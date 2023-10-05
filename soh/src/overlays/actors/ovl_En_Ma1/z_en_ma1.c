@@ -373,6 +373,7 @@ void func_80AA0EA0(EnMa1* this, PlayState* play) {
             func_8002F434(&this->actor, play, GI_WEIRD_EGG, 120.0f, 10.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HC_MALON_EGG, GI_WEIRD_EGG);
+            GET_PLAYER(play)->rangeCheck = RC_HC_MALON_EGG; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 120.0f, 10.0f);
         }
     }
@@ -398,6 +399,7 @@ void GivePlayerRandoRewardMalon(EnMa1* malon, PlayState* play, RandomizerCheck c
         // (confirmed via breakpoints in a vanilla save).
         malon->actionFunc = func_80AA0D88;
     } else if (!Flags_GetTreasure(play, 0x1F)) {
+        GET_PLAYER(play)->rangeCheck = check; // for OnCollectCheck
         GiveItemEntryFromActor(&malon->actor, play, getItemEntry, 10000.0f, 100.0f);
     }
     // make malon sing again after giving the item.

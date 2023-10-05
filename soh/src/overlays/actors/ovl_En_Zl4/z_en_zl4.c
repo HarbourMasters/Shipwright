@@ -234,6 +234,7 @@ void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, PlayState* play, RandomizerCh
     } else if (!Flags_GetTreasure(play, 0x1E) && !Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA) && Actor_TextboxIsClosing(&zelda->actor, play) &&
                (play->msgCtx.textId == 0x703C || play->msgCtx.textId == 0x703D)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_LETTER_ZELDA);
+        GET_PLAYER(play)->rangeCheck = check; // for OnCollectCheck
         GiveItemEntryFromActor(&zelda->actor, play, getItemEntry, 10000.0f, 100.0f);
     } else if (Flags_GetTreasure(play, 0x1E) && !Player_InBlockingCsMode(play, GET_PLAYER(play))) {
         gSaveContext.unk_13EE = 0x32;

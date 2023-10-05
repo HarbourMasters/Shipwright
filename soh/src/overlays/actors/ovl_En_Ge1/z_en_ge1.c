@@ -548,6 +548,7 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
             Flags_SetInfTable(INFTABLE_190);
         }
     } else {
+        RandomizerCheck check = RC_MAX;
         if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
             if (!IS_RANDO) {
                 switch (CUR_UPG_VALUE(UPG_QUIVER)) {
@@ -561,6 +562,7 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
                 }
             } else {
                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1500_POINTS, CUR_UPG_VALUE(UPG_QUIVER) == 1 ? GI_QUIVER_40 : GI_QUIVER_50);
+                check = RC_GF_HBA_1500_POINTS;
                 getItemId = getItemEntry.getItemId;
             }
         } else {
@@ -568,6 +570,7 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
                 getItemId = GI_HEART_PIECE;
             } else {
                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1000_POINTS, GI_HEART_PIECE);
+                check = RC_GF_HBA_1000_POINTS;
                 getItemId = getItemEntry.getItemId;
             }
         }
@@ -575,6 +578,9 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
         if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, play, getItemId, 10000.0f, 50.0f);
         } else {
+            if (check != RC_MAX) {
+                GET_PLAYER(play)->rangeCheck = check; // for OnCollectCheck
+            }
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }
@@ -589,6 +595,7 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, PlayState* play) {
         this->actionFunc = EnGe1_WaitTillItemGiven_Archery;
     }
 
+    RandomizerCheck check = RC_MAX;
     if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
         if (!IS_RANDO) {
             switch (CUR_UPG_VALUE(UPG_QUIVER)) {
@@ -602,6 +609,7 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, PlayState* play) {
             }
         } else {
             getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1500_POINTS, CUR_UPG_VALUE(UPG_QUIVER) == 1 ? GI_QUIVER_40 : GI_QUIVER_50);
+            check = RC_GF_HBA_1500_POINTS;
             getItemId = getItemEntry.getItemId;
         }
     } else {
@@ -609,6 +617,7 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, PlayState* play) {
             getItemId = GI_HEART_PIECE;
         } else {
             getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1000_POINTS, GI_HEART_PIECE);
+            check = RC_GF_HBA_1000_POINTS;
             getItemId = getItemEntry.getItemId;
         }
     }
@@ -616,6 +625,9 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, PlayState* play) {
     if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
         func_8002F434(&this->actor, play, getItemId, 10000.0f, 50.0f);
     } else {
+        if (check != RC_MAX) {
+            GET_PLAYER(play)->rangeCheck = check; // for OnCollectCheck
+        }
         GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
     }
 }

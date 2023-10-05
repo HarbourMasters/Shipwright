@@ -193,6 +193,7 @@ void ItemOcarina_WaitInWater(ItemOcarina* this, PlayState* play) {
             func_8002F434(&this->actor, play, GI_OCARINA_OOT, 30.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
+            GET_PLAYER(play)->rangeCheck = RC_HF_OCARINA_OF_TIME_ITEM; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 30.0f, 50.0f);
         }
 

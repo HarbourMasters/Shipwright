@@ -98,6 +98,7 @@ void EnDs_GiveOddPotion(EnDs* this, PlayState* play) {
         u32 itemId = GI_ODD_POTION;
         if (IS_RANDO) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_ODD_MUSHROOM, GI_ODD_POTION);
+            GET_PLAYER(play)->rangeCheck = RC_KAK_TRADE_ODD_MUSHROOM; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_ODD_MUSHROOM);
             return;
@@ -113,6 +114,7 @@ void EnDs_TalkAfterBrewOddPotion(EnDs* this, PlayState* play) {
         u32 itemId = GI_ODD_POTION;
         if (IS_RANDO) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_ODD_MUSHROOM, GI_ODD_POTION);
+            GET_PLAYER(play)->rangeCheck = RC_KAK_TRADE_ODD_MUSHROOM; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_ODD_MUSHROOM);
             return;
@@ -207,6 +209,7 @@ void EnDs_GiveBluePotion(EnDs* this, PlayState* play) {
     } else {
         if (EnDs_RandoCanGetGrannyItem()) {
             GetItemEntry entry = Randomizer_GetItemFromKnownCheck(RC_KAK_GRANNYS_SHOP, GI_POTION_BLUE);
+            GET_PLAYER(play)->rangeCheck = RC_KAK_GRANNYS_SHOP; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, entry, 10000.0f, 50.0f);
         } else {
             func_8002F434(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
@@ -233,6 +236,7 @@ void EnDs_OfferBluePotion(EnDs* this, PlayState* play) {
 
                         if (EnDs_RandoCanGetGrannyItem()) {
                             itemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_GRANNYS_SHOP, GI_POTION_BLUE);
+                            GET_PLAYER(play)->rangeCheck = RC_KAK_GRANNYS_SHOP; // for OnCollectCheck
                             GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
                         } else {
                             itemEntry = ItemTable_Retrieve(GI_POTION_BLUE);

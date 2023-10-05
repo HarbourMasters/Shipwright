@@ -552,6 +552,7 @@ void func_809FEC70(EnDu* this, PlayState* play) {
             func_8002F434(&this->actor, play, GI_BRACELET, xzRange, fabsf(this->actor.yDistToPlayer) + 1.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_DARUNIAS_JOY, GI_BRACELET);
+            GET_PLAYER(play)->rangeCheck = RC_GC_DARUNIAS_JOY; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, xzRange, fabsf(this->actor.yDistToPlayer) + 1.0f);
         }
     }

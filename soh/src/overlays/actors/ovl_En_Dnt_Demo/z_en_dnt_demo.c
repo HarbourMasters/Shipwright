@@ -141,6 +141,7 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
                 case PLAYER_MASK_SKULL:
                     if (!Flags_GetTreasure(play, 0x1F) && !Player_InBlockingCsMode(play, player)) {
                         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_SKULL_MASK, GI_STICK_UPGRADE_30);
+                        GET_PLAYER(play)->getItemCheck = RC_DEKU_THEATER_SKULL_MASK; // for OnCollectCheck
                         GiveItemEntryWithoutActor(play, getItemEntry);
                         player->pendingFlag.flagID = 0x1F;
                         player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
@@ -149,6 +150,7 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
                 case PLAYER_MASK_TRUTH:
                     if (!Flags_GetTreasure(play, 0x1E) && !Player_InBlockingCsMode(play, player)) {
                         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_MASK_OF_TRUTH, GI_NUT_UPGRADE_40);
+                        GET_PLAYER(play)->getItemCheck = RC_DEKU_THEATER_MASK_OF_TRUTH; // for OnCollectCheck
                         GiveItemEntryWithoutActor(play, getItemEntry);
                         player->pendingFlag.flagID = 0x1E;
                         player->pendingFlag.flagType = FLAG_SCENE_TREASURE;

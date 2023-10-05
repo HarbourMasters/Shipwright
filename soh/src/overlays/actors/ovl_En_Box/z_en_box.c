@@ -509,6 +509,7 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
             if (IS_RANDO) {
                 sItem.getItemId = 0 - sItem.getItemId;
                 sItem.getItemFrom = ITEM_FROM_CHEST;
+                GET_PLAYER(play)->rangeCheck = Randomizer_GetCheckFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params); // for OnCollectCheck
                 GiveItemEntryFromActorWithFixedRange(&this->dyna.actor, play, sItem);
             } else {
                 func_8002F554(&this->dyna.actor, play, -(this->dyna.actor.params >> 5 & 0x7F));

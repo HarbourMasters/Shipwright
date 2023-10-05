@@ -488,12 +488,14 @@ s32 DoorWarp1_PlayerInRange(DoorWarp1* this, PlayState* play) {
 }
 
 void GivePlayerRandoReward(DoorWarp1* this, Player* player, PlayState* play, u8 ruto, u8 adult) {
-    GetItemEntry getItemEntry = Randomizer_GetItemFromActor(this->actor.id, play->sceneNum, 0x00, GI_NONE);
+    RandomizerCheck check = Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, 0x00);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_NONE);
 
     if (this->actor.parent != NULL && this->actor.parent->id == GET_PLAYER(play)->actor.id &&
         !Flags_GetTreasure(play, 0x1F)) {
         Flags_SetTreasure(play, 0x1F);
     } else if (!Flags_GetTreasure(play, 0x1F)) {
+        GET_PLAYER(play)->rangeCheck = check; // for OnCollectCheck
         GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 100.0f);
     } else if (!Player_InBlockingCsMode(play, GET_PLAYER(play))) {
         if (adult) {

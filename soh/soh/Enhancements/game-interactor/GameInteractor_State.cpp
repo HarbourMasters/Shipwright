@@ -139,3 +139,7 @@ void GameInteractor_SetTriforceHuntPieceGiven(uint8_t state) {
 void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state) {
     GameInteractor::State::TriforceHuntCreditsWarpActive = state;
 }
+
+bool GameInteractor_IsSaveLoaded() {
+    return GameInteractor::IsSaveLoaded();
+}

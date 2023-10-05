@@ -258,29 +258,36 @@ void EnSth_ParentRewardObtainedWait(EnSth* this, PlayState* play) {
 void EnSth_GivePlayerItem(EnSth* this, PlayState* play) {
     u16 getItemId = sGetItemIds[this->actor.params];
     GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
+    RandomizerCheck check = RC_UNKNOWN_CHECK;
     
     if (IS_RANDO) {
         switch (getItemId) {
             case GI_RUPEE_GOLD:
                 if (!Flags_GetRandomizerInf(RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD)) {
                     getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_100_GOLD_SKULLTULA_REWARD, GI_RUPEE_GOLD);
+                    check = RC_KAK_100_GOLD_SKULLTULA_REWARD;
                     Flags_SetRandomizerInf(RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD);
                 }
                 break;
             case GI_WALLET_ADULT:
                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_10_GOLD_SKULLTULA_REWARD, GI_WALLET_ADULT);
+                check = RC_KAK_10_GOLD_SKULLTULA_REWARD;
                 break;
             case GI_STONE_OF_AGONY:
                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_20_GOLD_SKULLTULA_REWARD, GI_STONE_OF_AGONY);
+                check = RC_KAK_20_GOLD_SKULLTULA_REWARD;
                 break;
             case GI_WALLET_GIANT:
                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_30_GOLD_SKULLTULA_REWARD, GI_WALLET_GIANT);
+                check = RC_KAK_30_GOLD_SKULLTULA_REWARD;
                 break;
             case GI_BOMBCHUS_10:
                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_40_GOLD_SKULLTULA_REWARD, GI_BOMBCHUS_10);
+                check = RC_KAK_40_GOLD_SKULLTULA_REWARD;
                 break;
             case GI_HEART_PIECE:
                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_50_GOLD_SKULLTULA_REWARD, GI_HEART_PIECE);
+                check = RC_KAK_50_GOLD_SKULLTULA_REWARD;
                 break;
         }
         getItemId = getItemEntry.getItemId;
@@ -304,6 +311,9 @@ void EnSth_GivePlayerItem(EnSth* this, PlayState* play) {
     if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
         func_8002F434(&this->actor, play, getItemId, 10000.0f, 50.0f);
     } else {
+        if (check != RC_UNKNOWN_CHECK) {
+            GET_PLAYER(play)->rangeCheck = check; // for OnCollectCheck
+        }
         GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
     }
 }

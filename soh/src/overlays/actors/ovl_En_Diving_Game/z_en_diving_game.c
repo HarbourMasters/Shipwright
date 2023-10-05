@@ -459,6 +459,7 @@ void func_809EEA00(EnDivingGame* this, PlayState* play) {
             func_8002F434(&this->actor, play, GI_SCALE_SILVER, 90.0f, 10.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZD_DIVING_MINIGAME, GI_SCALE_SILVER);
+            GET_PLAYER(play)->rangeCheck = RC_ZD_DIVING_MINIGAME; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 90.0f, 10.0f);
         }
         this->actionFunc = func_809EEA90;
@@ -474,6 +475,7 @@ void func_809EEA90(EnDivingGame* this, PlayState* play) {
             func_8002F434(&this->actor, play, GI_SCALE_SILVER, 90.0f, 10.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZD_DIVING_MINIGAME, GI_SCALE_SILVER);
+            GET_PLAYER(play)->rangeCheck = RC_ZD_DIVING_MINIGAME; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 90.0f, 10.0f);
         }
     }

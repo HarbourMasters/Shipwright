@@ -397,6 +397,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                     if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
                         func_8002F434(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
                     } else {
+                        GET_PLAYER(play)->rangeCheck = LINK_IS_ADULT ? RC_KAK_SHOOTING_GALLERY_REWARD : RC_MARKET_SHOOTING_GALLERY_REWARD; // for OnCollectCheck
                         GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 2000.0f, 1000.0f);
                     }
                     this->actionFunc = EnSyatekiMan_GivePrize;

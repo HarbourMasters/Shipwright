@@ -183,17 +183,22 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, PlayState* play) {
         this->getItemId = GI_BOMB_BAG_40;
     }
 
+    RandomizerCheck check = RC_MAX; // for OnCollectCheck
+
     if (IS_RANDO) {
         switch (this->prizeIndex) {
             case EXITEM_BOMB_BAG_BOWLING:
+                check = RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE; // for OnCollectCheck
                 this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20);
                 this->getItemId = this->getItemEntry.getItemId;
                 break;
             case EXITEM_HEART_PIECE_BOWLING:
+                check = RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE; // for OnCollectCheck
                 this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
                 this->getItemId = this->getItemEntry.getItemId;
                 break;
             case EXITEM_BOMBCHUS_BOWLING:
+                check = RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS; // for OnCollectCheck
                 this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
                 this->getItemId = this->getItemEntry.getItemId;
                 break;
@@ -205,6 +210,9 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, PlayState* play) {
     if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
         func_8002F434(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
     } else {
+        if (check != RC_MAX) {
+            GET_PLAYER(play)->rangeCheck = check; // for OnCollectCheck
+        }
         GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 2000.0f, 1000.0f);
     }
     player->stateFlags1 |= 0x20000000;

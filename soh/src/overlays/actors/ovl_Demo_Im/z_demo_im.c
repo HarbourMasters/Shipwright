@@ -910,6 +910,7 @@ void GivePlayerRandoRewardImpa(Actor* impa, PlayState* play, RandomizerCheck che
         !Flags_GetTreasure(play, 0x1F)) {
         Flags_SetTreasure(play, 0x1F);
     } else if (!Flags_GetTreasure(play, 0x1F) && !Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
+        GET_PLAYER(play)->rangeCheck = check; // for OnCollectCheck
         GiveItemEntryFromActor(impa, play, getItemEntry, 75.0f, 50.0f);
     } else if (!Player_InBlockingCsMode(play, GET_PLAYER(play))) {
         Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);

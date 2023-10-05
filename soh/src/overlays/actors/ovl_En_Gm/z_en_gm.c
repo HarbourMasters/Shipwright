@@ -259,6 +259,7 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
                     if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
                         !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
                         itemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE);
+                        GET_PLAYER(play)->rangeCheck = RC_GC_MEDIGORON; // for OnCollectCheck
                         GiveItemEntryFromActor(&this->actor, play, itemEntry, 415.0f, 10.0f);
                         Flags_SetInfTable(INFTABLE_B1);
                     } else {
@@ -292,6 +293,7 @@ void func_80A3DF00(EnGm* this, PlayState* play) {
         if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
             !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE);
+            GET_PLAYER(play)->rangeCheck = RC_GC_MEDIGORON; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 415.0f, 10.0f);
             Flags_SetInfTable(INFTABLE_B1);
         }

@@ -326,6 +326,7 @@ void func_80ABF708(EnOkarinaTag* this, PlayState* play) {
 void GivePlayerRandoRewardSunSong(EnOkarinaTag* song, PlayState* play, RandomizerCheck check) {
     Flags_SetTreasure(play, 0x1F);
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_LETTER_ZELDA);
+    GET_PLAYER(play)->rangeCheck = check; // for OnCollectCheck
     GiveItemEntryFromActor(&song->actor, play, getItemEntry, 10000.0f, 100.0f);
 }
 

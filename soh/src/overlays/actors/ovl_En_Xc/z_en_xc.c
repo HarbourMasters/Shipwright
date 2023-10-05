@@ -297,11 +297,13 @@ void GivePlayerRandoRewardSheikSong(EnXc* sheik, PlayState* play, RandomizerChec
     if (!(gSaveContext.eventChkInf[5] & sheikType)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, ogSongId);
         if (check == RC_SHEIK_AT_TEMPLE && !Flags_GetTreasure(play, 0x1F)) {
+            GET_PLAYER(play)->rangeCheck = RC_SHEIK_AT_TEMPLE; // for OnCollectCheck
             if (GiveItemEntryFromActor(&sheik->actor, play, getItemEntry, 10000.0f, 100.0f)) {
                 player->pendingFlag.flagID = 0x1F;
                 player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
             }
         } else if (check != RC_SHEIK_AT_TEMPLE) {
+            GET_PLAYER(play)->rangeCheck = check; // for OnCollectCheck
             if (GiveItemEntryFromActor(&sheik->actor, play, getItemEntry, 10000.0f, 100.0f)) {
                 player->pendingFlag.flagID = (0x5 << 4) | (sheikType & 0xF) >> 1;
                 player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;

@@ -435,7 +435,8 @@ void func_809EFDD0(EnDns* this, PlayState* play) {
     } else {
         GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(this->scrubIdentity.randomizerCheck, this->scrubIdentity.getItemId);
         gSaveContext.pendingSale = itemEntry.itemId;
-        gSaveContext.pendingSaleMod = itemEntry.modIndex;
+        gSaveContext.pendingSaleMod = itemEntry.modIndex; // for OnCollectCheck
+        GET_PLAYER(play)->rangeCheck = this->scrubIdentity.randomizerCheck;
         GiveItemEntryFromActor(&this->actor, play, itemEntry, 130.0f, 100.0f);
     }
 }

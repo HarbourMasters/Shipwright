@@ -62,7 +62,9 @@ void ItemBHeart_Update(Actor* thisx, PlayState* play) {
         if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_HEART_CONTAINER_2, 30.0f, 40.0f);
         } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromActor(this->actor.id, play->sceneNum, this->actor.params, GI_HEART_CONTAINER_2);
+            RandomizerCheck check = Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->actor.params);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_HEART_CONTAINER_2);
+            GET_PLAYER(play)->rangeCheck = check; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 30.0f, 40.0f);
         }
     }

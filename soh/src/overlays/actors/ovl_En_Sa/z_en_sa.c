@@ -628,6 +628,7 @@ void GivePlayerRandoRewardSaria(EnSa* saria, PlayState* play, RandomizerCheck ch
         !Flags_GetTreasure(play, 0x1F)) {
         Flags_SetTreasure(play, 0x1F);
     } else if (!Flags_GetTreasure(play, 0x1F)) {
+        GET_PLAYER(play)->rangeCheck = check; // for OnCollectCheck
         GiveItemEntryFromActor(&saria->actor, play, getItemEntry, 10000.0f, 100.0f);
     }
 }

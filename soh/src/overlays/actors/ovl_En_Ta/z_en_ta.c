@@ -882,6 +882,7 @@ void func_80B15E80(EnTa* this, PlayState* play) {
             func_8002F434(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_MILK_BOTTLE);
+            GET_PLAYER(play)->rangeCheck = RC_LLR_TALONS_CHICKENS; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }
@@ -897,6 +898,7 @@ void func_80B15F54(EnTa* this, PlayState* play) {
             func_8002F434(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_MILK_BOTTLE);
+            GET_PLAYER(play)->rangeCheck = RC_LLR_TALONS_CHICKENS; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }

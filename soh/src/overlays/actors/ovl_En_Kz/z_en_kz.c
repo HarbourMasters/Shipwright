@@ -462,6 +462,7 @@ void EnKz_Wait(EnKz* this, PlayState* play) {
 void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
     GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     s32 getItemId;
+    RandomizerCheck check = RC_MAX; // for OnCollectCheck
     f32 xzRange;
     f32 yRange;
 
@@ -474,11 +475,13 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
             if (this->isTrading) {
                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZD_TRADE_PRESCRIPTION, GI_FROG);
                 getItemId = getItemEntry.getItemId;
+                check = RC_ZD_TRADE_PRESCRIPTION;
                 Randomizer_ConsumeAdultTradeItem(play, ITEM_PRESCRIPTION);
                 Flags_SetTreasure(play, 0x1F);
             } else {
                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZD_KING_ZORA_THAWED, GI_TUNIC_ZORA);
                 getItemId = getItemEntry.getItemId;
+                check = RC_ZD_KING_ZORA_THAWED;
             }
         } else {
             getItemId = this->isTrading ? GI_FROG : GI_TUNIC_ZORA;
@@ -488,6 +491,7 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
         if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, play, getItemId, xzRange, yRange);
         } else {
+            GET_PLAYER(play)->rangeCheck = check; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, xzRange, yRange);
         }
     }

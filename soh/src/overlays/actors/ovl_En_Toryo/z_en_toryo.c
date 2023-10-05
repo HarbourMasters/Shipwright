@@ -321,6 +321,7 @@ void func_80B20768(EnToryo* this, PlayState* play) {
         } else {
             if (IS_RANDO) {
                 GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_GV_TRADE_SAW, GI_SWORD_BROKEN);
+                GET_PLAYER(play)->rangeCheck = RC_GV_TRADE_SAW; // for OnCollectCheck
                 Randomizer_ConsumeAdultTradeItem(play, ITEM_SAW);
                 GiveItemEntryFromActor(&this->actor, play, itemEntry, 100.0f, 10.0f);
                 Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_GV_TRADE_SAW);

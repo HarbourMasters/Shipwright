@@ -684,6 +684,8 @@ typedef struct Player {
     // #endregion
     u8 ivanFloating;
     u8 ivanDamageMultiplier;
+    RandomizerCheck getItemCheck;
+    RandomizerCheck rangeCheck;
 } Player; // size = 0xA94
 
 #endif

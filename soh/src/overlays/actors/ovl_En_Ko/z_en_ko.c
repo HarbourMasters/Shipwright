@@ -1236,6 +1236,7 @@ void func_80A99504(EnKo* this, PlayState* play) {
     } else {
         if (IS_RANDO) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TRADE_ODD_POTION, GI_SAW);
+            GET_PLAYER(play)->rangeCheck = RC_LW_TRADE_ODD_POTION; // for OnCollectCheck
             Randomizer_ConsumeAdultTradeItem(play, ITEM_ODD_POTION);
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 120.0f, 10.0f);
         } else {

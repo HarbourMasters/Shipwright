@@ -70,13 +70,15 @@ const ActorInit Bg_Dy_Yoseizo_InitVars = {
 
 void GivePlayerRandoRewardGreatFairy(BgDyYoseizo* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    GetItemEntry getItemEntry = Randomizer_GetItemFromActor(this->actor.id, play->sceneNum, this->fountainType + 1, GI_NONE);
+    RandomizerCheck check = Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->fountainType + 1);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_NONE);
 
     if (this->actor.parent == GET_PLAYER(play) && !Flags_GetTreasure(play, this->fountainType + 1) &&
         !Player_InBlockingCsMode(play, GET_PLAYER(play))) {
         Flags_SetTreasure(play, this->fountainType + 1);
         Actor_Kill(&this->actor);
     } else if (!Flags_GetTreasure(play, this->fountainType + 1)) {
+        GET_PLAYER(play)->rangeCheck = check; // for OnCollectCheck
         GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 100.0f);
     }
 }

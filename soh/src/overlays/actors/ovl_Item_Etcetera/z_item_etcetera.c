@@ -137,6 +137,7 @@ void func_80B85824(ItemEtcetera* this, PlayState* play) {
             func_8002F434(&this->actor, play, this->getItemId, 30.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
+            GET_PLAYER(play)->rangeCheck = RC_LH_SUN; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 30.0f, 50.0f);
         }
     }
@@ -160,6 +161,7 @@ void func_80B858B4(ItemEtcetera* this, PlayState* play) {
             func_8002F434(&this->actor, play, this->getItemId, 30.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
+            GET_PLAYER(play)->rangeCheck = RC_LH_UNDERWATER_ITEM; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 30.0f, 50.0f);
         }
 

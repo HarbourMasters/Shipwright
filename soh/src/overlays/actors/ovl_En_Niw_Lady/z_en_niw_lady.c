@@ -313,6 +313,7 @@ void func_80ABA654(EnNiwLady* this, PlayState* play) {
                 func_8002F434(&this->actor, play, GI_BOTTLE, 100.0f, 50.0f);
             } else {
                 this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_CHILD, GI_BOTTLE);
+                GET_PLAYER(play)->rangeCheck = RC_KAK_ANJU_AS_CHILD; // for OnCollectCheck
                 GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 100.0f, 50.0f);
             }
 
@@ -402,6 +403,7 @@ void func_80ABA9B8(EnNiwLady* this, PlayState* play) {
                     func_8002F434(&this->actor, play, GI_POCKET_EGG, 200.0f, 100.0f);
                 } else {
                     this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
+                    GET_PLAYER(play)->rangeCheck = RC_KAK_ANJU_AS_ADULT; // for OnCollectCheck
                     GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 200.0f, 100.0f);
                     Flags_SetItemGetInf(ITEMGETINF_2C);
                 }
@@ -437,6 +439,7 @@ void func_80ABAB08(EnNiwLady* this, PlayState* play) {
                     func_8002F434(&this->actor, play, GI_COJIRO, 200.0f, 100.0f);
                 } else {
                     this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_POCKET_CUCCO, GI_COJIRO);
+                    GET_PLAYER(play)->rangeCheck = RC_KAK_TRADE_POCKET_CUCCO; // for OnCollectCheck
                     Randomizer_ConsumeAdultTradeItem(play, ITEM_POCKET_CUCCO);
                     GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 200.0f, 100.0f);
                     Flags_SetItemGetInf(ITEMGETINF_2E);

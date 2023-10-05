@@ -290,6 +290,7 @@ void EnCow_GivePlayerRandomizedItem(EnCow* this, PlayState* play) {
     if (!EnCow_HasBeenMilked(this, play)) {
         CowIdentity cowIdentity = Randomizer_IdentifyCow(play->sceneNum, this->actor.world.pos.x, this->actor.world.pos.z);
         GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(cowIdentity.randomizerCheck, GI_MILK);
+        GET_PLAYER(play)->rangeCheck = cowIdentity.randomizerCheck; // for OnCollectCheck
         GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 100.0f);
     } else {
         // once we've gotten the rando reward from the cow,

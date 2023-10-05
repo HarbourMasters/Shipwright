@@ -122,11 +122,12 @@ void func_80AFB768(EnSi* this, PlayState* play) {
                 Message_StartTextbox(play, textId, NULL);
 
                 if (IS_RANDO) {
-                    if (getItemId != RG_ICE_TRAP) {
+                    RandomizerCheck check = Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->actor.params);                    if (getItemId != RG_ICE_TRAP) {
                         Randomizer_GiveSkullReward(this, play);
                         Audio_PlayFanfare_Rando(getItem);
                     } else {
                         gSaveContext.pendingIceTrapCount++;
+                        GameInteractor_ExecuteOnCollectCheckHooks(check);
                         Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
                     }
                 } else {
@@ -241,6 +242,10 @@ void Randomizer_UpdateSkullReward(EnSi* this, PlayState* play) {
 void Randomizer_GiveSkullReward(EnSi* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
+    RandomizerCheck check = Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->actor.params);
+    if (check != RC_UNKNOWN_CHECK) {
+        GET_PLAYER(play)->getItemCheck = check; // for OnCollectCheck
+    }
     if (getItem.modIndex == MOD_NONE) {
         // RANDOTOD: Move this into Item_Give() or some other more central location
         if (getItem.getItemId == GI_SWORD_BGS) {

@@ -18,6 +18,10 @@ void GameInteractor_ExecuteOnItemReceiveHooks(GetItemEntry itemEntry) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnItemReceive>(itemEntry);
 }
 
+void GameInteractor_ExecuteOnCollectCheckHooks(RandomizerCheck check) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnCollectCheck>(check);
+}
+
 void GameInteractor_ExecuteOnSaleEndHooks(GetItemEntry itemEntry) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaleEnd>(itemEntry);
 }

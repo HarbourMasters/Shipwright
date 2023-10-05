@@ -1766,6 +1766,10 @@ u8 Item_Give(PlayState* play, u8 item) {
     s16 temp;
 
     GetItemID returnItem = ITEM_NONE;
+    if (GameInteractor_IsSaveLoaded() && GET_PLAYER(play)->getItemCheck != RC_MAX && GET_PLAYER(play)->getItemCheck != RC_UNKNOWN_CHECK) {
+        GameInteractor_ExecuteOnCollectCheckHooks(GET_PLAYER(play)->getItemCheck);
+        GET_PLAYER(play)->getItemCheck = RC_MAX;
+    }
 
     // Gameplay stats: Update the time the item was obtained
     GameplayStats_SetTimestamp(play, item);
@@ -2322,8 +2326,11 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     uint16_t i;
     uint16_t slot;
 
-    // Gameplay stats: Update the time the item was obtained
-    Randomizer_GameplayStats_SetTimestamp(item);
+    GetItemID returnItem = ITEM_NONE;
+    if (GameInteractor_IsSaveLoaded() && GET_PLAYER(play)->getItemCheck != RC_MAX && GET_PLAYER(play)->getItemCheck != RC_UNKNOWN_CHECK) {
+        GameInteractor_ExecuteOnCollectCheckHooks(GET_PLAYER(play)->getItemCheck);
+        GET_PLAYER(play)->getItemCheck = RC_MAX;
+    }
 
     slot = SLOT(item);
     if (item == RG_MAGIC_SINGLE) {

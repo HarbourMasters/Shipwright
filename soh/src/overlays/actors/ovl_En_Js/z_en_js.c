@@ -136,6 +136,7 @@ void func_80A89160(EnJs* this, PlayState* play) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_WASTELAND_BOMBCHU_SALESMAN, GI_BOMBCHUS_10);
             gSaveContext.pendingSale = itemEntry.itemId;
             gSaveContext.pendingSaleMod = itemEntry.modIndex;
+            GET_PLAYER(play)->rangeCheck = RC_WASTELAND_BOMBCHU_SALESMAN;
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
             Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
         } else {

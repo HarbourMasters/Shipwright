@@ -103,6 +103,7 @@ void func_80AACA94(EnMk* this, PlayState* play) {
     } else {
         if (IS_RANDO) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
+            GET_PLAYER(play)->rangeCheck = RC_LH_TRADE_FROG; // for OnCollectCheck
             Randomizer_ConsumeAdultTradeItem(play, ITEM_FROG);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
@@ -118,6 +119,7 @@ void func_80AACB14(EnMk* this, PlayState* play) {
         this->actionFunc = func_80AACA94;
         if (IS_RANDO) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
+            GET_PLAYER(play)->rangeCheck = RC_LH_TRADE_FROG; // for OnCollectCheck
             Randomizer_ConsumeAdultTradeItem(play, ITEM_FROG);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
@@ -223,6 +225,7 @@ void func_80AACFA0(EnMk* this, PlayState* play) {
             func_8002F434(&this->actor, play, GI_HEART_PIECE, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_LAB_DIVE, GI_HEART_PIECE);
+            GET_PLAYER(play)->rangeCheck = RC_LH_LAB_DIVE; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }
@@ -235,6 +238,7 @@ void func_80AAD014(EnMk* this, PlayState* play) {
             func_8002F434(&this->actor, play, GI_HEART_PIECE, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_LAB_DIVE, GI_HEART_PIECE);
+            GET_PLAYER(play)->rangeCheck = RC_LH_LAB_DIVE; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }

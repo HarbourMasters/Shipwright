@@ -148,6 +148,7 @@ void EnGe3_WaitTillCardGiven(EnGe3* this, PlayState* play) {
             func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);
+            GET_PLAYER(play)->rangeCheck = RC_GF_GERUDO_MEMBERSHIP_CARD; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }
@@ -162,6 +163,7 @@ void EnGe3_GiveCard(EnGe3* this, PlayState* play) {
             func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);
+            GET_PLAYER(play)->rangeCheck = RC_GF_GERUDO_MEMBERSHIP_CARD; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }

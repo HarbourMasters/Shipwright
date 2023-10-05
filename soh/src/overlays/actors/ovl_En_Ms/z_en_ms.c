@@ -135,6 +135,7 @@ void EnMs_Talk(EnMs* this, PlayState* play) {
                     return;
                 }
                 if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) {
+                    GET_PLAYER(play)->rangeCheck = RC_ZR_MAGIC_BEAN_SALESMAN; // for OnCollectCheck
                     GiveItemEntryFromActor(&this->actor, play, 
                         Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_BEAN), 90.0f, 10.0f);
                 } else {
@@ -161,6 +162,7 @@ void EnMs_Sell(EnMs* this, PlayState* play) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_BEAN);
             gSaveContext.pendingSale = itemEntry.itemId;
             gSaveContext.pendingSaleMod = itemEntry.modIndex;
+            GET_PLAYER(play)->rangeCheck = RC_ZR_MAGIC_BEAN_SALESMAN;
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 90.0f, 10.0f);
             BEANS_BOUGHT = 10;
         } else {

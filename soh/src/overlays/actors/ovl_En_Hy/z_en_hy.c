@@ -668,6 +668,7 @@ s16 func_80A70058(PlayState* play, Actor* thisx) {
                             this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_LOST_DOG, GI_HEART_PIECE);
                             // The follownig line and last arguments of GiveItemEntryFromActor are copied from func_80A6F7CC
                             this->unkGetItemId = this->getItemEntry.getItemId;
+                            GET_PLAYER(play)->rangeCheck = RC_MARKET_LOST_DOG; // for OnCollectCheck
                             GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
                         }
                     }

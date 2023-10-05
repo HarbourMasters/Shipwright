@@ -417,6 +417,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, PlayState* play) {
         if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, play, getItemId, 2000.0f, 1000.0f);
         } else {
+            GET_PLAYER(play)->rangeCheck = RC_LW_TARGET_IN_WOODS; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
         }
         this->actionFunc = EnExItem_TargetPrizeGive;
@@ -432,6 +433,7 @@ void EnExItem_TargetPrizeGive(EnExItem* this, PlayState* play) {
             func_8002F434(&this->actor, play, getItemId, 2000.0f, 1000.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
+            GET_PLAYER(play)->rangeCheck = RC_LW_TARGET_IN_WOODS; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
         }
 
@@ -540,8 +542,7 @@ void EnExItem_DrawHeartPiece(EnExItem* this, PlayState* play) {
     func_8002ED80(&this->actor, play, 0);
 
     if (IS_RANDO) {
-        GetItemEntry randoGetItem =
-            Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
+        GetItemEntry randoGetItem = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
         EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
         GetItemEntry_Draw(play, randoGetItem);
     } else {

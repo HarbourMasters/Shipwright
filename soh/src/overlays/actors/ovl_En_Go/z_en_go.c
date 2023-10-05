@@ -949,6 +949,7 @@ void EnGo_GetItem(EnGo* this, PlayState* play) {
     f32 yDist;
     GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     s32 getItemId;
+    RandomizerCheck check; // for OnCollectCheck
 
     if (Actor_HasParent(&this->actor, play)) {
         this->interactInfo.talkState = NPC_TALK_STATE_ACTION;
@@ -962,6 +963,7 @@ void EnGo_GetItem(EnGo* this, PlayState* play) {
                     getItemId = GI_SWORD_BGS;
                 } else {
                     getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS);
+                    check = RC_DMT_TRADE_CLAIM_CHECK;
                     getItemId = getItemEntry.getItemId;
                 }
                 this->unk_20C = 1;
@@ -969,6 +971,7 @@ void EnGo_GetItem(EnGo* this, PlayState* play) {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
                 if (IS_RANDO) {
                     getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
+                    check = RC_DMT_TRADE_CLAIM_CHECK;
                     getItemId = getItemEntry.getItemId;
                     Randomizer_ConsumeAdultTradeItem(play, ITEM_EYEDROPS);
                 } else {
@@ -978,6 +981,7 @@ void EnGo_GetItem(EnGo* this, PlayState* play) {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_SWORD_BROKEN) {
                 if (IS_RANDO) {
                     getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
+                    check = RC_DMT_TRADE_BROKEN_SWORD;
                     Randomizer_ConsumeAdultTradeItem(play, ITEM_SWORD_BROKEN);
                     getItemId = getItemEntry.getItemId;
                 } else {
@@ -995,6 +999,7 @@ void EnGo_GetItem(EnGo* this, PlayState* play) {
         if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, play, getItemId, xzDist, yDist);
         } else {
+            GET_PLAYER(play)->rangeCheck = check; // for OnCollectCheck
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, xzDist, yDist);
         }
     }
