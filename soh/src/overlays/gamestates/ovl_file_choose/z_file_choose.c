@@ -1265,18 +1265,14 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
             this->questType[this->buttonIndex] += 1;
-            while ((this->questType[this->buttonIndex] == QUEST_MASTER && !ResourceMgr_GameHasMasterQuest()) || 
-                (this->questType[this->buttonIndex] == QUEST_RANDOMIZER && !hasRandomizerQuest())) {
-                // If Master Quest is selected without a Master Quest OTR present or when Randomizer Quest is
-                // selected without a loaded Randomizer seed, skip past it.
+            while (this->questType[this->buttonIndex] == QUEST_MASTER && !ResourceMgr_GameHasMasterQuest()) {
+                // If Master Quest is selected without a Master Quest OTR present, skip past it.
                 this->questType[this->buttonIndex] += 1;
             }
         } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
             this->questType[this->buttonIndex] -= 1;
-            while ((this->questType[this->buttonIndex] == QUEST_MASTER && !ResourceMgr_GameHasMasterQuest()) ||
-                (this->questType[this->buttonIndex] == QUEST_RANDOMIZER && !hasRandomizerQuest())) {
-                // If Master Quest is selected without a Master Quest OTR present or when Randomizer Quest is
-                // selected without a loaded Randomizer seed, skip past it.
+            while (this->questType[this->buttonIndex] == QUEST_MASTER && !ResourceMgr_GameHasMasterQuest()) {
+                // If Master Quest is selected without a Master Quest OTR present, skip past it.
                 this->questType[this->buttonIndex] -= 1;
             }
         }
@@ -1303,6 +1299,8 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             this->prevConfigMode = this->configMode;
             this->configMode = CM_ROTATE_TO_BOSS_RUSH_MENU;
             return;
+        } else if (this->questType[this->buttonIndex] == QUEST_RANDOMIZER && !hasRandomizerQuest()) {
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         } else {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             osSyncPrintf("Selected Dungeon Quest: %d\n", IS_MASTER_QUEST);
@@ -2235,7 +2233,11 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             
             case QUEST_RANDOMIZER:
                 DrawSeedHashSprites(this);
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
+                if (hasRandomizerQuest()) {
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
+                } else {
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0x40, 0x40, 0x40, this->logoAlpha);
+                }
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
                 FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, ResourceMgr_GameHasOriginal() ? gTitleZeldaShieldLogoTex : gTitleZeldaShieldLogoMQTex, 160, 160);
@@ -3123,7 +3125,7 @@ static void (*gFileSelectUpdateFuncs[])(GameState*) = {
     FileChoose_SelectModeUpdate,
 };
 
-static const char* randoWarningText[] = {
+static const char* randoVersionWarningText[] = {
     // English
     "This save was created on a different version of SoH.\nThings may be broken. Play at your own risk.",
     // German
@@ -3132,7 +3134,7 @@ static const char* randoWarningText[] = {
     "Cette sauvegarde a été créée sur une version\ndifférente de SoH.\nCertaines fonctionnalités peuvent être corrompues."
 };
 
-void FileChoose_DrawRandoSaveWarning(GameState* thisx) {
+void FileChoose_DrawRandoSaveVersionWarning(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
 
     OPEN_DISPS(this->state.gfxCtx);
@@ -3169,11 +3171,55 @@ void FileChoose_DrawRandoSaveWarning(GameState* thisx) {
                                 (SCREEN_WIDTH - 32) << 2, (SCREEN_HEIGHT - bottomOffset) << 2, G_TX_RENDERTILE, 0, 0,
                                 1 << 10, texCoordinateHeightScale << 1);
 
-            Interface_DrawTextLine(this->state.gfxCtx, randoWarningText[gSaveContext.language], 36,
+            Interface_DrawTextLine(this->state.gfxCtx, randoVersionWarningText[gSaveContext.language], 36,
                                    SCREEN_HEIGHT - height, 255, 255, 255, textAlpha, 0.8f, 1);
         }
     }
 
+    CLOSE_DISPS(this->state.gfxCtx);
+}
+
+static const char* noRandoGeneratedText[] = {
+    // English
+    "No randomizer generated.\nGenerate one in the randomizer menu.",
+    // German
+    "!!!",
+    // French
+    "!!!"
+};
+
+void FileChoose_DrawNoRandoGeneratedWarning(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+
+    OPEN_DISPS(this->state.gfxCtx);
+
+    // Draw rando seed warning when build version doesn't match for Major or Minor number
+    if (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER && !hasRandomizerQuest()) {
+        u8 textAlpha = 225;
+
+        // Compute the height for a "squished" textbox texture
+        s16 height = gSaveContext.language == LANGUAGE_ENG ? 32 : 40; // English is only 2 lines
+        // float math to get a S5.10 number that will squish the texture
+        f32 texCoordinateHeightF = 512 / ((f32)height / 64);
+        s16 texCoordinateHeightScale = texCoordinateHeightF + 0.5f;
+        s16 bottomOffset = 4;
+
+        Gfx_SetupDL_39Opa(this->state.gfxCtx);
+        gDPSetAlphaDither(POLY_OPA_DISP++, G_AD_DISABLE);
+        gSPClearGeometryMode(POLY_OPA_DISP++, G_SHADE);
+        gDPSetCombineLERP(POLY_OPA_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0,
+                          0, PRIMITIVE, 0);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, textAlpha);
+        gDPLoadTextureBlock_4b(POLY_OPA_DISP++, gDefaultMessageBackgroundTex, G_IM_FMT_I, 128, 64, 0, G_TX_MIRROR,
+                               G_TX_MIRROR, 7, 0, G_TX_NOLOD, G_TX_NOLOD);
+        gSPTextureRectangle(POLY_OPA_DISP++, 32 << 2, (SCREEN_HEIGHT - height - bottomOffset) << 2,
+                            (SCREEN_WIDTH - 32) << 2, (SCREEN_HEIGHT - bottomOffset) << 2, G_TX_RENDERTILE, 0, 0,
+                            1 << 10, texCoordinateHeightScale << 1);
+
+        Interface_DrawTextLine(this->state.gfxCtx, noRandoGeneratedText[gSaveContext.language], 36,
+                               SCREEN_HEIGHT - height, 255, 255, 255, textAlpha, 0.8f, 1);
+    }
+    
     CLOSE_DISPS(this->state.gfxCtx);
 }
 
@@ -3368,8 +3414,10 @@ void FileChoose_Main(GameState* thisx) {
         gSPTextureRectangle(POLY_OPA_DISP++, 0x0168, 0x0330, 0x03A8, 0x0370, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
     }
 
-    // Draw rando save warning over the controls text, but before the screen fill fade out
-    FileChoose_DrawRandoSaveWarning(&this->state);
+    // Draw rando save version warning over the controls text, but before the screen fill fade out
+    FileChoose_DrawRandoSaveVersionWarning(&this->state);
+
+    FileChoose_DrawNoRandoGeneratedWarning(&this->state);
 
     gDPPipeSync(POLY_OPA_DISP++);
     gSPDisplayList(POLY_OPA_DISP++, sScreenFillSetupDL);
