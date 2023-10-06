@@ -1037,6 +1037,7 @@ void InitMods() {
     RegisterInfiniteNayrusLove();
     RegisterMoonJumpOnL();
     RegisterInfiniteISG();
+    RegisterEzQPA();
     RegisterUnrestrictedItems();
     RegisterFreezeTime();
     RegisterSwitchAge();
