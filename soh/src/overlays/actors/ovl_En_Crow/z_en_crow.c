@@ -283,7 +283,7 @@ void EnCrow_FlyIdle(EnCrow* this, PlayState* play) {
     }
     if ((this->timer == 0) && (this->actor.xzDistToPlayer < 300.0f) && !(player->stateFlags1 & 0x00800000) &&
         (this->actor.yDistToWater < -40.0f) && (Player_GetMask(play) != PLAYER_MASK_SKULL) &&
-        !CVar_GetS32("gNoKeeseGuayTarget", 0)) {
+        !CVarGetInteger("gNoKeeseGuayTarget", 0)) {
         EnCrow_SetupDiveAttack(this);
     }
 }
@@ -321,7 +321,7 @@ void EnCrow_DiveAttack(EnCrow* this, PlayState* play) {
     if ((this->timer == 0) || (Player_GetMask(play) == PLAYER_MASK_SKULL) ||
         (this->collider.base.atFlags & AT_HIT) || (this->actor.bgCheckFlags & 9) ||
         (player->stateFlags1 & 0x00800000) || (this->actor.yDistToWater > -40.0f) ||
-        CVar_GetS32("gNoKeeseGuayTarget", 0)) {
+        CVarGetInteger("gNoKeeseGuayTarget", 0)) {
         if (this->collider.base.atFlags & AT_HIT) {
             this->collider.base.atFlags &= ~AT_HIT;
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_KAICHO_ATTACK);

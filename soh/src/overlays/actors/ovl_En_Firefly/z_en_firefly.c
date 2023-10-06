@@ -416,7 +416,7 @@ void EnFirefly_FlyIdle(EnFirefly* this, PlayState* play) {
     }
     if ((this->timer == 0) && (this->actor.xzDistToPlayer < 200.0f) &&
         (Player_GetMask(play) != PLAYER_MASK_SKULL) &&
-        !CVar_GetS32("gNoKeeseGuayTarget", 0)) {
+        !CVarGetInteger("gNoKeeseGuayTarget", 0)) {
         EnFirefly_SetupDiveAttack(this);
     }
 }
@@ -495,7 +495,7 @@ void EnFirefly_DiveAttack(EnFirefly* this, PlayState* play) {
         Math_ScaledStepToS(&this->actor.shape.rot.x, this->targetPitch, 0x100);
     }
     if ((this->timer == 0) || (Player_GetMask(play) == PLAYER_MASK_SKULL) ||
-        CVar_GetS32("gNoKeeseGuayTarget", 0)) {
+        CVarGetInteger("gNoKeeseGuayTarget", 0)) {
         EnFirefly_SetupFlyAway(this);
     }
 }

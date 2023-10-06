@@ -263,6 +263,7 @@ const std::vector<const char*> cheatCvars = {
     "gSwitchAge",
     "gSwitchTimeline",
     "gNoRedeadFreeze",
+    "gNoKeeseGuayTarget",
     "gBombTimerMultiplier",
     "gNoFishDespawn",
     "gNoBugsDespawn"
