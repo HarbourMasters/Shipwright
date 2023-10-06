@@ -1262,6 +1262,8 @@ void DrawCheatsMenu() {
         UIWidgets::EnhancementCombobox("gDekuStickCheat", DekuStickCheat, DEKU_STICK_NORMAL);
         UIWidgets::PaddedEnhancementCheckbox("No ReDead/Gibdo Freeze", "gNoRedeadFreeze", true, false);
         UIWidgets::Tooltip("Prevents ReDeads and Gibdos from being able to freeze you with their scream");
+        UIWidgets::PaddedEnhancementCheckbox("Keese/Guay don't target you", "gNoKeeseGuayTarget", true, false);
+        UIWidgets::Tooltip("Keese and Guay no longer target you and simply ignore you as if you were wearing the skull mask");
         UIWidgets::Spacer(2.0f);
         if (ImGui::BeginMenu("Save States")) {
             ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f }, "          " ICON_FA_EXCLAMATION_TRIANGLE);
