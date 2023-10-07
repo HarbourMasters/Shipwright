@@ -3053,7 +3053,6 @@ void GenerateRandomizerImgui(std::string seed = "") {
         cvarSettings[RSK_RANDOMIZE_STARTING_INVENTORY_SETTINGS] == RO_GENERIC_ON,
     };
 
-    //Aurora Edit: Randomizing main rule settings
     srand(time(NULL));
 
     if (randomOptions.randomizeWorldSettings)
@@ -3066,7 +3065,6 @@ void GenerateRandomizerImgui(std::string seed = "") {
         RandomizeInventorySettings(cvarSettings);
 
     RandomizeDependentSettings(cvarSettings, randomOptions);
-    //End Aurora edit
 
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
@@ -3193,8 +3191,23 @@ void RandomizeWorldSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSe
         cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] += 1;
         cvarSettings[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] += 1;
         cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] += 1;
-        cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] += 1;
 
+    }
+
+    cvarSettings[RSK_TRIFORCE_HUNT] = rand() % 2;
+    
+    if (cvarSettings[RSK_TRIFORCE_HUNT] == RO_GENERIC_ON) {
+        cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = RandomizeItemCount(35, 20, {
+            5, 10,
+            10, 15,
+            15, 15,
+            20, 20,
+            25, 15,
+            30, 15,
+            35, 10,
+        });
+        cvarSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL] =
+            (u8)std::round(cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] * 1.5);
     }
 
     //Shuffle Entrances
@@ -3275,49 +3288,53 @@ void RandomizeItemSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSet
             : 8;
     cvarSettings[RSK_GERUDO_KEYS] = rand() % 4;
     cvarSettings[RSK_BOSS_KEYSANITY] = rand() % 6;
-    cvarSettings[RSK_GANONS_BOSS_KEY] = 
-        cvarSettings[RSK_ALLOW_100_GS_REWARD] == RO_GENERIC_ON ? rand() % 13 : rand() % 12;
-    cvarSettings[RSK_LACS_STONE_COUNT] = RandomizeItemCount(3, 2, {
-        1, 10,
-        2, 45,
-        3, 45,
-    });
-    cvarSettings[RSK_LACS_MEDALLION_COUNT] = RandomizeItemCount(6, 4, {
-        3, 10,
-        4, 30,
-        5, 30,
-        6, 30,
-     });;
-    cvarSettings[RSK_LACS_REWARD_COUNT] = RandomizeItemCount(9, 6, {
-        5, 10,
-        6, 20,
-        7, 40,
-        8, 20,
-        9, 10,
-    });;
-    cvarSettings[RSK_LACS_DUNGEON_COUNT] = RandomizeItemCount(8, 6, {
-        4, 10,
-        5, 20,
-        6, 40,
-        7, 20,
-        8, 10,
-    });;
-    cvarSettings[RSK_LACS_TOKEN_COUNT] = RandomizeItemCount(50, 30, {
-        20, 10,
-        25, 15,
-        30, 15,
-        35, 20,
-        40, 15,
-        45, 15,
-        50, 10,
-    });
-    cvarSettings[RSK_LACS_OPTIONS] = rand() % 3;
-    // Add one on if Greg is required
-    if (cvarSettings[RSK_LACS_OPTIONS] == RO_LACS_GREG_REWARD) {
-        cvarSettings[RSK_LACS_STONE_COUNT] += 1;
-        cvarSettings[RSK_LACS_MEDALLION_COUNT] += 1;
-        cvarSettings[RSK_LACS_REWARD_COUNT] += 1;
-        cvarSettings[RSK_LACS_DUNGEON_COUNT] += 1;
+
+    if (cvarSettings[RSK_TRIFORCE_HUNT] == RO_GENERIC_OFF) {
+        cvarSettings[RSK_GANONS_BOSS_KEY] = 
+            cvarSettings[RSK_ALLOW_100_GS_REWARD] == RO_GENERIC_ON ? rand() % 13 : rand() % 12;
+        cvarSettings[RSK_LACS_STONE_COUNT] = RandomizeItemCount(3, 2, {
+            1, 10,
+            2, 45,
+            3, 45,
+        });
+        cvarSettings[RSK_LACS_MEDALLION_COUNT] = RandomizeItemCount(6, 4, {
+            3, 10,
+            4, 30,
+            5, 30,
+            6, 30,
+         });;
+        cvarSettings[RSK_LACS_REWARD_COUNT] = RandomizeItemCount(9, 6, {
+            5, 10,
+            6, 20,
+            7, 40,
+            8, 20,
+            9, 10,
+        });;
+        cvarSettings[RSK_LACS_DUNGEON_COUNT] = RandomizeItemCount(8, 6, {
+            4, 10,
+            5, 20,
+            6, 40,
+            7, 20,
+            8, 10,
+        });;
+        cvarSettings[RSK_LACS_TOKEN_COUNT] = RandomizeItemCount(50, 30, {
+            20, 10,
+            25, 15,
+            30, 15,
+            35, 20,
+            40, 15,
+            45, 15,
+            50, 10,
+        });
+        cvarSettings[RSK_LACS_OPTIONS] = rand() % 3;
+        // Add one on if Greg is required
+        if (cvarSettings[RSK_LACS_OPTIONS] == RO_LACS_GREG_REWARD) {
+            cvarSettings[RSK_LACS_STONE_COUNT] += 1;
+            cvarSettings[RSK_LACS_MEDALLION_COUNT] += 1;
+            cvarSettings[RSK_LACS_REWARD_COUNT] += 1;
+        }
+    } else {
+        cvarSettings[RSK_GANONS_BOSS_KEY] = RO_GANON_BOSS_KEY_TRIFORCE_HUNT;
     }
 }
 
@@ -3344,6 +3361,8 @@ void RandomizeGameplaySettings(std::unordered_map<RandomizerSettingKey, u8>& cva
     cvarSettings[RSK_DAMPES_DIARY_HINT] = rand() % 2;
     cvarSettings[RSK_GREG_HINT] = rand() % 2;
     cvarSettings[RSK_WARP_SONG_HINTS] = rand() % 2;
+    cvarSettings[RSK_SARIA_HINT] = rand() % 2;
+    cvarSettings[RSK_FROGS_HINT] = rand() % 2;
     cvarSettings[RSK_SCRUB_TEXT_HINT] = rand() % 2;
     cvarSettings[RSK_KAK_10_SKULLS_HINT] = rand() % 2;
     cvarSettings[RSK_KAK_20_SKULLS_HINT] = rand() % 2;
@@ -3410,6 +3429,7 @@ void RandomizeDependentSettings(std::unordered_map<RandomizerSettingKey, u8>& cv
                                              ? rand() % 4
                                              : RO_LINKS_POCKET_DUNGEON_REWARD;
     }
+
 
 }
 
@@ -3756,22 +3776,23 @@ void RandomizerSettingsWindow::DrawElement() {
                             "rewards on slider does not change.");
 
                         UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions,
-                                                        RO_BRIDGE_STANDARD_REWARD);
+                                                       RO_BRIDGE_STANDARD_REWARD, worldSettingsRandomized,
+                                                       disabledRandomMessage);
                         switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
                             case RO_BRIDGE_STANDARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
                                                                         "gRandomizeStoneCount", 1, 3, "", 3, true,
-                                                                        true, false);
+                                    true, false, worldSettingsRandomized, disabledRandomMessage);
                                 break;
                             case RO_BRIDGE_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
                                                                         "gRandomizeStoneCount", 1, 4, "", 4, true,
-                                                                        true, false);
+                                    true, false, worldSettingsRandomized, disabledRandomMessage);
                                 break;
                             case RO_BRIDGE_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
                                                                         "gRandomizeStoneCount", 1, 3, "", 3, true,
-                                                                        true, false);
+                                    true, false, worldSettingsRandomized, disabledRandomMessage);
                                 break;
                         }
                         break;
@@ -3791,22 +3812,23 @@ void RandomizerSettingsWindow::DrawElement() {
                             "rewards on slider does not change.");
 
                         UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions,
-                                                        RO_BRIDGE_STANDARD_REWARD);
+                                                       RO_BRIDGE_STANDARD_REWARD, worldSettingsRandomized,
+                                                       disabledRandomMessage);
                         switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
                             case RO_BRIDGE_STANDARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt(
-                                    "Medallion Count: %d", "##RandoMedallionCount", "gRandomizeMedallionCount", 1,
-                                    6, "", 6, true, true, false);
+                                    "Medallion Count: %d", "##RandoMedallionCount", "gRandomizeMedallionCount", 1, 6,
+                                    "", 6, true, true, false, worldSettingsRandomized, disabledRandomMessage);
                                 break;
                             case RO_BRIDGE_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt(
-                                    "Medallion Count: %d", "##RandoMedallionCount", "gRandomizeMedallionCount", 1,
-                                    7, "", 7, true, true, false);
+                                    "Medallion Count: %d", "##RandoMedallionCount", "gRandomizeMedallionCount", 1, 7,
+                                    "", 7, true, true, false, worldSettingsRandomized, disabledRandomMessage);
                                 break;
                             case RO_BRIDGE_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt(
-                                    "Medallion Count: %d", "##RandoMedallionCount", "gRandomizeMedallionCount", 1,
-                                    6, "", 6, true, true, false);
+                                    "Medallion Count: %d", "##RandoMedallionCount", "gRandomizeMedallionCount", 1, 6,
+                                    "", 6, true, true, false, worldSettingsRandomized, disabledRandomMessage);
                                 break;
                         }
                         break;
@@ -3826,22 +3848,20 @@ void RandomizerSettingsWindow::DrawElement() {
                             "rewards on slider does not change.");
 
                         UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions,
-                                                        RO_BRIDGE_STANDARD_REWARD);
+                                                       RO_BRIDGE_STANDARD_REWARD, worldSettingsRandomized,
+                                                       disabledRandomMessage);
                         switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
                             case RO_BRIDGE_STANDARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                                        "gRandomizeRewardCount", 1, 9, "", 9, true,
-                                                                        true, false);
+                                                                        "gRandomizeRewardCount", 1, 9, "", 9, true, true, false, worldSettingsRandomized, disabledRandomMessage);
                                 break;
                             case RO_BRIDGE_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                                        "gRandomizeRewardCount", 1, 10, "", 10, true,
-                                                                        true, false);
+                                                                        "gRandomizeRewardCount", 1, 10, "", 10, true, true, false, worldSettingsRandomized, disabledRandomMessage);
                                 break;
                             case RO_BRIDGE_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                                        "gRandomizeRewardCount", 1, 9, "", 9, true,
-                                                                        true, false);
+                                                                        "gRandomizeRewardCount", 1, 9, "", 9, true, true, false, worldSettingsRandomized, disabledRandomMessage);
 
                                 break;
                         }
@@ -3862,29 +3882,27 @@ void RandomizerSettingsWindow::DrawElement() {
                             "rewards on slider does not change.");
 
                         UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions,
-                                                        RO_BRIDGE_STANDARD_REWARD);
+                                                       RO_BRIDGE_STANDARD_REWARD, worldSettingsRandomized,
+                                                       disabledRandomMessage);
                         switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
                             case RO_BRIDGE_STANDARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                                        "gRandomizeDungeonCount", 1, 8, "", 8, true,
-                                                                        true, false);
+                                                                        "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false, worldSettingsRandomized, disabledRandomMessage);
                                 break;
                             case RO_BRIDGE_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                                        "gRandomizeDungeonCount", 1, 9, "", 9, true,
-                                                                        true, false);
+                                                                        "gRandomizeDungeonCount", 1, 9, "", 9, true, true, false, worldSettingsRandomized, disabledRandomMessage);
                                 break;
                             case RO_BRIDGE_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                                        "gRandomizeDungeonCount", 1, 8, "", 8, true,
-                                                                        true, false);
+                                                                        "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false, worldSettingsRandomized, disabledRandomMessage);
                                 break;
                         }
                         break;
                     case RO_BRIDGE_TOKENS:
                         UIWidgets::PaddedEnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
                                                                 "gRandomizeTokenCount", 1, 100, "", 100, true, true,
-                                                                false);
+                                                              false, worldSettingsRandomized, disabledRandomMessage);
                         break;
                     case RO_BRIDGE_GREG:
                         break;
@@ -3973,7 +3991,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 }
 
                 // Triforce Hunt
-                UIWidgets::EnhancementCheckbox("Triforce Hunt", "gRandomizeTriforceHunt");
+                UIWidgets::EnhancementCheckbox("Triforce Hunt", "gRandomizeTriforceHunt", worldSettingsRandomized, disabledRandomMessage);
                 UIWidgets::InsertHelpHoverText(
                     "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n\n"
                     "When the required amount of pieces have been found, the game is saved and Ganon's Boss key is given "
@@ -3991,7 +4009,9 @@ void RandomizerSettingsWindow::DrawElement() {
                         "Keep in mind seed generation can fail if more pieces are placed than there are junk items in the item pool."
                     );
                     ImGui::SameLine();
-                    UIWidgets::EnhancementSliderInt("", "##TriforceHuntTotalPieces", "gRandomizeTriforceHuntTotalPieces", 1, 100, "", 30);
+                    UIWidgets::EnhancementSliderInt("", "##TriforceHuntTotalPieces",
+                                                    "gRandomizeTriforceHuntTotalPieces", 1, 100, "", 30, true,
+                                                    worldSettingsRandomized, disabledRandomMessage);
 
                     // Triforce Hunt (required pieces)
                     int requiredPieces = CVarGetInteger("gRandomizeTriforceHuntRequiredPieces", 20);
@@ -4000,7 +4020,9 @@ void RandomizerSettingsWindow::DrawElement() {
                         "The amount of Triforce pieces required to win the game."
                     );
                     ImGui::SameLine();
-                    UIWidgets::EnhancementSliderInt("", "##TriforceHuntRequiredPieces", "gRandomizeTriforceHuntRequiredPieces", 1, totalPieces, "", 20);
+                    UIWidgets::EnhancementSliderInt("", "##TriforceHuntRequiredPieces",
+                                                    "gRandomizeTriforceHuntRequiredPieces", 1, totalPieces, "", 20, true,
+                                                    worldSettingsRandomized, disabledRandomMessage);
                 }
 
                 UIWidgets::PaddedSeparator();
@@ -4149,25 +4171,29 @@ void RandomizerSettingsWindow::DrawElement() {
                     if (CVarGetInteger("gRandomizeShuffleDungeonsEntrances", RO_GENERIC_OFF)) {
                         UIWidgets::Spacer(0);
                         ImGui::SetCursorPosX(20);
-                        UIWidgets::EnhancementCheckbox("Mix Dungeons", "gRandomizeMixDungeons");
+                        UIWidgets::EnhancementCheckbox("Mix Dungeons", "gRandomizeMixDungeons", worldSettingsRandomized,
+                                                       disabledRandomMessage);
                         UIWidgets::InsertHelpHoverText("Dungeon entrances will be part of the mixed pool");
                     }
                     if (CVarGetInteger("gRandomizeShuffleOverworldEntrances", RO_GENERIC_OFF)) {
                         UIWidgets::Spacer(0);
                         ImGui::SetCursorPosX(20);
-                        UIWidgets::EnhancementCheckbox("Mix Overworld", "gRandomizeMixOverworld");
+                        UIWidgets::EnhancementCheckbox("Mix Overworld", "gRandomizeMixOverworld",
+                                                       worldSettingsRandomized, disabledRandomMessage);
                         UIWidgets::InsertHelpHoverText("Overworld entrances will be part of the mixed pool");
                     }
                     if (CVarGetInteger("gRandomizeShuffleInteriorsEntrances", RO_GENERIC_OFF)) {
                         UIWidgets::Spacer(0);
                         ImGui::SetCursorPosX(20);
-                        UIWidgets::EnhancementCheckbox("Mix Interiors", "gRandomizeMixInteriors");
+                        UIWidgets::EnhancementCheckbox("Mix Interiors", "gRandomizeMixInteriors",
+                                                       worldSettingsRandomized, disabledRandomMessage);
                         UIWidgets::InsertHelpHoverText("Interior entrances will be part of the mixed pool");
                     }
                     if (CVarGetInteger("gRandomizeShuffleGrottosEntrances", RO_GENERIC_OFF)) {
                         UIWidgets::Spacer(0);
                         ImGui::SetCursorPosX(20);
-                        UIWidgets::EnhancementCheckbox("Mix Grottos", "gRandomizeMixGrottos");
+                        UIWidgets::EnhancementCheckbox("Mix Grottos", "gRandomizeMixGrottos", worldSettingsRandomized,
+                                                       disabledRandomMessage);
                         UIWidgets::InsertHelpHoverText("Grotto entrances will be part of the mixed pool");
                     }
                 }
@@ -4693,19 +4719,24 @@ void RandomizerSettingsWindow::DrawElement() {
                             "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
                             "rewards on slider does not change.");
 
-                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions, RO_LACS_STANDARD_REWARD);
+                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions,
+                                                       RO_LACS_STANDARD_REWARD, itemSettingsRandomized,
+                                                       disabledRandomMessage);
                         switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
                             case RO_LACS_STANDARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount", 
-                                                            "gRandomizeLacsStoneCount", 1, 3, "", 3, true, true, false);
+                                                            "gRandomizeLacsStoneCount", 1, 3, "", 3,
+                                    true, true, false, itemSettingsRandomized, disabledRandomMessage);
                                 break;
                             case RO_LACS_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount", 
-                                                            "gRandomizeLacsStoneCount", 1, 4, "", 4, true, true, false);
+                                                            "gRandomizeLacsStoneCount", 1, 4, "", 4,
+                                    true, true, false, itemSettingsRandomized, disabledRandomMessage);
                                 break;
                             case RO_LACS_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount", 
-                                                            "gRandomizeLacsStoneCount", 1, 3, "", 3, true, true, false);
+                                                            "gRandomizeLacsStoneCount", 1, 3, "", 3,
+                                    true, true, false, itemSettingsRandomized, disabledRandomMessage);
                                 break;
                         }
                         break;
@@ -4722,19 +4753,24 @@ void RandomizerSettingsWindow::DrawElement() {
                             "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
                             "rewards on slider does not change.");
 
-                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions, RO_LACS_STANDARD_REWARD);
+                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions,
+                                                       RO_LACS_STANDARD_REWARD, itemSettingsRandomized,
+                                                       disabledRandomMessage);
                         switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
                             case RO_LACS_STANDARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
-                                                            "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
+                                                            "gRandomizeLacsMedallionCount",
+                                    1, 6, "", 6, true, true, false, itemSettingsRandomized, disabledRandomMessage);
                                 break;
                             case RO_LACS_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
-                                                            "gRandomizeLacsMedallionCount", 1, 7, "", 7, true, true, false);
+                                                            "gRandomizeLacsMedallionCount",
+                                    1, 7, "", 7, true, true, false, itemSettingsRandomized, disabledRandomMessage);
                                 break;
                             case RO_LACS_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
-                                                            "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
+                                                            "gRandomizeLacsMedallionCount",
+                                    1, 6, "", 6, true, true, false, itemSettingsRandomized, disabledRandomMessage);
                                 break;
                         }
                         break;
@@ -4751,19 +4787,24 @@ void RandomizerSettingsWindow::DrawElement() {
                             "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
                             "rewards on slider does not change.");
 
-                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions, RO_LACS_STANDARD_REWARD);
+                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions,
+                                                       RO_LACS_STANDARD_REWARD, itemSettingsRandomized,
+                                                       disabledRandomMessage);
                         switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
                             case RO_LACS_STANDARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
-                                                            "gRandomizeLacsRewardCount", 1, 9, "", 9, true, true, false);
+                                                            "gRandomizeLacsRewardCount", 1, 9, "",
+                                    9, true, true, false, itemSettingsRandomized, disabledRandomMessage);
                                 break;
                             case RO_LACS_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
-                                                            "gRandomizeLacsRewardCount", 1, 10, "", 10, true, true, false);
+                                                            "gRandomizeLacsRewardCount", 1, 10,
+                                    "", 10, true, true, false, itemSettingsRandomized, disabledRandomMessage);
                                 break;
                             case RO_LACS_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
-                                                            "gRandomizeLacsRewardCount", 1, 9, "", 9, true, true, false);
+                                                            "gRandomizeLacsRewardCount", 1, 9, "",
+                                    9, true, true, false, itemSettingsRandomized, disabledRandomMessage);
                                 break;
                         }
                         break;
@@ -4780,25 +4821,31 @@ void RandomizerSettingsWindow::DrawElement() {
                             "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
                             "rewards on slider does not change.");
 
-                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions, RO_LACS_STANDARD_REWARD);
+                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions,
+                                                       RO_LACS_STANDARD_REWARD, itemSettingsRandomized,
+                                                       disabledRandomMessage);
                         switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
                             case RO_LACS_STANDARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
-                                                            "gRandomizeLacsDungeonCount", 1, 8, "", 8, true, true, false);
+                                                            "gRandomizeLacsDungeonCount", 1, 8,
+                                    "", 8, true, true, false, itemSettingsRandomized, disabledRandomMessage);
                                 break;
                             case RO_LACS_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
-                                                            "gRandomizeLacsDungeonCount", 1, 9, "", 9, true, true, false);
+                                                            "gRandomizeLacsDungeonCount", 1, 9,
+                                    "", 9, true, true, false, itemSettingsRandomized, disabledRandomMessage);
                                 break;
                             case RO_LACS_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
-                                                            "gRandomizeLacsDungeonCount", 1, 8, "", 8, true, true, false);
+                                                            "gRandomizeLacsDungeonCount", 1, 8,
+                                    "", 8, true, true, false, itemSettingsRandomized, disabledRandomMessage);
                                 break;
                         }
                         break;
                     case RO_GANON_BOSS_KEY_LACS_TOKENS:
                         UIWidgets::PaddedEnhancementSliderInt("Token Count: %d", "##RandoLacsTokenCount",
-                                                        "gRandomizeLacsTokenCount", 1, 100, "", 100, true, true, false);
+                                                              "gRandomizeLacsTokenCount", 1, 100, "", 100, true, true,
+                                                              false, itemSettingsRandomized, disabledRandomMessage);
                         break;
                     default:
                         break;
@@ -5100,12 +5147,23 @@ void RandomizerSettingsWindow::DrawElement() {
                     UIWidgets::CheckboxGraphics::Cross,
                     true
                 );
-                UIWidgets::PaddedEnhancementCheckbox("Saria (Magic)", "gRandomizeSariaHint", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Saria (Magic)", "gRandomizeSariaHint", true, false,
+                                                     gameplaySettingsRandomized, disabledRandomMessage);
                 UIWidgets::InsertHelpHoverText("Talking to Saria either in person or through Saria's Song will tell you the location of a progressive magic meter.");
-                UIWidgets::PaddedEnhancementCheckbox("Frog Ocarina Game", "gRandomizeFrogsHint", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Frog Ocarina Game", "gRandomizeFrogsHint", true, false,
+                                                     gameplaySettingsRandomized, disabledRandomMessage);
                 UIWidgets::InsertHelpHoverText("Standing near the pedestal for the frogs in Zora's River will tell you the reward for the frogs' ocarina game.");
-                UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, !CVarGetInteger("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF),
-                 "This option is disabled since warp songs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
+                const char* warpSongTextDisabled = "This option is disabled since warp songs are not shuffled.";
+                UIWidgets::PaddedEnhancementCheckbox(
+                    "Warp Song text", 
+                    "gRandomizeWarpSongText", 
+                    true, 
+                    false, 
+                    gameplaySettingsRandomized || !CVarGetInteger("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF),
+                    gameplaySettingsRandomized ? disabledRandomMessage : warpSongTextDisabled, 
+                    UIWidgets::CheckboxGraphics::Cross, 
+                    true
+                );
                 UIWidgets::InsertHelpHoverText("Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)");
                 UIWidgets::PaddedEnhancementCheckbox("Scrub Item text", "gRandomizeScrubText", true, false, gameplaySettingsRandomized, disabledRandomMessage, UIWidgets::CheckboxGraphics::Cross, false);
                 UIWidgets::InsertHelpHoverText("Business scrubs will reveal the identity of what they're selling.");
@@ -6909,21 +6967,25 @@ void InitRandoItemTable() {
 void RandomizerSettingsWindow::AddCountRandomizationSettings() {
     static const char* randoBalancingSettings[4] = { "Balanced", "Most Items", "All Items", "Anything" };
 
-    ImGui::Text("Bridge/LACS Item Count Balancing");
+    ImGui::Text("Item Count Balancing");
     UIWidgets::InsertHelpHoverText(
-        "Determines how the number of required dungeon rewards will be determined, "
-        "if a bridge or LACS requirement is dependent on a certain number of items "
-        "that need to be gathered.\n"
+        "Determines how the number of items required to beat the game will be determined, "
+        "This affects the number of items required to spawn the bridge, the number of items "
+        "required for the Light Arrow Cutscene, and the number of Triforce Pieces required "
+        "for Triforce Hunt, if those settings are selected.\n"
         "\n"
         "Balanced - The number of items required will be randomly determined, but unlikely "
-        "to be too high or low.\n"
+        "to be very high or low.\n"
         "\n"
         "Most Items - The number of items required will be set at roughly 2/3 of the total number. "
-        "If Gold Skulltulas are required, it will always be 30.\n"
+        "If Gold Skulltulas are required, it will always be 30. If Triforce Pieces are required, "
+        "it will always be 20.\n"
         "\n"
-        "All Items - All items will need to be gathered for whatever item type is required.\n"
+        "All Items - All items will need to be gathered for whatever item type is required. "
+        "35 Triforce Pieces will be required if Triforce Hunt is selected.\n"
         "\n"
-        "Anything - The number of items required can be anything from 1 to the maximum.");
+        "Anything - The number of items required can be anything from 1 to the maximum. "
+        "If Triforce Hunt is selected, the maximum is 35.");
     UIWidgets::EnhancementCombobox("gRandomDungeonSettingsBalancing", randoBalancingSettings, 0);
 }
 
