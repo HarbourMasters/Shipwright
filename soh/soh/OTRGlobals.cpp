@@ -128,35 +128,32 @@ Color_RGB8 kokiriColor = { 0x1E, 0x69, 0x1B };
 Color_RGB8 goronColor = { 0x64, 0x14, 0x00 };
 Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
 
-// same NaviColor stuff from OoT src. (z_actor.c)
+// same NaviColor stuff from OoT src (z_actor.c)
+// but modified to be sans alpha channel for Controller LED.
 typedef struct {
-    /* 0x00 */ Color_RGBA8 inner;
-    /* 0x04 */ Color_RGBA8 outer;
-} NaviColor; // size = 0x8
+    Color_RGB8 inner;
+    Color_RGB8 outer;
+} NaviColor_RGB8;
 
-static Color_RGBA8 defaultIdlePrimaryColor = { 255, 255, 255, 255 };
-static Color_RGBA8 defaultIdleSecondaryColor = { 0, 0, 255, 0 };
-static Color_RGBA8 defaultNPCPrimaryColor = { 150, 150, 255, 255 };
-static Color_RGBA8 defaultNPCSecondaryColor = { 150, 150, 255, 0 };
-static Color_RGBA8 defaultEnemyPrimaryColor = { 255, 255, 0, 255 };
-static Color_RGBA8 defaultEnemySecondaryColor = { 200, 155, 0, 0 };
-static Color_RGBA8 defaultPropsPrimaryColor = { 0, 255, 0, 255 };
-static Color_RGBA8 defaultPropsSecondaryColor = { 0, 255, 0, 0 };
+static NaviColor_RGB8 defaultIdleColor  = { { 255, 255, 255 }, { 0,   0,   255 } };
+static NaviColor_RGB8 defaultNPCColor   = { { 150, 150, 255 }, { 150, 150, 255 } };
+static NaviColor_RGB8 defaultEnemyColor = { { 255, 255, 0 },   { 200, 155, 0 } };
+static NaviColor_RGB8 defaultPropsColor = { { 0,   255, 0 },   { 0,   255, 0 } };
 
-NaviColor ControllerLEDDefaultNaviColorList[] = {
-    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
-    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
-    { defaultIdlePrimaryColor, defaultIdleSecondaryColor },
-    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
-    { defaultNPCPrimaryColor, defaultNPCSecondaryColor },
-    { defaultEnemyPrimaryColor, defaultEnemySecondaryColor },
-    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
-    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
-    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
-    { defaultEnemyPrimaryColor, defaultEnemySecondaryColor },
-    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
-    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
-    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
+const NaviColor_RGB8 LEDColorDefaultNaviColorList[] = {
+    defaultPropsColor, // Switch
+    defaultPropsColor, // Background (Prop type 1)
+    defaultIdleColor,  // Player
+    defaultPropsColor, // Bomb
+    defaultNPCColor,   // NPC
+    defaultEnemyColor, // Enemy
+    defaultPropsColor, // Prop type 2
+    defaultPropsColor, // Item/Action
+    defaultPropsColor, // Misc.
+    defaultEnemyColor, // Boss
+    defaultPropsColor, // Door
+    defaultPropsColor, // Chest
+    defaultPropsColor, // unknown category 13
 };
 
 // OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
@@ -1753,13 +1750,9 @@ Color_RGB8 GetColorForControllerLED() {
             Actor* arrowPointedActor = gPlayState->actorCtx.targetCtx.arrowPointedActor;
             if (arrowPointedActor) {
                 uint8_t category = arrowPointedActor->category;
-                color.r = ControllerLEDDefaultNaviColorList[category].inner.r;
-                color.g = ControllerLEDDefaultNaviColorList[category].inner.g;
-                color.b = ControllerLEDDefaultNaviColorList[category].inner.b;
+                color = LEDColorDefaultNaviColorList[category].inner;
             } else {
-                color.r = ControllerLEDDefaultNaviColorList[2].inner.r;
-                color.g = ControllerLEDDefaultNaviColorList[2].inner.g;
-                color.b = ControllerLEDDefaultNaviColorList[2].inner.b;
+                color = LEDColorDefaultNaviColorList[2].inner;
             }
         }
         if (source == LED_SOURCE_CUSTOM) {
