@@ -628,35 +628,39 @@ static void CreateTrialHints() {
   }
 }
 
-void CreateGanonText() {
+void CreateGanonAndSheikText() {
   auto ctx = Rando::Context::GetInstance();
   //funny ganon line
   ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
   CreateMessageFromTextObject(0x70CB, 0, 2, 3, AddColorsAndFormat(ganonText));
 
-  //Get the location of the light arrows
-  auto lightArrowLocation = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
+  if(Settings::LightArrowHintText){
+    //Get the location of the light arrows
+    auto lightArrowLocation = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
       return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_LIGHT_ARROWS;
-  });
+    });
+    Text lightArrowArea = GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
 
-  //If there is no light arrow location, it was in the player's inventory at the start
-  auto hint = Hint(RHT_LIGHT_ARROW_LOCATION_HINT);
-  if (lightArrowLocation.empty()) {
-    ganonHintText = hint.GetText()+Hint(RHT_YOUR_POCKET).GetText();
-    lightArrowHintLoc = "Link's Pocket";
-  } else {
-      ganonHintText =
-          hint.GetText() + "%r" +
-          GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
+    //If there is no light arrow location, it was in the player's inventory at the start
+    auto hint = Hint(RHT_LIGHT_ARROW_LOCATION_HINT);
+    if (lightArrowLocation.empty()) {
+      ganonHintText = hint.GetText()+Hint(RHT_YOUR_POCKET).GetText();
+      lightArrowHintLoc = "Link's Pocket";
+    } else {
+      ganonHintText = hint.GetText() + "%r" + lightArrowArea;
       lightArrowHintLoc = Rando::StaticData::GetLocation(lightArrowLocation[0])->GetName();
-    if (IsReachableWithout(RH_GANONDORF_HINT,lightArrowLocation[0],true)){
-      ctx->GetItemLocation(lightArrowLocation[0])->SetAsHinted();
+      if (IsReachableWithout(RC_GANONDORF_HINT,lightArrowLocation[0],true)){
+        ctx->GetItemLocation(lightArrowLocation[0])->SetAsHinted();
+      }
+    }
+    ganonHintText = ganonHintText + "!";
+    CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(ganonHintText));
+    ctx->AddHint(RH_GANONDORF_HINT, ganonHintText, lightArrowLocation[0], HINT_TYPE_STATIC, GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText());
+
+    if(!Settings::GanonsTrialsCount.Is(0)){
+      sheikText = Hint(RHT_SHIEK_LIGHT_ARROW_HINT).GetText() + lightArrowArea + "%w.";
     }
   }
-  ganonHintText = ganonHintText + "!";
-
-  CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(ganonHintText));
-  ctx->AddHint(RH_GANONDORF_HINT, ganonHintText, lightArrowLocation[0], HINT_TYPE_STATIC, GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText());
 }
 
 //Find the location which has the given itemKey and create the generic altar text for the reward
@@ -938,38 +942,26 @@ void CreateGregRupeeHint() {
     ctx->AddHint(RH_GREG_RUPEE, gregText, location, HINT_TYPE_STATIC, area);
 }
 
-void CreateSheikText() {
-  auto ctx = Rando::Context::GetInstance();
-  //Get the location of the light arrows
-  auto lightArrowLocation = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc){return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_LIGHT_ARROWS;});
-  lightArrowHintLoc = Rando::StaticData::GetLocation(lightArrowLocation[0])->GetName();
-  Text area = GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
-  Text temp1 = Text{
-    "I overheard Ganondorf say that he misplaced the %yLight Arrows%w in&%r",
-    "J'ai entendu dire que Ganondorf aurait caché les %yFlèches de Lumière%w dans %r",
-    ""
-  };
-  Text temp2 = Text{"%w.", "%w.", "%w."};
-  sheikText = temp1 + area + temp2;
-}
 
 void CreateSariaText() {
-  auto ctx = Rando::Context::GetInstance();
-  //Get the location of a magic upgrade
-  auto magicLocation = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc){return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_PROGRESSIVE_MAGIC_METER;});
-  sariaHintLoc = Rando::StaticData::GetLocation(magicLocation[0])->GetName();
-  Text area = GetHintRegion(ctx->GetItemLocation(magicLocation[0])->GetParentRegionKey())->GetHint().GetText();
-  Text temp1 = Text{
-    "Did you feel the %gsurge of magic%w recently? A mysterious bird told me it came from %r",
-    "As-tu récemment ressenti une vague de %gpuissance magique%w? Un mystérieux hibou m'a dit  qu'elle provenait du %r",
-    ""
-  };
-  Text temp2 = Text{
-    "%w.^You should check that place out, @!$C", 
-    "%w. Tu devrais aller y jeter un coup d'oeil, @!$C", 
-    "%w.$C"
-  };
-  sariaText = temp1 + area + temp2;
+  if(Settings::SariaHintText){
+    auto ctx = Rando::Context::GetInstance();
+    //Get the location of a magic upgrade
+    auto magicLocation = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc){return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_PROGRESSIVE_MAGIC_METER;});
+    sariaHintLoc = Rando::StaticData::GetLocation(magicLocation[0])->GetName();
+    Text area = GetHintRegion(ctx->GetItemLocation(magicLocation[0])->GetParentRegionKey())->GetHint().GetText();
+    Text temp1 = Text{
+      "Did you feel the %gsurge of magic%w recently? A mysterious bird told me it came from %r",
+      "As-tu récemment ressenti une vague de %gpuissance magique%w? Un mystérieux hibou m'a dit  qu'elle provenait du %r",
+      ""
+    };
+    Text temp2 = Text{
+      "%w.^You should check that place out, @!$C", 
+      "%w. Tu devrais aller y jeter un coup d'oeil, @!$C", 
+      "%w.$C"
+    };
+    sariaText = temp1 + area + temp2;
+  }
 }
 
 

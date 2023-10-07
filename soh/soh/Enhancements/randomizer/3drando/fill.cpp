@@ -1112,11 +1112,10 @@ int Fill() {
         CreateMerchantsHints();
       }
       //Always execute ganon hint generation for the funny line
-      CreateGanonText();
+      CreateGanonAndSheikText();
       CreateAltarText();
       CreateDampesDiaryText();
       CreateGregRupeeHint();
-      CreateSheikText();
       CreateSariaText();
       CreateWarpSongTexts();
       return 1;

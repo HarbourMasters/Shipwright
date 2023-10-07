@@ -1356,8 +1356,7 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         CheckNameToEnum(spoilerFileJson, "gregLoc", &gSaveContext.gregCheck);
 
         ParseSpoilerHintText(spoilerFileJson, "sheikText", gSaveContext.sheikText, true, sizeof(gSaveContext.sheikText));
-        CheckNameToEnum(spoilerFileJson, "lightArrowHintLoc", &gSaveContext.lightArrowHintCheck); //redundency?
-
+        
         ParseSpoilerHintText(spoilerFileJson, "sariaText", gSaveContext.sariaText, true, sizeof(gSaveContext.sariaText));
         CheckNameToEnum(spoilerFileJson, "sariaHintLoc", &gSaveContext.sariaCheck);
 
