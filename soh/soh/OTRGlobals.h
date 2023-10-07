@@ -45,6 +45,10 @@ private:
 };
 
 uint32_t IsGameMasterQuest();
+
+Color_RGB8 ColorToColor24(Color_RGBA8 arg1);
+Color_RGBA8 Color24ToColor(Color_RGB8 arg1);
+Color_RGBA8 Color24ToColor(Color_RGB8 arg1, uint8_t alpha);
 #endif
 
 #ifndef __cplusplus

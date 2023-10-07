@@ -129,31 +129,43 @@ Color_RGB8 goronColor = { 0x64, 0x14, 0x00 };
 Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
 
 // same NaviColor stuff from OoT src (z_actor.c)
+typedef struct {
+    Color_RGBA8 inner;
+    Color_RGBA8 outer;
+} NaviColor_RGBA8;
+
+static NaviColor_RGBA8 defaultIdleColor = { { 255, 255, 255, 255 }, { 0, 0, 255, 0 } };
+static NaviColor_RGBA8 defaultNPCColor = { { 150, 150, 255, 255 }, { 150, 150, 255, 0 } };
+static NaviColor_RGBA8 defaultEnemyColor = { { 255, 255, 0, 255 }, { 200, 155, 0, 0 } };
+static NaviColor_RGBA8 defaultPropsColor = { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } };
+
+/*
 // but modified to be sans alpha channel for Controller LED.
 typedef struct {
     Color_RGB8 inner;
     Color_RGB8 outer;
 } NaviColor_RGB8;
 
-static NaviColor_RGB8 defaultIdleColor  = { { 255, 255, 255 }, { 0,   0,   255 } };
-static NaviColor_RGB8 defaultNPCColor   = { { 150, 150, 255 }, { 150, 150, 255 } };
-static NaviColor_RGB8 defaultEnemyColor = { { 255, 255, 0 },   { 200, 155, 0 } };
-static NaviColor_RGB8 defaultPropsColor = { { 0,   255, 0 },   { 0,   255, 0 } };
+static NaviColor_RGB8 defaultIdleColor = { { 255, 255, 255 }, { 0, 0, 255 } };
+static NaviColor_RGB8 defaultNPCColor = { { 150, 150, 255 }, { 150, 150, 255 } };
+static NaviColor_RGB8 defaultEnemyColor = { { 255, 255, 0 }, { 200, 155, 0 } };
+static NaviColor_RGB8 defaultPropsColor = { { 0, 255, 0 }, { 0, 255, 0 } };*/
 
-const NaviColor_RGB8 LEDColorDefaultNaviColorList[] = {
-    defaultPropsColor, // Switch
-    defaultPropsColor, // Background (Prop type 1)
-    defaultIdleColor,  // Player
-    defaultPropsColor, // Bomb
-    defaultNPCColor,   // NPC
-    defaultEnemyColor, // Enemy
-    defaultPropsColor, // Prop type 2
-    defaultPropsColor, // Item/Action
-    defaultPropsColor, // Misc.
-    defaultEnemyColor, // Boss
-    defaultPropsColor, // Door
-    defaultPropsColor, // Chest
-    defaultPropsColor, // unknown category 13
+// Labeled according to ActorCategory (included through ActorDB.h)
+const NaviColor_RGBA8 LEDColorDefaultNaviColorList[] = {
+    defaultPropsColor, // ACTORCAT_SWITCH       Switch
+    defaultPropsColor, // ACTORCAT_BG           Background (Prop type 1)
+    defaultIdleColor,  // ACTORCAT_PLAYER       Player
+    defaultPropsColor, // ACTORCAT_EXPLOSIVE    Bomb
+    defaultNPCColor,   // ACTORCAT_NPC          NPC
+    defaultEnemyColor, // ACTORCAT_ENEMY        Enemy
+    defaultPropsColor, // ACTORCAT_PROP         Prop type 2
+    defaultPropsColor, // ACTORCAT_ITEMACTION   Item/Action
+    defaultPropsColor, // ACTORCAT_MISC         Misc.
+    defaultEnemyColor, // ACTORCAT_BOSS         Boss
+    defaultPropsColor, // ACTORCAT_DOOR         Door
+    defaultPropsColor, // ACTORCAT_CHEST        Chest
+    defaultPropsColor, // ACTORCAT_MAX          unknown category 13
 };
 
 // OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
@@ -1749,10 +1761,45 @@ Color_RGB8 GetColorForControllerLED() {
         if (gPlayState && (source == LED_SOURCE_NAVI_ORIGINAL || source == LED_SOURCE_NAVI_COSMETICS)) {
             Actor* arrowPointedActor = gPlayState->actorCtx.targetCtx.arrowPointedActor;
             if (arrowPointedActor) {
-                uint8_t category = arrowPointedActor->category;
-                color = LEDColorDefaultNaviColorList[category].inner;
-            } else {
-                color = LEDColorDefaultNaviColorList[2].inner;
+                ActorCategory category = (ActorCategory)arrowPointedActor->category;
+                switch (category) {
+                    case ACTOR_PLAYER:
+                        if (source == LED_SOURCE_NAVI_COSMETICS &&
+                            CVarGetInteger("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
+                            color = ColorToColor24(
+                                CVarGetColor("gCosmetics.Navi_IdlePrimary.Value", defaultIdleColor.inner));
+                            break;
+                        }
+                    case ACTORCAT_NPC:
+                        if (source == LED_SOURCE_NAVI_COSMETICS &&
+                            CVarGetInteger("gCosmetics.Navi_NPCPrimary.Changed", 0)) {
+                            color =
+                                ColorToColor24(CVarGetColor("gCosmetics.Navi_NPCPrimary.Value", defaultNPCColor.inner));
+                            break;
+                        }
+                    case ACTORCAT_ENEMY:
+                    case ACTORCAT_BOSS:
+                        if (source == LED_SOURCE_NAVI_COSMETICS &&
+                            CVarGetInteger("gCosmetics.Navi_EnemyPrimary.Changed", 0)) {
+                            color = ColorToColor24(
+                                CVarGetColor("gCosmetics.Navi_EnemyPrimary.Value", defaultEnemyColor.inner));
+                            break;
+                        }
+                    default:
+                        if (source == LED_SOURCE_NAVI_COSMETICS &&
+                            CVarGetInteger("gCosmetics.Navi_PropsPrimary.Changed", 0)) {
+                            color = ColorToColor24(
+                                CVarGetColor("gCosmetics.Navi_PropsPrimary.Value", defaultPropsColor.inner));
+                            break;
+                        }
+                        color = ColorToColor24(LEDColorDefaultNaviColorList[category].inner);
+                }
+            } else { // No target actor.
+                if (source == LED_SOURCE_NAVI_COSMETICS && CVarGetInteger("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
+                    color = ColorToColor24(CVarGetColor("gCosmetics.Navi_IdlePrimary.Value", defaultIdleColor.inner));
+                } else {
+                    color = ColorToColor24(LEDColorDefaultNaviColorList[ACTORCAT_PLAYER].inner);
+                }
             }
         }
         if (source == LED_SOURCE_CUSTOM) {
@@ -1775,6 +1822,22 @@ Color_RGB8 GetColorForControllerLED() {
     }
 
     return color;
+}
+
+// RGBA8 to RGB8 conversion. Alpha channel will be dropped.
+Color_RGB8 ColorToColor24(Color_RGBA8 arg1) {
+    return { arg1.r, arg1.g, arg1.b };
+}
+
+// RGB8 to RGBA8 conversion. Takes RGB8 input, alpha channel defauls to 255.
+Color_RGBA8 Color24ToColor(Color_RGB8 arg1) {
+    uint8_t alpha = 255;
+    return { arg1.r, arg1.g, arg1.b, alpha };
+}
+
+// RGB8 to RGBA8 conversion. Takes RGB8 and 8-bit alpha inputs.
+Color_RGBA8 Color24ToColor(Color_RGB8 arg1, uint8_t alpha) {
+    return { arg1.r, arg1.g, arg1.b, alpha };
 }
 
 extern "C" void OTRControllerCallback(uint8_t rumble) {
