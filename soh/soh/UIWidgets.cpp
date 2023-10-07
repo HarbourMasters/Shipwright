@@ -765,4 +765,349 @@ namespace UIWidgets {
         float sz = ImGui::GetFrameHeight();
         return StateButtonEx(str_id, label, ImVec2(sz, sz), ImGuiButtonFlags_None);
     }
+
+    void PushStyleButton(const ImVec4& color) {
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(color.x, color.y, color.z, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(color.x, color.y, color.z, 0.8f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(color.x, color.y, color.z, 0.6f));
+        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 0.3f));
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 8.0f));
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 5.0f);
+    }
+
+    void PopStyleButton() {
+        ImGui::PopStyleVar(3);
+        ImGui::PopStyleColor(4);
+    }
+
+    bool Button(const char* label, const ButtonOptions& options) {
+        ImGui::BeginDisabled(options.disabled);
+        PushStyleButton(options.color);
+        bool dirty = ImGui::Button(label, options.size);
+        PopStyleButton();
+        ImGui::EndDisabled();
+        if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(options.disabledTooltip, "") != 0) {
+            ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip));
+        } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(options.tooltip, "") != 0) {
+            ImGui::SetTooltip("%s", WrappedText(options.tooltip));
+        }
+        return dirty;
+    }
+
+    bool WindowButton(const char* label, const char* cvarName, std::shared_ptr<LUS::GuiWindow> windowPtr, const ButtonOptions& options) {
+        ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
+        std::string buttonText = label;
+        bool dirty = false;
+        if (CVarGetInteger(cvarName, 0)) {
+            buttonText = ICON_FA_WINDOW_CLOSE " " + buttonText;
+        } else {
+            buttonText = ICON_FA_EXTERNAL_LINK_SQUARE " " + buttonText;
+        }
+        if (Button(buttonText.c_str(), options)) {
+            windowPtr->ToggleVisibility();
+            dirty = true;
+        }
+        ImGui::PopStyleVar();
+        return dirty;
+    }
+
+    void PushStyleCheckbox(const ImVec4& color) {
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(color.x, color.y, color.z, 0.8f));
+        ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(color.x, color.y, color.z, 0.6f));
+        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 0.3f));
+        ImGui::PushStyleColor(ImGuiCol_CheckMark, ImVec4(1.0f, 1.0f, 1.0f, 0.7f));
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 6.0f));
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 5.0f);
+    }
+
+    void PopStyleCheckbox() {
+        ImGui::PopStyleVar(3);
+        ImGui::PopStyleColor(5);
+    }
+
+    bool Checkbox(const char* label, bool* value, const CheckboxOptions& options) {
+        ImGui::PushID(label);
+        bool dirty = false;
+        float startX = ImGui::GetCursorPosX();
+        const char* invisibleLabel = ("##" + std::string(label)).c_str();
+        ImGui::BeginDisabled(options.disabled);
+        PushStyleCheckbox(options.color);
+        if (options.alignment == ComponentAlignment::Right) {
+            if (options.labelPosition == LabelPosition::Near || options.labelPosition == LabelPosition::Far || options.labelPosition == LabelPosition::None) {
+                ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::GetStyle().FramePadding.x * 2 - ImGui::GetStyle().ItemSpacing.x);
+            } else if (options.labelPosition == LabelPosition::Above) {
+                ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x);
+                ImGui::Text(label);
+                ImGui::NewLine();
+                ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::GetStyle().FramePadding.x * 2 - ImGui::GetStyle().ItemSpacing.x);
+            }
+        } else if (options.alignment == ComponentAlignment::Left) {
+            if (options.labelPosition == LabelPosition::Above) {
+                ImGui::Text(label);
+            }
+        }
+        dirty = CustomCheckbox(invisibleLabel, value, options.disabled);
+        if (options.alignment == ComponentAlignment::Right) {
+            if (options.labelPosition == LabelPosition::Near) {
+                ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x - ImGui::GetStyle().FramePadding.x * 2 - ImGui::GetStyle().ItemSpacing.x * 2);
+                ImGui::Text(label);
+            } else if (options.labelPosition == LabelPosition::Far) {
+                ImGui::SameLine();
+                ImGui::SetCursorPosX(startX);
+                ImGui::Text(label);
+            }
+        } else if (options.alignment == ComponentAlignment::Left) {
+            if (options.labelPosition == LabelPosition::Near) {
+                ImGui::SameLine();
+                ImGui::Text(label);
+            } else if (options.labelPosition == LabelPosition::Far) {
+                ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x);
+                ImGui::Text(label);
+            }
+        }
+        PopStyleCheckbox();
+        ImGui::EndDisabled();
+        if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(options.disabledTooltip, "") != 0) {
+            ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip));
+        } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(options.tooltip, "") != 0) {
+            ImGui::SetTooltip("%s", WrappedText(options.tooltip));
+        }
+        ImGui::PopID();
+        return dirty;
+    }
+
+    bool CVarCheckbox(const char* label, const char* cvarName, const CheckboxOptions& options) {
+        bool dirty = false;
+        bool value = (bool)CVarGetInteger(cvarName, options.defaultValue);
+        if (Checkbox(label, &value, options)) {
+            CVarSetInteger(cvarName, value);
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            dirty = true;
+        }
+        return dirty;
+    }
+
+    void PushStyleCombobox(const ImVec4& color) {
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 0.8f));
+        ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(color.x, color.y, color.z, 0.6f));
+        ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(color.x, color.y, color.z, 0.6f));
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(color.x, color.y, color.z, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(color.x, color.y, color.z, 0.8f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(color.x, color.y, color.z, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(color.x, color.y, color.z, 0.5f));
+        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(color.x, color.y, color.z, 0.6f));
+        ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(color.x, color.y, color.z, 0.6f));
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_PopupRounding, 3.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_PopupBorderSize, 0.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 6.0f));
+    }
+
+    void PopStyleCombobox() {
+        ImGui::PopStyleVar(4);
+        ImGui::PopStyleColor(9);
+    }
+
+    bool Combobox(const char* label, uint8_t* value, std::span<const char*, std::dynamic_extent> comboArray, const ComboboxOptions& options) {
+        bool dirty = false;
+        float startX = ImGui::GetCursorPosX();
+        const char* invisibleLabel = ("##" + std::string(label)).c_str();
+        ImGui::PushID(label);
+        ImGui::BeginGroup();
+        ImGui::BeginDisabled(options.disabled);
+        PushStyleCombobox(options.color);
+        if (options.alignment == ComponentAlignment::Left) {
+            if (options.labelPosition == LabelPosition::Above) {
+                ImGui::Text(label);
+                ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+            } else if (options.labelPosition == LabelPosition::Near) {
+                ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x - ImGui::GetStyle().ItemSpacing.x * 2);
+            } else if (options.labelPosition == LabelPosition::Far || options.labelPosition == LabelPosition::None) {
+                ImGui::SetNextItemWidth(ImGui::CalcTextSize(comboArray[*value]).x + ImGui::GetStyle().FramePadding.x * 4 + ImGui::GetStyle().ItemSpacing.x);
+            }
+        } else if (options.alignment == ComponentAlignment::Right) {
+            if (options.labelPosition == LabelPosition::Above) {
+                ImGui::NewLine();
+                ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x);
+                ImGui::Text(label);
+                ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+            } else if (options.labelPosition == LabelPosition::Near) {
+                ImGui::SameLine(ImGui::CalcTextSize(label).x + ImGui::GetStyle().ItemSpacing.x * 2);
+                ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+            } else if (options.labelPosition == LabelPosition::Far || options.labelPosition == LabelPosition::None) {
+                float width = ImGui::CalcTextSize(comboArray[*value]).x + ImGui::GetStyle().FramePadding.x * 4;
+                ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
+                ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+            }
+        }
+        if (ImGui::BeginCombo(invisibleLabel, comboArray[*value], options.flags)) {
+            ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10.0f, 10.0f));
+            for (uint8_t i = 0; i < comboArray.size(); i++) {
+                if (strlen(comboArray[i]) > 1) {
+                    if (ImGui::Selectable(comboArray[i], i == *value)) {
+                        *value = i;
+                        dirty = true;
+                    }
+                }
+            }
+            ImGui::PopStyleVar();
+            ImGui::EndCombo();
+        }
+        if (options.alignment == ComponentAlignment::Left) {
+            if (options.labelPosition == LabelPosition::Near) {
+                ImGui::SameLine();
+                ImGui::Text(label);
+            } else if (options.labelPosition == LabelPosition::Far) {
+                ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x);
+                ImGui::Text(label);
+            }
+        } else if (options.alignment == ComponentAlignment::Right) {
+            if (options.labelPosition == LabelPosition::Near || options.labelPosition == LabelPosition::Far) {
+                ImGui::SameLine(startX);
+                ImGui::Text(label);
+            }
+        }
+        PopStyleCombobox();
+        ImGui::EndDisabled();
+        ImGui::EndGroup();
+        if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(options.disabledTooltip, "") != 0) {
+            ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip));
+        } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(options.tooltip, "") != 0) {
+            ImGui::SetTooltip("%s", WrappedText(options.tooltip));
+        }
+        ImGui::PopID();
+        return dirty;
+    }
+
+    bool CVarCombobox(const char* label, const char* cvarName, std::span<const char*, std::dynamic_extent> comboArray, const ComboboxOptions& options) {
+        bool dirty = false;
+        uint8_t value = (uint8_t)CVarGetInteger(cvarName, options.defaultIndex);
+        if (Combobox(label, &value, comboArray, options)) {
+            CVarSetInteger(cvarName, value);
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            dirty = true;
+        }
+        return dirty;
+    }
+
+    void PushStyleMenu(const ImVec4& color) {
+        ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(color.x, color.y, color.z, 0.5f));
+        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(color.x, color.y, color.z, 0.6f));
+        ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(color.x, color.y, color.z, 0.6f));
+        ImGui::PushStyleVar(ImGuiStyleVar_PopupRounding, 3.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_PopupBorderSize, 0.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10.0f, 10.0f));
+    }
+
+    void PopStyleMenu() {
+        ImGui::PopStyleVar(4);
+        ImGui::PopStyleColor(3);
+    }
+
+    bool BeginMenu(const char* label, bool enabled) {
+        bool dirty = false;
+
+        PushStyleMenu();
+
+        if (ImGui::BeginMenu(label, enabled)) {
+            PopStyleMenu();
+            dirty = true;
+        } else {
+            PopStyleMenu();
+        }
+
+        return dirty;
+    }
+
+    // Old component usage
+    // UIWidgets::PaddedEnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
+    //                                 "gRandomizeGanonTrialCount", 1, 6, "", 6, true, true, false);
+    // UIWidgets::InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower.");
+    // New and improved component usage
+    // UIWidgets::CVarSliderInt("Ganon's Trial Count: %d", "gRandomizeGanonTrialCount", 1, 6, 6, {
+    //   .tooltip = "Set the number of trials required to enter Ganon's Tower."
+    //   .disabled = false,
+    //   .disabledTooltip = "",
+    //   .showButtons = true,
+    //   .color = UIWidgets::Color::Indigo,
+    // });
+    void PushStyleSlider(const ImVec4& color) {
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(color.x, color.y, color.z, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(color.x, color.y, color.z, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(color.x, color.y, color.z, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImVec4(1.0, 1.0, 1.0, 0.4f));
+        ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, ImVec4(1.0, 1.0, 1.0, 0.5f));
+        ImGui::PushStyleVar(ImGuiStyleVar_GrabRounding, 3.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 8.0f));
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0f);
+    }
+
+    void PopStyleSlider() {
+        ImGui::PopStyleVar(4);
+        ImGui::PopStyleColor(6);
+    }
+
+    bool CVarSliderInt(const char* label, const char* cvarName, int32_t min, int32_t max, const int32_t defaultValue, const SliderOptions& options){
+        bool dirty = false;
+        const char* invisibleLabel = ("##" + std::string(label)).c_str();
+        int32_t value = CVarGetInteger(cvarName, defaultValue);
+        ImGui::PushID(label);
+        ImGui::BeginGroup();
+        ImGui::BeginDisabled(options.disabled);
+        PushStyleSlider(options.color);
+        if (options.alignment == ComponentAlignment::Left) {
+            if (options.labelPosition == LabelPosition::Above) {
+                ImGui::Text(label, value);
+            }
+        } else if (options.alignment == ComponentAlignment::Right) {
+            if (options.labelPosition == LabelPosition::Above) {
+                ImGui::NewLine();
+                ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x);
+                ImGui::Text(label, value);
+            }
+        }
+        if (options.showButtons) {
+            if (Button("-", { .size = Sizes::Inline, .color = options.color }) && value > min) {
+                value--;
+                CVarSetInteger(cvarName, value);
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                dirty = true;
+            }
+            ImGui::SameLine(0, 3.0f);
+            ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize("+").x + 20.0f + 3.0f));
+        } else {
+            ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+        }
+        if (ImGui::SliderScalar(invisibleLabel, ImGuiDataType_S32, &value, &min, &max, options.format, options.flags)) {
+            CVarSetInteger(cvarName, value);
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            dirty = true;
+        }
+        if (options.showButtons) {
+            ImGui::SameLine(0, 3.0f);
+            ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+            if (Button("+", { .size = Sizes::Inline, .color = options.color }) && value < max) {
+                value++;
+                CVarSetInteger(cvarName, value);
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                dirty = true;
+            }
+        }
+        PopStyleSlider();
+        ImGui::EndDisabled();
+        ImGui::EndGroup();
+        if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(options.disabledTooltip, "") != 0) {
+            ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip));
+        } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(options.tooltip, "") != 0) {
+            ImGui::SetTooltip("%s", WrappedText(options.tooltip));
+        }
+        ImGui::PopID();
+        return dirty;
+    }
 }

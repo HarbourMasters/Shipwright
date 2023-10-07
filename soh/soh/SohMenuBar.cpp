@@ -536,6 +536,53 @@ void DrawEnhancementsMenu() {
                 ImGui::Text("Speed-ups:");
                 UIWidgets::PaddedSeparator();
 
+                // new
+                UIWidgets::CVarSliderInt("Text Speed", "gTextSpeed", 1, 5, 1, {
+                    .format = "%dx",
+                });
+                UIWidgets::CVarCheckbox("Skip Text", "gSkipText", {
+                    .tooltip = "Holding down B skips text",
+                });
+                UIWidgets::CVarSliderInt("King Zora Speed", "gMweepSpeed", 1, 5, 1, {
+                    .format = "%dx",
+                });
+                UIWidgets::CVarSliderInt("Biggoron Forge Time", "gForgeTime", 0, 3, 3, {
+                    .tooltip = "Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword",
+                    .format = "%d days"
+                });
+                UIWidgets::CVarSliderInt("Vine/Ladder Climb speed", "gClimbSpeed", 0, 12, 0, {
+                    .format = "%dx",
+                });
+                UIWidgets::CVarSliderInt("Block pushing speed", "gFasterBlockPush", 0, 5, 0, {
+                    .format = "%dx",
+                });
+                UIWidgets::CVarCheckbox("Faster Heavy Block Lift", "gFasterHeavyBlockLift", {
+                    .tooltip = "Speeds up lifting silver rocks and obelisks",
+                });
+                UIWidgets::CVarCheckbox("Link as default file name", "gLinkDefaultName", {
+                    .tooltip = "Allows you to have \"Link\" as a premade file name",
+                });
+                UIWidgets::CVarCheckbox("No Forced Navi", "gNoForcedNavi", {
+                    .tooltip = "Prevent forced Navi conversations",
+                });
+                UIWidgets::CVarCheckbox("No Skulltula Freeze", "gSkulltulaFreeze", {
+                    .tooltip = "Stops the game from freezing the player when picking up Gold Skulltulas",
+                });
+                UIWidgets::CVarCheckbox("Fast Chests", "gFastChests", {
+                    .tooltip = "Kick open every chest",
+                });
+                UIWidgets::CVarCombobox("Chest size & texture matches contents", "gChestSizeAndTextureMatchesContents", chestStyleMatchesContentsOptions, {
+                    .defaultIndex = CSMC_DISABLED,
+                    .tooltip =
+                        "Chest sizes and textures are changed to help identify the item inside.\n"
+                        " - Major items: Large gold chests\n"
+                        " - Lesser items: Large brown chests\n"
+                        " - Junk items: Small brown chests\n"
+                        " - Small keys: Small silver chest\n"
+                        " - Boss keys: Vanilla size and texture\n"
+                        " - Skulltula Tokens: Small skulltula chest\n",
+                });
+                // old
                 UIWidgets::PaddedEnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementCheckbox("Skip Text", "gSkipText", false, true);
                 UIWidgets::Tooltip("Holding down B skips text");
