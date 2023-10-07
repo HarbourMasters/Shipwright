@@ -1111,6 +1111,12 @@ int Fill() {
       if (ShuffleMerchants.Is(SHUFFLEMERCHANTS_HINTS)) {
         CreateMerchantsHints();
       }
+      //Always execute ganon hint generation for the funny line
+      CreateGanonAndSheikText();
+      CreateAltarText();
+      CreateDampesDiaryText();
+      CreateGregRupeeHint();
+      CreateSariaText();
       CreateWarpSongTexts();
       return 1;
     }

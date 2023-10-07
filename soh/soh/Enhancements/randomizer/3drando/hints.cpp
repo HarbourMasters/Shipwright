@@ -687,11 +687,18 @@ void CreateGanonAndSheikText() {
     } else {
       ganonHintText = hint.GetText() + "%r" + lightArrowArea;
       lightArrowHintLoc = Rando::StaticData::GetLocation(lightArrowLocation[0])->GetName();
-  }
-  ganonHintText = ganonHintText + "!";
+      if (IsReachableWithout(RC_GANONDORF_HINT,lightArrowLocation[0],true)){
+        ctx->GetItemLocation(lightArrowLocation[0])->SetAsHinted();
+      }
+    }
+    ganonHintText = ganonHintText + "!";
+    CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(ganonHintText));
+    ctx->AddHint(RH_GANONDORF_HINT, ganonHintText, lightArrowLocation[0], HINT_TYPE_STATIC, GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText());
 
-  CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(ganonHintText));
-  ctx->AddHint(RH_GANONDORF_HINT, ganonHintText, lightArrowLocation[0], HINT_TYPE_STATIC, GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText());
+    if(!Settings::GanonsTrialsCount.Is(0)){
+      sheikText = Hint(RHT_SHIEK_LIGHT_ARROW_HINT).GetText() + lightArrowArea + "%w.";
+    }
+  }
 }
 
 //Find the location which has the given itemKey and create the generic altar text for the reward

@@ -687,7 +687,6 @@ static void WriteHints(int language) {
             unformattedGanonHintText = GetGanonHintText().GetEnglish();
             unformattedDampesText = GetDampeHintText().GetEnglish();
             unformattedGregText = GetGregHintText().GetEnglish();
-<<<<<<< HEAD
             unformattedSheikText = GetSheikHintText().GetEnglish();
             unformattedSariaText = GetSariaHintText().GetEnglish();
 
@@ -707,7 +706,6 @@ static void WriteHints(int language) {
             unformattedGanonHintText = GetGanonHintText().GetFrench();
             unformattedDampesText = GetDampeHintText().GetFrench();
             unformattedGregText = GetGregHintText().GetFrench();
-<<<<<<< HEAD
             unformattedSheikText = GetSheikHintText().GetFrench();
             unformattedSariaText = GetSariaHintText().GetFrench();
 
