@@ -114,7 +114,7 @@ public:
 
     static auto LightArrow(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
         return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::LightArrow};
-    }
+    } //RANDOTODO Concert to generic special hints?
 
     static auto GanonLine(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
         return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::GanonLine};
@@ -206,9 +206,8 @@ extern void CreateMerchantsHints();
 extern void CreateWarpSongTexts();
 extern void CreateDampesDiaryText();
 extern void CreateGregRupeeHint();
-extern void CreateSheikText();
 extern void CreateSariaText();
-extern void CreateGanonText();
+extern void CreateGanonAndSheikText();
 extern void CreateAltarText();
 
 Text& GetChildAltarText();

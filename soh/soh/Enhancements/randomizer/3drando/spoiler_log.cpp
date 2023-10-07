@@ -680,11 +680,9 @@ static void WriteHints(int language) {
             unformattedGanonHintText = GetGanonHintText().GetEnglish();
             unformattedDampesText = GetDampeHintText().GetEnglish();
             unformattedGregText = GetGregHintText().GetEnglish();
-<<<<<<< HEAD
             unformattedSheikText = GetSheikHintText().GetEnglish();
             unformattedSariaText = GetSariaHintText().GetEnglish();
-=======
->>>>>>> b65a351a (Fix Loading spoiler logs causing corrupt hints, remove disabled warp song shuffle text from spoiler logs)
+
             if (Settings::ShuffleWarpSongs){
               jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
               jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
@@ -701,11 +699,9 @@ static void WriteHints(int language) {
             unformattedGanonHintText = GetGanonHintText().GetFrench();
             unformattedDampesText = GetDampeHintText().GetFrench();
             unformattedGregText = GetGregHintText().GetFrench();
-<<<<<<< HEAD
             unformattedSheikText = GetSheikHintText().GetFrench();
             unformattedSariaText = GetSariaHintText().GetFrench();
-=======
->>>>>>> b65a351a (Fix Loading spoiler logs causing corrupt hints, remove disabled warp song shuffle text from spoiler logs)
+
             if (Settings::ShuffleWarpSongs){
               jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
               jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
@@ -752,23 +748,25 @@ static void WriteHints(int language) {
     std::string sariaText = AutoFormatHintTextString(unformattedSariaText);
 
     jsonData["ganonText"] = ganonText;
-    if (ganonHintText != ""){
+    if (Settings::LightArrowHintText){
       jsonData["ganonHintText"] = ganonHintText;
       jsonData["lightArrowHintLoc"] = GetLightArrowHintLoc();
-
+      if (!Settings::GanonsTrialsCount.Is(0)){
+        jsonData["sheikText"] = sheikText;
+      }
     }
-    if (dampesText != ""){
+    if (Settings::DampeHintText){
       jsonData["dampeText"] = dampesText;
       jsonData["dampeHintLoc"] = GetDampeHintLoc();
     }
-    if (gregText != ""){
+    if (Settings::GregHintText){
       jsonData["gregText"] = gregText;
       jsonData["gregLoc"] = GetItemLocation(GREG_RUPEE)->GetName();
     }
-
-    jsonData["sheikText"] = sheikText;
-    jsonData["sariaText"] = sariaText;
-    jsonData["sariaHintLoc"] = GetSariaHintLoc();
+    if (Settings::SariaHintText){
+      jsonData["sariaText"] = sariaText;
+      jsonData["sariaHintLoc"] = GetSariaHintLoc();
+    }
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;
