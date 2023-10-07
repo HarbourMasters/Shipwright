@@ -331,7 +331,8 @@ namespace GameControlEditor {
 
     void DrawLEDControlPanel(GameControlEditorWindow* window) {
         window->BeginGroupPanelPublic("LED Colors", ImGui::GetContentRegionAvail());
-        static const char* ledSources[] = { "Original Tunic Colors", "Cosmetics Tunic Colors", "Health Colors", "Navi Targeting Colors", "Custom" };
+        static const char* ledSources[] = { "Original Tunic Colors",          "Cosmetics Tunic Colors",          "Health Colors",
+                                            "Original Navi Targeting Colors", "Cosmetics Navi Targeting Colors", "Custom" };
         UIWidgets::PaddedText("Source");
         UIWidgets::EnhancementCombobox("gLedColorSource", ledSources, LED_SOURCE_TUNIC_ORIGINAL);
         DrawHelpIcon("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when health < 40%. Green otherwise.\n\n" \

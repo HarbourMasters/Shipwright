@@ -128,20 +128,35 @@ Color_RGB8 kokiriColor = { 0x1E, 0x69, 0x1B };
 Color_RGB8 goronColor = { 0x64, 0x14, 0x00 };
 Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
 
+// same NaviColor stuff from OoT src. (z_actor.c)
 typedef struct {
     /* 0x00 */ Color_RGBA8 inner;
     /* 0x04 */ Color_RGBA8 outer;
 } NaviColor; // size = 0x8
-// TODO temporary fix to fix compile error. I'll remove or alter this block of code when I'm back at my computer.
 
-NaviColor sNaviColorListRenameThisVariableLater[] = {
-    { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },         { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },
-    { { 255, 255, 255, 255 }, { 0, 0, 255, 0 } },     { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },
-    { { 150, 150, 255, 255 }, { 150, 150, 255, 0 } }, { { 255, 255, 0, 255 }, { 200, 155, 0, 0 } },
-    { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },         { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },
-    { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },         { { 255, 255, 0, 255 }, { 200, 155, 0, 0 } },
-    { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },         { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },
-    { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },
+static Color_RGBA8 defaultIdlePrimaryColor = { 255, 255, 255, 255 };
+static Color_RGBA8 defaultIdleSecondaryColor = { 0, 0, 255, 0 };
+static Color_RGBA8 defaultNPCPrimaryColor = { 150, 150, 255, 255 };
+static Color_RGBA8 defaultNPCSecondaryColor = { 150, 150, 255, 0 };
+static Color_RGBA8 defaultEnemyPrimaryColor = { 255, 255, 0, 255 };
+static Color_RGBA8 defaultEnemySecondaryColor = { 200, 155, 0, 0 };
+static Color_RGBA8 defaultPropsPrimaryColor = { 0, 255, 0, 255 };
+static Color_RGBA8 defaultPropsSecondaryColor = { 0, 255, 0, 0 };
+
+NaviColor ControllerLEDDefaultNaviColorList[] = {
+    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
+    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
+    { defaultIdlePrimaryColor, defaultIdleSecondaryColor },
+    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
+    { defaultNPCPrimaryColor, defaultNPCSecondaryColor },
+    { defaultEnemyPrimaryColor, defaultEnemySecondaryColor },
+    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
+    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
+    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
+    { defaultEnemyPrimaryColor, defaultEnemySecondaryColor },
+    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
+    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
+    { defaultPropsPrimaryColor, defaultPropsSecondaryColor },
 };
 
 // OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
@@ -1734,17 +1749,17 @@ Color_RGB8 GetColorForControllerLED() {
                     break;
             }
         }
-        if (gPlayState && (source == LED_SOURCE_NAVI_ORIGINAL)) {
+        if (gPlayState && (source == LED_SOURCE_NAVI_ORIGINAL || source == LED_SOURCE_NAVI_COSMETICS)) {
             Actor* arrowPointedActor = gPlayState->actorCtx.targetCtx.arrowPointedActor;
             if (arrowPointedActor) {
                 uint8_t category = arrowPointedActor->category;
-                color.r = sNaviColorListRenameThisVariableLater[category].inner.r;
-                color.g = sNaviColorListRenameThisVariableLater[category].inner.g;
-                color.b = sNaviColorListRenameThisVariableLater[category].inner.b;
+                color.r = ControllerLEDDefaultNaviColorList[category].inner.r;
+                color.g = ControllerLEDDefaultNaviColorList[category].inner.g;
+                color.b = ControllerLEDDefaultNaviColorList[category].inner.b;
             } else {
-                color.r = sNaviColorListRenameThisVariableLater[2].inner.r;
-                color.g = sNaviColorListRenameThisVariableLater[2].inner.g;
-                color.b = sNaviColorListRenameThisVariableLater[2].inner.b;
+                color.r = ControllerLEDDefaultNaviColorList[2].inner.r;
+                color.g = ControllerLEDDefaultNaviColorList[2].inner.g;
+                color.b = ControllerLEDDefaultNaviColorList[2].inner.b;
             }
         }
         if (source == LED_SOURCE_CUSTOM) {
