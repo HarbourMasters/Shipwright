@@ -327,7 +327,7 @@ namespace Settings {
   Option GregHintText        = Option::Bool("Greg the Rupee Hint",    {"Off", "On"}, OptionCategory::Setting, 0);
   Option SariaHintText       = Option::Bool("Saria's Hint",           {"Off", "On"}, OptionCategory::Setting, 0);
   Option FrogsHintText       = Option::Bool("Frog Ocarina Game Hint", {"Off", "On"}, OptionCategory::Setting, 0);
-  Option WarpSongHints       = Option::Bool("Warp Songs Hints",       {"Off", "On"}, OptionCategory::Setting, 0);
+  Option WarpSongHints       = Option::Bool("Warp Song Hints",        {"Off", "On"}, OptionCategory::Setting, 0);
   Option Kak10GSHintText     = Option::Bool("10 GS Hint",             {"Off", "On"}, OptionCategory::Setting, 0);
   Option Kak20GSHintText     = Option::Bool("20 GS Hint",             {"Off", "On"}, OptionCategory::Setting, 0);
   Option Kak30GSHintText     = Option::Bool("30 GS Hint",             {"Off", "On"}, OptionCategory::Setting, 0);
