@@ -293,13 +293,13 @@ bool IsReachableWithout(uint32_t locToCheck, uint32_t excludedCheck, bool resetA
   return true;
 }
 
-bool IsReachableWithout(uint32_t locToCheck, uint32_t excludedCheck, bool resetAfter = true){
+bool IsReachableWithout(std::vector<uint32_t> locsToCheck, uint32_t excludedCheck, bool resetAfter = true){
   //temporarily remove the hinted location's item, and then perform a
   //reachability search for this check
   uint32_t originalItem = Location(excludedCheck)->GetPlaceduint32_t();
   Location(excludedCheck)->SetPlacedItem(NONE);
   LogicReset();
-  const std::vector<uint32_t> rechableWithout = GetAccessibleLocations({locToCheck});
+  const std::vector<uint32_t> rechableWithout = GetAccessibleLocations(locsToCheck);
   Location(excludedCheck)->SetPlacedItem(originalItem);
   if (resetAfter){
     //if resetAfter is on, reset logic we are done
@@ -311,7 +311,7 @@ bool IsReachableWithout(uint32_t locToCheck, uint32_t excludedCheck, bool resetA
   return true;
 }
 
-bool IsReachableWithout(uint32_t locToCheck, uint32_t excludedCheck, bool resetAfter = true){
+bool IsReachableWithout(std::vector<uint32_t> locsToCheck, uint32_t excludedCheck, bool resetAfter = true){
   //temporarily remove the hinted location's item, and then perform a
   //reachability search for this check
   uint32_t originalItem = ctx->GetItemLocation(excludedCheck)->GetPlaceduint32_t();
@@ -329,13 +329,13 @@ bool IsReachableWithout(uint32_t locToCheck, uint32_t excludedCheck, bool resetA
   return true;
 }
 
-bool IsReachableWithout(uint32_t locToCheck, uint32_t excludedCheck, bool resetAfter = true){
+bool IsReachableWithout(std::vector<uint32_t> locsToCheck, uint32_t excludedCheck, bool resetAfter = true){
   //temporarily remove the hinted location's item, and then perform a
   //reachability search for this check
   uint32_t originalItem = Location(excludedCheck)->GetPlaceduint32_t();
   Location(excludedCheck)->SetPlacedItem(NONE);
   LogicReset();
-  const std::vector<uint32_t> rechableWithout = GetAccessibleLocations({locToCheck});
+  const std::vector<uint32_t> rechableWithout = GetAccessibleLocations(locsToCheck);
   Location(excludedCheck)->SetPlacedItem(originalItem);
   if (resetAfter){
     //if resetAfter is on, reset logic we are done
@@ -687,16 +687,18 @@ void CreateGanonAndSheikText() {
     } else {
       ganonHintText = hint.GetText() + "%r" + lightArrowArea;
       lightArrowHintLoc = Rando::StaticData::GetLocation(lightArrowLocation[0])->GetName();
-      if (IsReachableWithout(RC_GANONDORF_HINT,lightArrowLocation[0],true)){
-        ctx->GetItemLocation(lightArrowLocation[0])->SetAsHinted();
-      }
     }
     ganonHintText = ganonHintText + "!";
     CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(ganonHintText));
     ctx->AddHint(RH_GANONDORF_HINT, ganonHintText, lightArrowLocation[0], HINT_TYPE_STATIC, GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText());
 
     if(!Settings::GanonsTrialsCount.Is(0)){
-      sheikText = Hint(RHT_SHIEK_LIGHT_ARROW_HINT).GetText() + lightArrowArea + "%w.";
+      sheikText = Hint(RHT_SHEIK_LIGHT_ARROW_HINT).GetText() + lightArrowArea + "%w.";
+      locsToCheck = {RC_GANONDORF_HINT, RC_SHEIK_HINT_GC, RC_SHEIK_HINT_MQ_GC};
+    }
+
+    if (IsReachableWithout(locsToCheck,lightArrowLocation[0],true)){
+      ctx->GetItemLocation(lightArrowLocation[0])->SetAsHinted();
     }
   }
 }
@@ -709,7 +711,7 @@ static Text BuildDungeonRewardText(const RandomizerGet itemKey, bool isChild) {
     RandomizerCheck location = FilterFromPool(ctx->allLocations, [itemKey, ctx](const RandomizerCheck loc) {
         return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == itemKey;
     })[0];
-    if (IsReachableWithout(altarLoc, location, true) || ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON)){ //RANDOTODO check if works properly
+    if (IsReachableWithout({altarLoc}, location, true) || ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON)){ //RANDOTODO check if works properly
       ctx->GetItemLocation(location)->SetAsHinted();
     }
 
@@ -927,6 +929,10 @@ void CreateDampesDiaryText() {
   RandomizerCheck location = FilterFromPool(ctx->allLocations, [item, ctx](const RandomizerCheck loc) {
       return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == item;
   })[0];
+  if (IsReachableWithout({RC_DAMPE_HINT},location,true)){
+    ctx->GetItemLocation(location)->SetAsHinted();
+  }
+
   Text area = GetHintRegion(ctx->GetItemLocation(location)->GetParentRegionKey())->GetHint().GetText();
   Text temp1 = Text{
     "Whoever reads this, please enter %r", 
@@ -956,6 +962,9 @@ void CreateGregRupeeHint() {
       return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_GREG_RUPEE;
   })[0];
   Text area = GetHintRegion(ctx->GetItemLocation(location)->GetParentRegionKey())->GetHint().GetText();
+  if (IsReachableWithout({RC_GREG_HINT},location,true)){
+    ctx->GetItemLocation(location)->SetAsHinted();
+  }
 
   Text temp1 = Text{
     "By the way, if you're interested, I saw the shiniest %gGreen Rupee%w somewhere in%r ",
