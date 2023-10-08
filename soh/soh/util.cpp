@@ -1,6 +1,7 @@
 #include "util.h"
 
 #include <vector>
+#include <string>
 
 std::vector<std::string> sceneNames = {
     "Inside the Deku Tree",
@@ -311,4 +312,9 @@ const std::string& SohUtils::GetItemName(int32_t item) {
 
 const std::string& SohUtils::GetQuestItemName(int32_t item) {
     return questItemNames[item];
+}
+
+void SohUtils::CopyStringToCharArray(char* destination, std::string source, size_t size) {
+    strncpy(destination, source.c_str(), size - 1);
+    destination[size - 1] = '\0';
 }
