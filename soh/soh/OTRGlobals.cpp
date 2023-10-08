@@ -1758,7 +1758,7 @@ Color_RGB8 GetColorForControllerLED() {
                             break;
                         }
                         color = LEDColorDefaultNaviColorList[category].inner;
-			break;
+                        break;
                     case ACTORCAT_NPC:
                         if (source == LED_SOURCE_NAVI_COSMETICS &&
                             CVarGetInteger("gCosmetics.Navi_NPCPrimary.Changed", 0)) {
@@ -1766,7 +1766,7 @@ Color_RGB8 GetColorForControllerLED() {
                             break;
                         }
                         color = LEDColorDefaultNaviColorList[category].inner;
-			break;
+                        break;
                     case ACTORCAT_ENEMY:
                     case ACTORCAT_BOSS:
                         if (source == LED_SOURCE_NAVI_COSMETICS &&
@@ -1775,7 +1775,7 @@ Color_RGB8 GetColorForControllerLED() {
                             break;
                         }
                         color = LEDColorDefaultNaviColorList[category].inner;
-			break;
+                        break;
                     default:
                         if (source == LED_SOURCE_NAVI_COSMETICS &&
                             CVarGetInteger("gCosmetics.Navi_PropsPrimary.Changed", 0)) {
