@@ -301,6 +301,14 @@ public:
       return !IsDungeon();
     }
 
+    bool IsHintStone() const {
+      return (type == ItemLocationType::HintStone);
+    }
+
+    bool IsOtherHint() const {
+      return (type == ItemLocationType::OtherHint);
+    }
+
     bool IsShop() const {
         return (scene >= 0x2C && scene <= 0x32);
     }

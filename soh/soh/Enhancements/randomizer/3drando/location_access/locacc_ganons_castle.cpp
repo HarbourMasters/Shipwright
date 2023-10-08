@@ -22,7 +22,10 @@ void AreaTable_Init_GanonsCastle() {
   |     VANILLA DUNGEON      |
   ---------------------------*/
   if (Dungeon::GanonsCastle.IsVanilla()) {
-  areaTable[GANONS_CASTLE_LOBBY] = Area("Ganon's Castle Lobby", "Ganon's Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[GANONS_CASTLE_LOBBY] = Area("Ganon's Castle Lobby", "Ganon's Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LocationAccess(SHEIK_HINT_GC,  {[]{return true;}}), 
+                }, {
                   //Exits
                   Entrance(GANONS_CASTLE_ENTRYWAY,     {[]{return true;}}),
                   Entrance(GANONS_CASTLE_FOREST_TRIAL, {[]{return true;}}),
@@ -121,7 +124,10 @@ void AreaTable_Init_GanonsCastle() {
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
   if (Dungeon::GanonsCastle.IsMQ()) {
-  areaTable[GANONS_CASTLE_MQ_LOBBY] = Area("Ganon's Castle MQ Lobby", "Ganons Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[GANONS_CASTLE_MQ_LOBBY] = Area("Ganon's Castle MQ Lobby", "Ganons Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LocationAccess(SHEIK_HINT_MQ_GC,  {[]{return true;}}),
+                }, {
                   //Exits
                   Entrance(GANONS_CASTLE_ENTRYWAY,        {[]{return (IsAdult || (HasExplosives || ((Nuts || Boomerang) && (Sticks || KokiriSword))));}}),
                   Entrance(GANONS_CASTLE_MQ_FOREST_TRIAL, {[]{return true;}}),

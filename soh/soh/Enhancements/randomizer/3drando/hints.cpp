@@ -274,13 +274,13 @@ static std::vector<uint32_t> GetAccessibleGossipStones(const uint32_t hintedLoca
   return accessibleGossipStones;
 }
 
-bool IsReachableWithout(uint32_t locToCheck, uint32_t excludedCheck, bool resetAfter = true){
+bool IsReachableWithout(std::vector<uint32_t> locsToCheck, uint32_t excludedCheck, bool resetAfter = true){
   //temporarily remove the hinted location's item, and then perform a
   //reachability search for this check
   uint32_t originalItem = Location(excludedCheck)->GetPlaceduint32_t();
   Location(excludedCheck)->SetPlacedItem(NONE);
   LogicReset();
-  const std::vector<uint32_t> rechableWithout = GetAccessibleLocations({locToCheck});
+  const std::vector<uint32_t> rechableWithout = GetAccessibleLocations(locsToCheck);
   Location(excludedCheck)->SetPlacedItem(originalItem);
   if (resetAfter){
     //if resetAfter is on, reset logic we are done
@@ -602,7 +602,6 @@ static void CreateTrialHints() {
 }
 
 void CreateGanonAndSheikText() {
-
   //funny ganon line
   ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
   CreateMessageFromTextObject(0x70CB, 0, 2, 3, AddColorsAndFormat(ganonText));
@@ -611,6 +610,8 @@ void CreateGanonAndSheikText() {
     //Get the location of the light arrows
     auto lightArrowLocation = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == LIGHT_ARROWS;});
     Text lightArrowArea = GetHintRegion(Location(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
+    std::vector<uint32_t> locsToCheck = {GANONDORF_HINT};
+    
     //If there is no light arrow location, it was in the player's inventory at the start
     auto hint = Hint(LIGHT_ARROW_LOCATION_HINT);
     if (lightArrowLocation.empty()) {
@@ -619,15 +620,17 @@ void CreateGanonAndSheikText() {
     } else {
       ganonHintText = hint.GetText()+lightArrowArea;
       lightArrowHintLoc = Location(lightArrowLocation[0])->GetName();
-      if (IsReachableWithout(GANONDORF_HINT,lightArrowLocation[0],true)){
-      Location(lightArrowLocation[0])->SetAsHinted();
-      }
     }
     ganonHintText = ganonHintText + "!";
     CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(ganonHintText));
 
     if(!Settings::GanonsTrialsCount.Is(0)){
-      sheikText = Hint(SHIEK_LIGHT_ARROW_HINT).GetText() + lightArrowArea + "%w.";
+      sheikText = Hint(SHEIK_LIGHT_ARROW_HINT).GetText() + lightArrowArea + "%w.";
+      locsToCheck = {GANONDORF_HINT, SHEIK_HINT_GC, SHEIK_HINT_MQ_GC};
+    }
+
+    if (IsReachableWithout(locsToCheck,lightArrowLocation[0],true)){
+      Location(lightArrowLocation[0])->SetAsHinted();
     }
   }
 }
@@ -637,7 +640,7 @@ static Text BuildDungeonRewardText(const uint32_t itemKey, bool isChild) {
   uint32_t location = FilterFromPool(allLocations, [itemKey](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == itemKey;})[0];
   uint32_t altarLoc = ALTAR_HINT_ADULT;
   if(isChild){altarLoc = ALTAR_HINT_CHILD;}
-  if (IsReachableWithout(altarLoc, location, true) || ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON)){
+  if (IsReachableWithout({altarLoc}, location, true) || ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON)){
     Location(location)->SetAsHinted();
   }
 
@@ -838,7 +841,7 @@ void CreateDampesDiaryText() {
 
   uint32_t item = PROGRESSIVE_HOOKSHOT;
   uint32_t location = FilterFromPool(allLocations, [item](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == item;})[0];
-  if (IsReachableWithout(DAMPE_HINT,location,true)){
+  if (IsReachableWithout({DAMPE_HINT},location,true)){
     Location(location)->SetAsHinted();
   }
   
@@ -867,7 +870,7 @@ void CreateGregRupeeHint() {
 
   uint32_t location = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlacedItemKey() == GREG_RUPEE;})[0];
   Text area = GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText();
-  if (IsReachableWithout(GREG_HINT,location,true)){
+  if (IsReachableWithout({GREG_HINT},location,true)){
     Location(location)->SetAsHinted();
   }
 
@@ -889,9 +892,9 @@ void CreateGregRupeeHint() {
 
 void CreateSariaText() {
   if(Settings::SariaHintText){
-    auto magicLocation = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == PROGRESSIVE_MAGIC_METER;});
-    sariaHintLoc = Location(magicLocation[0])->GetName();
-    Text area = GetHintRegion(Location(magicLocation[0])->GetParentRegionKey())->GetHint().GetText();
+    auto magicLocation = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == PROGRESSIVE_MAGIC_METER;})[0];
+    sariaHintLoc = Location(magicLocation)->GetName();
+    Text area = GetHintRegion(Location(magicLocation)->GetParentRegionKey())->GetHint().GetText();
     Text temp1 = Text{
       "Did you feel the %gsurge of magic%w recently? A mysterious bird told me it came from %g",
       "As-tu récemment ressenti une vague de %gpuissance magique%w? Un mystérieux hibou m'a dit  qu'elle provenait du %g",
@@ -903,6 +906,10 @@ void CreateSariaText() {
       "%w.$C"
     };
     sariaText = temp1 + area + temp2;
+
+    if (IsReachableWithout({SARIA_SONG_HINT},magicLocation,true)){
+      Location(magicLocation)->SetAsHinted();
+    }
   }
 }
 

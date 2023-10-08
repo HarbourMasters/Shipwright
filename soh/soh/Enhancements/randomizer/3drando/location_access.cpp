@@ -256,8 +256,9 @@ void AreaTable_Init() {
                        //name, scene, hint text,                       events, locations, exits
   areaTable[ROOT] = Area("Root", "", LINKS_POCKET, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(LINKS_POCKET, {[]{return true;}}),
-                  LocationAccess(TRIFORCE_COMPLETED, { [] { return CanCompleteTriforce;}}),
+                  LocationAccess(LINKS_POCKET,       {[]{return true;}}),
+                  LocationAccess(TRIFORCE_COMPLETED, {[]{return CanCompleteTriforce;}}),
+                  LocationAccess(SARIA_SONG_HINT,    {[]{return CanPlay(SariasSong);}}),
                 }, {
                   //Exits
                   Entrance(ROOT_EXITS, {[]{return true;}})
