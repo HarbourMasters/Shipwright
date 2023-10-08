@@ -918,11 +918,15 @@ void LocationTable_Init() {
     locationTable[DMC_UPPER_GROTTO_GOSSIP_STONE]         = ItemLocation::HintStone(RC_DMC_UPPER_GROTTO_GOSSIP_STONE,   "DMC Upper Grotto Gossip Stone");
 
     locationTable[GANONDORF_HINT]                        = ItemLocation::OtherHint(RC_GANONDORF_HINT,                  "Ganondorf Hint");
-    locationTable[TRIFORCE_COMPLETED]                    = ItemLocation::Reward (RC_TRIFORCE_COMPLETED, 0xFF, "Completed Triforce", NONE, TRIFORCE_COMPLETED, {}, SpoilerCollectionCheck::None(), SpoilerCollectionCheckGroup::GROUP_NO_GROUP);
+    locationTable[SHEIK_HINT_GC]                         = ItemLocation::OtherHint(RC_SHEIK_HINT_GC,                   "Sheik Hint in Ganons Castle");
+    locationTable[SHEIK_HINT_MQ_GC]                      = ItemLocation::OtherHint(RC_SHEIK_HINT_MQ_GC,                "Sheik Hint in MQ Ganons Castle");
     locationTable[DAMPE_HINT]                            = ItemLocation::OtherHint(RC_DAMPE_HINT,                      "Dampe's Diary Hint");
     locationTable[GREG_HINT]                             = ItemLocation::OtherHint(RC_GREG_HINT,                       "Greg Hint");
+    locationTable[SARIA_SONG_HINT]                       = ItemLocation::OtherHint(RC_SARIA_SONG_HINT,                 "Magic Hint Via Saria's Song");
     locationTable[ALTAR_HINT_CHILD]                      = ItemLocation::OtherHint(RC_ALTAR_HINT_CHILD,                "ToT Child Altar Text");
     locationTable[ALTAR_HINT_ADULT]                      = ItemLocation::OtherHint(RC_ALTAR_HINT_ADULT,                "ToT Adult Altar Text");
+
+    locationTable[TRIFORCE_COMPLETED]                    = ItemLocation::Reward(RC_TRIFORCE_COMPLETED, 0xFF, "Completed Triforce", NONE, TRIFORCE_COMPLETED, {}, SpoilerCollectionCheck::None(), SpoilerCollectionCheckGroup::GROUP_NO_GROUP);
 
     for (int i = NONE; i != KEY_ENUM_MAX; i++)
         locationLookupTable.insert(std::make_pair(locationTable[i].GetRandomizerCheck(), static_cast<Key>(i)));
@@ -1114,6 +1118,18 @@ std::vector<uint32_t> gossipStoneLocations = {
   DMC_UPPER_GROTTO_GOSSIP_STONE,
 };
 
+//List of Other Hint Locations
+std::vector<uint32_t> otherHintLocations = {
+  GANONDORF_HINT,
+  SHEIK_HINT_GC,
+  SHEIK_HINT_MQ_GC,
+  DAMPE_HINT,
+  GREG_HINT,
+  SARIA_SONG_HINT,
+  ALTAR_HINT_CHILD,
+  ALTAR_HINT_ADULT,
+};
+
 std::vector<uint32_t> dungeonRewardLocations = {
   //Bosses
   QUEEN_GOHMA,
@@ -1126,6 +1142,7 @@ std::vector<uint32_t> dungeonRewardLocations = {
   BONGO_BONGO,
   LINKS_POCKET,
 };
+
 std::vector<uint32_t> overworldLocations = {
   //Kokiri Forest
   KF_KOKIRI_SWORD_CHEST,
@@ -1595,11 +1612,9 @@ void LocationReset() {
     Location(il)->RemoveFromPool();
   }
 
-  Location(GANONDORF_HINT)->RemoveFromPool();
-  Location(DAMPE_HINT)->RemoveFromPool();
-  Location(GREG_HINT)->RemoveFromPool();
-  Location(ALTAR_HINT_CHILD)->RemoveFromPool();
-  Location(ALTAR_HINT_ADULT)->RemoveFromPool();
+  for (uint32_t il : otherHintLocations) {
+    Location(il)->RemoveFromPool();
+  }
  
 }
 

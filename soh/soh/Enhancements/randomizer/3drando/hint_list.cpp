@@ -2959,7 +2959,7 @@ void HintTable_Init() {
             "Ja, ja, ja... Nunca me derrotarás reflejando mis esferas de energía y desplegando la flecha de luz de " },
     });
 
-    hintTable[RHT_SHIEK_LIGHT_ARROW_HINT] = HintText::LightArrow({
+    hintTable[RHT_SHEIK_LIGHT_ARROW_HINT] = HintText::LightArrow({
         // obscure text
         Text{
             "I overheard Ganondorf say that he misplaced the %yLight Arrows%w in&%r",
