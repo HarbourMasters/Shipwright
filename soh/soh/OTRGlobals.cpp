@@ -1821,22 +1821,6 @@ Color_RGB8 GetColorForControllerLED() {
     return color;
 }
 
-// RGBA8 to RGB8 conversion. Alpha channel will be dropped.
-Color_RGB8 ColorToColor24(Color_RGBA8 arg1) {
-    return { arg1.r, arg1.g, arg1.b };
-}
-
-// RGB8 to RGBA8 conversion. Takes RGB8 input, alpha channel defauls to 255.
-Color_RGBA8 Color24ToColor(Color_RGB8 arg1) {
-    uint8_t alpha = 255;
-    return { arg1.r, arg1.g, arg1.b, alpha };
-}
-
-// RGB8 to RGBA8 conversion. Takes RGB8 and 8-bit alpha inputs.
-Color_RGBA8 Color24ToColor(Color_RGB8 arg1, uint8_t alpha) {
-    return { arg1.r, arg1.g, arg1.b, alpha };
-}
-
 extern "C" void OTRControllerCallback(uint8_t rumble) {
     auto physicalDevice = LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0);
 
