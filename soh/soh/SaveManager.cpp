@@ -1,6 +1,7 @@
 #include "SaveManager.h"
 #include "OTRGlobals.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
+#include "soh/util.h"
 
 #include "z64.h"
 #include "functions.h"
@@ -97,7 +98,8 @@ void SaveManager::LoadRandomizerVersion1() {
             SaveManager::Instance->LoadData("fakeRgID", gSaveContext.itemLocations[i].get.fakeRgID);
             std::string trickName;
             SaveManager::Instance->LoadData("trickName", trickName);
-            strncpy(gSaveContext.itemLocations[i].get.trickName, trickName.c_str(), MAX_TRICK_NAME_SIZE);
+            SohUtils::CopyStringToCharArray(gSaveContext.itemLocations[i].get.trickName, trickName,
+                                            MAX_TRICK_NAME_SIZE);
         });
         SaveManager::Instance->LoadData("check" + std::to_string(i), gSaveContext.itemLocations[i].check);
     }
@@ -170,7 +172,8 @@ void SaveManager::LoadRandomizerVersion2() {
             SaveManager::Instance->LoadData("fakeRgID", gSaveContext.itemLocations[i].get.fakeRgID);
             std::string trickName;
             SaveManager::Instance->LoadData("trickName", trickName);
-            strncpy(gSaveContext.itemLocations[i].get.trickName, trickName.c_str(), MAX_TRICK_NAME_SIZE);
+            SohUtils::CopyStringToCharArray(gSaveContext.itemLocations[i].get.trickName, trickName,
+                                            MAX_TRICK_NAME_SIZE);
         });
     });
 
@@ -190,7 +193,7 @@ void SaveManager::LoadRandomizerVersion2() {
 
     std::string inputSeed;
     SaveManager::Instance->LoadData("inputSeed", inputSeed);
-    memcpy(gSaveContext.inputSeed, inputSeed.c_str(), inputSeed.length() + 1);
+    SohUtils::CopyStringToCharArray(gSaveContext.inputSeed, inputSeed, ARRAY_COUNT(gSaveContext.inputSeed));
 
     SaveManager::Instance->LoadData("finalSeed", gSaveContext.finalSeed);
 
@@ -204,52 +207,61 @@ void SaveManager::LoadRandomizerVersion2() {
             SaveManager::Instance->LoadData("check", gSaveContext.hintLocations[i].check);
             std::string hintText;
             SaveManager::Instance->LoadData("hintText", hintText);
-            memcpy(gSaveContext.hintLocations[i].hintText, hintText.c_str(), hintText.length());
+            SohUtils::CopyStringToCharArray(gSaveContext.hintLocations[i].hintText, hintText,
+                                            ARRAY_COUNT(gSaveContext.hintLocations[i].hintText));
         });
     });
 
     std::string childAltarText;
     SaveManager::Instance->LoadData("childAltarText", childAltarText);
-    memcpy(gSaveContext.childAltarText, childAltarText.c_str(), childAltarText.length());
+    SohUtils::CopyStringToCharArray(gSaveContext.childAltarText, childAltarText,
+                                    ARRAY_COUNT(gSaveContext.childAltarText));
     std::string adultAltarText;
     SaveManager::Instance->LoadData("adultAltarText", adultAltarText);
-    memcpy(gSaveContext.adultAltarText, adultAltarText.c_str(), adultAltarText.length());
+    SohUtils::CopyStringToCharArray(gSaveContext.adultAltarText, adultAltarText,
+                                    ARRAY_COUNT(gSaveContext.adultAltarText));
     std::string ganonHintText;
     SaveManager::Instance->LoadData("ganonHintText", ganonHintText);
-    memcpy(gSaveContext.ganonHintText, ganonHintText.c_str(), ganonHintText.length());
+    SohUtils::CopyStringToCharArray(gSaveContext.ganonHintText, ganonHintText, ARRAY_COUNT(gSaveContext.ganonHintText));
     std::string ganonText;
     SaveManager::Instance->LoadData("ganonText", ganonText);
-    memcpy(gSaveContext.ganonText, ganonText.c_str(), ganonText.length());
+    SohUtils::CopyStringToCharArray(gSaveContext.ganonText, ganonText, ARRAY_COUNT(gSaveContext.ganonText));
     std::string dampeText;
     SaveManager::Instance->LoadData("dampeText", dampeText);
-    memcpy(gSaveContext.dampeText, dampeText.c_str(), dampeText.length());
+    SohUtils::CopyStringToCharArray(gSaveContext.dampeText, dampeText, ARRAY_COUNT(gSaveContext.dampeText));
     std::string gregHintText;
     SaveManager::Instance->LoadData("gregHintText", gregHintText);
-    memcpy(gSaveContext.gregHintText, gregHintText.c_str(), gregHintText.length());
+    SohUtils::CopyStringToCharArray(gSaveContext.gregHintText, gregHintText, ARRAY_COUNT(gSaveContext.gregHintText));
     std::string sheikText;
     SaveManager::Instance->LoadData("sheikText", sheikText);
-    memcpy(gSaveContext.sheikText, sheikText.c_str(), sheikText.length() + 1);
+    SohUtils::CopyStringToCharArray(gSaveContext.sheikText, sheikText, ARRAY_COUNT(gSaveContext.sheikText));
     std::string sariaText;
     SaveManager::Instance->LoadData("sariaText", sariaText);
-    memcpy(gSaveContext.sariaText, sariaText.c_str(), sariaText.length() + 1);
+    SohUtils::CopyStringToCharArray(gSaveContext.sariaText, sariaText, ARRAY_COUNT(gSaveContext.sariaText));
     std::string warpMinuetText;
     SaveManager::Instance->LoadData("warpMinuetText", warpMinuetText);
-    memcpy(gSaveContext.warpMinuetText, warpMinuetText.c_str(), warpMinuetText.length());
+    SohUtils::CopyStringToCharArray(gSaveContext.warpMinuetText, warpMinuetText,
+                                    ARRAY_COUNT(gSaveContext.warpMinuetText));
     std::string warpBoleroText;
     SaveManager::Instance->LoadData("warpBoleroText", warpBoleroText);
-    memcpy(gSaveContext.warpBoleroText, warpBoleroText.c_str(), warpBoleroText.length());
+    SohUtils::CopyStringToCharArray(gSaveContext.warpBoleroText, warpBoleroText,
+                                    ARRAY_COUNT(gSaveContext.warpBoleroText));
     std::string warpSerenadeText;
     SaveManager::Instance->LoadData("warpSerenadeText", warpSerenadeText);
-    memcpy(gSaveContext.warpSerenadeText, warpSerenadeText.c_str(), warpSerenadeText.length());
+    SohUtils::CopyStringToCharArray(gSaveContext.warpSerenadeText, warpSerenadeText,
+                                    ARRAY_COUNT(gSaveContext.warpSerenadeText));
     std::string warpRequiemText;
     SaveManager::Instance->LoadData("warpRequiemText", warpRequiemText);
-    memcpy(gSaveContext.warpRequiemText, warpRequiemText.c_str(), warpRequiemText.length());
+    SohUtils::CopyStringToCharArray(gSaveContext.warpRequiemText, warpRequiemText,
+                                    ARRAY_COUNT(gSaveContext.warpRequiemText));
     std::string warpNocturneText;
     SaveManager::Instance->LoadData("warpNocturneText", warpNocturneText);
-    memcpy(gSaveContext.warpNocturneText, warpNocturneText.c_str(), warpNocturneText.length());
+    SohUtils::CopyStringToCharArray(gSaveContext.warpNocturneText, warpNocturneText,
+                                    ARRAY_COUNT(gSaveContext.warpNocturneText));
     std::string warpPreludeText;
     SaveManager::Instance->LoadData("warpPreludeText", warpPreludeText);
-    memcpy(gSaveContext.warpPreludeText, warpPreludeText.c_str(), warpPreludeText.length());
+    SohUtils::CopyStringToCharArray(gSaveContext.warpPreludeText, warpPreludeText,
+                                    ARRAY_COUNT(gSaveContext.warpPreludeText));
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
 
@@ -466,8 +478,8 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].buildVersionMajor = gSaveContext.sohStats.buildVersionMajor;
     fileMetaInfo[fileNum].buildVersionMinor = gSaveContext.sohStats.buildVersionMinor;
     fileMetaInfo[fileNum].buildVersionPatch = gSaveContext.sohStats.buildVersionPatch;
-    strncpy(fileMetaInfo[fileNum].buildVersion, gSaveContext.sohStats.buildVersion, sizeof(fileMetaInfo[fileNum].buildVersion) - 1);
-    fileMetaInfo[fileNum].buildVersion[sizeof(fileMetaInfo[fileNum].buildVersion) - 1] = 0;
+    SohUtils::CopyStringToCharArray(fileMetaInfo[fileNum].buildVersion, gSaveContext.sohStats.buildVersion,
+                                    ARRAY_COUNT(fileMetaInfo[fileNum].buildVersion));
 }
 
 void SaveManager::InitFile(bool isDebug) {
@@ -1557,8 +1569,8 @@ void SaveManager::LoadBaseVersion3() {
     SaveManager::Instance->LoadStruct("sohStats", []() {
         std::string buildVersion;
         SaveManager::Instance->LoadData("buildVersion", buildVersion);
-        strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(), ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
-        gSaveContext.sohStats.buildVersion[ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1] = 0;
+        SohUtils::CopyStringToCharArray(gSaveContext.sohStats.buildVersion, buildVersion,
+                                        ARRAY_COUNT(gSaveContext.sohStats.buildVersion));
         SaveManager::Instance->LoadData("buildVersionMajor", gSaveContext.sohStats.buildVersionMajor);
         SaveManager::Instance->LoadData("buildVersionMinor", gSaveContext.sohStats.buildVersionMinor);
         SaveManager::Instance->LoadData("buildVersionPatch", gSaveContext.sohStats.buildVersionPatch);
@@ -2169,8 +2181,8 @@ void SaveManager::CopyZeldaFile(int from, int to) {
     fileMetaInfo[to].buildVersionMajor = fileMetaInfo[from].buildVersionMajor;
     fileMetaInfo[to].buildVersionMinor = fileMetaInfo[from].buildVersionMinor;
     fileMetaInfo[to].buildVersionPatch = fileMetaInfo[from].buildVersionPatch;
-    strncpy(fileMetaInfo[to].buildVersion, fileMetaInfo[from].buildVersion, sizeof(fileMetaInfo[to].buildVersion) - 1);
-    fileMetaInfo[to].buildVersion[sizeof(fileMetaInfo[to].buildVersion) - 1] = 0;
+    SohUtils::CopyStringToCharArray(fileMetaInfo[to].buildVersion, fileMetaInfo[from].buildVersion,
+                                    ARRAY_COUNT(fileMetaInfo[to].buildVersion));
 }
 
 void SaveManager::DeleteZeldaFile(int fileNum) {
