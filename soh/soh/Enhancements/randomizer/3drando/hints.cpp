@@ -1031,6 +1031,9 @@ void CreateAllHints() {
   if (Settings::FrogsHintText){
       ctx->GetItemLocation(RC_ZR_FROGS_OCARINA_GAME)->SetAsHinted();
   }
+  if (Settings::FrogsHintText){
+      Location(ZR_FROGS_OCARINA_GAME)->SetAsHinted();
+  }
   if (Settings::skipChildZelda){
       ctx->GetItemLocation(RC_SONG_FROM_IMPA)->SetAsHinted();
   }

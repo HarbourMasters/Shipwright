@@ -472,7 +472,7 @@ void HintTable_Init() {
         Text{ "a #cow behind webs# in a grotto gifts", /*french*/ "la #vache derrière les toiles# d'une grotte donne",
               /*spanish*/ "una #vaca tras la telaraña# de una cueva brinda" });
 
-    hintTable[RHT_ZR_FROGS_OCARINA_GAME] = HintText::Always(
+    hintTable[RHT_ZR_FROGS_OCARINA_GAME] = HintText::Sometimes(
         {
             // obscure text
             Text{ "an #amphibian feast# yields", /*french*/ "un #festin d'amphibiens# donne",
