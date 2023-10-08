@@ -128,19 +128,6 @@ Color_RGB8 kokiriColor = { 0x1E, 0x69, 0x1B };
 Color_RGB8 goronColor = { 0x64, 0x14, 0x00 };
 Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
 
-// Same as NaviColor type from OoT src (z_actor.c)
-/*
-typedef struct {
-    Color_RGBA8 inner;
-    Color_RGBA8 outer;
-} NaviColor_RGBA8;
-
-static NaviColor_RGBA8 defaultIdleColor = { { 255, 255, 255, 255 }, { 0, 0, 255, 0 } };
-static NaviColor_RGBA8 defaultNPCColor = { { 150, 150, 255, 255 }, { 150, 150, 255, 0 } };
-static NaviColor_RGBA8 defaultEnemyColor = { { 255, 255, 0, 255 }, { 200, 155, 0, 0 } };
-static NaviColor_RGBA8 defaultPropsColor = { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } };
-*/
-
 // Same as NaviColor type from OoT src (z_actor.c), but modified to be sans alpha channel for Controller LED.
 typedef struct {
     Color_RGB8 inner;
