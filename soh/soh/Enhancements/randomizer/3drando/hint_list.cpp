@@ -46,22 +46,6 @@ void HintTable_Init() {
     |     ALWAYS HINT TEXT     |
     ---------------------------*/
 
-    hintTable[ZR_FROGS_OCARINA_GAME] = HintText::Always(
-        {
-            // obscure text
-            Text{ "an #amphibian feast# yields", /*french*/ "un #festin d'amphibiens# donne",
-                  /*spanish*/ "una #fiesta anfibia# brinda" },
-            Text{ "the #croaking choir's magnum opus# awards", /*french*/ "la #chorale coassante# donne",
-                  /*spanish*/ "un #coro maestro de ancas# premia" },
-            Text{ "the #froggy finale# yields", /*french*/ "la #finale amphibienne# donne",
-                  /*spanish*/ "el #gran final batracio# brinda" },
-        },
-        {},
-        // clear text
-        Text{ "the final reward from the #Frogs of Zora's River# is",
-              /*french*/ "la dernière récompense des #grenouilles de la Rivière Zora# est",
-              /*spanish*/ "la recompensa final de las #ranas del Río Zora# premia" });
-
     hintTable[KF_LINKS_HOUSE_COW] = HintText::Always(
         {
             // obscure text
@@ -486,6 +470,22 @@ void HintTable_Init() {
         // clear text
         Text{ "a #cow behind webs# in a grotto gifts", /*french*/ "la #vache derrière les toiles# d'une grotte donne",
               /*spanish*/ "una #vaca tras la telaraña# de una cueva brinda" });
+
+    hintTable[ZR_FROGS_OCARINA_GAME] = HintText::Sometimes(
+        {
+            // obscure text
+            Text{ "an #amphibian feast# yields", /*french*/ "un #festin d'amphibiens# donne",
+                  /*spanish*/ "una #fiesta anfibia# brinda" },
+            Text{ "the #croaking choir's magnum opus# awards", /*french*/ "la #chorale coassante# donne",
+                  /*spanish*/ "un #coro maestro de ancas# premia" },
+            Text{ "the #froggy finale# yields", /*french*/ "la #finale amphibienne# donne",
+                  /*spanish*/ "el #gran final batracio# brinda" },
+        },
+        {},
+        // clear text
+        Text{ "the final reward from the #Frogs of Zora's River# is",
+              /*french*/ "la dernière récompense des #grenouilles de la Rivière Zora# est",
+              /*spanish*/ "la recompensa final de las #ranas del Río Zora# premia" });
 
     hintTable[ZF_GS_HIDDEN_CAVE] = HintText::Sometimes({
         // obscure text
@@ -3202,7 +3202,7 @@ int32_t TokensRequiredBySettings() {
     return tokens;
 }
 
-std::array<ConditionalAlwaysHint, 9> conditionalAlwaysHints = {
+std::array<ConditionalAlwaysHint, 10> conditionalAlwaysHints = {
     std::make_pair(MARKET_10_BIG_POES,
                    []() {
                        return Settings::BigPoeTargetCount.Value<uint8_t>() >= 3;
@@ -3214,7 +3214,8 @@ std::array<ConditionalAlwaysHint, 9> conditionalAlwaysHints = {
     std::make_pair(DMT_TRADE_CLAIM_CHECK, []() { return false; }),
     std::make_pair(KAK_30_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 30 && !Settings::Kak30GSHintText; }),
     std::make_pair(KAK_40_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 40 && !Settings::Kak40GSHintText; }),
-    std::make_pair(KAK_50_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 50 && !Settings::Kak50GSHintText; })
+    std::make_pair(KAK_50_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 50 && !Settings::Kak50GSHintText; }),
+    std::make_pair(ZR_FROGS_OCARINA_GAME, []() { return !Settings::FrogsHintText; }),
 };
 
 const HintText& Hint(const uint32_t hintKey) {

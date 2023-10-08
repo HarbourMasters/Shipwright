@@ -986,6 +986,9 @@ void CreateAllHints() {
   if (Settings::Kak50GSHintText){
       Location(KAK_50_GOLD_SKULLTULA_REWARD)->SetAsHinted();
   }
+  if (Settings::FrogsHintText){
+      Location(ZR_FROGS_OCARINA_GAME)->SetAsHinted();
+  }
   if (Settings::skipChildZelda){
       Location(SONG_FROM_IMPA)->SetAsHinted();
   }

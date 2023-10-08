@@ -198,7 +198,7 @@ using ConditionalAlwaysHint = std::pair<uint32_t, std::function<bool()>>;
 //10 dungeons as GTG and GC are excluded
 extern std::array<DungeonInfo, 10> dungeonInfoData;
 
-extern std::array<ConditionalAlwaysHint, 9> conditionalAlwaysHints;
+extern std::array<ConditionalAlwaysHint, 10> conditionalAlwaysHints;
 
 extern uint32_t GetHintRegionHintKey(const uint32_t area);
 extern void CreateAllHints();

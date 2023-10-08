@@ -2357,7 +2357,6 @@ namespace Settings {
     ClearerHints.SetSelectedIndex(cvarSettings[RSK_HINT_CLARITY]);
     AltarHintText.SetSelectedIndex(cvarSettings[RSK_TOT_ALTAR_HINT]);
     LightArrowHintText.SetSelectedIndex(cvarSettings[RSK_LIGHT_ARROWS_HINT]);
-    SariaHintText.SetSelectedIndex(cvarSettings[RSK_SARIA_HINT]);
     DampeHintText.SetSelectedIndex(cvarSettings[RSK_DAMPES_DIARY_HINT]);
     GregHintText.SetSelectedIndex(cvarSettings[RSK_GREG_HINT]);
     SariaHintText.SetSelectedIndex(cvarSettings[RSK_SARIA_HINT]);
