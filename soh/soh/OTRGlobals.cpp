@@ -1751,7 +1751,7 @@ Color_RGB8 GetColorForControllerLED() {
             if (arrowPointedActor) {
                 ActorCategory category = (ActorCategory)arrowPointedActor->category;
                 switch (category) {
-                    case ACTOR_PLAYER:
+                    case ACTORCAT_PLAYER:
                         if (source == LED_SOURCE_NAVI_COSMETICS &&
                             CVarGetInteger("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
                             color = CVarGetColor24("gCosmetics.Navi_IdlePrimary.Value", defaultIdleColor.inner);
