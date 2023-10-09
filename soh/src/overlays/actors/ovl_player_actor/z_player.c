@@ -149,7 +149,7 @@ s32 func_808359FC(Player* this, PlayState* play); // Throw boomerang
 s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play); // Throw boomerang Ivan
 s32 func_80835B60(Player* this, PlayState* play); // Boomerang active
 s32 func_80835C08(Player* this, PlayState* play);
-void func_80835F44(PlayState* play, Player* this, s32 item);
+void Player_UseItem(PlayState* play, Player* this, s32 item);
 void func_80839F90(Player* this, PlayState* play);
 s32 func_80838A14(Player* this, PlayState* play);
 s32 func_80839800(Player* this, PlayState* play);
@@ -1457,7 +1457,7 @@ void func_80832440(PlayState* play, Player* this) {
 
 s32 func_80832528(PlayState* play, Player* this) {
     if (this->heldItemAction >= PLAYER_IA_FISHING_POLE) {
-        func_80835F44(play, this, ITEM_NONE);
+        Player_UseItem(play, this, ITEM_NONE);
         return 1;
     } else {
         return 0;
@@ -2168,7 +2168,7 @@ void func_80833DF8(Player* this, PlayState* play) {
             }
             if (!func_80833C50(this, B_BTN_ITEM) && !func_80833C50(this, C_BTN_ITEM(0)) &&
                 !func_80833C50(this, C_BTN_ITEM(1)) && !func_80833C50(this, C_BTN_ITEM(2)) && !hasOnDpad) {
-                func_80835F44(play, this, ITEM_NONE);
+                Player_UseItem(play, this, ITEM_NONE);
                 return;
             }
         }
@@ -2193,7 +2193,7 @@ void func_80833DF8(Player* this, PlayState* play) {
             }
         } else if (gSaveContext.buttonStatus[i] != BTN_DISABLED && gSaveContext.equips.buttonModIds[i] == 0) {
             this->heldItemButton = i;
-            func_80835F44(play, this, item);
+            Player_UseItem(play, this, item);
         } else if (gSaveContext.equips.buttonModIds[i] != 0) {
             this->heldItemButton = i;
             ModdedItems_ExecuteModdedItemAction(play, this, gSaveContext.equips.buttonModIds[i], gSaveContext.equips.buttonItems[i]);
@@ -2340,7 +2340,7 @@ void func_80834594(PlayState* play, Player* this) {
         }
     }
 
-    func_80835F44(play, this, this->heldItemId);
+    Player_UseItem(play, this, this->heldItemId);
 
     if (func_8008F2BC(this, this->heldItemAction) >= 0) {
         func_808328EC(this, NA_SE_IT_SWORD_PICKOUT);
@@ -3018,7 +3018,7 @@ void func_80835EFC(Player* this) {
     }
 }
 
-void func_80835F44(PlayState* play, Player* this, s32 item) {
+void Player_UseItem(PlayState* play, Player* this, s32 item) {
     s8 actionParam;
     s32 temp;
     s32 nextAnimType;
@@ -5547,7 +5547,7 @@ s32 func_8083C1DC(Player* this, PlayState* play) {
             return 1;
         }
         if ((this->unk_837 == 0) && (this->heldItemAction >= PLAYER_IA_SWORD_MASTER)) {
-            func_80835F44(play, this, ITEM_NONE);
+            Player_UseItem(play, this, ITEM_NONE);
         } else {
             this->stateFlags2 ^= PLAYER_STATE2_NAVI_OUT;
         }
@@ -6541,7 +6541,7 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
                         this->nextModelGroup = Player_ActionToModelGroup(this, PLAYER_IA_LAST_USED);
                         Player_InitItemAction(play, this, PLAYER_IA_LAST_USED);
                     } else {
-                        func_80835F44(play, this, ITEM_LAST_USED);
+                        Player_UseItem(play, this, ITEM_LAST_USED);
                     }
                 } else {
                     s32 strength = Player_GetStrength();
@@ -8073,7 +8073,7 @@ void func_80842A28(PlayState* play, Player* this) {
 
 void func_80842A88(PlayState* play, Player* this) {
     Inventory_ChangeAmmo(ITEM_STICK, -1);
-    func_80835F44(play, this, ITEM_NONE);
+    Player_UseItem(play, this, ITEM_NONE);
 }
 
 s32 func_80842AC4(PlayState* play, Player* this) {
@@ -9753,7 +9753,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     this->itemAction = this->heldItemAction = -1;
     this->heldItemId = ITEM_NONE;
 
-    func_80835F44(play, this, ITEM_NONE);
+    Player_UseItem(play, this, ITEM_NONE);
     Player_SetEquipmentData(play, this);
     this->prevBoots = this->currentBoots;
     if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
@@ -10427,7 +10427,7 @@ void func_80848A04(PlayState* play, Player* this) {
     f32 temp;
 
     if (this->unk_85C == 0.0f) {
-        func_80835F44(play, this, 0xFF);
+        Player_UseItem(play, this, 0xFF);
         return;
     }
 
@@ -11616,7 +11616,7 @@ s32 func_8084B3CC(PlayState* play, Player* this) {
                 projectileItemToUse = LINK_IS_ADULT ? ITEM_BOW : ITEM_SLINGSHOT;
             }
 
-            func_80835F44(play, this, projectileItemToUse);
+            Player_UseItem(play, this, projectileItemToUse);
         }
 
         this->stateFlags1 |= PLAYER_STATE1_FIRST_PERSON;
@@ -15193,7 +15193,7 @@ s32 Player_StartFishing(PlayState* play) {
     }
 
     func_80832564(play, this);
-    func_80835F44(play, this, ITEM_FISHING_POLE);
+    Player_UseItem(play, this, ITEM_FISHING_POLE);
     return 1;
 }
 

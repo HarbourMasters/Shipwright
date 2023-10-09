@@ -14,11 +14,12 @@ struct ModdedItemData {
     std::string itemName;
     std::function<s32(void)> currentAmmoGetter;
     std::function<s32(void)> maxAmmoGetter;
+    s32 itemAgeRequirement;
 };
 
 static std::map<ModdedItem, ModdedItemData> moddedItems;
 
-bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc itemAction, std::string itemIcon, std::string itemNameTexture, std::string itemName, std::function<s32(void)> currentAmmoGetter, std::function<s32(void)> maxAmmoGetter) {
+bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc itemAction, std::string itemIcon, std::string itemNameTexture, std::string itemName, std::function<s32(void)> currentAmmoGetter, std::function<s32(void)> maxAmmoGetter, s32 itemAgeRequirement) {
     if (modId == 0) {
         //can't register a new vanilla item
         return false;
@@ -31,7 +32,7 @@ bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc 
         return false;
     }
 
-    ModdedItemData moddedItemData = { itemAction, itemIcon, itemNameTexture, itemName, currentAmmoGetter, maxAmmoGetter };
+    ModdedItemData moddedItemData = { itemAction, itemIcon, itemNameTexture, itemName, currentAmmoGetter, maxAmmoGetter, itemAgeRequirement };
 
     moddedItems.insert({ moddedItem, moddedItemData });
 
@@ -107,4 +108,15 @@ s32 ModdedItems_GetMaxAmmo(s32 modId, s32 itemId) {
 
 	//in case the item is not found
     return -1;
+}
+
+s32 ModdedItems_GetItemAgeRequirement(s32 modId, s32 itemId) {
+    ModdedItem moddedItem = { modId, itemId };
+
+    if (moddedItems.contains(moddedItem)) {
+        return moddedItems[moddedItem].itemAgeRequirement;
+    }
+
+	//in case the item is not found
+    return 9;
 }

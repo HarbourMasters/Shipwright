@@ -1039,7 +1039,8 @@ void InitMods() {
         },
         []() {
             return -1;
-        }
+        },
+        9
     );
 
     ModdedItems_RegisterModdedItem(
@@ -1065,7 +1066,8 @@ void InitMods() {
         },
         []() {
             return -1;
-        }
+        },
+        0
     );
 
     ModdedItems_RegisterModdedItem(
@@ -1091,6 +1093,7 @@ void InitMods() {
         },
         []() {
             return CUR_CAPACITY(UPG_NUTS);
-        }
+        },
+        1
     );
 }
