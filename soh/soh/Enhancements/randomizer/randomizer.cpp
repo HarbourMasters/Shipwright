@@ -1510,9 +1510,8 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
             index++;
         }
 
-        std::string inputSeed = spoilerFileJson["seed"].get<std::string>();
-        strncpy(gSaveContext.inputSeed, inputSeed.c_str(), sizeof(gSaveContext.inputSeed) - 1);
-        gSaveContext.inputSeed[sizeof(gSaveContext.inputSeed) - 1] = 0;
+        SohUtils::CopyStringToCharArray(gSaveContext.inputSeed, spoilerFileJson["seed"],
+                                        ARRAY_COUNT(gSaveContext.inputSeed));
 
         gSaveContext.finalSeed = spoilerFileJson["finalSeed"].get<uint32_t>();
 
@@ -1530,8 +1529,8 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
                         gSaveContext.itemLocations[randomizerCheck].get.fakeRgID =
                             SpoilerfileGetNameToEnum[itemit.value()];
                     } else if (itemit.key() == "trickName") {
-                        strncpy(gSaveContext.itemLocations[randomizerCheck].get.trickName,
-                                std::string(itemit.value()).c_str(), MAX_TRICK_NAME_SIZE);
+                        SohUtils::CopyStringToCharArray(gSaveContext.itemLocations[randomizerCheck].get.trickName,
+                                                        itemit.value(), MAX_TRICK_NAME_SIZE);
                     }
                 }
             } else {
@@ -3150,7 +3149,7 @@ void RandomizerSettingsWindow::DrawElement() {
         );
         ImGui::SameLine();
         if (ImGui::Button("New Seed")) {
-            strncpy(seedString, std::to_string(rand() & 0xFFFFFFFF).c_str(), MAX_SEED_STRING_SIZE);
+            SohUtils::CopyStringToCharArray(seedString, std::to_string(rand() & 0xFFFFFFFF), MAX_SEED_STRING_SIZE);
         }
         UIWidgets::Tooltip("Creates a new random seed value to be used when generating a randomizer");
         ImGui::SameLine();
