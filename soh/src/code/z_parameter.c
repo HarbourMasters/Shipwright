@@ -4828,7 +4828,7 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
             }
         } else if (modId != 0) {
             if (ammo == ModdedItems_GetMaxAmmo(modId, i)) {
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 120, 255, 0, alpha);
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, alpha);
             }
         } else if (((i == ITEM_BOW) && (AMMO(i) == CUR_CAPACITY(UPG_QUIVER))) ||
                    ((i == ITEM_BOMB) && (AMMO(i) == CUR_CAPACITY(UPG_BOMB_BAG))) ||
