@@ -906,7 +906,7 @@ void CreateWarpSongTexts() {
 }
 
 static std::array<uint8_t, HINT_TYPE_MAX> DistrabuteHints(uint8_t stoneCount, std::array<HintDistributionSetting, (int)HINT_TYPE_MAX> distTable, bool addFixed = true){
-  uint32_t totalWeight = 0;
+  int32_t totalWeight = 0;
   std::array<uint8_t, HINT_TYPE_MAX> selected = {};
 
   distTable[HINT_TYPE_JUNK].copies = 1; //Junk is hardcoded to 1 copy to avoid fill in issues
@@ -919,7 +919,7 @@ static std::array<uint8_t, HINT_TYPE_MAX> DistrabuteHints(uint8_t stoneCount, st
     }
   }
 
-  uint32_t currentWeight = Random(1,totalWeight);
+  int32_t currentWeight = Random(1,totalWeight);
   while(stoneCount > 0 && totalWeight > 0){
     for (HintDistributionSetting setting: distTable){
       currentWeight -= setting.weight;
@@ -959,11 +959,11 @@ uint8_t PlaceHints(std::array<uint8_t, HINT_TYPE_MAX> selectedHints,
       blankList, //enternce, not yet implemented
       blankList, // always, should not happen
       FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetHint().GetType() == HintCategory::Sometimes;}), //sometimes
-      allLocations, //random
-      allLocations, //Named item
       FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->IsCategory(Category::cSong);}), //songs
       FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->IsOverworld();}), //overworld
       FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->IsDungeon();}), //dungeon
+      allLocations, //Named item
+      allLocations, //random
       blankList //junk, irrelevent
   };
 
