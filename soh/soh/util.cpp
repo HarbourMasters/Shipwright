@@ -1,7 +1,7 @@
 #include "util.h"
 
+#include <string.h>
 #include <vector>
-#include <string>
 
 std::vector<std::string> sceneNames = {
     "Inside the Deku Tree",
