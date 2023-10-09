@@ -2217,84 +2217,79 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 }
             }
         }
-    }
-    else if (this->actor.scale.y >= 0.0f) {
+    } else if (this->actor.scale.y >= 0.0f) {
         if (limbIndex == PLAYER_LIMB_SHEATH) {
-                if (!(this->stateFlags2 & PLAYER_STATE2_CRAWLING && this->actor.projectedPos.z < 0.0f) &&
-                this->actor.id != 51)
-                // don't render these if the player's crawling. Or if it's actually dark link.
-                {
-                    switch (CUR_EQUIP_VALUE(EQUIP_SWORD)){
-                        case PLAYER_SWORD_KOKIRI:
-                        Player_DrawChildItem(
-                            play, Player_CanUseNewLoadingMethodSheathSword(this) ? gLinkKokiriSwordSheathDL : gLinkChildSheathNearDL);
-                            if (this->leftHandType != 2 && this->leftHandType != 3) {
+            if (!(this->stateFlags2 & PLAYER_STATE2_CRAWLING && this->actor.projectedPos.z < 0.0f) &&
+                this->actor.id != 51) { // Don't render these if the player's crawling, or if it's actually dark link.
+                switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
+                    case PLAYER_SWORD_KOKIRI:
+                        Player_DrawChildItem(play, Player_CanUseNewLoadingMethodSheathSword(this)
+                                                       ? gLinkKokiriSwordSheathDL
+                                                       : gLinkChildSheathNearDL);
+                        if (this->leftHandType != 2 && this->leftHandType != 3) {
                             Player_DrawChildItem(play, Player_CanUseNewLoadingMethodSheathSword(this)
                                                            ? gLinkKokiriSwordInSheathDL
                                                            : gLinkChildSwordAndSheathNearDL);
-                            }
-                            break;
-                        case PLAYER_SWORD_MASTER:
-                            Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathSword(this)
-                                                           ? gLinkMasterSwordSheathDL
-                                                           : gLinkAdultSheathNearDL);
-                            if (this->leftHandType != 2 && this->leftHandType != 3) {
+                        }
+                        break;
+                    case PLAYER_SWORD_MASTER:
+                        Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathSword(this)
+                                                       ? gLinkMasterSwordSheathDL
+                                                       : gLinkAdultSheathNearDL);
+                        if (this->leftHandType != 2 && this->leftHandType != 3) {
                             Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathSword(this)
                                                            ? gLinkMasterSwordInSheathDL
                                                            : gLinkAdultMasterSwordAndSheathNearDL);
-                            }
-                            break;
-                        case PLAYER_SWORD_BIGGORON:
-                            Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathSword(this)
-                                                           ? gLinkLongswordSheathDL
-                                                           : gLinkAdultSheathNearDL);
-                            if (this->leftHandType != 4)
+                        }
+                        break;
+                    case PLAYER_SWORD_BIGGORON:
+                        Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathSword(this)
+                                                       ? gLinkLongswordSheathDL
+                                                       : gLinkAdultSheathNearDL);
+                        if (this->leftHandType != 4)
                             Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathSword(this)
                                                            ? gLinkLongswordInSheathDL
                                                            : gLinkAdultMasterSwordAndSheathNearDL);
-                            break;
-                        }
-                    if (this->rightHandType != 10) {
-                        switch (CUR_EQUIP_VALUE(EQUIP_SHIELD)) {
-                            case PLAYER_SHIELD_DEKU:
+                        break;
+                }
+                if (this->rightHandType != 10) {
+                    switch (CUR_EQUIP_VALUE(EQUIP_SHIELD)) {
+                        case PLAYER_SHIELD_DEKU:
                             Player_DrawChildItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
                                                            ? gLinkDekuShieldOnBackDL
                                                            : gLinkChildDekuShieldAndSheathNearDL);
-                                break;
-                            case PLAYER_SHIELD_HYLIAN:
-                                if (!Player_IsChildWithHylianShield(this)) {
-                                    Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
-                                                                   ? gLinkHylianShieldOnBackDL
-                                                                   : gLinkAdultHylianShieldAndSheathNearDL);
-                                }
-                                break;
-                            case PLAYER_SHIELD_MIRROR:
+                            break;
+                        case PLAYER_SHIELD_HYLIAN:
+                            if (!Player_IsChildWithHylianShield(this)) {
                                 Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
-                                                               ? gLinkMirrorShieldOnBackDL
-                                                               : gLinkAdultMirrorShieldAndSheathNearDL);
-                                break;
-                        }
-                    }
-                    if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN &&
-                        Player_IsChildWithHylianShield(this)) {
-                        Player_DrawChildItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
-                                                       ? gLinkHylianShieldOnChildBackDL
-                                                       : gLinkChildHylianShieldAndSheathNearDL);
+                                                               ? gLinkHylianShieldOnBackDL
+                                                               : gLinkAdultHylianShieldAndSheathNearDL);
+                            }
+                            break;
+                        case PLAYER_SHIELD_MIRROR:
+                            Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
+                                                           ? gLinkMirrorShieldOnBackDL
+                                                           : gLinkAdultMirrorShieldAndSheathNearDL);
+                            break;
                     }
                 }
-                if ((this->rightHandType != 10) && (this->rightHandType != 0xFF)) {
-                    if (Player_IsChildWithHylianShield(this)) {
-                        Player_UpdateShieldCollider(play, this, &this->shieldQuad, sSheathLimbModelShieldQuadVertices);
-                    }
-
-                    Matrix_TranslateRotateZYX(&sSheathLimbModelShieldOnBackPos, &sSheathLimbModelShieldOnBackZyxRot);
-                    Matrix_Get(&this->shieldMf);
+                if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN && Player_IsChildWithHylianShield(this)) {
+                    Player_DrawChildItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
+                                                   ? gLinkHylianShieldOnChildBackDL
+                                                   : gLinkChildHylianShieldAndSheathNearDL);
                 }
             }
-        else if (limbIndex == PLAYER_LIMB_HEAD) {
-                Matrix_MultVec3f(&D_801260D4, &this->actor.focus.pos);
-        }
-        else {
+            if ((this->rightHandType != 10) && (this->rightHandType != 0xFF)) {
+                if (Player_IsChildWithHylianShield(this)) {
+                    Player_UpdateShieldCollider(play, this, &this->shieldQuad, sSheathLimbModelShieldQuadVertices);
+                }
+
+                Matrix_TranslateRotateZYX(&sSheathLimbModelShieldOnBackPos, &sSheathLimbModelShieldOnBackZyxRot);
+                Matrix_Get(&this->shieldMf);
+            }
+        } else if (limbIndex == PLAYER_LIMB_HEAD) {
+            Matrix_MultVec3f(&D_801260D4, &this->actor.focus.pos);
+        } else {
             Vec3f* vec = &sLeftRightFootLimbModelFootPos[(gSaveContext.linkAge)];
 
             Actor_SetFeetPos(&this->actor, limbIndex, PLAYER_LIMB_L_FOOT, vec, PLAYER_LIMB_R_FOOT, vec);
