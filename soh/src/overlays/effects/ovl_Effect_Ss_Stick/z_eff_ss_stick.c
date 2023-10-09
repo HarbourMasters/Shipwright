@@ -32,6 +32,10 @@ u32 EffectSsStick_Init(PlayState* play, u32 index, EffectSs* this, void* initPar
     };
     StickDrawInfo* ageInfoEntry = gSaveContext.linkAge + drawInfo;
     EffectSsStickInitParams* initParams = (EffectSsStickInitParams*)initParamsx;
+    Player* player = GET_PLAYER(play);
+    if (CVarGetInteger("gTimelessEquipment", 0)) {
+        ageInfoEntry = Player_HoldsStick(player) + drawInfo;
+    }
 
     this->rObjBankIdx = Object_GetIndex(&play->objectCtx, ageInfoEntry->objectID);
     this->gfx = ageInfoEntry->displayList;
@@ -50,20 +54,21 @@ u32 EffectSsStick_Init(PlayState* play, u32 index, EffectSs* this, void* initPar
 
 void EffectSsStick_Draw(PlayState* play, u32 index, EffectSs* this) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
+    Player* player = GET_PLAYER(play);
     s32 pad;
 
     OPEN_DISPS(gfxCtx);
 
     Matrix_Translate(this->pos.x, this->pos.y, this->pos.z, MTXMODE_NEW);
-
-    if (!LINK_IS_ADULT) {
+    
+    if (!LINK_IS_ADULT || (CVarGetInteger("gTimelessEquipment", 0) && Player_HoldsStick(player)) ) {
         Matrix_Scale(0.01f, 0.0025f, 0.01f, MTXMODE_APPLY);
         Matrix_RotateZYX(0, this->rYaw, 0, MTXMODE_APPLY);
     } else {
         Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
         Matrix_RotateZYX(0, this->rYaw, play->state.frames * 10000, MTXMODE_APPLY);
     }
-
+    
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Gfx_SetupDL_25Opa(gfxCtx);
