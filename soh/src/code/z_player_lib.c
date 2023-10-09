@@ -712,6 +712,10 @@ void Player_SetModelsForHoldingShield(Player* this) {
             } else if (this->sheathType == 19) {
                 this->sheathType = 17;
             }
+            // AltEquip TODO: Comment from @inspectredc's code review of HarbourMasters/Shipwright#3008
+            // 
+            // > More of a question here to help my understanding; does this mean that the alt DList always going to be used? 
+            // > if so, is that the intention and why is it required instead of using a Player_CanUseNewLoadingMethod?
             this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
             this->modelAnimType = 2;
             this->itemAction = -1;
@@ -1888,6 +1892,12 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         if (Player_CanUseNewLoadingMethodLeftHand(this) && this->actor.id != 51) {
             switch (this->leftHandType) {
                 case 2: // Unused, but a safe measure
+                    // AltEquip TODO: Comment from @inspectredc's code review of HarbourMasters/Shipwright#3008
+                    // 
+                    // > If this part is unused, I feel as though it should either break or not be included?
+                    // > 
+                    // > Would also be preferable for this section to have enums for describing the leftHandType cases,
+                    // > as the magic numbers don't make it clear what exactly is going on
                 case 3: 
                     switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
                         case PLAYER_SWORD_KOKIRI:
