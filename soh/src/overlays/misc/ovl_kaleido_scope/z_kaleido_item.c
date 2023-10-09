@@ -27,10 +27,18 @@ extern const char* _gAmmoDigit0Tex[];
 void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx, s16 item, int slot) {
     s16 ammo;
     s16 i;
+    s16 modId = gSaveContext.inventory.itemModIds[slot];
 
     OPEN_DISPS(gfxCtx);
 
-    ammo = AMMO(item);
+    if (modId == 0) {
+        ammo = AMMO(item);
+    } else {
+        if (ModdedItems_GetMaxAmmo(modId, item) == -1) {
+            return;
+        }
+        ammo = ModdedItems_GetCurrentAmmo(modId, item);
+    }
 
     gDPPipeSync(POLY_KAL_DISP++);
 
@@ -41,6 +49,10 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
 
         if (ammo == 0) {
             gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 130, 130, 130, pauseCtx->alpha);
+        } else if (modId != 0) {
+            if (ammo == ModdedItems_GetMaxAmmo(modId, item)) {
+                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 120, 255, 0, pauseCtx->alpha);
+            }
         } else if ((item == ITEM_BOMB && AMMO(item) == CUR_CAPACITY(UPG_BOMB_BAG)) ||
                    (item == ITEM_BOW && AMMO(item) == CUR_CAPACITY(UPG_QUIVER)) ||
                    (item == ITEM_SLINGSHOT && AMMO(item) == CUR_CAPACITY(UPG_BULLET_BAG)) ||
@@ -701,7 +713,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                       ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
 
     for (i = 0; i < 15; i++) {
-        if ((gAmmoItems[i] != ITEM_NONE) && (gSaveContext.inventory.items[i] != ITEM_NONE)) {
+        if (gSaveContext.inventory.itemModIds[i] != 0 || ((gAmmoItems[i] != ITEM_NONE) && (gSaveContext.inventory.items[i] != ITEM_NONE))) {
             KaleidoScope_DrawAmmoCount(pauseCtx, play->state.gfxCtx, gSaveContext.inventory.items[i], i);
         }
     }

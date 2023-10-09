@@ -4796,8 +4796,9 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
     OPEN_DISPS(play->state.gfxCtx);
 
     i = gSaveContext.equips.buttonItems[button];
+    s16 modId = gSaveContext.equips.buttonModIds[button];
 
-    if (gSaveContext.equips.buttonModIds[button] == 0 && (i == ITEM_STICK) || (i == ITEM_NUT) || (i == ITEM_BOMB) || (i == ITEM_BOW) ||
+    if (modId != 0 || (i == ITEM_STICK) || (i == ITEM_NUT) || (i == ITEM_BOMB) || (i == ITEM_BOW) ||
         ((i >= ITEM_BOW_ARROW_FIRE) && (i <= ITEM_BOW_ARROW_LIGHT)) || (i == ITEM_SLINGSHOT) || (i == ITEM_BOMBCHU) ||
         (i == ITEM_BEAN)) {
 
@@ -4805,8 +4806,15 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
             i = ITEM_BOW;
         }
 
-        ammo = AMMO(i);
-
+        if (modId != 0) {
+            if (ModdedItems_GetMaxAmmo(modId, i) == -1) {
+                return;
+            }
+            ammo = ModdedItems_GetCurrentAmmo(modId, i);
+        } else {
+            ammo = AMMO(i);
+        }
+        
         gDPPipeSync(OVERLAY_DISP++);
 
         if ((button == 0) && (gSaveContext.minigameState == 1)) {
@@ -4817,6 +4825,10 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
             ammo = play->bombchuBowlingStatus;
             if (ammo < 0) {
                 ammo = 0;
+            }
+        } else if (modId != 0) {
+            if (ammo == ModdedItems_GetMaxAmmo(modId, i)) {
+                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 120, 255, 0, alpha);
             }
         } else if (((i == ITEM_BOW) && (AMMO(i) == CUR_CAPACITY(UPG_QUIVER))) ||
                    ((i == ITEM_BOMB) && (AMMO(i) == CUR_CAPACITY(UPG_BOMB_BAG))) ||

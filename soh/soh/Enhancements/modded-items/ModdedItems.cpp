@@ -12,11 +12,13 @@ struct ModdedItemData {
     std::string itemIcon;
     std::string itemNameTexture;
     std::string itemName;
+    std::function<s32(void)> currentAmmoGetter;
+    std::function<s32(void)> maxAmmoGetter;
 };
 
 static std::map<ModdedItem, ModdedItemData> moddedItems;
 
-bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc itemAction, std::string itemIcon, std::string itemNameTexture, std::string itemName) {
+bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc itemAction, std::string itemIcon, std::string itemNameTexture, std::string itemName, std::function<s32(void)> currentAmmoGetter, std::function<s32(void)> maxAmmoGetter) {
     if (modId == 0) {
         //can't register a new vanilla item
         return false;
@@ -29,7 +31,7 @@ bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc 
         return false;
     }
 
-    ModdedItemData moddedItemData = { itemAction, itemIcon, itemNameTexture, itemName };
+    ModdedItemData moddedItemData = { itemAction, itemIcon, itemNameTexture, itemName, currentAmmoGetter, maxAmmoGetter };
 
     moddedItems.insert({ moddedItem, moddedItemData });
 
@@ -83,4 +85,26 @@ const char* ModdedItems_GetModdedItemNameTexture(s32 modId, s32 itemId, s32 lang
 
 	//in case the item is not found
 	return gDekuStickItemNameENGTex;
+}
+
+s32 ModdedItems_GetCurrentAmmo(s32 modId, s32 itemId) {
+    ModdedItem moddedItem = { modId, itemId };
+
+    if (moddedItems.contains(moddedItem)) {
+        return moddedItems[moddedItem].currentAmmoGetter();
+    }
+
+	//in case the item is not found
+    return 0;
+}
+
+s32 ModdedItems_GetMaxAmmo(s32 modId, s32 itemId) {
+    ModdedItem moddedItem = { modId, itemId };
+
+    if (moddedItems.contains(moddedItem)) {
+        return moddedItems[moddedItem].maxAmmoGetter();
+    }
+
+	//in case the item is not found
+    return -1;
 }

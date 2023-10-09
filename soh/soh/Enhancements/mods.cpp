@@ -10,6 +10,7 @@
 #include "soh/Enhancements/modded-items/ModdedItems.h"
 #include "soh/Enhancements/nametag.h"
 
+#include "src/overlays/actors/ovl_En_Arrow/z_en_arrow.h"
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
 #include "src/overlays/actors/ovl_En_Dekubaba/z_en_dekubaba.h"
 #include "src/overlays/actors/ovl_En_Mb/z_en_mb.h"
@@ -40,6 +41,11 @@ extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
 uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 void func_80838940(Player* player, LinkAnimationHeader* anim, f32 arg2, PlayState* play, u16 sfxId);
+void func_8083A098(Player* player, LinkAnimationHeader* anim, PlayState* play);
+void func_80832698(Player* player, u16 sfxId);
+s32 func_8083721C(Player* player);
+s32 func_80835C58(PlayState* play, Player* player, PlayerFunc674 func, s32 flags);
+void func_80832264(PlayState* play, Player* player, LinkAnimationHeader* anim);
 }
 bool performDelayedSave = false;
 bool performSave = false;
@@ -961,6 +967,20 @@ void RegisterAltTrapTypes() {
     });
 }
 
+void Player_ThrowDekuNutFunctionCopy(Player* player, PlayState* play) {
+    if (LinkAnimation_Update(play, &player->skelAnime)) {
+        func_8083A098(player, (LinkAnimationHeader*)(&gPlayerAnim_link_normal_light_bom_end), play);
+    } else if (LinkAnimation_OnFrame(&player->skelAnime, 3.0f)) {
+        Inventory_ChangeAmmo(ITEM_NUT, -1);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, player->bodyPartsPos[PLAYER_BODYPART_R_HAND].x,
+                    player->bodyPartsPos[PLAYER_BODYPART_R_HAND].y, player->bodyPartsPos[PLAYER_BODYPART_R_HAND].z, 4000,
+                    player->actor.shape.rot.y, 0, ARROW_NUT, true);
+        func_80832698(player, NA_SE_VO_LI_SWORD_N);
+    }
+
+    func_8083721C(player);
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1013,6 +1033,64 @@ void InitMods() {
         },
         gItemIconGiantsWalletTex,
         gBombItemNameENGTex,
-        "Roc's Feather"
+        "Roc's Feather",
+        []() {
+            return 0;
+        },
+        []() {
+            return -1;
+        }
+    );
+
+    ModdedItems_RegisterModdedItem(
+        2,
+        1,
+        [](PlayState* play, Player* player, ModdedItem moddedItem) {
+            if (func_80087708(play, 0, 3)) {
+                if (play->actorCtx.lensActive) {
+                    Actor_DisableLens(play);
+                } else {
+                    play->actorCtx.lensActive = true;
+                }
+                func_80078884((play->actorCtx.lensActive) ? NA_SE_SY_GLASSMODE_ON : NA_SE_SY_GLASSMODE_OFF);
+            } else {
+                func_80078884(NA_SE_SY_ERROR);
+            }
+        },
+        gItemIconLensOfTruthTex,
+        gLensItemNameENGTex,
+        "Lens Copy",
+        []() {
+            return 0;
+        },
+        []() {
+            return -1;
+        }
+    );
+
+    ModdedItems_RegisterModdedItem(
+        2,
+        2,
+        [](PlayState* play, Player* player, ModdedItem moddedItem) {
+            if (AMMO(ITEM_NUT) != 0) {
+                if ((play->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_2) && (player->actor.bgCheckFlags & 1) &&
+                    (AMMO(ITEM_NUT) != 0)) {
+                    func_80835C58(play, player, Player_ThrowDekuNutFunctionCopy, 0);
+                    func_80832264(play, player, (LinkAnimationHeader*)(&gPlayerAnim_link_normal_light_bom));
+                    player->unk_6AD = 0;
+                }
+            } else {
+                func_80078884(NA_SE_SY_ERROR);
+            }
+        },
+        gItemIconDekuNutTex,
+        gDekuNutItemNameENGTex,
+        "Deku Nuts Copy",
+        []() {
+            return AMMO(ITEM_NUT);
+        },
+        []() {
+            return CUR_CAPACITY(UPG_NUTS);
+        }
     );
 }

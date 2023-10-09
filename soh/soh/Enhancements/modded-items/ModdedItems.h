@@ -29,7 +29,7 @@ struct ModdedItem {
 
 using ModdedItemActionFunc = std::function<void(PlayState*, Player*, ModdedItem)>;
 
-bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc itemAction, std::string itemIcon, std::string itemNameTexture, std::string itemName);
+bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc itemAction, std::string itemIcon, std::string itemNameTexture, std::string itemName, std::function<s32(void)> currentAmmoGetter, std::function<s32(void)> maxAmmoGetter);
 std::vector<ModdedItem> ModdedItems_GetRegisteredModdedItems();
 
 extern "C" {
@@ -39,6 +39,8 @@ void ModdedItems_ExecuteModdedItemAction(PlayState* play, Player* player, s32 mo
 void* ModdedItems_GetModdedItemIcon(s32 modId, s32 itemId);
 const char* ModdedItems_GetModdedItemNameTexture(s32 modId, s32 itemId, s32 language);
 const char* ModdedItems_GetModdedItemName(s32 modId, s32 itemId);
+s32 ModdedItems_GetCurrentAmmo(s32 modId, s32 itemId);
+s32 ModdedItems_GetMaxAmmo(s32 modId, s32 itemId);
 
 #ifdef __cplusplus
 }
