@@ -1301,17 +1301,15 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
 
-        std::string childAltarJsonText = spoilerFileJson["childAltar"]["hintText"].get<std::string>();
-        std::string formattedChildAltarText = FormatJsonHintText(childAltarJsonText);
-        SohUtils::CopyStringToCharArray(gSaveContext.childAltarText, formattedChildAltarText,
+        SohUtils::CopyStringToCharArray(gSaveContext.childAltarText,
+                                        FormatJsonHintText(spoilerFileJson["childAltar"]["hintText"]),
                                         ARRAY_COUNT(gSaveContext.childAltarText));
         gSaveContext.rewardCheck[0] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["emeraldLoc"]];
         gSaveContext.rewardCheck[1] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["rubyLoc"]];
         gSaveContext.rewardCheck[2] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["sapphireLoc"]];
 
-        std::string adultAltarJsonText = spoilerFileJson["adultAltar"]["hintText"].get<std::string>();
-        std::string formattedAdultAltarText = FormatJsonHintText(adultAltarJsonText);
-        SohUtils::CopyStringToCharArray(gSaveContext.adultAltarText, formattedAdultAltarText,
+        SohUtils::CopyStringToCharArray(gSaveContext.adultAltarText,
+                                        FormatJsonHintText(spoilerFileJson["adultAltar"]["hintText"]),
                                         ARRAY_COUNT(gSaveContext.adultAltarText));
         gSaveContext.rewardCheck[3] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["forestMedallionLoc"]];
         gSaveContext.rewardCheck[4] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["fireMedallionLoc"]];
@@ -1320,63 +1318,40 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         gSaveContext.rewardCheck[7] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["spiritMedallionLoc"]];
         gSaveContext.rewardCheck[8] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["lightMedallionLoc"]];
 
-        std::string ganonHintJsonText = spoilerFileJson["ganonHintText"].get<std::string>();
-        std::string formattedGanonHintJsonText = FormatJsonHintText(ganonHintJsonText);
-        SohUtils::CopyStringToCharArray(gSaveContext.ganonHintText, formattedGanonHintJsonText,
+        SohUtils::CopyStringToCharArray(gSaveContext.ganonHintText, spoilerFileJson["ganonHintText"],
                                         ARRAY_COUNT(gSaveContext.ganonHintText));
         gSaveContext.lightArrowHintCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["lightArrowHintLoc"]];
 
-        std::string ganonJsonText = spoilerFileJson["ganonText"].get<std::string>();
-        std::string formattedGanonJsonText = FormatJsonHintText(ganonJsonText);
-        SohUtils::CopyStringToCharArray(gSaveContext.ganonText, formattedGanonJsonText,
+        SohUtils::CopyStringToCharArray(gSaveContext.ganonText, spoilerFileJson["ganonText"],
                                         ARRAY_COUNT(gSaveContext.ganonText));
 
-        std::string dampeJsonText = spoilerFileJson["dampeText"].get<std::string>();
-        std::string formattedDampeJsonText = FormatJsonHintText(dampeJsonText);
-        SohUtils::CopyStringToCharArray(gSaveContext.dampeText, formattedDampeJsonText,
+        SohUtils::CopyStringToCharArray(gSaveContext.dampeText, spoilerFileJson["dampeText"],
                                         ARRAY_COUNT(gSaveContext.dampeText));
         gSaveContext.dampeCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["dampeHintLoc"]];
 
-        std::string gregJsonText = spoilerFileJson["gregText"].get<std::string>();
-        std::string formattedGregJsonText = FormatJsonHintText(gregJsonText);
-        SohUtils::CopyStringToCharArray(gSaveContext.gregHintText, formattedGregJsonText,
+        SohUtils::CopyStringToCharArray(gSaveContext.gregHintText, spoilerFileJson["gregText"],
                                         ARRAY_COUNT(gSaveContext.gregHintText));
         gSaveContext.gregCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["gregLoc"]];
 
-        std::string sheikJsonText = spoilerFileJson["sheikText"].get<std::string>();
-        std::string formattedSheikJsonText = FormatJsonHintText(sheikJsonText);
-        SohUtils::CopyStringToCharArray(gSaveContext.sheikText, formattedSheikJsonText,
+        SohUtils::CopyStringToCharArray(gSaveContext.sheikText, spoilerFileJson["sheikText"],
                                         ARRAY_COUNT(gSaveContext.sheikText));
         gSaveContext.lightArrowHintCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["lightArrowHintLoc"]];
 
-        std::string sariaJsonText = spoilerFileJson["sariaText"].get<std::string>();
-        std::string formattedSariaJsonText = FormatJsonHintText(sariaJsonText);
-        SohUtils::CopyStringToCharArray(gSaveContext.sariaText, formattedSariaJsonText,
+        SohUtils::CopyStringToCharArray(gSaveContext.sariaText, spoilerFileJson["sariaText"],
                                         ARRAY_COUNT(gSaveContext.sariaText));
         gSaveContext.sariaCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["sariaHintLoc"]];
 
-        std::string warpMinuetJsonText = spoilerFileJson["warpMinuetText"].get<std::string>();
-        SohUtils::CopyStringToCharArray(gSaveContext.warpMinuetText, warpMinuetJsonText,
+        SohUtils::CopyStringToCharArray(gSaveContext.warpMinuetText, spoilerFileJson["warpMinuetText"],
                                         ARRAY_COUNT(gSaveContext.warpMinuetText));
-
-        std::string warpBoleroJsonText = spoilerFileJson["warpBoleroText"].get<std::string>();
-        SohUtils::CopyStringToCharArray(gSaveContext.warpBoleroText, warpBoleroJsonText,
+        SohUtils::CopyStringToCharArray(gSaveContext.warpBoleroText, spoilerFileJson["warpBoleroText"],
                                         ARRAY_COUNT(gSaveContext.warpBoleroText));
-
-        std::string warpSerenadeJsonText = spoilerFileJson["warpSerenadeText"].get<std::string>();
-        SohUtils::CopyStringToCharArray(gSaveContext.warpSerenadeText, warpSerenadeJsonText,
+        SohUtils::CopyStringToCharArray(gSaveContext.warpSerenadeText, spoilerFileJson["warpSerenadeText"],
                                         ARRAY_COUNT(gSaveContext.warpSerenadeText));
-
-        std::string warpRequiemJsonText = spoilerFileJson["warpRequiemText"].get<std::string>();
-        SohUtils::CopyStringToCharArray(gSaveContext.warpRequiemText, warpRequiemJsonText,
+        SohUtils::CopyStringToCharArray(gSaveContext.warpRequiemText, spoilerFileJson["warpRequiemText"],
                                         ARRAY_COUNT(gSaveContext.warpRequiemText));
-
-        std::string warpNocturneJsonText = spoilerFileJson["warpNocturneText"].get<std::string>();
-        SohUtils::CopyStringToCharArray(gSaveContext.warpNocturneText, warpNocturneJsonText,
+        SohUtils::CopyStringToCharArray(gSaveContext.warpNocturneText, spoilerFileJson["warpNocturneText"],
                                         ARRAY_COUNT(gSaveContext.warpNocturneText));
-
-        std::string warpPreludeJsonText = spoilerFileJson["warpPreludeText"].get<std::string>();
-        SohUtils::CopyStringToCharArray(gSaveContext.warpPreludeText, warpPreludeJsonText,
+        SohUtils::CopyStringToCharArray(gSaveContext.warpPreludeText, spoilerFileJson["warpPreludeText"],
                                         ARRAY_COUNT(gSaveContext.warpPreludeText));
 
         json hintsJson = spoilerFileJson["hints"];
@@ -1404,9 +1379,7 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
                 gSaveContext.hintLocations[index].area = SpoilerfileAreaNameToEnum[hintInfo["area"]];
             }
 
-            std::string hintMessage = FormatJsonHintText(hintInfo["hint"]);
-            size_t maxHintTextSize = sizeof(gSaveContext.hintLocations[index].hintText);
-            SohUtils::CopyStringToCharArray(gSaveContext.hintLocations[index].hintText, hintMessage, maxHintTextSize);
+            SohUtils::CopyStringToCharArray(gSaveContext.hintLocations[index].hintText, hintInfo["hint"], ARRAY_COUNT(gSaveContext.hintLocations[index].hintText));
 
             index++;
         }
