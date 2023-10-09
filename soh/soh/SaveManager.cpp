@@ -96,10 +96,8 @@ void SaveManager::LoadRandomizerVersion1() {
         SaveManager::Instance->LoadStruct("get" + std::to_string(i), [&]() {
             SaveManager::Instance->LoadData("rgID", gSaveContext.itemLocations[i].get.rgID);
             SaveManager::Instance->LoadData("fakeRgID", gSaveContext.itemLocations[i].get.fakeRgID);
-            std::string trickName;
-            SaveManager::Instance->LoadData("trickName", trickName);
-            SohUtils::CopyStringToCharArray(gSaveContext.itemLocations[i].get.trickName, trickName,
-                                            MAX_TRICK_NAME_SIZE);
+            SaveManager::Instance->LoadCharArray("trickName", gSaveContext.itemLocations[i].get.trickName,
+                                                 MAX_TRICK_NAME_SIZE);
         });
         SaveManager::Instance->LoadData("check" + std::to_string(i), gSaveContext.itemLocations[i].check);
     }
@@ -170,10 +168,8 @@ void SaveManager::LoadRandomizerVersion2() {
         SaveManager::Instance->LoadStruct("", [&]() {
             SaveManager::Instance->LoadData("rgID", gSaveContext.itemLocations[i].get.rgID);
             SaveManager::Instance->LoadData("fakeRgID", gSaveContext.itemLocations[i].get.fakeRgID);
-            std::string trickName;
-            SaveManager::Instance->LoadData("trickName", trickName);
-            SohUtils::CopyStringToCharArray(gSaveContext.itemLocations[i].get.trickName, trickName,
-                                            MAX_TRICK_NAME_SIZE);
+            SaveManager::Instance->LoadCharArray("trickName", gSaveContext.itemLocations[i].get.trickName,
+                                                 MAX_TRICK_NAME_SIZE);
         });
     });
 
@@ -192,8 +188,7 @@ void SaveManager::LoadRandomizerVersion2() {
     });
 
     std::string inputSeed;
-    SaveManager::Instance->LoadData("inputSeed", inputSeed);
-    SohUtils::CopyStringToCharArray(gSaveContext.inputSeed, inputSeed, ARRAY_COUNT(gSaveContext.inputSeed));
+    SaveManager::Instance->LoadCharArray("inputSeed", gSaveContext.inputSeed, ARRAY_COUNT(gSaveContext.inputSeed));
 
     SaveManager::Instance->LoadData("finalSeed", gSaveContext.finalSeed);
 
@@ -205,63 +200,41 @@ void SaveManager::LoadRandomizerVersion2() {
     SaveManager::Instance->LoadArray("hintLocations", ARRAY_COUNT(gSaveContext.hintLocations), [&](size_t i) {
         SaveManager::Instance->LoadStruct("", [&]() {
             SaveManager::Instance->LoadData("check", gSaveContext.hintLocations[i].check);
-            std::string hintText;
-            SaveManager::Instance->LoadData("hintText", hintText);
-            SohUtils::CopyStringToCharArray(gSaveContext.hintLocations[i].hintText, hintText,
-                                            ARRAY_COUNT(gSaveContext.hintLocations[i].hintText));
+            SaveManager::Instance->LoadCharArray("hintText", gSaveContext.hintLocations[i].hintText,
+                                                 ARRAY_COUNT(gSaveContext.hintLocations[i].hintText));
         });
     });
 
-    std::string childAltarText;
-    SaveManager::Instance->LoadData("childAltarText", childAltarText);
-    SohUtils::CopyStringToCharArray(gSaveContext.childAltarText, childAltarText,
-                                    ARRAY_COUNT(gSaveContext.childAltarText));
-    std::string adultAltarText;
-    SaveManager::Instance->LoadData("adultAltarText", adultAltarText);
-    SohUtils::CopyStringToCharArray(gSaveContext.adultAltarText, adultAltarText,
-                                    ARRAY_COUNT(gSaveContext.adultAltarText));
-    std::string ganonHintText;
-    SaveManager::Instance->LoadData("ganonHintText", ganonHintText);
-    SohUtils::CopyStringToCharArray(gSaveContext.ganonHintText, ganonHintText, ARRAY_COUNT(gSaveContext.ganonHintText));
-    std::string ganonText;
-    SaveManager::Instance->LoadData("ganonText", ganonText);
-    SohUtils::CopyStringToCharArray(gSaveContext.ganonText, ganonText, ARRAY_COUNT(gSaveContext.ganonText));
-    std::string dampeText;
-    SaveManager::Instance->LoadData("dampeText", dampeText);
-    SohUtils::CopyStringToCharArray(gSaveContext.dampeText, dampeText, ARRAY_COUNT(gSaveContext.dampeText));
-    std::string gregHintText;
-    SaveManager::Instance->LoadData("gregHintText", gregHintText);
-    SohUtils::CopyStringToCharArray(gSaveContext.gregHintText, gregHintText, ARRAY_COUNT(gSaveContext.gregHintText));
-    std::string sheikText;
-    SaveManager::Instance->LoadData("sheikText", sheikText);
-    SohUtils::CopyStringToCharArray(gSaveContext.sheikText, sheikText, ARRAY_COUNT(gSaveContext.sheikText));
-    std::string sariaText;
-    SaveManager::Instance->LoadData("sariaText", sariaText);
-    SohUtils::CopyStringToCharArray(gSaveContext.sariaText, sariaText, ARRAY_COUNT(gSaveContext.sariaText));
-    std::string warpMinuetText;
-    SaveManager::Instance->LoadData("warpMinuetText", warpMinuetText);
-    SohUtils::CopyStringToCharArray(gSaveContext.warpMinuetText, warpMinuetText,
-                                    ARRAY_COUNT(gSaveContext.warpMinuetText));
-    std::string warpBoleroText;
-    SaveManager::Instance->LoadData("warpBoleroText", warpBoleroText);
-    SohUtils::CopyStringToCharArray(gSaveContext.warpBoleroText, warpBoleroText,
-                                    ARRAY_COUNT(gSaveContext.warpBoleroText));
-    std::string warpSerenadeText;
-    SaveManager::Instance->LoadData("warpSerenadeText", warpSerenadeText);
-    SohUtils::CopyStringToCharArray(gSaveContext.warpSerenadeText, warpSerenadeText,
-                                    ARRAY_COUNT(gSaveContext.warpSerenadeText));
-    std::string warpRequiemText;
-    SaveManager::Instance->LoadData("warpRequiemText", warpRequiemText);
-    SohUtils::CopyStringToCharArray(gSaveContext.warpRequiemText, warpRequiemText,
-                                    ARRAY_COUNT(gSaveContext.warpRequiemText));
-    std::string warpNocturneText;
-    SaveManager::Instance->LoadData("warpNocturneText", warpNocturneText);
-    SohUtils::CopyStringToCharArray(gSaveContext.warpNocturneText, warpNocturneText,
-                                    ARRAY_COUNT(gSaveContext.warpNocturneText));
-    std::string warpPreludeText;
-    SaveManager::Instance->LoadData("warpPreludeText", warpPreludeText);
-    SohUtils::CopyStringToCharArray(gSaveContext.warpPreludeText, warpPreludeText,
-                                    ARRAY_COUNT(gSaveContext.warpPreludeText));
+    SaveManager::Instance->LoadCharArray("childAltarText", gSaveContext.childAltarText,
+                                         ARRAY_COUNT(gSaveContext.childAltarText));
+    SaveManager::Instance->LoadCharArray("adultAltarText", gSaveContext.adultAltarText,
+                                         ARRAY_COUNT(gSaveContext.adultAltarText));
+
+    SaveManager::Instance->LoadCharArray("ganonHintText", gSaveContext.ganonHintText,
+                                         ARRAY_COUNT(gSaveContext.ganonHintText));
+    SaveManager::Instance->LoadCharArray("ganonText", gSaveContext.ganonText, ARRAY_COUNT(gSaveContext.ganonText));
+
+    SaveManager::Instance->LoadCharArray("dampeText", gSaveContext.dampeText, ARRAY_COUNT(gSaveContext.dampeText));
+
+    SaveManager::Instance->LoadCharArray("gregHintText", gSaveContext.gregHintText,
+                                         ARRAY_COUNT(gSaveContext.gregHintText));
+
+    SaveManager::Instance->LoadCharArray("sheikText", gSaveContext.sheikText, ARRAY_COUNT(gSaveContext.sheikText));
+
+    SaveManager::Instance->LoadCharArray("sariaText", gSaveContext.sariaText, ARRAY_COUNT(gSaveContext.sariaText));
+
+    SaveManager::Instance->LoadCharArray("warpMinuetText", gSaveContext.warpMinuetText,
+                                         ARRAY_COUNT(gSaveContext.warpMinuetText));
+    SaveManager::Instance->LoadCharArray("warpBoleroText", gSaveContext.warpBoleroText,
+                                         ARRAY_COUNT(gSaveContext.warpBoleroText));
+    SaveManager::Instance->LoadCharArray("warpSerenadeText", gSaveContext.warpSerenadeText,
+                                         ARRAY_COUNT(gSaveContext.warpSerenadeText));
+    SaveManager::Instance->LoadCharArray("warpRequiemText", gSaveContext.warpRequiemText,
+                                         ARRAY_COUNT(gSaveContext.warpRequiemText));
+    SaveManager::Instance->LoadCharArray("warpNocturneText", gSaveContext.warpNocturneText,
+                                         ARRAY_COUNT(gSaveContext.warpNocturneText));
+    SaveManager::Instance->LoadCharArray("warpPreludeText", gSaveContext.warpPreludeText,
+                                         ARRAY_COUNT(gSaveContext.warpPreludeText));
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
 
@@ -1567,10 +1540,8 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadData("gsTokens", gSaveContext.inventory.gsTokens);
     });
     SaveManager::Instance->LoadStruct("sohStats", []() {
-        std::string buildVersion;
-        SaveManager::Instance->LoadData("buildVersion", buildVersion);
-        SohUtils::CopyStringToCharArray(gSaveContext.sohStats.buildVersion, buildVersion,
-                                        ARRAY_COUNT(gSaveContext.sohStats.buildVersion));
+        SaveManager::Instance->LoadCharArray("buildVersion", gSaveContext.sohStats.buildVersion,
+                                             ARRAY_COUNT(gSaveContext.sohStats.buildVersion));
         SaveManager::Instance->LoadData("buildVersionMajor", gSaveContext.sohStats.buildVersionMajor);
         SaveManager::Instance->LoadData("buildVersionMinor", gSaveContext.sohStats.buildVersionMinor);
         SaveManager::Instance->LoadData("buildVersionPatch", gSaveContext.sohStats.buildVersionPatch);
@@ -2056,6 +2027,13 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
         SaveManager::Instance->SaveData("tempCollectFlags", saveContext->backupFW.tempCollectFlags);
     });
     SaveManager::Instance->SaveData("dogParams", saveContext->dogParams);
+}
+
+// Load a string into a char array based on size and ensuring it is null terminated when overflowed
+void SaveManager::LoadCharArray(const std::string& name, char* destination, size_t size) {
+    std::string temp;
+    SaveManager::Instance->LoadData(name, temp);
+    SohUtils::CopyStringToCharArray(destination, temp, size);
 }
 
 void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArrayFunc func) {

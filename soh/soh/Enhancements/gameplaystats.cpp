@@ -287,10 +287,8 @@ extern "C" char* GameplayStats_GetCurrentTime() {
 }
 
 void LoadStatsVersion1() {
-    std::string buildVersion;
-    SaveManager::Instance->LoadData("buildVersion", buildVersion);
-    SohUtils::CopyStringToCharArray(gSaveContext.sohStats.buildVersion, buildVersion,
-                                    ARRAY_COUNT(gSaveContext.sohStats.buildVersion));
+    SaveManager::Instance->LoadCharArray("buildVersion", gSaveContext.sohStats.buildVersion,
+                                         ARRAY_COUNT(gSaveContext.sohStats.buildVersion));
     SaveManager::Instance->LoadData("buildVersionMajor", gSaveContext.sohStats.buildVersionMajor);
     SaveManager::Instance->LoadData("buildVersionMinor", gSaveContext.sohStats.buildVersionMinor);
     SaveManager::Instance->LoadData("buildVersionPatch", gSaveContext.sohStats.buildVersionPatch);
