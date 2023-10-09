@@ -569,7 +569,7 @@ namespace Logic {
     CanSummonGossipFairyWithoutSuns = Ocarina && (ZeldasLullaby || EponasSong || SongOfTime);
     Hearts          = BaseHearts + HeartContainer + (PieceOfHeart >> 2);
     EffectiveHealth = ((Hearts << (2 + DoubleDefense)) >> Multiplier) + ((Hearts << (2 + DoubleDefense)) % (1 << Multiplier) > 0); //Number of half heart hits to die, ranges from 1 to 160
-    FireTimer       = CanUse(GORON_TUNIC) ? 255 : (IsAdult && LogicFewerTunicRequirements) ? (Hearts * 8) : 0;
+    FireTimer       = CanUse(GORON_TUNIC) ? 255 : (LogicFewerTunicRequirements) ? (Hearts * 8) : 0;
     WaterTimer      = CanUse( ZORA_TUNIC) ? 255 : (LogicFewerTunicRequirements) ? (Hearts * 8) : 0;
     NeedNayrusLove      = (EffectiveHealth == 1);
     CanSurviveDamage    = !NeedNayrusLove || CanUse(NAYRUS_LOVE);
