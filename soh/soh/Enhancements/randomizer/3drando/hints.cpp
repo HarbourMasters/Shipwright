@@ -330,43 +330,15 @@ static void AddHintCopies(uint8_t copies, Text hint, std::vector<uint8_t> colour
   }
 }
 
-static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck> possibleHintLocations, uint8_t copies, HintType type) {
-  auto ctx = Rando::Context::GetInstance();
-  //return if there aren't any hintable locations or gossip stones available
-  bool validStone = false;
-  RandomizerCheck hintedLocation;
+
+static bool CreateHint(RandomizerCheck hintedLocation, uint8_t copies, HintType type){
+  //get a gossip stone accessible without the hinted item
   std::vector<RandomizerCheck> gossipStoneLocations;
+  gossipStoneLocations = GetAccessibleGossipStones(hintedLocation);
 
-  if (GetEmptyGossipStones().size() < copies) {
-    SPDLOG_DEBUG("\tNOT ENOUGH GOSSIP STONES TO PLACE HINTS\n\n");
-    return RC_UNKNOWN_CHECK;
-  }
-
-  while (!validStone){
-    if (possibleHintLocations.empty()) {
-        SPDLOG_DEBUG("\tNO LOCATIONS TO HINT\n\n");
-      return RC_UNKNOWN_CHECK;
-    }
-    RandomizerCheck hintedLocation = RandomElement(possibleHintLocations, true); //removing the location to avoid it being hinted again on fail
-
-    SPDLOG_DEBUG("\tLocation: ");
-    SPDLOG_DEBUG(Rando::StaticData::GetLocation(hintedLocation)->GetName());
-    SPDLOG_DEBUG("\n");
-
-    SPDLOG_DEBUG("\tItem: ");
-    SPDLOG_DEBUG(ctx->GetItemLocation(hintedLocation)->GetPlacedItemName().GetEnglish());
-    SPDLOG_DEBUG("\n");
-
-      // get an accessible gossip stone
-     const std::vector<RandomizerCheck> accessibleGossipStones = GetAccessibleGossipStones(hintedLocation);
-
-    if (gossipStoneLocations.empty()) { 
-        SPDLOG_DEBUG("\tNO IN LOGIC GOSSIP STONE\n\n"); 
-        return RC_UNKNOWN_CHECK;
-    }
-    else{
-      validStone = true;
-    }
+  if (gossipStoneLocations.empty()) { 
+      SPDLOG_DEBUG("\tNO IN LOGIC GOSSIP STONE\n\n"); 
+      return false;
   }
 
   RandomizerCheck gossipStone = RandomElement(gossipStoneLocations);
@@ -403,16 +375,11 @@ static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck> possibleHin
     }
     else{
       SPDLOG_DEBUG("\tINVALID HINT TYPE\n\n");
-      return RC_UNKNOWN_CHECK;
+      return false;
     }
   }
   
-  if (type == HINT_TYPE_BARREN){
-    SetAllInRegionAsHinted(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey(), possibleHintLocations);
-  }
-  else{
-    ctx->GetItemLocation(hintedLocation)->SetAsHinted();
-  }
+  ctx->GetItemLocation(hintedLocation)->SetAsHinted();
 
   SPDLOG_DEBUG("\tMessage: ");
   SPDLOG_DEBUG(finalHint.english);
@@ -420,11 +387,46 @@ static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck> possibleHin
 
   AddHintCopies(copies, finalHint, colours, type, hintedLocation, gossipStone);
 
+  return true;
+}
+
+
+static uint32_t CreateRandomHint(std::vector<RandomizerCheck>& possibleHintLocations, uint8_t copies, HintType type) {
+  auto ctx = Rando::Context::GetInstance();
+
+  //return if there aren't any hintable locations or gossip stones available
+  if (GetEmptyGossipStones().size() < copies) {
+    SPDLOG_DEBUG("\tNOT ENOUGH GOSSIP STONES TO PLACE HINTS\n\n");
+    return RC_UNKNOWN_CHECK;
+  }
+
+  RandomizerCheck hintedLocation;
+  bool placed = false;
+  while (!placed){
+    if (possibleHintLocations.empty()) {
+        SPDLOG_DEBUG("\tNO LOCATIONS TO HINT\n\n");
+      return RC_UNKNOWN_CHECK;
+    }
+    hintedLocation = RandomElement(possibleHintLocations, true); //removing the location to avoid it being hinted again on fail
+   
+    SPDLOG_DEBUG("\tLocation: ");
+    SPDLOG_DEBUG(Rando::StaticData::GetLocation(hintedLocation)->GetName());
+    SPDLOG_DEBUG("\n");
+
+    SPDLOG_DEBUG("\tItem: ");
+    SPDLOG_DEBUG(ctx->GetItemLocation(hintedLocation)->GetPlacedItemName().GetEnglish());
+    SPDLOG_DEBUG("\n");
+
+    placed = CreateHint(hintedLocation, copies, type);
+  }
+  if (type == HINT_TYPE_BARREN){
+     SetAllInRegionAsHinted(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey(), possibleHintLocations);
+  }
   return hintedLocation;
 }
 
-static std::vector<uint32_t> FilterHintability(std::vector<uint32_t> locations, const bool goodItemsOnly = false, const bool dungeonsOK = true){
-  return FilterFromPool(locations, [goodItemsOnly, dungeonsOK](const uint32_t loc) {
+static void FilterHintability(std::vector<uint32_t>& locations, const bool goodItemsOnly = false, const bool dungeonsOK = true){
+  FilterFromPool(locations, [goodItemsOnly, dungeonsOK](const uint32_t loc) {
     return Location(loc)->IsHintable() && !(Location(loc)->IsHintedAt()) && 
     (!goodItemsOnly || Location(loc)->GetPlacedItem().IsMajorItem()) && (dungeonsOK || Location(loc)->IsOverworld());
   });
@@ -905,6 +907,15 @@ void CreateWarpSongTexts() {
   }
 }
 
+
+int32_t getRandomWeight(int32_t totalWeight){
+  if (totalWeight <= 1){
+    return 1;
+  }
+  return Random(1,totalWeight);
+}
+
+
 static std::array<uint8_t, HINT_TYPE_MAX> DistrabuteHints(uint8_t stoneCount, std::array<HintDistributionSetting, (int)HINT_TYPE_MAX> distTable, bool addFixed = true){
   int32_t totalWeight = 0;
   std::array<uint8_t, HINT_TYPE_MAX> selected = {};
@@ -919,7 +930,8 @@ static std::array<uint8_t, HINT_TYPE_MAX> DistrabuteHints(uint8_t stoneCount, st
     }
   }
 
-  int32_t currentWeight = Random(1,totalWeight);
+  int32_t currentWeight = getRandomWeight(totalWeight);
+
   while(stoneCount > 0 && totalWeight > 0){
     for (HintDistributionSetting setting: distTable){
       currentWeight -= setting.weight;
@@ -936,7 +948,7 @@ static std::array<uint8_t, HINT_TYPE_MAX> DistrabuteHints(uint8_t stoneCount, st
         }
       }
     }
-    currentWeight = Random(1,totalWeight);
+    currentWeight = getRandomWeight(totalWeight);
   }
   //if stones are left, assign junk
   if (stoneCount > 0){
@@ -945,8 +957,9 @@ static std::array<uint8_t, HINT_TYPE_MAX> DistrabuteHints(uint8_t stoneCount, st
   return selected;
 }
 
-uint8_t PlaceHints(std::array<uint8_t, HINT_TYPE_MAX> selectedHints,
-                std::array<HintDistributionSetting, (int)HINT_TYPE_MAX> distTable, 
+
+uint8_t PlaceHints(std::array<uint8_t, HINT_TYPE_MAX>& selectedHints,
+                std::array<HintDistributionSetting, (int)HINT_TYPE_MAX>& distTable, 
                 uint8_t* remainingDungeonWothHints,
                 uint8_t* remainingDungeonBarrenHints){
 
@@ -981,11 +994,13 @@ uint8_t PlaceHints(std::array<uint8_t, HINT_TYPE_MAX> selectedHints,
         CreateJunkHint();
       }
       else{
-        hintedLocation = CreateRandomHint(FilterHintability(hintTypePools[hintType], (hintType == HINT_TYPE_NAMED_ITEM)), distTable[hintType].copies, (HintType)hintType);
+        FilterHintability(hintTypePools[hintType], (hintType == HINT_TYPE_NAMED_ITEM));
+        hintedLocation = CreateRandomHint(hintTypePools[hintType], distTable[hintType].copies, (HintType)hintType);
         if (hintedLocation == RC_UNKNOWN_CHECK){ //if hint failed to place
+          uint8_t hintsToRemove = (selectedHints[hintType] - numHint) * distTable[hintType].copies;
           selectedHints[hintType] = 0; //RANDOTODO is there a better way to filter out things hinted between hintTypePools creation and now
           distTable[hintType].weight = 0;
-          return (selectedHints[hintType] - numHint) * distTable[hintType].copies;
+          return hintsToRemove;
         }
       }
 
@@ -994,7 +1009,7 @@ uint8_t PlaceHints(std::array<uint8_t, HINT_TYPE_MAX> selectedHints,
           if (Location(hintedLocation)->IsDungeon()){
             *remainingDungeonWothHints -= 1;
             if (*remainingDungeonWothHints <= 0){
-              hintTypePools[hintType] = FilterHintability(hintTypePools[hintType], false, false);
+              FilterHintability(hintTypePools[hintType], false, false);
             }
           }
           break;
@@ -1002,7 +1017,7 @@ uint8_t PlaceHints(std::array<uint8_t, HINT_TYPE_MAX> selectedHints,
           if (Location(hintedLocation)->IsDungeon()){
             *remainingDungeonBarrenHints -= 1;
             if (*remainingDungeonBarrenHints <= 0){
-              hintTypePools[hintType] = FilterHintability(hintTypePools[hintType], false, false);
+              FilterHintability(hintTypePools[hintType], false, false);
             }
           }
           break;
@@ -1069,7 +1084,7 @@ void CreateAllHints() {
       }
 
     for (uint32_t location : alwaysHintLocations) {
-      CreateRandomHint({location}, alwaysCopies, HINT_TYPE_ALWAYS);
+      CreateHint(location, alwaysCopies, HINT_TYPE_ALWAYS);
     }
   }
 
