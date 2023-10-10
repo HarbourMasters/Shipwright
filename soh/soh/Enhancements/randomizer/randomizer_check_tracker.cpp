@@ -6,10 +6,10 @@
 #include <vector>
 #include <set>
 #include <libultraship/libultraship.h>
-#include "3drando/item_location.hpp"
+#include "location.h"
+#include "item_location.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "randomizerTypes.h"
-
 
 extern "C" {
 #include "variables.h"
@@ -711,7 +711,8 @@ bool HasItemBeenSkipped(RandomizerCheckObject obj) {
 }
 
 bool HasItemBeenCollected(RandomizerCheckObject obj) {
-    ItemLocation* x = Location(obj.rc);
+    using namespace Rando;
+    Location* x = StaticData::Location(obj.rc);
     SpoilerCollectionCheck check = x->GetCollectionCheck();
     auto flag = check.flag;
     auto scene = check.scene;
@@ -1039,7 +1040,7 @@ void CheckTrackerWindow::InitElement() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteFile>([](uint32_t fileNum) {
         Teardown();
     });
-    LocationTable_Init();
+    //LocationTable_Init();
 }
 
 } // namespace CheckTracker

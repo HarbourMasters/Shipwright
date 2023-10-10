@@ -9,7 +9,7 @@
 #include "z64item.h"
 #include "randomizerTypes.h"
 #include "z64actor_enum.h"
-#include "z64scene_enum.h"
+#include "z64scene.h"
 
 namespace Rando {
 typedef enum { RCQUEST_VANILLA, RCQUEST_MQ, RCQUEST_BOTH } RandomizerCheckQuest;

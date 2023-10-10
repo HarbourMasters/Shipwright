@@ -1,6 +1,6 @@
 #pragma once
 
-#include "randomizerTypes.h"
+#include "../randomizer/randomizerTypes.h"
 #include "item_location.h"
 #include "3drando/text.hpp"
 #include "hint.h"
