@@ -210,7 +210,7 @@ Area* GetHintRegion(const uint32_t area) {
     alreadyChecked.push_back(region);
     spotQueue.pop_back();
 
-    if (AreaTable(region)->hintKey != NONE) {
+    if (AreaTable(region)->hintKey != RHT_NONE) {
       return AreaTable(region);
     }
 

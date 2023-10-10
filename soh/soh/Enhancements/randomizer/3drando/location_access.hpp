@@ -114,7 +114,7 @@ enum class EntranceType;
 class Area {
 public:
     Area();
-    Area(std::string regionName_, std::string scene_, uint32_t hintKey_,
+    Area(std::string regionName_, std::string scene_, RandomizerHintTextKey hintKey_,
          bool timePass_,
          std::vector<EventAccess> events_,
          std::vector<LocationAccess> locations_,
@@ -123,7 +123,7 @@ public:
 
     std::string regionName;
     std::string scene;
-    uint32_t     hintKey;
+    RandomizerHintTextKey     hintKey;
     bool        timePass;
     std::vector<EventAccess> events;
     std::vector<LocationAccess> locations;
