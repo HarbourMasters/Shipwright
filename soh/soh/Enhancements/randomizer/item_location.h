@@ -57,8 +57,8 @@ class ItemLocation {
     RandomizerGet GetPlacedRandomizerGet() const;
     void SetPlacedItem(const RandomizerGet item);
     void SetDelayedItem(const RandomizerGet item);
-    uint32_t GetParentRegionKey() const;
-    void SetParentRegion (uint32_t region);
+    RandomizerRegion GetParentRegionKey() const;
+    void SetParentRegion (RandomizerRegion region);
     void PlaceVanillaItem();
     void ApplyPlacedItemEffect();
     void SaveDelayedItem();
@@ -89,7 +89,7 @@ class ItemLocation {
     RandomizerGet delayedItem = RG_NONE;
     Option excludedOption = Option::Bool(StaticData::Location(rc)->GetName(), {"Include", "Exclude"});
     uint16_t price = 0;
-    uint32_t parentRegion = NONE;
+    RandomizerRegion parentRegion = RR_NONE;
     bool hasShopsanityPrice = false;
     bool hasScrubsanityPrice = false;
     bool hidden = false;

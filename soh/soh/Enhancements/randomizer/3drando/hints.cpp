@@ -200,13 +200,13 @@ std::string GetDampeHintLoc() {
     return dampeHintLoc;
 }
 
-Area* GetHintRegion(const uint32_t area) {
+Area* GetHintRegion(const RandomizerRegion area) {
 
-  std::vector<uint32_t> alreadyChecked = {};
-  std::vector<uint32_t> spotQueue = {area};
+  std::vector<RandomizerRegion> alreadyChecked = {};
+  std::vector<RandomizerRegion> spotQueue = {area};
 
   while (!spotQueue.empty()) {
-    uint32_t region = spotQueue.back();
+    RandomizerRegion region = spotQueue.back();
     alreadyChecked.push_back(region);
     spotQueue.pop_back();
 
@@ -217,7 +217,7 @@ Area* GetHintRegion(const uint32_t area) {
     //add unchecked entrances to spot queue
     bool checked = false;
     for (auto& entrance : AreaTable(region)->entrances) {
-      for (uint32_t checkedEntrance : alreadyChecked) {
+      for (RandomizerRegion checkedEntrance : alreadyChecked) {
         if (entrance->GetParentRegionKey() == checkedEntrance) {
           checked = true;
           break;
@@ -230,14 +230,14 @@ Area* GetHintRegion(const uint32_t area) {
     }
   }
 
-  return AreaTable(NONE);
+  return AreaTable(RR_NONE);
 }
 
-uint32_t GetHintRegionHintKey(const uint32_t area) {
+RandomizerHintTextKey GetHintRegionHintKey(const RandomizerRegion area) {
     return GetHintRegion(area)->hintKey;
 }
 
-uint32_t GetHintRegionuint32_t(const uint32_t area) {
+uint32_t GetHintRegionuint32_t(const RandomizerRegion area) {
   return GetHintRegion(area)->hintKey;
 }
 

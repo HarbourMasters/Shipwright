@@ -77,30 +77,30 @@ static bool UpdateToDAccess(Entrance* entrance, SearchMode mode) {
 
   //special check for temple of time
   bool propogateTimeTravel = mode != SearchMode::TimePassAccess && mode != SearchMode::TempleOfTimeAccess;
-  if (!AreaTable(ROOT)->Adult() && AreaTable(TOT_BEYOND_DOOR_OF_TIME)->Child() && propogateTimeTravel) {
-    AreaTable(ROOT)->adultDay   = AreaTable(TOT_BEYOND_DOOR_OF_TIME)->childDay;
-    AreaTable(ROOT)->adultNight = AreaTable(TOT_BEYOND_DOOR_OF_TIME)->childNight;
-  } else if (!AreaTable(ROOT)->Child() && AreaTable(TOT_BEYOND_DOOR_OF_TIME)->Adult() && propogateTimeTravel){
-    AreaTable(ROOT)->childDay   = AreaTable(TOT_BEYOND_DOOR_OF_TIME)->adultDay;
-    AreaTable(ROOT)->childNight = AreaTable(TOT_BEYOND_DOOR_OF_TIME)->adultNight;
+  if (!AreaTable(RR_ROOT)->Adult() && AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child() && propogateTimeTravel) {
+    AreaTable(RR_ROOT)->adultDay   = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childDay;
+    AreaTable(RR_ROOT)->adultNight = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childNight;
+  } else if (!AreaTable(RR_ROOT)->Child() && AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult() && propogateTimeTravel){
+    AreaTable(RR_ROOT)->childDay   = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultDay;
+    AreaTable(RR_ROOT)->childNight = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultNight;
   }
 
   return ageTimePropogated;
 }
 
 // Various checks that need to pass for the world to be validated as completable
-static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, bool checkOtherEntranceAccess, std::vector<uint32_t>& areaPool) {
+static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, bool checkOtherEntranceAccess, std::vector<RandomizerRegion>& areaPool) {
   // Condition for validating Temple of Time Access
-  if (mode == SearchMode::TempleOfTimeAccess && ((Settings::ResolvedStartingAge == AGE_CHILD && AreaTable(TEMPLE_OF_TIME)->Adult()) || (Settings::ResolvedStartingAge == AGE_ADULT && AreaTable(TEMPLE_OF_TIME)->Child()) || !checkOtherEntranceAccess)) {
+  if (mode == SearchMode::TempleOfTimeAccess && ((Settings::ResolvedStartingAge == AGE_CHILD && AreaTable(RR_TEMPLE_OF_TIME)->Adult()) || (Settings::ResolvedStartingAge == AGE_ADULT && AreaTable(RR_TEMPLE_OF_TIME)->Child()) || !checkOtherEntranceAccess)) {
     mode = SearchMode::ValidStartingRegion;
   }
   // Condition for validating a valid starting region
   if (mode == SearchMode::ValidStartingRegion) {
-    bool childAccess = Settings::ResolvedStartingAge == AGE_CHILD || AreaTable(TOT_BEYOND_DOOR_OF_TIME)->Child();
-    bool adultAccess = Settings::ResolvedStartingAge == AGE_ADULT || AreaTable(TOT_BEYOND_DOOR_OF_TIME)->Adult();
+    bool childAccess = Settings::ResolvedStartingAge == AGE_CHILD || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child();
+    bool adultAccess = Settings::ResolvedStartingAge == AGE_ADULT || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult();
 
-    Area* kokiri = AreaTable(KOKIRI_FOREST);
-    Area* kakariko = AreaTable(KAKARIKO_VILLAGE);
+    Area* kokiri = AreaTable(RR_KOKIRI_FOREST);
+    Area* kakariko = AreaTable(RR_KAKARIKO_VILLAGE);
 
     if ((childAccess && (kokiri->Child() || kakariko->Child())) ||
         (adultAccess && (kokiri->Adult() || kakariko->Adult())) ||
@@ -111,7 +111,7 @@ static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, 
     }
   }
   // Condition for validating Poe Collector Access
-  if (mode == SearchMode::PoeCollectorAccess && (AreaTable(MARKET_GUARD_HOUSE)->Adult() || !checkPoeCollectorAccess)) {
+  if (mode == SearchMode::PoeCollectorAccess && (AreaTable(RR_MARKET_GUARD_HOUSE)->Adult() || !checkPoeCollectorAccess)) {
     // Apply all items that are necessary for checking all location access
       std::vector<RandomizerGet> itemsToPlace =
           FilterFromPool(ItemPool, [](const auto i) { return StaticData::RetrieveItem(i).IsAdvancement(); });
@@ -120,12 +120,12 @@ static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, 
     }
     // Reset access as the non-starting age
     if (Settings::ResolvedStartingAge == AGE_CHILD) {
-      for (uint32_t areaKey : areaPool) {
+      for (RandomizerRegion areaKey : areaPool) {
         AreaTable(areaKey)->adultDay = false;
         AreaTable(areaKey)->adultNight = false;
       }
     } else {
-      for (uint32_t areaKey : areaPool) {
+      for (RandomizerRegion areaKey : areaPool) {
         AreaTable(areaKey)->childDay = false;
         AreaTable(areaKey)->childNight = false;
       }
@@ -213,14 +213,14 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
   }
   Areas::AccessReset();
   ctx->LocationReset();
-  std::vector<uint32_t> areaPool = {ROOT};
+  std::vector<RandomizerRegion> areaPool = {RR_ROOT};
 
   if (mode == SearchMode::ValidateWorld) {
     mode = SearchMode::TimePassAccess;
-    AreaTable(ROOT)->childNight = true;
-    AreaTable(ROOT)->adultNight = true;
-    AreaTable(ROOT)->childDay = true;
-    AreaTable(ROOT)->adultDay = true;
+    AreaTable(RR_ROOT)->childNight = true;
+    AreaTable(RR_ROOT)->adultNight = true;
+    AreaTable(RR_ROOT)->childDay = true;
+    AreaTable(RR_ROOT)->adultDay = true;
     ctx->allLocationsReachable = false;
   }
 
@@ -302,7 +302,7 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
         Area* exitArea = exit.GetConnectedRegion();
         if (!exitArea->addedToPool && exit.ConditionsMet()) {
           exitArea->addedToPool = true;
-          areaPool.push_back(exit.Getuint32_t());
+          areaPool.push_back(exit.GetConnectedRegionKey());
         }
 
         // Add shuffled entrances to the entrance playthrough

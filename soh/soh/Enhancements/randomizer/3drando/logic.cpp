@@ -623,62 +623,62 @@ namespace Logic {
 
   }
 
-  bool SmallKeys(Key dungeon, uint8_t requiredAmount) {
+  bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount) {
     return SmallKeys(dungeon, requiredAmount, requiredAmount);
   }
 
-  bool SmallKeys(Key dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched) {
+  bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched) {
     switch (dungeon) {
-      case FOREST_TEMPLE:
+      case RR_FOREST_TEMPLE:
         /*if (IsGlitched && (GetDifficultyValueFromString(GlitchHookshotJump_Boots) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHoverBoost) >= static_cast<uint8_t>(GlitchDifficulty::NOVICE) ||
                           (GetDifficultyValueFromString(GlitchHover) >= static_cast<uint8_t>(GlitchDifficulty::NOVICE) && GetDifficultyValueFromString(GlitchISG) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE)))) {
           return ForestTempleKeys >= requiredAmountGlitched;
         }*/
         return ForestTempleKeys >= requiredAmountGlitchless;
 
-      case FIRE_TEMPLE:
+      case RR_FIRE_TEMPLE:
         /*if (IsGlitched && (GetDifficultyValueFromString(GlitchLedgeClip) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHover) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE))) {
           return FireTempleKeys >= requiredAmountGlitched;
         }*/
         return FireTempleKeys >= requiredAmountGlitchless;
 
-      case WATER_TEMPLE:
+      case RR_WATER_TEMPLE:
         /*if (IsGlitched && (false)) {
           return WaterTempleKeys >= requiredAmountGlitched;
         }*/
         return WaterTempleKeys >= requiredAmountGlitchless;
 
-      case SPIRIT_TEMPLE:
+      case RR_SPIRIT_TEMPLE:
         /*if (IsGlitched && (false)) {
           return SpiritTempleKeys >= requiredAmountGlitched;
         }*/
         return SpiritTempleKeys >= requiredAmountGlitchless;
 
-      case SHADOW_TEMPLE:
+      case RR_SHADOW_TEMPLE:
         /*if (IsGlitched && (GetDifficultyValueFromString(GlitchHookshotClip) >= static_cast<uint8_t>(GlitchDifficulty::NOVICE))) {
           return ShadowTempleKeys >= requiredAmountGlitched;
         }*/
         return ShadowTempleKeys >= requiredAmountGlitchless;
 
-      case BOTTOM_OF_THE_WELL:
+      case RR_BOTTOM_OF_THE_WELL:
         /*if (IsGlitched && (false)) {
           return BottomOfTheWellKeys >= requiredAmountGlitched;
         }*/
         return BottomOfTheWellKeys >= requiredAmountGlitchless;
 
-      case GERUDO_TRAINING_GROUNDS:
+      case RR_GERUDO_TRAINING_GROUNDS:
         /*if (IsGlitched && (false)) {
           return GerudoTrainingGroundsKeys >= requiredAmountGlitched;
         }*/
         return GerudoTrainingGroundsKeys >= requiredAmountGlitchless;
 
-      case GANONS_CASTLE:
+      case RR_GANONS_CASTLE:
         /*if (IsGlitched && (false)) {
           return GanonsCastleKeys >= requiredAmountGlitched;
         }*/
         return GanonsCastleKeys >= requiredAmountGlitchless;
 
-      case MARKET_TREASURE_CHEST_GAME:
+      case RR_MARKET_TREASURE_CHEST_GAME:
         /*if (IsGlitched && (false)) {
           return TreasureGameKeys >= requiredAmountGlitched;
         }*/

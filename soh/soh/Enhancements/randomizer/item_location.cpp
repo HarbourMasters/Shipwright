@@ -43,11 +43,11 @@ void ItemLocation::SaveDelayedItem () {
     delayedItem = RG_NONE;
 }
 
-void ItemLocation::SetParentRegion(uint32_t region) {
+void ItemLocation::SetParentRegion(RandomizerRegion region) {
     parentRegion = region;
 }
 
-uint32_t ItemLocation::GetParentRegionKey() const {
+RandomizerRegion ItemLocation::GetParentRegionKey() const {
     return parentRegion;
 }
 

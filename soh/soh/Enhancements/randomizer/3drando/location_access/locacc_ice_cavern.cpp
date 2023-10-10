@@ -10,24 +10,24 @@ void AreaTable_Init_IceCavern() {
   /*--------------------------
   |    VANILLA/MQ DECIDER    |
   ---------------------------*/
-  areaTable[ICE_CAVERN_ENTRYWAY] = Area("Ice Cavern Entryway", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_ICE_CAVERN_ENTRYWAY] = Area("Ice Cavern Entryway", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(ICE_CAVERN_BEGINNING,    {[]{return Dungeon::IceCavern.IsVanilla();}}),
-                  Entrance(ICE_CAVERN_MQ_BEGINNING, {[]{return Dungeon::IceCavern.IsMQ();}}),
-                  Entrance(ZORAS_FOUNTAIN,          {[]{return true;}}),
+                  Entrance(RR_ICE_CAVERN_BEGINNING,    {[]{return Dungeon::IceCavern.IsVanilla();}}),
+                  Entrance(RR_ICE_CAVERN_MQ_BEGINNING, {[]{return Dungeon::IceCavern.IsMQ();}}),
+                  Entrance(RR_ZORAS_FOUNTAIN,          {[]{return true;}}),
   });
 
   /*--------------------------
   |     VANILLA DUNGEON      |
   ---------------------------*/
   if (Dungeon::IceCavern.IsVanilla()) {
-  areaTable[ICE_CAVERN_BEGINNING] = Area("Ice Cavern Beginning", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_ICE_CAVERN_BEGINNING] = Area("Ice Cavern Beginning", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(ICE_CAVERN_ENTRYWAY, {[]{return true;}}),
-                  Entrance(ICE_CAVERN_MAIN,     {[]{return Here(ICE_CAVERN_BEGINNING, []{return IsAdult || HasExplosives || CanUse(DINS_FIRE);});}}),
+                  Entrance(RR_ICE_CAVERN_ENTRYWAY, {[]{return true;}}),
+                  Entrance(RR_ICE_CAVERN_MAIN,     {[]{return Here(RR_ICE_CAVERN_BEGINNING, []{return IsAdult || HasExplosives || CanUse(DINS_FIRE);});}}),
   });
 
-  areaTable[ICE_CAVERN_MAIN] = Area("Ice Cavern", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_ICE_CAVERN_MAIN] = Area("Ice Cavern", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&BlueFireAccess, {[]{return BlueFireAccess || (IsAdult && HasBottle);}}),
                 }, {
@@ -47,18 +47,18 @@ void AreaTable_Init_IceCavern() {
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
   if (Dungeon::IceCavern.IsMQ()) {
-  areaTable[ICE_CAVERN_MQ_BEGINNING] = Area("Ice Cavern MQ Beginning", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_ICE_CAVERN_MQ_BEGINNING] = Area("Ice Cavern MQ Beginning", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&FairyPot, {[]{return true;}}),
   }, {}, {
                   //Exits
-                  Entrance(ICE_CAVERN_ENTRYWAY,             {[]{return true;}}),
-                  Entrance(ICE_CAVERN_MQ_MAP_ROOM,          {[]{return IsAdult || CanUse(DINS_FIRE) || (HasExplosives && (CanUse(STICKS) || CanUse(SLINGSHOT) || KokiriSword));}}),
-                  Entrance(ICE_CAVERN_MQ_COMPASS_ROOM,      {[]{return IsAdult && BlueFire;}}),
-                  Entrance(ICE_CAVERN_MQ_IRON_BOOTS_REGION, {[]{return BlueFire;}}),
+                  Entrance(RR_ICE_CAVERN_ENTRYWAY,             {[]{return true;}}),
+                  Entrance(RR_ICE_CAVERN_MQ_MAP_ROOM,          {[]{return IsAdult || CanUse(DINS_FIRE) || (HasExplosives && (CanUse(STICKS) || CanUse(SLINGSHOT) || KokiriSword));}}),
+                  Entrance(RR_ICE_CAVERN_MQ_COMPASS_ROOM,      {[]{return IsAdult && BlueFire;}}),
+                  Entrance(RR_ICE_CAVERN_MQ_IRON_BOOTS_REGION, {[]{return BlueFire;}}),
   });
 
-  areaTable[ICE_CAVERN_MQ_MAP_ROOM] = Area("Ice Cavern MQ Map Room", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_ICE_CAVERN_MQ_MAP_ROOM] = Area("Ice Cavern MQ Map Room", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&BlueFireAccess,  {[]{return BlueFireAccess || HasBottle;}}),
   }, {
@@ -66,7 +66,7 @@ void AreaTable_Init_IceCavern() {
                   LocationAccess(RC_ICE_CAVERN_MQ_MAP_CHEST, {[]{return BlueFire && (IsAdult || CanUse(STICKS) || KokiriSword || CanUseProjectile);}}),
   }, {});
 
-  areaTable[ICE_CAVERN_MQ_IRON_BOOTS_REGION] = Area("Ice Cavern MQ Iron Boots Region", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_ICE_CAVERN_MQ_IRON_BOOTS_REGION] = Area("Ice Cavern MQ Iron Boots Region", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, {[]{return IsAdult;}}),
                   LocationAccess(RC_SHEIK_IN_ICE_CAVERN,            {[]{return IsAdult;}}),
@@ -75,7 +75,7 @@ void AreaTable_Init_IceCavern() {
                     //Tricks: (CanUse(SCARECROW) || (HoverBoots && CanUse(LONGSHOT)) || LogicIceMQScarecrow) && IsAdult
   }, {});
 
-  areaTable[ICE_CAVERN_MQ_COMPASS_ROOM] = Area("Ice Cavern MQ Compass Room", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_ICE_CAVERN_MQ_COMPASS_ROOM] = Area("Ice Cavern MQ Compass Room", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_ICE_CAVERN_MQ_COMPASS_CHEST,    {[]{return true;}}),
                   LocationAccess(RC_ICE_CAVERN_MQ_FREESTANDING_POH, {[]{return HasExplosives;}}),
