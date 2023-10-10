@@ -110,6 +110,7 @@ void ItemLocation::SetAsHinted() {
 RandomizerHintKey ItemLocation::GetHintKey() const {
     return hintedBy;
 }
+
 void ItemLocation::SetHintKey(RandomizerHintKey hintKey) {
     hintedBy = hintKey;
 } 

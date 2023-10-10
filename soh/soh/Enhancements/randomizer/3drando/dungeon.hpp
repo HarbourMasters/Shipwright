@@ -10,7 +10,7 @@
 namespace Dungeon {
 class DungeonInfo {
 public:
-  DungeonInfo(std::string name_, uint32_t hintKey_, RandomizerGet map_, RandomizerGet compass_, RandomizerGet smallKey_,
+  DungeonInfo(std::string name_, RandomizerHintTextKey hintKey_, RandomizerGet map_, RandomizerGet compass_, RandomizerGet smallKey_,
               RandomizerGet keyRing_, RandomizerGet bossKey_,
               uint8_t vanillaKeyCount_, uint8_t mqKeyCount_,
                 std::vector<RandomizerCheck> vanillaLocations_,
@@ -55,7 +55,7 @@ public:
         return (masterQuest) ? mqKeyCount : vanillaKeyCount;
     }
 
-    uint32_t GetHintKey() const;
+    RandomizerHintTextKey GetHintKey() const;
     RandomizerGet GetSmallKey() const;
     RandomizerGet GetKeyRing() const;
     RandomizerGet GetMap() const;
@@ -75,7 +75,7 @@ public:
 
 private:
     std::string name;
-    uint32_t hintKey;
+    RandomizerHintTextKey hintKey;
     RandomizerGet map;
     RandomizerGet compass;
     RandomizerGet smallKey;

@@ -1557,7 +1557,7 @@ void PlaceItemInLocation(uint32_t locKey, RandomizerGet item, bool applyEffectIm
     int index = TransformShopIndex(GetShopIndex(locKey));
     NonShopItems[index].Name = StaticData::RetrieveItem(item).GetName();
     NonShopItems[index].Repurchaseable = StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_REFILL ||
-                                         StaticData::RetrieveItem(item).GetHintKey() == RG_PROGRESSIVE_BOMBCHUS;
+                                         StaticData::RetrieveItem(item).GetHintKey() == RHT_PROGRESSIVE_BOMBCHUS;
   }
 
   loc->SetPlacedItem(item);

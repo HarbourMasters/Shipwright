@@ -7,7 +7,7 @@
 #include "z64item.h"
 
 RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
-                     bool* logicVar_, uint32_t hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
+                     bool* logicVar_, RandomizerHintTextKey hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
                      uint16_t textId_, uint16_t field_, int16_t chestAnimation_, GetItemCategory category_,
                      uint16_t modIndex_, bool progressive_, uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
@@ -16,7 +16,7 @@ RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, i
 }
 
 RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
-                     uint8_t* logicVar_, uint32_t hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
+                     uint8_t* logicVar_, RandomizerHintTextKey hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
                      uint16_t textId_, uint16_t field_, int16_t chestAnimation_, GetItemCategory category_,
                      uint16_t modIndex_, bool progressive_, uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
@@ -26,13 +26,13 @@ RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, i
 }
 
 RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
-                     bool* logicVar_, uint32_t hintKey_, bool progressive_, uint16_t price_)
+                     bool* logicVar_, RandomizerHintTextKey hintKey_, bool progressive_, uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
       advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
 }
 
 RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
-                     uint8_t* logicVar_, uint32_t hintKey_, bool progressive_, uint16_t price_)
+                     uint8_t* logicVar_, RandomizerHintTextKey hintKey_, bool progressive_, uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
       advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
 }
@@ -191,7 +191,7 @@ bool RandoItem::IsMajorItem() const {
     return IsAdvancement();
 }
 
-uint32_t RandoItem::GetHintKey() const {
+RandomizerHintTextKey RandoItem::GetHintKey() const {
     return hintKey;
 }
 

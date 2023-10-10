@@ -7,7 +7,7 @@
 
 namespace Dungeon {
 
-DungeonInfo::DungeonInfo(std::string name_, uint32_t hintKey_, RandomizerGet map_, RandomizerGet compass_,
+DungeonInfo::DungeonInfo(std::string name_, RandomizerHintTextKey hintKey_, RandomizerGet map_, RandomizerGet compass_,
                          RandomizerGet smallKey_, RandomizerGet keyRing_, RandomizerGet bossKey_,
                          uint8_t vanillaKeyCount_, uint8_t mqKeyCount_, std::vector<RandomizerCheck> vanillaLocations_,
                          std::vector<RandomizerCheck> mqLocations_, std::vector<RandomizerCheck> sharedLocations_,
@@ -20,99 +20,99 @@ DungeonInfo::DungeonInfo(std::string name_, uint32_t hintKey_, RandomizerGet map
 
 DungeonInfo::~DungeonInfo() = default;
 
-uint32_t DungeonInfo::GetHintKey() const {
-  return hintKey;
+RandomizerHintTextKey DungeonInfo::GetHintKey() const {
+    return hintKey;
 }
 
 RandomizerGet DungeonInfo::GetSmallKey() const {
-  return smallKey;
+    return smallKey;
 }
 
 RandomizerGet DungeonInfo::GetKeyRing() const {
-  return keyRing;
+    return keyRing;
 }
 
 RandomizerGet DungeonInfo::GetMap() const {
-  return map;
+    return map;
 }
 
 RandomizerGet DungeonInfo::GetCompass() const {
-  return compass;
+    return compass;
 }
 
 RandomizerGet DungeonInfo::GetBossKey() const {
-  return bossKey;
+    return bossKey;
 }
 
 void DungeonInfo::PlaceVanillaMap() {
-  if (map == RG_NONE) {
-    return;
-  }
+    if (map == RG_NONE) {
+        return;
+    }
 
-  auto dungeonLocations = GetDungeonLocations();
-  auto mapLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
-      return StaticData::Location(loc)->IsCategory(Category::cVanillaMap);
-  })[0];
-  Rando::Context::GetInstance()->PlaceItemInLocation(mapLocation, map);
+    auto dungeonLocations = GetDungeonLocations();
+    auto mapLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
+        return StaticData::Location(loc)->IsCategory(Category::cVanillaMap);
+    })[0];
+    Rando::Context::GetInstance()->PlaceItemInLocation(mapLocation, map);
 }
 
 void DungeonInfo::PlaceVanillaCompass() {
-  if (compass == RG_NONE) {
-    return;
-  }
+    if (compass == RG_NONE) {
+        return;
+    }
 
-  auto dungeonLocations = GetDungeonLocations();
-  auto compassLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
-      return StaticData::Location(loc)->IsCategory(Category::cVanillaCompass);
-  })[0];
-  Rando::Context::GetInstance()->PlaceItemInLocation(compassLocation, compass);
+    auto dungeonLocations = GetDungeonLocations();
+    auto compassLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
+        return StaticData::Location(loc)->IsCategory(Category::cVanillaCompass);
+    })[0];
+    Rando::Context::GetInstance()->PlaceItemInLocation(compassLocation, compass);
 }
 
 void DungeonInfo::PlaceVanillaBossKey() {
-  if (bossKey == RG_NONE || bossKey == RG_GANONS_CASTLE_BOSS_KEY) {
-    return;
-  }
+    if (bossKey == RG_NONE || bossKey == RG_GANONS_CASTLE_BOSS_KEY) {
+        return;
+    }
 
-  auto dungeonLocations = GetDungeonLocations();
-  auto bossKeyLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
-      return StaticData::Location(loc)->IsCategory(Category::cVanillaBossKey);
-  })[0];
-  Rando::Context::GetInstance()->PlaceItemInLocation(bossKeyLocation, bossKey);
+    auto dungeonLocations = GetDungeonLocations();
+    auto bossKeyLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
+        return StaticData::Location(loc)->IsCategory(Category::cVanillaBossKey);
+    })[0];
+    Rando::Context::GetInstance()->PlaceItemInLocation(bossKeyLocation, bossKey);
 }
 
 void DungeonInfo::PlaceVanillaSmallKeys() {
-  if (smallKey == RG_NONE) {
-    return;
-  }
+    if (smallKey == RG_NONE) {
+        return;
+    }
 
-  auto dungeonLocations = GetDungeonLocations();
-  auto smallKeyLocations = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
-      return StaticData::Location(loc)->IsCategory(Category::cVanillaSmallKey);
-  });
-  for (auto location : smallKeyLocations) {
-      Rando::Context::GetInstance()->PlaceItemInLocation(location, smallKey);
-  }
+    auto dungeonLocations = GetDungeonLocations();
+    auto smallKeyLocations = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
+        return StaticData::Location(loc)->IsCategory(Category::cVanillaSmallKey);
+    });
+    for (auto location : smallKeyLocations) {
+        Rando::Context::GetInstance()->PlaceItemInLocation(location, smallKey);
+    }
 }
 
-//Gets the chosen dungeon locations for a playthrough (so either MQ or Vanilla)
+// Gets the chosen dungeon locations for a playthrough (so either MQ or Vanilla)
 std::vector<RandomizerCheck> DungeonInfo::GetDungeonLocations() const {
-  auto locations = masterQuest ? mqLocations : vanillaLocations;
-  AddElementsToPool(locations, sharedLocations);
-  AddElementsToPool(locations, bossRoomLocations);
-  return locations;
+    auto locations = masterQuest ? mqLocations : vanillaLocations;
+    AddElementsToPool(locations, sharedLocations);
+    AddElementsToPool(locations, bossRoomLocations);
+    return locations;
 }
 
-//Gets all dungeon locations (MQ + Vanilla)
+// Gets all dungeon locations (MQ + Vanilla)
 std::vector<RandomizerCheck> DungeonInfo::GetEveryLocation() const {
-  auto locations = vanillaLocations;
-  AddElementsToPool(locations, mqLocations);
-  AddElementsToPool(locations, sharedLocations);
-  AddElementsToPool(locations, bossRoomLocations);
-  return locations;
+    auto locations = vanillaLocations;
+    AddElementsToPool(locations, mqLocations);
+    AddElementsToPool(locations, sharedLocations);
+    AddElementsToPool(locations, bossRoomLocations);
+    return locations;
 }
 
 DungeonInfo DekuTree =
-    DungeonInfo("Deku Tree", DEKU_TREE, RG_DEKU_TREE_MAP, RG_DEKU_TREE_COMPASS, RG_NONE, RG_NONE, RG_NONE, 0, 0,
+    DungeonInfo("Deku Tree", RHT_DEKU_TREE, RG_DEKU_TREE_MAP, RG_DEKU_TREE_COMPASS, RG_NONE, RG_NONE, RG_NONE, 0, 0,
                 {
                     // Vanilla Locations
                     RC_DEKU_TREE_MAP_CHEST,
@@ -148,7 +148,7 @@ DungeonInfo DekuTree =
                     RC_QUEEN_GOHMA,
                 });
 
-DungeonInfo DodongosCavern = DungeonInfo("Dodongo's Cavern", DODONGOS_CAVERN, RG_DODONGOS_CAVERN_MAP,
+DungeonInfo DodongosCavern = DungeonInfo("Dodongo's Cavern", RHT_DODONGOS_CAVERN, RG_DODONGOS_CAVERN_MAP,
                                          RG_DODONGOS_CAVERN_COMPASS, RG_NONE, RG_NONE, RG_NONE, 0, 0,
                                          {
                                              // Vanilla Locations
@@ -193,7 +193,7 @@ DungeonInfo DodongosCavern = DungeonInfo("Dodongo's Cavern", DODONGOS_CAVERN, RG
                                              RC_KING_DODONGO,
                                          });
 
-DungeonInfo JabuJabusBelly = DungeonInfo("Jabu Jabu's Belly", JABU_JABUS_BELLY, RG_JABU_JABUS_BELLY_MAP,
+DungeonInfo JabuJabusBelly = DungeonInfo("Jabu Jabu's Belly", RHT_JABU_JABUS_BELLY, RG_JABU_JABUS_BELLY_MAP,
                                          RG_JABU_JABUS_BELLY_COMPASS, RG_NONE, RG_NONE, RG_NONE, 0, 0,
                                          {
                                              // Vanilla Locations
@@ -233,7 +233,7 @@ DungeonInfo JabuJabusBelly = DungeonInfo("Jabu Jabu's Belly", JABU_JABUS_BELLY, 
                                          });
 
 DungeonInfo ForestTemple =
-    DungeonInfo("Forest Temple", FOREST_TEMPLE, RG_FOREST_TEMPLE_MAP, RG_FOREST_TEMPLE_COMPASS,
+    DungeonInfo("Forest Temple", RHT_FOREST_TEMPLE, RG_FOREST_TEMPLE_MAP, RG_FOREST_TEMPLE_COMPASS,
                 RG_FOREST_TEMPLE_SMALL_KEY, RG_FOREST_TEMPLE_KEY_RING, RG_FOREST_TEMPLE_BOSS_KEY, 5, 6,
                 {
                     // Vanilla Locations
@@ -283,7 +283,7 @@ DungeonInfo ForestTemple =
                     RC_PHANTOM_GANON,
                 });
 
-DungeonInfo FireTemple = DungeonInfo("Fire Temple", FIRE_TEMPLE, RG_FIRE_TEMPLE_MAP, RG_FIRE_TEMPLE_COMPASS,
+DungeonInfo FireTemple = DungeonInfo("Fire Temple", RHT_FIRE_TEMPLE, RG_FIRE_TEMPLE_MAP, RG_FIRE_TEMPLE_COMPASS,
                                      RG_FIRE_TEMPLE_SMALL_KEY, RG_FIRE_TEMPLE_KEY_RING, RG_FIRE_TEMPLE_BOSS_KEY, 8, 5,
                                      {
                                          // Vanilla Locations
@@ -335,8 +335,8 @@ DungeonInfo FireTemple = DungeonInfo("Fire Temple", FIRE_TEMPLE, RG_FIRE_TEMPLE_
                                      });
 
 DungeonInfo WaterTemple =
-    DungeonInfo("Water Temple", WATER_TEMPLE, RG_WATER_TEMPLE_MAP, RG_WATER_TEMPLE_COMPASS, RG_WATER_TEMPLE_SMALL_KEY,
-                RG_WATER_TEMPLE_KEY_RING, RG_WATER_TEMPLE_BOSS_KEY, 6, 2,
+    DungeonInfo("Water Temple", RHT_WATER_TEMPLE, RG_WATER_TEMPLE_MAP, RG_WATER_TEMPLE_COMPASS,
+                RG_WATER_TEMPLE_SMALL_KEY, RG_WATER_TEMPLE_KEY_RING, RG_WATER_TEMPLE_BOSS_KEY, 6, 2,
                 {
                     // Vanilla Locations
                     RC_WATER_TEMPLE_MAP_CHEST,
@@ -377,7 +377,7 @@ DungeonInfo WaterTemple =
                 });
 
 DungeonInfo SpiritTemple =
-    DungeonInfo("Spirit Temple", SPIRIT_TEMPLE, RG_SPIRIT_TEMPLE_MAP, RG_SPIRIT_TEMPLE_COMPASS,
+    DungeonInfo("Spirit Temple", RHT_SPIRIT_TEMPLE, RG_SPIRIT_TEMPLE_MAP, RG_SPIRIT_TEMPLE_COMPASS,
                 RG_SPIRIT_TEMPLE_SMALL_KEY, RG_SPIRIT_TEMPLE_KEY_RING, RG_SPIRIT_TEMPLE_BOSS_KEY, 5, 7,
                 {
                     // Vanilla Locations
@@ -444,7 +444,7 @@ DungeonInfo SpiritTemple =
                 });
 
 DungeonInfo ShadowTemple =
-    DungeonInfo("Shadow Temple", SHADOW_TEMPLE, RG_SHADOW_TEMPLE_MAP, RG_SHADOW_TEMPLE_COMPASS,
+    DungeonInfo("Shadow Temple", RHT_SHADOW_TEMPLE, RG_SHADOW_TEMPLE_MAP, RG_SHADOW_TEMPLE_COMPASS,
                 RG_SHADOW_TEMPLE_SMALL_KEY, RG_SHADOW_TEMPLE_KEY_RING, RG_SHADOW_TEMPLE_BOSS_KEY, 5, 6,
                 {
                     // Vanilla Locations
@@ -507,7 +507,7 @@ DungeonInfo ShadowTemple =
                 });
 
 DungeonInfo BottomOfTheWell =
-    DungeonInfo("Bottom of the Well", BOTTOM_OF_THE_WELL, RG_BOTTOM_OF_THE_WELL_MAP, RG_BOTTOM_OF_THE_WELL_COMPASS,
+    DungeonInfo("Bottom of the Well", RHT_BOTTOM_OF_THE_WELL, RG_BOTTOM_OF_THE_WELL_MAP, RG_BOTTOM_OF_THE_WELL_COMPASS,
                 RG_BOTTOM_OF_THE_WELL_SMALL_KEY, RG_BOTTOM_OF_THE_WELL_KEY_RING, RG_NONE, 3, 2,
                 {
                     // Vanilla Locations
@@ -543,7 +543,7 @@ DungeonInfo BottomOfTheWell =
                 {}, {});
 
 DungeonInfo IceCavern =
-    DungeonInfo("Ice Cavern", ICE_CAVERN, RG_ICE_CAVERN_MAP, RG_ICE_CAVERN_COMPASS, RG_NONE, RG_NONE, RG_NONE, 0, 0,
+    DungeonInfo("Ice Cavern", RHT_ICE_CAVERN, RG_ICE_CAVERN_MAP, RG_ICE_CAVERN_COMPASS, RG_NONE, RG_NONE, RG_NONE, 0, 0,
                 {
                     // Vanilla Locations
                     RC_ICE_CAVERN_MAP_CHEST,
@@ -571,7 +571,7 @@ DungeonInfo IceCavern =
                 {});
 
 DungeonInfo GerudoTrainingGrounds =
-    DungeonInfo("Gerudo Training Grounds", GERUDO_TRAINING_GROUNDS, RG_NONE, RG_NONE,
+    DungeonInfo("Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, RG_NONE, RG_NONE,
                 RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, RG_GERUDO_TRAINING_GROUNDS_KEY_RING, RG_NONE, 9, 3,
                 {
                     // Vanilla Locations
@@ -620,57 +620,58 @@ DungeonInfo GerudoTrainingGrounds =
                 },
                 {}, {});
 
-DungeonInfo GanonsCastle = DungeonInfo("Ganon's Castle", GANONS_CASTLE, RG_NONE, RG_NONE, RG_GANONS_CASTLE_SMALL_KEY,
-                                       RG_GANONS_CASTLE_KEY_RING, RG_GANONS_CASTLE_BOSS_KEY, 2, 3,
-                                       {
-                                           // Vanilla Locations
-                                           RC_GANONS_CASTLE_FOREST_TRIAL_CHEST,
-                                           RC_GANONS_CASTLE_WATER_TRIAL_LEFT_CHEST,
-                                           RC_GANONS_CASTLE_WATER_TRIAL_RIGHT_CHEST,
-                                           RC_GANONS_CASTLE_SHADOW_TRIAL_FRONT_CHEST,
-                                           RC_GANONS_CASTLE_SHADOW_TRIAL_GOLDEN_GAUNTLETS_CHEST,
-                                           RC_GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST,
-                                           RC_GANONS_CASTLE_SPIRIT_TRIAL_INVISIBLE_CHEST,
-                                           RC_GANONS_CASTLE_LIGHT_TRIAL_FIRST_LEFT_CHEST,
-                                           RC_GANONS_CASTLE_LIGHT_TRIAL_SECOND_LEFT_CHEST,
-                                           RC_GANONS_CASTLE_LIGHT_TRIAL_THIRD_LEFT_CHEST,
-                                           RC_GANONS_CASTLE_LIGHT_TRIAL_FIRST_RIGHT_CHEST,
-                                           RC_GANONS_CASTLE_LIGHT_TRIAL_SECOND_RIGHT_CHEST,
-                                           RC_GANONS_CASTLE_LIGHT_TRIAL_THIRD_RIGHT_CHEST,
-                                           RC_GANONS_CASTLE_LIGHT_TRIAL_INVISIBLE_ENEMIES_CHEST,
-                                           RC_GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST,
-                                           RC_GANONS_CASTLE_DEKU_SCRUB_LEFT,
-                                           RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT,
-                                           RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT,
-                                           RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT,
-                                       },
-                                       {
-                                           // MQ Locations
-                                           RC_GANONS_CASTLE_MQ_WATER_TRIAL_CHEST,
-                                           RC_GANONS_CASTLE_MQ_FOREST_TRIAL_EYE_SWITCH_CHEST,
-                                           RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FROZEN_EYE_SWITCH_CHEST,
-                                           RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_LULLABY_CHEST,
-                                           RC_GANONS_CASTLE_MQ_SHADOW_TRIAL_BOMB_FLOWER_CHEST,
-                                           RC_GANONS_CASTLE_MQ_SHADOW_TRIAL_EYE_SWITCH_CHEST,
-                                           RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_GOLDEN_GAUNTLETS_CHEST,
-                                           RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_RIGHT_CHEST,
-                                           RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_LEFT_CHEST,
-                                           RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_FRONT_LEFT_CHEST,
-                                           RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_FIRST_CHEST,
-                                           RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_INVISIBLE_CHEST,
-                                           RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FREESTANDING_KEY,
-                                           RC_GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT,
-                                           RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_LEFT,
-                                           RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER,
-                                           RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_RIGHT,
-                                           RC_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT,
-                                       },
-                                       {
-                                           // Shared Locations
-                                           RC_GANONS_TOWER_BOSS_KEY_CHEST,
-                                           RC_GANON,
-                                       },
-                                       {});
+DungeonInfo GanonsCastle =
+    DungeonInfo("Ganon's Castle", RHT_GANONS_CASTLE, RG_NONE, RG_NONE, RG_GANONS_CASTLE_SMALL_KEY,
+                RG_GANONS_CASTLE_KEY_RING, RG_GANONS_CASTLE_BOSS_KEY, 2, 3,
+                {
+                    // Vanilla Locations
+                    RC_GANONS_CASTLE_FOREST_TRIAL_CHEST,
+                    RC_GANONS_CASTLE_WATER_TRIAL_LEFT_CHEST,
+                    RC_GANONS_CASTLE_WATER_TRIAL_RIGHT_CHEST,
+                    RC_GANONS_CASTLE_SHADOW_TRIAL_FRONT_CHEST,
+                    RC_GANONS_CASTLE_SHADOW_TRIAL_GOLDEN_GAUNTLETS_CHEST,
+                    RC_GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST,
+                    RC_GANONS_CASTLE_SPIRIT_TRIAL_INVISIBLE_CHEST,
+                    RC_GANONS_CASTLE_LIGHT_TRIAL_FIRST_LEFT_CHEST,
+                    RC_GANONS_CASTLE_LIGHT_TRIAL_SECOND_LEFT_CHEST,
+                    RC_GANONS_CASTLE_LIGHT_TRIAL_THIRD_LEFT_CHEST,
+                    RC_GANONS_CASTLE_LIGHT_TRIAL_FIRST_RIGHT_CHEST,
+                    RC_GANONS_CASTLE_LIGHT_TRIAL_SECOND_RIGHT_CHEST,
+                    RC_GANONS_CASTLE_LIGHT_TRIAL_THIRD_RIGHT_CHEST,
+                    RC_GANONS_CASTLE_LIGHT_TRIAL_INVISIBLE_ENEMIES_CHEST,
+                    RC_GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST,
+                    RC_GANONS_CASTLE_DEKU_SCRUB_LEFT,
+                    RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT,
+                    RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT,
+                    RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT,
+                },
+                {
+                    // MQ Locations
+                    RC_GANONS_CASTLE_MQ_WATER_TRIAL_CHEST,
+                    RC_GANONS_CASTLE_MQ_FOREST_TRIAL_EYE_SWITCH_CHEST,
+                    RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FROZEN_EYE_SWITCH_CHEST,
+                    RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_LULLABY_CHEST,
+                    RC_GANONS_CASTLE_MQ_SHADOW_TRIAL_BOMB_FLOWER_CHEST,
+                    RC_GANONS_CASTLE_MQ_SHADOW_TRIAL_EYE_SWITCH_CHEST,
+                    RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_GOLDEN_GAUNTLETS_CHEST,
+                    RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_RIGHT_CHEST,
+                    RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_LEFT_CHEST,
+                    RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_FRONT_LEFT_CHEST,
+                    RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_FIRST_CHEST,
+                    RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_INVISIBLE_CHEST,
+                    RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FREESTANDING_KEY,
+                    RC_GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT,
+                    RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_LEFT,
+                    RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER,
+                    RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_RIGHT,
+                    RC_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT,
+                },
+                {
+                    // Shared Locations
+                    RC_GANONS_TOWER_BOSS_KEY_CHEST,
+                    RC_GANON,
+                },
+                {});
 
 const DungeonArray dungeonList = {
     &DekuTree,        &DodongosCavern, &JabuJabusBelly,        &ForestTemple,
@@ -678,4 +679,4 @@ const DungeonArray dungeonList = {
     &BottomOfTheWell, &IceCavern,      &GerudoTrainingGrounds, &GanonsCastle,
 };
 
-} //namespace Dungeon
+} // namespace Dungeon

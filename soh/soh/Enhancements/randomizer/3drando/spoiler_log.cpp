@@ -35,7 +35,7 @@
 using json = nlohmann::ordered_json;
 
 json jsonData;
-std::map<HintKey, Rando::ItemLocation*> hintedLocations;
+std::map<RandomizerHintTextKey, Rando::ItemLocation*> hintedLocations;
 
 extern std::unordered_map<HintType, std::string> hintTypeNames;
 extern std::array<std::string, 17> hintCategoryNames;
@@ -132,9 +132,9 @@ void WriteIngameSpoilerLog() {
         }
         // Gerudo Fortress
         else if ((Settings::GerudoFortress.Is(GERUDOFORTRESS_OPEN) &&
-                  (loc->IsCategory(Category::cVanillaGFSmallKey) || loc->GetHintKey() == GF_GERUDO_MEMBERSHIP_CARD)) ||
+                  (loc->IsCategory(Category::cVanillaGFSmallKey) || loc->GetHintKey() == RHT_GF_GERUDO_MEMBERSHIP_CARD)) ||
                  (Settings::GerudoFortress.Is(GERUDOFORTRESS_FAST) && loc->IsCategory(Category::cVanillaGFSmallKey) &&
-                  loc->GetHintKey() != GF_NORTH_F1_CARPENTER)) {
+                  loc->GetHintKey() != RHT_GF_NORTH_F1_CARPENTER)) {
             continue;
         }
 
@@ -193,7 +193,7 @@ void WriteIngameSpoilerLog() {
             }
             if (itemLocation->GetPlacedItem().GetItemType() == ITEMTYPE_REFILL ||
                 itemLocation->GetPlacedItem().GetItemType() == ITEMTYPE_SHOP ||
-                itemLocation->GetPlacedItem().GetHintKey() == PROGRESSIVE_BOMBCHUS) {
+                itemLocation->GetPlacedItem().GetHintKey() == RHT_PROGRESSIVE_BOMBCHUS) {
                 spoilerData.ItemLocations[spoilerItemIndex].CollectType = COLLECTTYPE_REPEATABLE;
             }
         }
@@ -823,7 +823,7 @@ static void WriteAllLocations(int language) {
                 location->GetPrice();
         }
         if (location->IsHintedAt()) {
-          //TODO: Hint Refactor hintedLocations.emplace(location->GetHintKey(), location);
+          hintedLocations.emplace(StaticData::Location(key)->GetHintKey(), location);
         }
 
         if (location->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
