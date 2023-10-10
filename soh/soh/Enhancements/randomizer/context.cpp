@@ -21,8 +21,14 @@ std::shared_ptr<Context> Context::GetInstance() {
     return mContext.lock();
 }
 
-void Context::AddHint(RandomizerHintKey hintId, Text text) {
-    hintTable[hintId] = RandoHint(text);
+RandoHint *Context::GetHint(RandomizerHintKey hintKey) {
+    return &hintTable[hintKey];
+}
+
+void Context::AddHint(RandomizerHintKey hintId, Text text, RandomizerCheck hintedLocation, HintType hintType,
+                      Text hintedRegion) {
+    hintTable[hintId] = RandoHint(text, hintedLocation, hintType, hintedRegion);
+    GetItemLocation(hintedLocation)->SetHintKey(hintId);
 }
 
 ItemLocation *Context::GetItemLocation(RandomizerCheck locKey) {
@@ -71,7 +77,7 @@ void Context::AddLocations(const Container& locations, std::vector<RandomizerChe
 void Context::GenerateLocationPool() {
     allLocations.clear();
     AddLocation(RC_LINKS_POCKET);
-    AddLocations(overworldLocations);
+    AddLocations(StaticData::overworldLocations);
 
     for (auto dungeon : Dungeon::dungeonList) {
         AddLocations(dungeon->GetDungeonLocations());

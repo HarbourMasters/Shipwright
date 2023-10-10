@@ -1332,6 +1332,7 @@ typedef enum {
 } RandomizerGet;
 
 typedef enum {
+    RH_NONE,
     RH_DMC_GOSSIP_STONE,
     RH_DMT_GOSSIP_STONE,
     RH_COLOSSUS_GOSSIP_STONE,

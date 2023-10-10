@@ -107,6 +107,13 @@ void ItemLocation::SetAsHinted() {
     hintedAt = true;
 }
 
+RandomizerHintKey ItemLocation::GetHintKey() const {
+    return hintedBy;
+}
+void ItemLocation::SetHintKey(RandomizerHintKey hintKey) {
+    hintedBy = hintKey;
+} 
+
 bool ItemLocation::IsHidden() const {
     return hidden;
 }
@@ -134,6 +141,7 @@ void ItemLocation::ResetVariables() {
     delayedItem = RG_NONE;
     isHintable = false;
     hintedAt = false;
+    hintedBy = RH_NONE;
     price = 0;
     hasShopsanityPrice = false;
     hasScrubsanityPrice = false;

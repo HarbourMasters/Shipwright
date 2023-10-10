@@ -21,7 +21,9 @@ class Context {
     public:
         static std::shared_ptr<Context> CreateInstance();
         static std::shared_ptr<Context> GetInstance();
-        void AddHint(RandomizerHintKey hintId, Text text);
+        RandoHint* GetHint(RandomizerHintKey hintKey);
+        void AddHint(RandomizerHintKey hintId, Text text, RandomizerCheck hintedLocation, HintType hintType,
+                     Text hintedRegion);
         ItemLocation *GetItemLocation(RandomizerCheck locKey);
         void PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bool applyEffectImmediately = false,
                                  bool setHidden = false);

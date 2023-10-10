@@ -193,7 +193,7 @@ private:
     HintCategory type;
 };
 
-using ConditionalAlwaysHint = std::pair<uint32_t, std::function<bool()>>;
+using ConditionalAlwaysHint = std::pair<RandomizerCheck, std::function<bool()>>;
 
 //10 dungeons as GTG and GC are excluded
 extern std::array<DungeonInfo, 10> dungeonInfoData;

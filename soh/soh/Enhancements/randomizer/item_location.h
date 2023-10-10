@@ -72,6 +72,8 @@ class ItemLocation {
     void SetAsHintable();
     bool IsHintedAt() const;
     void SetAsHinted();
+    RandomizerHintKey GetHintKey() const;
+    void SetHintKey(RandomizerHintKey hintKey);
     bool IsHidden() const;
     bool IsExcluded() const;
     void SetHidden(const bool hidden_);
@@ -79,6 +81,7 @@ class ItemLocation {
     void ResetVariables();
   private:
     RandomizerCheck rc;
+    RandomizerHintKey hintedBy;
     bool hintedAt = false;
     bool isHintable = false;
     bool addedToPool = false;

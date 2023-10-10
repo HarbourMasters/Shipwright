@@ -3193,18 +3193,18 @@ int32_t TokensRequiredBySettings() {
 }
 
 std::array<ConditionalAlwaysHint, 9> conditionalAlwaysHints = {
-    std::make_pair(MARKET_10_BIG_POES,
+    std::make_pair(RC_MARKET_10_BIG_POES,
                    []() {
                        return Settings::BigPoeTargetCount.Value<uint8_t>() >= 3;
                    }), // Remember, the option's value being 3 means 4 are required
-    std::make_pair(DEKU_THEATER_MASK_OF_TRUTH, []() { return !Settings::CompleteMaskQuest; }),
-    std::make_pair(SONG_FROM_OCARINA_OF_TIME, []() { return StonesRequiredBySettings() < 2; }),
-    std::make_pair(HF_OCARINA_OF_TIME_ITEM, []() { return StonesRequiredBySettings() < 2; }),
-    std::make_pair(SHEIK_IN_KAKARIKO, []() { return MedallionsRequiredBySettings() < 5; }),
-    std::make_pair(DMT_TRADE_CLAIM_CHECK, []() { return false; }),
-    std::make_pair(KAK_30_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 30; }),
-    std::make_pair(KAK_40_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 40; }),
-    std::make_pair(KAK_50_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 50; })
+    std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH, []() { return !Settings::CompleteMaskQuest; }),
+    std::make_pair(RC_SONG_FROM_OCARINA_OF_TIME, []() { return StonesRequiredBySettings() < 2; }),
+    std::make_pair(RC_HF_OCARINA_OF_TIME_ITEM, []() { return StonesRequiredBySettings() < 2; }),
+    std::make_pair(RC_SHEIK_IN_KAKARIKO, []() { return MedallionsRequiredBySettings() < 5; }),
+    std::make_pair(RC_DMT_TRADE_CLAIM_CHECK, []() { return false; }),
+    std::make_pair(RC_KAK_30_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 30; }),
+    std::make_pair(RC_KAK_40_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 40; }),
+    std::make_pair(RC_KAK_50_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 50; })
 };
 
 const HintText& Hint(const uint32_t hintKey) {

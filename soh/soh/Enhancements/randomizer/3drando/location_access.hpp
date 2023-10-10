@@ -100,7 +100,7 @@ public:
         return location;
     }
 
-private:
+protected:
     RandomizerCheck location;
     std::vector<ConditionFn> conditions_met;
 
