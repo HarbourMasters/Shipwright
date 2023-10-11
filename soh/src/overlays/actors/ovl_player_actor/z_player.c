@@ -12695,8 +12695,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         equipItem = giEntry.itemId;
         equipNow = CVarGetInteger("gAskToEquip", 0) && giEntry.modIndex == MOD_NONE &&
                     equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_TUNIC_ZORA &&
-                   ((gItemAgeReqs[equipItem] == 9 || gItemAgeReqs[equipItem] == gSaveContext.linkAge) ||
-                    CVarGetInteger("gTimelessEquipment", 0));
+                    CHECK_ITEM_AGE(equipItem);
 
         Message_StartTextbox(play, giEntry.textId, &this->actor);
         // RANDOTODO: Macro this boolean check.

@@ -293,9 +293,13 @@ extern GraphicsContext* __gfxCtx;
 // #endregion
 
 // #region SOH [Enhancements]
-#define CHECK_EQUIPMENT_AGE(i, j) (CVarGetInteger("gTimelessEquipment", 0) || (gEquipAgeReqs[i][j] == 9) || (gEquipAgeReqs[i][j] == ((void)0, gSaveContext.linkAge)))
-#define CHECK_SLOT_AGE(slotIndex) (CVarGetInteger("gTimelessEquipment", 0) || (gSlotAgeReqs[slotIndex] == 9) || gSlotAgeReqs[slotIndex] == ((void)0, gSaveContext.linkAge))
-#define CHECK_ITEM_AGE(itemIndex) (CVarGetInteger("gTimelessEquipment", 0) || (gItemAgeReqs[itemIndex] == 9) || (gItemAgeReqs[itemIndex] == gSaveContext.linkAge))
+#define AGE_REQ_ADULT LINK_AGE_ADULT
+#define AGE_REQ_CHILD LINK_AGE_CHILD
+#define AGE_REQ_NONE 9
+
+#define CHECK_EQUIPMENT_AGE(i, j) (CVarGetInteger("gTimelessEquipment", 0) || (gEquipAgeReqs[i][j] == AGE_REQ_NONE) || (gEquipAgeReqs[i][j] == ((void)0, gSaveContext.linkAge)))
+#define CHECK_SLOT_AGE(slotIndex) (CVarGetInteger("gTimelessEquipment", 0) || (gSlotAgeReqs[slotIndex] == AGE_REQ_NONE) || gSlotAgeReqs[slotIndex] == ((void)0, gSaveContext.linkAge))
+#define CHECK_ITEM_AGE(itemIndex) (CVarGetInteger("gTimelessEquipment", 0) || (gItemAgeReqs[itemIndex] == AGE_REQ_NONE) || (gItemAgeReqs[itemIndex] == gSaveContext.linkAge))
 
 #define DPAD_ITEM(button) ((gSaveContext.buttonStatus[(button) + 5] != BTN_DISABLED) \
                                 ? gSaveContext.equips.buttonItems[(button) + 4]       \

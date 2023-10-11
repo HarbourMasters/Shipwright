@@ -654,12 +654,12 @@ void Play_Init(GameState* thisx) {
     Fault_AddClient(&D_801614B8, ZeldaArena_Display, NULL, NULL);
     // In order to keep bunny hood equipped on first load, we need to pre-set the age reqs for the item and slot
     if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA || CVarGetInteger("gTimelessEquipment", 0)) {
-        gItemAgeReqs[ITEM_MASK_BUNNY] = 9;
+        gItemAgeReqs[ITEM_MASK_BUNNY] = AGE_REQ_NONE;
         if(INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
-            gSlotAgeReqs[SLOT_TRADE_CHILD] = 9;
+            gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_NONE;
     }
     else {
-        gItemAgeReqs[ITEM_MASK_BUNNY] = gSlotAgeReqs[SLOT_TRADE_CHILD] = 1;
+        gItemAgeReqs[ITEM_MASK_BUNNY] = gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_CHILD;
     }
     func_800304DC(play, &play->actorCtx, play->linkActorEntry);
 

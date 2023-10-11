@@ -540,8 +540,8 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                         gSlotAgeReqs[SLOT_TRADE_CHILD] = gItemAgeReqs[ITEM_MASK_BUNNY] =
                             ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA || CVarGetInteger("gTimelessEquipment", 0)) &&
                              INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
-                                ? 9
-                                : 1;
+                                ? AGE_REQ_NONE
+                                : AGE_REQ_CHILD;
                     }
                     if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
                         cursorSlot == SLOT_TRADE_ADULT && CHECK_BTN_ALL(input->press.button, BTN_A)) {
