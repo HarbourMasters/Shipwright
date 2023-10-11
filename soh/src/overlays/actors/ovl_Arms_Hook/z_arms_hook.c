@@ -341,7 +341,7 @@ void ArmsHook_Draw(Actor* thisx, PlayState* play) {
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         // Use an alternate set of DLs. 
         // Hookshot tips are seperate between ages because they can't be properly scaled.
-        if (CVarGetInteger("gAltLinkEquip", 0)) {
+        if (CVarGetInteger("gAltLinkEquip", 1)) { // Use alternate asset loading behavior.
             gSPDisplayList(POLY_OPA_DISP++, sHookshotTipDLs[gSaveContext.linkAge]);
         } else { // Use vanilla behavior.
             gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHookshotTipDL);
@@ -355,7 +355,7 @@ void ArmsHook_Draw(Actor* thisx, PlayState* play) {
         Matrix_Scale(0.015f, 0.015f, sqrtf(SQ(sp78.y) + sp58) * 0.01f, MTXMODE_APPLY);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        if (CVarGetInteger("gAltLinkEquip", 0)) {
+        if (CVarGetInteger("gAltLinkEquip", 1)) { // Use alternate asset loading behavior.
             gSPDisplayList(POLY_OPA_DISP++, sHookshotChainDLs[gSaveContext.linkAge]);
         } else { // Use vanilla behavior.
             gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHookshotChainDL);

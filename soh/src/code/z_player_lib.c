@@ -409,6 +409,7 @@ void Player_SetBootData(PlayState* play, Player* this) {
     }
 }
 
+// Alternative Equipment Loading - "Normal Child Hylian Shield" enhancement check.
 s32 Player_IsChildWithHylianShield(Player* this) {
     if (CVarGetInteger("gNormalChildHylianShield", 0)) {
         return false;
@@ -422,19 +423,23 @@ uint8_t Player_IsCustomLinkModel() {
            (LINK_IS_CHILD && ResourceGetIsCustomByName(gLinkChildSkel));
 }
 
-// Beginning of Alternative Equipment Loading function block.
+// Beginning of Alternative Equipment Loading "CanUse" function block.
 
 // Alternate Equipment Loading function.
 // AltEquip TODO 
-// What is even the point of this? Did it do something else once? 
-// I need to keep studying the commit history.
+// It seems as though this is a placeholder function, replaced by the below ones.
+// If there's no code using it, then it might be okay to just get rid of this.
 uint8_t Player_CanUseNewLoadingMethod(Player* this) {
     return false;
 }
 
 // Alternate Equipment Loading function.
 // Checks if player can use new loading method, for the left hand.
-uint8_t Player_CanUseNewLoadingMethodLeftHand(Player * this) {
+uint8_t Player_CanUseNewLoadingMethodLeftHand(Player* this) {
+    if (!CVarGetInteger("gAltLinkEquip", 1)) {
+        return false;
+    }
+
     switch (this->leftHandType) {
         case 2: // Unused, but a safe measure
         case 3:
@@ -469,8 +474,7 @@ uint8_t Player_CanUseNewLoadingMethodLeftHand(Player * this) {
             }
             break;
         case 7:
-            if (ResourceGetIsCustomByName(gLinkBottleDL)) 
-            {
+            if (ResourceGetIsCustomByName(gLinkBottleDL)) {
                 return true;
             }
             break;
@@ -485,6 +489,10 @@ uint8_t Player_CanUseNewLoadingMethodLeftHand(Player * this) {
 // Alternate Equipment Loading function.
 // Checks if player can use new loading method, for the right hand.
 uint8_t Player_CanUseNewLoadingMethodRightHand(Player* this) {
+    if (!CVarGetInteger("gAltLinkEquip", 1)) {
+        return false;
+    }
+
     switch (this->rightHandType) {
         case 10:
             if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU) {
@@ -492,14 +500,11 @@ uint8_t Player_CanUseNewLoadingMethodRightHand(Player* this) {
                     return true;
                 }
             } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-                       !Player_IsChildWithHylianShield(
-                           this)) 
-            {
+                       !Player_IsChildWithHylianShield(this)) {
                 if (ResourceGetIsCustomByName(gLinkHylianShieldDL)) {
                     return true;
                 }
-            } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) 
-            {
+            } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
                 if (ResourceGetIsCustomByName(gLinkMirrorShieldDL)) {
                     return true;
                 }
@@ -516,7 +521,7 @@ uint8_t Player_CanUseNewLoadingMethodRightHand(Player* this) {
                 }
             }
             break;
-        case 15: //literally all of these need a check at the same time, otherwise things will crash
+        case 15: // literally all of these need a check at the same time, otherwise things will crash
             if (ResourceGetIsCustomByName(gLinkHookshotDL) && ResourceGetIsCustomByName(gLinkHookshotChainDL) &&
                 ResourceGetIsCustomByName(gLinkHookshotTipDL) && ResourceGetIsCustomByName(gLinkHookshotSmallChainDL) &&
                 ResourceGetIsCustomByName(gLinkHookshotSmallTipDL)) {
@@ -542,37 +547,44 @@ uint8_t Player_CanUseNewLoadingMethodRightHand(Player* this) {
 // Alternate Equipment Loading function.
 // Checks if pause screen player model can use new loading method, for the left hand.
 uint8_t Player_CanUseNewLoadingMethodLeftHandPause(Player* this) {
-            switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
-                case PLAYER_SWORD_KOKIRI:
-                    if (ResourceGetIsCustomByName(gLinkKokiriSwordDL)) {
-                        return true;
-                    }
-                    break;
-                case PLAYER_SWORD_MASTER:
-                    if (ResourceGetIsCustomByName(gLinkMasterSwordDL)) {
-                        return true;
-                    }
-                    break;
-                case PLAYER_SWORD_BIGGORON:
-                    if (ResourceGetIsCustomByName(gLinkBrokenLongswordDL)) {
-                        return true;
-                    } else if (ResourceGetIsCustomByName(gLinkLongswordDL)) {
-                        return true;
-                    }
-                    break;
+    if (!CVarGetInteger("gAltLinkEquip", 1)) {
+        return false;
+    }
+
+    switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
+        case PLAYER_SWORD_KOKIRI:
+            if (ResourceGetIsCustomByName(gLinkKokiriSwordDL)) {
+                return true;
             }
+            break;
+        case PLAYER_SWORD_MASTER:
+            if (ResourceGetIsCustomByName(gLinkMasterSwordDL)) {
+                return true;
+            }
+            break;
+        case PLAYER_SWORD_BIGGORON:
+            if (ResourceGetIsCustomByName(gLinkBrokenLongswordDL)) {
+                return true;
+            } else if (ResourceGetIsCustomByName(gLinkLongswordDL)) {
+                return true;
+            }
+            break;
+    }
     return false;
 }
 
 // Alternate Equipment Loading function.
 // Checks if pause screen player model can use new loading method, for the right hand.
 uint8_t Player_CanUseNewLoadingMethodRightHandPause(Player* this) {
+    if (!CVarGetInteger("gAltLinkEquip", 1)) {
+        return false;
+    }
+
     if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU) {
         if (ResourceGetIsCustomByName(gLinkDekuShieldDL)) {
             return true;
         }
-    } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-                !Player_IsChildWithHylianShield(this)) {
+    } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) && !Player_IsChildWithHylianShield(this)) {
         if (ResourceGetIsCustomByName(gLinkHylianShieldDL)) {
             return true;
         }
@@ -587,6 +599,10 @@ uint8_t Player_CanUseNewLoadingMethodRightHandPause(Player* this) {
 // Alternate Equipment Loading function.
 // Checks if player can use new loading method, for the first person view.
 uint8_t Player_CanUseNewLoadingMethodFirstPerson(Player* this) {
+    if (!CVarGetInteger("gAltLinkEquip", 1)) {
+        return false;
+    }
+
     switch (this->rightHandType) {
         case 11:
             if (this->itemAction == PLAYER_IA_SLINGSHOT) {
@@ -601,8 +617,9 @@ uint8_t Player_CanUseNewLoadingMethodFirstPerson(Player* this) {
             break;
         case 15: // literally all of these need a check at the same time, otherwise things will crash
             if (!(ResourceGetIsCustomByName(gLinkHookshotDL) && ResourceGetIsCustomByName(gLinkHookshotChainDL) &&
-                ResourceGetIsCustomByName(gLinkHookshotTipDL) && ResourceGetIsCustomByName(gLinkHookshotSmallChainDL) &&
-                ResourceGetIsCustomByName(gLinkHookshotSmallTipDL))) {
+                  ResourceGetIsCustomByName(gLinkHookshotTipDL) &&
+                  ResourceGetIsCustomByName(gLinkHookshotSmallChainDL) &&
+                  ResourceGetIsCustomByName(gLinkHookshotSmallTipDL))) {
                 return false;
             }
             break;
@@ -623,6 +640,10 @@ uint8_t Player_CanUseNewLoadingMethodFirstPerson(Player* this) {
 // Alternate Equipment Loading function.
 // Checks if player can use new loading method,
 uint8_t Player_CanUseNewLoadingMethodSheathSword(Player* this) {
+    if (!CVarGetInteger("gAltLinkEquip", 1)) {
+        return false;
+    }
+
     switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
         case PLAYER_SWORD_KOKIRI:
             if (!(ResourceGetIsCustomByName(gLinkKokiriSwordSheathDL) &&
@@ -648,6 +669,10 @@ uint8_t Player_CanUseNewLoadingMethodSheathSword(Player* this) {
 // Alternate Equipment Loading function.
 // Checks if player can use new loading method,
 uint8_t Player_CanUseNewLoadingMethodSheathShield(Player* this) {
+    if (!CVarGetInteger("gAltLinkEquip", 1)) {
+        return false;
+    }
+
     switch (CUR_EQUIP_VALUE(EQUIP_SHIELD)) {
         case PLAYER_SHIELD_DEKU:
             if (!ResourceGetIsCustomByName(gLinkDekuShieldOnBackDL)) {
@@ -716,7 +741,11 @@ void Player_SetModelsForHoldingShield(Player* this) {
             // 
             // > More of a question here to help my understanding; does this mean that the alt DList always going to be used? 
             // > if so, is that the intention and why is it required instead of using a Player_CanUseNewLoadingMethod?
-            this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
+            // this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
+            this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
+            if (CVarGetInteger("gAltLinkEquip", 1)) {
+                this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
+            }
             this->modelAnimType = 2;
             this->itemAction = -1;
         }
@@ -743,7 +772,12 @@ void Player_SetModels(Player* this, s32 modelGroup) {
 
     // Sheath
     this->sheathType = gPlayerModelTypes[modelGroup][3];
-    this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
+    // AltEquip TODO: This is another instance of the confusing intent of sPlayerDListGroupsAlt flagged by inspect.
+    // this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
+    this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
+    if (CVarGetInteger("gAltLinkEquip", 1)) {
+        this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
+    }
 
     // Waist
     this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
@@ -2302,6 +2336,8 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
+    // AltEquip TODO: Could this change be made in a way that's easier to read and more distinctly separated from
+    // vanilla behavior?
     if (limbIndex == PLAYER_LIMB_L_HAND) {
         if (Player_CanUseNewLoadingMethodLeftHandPause(this)) {
             // kokiri sword
@@ -2363,22 +2399,22 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
         }
         // Child Hylian Shield on Back
         else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-            (!CVarGetInteger("gNormalChildHylianShield", 0) && LINK_IS_CHILD)) {
+                 (!CVarGetInteger("gNormalChildHylianShield", 0) && LINK_IS_CHILD)) {
             Player_DrawChildItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
                                            ? gLinkHylianShieldOnChildBackDL
                                            : gLinkChildHylianShieldAndSheathNearDL);
         }
         // Adult Hylian Shield on Back
         else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON) &&
-            (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-            (CVarGetInteger("gNormalChildHylianShield", 0) || LINK_IS_ADULT)) {
+                 (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
+                 (CVarGetInteger("gNormalChildHylianShield", 0) || LINK_IS_ADULT)) {
             Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
                                            ? gLinkHylianShieldOnBackDL
                                            : gLinkAdultHylianShieldAndSheathNearDL);
         }
         // Mirror Shield on Back
         else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON) &&
-            (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
+                 (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
             Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
                                            ? gLinkMirrorShieldOnBackDL
                                            : gLinkAdultMirrorShieldAndSheathNearDL);
@@ -2459,11 +2495,18 @@ s32 Player_OverrideLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         return 0;
     }
 
-    dLists = &sPlayerDListGroupsAlt[type][gSaveContext.linkAge];
-    if (limbIndex == PLAYER_LIMB_L_HAND && !Player_CanUseNewLoadingMethodLeftHandPause(this))
+    if (!CVarGetInteger("gAltLinkEquip", 1)) { // Use vanilla behavior
         dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
-    if (limbIndex == PLAYER_LIMB_R_HAND && !Player_CanUseNewLoadingMethodRightHandPause(this))
-        dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
+    } else { // Use alternate asset loading behavior
+        dLists = &sPlayerDListGroupsAlt[type][gSaveContext.linkAge];
+        if (limbIndex == PLAYER_LIMB_L_HAND && !Player_CanUseNewLoadingMethodLeftHandPause(this)) {
+            dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
+        }
+        if (limbIndex == PLAYER_LIMB_R_HAND && !Player_CanUseNewLoadingMethodRightHandPause(this)) {
+            dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
+        }
+        // AltEquip TODO: This is a somewhat confusing and messy way of doing this.
+    }
 
     *dList = dLists[dListOffset];
 
