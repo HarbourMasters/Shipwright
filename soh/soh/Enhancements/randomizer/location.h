@@ -12,7 +12,6 @@
 #include "z64scene.h"
 
 namespace Rando {
-typedef enum { RCQUEST_VANILLA, RCQUEST_MQ, RCQUEST_BOTH } RandomizerCheckQuest;
 class SpoilerCollectionCheck {
   public:
     SpoilerCollectionCheckType type = SpoilerCollectionCheckType::SPOILER_CHK_NONE;
@@ -124,6 +123,10 @@ class Location {
     RandomizerCheck GetRandomizerCheck() const;
     SpoilerCollectionCheck GetCollectionCheck() const;
     SpoilerCollectionCheckGroup GetCollectionCheckGroup() const;
+    RandomizerCheckQuest GetQuest() const;
+    RandomizerCheckArea GetArea() const;
+    ActorID GetActorID() const;
+    int32_t GetActorParams() const;
     SceneID GetScene() const;
     uint8_t GetFlag() const;
     RandomizerHintTextKey GetHintKey() const;

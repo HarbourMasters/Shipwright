@@ -13,6 +13,22 @@ SpoilerCollectionCheckGroup Rando::Location::GetCollectionCheckGroup() const {
     return collectionCheckGroup;
 }
 
+RandomizerCheckQuest Rando::Location::GetQuest() const {
+    return quest;
+}
+
+RandomizerCheckArea Rando::Location::GetArea() const {
+    return area;
+}
+
+ActorID Rando::Location::GetActorID() const {
+    return actorId;
+}
+
+int32_t Rando::Location::GetActorParams() const {
+    return actorParams;
+}
+
 SceneID Rando::Location::GetScene() const {
     return (SceneID)scene;
 }
@@ -47,8 +63,9 @@ bool Rando::Location::IsCategory(Category category) const {
 
 bool Rando::Location::IsDungeon() const {
     return (locationType != LocationType::GSToken &&
-            (scene < SCENE_GANON_SONOGO || (scene > SCENE_TAKARAYA && scene < SCENE_GANON_FINAL))) ||
-           (locationType == LocationType::GSToken && scene < SCENE_GANON);
+            (scene < SCENE_GANONS_TOWER_COLLAPSE_INTERIOR ||
+             (scene > SCENE_TREASURE_BOX_SHOP && scene < SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR))) ||
+           (locationType == LocationType::GSToken && scene < SCENE_GANONS_TOWER);
 }
 
 bool Rando::Location::IsOverworld() const {
@@ -56,7 +73,7 @@ bool Rando::Location::IsOverworld() const {
 }
 
 bool Rando::Location::IsShop() const {
-    return (scene >= SCENE_SHOP1 && scene <= SCENE_NIGHT_SHOP);
+    return (scene >= SCENE_BAZAAR && scene <= SCENE_BOMBCHU_SHOP);
 }
 
 uint32_t Rando::Location::Getuint32_t() const {
