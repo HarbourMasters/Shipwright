@@ -426,7 +426,7 @@ uint8_t Player_IsCustomLinkModel() {
 // Beginning of Alternative Equipment Loading "CanUse" function block.
 
 // Alternate Equipment Loading function.
-// AltEquip TODO 
+// AltEquip TODO
 // It seems as though this is a placeholder function, replaced by the below ones.
 // If there's no code using it, then it might be okay to just get rid of this.
 uint8_t Player_CanUseNewLoadingMethod(Player* this) {
@@ -1839,7 +1839,7 @@ Vec3f sLeftRightFootLimbModelFootPos[] = {
 void Player_DrawChildItem(PlayState* play, Gfx* dlist) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    //rescale child items for adult, otherwise clipping occurs
+    // rescale child items for adult, otherwise clipping occurs
     if (LINK_IS_ADULT) {
         Matrix_Scale(1.35f, 1.35f, 1.35f, MTXMODE_APPLY);
     }
@@ -1908,8 +1908,6 @@ void Player_DrawOcarinaItem(PlayState* play, Gfx* dlist) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-// Vanilla OoT function. 
-// Labeling this as such to distinguish it from a similar function added by Alternate Equipment Loading.
 void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
@@ -1923,16 +1921,17 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
         Math_Vec3f_Copy(&this->leftHandPos, D_80160000);
 
+        // Alternate Equipment Loading
         if (Player_CanUseNewLoadingMethodLeftHand(this) && this->actor.id != 51) {
+            // AltEquip TODO: Comment from @inspectredc's code review of HarbourMasters/Shipwright#3008
+            //
+            // > If this part is unused, I feel as though it should either break or not be included?
+            // >
+            // > Would also be preferable for this section to have enums for describing the leftHandType cases, 
+            // > as the magic numbers don't make it clear what exactly is going on
             switch (this->leftHandType) {
                 case 2: // Unused, but a safe measure
-                    // AltEquip TODO: Comment from @inspectredc's code review of HarbourMasters/Shipwright#3008
-                    // 
-                    // > If this part is unused, I feel as though it should either break or not be included?
-                    // > 
-                    // > Would also be preferable for this section to have enums for describing the leftHandType cases,
-                    // > as the magic numbers don't make it clear what exactly is going on
-                case 3: 
+                case 3:
                     switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
                         case PLAYER_SWORD_KOKIRI:
                             Player_DrawChildItem(play, gLinkKokiriSwordDL);
@@ -1946,8 +1945,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                     if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON) {
                         if (gSaveContext.swordHealth <= 0.0f) {
                             Player_DrawAdultItem(play, gLinkBrokenLongswordDL);
-                        }
-                        else {
+                        } else {
                             Player_DrawAdultItem(play, gLinkLongswordDL);
                         }
                     }
@@ -2014,6 +2012,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             func_800906D4(play, this, spE4);
         }
 
+
         if ((*dList != NULL) && (this->leftHandType == 7)) {
             Color_RGB8* bottleColor = &sBottleColors[Player_ActionToBottle(this, this->itemAction)];
 
@@ -2030,8 +2029,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             if (Player_CanUseNewLoadingMethodLeftHand(this)) {
                 gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gLinkBottleDL);
-            }
-            else {
+            } else {
                 gSPDisplayList(POLY_XLU_DISP++, sBottleDLists[(gSaveContext.linkAge)]);
             }
             CLOSE_DISPS(play->state.gfxCtx);
@@ -2040,11 +2038,16 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         if (this->actor.scale.y >= 0.0f) {
             if (!Player_HoldsHookshot(this) && ((hookedActor = this->heldActor) != NULL)) {
                 if (this->stateFlags1 & 0x200) {
-                    if (LINK_IS_CHILD && CVarGetInteger("gBowSlingShotAmmoFix", 0) &&
-                        this->itemAction != PLAYER_IA_SLINGSHOT)
-                        Matrix_MultVec3f(&sChildLeftHandArrowVec3, &hookedActor->world.pos);
-                    else
+                    if (!CVarGetInteger("gAltLinkEquip", 1)) { // use vanilla behavior.
                         Matrix_MultVec3f(&sLeftHandArrowVec3, &hookedActor->world.pos);
+                    } else { // use alternative asset loading behavior
+                        if (LINK_IS_CHILD && CVarGetInteger("gBowSlingShotAmmoFix", 0) &&
+                            this->itemAction != PLAYER_IA_SLINGSHOT) {
+                            Matrix_MultVec3f(&sChildLeftHandArrowVec3, &hookedActor->world.pos);
+                        } else {
+                            Matrix_MultVec3f(&sLeftHandArrowVec3, &hookedActor->world.pos);
+                        }
+                    }
                     Matrix_RotateZYX(0x69E8, -0x5708, 0x458E, MTXMODE_APPLY);
                     Matrix_Get(&sp14C);
                     Matrix_MtxFToYXZRotS(&sp14C, &hookedActor->world.rot, 0);
@@ -2066,29 +2069,44 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 Matrix_MtxFToYXZRotS(&this->mf_9E0, &this->unk_3BC, 0);
             }
         }
-    } 
-    else if (limbIndex == PLAYER_LIMB_R_HAND) {
+    } else if (limbIndex == PLAYER_LIMB_R_HAND) {
         Actor* heldActor = this->heldActor;
-        Vec3f projectedHeadPos;
 
-        SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &this->actor.focus.pos, &projectedHeadPos);
+        if (CVarGetInteger("gAltLinkEquip", 1)) {
+            Vec3f projectedHeadPos;
+            SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &this->actor.focus.pos, &projectedHeadPos);
 
-        if (Player_CanUseNewLoadingMethodRightHand(this) && this->actor.id != 51) {
-            switch (this->rightHandType) {
-                case 10:
-                    if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU) {
-                        Player_DrawChildItem(play, gLinkDekuShieldDL);
-                    } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-                               !Player_IsChildWithHylianShield(this)) { //I don't think this check is needed, but I'm playing it safe
-                        Player_DrawAdultItem(play, gLinkHylianShieldDL);
-                    } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
-                        Player_DrawAdultItem(play, gLinkMirrorShieldDL);
-                    }
-                    break;
-                case 11:
-                    if (this->itemAction == PLAYER_IA_SLINGSHOT) {
-                        if (projectedHeadPos.z < -4.0f && this->unk_6AD != 0) {
-                            if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
+            if (Player_CanUseNewLoadingMethodRightHand(this) && this->actor.id != 51) {
+                switch (this->rightHandType) {
+                    case 10:
+                        if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU) {
+                            Player_DrawChildItem(play, gLinkDekuShieldDL);
+                        } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
+                                   !Player_IsChildWithHylianShield(
+                                       this)) { // I don't think this check is needed, but I'm playing it safe
+                            Player_DrawAdultItem(play, gLinkHylianShieldDL);
+                        } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
+                            Player_DrawAdultItem(play, gLinkMirrorShieldDL);
+                        }
+                        break;
+                    case 11:
+                        if (this->itemAction == PLAYER_IA_SLINGSHOT) {
+                            if (projectedHeadPos.z < -4.0f && this->unk_6AD != 0) {
+                                if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
+                                    OPEN_DISPS(play->state.gfxCtx);
+
+                                    // rescale child items for adult, otherwise clipping occurs
+                                    if (LINK_IS_ADULT) {
+                                        Matrix_Scale(1.35f, 1.35f, 1.35f, MTXMODE_APPLY);
+                                    }
+
+                                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                                    gSPDisplayList(POLY_OPA_DISP++, gLinkSlingshotDL);
+
+                                    CLOSE_DISPS(play->state.gfxCtx);
+                                }
+                            } else {
                                 OPEN_DISPS(play->state.gfxCtx);
 
                                 // rescale child items for adult, otherwise clipping occurs
@@ -2103,46 +2121,33 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                                 CLOSE_DISPS(play->state.gfxCtx);
                             }
                         } else {
-                            OPEN_DISPS(play->state.gfxCtx);
-
-                            // rescale child items for adult, otherwise clipping occurs
-                            if (LINK_IS_ADULT) {
-                                Matrix_Scale(1.35f, 1.35f, 1.35f, MTXMODE_APPLY);
-                            }
-
-                            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                            gSPDisplayList(POLY_OPA_DISP++, gLinkSlingshotDL);
-
-                            CLOSE_DISPS(play->state.gfxCtx);
-                        }
-                    } else {
-                        if (projectedHeadPos.z < 0.0f && this->unk_6AD != 0) {
-                            if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
+                            if (projectedHeadPos.z < 0.0f && this->unk_6AD != 0) {
+                                if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
+                                    Player_DrawRightHandItem(play, gLinkBowDL);
+                                }
+                            } else {
                                 Player_DrawRightHandItem(play, gLinkBowDL);
                             }
-                        } else {
-                            Player_DrawRightHandItem(play, gLinkBowDL);
                         }
-                    }
-                    break;
-                case 15:
-                    if (projectedHeadPos.z < 0.0f && this->unk_6AD != 0) {
-                        if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
+                        break;
+                    case 15:
+                        if (projectedHeadPos.z < 0.0f && this->unk_6AD != 0) {
+                            if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
+                                Player_DrawRightHandItem(play, gLinkHookshotDL);
+                            }
+                        } else {
                             Player_DrawRightHandItem(play, gLinkHookshotDL);
                         }
-                    } else {
-                        Player_DrawRightHandItem(play, gLinkHookshotDL);
-                    }
-                    break;
-            }
-            //Ocarinas check to see if the item is being used instead of rightHandType.
-            //Otherwise, cutscenes for learning Ocarina songs don't work properly.
-            if (this->itemAction == PLAYER_IA_OCARINA_FAIRY) {
-                Player_DrawOcarinaItem(play, gLinkFairyOcarinaDL);
-            }
-            if (this->itemAction == PLAYER_IA_OCARINA_OF_TIME) {
-                Player_DrawOcarinaItem(play, gLinkOcarinaOfTimeDL);
+                        break;
+                }
+                // Ocarinas check to see if the item is being used instead of rightHandType.
+                // Otherwise, cutscenes for learning Ocarina songs don't work properly.
+                if (this->itemAction == PLAYER_IA_OCARINA_FAIRY) {
+                    Player_DrawOcarinaItem(play, gLinkFairyOcarinaDL);
+                }
+                if (this->itemAction == PLAYER_IA_OCARINA_OF_TIME) {
+                    Player_DrawOcarinaItem(play, gLinkOcarinaOfTimeDL);
+                }
             }
         }
         if (this->rightHandType == 0xFF) {
@@ -2253,8 +2258,9 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         }
     } else if (this->actor.scale.y >= 0.0f) {
         if (limbIndex == PLAYER_LIMB_SHEATH) {
-            if (!(this->stateFlags2 & PLAYER_STATE2_CRAWLING && this->actor.projectedPos.z < 0.0f) &&
-                this->actor.id != 51) { // Don't render these if the player's crawling, or if it's actually dark link.
+            if (CVarGetInteger("gAltLinkEquip", 1) &&
+                (!(this->stateFlags2 & PLAYER_STATE2_CRAWLING && this->actor.projectedPos.z < 0.0f) &&
+                 this->actor.id != 51)) { // Don't render these if the player's crawling, or if it's actually dark link.
                 switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
                     case PLAYER_SWORD_KOKIRI:
                         Player_DrawChildItem(play, Player_CanUseNewLoadingMethodSheathSword(this)
@@ -2336,8 +2342,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
-    // AltEquip TODO: Could this change be made in a way that's easier to read and more distinctly separated from
-    // vanilla behavior?
+    // AltEquip TODO: Could this whole function be done in a way that's easier to read?
     if (limbIndex == PLAYER_LIMB_L_HAND) {
         if (Player_CanUseNewLoadingMethodLeftHandPause(this)) {
             // kokiri sword
@@ -2455,7 +2460,6 @@ s32 Player_OverrideLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Ve
     s32 dListOffset = 0;
     Gfx** dLists;
     size_t ptrSize = sizeof(uint32_t);
-    Player* this = GET_PLAYER(play);
 
     if ((modelGroup == 2) && !LINK_IS_ADULT && (ptr[1] == 2)) {
         modelGroup = 1;
@@ -2498,11 +2502,12 @@ s32 Player_OverrideLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Ve
     if (!CVarGetInteger("gAltLinkEquip", 1)) { // Use vanilla behavior
         dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
     } else { // Use alternate asset loading behavior
+        Player* thisplayer = GET_PLAYER(play);
         dLists = &sPlayerDListGroupsAlt[type][gSaveContext.linkAge];
-        if (limbIndex == PLAYER_LIMB_L_HAND && !Player_CanUseNewLoadingMethodLeftHandPause(this)) {
+        if (limbIndex == PLAYER_LIMB_L_HAND && !Player_CanUseNewLoadingMethodLeftHandPause(thisplayer)) {
             dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
         }
-        if (limbIndex == PLAYER_LIMB_R_HAND && !Player_CanUseNewLoadingMethodRightHandPause(this)) {
+        if (limbIndex == PLAYER_LIMB_R_HAND && !Player_CanUseNewLoadingMethodRightHandPause(thisplayer)) {
             dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
         }
         // AltEquip TODO: This is a somewhat confusing and messy way of doing this.
@@ -2594,8 +2599,13 @@ void Player_DrawPauseImpl(PlayState* play, void* seg04, void* seg06, SkelAnime* 
 
     gSPSegment(POLY_OPA_DISP++, 0x0C, gCullBackDList);
 
-    Player_DrawImpl(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
-                    Player_OverrideLimbDrawPause, Player_PostLimbDrawPause, &sp12C);
+    if (!CVarGetInteger("gAltLinkEquip", 1)) { // Use vanilla behavior
+        Player_DrawImpl(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
+                        Player_OverrideLimbDrawPause, NULL, &sp12C);
+    } else { // Use alternative asset loading behavior
+        Player_DrawImpl(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
+                        Player_OverrideLimbDrawPause, Player_PostLimbDrawPause, &sp12C);
+    }
 
      if (CVarGetInteger("gPauseTriforce", 0)) {
 
@@ -2664,7 +2674,8 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
             EquipedStance = 1;
         } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 0) {
             EquipedStance = 2;
-        } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 2 && LINK_AGE_IN_YEARS == YEARS_CHILD && !(CVarGetInteger("gNormalChildHylianShield", 0))) {
+        } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 2 && LINK_AGE_IN_YEARS == YEARS_CHILD &&
+                   !(CVarGetInteger("gNormalChildHylianShield", 0))) {
             EquipedStance = 3;
         } else {
             // Link is idle so revert to 0
@@ -2834,7 +2845,10 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
     } else {
 
         if (!LINK_IS_ADULT) {
-            if (shield == PLAYER_SHIELD_DEKU || shield == PLAYER_SHIELD_MIRROR || (shield == PLAYER_SHIELD_HYLIAN && CVarGetInteger("gNormalChildHylianShield", 0))) {
+            if (shield == PLAYER_SHIELD_DEKU ||
+                (CVarGetInteger("gAltLinkEquip", 1) && shield == PLAYER_SHIELD_MIRROR) ||
+                (CVarGetInteger("gAltLinkEquip", 1) &&
+                 (shield == PLAYER_SHIELD_HYLIAN && CVarGetInteger("gNormalChildHylianShield", 0)))) {
                 srcTable = gLinkPauseChildDekuShieldJointTable;
             } else {
                 srcTable = gLinkPauseChildJointTable;
