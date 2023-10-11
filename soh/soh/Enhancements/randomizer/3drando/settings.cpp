@@ -7,7 +7,6 @@
 #include "random.hpp"
 #include "randomizer.hpp"
 #include "trial.hpp"
-#include "keys.hpp"
 
 using namespace Dungeon;
 using namespace Trial;

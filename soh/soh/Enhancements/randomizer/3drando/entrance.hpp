@@ -1,6 +1,5 @@
 #pragma once
 
-#include "keys.hpp"
 #include "location_access.hpp"
 
 #include <string>
@@ -127,7 +126,7 @@ public:
         age = true;
 
         Logic::UpdateHelpers();
-        return GetConditionsMet() && (connectedRegion != NONE || passAnyway);
+        return GetConditionsMet() && (connectedRegion != RR_NONE || passAnyway);
     }
 
     RandomizerRegion GetConnectedRegionKey() const {

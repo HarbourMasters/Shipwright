@@ -1,6 +1,5 @@
 #pragma once
 
-#include "keys.hpp"
 #include "../randomizerTypes.h"
 #include <cstdint>
 
@@ -362,7 +361,7 @@ enum class GlitchDifficulty {
 
 void UpdateHelpers();
 bool CanPlay(bool song);
-bool CanUse(uint32_t itemName);
+bool CanUse(RandomizerGet itemName);
 bool HasProjectile(HasProjectileAge age);
 bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
 bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);

@@ -8,7 +8,7 @@ using namespace Settings;
 void AreaTable_Init_HyruleField() {
   areaTable[RR_HYRULE_FIELD] = Area("Hyrule Field", "Hyrule Field", RHT_HYRULE_FIELD, DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&BigPoeKill, {[]{return CanUse(BOW) && CanRideEpona && HasBottle;}}),
+                  EventAccess(&BigPoeKill, {[]{return CanUse(RG_BOW) && CanRideEpona && HasBottle;}}),
                 }, {
                   //Locations
                   LocationAccess(RC_HF_OCARINA_OF_TIME_ITEM,   {[]{return IsChild && HasAllStones;}}),
@@ -25,7 +25,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(RR_HF_SOUTHEAST_GROTTO,    {[]{return Here(RR_HYRULE_FIELD, []{return CanBlastOrSmash;});}}),
                   Entrance(RR_HF_OPEN_GROTTO,         {[]{return true;}}),
                   Entrance(RR_HF_INSIDE_FENCE_GROTTO, {[]{return CanOpenBombGrotto;}}),
-                  Entrance(RR_HF_COW_GROTTO,          {[]{return (CanUse(MEGATON_HAMMER) || IsChild) && CanOpenBombGrotto;}}),
+                  Entrance(RR_HF_COW_GROTTO,          {[]{return (CanUse(RG_MEGATON_HAMMER) || IsChild) && CanOpenBombGrotto;}}),
                   Entrance(RR_HF_NEAR_MARKET_GROTTO,  {[]{return Here(RR_HYRULE_FIELD, []{return CanBlastOrSmash;});}}),
                   Entrance(RR_HF_FAIRY_GROTTO,        {[]{return Here(RR_HYRULE_FIELD, []{return CanBlastOrSmash;});}}),
                   Entrance(RR_HF_NEAR_KAK_GROTTO,     {[]{return CanOpenBombGrotto;}}),
@@ -95,7 +95,7 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_HF_TEKTITE_GROTTO] = Area("HF Tektite Grotto", "HF Tektite Grotto", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_HF_TEKTITE_GROTTO_FREESTANDING_POH, {[]{return ProgressiveScale >= 2 || CanUse(IRON_BOOTS);}}),
+                  LocationAccess(RC_HF_TEKTITE_GROTTO_FREESTANDING_POH, {[]{return ProgressiveScale >= 2 || CanUse(RG_IRON_BOOTS);}}),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
@@ -105,30 +105,30 @@ void AreaTable_Init_HyruleField() {
                   //Events
                   EventAccess(&GossipStoneFairy, {[]{return GossipStoneFairy || CanSummonGossipFairy;}}),
                   EventAccess(&BeanPlantFairy,   {[]{return BeanPlantFairy   || (CanPlantBean(RR_LAKE_HYLIA) && CanPlay(SongOfStorms));}}),
-                  EventAccess(&ButterflyFairy,   {[]{return ButterflyFairy   || CanUse(STICKS);}}),
+                  EventAccess(&ButterflyFairy,   {[]{return ButterflyFairy   || CanUse(RG_STICKS);}}),
                   EventAccess(&BugShrub,         {[]{return BugShrub         || (IsChild && CanCutShrubs);}}),
                   EventAccess(&ChildScarecrow,   {[]{return ChildScarecrow   || (IsChild && Ocarina);}}),
                   EventAccess(&AdultScarecrow,   {[]{return AdultScarecrow   || (IsAdult && Ocarina);}}),
                 }, {
                   //Locations
                   LocationAccess(RC_LH_UNDERWATER_ITEM,        {[]{return IsChild && CanDive;}}),
-                  LocationAccess(RC_LH_SUN,                    {[]{return IsAdult && WaterTempleClear && CanUse(BOW);}}),
-                  LocationAccess(RC_LH_FREESTANDING_POH,       {[]{return IsAdult && (CanUse(SCARECROW) || CanPlantBean(RR_LAKE_HYLIA));}}),
+                  LocationAccess(RC_LH_SUN,                    {[]{return IsAdult && WaterTempleClear && CanUse(RG_BOW);}}),
+                  LocationAccess(RC_LH_FREESTANDING_POH,       {[]{return IsAdult && (CanUse(RG_SCARECROW) || CanPlantBean(RR_LAKE_HYLIA));}}),
                   LocationAccess(RC_LH_GS_BEAN_PATCH,          {[]{return CanPlantBugs && CanChildAttack;}}),
-                  LocationAccess(RC_LH_GS_LAB_WALL,            {[]{return IsChild && (HookshotOrBoomerang || (LogicLabWallGS && (Sticks || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)))) && AtNight && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_LH_GS_LAB_WALL,            {[]{return IsChild && (HookshotOrBoomerang || (LogicLabWallGS && (Sticks || KokiriSword || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)))) && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(RC_LH_GS_SMALL_ISLAND,        {[]{return IsChild && CanChildAttack && AtNight && CanGetNightTimeGS;}}),
-                  LocationAccess(RC_LH_GS_TREE,                {[]{return IsAdult && CanUse(LONGSHOT) && AtNight && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_LH_GS_TREE,                {[]{return IsAdult && CanUse(RG_LONGSHOT) && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(RC_LH_LAB_GOSSIP_STONE,       {[]{return true;}}),
                   LocationAccess(RC_LH_SOUTHEAST_GOSSIP_STONE, {[]{return true;}}),
                   LocationAccess(RC_LH_SOUTHWEST_GOSSIP_STONE, {[]{return true;}}),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD,          {[]{return true;}}),
-                  Entrance(RR_ZORAS_DOMAIN,          {[]{return IsChild && (CanDive || CanUse(IRON_BOOTS));}}),
+                  Entrance(RR_ZORAS_DOMAIN,          {[]{return IsChild && (CanDive || CanUse(RG_IRON_BOOTS));}}),
                   Entrance(RR_LH_OWL_FLIGHT,         {[]{return IsChild;}}),
-                  Entrance(RR_LH_FISHING_ISLAND,     {[]{return IsChild || CanUse(SCARECROW) || CanPlantBean(RR_LAKE_HYLIA) || WaterTempleClear;}}),
+                  Entrance(RR_LH_FISHING_ISLAND,     {[]{return IsChild || CanUse(RG_SCARECROW) || CanPlantBean(RR_LAKE_HYLIA) || WaterTempleClear;}}),
                   Entrance(RR_LH_LAB,                {[]{return true;}}),
-                  Entrance(RR_WATER_TEMPLE_ENTRYWAY, {[]{return CanUse(HOOKSHOT) && ((CanUse(IRON_BOOTS) || (LogicWaterHookshotEntry && ProgressiveScale >= 2)) || (IsAdult && CanUse(LONGSHOT) && ProgressiveScale >= 2));}}),
+                  Entrance(RR_WATER_TEMPLE_ENTRYWAY, {[]{return CanUse(RG_HOOKSHOT) && ((CanUse(RG_IRON_BOOTS) || (LogicWaterHookshotEntry && ProgressiveScale >= 2)) || (IsAdult && CanUse(RG_LONGSHOT) && ProgressiveScale >= 2));}}),
                   Entrance(RR_LH_GROTTO,             {[]{return true;}}),
   });
 
@@ -148,9 +148,9 @@ void AreaTable_Init_HyruleField() {
                   EventAccess(&EyedropsAccess, {[]{return EyedropsAccess || (IsAdult && (EyeballFrogAccess || (EyeballFrog && DisableTradeRevert)));}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_LH_LAB_DIVE,     {[]{return ProgressiveScale >= 2 || (LogicLabDiving && CanUse(IRON_BOOTS) && CanUse(HOOKSHOT));}}),
+                  LocationAccess(RC_LH_LAB_DIVE,     {[]{return ProgressiveScale >= 2 || (LogicLabDiving && CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT));}}),
                   LocationAccess(RC_LH_TRADE_FROG,   {[]{return IsAdult && EyeballFrog;}}),
-                  LocationAccess(RC_LH_GS_LAB_CRATE, {[]{return CanUse(IRON_BOOTS) && CanUse(HOOKSHOT);}}),
+                  LocationAccess(RC_LH_GS_LAB_CRATE, {[]{return CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT);}}),
                 }, {
                   //Exits
                   Entrance(RR_LAKE_HYLIA, {[]{return true;}}),

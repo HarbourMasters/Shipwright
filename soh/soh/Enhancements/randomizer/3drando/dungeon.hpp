@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "keys.hpp"
 #include "../randomizerTypes.h"
 
 namespace Dungeon {

@@ -19,7 +19,7 @@ using namespace Settings;
 //generic grotto event list
 std::vector<EventAccess> grottoEvents = {
   EventAccess(&GossipStoneFairy, {[]{return GossipStoneFairy || CanSummonGossipFairy;}}),
-  EventAccess(&ButterflyFairy,   {[]{return ButterflyFairy   || (CanUse(STICKS));}}),
+  EventAccess(&ButterflyFairy,   {[]{return ButterflyFairy   || (CanUse(RG_STICKS));}}),
   EventAccess(&BugShrub,         {[]{return CanCutShrubs;}}),
   EventAccess(&LoneFish,         {[]{return true;}}),
 };

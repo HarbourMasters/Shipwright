@@ -19,7 +19,7 @@ void AreaTable_Init_ZorasDomain() {
                   //Events
                   EventAccess(&GossipStoneFairy, {[]{return GossipStoneFairy || CanSummonGossipFairy;}}),
                   EventAccess(&BeanPlantFairy,   {[]{return BeanPlantFairy   || (CanPlantBean(RR_ZORAS_RIVER) && CanPlay(SongOfStorms));}}),
-                  EventAccess(&ButterflyFairy,   {[]{return ButterflyFairy   || CanUse(STICKS);}}),
+                  EventAccess(&ButterflyFairy,   {[]{return ButterflyFairy   || CanUse(RG_STICKS);}}),
                   EventAccess(&BugShrub,         {[]{return BugShrub         || CanCutShrubs;}}),
                 }, {
                   //Locations
@@ -31,11 +31,11 @@ void AreaTable_Init_ZorasDomain() {
                   LocationAccess(RC_ZR_FROGS_SARIAS_SONG,                 {[]{return IsChild && CanPlay(SariasSong);}}),
                   LocationAccess(RC_ZR_FROGS_SUNS_SONG,                   {[]{return IsChild && CanPlay(SunsSong);}}),
                   LocationAccess(RC_ZR_FROGS_SONG_OF_TIME,                {[]{return IsChild && CanPlay(SongOfTime);}}),
-                  LocationAccess(RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH, {[]{return IsChild || CanUse(HOVER_BOOTS) || (IsAdult && LogicZoraRiverLower);}}),
-                  LocationAccess(RC_ZR_NEAR_DOMAIN_FREESTANDING_POH,      {[]{return IsChild || CanUse(HOVER_BOOTS) || (IsAdult && LogicZoraRiverUpper);}}),
+                  LocationAccess(RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH, {[]{return IsChild || CanUse(RG_HOVER_BOOTS) || (IsAdult && LogicZoraRiverLower);}}),
+                  LocationAccess(RC_ZR_NEAR_DOMAIN_FREESTANDING_POH,      {[]{return IsChild || CanUse(RG_HOVER_BOOTS) || (IsAdult && LogicZoraRiverUpper);}}),
                   LocationAccess(RC_ZR_GS_LADDER,                         {[]{return IsChild && AtNight && CanChildAttack && CanGetNightTimeGS;}}),
                   LocationAccess(RC_ZR_GS_NEAR_RAISED_GROTTOS,            {[]{return IsAdult && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
-                  LocationAccess(RC_ZR_GS_ABOVE_BRIDGE,                   {[]{return IsAdult && CanUse(HOOKSHOT) && AtNight && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_ZR_GS_ABOVE_BRIDGE,                   {[]{return IsAdult && CanUse(RG_HOOKSHOT) && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,         {[]{return true;}}),
                   LocationAccess(RC_ZR_NEAR_DOMAIN_GOSSIP_STONE,          {[]{return true;}}),
                 }, {
@@ -43,9 +43,9 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(RR_ZR_FRONT,            {[]{return true;}}),
                   Entrance(RR_ZR_OPEN_GROTTO,      {[]{return true;}}),
                   Entrance(RR_ZR_FAIRY_GROTTO,     {[]{return Here(RR_ZORAS_RIVER, []{return CanBlastOrSmash;});}}),
-                  Entrance(RR_THE_LOST_WOODS,      {[]{return CanDive || CanUse(IRON_BOOTS);}}),
+                  Entrance(RR_THE_LOST_WOODS,      {[]{return CanDive || CanUse(RG_IRON_BOOTS);}}),
                   Entrance(RR_ZR_STORMS_GROTTO,    {[]{return CanOpenStormGrotto;}}),
-                  Entrance(RR_ZR_BEHIND_WATERFALL, {[]{return CanPlay(ZeldasLullaby) || (IsChild && LogicZoraWithCucco) || (IsAdult && CanUse(HOVER_BOOTS) && LogicZoraWithHovers);}}),
+                  Entrance(RR_ZR_BEHIND_WATERFALL, {[]{return CanPlay(ZeldasLullaby) || (IsChild && LogicZoraWithCucco) || (IsAdult && CanUse(RG_HOVER_BOOTS) && LogicZoraWithHovers);}}),
   });
 
   areaTable[RR_ZR_BEHIND_WATERFALL] = Area("ZR Behind Waterfall", "Zora River", RHT_NONE, DAY_NIGHT_CYCLE, {}, {}, {
@@ -92,15 +92,15 @@ void AreaTable_Init_ZorasDomain() {
                 }, {
                   //Locations
                   LocationAccess(RC_ZD_DIVING_MINIGAME,     {[]{return IsChild;}}),
-                  LocationAccess(RC_ZD_CHEST,               {[]{return IsChild && CanUse(STICKS);}}),
+                  LocationAccess(RC_ZD_CHEST,               {[]{return IsChild && CanUse(RG_STICKS);}}),
                   LocationAccess(RC_ZD_KING_ZORA_THAWED,    {[]{return KingZoraThawed;}}),
                   LocationAccess(RC_ZD_TRADE_PRESCRIPTION,  {[]{return KingZoraThawed && Prescription;}}),
-                  LocationAccess(RC_ZD_GS_FROZEN_WATERFALL, {[]{return IsAdult && AtNight && (HookshotOrBoomerang || CanUse(SLINGSHOT) || Bow || MagicMeter || LogicDomainGS) && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_ZD_GS_FROZEN_WATERFALL, {[]{return IsAdult && AtNight && (HookshotOrBoomerang || CanUse(RG_SLINGSHOT) || Bow || MagicMeter || LogicDomainGS) && CanGetNightTimeGS;}}),
                   LocationAccess(RC_ZD_GOSSIP_STONE,        {[]{return true;}}),
                 }, {
                   //Exits
                   Entrance(RR_ZR_BEHIND_WATERFALL, {[]{return true;}}),
-                  Entrance(RR_LAKE_HYLIA,          {[]{return IsChild && (CanDive || CanUse(IRON_BOOTS));}}),
+                  Entrance(RR_LAKE_HYLIA,          {[]{return IsChild && (CanDive || CanUse(RG_IRON_BOOTS));}}),
                   Entrance(RR_ZD_BEHIND_KING_ZORA, {[]{return DeliverLetter || ZorasFountain.Is(ZORASFOUNTAIN_OPEN) || (ZorasFountain.Is(ZORASFOUNTAIN_ADULT) && IsAdult) || (LogicKingZoraSkip && IsAdult);}}),
                   Entrance(RR_ZD_SHOP,             {[]{return IsChild || BlueFire;}}),
                   Entrance(RR_ZD_STORMS_GROTTO,    {[]{return CanOpenStormGrotto;}}),
@@ -138,14 +138,14 @@ void AreaTable_Init_ZorasDomain() {
   areaTable[RR_ZORAS_FOUNTAIN] = Area("Zoras Fountain", "Zoras Fountain", RHT_ZORAS_FOUNTAIN, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&GossipStoneFairy, {[]{return GossipStoneFairy || CanSummonGossipFairyWithoutSuns;}}),
-                  EventAccess(&ButterflyFairy,   {[]{return ButterflyFairy   || (CanUse(STICKS) && AtDay);}}),
+                  EventAccess(&ButterflyFairy,   {[]{return ButterflyFairy   || (CanUse(RG_STICKS) && AtDay);}}),
                 }, {
                   //Locations
                   LocationAccess(RC_ZF_ICEBERC_FREESTANDING_POH, {[]{return IsAdult;}}),
                   LocationAccess(RC_ZF_BOTTOM_FREESTANDING_POH,  {[]{return IsAdult && IronBoots && WaterTimer >= 24;}}),
                   LocationAccess(RC_ZF_GS_TREE,                  {[]{return IsChild;}}),
                   LocationAccess(RC_ZF_GS_ABOVE_THE_LOG,         {[]{return IsChild && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
-                  LocationAccess(RC_ZF_GS_HIDDEN_CAVE,           {[]{return CanUse(SILVER_GAUNTLETS) && CanBlastOrSmash && HookshotOrBoomerang && IsAdult && AtNight && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_ZF_GS_HIDDEN_CAVE,           {[]{return CanUse(RG_SILVER_GAUNTLETS) && CanBlastOrSmash && HookshotOrBoomerang && IsAdult && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(RC_FAIRY_GOSSIP_STONE,       {[]{return true;}}),
                   LocationAccess(RC_JABU_GOSSIP_STONE,        {[]{return true;}}),
                 }, {

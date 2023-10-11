@@ -23,21 +23,21 @@ void AreaTable_Init_GerudoTrainingGrounds() {
   if (Dungeon::GerudoTrainingGrounds.IsVanilla()) {
   areaTable[RR_GERUDO_TRAINING_GROUNDS_LOBBY] = Area("Gerudo Training Grounds Lobby", "Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST,  {[]{return CanUse(BOW) || CanUse(SLINGSHOT);}}),
-                  LocationAccess(RC_GERUDO_TRAINING_GROUND_LOBBY_RIGHT_CHEST, {[]{return CanUse(BOW) || CanUse(SLINGSHOT);}}),
+                  LocationAccess(RC_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST,  {[]{return CanUse(RG_BOW) || CanUse(RG_SLINGSHOT);}}),
+                  LocationAccess(RC_GERUDO_TRAINING_GROUND_LOBBY_RIGHT_CHEST, {[]{return CanUse(RG_BOW) || CanUse(RG_SLINGSHOT);}}),
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_STALFOS_CHEST,     {[]{return IsAdult || KokiriSword;}}),
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_BEAMOS_CHEST,      {[]{return HasExplosives && (IsAdult || KokiriSword);}}),
                 }, {
                   //Exits
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_ENTRYWAY,         {[]{return true;}}),
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_ROOM, {[]{return (IsAdult || KokiriSword) && (CanUse(HOOKSHOT) || LogicGtgWithoutHookshot);}}),
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_ROOM, {[]{return (IsAdult || KokiriSword) && (CanUse(RG_HOOKSHOT) || LogicGtgWithoutHookshot);}}),
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_LAVA_ROOM,        {[]{return Here(RR_GERUDO_TRAINING_GROUNDS_LOBBY, []{return (IsAdult || KokiriSword) && HasExplosives;});}}),
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE,     {[]{return true;}}),
   });
 
   areaTable[RR_GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE] = Area("Gerudo Training Grounds Central Maze", "Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST,   {[]{return SmallKeys(RR_GERUDO_TRAINING_GROUNDS, 3) && (LogicLensGtg || CanUse(LENS_OF_TRUTH));}}),
+                  LocationAccess(RC_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST,   {[]{return SmallKeys(RR_GERUDO_TRAINING_GROUNDS, 3) && (LogicLensGtg || CanUse(RG_LENS_OF_TRUTH));}}),
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FIRST_CHEST,  {[]{return SmallKeys(RR_GERUDO_TRAINING_GROUNDS, 4);}}),
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MAZE_PATH_SECOND_CHEST, {[]{return SmallKeys(RR_GERUDO_TRAINING_GROUNDS, 6);}}),
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MAZE_PATH_THIRD_CHEST,  {[]{return SmallKeys(RR_GERUDO_TRAINING_GROUNDS, 7);}}),
@@ -54,32 +54,32 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_FREESTANDING_KEY,         {[]{return true;}}),
                 }, {
                   //Exits
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_HAMMER_ROOM, {[]{return CanUse(HOOKSHOT);}}),
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_HAMMER_ROOM, {[]{return CanUse(RG_HOOKSHOT);}}),
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_LAVA_ROOM,   {[]{return true;}}),
   });
 
   areaTable[RR_GERUDO_TRAINING_GROUNDS_LAVA_ROOM] = Area("Gerudo Training Grounds Lava Room", "Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST, {[]{return CanUse(HOOKSHOT) && CanPlay(SongOfTime) && IronBoots && WaterTimer >= 24;}}),
+                  LocationAccess(RC_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST, {[]{return CanUse(RG_HOOKSHOT) && CanPlay(SongOfTime) && IronBoots && WaterTimer >= 24;}}),
                 }, {
                   //Exits
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE_RIGHT, {[]{return CanPlay(SongOfTime) || IsChild;}}),
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_HAMMER_ROOM,        {[]{return CanUse(LONGSHOT)  || (CanUse(HOVER_BOOTS) && CanUse(HOOKSHOT));}}),
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_HAMMER_ROOM,        {[]{return CanUse(RG_LONGSHOT)  || (CanUse(RG_HOVER_BOOTS) && CanUse(RG_HOOKSHOT));}}),
   });
 
   areaTable[RR_GERUDO_TRAINING_GROUNDS_HAMMER_ROOM] = Area("Gerudo Training Grounds Hammer Room", "Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_CLEAR_CHEST,  {[]{return true;}}),
-                  LocationAccess(RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_SWITCH_CHEST, {[]{return CanUse(MEGATON_HAMMER) || (CanTakeDamage && LogicFlamingChests);}}),
+                  LocationAccess(RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_SWITCH_CHEST, {[]{return CanUse(RG_MEGATON_HAMMER) || (CanTakeDamage && LogicFlamingChests);}}),
                 }, {
                   //Exits
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_EYE_STATUE_LOWER, {[]{return CanUse(MEGATON_HAMMER) && Bow;}}),
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_EYE_STATUE_LOWER, {[]{return CanUse(RG_MEGATON_HAMMER) && Bow;}}),
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_LAVA_ROOM,        {[]{return true;}}),
   });
 
   areaTable[RR_GERUDO_TRAINING_GROUNDS_EYE_STATUE_LOWER] = Area("Gerudo Training Grounds Eye Statue Lower", "Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST, {[]{return CanUse(BOW);}}),
+                  LocationAccess(RC_GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST, {[]{return CanUse(RG_BOW);}}),
                 }, {
                   //Exits
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_HAMMER_ROOM, {[]{return true;}}),
@@ -87,7 +87,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
 
   areaTable[RR_GERUDO_TRAINING_GROUNDS_EYE_STATUE_UPPER] = Area("Gerudo Training Grounds Eye Statue Upper", "Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST, {[]{return CanUse(BOW);}}),
+                  LocationAccess(RC_GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST, {[]{return CanUse(RG_BOW);}}),
                 }, {
                   //Exits
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_EYE_STATUE_LOWER, {[]{return true;}}),
@@ -98,8 +98,8 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_BEFORE_HEAVY_BLOCK_CHEST, {[]{return true;}}),
                 }, {
                   //Exits
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_EYE_STATUE_UPPER, {[]{return (LogicLensGtg || CanUse(LENS_OF_TRUTH)) && (CanUse(HOOKSHOT) || (LogicGtgFakeWall && CanUse(HOVER_BOOTS)));}}),
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_LIKE_LIKE_ROOM,   {[]{return (LogicLensGtg || CanUse(LENS_OF_TRUTH)) && (CanUse(HOOKSHOT) || (LogicGtgFakeWall && CanUse(HOVER_BOOTS))) && CanUse(SILVER_GAUNTLETS);}}),
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_EYE_STATUE_UPPER, {[]{return (LogicLensGtg || CanUse(RG_LENS_OF_TRUTH)) && (CanUse(RG_HOOKSHOT) || (LogicGtgFakeWall && CanUse(RG_HOVER_BOOTS)));}}),
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_LIKE_LIKE_ROOM,   {[]{return (LogicLensGtg || CanUse(RG_LENS_OF_TRUTH)) && (CanUse(RG_HOOKSHOT) || (LogicGtgFakeWall && CanUse(RG_HOVER_BOOTS))) && CanUse(RG_SILVER_GAUNTLETS);}}),
   });
 
   areaTable[RR_GERUDO_TRAINING_GROUNDS_LIKE_LIKE_ROOM] = Area("Gerudo Training Grounds Like Like Room", "Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
@@ -119,7 +119,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   //Locations
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_CHEST,       {[]{return true;}}),
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_CHEST,      {[]{return true;}}),
-                  LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_HIDDEN_CEILING_CHEST,   {[]{return LogicLensGtgMQ || CanUse(LENS_OF_TRUTH);}}),
+                  LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_HIDDEN_CEILING_CHEST,   {[]{return LogicLensGtgMQ || CanUse(RG_LENS_OF_TRUTH);}}),
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_FIRST_CHEST,  {[]{return true;}}),
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_SECOND_CHEST, {[]{return true;}}),
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_THIRD_CHEST,  {[]{return SmallKeys(RR_GERUDO_TRAINING_GROUNDS, 1);}}),
@@ -127,23 +127,23 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   //Exits
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_ENTRYWAY,      {[]{return true;}}),
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_LEFT_SIDE,  {[]{return Here(RR_GERUDO_TRAINING_GROUNDS_MQ_LOBBY, []{return HasFireSource;});}}),
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_RIGHT_SIDE, {[]{return Here(RR_GERUDO_TRAINING_GROUNDS_MQ_LOBBY, []{return (IsAdult && CanUse(BOW)) || (IsChild && CanUse(SLINGSHOT));});}}),
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_RIGHT_SIDE, {[]{return Here(RR_GERUDO_TRAINING_GROUNDS_MQ_LOBBY, []{return (IsAdult && CanUse(RG_BOW)) || (IsChild && CanUse(RG_SLINGSHOT));});}}),
   });
 
   areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_RIGHT_SIDE] = Area("Gerudo Training Grounds MQ Right Side", "Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  //EventAccess(&WallFairy, {[]{return WallFairy || (IsAdult && CanUse(BOW));}}),
+                  //EventAccess(&WallFairy, {[]{return WallFairy || (IsAdult && CanUse(RG_BOW));}}),
   }, {
                   //Locations
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_CHEST, {[]{return IsAdult;}}),
   }, {
                   //Exits
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_UNDERWATER, {[]{return (Bow || CanUse(LONGSHOT)) && CanUse(HOVER_BOOTS) && IsAdult;}}),
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_UNDERWATER, {[]{return (Bow || CanUse(RG_LONGSHOT)) && CanUse(RG_HOVER_BOOTS) && IsAdult;}}),
   });
 
   areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_UNDERWATER] = Area("Gerudo Training Grounds MQ Underwater", "Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST, {[]{return HasFireSource && IsAdult && CanUse(IRON_BOOTS) && WaterTimer >= 24 && CanTakeDamage;}}),
+                  LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST, {[]{return HasFireSource && IsAdult && CanUse(RG_IRON_BOOTS) && WaterTimer >= 24 && CanTakeDamage;}}),
   }, {});
 
   areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_LEFT_SIDE] = Area("Gerudo Training Grounds MQ Left Side", "Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
@@ -151,8 +151,8 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_FIRST_IRON_KNUCKLE_CHEST, {[]{return IsAdult || KokiriSword || HasExplosives;}}),
   }, {
                   //Exits
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_STALFOS_ROOM, {[]{return (IsAdult && CanUse(LONGSHOT)) || LogicGtgMQWithoutHookshot || (LogicGtgMQWithHookshot && IsAdult && CanUse(HOOKSHOT));}}),
-                    //Trick: (IsAdult && CanUse(LONGSHOT)) || LogicGtgMQWithoutHookshot || (LogicGtgMQWithHookshot && IsAdult && CanUse(HOOKSHOT))
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_STALFOS_ROOM, {[]{return (IsAdult && CanUse(RG_LONGSHOT)) || LogicGtgMQWithoutHookshot || (LogicGtgMQWithHookshot && IsAdult && CanUse(RG_HOOKSHOT));}}),
+                    //Trick: (IsAdult && CanUse(RG_LONGSHOT)) || LogicGtgMQWithoutHookshot || (LogicGtgMQWithHookshot && IsAdult && CanUse(RG_HOOKSHOT))
   });
 
   areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_STALFOS_ROOM] = Area("Gerudo Training Grounds MQ Stalfos Room", "Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {
@@ -161,22 +161,22 @@ void AreaTable_Init_GerudoTrainingGrounds() {
   }, {
                   //Locations
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_BEFORE_HEAVY_BLOCK_CHEST, {[]{return IsAdult;}}),
-                  LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_HEAVY_BLOCK_CHEST,        {[]{return CanUse(SILVER_GAUNTLETS);}}),
+                  LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_HEAVY_BLOCK_CHEST,        {[]{return CanUse(RG_SILVER_GAUNTLETS);}}),
   }, {
                   //Exits
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_BACK_AREAS, {[]{return IsAdult && (LogicLensGtgMQ || CanUse(LENS_OF_TRUTH)) && BlueFire && (CanPlay(SongOfTime) || (LogicGtgFakeWall && IsAdult && CanUse(HOVER_BOOTS)));}}),
-                    //Trick: IsAdult && (LogicLensGtgMQ || CanUse(LENS_OF_TRUTH)) && BlueFire && (CanPlay(SongOfTime) || (LogicGtgFakeWall && IsAdult && CanUse(HOVER_BOOTS)))
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_BACK_AREAS, {[]{return IsAdult && (LogicLensGtgMQ || CanUse(RG_LENS_OF_TRUTH)) && BlueFire && (CanPlay(SongOfTime) || (LogicGtgFakeWall && IsAdult && CanUse(RG_HOVER_BOOTS)));}}),
+                    //Trick: IsAdult && (LogicLensGtgMQ || CanUse(RG_LENS_OF_TRUTH)) && BlueFire && (CanPlay(SongOfTime) || (LogicGtgFakeWall && IsAdult && CanUse(RG_HOVER_BOOTS)))
   });
 
   areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_BACK_AREAS] = Area("Gerudo Training Grounds MQ Back Areas", "Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_EYE_STATUE_CHEST,          {[]{return Bow;}}),
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_SECOND_IRON_KNUCKLE_CHEST, {[]{return true;}}),
-                  LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST,        {[]{return CanUse(HOOKSHOT) || Bow || HasExplosives;}}),
+                  LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST,        {[]{return CanUse(RG_HOOKSHOT) || Bow || HasExplosives;}}),
   }, {
                   //Exits
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_CENTRAL_MAZE_RIGHT, {[]{return Hammer;}}),
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_RIGHT_SIDE,         {[]{return CanUse(LONGSHOT);}}),
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_RIGHT_SIDE,         {[]{return CanUse(RG_LONGSHOT);}}),
   });
 
   areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_CENTRAL_MAZE_RIGHT] = Area("Gerudo Training Grounds MQ Central Maze Right", "Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
@@ -186,8 +186,8 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_ICE_ARROWS_CHEST,         {[]{return SmallKeys(RR_GERUDO_TRAINING_GROUNDS, 3);}}),
   }, {
                   //Exits
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_UNDERWATER,  {[]{return IsAdult && (CanUse(LONGSHOT) || (CanUse(HOOKSHOT) && Bow));}}),
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_RIGHT_SIDE,  {[]{return IsAdult && CanUse(HOOKSHOT);}}),
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_UNDERWATER,  {[]{return IsAdult && (CanUse(RG_LONGSHOT) || (CanUse(RG_HOOKSHOT) && Bow));}}),
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_RIGHT_SIDE,  {[]{return IsAdult && CanUse(RG_HOOKSHOT);}}),
   });
   }
 }

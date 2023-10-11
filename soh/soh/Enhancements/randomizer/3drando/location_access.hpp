@@ -6,7 +6,6 @@
 
 #include "logic.hpp"
 #include "hint_list.hpp"
-#include "keys.hpp"
 #include "fill.hpp"
 
 typedef bool (*ConditionFn)();
