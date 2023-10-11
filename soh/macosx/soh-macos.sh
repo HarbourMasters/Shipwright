@@ -24,6 +24,12 @@ remap_hashes ()
 	d6342c59007e57c1194661ec6880b2f078403f4e) # n64
 		ROMHASH=0227d7c0074f2d0ac935631990da8ec5914597b4
 		;;
+	d0bdc2eb320668b4ba6893b9aefe4040a73123ff) # v64
+		ROMHASH=328a1f1beba30ce5e178f031662019eb32c5f3b5
+		;;
+	4946ab250f6ac9b32d76b21f309ebb8ebc8103d2) # n64
+		ROMHASH=328a1f1beba30ce5e178f031662019eb32c5f3b5
+		;;
 	663c34f1b2c05a09e5beffe4d0dcd440f7d49dc7) # v64
 		ROMHASH=cfbb98d392e4a9d39da8285d10cbef3974c2f012
 		;;
@@ -102,6 +108,8 @@ if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 				cee6bc3c2a634b41728f2af8da54d9bf8cc14099)
 					ROM_TYPE=0;;
 				0227d7c0074f2d0ac935631990da8ec5914597b4)
+					ROM_TYPE=0;;
+				328a1f1beba30ce5e178f031662019eb32c5f3b5)
 					ROM_TYPE=0;;
 				cfbb98d392e4a9d39da8285d10cbef3974c2f012)
 					ROM_TYPE=0;;
@@ -188,6 +196,9 @@ if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 				OTRNAME="oot.otr";;
 			0227d7c0074f2d0ac935631990da8ec5914597b4)
 				ROM=GC_NMQ_PAL_F
+				OTRNAME="oot.otr";;
+			328a1f1beba30ce5e178f031662019eb32c5f3b5)
+				ROM=N64_PAL_10
 				OTRNAME="oot.otr";;
 			cfbb98d392e4a9d39da8285d10cbef3974c2f012)
 				ROM=N64_PAL_11
