@@ -2023,20 +2023,10 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
             func_80090A28(this, spE4);
             func_800906D4(play, this, spE4);
-        } else if ((*dList != NULL) && (this->leftHandType == 7)) {
-            if (!CVarGetInteger("gAltLinkEquip", 1)) {
-                Color_RGB8* bottleColor = &sBottleColors[Player_ActionToBottle(this, this->itemAction)];
-
-                OPEN_DISPS(play->state.gfxCtx);
-
-                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gDPSetEnvColor(POLY_XLU_DISP++, bottleColor->r, bottleColor->g, bottleColor->b, 0);
-                gSPDisplayList(POLY_XLU_DISP++, sBottleDLists[(gSaveContext.linkAge)]);
-            }
         }
-        // AltEquip TODO I don't know if I've blocked out Luna's changes to this correctly.
-        if (CVarGetInteger("gAltLinkEquip", 1) && ((*dList != NULL) && (this->leftHandType == 7))) {
+
+
+        if ((*dList != NULL) && (this->leftHandType == 7)) {
             Color_RGB8* bottleColor = &sBottleColors[Player_ActionToBottle(this, this->itemAction)];
 
             OPEN_DISPS(play->state.gfxCtx);
