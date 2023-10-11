@@ -967,6 +967,7 @@ void Play_Update(PlayState* play) {
                                 R_UPDATE_RATE = 3;
                             }
                             
+                            // Transition end for standard transitions
                             GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
                         }
                         play->sceneLoadFlag = 0;
@@ -1075,6 +1076,9 @@ void Play_Update(PlayState* play) {
                             R_UPDATE_RATE = 3;
                             play->sceneLoadFlag = 0;
                             play->transitionMode = 0;
+
+                            // Transition end for sandstorm effect (delayed until effect is finished)
+                            GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
                         }
                     } else {
                         if (play->envCtx.sandstormEnvA == 255) {
@@ -1109,6 +1113,9 @@ void Play_Update(PlayState* play) {
                             R_UPDATE_RATE = 3;
                             play->sceneLoadFlag = 0;
                             play->transitionMode = 0;
+
+                            // Transition end for sandstorm effect (delayed until effect is finished)
+                            GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
                         }
                     }
                     break;

@@ -95,6 +95,7 @@ namespace UIWidgets {
     void DrawFlagArray32(const std::string& name, uint32_t& flags);
     void DrawFlagArray16(const std::string& name, uint16_t& flags);
     void DrawFlagArray8(const std::string& name, uint8_t& flags);
+    bool StateButton(const char* str_id, const char* label);
 }
 
 #endif /* UIWidgets_hpp */

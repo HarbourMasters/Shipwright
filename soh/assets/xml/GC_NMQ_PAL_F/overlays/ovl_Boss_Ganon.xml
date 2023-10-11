@@ -29,7 +29,7 @@
         <Texture Name="gGanondorfLightning11Tex" OutName="lightning_11" Format="i8" Width="32" Height="96" Offset="0x18B10" Static="Off"/>
         <Texture Name="gGanondorfLightning12Tex" OutName="lightning_12" Format="i8" Width="32" Height="96" Offset="0x19710" Static="Off"/>
         
-        <Texture Name="gGanondorfWindowShatterTemplateTex" OutName="window_shatter_template" Format="ci8" Width="32" Height="64" Offset="0xFA48" Static="Off"/>
+        <Texture Name="gGanondorfWindowShatterTemplateTex" OutName="window_shatter_template" Format="i8" Width="32" Height="64" Offset="0xFA48" Static="Off"/>
 
         <DList Name="gGanondorfLightStreak1DL" Offset="0x1FA00" Static="Off"/>
         <DList Name="gGanondorfLightStreak2DL" Offset="0x1FA38" Static="Off"/>

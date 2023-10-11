@@ -1,0 +1,80 @@
+<Root>
+    <File Name="hakasitarelay_scene" Segment="2">
+        <Texture Name="hakasitarelay_sceneTex_00C080" OutName="hakasitarelay_sceneTex_00C080" Format="rgba16" Width="64" Height="32" Offset="0xC080" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_sceneTex_00D080" OutName="hakasitarelay_sceneTex_00D080" Format="rgba16" Width="32" Height="32" Offset="0xD080" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_sceneTex_00D880" OutName="hakasitarelay_sceneTex_00D880" Format="i4" Width="64" Height="64" Offset="0xD880" AddedByScript="true"/>
+        <Scene Name="hakasitarelay_scene" Offset="0x0"/>
+        <Cutscene Name="gSongOfStormsCs" Offset="0xE080"/>
+    </File>
+    <File Name="hakasitarelay_room_0" Segment="3">
+        <Texture Name="hakasitarelay_room_0Tex_003248" OutName="hakasitarelay_room_0Tex_003248" Format="i4" Width="32" Height="32" Offset="0x3248" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_0Tex_003448" OutName="hakasitarelay_room_0Tex_003448" Format="rgba16" Width="32" Height="64" Offset="0x3448" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_0Tex_004448" OutName="hakasitarelay_room_0Tex_004448" Format="i4" Width="128" Height="32" Offset="0x4448" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_0Tex_004C48" OutName="hakasitarelay_room_0Tex_004C48" Format="i4" Width="32" Height="128" Offset="0x4C48" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_0Tex_005448" OutName="hakasitarelay_room_0Tex_005448" Format="i8" Width="32" Height="32" Offset="0x5448" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_0Tex_005848" OutName="hakasitarelay_room_0Tex_005848" Format="i8" Width="64" Height="32" Offset="0x5848" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_0Tex_0062B8" OutName="hakasitarelay_room_0Tex_0062B8" Format="ia16" Width="128" Height="16" Offset="0x62B8" AddedByScript="true"/>
+        <Room Name="hakasitarelay_room_0" Offset="0x0"/>
+    </File>
+    <File Name="hakasitarelay_room_1" Segment="3">
+        <Texture Name="hakasitarelay_room_1Tex_003F20" OutName="hakasitarelay_room_1Tex_003F20" Format="i8" Width="32" Height="32" Offset="0x3F20" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_1Tex_004320" OutName="hakasitarelay_room_1Tex_004320" Format="i8" Width="32" Height="32" Offset="0x4320" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_1Tex_004720" OutName="hakasitarelay_room_1Tex_004720" Format="rgba16" Width="32" Height="64" Offset="0x4720" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_1Tex_005720" OutName="hakasitarelay_room_1Tex_005720" Format="rgba16" Width="32" Height="32" Offset="0x5720" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_1Tex_005F20" OutName="hakasitarelay_room_1Tex_005F20" Format="rgba16" Width="32" Height="16" Offset="0x5F20" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_1Tex_006320" OutName="hakasitarelay_room_1Tex_006320" Format="rgba16" Width="32" Height="16" Offset="0x6320" AddedByScript="true"/>
+        <Room Name="hakasitarelay_room_1" Offset="0x0"/>
+    </File>
+    <File Name="hakasitarelay_room_2" Segment="3">
+        <Texture Name="hakasitarelay_room_2Tex_0054A8" OutName="hakasitarelay_room_2Tex_0054A8" Format="i8" Width="32" Height="32" Offset="0x54A8" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_2Tex_0058A8" OutName="hakasitarelay_room_2Tex_0058A8" Format="i8" Width="32" Height="32" Offset="0x58A8" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_2Tex_005CA8" OutName="hakasitarelay_room_2Tex_005CA8" Format="rgba16" Width="32" Height="64" Offset="0x5CA8" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_2Tex_006CA8" OutName="hakasitarelay_room_2Tex_006CA8" Format="i8" Width="64" Height="32" Offset="0x6CA8" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_2Tex_0074A8" OutName="hakasitarelay_room_2Tex_0074A8" Format="rgba16" Width="32" Height="32" Offset="0x74A8" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_2Tex_007CA8" OutName="hakasitarelay_room_2Tex_007CA8" Format="rgba16" Width="32" Height="16" Offset="0x7CA8" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_2Tex_0080A8" OutName="hakasitarelay_room_2Tex_0080A8" Format="rgba16" Width="32" Height="16" Offset="0x80A8" AddedByScript="true"/>
+        <Room Name="hakasitarelay_room_2" Offset="0x0"/>
+    </File>
+    <File Name="hakasitarelay_room_3" Segment="3">
+        <Texture Name="hakasitarelay_room_3Tex_0056E0" OutName="hakasitarelay_room_3Tex_0056E0" Format="i8" Width="32" Height="32" Offset="0x56E0" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_3Tex_005AE0" OutName="hakasitarelay_room_3Tex_005AE0" Format="i8" Width="32" Height="32" Offset="0x5AE0" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_3Tex_005EE0" OutName="hakasitarelay_room_3Tex_005EE0" Format="i4" Width="32" Height="32" Offset="0x5EE0" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_3Tex_0060E0" OutName="hakasitarelay_room_3Tex_0060E0" Format="rgba16" Width="32" Height="64" Offset="0x60E0" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_3Tex_0070E0" OutName="hakasitarelay_room_3Tex_0070E0" Format="rgba16" Width="32" Height="32" Offset="0x70E0" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_3Tex_0078E0" OutName="hakasitarelay_room_3Tex_0078E0" Format="rgba16" Width="32" Height="16" Offset="0x78E0" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_3Tex_007CE0" OutName="hakasitarelay_room_3Tex_007CE0" Format="i4" Width="128" Height="32" Offset="0x7CE0" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_3Tex_0084E0" OutName="hakasitarelay_room_3Tex_0084E0" Format="i8" Width="64" Height="32" Offset="0x84E0" AddedByScript="true"/>
+        <Room Name="hakasitarelay_room_3" Offset="0x0"/>
+    </File>
+    <File Name="hakasitarelay_room_4" Segment="3">
+        <Texture Name="hakasitarelay_room_4Tex_001E80" OutName="hakasitarelay_room_4Tex_001E80" Format="i4" Width="32" Height="32" Offset="0x1E80" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_4Tex_002080" OutName="hakasitarelay_room_4Tex_002080" Format="i8" Width="64" Height="32" Offset="0x2080" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_4Tex_002880" OutName="hakasitarelay_room_4Tex_002880" Format="i4" Width="32" Height="128" Offset="0x2880" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_4Tex_003080" OutName="hakasitarelay_room_4Tex_003080" Format="i8" Width="32" Height="32" Offset="0x3080" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_4Tex_003480" OutName="hakasitarelay_room_4Tex_003480" Format="i8" Width="64" Height="32" Offset="0x3480" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_4Tex_003C80" OutName="hakasitarelay_room_4Tex_003C80" Format="i4" Width="64" Height="64" Offset="0x3C80" AddedByScript="true"/>
+        <Room Name="hakasitarelay_room_4" Offset="0x0"/>
+    </File>
+    <File Name="hakasitarelay_room_5" Segment="3">
+        <Texture Name="hakasitarelay_room_5Tex_001C48" OutName="hakasitarelay_room_5Tex_001C48" Format="rgba16" Width="32" Height="32" Offset="0x1C48" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_5Tex_002448" OutName="hakasitarelay_room_5Tex_002448" Format="ci4" Width="64" Height="64" Offset="0x2448" TlutOffset="0x1C28" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_5Tex_002C48" OutName="hakasitarelay_room_5Tex_002C48" Format="i8" Width="64" Height="32" Offset="0x2C48" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_5Tex_003448" OutName="hakasitarelay_room_5Tex_003448" Format="i4" Width="64" Height="64" Offset="0x3448" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_5Tex_003C48" OutName="hakasitarelay_room_5Tex_003C48" Format="i4" Width="64" Height="64" Offset="0x3C48" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_5TLUT_001C28" OutName="hakasitarelay_room_5TLUT_001C28" Format="rgba16" Width="4" Height="4" Offset="0x1C28" AddedByScript="true"/>
+        <Room Name="hakasitarelay_room_5" Offset="0x0"/>
+    </File>
+    <File Name="hakasitarelay_room_6" Segment="3">
+        <Texture Name="hakasitarelay_room_6Tex_0041A8" OutName="hakasitarelay_room_6Tex_0041A8" Format="rgba16" Width="16" Height="8" Offset="0x41A8" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_6Tex_0042A8" OutName="hakasitarelay_room_6Tex_0042A8" Format="rgba16" Width="32" Height="32" Offset="0x42A8" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_6Tex_004AA8" OutName="hakasitarelay_room_6Tex_004AA8" Format="rgba16" Width="32" Height="16" Offset="0x4AA8" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_6Tex_004EA8" OutName="hakasitarelay_room_6Tex_004EA8" Format="ci4" Width="64" Height="64" Offset="0x4EA8" TlutOffset="0x4188" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_6Tex_0056A8" OutName="hakasitarelay_room_6Tex_0056A8" Format="i8" Width="64" Height="32" Offset="0x56A8" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_6Tex_005EA8" OutName="hakasitarelay_room_6Tex_005EA8" Format="i4" Width="64" Height="64" Offset="0x5EA8" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_6Tex_0066A8" OutName="hakasitarelay_room_6Tex_0066A8" Format="i8" Width="32" Height="32" Offset="0x66A8" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_6Tex_006AA8" OutName="hakasitarelay_room_6Tex_006AA8" Format="i8" Width="64" Height="32" Offset="0x6AA8" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_6Tex_0072A8" OutName="hakasitarelay_room_6Tex_0072A8" Format="i4" Width="64" Height="64" Offset="0x72A8" AddedByScript="true"/>
+        <Texture Name="hakasitarelay_room_6TLUT_004188" OutName="hakasitarelay_room_6TLUT_004188" Format="rgba16" Width="4" Height="4" Offset="0x4188" AddedByScript="true"/>
+        <Room Name="hakasitarelay_room_6" Offset="0x0"/>
+    </File>
+</Root>

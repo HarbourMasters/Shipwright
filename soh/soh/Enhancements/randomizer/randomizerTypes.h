@@ -20,6 +20,16 @@ typedef struct {
     uint8_t id;
 } Sprite;
 
+// Check tracker check visibility categories
+typedef enum {
+    RCSHOW_UNCHECKED,
+    RCSHOW_SEEN,
+    RCSHOW_IDENTIFIED,
+    RCSHOW_SCUMMED,
+    RCSHOW_COLLECTED,
+    RCSHOW_SAVED,
+} RandomizerCheckStatus;
+
 typedef enum {
     HINT_TYPE_TRIAL,
     HINT_TYPE_ALWAYS,
@@ -1463,6 +1473,13 @@ typedef enum {
     RSK_TRIFORCE_HUNT_PIECES_REQUIRED,
     RSK_MAX
 } RandomizerSettingKey;
+
+typedef struct {
+    RandomizerCheckStatus status;
+    uint16_t skipped;
+    int16_t price;
+    uint16_t hintItem;
+} RandomizerCheckTrackerData;
 
 //Generic Settings (any binary option can use this)
 // off/on
