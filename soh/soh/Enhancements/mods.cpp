@@ -42,9 +42,10 @@ bool performSave = false;
 void ReloadSceneTogglingLinkAge() {
     gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
     gPlayState->sceneLoadFlag = 0x14;
-    gPlayState->fadeTransition = 11;
-    gSaveContext.nextTransitionType = 11;
+    gPlayState->fadeTransition = 42; // Fade Out
+    gSaveContext.nextTransitionType = 42;
     gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
+    gPlayState->fadeTransition = 42;  // Necessary to trigger the Fade In
 }
 
 void RegisterInfiniteMoney() {
