@@ -90,7 +90,7 @@ void AreaTable_Init_GanonsCastle() {
                   EventAccess(&SpiritTrialClear, {[]{return CanUse(LIGHT_ARROWS) && (CanUse(MIRROR_SHIELD) || SunlightArrows) && HasBombchus && ((LogicSpiritTrialHookshot && CanJumpslash) || CanUse(HOOKSHOT));}}),
                 }, {
                   //Locations
-                  LocationAccess(GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST, {[]{return LogicSpiritTrialHookshot || CanUse(HOOKSHOT);}}),
+                  LocationAccess(GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST, {[]{return (LogicSpiritTrialHookshot || CanUse(HOOKSHOT)) && CanJumpslash;}}),
                   LocationAccess(GANONS_CASTLE_SPIRIT_TRIAL_INVISIBLE_CHEST,      {[]{return (LogicSpiritTrialHookshot || CanUse(HOOKSHOT)) && HasBombchus && (LogicLensCastle || CanUse(LENS_OF_TRUTH));}}),
   }, {});
 

@@ -14925,13 +14925,20 @@ void func_80852648(PlayState* play, Player* this, CsCmdActorAction* arg2) {
         this->heldItemAction = this->itemAction = PLAYER_IA_NONE;
         this->heldItemId = ITEM_NONE;
         this->modelGroup = this->nextModelGroup = Player_ActionToModelGroup(this, PLAYER_IA_NONE);
-        this->leftHandDLists =gPlayerLeftHandOpenDLs;
-        if (!IS_RANDO|| !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) || 
-        (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && CHECK_OWNED_EQUIP(EQUIP_SWORD, 1) && play->sceneNum == SCENE_GANON_BOSS)) {
-            Inventory_ChangeEquipment(EQUIP_SWORD, 2);
-            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-            Inventory_DeleteEquipment(play, 0);
+        this->leftHandDLists = gPlayerLeftHandOpenDLs;
+        
+        // If MS sword is shuffled and not in the players inventory, then we need to unequip the current sword
+        // and set swordless flag to mimic Link having his weapon knocked out of his hand in the Ganon fight
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) {
+            Inventory_ChangeEquipment(EQUIP_SWORD, 0);
+            gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+            Flags_SetInfTable(INFTABLE_SWORDLESS);
+            return;
         }
+        
+        Inventory_ChangeEquipment(EQUIP_SWORD, 2);
+        gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+        Inventory_DeleteEquipment(play, 0);
     }
 }
 
