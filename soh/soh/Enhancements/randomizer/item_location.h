@@ -77,6 +77,8 @@ class ItemLocation {
     bool IsHidden() const;
     bool IsExcluded() const;
     void SetHidden(const bool hidden_);
+    bool IsVisible() const;
+    void SetVisible(bool visibleInImGui_);
     Rando::ItemOverride_Key Key() const;
     void ResetVariables();
   private:
@@ -93,5 +95,6 @@ class ItemLocation {
     bool hasShopsanityPrice = false;
     bool hasScrubsanityPrice = false;
     bool hidden = false;
+    bool visibleInImGui = false;
 };
 } // namespace Rando

@@ -21,6 +21,10 @@ RandomizerCheckArea Rando::Location::GetArea() const {
     return area;
 }
 
+RandomizerCheckType Rando::Location::GetRCType() const {
+    return checkType;
+}
+
 ActorID Rando::Location::GetActorID() const {
     return actorId;
 }

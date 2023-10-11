@@ -127,6 +127,14 @@ bool ItemLocation::IsExcluded() const {
     return excludedOption.Value<bool>();
 }
 
+bool ItemLocation::IsVisible() const {
+    return visibleInImGui;
+}
+void ItemLocation::SetVisible(bool visibleInImGui_) {
+    visibleInImGui = visibleInImGui_;
+
+}
+
 ItemOverride_Key ItemLocation::Key() const {
     ItemOverride_Key key;
     key.all = 0;

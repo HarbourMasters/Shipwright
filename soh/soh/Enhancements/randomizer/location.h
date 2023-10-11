@@ -125,6 +125,7 @@ class Location {
     SpoilerCollectionCheckGroup GetCollectionCheckGroup() const;
     RandomizerCheckQuest GetQuest() const;
     RandomizerCheckArea GetArea() const;
+    RandomizerCheckType GetRCType() const;
     ActorID GetActorID() const;
     int32_t GetActorParams() const;
     SceneID GetScene() const;

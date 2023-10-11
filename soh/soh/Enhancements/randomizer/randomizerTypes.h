@@ -61,7 +61,7 @@ typedef enum {
     RCTYPE_OCARINA,                    // Ocarina locations
 } RandomizerCheckType;
 
-typedef enum { RCVORMQ_VANILLA, RCVORMQ_MQ, RCVORMQ_BOTH } RandomizerCheckVanillaOrMQ;
+typedef enum { RCQUEST_VANILLA, RCQUEST_MQ, RCQUEST_BOTH } RandomizerCheckQuest;
 
 typedef enum {
     RCAREA_KOKIRI_FOREST,
