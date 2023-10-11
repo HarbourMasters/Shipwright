@@ -409,12 +409,12 @@ void Player_SetBootData(PlayState* play, Player* this) {
     }
 }
 
-// Alternate Equipment Loading - "Normal Child Hylian Shield" enhancement check.
 s32 Player_IsChildWithHylianShield(Player* this) {
     if (CVarGetInteger("gNormalChildHylianShield", 0)) {
+        // Alternate Equipment Loading - "Normal Child Hylian Shield" enhancement check.
         return false;
-    } else
-        return gSaveContext.linkAge != 0 && (this->currentShield == PLAYER_SHIELD_HYLIAN);
+    }
+    return gSaveContext.linkAge != 0 && (this->currentShield == PLAYER_SHIELD_HYLIAN);
 }
 
 // Custom method used to determine if we're using a custom model for link
