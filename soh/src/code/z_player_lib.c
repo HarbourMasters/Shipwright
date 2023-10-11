@@ -409,7 +409,7 @@ void Player_SetBootData(PlayState* play, Player* this) {
     }
 }
 
-// Alternative Equipment Loading - "Normal Child Hylian Shield" enhancement check.
+// Alternate Equipment Loading - "Normal Child Hylian Shield" enhancement check.
 s32 Player_IsChildWithHylianShield(Player* this) {
     if (CVarGetInteger("gNormalChildHylianShield", 0)) {
         return false;
@@ -423,7 +423,7 @@ uint8_t Player_IsCustomLinkModel() {
            (LINK_IS_CHILD && ResourceGetIsCustomByName(gLinkChildSkel));
 }
 
-// Beginning of Alternative Equipment Loading "CanUse" function block.
+// Beginning of Alternate Equipment Loading "CanUse" function block.
 
 // Alternate Equipment Loading function.
 // AltEquip TODO
@@ -695,7 +695,7 @@ uint8_t Player_CanUseNewLoadingMethodSheathShield(Player* this) {
     return true;
 }
 
-// End of Alternative Equipment Loading function block.
+// End of Alternate Equipment Loading "CanUse" function block.
 
 s32 Player_InBlockingCsMode(PlayState* play, Player* this) {
     return (this->stateFlags1 & 0x20000080) || (this->csMode != 0) || (play->sceneLoadFlag == 0x14) ||
@@ -2053,7 +2053,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 if (this->stateFlags1 & 0x200) {
                     if (!CVarGetInteger("gAltLinkEquip", 1)) { // use vanilla behavior.
                         Matrix_MultVec3f(&sLeftHandArrowVec3, &hookedActor->world.pos);
-                    } else { // use alternative asset loading behavior
+                    } else { // use alternate asset loading behavior
                         if (LINK_IS_CHILD && CVarGetInteger("gBowSlingShotAmmoFix", 0) &&
                             this->itemAction != PLAYER_IA_SLINGSHOT) {
                             Matrix_MultVec3f(&sChildLeftHandArrowVec3, &hookedActor->world.pos);
@@ -2615,7 +2615,7 @@ void Player_DrawPauseImpl(PlayState* play, void* seg04, void* seg06, SkelAnime* 
     if (!CVarGetInteger("gAltLinkEquip", 1)) { // Use vanilla behavior
         Player_DrawImpl(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
                         Player_OverrideLimbDrawPause, NULL, &sp12C);
-    } else { // Use alternative asset loading behavior
+    } else { // Use alternate asset loading behavior
         Player_DrawImpl(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
                         Player_OverrideLimbDrawPause, Player_PostLimbDrawPause, &sp12C);
     }
