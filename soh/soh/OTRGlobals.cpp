@@ -1703,17 +1703,17 @@ Color_RGB8 GetColorForControllerLED() {
             switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
                 case PLAYER_TUNIC_KOKIRI:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
-                                ? CVarGetColor24("gCosmetics.Link_KokiriTunic.Value", kokiriColor)
+                                ? CVarGetColor24(COSMETIC_CVAR("Link_KokiriTunic.Value"), kokiriColor)
                                 : kokiriColor;
                     break;
                 case PLAYER_TUNIC_GORON:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
-                                ? CVarGetColor24("gCosmetics.Link_GoronTunic.Value", goronColor)
+                                ? CVarGetColor24(COSMETIC_CVAR("Link_GoronTunic.Value"), goronColor)
                                 : goronColor;
                     break;
                 case PLAYER_TUNIC_ZORA:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
-                                ? CVarGetColor24("gCosmetics.Link_ZoraTunic.Value", zoraColor)
+                                ? CVarGetColor24(COSMETIC_CVAR("Link_ZoraTunic.Value"), zoraColor)
                                 : zoraColor;
                     break;
             }

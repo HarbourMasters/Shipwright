@@ -500,11 +500,11 @@ void EnDog_Draw(Actor* thisx, PlayState* play) {
     EnDog* this = (EnDog*)thisx;
     Color_RGB8 colors[] = { { 255, 255, 200 }, { 150, 100, 50 } };
 
-    if (CVarGetInteger("gCosmetics.NPC_Dog1.Changed", 0)) {
-        colors[0] = CVarGetColor24("gCosmetics.NPC_Dog1.Value", colors[0]);
+    if (CVarGetInteger(COSMETIC_CVAR("NPC_Dog1.Changed"), 0)) {
+        colors[0] = CVarGetColor24(COSMETIC_CVAR("NPC_Dog1.Value"), colors[0]);
     }
-    if (CVarGetInteger("gCosmetics.NPC_Dog2.Changed", 0)) {
-        colors[1] = CVarGetColor24("gCosmetics.NPC_Dog2.Value", colors[1]);
+    if (CVarGetInteger(COSMETIC_CVAR("NPC_Dog2.Changed"), 0)) {
+        colors[1] = CVarGetColor24(COSMETIC_CVAR("NPC_Dog2.Value"), colors[1]);
     }
 
     OPEN_DISPS(play->state.gfxCtx);

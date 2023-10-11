@@ -7,31 +7,31 @@ extern const char* digitTextures[];
 
 void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
     Color_RGB8 aButtonColor = { 80, 150, 255 };
-    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.Changed"), 0)) {
+        aButtonColor = CVarGetColor24(COSMETIC_CVAR("Hud_ButtonA.Value"), aButtonColor);
+    } else if (CVarGetInteger(COSMETIC_CVAR("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 80, 255, 150 };
     }
 
     Color_RGB8 cButtonsColor = {255, 255, 50};
-    if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-        cButtonsColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_CButtons.Changed"), 0)) {
+        cButtonsColor = CVarGetColor24(COSMETIC_CVAR("Hud_CButtons.Value"), cButtonsColor);
     }
     Color_RGB8 cUpButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CUpButton.Changed", 0)) {
-        cUpButtonColor = CVarGetColor24("gCosmetics.Hud_CUpButton.Value", cUpButtonColor);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCUp.Changed"), 0)) {
+        cUpButtonColor = CVarGetColor24(COSMETIC_CVAR("Hud_ButtonCUp.Value"), cUpButtonColor);
     }
     Color_RGB8 cDownButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CDownButton.Changed", 0)) {
-        cDownButtonColor = CVarGetColor24("gCosmetics.Hud_CDownButton.Value", cDownButtonColor);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.Changed"), 0)) {
+        cDownButtonColor = CVarGetColor24(COSMETIC_CVAR("Hud_ButtonCDown.Value"), cDownButtonColor);
     }
     Color_RGB8 cLeftButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-        cLeftButtonColor = CVarGetColor24("gCosmetics.Hud_CLeftButton.Value", cLeftButtonColor);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.Changed"), 0)) {
+        cLeftButtonColor = CVarGetColor24(COSMETIC_CVAR("Hud_ButtonCLeft.Value"), cLeftButtonColor);
     }
     Color_RGB8 cRightButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CRightButton.Changed", 0)) {
-        cRightButtonColor = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.Changed"), 0)) {
+        cRightButtonColor = CVarGetColor24(COSMETIC_CVAR("Hud_ButtonCRight.Value"), cRightButtonColor);
     }
 
     static s16 D_8082A070[][4] = {
