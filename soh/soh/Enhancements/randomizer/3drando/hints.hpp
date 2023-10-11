@@ -7,6 +7,7 @@
 #include "text.hpp"
 #include "random.hpp"
 #include "settings.hpp"
+#include "dungeon.hpp"
 #include <functional>
 
 struct HintDistributionSetting {
@@ -199,7 +200,7 @@ extern std::array<DungeonInfo, 10> dungeonInfoData;
 
 extern std::array<ConditionalAlwaysHint, 9> conditionalAlwaysHints;
 
-extern uint32_t GetHintRegionHintKey(const uint32_t area);
+extern RandomizerHintTextKey GetHintRegionHintKey(const RandomizerRegion area);
 extern void CreateAllHints();
 extern void CreateMerchantsHints();
 extern void CreateWarpSongTexts();

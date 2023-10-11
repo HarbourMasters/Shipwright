@@ -27,10 +27,10 @@ class Context {
         ItemLocation *GetItemLocation(RandomizerCheck locKey);
         void PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bool applyEffectImmediately = false,
                                  bool setHidden = false);
-        static std::vector<RandomizerCheck> allLocations;
-        void AddLocation(RandomizerCheck loc, std::vector<RandomizerCheck>* destination = &allLocations);
+        std::vector<RandomizerCheck> allLocations;
+        void AddLocation(RandomizerCheck loc, std::vector<RandomizerCheck>* destination = nullptr);
         template<typename Container>
-        void AddLocations(const Container& locations, std::vector<RandomizerCheck>* destination = &allLocations);
+        void AddLocations(const Container& locations, std::vector<RandomizerCheck>* destination = nullptr);
         void GenerateLocationPool();
         std::vector<RandomizerCheck> GetLocations(const std::vector<RandomizerCheck>& locationPool,
                                                   Category categoryInclude, Category categoryExclude = Category::cNull);

@@ -38,7 +38,6 @@ class Randomizer {
     bool IsItemVanilla(RandomizerGet randoGet);
     GetItemEntry GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability = true);
     int16_t GetVanillaMerchantPrice(RandomizerCheck check);
-    std::shared_ptr<Rando::Context> ctx;
 
   public:
     Randomizer();

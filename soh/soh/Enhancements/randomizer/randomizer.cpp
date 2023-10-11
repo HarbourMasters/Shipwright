@@ -115,7 +115,6 @@ static const char* frenchRupeeNames[36] = {
 };
 
 Randomizer::Randomizer() {
-    ctx = Rando::Context::GetInstance();
     for (auto& location : StaticData::GetLocationTable()) {
         SpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
         checkFromActorMultimap.emplace(std::make_tuple((s16)location.GetActorID(), (s16)location.GetScene(), location.GetActorParams()), location.GetRandomizerCheck());

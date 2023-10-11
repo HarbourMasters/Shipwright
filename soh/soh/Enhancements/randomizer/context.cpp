@@ -66,11 +66,17 @@ void Context::PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bo
 }
 
 void Context::AddLocation(RandomizerCheck loc, std::vector<RandomizerCheck>* destination) {
+    if (destination == nullptr) {
+        destination = &allLocations;
+    }
     destination->push_back(loc);
 }
 
 template<typename Container>
 void Context::AddLocations(const Container& locations, std::vector<RandomizerCheck>* destination) {
+    if (destination == nullptr) {
+        destination = &allLocations;
+    }
     destination->insert(destination->end(), std::cbegin(locations), std::cend(locations));
 }
 

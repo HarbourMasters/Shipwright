@@ -30,7 +30,7 @@
 #include <filesystem>
 #include <variables.h>
 
-#include <libultraship/libultraship.h>
+#include <Context.h>
 
 using json = nlohmann::ordered_json;
 
@@ -177,10 +177,10 @@ void WriteIngameSpoilerLog() {
         spoilerData.ItemLocations[spoilerItemIndex].LocationFlag = loc->GetCollectionCheck().flag;
 
         // Collect Type and Reveal Type
-        if (key == GANON) {
+        if (key == RC_GANON) {
             spoilerData.ItemLocations[spoilerItemIndex].CollectType = COLLECTTYPE_NEVER;
             spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
-        } else if (key == MARKET_BOMBCHU_BOWLING_BOMBCHUS) {
+        } else if (key == RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS) {
             spoilerData.ItemLocations[spoilerItemIndex].CollectType = COLLECTTYPE_REPEATABLE;
             spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
         }

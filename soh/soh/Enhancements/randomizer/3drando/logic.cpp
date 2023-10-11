@@ -371,17 +371,17 @@ namespace Logic {
     return Ocarina && song;
   }
 
-  static bool IsMagicItem(uint32_t item) {
-    return item == DINS_FIRE    ||
-           item == FARORES_WIND ||
-           item == NAYRUS_LOVE  ||
-           item == LENS_OF_TRUTH;
+  static bool IsMagicItem(RandomizerGet item) {
+    return item == RG_DINS_FIRE    ||
+           item == RG_FARORES_WIND ||
+           item == RG_NAYRUS_LOVE  ||
+           item == RG_LENS_OF_TRUTH;
   }
 
-  static bool IsMagicArrow(uint32_t item) {
-    return item == FIRE_ARROWS ||
-           item == ICE_ARROWS  ||
-           item == LIGHT_ARROWS;
+  static bool IsMagicArrow(RandomizerGet item) {
+    return item == RG_FIRE_ARROWS ||
+           item == RG_ICE_ARROWS  ||
+           item == RG_LIGHT_ARROWS;
   }
 
   bool HasItem(RandomizerGet itemName) {

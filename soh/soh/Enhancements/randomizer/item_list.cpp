@@ -742,7 +742,7 @@ void StaticData::InitItemTable() {
         RandoItem(RG_ARROWS_10, Text{ "Arrows (10)", "Flèches (10)", "Pfeile (10)" }, ITEMTYPE_REFILL, GI_ARROWS_MEDIUM,
                   false, &Logic::noVariable, RHT_ARROWS_10, ITEM_ARROWS_MEDIUM, OBJECT_GI_ARROW, GID_ARROWS_MEDIUM, 0xE6,
                   0x49, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
-    itemTable[ARROWS_30] =
+    itemTable[RG_ARROWS_30] =
         RandoItem(RG_ARROWS_30, Text{ "Arrows (30)", "Flèches (30)", "Pfeile (30)" }, ITEMTYPE_REFILL, GI_ARROWS_LARGE,
                   false, &Logic::noVariable, RHT_ARROWS_30, ITEM_ARROWS_LARGE, OBJECT_GI_ARROW, GID_ARROWS_LARGE, 0xE6,
                   0x4A, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);

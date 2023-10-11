@@ -125,7 +125,7 @@ static std::vector<Entrance*> AssumeEntrancePool(std::vector<Entrance*>& entranc
   return assumedPool;
 }
 
-static std::vector<Entrance*> BuildOneWayTargets(std::vector<EntranceType> typesToInclude, std::vector<std::pair<AreaKey, AreaKey>> exclude = {}/*, target_region_names*/) {
+static std::vector<Entrance*> BuildOneWayTargets(std::vector<EntranceType> typesToInclude, std::vector<std::pair<RandomizerRegion, RandomizerRegion>> exclude = {}/*, target_region_names*/) {
   std::vector<Entrance*> oneWayEntrances = {};
   // Get all entrances of the specified type
   for (EntranceType poolType : typesToInclude) {
@@ -133,7 +133,7 @@ static std::vector<Entrance*> BuildOneWayTargets(std::vector<EntranceType> types
   }
   // Filter out any that are passed in the exclusion list
   FilterAndEraseFromPool(oneWayEntrances, [&exclude](Entrance* entrance){
-    std::pair<AreaKey, AreaKey> entranceBeingChecked (entrance->GetParentRegionKey(), entrance->GetConnectedRegionKey());
+    std::pair<RandomizerRegion, RandomizerRegion> entranceBeingChecked (entrance->GetParentRegionKey(), entrance->GetConnectedRegionKey());
     return ElementInContainer(entranceBeingChecked, exclude);
   });
 
@@ -378,9 +378,9 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
   (entrancePlaced == nullptr || type == EntranceType::Interior || type == EntranceType::SpecialInterior)) {
     //When cows are shuffled, ensure both Impa's House entrances are in the same hint area because the cow is reachable from both sides
     if (Settings::ShuffleCows) {
-      auto impasHouseFrontHintRegion = GetHintRegionHintKey(KAK_IMPAS_HOUSE);
-      auto impasHouseBackHintRegion = GetHintRegionHintKey(KAK_IMPAS_HOUSE_BACK);
-      if (impasHouseFrontHintRegion != NONE && impasHouseBackHintRegion != NONE && impasHouseBackHintRegion != LINKS_POCKET && impasHouseFrontHintRegion != LINKS_POCKET && impasHouseBackHintRegion != impasHouseFrontHintRegion) {
+      auto impasHouseFrontHintRegion = GetHintRegionHintKey(RR_KAK_IMPAS_HOUSE);
+      auto impasHouseBackHintRegion = GetHintRegionHintKey(RR_KAK_IMPAS_HOUSE_BACK);
+      if (impasHouseFrontHintRegion != RHT_NONE && impasHouseBackHintRegion != RHT_NONE && impasHouseBackHintRegion != RHT_LINKS_POCKET && impasHouseFrontHintRegion != RHT_LINKS_POCKET && impasHouseBackHintRegion != impasHouseFrontHintRegion) {
         auto message = "Kak Impas House entrances are not in the same hint area\n";
         SPDLOG_DEBUG(message);
         return false;
@@ -1149,7 +1149,7 @@ int ShuffleAllEntrances() {
 
     if (poolType == EntranceType::OwlDrop) {
       validTargetTypes = {EntranceType::WarpSong, EntranceType::OwlDrop, EntranceType::Overworld, EntranceType::Extra};
-      oneWayTargetEntrancePools[poolType] = BuildOneWayTargets(validTargetTypes, {std::make_pair(PRELUDE_OF_LIGHT_WARP, TEMPLE_OF_TIME)});
+      oneWayTargetEntrancePools[poolType] = BuildOneWayTargets(validTargetTypes, {std::make_pair(RR_PRELUDE_OF_LIGHT_WARP, RR_TEMPLE_OF_TIME)});
       // Owl Drops are only accessible as child, so targets should reflect that
       for (Entrance* target : oneWayTargetEntrancePools[poolType]) {
         target->SetCondition([]{return Logic::IsChild;});
