@@ -730,22 +730,24 @@ void Player_SetModelsForHoldingShield(Player* this) {
             !Player_HoldsTwoHandedWeapon(this)) && !Player_IsChildWithHylianShield(this)) {
             this->rightHandType = 10;
             this->rightHandDLists = &sPlayerDListGroups[10][gSaveContext.linkAge];
-            if (Player_CanUseNewLoadingMethodRightHand(this))
-                this->rightHandDLists = &sPlayerDListGroupsAlt[10][gSaveContext.linkAge];
+
+            if (CVarGetInteger("gAltLinkEquip", 1)) {
+                if (Player_CanUseNewLoadingMethodRightHand(this)) {
+                    this->rightHandDLists = &sPlayerDListGroupsAlt[10][gSaveContext.linkAge];
+                }
+            }
+
             if (this->sheathType == 18) {
                 this->sheathType = 16;
             } else if (this->sheathType == 19) {
                 this->sheathType = 17;
             }
-            // AltEquip TODO: Comment from @inspectredc's code review of HarbourMasters/Shipwright#3008
-            // 
-            // > More of a question here to help my understanding; does this mean that the alt DList always going to be used? 
-            // > if so, is that the intention and why is it required instead of using a Player_CanUseNewLoadingMethod?
-            // this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
+
             if (CVarGetInteger("gAltLinkEquip", 1)) {
                 this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
             }
+
             this->modelAnimType = 2;
             this->itemAction = -1;
         }
@@ -756,32 +758,43 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     // Left hand
     this->leftHandType = gPlayerModelTypes[modelGroup][1];
     this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
-    if (Player_CanUseNewLoadingMethodLeftHand(this))
-        this->leftHandDLists = &sPlayerDListGroupsAlt[this->leftHandType][gSaveContext.linkAge];
+
+    if (CVarGetInteger("gAltLinkEquip", 1)) {
+        if (Player_CanUseNewLoadingMethodLeftHand(this)) {
+            this->leftHandDLists = &sPlayerDListGroupsAlt[this->leftHandType][gSaveContext.linkAge];
+        }
+    }
 
     // Right hand
     this->rightHandType = gPlayerModelTypes[modelGroup][2];
     this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
-    if (Player_CanUseNewLoadingMethodRightHand(this))
-        this->rightHandDLists = &sPlayerDListGroupsAlt[this->rightHandType][gSaveContext.linkAge];
 
-    if ((CVarGetInteger("gBowSlingShotAmmoFix", 0) && !Player_CanUseNewLoadingMethodRightHand(this)) &&
-        this->rightHandType == 11) { // If holding Bow/Slingshot without new DList system
-        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
+    if (CVarGetInteger("gAltLinkEquip", 1)) {
+        if (Player_CanUseNewLoadingMethodRightHand(this)) {
+            this->rightHandDLists = &sPlayerDListGroupsAlt[this->rightHandType][gSaveContext.linkAge];
+        }
+
+        if ((CVarGetInteger("gBowSlingShotAmmoFix", 0) && !Player_CanUseNewLoadingMethodRightHand(this)) &&
+            this->rightHandType == 11) { // If holding Bow/Slingshot without new DList system
+            this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
+        }
+    } else { // gAltLinkEquip disabled
+        if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && this->rightHandType == 11) { // If holding Bow/Slingshot
+            this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
+        }
     }
 
     // Sheath
     this->sheathType = gPlayerModelTypes[modelGroup][3];
-    // AltEquip TODO: This is another instance of the confusing intent of sPlayerDListGroupsAlt flagged by inspect.
-    // this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
     this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
+
     if (CVarGetInteger("gAltLinkEquip", 1)) {
         this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
     }
 
     // Waist
     this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
-    // leftover from waist bomb bag, no alt DList needed here.
+    // gAltLinkEquip: leftover from waist bomb bag, no alt DList needed here.
 
     Player_SetModelsForHoldingShield(this);
 }
