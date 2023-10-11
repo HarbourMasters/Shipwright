@@ -2512,9 +2512,9 @@ s32 Player_OverrideLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         return 0;
     }
 
-    if (!CVarGetInteger("gAltLinkEquip", 1)) { // Use vanilla behavior
-        dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
-    } else { // Use alternate asset loading behavior
+    dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
+    
+    if (CVarGetInteger("gAltLinkEquip", 1)) {
         Player* thisplayer = GET_PLAYER(play);
         dLists = &sPlayerDListGroupsAlt[type][gSaveContext.linkAge];
         if (limbIndex == PLAYER_LIMB_L_HAND && !Player_CanUseNewLoadingMethodLeftHandPause(thisplayer)) {
