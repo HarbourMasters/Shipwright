@@ -29,22 +29,23 @@ enum ItemType {
     ITEMTYPE_DUNGEONREWARD
 };
 
-class RandoItem {
+namespace Rando {
+class Item {
   public:
-    RandoItem() = default;
-    RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
+    Item() = default;
+    Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
                      bool* logicVar_, RandomizerHintTextKey hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
                      uint16_t textId_, uint16_t field_, int16_t chestAnimation_, GetItemCategory category_,
                      uint16_t modIndex_, bool progressive = false, uint16_t price_ = 0);
-    RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
+    Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
               uint8_t* logicVar_, RandomizerHintTextKey hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
               uint16_t textId_, uint16_t field_, int16_t chestAnimation_, GetItemCategory category_, uint16_t modIndex_,
               bool progressive = false, uint16_t price_ = 0);
-    RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
+    Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
               bool* logicVar_, RandomizerHintTextKey hintKey_, bool progressive = false, uint16_t price = 0);
-    RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
+    Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
               uint8_t* logicVar_, RandomizerHintTextKey hintKey_, bool progressive = false, uint16_t price = 0);
-    ~RandoItem();
+    ~Item();
 
     void ApplyEffect();
     void UndoEffect();
@@ -67,8 +68,8 @@ class RandoItem {
     bool IsMajorItem() const;
     RandomizerHintTextKey GetHintKey() const;
     const HintText& GetHint() const;
-    bool operator==(const RandoItem& right) const;
-    bool operator!=(const RandoItem& right) const;
+    bool operator==(const Item& right) const;
+    bool operator!=(const Item& right) const;
 
   private:
     RandomizerGet randomizerGet;
@@ -83,3 +84,4 @@ class RandoItem {
     bool playthrough = false;
    std::shared_ptr<GetItemEntry> giEntry = nullptr;
 };
+}

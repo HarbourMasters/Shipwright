@@ -6,7 +6,8 @@
 #include "3drando/item_pool.hpp"
 #include "z64item.h"
 
-RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
+namespace Rando {
+Item::Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
                      bool* logicVar_, RandomizerHintTextKey hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
                      uint16_t textId_, uint16_t field_, int16_t chestAnimation_, GetItemCategory category_,
                      uint16_t modIndex_, bool progressive_, uint16_t price_)
@@ -15,7 +16,7 @@ RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, i
     giEntry = std::shared_ptr<GetItemEntry>(new GetItemEntry(GET_ITEM(itemId_, objectId_, gid_, textId_, field_, chestAnimation_, category_, modIndex_, getItemId_)));
 }
 
-RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
+Item::Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
                      uint8_t* logicVar_, RandomizerHintTextKey hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
                      uint16_t textId_, uint16_t field_, int16_t chestAnimation_, GetItemCategory category_,
                      uint16_t modIndex_, bool progressive_, uint16_t price_)
@@ -25,21 +26,21 @@ RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, i
         GET_ITEM(itemId_, objectId_, gid_, textId_, field_, chestAnimation_, category_, modIndex_, getItemId_)));
 }
 
-RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
+Item::Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
                      bool* logicVar_, RandomizerHintTextKey hintKey_, bool progressive_, uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
       advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
 }
 
-RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
+Item::Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
                      uint8_t* logicVar_, RandomizerHintTextKey hintKey_, bool progressive_, uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
       advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
 }
 
-    RandoItem::~RandoItem() = default;
+    Item::~Item() = default;
 
-void RandoItem::ApplyEffect() {
+void Item::ApplyEffect() {
     // If this is a key ring, logically add as many keys as we could need
     if (RG_FOREST_TEMPLE_KEY_RING <= hintKey && hintKey <= RG_GANONS_CASTLE_KEY_RING) {
         *std::get<uint8_t*>(logicVar) += 10;
@@ -53,7 +54,7 @@ void RandoItem::ApplyEffect() {
     Logic::UpdateHelpers();
 }
 
-void RandoItem::UndoEffect() {
+void Item::UndoEffect() {
     if (RG_FOREST_TEMPLE_KEY_RING <= hintKey && hintKey <= RG_GANONS_CASTLE_KEY_RING) {
         *std::get<uint8_t*>(logicVar) -= 10;
     } else {
@@ -66,7 +67,7 @@ void RandoItem::UndoEffect() {
     Logic::UpdateHelpers();
 }
 
-Rando::ItemOverride_Value RandoItem::Value() const {
+Rando::ItemOverride_Value Item::Value() const {
     Rando::ItemOverride_Value val;
 
     val.all = 0;
@@ -89,61 +90,61 @@ Rando::ItemOverride_Value RandoItem::Value() const {
     return val;
 }
 
-const Text& RandoItem::GetName() const {
+const Text& Item::GetName() const {
     return name;
 }
 
-bool RandoItem::IsAdvancement() const {
+bool Item::IsAdvancement() const {
     return advancement;
 }
 
-int RandoItem::GetItemID() const {
+int Item::GetItemID() const {
     return getItemId;
 }
 
-ItemType RandoItem::GetItemType() const {
+ItemType Item::GetItemType() const {
     return type;
 }
 
-RandomizerGet RandoItem::GetRandomizerGet() {
+RandomizerGet Item::GetRandomizerGet() {
     return randomizerGet;
 }
 
-uint16_t RandoItem::GetPrice() const {
+uint16_t Item::GetPrice() const {
     return price;
 }
 
-std::shared_ptr<GetItemEntry> RandoItem::GetGIEntry() const {
+std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
     return giEntry;
 }
 
-GetItemEntry RandoItem::GetGIEntry_Copy() {
+GetItemEntry Item::GetGIEntry_Copy() {
     return *giEntry;
 }
 
-void RandoItem::SetPrice(uint16_t price_) {
+void Item::SetPrice(uint16_t price_) {
     price = price_;
 }
 
-void RandoItem::SetAsPlaythrough() {
+void Item::SetAsPlaythrough() {
     playthrough = true;
 }
 
-void RandoItem::SetCustomDrawFunc(CustomDrawFunc drawFunc) {
+void Item::SetCustomDrawFunc(CustomDrawFunc drawFunc) {
     giEntry->drawFunc = drawFunc;
 }
 
-bool RandoItem::IsPlaythrough() const {
+bool Item::IsPlaythrough() const {
     return playthrough;
 }
 
-bool RandoItem::IsBottleItem() const {
+bool Item::IsBottleItem() const {
     return getItemId == 0x0F ||                      // Empty Bottle
            getItemId == 0X14 ||                      // Bottle with Milk
            (getItemId >= 0x8C && getItemId <= 0x94); // Rest of bottled contents
 }
 
-bool RandoItem::IsMajorItem() const {
+bool Item::IsMajorItem() const {
     using namespace Settings;
     if (type == ITEMTYPE_TOKEN) {
         return Bridge.Is(RAINBOWBRIDGE_TOKENS) || LACSCondition == LACSCONDITION_TOKENS;
@@ -191,18 +192,19 @@ bool RandoItem::IsMajorItem() const {
     return IsAdvancement();
 }
 
-RandomizerHintTextKey RandoItem::GetHintKey() const {
+RandomizerHintTextKey Item::GetHintKey() const {
     return hintKey;
 }
 
-const HintText& RandoItem::GetHint() const {
+const HintText& Item::GetHint() const {
     return Hint(hintKey);
 }
 
-bool RandoItem::operator==(const RandoItem& right) const {
+bool Item::operator==(const Item& right) const {
     return type == right.GetItemType() && getItemId == right.GetItemID();
 }
 
-bool RandoItem::operator!=(const RandoItem& right) const {
+bool Item::operator!=(const Item& right) const {
     return !operator==(right);
+}
 }

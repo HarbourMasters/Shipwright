@@ -17,7 +17,7 @@ void ItemLocation::RemoveFromPool() {
     addedToPool = false;
 }
 
-const RandoItem& ItemLocation::GetPlacedItem() const {
+const Item& ItemLocation::GetPlacedItem() const {
     return StaticData::RetrieveItem(placedItem);
 }
 

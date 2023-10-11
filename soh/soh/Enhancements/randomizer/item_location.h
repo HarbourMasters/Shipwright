@@ -52,7 +52,7 @@ class ItemLocation {
     bool IsAddedToPool() const;
     void AddToPool();
     void RemoveFromPool();
-    const RandoItem& GetPlacedItem() const;
+    const Item& GetPlacedItem() const;
     const Text& GetPlacedItemName() const;
     RandomizerGet GetPlacedRandomizerGet() const;
     void SetPlacedItem(const RandomizerGet item);

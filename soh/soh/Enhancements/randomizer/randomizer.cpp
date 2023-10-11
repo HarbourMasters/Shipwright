@@ -2751,7 +2751,7 @@ GetItemEntry Randomizer::GetItemEntryFromRGData(RandomizerGetData rgData, GetIte
         return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GI_RUPEE_BLUE);
     }
 
-    RandoItem item = StaticData::RetrieveItem(rgData.rgID);
+    Rando::Item item = StaticData::RetrieveItem(rgData.rgID);
     GetItemEntry giEntry = item.GetGIEntry_Copy();
     // If we have an ice trap, we want to change the GID and drawFunc to the fakeRgID's values.
     if (rgData.rgID == RG_ICE_TRAP) {

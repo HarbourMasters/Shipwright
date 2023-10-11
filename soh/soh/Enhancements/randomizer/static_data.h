@@ -13,14 +13,14 @@
  */
 class StaticData {
     private:
-      static std::array<RandoItem, RG_MAX> itemTable;
+      static std::array<Rando::Item, RG_MAX> itemTable;
       static std::array<Rando::Location, RC_MAX> locationTable;
 
     public:
       static void InitItemTable();
-      static RandoItem& RetrieveItem(const RandomizerGet rgid);
-      static RandoItem& ItemFromGIID(const int giid);
-      static std::array<RandoItem, RG_MAX>& GetItemTable();
+      static Rando::Item& RetrieveItem(const RandomizerGet rgid);
+      static Rando::Item& ItemFromGIID(const int giid);
+      static std::array<Rando::Item, RG_MAX>& GetItemTable();
       static void InitLocationTable();
       static Rando::Location* Location(RandomizerCheck locKey);
       static std::array<Rando::Location, RC_MAX>& GetLocationTable();
