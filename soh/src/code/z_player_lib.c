@@ -293,7 +293,7 @@ Gfx* sFirstPersonRightHandHoldingWeaponDLs[] = {
     gLinkChildRightArmStretchedSlingshotDL,
 };
 
-// Alternate Equipment Loading
+// Alternate Equipment Loading - first-person view hand DLs.
 Gfx* sFirstPersonRightHandDLs[] = {
     gLinkAdultFPSHandDL,
     gLinkChildFPSHandDL,
@@ -324,7 +324,7 @@ Gfx** sPlayerDListGroups[] = {
     sPlayerWaistDLs,
 };
 
-// Alternate Equipment Loading
+// Alternate Equipment Loading - Alternative Player DListGroups
 Gfx** sPlayerDListGroupsAlt[] = {
     gPlayerLeftHandOpenDLs,
     gPlayerLeftHandClosedDLs,
@@ -1534,7 +1534,8 @@ s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, G
             // Vanilla behavior. "HookshotFarDL" refers to first-person Hookshot.
             *dList = Player_HoldsHookshot(this) ? gLinkAdultRightHandHoldingHookshotFarDL
                                                 : sFirstPersonRightHandHoldingWeaponDLs[firstPersonWeaponIndex];
-            if (Player_CanUseNewLoadingMethodFirstPerson(this)) { // Alternate Asset Loading behavior
+
+            if (Player_CanUseNewLoadingMethodFirstPerson(this)) { // Alternate Equipment Loading behavior
                 *dList = sFirstPersonRightHandDLs[gSaveContext.linkAge];
             }
         } else {
@@ -1942,7 +1943,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
         Math_Vec3f_Copy(&this->leftHandPos, D_80160000);
 
-        // Alternate Equipment Loading
+        // Alternate Equipment Loading - AltEquip left hand items.
         if (Player_CanUseNewLoadingMethodLeftHand(this) && this->actor.id != 51) {
             // AltEquip TODO: Comment from @inspectredc's code review of HarbourMasters/Shipwright#3008
             //
@@ -1993,7 +1994,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                     CLOSE_DISPS(play->state.gfxCtx);
                     break;
             }
-        }
+        } // End of AltEquip left hand items block.
 
         if (this->itemAction == PLAYER_IA_DEKU_STICK) {
             Vec3f sp124[3];
@@ -2076,7 +2077,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 if (this->stateFlags1 & 0x200) {
                     if (!CVarGetInteger("gAltLinkEquip", 1)) { // use vanilla behavior.
                         Matrix_MultVec3f(&sLeftHandArrowVec3, &hookedActor->world.pos);
-                    } else { // use alternate asset loading behavior
+                    } else { // use Alternate Equipment Loading behavior
                         if (LINK_IS_CHILD && CVarGetInteger("gBowSlingShotAmmoFix", 0) &&
                             this->itemAction != PLAYER_IA_SLINGSHOT) {
                             Matrix_MultVec3f(&sChildLeftHandArrowVec3, &hookedActor->world.pos);
@@ -2108,6 +2109,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
     } else if (limbIndex == PLAYER_LIMB_R_HAND) {
         Actor* heldActor = this->heldActor;
 
+        // Alternate Equipment Loading - AltEquip right hand items.
         if (CVarGetInteger("gAltLinkEquip", 1)) {
             Vec3f projectedHeadPos;
             SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &this->actor.focus.pos, &projectedHeadPos);
@@ -2185,7 +2187,8 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                     Player_DrawOcarinaItem(play, gLinkOcarinaOfTimeDL);
                 }
             }
-        }
+        } // End of AltEquip hands block.
+
         if (this->rightHandType == 0xFF) {
             Matrix_Get(&this->shieldMf);
         } else if ((this->rightHandType == 11) || (this->rightHandType == 12)) {
@@ -2636,10 +2639,10 @@ void Player_DrawPauseImpl(PlayState* play, void* seg04, void* seg06, SkelAnime* 
 
     gSPSegment(POLY_OPA_DISP++, 0x0C, gCullBackDList);
 
-    if (!CVarGetInteger("gAltLinkEquip", 1)) { // Use vanilla behavior
+    if (!CVarGetInteger("gAltLinkEquip", 1)) { // use vanilla behavior
         Player_DrawImpl(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
                         Player_OverrideLimbDrawPause, NULL, &sp12C);
-    } else { // Use alternate asset loading behavior
+    } else { // use Alternate Equipment Loading behavior
         Player_DrawImpl(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
                         Player_OverrideLimbDrawPause, Player_PostLimbDrawPause, &sp12C);
     }
