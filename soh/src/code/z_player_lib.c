@@ -1527,11 +1527,11 @@ s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, G
                     firstPersonWeaponIndex = 1;
                 }
             }
-            if (Player_CanUseNewLoadingMethodFirstPerson(this)) { // Alternate behavior
-                *dList = sFirstPersonRightHandDLs[gSaveContext.linkAge];
-            } else { // Vanilla behavior. "HookshotFarDL" refers to the first-person Hookshot.
-                *dList = Player_HoldsHookshot(this) ? gLinkAdultRightHandHoldingHookshotFarDL
+            // Vanilla behavior. "HookshotFarDL" refers to first-person Hookshot.
+            *dList = Player_HoldsHookshot(this) ? gLinkAdultRightHandHoldingHookshotFarDL
                                                 : sFirstPersonRightHandHoldingWeaponDLs[firstPersonWeaponIndex];
+            if (Player_CanUseNewLoadingMethodFirstPerson(this)) { // Alternate Asset Loading behavior
+                *dList = sFirstPersonRightHandDLs[gSaveContext.linkAge];
             }
         } else {
             *dList = NULL;
@@ -1847,6 +1847,8 @@ Vec3f sLeftRightFootLimbModelFootPos[] = {
 // started working out properly
 #define RETICLE_MAX 3.402823466e+12f
 
+// Beginning of Alternate Equipment Loading "Draw" function block
+
 // Alternate Equipment Loading function.
 // Rescales Child Link's items for Adult Link.
 void Player_DrawChildItem(PlayState* play, Gfx* dlist) {
@@ -1920,6 +1922,8 @@ void Player_DrawOcarinaItem(PlayState* play, Gfx* dlist) {
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
+
+// End of Alternate Equipment Loading "Draw" function block
 
 void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
@@ -2007,7 +2011,8 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             Matrix_RotateZYX(-0x8000, 0, 0x4000, MTXMODE_APPLY);
             Matrix_Scale(1.0f, this->unk_85C, 1.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gLinkChildLinkDekuStickDL);
 
             CLOSE_DISPS(play->state.gfxCtx);
@@ -2023,9 +2028,23 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
             func_80090A28(this, spE4);
             func_800906D4(play, this, spE4);
+        } // 
+        /*
+        else if ((*dList != NULL) && (this->leftHandType == 7)) {
+            Color_RGB8* bottleColor = &sBottleColors[Player_ActionToBottle(this, this->itemAction)];
+
+            OPEN_DISPS(play->state.gfxCtx);
+
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gDPSetEnvColor(POLY_XLU_DISP++, bottleColor->r, bottleColor->g, bottleColor->b, 0);
+            gSPDisplayList(POLY_XLU_DISP++, sBottleDLists[(gSaveContext.linkAge)]);
+
+            CLOSE_DISPS(play->state.gfxCtx);
         }
+        */
 
-
+        // AltEquip TODO: A problematic change to the original code was made here.
         if ((*dList != NULL) && (this->leftHandType == 7)) {
             Color_RGB8* bottleColor = &sBottleColors[Player_ActionToBottle(this, this->itemAction)];
 
@@ -2203,20 +2222,21 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 Matrix_RotateZ(this->unk_858 * -0.2f, MTXMODE_APPLY);
             }
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, stringData->dList);
 
             Matrix_Pop();
 
             CLOSE_DISPS(play->state.gfxCtx);
-
         } else if ((this->actor.scale.y >= 0.0f) && (this->rightHandType == 10)) {
             Matrix_Get(&this->shieldMf);
             Player_UpdateShieldCollider(play, this, &this->shieldQuad, sRightHandLimbModelShieldQuadVertices);
         }
 
         if (this->actor.scale.y >= 0.0f) {
-            if ((this->heldItemAction == PLAYER_IA_HOOKSHOT) || (this->heldItemAction == PLAYER_IA_LONGSHOT)) {
+            if ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
+                (this->heldItemAction == PLAYER_IA_LONGSHOT)) {
                 Matrix_MultVec3f(&D_80126184, &this->unk_3C8);
 
                 if (heldActor != NULL) {
@@ -2232,14 +2252,14 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                     if (func_8002DD78(this) != 0) {
                         Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
                         Player_DrawHookshotReticle(
-                            play, this,
-                            ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 77600.0f) *
-                                CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f));
+                            play, this, ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 77600.0f) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f));
                     }
                 }
-            } else if (CVarGetInteger("gBowReticle", 0) &&
-                       ((this->heldItemAction == PLAYER_IA_BOW_FIRE) || (this->heldItemAction == PLAYER_IA_BOW_ICE) ||
-                        (this->heldItemAction == PLAYER_IA_BOW_LIGHT) || (this->heldItemAction == PLAYER_IA_BOW) ||
+            } else if (CVarGetInteger("gBowReticle", 0) && (
+                        (this->heldItemAction == PLAYER_IA_BOW_FIRE) ||
+                        (this->heldItemAction == PLAYER_IA_BOW_ICE) ||
+                        (this->heldItemAction == PLAYER_IA_BOW_LIGHT) ||
+                        (this->heldItemAction == PLAYER_IA_BOW) ||
                         (this->heldItemAction == PLAYER_IA_SLINGSHOT))) {
                 if (heldActor != NULL) {
                     MtxF sp44;
@@ -2858,9 +2878,9 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
     } else {
 
         if (!LINK_IS_ADULT) {
-            if (shield == PLAYER_SHIELD_DEKU ||
-                (CVarGetInteger("gAltLinkEquip", 1) && shield == PLAYER_SHIELD_MIRROR) ||
-                (CVarGetInteger("gAltLinkEquip", 1) &&
+            bool CVar_gAltLinkEquip = (bool)CVarGetInteger("gAltLinkEquip", 1);
+            if (shield == PLAYER_SHIELD_DEKU || (CVar_gAltLinkEquip && shield == PLAYER_SHIELD_MIRROR) ||
+                (CVar_gAltLinkEquip &&
                  (shield == PLAYER_SHIELD_HYLIAN && CVarGetInteger("gNormalChildHylianShield", 0)))) {
                 srcTable = gLinkPauseChildDekuShieldJointTable;
             } else {
