@@ -527,7 +527,7 @@ u16 EnGo2_GetTextIdGoronCityLink(PlayState* play, EnGo2* this) {
 
     if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
         return Flags_GetInfTable(INFTABLE_10F) ? 0x3042 : 0x3041;
-    } else if (CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
+    } else if (CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)) {
         return Flags_GetInfTable(INFTABLE_SPOKE_TO_GORON_LINK) ? 0x3038 : 0x3037;
     } else if (Flags_GetInfTable(INFTABLE_STOPPED_GORON_LINKS_ROLLING)) {
         this->unk_20C = 0;
@@ -1221,7 +1221,7 @@ s32 EnGo2_IsCameraModified(EnGo2* this, PlayState* play) {
         return true;
     } else if (((!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
                 (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) &&
-                CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
+                CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)) {
         return true;
     } else {
         return false;
@@ -1280,7 +1280,7 @@ void EnGo2_SelectGoronWakingUp(EnGo2* this) {
         case GORON_CITY_LINK:
             if (((!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
                  (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) &&
-                CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
+                CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)) {
                 EnGo2_WakingUp(this);
                 break;
             }
@@ -1642,7 +1642,7 @@ void EnGo2_Init(Actor* thisx, PlayState* play) {
                 this->actor.home.pos = this->actor.world.pos;
                 if (((!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
                      (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) &&
-                    CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
+                    CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)) {
                     EnGo2_GetItemAnimation(this, play);
                 } else {
                     this->actionFunc = EnGo2_CurledUp;
