@@ -666,7 +666,9 @@ std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
 
 Rando::ItemLocation* GetItemLocation(RandomizerGet item) {
     auto ctx = Rando::Context::GetInstance();
-    return ctx->GetItemLocation(FilterFromPool(ctx->allLocations, [item, ctx](const RandomizerCheck loc){return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == item;})[0]);
+    return ctx->GetItemLocation(FilterFromPool(ctx->allLocations, [item, ctx](const RandomizerCheck loc) {
+        return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == item;
+    })[0]);
 }
 
 // Writes the hints to the spoiler log, if they are enabled.
@@ -756,37 +758,37 @@ static void WriteHints(int language) {
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;
     }
+    auto ctx = Rando::Context::GetInstance();
+    for (const RandomizerCheck key : StaticData::gossipStoneLocations) {
+        RandoHint* hint = ctx->GetHint((RandomizerHintKey)(key - RC_DMC_GOSSIP_STONE + 1));
+        Rando::ItemLocation* hintedLocation = ctx->GetItemLocation(hint->GetHintedLocation());
+        std::string unformattedHintTextString;
+        switch (language) {
+            case 0:
+            default:
+                unformattedHintTextString = hint->GetText().GetEnglish();
+                break;
+            case 2:
+                unformattedHintTextString = hint->GetText().GetFrench();
+                break;
+        }
 
-    //TODO: Hint Refactor
-    // for (const uint32_t key : gossipStoneLocations) {
-    //     ItemLocation* location = Location(key);
-    //     ItemLocation* hintedLocation = Location(location->GetHintedLocation());
-    //     std::string unformattedHintTextString;
-    //     switch (language) {
-    //         case 0:
-    //         default:
-    //             unformattedHintTextString = location->GetPlacedItemName().GetEnglish();
-    //             break;
-    //         case 2:
-    //             unformattedHintTextString = location->GetPlacedItemName().GetFrench();
-    //             break;
-    //     }
+        HintType hintType = hint->GetHintType();
 
-    //     HintType hintType = location->GetHintType();
-
-    //     std::string textStr = AutoFormatHintTextString(unformattedHintTextString);
-    //     jsonData["hints"][location->GetName()]["hint"] = textStr;
-    //     jsonData["hints"][location->GetName()]["type"] = hintTypeNames.find(hintType)->second;
-    //     if (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_NAMED_ITEM || hintType == HINT_TYPE_WOTH) {
-    //         jsonData["hints"][location->GetName()]["item"] = hintedLocation->GetPlacedItemName().GetEnglish();
-    //         if (hintType != HINT_TYPE_NAMED_ITEM || hintType == HINT_TYPE_WOTH) {
-    //             jsonData["hints"][location->GetName()]["location"] = hintedLocation->GetName();
-    //         }
-    //     }
-    //     if (hintType != HINT_TYPE_TRIAL && hintType != HINT_TYPE_JUNK) {
-    //         jsonData["hints"][location->GetName()]["area"] = location->GetHintedRegion();
-    //     }
-    // }
+        std::string textStr = AutoFormatHintTextString(unformattedHintTextString);
+        jsonData["hints"][StaticData::Location(key)->GetName()]["hint"] = textStr;
+        jsonData["hints"][StaticData::Location(key)->GetName()]["type"] = hintTypeNames.find(hintType)->second;
+        if (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_NAMED_ITEM || hintType == HINT_TYPE_WOTH) {
+            jsonData["hints"][StaticData::Location(key)->GetName()]["item"] = hintedLocation->GetPlacedItemName().GetEnglish();
+            if (hintType != HINT_TYPE_NAMED_ITEM || hintType == HINT_TYPE_WOTH) {
+                jsonData["hints"][StaticData::Location(key)->GetName()]["location"] =
+                    StaticData::Location(hintedLocation->GetRandomizerCheck())->GetName();
+            }
+        }
+        if (hintType != HINT_TYPE_TRIAL && hintType != HINT_TYPE_JUNK) {
+            jsonData["hints"][StaticData::Location(key)->GetName()]["area"] = hint->GetHintedRegion();
+        }
+    }
 }
 
 static void WriteAllLocations(int language) {
@@ -846,15 +848,18 @@ static void WriteAllLocations(int language) {
     }
 }
 
-//static void WriteHintData(int language) {
-//    for (auto [hintKey, item_location] : hintedLocations) {
-//        ItemLocation *hint_location = Location(hintKey);
-//        jsonData["hints"][hint_location->GetName()] = { { "text", hint_location->GetPlacedItemName().GetEnglish() },
-//                                                        { "item", item_location->GetPlacedItemName().GetEnglish() },
-//                                                        { "itemLocation", item_location->GetName() },
-//                                                        { "locationArea", item_location->GetParentRegionKey() } };
-//    }
-//}
+static void WriteHintData(int language) {
+    auto ctx = Rando::Context::GetInstance();
+    for (auto [hintKey, item_location] : hintedLocations) {
+        RandoHint* hint = ctx->GetHint(item_location->GetHintKey());
+        jsonData["hints"][StaticData::Location(hint->GetHintedLocation())->GetName()] = {
+            { "text", hint->GetText().GetEnglish() },
+            { "item", item_location->GetPlacedItemName().GetEnglish() },
+            { "itemLocation", StaticData::Location(item_location->GetRandomizerCheck())->GetName() },
+            { "locationArea", item_location->GetParentRegionKey() }
+        };
+    }
+}
 
 const char* SpoilerLog_Write(int language) {
     auto spoilerLog = tinyxml2::XMLDocument(false);
@@ -895,7 +900,7 @@ const char* SpoilerLog_Write(int language) {
     WriteHints(language);
     WriteShuffledEntrances();
     WriteAllLocations(language);
-    //WriteHintData(language);
+    WriteHintData(language);
 
     if (!std::filesystem::exists(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"))) {
         std::filesystem::create_directory(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"));

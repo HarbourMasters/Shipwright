@@ -20,7 +20,7 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
     ctx->overrides.clear();
     CustomMessages::ClearMessages();
     ctx->ItemReset();
-    //TODO: Hint refactor HintReset();
+    ctx->HintReset();
     Areas::AccessReset();
 
     Settings::UpdateSettings(cvarSettings, excludedLocations, enabledTricks);

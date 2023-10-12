@@ -603,6 +603,7 @@ void CreateGanonText() {
   ganonHintText = ganonHintText + "!";
 
   CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(ganonHintText));
+  ctx->AddHint(RH_GANONDORF_HINT, ganonHintText, lightArrowLocation[0], HINT_TYPE_STATIC, GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText());
 }
 
 //Find the location which has the given itemKey and create the generic altar text for the reward
@@ -731,6 +732,7 @@ static Text BuildGanonBossKeyText() {
 }
 
 void CreateAltarText() {
+  auto ctx = Rando::Context::GetInstance();
 
   //Child Altar Text
   if (AltarHintText) {
@@ -747,6 +749,7 @@ void CreateAltarText() {
   } else {
     childAltarText = BuildDoorOfTimeText();
   }
+  ctx->AddHint(RH_ALTAR_CHILD, childAltarText, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
 
   CreateMessageFromTextObject(0x7040, 0, 2, 3, AddColorsAndFormat(childAltarText, {QM_GREEN, QM_RED, QM_BLUE}));
 
@@ -778,6 +781,7 @@ void CreateAltarText() {
   //End
   Hint(RHT_ADULT_ALTAR_TEXT_END).GetText();
   CreateMessageFromTextObject(0x7088, 0, 2, 3, AddColorsAndFormat(adultAltarText, {QM_RED, QM_YELLOW, QM_GREEN, QM_RED, QM_BLUE, QM_YELLOW, QM_PINK, QM_RED, QM_RED, QM_RED, QM_RED}));
+  ctx->AddHint(RH_ALTAR_ADULT, adultAltarText, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
 }
 
 void CreateMerchantsHints() {
@@ -804,6 +808,9 @@ void CreateMerchantsHints() {
     CreateMessageFromTextObject(0x6077, 0, 2, 3, AddColorsAndFormat(carpetSalesmanTextOne, { QM_RED, QM_GREEN }));
     CreateMessageFromTextObject(0x6078, 0, 2, 3,
                                 AddColorsAndFormat(carpetSalesmanTextTwo, { QM_RED, QM_YELLOW, QM_RED }));
+    ctx->AddHint(RH_MEDIGORON, medigoronText, RC_GC_MEDIGORON, HINT_TYPE_STATIC, GetHintRegion(RR_GORON_CITY)->GetHint().GetText());
+    ctx->AddHint(RH_GRANNYS_SHOP, grannyText, RC_KAK_GRANNYS_SHOP, HINT_TYPE_STATIC, GetHintRegion(RR_KAKARIKO_VILLAGE)->GetHint().GetText());
+    ctx->AddHint(RH_WASTELAND_BOMBCHU_SALESMAN, carpetSalesmanTextOne, RC_WASTELAND_BOMBCHU_SALESMAN, HINT_TYPE_STATIC, GetHintRegion(RR_HAUNTED_WASTELAND)->GetHint().GetText());
 }
 
 void CreateDampesDiaryText() {
@@ -833,6 +840,7 @@ void CreateDampesDiaryText() {
   
   dampesText = temp1 + area + temp2;
   dampeHintLoc = StaticData::Location(location)->GetName();
+  ctx->AddHint(RH_DAMPES_DIARY, dampesText, location, HINT_TYPE_STATIC, area);
 }
 
 void CreateGregRupeeHint() {
@@ -860,6 +868,7 @@ void CreateGregRupeeHint() {
   };
 
     gregText = temp1 + area + temp2;
+    ctx->AddHint(RH_GREG_RUPEE, gregText, location, HINT_TYPE_STATIC, area);
 }
 
 void CreateWarpSongTexts() {
@@ -923,7 +932,7 @@ void CreateAllHints() {
       // Only filter locations that had a random item placed at them (e.g. don't get cow locations if shuffle cows is
       // off)
       auto alwaysHintLocations = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
-          return ((ctx->GetHint(ctx->GetItemLocation(loc)->GetHintKey())->GetHintType() == HINT_TYPE_ALWAYS) ||
+          return ((StaticData::Location(loc)->GetHint()->GetType() == HintCategory::Always) ||
                   // If we have Rainbow Bridge set to Greg, add a hint for where Greg is
                   (Bridge.Is(RAINBOWBRIDGE_GREG) && !GregHintText &&
                    ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_GREG_RUPEE)) &&

@@ -34,6 +34,7 @@ typedef enum {
     HINT_TYPE_DUNGEON,
     HINT_TYPE_JUNK,
     HINT_TYPE_NAMED_ITEM,
+    HINT_TYPE_STATIC, // For special hints, like Light Arrows or Hookshot Hints
     HINT_TYPE_MAX
 } HintType;
 
@@ -1871,6 +1872,14 @@ typedef enum {
     RH_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE,
     RH_DMT_STORMS_GROTTO_GOSSIP_STONE,
     RH_DMC_UPPER_GROTTO_GOSSIP_STONE,
+    RH_GANONDORF_HINT,
+    RH_DAMPES_DIARY,
+    RH_GREG_RUPEE,
+    RH_MEDIGORON,
+    RH_GRANNYS_SHOP,
+    RH_WASTELAND_BOMBCHU_SALESMAN,
+    RH_ALTAR_CHILD,
+    RH_ALTAR_ADULT,
     RH_MAX,
 } RandomizerHintKey;
 

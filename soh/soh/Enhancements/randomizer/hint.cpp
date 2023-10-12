@@ -34,3 +34,8 @@ void RandoHint::SetHintedRegion(Text region) {
 std::string RandoHint::GetHintedRegion() {
     return hintedRegion.GetEnglish();
 }
+
+void RandoHint::ResetVariables() {
+    hintedLocation = RC_UNKNOWN_CHECK;
+    addedToPool = false;
+}

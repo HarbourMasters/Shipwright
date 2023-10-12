@@ -15,6 +15,7 @@ class RandoHint {
     void SetHintType (HintType type);
     std::string GetHintedRegion();
     void SetHintedRegion (Text region);
+    void ResetVariables();
     bool IsAddedToPool();
     void AddToPool();
 

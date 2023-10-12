@@ -106,6 +106,10 @@ void Context::ItemReset() {
     for (RandomizerCheck il : allLocations) {
         GetItemLocation(il)->ResetVariables();
     }
+
+    for (RandomizerCheck il : StaticData::dungeonRewardLocations) {
+        GetItemLocation(il)->ResetVariables();
+    }
 }
 
 void Context::LocationReset() {
@@ -113,7 +117,22 @@ void Context::LocationReset() {
         GetItemLocation(il)->RemoveFromPool();
     }
 
-    //TODO: Dungeon Rewards and Hints
+    for (RandomizerCheck il : StaticData::dungeonRewardLocations) {
+        GetItemLocation(il)->RemoveFromPool();
+    }
+
+    for (RandomizerCheck il : StaticData::gossipStoneLocations) {
+        GetItemLocation(il)->RemoveFromPool();
+    }
+
+    GetItemLocation(RC_GANONDORF_HINT)->RemoveFromPool();
+}
+
+void Context::HintReset() {
+    for (RandomizerCheck il : StaticData::gossipStoneLocations) {
+        GetItemLocation(il)->ResetVariables();
+        GetHint((RandomizerHintKey)(il - RC_DMC_GOSSIP_STONE + 1))->ResetVariables();
+    }
 }
 
 void Context::CreateItemOverrides() {

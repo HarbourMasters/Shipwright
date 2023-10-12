@@ -36,6 +36,7 @@ class Context {
                                                   Category categoryInclude, Category categoryExclude = Category::cNull);
         void LocationReset();
         void ItemReset();
+        void HintReset();
         void CreateItemOverrides();
         std::set<ItemOverride, ItemOverride_Compare> overrides;
         std::vector<std::vector<RandomizerCheck>> playthroughLocations;
