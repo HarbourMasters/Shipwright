@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MISC_KAKUSIANA_ROOM_9_H
+#define MISC_KAKUSIANA_ROOM_9_H 1
 
 #include "align_asset_macro.h"
 
@@ -40,3 +41,6 @@ static const ALIGN_ASSET(2) char kakusiana_room_9DL_0006E0[] = dkakusiana_room_9
 
 #define dkakusiana_room_9Tex_002340 "__OTR__scenes/nonmq/kakusiana_scene/kakusiana_room_9Tex_002340"
 static const ALIGN_ASSET(2) char kakusiana_room_9Tex_002340[] = dkakusiana_room_9Tex_002340;
+
+
+#endif // MISC_KAKUSIANA_ROOM_9_H

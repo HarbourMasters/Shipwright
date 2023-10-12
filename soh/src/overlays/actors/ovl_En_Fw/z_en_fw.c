@@ -406,8 +406,7 @@ void EnFw_Draw(Actor* thisx, PlayState* play) {
     EnFw_DrawDust(this, play);
     Matrix_Pop();
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnFw_OverrideLimbDraw, EnFw_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnFw_OverrideLimbDraw, EnFw_PostLimbDraw, this);
 }
 
 void EnFw_AddDust(EnFw* this, Vec3f* initialPos, Vec3f* initialSpeed, Vec3f* accel, u8 initialTimer, f32 scale,

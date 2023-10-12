@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MIZU_OBJECTS_H
+#define OBJECTS_OBJECT_MIZU_OBJECTS_H 1
 
 #include "align_asset_macro.h"
 
@@ -133,3 +134,5 @@ static const ALIGN_ASSET(2) char object_mizu_objectsTex_005E70[] = dobject_mizu_
 
 #define dobject_mizu_objectsTex_00A720 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_00A720"
 static const ALIGN_ASSET(2) char object_mizu_objectsTex_00A720[] = dobject_mizu_objectsTex_00A720;
+
+#endif // OBJECTS_OBJECT_MIZU_OBJECTS_H

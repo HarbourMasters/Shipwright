@@ -47,15 +47,15 @@ typedef struct {
 } DungeonEntranceInfo;
 
 static DungeonEntranceInfo dungeons[] = {
-    //entryway                   exit,   boss,   reverse,bluewarp,dungeon scene,   boss scene
-    { DEKU_TREE_ENTRANCE,        0x0209, 0x040F, 0x0252, 0x0457,  SCENE_YDAN,      SCENE_YDAN_BOSS },
-    { DODONGOS_CAVERN_ENTRANCE,  0x0242, 0x040B, 0x00C5, 0x047A,  SCENE_DDAN,      SCENE_DDAN_BOSS },
-    { JABU_JABUS_BELLY_ENTRANCE, 0x0221, 0x0301, 0x0407, 0x010E,  SCENE_BDAN,      SCENE_BDAN_BOSS },
-    { FOREST_TEMPLE_ENTRANCE,    0x0215, 0x000C, 0x024E, 0x0608,  SCENE_BMORI1,    SCENE_MORIBOSSROOM },
-    { FIRE_TEMPLE_ENTRANCE,      0x024A, 0x0305, 0x0175, 0x0564,  SCENE_HIDAN,     SCENE_FIRE_BS },
-    { WATER_TEMPLE_ENTRANCE,     0x021D, 0x0417, 0x0423, 0x060C,  SCENE_MIZUSIN,   SCENE_MIZUSIN_BS },
-    { SPIRIT_TEMPLE_ENTRANCE,    0x01E1, 0x008D, 0x02F5, 0x0610,  SCENE_JYASINZOU, SCENE_JYASINBOSS },
-    { SHADOW_TEMPLE_ENTRANCE,    0x0205, 0x0413, 0x02B2, 0x0580,  SCENE_HAKADAN,   SCENE_HAKADAN_BS },
+    //entryway                   exit,   boss,   reverse,bluewarp,dungeon scene,         boss scene
+    { DEKU_TREE_ENTRANCE,        0x0209, 0x040F, 0x0252, 0x0457,  SCENE_DEKU_TREE,       SCENE_DEKU_TREE_BOSS },
+    { DODONGOS_CAVERN_ENTRANCE,  0x0242, 0x040B, 0x00C5, 0x047A,  SCENE_DODONGOS_CAVERN, SCENE_DODONGOS_CAVERN_BOSS },
+    { JABU_JABUS_BELLY_ENTRANCE, 0x0221, 0x0301, 0x0407, 0x010E,  SCENE_JABU_JABU,       SCENE_JABU_JABU_BOSS },
+    { FOREST_TEMPLE_ENTRANCE,    0x0215, 0x000C, 0x024E, 0x0608,  SCENE_FOREST_TEMPLE,   SCENE_FOREST_TEMPLE_BOSS },
+    { FIRE_TEMPLE_ENTRANCE,      0x024A, 0x0305, 0x0175, 0x0564,  SCENE_FIRE_TEMPLE,     SCENE_FIRE_TEMPLE_BOSS },
+    { WATER_TEMPLE_ENTRANCE,     0x021D, 0x0417, 0x0423, 0x060C,  SCENE_WATER_TEMPLE,    SCENE_WATER_TEMPLE_BOSS },
+    { SPIRIT_TEMPLE_ENTRANCE,    0x01E1, 0x008D, 0x02F5, 0x0610,  SCENE_SPIRIT_TEMPLE,   SCENE_SPIRIT_TEMPLE_BOSS },
+    { SHADOW_TEMPLE_ENTRANCE,    0x0205, 0x0413, 0x02B2, 0x0580,  SCENE_SHADOW_TEMPLE,   SCENE_SHADOW_TEMPLE_BOSS },
 };
 
 //These variables store the new entrance indices for dungeons so that
@@ -195,7 +195,7 @@ void Entrance_Init(void) {
 
                 // assign the boss scene override
                 if (bossScene != -1 && replacedDungeonScene != -1 && replacedDungeonExit != -1) {
-                    dungeonBossSceneOverrides[bossScene - SCENE_YDAN_BOSS] = replacedDungeonScene;
+                    dungeonBossSceneOverrides[bossScene - SCENE_DEKU_TREE_BOSS] = replacedDungeonScene;
                     bluewarps[blueWarpRemapIdx].blueWarp = blueWarpIndex;
                     bluewarps[blueWarpRemapIdx].destination = replacedDungeonExit;
                     blueWarpRemapIdx++;
@@ -271,7 +271,7 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
 
     // Exiting through the crawl space from Hyrule Castle courtyard is the same exit as leaving Ganon's castle
     // Don't override the entrance if we came from the Castle courtyard (day and night scenes)
-    if (gPlayState != NULL && (gPlayState->sceneNum == SCENE_HAIRAL_NIWA || gPlayState->sceneNum == SCENE_HAIRAL_NIWA_N) &&
+    if (gPlayState != NULL && (gPlayState->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_DAY || gPlayState->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_NIGHT) &&
         nextEntranceIndex == 0x023D) {
         return nextEntranceIndex;
     }
@@ -317,9 +317,9 @@ void Entrance_SetGameOverEntrance(void) {
     // When in a boss room and boss shuffle is on, get the connected dungeon's original boss room entrance
     // then run the normal game over overrides on it
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF &&
-        scene >= SCENE_YDAN_BOSS && scene <= SCENE_HAKADAN_BS) {
+        scene >= SCENE_DEKU_TREE_BOSS && scene <= SCENE_SHADOW_TEMPLE_BOSS) {
         // Normalize boss scene range to 0 on lookup
-        scene = dungeonBossSceneOverrides[scene - SCENE_YDAN_BOSS];
+        scene = dungeonBossSceneOverrides[scene - SCENE_DEKU_TREE_BOSS];
         gSaveContext.entranceIndex = dungeons[scene].bossDoor;
     }
 
@@ -363,40 +363,40 @@ void Entrance_SetSavewarpEntrance(void) {
     // When in a boss room and boss shuffle is on, use the boss scene override to remap to its
     // connected dungeon and use that for the final entrance
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF &&
-        scene >= SCENE_YDAN_BOSS && scene <= SCENE_HAKADAN_BS) {
+        scene >= SCENE_DEKU_TREE_BOSS && scene <= SCENE_SHADOW_TEMPLE_BOSS) {
         // Normalize boss scene range to 0 on lookup
-        scene = dungeonBossSceneOverrides[scene - SCENE_YDAN_BOSS];
+        scene = dungeonBossSceneOverrides[scene - SCENE_DEKU_TREE_BOSS];
     }
 
-    if (scene == SCENE_YDAN || scene == SCENE_YDAN_BOSS) {
+    if (scene == SCENE_DEKU_TREE || scene == SCENE_DEKU_TREE_BOSS) {
         gSaveContext.entranceIndex = newDekuTreeEntrance;
-    } else if (scene == SCENE_DDAN || scene == SCENE_DDAN_BOSS) {
+    } else if (scene == SCENE_DODONGOS_CAVERN || scene == SCENE_DODONGOS_CAVERN_BOSS) {
         gSaveContext.entranceIndex = newDodongosCavernEntrance;
-    } else if (scene == SCENE_BDAN || scene == SCENE_BDAN_BOSS) {
+    } else if (scene == SCENE_JABU_JABU || scene == SCENE_JABU_JABU_BOSS) {
         gSaveContext.entranceIndex = newJabuJabusBellyEntrance;
-    } else if (scene == SCENE_BMORI1 || scene == SCENE_MORIBOSSROOM) { //Forest Temple Boss Room
+    } else if (scene == SCENE_FOREST_TEMPLE || scene == SCENE_FOREST_TEMPLE_BOSS) { //Forest Temple Boss Room
         gSaveContext.entranceIndex = newForestTempleEntrance;
-    } else if (scene == SCENE_HIDAN || scene == SCENE_FIRE_BS) { //Fire Temple Boss Room
+    } else if (scene == SCENE_FIRE_TEMPLE || scene == SCENE_FIRE_TEMPLE_BOSS) { //Fire Temple Boss Room
         gSaveContext.entranceIndex = newFireTempleEntrance;
-    } else if (scene == SCENE_MIZUSIN || scene == SCENE_MIZUSIN_BS) { //Water Temple Boss Room
+    } else if (scene == SCENE_WATER_TEMPLE || scene == SCENE_WATER_TEMPLE_BOSS) { //Water Temple Boss Room
         gSaveContext.entranceIndex = newWaterTempleEntrance;
-    } else if (scene == SCENE_JYASINZOU || scene == SCENE_JYASINBOSS) { //Spirit Temple Boss Room
+    } else if (scene == SCENE_SPIRIT_TEMPLE || scene == SCENE_SPIRIT_TEMPLE_BOSS) { //Spirit Temple Boss Room
         gSaveContext.entranceIndex = newSpiritTempleEntrance;
-    } else if (scene == SCENE_HAKADAN || scene == SCENE_HAKADAN_BS) { //Shadow Temple Boss Room
+    } else if (scene == SCENE_SHADOW_TEMPLE || scene == SCENE_SHADOW_TEMPLE_BOSS) { //Shadow Temple Boss Room
         gSaveContext.entranceIndex = newShadowTempleEntrance;
-    } else if (scene == SCENE_HAKADANCH) { // BOTW
+    } else if (scene == SCENE_BOTTOM_OF_THE_WELL) { // BOTW
         gSaveContext.entranceIndex = newBottomOfTheWellEntrance;
-    } else if (scene == SCENE_MEN) { // GTG
+    } else if (scene == SCENE_GERUDO_TRAINING_GROUND) { // GTG
         gSaveContext.entranceIndex = newGerudoTrainingGroundsEntrance;
-    } else if (scene == SCENE_ICE_DOUKUTO) { // Ice cavern
+    } else if (scene == SCENE_ICE_CAVERN) { // Ice cavern
         gSaveContext.entranceIndex = newIceCavernEntrance;
-    } else if (scene == SCENE_GANONTIKA) {
+    } else if (scene == SCENE_INSIDE_GANONS_CASTLE) {
         gSaveContext.entranceIndex = GANONS_CASTLE_ENTRANCE;
-    } else if (scene == SCENE_GANON || scene == SCENE_GANONTIKA_SONOGO || scene == SCENE_GANON_SONOGO || scene == SCENE_GANON_DEMO || scene == SCENE_GANON_FINAL) {
+    } else if (scene == SCENE_GANONS_TOWER || scene == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE || scene == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR || scene == SCENE_GANON_BOSS || scene == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
         gSaveContext.entranceIndex = 0x041B; // Inside Ganon's Castle -> Ganon's Tower Climb
-    } else if (scene == SCENE_GERUDOWAY) { // Theives hideout
+    } else if (scene == SCENE_THIEVES_HIDEOUT) { // Theives hideout
         gSaveContext.entranceIndex = 0x0486; // Gerudo Fortress -> Thieve's Hideout spawn 0
-    } else if (scene == SCENE_LINK_HOME) {
+    } else if (scene == SCENE_LINKS_HOUSE) {
         gSaveContext.entranceIndex = Entrance_OverrideNextIndex(LINK_HOUSE_SAVEWARP_ENTRANCE);
     } else if (LINK_IS_CHILD) {
         gSaveContext.entranceIndex = Entrance_OverrideNextIndex(LINK_HOUSE_SAVEWARP_ENTRANCE); // Child Overworld Spawn
@@ -450,28 +450,28 @@ void Entrance_OverrideBlueWarp(void) {
     gPlayState->nextEntranceIndex = 0;
 
     switch (gPlayState->sceneNum) {
-        case SCENE_YDAN_BOSS: // Ghoma boss room
+        case SCENE_DEKU_TREE_BOSS: // Ghoma boss room
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0457);
             return;
-        case SCENE_DDAN_BOSS: // King Dodongo boss room
+        case SCENE_DODONGOS_CAVERN_BOSS: // King Dodongo boss room
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x047A);
             return;
-        case SCENE_BDAN_BOSS: // Barinade boss room
+        case SCENE_JABU_JABU_BOSS: // Barinade boss room
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x010E);
             return;
-        case SCENE_MORIBOSSROOM: // Phantom Ganon boss room
+        case SCENE_FOREST_TEMPLE_BOSS: // Phantom Ganon boss room
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0608);
             return;
-        case SCENE_FIRE_BS: // Volvagia boss room
+        case SCENE_FIRE_TEMPLE_BOSS: // Volvagia boss room
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0564);
             return;
-        case SCENE_MIZUSIN_BS: // Morpha boss room
+        case SCENE_WATER_TEMPLE_BOSS: // Morpha boss room
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x060C);
             return;
-        case SCENE_JYASINBOSS: // Bongo-Bongo boss room
+        case SCENE_SPIRIT_TEMPLE_BOSS: // Twinrova boss room
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0610);
             return;
-        case SCENE_HAKADAN_BS: // Twinrova boss room
+        case SCENE_SHADOW_TEMPLE_BOSS: // Bongo-Bongo boss room
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0580);
             return;
     }
@@ -681,7 +681,7 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON) {
         // Move Hyrule's Castle Courtyard exit spawn to be before the crates so players don't skip Talon
-        if (sceneNum == SCENE_SPOT15 && spawn == 1) {
+        if (sceneNum == SCENE_HYRULE_CASTLE && spawn == 1) {
             modifiedLinkActorEntry.pos.x = 0x033A;
             modifiedLinkActorEntry.pos.y = 0x0623;
             modifiedLinkActorEntry.pos.z = 0xFF22;
@@ -690,7 +690,7 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
 
         // Move Ganon's Castle exit spawn to be on the small ledge near the castle and not over the void
         // to prevent Link from falling if the bridge isn't spawned
-        if (sceneNum == SCENE_GANON_TOU && spawn == 1) {
+        if (sceneNum == SCENE_OUTSIDE_GANONS_CASTLE && spawn == 1) {
             modifiedLinkActorEntry.pos.x = 0xFEA8;
             modifiedLinkActorEntry.pos.y = 0x065C;
             modifiedLinkActorEntry.pos.z = 0x0290;
@@ -703,7 +703,7 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
         // Repair the authentically bugged entrance when leaving Barniades boss room -> JabuJabu's belly
         // Link's position needs to be adjusted to prevent him from falling through the floor
-        if (sceneNum == SCENE_BDAN && spawn == 1) {
+        if (sceneNum == SCENE_JABU_JABU && spawn == 1) {
             modifiedLinkActorEntry.pos.z = 0xF7F4;
             gPlayState->linkActorEntry = &modifiedLinkActorEntry;
         }
@@ -711,7 +711,7 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
         // Repair the authentically bugged entrance when leaving Morpha's boass room -> Water Temple
         // Link's position was at the start of the Water Temple entrance
         // This updates it to place him in the hallway outside of Morpha's boss room.
-        if (sceneNum == SCENE_MIZUSIN && spawn == 1) {
+        if (sceneNum == SCENE_WATER_TEMPLE && spawn == 1) {
             modifiedLinkActorEntry.pos.x = 0xFF4C;
             modifiedLinkActorEntry.pos.y = 0x0406;
             modifiedLinkActorEntry.pos.z = 0xF828;
@@ -722,7 +722,7 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) == RO_GENERIC_ON) {
         // Move Hyrule Field bridge spawn for child link at night to be beyond the moat so he doesn't fall in the water
-        if (sceneNum == SCENE_SPOT00 && spawn == 7 && LINK_IS_CHILD && IS_NIGHT) {
+        if (sceneNum == SCENE_HYRULE_FIELD && spawn == 7 && LINK_IS_CHILD && IS_NIGHT) {
             modifiedLinkActorEntry.pos.x = 0x0001;
             modifiedLinkActorEntry.pos.z = 0x049E;
             gPlayState->linkActorEntry = &modifiedLinkActorEntry;
@@ -734,13 +734,13 @@ s32 Entrance_OverrideSpawnSceneRoom(s32 sceneNum, s32 spawn, s32 roomNum) {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
         // Repair the authentically bugged scene/spawn info for leaving Barinade's boss room -> JabuJabu's belly
         // to load the correct room outside Barniade's boss room
-        if (sceneNum == SCENE_BDAN && spawn == 1) {
+        if (sceneNum == SCENE_JABU_JABU && spawn == 1) {
             return 5;
         }
 
         // Repair the authentically bugged scene/spawn info for leaving Morhpa's boss room -> Water Temple
         // to load the correct room for the hallway before Morpha's boss room
-        if (sceneNum == SCENE_MIZUSIN && spawn == 1) {
+        if (sceneNum == SCENE_WATER_TEMPLE && spawn == 1) {
             return 11;
         }
     }

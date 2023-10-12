@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_FHG_H
+#define OBJECTS_OBJECT_FHG_H 1
 
 #include "align_asset_macro.h"
 
@@ -52,6 +53,24 @@ static const ALIGN_ASSET(2) char gPhantomUnkDL_FCA0[] = dgPhantomUnkDL_FCA0;
 
 #define dgPhantomUnkDL_10CA0 "__OTR__objects/object_fhg/gPhantomUnkDL_10CA0"
 static const ALIGN_ASSET(2) char gPhantomUnkDL_10CA0[] = dgPhantomUnkDL_10CA0;
+
+#define dobject_fhgTex_00E8B0 "__OTR__objects/object_fhg/object_fhgTex_00E8B0"
+static const ALIGN_ASSET(2) char object_fhgTex_00E8B0[] = dobject_fhgTex_00E8B0;
+
+#define dobject_fhgTex_00F0B0 "__OTR__objects/object_fhg/object_fhgTex_00F0B0"
+static const ALIGN_ASSET(2) char object_fhgTex_00F0B0[] = dobject_fhgTex_00F0B0;
+
+#define dobject_fhgTex_00FD98 "__OTR__objects/object_fhg/object_fhgTex_00FD98"
+static const ALIGN_ASSET(2) char object_fhgTex_00FD98[] = dobject_fhgTex_00FD98;
+
+#define dobject_fhgTex_010660 "__OTR__objects/object_fhg/object_fhgTex_010660"
+static const ALIGN_ASSET(2) char object_fhgTex_010660[] = dobject_fhgTex_010660;
+
+#define dobject_fhgTex_011120 "__OTR__objects/object_fhg/object_fhgTex_011120"
+static const ALIGN_ASSET(2) char object_fhgTex_011120[] = dobject_fhgTex_011120;
+
+#define dobject_fhgTex_010D20 "__OTR__objects/object_fhg/object_fhgTex_010D20"
+static const ALIGN_ASSET(2) char object_fhgTex_010D20[] = dobject_fhgTex_010D20;
 
 #define dobject_fhgTex_00D060 "__OTR__objects/object_fhg/object_fhgTex_00D060"
 static const ALIGN_ASSET(2) char object_fhgTex_00D060[] = dobject_fhgTex_00D060;
@@ -125,24 +144,6 @@ static const ALIGN_ASSET(2) char gPhantomHorseSkelLimbsLimb_00AFA4DL_003220[] = 
 #define dgPhantomHorseSkelLimbsLimb_00AFB4DL_003170 "__OTR__objects/object_fhg/gPhantomHorseSkelLimbsLimb_00AFB4DL_003170"
 static const ALIGN_ASSET(2) char gPhantomHorseSkelLimbsLimb_00AFB4DL_003170[] = dgPhantomHorseSkelLimbsLimb_00AFB4DL_003170;
 
-#define dobject_fhgTex_00E8B0 "__OTR__objects/object_fhg/object_fhgTex_00E8B0"
-static const ALIGN_ASSET(2) char object_fhgTex_00E8B0[] = dobject_fhgTex_00E8B0;
-
-#define dobject_fhgTex_00F0B0 "__OTR__objects/object_fhg/object_fhgTex_00F0B0"
-static const ALIGN_ASSET(2) char object_fhgTex_00F0B0[] = dobject_fhgTex_00F0B0;
-
-#define dobject_fhgTex_00FD98 "__OTR__objects/object_fhg/object_fhgTex_00FD98"
-static const ALIGN_ASSET(2) char object_fhgTex_00FD98[] = dobject_fhgTex_00FD98;
-
-#define dobject_fhgTex_010660 "__OTR__objects/object_fhg/object_fhgTex_010660"
-static const ALIGN_ASSET(2) char object_fhgTex_010660[] = dobject_fhgTex_010660;
-
-#define dobject_fhgTex_011120 "__OTR__objects/object_fhg/object_fhgTex_011120"
-static const ALIGN_ASSET(2) char object_fhgTex_011120[] = dobject_fhgTex_011120;
-
-#define dobject_fhgTex_010D20 "__OTR__objects/object_fhg/object_fhgTex_010D20"
-static const ALIGN_ASSET(2) char object_fhgTex_010D20[] = dobject_fhgTex_010D20;
-
 #define dgPhantomHorseSkelLimbsLimb_00ACC4SkinLimbDL_00CB30 "__OTR__objects/object_fhg/gPhantomHorseSkelLimbsLimb_00ACC4SkinLimbDL_00CB30"
 
 #define dobject_fhgTex_003BA0 "__OTR__objects/object_fhg/object_fhgTex_003BA0"
@@ -165,3 +166,5 @@ static const ALIGN_ASSET(2) char object_fhgTex_0044A0[] = dobject_fhgTex_0044A0;
 
 #define dobject_fhgTex_003B20 "__OTR__objects/object_fhg/object_fhgTex_003B20"
 static const ALIGN_ASSET(2) char object_fhgTex_003B20[] = dobject_fhgTex_003B20;
+
+#endif // OBJECTS_OBJECT_FHG_H

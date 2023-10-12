@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MISC_HAKAANA_OUKE_ROOM_0_H
+#define MISC_HAKAANA_OUKE_ROOM_0_H 1
 
 #include "align_asset_macro.h"
 
@@ -40,3 +41,6 @@ static const ALIGN_ASSET(2) char hakaana_ouke_room_0Set_0001B0DL_004F00[] = dhak
 
 #define dhakaana_ouke_room_0Set_0001B0DL_007FD8 "__OTR__scenes/nonmq/hakaana_ouke_scene/hakaana_ouke_room_0Set_0001B0DL_007FD8"
 static const ALIGN_ASSET(2) char hakaana_ouke_room_0Set_0001B0DL_007FD8[] = dhakaana_ouke_room_0Set_0001B0DL_007FD8;
+
+
+#endif // MISC_HAKAANA_OUKE_ROOM_0_H

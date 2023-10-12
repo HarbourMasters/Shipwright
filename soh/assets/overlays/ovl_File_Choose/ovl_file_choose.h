@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OVERLAYS_OVL_FILE_CHOOSE_H
+#define OVERLAYS_OVL_FILE_CHOOSE_H 1
 
 #include "align_asset_macro.h"
 
@@ -25,3 +26,5 @@ static const ALIGN_ASSET(2) char gOptionsDividerMiddleVtx[] = dgOptionsDividerMi
 
 #define dgOptionsDividerBottomVtx "__OTR__overlays/ovl_file_choose/gOptionsDividerBottomVtx"
 static const ALIGN_ASSET(2) char gOptionsDividerBottomVtx[] = dgOptionsDividerBottomVtx;
+
+#endif // OVERLAYS_OVL_FILE_CHOOSE_H

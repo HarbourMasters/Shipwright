@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GI_GLOVES_H
+#define OBJECTS_OBJECT_GI_GLOVES_H 1
 
 #include "align_asset_macro.h"
 
@@ -22,3 +23,5 @@ static const ALIGN_ASSET(2) char gGiGauntletsPlateDL[] = dgGiGauntletsPlateDL;
 
 #define dobject_gi_glovesTex_000000 "__OTR__objects/object_gi_gloves/object_gi_glovesTex_000000"
 static const ALIGN_ASSET(2) char object_gi_glovesTex_000000[] = dobject_gi_glovesTex_000000;
+
+#endif // OBJECTS_OBJECT_GI_GLOVES_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MENKURI_OBJECTS_H
+#define OBJECTS_OBJECT_MENKURI_OBJECTS_H 1
 
 #include "align_asset_macro.h"
 
@@ -43,3 +44,5 @@ static const ALIGN_ASSET(2) char gGTGRotatingRingPlatformDL[] = dgGTGRotatingRin
 
 #define dgGTGRotatingRingPlatformCol "__OTR__objects/object_menkuri_objects/gGTGRotatingRingPlatformCol"
 static const ALIGN_ASSET(2) char gGTGRotatingRingPlatformCol[] = dgGTGRotatingRingPlatformCol;
+
+#endif // OBJECTS_OBJECT_MENKURI_OBJECTS_H

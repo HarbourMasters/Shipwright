@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SPOT08_OBJ_H
+#define OBJECTS_OBJECT_SPOT08_OBJ_H 1
 
 #include "align_asset_macro.h"
 
@@ -55,3 +56,5 @@ static const ALIGN_ASSET(2) char gZorasFountainBombableWallTex[] = dgZorasFounta
 
 #define dgZorasFountainBombableWallCol "__OTR__objects/object_spot08_obj/gZorasFountainBombableWallCol"
 static const ALIGN_ASSET(2) char gZorasFountainBombableWallCol[] = dgZorasFountainBombableWallCol;
+
+#endif // OBJECTS_OBJECT_SPOT08_OBJ_H

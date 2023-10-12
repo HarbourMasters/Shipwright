@@ -1,0 +1,18 @@
+<Root>
+    <File Name="object_kanban" Segment="6">
+        <DList Name="object_kanban_DL_000C30" Offset="0xC30"/>
+        <DList Name="object_kanban_DL_000CB0" Offset="0xCB0"/>
+        <DList Name="object_kanban_DL_000DB8" Offset="0xDB8"/>
+        <DList Name="object_kanban_DL_000E78" Offset="0xE78"/>
+        <DList Name="object_kanban_DL_000F38" Offset="0xF38"/>
+        <DList Name="object_kanban_DL_000FF8" Offset="0xFF8"/>
+        <DList Name="object_kanban_DL_0010B8" Offset="0x10B8"/>
+        <DList Name="object_kanban_DL_0011C0" Offset="0x11C0"/>
+        <DList Name="object_kanban_DL_0012C8" Offset="0x12C8"/>
+        <DList Name="object_kanban_DL_0013D0" Offset="0x13D0"/>
+        <DList Name="object_kanban_DL_001488" Offset="0x1488"/>
+        <DList Name="object_kanban_DL_001540" Offset="0x1540"/>
+        <DList Name="object_kanban_DL_001630" Offset="0x1630"/>
+        <Texture Name="object_kanban_Tex_0016B0" OutName="tex_000016B0" Format="i8" Width="16" Height="16" Offset="0x16B0"/>
+    </File>
+</Root>

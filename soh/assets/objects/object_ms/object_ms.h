@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MS_H
+#define OBJECTS_OBJECT_MS_H 1
 
 #include "align_asset_macro.h"
 
@@ -61,3 +62,6 @@ static const ALIGN_ASSET(2) char gBeanSalesmanBeanbagTex[] = dgBeanSalesmanBeanb
 
 #define dgBeanSalesmanEatingAnim "__OTR__objects/object_ms/gBeanSalesmanEatingAnim"
 static const ALIGN_ASSET(2) char gBeanSalesmanEatingAnim[] = dgBeanSalesmanEatingAnim;
+
+
+#endif // OBJECTS_OBJECT_MS_H

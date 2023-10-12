@@ -383,7 +383,7 @@ void EnViewer_UpdateImpl(EnViewer* this, PlayState* play) {
                 break;
         }
     } else if (type == ENVIEWER_TYPE_2_ZELDA) {
-        if (play->sceneNum == SCENE_SPOT00) { // Hyrule Field
+        if (play->sceneNum == SCENE_HYRULE_FIELD) { // Hyrule Field
             switch (this->state) {
                 case 0:
                     if (play->csCtx.state != CS_STATE_IDLE) {
@@ -557,23 +557,21 @@ void EnViewer_DrawGanondorf(EnViewer* this, PlayState* play) {
     }
 
     if (type == ENVIEWER_TYPE_9_GANONDORF) {
-        SkelAnime_DrawFlexOpa(play, this->skin.skelAnime.skeleton, this->skin.skelAnime.jointTable,
-                              this->skin.skelAnime.dListCount, NULL, EnViewer_Ganondorf9PostLimbDraw, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skin.skelAnime, NULL, EnViewer_Ganondorf9PostLimbDraw, this);
     } else if (type == ENVIEWER_TYPE_3_GANONDORF) {
-        SkelAnime_DrawFlexOpa(play, this->skin.skelAnime.skeleton, this->skin.skelAnime.jointTable,
-                              this->skin.skelAnime.dListCount, EnViewer_Ganondorf3OverrideLimbDraw,
+        SkelAnime_DrawSkeletonOpa(play, &this->skin.skelAnime, EnViewer_Ganondorf3OverrideLimbDraw,
                               EnViewer_GanondorfPostLimbDrawUpdateCapeVec, this);
         EnViewer_UpdateGanondorfCape(play, this);
     } else if (type == ENVIEWER_TYPE_3_GANONDORF || type == ENVIEWER_TYPE_5_GANONDORF ||
                type == ENVIEWER_TYPE_7_GANONDORF || type == ENVIEWER_TYPE_8_GANONDORF) {
         if ((play->csCtx.state != CS_STATE_IDLE) && (play->csCtx.npcActions[1] != NULL)) {
-            SkelAnime_DrawFlexOpa(play, this->skin.skelAnime.skeleton, this->skin.skelAnime.jointTable,
-                                  this->skin.skelAnime.dListCount, NULL, EnViewer_GanondorfPostLimbDrawUpdateCapeVec,
+            SkelAnime_DrawSkeletonOpa(play, &this->skin.skelAnime, NULL, EnViewer_GanondorfPostLimbDrawUpdateCapeVec,
                                   this);
             EnViewer_UpdateGanondorfCape(play, this);
         }
     } else {
-        SkelAnime_DrawOpa(play, this->skin.skelAnime.skeleton, this->skin.skelAnime.jointTable, NULL, NULL, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skin.skelAnime, NULL, NULL,
+                                  this);
     }
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -584,7 +582,7 @@ void EnViewer_DrawHorse(EnViewer* this, PlayState* play) {
 
 s32 EnViewer_ZeldaOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                                    void* thisx) {
-    if (play->sceneNum == SCENE_SPOT00) { // Hyrule Field
+    if (play->sceneNum == SCENE_HYRULE_FIELD) { // Hyrule Field
         if (limbIndex == 2) {
             *dList = gChildZeldaCutsceneDressDL;
         }
@@ -610,7 +608,7 @@ s32 EnViewer_ZeldaOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, 
 void EnViewer_ZeldaPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     s32 pad;
 
-    if (play->sceneNum == SCENE_TOKINOMA) {
+    if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
         if (limbIndex == 16) {
             OPEN_DISPS(play->state.gfxCtx);
             gSPDisplayList(POLY_OPA_DISP++, gChildZeldaOcarinaOfTimeDL);
@@ -621,7 +619,7 @@ void EnViewer_ZeldaPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec
 
 void EnViewer_DrawZelda(EnViewer* this, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
-    if (play->sceneNum == SCENE_SPOT00) { // Hyrule Field
+    if (play->sceneNum == SCENE_HYRULE_FIELD) { // Hyrule Field
         if (play->csCtx.frames < 771) {
             gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gChildZeldaEyeInTex));
             gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gChildZeldaEyeOutTex));
@@ -661,8 +659,7 @@ void EnViewer_DrawZelda(EnViewer* this, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gChildZeldaEyeShutTex));
         gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(gChildZeldaMouthWorriedTex));
     }
-    SkelAnime_DrawFlexOpa(play, this->skin.skelAnime.skeleton, this->skin.skelAnime.jointTable,
-                          this->skin.skelAnime.dListCount, EnViewer_ZeldaOverrideLimbDraw, EnViewer_ZeldaPostLimbDraw,
+    SkelAnime_DrawSkeletonOpa(play, &this->skin.skelAnime, EnViewer_ZeldaOverrideLimbDraw, EnViewer_ZeldaPostLimbDraw,
                           this);
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -681,8 +678,7 @@ void EnViewer_DrawImpa(EnViewer* this, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gImpaEyeOpenTex));
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
-    SkelAnime_DrawFlexOpa(play, this->skin.skelAnime.skeleton, this->skin.skelAnime.jointTable,
-                          this->skin.skelAnime.dListCount, EnViewer_ImpaOverrideLimbDraw, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skin.skelAnime, EnViewer_ImpaOverrideLimbDraw, NULL, this);
     CLOSE_DISPS(play->state.gfxCtx);
 }
 

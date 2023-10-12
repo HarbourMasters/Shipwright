@@ -35,8 +35,10 @@ class RomVersion:
 
 ROM_INFO_TABLE = dict()
 ROM_INFO_TABLE[Checksums.OOT_PAL_GC] = RomVersion("CFG/filelists/gamecube_pal.txt", 0x7170, "GC_NMQ_PAL_F")
+ROM_INFO_TABLE[Checksums.OOT_PAL_MQ] = RomVersion("CFG/filelists/gamecube_pal.txt", 0x7170, "GC_MQ_PAL_F")
 ROM_INFO_TABLE[Checksums.OOT_PAL_GC_DBG1] = RomVersion("CFG/filelists/dbg.txt", 0x12F70, "GC_NMQ_D")
 ROM_INFO_TABLE[Checksums.OOT_PAL_GC_MQ_DBG] = RomVersion("CFG/filelists/dbg.txt", 0x12F70, "GC_MQ_D")
+ROM_INFO_TABLE[Checksums.OOT_PAL_10] = RomVersion("CFG/filelists/pal_oot.txt", 0x7950, "N64_PAL_10")
 ROM_INFO_TABLE[Checksums.OOT_PAL_11] = RomVersion("CFG/filelists/pal_oot.txt", 0x7950, "N64_PAL_11")
 
 class RomDmaEntry:

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEST_LEVELS_SUTARU_ROOM_0_H
+#define TEST_LEVELS_SUTARU_ROOM_0_H 1
 
 #include "align_asset_macro.h"
 
@@ -25,3 +26,6 @@ static const ALIGN_ASSET(2) char sutaru_room_0Tex_0052F0[] = dsutaru_room_0Tex_0
 
 #define dsutaru_room_0Tex_0062F0 "__OTR__scenes/nonmq/sutaru_scene/sutaru_room_0Tex_0062F0"
 static const ALIGN_ASSET(2) char sutaru_room_0Tex_0062F0[] = dsutaru_room_0Tex_0062F0;
+
+
+#endif // TEST_LEVELS_SUTARU_ROOM_0_H

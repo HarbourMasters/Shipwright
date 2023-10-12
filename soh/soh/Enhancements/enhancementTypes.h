@@ -68,3 +68,9 @@ typedef enum {
     BONK_DAMAGE_8_HEARTS,
     BONK_DAMAGE_OHKO,
 } BonkDamage;
+
+typedef enum {
+    DEKU_STICK_NORMAL,
+    DEKU_STICK_UNBREAKABLE,
+    DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE,
+} DekuStickType;

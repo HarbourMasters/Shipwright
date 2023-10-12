@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GI_MEDAL_H
+#define OBJECTS_OBJECT_GI_MEDAL_H 1
 
 #include "align_asset_macro.h"
 
@@ -22,3 +23,5 @@ static const ALIGN_ASSET(2) char gGiShadowMedallionFaceDL[] = dgGiShadowMedallio
 
 #define dgGiLightMedallionFaceDL "__OTR__objects/object_gi_medal/gGiLightMedallionFaceDL"
 static const ALIGN_ASSET(2) char gGiLightMedallionFaceDL[] = dgGiLightMedallionFaceDL;
+
+#endif // OBJECTS_OBJECT_GI_MEDAL_H

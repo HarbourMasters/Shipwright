@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_LIGHTSWITCH_H
+#define OBJECTS_OBJECT_LIGHTSWITCH_H 1
 
 #include "align_asset_macro.h"
 
@@ -22,3 +23,5 @@ static const ALIGN_ASSET(2) char object_lightswitch_Tex_001420[] = dobject_light
 
 #define dobject_lightswitch_Tex_001C20 "__OTR__objects/object_lightswitch/object_lightswitch_Tex_001C20"
 static const ALIGN_ASSET(2) char object_lightswitch_Tex_001C20[] = dobject_lightswitch_Tex_001C20;
+
+#endif // OBJECTS_OBJECT_LIGHTSWITCH_H

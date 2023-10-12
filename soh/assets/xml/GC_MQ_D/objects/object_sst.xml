@@ -1,6 +1,22 @@
 <Root>
     
     <File Name="object_sst" Segment="6">
+        <Texture Name="object_sstTex_017FE0" OutName="object_sstTex_017FE0" Format="rgba16" Width="32" Height="64" Offset="0x17FE0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_019530" OutName="object_sstTex_019530" Format="rgba16" Width="4" Height="8" Offset="0x19530" AddedByScript="true"/>
+        <Texture Name="object_sstTex_019570" OutName="object_sstTex_019570" Format="rgba16" Width="8" Height="16" Offset="0x19570" AddedByScript="true"/>
+        <Texture Name="object_sstTex_019670" OutName="object_sstTex_019670" Format="rgba16" Width="8" Height="16" Offset="0x19670" AddedByScript="true"/>
+        <Texture Name="object_sstTex_019770" OutName="object_sstTex_019770" Format="rgba16" Width="4" Height="8" Offset="0x19770" AddedByScript="true"/>
+        <Texture Name="object_sstTex_0197B0" OutName="object_sstTex_0197B0" Format="rgba16" Width="16" Height="16" Offset="0x197B0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_0199B0" OutName="object_sstTex_0199B0" Format="rgba16" Width="8" Height="16" Offset="0x199B0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_019AB0" OutName="object_sstTex_019AB0" Format="rgba16" Width="8" Height="16" Offset="0x19AB0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_019BB0" OutName="object_sstTex_019BB0" Format="rgba16" Width="16" Height="32" Offset="0x19BB0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_019FB0" OutName="object_sstTex_019FB0" Format="rgba16" Width="8" Height="16" Offset="0x19FB0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_01A0B0" OutName="object_sstTex_01A0B0" Format="rgba16" Width="8" Height="16" Offset="0x1A0B0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_01A1B0" OutName="object_sstTex_01A1B0" Format="rgba16" Width="8" Height="32" Offset="0x1A1B0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_01A3B0" OutName="object_sstTex_01A3B0" Format="rgba16" Width="16" Height="16" Offset="0x1A3B0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_01A5B0" OutName="object_sstTex_01A5B0" Format="rgba16" Width="8" Height="16" Offset="0x1A5B0" AddedByScript="true"/>
+        <Texture Name="object_sstTex_01A730" OutName="object_sstTex_01A730" Format="rgba16" Width="4" Height="16" Offset="0x1A730" AddedByScript="true"/>
+        <Texture Name="object_sstTex_01A7B0" OutName="object_sstTex_01A7B0" Format="rgba16" Width="16" Height="16" Offset="0x1A7B0" AddedByScript="true"/>
         <!-- Boss Title Card -->
         <Texture Name="gBongoTitleCardTex" OutName="bongo_title_card" Format="i8" Width="128" Height="120" Offset="0x13D80"/>
 

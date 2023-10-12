@@ -35,6 +35,7 @@ typedef enum {
     /* 0xA9 */ TIMESTAMP_DEFEAT_GANON,          // z_boss_ganon2.c
     /* 0xA9 */ TIMESTAMP_BOSSRUSH_FINISH,       // z_boss_ganon2.c
     /* 0xAA */ TIMESTAMP_FOUND_GREG,            // z_parameter.c
+    /* 0xAA */ TIMESTAMP_TRIFORCE_COMPLETED,    // z_parameter.c
     /* 0xAB */ TIMESTAMP_MAX
 
 }GameplayStatTimestamp;
@@ -87,7 +88,7 @@ typedef enum {
     COUNT_ENEMIES_DEFEATED_PARASITIC_TENTACLE,   // EN_BA
     COUNT_ENEMIES_DEFEATED_PEAHAT,               // EN_PEEHAT
     COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA,         // EN_PEEHAT
-    COUNT_ENEMIES_DEFEATED_POE,                  // EN_POH
+    COUNT_ENEMIES_DEFEATED_POE,                  // EN_POH & EN_PO_FIELD
     COUNT_ENEMIES_DEFEATED_POE_BIG,              // EN_PO_FIELD
     COUNT_ENEMIES_DEFEATED_POE_COMPOSER,         // EN_POH
     COUNT_ENEMIES_DEFEATED_POE_SISTERS,          // EN_PO_SISTERS

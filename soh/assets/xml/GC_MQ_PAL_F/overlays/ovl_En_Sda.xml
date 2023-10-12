@@ -1,0 +1,9 @@
+<Root>
+    <File Name="ovl_En_Sda" BaseAddress="0x80AD86D0" RangeStart="0x1498" RangeEnd="0x1608">
+        <Array Name="D_80AFA398" Count="4" Offset="0x1498">
+            <Vtx/>
+        </Array>
+        <DList Name="D_80AFA3D8" Offset="0x14D8"/>
+        <DList Name="D_80AFA3F8" Offset="0x14F8"/>
+    </File>
+</Root>

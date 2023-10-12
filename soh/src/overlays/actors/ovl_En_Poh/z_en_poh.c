@@ -7,6 +7,7 @@
 #include "z_en_poh.h"
 #include "objects/object_poh/object_poh.h"
 #include "objects/object_po_composer/object_po_composer.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_IGNORE_QUAKE)
 
@@ -638,11 +639,7 @@ void func_80ADF15C(EnPoh* this, PlayState* play) {
                              0, 0, 255, 1, 9, 1);
         if (this->unk_198 == 1) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_EXTINCT);
-            if (this->actor.params == EN_POH_FLAT || this->actor.params == EN_POH_SHARP) {
-                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_COMPOSER]++;
-            } else {
-                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE]++;
-            }
+            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
         }
     } else if (this->unk_198 == 28) {
         EnPoh_SetupDeath(this, play);

@@ -70,7 +70,7 @@ void EnEncount1_Init(Actor* thisx, PlayState* play) {
         case SPAWNER_LEEVER:
             this->timer = 30;
             this->maxCurSpawns = 5;
-            if (play->sceneNum == SCENE_SPOT13) { // Haunted Wasteland
+            if (play->sceneNum == SCENE_HAUNTED_WASTELAND) { // Haunted Wasteland
                 this->reduceLeevers = true;
                 this->maxCurSpawns = 3;
             }
@@ -82,7 +82,7 @@ void EnEncount1_Init(Actor* thisx, PlayState* play) {
             break;
         case SPAWNER_STALCHILDREN:
         case SPAWNER_WOLFOS:
-            if (play->sceneNum == SCENE_SPOT00) { // Hyrule Field
+            if (play->sceneNum == SCENE_HYRULE_FIELD) { // Hyrule Field
                 this->maxTotalSpawns = 10000;
             }
             this->updateFunc = EnEncount1_SpawnStalchildOrWolfos;
@@ -224,7 +224,7 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
     s32 bgId;
     f32 floorY;
 
-    if (play->sceneNum != SCENE_SPOT00) {
+    if (play->sceneNum != SCENE_HYRULE_FIELD) {
         if ((fabsf(player->actor.world.pos.y - this->actor.world.pos.y) > 100.0f) ||
             (this->actor.xzDistToPlayer > this->spawnRange)) {
             this->outOfRangeTimer++;
@@ -247,7 +247,7 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
             (CVarGetInteger("gRandomizedEnemies", 0) && enemyCount < 15)) {
         while ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || 
                 (CVarGetInteger("gRandomizedEnemies", 0) && enemyCount < 15)) {
-            if (play->sceneNum == SCENE_SPOT00) {
+            if (play->sceneNum == SCENE_HYRULE_FIELD) {
                 if ((player->unk_89E == 0) || (player->actor.floorBgId != BGCHECK_SCENE) ||
                     !(player->actor.bgCheckFlags & 1) || (player->stateFlags1 & 0x08000000)) {
 
@@ -305,7 +305,7 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
                 if (this->curNumSpawn >= this->maxCurSpawns) {
                     this->fieldSpawnTimer = 100;
                 }
-                if (play->sceneNum != SCENE_SPOT00) {
+                if (play->sceneNum != SCENE_HYRULE_FIELD) {
                     this->totalNumSpawn++;
                 }
             } else {

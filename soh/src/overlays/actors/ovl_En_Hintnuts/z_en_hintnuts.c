@@ -6,6 +6,7 @@
 
 #include "z_en_hintnuts.h"
 #include "objects/object_hintnuts/object_hintnuts.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
@@ -430,7 +431,7 @@ void EnHintnuts_Leave(EnHintnuts* this, PlayState* play) {
             Actor_ChangeCategory(play, &play->actorCtx, this->actor.child, ACTORCAT_PROP);
         }
         Actor_Kill(&this->actor);
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_SCRUB]++;
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
     }
 }
 
@@ -541,7 +542,8 @@ void EnHintnuts_Draw(Actor* thisx, PlayState* play) {
     if (this->actor.params == 0xA) {
         Gfx_DrawDListOpa(play, gHintNutsFlowerDL);
     } else {
-        SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnHintnuts_OverrideLimbDraw,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime,
+                                  EnHintnuts_OverrideLimbDraw,
                           NULL, this);
     }
 }

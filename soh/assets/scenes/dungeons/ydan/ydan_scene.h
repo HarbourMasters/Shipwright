@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUNGEONS_YDAN_SCENE_H
+#define DUNGEONS_YDAN_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -16,3 +17,5 @@ static const ALIGN_ASSET(2) char ydan_sceneCollisionHeader_00B618[] = dydan_scen
 
 #define dydan_sceneTLUT_00B810 "__OTR__scenes/nonmq/ydan_scene/ydan_sceneTLUT_00B810"
 static const ALIGN_ASSET(2) char ydan_sceneTLUT_00B810[] = dydan_sceneTLUT_00B810;
+
+#endif // DUNGEONS_YDAN_SCENE_H

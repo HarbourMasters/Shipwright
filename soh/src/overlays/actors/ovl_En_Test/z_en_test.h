@@ -95,7 +95,7 @@ typedef struct EnTest {
     /* 0x7E8 */ s32 timer;
     /* 0x7EC */ f32 unk_7EC;
     /* 0x7F0 */ BodyBreak bodyBreak;
-    /* 0x808 */ s8 swordState;
+    /* 0x808 */ s8 meleeWeaponState;
     /* 0x80C */ s32 effectIndex;
     /* 0x810 */ ColliderCylinder bodyCollider;
     /* 0x85C */ ColliderQuad swordCollider;

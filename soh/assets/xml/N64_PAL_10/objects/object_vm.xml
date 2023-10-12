@@ -1,0 +1,41 @@
+<Root>
+    <File Name="object_vm" Segment="6">
+        <!-- Beamos Skeleton -->
+        <Skeleton Name="gBeamosSkel" Type="Normal" LimbType="Standard" Offset="0x3F60"/>
+
+        <!-- Beamos Skeleton Limbs -->
+        <Limb Name="gBeamosRootLimb" LimbType="Standard" Offset="0x3EC0"/>
+        <Limb Name="gBeamosLimb_3ECC" LimbType="Standard" Offset="0x3ECC"/>
+        <Limb Name="gBeamosLimb_3ED8" LimbType="Standard" Offset="0x3ED8"/>
+        <Limb Name="gBeamosLimb_3EE4" LimbType="Standard" Offset="0x3EE4"/>
+        <Limb Name="gBeamosTopEyelidLimb" LimbType="Standard" Offset="0x3EF0"/>
+        <Limb Name="gBeamosLimb_3EFC" LimbType="Standard" Offset="0x3EFC"/>
+        <Limb Name="gBeamosLimb_3F08" LimbType="Standard" Offset="0x3F08"/>
+        <Limb Name="gBeamosBottomEyelidLimb" LimbType="Standard" Offset="0x3F14"/>
+        <Limb Name="gBeamosEyeLimb" LimbType="Standard" Offset="0x3F20"/>
+        <Limb Name="gBeamosBodyLimb" LimbType="Standard" Offset="0x3F2C"/>
+
+        <!-- Beamos Limb DisplayLists -->
+        <DList Name="gBeamosTopEyelidDL" Offset="0x22B0"/>
+        <DList Name="gBeamosBottomEyelidDL" Offset="0x2460"/>
+        <DList Name="gBeamosEyeDL" Offset="0x2610"/>
+        <DList Name="gBeamosBodyDL" Offset="0x1E00"/>
+
+        <!-- Beamos DisplayList Textures -->
+        <Texture Name="gBeamosBodyGradientTex" OutName="body_gradient" Format="rgba16" Width="8" Height="8" Offset="0x27C0"/>
+        <Texture Name="gBeamosGrayMetalTex" OutName="gray_metal" Format="i4" Width="16" Height="32" Offset="0x2840"/>
+        <Texture Name="gBeamosBoltAndMetalTex" OutName="bolt_and_metal" Format="rgba16" Width="16" Height="32" Offset="0x2940"/>
+        <Texture Name="gBeamosTex_2D40" OutName="tex_2D40" Format="rgba16" Width="16" Height="8" Offset="0x2D40"/>
+        <Texture Name="gBeamosEyeOutlineTex" OutName="eye_outline" Format="rgba16" Width="16" Height="16" Offset="0x2E40"/>
+        <Texture Name="gBeamosEyeTex" OutName="eye" Format="rgba16" Width="32" Height="16" Offset="0x3040"/>
+        <Texture Name="gBeamosBodyTex" OutName="body" Format="rgba16" Width="16" Height="16" Offset="0x3440"/>
+        <Texture Name="gBeamosLaserTex" OutName="laser" Format="rgba16" Width="8" Height="8" Offset="0x3640"/>
+        <Texture Name="gBeamosTeethTex" OutName="teeth" Format="rgba16" Width="32" Height="32" Offset="0x36C0"/>
+
+        <!-- Beamos Animations -->
+        <Animation Name="gBeamosAnim" Offset="0x68"/>
+
+        <!-- Beamos Laser DisplayList -->
+        <DList Name="gBeamosLaserDL" Offset="0x2728"/>
+    </File>
+</Root>

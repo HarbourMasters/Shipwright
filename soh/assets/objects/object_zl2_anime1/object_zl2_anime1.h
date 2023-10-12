@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_ZL2_ANIME1_H
+#define OBJECTS_OBJECT_ZL2_ANIME1_H 1
 
 #include "align_asset_macro.h"
 
@@ -79,3 +80,5 @@ static const ALIGN_ASSET(2) char gZelda2Anime1Anim_00B224[] = dgZelda2Anime1Anim
 
 #define dgZelda2Anime1Anim_00B5FC "__OTR__objects/object_zl2_anime1/gZelda2Anime1Anim_00B5FC"
 static const ALIGN_ASSET(2) char gZelda2Anime1Anim_00B5FC[] = dgZelda2Anime1Anim_00B5FC;
+
+#endif // OBJECTS_OBJECT_ZL2_ANIME1_H

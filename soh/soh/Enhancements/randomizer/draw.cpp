@@ -3,17 +3,23 @@
 #include "z64.h"
 #include "macros.h"
 #include "functions.h"
+#include "variables.h"
+#include "soh/OTRGlobals.h"
 #include "randomizerTypes.h"
 #include <array>
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
+#include "soh_assets.h"
+
+extern "C" {
+extern SaveContext gSaveContext;
+}
 
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
-    s32 pad;
     s8 keysCanBeOutsideDungeon = getItemEntry->getItemId == RG_GERUDO_FORTRESS_SMALL_KEY ?
         Randomizer_GetSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA :
         DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_KEYSANITY);
@@ -53,7 +59,6 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
 }
 
 extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEntry) {
-    s32 pad;
     s8 keysCanBeOutsideDungeon = getItemEntry->getItemId == RG_GANONS_CASTLE_BOSS_KEY ?
         DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_GANONS_BOSS_KEY) :
         DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_BOSS_KEYSANITY);
@@ -107,8 +112,6 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
 }
 
 extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEntry) {
-    s32 pad;
-
     s16 color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_KEY_RING;
     s16 colors[9][3] = {
         { 4, 195, 46 },    // Forest Temple
@@ -155,7 +158,6 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
 }
 
 extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getItemEntry) {
-    s32 pad;
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
@@ -170,6 +172,87 @@ extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getIt
     gSPGrayscale(POLY_XLU_DISP++, false);
 
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiHeartContainerDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+Gfx* Randomizer_GetTriforcePieceDL(uint8_t index) {
+    switch (index) {
+        case 1:
+            return (Gfx*)gTriforcePiece1DL;
+        case 2:
+            return (Gfx*)gTriforcePiece2DL;
+        default:
+            return (Gfx*)gTriforcePiece0DL;
+    }
+}
+
+extern "C" void Randomizer_DrawTriforcePiece(PlayState* play, GetItemEntry getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+
+    uint16_t current = gSaveContext.triforcePiecesCollected;
+
+    Matrix_Scale(0.035f, 0.035f, 0.035f, MTXMODE_APPLY);
+
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    Gfx* triforcePieceDL = Randomizer_GetTriforcePieceDL(current % 3);
+
+    gSPDisplayList(POLY_XLU_DISP++, triforcePieceDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+// Seperate draw function for drawing the Triforce piece when in the GI state.
+// Needed for delaying showing the triforce piece slightly so the triforce shard doesn't
+// suddenly snap to the new piece model or completed triforce because the piece is
+// given mid textbox. Also makes it so the overworld models don't turn into the completed
+// model when the player has exactly the required amount of pieces.
+extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+
+    uint16_t current = gSaveContext.triforcePiecesCollected;
+    uint16_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+
+    Matrix_Scale(triforcePieceScale, triforcePieceScale, triforcePieceScale, MTXMODE_APPLY);
+
+    // For creating a delay before showing the model so the model doesn't swap visually when the triforce piece
+    // is given when the textbox just appears.
+    if (triforcePieceScale < 0.0001f) {
+        triforcePieceScale += 0.00003f;
+    }
+    
+    // Animation. When not the completed triforce, create delay before showing the piece to bypass interpolation.
+    // If the completed triforce, make it grow slowly.
+    if (current != required) {
+        if (triforcePieceScale > 0.00008f && triforcePieceScale < 0.034f) {
+            triforcePieceScale = 0.034f;
+        } else if (triforcePieceScale < 0.035f) {
+            triforcePieceScale += 0.0005f;
+        }
+    } else if (triforcePieceScale > 0.00008f && triforcePieceScale < 0.035f) { 
+        triforcePieceScale += 0.0005f;
+    }
+
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    // Show piece when not currently completing the triforce. Use the scale to create a delay so interpolation doesn't
+    // make the triforce twitch when the size is set to a higher value.
+    if (current != required && triforcePieceScale > 0.035f) {
+        // Get shard DL. Remove one before division to account for triforce piece given in the textbox
+        // to match up the shard from the overworld model.
+        Gfx* triforcePieceDL = Randomizer_GetTriforcePieceDL((current - 1) % 3);
+
+        gSPDisplayList(POLY_XLU_DISP++, triforcePieceDL);
+    } else if (current == required && triforcePieceScale > 0.00008f) {
+        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceCompletedDL);
+    }
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

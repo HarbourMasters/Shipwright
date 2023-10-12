@@ -4659,19 +4659,25 @@ void func_800F5C2C(void) {
 
 void Audio_PlayFanfare(u16 seqId)
 {
-    u16 sp26;
-    u32 sp20;
-    u8* sp1C;
-    u8* sp18;
+    u16 curSeqId;
+    u32 outNumFonts;
+    u8* curFontId;
+    u8* requestedFontId;
 
-    sp26 = func_800FA0B4(SEQ_PLAYER_FANFARE);
-    sp1C = func_800E5E84(sp26 & 0xFF, &sp20);
-    sp18 = func_800E5E84(seqId, &sp20);
-	if (!sp1C || !sp18) {
+    curSeqId = func_800FA0B4(SEQ_PLAYER_FANFARE);
+
+    // Although seqIds are u16, there is no fanfare that is above 0xFF
+    // Sometimes the game will add 0x900 to a requested fanfare ID
+    // The `& 0xFF` here is to strip off this 0x900 and get the original fanfare ID
+    // when getting the sound font data for the sequence
+    curFontId = func_800E5E84(curSeqId & 0xFF, &outNumFonts);
+    requestedFontId = func_800E5E84(seqId & 0xFF, &outNumFonts);
+
+	if (!curFontId || !requestedFontId) {
 		// disable BGM, we're about to null deref!
 		D_8016B9F4 = 1;
 	} else {
-		if ((sp26 == NA_BGM_DISABLED) || (*sp1C == *sp18)) {
+		if ((curSeqId == NA_BGM_DISABLED) || (*curFontId == *requestedFontId)) {
 			D_8016B9F4 = 1;
 		} else {
 			D_8016B9F4 = 5;
