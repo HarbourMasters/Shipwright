@@ -2949,7 +2949,7 @@ void HintTable_Init() {
     | LIGHT ARROW LOCATION TEXT|
     ---------------------------*/
 
-    hintTable[RHT_LIGHT_ARROW_LOCATION_HINT] = HintText::LightArrow({
+    hintTable[RHT_LIGHT_ARROW_LOCATION_HINT] = HintText::OtherHint({
         // obscure text
         Text{
             "Ha ha ha... You'll never beat me by reflecting my lightning bolts and unleashing the arrows from ",
@@ -2959,7 +2959,7 @@ void HintTable_Init() {
             "Ja, ja, ja... Nunca me derrotarás reflejando mis esferas de energía y desplegando la flecha de luz de " },
     });
 
-    hintTable[RHT_SHEIK_LIGHT_ARROW_HINT] = HintText::LightArrow({
+    hintTable[RHT_SHEIK_LIGHT_ARROW_HINT] = HintText::OtherHint({
         // obscure text
         Text{
             "I overheard Ganondorf say that he misplaced the %yLight Arrows%w in&%r",
@@ -2972,6 +2972,70 @@ void HintTable_Init() {
     hintTable[RHT_YOUR_POCKET] = HintText::Exclude({
         // obscure text
         Text{ "your pocket", /*french*/ "tes poches", /*spanish*/ "tu bolsillo" },
+    });
+
+    /*--------------------------
+    |      OTHER HINT TEXT     |
+    ---------------------------*/
+
+    hintTable[DAMPE_DIARY01] = HintText::OtherHint({
+        // obscure text
+        Text{
+            "Whoever reads this, please enter %g", 
+            /*french*/
+            "Toi qui lit ce journal, rends-toi dans %g",
+            /*german?*/
+            "Wer immer dies liest, der möge folgenden Ort aufsuchen: %g"},
+    });
+
+    hintTable[DAMPE_DIARY02] = HintText::OtherHint({
+        // obscure text
+        Text{
+            "%w. I will let you have my stretching, shrinking keepsake.^I'm waiting for you.&--Dampé",
+            /*french*/
+            "%w. Et peut-être auras-tu droit à mon précieux %rtrésor%w.^Je t'attends...&--Igor",
+            /*german?*/
+            "%w. Ihm gebe ich meinen langen, kurzen Schatz.^Ich warte!&Boris"},
+    });
+
+    hintTable[GREG_HINT01] = HintText::OtherHint({
+        // obscure text
+        Text{
+            "By the way, if you're interested, I saw the shiniest %gGreen Rupee%w somewhere in%g ", 
+            /*french*/
+            "Au fait, si ça t'intéresse, j'ai aperçu le plus éclatant des %gRubis Verts%w quelque part à %g",
+            /*spanish*/
+            ""},
+    });
+
+    hintTable[GREG_HINT02] = HintText::OtherHint({
+        // obscure text
+        Text{
+            "%w.^It's said to have %rmysterious powers%w...^But then, it could just be another regular rupee.&Oh well.",
+            /*french*/
+            "%w. On dit qu'il possède des pouvoirs mystérieux... Mais bon, ça pourrait juste être un autre rubis ordinaire.",
+            /*spanish*/
+            ""},
+    });
+
+    hintTable[SARIA_TEXT01] = HintText::OtherHint({
+        // obscure text
+        Text{
+            "Did you feel the %gsurge of magic%w recently? A mysterious bird told me it came from %g", 
+            /*french*/
+            "As-tu récemment ressenti une vague de %gpuissance magique%w? Un mystérieux hibou m'a dit  qu'elle provenait du %g",
+            /*spanish*/
+            ""},
+    });
+
+    hintTable[SARIA_TEXT02] = HintText::OtherHint({
+        // obscure text
+        Text{
+            "%w.^You should check that place out, @!$C",
+            /*french*/
+            "%w. Tu devrais aller y jeter un coup d'oeil, @!$C",
+            /*spanish*/
+            "%w.$C"},
     });
 
     /*--------------------------

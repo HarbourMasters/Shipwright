@@ -1098,20 +1098,13 @@ int Fill() {
       printf("Done");
       ctx->CreateItemOverrides();
       CreateEntranceOverrides();
-      //Always execute ganon hint generation for the funny line  
-      CreateGanonAndSheikText();
-      CreateAltarText();
-      CreateDampesDiaryText();
-      CreateGregRupeeHint();
-      CreateSariaText();
-      if (GossipStoneHints.IsNot(HINTS_NO_HINTS)) {
-        printf("\x1b[10;10HCreating Hints...");
-        CreateAllHints();
-        printf("Done");
-      }
-      if (ShuffleMerchants.Is(SHUFFLEMERCHANTS_HINTS)) {
-        CreateMerchantsHints();
-      }
+
+      //funny ganon line
+      Text ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
+      CreateMessageFromTextObject(0x70CB, 0, 2, 3, AddColorsAndFormat(ganonText));
+      SetGanonText(ganonText);
+      
+      CreateAllHints();
       CreateWarpSongTexts();
       return 1;
     }

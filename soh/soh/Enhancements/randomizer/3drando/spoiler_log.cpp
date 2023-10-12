@@ -775,7 +775,7 @@ static void WriteHints(int language) {
     }
     if (Settings::GregHintText){
       jsonData["gregText"] = gregText;
-      jsonData["gregLoc"] = Rando::StaticData::GetLocation(GetItemLocation(RG_GREG_RUPEE)->GetRandomizerCheck())->GetName();
+      jsonData["gregLoc"] = GetGregHintLoc();
     }
     if (Settings::SariaHintText){
       jsonData["sariaText"] = sariaText;

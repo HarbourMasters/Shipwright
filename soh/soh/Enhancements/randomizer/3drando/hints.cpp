@@ -137,8 +137,10 @@ Text warpNocturneText;
 Text warpPreludeText;
 
 std::string lightArrowHintLoc;
-std::string sariaHintLoc;
 std::string dampeHintLoc;
+std::string gregHintLoc;
+std::string sariaHintLoc;
+
 
 Text& GetChildAltarText() {
   return childAltarText;
@@ -146,6 +148,10 @@ Text& GetChildAltarText() {
 
 Text& GetAdultAltarText() {
   return adultAltarText;
+}
+
+void SetGanonText(Text text){
+  ganonText = text;
 }
 
 Text& GetGanonText() {
@@ -202,6 +208,10 @@ std::string GetLightArrowHintLoc() {
 
 std::string GetDampeHintLoc() {
     return dampeHintLoc;
+}
+
+std::string GetGregHintLoc() {
+    return gregHintLoc;
 }
 
 std::string GetSariaHintLoc() {
@@ -514,12 +524,9 @@ static void CreateTrialHints(uint8_t copies) {
   }
 }
 
+//RANDOTODO clean this mess up once starting items are expanded
 void CreateGanonAndSheikText() {
   auto ctx = Rando::Context::GetInstance();
-  //funny ganon line
-  ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
-  CreateMessageFromTextObject(0x70CB, 0, 2, 3, AddColorsAndFormat(ganonText));
-
   if(Settings::LightArrowHintText){
     //Get the location of the light arrows
     auto lightArrowLocation = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
@@ -741,17 +748,16 @@ void CreateAltarText() {
 void CreateMerchantsHints() {
     auto ctx = Rando::Context::GetInstance();
     Text medigoronItemText = ctx->GetItemLocation(RC_GC_MEDIGORON)->GetPlacedItem().GetHint().GetText();
-    Text grannyItemText = ctx->GetItemLocation(RC_KAK_GRANNYS_SHOP)->GetPlacedItem().GetHint().GetText();
+    Text grannyItemText = ctx->GetItemLocation(RC_KAK_GRANNYS_SHOP)->GetPlacedItem().GetHint().GetText().Capitalize();
     Text carpetSalesmanItemText =
         ctx->GetItemLocation(RC_WASTELAND_BOMBCHU_SALESMAN)->GetPlacedItem().GetHint().GetText();
     Text carpetSalesmanItemClearText =
         ctx->GetItemLocation(RC_WASTELAND_BOMBCHU_SALESMAN)->GetPlacedItem().GetHint().GetClear();
 
-    Text grannyCapitalItemText = grannyItemText.Capitalize();
 
     Text medigoronText =
         Hint(RHT_MEDIGORON_DIALOG_FIRST).GetText() + medigoronItemText + Hint(RHT_MEDIGORON_DIALOG_SECOND).GetText();
-    Text grannyText = grannyCapitalItemText + Hint(RHT_GRANNY_DIALOG).GetText();
+    Text grannyText = grannyItemText + Hint(RHT_GRANNY_DIALOG).GetText();
     Text carpetSalesmanTextOne = Hint(RHT_CARPET_SALESMAN_DIALOG_FIRST).GetText() + carpetSalesmanItemText +
                                  Hint(RHT_CARPET_SALESMAN_DIALOG_SECOND).GetText();
     Text carpetSalesmanTextTwo = Hint(RHT_CARPET_SALESMAN_DIALOG_THIRD).GetText() + carpetSalesmanItemClearText +
@@ -767,94 +773,24 @@ void CreateMerchantsHints() {
     ctx->AddHint(RH_WASTELAND_BOMBCHU_SALESMAN, carpetSalesmanTextOne, RC_WASTELAND_BOMBCHU_SALESMAN, HINT_TYPE_STATIC, GetHintRegion(RR_HAUNTED_WASTELAND)->GetHint().GetText());
 }
 
-void CreateDampesDiaryText() {
+//RANDOTODO add Better Links Pocket and starting item handling once more starting items are added
+void CreateSpecialItemHint(uint32_t item, std::vector<RandomizerCheck> hints, RandomizerHintTextKey text1, RandomizerHintTextKey text2, Text& textLoc, std::string& nameLoc, bool condition, bool yourpocket = false) {
   auto ctx = Rando::Context::GetInstance();
-  if (!DampeHintText) {
-    dampesText = Text();
-    dampeHintLoc = "";
-    return;
-  }
-
-  RandomizerGet item = RG_PROGRESSIVE_HOOKSHOT;
-  RandomizerCheck location = FilterFromPool(ctx->allLocations, [item, ctx](const RandomizerCheck loc) {
+  if(condition){
+      RandomizerCheck location = FilterFromPool(ctx->allLocations, [item, ctx](const RandomizerCheck loc) {
       return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == item;
   })[0];
-  if (IsReachableWithout({RC_DAMPE_HINT},location,true)){
-    ctx->GetItemLocation(location)->SetAsHinted();
-  }
 
-  Text area = GetHintRegion(ctx->GetItemLocation(location)->GetParentRegionKey())->GetHint().GetText();
-  Text temp1 = Text{
-    "Whoever reads this, please enter %r", 
-    "Toi qui lit ce journal, rends-toi dans %r",
-    "Wer immer dies liest, der möge folgenden Ort aufsuchen: %r"
-  };
-
-  Text temp2 = {
-    "%w. I will let you have my stretching, shrinking keepsake.^I'm waiting for you.&--Dampé",
-    "%w. Et peut-être auras-tu droit à mon précieux %rtrésor%w.^Je t'attends...&--Igor",
-    "%w. Ihm gebe ich meinen langen, kurzen Schatz.^Ich warte!&Boris"
-  };
-  
-  dampesText = temp1 + area + temp2;
-  dampeHintLoc = Rando::StaticData::GetLocation(location)->GetName();
-  ctx->AddHint(RH_DAMPES_DIARY, dampesText, location, HINT_TYPE_STATIC, area);
-}
-
-void CreateGregRupeeHint() {
-  auto ctx = Rando::Context::GetInstance();
-  if (!GregHintText) {
-    gregText = Text();
-    return;
-  }
-
-  RandomizerCheck location = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
-      return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_GREG_RUPEE;
-  })[0];
-  Text area = GetHintRegion(ctx->GetItemLocation(location)->GetParentRegionKey())->GetHint().GetText();
-  if (IsReachableWithout({RC_GREG_HINT},location,true)){
-    ctx->GetItemLocation(location)->SetAsHinted();
-  }
-
-  Text temp1 = Text{
-    "By the way, if you're interested, I saw the shiniest %gGreen Rupee%w somewhere in%r ",
-    "Au fait, si ça t'intéresse, j'ai aperçu le plus éclatant des %gRubis Verts%w quelque part à %r",
-    ""
-  };
-
-  Text temp2 = {
-    "%w.^It's said to have %cmysterious powers%w...^But then, it could just be another regular rupee.&Oh well.",
-    "%w. On dit qu'il possède des pouvoirs mystérieux... Mais bon, ça pourrait juste être un autre rubis ordinaire.",
-    ""
-  };
-
-    gregText = temp1 + area + temp2;
-    ctx->AddHint(RH_GREG_RUPEE, gregText, location, HINT_TYPE_STATIC, area);
-}
-
-
-void CreateSariaText() {
-  if(Settings::SariaHintText){
-    auto ctx = Rando::Context::GetInstance();
-    //Get the location of a magic upgrade
-    auto magicLocation = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc){return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_PROGRESSIVE_MAGIC_METER;})[0];
-    sariaHintLoc = Rando::StaticData::GetLocation(magicLocation)->GetName();
-    Text area = GetHintRegion(ctx->GetItemLocation(magicLocation)->GetParentRegionKey())->GetHint().GetText();
-    Text temp1 = Text{
-      "Did you feel the %gsurge of magic%w recently? A mysterious bird told me it came from %r",
-      "As-tu récemment ressenti une vague de %gpuissance magique%w? Un mystérieux hibou m'a dit  qu'elle provenait du %r",
-      ""
-    };
-    Text temp2 = Text{
-      "%w.^You should check that place out, @!$C", 
-      "%w. Tu devrais aller y jeter un coup d'oeil, @!$C", 
-      "%w.$C"
-    };
-    sariaText = temp1 + area + temp2;
-
-    if (IsReachableWithout({RC_SARIA_SONG_HINT},magicLocation,true)){
-      ctx->GetItemLocation(magicLocation)->SetAsHinted();
+    if (IsReachableWithout(hints,location,true)){
+      ctx->GetItemLocation(location)->SetAsHinted();
     }
+    
+    Text area = GetHintRegion(ctx->GetItemLocation(location)->GetParentRegionKey())->GetHint().GetText();
+    textLoc = Hint(text1).GetText() + area + Hint(text2).GetText();
+    nameLoc = ctx->GetItemLocation(location)->GetName();
+  } else {
+    textLoc = Text();
+    nameLoc = "";
   }
 }
 
@@ -1028,7 +964,7 @@ uint8_t PlaceHints(std::array<uint8_t, HINT_TYPE_MAX>& selectedHints,
   return 0;
 }
 
-void CreateAllHints() {
+void CreateStoneHints() {
   auto ctx = Rando::Context::GetInstance();
   SPDLOG_DEBUG("\nNOW CREATING HINTS\n");
   const HintSetting& hintSetting = hintSettingTable[Settings::HintDistribution.Value<uint8_t>()];
@@ -1108,4 +1044,21 @@ void CreateAllHints() {
   //Call the function one last time to get rid of false positives on locations not
   //being reachable.
   GetAccessibleLocations({});
+}
+
+void CreateAllHints(){
+  CreateGanonAndSheikText();
+  CreateAltarText();
+  CreateSpecialItemHint(PROGRESSIVE_HOOKSHOT, {DAMPE_HINT}, DAMPE_DIARY01, DAMPE_DIARY02, dampesText, dampeHintLoc, (bool)DampeHintText);
+  CreateSpecialItemHint(GREG_RUPEE, {GREG_HINT}, GREG_HINT01, GREG_HINT02, gregText, gregHintLoc, (bool)GregHintText);
+  CreateSpecialItemHint(PROGRESSIVE_MAGIC_METER, {SARIA_SONG_HINT, SONG_FROM_SARIA}, SARIA_TEXT01, SARIA_TEXT02, sariaText, sariaHintLoc, (bool)SariaHintText);
+
+  if (ShuffleMerchants.Is(SHUFFLEMERCHANTS_HINTS)) {
+    CreateMerchantsHints();
+  }
+  if (GossipStoneHints.IsNot(HINTS_NO_HINTS)) {
+    printf("\x1b[10;10HCreating Hints...");
+    CreateStoneHints();
+    printf("Done");
+  }
 }
