@@ -266,8 +266,8 @@ OTRGlobals::OTRGlobals() {
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Background, "Background", std::make_shared<LUS::BackgroundFactory>());
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
-    gRandomizer = std::make_shared<Randomizer>();
     gRandoContext = Rando::Context::CreateInstance();
+    gRandomizer = std::make_shared<Randomizer>();
 
     hasMasterQuest = hasOriginal = false;
 
@@ -780,7 +780,6 @@ extern "C" void InitOTR() {
     OTRExtScanner();
     VanillaItemTable_Init();
     DebugConsole_Init();
-    StaticData::InitItemTable();
 
     InitMods();
     ActorDB::AddBuiltInCustomActors();

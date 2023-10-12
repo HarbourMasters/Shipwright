@@ -39,16 +39,16 @@ class Context {
     void ItemReset();
     void HintReset();
     void CreateItemOverrides();
-    std::set<ItemOverride, ItemOverride_Compare> overrides;
-    std::vector<std::vector<RandomizerCheck>> playthroughLocations;
-    std::vector<RandomizerCheck> wothLocations;
-    std::unordered_map<RandomizerCheck, uint8_t> iceTrapModels;
+    std::set<ItemOverride, ItemOverride_Compare> overrides = {};
+    std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
+    std::vector<RandomizerCheck> wothLocations = {};
+    std::unordered_map<RandomizerCheck, uint8_t> iceTrapModels = {};
     bool playthroughBeatable = false;
     bool allLocationsReachable = false;
 
   private:
     static std::weak_ptr<Context> mContext;
-    std::array<Hint, RH_MAX> hintTable;
-    std::array<ItemLocation, RC_MAX> itemLocationTable;
+    std::array<Hint, RH_MAX> hintTable = {};
+    std::array<ItemLocation, RC_MAX> itemLocationTable = {};
 };
 } // namespace Rando

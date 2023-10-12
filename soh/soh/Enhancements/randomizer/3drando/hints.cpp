@@ -1083,7 +1083,7 @@ void CreateAllHints() {
 
   //If any gossip stones failed to have a hint placed on them for some reason, place a junk hint as a failsafe.
   for (RandomizerCheck gossipStone : FilterFromPool(StaticData::gossipStoneLocations, [ctx](const RandomizerCheck loc) {
-           return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_NONE;
+           return ctx->GetItemLocation(loc)->GetHintKey() == RH_NONE;
        })) {
       const HintText junkHint = RandomElement(GetHintCategory(HintCategory::Junk));
       AddHint(junkHint.GetText(), gossipStone, { QM_PINK });

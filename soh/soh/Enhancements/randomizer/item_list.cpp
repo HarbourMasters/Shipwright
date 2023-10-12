@@ -170,49 +170,49 @@ void StaticData::InitItemTable() {
     // Progressive Items
     itemTable[RG_PROGRESSIVE_HOOKSHOT] =
         Item(RG_PROGRESSIVE_HOOKSHOT, Text{ "Progressive Hookshot", "Grappin (prog.)", "Progressiver Fanghaken" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_HOOKSHOT, true, &Logic::ProgressiveHookshot, RHT_PROGRESSIVE_HOOKSHOT,
+                  ITEMTYPE_ITEM, 0x80, true, &Logic::ProgressiveHookshot, RHT_PROGRESSIVE_HOOKSHOT,
                   true);
     itemTable[RG_PROGRESSIVE_STRENGTH] = Item(
         RG_PROGRESSIVE_STRENGTH,
         Text{ "Strength Upgrade", "Amélioration de Force (prog.)", "Progressives Kraft-Upgrade" },
-        ITEMTYPE_ITEM, RG_PROGRESSIVE_STRENGTH, true, &Logic::ProgressiveStrength, RHT_PROGRESSIVE_STRENGTH, true);
+        ITEMTYPE_ITEM, 0x81, true, &Logic::ProgressiveStrength, RHT_PROGRESSIVE_STRENGTH, true);
     itemTable[RG_PROGRESSIVE_BOMB_BAG] = Item(
         RG_PROGRESSIVE_BOMB_BAG, Text{ "Progressive Bomb Bag", "Sac de Bombes (prog.)", "Progressive Bombentasche" },
-        ITEMTYPE_ITEM, RG_PROGRESSIVE_BOMB_BAG, true, &Logic::ProgressiveBombBag, RHT_PROGRESSIVE_BOMB_BAG, true);
+        ITEMTYPE_ITEM, 0x82, true, &Logic::ProgressiveBombBag, RHT_PROGRESSIVE_BOMB_BAG, true);
     itemTable[RG_PROGRESSIVE_BOW] =
         Item(RG_PROGRESSIVE_BOW, Text{ "Progressive Bow", "Arc (prog.)", "Progressiver Bogen" }, ITEMTYPE_ITEM,
-                  RG_PROGRESSIVE_BOW, true, &Logic::ProgressiveBow, RHT_PROGRESSIVE_BOW, true);
+                  0x83, true, &Logic::ProgressiveBow, RHT_PROGRESSIVE_BOW, true);
     itemTable[RG_PROGRESSIVE_SLINGSHOT] = Item(
         RG_PROGRESSIVE_SLINGSHOT, Text{ "Progressive Slingshot", "Lance-Pierre (prog.)", "Progressive Steinschleuder" },
-        ITEMTYPE_ITEM, RG_PROGRESSIVE_SLINGSHOT, true, &Logic::ProgressiveBulletBag, RHT_PROGRESSIVE_SLINGSHOT, true);
+        ITEMTYPE_ITEM, 0x84, true, &Logic::ProgressiveBulletBag, RHT_PROGRESSIVE_SLINGSHOT, true);
     itemTable[RG_PROGRESSIVE_WALLET] =
         Item(RG_PROGRESSIVE_WALLET, Text{ "Progressive Wallet", "Bourse (prog.)", "Progressive Brieftasche" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_WALLET, true, &Logic::ProgressiveWallet, RHT_PROGRESSIVE_WALLET, true);
+                  ITEMTYPE_ITEM, 0x85, true, &Logic::ProgressiveWallet, RHT_PROGRESSIVE_WALLET, true);
     itemTable[RG_PROGRESSIVE_SCALE] =
         Item(RG_PROGRESSIVE_SCALE, Text{ "Progressive Scale", "Écaille (prog.)", "Progressive Skala" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_SCALE, true, &Logic::ProgressiveScale, RHT_PROGRESSIVE_SCALE, true);
+                  ITEMTYPE_ITEM, 0x86, true, &Logic::ProgressiveScale, RHT_PROGRESSIVE_SCALE, true);
     itemTable[RG_PROGRESSIVE_NUT_UPGRADE] = Item(
         RG_PROGRESSIVE_NUT_UPGRADE,
         Text{ "Progressive Nut Capacity", "Capacité de Noix (prog.)", "Progressive Nusskapazität" }, ITEMTYPE_ITEM,
-        RG_PROGRESSIVE_NUT_UPGRADE, false, &Logic::noVariable, RHT_PROGRESSIVE_NUT_UPGRADE, true);
+        0x87, false, &Logic::noVariable, RHT_PROGRESSIVE_NUT_UPGRADE, true);
     itemTable[RG_PROGRESSIVE_STICK_UPGRADE] = Item(
         RG_PROGRESSIVE_STICK_UPGRADE,
         Text{ "Progressive Stick Capacity", "Capacité de Bâtons (prog.)", "Progressive Stick-Kapazität" },
-        ITEMTYPE_ITEM, RG_PROGRESSIVE_STICK_UPGRADE, false, &Logic::noVariable, RHT_PROGRESSIVE_STICK_UPGRADE, true);
+        ITEMTYPE_ITEM, 0x88, false, &Logic::noVariable, RHT_PROGRESSIVE_STICK_UPGRADE, true);
     itemTable[RG_PROGRESSIVE_BOMBCHUS] =
         Item(RG_PROGRESSIVE_BOMBCHUS, Text{ "Progressive Bombchu", "Missiles (prog.)", "Progressive Kriechgrube" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_BOMBCHUS, true, &Logic::Bombchus, RHT_PROGRESSIVE_BOMBCHUS, true);
+                  ITEMTYPE_ITEM, 0x89, true, &Logic::Bombchus, RHT_PROGRESSIVE_BOMBCHUS, true);
     itemTable[RG_PROGRESSIVE_MAGIC_METER] = Item(
         RG_PROGRESSIVE_MAGIC_METER,
         Text{ "Progressive Magic Meter", "Jauge de Magie (prog.)", "Progressives magisches Messgerät" }, ITEMTYPE_ITEM,
-        RG_PROGRESSIVE_MAGIC_METER, true, &Logic::ProgressiveMagic, RHT_PROGRESSIVE_MAGIC_METER, true);
+        0x8A, true, &Logic::ProgressiveMagic, RHT_PROGRESSIVE_MAGIC_METER, true);
     itemTable[RG_PROGRESSIVE_OCARINA] = Item(
         RG_PROGRESSIVE_OCARINA, Text{ "Progressive Ocarina", "Ocarina (prog.)", "Progressive Okarina" }, ITEMTYPE_ITEM,
-        RG_PROGRESSIVE_OCARINA, true, &Logic::ProgressiveOcarina, RHT_PROGRESSIVE_OCARINA, true);
+        0x8B, true, &Logic::ProgressiveOcarina, RHT_PROGRESSIVE_OCARINA, true);
     itemTable[RG_PROGRESSIVE_GORONSWORD] =
         Item(RG_PROGRESSIVE_GORONSWORD,
                   Text{ "Progressive Goron Sword", "Épée Goron (prog.)", "Progressives Goronenschwert" }, ITEMTYPE_ITEM,
-                  RG_PROGRESSIVE_GORONSWORD, true, &Logic::ProgressiveGiantKnife, RHT_PROGRESSIVE_GORONSWORD, true);
+                  0xD4, true, &Logic::ProgressiveGiantKnife, RHT_PROGRESSIVE_GORONSWORD, true);
     // Bottles
     itemTable[RG_EMPTY_BOTTLE] =
         Item(RG_EMPTY_BOTTLE, Text{ "Empty Bottle", "Bouteille Vide", "Leere Flasche" }, ITEMTYPE_ITEM,
@@ -225,45 +225,45 @@ void StaticData::InitItemTable() {
     itemTable[RG_BOTTLE_WITH_RED_POTION] =
         Item(RG_BOTTLE_WITH_RED_POTION,
                   Text{ "Bottle with Red Potion", "Bouteille avec une Potion Rouge", "Flasche mit rotem Elixier" },
-                  ITEMTYPE_ITEM, RG_BOTTLE_WITH_RED_POTION, true, &Logic::Bottles, RHT_BOTTLE_WITH_RED_POTION,
+                  ITEMTYPE_ITEM, 0x8C, true, &Logic::Bottles, RHT_BOTTLE_WITH_RED_POTION,
                   RG_BOTTLE_WITH_RED_POTION, OBJECT_GI_LIQUID, GID_POTION_RED, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
     itemTable[RG_BOTTLE_WITH_GREEN_POTION] =
         Item(RG_BOTTLE_WITH_GREEN_POTION,
                   Text{ "Bottle with Green Potion", "Bouteille avec une Potion Verte", "Flasche mit grünem Elixier" },
-                  ITEMTYPE_ITEM, RG_BOTTLE_WITH_GREEN_POTION, true, &Logic::Bottles, RHT_BOTTLE_WITH_GREEN_POTION,
+                  ITEMTYPE_ITEM, 0x8D, true, &Logic::Bottles, RHT_BOTTLE_WITH_GREEN_POTION,
                   RG_BOTTLE_WITH_GREEN_POTION, OBJECT_GI_LIQUID, GID_POTION_GREEN, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
     itemTable[RG_BOTTLE_WITH_BLUE_POTION] =
         Item(RG_BOTTLE_WITH_BLUE_POTION,
                   Text{ "Bottle with Blue Potion", "Bouteille avec une Potion Bleue", "Flasche mit blauem Elixier" },
-                  ITEMTYPE_ITEM, RG_BOTTLE_WITH_BLUE_POTION, true, &Logic::Bottles, RHT_BOTTLE_WITH_BLUE_POTION,
+                  ITEMTYPE_ITEM, 0x8E, true, &Logic::Bottles, RHT_BOTTLE_WITH_BLUE_POTION,
                   RG_BOTTLE_WITH_BLUE_POTION, OBJECT_GI_LIQUID, GID_POTION_BLUE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
     itemTable[RG_BOTTLE_WITH_FAIRY] =
         Item(RG_BOTTLE_WITH_FAIRY, Text{ "Bottle with Fairy", "Bouteille avec une Fée", "Flasche mit Fee"},
-                  ITEMTYPE_ITEM, RG_BOTTLE_WITH_FAIRY, true, &Logic::Bottles, RHT_BOTTLE_WITH_FAIRY,
+                  ITEMTYPE_ITEM, 0x8F, true, &Logic::Bottles, RHT_BOTTLE_WITH_FAIRY,
                   RG_BOTTLE_WITH_FAIRY, OBJECT_GI_BOTTLE, GID_BOTTLE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
     itemTable[RG_BOTTLE_WITH_FISH] =
         Item(RG_BOTTLE_WITH_FISH, Text{ "Bottle with Fish", "Bouteille avec un Poisson", "Flasche mit Fisch" },
-                  ITEMTYPE_ITEM, RG_BOTTLE_WITH_FISH, true, &Logic::Bottles, RHT_BOTTLE_WITH_FISH, RG_BOTTLE_WITH_FISH,
+                  ITEMTYPE_ITEM, 0x90, true, &Logic::Bottles, RHT_BOTTLE_WITH_FISH, RG_BOTTLE_WITH_FISH,
                   OBJECT_GI_FISH, GID_FISH, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
                   MOD_RANDOMIZER);
     itemTable[RG_BOTTLE_WITH_BLUE_FIRE] =
         Item(RG_BOTTLE_WITH_BLUE_FIRE,
                   Text{ "Bottle with Blue Fire", "Bouteille avec une Flamme Bleue", "Flasche mit blauem Feuer" },
-                  ITEMTYPE_ITEM, RG_BOTTLE_WITH_BLUE_FIRE, true, &Logic::Bottles, RHT_BOTTLE_WITH_BLUE_FIRE,
+                  ITEMTYPE_ITEM, 0x91, true, &Logic::Bottles, RHT_BOTTLE_WITH_BLUE_FIRE,
                   RG_BOTTLE_WITH_BLUE_FIRE, OBJECT_GI_FIRE, GID_BLUE_FIRE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
     itemTable[RG_BOTTLE_WITH_BUGS] =
         Item(RG_BOTTLE_WITH_BUGS, Text{ "Bottle with Bugs", "Bouteille avec des Insectes", "Flasche mit Wanzen" },
-                  ITEMTYPE_ITEM, RG_BOTTLE_WITH_BUGS, true, &Logic::Bottles, RHT_BOTTLE_WITH_BUGS, RG_BOTTLE_WITH_BUGS,
+                  ITEMTYPE_ITEM, 0x92, true, &Logic::Bottles, RHT_BOTTLE_WITH_BUGS, RG_BOTTLE_WITH_BUGS,
                   OBJECT_GI_INSECT, GID_BUG, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
                   MOD_RANDOMIZER);
     itemTable[RG_BOTTLE_WITH_POE] =
         Item(RG_BOTTLE_WITH_POE, Text{ "Bottle with Poe", "Bouteille avec un Esprit", "Flasche mit einem Geist" },
-                  ITEMTYPE_ITEM, RG_BOTTLE_WITH_POE, true, &Logic::Bottles, RHT_BOTTLE_WITH_POE, RG_BOTTLE_WITH_POE,
+                  ITEMTYPE_ITEM, 0x94, true, &Logic::Bottles, RHT_BOTTLE_WITH_POE, RG_BOTTLE_WITH_POE,
                   OBJECT_GI_GHOST, GID_POE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
                   MOD_RANDOMIZER);
     itemTable[RG_RUTOS_LETTER] =
@@ -273,211 +273,211 @@ void StaticData::InitItemTable() {
                   OBJECT_GI_BOTTLE_LETTER, GID_LETTER_RUTO, 0x99, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_BOTTLE_WITH_BIG_POE] =
         Item(RG_BOTTLE_WITH_BIG_POE, Text{ "Bottle with Big Poe", "Bouteille avec une Âme", "Flasche mit Seele" },
-                  ITEMTYPE_ITEM, RG_BOTTLE_WITH_BIG_POE, true, &Logic::BottleWithBigPoe, RHT_BOTTLE_WITH_BIG_POE,
+                  ITEMTYPE_ITEM, 0x93, true, &Logic::BottleWithBigPoe, RHT_BOTTLE_WITH_BIG_POE,
                   RG_BOTTLE_WITH_BIG_POE, OBJECT_GI_GHOST, GID_BIG_POE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
     // Songs
     itemTable[RG_ZELDAS_LULLABY] =
         Item(RG_ZELDAS_LULLABY, Text{ "Zelda's Lullaby", "Berceuse de Zelda", "Zeldas Wiegenlied" }, ITEMTYPE_SONG,
-                  RG_ZELDAS_LULLABY, true, &Logic::ZeldasLullaby, RHT_ZELDAS_LULLABY, ITEM_SONG_LULLABY,
+                  0xC1, true, &Logic::ZeldasLullaby, RHT_ZELDAS_LULLABY, ITEM_SONG_LULLABY,
                   OBJECT_GI_MELODY, GID_SONG_ZELDA, 0xD4, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_EPONAS_SONG] =
-        Item(RG_EPONAS_SONG, Text{ "Epona's Song", "Chant d'Epona", "Eponas Lied" }, ITEMTYPE_SONG, RG_EPONAS_SONG,
+        Item(RG_EPONAS_SONG, Text{ "Epona's Song", "Chant d'Epona", "Eponas Lied" }, ITEMTYPE_SONG, 0xC2,
                   true, &Logic::EponasSong, RHT_EPONAS_SONG, ITEM_SONG_EPONA, OBJECT_GI_MELODY, GID_SONG_EPONA, 0xD2,
                   0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_SARIAS_SONG] =
         Item(RG_SARIAS_SONG, Text{ "Saria's Song", "Chant de Saria", "Sarias Lied" }, ITEMTYPE_SONG,
-                  RG_SARIAS_SONG, true, &Logic::SariasSong, RHT_SARIAS_SONG, ITEM_SONG_SARIA, OBJECT_GI_MELODY,
+                  0xC3, true, &Logic::SariasSong, RHT_SARIAS_SONG, ITEM_SONG_SARIA, OBJECT_GI_MELODY,
                   GID_SONG_SARIA, 0xD1, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_SUNS_SONG] =
         Item(RG_SUNS_SONG, Text{ "Sun's Song", "Chant du Soleil", "Das Lied der Sonne" }, ITEMTYPE_SONG,
-                  RG_SUNS_SONG, true, &Logic::SunsSong, RHT_SUNS_SONG, ITEM_SONG_SUN, OBJECT_GI_MELODY, GID_SONG_SUN,
+                  0xC4, true, &Logic::SunsSong, RHT_SUNS_SONG, ITEM_SONG_SUN, OBJECT_GI_MELODY, GID_SONG_SUN,
                   0xD3, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_SONG_OF_TIME] =
         Item(RG_SONG_OF_TIME, Text{ "Song of Time", "Chant du Temps", "Das Lied der Zeit" }, ITEMTYPE_SONG,
-                  RG_SONG_OF_TIME, true, &Logic::SongOfTime, RHT_SONG_OF_TIME, ITEM_SONG_TIME, OBJECT_GI_MELODY,
+                  0xC5, true, &Logic::SongOfTime, RHT_SONG_OF_TIME, ITEM_SONG_TIME, OBJECT_GI_MELODY,
                   GID_SONG_TIME, 0xD5, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_SONG_OF_STORMS] =
         Item(RG_SONG_OF_STORMS, Text{ "Song of Storms", "Chant des Tempêtes", "Lied der Stürme" }, ITEMTYPE_SONG,
-                  RG_SONG_OF_STORMS, true, &Logic::SongOfStorms, RHT_SONG_OF_STORMS, ITEM_SONG_STORMS, OBJECT_GI_MELODY,
+                  0xC6, true, &Logic::SongOfStorms, RHT_SONG_OF_STORMS, ITEM_SONG_STORMS, OBJECT_GI_MELODY,
                   GID_SONG_STORM, 0xD6, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_MINUET_OF_FOREST] =
         Item(RG_MINUET_OF_FOREST, Text{ "Minuet of Forest", "Menuet des Bois", "Wald-Minuett", }, ITEMTYPE_SONG,
-                  RG_MINUET_OF_FOREST, true, &Logic::MinuetOfForest, RHT_MINUET_OF_FOREST, ITEM_SONG_MINUET,                    
+                  0xBB, true, &Logic::MinuetOfForest, RHT_MINUET_OF_FOREST, ITEM_SONG_MINUET,                    
                   OBJECT_GI_MELODY, GID_SONG_MINUET, 0x73, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_BOLERO_OF_FIRE] =
         Item(RG_BOLERO_OF_FIRE, Text{ "Bolero of Fire", "Boléro du Feu", "Bolero des Feuers" }, ITEMTYPE_SONG,
-                  RG_BOLERO_OF_FIRE, true, &Logic::BoleroOfFire, RHT_BOLERO_OF_FIRE, ITEM_SONG_BOLERO, OBJECT_GI_MELODY,
+                  0xBC, true, &Logic::BoleroOfFire, RHT_BOLERO_OF_FIRE, ITEM_SONG_BOLERO, OBJECT_GI_MELODY,
                   GID_SONG_BOLERO, 0x74, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_SERENADE_OF_WATER] =
         Item(RG_SERENADE_OF_WATER, Text{ "Serenade of Water", "Sérénade de l'Eau", "Serenade des Wassers" },
-                  ITEMTYPE_SONG, RG_SERENADE_OF_WATER, true, &Logic::SerenadeOfWater, RHT_SERENADE_OF_WATER,
+                  ITEMTYPE_SONG, 0xBD, true, &Logic::SerenadeOfWater, RHT_SERENADE_OF_WATER,
                   ITEM_SONG_SERENADE, OBJECT_GI_MELODY, GID_SONG_SERENADE, 0x75, 0x80, CHEST_ANIM_LONG,
                   ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_NOCTURNE_OF_SHADOW] =
         Item(RG_NOCTURNE_OF_SHADOW, Text{ "Nocturne of Shadow", "Nocturne de l'Ombre", "Nocturne der Schatten "},
-                  ITEMTYPE_SONG, RG_NOCTURNE_OF_SHADOW, true, &Logic::NocturneOfShadow, RHT_NOCTURNE_OF_SHADOW,
+                  ITEMTYPE_SONG, 0xBF, true, &Logic::NocturneOfShadow, RHT_NOCTURNE_OF_SHADOW,
                   ITEM_SONG_NOCTURNE, OBJECT_GI_MELODY, GID_SONG_NOCTURNE, 0x77, 0x80, CHEST_ANIM_LONG, 
                   ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_REQUIEM_OF_SPIRIT] =
         Item(RG_REQUIEM_OF_SPIRIT, Text{ "Requiem of Spirit", "Requiem des Esprits", "Requiem des Geistes" },
-                  ITEMTYPE_SONG, RG_REQUIEM_OF_SPIRIT, true, &Logic::RequiemOfSpirit, RHT_REQUIEM_OF_SPIRIT,
+                  ITEMTYPE_SONG, 0xBE, true, &Logic::RequiemOfSpirit, RHT_REQUIEM_OF_SPIRIT,
                   ITEM_SONG_REQUIEM, OBJECT_GI_MELODY, GID_SONG_REQUIEM, 0x76, 0x80, CHEST_ANIM_LONG, 
                   ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_PRELUDE_OF_LIGHT] =
         Item(RG_PRELUDE_OF_LIGHT, Text{ "Prelude of Light", "Prélude de la Lumière", "Präludium des Lichts" },
-                  ITEMTYPE_SONG, RG_PRELUDE_OF_LIGHT, true, &Logic::PreludeOfLight, RHT_PRELUDE_OF_LIGHT,
+                  ITEMTYPE_SONG, 0xC0, true, &Logic::PreludeOfLight, RHT_PRELUDE_OF_LIGHT,
                   ITEM_SONG_PRELUDE, OBJECT_GI_MELODY, GID_SONG_PRELUDE, 0x78, 0x80, CHEST_ANIM_LONG,
                   ITEM_CATEGORY_MAJOR, MOD_NONE);
     // Maps and Compasses
     itemTable[RG_DEKU_TREE_MAP] =
         Item(RG_DEKU_TREE_MAP, Text{ "Great Deku Tree Map", "Carte de l'Arbre Mojo", "Karte des Deku-Baums" },
-                  ITEMTYPE_MAP, RG_DEKU_TREE_MAP, false, &Logic::noVariable, RHT_DEKU_TREE_MAP, RG_DEKU_TREE_MAP,                    
+                  ITEMTYPE_MAP, 0xA5, false, &Logic::noVariable, RHT_DEKU_TREE_MAP, RG_DEKU_TREE_MAP,                    
                   OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
                   ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_DODONGOS_CAVERN_MAP] =
         Item(RG_DODONGOS_CAVERN_MAP,
                   Text{ "Dodongo's Cavern Map", "Carte de la Caverne Dodongo", "Karte der Dodongo-Höhle" },
-                  ITEMTYPE_MAP, RG_DODONGOS_CAVERN_MAP, false, &Logic::noVariable, RHT_DODONGOS_CAVERN_MAP,
+                  ITEMTYPE_MAP, 0xA6, false, &Logic::noVariable, RHT_DODONGOS_CAVERN_MAP,
                   RG_DODONGOS_CAVERN_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_JABU_JABUS_BELLY_MAP] =
         Item(RG_JABU_JABUS_BELLY_MAP,
                   Text{ "Jabu-Jabu's Belly Map", "Carte du Ventre de Jabu-Jabu", "Karte des Jabu-Jabu-Bauchs" },
-                  ITEMTYPE_MAP, RG_JABU_JABUS_BELLY_MAP, false, &Logic::noVariable, RHT_JABU_JABUS_BELLY_MAP,
+                  ITEMTYPE_MAP, 0xA7, false, &Logic::noVariable, RHT_JABU_JABUS_BELLY_MAP,
                   RG_JABU_JABUS_BELLY_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_FOREST_TEMPLE_MAP] =
         Item(RG_FOREST_TEMPLE_MAP, Text{ "Forest Temple Map", "Carte du Temple de la Forêt", "Waldtempel Karte" },
-                  ITEMTYPE_MAP, RG_FOREST_TEMPLE_MAP, false, &Logic::noVariable, RHT_FOREST_TEMPLE_MAP,
+                  ITEMTYPE_MAP, 0xA8, false, &Logic::noVariable, RHT_FOREST_TEMPLE_MAP,
                   RG_FOREST_TEMPLE_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_FIRE_TEMPLE_MAP] =
         Item(RG_FIRE_TEMPLE_MAP, Text{ "Fire Temple Map", "Carte due Temple de Feu", "Feuertempel Karte" },
-                  ITEMTYPE_MAP, RG_FIRE_TEMPLE_MAP, false, &Logic::noVariable, RHT_FIRE_TEMPLE_MAP, RG_FIRE_TEMPLE_MAP,                  
+                  ITEMTYPE_MAP, 0xA9, false, &Logic::noVariable, RHT_FIRE_TEMPLE_MAP, RG_FIRE_TEMPLE_MAP,                  
                   OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
                   ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_WATER_TEMPLE_MAP] =
         Item(RG_WATER_TEMPLE_MAP, Text{ "Water Temple Map", "Carte du Temple de l'Eau", "Wassertempel-Karte" },
-                  ITEMTYPE_MAP, RG_WATER_TEMPLE_MAP, false, &Logic::noVariable, RHT_WATER_TEMPLE_MAP, RG_WATER_TEMPLE_MAP,                 
+                  ITEMTYPE_MAP, 0xAA, false, &Logic::noVariable, RHT_WATER_TEMPLE_MAP, RG_WATER_TEMPLE_MAP,                 
                   OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, 
                   ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_SPIRIT_TEMPLE_MAP] =
         Item(RG_SPIRIT_TEMPLE_MAP,
                   Text{ "Spirit Temple Map", "Carte due Temple de l'Esprit", "Geistertempel Karte"}, ITEMTYPE_MAP,
-                  RG_SPIRIT_TEMPLE_MAP, false, &Logic::noVariable, RHT_SPIRIT_TEMPLE_MAP, RG_SPIRIT_TEMPLE_MAP,
+                  0xAB, false, &Logic::noVariable, RHT_SPIRIT_TEMPLE_MAP, RG_SPIRIT_TEMPLE_MAP,
                   OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
                   ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_SHADOW_TEMPLE_MAP] =
         Item(RG_SHADOW_TEMPLE_MAP,
                   Text{ "Shadow Temple Map", "Carte du Temple de l'Ombre", "Karte des Schattentempels"}, ITEMTYPE_MAP,
-                  RG_SHADOW_TEMPLE_MAP, false, &Logic::noVariable, RHT_SHADOW_TEMPLE_MAP, RG_SHADOW_TEMPLE_MAP,
+                  0xAC, false, &Logic::noVariable, RHT_SHADOW_TEMPLE_MAP, RG_SHADOW_TEMPLE_MAP,
                   OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
                   ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_BOTTOM_OF_THE_WELL_MAP] =
         Item(RG_BOTTOM_OF_THE_WELL_MAP,
                   Text{ "Bottom of the Well Map", "Carte du Puits", "Boden des Brunnens Karte"}, ITEMTYPE_MAP,
-                  RG_BOTTOM_OF_THE_WELL_MAP, false, &Logic::noVariable, RHT_BOTTOM_OF_THE_WELL_MAP,
+                  0xAD, false, &Logic::noVariable, RHT_BOTTOM_OF_THE_WELL_MAP,
                   RG_BOTTOM_OF_THE_WELL_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_ICE_CAVERN_MAP] =
         Item(RG_ICE_CAVERN_MAP, Text{ "Ice Cavern Map", "Carte de la Caverne Polaire", "Eishöhle Karte" },
-                  ITEMTYPE_MAP, RG_ICE_CAVERN_MAP, false, &Logic::noVariable, RHT_ICE_CAVERN_MAP, RG_ICE_CAVERN_MAP,                    
+                  ITEMTYPE_MAP, 0xAE, false, &Logic::noVariable, RHT_ICE_CAVERN_MAP, RG_ICE_CAVERN_MAP,                    
                   OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
                   ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_DEKU_TREE_COMPASS] =
         Item(RG_DEKU_TREE_COMPASS,
                   Text{ "Great Deku Tree Compass", "Boussole de l'Arbre Mojo", "Kompass des Deku-Baums"},
-                  ITEMTYPE_COMPASS, RG_DEKU_TREE_COMPASS, false, &Logic::noVariable, RHT_DEKU_TREE_COMPASS,
+                  ITEMTYPE_COMPASS, 0x9B, false, &Logic::noVariable, RHT_DEKU_TREE_COMPASS,
                   RG_DEKU_TREE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_DODONGOS_CAVERN_COMPASS] =
         Item(RG_DODONGOS_CAVERN_COMPASS,
                   Text{ "Dodongo's Cavern Compass", "Boussole de la Caverne Dodongo", "Kompass der Dodongo-Höhle" },
-                  ITEMTYPE_COMPASS, RG_DODONGOS_CAVERN_COMPASS, false, &Logic::noVariable, RHT_DODONGOS_CAVERN_COMPASS,
+                  ITEMTYPE_COMPASS, 0x9C, false, &Logic::noVariable, RHT_DODONGOS_CAVERN_COMPASS,
                   RG_DODONGOS_CAVERN_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_JABU_JABUS_BELLY_COMPASS] =
         Item(RG_JABU_JABUS_BELLY_COMPASS,
                   Text{ "Jabu-Jabu's Belly Compass", "Boussole du Ventre de Jabu-Jabu", "Kompass des Jabu-Jabu-Bauchs" },
-                  ITEMTYPE_COMPASS, RG_JABU_JABUS_BELLY_COMPASS, false, &Logic::noVariable, RHT_JABU_JABUS_BELLY_COMPASS,
+                  ITEMTYPE_COMPASS, 0x9D, false, &Logic::noVariable, RHT_JABU_JABUS_BELLY_COMPASS,
                   RG_JABU_JABUS_BELLY_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_FOREST_TEMPLE_COMPASS] =
         Item(RG_FOREST_TEMPLE_COMPASS,
                   Text{ "Forest Temple Compass", "Boussole du Temple de la Forêt", "Waldtempel-Kompass" },
-                  ITEMTYPE_COMPASS, RG_FOREST_TEMPLE_COMPASS, false, &Logic::noVariable, RHT_FOREST_TEMPLE_COMPASS,
+                  ITEMTYPE_COMPASS, 0x9E, false, &Logic::noVariable, RHT_FOREST_TEMPLE_COMPASS,
                   RG_FOREST_TEMPLE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_FIRE_TEMPLE_COMPASS] =
         Item(RG_FIRE_TEMPLE_COMPASS,
                   Text{ "Fire Temple Compass", "Boussole du Temple du Feu", "Feuertempel-Kompass" }, ITEMTYPE_COMPASS,
-                  RG_FIRE_TEMPLE_COMPASS, false, &Logic::noVariable, RHT_FIRE_TEMPLE_COMPASS, RG_FIRE_TEMPLE_COMPASS,              
+                  0x9F, false, &Logic::noVariable, RHT_FIRE_TEMPLE_COMPASS, RG_FIRE_TEMPLE_COMPASS,              
                   OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
                   ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_WATER_TEMPLE_COMPASS] =
         Item(RG_WATER_TEMPLE_COMPASS,
                   Text{ "Water Temple Compass", "Boussole du Temple de l'Eau", "Wassertempel-Kompass" },
-                  ITEMTYPE_COMPASS, RG_WATER_TEMPLE_COMPASS, false, &Logic::noVariable, RHT_WATER_TEMPLE_COMPASS, 
+                  ITEMTYPE_COMPASS, 0xA0, false, &Logic::noVariable, RHT_WATER_TEMPLE_COMPASS, 
                   RG_WATER_TEMPLE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_SPIRIT_TEMPLE_COMPASS] =
         Item(RG_SPIRIT_TEMPLE_COMPASS,
                   Text{ "Spirit Temple Compass", "Boussole due Temple de l'Esprit", "Geistiger Tempelkompass" },
-                  ITEMTYPE_COMPASS, RG_SPIRIT_TEMPLE_COMPASS, false, &Logic::noVariable, RHT_SPIRIT_TEMPLE_COMPASS,
+                  ITEMTYPE_COMPASS, 0xA1, false, &Logic::noVariable, RHT_SPIRIT_TEMPLE_COMPASS,
                   RG_SPIRIT_TEMPLE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_SHADOW_TEMPLE_COMPASS] =
         Item(RG_SHADOW_TEMPLE_COMPASS,
                   Text{ "Shadow Temple Compass", "Boussole du Temple de l'Ombre", "Kompass des Schattentempels" },
-                  ITEMTYPE_COMPASS, RG_SHADOW_TEMPLE_COMPASS, false, &Logic::noVariable, RHT_SHADOW_TEMPLE_COMPASS,
+                  ITEMTYPE_COMPASS, 0xA2, false, &Logic::noVariable, RHT_SHADOW_TEMPLE_COMPASS,
                   RG_SHADOW_TEMPLE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_BOTTOM_OF_THE_WELL_COMPASS] =
         Item(RG_BOTTOM_OF_THE_WELL_COMPASS,
                   Text{ "Bottom of the Well Compass", "Boussole du Puits", "Boden des Brunnenkompasses" },
-                  ITEMTYPE_COMPASS, RG_BOTTOM_OF_THE_WELL_COMPASS, false, &Logic::noVariable,
+                  ITEMTYPE_COMPASS, 0xA3, false, &Logic::noVariable,
                   RHT_BOTTOM_OF_THE_WELL_COMPASS, RG_BOTTOM_OF_THE_WELL_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS,
                   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     itemTable[RG_ICE_CAVERN_COMPASS] =
         Item(RG_ICE_CAVERN_COMPASS,
                   Text{ "Ice Cavern Compass", "Boussole de la Caverne Polaire", "Eishöhlenkompass"}, ITEMTYPE_COMPASS,
-                  RG_ICE_CAVERN_COMPASS, false, &Logic::noVariable, RHT_ICE_CAVERN_COMPASS, RG_ICE_CAVERN_COMPASS,               
+                  0xA4, false, &Logic::noVariable, RHT_ICE_CAVERN_COMPASS, RG_ICE_CAVERN_COMPASS,               
                   OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
                   ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     // Boss Keys
     itemTable[RG_FOREST_TEMPLE_BOSS_KEY] =
         Item(RG_FOREST_TEMPLE_BOSS_KEY,
                   Text{ "Forest Temple Boss Key", "Clé d'Or du Temple de la Forêt", "Waldtempel-Boss-Schlüssel" },
-                  ITEMTYPE_BOSSKEY, RG_FOREST_TEMPLE_BOSS_KEY, true, &Logic::BossKeyForestTemple,
+                  ITEMTYPE_BOSSKEY, 0x95, true, &Logic::BossKeyForestTemple,
                   RHT_FOREST_TEMPLE_BOSS_KEY, RG_FOREST_TEMPLE_BOSS_KEY, OBJECT_GI_BOSSKEY, GID_KEY_BOSS,
                   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_BOSS_KEY, MOD_RANDOMIZER);
     itemTable[RG_FOREST_TEMPLE_BOSS_KEY].SetCustomDrawFunc(Randomizer_DrawBossKey);
     itemTable[RG_FIRE_TEMPLE_BOSS_KEY] =
         Item(RG_FIRE_TEMPLE_BOSS_KEY,
                   Text{ "Fire Temple Boss Key", "Clé d'Or du Temple du Feu", "Feuertempel-Boss-Schlüssel" },
-                  ITEMTYPE_BOSSKEY, RG_FIRE_TEMPLE_BOSS_KEY, true, &Logic::BossKeyFireTemple, RHT_FIRE_TEMPLE_BOSS_KEY,
+                  ITEMTYPE_BOSSKEY, 0x96, true, &Logic::BossKeyFireTemple, RHT_FIRE_TEMPLE_BOSS_KEY,
                   RG_FIRE_TEMPLE_BOSS_KEY, OBJECT_GI_BOSSKEY, GID_KEY_BOSS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_BOSS_KEY, MOD_RANDOMIZER);
     itemTable[RG_FIRE_TEMPLE_BOSS_KEY].SetCustomDrawFunc(Randomizer_DrawBossKey);
     itemTable[RG_WATER_TEMPLE_BOSS_KEY] =
         Item(RG_WATER_TEMPLE_BOSS_KEY,
                   Text{ "Water Temple Boss Key", "Clé d'Or du Temple de l'Eau", "Wassertempel-Boss-Schlüssel" },
-                  ITEMTYPE_BOSSKEY, RG_WATER_TEMPLE_BOSS_KEY, true, &Logic::BossKeyWaterTemple,
+                  ITEMTYPE_BOSSKEY, 0x97, true, &Logic::BossKeyWaterTemple,
                   RHT_WATER_TEMPLE_BOSS_KEY, RG_WATER_TEMPLE_BOSS_KEY, OBJECT_GI_BOSSKEY, GID_KEY_BOSS,
                   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_BOSS_KEY, MOD_RANDOMIZER);
     itemTable[RG_WATER_TEMPLE_BOSS_KEY].SetCustomDrawFunc(Randomizer_DrawBossKey);
     itemTable[RG_SPIRIT_TEMPLE_BOSS_KEY] =
         Item(RG_SPIRIT_TEMPLE_BOSS_KEY,
                   Text{ "Spirit Temple Boss Key", "Clé d'Or du Temple de l'Esprit", "Geistertempel-Boss-Schlüssel" },
-                  ITEMTYPE_BOSSKEY, RG_SPIRIT_TEMPLE_BOSS_KEY, true, &Logic::BossKeySpiritTemple,
+                  ITEMTYPE_BOSSKEY, 0x98, true, &Logic::BossKeySpiritTemple,
                   RHT_SPIRIT_TEMPLE_BOSS_KEY, RG_SPIRIT_TEMPLE_BOSS_KEY, OBJECT_GI_BOSSKEY, GID_KEY_BOSS,
                   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_BOSS_KEY, MOD_RANDOMIZER);
     itemTable[RG_SPIRIT_TEMPLE_BOSS_KEY].SetCustomDrawFunc(Randomizer_DrawBossKey);
     itemTable[RG_SHADOW_TEMPLE_BOSS_KEY] =
         Item(RG_SHADOW_TEMPLE_BOSS_KEY,
                   Text{ "Shadow Temple Boss Key", "Clé d'Or du Temple de l'Ombre", 
-                  "Schlüssel für den Boss des Schattentempels" }, ITEMTYPE_BOSSKEY, RG_SHADOW_TEMPLE_BOSS_KEY, true,
+                  "Schlüssel für den Boss des Schattentempels" }, ITEMTYPE_BOSSKEY, 0x99, true,
                   &Logic::BossKeyShadowTemple, RHT_SHADOW_TEMPLE_BOSS_KEY, RG_SHADOW_TEMPLE_BOSS_KEY, OBJECT_GI_BOSSKEY,
                   GID_KEY_BOSS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_BOSS_KEY,
                   MOD_RANDOMIZER);
@@ -485,42 +485,42 @@ void StaticData::InitItemTable() {
     itemTable[RG_GANONS_CASTLE_BOSS_KEY] =
         Item(RG_GANONS_CASTLE_BOSS_KEY,
                   Text{ "Ganon's Castle Boss Key", "Clé d'Or du Château de Ganon", "Ganons Schloss-Boss-Schlüssel" },
-                  ITEMTYPE_BOSSKEY, RG_GANONS_CASTLE_BOSS_KEY, true, &Logic::BossKeyGanonsCastle,
+                  ITEMTYPE_BOSSKEY, 0x9A, true, &Logic::BossKeyGanonsCastle,
                   RHT_GANONS_CASTLE_BOSS_KEY, RG_GANONS_CASTLE_BOSS_KEY, OBJECT_GI_BOSSKEY, GID_KEY_BOSS,
                   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_BOSS_KEY, MOD_RANDOMIZER);
     itemTable[RG_GANONS_CASTLE_BOSS_KEY].SetCustomDrawFunc(Randomizer_DrawBossKey);
     itemTable[RG_FOREST_TEMPLE_SMALL_KEY] =
         Item(RG_FOREST_TEMPLE_SMALL_KEY,
                   Text{ "Forest Temple Small Key", "Petite Clé du Temple de la Forêt", "Waldtempel Kleiner Schlüssel" },
-                  ITEMTYPE_SMALLKEY, RG_FOREST_TEMPLE_SMALL_KEY, true, &Logic::ForestTempleKeys,
+                  ITEMTYPE_SMALLKEY, 0xAF, true, &Logic::ForestTempleKeys,
                   RHT_FOREST_TEMPLE_SMALL_KEY, RG_FOREST_TEMPLE_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL,
                   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_FOREST_TEMPLE_SMALL_KEY].SetCustomDrawFunc(Randomizer_DrawSmallKey);
     itemTable[RG_FIRE_TEMPLE_SMALL_KEY] =
         Item(RG_FIRE_TEMPLE_SMALL_KEY,
                   Text{ "Fire Temple Small Key", "Petite Clé du Temple du Feu", "Feuertempel Kleiner Schlüssel" },
-                  ITEMTYPE_SMALLKEY, RG_FIRE_TEMPLE_SMALL_KEY, true, &Logic::FireTempleKeys, RHT_FIRE_TEMPLE_SMALL_KEY,
+                  ITEMTYPE_SMALLKEY, 0xB0, true, &Logic::FireTempleKeys, RHT_FIRE_TEMPLE_SMALL_KEY,
                   RG_FIRE_TEMPLE_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_FIRE_TEMPLE_SMALL_KEY].SetCustomDrawFunc(Randomizer_DrawSmallKey);
     itemTable[RG_WATER_TEMPLE_SMALL_KEY] =
         Item(RG_WATER_TEMPLE_SMALL_KEY,
                   Text{ "Water Temple Small Key", "Petite Clé du Temple de l'Eau", "Wassertempel Kleiner Schlüssel" },
-                  ITEMTYPE_SMALLKEY, RG_WATER_TEMPLE_SMALL_KEY, true, &Logic::WaterTempleKeys,
+                  ITEMTYPE_SMALLKEY, 0xB1, true, &Logic::WaterTempleKeys,
                   RHT_WATER_TEMPLE_SMALL_KEY, RG_WATER_TEMPLE_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL,
                   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_WATER_TEMPLE_SMALL_KEY].SetCustomDrawFunc(Randomizer_DrawSmallKey);
     itemTable[RG_SPIRIT_TEMPLE_SMALL_KEY] =
         Item(RG_SPIRIT_TEMPLE_SMALL_KEY, 
                   Text{ "Spirit Temple Small Key", "Petite Clé du Temple de l'Esprit", "Geisttempel Kleiner Schlüssel" },
-                  ITEMTYPE_SMALLKEY, RG_SPIRIT_TEMPLE_SMALL_KEY, true, &Logic::SpiritTempleKeys,
+                  ITEMTYPE_SMALLKEY, 0xB2, true, &Logic::SpiritTempleKeys,
                   RHT_SPIRIT_TEMPLE_SMALL_KEY, RG_SPIRIT_TEMPLE_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL,
                   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_SPIRIT_TEMPLE_SMALL_KEY].SetCustomDrawFunc(Randomizer_DrawSmallKey);
     itemTable[RG_SHADOW_TEMPLE_SMALL_KEY] =
         Item(RG_SHADOW_TEMPLE_SMALL_KEY,
                   Text{ "Shadow Temple Small Key", "Petite Clé du Temple de l'Ombre",
-                  "Schattentempel Kleiner Schlüssel" }, ITEMTYPE_SMALLKEY, RG_SHADOW_TEMPLE_SMALL_KEY, true,
+                  "Schattentempel Kleiner Schlüssel" }, ITEMTYPE_SMALLKEY, 0xB3, true,
                   &Logic::ShadowTempleKeys, RHT_SHADOW_TEMPLE_SMALL_KEY, RG_SHADOW_TEMPLE_SMALL_KEY, OBJECT_GI_KEY, 
                   GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY,
                   MOD_RANDOMIZER);
@@ -528,140 +528,140 @@ void StaticData::InitItemTable() {
     itemTable[RG_BOTTOM_OF_THE_WELL_SMALL_KEY] =
         Item(RG_BOTTOM_OF_THE_WELL_SMALL_KEY,
                   Text{ "Bottom of the Well Small Key", "Petite Clé du Puits", "Boden des Brunnens Kleiner Schlüssel" },
-                  ITEMTYPE_SMALLKEY, RG_BOTTOM_OF_THE_WELL_SMALL_KEY, true, &Logic::BottomOfTheWellKeys,
+                  ITEMTYPE_SMALLKEY, 0xB4, true, &Logic::BottomOfTheWellKeys,
                   RHT_BOTTOM_OF_THE_WELL_SMALL_KEY, RG_BOTTOM_OF_THE_WELL_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL,
                   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_BOTTOM_OF_THE_WELL_SMALL_KEY].SetCustomDrawFunc(Randomizer_DrawSmallKey);
     itemTable[RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY] = Item(
         RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
         Text{ "Training Grounds Small Key", "Petite Clé du Gymnase Gerudo", "Trainingsgelände Kleiner Schlüssel" },
-        ITEMTYPE_SMALLKEY, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, true, &Logic::GerudoTrainingGroundsKeys,
+        ITEMTYPE_SMALLKEY, 0xB5, true, &Logic::GerudoTrainingGroundsKeys,
         RHT_GERUDO_TRAINING_GROUNDS_SMALL_KEY, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL,
         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY].SetCustomDrawFunc(Randomizer_DrawSmallKey);
     itemTable[RG_GERUDO_FORTRESS_SMALL_KEY] = Item(
         RG_GERUDO_FORTRESS_SMALL_KEY,
         Text{ "Gerudo Fortress Small Key", "Petite Clé du Repaire des Voleurs", "Gerudo-Festung Kleiner Schlüssel" },
-        ITEMTYPE_FORTRESS_SMALLKEY, RG_GERUDO_FORTRESS_SMALL_KEY, true, &Logic::GerudoFortressKeys,
+        ITEMTYPE_FORTRESS_SMALLKEY, 0xB6, true, &Logic::GerudoFortressKeys,
         RHT_GERUDO_FORTRESS_SMALL_KEY, RG_GERUDO_FORTRESS_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL,
         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_GERUDO_FORTRESS_SMALL_KEY].SetCustomDrawFunc(Randomizer_DrawSmallKey);
     itemTable[RG_GANONS_CASTLE_SMALL_KEY] = Item(
         RG_GANONS_CASTLE_SMALL_KEY,
         Text{ "Ganon's Castle Small Key", "Petite Clé du Château de Ganon", "Ganons Schloss Kleiner Schlüssel" },
-        ITEMTYPE_SMALLKEY, RG_GANONS_CASTLE_SMALL_KEY, true, &Logic::GanonsCastleKeys, RHT_GANONS_CASTLE_SMALL_KEY,
+        ITEMTYPE_SMALLKEY, 0xB7, true, &Logic::GanonsCastleKeys, RHT_GANONS_CASTLE_SMALL_KEY,
         RG_GANONS_CASTLE_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT,
         ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_GANONS_CASTLE_SMALL_KEY].SetCustomDrawFunc(Randomizer_DrawSmallKey);
     itemTable[RG_TREASURE_GAME_SMALL_KEY] = Item(
         RG_TREASURE_GAME_SMALL_KEY,
         Text{ "Chest Game Small Key", "Petite Clé du jeu la Chasse-aux-Trésors", "Truhenspiel Kleiner Schlüssel" },
-        ITEMTYPE_SMALLKEY, RG_TREASURE_GAME_SMALL_KEY, true, &Logic::TreasureGameKeys, RHT_TREASURE_GAME_SMALL_KEY, 
+        ITEMTYPE_SMALLKEY, 0xDE, true, &Logic::TreasureGameKeys, RHT_TREASURE_GAME_SMALL_KEY, 
         RG_TREASURE_GAME_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT,
         ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     // Key Rings
     itemTable[RG_FOREST_TEMPLE_KEY_RING] =
         Item(RG_FOREST_TEMPLE_KEY_RING,
                   Text{ "Forest Temple Key Ring", "Trousseau du Temple de la Forêt", "Waldtempel Schlüsselanhänger" },
-                  ITEMTYPE_SMALLKEY, RG_FOREST_TEMPLE_KEY_RING, true, &Logic::ForestTempleKeys,
+                  ITEMTYPE_SMALLKEY, 0xD5, true, &Logic::ForestTempleKeys,
                   RHT_FOREST_TEMPLE_KEY_RING, RG_FOREST_TEMPLE_KEY_RING, OBJECT_GI_KEY, GID_KEY_SMALL,
                   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_FOREST_TEMPLE_KEY_RING].SetCustomDrawFunc(Randomizer_DrawKeyRing);
     itemTable[RG_FIRE_TEMPLE_KEY_RING] =
         Item(RG_FIRE_TEMPLE_KEY_RING,
                   Text{ "Fire Temple Key Ring", "Trousseau du Temple du Feu", "Feuertempel Schlüsselanhänger" },
-                  ITEMTYPE_SMALLKEY, RG_FIRE_TEMPLE_KEY_RING, true, &Logic::FireTempleKeys, RHT_FIRE_TEMPLE_KEY_RING,
+                  ITEMTYPE_SMALLKEY, 0xD6, true, &Logic::FireTempleKeys, RHT_FIRE_TEMPLE_KEY_RING,
                   RG_FIRE_TEMPLE_KEY_RING, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_FIRE_TEMPLE_KEY_RING].SetCustomDrawFunc(Randomizer_DrawKeyRing);
     itemTable[RG_WATER_TEMPLE_KEY_RING] =
         Item(RG_WATER_TEMPLE_KEY_RING,
                   Text{ "Water Temple Key Ring", "Trousseau du Temple de l'Eau", "Wassertempel Schlüsselanhänger" },
-                  ITEMTYPE_SMALLKEY, RG_WATER_TEMPLE_KEY_RING, true, &Logic::WaterTempleKeys, RHT_WATER_TEMPLE_KEY_RING,
+                  ITEMTYPE_SMALLKEY, 0xD7, true, &Logic::WaterTempleKeys, RHT_WATER_TEMPLE_KEY_RING,
                   RG_WATER_TEMPLE_KEY_RING, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_WATER_TEMPLE_KEY_RING].SetCustomDrawFunc(Randomizer_DrawKeyRing);
     itemTable[RG_SPIRIT_TEMPLE_KEY_RING] =
         Item(RG_SPIRIT_TEMPLE_KEY_RING,
                   Text{ "Spirit Temple Key Ring", "Trousseau du Temple de l'Esprit", "Geisttempel Schlüsselanhänger" },
-                  ITEMTYPE_SMALLKEY, RG_SPIRIT_TEMPLE_KEY_RING, true, &Logic::SpiritTempleKeys,
+                  ITEMTYPE_SMALLKEY, 0xD8, true, &Logic::SpiritTempleKeys,
                   RHT_SPIRIT_TEMPLE_KEY_RING, RG_SPIRIT_TEMPLE_KEY_RING, OBJECT_GI_KEY, GID_KEY_SMALL,
                   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_SPIRIT_TEMPLE_KEY_RING].SetCustomDrawFunc(Randomizer_DrawKeyRing);
     itemTable[RG_SHADOW_TEMPLE_KEY_RING] = Item(
         RG_SHADOW_TEMPLE_KEY_RING,
         Text{ "Shadow Temple Key Ring", "Trousseau du Temple de l'Ombre", "Schattentempel Schlüsselanhänger" },
-        ITEMTYPE_SMALLKEY, RG_SHADOW_TEMPLE_KEY_RING, true, &Logic::ShadowTempleKeys, RHT_SHADOW_TEMPLE_KEY_RING,
+        ITEMTYPE_SMALLKEY, 0xD9, true, &Logic::ShadowTempleKeys, RHT_SHADOW_TEMPLE_KEY_RING,
         RG_SHADOW_TEMPLE_KEY_RING, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT,
         ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_SHADOW_TEMPLE_KEY_RING].SetCustomDrawFunc(Randomizer_DrawKeyRing);
     itemTable[RG_BOTTOM_OF_THE_WELL_KEY_RING] =
         Item(RG_BOTTOM_OF_THE_WELL_KEY_RING,
                   Text{ "Bottom of the Well Key Ring", "Trousseau du Puits", "Boden des Brunnens Schlüsselanhänger" },
-                  ITEMTYPE_SMALLKEY, RG_BOTTOM_OF_THE_WELL_KEY_RING, true, &Logic::BottomOfTheWellKeys,
+                  ITEMTYPE_SMALLKEY, 0xDA, true, &Logic::BottomOfTheWellKeys,
                   RHT_BOTTOM_OF_THE_WELL_KEY_RING, RG_BOTTOM_OF_THE_WELL_KEY_RING, OBJECT_GI_KEY, GID_KEY_SMALL,
                   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_BOTTOM_OF_THE_WELL_KEY_RING].SetCustomDrawFunc(Randomizer_DrawKeyRing);
     itemTable[RG_GERUDO_TRAINING_GROUNDS_KEY_RING] = Item(
         RG_GERUDO_TRAINING_GROUNDS_KEY_RING,
         Text{ "Training Grounds Key Ring", "Trousseau du Gymnase Gerudo", "Trainingsgelände Schlüsselanhänger" },
-        ITEMTYPE_SMALLKEY, RG_GERUDO_TRAINING_GROUNDS_KEY_RING, true, &Logic::GerudoTrainingGroundsKeys,
+        ITEMTYPE_SMALLKEY, 0xDB, true, &Logic::GerudoTrainingGroundsKeys,
         RHT_GERUDO_TRAINING_GROUNDS_KEY_RING, RG_GERUDO_TRAINING_GROUNDS_KEY_RING, OBJECT_GI_KEY, GID_KEY_SMALL,
         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_GERUDO_TRAINING_GROUNDS_KEY_RING].SetCustomDrawFunc(Randomizer_DrawKeyRing);
     itemTable[RG_GERUDO_FORTRESS_KEY_RING] = Item(
         RG_GERUDO_FORTRESS_KEY_RING,
         Text{ "Gerudo Fortress Key Ring", "Trousseau du Repaire des Voleurs", "Gerudo Festung Schlüsselanhänger" },
-        ITEMTYPE_FORTRESS_SMALLKEY, RG_GERUDO_FORTRESS_KEY_RING, true, &Logic::GerudoFortressKeys,
+        ITEMTYPE_FORTRESS_SMALLKEY, 0xDC, true, &Logic::GerudoFortressKeys,
         RHT_GERUDO_FORTRESS_KEY_RING, RG_GERUDO_FORTRESS_KEY_RING, OBJECT_GI_KEY, GID_KEY_SMALL,
         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_GERUDO_FORTRESS_KEY_RING].SetCustomDrawFunc(Randomizer_DrawKeyRing);
     itemTable[RG_GANONS_CASTLE_KEY_RING] = Item(
         RG_GANONS_CASTLE_KEY_RING,
         Text{ "Ganon's Castle Key Ring", "Trousseau du Château de Ganon", "Ganons Schloss Schlüsselanhänger" },
-        ITEMTYPE_SMALLKEY, RG_GANONS_CASTLE_KEY_RING, true, &Logic::GanonsCastleKeys, RHT_GANONS_CASTLE_KEY_RING,
+        ITEMTYPE_SMALLKEY, 0xDD, true, &Logic::GanonsCastleKeys, RHT_GANONS_CASTLE_KEY_RING,
         RG_GANONS_CASTLE_KEY_RING, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT,
         ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     itemTable[RG_GANONS_CASTLE_KEY_RING].SetCustomDrawFunc(Randomizer_DrawKeyRing);
     // Dungeon Rewards
     itemTable[RG_KOKIRI_EMERALD] = Item(
         RG_KOKIRI_EMERALD, Text{ "Kokiri's Emerald", "Émeraude Kokiri", "Kokiri-Smaragd" }, ITEMTYPE_DUNGEONREWARD,
-        RG_KOKIRI_EMERALD, true, &Logic::KokiriEmerald, RHT_KOKIRI_EMERALD, ITEM_KOKIRI_EMERALD, OBJECT_GI_JEWEL,
+        0xCB, true, &Logic::KokiriEmerald, RHT_KOKIRI_EMERALD, ITEM_KOKIRI_EMERALD, OBJECT_GI_JEWEL,
         GID_KOKIRI_EMERALD, 0x80, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_GORON_RUBY] =
         Item(RG_GORON_RUBY, Text{ "Goron's Ruby", "Rubis Goron", "Goronen-Rubin" }, ITEMTYPE_DUNGEONREWARD,
-                  RG_GORON_RUBY, true, &Logic::GoronRuby, RHT_GORON_RUBY, ITEM_GORON_RUBY, OBJECT_GI_JEWEL,
+                  0xCC, true, &Logic::GoronRuby, RHT_GORON_RUBY, ITEM_GORON_RUBY, OBJECT_GI_JEWEL,
                   GID_GORON_RUBY, 0x81, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_ZORA_SAPPHIRE] =
         Item(RG_ZORA_SAPPHIRE, Text{ "Zora's Sapphire", "Saphir Zora", "Zora-Saphir" }, ITEMTYPE_DUNGEONREWARD,
-                  RG_ZORA_SAPPHIRE, true, &Logic::ZoraSapphire, RHT_ZORA_SAPPHIRE, ITEM_ZORA_SAPPHIRE, OBJECT_GI_JEWEL,
+                  0xCD, true, &Logic::ZoraSapphire, RHT_ZORA_SAPPHIRE, ITEM_ZORA_SAPPHIRE, OBJECT_GI_JEWEL,
                   GID_ZORA_SAPPHIRE, 0x82, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_FOREST_MEDALLION] =
         Item(RG_FOREST_MEDALLION, Text{ "Forest Medallion", "Médaillon de la Forêt", "Wald Medaillon" },
-                  ITEMTYPE_DUNGEONREWARD, RG_FOREST_MEDALLION, true, &Logic::ForestMedallion, RHT_FOREST_MEDALLION,
+                  ITEMTYPE_DUNGEONREWARD, 0xCE, true, &Logic::ForestMedallion, RHT_FOREST_MEDALLION,
                   ITEM_MEDALLION_FOREST, OBJECT_GI_MEDAL, GID_MEDALLION_FOREST, 0x3E, 0x80, CHEST_ANIM_LONG,
                   ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_FIRE_MEDALLION] = Item(
         RG_FIRE_MEDALLION, Text{ "Fire Medallion", "Médaillon du Feu", "Feuer Medaillon" }, ITEMTYPE_DUNGEONREWARD,
-        RG_FIRE_MEDALLION, true, &Logic::FireMedallion, RHT_FIRE_MEDALLION, ITEM_MEDALLION_FIRE, OBJECT_GI_MEDAL,
+        0xCF, true, &Logic::FireMedallion, RHT_FIRE_MEDALLION, ITEM_MEDALLION_FIRE, OBJECT_GI_MEDAL,
         GID_MEDALLION_FIRE, 0x3C, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_WATER_MEDALLION] = Item(
         RG_WATER_MEDALLION, Text{ "Water Medallion", "Médaillon de l'Eau", "Wasser Medaillon" }, ITEMTYPE_DUNGEONREWARD,
-        RG_WATER_MEDALLION, true, &Logic::WaterMedallion, RHT_WATER_MEDALLION, ITEM_MEDALLION_WATER, OBJECT_GI_MEDAL,
+        0xD0, true, &Logic::WaterMedallion, RHT_WATER_MEDALLION, ITEM_MEDALLION_WATER, OBJECT_GI_MEDAL,
         GID_MEDALLION_WATER, 0x3D, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_SPIRIT_MEDALLION] =
         Item(RG_SPIRIT_MEDALLION, Text{ "Spirit Medallion", "Médaillon de l'Esprit", "Geist Medaillon" },
-                  ITEMTYPE_DUNGEONREWARD, RG_SPIRIT_MEDALLION, true, &Logic::SpiritMedallion, RHT_SPIRIT_MEDALLION,
+                  ITEMTYPE_DUNGEONREWARD, 0xD1, true, &Logic::SpiritMedallion, RHT_SPIRIT_MEDALLION,
                   ITEM_MEDALLION_SPIRIT, OBJECT_GI_MEDAL, GID_MEDALLION_SPIRIT, 0x3F, 0x80, CHEST_ANIM_LONG,
                   ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_SHADOW_MEDALLION] =
         Item(RG_SHADOW_MEDALLION, Text{ "Shadow Medallion", "Médaillon de l'Ombre", "Schatten Medaillon" },
-                  ITEMTYPE_DUNGEONREWARD, RG_SHADOW_MEDALLION, true, &Logic::ShadowMedallion, RHT_SHADOW_MEDALLION,
+                  ITEMTYPE_DUNGEONREWARD, 0xD2, true, &Logic::ShadowMedallion, RHT_SHADOW_MEDALLION,
                   ITEM_MEDALLION_SHADOW, OBJECT_GI_MEDAL, GID_MEDALLION_SHADOW, 0x41, 0x80, CHEST_ANIM_LONG,
                   ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_LIGHT_MEDALLION] =
         Item(RG_LIGHT_MEDALLION, Text{ "Light Medallion", "Médaillon de la Lumière", "Licht Medaillon" },
-                  ITEMTYPE_DUNGEONREWARD, RG_LIGHT_MEDALLION, true, &Logic::LightMedallion, RHT_LIGHT_MEDALLION,
+                  ITEMTYPE_DUNGEONREWARD, 0xD3, true, &Logic::LightMedallion, RHT_LIGHT_MEDALLION,
                   ITEM_MEDALLION_LIGHT, OBJECT_GI_MEDAL, GID_MEDALLION_LIGHT, 0x40, 0x80, CHEST_ANIM_LONG,
                   ITEM_CATEGORY_MAJOR, MOD_NONE);
     // Generic Items

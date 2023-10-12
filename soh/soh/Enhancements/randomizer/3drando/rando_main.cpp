@@ -12,7 +12,6 @@
 void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
     std::string seedString) {
     HintTable_Init();
-    StaticData::InitLocationTable();
 
     // std::string settingsFileName = "./randomizer/latest_settings.json";
     // CVarSetString("gLoadedPreset", settingsFileName.c_str());
