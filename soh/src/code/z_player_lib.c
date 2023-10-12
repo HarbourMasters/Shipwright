@@ -435,7 +435,7 @@ uint8_t Player_CanUseNewLoadingMethod(Player* this) {
 }*/
 // The one instance of this function being called has been reverted to a cvar check.
 
-// Alternate Equipment Loading function.
+// Alternate Equipment Loading function. (global function)
 // Checks if player can use new loading method, for the left hand.
 uint8_t Player_CanUseNewLoadingMethodLeftHand(Player* this) {
     if (!CVarGetInteger("gAltLinkEquip", 1)) {
@@ -964,7 +964,7 @@ s32 Player_HoldsSlingshot(Player* this) {
     return this->heldItemAction == PLAYER_IA_SLINGSHOT;
 }
 
-// Alternate Equipment Loading function.
+// Alternate Equipment Loading function. (global function)
 s32 Player_HoldsStick(Player* this) {
     return this->heldItemAction == PLAYER_IA_DEKU_STICK;
 }
@@ -1852,7 +1852,7 @@ Vec3f sLeftRightFootLimbModelFootPos[] = {
 // started working out properly
 #define RETICLE_MAX 3.402823466e+12f
 
-// Beginning of Alternate Equipment Loading "Draw" function block
+// Beginning of Alternate Equipment Loading "Draw Item" function block
 
 // Alternate Equipment Loading function.
 // Rescales Child Link's items for Adult Link.
@@ -1953,7 +1953,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             // > as the magic numbers don't make it clear what exactly is going on
             switch (this->leftHandType) {
                 case 2: // Unused, but a safe measure
-                case 3:
+                case 3: // Left hand is holding a one-handed sword.
                     switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
                         case PLAYER_SWORD_KOKIRI:
                             Player_DrawChildItem(play, gLinkKokiriSwordDL);
@@ -1963,7 +1963,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                             break;
                     }
                     break;
-                case 4:
+                case 4: // Left hand is holding a two-handed sword.
                     if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON) {
                         if (gSaveContext.swordHealth <= 0.0f) {
                             Player_DrawAdultItem(play, gLinkBrokenLongswordDL);
@@ -1972,15 +1972,16 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                         }
                     }
                     break;
-                case 5:
+                case 5: // Left hand is holding Megaton Hammer.
                     Player_DrawAdultItem(play, gLinkHammerDL);
                     break;
-                case 6:
+                case 6: // Left hand is holding Boomerang.
                     if (!(this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG)) {
                         Player_DrawChildItem(play, gLinkBoomerangDL);
                     }
                     break;
-                case 20:
+                case 20: // AltEquip TODO: Left hand is holding... something.
+
                     // Doesn't call PlayerDrawChildItem due to it being rotated
                     OPEN_DISPS(play->state.gfxCtx);
 
@@ -2116,19 +2117,18 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
             if (Player_CanUseNewLoadingMethodRightHand(this) && this->actor.id != 51) {
                 switch (this->rightHandType) {
-                    case 10:
+                    case 10: // Right hand is holding Shield
                         if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU) {
                             Player_DrawChildItem(play, gLinkDekuShieldDL);
                         } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-                                   !Player_IsChildWithHylianShield(
-                                       this)) { // I don't think this check is needed, but I'm playing it safe
+                                   !Player_IsChildWithHylianShield(this)) { // I don't think this check is needed, but I'm playing it safe
                             Player_DrawAdultItem(play, gLinkHylianShieldDL);
                         } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
                             Player_DrawAdultItem(play, gLinkMirrorShieldDL);
                         }
                         break;
-                    case 11:
-                        if (this->itemAction == PLAYER_IA_SLINGSHOT) {
+                    case 11: // Right hand is holding either Slingshot or Bow
+                        if (this->itemAction == PLAYER_IA_SLINGSHOT) { // Item is Slingshot
                             if (projectedHeadPos.z < -4.0f && this->unk_6AD != 0) {
                                 if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
                                     OPEN_DISPS(play->state.gfxCtx);
@@ -2158,7 +2158,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                                 CLOSE_DISPS(play->state.gfxCtx);
                             }
-                        } else {
+                        } else { // Item is Bow
                             if (projectedHeadPos.z < 0.0f && this->unk_6AD != 0) {
                                 if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
                                     Player_DrawRightHandItem(play, gLinkBowDL);
@@ -2168,7 +2168,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                             }
                         }
                         break;
-                    case 15:
+                    case 15: // Right hand is holding Hookshot
                         if (projectedHeadPos.z < 0.0f && this->unk_6AD != 0) {
                             if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
                                 Player_DrawRightHandItem(play, gLinkHookshotDL);
@@ -2187,7 +2187,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                     Player_DrawOcarinaItem(play, gLinkOcarinaOfTimeDL);
                 }
             }
-        } // End of AltEquip hands block.
+        } // End of AltEquip right hand items block.
 
         if (this->rightHandType == 0xFF) {
             Matrix_Get(&this->shieldMf);
