@@ -5,6 +5,9 @@
 #include "3drando/random.hpp"
 #include "3drando/item_pool.hpp"
 #include "z64item.h"
+#include "variables.h"
+#include "macros.h"
+#include "../../OTRGlobals.h"
 
 namespace Rando {
 Item::Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
@@ -128,11 +131,123 @@ uint16_t Item::GetPrice() const {
 }
 
 std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
-    return giEntry;
+    if (giEntry != nullptr) {
+        return giEntry;
+    }
+    RandomizerGet actual = RG_NONE;
+    u8 numWallets =
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 3 : 2;
+    switch (randomizerGet) {
+        case RG_PROGRESSIVE_STICK_UPGRADE:
+            switch (CUR_UPG_VALUE(UPG_STICKS)) {
+                case 0:
+                case 1:
+                    actual = RG_DEKU_STICK_CAPACITY_20;
+                case 2:
+                case 3:
+                    actual = RG_DEKU_STICK_CAPACITY_30;
+            }
+        case RG_PROGRESSIVE_NUT_UPGRADE:
+            switch (CUR_UPG_VALUE(UPG_NUTS)) {
+                case 0:
+                case 1:
+                    actual = RG_DEKU_NUT_CAPACITY_30;
+                case 2:
+                case 3:
+                    actual = RG_DEKU_NUT_CAPACITY_40;
+            }
+        case RG_PROGRESSIVE_BOMB_BAG:
+            switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
+                case 0:
+                    actual = RG_BOMB_BAG;
+                case 1:
+                    actual = RG_BIG_BOMB_BAG;
+                case 2:
+                case 3:
+                    actual = RG_BIGGEST_BOMB_BAG;
+            }
+        case RG_PROGRESSIVE_BOW:
+            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
+                case 0:
+                    actual = RG_FAIRY_BOW;
+                case 1:
+                    actual = RG_BIG_QUIVER;
+                case 2:
+                case 3:
+                    actual = RG_BIGGEST_QUIVER;
+            }
+        case RG_PROGRESSIVE_SLINGSHOT:
+            switch (CUR_UPG_VALUE(UPG_BULLET_BAG)) {
+                case 0:
+                    actual = RG_SLINGSHOT;
+                case 1:
+                    actual = RG_BIG_BULLET_BAG;
+                case 2:
+                case 3:
+                    actual = RG_BIGGEST_BULLET_BAG;
+            }
+        case RG_PROGRESSIVE_OCARINA:
+            switch (INV_CONTENT(ITEM_OCARINA_FAIRY)) {
+                case ITEM_NONE:
+                    actual = RG_FAIRY_OCARINA;
+                case ITEM_OCARINA_FAIRY:
+                case ITEM_OCARINA_TIME:
+                    actual = RG_OCARINA_OF_TIME;
+            }
+        case RG_PROGRESSIVE_HOOKSHOT:
+            switch (INV_CONTENT(ITEM_HOOKSHOT)) {
+                case ITEM_NONE:
+                    actual = RG_HOOKSHOT;
+                case ITEM_HOOKSHOT:
+                case ITEM_LONGSHOT:
+                    actual = RG_LONGSHOT;
+            }
+        case RG_PROGRESSIVE_STRENGTH:
+            switch (CUR_UPG_VALUE(UPG_STRENGTH)) {
+                case 0:
+                    actual = RG_GORONS_BRACELET;
+                case 1:
+                    actual = RG_SILVER_GAUNTLETS;
+                case 2:
+                case 3:
+                    actual = RG_GOLDEN_GAUNTLETS;
+            }
+        case RG_PROGRESSIVE_WALLET:
+            switch (CUR_UPG_VALUE(UPG_WALLET)) {
+                case 0:
+                    actual = RG_ADULT_WALLET;
+                case 1:
+                    actual = RG_GIANT_WALLET;
+                case 2:
+                case 3:
+                    actual = numWallets == 3 ? RG_TYCOON_WALLET : RG_GIANT_WALLET;
+            }
+        case RG_PROGRESSIVE_SCALE:
+            switch (CUR_UPG_VALUE(UPG_SCALE)) {
+                case 0:
+                    actual = RG_SILVER_SCALE;
+                case 1:
+                case 2:
+                    actual = RG_GOLD_SCALE;
+            }
+        case RG_PROGRESSIVE_MAGIC_METER:
+            switch (gSaveContext.magicLevel) {
+                case 0:
+                    actual = RG_MAGIC_SINGLE;
+                case 1:
+                case 2:
+                    actual = RG_MAGIC_DOUBLE;
+            }
+        case RG_PROGRESSIVE_GORONSWORD: // todo progressive?
+           actual = RG_BIGGORON_SWORD;
+        default:
+            actual = RG_NONE;
+    }
+    return StaticData::RetrieveItem(actual).GetGIEntry();
 }
 
 GetItemEntry Item::GetGIEntry_Copy() {
-    return *giEntry;
+    return *GetGIEntry();
 }
 
 void Item::SetPrice(uint16_t price_) {
@@ -211,7 +326,7 @@ RandomizerHintTextKey Item::GetHintKey() const {
 }
 
 const HintText& Item::GetHint() const {
-    return Hint(hintKey);
+    return ::Hint(hintKey);
 }
 
 bool Item::operator==(const Item& right) const {
