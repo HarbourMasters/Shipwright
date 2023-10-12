@@ -1,6 +1,8 @@
 #include "item_location.h"
 
 namespace Rando {
+ItemLocation::ItemLocation(RandomizerCheck rc_) : rc(rc_) {}
+
 RandomizerCheck ItemLocation::GetRandomizerCheck() const {
     return rc;
 }

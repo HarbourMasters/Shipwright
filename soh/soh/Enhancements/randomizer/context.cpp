@@ -8,6 +8,12 @@
 namespace Rando {
 std::weak_ptr<Context> Context::mContext;
 
+Context::Context() {
+    for (int i = 0; i < RC_MAX; i++) {
+        itemLocationTable[i] = ItemLocation((RandomizerCheck)i);
+    }
+}
+
 std::shared_ptr<Context> Context::CreateInstance() {
     if (mContext.expired()) {
         auto instance = std::make_shared<Context>();
@@ -21,13 +27,13 @@ std::shared_ptr<Context> Context::GetInstance() {
     return mContext.lock();
 }
 
-RandoHint *Context::GetHint(RandomizerHintKey hintKey) {
+Hint *Context::GetHint(RandomizerHintKey hintKey) {
     return &hintTable[hintKey];
 }
 
 void Context::AddHint(RandomizerHintKey hintId, Text text, RandomizerCheck hintedLocation, HintType hintType,
                       Text hintedRegion) {
-    hintTable[hintId] = RandoHint(text, hintedLocation, hintType, hintedRegion);
+    hintTable[hintId] = Hint(text, hintedLocation, hintType, hintedRegion);
     GetItemLocation(hintedLocation)->SetHintKey(hintId);
 }
 

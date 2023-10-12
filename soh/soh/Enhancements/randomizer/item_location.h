@@ -48,6 +48,8 @@ class ItemOverride_Compare {
 
 class ItemLocation {
   public:
+    ItemLocation() = default;
+    ItemLocation(RandomizerCheck rc);
     RandomizerCheck GetRandomizerCheck() const;
     bool IsAddedToPool() const;
     void AddToPool();

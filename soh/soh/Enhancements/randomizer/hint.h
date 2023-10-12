@@ -3,11 +3,12 @@
 #include "3drando/text.hpp"
 #include "randomizerTypes.h"
 
-class RandoHint {
+namespace Rando {
+class Hint {
     public:
-    RandoHint();
-    RandoHint(Text text_);
-    RandoHint(Text text_, RandomizerCheck hintedLocation_, HintType hintType_, Text hintedRegion_);
+    Hint();
+    Hint(Text text_);
+    Hint(Text text_, RandomizerCheck hintedLocation_, HintType hintType_, Text hintedRegion_);
     const Text& GetText() const;
     RandomizerCheck GetHintedLocation();
     void SetHintedLocation (RandomizerCheck location);
@@ -26,3 +27,4 @@ class RandoHint {
     Text hintedRegion;
     bool addedToPool;
 };
+}

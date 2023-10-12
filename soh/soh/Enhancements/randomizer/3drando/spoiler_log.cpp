@@ -760,7 +760,7 @@ static void WriteHints(int language) {
     }
     auto ctx = Rando::Context::GetInstance();
     for (const RandomizerCheck key : StaticData::gossipStoneLocations) {
-        RandoHint* hint = ctx->GetHint((RandomizerHintKey)(key - RC_DMC_GOSSIP_STONE + 1));
+        Rando::Hint* hint = ctx->GetHint((RandomizerHintKey)(key - RC_DMC_GOSSIP_STONE + 1));
         Rando::ItemLocation* hintedLocation = ctx->GetItemLocation(hint->GetHintedLocation());
         std::string unformattedHintTextString;
         switch (language) {
@@ -851,7 +851,7 @@ static void WriteAllLocations(int language) {
 static void WriteHintData(int language) {
     auto ctx = Rando::Context::GetInstance();
     for (auto [hintKey, item_location] : hintedLocations) {
-        RandoHint* hint = ctx->GetHint(item_location->GetHintKey());
+        Rando::Hint* hint = ctx->GetHint(item_location->GetHintKey());
         jsonData["hints"][StaticData::Location(hint->GetHintedLocation())->GetName()] = {
             { "text", hint->GetText().GetEnglish() },
             { "item", item_location->GetPlacedItemName().GetEnglish() },
