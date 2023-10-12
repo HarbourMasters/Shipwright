@@ -457,7 +457,7 @@ void Player_UpdateBottleHeld(PlayState* play, Player* this, s32 item, s32 action
 
 void func_8008EDF0(Player* this) {
     this->unk_664 = NULL;
-    this->stateFlags2 &= ~0x2000;
+    this->stateFlags2 &= ~PLAYER_STATE2_SWITCH_TARGETING;
 }
 
 void func_8008EE08(Player* this) {
@@ -1227,7 +1227,7 @@ void func_800906D4(PlayState* play, Player* this, Vec3f* newTipPos) {
                               &this->meleeWeaponInfo[0].base);
     }
 
-    if ((this->meleeWeaponState > 0) && ((this->meleeWeaponAnimation < 0x18) || (this->stateFlags2 & 0x20000))) {
+    if ((this->meleeWeaponState > 0) && ((this->meleeWeaponAnimation < 0x18) || (this->stateFlags2 & PLAYER_STATE2_SPIN_ATTACKING))) {
         func_80090480(play, &this->meleeWeaponQuads[0], &this->meleeWeaponInfo[1], &newTipPos[1], &newBasePos[1]);
         func_80090480(play, &this->meleeWeaponQuads[1], &this->meleeWeaponInfo[2], &newTipPos[2], &newBasePos[2]);
     }

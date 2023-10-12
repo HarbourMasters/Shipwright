@@ -4799,7 +4799,7 @@ void BossTw_UpdateEffects(PlayState* play) {
                     if (eff->workf[EFF_SCALE] == 0.0f) {
                         eff->type = TWEFF_NONE;
                         if (eff->target == NULL) {
-                            player->stateFlags2 &= ~0x8000;
+                            player->stateFlags2 &= ~PLAYER_STATE2_PAUSE_MOST_UPDATING;
                             sFreezeState = 0;
                         }
                     }
@@ -4815,9 +4815,9 @@ void BossTw_UpdateEffects(PlayState* play) {
 
                         if (eff->workf[EFF_ROLL] >= 0.8f) {
                             eff->workf[EFF_ROLL] -= 0.8f;
-                            player->stateFlags2 |= 0x8000;
+                            player->stateFlags2 |= PLAYER_STATE2_PAUSE_MOST_UPDATING;
                         } else {
-                            player->stateFlags2 &= ~0x8000;
+                            player->stateFlags2 &= ~PLAYER_STATE2_PAUSE_MOST_UPDATING;
                         }
 
                         if ((sKotakePtr->workf[UNK_F11] > 10.0f) && (sKotakePtr->workf[UNK_F11] < 200.0f)) {

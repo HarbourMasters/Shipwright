@@ -7242,7 +7242,7 @@ s32 Camera_UpdateWater(Camera* camera) {
     }
 
     if (camera->unk_14C & 0x200) {
-        if (player->stateFlags2 & 0x800) {
+        if (player->stateFlags2 & PLAYER_STATE2_DIVING) {
             Camera_ChangeSettingFlags(camera, CAM_SET_PIVOT_WATER_SURFACE, 6);
             camera->unk_14C |= (s16)0x8000;
         } else if (camera->unk_14C & (s16)0x8000) {

@@ -5734,7 +5734,7 @@ void Interface_Draw(PlayState* play) {
 
         if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
             (play->gameOverCtx.state == GAMEOVER_INACTIVE) && (msgCtx->msgMode == MSGMODE_NONE) &&
-            !(player->stateFlags2 & 0x01000000) && (play->sceneLoadFlag == 0) &&
+            !(player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) && (play->sceneLoadFlag == 0) &&
             (play->transitionMode == 0) && !Play_InCsMode(play) && (gSaveContext.minigameState != 1) &&
             (play->shootingGalleryStatus <= 1) &&
             !((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
@@ -6426,7 +6426,7 @@ void Interface_Update(PlayState* play) {
     HealthMeter_Update(play);
 
     if ((gSaveContext.timer1State >= 3) && (play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
-        (msgCtx->msgMode == MSGMODE_NONE) && !(player->stateFlags2 & 0x01000000) && (play->sceneLoadFlag == 0) &&
+        (msgCtx->msgMode == MSGMODE_NONE) && !(player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) && (play->sceneLoadFlag == 0) &&
         (play->transitionMode == 0) && !Play_InCsMode(play)) {}
 
     if (gSaveContext.rupeeAccumulator != 0) {

@@ -1103,7 +1103,7 @@ void func_80A0461C(EnElf* this, PlayState* play) {
         } else if (arrowPointedActor == NULL || arrowPointedActor->category == ACTORCAT_NPC) {
             if (arrowPointedActor != NULL) {
                 this->unk_2C0 = 100;
-                player->stateFlags2 |= 0x100000;
+                player->stateFlags2 |= PLAYER_STATE2_NAVI_OUT;
                 temp = 0;
             } else {
                 switch (this->unk_2A8) {
@@ -1124,7 +1124,7 @@ void func_80A0461C(EnElf* this, PlayState* play) {
                                 this->unk_2AE--;
                                 temp = 7;
                             } else {
-                                player->stateFlags2 |= 0x100000;
+                                player->stateFlags2 |= PLAYER_STATE2_NAVI_OUT;
                                 temp = 0;
                             }
                         } else {
@@ -1154,7 +1154,7 @@ void func_80A0461C(EnElf* this, PlayState* play) {
 
         switch (temp) {
             case 0:
-                if (!(player->stateFlags2 & 0x100000)) {
+                if (!(player->stateFlags2 & PLAYER_STATE2_NAVI_OUT)) {
                     temp = 7;
                     if (this->unk_2C7 == 0) {
                         Audio_PlayActorSound2(&this->actor, NA_SE_EV_NAVY_VANISH);
@@ -1162,7 +1162,7 @@ void func_80A0461C(EnElf* this, PlayState* play) {
                 }
                 break;
             case 8:
-                if (player->stateFlags2 & 0x100000) {
+                if (player->stateFlags2 & PLAYER_STATE2_NAVI_OUT) {
                     func_80A0299C(this, 0x32);
                     this->unk_2C0 = 42;
                     temp = 11;
@@ -1172,10 +1172,10 @@ void func_80A0461C(EnElf* this, PlayState* play) {
                 }
                 break;
             case 7:
-                player->stateFlags2 &= ~0x100000;
+                player->stateFlags2 &= ~PLAYER_STATE2_NAVI_OUT;
                 break;
             default:
-                player->stateFlags2 |= 0x100000;
+                player->stateFlags2 |= PLAYER_STATE2_NAVI_OUT;
                 break;
         }
     }

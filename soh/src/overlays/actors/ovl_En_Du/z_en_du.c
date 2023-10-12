@@ -321,9 +321,9 @@ void func_809FE3B4(EnDu* this, PlayState* play) {
 void func_809FE3C0(EnDu* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (player->stateFlags2 & 0x1000000) {
+    if (player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) {
         func_8010BD88(play, OCARINA_ACTION_CHECK_SARIA);
-        player->stateFlags2 |= 0x2000000;
+        player->stateFlags2 |= PLAYER_STATE2_PLAY_FOR_ACTOR;
         player->unk_6A8 = &this->actor;
         EnDu_SetupAction(this, func_809FE4A4);
         return;
@@ -333,7 +333,7 @@ void func_809FE3C0(EnDu* this, PlayState* play) {
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
     }
     if (this->actor.xzDistToPlayer < 116.0f + this->collider.dim.radius) {
-        player->stateFlags2 |= 0x800000;
+        player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     }
 }
 
@@ -361,7 +361,7 @@ void func_809FE4A4(EnDu* this, PlayState* play) {
         EnDu_SetupAction(this, func_809FE890);
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else {
-        player->stateFlags2 |= 0x800000;
+        player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     }
 }
 

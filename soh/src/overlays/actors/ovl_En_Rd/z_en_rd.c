@@ -336,9 +336,9 @@ void func_80AE2C1C(EnRd* this, PlayState* play) {
         if (!(player->stateFlags1 & 
             (PLAYER_STATE1_DEAD | PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE | 
              PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_CLIMBING_LADDER)) && 
-             !(player->stateFlags2 & 0x80)) {
+             !(player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY)) {
             if (this->unk_306 == 0) {
-                if (!(this->unk_312 & 0x80) && !CVarGetInteger("gNoRedeadFreeze", 0)) {
+                if (!(this->unk_312 & PLAYER_STATE2_GRABBED_BY_ENEMY) && !CVarGetInteger("gNoRedeadFreeze", 0)) {
                     player->actor.freezeTimer = 40;
                     func_8008EEAC(play, &this->actor);
                     GET_PLAYER(play)->unk_684 = &this->actor;
@@ -411,7 +411,7 @@ void func_80AE2FD0(EnRd* this, PlayState* play) {
     if (!(player->stateFlags1 & 
         (PLAYER_STATE1_DEAD | PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE | 
          PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_CLIMBING_LADDER)) && 
-         !(player->stateFlags2 & 0x80) &&
+         !(player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY) &&
         (Actor_WorldDistXYZToPoint(&player->actor, &this->actor.home.pos) < 150.0f)) {
         this->actor.targetMode = 0;
         func_80AE2B90(this, play);

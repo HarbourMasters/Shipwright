@@ -1653,7 +1653,7 @@ void func_80AEE7C4(EnRu1* this, PlayState* play) {
     }
 
     player = GET_PLAYER(play);
-    if (player->stateFlags2 & 0x10000000) {
+    if (player->stateFlags2 & PLAYER_STATE2_IDLING) {
         this->unk_370 += 1.0f;
         if (this->action != 32) {
             if (*unk_370 > 30.0f) {

@@ -1393,13 +1393,13 @@ s32 func_8002DDA8(PlayState* play) {
 s32 func_8002DDE4(PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    return player->stateFlags2 & 0x8;
+    return player->stateFlags2 & PLAYER_STATE2_FOOTSTEP;
 }
 
 s32 func_8002DDF4(PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    return player->stateFlags2 & 0x1000;
+    return player->stateFlags2 & PLAYER_STATE2_STATIONARY_LADDER;
 }
 
 void func_8002DE04(PlayState* play, Actor* actorA, Actor* actorB) {
@@ -2535,7 +2535,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
 
     sp80 = &D_80116068[0];
 
-    if (player->stateFlags2 & 0x8000000) {
+    if (player->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING) {
         unkFlag = ACTOR_FLAG_NO_FREEZE_OCARINA;
     }
 
