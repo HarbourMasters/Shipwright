@@ -1520,7 +1520,7 @@ void EnSkj_WaitForOfferResponse(EnSkj* this, PlayState* play) {
         switch (play->msgCtx.choiceIndex) {
             case 0: // yes
                 player = GET_PLAYER(play);
-                player->stateFlags3 |= 0x20; // makes player take ocarina out right away after closing box
+                player->stateFlags3 |= PLAYER_STATE3_FORCE_PULL_OCARINA; // makes player take ocarina out right away after closing box
                 this->actionFunc = EnSkj_SetupWaitForOcarina;
                 break;
             case 1: // no
