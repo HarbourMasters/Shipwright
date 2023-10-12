@@ -429,9 +429,11 @@ uint8_t Player_IsCustomLinkModel() {
 // AltEquip TODO
 // It seems as though this is a placeholder function, replaced by the below ones.
 // If there's no code using it, then it might be okay to just get rid of this.
+/*
 uint8_t Player_CanUseNewLoadingMethod(Player* this) {
     return false;
-}
+}*/
+// The one instance of this function being called has been reverted to a cvar check.
 
 // Alternate Equipment Loading function.
 // Checks if player can use new loading method, for the left hand.
@@ -1471,7 +1473,9 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                 }
             } else if (!LINK_IS_ADULT && ((this->sheathType == 16) || (this->sheathType == 17)) &&
                        (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) &&
-                       !(Player_CanUseNewLoadingMethod(this))) {
+                       !CVarGetInteger("gAltLinkEquip", 1)) {
+                // AltEquip TODO: Add a comment explaining why the not-NewLoadingMethod check is here.
+                // I think I might understand what this is for, but double check with Luna.
                 dLists = &sSheathWithSwordDLs[16];
             }
 
