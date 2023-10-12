@@ -333,7 +333,10 @@ void func_80AE2C1C(EnRd* this, PlayState* play) {
     }
 
     if ((ABS(sp32) < 0x1554) && (Actor_WorldDistXYZToActor(&this->actor, &player->actor) <= 150.0f)) {
-        if (!(player->stateFlags1 & 0x2C6080) && !(player->stateFlags2 & 0x80)) {
+        if (!(player->stateFlags1 & 
+            (PLAYER_STATE1_DEAD | PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE | 
+             PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_CLIMBING_LADDER)) && 
+             !(player->stateFlags2 & 0x80)) {
             if (this->unk_306 == 0) {
                 if (!(this->unk_312 & 0x80) && !CVarGetInteger("gNoRedeadFreeze", 0)) {
                     player->actor.freezeTimer = 40;
@@ -405,7 +408,10 @@ void func_80AE2FD0(EnRd* this, PlayState* play) {
     this->actor.world.rot.y = this->actor.shape.rot.y;
     SkelAnime_Update(&this->skelAnime);
 
-    if (!(player->stateFlags1 & 0x2C6080) && !(player->stateFlags2 & 0x80) &&
+    if (!(player->stateFlags1 & 
+        (PLAYER_STATE1_DEAD | PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE | 
+         PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL | PLAYER_STATE1_CLIMBING_LADDER)) && 
+         !(player->stateFlags2 & 0x80) &&
         (Actor_WorldDistXYZToPoint(&player->actor, &this->actor.home.pos) < 150.0f)) {
         this->actor.targetMode = 0;
         func_80AE2B90(this, play);

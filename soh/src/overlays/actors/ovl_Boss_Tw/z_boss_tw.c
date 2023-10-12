@@ -803,7 +803,7 @@ s32 BossTw_CheckBeamReflection(BossTw* this, PlayState* play) {
     Vec3f vec;
     Player* player = GET_PLAYER(play);
 
-    if (player->stateFlags1 & 0x400000 &&
+    if (player->stateFlags1 & PLAYER_STATE1_SHIELDING &&
         (s16)(player->actor.shape.rot.y - this->actor.shape.rot.y + 0x8000) < 0x2000 &&
         (s16)(player->actor.shape.rot.y - this->actor.shape.rot.y + 0x8000) > -0x2000) {
         // player is shielding and facing angles are less than 45 degrees in either direction
@@ -945,7 +945,7 @@ void BossTw_ShootBeam(BossTw* this, PlayState* play) {
 
     if (this->timers[1] != 0) {
         Math_ApproachS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 5, this->rotateSpeed);
-        if ((player->stateFlags1 & 0x400000) &&
+        if ((player->stateFlags1 & PLAYER_STATE1_SHIELDING) &&
             ((s16)((player->actor.shape.rot.y - this->actor.shape.rot.y) + 0x8000) < 0x2000) &&
             ((s16)((player->actor.shape.rot.y - this->actor.shape.rot.y) + 0x8000) > -0x2000)) {
             Math_ApproachF(&this->targetPos.x, player->bodyPartsPos[15].x, 1.0f, 400.0f);

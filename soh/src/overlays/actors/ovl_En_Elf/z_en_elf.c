@@ -1097,7 +1097,7 @@ void func_80A0461C(EnElf* this, PlayState* play) {
     } else {
         arrowPointedActor = play->actorCtx.targetCtx.arrowPointedActor;
 
-        if ((player->stateFlags1 & 0x400) || ((YREG(15) & 0x10) && func_800BC56C(play, 2))) {
+        if ((player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM) || ((YREG(15) & 0x10) && func_800BC56C(play, 2))) {
             temp = 12;
             this->unk_2C0 = 100;
         } else if (arrowPointedActor == NULL || arrowPointedActor->category == ACTORCAT_NPC) {
@@ -1514,7 +1514,7 @@ void EnElf_Draw(Actor* thisx, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if ((this->unk_2A8 != 8) && !(this->fairyFlags & 8)) {
-        if (!(player->stateFlags1 & 0x100000) || (kREG(90) < this->actor.projectedPos.z)) {
+        if (!(player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON) || (kREG(90) < this->actor.projectedPos.z)) {
             dListHead = Graph_Alloc(play->state.gfxCtx, sizeof(Gfx) * 4);
 
             OPEN_DISPS(play->state.gfxCtx);

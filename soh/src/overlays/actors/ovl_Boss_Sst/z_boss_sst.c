@@ -387,7 +387,7 @@ void BossSst_HeadSetupIntro(BossSst* this, PlayState* play) {
     player->targetYaw = -0x8000;
     player->currentYaw = -0x8000;
     player->fallStartHeight = 0;
-    player->stateFlags1 |= 0x20;
+    player->stateFlags1 |= PLAYER_STATE1_INPUT_DISABLED;
 
     func_80064520(play, &play->csCtx);
     func_8002DF54(play, &this->actor, 8);
@@ -421,7 +421,7 @@ void BossSst_HeadIntro(BossSst* this, PlayState* play) {
     if (this->timer == 0) {
         sHands[RIGHT]->actor.flags |= ACTOR_FLAG_TARGETABLE;
         sHands[LEFT]->actor.flags |= ACTOR_FLAG_TARGETABLE;
-        player->stateFlags1 &= ~0x20;
+        player->stateFlags1 &= ~PLAYER_STATE1_INPUT_DISABLED;
         func_80064534(play, &play->csCtx);
         func_8002DF54(play, &this->actor, 7);
         sCameraAt.y += 30.0f;
@@ -667,7 +667,7 @@ void BossSst_HeadNeutral(BossSst* this, PlayState* play) {
     }
 
     if (this->timer == 0) {
-        if ((GET_PLAYER(play)->actor.world.pos.y > -50.0f) && !(GET_PLAYER(play)->stateFlags1 & 0x6080)) {
+        if ((GET_PLAYER(play)->actor.world.pos.y > -50.0f) && !(GET_PLAYER(play)->stateFlags1 & (PLAYER_STATE1_DEAD | PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE))) {
             sHands[Rand_ZeroOne() <= 0.5f]->ready = true;
             BossSst_HeadSetupWait(this);
         } else {
@@ -1252,7 +1252,7 @@ void BossSst_HandWait(BossSst* this, PlayState* play) {
             this->timer--;
         }
 
-        if ((this->timer == 0) && (player->actor.world.pos.y > -50.0f) && !(player->stateFlags1 & 0x6080)) {
+        if ((this->timer == 0) && (player->actor.world.pos.y > -50.0f) && !(player->stateFlags1 & (PLAYER_STATE1_DEAD | PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE))) {
             BossSst_HandSelectAttack(this);
         }
     } else if (sHead->actionFunc == BossSst_HeadNeutral) {

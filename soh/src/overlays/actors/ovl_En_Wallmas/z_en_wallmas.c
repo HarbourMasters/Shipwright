@@ -313,11 +313,11 @@ void EnWallmas_WaitToDrop(EnWallmas* this, PlayState* play) {
     }
 
     if (this->actor.params == WMT_SHADOWTAG) {
-        if ((player->stateFlags1 & 0x100000) || (player->stateFlags1 & 0x8000000) || !(player->actor.bgCheckFlags & 1)) {
+        if ((player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON) || (player->stateFlags1 & PLAYER_STATE1_IN_WATER) || !(player->actor.bgCheckFlags & 1)) {
             Audio_StopSfxById(NA_SE_EN_FALL_AIM);
             this->timer = 0x82;
         }
-    } else if ((player->stateFlags1 & 0x100000) || (player->stateFlags1 & 0x8000000) || !(player->actor.bgCheckFlags & 1) ||
+    } else if ((player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON) || (player->stateFlags1 & PLAYER_STATE1_IN_WATER) || !(player->actor.bgCheckFlags & 1) ||
         ((this->actor.params == 1) && (320.0f < Math_Vec3f_DistXZ(&this->actor.home.pos, playerPos)))) {
         Audio_StopSfxById(NA_SE_EN_FALL_AIM);
         this->timer = 0x82;

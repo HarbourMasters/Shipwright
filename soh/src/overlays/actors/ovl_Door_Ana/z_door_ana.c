@@ -133,7 +133,7 @@ void DoorAna_WaitOpen(DoorAna* this, PlayState* play) {
 
     player = GET_PLAYER(play);
     if (Math_StepToF(&this->actor.scale.x, 0.01f, 0.001f)) {
-        if ((this->actor.targetMode != 0) && (play->sceneLoadFlag == 0) && (player->stateFlags1 & 0x80000000) &&
+        if ((this->actor.targetMode != 0) && (play->sceneLoadFlag == 0) && (player->stateFlags1 & PLAYER_STATE1_FLOOR_DISABLED) &&
             (player->unk_84F == 0)) {
             destinationIdx = ((this->actor.params >> 0xC) & 7) - 1;
             Play_SetupRespawnPoint(play, RESPAWN_MODE_RETURN, 0x4FF);
@@ -152,10 +152,10 @@ void DoorAna_WaitOpen(DoorAna* this, PlayState* play) {
 
             DoorAna_SetupAction(this, DoorAna_GrabPlayer);
         } else {
-            if (!Player_InCsMode(play) && !(player->stateFlags1 & 0x8800000) &&
+            if (!Player_InCsMode(play) && !(player->stateFlags1 & (PLAYER_STATE1_ON_HORSE | PLAYER_STATE1_IN_WATER)) &&
                 this->actor.xzDistToPlayer <= 15.0f && -50.0f <= this->actor.yDistToPlayer &&
                 this->actor.yDistToPlayer <= 15.0f) {
-                player->stateFlags1 |= 0x80000000;
+                player->stateFlags1 |= PLAYER_STATE1_FLOOR_DISABLED;
                 this->actor.targetMode = 1;
             } else {
                 this->actor.targetMode = 0;

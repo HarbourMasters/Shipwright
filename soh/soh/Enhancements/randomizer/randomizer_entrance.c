@@ -498,7 +498,7 @@ void Entrance_EnableFW(void) {
         gPlayState->sceneNum == 26 || gPlayState->sceneNum == 62 || gPlayState->sceneNum == 73 ||
         gPlayState->sceneNum == 79 ||
         gSaveContext.eventInf[0] & 0x1 ||   // Ingo's Minigame state
-        player->stateFlags1 & 0x08A02000 || // Swimming, riding horse, Down A, hanging from a ledge
+        player->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LADDER | PLAYER_STATE1_ON_HORSE | PLAYER_STATE1_IN_WATER) || // Swimming, riding horse, Down A, hanging from a ledge
         player->stateFlags2 & 0x00040000    // Blank A
         // Shielding, spinning and getting skull tokens still disable buttons automatically
         ) {

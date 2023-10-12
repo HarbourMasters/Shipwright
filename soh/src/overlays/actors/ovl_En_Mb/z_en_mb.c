@@ -1274,7 +1274,7 @@ void EnMb_ClubWaitPlayerNear(EnMb* this, PlayState* play) {
 
     SkelAnime_Update(&this->skelAnime);
     if (Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < this->playerDetectionRange &&
-        !(player->stateFlags1 & 0x4000000) && ABS(relYawFromPlayer) < 0x3E80) {
+        !(player->stateFlags1 & PLAYER_STATE1_DAMAGED) && ABS(relYawFromPlayer) < 0x3E80) {
         // Add a height check to the Moblin's Club attack when Enemy Randomizer is on.
         // Without the height check, the Moblin will attack (and play the sound effect) a lot even though
         // the Moblin is very far away from the player in vertical rooms (like the first room in Deku Tree).

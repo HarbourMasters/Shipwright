@@ -822,7 +822,7 @@ void func_80083108(PlayState* play) {
         ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.cutsceneIndex == 0xFFF0))) {
         gSaveContext.unk_13E7 = 0;
 
-        if ((player->stateFlags1 & 0x00800000) || (play->shootingGalleryStatus > 1) ||
+        if ((player->stateFlags1 & PLAYER_STATE1_ON_HORSE) || (play->shootingGalleryStatus > 1) ||
             ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
             if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
                 gSaveContext.unk_13E7 = 1;
@@ -875,11 +875,11 @@ void func_80083108(PlayState* play) {
                     Interface_ChangeAlpha(8);
                 } else if ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38)) {
                     Interface_ChangeAlpha(8);
-                } else if (player->stateFlags1 & 0x00800000) {
+                } else if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
                     Interface_ChangeAlpha(12);
                 }
             } else {
-                if (player->stateFlags1 & 0x00800000) {
+                if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
                     Interface_ChangeAlpha(12);
                 }
             }
@@ -974,7 +974,7 @@ void func_80083108(PlayState* play) {
                 }
 
                 Interface_ChangeAlpha(50);
-            } else if ((player->stateFlags1 & 0x00200000) || (player->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
+            } else if ((player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER) || (player->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
                 if (gSaveContext.buttonStatus[0] != BTN_DISABLED) {
                     gSaveContext.buttonStatus[0] = BTN_DISABLED;
                     gSaveContext.buttonStatus[1] = BTN_DISABLED;
@@ -988,7 +988,7 @@ void func_80083108(PlayState* play) {
                     Interface_ChangeAlpha(50);
                 }
             } else if ((gSaveContext.eventInf[0] & 0xF) == 1) {
-                if (player->stateFlags1 & 0x00800000) {
+                if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
                     if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) &&
                         (gSaveContext.equips.buttonItems[0] != ITEM_BOW)) {
                         if (gSaveContext.inventory.items[SLOT_BOW] == ITEM_NONE) {
@@ -3718,7 +3718,7 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
         Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[12], -floorf(halfBarWidth) + endTexWidth, (-texHeight / 2) + 3,
                                         healthBarFill, 7, 0);
 
-        if (((!(player->stateFlags1 & 0x40)) || (actor != player->unk_664)) && targetCtx->unk_44 < 500.0f) {
+        if (((!(player->stateFlags1 & PLAYER_STATE1_TEXT_ON_SCREEN)) || (actor != player->unk_664)) && targetCtx->unk_44 < 500.0f) {
             f32 slideInOffsetY = 0;
 
             // Slide in the health bar from edge of the screen (mimic the Z-Target triangles fly in)
@@ -4197,7 +4197,7 @@ void Interface_DrawItemButtons(PlayState* play) {
 
             if ((gSaveContext.unk_13EA == 1) || (gSaveContext.unk_13EA == 2) || (gSaveContext.unk_13EA == 5)) {
                 temp = 0;
-            } else if ((player->stateFlags1 & 0x00200000) || (Player_GetEnvironmentalHazard(play) == 4) ||
+            } else if ((player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER) || (Player_GetEnvironmentalHazard(play) == 4) ||
                        (player->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
                 temp = 70;
             } else {
@@ -5270,7 +5270,7 @@ void Interface_Draw(PlayState* play) {
                     Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[0]], 0);
                 }
 
-                if ((player->stateFlags1 & 0x00800000) || (play->shootingGalleryStatus > 1) ||
+                if ((player->stateFlags1 & PLAYER_STATE1_ON_HORSE) || (play->shootingGalleryStatus > 1) ||
                     ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
 
                     if (!fullUi) {
