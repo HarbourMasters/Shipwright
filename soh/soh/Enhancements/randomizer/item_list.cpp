@@ -985,6 +985,10 @@ void Rando::StaticData::InitItemTable() {
         Item(RG_MAGIC_DOUBLE, Text{ "Enhanced Magic Meter", "Jauge de Magie améliorée", "Verbesserte Magieanzeige" },
              ITEMTYPE_ITEM, 0x8A, true, &Logic::ProgressiveMagic, RHT_MAGIC_DOUBLE, RG_MAGIC_DOUBLE, OBJECT_GI_MAGICPOT,
              GID_MAGIC_LARGE, 0xE8, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_TRIFORCE_PIECE] =
+        Item(RG_TRIFORCE_PIECE, Text{ "Triforce Piece", "Triforce Piece", "Triforce Piece" }, ITEMTYPE_ITEM, 0xDF, true,
+             &Logic::TriforcePieces, RHT_TRIFORCE_PIECE, RG_TRIFORCE_PIECE, OBJECT_GI_BOMB_2, GID_TRIFORCE_PIECE,
+             TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
 }
 
 Item& Rando::StaticData::RetrieveItem(const RandomizerGet rgid) {

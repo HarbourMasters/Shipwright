@@ -234,7 +234,7 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
     if (play->msgCtx.ocarinaMode == OCARINA_MODE_04) {
         this->actionFunc = func_80ABF28C;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
-        if (!gSaveContext.n64ddFlag || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) != RO_DOOROFTIME_CLOSED)) {
+        if (!IS_RANDO || (IS_RANDO && Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) != RO_DOOROFTIME_CLOSED)) {
             func_80078884(NA_SE_SY_CORRECT_CHIME);
         }
         if (this->switchFlag >= 0) {
@@ -246,7 +246,7 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
                 Flags_SetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN);
                 break;
             case 2:
-                if (!gSaveContext.n64ddFlag) {
+                if (!IS_RANDO) {
                     play->csCtx.segment = D_80ABF9D0;
                     gSaveContext.cutsceneTrigger = 1;
                 } else {
@@ -256,7 +256,7 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
                 func_800F574C(1.18921f, 0x5A);
                 break;
             case 4:
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO) {
                     if (Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) == RO_DOOROFTIME_CLOSED &&
                         (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_OCARINA_TIME ||
                          !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) || !CHECK_QUEST_ITEM(QUEST_GORON_RUBY) ||
@@ -274,7 +274,7 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
                 break;
             case 6:
                 // Don't start the cutscene in a rando save.
-                if (!(gSaveContext.n64ddFlag)) {
+                if (!(IS_RANDO)) {
                     play->csCtx.segment = LINK_IS_ADULT ? SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_003C80)
                                                              : SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_005020);
                     gSaveContext.cutsceneTrigger = 1;
@@ -311,7 +311,7 @@ void func_80ABF708(EnOkarinaTag* this, PlayState* play) {
         yawDiff = this->actor.yawTowardsPlayer - this->actor.world.rot.y;
         this->unk_15A++;
         if (!(this->actor.xzDistToPlayer > 120.0f)) {
-            if (CHECK_QUEST_ITEM(QUEST_SONG_SUN) || gSaveContext.n64ddFlag) {
+            if (CHECK_QUEST_ITEM(QUEST_SONG_SUN) || IS_RANDO) {
                 this->actor.textId = 0x5021;
             }
             yawDiffNew = ABS(yawDiff);
@@ -335,10 +335,10 @@ void func_80ABF7CC(EnOkarinaTag* this, PlayState* play) {
 
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
-        if (!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
+        if (!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gSunSongGraveSunSongTeachCs);
             gSaveContext.cutsceneTrigger = 1;
-        } else if (gSaveContext.n64ddFlag && !Flags_GetTreasure(play, 0x1F)) {
+        } else if (IS_RANDO && !Flags_GetTreasure(play, 0x1F)) {
             GivePlayerRandoRewardSunSong(this, play, RC_SONG_FROM_ROYAL_FAMILYS_TOMB);
         }
         this->actionFunc = func_80ABF708;

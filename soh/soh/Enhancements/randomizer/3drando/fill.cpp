@@ -1111,6 +1111,8 @@ int Fill() {
       CreateAltarText();
       CreateDampesDiaryText();
       CreateGregRupeeHint();
+      CreateSheikText();
+      CreateSariaText();
       CreateWarpSongTexts();
       return 1;
     }

@@ -9,7 +9,7 @@ export DYLD_FALLBACK_LIBRARY_PATH="$LIBPATH"
 
 remap_hashes ()
 {
-	# Remap v64 and n64 hashes to their z64 has equivalent
+	# Remap v64 and n64 hashes to their z64 hash equivalent
 	# ZAPD will handle converting the data into z64 format
 	case "$ROMHASH" in
 	a9059b56e761c9034fbe02fe4c24985aaa835dac) # v64
@@ -24,11 +24,23 @@ remap_hashes ()
 	d6342c59007e57c1194661ec6880b2f078403f4e) # n64
 		ROMHASH=0227d7c0074f2d0ac935631990da8ec5914597b4
 		;;
+	d0bdc2eb320668b4ba6893b9aefe4040a73123ff) # v64
+		ROMHASH=328a1f1beba30ce5e178f031662019eb32c5f3b5
+		;;
+	4946ab250f6ac9b32d76b21f309ebb8ebc8103d2) # n64
+		ROMHASH=328a1f1beba30ce5e178f031662019eb32c5f3b5
+		;;
 	663c34f1b2c05a09e5beffe4d0dcd440f7d49dc7) # v64
 		ROMHASH=cfbb98d392e4a9d39da8285d10cbef3974c2f012
 		;;
 	24c73d378b0620a380ce5ef9f2b186c6c157a68b) # n64
 		ROMHASH=cfbb98d392e4a9d39da8285d10cbef3974c2f012
+		;;
+	8ebf2e29313f44f2d49e5b4191971d09919e8e48) # v64
+		ROMHASH=f46239439f59a2a594ef83cf68ef65043b1bffe2
+		;;
+	4264bf7b875737b8fae77d52322a5099d051fc11) # n64
+		ROMHASH=f46239439f59a2a594ef83cf68ef65043b1bffe2
 		;;
 	973bc6fe56010a8d646166a1182a81b4f13b8cf9) # v64
 		ROMHASH=50bebedad9e0f10746a52b07239e47fa6c284d03
@@ -97,8 +109,12 @@ if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 					ROM_TYPE=0;;
 				0227d7c0074f2d0ac935631990da8ec5914597b4)
 					ROM_TYPE=0;;
+				328a1f1beba30ce5e178f031662019eb32c5f3b5)
+					ROM_TYPE=0;;
 				cfbb98d392e4a9d39da8285d10cbef3974c2f012)
 					ROM_TYPE=0;;
+				f46239439f59a2a594ef83cf68ef65043b1bffe2)
+					ROM_TYPE=1;;
 				50bebedad9e0f10746a52b07239e47fa6c284d03)
 					ROM_TYPE=1;;
 				079b855b943d6ad8bd1eb026c0ed169ecbdac7da)
@@ -181,9 +197,15 @@ if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 			0227d7c0074f2d0ac935631990da8ec5914597b4)
 				ROM=GC_NMQ_PAL_F
 				OTRNAME="oot.otr";;
+			328a1f1beba30ce5e178f031662019eb32c5f3b5)
+				ROM=N64_PAL_10
+				OTRNAME="oot.otr";;
 			cfbb98d392e4a9d39da8285d10cbef3974c2f012)
 				ROM=N64_PAL_11
 				OTRNAME="oot.otr";;
+			f46239439f59a2a594ef83cf68ef65043b1bffe2)
+				ROM=GC_MQ_PAL_F
+				OTRNAME="oot-mq.otr";;
 			50bebedad9e0f10746a52b07239e47fa6c284d03)
 				ROM=GC_MQ_D
 				OTRNAME="oot-mq.otr";;

@@ -10,7 +10,7 @@
         <Texture Name="gDiveDoActionENGTex" OutName="dive_eng" Format="ia4" Width="48" Height="16" Offset="0xA80"/>
         <Texture Name="gFasterDoActionENGTex" OutName="faster_eng" Format="ia4" Width="48" Height="16" Offset="0xC00"/>
         <Texture Name="gThrowDoActionENGTex" OutName="throw_eng" Format="ia4" Width="48" Height="16" Offset="0xD80"/>
-        <Texture Name="gUnusedNaviDoActionENGTex" OutName="navi_unused_eng" Format="i4" Width="48" Height="16" Offset="0xF00"/>
+        <Texture Name="gUnusedNaviDoActionENGTex" OutName="navi_unused_eng" Format="ia4" Width="48" Height="16" Offset="0xF00"/>
         <Texture Name="gClimbDoActionENGTex" OutName="climb_eng" Format="ia4" Width="48" Height="16" Offset="0x1080"/>
         <Texture Name="gDropDoActionENGTex" OutName="drop_eng" Format="ia4" Width="48" Height="16" Offset="0x1200"/>
         <Texture Name="gDownDoActionENGTex" OutName="down_eng" Format="ia4" Width="48" Height="16" Offset="0x1380"/>
@@ -39,7 +39,7 @@
         <Texture Name="gDiveDoActionGERTex" OutName="dive_ger" Format="ia4" Width="48" Height="16" Offset="0x3600"/>
         <Texture Name="gFasterDoActionGERTex" OutName="faster_ger" Format="ia4" Width="48" Height="16" Offset="0x3780"/>
         <Texture Name="gThrowDoActionGERTex" OutName="throw_ger" Format="ia4" Width="48" Height="16" Offset="0x3900"/>
-        <Texture Name="gUnusedNaviDoActionGERTex" OutName="navi_unused_ger" Format="i4" Width="48" Height="16" Offset="0x3A80"/>
+        <Texture Name="gUnusedNaviDoActionGERTex" OutName="navi_unused_ger" Format="ia4" Width="48" Height="16" Offset="0x3A80"/>
         <Texture Name="gClimbDoActionGERTex" OutName="climb_ger" Format="ia4" Width="48" Height="16" Offset="0x3C00"/>
         <Texture Name="gDropDoActionGERTex" OutName="drop_ger" Format="ia4" Width="48" Height="16" Offset="0x3D80"/>
         <Texture Name="gDownDoActionGERTex" OutName="down_ger" Format="ia4" Width="48" Height="16" Offset="0x3F00"/>
@@ -68,7 +68,7 @@
         <Texture Name="gDiveDoActionFRATex" OutName="dive_fra" Format="ia4" Width="48" Height="16" Offset="0x6180"/>
         <Texture Name="gFasterDoActionFRATex" OutName="faster_fra" Format="ia4" Width="48" Height="16" Offset="0x6300"/>
         <Texture Name="gThrowDoActionFRATex" OutName="throw_fra" Format="ia4" Width="48" Height="16" Offset="0x6480"/>
-        <Texture Name="gUnusedNaviDoActionFRATex" OutName="navi_unused_fra" Format="i4" Width="48" Height="16" Offset="0x6600"/>
+        <Texture Name="gUnusedNaviDoActionFRATex" OutName="navi_unused_fra" Format="ia4" Width="48" Height="16" Offset="0x6600"/>
         <Texture Name="gClimbDoActionFRATex" OutName="climb_fra" Format="ia4" Width="48" Height="16" Offset="0x6780"/>
         <Texture Name="gDropDoActionFRATex" OutName="drop_fra" Format="ia4" Width="48" Height="16" Offset="0x6900"/>
         <Texture Name="gDownDoActionFRATex" OutName="down_fra" Format="ia4" Width="48" Height="16" Offset="0x6A80"/>

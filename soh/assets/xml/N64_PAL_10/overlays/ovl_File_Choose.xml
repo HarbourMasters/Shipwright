@@ -1,0 +1,32 @@
+<Root>
+    <File Name="ovl_file_choose" BaseAddress="0x80803880" RangeStart="0xF0A0" RangeEnd="0xF9A0">
+        <Array Name="D_80811BB0" Count="24" Offset="0xF0A0" Static="Off">
+            <Vtx/>
+        </Array>
+        <!-- German headers vertices are combined into one array -->
+        <Array Name="D_80811D30" Count="24" Offset="0xF220" Static="Off">
+            <Vtx/>
+        </Array>
+        <!-- German options vertices are combined into one array -->
+        <Array Name="D_80811F30" Count="52" Offset="0xF3A0" Static="Off">
+            <Vtx/>
+        </Array>
+        <!-- Not used for PAL N64, instead these vertices are apart of D_80811F30 -->
+        <!-- <Array Name="D_80812130" Count="12" Offset="0xF6A0" Static="Off">
+            <Vtx/>
+        </Array> -->
+        <Array Name="gOptionsDividerTopVtx" Count="4" Offset="0xF820" Static="Off">
+            <Vtx/>
+        </Array>
+        <Array Name="gOptionsDividerMiddleVtx" Count="4" Offset="0xF860" Static="Off">
+            <Vtx/>
+        </Array>
+        <Array Name="gOptionsDividerBottomVtx" Count="4" Offset="0xF8A0" Static="Off">
+            <Vtx/>
+        </Array>
+        <!-- PAL N64 only -->
+        <Array Name="gOptionsDividerChangeLangVtx" Count="4" Offset="0xF8E0" Static="Off">
+            <Vtx/>
+        </Array>
+    </File>
+</Root>

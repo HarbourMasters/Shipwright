@@ -436,5 +436,8 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.itemGetInf[3] |= 0x8000; // Obtained Mask of Truth
     }
 
+    // Reset triforce pieces collected
+    gSaveContext.triforcePiecesCollected = 0;
+
     SetStartingItems();
 }

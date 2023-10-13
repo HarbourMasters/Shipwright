@@ -813,8 +813,7 @@ void func_80AF3F20(EnRu2* this, PlayState* play) {
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
 
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL,
-                          this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, NULL, NULL, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

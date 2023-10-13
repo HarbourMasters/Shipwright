@@ -146,7 +146,7 @@ void DoorAna_WaitOpen(DoorAna* this, PlayState* play) {
             play->nextEntranceIndex = entrances[destinationIdx];
 
             // In ER, load the correct entrance based on the grotto link is falling into
-            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                 Grotto_OverrideActorEntrance(&this->actor);
             }
 
@@ -180,8 +180,10 @@ void DoorAna_Update(Actor* thisx, PlayState* play) {
     DoorAna* this = (DoorAna*)thisx;
 
     this->actionFunc(this, play);
-    // changes the grottos facing angle based on camera angle
-    this->actor.shape.rot.y = Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x8000;
+    // Changes the grottos facing angle based on camera angle
+    if (!CVarGetInteger("gDisableGrottoRotation", 0)) {
+        this->actor.shape.rot.y = Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x8000;
+    }
 }
 
 void DoorAna_Draw(Actor* thisx, PlayState* play) {

@@ -89,6 +89,9 @@ void Context::AddLocations(const Container& locations, std::vector<RandomizerChe
 void Context::GenerateLocationPool() {
     allLocations.clear();
     AddLocation(RC_LINKS_POCKET);
+    if (Settings::TriforceHunt.Is(TRIFORCE_HUNT_ON)) {
+        AddLocation(RC_TRIFORCE_COMPLETED);
+    }
     AddLocations(StaticData::overworldLocations);
 
     for (auto dungeon : Dungeon::dungeonList) {

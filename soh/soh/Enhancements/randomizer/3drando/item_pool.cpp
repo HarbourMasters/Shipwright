@@ -666,9 +666,17 @@ void GenerateItemPool() {
     IceTrapModels.push_back(0xD3);
   }
 
+  if (TriforceHunt.Is(TRIFORCE_HUNT_ON)) {
+    IceTrapModels.push_back(0xDF);
+    AddItemToMainPool(RG_TRIFORCE_PIECE, Settings::TriforceHuntTotal.Value<uint8_t>());
+    ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_TRIFORCE); // Win condition
+    ctx->PlaceItemInLocation(RC_GANON, GetJunkItem(), false, true);
+  } else {
+    ctx->PlaceItemInLocation(RC_GANON, RG_TRIFORCE); // Win condition
+  }
+
   //Fixed item locations
   ctx->PlaceItemInLocation(RC_HC_ZELDAS_LETTER, RG_ZELDAS_LETTER);
-  ctx->PlaceItemInLocation(RC_GANON, RG_TRIFORCE); //The Triforce is only used to make sure Ganon is accessible
   ctx->PlaceItemInLocation(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, RG_BOMBCHU_DROP);
 
   if (ShuffleKokiriSword) {
@@ -1140,7 +1148,7 @@ void GenerateItemPool() {
 
   if (GanonsBossKey.Is(GANONSBOSSKEY_FINAL_GS_REWARD)) {
     ctx->PlaceItemInLocation(RC_KAK_100_GOLD_SKULLTULA_REWARD, RG_GANONS_CASTLE_BOSS_KEY);
-  } else if (GanonsBossKey.Value<uint8_t>() >= GANONSBOSSKEY_LACS_VANILLA) {
+  } else if (GanonsBossKey.Value<uint8_t>() >= GANONSBOSSKEY_LACS_VANILLA && GanonsBossKey.IsNot(GANONSBOSSKEY_TRIFORCE_HUNT)) {
     ctx->PlaceItemInLocation(RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_GANONS_CASTLE_BOSS_KEY);
   } else if (GanonsBossKey.Is(GANONSBOSSKEY_VANILLA)) {
     ctx->PlaceItemInLocation(RC_GANONS_TOWER_BOSS_KEY_CHEST, RG_GANONS_CASTLE_BOSS_KEY);

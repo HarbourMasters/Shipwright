@@ -541,7 +541,7 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_KF_KOKIRI_SWORD_CHEST] = Location::Chest(
         RC_KF_KOKIRI_SWORD_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KOKIRI_FOREST, ACTOR_EN_BOX,
         SCENE_KOKIRI_FOREST, 1248, 0x00, "Kokiri Sword Chest", "KF Kokiri Sword Chest", RHT_KF_KOKIRI_SWORD_CHEST,
-        RG_KOKIRI_SWORD, {}, SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+        RG_KOKIRI_SWORD, {}, SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST, true);
     locationTable[RC_KF_MIDOS_TOP_LEFT_CHEST] = Location::Chest(
         RC_KF_MIDOS_TOP_LEFT_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KOKIRI_FOREST, ACTOR_EN_BOX,
         SCENE_MIDOS_HOUSE, 22944, 0x00, "Mido Top Left Chest", "KF Mido Top Left Chest", RHT_KF_MIDOS_TOP_LEFT_CHEST,
@@ -571,24 +571,24 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_LW_SKULL_KID] =
         Location::Base(RC_LW_SKULL_KID, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LOST_WOODS, ACTOR_ID_MAX,
                        SCENE_LOST_WOODS, 0x00, 0x3E, "Skull Kid", "LW Skull Kid", RHT_LW_SKULL_KID, RG_PIECE_OF_HEART,
-                       {}, SpoilerCollectionCheck::ItemGetInf(30), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+                       {}, SpoilerCollectionCheck::ItemGetInf(30), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS, true);
     locationTable[RC_LW_TRADE_COJIRO] = Location::Base(
         RC_LW_TRADE_COJIRO, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_LOST_WOODS, ACTOR_ID_MAX, SCENE_LOST_WOODS, 0x00,
         0x1F, "Trade Cojiro", "LW Trade Cojiro", RHT_LW_TRADE_COJIRO, RG_ODD_MUSHROOM, { Category::cAdultTrade },
-        SpoilerCollectionCheck::RandomizerInf(0x5B, 0x1F), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+        SpoilerCollectionCheck::RandomizerInf(0x5B, 0x1F), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS, true);
     locationTable[RC_LW_TRADE_ODD_POTION] =
         Location::Base(RC_LW_TRADE_ODD_POTION, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_LOST_WOODS, ACTOR_ID_MAX,
                        SCENE_LOST_WOODS, 0x00, 0x21, "Trade Odd Potion", "LW Trade Odd Potion", RHT_LW_TRADE_COJIRO,
                        RG_ODD_MUSHROOM, { Category::cAdultTrade }, SpoilerCollectionCheck::RandomizerInf(0x5B, 0x1F),
-                       SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+                       SpoilerCollectionCheckGroup::GROUP_LOST_WOODS, true);
     locationTable[RC_LW_OCARINA_MEMORY_GAME] = Location::Base(
         RC_LW_OCARINA_MEMORY_GAME, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LOST_WOODS, ACTOR_ID_MAX, SCENE_LOST_WOODS,
         0x00, 0x21, "Ocarina Memory Game", "LW Ocarina Memory Game", RHT_LW_OCARINA_MEMORY_GAME, RG_PIECE_OF_HEART, {},
-        SpoilerCollectionCheck::ItemGetInf(31), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+        SpoilerCollectionCheck::ItemGetInf(31), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS, true);
     locationTable[RC_LW_TARGET_IN_WOODS] = Location::Base(
         RC_LW_TARGET_IN_WOODS, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LOST_WOODS, ACTOR_ID_MAX, SCENE_LOST_WOODS, 0x00,
         0x60, "Target in Woods", "LW Target in Woods", RHT_LW_TARGET_IN_WOODS, RG_PROGRESSIVE_SLINGSHOT, {},
-        SpoilerCollectionCheck::ItemGetInf(21), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+        SpoilerCollectionCheck::ItemGetInf(21), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS, true);
     locationTable[RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT] = Location::Base(
         RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_LOST_WOODS, ACTOR_EN_DNS,
         SCENE_LOST_WOODS, 0x00, 0x30, "Deku Scrub Near Deku Theater Right", "LW Deku Scrub Near Deku Theater Right",
@@ -603,7 +603,7 @@ void Rando::StaticData::InitLocationTable() {
         RC_LW_DEKU_SCRUB_NEAR_BRIDGE, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_LOST_WOODS, ACTOR_EN_DNS, SCENE_LOST_WOODS,
         0x09, 0x77, "Deku Scrub Near Bridge", "LW Deku Scrub Near Bridge", RHT_LW_DEKU_SCRUB_NEAR_BRIDGE,
         RG_PROGRESSIVE_STICK_UPGRADE, { Category::cDekuScrub, Category::cDekuScrubUpgrades },
-        SpoilerCollectionCheck::Scrub(0x5B, 0x0A), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+        SpoilerCollectionCheck::Scrub(0x5B, 0x0A), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS, true);
     locationTable[RC_LW_DEKU_SCRUB_GROTTO_REAR] = Location::GrottoScrub(
         RC_LW_DEKU_SCRUB_GROTTO_REAR, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_LOST_WOODS, ACTOR_EN_DNS, SCENE_GROTTOS,
         TWO_ACTOR_PARAMS(0x03, 0xF5), 0x33, "Deku Scrub Grotto Rear", "LW Deku Scrub Grotto Rear",
@@ -619,12 +619,12 @@ void Rando::StaticData::InitLocationTable() {
         Location::Base(RC_DEKU_THEATER_SKULL_MASK, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LOST_WOODS, ACTOR_ID_MAX,
                        SCENE_GROTTOS, 0x00, 0x77, "Deku Theater Skull Mask", "Deku Theater Skull Mask",
                        RHT_DEKU_THEATER_SKULL_MASK, RG_PROGRESSIVE_STICK_UPGRADE, {},
-                       SpoilerCollectionCheck::Chest(0x3E, 0x1F), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+                       SpoilerCollectionCheck::Chest(0x3E, 0x1F), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS, true);
     locationTable[RC_DEKU_THEATER_MASK_OF_TRUTH] =
         Location::Base(RC_DEKU_THEATER_MASK_OF_TRUTH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LOST_WOODS, ACTOR_ID_MAX,
                        SCENE_GROTTOS, 0x00, 0x7A, "Deku Theater Mask of Truth", "Deku Theater Mask of Truth",
                        RHT_DEKU_THEATER_MASK_OF_TRUTH, RG_PROGRESSIVE_NUT_UPGRADE, {},
-                       SpoilerCollectionCheck::Chest(0x3E, 0x1E), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+                       SpoilerCollectionCheck::Chest(0x3E, 0x1E), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS, true);
 
     // Sacred Forest Meadow
     locationTable[RC_SFM_WOLFOS_GROTTO_CHEST] = Location::Chest(
@@ -660,46 +660,49 @@ void Rando::StaticData::InitLocationTable() {
                        SCENE_HYRULE_FIELD, 0x00, 0x0C, "Ocarina of Time Item", "HF Ocarina of Time Item",
                        RHT_HF_OCARINA_OF_TIME_ITEM, RG_PROGRESSIVE_OCARINA, {},
                        SpoilerCollectionCheck::EventChkInf(0x43), SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
-    locationTable[RC_HF_TEKTITE_GROTTO_FREESTANDING_POH] = Location::Collectable(
-        RC_HF_TEKTITE_GROTTO_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_FIELD, ACTOR_EN_ITEM00,
-        SCENE_GROTTOS, 262, 0x01, "Tektite Grotto Freestanding PoH", "HF Tektite Grotto Freestanding PoH",
-        RHT_HF_TEKTITE_GROTTO_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
+    locationTable[RC_HF_TEKTITE_GROTTO_FREESTANDING_POH] =
+        Location::Collectable(RC_HF_TEKTITE_GROTTO_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_FIELD,
+                              ACTOR_EN_ITEM00, SCENE_GROTTOS, 262, 0x01, "Tektite Grotto Freestanding PoH",
+                              "HF Tektite Grotto Freestanding PoH", RHT_HF_TEKTITE_GROTTO_FREESTANDING_POH,
+                              RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD, true);
     locationTable[RC_HF_DEKU_SCRUB_GROTTO] = Location::GrottoScrub(
         RC_HF_DEKU_SCRUB_GROTTO, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_HYRULE_FIELD, ACTOR_EN_DNS, SCENE_GROTTOS,
         TWO_ACTOR_PARAMS(0x02, 0xE6), 0x3E, "Deku Scrub Grotto", "HF Deku Scrub Grotto", RHT_HF_DEKU_SCRUB_GROTTO,
         RG_PIECE_OF_HEART, { Category::cDekuScrub, Category::cDekuScrubUpgrades },
-        SpoilerCollectionCheck::Scrub(0x10, 0x03), SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
+        SpoilerCollectionCheck::Scrub(0x10, 0x03), SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD, true);
     locationTable[RC_LH_CHILD_FISHING] = Location::Base(
         RC_LH_CHILD_FISHING, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LAKE_HYLIA, ACTOR_ID_MAX, SCENE_FISHING_POND, 0x00,
         0x3E, "Child Fishing", "LH Child Fishing", RHT_LH_CHILD_FISHING, RG_PIECE_OF_HEART, {},
-        SpoilerCollectionCheck::Fishing(0x02), SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+        SpoilerCollectionCheck::RandomizerInf(SCENE_FISHING_POND, RAND_INF_CHILD_FISHING),
+        SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA, true);
 
     // Lake Hylia
     locationTable[RC_LH_ADULT_FISHING] = Location::Base(
         RC_LH_ADULT_FISHING, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LAKE_HYLIA, ACTOR_ID_MAX, SCENE_FISHING_POND, 0x00,
         0x38, "Adult Fishing", "LH Adult Fishing", RHT_LH_ADULT_FISHING, RG_PROGRESSIVE_SCALE, {},
-        SpoilerCollectionCheck::Fishing(0x03), SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+        SpoilerCollectionCheck::RandomizerInf(SCENE_FISHING_POND, RAND_INF_ADULT_FISHING),
+        SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA, true);
     locationTable[RC_LH_LAB_DIVE] = Location::Base(
         RC_LH_LAB_DIVE, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LAKE_HYLIA, ACTOR_ID_MAX, SCENE_LAKESIDE_LABORATORY, 0x00,
         0x3E, "Lab Dive", "LH Lab Dive", RHT_LH_LAB_DIVE, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheck::ItemGetInf(24),
-        SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+        SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA, true);
     locationTable[RC_LH_TRADE_FROG] = Location::Base(
         RC_LH_TRADE_FROG, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_LAKE_HYLIA, ACTOR_ID_MAX, SCENE_LAKESIDE_LABORATORY,
         0x00, 0x25, "Lab Trade Eyeball Frog", "LH Lab Trade Eyeball Frog", RHT_LH_TRADE_FROG, RG_EYEDROPS,
         { Category::cAdultTrade }, SpoilerCollectionCheck::RandomizerInf(0x38, 0x1F),
-        SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+        SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA, true);
     locationTable[RC_LH_UNDERWATER_ITEM] = Location::Base(
         RC_LH_UNDERWATER_ITEM, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LAKE_HYLIA, ACTOR_ID_MAX, SCENE_LAKE_HYLIA, 0x00,
         0x15, "Underwater Item", "LH Underwater Item", RHT_LH_UNDERWATER_ITEM, RG_RUTOS_LETTER, {},
-        SpoilerCollectionCheck::EventChkInf(0x31), SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+        SpoilerCollectionCheck::EventChkInf(0x31), SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA, true);
     locationTable[RC_LH_SUN] =
         Location::Base(RC_LH_SUN, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LAKE_HYLIA, ACTOR_ID_MAX, SCENE_LAKE_HYLIA,
                        0x00, 0x58, "Sun", "LH Sun", RHT_LH_SUN, RG_FIRE_ARROWS, {},
-                       SpoilerCollectionCheck::Chest(0x57, 0x1F), SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+                       SpoilerCollectionCheck::Chest(0x57, 0x1F), SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA, true);
     locationTable[RC_LH_FREESTANDING_POH] = Location::Collectable(
         RC_LH_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LAKE_HYLIA, ACTOR_EN_ITEM00, SCENE_LAKE_HYLIA,
         7686, 0x1E, "Freestanding PoH", "LH Freestanding PoH", RHT_LH_FREESTANDING_POH, RG_PIECE_OF_HEART, {},
-        SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+        SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA, true);
     locationTable[RC_LH_DEKU_SCRUB_GROTTO_LEFT] = Location::GrottoScrub(
         RC_LH_DEKU_SCRUB_GROTTO_LEFT, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_LAKE_HYLIA, ACTOR_EN_DNS, SCENE_GROTTOS,
         TWO_ACTOR_PARAMS(0x00, 0xEF), 0x30, "Deku Scrub Grotto Left", "LH Deku Scrub Grotto Left",
@@ -722,15 +725,16 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_GV_TRADE_SAW] = Location::Base(
         RC_GV_TRADE_SAW, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_GERUDO_VALLEY, ACTOR_ID_MAX, SCENE_GERUDO_VALLEY,
         0x00, 0x22, "Trade Saw", "GV Trade Saw", RHT_GV_TRADE_SAW, RG_BROKEN_SWORD, { Category::cAdultTrade },
-        SpoilerCollectionCheck::RandomizerInf(0x5A, 0x1F), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-    locationTable[RC_GV_WATERFALL_FREESTANDING_POH] = Location::Collectable(
-        RC_GV_WATERFALL_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GERUDO_VALLEY, ACTOR_EN_ITEM00,
-        SCENE_GERUDO_VALLEY, 262, 0x01, "Waterfall Freestanding PoH", "GV Waterfall Freestanding PoH",
-        RHT_GV_WATERFALL_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+        SpoilerCollectionCheck::RandomizerInf(0x5A, 0x1F), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY, true);
+    locationTable[RC_GV_WATERFALL_FREESTANDING_POH] =
+        Location::Collectable(RC_GV_WATERFALL_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GERUDO_VALLEY,
+                              ACTOR_EN_ITEM00, SCENE_GERUDO_VALLEY, 262, 0x01, "Waterfall Freestanding PoH",
+                              "GV Waterfall Freestanding PoH", RHT_GV_WATERFALL_FREESTANDING_POH, RG_PIECE_OF_HEART, {},
+                              SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY, true);
     locationTable[RC_GV_CRATE_FREESTANDING_POH] = Location::Collectable(
         RC_GV_CRATE_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GERUDO_VALLEY, ACTOR_EN_ITEM00,
         SCENE_GERUDO_VALLEY, 518, 0x02, "Crate Freestanding PoH", "GV Crate Freestanding PoH",
-        RHT_GV_CRATE_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+        RHT_GV_CRATE_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY, true);
     locationTable[RC_GV_DEKU_SCRUB_GROTTO_REAR] = Location::GrottoScrub(
         RC_GV_DEKU_SCRUB_GROTTO_REAR, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_GERUDO_VALLEY, ACTOR_EN_DNS, SCENE_GROTTOS,
         TWO_ACTOR_PARAMS(0x07, 0xF0), 0x39, "Deku Scrub Grotto Rear", "GV Deku Scrub Grotto Rear",
@@ -746,42 +750,42 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_GF_CHEST] =
         Location::Chest(RC_GF_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GERUDO_FORTRESS, ACTOR_EN_BOX,
                         SCENE_GERUDOS_FORTRESS, 1984, 0x00, "Chest", "GF Chest", RHT_GF_CHEST, RG_PIECE_OF_HEART, {},
-                        SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY, true);
     locationTable[RC_GF_HBA_1000_POINTS] =
         Location::Base(RC_GF_HBA_1000_POINTS, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GERUDO_FORTRESS, ACTOR_ID_MAX,
                        SCENE_GERUDOS_FORTRESS, 0x00, 0x3E, "GF HBA 1000 Points", "GF HBA 1000 Points",
                        RHT_GF_HBA_1000_POINTS, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheck::InfTable(0x19, 0x08),
-                       SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+                       SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY, true);
     locationTable[RC_GF_HBA_1500_POINTS] =
         Location::Base(RC_GF_HBA_1500_POINTS, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GERUDO_FORTRESS, ACTOR_ID_MAX,
                        SCENE_GERUDOS_FORTRESS, 0x00, 0x30, "GF HBA 1500 Points", "GF HBA 1500 Points",
                        RHT_GF_HBA_1500_POINTS, RG_PROGRESSIVE_BOW, {}, SpoilerCollectionCheck::ItemGetInf(7),
-                       SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+                       SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY, true);
     locationTable[RC_GF_GERUDO_MEMBERSHIP_CARD] =
         Location::Base(RC_GF_GERUDO_MEMBERSHIP_CARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GERUDO_FORTRESS,
                        ACTOR_ID_MAX, SCENE_THIEVES_HIDEOUT, 0x00, 0x3A, "GF Gerudo Membership Card",
                        "GF Gerudo Membership Card", RHT_GF_GERUDO_MEMBERSHIP_CARD, RG_GERUDO_MEMBERSHIP_CARD, {},
-                       SpoilerCollectionCheck::GerudoToken(), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+                       SpoilerCollectionCheck::GerudoToken(), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY, true);
     locationTable[RC_GF_NORTH_F1_CARPENTER] =
         Location::Collectable(RC_GF_NORTH_F1_CARPENTER, RCQUEST_BOTH, RCTYPE_GF_KEY, RCAREA_GERUDO_FORTRESS,
                               ACTOR_EN_ITEM00, SCENE_THIEVES_HIDEOUT, 3089, 0x0C, "GF North F1 Carpenter",
                               "GF North F1 Carpenter", RHT_GF_NORTH_F1_CARPENTER, RG_GERUDO_FORTRESS_SMALL_KEY,
-                              { Category::cVanillaGFSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+                              { Category::cVanillaGFSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY, true);
     locationTable[RC_GF_NORTH_F2_CARPENTER] =
         Location::Collectable(RC_GF_NORTH_F2_CARPENTER, RCQUEST_BOTH, RCTYPE_GF_KEY, RCAREA_GERUDO_FORTRESS,
                               ACTOR_EN_ITEM00, SCENE_THIEVES_HIDEOUT, 2577, 0x0A, "GF North F2 Carpenter",
                               "GF North F2 Carpenter", RHT_GF_NORTH_F2_CARPENTER, RG_GERUDO_FORTRESS_SMALL_KEY,
-                              { Category::cVanillaGFSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+                              { Category::cVanillaGFSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY, true);
     locationTable[RC_GF_SOUTH_F1_CARPENTER] =
         Location::Collectable(RC_GF_SOUTH_F1_CARPENTER, RCQUEST_BOTH, RCTYPE_GF_KEY, RCAREA_GERUDO_FORTRESS,
                               ACTOR_EN_ITEM00, SCENE_THIEVES_HIDEOUT, 3601, 0x0E, "GF South F1 Carpenter",
                               "GF South F1 Carpenter", RHT_GF_SOUTH_F1_CARPENTER, RG_GERUDO_FORTRESS_SMALL_KEY,
-                              { Category::cVanillaGFSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+                              { Category::cVanillaGFSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY, true);
     locationTable[RC_GF_SOUTH_F2_CARPENTER] =
         Location::Collectable(RC_GF_SOUTH_F2_CARPENTER, RCQUEST_BOTH, RCTYPE_GF_KEY, RCAREA_GERUDO_FORTRESS,
                               ACTOR_EN_ITEM00, SCENE_THIEVES_HIDEOUT, 3857, 0x0F, "GF South F2 Carpenter",
                               "GF South F2 Carpenter", RHT_GF_SOUTH_F2_CARPENTER, RG_GERUDO_FORTRESS_SMALL_KEY,
-                              { Category::cVanillaGFSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+                              { Category::cVanillaGFSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY, true);
 
     // Haunted Wasteland
     locationTable[RC_WASTELAND_CHEST] =
@@ -798,7 +802,7 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_COLOSSUS_FREESTANDING_POH] = Location::Collectable(
         RC_COLOSSUS_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DESERT_COLOSSUS, ACTOR_EN_ITEM00,
         SCENE_DESERT_COLOSSUS, 3334, 0x0D, "Freestanding PoH", "Colossus Freestanding PoH",
-        RHT_COLOSSUS_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+        RHT_COLOSSUS_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY, true);
     locationTable[RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR] = Location::GrottoScrub(
         RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_DESERT_COLOSSUS, ACTOR_EN_DNS,
         SCENE_GROTTOS, TWO_ACTOR_PARAMS(0x07, 0xFD), 0x39, "Deku Scrub Grotto Rear", "Colossus Deku Scrub Grotto Rear",
@@ -812,21 +816,21 @@ void Rando::StaticData::InitLocationTable() {
         SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
 
     // Market
-    locationTable[RC_MARKET_TREASURE_CHEST_GAME_REWARD] =
-        Location::Chest(RC_MARKET_TREASURE_CHEST_GAME_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET,
-                        ACTOR_EN_BOX, SCENE_TREASURE_BOX_SHOP, 0x00, 0x0A, "Treasure Chest Game Reward",
-                        "MK Treasure Chest Game Reward", RHT_MARKET_TREASURE_CHEST_GAME_REWARD, RG_TREASURE_GAME_HEART,
-                        {}, SpoilerCollectionCheck::ItemGetInf(19), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_TREASURE_CHEST_GAME_REWARD] = Location::Chest(
+        RC_MARKET_TREASURE_CHEST_GAME_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_EN_BOX,
+        SCENE_TREASURE_BOX_SHOP, 0x00, 0x0A, "Treasure Chest Game Reward", "MK Treasure Chest Game Reward",
+        RHT_MARKET_TREASURE_CHEST_GAME_REWARD, RG_TREASURE_GAME_HEART, {}, SpoilerCollectionCheck::ItemGetInf(19),
+        SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE, true);
     locationTable[RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE] = Location::Base(
         RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX,
         SCENE_BOMBCHU_BOWLING_ALLEY, 0x00, 0x33, "Bombchu Bowling First Prize", "MK Bombchu Bowling First Prize",
         RHT_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, RG_PROGRESSIVE_BOMB_BAG, {}, SpoilerCollectionCheck::ItemGetInf(25),
-        SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE] =
-        Location::Base(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET,
-                       ACTOR_ID_MAX, SCENE_BOMBCHU_BOWLING_ALLEY, 0x00, 0x3E, "Bombchu Bowling Second Prize",
-                       "MK Bombchu Bowling Second Prize", RHT_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, RG_PIECE_OF_HEART,
-                       {}, SpoilerCollectionCheck::ItemGetInf(26), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+        SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE, true);
+    locationTable[RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE] = Location::Base(
+        RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX,
+        SCENE_BOMBCHU_BOWLING_ALLEY, 0x00, 0x3E, "Bombchu Bowling Second Prize", "MK Bombchu Bowling Second Prize",
+        RHT_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheck::ItemGetInf(26),
+        SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE, true);
     locationTable[RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS] =
         Location::Base(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX,
                        SCENE_BOMBCHU_BOWLING_ALLEY, 0x00, 0x00, "Bombchu Bowling Bombchus",
@@ -835,16 +839,17 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_MARKET_LOST_DOG] = Location::Base(
         RC_MARKET_LOST_DOG, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_DOG_LADY_HOUSE, 0x00,
         0x3E, "Lost Dog", "MK Lost Dog", RHT_MARKET_LOST_DOG, RG_PIECE_OF_HEART, {},
-        SpoilerCollectionCheck::InfTable(0x19, 0x09), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+        SpoilerCollectionCheck::InfTable(0x19, 0x09), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE, true);
     locationTable[RC_MARKET_SHOOTING_GALLERY_REWARD] =
         Location::Base(RC_MARKET_SHOOTING_GALLERY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX,
                        SCENE_SHOOTING_GALLERY, 0x00, 0x60, "Shooting Gallery", "MK Shooting Gallery",
                        RHT_MARKET_SHOOTING_GALLERY_REWARD, RG_PROGRESSIVE_SLINGSHOT, {},
-                       SpoilerCollectionCheck::ItemGetInf(5), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+                       SpoilerCollectionCheck::ItemGetInf(5), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE, true);
     locationTable[RC_MARKET_10_BIG_POES] = Location::Base(
         RC_MARKET_10_BIG_POES, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_MARKET_GUARD_HOUSE,
         0x00, 0x0F, "10 Big Poes", "MK 10 Big Poes", RHT_MARKET_10_BIG_POES, RG_EMPTY_BOTTLE, {},
-        SpoilerCollectionCheck::BigPoePoints(), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+        SpoilerCollectionCheck::RandomizerInf(SCENE_MARKET_GUARD_HOUSE, RAND_INF_10_BIG_POES),
+        SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE, true);
     locationTable[RC_MARKET_TREASURE_CHEST_GAME_ITEM_1] = Location::Chest(
         RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, RCQUEST_BOTH, RCTYPE_CHEST_GAME, RCAREA_MARKET, ACTOR_EN_BOX,
         SCENE_TREASURE_BOX_SHOP, 0x00, 0x01, "Chest Game First Room Chest", "MK Chest Game First Room Chest",
@@ -872,15 +877,15 @@ void Rando::StaticData::InitLocationTable() {
         SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
 
     // Hyrule Castle
-    locationTable[RC_HC_MALON_EGG] =
-        Location::Base(RC_HC_MALON_EGG, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_CASTLE, ACTOR_ID_MAX,
-                       SCENE_HYRULE_CASTLE, 0x00, 0x47, "Malon Egg", "HC Malon Egg", RHT_HC_MALON_EGG, RG_WEIRD_EGG, {},
-                       SpoilerCollectionCheck::EventChkInf(0x12), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_HC_MALON_EGG] = Location::Base(
+        RC_HC_MALON_EGG, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_CASTLE, ACTOR_ID_MAX, SCENE_HYRULE_CASTLE, 0x00,
+        0x47, "Malon Egg", "HC Malon Egg", RHT_HC_MALON_EGG, RG_WEIRD_EGG, {},
+        SpoilerCollectionCheck::EventChkInf(0x12), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE, true);
     locationTable[RC_HC_ZELDAS_LETTER] =
         Location::Base(RC_HC_ZELDAS_LETTER, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_CASTLE, ACTOR_ID_MAX,
                        SCENE_CASTLE_COURTYARD_ZELDA, 0x00, 0x0B, "Zeldas Letter", "HC Zeldas Letter",
                        RHT_HC_ZELDAS_LETTER, RG_ZELDAS_LETTER, {}, SpoilerCollectionCheck::EventChkInf(0x40),
-                       SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+                       SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE, true);
 
     // Kakariko
     locationTable[RC_KAK_REDEAD_GROTTO_CHEST] =
@@ -895,17 +900,17 @@ void Rando::StaticData::InitLocationTable() {
         Location::Base(RC_KAK_10_GOLD_SKULLTULA_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE,
                        ACTOR_ID_MAX, SCENE_HOUSE_OF_SKULLTULA, 0x00, 0x45, "10 Gold Skulltula Reward",
                        "Kak 10 Gold Skulltula Reward", RHT_KAK_10_GOLD_SKULLTULA_REWARD, RG_PROGRESSIVE_WALLET, {},
-                       SpoilerCollectionCheck::EventChkInf(0xDA), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+                       SpoilerCollectionCheck::EventChkInf(0xDA), SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
     locationTable[RC_KAK_20_GOLD_SKULLTULA_REWARD] =
         Location::Base(RC_KAK_20_GOLD_SKULLTULA_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE,
                        ACTOR_ID_MAX, SCENE_HOUSE_OF_SKULLTULA, 0x00, 0x39, "20 Gold Skulltula Reward",
                        "Kak 20 Gold Skulltula Reward", RHT_KAK_20_GOLD_SKULLTULA_REWARD, RG_STONE_OF_AGONY, {},
-                       SpoilerCollectionCheck::EventChkInf(0xDB), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+                       SpoilerCollectionCheck::EventChkInf(0xDB), SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
     locationTable[RC_KAK_30_GOLD_SKULLTULA_REWARD] =
         Location::Base(RC_KAK_30_GOLD_SKULLTULA_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE,
                        ACTOR_ID_MAX, SCENE_HOUSE_OF_SKULLTULA, 0x00, 0x46, "30 Gold Skulltula Reward",
                        "Kak 30 Gold Skulltula Reward", RHT_KAK_30_GOLD_SKULLTULA_REWARD, RG_PROGRESSIVE_WALLET, {},
-                       SpoilerCollectionCheck::EventChkInf(0xDC), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+                       SpoilerCollectionCheck::EventChkInf(0xDC), SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
     locationTable[RC_KAK_40_GOLD_SKULLTULA_REWARD] =
         Location::Base(RC_KAK_40_GOLD_SKULLTULA_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE,
                        ACTOR_ID_MAX, SCENE_HOUSE_OF_SKULLTULA, 0x00, 0x03, "40 Gold Skulltula Reward",
@@ -915,7 +920,7 @@ void Rando::StaticData::InitLocationTable() {
         Location::Base(RC_KAK_50_GOLD_SKULLTULA_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE,
                        ACTOR_ID_MAX, SCENE_HOUSE_OF_SKULLTULA, 0x00, 0x3E, "50 Gold Skulltula Reward",
                        "Kak 50 Gold Skulltula Reward", RHT_KAK_50_GOLD_SKULLTULA_REWARD, RG_PIECE_OF_HEART, {},
-                       SpoilerCollectionCheck::EventChkInf(0xDE), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+                       SpoilerCollectionCheck::EventChkInf(0xDE), SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
     locationTable[RC_KAK_100_GOLD_SKULLTULA_REWARD] =
         Location::Base(RC_KAK_100_GOLD_SKULLTULA_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE,
                        ACTOR_ID_MAX, SCENE_HOUSE_OF_SKULLTULA, 0x00, 0x3E, "100 Gold Skulltula Reward",
@@ -924,48 +929,49 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_KAK_MAN_ON_ROOF] = Location::Base(
         RC_KAK_MAN_ON_ROOF, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE, ACTOR_ID_MAX,
         SCENE_KAKARIKO_VILLAGE, 0x00, 0x3E, "Man on Roof", "Kak Man on Roof", RHT_KAK_MAN_ON_ROOF, RG_PIECE_OF_HEART,
-        {}, SpoilerCollectionCheck::ItemGetInf(29), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+        {}, SpoilerCollectionCheck::ItemGetInf(29), SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
     locationTable[RC_KAK_SHOOTING_GALLERY_REWARD] =
         Location::Base(RC_KAK_SHOOTING_GALLERY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE,
                        ACTOR_ID_MAX, SCENE_SHOOTING_GALLERY, 0x00, 0x30, "Shooting Gallery Reward",
                        "Kak Shooting Gallery Reward", RHT_KAK_SHOOTING_GALLERY_REWARD, RG_PROGRESSIVE_BOW, {},
-                       SpoilerCollectionCheck::Chest(0x42, 0x1F), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+                       SpoilerCollectionCheck::Chest(0x42, 0x1F), SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
     locationTable[RC_KAK_TRADE_ODD_MUSHROOM] =
         Location::Base(RC_KAK_TRADE_ODD_MUSHROOM, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_KAKARIKO_VILLAGE,
                        ACTOR_ID_MAX, SCENE_POTION_SHOP_GRANNY, 0x00, 0x20, "Trade Odd Mushroom",
                        "Kak Trade Odd Mushroom", RHT_KAK_TRADE_ODD_MUSHROOM, RG_ODD_POTION, { Category::cAdultTrade },
-                       SpoilerCollectionCheck::ItemGetInf(56), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+                       SpoilerCollectionCheck::ItemGetInf(56), SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
     locationTable[RC_KAK_ANJU_AS_ADULT] = Location::Base(
         RC_KAK_ANJU_AS_ADULT, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_KAKARIKO_VILLAGE, ACTOR_ID_MAX,
         SCENE_KAKARIKO_VILLAGE, 0x00, 0x1D, "Anju as Adult", "Kak Anju as Adult", RHT_KAK_ANJU_AS_ADULT, RG_CLAIM_CHECK,
-        {}, SpoilerCollectionCheck::ItemGetInf(36), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+        {}, SpoilerCollectionCheck::ItemGetInf(36), SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
     locationTable[RC_KAK_ANJU_AS_CHILD] = Location::Base(
         RC_KAK_ANJU_AS_CHILD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE, ACTOR_ID_MAX,
         SCENE_KAKARIKO_VILLAGE, 0x00, 0x0F, "Anju as Child", "Kak Anju as Child", RHT_KAK_ANJU_AS_CHILD,
-        RG_EMPTY_BOTTLE, {}, SpoilerCollectionCheck::ItemGetInf(4), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+        RG_EMPTY_BOTTLE, {}, SpoilerCollectionCheck::ItemGetInf(4), SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
     locationTable[RC_KAK_TRADE_POCKET_CUCCO] =
         Location::Base(RC_KAK_TRADE_POCKET_CUCCO, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_KAKARIKO_VILLAGE,
                        ACTOR_ID_MAX, SCENE_KAKARIKO_VILLAGE, 0x00, 0x0E, "Trade Pocket Cucco", "Kak Trade Pocket Cucco",
                        RHT_KAK_TRADE_POCKET_CUCCO, RG_COJIRO, { Category::cAdultTrade },
-                       SpoilerCollectionCheck::ItemGetInf(38), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+                       SpoilerCollectionCheck::ItemGetInf(38), SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
     locationTable[RC_KAK_IMPAS_HOUSE_FREESTANDING_POH] = Location::Collectable(
         RC_KAK_IMPAS_HOUSE_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_ITEM00,
         SCENE_IMPAS_HOUSE, 262, 0x01, "Impas House Freestanding PoH", "Kak Impas House Freestanding PoH",
-        RHT_KAK_IMPAS_HOUSE_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+        RHT_KAK_IMPAS_HOUSE_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
     locationTable[RC_KAK_WINDMILL_FREESTANDING_POH] = Location::Collectable(
         RC_KAK_WINDMILL_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_ITEM00,
         SCENE_WINDMILL_AND_DAMPES_GRAVE, 262, 0x01, "Windmill Freestanding PoH", "Kak Windmill Freestanding PoH",
-        RHT_KAK_WINDMILL_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+        RHT_KAK_WINDMILL_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
 
     // Graveyard
     locationTable[RC_GRAVEYARD_SHIELD_GRAVE_CHEST] = Location::Chest(
         RC_GRAVEYARD_SHIELD_GRAVE_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD, ACTOR_EN_BOX,
         SCENE_GRAVE_WITH_FAIRYS_FOUNTAIN, 21824, 0x00, "Shield Grave Chest", "GY Shield Grave Chest",
         RHT_GRAVEYARD_SHIELD_GRAVE_CHEST, RG_HYLIAN_SHIELD, {}, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST] = Location::Chest(
-        RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD, ACTOR_EN_BOX,
-        SCENE_REDEAD_GRAVE, -22592, 0x00, "Heart Piece Grave Chest", "GY Heart Piece Grave Chest",
-        RHT_GRAVEYARD_HEART_PIECE_GRAVE_CHEST, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST] =
+        Location::Chest(RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD,
+                        ACTOR_EN_BOX, SCENE_REDEAD_GRAVE, -22592, 0x00, "Heart Piece Grave Chest",
+                        "GY Heart Piece Grave Chest", RHT_GRAVEYARD_HEART_PIECE_GRAVE_CHEST, RG_PIECE_OF_HEART, {},
+                        SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
     locationTable[RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_CHEST] = Location::Chest(
         RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD, ACTOR_EN_BOX,
         SCENE_ROYAL_FAMILYS_TOMB, -32736, 0x00, "Composers Grave Chest", "GY Composers Grave Chest",
@@ -973,16 +979,17 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_GRAVEYARD_HOOKSHOT_CHEST] = Location::Chest(
         RC_GRAVEYARD_HOOKSHOT_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD, ACTOR_EN_BOX,
         SCENE_WINDMILL_AND_DAMPES_GRAVE, 4352, 0x00, "Hookshot Chest", "GY Hookshot Chest",
-        RHT_GRAVEYARD_HOOKSHOT_CHEST, RG_PROGRESSIVE_HOOKSHOT, {}, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+        RHT_GRAVEYARD_HOOKSHOT_CHEST, RG_PROGRESSIVE_HOOKSHOT, {}, SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
     locationTable[RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH] = Location::Collectable(
         RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD, ACTOR_EN_ITEM00,
         SCENE_WINDMILL_AND_DAMPES_GRAVE, 1798, 0x07, "Dampe Race Freestanding PoH", "GY Dampe Race Freestanding PoH",
-        RHT_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+        RHT_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_KAKARIKO,
+        true);
     locationTable[RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR] = Location::Collectable(
         RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD, ACTOR_EN_ITEM00,
         SCENE_GRAVEYARD, 7942, 0x08, "Dampe Gravedigging Tour", "GY Dampe Gravedigging Tour",
         RHT_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheck::Gravedigger(0x53, 0x1F),
-        SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+        SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
 
     // Death Mountain
     locationTable[RC_DMT_CHEST] =
@@ -997,21 +1004,21 @@ void Rando::StaticData::InitLocationTable() {
         RC_DMT_TRADE_BROKEN_SWORD, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_ID_MAX,
         SCENE_DEATH_MOUNTAIN_TRAIL, 0x00, 0x23, "Trade Broken Sword", "DMT Trade Broken Sword",
         RHT_DMT_TRADE_BROKEN_SWORD, RG_PRESCRIPTION, { Category::cAdultTrade },
-        SpoilerCollectionCheck::RandomizerInf(0x60, 0x1D), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+        SpoilerCollectionCheck::RandomizerInf(0x60, 0x1D), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN, true);
     locationTable[RC_DMT_TRADE_EYEDROPS] = Location::Base(
         RC_DMT_TRADE_EYEDROPS, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_ID_MAX,
         SCENE_DEATH_MOUNTAIN_TRAIL, 0x00, 0x26, "Trade Eyedrops", "DMT Trade Eyedrops", RHT_DMT_TRADE_EYEDROPS,
         RG_CLAIM_CHECK, { Category::cAdultTrade }, SpoilerCollectionCheck::RandomizerInf(0x60, 0x1E),
-        SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
-    locationTable[RC_DMT_TRADE_CLAIM_CHECK] =
-        Location::Base(RC_DMT_TRADE_CLAIM_CHECK, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_DEATH_MOUNTAIN_TRAIL,
-                       ACTOR_ID_MAX, SCENE_DEATH_MOUNTAIN_TRAIL, 0x00, 0x57, "Trade Claim Check",
-                       "DMT Trade Claim Check", RHT_DMT_TRADE_CLAIM_CHECK, RG_BIGGORON_SWORD, {},
-                       SpoilerCollectionCheck::Chest(0x60, 0x1F), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+        SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN, true);
+    locationTable[RC_DMT_TRADE_CLAIM_CHECK] = Location::Base(
+        RC_DMT_TRADE_CLAIM_CHECK, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_ID_MAX,
+        SCENE_DEATH_MOUNTAIN_TRAIL, 0x00, 0x57, "Trade Claim Check", "DMT Trade Claim Check", RHT_DMT_TRADE_CLAIM_CHECK,
+        RG_BIGGORON_SWORD, {}, SpoilerCollectionCheck::Chest(0x60, 0x1F),
+        SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN, true);
     locationTable[RC_DMT_FREESTANDING_POH] = Location::Collectable(
         RC_DMT_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_EN_ITEM00,
         SCENE_DEATH_MOUNTAIN_TRAIL, 7686, 0x1E, "Freestanding PoH", "DMT Freestanding PoH", RHT_DMT_FREESTANDING_POH,
-        RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+        RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN, true);
 
     // Goron City
     locationTable[RC_GC_MAZE_LEFT_CHEST] =
@@ -1026,24 +1033,24 @@ void Rando::StaticData::InitLocationTable() {
         Location::Chest(RC_GC_MAZE_CENTER_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GORON_CITY, ACTOR_EN_BOX,
                         SCENE_GORON_CITY, 23202, 0x02, "Maze Center Chest", "GC Maze Center Chest",
                         RHT_GC_MAZE_CENTER_CHEST, RG_PURPLE_RUPEE, {}, SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
-    locationTable[RC_GC_ROLLING_GORON_AS_CHILD] =
-        Location::Base(RC_GC_ROLLING_GORON_AS_CHILD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GORON_CITY, ACTOR_ID_MAX,
-                       SCENE_GORON_CITY, 0x00, 0x34, "Rolling Goron as Child", "GC Rolling Goron as Child",
-                       RHT_GC_ROLLING_GORON_AS_CHILD, RG_PROGRESSIVE_BOMB_BAG, {},
-                       SpoilerCollectionCheck::InfTable(0x11, 0x06), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_ROLLING_GORON_AS_CHILD] = Location::Base(
+        RC_GC_ROLLING_GORON_AS_CHILD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GORON_CITY, ACTOR_ID_MAX, SCENE_GORON_CITY,
+        0x00, 0x34, "Rolling Goron as Child", "GC Rolling Goron as Child", RHT_GC_ROLLING_GORON_AS_CHILD,
+        RG_PROGRESSIVE_BOMB_BAG, {}, SpoilerCollectionCheck::InfTable(0x11, 0x06),
+        SpoilerCollectionCheckGroup::GROUP_GORON_CITY, true);
     locationTable[RC_GC_ROLLING_GORON_AS_ADULT] =
         Location::Base(RC_GC_ROLLING_GORON_AS_ADULT, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GORON_CITY, ACTOR_ID_MAX,
                        SCENE_GORON_CITY, 0x00, 0x2C, "Rolling Goron as Adult", "GC Rolling Goron as Adult",
                        RHT_GC_ROLLING_GORON_AS_ADULT, RG_GORON_TUNIC, {}, SpoilerCollectionCheck::InfTable(0x10, 0x01),
-                       SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+                       SpoilerCollectionCheckGroup::GROUP_GORON_CITY, true);
     locationTable[RC_GC_DARUNIAS_JOY] = Location::Base(
         RC_GC_DARUNIAS_JOY, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GORON_CITY, ACTOR_ID_MAX, SCENE_GORON_CITY, 0x00,
         0x54, "Darunias Joy", "GC Darunias Joy", RHT_GC_DARUNIAS_JOY, RG_PROGRESSIVE_STRENGTH, {},
-        SpoilerCollectionCheck::Chest(0x62, 0x1E), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+        SpoilerCollectionCheck::Chest(0x62, 0x1E), SpoilerCollectionCheckGroup::GROUP_GORON_CITY, true);
     locationTable[RC_GC_POT_FREESTANDING_POH] = Location::Collectable(
         RC_GC_POT_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GORON_CITY, ACTOR_EN_ITEM00, SCENE_GORON_CITY,
         7942, 0x1F, "Pot Freestanding PoH", "GC Pot Freestanding PoH", RHT_GC_POT_FREESTANDING_POH, RG_PIECE_OF_HEART,
-        {}, SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+        {}, SpoilerCollectionCheckGroup::GROUP_GORON_CITY, true);
     locationTable[RC_GC_DEKU_SCRUB_GROTTO_LEFT] = Location::GrottoScrub(
         RC_GC_DEKU_SCRUB_GROTTO_LEFT, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_GORON_CITY, ACTOR_EN_DNS, SCENE_GROTTOS,
         TWO_ACTOR_PARAMS(0x00, 0xFB), 0x30, "Deku Scrub Grotto Left", "GC Deku Scrub Grotto Left",
@@ -1072,11 +1079,11 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_DMC_WALL_FREESTANDING_POH] = Location::Collectable(
         RC_DMC_WALL_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_ITEM00,
         SCENE_DEATH_MOUNTAIN_CRATER, 518, GI_HEART_PIECE, "Wall Freestanding PoH", "DMC Wall Freestanding PoH",
-        RHT_DMC_WALL_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+        RHT_DMC_WALL_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN, true);
     locationTable[RC_DMC_VOLCANO_FREESTANDING_POH] = Location::Collectable(
         RC_DMC_VOLCANO_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_ITEM00,
         SCENE_DEATH_MOUNTAIN_CRATER, 2054, 0x08, "Volcano Freestanding PoH", "DMC Volcano Freestanding PoH",
-        RHT_DMC_WALL_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+        RHT_DMC_WALL_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN, true);
     locationTable[RC_DMC_DEKU_SCRUB] =
         Location::Base(RC_DMC_DEKU_SCRUB, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_DNS,
                        SCENE_DEATH_MOUNTAIN_CRATER, 0x05, 0x37, "Deku Scrub", "DMC Deku Scrub", RHT_DMC_DEKU_SCRUB,
@@ -1106,7 +1113,7 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_ZR_MAGIC_BEAN_SALESMAN] = Location::Base(
         RC_ZR_MAGIC_BEAN_SALESMAN, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_RIVER, ACTOR_ID_MAX, SCENE_ZORAS_RIVER,
         0x00, 0x16, "Magic Bean Salesman", "ZR Magic Bean Salesman", RHT_ZR_MAGIC_BEAN_SALESMAN, RG_MAGIC_BEAN, {},
-        SpoilerCollectionCheck::MagicBeans(0x54, 0x01), SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+        SpoilerCollectionCheck::MagicBeans(0x54, 0x01), SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER, true);
     locationTable[RC_ZR_FROGS_ZELDAS_LULLABY] = Location::Base(
         RC_ZR_FROGS_ZELDAS_LULLABY, RCQUEST_BOTH, RCTYPE_FROG_SONG, RCAREA_ZORAS_RIVER, ACTOR_EN_FR, SCENE_ZORAS_RIVER,
         0x00, 0x3E, "Frogs Zelda's Lullaby", "ZR Frogs Zelda's Lullaby", RHT_ZR_FROGS_ZELDAS_LULLABY, RG_PURPLE_RUPEE,
@@ -1130,20 +1137,21 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_ZR_FROGS_IN_THE_RAIN] = Location::Base(
         RC_ZR_FROGS_IN_THE_RAIN, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_RIVER, ACTOR_EN_FR, SCENE_ZORAS_RIVER,
         0x00, 0x3E, "Frogs in the Rain", "ZR Frogs in the Rain", RHT_ZR_FROGS_IN_THE_RAIN, RG_PIECE_OF_HEART, {},
-        SpoilerCollectionCheck::EventChkInf(0xD6), SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+        SpoilerCollectionCheck::EventChkInf(0xD6), SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER, true);
     locationTable[RC_ZR_FROGS_OCARINA_GAME] = Location::Base(
         RC_ZR_FROGS_OCARINA_GAME, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_RIVER, ACTOR_EN_FR, SCENE_ZORAS_RIVER,
         0x00, 0x76, "Frogs Ocarina Game", "ZR Frogs Ocarina Game", RHT_ZR_FROGS_OCARINA_GAME, RG_PIECE_OF_HEART, {},
-        SpoilerCollectionCheck::EventChkInf(0xD0), SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+        SpoilerCollectionCheck::EventChkInf(0xD0), SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER, true);
     locationTable[RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH] = Location::Collectable(
         RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_RIVER, ACTOR_EN_ITEM00,
         SCENE_ZORAS_RIVER, 1030, 0x04, "Near Open Grotto Freestanding PoH", "ZR Near Open Grotto Freestanding PoH",
-        RHT_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH, RG_PIECE_OF_HEART, {},
-        SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
-    locationTable[RC_ZR_NEAR_DOMAIN_FREESTANDING_POH] = Location::Collectable(
-        RC_ZR_NEAR_DOMAIN_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_RIVER, ACTOR_EN_ITEM00,
-        SCENE_ZORAS_RIVER, 2822, 0x0B, "Near Domain Freestanding PoH", "ZR Near Domain Freestanding PoH",
-        RHT_ZR_NEAR_DOMAIN_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+        RHT_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER,
+        true);
+    locationTable[RC_ZR_NEAR_DOMAIN_FREESTANDING_POH] =
+        Location::Collectable(RC_ZR_NEAR_DOMAIN_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_RIVER,
+                              ACTOR_EN_ITEM00, SCENE_ZORAS_RIVER, 2822, 0x0B, "Near Domain Freestanding PoH",
+                              "ZR Near Domain Freestanding PoH", RHT_ZR_NEAR_DOMAIN_FREESTANDING_POH, RG_PIECE_OF_HEART,
+                              {}, SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER, true);
     locationTable[RC_ZR_DEKU_SCRUB_GROTTO_REAR] = Location::GrottoScrub(
         RC_ZR_DEKU_SCRUB_GROTTO_REAR, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_ZORAS_RIVER, ACTOR_EN_DNS, SCENE_GROTTOS,
         TWO_ACTOR_PARAMS(0x07, 0xEB), 0x39, "Deku Scrub Grotto Rear", "ZR Deku Scrub Grotto Rear",
@@ -1156,43 +1164,44 @@ void Rando::StaticData::InitLocationTable() {
         SpoilerCollectionCheck::Scrub(0x15, 0x09), SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
 
     // Zoras Domain
-    locationTable[RC_ZD_CHEST] = Location::Chest(
-        RC_ZD_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_DOMAIN, ACTOR_EN_BOX, SCENE_ZORAS_DOMAIN, -18496, 0x00,
-        "Chest", "ZD Chest", RHT_ZD_CHEST, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZD_CHEST] =
+        Location::Chest(RC_ZD_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_DOMAIN, ACTOR_EN_BOX,
+                        SCENE_ZORAS_DOMAIN, -18496, 0x00, "Chest", "ZD Chest", RHT_ZD_CHEST, RG_PIECE_OF_HEART, {},
+                        SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN, true);
     locationTable[RC_ZD_DIVING_MINIGAME] = Location::Base(
         RC_ZD_DIVING_MINIGAME, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_DOMAIN, ACTOR_ID_MAX, SCENE_ZORAS_DOMAIN,
         0x00, 0x37, "Diving Minigame", "ZD Diving Minigame", RHT_ZD_DIVING_MINIGAME, RG_PROGRESSIVE_SCALE, {},
-        SpoilerCollectionCheck::EventChkInf(0x38), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+        SpoilerCollectionCheck::EventChkInf(0x38), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN, true);
     locationTable[RC_ZD_KING_ZORA_THAWED] = Location::Base(
         RC_ZD_KING_ZORA_THAWED, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_DOMAIN, ACTOR_ID_MAX, SCENE_ZORAS_DOMAIN,
         0x00, 0x2D, "King Zora Thawed", "ZD King Zora Thawed", RHT_ZD_KING_ZORA_THAWED, RG_ZORA_TUNIC, {},
-        SpoilerCollectionCheck::InfTable(0x13, 0x01), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-    locationTable[RC_ZD_TRADE_PRESCRIPTION] =
-        Location::Base(RC_ZD_TRADE_PRESCRIPTION, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_ZORAS_DOMAIN, ACTOR_ID_MAX,
-                       SCENE_ZORAS_DOMAIN, 0x00, 0x24, "Trade Prescription", "ZD Trade Prescription",
-                       RHT_ZD_TRADE_PRESCRIPTION, RG_EYEBALL_FROG, { Category::cAdultTrade },
-                       SpoilerCollectionCheck::Chest(0x58, 0x1F), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+        SpoilerCollectionCheck::InfTable(0x13, 0x01), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN, true);
+    locationTable[RC_ZD_TRADE_PRESCRIPTION] = Location::Base(
+        RC_ZD_TRADE_PRESCRIPTION, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_ZORAS_DOMAIN, ACTOR_ID_MAX,
+        SCENE_ZORAS_DOMAIN, 0x00, 0x24, "Trade Prescription", "ZD Trade Prescription", RHT_ZD_TRADE_PRESCRIPTION,
+        RG_EYEBALL_FROG, { Category::cAdultTrade }, SpoilerCollectionCheck::Chest(0x58, 0x1F),
+        SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN, true);
 
     // Zora's Fountain
     locationTable[RC_ZF_ICEBERC_FREESTANDING_POH] = Location::Collectable(
         RC_ZF_ICEBERC_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_FOUNTAIN, ACTOR_EN_ITEM00,
         SCENE_ZORAS_FOUNTAIN, 262, 0x01, "Iceberg Freestanding PoH", "ZF Iceberg Freestanding PoH",
-        RHT_ZF_ICEBERG_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+        RHT_ZF_ICEBERG_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN, true);
     locationTable[RC_ZF_BOTTOM_FREESTANDING_POH] = Location::Collectable(
         RC_ZF_BOTTOM_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_FOUNTAIN, ACTOR_EN_ITEM00,
         SCENE_ZORAS_FOUNTAIN, 5126, 0x14, "Bottom Freestanding PoH", "ZF Bottom Freestanding PoH",
-        RHT_ZF_BOTTOM_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+        RHT_ZF_BOTTOM_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN, true);
 
     // Lon Lon Ranch
     locationTable[RC_LLR_TALONS_CHICKENS] =
         Location::Base(RC_LLR_TALONS_CHICKENS, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LON_LON_RANCH, ACTOR_ID_MAX,
                        SCENE_LON_LON_BUILDINGS, 0x00, 0x14, "Talons Chickens", "LLR Talons Chickens",
                        RHT_LLR_TALONS_CHICKENS, RG_BOTTLE_WITH_MILK, {}, SpoilerCollectionCheck::ItemGetInf(10),
-                       SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+                       SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH, true);
     locationTable[RC_LLR_FREESTANDING_POH] = Location::Collectable(
         RC_LLR_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LON_LON_RANCH, ACTOR_EN_ITEM00,
         SCENE_LON_LON_BUILDINGS, 262, 0x01, "Freestanding PoH", "LLR Freestanding PoH", RHT_LLR_FREESTANDING_POH,
-        RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+        RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH, true);
     locationTable[RC_LLR_DEKU_SCRUB_GROTTO_LEFT] = Location::GrottoScrub(
         RC_LLR_DEKU_SCRUB_GROTTO_LEFT, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_LON_LON_RANCH, ACTOR_EN_DNS, SCENE_GROTTOS,
         TWO_ACTOR_PARAMS(0x00, 0xFC), 0x30, "Deku Scrub Grotto Left", "LLR Deku Scrub Grotto Left",
@@ -1215,11 +1224,12 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_DEKU_TREE_MAP_CHEST] = Location::Chest(
         RC_DEKU_TREE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_DEKU_TREE, ACTOR_EN_BOX, SCENE_DEKU_TREE,
         2083, 0x03, "Map Chest", "Deku Tree Map Chest", RHT_DEKU_TREE_MAP_CHEST, RG_DEKU_TREE_MAP,
-        { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
-    locationTable[RC_DEKU_TREE_COMPASS_CHEST] = Location::Chest(
-        RC_DEKU_TREE_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_DEKU_TREE, ACTOR_EN_BOX,
-        SCENE_DEKU_TREE, 2050, 0x02, "Compass Chest", "Deku Tree Compass Chest", RHT_DEKU_TREE_COMPASS_CHEST,
-        RG_DEKU_TREE_COMPASS, { Category::cVanillaCompass }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+        { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE, true);
+    locationTable[RC_DEKU_TREE_COMPASS_CHEST] =
+        Location::Chest(RC_DEKU_TREE_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_DEKU_TREE, ACTOR_EN_BOX,
+                        SCENE_DEKU_TREE, 2050, 0x02, "Compass Chest", "Deku Tree Compass Chest",
+                        RHT_DEKU_TREE_COMPASS_CHEST, RG_DEKU_TREE_COMPASS, { Category::cVanillaCompass },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE, true);
     locationTable[RC_DEKU_TREE_COMPASS_ROOM_SIDE_CHEST] =
         Location::Chest(RC_DEKU_TREE_COMPASS_ROOM_SIDE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_DEKU_TREE,
                         ACTOR_EN_BOX, SCENE_DEKU_TREE, 22790, 0x06, "Compass Room Side Chest",
@@ -1232,7 +1242,7 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_DEKU_TREE_SLINGSHOT_CHEST] = Location::Chest(
         RC_DEKU_TREE_SLINGSHOT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_DEKU_TREE, ACTOR_EN_BOX, SCENE_DEKU_TREE,
         161, 0x01, "Slingshot Chest", "Deku Tree Slingshot Chest", RHT_DEKU_TREE_SLINGSHOT_CHEST,
-        RG_PROGRESSIVE_SLINGSHOT, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+        RG_PROGRESSIVE_SLINGSHOT, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE, true);
     locationTable[RC_DEKU_TREE_SLINGSHOT_ROOM_SIDE_CHEST] =
         Location::Chest(RC_DEKU_TREE_SLINGSHOT_ROOM_SIDE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_DEKU_TREE,
                         ACTOR_EN_BOX, SCENE_DEKU_TREE, 22789, 0x05, "Slingshot Room Side Chest",
@@ -1243,15 +1253,16 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_DEKU_TREE_MQ_MAP_CHEST] = Location::Chest(
         RC_DEKU_TREE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_DEKU_TREE, ACTOR_EN_BOX, SCENE_DEKU_TREE,
         2083, 0x03, "MQ Map Chest", "Deku Tree MQ Map Chest", RHT_DEKU_TREE_MQ_MAP_CHEST, RG_DEKU_TREE_MAP,
-        { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
-    locationTable[RC_DEKU_TREE_MQ_COMPASS_CHEST] = Location::Chest(
-        RC_DEKU_TREE_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_DEKU_TREE, ACTOR_EN_BOX, SCENE_DEKU_TREE,
-        2049, 0x01, "MQ Compass Chest", "Deku Tree MQ Compass Chest", RHT_DEKU_TREE_MQ_COMPASS_CHEST,
-        RG_DEKU_TREE_COMPASS, { Category::cVanillaCompass }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+        { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE, true);
+    locationTable[RC_DEKU_TREE_MQ_COMPASS_CHEST] =
+        Location::Chest(RC_DEKU_TREE_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_DEKU_TREE, ACTOR_EN_BOX,
+                        SCENE_DEKU_TREE, 2049, 0x01, "MQ Compass Chest", "Deku Tree MQ Compass Chest",
+                        RHT_DEKU_TREE_MQ_COMPASS_CHEST, RG_DEKU_TREE_COMPASS, { Category::cVanillaCompass },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE, true);
     locationTable[RC_DEKU_TREE_MQ_SLINGSHOT_CHEST] = Location::Chest(
         RC_DEKU_TREE_MQ_SLINGSHOT_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_DEKU_TREE, ACTOR_EN_BOX, SCENE_DEKU_TREE,
         4262, 0x06, "MQ Slingshot Chest", "Deku Tree MQ Slingshot Chest", RHT_DEKU_TREE_MQ_SLINGSHOT_CHEST,
-        RG_PROGRESSIVE_SLINGSHOT, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+        RG_PROGRESSIVE_SLINGSHOT, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE, true);
     locationTable[RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_BACK_CHEST] =
         Location::Chest(RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_BACK_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_DEKU_TREE,
                         ACTOR_EN_BOX, SCENE_DEKU_TREE, -31454, 0x02, "MQ Slingshot Room Back Chest",
@@ -1285,15 +1296,16 @@ void Rando::StaticData::InitLocationTable() {
                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
 
     // Dodongo's Cavern Vanilla
-    locationTable[RC_DODONGOS_CAVERN_MAP_CHEST] = Location::Chest(
-        RC_DODONGOS_CAVERN_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_DODONGOS_CAVERN, ACTOR_EN_BOX,
-        SCENE_DODONGOS_CAVERN, 2088, 0x08, "Map Chest", "Dodongos Cavern Map Chest", RHT_DODONGOS_CAVERN_MAP_CHEST,
-        RG_DODONGOS_CAVERN_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
-    locationTable[RC_DODONGOS_CAVERN_COMPASS_CHEST] =
-        Location::Chest(RC_DODONGOS_CAVERN_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_DODONGOS_CAVERN,
-                        ACTOR_EN_BOX, SCENE_DODONGOS_CAVERN, 2053, 0x05, "Compass Chest",
-                        "Dodongos Cavern Compass Chest", RHT_DODONGOS_CAVERN_COMPASS_CHEST, RG_DODONGOS_CAVERN_COMPASS,
-                        { Category::cVanillaCompass }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_MAP_CHEST] =
+        Location::Chest(RC_DODONGOS_CAVERN_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_DODONGOS_CAVERN,
+                        ACTOR_EN_BOX, SCENE_DODONGOS_CAVERN, 2088, 0x08, "Map Chest", "Dodongos Cavern Map Chest",
+                        RHT_DODONGOS_CAVERN_MAP_CHEST, RG_DODONGOS_CAVERN_MAP, { Category::cVanillaMap },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN, true);
+    locationTable[RC_DODONGOS_CAVERN_COMPASS_CHEST] = Location::Chest(
+        RC_DODONGOS_CAVERN_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_DODONGOS_CAVERN, ACTOR_EN_BOX,
+        SCENE_DODONGOS_CAVERN, 2053, 0x05, "Compass Chest", "Dodongos Cavern Compass Chest",
+        RHT_DODONGOS_CAVERN_COMPASS_CHEST, RG_DODONGOS_CAVERN_COMPASS, { Category::cVanillaCompass },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN, true);
     locationTable[RC_DODONGOS_CAVERN_BOMB_FLOWER_PLATFORM_CHEST] = Location::Chest(
         RC_DODONGOS_CAVERN_BOMB_FLOWER_PLATFORM_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_DODONGOS_CAVERN,
         ACTOR_EN_BOX, SCENE_DODONGOS_CAVERN, 22982, 0x06, "Bomb Flower Platform Chest",
@@ -1303,7 +1315,7 @@ void Rando::StaticData::InitLocationTable() {
         Location::Chest(RC_DODONGOS_CAVERN_BOMB_BAG_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_DODONGOS_CAVERN,
                         ACTOR_EN_BOX, SCENE_DODONGOS_CAVERN, 1604, 0x04, "Bomb Bag Chest",
                         "Dodongos Cavern Bomb Bag Chest", RHT_DODONGOS_CAVERN_BOMB_BAG_CHEST, RG_PROGRESSIVE_BOMB_BAG,
-                        {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+                        {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN, true);
     locationTable[RC_DODONGOS_CAVERN_END_OF_BRIDGE_CHEST] =
         Location::Chest(RC_DODONGOS_CAVERN_END_OF_BRIDGE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
                         RCAREA_DODONGOS_CAVERN, ACTOR_EN_BOX, SCENE_DODONGOS_CAVERN, 21802, 0x0A, "End Of Bridge Chest",
@@ -1338,17 +1350,17 @@ void Rando::StaticData::InitLocationTable() {
         Location::Chest(RC_DODONGOS_CAVERN_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_DODONGOS_CAVERN,
                         ACTOR_EN_BOX, SCENE_DODONGOS_CAVERN, 2080, 0x00, "MQ Map Chest", "Dodongos Cavern MQ Map Chest",
                         RHT_DODONGOS_CAVERN_MQ_MAP_CHEST, RG_DODONGOS_CAVERN_MAP, { Category::cVanillaMap },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN, true);
     locationTable[RC_DODONGOS_CAVERN_MQ_BOMB_BAG_CHEST] =
         Location::Chest(RC_DODONGOS_CAVERN_MQ_BOMB_BAG_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_DODONGOS_CAVERN,
                         ACTOR_EN_BOX, SCENE_DODONGOS_CAVERN, 1604, 0x04, "MQ Bomb Bag Chest",
                         "Dodongos Cavern MQ Bomb Bag Chest", RHT_DODONGOS_CAVERN_MQ_BOMB_BAG_CHEST,
-                        RG_PROGRESSIVE_BOMB_BAG, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+                        RG_PROGRESSIVE_BOMB_BAG, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN, true);
     locationTable[RC_DODONGOS_CAVERN_MQ_COMPASS_CHEST] = Location::Chest(
         RC_DODONGOS_CAVERN_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_DODONGOS_CAVERN, ACTOR_EN_BOX,
         SCENE_DODONGOS_CAVERN, 6149, 0x05, "MQ Compass Chest", "Dodongos Cavern MQ Compass Chest",
         RHT_DODONGOS_CAVERN_MQ_COMPASS_CHEST, RG_DODONGOS_CAVERN_COMPASS, { Category::cVanillaCompass },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN, true);
     locationTable[RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CHEST] =
         Location::Chest(RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_DODONGOS_CAVERN,
                         ACTOR_EN_BOX, SCENE_DODONGOS_CAVERN, 29986, 0x02, "MQ Larvae Room Chest",
@@ -1387,20 +1399,21 @@ void Rando::StaticData::InitLocationTable() {
         SpoilerCollectionCheck::Scrub(0x01, 0x08), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
 
     // Jabu-Jabu's Belly Vanilla
-    locationTable[RC_JABU_JABUS_BELLY_MAP_CHEST] = Location::Chest(
-        RC_JABU_JABUS_BELLY_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_JABU_JABUS_BELLY, ACTOR_EN_BOX,
-        SCENE_JABU_JABU, 6178, 0x02, "Map Chest", "Jabu Jabus Belly Map Chest", RHT_JABU_JABUS_BELLY_MAP_CHEST,
-        RG_JABU_JABUS_BELLY_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_MAP_CHEST] =
+        Location::Chest(RC_JABU_JABUS_BELLY_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_JABU_JABUS_BELLY,
+                        ACTOR_EN_BOX, SCENE_JABU_JABU, 6178, 0x02, "Map Chest", "Jabu Jabus Belly Map Chest",
+                        RHT_JABU_JABUS_BELLY_MAP_CHEST, RG_JABU_JABUS_BELLY_MAP, { Category::cVanillaMap },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY, true);
     locationTable[RC_JABU_JABUS_BELLY_COMPASS_CHEST] =
         Location::Chest(RC_JABU_JABUS_BELLY_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_JABU_JABUS_BELLY,
                         ACTOR_EN_BOX, SCENE_JABU_JABU, -18428, 0x04, "Compass Chest", "Jabu Jabus Belly Compass Chest",
                         RHT_JABU_JABUS_BELLY_COMPASS_CHEST, RG_JABU_JABUS_BELLY_COMPASS, { Category::cVanillaCompass },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY, true);
     locationTable[RC_JABU_JABUS_BELLY_BOOMERANG_CHEST] =
         Location::Chest(RC_JABU_JABUS_BELLY_BOOMERANG_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_JABU_JABUS_BELLY,
                         ACTOR_EN_BOX, SCENE_JABU_JABU, 4289, 0x01, "Boomerang Chest",
                         "Jabu Jabus Belly Boomerang Chest", RHT_JABU_JABUS_BELLY_BOOMERANG_CHEST, RG_BOOMERANG, {},
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY, true);
     locationTable[RC_JABU_JABUS_BELLY_DEKU_SCRUB] = Location::Base(
         RC_JABU_JABUS_BELLY_DEKU_SCRUB, RCQUEST_VANILLA, RCTYPE_SCRUB, RCAREA_JABU_JABUS_BELLY, ACTOR_EN_DNS,
         SCENE_JABU_JABU, 0x00, 0x30, "Deku Scrub", "Jabu Jabus Belly Deku Scrub", RHT_JABU_JABUS_BELLY_DEKU_SCRUB,
@@ -1417,7 +1430,7 @@ void Rando::StaticData::InitLocationTable() {
         Location::Chest(RC_JABU_JABUS_BELLY_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_JABU_JABUS_BELLY,
                         ACTOR_EN_BOX, SCENE_JABU_JABU, -18397, 0x03, "MQ Map Chest", "Jabu Jabus Belly MQ Map Chest",
                         RHT_JABU_JABUS_BELLY_MQ_MAP_CHEST, RG_JABU_JABUS_BELLY_MAP, { Category::cVanillaMap },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY, true);
     locationTable[RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_LOWER_CHEST] = Location::Chest(
         RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_LOWER_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_JABU_JABUS_BELLY,
         ACTOR_EN_BOX, SCENE_JABU_JABU, 20546, 0x02, "MQ Second Room Lower Chest",
@@ -1427,7 +1440,7 @@ void Rando::StaticData::InitLocationTable() {
         RC_JABU_JABUS_BELLY_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_JABU_JABUS_BELLY, ACTOR_EN_BOX,
         SCENE_JABU_JABU, -18432, 0x00, "MQ Compass Chest", "Jabu Jabus Belly MQ Compass Chest",
         RHT_JABU_JABUS_BELLY_MQ_COMPASS_CHEST, RG_JABU_JABUS_BELLY_COMPASS, { Category::cVanillaCompass },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY, true);
     locationTable[RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_UPPER_CHEST] = Location::Chest(
         RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_UPPER_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_JABU_JABUS_BELLY,
         ACTOR_EN_BOX, SCENE_JABU_JABU, -30457, 0x07, "MQ Second Room Upper Chest",
@@ -1462,33 +1475,34 @@ void Rando::StaticData::InitLocationTable() {
         Location::Chest(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_JABU_JABUS_BELLY,
                         ACTOR_EN_BOX, SCENE_JABU_JABU, 4294, 0x06, "MQ Boomerang Chest",
                         "Jabu Jabus Belly MQ Boomerang Chest", RHT_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST, RG_BOOMERANG,
-                        {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+                        {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY, true);
 
     // Forest Temple Vanilla
     locationTable[RC_FOREST_TEMPLE_FIRST_ROOM_CHEST] = Location::Chest(
         RC_FOREST_TEMPLE_FIRST_ROOM_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
         SCENE_FOREST_TEMPLE, 22595, 0x03, "First Room Chest", "Forest Temple First Room Chest",
         RHT_FOREST_TEMPLE_FIRST_ROOM_CHEST, RG_FOREST_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FOREST_TEMPLE_FIRST_STALFOS_CHEST] = Location::Chest(
         RC_FOREST_TEMPLE_FIRST_STALFOS_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
         SCENE_FOREST_TEMPLE, 30784, 0x00, "First Stalfos Chest", "Forest Temple First Stalfos Chest",
         RHT_FOREST_TEMPLE_FIRST_STALFOS_CHEST, RG_FOREST_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FOREST_TEMPLE_RAISED_ISLAND_COURTYARD_CHEST] = Location::Chest(
         RC_FOREST_TEMPLE_RAISED_ISLAND_COURTYARD_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FOREST_TEMPLE,
         ACTOR_EN_BOX, SCENE_FOREST_TEMPLE, 22789, 0x05, "Raised Island Courtyard Chest",
         "Forest Temple Raised Island Courtyard Chest", RHT_FOREST_TEMPLE_RAISED_ISLAND_COURTYARD_CHEST,
         RG_RECOVERY_HEART, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
-    locationTable[RC_FOREST_TEMPLE_MAP_CHEST] = Location::Chest(
-        RC_FOREST_TEMPLE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
-        SCENE_FOREST_TEMPLE, 6177, 0x01, "Map Chest", "Forest Temple Map Chest", RHT_FOREST_TEMPLE_MAP_CHEST,
-        RG_FOREST_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MAP_CHEST] =
+        Location::Chest(RC_FOREST_TEMPLE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_FOREST_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_FOREST_TEMPLE, 6177, 0x01, "Map Chest", "Forest Temple Map Chest",
+                        RHT_FOREST_TEMPLE_MAP_CHEST, RG_FOREST_TEMPLE_MAP, { Category::cVanillaMap },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FOREST_TEMPLE_WELL_CHEST] =
         Location::Chest(RC_FOREST_TEMPLE_WELL_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE,
                         ACTOR_EN_BOX, SCENE_FOREST_TEMPLE, 22601, 0x09, "Well Chest", "Forest Temple Well Chest",
                         RHT_FOREST_TEMPLE_WELL_CHEST, RG_FOREST_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FOREST_TEMPLE_FALLING_CEILING_ROOM_CHEST] = Location::Chest(
         RC_FOREST_TEMPLE_FALLING_CEILING_ROOM_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FOREST_TEMPLE,
         ACTOR_EN_BOX, SCENE_FOREST_TEMPLE, 22855, 0x07, "Falling Ceiling Room Chest",
@@ -1502,26 +1516,26 @@ void Rando::StaticData::InitLocationTable() {
         Location::Chest(RC_FOREST_TEMPLE_BOSS_KEY_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_KEY, RCAREA_FOREST_TEMPLE,
                         ACTOR_EN_BOX, SCENE_FOREST_TEMPLE, 10222, 0x0E, "Boss Key Chest",
                         "Forest Temple Boss Key Chest", RHT_FOREST_TEMPLE_BOSS_KEY_CHEST, RG_FOREST_TEMPLE_BOSS_KEY,
-                        { Category::cVanillaBossKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+                        { Category::cVanillaBossKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FOREST_TEMPLE_FLOORMASTER_CHEST] = Location::Chest(
         RC_FOREST_TEMPLE_FLOORMASTER_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
         SCENE_FOREST_TEMPLE, 30786, 0x02, "Floormaster Chest", "Forest Temple Floormaster Chest",
         RHT_FOREST_TEMPLE_FLOORMASTER_CHEST, RG_FOREST_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FOREST_TEMPLE_BOW_CHEST] = Location::Chest(
         RC_FOREST_TEMPLE_BOW_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
         SCENE_FOREST_TEMPLE, -20340, 0x0C, "Bow Chest", "Forest Temple Bow Chest", RHT_FOREST_TEMPLE_BOW_CHEST,
-        RG_PROGRESSIVE_BOW, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+        RG_PROGRESSIVE_BOW, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FOREST_TEMPLE_RED_POE_CHEST] =
         Location::Chest(RC_FOREST_TEMPLE_RED_POE_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE,
                         ACTOR_EN_BOX, SCENE_FOREST_TEMPLE, 30797, 0x0D, "Red Poe Chest", "Forest Temple Red Poe Chest",
                         RHT_FOREST_TEMPLE_RED_POE_CHEST, RG_FOREST_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FOREST_TEMPLE_BLUE_POE_CHEST] =
         Location::Chest(RC_FOREST_TEMPLE_BLUE_POE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FOREST_TEMPLE,
                         ACTOR_EN_BOX, SCENE_FOREST_TEMPLE, 6159, 0x0F, "Blue Poe Chest", "Forest Temple Blue Poe Chest",
                         RHT_FOREST_TEMPLE_BLUE_POE_CHEST, RG_FOREST_TEMPLE_COMPASS, { Category::cVanillaCompass },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FOREST_TEMPLE_BASEMENT_CHEST] = Location::Chest(
         RC_FOREST_TEMPLE_BASEMENT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
         SCENE_FOREST_TEMPLE, 22827, 0x0B, "Basement Chest", "Forest Temple Basement Chest",
@@ -1537,37 +1551,38 @@ void Rando::StaticData::InitLocationTable() {
         Location::Chest(RC_FOREST_TEMPLE_MQ_WOLFOS_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE,
                         ACTOR_EN_BOX, SCENE_FOREST_TEMPLE, 30784, 0x00, "MQ Wolfos Chest",
                         "Forest Temple MQ Wolfos Chest", RHT_FOREST_TEMPLE_MQ_WOLFOS_CHEST, RG_FOREST_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FOREST_TEMPLE_MQ_BOW_CHEST] = Location::Chest(
         RC_FOREST_TEMPLE_MQ_BOW_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
         SCENE_FOREST_TEMPLE, -20340, 0x0C, "MQ Bow Chest", "Forest Temple MQ Bow Chest", RHT_FOREST_TEMPLE_MQ_BOW_CHEST,
-        RG_PROGRESSIVE_BOW, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+        RG_PROGRESSIVE_BOW, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_LOWER_CHEST] = Location::Chest(
         RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_LOWER_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE,
         ACTOR_EN_BOX, SCENE_FOREST_TEMPLE, 22593, 0x01, "MQ Raised Island Courtyard Lower Chest",
         "Forest Temple MQ Raised Island Courtyard Lower Chest",
         RHT_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_LOWER_CHEST, RG_FOREST_TEMPLE_SMALL_KEY,
-        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_UPPER_CHEST] = Location::Chest(
         RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_UPPER_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE,
         ACTOR_EN_BOX, SCENE_FOREST_TEMPLE, 22597, 0x05, "MQ Raised Island Courtyard Upper Chest",
         "Forest Temple MQ Raised Island Courtyard Upper Chest",
         RHT_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_UPPER_CHEST, RG_FOREST_TEMPLE_SMALL_KEY,
-        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FOREST_TEMPLE_MQ_WELL_CHEST] =
         Location::Chest(RC_FOREST_TEMPLE_MQ_WELL_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE,
                         ACTOR_EN_BOX, SCENE_FOREST_TEMPLE, 22601, 0x09, "MQ Well Chest", "Forest Temple MQ Well Chest",
                         RHT_FOREST_TEMPLE_MQ_WELL_CHEST, RG_FOREST_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
-    locationTable[RC_FOREST_TEMPLE_MQ_MAP_CHEST] = Location::Chest(
-        RC_FOREST_TEMPLE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
-        SCENE_FOREST_TEMPLE, 6189, 0x0D, "MQ Map Chest", "Forest Temple MQ Map Chest", RHT_FOREST_TEMPLE_MQ_MAP_CHEST,
-        RG_FOREST_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
+    locationTable[RC_FOREST_TEMPLE_MQ_MAP_CHEST] =
+        Location::Chest(RC_FOREST_TEMPLE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_FOREST_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_FOREST_TEMPLE, 6189, 0x0D, "MQ Map Chest", "Forest Temple MQ Map Chest",
+                        RHT_FOREST_TEMPLE_MQ_MAP_CHEST, RG_FOREST_TEMPLE_MAP, { Category::cVanillaMap },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FOREST_TEMPLE_MQ_COMPASS_CHEST] =
         Location::Chest(RC_FOREST_TEMPLE_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_FOREST_TEMPLE,
                         ACTOR_EN_BOX, SCENE_FOREST_TEMPLE, 6159, 0x0F, "MQ Compass Chest",
                         "Forest Temple MQ Compass Chest", RHT_FOREST_TEMPLE_MQ_COMPASS_CHEST, RG_FOREST_TEMPLE_COMPASS,
-                        { Category::cVanillaCompass }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+                        { Category::cVanillaCompass }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FOREST_TEMPLE_MQ_FALLING_CEILING_ROOM_CHEST] = Location::Chest(
         RC_FOREST_TEMPLE_MQ_FALLING_CEILING_ROOM_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
         SCENE_FOREST_TEMPLE, -30426, 0x06, "MQ Falling Ceiling Room Chest",
@@ -1581,60 +1596,61 @@ void Rando::StaticData::InitLocationTable() {
         Location::Chest(RC_FOREST_TEMPLE_MQ_REDEAD_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE,
                         ACTOR_EN_BOX, SCENE_FOREST_TEMPLE, 30786, 0x02, "MQ Redead Chest",
                         "Forest Temple MQ Redead Chest", RHT_FOREST_TEMPLE_MQ_REDEAD_CHEST, RG_FOREST_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FOREST_TEMPLE_BOSS_KEY_CHEST] = Location::Chest(
         RC_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST, RCQUEST_MQ, RCTYPE_BOSS_KEY, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
         SCENE_FOREST_TEMPLE, 10222, 0x0E, "MQ Boss Key Chest", "Forest Temple MQ Boss Key Chest",
         RHT_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST, RG_FOREST_TEMPLE_BOSS_KEY, { Category::cVanillaBossKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
 
     // Fire Temple Vanilla
     locationTable[RC_FIRE_TEMPLE_NEAR_BOSS_CHEST] =
         Location::Chest(RC_FIRE_TEMPLE_NEAR_BOSS_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE,
                         ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 22593, 0x01, "Near Boss Chest", "Fire Temple Near Boss Chest",
                         RHT_FIRE_TEMPLE_NEAR_BOSS_CHEST, RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_FLARE_DANCER_CHEST] = Location::Chest(
         RC_FIRE_TEMPLE_FLARE_DANCER_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
         SCENE_FIRE_TEMPLE, 31936, 0x00, "Flare Dancer Chest", "Fire Temple Flare Dancer Chest",
         RHT_FIRE_TEMPLE_FLARE_DANCER_CHEST, RG_BOMBS_10, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    locationTable[RC_FIRE_TEMPLE_BOSS_KEY_CHEST] = Location::Chest(
-        RC_FIRE_TEMPLE_BOSS_KEY_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
-        SCENE_FIRE_TEMPLE, 10220, 0x0C, "Boss Key Chest", "Fire Temple Boss Key Chest", RHT_FIRE_TEMPLE_BOSS_KEY_CHEST,
-        RG_FIRE_TEMPLE_BOSS_KEY, { Category::cVanillaBossKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_BOSS_KEY_CHEST] =
+        Location::Chest(RC_FIRE_TEMPLE_BOSS_KEY_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_KEY, RCAREA_FIRE_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 10220, 0x0C, "Boss Key Chest", "Fire Temple Boss Key Chest",
+                        RHT_FIRE_TEMPLE_BOSS_KEY_CHEST, RG_FIRE_TEMPLE_BOSS_KEY, { Category::cVanillaBossKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST] =
         Location::Chest(RC_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
                         RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 22594, 0x02,
                         "Big Lava Room Blocked Door Chest", "Fire Temple Big Lava Room Blocked Door Chest",
                         RHT_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_CHEST] =
         Location::Chest(RC_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
                         RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 22596, 0x04,
                         "Big Lava Room Lower Open Door Chest", "Fire Temple Big Lava Room Lower Open Door Chest",
                         RHT_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST] = Location::Chest(
         RC_FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
         SCENE_FIRE_TEMPLE, 22595, 0x03, "Boulder Maze Lower Chest", "Fire Temple Boulder Maze Lower Chest",
         RHT_FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST, RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_BOULDER_MAZE_UPPER_CHEST] = Location::Chest(
         RC_FIRE_TEMPLE_BOULDER_MAZE_UPPER_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
         SCENE_FIRE_TEMPLE, 22598, 0x06, "Boulder Maze Upper Chest", "Fire Temple Boulder Maze Upper Chest",
         RHT_FIRE_TEMPLE_BOULDER_MAZE_UPPER_CHEST, RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_CHEST] =
         Location::Chest(RC_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
                         RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 22600, 0x08,
                         "Boulder Maze Side Room Chest", "Fire Temple Boulder Maze Side Room Chest",
                         RHT_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST] = Location::Chest(
         RC_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
         SCENE_FIRE_TEMPLE, 22603, 0x0B, "Boulder Maze Shortcut Chest", "Fire Temple Boulder Maze Shortcut Chest",
         RHT_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST, RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_SCARECROW_CHEST] = Location::Chest(
         RC_FIRE_TEMPLE_SCARECROW_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
         SCENE_FIRE_TEMPLE, 23245, 0x0D, "Scarecrow Chest", "Fire Temple Scarecrow Chest",
@@ -1642,38 +1658,39 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_FIRE_TEMPLE_MAP_CHEST] = Location::Chest(
         RC_FIRE_TEMPLE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
         SCENE_FIRE_TEMPLE, 2090, 0x0A, "Map Chest", "Fire Temple Map Chest", RHT_FIRE_TEMPLE_MAP_CHEST,
-        RG_FIRE_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    locationTable[RC_FIRE_TEMPLE_COMPASS_CHEST] = Location::Chest(
-        RC_FIRE_TEMPLE_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
-        SCENE_FIRE_TEMPLE, 2055, 0x07, "Compass Chest", "Fire Temple Compass Chest", RHT_FIRE_TEMPLE_COMPASS_CHEST,
-        RG_FIRE_TEMPLE_COMPASS, { Category::cVanillaCompass }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+        RG_FIRE_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_COMPASS_CHEST] =
+        Location::Chest(RC_FIRE_TEMPLE_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 2055, 0x07, "Compass Chest", "Fire Temple Compass Chest",
+                        RHT_FIRE_TEMPLE_COMPASS_CHEST, RG_FIRE_TEMPLE_COMPASS, { Category::cVanillaCompass },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_HIGHEST_GORON_CHEST] = Location::Chest(
         RC_FIRE_TEMPLE_HIGHEST_GORON_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
         SCENE_FIRE_TEMPLE, 22601, 0x09, "Highest Goron Chest", "Fire Temple Highest Goron Chest",
         RHT_FIRE_TEMPLE_HIGHEST_GORON_CHEST, RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_MEGATON_HAMMER_CHEST] =
         Location::Chest(RC_FIRE_TEMPLE_MEGATON_HAMMER_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE,
                         ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 421, 0x05, "Megaton Hammer Chest",
                         "Fire Temple Megaton Hammer Chest", RHT_FIRE_TEMPLE_MEGATON_HAMMER_CHEST, RG_MEGATON_HAMMER, {},
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
 
     // Fire Temple MQ
     locationTable[RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST] =
         Location::Chest(RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE,
                         ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 22599, 0x07, "MQ Near Boss Chest",
                         "Fire Temple MQ Near Boss Chest", RHT_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST] =
         Location::Chest(RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE,
                         ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 4512, 0x00, "MQ Megaton Hammer Chest",
                         "Fire Temple MQ Megaton Hammer Chest", RHT_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST,
-                        RG_MEGATON_HAMMER, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+                        RG_MEGATON_HAMMER, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_MQ_COMPASS_CHEST] =
         Location::Chest(RC_FIRE_TEMPLE_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE,
                         ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 2059, 0x0B, "MQ Compass Chest", "Fire Temple MQ Compass Chest",
                         RHT_FIRE_TEMPLE_MQ_COMPASS_CHEST, RG_FIRE_TEMPLE_COMPASS, { Category::cVanillaCompass },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CHEST] =
         Location::Chest(RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE,
                         ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 23747, 0x03, "MQ Lizalfos Maze Lower Chest",
@@ -1688,7 +1705,7 @@ void Rando::StaticData::InitLocationTable() {
         Location::Chest(RC_FIRE_TEMPLE_MQ_CHEST_ON_FIRE, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
                         SCENE_FIRE_TEMPLE, 22597, 0x05, "MQ Chest on Fire", "Fire Temple MQ Chest on Fire",
                         RHT_FIRE_TEMPLE_MQ_CHEST_ON_FIRE, RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST] =
         Location::Chest(RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE,
                         ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 30018, 0x02, "MQ Map Room Side Chest",
@@ -1697,122 +1714,122 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_FIRE_TEMPLE_MQ_MAP_CHEST] = Location::Chest(
         RC_FIRE_TEMPLE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
         SCENE_FIRE_TEMPLE, 2092, 0x0C, "MQ Map Chest", "Fire Temple MQ Map Chest", RHT_FIRE_TEMPLE_MQ_MAP_CHEST,
-        RG_FIRE_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+        RG_FIRE_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST] =
         Location::Chest(RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST, RCQUEST_MQ, RCTYPE_BOSS_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
                         SCENE_FIRE_TEMPLE, 10212, 0x04, "MQ Boss Key Chest", "Fire Temple MQ Boss Key Chest",
                         RHT_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST, RG_FIRE_TEMPLE_BOSS_KEY, { Category::cVanillaBossKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST] =
         Location::Chest(RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY,
                         RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 22593, 0x01,
                         "MQ Big Lava Room Blocked Door Chest", "Fire Temple MQ Big Lava Room Blocked Door Chest",
                         RHT_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST] =
         Location::Chest(RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY,
                         RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 22600, 0x08,
                         "MQ Lizalfos Maze Side Room Chest", "Fire Temple MQ Lizalfos Maze Side Room Chest",
                         RHT_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_MQ_FREESTANDING_KEY] = Location::Collectable(
         RC_FIRE_TEMPLE_MQ_FREESTANDING_KEY, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_ITEM00,
         SCENE_FIRE_TEMPLE, 7185, 0x1C, "MQ Freestanding Key", "Fire Temple MQ Freestanding Key",
         RHT_FIRE_TEMPLE_MQ_FREESTANDING_KEY, RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
 
     // Water Temple Vanilla
     locationTable[RC_WATER_TEMPLE_MAP_CHEST] = Location::Chest(
         RC_WATER_TEMPLE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
         SCENE_WATER_TEMPLE, 6178, 0x02, "Map Chest", "Water Temple Map Chest", RHT_WATER_TEMPLE_MAP_CHEST,
-        RG_WATER_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+        RG_WATER_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     locationTable[RC_WATER_TEMPLE_COMPASS_CHEST] =
         Location::Chest(RC_WATER_TEMPLE_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_WATER_TEMPLE,
                         ACTOR_EN_BOX, SCENE_WATER_TEMPLE, 2057, 0x09, "Compass Chest", "Water Temple Compass Chest",
                         RHT_WATER_TEMPLE_COMPASS_CHEST, RG_WATER_TEMPLE_COMPASS, { Category::cVanillaCompass },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     locationTable[RC_WATER_TEMPLE_TORCHES_CHEST] =
         Location::Chest(RC_WATER_TEMPLE_TORCHES_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE,
                         ACTOR_EN_BOX, SCENE_WATER_TEMPLE, 30785, 0x01, "Torches Chest", "Water Temple Torches Chest",
                         RHT_WATER_TEMPLE_TORCHES_CHEST, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     locationTable[RC_WATER_TEMPLE_DRAGON_CHEST] =
         Location::Chest(RC_WATER_TEMPLE_DRAGON_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE,
                         ACTOR_EN_BOX, SCENE_WATER_TEMPLE, 22602, 0x0A, "Dragon Chest", "Water Temple Dragon Chest",
                         RHT_WATER_TEMPLE_DRAGON_CHEST, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     locationTable[RC_WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST] = Location::Chest(
         RC_WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
         SCENE_WATER_TEMPLE, 22600, 0x08, "Central Bow Target Chest", "Water Temple Central Bow Target Chest",
         RHT_WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     locationTable[RC_WATER_TEMPLE_CENTRAL_PILLAR_CHEST] = Location::Chest(
         RC_WATER_TEMPLE_CENTRAL_PILLAR_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
         SCENE_WATER_TEMPLE, 22598, 0x06, "Central Pillar Chest", "Water Temple Central Pillar Chest",
         RHT_WATER_TEMPLE_CENTRAL_PILLAR_CHEST, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     locationTable[RC_WATER_TEMPLE_CRACKED_WALL_CHEST] = Location::Chest(
         RC_WATER_TEMPLE_CRACKED_WALL_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
         SCENE_WATER_TEMPLE, 22592, 0x00, "Cracked Wall Chest", "Water Temple Cracked Wall Chest",
         RHT_WATER_TEMPLE_CRACKED_WALL_CHEST, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     locationTable[RC_WATER_TEMPLE_BOSS_KEY_CHEST] =
         Location::Chest(RC_WATER_TEMPLE_BOSS_KEY_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_KEY, RCAREA_WATER_TEMPLE,
                         ACTOR_EN_BOX, SCENE_WATER_TEMPLE, 10213, 0x05, "Boss Key Chest", "Water Temple Boss Key Chest",
                         RHT_WATER_TEMPLE_BOSS_KEY_CHEST, RG_WATER_TEMPLE_BOSS_KEY, { Category::cVanillaBossKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     locationTable[RC_WATER_TEMPLE_LONGSHOT_CHEST] = Location::Chest(
         RC_WATER_TEMPLE_LONGSHOT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
         SCENE_WATER_TEMPLE, 295, 0x07, "Longshot Chest", "Water Temple Longshot Chest", RHT_WATER_TEMPLE_LONGSHOT_CHEST,
-        RG_PROGRESSIVE_HOOKSHOT, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+        RG_PROGRESSIVE_HOOKSHOT, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     locationTable[RC_WATER_TEMPLE_RIVER_CHEST] =
         Location::Chest(RC_WATER_TEMPLE_RIVER_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE,
                         ACTOR_EN_BOX, SCENE_WATER_TEMPLE, 22595, 0x03, "River Chest", "Water Temple River Chest",
                         RHT_WATER_TEMPLE_RIVER_CHEST, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
 
     // Water Temple MQ
     locationTable[RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST] = Location::Chest(
         RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
         SCENE_WATER_TEMPLE, -30650, 0x06, "MQ Central Pillar Chest", "Water Temple MQ Central Pillar Chest",
         RHT_WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     locationTable[RC_WATER_TEMPLE_MQ_BOSS_KEY_CHEST] =
         Location::Chest(RC_WATER_TEMPLE_MQ_BOSS_KEY_CHEST, RCQUEST_MQ, RCTYPE_BOSS_KEY, RCAREA_WATER_TEMPLE,
                         ACTOR_EN_BOX, SCENE_WATER_TEMPLE, 10213, 0x05, "MQ Boss Key Chest",
                         "Water Temple MQ Boss Key Chest", RHT_WATER_TEMPLE_MQ_BOSS_KEY_CHEST, RG_WATER_TEMPLE_BOSS_KEY,
-                        { Category::cVanillaBossKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+                        { Category::cVanillaBossKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     locationTable[RC_WATER_TEMPLE_MQ_LONGSHOT_CHEST] =
         Location::Chest(RC_WATER_TEMPLE_MQ_LONGSHOT_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_WATER_TEMPLE,
                         ACTOR_EN_BOX, SCENE_WATER_TEMPLE, -20192, 0x00, "MQ Longshot Chest",
                         "Water Temple MQ Longshot Chest", RHT_WATER_TEMPLE_MQ_LONGSHOT_CHEST, RG_PROGRESSIVE_HOOKSHOT,
-                        {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+                        {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     locationTable[RC_WATER_TEMPLE_MQ_COMPASS_CHEST] =
         Location::Chest(RC_WATER_TEMPLE_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_WATER_TEMPLE,
                         ACTOR_EN_BOX, SCENE_WATER_TEMPLE, 6145, 0x01, "MQ Compass Chest",
                         "Water Temple MQ Compass Chest", RHT_WATER_TEMPLE_MQ_COMPASS_CHEST, RG_WATER_TEMPLE_COMPASS,
-                        { Category::cVanillaCompass }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+                        { Category::cVanillaCompass }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     locationTable[RC_WATER_TEMPLE_MQ_MAP_CHEST] = Location::Chest(
         RC_WATER_TEMPLE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
         SCENE_WATER_TEMPLE, -18398, 0x02, "MQ Map Chest", "Water Temple MQ Map Chest", RHT_WATER_TEMPLE_MQ_MAP_CHEST,
-        RG_WATER_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+        RG_WATER_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     locationTable[RC_WATER_TEMPLE_MQ_FREESTANDING_KEY] = Location::Collectable(
         RC_WATER_TEMPLE_MQ_FREESTANDING_KEY, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE, ACTOR_EN_ITEM00,
         SCENE_WATER_TEMPLE, 273, 0x01, "MQ Freestanding Key", "Water Temple MQ Freestanding Key",
         RHT_WATER_TEMPLE_MQ_FREESTANDING_KEY, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
 
     // Spirit Temple Shared
     locationTable[RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST] =
         Location::Chest(RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
                         ACTOR_EN_BOX, SCENE_DESERT_COLOSSUS, 1707, 0x0B, "Silver Gauntlets Chest",
                         "Spirit Temple Silver Gauntlets Chest", RHT_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST,
-                        RG_PROGRESSIVE_STRENGTH, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+                        RG_PROGRESSIVE_STRENGTH, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST] =
         Location::Chest(RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
                         ACTOR_EN_BOX, SCENE_DESERT_COLOSSUS, 13673, 0x09, "Mirror Shield Chest",
                         "Spirit Temple Mirror Shield Chest", RHT_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST, RG_MIRROR_SHIELD,
-                        {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+                        {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
 
     // Spirit Temple Vanilla
     locationTable[RC_SPIRIT_TEMPLE_CHILD_BRIDGE_CHEST] =
@@ -1825,17 +1842,17 @@ void Rando::StaticData::InitLocationTable() {
                         RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -30656, 0x00,
                         "Child Early Torches Chest", "Spirit Temple Child Early Torches Chest",
                         RHT_SPIRIT_TEMPLE_CHILD_EARLY_TORCHES_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_COMPASS_CHEST] =
         Location::Chest(RC_SPIRIT_TEMPLE_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_SPIRIT_TEMPLE,
                         ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 14340, 0x04, "Compass Chest", "Spirit Temple Compass Chest",
                         RHT_SPIRIT_TEMPLE_COMPASS_CHEST, RG_SPIRIT_TEMPLE_COMPASS, { Category::cVanillaCompass },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_EARLY_ADULT_RIGHT_CHEST] = Location::Chest(
         RC_SPIRIT_TEMPLE_EARLY_ADULT_RIGHT_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
         SCENE_SPIRIT_TEMPLE, 22599, 0x07, "Early Adult Right Chest", "Spirit Temple Early Adult Right Chest",
         RHT_SPIRIT_TEMPLE_EARLY_ADULT_RIGHT_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_FIRST_MIRROR_LEFT_CHEST] = Location::Chest(
         RC_SPIRIT_TEMPLE_FIRST_MIRROR_LEFT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
         SCENE_SPIRIT_TEMPLE, -30451, 0x0D, "First Mirror Left Chest", "Spirit Temple First Mirror Left Chest",
@@ -1846,10 +1863,11 @@ void Rando::StaticData::InitLocationTable() {
         SCENE_SPIRIT_TEMPLE, -28786, 0x0E, "First Mirror Right Chest", "Spirit Temple First Mirror Right Chest",
         RHT_SPIRIT_TEMPLE_FIRST_MIRROR_RIGHT_CHEST, RG_RECOVERY_HEART, {},
         SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MAP_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, -18397, 0x03, "Map Chest", "Spirit Temple Map Chest", RHT_SPIRIT_TEMPLE_MAP_CHEST,
-        RG_SPIRIT_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MAP_CHEST] =
+        Location::Chest(RC_SPIRIT_TEMPLE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_SPIRIT_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -18397, 0x03, "Map Chest", "Spirit Temple Map Chest",
+                        RHT_SPIRIT_TEMPLE_MAP_CHEST, RG_SPIRIT_TEMPLE_MAP, { Category::cVanillaMap },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_CHILD_CLIMB_NORTH_CHEST] = Location::Chest(
         RC_SPIRIT_TEMPLE_CHILD_CLIMB_NORTH_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
         SCENE_SPIRIT_TEMPLE, -32666, 0x06, "Child Climb North Chest", "Spirit Temple Child Climb North Chest",
@@ -1864,12 +1882,12 @@ void Rando::StaticData::InitLocationTable() {
         RC_SPIRIT_TEMPLE_SUN_BLOCK_ROOM_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
         SCENE_SPIRIT_TEMPLE, -30655, 0x01, "Sun Block Room Chest", "Spirit Temple Sun Block Room Chest",
         RHT_SPIRIT_TEMPLE_SUN_BLOCK_ROOM_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST] = Location::Chest(
         RC_SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
         SCENE_SPIRIT_TEMPLE, -30654, 0x02, "Statue Room Hand Chest", "Spirit Temple Statue Room Hand Chest",
         RHT_SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_STATUE_ROOM_NORTHEAST_CHEST] = Location::Chest(
         RC_SPIRIT_TEMPLE_STATUE_ROOM_NORTHEAST_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
         ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -30577, 0x0F, "Statue Room Northeast Chest",
@@ -1879,7 +1897,7 @@ void Rando::StaticData::InitLocationTable() {
         RC_SPIRIT_TEMPLE_NEAR_FOUR_ARMOS_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
         SCENE_SPIRIT_TEMPLE, 22597, 0x05, "Near Four Armos Chest", "Spirit Temple Near Four Armos Chest",
         RHT_SPIRIT_TEMPLE_NEAR_FOUR_ARMOS_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_HALLWAY_RIGHT_INVISIBLE_CHEST] = Location::Chest(
         RC_SPIRIT_TEMPLE_HALLWAY_RIGHT_INVISIBLE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
         ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 26900, 0x14, "Hallway Right Invisible Chest",
@@ -1894,11 +1912,12 @@ void Rando::StaticData::InitLocationTable() {
         Location::Chest(RC_SPIRIT_TEMPLE_BOSS_KEY_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_KEY, RCAREA_SPIRIT_TEMPLE,
                         ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 10218, 0x0A, "Boss Key Chest",
                         "Spirit Temple Boss Key Chest", RHT_SPIRIT_TEMPLE_BOSS_KEY_CHEST, RG_SPIRIT_TEMPLE_BOSS_KEY,
-                        { Category::cVanillaBossKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_TOPMOST_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_TOPMOST_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, -29454, 0x12, "Topmost Chest", "Spirit Temple Topmost Chest",
-        RHT_SPIRIT_TEMPLE_TOPMOST_CHEST, RG_BOMBS_20, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+                        { Category::cVanillaBossKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_TOPMOST_CHEST] =
+        Location::Chest(RC_SPIRIT_TEMPLE_TOPMOST_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -29454, 0x12, "Topmost Chest", "Spirit Temple Topmost Chest",
+                        RHT_SPIRIT_TEMPLE_TOPMOST_CHEST, RG_BOMBS_20, {},
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
 
     // Spirit Temple MQ
     locationTable[RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_LEFT_CHEST] = Location::Chest(
@@ -1916,26 +1935,27 @@ void Rando::StaticData::InitLocationTable() {
                         RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -30629, 0x1B,
                         "MQ Entrance Front Right Chest", "Spirit Temple MQ Entrance Front Right Chest",
                         RHT_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_RIGHT_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST] = Location::Chest(
         RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
         SCENE_SPIRIT_TEMPLE, -30626, 0x1E, "MQ Entrance Back Left Chest", "Spirit Temple MQ Entrance Back Left Chest",
         RHT_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST] = Location::Chest(
         RC_SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
         SCENE_SPIRIT_TEMPLE, -30627, 0x1D, "MQ Child Hammer Switch Chest", "Spirit Temple MQ Child Hammer Switch Chest",
         RHT_SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_MAP_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, 2080, 0x00, "MQ Map Chest", "Spirit Temple MQ Map Chest", RHT_SPIRIT_TEMPLE_MQ_MAP_CHEST,
-        RG_SPIRIT_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_MAP_CHEST] =
+        Location::Chest(RC_SPIRIT_TEMPLE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_SPIRIT_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 2080, 0x00, "MQ Map Chest", "Spirit Temple MQ Map Chest",
+                        RHT_SPIRIT_TEMPLE_MQ_MAP_CHEST, RG_SPIRIT_TEMPLE_MAP, { Category::cVanillaMap },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_MQ_MAP_ROOM_ENEMY_CHEST] = Location::Chest(
         RC_SPIRIT_TEMPLE_MQ_MAP_ROOM_ENEMY_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
         SCENE_SPIRIT_TEMPLE, 30792, GI_KEY_SMALL, "MQ Map Room Enemy Chest", "Spirit Temple MQ Map Room Enemy Chest",
         RHT_SPIRIT_TEMPLE_MQ_MAP_ROOM_ENEMY_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_NORTH_CHEST] =
         Location::Chest(RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_NORTH_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
                         ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 28774, 0x06, "MQ Child Climb North Chest",
@@ -1945,12 +1965,12 @@ void Rando::StaticData::InitLocationTable() {
         RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_SOUTH_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
         SCENE_SPIRIT_TEMPLE, -30644, 0x0C, "MQ Child Climb South Chest", "Spirit Temple MQ Child Climb South Chest",
         RHT_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_SOUTH_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_MQ_COMPASS_CHEST] =
         Location::Chest(RC_SPIRIT_TEMPLE_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_SPIRIT_TEMPLE,
                         ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -18429, 0x03, "MQ Compass Chest",
                         "Spirit Temple MQ Compass Chest", RHT_SPIRIT_TEMPLE_MQ_COMPASS_CHEST, RG_SPIRIT_TEMPLE_COMPASS,
-                        { Category::cVanillaCompass }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+                        { Category::cVanillaCompass }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_MQ_STATUE_ROOM_LULLABY_CHEST] = Location::Chest(
         RC_SPIRIT_TEMPLE_MQ_STATUE_ROOM_LULLABY_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
         SCENE_SPIRIT_TEMPLE, -30577, 0x0F, "MQ Statue Room Lullaby Chest", "Spirit Temple MQ Statue Room Lullaby Chest",
@@ -1966,7 +1986,7 @@ void Rando::StaticData::InitLocationTable() {
                         RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -30628, 0x1C,
                         "MQ Silver Block Hallway Chest", "Spirit Temple MQ Silver Block Hallway Chest",
                         RHT_SPIRIT_TEMPLE_MQ_SILVER_BLOCK_HALLWAY_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM_CHEST] =
         Location::Chest(RC_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
                         ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -30463, 0x01, "MQ Sun Block Room Chest",
@@ -1996,35 +2016,36 @@ void Rando::StaticData::InitLocationTable() {
         RC_SPIRIT_TEMPLE_MQ_BOSS_KEY_CHEST, RCQUEST_MQ, RCTYPE_BOSS_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
         SCENE_SPIRIT_TEMPLE, 10213, 0x05, "MQ Boss Key Chest", "Spirit Temple MQ Boss Key Chest",
         RHT_SPIRIT_TEMPLE_MQ_BOSS_KEY_CHEST, RG_SPIRIT_TEMPLE_BOSS_KEY, { Category::cVanillaBossKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_MQ_MIRROR_PUZZLE_INVISIBLE_CHEST] =
         Location::Chest(RC_SPIRIT_TEMPLE_MQ_MIRROR_PUZZLE_INVISIBLE_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY,
                         RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 26706, 0x12,
                         "MQ Mirror Puzzle Invisible Chest", "Spirit Temple MQ Mirror Puzzle Invisible Chest",
                         RHT_SPIRIT_TEMPLE_MQ_MIRROR_PUZZLE_INVISIBLE_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
 
     // Shadow Temple Vanilla
-    locationTable[RC_SHADOW_TEMPLE_MAP_CHEST] = Location::Chest(
-        RC_SHADOW_TEMPLE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SHADOW_TEMPLE, 6177, 0x01, "Map Chest", "Shadow Temple Map Chest", RHT_SHADOW_TEMPLE_MAP_CHEST,
-        RG_SHADOW_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_MAP_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_SHADOW_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 6177, 0x01, "Map Chest", "Shadow Temple Map Chest",
+                        RHT_SHADOW_TEMPLE_MAP_CHEST, RG_SHADOW_TEMPLE_MAP, { Category::cVanillaMap },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_HOVER_BOOTS_CHEST] =
         Location::Chest(RC_SHADOW_TEMPLE_HOVER_BOOTS_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
                         ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 5607, 0x07, "Hover Boots Chest",
                         "Shadow Temple Hover Boots Chest", RHT_SHADOW_TEMPLE_HOVER_BOOTS_CHEST, RG_HOVER_BOOTS, {},
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_COMPASS_CHEST] =
         Location::Chest(RC_SHADOW_TEMPLE_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_SHADOW_TEMPLE,
                         ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 6147, 0x03, "Compass Chest", "Shadow Temple Compass Chest",
                         RHT_SHADOW_TEMPLE_COMPASS_CHEST, RG_SHADOW_TEMPLE_COMPASS, { Category::cVanillaCompass },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_EARLY_SILVER_RUPEE_CHEST] =
         Location::Chest(RC_SHADOW_TEMPLE_EARLY_SILVER_RUPEE_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
                         RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 22594, 0x02,
                         "Early Silver Rupee Chest", "Shadow Temple Early Silver Rupee Chest",
                         RHT_SHADOW_TEMPLE_EARLY_SILVER_RUPEE_CHEST, RG_SHADOW_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_INVISIBLE_BLADES_VISIBLE_CHEST] = Location::Chest(
         RC_SHADOW_TEMPLE_INVISIBLE_BLADES_VISIBLE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
         ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 22668, 0x0C, "Invisible Blades Visible Chest",
@@ -2050,7 +2071,7 @@ void Rando::StaticData::InitLocationTable() {
                         RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, -30652, 0x04,
                         "Falling Spikes Switch Chest", "Shadow Temple Falling Spikes Switch Chest",
                         RHT_SHADOW_TEMPLE_FALLING_SPIKES_SWITCH_CHEST, RG_SHADOW_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_INVISIBLE_SPIKES_CHEST] =
         Location::Chest(RC_SHADOW_TEMPLE_INVISIBLE_SPIKES_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
                         ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 30857, 0x09, "Invisible Spikes Chest",
@@ -2069,7 +2090,7 @@ void Rando::StaticData::InitLocationTable() {
         RC_SHADOW_TEMPLE_AFTER_WIND_HIDDEN_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX,
         SCENE_SHADOW_TEMPLE, 26708, 0x14, "After Wind Hidden Chest", "Shadow Temple After Wind Hidden Chest",
         RHT_SHADOW_TEMPLE_AFTER_WIND_HIDDEN_CHEST, RG_SHADOW_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_SPIKE_WALLS_LEFT_CHEST] =
         Location::Chest(RC_SHADOW_TEMPLE_SPIKE_WALLS_LEFT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
                         ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 22666, 0x0A, "Spike Walls Left Chest",
@@ -2079,39 +2100,40 @@ void Rando::StaticData::InitLocationTable() {
         Location::Chest(RC_SHADOW_TEMPLE_BOSS_KEY_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_KEY, RCAREA_SHADOW_TEMPLE,
                         ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 10219, 0x0B, "Boss Key Chest",
                         "Shadow Temple Boss Key Chest", RHT_SHADOW_TEMPLE_BOSS_KEY_CHEST, RG_SHADOW_TEMPLE_BOSS_KEY,
-                        { Category::cVanillaBossKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+                        { Category::cVanillaBossKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST] =
         Location::Chest(RC_SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
                         RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 30797, 0x0D,
                         "Invisible Floormaster Chest", "Shadow Temple Invisible Floormaster Chest",
                         RHT_SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST, RG_SHADOW_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_FREESTANDING_KEY] = Location::Collectable(
         RC_SHADOW_TEMPLE_FREESTANDING_KEY, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_SHADOW_TEMPLE, ACTOR_EN_ITEM00,
         SCENE_SHADOW_TEMPLE, 273, 0x01, "Freestanding Key", "Shadow Temple Freestanding Key",
         RHT_SHADOW_TEMPLE_FREESTANDING_KEY, RG_SHADOW_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
 
     // Shadow Temple MQ
     locationTable[RC_SHADOW_TEMPLE_MQ_COMPASS_CHEST] =
         Location::Chest(RC_SHADOW_TEMPLE_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_SHADOW_TEMPLE,
                         ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 6145, 0x01, "MQ Compass Chest",
                         "Shadow Temple MQ Compass Chest", RHT_SHADOW_TEMPLE_MQ_COMPASS_CHEST, RG_SHADOW_TEMPLE_COMPASS,
-                        { Category::cVanillaCompass }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+                        { Category::cVanillaCompass }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST] =
         Location::Chest(RC_SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
                         ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 5607, 0x07, "MQ Hover Boots Chest",
                         "Shadow Temple MQ Hover Boots Chest", RHT_SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST, RG_HOVER_BOOTS,
-                        {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+                        {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_MQ_EARLY_GIBDOS_CHEST] = Location::Chest(
         RC_SHADOW_TEMPLE_MQ_EARLY_GIBDOS_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX,
         SCENE_SHADOW_TEMPLE, 30787, 0x03, "MQ Early Gibdos Chest", "Shadow Temple MQ Early Gibdos Chest",
         RHT_SHADOW_TEMPLE_MQ_EARLY_GIBDOS_CHEST, RG_SHADOW_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
-    locationTable[RC_SHADOW_TEMPLE_MQ_MAP_CHEST] = Location::Chest(
-        RC_SHADOW_TEMPLE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SHADOW_TEMPLE, 2082, 0x02, "MQ Map Chest", "Shadow Temple MQ Map Chest", RHT_SHADOW_TEMPLE_MQ_MAP_CHEST,
-        RG_SHADOW_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
+    locationTable[RC_SHADOW_TEMPLE_MQ_MAP_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_SHADOW_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 2082, 0x02, "MQ Map Chest", "Shadow Temple MQ Map Chest",
+                        RHT_SHADOW_TEMPLE_MQ_MAP_CHEST, RG_SHADOW_TEMPLE_MAP, { Category::cVanillaMap },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_MQ_BEAMOS_SILVER_RUPEES_CHEST] = Location::Chest(
         RC_SHADOW_TEMPLE_MQ_BEAMOS_SILVER_RUPEES_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX,
         SCENE_SHADOW_TEMPLE, -30417, 0x0F, "MQ Beamos Silver Rupees Chest",
@@ -2122,7 +2144,7 @@ void Rando::StaticData::InitLocationTable() {
                         RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 22662, 0x04,
                         "MQ Falling Spikes Switch Chest", "Shadow Temple MQ Falling Spikes Switch Chest",
                         RHT_SHADOW_TEMPLE_MQ_FALLING_SPIKES_SWITCH_CHEST, RG_SHADOW_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_LOWER_CHEST] = Location::Chest(
         RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_LOWER_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX,
         SCENE_SHADOW_TEMPLE, 22853, 0x05, "MQ Falling Spikes Lower Chest",
@@ -2142,7 +2164,7 @@ void Rando::StaticData::InitLocationTable() {
         RC_SHADOW_TEMPLE_MQ_BOSS_KEY_CHEST, RCQUEST_MQ, RCTYPE_BOSS_KEY, RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX,
         SCENE_SHADOW_TEMPLE, 10219, 0x0B, "MQ Boss Key Chest", "Shadow Temple MQ Boss Key Chest",
         RHT_SHADOW_TEMPLE_MQ_BOSS_KEY_CHEST, RG_SHADOW_TEMPLE_BOSS_KEY, { Category::cVanillaBossKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_MQ_SPIKE_WALLS_LEFT_CHEST] =
         Location::Chest(RC_SHADOW_TEMPLE_MQ_SPIKE_WALLS_LEFT_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_SHADOW_TEMPLE,
                         ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 22666, 0x0A, "MQ Spike Walls Left Chest",
@@ -2158,7 +2180,7 @@ void Rando::StaticData::InitLocationTable() {
                         RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 26710, 0x16,
                         "MQ Invisible Blades Invisible Chest", "Shadow Temple MQ Invisible Blades Invisible Chest",
                         RHT_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_INVISIBLE_CHEST, RG_SHADOW_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_VISIBLE_CHEST] = Location::Chest(
         RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_VISIBLE_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
         ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 22668, 0x0C, "MQ Invisible Blades Visible Chest",
@@ -2173,7 +2195,7 @@ void Rando::StaticData::InitLocationTable() {
         RC_SHADOW_TEMPLE_MQ_WIND_HINT_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX,
         SCENE_SHADOW_TEMPLE, 26709, 0x15, "MQ Wind Hint Chest", "Shadow Temple MQ Wind Hint Chest",
         RHT_SHADOW_TEMPLE_MQ_WIND_HINT_CHEST, RG_SHADOW_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_MQ_AFTER_WIND_HIDDEN_CHEST] =
         Location::Chest(RC_SHADOW_TEMPLE_MQ_AFTER_WIND_HIDDEN_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
                         ACTOR_EN_BOX, SCENE_SHADOW_TEMPLE, 26932, 0x14, "MQ After Wind Hidden Chest",
@@ -2188,36 +2210,36 @@ void Rando::StaticData::InitLocationTable() {
         RC_SHADOW_TEMPLE_MQ_NEAR_SHIP_INVISIBLE_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX,
         SCENE_SHADOW_TEMPLE, 26702, 0x0E, "MQ Near Ship Invisible Chest", "Shadow Temple MQ Near Ship Invisible Chest",
         RHT_SHADOW_TEMPLE_MQ_NEAR_SHIP_INVISIBLE_CHEST, RG_SHADOW_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_MQ_FREESTANDING_KEY] = Location::Collectable(
         RC_SHADOW_TEMPLE_MQ_FREESTANDING_KEY, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_SHADOW_TEMPLE, ACTOR_EN_ITEM00,
         SCENE_SHADOW_TEMPLE, 1553, 0x06, "MQ Freestanding Key", "Shadow Temple MQ Freestanding Key",
         RHT_SHADOW_TEMPLE_MQ_FREESTANDING_KEY, RG_SHADOW_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
 
     // Bottom of the Well Vanilla
-    locationTable[RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST] =
-        Location::Chest(RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
-                        RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_BOX, SCENE_BOTTOM_OF_THE_WELL, 22600, 0x08,
-                        "Front Left Fake Wall Chest", "Bottom of the Well Front Left Fake Wall Chest",
-                        RHT_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST, RG_BOTTOM_OF_THE_WELL_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST] = Location::Chest(
+        RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_BOTTOM_OF_THE_WELL,
+        ACTOR_EN_BOX, SCENE_BOTTOM_OF_THE_WELL, 22600, 0x08, "Front Left Fake Wall Chest",
+        "Bottom of the Well Front Left Fake Wall Chest", RHT_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST,
+        RG_BOTTOM_OF_THE_WELL_SMALL_KEY, { Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL, true);
     locationTable[RC_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST] = Location::Chest(
         RC_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_BOTTOM_OF_THE_WELL,
         ACTOR_EN_BOX, SCENE_BOTTOM_OF_THE_WELL, 20578, 0x02, "Front Center Bombable Chest",
         "Bottom of the Well Front Center Bombable Chest", RHT_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST,
         RG_BOMBCHU_10, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
-    locationTable[RC_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST] =
-        Location::Chest(RC_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
-                        RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_BOX, SCENE_BOTTOM_OF_THE_WELL, 22597, 0x05,
-                        "Right Bottom Fake Wall Chest", "Bottom of the Well Right Bottom Fake Wall Chest",
-                        RHT_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST, RG_BOTTOM_OF_THE_WELL_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST] = Location::Chest(
+        RC_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+        RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_BOX, SCENE_BOTTOM_OF_THE_WELL, 22597, 0x05, "Right Bottom Fake Wall Chest",
+        "Bottom of the Well Right Bottom Fake Wall Chest", RHT_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST,
+        RG_BOTTOM_OF_THE_WELL_SMALL_KEY, { Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL, true);
     locationTable[RC_BOTTOM_OF_THE_WELL_COMPASS_CHEST] = Location::Chest(
         RC_BOTTOM_OF_THE_WELL_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_BOTTOM_OF_THE_WELL,
         ACTOR_EN_BOX, SCENE_BOTTOM_OF_THE_WELL, 2049, 0x01, "Compass Chest", "Bottom of the Well Compass Chest",
         RHT_BOTTOM_OF_THE_WELL_COMPASS_CHEST, RG_BOTTOM_OF_THE_WELL_COMPASS, { Category::cVanillaCompass },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL, true);
     locationTable[RC_BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST] = Location::Chest(
         RC_BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_BOTTOM_OF_THE_WELL,
         ACTOR_EN_BOX, SCENE_BOTTOM_OF_THE_WELL, 20558, 0x0E, "Center Skulltula Chest",
@@ -2232,7 +2254,7 @@ void Rando::StaticData::InitLocationTable() {
         RC_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_HEART_OR_OTHER_REWARD,
         RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_BOX, SCENE_BOTTOM_OF_THE_WELL, 4419, 0x03, "Lens of Truth Chest",
         "Bottom of the Well Lens of Truth Chest", RHT_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST, RG_LENS_OF_TRUTH,
-        { Category::cSongDungeonReward }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+        { Category::cSongDungeonReward }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL, true);
     locationTable[RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST] =
         Location::Chest(RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
                         RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_BOX, SCENE_BOTTOM_OF_THE_WELL, 27348, 0x14,
@@ -2252,7 +2274,7 @@ void Rando::StaticData::InitLocationTable() {
         Location::Chest(RC_BOTTOM_OF_THE_WELL_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_BOTTOM_OF_THE_WELL,
                         ACTOR_EN_BOX, SCENE_BOTTOM_OF_THE_WELL, 2087, 0x07, "Map Chest", "Bottom of the Well Map Chest",
                         RHT_BOTTOM_OF_THE_WELL_MAP_CHEST, RG_BOTTOM_OF_THE_WELL_MAP, { Category::cVanillaMap },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL, true);
     locationTable[RC_BOTTOM_OF_THE_WELL_FIRE_KEESE_CHEST] = Location::Chest(
         RC_BOTTOM_OF_THE_WELL_FIRE_KEESE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_BOTTOM_OF_THE_WELL,
         ACTOR_EN_BOX, SCENE_BOTTOM_OF_THE_WELL, 21802, 0x0A, "Fire Keese Chest", "Bottom of the Well Fire Keese Chest",
@@ -2267,74 +2289,77 @@ void Rando::StaticData::InitLocationTable() {
         RC_BOTTOM_OF_THE_WELL_FREESTANDING_KEY, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_BOTTOM_OF_THE_WELL,
         ACTOR_EN_ITEM00, SCENE_BOTTOM_OF_THE_WELL, 273, 0x01, "Freestanding Key", "Bottom of the Well Freestanding Key",
         RHT_BOTTOM_OF_THE_WELL_FREESTANDING_KEY, RG_BOTTOM_OF_THE_WELL_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL, true);
 
     // Bottom of the Well Master Quest
     locationTable[RC_BOTTOM_OF_THE_WELL_MQ_MAP_CHEST] = Location::Chest(
         RC_BOTTOM_OF_THE_WELL_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_BOX,
         SCENE_BOTTOM_OF_THE_WELL, 2083, 0x03, "MQ Map Chest", "Bottom of the Well MQ Map Chest",
         RHT_BOTTOM_OF_THE_WELL_MQ_MAP_CHEST, RG_BOTTOM_OF_THE_WELL_MAP, { Category::cVanillaMap },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL, true);
     locationTable[RC_BOTTOM_OF_THE_WELL_MQ_LENS_OF_TRUTH_CHEST] = Location::Chest(
         RC_BOTTOM_OF_THE_WELL_MQ_LENS_OF_TRUTH_CHEST, RCQUEST_MQ, RCTYPE_BOSS_HEART_OR_OTHER_REWARD,
         RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_BOX, SCENE_BOTTOM_OF_THE_WELL, -20159, 0x01, "MQ Lens of Truth Chest",
         "Bottom of the Well MQ Lens of Truth Chest", RHT_BOTTOM_OF_THE_WELL_MQ_LENS_OF_TRUTH_CHEST, RG_LENS_OF_TRUTH,
-        { Category::cSongDungeonReward }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+        { Category::cSongDungeonReward }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL, true);
     locationTable[RC_BOTTOM_OF_THE_WELL_MQ_COMPASS_CHEST] = Location::Chest(
         RC_BOTTOM_OF_THE_WELL_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_BOX,
         SCENE_BOTTOM_OF_THE_WELL, 6146, 0x02, "MQ Compass Chest", "Bottom of the Well MQ Compass Chest",
         RHT_BOTTOM_OF_THE_WELL_MQ_COMPASS_CHEST, RG_BOTTOM_OF_THE_WELL_COMPASS, { Category::cVanillaCompass },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL, true);
     locationTable[RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_FREESTANDING_KEY] = Location::Collectable(
         RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_FREESTANDING_KEY, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_BOTTOM_OF_THE_WELL,
         ACTOR_EN_ITEM00, SCENE_BOTTOM_OF_THE_WELL, 529, 0x02, "MQ Dead Hand Freestanding Key",
         "Bottom of the Well MQ Dead Hand Freestanding Key", RHT_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_FREESTANDING_KEY,
         RG_BOTTOM_OF_THE_WELL_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL, true);
     locationTable[RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_FREESTANDING_KEY] = Location::Collectable(
         RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_FREESTANDING_KEY, RCQUEST_MQ, RCTYPE_SMALL_KEY,
         RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_ITEM00, SCENE_BOTTOM_OF_THE_WELL, 273, 0x01,
         "MQ East Inner Room Freestanding Key", "Bottom of the Well MQ East Inner Room Freestanding Key",
         RHT_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_FREESTANDING_KEY, RG_BOTTOM_OF_THE_WELL_SMALL_KEY,
-        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL, true);
 
     // Ice Cavern Vanilla
     locationTable[RC_ICE_CAVERN_MAP_CHEST] = Location::Chest(
         RC_ICE_CAVERN_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_ICE_CAVERN, ACTOR_EN_BOX, SCENE_ICE_CAVERN,
         2080, 0x00, "Map Chest", "Ice Cavern Map Chest", RHT_ICE_CAVERN_MAP_CHEST, RG_ICE_CAVERN_MAP,
-        { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
-    locationTable[RC_ICE_CAVERN_COMPASS_CHEST] = Location::Chest(
-        RC_ICE_CAVERN_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_ICE_CAVERN, ACTOR_EN_BOX,
-        SCENE_ICE_CAVERN, 2049, 0x01, "Compass Chest", "Ice Cavern Compass Chest", RHT_ICE_CAVERN_COMPASS_CHEST,
-        RG_ICE_CAVERN_COMPASS, { Category::cVanillaCompass }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
-    locationTable[RC_ICE_CAVERN_IRON_BOOTS_CHEST] = Location::Chest(
-        RC_ICE_CAVERN_IRON_BOOTS_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_ICE_CAVERN, ACTOR_EN_BOX,
-        SCENE_ICE_CAVERN, 5570, 0x02, "Iron Boots Chest", "Ice Cavern Iron Boots Chest",
-        RHT_ICE_CAVERN_IRON_BOOTS_CHEST, RG_IRON_BOOTS, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+        { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN, true);
+    locationTable[RC_ICE_CAVERN_COMPASS_CHEST] =
+        Location::Chest(RC_ICE_CAVERN_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_ICE_CAVERN,
+                        ACTOR_EN_BOX, SCENE_ICE_CAVERN, 2049, 0x01, "Compass Chest", "Ice Cavern Compass Chest",
+                        RHT_ICE_CAVERN_COMPASS_CHEST, RG_ICE_CAVERN_COMPASS, { Category::cVanillaCompass },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN, true);
+    locationTable[RC_ICE_CAVERN_IRON_BOOTS_CHEST] =
+        Location::Chest(RC_ICE_CAVERN_IRON_BOOTS_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_ICE_CAVERN,
+                        ACTOR_EN_BOX, SCENE_ICE_CAVERN, 5570, 0x02, "Iron Boots Chest", "Ice Cavern Iron Boots Chest",
+                        RHT_ICE_CAVERN_IRON_BOOTS_CHEST, RG_IRON_BOOTS, {},
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN, true);
     locationTable[RC_ICE_CAVERN_FREESTANDING_POH] = Location::Collectable(
         RC_ICE_CAVERN_FREESTANDING_POH, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_ICE_CAVERN, ACTOR_EN_ITEM00,
         SCENE_ICE_CAVERN, 262, 0x01, "Freestanding PoH", "Ice Cavern Freestanding PoH", RHT_ICE_CAVERN_FREESTANDING_POH,
-        RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+        RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN, true);
 
     // Ice Cavern Master Quest
-    locationTable[RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST] = Location::Chest(
-        RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_ICE_CAVERN, ACTOR_EN_BOX,
-        SCENE_ICE_CAVERN, 5570, 0x02, "MQ Iron Boots Chest", "Ice Cavern MQ Iron Boots Chest",
-        RHT_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, RG_IRON_BOOTS, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+    locationTable[RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST] =
+        Location::Chest(RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_ICE_CAVERN, ACTOR_EN_BOX,
+                        SCENE_ICE_CAVERN, 5570, 0x02, "MQ Iron Boots Chest", "Ice Cavern MQ Iron Boots Chest",
+                        RHT_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, RG_IRON_BOOTS, {},
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN, true);
     locationTable[RC_ICE_CAVERN_MQ_COMPASS_CHEST] =
         Location::Chest(RC_ICE_CAVERN_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_ICE_CAVERN, ACTOR_EN_BOX,
                         SCENE_ICE_CAVERN, 2048, 0x00, "MQ Compass Chest", "Ice Cavern MQ Compass Chest",
                         RHT_ICE_CAVERN_MQ_COMPASS_CHEST, RG_ICE_CAVERN_COMPASS, { Category::cVanillaCompass },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN, true);
     locationTable[RC_ICE_CAVERN_MQ_MAP_CHEST] = Location::Chest(
         RC_ICE_CAVERN_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_ICE_CAVERN, ACTOR_EN_BOX, SCENE_ICE_CAVERN,
         -18399, 0x01, "MQ Map Chest", "Ice Cavern MQ Map Chest", RHT_ICE_CAVERN_MQ_MAP_CHEST, RG_ICE_CAVERN_MAP,
-        { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+        { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN, true);
     locationTable[RC_ICE_CAVERN_MQ_FREESTANDING_POH] =
         Location::Collectable(RC_ICE_CAVERN_MQ_FREESTANDING_POH, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_ICE_CAVERN,
                               ACTOR_EN_ITEM00, SCENE_ICE_CAVERN, 262, 0x01, "MQ Freestanding PoH",
                               "Ice Cavern MQ Freestanding PoH", RHT_ICE_CAVERN_MQ_FREESTANDING_POH, RG_PIECE_OF_HEART,
-                              {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+                              {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN, true);
 
     // Gerudo Training Grounds Vanilla
     locationTable[RC_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST] = Location::Chest(
@@ -2347,24 +2372,24 @@ void Rando::StaticData::InitLocationTable() {
         ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, -30393, 0x07, "Lobby Right Chest",
         "Gerudo Training Grounds Lobby Right Chest", RHT_GERUDO_TRAINING_GROUND_LOBBY_RIGHT_CHEST, RG_ARROWS_10, {},
         SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
-    locationTable[RC_GERUDO_TRAINING_GROUND_STALFOS_CHEST] =
-        Location::Chest(RC_GERUDO_TRAINING_GROUND_STALFOS_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
-                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, -30656, 0x00,
-                        "Stalfos Chest", "Gerudo Training Grounds Stalfos Chest",
-                        RHT_GERUDO_TRAINING_GROUND_STALFOS_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_STALFOS_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_STALFOS_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_GERUDO_TRAINING_GROUND,
+        ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, -30656, 0x00, "Stalfos Chest",
+        "Gerudo Training Grounds Stalfos Chest", RHT_GERUDO_TRAINING_GROUND_STALFOS_CHEST,
+        RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, { Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND, true);
     locationTable[RC_GERUDO_TRAINING_GROUND_BEAMOS_CHEST] =
         Location::Chest(RC_GERUDO_TRAINING_GROUND_BEAMOS_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
                         RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, -30655, 0x01,
                         "Beamos Chest", "Gerudo Training Grounds Beamos Chest", RHT_GERUDO_TRAINING_GROUND_BEAMOS_CHEST,
                         RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, { Category::cVanillaSmallKey },
-                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
-    locationTable[RC_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST] =
-        Location::Chest(RC_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
-                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 22603, 0x0B,
-                        "Hidden Ceiling Chest", "Gerudo Training Grounds Hidden Ceiling Chest",
-                        RHT_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND, true);
+    locationTable[RC_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 22603, 0x0B, "Hidden Ceiling Chest",
+        "Gerudo Training Grounds Hidden Ceiling Chest", RHT_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST,
+        RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, { Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND, true);
     locationTable[RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FIRST_CHEST] = Location::Chest(
         RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FIRST_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
         RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 23206, 0x06, "Maze Path First Chest",
@@ -2385,7 +2410,8 @@ void Rando::StaticData::InitLocationTable() {
         RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FINAL_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_HEART_OR_OTHER_REWARD,
         RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 2860, 0x0C, "Maze Path Final Chest",
         "Gerudo Training Grounds Maze Path Final Chest", RHT_GERUDO_TRAINING_GROUND_MAZE_PATH_FINAL_CHEST,
-        RG_ICE_ARROWS, { Category::cSongDungeonReward }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+        RG_ICE_ARROWS, { Category::cSongDungeonReward }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND,
+        true);
     locationTable[RC_GERUDO_TRAINING_GROUND_MAZE_RIGHT_CENTRAL_CHEST] =
         Location::Chest(RC_GERUDO_TRAINING_GROUND_MAZE_RIGHT_CENTRAL_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
                         RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 23877, 0x05,
@@ -2397,36 +2423,36 @@ void Rando::StaticData::InitLocationTable() {
         RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 22888, 0x08, "Maze Right Side Chest",
         "Gerudo Training Grounds Maze Right Side Chest", RHT_GERUDO_TRAINING_GROUND_MAZE_RIGHT_SIDE_CHEST, RG_ARROWS_30,
         {}, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
-    locationTable[RC_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST] =
-        Location::Chest(RC_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
-                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, -30643, 0x0D,
-                        "Underwater Silver Rupee Chest", "Gerudo Training Grounds Underwater Silver Rupee Chest",
-                        RHT_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, -30643, 0x0D,
+        "Underwater Silver Rupee Chest", "Gerudo Training Grounds Underwater Silver Rupee Chest",
+        RHT_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
+        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND, true);
     locationTable[RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_CLEAR_CHEST] =
         Location::Chest(RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_CLEAR_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
                         RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 31058, 0x12,
                         "Hammer Room Clear Chest", "Gerudo Training Grounds Hammer Room Clear Chest",
                         RHT_GERUDO_TRAINING_GROUND_HAMMER_ROOM_CLEAR_CHEST, RG_ARROWS_10, {},
                         SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
-    locationTable[RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_SWITCH_CHEST] =
-        Location::Chest(RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_SWITCH_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
-                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 22608, 0x10,
-                        "Hammer Room Switch Chest", "Gerudo Training Grounds Hammer Room Switch Chest",
-                        RHT_GERUDO_TRAINING_GROUND_HAMMER_ROOM_SWITCH_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
-    locationTable[RC_GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST] =
-        Location::Chest(RC_GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
-                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, -30653, 0x03,
-                        "Eye Statue Chest", "Gerudo Training Grounds Eye Statue Chest",
-                        RHT_GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
-    locationTable[RC_GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST] =
-        Location::Chest(RC_GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
-                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 22596, 0x04,
-                        "Near Scarecrow Chest", "Gerudo Training Grounds Near Scarecrow Chest",
-                        RHT_GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_SWITCH_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_SWITCH_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 22608, 0x10,
+        "Hammer Room Switch Chest", "Gerudo Training Grounds Hammer Room Switch Chest",
+        RHT_GERUDO_TRAINING_GROUND_HAMMER_ROOM_SWITCH_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
+        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND, true);
+    locationTable[RC_GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_GERUDO_TRAINING_GROUND,
+        ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, -30653, 0x03, "Eye Statue Chest",
+        "Gerudo Training Grounds Eye Statue Chest", RHT_GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST,
+        RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, { Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND, true);
+    locationTable[RC_GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 22596, 0x04, "Near Scarecrow Chest",
+        "Gerudo Training Grounds Near Scarecrow Chest", RHT_GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST,
+        RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, { Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND, true);
     locationTable[RC_GERUDO_TRAINING_GROUND_BEFORE_HEAVY_BLOCK_CHEST] =
         Location::Chest(RC_GERUDO_TRAINING_GROUND_BEFORE_HEAVY_BLOCK_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
                         RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 31089, 0x11,
@@ -2445,12 +2471,12 @@ void Rando::StaticData::InitLocationTable() {
                         "Heavy Block Second Chest", "Gerudo Training Grounds Heavy Block Second Chest",
                         RHT_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_SECOND_CHEST, RG_BLUE_RUPEE, {},
                         SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
-    locationTable[RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_THIRD_CHEST] =
-        Location::Chest(RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_THIRD_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
-                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 26708, 0x14,
-                        "Heavy Block Third Chest", "Gerudo Training Grounds Heavy Block Third Chest",
-                        RHT_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_THIRD_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_THIRD_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_THIRD_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 26708, 0x14,
+        "Heavy Block Third Chest", "Gerudo Training Grounds Heavy Block Third Chest",
+        RHT_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_THIRD_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
+        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND, true);
     locationTable[RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_FOURTH_CHEST] =
         Location::Chest(RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_FOURTH_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
                         RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 24450, 0x02,
@@ -2462,7 +2488,7 @@ void Rando::StaticData::InitLocationTable() {
         ACTOR_EN_ITEM00, SCENE_GERUDO_TRAINING_GROUND, 273, 0x01, "Freestanding Key",
         "Gerudo Training Grounds Freestanding Key", RHT_GERUDO_TRAINING_GROUND_FREESTANDING_KEY,
         RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND, true);
 
     // Gerudo Training Grounds Master Quest
     locationTable[RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_CHEST] = Location::Chest(
@@ -2492,29 +2518,29 @@ void Rando::StaticData::InitLocationTable() {
         ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, -32669, 0x03, "MQ Eye Statue Chest",
         "Gerudo Training Grounds MQ Eye Statue Chest", RHT_GERUDO_TRAINING_GROUND_MQ_EYE_STATUE_CHEST, RG_BOMBCHU_10,
         {}, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
-    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST] =
-        Location::Chest(RC_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY,
-                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, -30642, 0x0E,
-                        "MQ Flame Circle Chest", "Gerudo Training Grounds MQ Flame Circle Chest",
-                        RHT_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_GERUDO_TRAINING_GROUND,
+        ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, -30642, 0x0E, "MQ Flame Circle Chest",
+        "Gerudo Training Grounds MQ Flame Circle Chest", RHT_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST,
+        RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, { Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND, true);
     locationTable[RC_GERUDO_TRAINING_GROUND_MQ_SECOND_IRON_KNUCKLE_CHEST] =
         Location::Chest(RC_GERUDO_TRAINING_GROUND_MQ_SECOND_IRON_KNUCKLE_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
                         RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 31058, 0x12,
                         "MQ Second Iron Knuckle Chest", "Gerudo Training Grounds MQ Second Iron Knuckle Chest",
                         RHT_GERUDO_TRAINING_GROUND_MQ_SECOND_IRON_KNUCKLE_CHEST, RG_ARROWS_10, {},
                         SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
-    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_CHEST] =
-        Location::Chest(RC_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY,
-                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, -30655, 0x01,
-                        "MQ Dinolfos Chest", "Gerudo Training Grounds MQ Dinolfos Chest",
-                        RHT_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_GERUDO_TRAINING_GROUND,
+        ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, -30655, 0x01, "MQ Dinolfos Chest",
+        "Gerudo Training Grounds MQ Dinolfos Chest", RHT_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_CHEST,
+        RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, { Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND, true);
     locationTable[RC_GERUDO_TRAINING_GROUND_MQ_ICE_ARROWS_CHEST] = Location::Chest(
         RC_GERUDO_TRAINING_GROUND_MQ_ICE_ARROWS_CHEST, RCQUEST_MQ, RCTYPE_BOSS_HEART_OR_OTHER_REWARD,
         RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, -17628, 0x04, "MQ Ice Arrows Chest",
         "Gerudo Training Grounds MQ Ice Arrows Chest", RHT_GERUDO_TRAINING_GROUND_MQ_ICE_ARROWS_CHEST, RG_ICE_ARROWS,
-        { Category::cSongDungeonReward }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+        { Category::cSongDungeonReward }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND, true);
     locationTable[RC_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT_CENTRAL_CHEST] =
         Location::Chest(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT_CENTRAL_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
                         RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 22661, 0x05,
@@ -2546,12 +2572,12 @@ void Rando::StaticData::InitLocationTable() {
         ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 23211, 0x0B, "MQ Hidden Ceiling Chest",
         "Gerudo Training Grounds MQ Hidden Ceiling Chest", RHT_GERUDO_TRAINING_GROUND_MQ_HIDDEN_CEILING_CHEST,
         RG_PURPLE_RUPEE, {}, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
-    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST] =
-        Location::Chest(RC_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY,
-                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, -30643, 0x0D,
-                        "MQ Underwater Silver Rupee Chest", "Gerudo Training Grounds MQ Underwater Silver Rupee Chest",
-                        RHT_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST, RG_TREASURE_GAME_GREEN_RUPEE,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY,
+        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, -30643, 0x0D,
+        "MQ Underwater Silver Rupee Chest", "Gerudo Training Grounds MQ Underwater Silver Rupee Chest",
+        RHT_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST, RG_TREASURE_GAME_GREEN_RUPEE,
+        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND, true);
     locationTable[RC_GERUDO_TRAINING_GROUND_MQ_HEAVY_BLOCK_CHEST] = Location::Chest(
         RC_GERUDO_TRAINING_GROUND_MQ_HEAVY_BLOCK_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_GERUDO_TRAINING_GROUND,
         ACTOR_EN_BOX, SCENE_GERUDO_TRAINING_GROUND, 31394, 0x02, "MQ Heavy Block Chest",
@@ -2563,7 +2589,7 @@ void Rando::StaticData::InitLocationTable() {
         Location::Chest(RC_GANONS_TOWER_BOSS_KEY_CHEST, RCQUEST_BOTH, RCTYPE_GANON_BOSS_KEY, RCAREA_GANONS_CASTLE,
                         ACTOR_EN_BOX, SCENE_GANONS_TOWER, 10219, 0x0B, "Boss Key Chest", "Ganon's Tower Boss Key Chest",
                         RHT_GANONS_TOWER_BOSS_KEY_CHEST, RG_GANONS_CASTLE_BOSS_KEY, {},
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE, true);
 
     // Ganon's Castle Vanilla
     locationTable[RC_GANONS_CASTLE_FOREST_TRIAL_CHEST] =
@@ -2590,7 +2616,7 @@ void Rando::StaticData::InitLocationTable() {
         RC_GANONS_CASTLE_SHADOW_TRIAL_GOLDEN_GAUNTLETS_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE,
         ACTOR_EN_BOX, SCENE_INSIDE_GANONS_CASTLE, 14021, 0x05, "Shadow Trial Golden Gauntlets Chest",
         "Ganon's Castle Shadow Trial Golden Gauntlets Chest", RHT_GANONS_CASTLE_SHADOW_TRIAL_GOLDEN_GAUNTLETS_CHEST,
-        RG_PROGRESSIVE_STRENGTH, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+        RG_PROGRESSIVE_STRENGTH, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE, true);
     locationTable[RC_GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST] = Location::Chest(
         RC_GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE,
         ACTOR_EN_BOX, SCENE_INSIDE_GANONS_CASTLE, -29326, GI_BOMBCHUS_20, "Spirit Trial Crystal Switch Chest",
@@ -2636,13 +2662,13 @@ void Rando::StaticData::InitLocationTable() {
                         RCAREA_GANONS_CASTLE, ACTOR_EN_BOX, SCENE_INSIDE_GANONS_CASTLE, 30800, 0x10,
                         "Light Trial Invisible Enemies Chest", "Ganon's Castle Light Trial Invisible Enemies Chest",
                         RHT_GANONS_CASTLE_LIGHT_TRIAL_INVISIBLE_ENEMIES_CHEST, RG_GANONS_CASTLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE, true);
     locationTable[RC_GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST] =
         Location::Chest(RC_GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
                         RCAREA_GANONS_CASTLE, ACTOR_EN_BOX, SCENE_INSIDE_GANONS_CASTLE, -30639, 0x11,
                         "Light Trial Lullaby Chest", "Ganon's Castle Light Trial Lullaby Chest",
                         RHT_GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST, RG_GANONS_CASTLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE, true);
     locationTable[RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT] = Location::Base(
         RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT, RCQUEST_VANILLA, RCTYPE_SCRUB, RCAREA_GANONS_CASTLE, ACTOR_EN_DNS,
         SCENE_INSIDE_GANONS_CASTLE, 0x05, 0x37, "Deku Scrub Center-Left", "Ganon's Castle Deku Scrub Center-Left",
@@ -2696,13 +2722,13 @@ void Rando::StaticData::InitLocationTable() {
                         RCAREA_GANONS_CASTLE, ACTOR_EN_BOX, SCENE_INSIDE_GANONS_CASTLE, -30651, 0x05,
                         "MQ Shadow Trial Eye Switch Chest", "Ganon's Castle MQ Shadow Trial Eye Switch Chest",
                         RHT_GANONS_CASTLE_MQ_SHADOW_TRIAL_EYE_SWITCH_CHEST, RG_GANONS_CASTLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE, true);
     locationTable[RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_GOLDEN_GAUNTLETS_CHEST] = Location::Chest(
         RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_GOLDEN_GAUNTLETS_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE,
         ACTOR_EN_BOX, SCENE_INSIDE_GANONS_CASTLE, -18746, 0x06, "MQ Spirit Trial Golden Gauntlets Chest",
         "Ganon's Castle MQ Spirit Trial Golden Gauntlets Chest",
         RHT_GANONS_CASTLE_MQ_SPIRIT_TRIAL_GOLDEN_GAUNTLETS_CHEST, RG_PROGRESSIVE_STRENGTH, {},
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE, true);
     locationTable[RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_RIGHT_CHEST] = Location::Chest(
         RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_RIGHT_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE,
         ACTOR_EN_BOX, SCENE_INSIDE_GANONS_CASTLE, -30457, 0x07, "MQ Spirit Trial Sun Back Right Chest",
@@ -2729,12 +2755,12 @@ void Rando::StaticData::InitLocationTable() {
         ACTOR_EN_BOX, SCENE_INSIDE_GANONS_CASTLE, 26964, 0x14, "MQ Spirit Trial Invisible Chest",
         "Ganon's Castle MQ Spirit Trial Invisible Chest", RHT_GANONS_CASTLE_MQ_SPIRIT_TRIAL_INVISIBLE_CHEST,
         RG_ARROWS_10, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
-    locationTable[RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FREESTANDING_KEY] =
-        Location::Collectable(RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FREESTANDING_KEY, RCQUEST_MQ, RCTYPE_SMALL_KEY,
-                              RCAREA_GANONS_CASTLE, ACTOR_EN_ITEM00, SCENE_INSIDE_GANONS_CASTLE, 273, 0x01,
-                              "MQ Forest Trial Freestanding Key", "Ganon's Castle MQ Forest Trial Freestanding Key",
-                              RHT_GANONS_CASTLE_MQ_FOREST_TRIAL_FREESTANDING_KEY, RG_GANONS_CASTLE_SMALL_KEY,
-                              { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FREESTANDING_KEY] = Location::Collectable(
+        RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FREESTANDING_KEY, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_GANONS_CASTLE,
+        ACTOR_EN_ITEM00, SCENE_INSIDE_GANONS_CASTLE, 273, 0x01, "MQ Forest Trial Freestanding Key",
+        "Ganon's Castle MQ Forest Trial Freestanding Key", RHT_GANONS_CASTLE_MQ_FOREST_TRIAL_FREESTANDING_KEY,
+        RG_GANONS_CASTLE_SMALL_KEY, { Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE, true);
     locationTable[RC_GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT] = Location::Base(
         RC_GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT, RCQUEST_MQ, RCTYPE_SCRUB, RCAREA_GANONS_CASTLE, ACTOR_EN_DNS,
         SCENE_INSIDE_GANONS_CASTLE, 0x00, 0x30, "MQ Deku Scrub Right", "Ganon's Castle MQ Deku Scrub Right",
@@ -3457,44 +3483,44 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_LINKS_POCKET] = Location::Reward(
         RC_LINKS_POCKET, RCQUEST_BOTH, RCTYPE_LINKS_POCKET, RCAREA_KOKIRI_FOREST, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00,
         0x00, "Link's Pocket", "Link's Pocket", RHT_LINKS_POCKET, RG_LIGHT_MEDALLION, {},
-        SpoilerCollectionCheck::AlwaysCollected(), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+        SpoilerCollectionCheck::AlwaysCollected(), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST, true);
     locationTable[RC_QUEEN_GOHMA] = Location::Reward(
         RC_QUEEN_GOHMA, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_DEKU_TREE, ACTOR_DOOR_WARP1, SCENE_DEKU_TREE_BOSS,
         0x00, DungeonId::DUNGEON_DEKU_TREE, "Queen Gohma", "Queen Gohma", RHT_QUEEN_GOHMA, RG_KOKIRI_EMERALD, {},
-        SpoilerCollectionCheck::Chest(0x11, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+        SpoilerCollectionCheck::Chest(0x11, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE, true);
     locationTable[RC_KING_DODONGO] =
         Location::Reward(RC_KING_DODONGO, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_DODONGOS_CAVERN, ACTOR_DOOR_WARP1,
                          SCENE_DODONGOS_CAVERN_BOSS, 0x00, DungeonId::DUNGEON_DODONGOS_CAVERN, "King Dodongo",
                          "King Dodongo", RHT_KING_DODONGO, RG_GORON_RUBY, {}, SpoilerCollectionCheck::Chest(0x12, 0x1F),
-                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN, true);
     locationTable[RC_BARINADE] =
         Location::Reward(RC_BARINADE, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_JABU_JABUS_BELLY, ACTOR_DOOR_WARP1,
                          SCENE_JABU_JABU_BOSS, 0x00, DungeonId::DUNGEON_JABUJABUS_BELLY, "Barinade", "Barinade",
                          RHT_BARINADE, RG_ZORA_SAPPHIRE, {}, SpoilerCollectionCheck::Chest(0x13, 0x1F),
-                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY, true);
     locationTable[RC_PHANTOM_GANON] = Location::Reward(
         RC_PHANTOM_GANON, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_FOREST_TEMPLE, ACTOR_DOOR_WARP1,
         SCENE_FOREST_TEMPLE_BOSS, 0x00, DungeonId::DUNGEON_FOREST_TEMPLE, "Phantom Ganon", "Phantom Ganon",
         RHT_PHANTOM_GANON, RG_FOREST_MEDALLION, {}, SpoilerCollectionCheck::Chest(0x14, 0x1F),
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_VOLVAGIA] = Location::Reward(
         RC_VOLVAGIA, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_FIRE_TEMPLE, ACTOR_DOOR_WARP1, SCENE_FIRE_TEMPLE_BOSS,
         0x00, DungeonId::DUNGEON_FIRE_TEMPLE, "Volvagia", "Volvagia", RHT_VOLVAGIA, RG_FIRE_MEDALLION, {},
-        SpoilerCollectionCheck::Chest(0x15, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+        SpoilerCollectionCheck::Chest(0x15, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_MORPHA] = Location::Reward(
         RC_MORPHA, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_WATER_TEMPLE, ACTOR_DOOR_WARP1, SCENE_WATER_TEMPLE_BOSS,
         0x00, DungeonId::DUNGEON_WATER_TEMPLE, "Morpha", "Morpha", RHT_MORPHA, RG_WATER_MEDALLION, {},
-        SpoilerCollectionCheck::Chest(0x16, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+        SpoilerCollectionCheck::Chest(0x16, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     locationTable[RC_TWINROVA] =
         Location::Reward(RC_TWINROVA, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_SPIRIT_TEMPLE, ACTOR_DOOR_WARP1,
                          SCENE_SPIRIT_TEMPLE_BOSS, 0x00, DungeonId::DUNGEON_SPIRIT_TEMPLE, "Twinrova", "Twinrova",
                          RHT_TWINROVA, RG_SPIRIT_MEDALLION, {}, SpoilerCollectionCheck::Chest(0x17, 0x1F),
-                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_BONGO_BONGO] =
         Location::Reward(RC_BONGO_BONGO, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_SHADOW_TEMPLE, ACTOR_DOOR_WARP1,
                          SCENE_SHADOW_TEMPLE_BOSS, 0x00, DungeonId::DUNGEON_SHADOW_TEMPLE, "Bongo Bongo", "Bongo Bongo",
                          RHT_BONGO_BONGO, RG_SHADOW_MEDALLION, {}, SpoilerCollectionCheck::Chest(0x18, 0x1F),
-                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
     locationTable[RC_GANON] = Location::Reward(
         RC_GANON, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_GANONS_CASTLE, ACTOR_DOOR_WARP1, SCENE_GANON_BOSS, 0x00,
         DungeonId::DUNGEON_GANONS_CASTLE_CRUMBLING, "Ganon", "Ganon", RHT_NONE, RG_TRIFORCE, {},
@@ -3506,147 +3532,149 @@ void Rando::StaticData::InitLocationTable() {
         ACTOR_ITEM_B_HEART, SCENE_DEKU_TREE_BOSS, 0x00, 0x4F, "Queen Gohma Heart Container",
         "Deku Tree Queen Gohma Heart Container", RHT_DEKU_TREE_QUEEN_GOHMA_HEART, RG_HEART_CONTAINER,
         { Category::cSongDungeonReward }, SpoilerCollectionCheck::Collectable(0x11, 0x1F),
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE, true);
     locationTable[RC_DODONGOS_CAVERN_KING_DODONGO_HEART] = Location::Base(
         RC_DODONGOS_CAVERN_KING_DODONGO_HEART, RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_DODONGOS_CAVERN,
         ACTOR_ITEM_B_HEART, SCENE_DODONGOS_CAVERN_BOSS, 0x00, 0x4F, "King Dodongo Heart Container",
         "Dodongos Cavern King Dodongo Heart Container", RHT_DODONGOS_CAVERN_KING_DODONGO_HEART, RG_HEART_CONTAINER,
         { Category::cSongDungeonReward }, SpoilerCollectionCheck::Collectable(0x12, 0x1F),
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN, true);
     locationTable[RC_JABU_JABUS_BELLY_BARINADE_HEART] = Location::Base(
         RC_JABU_JABUS_BELLY_BARINADE_HEART, RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_JABU_JABUS_BELLY,
         ACTOR_ITEM_B_HEART, SCENE_JABU_JABU_BOSS, 0x00, 0x4F, "Barinade Heart Container",
         "Jabu Jabus Belly Barinade Heart Container", RHT_JABU_JABUS_BELLY_BARINADE_HEART, RG_HEART_CONTAINER,
         { Category::cSongDungeonReward }, SpoilerCollectionCheck::Collectable(0x13, 0x1F),
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY, true);
     locationTable[RC_FOREST_TEMPLE_PHANTOM_GANON_HEART] = Location::Base(
         RC_FOREST_TEMPLE_PHANTOM_GANON_HEART, RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_FOREST_TEMPLE,
         ACTOR_ITEM_B_HEART, SCENE_FOREST_TEMPLE_BOSS, 0x00, 0x4F, "Phantom Ganon Heart Container",
         "Forest Temple Phantom Ganon Heart Container", RHT_FOREST_TEMPLE_PHANTOM_GANON_HEART, RG_HEART_CONTAINER,
         { Category::cSongDungeonReward }, SpoilerCollectionCheck::Collectable(0x14, 0x1F),
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
     locationTable[RC_FIRE_TEMPLE_VOLVAGIA_HEART] = Location::Base(
         RC_FIRE_TEMPLE_VOLVAGIA_HEART, RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_FIRE_TEMPLE,
         ACTOR_ITEM_B_HEART, SCENE_FIRE_TEMPLE_BOSS, 0x00, 0x4F, "Volvagia Heart Container",
         "Fire Temple Volvagia Heart Container", RHT_FIRE_TEMPLE_VOLVAGIA_HEART, RG_HEART_CONTAINER,
         { Category::cSongDungeonReward }, SpoilerCollectionCheck::Collectable(0x15, 0x1F),
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     locationTable[RC_WATER_TEMPLE_MORPHA_HEART] = Location::Base(
         RC_WATER_TEMPLE_MORPHA_HEART, RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_WATER_TEMPLE,
         ACTOR_ITEM_B_HEART, SCENE_WATER_TEMPLE_BOSS, 0x00, 0x4F, "Morpha Heart Container",
         "Water Temple Morpha Heart Container", RHT_WATER_TEMPLE_MORPHA_HEART, RG_HEART_CONTAINER,
         { Category::cSongDungeonReward }, SpoilerCollectionCheck::Collectable(0x16, 0x1F),
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     locationTable[RC_SPIRIT_TEMPLE_TWINROVA_HEART] = Location::Base(
         RC_SPIRIT_TEMPLE_TWINROVA_HEART, RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_SPIRIT_TEMPLE,
         ACTOR_ITEM_B_HEART, SCENE_SPIRIT_TEMPLE_BOSS, 0x00, 0x4F, "Twinrova Heart Container",
         "Spirit Temple Twinrova Heart Container", RHT_SPIRIT_TEMPLE_TWINROVA_HEART, RG_HEART_CONTAINER,
         { Category::cSongDungeonReward }, SpoilerCollectionCheck::Collectable(0x17, 0x1F),
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     locationTable[RC_SHADOW_TEMPLE_BONGO_BONGO_HEART] = Location::Base(
         RC_SHADOW_TEMPLE_BONGO_BONGO_HEART, RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_SHADOW_TEMPLE,
         ACTOR_ITEM_B_HEART, SCENE_SHADOW_TEMPLE_BOSS, 0x00, 0x4F, "Bongo Bongo Heart Container",
         "Shadow Temple Bongo Bongo Heart Container", RHT_SHADOW_TEMPLE_BONGO_BONGO_HEART, RG_HEART_CONTAINER,
         { Category::cSongDungeonReward }, SpoilerCollectionCheck::Collectable(0x18, 0x1F),
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
 
     // Cutscenes
     locationTable[RC_TOT_LIGHT_ARROWS_CUTSCENE] = Location::Delayed(
         RC_TOT_LIGHT_ARROWS_CUTSCENE, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00,
         0x01, "ToT Light Arrow Cutscene", "ToT Light Arrow Cutscene", RHT_TOT_LIGHT_ARROWS_CUTSCENE, RG_LIGHT_ARROWS,
-        {}, SpoilerCollectionCheck::Chest(0x43, 0x1E), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+        {}, SpoilerCollectionCheck::Chest(0x43, 0x1E), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE, true);
     locationTable[RC_LW_GIFT_FROM_SARIA] = Location::Delayed(
         RC_LW_GIFT_FROM_SARIA, RCQUEST_BOTH, RCTYPE_OCARINA, RCAREA_LOST_WOODS, ACTOR_ID_MAX, SCENE_LOST_WOODS, 0x00,
         0x02, "Gift From Saria", "LW Gift From Saria", RHT_LW_GIFT_FROM_SARIA, RG_PROGRESSIVE_OCARINA, {},
-        SpoilerCollectionCheck::EventChkInf(0xC1), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
-    locationTable[RC_ZF_GREAT_FAIRY_REWARD] =
-        Location::Delayed(RC_ZF_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_FOUNTAIN,
-                          ACTOR_BG_DY_YOSEIZO, SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 1, 0x10, "Great Fairy Reward",
-                          "ZF Great Fairy Reward", RHT_ZF_GREAT_FAIRY_REWARD, RG_FARORES_WIND, {},
-                          SpoilerCollectionCheck::Chest(0x3D, 0x01), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-    locationTable[RC_HC_GREAT_FAIRY_REWARD] =
-        Location::Delayed(RC_HC_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_CASTLE,
-                          ACTOR_BG_DY_YOSEIZO, SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 2, 0x11, "Great Fairy Reward",
-                          "HC Great Fairy Reward", RHT_HC_GREAT_FAIRY_REWARD, RG_DINS_FIRE, {},
-                          SpoilerCollectionCheck::Chest(0x3D, 0x02), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_COLOSSUS_GREAT_FAIRY_REWARD] =
-        Location::Delayed(RC_COLOSSUS_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DESERT_COLOSSUS,
-                          ACTOR_BG_DY_YOSEIZO, SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 3, 0x12, "Great Fairy Reward",
-                          "Colossus Great Fairy Reward", RHT_COLOSSUS_GREAT_FAIRY_REWARD, RG_NAYRUS_LOVE, {},
-                          SpoilerCollectionCheck::Chest(0x3D, 0x03), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-    locationTable[RC_DMT_GREAT_FAIRY_REWARD] =
-        Location::Delayed(RC_DMT_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_TRAIL,
-                          ACTOR_BG_DY_YOSEIZO, SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, 1, 0x13, "Great Fairy Reward",
-                          "DMT Great Fairy Reward", RHT_DMT_GREAT_FAIRY_REWARD, RG_PROGRESSIVE_MAGIC_METER, {},
-                          SpoilerCollectionCheck::Chest(0x3B, 0x01), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
-    locationTable[RC_DMC_GREAT_FAIRY_REWARD] =
-        Location::Delayed(RC_DMC_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_CRATER,
-                          ACTOR_BG_DY_YOSEIZO, SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, 2, 0x14, "Great Fairy Reward",
-                          "DMC Great Fairy Reward", RHT_DMC_GREAT_FAIRY_REWARD, RG_PROGRESSIVE_MAGIC_METER, {},
-                          SpoilerCollectionCheck::Chest(0x3B, 0x02), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+        SpoilerCollectionCheck::EventChkInf(0xC1), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS, true);
+    locationTable[RC_ZF_GREAT_FAIRY_REWARD] = Location::Delayed(
+        RC_ZF_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_FOUNTAIN, ACTOR_BG_DY_YOSEIZO,
+        SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 1, 0x10, "Great Fairy Reward", "ZF Great Fairy Reward",
+        RHT_ZF_GREAT_FAIRY_REWARD, RG_FARORES_WIND, {}, SpoilerCollectionCheck::Chest(0x3D, 0x01),
+        SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN, true);
+    locationTable[RC_HC_GREAT_FAIRY_REWARD] = Location::Delayed(
+        RC_HC_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_CASTLE, ACTOR_BG_DY_YOSEIZO,
+        SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 2, 0x11, "Great Fairy Reward", "HC Great Fairy Reward",
+        RHT_HC_GREAT_FAIRY_REWARD, RG_DINS_FIRE, {}, SpoilerCollectionCheck::Chest(0x3D, 0x02),
+        SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE, true);
+    locationTable[RC_COLOSSUS_GREAT_FAIRY_REWARD] = Location::Delayed(
+        RC_COLOSSUS_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DESERT_COLOSSUS, ACTOR_BG_DY_YOSEIZO,
+        SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 3, 0x12, "Great Fairy Reward", "Colossus Great Fairy Reward",
+        RHT_COLOSSUS_GREAT_FAIRY_REWARD, RG_NAYRUS_LOVE, {}, SpoilerCollectionCheck::Chest(0x3D, 0x03),
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY, true);
+    locationTable[RC_DMT_GREAT_FAIRY_REWARD] = Location::Delayed(
+        RC_DMT_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_BG_DY_YOSEIZO,
+        SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, 1, 0x13, "Great Fairy Reward", "DMT Great Fairy Reward",
+        RHT_DMT_GREAT_FAIRY_REWARD, RG_PROGRESSIVE_MAGIC_METER, {}, SpoilerCollectionCheck::Chest(0x3B, 0x01),
+        SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN, true);
+    locationTable[RC_DMC_GREAT_FAIRY_REWARD] = Location::Delayed(
+        RC_DMC_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_BG_DY_YOSEIZO,
+        SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, 2, 0x14, "Great Fairy Reward", "DMC Great Fairy Reward",
+        RHT_DMC_GREAT_FAIRY_REWARD, RG_PROGRESSIVE_MAGIC_METER, {}, SpoilerCollectionCheck::Chest(0x3B, 0x02),
+        SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN, true);
     locationTable[RC_OGC_GREAT_FAIRY_REWARD] = Location::Delayed(
         RC_OGC_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_CASTLE, ACTOR_BG_DY_YOSEIZO,
         SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, 3, 0x15, "OGC Great Fairy Reward", "OGC Great Fairy Reward",
         RHT_OGC_GREAT_FAIRY_REWARD, RG_DOUBLE_DEFENSE, {}, SpoilerCollectionCheck::Chest(0x3B, 0x03),
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE, true);
 
     // Songs
-    locationTable[RC_SHEIK_IN_FOREST] =
-        Location::Delayed(RC_SHEIK_IN_FOREST, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_SACRED_FOREST_MEADOW,
-                          ACTOR_ID_MAX, SCENE_SACRED_FOREST_MEADOW, 0x00, 0x20, "Sheik in Forest", "Sheik in Forest",
-                          RHT_SHEIK_IN_FOREST, RG_MINUET_OF_FOREST, { Category::cSong },
-                          SpoilerCollectionCheck::EventChkInf(0x50), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
-    locationTable[RC_SHEIK_IN_CRATER] =
-        Location::Delayed(RC_SHEIK_IN_CRATER, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_DEATH_MOUNTAIN_CRATER,
-                          ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, 0x21, "Sheik in Crater", "Sheik in Crater",
-                          RHT_SHEIK_IN_CRATER, RG_BOLERO_OF_FIRE, { Category::cSong },
-                          SpoilerCollectionCheck::EventChkInf(0x51), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_SHEIK_IN_FOREST] = Location::Delayed(
+        RC_SHEIK_IN_FOREST, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_SACRED_FOREST_MEADOW, ACTOR_ID_MAX,
+        SCENE_SACRED_FOREST_MEADOW, 0x00, 0x20, "Sheik in Forest", "Sheik in Forest", RHT_SHEIK_IN_FOREST,
+        RG_MINUET_OF_FOREST, { Category::cSong }, SpoilerCollectionCheck::EventChkInf(0x50),
+        SpoilerCollectionCheckGroup::GROUP_LOST_WOODS, true);
+    locationTable[RC_SHEIK_IN_CRATER] = Location::Delayed(
+        RC_SHEIK_IN_CRATER, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_ID_MAX,
+        SCENE_ID_MAX, 0x00, 0x21, "Sheik in Crater", "Sheik in Crater", RHT_SHEIK_IN_CRATER, RG_BOLERO_OF_FIRE,
+        { Category::cSong }, SpoilerCollectionCheck::EventChkInf(0x51),
+        SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN, true);
     locationTable[RC_SHEIK_IN_ICE_CAVERN] = Location::Delayed(
         RC_SHEIK_IN_ICE_CAVERN, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_ICE_CAVERN, ACTOR_ID_MAX, SCENE_ICE_CAVERN,
         0x00, 0x22, "Sheik in Ice Cavern", "Sheik in Ice Cavern", RHT_SHEIK_IN_ICE_CAVERN, RG_SERENADE_OF_WATER,
         { Category::cSong, Category::cSongDungeonReward }, SpoilerCollectionCheck::EventChkInf(0x52),
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
-    locationTable[RC_SHEIK_AT_COLOSSUS] =
-        Location::Delayed(RC_SHEIK_AT_COLOSSUS, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_DESERT_COLOSSUS,
-                          ACTOR_ID_MAX, SCENE_DESERT_COLOSSUS, 0x00, 0x23, "Sheik at Colossus", "Sheik at Colossus",
-                          RHT_SHEIK_AT_COLOSSUS, RG_REQUIEM_OF_SPIRIT, { Category::cSong },
-                          SpoilerCollectionCheck::EventChkInf(0xAC), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-    locationTable[RC_SHEIK_IN_KAKARIKO] = Location::Delayed(
-        RC_SHEIK_IN_KAKARIKO, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_KAKARIKO_VILLAGE, ACTOR_ID_MAX, SCENE_ID_MAX,
-        0x00, 0x24, "Sheik in Kakariko", "Sheik in Kakariko", RHT_SHEIK_IN_KAKARIKO, RG_NOCTURNE_OF_SHADOW,
-        { Category::cSong }, SpoilerCollectionCheck::EventChkInf(0xAA), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN, true);
+    locationTable[RC_SHEIK_AT_COLOSSUS] = Location::Delayed(
+        RC_SHEIK_AT_COLOSSUS, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_DESERT_COLOSSUS, ACTOR_ID_MAX,
+        SCENE_DESERT_COLOSSUS, 0x00, 0x23, "Sheik at Colossus", "Sheik at Colossus", RHT_SHEIK_AT_COLOSSUS,
+        RG_REQUIEM_OF_SPIRIT, { Category::cSong }, SpoilerCollectionCheck::EventChkInf(0xAC),
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY, true);
+    locationTable[RC_SHEIK_IN_KAKARIKO] =
+        Location::Delayed(RC_SHEIK_IN_KAKARIKO, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_KAKARIKO_VILLAGE,
+                          ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, 0x24, "Sheik in Kakariko", "Sheik in Kakariko",
+                          RHT_SHEIK_IN_KAKARIKO, RG_NOCTURNE_OF_SHADOW, { Category::cSong },
+                          SpoilerCollectionCheck::EventChkInf(0xAA), SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
     locationTable[RC_SHEIK_AT_TEMPLE] = Location::Delayed(
         RC_SHEIK_AT_TEMPLE, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, 0x25,
         "Sheik at Temple", "Sheik at Temple", RHT_SHEIK_AT_TEMPLE, RG_PRELUDE_OF_LIGHT, { Category::cSong },
-        SpoilerCollectionCheck::Chest(0x43, 0x1F), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_SONG_FROM_IMPA] =
-        Location::Delayed(RC_SONG_FROM_IMPA, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_HYRULE_CASTLE, ACTOR_ID_MAX,
-                          SCENE_ID_MAX, 0x00, 0x26, "Song from Impa", "Song from Impa", RHT_SONG_FROM_IMPA,
-                          RG_ZELDAS_LULLABY, { Category::cSong, Category::cSongDungeonReward },
-                          SpoilerCollectionCheck::EventChkInf(0x59), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+        SpoilerCollectionCheck::Chest(0x43, 0x1F), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE, true);
+    locationTable[RC_SONG_FROM_IMPA] = Location::Delayed(
+        RC_SONG_FROM_IMPA, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_HYRULE_CASTLE, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00,
+        0x26, "Song from Impa", "Song from Impa", RHT_SONG_FROM_IMPA, RG_ZELDAS_LULLABY,
+        { Category::cSong, Category::cSongDungeonReward }, SpoilerCollectionCheck::EventChkInf(0x59),
+        SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE, true);
     locationTable[RC_SONG_FROM_MALON] = Location::Delayed(
         RC_SONG_FROM_MALON, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_LON_LON_RANCH, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00,
         0x27, "Song from Malon", "Song from Malon", RHT_SONG_FROM_MALON, RG_EPONAS_SONG, { Category::cSong },
-        SpoilerCollectionCheck::Chest(0x63, 0x1F), SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
-    locationTable[RC_SONG_FROM_SARIA] =
-        Location::Delayed(RC_SONG_FROM_SARIA, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_SACRED_FOREST_MEADOW,
-                          ACTOR_ID_MAX, SCENE_SACRED_FOREST_MEADOW, 0x00, 0x28, "Song from Saria", "Song from Saria",
-                          RHT_SONG_FROM_SARIA, RG_SARIAS_SONG, { Category::cSong },
-                          SpoilerCollectionCheck::Chest(0x56, 0x1F), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+        SpoilerCollectionCheck::Chest(0x63, 0x1F), SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH, true);
+    locationTable[RC_SONG_FROM_SARIA] = Location::Delayed(
+        RC_SONG_FROM_SARIA, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_SACRED_FOREST_MEADOW, ACTOR_ID_MAX,
+        SCENE_SACRED_FOREST_MEADOW, 0x00, 0x28, "Song from Saria", "Song from Saria", RHT_SONG_FROM_SARIA,
+        RG_SARIAS_SONG, { Category::cSong }, SpoilerCollectionCheck::Chest(0x56, 0x1F),
+        SpoilerCollectionCheckGroup::GROUP_LOST_WOODS, true);
     locationTable[RC_SONG_FROM_ROYAL_FAMILYS_TOMB] = Location::Delayed(
         RC_SONG_FROM_ROYAL_FAMILYS_TOMB, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_GRAVEYARD, ACTOR_ID_MAX,
         SCENE_ID_MAX, 0x00, 0x29, "Song from Composers Grave", "Song from Composers Grave",
         RHT_SONG_FROM_ROYAL_FAMILYS_TOMB, RG_SUNS_SONG, { Category::cSong }, SpoilerCollectionCheck::Chest(0x41, 0x1F),
-        SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+        SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
     locationTable[RC_SONG_FROM_OCARINA_OF_TIME] = Location::Delayed(
         RC_SONG_FROM_OCARINA_OF_TIME, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_HYRULE_FIELD, ACTOR_ID_MAX,
         SCENE_ID_MAX, 0x00, 0x2A, "Song from Ocarina of Time", "Song from Ocarina of Time",
         RHT_SONG_FROM_OCARINA_OF_TIME, RG_SONG_OF_TIME, { Category::cSong }, SpoilerCollectionCheck::Chest(0x51, 0x1F),
-        SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
-    locationTable[RC_SONG_FROM_WINDMILL] = Location::Delayed(
-        RC_SONG_FROM_WINDMILL, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_KAKARIKO_VILLAGE, ACTOR_ID_MAX, SCENE_ID_MAX,
-        0x00, 0x2B, "Song from Windmill", "Song from Windmill", RHT_SONG_FROM_WINDMILL, RG_SONG_OF_STORMS,
-        { Category::cSong }, SpoilerCollectionCheck::EventChkInf(0x5B), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+        SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD, true);
+    locationTable[RC_SONG_FROM_WINDMILL] =
+        Location::Delayed(RC_SONG_FROM_WINDMILL, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_KAKARIKO_VILLAGE,
+                          ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, 0x2B, "Song from Windmill", "Song from Windmill",
+                          RHT_SONG_FROM_WINDMILL, RG_SONG_OF_STORMS, { Category::cSong },
+                          SpoilerCollectionCheck::EventChkInf(0x5B), SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
 
     // Cows
     locationTable[RC_KF_LINKS_HOUSE_COW] = Location::Base(
@@ -4116,6 +4144,10 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_GANONDORF_HINT] =
         Location::OtherHint(RC_GANONDORF_HINT, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_GANONS_CASTLE,
                             ACTOR_EN_GANON_MANT, SCENE_GANON_BOSS, 0x00, 0x00, "Hint", "Ganondorf Hint", {});
+    locationTable[RC_TRIFORCE_COMPLETED] =
+        Location::Reward(RC_TRIFORCE_COMPLETED, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX,
+                         SCENE_ID_MAX, 0x00, 0x00, "Completed Triforce", "Completed Triforce", RHT_NONE, RG_NONE, {},
+                         SpoilerCollectionCheck::None(), SpoilerCollectionCheckGroup::GROUP_NO_GROUP);
 }
 
 Location* Rando::StaticData::GetLocation(RandomizerCheck locKey) {

@@ -168,7 +168,7 @@ void EnDns_Init(Actor* thisx, PlayState* play) {
     this->actor.gravity = -1.0f;
     this->actor.textId = D_809F040C[this->actor.params];
     this->dnsItemEntry = sItemEntries[this->actor.params];
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         // Ugly, but the best way we can identify which grotto we are in, same method 3DRando uses, but we'll need to account for entrance rando
         s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
         this->scrubIdentity = Randomizer_IdentifyScrub(play->sceneNum, this->actor.params, respawnData);
@@ -412,7 +412,7 @@ void EnDns_Talk(EnDns* this, PlayState* play) {
 
 void func_809EFDD0(EnDns* this, PlayState* play) {
     u16 pendingGetItemId;
-    if (!gSaveContext.n64ddFlag || !this->scrubIdentity.isShuffled) {
+    if (!IS_RANDO || !this->scrubIdentity.isShuffled) {
         if (this->actor.params == 0x9) {
             if (CUR_UPG_VALUE(UPG_STICKS) < 2) {
                 pendingGetItemId = GI_STICK_UPGRADE_20;
@@ -533,7 +533,7 @@ void EnDns_Update(Actor* thisx, PlayState* play) {
 
     this->dustTimer++;
     this->actor.textId = D_809F040C[this->actor.params];
-    if (gSaveContext.n64ddFlag && this->scrubIdentity.isShuffled) {
+    if (IS_RANDO && this->scrubIdentity.isShuffled) {
         this->actor.textId = 0x9000 + (this->scrubIdentity.randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT);
     }
     Actor_SetFocus(&this->actor, 60.0f);
@@ -554,6 +554,5 @@ void EnDns_Draw(Actor* thisx, PlayState* play) {
     EnDns* this = (EnDns*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, &this->actor);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, &this->actor);
 }

@@ -1,0 +1,9 @@
+<Root>
+    <File Name="object_gi_goddess" Segment="6">
+        <DList Name="gGiMagicSpellDiamondDL" Offset="0x0920"/>
+        <DList Name="gGiDinsFireColorDL" Offset="0x09E0"/>
+        <DList Name="gGiFaroresWindColorDL" Offset="0x0A00"/>
+        <DList Name="gGiNayrusLoveColorDL" Offset="0x0A20"/>
+        <DList Name="gGiMagicSpellOrbDL" Offset="0x0A40"/>
+    </File>
+</Root>
