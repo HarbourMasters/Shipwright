@@ -20,11 +20,11 @@ void ItemLocation::RemoveFromPool() {
 }
 
 const Item& ItemLocation::GetPlacedItem() const {
-    return StaticData::RetrieveItem(placedItem);
+    return Rando::StaticData::RetrieveItem(placedItem);
 }
 
 const Text& ItemLocation::GetPlacedItemName() const {
-    return StaticData::RetrieveItem(placedItem).GetName();
+    return Rando::StaticData::RetrieveItem(placedItem).GetName();
 }
 
 RandomizerGet ItemLocation::GetPlacedRandomizerGet() const {
@@ -54,16 +54,16 @@ RandomizerRegion ItemLocation::GetParentRegionKey() const {
 }
 
 void ItemLocation::PlaceVanillaItem() {
-    placedItem = StaticData::Location(rc)->GetVanillaItem();
+    placedItem = Rando::StaticData::GetLocation(rc)->GetVanillaItem();
 }
 
 void ItemLocation::ApplyPlacedItemEffect() {
-    StaticData::RetrieveItem(placedItem).ApplyEffect();
+    Rando::StaticData::RetrieveItem(placedItem).ApplyEffect();
 }
 
 uint16_t ItemLocation::GetPrice() const {
     if (StaticData::RetrieveItem(placedItem).GetItemType() == ITEMTYPE_SHOP) {
-        return StaticData::RetrieveItem(placedItem).GetPrice();
+        return Rando::StaticData::RetrieveItem(placedItem).GetPrice();
     }
     return price;
 }
@@ -141,8 +141,8 @@ ItemOverride_Key ItemLocation::Key() const {
     ItemOverride_Key key;
     key.all = 0;
 
-    key.scene = StaticData::Location(rc)->GetScene();
-    key.type = static_cast<uint8_t>(StaticData::Location(rc)->GetLocationType()); // TODO make sure these match up
+    key.scene = Rando::StaticData::GetLocation(rc)->GetScene();
+    key.type = static_cast<uint8_t>(StaticData::GetLocation(rc)->GetLocationType()); // TODO make sure these match up
     return key;
 }
 

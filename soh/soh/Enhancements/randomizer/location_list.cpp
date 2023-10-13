@@ -2,7 +2,7 @@
 
 #define TWO_ACTOR_PARAMS(a, b) (abs(a) << 16) | abs(b)
 
-std::array<Rando::Location, RC_MAX> StaticData::locationTable;
+std::array<Rando::Location, RC_MAX> Rando::StaticData::locationTable;
 
 std::vector<RandomizerCheck> KF_ShopLocations = {
     RC_KF_SHOP_ITEM_1, RC_KF_SHOP_ITEM_2, RC_KF_SHOP_ITEM_3, RC_KF_SHOP_ITEM_4,
@@ -39,12 +39,12 @@ std::vector<RandomizerCheck> GC_ShopLocations = {
     RC_GC_SHOP_ITEM_5, RC_GC_SHOP_ITEM_6, RC_GC_SHOP_ITEM_7, RC_GC_SHOP_ITEM_8,
 };
 // List of shop location lists, used for shop shuffle
-std::vector<std::vector<RandomizerCheck>> StaticData::shopLocationLists = {
+std::vector<std::vector<RandomizerCheck>> Rando::StaticData::shopLocationLists = {
     KF_ShopLocations,   Kak_PotionShopLocations, MK_BombchuShopLocations, MK_PotionShopLocations,
     MK_BazaarLocations, Kak_BazaarLocations,     ZD_ShopLocations,        GC_ShopLocations,
 };
 
-std::vector<RandomizerCheck> StaticData::scrubLocations = {
+std::vector<RandomizerCheck> Rando::StaticData::scrubLocations = {
     RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT,
     RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,
     RC_LW_DEKU_SCRUB_NEAR_BRIDGE,
@@ -93,13 +93,13 @@ std::vector<RandomizerCheck> StaticData::scrubLocations = {
     RC_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT,
 };
 
-std::vector<RandomizerCheck> StaticData::dungeonRewardLocations = {
+std::vector<RandomizerCheck> Rando::StaticData::dungeonRewardLocations = {
     // Bosses
     RC_QUEEN_GOHMA, RC_KING_DODONGO, RC_BARINADE,    RC_PHANTOM_GANON, RC_VOLVAGIA,
     RC_MORPHA,      RC_TWINROVA,     RC_BONGO_BONGO, RC_LINKS_POCKET,
 };
 
-std::vector<RandomizerCheck> StaticData::overworldLocations = {
+std::vector<RandomizerCheck> Rando::StaticData::overworldLocations = {
     // Kokiri Forest
     RC_KF_KOKIRI_SWORD_CHEST,
     RC_KF_MIDOS_TOP_LEFT_CHEST,
@@ -464,7 +464,7 @@ std::vector<RandomizerCheck> StaticData::overworldLocations = {
     RC_LLR_GS_TREE,
 };
 
-std::vector<RandomizerCheck> StaticData::gossipStoneLocations = {
+std::vector<RandomizerCheck> Rando::StaticData::gossipStoneLocations = {
     RC_COLOSSUS_GOSSIP_STONE,
     RC_DMC_GOSSIP_STONE,
     RC_DMC_UPPER_GROTTO_GOSSIP_STONE,
@@ -532,7 +532,7 @@ typedef enum {
 
 using namespace Rando;
 
-void StaticData::InitLocationTable() {
+void Rando::StaticData::InitLocationTable() {
     locationTable[RC_UNKNOWN_CHECK] = Location::Base(
         RC_UNKNOWN_CHECK, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_INVALID, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, 0x00,
         "Invalid Location", "Invalid Location", RHT_NONE, RG_NONE, {}, SpoilerCollectionCheck::None());
@@ -4118,10 +4118,10 @@ void StaticData::InitLocationTable() {
                             ACTOR_EN_GANON_MANT, SCENE_GANON_BOSS, 0x00, 0x00, "Hint", "Ganondorf Hint", {});
 }
 
-Location* StaticData::Location(RandomizerCheck locKey) {
+Location* Rando::StaticData::GetLocation(RandomizerCheck locKey) {
     return &(locationTable[locKey]);
 }
 
-std::array<Location, RC_MAX>& StaticData::GetLocationTable() {
+std::array<Location, RC_MAX>& Rando::StaticData::GetLocationTable() {
     return locationTable;
 }

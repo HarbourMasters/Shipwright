@@ -466,7 +466,7 @@ void PlaceJunkInExcludedLocation(const RandomizerCheck il) {
   //place a non-advancement item in this location
   auto ctx = Rando::Context::GetInstance();
   for (size_t i = 0; i < ItemPool.size(); i++) {
-    if (!StaticData::RetrieveItem(ItemPool[i]).IsAdvancement()) {
+    if (!Rando::StaticData::RetrieveItem(ItemPool[i]).IsAdvancement()) {
       ctx->PlaceItemInLocation(il, ItemPool[i]);
       ItemPool.erase(ItemPool.begin() + i);
       return;
@@ -785,7 +785,7 @@ void GenerateItemPool() {
     }
   } else if (Tokensanity.Is(TOKENSANITY_DUNGEONS)) {
     for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, Category::cSkulltula)) {
-      if (StaticData::Location(loc)->IsOverworld()) {
+      if (Rando::StaticData::GetLocation(loc)->IsOverworld()) {
           ctx->PlaceItemInLocation((RandomizerCheck)loc, RG_GOLD_SKULLTULA_TOKEN, false, true);
       } else {
         AddItemToMainPool(RG_GOLD_SKULLTULA_TOKEN);
@@ -793,7 +793,7 @@ void GenerateItemPool() {
     }
   } else if (Tokensanity.Is(TOKENSANITY_OVERWORLD)) {
     for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, Category::cSkulltula)) {
-      if (StaticData::Location(loc)->IsDungeon()) {
+      if (Rando::StaticData::GetLocation(loc)->IsDungeon()) {
           ctx->PlaceItemInLocation((RandomizerCheck)loc, RG_GOLD_SKULLTULA_TOKEN, false, true);
       } else {
         AddItemToMainPool(RG_GOLD_SKULLTULA_TOKEN);
@@ -1074,7 +1074,7 @@ void GenerateItemPool() {
   std::vector<RandomizerGet> bottles;
   bottles.assign(normalBottles.begin(), normalBottles.end());
   IceTrapModels.push_back(
-      StaticData::RetrieveItem(RandomElement(bottles)).GetItemID()); // Get one random bottle type for ice traps
+      Rando::StaticData::RetrieveItem(RandomElement(bottles)).GetItemID()); // Get one random bottle type for ice traps
   for (uint8_t i = 0; i < bottleCount; i++) {
     if (i >= rutoBottles) {
       if ((i == bottleCount - 1) && ShuffleMerchants.IsNot(SHUFFLEMERCHANTS_OFF)) {

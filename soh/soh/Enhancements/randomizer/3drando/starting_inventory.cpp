@@ -187,6 +187,6 @@ void ApplyStartingInventory() {
     if (item == RG_PIECE_OF_HEART || item == RG_HEART_CONTAINER || item == RG_TREASURE_GAME_HEART)
       continue;
 
-    StaticData::RetrieveItem(item).ApplyEffect();
+    Rando::StaticData::RetrieveItem(item).ApplyEffect();
   }
 }

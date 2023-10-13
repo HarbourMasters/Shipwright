@@ -283,7 +283,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
             actual = RG_NONE;
             break;
     }
-    return StaticData::RetrieveItem(actual).GetGIEntry();
+    return Rando::StaticData::RetrieveItem(actual).GetGIEntry();
 }
 
 GetItemEntry Item::GetGIEntry_Copy() {

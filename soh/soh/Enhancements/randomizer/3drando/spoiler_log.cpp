@@ -100,13 +100,13 @@ void WriteIngameSpoilerLog() {
     // Sort all locations by their group, so the in-game log can show a group of items by simply starting/ending at
     // certain indices
     std::stable_sort(ctx->allLocations.begin(), ctx->allLocations.end(), [](const RandomizerCheck& a, const RandomizerCheck& b) {
-        auto groupA = StaticData::Location(a)->GetCollectionCheckGroup();
-        auto groupB = StaticData::Location(b)->GetCollectionCheckGroup();
+        auto groupA = Rando::StaticData::GetLocation(a)->GetCollectionCheckGroup();
+        auto groupB = Rando::StaticData::GetLocation(b)->GetCollectionCheckGroup();
         return groupA < groupB;
     });
 
     for (const RandomizerCheck key : ctx->allLocations) {
-        auto loc = StaticData::Location(key);
+        auto loc = Rando::StaticData::GetLocation(key);
         auto itemLocation = ctx->GetItemLocation(key);
 
         // Hide excluded locations from ingame tracker
@@ -262,7 +262,7 @@ void WriteIngameSpoilerLog() {
 // Writes the location to the specified node.
 static void WriteLocation(
     std::string sphere, const RandomizerCheck locationKey, const bool withPadding = false) {
-  Rando::Location* location = StaticData::Location(locationKey);
+  Rando::Location* location = Rando::StaticData::GetLocation(locationKey);
   Rando::ItemLocation* itemLocation = Rando::Context::GetInstance()->GetItemLocation(locationKey);
 
   // auto node = parentNode->InsertNewChildElement("location");
@@ -415,7 +415,7 @@ static void WriteSettings(const bool printAll = false) {
   // spoilerLog.RootElement()->InsertEndChild(parentNode);
 
   //     for (const uint32_t key : allLocations) {
-  //       ItemLocation* location = Location(key);
+  //       ItemLocation* location = GetLocation(key);
   //       settingsJsonData["locations"][location->GetName()] = location->GetPlacedItemName().english;
   //   }
 }
@@ -717,10 +717,10 @@ static void WriteHints(int language) {
     std::string erubyArea;
     std::string sapphireArea;
 
-    jsonData["childAltar"]["rewards"]["emeraldLoc"] = StaticData::Location(emeraldLoc->GetRandomizerCheck())->GetName();
-    jsonData["childAltar"]["rewards"]["rubyLoc"] = StaticData::Location(rubyLoc->GetRandomizerCheck())->GetName();
+    jsonData["childAltar"]["rewards"]["emeraldLoc"] = Rando::StaticData::GetLocation(emeraldLoc->GetRandomizerCheck())->GetName();
+    jsonData["childAltar"]["rewards"]["rubyLoc"] = Rando::StaticData::GetLocation(rubyLoc->GetRandomizerCheck())->GetName();
     jsonData["childAltar"]["rewards"]["sapphireLoc"] =
-        StaticData::Location(sapphireLoc->GetRandomizerCheck())->GetName();
+        Rando::StaticData::GetLocation(sapphireLoc->GetRandomizerCheck())->GetName();
 
     Rando::ItemLocation* forestMedallionLoc = GetItemLocation(RG_FOREST_MEDALLION);
     Rando::ItemLocation* fireMedallionLoc = GetItemLocation(RG_FIRE_MEDALLION);
@@ -730,17 +730,17 @@ static void WriteHints(int language) {
     Rando::ItemLocation* lightMedallionLoc = GetItemLocation(RG_LIGHT_MEDALLION);
 
     jsonData["adultAltar"]["rewards"]["forestMedallionLoc"] =
-        StaticData::Location(forestMedallionLoc->GetRandomizerCheck())->GetName();
+        Rando::StaticData::GetLocation(forestMedallionLoc->GetRandomizerCheck())->GetName();
     jsonData["adultAltar"]["rewards"]["fireMedallionLoc"] =
-        StaticData::Location(fireMedallionLoc->GetRandomizerCheck())->GetName();
+        Rando::StaticData::GetLocation(fireMedallionLoc->GetRandomizerCheck())->GetName();
     jsonData["adultAltar"]["rewards"]["waterMedallionLoc"] =
-        StaticData::Location(waterMedallionLoc->GetRandomizerCheck())->GetName();
+        Rando::StaticData::GetLocation(waterMedallionLoc->GetRandomizerCheck())->GetName();
     jsonData["adultAltar"]["rewards"]["shadowMedallionLoc"] =
-        StaticData::Location(shadowMedallionLoc->GetRandomizerCheck())->GetName();
+        Rando::StaticData::GetLocation(shadowMedallionLoc->GetRandomizerCheck())->GetName();
     jsonData["adultAltar"]["rewards"]["spiritMedallionLoc"] =
-        StaticData::Location(spiritMedallionLoc->GetRandomizerCheck())->GetName();
+        Rando::StaticData::GetLocation(spiritMedallionLoc->GetRandomizerCheck())->GetName();
     jsonData["adultAltar"]["rewards"]["lightMedallionLoc"] =
-        StaticData::Location(lightMedallionLoc->GetRandomizerCheck())->GetName();
+        Rando::StaticData::GetLocation(lightMedallionLoc->GetRandomizerCheck())->GetName();
 
     std::string ganonText = AutoFormatHintTextString(unformattedGanonText);
     std::string ganonHintText = AutoFormatHintTextString(unformattedGanonHintText);
@@ -753,13 +753,13 @@ static void WriteHints(int language) {
     jsonData["dampeText"] = dampesText;
     jsonData["dampeHintLoc"] = GetDampeHintLoc();
     jsonData["gregText"] = gregText;
-    jsonData["gregLoc"] = StaticData::Location(GetItemLocation(RG_GREG_RUPEE)->GetRandomizerCheck())->GetName();
+    jsonData["gregLoc"] = Rando::StaticData::GetLocation(GetItemLocation(RG_GREG_RUPEE)->GetRandomizerCheck())->GetName();
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;
     }
     auto ctx = Rando::Context::GetInstance();
-    for (const RandomizerCheck key : StaticData::gossipStoneLocations) {
+    for (const RandomizerCheck key : Rando::StaticData::gossipStoneLocations) {
         Rando::Hint* hint = ctx->GetHint((RandomizerHintKey)(key - RC_DMC_GOSSIP_STONE + 1));
         Rando::ItemLocation* hintedLocation = ctx->GetItemLocation(hint->GetHintedLocation());
         std::string unformattedHintTextString;
@@ -776,17 +776,17 @@ static void WriteHints(int language) {
         HintType hintType = hint->GetHintType();
 
         std::string textStr = AutoFormatHintTextString(unformattedHintTextString);
-        jsonData["hints"][StaticData::Location(key)->GetName()]["hint"] = textStr;
-        jsonData["hints"][StaticData::Location(key)->GetName()]["type"] = hintTypeNames.find(hintType)->second;
+        jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["hint"] = textStr;
+        jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["type"] = hintTypeNames.find(hintType)->second;
         if (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_NAMED_ITEM || hintType == HINT_TYPE_WOTH) {
-            jsonData["hints"][StaticData::Location(key)->GetName()]["item"] = hintedLocation->GetPlacedItemName().GetEnglish();
+            jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["item"] = hintedLocation->GetPlacedItemName().GetEnglish();
             if (hintType != HINT_TYPE_NAMED_ITEM || hintType == HINT_TYPE_WOTH) {
-                jsonData["hints"][StaticData::Location(key)->GetName()]["location"] =
-                    StaticData::Location(hintedLocation->GetRandomizerCheck())->GetName();
+                jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["location"] =
+                    Rando::StaticData::GetLocation(hintedLocation->GetRandomizerCheck())->GetName();
             }
         }
         if (hintType != HINT_TYPE_TRIAL && hintType != HINT_TYPE_JUNK) {
-            jsonData["hints"][StaticData::Location(key)->GetName()]["area"] = hint->GetHintedRegion();
+            jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["area"] = hint->GetHintedRegion();
         }
     }
 }
@@ -813,34 +813,34 @@ static void WriteAllLocations(int language) {
             !location->HasShopsanityPrice() &&
             location->GetPlacedRandomizerGet() != RG_ICE_TRAP) {
             
-            jsonData["locations"][StaticData::Location(location->GetRandomizerCheck())->GetName()] = placedItemName;
+            jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()] = placedItemName;
             continue;
         }
 
         // We're dealing with a complex item, build out the json object for it
-        jsonData["locations"][StaticData::Location(location->GetRandomizerCheck())->GetName()]["item"] = placedItemName;
+        jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["item"] = placedItemName;
 
         if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
-            jsonData["locations"][StaticData::Location(location->GetRandomizerCheck())->GetName()]["price"] =
+            jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["price"] =
                 location->GetPrice();
         }
         if (location->IsHintedAt()) {
-          hintedLocations.emplace(StaticData::Location(key)->GetHintKey(), location);
+          hintedLocations.emplace(Rando::StaticData::GetLocation(key)->GetHintKey(), location);
         }
 
         if (location->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
           switch (language) {
               case 0:
               default:
-                  jsonData["locations"][StaticData::Location(location->GetRandomizerCheck())->GetName()]["model"] =
-                      StaticData::ItemFromGIID(ctx->iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
-                  jsonData["locations"][StaticData::Location(location->GetRandomizerCheck())->GetName()]["trickName"] = 
+                  jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["model"] =
+                      Rando::StaticData::ItemFromGIID(ctx->iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
+                  jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["trickName"] = 
                       GetIceTrapName(ctx->iceTrapModels[location->GetRandomizerCheck()]).english;
                   break;
               case 2:
-                  jsonData["locations"][StaticData::Location(location->GetRandomizerCheck())->GetName()]["model"] =
-                      StaticData::ItemFromGIID(ctx->iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
-                  jsonData["locations"][StaticData::Location(location->GetRandomizerCheck())->GetName()]["trickName"] =
+                  jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["model"] =
+                      Rando::StaticData::ItemFromGIID(ctx->iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
+                  jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["trickName"] =
                       GetIceTrapName(ctx->iceTrapModels[location->GetRandomizerCheck()]).french;
                   break;
           }

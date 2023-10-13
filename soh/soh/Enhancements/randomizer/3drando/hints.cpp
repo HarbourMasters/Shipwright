@@ -253,7 +253,7 @@ static std::vector<RandomizerCheck> GetAccessibleGossipStones(const RandomizerCh
   ctx->GetItemLocation(hintedLocation)->SetPlacedItem(RG_NONE);
 
   LogicReset();
-  auto accessibleGossipStones = GetAccessibleLocations(StaticData::gossipStoneLocations);
+  auto accessibleGossipStones = GetAccessibleLocations(Rando::StaticData::gossipStoneLocations);
   //Give the item back to the location
   ctx->GetItemLocation(hintedLocation)->SetPlacedItem(originalItem);
 
@@ -263,7 +263,7 @@ static std::vector<RandomizerCheck> GetAccessibleGossipStones(const RandomizerCh
 static void AddHint(Text hint, const RandomizerCheck gossipStone, const std::vector<uint8_t>& colors = {}, HintType hintType = HINT_TYPE_ITEM, const RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK) {
   //save hints as dummy items for writing to the spoiler log
   //NewItem(gossipStone, Item{RG_HINT, hint, ITEMTYPE_EVENT, GI_RUPEE_BLUE_LOSE, false, &noVariable, NONE});
-  //Location(gossipStone)->SetPlacedItem(gossipStone);
+  //GetLocation(gossipStone)->SetPlacedItem(gossipStone);
 
   auto ctx = Rando::Context::GetInstance();
   ctx->AddHint((RandomizerHintKey)((gossipStone - RC_DMC_GOSSIP_STONE) + 1), hint, hintedLocation, hintType, GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText());
@@ -282,7 +282,7 @@ static void CreateLocationHint(const std::vector<RandomizerCheck>& possibleHintL
   const std::vector<RandomizerCheck> accessibleGossipStones = GetAccessibleGossipStones(hintedLocation);
 
   SPDLOG_DEBUG("\tLocation: ");
-  SPDLOG_DEBUG(StaticData::Location(hintedLocation)->GetName());
+  SPDLOG_DEBUG(Rando::StaticData::GetLocation(hintedLocation)->GetName());
   SPDLOG_DEBUG("\n");
 
   SPDLOG_DEBUG("\tItem: ");
@@ -298,7 +298,7 @@ static void CreateLocationHint(const std::vector<RandomizerCheck>& possibleHintL
   ctx->GetItemLocation(hintedLocation)->SetAsHinted();
 
   //make hint text
-  Text locationHintText = StaticData::Location(hintedLocation)->GetHint()->GetText();
+  Text locationHintText = Rando::StaticData::GetLocation(hintedLocation)->GetHint()->GetText();
   Text itemHintText = ctx->GetItemLocation(hintedLocation)->GetPlacedItem().GetHint().GetText();
   Text prefix = Hint(RHT_PREFIX).GetText();
   
@@ -319,8 +319,8 @@ static void CreateWothHint(uint8_t* remainingDungeonWothHints) {
         FilterFromPool(ctx->wothLocations, [remainingDungeonWothHints, ctx](RandomizerCheck loc) {
             return ctx->GetItemLocation(loc)->IsHintable() &&    // only filter hintable locations
                    !(ctx->GetItemLocation(loc)->IsHintedAt()) && // only filter locations that haven't been hinted at
-                   (StaticData::Location(loc)->IsOverworld() ||
-                    (StaticData::Location(loc)->IsDungeon() &&
+                   (Rando::StaticData::GetLocation(loc)->IsOverworld() ||
+                    (Rando::StaticData::GetLocation(loc)->IsDungeon() &&
                      (*remainingDungeonWothHints) > 0)); // make sure we haven't surpassed the woth dungeon limit
         });
     AddElementsToPool(possibleHintLocations, wothHintLocations);
@@ -333,7 +333,7 @@ static void CreateWothHint(uint8_t* remainingDungeonWothHints) {
     RandomizerCheck hintedLocation = RandomElement(possibleHintLocations);
 
     SPDLOG_DEBUG("\tLocation: ");
-    SPDLOG_DEBUG(StaticData::Location(hintedLocation)->GetName());
+    SPDLOG_DEBUG(Rando::StaticData::GetLocation(hintedLocation)->GetName());
     SPDLOG_DEBUG("\n");
 
     SPDLOG_DEBUG("\tItem: ");
@@ -350,7 +350,7 @@ static void CreateWothHint(uint8_t* remainingDungeonWothHints) {
     ctx->GetItemLocation(hintedLocation)->SetAsHinted();
     RandomizerCheck gossipStone = RandomElement(gossipStoneLocations);
 
-    if (StaticData::Location(hintedLocation)->IsDungeon()) {
+    if (Rando::StaticData::GetLocation(hintedLocation)->IsDungeon()) {
         *remainingDungeonWothHints -= 1;
     }
 
@@ -369,7 +369,7 @@ static void CreateBarrenHint(uint8_t* remainingDungeonBarrenHints, std::vector<R
     if (*remainingDungeonBarrenHints < 1) {
         barrenLocations =
             FilterFromPool(barrenLocations, [](const RandomizerCheck loc) { 
-              return !(StaticData::Location(loc)->IsDungeon()); 
+              return !(Rando::StaticData::GetLocation(loc)->IsDungeon()); 
             });
     }
 
@@ -380,7 +380,7 @@ static void CreateBarrenHint(uint8_t* remainingDungeonBarrenHints, std::vector<R
     RandomizerCheck hintedLocation = RandomElement(barrenLocations, true);
 
     SPDLOG_DEBUG("\tLocation: ");
-    SPDLOG_DEBUG(StaticData::Location(hintedLocation)->GetName());
+    SPDLOG_DEBUG(Rando::StaticData::GetLocation(hintedLocation)->GetName());
     SPDLOG_DEBUG("\n");
 
     SPDLOG_DEBUG("\tItem: ");
@@ -396,7 +396,7 @@ static void CreateBarrenHint(uint8_t* remainingDungeonBarrenHints, std::vector<R
     ctx->GetItemLocation(hintedLocation)->SetAsHinted();
     RandomizerCheck gossipStone = RandomElement(gossipStoneLocations);
 
-    if (StaticData::Location(hintedLocation)->IsDungeon()) {
+    if (Rando::StaticData::GetLocation(hintedLocation)->IsDungeon()) {
         *remainingDungeonBarrenHints -= 1;
     }
 
@@ -429,7 +429,7 @@ static void CreateRandomLocationHint(const bool goodItem = false) {
   RandomizerCheck hintedLocation = RandomElement(possibleHintLocations);
 
   SPDLOG_DEBUG("\tLocation: ");
-  SPDLOG_DEBUG(StaticData::Location(hintedLocation)->GetName());
+  SPDLOG_DEBUG(Rando::StaticData::GetLocation(hintedLocation)->GetName());
   SPDLOG_DEBUG("\n");
 
   SPDLOG_DEBUG("\tItem: ");
@@ -449,7 +449,7 @@ static void CreateRandomLocationHint(const bool goodItem = false) {
   Text itemText = ctx->GetItemLocation(hintedLocation)->GetPlacedItem().GetHint().GetText();
   Text locationText = GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
   // RANDOTODO: reconsider dungeon vs non-dungeon item location hints when boss shuffle mixed pools happens
-  if (StaticData::Location(hintedLocation)->IsDungeon()) {
+  if (Rando::StaticData::GetLocation(hintedLocation)->IsDungeon()) {
     Text finalHint = Hint(RHT_PREFIX).GetText()+"#"+locationText+"# "+Hint(RHT_HOARDS).GetText()+" #"+itemText+"#.";
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalHint.english);
@@ -472,7 +472,7 @@ static void CreateJunkHint() {
   //duplicate junk hints are possible for now
   const HintText junkHint = RandomElement(GetHintCategory(HintCategory::Junk));
   LogicReset();
-  const std::vector<RandomizerCheck> gossipStones = GetAccessibleLocations(StaticData::gossipStoneLocations);
+  const std::vector<RandomizerCheck> gossipStones = GetAccessibleLocations(Rando::StaticData::gossipStoneLocations);
   if (gossipStones.empty()) {
       SPDLOG_DEBUG("\tNO GOSSIP STONES TO PLACE HINT\n\n");
     return;
@@ -599,7 +599,7 @@ void CreateGanonText() {
       ganonHintText =
           hint.GetText() +
           GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
-      ganonHintLoc = StaticData::Location(lightArrowLocation[0])->GetName();
+      ganonHintLoc = Rando::StaticData::GetLocation(lightArrowLocation[0])->GetName();
   }
   ganonHintText = ganonHintText + "!";
 
@@ -840,7 +840,7 @@ void CreateDampesDiaryText() {
   };
   
   dampesText = temp1 + area + temp2;
-  dampeHintLoc = StaticData::Location(location)->GetName();
+  dampeHintLoc = Rando::StaticData::GetLocation(location)->GetName();
   ctx->AddHint(RH_DAMPES_DIARY, dampesText, location, HINT_TYPE_STATIC, area);
 }
 
@@ -933,7 +933,7 @@ void CreateAllHints() {
       // Only filter locations that had a random item placed at them (e.g. don't get cow locations if shuffle cows is
       // off)
       auto alwaysHintLocations = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
-          return ((StaticData::Location(loc)->GetHint()->GetType() == HintCategory::Always) ||
+          return ((Rando::StaticData::GetLocation(loc)->GetHint()->GetType() == HintCategory::Always) ||
                   // If we have Rainbow Bridge set to Greg, add a hint for where Greg is
                   (Bridge.Is(RAINBOWBRIDGE_GREG) && !GregHintText &&
                    ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_GREG_RUPEE)) &&
@@ -1016,7 +1016,7 @@ void CreateAllHints() {
   }
 
   //while there are still gossip stones remaining
-  while (FilterFromPool(StaticData::gossipStoneLocations, [ctx](const RandomizerCheck loc) {
+  while (FilterFromPool(Rando::StaticData::gossipStoneLocations, [ctx](const RandomizerCheck loc) {
              return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_NONE;
          }).size() != 0) {
       // TODO: fixed hint types
@@ -1056,7 +1056,7 @@ void CreateAllHints() {
       } else if (type == HINT_TYPE_SONG) {
           std::vector<RandomizerCheck> songHintLocations =
               FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
-                  return StaticData::Location(loc)->IsCategory(Category::cSong) &&
+                  return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSong) &&
                          ctx->GetItemLocation(loc)->IsHintable() && !(ctx->GetItemLocation(loc)->IsHintedAt());
               });
           CreateLocationHint(songHintLocations);
@@ -1064,7 +1064,7 @@ void CreateAllHints() {
       } else if (type == HINT_TYPE_OVERWORLD) {
           std::vector<RandomizerCheck> overworldHintLocations =
               FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
-                  return StaticData::Location(loc)->IsOverworld() && ctx->GetItemLocation(loc)->IsHintable() &&
+                  return Rando::StaticData::GetLocation(loc)->IsOverworld() && ctx->GetItemLocation(loc)->IsHintable() &&
                          !(ctx->GetItemLocation(loc)->IsHintedAt());
               });
           CreateLocationHint(overworldHintLocations);
@@ -1072,7 +1072,7 @@ void CreateAllHints() {
       } else if (type == HINT_TYPE_DUNGEON) {
           std::vector<RandomizerCheck> dungeonHintLocations =
               FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
-                  return StaticData::Location(loc)->IsDungeon() && ctx->GetItemLocation(loc)->IsHintable() &&
+                  return Rando::StaticData::GetLocation(loc)->IsDungeon() && ctx->GetItemLocation(loc)->IsHintable() &&
                          !(ctx->GetItemLocation(loc)->IsHintedAt());
               });
           CreateLocationHint(dungeonHintLocations);
@@ -1083,7 +1083,7 @@ void CreateAllHints() {
   }
 
   //If any gossip stones failed to have a hint placed on them for some reason, place a junk hint as a failsafe.
-  for (RandomizerCheck gossipStone : FilterFromPool(StaticData::gossipStoneLocations, [ctx](const RandomizerCheck loc) {
+  for (RandomizerCheck gossipStone : FilterFromPool(Rando::StaticData::gossipStoneLocations, [ctx](const RandomizerCheck loc) {
            return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_NONE;
        })) {
       const HintText junkHint = RandomElement(GetHintCategory(HintCategory::Junk));

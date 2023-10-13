@@ -46,7 +46,7 @@ std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> rcObjectsByArea = {}
 
 std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> RandomizerCheckObjects::GetAllRCObjectsByArea() {
     if (rcObjectsByArea.size() == 0) {
-        for (auto& location : StaticData::GetLocationTable()) {
+        for (auto& location : Rando::StaticData::GetLocationTable()) {
             rcObjectsByArea[location.GetArea()][location.GetRandomizerCheck()] = location.GetRandomizerCheck();
         }
     }
@@ -73,7 +73,7 @@ std::map<SceneID, RandomizerCheckArea> rcAreaBySceneID = {};
 std::map<SceneID, RandomizerCheckArea> RandomizerCheckObjects::GetAllRCAreaBySceneID() {
     // memoize on first request
     if (rcAreaBySceneID.size() == 0) {
-        for (auto& location : StaticData::GetLocationTable()) {
+        for (auto& location : Rando::StaticData::GetLocationTable()) {
             rcAreaBySceneID[location.GetScene()] = location.GetArea();
         }
         // Add checkless Hyrule Market areas to the area return
@@ -95,7 +95,7 @@ RandomizerCheckArea RandomizerCheckObjects::GetRCAreaBySceneID(SceneID sceneId) 
 
 void RandomizerCheckObjects::UpdateImGuiVisibility() {
     auto ctx = Rando::Context::GetInstance();
-    for (auto& location : StaticData::GetLocationTable()) {
+    for (auto& location : Rando::StaticData::GetLocationTable()) {
         auto itemLoc = ctx->GetItemLocation(location.GetRandomizerCheck());
         itemLoc->SetVisible(
             (location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) &&

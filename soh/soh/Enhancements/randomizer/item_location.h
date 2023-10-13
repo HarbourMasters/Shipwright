@@ -91,7 +91,7 @@ class ItemLocation {
     bool addedToPool = false;
     RandomizerGet placedItem = RG_NONE;
     RandomizerGet delayedItem = RG_NONE;
-    Option excludedOption = Option::Bool(StaticData::Location(rc)->GetName(), {"Include", "Exclude"});
+    Option excludedOption = Option::Bool(StaticData::GetLocation(rc)->GetName(), {"Include", "Exclude"});
     uint16_t price = 0;
     RandomizerRegion parentRegion = RR_NONE;
     bool hasShopsanityPrice = false;

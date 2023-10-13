@@ -51,7 +51,7 @@ void DungeonInfo::PlaceVanillaMap() {
 
     auto dungeonLocations = GetDungeonLocations();
     auto mapLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
-        return StaticData::Location(loc)->IsCategory(Category::cVanillaMap);
+        return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cVanillaMap);
     })[0];
     Rando::Context::GetInstance()->PlaceItemInLocation(mapLocation, map);
 }
@@ -63,7 +63,7 @@ void DungeonInfo::PlaceVanillaCompass() {
 
     auto dungeonLocations = GetDungeonLocations();
     auto compassLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
-        return StaticData::Location(loc)->IsCategory(Category::cVanillaCompass);
+        return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cVanillaCompass);
     })[0];
     Rando::Context::GetInstance()->PlaceItemInLocation(compassLocation, compass);
 }
@@ -75,7 +75,7 @@ void DungeonInfo::PlaceVanillaBossKey() {
 
     auto dungeonLocations = GetDungeonLocations();
     auto bossKeyLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
-        return StaticData::Location(loc)->IsCategory(Category::cVanillaBossKey);
+        return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cVanillaBossKey);
     })[0];
     Rando::Context::GetInstance()->PlaceItemInLocation(bossKeyLocation, bossKey);
 }
@@ -87,7 +87,7 @@ void DungeonInfo::PlaceVanillaSmallKeys() {
 
     auto dungeonLocations = GetDungeonLocations();
     auto smallKeyLocations = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
-        return StaticData::Location(loc)->IsCategory(Category::cVanillaSmallKey);
+        return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cVanillaSmallKey);
     });
     for (auto location : smallKeyLocations) {
         Rando::Context::GetInstance()->PlaceItemInLocation(location, smallKey);

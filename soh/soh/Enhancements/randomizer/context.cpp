@@ -51,18 +51,18 @@ void Context::PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bo
     SPDLOG_DEBUG("\n\n");
 
     if (applyEffectImmediately || Settings::Logic.Is(LOGIC_NONE) || Settings::Logic.Is(LOGIC_VANILLA)) {
-        StaticData::RetrieveItem(item).ApplyEffect();
+        Rando::StaticData::RetrieveItem(item).ApplyEffect();
     }
 
     //TODO? Show Progress
 
     // If we're placing a non-shop item in a shop location, we want to record it for custom messages
     if (StaticData::RetrieveItem(item).GetItemType() != ITEMTYPE_SHOP &&
-        StaticData::Location(locKey)->IsCategory(Category::cShop)) {
+        Rando::StaticData::GetLocation(locKey)->IsCategory(Category::cShop)) {
         int index = TransformShopIndex(GetShopIndex(locKey));
-        NonShopItems[index].Name = StaticData::RetrieveItem(item).GetName();
-        NonShopItems[index].Repurchaseable = StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_REFILL ||
-                                             StaticData::RetrieveItem(item).GetHintKey() == RHT_PROGRESSIVE_BOMBCHUS;
+        NonShopItems[index].Name = Rando::StaticData::RetrieveItem(item).GetName();
+        NonShopItems[index].Repurchaseable = Rando::StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_REFILL ||
+                                             Rando::StaticData::RetrieveItem(item).GetHintKey() == RHT_PROGRESSIVE_BOMBCHUS;
     }
 
     loc->SetPlacedItem(item);
@@ -100,8 +100,8 @@ std::vector<RandomizerCheck> Context::GetLocations(const std::vector<RandomizerC
                                                    Category categoryInclude, Category categoryExclude) {
     std::vector<RandomizerCheck> locationsInCategory;
     for (RandomizerCheck locKey : locationPool) {
-        if (StaticData::Location(locKey)->IsCategory(categoryInclude) &&
-            !StaticData::Location(locKey)->IsCategory(categoryExclude)) {
+        if (StaticData::GetLocation(locKey)->IsCategory(categoryInclude) &&
+            !StaticData::GetLocation(locKey)->IsCategory(categoryExclude)) {
             locationsInCategory.push_back(locKey);
         }
     }
@@ -113,7 +113,7 @@ void Context::ItemReset() {
         GetItemLocation(il)->ResetVariables();
     }
 
-    for (RandomizerCheck il : StaticData::dungeonRewardLocations) {
+    for (RandomizerCheck il : Rando::StaticData::dungeonRewardLocations) {
         GetItemLocation(il)->ResetVariables();
     }
 }
@@ -123,11 +123,11 @@ void Context::LocationReset() {
         GetItemLocation(il)->RemoveFromPool();
     }
 
-    for (RandomizerCheck il : StaticData::dungeonRewardLocations) {
+    for (RandomizerCheck il : Rando::StaticData::dungeonRewardLocations) {
         GetItemLocation(il)->RemoveFromPool();
     }
 
-    for (RandomizerCheck il : StaticData::gossipStoneLocations) {
+    for (RandomizerCheck il : Rando::StaticData::gossipStoneLocations) {
         GetItemLocation(il)->RemoveFromPool();
     }
 
@@ -135,7 +135,7 @@ void Context::LocationReset() {
 }
 
 void Context::HintReset() {
-    for (RandomizerCheck il : StaticData::gossipStoneLocations) {
+    for (RandomizerCheck il : Rando::StaticData::gossipStoneLocations) {
         GetItemLocation(il)->ResetVariables();
         GetHint((RandomizerHintKey)(il - RC_DMC_GOSSIP_STONE + 1))->ResetVariables();
     }
@@ -144,9 +144,9 @@ void Context::HintReset() {
 void Context::CreateItemOverrides() {
     SPDLOG_DEBUG("NOW CREATING OVERRIDES\n\n");
     for (RandomizerCheck locKey : allLocations) {
-        auto loc = StaticData::Location(locKey);
+        auto loc = Rando::StaticData::GetLocation(locKey);
         auto itemLoc = GetItemLocation(locKey);
-        ItemOverride_Value val = StaticData::RetrieveItem(itemLoc->GetPlacedRandomizerGet()).Value();
+        ItemOverride_Value val = Rando::StaticData::RetrieveItem(itemLoc->GetPlacedRandomizerGet()).Value();
         // If this is an ice trap, store the disguise model in iceTrapModels
         if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
             iceTrapModels[loc->GetRandomizerCheck()] = val.looksLikeItemId;

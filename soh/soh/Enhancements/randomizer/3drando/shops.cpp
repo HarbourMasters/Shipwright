@@ -18,9 +18,9 @@ bool initTrickNames = false; //Indicates if trick ice trap names have been initi
 void PlaceVanillaShopItems() {
    auto ctx = Rando::Context::GetInstance();
   //Loop to place vanilla items in each location
-  for (size_t i = 0; i < StaticData::shopLocationLists.size(); i++) {
-    for (size_t j = 0; j < StaticData::shopLocationLists[i].size(); j++) {
-      ctx->GetItemLocation(StaticData::shopLocationLists[i][j])->PlaceVanillaItem();
+  for (size_t i = 0; i < Rando::StaticData::shopLocationLists.size(); i++) {
+    for (size_t j = 0; j < Rando::StaticData::shopLocationLists[i].size(); j++) {
+      ctx->GetItemLocation(Rando::StaticData::shopLocationLists[i][j])->PlaceVanillaItem();
     }
   }
 }
@@ -862,7 +862,7 @@ static std::map<std::string_view, int> ShopNameToNum = {{"KF Shop", 0},   {"Kak 
                                                         {"MK Bazaar", 4}, {"Kak Bazaar", 5},      {"ZD Shop", 6},         {"GC Shop", 7}};
 int GetShopIndex(RandomizerCheck loc) {
   //Kind of hacky, but extract the shop and item position from the name
-  const std::string& name(StaticData::Location(loc)->GetName());
+  const std::string& name(Rando::StaticData::GetLocation(loc)->GetName());
   int split = name.find(" Item ");
   std::string_view shop(name.c_str(), split);
   int pos = std::stoi(name.substr(split+6, 1)) - 1;

@@ -1499,15 +1499,15 @@ namespace Settings {
   //Include and Lock the desired locations
   // static void IncludeAndHide(std::vector<uint32_t> locations) {
   //   for (uint32_t loc : locations) {
-  //     Location(loc)->GetExcludedOption()->SetSelectedIndex(INCLUDE);
-  //     Location(loc)->GetExcludedOption()->Hide();
+  //     GetLocation(loc)->GetExcludedOption()->SetSelectedIndex(INCLUDE);
+  //     GetLocation(loc)->GetExcludedOption()->Hide();
   //   }
   // }
 
   //Unlock the desired locations
   // static void Unhide(std::vector<uint32_t> locations) {
   //   for (uint32_t loc : locations) {
-  //     Location(loc)->GetExcludedOption()->Unhide();
+  //     GetLocation(loc)->GetExcludedOption()->Unhide();
   //   }
   // }
 
@@ -1568,10 +1568,10 @@ namespace Settings {
   //   if (Tokensanity.IsNot(TOKENSANITY_ALL_TOKENS)) {
   //     if (Tokensanity.Is(TOKENSANITY_OVERWORLD)) {
   //       //filter overworld skulls so we're just left with dungeons
-  //       FilterAndEraseFromPool(skulltulaLocations, [](const uint32_t loc){return StaticData::Location(loc)->GetScene() >= 0x0A;});
+  //       FilterAndEraseFromPool(skulltulaLocations, [](const uint32_t loc){return Rando::StaticData::GetLocation(loc)->GetScene() >= 0x0A;});
   //     } else if (Tokensanity.Is(TOKENSANITY_DUNGEONS)) {
   //       //filter dungeon skulls so we're just left with overworld
-  //       FilterAndEraseFromPool(skulltulaLocations, [](const uint32_t loc){return StaticData::Location(loc)->GetScene() < 0x0A;});
+  //       FilterAndEraseFromPool(skulltulaLocations, [](const uint32_t loc){return Rando::StaticData::GetLocation(loc)->GetScene() < 0x0A;});
   //     }
   //     IncludeAndHide(skulltulaLocations);
   //   }
@@ -1614,7 +1614,7 @@ namespace Settings {
   //     IncludeAndHide({HC_MALON_EGG});
   //   }
 
-  //   //Force include Gerudo Membership Card Location if it's not shuffled
+  //   //Force include Gerudo Membership Card GetLocation if it's not shuffled
   //   if (ShuffleGerudoToken) {
   //     Unhide({GF_GERUDO_MEMBERSHIP_CARD});
   //   } else {
@@ -2190,7 +2190,7 @@ namespace Settings {
 
     // AddExcludedOptions();
     // for (auto locationKey : everyPossibleLocation) {
-    //   auto location = Location(locationKey);
+    //   auto location = GetLocation(locationKey);
     //   if (excludedLocations.count(location->GetRandomizerCheck())) {
     //     location->GetExcludedOption()->SetSelectedIndex(1);
     //   } else {

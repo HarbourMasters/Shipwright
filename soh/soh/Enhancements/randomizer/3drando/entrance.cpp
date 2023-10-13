@@ -176,9 +176,9 @@ static std::array<std::vector<Entrance*>, 2> SplitEntrancesByRequirements(std::v
   Logic::LogicReset();
   // Apply the effects of all advancement items to search for entrance accessibility
   std::vector<RandomizerGet> items = 
-    FilterFromPool(ItemPool, [](const RandomizerGet i){ return StaticData::RetrieveItem(i).IsAdvancement();});
+    FilterFromPool(ItemPool, [](const RandomizerGet i){ return Rando::StaticData::RetrieveItem(i).IsAdvancement();});
   for (RandomizerGet unplacedItem : items) {
-    StaticData::RetrieveItem(unplacedItem).ApplyEffect();
+    Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
   }
   // run a search to see what's accessible
   GetAccessibleLocations({});

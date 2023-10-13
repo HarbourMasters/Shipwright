@@ -6,9 +6,9 @@
 
 using namespace Rando;
 
-std::array<Item, RG_MAX> StaticData::itemTable;
+std::array<Item, RG_MAX> Rando::StaticData::itemTable;
 
-void StaticData::InitItemTable() {
+void Rando::StaticData::InitItemTable() {
     itemTable[RG_NONE] = Item(RG_NONE, Text{ "No Item", "Rien", "Kein Artikel" }, ITEMTYPE_EVENT, GI_RUPEE_GREEN, false,
                               &Logic::noVariable, RHT_NONE, ITEM_NONE, 0, 0, 0, 0, 0, ITEM_CATEGORY_JUNK, MOD_NONE);
     itemTable[RG_KOKIRI_SWORD] =
@@ -987,11 +987,11 @@ void StaticData::InitItemTable() {
              GID_MAGIC_LARGE, 0xE8, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
 }
 
-Item& StaticData::RetrieveItem(const RandomizerGet rgid) {
+Item& Rando::StaticData::RetrieveItem(const RandomizerGet rgid) {
     return itemTable[rgid];
 }
 
-Item& StaticData::ItemFromGIID(const int giid) {
+Item& Rando::StaticData::ItemFromGIID(const int giid) {
     uint32_t index = 0;
     while (index < RG_MAX) {
         if (itemTable[index].GetItemID() == giid) {
@@ -1006,6 +1006,6 @@ Item& StaticData::ItemFromGIID(const int giid) {
     return itemTable[RG_GREEN_RUPEE];
 }
 
-std::array<Item, RG_MAX>& StaticData::GetItemTable() {
+std::array<Item, RG_MAX>& Rando::StaticData::GetItemTable() {
     return itemTable;
 }

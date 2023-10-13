@@ -29,7 +29,7 @@ typedef enum {
     SPOILER_CHK_RANDOMIZER_INF,
 } SpoilerCollectionCheckType;
 
-// Location groups for checks, used to group the checks by logical location
+// GetLocation groups for checks, used to group the checks by logical location
 typedef enum {
     GROUP_NO_GROUP,
     GROUP_KOKIRI_FOREST,              // 0x55, 0x28

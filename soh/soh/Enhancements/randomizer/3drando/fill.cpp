@@ -34,8 +34,8 @@ static void RemoveStartingItemsFromPool() {
           ItemPool[i] = GetJunkItem();
         }
         continue;
-      } else if (startingItem == ItemPool[i] || (StaticData::RetrieveItem(startingItem).IsBottleItem() &&
-                                                 StaticData::RetrieveItem(ItemPool[i]).IsBottleItem())) {
+      } else if (startingItem == ItemPool[i] || (Rando::StaticData::RetrieveItem(startingItem).IsBottleItem() &&
+                                                 Rando::StaticData::RetrieveItem(ItemPool[i]).IsBottleItem())) {
         if (AdditionalHeartContainers > 0 && 
           (startingItem == RG_PIECE_OF_HEART || startingItem == RG_TREASURE_GAME_HEART)) {
           ItemPool[i] = RG_HEART_CONTAINER;
@@ -114,9 +114,9 @@ static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, 
   if (mode == SearchMode::PoeCollectorAccess && (AreaTable(RR_MARKET_GUARD_HOUSE)->Adult() || !checkPoeCollectorAccess)) {
     // Apply all items that are necessary for checking all location access
       std::vector<RandomizerGet> itemsToPlace =
-          FilterFromPool(ItemPool, [](const auto i) { return StaticData::RetrieveItem(i).IsAdvancement(); });
+          FilterFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
     for (RandomizerGet unplacedItem : itemsToPlace) {
-      StaticData::RetrieveItem(unplacedItem).ApplyEffect();
+      Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
     }
     // Reset access as the non-starting age
     if (Settings::ResolvedStartingAge == AGE_CHILD) {
@@ -434,7 +434,7 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
       if (!ctx->GetItemLocation(loc)->IsAddedToPool()) {
           ctx->allLocationsReachable = false;
           auto message = "Location " +
-                         StaticData::Location(ctx->GetItemLocation(loc)->GetRandomizerCheck())->GetName() +
+                         Rando::StaticData::GetLocation(ctx->GetItemLocation(loc)->GetRandomizerCheck())->GetName() +
                          " not reachable\n";
           SPDLOG_DEBUG(message);
         #ifndef ENABLE_DEBUG
@@ -481,14 +481,14 @@ static void PareDownPlaythrough() {
       LogicReset();
 
       std::string ignore = "";
-      if (StaticData::RetrieveItem(copy).GetItemType() == ITEMTYPE_TOKEN) {
+      if (Rando::StaticData::RetrieveItem(copy).GetItemType() == ITEMTYPE_TOKEN) {
         ignore = "Tokens";
       }
-      else if (StaticData::RetrieveItem(copy).GetName().GetEnglish().find("Bombchu") != std::string::npos) {
+      else if (Rando::StaticData::RetrieveItem(copy).GetName().GetEnglish().find("Bombchu") != std::string::npos) {
         ignore = "Bombchus";
       }
-      else if (StaticData::RetrieveItem(copy).GetItemType() == ITEMTYPE_SHOP) {
-        ignore = GetShopItemBaseName(StaticData::RetrieveItem(copy).GetName().GetEnglish());
+      else if (Rando::StaticData::RetrieveItem(copy).GetItemType() == ITEMTYPE_SHOP) {
+        ignore = GetShopItemBaseName(Rando::StaticData::RetrieveItem(copy).GetName().GetEnglish());
       }
 
       GetAccessibleLocations(ctx->allLocations, SearchMode::CheckBeatable, ignore); //Check if game is still beatable
@@ -496,8 +496,8 @@ static void PareDownPlaythrough() {
       //Playthrough is still beatable without this item, therefore it can be removed from playthrough section.
       if (ctx->playthroughBeatable) {
         // Uncomment to print playthrough deletion log in citra
-        //  std::string itemname(StaticData::RetrieveItem(copy).GetName().GetEnglish());
-        //  std::string locationname(Location(loc)->GetName());
+        //  std::string itemname(Rando::StaticData::RetrieveItem(copy).GetName().GetEnglish());
+        //  std::string locationname(GetLocation(loc)->GetName());
         //  std::string removallog = itemname + " at " + locationname + " removed from playthrough";
         //  CitraPrint(removallog);
         ctx->playthroughLocations[i].erase(ctx->playthroughLocations[i].begin() + j);
@@ -591,14 +591,14 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
         // NOLINTNEXTLINE(clang-diagnostic-unused-variable)
         for (const RandomizerGet item : items) {
             SPDLOG_DEBUG("\t");
-            SPDLOG_DEBUG(StaticData::RetrieveItem(item).GetName().GetEnglish());
+            SPDLOG_DEBUG(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
             SPDLOG_DEBUG("\n");
         }
         SPDLOG_DEBUG("\nAllowed Locations:\n");
         // NOLINTNEXTLINE(clang-diagnostic-unused-variable)
         for (const RandomizerCheck loc : allowedLocations) {
             SPDLOG_DEBUG("\t");
-            SPDLOG_DEBUG(StaticData::Location(loc)->GetName());
+            SPDLOG_DEBUG(Rando::StaticData::GetLocation(loc)->GetName());
             SPDLOG_DEBUG("\n");
         }
         placementFailure = true;
@@ -625,22 +625,22 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
 
         // copy all not yet placed advancement items so that we can apply their effects for the fill algorithm
         std::vector<RandomizerGet> itemsToNotPlace =
-            FilterFromPool(ItemPool, [](const auto i) { return StaticData::RetrieveItem(i).IsAdvancement(); });
+            FilterFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
 
         // shuffle the order of items to place
         Shuffle(itemsToPlace);
         while (!itemsToPlace.empty()) {
             RandomizerGet item = std::move(itemsToPlace.back());
-            StaticData::RetrieveItem(item).SetAsPlaythrough();
+            Rando::StaticData::RetrieveItem(item).SetAsPlaythrough();
             itemsToPlace.pop_back();
 
             // assume we have all unplaced items
             LogicReset();
             for (RandomizerGet unplacedItem : itemsToPlace) {
-                StaticData::RetrieveItem(unplacedItem).ApplyEffect();
+                Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
             }
             for (RandomizerGet unplacedItem : itemsToNotPlace) {
-                StaticData::RetrieveItem(unplacedItem).ApplyEffect();
+                Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
             }
 
             // get all accessible locations that are allowed
@@ -650,11 +650,11 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
             if (accessibleLocations.empty()) {
 
                 SPDLOG_DEBUG("\nCANNOT PLACE ");
-                SPDLOG_DEBUG(StaticData::RetrieveItem(item).GetName().GetEnglish());
+                SPDLOG_DEBUG(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
                 SPDLOG_DEBUG(". TRYING AGAIN...\n");
 
 #ifdef ENABLE_DEBUG
-                Areas::DumpWorldGraph(StaticData::RetrieveItem(item).GetName().GetEnglish());
+                Areas::DumpWorldGraph(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
                 PlacementLog_Write();
 #endif
 
@@ -714,12 +714,12 @@ static void RandomizeDungeonRewards() {
     0x00000010, //Shadow Medallion
     0x00000020, //Light Medallion
   };
-  int baseOffset = StaticData::RetrieveItem(RG_KOKIRI_EMERALD).GetItemID();
+  int baseOffset = Rando::StaticData::RetrieveItem(RG_KOKIRI_EMERALD).GetItemID();
 
   //End of Dungeons includes Link's Pocket
   if (ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON)) {
     //get stones and medallions
-    std::vector<RandomizerGet> rewards = FilterAndEraseFromPool(ItemPool, [](const auto i) {return StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;});
+    std::vector<RandomizerGet> rewards = FilterAndEraseFromPool(ItemPool, [](const auto i) {return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;});
 
     // If there are less than 9 dungeon rewards, prioritize the actual dungeons
     // for placement instead of Link's Pocket
@@ -728,28 +728,28 @@ static void RandomizeDungeonRewards() {
     }
 
     if (Settings::Logic.Is(LOGIC_VANILLA)) { //Place dungeon rewards in vanilla locations
-      for (RandomizerCheck loc : StaticData::dungeonRewardLocations) {
+      for (RandomizerCheck loc : Rando::StaticData::dungeonRewardLocations) {
         ctx->GetItemLocation(loc)->PlaceVanillaItem();
       }
     } else { //Randomize dungeon rewards with assumed fill
-      AssumedFill(rewards, StaticData::dungeonRewardLocations);
+      AssumedFill(rewards, Rando::StaticData::dungeonRewardLocations);
     }
 
-    for (size_t i = 0; i < StaticData::dungeonRewardLocations.size(); i++) {
-      const auto index = ctx->GetItemLocation(StaticData::dungeonRewardLocations[i])->GetPlacedItem().GetItemID() - baseOffset;
+    for (size_t i = 0; i < Rando::StaticData::dungeonRewardLocations.size(); i++) {
+      const auto index = ctx->GetItemLocation(Rando::StaticData::dungeonRewardLocations[i])->GetPlacedItem().GetItemID() - baseOffset;
       rDungeonRewardOverrides[i] = index;
 
       //set the player's dungeon reward on file creation instead of pushing it to them at the start.
       //This is done mainly because players are already familiar with seeing their dungeon reward
       //before opening up their file
-      if (i == StaticData::dungeonRewardLocations.size()-1) {
+      if (i == Rando::StaticData::dungeonRewardLocations.size()-1) {
         LinksPocketRewardBitMask = bitMaskTable[index];
       }
     }
   } else if (LinksPocketItem.Is(LINKSPOCKETITEM_DUNGEON_REWARD)) {
     //get 1 stone/medallion
     std::vector<RandomizerGet> rewards = FilterFromPool(
-        ItemPool, [](const auto i) { return StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
+        ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
     // If there are no remaining stones/medallions, then Link's pocket won't get one
     if (rewards.empty()) {
       ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
@@ -757,7 +757,7 @@ static void RandomizeDungeonRewards() {
     }
     RandomizerGet startingReward = RandomElement(rewards, true);
 
-    LinksPocketRewardBitMask = bitMaskTable[StaticData::RetrieveItem(startingReward).GetItemID() - baseOffset];
+    LinksPocketRewardBitMask = bitMaskTable[Rando::StaticData::RetrieveItem(startingReward).GetItemID() - baseOffset];
     ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingReward);
     //erase the stone/medallion from the Item Pool
     FilterAndEraseFromPool(ItemPool, [startingReward](const RandomizerGet i) {return i == startingReward;});
@@ -793,10 +793,10 @@ static void RandomizeOwnDungeon(const Dungeon::DungeonInfo* dungeon) {
   //filter out locations that may be required to have songs placed at them
   dungeonLocations = FilterFromPool(dungeonLocations, [](const auto loc){
     if (ShuffleSongs.Is(SONGSHUFFLE_SONG_LOCATIONS)) {
-      return !(StaticData::Location(loc)->IsCategory(Category::cSong));
+      return !(Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSong));
     }
     if (ShuffleSongs.Is(SONGSHUFFLE_DUNGEON_REWARDS)) {
-      return !(StaticData::Location(loc)->IsCategory(Category::cSongDungeonReward));
+      return !(Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSongDungeonReward));
     }
     return true;
   });
@@ -836,7 +836,7 @@ static void RandomizeDungeonItems() {
   using namespace Dungeon;
 
   //Get Any Dungeon and Overworld group locations
-  std::vector<RandomizerCheck> anyDungeonLocations = FilterFromPool(ctx->allLocations, [](const auto loc){return StaticData::Location(loc)->IsDungeon();});
+  std::vector<RandomizerCheck> anyDungeonLocations = FilterFromPool(ctx->allLocations, [](const auto loc){return Rando::StaticData::GetLocation(loc)->IsDungeon();});
   //overworldLocations defined in item_location.cpp
 
   //Create Any Dungeon and Overworld item pools
@@ -879,17 +879,17 @@ static void RandomizeDungeonItems() {
 
   if (ShuffleRewards.Is(REWARDSHUFFLE_ANY_DUNGEON)) {
       auto rewards = FilterAndEraseFromPool(
-          ItemPool, [](const auto i) { return StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
+          ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
     AddElementsToPool(anyDungeonItems, rewards);
   } else if (ShuffleRewards.Is(REWARDSHUFFLE_OVERWORLD)) {
       auto rewards = FilterAndEraseFromPool(
-          ItemPool, [](const auto i) { return StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
+          ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
     AddElementsToPool(overworldItems, rewards);
   }
 
   //Randomize Any Dungeon and Overworld pools
   AssumedFill(anyDungeonItems, anyDungeonLocations, true);
-  AssumedFill(overworldItems, StaticData::overworldLocations, true);
+  AssumedFill(overworldItems, Rando::StaticData::overworldLocations, true);
 
   //Randomize maps and compasses after since they're not advancement items
   for (auto dungeon : dungeonList) {
@@ -898,7 +898,7 @@ static void RandomizeDungeonItems() {
       AssumedFill(mapAndCompassItems, anyDungeonLocations, true);
     } else if (MapsAndCompasses.Is(MAPSANDCOMPASSES_OVERWORLD)) {
       auto mapAndCompassItems = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return i == dungeon->GetMap() || i == dungeon->GetCompass();});
-      AssumedFill(mapAndCompassItems, StaticData::overworldLocations, true);
+      AssumedFill(mapAndCompassItems, Rando::StaticData::overworldLocations, true);
     }
   }
 }
@@ -908,7 +908,7 @@ static void RandomizeLinksPocket() {
   if (LinksPocketItem.Is(LINKSPOCKETITEM_ADVANCEMENT)) {
    //Get all the advancement items                                                                                                     don't include tokens
       std::vector<RandomizerGet> advancementItems = FilterAndEraseFromPool(ItemPool, [](const auto i) {
-          return StaticData::RetrieveItem(i).IsAdvancement() && StaticData::RetrieveItem(i).GetItemType() != ITEMTYPE_TOKEN;
+          return Rando::StaticData::RetrieveItem(i).IsAdvancement() && Rando::StaticData::RetrieveItem(i).GetItemType() != ITEMTYPE_TOKEN;
       });
    //select a random one
    RandomizerGet startingItem = RandomElement(advancementItems, true);
@@ -983,7 +983,7 @@ int Fill() {
       printf("\x1b[7;32HDone");
     }
     //erase temporary shop items
-    FilterAndEraseFromPool(ItemPool, [](const auto item) { return StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_SHOP; });
+    FilterAndEraseFromPool(ItemPool, [](const auto item) { return Rando::StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_SHOP; });
 
     //ctx->showItemProgress = true;
     //Place shop items first, since a buy shield is needed to place a dungeon reward on Gohma due to access
@@ -1002,7 +1002,7 @@ int Fill() {
         //Indices from OoTR. So shopsanity one will overwrite 7, three will overwrite 7, 5, 8, etc.
         const std::array<int, 4> indices = {7, 5, 8, 6};
         //Overwrite appropriate number of shop items
-        for (size_t i = 0; i < StaticData::shopLocationLists.size(); i++) {
+        for (size_t i = 0; i < Rando::StaticData::shopLocationLists.size(); i++) {
           int num_to_replace = GetShopsanityReplaceAmount(); //1-4 shop items will be overwritten, depending on settings
           total_replaced += num_to_replace;
           for (int j = 0; j < num_to_replace; j++) {
@@ -1010,7 +1010,7 @@ int Fill() {
             int shopsanityPrice = GetRandomShopPrice();
             NonShopItems[TransformShopIndex(i * 8 + itemindex - 1)].Price =
                 shopsanityPrice; // Set price to be retrieved by the patch and textboxes
-            ctx->GetItemLocation(StaticData::shopLocationLists[i][itemindex - 1])->SetShopsanityPrice(shopsanityPrice);
+            ctx->GetItemLocation(Rando::StaticData::shopLocationLists[i][itemindex - 1])->SetShopsanityPrice(shopsanityPrice);
           }
         }
       }
@@ -1020,9 +1020,9 @@ int Fill() {
       //So shopsanity 0 will get all 64 vanilla items, shopsanity 4 will get 32, etc.
       std::vector<RandomizerGet> shopItems = GetMinVanillaShopItems(total_replaced);
 
-      for (size_t i = 0; i < StaticData::shopLocationLists.size(); i++) {
-        for (size_t j = 0; j < StaticData::shopLocationLists[i].size(); j++) {
-          RandomizerCheck loc = StaticData::shopLocationLists[i][j];
+      for (size_t i = 0; i < Rando::StaticData::shopLocationLists.size(); i++) {
+        for (size_t j = 0; j < Rando::StaticData::shopLocationLists[i].size(); j++) {
+          RandomizerCheck loc = Rando::StaticData::shopLocationLists[i][j];
           if (!(ctx->GetItemLocation(loc)->HasShopsanityPrice())) {
             shopLocations.push_back(loc);
           }
@@ -1045,17 +1045,17 @@ int Fill() {
 
       //Get each song
       std::vector<RandomizerGet> songs = FilterAndEraseFromPool(
-          ItemPool, [](const auto i) { return StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_SONG; });
+          ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_SONG; });
 
       //Get each song location
       std::vector<RandomizerCheck> songLocations;
       if (ShuffleSongs.Is(SONGSHUFFLE_SONG_LOCATIONS)) {
           songLocations = FilterFromPool(
-              ctx->allLocations, [](const auto loc) { return StaticData::Location(loc)->IsCategory(Category::cSong); });
+              ctx->allLocations, [](const auto loc) { return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSong); });
 
       } else if (ShuffleSongs.Is(SONGSHUFFLE_DUNGEON_REWARDS)) {
           songLocations = FilterFromPool(ctx->allLocations, [](const auto loc) {
-              return StaticData::Location(loc)->IsCategory(Category::cSongDungeonReward);
+              return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSongDungeonReward);
           });
       }
 
@@ -1069,7 +1069,7 @@ int Fill() {
     RandomizeLinksPocket();
     //Then place the rest of the advancement items
     std::vector<RandomizerGet> remainingAdvancementItems =
-        FilterAndEraseFromPool(ItemPool, [](const auto i) { return StaticData::RetrieveItem(i).IsAdvancement(); });
+        FilterAndEraseFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
     AssumedFill(remainingAdvancementItems, ctx->allLocations, true);
 
     //Fast fill for the rest of the pool
@@ -1078,13 +1078,13 @@ int Fill() {
 
     //Add prices for scrubsanity, this is unique to SoH because we write/read scrub prices to/from the spoilerfile.
     if (Scrubsanity.Is(SCRUBSANITY_AFFORDABLE)) {
-      for (size_t i = 0; i < StaticData::scrubLocations.size(); i++) {
-        ctx->GetItemLocation(StaticData::scrubLocations[i])->SetScrubsanityPrice(10);
+      for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
+        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetScrubsanityPrice(10);
       }
     } else if (Scrubsanity.Is(SCRUBSANITY_RANDOM_PRICES)) {
-      for (size_t i = 0; i < StaticData::scrubLocations.size(); i++) {
+      for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
         int randomPrice = GetRandomScrubPrice();
-        ctx->GetItemLocation(StaticData::scrubLocations[i])->SetScrubsanityPrice(randomPrice);
+        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetScrubsanityPrice(randomPrice);
       }
     }
 

@@ -233,7 +233,7 @@ void CheckTrackerWindow::DrawElement() {
     // Logic for each check
     for (RandomizerCheck rc : checks)
     {
-        auto obj = StaticData::Location(rc);
+        auto obj = Rando::StaticData::GetLocation(rc);
         //New Area to be drawn
         if (obj->GetArea() != lastArea)
         {
@@ -556,7 +556,7 @@ void InitializeChecks() {
     }
 
     LoadSettings();
-    for (auto& location : StaticData::GetLocationTable()) {
+    for (auto& location : Rando::StaticData::GetLocationTable()) {
         if (!IsVisibleInCheckTracker(location))
             continue;
 
@@ -605,7 +605,7 @@ bool SlowUpdateCheck() {
         return false;
     }
 
-    auto location = StaticData::Location(*checkIt);
+    auto location = Rando::StaticData::GetLocation(*checkIt);
     RandomizerCheckShow lastStatus = checkStatusMap.find(location->GetRandomizerCheck())->second;
     if (lastStatus != GetCheckStatus(location, slowCheckIdx))
         ret = true;
@@ -634,7 +634,7 @@ void UpdateChecks() {
     Rando::Location* lastCheck;
     RandomizerCheckShow lastStatus;
     for (RandomizerCheck rc : checks) {
-        auto location = StaticData::Location(rc);
+        auto location = Rando::StaticData::GetLocation(rc);
         RandomizerCheckShow* checkStatusPtr = &checkStatusMap.find(location->GetRandomizerCheck())->second;
         lastStatus = *checkStatusPtr;
         *checkStatusPtr = GetCheckStatus(location, idx);
@@ -679,8 +679,8 @@ void UpdateOrdering(bool init) {
 }
 
 bool CompareCheckObject(RandomizerCheck i, RandomizerCheck j) {
-    Rando::Location* x = StaticData::Location(i);
-    Rando::Location* y = StaticData::Location(j);
+    Rando::Location* x = Rando::StaticData::GetLocation(i);
+    Rando::Location* y = Rando::StaticData::GetLocation(j);
     if (x->GetArea() < y->GetArea())
         return true;
     else if (x->GetArea() > y->GetArea())

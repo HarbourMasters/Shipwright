@@ -57,7 +57,7 @@ bool LocationAccess::ConditionsMet() const {
 bool LocationAccess::CanBuy() const {
   auto ctx = Rando::Context::GetInstance();
   //Not a shop location, don't need to check if buyable
-  if (!(StaticData::Location(location)->IsCategory(Category::cShop))) {
+  if (!(Rando::StaticData::GetLocation(location)->IsCategory(Category::cShop))) {
     return true;
   }
 
