@@ -2,6 +2,7 @@
 
 #include <string>
 #include <variant>
+#include <memory>
 
 #include "3drando/text.hpp"
 #include "3drando/settings.hpp"
