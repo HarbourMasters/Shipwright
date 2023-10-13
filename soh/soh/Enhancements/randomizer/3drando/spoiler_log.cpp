@@ -848,19 +848,6 @@ static void WriteAllLocations(int language) {
     }
 }
 
-static void WriteHintData(int language) {
-    auto ctx = Rando::Context::GetInstance();
-    for (auto [hintKey, item_location] : hintedLocations) {
-        Rando::Hint* hint = ctx->GetHint(item_location->GetHintKey());
-        jsonData["hints"][StaticData::Location(hint->GetHintedLocation())->GetName()] = {
-            { "text", hint->GetText().GetEnglish() },
-            { "item", item_location->GetPlacedItemName().GetEnglish() },
-            { "itemLocation", StaticData::Location(item_location->GetRandomizerCheck())->GetName() },
-            { "locationArea", item_location->GetParentRegionKey() }
-        };
-    }
-}
-
 const char* SpoilerLog_Write(int language) {
     auto spoilerLog = tinyxml2::XMLDocument(false);
     spoilerLog.InsertEndChild(spoilerLog.NewDeclaration());
@@ -900,7 +887,6 @@ const char* SpoilerLog_Write(int language) {
     WriteHints(language);
     WriteShuffledEntrances();
     WriteAllLocations(language);
-    WriteHintData(language);
 
     if (!std::filesystem::exists(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"))) {
         std::filesystem::create_directory(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"));
