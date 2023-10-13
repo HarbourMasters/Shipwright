@@ -12,10 +12,6 @@ u32 sIrqMgrRetraceCount = 0;
 #define IRQ_PRENMI480_MSG 672
 #define IRQ_PRENMI500_MSG 673
 
-#define IRQ_RESET_STATUS_IDLE 0
-#define IRQ_RESET_STATUS_PRENMI 1
-#define IRQ_RESET_STATUS_NMI 2
-
 void IrqMgr_AddClient(IrqMgr* irqMgr, IrqMgrClient* c, OSMesgQueue* msgQueue) {
     OSIntMask prevInt;
 
