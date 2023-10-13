@@ -254,7 +254,7 @@ void WriteIngameSpoilerLog() {
             }
         }
         if (spoilerOutOfSpace || playthroughItemNotFound) {
-            printf("%sError!%s ", YELLOW, WHITE);
+            printf("Error! ");
         }
     }
 }
