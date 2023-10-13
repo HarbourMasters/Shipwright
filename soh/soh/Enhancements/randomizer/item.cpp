@@ -143,105 +143,145 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
                 case 0:
                 case 1:
                     actual = RG_DEKU_STICK_CAPACITY_20;
+                    break;
                 case 2:
                 case 3:
                     actual = RG_DEKU_STICK_CAPACITY_30;
+                    break;
             }
+            break;
         case RG_PROGRESSIVE_NUT_UPGRADE:
             switch (CUR_UPG_VALUE(UPG_NUTS)) {
                 case 0:
                 case 1:
                     actual = RG_DEKU_NUT_CAPACITY_30;
+                    break;
                 case 2:
                 case 3:
                     actual = RG_DEKU_NUT_CAPACITY_40;
+                    break;
             }
+            break;
         case RG_PROGRESSIVE_BOMB_BAG:
             switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
                 case 0:
                     actual = RG_BOMB_BAG;
+                    break;
                 case 1:
                     actual = RG_BIG_BOMB_BAG;
+                    break;
                 case 2:
                 case 3:
                     actual = RG_BIGGEST_BOMB_BAG;
+                    break;
             }
+            break;
         case RG_PROGRESSIVE_BOW:
             switch (CUR_UPG_VALUE(UPG_QUIVER)) {
                 case 0:
                     actual = RG_FAIRY_BOW;
+                    break;
                 case 1:
                     actual = RG_BIG_QUIVER;
+                    break;
                 case 2:
                 case 3:
                     actual = RG_BIGGEST_QUIVER;
+                    break;
             }
+            break;
         case RG_PROGRESSIVE_SLINGSHOT:
             switch (CUR_UPG_VALUE(UPG_BULLET_BAG)) {
                 case 0:
                     actual = RG_SLINGSHOT;
+                    break;
                 case 1:
                     actual = RG_BIG_BULLET_BAG;
+                    break;
                 case 2:
                 case 3:
                     actual = RG_BIGGEST_BULLET_BAG;
+                    break;
             }
+            break;
         case RG_PROGRESSIVE_OCARINA:
             switch (INV_CONTENT(ITEM_OCARINA_FAIRY)) {
                 case ITEM_NONE:
                     actual = RG_FAIRY_OCARINA;
+                    break;
                 case ITEM_OCARINA_FAIRY:
                 case ITEM_OCARINA_TIME:
                     actual = RG_OCARINA_OF_TIME;
+                    break;
             }
+            break;
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {
                 case ITEM_NONE:
                     actual = RG_HOOKSHOT;
+                    break;
                 case ITEM_HOOKSHOT:
                 case ITEM_LONGSHOT:
                     actual = RG_LONGSHOT;
+                    break;
             }
+            break;
         case RG_PROGRESSIVE_STRENGTH:
             switch (CUR_UPG_VALUE(UPG_STRENGTH)) {
                 case 0:
                     actual = RG_GORONS_BRACELET;
+                    break;
                 case 1:
                     actual = RG_SILVER_GAUNTLETS;
+                    break;
                 case 2:
                 case 3:
                     actual = RG_GOLDEN_GAUNTLETS;
+                    break;
             }
+            break;
         case RG_PROGRESSIVE_WALLET:
             switch (CUR_UPG_VALUE(UPG_WALLET)) {
                 case 0:
                     actual = RG_ADULT_WALLET;
+                    break;
                 case 1:
                     actual = RG_GIANT_WALLET;
+                    break;
                 case 2:
                 case 3:
                     actual = numWallets == 3 ? RG_TYCOON_WALLET : RG_GIANT_WALLET;
+                    break;
             }
+            break;
         case RG_PROGRESSIVE_SCALE:
             switch (CUR_UPG_VALUE(UPG_SCALE)) {
                 case 0:
                     actual = RG_SILVER_SCALE;
+                    break;
                 case 1:
                 case 2:
                     actual = RG_GOLD_SCALE;
+                    break;
             }
+            break;
         case RG_PROGRESSIVE_MAGIC_METER:
             switch (gSaveContext.magicLevel) {
                 case 0:
                     actual = RG_MAGIC_SINGLE;
+                    break;
                 case 1:
                 case 2:
                     actual = RG_MAGIC_DOUBLE;
+                    break;
             }
+            break;
         case RG_PROGRESSIVE_GORONSWORD: // todo progressive?
            actual = RG_BIGGORON_SWORD;
+           break;
         default:
             actual = RG_NONE;
+            break;
     }
     return StaticData::RetrieveItem(actual).GetGIEntry();
 }

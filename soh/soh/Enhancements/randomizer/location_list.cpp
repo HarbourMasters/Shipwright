@@ -3702,35 +3702,35 @@ void StaticData::InitLocationTable() {
     // Kokiri Forest
     locationTable[RC_KF_SHOP_ITEM_1] = Location::Base(
         RC_KF_SHOP_ITEM_1, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST, ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP, 0x00,
-        0x30, "Shop Item 1", "KF Shop Item 1", RHT_KF_SHOP_ITEM_1, RG_BUY_DEKU_SHIELD, { Category::cShop },
+        0x00, "Shop Item 1", "KF Shop Item 1", RHT_KF_SHOP_ITEM_1, RG_BUY_DEKU_SHIELD, { Category::cShop },
         SpoilerCollectionCheck::ShopItem(0x2D, 0), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
     locationTable[RC_KF_SHOP_ITEM_2] = Location::Base(
         RC_KF_SHOP_ITEM_2, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST, ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP, 0x01,
-        0x31, "Shop Item 2", "KF Shop Item 2", RHT_KF_SHOP_ITEM_2, RG_BUY_DEKU_NUT_5, { Category::cShop },
+        0x01, "Shop Item 2", "KF Shop Item 2", RHT_KF_SHOP_ITEM_2, RG_BUY_DEKU_NUT_5, { Category::cShop },
         SpoilerCollectionCheck::ShopItem(0x2D, 1), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
     locationTable[RC_KF_SHOP_ITEM_3] = Location::Base(
         RC_KF_SHOP_ITEM_3, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST, ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP, 0x02,
-        0x32, "Shop Item 3", "KF Shop Item 3", RHT_KF_SHOP_ITEM_3, RG_BUY_DEKU_NUT_10, { Category::cShop },
+        0x02, "Shop Item 3", "KF Shop Item 3", RHT_KF_SHOP_ITEM_3, RG_BUY_DEKU_NUT_10, { Category::cShop },
         SpoilerCollectionCheck::ShopItem(0x2D, 2), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
     locationTable[RC_KF_SHOP_ITEM_4] = Location::Base(
         RC_KF_SHOP_ITEM_4, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST, ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP, 0x03,
-        0x33, "Shop Item 4", "KF Shop Item 4", RHT_KF_SHOP_ITEM_4, RG_BUY_DEKU_STICK_1, { Category::cShop },
+        0x03, "Shop Item 4", "KF Shop Item 4", RHT_KF_SHOP_ITEM_4, RG_BUY_DEKU_STICK_1, { Category::cShop },
         SpoilerCollectionCheck::ShopItem(0x2D, 3), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
     locationTable[RC_KF_SHOP_ITEM_5] = Location::Base(
         RC_KF_SHOP_ITEM_5, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST, ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP, 0x04,
-        0x34, "Shop Item 5", "KF Shop Item 5", RHT_KF_SHOP_ITEM_5, RG_BUY_DEKU_SEEDS_30, { Category::cShop },
+        0x04, "Shop Item 5", "KF Shop Item 5", RHT_KF_SHOP_ITEM_5, RG_BUY_DEKU_SEEDS_30, { Category::cShop },
         SpoilerCollectionCheck::ShopItem(0x2D, 4), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
     locationTable[RC_KF_SHOP_ITEM_6] = Location::Base(
         RC_KF_SHOP_ITEM_6, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST, ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP, 0x05,
-        0x35, "Shop Item 6", "KF Shop Item 6", RHT_KF_SHOP_ITEM_6, RG_BUY_ARROWS_10, { Category::cShop },
+        0x05, "Shop Item 6", "KF Shop Item 6", RHT_KF_SHOP_ITEM_6, RG_BUY_ARROWS_10, { Category::cShop },
         SpoilerCollectionCheck::ShopItem(0x2D, 5), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
     locationTable[RC_KF_SHOP_ITEM_7] = Location::Base(
         RC_KF_SHOP_ITEM_7, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST, ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP, 0x06,
-        0x36, "Shop Item 7", "KF Shop Item 7", RHT_KF_SHOP_ITEM_7, RG_BUY_ARROWS_30, { Category::cShop },
+        0x06, "Shop Item 7", "KF Shop Item 7", RHT_KF_SHOP_ITEM_7, RG_BUY_ARROWS_30, { Category::cShop },
         SpoilerCollectionCheck::ShopItem(0x2D, 6), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
     locationTable[RC_KF_SHOP_ITEM_8] = Location::Base(
         RC_KF_SHOP_ITEM_8, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST, ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP, 0x07,
-        0x37, "Shop Item 8", "KF Shop Item 8", RHT_KF_SHOP_ITEM_8, RG_BUY_HEART, { Category::cShop },
+        0x07, "Shop Item 8", "KF Shop Item 8", RHT_KF_SHOP_ITEM_8, RG_BUY_HEART, { Category::cShop },
         SpoilerCollectionCheck::ShopItem(0x2D, 7), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
 
     // Kakariko Village

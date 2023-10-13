@@ -795,92 +795,122 @@ void StaticData::InitItemTable() {
     // Shop
     itemTable[RG_BUY_DEKU_NUT_5] =
         Item(RG_BUY_DEKU_NUT_5, Text{ "Buy Deku Nut (5)", "Acheter: Noix Mojo (5)", "Deku-Nuss kaufen (5)" },
-                  ITEMTYPE_SHOP, RG_BUY_DEKU_NUT_5, true, &Logic::Nuts, RHT_DEKU_NUTS_5, false, 15);
+             ITEMTYPE_SHOP, GI_NUTS_5_2, true, &Logic::Nuts, RHT_DEKU_NUTS_5, ITEM_NUTS_5, OBJECT_GI_NUTS, GID_NUTS, 0x34,
+             0x0C, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE, false, 15);
     itemTable[RG_BUY_ARROWS_30] =
-        Item(RG_BUY_ARROWS_30, Text{ "Buy Arrows (30)", "Acheter: Flèches (30)", "Pfeile kaufen (30)" },
-                  ITEMTYPE_SHOP, RG_BUY_ARROWS_30, true, &Logic::BuyArrow, RHT_ARROWS_30, false, 60);
+        Item(RG_BUY_ARROWS_30, Text{ "Buy Arrows (30)", "Acheter: Flèches (30)", "Pfeile kaufen (30)" }, ITEMTYPE_SHOP,
+             GI_ARROWS_MEDIUM, true, &Logic::BuyArrow, RHT_ARROWS_30, ITEM_ARROWS_MEDIUM, OBJECT_GI_ARROW,
+             GID_ARROWS_MEDIUM, 0xE6, 0x49, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE, false, 60);
     itemTable[RG_BUY_ARROWS_50] =
-        Item(RG_BUY_ARROWS_50, Text{ "Buy Arrows (50)", "Acheter: Flèches (50)", "Pfeile kaufen (50)" },
-                  ITEMTYPE_SHOP, RG_BUY_ARROWS_50, true, &Logic::BuyArrow, RHT_ARROWS_30, false, 90);
+        Item(RG_BUY_ARROWS_50, Text{ "Buy Arrows (50)", "Acheter: Flèches (50)", "Pfeile kaufen (50)" }, ITEMTYPE_SHOP,
+             GI_ARROWS_LARGE, true, &Logic::BuyArrow, RHT_ARROWS_30, ITEM_ARROWS_LARGE, OBJECT_GI_ARROW,
+             GID_ARROWS_LARGE, 0xE6, 0x4A, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE, false, 90);
     itemTable[RG_BUY_BOMBS_525] =
         Item(RG_BUY_BOMBS_525, Text{ "Buy Bombs (5) [25]", "Acheter: Bombes (5) [25]", "Bomben kaufen (5) [25]" },
-                  ITEMTYPE_SHOP, RG_BUY_BOMBS_525, true, &Logic::BuyBomb, RHT_BOMBS_5, false, 25);
+             ITEMTYPE_SHOP, GI_BOMBS_5, true, &Logic::BuyBomb, RHT_BOMBS_5, ITEM_BOMBS_5, OBJECT_GI_BOMB_1, GID_BOMB,
+             0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE, false, 25);
     itemTable[RG_BUY_DEKU_NUT_10] =
         Item(RG_BUY_DEKU_NUT_10, Text{ "Buy Deku Nut (10)", "Acheter: Noix Mojo (10)", "Deku-Nuss kaufen (10)" },
-                  ITEMTYPE_SHOP, RG_BUY_DEKU_NUT_10, true, &Logic::Nuts, RHT_DEKU_NUTS_10, false, 30);
+             ITEMTYPE_SHOP, GI_NUTS_10, true, &Logic::Nuts, RHT_DEKU_NUTS_10, ITEM_NUTS_10, OBJECT_GI_NUTS,
+             GID_NUTS, 0x34, 0x0C, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE, false, 30);
     itemTable[RG_BUY_DEKU_STICK_1] =
         Item(RG_BUY_DEKU_STICK_1, Text{ "Buy Deku Stick (1)", "Acheter: Bâton Mojo (1)", "Deku-Stick kaufen (1)" },
-                  ITEMTYPE_SHOP, RG_BUY_DEKU_STICK_1, true, &Logic::Sticks, RHT_DEKU_STICK_1, false, 10);
+             ITEMTYPE_SHOP, GI_STICKS_1, true, &Logic::Sticks, RHT_DEKU_STICK_1, ITEM_STICK, OBJECT_GI_STICK,
+             GID_STICK, 0x37, 0x0D, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE, false, 10);
     itemTable[RG_BUY_BOMBS_10] =
-        Item(RG_BUY_BOMBS_10, Text{ "Buy Bombs (10)", "Acheter: Bombes (10)", "Bomben kaufen (10)" },
-                  ITEMTYPE_SHOP, RG_BUY_BOMBS_10, true, &Logic::BuyBomb, RHT_BOMBS_10, false, 50);
+        Item(RG_BUY_BOMBS_10, Text{ "Buy Bombs (10)", "Acheter: Bombes (10)", "Bomben kaufen (10)" }, ITEMTYPE_SHOP,
+             GI_BOMBS_10, true, &Logic::BuyBomb, RHT_BOMBS_10, ITEM_BOMBS_10, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59,
+             CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE, false, 50);
     itemTable[RG_BUY_FISH] =
-        Item(RG_BUY_FISH, Text{ "Buy Fish", "Acheter: Poisson", "Fisch kaufen" }, ITEMTYPE_SHOP, RG_BUY_FISH, true,
-                  &Logic::FishAccess, RHT_BOTTLE_WITH_FISH, false, 200);
+        Item(RG_BUY_FISH, Text{ "Buy Fish", "Acheter: Poisson", "Fisch kaufen" }, ITEMTYPE_SHOP, GI_FISH, true,
+             &Logic::FishAccess, RHT_BOTTLE_WITH_FISH, ITEM_FISH, OBJECT_GI_FISH, GID_FISH, 0x47, 0x80, CHEST_ANIM_LONG,
+             ITEM_CATEGORY_JUNK, MOD_NONE, false, 200);
     itemTable[RG_BUY_RED_POTION_30] = Item(
         RG_BUY_RED_POTION_30, Text{ "Buy Red Potion [30]", "Acheter: Potion Rouge [30]", "Rotes Elixier kaufen [30]" },
-        ITEMTYPE_SHOP, RG_BUY_RED_POTION_30, false, &Logic::noVariable, RHT_BOTTLE_WITH_RED_POTION, false, 30);
+        ITEMTYPE_SHOP, GI_POTION_RED, false, &Logic::noVariable, RHT_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
+        OBJECT_GI_LIQUID, GID_POTION_RED, 0x43, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE, false, 30);
     itemTable[RG_BUY_GREEN_POTION] =
         Item(RG_BUY_GREEN_POTION, Text{ "Buy Green Potion", "Acheter: Potion Verte", "Grünes Elixier kaufen" },
-                  ITEMTYPE_SHOP, RG_BUY_GREEN_POTION, true, &Logic::BuyGPotion, RHT_BOTTLE_WITH_GREEN_POTION, false, 30);
+             ITEMTYPE_SHOP, GI_POTION_GREEN, true, &Logic::BuyGPotion, RHT_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
+             OBJECT_GI_LIQUID, GID_POTION_GREEN, 0x44, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE, false, 30);
     itemTable[RG_BUY_BLUE_POTION] =
         Item(RG_BUY_BLUE_POTION, Text{ "Buy Blue Potion", "Acheter: Potion Bleue", "Blaues Elixier kaufen" },
-                  ITEMTYPE_SHOP, RG_BUY_BLUE_POTION, true, &Logic::BuyBPotion, RHT_BOTTLE_WITH_BLUE_POTION, false, 100);
+             ITEMTYPE_SHOP, GI_POTION_BLUE, true, &Logic::BuyBPotion, RHT_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
+             OBJECT_GI_LIQUID, GID_POTION_BLUE, 0x45, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE, false, 100);
     itemTable[RG_BUY_HYLIAN_SHIELD] = Item(
         RG_BUY_HYLIAN_SHIELD, Text{ "Buy Hylian Shield", "Acheter: Bouclier Hylien", "Hylianischer Schild kaufen" },
-        ITEMTYPE_SHOP, RG_BUY_HYLIAN_SHIELD, true, &Logic::HylianShield, RHT_HYLIAN_SHIELD, false, 80);
-    itemTable[RG_BUY_DEKU_SHIELD] =
-        Item(RG_BUY_DEKU_SHIELD, Text{ "Buy Deku Shield", "Acheter: Bouclier Mojo", "Deku-Schild kaufen" },
-                  ITEMTYPE_SHOP, RG_BUY_DEKU_SHIELD, true, &Logic::DekuShield, RHT_DEKU_SHIELD, false, 40);
-    itemTable[RG_BUY_GORON_TUNIC] =
-        Item(RG_BUY_GORON_TUNIC, Text{ "Buy Goron Tunic", "Acheter: Tunique Goron", "Goronen-Tunika kaufen" },
-                  ITEMTYPE_SHOP, RG_BUY_GORON_TUNIC, true, &Logic::GoronTunic, RHT_GORON_TUNIC, false, 200);
+        ITEMTYPE_SHOP, GI_SHIELD_HYLIAN, true, &Logic::HylianShield, RHT_HYLIAN_SHIELD, ITEM_SHIELD_HYLIAN,
+        OBJECT_GI_SHIELD_2, GID_SHIELD_HYLIAN, 0x4D, 0xA0, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER, MOD_NONE, false, 80);
+    itemTable[RG_BUY_DEKU_SHIELD] = Item(
+        RG_BUY_DEKU_SHIELD, Text{ "Buy Deku Shield", "Acheter: Bouclier Mojo", "Deku-Schild kaufen" }, ITEMTYPE_SHOP,
+        GI_SHIELD_DEKU, true, &Logic::DekuShield, RHT_DEKU_SHIELD, ITEM_SHIELD_DEKU, OBJECT_GI_SHIELD_1,
+        GID_SHIELD_DEKU, 0x4C, 0xA0, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER, MOD_NONE, false, 40);
+    itemTable[RG_BUY_GORON_TUNIC] = Item(
+        RG_BUY_GORON_TUNIC, Text{ "Buy Goron Tunic", "Acheter: Tunique Goron", "Goronen-Tunika kaufen" }, ITEMTYPE_SHOP,
+        GI_TUNIC_GORON, true, &Logic::GoronTunic, RHT_GORON_TUNIC, ITEM_TUNIC_GORON, OBJECT_GI_CLOTHES, GID_TUNIC_GORON,
+        0x50, 0xA0, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_NONE, false, 200);
     itemTable[RG_BUY_ZORA_TUNIC] =
-        Item(RG_BUY_ZORA_TUNIC, Text{ "Buy Zora Tunic", "Acheter: Tunique Zora", "Zora-Tunika kaufen" },
-                  ITEMTYPE_SHOP, RG_BUY_ZORA_TUNIC, true, &Logic::ZoraTunic, RHT_ZORA_TUNIC, false, 300);
+        Item(RG_BUY_ZORA_TUNIC, Text{ "Buy Zora Tunic", "Acheter: Tunique Zora", "Zora-Tunika kaufen" }, ITEMTYPE_SHOP,
+             GI_TUNIC_ZORA, true, &Logic::ZoraTunic, RHT_ZORA_TUNIC, ITEM_TUNIC_ZORA, OBJECT_GI_CLOTHES, GID_TUNIC_ZORA,
+             0x51, 0xA0, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_NONE, false, 300);
     itemTable[RG_BUY_HEART] =
-        Item(RG_BUY_HEART, Text{ "Buy Heart", "Acheter: Coeur de Vie", "Herz kaufen" }, ITEMTYPE_SHOP,
-                  RG_BUY_HEART, false, &Logic::noVariable, RHT_RECOVERY_HEART, false, 10);
+        Item(RG_BUY_HEART, Text{ "Buy Heart", "Acheter: Coeur de Vie", "Herz kaufen" }, ITEMTYPE_SHOP, GI_HEART, false,
+             &Logic::noVariable, RHT_RECOVERY_HEART, ITEM_HEART, OBJECT_GI_HEART, GID_HEART, 0x55, 0x80,
+             CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE, false, 10);
     itemTable[RG_BUY_BOMBCHU_10] =
         Item(RG_BUY_BOMBCHU_10, Text{ "Buy Bombchu (10)", "Acheter: Missiles (10)", "Bomchu kaufen (10)" },
-                  ITEMTYPE_SHOP, RG_BUY_BOMBCHU_10, true, &Logic::BuyBombchus10, RHT_BOMBCHU_10, false, 99);
+             ITEMTYPE_SHOP, GI_BOMBCHUS_10, true, &Logic::BuyBombchus10, RHT_BOMBCHU_10, ITEM_BOMBCHU, OBJECT_GI_BOMB_2,
+             GID_BOMBCHU, 0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE, false, 99);
     itemTable[RG_BUY_BOMBCHU_20] =
         Item(RG_BUY_BOMBCHU_20, Text{ "Buy Bombchu (20)", "Acheter: Missiles (20)", "Bomchu kaufen (20)" },
-                  ITEMTYPE_SHOP, RG_BUY_BOMBCHU_20, true, &Logic::BuyBombchus20, RHT_BOMBCHU_20, false, 180);
+             ITEMTYPE_SHOP, GI_BOMBCHUS_20, true, &Logic::BuyBombchus20, RHT_BOMBCHU_20, ITEM_BOMBCHUS_20,
+             OBJECT_GI_BOMB_2, GID_BOMBCHU, 0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE, false, 180);
     itemTable[RG_BUY_DEKU_SEEDS_30] = Item(
         RG_BUY_DEKU_SEEDS_30, Text{ "Buy Deku Seeds (30)", "Acheter: Graines Mojo (30)", "Deku-Samen kaufen (30)" },
-        ITEMTYPE_SHOP, RG_BUY_DEKU_SEEDS_30, true, &Logic::BuySeed, RHT_DEKU_SEEDS_30, false, 30);
+        ITEMTYPE_SHOP, GI_SEEDS_30, true, &Logic::BuySeed, RHT_DEKU_SEEDS_30, ITEM_SEEDS_30, OBJECT_GI_SEED, GID_SEEDS,
+        0xDC, 0x50, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE, false, 30);
     itemTable[RG_SOLD_OUT] = Item(RG_SOLD_OUT, Text{ "Sold Out", "Rupture de stock", "Ausverkauft" },
                                        ITEMTYPE_SHOP, RG_SOLD_OUT, false, &Logic::noVariable, RHT_NONE, false, 0);
     itemTable[RG_BUY_BLUE_FIRE] =
-        Item(RG_BUY_BLUE_FIRE, Text{ "Buy Blue Fire", "Acheter: Flamme Bleue", "Blaues Feuer kaufen" },
-                  ITEMTYPE_SHOP, RG_BUY_BLUE_FIRE, true, &Logic::BlueFireAccess, RHT_BOTTLE_WITH_BLUE_FIRE, false, 300);
+        Item(RG_BUY_BLUE_FIRE, Text{ "Buy Blue Fire", "Acheter: Flamme Bleue", "Blaues Feuer kaufen" }, ITEMTYPE_SHOP,
+             GI_BLUE_FIRE, true, &Logic::BlueFireAccess, RHT_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, OBJECT_GI_FIRE,
+             GID_BLUE_FIRE, 0x5D, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE, false, 300);
     itemTable[RG_BUY_BOTTLE_BUG] =
         Item(RG_BUY_BOTTLE_BUG, Text{ "Buy Bottle Bug", "Acheter: Insecte en bouteille", "Flaschenkäfer kaufen" },
-                  ITEMTYPE_SHOP, RG_BUY_BOTTLE_BUG, true, &Logic::BugsAccess, RHT_BOTTLE_WITH_BUGS, false, 50);
-    itemTable[RG_BUY_POE] = Item(RG_BUY_POE, Text{ "Buy Poe", "Acheter: Esprit", "Geist kaufen" }, ITEMTYPE_SHOP,
-                                      RG_BUY_POE, false, &Logic::noVariable, RHT_BOTTLE_WITH_BIG_POE, false, 30);
+             ITEMTYPE_SHOP, GI_BUGS, true, &Logic::BugsAccess, RHT_BOTTLE_WITH_BUGS, ITEM_BUG, OBJECT_GI_INSECT,
+             GID_BUG, 0x7A, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE, false, 50);
+    itemTable[RG_BUY_POE] =
+        Item(RG_BUY_POE, Text{ "Buy Poe", "Acheter: Esprit", "Geist kaufen" }, ITEMTYPE_SHOP, RG_BUY_POE, false,
+             &Logic::noVariable, RHT_BOTTLE_WITH_BIG_POE, ITEM_POE, OBJECT_GI_GHOST, GID_POE, 0x97, 0x80,
+             CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE, false, 30);
     itemTable[RG_BUY_FAIRYS_SPIRIT] =
         Item(RG_BUY_FAIRYS_SPIRIT, Text{ "Buy Fairy's Spirit", "Acheter: Esprit de Fée", "Feengeist kaufen" },
-                  ITEMTYPE_SHOP, RG_BUY_FAIRYS_SPIRIT, true, &Logic::FairyAccess, RHT_BOTTLE_WITH_FAIRY, false, 50);
+             ITEMTYPE_SHOP, GI_FAIRY, true, &Logic::FairyAccess, RHT_BOTTLE_WITH_FAIRY, ITEM_FAIRY, OBJECT_GI_BOTTLE,
+             GID_BOTTLE, 0x46, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE, false, 50);
     itemTable[RG_BUY_ARROWS_10] =
-        Item(RG_BUY_ARROWS_10, Text{ "Buy Arrows (10)", "Acheter: Flèches (10)", "Pfeile kaufen (10)" },
-                  ITEMTYPE_SHOP, RG_BUY_ARROWS_10, true, &Logic::BuyArrow, RHT_ARROWS_10, false, 20);
+        Item(RG_BUY_ARROWS_10, Text{ "Buy Arrows (10)", "Acheter: Flèches (10)", "Pfeile kaufen (10)" }, ITEMTYPE_SHOP,
+             GI_ARROWS_SMALL, true, &Logic::BuyArrow, RHT_ARROWS_10, ITEM_ARROWS_SMALL, OBJECT_GI_ARROW,
+             GID_ARROWS_SMALL, 0xE6, 0x48, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE, false, 20);
     itemTable[RG_BUY_BOMBS_20] =
-        Item(RG_BUY_BOMBS_20, Text{ "Buy Bombs (20)", "Acheter: Bombes (20)", "Bomben kaufen (20)" },
-                  ITEMTYPE_SHOP, RG_BUY_BOMBS_20, true, &Logic::BuyBomb, RHT_BOMBS_20, false, 80);
+        Item(RG_BUY_BOMBS_20, Text{ "Buy Bombs (20)", "Acheter: Bombes (20)", "Bomben kaufen (20)" }, ITEMTYPE_SHOP,
+             GI_BOMBS_20, true, &Logic::BuyBomb, RHT_BOMBS_20, ITEM_BOMBS_20, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59,
+             CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE, false, 80);
     itemTable[RG_BUY_BOMBS_30] =
-        Item(RG_BUY_BOMBS_30, Text{ "Buy Bombs (30)", "Acheter: Bombes (30)", "Bomben kaufen (30)" },
-                  ITEMTYPE_SHOP, RG_BUY_BOMBS_30, true, &Logic::BuyBomb, RHT_BOMBS_20, false, 120);
+        Item(RG_BUY_BOMBS_30, Text{ "Buy Bombs (30)", "Acheter: Bombes (30)", "Bomben kaufen (30)" }, ITEMTYPE_SHOP,
+             GI_BOMBS_30, true, &Logic::BuyBomb, RHT_BOMBS_20, ITEM_BOMBS_30, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59,
+             CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE, false, 120);
     itemTable[RG_BUY_BOMBS_535] =
         Item(RG_BUY_BOMBS_535, Text{ "Buy Bombs (5) [35]", "Acheter: Bombes (5) [35]", "Bomben kaufen (5) [35]" },
-                  ITEMTYPE_SHOP, RG_BUY_BOMBS_535, true, &Logic::BuyBomb, RHT_BOMBS_5, false, 35);
+             ITEMTYPE_SHOP, GI_BOMBS_5, true, &Logic::BuyBomb, RHT_BOMBS_5, ITEM_BOMBS_5, OBJECT_GI_BOMB_1, GID_BOMB,
+             0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE, false, 35);
     itemTable[RG_BUY_RED_POTION_40] = Item(
         RG_BUY_RED_POTION_40, Text{ "Buy Red Potion [40]", "Acheter: Potion Rouge [40]", "Rotes Elixier kaufen [40]" },
-        ITEMTYPE_SHOP, RG_BUY_RED_POTION_40, false, &Logic::noVariable, RHT_BOTTLE_WITH_RED_POTION, false, 40);
+        ITEMTYPE_SHOP, GI_POTION_RED, false, &Logic::noVariable, RHT_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
+        OBJECT_GI_LIQUID, GID_POTION_RED, 0x43, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE, false, 40);
     itemTable[RG_BUY_RED_POTION_50] = Item(
         RG_BUY_RED_POTION_50, Text{ "Buy Red Potion [50]", "Acheter: Potion Rouge [50]", "Rotes Elixier kaufen [50]" },
-        ITEMTYPE_SHOP, RG_BUY_RED_POTION_50, false, &Logic::noVariable, RHT_BOTTLE_WITH_RED_POTION, false, 50);
+        ITEMTYPE_SHOP, GI_POTION_RED, false, &Logic::noVariable, RHT_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
+        OBJECT_GI_LIQUID, GID_POTION_RED, 0x43, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE, false, 50);
     // Misc.
     itemTable[RG_TRIFORCE] = Item(RG_TRIFORCE, Text{ "Triforce", "Triforce", "Triforce" }, ITEMTYPE_EVENT,
                                        RG_TRIFORCE, false, &Logic::noVariable, RHT_NONE);
