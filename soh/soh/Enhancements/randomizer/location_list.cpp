@@ -940,6 +940,11 @@ void Rando::StaticData::InitLocationTable() {
                        ACTOR_ID_MAX, SCENE_POTION_SHOP_GRANNY, 0x00, 0x20, "Trade Odd Mushroom",
                        "Kak Trade Odd Mushroom", RHT_KAK_TRADE_ODD_MUSHROOM, RG_ODD_POTION, { Category::cAdultTrade },
                        SpoilerCollectionCheck::ItemGetInf(56), SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
+    locationTable[RC_KAK_GRANNYS_SHOP] = Location::Base(
+        RC_KAK_GRANNYS_SHOP, RCQUEST_BOTH, RCTYPE_MERCHANT, RCAREA_KAKARIKO_VILLAGE, ACTOR_ID_MAX,
+        SCENE_POTION_SHOP_GRANNY, 0x00, GI_POTION_BLUE, "Granny's Shop", "Kak Granny's Shop", RHT_KAK_GRANNYS_SHOP,
+        RG_BUY_BLUE_POTION, {},
+        SpoilerCollectionCheck::RandomizerInf(SCENE_POTION_SHOP_GRANNY, RAND_INF_MERCHANTS_GRANNYS_SHOP));
     locationTable[RC_KAK_ANJU_AS_ADULT] = Location::Base(
         RC_KAK_ANJU_AS_ADULT, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_KAKARIKO_VILLAGE, ACTOR_ID_MAX,
         SCENE_KAKARIKO_VILLAGE, 0x00, 0x1D, "Anju as Adult", "Kak Anju as Adult", RHT_KAK_ANJU_AS_ADULT, RG_CLAIM_CHECK,
@@ -980,6 +985,10 @@ void Rando::StaticData::InitLocationTable() {
         RC_GRAVEYARD_HOOKSHOT_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD, ACTOR_EN_BOX,
         SCENE_WINDMILL_AND_DAMPES_GRAVE, 4352, 0x00, "Hookshot Chest", "GY Hookshot Chest",
         RHT_GRAVEYARD_HOOKSHOT_CHEST, RG_PROGRESSIVE_HOOKSHOT, {}, SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
+    locationTable[RC_GRAVEYARD_FREESTANDING_POH] = Location::Collectable(
+        RC_GRAVEYARD_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD, ACTOR_EN_ITEM00,
+        SCENE_GRAVEYARD, 1030, 0x04, "Freestanding PoH", "GY Freestanding PoH", RHT_GRAVEYARD_FREESTANDING_POH,
+        RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_KAKARIKO, true);
     locationTable[RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH] = Location::Collectable(
         RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD, ACTOR_EN_ITEM00,
         SCENE_WINDMILL_AND_DAMPES_GRAVE, 1798, 0x07, "Dampe Race Freestanding PoH", "GY Dampe Race Freestanding PoH",
@@ -1597,7 +1606,7 @@ void Rando::StaticData::InitLocationTable() {
                         ACTOR_EN_BOX, SCENE_FOREST_TEMPLE, 30786, 0x02, "MQ Redead Chest",
                         "Forest Temple MQ Redead Chest", RHT_FOREST_TEMPLE_MQ_REDEAD_CHEST, RG_FOREST_TEMPLE_SMALL_KEY,
                         { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
-    locationTable[RC_FOREST_TEMPLE_BOSS_KEY_CHEST] = Location::Chest(
+    locationTable[RC_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST] = Location::Chest(
         RC_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST, RCQUEST_MQ, RCTYPE_BOSS_KEY, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
         SCENE_FOREST_TEMPLE, 10222, 0x0E, "MQ Boss Key Chest", "Forest Temple MQ Boss Key Chest",
         RHT_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST, RG_FOREST_TEMPLE_BOSS_KEY, { Category::cVanillaBossKey },
@@ -3460,6 +3469,7 @@ void Rando::StaticData::InitLocationTable() {
         RC_ZF_GS_HIDDEN_CAVE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_ZORAS_FOUNTAIN, ACTOR_EN_SI,
         SCENE_ZORAS_FOUNTAIN, 20768, 0x20, "GS Hidden Cave", "ZF GS Hidden Cave", RHT_ZF_GS_HIDDEN_CAVE,
         { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZF_GS_TREE] = Location::GSToken(RC_ZF_GS_TREE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_ZORAS_FOUNTAIN, ACTOR_EN_SI, SCENE_ZORAS_FOUNTAIN, -28288, 0x80, "GS Tree", "ZF GS Tree", RHT_ZF_GS_TREE, { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
 
     // Lon Lon Ranch
     locationTable[RC_LLR_GS_BACK_WALL] =
