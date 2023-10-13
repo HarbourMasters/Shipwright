@@ -122,8 +122,6 @@ extern "C"
 	extern Mtx gMtxClear;
 	extern MtxF gMtxFClear;
 	extern u32 gIsCtrlr2Valid;
-	extern vu32 gIrqMgrResetStatus;
-	extern volatile OSTime gIrqMgrRetraceTime;
 	extern s16* gWaveSamples[9];
 	extern f32 gBendPitchOneOctaveFrequencies[256];
 	extern f32 gBendPitchTwoSemitonesFrequencies[256];
