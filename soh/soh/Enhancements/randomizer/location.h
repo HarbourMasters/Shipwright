@@ -222,10 +222,10 @@ class Location {
     RandomizerCheckQuest quest;
     RandomizerCheckType checkType;
     RandomizerCheckArea area;
+    LocationType locationType;
     ActorID actorId;
     uint8_t scene;
     int32_t actorParams;
-    LocationType locationType;
     uint8_t flag;
     bool checked = false;
     std::string shortName;
