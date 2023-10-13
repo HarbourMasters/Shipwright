@@ -199,7 +199,6 @@ extern "C"
 	extern Color_RGBA8_u32 D_801614B0;
 	extern PreNmiBuff* gAppNmiBufferPtr;
 	extern SchedContext gSchedContext;
-	extern PadMgr gPadMgr;
 	extern uintptr_t gSegments[NUM_SEGMENTS];
 	extern volatile OSTime D_8016A520;
 	extern volatile OSTime D_8016A528;

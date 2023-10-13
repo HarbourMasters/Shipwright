@@ -8,48 +8,48 @@ s32 D_8012D280 = 1;
 
 void OTRControllerCallback(uint8_t rumble);
 
-OSMesgQueue* PadMgr_LockSerialMesgQueue(PadMgr* padMgr) {
+OSMesgQueue* PadMgr_AcquireSerialEventQueue(PadMgr* padMgr) {
     OSMesgQueue* ctrlrQ = NULL;
 
     if (D_8012D280 > 2) {
         // "serialMsgQ Waiting for lock"
         osSyncPrintf("%2d %d serialMsgQロック待ち         %08x %08x          %08x\n", osGetThreadId(NULL),
-                     padMgr->serialMsgQ.validCount, padMgr, &padMgr->serialMsgQ, &ctrlrQ);
+                     padMgr->serialLockQueue.validCount, padMgr, &padMgr->serialLockQueue, &ctrlrQ);
     }
 
-    osRecvMesg(&padMgr->serialMsgQ, (OSMesg*)&ctrlrQ, OS_MESG_BLOCK);
+    osRecvMesg(&padMgr->serialLockQueue, (OSMesg*)&ctrlrQ, OS_MESG_BLOCK);
 
     if (D_8012D280 > 2) {
         // "serialMsgQ Locked"
         osSyncPrintf("%2d %d serialMsgQをロックしました                     %08x\n", osGetThreadId(NULL),
-                     padMgr->serialMsgQ.validCount, ctrlrQ);
+                     padMgr->serialLockQueue.validCount, ctrlrQ);
     }
 
     return ctrlrQ;
 }
 
-void PadMgr_UnlockSerialMesgQueue(PadMgr* padMgr, OSMesgQueue* ctrlrQ) {
+void PadMgr_ReleaseSerialEventQueue(PadMgr* padMgr, OSMesgQueue* ctrlrQ) {
     if (D_8012D280 > 2) {
         // "serialMsgQ Unlock"
         osSyncPrintf("%2d %d serialMsgQロック解除します   %08x %08x %08x\n", osGetThreadId(NULL),
-                     padMgr->serialMsgQ.validCount, padMgr, &padMgr->serialMsgQ, ctrlrQ);
+                     padMgr->serialLockQueue.validCount, padMgr, &padMgr->serialLockQueue, ctrlrQ);
     }
 
-    osSendMesgPtr(&padMgr->serialMsgQ, ctrlrQ, OS_MESG_BLOCK);
+    osSendMesgPtr(&padMgr->serialLockQueue, ctrlrQ, OS_MESG_BLOCK);
 
     if (D_8012D280 > 2) {
         // "serialMsgQ Unlocked"
         osSyncPrintf("%2d %d serialMsgQロック解除しました %08x %08x %08x\n", osGetThreadId(NULL),
-                     padMgr->serialMsgQ.validCount, padMgr, &padMgr->serialMsgQ, ctrlrQ);
+                     padMgr->serialLockQueue.validCount, padMgr, &padMgr->serialLockQueue, ctrlrQ);
     }
 }
 
 void PadMgr_LockPadData(PadMgr* padMgr) {
-    osRecvMesg(&padMgr->lockMsgQ, NULL, OS_MESG_BLOCK);
+    osRecvMesg(&padMgr->lockQueue, NULL, OS_MESG_BLOCK);
 }
 
 void PadMgr_UnlockPadData(PadMgr* padMgr) {
-    osSendMesgPtr(&padMgr->lockMsgQ, NULL, OS_MESG_BLOCK);
+    osSendMesgPtr(&padMgr->lockQueue, NULL, OS_MESG_BLOCK);
 }
 
 void PadMgr_RumbleControl(PadMgr* padMgr) {
@@ -57,18 +57,18 @@ void PadMgr_RumbleControl(PadMgr* padMgr) {
     static u32 frame;
     s32 temp = 1;
     s32 triedRumbleComm;
-    OSMesgQueue* ctrlrQ = PadMgr_LockSerialMesgQueue(padMgr);
+    OSMesgQueue* ctrlrQ = PadMgr_AcquireSerialEventQueue(padMgr);
     s32 var4;
     s32 i;
 
     triedRumbleComm = 0;
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < MAXCONTROLLERS; i++) {
         if (padMgr->ctrlrIsConnected[i]) {
             if (padMgr->padStatus[i].status & 1) {
                 if (padMgr->pakType[i] == temp) {
                     if (padMgr->rumbleEnable[i] != 0) {
-                        if (padMgr->rumbleCounter[i] < 3) {
+                        if (padMgr->rumbleTimer[i] < 3) {
                             // clang-format off
                             osSyncPrintf(VT_FGCOL(YELLOW));
                             // clang-format on
@@ -77,20 +77,20 @@ void PadMgr_RumbleControl(PadMgr* padMgr) {
                             osSyncPrintf("padmgr: %dコン: %s\n", i + 1, "振動パック ぶるぶるぶるぶる");
                             osSyncPrintf(VT_RST);
 
-                            if (__osMotorAccess(&padMgr->pfs[i], temp) != 0) {
+                            if (__osMotorAccess(&padMgr->rumblePfs[i], temp) != 0) {
                                 padMgr->pakType[i] = 0;
                                 osSyncPrintf(VT_FGCOL(YELLOW));
                                 // "A communication error has occurred with the vibration pack"
                                 osSyncPrintf("padmgr: %dコン: %s\n", i + 1, "振動パックで通信エラーが発生しました");
                                 osSyncPrintf(VT_RST);
                             } else {
-                                padMgr->rumbleCounter[i] = 3;
+                                padMgr->rumbleTimer[i] = 3;
                             }
 
                             triedRumbleComm = 1;
                         }
                     } else {
-                        if (padMgr->rumbleCounter[i] != 0) {
+                        if (padMgr->rumbleTimer[i] != 0) {
                             // clang-format off
                             osSyncPrintf(VT_FGCOL(YELLOW));
                             // clang-format on
@@ -99,14 +99,14 @@ void PadMgr_RumbleControl(PadMgr* padMgr) {
                             osSyncPrintf("padmgr: %dコン: %s\n", i + 1, "振動パック 停止");
                             osSyncPrintf(VT_RST);
 
-                            if (osMotorStop(&padMgr->pfs[i]) != 0) {
+                            if (osMotorStop(&padMgr->rumblePfs[i]) != 0) {
                                 padMgr->pakType[i] = 0;
                                 osSyncPrintf(VT_FGCOL(YELLOW));
                                 // "A communication error has occurred with the vibration pack"
                                 osSyncPrintf("padmgr: %dコン: %s\n", i + 1, "振動パックで通信エラーが発生しました");
                                 osSyncPrintf(VT_RST);
                             } else {
-                                padMgr->rumbleCounter[i]--;
+                                padMgr->rumbleTimer[i]--;
                             }
 
                             triedRumbleComm = 1;
@@ -138,12 +138,12 @@ void PadMgr_RumbleControl(PadMgr* padMgr) {
         i = frame % 4;
 
         if (padMgr->ctrlrIsConnected[i] && (padMgr->padStatus[i].status & 1) && (padMgr->pakType[i] != 1)) {
-            var4 = osMotorInit(ctrlrQ, &padMgr->pfs[i], i);
+            var4 = osMotorInit(ctrlrQ, &padMgr->rumblePfs[i], i);
 
             if (var4 == 0) {
                 padMgr->pakType[i] = 1;
-                osMotorStart(&padMgr->pfs[i]);
-                osMotorStop(&padMgr->pfs[i]);
+                osMotorStart(&padMgr->rumblePfs[i]);
+                osMotorStop(&padMgr->rumblePfs[i]);
                 osSyncPrintf(VT_FGCOL(YELLOW));
                 // "Recognized vibration pack"
                 osSyncPrintf("padmgr: %dコン: %s\n", i + 1, "振動パックを認識しました");
@@ -161,17 +161,17 @@ void PadMgr_RumbleControl(PadMgr* padMgr) {
     }
 
     frame++;
-    PadMgr_UnlockSerialMesgQueue(padMgr, ctrlrQ);
+    PadMgr_ReleaseSerialEventQueue(padMgr, ctrlrQ);
 }
 
 void PadMgr_RumbleStop(PadMgr* padMgr) {
     s32 i;
-    OSMesgQueue* ctrlrQ = PadMgr_LockSerialMesgQueue(padMgr);
+    OSMesgQueue* ctrlrQ = PadMgr_AcquireSerialEventQueue(padMgr);
 
     for (i = 0; i < 4; i++) {
-        if (osMotorInit(ctrlrQ, &padMgr->pfs[i], i) == 0) {
+        if (osMotorInit(ctrlrQ, &padMgr->rumblePfs[i], i) == 0) {
 #if 0
-            if ((gFaultStruct.msgId == 0) && (padMgr->rumbleOnFrames != 0))
+            if ((gFaultStruct.msgId == 0) && (padMgr->rumbleOnTimer != 0))
             {
                 osSyncPrintf(VT_FGCOL(YELLOW));
                 // "Stop vibration pack"
@@ -180,20 +180,20 @@ void PadMgr_RumbleStop(PadMgr* padMgr) {
             }
 #endif
 
-            osMotorStop(&padMgr->pfs[i]);
+            osMotorStop(&padMgr->rumblePfs[i]);
         }
     }
 
-    PadMgr_UnlockSerialMesgQueue(padMgr, ctrlrQ);
+    PadMgr_ReleaseSerialEventQueue(padMgr, ctrlrQ);
 }
 
 void PadMgr_RumbleReset(PadMgr* padMgr) {
-    padMgr->rumbleOffFrames = 3;
+    padMgr->rumbleOffTimer = 3;
 }
 
 void PadMgr_RumbleSetSingle(PadMgr* padMgr, u32 ctrlr, u32 rumble) {
     padMgr->rumbleEnable[ctrlr] = rumble;
-    padMgr->rumbleOnFrames = 240;
+    padMgr->rumbleOnTimer = 240;
 }
 
 void PadMgr_RumbleSet(PadMgr* padMgr, u8* ctrlrRumbles) {
@@ -203,7 +203,7 @@ void PadMgr_RumbleSet(PadMgr* padMgr, u8* ctrlrRumbles) {
         padMgr->rumbleEnable[i] = ctrlrRumbles[i];
     }
 
-    padMgr->rumbleOnFrames = 240;
+    padMgr->rumbleOnTimer = 240;
 }
 
 #define PAUSE_BUFFER_INPUT_BLOCK_ID 0
@@ -272,7 +272,7 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
                 if (padMgr->ctrlrIsConnected[i]) {
                     padMgr->ctrlrIsConnected[i] = false;
                     padMgr->pakType[i] = 0;
-                    padMgr->rumbleCounter[i] = 0xFF;
+                    padMgr->rumbleTimer[i] = 0xFF;
                     osSyncPrintf(VT_FGCOL(YELLOW));
                     // "Do not respond"?
                     osSyncPrintf("padmgr: %dコン: %s\n", i + 1, "応答しません");
@@ -307,12 +307,12 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
 
 void PadMgr_HandleRetraceMsg(PadMgr* padMgr) {
     s32 i;
-    OSMesgQueue* queue = PadMgr_LockSerialMesgQueue(padMgr);
+    OSMesgQueue* queue = PadMgr_AcquireSerialEventQueue(padMgr);
     u32 mask;
 
     osContStartReadData(queue);
     if (padMgr->retraceCallback) {
-        padMgr->retraceCallback(padMgr, padMgr->retraceCallbackValue);
+        padMgr->retraceCallback(padMgr, padMgr->retraceCallbackArg);
     }
     osRecvMesg(queue, NULL, OS_MESG_BLOCK);
     osContGetReadData(padMgr->pads);
@@ -321,14 +321,14 @@ void PadMgr_HandleRetraceMsg(PadMgr* padMgr) {
         padMgr->padStatus[i].status = Controller_ShouldRumble(i);
     }
 
-    if (padMgr->preNMIShutdown) {
+    if (padMgr->isResetting) {
         memset(padMgr->pads, 0, sizeof(padMgr->pads));
     }
     PadMgr_ProcessInputs(padMgr);
     osContStartQuery(queue);
     osRecvMesg(queue, NULL, OS_MESG_BLOCK);
     osContGetQuery(padMgr->padStatus);
-    PadMgr_UnlockSerialMesgQueue(padMgr, queue);
+    PadMgr_ReleaseSerialEventQueue(padMgr, queue);
 
     mask = 0;
     for (i = 0; i < 4; i++) {
@@ -346,20 +346,20 @@ void PadMgr_HandleRetraceMsg(PadMgr* padMgr) {
 
     /* if (gFaultStruct.msgId) {
         PadMgr_RumbleStop(padMgr);
-    } else */ if (padMgr->rumbleOffFrames > 0) {
-        --padMgr->rumbleOffFrames;
+    } else */ if (padMgr->rumbleOffTimer > 0) {
+        --padMgr->rumbleOffTimer;
         PadMgr_RumbleStop(padMgr);
-    } else if (padMgr->rumbleOnFrames == 0) {
+    } else if (padMgr->rumbleOnTimer == 0) {
         PadMgr_RumbleStop(padMgr);
-    } else if (!padMgr->preNMIShutdown) {
+    } else if (!padMgr->isResetting) {
         PadMgr_RumbleControl(padMgr);
-        --padMgr->rumbleOnFrames;
+        --padMgr->rumbleOnTimer;
     }
 }
 
 void PadMgr_HandlePreNMI(PadMgr* padMgr) {
     osSyncPrintf("padmgr_HandlePreNMI()\n");
-    padMgr->preNMIShutdown = true;
+    padMgr->isResetting = true;
     PadMgr_RumbleReset(padMgr);
 }
 
@@ -405,12 +405,12 @@ void PadMgr_ThreadEntry(PadMgr* padMgr) {
 
     exit = false;
     while (!exit) {
-        if ((D_8012D280 > 2) && (padMgr->interruptMsgQ.validCount == 0)) {
+        if ((D_8012D280 > 2) && (padMgr->interruptQueue.validCount == 0)) {
             // "Waiting for controller thread event"
             osSyncPrintf("コントローラスレッドイベント待ち %lld\n", OS_CYCLES_TO_USEC(osGetTime()));
         }
 
-        osRecvMesg(&padMgr->interruptMsgQ, (OSMesg*)&mesg, OS_MESG_BLOCK);
+        osRecvMesg(&padMgr->interruptQueue, (OSMesg*)&mesg, OS_MESG_BLOCK);
         //LOG_CHECK_NULL_POINTER("msg", mesg);
 
         PadMgr_HandleRetraceMsg(padMgr);
@@ -452,12 +452,12 @@ void PadMgr_Init(PadMgr* padMgr, OSMesgQueue* siIntMsgQ, IrqMgr* irqMgr, OSId id
     memset(padMgr, 0, sizeof(PadMgr));
     padMgr->irqMgr = irqMgr;
 
-    osCreateMesgQueue(&padMgr->interruptMsgQ, padMgr->interruptMsgBuf, 4);
+    osCreateMesgQueue(&padMgr->interruptQueue, padMgr->interruptMsgBuf, 4);
     // OTRTODO: Removed due to crash
-    //IrqMgr_AddClient(padMgr->irqMgr, &padMgr->irqClient, &padMgr->interruptMsgQ);
-    osCreateMesgQueue(&padMgr->serialMsgQ, padMgr->serialMsgBuf, 1);
-    PadMgr_UnlockSerialMesgQueue(padMgr, siIntMsgQ);
-    osCreateMesgQueue(&padMgr->lockMsgQ, padMgr->lockMsgBuf, 1);
+    //IrqMgr_AddClient(padMgr->irqMgr, &padMgr->irqClient, &padMgr->interruptQueue);
+    osCreateMesgQueue(&padMgr->serialLockQueue, &padMgr->serialMsg, 1);
+    PadMgr_ReleaseSerialEventQueue(padMgr, siIntMsgQ);
+    osCreateMesgQueue(&padMgr->lockQueue, &padMgr->lockMsg, 1);
     PadMgr_UnlockPadData(padMgr);
     PadSetup_Init(siIntMsgQ, (u8*)&padMgr->validCtrlrsMask, padMgr->padStatus);
 

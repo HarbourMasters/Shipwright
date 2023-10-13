@@ -17,14 +17,14 @@ s32 Mempak_Init(s32 controllerNb) {
     s32 pad;
     s32 ret = false;
 
-    mq = PadMgr_LockSerialMesgQueue(&gPadMgr);
+    mq = PadMgr_AcquireSerialEventQueue(&gPadMgr);
 
     if (!osPfsInitPak(mq, &sMempakPfsHandle, controllerNb)) {
         ret = true;
     }
 
     osPfsFreeBlocks(&sMempakPfsHandle, &sMempakFreeBytes);
-    PadMgr_UnlockSerialMesgQueue(&gPadMgr, mq);
+    PadMgr_ReleaseSerialEventQueue(&gPadMgr, mq);
 
     return ret;
 }
@@ -40,7 +40,7 @@ s32 Mempak_FindFile(s32 controllerNb, char start, char end) {
     u32 bit = 1;
     s32 flag = 0;
 
-    mq = PadMgr_LockSerialMesgQueue(&gPadMgr);
+    mq = PadMgr_AcquireSerialEventQueue(&gPadMgr);
 
     for (idx = start; idx <= end; idx++) {
         sMempakExtName[0] = idx - 0x27;
@@ -57,7 +57,7 @@ s32 Mempak_FindFile(s32 controllerNb, char start, char end) {
         osSyncPrintf("mempak: find '%c' (%d)\n", idx, error);
     }
 
-    PadMgr_UnlockSerialMesgQueue(&gPadMgr, mq);
+    PadMgr_ReleaseSerialEventQueue(&gPadMgr, mq);
     osSyncPrintf("mempak: find '%c' - '%c' %02x\n", start, end, flag);
 
     return flag;
@@ -69,7 +69,7 @@ s32 Mempak_Write(s32 controllerNb, char idx, void* buffer, s32 offset, ptrdiff_t
     s32 ret = false;
     s32 pad;
 
-    mq = PadMgr_LockSerialMesgQueue(&gPadMgr);
+    mq = PadMgr_AcquireSerialEventQueue(&gPadMgr);
 
     if (size < sMempakFreeBytes) {
         error = osPfsReadWriteFile(&sMempakPfsHandle, sMempakFiles[idx - 'A'], 1, offset, size, buffer);
@@ -78,7 +78,7 @@ s32 Mempak_Write(s32 controllerNb, char idx, void* buffer, s32 offset, ptrdiff_t
         }
         osSyncPrintf("mempak: write %d byte '%c' (%d)->%d\n", size, idx, sMempakFiles[idx - 'A'], error);
     }
-    PadMgr_UnlockSerialMesgQueue(&gPadMgr, mq);
+    PadMgr_ReleaseSerialEventQueue(&gPadMgr, mq);
 
     return ret;
 }
@@ -89,7 +89,7 @@ s32 Mempak_Read(s32 controllerNb, char idx, void* buffer, s32 offset, ptrdiff_t 
     s32 ret = false;
     s32 pad;
 
-    mq = PadMgr_LockSerialMesgQueue(&gPadMgr);
+    mq = PadMgr_AcquireSerialEventQueue(&gPadMgr);
 
     if (size < sMempakFreeBytes) {
         error = osPfsReadWriteFile(&sMempakPfsHandle, sMempakFiles[idx - 'A'], 0, offset, size, buffer);
@@ -98,7 +98,7 @@ s32 Mempak_Read(s32 controllerNb, char idx, void* buffer, s32 offset, ptrdiff_t 
         }
         osSyncPrintf("mempak: read %d byte '%c' (%d)<-%d\n", size, idx, sMempakFiles[idx - 'A'], error);
     }
-    PadMgr_UnlockSerialMesgQueue(&gPadMgr, mq);
+    PadMgr_ReleaseSerialEventQueue(&gPadMgr, mq);
     return ret;
 }
 
@@ -109,7 +109,7 @@ s32 Mempak_Alloc(s32 controllerNb, char* idx, ptrdiff_t size) {
     s32 i;
     s32 pad;
 
-    mq = PadMgr_LockSerialMesgQueue(&gPadMgr);
+    mq = PadMgr_AcquireSerialEventQueue(&gPadMgr);
 
     if (*idx >= 'A' && *idx < 'L') {
         sMempakExtName[0] = *idx - 0x27;
@@ -149,7 +149,7 @@ s32 Mempak_Alloc(s32 controllerNb, char* idx, ptrdiff_t size) {
             ret = 1;
         }
     }
-    PadMgr_UnlockSerialMesgQueue(&gPadMgr, mq);
+    PadMgr_ReleaseSerialEventQueue(&gPadMgr, mq);
 
     return ret;
 }
@@ -159,7 +159,7 @@ s32 Mempak_DeleteFile(s32 controllerNb, char idx) {
     s32 error;
     s32 ret = false;
 
-    mq = PadMgr_LockSerialMesgQueue(&gPadMgr);
+    mq = PadMgr_AcquireSerialEventQueue(&gPadMgr);
 
     sMempakExtName[0] = idx - 0x27;
     error = osPfsDeleteFile(&sMempakPfsHandle, sMempakCompanyCode, sMempakGameCode, sMempakGameName, sMempakExtName);
@@ -167,18 +167,18 @@ s32 Mempak_DeleteFile(s32 controllerNb, char idx) {
         ret = true;
     }
     osSyncPrintf("mempak: delete '%c' (%d)\n", idx, error);
-    PadMgr_UnlockSerialMesgQueue(&gPadMgr, mq);
+    PadMgr_ReleaseSerialEventQueue(&gPadMgr, mq);
 
     return ret;
 }
 
 s32 Mempak_GetFileSize(s32 controllerNb, char idx) {
-    OSMesgQueue* mq = PadMgr_LockSerialMesgQueue(&gPadMgr);
+    OSMesgQueue* mq = PadMgr_AcquireSerialEventQueue(&gPadMgr);
     OSPfsState state;
     s32 error = osPfsFileState(&sMempakPfsHandle, sMempakFiles[idx - 'A'], &state);
     s32 pad;
 
-    PadMgr_UnlockSerialMesgQueue(&gPadMgr, mq);
+    PadMgr_ReleaseSerialEventQueue(&gPadMgr, mq);
 
     if (error != 0) {
         return 0;
