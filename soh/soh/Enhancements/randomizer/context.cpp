@@ -47,7 +47,7 @@ void Context::PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bo
     SPDLOG_DEBUG("\n");
     SPDLOG_DEBUG(StaticData::RetrieveItem(item).GetName().GetEnglish());
     SPDLOG_DEBUG(" placed at ");
-    SPDLOG_DEBUG(loc->GetName());
+    SPDLOG_DEBUG(StaticData::GetLocation(locKey)->GetName());
     SPDLOG_DEBUG("\n\n");
 
     if (applyEffectImmediately || Settings::Logic.Is(LOGIC_NONE) || Settings::Logic.Is(LOGIC_VANILLA)) {
@@ -169,7 +169,7 @@ void Context::CreateItemOverrides() {
         SPDLOG_DEBUG("\t");
         SPDLOG_DEBUG(loc->GetName());
         SPDLOG_DEBUG(": ");
-        SPDLOG_DEBUG(loc->GetPlacedItemName().GetEnglish());
+        SPDLOG_DEBUG(itemLoc->GetPlacedItemName().GetEnglish());
         SPDLOG_DEBUG("\n");
     }
     SPDLOG_DEBUG("Overrides Created: ");
