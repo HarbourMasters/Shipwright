@@ -909,6 +909,10 @@ const char* SpoilerLog_Write(int language) {
     jsonFile << std::setw(4) << jsonString << std::endl;
     jsonFile.close();
 
+    // Note: probably shouldn't return this without making sure this string is stored somewhere, but
+    // this return value is currently only used in playthrough.cpp as a true/false. Even if the pointer
+    // is no longer valid it would still not be nullptr if the spoilerfile was written, so it works but
+    // should probably be changed for correctness later on.
     return fileName.c_str();
 }
 
