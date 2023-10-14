@@ -193,7 +193,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
         case RG_PROGRESSIVE_SLINGSHOT:
             switch (CUR_UPG_VALUE(UPG_BULLET_BAG)) {
                 case 0:
-                    actual = RG_SLINGSHOT;
+                    actual = RG_FAIRY_SLINGSHOT;
                     break;
                 case 1:
                     actual = RG_BIG_BULLET_BAG;
@@ -261,7 +261,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
                     break;
                 case 1:
                 case 2:
-                    actual = RG_GOLD_SCALE;
+                    actual = RG_GOLDEN_SCALE;
                     break;
             }
             break;
