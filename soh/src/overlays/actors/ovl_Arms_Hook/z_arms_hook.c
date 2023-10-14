@@ -16,7 +16,6 @@ uint8_t ArmsHook_CanUseNewLoadingMethod();
 
 // Alternate Equipment Loading DLs.
 // AltEquip TODO This is ridiculous. I'm sorry but this is a terrible workaround.
-//               All of these alternative DLs need to go.
 Gfx* sHookshotTipDLs[] = {
     gLinkHookshotTipDL,
     gLinkHookshotSmallTipDL,
@@ -76,14 +75,12 @@ static Vec3f D_80865BAC = { 0.0f, -500.0f, 1200.0f };
 
 // Alternate Equipment Loading function.
 // AltEquip TODO Try and figure out a way to not need alternative models for the tip and chain.
-uint8_t ArmsHook_CanUseNewLoadingMethod() {
+uint8_t ArmsHook_CanUseNewLoadingMethod(Gfx* arg) {
     if (!CVarGetInteger("gAltLinkEquip", 1)) {
         return false;
     }
 
-    if (!(ResourceGetIsCustomByName(gLinkHookshotDL) && ResourceGetIsCustomByName(gLinkHookshotChainDL) &&
-          ResourceGetIsCustomByName(gLinkHookshotTipDL) && ResourceGetIsCustomByName(gLinkHookshotSmallChainDL) &&
-          ResourceGetIsCustomByName(gLinkHookshotSmallTipDL))) {
+    if (!(ResourceGetIsCustomByName(arg))) {
         return false;
     }
     return true;
@@ -358,9 +355,12 @@ void ArmsHook_Draw(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        // Use an alternate set of DLs. 
+        // Use an alternate set of DLs.
         // Hookshot tips are seperate between ages because they can't be properly scaled.
-        if (ArmsHook_CanUseNewLoadingMethod()) { // Use alternate asset loading behavior.
+        // 
+        // AltEquip TODO: Why not? Shouldn't we try and solve that instead?
+        if (ArmsHook_CanUseNewLoadingMethod(
+                sHookshotTipDLs[gSaveContext.linkAge])) { // Use alternate asset loading behavior.
             gSPDisplayList(POLY_OPA_DISP++, sHookshotTipDLs[gSaveContext.linkAge]);
         } else { // Use vanilla behavior.
             gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHookshotTipDL);
@@ -374,7 +374,8 @@ void ArmsHook_Draw(Actor* thisx, PlayState* play) {
         Matrix_Scale(0.015f, 0.015f, sqrtf(SQ(sp78.y) + sp58) * 0.01f, MTXMODE_APPLY);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        if (ArmsHook_CanUseNewLoadingMethod()) { // Use alternate asset loading behavior.
+        if (ArmsHook_CanUseNewLoadingMethod(
+                sHookshotChainDLs[gSaveContext.linkAge])) { // Use alternate asset loading behavior.
             gSPDisplayList(POLY_OPA_DISP++, sHookshotChainDLs[gSaveContext.linkAge]);
         } else { // Use vanilla behavior.
             gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHookshotChainDL);
