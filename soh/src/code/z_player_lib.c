@@ -433,8 +433,8 @@ uint8_t Player_CanUseNewLoadingMethodLeftHand(Player* this) {
     }
 
     switch (this->leftHandType) {
-        case 2: // Unused, but a safe measure
-        case 3:
+        case PLAYER_MODELTYPE_LH_SWORD: // Unused, but a safe measure
+        case PLAYER_MODELTYPE_LH_SWORD_2:
             switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
                 case PLAYER_SWORD_KOKIRI:
                     if (ResourceGetIsCustomByName(gLinkKokiriSwordDL)) {
@@ -446,7 +446,7 @@ uint8_t Player_CanUseNewLoadingMethodLeftHand(Player* this) {
                     }
             }
             break;
-        case 4:
+        case PLAYER_MODELTYPE_LH_BGS:
             if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON) {
                 if (ResourceGetIsCustomByName(gLinkBrokenLongswordDL)) {
                     return true;
@@ -455,22 +455,22 @@ uint8_t Player_CanUseNewLoadingMethodLeftHand(Player* this) {
                 }
             }
             break;
-        case 5:
+        case PLAYER_MODELTYPE_LH_HAMMER:
             if (ResourceGetIsCustomByName(gLinkHammerDL)) {
                 return true;
             }
             break;
-        case 6:
+        case PLAYER_MODELTYPE_LH_BOOMERANG:
             if (ResourceGetIsCustomByName(gLinkBoomerangDL)) {
                 return true;
             }
             break;
-        case 7:
+        case PLAYER_MODELTYPE_LH_BOTTLE:
             if (ResourceGetIsCustomByName(gLinkBottleDL)) {
                 return true;
             }
             break;
-        case 20:
+        case 20: // 0x14 AltEquip TODO Add a comment explaining this.
             if (ResourceGetIsCustomByName(gLinkMasterSwordDL)) {
                 return true;
             }
@@ -486,7 +486,7 @@ uint8_t Player_CanUseNewLoadingMethodRightHand(Player* this) {
     }
 
     switch (this->rightHandType) {
-        case 10:
+        case PLAYER_MODELTYPE_RH_SHIELD:
             if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU) {
                 if (ResourceGetIsCustomByName(gLinkDekuShieldDL)) {
                     return true;
@@ -502,7 +502,8 @@ uint8_t Player_CanUseNewLoadingMethodRightHand(Player* this) {
                 }
             }
             break;
-        case 11:
+        case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT: // Right hand is holding either Bow or Slingshot.
+        case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2: // Unused, but same as Bow_Slingshot.
             if (this->itemAction == PLAYER_IA_SLINGSHOT) {
                 if (ResourceGetIsCustomByName(gLinkSlingshotDL)) {
                     return true;
@@ -513,7 +514,7 @@ uint8_t Player_CanUseNewLoadingMethodRightHand(Player* this) {
                 }
             }
             break;
-        case 15:
+        case PLAYER_MODELTYPE_RH_HOOKSHOT:
             if (ResourceGetIsCustomByName(gLinkHookshotDL)) {
                 return true;
             }
@@ -594,7 +595,8 @@ uint8_t Player_CanUseNewLoadingMethodFirstPerson(Player* this) {
     }
 
     switch (this->rightHandType) {
-        case 11:
+        case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT:   // Right hand is holding either Bow or Slingshot.
+        case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2: // Unused, but same as Bow_Slingshot.
             if (this->itemAction == PLAYER_IA_SLINGSHOT) {
                 if (!ResourceGetIsCustomByName(gLinkSlingshotDL)) {
                     return false;
@@ -605,7 +607,7 @@ uint8_t Player_CanUseNewLoadingMethodFirstPerson(Player* this) {
                 }
             }
             break;
-        case 15:
+        case PLAYER_MODELTYPE_RH_HOOKSHOT:
             if (!(ResourceGetIsCustomByName(gLinkHookshotDL))) {
                 return false;
             }
@@ -759,11 +761,12 @@ void Player_SetModels(Player* this, s32 modelGroup) {
         }
 
         if ((CVarGetInteger("gBowSlingShotAmmoFix", 0) && !Player_CanUseNewLoadingMethodRightHand(this)) &&
-            this->rightHandType == 11) { // If holding Bow/Slingshot without new DList system
+            this->rightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT) { // If holding Bow/Slingshot without new DList system
             this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
         }
     } else { // gAltLinkEquip disabled
-        if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && this->rightHandType == 11) { // If holding Bow/Slingshot
+        if (CVarGetInteger("gBowSlingShotAmmoFix", 0) &&
+            this->rightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT) { // If holding Bow/Slingshot
             this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
         }
     }
@@ -1931,12 +1934,9 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             // AltEquip TODO: Comment from @inspectredc's code review of HarbourMasters/Shipwright#3008
             //
             // > If this part is unused, I feel as though it should either break or not be included?
-            // >
-            // > Would also be preferable for this section to have enums for describing the leftHandType cases, 
-            // > as the magic numbers don't make it clear what exactly is going on
             switch (this->leftHandType) {
-                case 2: // Unused, but a safe measure
-                case 3: // Left hand is holding a one-handed sword.
+                case PLAYER_MODELTYPE_LH_SWORD: // Unused, but a safe measure
+                case PLAYER_MODELTYPE_LH_SWORD_2: // Left hand is holding a one-handed sword.
                     switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
                         case PLAYER_SWORD_KOKIRI:
                             Player_DrawChildItem(play, gLinkKokiriSwordDL);
@@ -1946,7 +1946,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                             break;
                     }
                     break;
-                case 4: // Left hand is holding a two-handed sword.
+                case PLAYER_MODELTYPE_LH_BGS: // Left hand is holding a two-handed sword.
                     if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON) {
                         if (gSaveContext.swordHealth <= 0.0f) {
                             Player_DrawAdultItem(play, gLinkBrokenLongswordDL);
@@ -1955,15 +1955,15 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                         }
                     }
                     break;
-                case 5: // Left hand is holding Megaton Hammer.
+                case PLAYER_MODELTYPE_LH_HAMMER: // Left hand is holding Megaton Hammer.
                     Player_DrawAdultItem(play, gLinkHammerDL);
                     break;
-                case 6: // Left hand is holding Boomerang.
+                case PLAYER_MODELTYPE_LH_BOOMERANG: // Left hand is holding Boomerang.
                     if (!(this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG)) {
                         Player_DrawChildItem(play, gLinkBoomerangDL);
                     }
                     break;
-                case 20: // (AltEquip TODO: Left hand is holding... Master Sword as Child?), which is a special case.
+                case 20: // 0x14 AltEquip TODO Add a comment explaining this.
                     // Doesn't call PlayerDrawChildItem due to it being rotated
                     OPEN_DISPS(play->state.gfxCtx);
 
@@ -2099,7 +2099,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
             if (Player_CanUseNewLoadingMethodRightHand(this) && this->actor.id != 51) {
                 switch (this->rightHandType) {
-                    case 10: // Right hand is holding Shield
+                    case PLAYER_MODELTYPE_RH_SHIELD: // Right hand is holding Shield
                         if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU) {
                             Player_DrawChildItem(play, gLinkDekuShieldDL);
                         } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
@@ -2109,7 +2109,8 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                             Player_DrawAdultItem(play, gLinkMirrorShieldDL);
                         }
                         break;
-                    case 11: // Right hand is holding either Slingshot or Bow
+                    case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT:            // Right hand is holding either Bow or Slingshot.
+                    case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2:          // Unused, but same as Bow_Slingshot.
                         if (this->itemAction == PLAYER_IA_SLINGSHOT) { // Item is Slingshot
                             if (projectedHeadPos.z < -4.0f && this->unk_6AD != 0) {
                                 if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
@@ -2150,7 +2151,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                             }
                         }
                         break;
-                    case 15: // Right hand is holding Hookshot
+                    case PLAYER_MODELTYPE_RH_HOOKSHOT: // Right hand is holding Hookshot
                         if (projectedHeadPos.z < 0.0f && this->unk_6AD != 0) {
                             if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
                                 Player_DrawRightHandItem(play, gLinkHookshotDL);
