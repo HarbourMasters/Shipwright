@@ -703,7 +703,10 @@ void LoadFile() {
         }
         if (!IsVisibleInCheckTracker(entry2->GetRandomizerCheck())) return;
 
-        checksByArea.find(entry2->GetArea())->second.push_back(entry2->GetRandomizerCheck());
+        if (entry2->GetRandomizerCheck() != RC_LINKS_POCKET) {
+            // RC_LINKS_POCKET is a special case because it's RCAREA is different depending on starting age.
+            checksByArea.find(entry2->GetArea())->second.push_back(entry2->GetRandomizerCheck());
+        }
         if (entry.status == RCSHOW_SAVED || entry.skipped) {
             areaChecksGotten[entry2->GetArea()]++;
         }

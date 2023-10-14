@@ -547,7 +547,7 @@ void Rando::StaticData::InitLocationTable() {
         SCENE_MIDOS_HOUSE, 22944, 0x00, "Mido Top Left Chest", "KF Mido Top Left Chest", RHT_KF_MIDOS_TOP_LEFT_CHEST,
         RG_BLUE_RUPEE, {}, SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
     locationTable[RC_KF_MIDOS_TOP_RIGHT_CHEST] = Location::Chest(
-        RC_KF_MIDOS_TOP_LEFT_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KOKIRI_FOREST, ACTOR_EN_BOX,
+        RC_KF_MIDOS_TOP_RIGHT_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KOKIRI_FOREST, ACTOR_EN_BOX,
         SCENE_MIDOS_HOUSE, 22944, 0x01, "Mido Top Right Chest", "KF Mido Top Right Chest", RHT_KF_MIDOS_TOP_RIGHT_CHEST,
         RG_BLUE_RUPEE, {}, SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
     locationTable[RC_KF_MIDOS_BOTTOM_LEFT_CHEST] = Location::Chest(
