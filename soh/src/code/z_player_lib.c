@@ -425,16 +425,6 @@ uint8_t Player_IsCustomLinkModel() {
 
 // Beginning of Alternate Equipment Loading "CanUse" function block.
 
-// Alternate Equipment Loading function.
-// AltEquip TODO
-// It seems as though this is a placeholder function, replaced by the below ones.
-// If there's no code using it, then it might be okay to just get rid of this.
-/*
-uint8_t Player_CanUseNewLoadingMethod(Player* this) {
-    return false;
-}*/
-// The one instance of this function being called has been reverted to a cvar check.
-
 // Alternate Equipment Loading function. (global function)
 // Checks if player can use new loading method, for the left hand.
 uint8_t Player_CanUseNewLoadingMethodLeftHand(Player* this) {
@@ -523,10 +513,8 @@ uint8_t Player_CanUseNewLoadingMethodRightHand(Player* this) {
                 }
             }
             break;
-        case 15: // literally all of these need a check at the same time, otherwise things will crash
-            if (ResourceGetIsCustomByName(gLinkHookshotDL) && ResourceGetIsCustomByName(gLinkHookshotChainDL) &&
-                ResourceGetIsCustomByName(gLinkHookshotTipDL) && ResourceGetIsCustomByName(gLinkHookshotSmallChainDL) &&
-                ResourceGetIsCustomByName(gLinkHookshotSmallTipDL)) {
+        case 15:
+            if (ResourceGetIsCustomByName(gLinkHookshotDL)) {
                 return true;
             }
             break;
