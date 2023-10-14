@@ -1,0 +1,11 @@
+<Root>
+    <File Name="object_oA3" Segment="6">
+        <Blob Name="object_oA3_Blob_00000000" Size="0x8" Offset="0x0"/>
+        <DList Name="object_oA3_DL_00000008" Offset="0x8"/>
+        <Texture Name="object_oA3_Tex_000012F0" OutName="tex_000012F0" Format="rgba16" Width="32" Height="32" Offset="0x12F0"/>
+        <Texture Name="object_oA3_Tex_00001AF0" OutName="tex_00001AF0" Format="rgba16" Width="16" Height="16" Offset="0x1AF0"/>
+        <Texture Name="object_oA3_Tex_00001CF0" OutName="tex_00001CF0" Format="rgba16" Width="16" Height="16" Offset="0x1CF0"/>
+        <Texture Name="object_oA3_Tex_00001EF0" OutName="tex_00001EF0" Format="rgba16" Width="16" Height="16" Offset="0x1EF0"/>
+        <Texture Name="object_oA3_Tex_000020F0" OutName="tex_000020F0" Format="rgba16" Width="4" Height="8" Offset="0x20F0"/>
+    </File>
+</Root>

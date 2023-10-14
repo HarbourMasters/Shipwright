@@ -758,7 +758,7 @@ void EnOkuta_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (this->actor.params == 0) {
-        SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnOkuta_OverrideLimbDraw,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnOkuta_OverrideLimbDraw,
                           NULL, this);
     } else {
         OPEN_DISPS(play->state.gfxCtx);

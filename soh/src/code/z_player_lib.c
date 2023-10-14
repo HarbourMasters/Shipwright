@@ -7,6 +7,7 @@
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/randomizer/draw.h"
 
 #include <stdlib.h>
 
@@ -1292,6 +1293,8 @@ void Player_DrawGetItemImpl(PlayState* play, Player* this, Vec3f* refPos, s32 dr
 
     if (this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId == RG_ICE_TRAP) {
         Player_DrawGetItemIceTrap(play, this, refPos, drawIdPlusOne, height);
+    } else if (this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId == RG_TRIFORCE_PIECE) {
+        Randomizer_DrawTriforcePieceGI(play, this->getItemEntry);
     } else if (this->getItemEntry.drawFunc != NULL) {
         this->getItemEntry.drawFunc(play, &this->getItemEntry);
     } else {
@@ -1366,7 +1369,7 @@ void Player_DrawHookshotReticle(PlayState* play, Player* this, f32 hookshotRange
             const Color_RGBA8 color = CVarGetColor("gCosmetics.HookshotReticle_NonTarget.Value", defaultColor);
             gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, color.r, color.g, color.b, color.a);
         }
-        gSPVertex(WORLD_OVERLAY_DISP++, (uintptr_t)gLinkAdultHookshotRedicleVtx, 3, 0);
+        gSPVertex(WORLD_OVERLAY_DISP++, (uintptr_t)gLinkAdultHookshotReticleVtx, 3, 0);
         gSP1Triangle(WORLD_OVERLAY_DISP++, 0, 1, 2, 0);
 
         CLOSE_DISPS(play->state.gfxCtx);

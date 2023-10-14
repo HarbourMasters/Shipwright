@@ -48,6 +48,9 @@ cd Shipwright
 
 # If you need to regenerate the asset headers to check them into source
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target ExtractAssetHeaders
+
+# If you need a newer soh.otr only
+& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target GenerateSohOtr
 ```
 
 ### Developing SoH
@@ -81,7 +84,7 @@ cd "build/x64"
 ```
 
 ## Linux
-Requires `gcc >= 10, x11, curl, python3, sdl2 >= 2.0.22, libpng, glew >= 2.2, ninja, cmake, lld`
+Requires `gcc >= 10, x11, curl, python3, sdl2 >= 2.0.22, libpng, glew >= 2.2, ninja, cmake, lld, pulseaudio-libs`
 
 **Important: For maximum performance make sure you have ninja build tools installed!**
 
@@ -110,6 +113,9 @@ cmake --build build-cmake --target clean
 
 # If you need to regenerate the asset headers to check them into source
 cmake --build build-cmake --target ExtractAssetHeaders
+
+# If you need a newer soh.otr only
+cmake --build build-cmake --target GenerateSohOtr
 ```
 
 ### Generating a distributable
@@ -157,6 +163,9 @@ cmake --build build-cmake --target clean
 
 # If you need to regenerate the asset headers to check them into source
 cmake --build build-cmake --target ExtractAssetHeaders
+
+# If you need a newer soh.otr only
+cmake --build build-cmake --target GenerateSohOtr
 ```
 
 ### Generating a distributable

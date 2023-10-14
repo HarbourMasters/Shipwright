@@ -14,6 +14,7 @@
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
 #define MAX_SEED_STRING_SIZE 1024
+#define NUM_TRIFORCE_PIECE_MESSAGES 6
 #define NUM_NAVI_MESSAGES 19
 #define NUM_ICE_TRAP_MESSAGES 23
 #define NUM_GORON_MESSAGES 9
@@ -37,7 +38,6 @@ class Randomizer {
     void ParseItemLocationsFile(const char* spoilerFileName, bool silent);
     void ParseEntranceDataFile(const char* spoilerFileName, bool silent);
     bool IsItemVanilla(RandomizerGet randoGet);
-    GetItemEntry GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability = true);
     int16_t GetVanillaMerchantPrice(RandomizerCheck check);
 
   public:
@@ -48,6 +48,7 @@ class Randomizer {
     static const std::string hintMessageTableID;
     static const std::string merchantMessageTableID;
     static const std::string rupeeMessageTableID;
+    static const std::string triforcePieceMessageTableID;
     static const std::string NaviRandoMessageTableID;
     static const std::string IceTrapRandoMessageTableID;
     static const std::string randoMiscHintsTableID;
@@ -76,6 +77,7 @@ class Randomizer {
     RandomizerInf GetRandomizerInfFromCheck(RandomizerCheck rc);
     RandomizerGetData GetRandomizerGetDataFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     RandomizerGetData GetRandomizerGetDataFromKnownCheck(RandomizerCheck randomizerCheck);
+    GetItemEntry GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability = true);
     std::string GetChildAltarText() const;
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;
@@ -102,6 +104,7 @@ class Randomizer {
     CustomMessage GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
     static void CreateCustomMessages();
     static CustomMessage GetRupeeMessage(u16 rupeeTextId);
+    static CustomMessage GetTriforcePieceMessage();
     bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
 };
 

@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+
 #include <libultraship/libultraship.h>
 
 typedef enum {
@@ -80,6 +81,9 @@ void SetCurrentGrottoIDForTracker(int16_t entranceIndex);
 void SetLastEntranceOverrideForTracker(int16_t entranceIndex);
 void ClearEntranceTrackingData();
 void InitEntranceTrackingData();
+s16 GetLastEntranceOverride();
+s16 GetCurrentGrottoId();
+const EntranceData* GetEntranceData(s16);
 
 class EntranceTrackerWindow : public LUS::GuiWindow {
   public:

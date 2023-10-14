@@ -136,6 +136,8 @@ void SaveManager::LoadRandomizerVersion1() {
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
 
+    SaveManager::Instance->LoadData("triforcePiecesCollected", gSaveContext.triforcePiecesCollected);
+
     SaveManager::Instance->LoadData("pendingIceTrapCount", gSaveContext.pendingIceTrapCount);
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
@@ -251,6 +253,8 @@ void SaveManager::LoadRandomizerVersion2() {
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
 
+    SaveManager::Instance->LoadData("triforcePiecesCollected", gSaveContext.triforcePiecesCollected);
+
     SaveManager::Instance->LoadData("pendingIceTrapCount", gSaveContext.pendingIceTrapCount);
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
@@ -282,7 +286,7 @@ void SaveManager::LoadRandomizerVersion2() {
 
 void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool fullSave) {
 
-    if(!saveContext->n64ddFlag) return;
+    if(saveContext->questId != QUEST_RANDOMIZER) return;
 
     SaveManager::Instance->SaveArray("itemLocations", RC_MAX, [&](size_t i) {
         SaveManager::Instance->SaveStruct("", [&]() {
@@ -337,6 +341,8 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
     SaveManager::Instance->SaveData("warpPreludeText", saveContext->warpPreludeText);
 
     SaveManager::Instance->SaveData("adultTradeItems", saveContext->adultTradeItems);
+
+    SaveManager::Instance->SaveData("triforcePiecesCollected", gSaveContext.triforcePiecesCollected);
 
     SaveManager::Instance->SaveData("pendingIceTrapCount", saveContext->pendingIceTrapCount);
 
@@ -450,12 +456,12 @@ void SaveManager::InitMeta(int fileNum) {
         fileMetaInfo[fileNum].seedHash[i] = gSaveContext.seedIcons[i];
     }
 
-    fileMetaInfo[fileNum].randoSave = gSaveContext.n64ddFlag;
+    fileMetaInfo[fileNum].randoSave = IS_RANDO;
     // If the file is marked as a Master Quest file or if we're randomized and have at least one master quest dungeon, we need the mq otr.
-    fileMetaInfo[fileNum].requiresMasterQuest = gSaveContext.isMasterQuest > 0 || (gSaveContext.n64ddFlag && gSaveContext.mqDungeonCount > 0);
+    fileMetaInfo[fileNum].requiresMasterQuest = IS_MASTER_QUEST || (IS_RANDO && gSaveContext.mqDungeonCount > 0);
     // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ dungeons, in which case
     // we don't actually require a vanilla OTR.
-    fileMetaInfo[fileNum].requiresOriginal = !gSaveContext.isMasterQuest && (!gSaveContext.n64ddFlag || gSaveContext.mqDungeonCount < 12);
+    fileMetaInfo[fileNum].requiresOriginal = !IS_MASTER_QUEST && (!IS_RANDO || gSaveContext.mqDungeonCount < 12);
 
     fileMetaInfo[fileNum].buildVersionMajor = gSaveContext.sohStats.buildVersionMajor;
     fileMetaInfo[fileNum].buildVersionMinor = gSaveContext.sohStats.buildVersionMinor;
@@ -514,7 +520,7 @@ void SaveManager::InitFileNormal() {
     }
     gSaveContext.adultEquips.equipment = 0;
     gSaveContext.unk_54 = 0;
-    gSaveContext.savedSceneNum = 0x34;
+    gSaveContext.savedSceneNum = SCENE_LINKS_HOUSE;
 
     // Equipment
     for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.buttonItems); button++) {
@@ -562,7 +568,6 @@ void SaveManager::InitFileNormal() {
     gSaveContext.fw.set = 0;
     gSaveContext.fw.tempSwchFlags = 0;
     gSaveContext.fw.tempCollectFlags = 0;
-    gSaveContext.backupFW = gSaveContext.fw;
     for (int flag = 0; flag < ARRAY_COUNT(gSaveContext.gsFlags); flag++) {
         gSaveContext.gsFlags[flag] = 0;
     }
@@ -608,11 +613,17 @@ void SaveManager::InitFileNormal() {
     gSaveContext.magicLevel = 0;
     gSaveContext.infTable[29] = 1;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
+
+    // SoH specific
+    gSaveContext.backupFW = gSaveContext.fw;
     gSaveContext.pendingSale = ITEM_NONE;
     gSaveContext.pendingSaleMod = MOD_NONE;
 
-    if (gSaveContext.isBossRush) {
+    // Boss Rush is set ahead of time in z_file_choose, otherwise init the save with the normal quest
+    if (IS_BOSS_RUSH) {
         BossRush_InitSave();
+    } else {
+        gSaveContext.questId = QUEST_NORMAL;
     }
 
     //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
@@ -891,8 +902,8 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
             nlohmann::json& sectionBlock = saveBlock["sections"][saveFuncInfo.name];
             sectionBlock["version"] = sectionHandlerPair.second.version;
             // If any save file is loaded for medatata, or a spoiler log is loaded (not sure which at this point), there is still data in the "randomizer" section
-            // This clears the randomizer data block if and only if the section being called is "randomizer" and n64ddFlag is false.
-            if (sectionHandlerPair.second.name == "randomizer" && !gSaveContext.n64ddFlag) {
+            // This clears the randomizer data block if and only if the section being called is "randomizer" and the current save file is not a randomizer save file.
+            if (sectionHandlerPair.second.name == "randomizer" && !IS_RANDO) {
                 sectionBlock["data"] = nlohmann::json::object();
                 continue;
             }
@@ -1113,7 +1124,11 @@ void SaveManager::LoadBaseVersion1() {
     SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.playerName[i]);
     });
-    SaveManager::Instance->LoadData("n64ddFlag", gSaveContext.n64ddFlag);
+    int isRando = 0;
+    SaveManager::Instance->LoadData("n64ddFlag", isRando);
+    if (isRando) {
+        gSaveContext.questId = QUEST_RANDOMIZER;
+    }
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
     SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
@@ -1254,7 +1269,11 @@ void SaveManager::LoadBaseVersion2() {
     SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.playerName[i]);
     });
-    SaveManager::Instance->LoadData("n64ddFlag", gSaveContext.n64ddFlag);
+    int isRando = 0;
+    SaveManager::Instance->LoadData("n64ddFlag", isRando);
+    if (isRando) {
+        gSaveContext.questId = QUEST_RANDOMIZER;
+    }
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
     SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
@@ -1420,7 +1439,11 @@ void SaveManager::LoadBaseVersion2() {
     SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
-    SaveManager::Instance->LoadData("isMasterQuest", gSaveContext.isMasterQuest);
+    int isMQ = 0;
+    SaveManager::Instance->LoadData("isMasterQuest", isMQ);
+    if (isMQ) {
+        gSaveContext.questId = QUEST_MASTER;
+    }
 
     // Workaround for breaking save compatibility from 5.0.2 -> 5.1.0 in commit d7c35221421bf712b5ead56a360f81f624aca4bc
     if (!gSaveContext.isMagicAcquired) {
@@ -1462,7 +1485,11 @@ void SaveManager::LoadBaseVersion3() {
     SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.playerName[i]);
     });
-    SaveManager::Instance->LoadData("n64ddFlag", gSaveContext.n64ddFlag);
+    int isRando = 0;
+    SaveManager::Instance->LoadData("n64ddFlag", isRando);
+    if (isRando) {
+        gSaveContext.questId = QUEST_RANDOMIZER;
+    }
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
     SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
@@ -1568,9 +1595,6 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadArray("entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.entrancesDiscovered[i]);
         });
-        SaveManager::Instance->LoadArray("locationsSkipped", ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.sohStats.locationsSkipped[i]);
-        });
     });
     SaveManager::Instance->LoadArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {
@@ -1650,7 +1674,11 @@ void SaveManager::LoadBaseVersion3() {
     SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
-    SaveManager::Instance->LoadData("isMasterQuest", gSaveContext.isMasterQuest);
+    int isMQ = 0;
+    SaveManager::Instance->LoadData("isMasterQuest", isMQ);
+    if (isMQ) {
+        gSaveContext.questId = QUEST_MASTER;
+    }
     SaveManager::Instance->LoadStruct("backupFW", []() {
         SaveManager::Instance->LoadStruct("pos", []() {
             SaveManager::Instance->LoadData("x", gSaveContext.backupFW.pos.x);
@@ -1680,7 +1708,11 @@ void SaveManager::LoadBaseVersion4() {
     SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.playerName[i]);
     });
-    SaveManager::Instance->LoadData("n64ddFlag", gSaveContext.n64ddFlag);
+    int isRando = 0;
+    SaveManager::Instance->LoadData("n64ddFlag", isRando);
+    if (isRando) {
+        gSaveContext.questId = QUEST_RANDOMIZER;
+    }
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
     SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
@@ -1823,7 +1855,11 @@ void SaveManager::LoadBaseVersion4() {
     SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
-    SaveManager::Instance->LoadData("isMasterQuest", gSaveContext.isMasterQuest);
+    int isMQ = 0;
+    SaveManager::Instance->LoadData("isMasterQuest", isMQ);
+    if (isMQ) {
+        gSaveContext.questId = QUEST_MASTER;
+    }
     SaveManager::Instance->LoadStruct("backupFW", []() {
         SaveManager::Instance->LoadStruct("pos", []() {
             SaveManager::Instance->LoadData("x", gSaveContext.backupFW.pos.x);
@@ -1853,7 +1889,7 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
     SaveManager::Instance->SaveArray("playerName", ARRAY_COUNT(saveContext->playerName), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->playerName[i]);
     });
-    SaveManager::Instance->SaveData("n64ddFlag", saveContext->n64ddFlag);
+    SaveManager::Instance->SaveData("n64ddFlag", saveContext->questId == QUEST_RANDOMIZER);
     SaveManager::Instance->SaveData("healthCapacity", saveContext->healthCapacity);
     SaveManager::Instance->SaveData("health", saveContext->health);
     SaveManager::Instance->SaveData("magicLevel", saveContext->magicLevel);
@@ -1992,7 +2028,7 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
     SaveManager::Instance->SaveArray("randomizerInf", ARRAY_COUNT(saveContext->randomizerInf), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->randomizerInf[i]);
     });
-    SaveManager::Instance->SaveData("isMasterQuest", saveContext->isMasterQuest);
+    SaveManager::Instance->SaveData("isMasterQuest", saveContext->questId == QUEST_MASTER);
     SaveManager::Instance->SaveStruct("backupFW", [&]() {
         SaveManager::Instance->SaveStruct("pos", [&]() {
             SaveManager::Instance->SaveData("x", saveContext->backupFW.pos.x);
@@ -2149,7 +2185,7 @@ void SaveManager::DeleteZeldaFile(int fileNum) {
 }
 
 bool SaveManager::IsRandoFile() {
-    return gSaveContext.n64ddFlag != 0 ? true : false;
+    return IS_RANDO;
 }
 
 // Functionality required to convert old saves into versioned saves
