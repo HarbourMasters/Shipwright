@@ -8,7 +8,7 @@ using namespace Settings;
 void AreaTable_Init_HyruleField() {
   areaTable[RR_HYRULE_FIELD] = Area("Hyrule Field", "Hyrule Field", RHT_HYRULE_FIELD, DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&BigPoeKill, {[]{return CanUse(RG_BOW) && CanRideEpona && HasBottle;}}),
+                  EventAccess(&BigPoeKill, {[]{return CanUse(RG_FAIRY_BOW) && CanRideEpona && HasBottle;}}),
                 }, {
                   //Locations
                   LocationAccess(RC_HF_OCARINA_OF_TIME_ITEM,   {[]{return IsChild && HasAllStones;}}),
@@ -112,7 +112,7 @@ void AreaTable_Init_HyruleField() {
                 }, {
                   //Locations
                   LocationAccess(RC_LH_UNDERWATER_ITEM,        {[]{return IsChild && CanDive;}}),
-                  LocationAccess(RC_LH_SUN,                    {[]{return IsAdult && WaterTempleClear && CanUse(RG_BOW);}}),
+                  LocationAccess(RC_LH_SUN,                    {[]{return IsAdult && WaterTempleClear && CanUse(RG_FAIRY_BOW);}}),
                   LocationAccess(RC_LH_FREESTANDING_POH,       {[]{return IsAdult && (CanUse(RG_SCARECROW) || CanPlantBean(RR_LAKE_HYLIA));}}),
                   LocationAccess(RC_LH_GS_BEAN_PATCH,          {[]{return CanPlantBugs && CanChildAttack;}}),
                   LocationAccess(RC_LH_GS_LAB_WALL,            {[]{return IsChild && (HookshotOrBoomerang || (LogicLabWallGS && (Sticks || KokiriSword || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)))) && AtNight && CanGetNightTimeGS;}}),

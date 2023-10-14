@@ -100,7 +100,7 @@ void AreaTable_Init_DodongosCavern() {
   areaTable[RR_DODONGOS_CAVERN_STAIRS_LOWER] = Area("Dodongos Cavern Stairs Lower", "Dodongos Cavern", RHT_DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_DODONGOS_CAVERN_LOBBY,        {[]{return true;}}),
-                  Entrance(RR_DODONGOS_CAVERN_STAIRS_UPPER, {[]{return HasExplosives || GoronBracelet || CanUse(RG_DINS_FIRE) || (LogicDCStaircase && CanUse(RG_BOW));}}),
+                  Entrance(RR_DODONGOS_CAVERN_STAIRS_UPPER, {[]{return HasExplosives || GoronBracelet || CanUse(RG_DINS_FIRE) || (LogicDCStaircase && CanUse(RG_FAIRY_BOW));}}),
                   Entrance(RR_DODONGOS_CAVERN_COMPASS_ROOM, {[]{return Here(RR_DODONGOS_CAVERN_STAIRS_LOWER, []{return CanBlastOrSmash || GoronBracelet;});}}),
   });
 
@@ -150,7 +150,7 @@ void AreaTable_Init_DodongosCavern() {
   areaTable[RR_DODONGOS_CAVERN_FIRST_SLINGSHOT_ROOM] = Area("Dodongos Cavern First Slingshot Room", "Dodongos Cavern", RHT_DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_DODONGOS_CAVERN_BOMB_ROOM_LOWER, {[]{return true;}}),
-                  Entrance(RR_DODONGOS_CAVERN_UPPER_LIZALFOS,  {[]{return CanUse(RG_SLINGSHOT) || CanUse(RG_BOW) || LogicDCSlingshotSkip;}}),
+                  Entrance(RR_DODONGOS_CAVERN_UPPER_LIZALFOS,  {[]{return CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || LogicDCSlingshotSkip;}}),
   });
 
   areaTable[RR_DODONGOS_CAVERN_UPPER_LIZALFOS] = Area("Dodongos Cavern Upper Lizalfos", "Dodongos Cavern", RHT_DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -163,7 +163,7 @@ void AreaTable_Init_DodongosCavern() {
   areaTable[RR_DODONGOS_CAVERN_SECOND_SLINGSHOT_ROOM] = Area("Dodongos Cavern Second Slingshot Room", "Dodongos Cavern", RHT_DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_DODONGOS_CAVERN_UPPER_LIZALFOS,  {[]{return true;}}),
-                  Entrance(RR_DODONGOS_CAVERN_BOMB_ROOM_UPPER, {[]{return CanUse(RG_SLINGSHOT) || CanUse(RG_BOW) || LogicDCSlingshotSkip;}}),
+                  Entrance(RR_DODONGOS_CAVERN_BOMB_ROOM_UPPER, {[]{return CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || LogicDCSlingshotSkip;}}),
   });
 
   areaTable[RR_DODONGOS_CAVERN_BOMB_ROOM_UPPER] = Area("Dodongos Cavern Bomb Room Upper", "Dodongos Cavern", RHT_DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {
@@ -245,15 +245,15 @@ void AreaTable_Init_DodongosCavern() {
                   LocationAccess(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_SIDE_ROOM_NEAR_LOWER_LIZALFOS, {[]{return CanStunDeku;}}),
   }, {
                   //Exits
-                  Entrance(RR_DODONGOS_CAVERN_MQ_BOMB_BAG_AREA, {[]{return (Here(RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE, []{return IsAdult && CanUse(RG_BOW);}) || GoronBracelet ||
+                  Entrance(RR_DODONGOS_CAVERN_MQ_BOMB_BAG_AREA, {[]{return (Here(RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE, []{return IsAdult && CanUse(RG_FAIRY_BOW);}) || GoronBracelet ||
                                                                                 CanUse(RG_DINS_FIRE) || HasExplosives) &&
-                                                                                IsChild && CanUse(RG_SLINGSHOT);}}),
+                                                                                IsChild && CanUse(RG_FAIRY_SLINGSHOT);}}),
   });
 
   areaTable[RR_DODONGOS_CAVERN_MQ_BOMB_BAG_AREA] = Area("Dodongos Cavern MQ Bomb Bag Area", "Dodongos Cavern", RHT_DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_DODONGOS_CAVERN_MQ_BOMB_BAG_CHEST, {[]{return true;}}),
-                  LocationAccess(RC_DODONGOS_CAVERN_MQ_GS_SCRUB_ROOM,  {[]{return (Here(RR_DODONGOS_CAVERN_MQ_BOMB_BAG_AREA, []{return IsAdult && CanUse(RG_BOW);}) ||  GoronBracelet || CanUse(RG_DINS_FIRE) || HasExplosives) && HookshotOrBoomerang;}}),
+                  LocationAccess(RC_DODONGOS_CAVERN_MQ_GS_SCRUB_ROOM,  {[]{return (Here(RR_DODONGOS_CAVERN_MQ_BOMB_BAG_AREA, []{return IsAdult && CanUse(RG_FAIRY_BOW);}) ||  GoronBracelet || CanUse(RG_DINS_FIRE) || HasExplosives) && HookshotOrBoomerang;}}),
   }, {
                   //Exits
                   Entrance(RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE, {[]{return true;}}),

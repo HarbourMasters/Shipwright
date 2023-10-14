@@ -154,7 +154,7 @@ void AreaTable_Init_JabuJabusBelly() {
                 }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_LIFT_MIDDLE, {[]{return true;}}),
-                  Entrance(RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, {[]{return CanUse(RG_BOOMERANG) || (LogicJabuNearBossRanged && ((IsAdult && (CanUse(RG_HOOKSHOT) || CanUse(RG_BOW))) || (IsChild && CanUse(RG_SLINGSHOT)))) || (LogicJabuNearBossExplosives && (HasBombchus || (IsAdult && CanUse(RG_HOVER_BOOTS) && Bombs)));}}),
+                  Entrance(RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, {[]{return CanUse(RG_BOOMERANG) || (LogicJabuNearBossRanged && ((IsAdult && (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW))) || (IsChild && CanUse(RG_FAIRY_SLINGSHOT)))) || (LogicJabuNearBossExplosives && (HasBombchus || (IsAdult && CanUse(RG_HOVER_BOOTS) && Bombs)));}}),
   });
   }
 
@@ -168,11 +168,11 @@ void AreaTable_Init_JabuJabusBelly() {
   }, {
                   //Locations
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_MAP_CHEST,             {[]{return CanBlastOrSmash;}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_FIRST_ROOM_SIDE_CHEST, {[]{return IsChild && CanUse(RG_SLINGSHOT);}}),
+                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_FIRST_ROOM_SIDE_CHEST, {[]{return IsChild && CanUse(RG_FAIRY_SLINGSHOT);}}),
   }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_ENTRYWAY, {[]{return true;}}),
-                  Entrance(RR_JABU_JABUS_BELLY_MQ_MAIN,  {[]{return Here(RR_JABU_JABUS_BELLY_MQ_BEGINNING, []{return IsChild && CanUse(RG_SLINGSHOT);});}}),
+                  Entrance(RR_JABU_JABUS_BELLY_MQ_MAIN,  {[]{return Here(RR_JABU_JABUS_BELLY_MQ_BEGINNING, []{return IsChild && CanUse(RG_FAIRY_SLINGSHOT);});}}),
   });
 
   areaTable[RR_JABU_JABUS_BELLY_MQ_MAIN] = Area("Jabu Jabus Belly MQ Main", "Jabu Jabus Belly", RHT_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
@@ -214,7 +214,7 @@ void AreaTable_Init_JabuJabusBelly() {
   }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_MQ_MAIN, {[]{return true;}}),
-                  Entrance(RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, {[]{return CanUse(RG_SLINGSHOT);}}),
+                  Entrance(RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, {[]{return CanUse(RG_FAIRY_SLINGSHOT);}}),
   });
   }
 

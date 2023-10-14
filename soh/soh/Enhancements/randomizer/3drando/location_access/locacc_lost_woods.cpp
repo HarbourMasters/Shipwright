@@ -123,7 +123,7 @@ void AreaTable_Init_LostWoods() {
                   LocationAccess(RC_LW_TRADE_COJIRO,              {[]{return IsAdult && Cojiro;}}),
                   LocationAccess(RC_LW_TRADE_ODD_POTION,        {[]{return IsAdult && OddPoultice && Cojiro;}}),
                   LocationAccess(RC_LW_OCARINA_MEMORY_GAME,       {[]{return IsChild && Ocarina;}}),
-                  LocationAccess(RC_LW_TARGET_IN_WOODS,           {[]{return IsChild && CanUse(RG_SLINGSHOT);}}),
+                  LocationAccess(RC_LW_TARGET_IN_WOODS,           {[]{return IsChild && CanUse(RG_FAIRY_SLINGSHOT);}}),
                   LocationAccess(RC_LW_DEKU_SCRUB_NEAR_BRIDGE,    {[]{return IsChild && CanStunDeku;}}),
                   LocationAccess(RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE, {[]{return CanPlantBugs && CanChildAttack;}}),
                   LocationAccess(RC_LW_GOSSIP_STONE,              {[]{return true;}}),
@@ -144,7 +144,7 @@ void AreaTable_Init_LostWoods() {
                   //Locations
                   LocationAccess(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, {[]{return IsChild && CanStunDeku;}}),
                   LocationAccess(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,  {[]{return IsChild && CanStunDeku;}}),
-                  LocationAccess(RC_LW_GS_ABOVE_THEATER,                   {[]{return IsAdult && AtNight && (CanPlantBean(RR_LW_BEYOND_MIDO) || (LogicLostWoodsGSBean && CanUse(RG_HOOKSHOT) && (CanUse(RG_LONGSHOT) || CanUse(RG_BOW) || CanUse(RG_SLINGSHOT) || HasBombchus || CanUse(RG_DINS_FIRE)))) && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_LW_GS_ABOVE_THEATER,                   {[]{return IsAdult && AtNight && (CanPlantBean(RR_LW_BEYOND_MIDO) || (LogicLostWoodsGSBean && CanUse(RG_HOOKSHOT) && (CanUse(RG_LONGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || HasBombchus || CanUse(RG_DINS_FIRE)))) && CanGetNightTimeGS;}}),
                   LocationAccess(RC_LW_GS_BEAN_PATCH_NEAR_THEATER,         {[]{return CanPlantBugs && (CanChildAttack || (Scrubsanity.Is(SCRUBSANITY_OFF) && DekuShield));}}),
                 }, {
                   //Exits

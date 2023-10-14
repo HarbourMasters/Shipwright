@@ -95,7 +95,7 @@ void AreaTable_Init_ZorasDomain() {
                   LocationAccess(RC_ZD_CHEST,               {[]{return IsChild && CanUse(RG_STICKS);}}),
                   LocationAccess(RC_ZD_KING_ZORA_THAWED,    {[]{return KingZoraThawed;}}),
                   LocationAccess(RC_ZD_TRADE_PRESCRIPTION,  {[]{return KingZoraThawed && Prescription;}}),
-                  LocationAccess(RC_ZD_GS_FROZEN_WATERFALL, {[]{return IsAdult && AtNight && (HookshotOrBoomerang || CanUse(RG_SLINGSHOT) || Bow || MagicMeter || LogicDomainGS) && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_ZD_GS_FROZEN_WATERFALL, {[]{return IsAdult && AtNight && (HookshotOrBoomerang || CanUse(RG_FAIRY_SLINGSHOT) || Bow || MagicMeter || LogicDomainGS) && CanGetNightTimeGS;}}),
                   LocationAccess(RC_ZD_GOSSIP_STONE,        {[]{return true;}}),
                 }, {
                   //Exits

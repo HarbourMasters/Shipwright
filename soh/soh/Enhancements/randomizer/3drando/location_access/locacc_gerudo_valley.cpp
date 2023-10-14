@@ -105,12 +105,12 @@ void AreaTable_Init_GerudoValley() {
                   LocationAccess(RC_GF_HBA_1000_POINTS,    {[]{return GerudoToken && CanRideEpona && Bow && AtDay;}}),
                   LocationAccess(RC_GF_HBA_1500_POINTS,    {[]{return GerudoToken && CanRideEpona && Bow && AtDay;}}),
                   LocationAccess(RC_GF_NORTH_F1_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);}}),
-                  LocationAccess(RC_GF_NORTH_F2_CARPENTER, {[]{return (IsAdult || KokiriSword || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (GerudoToken || CanUse(RG_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || LogicGerudoKitchen);}}),
+                  LocationAccess(RC_GF_NORTH_F2_CARPENTER, {[]{return (IsAdult || KokiriSword || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (GerudoToken || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || LogicGerudoKitchen);}}),
                   LocationAccess(RC_GF_SOUTH_F1_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);}}),
                   LocationAccess(RC_GF_SOUTH_F2_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);}}),
                   LocationAccess(RC_GF_GERUDO_MEMBERSHIP_CARD,       {[]{return CanFinishGerudoFortress;}}),
                   LocationAccess(RC_GF_GS_ARCHERY_RANGE,   {[]{return IsAdult && HookshotOrBoomerang && GerudoToken && AtNight && CanGetNightTimeGS;}}),
-                  LocationAccess(RC_GF_GS_TOP_FLOOR,       {[]{return IsAdult && AtNight && (GerudoToken || CanUse(RG_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || LogicGerudoKitchen || LogicGFJump) && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_GF_GS_TOP_FLOOR,       {[]{return IsAdult && AtNight && (GerudoToken || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || LogicGerudoKitchen || LogicGFJump) && CanGetNightTimeGS;}}),
                 }, {
                   //Exits
                   Entrance(RR_GV_FORTRESS_SIDE,                 {[]{return true;}}),

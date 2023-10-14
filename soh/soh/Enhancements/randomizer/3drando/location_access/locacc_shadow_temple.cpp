@@ -84,7 +84,7 @@ void AreaTable_Init_ShadowTemple() {
                   LocationAccess(RC_SHADOW_TEMPLE_GS_TRIPLE_GIANT_POT,         {[]{return true;}}),
   }, {
                   //Exits
-                  Entrance(RR_SHADOW_TEMPLE_BOSS_ENTRYWAY, {[]{return (CanUse(RG_BOW) || CanUse(RG_DISTANT_SCARECROW) || (LogicShadowStatue && HasBombchus)) && SmallKeys(RR_SHADOW_TEMPLE, 5) && CanUse(RG_HOVER_BOOTS) && BossKeyShadowTemple;}})
+                  Entrance(RR_SHADOW_TEMPLE_BOSS_ENTRYWAY, {[]{return (CanUse(RG_FAIRY_BOW) || CanUse(RG_DISTANT_SCARECROW) || (LogicShadowStatue && HasBombchus)) && SmallKeys(RR_SHADOW_TEMPLE, 5) && CanUse(RG_HOVER_BOOTS) && BossKeyShadowTemple;}})
   });
   }
 
@@ -103,7 +103,7 @@ void AreaTable_Init_ShadowTemple() {
   areaTable[RR_SHADOW_TEMPLE_MQ_DEAD_HAND_AREA] = Area("Shadow Temple MQ Dead Hand Area", "Shadow Temple", RHT_SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_SHADOW_TEMPLE_MQ_COMPASS_CHEST,     {[]{return true;}}),
-                  LocationAccess(RC_SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST, {[]{return CanPlay(SongOfTime) && IsAdult && CanUse(RG_BOW);}}),
+                  LocationAccess(RC_SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST, {[]{return CanPlay(SongOfTime) && IsAdult && CanUse(RG_FAIRY_BOW);}}),
   }, {});
 
   areaTable[RR_SHADOW_TEMPLE_MQ_FIRST_BEAMOS] = Area("Shadow Temple MQ First Beamos", "Shadow Temple", RHT_SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -164,7 +164,7 @@ void AreaTable_Init_ShadowTemple() {
   }, {
                   //Exits
                   Entrance(RR_SHADOW_TEMPLE_MQ_INVISIBLE_MAZE, {[]{return Bow && CanPlay(SongOfTime) && IsAdult && CanUse(RG_LONGSHOT);}}),
-                  Entrance(RR_SHADOW_TEMPLE_BOSS_ENTRYWAY,     {[]{return (CanUse(RG_BOW) || (LogicShadowStatue && HasBombchus)) && CanUse(RG_HOVER_BOOTS) && BossKeyShadowTemple;}}),
+                  Entrance(RR_SHADOW_TEMPLE_BOSS_ENTRYWAY,     {[]{return (CanUse(RG_FAIRY_BOW) || (LogicShadowStatue && HasBombchus)) && CanUse(RG_HOVER_BOOTS) && BossKeyShadowTemple;}}),
   });
 
   areaTable[RR_SHADOW_TEMPLE_MQ_INVISIBLE_MAZE] = Area("Shadow Temple MQ Invisible Maze", "Shadow Temple", RHT_SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -197,7 +197,7 @@ void AreaTable_Init_ShadowTemple() {
                      return ShadowTempleClear ||
                             ((CanUse(RG_LENS_OF_TRUTH) || LogicLensBongo) &&
                              (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) &&
-                             (CanUse(RG_HOOKSHOT) || CanUse(RG_BOW) || CanUse(RG_SLINGSHOT) || LogicShadowBongo));
+                             (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || LogicShadowBongo));
                  } }),
              },
              {

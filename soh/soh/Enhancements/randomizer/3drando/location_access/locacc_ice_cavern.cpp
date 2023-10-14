@@ -53,7 +53,7 @@ void AreaTable_Init_IceCavern() {
   }, {}, {
                   //Exits
                   Entrance(RR_ICE_CAVERN_ENTRYWAY,             {[]{return true;}}),
-                  Entrance(RR_ICE_CAVERN_MQ_MAP_ROOM,          {[]{return IsAdult || CanUse(RG_DINS_FIRE) || (HasExplosives && (CanUse(RG_STICKS) || CanUse(RG_SLINGSHOT) || KokiriSword));}}),
+                  Entrance(RR_ICE_CAVERN_MQ_MAP_ROOM,          {[]{return IsAdult || CanUse(RG_DINS_FIRE) || (HasExplosives && (CanUse(RG_STICKS) || CanUse(RG_FAIRY_SLINGSHOT) || KokiriSword));}}),
                   Entrance(RR_ICE_CAVERN_MQ_COMPASS_ROOM,      {[]{return IsAdult && BlueFire;}}),
                   Entrance(RR_ICE_CAVERN_MQ_IRON_BOOTS_REGION, {[]{return BlueFire;}}),
   });

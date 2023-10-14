@@ -156,7 +156,7 @@ void AreaTable_Init_GanonsCastle() {
                   EventAccess(&ForestTrialClear, {[]{return IsAdult && CanUse(RG_LIGHT_ARROWS) && CanPlay(SongOfTime);}}),
   }, {
                   //Locations
-                  LocationAccess(RC_GANONS_CASTLE_MQ_FOREST_TRIAL_EYE_SWITCH_CHEST,        {[]{return (IsAdult && CanUse(RG_BOW)) || (IsChild && CanUse(RG_SLINGSHOT));}}),
+                  LocationAccess(RC_GANONS_CASTLE_MQ_FOREST_TRIAL_EYE_SWITCH_CHEST,        {[]{return (IsAdult && CanUse(RG_FAIRY_BOW)) || (IsChild && CanUse(RG_FAIRY_SLINGSHOT));}}),
                   LocationAccess(RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FROZEN_EYE_SWITCH_CHEST, {[]{return HasFireSource;}}),
                   LocationAccess(RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FREESTANDING_KEY,        {[]{return HookshotOrBoomerang;}}),
   }, {});

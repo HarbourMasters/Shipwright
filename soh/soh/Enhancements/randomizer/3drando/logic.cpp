@@ -393,7 +393,7 @@ namespace Logic {
            (itemName == RG_FARORES_WIND      && FaroresWind)     ||
            (itemName == RG_NAYRUS_LOVE       && NayrusLove)      ||
            (itemName == RG_LENS_OF_TRUTH     && LensOfTruth)     ||
-           (itemName == RG_BOW               && Bow)             ||
+           (itemName == RG_FAIRY_BOW               && Bow)             ||
            (itemName == RG_MEGATON_HAMMER    && Hammer)          ||
            (itemName == RG_IRON_BOOTS        && IronBoots)       ||
            (itemName == RG_HOVER_BOOTS       && HoverBoots)      ||
@@ -409,7 +409,7 @@ namespace Logic {
            (itemName == RG_MIRROR_SHIELD     && MirrorShield)    ||
            (itemName == RG_MASTER_SWORD      && MasterSword)     ||
            (itemName == RG_BIGGORON_SWORD    && BiggoronSword)   ||
-           (itemName == RG_SLINGSHOT         && Slingshot)       ||
+           (itemName == RG_FAIRY_SLINGSHOT         && Slingshot)       ||
            (itemName == RG_BOOMERANG         && Boomerang)       ||
            (itemName == RG_KOKIRI_SWORD      && KokiriSword)     ||
            (itemName == RG_STICKS            && Sticks)          ||
@@ -427,7 +427,7 @@ namespace Logic {
 
     switch (itemName) {
       // Adult items
-      case RG_BOW:               return IsAdult || BowAsChild;
+      case RG_FAIRY_BOW:               return IsAdult || BowAsChild;
       case RG_MEGATON_HAMMER:    return IsAdult || HammerAsChild;
       case RG_IRON_BOOTS:        return IsAdult || IronBootsAsChild;
       case RG_HOVER_BOOTS:       return IsAdult || HoverBootsAsChild;
@@ -445,14 +445,14 @@ namespace Logic {
       case RG_BIGGORON_SWORD:    return IsAdult || BiggoronSwordAsChild;
 
       // Child items
-      case RG_SLINGSHOT:         return IsChild || SlingshotAsAdult;
+      case RG_FAIRY_SLINGSHOT:         return IsChild || SlingshotAsAdult;
       case RG_BOOMERANG:         return IsChild || BoomerangAsAdult;
       case RG_KOKIRI_SWORD:      return IsChild || KokiriSwordAsAdult;
       case RG_STICKS:            return IsChild || StickAsAdult;
       case RG_DEKU_SHIELD:       return IsChild || DekuShieldAsAdult;
 
       // Magic items
-      default: return MagicMeter && (IsMagicItem(itemName) || (IsMagicArrow(itemName) && CanUse(RG_BOW)));
+      default: return MagicMeter && (IsMagicItem(itemName) || (IsMagicArrow(itemName) && CanUse(RG_FAIRY_BOW)));
     }
   }
 
@@ -485,7 +485,7 @@ namespace Logic {
       case GlitchType::EquipSwapDins:
         return ((IsAdult && HasItem(RG_DINS_FIRE)) || (IsChild && (HasItem(RG_STICKS) || HasItem(RG_DINS_FIRE)))) && GlitchEquipSwapDins;
       case GlitchType::EquipSwap: // todo: add bunny hood to adult item equippable list and child trade item to child item equippable list
-        return ((IsAdult && (HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE))) || (IsChild && (HasItem(RG_STICKS) || HasItem(RG_SLINGSHOT) || HasItem(RG_BOOMERANG) || HasBottle || Nuts || Ocarina || HasItem(RG_LENS_OF_TRUTH) || HasExplosives || (MagicBean || MagicBeanPack) || HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE)))) && GlitchEquipSwap;
+        return ((IsAdult && (HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE))) || (IsChild && (HasItem(RG_STICKS) || HasItem(RG_FAIRY_SLINGSHOT) || HasItem(RG_BOOMERANG) || HasBottle || Nuts || Ocarina || HasItem(RG_LENS_OF_TRUTH) || HasExplosives || (MagicBean || MagicBeanPack) || HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE)))) && GlitchEquipSwap;
     }
 
     //Shouldn't be reached
@@ -587,7 +587,7 @@ namespace Logic {
     HasFireSourceWithTorch = HasFireSource || CanUse(RG_STICKS);
 
     //Gerudo Fortress
-    CanFinishGerudoFortress = (GerudoFortress.Is(GERUDOFORTRESS_NORMAL)    && GerudoFortressKeys >= 4 && (IsAdult || KokiriSword || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (GerudoToken || CanUse(RG_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || LogicGerudoKitchen)) ||
+    CanFinishGerudoFortress = (GerudoFortress.Is(GERUDOFORTRESS_NORMAL)    && GerudoFortressKeys >= 4 && (IsAdult || KokiriSword || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (GerudoToken || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || LogicGerudoKitchen)) ||
                               (GerudoFortress.Is(GERUDOFORTRESS_FAST)      && GerudoFortressKeys >= 1 && (IsAdult || KokiriSword || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD))) ||
                               (GerudoFortress.IsNot(GERUDOFORTRESS_NORMAL) && GerudoFortress.IsNot(GERUDOFORTRESS_FAST));
 
@@ -598,7 +598,7 @@ namespace Logic {
     AdultShield        = IsAdult && (CanUse(RG_HYLIAN_SHIELD) || CanUse(RG_MIRROR_SHIELD));
     CanShieldFlick     = ChildShield || AdultShield;
     CanJumpslash       = IsAdult || Sticks || KokiriSword;
-    CanUseProjectile   = HasExplosives || CanUse(RG_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_SLINGSHOT) || CanUse(RG_BOOMERANG);
+    CanUseProjectile   = HasExplosives || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG);
     CanUseMagicArrow   = CanUse(RG_FIRE_ARROWS) || CanUse(RG_ICE_ARROWS) || CanUse(RG_LIGHT_ARROWS);
 
     //Bridge and LACS Requirements

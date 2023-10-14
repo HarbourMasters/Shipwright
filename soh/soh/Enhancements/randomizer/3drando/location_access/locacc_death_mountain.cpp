@@ -83,7 +83,7 @@ void AreaTable_Init_DeathMountain() {
                   EventAccess(&StickPot,                  {[]{return StickPot                  || IsChild;}}),
                   EventAccess(&BugRock,                   {[]{return BugRock                   || (CanBlastOrSmash || CanUse(RG_SILVER_GAUNTLETS));}}),
                   EventAccess(&GoronCityChildFire,        {[]{return GoronCityChildFire        || (IsChild && CanUse(RG_DINS_FIRE));}}),
-                  EventAccess(&GCWoodsWarpOpen,           {[]{return GCWoodsWarpOpen           || (CanBlastOrSmash || CanUse(RG_DINS_FIRE) || CanUse(RG_BOW) || GoronBracelet || GoronCityChildFire);}}),
+                  EventAccess(&GCWoodsWarpOpen,           {[]{return GCWoodsWarpOpen           || (CanBlastOrSmash || CanUse(RG_DINS_FIRE) || CanUse(RG_FAIRY_BOW) || GoronBracelet || GoronCityChildFire);}}),
                   EventAccess(&GCDaruniasDoorOpenChild,   {[]{return GCDaruniasDoorOpenChild   || (IsChild && CanPlay(ZeldasLullaby));}}),
                   EventAccess(&StopGCRollingGoronAsAdult, {[]{return StopGCRollingGoronAsAdult || (IsAdult && (GoronBracelet || HasExplosives || Bow || (LogicGoronCityLinkGoronDins && CanUse(RG_DINS_FIRE))));}}),
                 }, {
@@ -103,7 +103,7 @@ void AreaTable_Init_DeathMountain() {
                   //Exits
                   Entrance(RR_DEATH_MOUNTAIN_TRAIL, {[]{return true;}}),
                   Entrance(RR_GC_WOODS_WARP,        {[]{return GCWoodsWarpOpen;}}),
-                  Entrance(RR_GC_SHOP,              {[]{return (IsAdult && StopGCRollingGoronAsAdult) || (IsChild && (CanBlastOrSmash || GoronBracelet || GoronCityChildFire || CanUse(RG_BOW)));}}),
+                  Entrance(RR_GC_SHOP,              {[]{return (IsAdult && StopGCRollingGoronAsAdult) || (IsChild && (CanBlastOrSmash || GoronBracelet || GoronCityChildFire || CanUse(RG_FAIRY_BOW)));}}),
                   Entrance(RR_GC_DARUNIAS_CHAMBER,  {[]{return (IsAdult && StopGCRollingGoronAsAdult) || GCDaruniasDoorOpenChild;}}),
                   Entrance(RR_GC_GROTTO_PLATFORM,   {[]{return IsAdult && ((CanPlay(SongOfTime) && ((EffectiveHealth > 2) || CanUse(RG_GORON_TUNIC) || CanUse(RG_LONGSHOT) || CanUse(RG_NAYRUS_LOVE))) || (EffectiveHealth > 1 && CanUse(RG_GORON_TUNIC) && CanUse(RG_HOOKSHOT)) || (CanUse(RG_NAYRUS_LOVE) && CanUse(RG_HOOKSHOT)) || (EffectiveHealth > 2 && CanUse(RG_HOOKSHOT) && LogicGoronCityGrotto));}}),
   });
