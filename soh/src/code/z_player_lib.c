@@ -730,10 +730,8 @@ void Player_SetModelsForHoldingShield(Player* this) {
             this->rightHandType = 10;
             this->rightHandDLists = &sPlayerDListGroups[10][gSaveContext.linkAge];
 
-            if (CVarGetInteger("gAltLinkEquip", 1)) {
-                if (Player_CanUseNewLoadingMethodRightHand(this)) {
-                    this->rightHandDLists = &sPlayerDListGroupsAlt[10][gSaveContext.linkAge];
-                }
+            if (CVarGetInteger("gAltLinkEquip", 1) && Player_CanUseNewLoadingMethodRightHand(this)) {
+                this->rightHandDLists = &sPlayerDListGroupsAlt[10][gSaveContext.linkAge];
             }
 
             if (this->sheathType == 18) {
@@ -744,6 +742,7 @@ void Player_SetModelsForHoldingShield(Player* this) {
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
 
             if (CVarGetInteger("gAltLinkEquip", 1)) {
+                // AltEquip TODO: check if CanUse function is needed here.
                 this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
             }
 
@@ -758,10 +757,8 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->leftHandType = gPlayerModelTypes[modelGroup][1];
     this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
 
-    if (CVarGetInteger("gAltLinkEquip", 1)) {
-        if (Player_CanUseNewLoadingMethodLeftHand(this)) {
-            this->leftHandDLists = &sPlayerDListGroupsAlt[this->leftHandType][gSaveContext.linkAge];
-        }
+    if (CVarGetInteger("gAltLinkEquip", 1) && Player_CanUseNewLoadingMethodLeftHand(this)) {
+        this->leftHandDLists = &sPlayerDListGroupsAlt[this->leftHandType][gSaveContext.linkAge];
     }
 
     // Right hand
@@ -788,6 +785,7 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
 
     if (CVarGetInteger("gAltLinkEquip", 1)) {
+        // AltEquip TODO: check if CanUse function is needed here.
         this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
     }
 
@@ -1977,8 +1975,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                         Player_DrawChildItem(play, gLinkBoomerangDL);
                     }
                     break;
-                case 20: // AltEquip TODO: Left hand is holding... something.
-
+                case 20: // (AltEquip TODO: Left hand is holding... Master Sword as Child?), which is a special case.
                     // Doesn't call PlayerDrawChildItem due to it being rotated
                     OPEN_DISPS(play->state.gfxCtx);
 
@@ -2295,6 +2292,8 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         }
     } else if (this->actor.scale.y >= 0.0f) {
         if (limbIndex == PLAYER_LIMB_SHEATH) {
+
+            // Alternate Equipment Loading - AltEquip sheath items.
             if (CVarGetInteger("gAltLinkEquip", 1) &&
                 (!(this->stateFlags2 & PLAYER_STATE2_CRAWLING && this->actor.projectedPos.z < 0.0f) &&
                  this->actor.id != 51)) { // Don't render these if the player's crawling, or if it's actually dark link.
@@ -2355,7 +2354,8 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                                                    ? gLinkHylianShieldOnChildBackDL
                                                    : gLinkChildHylianShieldAndSheathNearDL);
                 }
-            }
+            } // End of AltEquip sheath items block.
+
             if ((this->rightHandType != 10) && (this->rightHandType != 0xFF)) {
                 if (Player_IsChildWithHylianShield(this)) {
                     Player_UpdateShieldCollider(play, this, &this->shieldQuad, sSheathLimbModelShieldQuadVertices);

@@ -12,10 +12,9 @@ void ArmsHook_Draw(Actor* thisx, PlayState* play);
 void ArmsHook_Wait(ArmsHook* this, PlayState* play);
 void ArmsHook_Shoot(ArmsHook* this, PlayState* play);
 
-uint8_t ArmsHook_CanUseNewLoadingMethod();
+uint8_t ArmsHook_CanUseNewLoadingMethod(Gfx* arg);
 
-// Alternate Equipment Loading DLs.
-// AltEquip TODO This is ridiculous. I'm sorry but this is a terrible workaround.
+// Alternate Equipment Loading DLists.
 Gfx* sHookshotTipDLs[] = {
     gLinkHookshotTipDL,
     gLinkHookshotSmallTipDL,
@@ -112,8 +111,7 @@ void ArmsHook_Wait(ArmsHook* this, PlayState* play) {
     if (this->actor.parent == NULL) {
         Player* player = GET_PLAYER(play);
         // get correct timer length for hookshot or longshot
-        s32 length = ((player->heldItemAction == PLAYER_IA_HOOKSHOT) ? 13 : 26) *
-                     CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f);
+        s32 length = ((player->heldItemAction == PLAYER_IA_HOOKSHOT) ? 13 : 26) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f);
 
         ArmsHook_SetupAction(this, ArmsHook_Shoot);
         func_8002D9A4(&this->actor, 20.0f);
@@ -200,8 +198,7 @@ void ArmsHook_Shoot(ArmsHook* this, PlayState* play) {
     if ((this->timer != 0) && (this->collider.base.atFlags & AT_HIT) &&
         (this->collider.info.atHitInfo->elemType != ELEMTYPE_UNK4)) {
         touchedActor = this->collider.base.at;
-        if ((touchedActor->update != NULL) &&
-            (touchedActor->flags & (ACTOR_FLAG_HOOKSHOT_DRAGS | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT))) {
+        if ((touchedActor->update != NULL) && (touchedActor->flags & (ACTOR_FLAG_HOOKSHOT_DRAGS | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT))) {
             if (this->collider.info.atHitInfo->bumperFlags & BUMP_HOOKABLE) {
                 ArmsHook_AttachHookToActor(this, touchedActor);
                 if (CHECK_FLAG_ALL(touchedActor->flags, ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)) {
