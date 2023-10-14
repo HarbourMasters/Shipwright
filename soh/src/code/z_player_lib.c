@@ -617,7 +617,12 @@ uint8_t Player_CanUseNewLoadingMethodFirstPerson(Player* this) {
                 }
             }
             break;
-        case 15: // literally all of these need a check at the same time, otherwise things will crash
+        case 15: 
+            // Prev comment was: "literally all of these need a check at the same time, otherwise things will crash"
+            // But this doesn't actually stop it from crashing if toggling alt assets while holding the Hookshot.
+            // So it needs to be checked in z_arms_hook.c too. (Which I've now done.)
+            // AltEquip TODO Remove these comments later.
+            //               Also come up with a better way of doing the Hookshot than this.
             if (!(ResourceGetIsCustomByName(gLinkHookshotDL) && ResourceGetIsCustomByName(gLinkHookshotChainDL) &&
                   ResourceGetIsCustomByName(gLinkHookshotTipDL) &&
                   ResourceGetIsCustomByName(gLinkHookshotSmallChainDL) &&
