@@ -4251,6 +4251,9 @@ void KaleidoScope_Update(PlayState* play)
                 gSaveContext.buttonStatus[buttonIndex] = sButtonStatusSave[buttonIndex];
             }
 
+            // Used to clear swordless temp B after unpause so minigame/epona handling restarts
+            Interface_RandoRestoreSwordless();
+
             interfaceCtx->unk_1FA = interfaceCtx->unk_1FC = 0;
             osSyncPrintf(VT_FGCOL(YELLOW));
             osSyncPrintf("i=%d  LAST_TIME_TYPE=%d\n", i, gSaveContext.unk_13EE);

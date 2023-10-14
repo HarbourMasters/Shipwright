@@ -811,12 +811,18 @@ void func_80082850(PlayState* play, s16 maxAlpha) {
     }
 }
 
-/*Determines whether the player is swordless (either has no equippable sword or does, but does not have it on B)
-for the purposes of interface stuff. Should only apply to randomizer.*/
-bool Interface_IsSwordless() {
-    u8 sHasNoSword = LINK_IS_ADULT ? !(CHECK_OWNED_EQUIP(EQUIP_SWORD, 1) || CHECK_OWNED_EQUIP(EQUIP_SWORD, 2)) : !(CHECK_OWNED_EQUIP(EQUIP_SWORD, 0));
-    u8 sNoSwordOnB = !sHasNoSword && (gSaveContext.equips.buttonItems[0] == ITEM_NONE || gSaveContext.buttonStatus[0] < ITEM_SWORD_KOKIRI);
-    return (IS_RANDO && (sHasNoSword || sNoSwordOnB));
+// buttonStatus[0] is used to represent if the B button is disabled, but also tracks
+// the last active B button item during mini-games/epona (temp B)
+// Since ITEM_NONE is the same as BTN_DISABLED (255), we need a different value to help us track
+// that the player was swordless before like ITEM_NONE_FE (254)
+#define SWORDLESS_STATUS ITEM_NONE_FE
+
+// Restores swordless state when using the custom value for temp B and then clears temp B
+void Interface_RandoRestoreSwordless(void) {
+    if (IS_RANDO && gSaveContext.buttonStatus[0] == SWORDLESS_STATUS) {
+        gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+        gSaveContext.buttonStatus[0] = BTN_ENABLED;
+    }
 }
 
 void func_80083108(PlayState* play) {
@@ -825,7 +831,13 @@ void func_80083108(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     s16 i;
     s16 sp28 = 0;
-    u8 swordlessShuffleFlag = Interface_IsSwordless();
+
+    // Check for the player being swordless in rando (no item on B and swordless flag set)
+    // Child is always assumed due to not finding kokiri sword yet. Adult is only checked with MS shuffle on.
+    u8 randoIsSwordless = IS_RANDO && (LINK_IS_CHILD || Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) &&
+                              gSaveContext.equips.buttonItems[0] == ITEM_NONE && Flags_GetInfTable(INFTABLE_SWORDLESS);
+    u8 randoWasSwordlessBefore = IS_RANDO && gSaveContext.buttonStatus[0] == SWORDLESS_STATUS;
+    u8 randoCanTrackSwordless = randoIsSwordless && !randoWasSwordlessBefore;
 
     if ((gSaveContext.cutsceneIndex < 0xFFF0) ||
         ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.cutsceneIndex == 0xFFF0))) {
@@ -833,7 +845,7 @@ void func_80083108(PlayState* play) {
 
         if ((player->stateFlags1 & PLAYER_STATE1_ON_HORSE) || (play->shootingGalleryStatus > 1) ||
             ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
-            if (gSaveContext.equips.buttonItems[0] != ITEM_NONE || swordlessShuffleFlag) {
+            if (gSaveContext.equips.buttonItems[0] != ITEM_NONE || randoCanTrackSwordless) {
                 gSaveContext.unk_13E7 = 1;
 
                 if (gSaveContext.buttonStatus[0] == BTN_DISABLED) {
@@ -843,12 +855,16 @@ void func_80083108(PlayState* play) {
                         gSaveContext.buttonStatus[8] = BTN_ENABLED;
                 }
 
-                if (((gSaveContext.equips.buttonItems[0] != ITEM_SLINGSHOT) &&
+                if ((gSaveContext.equips.buttonItems[0] != ITEM_SLINGSHOT) &&
                     (gSaveContext.equips.buttonItems[0] != ITEM_BOW) &&
                     (gSaveContext.equips.buttonItems[0] != ITEM_BOMBCHU) &&
-                    (gSaveContext.equips.buttonItems[0] != ITEM_NONE)) ||
-                    (swordlessShuffleFlag)) {
+                    (gSaveContext.equips.buttonItems[0] != ITEM_NONE || randoCanTrackSwordless)) {
                     gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
+
+                    // Track swordless status for restoration later
+                    if (randoCanTrackSwordless) {
+                        gSaveContext.buttonStatus[0] = SWORDLESS_STATUS;
+                    }
 
                     if ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38)) {
                         gSaveContext.equips.buttonItems[0] = ITEM_BOMBCHU;
@@ -874,7 +890,7 @@ void func_80083108(PlayState* play) {
                         BTN_DISABLED;
                     gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
                         gSaveContext.buttonStatus[8] = BTN_DISABLED;
-                    Interface_ChangeAlpha(swordlessShuffleFlag ? 8 : 6);
+                    Interface_ChangeAlpha(6);
                 }
 
                 if (play->transitionMode != 0) {
@@ -886,17 +902,6 @@ void func_80083108(PlayState* play) {
                 } else if ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38)) {
                     Interface_ChangeAlpha(8);
                 } else if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
-                    if (swordlessShuffleFlag) {
-                        if (INV_CONTENT(SLOT_BOW) == ITEM_BOW) {
-                            gSaveContext.equips.buttonItems[0] = ITEM_BOW;
-                            Interface_LoadItemIcon1(play, 0);
-                        } else {
-                            gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-                        }
-                        gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] = gSaveContext.buttonStatus[3] = BTN_DISABLED;
-                        gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] = 
-                          gSaveContext.buttonStatus[8] = BTN_DISABLED;
-                    }
                     Interface_ChangeAlpha(12);
                 }
             } else {
@@ -912,9 +917,12 @@ void func_80083108(PlayState* play) {
             if (play->interfaceCtx.unk_260 != 0) {
                 if (gSaveContext.equips.buttonItems[0] != ITEM_FISHING_POLE) {
                     gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
-                    if (swordlessShuffleFlag) {
-                        gSaveContext.buttonStatus[0] = BTN_ENABLED;
+
+                    // Track swordless status for restoration later
+                    if (randoCanTrackSwordless) {
+                        gSaveContext.buttonStatus[0] = SWORDLESS_STATUS;
                     }
+
                     gSaveContext.equips.buttonItems[0] = ITEM_FISHING_POLE;
                     gSaveContext.unk_13EA = 0;
                     Interface_LoadItemIcon1(play, 0);
@@ -925,11 +933,10 @@ void func_80083108(PlayState* play) {
                     Interface_ChangeAlpha(12);
                 }
             } else if (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE) {
-                if (swordlessShuffleFlag) {
-                    gSaveContext.buttonStatus[0] = BTN_DISABLED;
-                }
                 gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
                 gSaveContext.unk_13EA = 0;
+
+                Interface_RandoRestoreSwordless();
 
                 if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
                     Interface_LoadItemIcon1(play, 0);
@@ -1035,10 +1042,9 @@ void func_80083108(PlayState* play) {
                             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER) &&
                             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS) &&
                             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE)) {
-                            if (swordlessShuffleFlag) {
-                                gSaveContext.buttonStatus[0] = 255;
-                            }
                             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+
+                            Interface_RandoRestoreSwordless();
                         } else {
                             gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
                         }
@@ -1078,11 +1084,12 @@ void func_80083108(PlayState* play) {
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOW) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
-                        if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0)) {
-                            if (swordlessShuffleFlag && gSaveContext.buttonStatus[0] != ITEM_SWORD_BGS) {
-                                gSaveContext.buttonStatus[0] = 255;
-                            }
+                        if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0) ||
+                            randoWasSwordlessBefore) {
                             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+
+                            Interface_RandoRestoreSwordless();
+
                             sp28 = 1;
 
                             if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
@@ -1104,11 +1111,12 @@ void func_80083108(PlayState* play) {
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOW) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
-                        if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0)) {
-                            if (swordlessShuffleFlag) {
-                                gSaveContext.buttonStatus[0] = BTN_DISABLED;
-                            }
-                            gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0]; 
+                        if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0) ||
+                            randoWasSwordlessBefore) {
+                            gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+
+                            Interface_RandoRestoreSwordless();
+
                             sp28 = 1;
 
                             if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
@@ -1669,11 +1677,13 @@ void func_80084BF4(PlayState* play, u16 flag) {
                 (gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU) ||
                 (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE)) {
                 gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+                Interface_RandoRestoreSwordless();
                 Interface_LoadItemIcon1(play, 0);
             }
         } else if (gSaveContext.equips.buttonItems[0] == ITEM_NONE) {
             if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0)) {
                 gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+                Interface_RandoRestoreSwordless();
                 Interface_LoadItemIcon1(play, 0);
             }
         }
@@ -5759,6 +5769,7 @@ void Interface_Draw(PlayState* play) {
                 (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE)) {
                 if (gSaveContext.buttonStatus[0] != BTN_ENABLED) {
                     gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+                    Interface_RandoRestoreSwordless();
                 } else {
                     gSaveContext.equips.buttonItems[0] = ITEM_NONE;
                 }

@@ -289,7 +289,6 @@ typedef struct {
     /*        */ u8 mqDungeonCount;
     /*        */ u8 pendingIceTrapCount;
     /*        */ SohStats sohStats;
-    /*        */ u8 temporaryWeapon;
     /*        */ FaroresWindData backupFW;
     /*        */ RandomizerCheckTrackerData checkTrackerData[RC_MAX];
     // #endregion
