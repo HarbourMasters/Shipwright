@@ -35,12 +35,14 @@ class Context {
     void GenerateLocationPool();
     std::vector<RandomizerCheck> GetLocations(const std::vector<RandomizerCheck>& locationPool,
                                               Category categoryInclude, Category categoryExclude = Category::cNull);
+    void AddExcludedOptions();
     void LocationReset();
     void ItemReset();
     void HintReset();
     void CreateItemOverrides();
     std::set<ItemOverride, ItemOverride_Compare> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
+    std::vector<RandomizerCheck> everyPossibleLocation = {};
     std::vector<RandomizerCheck> wothLocations = {};
     std::unordered_map<RandomizerCheck, uint8_t> iceTrapModels = {};
     bool playthroughBeatable = false;

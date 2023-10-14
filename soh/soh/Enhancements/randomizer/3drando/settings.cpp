@@ -2,7 +2,7 @@
 
 #include "dungeon.hpp"
 #include "fill.hpp"
-#include "../static_data.h"
+#include "../context.h"
 #include "../item_location.h"
 #include "random.hpp"
 #include "randomizer.hpp"
@@ -2205,16 +2205,16 @@ namespace Settings {
     }
 
     LocationsReachable.SetSelectedIndex(cvarSettings[RSK_ALL_LOCATIONS_REACHABLE]);
-
-    // AddExcludedOptions();
-    // for (auto locationKey : everyPossibleLocation) {
-    //   auto location = GetLocation(locationKey);
-    //   if (excludedLocations.count(location->GetRandomizerCheck())) {
-    //     location->GetExcludedOption()->SetSelectedIndex(1);
-    //   } else {
-    //     location->GetExcludedOption()->SetSelectedIndex(0);
-    //   }
-    // }
+    auto ctx = Rando::Context::GetInstance();
+    ctx->AddExcludedOptions();
+    for (auto locationKey : ctx->everyPossibleLocation) {
+      auto location = ctx->GetItemLocation(locationKey);
+      if (excludedLocations.count(location->GetRandomizerCheck())) {
+        location->GetExcludedOption()->SetSelectedIndex(1);
+      } else {
+        location->GetExcludedOption()->SetSelectedIndex(0);
+      }
+    }
 
     //tricks
     

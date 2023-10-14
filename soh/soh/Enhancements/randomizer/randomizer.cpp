@@ -4641,12 +4641,12 @@ void RandomizerSettingsWindow::DrawElement() {
                     if (hasItems) {
                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                         if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
-                            for (auto& location : Rando::StaticData::GetLocationTable()) {
-                                if (ctx->GetItemLocation(location.GetRandomizerCheck())->IsVisible() && !excludedLocations.count(location.GetRandomizerCheck()) &&
-                                    locationSearch.PassFilter(location.GetName().c_str())) {
+                            for (auto& location : locations) {
+                                if (ctx->GetItemLocation(location)->IsVisible() && !excludedLocations.count(location) &&
+                                    locationSearch.PassFilter(Rando::StaticData::GetLocation(location)->GetName().c_str())) {
 
-                                    if (ImGui::ArrowButton(std::to_string(location.GetRandomizerCheck()).c_str(), ImGuiDir_Right)) {
-                                        excludedLocations.insert(location.GetRandomizerCheck());
+                                    if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Right)) {
+                                        excludedLocations.insert(location);
                                         // todo: this efficently when we build out cvar array support
                                         std::string excludedLocationString = "";
                                         for (auto excludedLocationIt : excludedLocations) {
@@ -4657,7 +4657,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
-                                    ImGui::Text("%s", location.GetShortName().c_str());
+                                    ImGui::Text("%s", Rando::StaticData::GetLocation(location)->GetShortName().c_str());
                                 }
                             }
                             ImGui::TreePop();
@@ -4683,10 +4683,10 @@ void RandomizerSettingsWindow::DrawElement() {
                     if (hasItems) {
                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                         if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
-                            for (auto& location : Rando::StaticData::GetLocationTable()) {
-                                auto elfound = excludedLocations.find(location.GetRandomizerCheck());
-                                if (ctx->GetItemLocation(location.GetRandomizerCheck())->IsVisible() && elfound != excludedLocations.end()) {
-                                    if (ImGui::ArrowButton(std::to_string(location.GetRandomizerCheck()).c_str(), ImGuiDir_Left)) {
+                            for (auto& location : locations) {
+                                auto elfound = excludedLocations.find(location);
+                                if (ctx->GetItemLocation(location)->IsVisible() && elfound != excludedLocations.end()) {
+                                    if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Left)) {
                                         excludedLocations.erase(elfound);
                                         // todo: this efficently when we build out cvar array support
                                         std::string excludedLocationString = "";
@@ -4698,7 +4698,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
-                                    ImGui::Text("%s", location.GetShortName().c_str());
+                                    ImGui::Text("%s", Rando::StaticData::GetLocation(location)->GetShortName().c_str());
                                 }
                             }
                             ImGui::TreePop();

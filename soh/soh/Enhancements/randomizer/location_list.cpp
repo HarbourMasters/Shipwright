@@ -761,6 +761,7 @@ void Rando::StaticData::InitLocationTable() {
                        SCENE_GERUDOS_FORTRESS, 0x00, 0x30, "GF HBA 1500 Points", "GF HBA 1500 Points",
                        RHT_GF_HBA_1500_POINTS, RG_PROGRESSIVE_BOW, {}, SpoilerCollectionCheck::ItemGetInf(7),
                        SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY, true);
+    // RandoTodo: Do we replace these with the RC_HIDEOUT keys or keep these?
     locationTable[RC_GF_GERUDO_MEMBERSHIP_CARD] =
         Location::Base(RC_GF_GERUDO_MEMBERSHIP_CARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GERUDO_FORTRESS,
                        ACTOR_ID_MAX, SCENE_THIEVES_HIDEOUT, 0x00, 0x3A, "GF Gerudo Membership Card",
@@ -3535,6 +3536,7 @@ void Rando::StaticData::InitLocationTable() {
         RC_GANON, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_GANONS_CASTLE, ACTOR_DOOR_WARP1, SCENE_GANON_BOSS, 0x00,
         DungeonId::DUNGEON_GANONS_CASTLE_CRUMBLING, "Ganon", "Ganon", RHT_NONE, RG_TRIFORCE, {},
         SpoilerCollectionCheck::None(), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GIFT_FROM_SAGES] = Location::Reward(RC_GIFT_FROM_SAGES, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, "Gift from Raoru", "Gift from Raoru", RHT_NONE, RG_LIGHT_MEDALLION, {}, SpoilerCollectionCheck::None(), SpoilerCollectionCheckGroup::GROUP_NO_GROUP, true);
 
     // Heart Containers
     locationTable[RC_DEKU_TREE_QUEEN_GOHMA_HEART] = Location::Base(

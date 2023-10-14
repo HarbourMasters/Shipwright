@@ -78,11 +78,14 @@ class ItemLocation {
     void SetHintKey(RandomizerHintKey hintKey);
     bool IsHidden() const;
     bool IsExcluded() const;
+    void AddExcludeOption();
+    Option* GetExcludedOption();
     void SetHidden(const bool hidden_);
     bool IsVisible() const;
     void SetVisible(bool visibleInImGui_);
     Rando::ItemOverride_Key Key() const;
     void ResetVariables();
+
   private:
     RandomizerCheck rc;
     RandomizerHintKey hintedBy;

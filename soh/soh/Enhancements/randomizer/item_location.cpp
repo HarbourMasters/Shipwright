@@ -129,6 +129,34 @@ bool ItemLocation::IsExcluded() const {
     return excludedOption.Value<bool>();
 }
 
+Option* ItemLocation::GetExcludedOption() {
+    return &excludedOption;
+}
+
+void ItemLocation::AddExcludeOption() {
+    const std::string name = StaticData::GetLocation(rc)->GetName();
+    if (name.length() < 23) {
+        excludedOption = Option::Bool(name, {"Include", "Exclude"});
+    } else {
+        size_t lastSpace = name.rfind(' ', 23);
+        std::string settingText = name;
+        settingText.replace(lastSpace, 1, "\n ");
+
+        excludedOption = Option::Bool(settingText, {"Include", "Exclude"});
+    }
+    // RANDOTODO: this without string compares and loops
+    bool alreadyAdded = false;
+    Rando::Location* loc = StaticData::GetLocation(rc);
+    for (const Option* location : Settings::excludeLocationsOptionsVector[loc->GetCollectionCheckGroup()]) {
+        if (location->GetName() == excludedOption.GetName()) {
+            alreadyAdded = true;
+        }
+    }
+    if (!alreadyAdded) {
+        Settings::excludeLocationsOptionsVector[loc->GetCollectionCheckGroup()].push_back(&excludedOption);
+    }
+}
+
 bool ItemLocation::IsVisible() const {
     return visibleInImGui;
 }

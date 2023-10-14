@@ -47,7 +47,7 @@ std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> rcObjectsByArea = {}
 std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> RandomizerCheckObjects::GetAllRCObjectsByArea() {
     if (rcObjectsByArea.size() == 0) {
         for (auto& location : Rando::StaticData::GetLocationTable()) {
-            rcObjectsByArea[location.GetArea()][location.GetRandomizerCheck()] = location.GetRandomizerCheck();
+            rcObjectsByArea[location.GetArea()].push_back(location.GetRandomizerCheck());
         }
     }
 

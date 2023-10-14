@@ -99,6 +99,16 @@ void Context::GenerateLocationPool() {
     }
 }
 
+void Context::AddExcludedOptions() {
+    AddLocations(StaticData::overworldLocations, &everyPossibleLocation);
+    for (auto dungeon : Dungeon::dungeonList) {
+        AddLocations(dungeon->GetEveryLocation(), &everyPossibleLocation);
+    }
+    for (RandomizerCheck rc : everyPossibleLocation) {
+        GetItemLocation(rc)->AddExcludeOption();
+    }
+}
+
 std::vector<RandomizerCheck> Context::GetLocations(const std::vector<RandomizerCheck>& locationPool,
                                                    Category categoryInclude, Category categoryExclude) {
     std::vector<RandomizerCheck> locationsInCategory;
