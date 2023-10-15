@@ -47,7 +47,10 @@ std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> rcObjectsByArea = {}
 std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> RandomizerCheckObjects::GetAllRCObjectsByArea() {
     if (rcObjectsByArea.size() == 0) {
         for (auto& location : Rando::StaticData::GetLocationTable()) {
-            rcObjectsByArea[location.GetArea()].push_back(location.GetRandomizerCheck());
+            // There are some RCs that don't have checks implemented yet, prevent adding these to the map.
+            if (location.GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
+                rcObjectsByArea[location.GetArea()].push_back(location.GetRandomizerCheck());
+            }
         }
     }
 
@@ -74,7 +77,10 @@ std::map<SceneID, RandomizerCheckArea> RandomizerCheckObjects::GetAllRCAreaBySce
     // memoize on first request
     if (rcAreaBySceneID.size() == 0) {
         for (auto& location : Rando::StaticData::GetLocationTable()) {
-            rcAreaBySceneID[location.GetScene()] = location.GetArea();
+            // There are some RCs that don't have checks implemented yet, prevent adding these to the map.
+            if (location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+                rcAreaBySceneID[location.GetScene()] = location.GetArea();
+            }
         }
         // Add checkless Hyrule Market areas to the area return
         for (int id = (int)SCENE_MARKET_ENTRANCE_DAY; id <= (int)SCENE_MARKET_RUINS; id++) {
