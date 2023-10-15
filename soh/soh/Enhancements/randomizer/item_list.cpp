@@ -194,7 +194,9 @@ void Rando::StaticData::InitItemTable() {
              ITEMTYPE_ITEM, 0x88, false, &Logic::noVariable, RHT_PROGRESSIVE_STICK_UPGRADE, true);
     itemTable[RG_PROGRESSIVE_BOMBCHUS] =
         Item(RG_PROGRESSIVE_BOMBCHUS, Text{ "Progressive Bombchu", "Missiles (prog.)", "Progressive Kriechgrube" },
-             ITEMTYPE_ITEM, 0x89, true, &Logic::Bombchus, RHT_PROGRESSIVE_BOMBCHUS, true);
+             ITEMTYPE_ITEM, 0x89, true, &Logic::Bombchus, RHT_PROGRESSIVE_BOMBCHUS, RG_PROGRESSIVE_BOMBCHUS,
+             OBJECT_GI_BOMB_2, GID_BOMBCHU, 0x33, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER,
+             RG_PROGRESSIVE_BOMBCHUS, true);
     itemTable[RG_PROGRESSIVE_MAGIC_METER] =
         Item(RG_PROGRESSIVE_MAGIC_METER,
              Text{ "Progressive Magic Meter", "Jauge de Magie (prog.)", "Progressives magisches Messgerät" },
