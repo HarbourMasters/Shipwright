@@ -336,14 +336,18 @@ bool Extractor::ValidateAndFixRom() {
 bool Extractor::ValidateNotCompressed() const {
     // ZIP file header
     if (mRomData[0] == 'P' && mRomData[1] == 'K' && mRomData[2] == 0x03 && mRomData[3] == 0x04) {
-        return 0;
+        return false;
     }
     // RAR file header. Only the first 4 bytes.
     if (mRomData[0] == 'R' && mRomData[1] == 'a' && mRomData[2] == 'r' && mRomData[3] == 0x21) {
-        return 0;
+        return false;
+    }
+    // 7z file header. 37 7A BC AF 27 1C
+    if (mRomData[0] == '7' && mRomData[1] == 'z' && mRomData[2] == 0xBC && mRomData[3] == 0xAF && mRomData[4] == 0x27 && mRomData[5] == 0x1C) {
+        return false;
     }
 
-    return 1;
+    return true;
 }
 
 bool Extractor::ValidateRomSize() const {
