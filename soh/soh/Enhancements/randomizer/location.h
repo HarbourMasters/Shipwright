@@ -194,6 +194,34 @@ class Location {
             SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP,
             bool isVanillaCompletion_ = true);
 
+    /// @brief For certain scenes, the sceneId and the "Scene" in spoiler collection check later used to check the
+    /// GS flags don't necessarily match. Use this constructor for those. scene_ should be the actual scene where
+    /// the GS is located, skullScene_ is the value passed to GET_GS_FLAGS to get the correct skulltula. It is normal
+    /// and expected that these don't always match, and the naming is a holdover from 3drando.
+    /// @param rc 
+    /// @param quest_ 
+    /// @param checkType_ 
+    /// @param area_ 
+    /// @param actorId_ 
+    /// @param scene_ 
+    /// @param actorParams_ 
+    /// @param flag_ 
+    /// @param shortName_ 
+    /// @param spoilerName_ 
+    /// @param hintKey 
+    /// @param categories 
+    /// @param collectionCheckGroup 
+    /// @param skullScene_ 
+    /// @param isVanillaCompletion_ 
+    /// @return
+    static Location
+    GSToken(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_, RandomizerCheckArea area_,
+            ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
+            std::string&& spoilerName_, const RandomizerHintTextKey hintKey, std::vector<Category>&& categories,
+            uint8_t skullScene_,
+            SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP,
+            bool isVanillaCompletion_ = true);
+
     static Location
     GrottoScrub(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
                 RandomizerCheckArea area_, ActorID actorId_, uint8_t scene, int32_t actorParams_, uint8_t flag_,
