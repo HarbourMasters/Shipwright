@@ -3053,8 +3053,6 @@ void GenerateRandomizerImgui(std::string seed = "") {
         cvarSettings[RSK_RANDOMIZE_STARTING_INVENTORY_SETTINGS] == RO_GENERIC_ON,
     };
 
-    srand(time(NULL));
-
     if (randomOptions.randomizeWorldSettings)
         RandomizeWorldSettings(cvarSettings);
     if (randomOptions.randomizeItemSettings)
