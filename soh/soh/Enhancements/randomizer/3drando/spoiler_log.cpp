@@ -813,7 +813,7 @@ static void WriteHints(int language) {
             }
         }
         if (hintType != HINT_TYPE_TRIAL && hintType != HINT_TYPE_JUNK) {
-            jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["area"] = hint->GetHintedRegion();
+            jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["area"] = hint->GetHintedRegion(); //RANDOTODO find elegent way to capitalise this
         }
     }
 }

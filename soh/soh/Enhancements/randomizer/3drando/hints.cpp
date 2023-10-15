@@ -435,8 +435,8 @@ static uint32_t CreateRandomHint(std::vector<RandomizerCheck>& possibleHintLocat
   return hintedLocation;
 }
 
-static void FilterHintability(std::vector<uint32_t>& locations, const bool goodItemsOnly = false, const bool dungeonsOK = true){
-  FilterFromPool(locations, [goodItemsOnly, dungeonsOK](const uint32_t loc) {
+static std::vector<uint32_t> FilterHintability(std::vector<uint32_t>& locations, const bool goodItemsOnly = false, const bool dungeonsOK = true){
+  return FilterFromPool(locations, [goodItemsOnly, dungeonsOK](const uint32_t loc) {
     return Location(loc)->IsHintable() && !(Location(loc)->IsHintedAt()) && 
     (!goodItemsOnly || Location(loc)->GetPlacedItem().IsMajorItem()) && (dungeonsOK || Location(loc)->IsOverworld());
   });
@@ -852,9 +852,8 @@ int32_t getRandomWeight(int32_t totalWeight){
 }
 
 
-static std::array<uint8_t, HINT_TYPE_MAX> DistrabuteHints(uint8_t stoneCount, std::array<HintDistributionSetting, (int)HINT_TYPE_MAX> distTable, bool addFixed = true){
+static void DistrabuteHints(std::array<uint8_t, HINT_TYPE_MAX>& selected, uint8_t stoneCount, std::array<HintDistributionSetting, (int)HINT_TYPE_MAX> distTable, bool addFixed = true){
   int32_t totalWeight = 0;
-  std::array<uint8_t, HINT_TYPE_MAX> selected = {};
 
   distTable[HINT_TYPE_JUNK].copies = 1; //Junk is hardcoded to 1 copy to avoid fill in issues
 
@@ -867,19 +866,18 @@ static std::array<uint8_t, HINT_TYPE_MAX> DistrabuteHints(uint8_t stoneCount, st
   }
 
   int32_t currentWeight = getRandomWeight(totalWeight);
-
   while(stoneCount > 0 && totalWeight > 0){
-    for (HintDistributionSetting setting: distTable){
-      currentWeight -= setting.weight;
+    for (uint8_t hintType = 0; hintType < HINT_TYPE_MAX; hintType++){
+      currentWeight -= distTable[hintType].weight;
       if (currentWeight <= 0){
-        if (stoneCount >= setting.copies){
-          selected[setting.type] += 1;
-          stoneCount -= setting.copies;
+        if (stoneCount >= distTable[hintType].copies){
+          selected[hintType] += 1;
+          stoneCount -= distTable[hintType].copies;
           break;
         }
         else {
-          totalWeight -= setting.weight;
-          setting.weight = 0;
+          totalWeight -= distTable[hintType].weight;
+          distTable[hintType].weight = 0;
           break;
         }
       }
@@ -890,7 +888,6 @@ static std::array<uint8_t, HINT_TYPE_MAX> DistrabuteHints(uint8_t stoneCount, st
   if (stoneCount > 0){
     selected[HINT_TYPE_JUNK] += stoneCount;
   }
-  return selected;
 }
 
 
@@ -930,7 +927,7 @@ uint8_t PlaceHints(std::array<uint8_t, HINT_TYPE_MAX>& selectedHints,
         CreateJunkHint();
       }
       else{
-        FilterHintability(hintTypePools[hintType], (hintType == HINT_TYPE_NAMED_ITEM));
+        hintTypePools[hintType] = FilterHintability(hintTypePools[hintType], (hintType == HINT_TYPE_NAMED_ITEM));
         hintedLocation = CreateRandomHint(hintTypePools[hintType], distTable[hintType].copies, (HintType)hintType);
         if (hintedLocation == RC_UNKNOWN_CHECK){ //if hint failed to place
           uint8_t hintsToRemove = (selectedHints[hintType] - numHint) * distTable[hintType].copies;
@@ -945,7 +942,7 @@ uint8_t PlaceHints(std::array<uint8_t, HINT_TYPE_MAX>& selectedHints,
           if (Location(hintedLocation)->IsDungeon()){
             *remainingDungeonWothHints -= 1;
             if (*remainingDungeonWothHints <= 0){
-              FilterHintability(hintTypePools[hintType], false, false);
+              hintTypePools[hintType] = FilterHintability(hintTypePools[hintType], false, false);
             }
           }
           break;
@@ -953,7 +950,7 @@ uint8_t PlaceHints(std::array<uint8_t, HINT_TYPE_MAX>& selectedHints,
           if (Location(hintedLocation)->IsDungeon()){
             *remainingDungeonBarrenHints -= 1;
             if (*remainingDungeonBarrenHints <= 0){
-              FilterHintability(hintTypePools[hintType], false, false);
+              hintTypePools[hintType] = FilterHintability(hintTypePools[hintType], false, false);
             }
           }
           break;
@@ -1031,12 +1028,13 @@ void CreateStoneHints() {
   }
 
   uint8_t totalStones = GetEmptyGossipStones().size();
-  std::array<uint8_t, HINT_TYPE_MAX> selectedHints = DistrabuteHints(totalStones, distTable);
+  std::array<uint8_t, HINT_TYPE_MAX> selectedHints = {};
+  DistrabuteHints(selectedHints, totalStones, distTable);
 
   while(totalStones != 0){
     totalStones = PlaceHints(selectedHints, distTable, remainingDungeonWothHints, remainingDungeonBarrenHints);
     if (totalStones != 0){
-      selectedHints = DistrabuteHints(totalStones, distTable, false);
+      DistrabuteHints(selectedHints, totalStones, distTable, false);
     }
   }
 
