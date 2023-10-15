@@ -3112,7 +3112,7 @@ int RandomDistribution(std::initializer_list<u8> balanceDistribution) {
         throw std::invalid_argument("Random distribution must be an even sized array.");
     }
 
-    auto randNum = rand() % 100;
+    auto randNum = Random(0, 100);
     auto current = 0;
     for (auto i = 0; i < balanceDistribution.size(); i += 2) {
         auto itemToPick = *(std::begin(balanceDistribution) + i);
@@ -3135,21 +3135,21 @@ int RandomizeItemCount(int max, int setNumberCount, std::initializer_list<u8> ba
     case RO_COUNT_BALANCE_ALL_ITEMS:
         return max;
     case RO_COUNT_BALANCE_ANYTHING:
-        return rand() % (max + 1);
+        return Random(0, max + 1);
     }
 }
 
 void RandomizeWorldSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSettings) {
     //Area Access
-    cvarSettings[RSK_KAK_GATE] = rand() % 2;
-    cvarSettings[RSK_DOOR_OF_TIME] = rand() % 3;
-    cvarSettings[RSK_ZORAS_FOUNTAIN] = rand() % 3;
+    cvarSettings[RSK_KAK_GATE] = Random(0, 2);
+    cvarSettings[RSK_DOOR_OF_TIME] = Random(0, 3);
+    cvarSettings[RSK_ZORAS_FOUNTAIN] = Random(0, 3);
 
     //World Settings
     cvarSettings[RSK_STARTING_AGE] = 
-        cvarSettings[RSK_DOOR_OF_TIME] == RO_DOOROFTIME_CLOSED ? RO_AGE_CHILD : rand() % 2;
-    cvarSettings[RSK_GERUDO_FORTRESS] = rand() % 3;
-    cvarSettings[RSK_RAINBOW_BRIDGE] = rand() % 8;
+        cvarSettings[RSK_DOOR_OF_TIME] == RO_DOOROFTIME_CLOSED ? RO_AGE_CHILD : Random(0, 2);
+    cvarSettings[RSK_GERUDO_FORTRESS] = Random(0, 3);
+    cvarSettings[RSK_RAINBOW_BRIDGE] = Random(0, 8);
     //For "constant settings" option:
     cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] = RandomizeItemCount(3, 2, {
         1, 10,
@@ -3185,7 +3185,7 @@ void RandomizeWorldSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSe
         45, 15,
         50, 10,
     });
-    cvarSettings[RSK_BRIDGE_OPTIONS] = rand() % 3;
+    cvarSettings[RSK_BRIDGE_OPTIONS] = Random(0, 3);
     //Add one on if Greg is required
     if (cvarSettings[RSK_BRIDGE_OPTIONS] == RO_BRIDGE_GREG_REWARD) {
         cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] += 1;
@@ -3194,7 +3194,7 @@ void RandomizeWorldSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSe
 
     }
 
-    cvarSettings[RSK_TRIFORCE_HUNT] = rand() % 2;
+    cvarSettings[RSK_TRIFORCE_HUNT] = Random(0, 2);
     
     if (cvarSettings[RSK_TRIFORCE_HUNT] == RO_GENERIC_ON) {
         cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = RandomizeItemCount(35, 20, {
@@ -3216,24 +3216,24 @@ void RandomizeWorldSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSe
         RO_DUNGEON_ENTRANCE_SHUFFLE_ON, 25,
         RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON, 25
     });
-    cvarSettings[RSK_SHUFFLE_BOSS_ENTRANCES] = rand() % 3;
-    cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = rand() % 2;
+    cvarSettings[RSK_SHUFFLE_BOSS_ENTRANCES] = Random(0, 3);
+    cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = Random(0, 2);
     cvarSettings[RSK_SHUFFLE_INTERIOR_ENTRANCES] = RandomDistribution({ 
         RO_INTERIOR_ENTRANCE_SHUFFLE_OFF, 50,
         RO_INTERIOR_ENTRANCE_SHUFFLE_SIMPLE, 25,
         RO_INTERIOR_ENTRANCE_SHUFFLE_ALL, 25
     });
-    cvarSettings[RSK_SHUFFLE_GROTTO_ENTRANCES] = rand() % 2;
-    cvarSettings[RSK_SHUFFLE_OWL_DROPS] = rand() % 2;
-    cvarSettings[RSK_SHUFFLE_WARP_SONGS] = rand() % 2;
-    cvarSettings[RSK_SHUFFLE_OVERWORLD_SPAWNS] = rand() % 2;
+    cvarSettings[RSK_SHUFFLE_GROTTO_ENTRANCES] = Random(0, 2);
+    cvarSettings[RSK_SHUFFLE_OWL_DROPS] = Random(0, 2);
+    cvarSettings[RSK_SHUFFLE_WARP_SONGS] = Random(0, 2);
+    cvarSettings[RSK_SHUFFLE_OVERWORLD_SPAWNS] = Random(0, 2);
     cvarSettings[RSK_MIXED_ENTRANCE_POOLS] = 1;
-    cvarSettings[RSK_MIX_DUNGEON_ENTRANCES] = rand() % 2;
-    cvarSettings[RSK_MIX_OVERWORLD_ENTRANCES] = rand() % 2;
-    cvarSettings[RSK_MIX_INTERIOR_ENTRANCES] = rand() % 2;
-    cvarSettings[RSK_MIX_GROTTO_ENTRANCES] = rand() % 2;
+    cvarSettings[RSK_MIX_DUNGEON_ENTRANCES] = Random(0, 2);
+    cvarSettings[RSK_MIX_OVERWORLD_ENTRANCES] = Random(0, 2);
+    cvarSettings[RSK_MIX_INTERIOR_ENTRANCES] = Random(0, 2);
+    cvarSettings[RSK_MIX_GROTTO_ENTRANCES] = Random(0, 2);
     cvarSettings[RSK_DECOUPLED_ENTRANCES] =
-        cvarSettings[RSK_ALLOW_DECOUPLED_ENTRANCES] == RO_GENERIC_ON ? rand() % 2 : RO_GENERIC_OFF;
+        cvarSettings[RSK_ALLOW_DECOUPLED_ENTRANCES] == RO_GENERIC_ON ? Random(0, 2) : RO_GENERIC_OFF;
 
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = cvarSettings[RSK_SHUFFLE_DUNGEON_ENTRANCES] == RO_GENERIC_ON ||
                                           cvarSettings[RSK_SHUFFLE_BOSS_ENTRANCES] == RO_GENERIC_ON ||
@@ -3249,49 +3249,49 @@ void RandomizeWorldSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSe
     auto canBeClosedForest = cvarSettings[RSK_SHUFFLE_ENTRANCES] == RO_GENERIC_OFF &&
                        cvarSettings[RSK_STARTING_AGE] == RO_AGE_CHILD;
 
-    cvarSettings[RSK_FOREST] = canBeClosedForest ? rand() % 3 : rand() % 2 + 1;
+    cvarSettings[RSK_FOREST] = canBeClosedForest ? Random(0, 3) : Random(0, 2) + 1;
 }
 
 void RandomizeItemSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSettings) {
     //Shuffle Items
-    cvarSettings[RSK_SHUFFLE_SONGS] = rand() % 3;
-    cvarSettings[RSK_SHUFFLE_TOKENS] = rand() % 3;
-    cvarSettings[RSK_STARTING_KOKIRI_SWORD] = rand() % 2;
+    cvarSettings[RSK_SHUFFLE_SONGS] = Random(0, 3);
+    cvarSettings[RSK_SHUFFLE_TOKENS] = Random(0, 3);
+    cvarSettings[RSK_STARTING_KOKIRI_SWORD] = Random(0, 2);
     cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD] = cvarSettings[RSK_STARTING_KOKIRI_SWORD] == 1 ?
         RO_GENERIC_ON :
-        rand() % 2;
-    cvarSettings[RSK_SHUFFLE_OCARINA] = rand() % 2;
-    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = cvarSettings[RSK_SKIP_CHILD_ZELDA] == 1 ? 0 : rand() % 2;
-    cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = rand() % 2;
+        Random(0, 2);
+    cvarSettings[RSK_SHUFFLE_OCARINA] = Random(0, 2);
+    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = cvarSettings[RSK_SKIP_CHILD_ZELDA] == 1 ? 0 : Random(0, 2);
+    cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = Random(0, 2);
 
     //Shuffle NPCs and merchants
-    cvarSettings[RSK_SHOPSANITY] = rand() % 7;
-    cvarSettings[RSK_SHOPSANITY_PRICES] = rand() % 5;
-    cvarSettings[RSK_SHOPSANITY_PRICES_AFFORDABLE] = rand() % 2;
-    cvarSettings[RSK_SHUFFLE_SCRUBS] = rand() % 4;
-    cvarSettings[RSK_SHUFFLE_COWS] = rand() % 2;
-    cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = rand() % 2;
-    cvarSettings[RSK_SHUFFLE_MERCHANTS] = rand() % 3;
-    cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES] = rand() % 2;
-    cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = rand() % 2;
+    cvarSettings[RSK_SHOPSANITY] = Random(0, 7);
+    cvarSettings[RSK_SHOPSANITY_PRICES] = Random(0, 5);
+    cvarSettings[RSK_SHOPSANITY_PRICES_AFFORDABLE] = Random(0, 2);
+    cvarSettings[RSK_SHUFFLE_SCRUBS] = Random(0, 4);
+    cvarSettings[RSK_SHUFFLE_COWS] = Random(0, 2);
+    cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = Random(0, 2);
+    cvarSettings[RSK_SHUFFLE_MERCHANTS] = Random(0, 3);
+    cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES] = Random(0, 2);
+    cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = Random(0, 2);
     cvarSettings[RSK_SHUFFLE_100_GS_REWARD] =
-        cvarSettings[RSK_ALLOW_100_GS_REWARD] == RO_GENERIC_ON ? rand() % 2 : RO_GENERIC_OFF;
+        cvarSettings[RSK_ALLOW_100_GS_REWARD] == RO_GENERIC_ON ? Random(0, 2) : RO_GENERIC_OFF;
 
     //Shuffle Dungeon Rewards
-    cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = rand() % 4;
-    cvarSettings[RSK_STARTING_MAPS_COMPASSES] = rand() % 5;
-    cvarSettings[RSK_KEYSANITY] = rand() % 6;
-    cvarSettings[RSK_KEYRINGS] = rand() % 3; // Exclude RO_KEYRINGS_SELECTION
+    cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = Random(0, 4);
+    cvarSettings[RSK_STARTING_MAPS_COMPASSES] = Random(0, 5);
+    cvarSettings[RSK_KEYSANITY] = Random(0, 6);
+    cvarSettings[RSK_KEYRINGS] = Random(0, 3); // Exclude RO_KEYRINGS_SELECTION
     cvarSettings[RSK_KEYRINGS_RANDOM_COUNT] =
         cvarSettings[RSK_GERUDO_FORTRESS] == RO_GF_NORMAL && cvarSettings[RSK_GERUDO_KEYS] != RO_GERUDO_KEYS_VANILLA
             ? 9
             : 8;
-    cvarSettings[RSK_GERUDO_KEYS] = rand() % 4;
-    cvarSettings[RSK_BOSS_KEYSANITY] = rand() % 6;
+    cvarSettings[RSK_GERUDO_KEYS] = Random(0, 4);
+    cvarSettings[RSK_BOSS_KEYSANITY] = Random(0, 6);
 
     if (cvarSettings[RSK_TRIFORCE_HUNT] == RO_GENERIC_OFF) {
         cvarSettings[RSK_GANONS_BOSS_KEY] = 
-            cvarSettings[RSK_ALLOW_100_GS_REWARD] == RO_GENERIC_ON ? rand() % 13 : rand() % 12;
+            cvarSettings[RSK_ALLOW_100_GS_REWARD] == RO_GENERIC_ON ? Random(0, 13) : Random(0, 12);
         cvarSettings[RSK_LACS_STONE_COUNT] = RandomizeItemCount(3, 2, {
             1, 10,
             2, 45,
@@ -3326,7 +3326,7 @@ void RandomizeItemSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSet
             45, 15,
             50, 10,
         });
-        cvarSettings[RSK_LACS_OPTIONS] = rand() % 3;
+        cvarSettings[RSK_LACS_OPTIONS] = Random(0, 3);
         // Add one on if Greg is required
         if (cvarSettings[RSK_LACS_OPTIONS] == RO_LACS_GREG_REWARD) {
             cvarSettings[RSK_LACS_STONE_COUNT] += 1;
@@ -3340,53 +3340,53 @@ void RandomizeItemSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSet
 
 void RandomizeGameplaySettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSettings) {
     //Timesavers
-    cvarSettings[RSK_CUCCO_COUNT] = rand() % 8;
-    cvarSettings[RSK_BIG_POE_COUNT] = rand() % 10 + 1;
-    cvarSettings[RSK_SKIP_CHILD_ZELDA] = rand() % 2;
+    cvarSettings[RSK_CUCCO_COUNT] = Random(0, 8);
+    cvarSettings[RSK_BIG_POE_COUNT] = Random(0, 10) + 1;
+    cvarSettings[RSK_SKIP_CHILD_ZELDA] = Random(0, 2);
     cvarSettings[RSK_SKIP_CHILD_STEALTH] =
         cvarSettings[RSK_SKIP_CHILD_ZELDA] == 1 ? 1 : cvarSettings[RSK_SKIP_CHILD_STEALTH];
-    cvarSettings[RSK_SKIP_EPONA_RACE] = rand() % 2;
-    cvarSettings[RSK_SKIP_TOWER_ESCAPE] = rand() % 2;
-    cvarSettings[RSK_COMPLETE_MASK_QUEST] = rand() % 2;
-    cvarSettings[RSK_SKIP_SCARECROWS_SONG] = rand() % 2;
+    cvarSettings[RSK_SKIP_EPONA_RACE] = Random(0, 2);
+    cvarSettings[RSK_SKIP_TOWER_ESCAPE] = Random(0, 2);
+    cvarSettings[RSK_COMPLETE_MASK_QUEST] = Random(0, 2);
+    cvarSettings[RSK_SKIP_SCARECROWS_SONG] = Random(0, 2);
 
     //Item Pool and Hints
-    cvarSettings[RSK_ITEM_POOL] = rand() % 4;
-    cvarSettings[RSK_ICE_TRAPS] = rand() % 5;
-    cvarSettings[RSK_GOSSIP_STONE_HINTS] = rand() % 4;
-    cvarSettings[RSK_HINT_CLARITY] = rand() % 3;
-    cvarSettings[RSK_HINT_DISTRIBUTION] = rand() % 4;
-    cvarSettings[RSK_TOT_ALTAR_HINT] = rand() % 2;
-    cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT] = rand() % 2;
-    cvarSettings[RSK_DAMPES_DIARY_HINT] = rand() % 2;
-    cvarSettings[RSK_GREG_HINT] = rand() % 2;
-    cvarSettings[RSK_WARP_SONG_HINTS] = rand() % 2;
-    cvarSettings[RSK_SARIA_HINT] = rand() % 2;
-    cvarSettings[RSK_FROGS_HINT] = rand() % 2;
-    cvarSettings[RSK_SCRUB_TEXT_HINT] = rand() % 2;
-    cvarSettings[RSK_KAK_10_SKULLS_HINT] = rand() % 2;
-    cvarSettings[RSK_KAK_20_SKULLS_HINT] = rand() % 2;
-    cvarSettings[RSK_KAK_30_SKULLS_HINT] = rand() % 2;
-    cvarSettings[RSK_KAK_40_SKULLS_HINT] = rand() % 2;
-    cvarSettings[RSK_KAK_50_SKULLS_HINT] =  rand() % 2;
+    cvarSettings[RSK_ITEM_POOL] = Random(0, 4);
+    cvarSettings[RSK_ICE_TRAPS] = Random(0, 5);
+    cvarSettings[RSK_GOSSIP_STONE_HINTS] = Random(0, 4);
+    cvarSettings[RSK_HINT_CLARITY] = Random(0, 3);
+    cvarSettings[RSK_HINT_DISTRIBUTION] = Random(0, 4);
+    cvarSettings[RSK_TOT_ALTAR_HINT] = Random(0, 2);
+    cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT] = Random(0, 2);
+    cvarSettings[RSK_DAMPES_DIARY_HINT] = Random(0, 2);
+    cvarSettings[RSK_GREG_HINT] = Random(0, 2);
+    cvarSettings[RSK_WARP_SONG_HINTS] = Random(0, 2);
+    cvarSettings[RSK_SARIA_HINT] = Random(0, 2);
+    cvarSettings[RSK_FROGS_HINT] = Random(0, 2);
+    cvarSettings[RSK_SCRUB_TEXT_HINT] = Random(0, 2);
+    cvarSettings[RSK_KAK_10_SKULLS_HINT] = Random(0, 2);
+    cvarSettings[RSK_KAK_20_SKULLS_HINT] = Random(0, 2);
+    cvarSettings[RSK_KAK_30_SKULLS_HINT] = Random(0, 2);
+    cvarSettings[RSK_KAK_40_SKULLS_HINT] = Random(0, 2);
+    cvarSettings[RSK_KAK_50_SKULLS_HINT] =  Random(0, 2);
 
     //Additional Features
-    cvarSettings[RSK_FULL_WALLETS] = rand() % 2;
-    cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = rand() % 2;
+    cvarSettings[RSK_FULL_WALLETS] = Random(0, 2);
+    cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = Random(0, 2);
     cvarSettings[RSK_ENABLE_BOMBCHU_DROPS] = cvarSettings[RSK_BOMBCHUS_IN_LOGIC];
-    cvarSettings[RSK_BLUE_FIRE_ARROWS] = rand() % 2;
-    cvarSettings[RSK_SUNLIGHT_ARROWS] = rand() % 2;
+    cvarSettings[RSK_BLUE_FIRE_ARROWS] = Random(0, 2);
+    cvarSettings[RSK_SUNLIGHT_ARROWS] = Random(0, 2);
 }
 
 void RandomizeInventorySettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSettings) {
     //Starting Equipment
     
-    cvarSettings[RSK_STARTING_DEKU_SHIELD] = rand() % 2;
-    cvarSettings[RSK_STARTING_KOKIRI_SWORD] = rand() % 2;
+    cvarSettings[RSK_STARTING_DEKU_SHIELD] = Random(0, 2);
+    cvarSettings[RSK_STARTING_KOKIRI_SWORD] = Random(0, 2);
 
     //Starting Items
-    cvarSettings[RSK_STARTING_OCARINA] = rand() % 2;
-    cvarSettings[RSK_STARTING_CONSUMABLES] = rand() % 2;
+    cvarSettings[RSK_STARTING_OCARINA] = Random(0, 2);
+    cvarSettings[RSK_STARTING_CONSUMABLES] = Random(0, 2);
 
     //Starting songs
     std::array<RandomizerSettingKey, 12> songs {
@@ -3400,7 +3400,7 @@ void RandomizeInventorySettings(std::unordered_map<RandomizerSettingKey, u8>& cv
     if (randomizationType == RO_SONG_COUNT_SET_NUMBER) {
         numberToRandomize = CVarGetInteger("gRandomizeSongsCount", 0);
     } else {
-        numberToRandomize = rand() % 13;
+        numberToRandomize = Random(0, 13);
     }
     auto seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::shuffle(songs.begin(), songs.end(), std::default_random_engine(seed));
@@ -3420,13 +3420,13 @@ void RandomizeDependentSettings(std::unordered_map<RandomizerSettingKey, u8>& cv
                                 RandomSettingsOptions& options) {
     //Handle shuffle ocarina/start with ocarina
     if (options.randomizeItemSettings && options.randomizeStartingInventorySettings) {
-        auto shuffleOption = rand() % 4;
+        auto shuffleOption = Random(0, 4);
         cvarSettings[RSK_SHUFFLE_OCARINA] = shuffleOption < 2 ? RO_GENERIC_ON : RO_GENERIC_OFF;
         cvarSettings[RSK_STARTING_OCARINA] = shuffleOption % 2 == 0 ? RO_GENERIC_ON : RO_GENERIC_OFF;
     }
     if (options.randomizeStartingInventorySettings) {
         cvarSettings[RSK_LINKS_POCKET] = cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] != RO_DUNGEON_REWARDS_END_OF_DUNGEON
-                                             ? rand() % 4
+                                             ? Random(0, 4)
                                              : RO_LINKS_POCKET_DUNGEON_REWARD;
     }
 
