@@ -722,14 +722,14 @@ typedef struct {
     int16_t patch;
 } OTRVersion;
 
-// Read the soh version from an OTR file
-OTRVersion ReadSohVersionFromOTR(std::string otrPath) {
+// Read the port version from an OTR file
+OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
     OTRVersion version = {};
 
     // Use a temporary archive instance to load the otr and read the version file
     auto archive = std::make_shared<LUS::Archive>(otrPath, "", std::unordered_set<uint32_t>(), false);
     if (archive->IsMainMPQValid()) {
-        auto t = archive->LoadFile("sohVersion", false);
+        auto t = archive->LoadFile("portVersion", false);
         if (t != nullptr && t->IsLoaded) {
             auto stream = std::make_shared<LUS::MemoryStream>(t->Buffer.data(), t->Buffer.size());
             auto reader = std::make_shared<LUS::BinaryReader>(stream);
@@ -764,7 +764,7 @@ void CheckSoHOTRVersion(std::string otrPath) {
 #endif
     }
 
-    OTRVersion otrVersion = ReadSohVersionFromOTR(otrPath);
+    OTRVersion otrVersion = ReadPortVersionFromOTR(otrPath);
 
     if (otrVersion.major != gBuildVersionMajor || otrVersion.minor != gBuildVersionMinor || otrVersion.patch != gBuildVersionPatch) {
 #if not defined(__SWITCH__) && not defined(__WIIU__)
@@ -791,7 +791,7 @@ void DetectOTRVersion(std::string fileName, bool isMQ) {
         return;
     }
 
-    OTRVersion otrVersion = ReadSohVersionFromOTR(otrPath);
+    OTRVersion otrVersion = ReadPortVersionFromOTR(otrPath);
 
     if (otrVersion.major != gBuildVersionMajor) {
         isOtrOld = true;

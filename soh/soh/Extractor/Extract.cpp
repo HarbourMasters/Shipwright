@@ -535,7 +535,7 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     constexpr int argc = 18;
     char xmlPath[1024];
     char confPath[1024];
-    char sohVersion[18]; // 5 digits for int16_max (x3) + separators + terminator
+    char portVersion[18]; // 5 digits for int16_max (x3) + separators + terminator
     std::array<const char*, argc> argv;
     const char* version = GetZapdVerStr();
     const char* otrFile = IsMasterQuest() ? "oot-mq.otr" : "oot.otr";
@@ -557,7 +557,7 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
 
     snprintf(xmlPath, 1024, "assets/extractor/xmls/%s", version);
     snprintf(confPath, 1024, "assets/extractor/Config_%s.xml", version);
-    snprintf(sohVersion, 18, "%d.%d.%d", gBuildVersionMajor, gBuildVersionMinor, gBuildVersionPatch);
+    snprintf(portVersion, 18, "%d.%d.%d", gBuildVersionMajor, gBuildVersionMinor, gBuildVersionPatch);
 
     argv[0] = "ZAPD";
     argv[1] = "ed";
@@ -575,8 +575,8 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     argv[13] = "OTR";
     argv[14] = "--otrfile";
     argv[15] = otrFile;
-    argv[16] = "--sohver";
-    argv[17] = sohVersion;
+    argv[16] = "--portVer";
+    argv[17] = portVersion;
 
 #ifdef _WIN32
     // Grab a handle to the command window.

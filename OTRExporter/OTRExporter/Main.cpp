@@ -27,7 +27,7 @@
 #include <mutex>
 
 std::string otrFileName = "oot.otr";
-std::string sohVersionString = "0.0.0";
+std::string portVersionString = "0.0.0";
 std::shared_ptr<LUS::Archive> otrArchive;
 BinaryWriter* fileWriter;
 std::chrono::steady_clock::time_point fileStart, resStart;
@@ -69,12 +69,12 @@ static void ExporterProgramEnd()
 	uint32_t crc = 0xFFFFFFFF;
 	const uint8_t endianness = (uint8_t)Endianness::Big;
 
-	std::vector<int16_t> sohVersion = {};
-	std::vector<std::string> versionParts = StringHelper::Split(sohVersionString, ".");
+	std::vector<int16_t> portVersion = {};
+	std::vector<std::string> versionParts = StringHelper::Split(portVersionString, ".");
 
 	// If a major.minor.patch string was not passed in, fallback to 0 0 0 
 	if (versionParts.size() != 3) {
-		sohVersion = { 0, 0, 0 };
+		portVersion = { 0, 0, 0 };
 	} else {
 		// Parse version values to number
 		for (const auto& val : versionParts) {
@@ -87,17 +87,17 @@ static void ExporterProgramEnd()
 				num = 0;
 			}
 
-			sohVersion.push_back(num);
+			portVersion.push_back(num);
 		}
 	}
 
-	MemoryStream *sohVersionStream = new MemoryStream();
-	BinaryWriter sohWriter(sohVersionStream);
+	MemoryStream *portVersionStream = new MemoryStream();
+	BinaryWriter sohWriter(portVersionStream);
 	sohWriter.SetEndianness(Endianness::Big);
 	sohWriter.Write(endianness);
-	sohWriter.Write(sohVersion[0]); // Major
-	sohWriter.Write(sohVersion[1]); // Minor
-	sohWriter.Write(sohVersion[2]); // Patch
+	sohWriter.Write(portVersion[0]); // Major
+	sohWriter.Write(portVersion[1]); // Minor
+	sohWriter.Write(portVersion[2]); // Patch
 	sohWriter.Close();
 	
 	if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
@@ -127,8 +127,8 @@ static void ExporterProgramEnd()
 		printf("Adding version file.\n");
 		otrArchive->AddFile("version", (uintptr_t)versionStream->ToVector().data(), versionStream->GetLength());
 
-		printf("Adding sohVersion file.\n");
-		otrArchive->AddFile("sohVersion", (uintptr_t)sohVersionStream->ToVector().data(), sohVersionStream->GetLength());
+		printf("Adding portVersion file.\n");
+		otrArchive->AddFile("portVersion", (uintptr_t)portVersionStream->ToVector().data(), portVersionStream->GetLength());
 
 		for (const auto& item : files)
 		{
@@ -161,8 +161,8 @@ static void ExporterProgramEnd()
 	printf("Generating SoH OTR Archive...\n");
 	std::shared_ptr<LUS::Archive> sohOtr = LUS::Archive::CreateArchive("soh.otr", 4096);
 
-	printf("Adding sohVersion file.\n");
-	sohOtr->AddFile("sohVersion", (uintptr_t)sohVersionStream->ToVector().data(), sohVersionStream->GetLength());
+	printf("Adding portVersion file.\n");
+	sohOtr->AddFile("portVersion", (uintptr_t)portVersionStream->ToVector().data(), portVersionStream->GetLength());
 
 	for (const auto& item : lst)
 	{
@@ -227,9 +227,9 @@ static void ExporterParseArgs(int argc, char* argv[], int& i)
 		otrFileName = argv[i + 1];
 		i++;
 	}
-	else if (arg == "--sohver")
+	else if (arg == "--portVer")
 	{
-		sohVersionString = argv[i + 1];
+		portVersionString = argv[i + 1];
 		i++;
 	}
 }

@@ -229,13 +229,10 @@ extern "C" int zapd_main(int argc, char* argv[])
 	// Parse File Mode
 	ExporterSet* exporterSet = Globals::Instance->GetExporterSet();
 
-	if (Globals::Instance->onlyGenSohOtr)
-	{
-		if (exporterSet != nullptr)
-		{
+	if (Globals::Instance->onlyGenSohOtr) {
+		if (exporterSet != nullptr) {
 			// parse args for exporter
-			if (exporterSet->parseArgsFunc != nullptr)
-			{
+			if (exporterSet->parseArgsFunc != nullptr) {
 				for (int32_t i = 2; i < argc; i++)
 					exporterSet->parseArgsFunc(argc, argv, i);
 			}
