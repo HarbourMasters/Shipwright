@@ -3496,53 +3496,18 @@ void Rando::StaticData::InitLocationTable() {
                           SCENE_LON_LON_RANCH, -29944, 0x08, "GS Tree", "LLR GS Tree", RHT_LLR_GS_TREE,
                           { Category::cSkulltula }, 0x0B, SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
 
-    // Bosses
-    locationTable[RC_LINKS_POCKET] = Location::Reward(
-        RC_LINKS_POCKET, RCQUEST_BOTH, RCTYPE_LINKS_POCKET, RCAREA_KOKIRI_FOREST, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00,
-        0x00, "Link's Pocket", "Link's Pocket", RHT_LINKS_POCKET, RG_LIGHT_MEDALLION, {},
-        SpoilerCollectionCheck::AlwaysCollected(), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST, true);
-    locationTable[RC_QUEEN_GOHMA] = Location::Reward(
-        RC_QUEEN_GOHMA, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_DEKU_TREE, ACTOR_DOOR_WARP1, SCENE_DEKU_TREE_BOSS,
-        0x00, DungeonId::DUNGEON_DEKU_TREE, "Queen Gohma", "Queen Gohma", RHT_QUEEN_GOHMA, RG_KOKIRI_EMERALD, {},
-        SpoilerCollectionCheck::Chest(0x11, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE, true);
-    locationTable[RC_KING_DODONGO] =
-        Location::Reward(RC_KING_DODONGO, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_DODONGOS_CAVERN, ACTOR_DOOR_WARP1,
-                         SCENE_DODONGOS_CAVERN_BOSS, 0x00, DungeonId::DUNGEON_DODONGOS_CAVERN, "King Dodongo",
-                         "King Dodongo", RHT_KING_DODONGO, RG_GORON_RUBY, {}, SpoilerCollectionCheck::Chest(0x12, 0x1F),
-                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN, true);
-    locationTable[RC_BARINADE] =
-        Location::Reward(RC_BARINADE, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_JABU_JABUS_BELLY, ACTOR_DOOR_WARP1,
-                         SCENE_JABU_JABU_BOSS, 0x00, DungeonId::DUNGEON_JABUJABUS_BELLY, "Barinade", "Barinade",
-                         RHT_BARINADE, RG_ZORA_SAPPHIRE, {}, SpoilerCollectionCheck::Chest(0x13, 0x1F),
-                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY, true);
-    locationTable[RC_PHANTOM_GANON] = Location::Reward(
-        RC_PHANTOM_GANON, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_FOREST_TEMPLE, ACTOR_DOOR_WARP1,
-        SCENE_FOREST_TEMPLE_BOSS, 0x00, DungeonId::DUNGEON_FOREST_TEMPLE, "Phantom Ganon", "Phantom Ganon",
-        RHT_PHANTOM_GANON, RG_FOREST_MEDALLION, {}, SpoilerCollectionCheck::Chest(0x14, 0x1F),
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
-    locationTable[RC_VOLVAGIA] = Location::Reward(
-        RC_VOLVAGIA, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_FIRE_TEMPLE, ACTOR_DOOR_WARP1, SCENE_FIRE_TEMPLE_BOSS,
-        0x00, DungeonId::DUNGEON_FIRE_TEMPLE, "Volvagia", "Volvagia", RHT_VOLVAGIA, RG_FIRE_MEDALLION, {},
-        SpoilerCollectionCheck::Chest(0x15, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_MORPHA] = Location::Reward(
-        RC_MORPHA, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_WATER_TEMPLE, ACTOR_DOOR_WARP1, SCENE_WATER_TEMPLE_BOSS,
-        0x00, DungeonId::DUNGEON_WATER_TEMPLE, "Morpha", "Morpha", RHT_MORPHA, RG_WATER_MEDALLION, {},
-        SpoilerCollectionCheck::Chest(0x16, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
-    locationTable[RC_TWINROVA] =
-        Location::Reward(RC_TWINROVA, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_SPIRIT_TEMPLE, ACTOR_DOOR_WARP1,
-                         SCENE_SPIRIT_TEMPLE_BOSS, 0x00, DungeonId::DUNGEON_SPIRIT_TEMPLE, "Twinrova", "Twinrova",
-                         RHT_TWINROVA, RG_SPIRIT_MEDALLION, {}, SpoilerCollectionCheck::Chest(0x17, 0x1F),
-                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_BONGO_BONGO] =
-        Location::Reward(RC_BONGO_BONGO, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_SHADOW_TEMPLE, ACTOR_DOOR_WARP1,
-                         SCENE_SHADOW_TEMPLE_BOSS, 0x00, DungeonId::DUNGEON_SHADOW_TEMPLE, "Bongo Bongo", "Bongo Bongo",
-                         RHT_BONGO_BONGO, RG_SHADOW_MEDALLION, {}, SpoilerCollectionCheck::Chest(0x18, 0x1F),
-                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
-    locationTable[RC_GANON] = Location::Reward(
-        RC_GANON, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_GANONS_CASTLE, ACTOR_DOOR_WARP1, SCENE_GANON_BOSS, 0x00,
-        DungeonId::DUNGEON_GANONS_CASTLE_CRUMBLING, "Ganon", "Ganon", RHT_NONE, RG_TRIFORCE, {},
-        SpoilerCollectionCheck::None(), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
-    locationTable[RC_GIFT_FROM_SAGES] = Location::Reward(RC_GIFT_FROM_SAGES, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, "Gift from Raoru", "Gift from Raoru", RHT_NONE, RG_LIGHT_MEDALLION, {}, SpoilerCollectionCheck::None(), SpoilerCollectionCheckGroup::GROUP_NO_GROUP, true);
+    // Bosses     Randomizer Check                       Randomizer Check    Quest         Type                   Area                     Actor ID          Scene ID                    Params Flags                                      Short Name         Spoiler Name       Hint Text Key      Vanilla Item        Categories Spoiler Collection Check             Collection Check Group                                      Vanilla Progression
+    locationTable[RC_LINKS_POCKET] =    Location::Reward(RC_LINKS_POCKET,    RCQUEST_BOTH, RCTYPE_LINKS_POCKET,   RCAREA_KOKIRI_FOREST,    ACTOR_ID_MAX,     SCENE_ID_MAX,               0x00, 0x00,                                       "Link's Pocket",   "Link's Pocket",   RHT_LINKS_POCKET,  RG_LIGHT_MEDALLION,  {}, SpoilerCollectionCheck::AlwaysCollected(), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST,           true);
+    locationTable[RC_QUEEN_GOHMA] =     Location::Reward( RC_QUEEN_GOHMA,    RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_DEKU_TREE,        ACTOR_DOOR_WARP1, SCENE_DEKU_TREE_BOSS,       0x00, DungeonId::DUNGEON_DEKU_TREE,               "Queen Gohma",     "Queen Gohma",     RHT_QUEEN_GOHMA,   RG_KOKIRI_EMERALD,   {}, SpoilerCollectionCheck::Chest(0x11, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE,       true);
+    locationTable[RC_KING_DODONGO] =    Location::Reward(RC_KING_DODONGO,    RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_DODONGOS_CAVERN,  ACTOR_DOOR_WARP1, SCENE_DODONGOS_CAVERN_BOSS, 0x00, DungeonId::DUNGEON_DODONGOS_CAVERN,         "King Dodongo",    "King Dodongo",    RHT_KING_DODONGO,  RG_GORON_RUBY,       {}, SpoilerCollectionCheck::Chest(0x12, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN, true);
+    locationTable[RC_BARINADE] =        Location::Reward(RC_BARINADE,        RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_JABU_JABUS_BELLY, ACTOR_DOOR_WARP1, SCENE_JABU_JABU_BOSS,       0x00, DungeonId::DUNGEON_JABUJABUS_BELLY,         "Barinade",        "Barinade",        RHT_BARINADE,      RG_ZORA_SAPPHIRE,    {}, SpoilerCollectionCheck::Chest(0x13, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY, true);
+    locationTable[RC_PHANTOM_GANON] =   Location::Reward(RC_PHANTOM_GANON,   RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_FOREST_TEMPLE,    ACTOR_DOOR_WARP1, SCENE_FOREST_TEMPLE_BOSS,   0x00, DungeonId::DUNGEON_FOREST_TEMPLE,           "Phantom Ganon",   "Phantom Ganon",   RHT_PHANTOM_GANON, RG_FOREST_MEDALLION, {}, SpoilerCollectionCheck::Chest(0x14, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE,   true);
+    locationTable[RC_VOLVAGIA] =        Location::Reward(RC_VOLVAGIA,        RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_FIRE_TEMPLE,      ACTOR_DOOR_WARP1, SCENE_FIRE_TEMPLE_BOSS,     0x00, DungeonId::DUNGEON_FIRE_TEMPLE,             "Volvagia",        "Volvagia",        RHT_VOLVAGIA,      RG_FIRE_MEDALLION,   {}, SpoilerCollectionCheck::Chest(0x15, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE,     true);
+    locationTable[RC_MORPHA] =          Location::Reward(RC_MORPHA,          RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_WATER_TEMPLE,     ACTOR_DOOR_WARP1, SCENE_WATER_TEMPLE_BOSS,    0x00, DungeonId::DUNGEON_WATER_TEMPLE,            "Morpha",          "Morpha",          RHT_MORPHA,        RG_WATER_MEDALLION,  {}, SpoilerCollectionCheck::Chest(0x16, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE,    true);
+    locationTable[RC_TWINROVA] =        Location::Reward(RC_TWINROVA,        RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_SPIRIT_TEMPLE,    ACTOR_DOOR_WARP1, SCENE_SPIRIT_TEMPLE_BOSS,   0x00, DungeonId::DUNGEON_SPIRIT_TEMPLE,           "Twinrova",        "Twinrova",        RHT_TWINROVA,      RG_SPIRIT_MEDALLION, {}, SpoilerCollectionCheck::Chest(0x17, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE,   true);
+    locationTable[RC_BONGO_BONGO] =     Location::Reward(RC_BONGO_BONGO,     RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_SHADOW_TEMPLE,    ACTOR_DOOR_WARP1, SCENE_SHADOW_TEMPLE_BOSS,   0x00, DungeonId::DUNGEON_SHADOW_TEMPLE,           "Bongo Bongo",     "Bongo Bongo",     RHT_BONGO_BONGO,   RG_SHADOW_MEDALLION, {}, SpoilerCollectionCheck::Chest(0x18, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE,   true);
+    locationTable[RC_GANON] =           Location::Reward(RC_GANON,           RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_GANONS_CASTLE,    ACTOR_DOOR_WARP1, SCENE_GANON_BOSS,           0x00, DungeonId::DUNGEON_GANONS_CASTLE_CRUMBLING, "Ganon",           "Ganon",           RHT_NONE,          RG_TRIFORCE,         {}, SpoilerCollectionCheck::None(),            SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GIFT_FROM_SAGES] = Location::Reward(RC_GIFT_FROM_SAGES, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_MARKET,           ACTOR_ID_MAX,     SCENE_ID_MAX,               0x00, 0x00,                                       "Gift from Raoru", "Gift from Raoru", RHT_NONE,          RG_LIGHT_MEDALLION,  {}, SpoilerCollectionCheck::None(),            SpoilerCollectionCheckGroup::GROUP_NO_GROUP,                true);
 
     // Heart Containers     Randomizer Check                              Randomizer Check                       Quest         Type                               Area                     Actor ID            Scene ID                    Params Flags Short Name                      Spoiler Name                                    Hint Text Key                           Vanilla Item        Categories                        Spoiler Collection Check                         Collection Check Group                                      Vanilla Progression
     locationTable[RC_DEKU_TREE_QUEEN_GOHMA_HEART] =        Location::Base(RC_DEKU_TREE_QUEEN_GOHMA_HEART,        RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_DEKU_TREE,        ACTOR_ITEM_B_HEART, SCENE_DEKU_TREE_BOSS,       0x00, 0x4F, "Queen Gohma Heart Container",   "Deku Tree Queen Gohma Heart Container",        RHT_DEKU_TREE_QUEEN_GOHMA_HEART,        RG_HEART_CONTAINER, { Category::cSongDungeonReward }, SpoilerCollectionCheck::Collectable(0x11, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE,       true);
