@@ -48,7 +48,7 @@ std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> RandomizerCheckObjec
     if (rcObjectsByArea.size() == 0) {
         for (auto& location : Rando::StaticData::GetLocationTable()) {
             // There are some RCs that don't have checks implemented yet, prevent adding these to the map.
-            if (location.GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
+            if (location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
                 rcObjectsByArea[location.GetArea()].push_back(location.GetRandomizerCheck());
             }
         }
