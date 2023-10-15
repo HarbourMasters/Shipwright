@@ -1112,6 +1112,7 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
                 loc->GetQuest() == RCQUEST_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(loc->GetScene())
                 ) &&
             (loc->GetRCType() != RCTYPE_SHOP || (showShops && (!hideShopRightChecks || hideShopRightChecks && loc->GetActorParams() > 0x03))) &&
+            (loc->GetRandomizerCheck() != RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS) &&
             (loc->GetRCType() != RCTYPE_SCRUB ||
                 showScrubs ||
                 rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
