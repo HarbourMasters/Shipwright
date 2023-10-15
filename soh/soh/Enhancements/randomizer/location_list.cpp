@@ -3261,7 +3261,8 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE] = Location::GSToken(
         RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LOST_WOODS, ACTOR_EN_SI,
         SCENE_LOST_WOODS, 27905, 0x01, "GS Bean Patch Near Bridge", "LW GS Bean Patch Near Bridge",
-        RHT_LW_GS_BEAN_PATCH_NEAR_BRIDGE, { Category::cSkulltula }, 0x0D SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+        RHT_LW_GS_BEAN_PATCH_NEAR_BRIDGE, { Category::cSkulltula }, 0x0D,
+        SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
     locationTable[RC_LW_GS_BEAN_PATCH_NEAR_THEATER] = Location::GSToken(
         RC_LW_GS_BEAN_PATCH_NEAR_THEATER, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LOST_WOODS, ACTOR_EN_SI,
         SCENE_LOST_WOODS, 27906, 0x02, "GS Bean Patch Near Theater", "LW GS Bean Patch Near Theater",
