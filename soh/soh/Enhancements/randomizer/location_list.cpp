@@ -3594,45 +3594,15 @@ void Rando::StaticData::InitLocationTable() {
         { Category::cSongDungeonReward }, SpoilerCollectionCheck::Collectable(0x18, 0x1F),
         SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE, true);
 
-    // Cutscenes
-    locationTable[RC_TOT_LIGHT_ARROWS_CUTSCENE] = Location::Delayed(
-        RC_TOT_LIGHT_ARROWS_CUTSCENE, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00,
-        0x01, "ToT Light Arrow Cutscene", "ToT Light Arrow Cutscene", RHT_TOT_LIGHT_ARROWS_CUTSCENE, RG_LIGHT_ARROWS,
-        {}, SpoilerCollectionCheck::Chest(0x43, 0x1E), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE, true);
-    locationTable[RC_LW_GIFT_FROM_SARIA] = Location::Delayed(
-        RC_LW_GIFT_FROM_SARIA, RCQUEST_BOTH, RCTYPE_OCARINA, RCAREA_LOST_WOODS, ACTOR_ID_MAX, SCENE_LOST_WOODS, 0x00,
-        0x02, "Gift From Saria", "LW Gift From Saria", RHT_LW_GIFT_FROM_SARIA, RG_PROGRESSIVE_OCARINA, {},
-        SpoilerCollectionCheck::EventChkInf(0xC1), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS, true);
-    locationTable[RC_ZF_GREAT_FAIRY_REWARD] = Location::Delayed(
-        RC_ZF_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_FOUNTAIN, ACTOR_BG_DY_YOSEIZO,
-        SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 1, 0x10, "Great Fairy Reward", "ZF Great Fairy Reward",
-        RHT_ZF_GREAT_FAIRY_REWARD, RG_FARORES_WIND, {}, SpoilerCollectionCheck::Chest(0x3D, 0x01),
-        SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN, true);
-    locationTable[RC_HC_GREAT_FAIRY_REWARD] = Location::Delayed(
-        RC_HC_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_CASTLE, ACTOR_BG_DY_YOSEIZO,
-        SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 2, 0x11, "Great Fairy Reward", "HC Great Fairy Reward",
-        RHT_HC_GREAT_FAIRY_REWARD, RG_DINS_FIRE, {}, SpoilerCollectionCheck::Chest(0x3D, 0x02),
-        SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE, true);
-    locationTable[RC_COLOSSUS_GREAT_FAIRY_REWARD] = Location::Delayed(
-        RC_COLOSSUS_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DESERT_COLOSSUS, ACTOR_BG_DY_YOSEIZO,
-        SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 3, 0x12, "Great Fairy Reward", "Colossus Great Fairy Reward",
-        RHT_COLOSSUS_GREAT_FAIRY_REWARD, RG_NAYRUS_LOVE, {}, SpoilerCollectionCheck::Chest(0x3D, 0x03),
-        SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY, true);
-    locationTable[RC_DMT_GREAT_FAIRY_REWARD] = Location::Delayed(
-        RC_DMT_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_BG_DY_YOSEIZO,
-        SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, 1, 0x13, "Great Fairy Reward", "DMT Great Fairy Reward",
-        RHT_DMT_GREAT_FAIRY_REWARD, RG_PROGRESSIVE_MAGIC_METER, {}, SpoilerCollectionCheck::Chest(0x3B, 0x01),
-        SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN, true);
-    locationTable[RC_DMC_GREAT_FAIRY_REWARD] = Location::Delayed(
-        RC_DMC_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_BG_DY_YOSEIZO,
-        SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, 2, 0x14, "Great Fairy Reward", "DMC Great Fairy Reward",
-        RHT_DMC_GREAT_FAIRY_REWARD, RG_PROGRESSIVE_MAGIC_METER, {}, SpoilerCollectionCheck::Chest(0x3B, 0x02),
-        SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN, true);
-    locationTable[RC_OGC_GREAT_FAIRY_REWARD] = Location::Delayed(
-        RC_OGC_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_CASTLE, ACTOR_BG_DY_YOSEIZO,
-        SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, 3, 0x15, "OGC Great Fairy Reward", "OGC Great Fairy Reward",
-        RHT_OGC_GREAT_FAIRY_REWARD, RG_DOUBLE_DEFENSE, {}, SpoilerCollectionCheck::Chest(0x3B, 0x03),
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE, true);
+    // Cutscenes  Randomizer Check                                    Randomizer Check                Quest         Type             Area                          Actor ID             Scene ID                            Params Flags Short Name                 Spoiler Name                   Hint Text Key                    Vanilla Item                Categories Spoiler Collection Check            Collection Check Group
+    locationTable[RC_TOT_LIGHT_ARROWS_CUTSCENE] =   Location::Delayed(RC_TOT_LIGHT_ARROWS_CUTSCENE,   RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET,                ACTOR_ID_MAX,        SCENE_ID_MAX,                       0x00, 0x01, "ToT Light Arrow Cutscene", "ToT Light Arrow Cutscene",    RHT_TOT_LIGHT_ARROWS_CUTSCENE,   RG_LIGHT_ARROWS,            {}, SpoilerCollectionCheck::Chest(0x43, 0x1E), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE,         true);
+    locationTable[RC_LW_GIFT_FROM_SARIA] =          Location::Delayed(RC_LW_GIFT_FROM_SARIA,          RCQUEST_BOTH, RCTYPE_OCARINA,  RCAREA_LOST_WOODS,            ACTOR_ID_MAX,        SCENE_LOST_WOODS,                   0x00, 0x02, "Gift From Saria",          "LW Gift From Saria",          RHT_LW_GIFT_FROM_SARIA,          RG_PROGRESSIVE_OCARINA,     {}, SpoilerCollectionCheck::EventChkInf(0xC1), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS,            true);
+    locationTable[RC_ZF_GREAT_FAIRY_REWARD] =       Location::Delayed(RC_ZF_GREAT_FAIRY_REWARD,       RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_FOUNTAIN,        ACTOR_BG_DY_YOSEIZO, SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 1,    0x10, "Great Fairy Reward",       "ZF Great Fairy Reward",       RHT_ZF_GREAT_FAIRY_REWARD,       RG_FARORES_WIND,            {}, SpoilerCollectionCheck::Chest(0x3D, 0x01), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN,          true);
+    locationTable[RC_HC_GREAT_FAIRY_REWARD] =       Location::Delayed(RC_HC_GREAT_FAIRY_REWARD,       RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_CASTLE,         ACTOR_BG_DY_YOSEIZO, SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 2,    0x11, "Great Fairy Reward",       "HC Great Fairy Reward",       RHT_HC_GREAT_FAIRY_REWARD,       RG_DINS_FIRE,               {}, SpoilerCollectionCheck::Chest(0x3D, 0x02), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE,         true);
+    locationTable[RC_COLOSSUS_GREAT_FAIRY_REWARD] = Location::Delayed(RC_COLOSSUS_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DESERT_COLOSSUS,       ACTOR_BG_DY_YOSEIZO, SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 3,    0x12, "Great Fairy Reward",       "Colossus Great Fairy Reward", RHT_COLOSSUS_GREAT_FAIRY_REWARD, RG_NAYRUS_LOVE,             {}, SpoilerCollectionCheck::Chest(0x3D, 0x03), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY,         true);
+    locationTable[RC_DMT_GREAT_FAIRY_REWARD] =      Location::Delayed(RC_DMT_GREAT_FAIRY_REWARD,      RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_TRAIL,  ACTOR_BG_DY_YOSEIZO, SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC,  1,    0x13, "Great Fairy Reward",       "DMT Great Fairy Reward",      RHT_DMT_GREAT_FAIRY_REWARD,      RG_PROGRESSIVE_MAGIC_METER, {}, SpoilerCollectionCheck::Chest(0x3B, 0x01), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN,        true);
+    locationTable[RC_DMC_GREAT_FAIRY_REWARD] =      Location::Delayed(RC_DMC_GREAT_FAIRY_REWARD,      RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_BG_DY_YOSEIZO, SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC,  2,    0x14, "Great Fairy Reward",       "DMC Great Fairy Reward",      RHT_DMC_GREAT_FAIRY_REWARD,      RG_PROGRESSIVE_MAGIC_METER, {}, SpoilerCollectionCheck::Chest(0x3B, 0x02), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN,        true);
+    locationTable[RC_OGC_GREAT_FAIRY_REWARD] =      Location::Delayed(RC_OGC_GREAT_FAIRY_REWARD,      RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_CASTLE,         ACTOR_BG_DY_YOSEIZO, SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC,  3,    0x15, "OGC Great Fairy Reward",   "OGC Great Fairy Reward",      RHT_OGC_GREAT_FAIRY_REWARD,      RG_DOUBLE_DEFENSE,          {}, SpoilerCollectionCheck::Chest(0x3B, 0x03), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE, true);
 
     // Songs      Randomizer Check                                     Randomizer Check                 Quest         Type                  Area                          Actor ID      Scene ID                    Params Flags Short Name                  Spoiler Name                 Hint Text Key                     Vanilla Item           Categories                                         Spoiler Collection Check                   Collection Check Group
     locationTable[RC_SHEIK_IN_FOREST] =              Location::Delayed(RC_SHEIK_IN_FOREST,              RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_SACRED_FOREST_MEADOW,  ACTOR_ID_MAX, SCENE_SACRED_FOREST_MEADOW, 0x00, 0x20, "Sheik in Forest",           "Sheik in Forest",           RHT_SHEIK_IN_FOREST,              RG_MINUET_OF_FOREST,   { Category::cSong },                               SpoilerCollectionCheck::EventChkInf(0x50), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS, true);
