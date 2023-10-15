@@ -2534,9 +2534,8 @@ void EnOssan_DrawKokiriShopkeeper(Actor* thisx, PlayState* play) {
 s32 EnGo2_OverrideLimbDrawGoronShopkeeper (PlayState* play, s32 limb, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnOssan* this = (EnOssan*)thisx;
 
-        if (limb == 17) {
-        Matrix_Translate(2800.0f + CVarGetFloat("gCosmetics.Goron_NeckLength", 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_Translate(-2800.0f + CVarGetFloat("gCosmetics.Goron_NeckLength", 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
+    if (limb == 17) {
+        Matrix_Translate(CVarGetFloat("gCosmetics.Goron_NeckLength", 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
     }
     return 0;
 }
