@@ -3123,7 +3123,6 @@ int RandomDistribution(std::initializer_list<u8> balanceDistribution) {
 }
 
 int RandomizeItemCount(int max, int setNumberCount, std::initializer_list<u8> balanceDistribution) {
-    //NOTE This function assumes that srand() has been called beforehand.
     auto balanceOption = CVarGetInteger("gRandomDungeonSettingsBalancing", RO_COUNT_BALANCE_BALANCED);
     switch (balanceOption) { 
     case RO_COUNT_BALANCE_BALANCED:
