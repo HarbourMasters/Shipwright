@@ -1,4 +1,7 @@
 #pragma once
+#include <nlohmann/json.hpp>
+#include "randomizerTypes.h"
+#include "randomizer_check_objects.h"
 
 #include <libultraship/libultraship.h>
 
@@ -26,17 +29,6 @@ class CheckTrackerWindow : public LUS::GuiWindow {
     void UpdateElement() override {};
 };
 
-// Check tracker check visibility categories
-typedef enum {
-    RCSHOW_UNCHECKED,
-    RCSHOW_SKIPPED,
-    RCSHOW_SEEN,
-    RCSHOW_HINTED,
-    RCSHOW_CHECKED,
-    RCSHOW_SCUMMED,
-    RCSHOW_SAVED,
-} RandomizerCheckShow;
-
 //Converts an index into a Little Endian bitmask, as follows:
 //00: 0000000100000000
 //01: 0000001000000000
@@ -51,6 +43,18 @@ typedef enum {
 //repeat...
 #define INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(idx) (0x8000 >> (7 - (idx % 8) + ((idx % 16) / 8) * 8))
 
-
-
+void DefaultCheckData(RandomizerCheck rc);
+void Teardown();
+void UpdateAllOrdering();
+bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj);
+void InitTrackerData(bool isDebug);
+void SetLastItemGetRC(RandomizerCheck rc);
+RandomizerCheckArea GetCheckArea();
+void CheckTrackerDialogClosed();
+void ToggleShopRightChecks();
+void UpdateCheck(uint32_t, RandomizerCheckTrackerData);
 } // namespace CheckTracker
+
+
+void to_json(nlohmann::json & j, const RandomizerCheckTrackerData& rctd);
+void from_json(const nlohmann::json& j, RandomizerCheckTrackerData& rctd);
