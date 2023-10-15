@@ -17,7 +17,7 @@ void Rando::StaticData::InitItemTable() {
              0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_GIANTS_KNIFE] =
         Item(RG_GIANTS_KNIFE, Text{ "Giant's Knife", "Lame des Géants", "Messer des Riesen" }, ITEMTYPE_ITEM,
-             GI_SWORD_KNIFE, true, &Logic::KokiriSword, RHT_GIANTS_KNIFE, ITEM_SWORD_KNIFE, OBJECT_GI_LONGSWORD,
+             GI_SWORD_KNIFE, true, &Logic::KokiriSword, RHT_GIANTS_KNIFE, ITEM_SWORD_BGS, OBJECT_GI_LONGSWORD,
              GID_SWORD_BGS, 0x4B, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
     itemTable[RG_BIGGORON_SWORD] =
         Item(RG_BIGGORON_SWORD, Text{ "Biggoron's Sword", "Épée de Biggoron", "Biggoron-Schwert" }, ITEMTYPE_ITEM,
@@ -918,12 +918,12 @@ void Rando::StaticData::InitItemTable() {
     itemTable[RG_BIG_BULLET_BAG] = Item(
         RG_BIG_BULLET_BAG,
         Text{ "Big Deku Seed Bullet Bag", "Grand sac de graines mojo", "Großer Deku-Samenkugelsack" }, ITEMTYPE_ITEM,
-        GI_BULLET_BAG_30, true, &Logic::ProgressiveBulletBag, RHT_BIG_BULLET_BAG, ITEM_BULLET_BAG_30,
+        GI_BULLET_BAG_40, true, &Logic::ProgressiveBulletBag, RHT_BIG_BULLET_BAG, ITEM_BULLET_BAG_40,
         OBJECT_GI_DEKUPOUCH, GID_BULLET_BAG, 0x07, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_NONE);
     itemTable[RG_BIGGEST_BULLET_BAG] = Item(
         RG_BIGGEST_BULLET_BAG,
         Text{ "Biggest Deku Seed Bullet Bag", "Énorme sac de graines mojo", "Größte Deku-Samenkugelsack" },
-        ITEMTYPE_ITEM, GI_BULLET_BAG_40, true, &Logic::ProgressiveBulletBag, RHT_BIGGEST_BULLET_BAG, ITEM_BULLET_BAG_40,
+        ITEMTYPE_ITEM, GI_BULLET_BAG_50, true, &Logic::ProgressiveBulletBag, RHT_BIGGEST_BULLET_BAG, ITEM_BULLET_BAG_50,
         OBJECT_GI_DEKUPOUCH, GID_BULLET_BAG, 0x07, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_NONE);
     itemTable[RG_GORONS_BRACELET] =
         Item(RG_GORONS_BRACELET, Text{ "Goron's Bracelet", "Bracelet Goron", "Goronen-Armband" }, ITEMTYPE_ITEM,
