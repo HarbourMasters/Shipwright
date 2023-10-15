@@ -229,11 +229,11 @@ Rando::Location Rando::Location::OtherHint(RandomizerCheck rc, RandomizerCheckQu
                     std::move(shortName_), std::move(spoilerName_), RHT_NONE, RG_NONE, std::move(categories), isVanillaCompletion_);
 }
 
-Rando::Location Rando::Location::HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_,
-                                           RandomizerCheckType checkType_, RandomizerCheckArea area_, ActorID actorId_,
+Rando::Location Rando::Location::HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
                                            uint8_t scene_, int32_t actorParams_, uint8_t flag_,
                                            std::string&& shortName_, std::string&& spoilerName_,
                                            std::vector<Category>&& categories, bool isVanillaCompletion_) {
-    return Location(rc, quest_, checkType_, area_, LocationType::Base, actorId_, scene_, actorParams_, flag_,
-                    std::move(shortName_), std::move(spoilerName_), RHT_NONE, RG_NONE, std::move(categories), isVanillaCompletion_);
+    return Location(rc, quest_, RCTYPE_GOSSIP_STONE, area_, LocationType::Base, ACTOR_EN_GS, scene_, actorParams_, flag_,
+                    std::move(shortName_), std::move(spoilerName_), RHT_NONE, RG_NONE, std::move(categories),
+                    isVanillaCompletion_);
 }

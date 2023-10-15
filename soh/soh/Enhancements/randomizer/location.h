@@ -251,9 +251,8 @@ class Location {
                               uint8_t flag_, std::string&& shortName_, std::string&& spoilerName_,
                               std::vector<Category>&& categories, bool isVanillaCompletion_ = false);
 
-    static Location HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
-                              RandomizerCheckArea area_, ActorID actorId_, uint8_t scene, int32_t actorParams_,
-                              uint8_t flag_, std::string&& shortName_, std::string&& spoilerName_,
+    static Location HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, uint8_t scene,
+                              int32_t actorParams_, uint8_t flag_, std::string&& shortName_, std::string&& spoilerName_,
                               std::vector<Category>&& categories, bool isVanillaCompletion_ = false);
 
   private:
