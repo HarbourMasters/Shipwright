@@ -3744,297 +3744,80 @@ void Rando::StaticData::InitLocationTable() {
 
       7     5               1     3
       -------------------------------*/
-
+    //            Randomizer Check                                 Randomizer Check               Quest         Type         Area                       Actor ID        Scene ID                    Params Flags Short Name            Spoiler Name              Hint Text Key                   Vanilla Item           Categories           Spoiler Collection Check                   Spoiler Collection Check Group
     // Kokiri Forest
-    locationTable[RC_KF_SHOP_ITEM_1] = Location::Base(
-        RC_KF_SHOP_ITEM_1, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST, ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP, 0x00,
-        0x00, "Shop Item 1", "KF Shop Item 1", RHT_KF_SHOP_ITEM_1, RG_BUY_DEKU_SHIELD, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2D, 0), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
-    locationTable[RC_KF_SHOP_ITEM_2] = Location::Base(
-        RC_KF_SHOP_ITEM_2, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST, ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP, 0x01,
-        0x01, "Shop Item 2", "KF Shop Item 2", RHT_KF_SHOP_ITEM_2, RG_BUY_DEKU_NUT_5, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2D, 1), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
-    locationTable[RC_KF_SHOP_ITEM_3] = Location::Base(
-        RC_KF_SHOP_ITEM_3, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST, ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP, 0x02,
-        0x02, "Shop Item 3", "KF Shop Item 3", RHT_KF_SHOP_ITEM_3, RG_BUY_DEKU_NUT_10, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2D, 2), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
-    locationTable[RC_KF_SHOP_ITEM_4] = Location::Base(
-        RC_KF_SHOP_ITEM_4, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST, ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP, 0x03,
-        0x03, "Shop Item 4", "KF Shop Item 4", RHT_KF_SHOP_ITEM_4, RG_BUY_DEKU_STICK_1, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2D, 3), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
-    locationTable[RC_KF_SHOP_ITEM_5] = Location::Base(
-        RC_KF_SHOP_ITEM_5, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST, ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP, 0x04,
-        0x04, "Shop Item 5", "KF Shop Item 5", RHT_KF_SHOP_ITEM_5, RG_BUY_DEKU_SEEDS_30, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2D, 4), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
-    locationTable[RC_KF_SHOP_ITEM_6] = Location::Base(
-        RC_KF_SHOP_ITEM_6, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST, ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP, 0x05,
-        0x05, "Shop Item 6", "KF Shop Item 6", RHT_KF_SHOP_ITEM_6, RG_BUY_ARROWS_10, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2D, 5), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
-    locationTable[RC_KF_SHOP_ITEM_7] = Location::Base(
-        RC_KF_SHOP_ITEM_7, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST, ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP, 0x06,
-        0x06, "Shop Item 7", "KF Shop Item 7", RHT_KF_SHOP_ITEM_7, RG_BUY_ARROWS_30, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2D, 6), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
-    locationTable[RC_KF_SHOP_ITEM_8] = Location::Base(
-        RC_KF_SHOP_ITEM_8, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST, ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP, 0x07,
-        0x07, "Shop Item 8", "KF Shop Item 8", RHT_KF_SHOP_ITEM_8, RG_BUY_HEART, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2D, 7), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+    locationTable[RC_KF_SHOP_ITEM_1] =              Location::Base(RC_KF_SHOP_ITEM_1,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST,      ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP,          0x00, 0x00, "Shop Item 1",         "KF Shop Item 1",         RHT_KF_SHOP_ITEM_1,             RG_BUY_DEKU_SHIELD,    { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2D, 0), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+    locationTable[RC_KF_SHOP_ITEM_2] =              Location::Base(RC_KF_SHOP_ITEM_2,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST,      ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP,          0x01, 0x01, "Shop Item 2",         "KF Shop Item 2",         RHT_KF_SHOP_ITEM_2,             RG_BUY_DEKU_NUT_5,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2D, 1), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+    locationTable[RC_KF_SHOP_ITEM_3] =              Location::Base(RC_KF_SHOP_ITEM_3,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST,      ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP,          0x02, 0x02, "Shop Item 3",         "KF Shop Item 3",         RHT_KF_SHOP_ITEM_3,             RG_BUY_DEKU_NUT_10,    { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2D, 2), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+    locationTable[RC_KF_SHOP_ITEM_4] =              Location::Base(RC_KF_SHOP_ITEM_4,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST,      ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP,          0x03, 0x03, "Shop Item 4",         "KF Shop Item 4",         RHT_KF_SHOP_ITEM_4,             RG_BUY_DEKU_STICK_1,   { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2D, 3), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+    locationTable[RC_KF_SHOP_ITEM_5] =              Location::Base(RC_KF_SHOP_ITEM_5,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST,      ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP,          0x04, 0x04, "Shop Item 5",         "KF Shop Item 5",         RHT_KF_SHOP_ITEM_5,             RG_BUY_DEKU_SEEDS_30,  { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2D, 4), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+    locationTable[RC_KF_SHOP_ITEM_6] =              Location::Base(RC_KF_SHOP_ITEM_6,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST,      ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP,          0x05, 0x05, "Shop Item 6",         "KF Shop Item 6",         RHT_KF_SHOP_ITEM_6,             RG_BUY_ARROWS_10,      { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2D, 5), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+    locationTable[RC_KF_SHOP_ITEM_7] =              Location::Base(RC_KF_SHOP_ITEM_7,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST,      ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP,          0x06, 0x06, "Shop Item 7",         "KF Shop Item 7",         RHT_KF_SHOP_ITEM_7,             RG_BUY_ARROWS_30,      { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2D, 6), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+    locationTable[RC_KF_SHOP_ITEM_8] =              Location::Base(RC_KF_SHOP_ITEM_8,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KOKIRI_FOREST,      ACTOR_EN_GIRLA, SCENE_KOKIRI_SHOP,          0x07, 0x07, "Shop Item 8",         "KF Shop Item 8",         RHT_KF_SHOP_ITEM_8,             RG_BUY_HEART,          { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2D, 7), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
 
     // Kakariko Village
-    locationTable[RC_KAK_POTION_SHOP_ITEM_1] =
-        Location::Base(RC_KAK_POTION_SHOP_ITEM_1, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GIRLA,
-                       SCENE_POTION_SHOP_KAKARIKO, 0x00, 0x30, "Potion Shop Item 1", "Kak Potion Shop Item 1",
-                       RHT_KAK_POTION_SHOP_ITEM_1, RG_BUY_GREEN_POTION, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x30, 0), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_POTION_SHOP_ITEM_2] =
-        Location::Base(RC_KAK_POTION_SHOP_ITEM_2, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GIRLA,
-                       SCENE_POTION_SHOP_KAKARIKO, 0x01, 0x31, "Potion Shop Item 2", "Kak Potion Shop Item 2",
-                       RHT_KAK_POTION_SHOP_ITEM_2, RG_BUY_BLUE_FIRE, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x30, 1), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_POTION_SHOP_ITEM_3] =
-        Location::Base(RC_KAK_POTION_SHOP_ITEM_3, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GIRLA,
-                       SCENE_POTION_SHOP_KAKARIKO, 0x02, 0x32, "Potion Shop Item 3", "Kak Potion Shop Item 3",
-                       RHT_KAK_POTION_SHOP_ITEM_3, RG_BUY_RED_POTION_30, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x30, 2), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_POTION_SHOP_ITEM_4] =
-        Location::Base(RC_KAK_POTION_SHOP_ITEM_4, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GIRLA,
-                       SCENE_POTION_SHOP_KAKARIKO, 0x03, 0x33, "Potion Shop Item 4", "Kak Potion Shop Item 4",
-                       RHT_KAK_POTION_SHOP_ITEM_4, RG_BUY_FAIRYS_SPIRIT, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x30, 3), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_POTION_SHOP_ITEM_5] =
-        Location::Base(RC_KAK_POTION_SHOP_ITEM_5, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GIRLA,
-                       SCENE_POTION_SHOP_KAKARIKO, 0x04, 0x34, "Potion Shop Item 5", "Kak Potion Shop Item 5",
-                       RHT_KAK_POTION_SHOP_ITEM_5, RG_BUY_DEKU_NUT_5, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x30, 4), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_POTION_SHOP_ITEM_6] =
-        Location::Base(RC_KAK_POTION_SHOP_ITEM_6, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GIRLA,
-                       SCENE_POTION_SHOP_KAKARIKO, 0x05, 0x35, "Potion Shop Item 6", "Kak Potion Shop Item 6",
-                       RHT_KAK_POTION_SHOP_ITEM_6, RG_BUY_BOTTLE_BUG, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x30, 5), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_POTION_SHOP_ITEM_7] =
-        Location::Base(RC_KAK_POTION_SHOP_ITEM_7, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GIRLA,
-                       SCENE_POTION_SHOP_KAKARIKO, 0x06, 0x36, "Potion Shop Item 7", "Kak Potion Shop Item 7",
-                       RHT_KAK_POTION_SHOP_ITEM_7, RG_BUY_POE, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x30, 6), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_POTION_SHOP_ITEM_8] =
-        Location::Base(RC_KAK_POTION_SHOP_ITEM_8, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GIRLA,
-                       SCENE_POTION_SHOP_KAKARIKO, 0x07, 0x37, "Potion Shop Item 8", "Kak Potion Shop Item 8",
-                       RHT_KAK_POTION_SHOP_ITEM_8, RG_BUY_FISH, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x30, 7), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_BAZAAR_ITEM_1] = Location::Base(
-        RC_KAK_BAZAAR_ITEM_1, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GIRLA, SCENE_TEST01, 0x00,
-        0x38, "Bazaar Item 1", "Kak Bazaar Item 1", RHT_KAK_BAZAAR_ITEM_1, RG_BUY_HYLIAN_SHIELD, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x33, 0), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_BAZAAR_ITEM_2] = Location::Base(
-        RC_KAK_BAZAAR_ITEM_2, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GIRLA, SCENE_TEST01, 0x01,
-        0x39, "Bazaar Item 2", "Kak Bazaar Item 2", RHT_KAK_BAZAAR_ITEM_2, RG_BUY_BOMBS_535, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x33, 1), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_BAZAAR_ITEM_3] = Location::Base(
-        RC_KAK_BAZAAR_ITEM_3, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GIRLA, SCENE_TEST01, 0x02,
-        0x3A, "Bazaar Item 3", "Kak Bazaar Item 3", RHT_KAK_BAZAAR_ITEM_3, RG_BUY_DEKU_NUT_5, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x33, 2), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_BAZAAR_ITEM_4] = Location::Base(
-        RC_KAK_BAZAAR_ITEM_4, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GIRLA, SCENE_TEST01, 0x03,
-        0x3B, "Bazaar Item 4", "Kak Bazaar Item 4", RHT_KAK_BAZAAR_ITEM_4, RG_BUY_HEART, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x33, 3), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_BAZAAR_ITEM_5] = Location::Base(
-        RC_KAK_BAZAAR_ITEM_5, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GIRLA, SCENE_TEST01, 0x04,
-        0x3C, "Bazaar Item 5", "Kak Bazaar Item 5", RHT_KAK_BAZAAR_ITEM_5, RG_BUY_ARROWS_10, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x33, 4), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_BAZAAR_ITEM_6] = Location::Base(
-        RC_KAK_BAZAAR_ITEM_6, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GIRLA, SCENE_TEST01, 0x05,
-        0x3D, "Bazaar Item 6", "Kak Bazaar Item 6", RHT_KAK_BAZAAR_ITEM_6, RG_BUY_ARROWS_50, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x33, 5), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_BAZAAR_ITEM_7] = Location::Base(
-        RC_KAK_BAZAAR_ITEM_7, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GIRLA, SCENE_TEST01, 0x06,
-        0x3E, "Bazaar Item 7", "Kak Bazaar Item 7", RHT_KAK_BAZAAR_ITEM_7, RG_BUY_DEKU_STICK_1, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x33, 6), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_BAZAAR_ITEM_8] = Location::Base(
-        RC_KAK_BAZAAR_ITEM_8, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GIRLA, SCENE_TEST01, 0x07,
-        0x3F, "Bazaar Item 8", "Kak Bazaar Item 8", RHT_KAK_BAZAAR_ITEM_8, RG_BUY_ARROWS_30, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x33, 7), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_POTION_SHOP_ITEM_1] =      Location::Base(RC_KAK_POTION_SHOP_ITEM_1,     RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE,   ACTOR_EN_GIRLA, SCENE_POTION_SHOP_KAKARIKO, 0x00, 0x30, "Potion Shop Item 1",  "Kak Potion Shop Item 1", RHT_KAK_POTION_SHOP_ITEM_1,     RG_BUY_GREEN_POTION,   { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x30, 0), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_POTION_SHOP_ITEM_2] =      Location::Base(RC_KAK_POTION_SHOP_ITEM_2,     RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE,   ACTOR_EN_GIRLA, SCENE_POTION_SHOP_KAKARIKO, 0x01, 0x31, "Potion Shop Item 2",  "Kak Potion Shop Item 2", RHT_KAK_POTION_SHOP_ITEM_2,     RG_BUY_BLUE_FIRE,      { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x30, 1), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_POTION_SHOP_ITEM_3] =      Location::Base(RC_KAK_POTION_SHOP_ITEM_3,     RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE,   ACTOR_EN_GIRLA, SCENE_POTION_SHOP_KAKARIKO, 0x02, 0x32, "Potion Shop Item 3",  "Kak Potion Shop Item 3", RHT_KAK_POTION_SHOP_ITEM_3,     RG_BUY_RED_POTION_30,  { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x30, 2), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_POTION_SHOP_ITEM_4] =      Location::Base(RC_KAK_POTION_SHOP_ITEM_4,     RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE,   ACTOR_EN_GIRLA, SCENE_POTION_SHOP_KAKARIKO, 0x03, 0x33, "Potion Shop Item 4",  "Kak Potion Shop Item 4", RHT_KAK_POTION_SHOP_ITEM_4,     RG_BUY_FAIRYS_SPIRIT,  { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x30, 3), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_POTION_SHOP_ITEM_5] =      Location::Base(RC_KAK_POTION_SHOP_ITEM_5,     RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE,   ACTOR_EN_GIRLA, SCENE_POTION_SHOP_KAKARIKO, 0x04, 0x34, "Potion Shop Item 5",  "Kak Potion Shop Item 5", RHT_KAK_POTION_SHOP_ITEM_5,     RG_BUY_DEKU_NUT_5,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x30, 4), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_POTION_SHOP_ITEM_6] =      Location::Base(RC_KAK_POTION_SHOP_ITEM_6,     RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE,   ACTOR_EN_GIRLA, SCENE_POTION_SHOP_KAKARIKO, 0x05, 0x35, "Potion Shop Item 6",  "Kak Potion Shop Item 6", RHT_KAK_POTION_SHOP_ITEM_6,     RG_BUY_BOTTLE_BUG,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x30, 5), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_POTION_SHOP_ITEM_7] =      Location::Base(RC_KAK_POTION_SHOP_ITEM_7,     RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE,   ACTOR_EN_GIRLA, SCENE_POTION_SHOP_KAKARIKO, 0x06, 0x36, "Potion Shop Item 7",  "Kak Potion Shop Item 7", RHT_KAK_POTION_SHOP_ITEM_7,     RG_BUY_POE,            { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x30, 6), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_POTION_SHOP_ITEM_8] =      Location::Base(RC_KAK_POTION_SHOP_ITEM_8,     RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE,   ACTOR_EN_GIRLA, SCENE_POTION_SHOP_KAKARIKO, 0x07, 0x37, "Potion Shop Item 8",  "Kak Potion Shop Item 8", RHT_KAK_POTION_SHOP_ITEM_8,     RG_BUY_FISH,           { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x30, 7), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_BAZAAR_ITEM_1] =           Location::Base(RC_KAK_BAZAAR_ITEM_1,          RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE,   ACTOR_EN_GIRLA, SCENE_TEST01,               0x00, 0x38, "Bazaar Item 1",       "Kak Bazaar Item 1",      RHT_KAK_BAZAAR_ITEM_1,          RG_BUY_HYLIAN_SHIELD,  { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x33, 0), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_BAZAAR_ITEM_2] =           Location::Base(RC_KAK_BAZAAR_ITEM_2,          RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE,   ACTOR_EN_GIRLA, SCENE_TEST01,               0x01, 0x39, "Bazaar Item 2",       "Kak Bazaar Item 2",      RHT_KAK_BAZAAR_ITEM_2,          RG_BUY_BOMBS_535,      { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x33, 1), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_BAZAAR_ITEM_3] =           Location::Base(RC_KAK_BAZAAR_ITEM_3,          RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE,   ACTOR_EN_GIRLA, SCENE_TEST01,               0x02, 0x3A, "Bazaar Item 3",       "Kak Bazaar Item 3",      RHT_KAK_BAZAAR_ITEM_3,          RG_BUY_DEKU_NUT_5,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x33, 2), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_BAZAAR_ITEM_4] =           Location::Base(RC_KAK_BAZAAR_ITEM_4,          RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE,   ACTOR_EN_GIRLA, SCENE_TEST01,               0x03, 0x3B, "Bazaar Item 4",       "Kak Bazaar Item 4",      RHT_KAK_BAZAAR_ITEM_4,          RG_BUY_HEART,          { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x33, 3), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_BAZAAR_ITEM_5] =           Location::Base(RC_KAK_BAZAAR_ITEM_5,          RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE,   ACTOR_EN_GIRLA, SCENE_TEST01,               0x04, 0x3C, "Bazaar Item 5",       "Kak Bazaar Item 5",      RHT_KAK_BAZAAR_ITEM_5,          RG_BUY_ARROWS_10,      { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x33, 4), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_BAZAAR_ITEM_6] =           Location::Base(RC_KAK_BAZAAR_ITEM_6,          RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE,   ACTOR_EN_GIRLA, SCENE_TEST01,               0x05, 0x3D, "Bazaar Item 6",       "Kak Bazaar Item 6",      RHT_KAK_BAZAAR_ITEM_6,          RG_BUY_ARROWS_50,      { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x33, 5), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_BAZAAR_ITEM_7] =           Location::Base(RC_KAK_BAZAAR_ITEM_7,          RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE,   ACTOR_EN_GIRLA, SCENE_TEST01,               0x06, 0x3E, "Bazaar Item 7",       "Kak Bazaar Item 7",      RHT_KAK_BAZAAR_ITEM_7,          RG_BUY_DEKU_STICK_1,   { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x33, 6), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_BAZAAR_ITEM_8] =           Location::Base(RC_KAK_BAZAAR_ITEM_8,          RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_KAKARIKO_VILLAGE,   ACTOR_EN_GIRLA, SCENE_TEST01,               0x07, 0x3F, "Bazaar Item 8",       "Kak Bazaar Item 8",      RHT_KAK_BAZAAR_ITEM_8,          RG_BUY_ARROWS_30,      { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x33, 7), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
 
     // Market
-    locationTable[RC_MARKET_BOMBCHU_SHOP_ITEM_1] =
-        Location::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_1, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA,
-                       SCENE_BOMBCHU_SHOP, 0x00, 0x30, "Bombchu Shop Item 1", "MK Bombchu Shop Item 1",
-                       RHT_MARKET_BOMBCHU_SHOP_ITEM_1, RG_BUY_BOMBCHU_10, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x32, 0), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_BOMBCHU_SHOP_ITEM_2] =
-        Location::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_2, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA,
-                       SCENE_BOMBCHU_SHOP, 0x01, 0x31, "Bombchu Shop Item 2", "MK Bombchu Shop Item 2",
-                       RHT_MARKET_BOMBCHU_SHOP_ITEM_2, RG_BUY_BOMBCHU_10, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x32, 1), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_BOMBCHU_SHOP_ITEM_3] =
-        Location::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_3, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA,
-                       SCENE_BOMBCHU_SHOP, 0x02, 0x32, "Bombchu Shop Item 3", "MK Bombchu Shop Item 3",
-                       RHT_MARKET_BOMBCHU_SHOP_ITEM_3, RG_BUY_BOMBCHU_10, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x32, 2), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_BOMBCHU_SHOP_ITEM_4] =
-        Location::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_4, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA,
-                       SCENE_BOMBCHU_SHOP, 0x03, 0x33, "Bombchu Shop Item 4", "MK Bombchu Shop Item 4",
-                       RHT_MARKET_BOMBCHU_SHOP_ITEM_4, RG_BUY_BOMBCHU_10, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x32, 3), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_BOMBCHU_SHOP_ITEM_5] =
-        Location::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_5, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA,
-                       SCENE_BOMBCHU_SHOP, 0x04, 0x34, "Bombchu Shop Item 5", "MK Bombchu Shop Item 5",
-                       RHT_MARKET_BOMBCHU_SHOP_ITEM_5, RG_BUY_BOMBCHU_20, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x32, 4), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_BOMBCHU_SHOP_ITEM_6] =
-        Location::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_6, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA,
-                       SCENE_BOMBCHU_SHOP, 0x05, 0x35, "Bombchu Shop Item 6", "MK Bombchu Shop Item 6",
-                       RHT_MARKET_BOMBCHU_SHOP_ITEM_6, RG_BUY_BOMBCHU_20, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x32, 5), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_BOMBCHU_SHOP_ITEM_7] =
-        Location::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_7, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA,
-                       SCENE_BOMBCHU_SHOP, 0x06, 0x36, "Bombchu Shop Item 7", "MK Bombchu Shop Item 7",
-                       RHT_MARKET_BOMBCHU_SHOP_ITEM_7, RG_BUY_BOMBCHU_20, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x32, 6), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_BOMBCHU_SHOP_ITEM_8] =
-        Location::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_8, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA,
-                       SCENE_BOMBCHU_SHOP, 0x07, 0x37, "Bombchu Shop Item 8", "MK Bombchu Shop Item 8",
-                       RHT_MARKET_BOMBCHU_SHOP_ITEM_8, RG_BUY_BOMBCHU_20, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x32, 7), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_POTION_SHOP_ITEM_1] =
-        Location::Base(RC_MARKET_POTION_SHOP_ITEM_1, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA,
-                       SCENE_POTION_SHOP_MARKET, 0x00, 0x30, "Potion Shop Item 1", "MK Potion Shop Item 1",
-                       RHT_MARKET_POTION_SHOP_ITEM_1, RG_BUY_GREEN_POTION, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x31, 0), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_POTION_SHOP_ITEM_2] =
-        Location::Base(RC_MARKET_POTION_SHOP_ITEM_2, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA,
-                       SCENE_POTION_SHOP_MARKET, 0x01, 0x31, "Potion Shop Item 2", "MK Potion Shop Item 2",
-                       RHT_MARKET_POTION_SHOP_ITEM_2, RG_BUY_BLUE_FIRE, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x31, 1), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_POTION_SHOP_ITEM_3] =
-        Location::Base(RC_MARKET_POTION_SHOP_ITEM_3, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA,
-                       SCENE_POTION_SHOP_MARKET, 0x02, 0x32, "Potion Shop Item 3", "MK Potion Shop Item 3",
-                       RHT_MARKET_POTION_SHOP_ITEM_3, RG_BUY_RED_POTION_30, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x31, 2), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_POTION_SHOP_ITEM_4] =
-        Location::Base(RC_MARKET_POTION_SHOP_ITEM_4, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA,
-                       SCENE_POTION_SHOP_MARKET, 0x03, 0x33, "Potion Shop Item 4", "MK Potion Shop Item 4",
-                       RHT_MARKET_POTION_SHOP_ITEM_4, RG_BUY_FAIRYS_SPIRIT, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x31, 3), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_POTION_SHOP_ITEM_5] =
-        Location::Base(RC_MARKET_POTION_SHOP_ITEM_5, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA,
-                       SCENE_POTION_SHOP_MARKET, 0x04, 0x34, "Potion Shop Item 5", "MK Potion Shop Item 5",
-                       RHT_MARKET_POTION_SHOP_ITEM_5, RG_BUY_DEKU_NUT_5, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x31, 4), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_POTION_SHOP_ITEM_6] =
-        Location::Base(RC_MARKET_POTION_SHOP_ITEM_6, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA,
-                       SCENE_POTION_SHOP_MARKET, 0x05, 0x35, "Potion Shop Item 6", "MK Potion Shop Item 6",
-                       RHT_MARKET_POTION_SHOP_ITEM_6, RG_BUY_BOTTLE_BUG, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x31, 5), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_POTION_SHOP_ITEM_7] =
-        Location::Base(RC_MARKET_POTION_SHOP_ITEM_7, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA,
-                       SCENE_POTION_SHOP_MARKET, 0x06, 0x36, "Potion Shop Item 7", "MK Potion Shop Item 7",
-                       RHT_MARKET_POTION_SHOP_ITEM_7, RG_BUY_POE, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x31, 6), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_POTION_SHOP_ITEM_8] =
-        Location::Base(RC_MARKET_POTION_SHOP_ITEM_8, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA,
-                       SCENE_POTION_SHOP_MARKET, 0x07, 0x37, "Potion Shop Item 8", "MK Potion Shop Item 8",
-                       RHT_MARKET_POTION_SHOP_ITEM_8, RG_BUY_FISH, { Category::cShop },
-                       SpoilerCollectionCheck::ShopItem(0x31, 7), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_BAZAAR_ITEM_1] = Location::Base(
-        RC_MARKET_BAZAAR_ITEM_1, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA, SCENE_BAZAAR, 0x00, 0x30,
-        "Bazaar Item 1", "MK Bazaar Item 1", RHT_MARKET_BAZAAR_ITEM_1, RG_BUY_HYLIAN_SHIELD, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2C, 0), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_BAZAAR_ITEM_2] = Location::Base(
-        RC_MARKET_BAZAAR_ITEM_2, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA, SCENE_BAZAAR, 0x01, 0x31,
-        "Bazaar Item 2", "MK Bazaar Item 2", RHT_MARKET_BAZAAR_ITEM_2, RG_BUY_BOMBS_535, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2C, 1), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_BAZAAR_ITEM_3] = Location::Base(
-        RC_MARKET_BAZAAR_ITEM_3, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA, SCENE_BAZAAR, 0x02, 0x32,
-        "Bazaar Item 3", "MK Bazaar Item 3", RHT_MARKET_BAZAAR_ITEM_3, RG_BUY_DEKU_NUT_5, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2C, 2), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_BAZAAR_ITEM_4] = Location::Base(
-        RC_MARKET_BAZAAR_ITEM_4, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA, SCENE_BAZAAR, 0x03, 0x33,
-        "Bazaar Item 4", "MK Bazaar Item 4", RHT_MARKET_BAZAAR_ITEM_4, RG_BUY_HEART, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2C, 3), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_BAZAAR_ITEM_5] = Location::Base(
-        RC_MARKET_BAZAAR_ITEM_5, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA, SCENE_BAZAAR, 0x04, 0x34,
-        "Bazaar Item 5", "MK Bazaar Item 5", RHT_MARKET_BAZAAR_ITEM_5, RG_BUY_ARROWS_10, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2C, 4), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_BAZAAR_ITEM_6] = Location::Base(
-        RC_MARKET_BAZAAR_ITEM_6, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA, SCENE_BAZAAR, 0x05, 0x35,
-        "Bazaar Item 6", "MK Bazaar Item 6", RHT_MARKET_BAZAAR_ITEM_6, RG_BUY_ARROWS_50, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2C, 5), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_BAZAAR_ITEM_7] =
-        Location::Base(RC_MARKET_BAZAAR_ITEM_7, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA, SCENE_BAZAAR,
-                       0x06, GI_STICKS_1, "Bazaar Item 7", "MK Bazaar Item 7", RHT_MARKET_BAZAAR_ITEM_7,
-                       RG_BUY_DEKU_STICK_1, { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2C, 6),
-                       SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_BAZAAR_ITEM_8] = Location::Base(
-        RC_MARKET_BAZAAR_ITEM_8, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET, ACTOR_EN_GIRLA, SCENE_BAZAAR, 0x07, 0x37,
-        "Bazaar Item 8", "MK Bazaar Item 8", RHT_MARKET_BAZAAR_ITEM_8, RG_BUY_ARROWS_30, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2C, 7), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-
-    // Zora's Domain
-    locationTable[RC_ZD_SHOP_ITEM_1] = Location::Base(
-        RC_ZD_SHOP_ITEM_1, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN, ACTOR_EN_GIRLA, SCENE_ZORA_SHOP, 0x00, 0x30,
-        "Shop Item 1", "ZD Shop Item 1", RHT_ZD_SHOP_ITEM_1, RG_BUY_ZORA_TUNIC, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2F, 0), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-    locationTable[RC_ZD_SHOP_ITEM_2] = Location::Base(
-        RC_ZD_SHOP_ITEM_2, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN, ACTOR_EN_GIRLA, SCENE_ZORA_SHOP, 0x01, 0x31,
-        "Shop Item 2", "ZD Shop Item 2", RHT_ZD_SHOP_ITEM_2, RG_BUY_ARROWS_10, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2F, 1), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-    locationTable[RC_ZD_SHOP_ITEM_3] = Location::Base(
-        RC_ZD_SHOP_ITEM_3, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN, ACTOR_EN_GIRLA, SCENE_ZORA_SHOP, 0x02, 0x32,
-        "Shop Item 3", "ZD Shop Item 3", RHT_ZD_SHOP_ITEM_3, RG_BUY_HEART, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2F, 2), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-    locationTable[RC_ZD_SHOP_ITEM_4] = Location::Base(
-        RC_ZD_SHOP_ITEM_4, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN, ACTOR_EN_GIRLA, SCENE_ZORA_SHOP, 0x03, 0x33,
-        "Shop Item 4", "ZD Shop Item 4", RHT_ZD_SHOP_ITEM_4, RG_BUY_ARROWS_30, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2F, 3), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-    locationTable[RC_ZD_SHOP_ITEM_5] = Location::Base(
-        RC_ZD_SHOP_ITEM_5, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN, ACTOR_EN_GIRLA, SCENE_ZORA_SHOP, 0x04, 0x34,
-        "Shop Item 5", "ZD Shop Item 5", RHT_ZD_SHOP_ITEM_5, RG_BUY_DEKU_NUT_5, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2F, 4), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-    locationTable[RC_ZD_SHOP_ITEM_6] = Location::Base(
-        RC_ZD_SHOP_ITEM_6, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN, ACTOR_EN_GIRLA, SCENE_ZORA_SHOP, 0x05, 0x35,
-        "Shop Item 6", "ZD Shop Item 6", RHT_ZD_SHOP_ITEM_6, RG_BUY_ARROWS_50, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2F, 5), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-    locationTable[RC_ZD_SHOP_ITEM_7] = Location::Base(
-        RC_ZD_SHOP_ITEM_7, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN, ACTOR_EN_GIRLA, SCENE_ZORA_SHOP, 0x06, 0x036,
-        "Shop Item 7", "ZD Shop Item 7", RHT_ZD_SHOP_ITEM_7, RG_BUY_FISH, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2F, 6), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-    locationTable[RC_ZD_SHOP_ITEM_8] = Location::Base(
-        RC_ZD_SHOP_ITEM_8, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN, ACTOR_EN_GIRLA, SCENE_ZORA_SHOP, 0x07, 0x37,
-        "Shop Item 8", "ZD Shop Item 8", RHT_ZD_SHOP_ITEM_8, RG_BUY_RED_POTION_50, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2F, 7), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-
-    // Goron City
-    locationTable[RC_GC_SHOP_ITEM_1] = Location::Base(
-        RC_GC_SHOP_ITEM_1, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY, ACTOR_EN_GIRLA, SCENE_GORON_SHOP, 0x00, 0x30,
-        "Shop Item 1", "GC Shop Item 1", RHT_GC_SHOP_ITEM_1, RG_BUY_BOMBS_525, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2E, 0), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
-    locationTable[RC_GC_SHOP_ITEM_2] = Location::Base(
-        RC_GC_SHOP_ITEM_2, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY, ACTOR_EN_GIRLA, SCENE_GORON_SHOP, 0x01, 0x31,
-        "Shop Item 2", "GC Shop Item 2", RHT_GC_SHOP_ITEM_2, RG_BUY_BOMBS_10, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2E, 1), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
-    locationTable[RC_GC_SHOP_ITEM_3] = Location::Base(
-        RC_GC_SHOP_ITEM_3, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY, ACTOR_EN_GIRLA, SCENE_GORON_SHOP, 0x02, 0x32,
-        "Shop Item 3", "GC Shop Item 3", RHT_GC_SHOP_ITEM_3, RG_BUY_BOMBS_20, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2E, 2), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
-    locationTable[RC_GC_SHOP_ITEM_4] = Location::Base(
-        RC_GC_SHOP_ITEM_4, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY, ACTOR_EN_GIRLA, SCENE_GORON_SHOP, 0x03, 0x33,
-        "Shop Item 4", "GC Shop Item 4", RHT_GC_SHOP_ITEM_4, RG_BUY_BOMBS_30, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2E, 3), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
-    locationTable[RC_GC_SHOP_ITEM_5] = Location::Base(
-        RC_GC_SHOP_ITEM_5, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY, ACTOR_EN_GIRLA, SCENE_GORON_SHOP, 0x04, 0x34,
-        "Shop Item 5", "GC Shop Item 5", RHT_GC_SHOP_ITEM_5, RG_BUY_GORON_TUNIC, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2E, 4), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
-    locationTable[RC_GC_SHOP_ITEM_6] = Location::Base(
-        RC_GC_SHOP_ITEM_6, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY, ACTOR_EN_GIRLA, SCENE_GORON_SHOP, 0x05, 0x35,
-        "Shop Item 6", "GC Shop Item 6", RHT_GC_SHOP_ITEM_6, RG_BUY_HEART, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2E, 5), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
-    locationTable[RC_GC_SHOP_ITEM_7] = Location::Base(
-        RC_GC_SHOP_ITEM_7, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY, ACTOR_EN_GIRLA, SCENE_GORON_SHOP, 0x06, 0x36,
-        "Shop Item 7", "GC Shop Item 7", RHT_GC_SHOP_ITEM_7, RG_BUY_RED_POTION_40, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2E, 6), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
-    locationTable[RC_GC_SHOP_ITEM_8] = Location::Base(
-        RC_GC_SHOP_ITEM_8, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY, ACTOR_EN_GIRLA, SCENE_GORON_SHOP, 0x07, 0x37,
-        "Shop Item 8", "GC Shop Item 8", RHT_GC_SHOP_ITEM_8, RG_BUY_HEART, { Category::cShop },
-        SpoilerCollectionCheck::ShopItem(0x2E, 7), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_MARKET_BOMBCHU_SHOP_ITEM_1] =  Location::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_1, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_BOMBCHU_SHOP,         0x00, 0x30, "Bombchu Shop Item 1", "MK Bombchu Shop Item 1", RHT_MARKET_BOMBCHU_SHOP_ITEM_1, RG_BUY_BOMBCHU_10,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x32, 0), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BOMBCHU_SHOP_ITEM_2] =  Location::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_2, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_BOMBCHU_SHOP,         0x01, 0x31, "Bombchu Shop Item 2", "MK Bombchu Shop Item 2", RHT_MARKET_BOMBCHU_SHOP_ITEM_2, RG_BUY_BOMBCHU_10,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x32, 1), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BOMBCHU_SHOP_ITEM_3] =  Location::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_3, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_BOMBCHU_SHOP,         0x02, 0x32, "Bombchu Shop Item 3", "MK Bombchu Shop Item 3", RHT_MARKET_BOMBCHU_SHOP_ITEM_3, RG_BUY_BOMBCHU_10,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x32, 2), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BOMBCHU_SHOP_ITEM_4] =  Location::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_4, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_BOMBCHU_SHOP,         0x03, 0x33, "Bombchu Shop Item 4", "MK Bombchu Shop Item 4", RHT_MARKET_BOMBCHU_SHOP_ITEM_4, RG_BUY_BOMBCHU_10,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x32, 3), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BOMBCHU_SHOP_ITEM_5] =  Location::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_5, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_BOMBCHU_SHOP,         0x04, 0x34, "Bombchu Shop Item 5", "MK Bombchu Shop Item 5", RHT_MARKET_BOMBCHU_SHOP_ITEM_5, RG_BUY_BOMBCHU_20,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x32, 4), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BOMBCHU_SHOP_ITEM_6] =  Location::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_6, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_BOMBCHU_SHOP,         0x05, 0x35, "Bombchu Shop Item 6", "MK Bombchu Shop Item 6", RHT_MARKET_BOMBCHU_SHOP_ITEM_6, RG_BUY_BOMBCHU_20,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x32, 5), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BOMBCHU_SHOP_ITEM_7] =  Location::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_7, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_BOMBCHU_SHOP,         0x06, 0x36, "Bombchu Shop Item 7", "MK Bombchu Shop Item 7", RHT_MARKET_BOMBCHU_SHOP_ITEM_7, RG_BUY_BOMBCHU_20,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x32, 6), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BOMBCHU_SHOP_ITEM_8] =  Location::Base(RC_MARKET_BOMBCHU_SHOP_ITEM_8, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_BOMBCHU_SHOP,         0x07, 0x37, "Bombchu Shop Item 8", "MK Bombchu Shop Item 8", RHT_MARKET_BOMBCHU_SHOP_ITEM_8, RG_BUY_BOMBCHU_20,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x32, 7), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_POTION_SHOP_ITEM_1] =   Location::Base(RC_MARKET_POTION_SHOP_ITEM_1,  RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_POTION_SHOP_MARKET,   0x00, 0x30, "Potion Shop Item 1",  "MK Potion Shop Item 1",  RHT_MARKET_POTION_SHOP_ITEM_1,  RG_BUY_GREEN_POTION,   { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x31, 0), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_POTION_SHOP_ITEM_2] =   Location::Base(RC_MARKET_POTION_SHOP_ITEM_2,  RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_POTION_SHOP_MARKET,   0x01, 0x31, "Potion Shop Item 2",  "MK Potion Shop Item 2",  RHT_MARKET_POTION_SHOP_ITEM_2,  RG_BUY_BLUE_FIRE,      { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x31, 1), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_POTION_SHOP_ITEM_3] =   Location::Base(RC_MARKET_POTION_SHOP_ITEM_3,  RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_POTION_SHOP_MARKET,   0x02, 0x32, "Potion Shop Item 3",  "MK Potion Shop Item 3",  RHT_MARKET_POTION_SHOP_ITEM_3,  RG_BUY_RED_POTION_30,  { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x31, 2), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_POTION_SHOP_ITEM_4] =   Location::Base(RC_MARKET_POTION_SHOP_ITEM_4,  RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_POTION_SHOP_MARKET,   0x03, 0x33, "Potion Shop Item 4",  "MK Potion Shop Item 4",  RHT_MARKET_POTION_SHOP_ITEM_4,  RG_BUY_FAIRYS_SPIRIT,  { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x31, 3), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_POTION_SHOP_ITEM_5] =   Location::Base(RC_MARKET_POTION_SHOP_ITEM_5,  RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_POTION_SHOP_MARKET,   0x04, 0x34, "Potion Shop Item 5",  "MK Potion Shop Item 5",  RHT_MARKET_POTION_SHOP_ITEM_5,  RG_BUY_DEKU_NUT_5,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x31, 4), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_POTION_SHOP_ITEM_6] =   Location::Base(RC_MARKET_POTION_SHOP_ITEM_6,  RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_POTION_SHOP_MARKET,   0x05, 0x35, "Potion Shop Item 6",  "MK Potion Shop Item 6",  RHT_MARKET_POTION_SHOP_ITEM_6,  RG_BUY_BOTTLE_BUG,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x31, 5), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_POTION_SHOP_ITEM_7] =   Location::Base(RC_MARKET_POTION_SHOP_ITEM_7,  RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_POTION_SHOP_MARKET,   0x06, 0x36, "Potion Shop Item 7",  "MK Potion Shop Item 7",  RHT_MARKET_POTION_SHOP_ITEM_7,  RG_BUY_POE,            { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x31, 6), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_POTION_SHOP_ITEM_8] =   Location::Base(RC_MARKET_POTION_SHOP_ITEM_8,  RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_POTION_SHOP_MARKET,   0x07, 0x37, "Potion Shop Item 8",  "MK Potion Shop Item 8",  RHT_MARKET_POTION_SHOP_ITEM_8,  RG_BUY_FISH,           { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x31, 7), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BAZAAR_ITEM_1] =        Location::Base(RC_MARKET_BAZAAR_ITEM_1,       RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_BAZAAR,               0x00, 0x30, "Bazaar Item 1",       "MK Bazaar Item 1",       RHT_MARKET_BAZAAR_ITEM_1,       RG_BUY_HYLIAN_SHIELD,  { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2C, 0), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BAZAAR_ITEM_2] =        Location::Base(RC_MARKET_BAZAAR_ITEM_2,       RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_BAZAAR,               0x01, 0x31, "Bazaar Item 2",       "MK Bazaar Item 2",       RHT_MARKET_BAZAAR_ITEM_2,       RG_BUY_BOMBS_535,      { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2C, 1), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BAZAAR_ITEM_3] =        Location::Base(RC_MARKET_BAZAAR_ITEM_3,       RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_BAZAAR,               0x02, 0x32, "Bazaar Item 3",       "MK Bazaar Item 3",       RHT_MARKET_BAZAAR_ITEM_3,       RG_BUY_DEKU_NUT_5,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2C, 2), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BAZAAR_ITEM_4] =        Location::Base(RC_MARKET_BAZAAR_ITEM_4,       RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_BAZAAR,               0x03, 0x33, "Bazaar Item 4",       "MK Bazaar Item 4",       RHT_MARKET_BAZAAR_ITEM_4,       RG_BUY_HEART,          { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2C, 3), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BAZAAR_ITEM_5] =        Location::Base(RC_MARKET_BAZAAR_ITEM_5,       RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_BAZAAR,               0x04, 0x34, "Bazaar Item 5",       "MK Bazaar Item 5",       RHT_MARKET_BAZAAR_ITEM_5,       RG_BUY_ARROWS_10,      { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2C, 4), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BAZAAR_ITEM_6] =        Location::Base(RC_MARKET_BAZAAR_ITEM_6,       RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_BAZAAR,               0x05, 0x35, "Bazaar Item 6",       "MK Bazaar Item 6",       RHT_MARKET_BAZAAR_ITEM_6,       RG_BUY_ARROWS_50,      { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2C, 5), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BAZAAR_ITEM_7] =        Location::Base(RC_MARKET_BAZAAR_ITEM_7,       RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_BAZAAR,               0x06, 0x36, "Bazaar Item 7",       "MK Bazaar Item 7",       RHT_MARKET_BAZAAR_ITEM_7,       RG_BUY_DEKU_STICK_1,   { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2C, 6), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BAZAAR_ITEM_8] =        Location::Base(RC_MARKET_BAZAAR_ITEM_8,       RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_MARKET,             ACTOR_EN_GIRLA, SCENE_BAZAAR,               0x07, 0x37, "Bazaar Item 8",       "MK Bazaar Item 8",       RHT_MARKET_BAZAAR_ITEM_8,       RG_BUY_ARROWS_30,      { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2C, 7), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+ 
+    // Zora's Domain 
+    locationTable[RC_ZD_SHOP_ITEM_1] =              Location::Base(RC_ZD_SHOP_ITEM_1,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN,       ACTOR_EN_GIRLA, SCENE_ZORA_SHOP,            0x00, 0x30, "Shop Item 1",         "ZD Shop Item 1",         RHT_ZD_SHOP_ITEM_1,             RG_BUY_ZORA_TUNIC,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2F, 0), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZD_SHOP_ITEM_2] =              Location::Base(RC_ZD_SHOP_ITEM_2,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN,       ACTOR_EN_GIRLA, SCENE_ZORA_SHOP,            0x01, 0x31, "Shop Item 2",         "ZD Shop Item 2",         RHT_ZD_SHOP_ITEM_2,             RG_BUY_ARROWS_10,      { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2F, 1), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZD_SHOP_ITEM_3] =              Location::Base(RC_ZD_SHOP_ITEM_3,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN,       ACTOR_EN_GIRLA, SCENE_ZORA_SHOP,            0x02, 0x32, "Shop Item 3",         "ZD Shop Item 3",         RHT_ZD_SHOP_ITEM_3,             RG_BUY_HEART,          { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2F, 2), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZD_SHOP_ITEM_4] =              Location::Base(RC_ZD_SHOP_ITEM_4,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN,       ACTOR_EN_GIRLA, SCENE_ZORA_SHOP,            0x03, 0x33, "Shop Item 4",         "ZD Shop Item 4",         RHT_ZD_SHOP_ITEM_4,             RG_BUY_ARROWS_30,      { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2F, 3), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZD_SHOP_ITEM_5] =              Location::Base(RC_ZD_SHOP_ITEM_5,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN,       ACTOR_EN_GIRLA, SCENE_ZORA_SHOP,            0x04, 0x34, "Shop Item 5",         "ZD Shop Item 5",         RHT_ZD_SHOP_ITEM_5,             RG_BUY_DEKU_NUT_5,     { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2F, 4), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZD_SHOP_ITEM_6] =              Location::Base(RC_ZD_SHOP_ITEM_6,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN,       ACTOR_EN_GIRLA, SCENE_ZORA_SHOP,            0x05, 0x35, "Shop Item 6",         "ZD Shop Item 6",         RHT_ZD_SHOP_ITEM_6,             RG_BUY_ARROWS_50,      { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2F, 5), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZD_SHOP_ITEM_7] =              Location::Base(RC_ZD_SHOP_ITEM_7,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN,       ACTOR_EN_GIRLA, SCENE_ZORA_SHOP,            0x06, 0x36, "Shop Item 7",         "ZD Shop Item 7",         RHT_ZD_SHOP_ITEM_7,             RG_BUY_FISH,           { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2F, 6), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZD_SHOP_ITEM_8] =              Location::Base(RC_ZD_SHOP_ITEM_8,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_ZORAS_DOMAIN,       ACTOR_EN_GIRLA, SCENE_ZORA_SHOP,            0x07, 0x37, "Shop Item 8",         "ZD Shop Item 8",         RHT_ZD_SHOP_ITEM_8,             RG_BUY_RED_POTION_50,  { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2F, 7), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+              
+    // Goron City             
+    locationTable[RC_GC_SHOP_ITEM_1] =              Location::Base(RC_GC_SHOP_ITEM_1,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY,         ACTOR_EN_GIRLA, SCENE_GORON_SHOP,           0x00, 0x30, "Shop Item 1",         "GC Shop Item 1",         RHT_GC_SHOP_ITEM_1,             RG_BUY_BOMBS_525,      { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2E, 0), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_SHOP_ITEM_2] =              Location::Base(RC_GC_SHOP_ITEM_2,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY,         ACTOR_EN_GIRLA, SCENE_GORON_SHOP,           0x01, 0x31, "Shop Item 2",         "GC Shop Item 2",         RHT_GC_SHOP_ITEM_2,             RG_BUY_BOMBS_10,       { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2E, 1), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_SHOP_ITEM_3] =              Location::Base(RC_GC_SHOP_ITEM_3,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY,         ACTOR_EN_GIRLA, SCENE_GORON_SHOP,           0x02, 0x32, "Shop Item 3",         "GC Shop Item 3",         RHT_GC_SHOP_ITEM_3,             RG_BUY_BOMBS_20,       { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2E, 2), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_SHOP_ITEM_4] =              Location::Base(RC_GC_SHOP_ITEM_4,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY,         ACTOR_EN_GIRLA, SCENE_GORON_SHOP,           0x03, 0x33, "Shop Item 4",         "GC Shop Item 4",         RHT_GC_SHOP_ITEM_4,             RG_BUY_BOMBS_30,       { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2E, 3), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_SHOP_ITEM_5] =              Location::Base(RC_GC_SHOP_ITEM_5,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY,         ACTOR_EN_GIRLA, SCENE_GORON_SHOP,           0x04, 0x34, "Shop Item 5",         "GC Shop Item 5",         RHT_GC_SHOP_ITEM_5,             RG_BUY_GORON_TUNIC,    { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2E, 4), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_SHOP_ITEM_6] =              Location::Base(RC_GC_SHOP_ITEM_6,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY,         ACTOR_EN_GIRLA, SCENE_GORON_SHOP,           0x05, 0x35, "Shop Item 6",         "GC Shop Item 6",         RHT_GC_SHOP_ITEM_6,             RG_BUY_HEART,          { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2E, 5), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_SHOP_ITEM_7] =              Location::Base(RC_GC_SHOP_ITEM_7,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY,         ACTOR_EN_GIRLA, SCENE_GORON_SHOP,           0x06, 0x36, "Shop Item 7",         "GC Shop Item 7",         RHT_GC_SHOP_ITEM_7,             RG_BUY_RED_POTION_40,  { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2E, 6), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_SHOP_ITEM_8] =              Location::Base(RC_GC_SHOP_ITEM_8,             RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY,         ACTOR_EN_GIRLA, SCENE_GORON_SHOP,           0x07, 0x37, "Shop Item 8",         "GC Shop Item 8",         RHT_GC_SHOP_ITEM_8,             RG_BUY_HEART,          { Category::cShop }, SpoilerCollectionCheck::ShopItem(0x2E, 7), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
 
     // Gossip Stones
     //            RandomizerCheck                                           Randomizer Check                    Quest            Area                          Scene                        Params  Flag  Short Name                       Spoiler name                       Categories
