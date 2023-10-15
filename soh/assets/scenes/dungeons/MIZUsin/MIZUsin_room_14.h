@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUNGEONS_MIZUSIN_ROOM_14_H
+#define DUNGEONS_MIZUSIN_ROOM_14_H 1
 
 #include "align_asset_macro.h"
 
@@ -43,3 +44,6 @@ static const ALIGN_ASSET(2) char MIZUsin_room_14DL_000C68[] = dMIZUsin_room_14DL
 
 #define dMIZUsin_room_14DL_000450 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_14DL_000450"
 static const ALIGN_ASSET(2) char MIZUsin_room_14DL_000450[] = dMIZUsin_room_14DL_000450;
+
+
+#endif // DUNGEONS_MIZUSIN_ROOM_14_H

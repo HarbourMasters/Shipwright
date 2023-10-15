@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_YUKABYUN_H
+#define OBJECTS_OBJECT_YUKABYUN_H 1
 
 #include "align_asset_macro.h"
 
@@ -16,3 +17,5 @@ static const ALIGN_ASSET(2) char gFloorTileEnemyDL[] = dgFloorTileEnemyDL;
 
 #define dgFloorTileEnemyFragmentDL "__OTR__objects/object_yukabyun/gFloorTileEnemyFragmentDL"
 static const ALIGN_ASSET(2) char gFloorTileEnemyFragmentDL[] = dgFloorTileEnemyFragmentDL;
+
+#endif // OBJECTS_OBJECT_YUKABYUN_H

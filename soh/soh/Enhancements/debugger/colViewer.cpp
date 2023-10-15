@@ -641,7 +641,7 @@ void DrawWaterboxList() {
     }
 
     // Zora's Domain has a special, hard-coded waterbox with a bottom so you can go under the waterfall
-    if (gPlayState->sceneNum == SCENE_SPOT07) {
+    if (gPlayState->sceneNum == SCENE_ZORAS_DOMAIN) {
         DrawWaterbox(dl, &zdWaterBox, zdWaterBoxMinY);
     }
 }

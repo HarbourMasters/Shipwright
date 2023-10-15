@@ -56,59 +56,59 @@ void Sram_OpenSave() {
 
     Save_LoadFile();
 
-    if (!CVarGetInteger("gRememberSaveLocation", 0) || gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE ||
-        gSaveContext.savedSceneNum == SCENE_KAKUSIANA) {
+    if (!CVarGetInteger("gRememberSaveLocation", 0) || gSaveContext.savedSceneNum == SCENE_FAIRYS_FOUNTAIN ||
+        gSaveContext.savedSceneNum == SCENE_GROTTOS) {
         switch (gSaveContext.savedSceneNum) {
-            case SCENE_YDAN:
-            case SCENE_DDAN:
-            case SCENE_BDAN:
-            case SCENE_BMORI1:
-            case SCENE_HIDAN:
-            case SCENE_MIZUSIN:
-            case SCENE_JYASINZOU:
-            case SCENE_HAKADAN:
-            case SCENE_HAKADANCH:
-            case SCENE_ICE_DOUKUTO:
-            case SCENE_GANON:
-            case SCENE_MEN:
-            case SCENE_GERUDOWAY:
-            case SCENE_GANONTIKA:
+            case SCENE_DEKU_TREE:
+            case SCENE_DODONGOS_CAVERN:
+            case SCENE_JABU_JABU:
+            case SCENE_FOREST_TEMPLE:
+            case SCENE_FIRE_TEMPLE:
+            case SCENE_WATER_TEMPLE:
+            case SCENE_SPIRIT_TEMPLE:
+            case SCENE_SHADOW_TEMPLE:
+            case SCENE_BOTTOM_OF_THE_WELL:
+            case SCENE_ICE_CAVERN:
+            case SCENE_GANONS_TOWER:
+            case SCENE_GERUDO_TRAINING_GROUND:
+            case SCENE_THIEVES_HIDEOUT:
+            case SCENE_INSIDE_GANONS_CASTLE:
                 gSaveContext.entranceIndex = dungeonEntrances[gSaveContext.savedSceneNum];
                 break;
-            case SCENE_YDAN_BOSS:
+            case SCENE_DEKU_TREE_BOSS:
                 gSaveContext.entranceIndex = 0;
                 break;
-            case SCENE_DDAN_BOSS:
+            case SCENE_DODONGOS_CAVERN_BOSS:
                 gSaveContext.entranceIndex = 4;
                 break;
-            case SCENE_BDAN_BOSS:
+            case SCENE_JABU_JABU_BOSS:
                 gSaveContext.entranceIndex = 0x28;
                 break;
-            case SCENE_MORIBOSSROOM:
+            case SCENE_FOREST_TEMPLE_BOSS:
                 gSaveContext.entranceIndex = 0x169;
                 break;
-            case SCENE_FIRE_BS:
+            case SCENE_FIRE_TEMPLE_BOSS:
                 gSaveContext.entranceIndex = 0x165;
                 break;
-            case SCENE_MIZUSIN_BS:
+            case SCENE_WATER_TEMPLE_BOSS:
                 gSaveContext.entranceIndex = 0x10;
                 break;
-            case SCENE_JYASINBOSS:
+            case SCENE_SPIRIT_TEMPLE_BOSS:
                 gSaveContext.entranceIndex = 0x82;
                 break;
-            case SCENE_HAKADAN_BS:
+            case SCENE_SHADOW_TEMPLE_BOSS:
                 gSaveContext.entranceIndex = 0x37;
                 break;
-            case SCENE_GANON_SONOGO:
-            case SCENE_GANONTIKA_SONOGO:
+            case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
+            case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
+            case SCENE_GANONDORF_BOSS:
+            case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
             case SCENE_GANON_BOSS:
-            case SCENE_GANON_FINAL:
-            case SCENE_GANON_DEMO:
                 gSaveContext.entranceIndex = 0x41B;
                 break;
 
             default:
-                if (gSaveContext.savedSceneNum != SCENE_LINK_HOME) {
+                if (gSaveContext.savedSceneNum != SCENE_LINKS_HOUSE) {
                     gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? 0xBB : 0x5F4;
                 } else {
                     gSaveContext.entranceIndex = 0xBB;
@@ -155,7 +155,7 @@ void Sram_OpenSave() {
     }
 
     // if zelda cutscene has been watched but lullaby was not obtained, restore cutscene and take away letter
-    if ((Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) && !CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) && !gSaveContext.n64ddFlag) {
+    if ((Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) && !CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) && !IS_RANDO) {
         i = gSaveContext.eventChkInf[4] & ~1;
         gSaveContext.eventChkInf[4] = i;
 
@@ -176,7 +176,7 @@ void Sram_OpenSave() {
         gSaveContext.equips.equipment |= 2;
     }
 
-    if (!(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
+    if (!(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
         for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[i]) {
                 INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
@@ -218,11 +218,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.playerName[offset] = Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->playerName[offset];
     }
 
-    if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == 2 && strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
-        // Set N64DD Flags for save file
-        fileChooseCtx->n64ddFlags[fileChooseCtx->buttonIndex] = 1;
-        fileChooseCtx->n64ddFlag = 1;
-        gSaveContext.n64ddFlag = 1;
+    gSaveContext.n64ddFlag = fileChooseCtx->n64ddFlag;
+
+    if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == QUEST_RANDOMIZER &&
+        strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
+        gSaveContext.questId = QUEST_RANDOMIZER;
 
         Randomizer_InitSaveFile();
     }

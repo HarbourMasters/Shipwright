@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SPOT15_OBJ_H
+#define OBJECTS_OBJECT_SPOT15_OBJ_H 1
 
 #include "align_asset_macro.h"
 
@@ -19,3 +20,5 @@ static const ALIGN_ASSET(2) char gLonLonCorralFenceTex[] = dgLonLonCorralFenceTe
 
 #define dgLonLonCorralFenceCol "__OTR__objects/object_spot15_obj/gLonLonCorralFenceCol"
 static const ALIGN_ASSET(2) char gLonLonCorralFenceCol[] = dgLonLonCorralFenceCol;
+
+#endif // OBJECTS_OBJECT_SPOT15_OBJ_H

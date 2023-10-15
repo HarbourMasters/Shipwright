@@ -41,7 +41,10 @@ void EnRiverSound_Init(Actor* thisx, PlayState* play) {
         Actor_Kill(&this->actor);
     } else if (this->actor.params == RS_SARIAS_SONG) {
         // Always have leading music in rando
-        if ((!CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) || CHECK_QUEST_ITEM(QUEST_SONG_SARIA)) && !gSaveContext.n64ddFlag) {
+        if (
+            CVarGetInteger("gLostWoodsConsistentVolume", 0) ||
+            ((!CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) || CHECK_QUEST_ITEM(QUEST_SONG_SARIA)) && !IS_RANDO)
+        ) {
             Actor_Kill(&this->actor);
         }
     }
@@ -199,7 +202,7 @@ void EnRiverSound_Update(Actor* thisx, PlayState* play) {
         }
     } else if ((thisx->params == RS_UNK_13) || (thisx->params == RS_UNK_19)) {
         func_8002DBD0(&player->actor, &thisx->home.pos, &thisx->world.pos);
-    } else if (play->sceneNum == SCENE_DDAN_BOSS && Flags_GetClear(play, thisx->room)) {
+    } else if (play->sceneNum == SCENE_DODONGOS_CAVERN_BOSS && Flags_GetClear(play, thisx->room)) {
         Actor_Kill(thisx);
     }
 }

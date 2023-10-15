@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MISC_HIRAL_DEMO_SCENE_H
+#define MISC_HIRAL_DEMO_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -22,3 +23,6 @@ static const ALIGN_ASSET(2) char hiral_demo_sceneCollisionHeader_003548[] = dhir
 #define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
 
 #define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
+
+
+#endif // MISC_HIRAL_DEMO_SCENE_H

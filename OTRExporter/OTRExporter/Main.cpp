@@ -22,6 +22,7 @@
 #include <Utils/Directory.h>
 #include <Utils/MemoryStream.h>
 #include <Utils/BinaryWriter.h>
+#include <Utils/BitConverter.h>
 #include <bit>
 #include <mutex>
 
@@ -70,7 +71,10 @@ static void ExporterProgramEnd()
 	if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
 	{
 		std::string romPath = Globals::Instance->baseRomPath.string();
-		const std::vector<uint8_t>& romData = DiskFile::ReadAllBytes(romPath);
+		std::vector<uint8_t> romData = DiskFile::ReadAllBytes(romPath);
+
+		BitConverter::RomToBigEndian(romData.data(), romData.size());
+
 		crc = BitConverter::ToUInt32BE(romData, 0x10);
 		printf("Creating version file...\n");
 

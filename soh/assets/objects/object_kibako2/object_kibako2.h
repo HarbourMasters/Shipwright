@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_KIBAKO2_H
+#define OBJECTS_OBJECT_KIBAKO2_H 1
 
 #include "align_asset_macro.h"
 
@@ -25,3 +26,5 @@ static const ALIGN_ASSET(2) char gLargeCrateFragment2Tex[] = dgLargeCrateFragmen
 
 #define dgLargeCrateCol "__OTR__objects/object_kibako2/gLargeCrateCol"
 static const ALIGN_ASSET(2) char gLargeCrateCol[] = dgLargeCrateCol;
+
+#endif // OBJECTS_OBJECT_KIBAKO2_H

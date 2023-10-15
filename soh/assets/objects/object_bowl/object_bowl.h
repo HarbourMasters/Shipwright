@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_BOWL_H
+#define OBJECTS_OBJECT_BOWL_H 1
 
 #include "align_asset_macro.h"
 
@@ -28,3 +29,5 @@ static const ALIGN_ASSET(2) char gBowlingSecondRoundCol[] = dgBowlingSecondRound
 
 #define dgBowlingDefaultCol "__OTR__objects/object_bowl/gBowlingDefaultCol"
 static const ALIGN_ASSET(2) char gBowlingDefaultCol[] = dgBowlingDefaultCol;
+
+#endif // OBJECTS_OBJECT_BOWL_H

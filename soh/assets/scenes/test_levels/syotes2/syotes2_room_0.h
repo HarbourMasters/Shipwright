@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEST_LEVELS_SYOTES2_ROOM_0_H
+#define TEST_LEVELS_SYOTES2_ROOM_0_H 1
 
 #include "align_asset_macro.h"
 
@@ -25,3 +26,6 @@ static const ALIGN_ASSET(2) char syotes2_room_0Tex_0046F8[] = dsyotes2_room_0Tex
 
 #define dsyotes2_room_0Tex_007EF8 "__OTR__scenes/nonmq/syotes2_scene/syotes2_room_0Tex_007EF8"
 static const ALIGN_ASSET(2) char syotes2_room_0Tex_007EF8[] = dsyotes2_room_0Tex_007EF8;
+
+
+#endif // TEST_LEVELS_SYOTES2_ROOM_0_H

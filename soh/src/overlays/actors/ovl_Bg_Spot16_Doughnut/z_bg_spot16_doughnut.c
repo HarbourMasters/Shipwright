@@ -58,12 +58,12 @@ void BgSpot16Doughnut_Init(Actor* thisx, PlayState* play) {
         // Scales this actor for scenes where it is featured in the background,
         // Death Mountain itself falls into the default case.
         switch (play->sceneNum) {
-            case SCENE_SPOT01:
+            case SCENE_KAKARIKO_VILLAGE:
                 Actor_SetScale(&this->actor, 0.04f);
                 break;
-            case SCENE_SHRINE:
-            case SCENE_SHRINE_N:
-            case SCENE_SHRINE_R:
+            case SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY:
+            case SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT:
+            case SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS:
                 Actor_SetScale(&this->actor, 0.018f);
                 break;
             default:

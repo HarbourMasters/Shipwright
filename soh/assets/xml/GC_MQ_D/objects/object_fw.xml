@@ -1,5 +1,6 @@
 <Root>
     <File Name="object_fw" Segment="6">
+        <Texture Name="object_fwTex_007A90" OutName="object_fwTex_007A90" Format="i8" Width="16" Height="16" Offset="0x7A90" AddedByScript="true"/>
         <!-- Flare Dancer Enflamed Skeleton -->
         <Skeleton Name="gFlareDancerSkel" Type="Flex" LimbType="Standard" Offset="0x5810"/>
 

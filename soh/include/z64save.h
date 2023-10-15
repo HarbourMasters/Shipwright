@@ -92,7 +92,6 @@ typedef struct {
     /*      */ u32 count[COUNT_MAX];
     /*      */ u32 entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];
     /*      */ u32 scenesDiscovered[SAVEFILE_SCENES_DISCOVERED_IDX_COUNT];
-    /*      */ u8 locationsSkipped[RC_MAX];
     /*      */ bool rtaTiming;
     /*      */ uint64_t fileCreatedAt;
 } SohStats;
@@ -284,8 +283,7 @@ typedef struct {
     /* 0x1428 */ u16 pendingSaleMod;
     // #region SOH [General]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to SoH
-    /*        */ uint32_t isMasterQuest;
-    /*        */ uint32_t isBossRush;
+    /*        */ uint8_t questId;
     /*        */ uint32_t isBossRushPaused;
     /*        */ uint8_t bossRushOptions[BOSSRUSH_OPTIONS_AMOUNT];
     /*        */ u8 mqDungeonCount;
@@ -293,6 +291,7 @@ typedef struct {
     /*        */ SohStats sohStats;
     /*        */ u8 temporaryWeapon;
     /*        */ FaroresWindData backupFW;
+    /*        */ RandomizerCheckTrackerData checkTrackerData[RC_MAX];
     // #endregion
     // #region SOH [Randomizer]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to Randomizer
@@ -307,20 +306,38 @@ typedef struct {
     /*        */ char gregHintText[250];
     /*        */ char ganonText[250];
     /*        */ char dampeText[150];
+    /*        */ char sheikText[150];
+    /*        */ char sariaText[150];
     /*        */ char warpMinuetText[100];
     /*        */ char warpBoleroText[100];
     /*        */ char warpSerenadeText[100];
     /*        */ char warpRequiemText[100];
     /*        */ char warpNocturneText[100];
     /*        */ char warpPreludeText[100];
-    /*        */ RandomizerCheck ganonHintCheck;
+    /*        */ RandomizerCheck lightArrowHintCheck;
+    /*        */ RandomizerCheck sariaCheck;
     /*        */ RandomizerCheck gregCheck;
     /*        */ RandomizerCheck dampeCheck;
+    /*        */ char inputSeed[1024];
+    /*        */ u32 finalSeed;
     /*        */ u8 seedIcons[5];
-    /*        */ u16 randomizerInf[9];
+    /*        */ u16 randomizerInf[10];
     /*        */ u16 adultTradeItems;
+    /*        */ u8 triforcePiecesCollected;
     // #endregion
 } SaveContext; // size = 0x1428
+
+typedef enum {
+    /* 00 */ QUEST_NORMAL,
+    /* 01 */ QUEST_MASTER,
+    /* 02 */ QUEST_RANDOMIZER,
+    /* 03 */ QUEST_BOSSRUSH,
+} Quest;
+
+#define IS_VANILLA (gSaveContext.questId == QUEST_NORMAL)
+#define IS_MASTER_QUEST (gSaveContext.questId == QUEST_MASTER)
+#define IS_RANDO (gSaveContext.questId == QUEST_RANDOMIZER)
+#define IS_BOSS_RUSH (gSaveContext.questId == QUEST_BOSSRUSH)
 
 typedef enum {
     /* 0x00 */ BTN_ENABLED,
@@ -572,11 +589,16 @@ typedef enum {
 
 // 0xDA-0xDE
 #define EVENTCHKINF_SKULLTULA_REWARD_INDEX 13
-#define EVENTCHKINF_SKULLTULA_REWARD_10_MASK (1 << 10)
-#define EVENTCHKINF_SKULLTULA_REWARD_20_MASK (1 << 11)
-#define EVENTCHKINF_SKULLTULA_REWARD_30_MASK (1 << 12)
-#define EVENTCHKINF_SKULLTULA_REWARD_40_MASK (1 << 13)
-#define EVENTCHKINF_SKULLTULA_REWARD_50_MASK (1 << 14)
+#define EVENTCHKINF_SKULLTULA_REWARD_10_SHIFT 10
+#define EVENTCHKINF_SKULLTULA_REWARD_20_SHIFT 11
+#define EVENTCHKINF_SKULLTULA_REWARD_30_SHIFT 12
+#define EVENTCHKINF_SKULLTULA_REWARD_40_SHIFT 13
+#define EVENTCHKINF_SKULLTULA_REWARD_50_SHIFT 14
+#define EVENTCHKINF_SKULLTULA_REWARD_10_MASK (1 << EVENTCHKINF_SKULLTULA_REWARD_10_SHIFT)
+#define EVENTCHKINF_SKULLTULA_REWARD_20_MASK (1 << EVENTCHKINF_SKULLTULA_REWARD_20_SHIFT)
+#define EVENTCHKINF_SKULLTULA_REWARD_30_MASK (1 << EVENTCHKINF_SKULLTULA_REWARD_30_SHIFT)
+#define EVENTCHKINF_SKULLTULA_REWARD_40_MASK (1 << EVENTCHKINF_SKULLTULA_REWARD_40_SHIFT)
+#define EVENTCHKINF_SKULLTULA_REWARD_50_MASK (1 << EVENTCHKINF_SKULLTULA_REWARD_50_SHIFT)
 
 
 /*
