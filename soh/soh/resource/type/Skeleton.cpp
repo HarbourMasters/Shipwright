@@ -7,8 +7,6 @@
 #include <soh_assets.h>
 #include <objects/object_link_boy/object_link_boy.h>
 
-#define OTR_OFFSET 7
-
 namespace LUS {
 SkeletonData* Skeleton::GetPointer() {
     return &skeletonData;
@@ -86,15 +84,15 @@ void SkeletonPatcher::UpdateSkeletons() {
 
 void SkeletonPatcher::UpdateTunicSkeletons() {
     bool isAlt = CVarGetInteger("gAltAssets", 0);
-    const char* altPrefix = isAlt ? LUS::IResource::gAltAssetPrefix.c_str() : "";
+    std::string altPrefix = isAlt ? LUS::IResource::gAltAssetPrefix : "";
+    static const std::string sOtr = "__OTR__";
     for (auto skel : skeletons) {
         // Check if this is Link's skeleton
-        if (strcmp(skel.vanillaSkeletonPath.c_str(), &gLinkAdultSkel[OTR_OFFSET]) == 0) {
+        if (altPrefix + sOtr + skel.vanillaSkeletonPath == std::string(gLinkAdultSkel)) {
             Skeleton* newSkel = nullptr;
-            Skeleton* altSkel = nullptr;
             std::string skeletonPath = "";
             // Check what Link's current tunic is
-            switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
+            switch (TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TUNIC))) {
                 case PLAYER_TUNIC_KOKIRI:
                     skeletonPath = gLinkKokiriTunicSkel;
                     break;
@@ -109,24 +107,11 @@ void SkeletonPatcher::UpdateTunicSkeletons() {
             newSkel = 
                 (Skeleton*)LUS::Context::GetInstance()
                     ->GetResourceManager()
-                    ->LoadResource(skeletonPath, true)
+                    ->LoadResource(altPrefix + skeletonPath, true)
                     .get();
 
-            // If alt assets are on, look for alt tagged skeletons
-            if (isAlt) {
-                altSkel = 
-                    (Skeleton*)LUS::Context::GetInstance()
-                        ->GetResourceManager()
-                        ->LoadResource(LUS::IResource::gAltAssetPrefix + skeletonPath, true)
-                        .get();
-            }
-
-            // Override non-alt skeleton if necessary
-            if (altSkel != nullptr && isAlt) {
-                newSkel = altSkel;
-            }
-
             // Change back to the original Link skeleton if no skeleton's were found
+            // Needed if the skeleton previously existed but no longer does (e.g. only the alt skeleton exists)
             if (newSkel == nullptr) {
                 newSkel = 
                     (Skeleton*)LUS::Context::GetInstance()
