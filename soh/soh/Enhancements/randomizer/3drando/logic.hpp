@@ -115,6 +115,8 @@ extern bool LightTrialClear;
 
 //Greg
 extern bool Greg;
+extern bool GregInBridgeLogic;
+extern bool GregInLacsLogic;
 
 // Progression Items
 extern uint8_t ProgressiveBulletBag;
