@@ -2,7 +2,7 @@
 #include <ImGui/imgui.h>
 #include <libultraship/libultraship.h>
 
-#include <soh/UIWidgets.hpp> // This dependency is why the UI needs to be on SoH's side.
+#include <soh/UIWidgets.hpp>
 #include <graphic/Fast3D/gfx_pc.h>
 
 /*  Console Variables are grouped under gAdvancedResolution. (e.g. "gAdvancedResolution.Enabled")
@@ -12,7 +12,6 @@
         - AspectRatioX, AspectRatioY                    - Aspect ratio controls. To toggle off, set either to zero.
         - VerticalPixelCount, VerticalResolutionToggle  - Resolution controls.
         - PixelPerfectMode, IntegerScale.Factor         - Pixel Perfect Mode a.k.a. integer scaling controls.
-    (Waiting on a second PR merge on LUS for this to fully function.):
         - IntegerScale.FitAutomatically                 - Automatic resizing for Pixel Perfect Mode.
         - IntegerScale.NeverExceedBounds                - Prevents manual resizing from exceeding screen bounds.
 
@@ -36,11 +35,12 @@ const int default_aspectRatio = 1; // Default combo list option
 
 const char* pixelCountPresetLabels[] = { "Custom",     "Native N64 (240p)", "2x (480p)",       "3x (720p)", "4x (960p)",
                                          "5x (1200p)", "6x (1440p)",        "Full HD (1080p)", "4K (2160p)" };
-const int pixelCountPresets[] = { 480, 240, 480, 720, 960, 1200, 1440, 1080, 2160, 480 };
+const int pixelCountPresets[] = { 480, 240, 480, 720, 960, 1200, 1440, 1080, 2160 };
 const int default_pixelCount = 0; // Default combo list option
 
-const uint32_t minVerticalPixelCount = 240; // see: LUS::AdvancedResolution()
-const uint32_t maxVerticalPixelCount = 4320;
+// Resolution clamp values as defined in LUS::Gui::ApplyResolutionChanges()
+const uint32_t minVerticalPixelCount = 240;  // SCREEN_HEIGHT
+const uint32_t maxVerticalPixelCount = 4320; // 18x native, or 8K TV resolution
 
 const unsigned short default_maxIntegerScaleFactor = 6; // Default size of Integer scale factor slider.
 
@@ -145,6 +145,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         ImGui::Text("Force aspect ratio:");
         ImGui::SameLine();
         ImGui::TextColored({ 0.75f, 0.75f, 0.75f, 1.0f }, "(Select \"Off\" to disable.)");
+        // Presets
         if (ImGui::Combo(" ", &item_aspectRatio, aspectRatioPresetLabels,
                          IM_ARRAYSIZE(aspectRatioPresetLabels)) &&
             item_aspectRatio != default_aspectRatio) { // don't change anything if "Custom" is selected.
@@ -157,6 +158,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
             }
         }
+        // Hide aspect ratio input fields if using one of the presets.
         if (item_aspectRatio == default_aspectRatio && !showHorizontalResField) {
             // Declaring the Y input interaction in particular as a variable beforehand
             // will prevent a bug where the Y field would disappear when modifying X.
@@ -236,7 +238,6 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         }
 
         UIWidgets::Spacer(0);
-        // UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
         // Integer scaling settings group
         if (ImGui::CollapsingHeader("Integer Scaling Settings")) {
@@ -277,7 +278,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 CVarSetInteger("gAdvancedResolution.IntegerScale.Factor", integerScale_maximumBounds);
                 // CVarSave();
             }
-        }
+        } // End of integer scaling settings
 
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
@@ -338,9 +339,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f },
                                    " " ICON_FA_QUESTION_CIRCLE
                                    " A scroll bar may become visible if screen bounds are exceeded.");
-                // Another helpful button for an unused CVar.
+                // Another helpful button for the unused "Exceed Bounds" cvar.
                 if (CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0)) {
-                    if (ImGui::Button("Click to reset an unused CVar that may be causing this.")) {
+                    if (ImGui::Button("Click to reset a console variable that may be causing this.")) {
                         CVarSetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0);
                         CVarSave();
                     }
@@ -362,7 +363,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                                    " A scroll bar may become visible if screen bounds are exceeded.");
             }*/
 
-        } // end of Additional Settings
+        } // End of additional settings
 
         // Clamp and update the CVars that don't use UIWidgets
         if (IsBoolArrayTrue(update)) {
