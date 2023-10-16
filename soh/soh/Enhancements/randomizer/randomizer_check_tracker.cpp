@@ -80,6 +80,7 @@ bool initialized;
 bool doAreaScroll;
 bool previousShowHidden = false;
 bool hideShopRightChecks = true;
+bool hideTriforceCompleted = true;
 
 bool checkCollected = false;
 int checkLoops = 0;
@@ -1056,6 +1057,8 @@ void LoadSettings() {
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING
         :false;
     hideShopRightChecks = IS_RANDO ? CVarGetInteger("gCheckTrackerOptionHideRightShopChecks", 1) : false;
+    hideTriforceCompleted = IS_RANDO ? 
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) != RO_GENERIC_ON : false;
 
     if (IS_RANDO) {
         switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS)) {
@@ -1113,6 +1116,7 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
                 ) &&
             (loc->GetRCType() != RCTYPE_SHOP || (showShops && (!hideShopRightChecks || hideShopRightChecks && loc->GetActorParams() > 0x03))) &&
             (loc->GetRandomizerCheck() != RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS) &&
+            (rc != RC_TRIFORCE_COMPLETED || !hideTriforceCompleted) &&
             (loc->GetRCType() != RCTYPE_SCRUB ||
                 showScrubs ||
                 rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
