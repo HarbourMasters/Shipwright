@@ -245,12 +245,7 @@ void TrySetAreas() {
 
 void SetCheckCollected(RandomizerCheck rc) {
     gSaveContext.checkTrackerData[rc].status = RCSHOW_COLLECTED;
-    Rando::Location* loc;
-    if (rc == RC_GIFT_FROM_SAGES && !IS_RANDO) {
-        loc = Rando::StaticData::GetLocation(rc);
-    } else {
-        loc = Rando::StaticData::GetLocation(rc);
-    }
+    Rando::Location* loc = Rando::StaticData::GetLocation(rc);
     if (!gSaveContext.checkTrackerData[rc].skipped) {
         areaChecksGotten[loc->GetArea()]++;
     } else {
@@ -1117,6 +1112,7 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
             (loc->GetRCType() != RCTYPE_SHOP || (showShops && (!hideShopRightChecks || hideShopRightChecks && loc->GetActorParams() > 0x03))) &&
             (loc->GetRandomizerCheck() != RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS) &&
             (rc != RC_TRIFORCE_COMPLETED || !hideTriforceCompleted) &&
+            (rc != RC_GIFT_FROM_SAGES || !IS_RANDO) &&
             (loc->GetRCType() != RCTYPE_SCRUB ||
                 showScrubs ||
                 rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
