@@ -2802,699 +2802,172 @@ void Rando::StaticData::InitLocationTable() {
     // Gold Skulltula Tokens
 
     // Dungeons
-    locationTable[RC_DEKU_TREE_GS_BASEMENT_BACK_ROOM] =
-        Location::GSToken(RC_DEKU_TREE_GS_BASEMENT_BACK_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_DEKU_TREE,
-                          ACTOR_EN_SI, SCENE_DEKU_TREE, 8193, 0x01, "GS Basement Back Room",
-                          "Deku Tree GS Basement Back Room", RHT_DEKU_TREE_GS_BASEMENT_BACK_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
-    locationTable[RC_DEKU_TREE_GS_BASEMENT_GATE] = Location::GSToken(
-        RC_DEKU_TREE_GS_BASEMENT_GATE, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_DEKU_TREE, ACTOR_EN_SI,
-        SCENE_DEKU_TREE, 8194, 0x02, "GS Basement Gate", "Deku Tree GS Basement Gate", RHT_DEKU_TREE_GS_BASEMENT_GATE,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
-    locationTable[RC_DEKU_TREE_GS_BASEMENT_VINES] =
-        Location::GSToken(RC_DEKU_TREE_GS_BASEMENT_VINES, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_DEKU_TREE,
-                          ACTOR_EN_SI, SCENE_DEKU_TREE, 8196, 0x04, "GS Basement Vines", "Deku Tree GS Basement Vines",
-                          RHT_DEKU_TREE_GS_BASEMENT_VINES, { Category::cSkulltula },
-                          SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
-    locationTable[RC_DEKU_TREE_GS_COMPASS_ROOM] = Location::GSToken(
-        RC_DEKU_TREE_GS_COMPASS_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_DEKU_TREE, ACTOR_EN_SI,
-        SCENE_DEKU_TREE, 8200, 0x08, "GS Compass Room", "Deku Tree GS Compass Room", RHT_DEKU_TREE_GS_COMPASS_ROOM,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
-    locationTable[RC_DEKU_TREE_MQ_GS_LOBBY] = Location::GSToken(
-        RC_DEKU_TREE_MQ_GS_LOBBY, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_DEKU_TREE, ACTOR_EN_SI, SCENE_DEKU_TREE, 8194,
-        0x02, "MQ GS Lobby", "Deku Tree MQ GS Lobby", RHT_DEKU_TREE_MQ_GS_LOBBY, { Category::cSkulltula },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
-    locationTable[RC_DEKU_TREE_MQ_GS_COMPASS_ROOM] = Location::GSToken(
-        RC_DEKU_TREE_MQ_GS_COMPASS_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_DEKU_TREE, ACTOR_EN_SI, SCENE_DEKU_TREE,
-        8200, 0x08, "MQ GS Compass Room", "Deku Tree MQ GS Compass Room", RHT_DEKU_TREE_MQ_GS_COMPASS_ROOM,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
-    locationTable[RC_DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM] =
-        Location::GSToken(RC_DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_DEKU_TREE,
-                          ACTOR_EN_SI, SCENE_DEKU_TREE, 8196, 0x04, "MQ GS Basement Graves Room",
-                          "Deku Tree MQ GS Basement Graves Room", RHT_DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
-    locationTable[RC_DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM] =
-        Location::GSToken(RC_DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_DEKU_TREE,
-                          ACTOR_EN_SI, SCENE_DEKU_TREE, 8193, 0x01, "MQ GS Basement Back Room",
-                          "Deku Tree MQ GS Basement Back Room", RHT_DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
-
+    // Deku Tree  RandomizerCheck                                                          RandomizerCheck                                      Quest            Area                          Scene ID                    params  Flag  Short Name                          Spoiler Name                                        Hint Text Key                                         Categories                Collection Check Group
+    locationTable[RC_DEKU_TREE_GS_BASEMENT_BACK_ROOM] =                  Location::GSToken(RC_DEKU_TREE_GS_BASEMENT_BACK_ROOM,                  RCQUEST_VANILLA, RCAREA_DEKU_TREE,             SCENE_DEKU_TREE,            8193,   0x01, "GS Basement Back Room",            "Deku Tree GS Basement Back Room",                  RHT_DEKU_TREE_GS_BASEMENT_BACK_ROOM,                  { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_GS_BASEMENT_GATE] =                       Location::GSToken(RC_DEKU_TREE_GS_BASEMENT_GATE,                       RCQUEST_VANILLA, RCAREA_DEKU_TREE,             SCENE_DEKU_TREE,            8194,   0x02, "GS Basement Gate",                 "Deku Tree GS Basement Gate",                       RHT_DEKU_TREE_GS_BASEMENT_GATE,                       { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_GS_BASEMENT_VINES] =                      Location::GSToken(RC_DEKU_TREE_GS_BASEMENT_VINES,                      RCQUEST_VANILLA, RCAREA_DEKU_TREE,             SCENE_DEKU_TREE,            8196,   0x04, "GS Basement Vines",                "Deku Tree GS Basement Vines",                      RHT_DEKU_TREE_GS_BASEMENT_VINES,                      { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_GS_COMPASS_ROOM] =                        Location::GSToken(RC_DEKU_TREE_GS_COMPASS_ROOM,                        RCQUEST_VANILLA, RCAREA_DEKU_TREE,             SCENE_DEKU_TREE,            8200,   0x08, "GS Compass Room",                  "Deku Tree GS Compass Room",                        RHT_DEKU_TREE_GS_COMPASS_ROOM,                        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_MQ_GS_LOBBY] =                            Location::GSToken(RC_DEKU_TREE_MQ_GS_LOBBY,                            RCQUEST_MQ,      RCAREA_DEKU_TREE,             SCENE_DEKU_TREE,            8194,   0x02, "MQ GS Lobby",                      "Deku Tree MQ GS Lobby",                            RHT_DEKU_TREE_MQ_GS_LOBBY,                            { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_MQ_GS_COMPASS_ROOM] =                     Location::GSToken(RC_DEKU_TREE_MQ_GS_COMPASS_ROOM,                     RCQUEST_MQ,      RCAREA_DEKU_TREE,             SCENE_DEKU_TREE,            8200,   0x08, "MQ GS Compass Room",               "Deku Tree MQ GS Compass Room",                     RHT_DEKU_TREE_MQ_GS_COMPASS_ROOM,                     { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM] =             Location::GSToken(RC_DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM,             RCQUEST_MQ,      RCAREA_DEKU_TREE,             SCENE_DEKU_TREE,            8196,   0x04, "MQ GS Basement Graves Room",       "Deku Tree MQ GS Basement Graves Room",             RHT_DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM,             { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM] =               Location::GSToken(RC_DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM,               RCQUEST_MQ,      RCAREA_DEKU_TREE,             SCENE_DEKU_TREE,            8193,   0x01, "MQ GS Basement Back Room",         "Deku Tree MQ GS Basement Back Room",               RHT_DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM,               { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
     // Dodongo's Cavern
-    locationTable[RC_DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS] = Location::GSToken(
-        RC_DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_DODONGOS_CAVERN,
-        ACTOR_EN_SI, SCENE_DODONGOS_CAVERN, 8449, 0x01, "GS Vines Above Stairs",
-        "Dodongos Cavern GS Vines Above Stairs", RHT_DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS, { Category::cSkulltula },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
-    locationTable[RC_DODONGOS_CAVERN_GS_SCARECROW] =
-        Location::GSToken(RC_DODONGOS_CAVERN_GS_SCARECROW, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_DODONGOS_CAVERN,
-                          ACTOR_EN_SI, SCENE_DODONGOS_CAVERN, 8450, 0x02, "GS Scarecrow",
-                          "Dodongos Cavern GS Scarecrow", RHT_DODONGOS_CAVERN_GS_SCARECROW, { Category::cSkulltula },
-                          SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
-    locationTable[RC_DODONGOS_CAVERN_GS_ALCOVE_ABOVE_STAIRS] = Location::GSToken(
-        RC_DODONGOS_CAVERN_GS_ALCOVE_ABOVE_STAIRS, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_DODONGOS_CAVERN,
-        ACTOR_EN_SI, SCENE_DODONGOS_CAVERN, 8452, 0x04, "GS Alcove Above Stairs",
-        "Dodongos Cavern GS Alcove Above Stairs", RHT_DODONGOS_CAVERN_GS_ALCOVE_ABOVE_STAIRS, { Category::cSkulltula },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
-    locationTable[RC_DODONGOS_CAVERN_GS_BACK_ROOM] =
-        Location::GSToken(RC_DODONGOS_CAVERN_GS_BACK_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_DODONGOS_CAVERN,
-                          ACTOR_EN_SI, SCENE_DODONGOS_CAVERN, 8456, 0x08, "GS Back Room",
-                          "Dodongos Cavern GS Back Room", RHT_DODONGOS_CAVERN_GS_BACK_ROOM, { Category::cSkulltula },
-                          SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
-    locationTable[RC_DODONGOS_CAVERN_GS_SIDE_ROOM_NEAR_LOWER_LIZALFOS] = Location::GSToken(
-        RC_DODONGOS_CAVERN_GS_SIDE_ROOM_NEAR_LOWER_LIZALFOS, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN,
-        RCAREA_DODONGOS_CAVERN, ACTOR_EN_SI, SCENE_DODONGOS_CAVERN, 8464, 0x10, "GS Side Room Near Lower Lizalfos",
-        "Dodongos Cavern GS Side Room Near Lower Lizalfos", RHT_DODONGOS_CAVERN_GS_SIDE_ROOM_NEAR_LOWER_LIZALFOS,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
-    locationTable[RC_DODONGOS_CAVERN_MQ_GS_SCRUB_ROOM] =
-        Location::GSToken(RC_DODONGOS_CAVERN_MQ_GS_SCRUB_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_DODONGOS_CAVERN,
-                          ACTOR_EN_SI, SCENE_DODONGOS_CAVERN, 8450, 0x02, "MQ GS Scrub Room",
-                          "Dodongos Cavern MQ GS Scrub Room", RHT_DODONGOS_CAVERN_MQ_GS_SCRUB_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
-    locationTable[RC_DODONGOS_CAVERN_MQ_GS_SONG_OF_TIME_BLOCK_ROOM] = Location::GSToken(
-        RC_DODONGOS_CAVERN_MQ_GS_SONG_OF_TIME_BLOCK_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_DODONGOS_CAVERN,
-        ACTOR_EN_SI, SCENE_DODONGOS_CAVERN, 8456, 0x08, "MQ GS Song of Time Block Room",
-        "Dodongos Cavern MQ GS Song of Time Block Room", RHT_DODONGOS_CAVERN_MQ_GS_SONG_OF_TIME_BLOCK_ROOM,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
-    locationTable[RC_DODONGOS_CAVERN_MQ_GS_LIZALFOS_ROOM] =
-        Location::GSToken(RC_DODONGOS_CAVERN_MQ_GS_LIZALFOS_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN,
-                          RCAREA_DODONGOS_CAVERN, ACTOR_EN_SI, SCENE_DODONGOS_CAVERN, 8452, 0x04, "MQ GS Lizalfos Room",
-                          "Dodongos Cavern MQ GS Lizalfos Room", RHT_DODONGOS_CAVERN_MQ_GS_LIZALFOS_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
-    locationTable[RC_DODONGOS_CAVERN_MQ_GS_LARVAE_ROOM] =
-        Location::GSToken(RC_DODONGOS_CAVERN_MQ_GS_LARVAE_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_DODONGOS_CAVERN,
-                          ACTOR_EN_SI, SCENE_DODONGOS_CAVERN, 8464, 0x10, "MQ GS Larvae Room",
-                          "Dodongos Cavern MQ GS Larvae Room", RHT_DODONGOS_CAVERN_MQ_GS_LARVAE_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
-    locationTable[RC_DODONGOS_CAVERN_MQ_GS_BACK_AREA] =
-        Location::GSToken(RC_DODONGOS_CAVERN_MQ_GS_BACK_AREA, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_DODONGOS_CAVERN,
-                          ACTOR_EN_SI, SCENE_DODONGOS_CAVERN, 8449, 0x01, "MQ GS Back Room",
-                          "Dodongos Cavern MQ GS Back Room", RHT_DODONGOS_CAVERN_MQ_GS_BACK_AREA,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
-    locationTable[RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER] =
-        Location::GSToken(RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN,
-                          RCAREA_JABU_JABUS_BELLY, ACTOR_EN_SI, SCENE_JABU_JABU, 8705, 0x01, "GS Lobby Basement Lower",
-                          "Jabu Jabus Belly GS Lobby Basement Lower", RHT_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
-    locationTable[RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER] =
-        Location::GSToken(RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN,
-                          RCAREA_JABU_JABUS_BELLY, ACTOR_EN_SI, SCENE_JABU_JABU, 8706, 0x02, "GS Lobby Basement Upper",
-                          "Jabu Jabus Belly GS Lobby Basement Upper", RHT_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
-    locationTable[RC_JABU_JABUS_BELLY_GS_NEAR_BOSS] = Location::GSToken(
-        RC_JABU_JABUS_BELLY_GS_NEAR_BOSS, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_JABU_JABUS_BELLY, ACTOR_EN_SI,
-        SCENE_JABU_JABU, 8708, 0x04, "GS Near Boss", "Jabu Jabus Belly GS Near Boss", RHT_JABU_JABUS_BELLY_GS_NEAR_BOSS,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
-    locationTable[RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM] =
-        Location::GSToken(RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN,
-                          RCAREA_JABU_JABUS_BELLY, ACTOR_EN_SI, SCENE_JABU_JABU, 8712, 0x08, "GS Water Switch Room",
-                          "Jabu Jabus Belly GS Water Switch Room", RHT_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
-    locationTable[RC_JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM] =
-        Location::GSToken(RC_JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN,
-                          RCAREA_JABU_JABUS_BELLY, ACTOR_EN_SI, SCENE_JABU_JABU, 8708, 0x04, "MQ GS Tail Parasan Room",
-                          "Jabu Jabus Belly MQ GS Tail Parasan Room", RHT_JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
-    locationTable[RC_JABU_JABUS_BELLY_MQ_GS_INVISIBLE_ENEMIES_ROOM] = Location::GSToken(
-        RC_JABU_JABUS_BELLY_MQ_GS_INVISIBLE_ENEMIES_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_JABU_JABUS_BELLY,
-        ACTOR_EN_SI, SCENE_JABU_JABU, 8712, 0x08, "MQ GS Invisible Enemies Room",
-        "Jabu Jabus Belly MQ GS Invisible Enemies Room", RHT_JABU_JABUS_BELLY_MQ_GS_INVISIBLE_ENEMIES_ROOM,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
-    locationTable[RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM] = Location::GSToken(
-        RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_JABU_JABUS_BELLY,
-        ACTOR_EN_SI, SCENE_JABU_JABU, 8705, 0x01, "MQ GS Boomerang Chest Room",
-        "Jabu Jabus Belly MQ GS Boomerang Chest Room", RHT_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
-    locationTable[RC_JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS] =
-        Location::GSToken(RC_JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_JABU_JABUS_BELLY,
-                          ACTOR_EN_SI, SCENE_JABU_JABU, 8706, 0x02, "MQ GS Near Boss",
-                          "Jabu Jabus Belly MQ GS Near Boss", RHT_JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
-    locationTable[RC_FOREST_TEMPLE_GS_RAISED_ISLAND_COURTYARD] = Location::GSToken(
-        RC_FOREST_TEMPLE_GS_RAISED_ISLAND_COURTYARD, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_FOREST_TEMPLE,
-        ACTOR_EN_SI, SCENE_FOREST_TEMPLE, 8961, 0x01, "GS Raised Island Courtyard",
-        "Forest Temple GS Raised Island Courtyard", RHT_FOREST_TEMPLE_GS_RAISED_ISLAND_COURTYARD,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
-    locationTable[RC_FOREST_TEMPLE_GS_FIRST_ROOM] =
-        Location::GSToken(RC_FOREST_TEMPLE_GS_FIRST_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_FOREST_TEMPLE,
-                          ACTOR_EN_SI, SCENE_FOREST_TEMPLE, 8962, 0x02, "GS First Room", "Forest Temple GS First Room",
-                          RHT_FOREST_TEMPLE_GS_FIRST_ROOM, { Category::cSkulltula },
-                          SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
-    locationTable[RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD] = Location::GSToken(
-        RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_FOREST_TEMPLE,
-        ACTOR_EN_SI, SCENE_FOREST_TEMPLE, 8964, 0x04, "GS Level Island Courtyard",
-        "Forest Temple GS Level Island Courtyard", RHT_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
-    locationTable[RC_FOREST_TEMPLE_GS_LOBBY] = Location::GSToken(
-        RC_FOREST_TEMPLE_GS_LOBBY, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_FOREST_TEMPLE, ACTOR_EN_SI,
-        SCENE_FOREST_TEMPLE, 8968, 0x08, "GS Lobby", "Forest Temple GS Lobby", RHT_FOREST_TEMPLE_GS_LOBBY,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
-    locationTable[RC_FOREST_TEMPLE_GS_BASEMENT] = Location::GSToken(
-        RC_FOREST_TEMPLE_GS_BASEMENT, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_FOREST_TEMPLE, ACTOR_EN_SI,
-        SCENE_FOREST_TEMPLE, 8976, 0x10, "GS Basement", "Forest Temple GS Basement", RHT_FOREST_TEMPLE_GS_BASEMENT,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
-    locationTable[RC_FOREST_TEMPLE_MQ_GS_FIRST_HALLWAY] =
-        Location::GSToken(RC_FOREST_TEMPLE_MQ_GS_FIRST_HALLWAY, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_FOREST_TEMPLE,
-                          ACTOR_EN_SI, SCENE_FOREST_TEMPLE, 8962, 0x02, "MQ GS First Hallway",
-                          "Forest Temple MQ GS First Hallway", RHT_FOREST_TEMPLE_MQ_GS_FIRST_HALLWAY,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
-    locationTable[RC_FOREST_TEMPLE_MQ_GS_BLOCK_PUSH_ROOM] =
-        Location::GSToken(RC_FOREST_TEMPLE_MQ_GS_BLOCK_PUSH_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_FOREST_TEMPLE,
-                          ACTOR_EN_SI, SCENE_FOREST_TEMPLE, 8976, 0x10, "MQ GS Block Push Room",
-                          "Forest Temple MQ GS Block Push Room", RHT_FOREST_TEMPLE_MQ_GS_BLOCK_PUSH_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
-    locationTable[RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD] = Location::GSToken(
-        RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_FOREST_TEMPLE,
-        ACTOR_EN_SI, SCENE_FOREST_TEMPLE, 8961, 0x01, "MQ GS Raised Island Courtyard",
-        "Forest Temple MQ GS Raised Island Courtyard", RHT_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
-    locationTable[RC_FOREST_TEMPLE_MQ_GS_LEVEL_ISLAND_COURTYARD] = Location::GSToken(
-        RC_FOREST_TEMPLE_MQ_GS_LEVEL_ISLAND_COURTYARD, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_FOREST_TEMPLE,
-        ACTOR_EN_SI, SCENE_FOREST_TEMPLE, 8964, 0x04, "MQ GS Level Island Courtyard",
-        "Forest Temple MQ GS Level Island Courtyard", RHT_FOREST_TEMPLE_MQ_GS_LEVEL_ISLAND_COURTYARD,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
-    locationTable[RC_FOREST_TEMPLE_MQ_GS_WELL] = Location::GSToken(
-        RC_FOREST_TEMPLE_MQ_GS_WELL, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_FOREST_TEMPLE, ACTOR_EN_SI,
-        SCENE_FOREST_TEMPLE, 8968, 0x08, "MQ GS Well", "Forest Temple MQ GS Well", RHT_FOREST_TEMPLE_MQ_GS_WELL,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
-
+    locationTable[RC_DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS] =            Location::GSToken(RC_DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS,            RCQUEST_VANILLA, RCAREA_DODONGOS_CAVERN,       SCENE_DODONGOS_CAVERN,      8449,   0x01, "GS Vines Above Stairs",            "Dodongos Cavern GS Vines Above Stairs",            RHT_DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS,            { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_GS_SCARECROW] =                     Location::GSToken(RC_DODONGOS_CAVERN_GS_SCARECROW,                     RCQUEST_VANILLA, RCAREA_DODONGOS_CAVERN,       SCENE_DODONGOS_CAVERN,      8450,   0x02, "GS Scarecrow",                     "Dodongos Cavern GS Scarecrow",                     RHT_DODONGOS_CAVERN_GS_SCARECROW,                     { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_GS_ALCOVE_ABOVE_STAIRS] =           Location::GSToken(RC_DODONGOS_CAVERN_GS_ALCOVE_ABOVE_STAIRS,           RCQUEST_VANILLA, RCAREA_DODONGOS_CAVERN,       SCENE_DODONGOS_CAVERN,      8452,   0x04, "GS Alcove Above Stairs",           "Dodongos Cavern GS Alcove Above Stairs",           RHT_DODONGOS_CAVERN_GS_ALCOVE_ABOVE_STAIRS,           { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_GS_BACK_ROOM] =                     Location::GSToken(RC_DODONGOS_CAVERN_GS_BACK_ROOM,                     RCQUEST_VANILLA, RCAREA_DODONGOS_CAVERN,       SCENE_DODONGOS_CAVERN,      8456,   0x08, "GS Back Room",                     "Dodongos Cavern GS Back Room",                     RHT_DODONGOS_CAVERN_GS_BACK_ROOM,                     { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_GS_SIDE_ROOM_NEAR_LOWER_LIZALFOS] = Location::GSToken(RC_DODONGOS_CAVERN_GS_SIDE_ROOM_NEAR_LOWER_LIZALFOS, RCQUEST_VANILLA, RCAREA_DODONGOS_CAVERN,       SCENE_DODONGOS_CAVERN,      8464,   0x10, "GS Side Room Near Lower Lizalfos", "Dodongos Cavern GS Side Room Near Lower Lizalfos", RHT_DODONGOS_CAVERN_GS_SIDE_ROOM_NEAR_LOWER_LIZALFOS, { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_MQ_GS_SCRUB_ROOM] =                 Location::GSToken(RC_DODONGOS_CAVERN_MQ_GS_SCRUB_ROOM,                 RCQUEST_MQ,      RCAREA_DODONGOS_CAVERN,       SCENE_DODONGOS_CAVERN,      8450,   0x02, "MQ GS Scrub Room",                 "Dodongos Cavern MQ GS Scrub Room",                 RHT_DODONGOS_CAVERN_MQ_GS_SCRUB_ROOM,                 { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_MQ_GS_SONG_OF_TIME_BLOCK_ROOM] =    Location::GSToken(RC_DODONGOS_CAVERN_MQ_GS_SONG_OF_TIME_BLOCK_ROOM,    RCQUEST_MQ,      RCAREA_DODONGOS_CAVERN,       SCENE_DODONGOS_CAVERN,      8456,   0x08, "MQ GS Song of Time Block Room",    "Dodongos Cavern MQ GS Song of Time Block Room",    RHT_DODONGOS_CAVERN_MQ_GS_SONG_OF_TIME_BLOCK_ROOM,    { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_MQ_GS_LIZALFOS_ROOM] =              Location::GSToken(RC_DODONGOS_CAVERN_MQ_GS_LIZALFOS_ROOM,              RCQUEST_MQ,      RCAREA_DODONGOS_CAVERN,       SCENE_DODONGOS_CAVERN,      8452,   0x04, "MQ GS Lizalfos Room",              "Dodongos Cavern MQ GS Lizalfos Room",              RHT_DODONGOS_CAVERN_MQ_GS_LIZALFOS_ROOM,              { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_MQ_GS_LARVAE_ROOM] =                Location::GSToken(RC_DODONGOS_CAVERN_MQ_GS_LARVAE_ROOM,                RCQUEST_MQ,      RCAREA_DODONGOS_CAVERN,       SCENE_DODONGOS_CAVERN,      8464,   0x10, "MQ GS Larvae Room",                "Dodongos Cavern MQ GS Larvae Room",                RHT_DODONGOS_CAVERN_MQ_GS_LARVAE_ROOM,                { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_MQ_GS_BACK_AREA] =                  Location::GSToken(RC_DODONGOS_CAVERN_MQ_GS_BACK_AREA,                  RCQUEST_MQ,      RCAREA_DODONGOS_CAVERN,       SCENE_DODONGOS_CAVERN,      8449,   0x01, "MQ GS Back Room",                  "Dodongos Cavern MQ GS Back Room",                  RHT_DODONGOS_CAVERN_MQ_GS_BACK_AREA,                  { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER] =         Location::GSToken(RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER,         RCQUEST_VANILLA, RCAREA_JABU_JABUS_BELLY,      SCENE_JABU_JABU,            8705,   0x01, "GS Lobby Basement Lower",          "Jabu Jabus Belly GS Lobby Basement Lower",         RHT_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER,         { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER] =         Location::GSToken(RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER,         RCQUEST_VANILLA, RCAREA_JABU_JABUS_BELLY,      SCENE_JABU_JABU,            8706,   0x02, "GS Lobby Basement Upper",          "Jabu Jabus Belly GS Lobby Basement Upper",         RHT_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER,         { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_GS_NEAR_BOSS] =                    Location::GSToken(RC_JABU_JABUS_BELLY_GS_NEAR_BOSS,                    RCQUEST_VANILLA, RCAREA_JABU_JABUS_BELLY,      SCENE_JABU_JABU,            8708,   0x04, "GS Near Boss",                     "Jabu Jabus Belly GS Near Boss",                    RHT_JABU_JABUS_BELLY_GS_NEAR_BOSS,                    { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM] =            Location::GSToken(RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM,            RCQUEST_VANILLA, RCAREA_JABU_JABUS_BELLY,      SCENE_JABU_JABU,            8712,   0x08, "GS Water Switch Room",             "Jabu Jabus Belly GS Water Switch Room",            RHT_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM,            { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM] =          Location::GSToken(RC_JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM,          RCQUEST_MQ,      RCAREA_JABU_JABUS_BELLY,      SCENE_JABU_JABU,            8708,   0x04, "MQ GS Tail Parasan Room",          "Jabu Jabus Belly MQ GS Tail Parasan Room",         RHT_JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM,          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_MQ_GS_INVISIBLE_ENEMIES_ROOM] =    Location::GSToken(RC_JABU_JABUS_BELLY_MQ_GS_INVISIBLE_ENEMIES_ROOM,    RCQUEST_MQ,      RCAREA_JABU_JABUS_BELLY,      SCENE_JABU_JABU,            8712,   0x08, "MQ GS Invisible Enemies Room",     "Jabu Jabus Belly MQ GS Invisible Enemies Room",    RHT_JABU_JABUS_BELLY_MQ_GS_INVISIBLE_ENEMIES_ROOM,    { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM] =      Location::GSToken(RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,      RCQUEST_MQ,      RCAREA_JABU_JABUS_BELLY,      SCENE_JABU_JABU,            8705,   0x01, "MQ GS Boomerang Chest Room",       "Jabu Jabus Belly MQ GS Boomerang Chest Room",      RHT_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,      { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS] =                 Location::GSToken(RC_JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS,                 RCQUEST_MQ,      RCAREA_JABU_JABUS_BELLY,      SCENE_JABU_JABU,            8706,   0x02, "MQ GS Near Boss",                  "Jabu Jabus Belly MQ GS Near Boss",                 RHT_JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS,                 { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_FOREST_TEMPLE_GS_RAISED_ISLAND_COURTYARD] =         Location::GSToken(RC_FOREST_TEMPLE_GS_RAISED_ISLAND_COURTYARD,         RCQUEST_VANILLA, RCAREA_FOREST_TEMPLE,         SCENE_FOREST_TEMPLE,        8961,   0x01, "GS Raised Island Courtyard",       "Forest Temple GS Raised Island Courtyard",         RHT_FOREST_TEMPLE_GS_RAISED_ISLAND_COURTYARD,         { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_GS_FIRST_ROOM] =                      Location::GSToken(RC_FOREST_TEMPLE_GS_FIRST_ROOM,                      RCQUEST_VANILLA, RCAREA_FOREST_TEMPLE,         SCENE_FOREST_TEMPLE,        8962,   0x02, "GS First Room",                    "Forest Temple GS First Room",                      RHT_FOREST_TEMPLE_GS_FIRST_ROOM,                      { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD] =          Location::GSToken(RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD,          RCQUEST_VANILLA, RCAREA_FOREST_TEMPLE,         SCENE_FOREST_TEMPLE,        8964,   0x04, "GS Level Island Courtyard",        "Forest Temple GS Level Island Courtyard",          RHT_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD,          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_GS_LOBBY] =                           Location::GSToken(RC_FOREST_TEMPLE_GS_LOBBY,                           RCQUEST_VANILLA, RCAREA_FOREST_TEMPLE,         SCENE_FOREST_TEMPLE,        8968,   0x08, "GS Lobby",                         "Forest Temple GS Lobby",                           RHT_FOREST_TEMPLE_GS_LOBBY,                           { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_GS_BASEMENT] =                        Location::GSToken(RC_FOREST_TEMPLE_GS_BASEMENT,                        RCQUEST_VANILLA, RCAREA_FOREST_TEMPLE,         SCENE_FOREST_TEMPLE,        8976,   0x10, "GS Basement",                      "Forest Temple GS Basement",                        RHT_FOREST_TEMPLE_GS_BASEMENT,                        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MQ_GS_FIRST_HALLWAY] =                Location::GSToken(RC_FOREST_TEMPLE_MQ_GS_FIRST_HALLWAY,                RCQUEST_MQ,      RCAREA_FOREST_TEMPLE,         SCENE_FOREST_TEMPLE,        8962,   0x02, "MQ GS First Hallway",              "Forest Temple MQ GS First Hallway",                RHT_FOREST_TEMPLE_MQ_GS_FIRST_HALLWAY,                { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MQ_GS_BLOCK_PUSH_ROOM] =              Location::GSToken(RC_FOREST_TEMPLE_MQ_GS_BLOCK_PUSH_ROOM,              RCQUEST_MQ,      RCAREA_FOREST_TEMPLE,         SCENE_FOREST_TEMPLE,        8976,   0x10, "MQ GS Block Push Room",            "Forest Temple MQ GS Block Push Room",              RHT_FOREST_TEMPLE_MQ_GS_BLOCK_PUSH_ROOM,              { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD] =      Location::GSToken(RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD,      RCQUEST_MQ,      RCAREA_FOREST_TEMPLE,         SCENE_FOREST_TEMPLE,        8961,   0x01, "MQ GS Raised Island Courtyard",    "Forest Temple MQ GS Raised Island Courtyard",      RHT_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD,      { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MQ_GS_LEVEL_ISLAND_COURTYARD] =       Location::GSToken(RC_FOREST_TEMPLE_MQ_GS_LEVEL_ISLAND_COURTYARD,       RCQUEST_MQ,      RCAREA_FOREST_TEMPLE,         SCENE_FOREST_TEMPLE,        8964,   0x04, "MQ GS Level Island Courtyard",     "Forest Temple MQ GS Level Island Courtyard",       RHT_FOREST_TEMPLE_MQ_GS_LEVEL_ISLAND_COURTYARD,       { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MQ_GS_WELL] =                         Location::GSToken(RC_FOREST_TEMPLE_MQ_GS_WELL,                         RCQUEST_MQ,      RCAREA_FOREST_TEMPLE,         SCENE_FOREST_TEMPLE,        8968,   0x08, "MQ GS Well",                       "Forest Temple MQ GS Well",                         RHT_FOREST_TEMPLE_MQ_GS_WELL,                         { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
     // Fire Temple
-    locationTable[RC_FIRE_TEMPLE_GS_SONG_OF_TIME_ROOM] =
-        Location::GSToken(RC_FIRE_TEMPLE_GS_SONG_OF_TIME_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_FIRE_TEMPLE,
-                          ACTOR_EN_SI, SCENE_FIRE_TEMPLE, 9217, 0x01, "GS Song of Time Room",
-                          "Fire Temple GS Song of Time Room", RHT_FIRE_TEMPLE_GS_SONG_OF_TIME_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    locationTable[RC_FIRE_TEMPLE_GS_BOSS_KEY_LOOP] =
-        Location::GSToken(RC_FIRE_TEMPLE_GS_BOSS_KEY_LOOP, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_FIRE_TEMPLE,
-                          ACTOR_EN_SI, SCENE_FIRE_TEMPLE, 9218, 0x02, "GS Boss Key Loop",
-                          "Fire Temple GS Boss Key Loop", RHT_FIRE_TEMPLE_GS_BOSS_KEY_LOOP, { Category::cSkulltula },
-                          SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    locationTable[RC_FIRE_TEMPLE_GS_BOULDER_MAZE] =
-        Location::GSToken(RC_FIRE_TEMPLE_GS_BOULDER_MAZE, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_FIRE_TEMPLE,
-                          ACTOR_EN_SI, SCENE_FIRE_TEMPLE, 9220, 0x04, "GS Boulder Maze", "Fire Temple GS Boulder Maze",
-                          RHT_FIRE_TEMPLE_GS_BOULDER_MAZE, { Category::cSkulltula },
-                          SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    locationTable[RC_FIRE_TEMPLE_GS_SCARECROW_TOP] =
-        Location::GSToken(RC_FIRE_TEMPLE_GS_SCARECROW_TOP, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_FIRE_TEMPLE,
-                          ACTOR_EN_SI, SCENE_FIRE_TEMPLE, 9224, 0x08, "GS Scarecrow Top",
-                          "Fire Temple GS Scarecrow Top", RHT_FIRE_TEMPLE_GS_SCARECROW_TOP, { Category::cSkulltula },
-                          SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    locationTable[RC_FIRE_TEMPLE_GS_SCARECROW_CLIMB] =
-        Location::GSToken(RC_FIRE_TEMPLE_GS_SCARECROW_CLIMB, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_FIRE_TEMPLE,
-                          ACTOR_EN_SI, SCENE_FIRE_TEMPLE, 9232, 0x10, "GS Scarecrow Climb",
-                          "Fire Temple GS Scarecrow Climb", RHT_FIRE_TEMPLE_GS_SCARECROW_CLIMB,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    locationTable[RC_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE] =
-        Location::GSToken(RC_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_FIRE_TEMPLE,
-                          ACTOR_EN_SI, SCENE_FIRE_TEMPLE, 9218, 0x02, "MQ GS Above Fire Wall Maze",
-                          "Fire Temple MQ GS Above Fire Wall Maze", RHT_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    locationTable[RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER] =
-        Location::GSToken(RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER, RCQUEST_MQ, RCTYPE_SKULL_TOKEN,
-                          RCAREA_FIRE_TEMPLE, ACTOR_EN_SI, SCENE_FIRE_TEMPLE, 9224, 0x08, "MQ GS Fire Wall Maze Center",
-                          "Fire Temple MQ GS Fire Wall Maze Center", RHT_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    locationTable[RC_FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR] = Location::GSToken(
-        RC_FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_FIRE_TEMPLE, ACTOR_EN_SI,
-        SCENE_FIRE_TEMPLE, 9217, 0x01, "MQ GS Big Lava Room Open Door", "Fire Temple MQ GS Big Lava Room Open Door",
-        RHT_FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR, { Category::cSkulltula },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    locationTable[RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM] = Location::GSToken(
-        RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_FIRE_TEMPLE, ACTOR_EN_SI,
-        SCENE_FIRE_TEMPLE, 9232, 0x10, "MQ GS Fire Wall Maze Side Room", "Fire Temple MQ GS Fire Wall Maze Side Room",
-        RHT_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM, { Category::cSkulltula },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    locationTable[RC_FIRE_TEMPLE_MQ_GS_SKULL_ON_FIRE] =
-        Location::GSToken(RC_FIRE_TEMPLE_MQ_GS_SKULL_ON_FIRE, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_FIRE_TEMPLE,
-                          ACTOR_EN_SI, SCENE_FIRE_TEMPLE, 9220, 0x04, "MQ GS Skull on Fire",
-                          "Fire Temple MQ GS Skull on Fire", RHT_FIRE_TEMPLE_MQ_GS_SKULL_ON_FIRE,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-
+    locationTable[RC_FIRE_TEMPLE_GS_SONG_OF_TIME_ROOM] =                 Location::GSToken(RC_FIRE_TEMPLE_GS_SONG_OF_TIME_ROOM,                 RCQUEST_VANILLA, RCAREA_FIRE_TEMPLE,           SCENE_FIRE_TEMPLE,          9217,   0x01, "GS Song of Time Room",             "Fire Temple GS Song of Time Room",                 RHT_FIRE_TEMPLE_GS_SONG_OF_TIME_ROOM,                 { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_GS_BOSS_KEY_LOOP] =                     Location::GSToken(RC_FIRE_TEMPLE_GS_BOSS_KEY_LOOP,                     RCQUEST_VANILLA, RCAREA_FIRE_TEMPLE,           SCENE_FIRE_TEMPLE,          9218,   0x02, "GS Boss Key Loop",                 "Fire Temple GS Boss Key Loop",                     RHT_FIRE_TEMPLE_GS_BOSS_KEY_LOOP,                     { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_GS_BOULDER_MAZE] =                      Location::GSToken(RC_FIRE_TEMPLE_GS_BOULDER_MAZE,                      RCQUEST_VANILLA, RCAREA_FIRE_TEMPLE,           SCENE_FIRE_TEMPLE,          9220,   0x04, "GS Boulder Maze",                  "Fire Temple GS Boulder Maze",                      RHT_FIRE_TEMPLE_GS_BOULDER_MAZE,                      { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_GS_SCARECROW_TOP] =                     Location::GSToken(RC_FIRE_TEMPLE_GS_SCARECROW_TOP,                     RCQUEST_VANILLA, RCAREA_FIRE_TEMPLE,           SCENE_FIRE_TEMPLE,          9224,   0x08, "GS Scarecrow Top",                 "Fire Temple GS Scarecrow Top",                     RHT_FIRE_TEMPLE_GS_SCARECROW_TOP,                     { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_GS_SCARECROW_CLIMB] =                   Location::GSToken(RC_FIRE_TEMPLE_GS_SCARECROW_CLIMB,                   RCQUEST_VANILLA, RCAREA_FIRE_TEMPLE,           SCENE_FIRE_TEMPLE,          9232,   0x10, "GS Scarecrow Climb",               "Fire Temple GS Scarecrow Climb",                   RHT_FIRE_TEMPLE_GS_SCARECROW_CLIMB,                   { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE] =           Location::GSToken(RC_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE,           RCQUEST_MQ,      RCAREA_FIRE_TEMPLE,           SCENE_FIRE_TEMPLE,          9218,   0x02, "MQ GS Above Fire Wall Maze",       "Fire Temple MQ GS Above Fire Wall Maze",           RHT_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE,           { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER] =          Location::GSToken(RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER,          RCQUEST_MQ,      RCAREA_FIRE_TEMPLE,           SCENE_FIRE_TEMPLE,          9224,   0x08, "MQ GS Fire Wall Maze Center",      "Fire Temple MQ GS Fire Wall Maze Center",          RHT_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER,          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR] =        Location::GSToken(RC_FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR,        RCQUEST_MQ,      RCAREA_FIRE_TEMPLE,           SCENE_FIRE_TEMPLE,          9217,   0x01, "MQ GS Big Lava Room Open Door",    "Fire Temple MQ GS Big Lava Room Open Door",        RHT_FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR,        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM] =       Location::GSToken(RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM,       RCQUEST_MQ,      RCAREA_FIRE_TEMPLE,           SCENE_FIRE_TEMPLE,          9232,   0x10, "MQ GS Fire Wall Maze Side Room",   "Fire Temple MQ GS Fire Wall Maze Side Room",       RHT_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM,       { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_GS_SKULL_ON_FIRE] =                  Location::GSToken(RC_FIRE_TEMPLE_MQ_GS_SKULL_ON_FIRE,                  RCQUEST_MQ,      RCAREA_FIRE_TEMPLE,           SCENE_FIRE_TEMPLE,          9220,   0x04, "MQ GS Skull on Fire",              "Fire Temple MQ GS Skull on Fire",                  RHT_FIRE_TEMPLE_MQ_GS_SKULL_ON_FIRE,                  { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
     // Water Temple
-    locationTable[RC_WATER_TEMPLE_GS_BEHIND_GATE] =
-        Location::GSToken(RC_WATER_TEMPLE_GS_BEHIND_GATE, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_WATER_TEMPLE,
-                          ACTOR_EN_SI, SCENE_WATER_TEMPLE, 9473, 0x01, "GS Behind Gate", "Water Temple GS Behind Gate",
-                          RHT_WATER_TEMPLE_GS_BEHIND_GATE, { Category::cSkulltula },
-                          SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
-    locationTable[RC_WATER_TEMPLE_GS_FALLING_PLATFORM_ROOM] =
-        Location::GSToken(RC_WATER_TEMPLE_GS_FALLING_PLATFORM_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN,
-                          RCAREA_WATER_TEMPLE, ACTOR_EN_SI, SCENE_WATER_TEMPLE, 9474, 0x02, "GS Falling Platform Room",
-                          "Water Temple GS Falling Platform Room", RHT_WATER_TEMPLE_GS_FALLING_PLATFORM_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
-    locationTable[RC_WATER_TEMPLE_GS_CENTRAL_PILLAR] =
-        Location::GSToken(RC_WATER_TEMPLE_GS_CENTRAL_PILLAR, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_WATER_TEMPLE,
-                          ACTOR_EN_SI, SCENE_WATER_TEMPLE, 9476, 0x04, "GS Central Pillar",
-                          "Water Temple GS Central Pillar", RHT_WATER_TEMPLE_GS_CENTRAL_PILLAR,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
-    locationTable[RC_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST] =
-        Location::GSToken(RC_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN,
-                          RCAREA_WATER_TEMPLE, ACTOR_EN_SI, SCENE_WATER_TEMPLE, 9480, 0x08, "GS Near Boss Key Chest",
-                          "Water Temple GS Near Boss Key Chest", RHT_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
-    locationTable[RC_WATER_TEMPLE_GS_RIVER] = Location::GSToken(
-        RC_WATER_TEMPLE_GS_RIVER, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_WATER_TEMPLE, ACTOR_EN_SI,
-        SCENE_WATER_TEMPLE, 9488, 0x10, "GS River", "Water Temple GS River", RHT_WATER_TEMPLE_GS_RIVER,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
-    locationTable[RC_WATER_TEMPLE_MQ_GS_BEFORE_UPPER_WATER_SWITCH] = Location::GSToken(
-        RC_WATER_TEMPLE_MQ_GS_BEFORE_UPPER_WATER_SWITCH, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_WATER_TEMPLE,
-        ACTOR_EN_SI, SCENE_WATER_TEMPLE, 9476, 0x04, "MQ GS Before Upper Water Switch",
-        "Water Temple MQ GS Before Upper Water Switch", RHT_WATER_TEMPLE_MQ_GS_BEFORE_UPPER_WATER_SWITCH,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
-    locationTable[RC_WATER_TEMPLE_MQ_GS_FREESTANDING_KEY_AREA] = Location::GSToken(
-        RC_WATER_TEMPLE_MQ_GS_FREESTANDING_KEY_AREA, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_WATER_TEMPLE, ACTOR_EN_SI,
-        SCENE_WATER_TEMPLE, 9480, 0x08, "MQ GS Freestanding Key Area", "Water Temple MQ GS Freestanding Key Area",
-        RHT_WATER_TEMPLE_MQ_GS_FREESTANDING_KEY_AREA, { Category::cSkulltula },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
-    locationTable[RC_WATER_TEMPLE_MQ_GS_LIZALFOS_HALLWAY] =
-        Location::GSToken(RC_WATER_TEMPLE_MQ_GS_LIZALFOS_HALLWAY, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_WATER_TEMPLE,
-                          ACTOR_EN_SI, SCENE_WATER_TEMPLE, 9473, 0x01, "MQ GS Lizalfos Hallway",
-                          "Water Temple MQ GS Lizalfos Hallway", RHT_WATER_TEMPLE_MQ_GS_LIZALFOS_HALLWAY,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
-    locationTable[RC_WATER_TEMPLE_MQ_GS_RIVER] = Location::GSToken(
-        RC_WATER_TEMPLE_MQ_GS_RIVER, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_WATER_TEMPLE, ACTOR_EN_SI,
-        SCENE_WATER_TEMPLE, 9474, 0x02, "MQ GS River", "Water Temple MQ GS River", RHT_WATER_TEMPLE_MQ_GS_RIVER,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
-    locationTable[RC_WATER_TEMPLE_MQ_GS_TRIPLE_WALL_TORCH] =
-        Location::GSToken(RC_WATER_TEMPLE_MQ_GS_TRIPLE_WALL_TORCH, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_WATER_TEMPLE,
-                          ACTOR_EN_SI, SCENE_WATER_TEMPLE, 9488, 0x10, "MQ GS Triple Wall Torch",
-                          "Water Temple MQ GS Triple Wall Torch", RHT_WATER_TEMPLE_MQ_GS_TRIPLE_WALL_TORCH,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
-
+    locationTable[RC_WATER_TEMPLE_GS_BEHIND_GATE] =                      Location::GSToken(RC_WATER_TEMPLE_GS_BEHIND_GATE,                      RCQUEST_VANILLA, RCAREA_WATER_TEMPLE,          SCENE_WATER_TEMPLE,         9473,   0x01, "GS Behind Gate",                   "Water Temple GS Behind Gate",                      RHT_WATER_TEMPLE_GS_BEHIND_GATE,                      { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_GS_FALLING_PLATFORM_ROOM] =            Location::GSToken(RC_WATER_TEMPLE_GS_FALLING_PLATFORM_ROOM,            RCQUEST_VANILLA, RCAREA_WATER_TEMPLE,          SCENE_WATER_TEMPLE,         9474,   0x02, "GS Falling Platform Room",         "Water Temple GS Falling Platform Room",            RHT_WATER_TEMPLE_GS_FALLING_PLATFORM_ROOM,            { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_GS_CENTRAL_PILLAR] =                   Location::GSToken(RC_WATER_TEMPLE_GS_CENTRAL_PILLAR,                   RCQUEST_VANILLA, RCAREA_WATER_TEMPLE,          SCENE_WATER_TEMPLE,         9476,   0x04, "GS Central Pillar",                "Water Temple GS Central Pillar",                   RHT_WATER_TEMPLE_GS_CENTRAL_PILLAR,                   { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST] =              Location::GSToken(RC_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST,              RCQUEST_VANILLA, RCAREA_WATER_TEMPLE,          SCENE_WATER_TEMPLE,         9480,   0x08, "GS Near Boss Key Chest",           "Water Temple GS Near Boss Key Chest",              RHT_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST,              { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_GS_RIVER] =                            Location::GSToken(RC_WATER_TEMPLE_GS_RIVER,                            RCQUEST_VANILLA, RCAREA_WATER_TEMPLE,          SCENE_WATER_TEMPLE,         9488,   0x10, "GS River",                         "Water Temple GS River",                            RHT_WATER_TEMPLE_GS_RIVER,                            { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_MQ_GS_BEFORE_UPPER_WATER_SWITCH] =     Location::GSToken(RC_WATER_TEMPLE_MQ_GS_BEFORE_UPPER_WATER_SWITCH,     RCQUEST_MQ,      RCAREA_WATER_TEMPLE,          SCENE_WATER_TEMPLE,         9476,   0x04, "MQ GS Before Upper Water Switch",  "Water Temple MQ GS Before Upper Water Switch",     RHT_WATER_TEMPLE_MQ_GS_BEFORE_UPPER_WATER_SWITCH,     { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_MQ_GS_FREESTANDING_KEY_AREA] =         Location::GSToken(RC_WATER_TEMPLE_MQ_GS_FREESTANDING_KEY_AREA,         RCQUEST_MQ,      RCAREA_WATER_TEMPLE,          SCENE_WATER_TEMPLE,         9480,   0x08, "MQ GS Freestanding Key Area",      "Water Temple MQ GS Freestanding Key Area",         RHT_WATER_TEMPLE_MQ_GS_FREESTANDING_KEY_AREA,         { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_MQ_GS_LIZALFOS_HALLWAY] =              Location::GSToken(RC_WATER_TEMPLE_MQ_GS_LIZALFOS_HALLWAY,              RCQUEST_MQ,      RCAREA_WATER_TEMPLE,          SCENE_WATER_TEMPLE,         9473,   0x01, "MQ GS Lizalfos Hallway",           "Water Temple MQ GS Lizalfos Hallway",              RHT_WATER_TEMPLE_MQ_GS_LIZALFOS_HALLWAY,              { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_MQ_GS_RIVER] =                         Location::GSToken(RC_WATER_TEMPLE_MQ_GS_RIVER,                         RCQUEST_MQ,      RCAREA_WATER_TEMPLE,          SCENE_WATER_TEMPLE,         9474,   0x02, "MQ GS River",                      "Water Temple MQ GS River",                         RHT_WATER_TEMPLE_MQ_GS_RIVER,                         { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_MQ_GS_TRIPLE_WALL_TORCH] =             Location::GSToken(RC_WATER_TEMPLE_MQ_GS_TRIPLE_WALL_TORCH,             RCQUEST_MQ,      RCAREA_WATER_TEMPLE,          SCENE_WATER_TEMPLE,         9488,   0x10, "MQ GS Triple Wall Torch",          "Water Temple MQ GS Triple Wall Torch",             RHT_WATER_TEMPLE_MQ_GS_TRIPLE_WALL_TORCH,             { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
     // Spirit Temple
-    locationTable[RC_SPIRIT_TEMPLE_GS_HALL_AFTER_SUN_BLOCK_ROOM] = Location::GSToken(
-        RC_SPIRIT_TEMPLE_GS_HALL_AFTER_SUN_BLOCK_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_SPIRIT_TEMPLE,
-        ACTOR_EN_SI, SCENE_SPIRIT_TEMPLE, 9729, 0x01, "GS Hall After Sun Block Room",
-        "Spirit Temple GS Hall After Sun Block Room", RHT_SPIRIT_TEMPLE_GS_HALL_AFTER_SUN_BLOCK_ROOM,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_GS_BOULDER_ROOM] =
-        Location::GSToken(RC_SPIRIT_TEMPLE_GS_BOULDER_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_SPIRIT_TEMPLE,
-                          ACTOR_EN_SI, SCENE_SPIRIT_TEMPLE, 9730, 0x02, "GS Boulder Room",
-                          "Spirit Temple GS Boulder Room", RHT_SPIRIT_TEMPLE_GS_BOULDER_ROOM, { Category::cSkulltula },
-                          SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_GS_LOBBY] = Location::GSToken(
-        RC_SPIRIT_TEMPLE_GS_LOBBY, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_SI,
-        SCENE_SPIRIT_TEMPLE, 9732, 0x04, "GS Lobby", "Spirit Temple GS Lobby", RHT_SPIRIT_TEMPLE_GS_LOBBY,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_GS_SUN_ON_FLOOR_ROOM] =
-        Location::GSToken(RC_SPIRIT_TEMPLE_GS_SUN_ON_FLOOR_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN,
-                          RCAREA_SPIRIT_TEMPLE, ACTOR_EN_SI, SCENE_SPIRIT_TEMPLE, 9736, 0x08, "GS Sun on Floor Room",
-                          "Spirit Temple GS Sun on Floor Room", RHT_SPIRIT_TEMPLE_GS_SUN_ON_FLOOR_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_GS_METAL_FENCE] =
-        Location::GSToken(RC_SPIRIT_TEMPLE_GS_METAL_FENCE, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_SPIRIT_TEMPLE,
-                          ACTOR_EN_SI, SCENE_SPIRIT_TEMPLE, 9744, 0x10, "GS Metal Fence",
-                          "Spirit Temple GS Metal Fence", RHT_SPIRIT_TEMPLE_GS_METAL_FENCE, { Category::cSkulltula },
-                          SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_GS_SYMPHONY_ROOM] =
-        Location::GSToken(RC_SPIRIT_TEMPLE_MQ_GS_SYMPHONY_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_SPIRIT_TEMPLE,
-                          ACTOR_EN_SI, SCENE_SPIRIT_TEMPLE, 9736, 0x08, "MQ GS Symphony Room",
-                          "Spirit Temple MQ GS Symphony Room", RHT_SPIRIT_TEMPLE_MQ_GS_SYMPHONY_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_GS_LEEVER_ROOM] =
-        Location::GSToken(RC_SPIRIT_TEMPLE_MQ_GS_LEEVER_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_SPIRIT_TEMPLE,
-                          ACTOR_EN_SI, SCENE_SPIRIT_TEMPLE, 9730, 0x02, "MQ GS Leever Room",
-                          "Spirit Temple MQ GS Leever Room", RHT_SPIRIT_TEMPLE_MQ_GS_LEEVER_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_WEST] = Location::GSToken(
-        RC_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_WEST, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_SPIRIT_TEMPLE,
-        ACTOR_EN_SI, SCENE_SPIRIT_TEMPLE, 9732, 0x04, "MQ GS Nine Thrones Room West",
-        "Spirit Temple MQ GS Nine Thrones Room West", RHT_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_WEST,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_NORTH] = Location::GSToken(
-        RC_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_NORTH, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_SPIRIT_TEMPLE,
-        ACTOR_EN_SI, SCENE_SPIRIT_TEMPLE, 9744, 0x10, "MQ GS Nine Thrones Room North",
-        "Spirit Temple MQ GS Nine Thrones Room North", RHT_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_NORTH,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM] =
-        Location::GSToken(RC_SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_SPIRIT_TEMPLE,
-                          ACTOR_EN_SI, SCENE_SPIRIT_TEMPLE, 9729, 0x01, "MQ GS Sun Block Room",
-                          "Spirit Temple MQ GS Sun Block Room", RHT_SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-
+    locationTable[RC_SPIRIT_TEMPLE_GS_HALL_AFTER_SUN_BLOCK_ROOM] =       Location::GSToken(RC_SPIRIT_TEMPLE_GS_HALL_AFTER_SUN_BLOCK_ROOM,       RCQUEST_VANILLA, RCAREA_SPIRIT_TEMPLE,         SCENE_SPIRIT_TEMPLE,        9729,   0x01, "GS Hall After Sun Block Room",     "Spirit Temple GS Hall After Sun Block Room",       RHT_SPIRIT_TEMPLE_GS_HALL_AFTER_SUN_BLOCK_ROOM,       { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_GS_BOULDER_ROOM] =                    Location::GSToken(RC_SPIRIT_TEMPLE_GS_BOULDER_ROOM,                    RCQUEST_VANILLA, RCAREA_SPIRIT_TEMPLE,         SCENE_SPIRIT_TEMPLE,        9730,   0x02, "GS Boulder Room",                  "Spirit Temple GS Boulder Room",                    RHT_SPIRIT_TEMPLE_GS_BOULDER_ROOM,                    { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_GS_LOBBY] =                           Location::GSToken(RC_SPIRIT_TEMPLE_GS_LOBBY,                           RCQUEST_VANILLA, RCAREA_SPIRIT_TEMPLE,         SCENE_SPIRIT_TEMPLE,        9732,   0x04, "GS Lobby",                         "Spirit Temple GS Lobby",                           RHT_SPIRIT_TEMPLE_GS_LOBBY,                           { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_GS_SUN_ON_FLOOR_ROOM] =               Location::GSToken(RC_SPIRIT_TEMPLE_GS_SUN_ON_FLOOR_ROOM,               RCQUEST_VANILLA, RCAREA_SPIRIT_TEMPLE,         SCENE_SPIRIT_TEMPLE,        9736,   0x08, "GS Sun on Floor Room",             "Spirit Temple GS Sun on Floor Room",               RHT_SPIRIT_TEMPLE_GS_SUN_ON_FLOOR_ROOM,               { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_GS_METAL_FENCE] =                     Location::GSToken(RC_SPIRIT_TEMPLE_GS_METAL_FENCE,                     RCQUEST_VANILLA, RCAREA_SPIRIT_TEMPLE,         SCENE_SPIRIT_TEMPLE,        9744,   0x10, "GS Metal Fence",                   "Spirit Temple GS Metal Fence",                     RHT_SPIRIT_TEMPLE_GS_METAL_FENCE,                     { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_GS_SYMPHONY_ROOM] =                Location::GSToken(RC_SPIRIT_TEMPLE_MQ_GS_SYMPHONY_ROOM,                RCQUEST_MQ,      RCAREA_SPIRIT_TEMPLE,         SCENE_SPIRIT_TEMPLE,        9736,   0x08, "MQ GS Symphony Room",              "Spirit Temple MQ GS Symphony Room",                RHT_SPIRIT_TEMPLE_MQ_GS_SYMPHONY_ROOM,                { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_GS_LEEVER_ROOM] =                  Location::GSToken(RC_SPIRIT_TEMPLE_MQ_GS_LEEVER_ROOM,                  RCQUEST_MQ,      RCAREA_SPIRIT_TEMPLE,         SCENE_SPIRIT_TEMPLE,        9730,   0x02, "MQ GS Leever Room",                "Spirit Temple MQ GS Leever Room",                  RHT_SPIRIT_TEMPLE_MQ_GS_LEEVER_ROOM,                  { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_WEST] =       Location::GSToken(RC_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_WEST,       RCQUEST_MQ,      RCAREA_SPIRIT_TEMPLE,         SCENE_SPIRIT_TEMPLE,        9732,   0x04, "MQ GS Nine Thrones Room West",     "Spirit Temple MQ GS Nine Thrones Room West",       RHT_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_WEST,       { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_NORTH] =      Location::GSToken(RC_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_NORTH,      RCQUEST_MQ,      RCAREA_SPIRIT_TEMPLE,         SCENE_SPIRIT_TEMPLE,        9744,   0x10, "MQ GS Nine Thrones Room North",    "Spirit Temple MQ GS Nine Thrones Room North",      RHT_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_NORTH,      { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM] =               Location::GSToken(RC_SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM,               RCQUEST_MQ,      RCAREA_SPIRIT_TEMPLE,         SCENE_SPIRIT_TEMPLE,        9729,   0x01, "MQ GS Sun Block Room",             "Spirit Temple MQ GS Sun Block Room",               RHT_SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM,               { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
     // Shadow Temple
-    locationTable[RC_SHADOW_TEMPLE_GS_SINGLE_GIANT_POT] =
-        Location::GSToken(RC_SHADOW_TEMPLE_GS_SINGLE_GIANT_POT, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN,
-                          RCAREA_SHADOW_TEMPLE, ACTOR_EN_SI, SCENE_SHADOW_TEMPLE, 9985, 0x01, "GS Single Giant Pot",
-                          "Shadow Temple GS Single Giant Pot", RHT_SHADOW_TEMPLE_GS_SINGLE_GIANT_POT,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
-    locationTable[RC_SHADOW_TEMPLE_GS_FALLING_SPIKES_ROOM] =
-        Location::GSToken(RC_SHADOW_TEMPLE_GS_FALLING_SPIKES_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN,
-                          RCAREA_SHADOW_TEMPLE, ACTOR_EN_SI, SCENE_SHADOW_TEMPLE, 9986, 0x02, "GS Falling Spikes Room",
-                          "Shadow Temple GS Falling Spikes Room", RHT_SHADOW_TEMPLE_GS_FALLING_SPIKES_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
-    locationTable[RC_SHADOW_TEMPLE_GS_TRIPLE_GIANT_POT] =
-        Location::GSToken(RC_SHADOW_TEMPLE_GS_TRIPLE_GIANT_POT, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN,
-                          RCAREA_SHADOW_TEMPLE, ACTOR_EN_SI, SCENE_SHADOW_TEMPLE, 9988, 0x04, "GS Triple Giant Pot",
-                          "Shadow Temple GS Triple Giant Pot", RHT_SHADOW_TEMPLE_GS_TRIPLE_GIANT_POT,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
-    locationTable[RC_SHADOW_TEMPLE_GS_LIKE_LIKE_ROOM] =
-        Location::GSToken(RC_SHADOW_TEMPLE_GS_LIKE_LIKE_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_SHADOW_TEMPLE,
-                          ACTOR_EN_SI, SCENE_SHADOW_TEMPLE, 9992, 0x08, "GS Like Like Room",
-                          "Shadow Temple GS Like Like Room", RHT_SHADOW_TEMPLE_GS_LIKE_LIKE_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
-    locationTable[RC_SHADOW_TEMPLE_GS_NEAR_SHIP] = Location::GSToken(
-        RC_SHADOW_TEMPLE_GS_NEAR_SHIP, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_SHADOW_TEMPLE, ACTOR_EN_SI,
-        SCENE_SHADOW_TEMPLE, 10000, 0x10, "GS Near Ship", "Shadow Temple GS Near Ship", RHT_SHADOW_TEMPLE_GS_NEAR_SHIP,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
-    locationTable[RC_SHADOW_TEMPLE_MQ_GS_FALLING_SPIKES_ROOM] = Location::GSToken(
-        RC_SHADOW_TEMPLE_MQ_GS_FALLING_SPIKES_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_SHADOW_TEMPLE, ACTOR_EN_SI,
-        SCENE_SHADOW_TEMPLE, 9986, 0x02, "MQ GS Falling Spikes Room", "Shadow Temple MQ GS Falling Spikes Room",
-        RHT_SHADOW_TEMPLE_MQ_GS_FALLING_SPIKES_ROOM, { Category::cSkulltula },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
-    locationTable[RC_SHADOW_TEMPLE_MQ_GS_WIND_HINT_ROOM] =
-        Location::GSToken(RC_SHADOW_TEMPLE_MQ_GS_WIND_HINT_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_SHADOW_TEMPLE,
-                          ACTOR_EN_SI, SCENE_SHADOW_TEMPLE, 9985, 0x01, "MQ GS Wind Hint Room",
-                          "Shadow Temple MQ GS Wind Hint Room", RHT_SHADOW_TEMPLE_MQ_GS_WIND_HINT_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
-    locationTable[RC_SHADOW_TEMPLE_MQ_GS_AFTER_WIND] =
-        Location::GSToken(RC_SHADOW_TEMPLE_MQ_GS_AFTER_WIND, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_SHADOW_TEMPLE,
-                          ACTOR_EN_SI, SCENE_SHADOW_TEMPLE, 9992, 0x08, "MQ GS After Wind",
-                          "Shadow Temple MQ GS After Wind", RHT_SHADOW_TEMPLE_MQ_GS_AFTER_WIND,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
-    locationTable[RC_SHADOW_TEMPLE_MQ_GS_AFTER_SHIP] =
-        Location::GSToken(RC_SHADOW_TEMPLE_MQ_GS_AFTER_SHIP, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_SHADOW_TEMPLE,
-                          ACTOR_EN_SI, SCENE_SHADOW_TEMPLE, 10000, 0x10, "MQ GS After Ship",
-                          "Shadow Temple MQ GS After Ship", RHT_SHADOW_TEMPLE_MQ_GS_AFTER_SHIP,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
-    locationTable[RC_SHADOW_TEMPLE_MQ_GS_NEAR_BOSS] =
-        Location::GSToken(RC_SHADOW_TEMPLE_MQ_GS_NEAR_BOSS, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_SHADOW_TEMPLE,
-                          ACTOR_EN_SI, SCENE_SHADOW_TEMPLE, 9988, 0x04, "MQ GS Near Boss",
-                          "Shadow Temple MQ GS Near Boss", RHT_SHADOW_TEMPLE_MQ_GS_NEAR_BOSS, { Category::cSkulltula },
-                          SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
-
+    locationTable[RC_SHADOW_TEMPLE_GS_SINGLE_GIANT_POT] =                Location::GSToken(RC_SHADOW_TEMPLE_GS_SINGLE_GIANT_POT,                RCQUEST_VANILLA, RCAREA_SHADOW_TEMPLE,         SCENE_SHADOW_TEMPLE,        9985,   0x01, "GS Single Giant Pot",              "Shadow Temple GS Single Giant Pot",                RHT_SHADOW_TEMPLE_GS_SINGLE_GIANT_POT,                { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_GS_FALLING_SPIKES_ROOM] =             Location::GSToken(RC_SHADOW_TEMPLE_GS_FALLING_SPIKES_ROOM,             RCQUEST_VANILLA, RCAREA_SHADOW_TEMPLE,         SCENE_SHADOW_TEMPLE,        9986,   0x02, "GS Falling Spikes Room",           "Shadow Temple GS Falling Spikes Room",             RHT_SHADOW_TEMPLE_GS_FALLING_SPIKES_ROOM,             { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_GS_TRIPLE_GIANT_POT] =                Location::GSToken(RC_SHADOW_TEMPLE_GS_TRIPLE_GIANT_POT,                RCQUEST_VANILLA, RCAREA_SHADOW_TEMPLE,         SCENE_SHADOW_TEMPLE,        9988,   0x04, "GS Triple Giant Pot",              "Shadow Temple GS Triple Giant Pot",                RHT_SHADOW_TEMPLE_GS_TRIPLE_GIANT_POT,                { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_GS_LIKE_LIKE_ROOM] =                  Location::GSToken(RC_SHADOW_TEMPLE_GS_LIKE_LIKE_ROOM,                  RCQUEST_VANILLA, RCAREA_SHADOW_TEMPLE,         SCENE_SHADOW_TEMPLE,        9992,   0x08, "GS Like Like Room",                "Shadow Temple GS Like Like Room",                  RHT_SHADOW_TEMPLE_GS_LIKE_LIKE_ROOM,                  { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_GS_NEAR_SHIP] =                       Location::GSToken(RC_SHADOW_TEMPLE_GS_NEAR_SHIP,                       RCQUEST_VANILLA, RCAREA_SHADOW_TEMPLE,         SCENE_SHADOW_TEMPLE,        10000,  0x10, "GS Near Ship",                     "Shadow Temple GS Near Ship",                       RHT_SHADOW_TEMPLE_GS_NEAR_SHIP,                       { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_MQ_GS_FALLING_SPIKES_ROOM] =          Location::GSToken(RC_SHADOW_TEMPLE_MQ_GS_FALLING_SPIKES_ROOM,          RCQUEST_MQ,      RCAREA_SHADOW_TEMPLE,         SCENE_SHADOW_TEMPLE,        9986,   0x02, "MQ GS Falling Spikes Room",        "Shadow Temple MQ GS Falling Spikes Room",          RHT_SHADOW_TEMPLE_MQ_GS_FALLING_SPIKES_ROOM,          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_MQ_GS_WIND_HINT_ROOM] =               Location::GSToken(RC_SHADOW_TEMPLE_MQ_GS_WIND_HINT_ROOM,               RCQUEST_MQ,      RCAREA_SHADOW_TEMPLE,         SCENE_SHADOW_TEMPLE,        9985,   0x01, "MQ GS Wind Hint Room",             "Shadow Temple MQ GS Wind Hint Room",               RHT_SHADOW_TEMPLE_MQ_GS_WIND_HINT_ROOM,               { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_MQ_GS_AFTER_WIND] =                   Location::GSToken(RC_SHADOW_TEMPLE_MQ_GS_AFTER_WIND,                   RCQUEST_MQ,      RCAREA_SHADOW_TEMPLE,         SCENE_SHADOW_TEMPLE,        9992,   0x08, "MQ GS After Wind",                 "Shadow Temple MQ GS After Wind",                   RHT_SHADOW_TEMPLE_MQ_GS_AFTER_WIND,                   { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_MQ_GS_AFTER_SHIP] =                   Location::GSToken(RC_SHADOW_TEMPLE_MQ_GS_AFTER_SHIP,                   RCQUEST_MQ,      RCAREA_SHADOW_TEMPLE,         SCENE_SHADOW_TEMPLE,        10000,  0x10, "MQ GS After Ship",                 "Shadow Temple MQ GS After Ship",                   RHT_SHADOW_TEMPLE_MQ_GS_AFTER_SHIP,                   { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_MQ_GS_NEAR_BOSS] =                    Location::GSToken(RC_SHADOW_TEMPLE_MQ_GS_NEAR_BOSS,                    RCQUEST_MQ,      RCAREA_SHADOW_TEMPLE,         SCENE_SHADOW_TEMPLE,        9988,   0x04, "MQ GS Near Boss",                  "Shadow Temple MQ GS Near Boss",                    RHT_SHADOW_TEMPLE_MQ_GS_NEAR_BOSS,                    { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
     // Bottom of the Well
-    locationTable[RC_BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE] = Location::GSToken(
-        RC_BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_BOTTOM_OF_THE_WELL,
-        ACTOR_EN_SI, SCENE_BOTTOM_OF_THE_WELL, 10241, 0x01, "GS Like Like Cage", "Bottom of the Well GS Like Like Cage",
-        RHT_BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE, { Category::cSkulltula },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
-    locationTable[RC_BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM] = Location::GSToken(
-        RC_BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_BOTTOM_OF_THE_WELL,
-        ACTOR_EN_SI, SCENE_BOTTOM_OF_THE_WELL, 10242, 0x02, "GS East Inner Room",
-        "Bottom of the Well GS East Inner Room", RHT_BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM, { Category::cSkulltula },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
-    locationTable[RC_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM] = Location::GSToken(
-        RC_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_BOTTOM_OF_THE_WELL,
-        ACTOR_EN_SI, SCENE_BOTTOM_OF_THE_WELL, 10244, 0x04, "GS West Inner Room",
-        "Bottom of the Well GS West Inner Room", RHT_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM, { Category::cSkulltula },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
-    locationTable[RC_BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT] =
-        Location::GSToken(RC_BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT, RCQUEST_MQ, RCTYPE_SKULL_TOKEN,
-                          RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_SI, SCENE_BOTTOM_OF_THE_WELL, 10241, 0x01,
-                          "MQ GS Basement", "Bottom of the Well MQ GS Basement", RHT_BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
-    locationTable[RC_BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM] = Location::GSToken(
-        RC_BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_SI,
-        SCENE_BOTTOM_OF_THE_WELL, 10244, 0x04, "MQ GS Coffin Room", "Bottom of the Well MQ GS Coffin Room",
-        RHT_BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM, { Category::cSkulltula },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
-    locationTable[RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM] = Location::GSToken(
-        RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_BOTTOM_OF_THE_WELL,
-        ACTOR_EN_SI, SCENE_BOTTOM_OF_THE_WELL, 10242, 0x02, "MQ GS West Inner Room",
-        "Bottom of the Well MQ GS West Inner Room", RHT_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
-
+    locationTable[RC_BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE] =             Location::GSToken(RC_BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE,             RCQUEST_VANILLA, RCAREA_BOTTOM_OF_THE_WELL,    SCENE_BOTTOM_OF_THE_WELL,   10241,  0x01, "GS Like Like Cage",                "Bottom of the Well GS Like Like Cage",             RHT_BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE,             { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM] =            Location::GSToken(RC_BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM,            RCQUEST_VANILLA, RCAREA_BOTTOM_OF_THE_WELL,    SCENE_BOTTOM_OF_THE_WELL,   10242,  0x02, "GS East Inner Room",               "Bottom of the Well GS East Inner Room",            RHT_BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM,            { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM] =            Location::GSToken(RC_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM,            RCQUEST_VANILLA, RCAREA_BOTTOM_OF_THE_WELL,    SCENE_BOTTOM_OF_THE_WELL,   10244,  0x04, "GS West Inner Room",               "Bottom of the Well GS West Inner Room",            RHT_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM,            { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT] =                Location::GSToken(RC_BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT,                RCQUEST_MQ,      RCAREA_BOTTOM_OF_THE_WELL,    SCENE_BOTTOM_OF_THE_WELL,   10241,  0x01, "MQ GS Basement",                   "Bottom of the Well MQ GS Basement",                RHT_BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT,                { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM] =             Location::GSToken(RC_BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM,             RCQUEST_MQ,      RCAREA_BOTTOM_OF_THE_WELL,    SCENE_BOTTOM_OF_THE_WELL,   10244,  0x04, "MQ GS Coffin Room",                "Bottom of the Well MQ GS Coffin Room",             RHT_BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM,             { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM] =         Location::GSToken(RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM,         RCQUEST_MQ,      RCAREA_BOTTOM_OF_THE_WELL,    SCENE_BOTTOM_OF_THE_WELL,   10242,  0x02, "MQ GS West Inner Room",            "Bottom of the Well MQ GS West Inner Room",         RHT_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM,         { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
     // Ice Cavern
-    locationTable[RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM] =
-        Location::GSToken(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_ICE_CAVERN,
-                          ACTOR_EN_SI, SCENE_ICE_CAVERN, 10497, 0x01, "GS Push Block Room",
-                          "Ice Cavern GS Push Block Room", RHT_ICE_CAVERN_GS_PUSH_BLOCK_ROOM, { Category::cSkulltula },
-                          SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
-    locationTable[RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM] =
-        Location::GSToken(RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_ICE_CAVERN,
-                          ACTOR_EN_SI, SCENE_ICE_CAVERN, 10498, 0x02, "GS Spinning Scythe Room",
-                          "Ice Cavern GS Spinning Scythe Room", RHT_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
-    locationTable[RC_ICE_CAVERN_GS_HEART_PIECE_ROOM] =
-        Location::GSToken(RC_ICE_CAVERN_GS_HEART_PIECE_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_ICE_CAVERN,
-                          ACTOR_EN_SI, SCENE_ICE_CAVERN, 10500, 0x04, "GS Heart Piece Room",
-                          "Ice Cavern GS Heart Piece Room", RHT_ICE_CAVERN_GS_HEART_PIECE_ROOM,
-                          { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
-    locationTable[RC_ICE_CAVERN_MQ_GS_SCARECROW] = Location::GSToken(
-        RC_ICE_CAVERN_MQ_GS_SCARECROW, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_ICE_CAVERN, ACTOR_EN_SI, SCENE_ICE_CAVERN,
-        10497, 0x01, "MQ GS Scarecrow", "Ice Cavern MQ GS Scarecrow", RHT_ICE_CAVERN_MQ_GS_SCARECROW,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
-    locationTable[RC_ICE_CAVERN_MQ_GS_ICE_BLOCK] = Location::GSToken(
-        RC_ICE_CAVERN_MQ_GS_ICE_BLOCK, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_ICE_CAVERN, ACTOR_EN_SI, SCENE_ICE_CAVERN,
-        10500, 0x04, "MQ GS Ice Block", "Ice Cavern MQ GS Ice Block", RHT_ICE_CAVERN_MQ_GS_ICE_BLOCK,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
-    locationTable[RC_ICE_CAVERN_MQ_GS_RED_ICE] = Location::GSToken(
-        RC_ICE_CAVERN_MQ_GS_RED_ICE, RCQUEST_MQ, RCTYPE_SKULL_TOKEN, RCAREA_ICE_CAVERN, ACTOR_EN_SI, SCENE_ICE_CAVERN,
-        10498, 0x02, "MQ GS Red Ice", "Ice Cavern MQ GS Red Ice", RHT_ICE_CAVERN_MQ_GS_RED_ICE,
-        { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
-
+    locationTable[RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM] =                    Location::GSToken(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,                    RCQUEST_VANILLA, RCAREA_ICE_CAVERN,            SCENE_ICE_CAVERN,           10497,  0x01, "GS Push Block Room",               "Ice Cavern GS Push Block Room",                    RHT_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,                    { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+    locationTable[RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM] =               Location::GSToken(RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM,               RCQUEST_VANILLA, RCAREA_ICE_CAVERN,            SCENE_ICE_CAVERN,           10498,  0x02, "GS Spinning Scythe Room",          "Ice Cavern GS Spinning Scythe Room",               RHT_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM,               { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+    locationTable[RC_ICE_CAVERN_GS_HEART_PIECE_ROOM] =                   Location::GSToken(RC_ICE_CAVERN_GS_HEART_PIECE_ROOM,                   RCQUEST_VANILLA, RCAREA_ICE_CAVERN,            SCENE_ICE_CAVERN,           10500,  0x04, "GS Heart Piece Room",              "Ice Cavern GS Heart Piece Room",                   RHT_ICE_CAVERN_GS_HEART_PIECE_ROOM,                   { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+    locationTable[RC_ICE_CAVERN_MQ_GS_SCARECROW] =                       Location::GSToken(RC_ICE_CAVERN_MQ_GS_SCARECROW,                       RCQUEST_MQ,      RCAREA_ICE_CAVERN,            SCENE_ICE_CAVERN,           10497,  0x01, "MQ GS Scarecrow",                  "Ice Cavern MQ GS Scarecrow",                       RHT_ICE_CAVERN_MQ_GS_SCARECROW,                       { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+    locationTable[RC_ICE_CAVERN_MQ_GS_ICE_BLOCK] =                       Location::GSToken(RC_ICE_CAVERN_MQ_GS_ICE_BLOCK,                       RCQUEST_MQ,      RCAREA_ICE_CAVERN,            SCENE_ICE_CAVERN,           10500,  0x04, "MQ GS Ice Block",                  "Ice Cavern MQ GS Ice Block",                       RHT_ICE_CAVERN_MQ_GS_ICE_BLOCK,                       { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+    locationTable[RC_ICE_CAVERN_MQ_GS_RED_ICE] =                         Location::GSToken(RC_ICE_CAVERN_MQ_GS_RED_ICE,                         RCQUEST_MQ,      RCAREA_ICE_CAVERN,            SCENE_ICE_CAVERN,           10498,  0x02, "MQ GS Red Ice",                    "Ice Cavern MQ GS Red Ice",                         RHT_ICE_CAVERN_MQ_GS_RED_ICE,                         { Category::cSkulltula }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
     // Overworld
-
-    // Kokiri Forest
-    locationTable[RC_KF_GS_BEAN_PATCH] =
-        Location::GSToken(RC_KF_GS_BEAN_PATCH, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_KOKIRI_FOREST, ACTOR_EN_SI,
-                          SCENE_KOKIRI_FOREST, 27649, 0x01, "GS Bean Patch", "KF GS Bean Patch", RHT_KF_GS_BEAN_PATCH,
-                          { Category::cSkulltula }, 0x0C, SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
-    locationTable[RC_KF_GS_KNOW_IT_ALL_HOUSE] = Location::GSToken(
-        RC_KF_GS_KNOW_IT_ALL_HOUSE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_KOKIRI_FOREST, ACTOR_EN_SI,
-        SCENE_KOKIRI_FOREST, 19458, 0x02, "GS Know It All House", "KF GS Know It All House",
-        RHT_KF_GS_KNOW_IT_ALL_HOUSE, { Category::cSkulltula }, 0x0C, SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
-    locationTable[RC_KF_GS_HOUSE_OF_TWINS] = Location::GSToken(
-        RC_KF_GS_HOUSE_OF_TWINS, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_KOKIRI_FOREST, ACTOR_EN_SI,
-        SCENE_KOKIRI_FOREST, 19460, 0x04, "GS House of Twins", "KF GS House of Twins", RHT_KF_GS_HOUSE_OF_TWINS,
-        { Category::cSkulltula }, 0x0C, SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
-
+    // Kokiri Forest RandomizerCheck                                                       RandomizerCheck                                      Quest            Area                          Scene ID                    params  Flag  Short Name                          Spoiler Name                                        Hint Text Key                                         Categories                Map Index Collection Check Group
+    locationTable[RC_KF_GS_BEAN_PATCH] =                                 Location::GSToken(RC_KF_GS_BEAN_PATCH,                                 RCQUEST_BOTH,    RCAREA_KOKIRI_FOREST,         SCENE_KOKIRI_FOREST,        27649,  0x01, "GS Bean Patch",                    "KF GS Bean Patch",                                 RHT_KF_GS_BEAN_PATCH,                                 { Category::cSkulltula }, 0x0C, SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+    locationTable[RC_KF_GS_KNOW_IT_ALL_HOUSE] =                          Location::GSToken(RC_KF_GS_KNOW_IT_ALL_HOUSE,                          RCQUEST_BOTH,    RCAREA_KOKIRI_FOREST,         SCENE_KOKIRI_FOREST,        19458,  0x02, "GS Know It All House",             "KF GS Know It All House",                          RHT_KF_GS_KNOW_IT_ALL_HOUSE,                          { Category::cSkulltula }, 0x0C, SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+    locationTable[RC_KF_GS_HOUSE_OF_TWINS] =                             Location::GSToken(RC_KF_GS_HOUSE_OF_TWINS,                             RCQUEST_BOTH,    RCAREA_KOKIRI_FOREST,         SCENE_KOKIRI_FOREST,        19460,  0x04, "GS House of Twins",                "KF GS House of Twins",                             RHT_KF_GS_HOUSE_OF_TWINS,                             { Category::cSkulltula }, 0x0C, SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
     // Lost Woods
-    locationTable[RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE] = Location::GSToken(
-        RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LOST_WOODS, ACTOR_EN_SI,
-        SCENE_LOST_WOODS, 27905, 0x01, "GS Bean Patch Near Bridge", "LW GS Bean Patch Near Bridge",
-        RHT_LW_GS_BEAN_PATCH_NEAR_BRIDGE, { Category::cSkulltula }, 0x0D,
-        SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
-    locationTable[RC_LW_GS_BEAN_PATCH_NEAR_THEATER] = Location::GSToken(
-        RC_LW_GS_BEAN_PATCH_NEAR_THEATER, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LOST_WOODS, ACTOR_EN_SI,
-        SCENE_LOST_WOODS, 27906, 0x02, "GS Bean Patch Near Theater", "LW GS Bean Patch Near Theater",
-        RHT_LW_GS_BEAN_PATCH_NEAR_THEATER, { Category::cSkulltula }, 0x0D, SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
-    locationTable[RC_LW_GS_ABOVE_THEATER] = Location::GSToken(
-        RC_LW_GS_ABOVE_THEATER, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LOST_WOODS, ACTOR_EN_SI, SCENE_LOST_WOODS,
-        19716, 0x04, "GS Above Theater", "LW GS Above Theater", RHT_LW_GS_ABOVE_THEATER, { Category::cSkulltula },
-        0x0D, SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
-    locationTable[RC_SFM_GS] =
-        Location::GSToken(RC_SFM_GS, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_SACRED_FOREST_MEADOW, ACTOR_EN_SI,
-                          SCENE_SACRED_FOREST_MEADOW, 19720, 0x08, "GS", "SFM GS", RHT_SFM_GS, { Category::cSkulltula },
-                          0x0D, SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
-
+    locationTable[RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE] =                     Location::GSToken(RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE,                     RCQUEST_BOTH,    RCAREA_LOST_WOODS,            SCENE_LOST_WOODS,           27905,  0x01, "GS Bean Patch Near Bridge",        "LW GS Bean Patch Near Bridge",                     RHT_LW_GS_BEAN_PATCH_NEAR_BRIDGE,                     { Category::cSkulltula }, 0x0D, SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+    locationTable[RC_LW_GS_BEAN_PATCH_NEAR_THEATER] =                    Location::GSToken(RC_LW_GS_BEAN_PATCH_NEAR_THEATER,                    RCQUEST_BOTH,    RCAREA_LOST_WOODS,            SCENE_LOST_WOODS,           27906,  0x02, "GS Bean Patch Near Theater",       "LW GS Bean Patch Near Theater",                    RHT_LW_GS_BEAN_PATCH_NEAR_THEATER,                    { Category::cSkulltula }, 0x0D, SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+    locationTable[RC_LW_GS_ABOVE_THEATER] =                              Location::GSToken(RC_LW_GS_ABOVE_THEATER,                              RCQUEST_BOTH,    RCAREA_LOST_WOODS,            SCENE_LOST_WOODS,           19716,  0x04, "GS Above Theater",                 "LW GS Above Theater",                              RHT_LW_GS_ABOVE_THEATER,                              { Category::cSkulltula }, 0x0D, SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+    locationTable[RC_SFM_GS] =                                           Location::GSToken(RC_SFM_GS,                                           RCQUEST_BOTH,    RCAREA_SACRED_FOREST_MEADOW,  SCENE_SACRED_FOREST_MEADOW, 19720,  0x08, "GS",                               "SFM GS",                                           RHT_SFM_GS,                                           { Category::cSkulltula }, 0x0D, SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
     // Hyrule Field
-    locationTable[RC_HF_GS_COW_GROTTO] =
-        Location::GSToken(RC_HF_GS_COW_GROTTO, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_HYRULE_FIELD, ACTOR_EN_SI,
-                          SCENE_GROTTOS, 10753, 0x01, "GS Cow Grotto", "HF GS Cow Grotto", RHT_HF_GS_COW_GROTTO,
-                          { Category::cSkulltula }, 0x0A, SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
-    locationTable[RC_HF_GS_NEAR_KAK_GROTTO] = Location::GSToken(
-        RC_HF_GS_NEAR_KAK_GROTTO, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_HYRULE_FIELD, ACTOR_EN_SI, SCENE_GROTTOS,
-        10754, 0x02, "GS Near Kak Grotto", "HF GS Near Kak Grotto", RHT_HF_GS_NEAR_KAK_GROTTO, { Category::cSkulltula },
-        0x0A, SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
-
+    locationTable[RC_HF_GS_COW_GROTTO] =                                 Location::GSToken(RC_HF_GS_COW_GROTTO,                                 RCQUEST_BOTH,    RCAREA_HYRULE_FIELD,          SCENE_GROTTOS,              10753,  0x01, "GS Cow Grotto",                    "HF GS Cow Grotto",                                 RHT_HF_GS_COW_GROTTO,                                 { Category::cSkulltula }, 0x0A, SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
+    locationTable[RC_HF_GS_NEAR_KAK_GROTTO] =                            Location::GSToken(RC_HF_GS_NEAR_KAK_GROTTO,                            RCQUEST_BOTH,    RCAREA_HYRULE_FIELD,          SCENE_GROTTOS,              10754,  0x02, "GS Near Kak Grotto",               "HF GS Near Kak Grotto",                            RHT_HF_GS_NEAR_KAK_GROTTO,                            { Category::cSkulltula }, 0x0A, SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
     // Lake Hylia
-    locationTable[RC_LH_GS_BEAN_PATCH] =
-        Location::GSToken(RC_LH_GS_BEAN_PATCH, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LAKE_HYLIA, ACTOR_EN_SI,
-                          SCENE_LAKE_HYLIA, 29185, 0x01, "GS Bean Patch", "LH GS Bean Patch", RHT_LH_GS_BEAN_PATCH,
-                          { Category::cSkulltula }, 0x12, SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[RC_LH_GS_SMALL_ISLAND] = Location::GSToken(
-        RC_LH_GS_SMALL_ISLAND, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LAKE_HYLIA, ACTOR_EN_SI, SCENE_LAKE_HYLIA,
-        20994, 0x02, "GS Small Island", "LH GS Small Island", RHT_LH_GS_SMALL_ISLAND, { Category::cSkulltula },
-        0x12, SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[RC_LH_GS_LAB_WALL] =
-        Location::GSToken(RC_LH_GS_LAB_WALL, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LAKE_HYLIA, ACTOR_EN_SI,
-                          SCENE_LAKE_HYLIA, 20996, 0x04, "GS Lab Wall", "LH GS Lab Wall", RHT_LH_GS_LAB_WALL,
-                          { Category::cSkulltula }, 0x12, SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[RC_LH_GS_LAB_CRATE] = Location::GSToken(
-        RC_LH_GS_LAB_CRATE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LAKE_HYLIA, ACTOR_EN_SI, SCENE_LAKESIDE_LABORATORY,
-        -28152, 0x08, "GS Lab Crate", "LH GS Lab Crate", RHT_LH_GS_LAB_CRATE, { Category::cSkulltula }, 0x12,
-        SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[RC_LH_GS_TREE] =
-        Location::GSToken(RC_LH_GS_TREE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LAKE_HYLIA, ACTOR_EN_SI,
-                          SCENE_LAKE_HYLIA, 21008, 0x10, "GS Tree", "LH GS Tree", RHT_LH_GS_TREE,
-                          { Category::cSkulltula }, 0x12, SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-
+    locationTable[RC_LH_GS_BEAN_PATCH] =                                 Location::GSToken(RC_LH_GS_BEAN_PATCH,                                 RCQUEST_BOTH,    RCAREA_LAKE_HYLIA,            SCENE_LAKE_HYLIA,           29185,  0x01, "GS Bean Patch",                    "LH GS Bean Patch",                                 RHT_LH_GS_BEAN_PATCH,                                 { Category::cSkulltula }, 0x12, SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[RC_LH_GS_SMALL_ISLAND] =                               Location::GSToken(RC_LH_GS_SMALL_ISLAND,                               RCQUEST_BOTH,    RCAREA_LAKE_HYLIA,            SCENE_LAKE_HYLIA,           20994,  0x02, "GS Small Island",                  "LH GS Small Island",                               RHT_LH_GS_SMALL_ISLAND,                               { Category::cSkulltula }, 0x12, SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[RC_LH_GS_LAB_WALL] =                                   Location::GSToken(RC_LH_GS_LAB_WALL,                                   RCQUEST_BOTH,    RCAREA_LAKE_HYLIA,            SCENE_LAKE_HYLIA,           20996,  0x04, "GS Lab Wall",                      "LH GS Lab Wall",                                   RHT_LH_GS_LAB_WALL,                                   { Category::cSkulltula }, 0x12, SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[RC_LH_GS_LAB_CRATE] =                                  Location::GSToken(RC_LH_GS_LAB_CRATE,                                  RCQUEST_BOTH,    RCAREA_LAKE_HYLIA,            SCENE_LAKESIDE_LABORATORY,  -28152, 0x08, "GS Lab Crate",                     "LH GS Lab Crate",                                  RHT_LH_GS_LAB_CRATE,                                  { Category::cSkulltula }, 0x12, SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[RC_LH_GS_TREE] =                                       Location::GSToken(RC_LH_GS_TREE,                                       RCQUEST_BOTH,    RCAREA_LAKE_HYLIA,            SCENE_LAKE_HYLIA,           21008,  0x10, "GS Tree",                          "LH GS Tree",                                       RHT_LH_GS_TREE,                                       { Category::cSkulltula }, 0x12, SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
     // Gerudo Valley
-    locationTable[RC_GV_GS_BEAN_PATCH] =
-        Location::GSToken(RC_GV_GS_BEAN_PATCH, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_GERUDO_VALLEY, ACTOR_EN_SI,
-                          SCENE_GERUDO_VALLEY, 29441, 0x01, "GS Bean Patch", "GV GS Bean Patch", RHT_GV_GS_BEAN_PATCH,
-                          { Category::cSkulltula }, 0x13, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-    locationTable[RC_GV_GS_SMALL_BRIDGE] = Location::GSToken(
-        RC_GV_GS_SMALL_BRIDGE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_GERUDO_VALLEY, ACTOR_EN_SI, SCENE_GERUDO_VALLEY,
-        21250, 0x02, "GS Small Bridge", "GV GS Small Bridge", RHT_GV_GS_SMALL_BRIDGE, { Category::cSkulltula }, 0x13,
-        SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-    locationTable[RC_GV_GS_PILLAR] =
-        Location::GSToken(RC_GV_GS_PILLAR, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_GERUDO_VALLEY, ACTOR_EN_SI,
-                          SCENE_GERUDO_VALLEY, 21252, 0x04, "GS Pillar", "GV GS Pillar", RHT_GV_GS_PILLAR,
-                          { Category::cSkulltula }, 0x13, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-    locationTable[RC_GV_GS_BEHIND_TENT] = Location::GSToken(
-        RC_GV_GS_BEHIND_TENT, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_GERUDO_VALLEY, ACTOR_EN_SI, SCENE_GERUDO_VALLEY,
-        21256, 0x08, "GS Behind Tent", "GV GS Behind Tent", RHT_GV_GS_BEHIND_TENT, { Category::cSkulltula }, 0x13,
-        SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-
+    locationTable[RC_GV_GS_BEAN_PATCH] =                                 Location::GSToken(RC_GV_GS_BEAN_PATCH,                                 RCQUEST_BOTH,    RCAREA_GERUDO_VALLEY,         SCENE_GERUDO_VALLEY,        29441,  0x01, "GS Bean Patch",                    "GV GS Bean Patch",                                 RHT_GV_GS_BEAN_PATCH,                                 { Category::cSkulltula }, 0x13, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_GV_GS_SMALL_BRIDGE] =                               Location::GSToken(RC_GV_GS_SMALL_BRIDGE,                               RCQUEST_BOTH,    RCAREA_GERUDO_VALLEY,         SCENE_GERUDO_VALLEY,        21250,  0x02, "GS Small Bridge",                  "GV GS Small Bridge",                               RHT_GV_GS_SMALL_BRIDGE,                               { Category::cSkulltula }, 0x13, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_GV_GS_PILLAR] =                                     Location::GSToken(RC_GV_GS_PILLAR,                                     RCQUEST_BOTH,    RCAREA_GERUDO_VALLEY,         SCENE_GERUDO_VALLEY,        21252,  0x04, "GS Pillar",                        "GV GS Pillar",                                     RHT_GV_GS_PILLAR,                                     { Category::cSkulltula }, 0x13, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_GV_GS_BEHIND_TENT] =                                Location::GSToken(RC_GV_GS_BEHIND_TENT,                                RCQUEST_BOTH,    RCAREA_GERUDO_VALLEY,         SCENE_GERUDO_VALLEY,        21256,  0x08, "GS Behind Tent",                   "GV GS Behind Tent",                                RHT_GV_GS_BEHIND_TENT,                                { Category::cSkulltula }, 0x13, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
     // Gerudo Fortress
-    locationTable[RC_GF_GS_ARCHERY_RANGE] = Location::GSToken(
-        RC_GF_GS_ARCHERY_RANGE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_GERUDO_FORTRESS, ACTOR_EN_SI,
-        SCENE_GERUDOS_FORTRESS, 21505, 0x01, "GS Archery Range", "GF GS Archery Range", RHT_GF_GS_ARCHERY_RANGE,
-        { Category::cSkulltula }, 0x14, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-    locationTable[RC_GF_GS_TOP_FLOOR] =
-        Location::GSToken(RC_GF_GS_TOP_FLOOR, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_GERUDO_FORTRESS, ACTOR_EN_SI,
-                          SCENE_GERUDOS_FORTRESS, 21506, 0x02, "GS Top Floor", "GF GS Top Floor", RHT_GF_GS_TOP_FLOOR,
-                          { Category::cSkulltula }, 0x14, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-
+    locationTable[RC_GF_GS_ARCHERY_RANGE] =                              Location::GSToken(RC_GF_GS_ARCHERY_RANGE,                              RCQUEST_BOTH,    RCAREA_GERUDO_FORTRESS,       SCENE_GERUDOS_FORTRESS,     21505,  0x01, "GS Archery Range",                 "GF GS Archery Range",                              RHT_GF_GS_ARCHERY_RANGE,                              { Category::cSkulltula }, 0x14, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_GF_GS_TOP_FLOOR] =                                  Location::GSToken(RC_GF_GS_TOP_FLOOR,                                  RCQUEST_BOTH,    RCAREA_GERUDO_FORTRESS,       SCENE_GERUDOS_FORTRESS,     21506,  0x02, "GS Top Floor",                     "GF GS Top Floor",                                  RHT_GF_GS_TOP_FLOOR,                                  { Category::cSkulltula }, 0x14, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
     // Wasteland & Desert Colossus
-    locationTable[RC_WASTELAND_GS] =
-        Location::GSToken(RC_WASTELAND_GS, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_WASTELAND, ACTOR_EN_SI,
-                          SCENE_HAUNTED_WASTELAND, 13570, 0x02, "GS", "Wasteland GS", RHT_WASTELAND_GS,
-                          { Category::cSkulltula }, 0x15, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-    locationTable[RC_COLOSSUS_GS_BEAN_PATCH] = Location::GSToken(
-        RC_COLOSSUS_GS_BEAN_PATCH, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_DESERT_COLOSSUS, ACTOR_EN_SI,
-        SCENE_DESERT_COLOSSUS, 29953, 0x01, "GS Bean Patch", "Colossus GS Bean Patch", RHT_COLOSSUS_GS_BEAN_PATCH,
-        { Category::cSkulltula }, 0x15, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-    locationTable[RC_COLOSSUS_GS_HILL] =
-        Location::GSToken(RC_COLOSSUS_GS_HILL, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_DESERT_COLOSSUS, ACTOR_EN_SI,
-                          SCENE_DESERT_COLOSSUS, 21764, 0x04, "GS Hill", "Colossus GS Hill", RHT_COLOSSUS_GS_HILL,
-                          { Category::cSkulltula }, 0x15, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-    locationTable[RC_COLOSSUS_GS_TREE] =
-        Location::GSToken(RC_COLOSSUS_GS_TREE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_DESERT_COLOSSUS, ACTOR_EN_SI,
-                          SCENE_DESERT_COLOSSUS, 21768, 0x08, "GS Tree", "Colossus GS Tree", RHT_COLOSSUS_GS_TREE,
-                          { Category::cSkulltula }, 0x15, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-
+    locationTable[RC_WASTELAND_GS] =                                     Location::GSToken(RC_WASTELAND_GS,                                     RCQUEST_BOTH,    RCAREA_WASTELAND,             SCENE_HAUNTED_WASTELAND,    13570,  0x02, "GS",                               "Wasteland GS",                                     RHT_WASTELAND_GS,                                     { Category::cSkulltula }, 0x15, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_COLOSSUS_GS_BEAN_PATCH] =                           Location::GSToken(RC_COLOSSUS_GS_BEAN_PATCH,                           RCQUEST_BOTH,    RCAREA_DESERT_COLOSSUS,       SCENE_DESERT_COLOSSUS,      29953,  0x01, "GS Bean Patch",                    "Colossus GS Bean Patch",                           RHT_COLOSSUS_GS_BEAN_PATCH,                           { Category::cSkulltula }, 0x15, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_COLOSSUS_GS_HILL] =                                 Location::GSToken(RC_COLOSSUS_GS_HILL,                                 RCQUEST_BOTH,    RCAREA_DESERT_COLOSSUS,       SCENE_DESERT_COLOSSUS,      21764,  0x04, "GS Hill",                          "Colossus GS Hill",                                 RHT_COLOSSUS_GS_HILL,                                 { Category::cSkulltula }, 0x15, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_COLOSSUS_GS_TREE] =                                 Location::GSToken(RC_COLOSSUS_GS_TREE,                                 RCQUEST_BOTH,    RCAREA_DESERT_COLOSSUS,       SCENE_DESERT_COLOSSUS,      21768,  0x08, "GS Tree",                          "Colossus GS Tree",                                 RHT_COLOSSUS_GS_TREE,                                 { Category::cSkulltula }, 0x15, SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
     // Hyrule Castle, Market, and Outside Ganon's Castle
-    locationTable[RC_OGC_GS] =
-        Location::GSToken(RC_OGC_GS, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_HYRULE_CASTLE, ACTOR_EN_SI,
-                          SCENE_OUTSIDE_GANONS_CASTLE, 11777, 0x01, "OGC GS", "OGC GS", RHT_OGC_GS,
-                          { Category::cSkulltula }, 0x0E, SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
-    locationTable[RC_HC_GS_STORMS_GROTTO] = Location::GSToken(
-        RC_HC_GS_STORMS_GROTTO, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_HYRULE_CASTLE, ACTOR_EN_SI, SCENE_GROTTOS,
-        11778, 0x02, "GS Storms Grotto", "HC GS Storms Grotto", RHT_HC_GS_STORMS_GROTTO, { Category::cSkulltula }, 0x0E,
-        SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_HC_GS_TREE] =
-        Location::GSToken(RC_HC_GS_TREE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_HYRULE_CASTLE, ACTOR_EN_SI,
-                          SCENE_HYRULE_CASTLE, -29180, 0x04, "GS Tree", "HC GS Tree", RHT_HC_GS_TREE,
-                          { Category::cSkulltula }, 0x0E, SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    locationTable[RC_MARKET_GS_GUARD_HOUSE] = Location::GSToken(
-        RC_MARKET_GS_GUARD_HOUSE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_MARKET, ACTOR_EN_SI,
-        SCENE_MARKET_GUARD_HOUSE, -29176, 0x08, "Market GS Guard House", "Market GS Guard House",
-        RHT_MARKET_GS_GUARD_HOUSE, { Category::cSkulltula }, 0x0E, SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-
+    locationTable[RC_OGC_GS] =                                           Location::GSToken(RC_OGC_GS,                                           RCQUEST_BOTH,    RCAREA_HYRULE_CASTLE,         SCENE_OUTSIDE_GANONS_CASTLE,11777,  0x01, "OGC GS",                           "OGC GS",                                           RHT_OGC_GS,                                           { Category::cSkulltula }, 0x0E, SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_HC_GS_STORMS_GROTTO] =                              Location::GSToken(RC_HC_GS_STORMS_GROTTO,                              RCQUEST_BOTH,    RCAREA_HYRULE_CASTLE,         SCENE_GROTTOS,              11778,  0x02, "GS Storms Grotto",                 "HC GS Storms Grotto",                              RHT_HC_GS_STORMS_GROTTO,                              { Category::cSkulltula }, 0x0E, SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_HC_GS_TREE] =                                       Location::GSToken(RC_HC_GS_TREE,                                       RCQUEST_BOTH,    RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,        -29180, 0x04, "GS Tree",                          "HC GS Tree",                                       RHT_HC_GS_TREE,                                       { Category::cSkulltula }, 0x0E, SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_GS_GUARD_HOUSE] =                            Location::GSToken(RC_MARKET_GS_GUARD_HOUSE,                            RCQUEST_BOTH,    RCAREA_MARKET,                SCENE_MARKET_GUARD_HOUSE,   -29176, 0x08, "Market GS Guard House",            "Market GS Guard House",                            RHT_MARKET_GS_GUARD_HOUSE,                            { Category::cSkulltula }, 0x0E, SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
     // Kakariko
-    locationTable[RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION] = Location::GSToken(
-        RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_SI,
-        SCENE_KAKARIKO_VILLAGE, 20488, 0x08, "GS House Under Construction", "Kak GS House Under Construction",
-        RHT_KAK_GS_HOUSE_UNDER_CONSTRUCTION, { Category::cSkulltula },
-        0x10, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_GS_SKULLTULA_HOUSE] = Location::GSToken(
-        RC_KAK_GS_SKULLTULA_HOUSE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_SI,
-        SCENE_KAKARIKO_VILLAGE, 20496, 0x10, "GS Skulltula House", "Kak GS Skulltula House", RHT_KAK_GS_SKULLTULA_HOUSE,
-        { Category::cSkulltula }, 0x10, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_GS_GUARDS_HOUSE] = Location::GSToken(
-        RC_KAK_GS_GUARDS_HOUSE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_SI,
-        SCENE_KAKARIKO_VILLAGE, 20482, 0x02, "GS Guards House", "Kak GS Guards House", RHT_KAK_GS_GUARDS_HOUSE,
-        { Category::cSkulltula }, 0x10, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_GS_TREE] =
-        Location::GSToken(RC_KAK_GS_TREE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_SI,
-                          SCENE_KAKARIKO_VILLAGE, -28640, 0x20, "GS Tree", "Kak GS Tree", RHT_KAK_GS_TREE,
-                          { Category::cSkulltula }, 0x10, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_GS_WATCHTOWER] =
-        Location::GSToken(RC_KAK_GS_WATCHTOWER, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_SI,
-                          SCENE_KAKARIKO_VILLAGE, 20484, 0x04, "GS Watchtower", "Kak GS Watchtower",
-                          RHT_KAK_GS_WATCHTOWER, { Category::cSkulltula }, 0x10,
-                          SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_GS_ABOVE_IMPAS_HOUSE] = Location::GSToken(
-        RC_KAK_GS_ABOVE_IMPAS_HOUSE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_SI,
-        SCENE_KAKARIKO_VILLAGE, 20544, 0x40, "GS Above Impas House", "Kak GS Above Impas House",
-        RHT_KAK_GS_ABOVE_IMPAS_HOUSE, { Category::cSkulltula }, 0x10, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-
+    locationTable[RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION] =                  Location::GSToken(RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION,                  RCQUEST_BOTH,    RCAREA_KAKARIKO_VILLAGE,      SCENE_KAKARIKO_VILLAGE,     20488,  0x08, "GS House Under Construction",      "Kak GS House Under Construction",                  RHT_KAK_GS_HOUSE_UNDER_CONSTRUCTION,                  { Category::cSkulltula }, 0x10, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_GS_SKULLTULA_HOUSE] =                           Location::GSToken(RC_KAK_GS_SKULLTULA_HOUSE,                           RCQUEST_BOTH,    RCAREA_KAKARIKO_VILLAGE,      SCENE_KAKARIKO_VILLAGE,     20496,  0x10, "GS Skulltula House",               "Kak GS Skulltula House",                           RHT_KAK_GS_SKULLTULA_HOUSE,                           { Category::cSkulltula }, 0x10, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_GS_GUARDS_HOUSE] =                              Location::GSToken(RC_KAK_GS_GUARDS_HOUSE,                              RCQUEST_BOTH,    RCAREA_KAKARIKO_VILLAGE,      SCENE_KAKARIKO_VILLAGE,     20482,  0x02, "GS Guards House",                  "Kak GS Guards House",                              RHT_KAK_GS_GUARDS_HOUSE,                              { Category::cSkulltula }, 0x10, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_GS_TREE] =                                      Location::GSToken(RC_KAK_GS_TREE,                                      RCQUEST_BOTH,    RCAREA_KAKARIKO_VILLAGE,      SCENE_KAKARIKO_VILLAGE,     -28640, 0x20, "GS Tree",                          "Kak GS Tree",                                      RHT_KAK_GS_TREE,                                      { Category::cSkulltula }, 0x10, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_GS_WATCHTOWER] =                                Location::GSToken(RC_KAK_GS_WATCHTOWER,                                RCQUEST_BOTH,    RCAREA_KAKARIKO_VILLAGE,      SCENE_KAKARIKO_VILLAGE,     20484,  0x04, "GS Watchtower",                    "Kak GS Watchtower",                                RHT_KAK_GS_WATCHTOWER,                                { Category::cSkulltula }, 0x10, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_GS_ABOVE_IMPAS_HOUSE] =                         Location::GSToken(RC_KAK_GS_ABOVE_IMPAS_HOUSE,                         RCQUEST_BOTH,    RCAREA_KAKARIKO_VILLAGE,      SCENE_KAKARIKO_VILLAGE,     20544,  0x40, "GS Above Impas House",             "Kak GS Above Impas House",                         RHT_KAK_GS_ABOVE_IMPAS_HOUSE,                         { Category::cSkulltula }, 0x10, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
     // Graveyard
-    locationTable[RC_GRAVEYARD_GS_WALL] =
-        Location::GSToken(RC_GRAVEYARD_GS_WALL, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_GRAVEYARD, ACTOR_EN_SI,
-                          SCENE_GRAVEYARD, 20608, 0x80, "GS Wall", "Graveyard GS Wall", RHT_GRAVEYARD_GS_WALL,
-                          { Category::cSkulltula }, 0x10, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_GRAVEYARD_GS_BEAN_PATCH] = Location::GSToken(
-        RC_GRAVEYARD_GS_BEAN_PATCH, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_GRAVEYARD, ACTOR_EN_SI, SCENE_GRAVEYARD,
-        28673, 0x01, "GS Bean Patch", "Graveyard GS Bean Patch", RHT_GRAVEYARD_GS_BEAN_PATCH, { Category::cSkulltula },
-        0x10, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-
+    locationTable[RC_GRAVEYARD_GS_WALL] =                                Location::GSToken(RC_GRAVEYARD_GS_WALL,                                RCQUEST_BOTH,    RCAREA_GRAVEYARD,             SCENE_GRAVEYARD,            20608,  0x80, "GS Wall",                          "Graveyard GS Wall",                                RHT_GRAVEYARD_GS_WALL,                                { Category::cSkulltula }, 0x10, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_GRAVEYARD_GS_BEAN_PATCH] =                          Location::GSToken(RC_GRAVEYARD_GS_BEAN_PATCH,                          RCQUEST_BOTH,    RCAREA_GRAVEYARD,             SCENE_GRAVEYARD,            28673,  0x01, "GS Bean Patch",                    "Graveyard GS Bean Patch",                          RHT_GRAVEYARD_GS_BEAN_PATCH,                          { Category::cSkulltula }, 0x10, SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
     // Death Mountain
-    locationTable[RC_DMC_GS_BEAN_PATCH] = Location::GSToken(
-        RC_DMC_GS_BEAN_PATCH, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_SI,
-        SCENE_DEATH_MOUNTAIN_CRATER, 28417, 0x01, "GS Bean Patch", "DMC GS Bean Patch", RHT_DMC_GS_BEAN_PATCH,
-        { Category::cSkulltula }, 0x0F, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
-    locationTable[RC_DMC_GS_CRATE] =
-        Location::GSToken(RC_DMC_GS_CRATE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_SI,
-                          SCENE_DEATH_MOUNTAIN_CRATER, -28800, 0x80, "GS Crate", "DMC GS Crate", RHT_DMC_GS_CRATE,
-                          { Category::cSkulltula }, 0x0F, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
-    locationTable[RC_DMT_GS_BEAN_PATCH] = Location::GSToken(
-        RC_DMT_GS_BEAN_PATCH, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_EN_SI,
-        SCENE_DEATH_MOUNTAIN_TRAIL, 28418, 0x02, "GS Bean Patch", "DMT GS Bean Patch", RHT_DMT_GS_BEAN_PATCH,
-        { Category::cSkulltula }, 0x0F, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
-    locationTable[RC_DMT_GS_NEAR_KAK] = Location::GSToken(
-        RC_DMT_GS_NEAR_KAK, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_EN_SI,
-        SCENE_DEATH_MOUNTAIN_TRAIL, 12036, 0x04, "GS Near Kak", "DMT GS Near Kak", RHT_DMT_GS_NEAR_KAK,
-        { Category::cSkulltula }, 0x0F, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
-    locationTable[RC_DMT_GS_ABOVE_DODONGOS_CAVERN] = Location::GSToken(
-        RC_DMT_GS_ABOVE_DODONGOS_CAVERN, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_EN_SI,
-        SCENE_DEATH_MOUNTAIN_TRAIL, 20232, 0x08, "GS Above Dodongos Cavern", "DMT GS Above Dodongos Cavern",
-        RHT_DMT_GS_ABOVE_DODONGOS_CAVERN, { Category::cSkulltula }, 0x0F,
-        SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
-    locationTable[RC_DMT_GS_FALLING_ROCKS_PATH] = Location::GSToken(
-        RC_DMT_GS_FALLING_ROCKS_PATH, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_EN_SI,
-        SCENE_DEATH_MOUNTAIN_TRAIL, 20240, 0x10, "GS Falling Rocks Path", "DMT GS Falling Rocks Path",
-        RHT_DMT_GS_FALLING_ROCKS_PATH, { Category::cSkulltula }, 0x0F,
-        SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
-    locationTable[RC_GC_GS_CENTER_PLATFORM] = Location::GSToken(
-        RC_GC_GS_CENTER_PLATFORM, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_GORON_CITY, ACTOR_EN_SI, SCENE_GORON_CITY,
-        12064, 0x20, "GS Center Platform", "GC GS Center Platform", RHT_GC_GS_CENTER_PLATFORM, { Category::cSkulltula },
-        0x0F, SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
-    locationTable[RC_GC_GS_BOULDER_MAZE] = Location::GSToken(
-        RC_GC_GS_BOULDER_MAZE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_GORON_CITY, ACTOR_EN_SI, SCENE_GORON_CITY,
-        -28864, 0x40, "GS Boulder Maze", "GC GS Boulder Maze", RHT_GC_GS_BOULDER_MAZE, { Category::cSkulltula }, 0x0F,
-        SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
-
+    locationTable[RC_DMC_GS_BEAN_PATCH] =                                Location::GSToken(RC_DMC_GS_BEAN_PATCH,                                RCQUEST_BOTH,    RCAREA_DEATH_MOUNTAIN_CRATER, SCENE_DEATH_MOUNTAIN_CRATER,28417,  0x01, "GS Bean Patch",                    "DMC GS Bean Patch",                                RHT_DMC_GS_BEAN_PATCH,                                { Category::cSkulltula }, 0x0F, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMC_GS_CRATE] =                                     Location::GSToken(RC_DMC_GS_CRATE,                                     RCQUEST_BOTH,    RCAREA_DEATH_MOUNTAIN_CRATER, SCENE_DEATH_MOUNTAIN_CRATER,-28800, 0x80, "GS Crate",                         "DMC GS Crate",                                     RHT_DMC_GS_CRATE,                                     { Category::cSkulltula }, 0x0F, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMT_GS_BEAN_PATCH] =                                Location::GSToken(RC_DMT_GS_BEAN_PATCH,                                RCQUEST_BOTH,    RCAREA_DEATH_MOUNTAIN_TRAIL,  SCENE_DEATH_MOUNTAIN_TRAIL, 28418,  0x02, "GS Bean Patch",                    "DMT GS Bean Patch",                                RHT_DMT_GS_BEAN_PATCH,                                { Category::cSkulltula }, 0x0F, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMT_GS_NEAR_KAK] =                                  Location::GSToken(RC_DMT_GS_NEAR_KAK,                                  RCQUEST_BOTH,    RCAREA_DEATH_MOUNTAIN_TRAIL,  SCENE_DEATH_MOUNTAIN_TRAIL, 12036,  0x04, "GS Near Kak",                      "DMT GS Near Kak",                                  RHT_DMT_GS_NEAR_KAK,                                  { Category::cSkulltula }, 0x0F, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMT_GS_ABOVE_DODONGOS_CAVERN] =                     Location::GSToken(RC_DMT_GS_ABOVE_DODONGOS_CAVERN,                     RCQUEST_BOTH,    RCAREA_DEATH_MOUNTAIN_TRAIL,  SCENE_DEATH_MOUNTAIN_TRAIL, 20232,  0x08, "GS Above Dodongos Cavern",         "DMT GS Above Dodongos Cavern",                     RHT_DMT_GS_ABOVE_DODONGOS_CAVERN,                     { Category::cSkulltula }, 0x0F, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMT_GS_FALLING_ROCKS_PATH] =                        Location::GSToken(RC_DMT_GS_FALLING_ROCKS_PATH,                        RCQUEST_BOTH,    RCAREA_DEATH_MOUNTAIN_TRAIL,  SCENE_DEATH_MOUNTAIN_TRAIL, 20240,  0x10, "GS Falling Rocks Path",            "DMT GS Falling Rocks Path",                        RHT_DMT_GS_FALLING_ROCKS_PATH,                        { Category::cSkulltula }, 0x0F, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_GC_GS_CENTER_PLATFORM] =                            Location::GSToken(RC_GC_GS_CENTER_PLATFORM,                            RCQUEST_BOTH,    RCAREA_GORON_CITY,            SCENE_GORON_CITY,           12064,  0x20, "GS Center Platform",               "GC GS Center Platform",                            RHT_GC_GS_CENTER_PLATFORM,                            { Category::cSkulltula }, 0x0F, SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_GS_BOULDER_MAZE] =                               Location::GSToken(RC_GC_GS_BOULDER_MAZE,                               RCQUEST_BOTH,    RCAREA_GORON_CITY,            SCENE_GORON_CITY,           -28864, 0x40, "GS Boulder Maze",                  "GC GS Boulder Maze",                               RHT_GC_GS_BOULDER_MAZE,                               { Category::cSkulltula }, 0x0F, SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
     // Zora's River, Domain, and Fountain
-    locationTable[RC_ZR_GS_LADDER] =
-        Location::GSToken(RC_ZR_GS_LADDER, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_ZORAS_RIVER, ACTOR_EN_SI,
-                          SCENE_ZORAS_RIVER, 20737, 0x01, "GS Ladder", "ZR GS Ladder", RHT_ZR_GS_LADDER,
-                          { Category::cSkulltula }, 0x11, SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
-    locationTable[RC_ZR_GS_TREE] =
-        Location::GSToken(RC_ZR_GS_TREE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_ZORAS_RIVER, ACTOR_EN_SI,
-                          SCENE_ZORAS_RIVER, -28414, 0x02, "GS Tree", "ZR GS Tree", RHT_ZR_GS_TREE,
-                          { Category::cSkulltula }, 0x11, SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
-    locationTable[RC_ZR_GS_ABOVE_BRIDGE] = Location::GSToken(
-        RC_ZR_GS_ABOVE_BRIDGE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_ZORAS_RIVER, ACTOR_EN_SI, SCENE_ZORAS_RIVER,
-        20744, 0x10, "GS Above Bridge", "ZR GS Above Bridge", RHT_ZR_GS_ABOVE_BRIDGE, { Category::cSkulltula }, 0x11,
-        SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
-    locationTable[RC_ZR_GS_NEAR_RAISED_GROTTOS] = Location::GSToken(
-        RC_ZR_GS_NEAR_RAISED_GROTTOS, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_ZORAS_RIVER, ACTOR_EN_SI,
-        SCENE_ZORAS_RIVER, 20752, 0x10, "GS Near Raised Grottos", "ZR GS Near Raised Grottos",
-        RHT_ZR_GS_NEAR_RAISED_GROTTOS, { Category::cSkulltula }, 0x11, SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
-    locationTable[RC_ZD_GS_FROZEN_WATERFALL] = Location::GSToken(
-        RC_ZD_GS_FROZEN_WATERFALL, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_ZORAS_DOMAIN, ACTOR_EN_SI,
-        SCENE_ZORAS_DOMAIN, 20800, 0x40, "GS Frozen Waterfall", "ZD GS Frozen Waterfall", RHT_ZD_GS_FROZEN_WATERFALL,
-        { Category::cSkulltula }, 0x11, SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-    locationTable[RC_ZF_GS_ABOVE_THE_LOG] = Location::GSToken(
-        RC_ZF_GS_ABOVE_THE_LOG, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_ZORAS_FOUNTAIN, ACTOR_EN_SI,
-        SCENE_ZORAS_FOUNTAIN, 20740, 0x04, "GS Above The Log", "ZF GS Above The Log", RHT_ZF_GS_ABOVE_THE_LOG,
-        { Category::cSkulltula }, 0x11, SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-    locationTable[RC_ZF_GS_HIDDEN_CAVE] = Location::GSToken(
-        RC_ZF_GS_HIDDEN_CAVE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_ZORAS_FOUNTAIN, ACTOR_EN_SI,
-        SCENE_ZORAS_FOUNTAIN, 20768, 0x20, "GS Hidden Cave", "ZF GS Hidden Cave", RHT_ZF_GS_HIDDEN_CAVE,
-        { Category::cSkulltula }, 0x11, SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-    locationTable[RC_ZF_GS_TREE] = Location::GSToken(RC_ZF_GS_TREE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_ZORAS_FOUNTAIN, ACTOR_EN_SI, SCENE_ZORAS_FOUNTAIN, -28288, 0x80, "GS Tree", "ZF GS Tree", RHT_ZF_GS_TREE, { Category::cSkulltula }, 0x11, SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-
+    locationTable[RC_ZR_GS_LADDER] =                                     Location::GSToken(RC_ZR_GS_LADDER,                                     RCQUEST_BOTH,    RCAREA_ZORAS_RIVER,           SCENE_ZORAS_RIVER,          20737,  0x01, "GS Ladder",                        "ZR GS Ladder",                                     RHT_ZR_GS_LADDER,                                     { Category::cSkulltula }, 0x11, SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[RC_ZR_GS_TREE] =                                       Location::GSToken(RC_ZR_GS_TREE,                                       RCQUEST_BOTH,    RCAREA_ZORAS_RIVER,           SCENE_ZORAS_RIVER,          -28414, 0x02, "GS Tree",                          "ZR GS Tree",                                       RHT_ZR_GS_TREE,                                       { Category::cSkulltula }, 0x11, SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[RC_ZR_GS_ABOVE_BRIDGE] =                               Location::GSToken(RC_ZR_GS_ABOVE_BRIDGE,                               RCQUEST_BOTH,    RCAREA_ZORAS_RIVER,           SCENE_ZORAS_RIVER,          20744,  0x10, "GS Above Bridge",                  "ZR GS Above Bridge",                               RHT_ZR_GS_ABOVE_BRIDGE,                               { Category::cSkulltula }, 0x11, SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[RC_ZR_GS_NEAR_RAISED_GROTTOS] =                        Location::GSToken(RC_ZR_GS_NEAR_RAISED_GROTTOS,                        RCQUEST_BOTH,    RCAREA_ZORAS_RIVER,           SCENE_ZORAS_RIVER,          20752,  0x10, "GS Near Raised Grottos",           "ZR GS Near Raised Grottos",                        RHT_ZR_GS_NEAR_RAISED_GROTTOS,                        { Category::cSkulltula }, 0x11, SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[RC_ZD_GS_FROZEN_WATERFALL] =                           Location::GSToken(RC_ZD_GS_FROZEN_WATERFALL,                           RCQUEST_BOTH,    RCAREA_ZORAS_DOMAIN,          SCENE_ZORAS_DOMAIN,         20800,  0x40, "GS Frozen Waterfall",              "ZD GS Frozen Waterfall",                           RHT_ZD_GS_FROZEN_WATERFALL,                           { Category::cSkulltula }, 0x11, SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZF_GS_ABOVE_THE_LOG] =                              Location::GSToken(RC_ZF_GS_ABOVE_THE_LOG,                              RCQUEST_BOTH,    RCAREA_ZORAS_FOUNTAIN,        SCENE_ZORAS_FOUNTAIN,       20740,  0x04, "GS Above The Log",                 "ZF GS Above The Log",                              RHT_ZF_GS_ABOVE_THE_LOG,                              { Category::cSkulltula }, 0x11, SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZF_GS_HIDDEN_CAVE] =                                Location::GSToken(RC_ZF_GS_HIDDEN_CAVE,                                RCQUEST_BOTH,    RCAREA_ZORAS_FOUNTAIN,        SCENE_ZORAS_FOUNTAIN,       20768,  0x20, "GS Hidden Cave",                   "ZF GS Hidden Cave",                                RHT_ZF_GS_HIDDEN_CAVE,                                { Category::cSkulltula }, 0x11, SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZF_GS_TREE] =                                       Location::GSToken(RC_ZF_GS_TREE,                                       RCQUEST_BOTH,    RCAREA_ZORAS_FOUNTAIN,        SCENE_ZORAS_FOUNTAIN,       -28288, 0x80, "GS Tree",                          "ZF GS Tree",                                       RHT_ZF_GS_TREE,                                       { Category::cSkulltula }, 0x11, SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
     // Lon Lon Ranch
-    locationTable[RC_LLR_GS_BACK_WALL] =
-        Location::GSToken(RC_LLR_GS_BACK_WALL, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LON_LON_RANCH, ACTOR_EN_SI,
-                          SCENE_LON_LON_RANCH, 11009, 0x01, "GS Back Wall", "LLR GS Back Wall", RHT_LLR_GS_BACK_WALL,
-                          { Category::cSkulltula }, 0x0B, SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
-    locationTable[RC_LLR_GS_RAIN_SHED] =
-        Location::GSToken(RC_LLR_GS_RAIN_SHED, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LON_LON_RANCH, ACTOR_EN_SI,
-                          SCENE_LON_LON_RANCH, 11010, 0x02, "GS Rain Shed", "LLR GS Rain Shed", RHT_LLR_GS_RAIN_SHED,
-                          { Category::cSkulltula }, 0x0B, SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
-    locationTable[RC_LLR_GS_HOUSE_WINDOW] = Location::GSToken(
-        RC_LLR_GS_HOUSE_WINDOW, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LON_LON_RANCH, ACTOR_EN_SI,
-        SCENE_LON_LON_RANCH, 11012, 0x04, "GS House Window", "LLR GS House Window", RHT_LLR_GS_HOUSE_WINDOW,
-        { Category::cSkulltula }, 0x0B, SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
-    locationTable[RC_LLR_GS_TREE] =
-        Location::GSToken(RC_LLR_GS_TREE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LON_LON_RANCH, ACTOR_EN_SI,
-                          SCENE_LON_LON_RANCH, -29944, 0x08, "GS Tree", "LLR GS Tree", RHT_LLR_GS_TREE,
-                          { Category::cSkulltula }, 0x0B, SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+    locationTable[RC_LLR_GS_BACK_WALL] =                                 Location::GSToken(RC_LLR_GS_BACK_WALL,                                 RCQUEST_BOTH,    RCAREA_LON_LON_RANCH,         SCENE_LON_LON_RANCH,        11009,  0x01, "GS Back Wall",                     "LLR GS Back Wall",                                 RHT_LLR_GS_BACK_WALL,                                 { Category::cSkulltula }, 0x0B, SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+    locationTable[RC_LLR_GS_RAIN_SHED] =                                 Location::GSToken(RC_LLR_GS_RAIN_SHED,                                 RCQUEST_BOTH,    RCAREA_LON_LON_RANCH,         SCENE_LON_LON_RANCH,        11010,  0x02, "GS Rain Shed",                     "LLR GS Rain Shed",                                 RHT_LLR_GS_RAIN_SHED,                                 { Category::cSkulltula }, 0x0B, SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+    locationTable[RC_LLR_GS_HOUSE_WINDOW] =                              Location::GSToken(RC_LLR_GS_HOUSE_WINDOW,                              RCQUEST_BOTH,    RCAREA_LON_LON_RANCH,         SCENE_LON_LON_RANCH,        11012,  0x04, "GS House Window",                  "LLR GS House Window",                              RHT_LLR_GS_HOUSE_WINDOW,                              { Category::cSkulltula }, 0x0B, SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+    locationTable[RC_LLR_GS_TREE] =                                      Location::GSToken(RC_LLR_GS_TREE,                                      RCQUEST_BOTH,    RCAREA_LON_LON_RANCH,         SCENE_LON_LON_RANCH,        -29944, 0x08, "GS Tree",                          "LLR GS Tree",                                      RHT_LLR_GS_TREE,                                      { Category::cSkulltula }, 0x0B, SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
 
     // Bosses     Randomizer Check                       Randomizer Check    Quest         Type                   Area                     Actor ID          Scene ID                    Params Flags                                      Short Name         Spoiler Name       Hint Text Key      Vanilla Item        Categories Spoiler Collection Check             Collection Check Group                                      Vanilla Progression
     locationTable[RC_LINKS_POCKET] =    Location::Reward(RC_LINKS_POCKET,    RCQUEST_BOTH, RCTYPE_LINKS_POCKET,   RCAREA_KOKIRI_FOREST,    ACTOR_ID_MAX,     SCENE_ID_MAX,               0x00, 0x00,                                       "Link's Pocket",   "Link's Pocket",   RHT_LINKS_POCKET,  RG_LIGHT_MEDALLION,  {}, SpoilerCollectionCheck::AlwaysCollected(), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST,           true);

@@ -188,8 +188,8 @@ class Location {
                 bool isVanillaCompletion_ = false);
 
     static Location
-    GSToken(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_, RandomizerCheckArea area_,
-            ActorID actorId_, uint8_t scene, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
+    GSToken(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+            uint8_t scene, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
             std::string&& spoilerName_, const RandomizerHintTextKey hintKey, std::vector<Category>&& categories,
             SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP,
             bool isVanillaCompletion_ = true);
@@ -200,9 +200,7 @@ class Location {
     /// and expected that these don't always match, and the naming is a holdover from 3drando.
     /// @param rc 
     /// @param quest_ 
-    /// @param checkType_ 
     /// @param area_ 
-    /// @param actorId_ 
     /// @param scene_ 
     /// @param actorParams_ 
     /// @param flag_ 
@@ -215,8 +213,8 @@ class Location {
     /// @param isVanillaCompletion_ 
     /// @return
     static Location
-    GSToken(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_, RandomizerCheckArea area_,
-            ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
+    GSToken(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+            uint8_t scene_, int32_t actorParams_, uint8_t flag_, std::string&& shortName_,
             std::string&& spoilerName_, const RandomizerHintTextKey hintKey, std::vector<Category>&& categories,
             uint8_t skullScene_,
             SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP,
