@@ -91,19 +91,19 @@ void SkeletonPatcher::UpdateTunicSkeletons() {
     static const std::string sOtr = "__OTR__";
     for (auto skel : skeletons) {
         // Check if this is Link's skeleton
-        if (altPrefix + sOtr + skel.vanillaSkeletonPath == std::string(gLinkAdultSkel)) {
+        if (sOtr + skel.vanillaSkeletonPath == std::string(gLinkAdultSkel)) {
             Skeleton* newSkel = nullptr;
             std::string skeletonPath = "";
             // Check what Link's current tunic is
             switch (TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TUNIC))) {
                 case PLAYER_TUNIC_KOKIRI:
-                    skeletonPath = gLinkKokiriTunicSkel;
+                    skeletonPath = std::string(gLinkKokiriTunicSkel).substr(sOtr.length());
                     break;
                 case PLAYER_TUNIC_GORON:
-                    skeletonPath = gLinkGoronTunicSkel;
+                    skeletonPath = std::string(gLinkGoronTunicSkel).substr(sOtr.length());
                     break;
                 case PLAYER_TUNIC_ZORA:
-                    skeletonPath = gLinkZoraTunicSkel;
+                    skeletonPath = std::string(gLinkZoraTunicSkel).substr(sOtr.length());
                     break;
             }
             // Load new skeleton based on Link's tunic if it exists
