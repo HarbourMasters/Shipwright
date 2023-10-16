@@ -105,7 +105,7 @@ void AreaTable_Init_LostWoods() {
                   Entrance(KOKIRI_FOREST, {[]{return true;}})
   });
 
-  areaTable[LW_FOREST_EXIT] = Area("LW Forest Exit", "Lost Woods", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[LW_FOREST_EXIT] = Area("LW Forest Exit", "Lost Woods", THE_LOST_WOODS, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(KOKIRI_FOREST, {[]{return true;}})
   });
