@@ -309,8 +309,8 @@ static const ALIGN_ASSET(2) char gLinkAdultHookshotDesignTex[] = dgLinkAdultHook
 #define dgLinkAdultHookshotChainTex "__OTR__objects/object_link_boy/gLinkAdultHookshotChainTex"
 static const ALIGN_ASSET(2) char gLinkAdultHookshotChainTex[] = dgLinkAdultHookshotChainTex;
 
-#define dgLinkAdultHookshotRedicleVtx "__OTR__objects/object_link_boy/gLinkAdultHookshotRedicleVtx"
-static const ALIGN_ASSET(2) char gLinkAdultHookshotRedicleVtx[] = dgLinkAdultHookshotRedicleVtx;
+#define dgLinkAdultHookshotReticleVtx "__OTR__objects/object_link_boy/gLinkAdultHookshotReticleVtx"
+static const ALIGN_ASSET(2) char gLinkAdultHookshotReticleVtx[] = dgLinkAdultHookshotReticleVtx;
 
 #define dgLinkAdultHookshotReticleTex "__OTR__objects/object_link_boy/gLinkAdultHookshotReticleTex"
 static const ALIGN_ASSET(2) char gLinkAdultHookshotReticleTex[] = dgLinkAdultHookshotReticleTex;
