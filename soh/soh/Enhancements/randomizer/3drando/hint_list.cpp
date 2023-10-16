@@ -30,12 +30,12 @@ void HintTable_Init() {
     hintTable[RHT_PREFIX] =
         HintText::Exclude({ Text{ "They say that ", /*french*/ "Selon moi, ", /*spanish*/ "Según dicen, " } });
     hintTable[RHT_WAY_OF_THE_HERO] =
-        HintText::Exclude({ Text{ " is on the way of the hero.", /*french*/ " est sur la voie du héros.",
+        HintText::Exclude({ Text{ " is on %cthe way of the hero%w.", /*french*/ " est sur %cla voie du héros%w.",
                                   /*spanish*/ " conduce a la senda del héroe." } });
     hintTable[RHT_PLUNDERING] =
         HintText::Exclude({ Text{ "plundering ", /*french*/ "explorer ", /*spanish*/ "inspeccionar " } });
     hintTable[RHT_FOOLISH] = HintText::Exclude(
-        { Text{ " is a foolish choice.", /*french*/ " est futile.", /*spanish*/ " no es una sabia decisión." } });
+        { Text{ " is %pa foolish choice%w.", /*french*/ " est %pfutile%w.", /*spanish*/ " no es una sabia decisión." } });
     hintTable[RHT_CAN_BE_FOUND_AT] =
         HintText::Exclude({ Text{ "can be found at", /*french*/ "se trouve dans", /*spanish*/ "aguarda en" } });
     hintTable[RHT_HOARDS] = HintText::Exclude({ Text{ "hoards", /*french*/ "recèle", /*spanish*/ "acapara" } });

@@ -468,9 +468,9 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
 
     CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE,
-            CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you my&%b{{check}}%w!",
-                "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du %r{{params}} Skulltulas&%wzerstörst und ich werde dir dafür&%b{{check}} %wgeben!",
-                "Yeaaarrgh! Je suis maudit!^Détruit encore %r{{params}} Araignées de&la Malédiction%w et j'aurai quelque&chose à te donner!&%b({{check}})")
+            CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you my&%g{{check}}%w!",
+                "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du %r{{params}} Skulltulas&%wzerstörst und ich werde dir dafür&%g{{check}} %wgeben!",
+                "Yeaaarrgh! Je suis maudit!^Détruit encore %r{{params}} Araignées de&la Malédiction%w et j'aurai quelque&chose à te donner!&%g({{check}})")
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY,
@@ -484,7 +484,7 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
             Randomizer::randoMiscHintsTableID, TEXT_FROGS_UNDERWATER,
             CustomMessage("Some frogs holding&%g{{item}}%w&are looking at you from underwater...",
             "Unter Wasser gibt es Frösche,&die %g{{item}}%w&bei sich haben und Dich neugierig&beobachten...",
-            "Des grenouilles se trouvant&sous l'eau vous fixent attentivement,&tenant fermement&%r{{item}}%w.", TEXTBOX_TYPE_BLUE)
+            "Des grenouilles se trouvant&sous l'eau vous fixent attentivement,&tenant fermement&%g{{item}}%w.", TEXTBOX_TYPE_BLUE)
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_SARIAS_SONG_FOREST_SOUNDS,
@@ -568,17 +568,17 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
     //RANDOTODO: Implement obscure/ambiguous hints
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_MEDIGORON,
-        CustomMessage("How about buying %r&{{item}}%w for %g200 rupees%w?\x1B&%gYes&No%w",
-            "Wie wäre es mit %r&{{item}}%w für %g200 Rubine?%w\x1B&%gJa!&Nein!%w",
-            "Veux-tu acheter %r&{{item}}%w pour %g200 rubis?%w\x1B&%gOui&Non&w"));
+        CustomMessage("How about buying %g&{{item}}%w for %y200 rupees%w?\x1B&%gYes&No%w",
+            "Wie wäre es mit %g&{{item}}%w für %y200 Rubine?%w\x1B&%gJa!&Nein!%w",
+            "Veux-tu acheter %g&{{item}}%w pour %y200 rubis?%w\x1B&%gOui&Non&w"));
 
     //Granny Shopy
     //RANDOTODO: Implement obscure/ambiguous hints
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_GRANNYS_SHOP,
-        CustomMessage("%r{{item}}%w!&How about %g100 rupees%w?\x1B&%gYes&No%w",
-            "%r{{item}}%w!&Wie wäre es mit %g100 Rubine?%w\x1B&%gJa!&Nein!%w",
-            "%r{{item}}%w!&Que dis-tu de %g100 rubis?%w\x1B&%gOui&Non&w"));
+        CustomMessage("%g{{item}}%w!&How about %y100 rupees%w?\x1B&%gYes&No%w",
+            "%g{{item}}%w!&Wie wäre es mit %y100 Rubine?%w\x1B&%gJa!&Nein!%w",
+            "%g{{item}}%w!&Que dis-tu de %y100 rubis?%w\x1B&%gOui&Non&w"));
 
     //Carpet Salesman
     //RANDOTODO: Implement obscure/ambiguous hints
@@ -599,14 +599,14 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_1,
             CustomMessage("Welcome!^I am selling stuff, strange and rare, &from all over the world to "
-                          "everybody.&Today's special is...^%r{{item}}" +
-                              cgBoxTwoText[0] + "How about %g200 Rupees?%w\x1B&&%gYes&No%w",
+                          "everybody.&Today's special is...^%g{{item}}" +
+                              cgBoxTwoText[0] + "How about %y200 Rupees?%w\x1B&&%gYes&No%w",
                           "Sei gegrüßt!^Ich verkaufe allerlei Kuriorisäten.&Stets sonderliche und seltene Ware&aus "
-                          "aller Welt für jedermann.&Das heutige Angebot bleibt...^%r{{item}}" +
-                              cgBoxTwoText[1] + "Wie wäre es mit %g200 Rubinen?%w\x1B&&%gJa!&Nein!%w",
+                          "aller Welt für jedermann.&Das heutige Angebot bleibt...^%g{{item}}" +
+                              cgBoxTwoText[1] + "Wie wäre es mit %y200 Rubinen?%w\x1B&&%gJa!&Nein!%w",
                           "Bienvenue!^Je vends des trucs étranges et rares,&de partout dans le monde et à tout "
-                          "le&monde! L'objet du jour est...^%r{{item}}" +
-                              cgBoxTwoText[2] + "Alors, marché conclu pour %g200 rubis?%w\x1B&&%gOui&Non%w"));
+                          "le&monde! L'objet du jour est...^%g{{item}}" +
+                              cgBoxTwoText[2] + "Alors, marché conclu pour %y200 rubis?%w\x1B&&%gOui&Non%w"));
 
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_2,
