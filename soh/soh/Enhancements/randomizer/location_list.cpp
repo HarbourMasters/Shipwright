@@ -1614,221 +1614,55 @@ void Rando::StaticData::InitLocationTable() {
         RHT_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST, RG_FOREST_TEMPLE_BOSS_KEY, { Category::cVanillaBossKey },
         SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE, true);
 
+    //            Randomizer Check                                                      Randomizer Check                                    Quest            Type                Area                Actor ID         Scene ID           Params Flags Short Name                             Spoiler Name                                       Hint Text Key                                        Vanilla Item              Categories                      Collection Check Group                                  Vanilla Progression
     // Fire Temple Vanilla
-    locationTable[RC_FIRE_TEMPLE_NEAR_BOSS_CHEST] =
-        Location::Chest(RC_FIRE_TEMPLE_NEAR_BOSS_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 22593, 0x01, "Near Boss Chest", "Fire Temple Near Boss Chest",
-                        RHT_FIRE_TEMPLE_NEAR_BOSS_CHEST, RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_FLARE_DANCER_CHEST] = Location::Chest(
-        RC_FIRE_TEMPLE_FLARE_DANCER_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
-        SCENE_FIRE_TEMPLE, 31936, 0x00, "Flare Dancer Chest", "Fire Temple Flare Dancer Chest",
-        RHT_FIRE_TEMPLE_FLARE_DANCER_CHEST, RG_BOMBS_10, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    locationTable[RC_FIRE_TEMPLE_BOSS_KEY_CHEST] =
-        Location::Chest(RC_FIRE_TEMPLE_BOSS_KEY_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_KEY, RCAREA_FIRE_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 10220, 0x0C, "Boss Key Chest", "Fire Temple Boss Key Chest",
-                        RHT_FIRE_TEMPLE_BOSS_KEY_CHEST, RG_FIRE_TEMPLE_BOSS_KEY, { Category::cVanillaBossKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST] =
-        Location::Chest(RC_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
-                        RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 22594, 0x02,
-                        "Big Lava Room Blocked Door Chest", "Fire Temple Big Lava Room Blocked Door Chest",
-                        RHT_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_CHEST] =
-        Location::Chest(RC_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
-                        RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 22596, 0x04,
-                        "Big Lava Room Lower Open Door Chest", "Fire Temple Big Lava Room Lower Open Door Chest",
-                        RHT_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST] = Location::Chest(
-        RC_FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
-        SCENE_FIRE_TEMPLE, 22595, 0x03, "Boulder Maze Lower Chest", "Fire Temple Boulder Maze Lower Chest",
-        RHT_FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST, RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_BOULDER_MAZE_UPPER_CHEST] = Location::Chest(
-        RC_FIRE_TEMPLE_BOULDER_MAZE_UPPER_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
-        SCENE_FIRE_TEMPLE, 22598, 0x06, "Boulder Maze Upper Chest", "Fire Temple Boulder Maze Upper Chest",
-        RHT_FIRE_TEMPLE_BOULDER_MAZE_UPPER_CHEST, RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_CHEST] =
-        Location::Chest(RC_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
-                        RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 22600, 0x08,
-                        "Boulder Maze Side Room Chest", "Fire Temple Boulder Maze Side Room Chest",
-                        RHT_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST] = Location::Chest(
-        RC_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
-        SCENE_FIRE_TEMPLE, 22603, 0x0B, "Boulder Maze Shortcut Chest", "Fire Temple Boulder Maze Shortcut Chest",
-        RHT_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST, RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_SCARECROW_CHEST] = Location::Chest(
-        RC_FIRE_TEMPLE_SCARECROW_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
-        SCENE_FIRE_TEMPLE, 23245, 0x0D, "Scarecrow Chest", "Fire Temple Scarecrow Chest",
-        RHT_FIRE_TEMPLE_SCARECROW_CHEST, RG_HUGE_RUPEE, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    locationTable[RC_FIRE_TEMPLE_MAP_CHEST] = Location::Chest(
-        RC_FIRE_TEMPLE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
-        SCENE_FIRE_TEMPLE, 2090, 0x0A, "Map Chest", "Fire Temple Map Chest", RHT_FIRE_TEMPLE_MAP_CHEST,
-        RG_FIRE_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_COMPASS_CHEST] =
-        Location::Chest(RC_FIRE_TEMPLE_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 2055, 0x07, "Compass Chest", "Fire Temple Compass Chest",
-                        RHT_FIRE_TEMPLE_COMPASS_CHEST, RG_FIRE_TEMPLE_COMPASS, { Category::cVanillaCompass },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_HIGHEST_GORON_CHEST] = Location::Chest(
-        RC_FIRE_TEMPLE_HIGHEST_GORON_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
-        SCENE_FIRE_TEMPLE, 22601, 0x09, "Highest Goron Chest", "Fire Temple Highest Goron Chest",
-        RHT_FIRE_TEMPLE_HIGHEST_GORON_CHEST, RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_MEGATON_HAMMER_CHEST] =
-        Location::Chest(RC_FIRE_TEMPLE_MEGATON_HAMMER_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 421, 0x05, "Megaton Hammer Chest",
-                        "Fire Temple Megaton Hammer Chest", RHT_FIRE_TEMPLE_MEGATON_HAMMER_CHEST, RG_MEGATON_HAMMER, {},
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-
+    locationTable[RC_FIRE_TEMPLE_NEAR_BOSS_CHEST] =                     Location::Chest(RC_FIRE_TEMPLE_NEAR_BOSS_CHEST,                     RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 22593, 0x01, "Near Boss Chest",                     "Fire Temple Near Boss Chest",                     RHT_FIRE_TEMPLE_NEAR_BOSS_CHEST,                     RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_FLARE_DANCER_CHEST] =                  Location::Chest(RC_FIRE_TEMPLE_FLARE_DANCER_CHEST,                  RCQUEST_VANILLA, RCTYPE_STANDARD,    RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 31936, 0x00, "Flare Dancer Chest",                  "Fire Temple Flare Dancer Chest",                  RHT_FIRE_TEMPLE_FLARE_DANCER_CHEST,                  RG_BOMBS_10,              {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_BOSS_KEY_CHEST] =                      Location::Chest(RC_FIRE_TEMPLE_BOSS_KEY_CHEST,                      RCQUEST_VANILLA, RCTYPE_BOSS_KEY,    RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 10220, 0x0C, "Boss Key Chest",                      "Fire Temple Boss Key Chest",                      RHT_FIRE_TEMPLE_BOSS_KEY_CHEST,                      RG_FIRE_TEMPLE_BOSS_KEY,  { Category::cVanillaBossKey },  SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST] =    Location::Chest(RC_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST,    RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 22594, 0x02, "Big Lava Room Blocked Door Chest",    "Fire Temple Big Lava Room Blocked Door Chest",    RHT_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST,    RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_CHEST] = Location::Chest(RC_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 22596, 0x04, "Big Lava Room Lower Open Door Chest", "Fire Temple Big Lava Room Lower Open Door Chest", RHT_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_CHEST, RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST] =            Location::Chest(RC_FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST,            RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 22595, 0x03, "Boulder Maze Lower Chest",            "Fire Temple Boulder Maze Lower Chest",            RHT_FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST,            RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_BOULDER_MAZE_UPPER_CHEST] =            Location::Chest(RC_FIRE_TEMPLE_BOULDER_MAZE_UPPER_CHEST,            RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 22598, 0x06, "Boulder Maze Upper Chest",            "Fire Temple Boulder Maze Upper Chest",            RHT_FIRE_TEMPLE_BOULDER_MAZE_UPPER_CHEST,            RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_CHEST] =        Location::Chest(RC_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_CHEST,        RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 22600, 0x08, "Boulder Maze Side Room Chest",        "Fire Temple Boulder Maze Side Room Chest",        RHT_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_CHEST,        RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST] =         Location::Chest(RC_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST,         RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 22603, 0x0B, "Boulder Maze Shortcut Chest",         "Fire Temple Boulder Maze Shortcut Chest",         RHT_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST,         RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_SCARECROW_CHEST] =                     Location::Chest(RC_FIRE_TEMPLE_SCARECROW_CHEST,                     RCQUEST_VANILLA, RCTYPE_STANDARD,    RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 23245, 0x0D, "Scarecrow Chest",                     "Fire Temple Scarecrow Chest",                     RHT_FIRE_TEMPLE_SCARECROW_CHEST,                     RG_HUGE_RUPEE,            {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MAP_CHEST] =                           Location::Chest(RC_FIRE_TEMPLE_MAP_CHEST,                           RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 2090,  0x0A, "Map Chest",                           "Fire Temple Map Chest",                           RHT_FIRE_TEMPLE_MAP_CHEST,                           RG_FIRE_TEMPLE_MAP,       { Category::cVanillaMap },      SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_COMPASS_CHEST] =                       Location::Chest(RC_FIRE_TEMPLE_COMPASS_CHEST,                       RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 2055,  0x07, "Compass Chest",                       "Fire Temple Compass Chest",                       RHT_FIRE_TEMPLE_COMPASS_CHEST,                       RG_FIRE_TEMPLE_COMPASS,   { Category::cVanillaCompass },  SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_HIGHEST_GORON_CHEST] =                 Location::Chest(RC_FIRE_TEMPLE_HIGHEST_GORON_CHEST,                 RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 22601, 0x09, "Highest Goron Chest",                 "Fire Temple Highest Goron Chest",                 RHT_FIRE_TEMPLE_HIGHEST_GORON_CHEST,                 RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_MEGATON_HAMMER_CHEST] =                Location::Chest(RC_FIRE_TEMPLE_MEGATON_HAMMER_CHEST,                RCQUEST_VANILLA, RCTYPE_STANDARD,    RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 421,   0x05, "Megaton Hammer Chest",                "Fire Temple Megaton Hammer Chest",                RHT_FIRE_TEMPLE_MEGATON_HAMMER_CHEST,                RG_MEGATON_HAMMER,        {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
     // Fire Temple MQ
-    locationTable[RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST] =
-        Location::Chest(RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 22599, 0x07, "MQ Near Boss Chest",
-                        "Fire Temple MQ Near Boss Chest", RHT_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST] =
-        Location::Chest(RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 4512, 0x00, "MQ Megaton Hammer Chest",
-                        "Fire Temple MQ Megaton Hammer Chest", RHT_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST,
-                        RG_MEGATON_HAMMER, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_MQ_COMPASS_CHEST] =
-        Location::Chest(RC_FIRE_TEMPLE_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 2059, 0x0B, "MQ Compass Chest", "Fire Temple MQ Compass Chest",
-                        RHT_FIRE_TEMPLE_MQ_COMPASS_CHEST, RG_FIRE_TEMPLE_COMPASS, { Category::cVanillaCompass },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CHEST] =
-        Location::Chest(RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 23747, 0x03, "MQ Lizalfos Maze Lower Chest",
-                        "Fire Temple MQ Lizalfos Maze Lower Chest", RHT_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CHEST,
-                        RG_BOMBS_10, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    locationTable[RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CHEST] =
-        Location::Chest(RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 23782, 0x06, "MQ Lizalfos Maze Upper Chest",
-                        "Fire Temple MQ Lizalfos Maze Upper Chest", RHT_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CHEST,
-                        RG_BOMBS_10, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    locationTable[RC_FIRE_TEMPLE_MQ_CHEST_ON_FIRE] =
-        Location::Chest(RC_FIRE_TEMPLE_MQ_CHEST_ON_FIRE, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
-                        SCENE_FIRE_TEMPLE, 22597, 0x05, "MQ Chest on Fire", "Fire Temple MQ Chest on Fire",
-                        RHT_FIRE_TEMPLE_MQ_CHEST_ON_FIRE, RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST] =
-        Location::Chest(RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 30018, 0x02, "MQ Map Room Side Chest",
-                        "Fire Temple MQ Map Room Side Chest", RHT_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST, RG_HYLIAN_SHIELD,
-                        {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    locationTable[RC_FIRE_TEMPLE_MQ_MAP_CHEST] = Location::Chest(
-        RC_FIRE_TEMPLE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
-        SCENE_FIRE_TEMPLE, 2092, 0x0C, "MQ Map Chest", "Fire Temple MQ Map Chest", RHT_FIRE_TEMPLE_MQ_MAP_CHEST,
-        RG_FIRE_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST] =
-        Location::Chest(RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST, RCQUEST_MQ, RCTYPE_BOSS_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
-                        SCENE_FIRE_TEMPLE, 10212, 0x04, "MQ Boss Key Chest", "Fire Temple MQ Boss Key Chest",
-                        RHT_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST, RG_FIRE_TEMPLE_BOSS_KEY, { Category::cVanillaBossKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST] =
-        Location::Chest(RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY,
-                        RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 22593, 0x01,
-                        "MQ Big Lava Room Blocked Door Chest", "Fire Temple MQ Big Lava Room Blocked Door Chest",
-                        RHT_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST] =
-        Location::Chest(RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY,
-                        RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_FIRE_TEMPLE, 22600, 0x08,
-                        "MQ Lizalfos Maze Side Room Chest", "Fire Temple MQ Lizalfos Maze Side Room Chest",
-                        RHT_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
-    locationTable[RC_FIRE_TEMPLE_MQ_FREESTANDING_KEY] = Location::Collectable(
-        RC_FIRE_TEMPLE_MQ_FREESTANDING_KEY, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_ITEM00,
-        SCENE_FIRE_TEMPLE, 7185, 0x1C, "MQ Freestanding Key", "Fire Temple MQ Freestanding Key",
-        RHT_FIRE_TEMPLE_MQ_FREESTANDING_KEY, RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST] =                  Location::Chest(RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST,                  RCQUEST_MQ,      RCTYPE_SMALL_KEY,   RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 22599, 0x07, "MQ Near Boss Chest",                  "Fire Temple MQ Near Boss Chest",                  RHT_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST,                  RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST] =             Location::Chest(RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST,             RCQUEST_MQ,      RCTYPE_STANDARD,    RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 4512,  0x00, "MQ Megaton Hammer Chest",             "Fire Temple MQ Megaton Hammer Chest",             RHT_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST,             RG_MEGATON_HAMMER,        {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_MQ_COMPASS_CHEST] =                    Location::Chest(RC_FIRE_TEMPLE_MQ_COMPASS_CHEST,                    RCQUEST_MQ,      RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 2059,  0x0B, "MQ Compass Chest",                    "Fire Temple MQ Compass Chest",                    RHT_FIRE_TEMPLE_MQ_COMPASS_CHEST,                    RG_FIRE_TEMPLE_COMPASS,   { Category::cVanillaCompass },  SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CHEST] =        Location::Chest(RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CHEST,        RCQUEST_MQ,      RCTYPE_STANDARD,    RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 23747, 0x03, "MQ Lizalfos Maze Lower Chest",        "Fire Temple MQ Lizalfos Maze Lower Chest",        RHT_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CHEST,        RG_BOMBS_10,              {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CHEST] =        Location::Chest(RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CHEST,        RCQUEST_MQ,      RCTYPE_STANDARD,    RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 23782, 0x06, "MQ Lizalfos Maze Upper Chest",        "Fire Temple MQ Lizalfos Maze Upper Chest",        RHT_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CHEST,        RG_BOMBS_10,              {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_CHEST_ON_FIRE] =                    Location::Chest(RC_FIRE_TEMPLE_MQ_CHEST_ON_FIRE,                    RCQUEST_MQ,      RCTYPE_SMALL_KEY,   RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 22597, 0x05, "MQ Chest on Fire",                    "Fire Temple MQ Chest on Fire",                    RHT_FIRE_TEMPLE_MQ_CHEST_ON_FIRE,                    RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST] =              Location::Chest(RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST,              RCQUEST_MQ,      RCTYPE_STANDARD,    RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 30018, 0x02, "MQ Map Room Side Chest",              "Fire Temple MQ Map Room Side Chest",              RHT_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST,              RG_HYLIAN_SHIELD,         {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_MAP_CHEST] =                        Location::Chest(RC_FIRE_TEMPLE_MQ_MAP_CHEST,                        RCQUEST_MQ,      RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 2092,  0x0C, "MQ Map Chest",                        "Fire Temple MQ Map Chest",                        RHT_FIRE_TEMPLE_MQ_MAP_CHEST,                        RG_FIRE_TEMPLE_MAP,       { Category::cVanillaMap },      SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST] =                   Location::Chest(RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST,                   RCQUEST_MQ,      RCTYPE_BOSS_KEY,    RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 10212, 0x04, "MQ Boss Key Chest",                   "Fire Temple MQ Boss Key Chest",                   RHT_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST,                   RG_FIRE_TEMPLE_BOSS_KEY,  { Category::cVanillaBossKey },  SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST] = Location::Chest(RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, RCQUEST_MQ,      RCTYPE_SMALL_KEY,   RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 22593, 0x01, "MQ Big Lava Room Blocked Door Chest", "Fire Temple MQ Big Lava Room Blocked Door Chest", RHT_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST] =    Location::Chest(RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST,    RCQUEST_MQ,      RCTYPE_SMALL_KEY,   RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,    SCENE_FIRE_TEMPLE, 22600, 0x08, "MQ Lizalfos Maze Side Room Chest",    "Fire Temple MQ Lizalfos Maze Side Room Chest",    RHT_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST,    RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
+    locationTable[RC_FIRE_TEMPLE_MQ_FREESTANDING_KEY] =           Location::Collectable(RC_FIRE_TEMPLE_MQ_FREESTANDING_KEY,                 RCQUEST_MQ,      RCTYPE_SMALL_KEY,   RCAREA_FIRE_TEMPLE, ACTOR_EN_ITEM00, SCENE_FIRE_TEMPLE, 7185,  0x1C, "MQ Freestanding Key",                 "Fire Temple MQ Freestanding Key",                 RHT_FIRE_TEMPLE_MQ_FREESTANDING_KEY,                 RG_FIRE_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE, true);
 
+    //            Randomizer Check                                             Randomizer Check                          Quest            Type                Area                 Actor ID         Scene ID            Params  Flags Short Name                  Spoiler Name                             Hint Text Key                              Randomizer Get             Categories                      Collection Check Group                                   Vanilla Progression
     // Water Temple Vanilla
-    locationTable[RC_WATER_TEMPLE_MAP_CHEST] = Location::Chest(
-        RC_WATER_TEMPLE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
-        SCENE_WATER_TEMPLE, 6178, 0x02, "Map Chest", "Water Temple Map Chest", RHT_WATER_TEMPLE_MAP_CHEST,
-        RG_WATER_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
-    locationTable[RC_WATER_TEMPLE_COMPASS_CHEST] =
-        Location::Chest(RC_WATER_TEMPLE_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_WATER_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_WATER_TEMPLE, 2057, 0x09, "Compass Chest", "Water Temple Compass Chest",
-                        RHT_WATER_TEMPLE_COMPASS_CHEST, RG_WATER_TEMPLE_COMPASS, { Category::cVanillaCompass },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
-    locationTable[RC_WATER_TEMPLE_TORCHES_CHEST] =
-        Location::Chest(RC_WATER_TEMPLE_TORCHES_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_WATER_TEMPLE, 30785, 0x01, "Torches Chest", "Water Temple Torches Chest",
-                        RHT_WATER_TEMPLE_TORCHES_CHEST, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
-    locationTable[RC_WATER_TEMPLE_DRAGON_CHEST] =
-        Location::Chest(RC_WATER_TEMPLE_DRAGON_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_WATER_TEMPLE, 22602, 0x0A, "Dragon Chest", "Water Temple Dragon Chest",
-                        RHT_WATER_TEMPLE_DRAGON_CHEST, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
-    locationTable[RC_WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST] = Location::Chest(
-        RC_WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
-        SCENE_WATER_TEMPLE, 22600, 0x08, "Central Bow Target Chest", "Water Temple Central Bow Target Chest",
-        RHT_WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
-    locationTable[RC_WATER_TEMPLE_CENTRAL_PILLAR_CHEST] = Location::Chest(
-        RC_WATER_TEMPLE_CENTRAL_PILLAR_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
-        SCENE_WATER_TEMPLE, 22598, 0x06, "Central Pillar Chest", "Water Temple Central Pillar Chest",
-        RHT_WATER_TEMPLE_CENTRAL_PILLAR_CHEST, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
-    locationTable[RC_WATER_TEMPLE_CRACKED_WALL_CHEST] = Location::Chest(
-        RC_WATER_TEMPLE_CRACKED_WALL_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
-        SCENE_WATER_TEMPLE, 22592, 0x00, "Cracked Wall Chest", "Water Temple Cracked Wall Chest",
-        RHT_WATER_TEMPLE_CRACKED_WALL_CHEST, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
-    locationTable[RC_WATER_TEMPLE_BOSS_KEY_CHEST] =
-        Location::Chest(RC_WATER_TEMPLE_BOSS_KEY_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_KEY, RCAREA_WATER_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_WATER_TEMPLE, 10213, 0x05, "Boss Key Chest", "Water Temple Boss Key Chest",
-                        RHT_WATER_TEMPLE_BOSS_KEY_CHEST, RG_WATER_TEMPLE_BOSS_KEY, { Category::cVanillaBossKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
-    locationTable[RC_WATER_TEMPLE_LONGSHOT_CHEST] = Location::Chest(
-        RC_WATER_TEMPLE_LONGSHOT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
-        SCENE_WATER_TEMPLE, 295, 0x07, "Longshot Chest", "Water Temple Longshot Chest", RHT_WATER_TEMPLE_LONGSHOT_CHEST,
-        RG_PROGRESSIVE_HOOKSHOT, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
-    locationTable[RC_WATER_TEMPLE_RIVER_CHEST] =
-        Location::Chest(RC_WATER_TEMPLE_RIVER_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_WATER_TEMPLE, 22595, 0x03, "River Chest", "Water Temple River Chest",
-                        RHT_WATER_TEMPLE_RIVER_CHEST, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
-
+    locationTable[RC_WATER_TEMPLE_MAP_CHEST] =                 Location::Chest(RC_WATER_TEMPLE_MAP_CHEST,                RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,    SCENE_WATER_TEMPLE, 6178,   0x02, "Map Chest",                "Water Temple Map Chest",                RHT_WATER_TEMPLE_MAP_CHEST,                RG_WATER_TEMPLE_MAP,       { Category::cVanillaMap },      SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
+    locationTable[RC_WATER_TEMPLE_COMPASS_CHEST] =             Location::Chest(RC_WATER_TEMPLE_COMPASS_CHEST,            RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,    SCENE_WATER_TEMPLE, 2057,   0x09, "Compass Chest",            "Water Temple Compass Chest",            RHT_WATER_TEMPLE_COMPASS_CHEST,            RG_WATER_TEMPLE_COMPASS,   { Category::cVanillaCompass },  SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
+    locationTable[RC_WATER_TEMPLE_TORCHES_CHEST] =             Location::Chest(RC_WATER_TEMPLE_TORCHES_CHEST,            RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,    SCENE_WATER_TEMPLE, 30785,  0x01, "Torches Chest",            "Water Temple Torches Chest",            RHT_WATER_TEMPLE_TORCHES_CHEST,            RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
+    locationTable[RC_WATER_TEMPLE_DRAGON_CHEST] =              Location::Chest(RC_WATER_TEMPLE_DRAGON_CHEST,             RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,    SCENE_WATER_TEMPLE, 22602,  0x0A, "Dragon Chest",             "Water Temple Dragon Chest",             RHT_WATER_TEMPLE_DRAGON_CHEST,             RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
+    locationTable[RC_WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST] =  Location::Chest(RC_WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,    SCENE_WATER_TEMPLE, 22600,  0x08, "Central Bow Target Chest", "Water Temple Central Bow Target Chest", RHT_WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
+    locationTable[RC_WATER_TEMPLE_CENTRAL_PILLAR_CHEST] =      Location::Chest(RC_WATER_TEMPLE_CENTRAL_PILLAR_CHEST,     RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,    SCENE_WATER_TEMPLE, 22598,  0x06, "Central Pillar Chest",     "Water Temple Central Pillar Chest",     RHT_WATER_TEMPLE_CENTRAL_PILLAR_CHEST,     RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
+    locationTable[RC_WATER_TEMPLE_CRACKED_WALL_CHEST] =        Location::Chest(RC_WATER_TEMPLE_CRACKED_WALL_CHEST,       RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,    SCENE_WATER_TEMPLE, 22592,  0x00, "Cracked Wall Chest",       "Water Temple Cracked Wall Chest",       RHT_WATER_TEMPLE_CRACKED_WALL_CHEST,       RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
+    locationTable[RC_WATER_TEMPLE_BOSS_KEY_CHEST] =            Location::Chest(RC_WATER_TEMPLE_BOSS_KEY_CHEST,           RCQUEST_VANILLA, RCTYPE_BOSS_KEY,    RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,    SCENE_WATER_TEMPLE, 10213,  0x05, "Boss Key Chest",           "Water Temple Boss Key Chest",           RHT_WATER_TEMPLE_BOSS_KEY_CHEST,           RG_WATER_TEMPLE_BOSS_KEY,  { Category::cVanillaBossKey },  SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
+    locationTable[RC_WATER_TEMPLE_LONGSHOT_CHEST] =            Location::Chest(RC_WATER_TEMPLE_LONGSHOT_CHEST,           RCQUEST_VANILLA, RCTYPE_STANDARD,    RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,    SCENE_WATER_TEMPLE, 295,    0x07, "Longshot Chest",           "Water Temple Longshot Chest",           RHT_WATER_TEMPLE_LONGSHOT_CHEST,           RG_PROGRESSIVE_HOOKSHOT,   {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
+    locationTable[RC_WATER_TEMPLE_RIVER_CHEST] =               Location::Chest(RC_WATER_TEMPLE_RIVER_CHEST,              RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,    SCENE_WATER_TEMPLE, 22595,  0x03, "River Chest",              "Water Temple River Chest",              RHT_WATER_TEMPLE_RIVER_CHEST,              RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
     // Water Temple MQ
-    locationTable[RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST] = Location::Chest(
-        RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
-        SCENE_WATER_TEMPLE, -30650, 0x06, "MQ Central Pillar Chest", "Water Temple MQ Central Pillar Chest",
-        RHT_WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
-    locationTable[RC_WATER_TEMPLE_MQ_BOSS_KEY_CHEST] =
-        Location::Chest(RC_WATER_TEMPLE_MQ_BOSS_KEY_CHEST, RCQUEST_MQ, RCTYPE_BOSS_KEY, RCAREA_WATER_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_WATER_TEMPLE, 10213, 0x05, "MQ Boss Key Chest",
-                        "Water Temple MQ Boss Key Chest", RHT_WATER_TEMPLE_MQ_BOSS_KEY_CHEST, RG_WATER_TEMPLE_BOSS_KEY,
-                        { Category::cVanillaBossKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
-    locationTable[RC_WATER_TEMPLE_MQ_LONGSHOT_CHEST] =
-        Location::Chest(RC_WATER_TEMPLE_MQ_LONGSHOT_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_WATER_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_WATER_TEMPLE, -20192, 0x00, "MQ Longshot Chest",
-                        "Water Temple MQ Longshot Chest", RHT_WATER_TEMPLE_MQ_LONGSHOT_CHEST, RG_PROGRESSIVE_HOOKSHOT,
-                        {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
-    locationTable[RC_WATER_TEMPLE_MQ_COMPASS_CHEST] =
-        Location::Chest(RC_WATER_TEMPLE_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_WATER_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_WATER_TEMPLE, 6145, 0x01, "MQ Compass Chest",
-                        "Water Temple MQ Compass Chest", RHT_WATER_TEMPLE_MQ_COMPASS_CHEST, RG_WATER_TEMPLE_COMPASS,
-                        { Category::cVanillaCompass }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
-    locationTable[RC_WATER_TEMPLE_MQ_MAP_CHEST] = Location::Chest(
-        RC_WATER_TEMPLE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
-        SCENE_WATER_TEMPLE, -18398, 0x02, "MQ Map Chest", "Water Temple MQ Map Chest", RHT_WATER_TEMPLE_MQ_MAP_CHEST,
-        RG_WATER_TEMPLE_MAP, { Category::cVanillaMap }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
-    locationTable[RC_WATER_TEMPLE_MQ_FREESTANDING_KEY] = Location::Collectable(
-        RC_WATER_TEMPLE_MQ_FREESTANDING_KEY, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE, ACTOR_EN_ITEM00,
-        SCENE_WATER_TEMPLE, 273, 0x01, "MQ Freestanding Key", "Water Temple MQ Freestanding Key",
-        RHT_WATER_TEMPLE_MQ_FREESTANDING_KEY, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
+    locationTable[RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST] =   Location::Chest(RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST,  RCQUEST_MQ,      RCTYPE_SMALL_KEY,   RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,    SCENE_WATER_TEMPLE, -30650, 0x06, "MQ Central Pillar Chest",  "Water Temple MQ Central Pillar Chest",  RHT_WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST,  RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
+    locationTable[RC_WATER_TEMPLE_MQ_BOSS_KEY_CHEST] =         Location::Chest(RC_WATER_TEMPLE_MQ_BOSS_KEY_CHEST,        RCQUEST_MQ,      RCTYPE_BOSS_KEY,    RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,    SCENE_WATER_TEMPLE, 10213,  0x05, "MQ Boss Key Chest",        "Water Temple MQ Boss Key Chest",        RHT_WATER_TEMPLE_MQ_BOSS_KEY_CHEST,        RG_WATER_TEMPLE_BOSS_KEY,  { Category::cVanillaBossKey },  SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
+    locationTable[RC_WATER_TEMPLE_MQ_LONGSHOT_CHEST] =         Location::Chest(RC_WATER_TEMPLE_MQ_LONGSHOT_CHEST,        RCQUEST_MQ,      RCTYPE_STANDARD,    RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,    SCENE_WATER_TEMPLE, -20192, 0x00, "MQ Longshot Chest",        "Water Temple MQ Longshot Chest",        RHT_WATER_TEMPLE_MQ_LONGSHOT_CHEST,        RG_PROGRESSIVE_HOOKSHOT,   {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
+    locationTable[RC_WATER_TEMPLE_MQ_COMPASS_CHEST] =          Location::Chest(RC_WATER_TEMPLE_MQ_COMPASS_CHEST,         RCQUEST_MQ,      RCTYPE_MAP_COMPASS, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,    SCENE_WATER_TEMPLE, 6145,   0x01, "MQ Compass Chest",         "Water Temple MQ Compass Chest",         RHT_WATER_TEMPLE_MQ_COMPASS_CHEST,         RG_WATER_TEMPLE_COMPASS,   { Category::cVanillaCompass },  SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
+    locationTable[RC_WATER_TEMPLE_MQ_MAP_CHEST] =              Location::Chest(RC_WATER_TEMPLE_MQ_MAP_CHEST,             RCQUEST_MQ,      RCTYPE_MAP_COMPASS, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,    SCENE_WATER_TEMPLE, -18398, 0x02, "MQ Map Chest",             "Water Temple MQ Map Chest",             RHT_WATER_TEMPLE_MQ_MAP_CHEST,             RG_WATER_TEMPLE_MAP,       { Category::cVanillaMap },      SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
+    locationTable[RC_WATER_TEMPLE_MQ_FREESTANDING_KEY] = Location::Collectable(RC_WATER_TEMPLE_MQ_FREESTANDING_KEY,      RCQUEST_MQ,      RCTYPE_SMALL_KEY,   RCAREA_WATER_TEMPLE, ACTOR_EN_ITEM00, SCENE_WATER_TEMPLE, 273,    0x01, "MQ Freestanding Key",      "Water Temple MQ Freestanding Key",      RHT_WATER_TEMPLE_MQ_FREESTANDING_KEY,      RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
 
     //            Randomizer Check                                                     Randomizer Check                                   Quest            Type                Area                  Actor ID      Scene ID               Params  Flags Short Name                          Spoiler Name                                      Hint Text Key                                       Vanilla Item                Categories                      Collection Check Group                                    Vanilla Progression
     // Spirit Temple Shared
