@@ -217,7 +217,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
         if (ImGui::BeginCombo(hiddenKey.c_str(), map.at(initialValue).label.c_str())) {
             for (const auto& [value, seqData] : map) {
                 // If excluded as a replacement sequence, don't show in other dropdowns except the effect's own dropdown.
-                if (~(seqData.category) & type || (seqData.excludeAsReplacement && initialSfxKey != seqData.sfxKey)) {
+                if (~(seqData.category) & type || (!seqData.canBeUsedAsReplacement && initialSfxKey != seqData.sfxKey)) {
                     continue;
                 }
 
