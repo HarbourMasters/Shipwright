@@ -567,7 +567,7 @@ void Rando::StaticData::InitLocationTable() {
     // Lost Woods
     locationTable[RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST] = Location::Chest(
         RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LOST_WOODS, ACTOR_EN_BOX,
-        SCENE_GROTTOS, 22964, 0x3E, "Near Shortcuts Grotto Chest", "LW Near Shortcuts Grotto Chest",
+        SCENE_GROTTOS, 22964, 0x14, "Near Shortcuts Grotto Chest", "LW Near Shortcuts Grotto Chest",
         RHT_KF_STORMS_GROTTO_CHEST, RG_RED_RUPEE, {}, SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
     locationTable[RC_LW_SKULL_KID] =
         Location::Base(RC_LW_SKULL_KID, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LOST_WOODS, ACTOR_ID_MAX,
@@ -1090,11 +1090,11 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_DMC_WALL_FREESTANDING_POH] = Location::Collectable(
         RC_DMC_WALL_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_ITEM00,
         SCENE_DEATH_MOUNTAIN_CRATER, 518, GI_HEART_PIECE, "Wall Freestanding PoH", "DMC Wall Freestanding PoH",
-        RHT_DMC_WALL_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN, true);
+        RHT_DMC_WALL_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, 0x02, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN, true);
     locationTable[RC_DMC_VOLCANO_FREESTANDING_POH] = Location::Collectable(
         RC_DMC_VOLCANO_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_ITEM00,
         SCENE_DEATH_MOUNTAIN_CRATER, 2054, 0x08, "Volcano Freestanding PoH", "DMC Volcano Freestanding PoH",
-        RHT_DMC_WALL_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN, true);
+        RHT_DMC_WALL_FREESTANDING_POH, RG_PIECE_OF_HEART, {}, 0x08, SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN, true);
     locationTable[RC_DMC_DEKU_SCRUB] =
         Location::Base(RC_DMC_DEKU_SCRUB, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_DNS,
                        SCENE_DEATH_MOUNTAIN_CRATER, 0x05, 0x37, "Deku Scrub", "DMC Deku Scrub", RHT_DMC_DEKU_SCRUB,

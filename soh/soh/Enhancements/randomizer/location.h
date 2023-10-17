@@ -182,6 +182,14 @@ class Location {
     Collectable(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
                 RandomizerCheckArea area_, ActorID actorId_, uint8_t scene, int32_t actorParams_, uint8_t flag_,
                 std::string&& shortName_, std::string&& spoilerName_, const RandomizerHintTextKey hintKey,
+                const RandomizerGet vanillaItem, std::vector<Category>&& categories, uint8_t collectFlag_,
+                SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP,
+                bool isVanillaCompletion_ = false);
+
+    static Location
+    Collectable(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
+                RandomizerCheckArea area_, ActorID actorId_, uint8_t scene, int32_t actorParams_, uint8_t flag_,
+                std::string&& shortName_, std::string&& spoilerName_, const RandomizerHintTextKey hintKey,
                 const RandomizerGet vanillaItem, std::vector<Category>&& categories,
                 SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
                 SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP,

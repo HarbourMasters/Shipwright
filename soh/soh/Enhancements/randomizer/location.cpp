@@ -149,6 +149,21 @@ Rando::Location Rando::Location::Collectable(RandomizerCheck rc, RandomizerCheck
                                              ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_,
                                              std::string&& shortName_, std::string&& spoilerName_,
                                              const RandomizerHintTextKey hintKey, const RandomizerGet vanillaItem,
+                                             std::vector<Category>&& categories, uint8_t collectFlag_,
+                                             SpoilerCollectionCheckGroup collectionCheckGroup,
+                                             bool isVanillaCompletion_) {
+    return Location(rc, quest_, checkType_, area_, LocationType::Collectable, actorId_, scene_, actorParams_, flag_,
+                    std::move(shortName_), std::move(spoilerName_), hintKey, vanillaItem, std::move(categories),
+                    isVanillaCompletion_,
+                    SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE, scene_, collectFlag_),
+                    collectionCheckGroup);
+}
+
+Rando::Location Rando::Location::Collectable(RandomizerCheck rc, RandomizerCheckQuest quest_,
+                                             RandomizerCheckType checkType_, RandomizerCheckArea area_,
+                                             ActorID actorId_, uint8_t scene_, int32_t actorParams_, uint8_t flag_,
+                                             std::string&& shortName_, std::string&& spoilerName_,
+                                             const RandomizerHintTextKey hintKey, const RandomizerGet vanillaItem,
                                              std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck,
                                              SpoilerCollectionCheckGroup collectionCheckGroup,
                                              bool isVanillaCompletion_) {
