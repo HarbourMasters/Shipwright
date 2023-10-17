@@ -1830,210 +1830,49 @@ void Rando::StaticData::InitLocationTable() {
         RHT_WATER_TEMPLE_MQ_FREESTANDING_KEY, RG_WATER_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
         SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE, true);
 
+    //            Randomizer Check                                                     Randomizer Check                                   Quest            Type                Area                  Actor ID      Scene ID               Params  Flags Short Name                          Spoiler Name                                      Hint Text Key                                       Vanilla Item                Categories                      Collection Check Group                                    Vanilla Progression
     // Spirit Temple Shared
-    locationTable[RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_DESERT_COLOSSUS, 1707, 0x0B, "Silver Gauntlets Chest",
-                        "Spirit Temple Silver Gauntlets Chest", RHT_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST,
-                        RG_PROGRESSIVE_STRENGTH, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_DESERT_COLOSSUS, 13673, 0x09, "Mirror Shield Chest",
-                        "Spirit Temple Mirror Shield Chest", RHT_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST, RG_MIRROR_SHIELD,
-                        {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-
+    locationTable[RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST] =           Location::Chest(RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST,           RCQUEST_BOTH,    RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_DESERT_COLOSSUS, 1707,   0x0B, "Silver Gauntlets Chest",           "Spirit Temple Silver Gauntlets Chest",           RHT_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST,           RG_PROGRESSIVE_STRENGTH,    {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST] =              Location::Chest(RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST,              RCQUEST_BOTH,    RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_DESERT_COLOSSUS, 13673,  0x09, "Mirror Shield Chest",              "Spirit Temple Mirror Shield Chest",              RHT_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST,              RG_MIRROR_SHIELD,           {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     // Spirit Temple Vanilla
-    locationTable[RC_SPIRIT_TEMPLE_CHILD_BRIDGE_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_CHILD_BRIDGE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 21800, 0x08, "Child Bridge Chest",
-                        "Spirit Temple Child Bridge Chest", RHT_SPIRIT_TEMPLE_CHILD_BRIDGE_CHEST, RG_DEKU_SHIELD, {},
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_CHILD_EARLY_TORCHES_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_CHILD_EARLY_TORCHES_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
-                        RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -30656, 0x00,
-                        "Child Early Torches Chest", "Spirit Temple Child Early Torches Chest",
-                        RHT_SPIRIT_TEMPLE_CHILD_EARLY_TORCHES_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_COMPASS_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_SPIRIT_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 14340, 0x04, "Compass Chest", "Spirit Temple Compass Chest",
-                        RHT_SPIRIT_TEMPLE_COMPASS_CHEST, RG_SPIRIT_TEMPLE_COMPASS, { Category::cVanillaCompass },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_EARLY_ADULT_RIGHT_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_EARLY_ADULT_RIGHT_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, 22599, 0x07, "Early Adult Right Chest", "Spirit Temple Early Adult Right Chest",
-        RHT_SPIRIT_TEMPLE_EARLY_ADULT_RIGHT_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_FIRST_MIRROR_LEFT_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_FIRST_MIRROR_LEFT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, -30451, 0x0D, "First Mirror Left Chest", "Spirit Temple First Mirror Left Chest",
-        RHT_SPIRIT_TEMPLE_FIRST_MIRROR_LEFT_CHEST, RG_ICE_TRAP, {},
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_FIRST_MIRROR_RIGHT_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_FIRST_MIRROR_RIGHT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, -28786, 0x0E, "First Mirror Right Chest", "Spirit Temple First Mirror Right Chest",
-        RHT_SPIRIT_TEMPLE_FIRST_MIRROR_RIGHT_CHEST, RG_RECOVERY_HEART, {},
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MAP_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_SPIRIT_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -18397, 0x03, "Map Chest", "Spirit Temple Map Chest",
-                        RHT_SPIRIT_TEMPLE_MAP_CHEST, RG_SPIRIT_TEMPLE_MAP, { Category::cVanillaMap },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_CHILD_CLIMB_NORTH_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_CHILD_CLIMB_NORTH_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, -32666, 0x06, "Child Climb North Chest", "Spirit Temple Child Climb North Chest",
-        RHT_SPIRIT_TEMPLE_CHILD_CLIMB_NORTH_CHEST, RG_BOMBCHU_10, {},
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_CHILD_CLIMB_EAST_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_CHILD_CLIMB_EAST_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -31444, 0x0C, "Child Climb East Chest",
-                        "Spirit Temple Child Climb East Chest", RHT_SPIRIT_TEMPLE_CHILD_CLIMB_EAST_CHEST,
-                        RG_DEKU_SHIELD, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_SUN_BLOCK_ROOM_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_SUN_BLOCK_ROOM_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, -30655, 0x01, "Sun Block Room Chest", "Spirit Temple Sun Block Room Chest",
-        RHT_SPIRIT_TEMPLE_SUN_BLOCK_ROOM_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, -30654, 0x02, "Statue Room Hand Chest", "Spirit Temple Statue Room Hand Chest",
-        RHT_SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_STATUE_ROOM_NORTHEAST_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_STATUE_ROOM_NORTHEAST_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
-        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -30577, 0x0F, "Statue Room Northeast Chest",
-        "Spirit Temple Statue Room Northeast Chest", RHT_SPIRIT_TEMPLE_STATUE_ROOM_NORTHEAST_CHEST, RG_BLUE_RUPEE, {},
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_NEAR_FOUR_ARMOS_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_NEAR_FOUR_ARMOS_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, 22597, 0x05, "Near Four Armos Chest", "Spirit Temple Near Four Armos Chest",
-        RHT_SPIRIT_TEMPLE_NEAR_FOUR_ARMOS_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_HALLWAY_RIGHT_INVISIBLE_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_HALLWAY_RIGHT_INVISIBLE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
-        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 26900, 0x14, "Hallway Right Invisible Chest",
-        "Spirit Temple Hallway Right Invisible Chest", RHT_SPIRIT_TEMPLE_HALLWAY_RIGHT_INVISIBLE_CHEST,
-        RG_RECOVERY_HEART, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_HALLWAY_LEFT_INVISIBLE_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_HALLWAY_LEFT_INVISIBLE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
-        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 26901, 0x15, "Hallway Left Invisible Chest",
-        "Spirit Temple Hallway Left Invisible Chest", RHT_SPIRIT_TEMPLE_HALLWAY_LEFT_INVISIBLE_CHEST, RG_RECOVERY_HEART,
-        {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_BOSS_KEY_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_BOSS_KEY_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_KEY, RCAREA_SPIRIT_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 10218, 0x0A, "Boss Key Chest",
-                        "Spirit Temple Boss Key Chest", RHT_SPIRIT_TEMPLE_BOSS_KEY_CHEST, RG_SPIRIT_TEMPLE_BOSS_KEY,
-                        { Category::cVanillaBossKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_TOPMOST_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_TOPMOST_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -29454, 0x12, "Topmost Chest", "Spirit Temple Topmost Chest",
-                        RHT_SPIRIT_TEMPLE_TOPMOST_CHEST, RG_BOMBS_20, {},
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-
+    locationTable[RC_SPIRIT_TEMPLE_CHILD_BRIDGE_CHEST] =               Location::Chest(RC_SPIRIT_TEMPLE_CHILD_BRIDGE_CHEST,               RCQUEST_VANILLA, RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   21800,  0x08, "Child Bridge Chest",               "Spirit Temple Child Bridge Chest",               RHT_SPIRIT_TEMPLE_CHILD_BRIDGE_CHEST,               RG_DEKU_SHIELD,             {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_CHILD_EARLY_TORCHES_CHEST] =        Location::Chest(RC_SPIRIT_TEMPLE_CHILD_EARLY_TORCHES_CHEST,        RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -30656, 0x00, "Child Early Torches Chest",        "Spirit Temple Child Early Torches Chest",        RHT_SPIRIT_TEMPLE_CHILD_EARLY_TORCHES_CHEST,        RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_COMPASS_CHEST] =                    Location::Chest(RC_SPIRIT_TEMPLE_COMPASS_CHEST,                    RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   14340,  0x04, "Compass Chest",                    "Spirit Temple Compass Chest",                    RHT_SPIRIT_TEMPLE_COMPASS_CHEST,                    RG_SPIRIT_TEMPLE_COMPASS,   { Category::cVanillaCompass },  SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_EARLY_ADULT_RIGHT_CHEST] =          Location::Chest(RC_SPIRIT_TEMPLE_EARLY_ADULT_RIGHT_CHEST,          RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   22599,  0x07, "Early Adult Right Chest",          "Spirit Temple Early Adult Right Chest",          RHT_SPIRIT_TEMPLE_EARLY_ADULT_RIGHT_CHEST,          RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_FIRST_MIRROR_LEFT_CHEST] =          Location::Chest(RC_SPIRIT_TEMPLE_FIRST_MIRROR_LEFT_CHEST,          RCQUEST_VANILLA, RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -30451, 0x0D, "First Mirror Left Chest",          "Spirit Temple First Mirror Left Chest",          RHT_SPIRIT_TEMPLE_FIRST_MIRROR_LEFT_CHEST,          RG_ICE_TRAP,                {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_FIRST_MIRROR_RIGHT_CHEST] =         Location::Chest(RC_SPIRIT_TEMPLE_FIRST_MIRROR_RIGHT_CHEST,         RCQUEST_VANILLA, RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -28786, 0x0E, "First Mirror Right Chest",         "Spirit Temple First Mirror Right Chest",         RHT_SPIRIT_TEMPLE_FIRST_MIRROR_RIGHT_CHEST,         RG_RECOVERY_HEART,          {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MAP_CHEST] =                        Location::Chest(RC_SPIRIT_TEMPLE_MAP_CHEST,                        RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -18397, 0x03, "Map Chest",                        "Spirit Temple Map Chest",                        RHT_SPIRIT_TEMPLE_MAP_CHEST,                        RG_SPIRIT_TEMPLE_MAP,       { Category::cVanillaMap },      SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_CHILD_CLIMB_NORTH_CHEST] =          Location::Chest(RC_SPIRIT_TEMPLE_CHILD_CLIMB_NORTH_CHEST,          RCQUEST_VANILLA, RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -32666, 0x06, "Child Climb North Chest",          "Spirit Temple Child Climb North Chest",          RHT_SPIRIT_TEMPLE_CHILD_CLIMB_NORTH_CHEST,          RG_BOMBCHU_10,              {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_CHILD_CLIMB_EAST_CHEST] =           Location::Chest(RC_SPIRIT_TEMPLE_CHILD_CLIMB_EAST_CHEST,           RCQUEST_VANILLA, RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -31444, 0x0C, "Child Climb East Chest",           "Spirit Temple Child Climb East Chest",           RHT_SPIRIT_TEMPLE_CHILD_CLIMB_EAST_CHEST,           RG_DEKU_SHIELD,             {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_SUN_BLOCK_ROOM_CHEST] =             Location::Chest(RC_SPIRIT_TEMPLE_SUN_BLOCK_ROOM_CHEST,             RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -30655, 0x01, "Sun Block Room Chest",             "Spirit Temple Sun Block Room Chest",             RHT_SPIRIT_TEMPLE_SUN_BLOCK_ROOM_CHEST,             RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST] =           Location::Chest(RC_SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST,           RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -30654, 0x02, "Statue Room Hand Chest",           "Spirit Temple Statue Room Hand Chest",           RHT_SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST,           RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_STATUE_ROOM_NORTHEAST_CHEST] =      Location::Chest(RC_SPIRIT_TEMPLE_STATUE_ROOM_NORTHEAST_CHEST,      RCQUEST_VANILLA, RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -30577, 0x0F, "Statue Room Northeast Chest",      "Spirit Temple Statue Room Northeast Chest",      RHT_SPIRIT_TEMPLE_STATUE_ROOM_NORTHEAST_CHEST,      RG_BLUE_RUPEE,              {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_NEAR_FOUR_ARMOS_CHEST] =            Location::Chest(RC_SPIRIT_TEMPLE_NEAR_FOUR_ARMOS_CHEST,            RCQUEST_VANILLA, RCTYPE_SMALL_KEY,   RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   22597,  0x05, "Near Four Armos Chest",            "Spirit Temple Near Four Armos Chest",            RHT_SPIRIT_TEMPLE_NEAR_FOUR_ARMOS_CHEST,            RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_HALLWAY_RIGHT_INVISIBLE_CHEST] =    Location::Chest(RC_SPIRIT_TEMPLE_HALLWAY_RIGHT_INVISIBLE_CHEST,    RCQUEST_VANILLA, RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   26900,  0x14, "Hallway Right Invisible Chest",    "Spirit Temple Hallway Right Invisible Chest",    RHT_SPIRIT_TEMPLE_HALLWAY_RIGHT_INVISIBLE_CHEST,    RG_RECOVERY_HEART,          {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_HALLWAY_LEFT_INVISIBLE_CHEST] =     Location::Chest(RC_SPIRIT_TEMPLE_HALLWAY_LEFT_INVISIBLE_CHEST,     RCQUEST_VANILLA, RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   26901,  0x15, "Hallway Left Invisible Chest",     "Spirit Temple Hallway Left Invisible Chest",     RHT_SPIRIT_TEMPLE_HALLWAY_LEFT_INVISIBLE_CHEST,     RG_RECOVERY_HEART,          {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_BOSS_KEY_CHEST] =                   Location::Chest(RC_SPIRIT_TEMPLE_BOSS_KEY_CHEST,                   RCQUEST_VANILLA, RCTYPE_BOSS_KEY,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   10218,  0x0A, "Boss Key Chest",                   "Spirit Temple Boss Key Chest",                   RHT_SPIRIT_TEMPLE_BOSS_KEY_CHEST,                   RG_SPIRIT_TEMPLE_BOSS_KEY,  { Category::cVanillaBossKey },  SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_TOPMOST_CHEST] =                    Location::Chest(RC_SPIRIT_TEMPLE_TOPMOST_CHEST,                    RCQUEST_VANILLA, RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -29454, 0x12, "Topmost Chest",                    "Spirit Temple Topmost Chest",                    RHT_SPIRIT_TEMPLE_TOPMOST_CHEST,                    RG_BOMBS_20,                {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
     // Spirit Temple MQ
-    locationTable[RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_LEFT_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_LEFT_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, 20602, 0x1A, "MQ Entrance Front Left Chest", "Spirit Temple MQ Entrance Front Left Chest",
-        RHT_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_LEFT_CHEST, RG_BOMBCHU_10, {},
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_RIGHT_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_RIGHT_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, -32641, 0x1F, "MQ Entrance Back Right Chest", "Spirit Temple MQ Entrance Back Right Chest",
-        RHT_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_RIGHT_CHEST, RG_BOMBCHU_10, {},
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_RIGHT_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_RIGHT_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY,
-                        RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -30629, 0x1B,
-                        "MQ Entrance Front Right Chest", "Spirit Temple MQ Entrance Front Right Chest",
-                        RHT_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_RIGHT_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, -30626, 0x1E, "MQ Entrance Back Left Chest", "Spirit Temple MQ Entrance Back Left Chest",
-        RHT_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, -30627, 0x1D, "MQ Child Hammer Switch Chest", "Spirit Temple MQ Child Hammer Switch Chest",
-        RHT_SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_MAP_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_SPIRIT_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 2080, 0x00, "MQ Map Chest", "Spirit Temple MQ Map Chest",
-                        RHT_SPIRIT_TEMPLE_MQ_MAP_CHEST, RG_SPIRIT_TEMPLE_MAP, { Category::cVanillaMap },
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_MAP_ROOM_ENEMY_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_MQ_MAP_ROOM_ENEMY_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, 30792, GI_KEY_SMALL, "MQ Map Room Enemy Chest", "Spirit Temple MQ Map Room Enemy Chest",
-        RHT_SPIRIT_TEMPLE_MQ_MAP_ROOM_ENEMY_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_NORTH_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_NORTH_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 28774, 0x06, "MQ Child Climb North Chest",
-                        "Spirit Temple MQ Child Climb North Chest", RHT_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_NORTH_CHEST,
-                        RG_BOMBCHU_10, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_SOUTH_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_SOUTH_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, -30644, 0x0C, "MQ Child Climb South Chest", "Spirit Temple MQ Child Climb South Chest",
-        RHT_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_SOUTH_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_COMPASS_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_SPIRIT_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -18429, 0x03, "MQ Compass Chest",
-                        "Spirit Temple MQ Compass Chest", RHT_SPIRIT_TEMPLE_MQ_COMPASS_CHEST, RG_SPIRIT_TEMPLE_COMPASS,
-                        { Category::cVanillaCompass }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_STATUE_ROOM_LULLABY_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_MQ_STATUE_ROOM_LULLABY_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, -30577, 0x0F, "MQ Statue Room Lullaby Chest", "Spirit Temple MQ Statue Room Lullaby Chest",
-        RHT_SPIRIT_TEMPLE_MQ_STATUE_ROOM_LULLABY_CHEST, RG_BLUE_RUPEE, {},
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_STATUE_ROOM_INVISIBLE_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_MQ_STATUE_ROOM_INVISIBLE_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
-        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 26882, 0x02, "MQ Statue Room Invisible Chest",
-        "Spirit Temple MQ Statue Room Invisible Chest", RHT_SPIRIT_TEMPLE_MQ_STATUE_ROOM_INVISIBLE_CHEST,
-        RG_RECOVERY_HEART, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_SILVER_BLOCK_HALLWAY_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_MQ_SILVER_BLOCK_HALLWAY_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY,
-                        RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -30628, 0x1C,
-                        "MQ Silver Block Hallway Chest", "Spirit Temple MQ Silver Block Hallway Chest",
-                        RHT_SPIRIT_TEMPLE_MQ_SILVER_BLOCK_HALLWAY_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, -30463, 0x01, "MQ Sun Block Room Chest",
-                        "Spirit Temple MQ Sun Block Room Chest", RHT_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM_CHEST,
-                        RG_RECOVERY_HEART, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_SYMPHONY_ROOM_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_MQ_SYMPHONY_ROOM_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 23207, 0x07, "MQ Symphony Room Chest",
-                        "Spirit Temple MQ Symphony Room Chest", RHT_SPIRIT_TEMPLE_MQ_SYMPHONY_ROOM_CHEST,
-                        RG_PURPLE_RUPEE, {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_LEEVER_ROOM_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_MQ_LEEVER_ROOM_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 31396, 0x04, "MQ Leever Room Chest",
-                        "Spirit Temple MQ Leever Room Chest", RHT_SPIRIT_TEMPLE_MQ_LEEVER_ROOM_CHEST, RG_PURPLE_RUPEE,
-                        {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_BEAMOS_ROOM_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_MQ_BEAMOS_ROOM_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 24472, 0x19, "MQ Beamos Room Chest",
-                        "Spirit Temple MQ Beamos Room Chest", RHT_SPIRIT_TEMPLE_MQ_BEAMOS_ROOM_CHEST, RG_RECOVERY_HEART,
-                        {}, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_CHEST_SWITCH_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_MQ_CHEST_SWITCH_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SPIRIT_TEMPLE,
-                        ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 31097, 0x18, "MQ Chest Switch Chest",
-                        "Spirit Temple MQ Chest Switch Chest", RHT_SPIRIT_TEMPLE_MQ_CHEST_SWITCH_CHEST, RG_ICE_TRAP, {},
-                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_BOSS_KEY_CHEST] = Location::Chest(
-        RC_SPIRIT_TEMPLE_MQ_BOSS_KEY_CHEST, RCQUEST_MQ, RCTYPE_BOSS_KEY, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX,
-        SCENE_SPIRIT_TEMPLE, 10213, 0x05, "MQ Boss Key Chest", "Spirit Temple MQ Boss Key Chest",
-        RHT_SPIRIT_TEMPLE_MQ_BOSS_KEY_CHEST, RG_SPIRIT_TEMPLE_BOSS_KEY, { Category::cVanillaBossKey },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
-    locationTable[RC_SPIRIT_TEMPLE_MQ_MIRROR_PUZZLE_INVISIBLE_CHEST] =
-        Location::Chest(RC_SPIRIT_TEMPLE_MQ_MIRROR_PUZZLE_INVISIBLE_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY,
-                        RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE, 26706, 0x12,
-                        "MQ Mirror Puzzle Invisible Chest", "Spirit Temple MQ Mirror Puzzle Invisible Chest",
-                        RHT_SPIRIT_TEMPLE_MQ_MIRROR_PUZZLE_INVISIBLE_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY,
-                        { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_LEFT_CHEST] =     Location::Chest(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_LEFT_CHEST,     RCQUEST_MQ,      RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   20602,  0x1A, "MQ Entrance Front Left Chest",     "Spirit Temple MQ Entrance Front Left Chest",     RHT_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_LEFT_CHEST,     RG_BOMBCHU_10,              {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_RIGHT_CHEST] =     Location::Chest(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_RIGHT_CHEST,     RCQUEST_MQ,      RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -32641, 0x1F, "MQ Entrance Back Right Chest",     "Spirit Temple MQ Entrance Back Right Chest",     RHT_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_RIGHT_CHEST,     RG_BOMBCHU_10,              {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_RIGHT_CHEST] =    Location::Chest(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_RIGHT_CHEST,    RCQUEST_MQ,      RCTYPE_SMALL_KEY,   RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -30629, 0x1B, "MQ Entrance Front Right Chest",    "Spirit Temple MQ Entrance Front Right Chest",    RHT_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_RIGHT_CHEST,    RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST] =      Location::Chest(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST,      RCQUEST_MQ,      RCTYPE_SMALL_KEY,   RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -30626, 0x1E, "MQ Entrance Back Left Chest",      "Spirit Temple MQ Entrance Back Left Chest",      RHT_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST,      RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST] =     Location::Chest(RC_SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST,     RCQUEST_MQ,      RCTYPE_SMALL_KEY,   RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -30627, 0x1D, "MQ Child Hammer Switch Chest",     "Spirit Temple MQ Child Hammer Switch Chest",     RHT_SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST,     RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_MAP_CHEST] =                     Location::Chest(RC_SPIRIT_TEMPLE_MQ_MAP_CHEST,                     RCQUEST_MQ,      RCTYPE_MAP_COMPASS, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   2080,   0x00, "MQ Map Chest",                     "Spirit Temple MQ Map Chest",                     RHT_SPIRIT_TEMPLE_MQ_MAP_CHEST,                     RG_SPIRIT_TEMPLE_MAP,       { Category::cVanillaMap },      SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_MAP_ROOM_ENEMY_CHEST] =          Location::Chest(RC_SPIRIT_TEMPLE_MQ_MAP_ROOM_ENEMY_CHEST,          RCQUEST_MQ,      RCTYPE_SMALL_KEY,   RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   30792,  0x08, "MQ Map Room Enemy Chest",          "Spirit Temple MQ Map Room Enemy Chest",          RHT_SPIRIT_TEMPLE_MQ_MAP_ROOM_ENEMY_CHEST,          RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_NORTH_CHEST] =       Location::Chest(RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_NORTH_CHEST,       RCQUEST_MQ,      RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   28774,  0x06, "MQ Child Climb North Chest",       "Spirit Temple MQ Child Climb North Chest",       RHT_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_NORTH_CHEST,       RG_BOMBCHU_10,              {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_SOUTH_CHEST] =       Location::Chest(RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_SOUTH_CHEST,       RCQUEST_MQ,      RCTYPE_SMALL_KEY,   RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -30644, 0x0C, "MQ Child Climb South Chest",       "Spirit Temple MQ Child Climb South Chest",       RHT_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_SOUTH_CHEST,       RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_COMPASS_CHEST] =                 Location::Chest(RC_SPIRIT_TEMPLE_MQ_COMPASS_CHEST,                 RCQUEST_MQ,      RCTYPE_MAP_COMPASS, RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -18429, 0x03, "MQ Compass Chest",                 "Spirit Temple MQ Compass Chest",                 RHT_SPIRIT_TEMPLE_MQ_COMPASS_CHEST,                 RG_SPIRIT_TEMPLE_COMPASS,   { Category::cVanillaCompass },  SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_STATUE_ROOM_LULLABY_CHEST] =     Location::Chest(RC_SPIRIT_TEMPLE_MQ_STATUE_ROOM_LULLABY_CHEST,     RCQUEST_MQ,      RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -30577, 0x0F, "MQ Statue Room Lullaby Chest",     "Spirit Temple MQ Statue Room Lullaby Chest",     RHT_SPIRIT_TEMPLE_MQ_STATUE_ROOM_LULLABY_CHEST,     RG_BLUE_RUPEE,              {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_STATUE_ROOM_INVISIBLE_CHEST] =   Location::Chest(RC_SPIRIT_TEMPLE_MQ_STATUE_ROOM_INVISIBLE_CHEST,   RCQUEST_MQ,      RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   26882,  0x02, "MQ Statue Room Invisible Chest",   "Spirit Temple MQ Statue Room Invisible Chest",   RHT_SPIRIT_TEMPLE_MQ_STATUE_ROOM_INVISIBLE_CHEST,   RG_RECOVERY_HEART,          {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_SILVER_BLOCK_HALLWAY_CHEST] =    Location::Chest(RC_SPIRIT_TEMPLE_MQ_SILVER_BLOCK_HALLWAY_CHEST,    RCQUEST_MQ,      RCTYPE_SMALL_KEY,   RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -30628, 0x1C, "MQ Silver Block Hallway Chest",    "Spirit Temple MQ Silver Block Hallway Chest",    RHT_SPIRIT_TEMPLE_MQ_SILVER_BLOCK_HALLWAY_CHEST,    RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM_CHEST] =          Location::Chest(RC_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM_CHEST,          RCQUEST_MQ,      RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   -30463, 0x01, "MQ Sun Block Room Chest",          "Spirit Temple MQ Sun Block Room Chest",          RHT_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM_CHEST,          RG_RECOVERY_HEART,          {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_SYMPHONY_ROOM_CHEST] =           Location::Chest(RC_SPIRIT_TEMPLE_MQ_SYMPHONY_ROOM_CHEST,           RCQUEST_MQ,      RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   23207,  0x07, "MQ Symphony Room Chest",           "Spirit Temple MQ Symphony Room Chest",           RHT_SPIRIT_TEMPLE_MQ_SYMPHONY_ROOM_CHEST,           RG_PURPLE_RUPEE,            {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_LEEVER_ROOM_CHEST] =             Location::Chest(RC_SPIRIT_TEMPLE_MQ_LEEVER_ROOM_CHEST,             RCQUEST_MQ,      RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   31396,  0x04, "MQ Leever Room Chest",             "Spirit Temple MQ Leever Room Chest",             RHT_SPIRIT_TEMPLE_MQ_LEEVER_ROOM_CHEST,             RG_PURPLE_RUPEE,            {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_BEAMOS_ROOM_CHEST] =             Location::Chest(RC_SPIRIT_TEMPLE_MQ_BEAMOS_ROOM_CHEST,             RCQUEST_MQ,      RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   24472,  0x19, "MQ Beamos Room Chest",             "Spirit Temple MQ Beamos Room Chest",             RHT_SPIRIT_TEMPLE_MQ_BEAMOS_ROOM_CHEST,             RG_RECOVERY_HEART,          {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_CHEST_SWITCH_CHEST] =            Location::Chest(RC_SPIRIT_TEMPLE_MQ_CHEST_SWITCH_CHEST,            RCQUEST_MQ,      RCTYPE_STANDARD,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   31097,  0x18, "MQ Chest Switch Chest",            "Spirit Temple MQ Chest Switch Chest",            RHT_SPIRIT_TEMPLE_MQ_CHEST_SWITCH_CHEST,            RG_ICE_TRAP,                {},                             SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_BOSS_KEY_CHEST] =                Location::Chest(RC_SPIRIT_TEMPLE_MQ_BOSS_KEY_CHEST,                RCQUEST_MQ,      RCTYPE_BOSS_KEY,    RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   10213,  0x05, "MQ Boss Key Chest",                "Spirit Temple MQ Boss Key Chest",                RHT_SPIRIT_TEMPLE_MQ_BOSS_KEY_CHEST,                RG_SPIRIT_TEMPLE_BOSS_KEY,  { Category::cVanillaBossKey },  SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
+    locationTable[RC_SPIRIT_TEMPLE_MQ_MIRROR_PUZZLE_INVISIBLE_CHEST] = Location::Chest(RC_SPIRIT_TEMPLE_MQ_MIRROR_PUZZLE_INVISIBLE_CHEST, RCQUEST_MQ,      RCTYPE_SMALL_KEY,   RCAREA_SPIRIT_TEMPLE, ACTOR_EN_BOX, SCENE_SPIRIT_TEMPLE,   26706,  0x12, "MQ Mirror Puzzle Invisible Chest", "Spirit Temple MQ Mirror Puzzle Invisible Chest", RHT_SPIRIT_TEMPLE_MQ_MIRROR_PUZZLE_INVISIBLE_CHEST, RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE, true);
 
     //            Randomizer Check                                                        Randomizer Check                                      Quest            Type                Area                  Actor ID         Scene ID             Params Flags Short Name                              Spoiler Name                                         Hint Text Key                                          Vanilla Item                Categories                      Collection Check Group                                    Vanilla Progression
     // Shadow Temple Vanilla
