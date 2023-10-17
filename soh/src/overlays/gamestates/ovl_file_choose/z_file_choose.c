@@ -3195,7 +3195,7 @@ static const char* noRandoGeneratedText[] = {
     ",\nor drop a spoiler log on the game window.",
 #endif
     // French
-    "Aucune Seed de Randomizer actuellement disponoble.\nGénérez-en une dans les \"Randomizer Settings\""
+    "Aucune Seed de Randomizer actuellement disponible.\nGénérez-en une dans les \"Randomizer Settings\""
 #if (defined(__WIIU__) || defined(__SWITCH__))
     "."
 #else
