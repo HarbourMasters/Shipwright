@@ -423,6 +423,7 @@ uint8_t Player_IsCustomLinkModel() {
            (LINK_IS_CHILD && ResourceGetIsCustomByName(gLinkChildSkel));
 }
 
+
 // Beginning of Alternate Equipment Loading "CanUse" function block.
 
 // Alternate Equipment Loading function. (global function)
@@ -433,8 +434,8 @@ uint8_t Player_CanUseNewLoadingMethodLeftHand(Player* this) {
     }
 
     switch (this->leftHandType) {
-        case PLAYER_MODELTYPE_LH_SWORD: // Unused, but a safe measure
-        case PLAYER_MODELTYPE_LH_SWORD_2:
+        case PLAYER_MODELTYPE_LH_SWORD:   // Left hand is holding a one-handed sword.
+        case PLAYER_MODELTYPE_LH_SWORD_2: // One of these is unused, but the same as the other.
             switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
                 case PLAYER_SWORD_KOKIRI:
                     if (ResourceGetIsCustomByName(gLinkKokiriSwordDL)) {
@@ -502,7 +503,7 @@ uint8_t Player_CanUseNewLoadingMethodRightHand(Player* this) {
                 }
             }
             break;
-        case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT: // Right hand is holding either Bow or Slingshot.
+        case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT:   // Right hand is holding either Bow or Slingshot.
         case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2: // Unused, but same as Bow_Slingshot.
             if (this->itemAction == PLAYER_IA_SLINGSHOT) {
                 if (ResourceGetIsCustomByName(gLinkSlingshotDL)) {
@@ -686,6 +687,7 @@ uint8_t Player_CanUseNewLoadingMethodSheathShield(Player* this) {
 
 // End of Alternate Equipment Loading "CanUse" function block.
 
+
 s32 Player_InBlockingCsMode(PlayState* play, Player* this) {
     return (this->stateFlags1 & 0x20000080) || (this->csMode != 0) || (play->sceneLoadFlag == 0x14) ||
            (this->stateFlags1 & 1) || (this->stateFlags3 & 0x80) ||
@@ -730,7 +732,8 @@ void Player_SetModelsForHoldingShield(Player* this) {
                 this->sheathType = 17;
             }
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
-
+            
+            //if (CVarGetInteger("gAltLinkEquip", 1) && (Player_CanUseNewLoadingMethodSheathSword(this) && Player_CanUseNewLoadingMethodSheathShield(this))) {
             if (CVarGetInteger("gAltLinkEquip", 1)) {
                 // AltEquip TODO: check if CanUse function is needed here.
                 this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
@@ -748,6 +751,7 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
 
     if (CVarGetInteger("gAltLinkEquip", 1) && Player_CanUseNewLoadingMethodLeftHand(this)) {
+        // Hides the original sword-hand if AltEquip DLs are detected.
         this->leftHandDLists = &sPlayerDListGroupsAlt[this->leftHandType][gSaveContext.linkAge];
     }
 
@@ -755,28 +759,24 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->rightHandType = gPlayerModelTypes[modelGroup][2];
     this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
 
-    if (CVarGetInteger("gAltLinkEquip", 1)) {
-        if (Player_CanUseNewLoadingMethodRightHand(this)) {
-            this->rightHandDLists = &sPlayerDListGroupsAlt[this->rightHandType][gSaveContext.linkAge];
-        }
-
-        if ((CVarGetInteger("gBowSlingShotAmmoFix", 0) && !Player_CanUseNewLoadingMethodRightHand(this)) &&
-            this->rightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT) { // If holding Bow/Slingshot without new DList system
-            this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
-        }
-    } else { // gAltLinkEquip disabled
-        if (CVarGetInteger("gBowSlingShotAmmoFix", 0) &&
-            this->rightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT) { // If holding Bow/Slingshot
-            this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
-        }
+    if (CVarGetInteger("gAltLinkEquip", 1) && Player_CanUseNewLoadingMethodRightHand(this)) {
+        // Hides the original shield-hand if AltEquip DLs are detected.
+        this->rightHandDLists = &sPlayerDListGroupsAlt[this->rightHandType][gSaveContext.linkAge];
     }
+    if ((CVarGetInteger("gBowSlingShotAmmoFix", 0) && !Player_CanUseNewLoadingMethodRightHand(this)) &&
+        this->rightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT) { // If holding Bow/Slingshot
+        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
+    } // (This isn't required when Alternate Equipment Loading is activated)
 
     // Sheath
     this->sheathType = gPlayerModelTypes[modelGroup][3];
     this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
 
+    //if (CVarGetInteger("gAltLinkEquip", 1) && (Player_CanUseNewLoadingMethodSheathSword(this) && Player_CanUseNewLoadingMethodSheathShield(this))) {
     if (CVarGetInteger("gAltLinkEquip", 1)) {
         // AltEquip TODO: check if CanUse function is needed here.
+        
+        // Hide the original sword/sheath and shield on Link's back when AltEquip DLs are detected.
         this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
     }
 
@@ -1838,6 +1838,7 @@ Vec3f sLeftRightFootLimbModelFootPos[] = {
 // started working out properly
 #define RETICLE_MAX 3.402823466e+12f
 
+
 // Beginning of Alternate Equipment Loading "Draw Item" function block
 
 // Alternate Equipment Loading function.
@@ -1916,6 +1917,7 @@ void Player_DrawOcarinaItem(PlayState* play, Gfx* dlist) {
 
 // End of Alternate Equipment Loading "Draw" function block
 
+
 void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
@@ -1935,8 +1937,8 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             //
             // > If this part is unused, I feel as though it should either break or not be included?
             switch (this->leftHandType) {
-                case PLAYER_MODELTYPE_LH_SWORD: // Unused, but a safe measure
-                case PLAYER_MODELTYPE_LH_SWORD_2: // Left hand is holding a one-handed sword.
+                case PLAYER_MODELTYPE_LH_SWORD:   // Left hand is holding a one-handed sword.
+                case PLAYER_MODELTYPE_LH_SWORD_2: // One of these is unused, but the same as the other.
                     switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
                         case PLAYER_SWORD_KOKIRI:
                             Player_DrawChildItem(play, gLinkKokiriSwordDL);
@@ -1946,6 +1948,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                             break;
                     }
                     break;
+
                 case PLAYER_MODELTYPE_LH_BGS: // Left hand is holding a two-handed sword.
                     if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON) {
                         if (gSaveContext.swordHealth <= 0.0f) {
@@ -1955,14 +1958,17 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                         }
                     }
                     break;
+
                 case PLAYER_MODELTYPE_LH_HAMMER: // Left hand is holding Megaton Hammer.
                     Player_DrawAdultItem(play, gLinkHammerDL);
                     break;
+
                 case PLAYER_MODELTYPE_LH_BOOMERANG: // Left hand is holding Boomerang.
                     if (!(this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG)) {
                         Player_DrawChildItem(play, gLinkBoomerangDL);
                     }
                     break;
+
                 case 20: // 0x14 AltEquip TODO Add a comment explaining this.
                     // Doesn't call PlayerDrawChildItem due to it being rotated
                     OPEN_DISPS(play->state.gfxCtx);
@@ -2109,9 +2115,11 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                             Player_DrawAdultItem(play, gLinkMirrorShieldDL);
                         }
                         break;
-                    case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT:            // Right hand is holding either Bow or Slingshot.
-                    case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2:          // Unused, but same as Bow_Slingshot.
-                        if (this->itemAction == PLAYER_IA_SLINGSHOT) { // Item is Slingshot
+
+                    case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT:   // Right hand is holding either Bow or Slingshot.
+                    case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2: // Unused, but same as Bow_Slingshot.
+                        if (this->itemAction == PLAYER_IA_SLINGSHOT) { 
+                            // Item is Slingshot
                             if (projectedHeadPos.z < -4.0f && this->unk_6AD != 0) {
                                 if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
                                     OPEN_DISPS(play->state.gfxCtx);
@@ -2151,6 +2159,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                             }
                         }
                         break;
+
                     case PLAYER_MODELTYPE_RH_HOOKSHOT: // Right hand is holding Hookshot
                         if (projectedHeadPos.z < 0.0f && this->unk_6AD != 0) {
                             if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
