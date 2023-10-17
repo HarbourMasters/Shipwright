@@ -321,7 +321,7 @@ static void CreateLocationHint(const std::vector<uint32_t>& possibleHintLocation
   Text itemHintText = Location(hintedLocation)->GetPlacedItem().GetHint().GetText();
   Text prefix = Hint(PREFIX).GetText();
   
-  Text finalHint = prefix + locationHintText + " #"+itemHintText+"#.";
+  Text finalHint = prefix + "%r" + locationHintText + " #%g" + itemHintText + "#%w.";
   SPDLOG_DEBUG("\tMessage: ");
   SPDLOG_DEBUG(finalHint.english);
   SPDLOG_DEBUG("\n\n");
@@ -374,7 +374,7 @@ static void CreateWothHint(uint8_t* remainingDungeonWothHints) {
 
     // form hint text
     Text locationText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
-    Text finalWothHint = Hint(PREFIX).GetText() + "#" + locationText + "#" + Hint(WAY_OF_THE_HERO).GetText();
+    Text finalWothHint = Hint(PREFIX).GetText() + "%r#" + locationText + "#%w" + Hint(WAY_OF_THE_HERO).GetText();
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalWothHint.english);
     SPDLOG_DEBUG("\n\n");
@@ -418,7 +418,7 @@ static void CreateBarrenHint(uint8_t* remainingDungeonBarrenHints, std::vector<u
     // form hint text
     Text locationText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
     Text finalBarrenHint =
-        Hint(PREFIX).GetText() + Hint(PLUNDERING).GetText() + "#" + locationText + "#" + Hint(FOOLISH).GetText();
+        Hint(PREFIX).GetText() + Hint(PLUNDERING).GetText() + "%r#" + locationText + "#%w" + Hint(FOOLISH).GetText();
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalBarrenHint.english);
     SPDLOG_DEBUG("\n\n");
@@ -464,13 +464,13 @@ static void CreateRandomLocationHint(const bool goodItem = false) {
   Text locationText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
   // RANDOTODO: reconsider dungeon vs non-dungeon item location hints when boss shuffle mixed pools happens
   if (Location(hintedLocation)->IsDungeon()) {
-    Text finalHint = Hint(PREFIX).GetText()+"#"+locationText+"# "+Hint(HOARDS).GetText()+" #"+itemText+"#.";
+    Text finalHint = Hint(PREFIX).GetText()+"%r#"+locationText+"#%w "+Hint(HOARDS).GetText()+" %g#"+itemText+"#%w.";
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalHint.english);
     SPDLOG_DEBUG("\n\n");
     AddHint(finalHint, gossipStone, {QM_GREEN, QM_RED}, HINT_TYPE_NAMED_ITEM, hintedLocation);
   } else {
-    Text finalHint = Hint(PREFIX).GetText()+"#"+itemText+"# "+Hint(CAN_BE_FOUND_AT).GetText()+" #"+locationText+"#.";
+    Text finalHint = Hint(PREFIX).GetText()+"%r#"+itemText+"#%w "+Hint(CAN_BE_FOUND_AT).GetText()+" %g#"+locationText+"#%w.";
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalHint.english);
     SPDLOG_DEBUG("\n\n");
@@ -609,7 +609,7 @@ void CreateGanonText() {
     ganonHintText = hint.GetText()+Hint(YOUR_POCKET).GetText();
     lightArrowHintLoc = "Link's Pocket";
   } else {
-    ganonHintText = hint.GetText()+GetHintRegion(Location(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
+    ganonHintText = hint.GetText() + "%r" + GetHintRegion(Location(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
     lightArrowHintLoc = Location(lightArrowLocation[0])->GetName();
   }
   ganonHintText = ganonHintText + "!";
@@ -837,9 +837,9 @@ void CreateDampesDiaryText() {
   uint32_t location = FilterFromPool(allLocations, [item](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == item;})[0];
   Text area = GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText();
   Text temp1 = Text{
-    "Whoever reads this, please enter %g", 
-    "Toi qui lit ce journal, rends-toi dans %g",
-    "Wer immer dies liest, der möge folgenden Ort aufsuchen: %g"
+    "Whoever reads this, please enter %r", 
+    "Toi qui lit ce journal, rends-toi dans %r",
+    "Wer immer dies liest, der möge folgenden Ort aufsuchen: %r"
   };
 
   Text temp2 = {
@@ -862,13 +862,13 @@ void CreateGregRupeeHint() {
   Text area = GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText();
 
   Text temp1 = Text{
-    "By the way, if you're interested, I saw the shiniest %gGreen Rupee%w somewhere in%g ",
-    "Au fait, si ça t'intéresse, j'ai aperçu le plus éclatant des %gRubis Verts%w quelque part à %g",
+    "By the way, if you're interested, I saw the shiniest %gGreen Rupee%w somewhere in%r ",
+    "Au fait, si ça t'intéresse, j'ai aperçu le plus éclatant des %gRubis Verts%w quelque part à %r",
     ""
   };
 
   Text temp2 = {
-    "%w.^It's said to have %rmysterious powers%w...^But then, it could just be another regular rupee.&Oh well.",
+    "%w.^It's said to have %cmysterious powers%w...^But then, it could just be another regular rupee.&Oh well.",
     "%w. On dit qu'il possède des pouvoirs mystérieux... Mais bon, ça pourrait juste être un autre rubis ordinaire.",
     ""
   };
@@ -882,8 +882,8 @@ void CreateSheikText() {
   lightArrowHintLoc = Location(lightArrowLocation[0])->GetName();
   Text area = GetHintRegion(Location(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
   Text temp1 = Text{
-    "I overheard Ganondorf say that he misplaced the %rLight Arrows%w in %g",
-    "J'ai entendu dire que Ganondorf aurait caché les %rFlèches de Lumière%w dans %g",
+    "I overheard Ganondorf say that he misplaced the %yLight Arrows%w in&%r",
+    "J'ai entendu dire que Ganondorf aurait caché les %yFlèches de Lumière%w dans %r",
     ""
   };
   Text temp2 = Text{"%w.", "%w.", "%w."};
@@ -908,8 +908,8 @@ void CreateSariaText() {
   sariaHintLoc = Location(magicLocation[0])->GetName();
   Text area = GetHintRegion(Location(magicLocation[0])->GetParentRegionKey())->GetHint().GetText();
   Text temp1 = Text{
-    "Did you feel the %gsurge of magic%w recently? A mysterious bird told me it came from %g",
-    "As-tu récemment ressenti une vague de %gpuissance magique%w? Un mystérieux hibou m'a dit  qu'elle provenait du %g",
+    "Did you feel the %gsurge of magic%w recently? A mysterious bird told me it came from %r",
+    "As-tu récemment ressenti une vague de %gpuissance magique%w? Un mystérieux hibou m'a dit  qu'elle provenait du %r",
     ""
   };
   Text temp2 = Text{
