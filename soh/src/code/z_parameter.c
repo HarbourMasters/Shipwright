@@ -2788,30 +2788,10 @@ s32 Inventory_HasSpecificBottle(u8 bottleItem) {
 #define RBA_GS_OFFSET 0x5C
 
 void byteSwapInventory() {
-    u8 equipment[2];
-    u8 upgrades[4];
-    u8 questItems[4];
-    u8 gsTokens[2];
-
-    equipment[0] = gSaveContext.inventory.items[RBA_EQUIPMENT_OFFSET + 1];
-    equipment[1] = gSaveContext.inventory.items[RBA_EQUIPMENT_OFFSET + 0];
-    gSaveContext.inventory.equipment = *(u16*)equipment;
-
-    upgrades[0] = gSaveContext.inventory.items[RBA_UPGRADE_OFFSET + 3];
-    upgrades[1] = gSaveContext.inventory.items[RBA_UPGRADE_OFFSET + 2];
-    upgrades[2] = gSaveContext.inventory.items[RBA_UPGRADE_OFFSET + 1];
-    upgrades[3] = gSaveContext.inventory.items[RBA_UPGRADE_OFFSET + 0];
-    gSaveContext.inventory.upgrades = *(u32*)upgrades;
-
-    questItems[0] = gSaveContext.inventory.items[RBA_QUEST_OFFSET + 3];
-    questItems[1] = gSaveContext.inventory.items[RBA_QUEST_OFFSET + 2];
-    questItems[2] = gSaveContext.inventory.items[RBA_QUEST_OFFSET + 1];
-    questItems[3] = gSaveContext.inventory.items[RBA_QUEST_OFFSET + 0];
-    gSaveContext.inventory.questItems = *(u32*)questItems;
-
-    gsTokens[0] = gSaveContext.inventory.items[RBA_GS_OFFSET + 1];
-    gsTokens[1] = gSaveContext.inventory.items[RBA_GS_OFFSET + 0];
-    gSaveContext.inventory.gsTokens = *(s16*)gsTokens;
+    gSaveContext.inventory.equipment = BE16SWAP(gSaveContext.inventory.equipment);
+    gSaveContext.inventory.upgrades = BE32SWAP(gSaveContext.inventory.upgrades);
+    gSaveContext.inventory.questItems = BE32SWAP(gSaveContext.inventory.questItems);
+    gSaveContext.inventory.gsTokens = BE16SWAP(gSaveContext.inventory.gsTokens);
 }
 
 void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 button) {
