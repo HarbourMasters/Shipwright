@@ -83,6 +83,7 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
     static const char* autosaveLabels[6] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
     static const char* DebugSaveFileModes[3] = { "Off", "Vanilla", "Maxed" };
     static const char* FastFileSelect[5] = { "File N.1", "File N.2", "File N.3", "Zelda Map Select (require OoT Debug Mode)", "File select" };
+    static const char* DekuStickCheat[3] = { "Normal", "Unbreakable", "Unbreakable + Always on Fire" };
     static const char* bonkDamageValues[8] = {
         "No Damage",
         "0.25 Heart",
@@ -155,6 +156,12 @@ void DrawShipMenu() {
         }
 #if !defined(__SWITCH__) && !defined(__WIIU__)
         UIWidgets::Spacer(0);
+        if (ImGui::MenuItem("Open App Files Folder")) {
+            std::string filesPath = LUS::Context::GetInstance()->GetAppDirectoryPath();
+            SDL_OpenURL(std::string("file:///" + std::filesystem::absolute(filesPath).string()).c_str());
+        }
+        UIWidgets::Spacer(0);
+
         if (ImGui::MenuItem("Quit")) {
             LUS::Context::GetInstance()->GetWindow()->Close();
         }
@@ -579,6 +586,8 @@ void DrawEnhancementsMenu() {
                     "Wearing the Bunny Hood grants a speed increase like in Majora's Mask. The longer jump option is not accounted for in randomizer logic.\n\n"
                     "Also disables NPC's reactions to wearing the Bunny Hood."
                 );
+                UIWidgets::PaddedEnhancementCheckbox("Bunny Hood Equippable as Adult", "gAdultBunnyHood", true, false, (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) == BUNNY_HOOD_VANILLA), "Only available with increased bunny hood speed", UIWidgets::CheckboxGraphics::Cross, false);
+                UIWidgets::Tooltip("Allows the bunny hood to be equipped normally from the pause menu as adult.");
                 UIWidgets::PaddedEnhancementCheckbox("Mask Select in Inventory", "gMaskSelect", true, false);
                 UIWidgets::Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
                 UIWidgets::PaddedEnhancementCheckbox("Nuts explode bombs", "gNutsExplodeBombs", true, false);
@@ -665,6 +674,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Always Win Dampe Digging Game", "gDampeWin", true, false, SaveManager::Instance->IsRandoFile(),
                                                         "This setting is always enabled in randomizer files", UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Always win the heart piece/purple rupee on the first dig in Dampe's grave digging game, just like in rando\nIn a rando file, this is unconditionally enabled");
+                UIWidgets::PaddedEnhancementCheckbox("All Dogs are Richard", "gAllDogsRichard", true, false);
+                UIWidgets::Tooltip("All dogs can be traded in and will count as Richard.");
                 UIWidgets::Spacer(0);
 
                 if (ImGui::BeginMenu("Potion Values"))
@@ -890,6 +901,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Disables bombs always rotating to face the camera. To be used in conjunction with mods that want to replace bombs with 3D objects.");
                 UIWidgets::PaddedEnhancementCheckbox("Disable Grotto Fixed Rotation", "gDisableGrottoRotation", true, false);
                 UIWidgets::Tooltip("Disables grottos rotating with the camera. To be used in conjunction with mods that want to replace grottos with 3D objects.");
+                UIWidgets::PaddedEnhancementCheckbox("Invisible Bunny Hood", "gHideBunnyHood", true, false);
+                UIWidgets::Tooltip("Turns Bunny Hood invisible while still maintaining its effects.");
 
                 ImGui::EndMenu();
             }
@@ -1253,6 +1266,8 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
         UIWidgets::PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
         UIWidgets::Tooltip("This syncs the ingame time with the real world time");
+        ImGui::Text("Deku Sticks:");
+        UIWidgets::EnhancementCombobox("gDekuStickCheat", DekuStickCheat, DEKU_STICK_NORMAL);
         UIWidgets::PaddedEnhancementCheckbox("No ReDead/Gibdo Freeze", "gNoRedeadFreeze", true, false);
         UIWidgets::Tooltip("Prevents ReDeads and Gibdos from being able to freeze you with their scream");
         UIWidgets::Spacer(2.0f);
@@ -1347,7 +1362,12 @@ void DrawCheatsMenu() {
         if (ImGui::Button("Change Age")) {
             CVarSetInteger("gSwitchAge", 1);
         }
-        UIWidgets::Tooltip("Switches Link's age and reloads the area.");   
+        UIWidgets::Tooltip("Switches Link's age and reloads the area.");  
+
+        if (ImGui::Button("Clear Cutscene Pointer")) {
+            GameInteractor::RawAction::ClearCutscenePointer();
+        }
+        UIWidgets::Tooltip("Clears the cutscene pointer to a value safe for wrong warps.");   
 
         ImGui::EndMenu();
     }

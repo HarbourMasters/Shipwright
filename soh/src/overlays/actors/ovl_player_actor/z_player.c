@@ -2972,33 +2972,9 @@ void func_80835F44(PlayState* play, Player* this, s32 item) {
                 return;
             }
 
-            if (actionParam >= PLAYER_IA_BOOTS_KOKIRI) {
-                u16 bootsValue = actionParam - PLAYER_IA_BOOTS_KOKIRI + 1;
-                if (CUR_EQUIP_VALUE(EQUIP_BOOTS) == bootsValue) {
-                    Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_KOKIRI + 1);
-                } else {
-                    Inventory_ChangeEquipment(EQUIP_BOOTS, bootsValue);
-                }
-                Player_SetEquipmentData(play, this);
-                func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_BOOTS) == PLAYER_BOOTS_IRON + 1 ? NA_SE_PL_WALK_HEAVYBOOTS
-                                                                                          : NA_SE_PL_CHANGE_ARMS);
-                return;
-            }
-
-            if (actionParam >= PLAYER_IA_TUNIC_KOKIRI) {
-                u16 tunicValue = actionParam - PLAYER_IA_TUNIC_KOKIRI + 1;
-                if (CUR_EQUIP_VALUE(EQUIP_TUNIC) == tunicValue) {
-                    Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_KOKIRI + 1);
-                } else {
-                    Inventory_ChangeEquipment(EQUIP_TUNIC, tunicValue);
-                }
-                Player_SetEquipmentData(play, this);
-                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
-                return;
-            }
-
             if (actionParam >= PLAYER_IA_SHIELD_DEKU) {
                 // Changing shields through action commands is unimplemented
+                // Boots and tunics handled previously
                 return;
             }
 
@@ -7998,13 +7974,15 @@ void func_80842A28(PlayState* play, Player* this) {
 }
 
 void func_80842A88(PlayState* play, Player* this) {
-    Inventory_ChangeAmmo(ITEM_STICK, -1);
-    func_80835F44(play, this, ITEM_NONE);
+    if (CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
+        Inventory_ChangeAmmo(ITEM_STICK, -1);
+        func_80835F44(play, this, ITEM_NONE);
+    }
 }
 
 s32 func_80842AC4(PlayState* play, Player* this) {
     if ((this->heldItemAction == PLAYER_IA_DEKU_STICK) && (this->unk_85C > 0.5f)) {
-        if (AMMO(ITEM_STICK) != 0) {
+        if (AMMO(ITEM_STICK) != 0 && CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
             EffectSsStick_Spawn(play, &this->bodyPartsPos[PLAYER_BODYPART_R_HAND],
                                 this->actor.shape.rot.y + 0x8000);
             this->unk_85C = 0.5f;
@@ -10352,20 +10330,28 @@ static Color_RGBA8 D_808547C0 = { 255, 50, 0, 0 };
 void func_80848A04(PlayState* play, Player* this) {
     f32 temp;
 
-    if (this->unk_85C == 0.0f) {
+    if (CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE) {
+        f32 temp2 = 1.0f;       // Secondary temporary variable to use with the alleged draw flame function
+        this->unk_860 = 200;    // Keeps the stick's flame lit
+        this->unk_85C = 1.0f;   // Ensures the stick is the proper length
+        func_8002836C(play, &this->meleeWeaponInfo[0].tip, &D_808547A4, &D_808547B0, &D_808547BC, &D_808547C0, temp2 * 200.0f,
+                      0, 8);      // I believe this draws the flame effect
+    }
+
+    if (this->unk_85C == 0.0f && CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
         func_80835F44(play, this, 0xFF);
         return;
     }
 
     temp = 1.0f;
-    if (DECR(this->unk_860) == 0) {
+    if (DECR(this->unk_860) == 0 && CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
         Inventory_ChangeAmmo(ITEM_STICK, -1);
         this->unk_860 = 1;
         temp = 0.0f;
         this->unk_85C = temp;
     } else if (this->unk_860 > 200) {
         temp = (210 - this->unk_860) / 10.0f;
-    } else if (this->unk_860 < 20) {
+    } else if (this->unk_860 < 20 && CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
         temp = this->unk_860 / 20.0f;
         this->unk_85C = temp;
     }
@@ -10587,6 +10573,45 @@ static Vec3f D_80854814 = { 0.0f, 0.0f, 200.0f };
 static f32 D_80854820[] = { 2.0f, 4.0f, 7.0f };
 static f32 D_8085482C[] = { 0.5f, 1.0f, 3.0f };
 
+void Player_UseTunicBoots(Player* this, PlayState* play) {
+    // Boots and tunics equip despite state
+    s32 i;
+    s32 item;
+    s32 actionParam;
+    if (!(this->stateFlags1 & PLAYER_STATE1_INPUT_DISABLED || this->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || this->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE || this->stateFlags1 & PLAYER_STATE1_TEXT_ON_SCREEN || this->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING)) {
+        for (i = 0; i < ARRAY_COUNT(D_80854388); i++) {
+            if (CHECK_BTN_ALL(sControlInput->press.button, D_80854388[i])) {
+                break;
+            }
+        }
+        item = func_80833CDC(play, i);
+        if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+            this->heldItemButton = i;
+            actionParam = Player_ItemToItemAction(item);
+            if (actionParam >= PLAYER_IA_BOOTS_KOKIRI) {
+                u16 bootsValue = actionParam - PLAYER_IA_BOOTS_KOKIRI + 1;
+                if (CUR_EQUIP_VALUE(EQUIP_BOOTS) == bootsValue) {
+                    Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_KOKIRI + 1);
+                } else {
+                    Inventory_ChangeEquipment(EQUIP_BOOTS, bootsValue);
+                }
+                Player_SetEquipmentData(play, this);
+                func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_BOOTS) == PLAYER_BOOTS_IRON + 1 ? NA_SE_PL_WALK_HEAVYBOOTS
+                                                                                            : NA_SE_PL_CHANGE_ARMS);
+            } else if (actionParam >= PLAYER_IA_TUNIC_KOKIRI) {
+                u16 tunicValue = actionParam - PLAYER_IA_TUNIC_KOKIRI + 1;
+                if (CUR_EQUIP_VALUE(EQUIP_TUNIC) == tunicValue) {
+                    Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_KOKIRI + 1);
+                } else {
+                    Inventory_ChangeEquipment(EQUIP_TUNIC, tunicValue);
+                }
+                Player_SetEquipmentData(play, this);
+                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+            }
+        }
+    }
+}
+
 void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     s32 pad;
 
@@ -10627,7 +10652,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     func_808473D4(play, this);
     func_80836BEC(this, play);
 
-    if ((this->heldItemAction == PLAYER_IA_DEKU_STICK) && (this->unk_860 != 0)) {
+    if ((this->heldItemAction == PLAYER_IA_DEKU_STICK) && ((this->unk_860 != 0) || CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE)) {
         func_80848A04(play, this);
     } else if ((this->heldItemAction == PLAYER_IA_FISHING_POLE) && (this->unk_860 < 0)) {
         this->unk_860++;
@@ -10884,6 +10909,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
 
         if (!(this->stateFlags3 & PLAYER_STATE3_PAUSE_ACTION_FUNC)) {
             this->func_674(this, play);
+            Player_UseTunicBoots(this, play);
         }
 
         Player_UpdateCamAndSeqModes(play, this);
@@ -11161,7 +11187,11 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
             MATRIX_TOMTX(sp70);
         }
 
-        gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[this->currentMask - 1]);
+       
+        if (this->currentMask != PLAYER_MASK_BUNNY || !CVarGetInteger("gHideBunnyHood", 0)) {
+            gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[this->currentMask - 1]);
+        }
+
         if (CVarGetInteger("gFixIceTrapWithBunnyHood", 1)) Matrix_Pop();
     }
 

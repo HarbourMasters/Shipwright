@@ -1,0 +1,38 @@
+<Root>
+    <File Name="object_dekubaba" Segment="6">
+        <!-- Deku Baba animations -->
+        <Animation Name="gDekuBabaPauseChompAnim" Offset="0x208"/>
+        <Animation Name="gDekuBabaFastChompAnim" Offset="0x2B8"/>
+
+        <!-- Deku Baba body DLists (not all are limb DLists) -->
+        <DList Name="gDekuBabaLowerJawDL" Offset="0x580"/>
+        <DList Name="gDekuBabaUpperJawDL" Offset="0xB68"/>
+        <DList Name="gDekuBabaBaseLeavesDL" Offset="0x10F0"/>
+        <DList Name="gDekuBabaStemTopDL" Offset="0x1330"/>
+        <DList Name="gDekuBabaStemMiddleDL" Offset="0x1628"/>
+        <DList Name="gDekuBabaStemBaseDL" Offset="0x1828"/>
+
+        <!-- Deku Baba body textures -->
+        <Texture Name="gDekuBabaJawOuterTex" OutName="deku_baba_jaw_outer" Format="rgba16" Width="16" Height="32" Offset="0x18D0"/>
+        <Texture Name="gDekuBabaJawInnerTex" OutName="deku_baba_jaw_inner" Format="rgba16" Width="32" Height="32" Offset="0x1CD0"/>
+        <Texture Name="gDekuBabaLeafTex" OutName="deku_baba_leaf" Format="rgba16" Width="16" Height="32" Offset="0x24D0"/>
+        <Texture Name="gDekuBabaBulbTex" OutName="deku_baba_bulb" Format="rgba16" Width="8" Height="8" Offset="0x28D0"/>
+        <Texture Name="gDekuBabaStemTex" OutName="deku_baba_stem" Format="rgba16" Width="8" Height="8" Offset="0x2950"/>
+
+        <!-- Deku Baba limbs -->
+        <Limb Name="object_dekubaba_Limb_0029D0" LimbType="Standard" Offset="0x29D0"/>
+        <Limb Name="object_dekubaba_Limb_0029DC" LimbType="Standard" Offset="0x29DC"/>
+        <Limb Name="object_dekubaba_Limb_0029E8" LimbType="Standard" Offset="0x29E8"/>
+        <Limb Name="object_dekubaba_Limb_0029F4" LimbType="Standard" Offset="0x29F4"/>
+        <Limb Name="object_dekubaba_Limb_002A00" LimbType="Standard" Offset="0x2A00"/>
+        <Limb Name="object_dekubaba_Limb_002A0C" LimbType="Standard" Offset="0x2A0C"/>
+        <Limb Name="object_dekubaba_Limb_002A18" LimbType="Standard" Offset="0x2A18"/>
+
+        <!-- Deku Baba skeleton -->
+        <Skeleton Name="gDekuBabaSkel" Type="Normal" LimbType="Standard" Offset="0x2A40"/>
+
+        <!-- Deku Baba stick drop -->
+        <DList Name="gDekuBabaStickDropDL" Offset="0x3070"/>
+        <Texture Name="gDekuBabaStickDropTex" OutName="deku_baba_stick_drop" Format="rgba16" Width="32" Height="32" Offset="0x31C0"/>
+    </File>
+</Root>

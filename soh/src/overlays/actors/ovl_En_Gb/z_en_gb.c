@@ -338,8 +338,8 @@ void func_80A2FA50(EnGb* this, PlayState* play) {
         Rupees_ChangeBy(50);
         HIGH_SCORE(HS_POE_POINTS) += 100;
         if (
-            (!gSaveContext.n64ddFlag && HIGH_SCORE(HS_POE_POINTS) != 1000) ||
-            (gSaveContext.n64ddFlag && (HIGH_SCORE(HS_POE_POINTS) != 1000 || Flags_GetRandomizerInf(RAND_INF_10_BIG_POES)))
+            (!IS_RANDO && HIGH_SCORE(HS_POE_POINTS) != 1000) ||
+            (IS_RANDO && (HIGH_SCORE(HS_POE_POINTS) != 1000 || Flags_GetRandomizerInf(RAND_INF_10_BIG_POES)))
         ) {
             if (HIGH_SCORE(HS_POE_POINTS) > 1100) {
                 HIGH_SCORE(HS_POE_POINTS) = 1100;

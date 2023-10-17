@@ -42,8 +42,8 @@ bool performSave = false;
 void ReloadSceneTogglingLinkAge() {
     gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
     gPlayState->sceneLoadFlag = 0x14;
-    gPlayState->fadeTransition = 11;
-    gSaveContext.nextTransitionType = 11;
+    gPlayState->fadeTransition = 42; // Fade Out
+    gSaveContext.nextTransitionType = 42;
     gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
 }
 
@@ -998,7 +998,7 @@ void RegisterRandomizerSheikSpawn() {
         if (!gPlayState) return;
         bool canSheik = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIAL_COUNT) != RO_GANONS_TRIALS_SKIP && 
           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LIGHT_ARROWS_HINT));
-        if (!gSaveContext.n64ddFlag || !LINK_IS_ADULT || !canSheik) return;
+        if (!IS_RANDO || !LINK_IS_ADULT || !canSheik) return;
         switch (gPlayState->sceneNum) {
             case SCENE_TEMPLE_OF_TIME:
                 if (gPlayState->roomCtx.curRoom.num == 1) {

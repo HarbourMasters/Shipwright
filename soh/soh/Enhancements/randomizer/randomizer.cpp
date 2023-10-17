@@ -6,10 +6,9 @@
 #include <macros.h>
 #include <objects/gameplay_keep/gameplay_keep.h>
 #include <functions.h>
-#include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
-#include <thread>
 #include "3drando/rando_main.hpp"
 #include "3drando/random.hpp"
 #include "../../UIWidgets.hpp"
@@ -21,14 +20,16 @@
 #include <stdexcept>
 #include "randomizer_check_objects.h"
 #include "randomizer_tricks.h"
+#include "randomizer_check_tracker.h"
 #include <sstream>
 #include <tuple>
 #include <functional>
 #include "draw.h"
 #include "rando_hash.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <boost_custom/container_hash/hash_32.hpp>
-#include <libultraship/libultraship.h>
 #include "randomizer_settings_window.h"
+#include "savefile.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -47,6 +48,8 @@ std::multimap<std::tuple<s16, s16, s32>, RandomizerCheckObject> checkFromActorMu
 std::set<RandomizerCheck> excludedLocations;
 std::set<RandomizerTrick> enabledTricks;
 std::set<RandomizerTrick> enabledGlitches;
+
+std::set<std::map<RandomizerCheck, RandomizerCheckTrackerData>> checkTrackerStates;
 
 u8 generated;
 char* seedString;
@@ -132,18 +135,6 @@ Randomizer::Randomizer() {
             item.GetName().english,
             item.GetName().french,
         };
-    }
-    for (auto area : rcAreaNames) {
-        SpoilerfileAreaNameToEnum[area.second] = area.first;
-    }
-    SpoilerfileAreaNameToEnum["Inside Ganon's Castle"] = RCAREA_GANONS_CASTLE;
-    SpoilerfileAreaNameToEnum["the Lost Woods"] = RCAREA_LOST_WOODS;
-    SpoilerfileAreaNameToEnum["the Market"] = RCAREA_MARKET;
-    SpoilerfileAreaNameToEnum["the Graveyard"] = RCAREA_GRAVEYARD;
-    SpoilerfileAreaNameToEnum["Haunted Wasteland"] = RCAREA_WASTELAND;
-    SpoilerfileAreaNameToEnum["outside Ganon's Castle"] = RCAREA_HYRULE_CASTLE;
-    for (auto [type, name] : hintTypeNames) {
-        SpoilerfileHintTypeNameToEnum[name] = type;
     }
 }
 
@@ -474,9 +465,9 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
 
     CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE,
-            CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you my&%b{{check}}%w!",
-                "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du %r{{params}} Skulltulas&%wzerstörst und ich werde dir dafür&%b{{check}} %wgeben!",
-                "Yeaaarrgh! Je suis maudit!^Détruit encore %r{{params}} Araignées de&la Malédiction%w et j'aurai quelque&chose à te donner!&%b({{check}})")
+            CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you my&%g{{check}}%w!",
+                "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du %r{{params}} Skulltulas&%wzerstörst und ich werde dir dafür&%g{{check}} %wgeben!",
+                "Yeaaarrgh! Je suis maudit!^Détruit encore %r{{params}} Araignées de&la Malédiction%w et j'aurai quelque&chose à te donner!&%g({{check}})")
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY,
@@ -490,7 +481,7 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
             Randomizer::randoMiscHintsTableID, TEXT_FROGS_UNDERWATER,
             CustomMessage("Some frogs holding&%g{{item}}%w&are looking at you from underwater...",
             "Unter Wasser gibt es Frösche,&die %g{{item}}%w&bei sich haben und Dich neugierig&beobachten...",
-            "Des grenouilles se trouvant&sous l'eau vous fixent attentivement,&tenant fermement&%r{{item}}%w.", TEXTBOX_TYPE_BLUE)
+            "Des grenouilles se trouvant&sous l'eau vous fixent attentivement,&tenant fermement&%g{{item}}%w.", TEXTBOX_TYPE_BLUE)
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_SARIAS_SONG_FOREST_SOUNDS,
@@ -574,17 +565,17 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
     //RANDOTODO: Implement obscure/ambiguous hints
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_MEDIGORON,
-        CustomMessage("How about buying %r&{{item}}%w for %g200 rupees%w?\x1B&%gYes&No%w",
-            "Wie wäre es mit %r&{{item}}%w für %g200 Rubine?%w\x1B&%gJa!&Nein!%w",
-            "Veux-tu acheter %r&{{item}}%w pour %g200 rubis?%w\x1B&%gOui&Non&w"));
+        CustomMessage("How about buying %g&{{item}}%w for %y200 rupees%w?\x1B&%gYes&No%w",
+            "Wie wäre es mit %g&{{item}}%w für %y200 Rubine?%w\x1B&%gJa!&Nein!%w",
+            "Veux-tu acheter %g&{{item}}%w pour %y200 rubis?%w\x1B&%gOui&Non&w"));
 
     //Granny Shopy
     //RANDOTODO: Implement obscure/ambiguous hints
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_GRANNYS_SHOP,
-        CustomMessage("%r{{item}}%w!&How about %g100 rupees%w?\x1B&%gYes&No%w",
-            "%r{{item}}%w!&Wie wäre es mit %g100 Rubine?%w\x1B&%gJa!&Nein!%w",
-            "%r{{item}}%w!&Que dis-tu de %g100 rubis?%w\x1B&%gOui&Non&w"));
+        CustomMessage("%g{{item}}%w!&How about %y100 rupees%w?\x1B&%gYes&No%w",
+            "%g{{item}}%w!&Wie wäre es mit %y100 Rubine?%w\x1B&%gJa!&Nein!%w",
+            "%g{{item}}%w!&Que dis-tu de %y100 rubis?%w\x1B&%gOui&Non&w"));
 
     //Carpet Salesman
     //RANDOTODO: Implement obscure/ambiguous hints
@@ -605,14 +596,14 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_1,
             CustomMessage("Welcome!^I am selling stuff, strange and rare, &from all over the world to "
-                          "everybody.&Today's special is...^%r{{item}}" +
-                              cgBoxTwoText[0] + "How about %g200 Rupees?%w\x1B&&%gYes&No%w",
+                          "everybody.&Today's special is...^%g{{item}}" +
+                              cgBoxTwoText[0] + "How about %y200 Rupees?%w\x1B&&%gYes&No%w",
                           "Sei gegrüßt!^Ich verkaufe allerlei Kuriorisäten.&Stets sonderliche und seltene Ware&aus "
-                          "aller Welt für jedermann.&Das heutige Angebot bleibt...^%r{{item}}" +
-                              cgBoxTwoText[1] + "Wie wäre es mit %g200 Rubinen?%w\x1B&&%gJa!&Nein!%w",
+                          "aller Welt für jedermann.&Das heutige Angebot bleibt...^%g{{item}}" +
+                              cgBoxTwoText[1] + "Wie wäre es mit %y200 Rubinen?%w\x1B&&%gJa!&Nein!%w",
                           "Bienvenue!^Je vends des trucs étranges et rares,&de partout dans le monde et à tout "
-                          "le&monde! L'objet du jour est...^%r{{item}}" +
-                              cgBoxTwoText[2] + "Alors, marché conclu pour %g200 rubis?%w\x1B&&%gOui&Non%w"));
+                          "le&monde! L'objet du jour est...^%g{{item}}" +
+                              cgBoxTwoText[2] + "Alors, marché conclu pour %y200 rubis?%w\x1B&&%gOui&Non%w"));
 
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_2,
@@ -2601,6 +2592,11 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                 if((actorParams & 0xF) < 10) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
             }
             break;
+        case SCENE_SACRED_FOREST_MEADOW:
+            if (actorId == ACTOR_EN_SA) {
+                specialRc = RC_SONG_FROM_SARIA;
+            }
+            break;
         case SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY:
         case SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT:
         case SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS:
@@ -4106,9 +4102,8 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PopItemWidth();
                 switch (CVarGetInteger("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF)) {
                     case RO_KEYRINGS_COUNT:
-                        maxKeyringCount =
-                            (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
-                             CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) ? 9 : 8;
+                        maxKeyringCount = (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
+                                            CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) ? 9 : 8;
                         UIWidgets::PaddedEnhancementSliderInt("Key Ring Count: %d",
                                                               "##RandomizeShuffleKeyRingsRandomCount",
                                                               "gRandomizeShuffleKeyRingsRandomCount", 1,
@@ -4117,7 +4112,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     case RO_KEYRINGS_SELECTION:
                         disableGFKeyring =
                             CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) != RO_GF_NORMAL || CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) == RO_GERUDO_KEYS_VANILLA;
-                        UIWidgets::EnhancementCheckbox( "Gerudo Fortress##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGerudoFortress",
+                        UIWidgets::EnhancementCheckbox("Gerudo Fortress##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGerudoFortress",
                             disableGFKeyring, "Disabled because the currently selected Gerudo Fortress Carpenters\n setting and/or Gerudo Fortress Keys setting is incompatible with \nhaving a Gerudo Fortress keyring.");
                         UIWidgets::EnhancementCheckbox("Forest Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsForestTemple");
                         UIWidgets::EnhancementCheckbox("Fire Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsFireTemple");
@@ -4397,15 +4392,13 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Complete mask quest
-                UIWidgets::EnhancementCheckbox(Settings::CompleteMaskQuest.GetName().c_str(),
-                                              "gRandomizeCompleteMaskQuest");
+                UIWidgets::EnhancementCheckbox(Settings::CompleteMaskQuest.GetName().c_str(), "gRandomizeCompleteMaskQuest");
                 UIWidgets::InsertHelpHoverText("Once the happy mask shop is opened, all masks will be available to be borrowed.");
 
                 UIWidgets::PaddedSeparator();
 
                 // Skip Scarecrow Song
-                UIWidgets::EnhancementCheckbox(Settings::FreeScarecrow.GetName().c_str(),
-                                               "gRandomizeSkipScarecrowsSong");
+                UIWidgets::EnhancementCheckbox(Settings::FreeScarecrow.GetName().c_str(), "gRandomizeSkipScarecrowsSong");
                 UIWidgets::InsertHelpHoverText(
                     "Start with the ability to summon Pierre the scarecrow. Pulling out an ocarina in the usual locations will automatically summon him."
                 );
@@ -5220,12 +5213,13 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::EnhancementCheckbox(Settings::StartingSongOfTime.GetName().c_str(), "gRandomizeStartingSongOfTime");
                 UIWidgets::EnhancementCheckbox(Settings::StartingSongOfStorms.GetName().c_str(), "gRandomizeStartingSongOfStorms");
                 UIWidgets::PaddedSeparator();
+
                 ImGui::Text("Warp Songs");
                 UIWidgets::PaddedSeparator();
-                UIWidgets::EnhancementCheckbox(Settings::StartingMinuetOfForest.GetName().c_str(),  "gRandomizeStartingMinuetOfForest");
+                UIWidgets::EnhancementCheckbox(Settings::StartingMinuetOfForest.GetName().c_str(), "gRandomizeStartingMinuetOfForest");
                 UIWidgets::EnhancementCheckbox(Settings::StartingBoleroOfFire.GetName().c_str(), "gRandomizeStartingBoleroOfFire");
                 UIWidgets::EnhancementCheckbox(Settings::StartingSerenadeOfWater.GetName().c_str(), "gRandomizeStartingSerenadeOfWater");
-                UIWidgets::EnhancementCheckbox(Settings::StartingRequiemOfSpirit.GetName().c_str(),  "gRandomizeStartingRequiemOfSpirit");
+                UIWidgets::EnhancementCheckbox(Settings::StartingRequiemOfSpirit.GetName().c_str(), "gRandomizeStartingRequiemOfSpirit");
                 UIWidgets::EnhancementCheckbox(Settings::StartingNocturneOfShadow.GetName().c_str(), "gRandomizeStartingNocturneOfShadow");
                 UIWidgets::EnhancementCheckbox(Settings::StartingPreludeOfLight.GetName().c_str(), "gRandomizeStartingPreludeOfLight");
                 UIWidgets::PaddedSeparator();
