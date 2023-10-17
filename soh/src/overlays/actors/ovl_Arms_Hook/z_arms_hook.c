@@ -78,11 +78,7 @@ uint8_t ArmsHook_CanUseNewLoadingMethod(Gfx* arg) {
     if (!CVarGetInteger("gAltLinkEquip", 1)) {
         return false;
     }
-
-    if (!(ResourceGetIsCustomByName(arg))) {
-        return false;
-    }
-    return true;
+    return ResourceGetIsCustomByName(arg);
 }
 
 void ArmsHook_SetupAction(ArmsHook* this, ArmsHookActionFunc actionFunc) {
@@ -352,12 +348,11 @@ void ArmsHook_Draw(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        // Use an alternate set of DLs.
-        // Hookshot tips are seperate between ages because they can't be properly scaled.
-        // 
+        // > Use an alternate set of DLs.
+        // > Hookshot tips are seperate between ages because they can't be properly scaled.
         // AltEquip TODO: Why not? Shouldn't we try and solve that instead?
-        if (ArmsHook_CanUseNewLoadingMethod(
-                sHookshotTipDLs[gSaveContext.linkAge])) { // Use alternate asset loading behavior.
+        if (ArmsHook_CanUseNewLoadingMethod(sHookshotTipDLs[gSaveContext.linkAge])) { 
+            // Use Alternate Equipment Loading behavior.
             gSPDisplayList(POLY_OPA_DISP++, sHookshotTipDLs[gSaveContext.linkAge]);
         } else { // Use vanilla behavior.
             gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHookshotTipDL);
@@ -371,8 +366,8 @@ void ArmsHook_Draw(Actor* thisx, PlayState* play) {
         Matrix_Scale(0.015f, 0.015f, sqrtf(SQ(sp78.y) + sp58) * 0.01f, MTXMODE_APPLY);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        if (ArmsHook_CanUseNewLoadingMethod(
-                sHookshotChainDLs[gSaveContext.linkAge])) { // Use alternate asset loading behavior.
+        if (ArmsHook_CanUseNewLoadingMethod(sHookshotChainDLs[gSaveContext.linkAge])) { 
+            // Use Alternate Equipment Loading behavior.
             gSPDisplayList(POLY_OPA_DISP++, sHookshotChainDLs[gSaveContext.linkAge]);
         } else { // Use vanilla behavior.
             gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHookshotChainDL);
