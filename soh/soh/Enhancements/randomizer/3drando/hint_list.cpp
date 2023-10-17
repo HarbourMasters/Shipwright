@@ -2981,11 +2981,11 @@ void HintTable_Init() {
     hintTable[DAMPE_DIARY01] = HintText::OtherHint({
         // obscure text
         Text{
-            "Whoever reads this, please enter %g", 
+            "Whoever reads this, please enter %r", 
             /*french*/
-            "Toi qui lit ce journal, rends-toi dans %g",
+            "Toi qui lit ce journal, rends-toi dans %r",
             /*german?*/
-            "Wer immer dies liest, der möge folgenden Ort aufsuchen: %g"},
+            "Wer immer dies liest, der möge folgenden Ort aufsuchen: %r"},
     });
 
     hintTable[DAMPE_DIARY02] = HintText::OtherHint({
