@@ -442,7 +442,13 @@ namespace Logic {
         break;
 
       case Song::SONG_SCARECROW://you need at least 2 buttons for scarecrow song
-        if (OcarinaAButton + OcarinaCLeftButton + OcarinaCRightButton + OcarinaCUpButton + OcarinaCDownButton < 2) {
+        if (
+          (OcarinaAButton ? 1 : 0) +
+          (OcarinaCLeftButton ? 1 : 0) +
+          (OcarinaCRightButton ? 1 : 0) +
+          (OcarinaCUpButton ? 1 : 0) +
+          (OcarinaCDownButton ? 1 : 0) < 2
+        ) {
           return false;
         }
         break;
@@ -640,8 +646,8 @@ namespace Logic {
     CanLeaveForest  = OpenForest.IsNot(OPENFOREST_CLOSED) || IsAdult || DekuTreeClear || ShuffleInteriorEntrances || ShuffleOverworldEntrances;
     CanPlantBugs    = IsChild && Bugs;
     CanRideEpona    = IsAdult && Epona && CanPlay(EponasSong, Song::SONG_EPONA);
-    CanSummonGossipFairy            = Ocarina && (ZeldasLullaby || EponasSong || SongOfTime || SunsSong);
-    CanSummonGossipFairyWithoutSuns = Ocarina && (ZeldasLullaby || EponasSong || SongOfTime);
+    CanSummonGossipFairy            = Ocarina && (CanPlay(ZeldasLullaby, Song::SONG_LULLABY) || CanPlay(EponasSong, Song::SONG_EPONA) || CanPlay(SongOfTime, Song::SONG_TIME) || CanPlay(SunsSong, Song::SONG_SUN));
+    CanSummonGossipFairyWithoutSuns = Ocarina && (CanPlay(ZeldasLullaby, Song::SONG_LULLABY) || CanPlay(EponasSong, Song::SONG_EPONA) || CanPlay(SongOfTime, Song::SONG_TIME));
     Hearts          = BaseHearts + HeartContainer + (PieceOfHeart >> 2);
     EffectiveHealth = ((Hearts << (2 + DoubleDefense)) >> Multiplier) + ((Hearts << (2 + DoubleDefense)) % (1 << Multiplier) > 0); //Number of half heart hits to die, ranges from 1 to 160
     FireTimer       = CanUse(GORON_TUNIC) ? 255 : (LogicFewerTunicRequirements) ? (Hearts * 8) : 0;
