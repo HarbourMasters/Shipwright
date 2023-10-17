@@ -1067,6 +1067,8 @@ void DrawEnhancementsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Restore old Gold Skulltula cutscene", "gGsCutscene", true, false);
             UIWidgets::PaddedEnhancementCheckbox("Quick Bongo Kill", "gQuickBongoKill", true, false);
             UIWidgets::Tooltip("Restore a bug from NTSC 1.0 that allows bypassing Bongo Bongo's intro cutscene to quickly kill him");
+            UIWidgets::PaddedEnhancementCheckbox("Original RBA Values", "gRestoreRBAValues", true, false);
+            UIWidgets::Tooltip("Restores the original outcomes when performing Reverse Bottle Adventure.");
 
             ImGui::EndMenu();
         }
