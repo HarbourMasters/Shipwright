@@ -2782,11 +2782,6 @@ s32 Inventory_HasSpecificBottle(u8 bottleItem) {
     }
 }
 
-#define RBA_EQUIPMENT_OFFSET 0x28
-#define RBA_UPGRADE_OFFSET 0x2C
-#define RBA_QUEST_OFFSET 0x30
-#define RBA_GS_OFFSET 0x5C
-
 void byteSwapInventory() {
     gSaveContext.inventory.equipment = BE16SWAP(gSaveContext.inventory.equipment);
     gSaveContext.inventory.upgrades = BE32SWAP(gSaveContext.inventory.upgrades);
