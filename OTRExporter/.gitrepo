@@ -6,6 +6,7 @@
 [subrepo]
 	remote = https://github.com/harbourmasters/OTRExporter
 	branch = TEST-101623
-	commit = 
+	commit = 89de1472606b101a25d489d3e01f1769d3bc186c
 	method = merge
 	cmdver = 0.4.6
+	parent = 6c6c588824dd8cf36c90ef12c71898067009df67
