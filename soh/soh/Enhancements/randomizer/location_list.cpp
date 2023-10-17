@@ -580,7 +580,7 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_LW_TRADE_ODD_POTION] =
         Location::Base(RC_LW_TRADE_ODD_POTION, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_LOST_WOODS, ACTOR_ID_MAX,
                        SCENE_LOST_WOODS, 0x00, 0x21, "Trade Odd Potion", "LW Trade Odd Potion", RHT_LW_TRADE_COJIRO,
-                       RG_ODD_MUSHROOM, { Category::cAdultTrade }, SpoilerCollectionCheck::RandomizerInf(0x5B, 0x1F),
+                       RG_POACHERS_SAW, { Category::cAdultTrade }, SpoilerCollectionCheck::ItemGetInf(57),
                        SpoilerCollectionCheckGroup::GROUP_LOST_WOODS, true);
     locationTable[RC_LW_OCARINA_MEMORY_GAME] = Location::Base(
         RC_LW_OCARINA_MEMORY_GAME, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LOST_WOODS, ACTOR_ID_MAX, SCENE_LOST_WOODS,
