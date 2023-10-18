@@ -609,7 +609,7 @@ void DrawEnhancementsMenu() {
                         CVarSetInteger("gStrengthDisabled", 0);
                     }
                 }
-                UIWidgets::Tooltip("Allows strength to be toggled on and off by pressing A on the strength upgrade in the equipment subscreen of the pause menu");
+                UIWidgets::Tooltip("Allows strength to be toggled on and off by pressing A on the strength upgrade in the equipment subscreen of the pause menu (This allows performing some glitches that require the player to not have strength).");
                 ImGui::EndMenu();
             }
 
