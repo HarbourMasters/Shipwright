@@ -438,7 +438,7 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
 
                 if (followingDog != 0) {
                     this->unk_215 = false;
-                    return (followingDog == 1) ? 0x709F : 0x709E;
+                    return ((followingDog == 1) || (CVarGetInteger("gAllDogsRichard", 0))) ? 0x709F : 0x709E;
                 } else {
                     return 0x709D;
                 }
