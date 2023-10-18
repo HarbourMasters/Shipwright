@@ -488,18 +488,6 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             }
         }
 
-        // Grey Out Strength Upgrade Name when Disabled
-        // Do not Grey Out Strength Upgrade Name when Enabled
-        if ((pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 2) &&
-            CVarGetInteger("gToggleStrength", 0)) {
-            if (CVarGetInteger("gStrengthDisabled", 0)) {
-                pauseCtx->nameColorSet = 1;
-            } else {
-                pauseCtx->nameColorSet = 0;
-            }
-        }
-
-
         if ((pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 0)) {
             if (LINK_AGE_IN_YEARS != YEARS_CHILD) {
                 if ((cursorItem >= ITEM_BULLET_BAG_30) && (cursorItem <= ITEM_BULLET_BAG_50)) {
@@ -514,16 +502,21 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
 
         KaleidoScope_SetCursorVtx(pauseCtx, cursorSlot * 4, pauseCtx->equipVtx);
 
-        u16 buttonsToCheck = BTN_A | BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
-        if (CVarGetInteger("gDpadEquips", 0) && (!CVarGetInteger("gDpadPause", 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
-            buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
-        }
-
         // Allow Toggling of Strength when Pressing A on Strength Upgrade Slot
         if ((pauseCtx->cursorSpecialPos == 0) && (pauseCtx->state == 6) &&
             (pauseCtx->unk_1E4 == 0) && CHECK_BTN_ALL(input->press.button, BTN_A) &&
             (pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 2) && CVarGetInteger("gToggleStrength", 0)) {
             CVarSetInteger("gStrengthDisabled", !CVarGetInteger("gStrengthDisabled", 0));
+            // Equip success sound
+            Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            // Wait 10 frames before accepting input again
+            pauseCtx->unk_1E4 = 7;
+            sEquipTimer = 10;
+        }
+
+        u16 buttonsToCheck = BTN_A | BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
+        if (CVarGetInteger("gDpadEquips", 0) && (!CVarGetInteger("gDpadPause", 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
+            buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
         }
 
         if ((pauseCtx->cursorSpecialPos == 0) && (cursorItem != PAUSE_ITEM_NONE) && (pauseCtx->state == 6) &&
@@ -654,6 +647,19 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         sEquipTimer--;
         if (sEquipTimer == 0) {
             pauseCtx->unk_1E4 = 0;
+        }
+    }
+
+
+    // Grey Out Strength Upgrade Name when Disabled
+    // Do not Grey Out Strength Upgrade Name when Enabled
+    // This needs to be outside the previous block since otherwise the nameColorSet is cleared to 0 by other menu pages when toggling
+    if ((pauseCtx->pageIndex == PAUSE_EQUIP) && (pauseCtx->cursorX[PAUSE_EQUIP] == 0) &&
+        (pauseCtx->cursorY[PAUSE_EQUIP] == 2) && CVarGetInteger("gToggleStrength", 0)) {
+        if (CVarGetInteger("gStrengthDisabled", 0)) {
+            pauseCtx->nameColorSet = 1;
+        } else {
+            pauseCtx->nameColorSet = 0;
         }
     }
 
