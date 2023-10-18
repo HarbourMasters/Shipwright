@@ -17,7 +17,6 @@ using namespace Dungeon;
 
 std::vector<RandomizerGet> ItemPool = {};
 std::vector<RandomizerGet> PendingJunkPool = {};
-std::vector<uint8_t> IceTrapModels = {};
 const std::array<RandomizerGet, 9> dungeonRewards = {
   RG_KOKIRI_EMERALD,
   RG_GORON_RUBY,
@@ -612,62 +611,62 @@ void GenerateItemPool() {
   PendingJunkPool.clear();
 
   //Initialize ice trap models to always major items
-  IceTrapModels = {
-    GI_SHIELD_MIRROR,
-    GI_BOOMERANG,
-    GI_LENS,
-    GI_HAMMER,
-    GI_BOOTS_IRON,
-    GI_BOOTS_HOVER,
-    GI_STONE_OF_AGONY,
-    GI_DINS_FIRE,
-    GI_FARORES_WIND,
-    GI_NAYRUS_LOVE,
-    GI_ARROW_FIRE,
-    GI_ARROW_ICE,
-    GI_ARROW_LIGHT,
-    0xB8, //Double defense
-    GI_CLAIM_CHECK,
-    0x80, //Progressive hookshot
-    0x81, //Progressive strength
-    0x82, //Progressive bomb bag
-    0x83, //Progressive bow
-    0x84, //Progressive slingshot
-    0x85, //Progressive wallet
-    0x86, //Progressive scale
-    0x8A, //Progressive magic
+  ctx->possibleIceTrapModels = {
+    RG_MIRROR_SHIELD,
+    RG_BOOMERANG,
+    RG_LENS_OF_TRUTH,
+    RG_MEGATON_HAMMER,
+    RG_IRON_BOOTS,
+    RG_HOVER_BOOTS,
+    RG_STONE_OF_AGONY,
+    RG_DINS_FIRE,
+    RG_FARORES_WIND,
+    RG_NAYRUS_LOVE,
+    RG_FIRE_ARROWS,
+    RG_ICE_ARROWS,
+    RG_LIGHT_ARROWS,
+    RG_DOUBLE_DEFENSE, //Double defense
+    RG_CLAIM_CHECK,
+    RG_PROGRESSIVE_HOOKSHOT, //Progressive hookshot
+    RG_PROGRESSIVE_STRENGTH, //Progressive strength
+    RG_PROGRESSIVE_BOMB_BAG, //Progressive bomb bag
+    RG_PROGRESSIVE_BOW, //Progressive bow
+    RG_PROGRESSIVE_SLINGSHOT, //Progressive slingshot
+    RG_PROGRESSIVE_WALLET, //Progressive wallet
+    RG_PROGRESSIVE_SCALE, //Progressive scale
+    RG_PROGRESSIVE_MAGIC_METER, //Progressive magic
   };
   //Check song shuffle and dungeon reward shuffle just for ice traps
   if (ShuffleSongs.Is(SONGSHUFFLE_ANYWHERE)) {
     //Push item ids for songs
-    IceTrapModels.push_back(0xC1);
-    IceTrapModels.push_back(0xC2);
-    IceTrapModels.push_back(0xC3);
-    IceTrapModels.push_back(0xC4);
-    IceTrapModels.push_back(0xC5);
-    IceTrapModels.push_back(0xC6);
-    IceTrapModels.push_back(0xBB);
-    IceTrapModels.push_back(0xBC);
-    IceTrapModels.push_back(0xBD);
-    IceTrapModels.push_back(0xBE);
-    IceTrapModels.push_back(0xBF);
-    IceTrapModels.push_back(0xC0);
+    ctx->possibleIceTrapModels.push_back(RG_ZELDAS_LULLABY);
+    ctx->possibleIceTrapModels.push_back(RG_EPONAS_SONG);
+    ctx->possibleIceTrapModels.push_back(RG_SARIAS_SONG);
+    ctx->possibleIceTrapModels.push_back(RG_SUNS_SONG);
+    ctx->possibleIceTrapModels.push_back(RG_SONG_OF_TIME);
+    ctx->possibleIceTrapModels.push_back(RG_SONG_OF_STORMS);
+    ctx->possibleIceTrapModels.push_back(RG_MINUET_OF_FOREST);
+    ctx->possibleIceTrapModels.push_back(RG_BOLERO_OF_FIRE);
+    ctx->possibleIceTrapModels.push_back(RG_SERENADE_OF_WATER);
+    ctx->possibleIceTrapModels.push_back(RG_REQUIEM_OF_SPIRIT);
+    ctx->possibleIceTrapModels.push_back(RG_NOCTURNE_OF_SHADOW);
+    ctx->possibleIceTrapModels.push_back(RG_PRELUDE_OF_LIGHT);
   }
   if (ShuffleRewards.Is(REWARDSHUFFLE_ANYWHERE)) {
     //Push item ids for dungeon rewards
-    IceTrapModels.push_back(0xCB);
-    IceTrapModels.push_back(0xCC);
-    IceTrapModels.push_back(0xCD);
-    IceTrapModels.push_back(0xCE);
-    IceTrapModels.push_back(0xCF);
-    IceTrapModels.push_back(0xD0);
-    IceTrapModels.push_back(0xD1);
-    IceTrapModels.push_back(0xD2);
-    IceTrapModels.push_back(0xD3);
+    ctx->possibleIceTrapModels.push_back(RG_KOKIRI_EMERALD);
+    ctx->possibleIceTrapModels.push_back(RG_GORON_RUBY);
+    ctx->possibleIceTrapModels.push_back(RG_ZORA_SAPPHIRE);
+    ctx->possibleIceTrapModels.push_back(RG_FOREST_MEDALLION);
+    ctx->possibleIceTrapModels.push_back(RG_FIRE_MEDALLION);
+    ctx->possibleIceTrapModels.push_back(RG_WATER_MEDALLION);
+    ctx->possibleIceTrapModels.push_back(RG_SPIRIT_MEDALLION);
+    ctx->possibleIceTrapModels.push_back(RG_SHADOW_MEDALLION);
+    ctx->possibleIceTrapModels.push_back(RG_LIGHT_MEDALLION);
   }
 
   if (TriforceHunt.Is(TRIFORCE_HUNT_ON)) {
-    IceTrapModels.push_back(0xDF);
+    ctx->possibleIceTrapModels.push_back(RG_TRIFORCE_PIECE);
     AddItemToMainPool(RG_TRIFORCE_PIECE, Settings::TriforceHuntTotal.Value<uint8_t>());
     ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_TRIFORCE); // Win condition
     ctx->PlaceItemInLocation(RC_GANON, GetJunkItem(), false, true);
@@ -681,14 +680,14 @@ void GenerateItemPool() {
 
   if (ShuffleKokiriSword) {
     AddItemToMainPool(RG_KOKIRI_SWORD);
-    IceTrapModels.push_back(GI_SWORD_KOKIRI);
+    ctx->possibleIceTrapModels.push_back(RG_KOKIRI_SWORD);
   } else {
     ctx->PlaceItemInLocation(RC_KF_KOKIRI_SWORD_CHEST, RG_KOKIRI_SWORD, false, true);
   }
 
   if (ShuffleWeirdEgg) {
     AddItemToMainPool(RG_WEIRD_EGG);
-    IceTrapModels.push_back(GI_WEIRD_EGG);
+    ctx->possibleIceTrapModels.push_back(RG_WEIRD_EGG);
   } else {
     ctx->PlaceItemInLocation(RC_HC_MALON_EGG, RG_WEIRD_EGG, false, true);
   }
@@ -698,7 +697,7 @@ void GenerateItemPool() {
     if (ItemPoolValue.Is(ITEMPOOL_PLENTIFUL)) {
       AddItemToPool(PendingJunkPool, RG_PROGRESSIVE_OCARINA);
     }
-    IceTrapModels.push_back(0x8B); //Progressive ocarina
+    ctx->possibleIceTrapModels.push_back(RG_PROGRESSIVE_OCARINA); //Progressive ocarina
   } else {
     ctx->PlaceItemInLocation(RC_LW_GIFT_FROM_SARIA, RG_PROGRESSIVE_OCARINA, false, true);
     ctx->PlaceItemInLocation(RC_HF_OCARINA_OF_TIME_ITEM, RG_PROGRESSIVE_OCARINA, false, true);
@@ -722,7 +721,7 @@ void GenerateItemPool() {
     if (ItemPoolValue.Is(ITEMPOOL_PLENTIFUL)) {
       AddItemToPool(PendingJunkPool, RG_MAGIC_BEAN_PACK);
     }
-    IceTrapModels.push_back(0xC9); //Magic bean pack
+    ctx->possibleIceTrapModels.push_back(RG_MAGIC_BEAN_PACK); //Magic bean pack
   } else {
     ctx->PlaceItemInLocation(RC_ZR_MAGIC_BEAN_SALESMAN, RG_MAGIC_BEAN, false, true);
   }
@@ -885,7 +884,7 @@ void GenerateItemPool() {
   //Gerudo Membership Card
   if (ShuffleGerudoToken && GerudoFortress.IsNot(GERUDOFORTRESS_OPEN)) {
     AddItemToMainPool(RG_GERUDO_MEMBERSHIP_CARD);
-    IceTrapModels.push_back(GI_GERUDO_CARD);
+    ctx->possibleIceTrapModels.push_back(RG_GERUDO_MEMBERSHIP_CARD);
   } else if (ShuffleGerudoToken) {
     AddItemToPool(PendingJunkPool, RG_GERUDO_MEMBERSHIP_CARD);
     ctx->PlaceItemInLocation(RC_GF_GERUDO_MEMBERSHIP_CARD, RG_ICE_TRAP, false, true);
@@ -1081,8 +1080,8 @@ void GenerateItemPool() {
   uint8_t bottleCount = 4;
   std::vector<RandomizerGet> bottles;
   bottles.assign(normalBottles.begin(), normalBottles.end());
-  IceTrapModels.push_back(
-      Rando::StaticData::RetrieveItem(RandomElement(bottles)).GetItemID()); // Get one random bottle type for ice traps
+  ctx->possibleIceTrapModels.push_back(
+      Rando::StaticData::RetrieveItem(RandomElement(bottles)).GetRandomizerGet()); // Get one random bottle type for ice traps
   for (uint8_t i = 0; i < bottleCount; i++) {
     if (i >= rutoBottles) {
       if ((i == bottleCount - 1) && ShuffleMerchants.IsNot(SHUFFLEMERCHANTS_OFF)) {
@@ -1169,9 +1168,9 @@ void GenerateItemPool() {
   if (ProgressiveGoronSword) {
     ReplaceMaxItem(RG_BIGGORON_SWORD, 0);
     AddItemToMainPool(RG_PROGRESSIVE_GORONSWORD, 2);
-    IceTrapModels.push_back(0xD4); // Progressive Goron Sword
+    ctx->possibleIceTrapModels.push_back(RG_PROGRESSIVE_GORONSWORD); // Progressive Goron Sword
   } else {
-    IceTrapModels.push_back(GI_SWORD_BGS);
+    ctx->possibleIceTrapModels.push_back(RG_BIGGORON_SWORD);
   }
 
   //Replace ice traps with junk from the pending junk pool if necessary

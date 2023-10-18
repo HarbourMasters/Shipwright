@@ -165,15 +165,6 @@ void ItemLocation::SetVisible(bool visibleInImGui_) {
 
 }
 
-ItemOverride_Key ItemLocation::Key() const {
-    ItemOverride_Key key;
-    key.all = 0;
-
-    key.scene = Rando::StaticData::GetLocation(rc)->GetScene();
-    key.type = static_cast<uint8_t>(StaticData::GetLocation(rc)->GetLocationType()); // TODO make sure these match up
-    return key;
-}
-
 void ItemLocation::ResetVariables() {
     addedToPool = false;
     placedItem = RG_NONE;

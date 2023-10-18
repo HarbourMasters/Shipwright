@@ -27,7 +27,7 @@ std::shared_ptr<Context> Context::GetInstance() {
     return mContext.lock();
 }
 
-Hint *Context::GetHint(RandomizerHintKey hintKey) {
+Hint* Context::GetHint(RandomizerHintKey hintKey) {
     return &hintTable[hintKey];
 }
 
@@ -37,7 +37,7 @@ void Context::AddHint(RandomizerHintKey hintId, Text text, RandomizerCheck hinte
     GetItemLocation(hintedLocation)->SetHintKey(hintId);
 }
 
-ItemLocation *Context::GetItemLocation(RandomizerCheck locKey) {
+ItemLocation* Context::GetItemLocation(RandomizerCheck locKey) {
     return &(itemLocationTable[locKey]);
 }
 
@@ -54,15 +54,16 @@ void Context::PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bo
         Rando::StaticData::RetrieveItem(item).ApplyEffect();
     }
 
-    //TODO? Show Progress
+    // TODO? Show Progress
 
     // If we're placing a non-shop item in a shop location, we want to record it for custom messages
     if (StaticData::RetrieveItem(item).GetItemType() != ITEMTYPE_SHOP &&
         Rando::StaticData::GetLocation(locKey)->IsCategory(Category::cShop)) {
         int index = TransformShopIndex(GetShopIndex(locKey));
         NonShopItems[index].Name = Rando::StaticData::RetrieveItem(item).GetName();
-        NonShopItems[index].Repurchaseable = Rando::StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_REFILL ||
-                                             Rando::StaticData::RetrieveItem(item).GetHintKey() == RHT_PROGRESSIVE_BOMBCHUS;
+        NonShopItems[index].Repurchaseable =
+            Rando::StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_REFILL ||
+            Rando::StaticData::RetrieveItem(item).GetHintKey() == RHT_PROGRESSIVE_BOMBCHUS;
     }
 
     loc->SetPlacedItem(item);
@@ -78,7 +79,7 @@ void Context::AddLocation(RandomizerCheck loc, std::vector<RandomizerCheck>* des
     destination->push_back(loc);
 }
 
-template<typename Container>
+template <typename Container>
 void Context::AddLocations(const Container& locations, std::vector<RandomizerCheck>* destination) {
     if (destination == nullptr) {
         destination = &allLocations;
@@ -159,24 +160,17 @@ void Context::CreateItemOverrides() {
     for (RandomizerCheck locKey : allLocations) {
         auto loc = Rando::StaticData::GetLocation(locKey);
         auto itemLoc = GetItemLocation(locKey);
-        ItemOverride_Value val = Rando::StaticData::RetrieveItem(itemLoc->GetPlacedRandomizerGet()).Value();
         // If this is an ice trap, store the disguise model in iceTrapModels
         if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
-            iceTrapModels[loc->GetRandomizerCheck()] = val.looksLikeItemId;
+            ItemOverride val(locKey, RandomElement(possibleIceTrapModels));
+            iceTrapModels[locKey] = val.LooksLike();
             // If this is ice trap is in a shop, change the name based on what the model will look like
             if (loc->IsCategory(Category::cShop)) {
-                NonShopItems[TransformShopIndex(GetShopIndex(locKey))].Name = GetIceTrapName(val.looksLikeItemId);
+                val.SetTrickName(GetIceTrapName(val.LooksLike()));
+                NonShopItems[TransformShopIndex(GetShopIndex(locKey))].Name = val.GetTrickName();
             }
+            overrides[locKey] = val;
         }
-        overrides.insert({
-            .key = itemLoc->Key(),
-            .value = val,
-        });
-        SPDLOG_DEBUG("\tScene: ");
-        SPDLOG_DEBUG(std::to_string(itemLoc->Key().scene));
-        SPDLOG_DEBUG("\tType: ");
-        SPDLOG_DEBUG(std::to_string(itemLoc->Key().type));
-        SPDLOG_DEBUG("\t");
         SPDLOG_DEBUG(loc->GetName());
         SPDLOG_DEBUG(": ");
         SPDLOG_DEBUG(itemLoc->GetPlacedItemName().GetEnglish());

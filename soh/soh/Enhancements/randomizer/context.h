@@ -40,10 +40,11 @@ class Context {
     void ItemReset();
     void HintReset();
     void CreateItemOverrides();
-    std::set<ItemOverride, ItemOverride_Compare> overrides = {};
+    std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
     std::vector<RandomizerCheck> everyPossibleLocation = {};
     std::vector<RandomizerCheck> wothLocations = {};
+    std::vector<RandomizerGet> possibleIceTrapModels = {};
     std::unordered_map<RandomizerCheck, uint8_t> iceTrapModels = {};
     bool playthroughBeatable = false;
     bool allLocationsReachable = false;

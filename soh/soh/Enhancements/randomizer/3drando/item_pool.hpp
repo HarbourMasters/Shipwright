@@ -14,4 +14,3 @@ void GenerateItemPool();
 void AddJunk();
 
 extern std::vector<RandomizerGet> ItemPool;
-extern std::vector<uint8_t> IceTrapModels;

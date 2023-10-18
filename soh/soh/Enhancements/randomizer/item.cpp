@@ -83,29 +83,6 @@ void Item::UndoEffect() {
     Logic::UpdateHelpers();
 }
 
-Rando::ItemOverride_Value Item::Value() const {
-    Rando::ItemOverride_Value val;
-
-    val.all = 0;
-    val.itemId = getItemId;
-    if (getItemId == RG_ICE_TRAP) {
-        val.looksLikeItemId = RandomElement(IceTrapModels);
-    }
-    if ((getItemId >= 0x95 && getItemId <= 0x9A)) { // Boss keys
-        val.looksLikeItemId = GI_KEY_BOSS;
-    }
-    if ((getItemId >= 0xAF && getItemId <= 0xB7)) { // Small keys
-        val.looksLikeItemId = GI_KEY_SMALL;
-    }
-    if (type == ITEMTYPE_SHOP) {
-        // With the current shopsanity implementation, we need a way to detect
-        // regular shop items. This method should have no unintended side effects
-        // unless there was a multiworld with 256 players... so, it should be fine.
-        val.player = 0xFF;
-    }
-    return val;
-}
-
 const Text& Item::GetName() const {
     return name;
 }
@@ -286,7 +263,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
     return Rando::StaticData::RetrieveItem(actual).GetGIEntry();
 }
 
-GetItemEntry Item::GetGIEntry_Copy() {
+GetItemEntry Item::GetGIEntry_Copy() const {
     return *GetGIEntry();
 }
 
