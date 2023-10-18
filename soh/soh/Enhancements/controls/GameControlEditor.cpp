@@ -267,6 +267,8 @@ namespace GameControlEditor {
         DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera");
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
         DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera");
+        UIWidgets::PaddedEnhancementCheckbox("Invert Z-Weapon Aiming Y Axis", "gInvertZAimingYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+        DrawHelpIcon("Inverts the Camera Y Axis in:\n-Z-Weapon Aiming");
         UIWidgets::Spacer(0);
         UIWidgets::PaddedEnhancementSliderFloat("Third-Person Horizontal Sensitivity: %d %%", "##ThirdPersonSensitivity Horizontal",
                                                 "gThirdPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true, true, false, true);

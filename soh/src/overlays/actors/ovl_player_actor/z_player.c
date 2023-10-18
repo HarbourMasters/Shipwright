@@ -6918,10 +6918,11 @@ s32 func_8083FD78(Player* this, f32* arg1, s16* arg2, PlayState* play) {
         if (this->unk_664 != NULL) {
             func_8083DB98(this, 1);
         } else {
-            Math_SmoothStepToS(&this->actor.focus.rot.x, sControlInput->rel.stick_y * 240.0f, 14, 4000, 30);
+            Math_SmoothStepToS(&this->actor.focus.rot.x, sControlInput->rel.stick_y * (CVarGetInteger("gInvertZAimingYAxis", 1) ? 1 : -1) * 240.0f,
+                               14, 4000, 30);
             if (CVarGetInteger("gRightStickAiming", 0) != 0) {
-                Math_SmoothStepToS(&this->actor.focus.rot.x, sControlInput->cur.right_stick_y * 240.0f, 14, 4000,
-                                   30);
+                Math_SmoothStepToS(&this->actor.focus.rot.x, sControlInput->cur.right_stick_y * 
+                                        (CVarGetInteger("gInvertZAimingYAxis", 1) ? 1 : -1) * 240.0f, 14, 4000, 30);
             }
             func_80836AB8(this, 1);
         }
