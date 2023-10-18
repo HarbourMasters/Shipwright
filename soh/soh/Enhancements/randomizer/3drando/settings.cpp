@@ -196,6 +196,7 @@ namespace Settings {
   Option ShuffleAdultTradeQuest = Option::Bool("Shuffle Adult Trade",    {"Off", "On"});
   Option ShuffleChestMinigame   = Option::U8  ("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"});
   Option Shuffle100GSReward     = Option::Bool("Shuffle 100 GS Reward",  {"Off", "On"});
+  Option ShuffleBossSouls       = Option::U8  ("Shuffle Boss Souls",     {"Off", "On", "On + Ganon"});
   std::vector<Option *> shuffleOptions = {
     &RandomizeShuffle,
     &ShuffleRewards,
@@ -217,6 +218,7 @@ namespace Settings {
     &ShuffleAdultTradeQuest,
     &ShuffleChestMinigame,
     &Shuffle100GSReward,
+    &ShuffleBossSouls,
   };
 
   //Shuffle Dungeon Items
@@ -2276,6 +2278,7 @@ namespace Settings {
     ShopsanityPricesAffordable.SetSelectedIndex(cvarSettings[RSK_SHOPSANITY_PRICES_AFFORDABLE]);
     Scrubsanity.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SCRUBS]);
     ShuffleCows.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_COWS]);
+    ShuffleBossSouls.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_BOSS_SOULS]);
     ShuffleKokiriSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD]);
     ShuffleOcarinas.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_OCARINA]);
 

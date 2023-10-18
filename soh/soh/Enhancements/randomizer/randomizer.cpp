@@ -257,6 +257,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Shuffle Frog Song Rupees", RSK_SHUFFLE_FROG_SONG_RUPEES },
     { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
     { "Shuffle Settings:Shuffle 100 GS Reward", RSK_SHUFFLE_100_GS_REWARD },
+    { "Shuffle Settings:Shuffle Boss Souls", RSK_SHUFFLE_BOSS_SOULS },
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
@@ -942,6 +943,14 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_AMMO_DROPS_OFF;
                         }
                         break;
+                    case RSK_SHUFFLE_BOSS_SOULS:
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = RO_BOSS_SOULS_OFF;
+                        } else if (it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = RO_BOSS_SOULS_ON;
+                        } else if (it.value() == "On + Ganon") {
+                            gSaveContext.randoSettings[index].value = RO_BOSS_SOULS_ON_PLUS_GANON;
+                        }
                     case RSK_STARTING_OCARINA:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = RO_STARTING_OCARINA_OFF;
@@ -2900,6 +2909,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVarGetInteger("gRandomizeShuffleBeans", 0);
     cvarSettings[RSK_SHUFFLE_MERCHANTS] = CVarGetInteger("gRandomizeShuffleMerchants", RO_SHUFFLE_MERCHANTS_OFF);
     cvarSettings[RSK_SHUFFLE_100_GS_REWARD] = CVarGetInteger("gRandomizeShuffle100GSReward", RO_GENERIC_OFF);
+    cvarSettings[RSK_SHUFFLE_BOSS_SOULS] = CVarGetInteger("gRandomizeShuffleBossSouls", RO_BOSS_SOULS_OFF);
     cvarSettings[RSK_ENABLE_BOMBCHU_DROPS] = CVarGetInteger("gRandomizeEnableBombchuDrops", 0);
     cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = CVarGetInteger("gRandomizeBombchusInLogic", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVarGetInteger("gRandomizeSkipChildZelda", 0);
@@ -3124,6 +3134,7 @@ void RandomizerSettingsWindow::DrawElement() {
     static const char* randoTokensanity[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
     static const char* randoShuffleScrubs[4] = { "Off", "Affordable", "Expensive", "Random Prices" };
     static const char* randoShuffleMerchants[3] = { "Off", "On (no hints)", "On (with hints)" };
+    static const char* randoShuffleBossSouls[3] = { "Off", "On", "On + Ganon"};
 
     // Shuffle Dungeon Items Settings
     static const char* randoShuffleMapsAndCompasses[6] = { "Start With",  "Vanilla",   "Own Dungeon",
@@ -4009,6 +4020,15 @@ void RandomizerSettingsWindow::DrawElement() {
                     "\n"
                     "You can still talk to him multiple times to get Huge Rupees."
                 );
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Boss Souls
+                // Forces players to find a boss's soul before defeating them in their lair.
+                ImGui::Text("%s", Settings::ShuffleBossSouls.GetName().c_str());
+                UIWidgets::InsertHelpHoverText("Shuffles 8 boss souls (one for each blue warp dungeon). A boss will not appear until you collect its respective soul."
+                "\n\"On + Ganon\" will also hide Ganon and Ganondorf behind a boss soul.");
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleBossSouls", randoShuffleBossSouls, RO_BOSS_SOULS_OFF);
 
                 UIWidgets::PaddedSeparator();
 
@@ -5866,7 +5886,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 56> getItemMessages = {{
+    const std::array<GetItemMessage, 65> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
@@ -6096,7 +6116,18 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_TYCOON_WALLET, ITEM_WALLET_GIANT,
 			"You got a %rTycoon's Wallet%w!&It's gigantic! Now you can carry&up to %y999 rupees%w!",
 			"Du erhältst die %rGoldene&Geldbörse%w! Die größte aller&Geldbörsen! Jetzt kannst Du bis&zu %y999 Rubine%w mit dir führen!",
-			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!")
+			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!"),
+
+        GIMESSAGE_UNTRANSLATED(RG_GOHMA_SOUL, ITEM_BIG_POE, "You found the soul for %gGohma%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_KING_DODONGO_SOUL, ITEM_BIG_POE, "You found the soul for %rKing Dodongo%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_BARINADE_SOUL, ITEM_BIG_POE, "You found the soul for %bBarindade%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_PHANTOM_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %gPhantom Ganon%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_VOLVAGIA_SOUL, ITEM_BIG_POE, "You found the soul for %rVolvagia%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_MORPHA_SOUL, ITEM_BIG_POE, "You found the soul for %bMorpha%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_BONGO_BONGO_SOUL, ITEM_BIG_POE, "You found the soul for %pBongo Bongo%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_TWINROVA_SOUL, ITEM_BIG_POE, "You found the soul for %yTwinrova%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %cGanon%w!"),
+        
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();
@@ -6212,6 +6243,15 @@ void InitRandoItemTable() {
         GET_ITEM(RG_TYCOON_WALLET,                     OBJECT_GI_PURSE,    GID_WALLET_GIANT,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_TYCOON_WALLET),
         GET_ITEM(RG_PROGRESSIVE_BOMBCHUS,              OBJECT_GI_BOMB_2,   GID_BOMBCHU,          0x33,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_PROGRESSIVE_BOMBCHUS),
         GET_ITEM(RG_TRIFORCE_PIECE,                    OBJECT_GI_BOMB_2,   GID_TRIFORCE_PIECE,   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_TRIFORCE_PIECE),
+        GET_ITEM(RG_GOHMA_SOUL,                        OBJECT_GI_SUTARU,   GID_SKULL_TOKEN,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_GOHMA_SOUL),
+        GET_ITEM(RG_KING_DODONGO_SOUL,                 OBJECT_GI_SUTARU,   GID_SKULL_TOKEN,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_KING_DODONGO_SOUL),
+        GET_ITEM(RG_BARINADE_SOUL,                     OBJECT_GI_SUTARU,   GID_SKULL_TOKEN,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BARINADE_SOUL),
+        GET_ITEM(RG_PHANTOM_GANON_SOUL,                OBJECT_GI_SUTARU,   GID_SKULL_TOKEN,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_PHANTOM_GANON_SOUL),
+        GET_ITEM(RG_VOLVAGIA_SOUL,                     OBJECT_GI_SUTARU,   GID_SKULL_TOKEN,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_VOLVAGIA_SOUL),
+        GET_ITEM(RG_MORPHA_SOUL,                       OBJECT_GI_SUTARU,   GID_SKULL_TOKEN,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MORPHA_SOUL),
+        GET_ITEM(RG_BONGO_BONGO_SOUL,                  OBJECT_GI_SUTARU,   GID_SKULL_TOKEN,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BONGO_BONGO_SOUL),
+        GET_ITEM(RG_TWINROVA_SOUL,                     OBJECT_GI_SUTARU,   GID_SKULL_TOKEN,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_TWINROVA_SOUL),
+        GET_ITEM(RG_GANON_SOUL,                        OBJECT_GI_SUTARU,   GID_SKULL_TOKEN,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_GANON_SOUL),
     };
     ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
     for (int i = 0; i < ARRAY_COUNT(extendedVanillaGetItemTable); i++) {

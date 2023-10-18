@@ -314,6 +314,16 @@ namespace Logic {
   uint8_t Age             = 0;
   bool CanCompleteTriforce = false;
 
+  bool CanSummonGohma        = false;
+  bool CanSummonKingDodongo  = false;
+  bool CanSummonBarinade     = false;
+  bool CanSummonPhantomGanon = false;
+  bool CanSummonVolvagia     = false;
+  bool CanSummonMorpha       = false;
+  bool CanSummonBongoBongo   = false;
+  bool CanSummonTwinrova     = false;
+  bool CanSummonGanon        = false;
+
   //Events
   bool ShowedMidoSwordAndShield  = false;
   bool CarpenterRescue           = false;
@@ -462,6 +472,22 @@ namespace Logic {
            (age == HasProjectileAge::Adult  && (Hookshot  || Bow      )) ||
            (age == HasProjectileAge::Both   && (Slingshot || Boomerang)  && (Hookshot || Bow)) ||
            (age == HasProjectileAge::Either && (Slingshot || Boomerang   ||  Hookshot || Bow));
+  }
+
+  bool HasBossSoul(uint32_t itemName) {
+    if (ShuffleBossSouls.Is(BOSSSOULS_OFF)) {
+      return true;
+    }
+    return (itemName == GOHMA_BOSS_SOUL && CanSummonGohma)         ||
+    (itemName == KING_DODONGO_BOSS_SOUL && CanSummonKingDodongo)   ||
+    (itemName == BARINADE_BOSS_SOUL && CanSummonBarinade)          ||
+    (itemName == PHANTOM_GANON_BOSS_SOUL && CanSummonPhantomGanon) ||
+    (itemName == VOLVAGIA_BOSS_SOUL && CanSummonVolvagia)          ||
+    (itemName == MORPHA_BOSS_SOUL && CanSummonMorpha)              ||
+    (itemName == BONGO_BONGO_BOSS_SOUL && CanSummonBongoBongo)     ||
+    (itemName == TWINROVA_BOSS_SOUL && CanSummonTwinrova)          ||
+    (ShuffleBossSouls.Is(BOSSSOULS_ON_PLUS_GANON) && (itemName == GANON_BOSS_SOUL && CanSummonGanon));
+
   }
 
   uint8_t GetDifficultyValueFromString(Option& glitchOption) {
@@ -625,6 +651,16 @@ namespace Logic {
                      (LACSCondition == LACSCONDITION_DUNGEONS   && DungeonCount + (Greg && GregInLogic ? 1 : 0) >= LACSDungeonCount.Value<uint8_t>())                ||
                      (LACSCondition == LACSCONDITION_TOKENS     && GoldSkulltulaTokens >= LACSTokenCount.Value<uint8_t>());
     CanCompleteTriforce = TriforcePieces >= TriforceHuntRequired.Value<uint8_t>();
+    CanSummonGohma = HasBossSoul(GOHMA_BOSS_SOUL);
+    CanSummonKingDodongo = HasBossSoul(KING_DODONGO_BOSS_SOUL);
+    CanSummonBarinade = HasBossSoul(BARINADE_BOSS_SOUL);
+    CanSummonPhantomGanon = HasBossSoul(PHANTOM_GANON_BOSS_SOUL);
+    CanSummonVolvagia = HasBossSoul(VOLVAGIA_BOSS_SOUL);
+    CanSummonMorpha = HasBossSoul(MORPHA_BOSS_SOUL);
+    CanSummonBongoBongo = HasBossSoul(BONGO_BONGO_BOSS_SOUL);
+    CanSummonTwinrova = HasBossSoul(TWINROVA_BOSS_SOUL);
+    CanSummonGanon = HasBossSoul(GANON_BOSS_SOUL);
+
   }
 
   bool SmallKeys(Key dungeon, uint8_t requiredAmount) {
@@ -879,6 +915,17 @@ namespace Logic {
 
      //Triforce Pieces
      TriforcePieces = 0;
+
+     //Boss Souls
+     CanSummonGohma        = false;
+     CanSummonKingDodongo  = false;
+     CanSummonBarinade     = false;
+     CanSummonPhantomGanon = false;
+     CanSummonVolvagia     = false;
+     CanSummonMorpha       = false;
+     CanSummonBongoBongo   = false;
+     CanSummonTwinrova     = false;
+     CanSummonGanon        = false;
 
      //Drops and Bottle Contents Access
      DekuNutDrop      = false;

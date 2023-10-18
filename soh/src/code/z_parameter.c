@@ -2543,6 +2543,13 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
+    if (item >= RG_GOHMA_SOUL && item <= RG_GANON_SOUL) {
+        u8 index = item - RG_GOHMA_SOUL;
+        Flags_SetRandomizerInf(RAND_INF_GOHMA_SOUL + index);
+
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
     if (item == RG_PROGRESSIVE_BOMBCHUS) {
         if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
             INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;

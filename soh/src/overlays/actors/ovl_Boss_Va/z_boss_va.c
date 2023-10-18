@@ -652,6 +652,9 @@ void BossVa_Init(Actor* thisx, PlayState* play2) {
                 this->actor.colChkInfo.damageTable = sDamageTable;
                 sPhase2Timer = 0xFFFF;
                 if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_BARINA_BATTLE)) {
+                    if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_SOULS) && !Flags_GetRandomizerInf(RAND_INF_BARINADE_SOUL)) {
+                        sCsState = BOSSVA_BATTLE;
+                    } else {
                     sCsState = INTRO_CALL_BARI;
                     sDoorState = 100;
                     func_8002DF54(play, &this->actor, 1);
@@ -682,6 +685,7 @@ void BossVa_Init(Actor* thisx, PlayState* play2) {
                     }
 
                     sCameraAtMaxVel = sCameraEyeMaxVel = sZeroVec;
+                    }
 
                 } else {
                     sCsState = INTRO_START;

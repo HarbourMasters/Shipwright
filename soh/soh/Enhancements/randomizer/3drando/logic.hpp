@@ -303,6 +303,16 @@ extern bool LinksCow;
 extern uint8_t Age;
 extern bool CanCompleteTriforce;
 
+extern bool CanSummonGohma;
+extern bool CanSummonKingDodongo;
+extern bool CanSummonBarinade;
+extern bool CanSummonPhantomGanon;
+extern bool CanSummonVolvagia;
+extern bool CanSummonMorpha;
+extern bool CanSummonBongoBongo;
+extern bool CanSummonTwinrova;
+extern bool CanSummonGanon;
+
 // Events
 extern bool ShowedMidoSwordAndShield;
 extern bool CarpenterRescue;

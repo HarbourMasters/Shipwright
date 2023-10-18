@@ -1314,6 +1314,15 @@ typedef enum {
     RG_BUY_RED_POTION_50,
     RG_TRIFORCE,
     RG_TRIFORCE_PIECE,
+    RG_GOHMA_SOUL,
+    RG_KING_DODONGO_SOUL,
+    RG_BARINADE_SOUL,
+    RG_PHANTOM_GANON_SOUL,
+    RG_VOLVAGIA_SOUL,
+    RG_MORPHA_SOUL,
+    RG_BONGO_BONGO_SOUL,
+    RG_TWINROVA_SOUL,
+    RG_GANON_SOUL,
     RG_HINT,
     RG_TYCOON_WALLET,
     RG_MAX
@@ -1468,6 +1477,7 @@ typedef enum {
     RSK_TRIFORCE_HUNT,
     RSK_TRIFORCE_HUNT_PIECES_TOTAL,
     RSK_TRIFORCE_HUNT_PIECES_REQUIRED,
+    RSK_SHUFFLE_BOSS_SOULS,
     RSK_MAX
 } RandomizerSettingKey;
 
@@ -1591,6 +1601,12 @@ typedef enum {
     RO_AMMO_DROPS_ON_PLUS_BOMBCHU,
     RO_AMMO_DROPS_OFF,
 } RandoOptionAmmoDrops;
+
+typedef enum {
+    RO_BOSS_SOULS_OFF,
+    RO_BOSS_SOULS_ON,
+    RO_BOSS_SOULS_ON_PLUS_GANON,
+} RandoOptionBossSouls;
 
 //Any Dungeon Item (start with, vanilla, own dungeon, any dungeon,
 //overworld, anywhere)

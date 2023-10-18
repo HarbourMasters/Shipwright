@@ -318,14 +318,14 @@ void AreaTable_Init_WaterTemple() {
         {
             // Events
             EventAccess(&WaterTempleClear, { [] {
-                return WaterTempleClear ||
-                       (CanUse(HOOKSHOT) && (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)));
+                return WaterTempleClear || (CanSummonMorpha &&
+                       (CanUse(HOOKSHOT) && (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD))));
             } }),
         },
         {
             // Locations
             LocationAccess(WATER_TEMPLE_MORPHA_HEART, { [] { return WaterTempleClear; } }),
-            LocationAccess(MORPHA, { [] { return WaterTempleClear; } }),
+            LocationAccess(MORPHA, { [] { return CanSummonMorpha && WaterTempleClear; } }),
         },
         {
             // Exits

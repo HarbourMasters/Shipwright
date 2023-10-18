@@ -816,6 +816,19 @@ void GenerateItemPool() {
     PlaceItemInLocation(KAK_100_GOLD_SKULLTULA_REWARD, HUGE_RUPEE, false, true);
   }
 
+  if (ShuffleBossSouls.IsNot(BOSSSOULS_OFF)) {
+    AddItemToMainPool(GOHMA_BOSS_SOUL);
+    AddItemToMainPool(KING_DODONGO_BOSS_SOUL);
+    AddItemToMainPool(BARINADE_BOSS_SOUL);
+    AddItemToMainPool(PHANTOM_GANON_BOSS_SOUL);
+    AddItemToMainPool(VOLVAGIA_BOSS_SOUL);
+    AddItemToMainPool(BONGO_BONGO_BOSS_SOUL);
+    AddItemToMainPool(TWINROVA_BOSS_SOUL);
+    if (ShuffleBossSouls.Is(BOSSSOULS_ON_PLUS_GANON)) {
+      AddItemToMainPool(GANON_BOSS_SOUL);
+    }
+  }
+
   if (BombchusInLogic) {
     AddItemToMainPool(PROGRESSIVE_BOMBCHUS, 5);
   } else {

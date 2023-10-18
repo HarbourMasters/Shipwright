@@ -10,6 +10,7 @@
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
+#include "objects/object_gi_sutaru/object_gi_sutaru.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "soh_assets.h"
 
@@ -256,3 +257,29 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
+// TODO get custom model for boss souls
+// extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry getItemEntry) {
+//     OPEN_DISPS(play->state.gfxCtx);
+
+//     Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    
+//     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+//       G_MTX_MODELVIEW | G_MTX_LOAD);
+//     gDPSetGrayscaleColor(POLY_OPA_DISP++, 255, 0, 0, 255);
+//     gSPGrayscale(POLY_OPA_DISP++, true);
+    
+//     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSkulltulaTokenDL);
+
+//     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+//     gSPSegment(POLY_XLU_DISP++, 8, Gfx_TwoTexScroll(
+//         play->state.gfxCtx, 0, 0 * (play->state.frames * 0),
+//         1 * -(play->state.frames * 5), 32, 32, 1, 0 * (play->state.frames * 0),
+//         0 * (play->state.frames * 0), 32, 64
+//     ));
+//     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+//               G_MTX_MODELVIEW | G_MTX_LOAD);
+//     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSkulltulaTokenFlameDL);
+
+//     CLOSE_DISPS(play->state.gfxCtx);
+
+// }

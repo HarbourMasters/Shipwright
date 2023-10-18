@@ -1939,6 +1939,107 @@ void HintTable_Init_Item() {
                        Text{"a Piece of the Triforce", /*french*/"un fragment de la Triforce", /*spanish*/"un fragmento de la Trifuerza"}
     );
 
+    hintTable[GOHMA_BOSS_SOUL] = HintText::Item({
+                      //obscure text
+                      Text{"a regal soul", "", ""},
+                      Text("some spider essence", "", ""),
+                    }, {
+                      //ambiguous text
+                      Text("something webbed", "", "")
+                    }, {
+                      //clear text
+                      Text("the soul of Gohma", "", "")}
+    );
+
+    hintTable[KING_DODONGO_BOSS_SOUL] = HintText::Item({
+      //obscure text
+      Text{"a royal soul", "", ""},
+      Text("some reptile essence", "", ""),
+    }, {
+      //ambiguous text
+      Text("something spectral", "", "")
+    }, {
+      //clear text
+      Text("the soul of King Dodongo", "", "")
+    });
+     hintTable[BARINADE_BOSS_SOUL] = HintText::Item({
+      //obscure text
+      Text{"an infectuous soul", "", ""},
+      Text("some parasitic essence", "", ""),
+    }, {
+      //ambiguous text
+      Text("something fishy", "", "")
+    }, {
+      //clear text
+      Text("the soul of Barinade", "", "")
+    });
+    hintTable[PHANTOM_GANON_BOSS_SOUL] = HintText::Item({
+      //obscure text
+      Text{"a duplicate soul", "", ""},
+      Text("some illusionary essence", "", ""),
+    }, {
+      //ambiguous text
+      Text("something spectral", "", "")
+    }, {
+      //clear text
+      Text("the soul of Phantom Ganon", "", "")
+    });
+hintTable[VOLVAGIA_BOSS_SOUL] = HintText::Item({
+      //obscure text
+      Text{"a draconic soul", "", ""},
+      Text("some magmatic essence", "", ""),
+    }, {
+      //ambiguous text
+      Text("something hot", "", "")
+    }, {
+      //clear text
+      Text("the soul of Volvagia", "", "")
+    });
+hintTable[MORPHA_BOSS_SOUL] = HintText::Item({
+      //obscure text
+      Text{"an aquatic soul", "", ""},
+      Text("some liquid essence", "", ""),
+    }, {
+      //ambiguous text
+      Text("something wet", "", "")
+    }, {
+      //clear text
+      Text("the soul of Barinade", "", "")
+    });
+hintTable[BONGO_BONGO_BOSS_SOUL] = HintText::Item({
+      //obscure text
+      Text{"a shadowy soul", "", ""},
+      Text("some handy essence", "", ""),
+    }, {
+      //ambiguous text
+      Text("something dark", "", "")
+    }, {
+      //clear text
+      Text("the soul of Bongo Bongo", "", "")
+    });
+hintTable[TWINROVA_BOSS_SOUL] = HintText::Item({
+      //obscure text
+      Text{"old souls", "", ""},
+      Text("twin essences", "", ""),
+    }, {
+      //ambiguous text
+      Text("something spiritual", "", "")
+    }, {
+      //clear text
+      Text("the soul of Twinrova", "", "")
+    });
+hintTable[GANON_BOSS_SOUL] = HintText::Item({
+      //obscure text
+      Text{"an evil soul", "", ""},
+      Text("some powerful essence", "", ""),
+    }, {
+      //ambiguous text
+      Text("something strong", "", "")
+    }, {
+      //clear text
+      Text("the soul of Ganon", "", "")
+    });
+
     hintTable[EPONA] = HintText::Item({
                        //obscure text
                        Text{"a horse",              /*french*/"un fidèle destrier", /*spanish*/"una yegua"},

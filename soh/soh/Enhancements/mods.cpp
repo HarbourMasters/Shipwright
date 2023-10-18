@@ -1015,6 +1015,54 @@ void RegisterRandomizerSheikSpawn() {
     });
 }
 
+//Boss souls require an additional item (represented by a RAND_INF) to spawn a boss in a particular lair
+void RegisterBossSouls() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* actor) {
+        if (!gPlayState) return;
+        if (!IS_RANDO || !(OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS))) return;
+        RandomizerInf rand_inf = RAND_INF_MAX;
+        Actor* actual = (Actor*)actor;
+        switch (gPlayState->sceneNum){
+            case SCENE_DEKU_TREE_BOSS:
+                rand_inf = RAND_INF_GOHMA_SOUL;
+                break;
+            case SCENE_DODONGOS_CAVERN_BOSS:
+                rand_inf = RAND_INF_KING_DODONGO_SOUL;
+                break;
+            case SCENE_JABU_JABU_BOSS:
+                rand_inf = RAND_INF_BARINADE_SOUL;
+                break;
+            case SCENE_FOREST_TEMPLE_BOSS:
+                rand_inf = RAND_INF_PHANTOM_GANON_SOUL;
+                break;
+            case SCENE_FIRE_TEMPLE_BOSS:
+                rand_inf = RAND_INF_VOLVAGIA_SOUL;
+                break;
+            case SCENE_WATER_TEMPLE_BOSS:
+                rand_inf = RAND_INF_MORPHA_SOUL;
+                break;
+            case SCENE_SHADOW_TEMPLE_BOSS:
+                rand_inf = RAND_INF_BONGO_BONGO_SOUL;
+                break;
+            case SCENE_SPIRIT_TEMPLE_BOSS:
+                rand_inf = RAND_INF_TWINROVA_SOUL;
+                break;
+            case SCENE_GANONDORF_BOSS:
+                rand_inf = RAND_INF_GANON_SOUL;
+                break;
+            case SCENE_GANON_BOSS:
+                rand_inf = RAND_INF_GANON_SOUL;
+                break;
+            default: break;
+        }
+
+    if (!Flags_GetRandomizerInf(rand_inf) && actual->category == ACTORCAT_BOSS) {
+        Actor_Delete(&gPlayState->actorCtx, actual, gPlayState);
+    }
+    });
+
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1041,5 +1089,6 @@ void InitMods() {
     RegisterEnemyDefeatCounts();
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
+    RegisterBossSouls();
     NameTag_RegisterHooks();
 }

@@ -200,6 +200,12 @@ typedef enum {
 } ShuffleChestMinigameSetting;
 
 typedef enum {
+    BOSSSOULS_OFF,
+    BOSSSOULS_ON,
+    BOSSSOULS_ON_PLUS_GANON,
+} ShuffleBossSoulsSetting;
+
+typedef enum {
     MAPSANDCOMPASSES_START_WITH,
     MAPSANDCOMPASSES_VANILLA,
     MAPSANDCOMPASSES_OWN_DUNGEON,
@@ -421,6 +427,7 @@ typedef struct {
     uint8_t shuffleAdultTradeQuest;
     uint8_t shuffleChestMinigame;
     uint8_t shuffle100GsReward;
+    uint8_t shuffleBossSouls;
 
     uint8_t mapsAndCompasses;
     uint8_t keysanity;
@@ -811,6 +818,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option ShuffleAdultTradeQuest;
   extern Option ShuffleChestMinigame;
   extern Option Shuffle100GSReward;
+  extern Option ShuffleBossSouls;
 
   extern Option MapsAndCompasses;
   extern Option Keysanity;

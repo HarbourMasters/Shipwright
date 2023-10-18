@@ -259,8 +259,8 @@ void AreaTable_Init_SpiritTemple() {
         {
             // Events
             EventAccess(&SpiritTempleClear, { [] {
-                return SpiritTempleClear || (CanUse(MIRROR_SHIELD) &&
-                                             (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)));
+                return SpiritTempleClear || (CanSummonTwinrova && (CanUse(MIRROR_SHIELD) &&
+                                             (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD))));
             } }),
         },
         {

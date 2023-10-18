@@ -716,7 +716,8 @@ static void RandomizeDungeonRewards() {
     }
 
     for (size_t i = 0; i < dungeonRewardLocations.size(); i++) {
-      const auto index = Location(dungeonRewardLocations[i])->GetPlacedItem().GetItemID() - baseOffset;
+      const auto itemID = Location(dungeonRewardLocations[i])->GetPlacedItem().GetItemID();
+      const auto index = itemID - baseOffset;
       rDungeonRewardOverrides[i] = index;
 
       //set the player's dungeon reward on file creation instead of pushing it to them at the start.

@@ -235,7 +235,7 @@ void AreaTable_Init_JabuJabusBelly() {
              {
                  // Events //todo: add pot kill trick
                  EventAccess(&JabuJabusBellyClear,
-                             { [] { return JabuJabusBellyClear || (CanUse(BOOMERANG) && CanJumpslash); } }),
+                             { [] { return JabuJabusBellyClear || (CanSummonBarinade && (CanUse(BOOMERANG) && CanJumpslash)); } }),
              },
              {
                  // Locations
