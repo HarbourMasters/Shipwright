@@ -1634,21 +1634,15 @@ bool Randomizer::IsTrialRequired(RandomizerInf trial) {
     return this->trialsRequired.contains(trial);
 }
 
-RandomizerGetData Randomizer::GetRandomizerGetDataFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
-    return this->itemLocations[GetCheckFromActor(actorId, sceneNum, actorParams)];
-}
-
-RandomizerGetData Randomizer::GetRandomizerGetDataFromKnownCheck(RandomizerCheck randomizerCheck) {
-    return this->itemLocations[randomizerCheck];
-}
-
-GetItemEntry Randomizer::GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId, bool checkObtainability) {
-    RandomizerGetData rgData = this->itemLocations[GetCheckFromActor(actorId, sceneNum, actorParams)];
-    return GetItemEntryFromRGData(rgData, ogItemId, checkObtainability);
+GetItemEntry Randomizer::GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId,
+                                          bool checkObtainability) {
+    return Rando::Context::GetInstance()->GetFinalGIEntry(GetCheckFromActor(actorId, sceneNum, actorParams),
+                                                          checkObtainability);
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
-    return GetItemObtainabilityFromRandomizerGet(GetRandomizerGetDataFromKnownCheck(randomizerCheck).rgID);
+    return GetItemObtainabilityFromRandomizerGet(
+        Rando::Context::GetInstance()->GetItemLocation(randomizerCheck)->GetPlacedRandomizerGet());
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGet randoGet) {
@@ -2749,9 +2743,10 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
         shopItemIdentity.randomizerCheck = location->GetRandomizerCheck();
         shopItemIdentity.ogItemId = (GetItemID)Rando::StaticData::RetrieveItem(location->GetVanillaItem()).GetItemID();
 
-        RandomizerGetData randoGet = GetRandomizerGetDataFromKnownCheck(shopItemIdentity.randomizerCheck);
-        if (randomizerGetToEnGirlShopItem.find(randoGet.rgID) != randomizerGetToEnGirlShopItem.end()) {
-            shopItemIdentity.enGirlAShopItem = randomizerGetToEnGirlShopItem[randoGet.rgID];
+        RandomizerGet randoGet =
+            Rando::Context::GetInstance()->GetItemLocation(shopItemIdentity.randomizerCheck)->GetPlacedRandomizerGet();
+        if (randomizerGetToEnGirlShopItem.find(randoGet) != randomizerGetToEnGirlShopItem.end()) {
+            shopItemIdentity.enGirlAShopItem = randomizerGetToEnGirlShopItem[randoGet];
         }
 
         if (merchantPrices.find(shopItemIdentity.randomizerCheck) != merchantPrices.end()) {
@@ -2788,32 +2783,8 @@ u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
     return this->randoSettings[randoSettingKey];
 }
 
-GetItemEntry Randomizer::GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability) {
-    // Go ahead and early return the ogItemId's entry if we somehow get RG_NONE.
-    if (rgData.rgID == RG_NONE) {
-        return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, ogItemId);
-    }
-    if (checkObtainability && OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerGet(rgData.rgID) != CAN_OBTAIN) {
-        return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GI_RUPEE_BLUE);
-    }
-
-    Rando::Item item = Rando::StaticData::RetrieveItem(rgData.rgID);
-    GetItemEntry giEntry = item.GetGIEntry_Copy();
-    // If we have an ice trap, we want to change the GID and drawFunc to the fakeRgID's values.
-    if (rgData.rgID == RG_ICE_TRAP) {
-        std::shared_ptr<GetItemEntry> fakeGiEntry = Rando::StaticData::RetrieveItem(rgData.fakeRgID).GetGIEntry();
-        giEntry.gid = fakeGiEntry->gid;
-        giEntry.gi = fakeGiEntry->gi;
-        giEntry.drawItemId = fakeGiEntry->drawItemId;
-        giEntry.drawModIndex = fakeGiEntry->drawModIndex;
-        giEntry.drawFunc = fakeGiEntry->drawFunc;
-    }
-    return giEntry;
-}
-
 GetItemEntry Randomizer::GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability) {
-    RandomizerGetData rgData = this->itemLocations[randomizerCheck];
-    return GetItemEntryFromRGData(rgData, ogItemId, checkObtainability);
+    return Rando::Context::GetInstance()->GetFinalGIEntry(randomizerCheck, checkObtainability);
 }
 
 RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {

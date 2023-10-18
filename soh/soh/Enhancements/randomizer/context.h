@@ -2,11 +2,13 @@
 
 #include "randomizerTypes.h"
 #include "item_location.h"
+#include "item_override.h"
 #include "3drando/text.hpp"
 #include "hint.h"
 
 #include <memory>
 #include <array>
+#include <map>
 
 /**
  * @brief Singleton for storing and accessing dynamic Randomizer-related data
@@ -40,6 +42,7 @@ class Context {
     void ItemReset();
     void HintReset();
     void CreateItemOverrides();
+    GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true);
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
     std::vector<RandomizerCheck> everyPossibleLocation = {};

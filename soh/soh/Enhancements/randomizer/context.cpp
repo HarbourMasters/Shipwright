@@ -1,5 +1,7 @@
 #include "context.h"
 #include "static_data.h"
+#include "soh/OTRGlobals.h"
+#include "soh/Enhancements/item-tables/ItemTableManager.h"
 #include "3drando/shops.hpp"
 #include "3drando/dungeon.hpp"
 
@@ -179,4 +181,26 @@ void Context::CreateItemOverrides() {
     SPDLOG_DEBUG("Overrides Created: ");
     SPDLOG_DEBUG(std::to_string(overrides.size()));
 }
+
+GetItemEntry Context::GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability) {
+    auto itemLoc = GetItemLocation(rc);
+    if (itemLoc->GetPlacedRandomizerGet() == RG_NONE) {
+        return ItemTableManager::Instance->RetrieveItemEntry(
+            MOD_NONE, StaticData::RetrieveItem(StaticData::GetLocation(rc)->GetVanillaItem()).GetItemID());
+    }
+    if (checkObtainability && OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerGet(
+                                  itemLoc->GetPlacedRandomizerGet()) != CAN_OBTAIN) {
+        return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GI_RUPEE_BLUE);
+    }
+    GetItemEntry giEntry = itemLoc->GetPlacedItem().GetGIEntry_Copy();
+    if (overrides.contains(rc)) {
+        auto fakeGiEntry = StaticData::RetrieveItem(overrides[rc].LooksLike()).GetGIEntry();
+        giEntry.gid = fakeGiEntry->gid;
+        giEntry.gi = fakeGiEntry->gi;
+        giEntry.drawItemId = fakeGiEntry->drawItemId;
+        giEntry.drawModIndex = fakeGiEntry->drawModIndex;
+        giEntry.drawFunc = fakeGiEntry->drawFunc;
+    }
+    return giEntry;
 }
+} // namespace Rando

@@ -76,9 +76,6 @@ class Randomizer {
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     RandomizerCheck GetCheckFromRandomizerInf(RandomizerInf randomizerInf);
     RandomizerInf GetRandomizerInfFromCheck(RandomizerCheck rc);
-    RandomizerGetData GetRandomizerGetDataFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
-    RandomizerGetData GetRandomizerGetDataFromKnownCheck(RandomizerCheck randomizerCheck);
-    GetItemEntry GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability = true);
     std::string GetChildAltarText() const;
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;
