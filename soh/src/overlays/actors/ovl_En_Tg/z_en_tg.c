@@ -190,7 +190,6 @@ void EnTg_Draw(Actor* thisx, PlayState* play) {
     // Set the girl's shirt to white
     gSPSegment(POLY_OPA_DISP++, 0x09, EnTg_SetColor(play->state.gfxCtx, 255, 255, 255, 0));
 
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnTg_OverrideLimbDraw, EnTg_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnTg_OverrideLimbDraw, EnTg_PostLimbDraw, this);
     CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -767,7 +767,7 @@ void func_80AEC2C0(EnRu1* this, PlayState* play) {
 bool shouldSpawnRuto() {
     // Flags_GetInfTable(INFTABLE_146) check is to prevent Ruto from spawning during the short period of time when
     // she's on the Zora's Sapphire pedestal but hasn't been kidnapped yet (would result in multiple Rutos otherwise)
-    return !Flags_GetInfTable(INFTABLE_145) || (gSaveContext.n64ddFlag && (Flags_GetInfTable(INFTABLE_146)));
+    return !Flags_GetInfTable(INFTABLE_145) || (IS_RANDO && (Flags_GetInfTable(INFTABLE_146)));
 }
 
 void func_80AEC320(EnRu1* this, PlayState* play) {

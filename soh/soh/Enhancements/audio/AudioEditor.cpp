@@ -330,7 +330,7 @@ ImVec4 GetSequenceTypeColor(SeqType type) {
         case SEQ_SFX:
             return ImVec4(0.4f, 0.33f, 0.0f, 1.0f);
         case SEQ_VOICE:
-            return ImVec4(0.4f, 0.33f, 0.0f, 1.0f);
+            return ImVec4(0.3f, 0.42f, 0.09f, 1.0f);
         case SEQ_INSTRUMENT:
             return ImVec4(0.0f, 0.25f, 0.5f, 1.0f);
         case SEQ_BGM_CUSTOM:
@@ -401,6 +401,13 @@ void AudioEditor::DrawElement() {
                 UIWidgets::InsertHelpHoverText(
                     "Disables the music change when getting close to enemies. Useful for hearing "
                     "your custom music for each scene more often.");
+                UIWidgets::EnhancementCheckbox("Disable Leading Music in Lost Woods", "gLostWoodsConsistentVolume");
+                UIWidgets::InsertHelpHoverText(
+                    "Disables the volume shifting in the Lost Woods. Useful for hearing "
+                    "your custom music in the Lost Woods if you don't need the navigation assitance "
+                    "the volume changing provides. If toggling this while in the Lost Woods, reload "
+                    "the area for the effect to kick in."
+                );
                 UIWidgets::EnhancementCheckbox("Display Sequence Name on Overlay", "gSeqNameOverlay");
                 UIWidgets::InsertHelpHoverText(
                     "Displays the name of the current sequence in the corner of the screen whenever a new sequence "
@@ -481,7 +488,7 @@ void AudioEditor::DrawElement() {
                 }
             }
 
-            ImGui::BeginTable("sequenceTypes", 8, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders);
+            ImGui::BeginTable("sequenceTypes", 9, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders);
 
             ImGui::TableNextColumn();
             ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_WORLD));
@@ -542,7 +549,7 @@ void AudioEditor::DrawElement() {
                 ImGui::BeginChild("ChildIncludedSequences", ImVec2(0, -8));
                 for (auto seqInfo : AudioCollection::Instance->GetIncludedSequences()) {
                     if (sequenceSearch.PassFilter(seqInfo->label.c_str()) && showType[seqInfo->category]) {
-                        if (ImGui::ArrowButton(seqInfo->sfxKey.c_str(), ImGuiDir_Right)) {
+                        if (ImGui::Button(std::string(ICON_FA_TIMES "##" + seqInfo->sfxKey).c_str())) {
                             seqsToExclude.insert(seqInfo);
                         }
                         ImGui::SameLine();
@@ -566,7 +573,7 @@ void AudioEditor::DrawElement() {
                 ImGui::BeginChild("ChildExcludedSequences", ImVec2(0, -8));
                 for (auto seqInfo : AudioCollection::Instance->GetExcludedSequences()) {
                     if (sequenceSearch.PassFilter(seqInfo->label.c_str()) && showType[seqInfo->category]) {
-                        if (ImGui::ArrowButton(seqInfo->sfxKey.c_str(), ImGuiDir_Left)) {
+                        if (ImGui::Button(std::string(ICON_FA_PLUS "##" + seqInfo->sfxKey).c_str())) {
                             seqsToInclude.insert(seqInfo);
                         }
                         ImGui::SameLine();

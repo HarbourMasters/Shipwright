@@ -16,6 +16,9 @@
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
+#define TEXT_SHEIK_NEED_HOOK 0x700F
+#define TEXT_SHEIK_HAVE_HOOK 0x7010
+
 void EnXc_Init(Actor* thisx, PlayState* play);
 void EnXc_Destroy(Actor* thisx, PlayState* play);
 void EnXc_Update(Actor* thisx, PlayState* play);
@@ -274,7 +277,7 @@ void func_80B3C9EC(EnXc* this) {
     this->action = SHEIK_ACTION_BLOCK_PEDESTAL;
     this->drawMode = SHEIK_DRAW_DEFAULT;
     this->unk_30C = 1;
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         Actor_Kill(&this->actor);
     }
     return;
@@ -314,7 +317,7 @@ s32 EnXc_MinuetCS(EnXc* this, PlayState* play) {
 
         if (z < -2225.0f) {
             if (!Play_InCsMode(play)) {
-                if (!gSaveContext.n64ddFlag) {
+                if (!IS_RANDO) {
                     play->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gMinuetCs);
                     gSaveContext.cutsceneTrigger = 1;
                     Flags_SetEventChkInf(EVENTCHKINF_LEARNED_MINUET_OF_FOREST);
@@ -350,7 +353,7 @@ s32 EnXc_BoleroCS(EnXc* this, PlayState* play) {
         if ((posRot->pos.x > -784.0f) && (posRot->pos.x < -584.0f) && (posRot->pos.y > 447.0f) &&
             (posRot->pos.y < 647.0f) && (posRot->pos.z > -446.0f) && (posRot->pos.z < -246.0f) &&
             !Play_InCsMode(play)) {
-            if (!gSaveContext.n64ddFlag) {
+            if (!IS_RANDO) {
                 play->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gDeathMountainCraterBoleroCs);
                 gSaveContext.cutsceneTrigger = 1;
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_BOLERO_OF_FIRE);
@@ -367,7 +370,7 @@ s32 EnXc_BoleroCS(EnXc* this, PlayState* play) {
 }
 
 void EnXc_SetupSerenadeAction(EnXc* this, PlayState* play) {
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         this->action = SHEIK_ACTION_SERENADE;
         return;
     }
@@ -387,11 +390,11 @@ s32 EnXc_SerenadeCS(EnXc* this, PlayState* play) {
         Player* player = GET_PLAYER(play);
         s32 stateFlags = player->stateFlags1;
 
-        if (((CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1) && !gSaveContext.n64ddFlag) ||
-             (Flags_GetTreasure(play, 2) && gSaveContext.n64ddFlag)) &&
+        if (((CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1) && !IS_RANDO) ||
+             (Flags_GetTreasure(play, 2) && IS_RANDO)) &&
             !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER) && !(stateFlags & 0x20000000) &&
             !Play_InCsMode(play)) {
-            if (!gSaveContext.n64ddFlag) {
+            if (!IS_RANDO) {
                 Cutscene_SetSegment(play, &gIceCavernSerenadeCs);
                 gSaveContext.cutsceneTrigger = 1;
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER); // Learned Serenade of Water Flag
@@ -410,6 +413,21 @@ s32 EnXc_SerenadeCS(EnXc* this, PlayState* play) {
 }
 
 void EnXc_DoNothing(EnXc* this, PlayState* play) {
+}
+
+void EnXc_RandoStand(EnXc* this, PlayState* play) {
+    //Replaces Ganondorf Light Arrow hint. also stands in ToT
+    if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
+        EnXc_ChangeAnimation(this, &gSheikArmsCrossedIdleAnim, ANIMMODE_LOOP, 0.0f, false);
+    } else {
+        EnXc_ChangeAnimation(this, &gSheikIdleAnim, ANIMMODE_LOOP, 0.0f, false);
+    }
+    this->action = SHEIK_ACTION_BLOCK_PEDESTAL;
+    this->drawMode = SHEIK_DRAW_DEFAULT;
+    this->unk_30C = 1;
+    if (!IS_RANDO) {
+        Actor_Kill(&this->actor);
+    }
 }
 
 void EnXc_SetWalkingSFX(EnXc* this, PlayState* play) {
@@ -1132,8 +1150,7 @@ void EnXc_DrawPullingOutHarp(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                          EnXc_PullingOutHarpOverrideLimbDraw, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, EnXc_PullingOutHarpOverrideLimbDraw, NULL, this);
     CLOSE_DISPS(gfxCtx);
 }
 
@@ -1155,8 +1172,7 @@ void EnXc_DrawHarp(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                          EnXc_HarpOverrideLimbDraw, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, EnXc_HarpOverrideLimbDraw, NULL, this);
     CLOSE_DISPS(gfxCtx);
 }
 
@@ -1783,8 +1799,7 @@ void EnXc_DrawTriforce(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                          EnXc_TriforceOverrideLimbDraw, EnXc_TriforcePostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, EnXc_TriforceOverrideLimbDraw, EnXc_TriforcePostLimbDraw, this);
     CLOSE_DISPS(gfxCtx);
 }
 
@@ -2185,7 +2200,7 @@ void EnXc_DrawSquintingEyes(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gSheikEyeSquintingTex));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gSheikEyeSquintingTex));
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL,
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, NULL, NULL,
                           NULL);
     CLOSE_DISPS(gfxCtx);
 }
@@ -2198,10 +2213,10 @@ void EnXc_InitTempleOfTime(EnXc* this, PlayState* play) {
             gSaveContext.cutsceneTrigger = 1;
             func_80B3EBF0(this, play);
         } else if ((!Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) &&
-                    !gSaveContext.n64ddFlag) ||
+                    !IS_RANDO) ||
                    (!Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
-                    gSaveContext.n64ddFlag)) {
-            if (!gSaveContext.n64ddFlag) {
+                    IS_RANDO)) {
+            if (!IS_RANDO) {
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT);
                 Item_Give(play, ITEM_SONG_PRELUDE);
                 play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gTempleOfTimePreludeCs);
@@ -2224,11 +2239,27 @@ void EnXc_SetupDialogueAction(EnXc* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->action = SHEIK_ACTION_IN_DIALOGUE;
     } else {
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
-        if (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE) {
-            this->actor.textId = 0x7010;
-        } else {
-            this->actor.textId = 0x700F;
+         this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
+        if (IS_RANDO && gPlayState->sceneNum == SCENE_TEMPLE_OF_TIME) {
+            if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER)) {
+                this->actor.textId = TEXT_SHEIK_NEED_HOOK;
+            } else {
+                this->actor.textId = TEXT_SHEIK_HAVE_HOOK;
+            }
+        } else if (IS_RANDO && gPlayState->sceneNum == SCENE_INSIDE_GANONS_CASTLE) {
+            if (CHECK_OWNED_EQUIP(EQUIP_SWORD, 1) && INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT &&
+            CUR_CAPACITY(UPG_QUIVER) >= 30 && gSaveContext.isMagicAcquired) {
+                this->actor.textId = TEXT_SHEIK_HAVE_HOOK;
+            } else {
+                this->actor.textId = TEXT_SHEIK_NEED_HOOK;
+            }
+        }
+        else {
+            if (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE) {
+                this->actor.textId = 0x7010; //"You have what you need"
+            } else {
+                this->actor.textId = 0x700F; //"You need another skill"
+            }
         }
         func_8002F2F4(&this->actor, play);
     }
@@ -2348,7 +2379,7 @@ void EnXc_Update(Actor* thisx, PlayState* play) {
     s32 action = this->action;
 
     if (this->actor.params == SHEIK_TYPE_9) {
-        if (gSaveContext.n64ddFlag && LINK_IS_ADULT) {
+        if (IS_RANDO && LINK_IS_ADULT) {
             if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT)) {
                 GivePlayerRandoRewardSheikSong(this, play, RC_SHEIK_AT_TEMPLE, 0x20, RG_PRELUDE_OF_LIGHT);
             }
@@ -2400,6 +2431,9 @@ void EnXc_Init(Actor* thisx, PlayState* play) {
             break;
         case SHEIK_TYPE_0:
             EnXc_DoNothing(this, play);
+            break;
+        case SHEIK_TYPE_RANDO:
+            EnXc_RandoStand(this, play);
             break;
         default:
             osSyncPrintf(VT_FGCOL(RED) " En_Oa2 の arg_data がおかしい!!!!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST);
@@ -2455,8 +2489,7 @@ void EnXc_DrawDefault(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeSegment));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeSegment));
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                          EnXc_OverrideLimbDraw, EnXc_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, EnXc_OverrideLimbDraw, EnXc_PostLimbDraw, this);
     CLOSE_DISPS(gfxCtx);
 }
 

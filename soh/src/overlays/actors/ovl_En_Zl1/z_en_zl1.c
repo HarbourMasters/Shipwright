@@ -422,7 +422,7 @@ void func_80B4BBC4(EnZl1* this, PlayState* play) {
 
     Animation_Change(&this->skelAnime, &gChildZelda1Anim_00438, 1.0f, 0.0f, frameCount, ANIMMODE_LOOP, 0.0f);
     func_8002DF54(play, &this->actor, 1);
-    func_8002F7DC(&player->actor, NA_SE_VO_LI_SURPRISE_KID);
+    Player_PlaySfx(&player->actor, NA_SE_VO_LI_SURPRISE_KID);
     this->actor.textId = 0x7039;
     Message_StartTextbox(play, this->actor.textId, NULL);
     this->unk_1E2 = 0;
@@ -623,8 +623,7 @@ void EnZl1_Draw(Actor* thisx, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(this->unk_1EC));
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnZl1_OverrideLimbDraw, EnZl1_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnZl1_OverrideLimbDraw, EnZl1_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

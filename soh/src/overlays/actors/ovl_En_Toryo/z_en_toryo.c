@@ -319,7 +319,7 @@ void func_80B20768(EnToryo* this, PlayState* play) {
             this->actor.parent = NULL;
             this->unk_1E4 = 5;
         } else {
-            if (gSaveContext.n64ddFlag) {
+            if (IS_RANDO) {
                 GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_GV_TRADE_SAW, GI_SWORD_BROKEN);
                 Randomizer_ConsumeAdultTradeItem(play, ITEM_SAW);
                 GiveItemEntryFromActor(&this->actor, play, itemEntry, 100.0f, 10.0f);
@@ -395,8 +395,7 @@ void EnToryo_Draw(Actor* thisx, PlayState* play) {
     EnToryo* this = (EnToryo*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnToryo_OverrideLimbDraw, EnToryo_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnToryo_OverrideLimbDraw, EnToryo_PostLimbDraw, this);
 }
 
 s32 EnToryo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,

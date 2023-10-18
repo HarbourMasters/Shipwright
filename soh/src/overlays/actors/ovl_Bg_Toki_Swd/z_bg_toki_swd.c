@@ -74,7 +74,7 @@ void BgTokiSwd_Init(Actor* thisx, PlayState* play) {
     BgTokiSwd_SetupAction(this, func_808BAF40);
 
     if (LINK_IS_ADULT) {
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             if (!CUR_UPG_VALUE(UPG_BOMB_BAG)) {
                 for (size_t i = 0; i < 8; i++) {
                     if (gSaveContext.equips.buttonItems[i] == ITEM_BOMB) {
@@ -84,7 +84,7 @@ void BgTokiSwd_Init(Actor* thisx, PlayState* play) {
             }
         }
         this->actor.draw = NULL;
-    } else if (gSaveContext.n64ddFlag) {
+    } else if (IS_RANDO) {
         // don't give child link a kokiri sword if we don't have one
         uint32_t kokiriSwordBitMask = 1 << 0;
         if (!(gSaveContext.inventory.equipment & kokiriSwordBitMask)) {
@@ -119,7 +119,7 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
         gSaveContext.cutsceneTrigger = 1;
     }
 
-    if (!LINK_IS_ADULT || (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && !gSaveContext.n64ddFlag) || gSaveContext.n64ddFlag) {
+    if (!LINK_IS_ADULT || (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && !IS_RANDO) || IS_RANDO) {
         if (Actor_HasParent(&this->actor, play)) {
             if (!LINK_IS_ADULT) {
                 Item_Give(play, ITEM_SWORD_MASTER);
@@ -134,8 +134,7 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
             BgTokiSwd_SetupAction(this, func_808BB0AC);
         } else {
             Player* player = GET_PLAYER(play);
-            if (Actor_IsFacingPlayer(&this->actor, 0x2000) && 
-                (!gSaveContext.n64ddFlag || (gSaveContext.n64ddFlag && player->getItemId == GI_NONE))) {
+            if (Actor_IsFacingPlayer(&this->actor, 0x2000)) {
                 func_8002F580(&this->actor, play);
             }
         }

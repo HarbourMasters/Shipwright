@@ -497,7 +497,7 @@ void EnTest_Idle(EnTest* this, PlayState* play) {
         yawDiff = player->actor.shape.rot.y - this->actor.shape.rot.y;
 
         if (this->actor.xzDistToPlayer < 100.0f) {
-            if ((player->swordState != 0) && (ABS(yawDiff) >= 0x1F40)) {
+            if ((player->meleeWeaponState != 0) && (ABS(yawDiff) >= 0x1F40)) {
                 this->actor.shape.rot.y = this->actor.world.rot.y = this->actor.yawTowardsPlayer;
 
                 if (Rand_ZeroOne() > 0.7f && player->meleeWeaponAnimation != 0x11) {
@@ -627,7 +627,7 @@ void EnTest_WalkAndBlock(EnTest* this, PlayState* play) {
 
         yawDiff = player->actor.shape.rot.y - this->actor.shape.rot.y;
 
-        if ((this->actor.xzDistToPlayer < 100.0f) && (player->swordState != 0)) {
+        if ((this->actor.xzDistToPlayer < 100.0f) && (player->meleeWeaponState != 0)) {
             if (ABS(yawDiff) >= 0x1F40) {
                 this->actor.shape.rot.y = this->actor.world.rot.y = this->actor.yawTowardsPlayer;
 
@@ -921,9 +921,9 @@ void EnTest_SlashDown(EnTest* this, PlayState* play) {
     }
 
     if ((this->skelAnime.curFrame > 7.0f) && (this->skelAnime.curFrame < 11.0f)) {
-        this->swordState = 1;
+        this->meleeWeaponState = 1;
     } else {
-        this->swordState = 0;
+        this->meleeWeaponState = 0;
     }
 
     if (SkelAnime_Update(&this->skelAnime)) {
@@ -1016,9 +1016,9 @@ void EnTest_SlashUp(EnTest* this, PlayState* play) {
     }
 
     if ((this->skelAnime.curFrame > 1.0f) && (this->skelAnime.curFrame < 8.0f)) {
-        this->swordState = 1;
+        this->meleeWeaponState = 1;
     } else {
-        this->swordState = 0;
+        this->meleeWeaponState = 0;
     }
 
     if (SkelAnime_Update(&this->skelAnime)) {
@@ -1100,7 +1100,7 @@ void EnTest_Jumpslash(EnTest* this, PlayState* play) {
         if (this->timer == 0) {
             Animation_PlayOnce(&this->skelAnime, &gStalfosJumpslashAnim);
             this->timer = 1;
-            this->swordState = 1;
+            this->meleeWeaponState = 1;
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_STAL_SAKEBI);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_STAL_JUMP);
         } else {
@@ -1110,7 +1110,7 @@ void EnTest_Jumpslash(EnTest* this, PlayState* play) {
     }
 
     if ((this->timer != 0) && (this->skelAnime.curFrame >= 5.0f)) {
-        this->swordState = 0;
+        this->meleeWeaponState = 0;
     }
 
     if (this->actor.world.pos.y <= this->actor.floorHeight) {
@@ -1237,7 +1237,7 @@ void func_808621D4(EnTest* this, PlayState* play) {
         }
     }
 
-    if (player->swordState != 0) {
+    if (player->meleeWeaponState != 0) {
         if ((this->actor.bgCheckFlags & 8) && ((ABS((s16)(this->actor.wallYaw - this->actor.shape.rot.y)) < 0x38A4) &&
                                                (this->actor.xzDistToPlayer < 80.0f))) {
             EnTest_SetupJumpUp(this);
@@ -1276,7 +1276,7 @@ void func_80862418(EnTest* this, PlayState* play) {
         }
     }
 
-    if (player->swordState != 0) {
+    if (player->meleeWeaponState != 0) {
         if ((this->actor.bgCheckFlags & 8) && ((ABS((s16)(this->actor.wallYaw - this->actor.shape.rot.y)) < 0x38A4) &&
                                                (this->actor.xzDistToPlayer < 80.0f))) {
             EnTest_SetupJumpUp(this);
@@ -1294,7 +1294,7 @@ void func_80862418(EnTest* this, PlayState* play) {
 void EnTest_SetupStunned(EnTest* this) {
     this->unk_7C8 = 0xB;
     this->unk_7DE = 0;
-    this->swordState = 0;
+    this->meleeWeaponState = 0;
     this->skelAnime.playSpeed = 0.0f;
     this->actor.speedXZ = -4.0f;
 
@@ -1322,7 +1322,7 @@ void EnTest_Stunned(EnTest* this, PlayState* play) {
     if (this->actor.colorFilterTimer == 0) {
         if (this->actor.colChkInfo.health == 0) {
             func_80862FA8(this, play);
-        } else if (player->swordState != 0) {
+        } else if (player->meleeWeaponState != 0) {
             if ((this->actor.bgCheckFlags & 8) &&
                 ((ABS((s16)(this->actor.wallYaw - this->actor.shape.rot.y)) < 0x38A4) &&
                  (this->actor.xzDistToPlayer < 80.0f))) {
@@ -1484,9 +1484,9 @@ void func_80862DBC(EnTest* this, PlayState* play) {
     BodyBreak_Alloc(&this->bodyBreak, 60, play);
     this->actor.home.rot.x = 0;
 
-    if (this->swordState >= 0) {
+    if (this->meleeWeaponState >= 0) {
         EffectBlure_AddSpace(Effect_GetByIndex(this->effectIndex));
-        this->swordState = -1;
+        this->meleeWeaponState = -1;
     }
 
     this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
@@ -1593,7 +1593,7 @@ void func_8086318C(EnTest* this, PlayState* play) {
 }
 
 void EnTest_SetupRecoil(EnTest* this) {
-    this->swordState = 0;
+    this->meleeWeaponState = 0;
     this->skelAnime.moveFlags = 2;
     this->unk_7C8 = 0x13;
     this->skelAnime.playSpeed = -1.0f;
@@ -1668,8 +1668,8 @@ void EnTest_UpdateDamage(EnTest* this, PlayState* play) {
         if ((this->actor.colChkInfo.damageEffect != STALFOS_DMGEFF_SLING) &&
             (this->actor.colChkInfo.damageEffect != STALFOS_DMGEFF_FIREMAGIC)) {
             this->lastDamageEffect = this->actor.colChkInfo.damageEffect;
-            if (this->swordState >= 1) {
-                this->swordState = 0;
+            if (this->meleeWeaponState >= 1) {
+                this->meleeWeaponState = 0;
             }
             this->unk_7DC = player->unk_845;
             this->actor.world.rot.y = this->actor.yawTowardsPlayer;
@@ -1801,7 +1801,7 @@ void EnTest_Update(Actor* thisx, PlayState* play) {
         }
     }
 
-    if (this->swordState >= 1) {
+    if (this->meleeWeaponState >= 1) {
         if (!(this->swordCollider.base.atFlags & AT_BOUNCED)) {
             CollisionCheck_SetAT(play, &play->colChkCtx, &this->swordCollider.base);
         } else {
@@ -1883,12 +1883,12 @@ void EnTest_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot
         Matrix_MultVec3f(&D_80864664, &sp70);
         Matrix_MultVec3f(&D_80864670, &sp64);
 
-        if ((this->swordState >= 1) &&
+        if ((this->meleeWeaponState >= 1) &&
             ((this->actor.params != STALFOS_TYPE_INVISIBLE) || play->actorCtx.lensActive)) {
             EffectBlure_AddVertex(Effect_GetByIndex(this->effectIndex), &sp70, &sp64);
-        } else if (this->swordState >= 0) {
+        } else if (this->meleeWeaponState >= 0) {
             EffectBlure_AddSpace(Effect_GetByIndex(this->effectIndex));
-            this->swordState = -1;
+            this->meleeWeaponState = -1;
         }
 
     } else if ((limbIndex == STALFOS_LIMB_SHIELD) && (this->unk_7DE != 0)) {
@@ -1958,7 +1958,7 @@ void EnTest_Draw(Actor* thisx, PlayState* play) {
     func_8002EBCC(&this->actor, play, 1);
 
     if ((thisx->params <= STALFOS_TYPE_CEILING) || (thisx->child == NULL)) {
-        SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnTest_OverrideLimbDraw,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnTest_OverrideLimbDraw,
                           EnTest_PostLimbDraw, this);
     }
 

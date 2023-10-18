@@ -144,7 +144,7 @@ void EnGe3_WaitTillCardGiven(EnGe3* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = EnGe3_Wait;
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);
@@ -158,7 +158,7 @@ void EnGe3_GiveCard(EnGe3* this, PlayState* play) {
         Message_CloseTextbox(play);
         this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         this->actionFunc = EnGe3_WaitTillCardGiven;
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);
@@ -303,8 +303,7 @@ void EnGe3_Draw(Actor* thisx, PlayState* play2) {
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
     func_8002EBCC(&this->actor, play, 0);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnGe3_OverrideLimbDraw, EnGe3_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime,EnGe3_OverrideLimbDraw, EnGe3_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

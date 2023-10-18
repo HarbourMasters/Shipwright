@@ -892,8 +892,7 @@ void EnBigokuta_Draw(Actor* thisx, PlayState* play) {
                 Matrix_RotateY(-rotY, MTXMODE_APPLY);
             }
         }
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnBigokuta_OverrideLimbDraw, NULL, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnBigokuta_OverrideLimbDraw, NULL, this);
     } else {
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x0C, D_80116280);

@@ -72,8 +72,8 @@
         <Texture Name="object_owl_TLUT_006FA8" OutName="tlut_00006FA8" Format="rgba16" Width="16" Height="16" Offset="0x6FA8"/>
 
         <!-- Eye Textures -->
-        <Texture Name="gObjOwlEyeOpenTex" OutName="owl_eye_open" Format="ci8" Width="32" Height="32" Offset="0x89A8"/>
-        <Texture Name="gObjOwlEyeHalfTex" OutName="owl_eye_half" Format="ci8" Width="32" Height="32" Offset="0x8DA8"/>
-        <Texture Name="gObjOwlEyeClosedTex" OutName="owl_eye_closed" Format="ci8" Width="32" Height="32" Offset="0x91A8"/>
+        <Texture Name="gObjOwlEyeOpenTex" OutName="owl_eye_open" Format="ci8" Width="32" Height="32" Offset="0x89A8" TlutOffset="0x6DA8"/>
+        <Texture Name="gObjOwlEyeHalfTex" OutName="owl_eye_half" Format="ci8" Width="32" Height="32" Offset="0x8DA8" TlutOffset="0x6DA8"/>
+        <Texture Name="gObjOwlEyeClosedTex" OutName="owl_eye_closed" Format="ci8" Width="32" Height="32" Offset="0x91A8" TlutOffset="0x6DA8"/>
     </File>
 </Root>

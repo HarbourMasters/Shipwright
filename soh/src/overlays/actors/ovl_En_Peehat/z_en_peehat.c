@@ -1079,7 +1079,7 @@ void EnPeehat_Draw(Actor* thisx, PlayState* play) {
     EnPeehat* this = (EnPeehat*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnPeehat_OverrideLimbDraw,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnPeehat_OverrideLimbDraw,
                       EnPeehat_PostLimbDraw, this);
     if (this->actor.speedXZ != 0.0f || this->actor.velocity.y != 0.0f) {
         Matrix_MultVec3f(&D_80AD285C[0], &this->colQuad.dim.quad[1]);

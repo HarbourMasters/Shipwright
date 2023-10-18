@@ -334,9 +334,6 @@ void LoadStatsVersion1() {
     SaveManager::Instance->LoadArray("entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.sohStats.entrancesDiscovered[i]);
     });
-    SaveManager::Instance->LoadArray("locationsSkipped", ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.sohStats.locationsSkipped[i]);
-    });
 }
 
 void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -377,9 +374,6 @@ void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
     });
     SaveManager::Instance->SaveArray("entrancesDiscovered", ARRAY_COUNT(saveContext->sohStats.entrancesDiscovered), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->sohStats.entrancesDiscovered[i]);
-    });
-    SaveManager::Instance->SaveArray("locationsSkipped", ARRAY_COUNT(saveContext->sohStats.locationsSkipped), [&](size_t i) {
-        SaveManager::Instance->SaveData("", saveContext->sohStats.locationsSkipped[i]);
     });
 }
 
@@ -688,9 +682,6 @@ void InitStats(bool isDebug) {
     for (int entrancesIdx = 0; entrancesIdx < ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered); entrancesIdx++) {
         gSaveContext.sohStats.entrancesDiscovered[entrancesIdx] = 0;
     }
-    for (int rc = 0; rc < ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped); rc++) {
-        gSaveContext.sohStats.locationsSkipped[rc] = 0;
-    }
 
     strncpy(gSaveContext.sohStats.buildVersion, (const char*) gBuildVersion, sizeof(gSaveContext.sohStats.buildVersion) - 1);
     gSaveContext.sohStats.buildVersion[sizeof(gSaveContext.sohStats.buildVersion) - 1] = 0;
@@ -793,6 +784,7 @@ void SetupDisplayNames() {
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_FINISH],      "Boss Rush Finished: ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:         ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_TRIFORCE_COMPLETED],   "Triforce Completed: ");
 }
 
 void SetupDisplayColors() {
@@ -839,6 +831,7 @@ void SetupDisplayColors() {
             case ITEM_ARROW_LIGHT:
             case TIMESTAMP_DEFEAT_GANONDORF:
             case TIMESTAMP_DEFEAT_GANON:
+            case TIMESTAMP_TRIFORCE_COMPLETED:
                 itemTimestampDisplayColor[i] = COLOR_YELLOW;
                 break;
             case ITEM_SONG_STORMS:

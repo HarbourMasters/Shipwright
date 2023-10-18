@@ -1,0 +1,27 @@
+<Root>
+    <File Name="kenjyanoma_scene" Segment="2">
+        <Scene Name="kenjyanoma_scene" Offset="0x0"/>
+    </File>
+    <File Name="kenjyanoma_room_0" Segment="3">
+        <Texture Name="kenjyanoma_room_0Tex_001618" OutName="kenjyanoma_room_0Tex_001618" Format="rgba16" Width="64" Height="32" Offset="0x1618" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_002618" OutName="kenjyanoma_room_0Tex_002618" Format="rgba16" Width="64" Height="32" Offset="0x2618" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_003618" OutName="kenjyanoma_room_0Tex_003618" Format="rgba16" Width="64" Height="32" Offset="0x3618" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_004618" OutName="kenjyanoma_room_0Tex_004618" Format="rgba16" Width="64" Height="32" Offset="0x4618" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_005618" OutName="kenjyanoma_room_0Tex_005618" Format="rgba16" Width="64" Height="32" Offset="0x5618" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_006618" OutName="kenjyanoma_room_0Tex_006618" Format="rgba16" Width="64" Height="32" Offset="0x6618" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_007618" OutName="kenjyanoma_room_0Tex_007618" Format="rgba16" Width="64" Height="32" Offset="0x7618" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_008618" OutName="kenjyanoma_room_0Tex_008618" Format="rgba16" Width="64" Height="32" Offset="0x8618" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_009618" OutName="kenjyanoma_room_0Tex_009618" Format="rgba16" Width="32" Height="64" Offset="0x9618" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_00A618" OutName="kenjyanoma_room_0Tex_00A618" Format="rgba16" Width="32" Height="64" Offset="0xA618" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_00B618" OutName="kenjyanoma_room_0Tex_00B618" Format="rgba16" Width="64" Height="32" Offset="0xB618" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_00C618" OutName="kenjyanoma_room_0Tex_00C618" Format="rgba16" Width="64" Height="32" Offset="0xC618" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_00D618" OutName="kenjyanoma_room_0Tex_00D618" Format="rgba16" Width="32" Height="32" Offset="0xD618" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_010CE8" OutName="kenjyanoma_room_0Tex_010CE8" Format="ia16" Width="32" Height="32" Offset="0x10CE8" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_0114E8" OutName="kenjyanoma_room_0Tex_0114E8" Format="i8" Width="32" Height="64" Offset="0x114E8" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_011CE8" OutName="kenjyanoma_room_0Tex_011CE8" Format="rgba16" Width="4" Height="4" Offset="0x11CE8" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_011D08" OutName="kenjyanoma_room_0Tex_011D08" Format="rgba16" Width="32" Height="32" Offset="0x11D08" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_012508" OutName="kenjyanoma_room_0Tex_012508" Format="i8" Width="32" Height="64" Offset="0x12508" AddedByScript="true"/>
+        <Texture Name="kenjyanoma_room_0Tex_012D08" OutName="kenjyanoma_room_0Tex_012D08" Format="i8" Width="32" Height="32" Offset="0x12D08" AddedByScript="true"/>
+        <Room Name="kenjyanoma_room_0" Offset="0x0"/>
+    </File>
+</Root>

@@ -83,6 +83,8 @@ uint8_t GameInteractor_GetRandomWindActive();
 uint8_t GameInteractor_GetRandomBonksActive();
 uint8_t GameInteractor_GetSlipperyFloorActive();
 uint8_t GameInteractor_SecondCollisionUpdate();
+void GameInteractor_SetTriforceHuntPieceGiven(uint8_t state);
+void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 #ifdef __cplusplus
 }
 #endif
@@ -123,6 +125,8 @@ public:
         static uint8_t RandomBonksActive;
         static uint8_t SlipperyFloorActive;
         static uint8_t SecondCollisionUpdate;
+        static uint8_t TriforceHuntPieceGiven;
+        static uint8_t TriforceHuntCreditsWarpActive;
 
         static void SetPacifistMode(bool active);
     };
@@ -148,9 +152,14 @@ public:
     DEFINE_HOOK(OnSaleEnd, void(GetItemEntry itemEntry));
     DEFINE_HOOK(OnTransitionEnd, void(int16_t sceneNum));
     DEFINE_HOOK(OnSceneInit, void(int16_t sceneNum));
+    DEFINE_HOOK(OnSceneFlagSet, void(int16_t sceneNum, int16_t flagType, int16_t flag));
+    DEFINE_HOOK(OnSceneFlagUnset, void(int16_t sceneNum, int16_t flagType, int16_t flag));
+    DEFINE_HOOK(OnFlagSet, void(int16_t flagType, int16_t flag));
+    DEFINE_HOOK(OnFlagUnset, void(int16_t flagType, int16_t flag));
     DEFINE_HOOK(OnSceneSpawnActors, void());
     DEFINE_HOOK(OnPlayerUpdate, void());
     DEFINE_HOOK(OnOcarinaSongAction, void());
+    DEFINE_HOOK(OnShopSlotChange, void(uint8_t cursorIndex, int16_t price));
     DEFINE_HOOK(OnActorInit, void(void* actor));
     DEFINE_HOOK(OnActorUpdate, void(void* actor));
     DEFINE_HOOK(OnActorKill, void(void* actor));
@@ -192,6 +201,10 @@ public:
 
     class RawAction {
     public:
+        static void SetSceneFlag(int16_t sceneNum, int16_t flagType, int16_t flag);
+        static void UnsetSceneFlag(int16_t sceneNum, int16_t flagType, int16_t flag);
+        static void SetFlag(int16_t flagType, int16_t chestNum);
+        static void UnsetFlag(int16_t flagType, int16_t chestNum);
         static void AddOrRemoveHealthContainers(int16_t amount);
         static void AddOrRemoveMagic(int8_t amount);
         static void HealOrDamagePlayer(int16_t hearts);
@@ -217,6 +230,7 @@ public:
         static void EmulateRandomButtonPress(uint32_t chancePercentage = 100);
         static void SetRandomWind(bool active);
         static void SetPlayerInvincibility(bool active);
+        static void ClearCutscenePointer();
 
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
         static GameInteractionEffectQueryResult SpawnActor(uint32_t actorId, int32_t actorParams);

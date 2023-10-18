@@ -53,7 +53,7 @@
         <!-- Mido DisplayList Textures -->
         <Texture Name="gMidoGradientTex" OutName="gradient" Format="ci8" Width="8" Height="8" Offset="0x4E0" TlutOffset="0x02E0"/>
         <Texture Name="gMidoTex_D20" OutName="tex_D20" Format="rgba16" Width="8" Height="8" Offset="0xD20"/>
-        <Texture Name="gMidoTex_DA0" OutName="tex_DA0" Format="ci8" Width="32" Height="4" Offset="0xDA0" TlutOffset="0x02E0"/>
+        <Texture Name="gMidoTex_DA0" OutName="tex_DA0" Format="ci8" Width="8" Height="16" Offset="0xDA0" TlutOffset="0x02E0"/>
         <Texture Name="gMidoHairCurl1Tex" OutName="hair_curl_1" Format="ci8" Width="32" Height="32" Offset="0xE20" TlutOffset="0x02E0"/>
         <Texture Name="gMidoTex_1220" OutName="tex_1220" Format="ci8" Width="8" Height="8" Offset="0x1220" TlutOffset="0x02E0"/>
         <Texture Name="gMidoTex_1260" OutName="tex_1260" Format="ci8" Width="8" Height="8" Offset="0x1260" TlutOffset="0x02E0"/>

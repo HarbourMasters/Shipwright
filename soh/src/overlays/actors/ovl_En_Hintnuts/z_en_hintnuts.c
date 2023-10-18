@@ -542,7 +542,8 @@ void EnHintnuts_Draw(Actor* thisx, PlayState* play) {
     if (this->actor.params == 0xA) {
         Gfx_DrawDListOpa(play, gHintNutsFlowerDL);
     } else {
-        SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnHintnuts_OverrideLimbDraw,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime,
+                                  EnHintnuts_OverrideLimbDraw,
                           NULL, this);
     }
 }
