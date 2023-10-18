@@ -509,6 +509,10 @@ s32 Player_IsBurningStickInRange(PlayState* play, Vec3f* pos, f32 xzRange, f32 y
 s32 Player_GetStrength(void) {
     s32 strengthUpgrade = CUR_UPG_VALUE(UPG_STRENGTH);
 
+    if (CVarGetInteger("gToggleStrength", 0) && CVarGetInteger("gStrengthDisabled", 0)) {
+        return PLAYER_STR_NONE;
+    }
+
     if (CVarGetInteger("gTimelessEquipment", 0) || LINK_IS_ADULT) {
         return strengthUpgrade;
     } else if (strengthUpgrade != 0) {

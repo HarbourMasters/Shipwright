@@ -488,6 +488,12 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             }
         }
 
+        // Grey Out Strength Upgrade Name when Disabled
+        if ((pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 2) &&
+            CVarGetInteger("gToggleStrength", 0) && CVarGetInteger("gStrengthDisabled", 0)) {
+            pauseCtx->nameColorSet = 1;
+        }
+
         if ((pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 0)) {
             if (LINK_AGE_IN_YEARS != YEARS_CHILD) {
                 if ((cursorItem >= ITEM_BULLET_BAG_30) && (cursorItem <= ITEM_BULLET_BAG_50)) {
@@ -505,6 +511,13 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         u16 buttonsToCheck = BTN_A | BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
         if (CVarGetInteger("gDpadEquips", 0) && (!CVarGetInteger("gDpadPause", 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
             buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
+        }
+
+        // Allow Toggling of Strength when Pressing A on Strength Upgrade Slot
+        if ((pauseCtx->cursorSpecialPos == 0) && (pauseCtx->state == 6) &&
+            (pauseCtx->unk_1E4 == 0) && CHECK_BTN_ALL(input->press.button, BTN_A) &&
+            (pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 2) && CVarGetInteger("gToggleStrength", 0)) {
+            CVarSetInteger("gStrengthDisabled", !CVarGetInteger("gStrengthDisabled", 0));
         }
 
         if ((pauseCtx->cursorSpecialPos == 0) && (cursorItem != PAUSE_ITEM_NONE) && (pauseCtx->state == 6) &&
@@ -659,6 +672,22 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         }
     }
 
+    // Add zoom effect to strength item if cursor is hovering over it and strength is not disabled when the toggle is on
+    if ((pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 2) &&
+        CVarGetInteger("gToggleStrength", 0) && !CVarGetInteger("gStrengthDisabled", 0)) {
+        i = 2; // row
+        k = 0; // column
+        j = 16 * i + 4 * k; // vtx index
+        pauseCtx->equipVtx[j].v.ob[0] = pauseCtx->equipVtx[j + 2].v.ob[0] =
+            pauseCtx->equipVtx[j].v.ob[0] - 2;
+        pauseCtx->equipVtx[j + 1].v.ob[0] = pauseCtx->equipVtx[j + 3].v.ob[0] =
+            pauseCtx->equipVtx[j + 1].v.ob[0] + 4;
+        pauseCtx->equipVtx[j].v.ob[1] = pauseCtx->equipVtx[j + 1].v.ob[1] =
+            pauseCtx->equipVtx[j].v.ob[1] + 2;
+        pauseCtx->equipVtx[j + 2].v.ob[1] = pauseCtx->equipVtx[j + 3].v.ob[1] =
+            pauseCtx->equipVtx[j + 2].v.ob[1] - 4;
+    }
+
     Gfx_SetupDL_42Opa(play->state.gfxCtx);
 
     gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -670,9 +699,12 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
             point = CUR_UPG_VALUE(sChildUpgrades[i]);
             if ((point != 0) && (CUR_UPG_VALUE(sChildUpgrades[i]) != 0)) {
-                if (drawGreyItems &&
+                // Grey Out the Gauntlets as Child
+                // Grey Out Strength Upgrades when Disabled and the Toggle Option is on
+                if ((drawGreyItems &&
                     ((sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_SILVER || 
-                    (sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_GOLD)) { // Grey Out the Gauntlets
+                    (sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_GOLD)) ||
+                    (CVarGetInteger("gToggleStrength", 0) && CVarGetInteger("gStrengthDisabled", 0) && sChildUpgrades[i] == UPG_STRENGTH)) {
                     gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                     gSPGrayscale(POLY_KAL_DISP++, true);
                 }
@@ -688,9 +720,12 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1], 32, 32, 0);
                 gSPGrayscale(POLY_KAL_DISP++, false);
             } else if (CUR_UPG_VALUE(sAdultUpgrades[i]) != 0) {
-                if (drawGreyItems &&
-                    ((sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1) == ITEM_BRACELET &&
-                        !(IS_RANDO))) { // Grey Out the Goron Bracelet when Not Randomized
+                // Grey Out the Goron Bracelet when Not Randomized
+                // Grey Out Strength Upgrades when Disabled and the Toggle Option is on
+                if ((drawGreyItems &&
+                    (((sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1) == ITEM_BRACELET &&
+                        !(IS_RANDO)))) || 
+                     (CVarGetInteger("gToggleStrength", 0) && CVarGetInteger("gStrengthDisabled", 0) && sAdultUpgrades[i] == UPG_STRENGTH)) {
                     gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                     gSPGrayscale(POLY_KAL_DISP++, true);
                 }
