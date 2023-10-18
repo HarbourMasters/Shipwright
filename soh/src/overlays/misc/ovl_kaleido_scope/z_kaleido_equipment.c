@@ -700,7 +700,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             point = CUR_UPG_VALUE(sChildUpgrades[i]);
             if ((point != 0) && (CUR_UPG_VALUE(sChildUpgrades[i]) != 0)) {
                 // Grey Out the Gauntlets as Child
-                // Grey Out Strength Upgrades when Disabled and the Toggle Option is on
+                // Grey Out Strength Upgrades when Disabled and the Toggle Strength Option is on
                 if ((drawGreyItems &&
                     ((sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_SILVER || 
                     (sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_GOLD)) ||
@@ -720,11 +720,11 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1], 32, 32, 0);
                 gSPGrayscale(POLY_KAL_DISP++, false);
             } else if (CUR_UPG_VALUE(sAdultUpgrades[i]) != 0) {
-                // Grey Out the Goron Bracelet when Not Randomized
-                // Grey Out Strength Upgrades when Disabled and the Toggle Option is on
+                // Grey Out the Goron Bracelet when Not Randomized and Toggle Strength Option is off
+                // Grey Out Strength Upgrades when Disabled and the Toggle Strength Option is on
                 if ((drawGreyItems &&
                     (((sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1) == ITEM_BRACELET &&
-                        !(IS_RANDO)))) || 
+                        !(IS_RANDO) && !CVarGetInteger("gToggleStrength", 0)))) || 
                      (CVarGetInteger("gToggleStrength", 0) && CVarGetInteger("gStrengthDisabled", 0) && sAdultUpgrades[i] == UPG_STRENGTH)) {
                     gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                     gSPGrayscale(POLY_KAL_DISP++, true);
