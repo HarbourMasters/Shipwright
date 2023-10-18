@@ -167,6 +167,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gBombchusOOB",
     "gQuickPutaway",
     "gGsCutscene",
+    "gRestoreRBAValues",
     "gSkipSaveConfirmation",
     "gAutosave",
     "gDisableCritWiggle",
