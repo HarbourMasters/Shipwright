@@ -489,10 +489,16 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         }
 
         // Grey Out Strength Upgrade Name when Disabled
+        // Do not Grey Out Strength Upgrade Name when Enabled
         if ((pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 2) &&
-            CVarGetInteger("gToggleStrength", 0) && CVarGetInteger("gStrengthDisabled", 0)) {
-            pauseCtx->nameColorSet = 1;
+            CVarGetInteger("gToggleStrength", 0)) {
+            if (CVarGetInteger("gStrengthDisabled", 0)) {
+                pauseCtx->nameColorSet = 1;
+            } else {
+                pauseCtx->nameColorSet = 0;
+            }
         }
+
 
         if ((pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 0)) {
             if (LINK_AGE_IN_YEARS != YEARS_CHILD) {
@@ -672,9 +678,9 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         }
     }
 
-    // Add zoom effect to strength item if cursor is hovering over it and strength is not disabled when the toggle is on
+    // Add zoom effect to strength item if cursor is hovering over it when toggle option is on
     if ((pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 2) &&
-        CVarGetInteger("gToggleStrength", 0) && !CVarGetInteger("gStrengthDisabled", 0)) {
+        CVarGetInteger("gToggleStrength", 0)) {
         i = 2; // row
         k = 0; // column
         j = 16 * i + 4 * k; // vtx index
