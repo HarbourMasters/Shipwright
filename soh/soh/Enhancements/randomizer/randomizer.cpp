@@ -6119,12 +6119,12 @@ void Randomizer::CreateCustomMessages() {
 			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!"),
 
         GIMESSAGE_UNTRANSLATED(RG_GOHMA_SOUL, ITEM_BIG_POE, "You found the soul for %gGohma%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_KING_DODONGO_SOUL, ITEM_BIG_POE, "You found the soul for %rKing Dodongo%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_BARINADE_SOUL, ITEM_BIG_POE, "You found the soul for %bBarindade%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_PHANTOM_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %gPhantom Ganon%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_KING_DODONGO_SOUL, ITEM_BIG_POE, "You found the soul for %rKing&Dodongo%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_BARINADE_SOUL, ITEM_BIG_POE, "You found the soul for %bBarinade%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_PHANTOM_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %gPhantom&Ganon%w!"),
         GIMESSAGE_UNTRANSLATED(RG_VOLVAGIA_SOUL, ITEM_BIG_POE, "You found the soul for %rVolvagia%w!"),
         GIMESSAGE_UNTRANSLATED(RG_MORPHA_SOUL, ITEM_BIG_POE, "You found the soul for %bMorpha%w!"),
-        GIMESSAGE_UNTRANSLATED(RG_BONGO_BONGO_SOUL, ITEM_BIG_POE, "You found the soul for %pBongo Bongo%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_BONGO_BONGO_SOUL, ITEM_BIG_POE, "You found the soul for %pBongo&Bongo%w!"),
         GIMESSAGE_UNTRANSLATED(RG_TWINROVA_SOUL, ITEM_BIG_POE, "You found the soul for %yTwinrova%w!"),
         GIMESSAGE_UNTRANSLATED(RG_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %cGanon%w!"),
         
