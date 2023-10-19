@@ -410,10 +410,6 @@ void Player_SetBootData(PlayState* play, Player* this) {
 }
 
 s32 Player_IsChildWithHylianShield(Player* this) {
-    if (CVarGetInteger("gNormalChildHylianShield", 0)) {
-        // Alternate Equipment Loading - "Normal Child Hylian Shield" enhancement check.
-        return false;
-    }
     return gSaveContext.linkAge != 0 && (this->currentShield == PLAYER_SHIELD_HYLIAN);
 }
 
@@ -2403,7 +2399,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
             }
             // hylian shield
             else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-                     (CVarGetInteger("gNormalChildHylianShield", 0) || LINK_IS_ADULT) &&
+                     (LINK_IS_ADULT) &&
                      !(CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON)) {
                 Player_DrawAdultItem(play, gLinkHylianShieldDL);
             }
@@ -2438,7 +2434,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
         }
         // Child Hylian Shield on Back
         else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-                 (!CVarGetInteger("gNormalChildHylianShield", 0) && LINK_IS_CHILD)) {
+                 (LINK_IS_CHILD)) {
             Player_DrawChildItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
                                            ? gLinkHylianShieldOnChildBackDL
                                            : gLinkChildHylianShieldAndSheathNearDL);
@@ -2446,7 +2442,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
         // Adult Hylian Shield on Back
         else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON) &&
                  (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-                 (CVarGetInteger("gNormalChildHylianShield", 0) || LINK_IS_ADULT)) {
+                 (LINK_IS_ADULT)) {
             Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
                                            ? gLinkHylianShieldOnBackDL
                                            : gLinkAdultHylianShieldAndSheathNearDL);
@@ -2708,8 +2704,7 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
             EquipedStance = 1;
         } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 0) {
             EquipedStance = 2;
-        } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 2 && LINK_AGE_IN_YEARS == YEARS_CHILD &&
-                   !(CVarGetInteger("gNormalChildHylianShield", 0))) {
+        } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 2 && LINK_AGE_IN_YEARS == YEARS_CHILD) {
             EquipedStance = 3;
         } else {
             // Link is idle so revert to 0
@@ -2882,7 +2877,7 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
             bool CVar_gAltLinkEquip = (bool)CVarGetInteger("gAltLinkEquip", 1);
             if (shield == PLAYER_SHIELD_DEKU || (CVar_gAltLinkEquip && shield == PLAYER_SHIELD_MIRROR) ||
                 (CVar_gAltLinkEquip &&
-                 (shield == PLAYER_SHIELD_HYLIAN && CVarGetInteger("gNormalChildHylianShield", 0)))) {
+                 (shield == PLAYER_SHIELD_HYLIAN))) {
                 srcTable = gLinkPauseChildDekuShieldJointTable;
             } else {
                 srcTable = gLinkPauseChildJointTable;
