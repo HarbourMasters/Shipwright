@@ -1,6 +1,5 @@
 #pragma once
 
-#include "keys.hpp"
 #include "location_access.hpp"
 
 #include <string>
@@ -38,7 +37,7 @@ enum class EntranceType {
 class Entrance {
 public:
 
-    Entrance(uint32_t connectedRegion_, std::vector<ConditionFn> conditions_met_)
+    Entrance(RandomizerRegion connectedRegion_, std::vector<ConditionFn> conditions_met_)
         : connectedRegion(connectedRegion_) {
         conditions_met.resize(2);
         for (size_t i = 0; i < conditions_met_.size(); i++) {
@@ -127,10 +126,10 @@ public:
         age = true;
 
         Logic::UpdateHelpers();
-        return GetConditionsMet() && (connectedRegion != NONE || passAnyway);
+        return GetConditionsMet() && (connectedRegion != RR_NONE || passAnyway);
     }
 
-    uint32_t GetConnectedRegionKey() const {
+    RandomizerRegion GetConnectedRegionKey() const {
         return connectedRegion;
     }
 
@@ -138,11 +137,11 @@ public:
         return AreaTable(connectedRegion);
     }
 
-    void SetParentRegion(uint32_t newParent) {
+    void SetParentRegion(RandomizerRegion newParent) {
         parentRegion = newParent;
     }
 
-    uint32_t GetParentRegionKey() const {
+    RandomizerRegion GetParentRegionKey() const {
         return parentRegion;
     }
 
@@ -150,7 +149,7 @@ public:
         return AreaTable(parentRegion);
     }
 
-    void SetNewEntrance(uint32_t newRegion) {
+    void SetNewEntrance(RandomizerRegion newRegion) {
         connectedRegion = newRegion;
     }
 
@@ -230,15 +229,15 @@ public:
         return reverse;
     }
 
-    void Connect(uint32_t newConnectedRegion) {
+    void Connect(RandomizerRegion newConnectedRegion) {
         connectedRegion = newConnectedRegion;
         AreaTable(newConnectedRegion)->entrances.push_front(this);
     }
 
-    uint32_t Disconnect() {
+    RandomizerRegion Disconnect() {
         AreaTable(connectedRegion)->entrances.remove_if([this](const auto entrance){return this == entrance;});
-        uint32_t previouslyConnected = connectedRegion;
-        connectedRegion = NONE;
+        RandomizerRegion previouslyConnected = connectedRegion;
+        connectedRegion = RR_NONE;
         return previouslyConnected;
     }
 
@@ -248,8 +247,8 @@ public:
     }
 
     Entrance* GetNewTarget() {
-        AreaTable(ROOT)->AddExit(ROOT, connectedRegion, []{return true;});
-        Entrance* targetEntrance = AreaTable(ROOT)->GetExit(connectedRegion);
+        AreaTable(RR_ROOT)->AddExit(RR_ROOT, connectedRegion, []{return true;});
+        Entrance* targetEntrance = AreaTable(RR_ROOT)->GetExit(connectedRegion);
         targetEntrance->SetReplacement(this);
         targetEntrance->SetName(GetParentRegion()->regionName + " -> " + GetConnectedRegion()->regionName);
         return targetEntrance;
@@ -264,8 +263,8 @@ public:
     }
 
 private:
-    uint32_t parentRegion;
-    uint32_t connectedRegion;
+    RandomizerRegion parentRegion;
+    RandomizerRegion connectedRegion;
     std::vector<ConditionFn> conditions_met;
 
     //Entrance Randomizer stuff

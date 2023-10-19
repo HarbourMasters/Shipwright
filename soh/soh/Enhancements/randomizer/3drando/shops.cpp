@@ -1,8 +1,6 @@
-#include "item_location.hpp"
 #include "item_pool.hpp"
 #include "location_access.hpp"
 #include "random.hpp"
-#include "item.hpp"
 #include "shops.hpp"
 
 #include <math.h>
@@ -18,10 +16,11 @@ bool initTrickNames = false; //Indicates if trick ice trap names have been initi
 
 //Set vanilla shop item locations before potentially shuffling
 void PlaceVanillaShopItems() {
+   auto ctx = Rando::Context::GetInstance();
   //Loop to place vanilla items in each location
-  for (size_t i = 0; i < ShopLocationLists.size(); i++) {
-    for (size_t j = 0; j < ShopLocationLists[i].size(); j++) {
-      Location(ShopLocationLists[i][j])->PlaceVanillaItem();
+  for (size_t i = 0; i < Rando::StaticData::shopLocationLists.size(); i++) {
+    for (size_t j = 0; j < Rando::StaticData::shopLocationLists[i].size(); j++) {
+      ctx->GetItemLocation(Rando::StaticData::shopLocationLists[i][j])->PlaceVanillaItem();
     }
   }
 }
@@ -31,77 +30,77 @@ void PlaceVanillaShopItems() {
 //The first 32 items here will always be present in shops
 //Shopsanity 4 will only have the first 32, shopsanity 1 will have the first 56, etc.
 //Shopsanity random will have anywhere from the first 32 to the first 56, so the order of items after 32 is relevant
-std::vector<uint32_t> GetMinVanillaShopItems(int total_replaced) {
-    std::vector<uint32_t> minShopItems = {
-    BUY_DEKU_SHIELD,
-    BUY_HYLIAN_SHIELD,
-    BUY_GORON_TUNIC,
-    BUY_ZORA_TUNIC,
-    BUY_DEKU_NUT_5,
-    BUY_DEKU_NUT_5,
-    BUY_DEKU_NUT_10,
-    BUY_DEKU_STICK_1,
-    BUY_DEKU_STICK_1,
-    BUY_DEKU_SEEDS_30,
-    BUY_ARROWS_10,
-    BUY_ARROWS_10,
-    BUY_ARROWS_30,
-    BUY_ARROWS_50,
-    BUY_BOMBCHU_10,
-    BUY_BOMBCHU_10,
-    BUY_BOMBCHU_10,
-    BUY_BOMBCHU_20,
-    BUY_BOMBS_525,
-    BUY_BOMBS_535,
-    BUY_BOMBS_10,
-    BUY_BOMBS_20,
-    BUY_GREEN_POTION,
-    BUY_RED_POTION_30,
-    BUY_BLUE_FIRE,
-    BUY_FAIRYS_SPIRIT,
-    BUY_BOTTLE_BUG,
-    BUY_FISH,
+std::vector<RandomizerGet> GetMinVanillaShopItems(int total_replaced) {
+    std::vector<RandomizerGet> minShopItems = {
+    RG_BUY_DEKU_SHIELD,
+    RG_BUY_HYLIAN_SHIELD,
+    RG_BUY_GORON_TUNIC,
+    RG_BUY_ZORA_TUNIC,
+    RG_BUY_DEKU_NUT_5,
+    RG_BUY_DEKU_NUT_5,
+    RG_BUY_DEKU_NUT_10,
+    RG_BUY_DEKU_STICK_1,
+    RG_BUY_DEKU_STICK_1,
+    RG_BUY_DEKU_SEEDS_30,
+    RG_BUY_ARROWS_10,
+    RG_BUY_ARROWS_10,
+    RG_BUY_ARROWS_30,
+    RG_BUY_ARROWS_50,
+    RG_BUY_BOMBCHU_10,
+    RG_BUY_BOMBCHU_10,
+    RG_BUY_BOMBCHU_10,
+    RG_BUY_BOMBCHU_20,
+    RG_BUY_BOMBS_525,
+    RG_BUY_BOMBS_535,
+    RG_BUY_BOMBS_10,
+    RG_BUY_BOMBS_20,
+    RG_BUY_GREEN_POTION,
+    RG_BUY_RED_POTION_30,
+    RG_BUY_BLUE_FIRE,
+    RG_BUY_FAIRYS_SPIRIT,
+    RG_BUY_BOTTLE_BUG,
+    RG_BUY_FISH,
     //^First 28 items from OoTR
-    BUY_HYLIAN_SHIELD,
-    BUY_BOTTLE_BUG,
-    BUY_DEKU_STICK_1,
-    BUY_FAIRYS_SPIRIT,
+    RG_BUY_HYLIAN_SHIELD,
+    RG_BUY_BOTTLE_BUG,
+    RG_BUY_DEKU_STICK_1,
+    RG_BUY_FAIRYS_SPIRIT,
     //^First 32 items: Always guaranteed
-    BUY_BLUE_FIRE,
-    BUY_FISH,
-    BUY_BOMBCHU_10,
-    BUY_DEKU_NUT_5,
-    BUY_ARROWS_10,
-    BUY_BOMBCHU_20,
-    BUY_BOMBS_535,
-    BUY_RED_POTION_30,
+    RG_BUY_BLUE_FIRE,
+    RG_BUY_FISH,
+    RG_BUY_BOMBCHU_10,
+    RG_BUY_DEKU_NUT_5,
+    RG_BUY_ARROWS_10,
+    RG_BUY_BOMBCHU_20,
+    RG_BUY_BOMBS_535,
+    RG_BUY_RED_POTION_30,
     //^First 40 items: Exist on shopsanity 3 or less
-    BUY_BOMBS_30,
-    BUY_BOMBCHU_20,
-    BUY_DEKU_NUT_5,
-    BUY_ARROWS_10,
-    BUY_DEKU_NUT_5,
-    BUY_ARROWS_30,
-    BUY_RED_POTION_40,
-    BUY_FISH,
+    RG_BUY_BOMBS_30,
+    RG_BUY_BOMBCHU_20,
+    RG_BUY_DEKU_NUT_5,
+    RG_BUY_ARROWS_10,
+    RG_BUY_DEKU_NUT_5,
+    RG_BUY_ARROWS_30,
+    RG_BUY_RED_POTION_40,
+    RG_BUY_FISH,
     //^First 48 items: Exist on shopsanity 2 or less
-    BUY_BOMBCHU_20,
-    BUY_ARROWS_30,
-    BUY_RED_POTION_50,
-    BUY_ARROWS_30,
-    BUY_DEKU_NUT_5,
-    BUY_ARROWS_50,
-    BUY_ARROWS_50,
-    BUY_GREEN_POTION,
+    RG_BUY_BOMBCHU_20,
+    RG_BUY_ARROWS_30,
+    RG_BUY_RED_POTION_50,
+    RG_BUY_ARROWS_30,
+    RG_BUY_DEKU_NUT_5,
+    RG_BUY_ARROWS_50,
+    RG_BUY_ARROWS_50,
+    RG_BUY_GREEN_POTION,
     //^First 56 items: Exist on shopsanity 1 or less
-    BUY_POE,
-    BUY_POE,
-    BUY_HEART,
-    BUY_HEART,
-    BUY_HEART,
-    BUY_HEART,
-    BUY_HEART,
-    BUY_HEART,
+    RG_BUY_POE,
+    RG_BUY_POE,
+    RG_BUY_HEART,
+    RG_BUY_HEART,
+    RG_BUY_HEART,
+    RG_BUY_HEART,
+    RG_BUY_HEART,
+    RG_BUY_HEART,
     //^All 64 items: Only exist with shopsanity 0
   };
   //Now delete however many items there are to replace
@@ -865,9 +864,9 @@ Text GetIceTrapName(uint8_t id) {
 //Get shop index based on a given location
 static std::map<std::string_view, int> ShopNameToNum = {{"KF Shop", 0},   {"Kak Potion Shop", 1}, {"MK Bombchu Shop", 2}, {"MK Potion Shop", 3},
                                                         {"MK Bazaar", 4}, {"Kak Bazaar", 5},      {"ZD Shop", 6},         {"GC Shop", 7}};
-int GetShopIndex(uint32_t loc) {
+int GetShopIndex(RandomizerCheck loc) {
   //Kind of hacky, but extract the shop and item position from the name
-  const std::string& name(Location(loc)->GetName());
+  const std::string& name(Rando::StaticData::GetLocation(loc)->GetName());
   int split = name.find(" Item ");
   std::string_view shop(name.c_str(), split);
   int pos = std::stoi(name.substr(split+6, 1)) - 1;

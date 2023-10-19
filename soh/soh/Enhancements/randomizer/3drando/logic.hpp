@@ -1,6 +1,6 @@
 #pragma once
 
-#include "keys.hpp"
+#include "../randomizerTypes.h"
 #include <cstdint>
 
 namespace Logic {
@@ -365,10 +365,10 @@ enum class GlitchDifficulty {
 
 void UpdateHelpers();
 bool CanPlay(bool song);
-bool CanUse(uint32_t itemName);
+bool CanUse(RandomizerGet itemName);
 bool HasProjectile(HasProjectileAge age);
-bool SmallKeys(Key dungeon, uint8_t requiredAmount);
-bool SmallKeys(Key dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
+bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
+bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
 bool CanDoGlitch(GlitchType glitch);
 bool EventsUpdated();
 void LogicReset();

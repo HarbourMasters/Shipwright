@@ -7,6 +7,7 @@
 #include <libultraship/libultra.h>
 #include "z64item.h"
 #include <memory>
+#include "context.h"
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/randomizer_tricks.h"
@@ -85,7 +86,7 @@ class Randomizer {
     std::string GetDampeText() const;
     std::string GetSheikText() const;
     std::string GetSariaText() const;
-    RandomizerCheckObject GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams);
+    Rando::Location* GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams);
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
     CowIdentity IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);

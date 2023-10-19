@@ -17,6 +17,7 @@
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include <vector>
+#include "Enhancements/randomizer/context.h"
 
 const std::string customMessageTableID = "BaseGameOverrides";
 const std::string appShortName = "soh";
@@ -29,6 +30,7 @@ public:
     std::shared_ptr<LUS::Context> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
+    std::shared_ptr<Rando::Context> gRandoContext;
 
     OTRGlobals();
     ~OTRGlobals();

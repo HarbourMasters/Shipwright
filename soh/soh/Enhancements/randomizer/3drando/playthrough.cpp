@@ -16,10 +16,11 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
     // resolved to something random
     Random_Init(seed);
 
-    overrides.clear();
+    auto ctx = Rando::Context::GetInstance();
+    ctx->overrides.clear();
     CustomMessages::ClearMessages();
-    ItemReset();
-    HintReset();
+    ctx->ItemReset();
+    ctx->HintReset();
     Areas::AccessReset();
 
     Settings::UpdateSettings(cvarSettings, excludedLocations, enabledTricks);
@@ -75,9 +76,9 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
 #endif
     }
 
-    playthroughLocations.clear();
-    wothLocations.clear();
-    playthroughBeatable = false;
+    ctx->playthroughLocations.clear();
+    ctx->wothLocations.clear();
+    ctx->playthroughBeatable = false;
 
     return 1;
 }

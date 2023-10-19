@@ -1,14 +1,13 @@
 #pragma once
 
 #include "hints.hpp"
-#include "keys.hpp"
 
 #include <vector>
 
-extern std::array<HintText, KEY_ENUM_MAX> hintTable;
+extern std::array<HintText, RHT_MAX> hintTable;
 
 void HintTable_Init();
-const HintText& Hint(uint32_t hintKey);
+const HintText& Hint(const RandomizerHintTextKey hintKey);
 std::vector<HintText> GetHintCategory(HintCategory category);
 
 void HintTable_Init_Item();

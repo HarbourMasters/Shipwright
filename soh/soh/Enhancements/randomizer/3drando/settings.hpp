@@ -737,7 +737,7 @@ class Menu {
 namespace Settings {
 void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks);
   SettingsContext FillContext();
-  void ResolveExcludedLocationConflicts();
+  //void ResolveExcludedLocationConflicts();
   void RandomizeAllSettings(const bool selectOptions = false);
   void ForceChange(uint32_t kDown, Option* currentSetting);
   const std::vector<Menu*> GetAllOptionMenus();
