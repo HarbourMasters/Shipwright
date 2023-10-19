@@ -2023,7 +2023,6 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             func_80090A28(this, spE4);
             func_800906D4(play, this, spE4);
         } // 
-        /*
         else if ((*dList != NULL) && (this->leftHandType == 7)) {
             Color_RGB8* bottleColor = &sBottleColors[Player_ActionToBottle(this, this->itemAction)];
 
@@ -2036,30 +2035,30 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
             CLOSE_DISPS(play->state.gfxCtx);
         }
-        */
+        
 
         // AltEquip TODO: A problematic change to the original code was made here.
-        if ((*dList != NULL) && (this->leftHandType == 7)) {
-            Color_RGB8* bottleColor = &sBottleColors[Player_ActionToBottle(this, this->itemAction)];
+        // if ((*dList != NULL) && (this->leftHandType == 7)) {
+        //     Color_RGB8* bottleColor = &sBottleColors[Player_ActionToBottle(this, this->itemAction)];
 
-            OPEN_DISPS(play->state.gfxCtx);
+        //     OPEN_DISPS(play->state.gfxCtx);
 
-            gDPSetEnvColor(POLY_XLU_DISP++, bottleColor->r, bottleColor->g, bottleColor->b, 0);
+        //     gDPSetEnvColor(POLY_XLU_DISP++, bottleColor->r, bottleColor->g, bottleColor->b, 0);
 
-            if (this->itemAction != PLAYER_IA_BOTTLE && Player_CanUseNewLoadingMethodLeftHand(this)) {
-                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gLinkBottleContentsDL);
-            }
+        //     if (this->itemAction != PLAYER_IA_BOTTLE && Player_CanUseNewLoadingMethodLeftHand(this)) {
+        //         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+        //                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        //         gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gLinkBottleContentsDL);
+        //     }
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            if (Player_CanUseNewLoadingMethodLeftHand(this)) {
-                gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gLinkBottleDL);
-            } else {
-                gSPDisplayList(POLY_XLU_DISP++, sBottleDLists[(gSaveContext.linkAge)]);
-            }
-            CLOSE_DISPS(play->state.gfxCtx);
-        }
+        //     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        //     if (Player_CanUseNewLoadingMethodLeftHand(this)) {
+        //         gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gLinkBottleDL);
+        //     } else {
+        //         gSPDisplayList(POLY_XLU_DISP++, sBottleDLists[(gSaveContext.linkAge)]);
+        //     }
+        //     CLOSE_DISPS(play->state.gfxCtx);
+        // }
 
         if (this->actor.scale.y >= 0.0f) {
             if (!Player_HoldsHookshot(this) && ((hookedActor = this->heldActor) != NULL)) {
