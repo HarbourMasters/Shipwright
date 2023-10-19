@@ -467,10 +467,6 @@ uint8_t Player_CanUseNewLoadingMethodLeftHand(Player* this) {
                 return true;
             }
             break;
-        case 20: // 0x14 AltEquip TODO Add a comment explaining this.
-            if (ResourceGetIsCustomByName(gLinkMasterSwordDL)) {
-                return true;
-            }
     }
     return false;
 }
@@ -1963,20 +1959,6 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                     if (!(this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG)) {
                         Player_DrawChildItem(play, gLinkBoomerangDL);
                     }
-                    break;
-
-                case 20: // 0x14 AltEquip TODO Add a comment explaining this.
-                    // Doesn't call PlayerDrawChildItem due to it being rotated
-                    OPEN_DISPS(play->state.gfxCtx);
-
-                    Matrix_RotateZYX(-0x4400, -0x800, 0x8000, MTXMODE_APPLY);
-                    Matrix_Translate(280, -280, -160, MTXMODE_APPLY);
-
-                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkMasterSwordDL);
-
-                    CLOSE_DISPS(play->state.gfxCtx);
                     break;
             }
         } // End of AltEquip left hand items block.

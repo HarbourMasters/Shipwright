@@ -14635,17 +14635,12 @@ void func_80851A50(PlayState* play, Player* this, CsCmdActorAction* arg2) {
         sp2C = &D_808551A4[gSaveContext.linkAge];
         this->interactRangeActor->parent = &this->actor;
 
-        if (!LINK_IS_ADULT && !Player_CanUseNewLoadingMethodLeftHand(this)) {
+        if (!LINK_IS_ADULT) {
             dLists = gPlayerLeftHandBgsDLs;
         } else {
             dLists = gPlayerLeftHandClosedDLs;
         }
         this->leftHandDLists = &dLists[gSaveContext.linkAge];
-
-        if (!LINK_IS_ADULT && Player_CanUseNewLoadingMethodLeftHand(this)) {
-            this->leftHandType = 20;
-            // AltEquip TODO Did this end up working? What does this do?
-        }
 
         Player_PlaySfx(&this->actor, sp2C->unk_00);
         if (!LINK_IS_ADULT) {
