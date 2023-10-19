@@ -541,9 +541,9 @@ namespace Logic {
     BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
     //you need at least 2 buttons for scarecrow song
-    ScarecrowSong    = ScarecrowSong || FreeScarecrow || (ChildScarecrow && AdultScarecrow);
-    Scarecrow        = Hookshot && Ocarina && OcarinaButtons >= 2;
-    DistantScarecrow = Longshot && Ocarina && OcarinaButtons >= 2;
+    ScarecrowSong    = ScarecrowSong || (FreeScarecrow && Ocarina && OcarinaButtons >= 2) || (ChildScarecrow && AdultScarecrow);
+    Scarecrow        = Hookshot && ScarecrowSong;
+    DistantScarecrow = Longshot && ScarecrowSong;
 
     //Drop Access
     DekuStickDrop = StickPot || DekuBabaSticks;

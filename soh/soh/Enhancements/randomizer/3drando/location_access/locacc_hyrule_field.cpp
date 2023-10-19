@@ -107,8 +107,8 @@ void AreaTable_Init_HyruleField() {
                   EventAccess(&BeanPlantFairy,   {[]{return BeanPlantFairy   || (CanPlantBean(LAKE_HYLIA) && CanUse(SONG_OF_STORMS));}}),
                   EventAccess(&ButterflyFairy,   {[]{return ButterflyFairy   || CanUse(STICKS);}}),
                   EventAccess(&BugShrub,         {[]{return BugShrub         || (IsChild && CanCutShrubs);}}),
-                  EventAccess(&ChildScarecrow,   {[]{return ChildScarecrow   || (IsChild && Ocarina);}}),
-                  EventAccess(&AdultScarecrow,   {[]{return AdultScarecrow   || (IsAdult && Ocarina);}}),
+                  EventAccess(&ChildScarecrow,   {[]{return ChildScarecrow   || (IsChild && Ocarina && OcarinaButtons >= 2);}}),
+                  EventAccess(&AdultScarecrow,   {[]{return AdultScarecrow   || (IsAdult && Ocarina && OcarinaButtons >= 2);}}),
                 }, {
                   //Locations
                   LocationAccess(LH_UNDERWATER_ITEM,        {[]{return IsChild && CanDive;}}),

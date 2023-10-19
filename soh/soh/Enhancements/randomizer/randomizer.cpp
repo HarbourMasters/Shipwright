@@ -4436,6 +4436,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::EnhancementCheckbox(Settings::FreeScarecrow.GetName().c_str(), "gRandomizeSkipScarecrowsSong");
                 UIWidgets::InsertHelpHoverText(
                     "Start with the ability to summon Pierre the scarecrow. Pulling out an ocarina in the usual locations will automatically summon him."
+                    "In Ocarina Button Shuffle you'll need at least two ocarina buttons to summon him."
                 );
 
                 UIWidgets::PaddedSeparator();
