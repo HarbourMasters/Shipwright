@@ -70,7 +70,7 @@ void AreaTable_Init_CastleTown() {
                   Entrance(TEMPLE_OF_TIME, {[]{return true;}}),
   });
 
-  areaTable[CASTLE_GROUNDS] = Area("Castle Grounds", "Castle Grounds", THE_MARKET, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[CASTLE_GROUNDS] = Area("Castle Grounds", "Castle Grounds", CASTLE_GROUNDS, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(THE_MARKET,            {[]{return true;}}),
                   Entrance(HYRULE_CASTLE_GROUNDS, {[]{return IsChild;}}),

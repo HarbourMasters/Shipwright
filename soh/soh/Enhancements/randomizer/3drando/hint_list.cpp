@@ -1046,6 +1046,11 @@ void HintTable_Init() {
         Text{ "Temple of Time", /*french*/ "le Temple du Temps", /*spanish*/ "el Templo del Tiempo" },
     });
 
+    hintTable[CASTLE_GROUNDS] = HintText::Exclude({
+        // obscure text
+        Text{ "the Castle Grounds", /*french*/ "le Château d'Hyrule", /*spanish*/ "" },
+    });
+
     hintTable[HYRULE_CASTLE] = HintText::Exclude({
         // obscure text
         Text{ "Hyrule Castle", /*french*/ "le Château d'Hyrule", /*spanish*/ "el Castillo de Hyrule" },
