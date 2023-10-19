@@ -114,7 +114,7 @@ void AreaTable_Init_GanonsCastle() {
                   //Locations
                   LocationAccess(GANONS_TOWER_BOSS_KEY_CHEST, {[]{return true;}}),
                   LocationAccess(GANONDORF_HINT,              {[]{return BossKeyGanonsCastle;}}),
-                  LocationAccess(GANON,                       {[]{return BossKeyGanonsCastle && CanUse(LIGHT_ARROWS);}}),
+                  LocationAccess(GANON,                       {[]{return HasBossSoul(GANON_BOSS_SOUL) && BossKeyGanonsCastle && CanUse(LIGHT_ARROWS);}}),
   }, {});
 
   /*---------------------------

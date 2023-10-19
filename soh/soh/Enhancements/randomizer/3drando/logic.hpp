@@ -377,6 +377,7 @@ void UpdateHelpers();
 bool CanPlay(bool song);
 bool CanUse(uint32_t itemName);
 bool HasProjectile(HasProjectileAge age);
+bool HasBossSoul(uint32_t itemName);
 bool SmallKeys(Key dungeon, uint8_t requiredAmount);
 bool SmallKeys(Key dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
 bool CanDoGlitch(GlitchType glitch);

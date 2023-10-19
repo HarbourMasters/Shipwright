@@ -407,7 +407,7 @@ void AreaTable_Init_FireTemple() {
              {
                  // Events
                  EventAccess(&FireTempleClear,
-                             { [] { return FireTempleClear || (CanSummonVolvagia && (FireTimer >= 64 && CanUse(MEGATON_HAMMER))); }}),
+                             { [] { return FireTempleClear || (HasBossSoul(VOLVAGIA_BOSS_SOUL) && (FireTimer >= 64 && CanUse(MEGATON_HAMMER))); }}),
              },
              {
                  // Locations

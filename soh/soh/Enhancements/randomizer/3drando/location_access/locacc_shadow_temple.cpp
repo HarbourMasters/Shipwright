@@ -194,7 +194,7 @@ void AreaTable_Init_ShadowTemple() {
              {
                  // Events
                  EventAccess(&ShadowTempleClear, { [] {
-                     return ShadowTempleClear || (CanSummonBongoBongo &&
+                     return ShadowTempleClear || (HasBossSoul(BONGO_BONGO_BOSS_SOUL) &&
                             ((CanUse(LENS_OF_TRUTH) || LogicLensBongo) &&
                              (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)) &&
                              (CanUse(HOOKSHOT) || CanUse(BOW) || CanUse(SLINGSHOT) || LogicShadowBongo)));

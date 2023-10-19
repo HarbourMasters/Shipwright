@@ -290,7 +290,7 @@ void AreaTable_Init_DodongosCavern() {
                  // Events
                  EventAccess(&DodongosCavernClear,
                              { [] {
-                                  return DodongosCavernClear || (CanSummonKingDodongo &&
+                                  return DodongosCavernClear || (HasBossSoul(KING_DODONGO_BOSS_SOUL) &&
                                          (Here(DODONGOS_CAVERN_BOSS_ROOM,
                                                [] { return HasExplosives || (CanUse(MEGATON_HAMMER) && LogicDCHammerFloor); }) &&
                                           (Bombs || GoronBracelet) && CanJumpslash)); /*todo add chu kill to tricks*/

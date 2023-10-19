@@ -478,6 +478,9 @@ namespace Logic {
     if (ShuffleBossSouls.Is(BOSSSOULS_OFF)) {
       return true;
     }
+    if (ShuffleBossSouls.IsNot(BOSSSOULS_ON_PLUS_GANON) && itemName == GANON_BOSS_SOUL) {
+      return true;
+    }
     return (itemName == GOHMA_BOSS_SOUL && CanSummonGohma)         ||
     (itemName == KING_DODONGO_BOSS_SOUL && CanSummonKingDodongo)   ||
     (itemName == BARINADE_BOSS_SOUL && CanSummonBarinade)          ||
@@ -651,15 +654,6 @@ namespace Logic {
                      (LACSCondition == LACSCONDITION_DUNGEONS   && DungeonCount + (Greg && GregInLogic ? 1 : 0) >= LACSDungeonCount.Value<uint8_t>())                ||
                      (LACSCondition == LACSCONDITION_TOKENS     && GoldSkulltulaTokens >= LACSTokenCount.Value<uint8_t>());
     CanCompleteTriforce = TriforcePieces >= TriforceHuntRequired.Value<uint8_t>();
-    CanSummonGohma = HasBossSoul(GOHMA_BOSS_SOUL);
-    CanSummonKingDodongo = HasBossSoul(KING_DODONGO_BOSS_SOUL);
-    CanSummonBarinade = HasBossSoul(BARINADE_BOSS_SOUL);
-    CanSummonPhantomGanon = HasBossSoul(PHANTOM_GANON_BOSS_SOUL);
-    CanSummonVolvagia = HasBossSoul(VOLVAGIA_BOSS_SOUL);
-    CanSummonMorpha = HasBossSoul(MORPHA_BOSS_SOUL);
-    CanSummonBongoBongo = HasBossSoul(BONGO_BONGO_BOSS_SOUL);
-    CanSummonTwinrova = HasBossSoul(TWINROVA_BOSS_SOUL);
-    CanSummonGanon = HasBossSoul(GANON_BOSS_SOUL);
 
   }
 

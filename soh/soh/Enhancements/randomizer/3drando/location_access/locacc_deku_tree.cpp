@@ -253,7 +253,7 @@ void AreaTable_Init_DekuTree() {
              {
                  // Events
                  EventAccess(&DekuTreeClear, { [] {
-                                                  return DekuTreeClear || (CanSummonGohma && 
+                                                  return DekuTreeClear || (HasBossSoul(GOHMA_BOSS_SOUL) && 
                                                          (CanJumpslash && (Nuts || CanUse(SLINGSHOT) || CanUse(BOW) ||
                                                                            HookshotOrBoomerang)));
                                               }}),

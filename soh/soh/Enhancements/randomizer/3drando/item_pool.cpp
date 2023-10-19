@@ -822,6 +822,7 @@ void GenerateItemPool() {
     AddItemToMainPool(BARINADE_BOSS_SOUL);
     AddItemToMainPool(PHANTOM_GANON_BOSS_SOUL);
     AddItemToMainPool(VOLVAGIA_BOSS_SOUL);
+    AddItemToMainPool(MORPHA_BOSS_SOUL);
     AddItemToMainPool(BONGO_BONGO_BOSS_SOUL);
     AddItemToMainPool(TWINROVA_BOSS_SOUL);
     if (ShuffleBossSouls.Is(BOSSSOULS_ON_PLUS_GANON)) {
