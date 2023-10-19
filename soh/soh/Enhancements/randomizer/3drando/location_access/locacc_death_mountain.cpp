@@ -8,7 +8,7 @@ using namespace Settings;
 void AreaTable_Init_DeathMountain() {
   areaTable[DEATH_MOUNTAIN_TRAIL] = Area("Death Mountain", "Death Mountain", DEATH_MOUNTAIN_TRAIL, DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&BeanPlantFairy, {[]{return BeanPlantFairy || (CanPlantBean(DEATH_MOUNTAIN_TRAIL) && CanPlay(SongOfStorms, Song::SONG_STORMS) && (HasExplosives || GoronBracelet));}}),
+                  EventAccess(&BeanPlantFairy, {[]{return BeanPlantFairy || (CanPlantBean(DEATH_MOUNTAIN_TRAIL) && CanUse(SONG_OF_STORMS) && (HasExplosives || GoronBracelet));}}),
                 }, {
                   //Locations
                   LocationAccess(DMT_CHEST,                    {[]{return CanBlastOrSmash || (LogicDMTBombable && IsChild && GoronBracelet);}}),
@@ -53,7 +53,7 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[DMT_COW_GROTTO] = Area("DMT Cow Grotto", "DMT Cow Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(DMT_COW_GROTTO_COW, {[]{return CanPlay(EponasSong, Song::SONG_EPONA);}}),
+                  LocationAccess(DMT_COW_GROTTO_COW, {[]{return CanUse(EPONAS_SONG);}}),
                 }, {
                   //Exits
                   Entrance(DEATH_MOUNTAIN_SUMMIT, {[]{return true;}}),
@@ -71,7 +71,7 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[DMT_GREAT_FAIRY_FOUNTAIN] = Area("DMT Great Fairy Fountain", "DMT Great Fairy Fountain", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(DMT_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby, Song::SONG_LULLABY);}}),
+                  LocationAccess(DMT_GREAT_FAIRY_REWARD, {[]{return CanUse(ZELDAS_LULLABY);}}),
                 }, {
                   //Exits
                   Entrance(DEATH_MOUNTAIN_SUMMIT, {[]{return true;}}),
@@ -84,7 +84,7 @@ void AreaTable_Init_DeathMountain() {
                   EventAccess(&BugRock,                   {[]{return BugRock                   || (CanBlastOrSmash || CanUse(SILVER_GAUNTLETS));}}),
                   EventAccess(&GoronCityChildFire,        {[]{return GoronCityChildFire        || (IsChild && CanUse(DINS_FIRE));}}),
                   EventAccess(&GCWoodsWarpOpen,           {[]{return GCWoodsWarpOpen           || (CanBlastOrSmash || CanUse(DINS_FIRE) || CanUse(BOW) || GoronBracelet || GoronCityChildFire);}}),
-                  EventAccess(&GCDaruniasDoorOpenChild,   {[]{return GCDaruniasDoorOpenChild   || (IsChild && CanPlay(ZeldasLullaby, Song::SONG_LULLABY));}}),
+                  EventAccess(&GCDaruniasDoorOpenChild,   {[]{return GCDaruniasDoorOpenChild   || (IsChild && CanUse(ZELDAS_LULLABY));}}),
                   EventAccess(&StopGCRollingGoronAsAdult, {[]{return StopGCRollingGoronAsAdult || (IsAdult && (GoronBracelet || HasExplosives || Bow || (LogicGoronCityLinkGoronDins && CanUse(DINS_FIRE))));}}),
                 }, {
                   //Locations
@@ -105,7 +105,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(GC_WOODS_WARP,        {[]{return GCWoodsWarpOpen;}}),
                   Entrance(GC_SHOP,              {[]{return (IsAdult && StopGCRollingGoronAsAdult) || (IsChild && (CanBlastOrSmash || GoronBracelet || GoronCityChildFire || CanUse(BOW)));}}),
                   Entrance(GC_DARUNIAS_CHAMBER,  {[]{return (IsAdult && StopGCRollingGoronAsAdult) || GCDaruniasDoorOpenChild;}}),
-                  Entrance(GC_GROTTO_PLATFORM,   {[]{return IsAdult && ((CanPlay(SongOfTime, Song::SONG_TIME) && ((EffectiveHealth > 2) || CanUse(GORON_TUNIC) || CanUse(LONGSHOT) || CanUse(NAYRUS_LOVE))) || (EffectiveHealth > 1 && CanUse(GORON_TUNIC) && CanUse(HOOKSHOT)) || (CanUse(NAYRUS_LOVE) && CanUse(HOOKSHOT)) || (EffectiveHealth > 2 && CanUse(HOOKSHOT) && LogicGoronCityGrotto));}}),
+                  Entrance(GC_GROTTO_PLATFORM,   {[]{return IsAdult && ((CanUse(SONG_OF_TIME) && ((EffectiveHealth > 2) || CanUse(GORON_TUNIC) || CanUse(LONGSHOT) || CanUse(NAYRUS_LOVE))) || (EffectiveHealth > 1 && CanUse(GORON_TUNIC) && CanUse(HOOKSHOT)) || (CanUse(NAYRUS_LOVE) && CanUse(HOOKSHOT)) || (EffectiveHealth > 2 && CanUse(HOOKSHOT) && LogicGoronCityGrotto));}}),
   });
 
   areaTable[GC_WOODS_WARP] = Area("GC Woods Warp", "Goron City", NONE, NO_DAY_NIGHT_CYCLE, {
@@ -122,7 +122,7 @@ void AreaTable_Init_DeathMountain() {
                   EventAccess(&GoronCityChildFire, {[]{return GoronCityChildFire || (IsChild && CanUse(STICKS));}}),
                 }, {
                   //Locations
-                  LocationAccess(GC_DARUNIAS_JOY, {[]{return IsChild && CanPlay(SariasSong, Song::SONG_SARIA);}}),
+                  LocationAccess(GC_DARUNIAS_JOY, {[]{return IsChild && CanUse(SARIAS_SONG);}}),
                 }, {
                   //Exits
                   Entrance(GORON_CITY,      {[]{return true;}}),
@@ -132,7 +132,7 @@ void AreaTable_Init_DeathMountain() {
   areaTable[GC_GROTTO_PLATFORM] = Area("GC Grotto Platform", "Goron City", GORON_CITY, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(GC_GROTTO,  {[]{return true;}}),
-                  Entrance(GORON_CITY, {[]{return EffectiveHealth > 2 || CanUse(GORON_TUNIC) || CanUse(NAYRUS_LOVE) || ((IsChild || CanPlay(SongOfTime, Song::SONG_TIME)) && CanUse(LONGSHOT));}}),
+                  Entrance(GORON_CITY, {[]{return EffectiveHealth > 2 || CanUse(GORON_TUNIC) || CanUse(NAYRUS_LOVE) || ((IsChild || CanUse(SONG_OF_TIME)) && CanUse(LONGSHOT));}}),
   });
 
   areaTable[GC_SHOP] = Area("GC Shop", "GC Shop", NONE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -219,7 +219,7 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[DMC_CENTRAL_LOCAL] = Area("DMC Central Local", "Death Mountain Crater", DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&BeanPlantFairy, {[]{return BeanPlantFairy || (CanPlantBean(DMC_CENTRAL_LOCAL) && CanPlay(SongOfStorms, Song::SONG_STORMS));}}),
+                  EventAccess(&BeanPlantFairy, {[]{return BeanPlantFairy || (CanPlantBean(DMC_CENTRAL_LOCAL) && CanUse(SONG_OF_STORMS));}}),
                 }, {
                   //Locations
                   LocationAccess(DMC_GS_BEAN_PATCH, {[]{return (FireTimer >= 8 || Hearts >= 3) && CanPlantBugs && CanChildAttack;}}),
@@ -233,7 +233,7 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[DMC_GREAT_FAIRY_FOUNTAIN] = Area("DMC Great Fairy Fountain", "DMC Great Fairy Fountain", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(DMC_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby, Song::SONG_LULLABY);}}),
+                  LocationAccess(DMC_GREAT_FAIRY_REWARD, {[]{return CanUse(ZELDAS_LULLABY);}}),
                 }, {
                   //Exits
                   Entrance(DMC_LOWER_LOCAL, {[]{return true;}}),

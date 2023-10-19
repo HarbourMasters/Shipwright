@@ -177,8 +177,8 @@ void AreaTable_Init_DekuTree() {
                   LocationAccess(DEKU_TREE_MQ_COMPASS_CHEST,   {[]{return true;}}),
                   LocationAccess(DEKU_TREE_MQ_GS_COMPASS_ROOM, {[]{return HookshotOrBoomerang &&
                                                                                Here(DEKU_TREE_MQ_COMPASS_ROOM, []{return HasBombchus ||
-                                                                               (Bombs && (CanPlay(SongOfTime, Song::SONG_TIME) || IsAdult)) ||
-                                                                               (IsAdult && CanUse(MEGATON_HAMMER) && (CanPlay(SongOfTime, Song::SONG_TIME) || LogicDekuMQCompassGS));});}}),
+                                                                               (Bombs && (CanUse(SONG_OF_TIME) || IsAdult)) ||
+                                                                               (IsAdult && CanUse(MEGATON_HAMMER) && (CanUse(SONG_OF_TIME) || LogicDekuMQCompassGS));});}}),
   }, {
                   //Exits
                   Entrance(DEKU_TREE_MQ_LOBBY, {[]{return true;}}),
@@ -196,7 +196,7 @@ void AreaTable_Init_DekuTree() {
 
   areaTable[DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK] = Area("Deku Tree MQ Basement Water Room Front", "Deku Tree", DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(DEKU_TREE_MQ_AFTER_SPINNING_LOG_CHEST, {[]{return CanPlay(SongOfTime, Song::SONG_TIME);}}),
+                  LocationAccess(DEKU_TREE_MQ_AFTER_SPINNING_LOG_CHEST, {[]{return CanUse(SONG_OF_TIME);}}),
   }, {
                   //Exits
                   Entrance(DEKU_TREE_MQ_BASEMENT_BACK_ROOM,        {[]{return Here(DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, []{return (IsChild && CanUse(STICKS)) || CanUse(DINS_FIRE) ||
@@ -207,7 +207,7 @@ void AreaTable_Init_DekuTree() {
 
   areaTable[DEKU_TREE_MQ_BASEMENT_BACK_ROOM] = Area("Deku Tree MQ Basement Back Room", "Deku Tree", DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM, {[]{return (IsAdult && CanUse(LONGSHOT)) || (CanPlay(SongOfTime, Song::SONG_TIME) && HookshotOrBoomerang);}}),
+                  LocationAccess(DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM, {[]{return (IsAdult && CanUse(LONGSHOT)) || (CanUse(SONG_OF_TIME) && HookshotOrBoomerang);}}),
                   LocationAccess(DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM,   {[]{return HasFireSourceWithTorch && HookshotOrBoomerang;}}),
   }, {
                   //Exits

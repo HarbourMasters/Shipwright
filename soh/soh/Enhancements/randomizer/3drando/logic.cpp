@@ -280,6 +280,7 @@ namespace Logic {
   bool HookshotOrBoomerang = false;
   bool CanGetNightTimeGS   = false;
 
+  uint8_t   OcarinaButtons  = 0;
   uint8_t   BaseHearts      = 0;
   uint8_t   Hearts          = 0;
   uint8_t   Multiplier      = 0;
@@ -377,85 +378,6 @@ namespace Logic {
   bool BuyDekuShieldPast        = false;
   bool TimeTravelPast           = false;
 
-  bool CanPlay(bool hasSong, Song song) {
-    switch (song) {
-      case Song::SONG_MINUET:
-        if (!OcarinaAButton || !OcarinaCLeftButton || !OcarinaCRightButton || !OcarinaCUpButton) {
-          return false;
-        }
-        break;
-      case Song::SONG_BOLERO:
-        if (!OcarinaAButton || !OcarinaCRightButton || !OcarinaCDownButton) {
-          return false;
-        }
-        break;
-      case Song::SONG_SERENADE:
-        if (!OcarinaAButton || !OcarinaCLeftButton || !OcarinaCRightButton  || !OcarinaCDownButton) {
-          return false;
-        }
-        break;
-      case Song::SONG_REQUIEM:
-        if (!OcarinaAButton || !OcarinaCRightButton || !OcarinaCDownButton) {
-          return false;
-        }
-        break;
-      case Song::SONG_NOCTURNE:
-        if (!OcarinaAButton || !OcarinaCLeftButton || !OcarinaCRightButton || !OcarinaCDownButton) {
-          return false;
-        }
-        break;
-      case Song::SONG_PRELUDE:
-        if (!OcarinaCLeftButton || !OcarinaCRightButton || !OcarinaCUpButton) {
-          return false;
-        }
-        break;
-
-      case Song::SONG_LULLABY:
-        if (!OcarinaCLeftButton || !OcarinaCRightButton || !OcarinaCUpButton) {
-          return false;
-        }
-        break;
-      case Song::SONG_EPONA:
-        if (!OcarinaCLeftButton || !OcarinaCRightButton || !OcarinaCUpButton) {
-            return false;
-        }
-        break;
-      case Song::SONG_SARIA:
-        if (!OcarinaCLeftButton || !OcarinaCRightButton || !OcarinaCDownButton) {
-          return false;
-        }
-        break;
-      case Song::SONG_SUN:
-        if (!OcarinaCRightButton || !OcarinaCUpButton || !OcarinaCDownButton) {
-          return false;
-        }
-        break;
-      case Song::SONG_TIME:
-        if (!OcarinaAButton || !OcarinaCRightButton || !OcarinaCDownButton) {
-          return false;
-        }
-        break;
-      case Song::SONG_STORMS:
-        if (!OcarinaAButton || !OcarinaCUpButton || !OcarinaCDownButton) {
-          return false;
-        }
-        break;
-
-      case Song::SONG_SCARECROW://you need at least 2 buttons for scarecrow song
-        if (
-          (OcarinaAButton ? 1 : 0) +
-          (OcarinaCLeftButton ? 1 : 0) +
-          (OcarinaCRightButton ? 1 : 0) +
-          (OcarinaCUpButton ? 1 : 0) +
-          (OcarinaCDownButton ? 1 : 0) < 2
-        ) {
-          return false;
-        }
-        break;
-    }
-    return Ocarina && hasSong;
-  }
-
   static bool IsMagicItem(uint32_t item) {
     return item == DINS_FIRE    ||
            item == FARORES_WIND ||
@@ -470,34 +392,39 @@ namespace Logic {
   }
 
   bool HasItem(uint32_t itemName) {
-    return (itemName == DINS_FIRE         && DinsFire)        ||
-           (itemName == FARORES_WIND      && FaroresWind)     ||
-           (itemName == NAYRUS_LOVE       && NayrusLove)      ||
-           (itemName == LENS_OF_TRUTH     && LensOfTruth)     ||
-           (itemName == BOW               && Bow)             ||
-           (itemName == MEGATON_HAMMER    && Hammer)          ||
-           (itemName == IRON_BOOTS        && IronBoots)       ||
-           (itemName == HOVER_BOOTS       && HoverBoots)      ||
-           (itemName == HOOKSHOT          && Hookshot)        ||
-           (itemName == LONGSHOT          && Longshot)        ||
-           (itemName == SILVER_GAUNTLETS  && SilverGauntlets) ||
-           (itemName == GOLDEN_GAUNTLETS  && GoldenGauntlets) ||
-           (itemName == GORON_TUNIC       && GoronTunic)      ||
-           (itemName == ZORA_TUNIC        && ZoraTunic)       ||
-           (itemName == SCARECROW         && Scarecrow)       ||
-           (itemName == DISTANT_SCARECROW && DistantScarecrow)||
-           (itemName == HYLIAN_SHIELD     && HylianShield)    ||
-           (itemName == MIRROR_SHIELD     && MirrorShield)    ||
-           (itemName == MASTER_SWORD      && MasterSword)     ||
-           (itemName == BIGGORON_SWORD    && BiggoronSword)   ||
-           (itemName == SLINGSHOT         && Slingshot)       ||
-           (itemName == BOOMERANG         && Boomerang)       ||
-           (itemName == KOKIRI_SWORD      && KokiriSword)     ||
-           (itemName == STICKS            && Sticks)          ||
-           (itemName == DEKU_SHIELD       && DekuShield)      ||
-           (itemName == FIRE_ARROWS       && FireArrows)      ||
-           (itemName == ICE_ARROWS        && IceArrows)       ||
-           (itemName == LIGHT_ARROWS      && LightArrows);
+    return (itemName == DINS_FIRE              && DinsFire)            ||
+           (itemName == FARORES_WIND           && FaroresWind)         ||
+           (itemName == NAYRUS_LOVE            && NayrusLove)          ||
+           (itemName == LENS_OF_TRUTH          && LensOfTruth)         ||
+           (itemName == BOW                    && Bow)                 ||
+           (itemName == MEGATON_HAMMER         && Hammer)              ||
+           (itemName == IRON_BOOTS             && IronBoots)           ||
+           (itemName == HOVER_BOOTS            && HoverBoots)          ||
+           (itemName == HOOKSHOT               && Hookshot)            ||
+           (itemName == LONGSHOT               && Longshot)            ||
+           (itemName == SILVER_GAUNTLETS       && SilverGauntlets)     ||
+           (itemName == GOLDEN_GAUNTLETS       && GoldenGauntlets)     ||
+           (itemName == GORON_TUNIC            && GoronTunic)          ||
+           (itemName == ZORA_TUNIC             && ZoraTunic)           ||
+           (itemName == SCARECROW              && Scarecrow)           ||
+           (itemName == DISTANT_SCARECROW      && DistantScarecrow)    ||
+           (itemName == HYLIAN_SHIELD          && HylianShield)        ||
+           (itemName == MIRROR_SHIELD          && MirrorShield)        ||
+           (itemName == MASTER_SWORD           && MasterSword)         ||
+           (itemName == BIGGORON_SWORD         && BiggoronSword)       ||
+           (itemName == SLINGSHOT              && Slingshot)           ||
+           (itemName == BOOMERANG              && Boomerang)           ||
+           (itemName == KOKIRI_SWORD           && KokiriSword)         ||
+           (itemName == STICKS                 && Sticks)              ||
+           (itemName == DEKU_SHIELD            && DekuShield)          ||
+           (itemName == FIRE_ARROWS            && FireArrows)          ||
+           (itemName == ICE_ARROWS             && IceArrows)           ||
+           (itemName == LIGHT_ARROWS           && LightArrows)         ||
+           (itemName == OCARINA_A_BUTTON       && OcarinaAButton)      ||
+           (itemName == OCARINA_C_LEFT_BUTTON  && OcarinaCLeftButton)  ||
+           (itemName == OCARINA_C_RIGHT_BUTTON && OcarinaCRightButton) ||
+           (itemName == OCARINA_C_DOWN_BUTTON  && OcarinaCDownButton)  ||
+           (itemName == OCARINA_C_UP_BUTTON    && OcarinaCUpButton);
 
   }
 
@@ -531,6 +458,20 @@ namespace Logic {
       case KOKIRI_SWORD:      return IsChild || KokiriSwordAsAdult;
       case STICKS:            return IsChild || StickAsAdult;
       case DEKU_SHIELD:       return IsChild || DekuShieldAsAdult;
+
+      // Songs
+      case ZELDAS_LULLABY:     return Ocarina && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCUpButton;
+      case EPONAS_SONG:        return Ocarina && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCUpButton;
+      case SARIAS_SONG:        return Ocarina && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCDownButton;
+      case SUNS_SONG:          return Ocarina && OcarinaCRightButton && OcarinaCUpButton && OcarinaCDownButton;
+      case SONG_OF_TIME:       return Ocarina && OcarinaAButton && OcarinaCRightButton && OcarinaCDownButton;
+      case SONG_OF_STORMS:     return Ocarina && OcarinaAButton && OcarinaCUpButton && OcarinaCDownButton;
+      case MINUET_OF_FOREST:   return Ocarina && OcarinaAButton && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCUpButton;
+      case BOLERO_OF_FIRE:     return Ocarina && OcarinaAButton && OcarinaCRightButton && OcarinaCDownButton;
+      case SERENADE_OF_WATER:  return Ocarina && OcarinaAButton && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCDownButton;
+      case REQUIEM_OF_SPIRIT:  return Ocarina && OcarinaAButton && OcarinaCRightButton && OcarinaCDownButton;
+      case NOCTURNE_OF_SHADOW: return Ocarina && OcarinaAButton && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCDownButton;
+      case PRELUDE_OF_LIGHT:   return Ocarina && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCUpButton;
 
       // Magic items
       default: return MagicMeter && (IsMagicItem(itemName) || (IsMagicArrow(itemName) && CanUse(BOW)));
@@ -575,6 +516,11 @@ namespace Logic {
 
   //Updates all logic helpers. Should be called whenever a non-helper is changed
   void UpdateHelpers() {
+    OcarinaButtons  = (OcarinaAButton ? 1 : 0) +
+                      (OcarinaCLeftButton ? 1 : 0) +
+                      (OcarinaCRightButton ? 1 : 0) +
+                      (OcarinaCUpButton ? 1 : 0) +
+                      (OcarinaCDownButton ? 1 : 0);
     NumBottles      = ((NoBottles) ? 0 : (Bottles + ((DeliverLetter) ? 1 : 0)));
     HasBottle       = NumBottles >= 1;
     Slingshot       = (ProgressiveBulletBag >= 1) && (BuySeed || AmmoCanDrop);
@@ -594,9 +540,10 @@ namespace Logic {
     MasterSword     = MasterSword   || IsAdult;
     BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
+    //you need at least 2 buttons for scarecrow song
     ScarecrowSong    = ScarecrowSong || FreeScarecrow || (ChildScarecrow && AdultScarecrow);
-    Scarecrow        = Hookshot && CanPlay(ScarecrowSong, Song::SONG_SCARECROW);
-    DistantScarecrow = Longshot && CanPlay(ScarecrowSong, Song::SONG_SCARECROW);
+    Scarecrow        = Hookshot && Ocarina && OcarinaButtons >= 2;
+    DistantScarecrow = Longshot && Ocarina && OcarinaButtons >= 2;
 
     //Drop Access
     DekuStickDrop = StickPot || DekuBabaSticks;
@@ -645,9 +592,9 @@ namespace Logic {
     CanDive         = ProgressiveScale >= 1;
     CanLeaveForest  = OpenForest.IsNot(OPENFOREST_CLOSED) || IsAdult || DekuTreeClear || ShuffleInteriorEntrances || ShuffleOverworldEntrances;
     CanPlantBugs    = IsChild && Bugs;
-    CanRideEpona    = IsAdult && Epona && CanPlay(EponasSong, Song::SONG_EPONA);
-    CanSummonGossipFairy            = Ocarina && (CanPlay(ZeldasLullaby, Song::SONG_LULLABY) || CanPlay(EponasSong, Song::SONG_EPONA) || CanPlay(SongOfTime, Song::SONG_TIME) || CanPlay(SunsSong, Song::SONG_SUN));
-    CanSummonGossipFairyWithoutSuns = Ocarina && (CanPlay(ZeldasLullaby, Song::SONG_LULLABY) || CanPlay(EponasSong, Song::SONG_EPONA) || CanPlay(SongOfTime, Song::SONG_TIME));
+    CanRideEpona    = IsAdult && Epona && CanUse(EPONAS_SONG);
+    CanSummonGossipFairy            = Ocarina && (CanUse(ZELDAS_LULLABY) || CanUse(EPONAS_SONG) || CanUse(SONG_OF_TIME) || CanUse(SUNS_SONG));
+    CanSummonGossipFairyWithoutSuns = Ocarina && (CanUse(ZELDAS_LULLABY) || CanUse(EPONAS_SONG) || CanUse(SONG_OF_TIME));
     Hearts          = BaseHearts + HeartContainer + (PieceOfHeart >> 2);
     EffectiveHealth = ((Hearts << (2 + DoubleDefense)) >> Multiplier) + ((Hearts << (2 + DoubleDefense)) % (1 << Multiplier) > 0); //Number of half heart hits to die, ranges from 1 to 160
     FireTimer       = CanUse(GORON_TUNIC) ? 255 : (LogicFewerTunicRequirements) ? (Hearts * 8) : 0;
@@ -658,9 +605,9 @@ namespace Logic {
     CanTakeDamageTwice  = (Fairy && NumBottles >= 2) || ((EffectiveHealth == 2) && (CanUse(NAYRUS_LOVE) || Fairy)) || (EffectiveHealth > 2);
     //CanPlantBean        = IsChild && (MagicBean || MagicBeanPack);
     CanOpenBombGrotto   = CanBlastOrSmash       && (ShardOfAgony || LogicGrottosWithoutAgony);
-    CanOpenStormGrotto  = CanPlay(SongOfStorms, Song::SONG_STORMS) && (ShardOfAgony || LogicGrottosWithoutAgony);
+    CanOpenStormGrotto  = CanUse(SONG_OF_STORMS) && (ShardOfAgony || LogicGrottosWithoutAgony);
     HookshotOrBoomerang = CanUse(HOOKSHOT) || CanUse(BOOMERANG);
-    CanGetNightTimeGS   = (CanPlay(SunsSong, Song::SONG_SUN) || !NightGSExpectSuns);
+    CanGetNightTimeGS   = (CanUse(SUNS_SONG) || !NightGSExpectSuns);
 
     GuaranteeTradePath     = ShuffleInteriorEntrances || ShuffleOverworldEntrances || LogicBiggoronBolero || CanBlastOrSmash || StopGCRollingGoronAsAdult;
   //GuaranteeHint          = (hints == "Mask" && MaskofTruth) || (hints == "Agony") || (hints != "Mask" && hints != "Agony");

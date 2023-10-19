@@ -184,8 +184,8 @@ void AreaTable_Init_JabuJabusBelly() {
                   LocationAccess(JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST, {[]{return true;}}),
                   LocationAccess(JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST,   {[]{return true;}}),
                   LocationAccess(JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST,              {[]{return true;}}),
-                  LocationAccess(JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,      {[]{return CanPlay(SongOfTime, Song::SONG_TIME) || (LogicJabuMQSoTGS && IsChild && CanUse(BOOMERANG));}}),
-                    //Trick: CanPlay(SongOfTime, Song::SONG_TIME) || (LogicJabuMQSoTGS && IsChild && CanUse(BOOMERANG))
+                  LocationAccess(JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,      {[]{return CanUse(SONG_OF_TIME) || (LogicJabuMQSoTGS && IsChild && CanUse(BOOMERANG));}}),
+                    //Trick: CanUse(SONG_OF_TIME) || (LogicJabuMQSoTGS && IsChild && CanUse(BOOMERANG))
   }, {
                   //Exits
                   Entrance(JABU_JABUS_BELLY_MQ_BEGINNING, {[]{return true;}}),
@@ -208,7 +208,7 @@ void AreaTable_Init_JabuJabusBelly() {
                   EventAccess(&FairyPot, {[]{return true;}}),
   }, {
                   //Locations
-                  LocationAccess(JABU_JABUS_BELLY_MQ_COW,             {[]{return CanPlay(EponasSong, Song::SONG_EPONA);}}),
+                  LocationAccess(JABU_JABUS_BELLY_MQ_COW,             {[]{return CanUse(EPONAS_SONG);}}),
                   LocationAccess(JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST, {[]{return true;}}),
                   LocationAccess(JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS,    {[]{return true;}}),
   }, {

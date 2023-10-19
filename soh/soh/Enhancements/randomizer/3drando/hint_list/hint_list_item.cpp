@@ -1955,7 +1955,7 @@ void HintTable_Init_Item() {
 
     hintTable[OCARINA_A_BUTTON] = HintText::Item({
                        //obscure text
-                       Text{"a cyclinder", /*french*/"un cylindre", /*spanish*/"un cilindro"},
+                       Text{"a musical letter", /*french*/"!!!", /*spanish*/"una letra musical"},
                      }, {
                        //ambiguous text
                        Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"},
@@ -1966,7 +1966,7 @@ void HintTable_Init_Item() {
 
     hintTable[OCARINA_C_LEFT_BUTTON] = HintText::Item({
                        //obscure text
-                       Text{"a cyclinder", /*french*/"un cylindre", /*spanish*/"un cilindro"},
+                       Text{"a leftward tone", /*french*/"!!!", /*spanish*/"un tono hacia la izquierda"},
                      }, {
                        //ambiguous text
                        Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"},
@@ -1977,7 +1977,7 @@ void HintTable_Init_Item() {
 
     hintTable[OCARINA_C_RIGHT_BUTTON] = HintText::Item({
                        //obscure text
-                       Text{"a cyclinder", /*french*/"un cylindre", /*spanish*/"un cilindro"},
+                       Text{"a rightward tone", /*french*/"!!!", /*spanish*/"un tono hacia la derecha"},
                      }, {
                        //ambiguous text
                        Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"},
@@ -1988,7 +1988,7 @@ void HintTable_Init_Item() {
 
     hintTable[OCARINA_C_UP_BUTTON] = HintText::Item({
                        //obscure text
-                       Text{"a cyclinder", /*french*/"un cylindre", /*spanish*/"un cilindro"},
+                       Text{"a high tone", /*french*/"!!!", /*spanish*/"un tono alto"},
                      }, {
                        //ambiguous text
                        Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"},
@@ -1999,7 +1999,7 @@ void HintTable_Init_Item() {
 
     hintTable[OCARINA_C_DOWN_BUTTON] = HintText::Item({
                        //obscure text
-                       Text{"a cyclinder", /*french*/"un cylindre", /*spanish*/"un cilindro"},
+                       Text{"a low tone", /*french*/"!!!", /*spanish*/"un tono bajo"},
                      }, {
                        //ambiguous text
                        Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"},

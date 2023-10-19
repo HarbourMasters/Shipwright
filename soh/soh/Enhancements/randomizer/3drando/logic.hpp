@@ -270,6 +270,7 @@ extern bool HookshotOrBoomerang;
 extern bool CanGetNightTimeGS;
 extern bool BigPoeKill;
 
+extern uint8_t OcarinaButtons;
 extern uint8_t BaseHearts;
 extern uint8_t Hearts;
 extern uint8_t Multiplier;
@@ -369,25 +370,7 @@ enum class GlitchDifficulty {
     HERO,
 };
 
-enum class Song {
-    SONG_MINUET,
-    SONG_BOLERO,
-    SONG_SERENADE,
-    SONG_REQUIEM,
-    SONG_NOCTURNE,
-    SONG_PRELUDE,
-    SONG_LULLABY,
-    SONG_EPONA,
-    SONG_SARIA,
-    SONG_SUN,
-    SONG_TIME,
-    SONG_STORMS,
-
-    SONG_SCARECROW
-};
-
 void UpdateHelpers();
-bool CanPlay(bool hasSong, Song song);
 bool CanUse(uint32_t itemName);
 bool HasProjectile(HasProjectileAge age);
 bool SmallKeys(Key dungeon, uint8_t requiredAmount);
