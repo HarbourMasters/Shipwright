@@ -424,8 +424,19 @@ namespace Logic {
            (itemName == OCARINA_C_LEFT_BUTTON  && OcarinaCLeftButton)  ||
            (itemName == OCARINA_C_RIGHT_BUTTON && OcarinaCRightButton) ||
            (itemName == OCARINA_C_DOWN_BUTTON  && OcarinaCDownButton)  ||
-           (itemName == OCARINA_C_UP_BUTTON    && OcarinaCUpButton);
-
+           (itemName == OCARINA_C_UP_BUTTON    && OcarinaCUpButton)    ||
+           (itemName == ZELDAS_LULLABY         && ZeldasLullaby)       ||
+           (itemName == EPONAS_SONG            && EponasSong)          ||
+           (itemName == SARIAS_SONG            && SariasSong)          ||
+           (itemName == SUNS_SONG              && SunsSong)            ||
+           (itemName == SONG_OF_TIME           && SongOfTime)          ||
+           (itemName == SONG_OF_STORMS         && SongOfStorms)        ||
+           (itemName == MINUET_OF_FOREST       && MinuetOfForest)      ||
+           (itemName == BOLERO_OF_FIRE         && BoleroOfFire)        ||
+           (itemName == SERENADE_OF_WATER      && SerenadeOfWater)     ||
+           (itemName == REQUIEM_OF_SPIRIT      && RequiemOfSpirit)     ||
+           (itemName == NOCTURNE_OF_SHADOW     && NocturneOfShadow)    ||
+           (itemName == PRELUDE_OF_LIGHT       && PreludeOfLight);
   }
 
   //Can the passed in item be used?
