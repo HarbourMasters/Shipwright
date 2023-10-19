@@ -1029,8 +1029,7 @@ void FileChoose_UpdateRandomizer() {
             fileSelectSpoilerFileLoaded = false;
     }
 
-    if ((CVarGetInteger("gNewFileDropped", 0) != 0) || (CVarGetInteger("gNewSeedGenerated", 0) != 0) ||
-        (!fileSelectSpoilerFileLoaded && SpoilerFileExists(CVarGetString("gSpoilerLog", "")))) {
+    if ((CVarGetInteger("gNewFileDropped", 0) != 0) || (CVarGetInteger("gNewSeedGenerated", 0) != 0)) {
             if (CVarGetInteger("gNewFileDropped", 0) != 0) {
             CVarSetString("gSpoilerLog", CVarGetString("gDroppedFile", "None"));
             }
