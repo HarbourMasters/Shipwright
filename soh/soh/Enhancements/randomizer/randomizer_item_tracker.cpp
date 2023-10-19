@@ -84,6 +84,24 @@ std::vector<ItemTrackerItem> triforcePieces = {
     ITEM_TRACKER_ITEM(RG_TRIFORCE_PIECE, 0, DrawItem),
 };
 
+std::vector<ItemTrackerItem> bossSoulItems = {
+    //Hack for right now, just gonna draw souls as bottles/big poes.
+    ItemTrackerItem(RG_GOHMA_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
+    ItemTrackerItem(RG_KING_DODONGO_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
+    ItemTrackerItem(RG_BARINADE_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
+    ItemTrackerItem(RG_PHANTOM_GANON_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
+    ItemTrackerItem(RG_VOLVAGIA_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
+    ItemTrackerItem(RG_MORPHA_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
+    ItemTrackerItem(RG_BONGO_BONGO_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
+    ItemTrackerItem(RG_TWINROVA_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
+    ItemTrackerItem(RG_GANON_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
+    
+    //For when these actually have textures, maybe?
+    // ITEM_TRACKER_ITEM(RG_GOHMA_SOUL, 0, DrawItem),         ITEM_TRACKER_ITEM(RG_KING_DODONGO_SOUL, 0, DrawItem), ITEM_TRACKER_ITEM(RG_BARINADE_SOUL, 0, DrawItem),
+    // ITEM_TRACKER_ITEM(RG_PHANTOM_GANON_SOUL, 0, DrawItem), ITEM_TRACKER_ITEM(RG_VOLVAGIA_SOUL, 0, DrawItem),     ITEM_TRACKER_ITEM(RG_MORPHA_SOUL, 0, DrawItem),
+    // ITEM_TRACKER_ITEM(RG_BONGO_BONGO_SOUL, 0, DrawItem),   ITEM_TRACKER_ITEM(RG_TWINROVA_SOUL, 0, DrawItem),     ITEM_TRACKER_ITEM(RG_GANON_SOUL, 0, DrawItem),
+};
+
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsHorizontal = {
     { SCENE_DEKU_TREE, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
     { SCENE_DODONGOS_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
@@ -152,6 +170,18 @@ std::map<uint16_t, std::string> itemTrackerDungeonShortNames = {
     { SCENE_INSIDE_GANONS_CASTLE, "GANON" },
     { SCENE_GERUDO_TRAINING_GROUND, "GTG" },
     { SCENE_THIEVES_HIDEOUT, "HIDE" },
+};
+
+std::map<uint16_t, std::string> itemTrackerBossShortNames = {
+    { RG_GOHMA_SOUL, "GOHMA" },
+    { RG_KING_DODONGO_SOUL, "KD" },
+    { RG_BARINADE_SOUL, "BARI" },
+    { RG_PHANTOM_GANON_SOUL, "PG"},
+    { RG_VOLVAGIA_SOUL, "VOLV"},
+    { RG_MORPHA_SOUL, "MORPH"},
+    { RG_BONGO_BONGO_SOUL, "BONGO"},
+    { RG_TWINROVA_SOUL, "TWIN"},
+    { RG_GANON_SOUL, "GANON"},
 };
 
 std::vector<ItemTrackerItem> dungeonItems = {};
@@ -609,6 +639,52 @@ void DrawItem(ItemTrackerItem item) {
             hasItem = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT);
             itemName = "Triforce Piece";
             break;
+        case RG_GOHMA_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_GOHMA_SOUL);
+            itemName = "Gohma's Soul";
+            break;
+        case RG_KING_DODONGO_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_KING_DODONGO_SOUL);
+            itemName = "King Dodongo's Soul";
+            break;
+        case RG_BARINADE_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_BARINADE_SOUL);
+            itemName = "Barinade's Soul";
+            break;
+        case RG_PHANTOM_GANON_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_PHANTOM_GANON_SOUL);
+            itemName = "Phantom Ganon's Soul";
+            break;
+        case RG_VOLVAGIA_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_VOLVAGIA_SOUL);
+            itemName = "Volvagia's Soul";
+            break;
+        case RG_MORPHA_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_MORPHA_SOUL);
+            itemName = "Morpha's Soul";
+            break;
+        case RG_BONGO_BONGO_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_BONGO_BONGO_SOUL);
+            itemName = "Bongo Bongo's Soul";
+            break;
+        case RG_TWINROVA_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_TWINROVA_SOUL);
+            itemName = "Twinrova's Soul";
+            break;
+        case RG_GANON_SOUL:
+            actualItemId = item.id;
+            hasItem = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS) == RO_BOSS_SOULS_ON_PLUS_GANON ? true :
+                Flags_GetRandomizerInf(RAND_INF_GANON_SOUL);
+            itemName = "Ganon's Soul";
+            break;
     }
 
     if (GameInteractor::IsSaveLoaded() && (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
@@ -621,6 +697,16 @@ void DrawItem(ItemTrackerItem item) {
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     
     DrawItemCount(item);
+
+    if (item.id >= RG_GOHMA_SOUL && item.id <= RG_GANON_SOUL) {
+        ImVec2 p = ImGui::GetCursorScreenPos();
+        std::string bossName = itemTrackerBossShortNames[item.id];
+        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(bossName.c_str()).x / 2), p.y - (iconSize + 13)));
+        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL_WHITE);
+        ImGui::Text("%s", bossName.c_str());
+        ImGui::PopStyleColor();
+    }
+
     ImGui::EndGroup();
 
     if (itemName == "") {
@@ -956,6 +1042,17 @@ void UpdateVectors() {
         mainWindowItems.insert(mainWindowItems.end(), triforcePieces.begin(), triforcePieces.end());
     }
 
+    //If we're adding boss souls to the main window...
+    if (CVarGetInteger("gItemTrackerBossSoulsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) {
+        //...add empty items on the main window to get the souls on their own row. (Too many to sit with Greg/Triforce pieces)
+        while (mainWindowItems.size() % 6) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+        }
+
+        //Add boss souls
+        mainWindowItems.insert(mainWindowItems.end(), bossSoulItems.begin(), bossSoulItems.end());
+    }
+
     shouldUpdateVectors = false;
 }
 
@@ -1053,6 +1150,12 @@ void ItemTrackerWindow::DrawElement() {
         if (CVarGetInteger("gItemTrackerTriforcePiecesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Triforce Piece Tracker");
             DrawItemsInRows(triforcePieces);
+            EndFloatingWindows();
+        }
+
+        if (CVarGetInteger("gItemTrackerBossSoulsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
+            BeginFloatingWindows("Boss Soul Tracker");
+            DrawItemsInRows(bossSoulItems);
             EndFloatingWindows();
         }
 
@@ -1192,6 +1295,10 @@ void ItemTrackerSettingsWindow::DrawElement() {
     }
 
     if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Triforce Pieces", "gItemTrackerTriforcePiecesDisplayType", displayTypes, SECTION_DISPLAY_HIDDEN)) {
+        shouldUpdateVectors = true;
+    }
+
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Boss Souls", "gItemTrackerBossSoulsDisplayType", displayTypes, SECTION_DISPLAY_HIDDEN)) {
         shouldUpdateVectors = true;
     }
 
