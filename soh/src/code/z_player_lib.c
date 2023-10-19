@@ -454,10 +454,6 @@ void Player_SetModelsForHoldingShield(Player* this) {
             this->rightHandType = 10;
             this->rightHandDLists = &sPlayerDListGroups[10][gSaveContext.linkAge];
 
-            if (CVarGetInteger("gAltLinkEquip", 1) && AlternateEquipment_CanUseNewLoadingMethodRightHand(this)) {
-                this->rightHandDLists = &sPlayerDListGroupsAlt[10][gSaveContext.linkAge];
-            }
-
             if (this->sheathType == 18) {
                 this->sheathType = 16;
             } else if (this->sheathType == 19) {
@@ -465,12 +461,6 @@ void Player_SetModelsForHoldingShield(Player* this) {
             }
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
             
-            //if (CVarGetInteger("gAltLinkEquip", 1) && (AlternateEquipment_CanUseNewLoadingMethodSheathSword(this) && AlternateEquipment_CanUseNewLoadingMethodSheathShield(this))) {
-            if (CVarGetInteger("gAltLinkEquip", 1)) {
-                // AltEquip TODO: check if CanUse function is needed here.
-                this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
-            }
-
             this->modelAnimType = 2;
             this->itemAction = -1;
         }
@@ -482,39 +472,21 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->leftHandType = gPlayerModelTypes[modelGroup][1];
     this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
 
-    if (CVarGetInteger("gAltLinkEquip", 1) && AlternateEquipment_CanUseNewLoadingMethodLeftHand(this)) {
-        // Hides the original sword-hand if AltEquip DLs are detected.
-        this->leftHandDLists = &sPlayerDListGroupsAlt[this->leftHandType][gSaveContext.linkAge];
-    }
-
     // Right hand
     this->rightHandType = gPlayerModelTypes[modelGroup][2];
     this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
 
-    if (CVarGetInteger("gAltLinkEquip", 1) && AlternateEquipment_CanUseNewLoadingMethodRightHand(this)) {
-        // Hides the original shield-hand if AltEquip DLs are detected.
-        this->rightHandDLists = &sPlayerDListGroupsAlt[this->rightHandType][gSaveContext.linkAge];
-    }
-    if ((CVarGetInteger("gBowSlingShotAmmoFix", 0) && !AlternateEquipment_CanUseNewLoadingMethodRightHand(this)) &&
-        this->rightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT) { // If holding Bow/Slingshot
+    if ((CVarGetInteger("gBowSlingShotAmmoFix", 0)) && this->rightHandType == 11) { // If holding Bow/Slingshot
         this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
-    } // (This isn't required when Alternate Equipment Loading is activated)
+    }
 
     // Sheath
     this->sheathType = gPlayerModelTypes[modelGroup][3];
     this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
 
-    //if (CVarGetInteger("gAltLinkEquip", 1) && (AlternateEquipment_CanUseNewLoadingMethodSheathSword(this) && AlternateEquipment_CanUseNewLoadingMethodSheathShield(this))) {
-    if (CVarGetInteger("gAltLinkEquip", 1)) {
-        // AltEquip TODO: check if CanUse function is needed here.
-        
-        // Hide the original sword/sheath and shield on Link's back when AltEquip DLs are detected.
-        this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
-    }
 
     // Waist
     this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
-    // gAltLinkEquip: leftover from waist bomb bag, no alt DList needed here.
 
     Player_SetModelsForHoldingShield(this);
 }
@@ -680,11 +652,6 @@ s32 Player_HoldsBow(Player* this) {
 
 s32 Player_HoldsSlingshot(Player* this) {
     return this->heldItemAction == PLAYER_IA_SLINGSHOT;
-}
-
-// Alternate Equipment Loading function. (global function)
-s32 Player_HoldsStick(Player* this) {
-    return this->heldItemAction == PLAYER_IA_DEKU_STICK;
 }
 
 s32 func_8008F128(Player* this) {
@@ -1190,10 +1157,7 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                     dLists += 16;
                 }
             } else if (!LINK_IS_ADULT && ((this->sheathType == 16) || (this->sheathType == 17)) &&
-                       (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) &&
-                       !CVarGetInteger("gAltLinkEquip", 1)) {
-                // AltEquip TODO: Add a comment explaining why the not-NewLoadingMethod check is here.
-                // I think I might understand what this is for, but double check with Luna.
+                       (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
                 dLists = &sSheathWithSwordDLs[16];
             }
 
@@ -1701,16 +1665,16 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         if (this->actor.scale.y >= 0.0f) {
             if (!Player_HoldsHookshot(this) && ((hookedActor = this->heldActor) != NULL)) {
                 if (this->stateFlags1 & 0x200) {
-                    if (!CVarGetInteger("gAltLinkEquip", 1)) { // use vanilla behavior.
-                        Matrix_MultVec3f(&sLeftHandArrowVec3, &hookedActor->world.pos);
-                    } else { // use Alternate Equipment Loading behavior
-                        if (LINK_IS_CHILD && CVarGetInteger("gBowSlingShotAmmoFix", 0) &&
-                            this->itemAction != PLAYER_IA_SLINGSHOT) {
-                            Matrix_MultVec3f(&sChildLeftHandArrowVec3, &hookedActor->world.pos);
-                        } else {
-                            Matrix_MultVec3f(&sLeftHandArrowVec3, &hookedActor->world.pos);
-                        }
-                    }
+                    // if (!CVarGetInteger("gAltLinkEquip", 1)) { // use vanilla behavior.
+                    Matrix_MultVec3f(&sLeftHandArrowVec3, &hookedActor->world.pos);
+                    // } else { // use Alternate Equipment Loading behavior
+                    //     if (LINK_IS_CHILD && CVarGetInteger("gBowSlingShotAmmoFix", 0) &&
+                    //         this->itemAction != PLAYER_IA_SLINGSHOT) {
+                    //         Matrix_MultVec3f(&sChildLeftHandArrowVec3, &hookedActor->world.pos);
+                    //     } else {
+                    //         Matrix_MultVec3f(&sLeftHandArrowVec3, &hookedActor->world.pos);
+                    //     }
+                    // }
                     Matrix_RotateZYX(0x69E8, -0x5708, 0x458E, MTXMODE_APPLY);
                     Matrix_Get(&sp14C);
                     Matrix_MtxFToYXZRotS(&sp14C, &hookedActor->world.rot, 0);
@@ -2173,17 +2137,17 @@ s32 Player_OverrideLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
     dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
     
-    if (CVarGetInteger("gAltLinkEquip", 1)) {
-        Player* thisplayer = GET_PLAYER(play);
-        dLists = &sPlayerDListGroupsAlt[type][gSaveContext.linkAge];
-        if (limbIndex == PLAYER_LIMB_L_HAND && !AlternateEquipment_CanUseNewLoadingMethodLeftHandPause(thisplayer)) {
-            dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
-        }
-        if (limbIndex == PLAYER_LIMB_R_HAND && !AlternateEquipment_CanUseNewLoadingMethodRightHandPause(thisplayer)) {
-            dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
-        }
-        // AltEquip TODO: This is a somewhat confusing and messy way of doing this.
-    }
+    // if (CVarGetInteger("gAltLinkEquip", 1)) {
+    //     Player* thisplayer = GET_PLAYER(play);
+    //     dLists = &sPlayerDListGroupsAlt[type][gSaveContext.linkAge];
+    //     if (limbIndex == PLAYER_LIMB_L_HAND && !AlternateEquipment_CanUseNewLoadingMethodLeftHandPause(thisplayer)) {
+    //         dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
+    //     }
+    //     if (limbIndex == PLAYER_LIMB_R_HAND && !AlternateEquipment_CanUseNewLoadingMethodRightHandPause(thisplayer)) {
+    //         dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
+    //     }
+    //     // AltEquip TODO: This is a somewhat confusing and messy way of doing this.
+    // }
 
     *dList = dLists[dListOffset];
 
@@ -2516,10 +2480,7 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
     } else {
 
         if (!LINK_IS_ADULT) {
-            bool CVar_gAltLinkEquip = (bool)CVarGetInteger("gAltLinkEquip", 1);
-            if (shield == PLAYER_SHIELD_DEKU || (CVar_gAltLinkEquip && shield == PLAYER_SHIELD_MIRROR) ||
-                (CVar_gAltLinkEquip &&
-                 (shield == PLAYER_SHIELD_HYLIAN))) {
+            if (shield == PLAYER_SHIELD_DEKU) {
                 srcTable = gLinkPauseChildDekuShieldJointTable;
             } else {
                 srcTable = gLinkPauseChildJointTable;
