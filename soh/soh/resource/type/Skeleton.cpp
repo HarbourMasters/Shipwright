@@ -87,12 +87,12 @@ void SkeletonPatcher::UpdateSkeletons() {
 
 void SkeletonPatcher::UpdateTunicSkeletons() {
     bool isAlt = CVarGetInteger("gAltAssets", 0);
-    std::string altPrefix = isAlt ? LUS::IResource::gAltAssetPrefix : "";
     static const std::string sOtr = "__OTR__";
     for (auto skel : skeletons) {
         // Check if this is Link's skeleton
         if (sOtr + skel.vanillaSkeletonPath == std::string(gLinkAdultSkel)) {
             Skeleton* newSkel = nullptr;
+            Skeleton* altSkel = nullptr;
             std::string skeletonPath = "";
             // Check what Link's current tunic is
             switch (TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TUNIC))) {
@@ -110,8 +110,22 @@ void SkeletonPatcher::UpdateTunicSkeletons() {
             newSkel = 
                 (Skeleton*)LUS::Context::GetInstance()
                     ->GetResourceManager()
-                    ->LoadResource(altPrefix + skeletonPath, true)
+                    ->LoadResource(skeletonPath, true)
                     .get();
+            
+            // If alt assets are on, look for alt tagged skeletons
+            if (isAlt) {
+                altSkel = 
+                    (Skeleton*)LUS::Context::GetInstance()
+                        ->GetResourceManager()
+                        ->LoadResource(LUS::IResource::gAltAssetPrefix + skeletonPath, true)
+                        .get();
+
+                // Override non-alt skeleton if necessary
+                if (altSkel != nullptr) {
+                    newSkel = altSkel;
+                }
+            }
 
             // Change back to the original Link skeleton if no skeleton's were found
             // Needed if the skeleton previously existed but no longer does (e.g. only the alt skeleton exists)
