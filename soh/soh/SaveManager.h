@@ -155,6 +155,7 @@ class SaveManager {
 
     static void LoadRandomizerVersion1();
     static void LoadRandomizerVersion2();
+    static void LoadRandomizerVersion3();
     static void SaveRandomizer(SaveContext* saveContext, int sectionID, bool fullSave);
 
     static void LoadBaseVersion1();

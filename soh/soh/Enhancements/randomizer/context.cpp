@@ -43,6 +43,10 @@ ItemLocation* Context::GetItemLocation(RandomizerCheck locKey) {
     return &(itemLocationTable[locKey]);
 }
 
+ItemLocation* Context::GetItemLocation(size_t locKey) {
+    return &(itemLocationTable[static_cast<RandomizerCheck>(locKey)]);
+}
+
 void Context::PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bool applyEffectImmediately,
                                   bool setHidden) {
     auto loc = GetItemLocation(locKey);
@@ -166,9 +170,9 @@ void Context::CreateItemOverrides() {
         if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
             ItemOverride val(locKey, RandomElement(possibleIceTrapModels));
             iceTrapModels[locKey] = val.LooksLike();
+            val.SetTrickName(GetIceTrapName(val.LooksLike()));
             // If this is ice trap is in a shop, change the name based on what the model will look like
             if (loc->IsCategory(Category::cShop)) {
-                val.SetTrickName(GetIceTrapName(val.LooksLike()));
                 NonShopItems[TransformShopIndex(GetShopIndex(locKey))].Name = val.GetTrickName();
             }
             overrides[locKey] = val;

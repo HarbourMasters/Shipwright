@@ -10,8 +10,10 @@ class ItemOverride {
     ItemOverride() = default;
     ItemOverride(RandomizerCheck location_, RandomizerGet looksLike_);
     RandomizerCheck GetLocation() const;
+    void SetLocation(RandomizerCheck);
     RandomizerGet LooksLike() const;
-    const Text& GetTrickName() const;
+    RandomizerGet& RefRandomizerGet();
+    Text& GetTrickName();
     void SetTrickName (Text trickName);
   private:
     RandomizerCheck location;

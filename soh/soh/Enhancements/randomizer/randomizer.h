@@ -22,7 +22,6 @@
 
 class Randomizer {
   private:
-    std::unordered_map<RandomizerCheck, RandomizerGetData> itemLocations;
     std::unordered_map<RandomizerCheck, std::string> hintLocations;
     std::string childAltarText;
     std::string adultAltarText;

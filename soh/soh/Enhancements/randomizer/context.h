@@ -28,6 +28,7 @@ class Context {
     void AddHint(RandomizerHintKey hintId, Text text, RandomizerCheck hintedLocation, HintType hintType,
                  Text hintedRegion);
     ItemLocation* GetItemLocation(RandomizerCheck locKey);
+    ItemLocation* GetItemLocation(size_t locKey);
     void PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bool applyEffectImmediately = false,
                              bool setHidden = false);
     std::vector<RandomizerCheck> allLocations;
@@ -48,7 +49,7 @@ class Context {
     std::vector<RandomizerCheck> everyPossibleLocation = {};
     std::vector<RandomizerCheck> wothLocations = {};
     std::vector<RandomizerGet> possibleIceTrapModels = {};
-    std::unordered_map<RandomizerCheck, uint8_t> iceTrapModels = {};
+    std::unordered_map<RandomizerCheck, RandomizerGet> iceTrapModels = {};
     bool playthroughBeatable = false;
     bool allLocationsReachable = false;
 

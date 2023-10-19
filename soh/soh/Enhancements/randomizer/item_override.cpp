@@ -8,11 +8,19 @@ RandomizerCheck ItemOverride::GetLocation() const {
     return location;
 }
 
+void ItemOverride::SetLocation(RandomizerCheck location_) {
+    location = location_;
+}
+
 RandomizerGet ItemOverride::LooksLike() const {
     return looksLike;
 }
 
-const Text& ItemOverride::GetTrickName() const {
+RandomizerGet& ItemOverride::RefRandomizerGet() {
+    return looksLike;
+}
+
+Text& ItemOverride::GetTrickName() {
     return trickName;
 }
 

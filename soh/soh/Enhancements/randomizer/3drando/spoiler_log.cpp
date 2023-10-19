@@ -845,15 +845,15 @@ static void WriteAllLocations(int language) {
               case 0:
               default:
                   jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["model"] =
-                      Rando::StaticData::ItemFromGIID(ctx->iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
+                      Rando::StaticData::RetrieveItem(ctx->overrides[location->GetRandomizerCheck()].LooksLike()).GetName().english;
                   jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["trickName"] = 
-                      GetIceTrapName(ctx->iceTrapModels[location->GetRandomizerCheck()]).english;
+                      ctx->overrides[location->GetRandomizerCheck()].GetTrickName().english;
                   break;
               case 2:
                   jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["model"] =
-                      Rando::StaticData::ItemFromGIID(ctx->iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
+                      Rando::StaticData::RetrieveItem(ctx->overrides[location->GetRandomizerCheck()].LooksLike()).GetName().french;
                   jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["trickName"] =
-                      GetIceTrapName(ctx->iceTrapModels[location->GetRandomizerCheck()]).french;
+                      ctx->overrides[location->GetRandomizerCheck()].GetTrickName().french;
                   break;
           }
       }

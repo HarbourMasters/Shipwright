@@ -147,7 +147,6 @@ Sprite* Randomizer::GetSeedTexture(uint8_t index) {
 
 Randomizer::~Randomizer() { 
     this->randoSettings.clear();
-    this->itemLocations.clear();
     this->merchantPrices.clear();
 }
 
@@ -633,11 +632,11 @@ void Randomizer::LoadItemLocations(const char* spoilerFileName, bool silent) {
         ParseItemLocationsFile(spoilerFileName, silent);
     }
 
-    for (auto& itemLocation : gSaveContext.itemLocations) {
-        this->itemLocations[itemLocation.check] = itemLocation.get;
-    }
+    // for (auto& itemLocation : gSaveContext.itemLocations) {
+    //     this->itemLocations[itemLocation.check] = itemLocation.get;
+    // }
 
-    itemLocations[RC_UNKNOWN_CHECK].rgID = itemLocations[RC_UNKNOWN_CHECK].fakeRgID = RG_NONE;
+    // itemLocations[RC_UNKNOWN_CHECK].rgID = itemLocations[RC_UNKNOWN_CHECK].fakeRgID = RG_NONE;
 }
 
 void Randomizer::LoadRequiredTrials(const char* spoilerFileName) {
@@ -2410,7 +2409,7 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
 }
 
 bool Randomizer::CheckContainsVanillaItem(RandomizerCheck randoCheck) {
-    RandomizerGet randoGet = this->itemLocations[randoCheck].rgID;
+    RandomizerGet randoGet = Rando::Context::GetInstance()->GetItemLocation(randoCheck)->GetPlacedRandomizerGet();
     return IsItemVanilla(randoGet);
 }
 
@@ -5248,15 +5247,16 @@ CustomMessage Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
 }
 
 CustomMessage Randomizer::GetFrogsMessage(u16 originalTextId) {
+    auto ctx = Rando::Context::GetInstance();
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, originalTextId);
-        RandomizerGet frogsGet = this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].rgID;
+        RandomizerGet frogsGet = ctx->GetItemLocation(RC_ZR_FROGS_OCARINA_GAME)->GetPlacedRandomizerGet();
         std::array<std::string, LANGUAGE_MAX> frogItemName;
         if (frogsGet == RG_ICE_TRAP) {
-            frogsGet = this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].fakeRgID;
+            frogsGet = ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].LooksLike();
             frogItemName = {
-                this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].trickName,
-                this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].trickName,
-                this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].trickName
+                ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].GetTrickName().english,
+                ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].GetTrickName().french,
+                ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].GetTrickName().english
             };
         } else {
             frogItemName = EnumToSpoilerfileGetName[frogsGet];
@@ -5315,9 +5315,10 @@ CustomMessage Randomizer::GetSariaMessage(u16 originalTextId) {
 }
 
 CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious) {
+    auto ctx = Rando::Context::GetInstance();
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
     RandomizerCheck rc = GetCheckFromRandomizerInf(randomizerInf);
-    RandomizerGet shopItemGet = this->itemLocations[rc].rgID;
+    RandomizerGet shopItemGet = ctx->GetItemLocation(rc)->GetPlacedRandomizerGet();
     std::array<std::string, LANGUAGE_MAX> shopItemName;
     if (mysterious) {
         shopItemName = {
@@ -5327,11 +5328,11 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
         };
     // TODO: This should eventually be replaced with a full fledged trick model & trick name system
     } else if (shopItemGet == RG_ICE_TRAP) {
-        shopItemGet = this->itemLocations[rc].fakeRgID;
+        shopItemGet = ctx->overrides[rc].LooksLike();
         shopItemName = {
-            std::string(this->itemLocations[rc].trickName),
-            std::string(this->itemLocations[rc].trickName),
-            std::string(this->itemLocations[rc].trickName)
+            std::string(ctx->overrides[rc].GetTrickName().english),
+            std::string(ctx->overrides[rc].GetTrickName().french),
+            std::string(ctx->overrides[rc].GetTrickName().english)
         };
     } else { 
         shopItemName = EnumToSpoilerfileGetName[shopItemGet];
@@ -5353,16 +5354,17 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
 }
 
 CustomMessage Randomizer::GetCursedSkullMessage(s16 params) {
+    auto ctx = Rando::Context::GetInstance();
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE);
     RandomizerCheck rc = GetCheckFromActor(ACTOR_EN_SSH, SCENE_HOUSE_OF_SKULLTULA, params);
-    RandomizerGet itemGet = this->itemLocations[rc].rgID;
+    RandomizerGet itemGet = ctx->GetItemLocation(rc)->GetPlacedRandomizerGet();
     std::array<std::string, LANGUAGE_MAX> itemName;
     if (itemGet == RG_ICE_TRAP) {
-        itemGet = this->itemLocations[rc].fakeRgID;
+        itemGet = ctx->overrides[rc].LooksLike();
         itemName = {
-            std::string(this->itemLocations[rc].trickName),
-            std::string(this->itemLocations[rc].trickName),
-            std::string(this->itemLocations[rc].trickName)
+            std::string(ctx->overrides[rc].GetTrickName().english),
+            std::string(ctx->overrides[rc].GetTrickName().french),
+            std::string(ctx->overrides[rc].GetTrickName().english)
         };
     } else {
         itemName = EnumToSpoilerfileGetName[itemGet];

@@ -23,6 +23,10 @@ const Item& ItemLocation::GetPlacedItem() const {
     return Rando::StaticData::RetrieveItem(placedItem);
 }
 
+RandomizerGet& ItemLocation::RefPlacedItem() {
+    return placedItem;
+}
+
 const Text& ItemLocation::GetPlacedItemName() const {
     return Rando::StaticData::RetrieveItem(placedItem).GetName();
 }

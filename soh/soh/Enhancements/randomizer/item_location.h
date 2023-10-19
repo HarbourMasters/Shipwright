@@ -18,6 +18,7 @@ class ItemLocation {
     const Text& GetPlacedItemName() const;
     RandomizerGet GetPlacedRandomizerGet() const;
     void SetPlacedItem(const RandomizerGet item);
+    RandomizerGet& RefPlacedItem();
     void SetDelayedItem(const RandomizerGet item);
     RandomizerRegion GetParentRegionKey() const;
     void SetParentRegion (RandomizerRegion region);
