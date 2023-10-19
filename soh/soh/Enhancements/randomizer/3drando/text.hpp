@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "z64.h"
 
 #define PLURAL 0
 #define SINGULAR 1
@@ -29,6 +30,18 @@ public:
             return spanish;
         }
         return english;
+    }
+
+    const std::string& GetForLanguage(uint8_t language) const {
+        switch (language) {
+            case LANGUAGE_ENG:
+                return english;
+            case LANGUAGE_FRA:
+                return french;
+            case LANGUAGE_GER:
+            default:
+                return english; // TODO: German
+        }
     }
 
     Text operator+ (const Text& right) const {

@@ -16,7 +16,7 @@ RandomizerGet ItemOverride::LooksLike() const {
     return looksLike;
 }
 
-RandomizerGet& ItemOverride::RefRandomizerGet() {
+RandomizerGet& ItemOverride::RefLooksLike() {
     return looksLike;
 }
 

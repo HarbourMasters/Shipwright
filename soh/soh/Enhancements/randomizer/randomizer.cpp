@@ -1547,31 +1547,33 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
 
         gSaveContext.finalSeed = spoilerFileJson["finalSeed"].get<uint32_t>();
 
-        for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
-            RandomizerCheck randomizerCheck = SpoilerfileCheckNameToEnum[it.key()];
-            if (it->is_structured()) {
-                json itemJson = *it;
-                for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
-                    if (itemit.key() == "item") {
-                        gSaveContext.itemLocations[randomizerCheck].check = randomizerCheck;
-                        gSaveContext.itemLocations[randomizerCheck].get.rgID = SpoilerfileGetNameToEnum[itemit.value()];
-                    } else if (itemit.key() == "price") {
-                        merchantPrices[gSaveContext.itemLocations[randomizerCheck].check] = itemit.value();
-                    } else if (itemit.key() == "model") {
-                        gSaveContext.itemLocations[randomizerCheck].get.fakeRgID =
-                            SpoilerfileGetNameToEnum[itemit.value()];
-                    } else if (itemit.key() == "trickName") {
-                        strncpy(gSaveContext.itemLocations[randomizerCheck].get.trickName,
-                                std::string(itemit.value()).c_str(), MAX_TRICK_NAME_SIZE);
+        if (false) { // TODO: Plando mode
+            for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
+                RandomizerCheck randomizerCheck = SpoilerfileCheckNameToEnum[it.key()];
+                if (it->is_structured()) {
+                    json itemJson = *it;
+                    for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
+                        if (itemit.key() == "item") {
+                            // gSaveContext.itemLocations[randomizerCheck].check = randomizerCheck;
+                            // gSaveContext.itemLocations[randomizerCheck].get.rgID = SpoilerfileGetNameToEnum[itemit.value()];
+                        } else if (itemit.key() == "price") {
+                            // merchantPrices[gSaveContext.itemLocations[randomizerCheck].check] = itemit.value();
+                        } else if (itemit.key() == "model") {
+                            // gSaveContext.itemLocations[randomizerCheck].get.fakeRgID =
+                                // SpoilerfileGetNameToEnum[itemit.value()];
+                        } else if (itemit.key() == "trickName") {
+                            // strncpy(gSaveContext.itemLocations[randomizerCheck].get.trickName,
+                                    // std::string(itemit.value()).c_str(), MAX_TRICK_NAME_SIZE);
+                        }
                     }
-                }
-            } else {
-                gSaveContext.itemLocations[randomizerCheck].check = SpoilerfileCheckNameToEnum[it.key()];
-                gSaveContext.itemLocations[randomizerCheck].get.rgID = SpoilerfileGetNameToEnum[it.value()];
-                gSaveContext.itemLocations[randomizerCheck].get.fakeRgID = RG_NONE;
-                int16_t price = GetVanillaMerchantPrice(randomizerCheck);
-                if (price != -1) {
-                    merchantPrices[gSaveContext.itemLocations[randomizerCheck].check] = price;
+                } else {
+                    // gSaveContext.itemLocations[randomizerCheck].check = SpoilerfileCheckNameToEnum[it.key()];
+                    // gSaveContext.itemLocations[randomizerCheck].get.rgID = SpoilerfileGetNameToEnum[it.value()];
+                    // gSaveContext.itemLocations[randomizerCheck].get.fakeRgID = RG_NONE;
+                    int16_t price = GetVanillaMerchantPrice(randomizerCheck);
+                    if (price != -1) {
+                        // merchantPrices[gSaveContext.itemLocations[randomizerCheck].check] = price;
+                    }
                 }
             }
         }

@@ -93,15 +93,19 @@ SaveManager::SaveManager() {
 }
 
 void SaveManager::LoadRandomizerVersion1() {
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.itemLocations); i++) {
+    auto randoContext = Rando::Context::GetInstance();
+    RandomizerCheck location = RC_UNKNOWN_CHECK;
+    for (int i = 0; i < RC_MAX; i++) {
+        SaveManager::Instance->LoadData("check" + std::to_string(i), location);
         SaveManager::Instance->LoadStruct("get" + std::to_string(i), [&]() {
-            SaveManager::Instance->LoadData("rgID", gSaveContext.itemLocations[i].get.rgID);
-            SaveManager::Instance->LoadData("fakeRgID", gSaveContext.itemLocations[i].get.fakeRgID);
-            std::string trickName;
-            SaveManager::Instance->LoadData("trickName", trickName);
-            strncpy(gSaveContext.itemLocations[i].get.trickName, trickName.c_str(), MAX_TRICK_NAME_SIZE);
+            SaveManager::Instance->LoadData("rgID", randoContext->GetItemLocation(location)->RefPlacedItem());
+            if (randoContext->GetItemLocation(location)->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
+                randoContext->overrides[location].SetLocation(location);
+                SaveManager::Instance->LoadData("fakeRgID", randoContext->overrides[location].RefLooksLike());
+                SaveManager::Instance->LoadData("trickName", randoContext->overrides[location].GetTrickName().english);
+                SaveManager::Instance->LoadData("trickName", randoContext->overrides[location].GetTrickName().french);
+            }
         });
-        SaveManager::Instance->LoadData("check" + std::to_string(i), gSaveContext.itemLocations[i].check);
     }
 
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.seedIcons); i++) {

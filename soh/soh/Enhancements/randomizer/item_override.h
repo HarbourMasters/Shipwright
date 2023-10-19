@@ -12,7 +12,7 @@ class ItemOverride {
     RandomizerCheck GetLocation() const;
     void SetLocation(RandomizerCheck);
     RandomizerGet LooksLike() const;
-    RandomizerGet& RefRandomizerGet();
+    RandomizerGet& RefLooksLike();
     Text& GetTrickName();
     void SetTrickName (Text trickName);
   private:

@@ -149,11 +149,6 @@ typedef struct {
 
 typedef struct {
     RandomizerCheck check;
-    RandomizerGetData get;
-} ItemLocationRando;
-
-typedef struct {
-    RandomizerCheck check;
     RandomizerCheck hintedCheck;
     RandomizerGet rGet;
     RandomizerCheckArea area;
@@ -296,7 +291,6 @@ typedef struct {
     // #region SOH [Randomizer]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to Randomizer
     /*        */ RandoSetting randoSettings[300];
-    /*        */ ItemLocationRando itemLocations[RC_MAX];
     /*        */ HintLocationRando hintLocations[50];
     /*        */ EntranceOverride entranceOverrides[ENTRANCE_OVERRIDES_MAX_COUNT];
     /*        */ char childAltarText[250];

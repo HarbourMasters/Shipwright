@@ -1236,6 +1236,7 @@ void DrawLocation(RandomizerCheck rc) {
     std::string txt;
     bool showHidden = CVarGetInteger("gCheckTrackerOptionShowHidden", 0);
     Rando::Location* loc = Rando::StaticData::GetLocation(rc);
+    Rando::ItemLocation* itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
     RandomizerCheckTrackerData checkData = gSaveContext.checkTrackerData[rc];
     RandomizerCheckStatus status = checkData.status;
     bool skipped = checkData.skipped;
@@ -1329,7 +1330,7 @@ void DrawLocation(RandomizerCheck rc) {
             case RCSHOW_COLLECTED:
             case RCSHOW_SCUMMED:
                 if (IS_RANDO) {
-                    txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rc].get.rgID][gSaveContext.language];
+                    txt = itemLoc->GetPlacedItem().GetName().GetForLanguage(gSaveContext.language);
                 } else {
                     if (IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID())) {
                         if (gSaveContext.language == LANGUAGE_ENG || gSaveContext.language == LANGUAGE_GER) {
@@ -1343,14 +1344,14 @@ void DrawLocation(RandomizerCheck rc) {
             case RCSHOW_IDENTIFIED:
             case RCSHOW_SEEN:
                 if (IS_RANDO) {
-                    if (gSaveContext.itemLocations[rc].get.rgID == RG_ICE_TRAP) {
+                    if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
                         if (status == RCSHOW_IDENTIFIED) {
-                            txt = gSaveContext.itemLocations[rc].get.trickName;
+                            txt = OTRGlobals::Instance->gRandoContext->overrides[rc].GetTrickName().GetForLanguage(gSaveContext.language);
                         } else {
-                            txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rc].get.fakeRgID][gSaveContext.language];
+                            txt = Rando::StaticData::RetrieveItem(OTRGlobals::Instance->gRandoContext->overrides[rc].LooksLike()).GetName().GetForLanguage(gSaveContext.language);
                         }
                     } else {
-                        txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rc].get.rgID][gSaveContext.language];
+                        txt = itemLoc->GetPlacedItem().GetName().GetForLanguage(gSaveContext.language);
                     }
                     if (status == RCSHOW_IDENTIFIED) {
                         txt += fmt::format(" - {}", gSaveContext.checkTrackerData[rc].price);
