@@ -2838,11 +2838,11 @@ s32 func_80835B60(Player* this, PlayState* play) {
     if (!(this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG)) {
         func_80833638(this, func_80835C08);
         LinkAnimation_PlayOnce(play, &this->skelAnime2, &gPlayerAnim_link_boom_catch);
-        if (Player_CanUseNewLoadingMethodLeftHand(this)) {
-            func_808357E8(this, gPlayerLeftHandClosedDLs);
-        } else {
+        // if (AlternateEquipment_CanUseNewLoadingMethodLeftHand(this)) {
+        //     func_808357E8(this, gPlayerLeftHandClosedDLs);
+        // } else {
             func_808357E8(this, gPlayerLeftHandBoomerangDLs);
-        }
+        // }
         Player_PlaySfx(&this->actor, NA_SE_PL_CATCH_BOOMERANG);
         func_80832698(this, NA_SE_VO_LI_SWORD_N);
         return 1;

@@ -1110,7 +1110,6 @@ s32 Player_InCsMode(PlayState* play);
 s32 func_8008E9C4(Player* player);
 s32 Player_IsChildWithHylianShield(Player* player);
 s32 Player_ActionToModelGroup(Player* player, s32 actionParam);
-uint8_t Player_CanUseNewLoadingMethodLeftHand(Player* this); // AltEquip TODO Can we avoid declaring this globally?
 void Player_SetModelsForHoldingShield(Player* player);
 void Player_SetModels(Player* player, s32 modelGroup);
 void Player_SetModelGroup(Player* player, s32 modelGroup);
@@ -1132,7 +1131,6 @@ s32 Player_ActionToMagicSpell(Player* player, s32 actionParam);
 s32 Player_HoldsHookshot(Player* player);
 s32 Player_HoldsBow(Player* player);
 s32 Player_HoldsSlingshot(Player* player);
-s32 Player_HoldsStick(Player* player); // Alternate Equipment Loading function. Also used in z_eff_ss_stick.c
 s32 func_8008F128(Player* player);
 s32 Player_ActionToMeleeWeapon(s32 actionParam);
 s32 Player_GetMeleeWeaponHeld(Player* player);
