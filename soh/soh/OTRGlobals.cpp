@@ -153,7 +153,7 @@ const NaviColor_RGB8 LEDColorDefaultNaviColorList[] = {
     defaultEnemyColor, // ACTORCAT_BOSS         Boss
     defaultPropsColor, // ACTORCAT_DOOR         Door
     defaultPropsColor, // ACTORCAT_CHEST        Chest
-    defaultPropsColor, // ACTORCAT_MAX          unknown category 13
+    defaultPropsColor, // ACTORCAT_MAX
 };
 
 // OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
