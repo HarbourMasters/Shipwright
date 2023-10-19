@@ -139,6 +139,8 @@ void SkeletonPatcher::UpdateTunicSkeletons() {
             
             if (newSkel != nullptr) {
                 skel.skelAnime->skeleton = newSkel->skeletonData.skeletonHeader.segment;
+                uintptr_t skelPtr = (uintptr_t)newSkel->GetPointer();
+                memcpy(&skel.skelAnime->skeletonHeader, &skelPtr, sizeof(uintptr_t));
             }
         }
     }
