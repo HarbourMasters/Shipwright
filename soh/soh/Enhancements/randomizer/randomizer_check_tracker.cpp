@@ -1151,9 +1151,11 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
 
 void UpdateInventoryChecks() {
     //For all the areas with compasses, if you have one, spoil the area
-    for (u8 i = SCENE_DEKU_TREE; i <= SCENE_GERUDO_TRAINING_GROUND; i++)
-        if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, i))
-            areasSpoiled |= (1 << RCAreaFromSceneID.at((SceneID)i));
+    for (auto [scene, area] : RCAreaFromSceneID) {
+        if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, scene)) {
+            areasSpoiled |= (1 << area);
+        }
+    }
 }
 
 void UpdateAreaFullyChecked(RandomizerCheckArea area) {
