@@ -474,22 +474,22 @@ namespace Logic {
            (age == HasProjectileAge::Either && (Slingshot || Boomerang   ||  Hookshot || Bow));
   }
 
-  bool HasBossSoul(uint32_t itemName) {
+  bool HasBossSoul(RandomizerGet itemName) {
     if (ShuffleBossSouls.Is(BOSSSOULS_OFF)) {
       return true;
     }
-    if (ShuffleBossSouls.IsNot(BOSSSOULS_ON_PLUS_GANON) && itemName == GANON_BOSS_SOUL) {
+    if (ShuffleBossSouls.IsNot(BOSSSOULS_ON_PLUS_GANON) && itemName == RG_GANON_SOUL) {
       return true;
     }
-    return (itemName == GOHMA_BOSS_SOUL && CanSummonGohma)         ||
-    (itemName == KING_DODONGO_BOSS_SOUL && CanSummonKingDodongo)   ||
-    (itemName == BARINADE_BOSS_SOUL && CanSummonBarinade)          ||
-    (itemName == PHANTOM_GANON_BOSS_SOUL && CanSummonPhantomGanon) ||
-    (itemName == VOLVAGIA_BOSS_SOUL && CanSummonVolvagia)          ||
-    (itemName == MORPHA_BOSS_SOUL && CanSummonMorpha)              ||
-    (itemName == BONGO_BONGO_BOSS_SOUL && CanSummonBongoBongo)     ||
-    (itemName == TWINROVA_BOSS_SOUL && CanSummonTwinrova)          ||
-    (ShuffleBossSouls.Is(BOSSSOULS_ON_PLUS_GANON) && (itemName == GANON_BOSS_SOUL && CanSummonGanon));
+    return (itemName == RG_GOHMA_SOUL && CanSummonGohma)         ||
+    (itemName == RG_KING_DODONGO_SOUL && CanSummonKingDodongo)   ||
+    (itemName == RG_BARINADE_SOUL && CanSummonBarinade)          ||
+    (itemName == RG_PHANTOM_GANON_SOUL && CanSummonPhantomGanon) ||
+    (itemName == RG_VOLVAGIA_SOUL && CanSummonVolvagia)          ||
+    (itemName == RG_MORPHA_SOUL && CanSummonMorpha)              ||
+    (itemName == RG_MORPHA_SOUL && CanSummonBongoBongo)     ||
+    (itemName == RG_TWINROVA_SOUL && CanSummonTwinrova)          ||
+    (ShuffleBossSouls.Is(BOSSSOULS_ON_PLUS_GANON) && (itemName == RG_GANON_SOUL && CanSummonGanon));
 
   }
 
