@@ -2792,6 +2792,13 @@ s32 Inventory_HasSpecificBottle(u8 bottleItem) {
     }
 }
 
+void byteSwapInventory() {
+    gSaveContext.inventory.equipment = BE16SWAP(gSaveContext.inventory.equipment);
+    gSaveContext.inventory.upgrades = BE32SWAP(gSaveContext.inventory.upgrades);
+    gSaveContext.inventory.questItems = BE32SWAP(gSaveContext.inventory.questItems);
+    gSaveContext.inventory.gsTokens = BE16SWAP(gSaveContext.inventory.gsTokens);
+}
+
 void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 button) {
     osSyncPrintf("item_no=%x,  c_no=%x,  Pt=%x  Item_Register=%x\n", item, button,
                  gSaveContext.equips.cButtonSlots[button - 1],
@@ -2803,7 +2810,14 @@ void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 button) {
         item = ITEM_MILK_HALF;
     }
 
-    gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
+    if (CVarGetInteger("gRestoreRBAValues",0)) {
+        byteSwapInventory();
+        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
+        byteSwapInventory();
+    } else {
+        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
+    }
+
     gSaveContext.equips.buttonItems[button] = item;
 
     Interface_LoadItemIcon1(play, button);
