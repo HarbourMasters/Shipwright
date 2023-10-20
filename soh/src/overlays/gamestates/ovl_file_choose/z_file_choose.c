@@ -983,7 +983,9 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, alpha);
 
-        // Draw Seed Icons for spoiler log
+        // Draw Seed Icons for spoiler log:
+        // 1. On Name Entry if a rando seed has been generated
+        // 2. On Quest Menu if a spoiler has been dropped and the Randomizer quest option is currently hovered.
         if ((this->configMode == CM_NAME_ENTRY && gSaveContext.questId == QUEST_RANDOMIZER &&
              Randomizer_IsSeedGenerated()) || (this->configMode == CM_QUEST_MENU && 
              strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0 && Randomizer_IsSpoilerLoaded() && 
@@ -1027,9 +1029,7 @@ void FileChoose_UpdateRandomizer() {
     }
 
     if ((CVarGetInteger("gNewFileDropped", 0) != 0)) {
-            if (CVarGetInteger("gNewFileDropped", 0) != 0) {
             CVarSetString("gSpoilerLog", CVarGetString("gDroppedFile", "None"));
-            }
             bool silent = true;
             if ((CVarGetInteger("gNewFileDropped", 0) != 0)) {
             silent = false;
@@ -1353,6 +1353,7 @@ void FileChoose_GenerateRandoSeed(GameState* thisx) {
         this->nameEntryBoxAlpha = 0;
         memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName,
                CVarGetInteger("gLinkDefaultName", 0) ? &linkName : &emptyName, 8);
+        Randomizer_SetSeedGenerated(false);
         return;
     } else {
         Randomizer_GenerateSeed();

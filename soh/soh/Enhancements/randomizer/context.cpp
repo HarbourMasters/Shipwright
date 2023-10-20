@@ -198,7 +198,7 @@ bool Context::IsSpoilerLoaded() {
     return mSpoilerLoaded;
 }
 
-bool Context::SetSpoilerLoaded(bool spoilerLoaded) {
+void Context::SetSpoilerLoaded(bool spoilerLoaded) {
     mSpoilerLoaded = spoilerLoaded;
 }
 

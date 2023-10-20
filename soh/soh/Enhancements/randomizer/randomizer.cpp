@@ -3044,6 +3044,10 @@ void GenerateRandomizerImgui(std::string seed = "") {
 }
 
 bool GenerateRandomizer(std::string seed /*= ""*/) {
+    if (generated) {
+        generated = 0;
+        randoThread.join();
+    }
     if (CVarGetInteger("gRandoGenerating", 0) == 0) {
         randoThread = std::thread(&GenerateRandomizerImgui, seed);
         return true;

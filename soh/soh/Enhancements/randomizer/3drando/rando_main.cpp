@@ -18,7 +18,6 @@ void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarS
     // CVarSetString("gLoadedPreset", settingsFileName.c_str());
 
     std::string fileName = LUS::Context::GetPathRelativeToAppDirectory(GenerateRandomizer(cvarSettings, excludedLocations, enabledTricks, seedString).c_str());
-    CVarSetString("gSpoilerLog", fileName.c_str());
 
     CVarSave();
     CVarLoad();
