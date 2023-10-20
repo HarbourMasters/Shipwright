@@ -484,7 +484,7 @@ namespace Logic {
     (itemName == RG_PHANTOM_GANON_SOUL && CanSummonPhantomGanon) ||
     (itemName == RG_VOLVAGIA_SOUL && CanSummonVolvagia)          ||
     (itemName == RG_MORPHA_SOUL && CanSummonMorpha)              ||
-    (itemName == RG_MORPHA_SOUL && CanSummonBongoBongo)     ||
+    (itemName == RG_MORPHA_SOUL && CanSummonBongoBongo)          ||
     (itemName == RG_TWINROVA_SOUL && CanSummonTwinrova)          ||
     (itemName == RG_GANON_SOUL && CanSummonGanon);
 
