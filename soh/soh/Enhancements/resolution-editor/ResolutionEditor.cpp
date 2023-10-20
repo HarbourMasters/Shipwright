@@ -29,8 +29,8 @@ enum setting { UPDATE_aspectRatioX, UPDATE_aspectRatioY, UPDATE_verticalPixelCou
 const char* aspectRatioPresetLabels[] = {
     "Off", "Custom", "Original (4:3)", "Widescreen (16:9)", "Nintendo 3DS (5:3)", "16:10 (8:5)", "Ultrawide (21:9)"
 };
-const float aspectRatioPresetsX[] = { 0.0f, 12.0f, 4.0f, 16.0f, 5.0f, 16.0f, 21.0f };
-const float aspectRatioPresetsY[] = { 0.0f, 9.0f, 3.0f, 9.0f, 3.0f, 10.0f, 9.0f };
+const float aspectRatioPresetsX[] = { 0.0f, 4.0f, 4.0f, 16.0f, 5.0f, 16.0f, 21.0f };
+const float aspectRatioPresetsY[] = { 0.0f, 3.0f, 3.0f, 09.0f, 3.0f, 10.0f, 09.0f };
 const int default_aspectRatio = 1; // Default combo list option
 
 const char* pixelCountPresetLabels[] = { "Custom",     "Native N64 (240p)", "2x (480p)",       "3x (720p)", "4x (960p)",
@@ -81,13 +81,17 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 integerScale_maximumBounds + CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0);
         }
 
-        // Stored Values for non-UIWidgets elements
-        static float aspectRatioX = CVarGetFloat("gAdvancedResolution.AspectRatioX", 16.0f);
-        static float aspectRatioY = CVarGetFloat("gAdvancedResolution.AspectRatioY", 9.0f);
-        static int verticalPixelCount = CVarGetInteger("gAdvancedResolution.VerticalPixelCount", 480);
         // Combo List defaults
-        static int item_aspectRatio = default_aspectRatio;
-        static int item_pixelCount = default_pixelCount;
+        static int item_aspectRatio =
+            CVarGetInteger("gAdvancedResolution.UIComboItem.AspectRatio", default_aspectRatio);
+        static int item_pixelCount = CVarGetInteger("gAdvancedResolution.UIComboItem.PixelCount", default_pixelCount);
+        // Stored Values for non-UIWidgets elements
+        static float aspectRatioX =
+            CVarGetFloat("gAdvancedResolution.AspectRatioX", aspectRatioPresetsX[item_aspectRatio]);
+        static float aspectRatioY =
+            CVarGetFloat("gAdvancedResolution.AspectRatioY", aspectRatioPresetsY[item_aspectRatio]);
+        static int verticalPixelCount =
+            CVarGetInteger("gAdvancedResolution.VerticalPixelCount", pixelCountPresets[item_pixelCount]);
         // Additional settings
         static bool showHorizontalResField = false;
         static int horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
@@ -157,6 +161,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             if (showHorizontalResField) {
                 horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
             }
+
+            CVarSetInteger("gAdvancedResolution.UIComboItem.AspectRatio", item_aspectRatio);
+            CVarSave();
         }
         // Hide aspect ratio input fields if using one of the presets.
         if (item_aspectRatio == default_aspectRatio && !showHorizontalResField) {
@@ -195,6 +202,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             if (showHorizontalResField) {
                 horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
             }
+
+            CVarSetInteger("gAdvancedResolution.UIComboItem.PixelCount", item_pixelCount);
+            CVarSave();
         }
         // Horizontal Resolution, if visibility is enabled for it.
         if (showHorizontalResField) {
