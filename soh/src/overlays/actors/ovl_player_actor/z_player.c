@@ -17,6 +17,7 @@
 #include "overlays/actors/ovl_En_Fish/z_en_fish.h"
 #include "overlays/actors/ovl_En_Horse/z_en_horse.h"
 #include "overlays/effects/ovl_Effect_Ss_Fhg_Flash/z_eff_ss_fhg_flash.h"
+#include "overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
@@ -12715,8 +12716,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         equipItem = giEntry.itemId;
         equipNow = CVarGetInteger("gAskToEquip", 0) && giEntry.modIndex == MOD_NONE &&
                     equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_TUNIC_ZORA &&
-                   ((gItemAgeReqs[equipItem] == 9 || gItemAgeReqs[equipItem] == gSaveContext.linkAge) ||
-                    CVarGetInteger("gTimelessEquipment", 0));
+                    CHECK_AGE_REQ_ITEM(equipItem);
 
         Message_StartTextbox(play, giEntry.textId, &this->actor);
         // RANDOTODO: Macro this boolean check.
