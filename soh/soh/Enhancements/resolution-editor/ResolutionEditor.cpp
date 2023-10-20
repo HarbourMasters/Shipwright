@@ -44,6 +44,14 @@ const uint32_t maxVerticalPixelCount = 4320; // 18x native, or 8K TV resolution
 
 const unsigned short default_maxIntegerScaleFactor = 6; // Default size of Integer scale factor slider.
 
+enum messageType { MESSAGE_ERROR, MESSAGE_WARNING, MESSAGE_QUESTION, MESSAGE_INFO, MESSAGE_GRAY_75 };
+const ImVec4 messageColor[]{
+    { 0.85f, 0.0f, 0.0f, 1.0f },  // MESSAGE_ERROR
+    { 0.85f, 0.85f, 0.0f, 1.0f }, // MESSAGE_WARNING
+    { 0.0f, 0.85f, 0.85f, 1.0f }, // MESSAGE_QUESTION
+    { 0.0f, 0.85f, 0.55f, 1.0f }, // MESSAGE_INFO
+    { 0.75f, 0.75f, 0.75f, 1.0f } // MESSAGE_GRAY_75
+};
 const float enhancementSpacerHeight = 19.0f;
 // This will need to be determined more intelligently when Hi-DPI UI support is added.
 
@@ -123,14 +131,14 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         // Error/Warning display
         if (!CVarGetInteger("gLowResMode", 0)) {
             if (IsDroppingFrames()) { // Significant frame drop warning
-                ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f },
+                ImGui::TextColored(messageColor[MESSAGE_WARNING],
                                    ICON_FA_EXCLAMATION_TRIANGLE " Significant frame rate (FPS) drops may be occuring.");
                 UIWidgets::Spacer(2);
             } else { // No warnings
                 UIWidgets::Spacer(enhancementSpacerHeight);
             }
         } else { // N64 Mode warning
-            ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f },
+            ImGui::TextColored(messageColor[MESSAGE_QUESTION],
                                ICON_FA_QUESTION_CIRCLE " \"N64 Mode\" is overriding these settings.");
             ImGui::SameLine();
             if (ImGui::Button("Click to disable")) {
@@ -148,7 +156,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         // Aspect Ratio
         ImGui::Text("Force aspect ratio:");
         ImGui::SameLine();
-        ImGui::TextColored({ 0.75f, 0.75f, 0.75f, 1.0f }, "(Select \"Off\" to disable.)");
+        ImGui::TextColored(messageColor[MESSAGE_GRAY_75], "(Select \"Off\" to disable.)");
         // Presets
         if (ImGui::Combo(" ", &item_aspectRatio, aspectRatioPresetLabels,
                          IM_ARRAYSIZE(aspectRatioPresetLabels)) &&
@@ -220,7 +228,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                     update[UPDATE_aspectRatioX] = true;
                 }
             } else { // Display a notice instead.
-                ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f },
+                ImGui::TextColored(messageColor[MESSAGE_QUESTION],
                                    ICON_FA_QUESTION_CIRCLE " \"Force aspect ratio\" required.");
                 // ImGui::Text(" ");
                 ImGui::SameLine();
@@ -274,7 +282,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 (CVarGetInteger("gAdvancedResolution.IntegerScale.NeverExceedBounds", 1) &&
                  CVarGetInteger("gAdvancedResolution.IntegerScale.Factor", 1) > integerScale_maximumBounds)) {
                 ImGui::SameLine();
-                ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f }, ICON_FA_EXCLAMATION_TRIANGLE " Window exceeded.");
+                ImGui::TextColored(messageColor[MESSAGE_WARNING], ICON_FA_EXCLAMATION_TRIANGLE " Window exceeded.");
             }
 
             UIWidgets::PaddedEnhancementCheckbox("Automatically scale image to fit viewport",
@@ -310,7 +318,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 // This setting is intentionally not exposed on PC platforms,
                 // but may be accidentally activated for varying reasons.
                 // Having this button should hopefully prevent support headaches.
-                ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f }, ICON_FA_QUESTION_CIRCLE
+                ImGui::TextColored(messageColor[MESSAGE_QUESTION], ICON_FA_QUESTION_CIRCLE
                                    " If the image is stretched and you don't know why, click this.");
                 if (ImGui::Button("Click to reenable aspect correction.")) {
                     CVarSetInteger("gAdvancedResolution.IgnoreAspectCorrection", (int)false);
@@ -352,7 +360,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 
             if (!CVarGetInteger("gAdvancedResolution.IntegerScale.NeverExceedBounds", 1) ||
                 CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0)) {
-                ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f },
+                ImGui::TextColored(messageColor[MESSAGE_INFO],
                                    " " ICON_FA_INFO_CIRCLE
                                    " A scroll bar may become visible if screen bounds are exceeded.");
                 // Another helpful button, to disable the unused "Exceed Bounds" cvar.
@@ -375,8 +383,8 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                                                  !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "",
                                                  UIWidgets::CheckboxGraphics::Cross, false);
             if (CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0)) {
-                ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f },
-                                   " " ICON_FA_QUESTION_CIRCLE
+                ImGui::TextColored(messageColor[MESSAGE_INFO],
+                                   " " ICON_FA_INFO_CIRCLE
                                    " A scroll bar may become visible if screen bounds are exceeded.");
             }*/
 
