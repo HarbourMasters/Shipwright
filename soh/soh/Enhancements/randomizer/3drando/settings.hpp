@@ -745,7 +745,6 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
 
   extern uint32_t seed;
   extern std::string version;
-  extern std::array<uint8_t, 5> hashIconIndexes;
   extern std::string hash;
   extern std::string seedString;
 

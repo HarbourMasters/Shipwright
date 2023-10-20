@@ -65,6 +65,7 @@ typedef enum {
     CM_BOSS_RUSH_MENU,
     CM_START_BOSS_RUSH_MENU,
     CM_BOSS_RUSH_TO_QUEST,
+    CM_GENERATE_SEED,
 } ConfigMode;
 
 typedef enum {

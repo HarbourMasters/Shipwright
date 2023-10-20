@@ -15,7 +15,6 @@ namespace Settings {
   uint32_t seed;
   std::string hash;
   std::string version = RANDOMIZER_VERSION "-" COMMIT_NUMBER;
-  std::array<uint8_t, 5> hashIconIndexes;
   std::string seedString;
 
   bool skipChildZelda = false;
@@ -1259,11 +1258,6 @@ namespace Settings {
   //to read what settings the player selected to make in game decisions.
   SettingsContext FillContext() {
     SettingsContext ctx = {};
-    ctx.hashIndexes[0] = hashIconIndexes[0];
-    ctx.hashIndexes[1] = hashIconIndexes[1];
-    ctx.hashIndexes[2] = hashIconIndexes[2];
-    ctx.hashIndexes[3] = hashIconIndexes[3];
-    ctx.hashIndexes[4] = hashIconIndexes[4];
 
     ctx.logic                = Logic.Value<uint8_t>();
     ctx.openForest           = OpenForest.Value<uint8_t>();

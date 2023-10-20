@@ -1523,6 +1523,7 @@ int16_t Randomizer::GetVanillaMerchantPrice(RandomizerCheck check) {
 }
 
 void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent) {
+    auto ctx = Rando::Context::GetInstance();
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
         return;
@@ -1537,7 +1538,7 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
 
         int index = 0;
         for (auto it = hashJson.begin(); it != hashJson.end(); ++it) {
-            gSaveContext.seedIcons[index] = gSeedTextures[it.value()].id;
+            ctx->hashIconIndexes[index] = gSeedTextures[it.value()].id;
             index++;
         }
 

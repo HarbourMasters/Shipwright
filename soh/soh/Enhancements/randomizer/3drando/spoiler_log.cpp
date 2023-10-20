@@ -48,14 +48,15 @@ std::string placementtxt;
 static SpoilerData spoilerData;
 
 void GenerateHash() {
+    auto ctx = Rando::Context::GetInstance();
     std::string hash = Settings::hash;
     // adds leading 0s to the hash string if it has less than 10 digits.
     while (hash.length() < 10) {
         hash = "0" + hash;
     }
-    for (size_t i = 0, j = 0; i < Settings::hashIconIndexes.size(); i++, j += 2) {
+    for (size_t i = 0, j = 0; i < ctx->hashIconIndexes.size(); i++, j += 2) {
         int number = std::stoi(hash.substr(j, 2));
-        Settings::hashIconIndexes[i] = number;
+        ctx->hashIconIndexes[i] = number;
     }
 
     // Clear out spoiler log data here, in case we aren't going to re-generate it
@@ -861,6 +862,7 @@ static void WriteAllLocations(int language) {
 }
 
 const char* SpoilerLog_Write(int language) {
+    auto ctx = Rando::Context::GetInstance();
     auto spoilerLog = tinyxml2::XMLDocument(false);
     spoilerLog.InsertEndChild(spoilerLog.NewDeclaration());
 
@@ -875,7 +877,7 @@ const char* SpoilerLog_Write(int language) {
 
     // Write Hash
     int index = 0;
-    for (uint8_t seed_value : Settings::hashIconIndexes) {
+    for (uint8_t seed_value : ctx->hashIconIndexes) {
         jsonData["file_hash"][index] = seed_value;
         index++;
     }
@@ -892,7 +894,6 @@ const char* SpoilerLog_Write(int language) {
     WritePlaythrough();
     //WriteWayOfTheHeroLocation(spoilerLog);
 
-    auto ctx = Rando::Context::GetInstance();
     ctx->playthroughLocations.clear();
     ctx->playthroughBeatable = false;
     ctx->wothLocations.clear();
@@ -907,14 +908,14 @@ const char* SpoilerLog_Write(int language) {
 
     std::string jsonString = jsonData.dump(4);
     std::ostringstream fileNameStream;
-    for (int i = 0; i < Settings::hashIconIndexes.size(); i ++) {
+    for (int i = 0; i < ctx->hashIconIndexes.size(); i ++) {
         if (i) {
             fileNameStream << '-';
         }
-        if (Settings::hashIconIndexes[i] < 10) {
+        if (ctx->hashIconIndexes[i] < 10) {
             fileNameStream << '0';
         }
-        fileNameStream << std::to_string(Settings::hashIconIndexes[i]);
+        fileNameStream << std::to_string(ctx->hashIconIndexes[i]);
     }
     std::string fileName = fileNameStream.str();
     std::ofstream jsonFile(LUS::Context::GetPathRelativeToAppDirectory(

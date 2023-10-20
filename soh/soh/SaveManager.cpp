@@ -108,8 +108,8 @@ void SaveManager::LoadRandomizerVersion1() {
         });
     }
 
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.seedIcons); i++) {
-        SaveManager::Instance->LoadData("seed" + std::to_string(i), gSaveContext.seedIcons[i]);
+    for (int i = 0; i < randoContext->hashIconIndexes.size(); i++) {
+        SaveManager::Instance->LoadData("seed" + std::to_string(i), randoContext->hashIconIndexes[i]);
     }
 
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.randoSettings); i++) {
@@ -193,8 +193,8 @@ void SaveManager::LoadRandomizerVersion2() {
         });
     });
 
-    SaveManager::Instance->LoadArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.seedIcons[i]);
+    SaveManager::Instance->LoadArray("seed", randoContext->hashIconIndexes.size(), [&](size_t i) {
+        SaveManager::Instance->LoadData("", randoContext->hashIconIndexes[i]);
     });
 
     std::string inputSeed;
@@ -324,8 +324,9 @@ void SaveManager::LoadRandomizerVersion3() {
         });
     });
 
-    SaveManager::Instance->LoadArray("seed", ARRAY_COUNT(gSaveContext.seedIcons),
-                                     [&](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.seedIcons[i]); });
+    SaveManager::Instance->LoadArray("seed", randoContext->hashIconIndexes.size(), [&](size_t i) {
+        SaveManager::Instance->LoadData("", randoContext->hashIconIndexes[i]);
+    });
 
     std::string inputSeed;
     SaveManager::Instance->LoadData("inputSeed", inputSeed);
@@ -452,8 +453,8 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
         });
     });
 
-    SaveManager::Instance->SaveArray("seed", ARRAY_COUNT(saveContext->seedIcons), [&](size_t i) {
-        SaveManager::Instance->SaveData("", saveContext->seedIcons[i]);
+    SaveManager::Instance->SaveArray("seed", randoContext->hashIconIndexes.size(), [&](size_t i) {
+        SaveManager::Instance->SaveData("", randoContext->hashIconIndexes[i]);
     });
 
     SaveManager::Instance->SaveData("inputSeed", saveContext->inputSeed);
@@ -599,7 +600,7 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].health = gSaveContext.health;
 
     for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].seedHash); i++) {
-        fileMetaInfo[fileNum].seedHash[i] = gSaveContext.seedIcons[i];
+        fileMetaInfo[fileNum].seedHash[i] = Rando::Context::GetInstance()->hashIconIndexes[i];
     }
 
     fileMetaInfo[fileNum].randoSave = IS_RANDO;

@@ -186,6 +186,22 @@ void Context::CreateItemOverrides() {
     SPDLOG_DEBUG(std::to_string(overrides.size()));
 }
 
+bool Context::IsSeedGenerated() {
+    return mSeedGenerated;
+}
+
+void Context::SetSeedGenerated(bool seedGenerated) {
+    mSeedGenerated = seedGenerated;
+}
+
+bool Context::IsSpoilerLoaded() {
+    return mSpoilerLoaded;
+}
+
+bool Context::SetSpoilerLoaded(bool spoilerLoaded) {
+    mSpoilerLoaded = spoilerLoaded;
+}
+
 GetItemEntry Context::GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability) {
     auto itemLoc = GetItemLocation(rc);
     if (itemLoc->GetPlacedRandomizerGet() == RG_NONE) {

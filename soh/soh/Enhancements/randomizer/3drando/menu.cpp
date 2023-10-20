@@ -67,14 +67,15 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
         Settings::Keysanity.RestoreDelayedOption();
     }
     std::ostringstream fileNameStream;
-    for (int i = 0; i < Settings::hashIconIndexes.size(); i++) {
+    auto ctx = Rando::Context::GetInstance();
+    for (int i = 0; i < ctx->hashIconIndexes.size(); i++) {
         if (i) {
             fileNameStream << '-';
         }
-        if (Settings::hashIconIndexes[i] < 10) {
+        if (ctx->hashIconIndexes[i] < 10) {
             fileNameStream << '0';
         }
-        fileNameStream << std::to_string(Settings::hashIconIndexes[i]);
+        fileNameStream << std::to_string(ctx->hashIconIndexes[i]);
     }
     std::string fileName = fileNameStream.str();
     return "./Randomizer/" + fileName + ".json";

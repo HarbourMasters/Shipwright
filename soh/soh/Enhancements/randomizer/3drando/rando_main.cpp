@@ -4,6 +4,7 @@
 #include "../item_location.h"
 #include "location_access.hpp"
 #include "rando_main.hpp"
+#include "../context.h"
 // #include <soh/Enhancements/randomizer.h>
 #include <libultraship/bridge.h>
 #include <Context.h>
@@ -21,5 +22,6 @@ void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarS
 
     CVarSave();
     CVarLoad();
-    CVarSetInteger("gNewSeedGenerated", 1);
+    Rando::Context::GetInstance()->SetSeedGenerated();
+    Rando::Context::GetInstance()->SetSpoilerLoaded(false);
 }

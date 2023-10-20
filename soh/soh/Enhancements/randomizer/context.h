@@ -43,6 +43,10 @@ class Context {
     void ItemReset();
     void HintReset();
     void CreateItemOverrides();
+    bool IsSeedGenerated();
+    void SetSeedGenerated(bool seedGenerated = true);
+    bool IsSpoilerLoaded();
+    bool SetSpoilerLoaded(bool spoilerLoaded = true);
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true);
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
@@ -50,6 +54,7 @@ class Context {
     std::vector<RandomizerCheck> wothLocations = {};
     std::vector<RandomizerGet> possibleIceTrapModels = {};
     std::unordered_map<RandomizerCheck, RandomizerGet> iceTrapModels = {};
+    std::array<uint8_t, 5> hashIconIndexes = {};
     bool playthroughBeatable = false;
     bool allLocationsReachable = false;
 
@@ -57,5 +62,7 @@ class Context {
     static std::weak_ptr<Context> mContext;
     std::array<Hint, RH_MAX> hintTable = {};
     std::array<ItemLocation, RC_MAX> itemLocationTable = {};
+    bool mSeedGenerated = false;
+    bool mSpoilerLoaded = false;
 };
 } // namespace Rando
