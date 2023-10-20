@@ -275,68 +275,15 @@ static std::vector<RandomizerCheck> GetAccessibleGossipStones(const RandomizerCh
   return accessibleGossipStones;
 }
 
-bool IsReachableWithout(uint32_t locToCheck, uint32_t excludedCheck, bool resetAfter = true){
+bool IsReachableWithout(std::vector<RandomizerCheck> locsToCheck, RandomizerCheck excludedCheck, bool resetAfter = true){
   //temporarily remove the hinted location's item, and then perform a
   //reachability search for this check
-  uint32_t originalItem = ctx->GetItemLocation(excludedCheck)->GetPlaceduint32_t();
-  ctx->GetItemLocation(excludedCheck)->SetPlacedItem(NONE);
+  auto ctx = Rando::Context::GetInstance();
+  RandomizerGet originalItem = ctx->GetItemLocation(excludedCheck)->GetPlacedRandomizerGet();
+  ctx->GetItemLocation(excludedCheck)->SetPlacedItem(RG_NONE);
   LogicReset();
-  const std::vector<uint32_t> rechableWithout = GetAccessibleLocations({locToCheck});
+  const auto rechableWithout = GetAccessibleLocations(locsToCheck);
   ctx->GetItemLocation(excludedCheck)->SetPlacedItem(originalItem);
-  if (resetAfter){
-    //if resetAfter is on, reset logic we are done
-    LogicReset();
-  }
-  if (rechableWithout.empty()) {
-    return false;
-  }
-  return true;
-}
-
-bool IsReachableWithout(std::vector<uint32_t> locsToCheck, uint32_t excludedCheck, bool resetAfter = true){
-  //temporarily remove the hinted location's item, and then perform a
-  //reachability search for this check
-  uint32_t originalItem = Location(excludedCheck)->GetPlaceduint32_t();
-  Location(excludedCheck)->SetPlacedItem(NONE);
-  LogicReset();
-  const std::vector<uint32_t> rechableWithout = GetAccessibleLocations(locsToCheck);
-  Location(excludedCheck)->SetPlacedItem(originalItem);
-  if (resetAfter){
-    //if resetAfter is on, reset logic we are done
-    LogicReset();
-  }
-  if (rechableWithout.empty()) {
-    return false;
-  }
-  return true;
-}
-
-bool IsReachableWithout(std::vector<uint32_t> locsToCheck, uint32_t excludedCheck, bool resetAfter = true){
-  //temporarily remove the hinted location's item, and then perform a
-  //reachability search for this check
-  uint32_t originalItem = ctx->GetItemLocation(excludedCheck)->GetPlaceduint32_t();
-  ctx->GetItemLocation(excludedCheck)->SetPlacedItem(NONE);
-  LogicReset();
-  const std::vector<uint32_t> rechableWithout = GetAccessibleLocations({locToCheck});
-  ctx->GetItemLocation(excludedCheck)->SetPlacedItem(originalItem);
-  if (resetAfter){
-    //if resetAfter is on, reset logic we are done
-    LogicReset();
-  }
-  if (rechableWithout.empty()) {
-    return false;
-  }
-  return true;
-}
-
-bool IsReachableWithout(std::vector<uint32_t> locsToCheck, uint32_t excludedCheck, bool resetAfter = true){
-  //temporarily remove the hinted location's item, and then perform a
-  //reachability search for this check
-  uint32_t originalItem = Location(excludedCheck)->GetPlaceduint32_t();
-  Location(excludedCheck)->SetPlacedItem(NONE);
-  LogicReset();
-  const std::vector<uint32_t> rechableWithout = GetAccessibleLocations(locsToCheck);
-  Location(excludedCheck)->SetPlacedItem(originalItem);
   if (resetAfter){
     //if resetAfter is on, reset logic we are done
     LogicReset();
@@ -1067,25 +1014,25 @@ void CreateAllHints() {
 
   // Apply Special hint exclusions with no requirements
   if (Settings::Kak10GSHintText){
-      Location(KAK_10_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+      ctx->GetItemLocation(RC_KAK_10_GOLD_SKULLTULA_REWARD)->SetAsHinted();
   }
   if (Settings::Kak20GSHintText){
-      Location(KAK_20_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+      ctx->GetItemLocation(RC_KAK_20_GOLD_SKULLTULA_REWARD)->SetAsHinted();
   }
   if (Settings::Kak30GSHintText){
-      Location(KAK_30_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+      ctx->GetItemLocation(RC_KAK_30_GOLD_SKULLTULA_REWARD)->SetAsHinted();
   }
   if (Settings::Kak40GSHintText){
-      Location(KAK_40_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+      ctx->GetItemLocation(RC_KAK_40_GOLD_SKULLTULA_REWARD)->SetAsHinted();
   }
   if (Settings::Kak50GSHintText){
-      Location(KAK_50_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+      ctx->GetItemLocation(RC_KAK_50_GOLD_SKULLTULA_REWARD)->SetAsHinted();
   }
   if (Settings::FrogsHintText){
-      Location(ZR_FROGS_OCARINA_GAME)->SetAsHinted();
+      ctx->GetItemLocation(RC_ZR_FROGS_OCARINA_GAME)->SetAsHinted();
   }
   if (Settings::skipChildZelda){
-      Location(SONG_FROM_IMPA)->SetAsHinted();
+      ctx->GetItemLocation(RC_SONG_FROM_IMPA)->SetAsHinted();
   }
 
   // Add 'always' location hints
