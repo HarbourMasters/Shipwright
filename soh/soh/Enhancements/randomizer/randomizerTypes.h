@@ -3179,6 +3179,7 @@ typedef enum {
     RHT_VALIDATION_LINE,
     // Light Arrow Location
     RHT_LIGHT_ARROW_LOCATION_HINT,
+    RHT_SHEIK_LIGHT_ARROW_HINT,
     // Your Pocket
     RHT_YOUR_POCKET,
     // Ganon Line

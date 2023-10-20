@@ -31,6 +31,7 @@ class StaticData {
       static std::vector<std::vector<RandomizerCheck>> shopLocationLists;
       static std::vector<RandomizerCheck> scrubLocations;
       static std::vector<RandomizerCheck> gossipStoneLocations;
+      static std::vector<RandomizerCheck> otherHintLocations;
       StaticData();
       ~StaticData();
 };

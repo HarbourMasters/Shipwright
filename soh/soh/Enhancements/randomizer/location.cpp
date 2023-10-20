@@ -235,11 +235,11 @@ Rando::Location Rando::Location::Reward(RandomizerCheck rc, RandomizerCheckQuest
 
 Rando::Location Rando::Location::OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_,
                                            RandomizerCheckType checkType_, RandomizerCheckArea area_, ActorID actorId_,
-                                           uint8_t scene_, int32_t actorParams_, uint8_t flag_,
+                                           uint8_t scene_,
                                            std::string&& shortName_, std::string&& spoilerName_,
-                                           std::vector<Category>&& categories, bool isVanillaCompletion_) {
-    return Location(rc, quest_, checkType_, area_, LocationType::OtherHint, actorId_, scene_, actorParams_, flag_,
-                    std::move(shortName_), std::move(spoilerName_), RHT_NONE, RG_NONE, std::move(categories), isVanillaCompletion_);
+                                           bool isVanillaCompletion_) {
+    return Location(rc, quest_, checkType_, area_, LocationType::OtherHint, actorId_, scene_, 0x00, 0x00,
+                    std::move(shortName_), std::move(spoilerName_), RHT_NONE, RG_NONE, {}, isVanillaCompletion_);
 }
 
 Rando::Location Rando::Location::HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
