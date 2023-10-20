@@ -1,8 +1,8 @@
 #include "location_access.hpp"
 
 #include "dungeon.hpp"
-#include "item_list.hpp"
-#include "item_location.hpp"
+#include "../static_data.h"
+#include "../context.h"
 #include "item_pool.hpp"
 #include "logic.hpp"
 #include "settings.hpp"
@@ -19,7 +19,7 @@ using namespace Settings;
 //generic grotto event list
 std::vector<EventAccess> grottoEvents = {
   EventAccess(&GossipStoneFairy, {[]{return GossipStoneFairy || CanSummonGossipFairy;}}),
-  EventAccess(&ButterflyFairy,   {[]{return ButterflyFairy   || (CanUse(STICKS));}}),
+  EventAccess(&ButterflyFairy,   {[]{return ButterflyFairy   || (CanUse(RG_STICKS));}}),
   EventAccess(&BugShrub,         {[]{return CanCutShrubs;}}),
   EventAccess(&LoneFish,         {[]{return true;}}),
 };
@@ -41,7 +41,7 @@ bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
 
 bool LocationAccess::ConditionsMet() const {
 
-  Area* parentRegion = AreaTable(Location(location)->GetParentRegionKey());
+  Area* parentRegion = AreaTable(Rando::Context::GetInstance()->GetItemLocation(location)->GetParentRegionKey());
   bool conditionsMet = false;
 
   if ((parentRegion->childDay   && CheckConditionAtAgeTime(IsChild, AtDay))   ||
@@ -55,37 +55,39 @@ bool LocationAccess::ConditionsMet() const {
 }
 
 bool LocationAccess::CanBuy() const {
+  auto ctx = Rando::Context::GetInstance();
   //Not a shop location, don't need to check if buyable
-  if (!(Location(location)->IsCategory(Category::cShop))) {
+  if (!(Rando::StaticData::GetLocation(location)->IsCategory(Category::cShop))) {
     return true;
   }
 
   //Check if wallet is large enough to buy item
   bool SufficientWallet = true;
-  if (Location(location)->GetPrice() > 500) {
+  if (ctx->GetItemLocation(location)->GetPrice() > 500) {
     SufficientWallet = ProgressiveWallet >= 3;
-  } else if (Location(location)->GetPrice() > 200) {
+  } else if (ctx->GetItemLocation(location)->GetPrice() > 200) {
     SufficientWallet = ProgressiveWallet >= 2;
-  } else if (Location(location)->GetPrice() > 99) {
+  } else if (ctx->GetItemLocation(location)->GetPrice() > 99) {
     SufficientWallet = ProgressiveWallet >= 1;
   }
 
   bool OtherCondition = true;
-  uint32_t placed = Location(location)->GetPlacedItemKey();
+  RandomizerGet placed = ctx->GetItemLocation(location)->GetPlacedRandomizerGet();
   //Need bottle to buy bottle items, only logically relevant bottle items included here
-  if (placed == BUY_BLUE_FIRE || placed == BUY_BOTTLE_BUG || placed == BUY_FISH || placed == BUY_FAIRYS_SPIRIT) {
-    OtherCondition = HasBottle;
+  if (placed == RG_BUY_BLUE_FIRE || placed == RG_BUY_BOTTLE_BUG || placed == RG_BUY_FISH ||
+      placed == RG_BUY_FAIRYS_SPIRIT) {
+      OtherCondition = HasBottle;
   }
-  //If bombchus in logic, need to have found chus to buy; if not just need bomb bag
-  else if (placed == BUY_BOMBCHU_10 || placed == BUY_BOMBCHU_20) {
-    OtherCondition = (!BombchusInLogic && Bombs) || (BombchusInLogic && FoundBombchus);
+  // If bombchus in logic, need to have found chus to buy; if not just need bomb bag
+  else if (placed == RG_BUY_BOMBCHU_10 || placed == RG_BUY_BOMBCHU_20) {
+      OtherCondition = (!BombchusInLogic && Bombs) || (BombchusInLogic && FoundBombchus);
   }
 
   return SufficientWallet && OtherCondition;
 }
 
 Area::Area() = default;
-Area::Area(std::string regionName_, std::string scene_, uint32_t hintKey_,
+Area::Area(std::string regionName_, std::string scene_, RandomizerHintTextKey hintKey_,
          bool timePass_,
          std::vector<EventAccess> events_,
          std::vector<LocationAccess> locations_,
@@ -106,14 +108,14 @@ bool Area::UpdateEvents(SearchMode mode) {
     if (Child()) {
       childDay = true;
       childNight = true;
-      AreaTable(ROOT)->childDay = true;
-      AreaTable(ROOT)->childNight = true;
+      AreaTable(RR_ROOT)->childDay = true;
+      AreaTable(RR_ROOT)->childNight = true;
     }
     if (Adult()) {
       adultDay = true;
       adultNight = true;
-      AreaTable(ROOT)->adultDay = true;
-      AreaTable(ROOT)->adultNight = true;
+      AreaTable(RR_ROOT)->adultDay = true;
+      AreaTable(RR_ROOT)->adultNight = true;
     }
   }
 
@@ -136,7 +138,7 @@ bool Area::UpdateEvents(SearchMode mode) {
   return eventsUpdated;
 }
 
-void Area::AddExit(uint32_t parentKey, uint32_t newExitKey, ConditionFn condition) {
+void Area::AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition) {
   Entrance newExit = Entrance(newExitKey, {condition});
   newExit.SetParentRegion(parentKey);
   exits.push_front(newExit);
@@ -147,7 +149,7 @@ void Area::RemoveExit(Entrance* exitToRemove) {
   exits.remove_if([exitToRemove](const auto exit){return &exit == exitToRemove;});
 }
 
-void Area::SetAsPrimary(uint32_t exitToBePrimary) {
+void Area::SetAsPrimary(RandomizerRegion exitToBePrimary) {
   for (auto& exit : exits) {
     if (exit.Getuint32_t() == exitToBePrimary) {
       exit.SetAsPrimary();
@@ -156,7 +158,7 @@ void Area::SetAsPrimary(uint32_t exitToBePrimary) {
   }
 }
 
-Entrance* Area::GetExit(uint32_t exitToReturn) {
+Entrance* Area::GetExit(RandomizerRegion exitToReturn) {
   for (auto& exit : exits) {
     if (exit.Getuint32_t() == exitToReturn) {
       return &exit;
@@ -179,7 +181,7 @@ bool Area::AllAccountedFor() const {
   }
 
   for (const LocationAccess& loc : locations) {
-    if (!(Location(loc.GetLocation())->IsAddedToPool())) {
+    if (!(Rando::Context::GetInstance()->GetItemLocation(loc.GetLocation())->IsAddedToPool())) {
       return false;
     }
   }
@@ -193,13 +195,13 @@ bool Area::AllAccountedFor() const {
   return AllAccess();
 }
 
-bool Area::CheckAllAccess(const uint32_t exitKey) {
+bool Area::CheckAllAccess(const RandomizerRegion exitKey) {
   if (!AllAccess()) {
     return false;
   }
 
   for (Entrance& exit : exits) {
-    if (exit.Getuint32_t() == exitKey) {
+    if (exit.GetConnectedRegionKey() == exitKey) {
       return exit.CheckConditionAtAgeTime(Logic::IsChild, Logic::AtDay)   &&
              exit.CheckConditionAtAgeTime(Logic::IsChild, Logic::AtNight) &&
              exit.CheckConditionAtAgeTime(Logic::IsAdult, Logic::AtDay)   &&
@@ -220,29 +222,29 @@ void Area::ResetVariables() {
   }
 }
 
-std::array<Area, KEY_ENUM_MAX> areaTable;
+std::array<Area, RR_MAX> areaTable;
 
-bool Here(const uint32_t area, ConditionFn condition) {
+bool Here(const RandomizerRegion area, ConditionFn condition) {
   return areaTable[area].HereCheck(condition);
 }
 
-bool CanPlantBean(const uint32_t area) {
+bool CanPlantBean(const RandomizerRegion area) {
   return areaTable[area].CanPlantBeanCheck();
 }
 
-bool BothAges(const uint32_t area) {
+bool BothAges(const RandomizerRegion area) {
   return areaTable[area].BothAgesCheck();
 }
 
-bool ChildCanAccess(const uint32_t area) {
+bool ChildCanAccess(const RandomizerRegion area) {
   return areaTable[area].Child();
 }
 
-bool AdultCanAccess(const uint32_t area) {
+bool AdultCanAccess(const RandomizerRegion area) {
   return areaTable[area].Adult();
 }
 
-bool HasAccessTo(const uint32_t area) {
+bool HasAccessTo(const RandomizerRegion area) {
   return areaTable[area].HasAccess();
 }
 
@@ -251,68 +253,68 @@ bool HasAccessTo(const uint32_t area) {
 void AreaTable_Init() {
   //Clear the array from any previous playthrough attempts. This is important so that
   //locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
-  areaTable.fill(Area("Invalid Area", "Invalid Area", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {}));
+  areaTable.fill(Area("Invalid Area", "Invalid Area", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {}));
 
                        //name, scene, hint text,                       events, locations, exits
-  areaTable[ROOT] = Area("Root", "", LINKS_POCKET, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_ROOT] = Area("Root", "", RHT_LINKS_POCKET, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(LINKS_POCKET, {[]{return true;}}),
-                  LocationAccess(TRIFORCE_COMPLETED, { [] { return CanCompleteTriforce;}}),
+                  LocationAccess(RC_LINKS_POCKET, {[]{return true;}}),
+                  LocationAccess(RC_TRIFORCE_COMPLETED, { [] { return CanCompleteTriforce;}}),
                 }, {
                   //Exits
-                  Entrance(ROOT_EXITS, {[]{return true;}})
+                  Entrance(RR_ROOT_EXITS, {[]{return true;}})
   });
 
-  areaTable[ROOT_EXITS] = Area("Root Exits", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_ROOT_EXITS] = Area("Root Exits", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(CHILD_SPAWN,             {[]{return IsChild;}}),
-                  Entrance(ADULT_SPAWN,             {[]{return IsAdult;}}),
-                  Entrance(MINUET_OF_FOREST_WARP,   {[]{return CanPlay(MinuetOfForest);}}),
-                  Entrance(BOLERO_OF_FIRE_WARP,     {[]{return CanPlay(BoleroOfFire)     && CanLeaveForest;}}),
-                  Entrance(SERENADE_OF_WATER_WARP,  {[]{return CanPlay(SerenadeOfWater)  && CanLeaveForest;}}),
-                  Entrance(NOCTURNE_OF_SHADOW_WARP, {[]{return CanPlay(NocturneOfShadow) && CanLeaveForest;}}),
-                  Entrance(REQUIEM_OF_SPIRIT_WARP,  {[]{return CanPlay(RequiemOfSpirit)  && CanLeaveForest;}}),
-                  Entrance(PRELUDE_OF_LIGHT_WARP,   {[]{return CanPlay(PreludeOfLight)   && CanLeaveForest;}}),
+                  Entrance(RR_CHILD_SPAWN,             {[]{return IsChild;}}),
+                  Entrance(RR_ADULT_SPAWN,             {[]{return IsAdult;}}),
+                  Entrance(RR_MINUET_OF_FOREST_WARP,   {[]{return CanPlay(MinuetOfForest);}}),
+                  Entrance(RR_BOLERO_OF_FIRE_WARP,     {[]{return CanPlay(BoleroOfFire)     && CanLeaveForest;}}),
+                  Entrance(RR_SERENADE_OF_WATER_WARP,  {[]{return CanPlay(SerenadeOfWater)  && CanLeaveForest;}}),
+                  Entrance(RR_NOCTURNE_OF_SHADOW_WARP, {[]{return CanPlay(NocturneOfShadow) && CanLeaveForest;}}),
+                  Entrance(RR_REQUIEM_OF_SPIRIT_WARP,  {[]{return CanPlay(RequiemOfSpirit)  && CanLeaveForest;}}),
+                  Entrance(RR_PRELUDE_OF_LIGHT_WARP,   {[]{return CanPlay(PreludeOfLight)   && CanLeaveForest;}}),
   });
 
-  areaTable[CHILD_SPAWN] = Area("Child Spawn", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_CHILD_SPAWN] = Area("Child Spawn", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(KF_LINKS_HOUSE, {[]{return true;}}),
+                  Entrance(RR_KF_LINKS_HOUSE, {[]{return true;}}),
   });
 
-  areaTable[ADULT_SPAWN] = Area("Adult Spawn", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_ADULT_SPAWN] = Area("Adult Spawn", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(TEMPLE_OF_TIME, {[]{return true;}}),
+                  Entrance(RR_TEMPLE_OF_TIME, {[]{return true;}}),
   });
 
-  areaTable[MINUET_OF_FOREST_WARP] = Area("Minuet of Forest Warp", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_MINUET_OF_FOREST_WARP] = Area("Minuet of Forest Warp", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(SACRED_FOREST_MEADOW, {[]{return true;}}),
+                  Entrance(RR_SACRED_FOREST_MEADOW, {[]{return true;}}),
   });
 
-  areaTable[BOLERO_OF_FIRE_WARP] = Area("Bolero of Fire Warp", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_BOLERO_OF_FIRE_WARP] = Area("Bolero of Fire Warp", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(DMC_CENTRAL_LOCAL, {[]{return true;}}),
+                  Entrance(RR_DMC_CENTRAL_LOCAL, {[]{return true;}}),
   });
 
-  areaTable[SERENADE_OF_WATER_WARP] = Area("Serenade of Water Warp", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_SERENADE_OF_WATER_WARP] = Area("Serenade of Water Warp", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(LAKE_HYLIA, {[]{return true;}}),
+                  Entrance(RR_LAKE_HYLIA, {[]{return true;}}),
   });
 
-  areaTable[REQUIEM_OF_SPIRIT_WARP] = Area("Requiem of Spirit Warp", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Area("Requiem of Spirit Warp", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(DESERT_COLOSSUS, {[]{return true;}}),
+                  Entrance(RR_DESERT_COLOSSUS, {[]{return true;}}),
   });
 
-  areaTable[NOCTURNE_OF_SHADOW_WARP] = Area("Nocturne of Shadow Warp", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Area("Nocturne of Shadow Warp", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(GRAVEYARD_WARP_PAD_REGION, {[]{return true;}}),
+                  Entrance(RR_GRAVEYARD_WARP_PAD_REGION, {[]{return true;}}),
   });
 
-  areaTable[PRELUDE_OF_LIGHT_WARP] = Area("Prelude of Light Warp", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Area("Prelude of Light Warp", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(TEMPLE_OF_TIME, {[]{return true;}}),
+                  Entrance(RR_TEMPLE_OF_TIME, {[]{return true;}}),
   });
 
   // Overworld
@@ -338,13 +340,13 @@ void AreaTable_Init() {
   AreaTable_Init_GanonsCastle();
 
   //Set parent regions
-  for (uint32_t i = ROOT; i <= GANONS_CASTLE; i++) {
+  for (uint32_t i = RR_ROOT; i <= RR_GANONS_CASTLE; i++) {
     for (LocationAccess& locPair : areaTable[i].locations) {
-      uint32_t location = locPair.GetLocation();
-      Location(location)->SetParentRegion(i);
+      RandomizerCheck location = locPair.GetLocation();
+      Rando::Context::GetInstance()->GetItemLocation(location)->SetParentRegion((RandomizerRegion)i);
     }
     for (Entrance& exit : areaTable[i].exits) {
-      exit.SetParentRegion(i);
+      exit.SetParentRegion((RandomizerRegion)i);
       exit.SetName();
       exit.GetConnectedRegion()->entrances.push_front(&exit);
     }
@@ -361,14 +363,14 @@ void AreaTable_Init() {
 namespace Areas {
 
   const auto GetAllAreas() {
-    static const size_t areaCount = MARKER_AREAS_END - (MARKER_AREAS_START + 1);
+    static const size_t areaCount = RR_MAX - (RR_NONE + 1);
 
-    static std::array<uint32_t, areaCount> allAreas = {};
+    static std::array<RandomizerRegion, areaCount> allAreas = {};
 
     static bool intialized = false;
     if (!intialized) {
       for (size_t i = 0; i < areaCount; i++) {
-        allAreas[i] = (MARKER_AREAS_START + 1) + i;
+        allAreas[i] = (RandomizerRegion)((RR_NONE + 1) + i);
       }
       intialized = true;
     }
@@ -377,53 +379,53 @@ namespace Areas {
   }
 
   void AccessReset() {
-      for (const uint32_t area : GetAllAreas()) {
+      for (const RandomizerRegion area : GetAllAreas()) {
       AreaTable(area)->ResetVariables();
     }
 
     if(Settings::HasNightStart) {
         if(Settings::ResolvedStartingAge == AGE_CHILD) {
-          AreaTable(ROOT)->childNight = true;
+          AreaTable(RR_ROOT)->childNight = true;
         } else {
-          AreaTable(ROOT)->adultNight = true;
+          AreaTable(RR_ROOT)->adultNight = true;
         }
       } else {
         if(Settings::ResolvedStartingAge == AGE_CHILD) {
-          AreaTable(ROOT)->childDay = true;
+          AreaTable(RR_ROOT)->childDay = true;
         } else {
-          AreaTable(ROOT)->adultDay = true;
+          AreaTable(RR_ROOT)->adultDay = true;
         }
     }
   }
 
   //Reset exits and clear items from locations
   void ResetAllLocations() {
-      for (const uint32_t area : GetAllAreas()) {
+      for (const RandomizerRegion area : GetAllAreas()) {
       AreaTable(area)->ResetVariables();
       //Erase item from every location in this exit
       for (LocationAccess& locPair : AreaTable(area)->locations) {
-          uint32_t location = locPair.GetLocation();
-          Location(location)->ResetVariables();
+          RandomizerCheck location = locPair.GetLocation();
+          Rando::Context::GetInstance()->GetItemLocation(location)->ResetVariables();
       }
     }
 
     if(Settings::HasNightStart) {
         if(Settings::ResolvedStartingAge == AGE_CHILD) {
-          AreaTable(ROOT)->childNight = true;
+          AreaTable(RR_ROOT)->childNight = true;
         } else {
-          AreaTable(ROOT)->adultNight = true;
+          AreaTable(RR_ROOT)->adultNight = true;
         }
       } else {
         if(Settings::ResolvedStartingAge == AGE_CHILD) {
-          AreaTable(ROOT)->childDay = true;
+          AreaTable(RR_ROOT)->childDay = true;
         } else {
-          AreaTable(ROOT)->adultDay = true;
+          AreaTable(RR_ROOT)->adultDay = true;
         }
     }
   }
 
   bool HasTimePassAccess(uint8_t age) {
-      for (const uint32_t areaKey : GetAllAreas()) {
+      for (const RandomizerRegion areaKey : GetAllAreas()) {
       auto area = AreaTable(areaKey);
       if (area->timePass && ((age == AGE_CHILD && area->Child()) || (age == AGE_ADULT && area->Adult()))) {
         return true;
@@ -441,7 +443,7 @@ namespace Areas {
     worldGraph.open (str + ".dot");
     worldGraph << "digraph {\n\tcenter=true;\n";
 
-    for (const uint32_t areaKey : GetAllAreas()) {
+    for (const RandomizerRegion areaKey : GetAllAreas()) {
       auto area = AreaTable(areaKey);
       for (auto exit : area->exits) {
         if (exit.GetConnectedRegion()->regionName != "Invalid Area") {
@@ -484,8 +486,8 @@ namespace Areas {
 
 } //namespace Areas
 
-Area* AreaTable(const uint32_t areaKey) {
-  if (areaKey > KEY_ENUM_MAX) {
+Area* AreaTable(const RandomizerRegion areaKey) {
+  if (areaKey > RR_MAX) {
     printf("\x1b[1;1HERROR: AREAKEY TOO BIG");
   }
   return &(areaTable[areaKey]);
@@ -494,7 +496,7 @@ Area* AreaTable(const uint32_t areaKey) {
 //Retrieve all the shuffable entrances of a specific type
 std::vector<Entrance*> GetShuffleableEntrances(EntranceType type, bool onlyPrimary /*= true*/) {
   std::vector<Entrance*> entrancesToShuffle = {};
-    for (uint32_t area : Areas::GetAllAreas()) {
+    for (RandomizerRegion area : Areas::GetAllAreas()) {
     for (auto& exit: AreaTable(area)->exits) {
       if ((exit.GetType() == type || type == EntranceType::All) && (exit.IsPrimary() || !onlyPrimary) && exit.GetType() != EntranceType::None) {
         entrancesToShuffle.push_back(&exit);

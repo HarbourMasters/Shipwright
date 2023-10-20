@@ -26,6 +26,7 @@
 #include <functional>
 #include "draw.h"
 #include "rando_hash.h"
+#include "static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <boost_custom/container_hash/hash_32.hpp>
 #include "randomizer_settings_window.h"
@@ -44,7 +45,7 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum;
 std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum;
 std::unordered_map<std::string, RandomizerCheckArea> SpoilerfileAreaNameToEnum;
 std::unordered_map<std::string, HintType> SpoilerfileHintTypeNameToEnum;
-std::multimap<std::tuple<s16, s16, s32>, RandomizerCheckObject> checkFromActorMultimap;
+std::multimap<std::tuple<s16, s16, s32>, RandomizerCheck> checkFromActorMultimap;
 std::set<RandomizerCheck> excludedLocations;
 std::set<RandomizerTrick> enabledTricks;
 std::set<RandomizerTrick> enabledGlitches;
@@ -118,14 +119,16 @@ static const char* frenchRupeeNames[36] = {
 };
 
 Randomizer::Randomizer() {
-    for (auto& [randomizerCheck, rcObject] : RandomizerCheckObjects::GetAllRCObjects()) {
-        SpoilerfileCheckNameToEnum[rcObject.rcSpoilerName] = rcObject.rc;
-        checkFromActorMultimap.emplace(std::make_tuple((s16)rcObject.actorId, (s16)rcObject.sceneId, rcObject.actorParams), rcObject);
+    Rando::StaticData::InitItemTable();
+    Rando::StaticData::InitLocationTable();
+    for (auto& location : Rando::StaticData::GetLocationTable()) {
+        SpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
+        checkFromActorMultimap.emplace(std::make_tuple((s16)location.GetActorID(), (s16)location.GetScene(), location.GetActorParams()), location.GetRandomizerCheck());
     }
     SpoilerfileCheckNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
     SpoilerfileCheckNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
 
-    for (auto& item: *RandoMain::GetFullItemTable()) {
+    for (auto& item: Rando::StaticData::GetItemTable()) {
         // Easiest way to filter out all the empty values from the array, since we still technically want the 0/RG_NONE entry
         if (item.GetName().english.empty()) continue;
         SpoilerfileGetNameToEnum[item.GetName().english] = item.GetRandomizerGet();
@@ -2582,7 +2585,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_MARKET_10_BIG_POES,                                          RAND_INF_10_BIG_POES },
 };
 
-RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
+Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
     RandomizerCheck specialRc = RC_UNKNOWN_CHECK;
     // TODO: Migrate these special cases into table, or at least document why they are special
     switch(sceneNum) {
@@ -2683,22 +2686,22 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
     }
 
     if (specialRc != RC_UNKNOWN_CHECK) {
-        return RandomizerCheckObjects::GetAllRCObjects()[specialRc];
+        return Rando::StaticData::GetLocation(specialRc);
     }
 
     auto range = checkFromActorMultimap.equal_range(std::make_tuple(actorId, sceneNum, actorParams));
 
     for (auto it = range.first; it != range.second; ++it) {
         if (
-            it->second.vOrMQ == RCVORMQ_BOTH ||
-            (it->second.vOrMQ == RCVORMQ_VANILLA && !ResourceMgr_IsGameMasterQuest()) ||
-            (it->second.vOrMQ == RCVORMQ_MQ && ResourceMgr_IsGameMasterQuest())
+            Rando::StaticData::GetLocation(it->second)->GetQuest() == RCQUEST_BOTH ||
+            (Rando::StaticData::GetLocation(it->second)->GetQuest() == RCQUEST_VANILLA && !ResourceMgr_IsGameMasterQuest()) ||
+            (Rando::StaticData::GetLocation(it->second)->GetQuest() == RCQUEST_MQ && ResourceMgr_IsGameMasterQuest())
         ) {
-            return it->second;
+            return Rando::StaticData::GetLocation(it->second);
         }
     }
 
-    return RandomizerCheckObjects::GetAllRCObjects()[RC_UNKNOWN_CHECK];
+    return Rando::StaticData::GetLocation(RC_UNKNOWN_CHECK);
 }
 
 ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData) {
@@ -2717,15 +2720,15 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
         actorParams = TWO_ACTOR_PARAMS(actorParams, respawnData);
     }
 
-    RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_EN_DNS, sceneNum, actorParams);
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_DNS, sceneNum, actorParams);
 
-    if (rcObject.rc != RC_UNKNOWN_CHECK) {
-        scrubIdentity.randomizerInf = rcToRandomizerInf[rcObject.rc];
-        scrubIdentity.randomizerCheck = rcObject.rc;
-        scrubIdentity.getItemId = rcObject.ogItemId;
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        scrubIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        scrubIdentity.randomizerCheck = location->GetRandomizerCheck();
+        scrubIdentity.getItemId = (GetItemID)Rando::StaticData::RetrieveItem(location->GetVanillaItem()).GetItemID();
         scrubIdentity.isShuffled = GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) != RO_SCRUBS_OFF;
 
-        if (rcObject.rc == RC_HF_DEKU_SCRUB_GROTTO || rcObject.rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT || rcObject.rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE) {
+        if (location->GetRandomizerCheck() == RC_HF_DEKU_SCRUB_GROTTO || location->GetRandomizerCheck() == RC_LW_DEKU_SCRUB_GROTTO_FRONT || location->GetRandomizerCheck() == RC_LW_DEKU_SCRUB_NEAR_BRIDGE) {
             scrubIdentity.isShuffled = true;
         }
 
@@ -2746,14 +2749,14 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
     shopItemIdentity.itemPrice = -1;
     shopItemIdentity.enGirlAShopItem = 0x32;
 
-    RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_EN_GIRLA, 
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_GIRLA, 
         // Bazaar (SHOP1) scene is reused, so if entering from Kak use debug scene to identify
         (sceneNum == SCENE_BAZAAR && gSaveContext.entranceIndex == 0xB7) ? SCENE_TEST01 : sceneNum, slotIndex);
 
-    if (rcObject.rc != RC_UNKNOWN_CHECK) {
-        shopItemIdentity.randomizerInf = rcToRandomizerInf[rcObject.rc];
-        shopItemIdentity.randomizerCheck = rcObject.rc;
-        shopItemIdentity.ogItemId = rcObject.ogItemId;
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        shopItemIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        shopItemIdentity.randomizerCheck = location->GetRandomizerCheck();
+        shopItemIdentity.ogItemId = (GetItemID)Rando::StaticData::RetrieveItem(location->GetVanillaItem()).GetItemID();
 
         RandomizerGetData randoGet = GetRandomizerGetDataFromKnownCheck(shopItemIdentity.randomizerCheck);
         if (randomizerGetToEnGirlShopItem.find(randoGet.rgID) != randomizerGetToEnGirlShopItem.end()) {
@@ -2780,11 +2783,11 @@ CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
         actorParams = TWO_ACTOR_PARAMS(posX, posZ);
     }
 
-    RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_EN_COW, sceneNum, actorParams);
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_COW, sceneNum, actorParams);
 
-    if (rcObject.rc != RC_UNKNOWN_CHECK) {
-        cowIdentity.randomizerInf = rcToRandomizerInf[rcObject.rc];
-        cowIdentity.randomizerCheck = rcObject.rc;
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        cowIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        cowIdentity.randomizerCheck = location->GetRandomizerCheck();
     }
 
     return cowIdentity;
@@ -2802,27 +2805,17 @@ GetItemEntry Randomizer::GetItemEntryFromRGData(RandomizerGetData rgData, GetIte
     if (checkObtainability && OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerGet(rgData.rgID) != CAN_OBTAIN) {
         return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GI_RUPEE_BLUE);
     }
-    // Can't get RG_ICE_TRAP if the rgID corresponds to a vanilla item
-    if (IsItemVanilla(rgData.rgID)) {
-        return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GetItemIdFromRandomizerGet(rgData.rgID, ogItemId));
-    }
-    // After this point we can assume we are dealing with a randomizer exclusive item.
-    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(
-        MOD_RANDOMIZER, GetItemIdFromRandomizerGet(rgData.rgID, ogItemId));
-    // If we have an ice trap, we want to change the GID and DrawFunc to the fakeRgID's values.
+
+    Rando::Item item = Rando::StaticData::RetrieveItem(rgData.rgID);
+    GetItemEntry giEntry = item.GetGIEntry_Copy();
+    // If we have an ice trap, we want to change the GID and drawFunc to the fakeRgID's values.
     if (rgData.rgID == RG_ICE_TRAP) {
-        ModIndex modIndex;
-        if (IsItemVanilla(rgData.fakeRgID)) {
-            modIndex = MOD_NONE;
-        } else {
-            modIndex = MOD_RANDOMIZER;
-        }
-        GetItemEntry fakeGiEntry = ItemTableManager::Instance->RetrieveItemEntry(modIndex, GetItemIdFromRandomizerGet(rgData.fakeRgID, ogItemId));
-        giEntry.gid = fakeGiEntry.gid;
-        giEntry.gi = fakeGiEntry.gi;
-        giEntry.drawItemId = fakeGiEntry.drawItemId;
-        giEntry.drawModIndex = fakeGiEntry.drawModIndex;
-        giEntry.drawFunc = fakeGiEntry.drawFunc;
+        std::shared_ptr<GetItemEntry> fakeGiEntry = Rando::StaticData::RetrieveItem(rgData.fakeRgID).GetGIEntry();
+        giEntry.gid = fakeGiEntry->gid;
+        giEntry.gi = fakeGiEntry->gi;
+        giEntry.drawItemId = fakeGiEntry->drawItemId;
+        giEntry.drawModIndex = fakeGiEntry->drawModIndex;
+        giEntry.drawFunc = fakeGiEntry->drawFunc;
     }
     return giEntry;
 }
@@ -2833,7 +2826,7 @@ GetItemEntry Randomizer::GetItemFromKnownCheck(RandomizerCheck randomizerCheck, 
 }
 
 RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
-    return GetCheckObjectFromActor(actorId, sceneNum, actorParams).rc;
+    return GetCheckObjectFromActor(actorId, sceneNum, actorParams)->GetRandomizerCheck();
 }
 
 RandomizerInf Randomizer::GetRandomizerInfFromCheck(RandomizerCheck rc) {
@@ -3070,9 +3063,10 @@ void GenerateRandomizerImgui(std::string seed = "") {
     RandomizerCheckObjects::UpdateImGuiVisibility();
 
     // Remove excludes for locations that are no longer allowed to be excluded
-    for (auto& [randomizerCheck, rcObject] : RandomizerCheckObjects::GetAllRCObjects()) {
-        auto elfound = excludedLocations.find(rcObject.rc);
-        if (!rcObject.visibleInImgui && elfound != excludedLocations.end()) {
+    auto ctx = Rando::Context::GetInstance();
+    for (auto& location : Rando::StaticData::GetLocationTable()) {
+        auto elfound = excludedLocations.find(location.GetRandomizerCheck());
+        if (!ctx->GetItemLocation(location.GetRandomizerCheck())->IsVisible() && elfound != excludedLocations.end()) {
             excludedLocations.erase(elfound);
         }
     }
@@ -3095,6 +3089,7 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
 }
 
 void RandomizerSettingsWindow::DrawElement() {
+    auto ctx = Rando::Context::GetInstance();
     if (generated) {
         generated = 0;
         randoThread.join();
@@ -4652,11 +4647,11 @@ void RandomizerSettingsWindow::DrawElement() {
                 locationSearch.Draw();
 
                 ImGui::BeginChild("ChildIncludedLocations", ImVec2(0, -8));
-                for (auto& [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
+                for (auto& [rcArea, locations] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
                     bool hasItems = false;
-                    for (auto& [randomizerCheck, rcObject] : rcObjects) {
-                        if (rcObject->visibleInImgui && !excludedLocations.count(rcObject->rc) &&
-                            locationSearch.PassFilter(rcObject->rcSpoilerName.c_str())) {
+                    for (RandomizerCheck rc : locations) {
+                        if (ctx->GetItemLocation(rc)->IsVisible() && !excludedLocations.count(rc) &&
+                            locationSearch.PassFilter(Rando::StaticData::GetLocation(rc)->GetName().c_str())) {
 
                             hasItems = true;
                             break;
@@ -4666,12 +4661,12 @@ void RandomizerSettingsWindow::DrawElement() {
                     if (hasItems) {
                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                         if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
-                            for (auto& [randomizerCheck, rcObject] : rcObjects) {
-                                if (rcObject->visibleInImgui && !excludedLocations.count(rcObject->rc) &&
-                                    locationSearch.PassFilter(rcObject->rcSpoilerName.c_str())) {
+                            for (auto& location : locations) {
+                                if (ctx->GetItemLocation(location)->IsVisible() && !excludedLocations.count(location) &&
+                                    locationSearch.PassFilter(Rando::StaticData::GetLocation(location)->GetName().c_str())) {
 
-                                    if (ImGui::ArrowButton(std::to_string(rcObject->rc).c_str(), ImGuiDir_Right)) {
-                                        excludedLocations.insert(rcObject->rc);
+                                    if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Right)) {
+                                        excludedLocations.insert(location);
                                         // todo: this efficently when we build out cvar array support
                                         std::string excludedLocationString = "";
                                         for (auto excludedLocationIt : excludedLocations) {
@@ -4682,7 +4677,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
-                                    ImGui::Text("%s", rcObject->rcShortName.c_str());
+                                    ImGui::Text("%s", Rando::StaticData::GetLocation(location)->GetShortName().c_str());
                                 }
                             }
                             ImGui::TreePop();
@@ -4696,10 +4691,10 @@ void RandomizerSettingsWindow::DrawElement() {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
 
                 ImGui::BeginChild("ChildExcludedLocations", ImVec2(0, -8));
-                for (auto& [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
+                for (auto& [rcArea, locations] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
                     bool hasItems = false;
-                    for (auto& [randomizerCheck, rcObject] : rcObjects) {
-                        if (rcObject->visibleInImgui && excludedLocations.count(rcObject->rc)) {
+                    for (RandomizerCheck rc : locations) {
+                        if (ctx->GetItemLocation(rc)->IsVisible() && excludedLocations.count(rc)) {
                             hasItems = true;
                             break;
                         }
@@ -4708,10 +4703,10 @@ void RandomizerSettingsWindow::DrawElement() {
                     if (hasItems) {
                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                         if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
-                            for (auto& [randomizerCheck, rcObject] : rcObjects) {
-                                auto elfound = excludedLocations.find(rcObject->rc);
-                                if (rcObject->visibleInImgui && elfound != excludedLocations.end()) {
-                                    if (ImGui::ArrowButton(std::to_string(rcObject->rc).c_str(), ImGuiDir_Left)) {
+                            for (auto& location : locations) {
+                                auto elfound = excludedLocations.find(location);
+                                if (ctx->GetItemLocation(location)->IsVisible() && elfound != excludedLocations.end()) {
+                                    if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Left)) {
                                         excludedLocations.erase(elfound);
                                         // todo: this efficently when we build out cvar array support
                                         std::string excludedLocationString = "";
@@ -4723,7 +4718,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
-                                    ImGui::Text("%s", rcObject->rcShortName.c_str());
+                                    ImGui::Text("%s", Rando::StaticData::GetLocation(location)->GetShortName().c_str());
                                 }
                             }
                             ImGui::TreePop();
@@ -6278,5 +6273,4 @@ void InitRandoItemTable() {
 void RandomizerSettingsWindow::InitElement() {
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
-    InitRandoItemTable();
 }

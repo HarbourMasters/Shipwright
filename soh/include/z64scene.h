@@ -2,6 +2,8 @@
 #define Z64SCENE_H
 
 #include "command_macros_base.h"
+#include "libultraship/libultra.h"
+#include "z64math.h"
 
 typedef struct {
     /* 0x00 */ uintptr_t vromStart;

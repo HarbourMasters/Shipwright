@@ -320,3 +320,4 @@ void NewItem(const uint32_t itemKey, const Item item) {
 std::array<Item, KEY_ENUM_MAX>* GetFullItemTable_() {
     return &itemTable;
 }
+

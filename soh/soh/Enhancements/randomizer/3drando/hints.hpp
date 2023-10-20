@@ -4,10 +4,10 @@
 #include <string>
 #include <vector>
 
-#include "keys.hpp"
 #include "text.hpp"
 #include "random.hpp"
 #include "settings.hpp"
+#include "dungeon.hpp"
 #include <functional>
 
 struct HintDistributionSetting {
@@ -193,14 +193,14 @@ private:
     HintCategory type;
 };
 
-using ConditionalAlwaysHint = std::pair<uint32_t, std::function<bool()>>;
+using ConditionalAlwaysHint = std::pair<RandomizerCheck, std::function<bool()>>;
 
 //10 dungeons as GTG and GC are excluded
 extern std::array<DungeonInfo, 10> dungeonInfoData;
 
 extern std::array<ConditionalAlwaysHint, 9> conditionalAlwaysHints;
 
-extern uint32_t GetHintRegionHintKey(const uint32_t area);
+extern RandomizerHintTextKey GetHintRegionHintKey(const RandomizerRegion area);
 extern void CreateAllHints();
 extern void CreateMerchantsHints();
 extern void CreateWarpSongTexts();

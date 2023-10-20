@@ -6,7 +6,6 @@
 
 #include "logic.hpp"
 #include "hint_list.hpp"
-#include "keys.hpp"
 #include "fill.hpp"
 
 typedef bool (*ConditionFn)();
@@ -69,7 +68,7 @@ private:
 class LocationAccess {
 public:
 
-    explicit LocationAccess(uint32_t location_, std::vector<ConditionFn> conditions_met_)
+    explicit LocationAccess(RandomizerCheck location_, std::vector<ConditionFn> conditions_met_)
         : location(location_) {
         conditions_met.resize(2);
         for (size_t i = 0; i < conditions_met_.size(); i++) {
@@ -96,12 +95,12 @@ public:
 
     bool ConditionsMet() const;
 
-    uint32_t GetLocation() const {
+    RandomizerCheck GetLocation() const {
         return location;
     }
 
-private:
-    uint32_t location;
+protected:
+    RandomizerCheck location;
     std::vector<ConditionFn> conditions_met;
 
     //Makes sure shop locations are buyable
@@ -114,7 +113,7 @@ enum class EntranceType;
 class Area {
 public:
     Area();
-    Area(std::string regionName_, std::string scene_, uint32_t hintKey_,
+    Area(std::string regionName_, std::string scene_, RandomizerHintTextKey hintKey_,
          bool timePass_,
          std::vector<EventAccess> events_,
          std::vector<LocationAccess> locations_,
@@ -123,7 +122,7 @@ public:
 
     std::string regionName;
     std::string scene;
-    uint32_t     hintKey;
+    RandomizerHintTextKey     hintKey;
     bool        timePass;
     std::vector<EventAccess> events;
     std::vector<LocationAccess> locations;
@@ -143,13 +142,13 @@ public:
 
     bool UpdateEvents(SearchMode mode);
 
-    void AddExit(uint32_t parentKey, uint32_t newExitKey, ConditionFn condition);
+    void AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition);
 
     void RemoveExit(Entrance* exitToRemove);
 
-    void SetAsPrimary(uint32_t exitToBePrimary);
+    void SetAsPrimary(RandomizerRegion exitToBePrimary);
 
-    Entrance* GetExit(uint32_t exit);
+    Entrance* GetExit(RandomizerRegion exit);
 
     bool Child() const {
       return childDay || childNight;
@@ -172,7 +171,7 @@ public:
     }
 
     //Check to see if an exit can be access as both ages at both times of day
-    bool CheckAllAccess(uint32_t exitKey);
+    bool CheckAllAccess(RandomizerRegion exitKey);
 
     const HintText& GetHint() const {
       return Hint(hintKey);
@@ -218,15 +217,15 @@ public:
     }
 };
 
-extern std::array<Area, KEY_ENUM_MAX> areaTable;
+extern std::array<Area, RR_MAX> areaTable;
 extern std::vector<EventAccess> grottoEvents;
 
-bool Here(const AreaKey area, ConditionFn condition);
-bool CanPlantBean(const AreaKey area);
-bool BothAges(const AreaKey area);
-bool ChildCanAccess(const AreaKey area);
-bool AdultCanAccess(const AreaKey area);
-bool HasAccessTo(const AreaKey area);
+bool Here(const RandomizerRegion area, ConditionFn condition);
+bool CanPlantBean(const RandomizerRegion area);
+bool BothAges(const RandomizerRegion area);
+bool ChildCanAccess(const RandomizerRegion area);
+bool AdultCanAccess(const RandomizerRegion area);
+bool HasAccessTo(const RandomizerRegion area);
 
 #define DAY_NIGHT_CYCLE true
 #define NO_DAY_NIGHT_CYCLE false
@@ -240,7 +239,7 @@ namespace Areas {
 } //namespace Exits
 
 void  AreaTable_Init();
-Area* AreaTable(const uint32_t areaKey);
+Area* AreaTable(const RandomizerRegion areaKey);
 std::vector<Entrance*> GetShuffleableEntrances(EntranceType type, bool onlyPrimary = true);
 
 // Overworld
