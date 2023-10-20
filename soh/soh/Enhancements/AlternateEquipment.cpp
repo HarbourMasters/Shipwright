@@ -379,6 +379,10 @@ bool AlternateEquipment_SwapDLists(Gfx** dLists, Gfx* dList, s32 dListsLodOffset
     return patchDLists;
 }
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // Beginning of Alternate Equipment Loading "Draw Item" function block
 
 // Alternate Equipment Loading function.
@@ -456,3 +460,7 @@ void AlternateEquipment_DrawOcarinaItem(PlayState* play, Gfx* dlist) {
 }
 
 // End of Alternate Equipment Loading "Draw" function block
+
+#ifdef __cplusplus
+}
+#endif
