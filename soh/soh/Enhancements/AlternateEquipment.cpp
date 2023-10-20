@@ -1,5 +1,8 @@
 #include "AlternateEquipment.h"
 
+#include <utility>
+#include <unordered_map>
+
 // Beginning of Alternate Equipment Loading "CanUse" function block.
 
 // Alternate Equipment Loading function. (global function)
@@ -258,6 +261,123 @@ uint8_t AlternateEquipment_CanUseNewLoadingMethodSheathShield(Player* player) {
 }
 
 // End of Alternate Equipment Loading "CanUse" function block.
+
+std::unordered_map<Gfx*,Gfx*> dListMap = {
+    // PLAYER_MODELTYPE_LH_SWORD PLAYER_MODELTYPE_LH_SWORD_2
+    {(Gfx*)gLinkAdultLeftHandHoldingMasterSwordNearDL,  (Gfx*)gLinkAdultLeftHandClosedNearDL},
+    {(Gfx*)gLinkChildLeftFistAndKokiriSwordNearDL,      (Gfx*)gLinkChildLeftFistNearDL},
+    {(Gfx*)gLinkAdultLeftHandHoldingMasterSwordFarDL,   (Gfx*)gLinkAdultLeftHandClosedFarDL},
+    {(Gfx*)gLinkChildLeftFistAndKokiriSwordFarDL,       (Gfx*)gLinkChildLeftFistFarDL},
+    // PLAYER_MODELTYPE_LH_BGS
+    {(Gfx*)gLinkAdultLeftHandHoldingBgsNearDL,          (Gfx*)gLinkAdultLeftHandClosedNearDL},
+    {(Gfx*)gLinkChildLeftHandHoldingMasterSwordDL,      (Gfx*)gLinkChildLeftFistNearDL},
+    {(Gfx*)gLinkAdultLeftHandHoldingBgsFarDL,           (Gfx*)gLinkAdultLeftHandClosedFarDL},
+    {(Gfx*)gLinkChildLeftHandHoldingMasterSwordDL,      (Gfx*)gLinkChildLeftFistFarDL},
+    {(Gfx*)gLinkAdultHandHoldingBrokenGiantsKnifeDL,    (Gfx*)gLinkAdultLeftHandClosedNearDL},
+    {(Gfx*)gLinkChildLeftHandHoldingMasterSwordDL,      (Gfx*)gLinkChildLeftFistNearDL},
+    {(Gfx*)gLinkAdultHandHoldingBrokenGiantsKnifeFarDL, (Gfx*)gLinkAdultLeftHandClosedFarDL},
+    {(Gfx*)gLinkChildLeftHandHoldingMasterSwordDL,      (Gfx*)gLinkChildLeftFistFarDL},
+    // PLAYER_MODELTYPE_LH_HAMMER
+    {(Gfx*)gLinkAdultLeftHandHoldingHammerNearDL,       (Gfx*)gLinkAdultLeftHandClosedNearDL},
+    {(Gfx*)gLinkChildLeftHandNearDL,                    (Gfx*)gLinkChildLeftFistNearDL},
+    {(Gfx*)gLinkAdultLeftHandHoldingHammerFarDL,        (Gfx*)gLinkAdultLeftHandClosedFarDL},
+    {(Gfx*)gLinkChildLeftHandFarDL,                     (Gfx*)gLinkChildLeftFistFarDL},
+    // PLAYER_MODELTYPE_LH_BOOMERANG
+    {(Gfx*)gLinkAdultLeftHandNearDL,                    (Gfx*)gLinkAdultLeftHandClosedNearDL},
+    {(Gfx*)gLinkChildLeftFistAndBoomerangNearDL,        (Gfx*)gLinkChildLeftFistNearDL},
+    {(Gfx*)gLinkAdultLeftHandFarDL,                     (Gfx*)gLinkAdultLeftHandClosedFarDL},
+    {(Gfx*)gLinkChildLeftFistAndBoomerangFarDL,         (Gfx*)gLinkChildLeftFistFarDL},
+    // PLAYER_MODELTYPE_RH_SHIELD
+    {(Gfx*)gLinkAdultRightHandClosedNearDL,             (Gfx*)gLinkAdultRightHandClosedNearDL},
+    {(Gfx*)gLinkChildRightHandClosedNearDL,             (Gfx*)gLinkChildRightHandClosedNearDL},
+    {(Gfx*)gLinkAdultRightHandClosedFarDL,              (Gfx*)gLinkAdultRightHandClosedFarDL},
+    {(Gfx*)gLinkChildRightHandClosedFarDL,              (Gfx*)gLinkChildRightHandClosedFarDL},
+    {(Gfx*)gLinkAdultRightHandClosedNearDL,             (Gfx*)gLinkAdultRightHandClosedNearDL},
+    {(Gfx*)gLinkChildRightFistAndDekuShieldNearDL,      (Gfx*)gLinkChildRightHandClosedNearDL},
+    {(Gfx*)gLinkAdultRightHandClosedFarDL,              (Gfx*)gLinkAdultRightHandClosedFarDL},
+    {(Gfx*)gLinkChildRightFistAndDekuShieldFarDL,       (Gfx*)gLinkChildRightHandClosedFarDL},
+    {(Gfx*)gLinkAdultRightHandHoldingHylianShieldNearDL,(Gfx*)gLinkAdultRightHandClosedNearDL},
+    {(Gfx*)gLinkChildRightHandClosedNearDL,             (Gfx*)gLinkChildRightHandClosedNearDL},
+    {(Gfx*)gLinkAdultRightHandHoldingHylianShieldFarDL, (Gfx*)gLinkAdultRightHandClosedFarDL},
+    {(Gfx*)gLinkChildRightHandClosedFarDL,              (Gfx*)gLinkChildRightHandClosedFarDL},
+    {(Gfx*)gLinkAdultRightHandHoldingMirrorShieldNearDL,(Gfx*)gLinkAdultRightHandClosedNearDL},
+    {(Gfx*)gLinkChildRightHandClosedNearDL,             (Gfx*)gLinkChildRightHandClosedNearDL},
+    {(Gfx*)gLinkAdultRightHandHoldingMirrorShieldFarDL, (Gfx*)gLinkAdultRightHandClosedFarDL},
+    {(Gfx*)gLinkChildRightHandClosedFarDL,              (Gfx*)gLinkChildRightHandClosedFarDL},
+    // PLAYER_MODELTYPE_RH_BOW_SLINGSHOT PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2 
+    {(Gfx*)gLinkAdultRightHandHoldingBowNearDL,         (Gfx*)gLinkAdultRightHandClosedNearDL},
+    {(Gfx*)gLinkChildRightHandHoldingSlingshotNearDL,   (Gfx*)gLinkChildRightHandClosedNearDL},
+    {(Gfx*)gLinkAdultRightHandHoldingBowFarDL,          (Gfx*)gLinkAdultRightHandClosedFarDL},
+    {(Gfx*)gLinkChildRightHandHoldingSlingshotFarDL,    (Gfx*)gLinkChildRightHandClosedFarDL},
+    // PLAYER_MODELTYPE_RH_OCARINA
+    {(Gfx*)gLinkAdultRightHandHoldingOotNearDL,         (Gfx*)gLinkAdultRightHandNearDL},
+    {(Gfx*)gLinkChildRightHandHoldingFairyOcarinaNearDL,(Gfx*)gLinkChildRightHandNearDL},
+    {(Gfx*)gLinkAdultRightHandHoldingOotFarDL,          (Gfx*)gLinkAdultRightHandFarDL},
+    {(Gfx*)gLinkChildRightHandHoldingFairyOcarinaFarDL, (Gfx*)gLinkChildRightHandFarDL},
+    // PLAYER_MODELTYPE_RH_OOT
+    {(Gfx*)gLinkAdultRightHandHoldingOotNearDL,         (Gfx*)gLinkAdultRightHandNearDL},
+    {(Gfx*)gLinkChildRightHandAndOotNearDL,             (Gfx*)gLinkChildRightHandNearDL},
+    {(Gfx*)gLinkAdultRightHandHoldingOotFarDL,          (Gfx*)gLinkAdultRightHandFarDL},
+    {(Gfx*)gLinkChildRightHandHoldingOOTFarDL,          (Gfx*)gLinkChildRightHandFarDL},
+    // PLAYER_MODELTYPE_RH_HOOKSHOT
+    {(Gfx*)gLinkAdultRightHandHoldingHookshotNearDL,    (Gfx*)gLinkAdultRightHandClosedNearDL},
+    {(Gfx*)gLinkChildRightHandNearDL,                   (Gfx*)gLinkChildRightHandClosedNearDL},
+    {(Gfx*)gLinkAdultRightHandHoldingHookshotNearDL,    (Gfx*)gLinkAdultRightHandClosedFarDL},
+    {(Gfx*)gLinkChildRightHandFarDL,                    (Gfx*)gLinkChildRightHandClosedFarDL},
+    // SHEATHES
+    {(Gfx*)gLinkAdultMasterSwordAndSheathNearDL,        NULL},
+    {(Gfx*)gLinkChildSwordAndSheathNearDL,              NULL},
+    {(Gfx*)gLinkAdultMasterSwordAndSheathFarDL,         NULL},
+    {(Gfx*)gLinkChildSwordAndSheathFarDL,               NULL},
+    {(Gfx*)gLinkAdultSheathNearDL,                      NULL},
+    {(Gfx*)gLinkChildSheathNearDL,                      NULL},
+    {(Gfx*)gLinkAdultSheathFarDL,                       NULL},
+    {(Gfx*)gLinkChildSheathFarDL,                       NULL},
+    {(Gfx*)gLinkChildDekuShieldSwordAndSheathNearDL,    NULL},
+    {(Gfx*)gLinkChildDekuShieldSwordAndSheathFarDL,     NULL},
+    {(Gfx*)gLinkAdultHylianShieldSwordAndSheathNearDL,  NULL},
+    {(Gfx*)gLinkChildHylianShieldSwordAndSheathNearDL,  NULL},
+    {(Gfx*)gLinkAdultHylianShieldSwordAndSheathFarDL,   NULL},
+    {(Gfx*)gLinkChildHylianShieldSwordAndSheathFarDL,   NULL},
+    {(Gfx*)gLinkAdultMirrorShieldSwordAndSheathNearDL,  NULL},
+    {(Gfx*)gLinkAdultMirrorShieldSwordAndSheathFarDL,   NULL},
+    {(Gfx*)gLinkChildDekuShieldWithMatrixDL,            NULL},
+    {(Gfx*)gLinkChildDekuShieldAndSheathNearDL,         NULL},
+    {(Gfx*)gLinkChildDekuShieldAndSheathFarDL,          NULL},
+    {(Gfx*)gLinkAdultHylianShieldAndSheathNearDL,       NULL},
+    {(Gfx*)gLinkChildHylianShieldAndSheathNearDL,       NULL},
+    {(Gfx*)gLinkAdultHylianShieldAndSheathFarDL,        NULL},
+    {(Gfx*)gLinkChildHylianShieldAndSheathFarDL,        NULL},
+    {(Gfx*)gLinkAdultMirrorShieldAndSheathNearDL,       NULL},
+    {(Gfx*)gLinkAdultMirrorShieldAndSheathFarDL,        NULL},
+};
+
+bool AlternateEquipment_SwapDLists(Gfx** dLists, Gfx* dList, s32 dListsLodOffset, s32 limbIndex, Player* player) {
+    bool patchDLists = false;
+    switch (limbIndex) {
+        case PLAYER_LIMB_L_HAND:
+            // todo: replace the canuse conditions to depend on player->xxxxType
+            if (AlternateEquipment_CanUseNewLoadingMethodLeftHand(player) && dListMap.find(dLists[dListsLodOffset]) != dListMap.end()) {
+                dList = dListMap.at(dLists[dListsLodOffset]);
+                patchDLists = true;
+            }
+            break;
+        case PLAYER_LIMB_R_HAND:
+            if (AlternateEquipment_CanUseNewLoadingMethodLeftHand(player) && dListMap.find(dLists[dListsLodOffset]) != dListMap.end()) {
+                dList = dListMap.at(dLists[dListsLodOffset]);
+                patchDLists = true;
+            }
+            break;
+        case PLAYER_LIMB_SHEATH:
+            if (AlternateEquipment_CanUseNewLoadingMethodSheathSword(player) && AlternateEquipment_CanUseNewLoadingMethodSheathShield(player) && dListMap.find(dLists[dListsLodOffset]) != dListMap.end()) {
+                dList = dListMap.at(dLists[dListsLodOffset]);
+                patchDLists = true;
+            }
+            break;
+
+    }
+    return patchDLists;
+}
 
 // Beginning of Alternate Equipment Loading "Draw Item" function block
 

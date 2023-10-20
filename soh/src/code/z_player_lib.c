@@ -1134,8 +1134,12 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                 dLists = &gPlayerLeftHandClosedDLs[gSaveContext.linkAge];
                 sLeftHandType = 1;
             }
-
-            *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+            Gfx* altDList = *dLists;
+            if (AlternateEquipment_SwapDLists(dLists, altDList, sDListsLodOffset, limbIndex, this)) {
+                *dList = ResourceMgr_LoadGfxByName(altDList);
+            } else {
+                *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+            }
         } else if (limbIndex == PLAYER_LIMB_R_HAND) {
             Gfx** dLists = this->rightHandDLists;
 
@@ -1146,7 +1150,12 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                 sRightHandType = 9;
             }
 
-            *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+            Gfx* altDList = *dLists;
+            if (AlternateEquipment_SwapDLists(dLists, altDList, sDListsLodOffset, limbIndex, this)) {
+                *dList = ResourceMgr_LoadGfxByName(altDList);
+            } else {
+                *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+            }
         } else if (limbIndex == PLAYER_LIMB_SHEATH) {
             Gfx** dLists = this->sheathDLists;
 
@@ -1160,11 +1169,15 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                        (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
                 dLists = &sSheathWithSwordDLs[16];
             }
-
-            if (dLists[sDListsLodOffset] != NULL) {
-                *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+            Gfx* altDList = *dLists;
+            if (AlternateEquipment_SwapDLists(dLists, altDList, sDListsLodOffset, limbIndex, this)) {
+                *dList = ResourceMgr_LoadGfxByName(altDList);
             } else {
-                *dList = NULL;
+                if (dLists[sDListsLodOffset] != NULL) {
+                    *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+                } else {
+                    *dList = NULL;
+                }
             }
 
 
