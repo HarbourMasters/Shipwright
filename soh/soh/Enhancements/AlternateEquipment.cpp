@@ -379,10 +379,6 @@ bool AlternateEquipment_SwapDLists(Gfx** dLists, Gfx* dList, s32 dListsLodOffset
     return patchDLists;
 }
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 // Beginning of Alternate Equipment Loading "Draw Item" function block
 
 // Alternate Equipment Loading function.
@@ -395,7 +391,7 @@ void AlternateEquipment_DrawChildItem(PlayState* play, Gfx* dlist) {
         Matrix_Scale(1.35f, 1.35f, 1.35f, MTXMODE_APPLY);
     }
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, "", __LINE__), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, dlist);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -416,7 +412,7 @@ void AlternateEquipment_DrawAdultItem(PlayState* play, Gfx* dlist) {
         Matrix_Scale(1.0f / 1.35f, 1.0f / 1.35f, 1.0f / 1.35f, MTXMODE_APPLY);
     }
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, "", __LINE__), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, dlist);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -437,7 +433,7 @@ void AlternateEquipment_DrawRightHandItem(PlayState* play, Gfx* dlist) {
         Matrix_Scale(1.0f / 1.35f, 1.0f / 1.35f, 1.0f / 1.35f, MTXMODE_APPLY);
     }
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, "", __LINE__), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, dlist);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -452,7 +448,7 @@ void AlternateEquipment_DrawOcarinaItem(PlayState* play, Gfx* dlist) {
         Matrix_RotateZYX(7.57f, 3.72f, 0.0f, MTXMODE_APPLY);
     }
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, "", __LINE__), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)dlist);
 
@@ -460,7 +456,3 @@ void AlternateEquipment_DrawOcarinaItem(PlayState* play, Gfx* dlist) {
 }
 
 // End of Alternate Equipment Loading "Draw" function block
-
-#ifdef __cplusplus
-}
-#endif
