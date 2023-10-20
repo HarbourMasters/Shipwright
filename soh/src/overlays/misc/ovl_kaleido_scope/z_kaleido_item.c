@@ -538,7 +538,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                         gSelectingMask = cursorSlot == SLOT_TRADE_CHILD;
 
                         gSlotAgeReqs[SLOT_TRADE_CHILD] = gItemAgeReqs[ITEM_MASK_BUNNY] =
-                            ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA || CVarGetInteger("gTimelessEquipment", 0)) &&
+                            ((((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger("gAdultBunnyHood", 0)) || CVarGetInteger("gTimelessEquipment", 0)) &&
                              INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
                                 ? AGE_REQ_NONE
                                 : AGE_REQ_CHILD;

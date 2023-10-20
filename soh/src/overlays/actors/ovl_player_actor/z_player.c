@@ -2973,33 +2973,9 @@ void func_80835F44(PlayState* play, Player* this, s32 item) {
                 return;
             }
 
-            if (actionParam >= PLAYER_IA_BOOTS_KOKIRI) {
-                u16 bootsValue = actionParam - PLAYER_IA_BOOTS_KOKIRI + 1;
-                if (CUR_EQUIP_VALUE(EQUIP_BOOTS) == bootsValue) {
-                    Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_KOKIRI + 1);
-                } else {
-                    Inventory_ChangeEquipment(EQUIP_BOOTS, bootsValue);
-                }
-                Player_SetEquipmentData(play, this);
-                func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_BOOTS) == PLAYER_BOOTS_IRON + 1 ? NA_SE_PL_WALK_HEAVYBOOTS
-                                                                                          : NA_SE_PL_CHANGE_ARMS);
-                return;
-            }
-
-            if (actionParam >= PLAYER_IA_TUNIC_KOKIRI) {
-                u16 tunicValue = actionParam - PLAYER_IA_TUNIC_KOKIRI + 1;
-                if (CUR_EQUIP_VALUE(EQUIP_TUNIC) == tunicValue) {
-                    Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_KOKIRI + 1);
-                } else {
-                    Inventory_ChangeEquipment(EQUIP_TUNIC, tunicValue);
-                }
-                Player_SetEquipmentData(play, this);
-                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
-                return;
-            }
-
             if (actionParam >= PLAYER_IA_SHIELD_DEKU) {
                 // Changing shields through action commands is unimplemented
+                // Boots and tunics handled previously
                 return;
             }
 
@@ -10598,6 +10574,45 @@ static Vec3f D_80854814 = { 0.0f, 0.0f, 200.0f };
 static f32 D_80854820[] = { 2.0f, 4.0f, 7.0f };
 static f32 D_8085482C[] = { 0.5f, 1.0f, 3.0f };
 
+void Player_UseTunicBoots(Player* this, PlayState* play) {
+    // Boots and tunics equip despite state
+    s32 i;
+    s32 item;
+    s32 actionParam;
+    if (!(this->stateFlags1 & PLAYER_STATE1_INPUT_DISABLED || this->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || this->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE || this->stateFlags1 & PLAYER_STATE1_TEXT_ON_SCREEN || this->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING)) {
+        for (i = 0; i < ARRAY_COUNT(D_80854388); i++) {
+            if (CHECK_BTN_ALL(sControlInput->press.button, D_80854388[i])) {
+                break;
+            }
+        }
+        item = func_80833CDC(play, i);
+        if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+            this->heldItemButton = i;
+            actionParam = Player_ItemToItemAction(item);
+            if (actionParam >= PLAYER_IA_BOOTS_KOKIRI) {
+                u16 bootsValue = actionParam - PLAYER_IA_BOOTS_KOKIRI + 1;
+                if (CUR_EQUIP_VALUE(EQUIP_BOOTS) == bootsValue) {
+                    Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_KOKIRI + 1);
+                } else {
+                    Inventory_ChangeEquipment(EQUIP_BOOTS, bootsValue);
+                }
+                Player_SetEquipmentData(play, this);
+                func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_BOOTS) == PLAYER_BOOTS_IRON + 1 ? NA_SE_PL_WALK_HEAVYBOOTS
+                                                                                            : NA_SE_PL_CHANGE_ARMS);
+            } else if (actionParam >= PLAYER_IA_TUNIC_KOKIRI) {
+                u16 tunicValue = actionParam - PLAYER_IA_TUNIC_KOKIRI + 1;
+                if (CUR_EQUIP_VALUE(EQUIP_TUNIC) == tunicValue) {
+                    Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_KOKIRI + 1);
+                } else {
+                    Inventory_ChangeEquipment(EQUIP_TUNIC, tunicValue);
+                }
+                Player_SetEquipmentData(play, this);
+                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+            }
+        }
+    }
+}
+
 void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     s32 pad;
 
@@ -10895,6 +10910,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
 
         if (!(this->stateFlags3 & PLAYER_STATE3_PAUSE_ACTION_FUNC)) {
             this->func_674(this, play);
+            Player_UseTunicBoots(this, play);
         }
 
         Player_UpdateCamAndSeqModes(play, this);
@@ -11172,7 +11188,11 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
             MATRIX_TOMTX(sp70);
         }
 
-        gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[this->currentMask - 1]);
+       
+        if (this->currentMask != PLAYER_MASK_BUNNY || !CVarGetInteger("gHideBunnyHood", 0)) {
+            gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[this->currentMask - 1]);
+        }
+
         if (CVarGetInteger("gFixIceTrapWithBunnyHood", 1)) Matrix_Pop();
     }
 
