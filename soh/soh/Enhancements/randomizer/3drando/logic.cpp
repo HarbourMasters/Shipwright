@@ -478,9 +478,6 @@ namespace Logic {
     if (ShuffleBossSouls.Is(BOSSSOULS_OFF)) {
       return true;
     }
-    if (ShuffleBossSouls.IsNot(BOSSSOULS_ON_PLUS_GANON) && itemName == RG_GANON_SOUL) {
-      return true;
-    }
     return (itemName == RG_GOHMA_SOUL && CanSummonGohma)         ||
     (itemName == RG_KING_DODONGO_SOUL && CanSummonKingDodongo)   ||
     (itemName == RG_BARINADE_SOUL && CanSummonBarinade)          ||
@@ -489,7 +486,7 @@ namespace Logic {
     (itemName == RG_MORPHA_SOUL && CanSummonMorpha)              ||
     (itemName == RG_MORPHA_SOUL && CanSummonBongoBongo)     ||
     (itemName == RG_TWINROVA_SOUL && CanSummonTwinrova)          ||
-    (ShuffleBossSouls.Is(BOSSSOULS_ON_PLUS_GANON) && (itemName == RG_GANON_SOUL && CanSummonGanon));
+    (itemName == RG_GANON_SOUL && CanSummonGanon);
 
   }
 

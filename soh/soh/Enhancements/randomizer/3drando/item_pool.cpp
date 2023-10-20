@@ -821,16 +821,16 @@ void GenerateItemPool() {
   }
 
   if (ShuffleBossSouls.IsNot(BOSSSOULS_OFF)) {
-    AddItemToMainPool(GOHMA_BOSS_SOUL);
-    AddItemToMainPool(KING_DODONGO_BOSS_SOUL);
-    AddItemToMainPool(BARINADE_BOSS_SOUL);
-    AddItemToMainPool(PHANTOM_GANON_BOSS_SOUL);
-    AddItemToMainPool(VOLVAGIA_BOSS_SOUL);
-    AddItemToMainPool(MORPHA_BOSS_SOUL);
-    AddItemToMainPool(BONGO_BONGO_BOSS_SOUL);
-    AddItemToMainPool(TWINROVA_BOSS_SOUL);
+    AddItemToMainPool(RG_GOHMA_SOUL);
+    AddItemToMainPool(RG_KING_DODONGO_SOUL);
+    AddItemToMainPool(RG_BARINADE_SOUL);
+    AddItemToMainPool(RG_PHANTOM_GANON_SOUL);
+    AddItemToMainPool(RG_VOLVAGIA_SOUL);
+    AddItemToMainPool(RG_MORPHA_SOUL);
+    AddItemToMainPool(RG_BONGO_BONGO_SOUL);
+    AddItemToMainPool(RG_TWINROVA_SOUL);
     if (ShuffleBossSouls.Is(BOSSSOULS_ON_PLUS_GANON)) {
-      AddItemToMainPool(GANON_BOSS_SOUL);
+      AddItemToMainPool(RG_GANON_SOUL);
     }
   }
 
