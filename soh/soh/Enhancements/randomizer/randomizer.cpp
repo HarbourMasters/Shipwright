@@ -2574,6 +2574,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_LH_CHILD_FISHING,                                            RAND_INF_CHILD_FISHING },
     { RC_LH_ADULT_FISHING,                                            RAND_INF_ADULT_FISHING },
     { RC_MARKET_10_BIG_POES,                                          RAND_INF_10_BIG_POES },
+    { RC_KAK_100_GOLD_SKULLTULA_REWARD,                               RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD },
 };
 
 Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
