@@ -478,6 +478,8 @@ void DrawSettingsMenu() {
         #endif
             UIWidgets::PaddedEnhancementCheckbox("Disable Idle Camera Re-Centering", "gA11yDisableIdleCam");
             UIWidgets::Tooltip("Disables the automatic re-centering of the camera when idle.");
+            UIWidgets::PaddedEnhancementCheckbox("Photosensitive Mode", "gPhotosensitiveMode");
+            UIWidgets::Tooltip("Reduce the extreme flashing and blinking from different effects");
             
             ImGui::EndMenu();
         }
