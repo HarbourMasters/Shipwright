@@ -219,7 +219,8 @@ void EnFirefly_SetupFall(EnFirefly* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_FFLY_DEAD);
 
     this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
-    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+
+    if (!CVarGetInteger("gPhotosensitiveMode", 0)) {
         Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 40);
     }
     this->actionFunc = EnFirefly_Fall;
