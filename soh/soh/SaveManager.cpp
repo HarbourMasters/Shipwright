@@ -342,7 +342,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 
     SaveManager::Instance->SaveData("adultTradeItems", saveContext->adultTradeItems);
 
-    SaveManager::Instance->SaveData("triforcePiecesCollected", gSaveContext.triforcePiecesCollected);
+    SaveManager::Instance->SaveData("triforcePiecesCollected", saveContext->triforcePiecesCollected);
 
     SaveManager::Instance->SaveData("pendingIceTrapCount", saveContext->pendingIceTrapCount);
 
