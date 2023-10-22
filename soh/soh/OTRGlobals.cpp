@@ -869,7 +869,7 @@ extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
 }
 
 extern bool ShouldClearTextureCacheAtEndOfFrame;
-extern bool ShouldBufferTunicsNextFrame;
+extern bool ShouldUpdateCustomSkeletonsNextFrame;
 
 extern "C" void Graph_StartFrame() {
 #ifndef __WIIU__
@@ -1026,13 +1026,13 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     if (ShouldClearTextureCacheAtEndOfFrame) {
         gfx_texture_cache_clear();
         LUS::SkeletonPatcher::UpdateSkeletons();
-        ShouldBufferTunicsNextFrame = true;
+        ShouldUpdateCustomSkeletonsNextFrame = true;
         ShouldClearTextureCacheAtEndOfFrame = false;
     }
 
-     if (ShouldBufferTunicsNextFrame) {
-        LUS::SkeletonPatcher::UpdateTunicSkeletons();
-        ShouldBufferTunicsNextFrame = false;
+    if (ShouldUpdateCustomSkeletonsNextFrame) {
+        LUS::SkeletonPatcher::UpdateCustomSkeletons();
+        ShouldUpdateCustomSkeletonsNextFrame = false;
     }
 
     // OTRTODO: FIGURE OUT END FRAME POINT

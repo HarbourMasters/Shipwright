@@ -558,7 +558,6 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                     }
 
                     RESUME_EQUIPMENT:
-                    SetRefreshTunicFlag();
                     if (pauseCtx->cursorY[PAUSE_EQUIP] == 0) {
                         gSaveContext.infTable[29] = 0;
                         gSaveContext.equips.buttonItems[0] = cursorItem;

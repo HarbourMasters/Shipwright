@@ -9669,7 +9669,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
         }
         this->currentMask = sMaskMemory;
     }
-    SetRefreshTunicFlag();
+    SetRefreshCustomSkeletonFlag();
     Player_InitCommon(this, play, gPlayerSkelHeaders[((void)0, gSaveContext.linkAge)]);
     this->giObjectSegment = (void*)(((uintptr_t)ZELDA_ARENA_MALLOC_DEBUG(0x3008) + 8) & ~0xF);
 
@@ -12790,7 +12790,6 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
                 Inventory_ChangeEquipment(EQUIP_TUNIC, equipItem - ITEM_TUNIC_KOKIRI + 1);
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
                 Player_SetEquipmentData(play, this);
-                SetRefreshTunicFlag();
             }
         }
         equipNow = false;

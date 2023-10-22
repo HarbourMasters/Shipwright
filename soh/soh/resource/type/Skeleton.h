@@ -86,9 +86,14 @@ class SkeletonPatcher {
     static void UnregisterSkeleton(SkelAnime* skelAnime);
     static void ClearSkeletons();
     static void UpdateSkeletons();
-    static void UpdateTunicSkeletons();
+    static void UpdateCustomSkeletons();
 
     static std::vector<SkeletonPatchInfo> skeletons;
+
+  private:
+    inline static const std::string sOtr = "__OTR__";
+    static void UpdateTunicSkeletons(LUS::SkeletonPatchInfo& skel);
+    static void UpdateCustomSkeletonFromPath(const std::string& skeletonPath, LUS::SkeletonPatchInfo& skel);
 };
 
 

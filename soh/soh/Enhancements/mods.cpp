@@ -47,10 +47,10 @@ void ReloadSceneTogglingLinkAge() {
     gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
 }
 
-bool ShouldBufferTunicsNextFrame = false;
+bool ShouldUpdateCustomSkeletonsNextFrame = false;
 
-void SetRefreshTunicFlag() {
-    ShouldBufferTunicsNextFrame = true;
+void SetRefreshCustomSkeletonFlag() {
+    ShouldUpdateCustomSkeletonsNextFrame = true;
 }
 
 void RegisterInfiniteMoney() {
