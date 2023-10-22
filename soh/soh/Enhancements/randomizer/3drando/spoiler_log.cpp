@@ -690,12 +690,15 @@ static void WriteHints(int language) {
             unformattedGregText = GetGregHintText().GetEnglish();
             unformattedSheikText = GetSheikHintText().GetEnglish();
             unformattedSariaText = GetSariaHintText().GetEnglish();
-            jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
-            jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
-            jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
-            jsonData["warpRequiemText"] = GetWarpRequiemText().GetEnglish();
-            jsonData["warpNocturneText"] = GetWarpNocturneText().GetEnglish();
-            jsonData["warpPreludeText"] = GetWarpPreludeText().GetEnglish();
+
+            if (Settings::ShuffleWarpSongs){
+              jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
+              jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
+              jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
+              jsonData["warpRequiemText"] = GetWarpRequiemText().GetEnglish();
+              jsonData["warpNocturneText"] = GetWarpNocturneText().GetEnglish();
+              jsonData["warpPreludeText"] = GetWarpPreludeText().GetEnglish();
+            }
             jsonData["childAltar"]["hintText"] = GetChildAltarText().GetEnglish();
             jsonData["adultAltar"]["hintText"] = GetAdultAltarText().GetEnglish();
             break;
@@ -706,12 +709,15 @@ static void WriteHints(int language) {
             unformattedGregText = GetGregHintText().GetFrench();
             unformattedSheikText = GetSheikHintText().GetFrench();
             unformattedSariaText = GetSariaHintText().GetFrench();
-            jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
-            jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
-            jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
-            jsonData["warpRequiemText"] = GetWarpRequiemText().GetFrench();
-            jsonData["warpNocturneText"] = GetWarpNocturneText().GetFrench();
-            jsonData["warpPreludeText"] = GetWarpPreludeText().GetFrench();
+
+            if (Settings::ShuffleWarpSongs){
+              jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
+              jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
+              jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
+              jsonData["warpRequiemText"] = GetWarpRequiemText().GetFrench();
+              jsonData["warpNocturneText"] = GetWarpNocturneText().GetFrench();
+              jsonData["warpPreludeText"] = GetWarpPreludeText().GetFrench();
+            }
             jsonData["childAltar"]["hintText"] = GetChildAltarText().GetFrench();
             jsonData["adultAltar"]["hintText"] = GetAdultAltarText().GetFrench();
             break;
@@ -757,16 +763,25 @@ static void WriteHints(int language) {
     std::string sariaText = AutoFormatHintTextString(unformattedSariaText);
 
     jsonData["ganonText"] = ganonText;
-    jsonData["ganonHintText"] = ganonHintText;
-    jsonData["lightArrowHintLoc"] = GetLightArrowHintLoc();
-    jsonData["dampeText"] = dampesText;
-    jsonData["dampeHintLoc"] = GetDampeHintLoc();
-    jsonData["gregText"] = gregText;
-    jsonData["gregLoc"] =
-        Rando::StaticData::GetLocation(GetItemLocation(RG_GREG_RUPEE)->GetRandomizerCheck())->GetName();
-    jsonData["sheikText"] = sheikText;
-    jsonData["sariaText"] = sariaText;
-    jsonData["sariaHintLoc"] = GetSariaHintLoc();
+    if (Settings::LightArrowHintText){
+      jsonData["ganonHintText"] = ganonHintText;
+      jsonData["lightArrowHintLoc"] = GetLightArrowHintLoc();
+      if (!Settings::GanonsTrialsCount.Is(0)){
+        jsonData["sheikText"] = sheikText;
+      }
+    }
+    if (Settings::DampeHintText){
+      jsonData["dampeText"] = dampesText;
+      jsonData["dampeHintLoc"] = GetDampeHintLoc();
+    }
+    if (Settings::GregHintText){
+      jsonData["gregText"] = gregText;
+      jsonData["gregLoc"] = Rando::StaticData::GetLocation(GetItemLocation(RG_GREG_RUPEE)->GetRandomizerCheck())->GetName();
+    }
+    if (Settings::SariaHintText){
+      jsonData["sariaText"] = sariaText;
+      jsonData["sariaHintLoc"] = GetSariaHintLoc();
+    }
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;

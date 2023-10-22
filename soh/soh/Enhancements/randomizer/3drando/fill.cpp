@@ -1098,6 +1098,12 @@ int Fill() {
       printf("Done");
       ctx->CreateItemOverrides();
       CreateEntranceOverrides();
+      //Always execute ganon hint generation for the funny line  
+      CreateGanonAndSheikText();
+      CreateAltarText();
+      CreateDampesDiaryText();
+      CreateGregRupeeHint();
+      CreateSariaText();
       if (GossipStoneHints.IsNot(HINTS_NO_HINTS)) {
         printf("\x1b[10;10HCreating Hints...");
         CreateAllHints();
@@ -1106,13 +1112,6 @@ int Fill() {
       if (ShuffleMerchants.Is(SHUFFLEMERCHANTS_HINTS)) {
         CreateMerchantsHints();
       }
-      //Always execute ganon hint generation for the funny line
-      CreateGanonText();
-      CreateAltarText();
-      CreateDampesDiaryText();
-      CreateGregRupeeHint();
-      CreateSheikText();
-      CreateSariaText();
       CreateWarpSongTexts();
       return 1;
     }

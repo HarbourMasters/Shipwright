@@ -857,6 +857,8 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option HintDistribution;
   extern Option AltarHintText;
   extern Option LightArrowHintText;
+  extern Option SariaHintText;
+  extern Option FrogsHintText;
   extern Option DampeHintText;
   extern Option GregHintText;
   extern Option Kak10GSHintText;

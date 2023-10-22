@@ -1348,7 +1348,14 @@ typedef enum {
     RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,
     RC_ZR_OPEN_GROTTO_GOSSIP_STONE,
     RC_GANONDORF_HINT,
+    RC_SHEIK_HINT_GC,
+    RC_SHEIK_HINT_MQ_GC,
     RC_TRIFORCE_COMPLETED,
+    RC_DAMPE_HINT,
+    RC_GREG_HINT,
+    RC_SARIA_SONG_HINT,
+    RC_ALTAR_HINT_CHILD,
+    RC_ALTAR_HINT_ADULT,
     RC_MAX
 } RandomizerCheck;
 
@@ -3172,6 +3179,7 @@ typedef enum {
     RHT_VALIDATION_LINE,
     // Light Arrow Location
     RHT_LIGHT_ARROW_LOCATION_HINT,
+    RHT_SHEIK_LIGHT_ARROW_HINT,
     // Your Pocket
     RHT_YOUR_POCKET,
     // Ganon Line
