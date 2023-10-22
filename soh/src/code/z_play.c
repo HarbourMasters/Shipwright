@@ -874,10 +874,10 @@ void Play_Update(PlayState* play) {
                         }
                     }
 
-                    if (CREG(11) == 0) {
+                    if (!R_TRANS_DBG_ENABLED) {
                         Gameplay_SetupTransition(play, play->transitionType);
                     } else {
-                        Gameplay_SetupTransition(play, CREG(12));
+                        Gameplay_SetupTransition(play, R_TRANS_DBG_TYPE);
                     }
 
                     if (play->transitionMode >= TRANS_MODE_FILL_WHITE_INIT) {
