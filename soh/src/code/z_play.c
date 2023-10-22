@@ -441,7 +441,7 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(PlayState* play, RandomizerCheck 
     if (meetsRequirements && LINK_IS_ADULT &&
         (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TEMPLE_OF_TIME) &&
         !Flags_GetTreasure(play, 0x1E) && player != NULL && !Player_InBlockingCsMode(play, player) &&
-        play->sceneLoadFlag == 0) {
+        play->transitionTrigger == 0) {
         GetItemEntry getItem = Randomizer_GetItemFromKnownCheck(check, GI_ARROW_LIGHT);
         if (GiveItemEntryWithoutActor(play, getItem)) {
             player->pendingFlag.flagID = 0x1E;
@@ -630,7 +630,7 @@ void Play_Init(GameState* thisx) {
     Matrix_Init(&play->state);
     play->state.main = Play_Main;
     play->state.destroy = Play_Destroy;
-    play->sceneLoadFlag = -0x14;
+    play->transitionTrigger = -0x14;
     play->unk_11E16 = 0xFF;
     play->unk_11E18 = 0;
     play->unk_11DE9 = 0;
@@ -801,7 +801,7 @@ void Play_Update(PlayState* play) {
     gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
 
     if (FrameAdvance_Update(&play->frameAdvCtx, &input[1])) {
-        if ((play->transitionMode == 0) && (play->sceneLoadFlag != 0)) {
+        if ((play->transitionMode == 0) && (play->transitionTrigger != 0)) {
             play->transitionMode = 1;
         }
 
@@ -852,7 +852,7 @@ void Play_Update(PlayState* play) {
         if (play->transitionMode) {
             switch (play->transitionMode) {
                 case 1:
-                    if (play->sceneLoadFlag != -0x14) {
+                    if (play->transitionTrigger != -0x14) {
                         s16 sp6E = 0;
                         Interface_ChangeAlpha(1);
 
@@ -937,7 +937,7 @@ void Play_Update(PlayState* play) {
                         }
                     }
 
-                    if (play->sceneLoadFlag == -0x14) {
+                    if (play->transitionTrigger == -0x14) {
                         play->transitionCtx.setType(&play->transitionCtx.data, 1);
                     } else {
                         play->transitionCtx.setType(&play->transitionCtx.data, 2);
@@ -955,12 +955,12 @@ void Play_Update(PlayState* play) {
                 case 3:
                     if (play->transitionCtx.isDone(&play->transitionCtx) != 0) {
                         if (play->transitionCtx.transitionType >= 56) {
-                            if (play->sceneLoadFlag == -0x14) {
+                            if (play->transitionTrigger == -0x14) {
                                 play->transitionCtx.destroy(&play->transitionCtx);
                                 func_800BC88C(play);
                                 play->transitionMode = 0;
                             }
-                        } else if (play->sceneLoadFlag != -0x14) {
+                        } else if (play->transitionTrigger != -0x14) {
                             play->state.running = 0;
                             if (gSaveContext.gameMode != 2) {
                                 SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
@@ -984,7 +984,7 @@ void Play_Update(PlayState* play) {
                             // Transition end for standard transitions
                             GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
                         }
-                        play->sceneLoadFlag = 0;
+                        play->transitionTrigger = 0;
                     } else {
                         play->transitionCtx.update(&play->transitionCtx.data, R_UPDATE_RATE);
                     }
@@ -998,7 +998,7 @@ void Play_Update(PlayState* play) {
                     play->envCtx.screenFillColor[0] = 160;
                     play->envCtx.screenFillColor[1] = 160;
                     play->envCtx.screenFillColor[2] = 160;
-                    if (play->sceneLoadFlag != -0x14) {
+                    if (play->transitionTrigger != -0x14) {
                         play->envCtx.screenFillColor[3] = 0;
                         play->transitionMode = 5;
                     } else {
@@ -1013,7 +1013,7 @@ void Play_Update(PlayState* play) {
                         play->state.running = 0;
                         SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
                         gSaveContext.entranceIndex = play->nextEntranceIndex;
-                        play->sceneLoadFlag = 0;
+                        play->transitionTrigger = 0;
                         play->transitionMode = 0;
                     } else {
                         D_801614C8++;
@@ -1025,7 +1025,7 @@ void Play_Update(PlayState* play) {
                     if (D_801614C8 >= 20 && 1) {
                         gTrnsnUnkState = 0;
                         R_UPDATE_RATE = 3;
-                        play->sceneLoadFlag = 0;
+                        play->transitionTrigger = 0;
                         play->transitionMode = 0;
                         play->envCtx.fillScreen = false;
                     } else {
@@ -1039,7 +1039,7 @@ void Play_Update(PlayState* play) {
                     play->envCtx.screenFillColor[0] = 170;
                     play->envCtx.screenFillColor[1] = 160;
                     play->envCtx.screenFillColor[2] = 150;
-                    if (play->sceneLoadFlag != -0x14) {
+                    if (play->transitionTrigger != -0x14) {
                         play->envCtx.screenFillColor[3] = 0;
                         play->transitionMode = 5;
                     } else {
@@ -1049,16 +1049,16 @@ void Play_Update(PlayState* play) {
                     break;
 
                 case 10:
-                    if (play->sceneLoadFlag != -0x14) {
+                    if (play->transitionTrigger != -0x14) {
                         play->state.running = 0;
                         SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
                         gSaveContext.entranceIndex = play->nextEntranceIndex;
-                        play->sceneLoadFlag = 0;
+                        play->transitionTrigger = 0;
                         play->transitionMode = 0;
                     } else {
                         gTrnsnUnkState = 0;
                         R_UPDATE_RATE = 3;
-                        play->sceneLoadFlag = 0;
+                        play->transitionTrigger = 0;
                         play->transitionMode = 0;
                     }
                     break;
@@ -1070,7 +1070,7 @@ void Play_Update(PlayState* play) {
                     break;
 
                 case 12:
-                    if (play->sceneLoadFlag != -0x14) {
+                    if (play->transitionTrigger != -0x14) {
                         play->envCtx.sandstormState = SANDSTORM_FILL;
                         play->transitionMode = 13;
                     } else {
@@ -1084,11 +1084,11 @@ void Play_Update(PlayState* play) {
                 case 13:
                     Audio_PlaySoundGeneral(NA_SE_EV_SAND_STORM - SFX_FLAG, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
-                    if (play->sceneLoadFlag == -0x14) {
+                    if (play->transitionTrigger == -0x14) {
                         if (play->envCtx.sandstormPrimA < 110) {
                             gTrnsnUnkState = 0;
                             R_UPDATE_RATE = 3;
-                            play->sceneLoadFlag = 0;
+                            play->transitionTrigger = 0;
                             play->transitionMode = 0;
 
                             // Transition end for sandstorm effect (delayed until effect is finished)
@@ -1099,14 +1099,14 @@ void Play_Update(PlayState* play) {
                             play->state.running = 0;
                             SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
                             gSaveContext.entranceIndex = play->nextEntranceIndex;
-                            play->sceneLoadFlag = 0;
+                            play->transitionTrigger = 0;
                             play->transitionMode = 0;
                         }
                     }
                     break;
 
                 case 14:
-                    if (play->sceneLoadFlag == -0x14) {
+                    if (play->transitionTrigger == -0x14) {
                         play->envCtx.sandstormState = SANDSTORM_DISSIPATE;
                         play->envCtx.sandstormPrimA = 255;
                         play->envCtx.sandstormEnvA = 255;
@@ -1121,11 +1121,11 @@ void Play_Update(PlayState* play) {
                 case 15:
                     Audio_PlaySoundGeneral(NA_SE_EV_SAND_STORM - SFX_FLAG, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
-                    if (play->sceneLoadFlag == -0x14) {
+                    if (play->transitionTrigger == -0x14) {
                         if (play->envCtx.sandstormPrimA <= 0) {
                             gTrnsnUnkState = 0;
                             R_UPDATE_RATE = 3;
-                            play->sceneLoadFlag = 0;
+                            play->transitionTrigger = 0;
                             play->transitionMode = 0;
 
                             // Transition end for sandstorm effect (delayed until effect is finished)
@@ -1150,7 +1150,7 @@ void Play_Update(PlayState* play) {
                         if (gSaveContext.cutsceneTransitionControl < 0x65) {
                             gTrnsnUnkState = 0;
                             R_UPDATE_RATE = 3;
-                            play->sceneLoadFlag = 0;
+                            play->transitionTrigger = 0;
                             play->transitionMode = 0;
                         }
                     }
@@ -2246,14 +2246,14 @@ void Play_TriggerVoidOut(PlayState* play) {
     gSaveContext.respawn[RESPAWN_MODE_DOWN].tempSwchFlags = play->actorCtx.flags.tempSwch;
     gSaveContext.respawn[RESPAWN_MODE_DOWN].tempCollectFlags = play->actorCtx.flags.tempCollect;
     gSaveContext.respawnFlag = 1;
-    play->sceneLoadFlag = 0x14;
+    play->transitionTrigger = 0x14;
     play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
     play->transitionType = 2;
 }
 
 void Play_LoadToLastEntrance(PlayState* play) {
     gSaveContext.respawnFlag = -1;
-    play->sceneLoadFlag = 0x14;
+    play->transitionTrigger = 0x14;
 
     if ((play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) || (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
         (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE) || (play->sceneNum == SCENE_GANON_BOSS)) {
