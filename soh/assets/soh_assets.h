@@ -119,11 +119,20 @@ static const ALIGN_ASSET(2) char gFileSelLanguageGERTex[] = dgFileSelLanguageGER
 static const ALIGN_ASSET(2) char gEmptyTexture[] = dgEmptyTexture;
 
 // Tunic Models
-#define dgLinkKokiriTunicSkel "__OTR__objects/object_link_boy_kokiri/gLinkKokiriTunicSkel"
-static const ALIGN_ASSET(2) char gLinkKokiriTunicSkel[] = dgLinkKokiriTunicSkel;
+#define dgLinkChildKokiriTunicSkel "__OTR__objects/object_link_child_kokiri/gLinkChildKokiriTunicSkel"
+static const ALIGN_ASSET(2) char gLinkChildKokiriTunicSkel[] = dgLinkChildKokiriTunicSkel;
 
-#define dgLinkGoronTunicSkel "__OTR__objects/object_link_boy_goron/gLinkGoronTunicSkel"
-static const ALIGN_ASSET(2) char gLinkGoronTunicSkel[] = dgLinkGoronTunicSkel;
+#define dgLinkChildGoronTunicSkel "__OTR__objects/object_link_child_goron/gLinkChildGoronTunicSkel"
+static const ALIGN_ASSET(2) char gLinkChildGoronTunicSkel[] = dgLinkChildGoronTunicSkel;
 
-#define dgLinkZoraTunicSkel "__OTR__objects/object_link_boy_zora/gLinkZoraTunicSkel"
-static const ALIGN_ASSET(2) char gLinkZoraTunicSkel[] = dgLinkZoraTunicSkel;
+#define dgLinkChildZoraTunicSkel "__OTR__objects/object_link_child_zora/gLinkChildZoraTunicSkel"
+static const ALIGN_ASSET(2) char gLinkChildZoraTunicSkel[] = dgLinkChildZoraTunicSkel;
+
+#define dgLinkAdultKokiriTunicSkel "__OTR__objects/object_link_boy_kokiri/gLinkAdultKokiriTunicSkel"
+static const ALIGN_ASSET(2) char gLinkAdultKokiriTunicSkel[] = dgLinkAdultKokiriTunicSkel;
+
+#define dgLinkAdultGoronTunicSkel "__OTR__objects/object_link_boy_goron/gLinkAdultGoronTunicSkel"
+static const ALIGN_ASSET(2) char gLinkAdultGoronTunicSkel[] = dgLinkAdultGoronTunicSkel;
+
+#define dgLinkAdultZoraTunicSkel "__OTR__objects/object_link_boy_zora/gLinkAdultZoraTunicSkel"
+static const ALIGN_ASSET(2) char gLinkAdultZoraTunicSkel[] = dgLinkAdultZoraTunicSkel;
