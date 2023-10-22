@@ -2978,7 +2978,7 @@ void HintTable_Init() {
     |      OTHER HINT TEXT     |
     ---------------------------*/
 
-    hintTable[DAMPE_DIARY01] = HintText::OtherHint({
+    hintTable[RHT_DAMPE_DIARY01] = HintText::OtherHint({
         // obscure text
         Text{
             "Whoever reads this, please enter %r", 
@@ -2988,7 +2988,7 @@ void HintTable_Init() {
             "Wer immer dies liest, der möge folgenden Ort aufsuchen: %r"},
     });
 
-    hintTable[DAMPE_DIARY02] = HintText::OtherHint({
+    hintTable[RHT_DAMPE_DIARY02] = HintText::OtherHint({
         // obscure text
         Text{
             "%w. I will let you have my stretching, shrinking keepsake.^I'm waiting for you.&--Dampé",
@@ -2998,7 +2998,7 @@ void HintTable_Init() {
             "%w. Ihm gebe ich meinen langen, kurzen Schatz.^Ich warte!&Boris"},
     });
 
-    hintTable[GREG_HINT01] = HintText::OtherHint({
+    hintTable[RHT_GREG_HINT01] = HintText::OtherHint({
         // obscure text
         Text{
             "By the way, if you're interested, I saw the shiniest %gGreen Rupee%w somewhere in%g ", 
@@ -3008,7 +3008,7 @@ void HintTable_Init() {
             ""},
     });
 
-    hintTable[GREG_HINT02] = HintText::OtherHint({
+    hintTable[RHT_GREG_HINT02] = HintText::OtherHint({
         // obscure text
         Text{
             "%w.^It's said to have %rmysterious powers%w...^But then, it could just be another regular rupee.&Oh well.",
@@ -3018,7 +3018,7 @@ void HintTable_Init() {
             ""},
     });
 
-    hintTable[SARIA_TEXT01] = HintText::OtherHint({
+    hintTable[RHT_SARIA_TEXT01] = HintText::OtherHint({
         // obscure text
         Text{
             "Did you feel the %gsurge of magic%w recently? A mysterious bird told me it came from %g", 
@@ -3028,7 +3028,7 @@ void HintTable_Init() {
             ""},
     });
 
-    hintTable[SARIA_TEXT02] = HintText::OtherHint({
+    hintTable[RHT_SARIA_TEXT02] = HintText::OtherHint({
         // obscure text
         Text{
             "%w.^You should check that place out, @!$C",

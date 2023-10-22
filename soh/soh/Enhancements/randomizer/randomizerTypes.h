@@ -31,6 +31,7 @@ typedef enum {
 } RandomizerCheckStatus;
 
 typedef enum {
+    HINT_TYPE_STATIC,
     HINT_TYPE_TRIAL,
     HINT_TYPE_WOTH, // Way of the Hero
     HINT_TYPE_BARREN,
@@ -3181,6 +3182,13 @@ typedef enum {
     RHT_SHEIK_LIGHT_ARROW_HINT,
     // Your Pocket
     RHT_YOUR_POCKET,
+    // Other Hints
+    RHT_DAMPE_DIARY01,
+    RHT_DAMPE_DIARY02,
+    RHT_GREG_HINT01,
+    RHT_GREG_HINT02,
+    RHT_SARIA_TEXT01,
+    RHT_SARIA_TEXT02,
     // Ganon Line
     RHT_GANON_LINE01,
     RHT_GANON_LINE02,
