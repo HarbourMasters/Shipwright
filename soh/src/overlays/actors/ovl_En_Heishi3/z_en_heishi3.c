@@ -207,7 +207,7 @@ void func_80A55D00(EnHeishi3* this, PlayState* play) {
         (this->respawnFlag == 0)) {
         Flags_SetEventChkInf(EVENTCHKINF_CAUGHT_BY_CASTLE_GUARDS);
         play->nextEntranceIndex = 0x47E; // Hyrule Castle from Guard Capture (outside)
-        play->transitionTrigger = 0x14;
+        play->transitionTrigger = TRANS_TRIGGER_START;
         this->respawnFlag = 1;
         play->transitionType = 0x2E;
         gSaveContext.nextTransitionType = 0x2E;

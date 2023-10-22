@@ -274,7 +274,7 @@ void EnGe1_KickPlayer(EnGe1* this, PlayState* play) {
         }
 
         play->transitionType = 0x26;
-        play->transitionTrigger = 0x14;
+        play->transitionTrigger = TRANS_TRIGGER_START;
     }
 }
 
@@ -657,7 +657,7 @@ void EnGe1_BeginGame_Archery(EnGe1* this, PlayState* play) {
                     play->nextEntranceIndex = 0x129;
                     gSaveContext.nextCutsceneIndex = 0xFFF0;
                     play->transitionType = 0x26;
-                    play->transitionTrigger = 0x14;
+                    play->transitionTrigger = TRANS_TRIGGER_START;
                     gSaveContext.eventInf[0] |= 0x100;
                     Flags_SetEventChkInf(EVENTCHKINF_PLAYED_HORSEBACK_ARCHERY);
 

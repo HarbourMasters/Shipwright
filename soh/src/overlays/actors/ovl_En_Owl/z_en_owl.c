@@ -967,7 +967,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                         } else {
                             play->nextEntranceIndex = 0x027E;
                         }
-                        play->transitionTrigger = 0x14;
+                        play->transitionTrigger = TRANS_TRIGGER_START;
                         play->transitionType = 2;
                         break;
                     }
@@ -982,7 +982,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                         } else {
                             play->nextEntranceIndex = 0x0554;
                         }
-                        play->transitionTrigger = 0x14;
+                        play->transitionTrigger = TRANS_TRIGGER_START;
                         play->transitionType = 2;
                         break;
                     }

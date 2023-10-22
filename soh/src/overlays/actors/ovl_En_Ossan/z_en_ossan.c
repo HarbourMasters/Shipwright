@@ -952,7 +952,7 @@ void EnOssan_State_StartConversation(EnOssan* this, PlayState* play, Player* pla
                 } else {
                     play->nextEntranceIndex = 0x1D1;
                 }
-                play->transitionTrigger = 0x14;
+                play->transitionTrigger = TRANS_TRIGGER_START;
                 play->transitionType = 0x2E;
                 return;
         }

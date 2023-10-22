@@ -118,7 +118,7 @@ s16 func_80AA2BD4(PlayState* play, Actor* thisx) {
                 play->nextEntranceIndex = 0x157;
                 gSaveContext.nextCutsceneIndex = 0xFFF0;
                 play->transitionType = 0x26;
-                play->transitionTrigger = 0x14;
+                play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.eventInf[0] |= 0x400;
                 gSaveContext.timer1State = 0xF;
             }

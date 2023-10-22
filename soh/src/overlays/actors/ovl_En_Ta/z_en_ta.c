@@ -679,7 +679,7 @@ void func_80B15424(EnTa* this, PlayState* play) {
             gSaveContext.nextTransitionType = 2;
         }
 
-        play->transitionTrigger = 0x14;
+        play->transitionTrigger = TRANS_TRIGGER_START;
         gSaveContext.eventInf[0] |= 0x400;
         this->actionFunc = func_80B153D4;
         this->unk_2CC = 22;

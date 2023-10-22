@@ -433,7 +433,7 @@ void func_80A79BAC(EnIn* this, PlayState* play, s32 index, u32 arg3) {
         gSaveContext.nextCutsceneIndex = 0xFFF0;
     }
     play->transitionType = arg3;
-    play->transitionTrigger = 0x14;
+    play->transitionTrigger = TRANS_TRIGGER_START;
     func_8002DF54(play, &this->actor, 8);
     Interface_ChangeAlpha(1);
     if (index == 0) {
@@ -871,7 +871,7 @@ void func_80A7AEF0(EnIn* this, PlayState* play) {
     yaw = Math_Vec3f_Yaw(&pos, &player->actor.world.pos);
     if (ABS(yaw) > 0x4000) {
         play->nextEntranceIndex = 0x0476;
-        play->transitionTrigger = 0x14;
+        play->transitionTrigger = TRANS_TRIGGER_START;
         play->transitionType = 5;
         this->actionFunc = func_80A7B018;
     } else if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {

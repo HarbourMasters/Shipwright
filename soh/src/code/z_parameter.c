@@ -1344,7 +1344,7 @@ void func_80083108(PlayState* play) {
 
     if (sp28) {
         gSaveContext.unk_13EA = 0;
-        if ((play->transitionTrigger == 0) && (play->transitionMode == 0)) {
+        if ((play->transitionTrigger == TRANS_TRIGGER_OFF) && (play->transitionMode == 0)) {
             Interface_ChangeAlpha(50);
             osSyncPrintf("????????  alpha_change( 50 );  ?????\n");
         } else {
@@ -3448,7 +3448,7 @@ void Interface_UpdateMagicBar(PlayState* play) {
         case MAGIC_STATE_CONSUME_LENS:
             if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
                 (msgCtx->msgMode == MSGMODE_NONE) && (play->gameOverCtx.state == GAMEOVER_INACTIVE) &&
-                (play->transitionTrigger == 0) && (play->transitionMode == 0) && !Play_InCsMode(play)) {
+                (play->transitionTrigger == TRANS_TRIGGER_OFF) && (play->transitionMode == 0) && !Play_InCsMode(play)) {
                 bool hasLens = false;
                 for (int buttonIndex = 1; buttonIndex < (CVarGetInteger("gDpadEquips", 0) != 0) ? ARRAY_COUNT(gSaveContext.equips.buttonItems) : 4; buttonIndex++) {
                     if (gSaveContext.equips.buttonItems[buttonIndex] == ITEM_LENS) {
@@ -5773,7 +5773,7 @@ void Interface_Draw(PlayState* play) {
             // Trade quest timer reached 0
             D_8015FFE6 = 40;
             gSaveContext.cutsceneIndex = 0;
-            play->transitionTrigger = 0x14;
+            play->transitionTrigger = TRANS_TRIGGER_START;
             play->transitionType = 3;
             gSaveContext.timer2State = 0;
 
@@ -5809,7 +5809,7 @@ void Interface_Draw(PlayState* play) {
 
         if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
             (play->gameOverCtx.state == GAMEOVER_INACTIVE) && (msgCtx->msgMode == MSGMODE_NONE) &&
-            !(player->stateFlags2 & 0x01000000) && (play->transitionTrigger == 0) &&
+            !(player->stateFlags2 & 0x01000000) && (play->transitionTrigger == TRANS_TRIGGER_OFF) &&
             (play->transitionMode == 0) && !Play_InCsMode(play) && (gSaveContext.minigameState != 1) &&
             (play->shootingGalleryStatus <= 1) &&
             !((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
@@ -6501,7 +6501,7 @@ void Interface_Update(PlayState* play) {
     HealthMeter_Update(play);
 
     if ((gSaveContext.timer1State >= 3) && (play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
-        (msgCtx->msgMode == MSGMODE_NONE) && !(player->stateFlags2 & 0x01000000) && (play->transitionTrigger == 0) &&
+        (msgCtx->msgMode == MSGMODE_NONE) && !(player->stateFlags2 & 0x01000000) && (play->transitionTrigger == TRANS_TRIGGER_OFF) &&
         (play->transitionMode == 0) && !Play_InCsMode(play)) {}
 
     if (gSaveContext.rupeeAccumulator != 0) {
@@ -6597,7 +6597,7 @@ void Interface_Update(PlayState* play) {
     WREG(7) = interfaceCtx->unk_1F4;
 
     if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
-        (msgCtx->msgMode == MSGMODE_NONE) && (play->transitionTrigger == 0) &&
+        (msgCtx->msgMode == MSGMODE_NONE) && (play->transitionTrigger == TRANS_TRIGGER_OFF) &&
         (play->gameOverCtx.state == GAMEOVER_INACTIVE) && (play->transitionMode == 0) &&
         ((play->csCtx.state == CS_STATE_IDLE) || !Player_InCsMode(play))) {
         if ((gSaveContext.isMagicAcquired != 0) && (gSaveContext.magicLevel == 0)) {
@@ -6718,7 +6718,7 @@ void Interface_Update(PlayState* play) {
                 Grotto_ForceGrottoReturn();
             }
 
-            play->transitionTrigger = 0x14;
+            play->transitionTrigger = TRANS_TRIGGER_START;
             gSaveContext.sunsSongState = SUNSSONG_INACTIVE;
             func_800F6964(30);
             gSaveContext.seqId = (u8)NA_BGM_DISABLED;

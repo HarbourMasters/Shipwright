@@ -244,14 +244,14 @@ void EnMag_UpdateMq(Actor* thisx, PlayState* play) {
                     CHECK_BTN_ALL(play->state.input[0].press.button, BTN_A) ||
                     CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B)) {
 
-                    if (play->transitionTrigger != 20) {
+                    if (play->transitionTrigger != TRANS_TRIGGER_START) {
                         Audio_SetCutsceneFlag(0);
 
                         Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                &D_801333E8);
 
                         gSaveContext.gameMode = 2;
-                        play->transitionTrigger = 20;
+                        play->transitionTrigger = TRANS_TRIGGER_START;
                         play->transitionType = 2;
                     }
 
@@ -404,14 +404,14 @@ void EnMag_UpdateVanilla(Actor* thisx, PlayState* play) {
                     CHECK_BTN_ALL(play->state.input[0].press.button, BTN_A) ||
                     CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B)) {
 
-                    if (play->transitionTrigger != 20) {
+                    if (play->transitionTrigger != TRANS_TRIGGER_START) {
                         Audio_SetCutsceneFlag(0);
 
                         Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                &D_801333E8);
 
                         gSaveContext.gameMode = 2;
-                        play->transitionTrigger = 20;
+                        play->transitionTrigger = TRANS_TRIGGER_START;
                         play->transitionType = 2;
                     }
 

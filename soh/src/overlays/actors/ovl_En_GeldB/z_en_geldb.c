@@ -1580,7 +1580,7 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
                 }
 
                 play->transitionType = 0x26;
-                play->transitionTrigger = 0x14;
+                play->transitionTrigger = TRANS_TRIGGER_START;
             }
         }
     }

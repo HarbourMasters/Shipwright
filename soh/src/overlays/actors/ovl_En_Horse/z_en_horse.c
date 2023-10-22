@@ -2510,7 +2510,7 @@ void EnHorse_UpdateHorsebackArchery(EnHorse* this, PlayState* play) {
         if (sp20 != 1 && gSaveContext.minigameState != 3) {
             gSaveContext.cutsceneIndex = 0;
             play->nextEntranceIndex = 0x3B0;
-            play->transitionTrigger = 0x14;
+            play->transitionTrigger = TRANS_TRIGGER_START;
             play->transitionType = 0x20;
         }
     }

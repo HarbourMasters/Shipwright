@@ -367,7 +367,7 @@ void EnHeishi1_Kick(EnHeishi1* this, PlayState* play) {
             if (!this->loadStarted) {
                 Flags_SetEventChkInf(EVENTCHKINF_CAUGHT_BY_CASTLE_GUARDS);
                 play->nextEntranceIndex = 0x4FA;
-                play->transitionTrigger = 0x14;
+                play->transitionTrigger = TRANS_TRIGGER_START;
                 this->loadStarted = true;
                 sHeishi1PlayerIsCaught = false;
                 play->transitionType = 0x2E;

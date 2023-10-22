@@ -173,7 +173,7 @@ void ItemOcarina_StartSoTCutscene(ItemOcarina* this, PlayState* play) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gHyruleFieldZeldaSongOfTimeCs);
             gSaveContext.cutsceneTrigger = 1;
         } else {
-            play->transitionTrigger = 0x14;
+            play->transitionTrigger = TRANS_TRIGGER_START;
             play->transitionType = 3;
             gSaveContext.nextTransitionType = 3;
             play->nextEntranceIndex = 0x050F;
