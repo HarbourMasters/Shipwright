@@ -882,7 +882,7 @@ void CreateSheikText() {
   lightArrowHintLoc = Location(lightArrowLocation[0])->GetName();
   Text area = GetHintRegion(Location(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
   Text temp1 = Text{
-    "I overheard Ganondorf say that he misplaced the %yLight Arrows%w in%r",
+    "I overheard Ganondorf say that he misplaced the %yLight Arrows%w in %r",
     "J'ai entendu dire que Ganondorf aurait caché les %yFlèches de Lumière%w dans %r",
     ""
   };
