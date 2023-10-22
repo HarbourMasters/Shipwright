@@ -13,7 +13,7 @@ using namespace Settings;
 
 std::vector<ItemAndPrice> NonShopItems = {};
 
-static std::array<std::vector<Text>, 0xE0> trickNameTable; // Table of trick names for ice traps
+static std::array<std::vector<Text>, 0xE1> trickNameTable; // Table of trick names for ice traps
 bool initTrickNames = false; //Indicates if trick ice trap names have been initialized yet
 
 //Set vanilla shop item locations before potentially shuffling
