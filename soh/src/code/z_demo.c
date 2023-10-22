@@ -409,7 +409,7 @@ void func_80064824(PlayState* play, CutsceneContext* csCtx, CsCmdBase* cmd) {
             break;
         case 32:
             if (sp3F != 0) {
-                play->envCtx.sandstormState = 1;
+                play->envCtx.sandstormState = SANDSTORM_FILL;
             }
             func_800788CC(NA_SE_EV_SAND_STORM - SFX_FLAG);
             break;

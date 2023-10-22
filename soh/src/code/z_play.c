@@ -1071,10 +1071,10 @@ void Play_Update(PlayState* play) {
 
                 case 12:
                     if (play->sceneLoadFlag != -0x14) {
-                        play->envCtx.sandstormState = 1;
+                        play->envCtx.sandstormState = SANDSTORM_FILL;
                         play->transitionMode = 13;
                     } else {
-                        play->envCtx.sandstormState = 2;
+                        play->envCtx.sandstormState = SANDSTORM_UNFILL;
                         play->envCtx.sandstormPrimA = 255;
                         play->envCtx.sandstormEnvA = 255;
                         play->transitionMode = 13;
@@ -1107,7 +1107,7 @@ void Play_Update(PlayState* play) {
 
                 case 14:
                     if (play->sceneLoadFlag == -0x14) {
-                        play->envCtx.sandstormState = 4;
+                        play->envCtx.sandstormState = SANDSTORM_DISSIPATE;
                         play->envCtx.sandstormPrimA = 255;
                         play->envCtx.sandstormEnvA = 255;
                         // "It's here!!!!!!!!!"
@@ -1702,7 +1702,7 @@ void Play_Draw(PlayState* play) {
                 }
 
                 if ((HREG(80) != 10) || (HREG(88) != 0)) {
-                    if (play->envCtx.sandstormState != 0) {
+                    if (play->envCtx.sandstormState != SANDSTORM_OFF) {
                         Environment_DrawSandstorm(play, play->envCtx.sandstormState);
                     }
                 }
