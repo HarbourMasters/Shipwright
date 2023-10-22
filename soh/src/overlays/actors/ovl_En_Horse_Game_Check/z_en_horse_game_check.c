@@ -114,22 +114,22 @@ void EnHorseGameCheck_FinishIngoRace(EnHorseGameCheckIngoRace* this, PlayState* 
         if (gSaveContext.eventInf[0] & 0x40) {
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0xF) | 6;
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
-            play->fadeTransition = 3;
+            play->transitionType = 3;
             Environment_ForcePlaySequence(NA_BGM_INGO);
         } else {
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0xF) | 4;
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
             Environment_ForcePlaySequence(NA_BGM_INGO);
-            play->fadeTransition = 0x2E;
+            play->transitionType = 0x2E;
         }
     } else {
         play->nextEntranceIndex = 0x558;
         gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0xF) | 3;
-        play->fadeTransition = 0x20;
+        play->transitionType = 0x20;
         gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
     }
     DREG(25) = 0;
-    play->sceneLoadFlag = 0x14;
+    play->transitionTrigger = 0x14;
     gSaveContext.timer1State = 0;
 }
 
@@ -294,22 +294,22 @@ void EnHorseGameCheck_FinishMalonRace(EnHorseGameCheckMalonRace* this, PlayState
     if ((this->result == MALONRACE_SUCCESS) || (this->result == MALONRACE_TIME_UP)) {
         gSaveContext.cutsceneIndex = 0;
         play->nextEntranceIndex = 0x4CE;
-        play->fadeTransition = 0x2E;
-        play->sceneLoadFlag = 0x14;
+        play->transitionType = 0x2E;
+        play->transitionTrigger = 0x14;
     } else if (this->result == MALONRACE_FAILURE) {
         gSaveContext.timer1Value = 240;
         gSaveContext.timer1State = 0xF;
         gSaveContext.cutsceneIndex = 0;
         play->nextEntranceIndex = 0x4CE;
-        play->fadeTransition = 0x2E;
-        play->sceneLoadFlag = 0x14;
+        play->transitionType = 0x2E;
+        play->transitionTrigger = 0x14;
     } else {
         // "not supported"
         osSyncPrintf("En_HGC_Spot20_Ta_end():対応せず\n");
         gSaveContext.cutsceneIndex = 0;
         play->nextEntranceIndex = 0x157;
-        play->fadeTransition = 0x2E;
-        play->sceneLoadFlag = 0x14;
+        play->transitionType = 0x2E;
+        play->transitionTrigger = 0x14;
     }
 }
 

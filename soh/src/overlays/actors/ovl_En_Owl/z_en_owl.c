@@ -967,8 +967,8 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                         } else {
                             play->nextEntranceIndex = 0x027E;
                         }
-                        play->sceneLoadFlag = 0x14;
-                        play->fadeTransition = 2;
+                        play->transitionTrigger = 0x14;
+                        play->transitionType = 2;
                         break;
                     }
                     play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gLakeHyliaOwlCs);
@@ -982,8 +982,8 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                         } else {
                             play->nextEntranceIndex = 0x0554;
                         }
-                        play->sceneLoadFlag = 0x14;
-                        play->fadeTransition = 2;
+                        play->transitionTrigger = 0x14;
+                        play->transitionType = 2;
                         break;
                     }
                     play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gDMTOwlCs);

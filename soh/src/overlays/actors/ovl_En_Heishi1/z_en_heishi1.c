@@ -367,10 +367,10 @@ void EnHeishi1_Kick(EnHeishi1* this, PlayState* play) {
             if (!this->loadStarted) {
                 Flags_SetEventChkInf(EVENTCHKINF_CAUGHT_BY_CASTLE_GUARDS);
                 play->nextEntranceIndex = 0x4FA;
-                play->sceneLoadFlag = 0x14;
+                play->transitionTrigger = 0x14;
                 this->loadStarted = true;
                 sHeishi1PlayerIsCaught = false;
-                play->fadeTransition = 0x2E;
+                play->transitionType = 0x2E;
                 gSaveContext.nextTransitionType = 0x2E;
             }
         }

@@ -952,8 +952,8 @@ void EnOssan_State_StartConversation(EnOssan* this, PlayState* play, Player* pla
                 } else {
                     play->nextEntranceIndex = 0x1D1;
                 }
-                play->sceneLoadFlag = 0x14;
-                play->fadeTransition = 0x2E;
+                play->transitionTrigger = 0x14;
+                play->transitionType = 0x2E;
                 return;
         }
 

@@ -396,8 +396,8 @@ static bool EntranceHandler(std::shared_ptr<LUS::Console> Console, const std::ve
     }
 
     gPlayState->nextEntranceIndex = entrance;
-    gPlayState->sceneLoadFlag = 0x14;
-    gPlayState->fadeTransition = 11;
+    gPlayState->transitionTrigger = 0x14;
+    gPlayState->transitionType = 11;
     gSaveContext.nextTransitionType = 11;
 }
 
@@ -406,9 +406,9 @@ static bool VoidHandler(std::shared_ptr<LUS::Console> Console, const std::vector
             gSaveContext.respawn[RESPAWN_MODE_DOWN].tempSwchFlags = gPlayState->actorCtx.flags.tempSwch;
             gSaveContext.respawn[RESPAWN_MODE_DOWN].tempCollectFlags = gPlayState->actorCtx.flags.tempCollect;
             gSaveContext.respawnFlag = 1;
-            gPlayState->sceneLoadFlag = 0x14;
+            gPlayState->transitionTrigger = 0x14;
             gPlayState->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
-            gPlayState->fadeTransition = 2;
+            gPlayState->transitionType = 2;
             gSaveContext.nextTransitionType = 2;
     } else {
         ERROR_MESSAGE("gPlayState == nullptr");
@@ -420,8 +420,8 @@ static bool VoidHandler(std::shared_ptr<LUS::Console> Console, const std::vector
 static bool ReloadHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (gPlayState != nullptr) {
         gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
-        gPlayState->sceneLoadFlag = 0x14;
-        gPlayState->fadeTransition = 11;
+        gPlayState->transitionTrigger = 0x14;
+        gPlayState->transitionType = 11;
         gSaveContext.nextTransitionType = 11;
     } else {
         ERROR_MESSAGE("gPlayState == nullptr");
@@ -456,9 +456,9 @@ static bool FWHandler(std::shared_ptr<LUS::Console> Console, const std::vector<s
                 break;
             case 1: //warp
                 if (gSaveContext.respawn[RESPAWN_MODE_TOP].data > 0) {
-                    gPlayState->sceneLoadFlag = 0x14;
+                    gPlayState->transitionTrigger = 0x14;
                     gPlayState->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
-                    gPlayState->fadeTransition = 5;
+                    gPlayState->transitionType = 5;
                 } else {
                     ERROR_MESSAGE("Farore's wind not set!");
                     return 1;

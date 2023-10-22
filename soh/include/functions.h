@@ -1537,7 +1537,7 @@ void KaleidoScopeCall_Draw(PlayState* play);
 void func_800BC490(PlayState* play, s16 point);
 s32 func_800BC56C(PlayState* play, s16 arg1);
 void func_800BC590(PlayState* play);
-void func_800BC5E0(PlayState* play, s32 arg1);
+void Gameplay_SetupTransition(PlayState* play, s32 arg1);
 Gfx* Play_SetFog(PlayState* play, Gfx* gfx);
 void Play_Destroy(GameState* thisx);
 void Play_Init(GameState* thisx);

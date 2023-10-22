@@ -263,8 +263,8 @@ void EnGe2_CaptureClose(EnGe2* this, PlayState* play) {
             Entrance_OverrideGeurdoGuardCapture();
         }
 
-        play->fadeTransition = 0x26;
-        play->sceneLoadFlag = 0x14;
+        play->transitionType = 0x26;
+        play->transitionTrigger = 0x14;
     }
 }
 
@@ -293,8 +293,8 @@ void EnGe2_CaptureCharge(EnGe2* this, PlayState* play) {
             Entrance_OverrideGeurdoGuardCapture();
         }
 
-        play->fadeTransition = 0x26;
-        play->sceneLoadFlag = 0x14;
+        play->transitionType = 0x26;
+        play->transitionTrigger = 0x14;
     }
 }
 

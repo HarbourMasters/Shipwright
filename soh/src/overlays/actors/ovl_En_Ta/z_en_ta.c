@@ -672,14 +672,14 @@ void func_80B15424(EnTa* this, PlayState* play) {
         play->nextEntranceIndex = 0x5E4;
 
         if (gSaveContext.eventInf[0] & 0x100) {
-            play->fadeTransition = 46;
+            play->transitionType = 46;
             gSaveContext.nextTransitionType = 3;
         } else {
-            play->fadeTransition = 38;
+            play->transitionType = 38;
             gSaveContext.nextTransitionType = 2;
         }
 
-        play->sceneLoadFlag = 0x14;
+        play->transitionTrigger = 0x14;
         gSaveContext.eventInf[0] |= 0x400;
         this->actionFunc = func_80B153D4;
         this->unk_2CC = 22;

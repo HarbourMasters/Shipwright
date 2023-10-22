@@ -432,8 +432,8 @@ void func_80A79BAC(EnIn* this, PlayState* play, s32 index, u32 arg3) {
     if (index == 2) {
         gSaveContext.nextCutsceneIndex = 0xFFF0;
     }
-    play->fadeTransition = arg3;
-    play->sceneLoadFlag = 0x14;
+    play->transitionType = arg3;
+    play->transitionTrigger = 0x14;
     func_8002DF54(play, &this->actor, 8);
     Interface_ChangeAlpha(1);
     if (index == 0) {
@@ -871,8 +871,8 @@ void func_80A7AEF0(EnIn* this, PlayState* play) {
     yaw = Math_Vec3f_Yaw(&pos, &player->actor.world.pos);
     if (ABS(yaw) > 0x4000) {
         play->nextEntranceIndex = 0x0476;
-        play->sceneLoadFlag = 0x14;
-        play->fadeTransition = 5;
+        play->transitionTrigger = 0x14;
+        play->transitionType = 5;
         this->actionFunc = func_80A7B018;
     } else if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         play->msgCtx.stateTimer = 4;

@@ -2182,7 +2182,7 @@ void func_80834298(Player* this, PlayState* play) {
         ((this->heldItemAction == this->itemAction) || (this->stateFlags1 & PLAYER_STATE1_SHIELDING)) &&
         (gSaveContext.health != 0) && (play->csCtx.state == CS_STATE_IDLE) && (this->csMode == 0) &&
         (play->shootingGalleryStatus == 0) && (play->activeCamera == MAIN_CAM) &&
-        (play->sceneLoadFlag != 0x14) && (gSaveContext.timer1State != 10)) {
+        (play->transitionTrigger != 0x14) && (gSaveContext.timer1State != 10)) {
         func_80833DF8(this, play);
     }
 
@@ -3332,7 +3332,7 @@ s32 func_80836FAC(PlayState* play, Player* this, f32* arg2, s16* arg3, f32 arg4)
     f32 temp_f14;
     f32 temp_f12;
 
-    if ((this->unk_6AD != 0) || (play->sceneLoadFlag == 0x14) || (this->stateFlags1 & PLAYER_STATE1_LOADING)) {
+    if ((this->unk_6AD != 0) || (play->transitionTrigger == 0x14) || (this->stateFlags1 & PLAYER_STATE1_LOADING)) {
         *arg2 = 0.0f;
         *arg3 = this->actor.shape.rot.y;
     } else {
@@ -4193,7 +4193,7 @@ void func_80838F5C(PlayState* play, Player* this) {
 }
 
 s32 func_80838FB8(PlayState* play, Player* this) {
-    if ((play->sceneLoadFlag == 0) && (this->stateFlags1 & PLAYER_STATE1_FLOOR_DISABLED)) {
+    if ((play->transitionTrigger == 0) && (this->stateFlags1 & PLAYER_STATE1_FLOOR_DISABLED)) {
         func_80838F5C(play, this);
         func_80832284(play, this, &gPlayerAnim_link_normal_landing_wait);
         func_80832698(this, NA_SE_VO_LI_FALL_S);
@@ -4233,7 +4233,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
     if (this->actor.category == ACTORCAT_PLAYER) {
         sp3C = 0;
 
-        if (!(this->stateFlags1 & PLAYER_STATE1_DEAD) && (play->sceneLoadFlag == 0) && (this->csMode == 0) &&
+        if (!(this->stateFlags1 & PLAYER_STATE1_DEAD) && (play->transitionTrigger == 0) && (this->csMode == 0) &&
             !(this->stateFlags1 & PLAYER_STATE1_LOADING) &&
             (((poly != NULL) && (sp3C = SurfaceType_GetSceneExitIndex(&play->colCtx, poly, bgId), sp3C != 0)) ||
              (func_8083816C(D_808535E4) && (this->unk_A7A == 12)))) {
@@ -4259,7 +4259,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                 if (play->nextEntranceIndex == 0x7FFF) {
                     gSaveContext.respawnFlag = 2;
                     play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex;
-                    play->fadeTransition = 3;
+                    play->transitionType = 3;
                     gSaveContext.nextTransitionType = 3;
                 } else if (play->nextEntranceIndex >= 0x7FF9) {
                     // handle dynamic exits
@@ -4280,7 +4280,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                     gSaveContext.retainWeatherMode = 1;
                     func_800994A0(play);
                 }
-                play->sceneLoadFlag = 0x14;
+                play->transitionTrigger = 0x14;
             }
 
             if (!(this->stateFlags1 & (PLAYER_STATE1_ON_HORSE | PLAYER_STATE1_IN_CUTSCENE)) &&
@@ -4326,7 +4326,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
 
             return 1;
         } else {
-            if (play->sceneLoadFlag == 0) {
+            if (play->transitionTrigger == 0) {
 
                 if ((this->actor.world.pos.y < -4000.0f) ||
                     (((this->unk_A7A == 5) || (this->unk_A7A == 12)) &&
@@ -4340,7 +4340,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                         } else {
                             Play_TriggerVoidOut(play);
                         }
-                        play->fadeTransition = 4;
+                        play->transitionType = 4;
                         func_80078884(NA_SE_OC_ABYSS);
                     } else {
                         func_80838F5C(play, this);
@@ -10848,7 +10848,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
                 }
             } else {
                 if ((this->actor.parent == NULL) &&
-                    ((play->sceneLoadFlag == 0x14) || (this->unk_A87 != 0) || !func_808382DC(this, play))) {
+                    ((play->transitionTrigger == 0x14) || (this->unk_A87 != 0) || !func_808382DC(this, play))) {
                     func_8083AA10(this, play);
                 } else {
                     this->fallStartHeight = this->actor.world.pos.y;
@@ -12795,9 +12795,9 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
             if (this->getItemId == GI_GAUNTLETS_SILVER && !IS_RANDO) {
                 play->nextEntranceIndex = 0x0123;
-                play->sceneLoadFlag = 0x14;
+                play->transitionTrigger = 0x14;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;
-                play->fadeTransition = 0xF;
+                play->transitionType = 0xF;
                 this->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
                 func_80852FFC(play, NULL, 8);
             }
@@ -13511,7 +13511,7 @@ void func_8084F710(Player* this, PlayState* play) {
 void func_8084F88C(Player* this, PlayState* play) {
     LinkAnimation_Update(play, &this->skelAnime);
 
-    if ((this->unk_850++ > 8) && (play->sceneLoadFlag == 0)) {
+    if ((this->unk_850++ > 8) && (play->transitionTrigger == 0)) {
 
         if (this->unk_84F != 0) {
             if (play->sceneNum == SCENE_ICE_CAVERN) {
@@ -13527,16 +13527,16 @@ void func_8084F88C(Player* this, PlayState* play) {
                 Play_TriggerVoidOut(play);
             }
 
-            play->fadeTransition = 4;
+            play->transitionType = 4;
             func_80078884(NA_SE_OC_ABYSS);
         } else {
-            play->fadeTransition = 2;
+            play->transitionType = 2;
             gSaveContext.nextTransitionType = 2;
             gSaveContext.seqId = (u8)NA_BGM_DISABLED;
             gSaveContext.natureAmbienceId = 0xFF;
         }
 
-        play->sceneLoadFlag = 0x14;
+        play->transitionTrigger = 0x14;
     }
 }
 
@@ -13854,9 +13854,9 @@ void func_8085063C(Player* this, PlayState* play) {
 
         if (play->msgCtx.choiceIndex == 0) { //Returns to FW
             gSaveContext.respawnFlag = 3;
-            play->sceneLoadFlag = 0x14;
+            play->transitionTrigger = 0x14;
             play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
-            play->fadeTransition = 5;
+            play->transitionType = 5;
             func_80088AF0(play);
             return;
         }

@@ -71,7 +71,7 @@ void func_800BC590(PlayState* play) {
     }
 }
 
-void func_800BC5E0(PlayState* play, s32 transitionType) {
+void Gameplay_SetupTransition(PlayState* play, s32 transitionType) {
     TransitionContext* transitionCtx = &play->transitionCtx;
 
     memset(transitionCtx,0,  sizeof(TransitionContext));
@@ -622,7 +622,7 @@ void Play_Init(GameState* thisx) {
     if (CVarGetInteger("gSceneTransitions", 255)!= 255){
         play->transitionMode = CVarGetInteger("gSceneTransitions", 0);
         gSaveContext.nextTransitionType = CVarGetInteger("gSceneTransitions", 0);
-        play->fadeTransition = CVarGetInteger("gSceneTransitions", 0);
+        play->transitionType = CVarGetInteger("gSceneTransitions", 0);
     }
 
     FrameAdvance_Init(&play->frameAdvCtx);
@@ -637,14 +637,14 @@ void Play_Init(GameState* thisx) {
 
     if (gSaveContext.gameMode != 1) {
         if (gSaveContext.nextTransitionType == 0xFF) {
-            play->fadeTransition =
+            play->transitionType =
                 (gEntranceTable[((void)0, gSaveContext.entranceIndex) + tempSetupIndex].field >> 7) & 0x7F; // Fade In
         } else {
-            play->fadeTransition = gSaveContext.nextTransitionType;
+            play->transitionType = gSaveContext.nextTransitionType;
             gSaveContext.nextTransitionType = 0xFF;
         }
     } else {
-        play->fadeTransition = 6;
+        play->transitionType = 6;
     }
 
     ShrinkWindow_Init();
@@ -863,7 +863,7 @@ void Play_Update(PlayState* play) {
                         if (!(gEntranceTable[play->nextEntranceIndex + sp6E].field & 0x8000)) { // Continue BGM Off
                             // "Sound initalized. 111"
                             osSyncPrintf("\n\n\nサウンドイニシャル来ました。111");
-                            if ((play->fadeTransition < 56) && !Environment_IsForcedSequenceDisabled()) {
+                            if ((play->transitionType < 56) && !Environment_IsForcedSequenceDisabled()) {
                                 // "Sound initalized. 222"
                                 osSyncPrintf("\n\n\nサウンドイニシャル来ました。222");
                                 func_800F6964(0x14);
@@ -874,9 +874,9 @@ void Play_Update(PlayState* play) {
                     }
 
                     if (CREG(11) == 0) {
-                        func_800BC5E0(play, play->fadeTransition);
+                        Gameplay_SetupTransition(play, play->transitionType);
                     } else {
-                        func_800BC5E0(play, CREG(12));
+                        Gameplay_SetupTransition(play, CREG(12));
                     }
 
                     if (play->transitionMode >= 4) {
@@ -2248,7 +2248,7 @@ void Play_TriggerVoidOut(PlayState* play) {
     gSaveContext.respawnFlag = 1;
     play->sceneLoadFlag = 0x14;
     play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
-    play->fadeTransition = 2;
+    play->transitionType = 2;
 }
 
 void Play_LoadToLastEntrance(PlayState* play) {
@@ -2266,7 +2266,7 @@ void Play_LoadToLastEntrance(PlayState* play) {
         play->nextEntranceIndex = gSaveContext.entranceIndex;
     }
 
-    play->fadeTransition = 2;
+    play->transitionType = 2;
 }
 
 void Play_TriggerRespawn(PlayState* play) {

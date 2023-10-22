@@ -41,8 +41,8 @@ bool performSave = false;
 // TODO: When there's more uses of something like this, create a new GI::RawAction?
 void ReloadSceneTogglingLinkAge() {
     gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
-    gPlayState->sceneLoadFlag = 0x14;
-    gPlayState->fadeTransition = 42; // Fade Out
+    gPlayState->transitionTrigger = 0x14;
+    gPlayState->transitionType = 42; // Fade Out
     gSaveContext.nextTransitionType = 42;
     gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
 }
@@ -194,7 +194,7 @@ void RegisterSwitchAge() {
             warped = true;
         }
 
-        if (warped && gPlayState->sceneLoadFlag != 0x0014 &&
+        if (warped && gPlayState->transitionTrigger != 0x0014 &&
             gSaveContext.nextTransitionType == 255) {
             GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
             GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
@@ -629,8 +629,8 @@ void RegisterTriforceHunt() {
             if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
                 gPlayState->nextEntranceIndex = 0x6B;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
-                gPlayState->sceneLoadFlag = 0x14;
-                gPlayState->fadeTransition = 3;
+                gPlayState->transitionTrigger = 0x14;
+                gPlayState->transitionType = 3;
                 GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
             }
 
@@ -648,7 +648,7 @@ void RegisterTriforceHunt() {
             uint8_t requiredPieces = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
             
             // Give Boss Key when player loads back into the savefile.
-            if (currentPieces >= requiredPieces && gPlayState->sceneLoadFlag != 0x14 &&
+            if (currentPieces >= requiredPieces && gPlayState->transitionTrigger != 0x14 &&
                 (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
                 GetItemEntry getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
                 GiveItemEntryWithoutActor(gPlayState, getItemEntry);

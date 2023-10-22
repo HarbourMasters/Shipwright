@@ -873,8 +873,8 @@ void func_80986B2C(PlayState* play) {
         } else {
             play->nextEntranceIndex = 0xCD;
         }
-        play->fadeTransition = 38;
-        play->sceneLoadFlag = 0x14;
+        play->transitionType = 38;
+        play->transitionTrigger = 0x14;
         func_8002DF54(play, &player->actor, 8);
     }
 }
@@ -913,8 +913,8 @@ void GivePlayerRandoRewardImpa(Actor* impa, PlayState* play, RandomizerCheck che
         GiveItemEntryFromActor(impa, play, getItemEntry, 75.0f, 50.0f);
     } else if (!Player_InBlockingCsMode(play, GET_PLAYER(play))) {
         Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
-        play->sceneLoadFlag = 0x14;
-        play->fadeTransition = 3;
+        play->transitionTrigger = 0x14;
+        play->transitionType = 3;
         gSaveContext.nextTransitionType = 3;
         // In entrance rando have impa bring link back to the front of castle grounds
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {

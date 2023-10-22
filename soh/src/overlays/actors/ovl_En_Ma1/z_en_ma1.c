@@ -492,8 +492,8 @@ void func_80AA1150(EnMa1* this, PlayState* play) {
         if (!IS_RANDO) {
             play->nextEntranceIndex = 0x157;
             gSaveContext.nextCutsceneIndex = 0xFFF1;
-            play->fadeTransition = 42;
-            play->sceneLoadFlag = 0x14;
+            play->transitionType = 42;
+            play->transitionTrigger = 0x14;
             this->actionFunc = EnMa1_DoNothing;
         } else {
             // When rando'ed, skip the cutscene, play the chime, reset some flags,

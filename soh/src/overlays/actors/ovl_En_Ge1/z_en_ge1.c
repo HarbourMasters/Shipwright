@@ -273,8 +273,8 @@ void EnGe1_KickPlayer(EnGe1* this, PlayState* play) {
             Entrance_OverrideGeurdoGuardCapture();
         }
 
-        play->fadeTransition = 0x26;
-        play->sceneLoadFlag = 0x14;
+        play->transitionType = 0x26;
+        play->transitionTrigger = 0x14;
     }
 }
 
@@ -656,8 +656,8 @@ void EnGe1_BeginGame_Archery(EnGe1* this, PlayState* play) {
                     Rupees_ChangeBy(-20);
                     play->nextEntranceIndex = 0x129;
                     gSaveContext.nextCutsceneIndex = 0xFFF0;
-                    play->fadeTransition = 0x26;
-                    play->sceneLoadFlag = 0x14;
+                    play->transitionType = 0x26;
+                    play->transitionTrigger = 0x14;
                     gSaveContext.eventInf[0] |= 0x100;
                     Flags_SetEventChkInf(EVENTCHKINF_PLAYED_HORSEBACK_ARCHERY);
 

@@ -2541,8 +2541,8 @@ void Environment_WarpSongLeave(PlayState* play) {
     gSaveContext.cutsceneIndex = 0;
     gSaveContext.respawnFlag = -3;
     play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex;
-    play->sceneLoadFlag = 0x14;
-    play->fadeTransition = 3;
+    play->transitionTrigger = 0x14;
+    play->transitionType = 3;
     gSaveContext.nextTransitionType = 3;
 
     switch (play->nextEntranceIndex) {
