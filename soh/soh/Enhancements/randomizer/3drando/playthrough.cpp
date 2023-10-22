@@ -7,6 +7,7 @@
 #include "logic.hpp"
 #include "random.hpp"
 #include "spoiler_log.hpp"
+#include "spdlog/spdlog.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 namespace Playthrough {
@@ -60,18 +61,18 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
 
     if (Settings::GenerateSpoilerLog) {
         // write logs
-        printf("\x1b[11;10HWriting Spoiler Log...");
+        SPDLOG_INFO("Writing Spoiler Log...");
         if (SpoilerLog_Write(cvarSettings[RSK_LANGUAGE])) {
-            printf("Done");
+            SPDLOG_INFO("Writing Spoiler Log Done");
         } else {
-            printf("Failed");
+            SPDLOG_INFO("Writing Spoiler Log Failed");
         }
 #ifdef ENABLE_DEBUG
-        printf("\x1b[11;10HWriting Placement Log...");
+        SPDLOG_INFO("Writing Placement Log...");
         if (PlacementLog_Write()) {
-            printf("Done\n");
+            SPDLOG_INFO("Writing Placement Log Done");
         } else {
-            printf("Failed\n");
+            SPDLOG_INFO("Writing Placement Log Failed");
         }
 #endif
     }
@@ -85,7 +86,7 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
 
 // used for generating a lot of seeds at once
 int Playthrough_Repeat(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks, int count /*= 1*/) {
-    printf("\x1b[0;0HGENERATING %d SEEDS", count);
+    SPDLOG_INFO("GENERATING {} SEEDS", count);
     uint32_t repeatedSeed = 0;
     for (int i = 0; i < count; i++) {
         Settings::seedString = std::to_string(rand() % 0xFFFFFFFF);
@@ -94,7 +95,7 @@ int Playthrough_Repeat(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSet
         //CitraPrint("testing seed: " + std::to_string(Settings::seed));
         ClearProgress();
         Playthrough_Init(Settings::seed, cvarSettings, excludedLocations, enabledTricks);
-        printf("\x1b[15;15HSeeds Generated: %d\n", i + 1);
+        SPDLOG_INFO("Seeds Generated: {}", i + 1);
     }
 
     return 1;

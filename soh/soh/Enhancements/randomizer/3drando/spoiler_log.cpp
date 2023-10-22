@@ -254,7 +254,7 @@ void WriteIngameSpoilerLog() {
             }
         }
         if (spoilerOutOfSpace || playthroughItemNotFound) {
-            printf("Error! ");
+            SPDLOG_ERROR("In-game spoiler log is out of space, playthrough data will not be written");
         }
     }
 }

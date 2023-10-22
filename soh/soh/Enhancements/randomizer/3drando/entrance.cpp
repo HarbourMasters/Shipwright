@@ -60,7 +60,7 @@ static void DisplayEntranceProgress() {
   } else {
     dots += " ";
   }
-  printf("\x1b[7;29H%s", dots.c_str());
+  SPDLOG_DEBUG(dots);
   #ifdef ENABLE_DEBUG
     if (curNumRandomizedEntrances == totalRandomizableEntrances) {
       Areas::DumpWorldGraph("Finish Validation");

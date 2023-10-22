@@ -586,7 +586,7 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
                         bool setLocationsAsHintable = false) {
     auto ctx = Rando::Context::GetInstance();
     if (items.size() > allowedLocations.size()) {
-        printf("\x1b[2;2HERROR: MORE ITEMS THAN LOCATIONS IN GIVEN LISTS");
+        SPDLOG_ERROR("ERROR: MORE ITEMS THAN LOCATIONS IN GIVEN LISTS");
         SPDLOG_DEBUG("Items:\n");
         // NOLINTNEXTLINE(clang-diagnostic-unused-variable)
         for (const RandomizerGet item : items) {
@@ -935,9 +935,9 @@ void VanillaFill() {
   }
   //If necessary, handle ER stuff
   if (ShuffleEntrances) {
-    printf("\x1b[7;10HShuffling Entrances...");
+    SPDLOG_INFO("Shuffling Entrances...");
     ShuffleAllEntrances();
-    printf("\x1b[7;32HDone");
+    SPDLOG_INFO("Shuffling Entrances Done");
   }
   //Finish up
   ctx->CreateItemOverrides();
@@ -946,11 +946,6 @@ void VanillaFill() {
 }
 
 void ClearProgress() {
-  printf("\x1b[7;32H    "); // Done
-  printf("\x1b[8;10H                    "); // Placing Items...Done
-  printf("\x1b[9;10H                              "); // Calculating Playthrough...Done
-  printf("\x1b[10;10H                     "); // Creating Hints...Done
-  printf("\x1b[11;10H                                  "); // Writing Spoiler Log...Done
 }
 
 int Fill() {
@@ -974,13 +969,13 @@ int Fill() {
     //can validate the world using deku/hylian shields
     AddElementsToPool(ItemPool, GetMinVanillaShopItems(32)); //assume worst case shopsanity 4
     if (ShuffleEntrances) {
-      printf("\x1b[7;10HShuffling Entrances");
+      SPDLOG_INFO("Shuffling Entrances");
       if (ShuffleAllEntrances() == ENTRANCE_SHUFFLE_FAILURE) {
         retries++;
         ClearProgress();
         continue;
       }
-      printf("\x1b[7;32HDone");
+      SPDLOG_INFO("Shuffling Entrances Done");
     }
     //erase temporary shop items
     FilterAndEraseFromPool(ItemPool, [](const auto item) { return Rando::StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_SHOP; });
@@ -1091,33 +1086,38 @@ int Fill() {
     GeneratePlaythrough();
     //Successful placement, produced beatable result
     if(ctx->playthroughBeatable && !placementFailure) {
-      printf("Done");
-      printf("\x1b[9;10HCalculating Playthrough...");
+      SPDLOG_INFO("Calculating Playthrough...");
       PareDownPlaythrough();
       CalculateWotH();
-      printf("Done");
+      SPDLOG_INFO("Calculating Playthrough Done");
       ctx->CreateItemOverrides();
       CreateEntranceOverrides();
+      SPDLOG_INFO("Creating Other Hint Texts...");
       //Always execute ganon hint generation for the funny line  
       CreateGanonAndSheikText();
       CreateAltarText();
       CreateDampesDiaryText();
       CreateGregRupeeHint();
       CreateSariaText();
+      SPDLOG_INFO("Creating Other Hint Texts Done");
       if (GossipStoneHints.IsNot(HINTS_NO_HINTS)) {
-        printf("\x1b[10;10HCreating Hints...");
+        SPDLOG_INFO("Creating Hints...");
         CreateAllHints();
-        printf("Done");
+        SPDLOG_INFO("Creating Hints Done");
       }
       if (ShuffleMerchants.Is(SHUFFLEMERCHANTS_HINTS)) {
+        SPDLOG_INFO("Creating Merchant Hints...");
         CreateMerchantsHints();
+        SPDLOG_INFO("Creating Merchant Hints Done");
       }
+      SPDLOG_INFO("Creating Warp Song Texts...");
       CreateWarpSongTexts();
+      SPDLOG_INFO("Creating Warp Song Texts Done");
       return 1;
     }
     //Unsuccessful placement
     if(retries < 4) {
-      SPDLOG_DEBUG("\nGOT STUCK. RETRYING...\n");
+      SPDLOG_DEBUG("Failed to generate a beatable seed. Retrying...");
       Areas::ResetAllLocations();
       LogicReset();
       ClearProgress();

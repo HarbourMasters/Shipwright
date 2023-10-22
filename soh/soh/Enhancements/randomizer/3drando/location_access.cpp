@@ -9,6 +9,7 @@
 #include "spoiler_log.hpp"
 #include "trial.hpp"
 #include "entrance.hpp"
+#include "spdlog/spdlog.h"
 
 #include <fstream>
 #include <iostream>
@@ -489,7 +490,7 @@ namespace Areas {
 
 Area* AreaTable(const RandomizerRegion areaKey) {
   if (areaKey > RR_MAX) {
-    printf("\x1b[1;1HERROR: AREAKEY TOO BIG");
+    SPDLOG_ERROR("ERROR: AREAKEY TOO BIG");
   }
   return &(areaTable[areaKey]);
 }

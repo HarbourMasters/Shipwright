@@ -9,6 +9,7 @@
 #include <variant>
 #include <vector>
 
+#include "spdlog/spdlog.h"
 #include "category.hpp"
 #include "menu.hpp"
 #include "pool_functions.hpp"
@@ -644,7 +645,7 @@ public:
     void SetSelectedIndex(size_t idx) {
       selectedOption = idx;
       if (selectedOption >= options.size()) {
-        printf("\x1b[30;0HERROR: Incompatible selection for %s\n", name.c_str());
+        SPDLOG_ERROR("ERROR: Incompatible selection for {}", name);
         selectedOption = 0;
       }
 
