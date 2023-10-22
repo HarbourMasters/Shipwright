@@ -53,6 +53,8 @@ void AreaTable_Init_CastleTown() {
   areaTable[RR_TEMPLE_OF_TIME] = Area("Temple of Time", "Temple of Time", RHT_TEMPLE_OF_TIME, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_TOT_LIGHT_ARROWS_CUTSCENE, {[]{return IsAdult && CanTriggerLACS;}}),
+                  LocationAccess(RC_ALTAR_HINT_CHILD, {[]{return IsChild;}}),
+                  LocationAccess(RC_ALTAR_HINT_ADULT, {[]{return IsAdult;}}),
                 }, {
                   //Exits
                   Entrance(RR_TOT_ENTRANCE,            {[]{return true;}}),
@@ -231,6 +233,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_MARKET_TREASURE_CHEST_GAME] = Area("Market Treasure Chest Game", "Market Treasure Chest Game", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
+                  LocationAccess(RC_GREG_HINT, {[]{return true;}}),
                   LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_REWARD, {[]{return (CanUse(RG_LENS_OF_TRUTH) && !ShuffleChestMinigame) || (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_SINGLE_KEYS) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 6)) || (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_PACK) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1));}}),
                   LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, {[]{return (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_SINGLE_KEYS) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_PACK) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (CanUse(RG_LENS_OF_TRUTH) && !ShuffleChestMinigame);}}),
                   LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, {[]{return (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_SINGLE_KEYS) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 2)) || (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_PACK) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (CanUse(RG_LENS_OF_TRUTH) && !ShuffleChestMinigame);}}),

@@ -114,7 +114,7 @@ public:
 
     static auto LightArrow(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
         return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::LightArrow};
-    }
+    } //RANDOTODO Concert to generic special hints?
 
     static auto GanonLine(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
         return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::GanonLine};
@@ -198,7 +198,7 @@ using ConditionalAlwaysHint = std::pair<RandomizerCheck, std::function<bool()>>;
 //10 dungeons as GTG and GC are excluded
 extern std::array<DungeonInfo, 10> dungeonInfoData;
 
-extern std::array<ConditionalAlwaysHint, 9> conditionalAlwaysHints;
+extern std::array<ConditionalAlwaysHint, 10> conditionalAlwaysHints;
 
 extern RandomizerHintTextKey GetHintRegionHintKey(const RandomizerRegion area);
 extern void CreateAllHints();
@@ -206,9 +206,8 @@ extern void CreateMerchantsHints();
 extern void CreateWarpSongTexts();
 extern void CreateDampesDiaryText();
 extern void CreateGregRupeeHint();
-extern void CreateSheikText();
 extern void CreateSariaText();
-extern void CreateGanonText();
+extern void CreateGanonAndSheikText();
 extern void CreateAltarText();
 
 Text& GetChildAltarText();
