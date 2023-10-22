@@ -890,7 +890,7 @@ void Play_Update(PlayState* play) {
                     // Circle Transition Types
                     if ((play->transitionCtx.transitionType >> 5) == 1) {
                         play->transitionCtx.setType(&play->transitionCtx.data,
-                                                         play->transitionCtx.transitionType | 0x80);
+                                                         play->transitionCtx.transitionType | TC_SET_PARAMS);
                     }
 
                     gSaveContext.transWipeSpeed = 14;
