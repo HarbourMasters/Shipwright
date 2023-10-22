@@ -327,8 +327,8 @@ void GameInteractor::RawAction::TeleportPlayer(int32_t nextEntrance) {
     Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
     gPlayState->nextEntranceIndex = nextEntrance;
     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-    gPlayState->transitionType = 2;
-    gSaveContext.nextTransitionType = 2;
+    gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
+    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
 }
 
 void GameInteractor::RawAction::ClearAssignedButtons(uint8_t buttonSet) {

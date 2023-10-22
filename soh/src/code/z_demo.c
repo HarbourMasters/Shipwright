@@ -577,43 +577,43 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->nextEntranceIndex = 0x00A0;
                 gSaveContext.cutsceneIndex = 0xFFF1;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 2:
                 play->nextEntranceIndex = 0x00A0;
                 gSaveContext.cutsceneIndex = 0xFFF0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 10;
+                play->transitionType = TRANS_TYPE_FILL_WHITE;
                 break;
             case 3:
                 play->nextEntranceIndex = 0x0117;
                 gSaveContext.cutsceneIndex = 0xFFF1;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 10;
+                play->transitionType = TRANS_TYPE_FILL_WHITE;
                 break;
             case 4:
                 play->nextEntranceIndex = 0x013D;
                 gSaveContext.cutsceneIndex = 0xFFF0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 10;
+                play->transitionType = TRANS_TYPE_FILL_WHITE;
                 break;
             case 5:
                 play->nextEntranceIndex = 0x00EE;
                 gSaveContext.cutsceneIndex = 0xFFF0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 10;
+                play->transitionType = TRANS_TYPE_FILL_WHITE;
                 break;
             case 6:
                 play->nextEntranceIndex = 0x00A0;
                 gSaveContext.cutsceneIndex = 0xFFF2;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 10;
+                play->transitionType = TRANS_TYPE_FILL_WHITE;
                 break;
             case 7:
                 play->nextEntranceIndex = 0x00EE;
                 gSaveContext.cutsceneIndex = 0xFFF2;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 11;
+                play->transitionType = TRANS_TYPE_INSTANT;
                 break;
             case 8:
                 if (CVarGetInteger("gBetterFW", 0)) {
@@ -629,7 +629,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     play->nextEntranceIndex = 0x00A0;
                     play->transitionTrigger = TRANS_TRIGGER_START;
                     gSaveContext.cutsceneIndex = 0xFFF3;
-                    play->transitionType = 11;
+                    play->transitionType = TRANS_TYPE_INSTANT;
                 } else {
                     if (gSaveContext.sceneSetupIndex < 4) {
                         if (!LINK_IS_ADULT) {
@@ -640,141 +640,141 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     }
                     play->nextEntranceIndex = 0x02CA;
                     play->transitionTrigger = TRANS_TRIGGER_START;
-                    play->transitionType = 3;
-                    gSaveContext.nextTransitionType = 3;
+                    play->transitionType = TRANS_TYPE_FADE_WHITE;
+                    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
                 }
                 break;
             case 9:
                 play->nextEntranceIndex = 0x0117;
                 gSaveContext.cutsceneIndex = 0xFFF0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 12;
+                play->transitionType = TRANS_TYPE_FILL_BROWN;
                 break;
             case 10:
                 play->nextEntranceIndex = 0x00BB;
                 gSaveContext.cutsceneIndex = 0xFFF0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 11:
                 play->nextEntranceIndex = 0x00EE;
                 gSaveContext.cutsceneIndex = 0xFFF3;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 12:
                 play->nextEntranceIndex = 0x047A;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 13:
                 play->nextEntranceIndex = 0x010E;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
-                gSaveContext.nextTransitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 14:
                 play->nextEntranceIndex = 0x0457;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 15:
                 play->nextEntranceIndex = 0x0053;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF4;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 16:
                 play->nextEntranceIndex = 0x0053;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF5;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 17:
                 play->nextEntranceIndex = 0x0053;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF6;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 18:
                 Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
                 play->nextEntranceIndex = 0x0324;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
-                gSaveContext.nextTransitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 19:
                 play->nextEntranceIndex = 0x013D;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 4;
+                play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                 gSaveContext.cutsceneIndex = 0x8000;
                 break;
             case 21:
                 play->nextEntranceIndex = 0x0102;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF0;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 22:
                 Item_Give(play, ITEM_SONG_REQUIEM);
                 play->nextEntranceIndex = 0x0123;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF0;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 23:
                 play->nextEntranceIndex = 0x00A0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF8;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 24:
                 play->nextEntranceIndex = 0x0028;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 25:
                 play->linkAgeOnLoad = 0;
                 play->nextEntranceIndex = 0x006B;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF0;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 26:
                 play->nextEntranceIndex = 0x0053;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF4;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 27:
                 play->nextEntranceIndex = 0x0053;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF5;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 28:
                 play->nextEntranceIndex = 0x0053;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF6;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 29:
                 play->nextEntranceIndex = 0x006B;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.chamberCutsceneNum = 0;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 30:
                 play->nextEntranceIndex = 0x006B;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 Item_Give(play, ITEM_MEDALLION_FIRE);
                 gSaveContext.chamberCutsceneNum = 1;
                 break;
             case 31:
                 play->nextEntranceIndex = 0x006B;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 gSaveContext.chamberCutsceneNum = 2;
                 break;
             case 32:
@@ -782,70 +782,70 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->nextEntranceIndex = 0x00CD;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF2;
-                play->transitionType = 11;
+                play->transitionType = TRANS_TYPE_INSTANT;
                 break;
             case 33:
                 play->nextEntranceIndex = 0x00CD;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 34:
                 play->nextEntranceIndex = 0x00A0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF3;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 35:
                 play->nextEntranceIndex = 0x00CD;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF0;
-                play->transitionType = 4;
+                play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                 break;
             case 38:
                 play->nextEntranceIndex = 0x00A0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF4;
-                play->transitionType = 4;
+                play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                 break;
             case 39:
                 play->nextEntranceIndex = 0x0053;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF9;
-                play->transitionType = 4;
+                play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                 break;
             case 40:
                 play->linkAgeOnLoad = 0;
                 play->nextEntranceIndex = 0x0053;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFFA;
-                play->transitionType = 4;
+                play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                 break;
             case 41:
                 play->nextEntranceIndex = 0x04E6;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 42:
                 play->nextEntranceIndex = 0x00DB;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF2;
-                play->transitionType = 4;
+                play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                 break;
             case 43:
                 play->nextEntranceIndex = 0x0503;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 4;
+                play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                 break;
             case 44:
                 play->nextEntranceIndex = 0x0320;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 17;
+                play->transitionType = TRANS_TYPE_FADE_WHITE_INSTANT;
                 break;
             case 46:
                 Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
                 play->nextEntranceIndex = 0x0324;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 4;
+                play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                 break;
             case 47:
                 Item_Give(play, ITEM_SONG_NOCTURNE);
@@ -853,40 +853,40 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->nextEntranceIndex = 0x00DB;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF1;
-                play->transitionType = 4;
+                play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                 break;
             case 48:
                 play->nextEntranceIndex = 0x01ED;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 15;
-                gSaveContext.nextTransitionType = 15;
+                play->transitionType = TRANS_TYPE_SANDSTORM_END;
+                gSaveContext.nextTransitionType = TRANS_TYPE_SANDSTORM_END;
                 break;
             case 49:
                 play->nextEntranceIndex = 0x058C;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 4;
+                play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                 break;
             case 50:
                 play->nextEntranceIndex = 0x0513;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 17;
+                play->transitionType = TRANS_TYPE_FADE_WHITE_INSTANT;
                 break;
             case 51:
                 play->nextEntranceIndex = 0x00CD;
                 gSaveContext.cutsceneIndex = 0xFFF8;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 41;
+                play->transitionType = TRANS_TYPE_CIRCLE(TCA_NORMAL, TCC_WHITE, TCS_SLOW);
                 break;
             case 52:
                 play->nextEntranceIndex = 0x0053;
                 gSaveContext.cutsceneIndex = 0xFFF7;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 11;
+                play->transitionType = TRANS_TYPE_INSTANT;
                 break;
             case 53:
                 play->nextEntranceIndex = 0x050F;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 54:
                 gSaveContext.gameMode = 3;
@@ -895,103 +895,103 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->nextEntranceIndex = 0x0117;
                 gSaveContext.cutsceneIndex = 0xFFF2;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 55:
                 play->nextEntranceIndex = 0x0129;
                 gSaveContext.cutsceneIndex = 0xFFF1;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 56:
                 play->nextEntranceIndex = 0x00DB;
                 gSaveContext.cutsceneIndex = 0xFFF4;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 57:
                 play->nextEntranceIndex = 0x013D;
                 gSaveContext.cutsceneIndex = 0xFFF3;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 58:
                 play->nextEntranceIndex = 0x014D;
                 gSaveContext.cutsceneIndex = 0xFFF1;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 59:
                 play->nextEntranceIndex = 0x0102;
                 gSaveContext.cutsceneIndex = 0xFFF1;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 60:
                 play->nextEntranceIndex = 0x010E;
                 gSaveContext.cutsceneIndex = 0xFFF2;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 61:
                 play->nextEntranceIndex = 0x0108;
                 gSaveContext.cutsceneIndex = 0xFFF0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 62:
                 play->linkAgeOnLoad = 0;
                 play->nextEntranceIndex = 0x00EE;
                 gSaveContext.cutsceneIndex = 0xFFF6;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 63:
                 play->nextEntranceIndex = 0x00EE;
                 gSaveContext.cutsceneIndex = 0xFFF7;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 64:
                 play->nextEntranceIndex = 0x00CD;
                 gSaveContext.cutsceneIndex = 0xFFF5;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 65:
                 play->linkAgeOnLoad = 1;
                 play->nextEntranceIndex = 0x0157;
                 gSaveContext.cutsceneIndex = 0xFFF2;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 66:
                 play->nextEntranceIndex = 0x0554;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 67:
                 play->nextEntranceIndex = 0x027E;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 68:
                 play->nextEntranceIndex = 0x00A0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF5;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 69:
                 play->nextEntranceIndex = 0x05E8;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 70:
                 play->nextEntranceIndex = 0x013D;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF4;
-                play->transitionType = 2;
-                gSaveContext.nextTransitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 71:
                 gSaveContext.equips.equipment |= 0x0100;
@@ -1002,55 +1002,55 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->nextEntranceIndex = 0x0053;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF1;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 72:
                 play->nextEntranceIndex = 0x0400;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF0;
-                play->transitionType = 2;
-                gSaveContext.nextTransitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 73:
                 play->linkAgeOnLoad = 1;
                 play->nextEntranceIndex = 0x0157;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF2;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 74:
                 play->nextEntranceIndex = 0x0157;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF3;
-                play->transitionType = 3;
-                gSaveContext.nextTransitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 75:
                 play->linkAgeOnLoad = 1;
                 play->nextEntranceIndex = 0x0157;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF4;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 76:
                 play->linkAgeOnLoad = 0;
                 play->nextEntranceIndex = 0x0157;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF5;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 77:
                 play->linkAgeOnLoad = 1;
                 play->nextEntranceIndex = 0x0157;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF6;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 78:
                 play->nextEntranceIndex = 0x0157;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF7;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 79:
             case 80:
@@ -1069,12 +1069,12 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
             case 93:
                 play->nextEntranceIndex = 0x0157;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 94:
                 play->nextEntranceIndex = 0x02AE;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 95:
                 if ((Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) && (Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) &&
@@ -1082,24 +1082,24 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     play->nextEntranceIndex = 0x0053;
                     play->transitionTrigger = TRANS_TRIGGER_START;
                     gSaveContext.cutsceneIndex = 0xFFF3;
-                    play->transitionType = 2;
+                    play->transitionType = TRANS_TYPE_FADE_BLACK;
                 } else {
                     switch (gSaveContext.sceneSetupIndex) {
                         case 8:
                             play->nextEntranceIndex = 0x00FC;
                             play->transitionTrigger = TRANS_TRIGGER_START;
-                            play->transitionType = 2;
+                            play->transitionType = TRANS_TYPE_FADE_BLACK;
                             break;
                         case 9:
                             play->nextEntranceIndex = 0x0147;
                             play->transitionTrigger = TRANS_TRIGGER_START;
-                            play->transitionType = 2;
+                            play->transitionType = TRANS_TYPE_FADE_BLACK;
                             break;
                         case 10:
                             play->nextEntranceIndex = 0x0102;
                             play->transitionTrigger = TRANS_TRIGGER_START;
                             gSaveContext.cutsceneIndex = 0xFFF0;
-                            play->transitionType = 3;
+                            play->transitionType = TRANS_TYPE_FADE_WHITE;
                             break;
                     }
                 }
@@ -1109,13 +1109,13 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     play->nextEntranceIndex = 0x006B;
                     play->transitionTrigger = TRANS_TRIGGER_START;
                     gSaveContext.cutsceneIndex = 0xFFF1;
-                    play->transitionType = 5;
+                    play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
                 } else {
                     Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_SPIRIT_MEDALLION);
                     play->nextEntranceIndex = 0x0610;
                     play->transitionTrigger = TRANS_TRIGGER_START;
-                    play->transitionType = 3;
-                    gSaveContext.nextTransitionType = 3;
+                    play->transitionType = TRANS_TYPE_FADE_WHITE;
+                    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
                 }
                 break;
             case 97:
@@ -1123,48 +1123,48 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     play->nextEntranceIndex = 0x006B;
                     play->transitionTrigger = TRANS_TRIGGER_START;
                     gSaveContext.cutsceneIndex = 0xFFF1;
-                    play->transitionType = 5;
+                    play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
                 } else {
                     play->nextEntranceIndex = 0x0580;
                     play->transitionTrigger = TRANS_TRIGGER_START;
-                    play->transitionType = 3;
-                    gSaveContext.nextTransitionType = 3;
+                    play->transitionType = TRANS_TYPE_FADE_WHITE;
+                    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
                 }
                 break;
             case 98:
                 play->nextEntranceIndex = 0x0564;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 3;
-                gSaveContext.nextTransitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 99:
                 play->nextEntranceIndex = 0x0608;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
-                gSaveContext.nextTransitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 100:
                 play->nextEntranceIndex = 0x00EE;
                 gSaveContext.cutsceneIndex = 0xFFF8;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 3;
-                gSaveContext.nextTransitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 101:
                 play->nextEntranceIndex = 0x01F5;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 15;
+                play->transitionType = TRANS_TYPE_SANDSTORM_END;
                 break;
             case 102:
                 play->nextEntranceIndex = 0x0590;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 103:
                 play->nextEntranceIndex = 0x00CD;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF3;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 104:
                 switch (sTitleCsState) {
@@ -1172,21 +1172,21 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                         play->nextEntranceIndex = 0x008D;
                         play->transitionTrigger = TRANS_TRIGGER_START;
                         gSaveContext.cutsceneIndex = 0xFFF2;
-                        play->transitionType = 2;
+                        play->transitionType = TRANS_TYPE_FADE_BLACK;
                         sTitleCsState++;
                         break;
                     case 1:
                         play->nextEntranceIndex = 0x0147;
                         play->transitionTrigger = TRANS_TRIGGER_START;
                         gSaveContext.cutsceneIndex = 0xFFF1;
-                        play->transitionType = 2;
+                        play->transitionType = TRANS_TYPE_FADE_BLACK;
                         sTitleCsState++;
                         break;
                     case 2:
                         play->nextEntranceIndex = 0x00A0;
                         play->transitionTrigger = TRANS_TRIGGER_START;
                         gSaveContext.cutsceneIndex = 0xFFF6;
-                        play->transitionType = 2;
+                        play->transitionType = TRANS_TYPE_FADE_BLACK;
                         sTitleCsState = 0;
                         break;
                 }
@@ -1195,42 +1195,42 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->nextEntranceIndex = 0x00E4;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.cutsceneIndex = 0xFFF1;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 106:
                 play->nextEntranceIndex = 0x0574;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 107:
                 play->nextEntranceIndex = 0x0538;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 108:
                 play->nextEntranceIndex = 0x053C;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 109:
                 play->nextEntranceIndex = 0x0540;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 110:
                 play->nextEntranceIndex = 0x0544;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 111:
                 play->nextEntranceIndex = 0x0548;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 112:
                 play->nextEntranceIndex = 0x054C;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 113:
                 if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FOREST_TRIAL) && Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_WATER_TRIAL) && Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SHADOW_TRIAL) &&
@@ -1248,25 +1248,25 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
             case 114:
                 play->nextEntranceIndex = 0x0185;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 115:
                 play->nextEntranceIndex = 0x0594;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 2;
-                gSaveContext.nextTransitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 116:
                 if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SPIRIT_MEDALLION)) {
                     play->nextEntranceIndex = 0x0580;
                     play->transitionTrigger = TRANS_TRIGGER_START;
-                    play->transitionType = 3;
+                    play->transitionType = TRANS_TYPE_FADE_WHITE;
                 } else {
                     play->nextEntranceIndex = 0x0610;
                     play->transitionTrigger = TRANS_TRIGGER_START;
-                    play->transitionType = 3;
+                    play->transitionType = TRANS_TYPE_FADE_WHITE;
                 }
-                gSaveContext.nextTransitionType = 3;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 117:
                 gSaveContext.gameMode = 3;
@@ -1275,20 +1275,20 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->nextEntranceIndex = 0x00CD;
                 gSaveContext.cutsceneIndex = 0xFFF7;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 118:
                 gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex = 0x0517;
                 Play_TriggerVoidOut(play);
                 gSaveContext.respawnFlag = -2;
-                gSaveContext.nextTransitionType = 2;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 119:
                 gSaveContext.dayTime = 0x8000;
                 gSaveContext.skyboxTime = 0x8000;
                 play->nextEntranceIndex = 0x05F0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
         }
 

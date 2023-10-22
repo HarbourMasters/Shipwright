@@ -209,8 +209,8 @@ void func_80A55D00(EnHeishi3* this, PlayState* play) {
         play->nextEntranceIndex = 0x47E; // Hyrule Castle from Guard Capture (outside)
         play->transitionTrigger = TRANS_TRIGGER_START;
         this->respawnFlag = 1;
-        play->transitionType = 0x2E;
-        gSaveContext.nextTransitionType = 0x2E;
+        play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
+        gSaveContext.nextTransitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
     }
 }
 

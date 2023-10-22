@@ -263,7 +263,7 @@ void EnGe2_CaptureClose(EnGe2* this, PlayState* play) {
             Entrance_OverrideGeurdoGuardCapture();
         }
 
-        play->transitionType = 0x26;
+        play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
         play->transitionTrigger = TRANS_TRIGGER_START;
     }
 }
@@ -293,7 +293,7 @@ void EnGe2_CaptureCharge(EnGe2* this, PlayState* play) {
             Entrance_OverrideGeurdoGuardCapture();
         }
 
-        play->transitionType = 0x26;
+        play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
         play->transitionTrigger = TRANS_TRIGGER_START;
     }
 }

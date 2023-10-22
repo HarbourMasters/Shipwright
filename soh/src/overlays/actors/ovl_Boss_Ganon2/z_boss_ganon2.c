@@ -1859,7 +1859,7 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
             play->nextEntranceIndex = 0x6B;
             gSaveContext.nextCutsceneIndex = 0xFFF2;
             play->transitionTrigger = TRANS_TRIGGER_START;
-            play->transitionType = 3;
+            play->transitionType = TRANS_TYPE_FADE_WHITE;
             play->linkAgeOnLoad = 1;
             break;
     }

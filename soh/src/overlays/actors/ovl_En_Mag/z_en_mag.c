@@ -252,7 +252,7 @@ void EnMag_UpdateMq(Actor* thisx, PlayState* play) {
 
                         gSaveContext.gameMode = 2;
                         play->transitionTrigger = TRANS_TRIGGER_START;
-                        play->transitionType = 2;
+                        play->transitionType = TRANS_TYPE_FADE_BLACK;
                     }
 
                     this->copyrightAlphaStep = 15;
@@ -412,7 +412,7 @@ void EnMag_UpdateVanilla(Actor* thisx, PlayState* play) {
 
                         gSaveContext.gameMode = 2;
                         play->transitionTrigger = TRANS_TRIGGER_START;
-                        play->transitionType = 2;
+                        play->transitionType = TRANS_TYPE_FADE_BLACK;
                     }
 
                     this->copyrightAlphaStep = 15;

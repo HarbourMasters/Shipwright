@@ -616,8 +616,8 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
 
         osSyncPrintf("\n\n\nおわりおわり");
         play->transitionTrigger = TRANS_TRIGGER_START;
-        play->transitionType = 7;
-        gSaveContext.nextTransitionType = 3;
+        play->transitionType = TRANS_TYPE_FADE_WHITE_SLOW;
+        gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
     }
 
     Math_StepToF(&this->unk_194, 2.0f, 0.01f);
@@ -722,7 +722,7 @@ void DoorWarp1_RutoWarpOut(DoorWarp1* this, PlayState* play) {
         }
 
         play->transitionTrigger = TRANS_TRIGGER_START;
-        play->transitionType = 7;
+        play->transitionType = TRANS_TYPE_FADE_WHITE_SLOW;
     }
 
     Math_StepToF(&this->unk_194, 2.0f, 0.01f);
@@ -947,8 +947,8 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
         }
 
         play->transitionTrigger = TRANS_TRIGGER_START;
-        play->transitionType = 3;
-        gSaveContext.nextTransitionType = 7;
+        play->transitionType = TRANS_TYPE_FADE_WHITE;
+        gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE_SLOW;
     }
     if (this->warpTimer >= 141) {
         f32 screenFillAlpha;

@@ -1546,7 +1546,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
                 else {
                     play->nextEntranceIndex = 0x43F;
                 }
-                play->transitionType = 5;
+                play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
             }
             break;
 

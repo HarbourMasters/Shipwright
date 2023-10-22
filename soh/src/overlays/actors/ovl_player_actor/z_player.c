@@ -4259,8 +4259,8 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                 if (play->nextEntranceIndex == 0x7FFF) {
                     gSaveContext.respawnFlag = 2;
                     play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex;
-                    play->transitionType = 3;
-                    gSaveContext.nextTransitionType = 3;
+                    play->transitionType = TRANS_TYPE_FADE_WHITE;
+                    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
                 } else if (play->nextEntranceIndex >= 0x7FF9) {
                     // handle dynamic exits
                     if (IS_RANDO) {
@@ -4340,7 +4340,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                         } else {
                             Play_TriggerVoidOut(play);
                         }
-                        play->transitionType = 4;
+                        play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                         func_80078884(NA_SE_OC_ABYSS);
                     } else {
                         func_80838F5C(play, this);
@@ -12797,7 +12797,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
                 play->nextEntranceIndex = 0x0123;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;
-                play->transitionType = 0xF;
+                play->transitionType = TRANS_TYPE_SANDSTORM_END;
                 this->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
                 func_80852FFC(play, NULL, 8);
             }
@@ -13527,11 +13527,11 @@ void func_8084F88C(Player* this, PlayState* play) {
                 Play_TriggerVoidOut(play);
             }
 
-            play->transitionType = 4;
+            play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
             func_80078884(NA_SE_OC_ABYSS);
         } else {
-            play->transitionType = 2;
-            gSaveContext.nextTransitionType = 2;
+            play->transitionType = TRANS_TYPE_FADE_BLACK;
+            gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
             gSaveContext.seqId = (u8)NA_BGM_DISABLED;
             gSaveContext.natureAmbienceId = 0xFF;
         }
@@ -13856,7 +13856,7 @@ void func_8085063C(Player* this, PlayState* play) {
             gSaveContext.respawnFlag = 3;
             play->transitionTrigger = TRANS_TRIGGER_START;
             play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
-            play->transitionType = 5;
+            play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
             func_80088AF0(play);
             return;
         }

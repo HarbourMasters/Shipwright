@@ -407,7 +407,7 @@ void Entrance_SetSavewarpEntrance(void) {
 
 void Entrance_SetWarpSongEntrance(void) {
     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-    gPlayState->transitionType = 5;
+    gPlayState->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
     switch (gPlayState->msgCtx.lastPlayedSong) {
         case 0:
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0600); // Minuet
@@ -482,7 +482,7 @@ void Entrance_OverrideCutsceneEntrance(u16 cutsceneCmd) {
         case 24: // Dropping a fish for Jabu Jabu
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(newJabuJabusBellyEntrance);
             gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-            gPlayState->transitionType = 2;
+            gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
             // In case Jabu's mouth leads to a grotto return
             Grotto_ForceGrottoReturnOnSpecialEntrance();
             break;

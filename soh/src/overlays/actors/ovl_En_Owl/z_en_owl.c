@@ -968,7 +968,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                             play->nextEntranceIndex = 0x027E;
                         }
                         play->transitionTrigger = TRANS_TRIGGER_START;
-                        play->transitionType = 2;
+                        play->transitionType = TRANS_TYPE_FADE_BLACK;
                         break;
                     }
                     play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gLakeHyliaOwlCs);
@@ -983,7 +983,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                             play->nextEntranceIndex = 0x0554;
                         }
                         play->transitionTrigger = TRANS_TRIGGER_START;
-                        play->transitionType = 2;
+                        play->transitionType = TRANS_TYPE_FADE_BLACK;
                         break;
                     }
                     play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gDMTOwlCs);

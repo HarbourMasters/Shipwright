@@ -42,8 +42,8 @@ bool performSave = false;
 void ReloadSceneTogglingLinkAge() {
     gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-    gPlayState->transitionType = 42; // Fade Out
-    gSaveContext.nextTransitionType = 42;
+    gPlayState->transitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST); // Fade Out
+    gSaveContext.nextTransitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST);
     gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
 }
 
@@ -195,7 +195,7 @@ void RegisterSwitchAge() {
         }
 
         if (warped && gPlayState->transitionTrigger != TRANS_TRIGGER_START &&
-            gSaveContext.nextTransitionType == 255) {
+            gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT) {
             GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
             GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
             if (roomNum != roomCtx->curRoom.num) {
@@ -630,7 +630,7 @@ void RegisterTriforceHunt() {
                 gPlayState->nextEntranceIndex = 0x6B;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
                 gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-                gPlayState->transitionType = 3;
+                gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
                 GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
             }
 

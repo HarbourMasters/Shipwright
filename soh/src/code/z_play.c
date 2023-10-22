@@ -78,6 +78,7 @@ void Gameplay_SetupTransition(PlayState* play, s32 transitionType) {
 
     transitionCtx->transitionType = transitionType;
 
+    // Circle Transition Types
     if ((transitionCtx->transitionType >> 5) == 1) {
         transitionCtx->init = TransitionCircle_Init;
         transitionCtx->destroy = TransitionCircle_Destroy;
@@ -90,7 +91,7 @@ void Gameplay_SetupTransition(PlayState* play, s32 transitionType) {
         transitionCtx->setEnvColor = TransitionCircle_SetEnvColor;
     } else {
         switch (transitionCtx->transitionType) {
-            case 1:
+            case TRANS_TYPE_TRIFORCE:
                 transitionCtx->init = TransitionTriforce_Init;
                 transitionCtx->destroy = TransitionTriforce_Destroy;
                 transitionCtx->start = TransitionTriforce_Start;
@@ -101,8 +102,8 @@ void Gameplay_SetupTransition(PlayState* play, s32 transitionType) {
                 transitionCtx->setColor = TransitionTriforce_SetColor;
                 transitionCtx->setEnvColor = NULL;
                 break;
-            case 0:
-            case 8:
+            case TRANS_TYPE_WIPE:
+            case TRANS_TYPE_WIPE_FAST:
                 transitionCtx->init = TransitionWipe_Init;
                 transitionCtx->destroy = TransitionWipe_Destroy;
                 transitionCtx->start = TransitionWipe_Start;
@@ -113,16 +114,16 @@ void Gameplay_SetupTransition(PlayState* play, s32 transitionType) {
                 transitionCtx->setColor = TransitionWipe_SetColor;
                 transitionCtx->setEnvColor = NULL;
                 break;
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 13:
-            case 17:
-            case 18:
-            case 19:
+            case TRANS_TYPE_FADE_BLACK:
+            case TRANS_TYPE_FADE_WHITE:
+            case TRANS_TYPE_FADE_BLACK_FAST:
+            case TRANS_TYPE_FADE_WHITE_FAST:
+            case TRANS_TYPE_FADE_BLACK_SLOW:
+            case TRANS_TYPE_FADE_WHITE_SLOW:
+            case TRANS_TYPE_FADE_WHITE_CS_DELAYED:
+            case TRANS_TYPE_FADE_WHITE_INSTANT:
+            case TRANS_TYPE_FADE_GREEN:
+            case TRANS_TYPE_FADE_BLUE:
                 transitionCtx->init = TransitionFade_Init;
                 transitionCtx->destroy = TransitionFade_Destroy;
                 transitionCtx->start = TransitionFade_Start;
@@ -133,23 +134,23 @@ void Gameplay_SetupTransition(PlayState* play, s32 transitionType) {
                 transitionCtx->setColor = TransitionFade_SetColor;
                 transitionCtx->setEnvColor = NULL;
                 break;
-            case 9:
-            case 10:
+            case TRANS_TYPE_FILL_WHITE2:
+            case TRANS_TYPE_FILL_WHITE:
                 play->transitionMode = TRANS_MODE_FILL_WHITE_INIT;
                 break;
-            case 11:
+            case TRANS_TYPE_INSTANT:
                 play->transitionMode = TRANS_MODE_INSTANT;
                 break;
-            case 12:
+            case TRANS_TYPE_FILL_BROWN:
                 play->transitionMode = TRANS_MODE_FILL_BROWN_INIT;
                 break;
-            case 14:
+            case TRANS_TYPE_SANDSTORM_PERSIST:
                 play->transitionMode = TRANS_MODE_SANDSTORM_INIT;
                 break;
-            case 15:
+            case TRANS_TYPE_SANDSTORM_END:
                 play->transitionMode = TRANS_MODE_SANDSTORM_END_INIT;
                 break;
-            case 16:
+            case TRANS_TYPE_CS_BLACK_FILL:
                 play->transitionMode = TRANS_MODE_CS_BLACK_FILL_INIT;
                 break;
             default:
@@ -228,7 +229,7 @@ void GivePlayerRandoRewardSongOfTime(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
 
     if (gSaveContext.entranceIndex == 0x050F && player != NULL && !Player_InBlockingCsMode(play, player) &&
-        !Flags_GetTreasure(play, 0x1F) && gSaveContext.nextTransitionType == 0xFF && !gSaveContext.pendingIceTrapCount) {
+        !Flags_GetTreasure(play, 0x1F) && gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT && !gSaveContext.pendingIceTrapCount) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
         GiveItemEntryWithoutActor(play, getItemEntry);
         player->pendingFlag.flagID = 0x1F;
@@ -636,15 +637,15 @@ void Play_Init(GameState* thisx) {
     play->unk_11DE9 = 0;
 
     if (gSaveContext.gameMode != 1) {
-        if (gSaveContext.nextTransitionType == 0xFF) {
+        if (gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT) {
             play->transitionType =
                 (gEntranceTable[((void)0, gSaveContext.entranceIndex) + tempSetupIndex].field >> 7) & 0x7F; // Fade In
         } else {
             play->transitionType = gSaveContext.nextTransitionType;
-            gSaveContext.nextTransitionType = 0xFF;
+            gSaveContext.nextTransitionType = TRANS_NEXT_TYPE_DEFAULT;
         }
     } else {
-        play->transitionType = 6;
+        play->transitionType = TRANS_TYPE_FADE_BLACK_SLOW;
     }
 
     ShrinkWindow_Init();
@@ -863,7 +864,7 @@ void Play_Update(PlayState* play) {
                         if (!(gEntranceTable[play->nextEntranceIndex + sp6E].field & 0x8000)) { // Continue BGM Off
                             // "Sound initalized. 111"
                             osSyncPrintf("\n\n\nサウンドイニシャル来ました。111");
-                            if ((play->transitionType < 56) && !Environment_IsForcedSequenceDisabled()) {
+                            if ((play->transitionType < TRANS_TYPE_MAX) && !Environment_IsForcedSequenceDisabled()) {
                                 // "Sound initalized. 222"
                                 osSyncPrintf("\n\n\nサウンドイニシャル来ました。222");
                                 func_800F6964(0x14);
@@ -886,45 +887,46 @@ void Play_Update(PlayState* play) {
                 case TRANS_MODE_INSTANCE_INIT:
                     play->transitionCtx.init(&play->transitionCtx.data);
 
+                    // Circle Transition Types
                     if ((play->transitionCtx.transitionType >> 5) == 1) {
                         play->transitionCtx.setType(&play->transitionCtx.data,
                                                          play->transitionCtx.transitionType | 0x80);
                     }
 
                     gSaveContext.transWipeSpeed = 14;
-                    if ((play->transitionCtx.transitionType == 8) ||
-                        (play->transitionCtx.transitionType == 9)) {
+                    if ((play->transitionCtx.transitionType == TRANS_TYPE_WIPE_FAST) ||
+                        (play->transitionCtx.transitionType == TRANS_TYPE_FILL_WHITE2)) {
                         gSaveContext.transWipeSpeed = 28;
                     }
 
                     gSaveContext.transFadeDuration = 60;
-                    if ((play->transitionCtx.transitionType == 4) ||
-                        (play->transitionCtx.transitionType == 5)) {
+                    if ((play->transitionCtx.transitionType == TRANS_TYPE_FADE_BLACK_FAST) ||
+                        (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_FAST)) {
                         gSaveContext.transFadeDuration = 20;
-                    } else if ((play->transitionCtx.transitionType == 6) ||
-                               (play->transitionCtx.transitionType == 7)) {
+                    } else if ((play->transitionCtx.transitionType == TRANS_TYPE_FADE_BLACK_SLOW) ||
+                               (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_SLOW)) {
                         gSaveContext.transFadeDuration = 150;
-                    } else if (play->transitionCtx.transitionType == 17) {
+                    } else if (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_INSTANT) {
                         gSaveContext.transFadeDuration = 2;
                     }
 
-                    if ((play->transitionCtx.transitionType == 3) ||
-                        (play->transitionCtx.transitionType == 5) ||
-                        (play->transitionCtx.transitionType == 7) ||
-                        (play->transitionCtx.transitionType == 13) ||
-                        (play->transitionCtx.transitionType == 17)) {
+                    if ((play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE) ||
+                        (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_FAST) ||
+                        (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_SLOW) ||
+                        (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_CS_DELAYED) ||
+                        (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_INSTANT)) {
                         play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(160, 160, 160, 255));
                         if (play->transitionCtx.setEnvColor != NULL) {
                             play->transitionCtx.setEnvColor(&play->transitionCtx.data,
                                                                  RGBA8(160, 160, 160, 255));
                         }
-                    } else if (play->transitionCtx.transitionType == 18) {
+                    } else if (play->transitionCtx.transitionType == TRANS_TYPE_FADE_GREEN) {
                         play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(140, 140, 100, 255));
                         if (play->transitionCtx.setEnvColor != NULL) {
                             play->transitionCtx.setEnvColor(&play->transitionCtx.data,
                                                                  RGBA8(140, 140, 100, 255));
                         }
-                    } else if (play->transitionCtx.transitionType == 19) {
+                    } else if (play->transitionCtx.transitionType == TRANS_TYPE_FADE_BLUE) {
                         play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(70, 100, 110, 255));
                         if (play->transitionCtx.setEnvColor != NULL) {
                             play->transitionCtx.setEnvColor(&play->transitionCtx.data,
@@ -945,7 +947,7 @@ void Play_Update(PlayState* play) {
 
                     play->transitionCtx.start(&play->transitionCtx);
 
-                    if (play->transitionCtx.transitionType == 13) {
+                    if (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_CS_DELAYED) {
                         play->transitionMode = TRANS_MODE_INSTANCE_WAIT;
                     } else {
                         play->transitionMode = TRANS_MODE_INSTANCE_RUNNING;
@@ -954,7 +956,7 @@ void Play_Update(PlayState* play) {
 
                 case TRANS_MODE_INSTANCE_RUNNING:
                     if (play->transitionCtx.isDone(&play->transitionCtx) != 0) {
-                        if (play->transitionCtx.transitionType >= 56) {
+                        if (play->transitionCtx.transitionType >= TRANS_TYPE_MAX) {
                             if (play->transitionTrigger == TRANS_TRIGGER_END) {
                                 play->transitionCtx.destroy(&play->transitionCtx);
                                 func_800BC88C(play);
@@ -1540,7 +1542,7 @@ void Play_Draw(PlayState* play) {
             gSPGrayscale(gfxP++, false);
 
             if ((play->transitionMode == TRANS_MODE_INSTANCE_RUNNING) || (play->transitionMode == TRANS_MODE_INSTANCE_WAIT) ||
-                (play->transitionCtx.transitionType >= 56)) {
+                (play->transitionCtx.transitionType >= TRANS_TYPE_MAX)) {
                 View view;
 
                 View_Init(&view, gfxCtx);
@@ -2248,7 +2250,7 @@ void Play_TriggerVoidOut(PlayState* play) {
     gSaveContext.respawnFlag = 1;
     play->transitionTrigger = TRANS_TRIGGER_START;
     play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
-    play->transitionType = 2;
+    play->transitionType = TRANS_TYPE_FADE_BLACK;
 }
 
 void Play_LoadToLastEntrance(PlayState* play) {
@@ -2266,7 +2268,7 @@ void Play_LoadToLastEntrance(PlayState* play) {
         play->nextEntranceIndex = gSaveContext.entranceIndex;
     }
 
-    play->transitionType = 2;
+    play->transitionType = TRANS_TYPE_FADE_BLACK;
 }
 
 void Play_TriggerRespawn(PlayState* play) {

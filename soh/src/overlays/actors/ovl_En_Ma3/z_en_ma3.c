@@ -117,7 +117,7 @@ s16 func_80AA2BD4(PlayState* play, Actor* thisx) {
             if (Message_ShouldAdvance(play)) {
                 play->nextEntranceIndex = 0x157;
                 gSaveContext.nextCutsceneIndex = 0xFFF0;
-                play->transitionType = 0x26;
+                play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.eventInf[0] |= 0x400;
                 gSaveContext.timer1State = 0xF;

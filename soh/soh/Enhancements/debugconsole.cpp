@@ -397,8 +397,8 @@ static bool EntranceHandler(std::shared_ptr<LUS::Console> Console, const std::ve
 
     gPlayState->nextEntranceIndex = entrance;
     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-    gPlayState->transitionType = 11;
-    gSaveContext.nextTransitionType = 11;
+    gPlayState->transitionType = TRANS_TYPE_INSTANT;
+    gSaveContext.nextTransitionType = TRANS_TYPE_INSTANT;
 }
 
 static bool VoidHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
@@ -408,8 +408,8 @@ static bool VoidHandler(std::shared_ptr<LUS::Console> Console, const std::vector
             gSaveContext.respawnFlag = 1;
             gPlayState->transitionTrigger = TRANS_TRIGGER_START;
             gPlayState->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
-            gPlayState->transitionType = 2;
-            gSaveContext.nextTransitionType = 2;
+            gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
+            gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
     } else {
         ERROR_MESSAGE("gPlayState == nullptr");
         return 1;
@@ -421,8 +421,8 @@ static bool ReloadHandler(std::shared_ptr<LUS::Console> Console, const std::vect
     if (gPlayState != nullptr) {
         gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
         gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-        gPlayState->transitionType = 11;
-        gSaveContext.nextTransitionType = 11;
+        gPlayState->transitionType = TRANS_TYPE_INSTANT;
+        gSaveContext.nextTransitionType = TRANS_TYPE_INSTANT;
     } else {
         ERROR_MESSAGE("gPlayState == nullptr");
         return 1;
@@ -458,7 +458,7 @@ static bool FWHandler(std::shared_ptr<LUS::Console> Console, const std::vector<s
                 if (gSaveContext.respawn[RESPAWN_MODE_TOP].data > 0) {
                     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
                     gPlayState->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
-                    gPlayState->transitionType = 5;
+                    gPlayState->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
                 } else {
                     ERROR_MESSAGE("Farore's wind not set!");
                     return 1;

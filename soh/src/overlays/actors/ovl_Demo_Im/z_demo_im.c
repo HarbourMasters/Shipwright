@@ -873,7 +873,7 @@ void func_80986B2C(PlayState* play) {
         } else {
             play->nextEntranceIndex = 0xCD;
         }
-        play->transitionType = 38;
+        play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
         play->transitionTrigger = TRANS_TRIGGER_START;
         func_8002DF54(play, &player->actor, 8);
     }
@@ -914,8 +914,8 @@ void GivePlayerRandoRewardImpa(Actor* impa, PlayState* play, RandomizerCheck che
     } else if (!Player_InBlockingCsMode(play, GET_PLAYER(play))) {
         Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
         play->transitionTrigger = TRANS_TRIGGER_START;
-        play->transitionType = 3;
-        gSaveContext.nextTransitionType = 3;
+        play->transitionType = TRANS_TYPE_FADE_WHITE;
+        gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
         // In entrance rando have impa bring link back to the front of castle grounds
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
             play->nextEntranceIndex = 0x0138;

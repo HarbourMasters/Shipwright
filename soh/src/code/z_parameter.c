@@ -5774,7 +5774,7 @@ void Interface_Draw(PlayState* play) {
             D_8015FFE6 = 40;
             gSaveContext.cutsceneIndex = 0;
             play->transitionTrigger = TRANS_TRIGGER_START;
-            play->transitionType = 3;
+            play->transitionType = TRANS_TYPE_FADE_WHITE;
             gSaveContext.timer2State = 0;
 
             if ((gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) &&
@@ -6695,19 +6695,19 @@ void Interface_Update(PlayState* play) {
                    (interfaceCtx->restrictions.sunsSong != 3)) {
             if ((gSaveContext.dayTime >= 0x4555) && (gSaveContext.dayTime < 0xC001)) {
                 gSaveContext.nextDayTime = 0;
-                play->transitionType = 4;
-                gSaveContext.nextTransitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
                 play->unk_11DE9 = 1;
             } else {
                 gSaveContext.nextDayTime = 0x8001;
-                play->transitionType = 5;
-                gSaveContext.nextTransitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
                 play->unk_11DE9 = 1;
             }
 
             if (play->sceneNum == SCENE_HAUNTED_WASTELAND) {
-                play->transitionType = 14;
-                gSaveContext.nextTransitionType = 14;
+                play->transitionType = TRANS_TYPE_SANDSTORM_PERSIST;
+                gSaveContext.nextTransitionType = TRANS_TYPE_SANDSTORM_PERSIST;
             }
 
             gSaveContext.respawnFlag = -2;

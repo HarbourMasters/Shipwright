@@ -363,8 +363,8 @@ void EnHeishi4_MarketSneak(EnHeishi4* this, PlayState* play) {
                     play->nextEntranceIndex = 0x00CD; // HF Near bridge (OoT cutscene entrance) to not fall in the water
                 } 
                 play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = 0x2E;
-                gSaveContext.nextTransitionType = 0x2E;
+                play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
+                gSaveContext.nextTransitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
                 this->actionFunc = func_80A56614;
                 break;
             case 1: //no
