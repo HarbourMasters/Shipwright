@@ -811,6 +811,20 @@ void func_80082850(PlayState* play, s16 maxAlpha) {
     }
 }
 
+// buttonStatus[0] is used to represent if the B button is disabled, but also tracks
+// the last active B button item during mini-games/epona (temp B)
+// Since ITEM_NONE is the same as BTN_DISABLED (255), we need a different value to help us track
+// that the player was swordless before like ITEM_NONE_FE (254)
+#define SWORDLESS_STATUS ITEM_NONE_FE
+
+// Restores swordless state when using the custom value for temp B and then clears temp B
+void Interface_RandoRestoreSwordless(void) {
+    if (IS_RANDO && gSaveContext.buttonStatus[0] == SWORDLESS_STATUS) {
+        gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+        gSaveContext.buttonStatus[0] = BTN_ENABLED;
+    }
+}
+
 void func_80083108(PlayState* play) {
     MessageContext* msgCtx = &play->msgCtx;
     Player* player = GET_PLAYER(play);
@@ -818,13 +832,20 @@ void func_80083108(PlayState* play) {
     s16 i;
     s16 sp28 = 0;
 
+    // Check for the player being swordless in rando (no item on B and swordless flag set)
+    // Child is always assumed due to not finding kokiri sword yet. Adult is only checked with MS shuffle on.
+    u8 randoIsSwordless = IS_RANDO && (LINK_IS_CHILD || Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) &&
+                              gSaveContext.equips.buttonItems[0] == ITEM_NONE && Flags_GetInfTable(INFTABLE_SWORDLESS);
+    u8 randoWasSwordlessBefore = IS_RANDO && gSaveContext.buttonStatus[0] == SWORDLESS_STATUS;
+    u8 randoCanTrackSwordless = randoIsSwordless && !randoWasSwordlessBefore;
+
     if ((gSaveContext.cutsceneIndex < 0xFFF0) ||
         ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.cutsceneIndex == 0xFFF0))) {
         gSaveContext.unk_13E7 = 0;
 
-        if ((player->stateFlags1 & 0x00800000) || (play->shootingGalleryStatus > 1) ||
+        if ((player->stateFlags1 & PLAYER_STATE1_ON_HORSE) || (play->shootingGalleryStatus > 1) ||
             ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
-            if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
+            if (gSaveContext.equips.buttonItems[0] != ITEM_NONE || randoCanTrackSwordless) {
                 gSaveContext.unk_13E7 = 1;
 
                 if (gSaveContext.buttonStatus[0] == BTN_DISABLED) {
@@ -837,8 +858,13 @@ void func_80083108(PlayState* play) {
                 if ((gSaveContext.equips.buttonItems[0] != ITEM_SLINGSHOT) &&
                     (gSaveContext.equips.buttonItems[0] != ITEM_BOW) &&
                     (gSaveContext.equips.buttonItems[0] != ITEM_BOMBCHU) &&
-                    (gSaveContext.equips.buttonItems[0] != ITEM_NONE)) {
+                    (gSaveContext.equips.buttonItems[0] != ITEM_NONE || randoCanTrackSwordless)) {
                     gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
+
+                    // Track swordless status for restoration later
+                    if (randoCanTrackSwordless) {
+                        gSaveContext.buttonStatus[0] = SWORDLESS_STATUS;
+                    }
 
                     if ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38)) {
                         gSaveContext.equips.buttonItems[0] = ITEM_BOMBCHU;
@@ -875,11 +901,11 @@ void func_80083108(PlayState* play) {
                     Interface_ChangeAlpha(8);
                 } else if ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38)) {
                     Interface_ChangeAlpha(8);
-                } else if (player->stateFlags1 & 0x00800000) {
+                } else if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
                     Interface_ChangeAlpha(12);
                 }
             } else {
-                if (player->stateFlags1 & 0x00800000) {
+                if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
                     Interface_ChangeAlpha(12);
                 }
             }
@@ -891,6 +917,12 @@ void func_80083108(PlayState* play) {
             if (play->interfaceCtx.unk_260 != 0) {
                 if (gSaveContext.equips.buttonItems[0] != ITEM_FISHING_POLE) {
                     gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
+
+                    // Track swordless status for restoration later
+                    if (randoCanTrackSwordless) {
+                        gSaveContext.buttonStatus[0] = SWORDLESS_STATUS;
+                    }
+
                     gSaveContext.equips.buttonItems[0] = ITEM_FISHING_POLE;
                     gSaveContext.unk_13EA = 0;
                     Interface_LoadItemIcon1(play, 0);
@@ -903,6 +935,8 @@ void func_80083108(PlayState* play) {
             } else if (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE) {
                 gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
                 gSaveContext.unk_13EA = 0;
+
+                Interface_RandoRestoreSwordless();
 
                 if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
                     Interface_LoadItemIcon1(play, 0);
@@ -974,7 +1008,7 @@ void func_80083108(PlayState* play) {
                 }
 
                 Interface_ChangeAlpha(50);
-            } else if ((player->stateFlags1 & 0x00200000) || (player->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
+            } else if ((player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER) || (player->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
                 if (gSaveContext.buttonStatus[0] != BTN_DISABLED) {
                     gSaveContext.buttonStatus[0] = BTN_DISABLED;
                     gSaveContext.buttonStatus[1] = BTN_DISABLED;
@@ -988,7 +1022,7 @@ void func_80083108(PlayState* play) {
                     Interface_ChangeAlpha(50);
                 }
             } else if ((gSaveContext.eventInf[0] & 0xF) == 1) {
-                if (player->stateFlags1 & 0x00800000) {
+                if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
                     if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) &&
                         (gSaveContext.equips.buttonItems[0] != ITEM_BOW)) {
                         if (gSaveContext.inventory.items[SLOT_BOW] == ITEM_NONE) {
@@ -1009,6 +1043,8 @@ void func_80083108(PlayState* play) {
                             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS) &&
                             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE)) {
                             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+
+                            Interface_RandoRestoreSwordless();
                         } else {
                             gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
                         }
@@ -1048,8 +1084,12 @@ void func_80083108(PlayState* play) {
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOW) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
-                        if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0)) {
+                        if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0) ||
+                            randoWasSwordlessBefore) {
                             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+
+                            Interface_RandoRestoreSwordless();
+
                             sp28 = 1;
 
                             if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
@@ -1071,8 +1111,12 @@ void func_80083108(PlayState* play) {
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOW) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
-                        if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0)) {
+                        if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0) ||
+                            randoWasSwordlessBefore) {
                             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+
+                            Interface_RandoRestoreSwordless();
+
                             sp28 = 1;
 
                             if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
@@ -1412,15 +1456,20 @@ void Inventory_SwapAgeEquipment(void) {
         }
 
         // When becoming adult, remove swordless flag since we'll get master sword
+        // (Unless Master Sword is shuffled)
         // Only in rando to keep swordless link bugs in vanilla
-        if (IS_RANDO) {
+        if (IS_RANDO && !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
             Flags_UnsetInfTable(INFTABLE_SWORDLESS);
         }
 
         gSaveContext.childEquips.equipment = gSaveContext.equips.equipment;
 
-        if (gSaveContext.adultEquips.buttonItems[0] == ITEM_NONE) {
-            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+        if (gSaveContext.adultEquips.buttonItems[0] == ITEM_NONE && !(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && gSaveContext.adultEquips.equipment)) {
+            if (!IS_RANDO || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
+                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+            } else {
+                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+            }
 
             if (gSaveContext.inventory.items[SLOT_NUT] != ITEM_NONE) {
                 gSaveContext.equips.buttonItems[1] = ITEM_NUT;
@@ -1433,7 +1482,9 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.buttonItems[3] = gSaveContext.inventory.items[SLOT_OCARINA];
             gSaveContext.equips.cButtonSlots[1] = SLOT_BOMB;
             gSaveContext.equips.cButtonSlots[2] = SLOT_OCARINA;
-            gSaveContext.equips.equipment = 0x1122;
+            
+            gSaveContext.equips.equipment = (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && 
+             gSaveContext.equips.buttonItems[0] == ITEM_NONE) ? 0x1120 :0x1122;
 
             // Set the dpad to nothing
             gSaveContext.equips.buttonItems[4] = ITEM_NONE;
@@ -1626,11 +1677,13 @@ void func_80084BF4(PlayState* play, u16 flag) {
                 (gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU) ||
                 (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE)) {
                 gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+                Interface_RandoRestoreSwordless();
                 Interface_LoadItemIcon1(play, 0);
             }
         } else if (gSaveContext.equips.buttonItems[0] == ITEM_NONE) {
             if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0)) {
                 gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+                Interface_RandoRestoreSwordless();
                 Interface_LoadItemIcon1(play, 0);
             }
         }
@@ -2552,6 +2605,13 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             if (AMMO(ITEM_BOMBCHU) > 50) {
                 AMMO(ITEM_BOMBCHU) = 50;
             }
+        }
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_MASTER_SWORD) {
+        if (!CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) {
+            gSaveContext.inventory.equipment |= gBitFlags[1] << gEquipShifts[EQUIP_SWORD];
         }
         return Return_Item_Entry(giEntry, RG_NONE);
     }
@@ -5723,6 +5783,7 @@ void Interface_Draw(PlayState* play) {
                 (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE)) {
                 if (gSaveContext.buttonStatus[0] != BTN_ENABLED) {
                     gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+                    Interface_RandoRestoreSwordless();
                 } else {
                     gSaveContext.equips.buttonItems[0] = ITEM_NONE;
                 }

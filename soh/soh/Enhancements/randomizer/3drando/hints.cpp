@@ -6,6 +6,7 @@
 #include "item_pool.hpp"
 #include "logic.hpp"
 #include "random.hpp"
+#include "settings.hpp"
 #include "spoiler_log.hpp"
 #include "fill.hpp"
 #include "hint_list.hpp"
@@ -143,7 +144,9 @@ Text warpRequiemText;
 Text warpNocturneText;
 Text warpPreludeText;
 
+
 std::string lightArrowHintLoc;
+std::string masterSwordHintLoc;
 std::string sariaHintLoc;
 std::string dampeHintLoc;
 
@@ -203,6 +206,10 @@ Text& GetWarpPreludeText() {
   return warpPreludeText;
 }
 
+std::string GetMasterSwordHintLoc() {
+    return masterSwordHintLoc;
+}
+  
 std::string GetLightArrowHintLoc() {
     return lightArrowHintLoc;
 }
@@ -607,6 +614,22 @@ void CreateGanonText() {
   }
   ganonHintText = ganonHintText + "!";
 
+  if (ShuffleMasterSword) {
+    //Get the location of the master sword
+    auto masterSwordLocation = FilterFromPool(allLocations, [](const LocationKey loc){return Location(loc)->GetPlacedItemKey() == MASTER_SWORD;});
+
+    // Add second text box
+    ganonHintText = ganonHintText + "^";
+    if (masterSwordLocation.empty()) {
+      ganonHintText = ganonHintText+Hint(MASTER_SWORD_LOCATION_HINT).GetText()+Hint(YOUR_POCKET).GetText();
+      masterSwordHintLoc = "Link's Pocket";
+    } else {
+      ganonHintText = ganonHintText+Hint(MASTER_SWORD_LOCATION_HINT).GetText()+GetHintRegion(Location(masterSwordLocation[0])->GetParentRegionKey())->GetHint().GetText();
+      masterSwordHintLoc = Location(masterSwordLocation[0])->GetName();
+    }
+    ganonHintText = ganonHintText + "!";
+  }
+
   CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(ganonHintText));
 }
 
@@ -865,6 +888,18 @@ void CreateSheikText() {
   };
   Text temp2 = Text{"%w.", "%w.", "%w."};
   sheikText = temp1 + area + temp2;
+  if (ShuffleMasterSword) {
+    sheikText = sheikText + "^";
+    auto masterSwordLocation = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == MASTER_SWORD;});
+    masterSwordHintLoc = Location(masterSwordLocation[0])->GetName();
+    area = GetHintRegion(Location(masterSwordLocation[0])->GetParentRegionKey())->GetHint().GetText();
+    Text temp3 = Text{
+      "I also heard that he stole %rthe Master Sword%w and hid it somewhere within %g",
+      "Test",
+      "Test"
+    };
+    sheikText = sheikText + temp3 + area + temp2;
+  }
 }
 
 void CreateSariaText() {

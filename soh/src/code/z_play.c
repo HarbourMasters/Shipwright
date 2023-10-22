@@ -265,6 +265,19 @@ void GivePlayerRandoRewardRequiem(PlayState* play, RandomizerCheck check) {
     }
 }
 
+void GivePlayerRandoRewardMasterSword(PlayState* play, RandomizerCheck check) {
+    Player* player = GET_PLAYER(play);
+
+    if (gSaveContext.entranceIndex == 0x02CA && LINK_IS_ADULT && player != NULL &&
+        !Player_InBlockingCsMode(play, player) && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+        !Flags_GetRandomizerInf(RAND_INF_TOT_MASTER_SWORD)) {
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_MASTER_SWORD);
+        GiveItemEntryWithoutActor(play, getItemEntry);
+        player->pendingFlag.flagID = RAND_INF_TOT_MASTER_SWORD;
+        player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
+    }
+}
+
 u8 CheckStoneCount() {
     u8 stoneCount = 0;
 
@@ -1433,6 +1446,7 @@ skip:
         GivePlayerRandoRewardZeldaLightArrowsGift(play, RC_TOT_LIGHT_ARROWS_CUTSCENE);
         GivePlayerRandoRewardNocturne(play, RC_SHEIK_IN_KAKARIKO);
         GivePlayerRandoRewardRequiem(play, RC_SHEIK_AT_COLOSSUS);
+        GivePlayerRandoRewardMasterSword(play, RC_TOT_MASTER_SWORD);
     }
 }
 
@@ -2315,17 +2329,8 @@ void Play_PerformSave(PlayState* play) {
     if (play != NULL && gSaveContext.fileNum != 0xFF) {
         Play_SaveSceneFlags(play);
         gSaveContext.savedSceneNum = play->sceneNum;
-        if (gSaveContext.temporaryWeapon) {
-            gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-            GET_PLAYER(play)->currentSwordItemId = ITEM_NONE;
-            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
-            Save_SaveFile();
-            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-            GET_PLAYER(play)->currentSwordItemId = ITEM_SWORD_KOKIRI;
-            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
-        } else {
-            Save_SaveFile();
-        }
+        Save_SaveFile();
+
         uint8_t triforceHuntCompleted =
             IS_RANDO &&
             gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) &&

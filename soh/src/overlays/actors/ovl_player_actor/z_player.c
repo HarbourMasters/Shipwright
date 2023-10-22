@@ -14946,6 +14946,16 @@ void func_80852648(PlayState* play, Player* this, CsCmdActorAction* arg2) {
         this->heldItemId = ITEM_NONE;
         this->modelGroup = this->nextModelGroup = Player_ActionToModelGroup(this, PLAYER_IA_NONE);
         this->leftHandDLists = gPlayerLeftHandOpenDLs;
+        
+        // If MS sword is shuffled and not in the players inventory, then we need to unequip the current sword
+        // and set swordless flag to mimic Link having his weapon knocked out of his hand in the Ganon fight
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) {
+            Inventory_ChangeEquipment(EQUIP_SWORD, 0);
+            gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+            Flags_SetInfTable(INFTABLE_SWORDLESS);
+            return;
+        }
+        
         Inventory_ChangeEquipment(EQUIP_SWORD, 2);
         gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
         Inventory_DeleteEquipment(play, 0);
@@ -15134,17 +15144,6 @@ s32 Player_IsDroppingFish(PlayState* play) {
 
 s32 Player_StartFishing(PlayState* play) {
     Player* this = GET_PLAYER(play);
-
-    if (gSaveContext.linkAge == 1) {
-        if (!CHECK_OWNED_EQUIP(EQUIP_SWORD, 0)) {
-            gSaveContext.temporaryWeapon = true;
-        }
-        if (this->heldItemId == ITEM_NONE) {
-            this->currentSwordItemId = ITEM_SWORD_KOKIRI;
-            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
-        }
-    }
 
     func_80832564(play, this);
     func_80835F44(play, this, ITEM_FISHING_POLE);
