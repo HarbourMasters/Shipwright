@@ -91,39 +91,43 @@ void SkeletonPatcher::UpdateCustomSkeletons() {
 }
 
 void SkeletonPatcher::UpdateTunicSkeletons(SkeletonPatchInfo& skel) {
-    
-    // Check if this is Link's skeleton
-    if (sOtr + skel.vanillaSkeletonPath == std::string(gLinkAdultSkel) || sOtr + skel.vanillaSkeletonPath == std::string(gLinkChildSkel)) {
-        std::string skeletonPath = "";
+    std::string skeletonPath = "";
+
+    // Check if this is one of Link's skeletons
+    if (sOtr + skel.vanillaSkeletonPath == std::string(gLinkAdultSkel)) {
         // Check what Link's current tunic is
-        if (sOtr + skel.vanillaSkeletonPath == std::string(gLinkAdultSkel)) {
-            switch (TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TUNIC))) {
-                case PLAYER_TUNIC_KOKIRI:
-                    skeletonPath = std::string(gLinkAdultKokiriTunicSkel).substr(sOtr.length());
-                    break;
-                case PLAYER_TUNIC_GORON:
-                    skeletonPath = std::string(gLinkAdultGoronTunicSkel).substr(sOtr.length());
-                    break;
-                case PLAYER_TUNIC_ZORA:
-                    skeletonPath = std::string(gLinkAdultZoraTunicSkel).substr(sOtr.length());
-                    break;
-            }
-        } else if (sOtr + skel.vanillaSkeletonPath == std::string(gLinkChildSkel)) {
-            switch (TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TUNIC))) {
-                case PLAYER_TUNIC_KOKIRI:
-                    skeletonPath = std::string(gLinkChildKokiriTunicSkel).substr(sOtr.length());
-                    break;
-                case PLAYER_TUNIC_GORON:
-                    skeletonPath = std::string(gLinkChildGoronTunicSkel).substr(sOtr.length());
-                    break;
-                case PLAYER_TUNIC_ZORA:
-                    skeletonPath = std::string(gLinkChildZoraTunicSkel).substr(sOtr.length());
-                    break;
-            }
+        switch (TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TUNIC))) {
+            case PLAYER_TUNIC_KOKIRI:
+                skeletonPath = std::string(gLinkAdultKokiriTunicSkel).substr(sOtr.length());
+                break;
+            case PLAYER_TUNIC_GORON:
+                skeletonPath = std::string(gLinkAdultGoronTunicSkel).substr(sOtr.length());
+                break;
+            case PLAYER_TUNIC_ZORA:
+                skeletonPath = std::string(gLinkAdultZoraTunicSkel).substr(sOtr.length());
+                break;
+            default:
+                return;
         }
 
         UpdateCustomSkeletonFromPath(skeletonPath, skel);
-        
+    } else if (sOtr + skel.vanillaSkeletonPath == std::string(gLinkChildSkel)) {
+        // Check what Link's current tunic is
+        switch (TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TUNIC))) {
+            case PLAYER_TUNIC_KOKIRI:
+                skeletonPath = std::string(gLinkChildKokiriTunicSkel).substr(sOtr.length());
+                break;
+            case PLAYER_TUNIC_GORON:
+                skeletonPath = std::string(gLinkChildGoronTunicSkel).substr(sOtr.length());
+                break;
+            case PLAYER_TUNIC_ZORA:
+                skeletonPath = std::string(gLinkChildZoraTunicSkel).substr(sOtr.length());
+                break;
+            default:
+                return;
+        }
+
+        UpdateCustomSkeletonFromPath(skeletonPath, skel);
     }
 }
 
