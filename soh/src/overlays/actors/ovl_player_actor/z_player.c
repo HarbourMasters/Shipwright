@@ -12156,7 +12156,7 @@ s32 func_8084C9BC(Player* this, PlayState* play) {
             }
         }
 
-        if ((play->csCtx.state == CS_STATE_IDLE) && (play->transitionMode == 0) &&
+        if ((play->csCtx.state == CS_STATE_IDLE) && (play->transitionMode == TRANS_MODE_OFF) &&
             (EN_HORSE_CHECK_1(rideActor) || EN_HORSE_CHECK_4(rideActor))) {
             this->stateFlags2 |= PLAYER_STATE2_DO_ACTION_DOWN;
 

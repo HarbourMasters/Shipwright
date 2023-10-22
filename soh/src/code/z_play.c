@@ -135,22 +135,22 @@ void Gameplay_SetupTransition(PlayState* play, s32 transitionType) {
                 break;
             case 9:
             case 10:
-                play->transitionMode = 4;
+                play->transitionMode = TRANS_MODE_FILL_WHITE_INIT;
                 break;
             case 11:
-                play->transitionMode = 10;
+                play->transitionMode = TRANS_MODE_INSTANT;
                 break;
             case 12:
-                play->transitionMode = 7;
+                play->transitionMode = TRANS_MODE_FILL_BROWN_INIT;
                 break;
             case 14:
-                play->transitionMode = 12;
+                play->transitionMode = TRANS_MODE_SANDSTORM_INIT;
                 break;
             case 15:
-                play->transitionMode = 14;
+                play->transitionMode = TRANS_MODE_SANDSTORM_END_INIT;
                 break;
             case 16:
-                play->transitionMode = 16;
+                play->transitionMode = TRANS_MODE_CS_BLACK_FILL_INIT;
                 break;
             default:
                 Fault_AddHungupAndCrash(__FILE__, __LINE__);
@@ -199,10 +199,10 @@ void Play_Destroy(GameState* thisx) {
         gTrnsnUnkState = 0;
     }
 
-    if (play->transitionMode == 3) {
+    if (play->transitionMode == TRANS_MODE_INSTANCE_RUNNING) {
         play->transitionCtx.destroy(&play->transitionCtx.data);
         func_800BC88C(play);
-        play->transitionMode = 0;
+        play->transitionMode = TRANS_MODE_OFF;
     }
 
     ShrinkWindow_Destroy();
@@ -617,7 +617,7 @@ void Play_Init(GameState* thisx) {
     PreRender_SetValuesSave(&play->pauseBgPreRender, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0);
     PreRender_SetValues(&play->pauseBgPreRender, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0);
     gTrnsnUnkState = 0;
-    play->transitionMode = 0;
+    play->transitionMode = TRANS_MODE_OFF;
 
     if (CVarGetInteger("gSceneTransitions", 255)!= 255){
         play->transitionMode = CVarGetInteger("gSceneTransitions", 0);
@@ -801,8 +801,8 @@ void Play_Update(PlayState* play) {
     gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
 
     if (FrameAdvance_Update(&play->frameAdvCtx, &input[1])) {
-        if ((play->transitionMode == 0) && (play->transitionTrigger != TRANS_TRIGGER_OFF)) {
-            play->transitionMode = 1;
+        if ((play->transitionMode == TRANS_MODE_OFF) && (play->transitionTrigger != TRANS_TRIGGER_OFF)) {
+            play->transitionMode = TRANS_MODE_SETUP;
         }
 
         // Gameplay stats: Count button presses
@@ -851,7 +851,7 @@ void Play_Update(PlayState* play) {
 
         if (play->transitionMode) {
             switch (play->transitionMode) {
-                case 1:
+                case TRANS_MODE_SETUP:
                     if (play->transitionTrigger != TRANS_TRIGGER_END) {
                         s16 sp6E = 0;
                         Interface_ChangeAlpha(1);
@@ -879,11 +879,11 @@ void Play_Update(PlayState* play) {
                         Gameplay_SetupTransition(play, CREG(12));
                     }
 
-                    if (play->transitionMode >= 4) {
+                    if (play->transitionMode >= TRANS_MODE_FILL_WHITE_INIT) {
                         break;
                     }
 
-                case 2:
+                case TRANS_MODE_INSTANCE_INIT:
                     play->transitionCtx.init(&play->transitionCtx.data);
 
                     if ((play->transitionCtx.transitionType >> 5) == 1) {
@@ -946,19 +946,19 @@ void Play_Update(PlayState* play) {
                     play->transitionCtx.start(&play->transitionCtx);
 
                     if (play->transitionCtx.transitionType == 13) {
-                        play->transitionMode = 11;
+                        play->transitionMode = TRANS_MODE_INSTANCE_WAIT;
                     } else {
-                        play->transitionMode = 3;
+                        play->transitionMode = TRANS_MODE_INSTANCE_RUNNING;
                     }
                     break;
 
-                case 3:
+                case TRANS_MODE_INSTANCE_RUNNING:
                     if (play->transitionCtx.isDone(&play->transitionCtx) != 0) {
                         if (play->transitionCtx.transitionType >= 56) {
                             if (play->transitionTrigger == TRANS_TRIGGER_END) {
                                 play->transitionCtx.destroy(&play->transitionCtx);
                                 func_800BC88C(play);
-                                play->transitionMode = 0;
+                                play->transitionMode = TRANS_MODE_OFF;
                             }
                         } else if (play->transitionTrigger != TRANS_TRIGGER_END) {
                             play->state.running = 0;
@@ -974,7 +974,7 @@ void Play_Update(PlayState* play) {
                         } else {
                             play->transitionCtx.destroy(&play->transitionCtx);
                             func_800BC88C(play);
-                            play->transitionMode = 0;
+                            play->transitionMode = TRANS_MODE_OFF;
                             if (gTrnsnUnkState == 3) {
                                 TransitionUnk_Destroy(&sTrnsnUnk);
                                 gTrnsnUnkState = 0;
@@ -992,7 +992,7 @@ void Play_Update(PlayState* play) {
             }
 
             switch (play->transitionMode) {
-                case 4:
+                case TRANS_MODE_FILL_WHITE_INIT:
                     D_801614C8 = 0;
                     play->envCtx.fillScreen = true;
                     play->envCtx.screenFillColor[0] = 160;
@@ -1000,40 +1000,40 @@ void Play_Update(PlayState* play) {
                     play->envCtx.screenFillColor[2] = 160;
                     if (play->transitionTrigger != TRANS_TRIGGER_END) {
                         play->envCtx.screenFillColor[3] = 0;
-                        play->transitionMode = 5;
+                        play->transitionMode = TRANS_MODE_FILL_IN;
                     } else {
                         play->envCtx.screenFillColor[3] = 255;
-                        play->transitionMode = 6;
+                        play->transitionMode = TRANS_MODE_FILL_OUT;
                     }
                     break;
 
-                case 5:
+                case TRANS_MODE_FILL_IN:
                     play->envCtx.screenFillColor[3] = (D_801614C8 / 20.0f) * 255.0f;
                     if (D_801614C8 >= 20 && 1) {
                         play->state.running = 0;
                         SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
                         gSaveContext.entranceIndex = play->nextEntranceIndex;
                         play->transitionTrigger = TRANS_TRIGGER_OFF;
-                        play->transitionMode = 0;
+                        play->transitionMode = TRANS_MODE_OFF;
                     } else {
                         D_801614C8++;
                     }
                     break;
 
-                case 6:
+                case TRANS_MODE_FILL_OUT:
                     play->envCtx.screenFillColor[3] = (1 - D_801614C8 / 20.0f) * 255.0f;
                     if (D_801614C8 >= 20 && 1) {
                         gTrnsnUnkState = 0;
                         R_UPDATE_RATE = 3;
                         play->transitionTrigger = TRANS_TRIGGER_OFF;
-                        play->transitionMode = 0;
+                        play->transitionMode = TRANS_MODE_OFF;
                         play->envCtx.fillScreen = false;
                     } else {
                         D_801614C8++;
                     }
                     break;
 
-                case 7:
+                case TRANS_MODE_FILL_BROWN_INIT:
                     D_801614C8 = 0;
                     play->envCtx.fillScreen = true;
                     play->envCtx.screenFillColor[0] = 170;
@@ -1041,47 +1041,47 @@ void Play_Update(PlayState* play) {
                     play->envCtx.screenFillColor[2] = 150;
                     if (play->transitionTrigger != TRANS_TRIGGER_END) {
                         play->envCtx.screenFillColor[3] = 0;
-                        play->transitionMode = 5;
+                        play->transitionMode = TRANS_MODE_FILL_IN;
                     } else {
                         play->envCtx.screenFillColor[3] = 255;
-                        play->transitionMode = 6;
+                        play->transitionMode = TRANS_MODE_FILL_OUT;
                     }
                     break;
 
-                case 10:
+                case TRANS_MODE_INSTANT:
                     if (play->transitionTrigger != TRANS_TRIGGER_END) {
                         play->state.running = 0;
                         SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
                         gSaveContext.entranceIndex = play->nextEntranceIndex;
                         play->transitionTrigger = TRANS_TRIGGER_OFF;
-                        play->transitionMode = 0;
+                        play->transitionMode = TRANS_MODE_OFF;
                     } else {
                         gTrnsnUnkState = 0;
                         R_UPDATE_RATE = 3;
                         play->transitionTrigger = TRANS_TRIGGER_OFF;
-                        play->transitionMode = 0;
+                        play->transitionMode = TRANS_MODE_OFF;
                     }
                     break;
 
-                case 11:
+                case TRANS_MODE_INSTANCE_WAIT:
                     if (gSaveContext.cutsceneTransitionControl != 0) {
-                        play->transitionMode = 3;
+                        play->transitionMode = TRANS_MODE_INSTANCE_RUNNING;
                     }
                     break;
 
-                case 12:
+                case TRANS_MODE_SANDSTORM_INIT:
                     if (play->transitionTrigger != TRANS_TRIGGER_END) {
                         play->envCtx.sandstormState = SANDSTORM_FILL;
-                        play->transitionMode = 13;
+                        play->transitionMode = TRANS_MODE_SANDSTORM;
                     } else {
                         play->envCtx.sandstormState = SANDSTORM_UNFILL;
                         play->envCtx.sandstormPrimA = 255;
                         play->envCtx.sandstormEnvA = 255;
-                        play->transitionMode = 13;
+                        play->transitionMode = TRANS_MODE_SANDSTORM;
                     }
                     break;
 
-                case 13:
+                case TRANS_MODE_SANDSTORM:
                     Audio_PlaySoundGeneral(NA_SE_EV_SAND_STORM - SFX_FLAG, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
                     if (play->transitionTrigger == TRANS_TRIGGER_END) {
@@ -1089,7 +1089,7 @@ void Play_Update(PlayState* play) {
                             gTrnsnUnkState = 0;
                             R_UPDATE_RATE = 3;
                             play->transitionTrigger = TRANS_TRIGGER_OFF;
-                            play->transitionMode = 0;
+                            play->transitionMode = TRANS_MODE_OFF;
 
                             // Transition end for sandstorm effect (delayed until effect is finished)
                             GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
@@ -1100,25 +1100,25 @@ void Play_Update(PlayState* play) {
                             SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
                             gSaveContext.entranceIndex = play->nextEntranceIndex;
                             play->transitionTrigger = TRANS_TRIGGER_OFF;
-                            play->transitionMode = 0;
+                            play->transitionMode = TRANS_MODE_OFF;
                         }
                     }
                     break;
 
-                case 14:
+                case TRANS_MODE_SANDSTORM_END_INIT:
                     if (play->transitionTrigger == TRANS_TRIGGER_END) {
                         play->envCtx.sandstormState = SANDSTORM_DISSIPATE;
                         play->envCtx.sandstormPrimA = 255;
                         play->envCtx.sandstormEnvA = 255;
                         // "It's here!!!!!!!!!"
                         LOG_STRING("来た!!!!!!!!!!!!!!!!!!!!!");
-                        play->transitionMode = 15;
+                        play->transitionMode = TRANS_MODE_SANDSTORM_END;
                     } else {
-                        play->transitionMode = 12;
+                        play->transitionMode = TRANS_MODE_SANDSTORM_INIT;
                     }
                     break;
 
-                case 15:
+                case TRANS_MODE_SANDSTORM_END:
                     Audio_PlaySoundGeneral(NA_SE_EV_SAND_STORM - SFX_FLAG, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
                     if (play->transitionTrigger == TRANS_TRIGGER_END) {
@@ -1126,7 +1126,7 @@ void Play_Update(PlayState* play) {
                             gTrnsnUnkState = 0;
                             R_UPDATE_RATE = 3;
                             play->transitionTrigger = TRANS_TRIGGER_OFF;
-                            play->transitionMode = 0;
+                            play->transitionMode = TRANS_MODE_OFF;
 
                             // Transition end for sandstorm effect (delayed until effect is finished)
                             GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
@@ -1134,24 +1134,24 @@ void Play_Update(PlayState* play) {
                     }
                     break;
 
-                case 16:
+                case TRANS_MODE_CS_BLACK_FILL_INIT:
                     D_801614C8 = 0;
                     play->envCtx.fillScreen = true;
                     play->envCtx.screenFillColor[0] = 0;
                     play->envCtx.screenFillColor[1] = 0;
                     play->envCtx.screenFillColor[2] = 0;
                     play->envCtx.screenFillColor[3] = 255;
-                    play->transitionMode = 17;
+                    play->transitionMode = TRANS_MODE_CS_BLACK_FILL;
                     break;
 
-                case 17:
+                case TRANS_MODE_CS_BLACK_FILL:
                     if (gSaveContext.cutsceneTransitionControl != 0) {
                         play->envCtx.screenFillColor[3] = gSaveContext.cutsceneTransitionControl;
                         if (gSaveContext.cutsceneTransitionControl < 0x65) {
                             gTrnsnUnkState = 0;
                             R_UPDATE_RATE = 3;
                             play->transitionTrigger = TRANS_TRIGGER_OFF;
-                            play->transitionMode = 0;
+                            play->transitionMode = TRANS_MODE_OFF;
                         }
                     }
                     break;
@@ -1539,7 +1539,7 @@ void Play_Draw(PlayState* play) {
             gSPDisplayList(OVERLAY_DISP++, gfxP);
             gSPGrayscale(gfxP++, false);
 
-            if ((play->transitionMode == 3) || (play->transitionMode == 11) ||
+            if ((play->transitionMode == TRANS_MODE_INSTANCE_RUNNING) || (play->transitionMode == TRANS_MODE_INSTANCE_WAIT) ||
                 (play->transitionCtx.transitionType >= 56)) {
                 View view;
 
