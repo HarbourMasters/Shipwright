@@ -134,15 +134,10 @@ void SkeletonPatcher::UpdateTunicSkeletons(SkeletonPatchInfo& skel) {
 void SkeletonPatcher::UpdateCustomSkeletonFromPath(const std::string& skeletonPath, SkeletonPatchInfo& skel) {
     Skeleton* newSkel = nullptr;
     Skeleton* altSkel = nullptr;
-    // Load new skeleton based on the custom model if it exists
-    newSkel = 
-        (Skeleton*)LUS::Context::GetInstance()
-            ->GetResourceManager()
-            ->LoadResource(skeletonPath, true)
-            .get();
-    
+    bool isAlt = CVarGetInteger("gAltAssets", 0);
+
     // If alt assets are on, look for alt tagged skeletons
-    if (CVarGetInteger("gAltAssets", 0)) {
+    if (isAlt) {
         altSkel = 
             (Skeleton*)LUS::Context::GetInstance()
                 ->GetResourceManager()
@@ -155,14 +150,19 @@ void SkeletonPatcher::UpdateCustomSkeletonFromPath(const std::string& skeletonPa
         }
     }
 
-    // Change back to the original skeleton if no skeleton's were found
-    // Needed if the skeleton previously existed but no longer does (e.g. only the alt skeleton exists)
-    if (newSkel == nullptr) {
+    // Load new skeleton based on the custom model if it exists
+    if (altSkel == nullptr) {
         newSkel = 
             (Skeleton*)LUS::Context::GetInstance()
                 ->GetResourceManager()
-                ->LoadResource(skel.vanillaSkeletonPath, true)
+                ->LoadResource(skeletonPath, true)
                 .get();
+    }
+
+    // Change back to the original skeleton if no skeleton's were found
+    if (newSkel == nullptr && skeletonPath != skel.vanillaSkeletonPath) {
+        UpdateCustomSkeletonFromPath(skel.vanillaSkeletonPath, skel);
+        return;
     }
     
     if (newSkel != nullptr) {
