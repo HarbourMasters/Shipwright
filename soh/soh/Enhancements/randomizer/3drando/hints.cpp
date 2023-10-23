@@ -307,10 +307,10 @@ bool IsReachableWithout(std::vector<RandomizerCheck> locsToCheck, RandomizerChec
   return true;
 }
 
-static void SetAllInRegionAsHinted(uint32_t region, std::vector<RandomizerCheck> locations){
+static void SetAllInRegionAsHinted(RandomizerHintTextKey region, std::vector<RandomizerCheck> locations){
   auto ctx = Rando::Context::GetInstance();
-  std::vector<RandomizerCheck> locsInRegion = FilterFromPool(locations, [region](const RandomizerCheck loc){
-                                        return GetLocationRegionuint32_t(loc) == region;
+  std::vector<RandomizerCheck> locsInRegion = FilterFromPool(locations, [region, ctx](const RandomizerCheck loc){
+                                        return GetHintRegion(ctx->GetItemLocation(loc)->GetParentRegionKey())->hintKey == region;
                                       });
   for(RandomizerCheck loc: locsInRegion){
     ctx->GetItemLocation(loc)->SetAsHinted();
@@ -436,14 +436,14 @@ static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck>& possibleHi
     placed = CreateHint(hintedLocation, copies, type);
   }
   if (type == HINT_TYPE_BARREN){
-     SetAllInRegionAsHinted(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey(), possibleHintLocations);
+     SetAllInRegionAsHinted(GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->hintKey, possibleHintLocations);
   }
   return hintedLocation;
 }
 
 static std::vector<RandomizerCheck> FilterHintability(std::vector<RandomizerCheck>& locations, const bool goodItemsOnly = false, const bool dungeonsOK = true){
-  return FilterFromPool(locations, [goodItemsOnly, dungeonsOK](const RandomizerCheck loc) {
-    auto ctx = Rando::Context::GetInstance();
+  auto ctx = Rando::Context::GetInstance();
+  return FilterFromPool(locations, [goodItemsOnly, dungeonsOK, ctx](const RandomizerCheck loc) {
     return ctx->GetItemLocation(loc)->IsHintable() && !(ctx->GetItemLocation(loc)->IsHintedAt()) && 
     (!goodItemsOnly || ctx->GetItemLocation(loc)->GetPlacedItem().IsMajorItem()) && (dungeonsOK || Rando::StaticData::GetLocation(loc)->IsOverworld());
   });
