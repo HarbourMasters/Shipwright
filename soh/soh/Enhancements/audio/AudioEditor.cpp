@@ -82,7 +82,7 @@ void RandomizeGroup(SeqType type) {
     // use a while loop to add duplicates if we don't have enough included sequences
     while (values.size() < AuthenticCountBySequenceType(type)) {
         for (const auto& seqData : AudioCollection::Instance->GetIncludedSequences()) {
-            if (seqData->category & type) {
+            if (seqData->category & type && seqData->canBeUsedAsReplacement) {
                 values.push_back(seqData->sequenceId);
             }
         }
