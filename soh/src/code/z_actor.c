@@ -2462,7 +2462,7 @@ void func_80030488(PlayState* play) {
 void Actor_DisableLens(PlayState* play) {
     if (play->actorCtx.lensActive) {
         play->actorCtx.lensActive = false;
-        func_800876C8(play);
+        Magic_Reset(play);
     }
 }
 
