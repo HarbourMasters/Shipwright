@@ -74,7 +74,6 @@ class Context {
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
     std::vector<RandomizerCheck> everyPossibleLocation = {};
-    std::vector<RandomizerCheck> wothLocations = {};
     std::vector<RandomizerGet> possibleIceTrapModels = {};
     std::unordered_map<RandomizerCheck, RandomizerGet> iceTrapModels = {};
     std::array<uint8_t, 5> hashIconIndexes = {};

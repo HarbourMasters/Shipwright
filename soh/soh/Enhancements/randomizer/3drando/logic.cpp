@@ -194,13 +194,11 @@ namespace Logic {
   bool BombchuDrop      = false;
   bool AmmoCanDrop      = false;
 
-  bool BuyBombchus10    = false;
-  bool BuyBombchus20    = false;
+  bool BuyBombchus      = false;
   bool BuySeed          = false;
   bool BuyArrow         = false;
   bool BuyBomb          = false;
-  bool BuyGPotion       = false;
-  bool BuyBPotion       = false;
+  bool BuyPotion        = false;
   bool MagicRefill      = false;
 
   uint8_t   PieceOfHeart     = 0;
@@ -542,7 +540,7 @@ namespace Logic {
     Slingshot       = (ProgressiveBulletBag >= 1) && (BuySeed || AmmoCanDrop);
     Ocarina         = ProgressiveOcarina    >= 1;
     OcarinaOfTime   = ProgressiveOcarina    >= 2;
-    MagicMeter      = (ProgressiveMagic     >= 1) && (AmmoCanDrop || (HasBottle && (BuyGPotion || BuyBPotion)));
+    MagicMeter      = (ProgressiveMagic     >= 1) && (AmmoCanDrop || (HasBottle && (BuyPotion)));
     BombBag         = (ProgressiveBombBag   >= 1) && (BuyBomb || AmmoCanDrop);
     Hookshot        = ProgressiveHookshot   >= 1;
     Longshot        = ProgressiveHookshot   >= 2;
@@ -579,7 +577,7 @@ namespace Logic {
     FoundBombchus   = (BombchuDrop || Bombchus || Bombchus5 || Bombchus10 || Bombchus20);
     CanPlayBowling  = (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && FoundBombchus) || (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && BombBag);
     // TODO: Implement Ammo Drop Setting in place of bombchu drops
-    HasBombchus     = (BuyBombchus10 || BuyBombchus20 || (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON_PLUS_BOMBCHU) && FoundBombchus));
+    HasBombchus     = (BuyBombchus || (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON_PLUS_BOMBCHU) && FoundBombchus));
 
     HasExplosives =  Bombs || (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && HasBombchus);
 
@@ -967,13 +965,11 @@ namespace Logic {
      FairyPond        = false;
      BombchuDrop      = false;
 
-     BuyBombchus10    = false;
-     BuyBombchus20    = false;
+     BuyBombchus      = false;
      BuySeed          = false;
      BuyArrow         = false;
      BuyBomb          = false;
-     BuyGPotion       = false;
-     BuyBPotion       = false;
+     BuyPotion        = false;
      MagicRefill      = false;
 
      PieceOfHeart     = 0;

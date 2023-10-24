@@ -361,11 +361,11 @@ void Randomizer::LoadHintMessages() {
 
 // Reference soh/src/overlays/actors/ovl_En_GirlA/z_en_girla.h
 std::unordered_map<RandomizerGet, EnGirlAShopItem> randomizerGetToEnGirlShopItem = {
-    { RG_BUY_DEKU_NUT_5,    SI_DEKU_NUTS_5 },
+    { RG_BUY_DEKU_NUTS_5,   SI_DEKU_NUTS_5 },
     { RG_BUY_ARROWS_30,     SI_ARROWS_30 },
     { RG_BUY_ARROWS_50,     SI_ARROWS_50 },
     { RG_BUY_BOMBS_525,     SI_BOMBS_5_R25 },
-    { RG_BUY_DEKU_NUT_10,   SI_DEKU_NUTS_10 },
+    { RG_BUY_DEKU_NUTS_10,  SI_DEKU_NUTS_10 },
     { RG_BUY_DEKU_STICK_1,  SI_DEKU_STICK },
     { RG_BUY_BOMBS_10,      SI_BOMBS_10 },
     { RG_BUY_FISH,          SI_FISH },
@@ -825,8 +825,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_DEKU_STICK_1:
         case RG_TREASURE_GAME_HEART:
         case RG_TREASURE_GAME_GREEN_RUPEE:
-        case RG_BUY_DEKU_NUT_5:
-        case RG_BUY_DEKU_NUT_10:
+        case RG_BUY_DEKU_NUTS_5:
+        case RG_BUY_DEKU_NUTS_10:
         case RG_BUY_DEKU_STICK_1:
         case RG_BUY_HEART:
         case RG_TRIFORCE_PIECE:
@@ -1118,10 +1118,10 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
             return GI_HEART_CONTAINER;
         
         case RG_DEKU_NUTS_5:
-        case RG_BUY_DEKU_NUT_5:
+        case RG_BUY_DEKU_NUTS_5:
             return GI_NUTS_5;
         case RG_DEKU_NUTS_10:
-        case RG_BUY_DEKU_NUT_10:
+        case RG_BUY_DEKU_NUTS_10:
             return GI_NUTS_10;
         case RG_DEKU_STICK_1:
         case RG_BUY_DEKU_STICK_1:
@@ -1219,11 +1219,11 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BLUE_POTION_REFILL:
         case RG_TREASURE_GAME_HEART:
         case RG_TREASURE_GAME_GREEN_RUPEE:
-        case RG_BUY_DEKU_NUT_5:
+        case RG_BUY_DEKU_NUTS_5:
         case RG_BUY_ARROWS_30:
         case RG_BUY_ARROWS_50:
         case RG_BUY_BOMBS_525:
-        case RG_BUY_DEKU_NUT_10:
+        case RG_BUY_DEKU_NUTS_10:
         case RG_BUY_DEKU_STICK_1:
         case RG_BUY_BOMBS_10:
         case RG_BUY_FISH:

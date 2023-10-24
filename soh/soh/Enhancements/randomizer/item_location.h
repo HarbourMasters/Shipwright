@@ -42,6 +42,8 @@ class ItemLocation {
     void SetHidden(bool hidden_);
     bool IsVisible() const;
     void SetVisible(bool visibleInImGui_);
+    bool IsWothCandidate() const;
+    void SetWothCandidate();
     void ResetVariables();
 
   private:
@@ -58,5 +60,6 @@ class ItemLocation {
     bool hasCustomPrice = false;
     bool hidden = false;
     bool visibleInImGui = false;
+    bool wothCandidate = false;
 };
 } // namespace Rando

@@ -161,6 +161,14 @@ void ItemLocation::SetVisible(const bool visibleInImGui_) {
 
 }
 
+bool ItemLocation::IsWothCandidate() const {
+    return wothCandidate;
+}
+
+void ItemLocation::SetWothCandidate() {
+    wothCandidate = true;
+}
+
 void ItemLocation::ResetVariables() {
     addedToPool = false;
     placedItem = RG_NONE;
@@ -171,5 +179,6 @@ void ItemLocation::ResetVariables() {
     price = 0;
     hasCustomPrice = false;
     hidden = false;
+    wothCandidate = false;
 }
 }

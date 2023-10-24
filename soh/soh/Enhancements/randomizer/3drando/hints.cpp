@@ -371,7 +371,7 @@ static std::vector<RandomizerCheck> GetAccessibleGossipStones(const RandomizerCh
 
 bool IsReachableWithout(std::vector<RandomizerCheck> locsToCheck, RandomizerCheck excludedCheck, bool resetAfter = true){
   //temporarily remove the hinted location's item, and then perform a
-  //reachability search for this check
+  //reachability search for this check RANDOTODO convert excludedCheck to an ItemLocation
   auto ctx = Rando::Context::GetInstance();
   RandomizerGet originalItem = ctx->GetItemLocation(excludedCheck)->GetPlacedRandomizerGet();
   ctx->GetItemLocation(excludedCheck)->SetPlacedItem(RG_NONE);

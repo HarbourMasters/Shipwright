@@ -540,19 +540,6 @@ static void WriteShuffledEntrances() {
   }
 }
 
-// Writes the WOTH locations to the spoiler log, if there are any.
-static void WriteWayOfTheHeroLocation(tinyxml2::XMLDocument& spoilerLog) {
-    auto parentNode = spoilerLog.NewElement("way-of-the-hero-locations");
-
-    for (const RandomizerCheck key : Rando::Context::GetInstance()->wothLocations) {
-        // WriteLocation(parentNode, key, true);
-    }
-
-    if (!parentNode->NoChildren()) {
-        spoilerLog.RootElement()->InsertEndChild(parentNode);
-    }
-}
-
 std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
   std::string textStr = unformattedHintTextString;
 
@@ -849,11 +836,9 @@ const char* SpoilerLog_Write(int language) {
     WriteMasterQuestDungeons(spoilerLog);
     WriteRequiredTrials();
     WritePlaythrough();
-    //WriteWayOfTheHeroLocation(spoilerLog);
 
     ctx->playthroughLocations.clear();
     ctx->playthroughBeatable = false;
-    ctx->wothLocations.clear();
 
     WriteHints(language);
     WriteShuffledEntrances();
