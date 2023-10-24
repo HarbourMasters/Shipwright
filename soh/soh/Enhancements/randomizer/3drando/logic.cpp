@@ -8,6 +8,7 @@
 
 #include "settings.hpp"
 #include "dungeon.hpp"
+#include "../context.h"
 
 using namespace Settings;
 
@@ -725,6 +726,7 @@ namespace Logic {
 
    //Reset All Logic to false
    void LogicReset() {
+    auto ctx = Rando::Context::GetInstance();
      //Settings-dependent variables
      IsKeysanity = Keysanity.Is(KEYSANITY_ANYWHERE) || Keysanity.Is(KEYSANITY_OVERWORLD) || Keysanity.Is(KEYSANITY_ANY_DUNGEON);
      AmmoCanDrop = AmmoDrops.IsNot(AMMODROPS_NONE);
@@ -961,7 +963,7 @@ namespace Logic {
      HasBoots         = false;
      IsChild          = false;
      IsAdult          = false;
-     IsGlitched       = Settings::Logic.Is(LOGIC_GLITCHED);
+     IsGlitched       = ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHED);
      CanBlastOrSmash  = false;
      CanChildAttack   = false;
      CanChildDamage   = false;
@@ -979,9 +981,9 @@ namespace Logic {
      BigPoeKill          = false;
      HookshotOrBoomerang = false;
 
-     BaseHearts      = StartingHearts.Value<uint8_t>() + 1;
+     BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).Value<uint8_t>() + 1;
      Hearts          = 0;
-     Multiplier      = (DamageMultiplier.Value<uint8_t>() < 6) ? DamageMultiplier.Value<uint8_t>() : 10;
+     Multiplier      = (ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Value<uint8_t>() < 6) ? ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Value<uint8_t>() : 10;
      EffectiveHealth = 0;
      FireTimer       = 0;
      WaterTimer      = 0;
@@ -1013,7 +1015,7 @@ namespace Logic {
      //Other
      AtDay         = false;
      AtNight       = false;
-     Age           = Settings::ResolvedStartingAge;
+     Age           = ctx->GetSettings().ResolvedStartingAge();
 
      //Events
      ShowedMidoSwordAndShield  = false;

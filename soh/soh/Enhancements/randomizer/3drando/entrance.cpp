@@ -69,6 +69,7 @@ static void DisplayEntranceProgress() {
 }
 
 void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
+  auto ctx = Rando::Context::GetInstance();
   for (auto& entrancePair: entranceShuffleTable) {
 
     auto& forwardEntry = entrancePair.first;
@@ -82,7 +83,7 @@ void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
     forwardEntrance->SetAsPrimary();
 
     // When decouple entrances is on, mark it for entrances except boss rooms
-    if (Settings::DecoupleEntrances && forwardEntry.type != EntranceType::ChildBoss &&
+    if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES) && forwardEntry.type != EntranceType::ChildBoss &&
       forwardEntry.type != EntranceType::AdultBoss) {
       forwardEntrance->SetDecoupled();
     }
@@ -95,7 +96,7 @@ void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
       forwardEntrance->BindTwoWay(returnEntrance);
 
       // Mark reverse entrance as decoupled
-      if (Settings::DecoupleEntrances && returnEntry.type != EntranceType::ChildBoss &&
+      if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES) && returnEntry.type != EntranceType::ChildBoss &&
         returnEntry.type != EntranceType::AdultBoss) {
         returnEntrance->SetDecoupled();
       }
@@ -104,19 +105,23 @@ void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
 }
 
 static std::vector<Entrance*> AssumeEntrancePool(std::vector<Entrance*>& entrancePool) {
+  auto ctx = Rando::Context::GetInstance();
   std::vector<Entrance*> assumedPool = {};
   for (Entrance* entrance : entrancePool) {
     totalRandomizableEntrances++;
     Entrance* assumedForward = entrance->AssumeReachable();
     if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
       Entrance* assumedReturn = entrance->GetReverse()->AssumeReachable();
-      if (!(Settings::MixedEntrancePools && (Settings::ShuffleOverworldEntrances || Settings::ShuffleInteriorEntrances.Is(SHUFFLEINTERIORS_ALL)))) {
+      if (!(ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS) && (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)))) {
         auto type = entrance->GetType();
-        if (((type == EntranceType::Dungeon || type == EntranceType::GrottoGrave) && entrance->GetReverse()->GetName() != "Spirit Temple Entryway -> Desert Colossus From Spirit Entryway") ||
-             (type == EntranceType::Interior && Settings::ShuffleInteriorEntrances.Is(SHUFFLEINTERIORS_ALL))) {
-               // In most cases, Dungeon, Grotto/Grave and Simple Interior exits shouldn't be assumed able to give access to their parent region
-               assumedReturn->SetCondition([]{return false;});
-             }
+        if (((type == EntranceType::Dungeon || type == EntranceType::GrottoGrave) &&
+             entrance->GetReverse()->GetName() != "Spirit Temple Entryway -> Desert Colossus From Spirit Entryway") ||
+            (type == EntranceType::Interior &&
+             ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL))) {
+            // In most cases, Dungeon, Grotto/Grave and Simple Interior exits shouldn't be assumed able to give access
+            // to their parent region
+            assumedReturn->SetCondition([] { return false; });
+        }
       }
       assumedForward->BindTwoWay(assumedReturn);
     }
@@ -309,6 +314,7 @@ static bool EntranceUnreachableAs(Entrance* entrance, uint8_t age, std::vector<E
 }
 
 static bool ValidateWorld(Entrance* entrancePlaced) {
+  auto ctx = Rando::Context::GetInstance();
   SPDLOG_DEBUG("Validating world\n");
 
   //check certain conditions when certain types of ER are enabled
@@ -317,10 +323,19 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
     type = entrancePlaced->GetType();
   }
 
-  bool checkPoeCollectorAccess  = (Settings::ShuffleOverworldEntrances || Settings::ShuffleInteriorEntrances.Is(SHUFFLEINTERIORS_ALL)) && (entrancePlaced == nullptr || Settings::MixedEntrancePools ||
-                                 type == EntranceType::Interior || type == EntranceType::SpecialInterior || type == EntranceType::Overworld || type == EntranceType::Spawn || type == EntranceType::WarpSong || type == EntranceType::OwlDrop);
-  bool checkOtherEntranceAccess = (Settings::ShuffleOverworldEntrances || Settings::ShuffleInteriorEntrances.Is(SHUFFLEINTERIORS_ALL) || Settings::ShuffleOverworldSpawns) && (entrancePlaced == nullptr || Settings::MixedEntrancePools ||
-                                 type == EntranceType::SpecialInterior || type == EntranceType::Overworld || type == EntranceType::Spawn || type == EntranceType::WarpSong || type == EntranceType::OwlDrop);
+  bool checkPoeCollectorAccess =
+      (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
+       ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)) &&
+      (entrancePlaced == nullptr || ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS) || type == EntranceType::Interior ||
+       type == EntranceType::SpecialInterior || type == EntranceType::Overworld || type == EntranceType::Spawn ||
+       type == EntranceType::WarpSong || type == EntranceType::OwlDrop);
+  bool checkOtherEntranceAccess =
+      (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
+       ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL) ||
+       ctx->GetOption(RSK_SHUFFLE_OVERWORLD_SPAWNS)) &&
+      (entrancePlaced == nullptr || ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS) || type == EntranceType::SpecialInterior ||
+       type == EntranceType::Overworld || type == EntranceType::Spawn || type == EntranceType::WarpSong ||
+       type == EntranceType::OwlDrop);
 
   // Search the world to verify that all necessary conditions are still being held
   // Conditions will be checked during the search and any that fail will be figured out
@@ -328,7 +343,7 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
   Logic::LogicReset();
   GetAccessibleLocations({}, SearchMode::ValidateWorld, "", checkPoeCollectorAccess, checkOtherEntranceAccess);
 
-  if (!Settings::DecoupleEntrances) {
+  if (!ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
   // Unless entrances are decoupled, we don't want the player to end up through certain entrances as the wrong age
   // This means we need to hard check that none of the relevant entrances are ever reachable as that age
   // This is mostly relevant when mixing entrance pools or shuffling special interiors (such as windmill or kak potion shop)
@@ -374,10 +389,10 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
     }
   }
 
-  if (Settings::ShuffleInteriorEntrances.IsNot(SHUFFLEINTERIORS_OFF) && Settings::GossipStoneHints.IsNot(HINTS_NO_HINTS) &&
+  if (ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).IsNot(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) && ctx->GetOption(RSK_GOSSIP_STONE_HINTS).IsNot(RO_GOSSIP_STONES_NONE) &&
   (entrancePlaced == nullptr || type == EntranceType::Interior || type == EntranceType::SpecialInterior)) {
     //When cows are shuffled, ensure both Impa's House entrances are in the same hint area because the cow is reachable from both sides
-    if (Settings::ShuffleCows) {
+    if (ctx->GetOption(RSK_SHUFFLE_COWS)) {
       auto impasHouseFrontHintRegion = GetHintRegionHintKey(RR_KAK_IMPAS_HOUSE);
       auto impasHouseBackHintRegion = GetHintRegionHintKey(RR_KAK_IMPAS_HOUSE_BACK);
       if (impasHouseFrontHintRegion != RHT_NONE && impasHouseBackHintRegion != RHT_NONE && impasHouseBackHintRegion != RHT_LINKS_POCKET && impasHouseFrontHintRegion != RHT_LINKS_POCKET && impasHouseBackHintRegion != impasHouseFrontHintRegion) {
@@ -405,10 +420,10 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
 
       // The player should be able to get back to ToT after going through time, without having collected any items
       // This is important to ensure that the player never loses access to the pedestal after going through time
-      if (Settings::ResolvedStartingAge == AGE_CHILD && !AreaTable(RR_TEMPLE_OF_TIME)->Adult()) {
+      if (ctx->GetSettings().ResolvedStartingAge() == RO_AGE_CHILD && !AreaTable(RR_TEMPLE_OF_TIME)->Adult()) {
         SPDLOG_DEBUG("Path to Temple of Time as adult is not guaranteed\n");
         return false;
-      } else if (Settings::ResolvedStartingAge == AGE_ADULT && !AreaTable(RR_TEMPLE_OF_TIME)->Child()) {
+      } else if (ctx->GetSettings().ResolvedStartingAge() == RO_AGE_ADULT && !AreaTable(RR_TEMPLE_OF_TIME)->Child()) {
         SPDLOG_DEBUG("Path to Temple of Time as child is not guaranteed\n");
         return false;
       }
@@ -464,6 +479,7 @@ static bool ReplaceEntrance(Entrance* entrance, Entrance* target, std::vector<En
 // Entrance chosen will have one of the allowed types.
 // Target chosen will lead to one of the allowed regions.
 static bool PlaceOneWayPriorityEntrance(std::string priorityName, std::list<RandomizerRegion>& allowedRegions, std::list<EntranceType>& allowedTypes, std::vector<EntrancePair>& rollbacks, EntrancePools oneWayEntrancePools, EntrancePools oneWayTargetEntrancePools) {
+  auto ctx = Rando::Context::GetInstance();
   // Combine the entrances for allowed types in one list.
   // Shuffle this list.
   // Pick the first one not already set, not adult spawn, that has a valid target entrance.
@@ -484,12 +500,12 @@ static bool PlaceOneWayPriorityEntrance(std::string priorityName, std::list<Rand
     // Only allow Adult Spawn as sole Nocturne access if hints != mask.
     // Otherwise, child access is required here (adult access assumed or guaranteed later).
     if (entrance->GetParentRegionKey() == RR_ADULT_SPAWN) {
-      if (priorityName != "Nocturne" || Settings::GossipStoneHints.Is(HINTS_MASK_OF_TRUTH)) {
+      if (priorityName != "Nocturne" || ctx->GetOption(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NEED_TRUTH)) {
         continue;
       }
     }
     // If not shuffling dungeons, Nocturne requires adult access
-    if (!Settings::ShuffleDungeonEntrances && priorityName == "Nocturne") {
+    if (!ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES) && priorityName == "Nocturne") {
       if (entrance->GetType() != EntranceType::WarpSong && entrance->GetParentRegionKey() != RR_ADULT_SPAWN) {
         continue;
       }
@@ -546,6 +562,7 @@ static bool PlaceOtherImpasHouseEntrance(std::vector<Entrance*> entrances, std::
 
 // Shuffle entrances by placing them instead of entrances in the provided target entrances list
 static bool ShuffleEntrances(std::vector<Entrance*>& entrances, std::vector<Entrance*>& targetEntrances, std::vector<EntrancePair>& rollbacks) {
+  auto ctx = Rando::Context::GetInstance();
 
   Shuffle(entrances);
 
@@ -567,7 +584,7 @@ static bool ShuffleEntrances(std::vector<Entrance*>& entrances, std::vector<Entr
       if (ReplaceEntrance(entrance, target, rollbacks)) {
         // If shuffle cows is enabled and the last entrance was one to Impas House,
         // then immediately attempt to place the other entrance to Impas House
-        if (Settings::ShuffleCows && attemptedImpasHousePlacement) {
+        if (ctx->GetOption(RSK_SHUFFLE_COWS) && attemptedImpasHousePlacement) {
           if (!PlaceOtherImpasHouseEntrance(entrances, targetEntrances, rollbacks)) {
             return false;
           }
@@ -689,6 +706,7 @@ static void SetShuffledEntrances(EntrancePools entrancePools) {
 
 //Process for setting up the shuffling of all entrances to be shuffled
 int ShuffleAllEntrances() {
+  auto ctx = Rando::Context::GetInstance();
 
   totalRandomizableEntrances = 0;
   curNumRandomizedEntrances = 0;
@@ -992,36 +1010,36 @@ int ShuffleAllEntrances() {
   std::map<std::string, PriorityEntrance> oneWayPriorities = {};
 
   // Owl Drops
-  if (Settings::ShuffleOwlDrops) {
+  if (ctx->GetOption(RSK_SHUFFLE_OWL_DROPS)) {
     oneWayEntrancePools[EntranceType::OwlDrop] = GetShuffleableEntrances(EntranceType::OwlDrop);
   }
 
   // Spawns
-  if (Settings::ShuffleOverworldSpawns) {
+  if (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_SPAWNS)) {
     oneWayEntrancePools[EntranceType::Spawn] = GetShuffleableEntrances(EntranceType::Spawn);
   }
 
   // Warpsongs
-  if (Settings::ShuffleWarpSongs) {
+  if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
     oneWayEntrancePools[EntranceType::WarpSong] = GetShuffleableEntrances(EntranceType::WarpSong);
     // In Glitchless, there aren't any other ways to access these areas
-    if (Settings::Logic.Is(LOGIC_GLITCHLESS)) {
+    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
       oneWayPriorities["Bolero"] = priorityEntranceTable["Bolero"];
       oneWayPriorities["Nocturne"] = priorityEntranceTable["Nocturne"];
-      if (!Settings::ShuffleDungeonEntrances && !Settings::ShuffleOverworldEntrances) {
+      if (!ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES) && !ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
         oneWayPriorities["Requiem"] = priorityEntranceTable["Requiem"];
       }
     }
   }
 
   // Shuffle Bosses
-  if (Settings::ShuffleBossEntrances.IsNot(SHUFFLEBOSSES_OFF)) {
-    if (Settings::ShuffleBossEntrances.Is(SHUFFLEBOSSES_FULL)) {
+  if (ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES).IsNot(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
+    if (ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES).Is(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL)) {
       entrancePools[EntranceType::Boss] = GetShuffleableEntrances(EntranceType::ChildBoss);
       AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::AdultBoss));
       // If forest is closed, ensure Ghoma is inside the Deku tree
       // Deku tree being in its vanilla location is handled below
-      if (Settings::OpenForest.Is(OPENFOREST_CLOSED) && !(Settings::ShuffleOverworldEntrances || Settings::ShuffleInteriorEntrances)) {
+      if (ctx->GetOption(RSK_FOREST).Is(RO_FOREST_CLOSED) && !(ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES))) {
         FilterAndEraseFromPool(entrancePools[EntranceType::Boss], [](const Entrance* entrance){return entrance->GetParentRegionKey()    == RR_DEKU_TREE_BOSS_ENTRYWAY &&
                                                                                                       entrance->GetConnectedRegionKey() == RR_DEKU_TREE_BOSS_ROOM;});
       }
@@ -1029,7 +1047,7 @@ int ShuffleAllEntrances() {
       entrancePools[EntranceType::ChildBoss] = GetShuffleableEntrances(EntranceType::ChildBoss);
       entrancePools[EntranceType::AdultBoss] = GetShuffleableEntrances(EntranceType::AdultBoss);
       // If forest is closed, ensure Ghoma is inside the Deku tree
-      if (Settings::OpenForest.Is(OPENFOREST_CLOSED) && !(Settings::ShuffleOverworldEntrances || Settings::ShuffleInteriorEntrances)) {
+      if (ctx->GetOption(RSK_FOREST).Is(RO_FOREST_CLOSED) && !(ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES))) {
         FilterAndEraseFromPool(entrancePools[EntranceType::ChildBoss], [](const Entrance* entrance){return entrance->GetParentRegionKey()    == RR_DEKU_TREE_BOSS_ENTRYWAY &&
                                                                                                            entrance->GetConnectedRegionKey() == RR_DEKU_TREE_BOSS_ROOM;});
       }
@@ -1037,18 +1055,18 @@ int ShuffleAllEntrances() {
   }
 
   //Shuffle Dungeon Entrances
-  if (Settings::ShuffleDungeonEntrances.IsNot(SHUFFLEDUNGEONS_OFF)) {
+  if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) {
     entrancePools[EntranceType::Dungeon] = GetShuffleableEntrances(EntranceType::Dungeon);
 	//Add Ganon's Castle, if set to On + Ganon
-    if (Settings::ShuffleDungeonEntrances.Is(SHUFFLEDUNGEONS_GANON)) {
+    if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON)) {
       AddElementsToPool(entrancePools[EntranceType::Dungeon], GetShuffleableEntrances(EntranceType::GanonDungeon));
     }
     //If forest is closed don't allow a forest escape via spirit temple hands
-    if (Settings::OpenForest.Is(OPENFOREST_CLOSED) && !(Settings::ShuffleOverworldEntrances || Settings::ShuffleInteriorEntrances)) {
+    if (ctx->GetOption(RSK_FOREST).Is(RO_FOREST_CLOSED) && !(ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES))) {
       FilterAndEraseFromPool(entrancePools[EntranceType::Dungeon], [](const Entrance* entrance){return entrance->GetParentRegionKey()    == RR_KF_OUTSIDE_DEKU_TREE &&
                                                                                                        entrance->GetConnectedRegionKey() == RR_DEKU_TREE_ENTRYWAY;});
     }
-    if (Settings::DecoupleEntrances) {
+    if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
       for (Entrance* entrance : entrancePools[EntranceType::Dungeon]) {
         entrancePools[EntranceType::DungeonReverse].push_back(entrance->GetReverse());
       }
@@ -1056,13 +1074,13 @@ int ShuffleAllEntrances() {
   }
 
   // Interior entrances
-  if (Settings::ShuffleInteriorEntrances.IsNot(SHUFFLEINTERIORS_OFF)) {
+  if (ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).IsNot(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF)) {
     entrancePools[EntranceType::Interior] = GetShuffleableEntrances(EntranceType::Interior);
     // Special interiors
-    if (Settings::ShuffleInteriorEntrances.Is(SHUFFLEINTERIORS_ALL)) {
+    if (ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)) {
       AddElementsToPool(entrancePools[EntranceType::Interior], GetShuffleableEntrances(EntranceType::SpecialInterior));
     }
-    if (Settings::DecoupleEntrances) {
+    if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
       for (Entrance* entrance : entrancePools[EntranceType::Interior]) {
         entrancePools[EntranceType::InteriorReverse].push_back(entrance->GetReverse());
       }
@@ -1070,10 +1088,10 @@ int ShuffleAllEntrances() {
   }
 
   //grotto entrances
-  if (Settings::ShuffleGrottoEntrances) {
+  if (ctx->GetOption(RSK_SHUFFLE_GROTTO_ENTRANCES)) {
     entrancePools[EntranceType::GrottoGrave] = GetShuffleableEntrances(EntranceType::GrottoGrave);
 
-    if (Settings::DecoupleEntrances) {
+    if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
       for (Entrance* entrance : entrancePools[EntranceType::GrottoGrave]) {
         entrancePools[EntranceType::GrottoGraveReverse].push_back(entrance->GetReverse());
       }
@@ -1081,11 +1099,11 @@ int ShuffleAllEntrances() {
   }
 
   //overworld entrances
-  if (Settings::ShuffleOverworldEntrances) {
-    bool excludeOverworldReverse = Settings::MixOverworld && !Settings::DecoupleEntrances;
+  if (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
+    bool excludeOverworldReverse = ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) && !ctx->GetOption(RSK_DECOUPLED_ENTRANCES);
     entrancePools[EntranceType::Overworld] = GetShuffleableEntrances(EntranceType::Overworld, excludeOverworldReverse);
     // Only shuffle GV Lower Stream -> Lake Hylia if decoupled entrances are on
-    if (!Settings::DecoupleEntrances) {
+    if (!ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
       FilterAndEraseFromPool(entrancePools[EntranceType::Overworld], [](const Entrance* entrance){return entrance->GetParentRegionKey()    == RR_GV_LOWER_STREAM &&
                                                                                                          entrance->GetConnectedRegionKey() == RR_LAKE_HYLIA;});
     }
@@ -1096,35 +1114,35 @@ int ShuffleAllEntrances() {
   SetShuffledEntrances(oneWayEntrancePools);
 
   //combine entrance pools if mixing pools. Only continue if more than one pool is selected.
-  int totalMixedPools = (Settings::MixDungeons ? 1 : 0) + (Settings::MixOverworld ? 1 : 0) + (Settings::MixInteriors ? 1 : 0) + (Settings::MixGrottos ? 1 : 0);
+  int totalMixedPools = (ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES) ? 1 : 0);
   if (totalMixedPools < 2) {
-    Settings::MixedEntrancePools.SetSelectedIndex(OFF);
-    Settings::MixDungeons.SetSelectedIndex(OFF);
-    Settings::MixOverworld.SetSelectedIndex(OFF);
-    Settings::MixInteriors.SetSelectedIndex(OFF);
-    Settings::MixGrottos.SetSelectedIndex(OFF);
+    ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).SetSelectedIndex(OFF);
+    ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES).SetSelectedIndex(OFF);
+    ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).SetSelectedIndex(OFF);
+    ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).SetSelectedIndex(OFF);
+    ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).SetSelectedIndex(OFF);
   }
-  if (Settings::MixedEntrancePools) {
+  if (ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS)) {
     std::set<EntranceType> poolsToMix = {};
-    if (Settings::MixDungeons) {
+    if (ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES)) {
       poolsToMix.insert(EntranceType::Dungeon);
       // Insert reverse entrances when decoupled entrances is on
-      if (Settings::DecoupleEntrances) {
+      if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
         poolsToMix.insert(EntranceType::DungeonReverse);
       }
     }
-    if (Settings::MixOverworld) {
+    if (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
       poolsToMix.insert(EntranceType::Overworld);
     }
-    if (Settings::MixInteriors) {
+    if (ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES)) {
       poolsToMix.insert(EntranceType::Interior);
-      if (Settings::DecoupleEntrances) {
+      if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
         poolsToMix.insert(EntranceType::InteriorReverse);
       }
     }
-    if (Settings::MixGrottos) {
+    if (ctx->GetOption(RSK_SHUFFLE_GROTTO_ENTRANCES)) {
       poolsToMix.insert(EntranceType::GrottoGrave);
-      if (Settings::DecoupleEntrances) {
+      if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
         poolsToMix.insert(EntranceType::GrottoGraveReverse);
       }
     }
@@ -1251,6 +1269,7 @@ int ShuffleAllEntrances() {
 
 // Save the set of shuffled entrances that will be sent to the patch
 void CreateEntranceOverrides() {
+  auto ctx = Rando::Context::GetInstance();
   entranceOverrides.clear();
   if (noRandomEntrances) {
     return;
@@ -1277,7 +1296,7 @@ void CreateEntranceOverrides() {
 
     // Only set destination indices for two way entrances and when decouple entrances
     // is off
-    if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+    if (entrance->GetReverse() != nullptr && !ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
       replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
       destinationIndex = entrance->GetReverse()->GetIndex();
     }

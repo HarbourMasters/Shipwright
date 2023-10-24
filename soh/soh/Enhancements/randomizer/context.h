@@ -5,6 +5,7 @@
 #include "item_override.h"
 #include "3drando/text.hpp"
 #include "hint.h"
+#include "settings.h"
 
 #include <memory>
 #include <array>
@@ -47,6 +48,8 @@ class Context {
     void SetSeedGenerated(bool seedGenerated = true);
     bool IsSpoilerLoaded();
     void SetSpoilerLoaded(bool spoilerLoaded = true);
+    const Settings& GetSettings() const;
+    Option& GetOption(RandomizerSettingKey);
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true);
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
@@ -62,6 +65,7 @@ class Context {
     static std::weak_ptr<Context> mContext;
     std::array<Hint, RH_MAX> hintTable = {};
     std::array<ItemLocation, RC_MAX> itemLocationTable = {};
+    Settings mSettings;
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;
 };

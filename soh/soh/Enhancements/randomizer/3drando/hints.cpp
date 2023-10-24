@@ -617,7 +617,7 @@ void CreateGanonAndSheikText() {
   ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
   CreateMessageFromTextObject(0x70CB, 0, 2, 3, AddColorsAndFormat(ganonText));
 
-  if(Settings::LightArrowHintText){
+  if(ctx->GetOption(RSK_LIGHT_ARROWS_HINT)){
     //Get the location of the light arrows
     auto lightArrowLocation = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
       return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_LIGHT_ARROWS;
@@ -639,7 +639,7 @@ void CreateGanonAndSheikText() {
     CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(ganonHintText));
     ctx->AddHint(RH_GANONDORF_HINT, ganonHintText, lightArrowLocation[0], HINT_TYPE_STATIC, GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText());
 
-    if(!Settings::GanonsTrialsCount.Is(0)){
+    if(!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)){
       sheikText = Hint(RHT_SHEIK_LIGHT_ARROW_HINT).GetText() + lightArrowArea + "%w.";
       locsToCheck = {RC_GANONDORF_HINT, RC_SHEIK_HINT_GC, RC_SHEIK_HINT_MQ_GC};
     }
@@ -930,8 +930,8 @@ void CreateGregRupeeHint() {
 }
 
 void CreateSariaText() {
-  if(Settings::SariaHintText){
-    auto ctx = Rando::Context::GetInstance();
+  auto ctx = Rando::Context::GetInstance();
+  if(ctx->GetOption(RSK_SARIA_HINT)){
     //Get the location of a magic upgrade
     auto magicLocation = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc){return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_PROGRESSIVE_MAGIC_METER;})[0];
     sariaHintLoc = Rando::StaticData::GetLocation(magicLocation)->GetName();
@@ -1006,31 +1006,31 @@ void CreateWarpSongTexts() {
 void CreateAllHints() {
   auto ctx = Rando::Context::GetInstance();
   SPDLOG_DEBUG("\nNOW CREATING HINTS\n");
-  const HintSetting& hintSetting = hintSettingTable[Settings::HintDistribution.Value<uint8_t>()];
+  const HintSetting& hintSetting = hintSettingTable[ctx->GetOption(RSK_HINT_DISTRIBUTION).Value<uint8_t>()];
 
   uint8_t remainingDungeonWothHints = hintSetting.dungeonsWothLimit;
   uint8_t remainingDungeonBarrenHints = hintSetting.dungeonsBarrenLimit;
 
   // Apply Special hint exclusions with no requirements
-  if (Settings::Kak10GSHintText){
+  if (ctx->GetOption(RSK_KAK_10_SKULLS_HINT)){
       ctx->GetItemLocation(RC_KAK_10_GOLD_SKULLTULA_REWARD)->SetAsHinted();
   }
-  if (Settings::Kak20GSHintText){
+  if (ctx->GetOption(RSK_KAK_20_SKULLS_HINT)){
       ctx->GetItemLocation(RC_KAK_20_GOLD_SKULLTULA_REWARD)->SetAsHinted();
   }
-  if (Settings::Kak30GSHintText){
+  if (ctx->GetOption(RSK_KAK_30_SKULLS_HINT)){
       ctx->GetItemLocation(RC_KAK_30_GOLD_SKULLTULA_REWARD)->SetAsHinted();
   }
-  if (Settings::Kak40GSHintText){
+  if (ctx->GetOption(RSK_KAK_40_SKULLS_HINT)){
       ctx->GetItemLocation(RC_KAK_40_GOLD_SKULLTULA_REWARD)->SetAsHinted();
   }
-  if (Settings::Kak50GSHintText){
+  if (ctx->GetOption(RSK_KAK_50_SKULLS_HINT)){
       ctx->GetItemLocation(RC_KAK_50_GOLD_SKULLTULA_REWARD)->SetAsHinted();
   }
-  if (Settings::FrogsHintText){
+  if (ctx->GetOption(RSK_FROGS_HINT)){
       ctx->GetItemLocation(RC_ZR_FROGS_OCARINA_GAME)->SetAsHinted();
   }
-  if (Settings::skipChildZelda){
+  if (ctx->GetOption(RSK_SKIP_CHILD_ZELDA)){
       ctx->GetItemLocation(RC_SONG_FROM_IMPA)->SetAsHinted();
   }
 

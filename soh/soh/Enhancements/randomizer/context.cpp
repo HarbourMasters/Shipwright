@@ -56,7 +56,7 @@ void Context::PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bo
     SPDLOG_DEBUG(StaticData::GetLocation(locKey)->GetName());
     SPDLOG_DEBUG("\n\n");
 
-    if (applyEffectImmediately || Settings::Logic.Is(LOGIC_NONE) || Settings::Logic.Is(LOGIC_VANILLA)) {
+    if (applyEffectImmediately || mSettings.Setting(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS) || mSettings.Setting(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
         Rando::StaticData::RetrieveItem(item).ApplyEffect();
     }
 
@@ -96,7 +96,7 @@ void Context::AddLocations(const Container& locations, std::vector<RandomizerChe
 void Context::GenerateLocationPool() {
     allLocations.clear();
     AddLocation(RC_LINKS_POCKET);
-    if (Settings::TriforceHunt.Is(TRIFORCE_HUNT_ON)) {
+    if (mSettings.Setting(RSK_TRIFORCE_HUNT).Is(RO_GENERIC_ON)) {
         AddLocation(RC_TRIFORCE_COMPLETED);
     }
     AddLocations(StaticData::overworldLocations);
@@ -222,5 +222,13 @@ GetItemEntry Context::GetFinalGIEntry(RandomizerCheck rc, bool checkObtainabilit
         giEntry.drawFunc = fakeGiEntry->drawFunc;
     }
     return giEntry;
+}
+
+const Settings& Context::GetSettings() const {
+    return mSettings;
+}
+
+Rando::Option& Context::GetOption(RandomizerSettingKey key) {
+    return mSettings.Setting(key);
 }
 } // namespace Rando

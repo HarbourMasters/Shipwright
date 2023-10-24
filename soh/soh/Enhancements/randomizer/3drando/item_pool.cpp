@@ -665,9 +665,9 @@ void GenerateItemPool() {
     ctx->possibleIceTrapModels.push_back(RG_LIGHT_MEDALLION);
   }
 
-  if (TriforceHunt.Is(TRIFORCE_HUNT_ON)) {
+  if (ctx->GetOption(RSK_TRIFORCE_HUNT).Is(RO_GENERIC_ON)) {
     ctx->possibleIceTrapModels.push_back(RG_TRIFORCE_PIECE);
-    AddItemToMainPool(RG_TRIFORCE_PIECE, Settings::TriforceHuntTotal.Value<uint8_t>());
+    AddItemToMainPool(RG_TRIFORCE_PIECE, ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Value<uint8_t>());
     ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_TRIFORCE); // Win condition
     ctx->PlaceItemInLocation(RC_GANON, GetJunkItem(), false, true);
   } else {
@@ -970,14 +970,14 @@ void GenerateItemPool() {
   }
 
   //Shopsanity
-  if (Settings::Shopsanity.Is(SHOPSANITY_OFF) || Settings::Shopsanity.Is(SHOPSANITY_ZERO)) {
+  if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) || ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_ZERO_ITEMS)) {
     AddItemsToPool(ItemPool, normalRupees);
   } else { //Shopsanity 1-4, random
     AddItemsToPool(ItemPool, shopsanityRupees); //Shopsanity gets extra large rupees
   }
 
   //Scrubsanity
-  if (Settings::Scrubsanity.IsNot(SCRUBSANITY_OFF)) {
+  if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).IsNot(RO_SCRUBS_OFF)) {
     //Deku Tree
     if (DekuTree.IsMQ()) {
       AddItemToMainPool(RG_DEKU_SHIELD);

@@ -380,18 +380,19 @@ namespace Areas {
   }
 
   void AccessReset() {
+    auto ctx = Rando::Context::GetInstance();
       for (const RandomizerRegion area : GetAllAreas()) {
       AreaTable(area)->ResetVariables();
     }
 
-    if(Settings::HasNightStart) {
-        if(Settings::ResolvedStartingAge == AGE_CHILD) {
+    if(/*Settings::HasNightStart TODO:: Randomize Starting Time*/ false) {
+        if(ctx->GetSettings().ResolvedStartingAge() == RO_AGE_CHILD) {
           AreaTable(RR_ROOT)->childNight = true;
         } else {
           AreaTable(RR_ROOT)->adultNight = true;
         }
       } else {
-        if(Settings::ResolvedStartingAge == AGE_CHILD) {
+        if(ctx->GetSettings().ResolvedStartingAge() == RO_AGE_CHILD) {
           AreaTable(RR_ROOT)->childDay = true;
         } else {
           AreaTable(RR_ROOT)->adultDay = true;
@@ -401,6 +402,7 @@ namespace Areas {
 
   //Reset exits and clear items from locations
   void ResetAllLocations() {
+    auto ctx = Rando::Context::GetInstance();
       for (const RandomizerRegion area : GetAllAreas()) {
       AreaTable(area)->ResetVariables();
       //Erase item from every location in this exit
@@ -410,14 +412,14 @@ namespace Areas {
       }
     }
 
-    if(Settings::HasNightStart) {
-        if(Settings::ResolvedStartingAge == AGE_CHILD) {
+    if (/*Settings::HasNightStart TODO:: Randomize Starting Time*/ false) {
+        if(ctx->GetSettings().ResolvedStartingAge() == RO_AGE_CHILD) {
           AreaTable(RR_ROOT)->childNight = true;
         } else {
           AreaTable(RR_ROOT)->adultNight = true;
         }
-      } else {
-        if(Settings::ResolvedStartingAge == AGE_CHILD) {
+    } else {
+        if(ctx->GetSettings().ResolvedStartingAge() == RO_AGE_CHILD) {
           AreaTable(RR_ROOT)->childDay = true;
         } else {
           AreaTable(RR_ROOT)->adultDay = true;

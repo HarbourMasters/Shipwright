@@ -90,14 +90,15 @@ static bool UpdateToDAccess(Entrance* entrance, SearchMode mode) {
 
 // Various checks that need to pass for the world to be validated as completable
 static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, bool checkOtherEntranceAccess, std::vector<RandomizerRegion>& areaPool) {
+  auto ctx = Rando::Context::GetInstance();
   // Condition for validating Temple of Time Access
-  if (mode == SearchMode::TempleOfTimeAccess && ((Settings::ResolvedStartingAge == AGE_CHILD && AreaTable(RR_TEMPLE_OF_TIME)->Adult()) || (Settings::ResolvedStartingAge == AGE_ADULT && AreaTable(RR_TEMPLE_OF_TIME)->Child()) || !checkOtherEntranceAccess)) {
+  if (mode == SearchMode::TempleOfTimeAccess && ((ctx->GetSettings().ResolvedStartingAge() == RO_AGE_CHILD && AreaTable(RR_TEMPLE_OF_TIME)->Adult()) || (ctx->GetSettings().ResolvedStartingAge() == RO_AGE_ADULT && AreaTable(RR_TEMPLE_OF_TIME)->Child()) || !checkOtherEntranceAccess)) {
     mode = SearchMode::ValidStartingRegion;
   }
   // Condition for validating a valid starting region
   if (mode == SearchMode::ValidStartingRegion) {
-    bool childAccess = Settings::ResolvedStartingAge == AGE_CHILD || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child();
-    bool adultAccess = Settings::ResolvedStartingAge == AGE_ADULT || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult();
+    bool childAccess = ctx->GetSettings().ResolvedStartingAge() == RO_AGE_CHILD || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child();
+    bool adultAccess = ctx->GetSettings().ResolvedStartingAge() == RO_AGE_ADULT || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult();
 
     Area* kokiri = AreaTable(RR_KOKIRI_FOREST);
     Area* kakariko = AreaTable(RR_KAKARIKO_VILLAGE);
@@ -119,7 +120,7 @@ static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, 
       Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
     }
     // Reset access as the non-starting age
-    if (Settings::ResolvedStartingAge == AGE_CHILD) {
+    if (ctx->GetSettings().ResolvedStartingAge() == RO_AGE_CHILD) {
       for (RandomizerRegion areaKey : areaPool) {
         AreaTable(areaKey)->adultDay = false;
         AreaTable(areaKey)->adultNight = false;
@@ -142,11 +143,11 @@ static int GetMaxGSCount() {
   //If bridge or LACS is set to tokens, get how many are required
   int maxBridge = 0;
   int maxLACS = 0;
-  if (Settings::Bridge.Is(RAINBOWBRIDGE_TOKENS)) {
-    maxBridge = Settings::BridgeTokenCount.Value<uint8_t>();
+  if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)) {
+    maxBridge = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Value<uint8_t>();
   }
-  if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_TOKENS)) {
-    maxLACS = Settings::LACSTokenCount.Value<uint8_t>();
+  if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
+    maxLACS = ctx->GetOption(RSK_LACS_TOKEN_COUNT).Value<uint8_t>();
   }
   maxBridge = std::max(maxBridge, maxLACS);
   //Get the max amount of GS which could be useful from token reward locations
@@ -605,7 +606,7 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
         return;
     }
 
-    if (Settings::Logic.Is(LOGIC_NONE)) {
+    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC)) {
         FastFill(items, GetEmptyLocations(allowedLocations), true);
         return;
     }
@@ -727,7 +728,7 @@ static void RandomizeDungeonRewards() {
       ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
     }
 
-    if (Settings::Logic.Is(LOGIC_VANILLA)) { //Place dungeon rewards in vanilla locations
+    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) { //Place dungeon rewards in vanilla locations
       for (RandomizerCheck loc : Rando::StaticData::dungeonRewardLocations) {
         ctx->GetItemLocation(loc)->PlaceVanillaItem();
       }

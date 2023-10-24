@@ -5,8 +5,8 @@
 #include <memory>
 
 #include "3drando/text.hpp"
-#include "3drando/settings.hpp"
 #include "3drando/hint_list.hpp"
+#include "settings.h"
 #include "randomizerTypes.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 

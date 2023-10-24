@@ -10,6 +10,8 @@
 #include "dungeon.hpp"
 #include <functional>
 
+#include "../context.h"
+
 struct HintDistributionSetting {
   HintType type;
   uint8_t order;
@@ -154,9 +156,10 @@ public:
     }
 
     const Text& GetText() const {
-        if (Settings::ClearerHints.Is(HINTMODE_OBSCURE)) {
+        auto ctx = Rando::Context::GetInstance();
+        if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)) {
             return GetObscure();
-        } else if (Settings::ClearerHints.Is(HINTMODE_AMBIGUOUS)){
+        } else if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS)) {
             return GetAmbiguous();
         } else {
             return GetClear();
@@ -164,9 +167,10 @@ public:
     }
 
     const Text GetTextCopy() const {
-        if (Settings::ClearerHints.Is(HINTMODE_OBSCURE)) {
+        auto ctx = Rando::Context::GetInstance();
+        if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)) {
             return GetObscure();
-        } else if (Settings::ClearerHints.Is(HINTMODE_AMBIGUOUS)){
+        } else if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS)) {
             return GetAmbiguous();
         } else {
             return GetClear();

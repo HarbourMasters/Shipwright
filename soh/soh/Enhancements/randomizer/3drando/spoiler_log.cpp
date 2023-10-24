@@ -49,7 +49,7 @@ static SpoilerData spoilerData;
 
 void GenerateHash() {
     auto ctx = Rando::Context::GetInstance();
-    std::string hash = Settings::hash;
+    std::string hash = ctx->GetSettings().GetHash();
     // adds leading 0s to the hash string if it has less than 10 digits.
     while (hash.length() < 10) {
         hash = "0" + hash;
@@ -115,26 +115,26 @@ void WriteIngameSpoilerLog() {
         //     continue;
         // }
         // Cows
-        if (!Settings::ShuffleCows && loc->IsCategory(Category::cCow)) {
+        if (!ctx->GetOption(RSK_SHUFFLE_COWS) && loc->IsCategory(Category::cCow)) {
             continue;
         }
         // Merchants
-        else if (Settings::ShuffleMerchants.Is(SHUFFLEMERCHANTS_OFF) && loc->IsCategory(Category::cMerchant)) {
+        else if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_OFF) && loc->IsCategory(Category::cMerchant)) {
             continue;
         }
         // Adult Trade
-        else if (!Settings::ShuffleAdultTradeQuest && loc->IsCategory(Category::cAdultTrade)) {
+        else if (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && loc->IsCategory(Category::cAdultTrade)) {
             continue;
         }
         // Chest Minigame
-        else if (Settings::ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_OFF) &&
+        else if (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_GENERIC_OFF) &&
                  loc->IsCategory(Category::cChestMinigame)) {
             continue;
         }
         // Gerudo Fortress
-        else if ((Settings::GerudoFortress.Is(GERUDOFORTRESS_OPEN) &&
+        else if ((ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_NORMAL) &&
                   (loc->IsCategory(Category::cVanillaGFSmallKey) || loc->GetHintKey() == RHT_GF_GERUDO_MEMBERSHIP_CARD)) ||
-                 (Settings::GerudoFortress.Is(GERUDOFORTRESS_FAST) && loc->IsCategory(Category::cVanillaGFSmallKey) &&
+                 (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST) && loc->IsCategory(Category::cVanillaGFSmallKey) &&
                   loc->GetHintKey() != RHT_GF_NORTH_F1_CARPENTER)) {
             continue;
         }
@@ -187,7 +187,7 @@ void WriteIngameSpoilerLog() {
         }
         // Shops
         else if (loc->IsShop()) {
-            if (Settings::Shopsanity.Is(SHOPSANITY_OFF)) {
+            if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
                 spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
             } else {
                 spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_SCENE;
@@ -200,14 +200,14 @@ void WriteIngameSpoilerLog() {
         }
         // Gold Skulltulas
         else if (loc->IsCategory(Category::cSkulltula) &&
-                 ((Settings::Tokensanity.Is(TOKENSANITY_OFF)) ||
-                  (Settings::Tokensanity.Is(TOKENSANITY_DUNGEONS) && !loc->IsDungeon()) ||
-                  (Settings::Tokensanity.Is(TOKENSANITY_OVERWORLD) && loc->IsDungeon()))) {
+                 ((ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OFF)) ||
+                  (ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_DUNGEONS) && !loc->IsDungeon()) ||
+                  (ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OVERWORLD) && loc->IsDungeon()))) {
             spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
         }
         // Deku Scrubs
         else if (loc->IsCategory(Category::cDekuScrub) && !loc->IsCategory(Category::cDekuScrubUpgrades) &&
-                 Settings::Scrubsanity.Is(SCRUBSANITY_OFF)) {
+                 ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF)) {
             spoilerData.ItemLocations[spoilerItemIndex].CollectType = COLLECTTYPE_REPEATABLE;
             spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
         }
@@ -227,7 +227,7 @@ void WriteIngameSpoilerLog() {
     }
     spoilerData.ItemLocationsCount = spoilerItemIndex;
 
-    if (Settings::IngameSpoilers) {
+    if (/*Settings::IngameSpoilers TODO: Remove: don't think we have any need for this*/ false) {
         bool playthroughItemNotFound = false;
         // Write playthrough data to in-game spoiler log
         if (!spoilerOutOfSpace) {
@@ -359,58 +359,13 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
 // Writes the settings (without excluded locations, starting inventory and tricks) to the spoilerLog document.
 static void WriteSettings(const bool printAll = false) {
   // auto parentNode = spoilerLog.NewElement("settings");
+  auto ctx = Rando::Context::GetInstance();
 
-  std::vector<Menu*> allMenus = Settings::GetAllOptionMenus();
+  auto allOptions = ctx->GetSettings().GetAllOptions();
 
-  for (const Menu* menu : allMenus) {
-    if (menu->name == "Item Usability Settings" ||
-        menu->name == "Multiplayer Settings") continue;
-
-    if (menu->name == "Timesaver Settings") {
-      for (const Option* setting : *menu->settingsList) {
-        if (setting->GetName() == "Big Poe Target Count" ||
-            setting->GetName() == "Cuccos to return" ||
-            setting->GetName() == "Skip Epona Race" ||
-            setting->GetName() == "Skip Tower Escape" ||
-            setting->GetName() == "Skip Child Stealth" ||
-            setting->GetName() == "Complete Mask Quest" ||
-            setting->GetName() == "Skip Scarecrow's Song" ||
-            setting->GetName() == "Enable Glitch-Useful Cutscenes") {
-            std::string settingName = menu->name + ":" + setting->GetName();
-            jsonData["settings"][settingName] = setting->GetSelectedOptionText();
-        }
-      }
-      continue;
-    }
-
-    //This is a menu of settings, write them
-    if (menu->mode == OPTION_SUB_MENU && menu->printInSpoiler) {
-      for (const Option* setting : *menu->settingsList) {
-        std::string settingName = menu->name + ":" + setting->GetName();
-        jsonData["settings"][settingName] = setting->GetSelectedOptionText();
-      }
-
-
-      // for (const Option* setting : *menu->settingsList) {
-      //   if (printAll || (!setting->IsHidden() && setting->IsCategory(OptionCategory::Setting))) {
-      //     auto node = parentNode->InsertNewChildElement("setting");
-      //     node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
-      //     node->SetText(setting->GetSelectedOptionText().c_str());
-      //   }
-      // }
-    }
-  }
-
-  // 3drando doesn't have a "skip child zelda" setting, manually add it to the spoilerfile
-  jsonData["settings"]["Skip Child Zelda"] = Settings::skipChildZelda;
-
-  // 3drando uses an MQ dungeon count of 13 to mean random, manually add that to the spoilerfile as a bool
-  if (Settings::MQDungeonCount.GetSelectedOptionIndex() == 0) {
-    jsonData["settings"]["World Settings:MQ Dungeons"] = "None";
-  } else if (Settings::MQDungeonCount.GetSelectedOptionIndex() == 13) {
-    jsonData["settings"]["World Settings:MQ Dungeons"] = "Random Number";
-  } else {
-    jsonData["settings"]["World Settings:MQ Dungeons"] = "Set Number";
+  for (const Rando::Option& option : allOptions) {
+      std::string settingName = option.GetName();
+      jsonData["settings"][settingName] = option.GetSelectedOptionText();
   }
 
   // spoilerLog.RootElement()->InsertEndChild(parentNode);
@@ -424,10 +379,11 @@ static void WriteSettings(const bool printAll = false) {
 // Writes the excluded locations to the spoiler log, if there are any.
 static void WriteExcludedLocations() {
   // auto parentNode = spoilerLog.NewElement("excluded-locations");
+  auto ctx = Rando::Context::GetInstance();
 
-  for (size_t i = 1; i < Settings::excludeLocationsOptionsVector.size(); i++) {
-    for (const auto& location : Settings::excludeLocationsOptionsVector[i]) {
-      if (location->GetSelectedOptionIndex() == INCLUDE) {
+  for (size_t i = 1; i < ctx->GetSettings().GetExcludeLocationsOptions().size(); i++) {
+    for (const auto& location : ctx->GetSettings().GetExcludeLocationsOptions()[i]) {
+      if (location->GetSelectedOptionIndex() == RO_LOCATION_INCLUDE) {
         continue;
       }
 
@@ -446,61 +402,62 @@ static void WriteExcludedLocations() {
 
 // Writes the starting inventory to the spoiler log, if there is any.
 static void WriteStartingInventory() {
-  std::vector<std::vector<Option *>*> startingInventoryOptions = {
-    &Settings::startingItemsOptions,
-    &Settings::startingSongsOptions,
-    &Settings::startingEquipmentOptions,
-    &Settings::startingStonesMedallionsOptions,
-    &Settings::startingOthersOptions
-  };
+  // std::vector<std::vector<Option *>*> startingInventoryOptions = {
+  //   &Settings::startingItemsOptions,
+  //   &Settings::startingSongsOptions,
+  //   &Settings::startingEquipmentOptions,
+  //   &Settings::startingStonesMedallionsOptions,
+  //   &Settings::startingOthersOptions
+  // };
 
-  for (std::vector<Option*>* menu : startingInventoryOptions) {
-      for (size_t i = 0; i < menu->size(); ++i) {
-          const auto setting = menu->at(i);
-          // Starting Songs
-          if (setting->GetName() == "Start with Zelda's Lullaby" || 
-              setting->GetName() == "Start with Epona's Song" ||
-              setting->GetName() == "Start with Saria's Song" || 
-              setting->GetName() == "Start with Sun's Song" ||
-              setting->GetName() == "Start with Song of Time" || 
-              setting->GetName() == "Start with Song of Storms" ||
-              setting->GetName() == "Start with Minuet of Forest" || 
-              setting->GetName() == "Start with Bolero of Fire" ||
-              setting->GetName() == "Start with Serenade of Water" || 
-              setting->GetName() == "Start with Requiem of Spirit" ||
-              setting->GetName() == "Start with Nocturne of Shadow" || 
-              setting->GetName() == "Start with Prelude of Light") {
-              jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
-          }
-      }
-  }
-  for (std::vector<Option *>* menu : startingInventoryOptions) {
-    for (size_t i = 0; i < menu->size(); ++i) {
-      const auto setting = menu->at(i);
+  // for (std::vector<Option*>* menu : startingInventoryOptions) {
+  //     for (size_t i = 0; i < menu->size(); ++i) {
+  //         const auto setting = menu->at(i);
+  //         // Starting Songs
+  //         if (setting->GetName() == "Start with Zelda's Lullaby" || 
+  //             setting->GetName() == "Start with Epona's Song" ||
+  //             setting->GetName() == "Start with Saria's Song" || 
+  //             setting->GetName() == "Start with Sun's Song" ||
+  //             setting->GetName() == "Start with Song of Time" || 
+  //             setting->GetName() == "Start with Song of Storms" ||
+  //             setting->GetName() == "Start with Minuet of Forest" || 
+  //             setting->GetName() == "Start with Bolero of Fire" ||
+  //             setting->GetName() == "Start with Serenade of Water" || 
+  //             setting->GetName() == "Start with Requiem of Spirit" ||
+  //             setting->GetName() == "Start with Nocturne of Shadow" || 
+  //             setting->GetName() == "Start with Prelude of Light") {
+  //             jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
+  //         }
+  //     }
+  // }
+  // for (std::vector<Option *>* menu : startingInventoryOptions) {
+  //   for (size_t i = 0; i < menu->size(); ++i) {
+  //     const auto setting = menu->at(i);
    
-      // we need to write these every time because we're not clearing jsondata, so
-      // the default logic of only writing it when we aren't using the default value
-      // doesn't work, and because it'd be bad to set every single possible starting
-      // inventory item as "false" in the json, we're just going to check
-      // to see if the name is one of the 3 we're using rn
-      if (setting->GetName() == "Start with Consumables" ||
-          setting->GetName() == "Start with Max Rupees" ||
-          setting->GetName() == "Gold Skulltula Tokens" ||
-          setting->GetName() == "Start with Fairy Ocarina" ||
-          setting->GetName() == "Start with Kokiri Sword" ||
-          setting->GetName() == "Start with Deku Shield") {
-        jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
-      }
-    }
-  }
+  //     // we need to write these every time because we're not clearing jsondata, so
+  //     // the default logic of only writing it when we aren't using the default value
+  //     // doesn't work, and because it'd be bad to set every single possible starting
+  //     // inventory item as "false" in the json, we're just going to check
+  //     // to see if the name is one of the 3 we're using rn
+  //     if (setting->GetName() == "Start with Consumables" ||
+  //         setting->GetName() == "Start with Max Rupees" ||
+  //         setting->GetName() == "Gold Skulltula Tokens" ||
+  //         setting->GetName() == "Start with Fairy Ocarina" ||
+  //         setting->GetName() == "Start with Kokiri Sword" ||
+  //         setting->GetName() == "Start with Deku Shield") {
+  //       jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
+  //     }
+  //   }
+  // }
 }
 
 // Writes the enabled tricks to the spoiler log, if there are any.
 static void WriteEnabledTricks(tinyxml2::XMLDocument& spoilerLog) {
   //auto parentNode = spoilerLog.NewElement("enabled-tricks");
+  auto ctx = Rando::Context::GetInstance();
 
-  for (const auto& setting : Settings::trickOptions) {
-    if (setting->GetSelectedOptionIndex() != TRICK_ENABLED/* || !setting->IsCategory(OptionCategory::Setting)*/) {
+  for (const auto& setting : ctx->GetSettings().trickOptions) {
+    if (setting.GetSelectedOptionIndex() != RO_GENERIC_ON/* || !setting->IsCategory(OptionCategory::Setting)*/) {
       continue;
     }
     jsonData["enabledTricks"].push_back(RemoveLineBreaks(RandomizerTricks::GetRTName((RandomizerTrick)std::stoi(setting->GetName()))).c_str());

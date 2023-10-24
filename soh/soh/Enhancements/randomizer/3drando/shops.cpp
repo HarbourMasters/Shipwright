@@ -134,13 +134,14 @@ int GetPriceFromMax(int max) {
 // Get random price out of available "affordable prices", or just return 10 if Starter wallet is selected (no need to randomly select
 // from a single element)
 int GetPriceAffordable() {
-    if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_STARTER)) {
+   auto ctx = Rando::Context::GetInstance();
+    if (ctx->GetOption(RSK_SHOPSANITY_PRICES).Is(RO_SHOPSANITY_PRICE_STARTER)) {
         return 10;
     }
 
     static const std::vector<int> affordablePrices = { 10, 105, 205, 505 };
     std::vector<int> priceList;
-    uint8_t maxElements = Settings::ShopsanityPrices.Value<uint8_t>();
+    uint8_t maxElements = ctx->GetOption(RSK_SHOPSANITY_PRICES).Value<uint8_t>();
     for (int i = 0; i < maxElements; i++) {
         priceList.push_back(affordablePrices.at(i));
     }
@@ -148,8 +149,9 @@ int GetPriceAffordable() {
 }
 
 int GetRandomShopPrice() {
+   auto ctx = Rando::Context::GetInstance();
     // If Shopsanity prices aren't Balanced, but Affordable is on, don't GetPriceFromMax
-    if (Settings::ShopsanityPricesAffordable.Is(true) && Settings::ShopsanityPrices.IsNot(RO_SHOPSANITY_PRICE_BALANCED)) {
+    if (ctx->GetOption(RSK_SHOPSANITY_PRICES_AFFORDABLE).Is(true) && ctx->GetOption(RSK_SHOPSANITY_PRICES).IsNot(RO_SHOPSANITY_PRICE_BALANCED)) {
         return GetPriceAffordable();
     }
 
@@ -157,16 +159,16 @@ int GetRandomShopPrice() {
     int max = 0;
 
     // check settings for a wallet tier selection and set max amount as method for setting true randomization
-    if(Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_STARTER)) {
+    if(ctx->GetOption(RSK_SHOPSANITY_PRICES).Is(RO_SHOPSANITY_PRICE_STARTER)) {
         max = 19; // 95/5
     }
-    else if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_ADULT)) {
+    else if (ctx->GetOption(RSK_SHOPSANITY_PRICES).Is(RO_SHOPSANITY_PRICE_ADULT)) {
         max = 40; // 200/5
     }
-    else if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_GIANT)) {
+    else if (ctx->GetOption(RSK_SHOPSANITY_PRICES).Is(RO_SHOPSANITY_PRICE_GIANT)) {
         max = 100; // 500/5
     }
-    else if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_TYCOON)) {
+    else if (ctx->GetOption(RSK_SHOPSANITY_PRICES).Is(RO_SHOPSANITY_PRICE_TYCOON)) {
         max = 199; // 995/5
     }
     if (max != 0) {
@@ -205,13 +207,14 @@ int16_t GetRandomScrubPrice() {
 
 //Get 1 to 4, or a random number from 1-4 depending on shopsanity setting
 int GetShopsanityReplaceAmount() {
-  if (Settings::Shopsanity.Is(SHOPSANITY_ONE)) {
+   auto ctx = Rando::Context::GetInstance();
+  if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_ONE_ITEM)) {
     return 1;
-  } else if (Settings::Shopsanity.Is(SHOPSANITY_TWO)) {
+  } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_TWO_ITEMS)) {
     return 2;
-  } else if (Settings::Shopsanity.Is(SHOPSANITY_THREE)) {
+  } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_THREE_ITEMS)) {
     return 3;
-  } else if (Settings::Shopsanity.Is(SHOPSANITY_FOUR)) {
+  } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_FOUR_ITEMS)) {
     return 4;
   } else { //Random, get number in [1, 4]
     return Random(1, 5);

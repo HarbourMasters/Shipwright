@@ -6,6 +6,7 @@
 #include <list>
 
 #include "../randomizer_entrance.h"
+#include "../context.h"
 
 #define ENTRANCE_SHUFFLE_SUCCESS 0
 #define ENTRANCE_SHUFFLE_FAILURE 1
@@ -51,11 +52,12 @@ public:
     }
 
     bool GetConditionsMet() const {
-        if (Settings::Logic.Is(LOGIC_NONE) || Settings::Logic.Is(LOGIC_VANILLA)) {
+        auto ctx = Rando::Context::GetInstance();
+        if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) || ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
             return true;
-        } else if (Settings::Logic.Is(LOGIC_GLITCHLESS)) {
+        } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
             return conditions_met[0]();
-        } else if (Settings::Logic.Is(LOGIC_GLITCHED)) {
+        } else if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHED)) {
             if (conditions_met[0]()) {
                 return true;
             } else if (conditions_met[1] != NULL) {

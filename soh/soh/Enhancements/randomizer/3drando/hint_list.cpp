@@ -2,6 +2,7 @@
 #include "custom_messages.hpp"
 
 #include "../randomizerTypes.h"
+#include "../context.h"
 
 #include <array>
 
@@ -3147,58 +3148,61 @@ void HintTable_Init() {
 }
 
 int32_t StonesRequiredBySettings() {
+    auto ctx = Rando::Context::GetInstance();
     int32_t stones = 0;
-    if (Settings::Bridge.Is(RAINBOWBRIDGE_STONES)) {
-        stones = std::max<int32_t>({ stones, (int32_t)Settings::BridgeStoneCount.Value<uint8_t>() });
+    if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)) {
+        stones = std::max<int32_t>({ stones, (int32_t)ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).Value<uint8_t>() });
     }
-    if (Settings::Bridge.Is(RAINBOWBRIDGE_REWARDS)) {
-        stones = std::max<int32_t>({ stones, (int32_t)Settings::BridgeRewardCount.Value<uint8_t>() - 6 });
+    if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS)) {
+        stones = std::max<int32_t>({ stones, (int32_t)ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Value<uint8_t>() - 6 });
     }
-    if ((Settings::Bridge.Is(RAINBOWBRIDGE_DUNGEONS)) && (Settings::ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON))) {
-        stones = std::max<int32_t>({ stones, (int32_t)Settings::BridgeDungeonCount.Value<uint8_t>() - 6 });
+    if ((ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)) && (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON))) {
+        stones = std::max<int32_t>({ stones, (int32_t)ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Value<uint8_t>() - 6 });
     }
-    if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_STONES)) {
-        stones = std::max<int32_t>({ stones, (int32_t)Settings::LACSStoneCount.Value<uint8_t>() });
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
+        stones = std::max<int32_t>({ stones, (int32_t)ctx->GetOption(RSK_LACS_STONE_COUNT).Value<uint8_t>() });
     }
-    if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_REWARDS)) {
-        stones = std::max<int32_t>({ stones, (int32_t)Settings::LACSRewardCount.Value<uint8_t>() - 6 });
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(GANONSBOSSKEY_LACS_REWARDS)) {
+        stones = std::max<int32_t>({ stones, (int32_t)ctx->GetOption(RSK_LACS_REWARD_COUNT).Value<uint8_t>() - 6 });
     }
-    if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_DUNGEONS)) {
-        stones = std::max<int32_t>({ stones, (int32_t)Settings::LACSDungeonCount.Value<uint8_t>() - 6 });
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(GANONSBOSSKEY_LACS_DUNGEONS)) {
+        stones = std::max<int32_t>({ stones, (int32_t)ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Value<uint8_t>() - 6 });
     }
     return stones;
 }
 
 int32_t MedallionsRequiredBySettings() {
+    auto ctx = Rando::Context::GetInstance();
     int32_t medallions = 0;
-    if (Settings::Bridge.Is(RAINBOWBRIDGE_MEDALLIONS)) {
-        medallions = std::max<int32_t>({ medallions, (int32_t)Settings::BridgeMedallionCount.Value<uint8_t>() });
+    if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)) {
+        medallions = std::max<int32_t>({ medallions, (int32_t)ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).Value<uint8_t>() });
     }
-    if (Settings::Bridge.Is(RAINBOWBRIDGE_REWARDS)) {
-        medallions = std::max<int32_t>({ medallions, (int32_t)Settings::BridgeRewardCount.Value<uint8_t>() - 3 });
+    if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS)) {
+        medallions = std::max<int32_t>({ medallions, (int32_t)ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Value<uint8_t>() - 3 });
     }
-    if ((Settings::Bridge.Is(RAINBOWBRIDGE_DUNGEONS)) && (Settings::ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON))) {
-        medallions = std::max<int32_t>({ medallions, (int32_t)Settings::BridgeDungeonCount.Value<uint8_t>() - 3 });
+    if ((ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)) && (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON))) {
+        medallions = std::max<int32_t>({ medallions, (int32_t)ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Value<uint8_t>() - 3 });
     }
-    if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_MEDALLIONS)) {
-        medallions = std::max<int32_t>({ medallions, (int32_t)Settings::LACSMedallionCount.Value<uint8_t>() });
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_MEDALLIONS)) {
+        medallions = std::max<int32_t>({ medallions, (int32_t)ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Value<uint8_t>() });
     }
-    if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_REWARDS)) {
-        medallions = std::max<int32_t>({ medallions, (int32_t)Settings::LACSRewardCount.Value<uint8_t>() - 3 });
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
+        medallions = std::max<int32_t>({ medallions, (int32_t)ctx->GetOption(RSK_LACS_REWARD_COUNT).Value<uint8_t>() - 3 });
     }
-    if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_DUNGEONS)) {
-        medallions = std::max<int32_t>({ medallions, (int32_t)Settings::LACSDungeonCount.Value<uint8_t>() - 3 });
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS)) {
+        medallions = std::max<int32_t>({ medallions, (int32_t)ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Value<uint8_t>() - 3 });
     }
     return medallions;
 }
 
 int32_t TokensRequiredBySettings() {
+    auto ctx = Rando::Context::GetInstance();
     int32_t tokens = 0;
-    if (Settings::Bridge.Is(RAINBOWBRIDGE_TOKENS)) {
-        tokens = std::max<int32_t>({ tokens, (int32_t)Settings::BridgeTokenCount.Value<uint8_t>() });
+    if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)) {
+        tokens = std::max<int32_t>({ tokens, (int32_t)ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Value<uint8_t>() });
     }
-    if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_TOKENS)) {
-        tokens = std::max<int32_t>({ tokens, (int32_t)Settings::LACSTokenCount.Value<uint8_t>() });
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
+        tokens = std::max<int32_t>({ tokens, (int32_t)ctx->GetOption(RSK_LACS_TOKEN_COUNT).Value<uint8_t>() });
     }
     return tokens;
 }
@@ -3206,17 +3210,38 @@ int32_t TokensRequiredBySettings() {
 std::array<ConditionalAlwaysHint, 10> conditionalAlwaysHints = {
     std::make_pair(RC_MARKET_10_BIG_POES,
                    []() {
-                       return Settings::BigPoeTargetCount.Value<uint8_t>() >= 3;
+                       auto ctx = Rando::Context::GetInstance();
+                       return ctx->GetOption(RSK_BIG_POE_COUNT).Value<uint8_t>() >= 3;
                    }), // Remember, the option's value being 3 means 4 are required
-    std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH, []() { return !Settings::CompleteMaskQuest; }),
+    std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH,
+                   []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return !ctx->GetOption(RSK_COMPLETE_MASK_QUEST);
+                   }),
     std::make_pair(RC_SONG_FROM_OCARINA_OF_TIME, []() { return StonesRequiredBySettings() < 2; }),
     std::make_pair(RC_HF_OCARINA_OF_TIME_ITEM, []() { return StonesRequiredBySettings() < 2; }),
     std::make_pair(RC_SHEIK_IN_KAKARIKO, []() { return MedallionsRequiredBySettings() < 5; }),
     std::make_pair(RC_DMT_TRADE_CLAIM_CHECK, []() { return false; }),
-    std::make_pair(RC_KAK_30_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 30 && !Settings::Kak30GSHintText; }),
-    std::make_pair(RC_KAK_40_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 40 && !Settings::Kak40GSHintText; }),
-    std::make_pair(RC_KAK_50_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 50 && !Settings::Kak50GSHintText; }),
-    std::make_pair(RC_ZR_FROGS_OCARINA_GAME, []() { return !Settings::FrogsHintText; }),
+    std::make_pair(RC_KAK_30_GOLD_SKULLTULA_REWARD,
+                   []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return TokensRequiredBySettings() < 30 && !ctx->GetOption(RSK_KAK_30_SKULLS_HINT);
+                   }),
+    std::make_pair(RC_KAK_40_GOLD_SKULLTULA_REWARD,
+                   []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return TokensRequiredBySettings() < 40 && !ctx->GetOption(RSK_KAK_40_SKULLS_HINT);
+                   }),
+    std::make_pair(RC_KAK_50_GOLD_SKULLTULA_REWARD,
+                   []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return TokensRequiredBySettings() < 50 && !ctx->GetOption(RSK_KAK_50_SKULLS_HINT);
+                   }),
+    std::make_pair(RC_ZR_FROGS_OCARINA_GAME,
+                   []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return !ctx->GetOption(RSK_FROGS_HINT);
+                   }),
 };
 
 const HintText& Hint(const RandomizerHintTextKey hintKey) {
