@@ -638,8 +638,8 @@ void Play_Init(GameState* thisx) {
 
     if (gSaveContext.gameMode != 1) {
         if (gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT) {
-            play->transitionType =
-                (gEntranceTable[((void)0, gSaveContext.entranceIndex) + tempSetupIndex].field >> 7) & 0x7F; // Fade In
+            play->transitionType = ENTRANCE_INFO_END_TRANS_TYPE(
+                gEntranceTable[((void)0, gSaveContext.entranceIndex) + tempSetupIndex].field); // Fade In
         } else {
             play->transitionType = gSaveContext.nextTransitionType;
             gSaveContext.nextTransitionType = TRANS_NEXT_TYPE_DEFAULT;
@@ -861,7 +861,7 @@ void Play_Update(PlayState* play) {
                             sp6E = (gSaveContext.cutsceneIndex & 0xF) + 4;
                         }
 
-                        if (!(gEntranceTable[play->nextEntranceIndex + sp6E].field & 0x8000)) { // Continue BGM Off
+                        if (!(gEntranceTable[play->nextEntranceIndex + sp6E].field & ENTRANCE_INFO_CONTINUE_BGM_FLAG)) { // Continue BGM Off
                             // "Sound initalized. 111"
                             osSyncPrintf("\n\n\nサウンドイニシャル来ました。111");
                             if ((play->transitionType < TRANS_TYPE_MAX) && !Environment_IsForcedSequenceDisabled()) {

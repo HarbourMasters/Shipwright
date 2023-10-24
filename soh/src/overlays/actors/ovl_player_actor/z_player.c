@@ -3903,7 +3903,7 @@ s32 func_808382DC(Player* this, PlayState* play) {
 
             if (sp68) {
                 Play_TriggerRespawn(play);
-                func_800994A0(play);
+                Scene_SetTransitionForNextEntrance(play);
             } else {
                 // Special case for getting crushed in Forest Temple's Checkboard Ceiling Hall or Shadow Temple's
                 // Falling Spike Trap Room, to respawn the player in a specific place
@@ -4247,7 +4247,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
 
             if (sp3C == 0) {
                 Play_TriggerVoidOut(play);
-                func_800994A0(play);
+                Scene_SetTransitionForNextEntrance(play);
             } else {
                 play->nextEntranceIndex = play->setupExitList[sp3C - 1];
 
@@ -4270,7 +4270,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                             D_808544F8[D_80854514[play->nextEntranceIndex - 0x7FF9] + play->curSpawn];
                     }
 
-                    func_800994A0(play);
+                    Scene_SetTransitionForNextEntrance(play);
                 } else {
                     if (SurfaceType_GetSlope(&play->colCtx, poly, bgId) == 2) {
                         gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex = play->nextEntranceIndex;
@@ -4278,7 +4278,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                         gSaveContext.respawnFlag = -2;
                     }
                     gSaveContext.retainWeatherMode = 1;
-                    func_800994A0(play);
+                    Scene_SetTransitionForNextEntrance(play);
                 }
                 play->transitionTrigger = TRANS_TRIGGER_START;
             }
@@ -9702,7 +9702,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
         if (gSaveContext.showTitleCard) {
             if ((gSaveContext.sceneSetupIndex < 4) &&
                 (gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].field &
-                 0x4000) &&
+                 ENTRANCE_INFO_DISPLAY_TITLE_CARD_FLAG) &&
                 ((play->sceneNum != SCENE_DODONGOS_CAVERN) || (Flags_GetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN))) &&
                 ((play->sceneNum != SCENE_BOMBCHU_SHOP) || (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)))) {
                 TitleCard_InitPlaceName(play, &play->actorCtx.titleCtx, this->giObjectSegment, 160, 120, 144,
