@@ -24,6 +24,27 @@ CollisionHeaderFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
     return resource;
 }
 
+std::shared_ptr<IResource>
+CollisionHeaderFactory::ReadResourceXML(std::shared_ptr<ResourceInitData> initData, tinyxml2::XMLElement *reader) {
+    auto resource = std::make_shared<CollisionHeader>(initData);
+    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
+
+    switch (resource->GetInitData()->ResourceVersion) {
+        case 0:
+            factory = std::make_shared<CollisionHeaderFactoryV0>();
+            break;
+    }
+
+    if (factory == nullptr) {
+        SPDLOG_ERROR("Failed to load Collision Header with version {}", resource->GetInitData()->ResourceVersion);
+        return nullptr;
+    }
+
+    factory->ParseFileXML(reader, resource);
+
+    return resource;
+}
+
 void LUS::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                                      std::shared_ptr<IResource> resource)
 {
@@ -139,4 +160,117 @@ void LUS::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
     }
     collisionHeader->collisionHeaderData.waterBoxes = collisionHeader->waterBoxes.data();
 }
+}
+
+void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<IResource> resource) {
+    std::shared_ptr<CollisionHeader> collisionHeader = std::static_pointer_cast<CollisionHeader>(resource);
+
+    collisionHeader->collisionHeaderData.minBounds.x = reader->IntAttribute("MinBoundsX");
+    collisionHeader->collisionHeaderData.minBounds.y = reader->IntAttribute("MinBoundsY");
+    collisionHeader->collisionHeaderData.minBounds.z = reader->IntAttribute("MinBoundsZ");
+
+    collisionHeader->collisionHeaderData.maxBounds.x = reader->IntAttribute("MaxBoundsX");
+    collisionHeader->collisionHeaderData.maxBounds.y = reader->IntAttribute("MaxBoundsY");
+    collisionHeader->collisionHeaderData.maxBounds.z = reader->IntAttribute("MaxBoundsZ");
+
+    collisionHeader->collisionHeaderData.numVertices = reader->IntAttribute("NumVertices");
+    collisionHeader->collisionHeaderData.numPolygons = reader->IntAttribute("NumPolygons");
+    collisionHeader->surfaceTypesCount = reader->IntAttribute("NumPolygonTypes");
+    collisionHeader->camDataCount = reader->IntAttribute("NumCameraDatas");
+    collisionHeader->camPosCount = reader->IntAttribute("NumCameraPositionDatas");
+    collisionHeader->collisionHeaderData.numWaterBoxes = reader->IntAttribute("NumWaterBoxes");
+
+    collisionHeader->vertices.reserve(collisionHeader->collisionHeaderData.numVertices);
+    collisionHeader->polygons.reserve(collisionHeader->collisionHeaderData.numPolygons);
+    collisionHeader->surfaceTypes.reserve(collisionHeader->surfaceTypesCount);
+    collisionHeader->camData.reserve(collisionHeader->camDataCount);
+    collisionHeader->camPosDataIndices.reserve(collisionHeader->camDataCount);
+    collisionHeader->camPosData.reserve(collisionHeader->camPosCount);
+    collisionHeader->waterBoxes.reserve(collisionHeader->collisionHeaderData.numWaterBoxes);
+
+    Vec3s zero;
+    zero.x = 0;
+    zero.y = 0;
+    zero.z = 0;
+    collisionHeader->camPosDataZero = zero;
+
+    auto child = reader->FirstChildElement();
+
+    while (child != nullptr) {
+        std::string childName = child->Name();
+        if (childName == "Vertex") {
+            Vec3s vtx;
+            vtx.x = child->IntAttribute("X");
+            vtx.y = child->IntAttribute("Y");
+            vtx.z = child->IntAttribute("Z");
+            collisionHeader->vertices.push_back(vtx);
+        } else if (childName == "Polygon") {
+            CollisionPoly polygon;
+
+            polygon.type = child->IntAttribute("Type");
+        
+            polygon.flags_vIA = child->IntAttribute("VertexA");
+            polygon.flags_vIB = child->IntAttribute("VertexB");
+            polygon.vIC = child->IntAttribute("VertexC");
+
+            polygon.normal.x = child->IntAttribute("NormalX");
+            polygon.normal.y = child->IntAttribute("NormalY");
+            polygon.normal.z = child->IntAttribute("NormalZ");
+
+            polygon.dist = child->IntAttribute("Dist");
+
+            collisionHeader->polygons.push_back(polygon);
+        } else if (childName == "PolygonType") {
+            SurfaceType surfaceType;
+
+            //might be swapped but idk
+            surfaceType.data[1] = child->IntAttribute("Data1");
+            surfaceType.data[0] = child->IntAttribute("Data2");
+
+            collisionHeader->surfaceTypes.push_back(surfaceType);
+        } else if (childName == "CameraData") {
+            CamData camDataEntry;
+            camDataEntry.cameraSType = child->IntAttribute("SType");
+            camDataEntry.numCameras = child->IntAttribute("NumData");
+            collisionHeader->camData.push_back(camDataEntry);
+        
+            int32_t camPosDataIdx = child->IntAttribute("CameraPosDataSeg");
+            collisionHeader->camPosDataIndices.push_back(camPosDataIdx);
+        } else if (childName == "CameraPositionData") {
+            Vec3s pos;
+            pos.x = child->IntAttribute("X");
+            pos.y = child->IntAttribute("Y");
+            pos.z = child->IntAttribute("Z");
+            collisionHeader->camPosData.push_back(pos);
+        } else if (childName == "WaterBox") {
+            WaterBox waterBox;
+            waterBox.xMin = child->IntAttribute("XMin");
+            waterBox.ySurface = child->IntAttribute("Ysurface");
+            waterBox.zMin = child->IntAttribute("ZMin");
+            waterBox.xLength = child->IntAttribute("XLength");
+            waterBox.zLength = child->IntAttribute("ZLength");
+            waterBox.properties = child->IntAttribute("Properties");
+
+            collisionHeader->waterBoxes.push_back(waterBox);
+        }
+
+        child = child->NextSiblingElement();
+    }
+
+    for (size_t i = 0; i < collisionHeader->camDataCount; i++) {
+        int32_t idx = collisionHeader->camPosDataIndices[i];
+
+        if (collisionHeader->camPosCount > 0) {
+            collisionHeader->camData[i].camPosData = &collisionHeader->camPosData[idx];
+        } else {
+            collisionHeader->camData[i].camPosData = &collisionHeader->camPosDataZero;
+        }
+    }
+
+    collisionHeader->collisionHeaderData.vtxList = collisionHeader->vertices.data();
+    collisionHeader->collisionHeaderData.polyList = collisionHeader->polygons.data();
+    collisionHeader->collisionHeaderData.surfaceTypeList = collisionHeader->surfaceTypes.data();
+    collisionHeader->collisionHeaderData.cameraDataList = collisionHeader->camData.data();
+    collisionHeader->collisionHeaderData.cameraDataListLen = collisionHeader->camDataCount;
+    collisionHeader->collisionHeaderData.waterBoxes = collisionHeader->waterBoxes.data();
 }
