@@ -372,4 +372,24 @@ RandoOptionStartingAge Settings::ResolvedStartingAge() const {
 std::string Settings::GetHash() const {
     return mHash;
 }
+
+void Settings::SetHash(std::string hash) {
+    mHash = hash;
+}
+
+const std::string& Settings::GetSeedString() const {
+    return mSeedString;
+}
+
+void Settings::SetSeedString(std::string seedString) {
+    mSeedString = seedString;
+}
+
+const uint32_t Settings::GetSeed() const {
+    return mSeed;
+}
+
+void Settings::SetSeed(uint32_t seed) {
+    mSeed = seed;
+}
 }

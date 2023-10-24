@@ -224,7 +224,7 @@ GetItemEntry Context::GetFinalGIEntry(RandomizerCheck rc, bool checkObtainabilit
     return giEntry;
 }
 
-const Settings& Context::GetSettings() const {
+Settings& Context::GetSettings() const {
     return mSettings;
 }
 

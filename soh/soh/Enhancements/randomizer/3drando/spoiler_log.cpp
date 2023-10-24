@@ -631,6 +631,7 @@ Rando::ItemLocation* GetItemLocation(RandomizerGet item) {
 
 // Writes the hints to the spoiler log, if they are enabled.
 static void WriteHints(int language) {
+    auto ctx = Rando::Context::GetInstance();
     std::string unformattedGanonText;
     std::string unformattedGanonHintText;
     std::string unformattedDampesText;
@@ -648,7 +649,7 @@ static void WriteHints(int language) {
             unformattedSheikText = GetSheikHintText().GetEnglish();
             unformattedSariaText = GetSariaHintText().GetEnglish();
 
-            if (Settings::ShuffleWarpSongs){
+            if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)){
               jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
               jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
               jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
@@ -667,7 +668,7 @@ static void WriteHints(int language) {
             unformattedSheikText = GetSheikHintText().GetFrench();
             unformattedSariaText = GetSariaHintText().GetFrench();
 
-            if (Settings::ShuffleWarpSongs){
+            if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)){
               jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
               jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
               jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
@@ -720,30 +721,29 @@ static void WriteHints(int language) {
     std::string sariaText = AutoFormatHintTextString(unformattedSariaText);
 
     jsonData["ganonText"] = ganonText;
-    if (Settings::LightArrowHintText){
+    if (ctx->GetOption(RSK_LIGHT_ARROWS_HINT)){
       jsonData["ganonHintText"] = ganonHintText;
       jsonData["lightArrowHintLoc"] = GetLightArrowHintLoc();
-      if (!Settings::GanonsTrialsCount.Is(0)){
+      if (!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)){
         jsonData["sheikText"] = sheikText;
       }
     }
-    if (Settings::DampeHintText){
+    if (ctx->GetOption(RSK_DAMPES_DIARY_HINT)){
       jsonData["dampeText"] = dampesText;
       jsonData["dampeHintLoc"] = GetDampeHintLoc();
     }
-    if (Settings::GregHintText){
+    if (ctx->GetOption(RSK_GREG_HINT)){
       jsonData["gregText"] = gregText;
       jsonData["gregLoc"] = Rando::StaticData::GetLocation(GetItemLocation(RG_GREG_RUPEE)->GetRandomizerCheck())->GetName();
     }
-    if (Settings::SariaHintText){
+    if (ctx->GetOption(RSK_SARIA_HINT)){
       jsonData["sariaText"] = sariaText;
       jsonData["sariaHintLoc"] = GetSariaHintLoc();
     }
 
-    if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
+    if (ctx->GetOption(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NONE)) {
         return;
     }
-    auto ctx = Rando::Context::GetInstance();
     for (const RandomizerCheck key : Rando::StaticData::gossipStoneLocations) {
         Rando::Hint* hint = ctx->GetHint((RandomizerHintKey)(key - RC_DMC_GOSSIP_STONE + 1));
         Rando::ItemLocation* hintedLocation = ctx->GetItemLocation(hint->GetHintedLocation());
@@ -844,8 +844,8 @@ const char* SpoilerLog_Write(int language) {
     jsonData.clear();
 
     jsonData["version"] = (char*) gBuildVersion;
-    jsonData["seed"] = Settings::seedString;
-    jsonData["finalSeed"] = Settings::seed;
+    jsonData["seed"] = ctx->GetSettings().GetSeedString();
+    jsonData["finalSeed"] = ctx->GetSettings().GetSeed();
 
     // Write Hash
     int index = 0;
@@ -917,8 +917,9 @@ bool PlacementLog_Write() {
     auto rootNode = placementLog.NewElement("placement-log");
     placementLog.InsertEndChild(rootNode);
 
-    rootNode->SetAttribute("version", Settings::version.c_str());
-    rootNode->SetAttribute("seed", Settings::seed);
+    // rootNode->SetAttribute("version", Settings::version.c_str());
+    // rootNode->SetAttribute("seed", Settings::seed);
+    // TODO: Do we even use this?
 
     // WriteSettings(placementLog, true); // Include hidden settings.
     // WriteExcludedLocations(placementLog);
