@@ -803,6 +803,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option Scrubsanity;
   extern Option ShuffleCows;
   extern Option ShuffleKokiriSword;
+  extern Option ShuffleMasterSword;
   extern Option ShuffleOcarinas;
   extern Option ShuffleOcarinaButtons;
   extern Option ShuffleWeirdEgg;

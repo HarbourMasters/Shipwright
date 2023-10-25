@@ -111,7 +111,7 @@ void AreaTable_Init_JabuJabusBelly() {
 
   areaTable[JABU_JABUS_BELLY_COMPASS_ROOM] = Area("Jabu Jabus Belly Compass Room", "Jabu Jabus Belly", JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(JABU_JABUS_BELLY_COMPASS_CHEST, {[]{return IsAdult || CanChildAttack;}}),
+                  LocationAccess(JABU_JABUS_BELLY_COMPASS_CHEST, {[]{return CanAdultAttack || CanChildAttack;}}),
                 }, {
                   //Exits
                   Entrance(JABU_JABUS_BELLY_FORKED_CORRIDOR, {[]{return true;}}),
@@ -150,7 +150,7 @@ void AreaTable_Init_JabuJabusBelly() {
 
   areaTable[JABU_JABUS_BELLY_NEAR_BOSS_ROOM] = Area("Jabu Jabus Belly Near Boss Room", "Jabu Jabus Belly", JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(JABU_JABUS_BELLY_GS_NEAR_BOSS, {[]{return IsAdult || CanChildAttack;}}),
+                  LocationAccess(JABU_JABUS_BELLY_GS_NEAR_BOSS, {[]{return CanAdultAttack || CanChildAttack;}}),
                 }, {
                   //Exits
                   Entrance(JABU_JABUS_BELLY_LIFT_MIDDLE, {[]{return true;}}),

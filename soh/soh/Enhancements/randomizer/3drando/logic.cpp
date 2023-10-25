@@ -121,7 +121,8 @@ namespace Logic {
 
   //Greg
   bool Greg = false;
-  bool GregInLogic = false;
+  bool GregInBridgeLogic = false;
+  bool GregInLacsLogic = false;
 
   //Progressive Items
   uint8_t ProgressiveBulletBag  = 0;
@@ -261,6 +262,8 @@ namespace Logic {
   bool CanBlastOrSmash  = false;
   bool CanChildAttack   = false;
   bool CanChildDamage   = false;
+  bool CanAdultAttack   = false;
+  bool CanAdultDamage   = false;
   bool CanCutShrubs     = false;
   bool CanDive          = false;
   bool CanLeaveForest   = false;
@@ -548,7 +551,6 @@ namespace Logic {
     SilverScale     = ProgressiveScale      >= 1;
     GoldScale       = ProgressiveScale      >= 2;
     AdultsWallet    = ProgressiveWallet     >= 1;
-    MasterSword     = MasterSword   || IsAdult;
     BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
     //you need at least 2 buttons for scarecrow song
@@ -598,8 +600,10 @@ namespace Logic {
     CanBlastOrSmash = HasExplosives || CanUse(MEGATON_HAMMER);
     CanChildAttack  = IsChild && (Slingshot || Boomerang || Sticks || KokiriSword || HasExplosives || CanUse(DINS_FIRE) || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD));
     CanChildDamage  = IsChild && (Slingshot ||              Sticks || KokiriSword || HasExplosives || CanUse(DINS_FIRE) || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD));
-    CanStunDeku     = IsAdult || CanChildAttack || Nuts || HasShield;
-    CanCutShrubs    = IsAdult /*|| Sticks*/ || KokiriSword || Boomerang || HasExplosives || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD);
+    CanAdultAttack  = IsAdult && (CanUse(BOW) || CanUse(BOOMERANG)       || CanUse(STICKS) || CanUse(KOKIRI_SWORD) || HasExplosives || CanUse(DINS_FIRE) || MasterSword || Hammer || BiggoronSword || Hookshot);
+    CanAdultDamage  = IsAdult && (CanUse(BOW) || CanUse(STICKS)          || CanUse(KOKIRI_SWORD) || HasExplosives || CanUse(DINS_FIRE) || MasterSword || Hammer || BiggoronSword);
+    CanStunDeku     = CanAdultAttack || CanChildAttack || Nuts || HasShield;
+    CanCutShrubs    = CanUse(KOKIRI_SWORD) || CanUse(BOOMERANG) || HasExplosives || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD);
     CanDive         = ProgressiveScale >= 1;
     CanLeaveForest  = OpenForest.IsNot(OPENFOREST_CLOSED) || IsAdult || DekuTreeClear || ShuffleInteriorEntrances || ShuffleOverworldEntrances;
     CanPlantBugs    = IsChild && Bugs;
@@ -626,8 +630,8 @@ namespace Logic {
     HasFireSourceWithTorch = HasFireSource || CanUse(STICKS);
 
     //Gerudo Fortress
-    CanFinishGerudoFortress = (GerudoFortress.Is(GERUDOFORTRESS_NORMAL)    && GerudoFortressKeys >= 4 && (IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)) && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen)) ||
-                              (GerudoFortress.Is(GERUDOFORTRESS_FAST)      && GerudoFortressKeys >= 1 && (IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD))) ||
+    CanFinishGerudoFortress = (GerudoFortress.Is(GERUDOFORTRESS_NORMAL)    && GerudoFortressKeys >= 4 && (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)) && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen)) ||
+                              (GerudoFortress.Is(GERUDOFORTRESS_FAST)      && GerudoFortressKeys >= 1 && (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD))) ||
                               (GerudoFortress.IsNot(GERUDOFORTRESS_NORMAL) && GerudoFortress.IsNot(GERUDOFORTRESS_FAST));
 
     HasShield          = CanUse(HYLIAN_SHIELD) || CanUse(DEKU_SHIELD); //Mirror shield can't reflect attacks
@@ -636,7 +640,7 @@ namespace Logic {
     AdultReflectShield = IsAdult && CanUse(HYLIAN_SHIELD); //Mirror shield can't reflect attacks
     AdultShield        = IsAdult && (CanUse(HYLIAN_SHIELD) || CanUse(MIRROR_SHIELD));
     CanShieldFlick     = ChildShield || AdultShield;
-    CanJumpslash       = IsAdult || Sticks || KokiriSword;
+    CanJumpslash       = CanUse(STICKS) || CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD); // Not including hammer as hammer jump attacks can be weird
     CanUseProjectile   = HasExplosives || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(SLINGSHOT) || CanUse(BOOMERANG);
     CanUseMagicArrow   = CanUse(FIRE_ARROWS) || CanUse(ICE_ARROWS) || CanUse(LIGHT_ARROWS);
 
@@ -646,22 +650,23 @@ namespace Logic {
     DungeonCount          = (DekuTreeClear ? 1:0) + (DodongosCavernClear ? 1:0) + (JabuJabusBellyClear ? 1:0) + (ForestTempleClear ? 1:0) + (FireTempleClear ? 1:0) + (WaterTempleClear ? 1:0) + (SpiritTempleClear ? 1:0) + (ShadowTempleClear ? 1:0);
     HasAllStones          = StoneCount == 3;
     HasAllMedallions      = MedallionCount == 6;
-    GregInLogic           = BridgeRewardOptions.Is(BRIDGE_OPTION_GREG) || LACSRewardOptions.Is(LACS_OPTION_GREG);
+    GregInBridgeLogic     = BridgeRewardOptions.Is(BRIDGE_OPTION_GREG);
+    GregInLacsLogic       = LACSRewardOptions.Is(LACS_OPTION_GREG);
 
     CanBuildRainbowBridge = Bridge.Is(RAINBOWBRIDGE_OPEN)                                                                         ||
                            (Bridge.Is(RAINBOWBRIDGE_VANILLA)    && ShadowMedallion && SpiritMedallion && LightArrows)             ||
-                           (Bridge.Is(RAINBOWBRIDGE_STONES)     && StoneCount + (Greg && GregInLogic ? 1 : 0) >= BridgeStoneCount.Value<uint8_t>())                    ||
-                           (Bridge.Is(RAINBOWBRIDGE_MEDALLIONS) && MedallionCount + (Greg && GregInLogic ? 1 : 0) >= BridgeMedallionCount.Value<uint8_t>())            ||
-                           (Bridge.Is(RAINBOWBRIDGE_REWARDS)    && StoneCount + MedallionCount + (Greg && GregInLogic ? 1 : 0) >= BridgeRewardCount.Value<uint8_t>())  ||
-                           (Bridge.Is(RAINBOWBRIDGE_DUNGEONS)   && DungeonCount + (Greg && GregInLogic ? 1 : 0) >= BridgeDungeonCount.Value<uint8_t>())                ||
+                           (Bridge.Is(RAINBOWBRIDGE_STONES)     && StoneCount + (Greg && GregInBridgeLogic ? 1 : 0) >= BridgeStoneCount.Value<uint8_t>())                    ||
+                           (Bridge.Is(RAINBOWBRIDGE_MEDALLIONS) && MedallionCount + (Greg && GregInBridgeLogic ? 1 : 0) >= BridgeMedallionCount.Value<uint8_t>())            ||
+                           (Bridge.Is(RAINBOWBRIDGE_REWARDS)    && StoneCount + MedallionCount + (Greg && GregInBridgeLogic ? 1 : 0) >= BridgeRewardCount.Value<uint8_t>())  ||
+                           (Bridge.Is(RAINBOWBRIDGE_DUNGEONS)   && DungeonCount + (Greg && GregInBridgeLogic ? 1 : 0) >= BridgeDungeonCount.Value<uint8_t>())                ||
                            (Bridge.Is(RAINBOWBRIDGE_TOKENS)     && GoldSkulltulaTokens >= BridgeTokenCount.Value<uint8_t>()) ||
                            (Bridge.Is(RAINBOWBRIDGE_GREG)       && Greg);
 
     CanTriggerLACS = (LACSCondition == LACSCONDITION_VANILLA    && ShadowMedallion && SpiritMedallion)                          ||
-                     (LACSCondition == LACSCONDITION_STONES     && StoneCount + (Greg && GregInLogic ? 1 : 0) >= LACSStoneCount.Value<uint8_t>())                    ||
-                     (LACSCondition == LACSCONDITION_MEDALLIONS && MedallionCount + (Greg && GregInLogic ? 1 : 0) >= LACSMedallionCount.Value<uint8_t>())            ||
-                     (LACSCondition == LACSCONDITION_REWARDS    && StoneCount + MedallionCount + (Greg && GregInLogic ? 1 : 0) >= LACSRewardCount.Value<uint8_t>())  ||
-                     (LACSCondition == LACSCONDITION_DUNGEONS   && DungeonCount + (Greg && GregInLogic ? 1 : 0) >= LACSDungeonCount.Value<uint8_t>())                ||
+                     (LACSCondition == LACSCONDITION_STONES     && StoneCount + (Greg && GregInLacsLogic ? 1 : 0) >= LACSStoneCount.Value<uint8_t>())                    ||
+                     (LACSCondition == LACSCONDITION_MEDALLIONS && MedallionCount + (Greg && GregInLacsLogic ? 1 : 0) >= LACSMedallionCount.Value<uint8_t>())            ||
+                     (LACSCondition == LACSCONDITION_REWARDS    && StoneCount + MedallionCount + (Greg && GregInLacsLogic ? 1 : 0) >= LACSRewardCount.Value<uint8_t>())  ||
+                     (LACSCondition == LACSCONDITION_DUNGEONS   && DungeonCount + (Greg && GregInLacsLogic ? 1 : 0) >= LACSDungeonCount.Value<uint8_t>())                ||
                      (LACSCondition == LACSCONDITION_TOKENS     && GoldSkulltulaTokens >= LACSTokenCount.Value<uint8_t>());
     CanCompleteTriforce = TriforcePieces >= TriforceHuntRequired.Value<uint8_t>();
   }
@@ -874,6 +879,8 @@ namespace Logic {
 
      //Greg
      Greg = false;
+     GregInBridgeLogic = false;
+     GregInLacsLogic = false;
 
      //Ocarina C Buttons
      OcarinaAButton = ShuffleOcarinaButtons.Is(true) ? 0 : 1;

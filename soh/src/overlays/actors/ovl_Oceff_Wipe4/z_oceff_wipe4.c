@@ -39,7 +39,7 @@ void OceffWipe4_Init(Actor* thisx, PlayState* play) {
 void OceffWipe4_Destroy(Actor* thisx, PlayState* play) {
     OceffWipe4* this = (OceffWipe4*)thisx;
 
-    func_800876C8(play);
+    Magic_Reset(play);
 }
 
 void OceffWipe4_Update(Actor* thisx, PlayState* play) {

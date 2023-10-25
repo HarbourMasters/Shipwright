@@ -2958,6 +2958,20 @@ void HintTable_Init() {
             "Ja, ja, ja... Nunca me derrotarás reflejando mis esferas de energía y desplegando la flecha de luz de " },
     });
 
+
+    /*--------------------------
+    |MASTER SWORD LOCATION TEXT|
+    ---------------------------*/
+
+    hintTable[MASTER_SWORD_LOCATION_HINT] = HintText::MasterSword({
+        // obscure text
+        Text{"And even if you do, you'll never find the legendary blade hidden in ",
+            /*french*/
+            "Et même si tu les trouves, tu ne touveras jamais l'épée de légende cachée dans ",
+            /*spanish*/
+            "E incluso si lo haces, nunca encontrarás la espada legendaria escondida en " },
+    });
+
     hintTable[YOUR_POCKET] = HintText::Exclude({
         // obscure text
         Text{ "your pocket", /*french*/ "tes poches", /*spanish*/ "tu bolsillo" },

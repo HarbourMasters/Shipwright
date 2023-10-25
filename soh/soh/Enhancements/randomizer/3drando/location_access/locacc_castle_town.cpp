@@ -52,6 +52,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[TEMPLE_OF_TIME] = Area("Temple of Time", "Temple of Time", TEMPLE_OF_TIME, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
+                  LocationAccess(TOT_MASTER_SWORD, {[]{return IsAdult;}}),
                   LocationAccess(TOT_LIGHT_ARROWS_CUTSCENE, {[]{return IsAdult && CanTriggerLACS;}}),
                 }, {
                   //Exits
