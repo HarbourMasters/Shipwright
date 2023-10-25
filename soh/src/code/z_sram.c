@@ -76,42 +76,42 @@ void Sram_OpenSave() {
                 gSaveContext.entranceIndex = dungeonEntrances[gSaveContext.savedSceneNum];
                 break;
             case SCENE_DEKU_TREE_BOSS:
-                gSaveContext.entranceIndex = 0;
+                gSaveContext.entranceIndex = ENTR_DEKU_TREE_0;
                 break;
             case SCENE_DODONGOS_CAVERN_BOSS:
-                gSaveContext.entranceIndex = 4;
+                gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_0;
                 break;
             case SCENE_JABU_JABU_BOSS:
-                gSaveContext.entranceIndex = 0x28;
+                gSaveContext.entranceIndex = ENTR_JABU_JABU_0;
                 break;
             case SCENE_FOREST_TEMPLE_BOSS:
-                gSaveContext.entranceIndex = 0x169;
+                gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_0;
                 break;
             case SCENE_FIRE_TEMPLE_BOSS:
-                gSaveContext.entranceIndex = 0x165;
+                gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_0;
                 break;
             case SCENE_WATER_TEMPLE_BOSS:
-                gSaveContext.entranceIndex = 0x10;
+                gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_0;
                 break;
             case SCENE_SPIRIT_TEMPLE_BOSS:
-                gSaveContext.entranceIndex = 0x82;
+                gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_0;
                 break;
             case SCENE_SHADOW_TEMPLE_BOSS:
-                gSaveContext.entranceIndex = 0x37;
+                gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_0;
                 break;
             case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
             case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
             case SCENE_GANONDORF_BOSS:
             case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
             case SCENE_GANON_BOSS:
-                gSaveContext.entranceIndex = 0x41B;
+                gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0;
                 break;
 
             default:
                 if (gSaveContext.savedSceneNum != SCENE_LINKS_HOUSE) {
-                    gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? 0xBB : 0x5F4;
+                    gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? ENTR_LINKS_HOUSE_0 : ENTR_TEMPLE_OF_TIME_7;
                 } else {
-                    gSaveContext.entranceIndex = 0xBB;
+                    gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_0;
                 }
                 break;
         }
@@ -207,7 +207,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         Sram_InitDebugSave();
     }
 
-    gSaveContext.entranceIndex = 0xBB;
+    gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_0;
     gSaveContext.linkAge = 1;
     gSaveContext.dayTime = 0x6AAB;
     gSaveContext.cutsceneIndex = 0xFFF1;

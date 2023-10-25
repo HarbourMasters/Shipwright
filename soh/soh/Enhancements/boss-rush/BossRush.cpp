@@ -292,7 +292,7 @@ void BossRush_InitSave() {
     }
 
     gSaveContext.isBossRushPaused = 1;
-    gSaveContext.entranceIndex = 107;
+    gSaveContext.entranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
     gSaveContext.cutsceneIndex = 0x8000;
     gSaveContext.isMagicAcquired = 1;
 

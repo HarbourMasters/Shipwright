@@ -246,7 +246,7 @@ void func_80064824(PlayState* play, CutsceneContext* csCtx, CsCmdBase* cmd) {
         case 3:
             if (sp3F != 0) {
                 Flags_SetEnv(play, 0);
-                if (gSaveContext.entranceIndex == 0x0053 || (IS_RANDO && gSaveContext.entranceIndex == 0x05F4)) {
+                if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_0 || (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_7)) {
                     Flags_SetEnv(play, 2);
                 }
             }
@@ -1314,12 +1314,12 @@ void Cutscene_Command_TransitionFX(PlayState* play, CutsceneContext* csCtx, CsCm
                 play->envCtx.screenFillColor[2] = 160;
                 if (cmd->base == 1) {
                     play->envCtx.screenFillColor[3] = 255.0f * temp;
-                    if ((temp == 0.0f) && (gSaveContext.entranceIndex == 0x006B)) {
+                    if ((temp == 0.0f) && (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0)) {
                         Audio_PlaySoundGeneral(NA_SE_SY_WHITE_OUT_S, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                &D_801333E8);
                     } else if ((temp == 0.0f) &&
-                               ((gSaveContext.entranceIndex == 0x0053) || (gSaveContext.entranceIndex == 0x0138) ||
-                                (gSaveContext.entranceIndex == 0x0371))) {
+                               ((gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_0) || (gSaveContext.entranceIndex == ENTR_HYRULE_CASTLE_0) ||
+                                (gSaveContext.entranceIndex == ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_0))) {
                         Audio_PlaySoundGeneral(NA_SE_EV_WHITE_OUT, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                &D_801333E8);
                     } else if ((temp == 0.0f) && (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE)) {
@@ -2024,10 +2024,10 @@ void func_80068DC0(PlayState* play, CutsceneContext* csCtx) {
 
         if (D_8015FCC8 != 0) {
             switch (gSaveContext.entranceIndex) {
-                case 0x028A:
-                case 0x028E:
-                case 0x0292:
-                case 0x0476:
+                case ENTR_HYRULE_FIELD_11:
+                case ENTR_HYRULE_FIELD_12:
+                case ENTR_HYRULE_FIELD_13:
+                case ENTR_HYRULE_FIELD_15:
                     Play_CopyCamera(play, D_8015FCC6, csCtx->unk_14);
             }
 
@@ -2115,12 +2115,12 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
 
     if (IS_RANDO &&
         // don't skip epona escape cutscenes 
-        gSaveContext.entranceIndex != 650 &&
-        gSaveContext.entranceIndex != 654 &&
-        gSaveContext.entranceIndex != 658 &&
-        gSaveContext.entranceIndex != 1142 &&
+        gSaveContext.entranceIndex != ENTR_HYRULE_FIELD_11 &&
+        gSaveContext.entranceIndex != ENTR_HYRULE_FIELD_12 &&
+        gSaveContext.entranceIndex != ENTR_HYRULE_FIELD_13 &&
+        gSaveContext.entranceIndex != ENTR_HYRULE_FIELD_15 &&
         // don't skip nabooru iron knuckle cs
-        gSaveContext.entranceIndex != 141) {
+        gSaveContext.entranceIndex != ENTR_SPIRIT_TEMPLE_BOSS_0) {
         gSaveContext.showTitleCard = false;
         return;
     }
@@ -2152,24 +2152,24 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
     if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
         const bool bShouldTowerRandoSkip =
             (IS_RANDO && Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE));
-        if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
+        if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
             if (!IS_RANDO) {
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
-                gSaveContext.entranceIndex = 0x0123;
+                gSaveContext.entranceIndex = ENTR_DESERT_COLOSSUS_0;
                 gSaveContext.cutsceneIndex = 0xFFF0;
             }
-        } else if ((gSaveContext.entranceIndex == 0x00DB) && LINK_IS_ADULT && (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) &&
+        } else if ((gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_0) && LINK_IS_ADULT && (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) &&
                    (Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) && (Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) &&
                    !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)) {
             if (!IS_RANDO) {
                 Flags_SetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL);
                 gSaveContext.cutsceneIndex = 0xFFF0;
             }
-        } else if ((gSaveContext.entranceIndex == 0x05E0) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE)) {
+        } else if ((gSaveContext.entranceIndex == ENTR_LOST_WOODS_9) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE)) {
             if (!IS_RANDO) {
                 Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE);
                 Item_Give(play, ITEM_OCARINA_FAIRY);
-                gSaveContext.entranceIndex = 0x011E;
+                gSaveContext.entranceIndex = ENTR_LOST_WOODS_0;
                 gSaveContext.cutsceneIndex = 0xFFF0;
             }
         } else if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
@@ -2177,7 +2177,7 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
                    (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TEMPLE_OF_TIME)) {
             if (!IS_RANDO) {
                 Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
-                gSaveContext.entranceIndex = 0x0053;
+                gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_0;
                 gSaveContext.cutsceneIndex = 0xFFF8;
             }
         } else if ((!Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO) &&
@@ -2185,7 +2185,7 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
                    (bShouldTowerRandoSkip &&
                     gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR)) {
             Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
-            gSaveContext.entranceIndex = 0x0517;
+            gSaveContext.entranceIndex = ENTR_GANON_BOSS_0;
             // In rando, skip the cutscene for the tower falling down after the escape.
             if (IS_RANDO) {
                 return;

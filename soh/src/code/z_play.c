@@ -228,7 +228,7 @@ void Play_Destroy(GameState* thisx) {
 void GivePlayerRandoRewardSongOfTime(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
 
-    if (gSaveContext.entranceIndex == 0x050F && player != NULL && !Player_InBlockingCsMode(play, player) &&
+    if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_16 && player != NULL && !Player_InBlockingCsMode(play, player) &&
         !Flags_GetTreasure(play, 0x1F) && gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT && !gSaveContext.pendingIceTrapCount) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
         GiveItemEntryWithoutActor(play, getItemEntry);
@@ -240,9 +240,9 @@ void GivePlayerRandoRewardSongOfTime(PlayState* play, RandomizerCheck check) {
 void GivePlayerRandoRewardNocturne(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
 
-    if ((gSaveContext.entranceIndex == 0x00DB ||
-         gSaveContext.entranceIndex == 0x0191 ||
-         gSaveContext.entranceIndex == 0x0195) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
+    if ((gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_0 ||
+         gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_1 ||
+         gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_2) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
         CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && player != NULL &&
         !Player_InBlockingCsMode(play, player) && !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_NOCTURNE_OF_SHADOW);
@@ -256,7 +256,7 @@ void GivePlayerRandoRewardRequiem(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
 
     if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
-        if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT) && player != NULL &&
+        if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT) && player != NULL &&
             !Player_InBlockingCsMode(play, player)) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
             GiveItemEntryWithoutActor(play, getItemEntry);
@@ -269,7 +269,7 @@ void GivePlayerRandoRewardRequiem(PlayState* play, RandomizerCheck check) {
 void GivePlayerRandoRewardMasterSword(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
 
-    if (gSaveContext.entranceIndex == 0x02CA && LINK_IS_ADULT && player != NULL &&
+    if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_2 && LINK_IS_ADULT && player != NULL &&
         !Player_InBlockingCsMode(play, player) && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
         !Flags_GetRandomizerInf(RAND_INF_TOT_MASTER_SWORD)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_MASTER_SWORD);
@@ -453,7 +453,7 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(PlayState* play, RandomizerCheck 
 
 void GivePlayerRandoRewardSariaGift(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
-    if (gSaveContext.entranceIndex == 0x05E0) {
+    if (gSaveContext.entranceIndex == ENTR_LOST_WOODS_9) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_ZELDAS_LULLABY);
 
         if (!Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE) && player != NULL && !Player_InBlockingCsMode(play, player)) {
@@ -482,17 +482,17 @@ void Play_Init(GameState* thisx) {
     // Skip Child Stealth when option is enabled, Zelda's Letter isn't obtained and Impa's reward hasn't been received
     // eventChkInf[4] & 1 = Got Zelda's Letter
     // eventChkInf[5] & 0x200 = Got Impa's reward
-    // entranceIndex 0x7A, Castle Courtyard - Day from crawlspace
-    // entranceIndex 0x400, Zelda's Courtyard
+    // entranceIndex 0x7A, ENTR_CASTLE_COURTYARD_GUARDS_DAY_0, Castle Courtyard - Day from crawlspace
+    // entranceIndex 0x400, ENTR_CASTLE_COURTYARD_ZELDA_0, Zelda's Courtyard
     if (IS_RANDO && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH) &&
         !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY)) {
-        if (gSaveContext.entranceIndex == 0x7A) {
-            gSaveContext.entranceIndex = 0x400;
+        if (gSaveContext.entranceIndex == ENTR_CASTLE_COURTYARD_GUARDS_DAY_0) {
+            gSaveContext.entranceIndex = ENTR_CASTLE_COURTYARD_ZELDA_0;
         }
     }
 
     // Invalid entrance, so immediately exit the game to opening title
-    if (gSaveContext.entranceIndex == -1) {
+    if (gSaveContext.entranceIndex == ENTR_LOAD_OPENING) {
         gSaveContext.entranceIndex = 0;
         play->state.running = false;
         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
@@ -2261,8 +2261,8 @@ void Play_LoadToLastEntrance(PlayState* play) {
         (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE) || (play->sceneNum == SCENE_GANON_BOSS)) {
         play->nextEntranceIndex = 0x043F;
         Item_Give(play, ITEM_SWORD_MASTER);
-    } else if ((gSaveContext.entranceIndex == 0x028A) || (gSaveContext.entranceIndex == 0x028E) ||
-               (gSaveContext.entranceIndex == 0x0292) || (gSaveContext.entranceIndex == 0x0476)) {
+    } else if ((gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_11) || (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_12) ||
+               (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_13) || (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_15)) {
         play->nextEntranceIndex = 0x01F9;
     } else {
         play->nextEntranceIndex = gSaveContext.entranceIndex;

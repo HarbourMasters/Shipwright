@@ -177,11 +177,11 @@ void DoorWarp1_SetupWarp(DoorWarp1* this, PlayState* play) {
             DoorWarp1_SetupAction(this, DoorWarp1_AwaitClearFlag);
             break;
         case WARP_DESTINATION:
-            if ((!(gSaveContext.entranceIndex == 0x608 ||  // sacred forest meadow
-                   gSaveContext.entranceIndex == 0x564 ||  // death mountain crater
-                   gSaveContext.entranceIndex == 0x60C ||  // lake hylia
-                   gSaveContext.entranceIndex == 0x610 ||  // desert colossus
-                   gSaveContext.entranceIndex == 0x580) && // graveyard
+            if ((!(gSaveContext.entranceIndex == ENTR_SACRED_FOREST_MEADOW_3 ||  // sacred forest meadow
+                   gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_CRATER_5 ||  // death mountain crater
+                   gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_9 ||  // lake hylia
+                   gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_8 ||  // desert colossus
+                   gSaveContext.entranceIndex == ENTR_GRAVEYARD_8) && // graveyard
                  gSaveContext.sceneSetupIndex < 4) ||
                 (GET_PLAYER(play)->actor.params & 0xF00) != 0x200) {
                 Actor_Kill(&this->actor);
@@ -283,7 +283,7 @@ void DoorWarp1_SetupPurpleCrystal(DoorWarp1* this, PlayState* play) {
     this->unk_1BC = 1.f;
     this->actor.shape.yOffset = 800.0f;
 
-    if (gSaveContext.entranceIndex != 0x53) {
+    if (gSaveContext.entranceIndex != ENTR_TEMPLE_OF_TIME_0) {
         this->actor.scale.x = 0.0499f;
         this->actor.scale.y = 0.077f;
         this->actor.scale.z = 0.09f;

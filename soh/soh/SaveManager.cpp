@@ -739,7 +739,7 @@ void SaveManager::InitFileDebug() {
         }
     }
 
-    gSaveContext.entranceIndex = 0xCD;
+    gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_0;
     gSaveContext.magicLevel = 0;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
 }
@@ -882,7 +882,7 @@ void SaveManager::InitFileMaxed() {
         }
     }
 
-    gSaveContext.entranceIndex = 0xCD;
+    gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_0;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
 }
 
