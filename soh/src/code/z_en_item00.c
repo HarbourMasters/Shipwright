@@ -1375,7 +1375,7 @@ void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
         f32 mtxScale = 10.67f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
         EnItem00_CustomItemsParticles(&this->actor, play, this->randoGiEntry);
-        GetItemEntry_Draw(play, this->randoGiEntry);
+        GetItemEntry_Draw(play, this->randoGiEntry, randoCheck);
     } else if (this->actor.params == ITEM00_BOMBCHU) {
         OPEN_DISPS(play->state.gfxCtx);
 
@@ -1469,7 +1469,7 @@ void EnItem00_DrawHeartPiece(EnItem00* this, PlayState* play) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
         EnItem00_CustomItemsParticles(&this->actor, play, this->randoGiEntry);
-        GetItemEntry_Draw(play, this->randoGiEntry);
+        GetItemEntry_Draw(play, this->randoGiEntry, randoCheck);
     } else {
         s32 pad;
 

@@ -248,7 +248,7 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
     if (triforcePieceScale < 0.0001f) {
         triforcePieceScale += 0.00003f;
     }
-    
+
     // Animation. When not the completed triforce, create delay before showing the piece to bypass interpolation.
     // If the completed triforce, make it grow slowly.
     if (current != required) {
@@ -275,5 +275,28 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
     } else if (current == required && triforcePieceScale > 0.00008f) {
         gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceCompletedDL);
     }
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawMysteryItem(PlayState* play) {
+    Color_RGB8 color = { 0, 60, 100 };
+    if (CVarGetInteger("gCosmetics.World_MysteryItem.Changed", 0)) {
+        color = CVarGetColor24("gCosmetics.World_MysteryItem.Value", color);
+    }
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gDPSetGrayscaleColor(POLY_XLU_DISP++, color.r, color.g, color.b, 255);
+    gSPGrayscale(POLY_XLU_DISP++, true);
+
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gMysteryItemDL);
+
+    gSPGrayscale(POLY_XLU_DISP++, false);
+
     CLOSE_DISPS(play->state.gfxCtx);
 }

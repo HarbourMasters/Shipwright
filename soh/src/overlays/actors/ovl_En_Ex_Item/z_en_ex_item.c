@@ -528,7 +528,7 @@ void EnExItem_DrawItems(EnExItem* this, PlayState* play) {
 
         if (randoGetItem.getItemId != GI_NONE) {
             EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
-            GetItemEntry_Draw(play, randoGetItem);
+            GetItemEntry_Draw(play, randoGetItem, RC_MAX);
             return;
         }
     }
@@ -543,7 +543,7 @@ void EnExItem_DrawHeartPiece(EnExItem* this, PlayState* play) {
         GetItemEntry randoGetItem =
             Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
         EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
-        GetItemEntry_Draw(play, randoGetItem);
+        GetItemEntry_Draw(play, randoGetItem, RC_MAX);
     } else {
         GetItem_Draw(play, GID_HEART_PIECE);
     }

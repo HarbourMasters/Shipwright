@@ -1336,6 +1336,8 @@ void DrawLocation(RandomizerCheckObject rcObj) {
     //Draw the extra info
     txt = "";
 
+    bool mystery = CVarGetInteger("gMysteriousShuffle", 0) && OTRGlobals::Instance->gRandomizer->merchantPrices.contains(rcObj.rc);
+
     if (checkData.hintItem != 0) {
         // TODO hints
     } else if (status != RCSHOW_UNCHECKED) {
@@ -1358,16 +1360,16 @@ void DrawLocation(RandomizerCheckObject rcObj) {
             case RCSHOW_IDENTIFIED:
             case RCSHOW_SEEN:
                 if (IS_RANDO) {
-                    if (gSaveContext.itemLocations[rcObj.rc].get.rgID == RG_ICE_TRAP) {
+                    if (gSaveContext.itemLocations[rcObj.rc].get.rgID == RG_ICE_TRAP && !mystery) {
                         if (status == RCSHOW_IDENTIFIED) {
                             txt = gSaveContext.itemLocations[rcObj.rc].get.trickName;
                         } else {
                             txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.fakeRgID][gSaveContext.language];
                         }
-                    } else {
+                    } else if (!mystery) {
                         txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.rgID][gSaveContext.language];
                     }
-                    if (status == RCSHOW_IDENTIFIED) {
+                    if (!IsVisibleInCheckTracker(rcObj) && status == RCSHOW_IDENTIFIED && !mystery) {
                         txt += fmt::format(" - {}", gSaveContext.checkTrackerData[rcObj.rc].price);
                     }
                 } else {

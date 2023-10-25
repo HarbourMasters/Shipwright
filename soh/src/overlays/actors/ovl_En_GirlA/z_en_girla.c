@@ -1336,7 +1336,7 @@ void EnGirlA_Draw(Actor* thisx, PlayState* play) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
         EnItem00_CustomItemsParticles(&this->actor, play, getItemEntry);
-        GetItemEntry_Draw(play, getItemEntry);
+        GetItemEntry_Draw(play, getItemEntry, shopItemIdentity.randomizerCheck);
         return;
     }
 

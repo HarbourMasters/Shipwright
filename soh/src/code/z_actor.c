@@ -6186,7 +6186,7 @@ s32 func_80038290(PlayState* play, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f
     return true;
 }
 
-GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play) {
+GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play, RandomizerCheck* check) {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
         // RANDOTODO update this logic when we implement keysanity
         // because 3drando replaces the keys not the rupees
@@ -6197,26 +6197,31 @@ GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play) {
             switch(room) {
                 case 1:
                     if(!Flags_GetCollectible(play, 0x1B)) {
+                        if (check != NULL) *check = RC_MARKET_TREASURE_CHEST_GAME_ITEM_1;
                         return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, GI_RUPEE_GREEN);
                     }
                     break;
                 case 2:
                     if(!Flags_GetCollectible(play, 0x1C)) {
+                        if (check != NULL) *check = RC_MARKET_TREASURE_CHEST_GAME_ITEM_2;
                         return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, GI_RUPEE_GREEN);
                     }
                     break;
                 case 3:
                     if(!Flags_GetCollectible(play, 0x1D)) {
+                        if (check != NULL) *check = RC_MARKET_TREASURE_CHEST_GAME_ITEM_3;
                         return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, GI_RUPEE_BLUE);
                     }
                     break;
                 case 4:
                     if(!Flags_GetCollectible(play, 0x1E)) {
+                        if (check != NULL) *check = RC_MARKET_TREASURE_CHEST_GAME_ITEM_4;
                         return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, GI_RUPEE_BLUE);
                     }
                     break;
                 case 5:
                     if(!Flags_GetCollectible(play, 0x1F)) {
+                        if (check != NULL) *check = RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
                         return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, GI_RUPEE_RED);
                     }
                     break;
@@ -6225,6 +6230,7 @@ GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play) {
     }
 
     if(ogDrawId == GID_HEART_PIECE) {
+        if (check != NULL) *check = RC_MARKET_TREASURE_CHEST_GAME_REWARD;
         return Randomizer_GetItemFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_REWARD, GI_HEART_PIECE);
     }
 
@@ -6232,7 +6238,7 @@ GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play) {
 }
 
 s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, PlayState* play) {
-    GetItemEntry randoGetItem = GetChestGameRandoGetItem(room, ogDrawId, play);
+    GetItemEntry randoGetItem = GetChestGameRandoGetItem(room, ogDrawId, play, NULL);
 
     if (randoGetItem.itemId != ITEM_NONE) {
         return randoGetItem.gid;

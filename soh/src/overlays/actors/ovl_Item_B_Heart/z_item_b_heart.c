@@ -99,8 +99,8 @@ void ItemBHeart_Draw(Actor* thisx, PlayState* play) {
     }
 
     if (IS_RANDO) {
-        GetItemEntry_Draw(play, Randomizer_GetItemFromActor(this->actor.id, 
-            play->sceneNum,this->actor.params, GI_HEART_CONTAINER_2));
+        RandomizerCheck check = Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->actor.params);
+        GetItemEntry_Draw(play, Randomizer_GetItemFromKnownCheck(check, GI_HEART_CONTAINER_2), check);
     } else {
         if (flag) {
             Gfx_SetupDL_25Xlu(play->state.gfxCtx);

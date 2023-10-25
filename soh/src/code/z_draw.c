@@ -114,6 +114,8 @@ void GetItem_DrawJewelZora(PlayState* play, s16 drawId);
 void GetItem_DrawGenericMusicNote(PlayState* play, s16 drawId);
 void GetItem_DrawTriforcePiece(PlayState* play, s16 drawId);
 
+extern void Randomizer_DrawMysteryItem(PlayState*);
+
 typedef struct {
     /* 0x00 */ void (*drawFunc)(PlayState*, s16);
     /* 0x04 */ Gfx* dlists[8];
@@ -403,8 +405,10 @@ void GetItem_Draw(PlayState* play, s16 drawId) {
  * Draw "Get Item" Model from a `GetItemEntry`
  * Uses the Custom Draw Function if it exists, or just calls `GetItem_Draw`
  */
-void GetItemEntry_Draw(PlayState* play, GetItemEntry getItemEntry) {
-    if (getItemEntry.drawFunc != NULL) {
+void GetItemEntry_Draw(PlayState* play, GetItemEntry getItemEntry, RandomizerCheck check) {
+    if (CVarGetInteger("gMysteriousShuffle", 0) && check != RC_MAX && Randomizer_IsVisibleInCheckTracker(check)) {
+        Randomizer_DrawMysteryItem(play);
+    } else if (getItemEntry.drawFunc != NULL) {
         getItemEntry.drawFunc(play, &getItemEntry);
     } else {
         GetItem_Draw(play, getItemEntry.gid);

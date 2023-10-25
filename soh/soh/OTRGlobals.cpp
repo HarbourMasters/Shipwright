@@ -2350,6 +2350,10 @@ extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(
     return OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck);
 }
 
+extern "C" bool Randomizer_IsVisibleInCheckTracker(RandomizerCheck check) {
+    return CheckTracker::IsVisibleInCheckTracker(RandomizerCheckObjects::GetAllRCObjects().find(check)->second);
+}
+
 CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
     s16 giid;
     if (player->getItemEntry.objectId != OBJECT_INVALID) {

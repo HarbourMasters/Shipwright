@@ -230,10 +230,11 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, PlayState* play) {
         func_8002ED80(&this->actor, play, 0);
 
         if(IS_RANDO && play->sceneNum == SCENE_TREASURE_BOX_SHOP) {
-            GetItemEntry randoGetItem = GetChestGameRandoGetItem(this->actor.room, this->giDrawId, play);
+            RandomizerCheck check = RC_MAX;
+            GetItemEntry randoGetItem = GetChestGameRandoGetItem(this->actor.room, this->giDrawId, play, &check);
             EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
             if (randoGetItem.itemId != ITEM_NONE) {
-                GetItemEntry_Draw(play, randoGetItem);
+                GetItemEntry_Draw(play, randoGetItem, check);
                 return;
             }
         }
@@ -248,9 +249,12 @@ void ItemEtcetera_Draw(Actor* thisx, PlayState* play) {
 
     if (IS_RANDO) {
         GetItemEntry randoGetItem = (GetItemEntry)GET_ITEM_NONE;
+        RandomizerCheck check = RC_MAX;
         if (type == ITEM_ETC_ARROW_FIRE) {
+            check = RC_LH_SUN;
             randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
         } else if (type == ITEM_ETC_LETTER) {
+            check = RC_LH_UNDERWATER_ITEM;
             randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
         }
 
@@ -259,7 +263,7 @@ void ItemEtcetera_Draw(Actor* thisx, PlayState* play) {
         if (randoGetItem.itemId != ITEM_NONE) {
             func_8002EBCC(&this->actor, play, 0);
             func_8002ED80(&this->actor, play, 0);
-            GetItemEntry_Draw(play, randoGetItem);
+            GetItemEntry_Draw(play, randoGetItem, check);
             return;
         }
     }

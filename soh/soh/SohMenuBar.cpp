@@ -1621,6 +1621,11 @@ void DrawRandomizerMenu() {
                 "Play unique fanfares when obtaining quest items "
                 "(medallions/stones/songs). Note that these fanfares are longer than usual."
             );
+            UIWidgets::PaddedEnhancementCheckbox("Mysterious Shuffled Items", "gMysteriousShuffle", true, false);
+            UIWidgets::Tooltip(
+                "Displays a \"Mystery Item\" model in place of any freestanding/GS/shop items that were shuffled, "
+                "and replaces item names for them and scrubs and merchants, regardless of hint settings, "
+                "so you never know what you're getting.");
             ImGui::EndMenu();
         }
 

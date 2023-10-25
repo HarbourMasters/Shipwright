@@ -307,6 +307,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("World_Moon",                    "Moon",                 GROUP_WORLD,        ImVec4(240, 255, 180, 255), false, true, true),
     COSMETIC_OPTION("World_GossipStone",             "Gossip Stone",         GROUP_WORLD,        ImVec4(200, 200, 200, 255), false, true, true),
     COSMETIC_OPTION("World_RedIce",                  "Red Ice",              GROUP_WORLD,        ImVec4(255,   0,   0, 255), false, true, false),
+    COSMETIC_OPTION("World_MysteryItem",             "Mystery Item",         GROUP_WORLD,        ImVec4(0,    60, 100, 255), false, true, false),
 
     COSMETIC_OPTION("Navi_IdlePrimary",              "Idle Primary",         GROUP_NAVI,         ImVec4(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("Navi_IdleSecondary",            "Idle Secondary",       GROUP_NAVI,         ImVec4(  0,   0, 255,   0), false, true, true),

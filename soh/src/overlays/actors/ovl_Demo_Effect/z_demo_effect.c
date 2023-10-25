@@ -2092,7 +2092,7 @@ void DemoEffect_DrawGetItem(Actor* thisx, PlayState* play) {
             this->getItem.drawId = getItemEntry.gid;
             func_8002EBCC(thisx, play, 0);
             func_8002ED80(thisx, play, 0);
-            GetItemEntry_Draw(play, getItemEntry);
+            GetItemEntry_Draw(play, getItemEntry, RC_BARINADE);
             return;
         }
         func_8002EBCC(thisx, play, 0);

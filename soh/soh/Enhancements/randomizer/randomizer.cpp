@@ -5366,12 +5366,20 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
     RandomizerCheck rc = GetCheckFromRandomizerInf(randomizerInf);
     RandomizerGet shopItemGet = this->itemLocations[rc].rgID;
     std::array<std::string, LANGUAGE_MAX> shopItemName;
-    if (mysterious) {
-        shopItemName = {
-            "mysterious item",
-            "mysteriösen Gegenstand",
-            "objet mystérieux"
-        };
+    if (mysterious || CVarGetInteger("gMysteriousShuffle", 0)) {
+        if (randomizerInf >= RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1 && randomizerInf <= RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8) {
+            shopItemName = {
+                "Mysterious Item",
+                "Mysteriösen Gegenstand",
+                "Objet Mystérieux"
+            };
+        } else {
+            shopItemName = {
+                "mysterious item",
+                "mysteriösen Gegenstand",
+                "objet mystérieux"
+            };
+        }
     // TODO: This should eventually be replaced with a full fledged trick model & trick name system
     } else if (shopItemGet == RG_ICE_TRAP) {
         shopItemGet = this->itemLocations[rc].fakeRgID;
