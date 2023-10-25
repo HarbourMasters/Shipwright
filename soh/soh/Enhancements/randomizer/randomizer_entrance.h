@@ -60,6 +60,7 @@ typedef enum {
     /* 0x1E */ GROTTO_GV_STORMS_OFFSET,
     /* 0x1F */ GROTTO_GV_OCTOROK_OFFSET,
     /* 0x20 */ GROTTO_LW_DEKU_THEATRE_OFFSET,
+    /* 0x21 */ GROTTO_OFFSET_MAX,
 } GrottoEntranceOffsets;
 
 #define ENTRANCE_RANDO_GROTTO_LOAD(index) ENTRANCE_RANDO_GROTTO_LOAD_START + index
