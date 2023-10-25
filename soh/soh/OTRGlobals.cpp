@@ -250,6 +250,8 @@ OTRGlobals::OTRGlobals() {
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
     context = LUS::Context::CreateInstance("Ship of Harkinian", appShortName, "shipofharkinian.json", OTRFiles, {}, 3);
 
+    // context->GetControlDeck()->SetSinglePlayerMappingMode(true);
+
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Animation, "Animation", std::make_shared<LUS::AnimationFactory>());
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_PlayerAnimation, "PlayerAnimation", std::make_shared<LUS::PlayerAnimationFactory>());
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Room, "Room", std::make_shared<LUS::SceneFactory>()); // Is room scene? maybe?
@@ -1741,15 +1743,15 @@ Color_RGB8 GetColorForControllerLED() {
 }
 
 extern "C" void OTRControllerCallback(uint8_t rumble) {
-    auto physicalDevice = LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0);
+    // We call this every tick, SDL accounts for this use and prevents driver spam
+    // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
+    LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetLED()->SetLEDColor(GetColorForControllerLED());
 
-    if (physicalDevice->CanSetLed()) {
-        // We call this every tick, SDL accounts for this use and prevents driver spam
-        // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
-        physicalDevice->SetLedColor(0, GetColorForControllerLED());
+    if (rumble) {
+        LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetRumble()->StartRumble();
+    } else {
+        LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetRumble()->StopRumble();
     }
-
-    physicalDevice->SetRumble(0, rumble);
 }
 
 extern "C" float OTRGetAspectRatio() {
@@ -1788,15 +1790,15 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 }
 
 extern "C" int Controller_ShouldRumble(size_t slot) {
-    auto controlDeck = LUS::Context::GetInstance()->GetControlDeck();
+    // auto controlDeck = LUS::Context::GetInstance()->GetControlDeck();
     
-    if (slot < controlDeck->GetNumConnectedPorts()) {
-        auto physicalDevice = controlDeck->GetDeviceFromPortIndex(slot);
+    // if (slot < controlDeck->GetNumConnectedPorts()) {
+    //     auto physicalDevice = controlDeck->GetDeviceFromPortIndex(slot);
         
-        if (physicalDevice->GetProfile(slot)->UseRumble && physicalDevice->CanRumble()) {
-            return 1;
-        }
-    }
+    //     if (physicalDevice->GetProfile(slot)->UseRumble && physicalDevice->CanRumble()) {
+    //         return 1;
+    //     }
+    // }
 
     return 0;
 }
