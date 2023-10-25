@@ -12,6 +12,8 @@
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include <libultraship/libultraship.h>
 
+#include "variables.h"
+#include "soh/OTRGlobals.h"
 #include "soh/UIWidgets.hpp"
 
 extern "C" {
@@ -394,9 +396,24 @@ void ResetPositionAll() {
 }
 
 int hue = 0;
+bool randomCosmeticsDone = false;
 
 // Runs every frame to update rainbow hue, a potential future optimization is to only run this a once or twice a second and increase the speed of the rainbow hue rotation.
 void CosmeticsUpdateTick() {
+    if (CVarGetInteger("gCosmetics.RandomizeAllOnTimer", 0) && GameInteractor::IsSaveLoaded()) {
+        uint32_t currentTimer =
+            GAMEPLAYSTAT_TOTAL_TIME % (CVarGetInteger("gCosmetics.RandomizeAllOnTimerDuration", 5) * 600);
+        if (currentTimer == 0) {
+            if (!randomCosmeticsDone) {
+                CosmeticsEditor_RandomizeAll();
+                randomCosmeticsDone = true;
+            }
+            else {
+                randomCosmeticsDone = false;
+            }
+        }
+    }
+
     int index = 0;
     float rainbowSpeed = CVarGetFloat("gCosmetics.RainbowSpeed", 0.6f);
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
@@ -1788,14 +1805,15 @@ void CosmeticsEditorWindow::DrawElement() {
     }
     UIWidgets::EnhancementCheckbox("Sync Rainbow colors", "gCosmetics.RainbowSync");
     UIWidgets::EnhancementSliderFloat("Rainbow Speed: %f", "##rainbowSpeed", "gCosmetics.RainbowSpeed", 0.03f, 1.0f, "", 0.6f, false);
+    UIWidgets::EnhancementCheckbox("Randomize All on Timer", "gCosmetics.RandomizeAllOnTimer");
+    UIWidgets::Tooltip("Enables randomizing all unlocked cosmetics in a fixed interval.");
+    UIWidgets::EnhancementSliderInt("Randomize All Timer (Minutes): %d", "##randomizeAllOnTimerDuration",
+                                    "gCosmetics.RandomizeAllOnTimerDuration", 1, 60, "", 5, true,
+                                    CVarGetInteger("gCosmetics.RandomizeAllOnTimer", 0) == 0);
+    UIWidgets::Tooltip("All unlocked cosmetics are randomized based upon the provided interval and in-game time.");
+
     if (ImGui::Button("Randomize All", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
-        for (auto& [id, cosmeticOption] : cosmeticOptions) {
-            if (!CVarGetInteger(cosmeticOption.lockedCvar, 0) && (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0))) {
-                RandomizeColor(cosmeticOption);
-            }
-        }
-        ApplyOrResetCustomGfxPatches();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        CosmeticsEditor_RandomizeAll();
     }
     ImGui::SameLine();
     if (ImGui::Button("Reset All", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
