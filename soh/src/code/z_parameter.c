@@ -5056,7 +5056,7 @@ void Interface_Draw(PlayState* play) {
         aButtonColor = (Color_RGB8){ 0, 200, 50 };
     }
 
-    static s16 spoilingItemEntrances[] = { 0x01AD, 0x0153, 0x0153 };
+    static s16 spoilingItemEntrances[] = { ENTR_LOST_WOODS_2, ENTR_ZORAS_DOMAIN_3, ENTR_ZORAS_DOMAIN_3 };
     static f32 D_80125B54[] = { -40.0f, -35.0f }; // unused
     static s16 D_80125B5C[] = { 91, 91 };         // unused
     static s16 D_8015FFE0;

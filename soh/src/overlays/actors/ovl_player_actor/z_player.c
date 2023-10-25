@@ -4204,24 +4204,58 @@ s32 func_80838FB8(PlayState* play, Player* this) {
     return 0;
 }
 
-s16 D_808544F8[] = {
-    0x045B, // DMT from Magic Fairy Fountain
-    0x0482, // DMC from Double Defense Fairy Fountain
-    0x0340, // Hyrule Castle from Dins Fire Fairy Fountain
-    0x044B, // Kakariko from Potion Shop
-    0x02A2, // Market (child day) from Potion Shop
-    0x0201, // Kakariko from Bazaar
-    0x03B8, // Market (child day) from Bazaar
-    0x04EE, // Kakariko from House of Skulltulas
-    0x03C0, // Back Alley (day) from Bombchu Shop
-    0x0463, // Kakariko from Shooting Gallery
-    0x01CD, // Market (child day) from Shooting Gallery
-    0x0394, // Zoras Fountain from Farores Wind Fairy Fountain
-    0x0340, // Hyrule Castle from Dins Fire Fairy Fountain
-    0x057C, // Desert Colossus from Nayrus Love Fairy Fountain
+/**
+ * The actual entrances each "return entrance" value can map to.
+ * This is used by scenes that are shared between locations, like child/adult Shooting Gallery or Great Fairy Fountains.
+ *
+ * This 1D array is split into groups of entrances.
+ * The start of each group is indexed by `sReturnEntranceGroupIndices` values.
+ * The resulting groups are then indexed by the spawn value.
+ *
+ * The spawn value (`PlayState.spawn`) is set to a different value depending on the entrance used to enter the
+ * scene, which allows these dynamic "return entrances" to link back to the previous scene.
+ *
+ * Note: grottos and normal fairy fountains use `ENTR_RETURN_GROTTO`
+ */
+s16 sReturnEntranceGroupData[] = {
+    // ENTR_RETURN_GREAT_FAIRYS_FOUNTAIN_MAGIC
+    /*  0 */ ENTR_DEATH_MOUNTAIN_TRAIL_4,  // from Magic Fairy Fountain
+    /*  1 */ ENTR_DEATH_MOUNTAIN_CRATER_3, // from Double Magic Fairy Fountain
+    /*  2 */ ENTR_HYRULE_CASTLE_2,         // from Double Defense Fairy Fountain (as adult)
+
+    // ENTR_RETURN_2
+    /*  3 */ ENTR_KAKARIKO_VILLAGE_9, // from Potion Shop in Kakariko
+    /*  4 */ ENTR_MARKET_DAY_5,       // from Potion Shop in Market
+
+    // ENTR_RETURN_BAZAAR
+    /*  5 */ ENTR_KAKARIKO_VILLAGE_3,
+    /*  6 */ ENTR_MARKET_DAY_6,
+
+    // ENTR_RETURN_4
+    /*  7 */ ENTR_KAKARIKO_VILLAGE_11, // from House of Skulltulas
+    /*  8 */ ENTR_BACK_ALLEY_DAY_2,    // from Bombchu Shop
+
+    // ENTR_RETURN_SHOOTING_GALLERY
+    /*  9 */ ENTR_KAKARIKO_VILLAGE_10,
+    /* 10 */ ENTR_MARKET_DAY_8,
+
+    // ENTR_RETURN_GREAT_FAIRYS_FOUNTAIN_SPELLS
+    /* 11 */ ENTR_ZORAS_FOUNTAIN_5,  // from Farores Wind Fairy Fountain
+    /* 12 */ ENTR_HYRULE_CASTLE_2,   // from Dins Fire Fairy Fountain (as child)
+    /* 13 */ ENTR_DESERT_COLOSSUS_7, // from Nayrus Love Fairy Fountain
 };
 
-u8 D_80854514[] = { 11, 9, 3, 5, 7, 0 };
+/**
+ * The values are indices into `sReturnEntranceGroupData` marking the start of each group
+ */
+u8 sReturnEntranceGroupIndices[] = {
+    11, // ENTR_RETURN_GREAT_FAIRYS_FOUNTAIN_SPELLS
+    9,  // ENTR_RETURN_SHOOTING_GALLERY
+    3,  // ENTR_RETURN_2
+    5,  // ENTR_RETURN_BAZAAR
+    7,  // ENTR_RETURN_4
+    0,  // ENTR_RETURN_GREAT_FAIRYS_FOUNTAIN_MAGIC
+};
 
 s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) {
     s32 sp3C;
@@ -4264,10 +4298,10 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                 } else if (play->nextEntranceIndex >= 0x7FF9) {
                     // handle dynamic exits
                     if (IS_RANDO) {
-                        play->nextEntranceIndex = Entrance_OverrideDynamicExit(D_80854514[play->nextEntranceIndex - 0x7FF9] + play->curSpawn);
+                        play->nextEntranceIndex = Entrance_OverrideDynamicExit(sReturnEntranceGroupIndices[play->nextEntranceIndex - 0x7FF9] + play->curSpawn);
                     } else {
                         play->nextEntranceIndex =
-                            D_808544F8[D_80854514[play->nextEntranceIndex - 0x7FF9] + play->curSpawn];
+                            sReturnEntranceGroupData[sReturnEntranceGroupIndices[play->nextEntranceIndex - 0x7FF9] + play->curSpawn];
                     }
 
                     Scene_SetTransitionForNextEntrance(play);
@@ -12866,7 +12900,14 @@ void func_8084E368(Player* this, PlayState* play) {
     func_8084AEEC(this, &this->linearVelocity, 0.0f, this->actor.shape.rot.y);
 }
 
-static s16 D_808549D4[] = { 0x0600, 0x04F6, 0x0604, 0x01F1, 0x0568, 0x05F4 };
+static s16 sWarpSongEntrances[] = {
+    ENTR_SACRED_FOREST_MEADOW_2,
+    ENTR_DEATH_MOUNTAIN_CRATER_4,
+    ENTR_LAKE_HYLIA_8,
+    ENTR_DESERT_COLOSSUS_5,
+    ENTR_GRAVEYARD_7,
+    ENTR_TEMPLE_OF_TIME_7,
+};
 
 void func_8084E3C4(Player* this, PlayState* play) {
     if (LinkAnimation_Update(play, &this->skelAnime)) {
@@ -12900,7 +12941,7 @@ void func_8084E3C4(Player* this, PlayState* play) {
         this->stateFlags2 &= ~(PLAYER_STATE2_NEAR_OCARINA_ACTOR | PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR | PLAYER_STATE2_PLAY_FOR_ACTOR);
         this->unk_6A8 = NULL;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_02) {
-        gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex = D_808549D4[play->msgCtx.lastPlayedSong];
+        gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex = sWarpSongEntrances[play->msgCtx.lastPlayedSong];
         gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x5FF;
         gSaveContext.respawn[RESPAWN_MODE_RETURN].data = play->msgCtx.lastPlayedSong;
 

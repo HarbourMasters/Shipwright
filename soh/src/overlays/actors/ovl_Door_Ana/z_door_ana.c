@@ -57,9 +57,10 @@ static ColliderCylinderInit sCylinderInit = {
 };
 
 // array of entrance table entries to grotto destinations
-static s16 entrances[] = {
-    0x036D, 0x003F, 0x0598, 0x059C, 0x05A0, 0x05A4, 0x05A8, 0x05AC,
-    0x05B0, 0x05B4, 0x05B8, 0x05BC, 0x05C0, 0x05C4, 0x05FC,
+static s16 sGrottoEntrances[] = {
+    ENTR_FAIRYS_FOUNTAIN_0, ENTR_GROTTOS_0,  ENTR_GROTTOS_1,  ENTR_GROTTOS_2,  ENTR_GROTTOS_3,
+    ENTR_GROTTOS_4,         ENTR_GROTTOS_5,  ENTR_GROTTOS_6,  ENTR_GROTTOS_7,  ENTR_GROTTOS_8,
+    ENTR_GROTTOS_9,         ENTR_GROTTOS_10, ENTR_GROTTOS_11, ENTR_GROTTOS_12, ENTR_GROTTOS_13,
 };
 
 void DoorAna_SetupAction(DoorAna* this, DoorAnaActionFunc actionFunc) {
@@ -143,7 +144,7 @@ void DoorAna_WaitOpen(DoorAna* this, PlayState* play) {
             if (destinationIdx < 0) {
                 destinationIdx = this->actor.home.rot.z + 1;
             }
-            play->nextEntranceIndex = entrances[destinationIdx];
+            play->nextEntranceIndex = sGrottoEntrances[destinationIdx];
 
             // In ER, load the correct entrance based on the grotto link is falling into
             if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
