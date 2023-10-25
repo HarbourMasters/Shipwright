@@ -1712,7 +1712,7 @@ void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
     }
     // Use ITEM_KEY_BOSS only for Ganon's boss key - not any other boss keys
     if (play != NULL) {
-        if (item == ITEM_KEY_BOSS && play->sceneNum != 13 && play->sceneNum != 10) {
+        if (item == ITEM_KEY_BOSS && play->sceneNum != SCENE_INSIDE_GANONS_CASTLE && play->sceneNum != SCENE_GANONS_TOWER) {
             return;
         }
     }
