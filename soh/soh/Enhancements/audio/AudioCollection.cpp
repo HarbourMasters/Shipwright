@@ -353,7 +353,7 @@ void AudioCollection::AddToCollection(char* otrPath, uint16_t seqNum) {
     SequenceInfo info = {seqNum,
                          sequenceName,
                          StringHelper::Replace(StringHelper::Replace(StringHelper::Replace(sequenceName, " ", "_"), "~", "-"),".", ""),
-                         type, false, false};
+                         type, false, true};
     sequenceMap.emplace(seqNum, info);
 }
 
