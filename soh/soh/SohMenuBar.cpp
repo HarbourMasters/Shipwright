@@ -1163,6 +1163,12 @@ void DrawEnhancementsMenu() {
                 }
             }
 
+            UIWidgets::Spacer(0);
+            UIWidgets::PaddedEnhancementCheckbox("Hurt Container Mode", "gHurtContainer", true, false);
+            UIWidgets::Tooltip("Changes Heart Piece and Heart Container functionality.\n\n"
+                "- Each Heart Container or full Heart Piece reduces Links hearts by 1.\n"
+                "- Can be enabled retroactively after a File has already started.");
+
             ImGui::EndMenu();
         }
 

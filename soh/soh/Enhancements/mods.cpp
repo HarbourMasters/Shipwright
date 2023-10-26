@@ -1018,6 +1018,26 @@ void RegisterRandomizerSheikSpawn() {
     });
 }
 
+void RegisterHurtContainer() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        static uint16_t hurtInitialized = 0;
+        if (!CVarGetInteger("gHurtContainer", 0)) {
+            hurtInitialized = 0;
+            return;
+        }
+        // Max Health is 320 (20 Hearts)
+        
+        if (hurtInitialized == 0) {
+            uint16_t getHeartPieces = gSaveContext.sohStats.heartPieces / 4;
+            uint16_t getHeartContainers = gSaveContext.sohStats.heartContainers;
+            
+            gSaveContext.healthCapacity = 320 - ((getHeartPieces + getHeartContainers) * 16);
+
+            hurtInitialized = 1;
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1045,4 +1065,5 @@ void InitMods() {
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
     NameTag_RegisterHooks();
+    RegisterHurtContainer();
 }
