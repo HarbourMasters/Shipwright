@@ -1025,9 +1025,8 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     if (ShouldClearTextureCacheAtEndOfFrame) {
         gfx_texture_cache_clear();
-        LUS::SkeletonPatcher::UpdateCustomSkeletons();
         LUS::SkeletonPatcher::UpdateSkeletons();
-        LUS::SkeletonPatcher::UpdateCustomSkeletons();
+        ShouldUpdateCustomSkeletonsNextFrame = true;
         ShouldClearTextureCacheAtEndOfFrame = false;
     }
 
