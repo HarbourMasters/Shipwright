@@ -775,6 +775,23 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             ctx->GetOption(index).SetSelectedIndex(RO_LACS_WILDCARD_REWARD);
                         }
                         break;
+                    case RSK_DAMAGE_MULTIPLIER:
+                        if (it.value() == "x1/2") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_DAMAGE_MULTIPLIER_HALF);
+                        } else if (it.value() == "x1") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_DAMAGE_MULTIPLIER_DEFAULT);
+                        } else if (it.value() == "x2") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_DAMAGE_MULTIPLIER_DOUBLE);
+                        } else if (it.value() == "x4") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_DAMAGE_MULTIPLIER_QUADRUPLE);
+                        } else if (it.value() == "x8") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_DAMAGE_MULTIPLIER_OCTUPLE);
+                        } else if (it.value() == "x16") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_DAMAGE_MULTIPLIER_SEXDECUPLE);
+                        } else if (it.value() == "OHKO") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_DAMAGE_MULTIPLIER_OHKO);
+                        }
+                        break;
                     case RSK_RAINBOW_BRIDGE_STONE_COUNT:
                     case RSK_RAINBOW_BRIDGE_MEDALLION_COUNT:
                     case RSK_RAINBOW_BRIDGE_REWARD_COUNT:
@@ -792,9 +809,18 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_STARTING_SKULLTULA_TOKEN:
                     case RSK_TRIFORCE_HUNT_PIECES_TOTAL:
                     case RSK_TRIFORCE_HUNT_PIECES_REQUIRED:
+                    case RSK_STARTING_HEARTS:
                         numericValueString = it.value();
                         ctx->GetOption(index).SetSelectedIndex(std::stoi(numericValueString));
                         break;
+                    case RSK_GANONS_TRIALS:
+                        if (it.value() == "Skip") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANONS_TRIALS_SKIP);
+                        } else if (it.value() == "Set Number") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANONS_TRIALS_SET_NUMBER);
+                        } else if (it.value() == "Random Number") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANONS_TRIALS_RANDOM_NUMBER);
+                        }
                     case RSK_SHOPSANITY:
                         if(it.value() == "Off") {
                             ctx->GetOption(index).SetSelectedIndex(RO_SHOPSANITY_OFF);
@@ -902,6 +928,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHOPSANITY_PRICES_AFFORDABLE:
                     case RSK_ALL_LOCATIONS_REACHABLE:
                     case RSK_TRIFORCE_HUNT:
+                    case RSK_MQ_DUNGEON_SET:
                         if(it.value() == "Off") {
                             ctx->GetOption(index).SetSelectedIndex(RO_GENERIC_OFF);
                         } else if(it.value() == "On") {
@@ -1161,6 +1188,34 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             ctx->GetOption(index).SetSelectedIndex(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL);
                         }
                         break;
+                    case RSK_SHUFFLE_CHEST_MINIGAME:
+                        if (it.value() == "Off") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_CHEST_GAME_OFF);
+                        } else if (it.value() == "On (Separate)") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_CHEST_GAME_SINGLE_KEYS);
+                        } else if (it.value () == "On (Pack)") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_CHEST_GAME_PACK);
+                        }
+                        break;
+                    case RSK_MQ_DEKU_TREE:
+                    case RSK_MQ_DODONGOS_CAVERN:
+                    case RSK_MQ_JABU_JABU:
+                    case RSK_MQ_FOREST_TEMPLE:
+                    case RSK_MQ_FIRE_TEMPLE:
+                    case RSK_MQ_WATER_TEMPLE:
+                    case RSK_MQ_SPIRIT_TEMPLE:
+                    case RSK_MQ_SHADOW_TEMPLE:
+                    case RSK_MQ_BOTTOM_OF_THE_WELL:
+                    case RSK_MQ_ICE_CAVERN:
+                    case RSK_MQ_GTG:
+                    case RSK_MQ_GANONS_CASTLE:
+                        if (it.value() == "Vanilla") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_MQ_SET_VANILLA);
+                        } else if (it.value() == "Master Quest") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_MQ_SET_MQ);
+                        } else if (it.value() == "Random") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_MQ_SET_RANDOM);
+                        }
                 }
             }
         }
@@ -2931,18 +2986,18 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = CVarGetInteger("gRandomizeTriforceHuntTotalPieces", 30);
     cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = CVarGetInteger("gRandomizeTriforceHuntRequiredPieces", 20);
     
-    cvarSettings[RSK_MQ_DEKU_TREE] = CVarGetInteger("gRandomizeMqDungeonsDekuTree", 0);
-    cvarSettings[RSK_MQ_DODONGOS_CAVERN] = CVarGetInteger("gRandomizeMqDungeonsDodongosCavern", 0);
-    cvarSettings[RSK_MQ_JABU_JABU] = CVarGetInteger("gRandomizeMqDungeonsJabuJabu", 0);
-    cvarSettings[RSK_MQ_FOREST_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsForestTemple", 0);
-    cvarSettings[RSK_MQ_FIRE_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsFireTemple", 0);
-    cvarSettings[RSK_MQ_WATER_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsWaterTemple", 0);
-    cvarSettings[RSK_MQ_SPIRIT_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsSpiritTemple", 0);
-    cvarSettings[RSK_MQ_SHADOW_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsShadowTemple", 0);
-    cvarSettings[RSK_MQ_BOTTOM_OF_THE_WELL] = CVarGetInteger("gRandomizeMqDungeonsBottomOfTheWell", 0);
-    cvarSettings[RSK_MQ_ICE_CAVERN] = CVarGetInteger("gRandomizeMqDungeonsIceCavern", 0);
-    cvarSettings[RSK_MQ_GTG] = CVarGetInteger("gRandomizeMqDungeonsGTG", 0);
-    cvarSettings[RSK_MQ_GANONS_CASTLE] = CVarGetInteger("gRandomizeMqDungeonsGanonsCastle", 0);
+    cvarSettings[RSK_MQ_DEKU_TREE] = CVarGetInteger("gRandomizeMqDungeonsDekuTree", RO_MQ_SET_VANILLA);
+    cvarSettings[RSK_MQ_DODONGOS_CAVERN] = CVarGetInteger("gRandomizeMqDungeonsDodongosCavern", RO_MQ_SET_VANILLA);
+    cvarSettings[RSK_MQ_JABU_JABU] = CVarGetInteger("gRandomizeMqDungeonsJabuJabu", RO_MQ_SET_VANILLA);
+    cvarSettings[RSK_MQ_FOREST_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsForestTemple", RO_MQ_SET_VANILLA);
+    cvarSettings[RSK_MQ_FIRE_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsFireTemple", RO_MQ_SET_VANILLA);
+    cvarSettings[RSK_MQ_WATER_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsWaterTemple", RO_MQ_SET_VANILLA);
+    cvarSettings[RSK_MQ_SPIRIT_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsSpiritTemple", RO_MQ_SET_VANILLA);
+    cvarSettings[RSK_MQ_SHADOW_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsShadowTemple", RO_MQ_SET_VANILLA);
+    cvarSettings[RSK_MQ_BOTTOM_OF_THE_WELL] = CVarGetInteger("gRandomizeMqDungeonsBottomOfTheWell", RO_MQ_SET_VANILLA);
+    cvarSettings[RSK_MQ_ICE_CAVERN] = CVarGetInteger("gRandomizeMqDungeonsIceCavern", RO_MQ_SET_VANILLA);
+    cvarSettings[RSK_MQ_GTG] = CVarGetInteger("gRandomizeMqDungeonsGTG", RO_MQ_SET_VANILLA);
+    cvarSettings[RSK_MQ_GANONS_CASTLE] = CVarGetInteger("gRandomizeMqDungeonsGanonsCastle", RO_MQ_SET_VANILLA);
 
     // Enable if any of the entrance rando options are enabled.
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVarGetInteger("gRandomizeShuffleDungeonsEntrances", RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
@@ -3489,29 +3544,29 @@ void RandomizerSettingsWindow::DrawElement() {
                             "set.");
                         if (CVarGetInteger("gRandomizeMqDungeonsSelection", RO_GENERIC_OFF) == RO_GENERIC_ON) {
                             UIWidgets::PaddedText("Deku Tree", true, false);
-                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsDekuTree", randoMqDungeonOptions, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsDekuTree", randoMqDungeonOptions, RO_MQ_SET_VANILLA);
                             UIWidgets::PaddedText("Dodongo's Cavern", true, false);
-                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsDodongosCavern", randoMqDungeonOptions, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsDodongosCavern", randoMqDungeonOptions, RO_MQ_SET_VANILLA);
                             UIWidgets::PaddedText("Jabu Jabu's Belly", true, false);
-                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsJabuJabu", randoMqDungeonOptions, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsJabuJabu", randoMqDungeonOptions, RO_MQ_SET_VANILLA);
                             UIWidgets::PaddedText("Forest Temple", true, false);
-                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsForestTemple", randoMqDungeonOptions, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsForestTemple", randoMqDungeonOptions, RO_MQ_SET_VANILLA);
                             UIWidgets::PaddedText("Fire Temple", true, false);
-                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsFireTemple", randoMqDungeonOptions, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsFireTemple", randoMqDungeonOptions, RO_MQ_SET_VANILLA);
                             UIWidgets::PaddedText("Water Temple", true, false);
-                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsWaterTemple", randoMqDungeonOptions, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsWaterTemple", randoMqDungeonOptions, RO_MQ_SET_VANILLA);
                             UIWidgets::PaddedText("Spirit Temple", true, false);
-                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsSpiritTemple", randoMqDungeonOptions, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsSpiritTemple", randoMqDungeonOptions, RO_MQ_SET_VANILLA);
                             UIWidgets::PaddedText("Shadow Temple", true, false);
-                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsShadowTemple", randoMqDungeonOptions, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsShadowTemple", randoMqDungeonOptions, RO_MQ_SET_VANILLA);
                             UIWidgets::PaddedText("Bottom of the Well", true, false);
-                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsBottomOfTheWell", randoMqDungeonOptions, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsBottomOfTheWell", randoMqDungeonOptions, RO_MQ_SET_VANILLA);
                             UIWidgets::PaddedText("Ice Cavern", true, false);
-                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsIceCavern", randoMqDungeonOptions, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsIceCavern", randoMqDungeonOptions, RO_MQ_SET_VANILLA);
                             UIWidgets::PaddedText("Gerudo Training Grounds", true, false);
-                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsGTG", randoMqDungeonOptions, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsGTG", randoMqDungeonOptions, RO_MQ_SET_VANILLA);
                             UIWidgets::PaddedText("Ganon's Castle", true, false);
-                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsGanonsCastle", randoMqDungeonOptions, 0);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsGanonsCastle", randoMqDungeonOptions, RO_MQ_SET_VANILLA);
                         }
                     }
 
