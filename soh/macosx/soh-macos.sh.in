@@ -180,9 +180,7 @@ if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 		export ASSETDIR
 		cp -r "$RESPATH/assets" "$ASSETDIR"
 		mkdir -p "$ASSETDIR"/tmp
-		mkdir -p "$ASSETDIR"/Extract
 		cp "$ROMPATH" "$ASSETDIR"/tmp/rom.z64
-		cp -r "$ASSETDIR"/assets/game "$ASSETDIR"/Extract/assets/
 		cd "$ASSETDIR" || return
 
 		# If an invalid rom was detected, let the user know
