@@ -150,7 +150,7 @@ void SetStartingItems() {
         GiveLinkRupees(9001);
     }
 
-    if (Randomizer_GetSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAPANDCOMPASS) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
         uint32_t mapBitMask = 1 << 1;
         uint32_t compassBitMask = 1 << 2;
         uint32_t startingDungeonItemsBitMask = mapBitMask | compassBitMask;

@@ -576,6 +576,8 @@ void Settings::CreateOptions() {
         &mOptions[RSK_MQ_DUNGEON_RANDOM],
         &mOptions[RSK_MQ_DUNGEON_COUNT],
         &mOptions[RSK_MQ_DUNGEON_SET],
+    });
+    mOptionGroups[RSG_SHUFFLE_DUNGEON_QUESTS] = OptionGroup::SubGroup("Shuffle Dungeon Quest", {
         &mOptions[RSK_MQ_DEKU_TREE],
         &mOptions[RSK_MQ_DODONGOS_CAVERN],
         &mOptions[RSK_MQ_JABU_JABU],
@@ -619,6 +621,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_LACS_STONE_COUNT],
         &mOptions[RSK_LACS_MEDALLION_COUNT],
         &mOptions[RSK_LACS_DUNGEON_COUNT],
+        &mOptions[RSK_LACS_REWARD_COUNT],
         &mOptions[RSK_LACS_TOKEN_COUNT],
         &mOptions[RSK_LACS_OPTIONS],
         &mOptions[RSK_KEYRINGS],
@@ -635,6 +638,8 @@ void Settings::CreateOptions() {
     });
     mOptionGroups[RSG_STARTING_ITEMS] = OptionGroup::SubGroup("Items", {
         &mOptions[RSK_STARTING_OCARINA],
+        &mOptions[RSK_STARTING_KOKIRI_SWORD],
+        &mOptions[RSK_STARTING_DEKU_SHIELD]
     }, false);
     mOptionGroups[RSG_STARTING_SONGS] = OptionGroup::SubGroup("Ocarina Songs", {
         &mOptions[RSK_STARTING_ZELDAS_LULLABY],

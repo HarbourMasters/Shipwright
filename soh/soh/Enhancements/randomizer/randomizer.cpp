@@ -243,7 +243,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Shuffle Dungeon Rewards", RSK_SHUFFLE_DUNGEON_REWARDS },
     { "Shuffle Settings:Link's Pocket", RSK_LINKS_POCKET },
     { "Shuffle Settings:Shuffle Songs", RSK_SHUFFLE_SONGS },
-    { "Shuffle Settings:Shuffle Gerudo Card", RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD },
+    { "Shuffle Settings:Shuffle Gerudo Membership Card", RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD },
     { "Shuffle Settings:Shopsanity", RSK_SHOPSANITY },
     { "Shuffle Settings:Shopsanity Prices", RSK_SHOPSANITY_PRICES },
     { "Shuffle Settings:Affordable Prices", RSK_SHOPSANITY_PRICES_AFFORDABLE },
@@ -273,7 +273,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Start with Requiem of Spirit", RSK_STARTING_REQUIEM_OF_SPIRIT },
     { "Start with Nocturne of Shadow", RSK_STARTING_NOCTURNE_OF_SHADOW },
     { "Start with Prelude of Light", RSK_STARTING_PRELUDE_OF_LIGHT },
-    { "Shuffle Dungeon Items:Maps/Compasses", RSK_STARTING_MAPS_COMPASSES },
+    { "Shuffle Dungeon Items:Maps/Compasses", RSK_SHUFFLE_MAPANDCOMPASS },
     { "Shuffle Dungeon Items:Small Keys", RSK_KEYSANITY },
     { "Shuffle Dungeon Items:Gerudo Fortress Keys", RSK_GERUDO_KEYS },
     { "Shuffle Dungeon Items:Boss Keys", RSK_BOSS_KEYSANITY },
@@ -296,7 +296,8 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Items:GTG", RSK_KEYRINGS_GTG },
     { "Shuffle Dungeon Items:Ganon's Castle", RSK_KEYRINGS_GANONS_CASTLE },
     { "World Settings:Starting Age", RSK_STARTING_AGE },
-    { "World Settings:Ammo Drops", RSK_ENABLE_BOMBCHU_DROPS },
+    // TODO: Ammo Drop settings
+    { "World Settings:Bombchu Drops", RSK_ENABLE_BOMBCHU_DROPS },
     { "World Settings:Bombchus in Logic", RSK_BOMBCHUS_IN_LOGIC },
     { "World Settings:Shuffle Entrances", RSK_SHUFFLE_ENTRANCES },
     { "World Settings:Dungeon Entrances", RSK_SHUFFLE_DUNGEON_ENTRANCES },
@@ -316,27 +317,27 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "World Settings:Triforce Hunt", RSK_TRIFORCE_HUNT },
     { "World Settings:Triforce Hunt Total Pieces", RSK_TRIFORCE_HUNT_PIECES_TOTAL },
     { "World Settings:Triforce Hunt Required Pieces", RSK_TRIFORCE_HUNT_PIECES_REQUIRED },
-    { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
-    { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
-    { "Misc Settings:ToT Altar Hint", RSK_TOT_ALTAR_HINT },
-    { "Misc Settings:Light Arrow Hint", RSK_LIGHT_ARROWS_HINT },
-    { "Misc Settings:Dampe's Diary Hint", RSK_DAMPES_DIARY_HINT },
-    { "Misc Settings:Greg the Rupee Hint", RSK_GREG_HINT },
-    { "Misc Settings:Saria's Hint", RSK_SARIA_HINT },
-    { "Misc Settings:Frog Ocarina Game Hint", RSK_FROGS_HINT },
-    { "Misc Settings:10 GS Hint", RSK_KAK_10_SKULLS_HINT },
-    { "Misc Settings:20 GS Hint", RSK_KAK_20_SKULLS_HINT },
-    { "Misc Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
-    { "Misc Settings:40 GS Hint", RSK_KAK_40_SKULLS_HINT },
-    { "Misc Settings:50 GS Hint", RSK_KAK_50_SKULLS_HINT },
-    { "Misc Settings:Warp Song Hints", RSK_WARP_SONG_HINTS },
-    { "Misc Settings:Scrub Hint Text", RSK_SCRUB_TEXT_HINT },
-    { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
-    { "Misc Settings:Blue Fire Arrows", RSK_BLUE_FIRE_ARROWS },
-    { "Misc Settings:Sunlight Arrows", RSK_SUNLIGHT_ARROWS },
-    { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
+    { "Miscellaneous Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
+    { "Miscellaneous Settings:Hint Clarity", RSK_HINT_CLARITY },
+    { "Miscellaneous Settings:ToT Altar Hint", RSK_TOT_ALTAR_HINT },
+    { "Miscellaneous Settings:Light Arrow Hint", RSK_LIGHT_ARROWS_HINT },
+    { "Miscellaneous Settings:Dampe's Diary Hint", RSK_DAMPES_DIARY_HINT },
+    { "Miscellaneous Settings:Greg the Rupee Hint", RSK_GREG_HINT },
+    { "Miscellaneous Settings:Saria's Hint", RSK_SARIA_HINT },
+    { "Miscellaneous Settings:Frog Ocarina Game Hint", RSK_FROGS_HINT },
+    { "Miscellaneous Settings:10 GS Hint", RSK_KAK_10_SKULLS_HINT },
+    { "Miscellaneous Settings:20 GS Hint", RSK_KAK_20_SKULLS_HINT },
+    { "Miscellaneous Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
+    { "Miscellaneous Settings:40 GS Hint", RSK_KAK_40_SKULLS_HINT },
+    { "Miscellaneous Settings:50 GS Hint", RSK_KAK_50_SKULLS_HINT },
+    { "Miscellaneous Settings:Warp Song Hints", RSK_WARP_SONG_HINTS },
+    { "Miscellaneous Settings:Scrub Hint Text", RSK_SCRUB_TEXT_HINT },
+    { "Miscellaneous Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
+    { "Miscellaneous Settings:Blue Fire Arrows", RSK_BLUE_FIRE_ARROWS },
+    { "Miscellaneous Settings:Sunlight Arrows", RSK_SUNLIGHT_ARROWS },
+    { "Timesaver Settings:Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
     { "Start with Consumables", RSK_STARTING_CONSUMABLES },
-    { "Start with Max Rupees", RSK_FULL_WALLETS },
+    { "Full Wallets", RSK_FULL_WALLETS },
     { "Gold Skulltula Tokens", RSK_STARTING_SKULLTULA_TOKEN },
     { "Timesaver Settings:Cuccos to return", RSK_CUCCO_COUNT },
     { "Timesaver Settings:Big Poe Target Count", RSK_BIG_POE_COUNT },
@@ -346,7 +347,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Timesaver Settings:Complete Mask Quest", RSK_COMPLETE_MASK_QUEST },
     { "Timesaver Settings:Skip Scarecrow's Song", RSK_SKIP_SCARECROWS_SONG },
     { "Timesaver Settings:Enable Glitch-Useful Cutscenes", RSK_ENABLE_GLITCH_CUTSCENES },
-    { "World Settings:MQ Dungeon Settings", RSK_MQ_DUNGEON_RANDOM },
+    { "World Settings:MQ Dungeon Setting", RSK_MQ_DUNGEON_RANDOM },
     { "World Settings:MQ Dungeon Count", RSK_MQ_DUNGEON_COUNT },
     { "World Settings:Set Dungeon Quests", RSK_MQ_DUNGEON_SET },
     { "Shuffle Dungeon Quest:Forest Temple", RSK_MQ_FOREST_TEMPLE },
@@ -1013,7 +1014,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         break;
                     case RSK_KEYSANITY:
                     case RSK_BOSS_KEYSANITY:
-                    case RSK_STARTING_MAPS_COMPASSES:
+                    case RSK_SHUFFLE_MAPANDCOMPASS:
                         if(it.value() == "Start With") {
                             ctx->GetOption(index).SetSelectedIndex(RO_DUNGEON_ITEM_LOC_STARTWITH);
                         } else if(it.value() == "Vanilla") {
@@ -2818,7 +2819,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_STARTING_NOCTURNE_OF_SHADOW] = CVarGetInteger("gRandomizeStartingNocturneOfShadow", 0);
     cvarSettings[RSK_STARTING_PRELUDE_OF_LIGHT] = CVarGetInteger("gRandomizeStartingPreludeOfLight", 0);
     cvarSettings[RSK_STARTING_SKULLTULA_TOKEN] = CVarGetInteger("gRandomizeStartingSkulltulaToken", 0);
-    cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVarGetInteger("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
+    cvarSettings[RSK_SHUFFLE_MAPANDCOMPASS] = CVarGetInteger("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON);
     cvarSettings[RSK_SHUFFLE_SONGS] = CVarGetInteger("gRandomizeShuffleSongs", RO_SONG_SHUFFLE_SONG_LOCATIONS);
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVarGetInteger("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF);
