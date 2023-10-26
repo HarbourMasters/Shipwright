@@ -5,6 +5,7 @@
 
 #include "GameInteractionEffect.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
+#include <z64.h>
 
 typedef enum {
     /* 0x00 */ GI_LINK_SIZE_NORMAL,
