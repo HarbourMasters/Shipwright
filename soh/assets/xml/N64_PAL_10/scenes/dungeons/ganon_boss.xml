@@ -1,0 +1,31 @@
+<Root>
+    <File Name="ganon_boss_scene" Segment="2">
+        <Texture Name="ganon_boss_sceneTex_001E58" OutName="ganon_boss_sceneTex_001E58" Format="ci8" Width="32" Height="64" Offset="0x1E58" TlutOffset="0x1550" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTex_002658" OutName="ganon_boss_sceneTex_002658" Format="ci8" Width="16" Height="16" Offset="0x2658" TlutOffset="0x1A90" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTex_002758" OutName="ganon_boss_sceneTex_002758" Format="ci8" Width="8" Height="8" Offset="0x2758" TlutOffset="0x1A90" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTex_002798" OutName="ganon_boss_sceneTex_002798" Format="ci8" Width="32" Height="32" Offset="0x2798" TlutOffset="0x1C50" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTex_002B98" OutName="ganon_boss_sceneTex_002B98" Format="ci8" Width="16" Height="8" Offset="0x2B98" TlutOffset="0x1A90" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTex_002C18" OutName="ganon_boss_sceneTex_002C18" Format="rgba16" Width="32" Height="64" Offset="0x2C18" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTex_003C18" OutName="ganon_boss_sceneTex_003C18" Format="ci8" Width="32" Height="32" Offset="0x3C18" TlutOffset="0x1620" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTex_004018" OutName="ganon_boss_sceneTex_004018" Format="ci8" Width="32" Height="32" Offset="0x4018" TlutOffset="0x1888" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTex_004418" OutName="ganon_boss_sceneTex_004418" Format="ci8" Width="32" Height="32" Offset="0x4418" TlutOffset="0x1A90" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTex_004818" OutName="ganon_boss_sceneTex_004818" Format="ci8" Width="32" Height="32" Offset="0x4818" TlutOffset="0x1A90" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTex_004C18" OutName="ganon_boss_sceneTex_004C18" Format="ci8" Width="32" Height="32" Offset="0x4C18" TlutOffset="0x1A90" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTex_005018" OutName="ganon_boss_sceneTex_005018" Format="rgba16" Width="32" Height="32" Offset="0x5018" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTex_005818" OutName="ganon_boss_sceneTex_005818" Format="ci8" Width="32" Height="64" Offset="0x5818" TlutOffset="0x1888" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTex_006018" OutName="ganon_boss_sceneTex_006018" Format="ci8" Width="16" Height="64" Offset="0x6018" TlutOffset="0x1A90" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTex_006418" OutName="ganon_boss_sceneTex_006418" Format="ci8" Width="32" Height="64" Offset="0x6418" TlutOffset="0x1C50" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTex_006C18" OutName="ganon_boss_sceneTex_006C18" Format="ci8" Width="32" Height="64" Offset="0x6C18" TlutOffset="0x1680" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTex_007418" OutName="ganon_boss_sceneTex_007418" Format="ci8" Width="32" Height="64" Offset="0x7418" TlutOffset="0x1680" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTLUT_001550" OutName="ganon_boss_sceneTLUT_001550" Format="rgba16" Width="16" Height="16" Offset="0x1550" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTLUT_001620" OutName="ganon_boss_sceneTLUT_001620" Format="rgba16" Width="16" Height="16" Offset="0x1620" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTLUT_001680" OutName="ganon_boss_sceneTLUT_001680" Format="rgba16" Width="16" Height="16" Offset="0x1680" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTLUT_001888" OutName="ganon_boss_sceneTLUT_001888" Format="rgba16" Width="16" Height="16" Offset="0x1888" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTLUT_001A90" OutName="ganon_boss_sceneTLUT_001A90" Format="rgba16" Width="16" Height="16" Offset="0x1A90" AddedByScript="true"/>
+        <Texture Name="ganon_boss_sceneTLUT_001C50" OutName="ganon_boss_sceneTLUT_001C50" Format="rgba16" Width="16" Height="16" Offset="0x1C50" AddedByScript="true"/>
+        <Scene Name="ganon_boss_scene" Offset="0x0"/>
+    </File>
+    <File Name="ganon_boss_room_0" Segment="3">
+        <Room Name="ganon_boss_room_0" Offset="0x0"/>
+    </File>
+</Root>

@@ -48,6 +48,9 @@ cd Shipwright
 
 # If you need to regenerate the asset headers to check them into source
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target ExtractAssetHeaders
+
+# If you need a newer soh.otr only
+& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target GenerateSohOtr
 ```
 
 ### Developing SoH
@@ -110,6 +113,9 @@ cmake --build build-cmake --target clean
 
 # If you need to regenerate the asset headers to check them into source
 cmake --build build-cmake --target ExtractAssetHeaders
+
+# If you need a newer soh.otr only
+cmake --build build-cmake --target GenerateSohOtr
 ```
 
 ### Generating a distributable
@@ -157,6 +163,9 @@ cmake --build build-cmake --target clean
 
 # If you need to regenerate the asset headers to check them into source
 cmake --build build-cmake --target ExtractAssetHeaders
+
+# If you need a newer soh.otr only
+cmake --build build-cmake --target GenerateSohOtr
 ```
 
 ### Generating a distributable
