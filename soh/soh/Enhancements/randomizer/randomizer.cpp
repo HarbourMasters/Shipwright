@@ -677,11 +677,10 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
             std::string numericValueString;
             if(SpoilerfileSettingNameToEnum.count(it.key())) {
                 RandomizerSettingKey index = SpoilerfileSettingNameToEnum[it.key()];
-                gSaveContext.randoSettings[index].key = SpoilerfileSettingNameToEnum[it.key()];
                 // this is annoying but the same strings are used in different orders
                 // and i don't want the spoilerfile to just have numbers instead of
                 // human readable settings values so it'll have to do for now
-                switch(gSaveContext.randoSettings[index].key) {
+                switch(index) {
                     case RSK_LOGIC_RULES:
                         if (it.value() == "Glitchless") {
                             ctx->GetOption(index).SetSelectedIndex(RO_LOGIC_GLITCHLESS);

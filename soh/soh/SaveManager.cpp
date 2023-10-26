@@ -112,9 +112,11 @@ void SaveManager::LoadRandomizerVersion1() {
         SaveManager::Instance->LoadData("seed" + std::to_string(i), randoContext->hashIconIndexes[i]);
     }
 
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.randoSettings); i++) {
-        SaveManager::Instance->LoadData("sk" + std::to_string(i), gSaveContext.randoSettings[i].key);
-        SaveManager::Instance->LoadData("sv" + std::to_string(i), gSaveContext.randoSettings[i].value);
+    for (int i = 0; i < RSK_MAX; i++) {
+        int key, value;
+        SaveManager::Instance->LoadData("sk" + std::to_string(i), key);
+        SaveManager::Instance->LoadData("sv" + std::to_string(i), value);
+        randoContext->GetOption(RandomizerSettingKey(key)).SetSelectedIndex(value);
     }
 
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.hintLocations); i++) {
@@ -203,8 +205,9 @@ void SaveManager::LoadRandomizerVersion2() {
     SaveManager::Instance->LoadData("finalSeed", gSaveContext.finalSeed);
 
     SaveManager::Instance->LoadArray("randoSettings", RSK_MAX, [&](size_t i) {
-        gSaveContext.randoSettings[i].key = RandomizerSettingKey(i);
-        SaveManager::Instance->LoadData("", gSaveContext.randoSettings[i].value);
+        int value = 0;
+        SaveManager::Instance->LoadData("", value);
+        randoContext->GetOption(RandomizerSettingKey(i)).SetSelectedIndex(value);
     });
 
     SaveManager::Instance->LoadArray("hintLocations", ARRAY_COUNT(gSaveContext.hintLocations), [&](size_t i) {
