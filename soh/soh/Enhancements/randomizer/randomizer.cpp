@@ -46,6 +46,7 @@ std::unordered_map<std::string, RandomizerCheckArea> SpoilerfileAreaNameToEnum;
 std::unordered_map<std::string, HintType> SpoilerfileHintTypeNameToEnum;
 std::multimap<std::tuple<s16, s16, s32>, RandomizerCheck> checkFromActorMultimap;
 std::set<RandomizerCheck> excludedLocations;
+std::set<RandomizerCheck> spoilerExcludedLocations;
 std::set<RandomizerTrick> enabledTricks;
 std::set<RandomizerTrick> enabledGlitches;
 
@@ -669,6 +670,17 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
     try {
         json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
+
+        std::string inputSeed = spoilerFileJson["seed"].get<std::string>();
+        ctx->GetSettings().SetSeedString(inputSeed);
+
+        json hashJson = spoilerFileJson["file_hash"];
+        int index = 0;
+        for (auto it = hashJson.begin(); it != hashJson.end(); ++it) {
+            ctx->hashIconIndexes[index] = gSeedTextures[it.value()].id;
+            index++;
+        }
+
         json settingsJson = spoilerFileJson["settings"];
 
         for (auto it = settingsJson.begin(); it != settingsJson.end(); ++it) {
@@ -1218,6 +1230,21 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         }
                 }
             }
+        }
+
+        json jsonExcludedLocations = spoilerFileJson["excludedLocations"];
+
+        ctx->AddExcludedOptions();
+        for (auto it = jsonExcludedLocations.begin(); it != jsonExcludedLocations.end(); it++) {
+            RandomizerCheck rc = SpoilerfileCheckNameToEnum[it.value()];
+            ctx->GetItemLocation(rc)->GetExcludedOption()->SetSelectedIndex(RO_GENERIC_ON);
+        }
+
+        json enabledTricksJson = spoilerFileJson["enabledTricks"];
+        for (auto it = enabledTricksJson.begin(); it != enabledTricksJson.end(); it++) {
+            std::string numericValueString = it.value();
+            RandomizerTrick rt = (RandomizerTrick)std::stoi(numericValueString);
+            ctx->GetTrickOption(rt).SetSelectedIndex(RO_GENERIC_ON);
         }
 
         success = true;

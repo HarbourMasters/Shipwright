@@ -1957,7 +1957,11 @@ extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(
 }
 
 extern "C" void Randomizer_GenerateSeed() {
-    GenerateRandomizer();
+    std::string seed = "";
+    if (OTRGlobals::Instance->gRandoContext->IsSpoilerLoaded()) {
+        seed = OTRGlobals::Instance->gRandoContext->GetSettings().GetSeedString();
+    }
+    GenerateRandomizer(seed);
 }
 
 extern "C" uint8_t Randomizer_IsSeedGenerated() {

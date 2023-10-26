@@ -839,56 +839,61 @@ const OptionGroup& Settings::GetOptionGroup(RandomizerSettingGroupKey key) {
 }
 
 void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks) {
-    for (auto [key, value] : cvarSettings) {
-        mOptions[key].SetSelectedIndex(value);
-    }
-    switch (cvarSettings[RSK_LOGIC_RULES]) {
-        case RO_LOGIC_GLITCHLESS:
-            mOptions[RSK_LOGIC_RULES].SetSelectedIndex(RO_LOGIC_GLITCHLESS);
-            break;
-        case RO_LOGIC_NO_LOGIC:
-            mOptions[RSK_LOGIC_RULES].SetSelectedIndex(RO_LOGIC_NO_LOGIC);
-            break;
-    }
     auto ctx = Rando::Context::GetInstance();
-    ctx->AddExcludedOptions();
-    for (auto locationKey : ctx->everyPossibleLocation) {
-        auto location = ctx->GetItemLocation(locationKey);
-        if (excludedLocations.count(location->GetRandomizerCheck())) {
-            location->GetExcludedOption()->SetSelectedIndex(1);
+    if (!ctx->IsSpoilerLoaded()) {
+        // If we've loaded a spoiler file, the settings have already been populated, so we
+        // only need to do things like resolve the starting age or determine MQ dungeons.
+        // Any logic dependent on cvarSettings should go in this if statement
+        for (auto [key, value] : cvarSettings) {
+            mOptions[key].SetSelectedIndex(value);
+        }
+        switch (cvarSettings[RSK_LOGIC_RULES]) {
+            case RO_LOGIC_GLITCHLESS:
+                mOptions[RSK_LOGIC_RULES].SetSelectedIndex(RO_LOGIC_GLITCHLESS);
+                break;
+            case RO_LOGIC_NO_LOGIC:
+                mOptions[RSK_LOGIC_RULES].SetSelectedIndex(RO_LOGIC_NO_LOGIC);
+                break;
+        }
+        
+        // if we skip child zelda, we start with zelda's letter, and malon starts
+        // at the ranch, so we should *not* shuffle the weird egg
+        if (cvarSettings[RSK_SKIP_CHILD_ZELDA]) {
+            mOptions[RSK_SKIP_CHILD_ZELDA].SetSelectedIndex(true);
+            mOptions[RSK_SHUFFLE_WEIRD_EGG].SetSelectedIndex(0);
         } else {
-            location->GetExcludedOption()->SetSelectedIndex(0);
+            mOptions[RSK_SKIP_CHILD_ZELDA].SetSelectedIndex(false);
+            mOptions[RSK_SHUFFLE_WEIRD_EGG].SetSelectedIndex(cvarSettings[RSK_SHUFFLE_WEIRD_EGG]);
+        }
+        // Force 100 GS Shuffle if that's where Ganon's Boss Key is
+        if (cvarSettings[RSK_GANONS_BOSS_KEY] == RO_GANON_BOSS_KEY_KAK_TOKENS) {
+            mOptions[RSK_SHUFFLE_100_GS_REWARD].SetSelectedIndex(1);
+        } else {
+            mOptions[RSK_SHUFFLE_100_GS_REWARD].SetSelectedIndex(cvarSettings[RSK_SHUFFLE_100_GS_REWARD]);
+        }
+
+        if (cvarSettings[RSK_TRIFORCE_HUNT]) {
+            mOptions[RSK_GANONS_BOSS_KEY].SetSelectedIndex(RO_GANON_BOSS_KEY_TRIFORCE_HUNT);
+        } else {
+            mOptions[RSK_GANONS_BOSS_KEY].SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
+        }
+        // ImGui has a slider which returns the actual number, which is off by one since
+        // the ImGui slider can't go down to 0 (the first index aka 1 big poe).
+        mOptions[RSK_BIG_POE_COUNT].SetSelectedIndex(cvarSettings[RSK_BIG_POE_COUNT] - 1);
+        ctx->AddExcludedOptions();
+        for (auto locationKey : ctx->everyPossibleLocation) {
+            auto location = ctx->GetItemLocation(locationKey);
+            if (excludedLocations.count(location->GetRandomizerCheck())) {
+                location->GetExcludedOption()->SetSelectedIndex(1);
+            } else {
+                location->GetExcludedOption()->SetSelectedIndex(0);
+            }
+        }
+        // Tricks
+        for (auto randomizerTrick : enabledTricks) {
+            mTrickOptions[randomizerTrick].SetSelectedIndex(1);
         }
     }
-
-    // Tricks
-    for (auto randomizerTrick : enabledTricks) {
-        mTrickOptions[randomizerTrick].SetSelectedIndex(1);
-    }
-    // if we skip child zelda, we start with zelda's letter, and malon starts
-    // at the ranch, so we should *not* shuffle the weird egg
-    if (cvarSettings[RSK_SKIP_CHILD_ZELDA]) {
-        mOptions[RSK_SKIP_CHILD_ZELDA].SetSelectedIndex(true);
-        mOptions[RSK_SHUFFLE_WEIRD_EGG].SetSelectedIndex(0);
-    } else {
-        mOptions[RSK_SKIP_CHILD_ZELDA].SetSelectedIndex(false);
-        mOptions[RSK_SHUFFLE_WEIRD_EGG].SetSelectedIndex(cvarSettings[RSK_SHUFFLE_WEIRD_EGG]);
-    }
-    // Force 100 GS Shuffle if that's where Ganon's Boss Key is
-    if (cvarSettings[RSK_GANONS_BOSS_KEY] == RO_GANON_BOSS_KEY_KAK_TOKENS) {
-        mOptions[RSK_SHUFFLE_100_GS_REWARD].SetSelectedIndex(1);
-    } else {
-        mOptions[RSK_SHUFFLE_100_GS_REWARD].SetSelectedIndex(cvarSettings[RSK_SHUFFLE_100_GS_REWARD]);
-    }
-
-    if (cvarSettings[RSK_TRIFORCE_HUNT]) {
-        mOptions[RSK_GANONS_BOSS_KEY].SetSelectedIndex(RO_GANON_BOSS_KEY_TRIFORCE_HUNT);
-    } else {
-        mOptions[RSK_GANONS_BOSS_KEY].SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
-    }
-    // ImGui has a slider which returns the actual number, which is off by one since
-    // the ImGui slider can't go down to 0 (the first index aka 1 big poe).
-    mOptions[RSK_BIG_POE_COUNT].SetSelectedIndex(cvarSettings[RSK_BIG_POE_COUNT] - 1);
 
     // RANDOTODO implement chest shuffle with keysanity
     // ShuffleChestMinigame.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);

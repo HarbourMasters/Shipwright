@@ -1035,12 +1035,12 @@ void FileChoose_UpdateRandomizer() {
             fileSelectSpoilerFileLoaded = false;
             const char* fileLoc = CVarGetString("gSpoilerLog", "");
             Randomizer_LoadSettings(fileLoc);
-            Randomizer_LoadHintLocations(fileLoc);
-            Randomizer_LoadRequiredTrials(fileLoc);
-            Randomizer_LoadItemLocations(fileLoc, silent);
-            Randomizer_LoadMerchantMessages(fileLoc);
-            Randomizer_LoadMasterQuestDungeons(fileLoc);
-            Randomizer_LoadEntranceOverrides(fileLoc, silent);
+            //Randomizer_LoadHintLocations(fileLoc);
+            //Randomizer_LoadRequiredTrials(fileLoc);
+            //Randomizer_LoadItemLocations(fileLoc, silent);
+            //Randomizer_LoadMerchantMessages(fileLoc);
+            //Randomizer_LoadMasterQuestDungeons(fileLoc);
+            //Randomizer_LoadEntranceOverrides(fileLoc, silent);
             fileSelectSpoilerFileLoaded = true;
             Randomizer_SetSeedGenerated(false);
             Randomizer_SetSpoilerLoaded(true);
