@@ -476,7 +476,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
 
         osSyncPrintf("kscope->select_name[Display_Equipment] = %d\n", pauseCtx->cursorItem[PAUSE_EQUIP]);
 
-        if (!(CHECK_EQUIPMENT_AGE(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP]))) {
+        if (!(CHECK_AGE_REQ_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP]))) {
             pauseCtx->nameColorSet = 1;
         }
 
@@ -511,7 +511,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             (pauseCtx->unk_1E4 == 0) && CHECK_BTN_ANY(input->press.button, buttonsToCheck) &&
             (pauseCtx->cursorX[PAUSE_EQUIP] != 0)) {
 
-            if (CHECK_EQUIPMENT_AGE(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP])) {
+            if (CHECK_AGE_REQ_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP])) {
                 if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
 
                     // Allow Link to remove his equipment from the equipment subscreen by toggling on/off
@@ -643,7 +643,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         for (k = 0, temp = rowStart + 1, bit = rowStart, j = point; k < 3; k++, bit++, j += 4, temp++) {
 
             if ((gBitFlags[bit] & gSaveContext.inventory.equipment) && (pauseCtx->cursorSpecialPos == 0)) {
-                if (CHECK_EQUIPMENT_AGE(i, k + 1)) {
+                if (CHECK_AGE_REQ_EQUIP(i, k + 1)) {
                     if (temp == cursorSlot) {
                         pauseCtx->equipVtx[j].v.ob[0] = pauseCtx->equipVtx[j + 2].v.ob[0] =
                             pauseCtx->equipVtx[j].v.ob[0] - 2;
@@ -702,7 +702,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         for (k = 0, bit = rowStart, point = 4; k < 3; k++, point += 4, temp++, bit++) {
 
             int itemId = ITEM_SWORD_KOKIRI + temp;
-            bool age_restricted = !CHECK_ITEM_AGE(itemId);
+            bool age_restricted = !CHECK_AGE_REQ_ITEM(itemId);
             if (age_restricted) {
                 gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                 gSPGrayscale(POLY_KAL_DISP++, true);
