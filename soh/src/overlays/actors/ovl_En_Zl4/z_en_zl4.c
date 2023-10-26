@@ -798,7 +798,7 @@ s32 EnZl4_CsAskName(EnZl4* this, PlayState* play) {
             this->talkTimer2++;
             if (this->talkTimer2 == 130) {
                 play->msgCtx.msgMode = MSGMODE_PAUSED;
-                play->nextEntranceIndex = 0xA0;
+                play->nextEntranceIndex = ENTR_CUTSCENE_MAP_0;
                 gSaveContext.nextCutsceneIndex = 0xFFF7;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 play->transitionType = TRANS_TYPE_FADE_WHITE;

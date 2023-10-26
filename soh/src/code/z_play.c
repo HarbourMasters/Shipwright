@@ -2259,11 +2259,11 @@ void Play_LoadToLastEntrance(PlayState* play) {
 
     if ((play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) || (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
         (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE) || (play->sceneNum == SCENE_GANON_BOSS)) {
-        play->nextEntranceIndex = 0x043F;
+        play->nextEntranceIndex = ENTR_GANONS_TOWER_COLLAPSE_EXTERIOR_0;
         Item_Give(play, ITEM_SWORD_MASTER);
     } else if ((gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_11) || (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_12) ||
                (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_13) || (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_15)) {
-        play->nextEntranceIndex = 0x01F9;
+        play->nextEntranceIndex = ENTR_HYRULE_FIELD_6;
     } else {
         play->nextEntranceIndex = gSaveContext.entranceIndex;
     }

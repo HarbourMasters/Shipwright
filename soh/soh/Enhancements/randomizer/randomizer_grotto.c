@@ -158,7 +158,7 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
         // When the nextEntranceIndex is determined by a dynamic exit,
         // or set by Entrance_OverrideBlueWarp to mark a blue warp entrance,
         // we have to set the respawn information and nextEntranceIndex manually
-        if (gPlayState != NULL && gPlayState->nextEntranceIndex != -1) {
+        if (gPlayState != NULL && gPlayState->nextEntranceIndex != ENTR_LOAD_OPENING) {
             gSaveContext.respawnFlag = 2;
             nextEntranceIndex = grotto.entranceIndex;
             gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;

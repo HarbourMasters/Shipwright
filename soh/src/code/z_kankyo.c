@@ -2546,22 +2546,22 @@ void Environment_WarpSongLeave(PlayState* play) {
     gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
 
     switch (play->nextEntranceIndex) {
-        case 0x147:
+        case ENTR_DEATH_MOUNTAIN_CRATER_0:
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEATH_MOUNTAIN_CRATER);
             break;
-        case 0x0102:
+        case ENTR_LAKE_HYLIA_0:
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_LAKE_HYLIA);
             break;
-        case 0x0123:
+        case ENTR_DESERT_COLOSSUS_0:
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DESERT_COLOSSUS);
             break;
-        case 0x00E4:
+        case ENTR_GRAVEYARD_0:
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GRAVEYARD);
             break;
-        case 0x0053:
+        case ENTR_TEMPLE_OF_TIME_0:
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_TEMPLE_OF_TIME);
             break;
-        case 0x00FC:
+        case ENTR_SACRED_FOREST_MEADOW_0:
             break;
     }
 }

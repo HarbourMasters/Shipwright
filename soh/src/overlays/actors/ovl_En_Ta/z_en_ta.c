@@ -669,7 +669,7 @@ void func_80B15424(EnTa* this, PlayState* play) {
     func_80B15308(this);
 
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
-        play->nextEntranceIndex = 0x5E4;
+        play->nextEntranceIndex = ENTR_LON_LON_BUILDINGS_2;
 
         if (gSaveContext.eventInf[0] & 0x100) {
             play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
