@@ -145,7 +145,6 @@ Sprite* Randomizer::GetSeedTexture(uint8_t index) {
 }
 
 Randomizer::~Randomizer() { 
-    this->randoSettings.clear();
     this->merchantPrices.clear();
 }
 
@@ -223,7 +222,7 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
 
 std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEnum = {
     { "Logic Options:Logic", RSK_LOGIC_RULES },
-    { "Logic Options:Night GSs Expect Sun's", RSK_SKULLS_SUNS_SONG },
+    { "Logic Options:Night Skulltula's Expect Sun's Song", RSK_SKULLS_SUNS_SONG },
     { "Logic Options:All Locations Reachable", RSK_ALL_LOCATIONS_REACHABLE },
     { "Item Pool Settings:Item Pool", RSK_ITEM_POOL },
     { "Item Pool Settings:Ice Traps", RSK_ICE_TRAPS },
@@ -233,7 +232,8 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Zora's Fountain", RSK_ZORAS_FOUNTAIN },
     { "Open Settings:Gerudo Fortress", RSK_GERUDO_FORTRESS },
     { "Open Settings:Rainbow Bridge", RSK_RAINBOW_BRIDGE },
-    { "Open Settings:Trial Count", RSK_TRIAL_COUNT },
+    { "Open Settings:Ganon's Trials", RSK_GANONS_TRIALS },
+    { "Open Settings:Ganon's Trials Count", RSK_TRIAL_COUNT },
     { "Open Settings:Stone Count", RSK_RAINBOW_BRIDGE_STONE_COUNT },
     { "Open Settings:Medallion Count", RSK_RAINBOW_BRIDGE_MEDALLION_COUNT },
     { "Open Settings:Reward Count", RSK_RAINBOW_BRIDGE_REWARD_COUNT },
@@ -241,7 +241,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Token Count", RSK_RAINBOW_BRIDGE_TOKEN_COUNT },
     { "Open Settings:Bridge Reward Options", RSK_BRIDGE_OPTIONS },
     { "Shuffle Settings:Shuffle Dungeon Rewards", RSK_SHUFFLE_DUNGEON_REWARDS },
-    { "Shuffle Settings:Link's Pocket", RSK_LINKS_POCKET},
+    { "Shuffle Settings:Link's Pocket", RSK_LINKS_POCKET },
     { "Shuffle Settings:Shuffle Songs", RSK_SHUFFLE_SONGS },
     { "Shuffle Settings:Shuffle Gerudo Card", RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD },
     { "Shuffle Settings:Shopsanity", RSK_SHOPSANITY },
@@ -346,8 +346,9 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Timesaver Settings:Complete Mask Quest", RSK_COMPLETE_MASK_QUEST },
     { "Timesaver Settings:Skip Scarecrow's Song", RSK_SKIP_SCARECROWS_SONG },
     { "Timesaver Settings:Enable Glitch-Useful Cutscenes", RSK_ENABLE_GLITCH_CUTSCENES },
-    { "World Settings:MQ Dungeons", RSK_RANDOM_MQ_DUNGEONS },
+    { "World Settings:MQ Dungeon Settings", RSK_MQ_DUNGEON_RANDOM },
     { "World Settings:MQ Dungeon Count", RSK_MQ_DUNGEON_COUNT },
+    { "World Settings:Set Dungeon Quests", RSK_MQ_DUNGEON_SET },
     { "Shuffle Dungeon Quest:Forest Temple", RSK_MQ_FOREST_TEMPLE },
     { "Shuffle Dungeon Quest:Fire Temple", RSK_MQ_FIRE_TEMPLE },
     { "Shuffle Dungeon Quest:Water Temple", RSK_MQ_WATER_TEMPLE },
@@ -408,10 +409,6 @@ void DrawTagChips(const std::vector<RandomizerTrickTag> &rtTags) {
 void Randomizer::LoadRandomizerSettings(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
         ParseRandomizerSettingsFile(spoilerFileName);
-    }
-
-    for(auto& randoSetting : gSaveContext.randoSettings) {
-        this->randoSettings[randoSetting.key] = randoSetting.value;
     }
 }
 
@@ -661,6 +658,7 @@ void Randomizer::LoadMasterQuestDungeons(const char* spoilerFileName) {
 }
 
 void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
+    auto ctx = OTRGlobals::Instance->gRandoContext;
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
         return;
@@ -668,12 +666,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
     bool success = false;
 
     try {
-        // clear out existing settings
-        for(size_t i = 0; i < RSK_MAX; i++) {
-            gSaveContext.randoSettings[i].key = RSK_NONE;
-            gSaveContext.randoSettings[i].value = 0;
-        }
-
         json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
         json settingsJson = spoilerFileJson["settings"];
@@ -691,96 +683,96 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                 switch(gSaveContext.randoSettings[index].key) {
                     case RSK_LOGIC_RULES:
                         if (it.value() == "Glitchless") {
-                            gSaveContext.randoSettings[index].value = RO_LOGIC_GLITCHLESS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_LOGIC_GLITCHLESS);
                         } else if (it.value() == "No Logic") {
-                            gSaveContext.randoSettings[index].value = RO_LOGIC_NO_LOGIC;
+                            ctx->GetOption(index).SetSelectedIndex(RO_LOGIC_NO_LOGIC);
                         }
                         break;
                     case RSK_FOREST:
                         if(it.value() == "Closed") {
-                            gSaveContext.randoSettings[index].value = RO_FOREST_CLOSED;
+                            ctx->GetOption(index).SetSelectedIndex(RO_FOREST_CLOSED);
                         } else if(it.value() == "Open") {
-                            gSaveContext.randoSettings[index].value = RO_FOREST_OPEN;
+                            ctx->GetOption(index).SetSelectedIndex(RO_FOREST_OPEN);
                         } else if(it.value() == "Closed Deku") {
-                            gSaveContext.randoSettings[index].value = RO_FOREST_CLOSED_DEKU;
+                            ctx->GetOption(index).SetSelectedIndex(RO_FOREST_CLOSED_DEKU);
                         }
                         break;
                     case RSK_KAK_GATE:
                         if(it.value() == "Closed") {
-                            gSaveContext.randoSettings[index].value = RO_KAK_GATE_CLOSED;
+                            ctx->GetOption(index).SetSelectedIndex(RO_KAK_GATE_CLOSED);
                         } else if(it.value() == "Open") {
-                            gSaveContext.randoSettings[index].value = RO_KAK_GATE_OPEN;
+                            ctx->GetOption(index).SetSelectedIndex(RO_KAK_GATE_OPEN);
                         }
                         break;
                     case RSK_DOOR_OF_TIME:
                         if(it.value() == "Open") {
-                            gSaveContext.randoSettings[index].value = RO_DOOROFTIME_OPEN;
+                            ctx->GetOption(index).SetSelectedIndex(RO_DOOROFTIME_OPEN);
                         } else if(it.value() == "Song only") {
-                            gSaveContext.randoSettings[index].value = RO_DOOROFTIME_SONGONLY;
+                            ctx->GetOption(index).SetSelectedIndex(RO_DOOROFTIME_SONGONLY);
                         } else if(it.value() == "Closed") {
-                            gSaveContext.randoSettings[index].value = RO_DOOROFTIME_CLOSED;
+                            ctx->GetOption(index).SetSelectedIndex(RO_DOOROFTIME_CLOSED);
                         }
                         break;
                     case RSK_ZORAS_FOUNTAIN:
                         if(it.value() == "Closed") {
-                            gSaveContext.randoSettings[index].value = RO_ZF_CLOSED;
+                            ctx->GetOption(index).SetSelectedIndex(RO_ZF_CLOSED);
                         } else if(it.value() == "Closed as child") {
-                            gSaveContext.randoSettings[index].value = RO_ZF_CLOSED_CHILD;
+                            ctx->GetOption(index).SetSelectedIndex(RO_ZF_CLOSED_CHILD);
                         } else if(it.value() == "Open") {
-                            gSaveContext.randoSettings[index].value = RO_ZF_OPEN;
+                            ctx->GetOption(index).SetSelectedIndex(RO_ZF_OPEN);
                         }
                         break;
                     case RSK_STARTING_AGE:
                         if(it.value() == "Child") {
-                            gSaveContext.randoSettings[index].value = RO_AGE_CHILD;
+                            ctx->GetOption(index).SetSelectedIndex(RO_AGE_CHILD);
                         } else if (it.value() == "Adult") {
-                            gSaveContext.randoSettings[index].value = RO_AGE_ADULT;
+                            ctx->GetOption(index).SetSelectedIndex(RO_AGE_ADULT);
                         }
                         break;
                     case RSK_GERUDO_FORTRESS:
                         if(it.value() == "Normal") {
-                            gSaveContext.randoSettings[index].value = RO_GF_NORMAL;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GF_NORMAL);
                         } else if(it.value() == "Fast") {
-                            gSaveContext.randoSettings[index].value = RO_GF_FAST;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GF_FAST);
                         } else if(it.value() == "Open") {
-                            gSaveContext.randoSettings[index].value = RO_GF_OPEN;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GF_OPEN);
                         }
                         break;
                     case RSK_RAINBOW_BRIDGE:
                         if(it.value() == "Vanilla") {
-                            gSaveContext.randoSettings[index].value = RO_BRIDGE_VANILLA;
+                            ctx->GetOption(index).SetSelectedIndex(RO_BRIDGE_VANILLA);
                         } else if(it.value() == "Always open") {
-                            gSaveContext.randoSettings[index].value = RO_BRIDGE_ALWAYS_OPEN;
+                            ctx->GetOption(index).SetSelectedIndex(RO_BRIDGE_ALWAYS_OPEN);
                         } else if(it.value() == "Stones") {
-                            gSaveContext.randoSettings[index].value = RO_BRIDGE_STONES;
+                            ctx->GetOption(index).SetSelectedIndex(RO_BRIDGE_STONES);
                         } else if(it.value() == "Medallions") {
-                            gSaveContext.randoSettings[index].value = RO_BRIDGE_MEDALLIONS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_BRIDGE_MEDALLIONS);
                         } else if(it.value() == "Dungeon rewards") {
-                            gSaveContext.randoSettings[index].value = RO_BRIDGE_DUNGEON_REWARDS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_BRIDGE_DUNGEON_REWARDS);
                         } else if(it.value() == "Dungeons") {
-                            gSaveContext.randoSettings[index].value = RO_BRIDGE_DUNGEONS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_BRIDGE_DUNGEONS);
                         } else if(it.value() == "Tokens") {
-                            gSaveContext.randoSettings[index].value = RO_BRIDGE_TOKENS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_BRIDGE_TOKENS);
                         } else if(it.value() == "Greg") {
-                            gSaveContext.randoSettings[index].value = RO_BRIDGE_GREG;
+                            ctx->GetOption(index).SetSelectedIndex(RO_BRIDGE_GREG);
                         }
                         break;
                     case RSK_BRIDGE_OPTIONS:
                         if (it.value() == "Standard Rewards") {
-                            gSaveContext.randoSettings[index].value = RO_BRIDGE_STANDARD_REWARD;
+                            ctx->GetOption(index).SetSelectedIndex(RO_BRIDGE_STANDARD_REWARD);
                         } else if (it.value() == "Greg as Reward") {
-                            gSaveContext.randoSettings[index].value = RO_BRIDGE_GREG_REWARD;
+                            ctx->GetOption(index).SetSelectedIndex(RO_BRIDGE_GREG_REWARD);
                         } else if (it.value() == "Greg as Wildcard") {
-                            gSaveContext.randoSettings[index].value = RO_BRIDGE_WILDCARD_REWARD;
+                            ctx->GetOption(index).SetSelectedIndex(RO_BRIDGE_WILDCARD_REWARD);
                         }
                         break;
                     case RSK_LACS_OPTIONS:
                         if (it.value() == "Standard Reward") {
-                            gSaveContext.randoSettings[index].value = RO_LACS_STANDARD_REWARD;
+                            ctx->GetOption(index).SetSelectedIndex(RO_LACS_STANDARD_REWARD);
                         } else if (it.value() == "Greg as Reward") {
-                            gSaveContext.randoSettings[index].value = RO_LACS_GREG_REWARD;
+                            ctx->GetOption(index).SetSelectedIndex(RO_LACS_GREG_REWARD);
                         } else if (it.value() == "Greg as Wildcard") {
-                            gSaveContext.randoSettings[index].value = RO_LACS_WILDCARD_REWARD;
+                            ctx->GetOption(index).SetSelectedIndex(RO_LACS_WILDCARD_REWARD);
                         }
                         break;
                     case RSK_RAINBOW_BRIDGE_STONE_COUNT:
@@ -801,46 +793,46 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_TRIFORCE_HUNT_PIECES_TOTAL:
                     case RSK_TRIFORCE_HUNT_PIECES_REQUIRED:
                         numericValueString = it.value();
-                        gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
+                        ctx->GetOption(index).SetSelectedIndex(std::stoi(numericValueString));
                         break;
                     case RSK_SHOPSANITY:
                         if(it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_OFF;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SHOPSANITY_OFF);
                         } else if(it.value() == "0 Items") {
-                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_ZERO_ITEMS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SHOPSANITY_ZERO_ITEMS);
                         } else if(it.value() == "1 Item") {
-                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_ONE_ITEM;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SHOPSANITY_ONE_ITEM);
                         } else if(it.value() == "2 Items") {
-                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_TWO_ITEMS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SHOPSANITY_TWO_ITEMS);
                         } else if(it.value() == "3 Items") {
-                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_THREE_ITEMS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SHOPSANITY_THREE_ITEMS);
                         } else if(it.value() == "4 Items") {
-                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_FOUR_ITEMS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SHOPSANITY_FOUR_ITEMS);
                         } else if(it.value() == "Random") {
-                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_RANDOM;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SHOPSANITY_RANDOM);
                         }
                         break;
                     case RSK_SHOPSANITY_PRICES:
                         if (it.value() == "Random") {
-                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_PRICE_BALANCED;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SHOPSANITY_PRICE_BALANCED);
                         } else if (it.value() == "Starter Wallet") {
-                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_PRICE_STARTER;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SHOPSANITY_PRICE_STARTER);
                         } else if (it.value() == "Adult's Wallet") {
-                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_PRICE_ADULT;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SHOPSANITY_PRICE_ADULT);
                         } else if (it.value() == "Giant's Wallet") {
-                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_PRICE_GIANT;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SHOPSANITY_PRICE_GIANT);
                         } else if (it.value() == "Tycoon's Wallet") {
-                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_PRICE_TYCOON;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SHOPSANITY_PRICE_TYCOON);
                         }
                     case RSK_SHUFFLE_SCRUBS:
                         if(it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = RO_SCRUBS_OFF;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SCRUBS_OFF);
                         } else if(it.value() == "Affordable") {
-                            gSaveContext.randoSettings[index].value = RO_SCRUBS_AFFORDABLE;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SCRUBS_AFFORDABLE);
                         } else if(it.value() == "Expensive") {
-                            gSaveContext.randoSettings[index].value = RO_SCRUBS_EXPENSIVE;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SCRUBS_EXPENSIVE);
                         } else if(it.value() == "Random Prices") {
-                            gSaveContext.randoSettings[index].value = RO_SCRUBS_RANDOM;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SCRUBS_RANDOM);
                         }
                         break;
                     case RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD:
@@ -911,273 +903,262 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_ALL_LOCATIONS_REACHABLE:
                     case RSK_TRIFORCE_HUNT:
                         if(it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = RO_GENERIC_OFF;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GENERIC_OFF);
                         } else if(it.value() == "On") {
-                            gSaveContext.randoSettings[index].value = RO_GENERIC_ON;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GENERIC_ON);
                         }
                         break;
                     case RSK_KEYRINGS:
                         if (it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = RO_KEYRINGS_OFF;
+                            ctx->GetOption(index).SetSelectedIndex(RO_KEYRINGS_OFF);
                         } else if (it.value() == "Random") {
-                            gSaveContext.randoSettings[index].value = RO_KEYRINGS_RANDOM;
+                            ctx->GetOption(index).SetSelectedIndex(RO_KEYRINGS_RANDOM);
                         } else if (it.value() == "Count") {
-                            gSaveContext.randoSettings[index].value = RO_KEYRINGS_COUNT;
+                            ctx->GetOption(index).SetSelectedIndex(RO_KEYRINGS_COUNT);
                         } else if (it.value() == "Selection") {
-                            gSaveContext.randoSettings[index].value = RO_KEYRINGS_SELECTION;
+                            ctx->GetOption(index).SetSelectedIndex(RO_KEYRINGS_SELECTION);
                         }
                         break;
                     case RSK_SHUFFLE_MERCHANTS:
                         if(it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = RO_SHUFFLE_MERCHANTS_OFF;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SHUFFLE_MERCHANTS_OFF);
                         } else if (it.value() == "On (No Hints)") {
-                            gSaveContext.randoSettings[index].value = RO_SHUFFLE_MERCHANTS_ON_NO_HINT;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SHUFFLE_MERCHANTS_ON_NO_HINT);
                         } else if (it.value() == "On (With Hints)") {
-                            gSaveContext.randoSettings[index].value = RO_SHUFFLE_MERCHANTS_ON_HINT;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SHUFFLE_MERCHANTS_ON_HINT);
                         }
                         break;
                     // Uses Ammo Drops option for now. "Off" not yet implemented
                     case RSK_ENABLE_BOMBCHU_DROPS:
                         if (it.value() == "On") {
-                            gSaveContext.randoSettings[index].value = RO_AMMO_DROPS_ON;
+                            ctx->GetOption(index).SetSelectedIndex(RO_AMMO_DROPS_ON);
                         } else if (it.value() == "On + Bombchu") {
-                            gSaveContext.randoSettings[index].value = RO_AMMO_DROPS_ON_PLUS_BOMBCHU;
+                            ctx->GetOption(index).SetSelectedIndex(RO_AMMO_DROPS_ON_PLUS_BOMBCHU);
                         } else if (it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = RO_AMMO_DROPS_OFF;
+                            ctx->GetOption(index).SetSelectedIndex(RO_AMMO_DROPS_OFF);
                         }
                         break;
                     case RSK_STARTING_OCARINA:
                         if(it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = RO_STARTING_OCARINA_OFF;
+                            ctx->GetOption(index).SetSelectedIndex(RO_STARTING_OCARINA_OFF);
                         } else if(it.value() == "Fairy Ocarina") {
-                            gSaveContext.randoSettings[index].value = RO_STARTING_OCARINA_FAIRY;
+                            ctx->GetOption(index).SetSelectedIndex(RO_STARTING_OCARINA_FAIRY);
                         }
                         break;
                     case RSK_ITEM_POOL:
                         if(it.value() == "Plentiful") {
-                            gSaveContext.randoSettings[index].value = RO_ITEM_POOL_PLENTIFUL;
+                            ctx->GetOption(index).SetSelectedIndex(RO_ITEM_POOL_PLENTIFUL);
                         } else if(it.value() == "Balanced") {
-                            gSaveContext.randoSettings[index].value = RO_ITEM_POOL_BALANCED;
+                            ctx->GetOption(index).SetSelectedIndex(RO_ITEM_POOL_BALANCED);
                         } else if(it.value() == "Scarce") {
-                            gSaveContext.randoSettings[index].value = RO_ITEM_POOL_SCARCE;
+                            ctx->GetOption(index).SetSelectedIndex(RO_ITEM_POOL_SCARCE);
                         } else if(it.value() == "Minimal") {
-                            gSaveContext.randoSettings[index].value = RO_ITEM_POOL_MINIMAL;
+                            ctx->GetOption(index).SetSelectedIndex(RO_ITEM_POOL_MINIMAL);
                         }
                         break;
                     case RSK_ICE_TRAPS:
                         if(it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = RO_ICE_TRAPS_OFF;
+                            ctx->GetOption(index).SetSelectedIndex(RO_ICE_TRAPS_OFF);
                         } else if(it.value() == "Normal") {
-                            gSaveContext.randoSettings[index].value = RO_ICE_TRAPS_NORMAL;
+                            ctx->GetOption(index).SetSelectedIndex(RO_ICE_TRAPS_NORMAL);
                         } else if(it.value() == "Extra") {
-                            gSaveContext.randoSettings[index].value = RO_ICE_TRAPS_EXTRA;
+                            ctx->GetOption(index).SetSelectedIndex(RO_ICE_TRAPS_EXTRA);
                         } else if(it.value() == "Mayhem") {
-                            gSaveContext.randoSettings[index].value = RO_ICE_TRAPS_MAYHEM;
+                            ctx->GetOption(index).SetSelectedIndex(RO_ICE_TRAPS_MAYHEM);
                         } else if(it.value() == "Onslaught") {
-                            gSaveContext.randoSettings[index].value = RO_ICE_TRAPS_ONSLAUGHT;
+                            ctx->GetOption(index).SetSelectedIndex(RO_ICE_TRAPS_ONSLAUGHT);
                         }
                         break;
                     case RSK_GOSSIP_STONE_HINTS:
                         if(it.value() == "No Hints") {
-                            gSaveContext.randoSettings[index].value = RO_GOSSIP_STONES_NONE;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GOSSIP_STONES_NONE);
                         } else if(it.value() == "Need Nothing") {
-                            gSaveContext.randoSettings[index].value = RO_GOSSIP_STONES_NEED_NOTHING;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GOSSIP_STONES_NEED_NOTHING);
                         } else if(it.value() == "Mask of Truth") {
-                            gSaveContext.randoSettings[index].value = RO_GOSSIP_STONES_NEED_TRUTH;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GOSSIP_STONES_NEED_TRUTH);
                         } else if(it.value() == "Stone of Agony") {
-                            gSaveContext.randoSettings[index].value = RO_GOSSIP_STONES_NEED_STONE;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GOSSIP_STONES_NEED_STONE);
                         }
                         break;
                     case RSK_HINT_CLARITY:
                         if(it.value() == "Obscure") {
-                            gSaveContext.randoSettings[index].value = RO_HINT_CLARITY_OBSCURE;
+                            ctx->GetOption(index).SetSelectedIndex(RO_HINT_CLARITY_OBSCURE);
                         } else if(it.value() == "Ambiguous") {
-                            gSaveContext.randoSettings[index].value = RO_HINT_CLARITY_AMBIGUOUS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_HINT_CLARITY_AMBIGUOUS);
                         } else if(it.value() == "Clear") {
-                            gSaveContext.randoSettings[index].value = RO_HINT_CLARITY_CLEAR;
+                            ctx->GetOption(index).SetSelectedIndex(RO_HINT_CLARITY_CLEAR);
                         }
                         break;
                     case RSK_HINT_DISTRIBUTION:
                         if(it.value() == "Useless") {
-                            gSaveContext.randoSettings[index].value = RO_HINT_DIST_USELESS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_HINT_DIST_USELESS);
                         } else if(it.value() == "Balanced") {
-                            gSaveContext.randoSettings[index].value = RO_HINT_DIST_BALANCED;
+                            ctx->GetOption(index).SetSelectedIndex(RO_HINT_DIST_BALANCED);
                         } else if(it.value() == "Strong") {
-                            gSaveContext.randoSettings[index].value = RO_HINT_DIST_STRONG;
+                            ctx->GetOption(index).SetSelectedIndex(RO_HINT_DIST_STRONG);
                         } else if(it.value() == "Very Strong") {
-                            gSaveContext.randoSettings[index].value = RO_HINT_DIST_VERY_STRONG;
+                            ctx->GetOption(index).SetSelectedIndex(RO_HINT_DIST_VERY_STRONG);
                         }
                         break;
                     case RSK_GERUDO_KEYS:
                         if (it.value() == "Vanilla") {
-                            gSaveContext.randoSettings[index].value = RO_GERUDO_KEYS_VANILLA;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GERUDO_KEYS_VANILLA);
                         } else if (it.value() == "Any Dungeon") {
-                            gSaveContext.randoSettings[index].value = RO_GERUDO_KEYS_ANY_DUNGEON;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GERUDO_KEYS_ANY_DUNGEON);
                         } else if (it.value() == "Overworld") {
-                            gSaveContext.randoSettings[index].value = RO_GERUDO_KEYS_OVERWORLD;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GERUDO_KEYS_OVERWORLD);
                         } else if (it.value() == "Anywhere") {
-                            gSaveContext.randoSettings[index].value = RO_GERUDO_KEYS_ANYWHERE;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GERUDO_KEYS_ANYWHERE);
                         }
                         break;
                     case RSK_KEYSANITY:
                     case RSK_BOSS_KEYSANITY:
                     case RSK_STARTING_MAPS_COMPASSES:
                         if(it.value() == "Start With") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_STARTWITH;
+                            ctx->GetOption(index).SetSelectedIndex(RO_DUNGEON_ITEM_LOC_STARTWITH);
                         } else if(it.value() == "Vanilla") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_VANILLA;
+                            ctx->GetOption(index).SetSelectedIndex(RO_DUNGEON_ITEM_LOC_VANILLA);
                         } else if(it.value() == "Own Dungeon") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_OWN_DUNGEON;
+                            ctx->GetOption(index).SetSelectedIndex(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
                         } else if(it.value() == "Any Dungeon") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_ANY_DUNGEON;
+                            ctx->GetOption(index).SetSelectedIndex(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON);
                         } else if(it.value() == "Overworld") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_OVERWORLD;
+                            ctx->GetOption(index).SetSelectedIndex(RO_DUNGEON_ITEM_LOC_OVERWORLD);
                         } else if(it.value() == "Anywhere") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_ANYWHERE;
+                            ctx->GetOption(index).SetSelectedIndex(RO_DUNGEON_ITEM_LOC_ANYWHERE);
                         }
                         break;
                     case RSK_GANONS_BOSS_KEY:
                         if(it.value() == "Vanilla") {
-                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_VANILLA;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANON_BOSS_KEY_VANILLA);
                         } else if(it.value() == "Own dungeon") {
-                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_OWN_DUNGEON;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANON_BOSS_KEY_OWN_DUNGEON);
                         } else if(it.value() == "Start with") {
-                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_STARTWITH;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANON_BOSS_KEY_STARTWITH);
                         } else if(it.value() == "Any Dungeon") {
-                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_ANY_DUNGEON;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANON_BOSS_KEY_ANY_DUNGEON);
                         } else if(it.value() == "Overworld") {
-                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_OVERWORLD;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANON_BOSS_KEY_OVERWORLD);
                         } else if(it.value() == "Anywhere") {                         
-                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_ANYWHERE;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANON_BOSS_KEY_ANYWHERE);
                         } else if(it.value() == "LACS-Vanilla") {
-                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_VANILLA;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_VANILLA);
                         } else if(it.value() == "LACS-Stones") {
-                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_STONES;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_STONES);
                         } else if(it.value() == "LACS-Medallions") {
-                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_MEDALLIONS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_MEDALLIONS);
                         } else if(it.value() == "LACS-Rewards") {
-                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_REWARDS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_REWARDS);
                         } else if(it.value() == "LACS-Dungeons") {
-                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_DUNGEONS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_DUNGEONS);
                         } else if(it.value() == "LACS-Tokens") {
-                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_TOKENS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_TOKENS);
                         } else if(it.value() == "100 GS Reward") {
-                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_KAK_TOKENS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANON_BOSS_KEY_KAK_TOKENS);
                         } else if(it.value() == "Triforce Hunt") {
-                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_TRIFORCE_HUNT;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GANON_BOSS_KEY_TRIFORCE_HUNT);
                         }
                         break;
-                    case RSK_RANDOM_MQ_DUNGEONS:
+                    case RSK_MQ_DUNGEON_RANDOM:
                         if (it.value() == "None") {
-                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_NONE;
+                            ctx->GetOption(index).SetSelectedIndex(RO_MQ_DUNGEONS_NONE);
                         } else if (it.value() == "Random Number") {
-                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_RANDOM_NUMBER;
+                            ctx->GetOption(index).SetSelectedIndex(RO_MQ_DUNGEONS_RANDOM_NUMBER);
                         } else if (it.value() == "Set Number") {
-                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_SET_NUMBER;
+                            ctx->GetOption(index).SetSelectedIndex(RO_MQ_DUNGEONS_SET_NUMBER);
+                        } else if (it.value() == "Selection Only") {
+                            ctx->GetOption(index).SetSelectedIndex(RO_MQ_DUNGEONS_SELECTION);
                         }
-                        break;
-                    case RSK_SKIP_CHILD_ZELDA:
-                        gSaveContext.randoSettings[index].value = it.value();
                         break;
                     case RSK_STARTING_CONSUMABLES:
                     case RSK_FULL_WALLETS:
                         if(it.value() == "No") {
-                            gSaveContext.randoSettings[index].value = RO_GENERIC_NO;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GENERIC_NO);
                         } else if(it.value() == "Yes") {
-                            gSaveContext.randoSettings[index].value = RO_GENERIC_YES;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GENERIC_YES);
                         }
                         break;
+                    case RSK_SKIP_CHILD_ZELDA:
                     case RSK_SKIP_CHILD_STEALTH:
                     case RSK_SKIP_EPONA_RACE:
                     case RSK_SKIP_TOWER_ESCAPE:
                         if(it.value() == "Don't Skip") {
-                            gSaveContext.randoSettings[index].value = RO_GENERIC_DONT_SKIP;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GENERIC_DONT_SKIP);
                         } else if (it.value() == "Skip") {
-                            gSaveContext.randoSettings[index].value = RO_GENERIC_SKIP;
+                            ctx->GetOption(index).SetSelectedIndex(RO_GENERIC_SKIP);
                         }
                         break;
                     case RSK_SHUFFLE_DUNGEON_REWARDS:
                         if (it.value() == "End of dungeons") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_REWARDS_END_OF_DUNGEON;
+                            ctx->GetOption(index).SetSelectedIndex(RO_DUNGEON_REWARDS_END_OF_DUNGEON);
                         } else if (it.value() == "Any dungeon") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_REWARDS_ANY_DUNGEON;
+                            ctx->GetOption(index).SetSelectedIndex(RO_DUNGEON_REWARDS_ANY_DUNGEON);
                         } else if (it.value() == "Overworld") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_REWARDS_OVERWORLD;
+                            ctx->GetOption(index).SetSelectedIndex(RO_DUNGEON_REWARDS_OVERWORLD);
                         } else if (it.value() == "Anywhere") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_REWARDS_ANYWHERE;
+                            ctx->GetOption(index).SetSelectedIndex(RO_DUNGEON_REWARDS_ANYWHERE);
                         }
                         break;
                     case RSK_SHUFFLE_SONGS:
                         if (it.value() == "Song locations") {
-                            gSaveContext.randoSettings[index].value = RO_SONG_SHUFFLE_SONG_LOCATIONS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SONG_SHUFFLE_SONG_LOCATIONS);
                         } else if (it.value() == "Dungeon rewards") {
-                            gSaveContext.randoSettings[index].value = RO_SONG_SHUFFLE_DUNGEON_REWARDS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SONG_SHUFFLE_DUNGEON_REWARDS);
                         } else if (it.value() == "Anywhere") {
-                            gSaveContext.randoSettings[index].value = RO_SONG_SHUFFLE_ANYWHERE;
+                            ctx->GetOption(index).SetSelectedIndex(RO_SONG_SHUFFLE_ANYWHERE);
                         }
                         break;
                     case RSK_SHUFFLE_TOKENS:
                         if (it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = RO_TOKENSANITY_OFF;
+                            ctx->GetOption(index).SetSelectedIndex(RO_TOKENSANITY_OFF);
                         } else if (it.value() == "Dungeons") {
-                            gSaveContext.randoSettings[index].value = RO_TOKENSANITY_DUNGEONS;
+                            ctx->GetOption(index).SetSelectedIndex(RO_TOKENSANITY_DUNGEONS);
                         } else if (it.value() == "Overworld") {
-                            gSaveContext.randoSettings[index].value = RO_TOKENSANITY_OVERWORLD;
+                            ctx->GetOption(index).SetSelectedIndex(RO_TOKENSANITY_OVERWORLD);
                         } else if (it.value() == "All Tokens") {
-                            gSaveContext.randoSettings[index].value = RO_TOKENSANITY_ALL;
+                            ctx->GetOption(index).SetSelectedIndex(RO_TOKENSANITY_ALL);
                         }
                         break;
                     case RSK_LINKS_POCKET:
                         if (it.value() == "Dungeon Reward") {
-                            gSaveContext.randoSettings[index].value = RO_LINKS_POCKET_DUNGEON_REWARD;
+                            ctx->GetOption(index).SetSelectedIndex(RO_LINKS_POCKET_DUNGEON_REWARD);
                         } else if (it.value() == "Advancement") {
-                            gSaveContext.randoSettings[index].value = RO_LINKS_POCKET_ADVANCEMENT;
+                            ctx->GetOption(index).SetSelectedIndex(RO_LINKS_POCKET_ADVANCEMENT);
                         } else if (it.value() == "Anything") {
-                            gSaveContext.randoSettings[index].value = RO_LINKS_POCKET_ANYTHING;
+                            ctx->GetOption(index).SetSelectedIndex(RO_LINKS_POCKET_ANYTHING);
                         } else if (it.value() == "Nothing") {
-                            gSaveContext.randoSettings[index].value = RO_LINKS_POCKET_NOTHING;
+                            ctx->GetOption(index).SetSelectedIndex(RO_LINKS_POCKET_NOTHING);
                         }
                         break;
                     case RSK_MQ_DUNGEON_COUNT:
-                        if (it.value() == "Count") {
-                            numericValueString = it.value();
-                            gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
-                        }
-
-                        else if (it.value() == "Random") {
-                            gSaveContext.randoSettings[index].value = 13;
-                        }
-
-                        else if (it.value() == "Selection") {
-                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_SELECTION;
-                        }
-
+                        numericValueString = it.value();
+                        ctx->GetOption(index).SetSelectedIndex(std::stoi(numericValueString));
                         break;
                     case RSK_SHUFFLE_DUNGEON_ENTRANCES:
                         if (it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ENTRANCE_SHUFFLE_OFF;
+                            ctx->GetOption(index).SetSelectedIndex(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
                         } else if (it.value() == "On") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ENTRANCE_SHUFFLE_ON;
+                            ctx->GetOption(index).SetSelectedIndex(RO_DUNGEON_ENTRANCE_SHUFFLE_ON);
                         } else if (it.value() == "On + Ganon") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON;
+                            ctx->GetOption(index).SetSelectedIndex(RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON);
                         }
                         break;
                     case RSK_SHUFFLE_BOSS_ENTRANCES:
                         if (it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF;
+                            ctx->GetOption(index).SetSelectedIndex(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
                         } else if (it.value() == "Age Restricted") {
-                            gSaveContext.randoSettings[index].value = RO_BOSS_ROOM_ENTRANCE_SHUFFLE_AGE_RESTRICTED;
+                            ctx->GetOption(index).SetSelectedIndex(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_AGE_RESTRICTED);
                         } else if (it.value() == "Full") {
-                            gSaveContext.randoSettings[index].value = RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL;
+                            ctx->GetOption(index).SetSelectedIndex(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL);
                         }
                         break;
                     case RSK_SHUFFLE_INTERIOR_ENTRANCES:
                         if (it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = RO_INTERIOR_ENTRANCE_SHUFFLE_OFF;
+                            ctx->GetOption(index).SetSelectedIndex(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
                         } else if (it.value() == "Simple") {
-                            gSaveContext.randoSettings[index].value = RO_INTERIOR_ENTRANCE_SHUFFLE_SIMPLE;
+                            ctx->GetOption(index).SetSelectedIndex(RO_INTERIOR_ENTRANCE_SHUFFLE_SIMPLE);
                         } else if (it.value() == "All") {
-                            gSaveContext.randoSettings[index].value = RO_INTERIOR_ENTRANCE_SHUFFLE_ALL;
+                            ctx->GetOption(index).SetSelectedIndex(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL);
                         }
                         break;
                 }
@@ -2766,7 +2747,7 @@ CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
-    return this->randoSettings[randoSettingKey];
+    return Rando::Context::GetInstance()->GetOption(randoSettingKey).GetSelectedOptionIndex();
 }
 
 GetItemEntry Randomizer::GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability) {
@@ -2934,15 +2915,15 @@ void GenerateRandomizerImgui(std::string seed = "") {
 
     if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
         // If both OTRs are loaded.
-        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE);
+        cvarSettings[RSK_MQ_DUNGEON_RANDOM] = CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE);
         cvarSettings[RSK_MQ_DUNGEON_COUNT] = CVarGetInteger("gRandomizeMqDungeonCount", 12);
     } else if (OTRGlobals::Instance->HasMasterQuest()) {
         // If only Master Quest is loaded.
-        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = RO_MQ_DUNGEONS_SET_NUMBER;
+        cvarSettings[RSK_MQ_DUNGEON_RANDOM] = RO_MQ_DUNGEONS_SET_NUMBER;
         cvarSettings[RSK_MQ_DUNGEON_COUNT] = 12;
     } else {
         // If only Original Quest is loaded.
-        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = RO_MQ_DUNGEONS_NONE;
+        cvarSettings[RSK_MQ_DUNGEON_RANDOM] = RO_MQ_DUNGEONS_NONE;
         cvarSettings[RSK_MQ_DUNGEON_COUNT] = 0;
     }
 
@@ -3060,7 +3041,8 @@ void RandomizerSettingsWindow::DrawElement() {
                                           "Dungeon rewards", "Dungeons", "Tokens", "Greg" };
     static const char* randoBridgeRewardOptions[3] = { "Standard Rewards", "Greg as Reward", "Greg as Wildcard" };
     static const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
-    static const char* randoMqDungeons[4] = { "None", "Set Number", "Random Number", "Selection" };
+    static const char* randoMqDungeons[4] = { "None", "Set Number", "Random Number", "Selection Only" };
+    static const char* randoMqDungeonOptions[3] = {"Vanilla", "Master Quest", "Random"};
 
     // World Settings
     static const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
@@ -3482,7 +3464,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         "\n"
                         "Random Number - A Random number and set of dungeons will be their Master Quest varieties.\n"
                         "\n"
-                        "Selection - Leave unchecked for Vanilla and checked for Master Quest."
+                        "Selection Only - Specify which dungeons are Vanilla or Master Quest."
                     );
                     UIWidgets::EnhancementCombobox("gRandomizeMqDungeons", randoMqDungeons, RO_MQ_DUNGEONS_NONE);
                     ImGui::PopItemWidth();
@@ -3491,30 +3473,46 @@ void RandomizerSettingsWindow::DrawElement() {
                             "Master Quest Dungeon Count: %d", "##RandoMqDungeonCount", "gRandomizeMqDungeonCount", 1,
                             12, "", CVarGetInteger("gRandomizeMqDungeonCount", 12), true, true, false);
                     }
-                    else if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SELECTION) {
-                        UIWidgets::EnhancementCheckbox("Deku Tree##RandomizeMqDungeons",
-                                                       "gRandomizeMqDungeonsDekuTree");
-                        UIWidgets::EnhancementCheckbox("Dodongo's Cavern##RandomizeMqDungeons",
-                                                       "gRandomizeMqDungeonsDodongosCavern");
-                        UIWidgets::EnhancementCheckbox("Jabu Jabu's Belly##RandomizeMqDungeons",
-                                                       "gRandomizeMqDungeonsJabuJabu");
-                        UIWidgets::EnhancementCheckbox("Forest Temple##RandomizeMqDungeons",
-                                                       "gRandomizeMqDungeonsForestTemple");
-                        UIWidgets::EnhancementCheckbox("Fire Temple##RandomizeMqDungeons",
-                                                       "gRandomizeMqDungeonsFireTemple");
-                        UIWidgets::EnhancementCheckbox("Water Temple##RandomizeMqDungeons",
-                                                       "gRandomizeMqDungeonsWaterTemple");
-                        UIWidgets::EnhancementCheckbox("Spirit Temple##RandomizeMqDungeons",
-                                                       "gRandomizeMqDungeonsSpiritTemple");
-                        UIWidgets::EnhancementCheckbox("Shadow Temple##RandomizeMqDungeons",
-                                                       "gRandomizeMqDungeonsShadowTemple");
-                        UIWidgets::EnhancementCheckbox("Bottom of the Well##RandomizeMqDungeons",
-                                                       "gRandomizeMqDungeonsBottomOfTheWell");
-                        UIWidgets::EnhancementCheckbox("Ice Cavern##RandomizeMqDungeons",
-                                                       "gRandomizeMqDungeonsIceCavern");
-                        UIWidgets::EnhancementCheckbox("Gerudo Training Grounds##RandomizeMqDungeons", "gRandomizeMqDungeonsGTG");
-                        UIWidgets::EnhancementCheckbox("Ganon's Castle##RandomizeMqDungeons",
-                                                       "gRandomizeMqDungeonsGanonsCastle");
+                    if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_NONE) {
+                        UIWidgets::EnhancementCheckbox(
+                            ctx->GetOption(RSK_MQ_DUNGEON_SET).GetName().c_str(), "gRandomizeMqDungeonsSelection",
+                            CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SELECTION,
+                            "This option is enabled because Master Quest Dungeons is set to Selection Only",
+                            UIWidgets::CheckboxGraphics::Checkmark);
+                        UIWidgets::InsertHelpHoverText(
+                            "Choose specific Dungeons to be Master Quest or Vanilla.\n"
+                            "\n"
+                            "If Master Quest Dungeons is set to Set Number or Random, the dungeons chosen "
+                            "to be Master Quest here will count towards that total. Any Dungeons set to Vanilla "
+                            "here will be guaranteed to be Vanilla. If Set Number is higher than the amount of dungeons "
+                            "set to either MQ or Random here, you will have fewer MQ Dungeons than the number you "
+                            "set.");
+                        if (CVarGetInteger("gRandomizeMqDungeonsSelection", RO_GENERIC_OFF) == RO_GENERIC_ON) {
+                            UIWidgets::PaddedText("Deku Tree", true, false);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsDekuTree", randoMqDungeonOptions, 0);
+                            UIWidgets::PaddedText("Dodongo's Cavern", true, false);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsDodongosCavern", randoMqDungeonOptions, 0);
+                            UIWidgets::PaddedText("Jabu Jabu's Belly", true, false);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsJabuJabu", randoMqDungeonOptions, 0);
+                            UIWidgets::PaddedText("Forest Temple", true, false);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsForestTemple", randoMqDungeonOptions, 0);
+                            UIWidgets::PaddedText("Fire Temple", true, false);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsFireTemple", randoMqDungeonOptions, 0);
+                            UIWidgets::PaddedText("Water Temple", true, false);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsWaterTemple", randoMqDungeonOptions, 0);
+                            UIWidgets::PaddedText("Spirit Temple", true, false);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsSpiritTemple", randoMqDungeonOptions, 0);
+                            UIWidgets::PaddedText("Shadow Temple", true, false);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsShadowTemple", randoMqDungeonOptions, 0);
+                            UIWidgets::PaddedText("Bottom of the Well", true, false);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsBottomOfTheWell", randoMqDungeonOptions, 0);
+                            UIWidgets::PaddedText("Ice Cavern", true, false);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsIceCavern", randoMqDungeonOptions, 0);
+                            UIWidgets::PaddedText("Gerudo Training Grounds", true, false);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsGTG", randoMqDungeonOptions, 0);
+                            UIWidgets::PaddedText("Ganon's Castle", true, false);
+                            UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsGanonsCastle", randoMqDungeonOptions, 0);
+                        }
                     }
 
                     UIWidgets::PaddedSeparator();
@@ -5408,9 +5406,9 @@ CustomMessage Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
             break;
     }
 
-    if (this->randoSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_NONE ||
-        (this->randoSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_SET_NUMBER &&
-         this->randoSettings[RSK_MQ_DUNGEON_COUNT] == 12)
+    if (GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) == RO_MQ_DUNGEONS_NONE ||
+        (GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) == RO_MQ_DUNGEONS_SET_NUMBER &&
+         GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) == 12)
        ) {
         messageEntry.Replace("{{typeHint}}", "");
     } else if (ResourceMgr_IsSceneMasterQuest(sceneNum)) {

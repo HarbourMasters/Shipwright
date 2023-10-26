@@ -68,7 +68,9 @@ void Settings::CreateOptions() {
     mOptions[RSK_TRIFORCE_HUNT] = Option::Bool("Triforce Hunt");
     mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = Option::U8("Triforce Hunt Total Pieces", {NumOpts(0, 100)});
     mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = Option::U8("Triforce Hunt Required Pieces", {NumOpts(0, 100)});
-    mOptions[RSK_MQ_DUNGEON_COUNT] = Option::U8("MQ Dungeon Count", {MultiVecOpts({NumOpts(0, 12), {"Random"}, {"Selection"}})});
+    mOptions[RSK_MQ_DUNGEON_RANDOM] = Option::U8("MQ Dungeon Setting", {"None", "Set Number", "Random", "Selection Only"});
+    mOptions[RSK_MQ_DUNGEON_COUNT] = Option::U8("MQ Dungeon Count", {NumOpts(0, 12)});
+    mOptions[RSK_MQ_DUNGEON_SET] = Option::Bool("Set Dungeon Quests");
     mOptions[RSK_MQ_DEKU_TREE] = Option::U8("Deku Tree", {"Vanilla", "Master Quest", "Random"});
     mOptions[RSK_MQ_DODONGOS_CAVERN] = Option::U8("Dodongo's Cavern", {"Vanilla", "Master Quest", "Random"});
     mOptions[RSK_MQ_JABU_JABU] = Option::U8("Jabu-Jabu's Belly", {"Vanilla", "Master Quest", "Random"});
@@ -571,8 +573,9 @@ void Settings::CreateOptions() {
         &mOptions[RSK_TRIFORCE_HUNT],
         &mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL],
         &mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED],
+        &mOptions[RSK_MQ_DUNGEON_RANDOM],
         &mOptions[RSK_MQ_DUNGEON_COUNT],
-        // TODO: set dungeon types?
+        &mOptions[RSK_MQ_DUNGEON_SET],
         &mOptions[RSK_MQ_DEKU_TREE],
         &mOptions[RSK_MQ_DODONGOS_CAVERN],
         &mOptions[RSK_MQ_JABU_JABU],
@@ -831,7 +834,6 @@ const OptionGroup& Settings::GetOptionGroup(RandomizerSettingGroupKey key) {
 }
 
 void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks) {
-    bool setDungeonTypes = false;
     for (auto [key, value] : cvarSettings) {
         mOptions[key].SetSelectedIndex(value);
     }
@@ -857,28 +859,6 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
     // Tricks
     for (auto randomizerTrick : enabledTricks) {
         mTrickOptions[randomizerTrick].SetSelectedIndex(1);
-    }
-    if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_RANDOM_NUMBER) {
-        mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(13);
-    } else if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_NONE) {
-        mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(0);
-    } else if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_SET_NUMBER) {
-        mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(cvarSettings[RSK_MQ_DUNGEON_COUNT]);
-    } else if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_SELECTION) {
-        // TODO: SetDungeonTypes?
-        setDungeonTypes = true;
-        mOptions[RSK_MQ_DEKU_TREE].SetSelectedIndex(cvarSettings[RSK_MQ_DEKU_TREE]);
-        mOptions[RSK_MQ_DODONGOS_CAVERN].SetSelectedIndex(cvarSettings[RSK_MQ_DODONGOS_CAVERN]);
-        mOptions[RSK_MQ_JABU_JABU].SetSelectedIndex(cvarSettings[RSK_MQ_JABU_JABU]);
-        mOptions[RSK_MQ_FOREST_TEMPLE].SetSelectedIndex(cvarSettings[RSK_MQ_FOREST_TEMPLE]);
-        mOptions[RSK_MQ_FIRE_TEMPLE].SetSelectedIndex(cvarSettings[RSK_MQ_FIRE_TEMPLE]);
-        mOptions[RSK_MQ_WATER_TEMPLE].SetSelectedIndex(cvarSettings[RSK_MQ_WATER_TEMPLE]);
-        mOptions[RSK_MQ_SPIRIT_TEMPLE].SetSelectedIndex(cvarSettings[RSK_MQ_SPIRIT_TEMPLE]);
-        mOptions[RSK_MQ_SHADOW_TEMPLE].SetSelectedIndex(cvarSettings[RSK_MQ_SHADOW_TEMPLE]);
-        mOptions[RSK_MQ_ICE_CAVERN].SetSelectedIndex(cvarSettings[RSK_MQ_ICE_CAVERN]);
-        mOptions[RSK_MQ_BOTTOM_OF_THE_WELL].SetSelectedIndex(cvarSettings[RSK_MQ_BOTTOM_OF_THE_WELL]);
-        mOptions[RSK_MQ_GTG].SetSelectedIndex(cvarSettings[RSK_MQ_GTG]);
-        mOptions[RSK_MQ_GANONS_CASTLE].SetSelectedIndex(cvarSettings[RSK_MQ_GANONS_CASTLE]);
     }
     // if we skip child zelda, we start with zelda's letter, and malon starts
     // at the ranch, so we should *not* shuffle the weird egg
@@ -925,9 +905,12 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
         &mOptions[RSK_MQ_GANONS_CASTLE]
     };
     uint8_t mqSet = mOptions[RSK_MQ_DUNGEON_COUNT].Value<uint8_t>();
+    if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_SELECTION)) {
+        mqSet = 0;
+    }
     uint8_t dungeonCount = 0;
     std::vector<uint8_t> randMQOption = {};
-    if (setDungeonTypes) {
+    if (mOptions[RSK_MQ_DUNGEON_SET]) {
         for (size_t i = 0; i < dungeons.size(); i++) {
             dungeons[i]->ClearMQ();
             dungeonModesKnown[i] = true;
@@ -943,10 +926,16 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
             }
         }
         Shuffle(randMQOption);
-        if (mqSet == 13) {
+        if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_RANDOM_NUMBER)) {
             mqSet = dungeonCount + Random(0, randMQOption.size() + 1);
         }
         for (uint8_t i = 0; dungeonCount < mqSet; i++) {
+            if (i > randMQOption.size()) {
+                // This can happen if the amount of MQ Dungeons is specifically
+                // set to a higher number than the amount of Dungeons specifically set to MQ or Random,
+                // break out of the loop and just have fewer MQ dungeons than the Set Count.
+                break;
+            }
             dungeons[randMQOption[i]]->SetMQ();
             dungeonCount++;
         }
@@ -959,7 +948,7 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
         for (uint8_t i = 0; i < sizeof(dungeonModesKnown); ++i) {
             dungeonModesKnown[i] = allDungeonModesKnown;
         }
-        if (mqSet == 13) {
+        if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_RANDOM_NUMBER)) {
             mqSet = Random(0, 13);
         }
         for (uint8_t i = 0; i < mqSet; i++) {

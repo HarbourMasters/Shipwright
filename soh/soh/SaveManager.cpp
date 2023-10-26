@@ -148,7 +148,6 @@ void SaveManager::LoadRandomizerVersion1() {
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
-    randomizer->LoadRandomizerSettings("");
     size_t merchantPricesSize = 0;
     if (randomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) != RO_SCRUBS_OFF) {
         merchantPricesSize += NUM_SCRUBS;
@@ -268,8 +267,6 @@ void SaveManager::LoadRandomizerVersion2() {
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
-    randomizer->LoadRandomizerSettings("");
-
     size_t merchantPricesSize = 0;
     SaveManager::Instance->LoadData("merchantPricesSize", merchantPricesSize);
 
@@ -335,8 +332,9 @@ void SaveManager::LoadRandomizerVersion3() {
     SaveManager::Instance->LoadData("finalSeed", gSaveContext.finalSeed);
 
     SaveManager::Instance->LoadArray("randoSettings", RSK_MAX, [&](size_t i) {
-        gSaveContext.randoSettings[i].key = RandomizerSettingKey(i);
-        SaveManager::Instance->LoadData("", gSaveContext.randoSettings[i].value);
+        int value = 0;
+        SaveManager::Instance->LoadData("", value);
+        randoContext->GetOption(RandomizerSettingKey(i)).SetSelectedIndex(value);
     });
 
     SaveManager::Instance->LoadArray("hintLocations", ARRAY_COUNT(gSaveContext.hintLocations), [&](size_t i) {
@@ -399,8 +397,6 @@ void SaveManager::LoadRandomizerVersion3() {
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
-    randomizer->LoadRandomizerSettings("");
-
     size_t merchantPricesSize = 0;
     SaveManager::Instance->LoadData("merchantPricesSize", merchantPricesSize);
 
@@ -462,7 +458,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
     SaveManager::Instance->SaveData("finalSeed", saveContext->finalSeed);
 
     SaveManager::Instance->SaveArray("randoSettings", RSK_MAX, [&](size_t i) {
-        SaveManager::Instance->SaveData("", saveContext->randoSettings[i].value);
+        SaveManager::Instance->SaveData("", randoContext->GetOption((RandomizerSettingKey(i))).GetSelectedOptionIndex());
     });
 
     SaveManager::Instance->SaveArray("hintLocations", ARRAY_COUNT(saveContext->hintLocations), [&](size_t i) {
