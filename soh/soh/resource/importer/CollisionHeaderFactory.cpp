@@ -223,9 +223,8 @@ void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, s
         } else if (childName == "PolygonType") {
             SurfaceType surfaceType;
 
-            //might be swapped but idk
-            surfaceType.data[1] = child->IntAttribute("Data1");
-            surfaceType.data[0] = child->IntAttribute("Data2");
+            surfaceType.data[0] = child->IntAttribute("Data1");
+            surfaceType.data[1] = child->IntAttribute("Data2");
 
             collisionHeader->surfaceTypes.push_back(surfaceType);
         } else if (childName == "CameraData") {
@@ -237,11 +236,22 @@ void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, s
             int32_t camPosDataIdx = child->IntAttribute("CameraPosDataSeg");
             collisionHeader->camPosDataIndices.push_back(camPosDataIdx);
         } else if (childName == "CameraPositionData") {
+            //each camera position data is made up of 3 Vec3s
             Vec3s pos;
-            pos.x = child->IntAttribute("X");
-            pos.y = child->IntAttribute("Y");
-            pos.z = child->IntAttribute("Z");
+            pos.x = child->IntAttribute("PosX");
+            pos.y = child->IntAttribute("PosY");
+            pos.z = child->IntAttribute("PosZ");
             collisionHeader->camPosData.push_back(pos);
+            Vec3s rot;
+            rot.x = child->IntAttribute("RotX");
+            rot.y = child->IntAttribute("RotY");
+            rot.z = child->IntAttribute("RotZ");
+            collisionHeader->camPosData.push_back(rot);
+            Vec3s other;
+            other.x = child->IntAttribute("FOV");
+            other.y = child->IntAttribute("JfifID");
+            other.z = child->IntAttribute("Unknown");
+            collisionHeader->camPosData.push_back(other);
         } else if (childName == "WaterBox") {
             WaterBox waterBox;
             waterBox.xMin = child->IntAttribute("XMin");
@@ -266,7 +276,7 @@ void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, s
             collisionHeader->camData[i].camPosData = &collisionHeader->camPosDataZero;
         }
     }
-
+    
     collisionHeader->collisionHeaderData.vtxList = collisionHeader->vertices.data();
     collisionHeader->collisionHeaderData.polyList = collisionHeader->polygons.data();
     collisionHeader->collisionHeaderData.surfaceTypeList = collisionHeader->surfaceTypes.data();
