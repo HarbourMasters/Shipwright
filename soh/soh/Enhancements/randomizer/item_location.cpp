@@ -74,28 +74,19 @@ uint16_t ItemLocation::GetPrice() const {
 }
 
 void ItemLocation::SetPrice(uint16_t price_) {
-    if (hasShopsanityPrice || hasScrubsanityPrice) {
+    if (hasCustomPrice) {
         return;
     }
     price = price_;
 }
 
-bool ItemLocation::HasShopsanityPrice() const {
-    return hasShopsanityPrice;
+bool ItemLocation::HasCustomPrice() const {
+    return hasCustomPrice;
 }
 
-void ItemLocation::SetShopsanityPrice(uint16_t price_) {
+void ItemLocation::SetCustomPrice(uint16_t price_) {
     price = price_;
-    hasShopsanityPrice = true;
-}
-
-bool ItemLocation::HasScrubsanityPrice() const {
-    return hasScrubsanityPrice;
-}
-
-void ItemLocation::SetScrubsanityPrice(uint16_t price_) {
-    price = price_;
-    hasScrubsanityPrice = true;
+    hasCustomPrice = true;
 }
 
 bool ItemLocation::IsHintable() const {
@@ -178,8 +169,7 @@ void ItemLocation::ResetVariables() {
     hintedAt = false;
     hintedBy = RH_NONE;
     price = 0;
-    hasShopsanityPrice = false;
-    hasScrubsanityPrice = false;
+    hasCustomPrice = false;
     hidden = false;
 }
 }

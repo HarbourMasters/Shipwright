@@ -1013,7 +1013,7 @@ int Fill() {
             int shopsanityPrice = GetRandomShopPrice();
             NonShopItems[TransformShopIndex(i * 8 + itemindex - 1)].Price =
                 shopsanityPrice; // Set price to be retrieved by the patch and textboxes
-            ctx->GetItemLocation(Rando::StaticData::shopLocationLists[i][itemindex - 1])->SetShopsanityPrice(shopsanityPrice);
+            ctx->GetItemLocation(Rando::StaticData::shopLocationLists[i][itemindex - 1])->SetCustomPrice(shopsanityPrice);
           }
         }
       }
@@ -1026,7 +1026,7 @@ int Fill() {
       for (size_t i = 0; i < Rando::StaticData::shopLocationLists.size(); i++) {
         for (size_t j = 0; j < Rando::StaticData::shopLocationLists[i].size(); j++) {
           RandomizerCheck loc = Rando::StaticData::shopLocationLists[i][j];
-          if (!(ctx->GetItemLocation(loc)->HasShopsanityPrice())) {
+          if (!(ctx->GetItemLocation(loc)->HasCustomPrice())) {
             shopLocations.push_back(loc);
           }
         }
@@ -1082,12 +1082,12 @@ int Fill() {
     //Add prices for scrubsanity, this is unique to SoH because we write/read scrub prices to/from the spoilerfile.
     if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_AFFORDABLE)) {
       for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
-        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetScrubsanityPrice(10);
+        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(10);
       }
     } else if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_RANDOM)) {
       for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
         int randomPrice = GetRandomScrubPrice();
-        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetScrubsanityPrice(randomPrice);
+        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(randomPrice);
       }
     }
 

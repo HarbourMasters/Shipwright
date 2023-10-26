@@ -27,10 +27,8 @@ class ItemLocation {
     void SaveDelayedItem();
     uint16_t GetPrice() const;
     void SetPrice(uint16_t price_);
-    bool HasShopsanityPrice() const;
-    void SetShopsanityPrice(uint16_t price_);
-    bool HasScrubsanityPrice() const;
-    void SetScrubsanityPrice(uint16_t price_);
+    bool HasCustomPrice() const;
+    void SetCustomPrice(uint16_t price_);
     bool IsHintable() const;
     void SetAsHintable();
     bool IsHintedAt() const;
@@ -57,8 +55,7 @@ class ItemLocation {
     Option excludedOption = Option::Bool(StaticData::GetLocation(rc)->GetName(), {"Include", "Exclude"});
     uint16_t price = 0;
     RandomizerRegion parentRegion = RR_NONE;
-    bool hasShopsanityPrice = false;
-    bool hasScrubsanityPrice = false;
+    bool hasCustomPrice = false;
     bool hidden = false;
     bool visibleInImGui = false;
 };

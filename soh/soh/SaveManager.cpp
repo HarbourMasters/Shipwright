@@ -148,13 +148,12 @@ void SaveManager::LoadRandomizerVersion1() {
 
     SaveManager::Instance->LoadData("pendingIceTrapCount", gSaveContext.pendingIceTrapCount);
 
-    std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
     size_t merchantPricesSize = 0;
-    if (randomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) != RO_SCRUBS_OFF) {
+    if (randoContext->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF)) {
         merchantPricesSize += NUM_SCRUBS;
     }
-    if (randomizer->GetRandoSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF) {
+    if (randoContext->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
         merchantPricesSize += NUM_SHOP_ITEMS;
     }
 
@@ -164,7 +163,7 @@ void SaveManager::LoadRandomizerVersion1() {
             SaveManager::Instance->LoadData("check", rc);
             uint32_t price;
             SaveManager::Instance->LoadData("price", price);
-            randomizer->merchantPrices[rc] = price;
+            randoContext->GetItemLocation(rc)->SetCustomPrice(price);
         });
     });
 }
@@ -279,7 +278,7 @@ void SaveManager::LoadRandomizerVersion2() {
             SaveManager::Instance->LoadData("check", rc);
             uint32_t price;
             SaveManager::Instance->LoadData("price", price);
-            randomizer->merchantPrices[rc] = price;
+            randoContext->GetItemLocation(rc)->SetCustomPrice(price);
         });
     });
 
@@ -309,6 +308,15 @@ void SaveManager::LoadRandomizerVersion3() {
                     SaveManager::Instance->LoadData(
                         "french", randoContext->overrides[static_cast<RandomizerCheck>(i)].GetTrickName().french);
                 });
+            }
+            uint16_t price = 0; 
+            SaveManager::Instance->LoadData("price", price, (uint16_t)0);
+            if (price > 0) {
+                // Technically an item with a custom price (scrub/shopsanity) could have
+                // a 0 rupee price, meaning it would not be loaded after the first save and
+                // disappear from the save file. However, this is fine, as the default price on
+                // all ItemLocations is 0 anyway.
+                randoContext->GetItemLocation(i)->SetCustomPrice(price);
             }
         });
     });
@@ -400,19 +408,6 @@ void SaveManager::LoadRandomizerVersion3() {
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
-    size_t merchantPricesSize = 0;
-    SaveManager::Instance->LoadData("merchantPricesSize", merchantPricesSize);
-
-    SaveManager::Instance->LoadArray("merchantPrices", merchantPricesSize, [&](size_t i) {
-        SaveManager::Instance->LoadStruct("", [&]() {
-            RandomizerCheck rc;
-            SaveManager::Instance->LoadData("check", rc);
-            uint32_t price;
-            SaveManager::Instance->LoadData("price", price);
-            randomizer->merchantPrices[rc] = price;
-        });
-    });
-
     SaveManager::Instance->LoadData("masterQuestDungeonCount", gSaveContext.mqDungeonCount, (uint8_t)0);
 
     OTRGlobals::Instance->gRandomizer->masterQuestDungeons.clear();
@@ -438,6 +433,9 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
                     SaveManager::Instance->SaveData("french", randoContext->overrides[static_cast<RandomizerCheck>(i)].GetTrickName().GetFrench());
                     // TODO: German (trick names don't have german translations yet)
                 });
+            }
+            if (randoContext->GetItemLocation(i)->HasCustomPrice()) {
+                SaveManager::Instance->SaveData("price", randoContext->GetItemLocation(i)->GetPrice());
             }
         });
     });
@@ -493,19 +491,6 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
     SaveManager::Instance->SaveData("pendingIceTrapCount", saveContext->pendingIceTrapCount);
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
-
-    std::vector<std::pair<RandomizerCheck, u16>> merchantPrices;
-    for (const auto & [ check, price ] : randomizer->merchantPrices) {
-        merchantPrices.push_back(std::make_pair(check, price));
-    }
-
-    SaveManager::Instance->SaveData("merchantPricesSize", merchantPrices.size());
-    SaveManager::Instance->SaveArray("merchantPrices", merchantPrices.size(), [&](size_t i) {
-        SaveManager::Instance->SaveStruct("", [&]() {
-            SaveManager::Instance->SaveData("check", merchantPrices[i].first);
-            SaveManager::Instance->SaveData("price", merchantPrices[i].second);
-        });
-    });
 
     SaveManager::Instance->SaveData("masterQuestDungeonCount", saveContext->mqDungeonCount);
 

@@ -146,7 +146,6 @@ Sprite* Randomizer::GetSeedTexture(uint8_t index) {
 }
 
 Randomizer::~Randomizer() { 
-    this->merchantPrices.clear();
 }
 
 std::unordered_map<std::string, RandomizerInf> spoilerFileTrialToEnum = {
@@ -2766,9 +2765,7 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
             scrubIdentity.isShuffled = true;
         }
 
-        if (merchantPrices.find(scrubIdentity.randomizerCheck) != merchantPrices.end()) {
-            scrubIdentity.itemPrice = merchantPrices[scrubIdentity.randomizerCheck];
-        }
+        scrubIdentity.itemPrice = OTRGlobals::Instance->gRandoContext->GetItemLocation(scrubIdentity.randomizerCheck)->GetPrice();
     }
 
     return scrubIdentity;
@@ -2798,9 +2795,7 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
             shopItemIdentity.enGirlAShopItem = randomizerGetToEnGirlShopItem[randoGet];
         }
 
-        if (merchantPrices.find(shopItemIdentity.randomizerCheck) != merchantPrices.end()) {
-            shopItemIdentity.itemPrice = merchantPrices[shopItemIdentity.randomizerCheck];
-        }
+        shopItemIdentity.itemPrice = OTRGlobals::Instance->gRandoContext->GetItemLocation(shopItemIdentity.randomizerCheck)->GetPrice();
     }
 
     return shopItemIdentity;
@@ -5408,7 +5403,7 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
     } else { 
         shopItemName = EnumToSpoilerfileGetName[shopItemGet];
     }
-    u16 shopItemPrice = merchantPrices[rc];
+    u16 shopItemPrice = ctx->GetItemLocation(rc)->GetPrice();
 
     if (textId == TEXT_SCRUB_RANDOM && shopItemPrice == 0) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM_FREE);

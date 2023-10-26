@@ -771,8 +771,7 @@ static void WriteAllLocations(int language) {
 
         // If it's a simple item (not an ice trap, doesn't have a price)
         // just add the name of the item and move on
-        if (!location->HasScrubsanityPrice() &&
-            !location->HasShopsanityPrice() &&
+        if (!location->HasCustomPrice() &&
             location->GetPlacedRandomizerGet() != RG_ICE_TRAP) {
             
             jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()] = placedItemName;
@@ -782,7 +781,7 @@ static void WriteAllLocations(int language) {
         // We're dealing with a complex item, build out the json object for it
         jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["item"] = placedItemName;
 
-        if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
+        if (location->HasCustomPrice()) {
             jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["price"] =
                 location->GetPrice();
         }
