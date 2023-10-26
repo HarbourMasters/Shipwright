@@ -7,7 +7,6 @@
 #include <map>
 #include "z64item.h"
 
-using namespace Settings;
 
 std::vector<ItemAndPrice> NonShopItems = {};
 

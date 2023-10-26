@@ -9,6 +9,7 @@
 #include "spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include <variables.h>
+#include "../option.h"
 
 namespace Playthrough {
 
@@ -24,19 +25,18 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
     ctx->HintReset();
     Areas::AccessReset();
 
-    Settings::UpdateSettings(cvarSettings, excludedLocations, enabledTricks);
+    ctx->GetSettings().UpdateSettings(cvarSettings, excludedLocations, enabledTricks);
     // once the settings have been finalized turn them into a string for hashing
     std::string settingsStr;
-    for (Menu* menu : Settings::GetAllOptionMenus()) {
+    for (const Rando::OptionGroup& optionGroup : ctx->GetSettings().GetOptionGroups()) {
         // don't go through non-menus
-        if (menu->mode != OPTION_SUB_MENU) {
+        if (optionGroup.GetContainsType() != Rando::OptionGroupType::SUBGROUP) {
             continue;
         }
 
-        for (size_t i = 0; i < menu->settingsList->size(); i++) {
-            Option* setting = menu->settingsList->at(i);
-            if (setting->IsCategory(OptionCategory::Setting)) {
-                settingsStr += setting->GetSelectedOptionText();
+        for (Rando::Option* option : optionGroup.GetOptions()) {
+            if (option->IsCategory(Rando::OptionCategory::Setting)) {
+                settingsStr += option->GetSelectedOptionText();
             }
         }
     }

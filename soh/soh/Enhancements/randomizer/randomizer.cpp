@@ -1,6 +1,5 @@
 #include "randomizer.h"
 #include <nlohmann/json.hpp>
-#include "3drando/settings.hpp"
 #include <fstream>
 #include <variables.h>
 #include <macros.h>
@@ -223,9 +222,9 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
 };
 
 std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEnum = {
-    { "Detailed Logic Settings:Logic", RSK_LOGIC_RULES },
-    { "Detailed Logic Settings:Night GSs Expect Sun's", RSK_SKULLS_SUNS_SONG },
-    { "Detailed Logic Settings:All Locations Reachable", RSK_ALL_LOCATIONS_REACHABLE },
+    { "Logic Options:Logic", RSK_LOGIC_RULES },
+    { "Logic Options:Night GSs Expect Sun's", RSK_SKULLS_SUNS_SONG },
+    { "Logic Options:All Locations Reachable", RSK_ALL_LOCATIONS_REACHABLE },
     { "Item Pool Settings:Item Pool", RSK_ITEM_POOL },
     { "Item Pool Settings:Ice Traps", RSK_ICE_TRAPS },
     { "Open Settings:Forest", RSK_FOREST },

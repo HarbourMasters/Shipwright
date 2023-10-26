@@ -4,7 +4,6 @@
 #include "../dungeon.hpp"
 
 using namespace Logic;
-using namespace Settings;
 
 void AreaTable_Init_IceCavern() {
   /*--------------------------
@@ -39,7 +38,7 @@ void AreaTable_Init_IceCavern() {
                   LocationAccess(RC_ICE_CAVERN_FREESTANDING_POH,        {[]{return BlueFire;}}),
                   LocationAccess(RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM, {[]{return HookshotOrBoomerang;}}),
                   LocationAccess(RC_ICE_CAVERN_GS_HEART_PIECE_ROOM,     {[]{return BlueFire && HookshotOrBoomerang;}}),
-                  LocationAccess(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,      {[]{return BlueFire && (HookshotOrBoomerang || (LogicIceBlockGS && IsAdult && CanUse(RG_HOVER_BOOTS)));}}),
+                  LocationAccess(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,      {[]{return BlueFire && (HookshotOrBoomerang || (randoCtx->GetTrickOption(RT_ICE_BLOCK_GS) && IsAdult && CanUse(RG_HOVER_BOOTS)));}}),
   }, {});
   }
 
@@ -71,7 +70,7 @@ void AreaTable_Init_IceCavern() {
                   LocationAccess(RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, {[]{return IsAdult;}}),
                   LocationAccess(RC_SHEIK_IN_ICE_CAVERN,            {[]{return IsAdult;}}),
                   LocationAccess(RC_ICE_CAVERN_MQ_GS_ICE_BLOCK,     {[]{return IsAdult || CanUseProjectile;}}),
-                  LocationAccess(RC_ICE_CAVERN_MQ_GS_SCARECROW,     {[]{return (CanUse(RG_SCARECROW) || (HoverBoots && CanUse(RG_LONGSHOT)) || LogicIceMQScarecrow) && IsAdult;}}),
+                  LocationAccess(RC_ICE_CAVERN_MQ_GS_SCARECROW,     {[]{return (CanUse(RG_SCARECROW) || (HoverBoots && CanUse(RG_LONGSHOT)) || randoCtx->GetTrickOption(RT_ICE_MQ_SCARECROW)) && IsAdult;}}),
                     //Tricks: (CanUse(RG_SCARECROW) || (HoverBoots && CanUse(RG_LONGSHOT)) || LogicIceMQScarecrow) && IsAdult
   }, {});
 
@@ -79,7 +78,7 @@ void AreaTable_Init_IceCavern() {
                   //Locations
                   LocationAccess(RC_ICE_CAVERN_MQ_COMPASS_CHEST,    {[]{return true;}}),
                   LocationAccess(RC_ICE_CAVERN_MQ_FREESTANDING_POH, {[]{return HasExplosives;}}),
-                  LocationAccess(RC_ICE_CAVERN_MQ_GS_RED_ICE,       {[]{return CanPlay(SongOfTime) || LogicIceMQRedIceGS;}}),
+                  LocationAccess(RC_ICE_CAVERN_MQ_GS_RED_ICE,       {[]{return CanPlay(SongOfTime) || randoCtx->GetTrickOption(RT_ICE_MQ_RED_ICE_GS);}}),
                     //Trick: CanPlay(SongOfTime) || LogicIceMQRedIceGS
   }, {});
   }

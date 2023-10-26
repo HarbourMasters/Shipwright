@@ -3,7 +3,6 @@
 #include "../entrance.hpp"
 
 using namespace Logic;
-using namespace Settings;
 
 void AreaTable_Init_GerudoValley() {
   areaTable[RR_GERUDO_VALLEY] = Area("Gerudo Valley", "Gerudo Valley", RHT_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
@@ -18,7 +17,7 @@ void AreaTable_Init_GerudoValley() {
                   Entrance(RR_GV_UPPER_STREAM,   {[]{return true;}}),
                   Entrance(RR_GV_CRATE_LEDGE,    {[]{return IsChild || CanUse(RG_LONGSHOT);}}),
                   Entrance(RR_GV_GROTTO_LEDGE,   {[]{return true;}}),
-                  Entrance(RR_GV_FORTRESS_SIDE,  {[]{return (IsAdult && (CanRideEpona || CanUse(RG_LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue)) || (IsChild && CanUse(RG_HOOKSHOT));}}),
+                  Entrance(RR_GV_FORTRESS_SIDE,  {[]{return (IsAdult && (CanRideEpona || CanUse(RG_LONGSHOT) || randoCtx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_OPEN) || CarpenterRescue)) || (IsChild && CanUse(RG_HOOKSHOT));}}),
   });
 
   areaTable[RR_GV_UPPER_STREAM] = Area("GV Upper Stream", "Gerudo Valley", RHT_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
@@ -69,7 +68,7 @@ void AreaTable_Init_GerudoValley() {
                   //Exits
                   Entrance(RR_GERUDO_FORTRESS,   {[]{return true;}}),
                   Entrance(RR_GV_UPPER_STREAM,   {[]{return true;}}),
-                  Entrance(RR_GERUDO_VALLEY,     {[]{return IsChild || CanRideEpona || CanUse(RG_LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue;}}),
+                  Entrance(RR_GERUDO_VALLEY,     {[]{return IsChild || CanRideEpona || CanUse(RG_LONGSHOT) || randoCtx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_OPEN) || CarpenterRescue;}}),
                   Entrance(RR_GV_CARPENTER_TENT, {[]{return IsAdult;}}),
                   Entrance(RR_GV_STORMS_GROTTO,  {[]{return IsAdult && CanOpenStormGrotto;}}),
                   Entrance(RR_GV_CRATE_LEDGE, {[]{return false;}}),
@@ -105,26 +104,26 @@ void AreaTable_Init_GerudoValley() {
                   LocationAccess(RC_GF_HBA_1000_POINTS,    {[]{return GerudoToken && CanRideEpona && Bow && AtDay;}}),
                   LocationAccess(RC_GF_HBA_1500_POINTS,    {[]{return GerudoToken && CanRideEpona && Bow && AtDay;}}),
                   LocationAccess(RC_GF_NORTH_F1_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);}}),
-                  LocationAccess(RC_GF_NORTH_F2_CARPENTER, {[]{return (IsAdult || KokiriSword || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (GerudoToken || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || LogicGerudoKitchen);}}),
+                  LocationAccess(RC_GF_NORTH_F2_CARPENTER, {[]{return (IsAdult || KokiriSword || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (GerudoToken || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || randoCtx->GetTrickOption(RT_GF_KITCHEN));}}),
                   LocationAccess(RC_GF_SOUTH_F1_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);}}),
                   LocationAccess(RC_GF_SOUTH_F2_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);}}),
                   LocationAccess(RC_GF_GERUDO_MEMBERSHIP_CARD,       {[]{return CanFinishGerudoFortress;}}),
                   LocationAccess(RC_GF_GS_ARCHERY_RANGE,   {[]{return IsAdult && HookshotOrBoomerang && GerudoToken && AtNight && CanGetNightTimeGS;}}),
-                  LocationAccess(RC_GF_GS_TOP_FLOOR,       {[]{return IsAdult && AtNight && (GerudoToken || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || LogicGerudoKitchen || LogicGFJump) && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_GF_GS_TOP_FLOOR,       {[]{return IsAdult && AtNight && (GerudoToken || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || randoCtx->GetTrickOption(RT_GF_KITCHEN) || randoCtx->GetTrickOption(RT_GF_JUMP)) && CanGetNightTimeGS;}}),
                 }, {
                   //Exits
                   Entrance(RR_GV_FORTRESS_SIDE,                 {[]{return true;}}),
                   Entrance(RR_GF_OUTSIDE_GATE,                  {[]{return GF_GateOpen;}}),
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_ENTRYWAY, {[]{return GtG_GateOpen && (IsAdult || ShuffleDungeonEntrances);}}),
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_ENTRYWAY, {[]{return GtG_GateOpen && (IsAdult || randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES));}}),
                   Entrance(RR_GF_STORMS_GROTTO,                 {[]{return IsAdult && CanOpenStormGrotto;}}),
   });
 
   areaTable[RR_GF_OUTSIDE_GATE] = Area("GF Outside Gate", "Gerudo Fortress", RHT_NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&GF_GateOpen, {[]{return IsAdult && GerudoToken && (ShuffleGerudoToken || ShuffleOverworldEntrances /*|| ShuffleSpecialIndoorEntrances*/);}}),
+                  EventAccess(&GF_GateOpen, {[]{return IsAdult && GerudoToken && (randoCtx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) || randoCtx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) /*|| ShuffleSpecialIndoorEntrances*/);}}),
                 }, {}, {
                   //Exits
-                  Entrance(RR_GERUDO_FORTRESS,         {[]{return (IsAdult && (Hookshot || !ShuffleOverworldEntrances)) || GF_GateOpen;}}),
+                  Entrance(RR_GERUDO_FORTRESS,         {[]{return (IsAdult && (Hookshot || !randoCtx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES))) || GF_GateOpen;}}),
                   Entrance(RR_WASTELAND_NEAR_FORTRESS, {[]{return true;}}),
   });
 
@@ -139,7 +138,7 @@ void AreaTable_Init_GerudoValley() {
   areaTable[RR_WASTELAND_NEAR_FORTRESS] = Area("Wasteland Near Fortress", "Haunted Wasteland", RHT_HAUNTED_WASTELAND, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_GF_OUTSIDE_GATE,   {[]{return true;}}),
-                  Entrance(RR_HAUNTED_WASTELAND, {[]{return CanUse(RG_HOVER_BOOTS) || CanUse(RG_LONGSHOT) || LogicWastelandCrossing;}}),
+                  Entrance(RR_HAUNTED_WASTELAND, {[]{return CanUse(RG_HOVER_BOOTS) || CanUse(RG_LONGSHOT) || randoCtx->GetTrickOption(RT_HW_CROSSING);}}),
   });
 
   areaTable[RR_HAUNTED_WASTELAND] = Area("Haunted Wasteland", "Haunted Wasteland", RHT_HAUNTED_WASTELAND, NO_DAY_NIGHT_CYCLE, {
@@ -153,14 +152,14 @@ void AreaTable_Init_GerudoValley() {
                   LocationAccess(RC_WASTELAND_GS,               {[]{return HookshotOrBoomerang;}}),
                 }, {
                   //Exits
-                  Entrance(RR_WASTELAND_NEAR_COLOSSUS, {[]{return LogicLensWasteland || CanUse(RG_LENS_OF_TRUTH);}}),
-                  Entrance(RR_WASTELAND_NEAR_FORTRESS, {[]{return CanUse(RG_HOVER_BOOTS) || CanUse(RG_LONGSHOT) || LogicWastelandCrossing;}}),
+                  Entrance(RR_WASTELAND_NEAR_COLOSSUS, {[]{return randoCtx->GetTrickOption(RT_LENS_HW) || CanUse(RG_LENS_OF_TRUTH);}}),
+                  Entrance(RR_WASTELAND_NEAR_FORTRESS, {[]{return CanUse(RG_HOVER_BOOTS) || CanUse(RG_LONGSHOT) || randoCtx->GetTrickOption(RT_HW_CROSSING);}}),
   });
 
   areaTable[RR_WASTELAND_NEAR_COLOSSUS] = Area("Wasteland Near Colossus", "Haunted Wasteland", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_DESERT_COLOSSUS,   {[]{return true;}}),
-                  Entrance(RR_HAUNTED_WASTELAND, {[]{return LogicReverseWasteland || false;}}),
+                  Entrance(RR_HAUNTED_WASTELAND, {[]{return randoCtx->GetTrickOption(RT_HW_REVERSE) || false;}}),
   });
 
   areaTable[RR_DESERT_COLOSSUS] = Area("Desert Colossus", "Desert Colossus", RHT_DESERT_COLOSSUS, DAY_NIGHT_CYCLE, {
@@ -172,7 +171,7 @@ void AreaTable_Init_GerudoValley() {
                   LocationAccess(RC_COLOSSUS_FREESTANDING_POH, {[]{return IsAdult && CanPlantBean(RR_DESERT_COLOSSUS);}}),
                   LocationAccess(RC_COLOSSUS_GS_BEAN_PATCH,    {[]{return CanPlantBugs && CanChildAttack;}}),
                   LocationAccess(RC_COLOSSUS_GS_TREE,          {[]{return IsAdult && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
-                  LocationAccess(RC_COLOSSUS_GS_HILL,          {[]{return IsAdult && AtNight && (CanPlantBean(RR_DESERT_COLOSSUS) || CanUse(RG_LONGSHOT) || (LogicColossusGS && CanUse(RG_HOOKSHOT))) && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_COLOSSUS_GS_HILL,          {[]{return IsAdult && AtNight && (CanPlantBean(RR_DESERT_COLOSSUS) || CanUse(RG_LONGSHOT) || (randoCtx->GetTrickOption(RT_COLOSSUS_GS) && CanUse(RG_HOOKSHOT))) && CanGetNightTimeGS;}}),
                   LocationAccess(RC_COLOSSUS_GOSSIP_STONE,     {[]{return true;}}),
                 }, {
                   //Exits

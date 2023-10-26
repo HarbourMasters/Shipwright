@@ -3,14 +3,13 @@
 #include "../entrance.hpp"
 
 using namespace Logic;
-using namespace Settings;
 
 void AreaTable_Init_Kakariko() {
   areaTable[RR_KAKARIKO_VILLAGE] = Area("Kakariko Village", "Kakariko Village", RHT_KAKARIKO_VILLAGE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&CojiroAccess,            {[]{return CojiroAccess || (IsAdult && WakeUpAdultTalon);}}),
                   EventAccess(&BugRock,                 {[]{return true;}}),
-                  EventAccess(&KakarikoVillageGateOpen, {[]{return KakarikoVillageGateOpen || (IsChild && (ZeldasLetter || OpenKakariko.Is(OPENKAKARIKO_OPEN)));}}),
+                  EventAccess(&KakarikoVillageGateOpen, {[]{return KakarikoVillageGateOpen || (IsChild && (ZeldasLetter || randoCtx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN)));}}),
                 }, {
                   //Locations
                   LocationAccess(RC_SHEIK_IN_KAKARIKO,               {[]{return IsAdult && ForestMedallion && FireMedallion && WaterMedallion;}}),
@@ -21,7 +20,7 @@ void AreaTable_Init_Kakariko() {
                   LocationAccess(RC_KAK_GS_SKULLTULA_HOUSE,          {[]{return IsChild && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(RC_KAK_GS_GUARDS_HOUSE,             {[]{return IsChild && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(RC_KAK_GS_TREE,                     {[]{return IsChild && AtNight && CanGetNightTimeGS;}}),
-                  LocationAccess(RC_KAK_GS_WATCHTOWER,               {[]{return IsChild && (Slingshot || HasBombchus || CanUse(RG_FAIRY_BOW) || CanUse(RG_LONGSHOT) || (LogicKakarikoTowerGS && CanJumpslash)) && AtNight && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_KAK_GS_WATCHTOWER,               {[]{return IsChild && (Slingshot || HasBombchus || CanUse(RG_FAIRY_BOW) || CanUse(RG_LONGSHOT) || (randoCtx->GetTrickOption(RT_KAK_TOWER_GS) && CanJumpslash)) && AtNight && CanGetNightTimeGS;}}),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD,                {[]{return true;}}),
@@ -31,12 +30,12 @@ void AreaTable_Init_Kakariko() {
                   Entrance(RR_KAK_WINDMILL,                {[]{return true;}}),
                   Entrance(RR_KAK_BAZAAR,                  {[]{return IsAdult && AtDay;}}),
                   Entrance(RR_KAK_SHOOTING_GALLERY,        {[]{return IsAdult && AtDay;}}),
-                  Entrance(RR_BOTTOM_OF_THE_WELL_ENTRYWAY, {[]{return DrainWell && (IsChild || ShuffleDungeonEntrances.IsNot(SHUFFLEDUNGEONS_OFF));}}),
+                  Entrance(RR_BOTTOM_OF_THE_WELL_ENTRYWAY, {[]{return DrainWell && (IsChild || randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF));}}),
                   Entrance(RR_KAK_POTION_SHOP_FRONT,       {[]{return AtDay || IsChild;}}),
                   Entrance(RR_KAK_REDEAD_GROTTO,           {[]{return CanOpenBombGrotto;}}),
-                  Entrance(RR_KAK_IMPAS_LEDGE,             {[]{return (IsChild && AtDay) || CanUse(RG_HOOKSHOT) || (IsAdult && LogicVisibleCollision);}}),
-                  Entrance(RR_KAK_ROOFTOP,                 {[]{return CanUse(RG_HOOKSHOT) || (LogicManOnRoof && (IsAdult || AtDay || Slingshot || HasBombchus || CanUse(RG_FAIRY_BOW) || CanUse(RG_LONGSHOT)));}}),
-                  Entrance(RR_KAK_IMPAS_ROOFTOP,           {[]{return CanUse(RG_HOOKSHOT) || (LogicKakarikoRooftopGS && CanUse(RG_HOVER_BOOTS));}}),
+                  Entrance(RR_KAK_IMPAS_LEDGE,             {[]{return (IsChild && AtDay) || CanUse(RG_HOOKSHOT) || (IsAdult && randoCtx->GetTrickOption(RT_VISIBLE_COLLISION));}}),
+                  Entrance(RR_KAK_ROOFTOP,                 {[]{return CanUse(RG_HOOKSHOT) || (randoCtx->GetTrickOption(RT_KAK_MAN_ON_ROOF) && (IsAdult || AtDay || Slingshot || HasBombchus || CanUse(RG_FAIRY_BOW) || CanUse(RG_LONGSHOT)));}}),
+                  Entrance(RR_KAK_IMPAS_ROOFTOP,           {[]{return CanUse(RG_HOOKSHOT) || (randoCtx->GetTrickOption(RT_KAK_ROOFTOP_GS) && CanUse(RG_HOVER_BOOTS));}}),
                   Entrance(RR_THE_GRAVEYARD,               {[]{return true;}}),
                   Entrance(RR_KAK_BEHIND_GATE,             {[]{return IsAdult || (KakarikoVillageGateOpen);}}),
   });
@@ -118,7 +117,7 @@ void AreaTable_Init_Kakariko() {
                   EventAccess(&DrainWell, {[]{return DrainWell || (IsChild && CanPlay(SongOfStorms));}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_KAK_WINDMILL_FREESTANDING_POH, {[]{return CanUse(RG_BOOMERANG) || DampesWindmillAccess || (IsAdult && LogicAdultWindmillPoH) || (IsChild && CanJumpslash && LogicChildWindmillPoH);}}),
+                  LocationAccess(RC_KAK_WINDMILL_FREESTANDING_POH, {[]{return CanUse(RG_BOOMERANG) || DampesWindmillAccess || (IsAdult && randoCtx->GetTrickOption(RT_KAK_ADULT_WINDMILL_POH)) || (IsChild && CanJumpslash && randoCtx->GetTrickOption(RT_KAK_CHILD_WINDMILL_POH));}}),
                     //PoH as child not added to trick options yet (needs uncommenting in randomizer_tricks.cpp)
                   LocationAccess(RC_SONG_FROM_WINDMILL,            {[]{return IsAdult && Ocarina;}}),
                 }, {
@@ -212,7 +211,7 @@ void AreaTable_Init_Kakariko() {
                   EventAccess(&BugRock,        {[]{return true;}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_GRAVEYARD_FREESTANDING_POH,        {[]{return (IsAdult && CanPlantBean(RR_THE_GRAVEYARD)) || CanUse(RG_LONGSHOT) || (LogicGraveyardPoH && CanUse(RG_BOOMERANG));}}),
+                  LocationAccess(RC_GRAVEYARD_FREESTANDING_POH,        {[]{return (IsAdult && CanPlantBean(RR_THE_GRAVEYARD)) || CanUse(RG_LONGSHOT) || (randoCtx->GetTrickOption(RT_GY_POH) && CanUse(RG_BOOMERANG));}}),
                   LocationAccess(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, {[]{return IsChild && AtNight;}}), //TODO: This needs to change
                   LocationAccess(RC_GRAVEYARD_GS_WALL,                 {[]{return IsChild && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(RC_GRAVEYARD_GS_BEAN_PATCH,           {[]{return CanPlantBugs && CanChildAttack;}}),
@@ -260,7 +259,7 @@ void AreaTable_Init_Kakariko() {
                 }, {
                   //Locations
                   LocationAccess(RC_GRAVEYARD_HOOKSHOT_CHEST,              {[]{return true;}}),
-                  LocationAccess(RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH, {[]{return IsAdult || LogicChildDampeRacePoH;}}),
+                  LocationAccess(RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH, {[]{return IsAdult || randoCtx->GetTrickOption(RT_GY_CHILD_DAMPE_RACE_POH);}}),
                 }, {
                   //Exits
                   Entrance(RR_THE_GRAVEYARD, {[]{return true;}}),
@@ -284,12 +283,12 @@ void AreaTable_Init_Kakariko() {
                 }, {
                   //Exits
                   Entrance(RR_THE_GRAVEYARD,             {[]{return true;}}),
-                  Entrance(RR_SHADOW_TEMPLE_ENTRYWAY,    {[]{return CanUse(RG_DINS_FIRE) || (LogicShadowFireArrowEntry && IsAdult && CanUse(RG_FIRE_ARROWS));}}),
+                  Entrance(RR_SHADOW_TEMPLE_ENTRYWAY,    {[]{return CanUse(RG_DINS_FIRE) || (randoCtx->GetTrickOption(RT_GY_SHADOW_FIRE_ARROWS) && IsAdult && CanUse(RG_FIRE_ARROWS));}}),
   });
 
   areaTable[RR_KAK_BEHIND_GATE] = Area("Kak Behind Gate", "Kakariko Village", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_KAKARIKO_VILLAGE,     {[]{return IsAdult || LogicVisibleCollision || KakarikoVillageGateOpen || OpenKakariko.Is(OPENKAKARIKO_OPEN);}}),
+                  Entrance(RR_KAKARIKO_VILLAGE,     {[]{return IsAdult || randoCtx->GetTrickOption(RT_VISIBLE_COLLISION) || KakarikoVillageGateOpen || randoCtx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}}),
                   Entrance(RR_DEATH_MOUNTAIN_TRAIL, {[]{return true;}}),
   });
 }

@@ -14,11 +14,33 @@
 #include <spdlog/spdlog.h>
 #include "../randomizerTypes.h"
 #include "../context.h"
+#include "pool_functions.hpp"
 
 using namespace CustomMessages;
 using namespace Logic;
-using namespace Settings;
 using namespace Trial;
+
+const Text& HintText::GetText() const {
+  auto ctx = Rando::Context::GetInstance();
+    if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)) {
+        return GetObscure();
+    } else if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS)) {
+        return GetAmbiguous();
+    } else {
+        return GetClear();
+    }
+}
+
+const Text HintText::GetTextCopy() const {
+    auto ctx = Rando::Context::GetInstance();
+    if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)) {
+        return GetObscure();
+    } else if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS)) {
+        return GetAmbiguous();
+    } else {
+        return GetClear();
+    }
+}
 
 std::unordered_map<HintType, std::string> hintTypeNames = {
     { HINT_TYPE_TRIAL, "Trial" },
@@ -126,7 +148,7 @@ constexpr std::array<HintSetting, 4> hintSettingTable{{
   },
 }};
 
-std::array<DungeonInfo, 10> dungeonInfoData;
+std::array<DungeonHintInfo, 10> dungeonInfoData;
 
 Text childAltarText;
 Text adultAltarText;
@@ -551,8 +573,9 @@ static std::vector<RandomizerCheck> CalculateBarrenRegions() {
 }
 
 static void CreateTrialHints() {
+  auto ctx = Rando::Context::GetInstance();
     //six trials
-  if (RandomGanonsTrials && GanonsTrialsCount.Is(6)) {
+  if (ctx->GetOption(RSK_GANONS_TRIALS) && ctx->GetOption(RSK_TRIAL_COUNT).Is(6)) {
 
     //get a random gossip stone
     auto gossipStones = GetAccessibleGossipStones();
@@ -563,7 +586,7 @@ static void CreateTrialHints() {
     AddHint(hint, gossipStone, { QM_PINK }, HINT_TYPE_TRIAL);
 
     //zero trials
-  } else if (RandomGanonsTrials && GanonsTrialsCount.Is(0)) {
+  } else if (ctx->GetOption(RSK_GANONS_TRIALS) && ctx->GetOption(RSK_TRIAL_COUNT).Is(0)) {
 
     //get a random gossip stone
     auto gossipStones = GetAccessibleGossipStones();
@@ -574,7 +597,7 @@ static void CreateTrialHints() {
     AddHint(hint, gossipStone, { QM_YELLOW }, HINT_TYPE_TRIAL);
 
     //4 or 5 required trials
-  } else if (GanonsTrialsCount.Is(5) || GanonsTrialsCount.Is(4)) {
+  } else if (ctx->GetOption(RSK_TRIAL_COUNT).Is(5) || ctx->GetOption(RSK_TRIAL_COUNT).Is(4)) {
 
     //get skipped trials
     std::vector<TrialInfo*> trials = {};
@@ -592,7 +615,7 @@ static void CreateTrialHints() {
       AddHint(hint, gossipStone, { QM_YELLOW }, HINT_TYPE_TRIAL);
     }
     //1 to 3 trials
-  } else if (GanonsTrialsCount.Value<uint8_t>() >= 1 && GanonsTrialsCount.Value<uint8_t>() <= 3) {
+  } else if (ctx->GetOption(RSK_TRIAL_COUNT).Value<uint8_t>() >= 1 && ctx->GetOption(RSK_TRIAL_COUNT).Value<uint8_t>() <= 3) {
     //get requried trials
     std::vector<TrialInfo*> trials = {};
     trials.assign(trialList.begin(), trialList.end());
@@ -658,7 +681,7 @@ static Text BuildDungeonRewardText(const RandomizerGet itemKey, bool isChild) {
     RandomizerCheck location = FilterFromPool(ctx->allLocations, [itemKey, ctx](const RandomizerCheck loc) {
         return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == itemKey;
     })[0];
-    if (IsReachableWithout({altarLoc}, location, true) || ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON)){ //RANDOTODO check if works properly
+    if (IsReachableWithout({altarLoc}, location, true) || ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)){ //RANDOTODO check if works properly
       ctx->GetItemLocation(location)->SetAsHinted();
     }
 
@@ -671,18 +694,19 @@ static Text BuildDungeonRewardText(const RandomizerGet itemKey, bool isChild) {
 }
 
 static Text BuildDoorOfTimeText() {
+  auto ctx = Rando::Context::GetInstance();
   std::string itemObtained;
   Text doorOfTimeText;
 
-  if (OpenDoorOfTime.Is(OPENDOOROFTIME_OPEN)) {
+  if (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_OPEN)) {
     itemObtained = "$o";
     doorOfTimeText = Hint(RHT_CHILD_ALTAR_TEXT_END_DOTOPEN).GetText();
 
-  } else if (OpenDoorOfTime.Is(OPENDOOROFTIME_SONGONLY)) {
+  } else if (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_SONGONLY)) {
     itemObtained = "$c";
     doorOfTimeText = Hint(RHT_CHILD_ALTAR_TEXT_END_DOTSONGONLY).GetText();
 
-  } else if (OpenDoorOfTime.Is(OPENDOOROFTIME_CLOSED)) {
+  } else if (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_CLOSED)) {
     itemObtained = "$i";
     doorOfTimeText = Hint(RHT_CHILD_ALTAR_TEXT_END_DOTCLOSED).GetText();
   }
@@ -691,7 +715,7 @@ static Text BuildDoorOfTimeText() {
 }
 
 //insert the required number into the hint and set the singular/plural form
-static Text BuildCountReq(const RandomizerHintTextKey req, const Option& count) {
+static Text BuildCountReq(const RandomizerHintTextKey req, const Rando::Option& count) {
   Text requirement = Hint(req).GetTextCopy();
     if (count.Value<uint8_t>() == 1) {
     requirement.SetForm(SINGULAR);
@@ -703,79 +727,81 @@ static Text BuildCountReq(const RandomizerHintTextKey req, const Option& count) 
 }
 
 static Text BuildBridgeReqsText() {
+  auto ctx = Rando::Context::GetInstance();
   Text bridgeText;
 
-  if (Bridge.Is(RAINBOWBRIDGE_OPEN)) {
+  if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_ALWAYS_OPEN)) {
     bridgeText = Hint(RHT_BRIDGE_OPEN_HINT).GetText();
 
-  } else if (Bridge.Is(RAINBOWBRIDGE_VANILLA)) {
-    bridgeText = Hint(RHT_BRIDGE_VANILLA_HINT).GetText();
+  } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_VANILLA)) {
+      bridgeText = Hint(RHT_BRIDGE_VANILLA_HINT).GetText();
 
-  } else if (Bridge.Is(RAINBOWBRIDGE_STONES)) {
-    bridgeText = BuildCountReq(RHT_BRIDGE_STONES_HINT, BridgeStoneCount);
+  } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)) {
+      bridgeText = BuildCountReq(RHT_BRIDGE_STONES_HINT, ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT));
 
-  } else if (Bridge.Is(RAINBOWBRIDGE_MEDALLIONS)) {
-    bridgeText = BuildCountReq(RHT_BRIDGE_MEDALLIONS_HINT, BridgeMedallionCount);
+  } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)) {
+      bridgeText = BuildCountReq(RHT_BRIDGE_MEDALLIONS_HINT, ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT));
 
-  } else if (Bridge.Is(RAINBOWBRIDGE_REWARDS)) {
-    bridgeText = BuildCountReq(RHT_BRIDGE_REWARDS_HINT, BridgeRewardCount);
+  } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS)) {
+      bridgeText = BuildCountReq(RHT_BRIDGE_REWARDS_HINT, ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT));
 
-  } else if (Bridge.Is(RAINBOWBRIDGE_DUNGEONS)) {
-    bridgeText = BuildCountReq(RHT_BRIDGE_DUNGEONS_HINT, BridgeDungeonCount);
+  } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)) {
+      bridgeText = BuildCountReq(RHT_BRIDGE_DUNGEONS_HINT, ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT));
 
-  } else if (Bridge.Is(RAINBOWBRIDGE_TOKENS)) {
-    bridgeText = BuildCountReq(RHT_BRIDGE_TOKENS_HINT, BridgeTokenCount);
-  
-  } else if (Bridge.Is(RAINBOWBRIDGE_GREG)) {
-    bridgeText = Hint(RHT_BRIDGE_GREG_HINT).GetText();
+  } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)) {
+      bridgeText = BuildCountReq(RHT_BRIDGE_TOKENS_HINT, ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT));
+
+  } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_GREG)) {
+      bridgeText = Hint(RHT_BRIDGE_GREG_HINT).GetText();
   }
 
   return Text()+"$l"+bridgeText+"^";
 }
 
 static Text BuildGanonBossKeyText() {
+  auto ctx = Rando::Context::GetInstance();
   Text ganonBossKeyText;
 
-  if (GanonsBossKey.Is(GANONSBOSSKEY_START_WITH)) {
+  if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_STARTWITH)) {
     ganonBossKeyText = Hint(RHT_GANON_BK_START_WITH_HINT).GetText();
 
-  } else if (GanonsBossKey.Is(GANONSBOSSKEY_VANILLA)) {
+  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_VANILLA)) {
     ganonBossKeyText = Hint(RHT_GANON_BK_VANILLA_HINT).GetText();
 
-  } else if (GanonsBossKey.Is(GANONSBOSSKEY_OWN_DUNGEON)) {
+  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_OWN_DUNGEON)) {
     ganonBossKeyText = Hint(RHT_GANON_BK_OWN_DUNGEON_HINT).GetText();
 
-  } else if (GanonsBossKey.Is(GANONSBOSSKEY_ANY_DUNGEON)) {
+  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_ANY_DUNGEON)) {
     ganonBossKeyText = Hint(RHT_GANON_BK_ANY_DUNGEON_HINT).GetText();
 
-  } else if (GanonsBossKey.Is(GANONSBOSSKEY_OVERWORLD)) {
+  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_OVERWORLD)) {
     ganonBossKeyText = Hint(RHT_GANON_BK_OVERWORLD_HINT).GetText();
 
-  } else if (GanonsBossKey.Is(GANONSBOSSKEY_ANYWHERE)) {
+  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_ANYWHERE)) {
     ganonBossKeyText = Hint(RHT_GANON_BK_ANYWHERE_HINT).GetText();
 
-  } else if (GanonsBossKey.Is(GANONSBOSSKEY_FINAL_GS_REWARD)) {
+  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
     ganonBossKeyText = Hint(RHT_GANON_BK_SKULLTULA_HINT).GetText();
 
-  } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_VANILLA)) {
+  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_VANILLA)) {
     ganonBossKeyText = Hint(RHT_LACS_VANILLA_HINT).GetText();
 
-  } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_STONES)) {
-    ganonBossKeyText = BuildCountReq(RHT_LACS_STONES_HINT, LACSStoneCount);
+  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
+    ganonBossKeyText = BuildCountReq(RHT_LACS_STONES_HINT, ctx->GetOption(RSK_LACS_STONE_COUNT));
 
-  } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_MEDALLIONS)) {
-    ganonBossKeyText = BuildCountReq(RHT_LACS_MEDALLIONS_HINT, LACSMedallionCount);
+  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_MEDALLIONS)) {
+    ganonBossKeyText = BuildCountReq(RHT_LACS_MEDALLIONS_HINT, ctx->GetOption(RSK_LACS_MEDALLION_COUNT));
 
-  } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_REWARDS)) {
-    ganonBossKeyText = BuildCountReq(RHT_LACS_REWARDS_HINT, LACSRewardCount);
+  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
+    ganonBossKeyText = BuildCountReq(RHT_LACS_REWARDS_HINT, ctx->GetOption(RSK_LACS_REWARD_COUNT));
 
-  } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_DUNGEONS)) {
-    ganonBossKeyText = BuildCountReq(RHT_LACS_DUNGEONS_HINT, LACSDungeonCount);
+  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS)) {
+    ganonBossKeyText = BuildCountReq(RHT_LACS_DUNGEONS_HINT, ctx->GetOption(RSK_LACS_DUNGEON_COUNT));
 
-  } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_TOKENS)) {
-    ganonBossKeyText = BuildCountReq(RHT_LACS_TOKENS_HINT, LACSTokenCount);
+  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
+    ganonBossKeyText = BuildCountReq(RHT_LACS_TOKENS_HINT, ctx->GetOption(RSK_LACS_TOKEN_COUNT));
 
-  } else if (GanonsBossKey.Is(GANONSBOSSKEY_TRIFORCE_HUNT)) {
+  } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_TRIFORCE_HUNT)) {
     ganonBossKeyText = Hint(RHT_GANON_BK_TRIFORCE_HINT).GetText();
   }
 
@@ -786,14 +812,15 @@ void CreateAltarText() {
   auto ctx = Rando::Context::GetInstance();
 
   //Child Altar Text
-  if (AltarHintText) {
+  if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
     childAltarText = Hint(RHT_SPIRITUAL_STONE_TEXT_START).GetText()+"^"+
     //Spiritual Stones
-        (StartingKokiriEmerald.Value<uint8_t>() ? Text{ "##", "##", "##" }
+    // TODO: Starting Inventory Dungeon Rewards
+        (/*StartingKokiriEmerald.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
                                                 : BuildDungeonRewardText(RG_KOKIRI_EMERALD, true)) +
-        (StartingGoronRuby.Value<uint8_t>() ? Text{ "##", "##", "##" }
+        (/*StartingGoronRuby.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
                                             : BuildDungeonRewardText(RG_GORON_RUBY, true)) +
-        (StartingZoraSapphire.Value<uint8_t>() ? Text{ "##", "##", "##" }
+        (/*StartingZoraSapphire.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
                                               : BuildDungeonRewardText(RG_ZORA_SAPPHIRE, true)) +
     //How to open Door of Time, the event trigger is necessary to read the altar multiple times
     BuildDoorOfTimeText();
@@ -806,20 +833,20 @@ void CreateAltarText() {
 
   //Adult Altar Text
   adultAltarText = Hint(RHT_ADULT_ALTAR_TEXT_START).GetText() + "^";
-  if (AltarHintText) {
+  if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
     adultAltarText = adultAltarText +
     //Medallion Areas
-        (StartingLightMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
+        (/*StartingLightMedallion.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
                                                 : BuildDungeonRewardText(RG_LIGHT_MEDALLION, false)) +
-        (StartingForestMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
+        (/*StartingForestMedallion.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
                                                   : BuildDungeonRewardText(RG_FOREST_MEDALLION, false)) +
-        (StartingFireMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
+        (/*StartingFireMedallion.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
                                                 : BuildDungeonRewardText(RG_FIRE_MEDALLION, false)) +
-        (StartingWaterMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
+        (/*StartingWaterMedallion.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
                                                 : BuildDungeonRewardText(RG_WATER_MEDALLION, false)) +
-        (StartingSpiritMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
+        (/*StartingSpiritMedallion.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
                                                   : BuildDungeonRewardText(RG_SPIRIT_MEDALLION, false)) +
-        (StartingShadowMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
+        (/*StartingShadowMedallion.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
                                                   : BuildDungeonRewardText(RG_SHADOW_MEDALLION, false));
   }
   adultAltarText = adultAltarText + 
@@ -866,7 +893,7 @@ void CreateMerchantsHints() {
 
 void CreateDampesDiaryText() {
   auto ctx = Rando::Context::GetInstance();
-  if (!DampeHintText) {
+  if (!ctx->GetOption(RSK_DAMPES_DIARY_HINT)) {
     dampesText = Text();
     dampeHintLoc = "";
     return;
@@ -900,7 +927,7 @@ void CreateDampesDiaryText() {
 
 void CreateGregRupeeHint() {
   auto ctx = Rando::Context::GetInstance();
-  if (!GregHintText) {
+  if (!ctx->GetOption(RSK_GREG_HINT)) {
     gregText = Text();
     return;
   }
@@ -956,7 +983,8 @@ void CreateSariaText() {
 
 
 void CreateWarpSongTexts() {
-  if (!ShuffleWarpSongs) {
+  auto ctx = Rando::Context::GetInstance();
+  if (!ctx->GetOption(RSK_WARP_SONG_HINTS)) {
     warpMinuetText = Text();
     warpBoleroText = Text();
     warpSerenadeText = Text();
@@ -1041,7 +1069,7 @@ void CreateAllHints() {
       auto alwaysHintLocations = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
           return ((Rando::StaticData::GetLocation(loc)->GetHint()->GetType() == HintCategory::Always) ||
                   // If we have Rainbow Bridge set to Greg, add a hint for where Greg is
-                  (Bridge.Is(RAINBOWBRIDGE_GREG) &&
+                  (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_GREG) &&
                    ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_GREG_RUPEE)) &&
                  ctx->GetItemLocation(loc)->IsHintable() && !(ctx->GetItemLocation(loc)->IsHintedAt());
       });
@@ -1113,11 +1141,11 @@ void CreateAllHints() {
   for (uint32_t i = 0; i < dungeonInfoData.size(); i++) {
     std::string dungeonName = dungeonNames[i];
     if (std::find(barrenDungeons.begin(), barrenDungeons.end(), dungeonName) != barrenDungeons.end()) {
-      dungeonInfoData[i] = DungeonInfo::DUNGEON_BARREN;
+      dungeonInfoData[i] = DungeonHintInfo::DUNGEON_BARREN;
     } else if (std::find(wothDungeons.begin(), wothDungeons.end(), dungeonName) != wothDungeons.end()) {
-      dungeonInfoData[i] = DungeonInfo::DUNGEON_WOTH;
+      dungeonInfoData[i] = DungeonHintInfo::DUNGEON_WOTH;
     } else {
-      dungeonInfoData[i] = DungeonInfo::DUNGEON_NEITHER;
+      dungeonInfoData[i] = DungeonHintInfo::DUNGEON_NEITHER;
     }
   }
 

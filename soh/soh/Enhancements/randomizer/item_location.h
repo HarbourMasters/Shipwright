@@ -1,9 +1,9 @@
 #pragma once
 
 #include "randomizerTypes.h"
-#include "item.h"
 #include "3drando/text.hpp"
 #include "static_data.h"
+#include "settings.h"
 
 namespace Rando {
 class ItemLocation {

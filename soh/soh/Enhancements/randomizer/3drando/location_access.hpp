@@ -7,8 +7,12 @@
 #include "logic.hpp"
 #include "hint_list.hpp"
 #include "fill.hpp"
+#include "../context.h"
 
 typedef bool (*ConditionFn)();
+
+// I hate this but every alternative I can think of right now is worse
+extern std::shared_ptr<Rando::Context> randoCtx;
 
 class EventAccess {
 public:

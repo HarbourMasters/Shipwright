@@ -5,7 +5,6 @@
 #include "../context.h"
 #include "item_pool.hpp"
 #include "logic.hpp"
-#include "settings.hpp"
 #include "spoiler_log.hpp"
 #include "trial.hpp"
 #include "entrance.hpp"
@@ -14,7 +13,6 @@
 #include <iostream>
 
 using namespace Logic;
-using namespace Settings;
 
 //generic grotto event list
 std::vector<EventAccess> grottoEvents = {
@@ -80,7 +78,8 @@ bool LocationAccess::CanBuy() const {
   }
   // If bombchus in logic, need to have found chus to buy; if not just need bomb bag
   else if (placed == RG_BUY_BOMBCHU_10 || placed == RG_BUY_BOMBCHU_20) {
-      OtherCondition = (!BombchusInLogic && Bombs) || (BombchusInLogic && FoundBombchus);
+      OtherCondition =
+          (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && Bombs) || (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && FoundBombchus);
   }
 
   return SufficientWallet && OtherCondition;
@@ -248,9 +247,10 @@ bool HasAccessTo(const RandomizerRegion area) {
   return areaTable[area].HasAccess();
 }
 
-
+std::shared_ptr<Rando::Context> randoCtx;
 
 void AreaTable_Init() {
+  randoCtx = Rando::Context::GetInstance();
   //Clear the array from any previous playthrough attempts. This is important so that
   //locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
   areaTable.fill(Area("Invalid Area", "Invalid Area", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {}));
@@ -430,7 +430,7 @@ namespace Areas {
   bool HasTimePassAccess(uint8_t age) {
       for (const RandomizerRegion areaKey : GetAllAreas()) {
       auto area = AreaTable(areaKey);
-      if (area->timePass && ((age == AGE_CHILD && area->Child()) || (age == AGE_ADULT && area->Adult()))) {
+      if (area->timePass && ((age == RO_AGE_CHILD && area->Child()) || (age == RO_AGE_ADULT && area->Adult()))) {
         return true;
       }
     }

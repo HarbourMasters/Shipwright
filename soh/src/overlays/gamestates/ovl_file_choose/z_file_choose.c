@@ -954,11 +954,8 @@ void DrawSeedHashSprites(FileChooseContext* this) {
     gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
     // Draw icons on the main menu, when a rando file is selected, and on name entry when quest selection is set to rando
-    if ((this->configMode == CM_MAIN_MENU &&
-         (this->selectMode != SM_CONFIRM_FILE || Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1)) ||
-        (this->configMode == CM_NAME_ENTRY && gSaveContext.questId == QUEST_RANDOMIZER) ||
-        (this->configMode == CM_QUEST_MENU && strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0 &&
-         Randomizer_IsSpoilerLoaded() && this->questType[this->buttonIndex] == QUEST_RANDOMIZER)) {
+    if (this->configMode == CM_MAIN_MENU &&
+         (this->selectMode != SM_CONFIRM_FILE || Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1)) {
 
         if (this->fileInfoAlpha[this->selectedFileIndex] > 0) {
             // Use file info alpha to match fading
@@ -967,34 +964,32 @@ void DrawSeedHashSprites(FileChooseContext* this) {
             u16 xStart = 64;
             // Draw Seed Icons for specific file
             for (unsigned int i = 0; i < 5; i++) {
-                if (Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1) {
-                    SpriteLoad(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]));
-                    SpriteDraw(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]),
-                                xStart + (40 * i), 10, 24, 24);
-                }
+                SpriteLoad(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]));
+                SpriteDraw(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]),
+                            xStart + (40 * i), 10, 24, 24);
             }
         }
+    }
 
+    // Draw Seed Icons for spoiler log:
+    // 1. On Name Entry if a rando seed has been generated
+    // 2. On Quest Menu if a spoiler has been dropped and the Randomizer quest option is currently hovered.
+    if ((Randomizer_IsSeedGenerated() ||
+            (strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0 && Randomizer_IsSpoilerLoaded())) &&
+        ((this->configMode == CM_NAME_ENTRY && gSaveContext.questId == QUEST_RANDOMIZER) ||
+        (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER))) {
         // Fade top seed icons based on main menu fade and if save supports rando
-        u8 alpha = MAX(this->optionButtonAlpha, Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1 ? 0xFF : 0);
+        u8 alpha =
+            MAX(this->optionButtonAlpha, Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1 ? 0xFF : 0);
         if (alpha >= 200) {
             alpha = 0xFF;
         }
 
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, alpha);
-
-        // Draw Seed Icons for spoiler log:
-        // 1. On Name Entry if a rando seed has been generated
-        // 2. On Quest Menu if a spoiler has been dropped and the Randomizer quest option is currently hovered.
-        if ((this->configMode == CM_NAME_ENTRY && gSaveContext.questId == QUEST_RANDOMIZER &&
-             Randomizer_IsSeedGenerated()) || (this->configMode == CM_QUEST_MENU && 
-             strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0 && Randomizer_IsSpoilerLoaded() && 
-             this->questType[this->buttonIndex] == QUEST_RANDOMIZER)) {
-            u16 xStart = 64;
-            for (unsigned int i = 0; i < 5; i++) {
-                SpriteLoad(this, GetSeedTexture(GetSeedIconIndex(i)));
-                SpriteDraw(this, GetSeedTexture(GetSeedIconIndex(i)), xStart + (40 * i), 10, 24, 24);
-            }
+        u16 xStart = 64;
+        for (unsigned int i = 0; i < 5; i++) {
+            SpriteLoad(this, GetSeedTexture(GetSeedIconIndex(i)));
+            SpriteDraw(this, GetSeedTexture(GetSeedIconIndex(i)), xStart + (40 * i), 10, 24, 24);
         }
     }
 
@@ -1011,7 +1006,7 @@ void FileChoose_UpdateRandomizer() {
             func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
             return;
     } else if (CVarGetInteger("gRandoGenerating", 0) == 0 && generating) {
-            if (SpoilerFileExists(CVarGetString("gSpoilerLog", ""))) {
+            if (SpoilerFileExists(CVarGetString("gSpoilerLog", "")) || Randomizer_IsSeedGenerated()) {
                 Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
             } else {
                 func_80078884(NA_SE_SY_OCARINA_ERROR);
@@ -1353,7 +1348,6 @@ void FileChoose_GenerateRandoSeed(GameState* thisx) {
         this->nameEntryBoxAlpha = 0;
         memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName,
                CVarGetInteger("gLinkDefaultName", 0) ? &linkName : &emptyName, 8);
-        Randomizer_SetSeedGenerated(false);
         return;
     } else {
         Randomizer_GenerateSeed();

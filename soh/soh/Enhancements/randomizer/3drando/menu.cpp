@@ -8,7 +8,6 @@
 #include "menu.hpp"
 #include "playthrough.hpp"
 #include "randomizer.hpp"
-#include "settings.hpp"
 #include "spoiler_log.hpp"
 #include "location_access.hpp"
 #include <spdlog/spdlog.h>
@@ -19,7 +18,7 @@ namespace {
 bool seedChanged;
 uint16_t pastSeedLength;
 std::vector<std::string> presetEntries;
-Option* currentSetting;
+Rando::Option* currentSetting;
 } // namespace
 
 std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
@@ -62,13 +61,12 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
 
     // Restore settings that were set to a specific value for vanilla logic
     if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
-        for (Option* setting : Settings::vanillaLogicDefaults) {
+        for (Rando::Option* setting : ctx->GetSettings().VanillaLogicDefaults) {
             setting->RestoreDelayedOption();
         }
         ctx->GetOption(RSK_KEYSANITY).RestoreDelayedOption();
     }
     std::ostringstream fileNameStream;
-    auto ctx = Rando::Context::GetInstance();
     for (int i = 0; i < ctx->hashIconIndexes.size(); i++) {
         if (i) {
             fileNameStream << '-';

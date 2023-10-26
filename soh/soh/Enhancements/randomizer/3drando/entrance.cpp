@@ -1,13 +1,14 @@
 #include "entrance.hpp"
 
 #include "fill.hpp"
-#include "settings.hpp"
 #include "item_pool.hpp"
 #include "../context.h"
+#include "../option.h"
 #include "spoiler_log.hpp"
 #include "hints.hpp"
 #include "location_access.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"
+#include "pool_functions.hpp"
 
 #include <vector>
 #include <utility>
@@ -287,11 +288,11 @@ static bool EntranceUnreachableAs(Entrance* entrance, uint8_t age, std::vector<E
     // Note that we consider all overworld entrances as potentially accessible as both ages, to be completely safe
     return false;
   } else if (type == EntranceType::OwlDrop) {
-    return age == AGE_ADULT;
+    return age == RO_AGE_ADULT;
   } else if (type == EntranceType::Spawn && entrance->GetConnectedRegionKey() == RR_KF_LINKS_HOUSE) {
-    return age == AGE_ADULT;
+    return age == RO_AGE_ADULT;
   } else if (type == EntranceType::Spawn && entrance->GetConnectedRegionKey() == RR_TEMPLE_OF_TIME) {
-    return age == AGE_CHILD;
+    return age == RO_AGE_CHILD;
   }
 
   // Other entrances such as Interior, Dungeon or Grotto are fine unless they have a parent which is one of the above cases
@@ -362,11 +363,11 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
           auto replacementName = entrance->GetReplacement()->GetName();
           alreadyChecked.push_back(entrance->GetReplacement()->GetReverse());
 
-          if (ElementInContainer(replacementName, childForbidden) && !EntranceUnreachableAs(entrance, AGE_CHILD, alreadyChecked)) {
+          if (ElementInContainer(replacementName, childForbidden) && !EntranceUnreachableAs(entrance, RO_AGE_CHILD, alreadyChecked)) {
             auto message = replacementName + " is replaced by an entrance with a potential child access\n";
             SPDLOG_DEBUG(message);
             return false;
-          } else if (ElementInContainer(replacementName, adultForbidden) && !EntranceUnreachableAs(entrance, AGE_ADULT, alreadyChecked)) {
+          } else if (ElementInContainer(replacementName, adultForbidden) && !EntranceUnreachableAs(entrance, RO_AGE_ADULT, alreadyChecked)) {
             auto message = replacementName + " is replaced by an entrance with a potential adult access\n";
             SPDLOG_DEBUG(message);
             return false;
@@ -376,11 +377,11 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
         auto name = entrance->GetName();
         alreadyChecked.push_back(entrance->GetReverse());
 
-        if (ElementInContainer(name, childForbidden) && !EntranceUnreachableAs(entrance, AGE_CHILD, alreadyChecked)) {
+        if (ElementInContainer(name, childForbidden) && !EntranceUnreachableAs(entrance, RO_AGE_CHILD, alreadyChecked)) {
           auto message = name + " is potentially accessible as child\n";
           SPDLOG_DEBUG(message);
           return false;
-        } else if (ElementInContainer(name, adultForbidden) && !EntranceUnreachableAs(entrance, AGE_ADULT, alreadyChecked)) {
+        } else if (ElementInContainer(name, adultForbidden) && !EntranceUnreachableAs(entrance, RO_AGE_ADULT, alreadyChecked)) {
           auto message = name + " is potentially accessible as adult\n";
           SPDLOG_DEBUG(message);
           return false;
@@ -413,7 +414,7 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
       }
 
       // Check that a region where time passes is always reachable as both ages without having collected any items
-      if (!Areas::HasTimePassAccess(AGE_CHILD) || !Areas::HasTimePassAccess(AGE_ADULT)) {
+      if (!Areas::HasTimePassAccess(RO_AGE_CHILD) || !Areas::HasTimePassAccess(RO_AGE_ADULT)) {
         SPDLOG_DEBUG("Time passing is not guaranteed as both ages\n");
         return false;
       }
@@ -1116,11 +1117,11 @@ int ShuffleAllEntrances() {
   //combine entrance pools if mixing pools. Only continue if more than one pool is selected.
   int totalMixedPools = (ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES) ? 1 : 0);
   if (totalMixedPools < 2) {
-    ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).SetSelectedIndex(OFF);
-    ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES).SetSelectedIndex(OFF);
-    ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).SetSelectedIndex(OFF);
-    ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).SetSelectedIndex(OFF);
-    ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).SetSelectedIndex(OFF);
+    ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).SetSelectedIndex(RO_GENERIC_OFF);
+    ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
+    ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
+    ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
+    ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
   }
   if (ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS)) {
     std::set<EntranceType> poolsToMix = {};

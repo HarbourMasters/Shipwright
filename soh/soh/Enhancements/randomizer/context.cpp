@@ -96,7 +96,7 @@ void Context::AddLocations(const Container& locations, std::vector<RandomizerChe
 void Context::GenerateLocationPool() {
     allLocations.clear();
     AddLocation(RC_LINKS_POCKET);
-    if (mSettings.Setting(RSK_TRIFORCE_HUNT).Is(RO_GENERIC_ON)) {
+    if (mSettings.Setting(RSK_TRIFORCE_HUNT)) {
         AddLocation(RC_TRIFORCE_COMPLETED);
     }
     AddLocations(StaticData::overworldLocations);
@@ -224,11 +224,15 @@ GetItemEntry Context::GetFinalGIEntry(RandomizerCheck rc, bool checkObtainabilit
     return giEntry;
 }
 
-Settings& Context::GetSettings() const {
+Settings& Context::GetSettings() {
     return mSettings;
 }
 
 Rando::Option& Context::GetOption(RandomizerSettingKey key) {
     return mSettings.Setting(key);
+}
+
+Rando::Option& Context::GetTrickOption(RandomizerTrick key) {
+    return mSettings.GetTrickOption(key);
 }
 } // namespace Rando

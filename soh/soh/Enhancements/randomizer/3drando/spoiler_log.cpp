@@ -5,7 +5,6 @@
 #include "../context.h"
 #include "entrance.hpp"
 #include "random.hpp"
-#include "settings.hpp"
 #include "trial.hpp"
 #include "tinyxml2.h"
 #include "utils.hpp"
@@ -358,22 +357,37 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
 
 // Writes the settings (without excluded locations, starting inventory and tricks) to the spoilerLog document.
 static void WriteSettings(const bool printAll = false) {
-  // auto parentNode = spoilerLog.NewElement("settings");
-  auto ctx = Rando::Context::GetInstance();
+    // auto parentNode = spoilerLog.NewElement("settings");
+    auto ctx = Rando::Context::GetInstance();
+    auto allOptionGroups = ctx->GetSettings().GetOptionGroups();
+    for (const Rando::OptionGroup& optionGroup : allOptionGroups) {
+        if (optionGroup.GetName() == "Timesaver Settings") {
+            for (const Rando::Option* option : optionGroup.GetOptions()) {
+                if (option->GetName() == "Big Poe Target Count" || option->GetName() == "Cuccos to return" ||
+                    option->GetName() == "Skip Epona Race" || option->GetName() == "Skip Tower Escape" ||
+                    option->GetName() == "Skip Child Stealth" || option->GetName() == "Complete Mask Quest" ||
+                    option->GetName() == "Skip Scarecrow's Song" ||
+                    option->GetName() == "Enable Glitch-Useful Cutscenes") {
+                    std::string settingName = optionGroup.GetName() + ":" + option->GetName();
+                    jsonData["settings"][settingName] = option->GetSelectedOptionText();
+                }
+            }
+            continue;
+        }
+        if (optionGroup.GetContainsType() == Rando::OptionGroupType::DEFAULT && optionGroup.PrintInSpoiler()) {
+            for (const Rando::Option* option : optionGroup.GetOptions()) {
+                std::string settingName = optionGroup.GetName() + ":" + option->GetName();
+                jsonData["settings"][settingName] = option->GetSelectedOptionText();
+            }
+        }
+    }
 
-  auto allOptions = ctx->GetSettings().GetAllOptions();
+    // spoilerLog.RootElement()->InsertEndChild(parentNode);
 
-  for (const Rando::Option& option : allOptions) {
-      std::string settingName = option.GetName();
-      jsonData["settings"][settingName] = option.GetSelectedOptionText();
-  }
-
-  // spoilerLog.RootElement()->InsertEndChild(parentNode);
-
-  //     for (const uint32_t key : allLocations) {
-  //       ItemLocation* location = GetLocation(key);
-  //       settingsJsonData["locations"][location->GetName()] = location->GetPlacedItemName().english;
-  //   }
+    //     for (const uint32_t key : allLocations) {
+    //       ItemLocation* location = GetLocation(key);
+    //       settingsJsonData["locations"][location->GetName()] = location->GetPlacedItemName().english;
+    //   }
 }
 
 // Writes the excluded locations to the spoiler log, if there are any.
@@ -402,53 +416,15 @@ static void WriteExcludedLocations() {
 
 // Writes the starting inventory to the spoiler log, if there is any.
 static void WriteStartingInventory() {
-  // std::vector<std::vector<Option *>*> startingInventoryOptions = {
-  //   &Settings::startingItemsOptions,
-  //   &Settings::startingSongsOptions,
-  //   &Settings::startingEquipmentOptions,
-  //   &Settings::startingStonesMedallionsOptions,
-  //   &Settings::startingOthersOptions
-  // };
-
-  // for (std::vector<Option*>* menu : startingInventoryOptions) {
-  //     for (size_t i = 0; i < menu->size(); ++i) {
-  //         const auto setting = menu->at(i);
-  //         // Starting Songs
-  //         if (setting->GetName() == "Start with Zelda's Lullaby" || 
-  //             setting->GetName() == "Start with Epona's Song" ||
-  //             setting->GetName() == "Start with Saria's Song" || 
-  //             setting->GetName() == "Start with Sun's Song" ||
-  //             setting->GetName() == "Start with Song of Time" || 
-  //             setting->GetName() == "Start with Song of Storms" ||
-  //             setting->GetName() == "Start with Minuet of Forest" || 
-  //             setting->GetName() == "Start with Bolero of Fire" ||
-  //             setting->GetName() == "Start with Serenade of Water" || 
-  //             setting->GetName() == "Start with Requiem of Spirit" ||
-  //             setting->GetName() == "Start with Nocturne of Shadow" || 
-  //             setting->GetName() == "Start with Prelude of Light") {
-  //             jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
-  //         }
-  //     }
-  // }
-  // for (std::vector<Option *>* menu : startingInventoryOptions) {
-  //   for (size_t i = 0; i < menu->size(); ++i) {
-  //     const auto setting = menu->at(i);
-   
-  //     // we need to write these every time because we're not clearing jsondata, so
-  //     // the default logic of only writing it when we aren't using the default value
-  //     // doesn't work, and because it'd be bad to set every single possible starting
-  //     // inventory item as "false" in the json, we're just going to check
-  //     // to see if the name is one of the 3 we're using rn
-  //     if (setting->GetName() == "Start with Consumables" ||
-  //         setting->GetName() == "Start with Max Rupees" ||
-  //         setting->GetName() == "Gold Skulltula Tokens" ||
-  //         setting->GetName() == "Start with Fairy Ocarina" ||
-  //         setting->GetName() == "Start with Kokiri Sword" ||
-  //         setting->GetName() == "Start with Deku Shield") {
-  //       jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
-  //     }
-  //   }
-  // }
+    auto ctx = Rando::Context::GetInstance();
+    const Rando::OptionGroup& optionGroup = ctx->GetSettings().GetOptionGroup(RSG_STARTING_INVENTORY);
+    for (const Rando::OptionGroup* subGroup : optionGroup.GetSubGroups()) {
+        if (subGroup->GetContainsType() == Rando::OptionGroupType::DEFAULT) {
+            for (const Rando::Option* option : subGroup->GetOptions()) {
+                jsonData["settings"][option->GetName()] = option->GetSelectedOptionText();
+            }
+        }
+    }
 }
 
 // Writes the enabled tricks to the spoiler log, if there are any.
@@ -456,8 +432,8 @@ static void WriteEnabledTricks(tinyxml2::XMLDocument& spoilerLog) {
   //auto parentNode = spoilerLog.NewElement("enabled-tricks");
   auto ctx = Rando::Context::GetInstance();
 
-  for (const auto& setting : ctx->GetSettings().trickOptions) {
-    if (setting.GetSelectedOptionIndex() != RO_GENERIC_ON/* || !setting->IsCategory(OptionCategory::Setting)*/) {
+  for (const auto& setting : ctx->GetSettings().GetOptionGroup(RSG_TRICKS).GetOptions()) {
+    if (setting->GetSelectedOptionIndex() != RO_GENERIC_ON/* || !setting->IsCategory(OptionCategory::Setting)*/) {
       continue;
     }
     jsonData["enabledTricks"].push_back(RemoveLineBreaks(RandomizerTricks::GetRTName((RandomizerTrick)std::stoi(setting->GetName()))).c_str());
@@ -471,32 +447,33 @@ static void WriteEnabledTricks(tinyxml2::XMLDocument& spoilerLog) {
 }
 
 // Writes the enabled glitches to the spoiler log, if there are any.
-static void WriteEnabledGlitches(tinyxml2::XMLDocument& spoilerLog) {
-  auto parentNode = spoilerLog.NewElement("enabled-glitches");
+// TODO: Implement Glitches
+// static void WriteEnabledGlitches(tinyxml2::XMLDocument& spoilerLog) {
+//   auto parentNode = spoilerLog.NewElement("enabled-glitches");
 
-  for (const auto& setting : Settings::glitchCategories) {
-    if (setting->Value<uint8_t>() == 0) {
-      continue;
-    }
+//   for (const auto& setting : Settings::glitchCategories) {
+//     if (setting->Value<uint8_t>() == 0) {
+//       continue;
+//     }
 
-    auto node = parentNode->InsertNewChildElement("glitch-category");
-    node->SetAttribute("name", setting->GetName().c_str());
-    node->SetText(setting->GetSelectedOptionText().c_str());
-  }
+//     auto node = parentNode->InsertNewChildElement("glitch-category");
+//     node->SetAttribute("name", setting->GetName().c_str());
+//     node->SetText(setting->GetSelectedOptionText().c_str());
+//   }
 
-  for (const auto& setting : Settings::miscGlitches) {
-    if (!setting->Value<bool>()) {
-      continue;
-    }
+//   for (const auto& setting : Settings::miscGlitches) {
+//     if (!setting->Value<bool>()) {
+//       continue;
+//     }
 
-    auto node = parentNode->InsertNewChildElement("misc-glitch");
-    node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
-  }
+//     auto node = parentNode->InsertNewChildElement("misc-glitch");
+//     node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
+//   }
 
-  if (!parentNode->NoChildren()) {
-    spoilerLog.RootElement()->InsertEndChild(parentNode);
-  }
-}
+//   if (!parentNode->NoChildren()) {
+//     spoilerLog.RootElement()->InsertEndChild(parentNode);
+//   }
+// }
 
 // Writes the Master Quest dungeons to the spoiler log, if there are any.
 static void WriteMasterQuestDungeons(tinyxml2::XMLDocument& spoilerLog) {
@@ -925,7 +902,7 @@ bool PlacementLog_Write() {
     // WriteExcludedLocations(placementLog);
     // WriteStartingInventory(placementLog);
     WriteEnabledTricks(placementLog);
-    WriteEnabledGlitches(placementLog);
+    //WriteEnabledGlitches(placementLog);
     WriteMasterQuestDungeons(placementLog);
     //WriteRequiredTrials(placementLog);
 

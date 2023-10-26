@@ -6,12 +6,8 @@
 
 #include "text.hpp"
 #include "random.hpp"
-#include "settings.hpp"
 #include "dungeon.hpp"
 #include <functional>
-
-#include "../context.h"
-
 struct HintDistributionSetting {
   HintType type;
   uint8_t order;
@@ -56,7 +52,8 @@ public:
     : obscureText(std::move(obscureText_)),
       ambiguousText(std::move(ambiguousText_)),
       clearText(std::move(clearText_)),
-      type(type_) {}
+      type(type_) {
+      }
 
     static auto Item(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
         return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::Item};
@@ -155,27 +152,9 @@ public:
         return clearText;
     }
 
-    const Text& GetText() const {
-        auto ctx = Rando::Context::GetInstance();
-        if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)) {
-            return GetObscure();
-        } else if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS)) {
-            return GetAmbiguous();
-        } else {
-            return GetClear();
-        }
-    }
+    const Text& GetText() const;
 
-    const Text GetTextCopy() const {
-        auto ctx = Rando::Context::GetInstance();
-        if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)) {
-            return GetObscure();
-        } else if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS)) {
-            return GetAmbiguous();
-        } else {
-            return GetClear();
-        }
-    }
+    const Text GetTextCopy() const;
 
     HintCategory GetType() const {
         return type;
@@ -199,8 +178,14 @@ private:
 
 using ConditionalAlwaysHint = std::pair<RandomizerCheck, std::function<bool()>>;
 
+typedef enum {
+    DUNGEON_NEITHER,
+    DUNGEON_BARREN,
+    DUNGEON_WOTH,
+} DungeonHintInfo;
+
 //10 dungeons as GTG and GC are excluded
-extern std::array<DungeonInfo, 10> dungeonInfoData;
+extern std::array<DungeonHintInfo, 10> dungeonInfoData;
 
 extern std::array<ConditionalAlwaysHint, 10> conditionalAlwaysHints;
 

@@ -3,7 +3,6 @@
 #include "../entrance.hpp"
 
 using namespace Logic;
-using namespace Settings;
 
 void AreaTable_Init_LostWoods() {
   areaTable[RR_KOKIRI_FOREST] = Area("Kokiri Forest", "Kokiri Forest", RHT_KOKIRI_FOREST, NO_DAY_NIGHT_CYCLE, {
@@ -14,9 +13,9 @@ void AreaTable_Init_LostWoods() {
                 }, {
                   //Locations
                   LocationAccess(RC_KF_KOKIRI_SWORD_CHEST,   {[]{return IsChild;}}),
-                  LocationAccess(RC_KF_GS_KNOW_IT_ALL_HOUSE, {[]{return IsChild && CanChildAttack && AtNight && (HasNightStart || CanLeaveForest || CanPlay(SunsSong)) && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_KF_GS_KNOW_IT_ALL_HOUSE, {[]{return IsChild && CanChildAttack && AtNight && (/*TODO: HasNightStart ||*/ CanLeaveForest || CanPlay(SunsSong)) && CanGetNightTimeGS;}}),
                   LocationAccess(RC_KF_GS_BEAN_PATCH,        {[]{return CanPlantBugs && CanChildAttack;}}),
-                  LocationAccess(RC_KF_GS_HOUSE_OF_TWINS,    {[]{return IsAdult && AtNight && (HookshotOrBoomerang || (LogicAdultKokiriGS && CanUse(RG_HOVER_BOOTS))) && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_KF_GS_HOUSE_OF_TWINS,    {[]{return IsAdult && AtNight && (HookshotOrBoomerang || (randoCtx->GetTrickOption(RT_KF_ADULT_GS) && CanUse(RG_HOVER_BOOTS))) && CanGetNightTimeGS;}}),
                   LocationAccess(RC_KF_GOSSIP_STONE,         {[]{return true;}}),
                 }, {
                   //Exits
@@ -26,16 +25,16 @@ void AreaTable_Init_LostWoods() {
                   Entrance(RR_KF_HOUSE_OF_TWINS,     {[]{return true;}}),
                   Entrance(RR_KF_KNOW_IT_ALL_HOUSE,  {[]{return true;}}),
                   Entrance(RR_KF_KOKIRI_SHOP,        {[]{return true;}}),
-                  Entrance(RR_KF_OUTSIDE_DEKU_TREE,  {[]{return IsAdult || OpenForest.Is(OPENFOREST_OPEN) || ShowedMidoSwordAndShield;}}),
+                  Entrance(RR_KF_OUTSIDE_DEKU_TREE,  {[]{return IsAdult || randoCtx->GetOption(RSK_FOREST).Is(RO_FOREST_OPEN) || ShowedMidoSwordAndShield;}}),
                   Entrance(RR_THE_LOST_WOODS,        {[]{return true;}}),
-                  Entrance(RR_LW_BRIDGE_FROM_FOREST, {[]{return IsAdult || OpenForest.IsNot(OPENFOREST_CLOSED) || DekuTreeClear;}}),
+                  Entrance(RR_LW_BRIDGE_FROM_FOREST, {[]{return IsAdult || randoCtx->GetOption(RSK_FOREST).IsNot(RO_FOREST_CLOSED) || DekuTreeClear;}}),
                   Entrance(RR_KF_STORMS_GROTTO,      {[]{return CanOpenStormGrotto;}}),
   });
 
   areaTable[RR_KF_OUTSIDE_DEKU_TREE] = Area("KF Outside Deku Tree", "Kokiri Forest", RHT_KOKIRI_FOREST, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&DekuBabaSticks,           {[]{return DekuBabaSticks || ((IsAdult && ShuffleDungeonEntrances.Is(SHUFFLEDUNGEONS_OFF)) || KokiriSword || Boomerang);}}),
-                  EventAccess(&DekuBabaNuts,             {[]{return DekuBabaNuts   || ((IsAdult && ShuffleDungeonEntrances.Is(SHUFFLEDUNGEONS_OFF)) || KokiriSword || Slingshot || Sticks || HasExplosives || CanUse(RG_DINS_FIRE));}}),
+                  EventAccess(&DekuBabaSticks,           {[]{return DekuBabaSticks || ((IsAdult && randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) || KokiriSword || Boomerang);}}),
+                  EventAccess(&DekuBabaNuts,             {[]{return DekuBabaNuts   || ((IsAdult && randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) || KokiriSword || Slingshot || Sticks || HasExplosives || CanUse(RG_DINS_FIRE));}}),
                   EventAccess(&ShowedMidoSwordAndShield, {[]{return ShowedMidoSwordAndShield || (IsChild && KokiriSword && DekuShield);}}),
                 }, {
                   //Locations
@@ -43,8 +42,8 @@ void AreaTable_Init_LostWoods() {
                   LocationAccess(RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE, {[]{return true;}}),
                 }, {
                   //Exits
-                  Entrance(RR_DEKU_TREE_ENTRYWAY, {[]{return IsChild || (ShuffleDungeonEntrances.IsNot(SHUFFLEDUNGEONS_OFF) && (OpenForest.Is(OPENFOREST_OPEN) || ShowedMidoSwordAndShield));}}),
-                  Entrance(RR_KOKIRI_FOREST,      {[]{return IsAdult || OpenForest.Is(OPENFOREST_OPEN) || ShowedMidoSwordAndShield;}}),
+                  Entrance(RR_DEKU_TREE_ENTRYWAY, {[]{return IsChild || (randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) && (randoCtx->GetOption(RSK_FOREST).Is(RO_FOREST_OPEN) || ShowedMidoSwordAndShield));}}),
+                  Entrance(RR_KOKIRI_FOREST,      {[]{return IsAdult || randoCtx->GetOption(RSK_FOREST).Is(RO_FOREST_OPEN) || ShowedMidoSwordAndShield;}}),
   });
 
   areaTable[RR_KF_LINKS_HOUSE] = Area("KF Link's House", "KF Link's House", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -131,9 +130,9 @@ void AreaTable_Init_LostWoods() {
                   //Exits
                   Entrance(RR_LW_FOREST_EXIT,           {[]{return true;}}),
                   Entrance(RR_GC_WOODS_WARP,            {[]{return true;}}),
-                  Entrance(RR_LW_BRIDGE,                {[]{return CanLeaveForest && ((IsAdult && (CanPlantBean(RR_THE_LOST_WOODS) || LogicLostWoodsBridge)) || CanUse(RG_HOVER_BOOTS) || CanUse(RG_LONGSHOT));}}),
+                  Entrance(RR_LW_BRIDGE,                {[]{return CanLeaveForest && ((IsAdult && (CanPlantBean(RR_THE_LOST_WOODS) || randoCtx->GetTrickOption(RT_LW_BRIDGE))) || CanUse(RG_HOVER_BOOTS) || CanUse(RG_LONGSHOT));}}),
                   Entrance(RR_ZORAS_RIVER,              {[]{return CanLeaveForest && (CanDive || CanUse(RG_IRON_BOOTS));}}),
-                  Entrance(RR_LW_BEYOND_MIDO,           {[]{return IsChild || CanPlay(SariasSong) || LogicMidoBackflip;}}),
+                  Entrance(RR_LW_BEYOND_MIDO,           {[]{return IsChild || CanPlay(SariasSong) || randoCtx->GetTrickOption(RT_LW_MIDO_BACKFLIP);}}),
                   Entrance(RR_LW_NEAR_SHORTCUTS_GROTTO, {[]{return Here(RR_THE_LOST_WOODS, []{return CanBlastOrSmash;});}}),
   });
 
@@ -144,8 +143,8 @@ void AreaTable_Init_LostWoods() {
                   //Locations
                   LocationAccess(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, {[]{return IsChild && CanStunDeku;}}),
                   LocationAccess(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,  {[]{return IsChild && CanStunDeku;}}),
-                  LocationAccess(RC_LW_GS_ABOVE_THEATER,                   {[]{return IsAdult && AtNight && (CanPlantBean(RR_LW_BEYOND_MIDO) || (LogicLostWoodsGSBean && CanUse(RG_HOOKSHOT) && (CanUse(RG_LONGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || HasBombchus || CanUse(RG_DINS_FIRE)))) && CanGetNightTimeGS;}}),
-                  LocationAccess(RC_LW_GS_BEAN_PATCH_NEAR_THEATER,         {[]{return CanPlantBugs && (CanChildAttack || (Scrubsanity.Is(SCRUBSANITY_OFF) && DekuShield));}}),
+                  LocationAccess(RC_LW_GS_ABOVE_THEATER,                   {[]{return IsAdult && AtNight && (CanPlantBean(RR_LW_BEYOND_MIDO) || (randoCtx->GetTrickOption(RT_LW_GS_BEAN) && CanUse(RG_HOOKSHOT) && (CanUse(RG_LONGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || HasBombchus || CanUse(RG_DINS_FIRE)))) && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_LW_GS_BEAN_PATCH_NEAR_THEATER,         {[]{return CanPlantBugs && (CanChildAttack || (randoCtx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF) && DekuShield));}}),
                 }, {
                   //Exits
                   Entrance(RR_LW_FOREST_EXIT,   {[]{return true;}}),

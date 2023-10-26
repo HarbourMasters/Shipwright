@@ -48,8 +48,9 @@ class Context {
     void SetSeedGenerated(bool seedGenerated = true);
     bool IsSpoilerLoaded();
     void SetSpoilerLoaded(bool spoilerLoaded = true);
-    Settings& GetSettings() const;
-    Option& GetOption(RandomizerSettingKey);
+    Settings& GetSettings();
+    Option& GetOption(RandomizerSettingKey key);
+    Option& GetTrickOption(RandomizerTrick key);
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true);
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};

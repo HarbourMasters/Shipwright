@@ -3162,10 +3162,10 @@ int32_t StonesRequiredBySettings() {
     if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
         stones = std::max<int32_t>({ stones, (int32_t)ctx->GetOption(RSK_LACS_STONE_COUNT).Value<uint8_t>() });
     }
-    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(GANONSBOSSKEY_LACS_REWARDS)) {
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
         stones = std::max<int32_t>({ stones, (int32_t)ctx->GetOption(RSK_LACS_REWARD_COUNT).Value<uint8_t>() - 6 });
     }
-    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(GANONSBOSSKEY_LACS_DUNGEONS)) {
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS)) {
         stones = std::max<int32_t>({ stones, (int32_t)ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Value<uint8_t>() - 6 });
     }
     return stones;
