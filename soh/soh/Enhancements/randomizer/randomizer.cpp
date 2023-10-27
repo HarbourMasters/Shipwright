@@ -30,6 +30,7 @@
 #include <boost_custom/container_hash/hash_32.hpp>
 #include "randomizer_settings_window.h"
 #include "savefile.h"
+#include "soh/util.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -1298,24 +1299,20 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
 
     bool success = false;
 
-    // Have all these use strncpy so that the null terminator is copied 
-    // and also set the last index to null for safety
     try {
         json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
 
-        std::string childAltarJsonText = spoilerFileJson["childAltar"]["hintText"].get<std::string>();
-        std::string formattedChildAltarText = FormatJsonHintText(childAltarJsonText);
-        strncpy(gSaveContext.childAltarText, formattedChildAltarText.c_str(), sizeof(gSaveContext.childAltarText) - 1);
-        gSaveContext.childAltarText[sizeof(gSaveContext.childAltarText) - 1] = 0;
+        SohUtils::CopyStringToCharArray(gSaveContext.childAltarText,
+                                        FormatJsonHintText(spoilerFileJson["childAltar"]["hintText"]),
+                                        ARRAY_COUNT(gSaveContext.childAltarText));
         gSaveContext.rewardCheck[0] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["emeraldLoc"]];
         gSaveContext.rewardCheck[1] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["rubyLoc"]];
         gSaveContext.rewardCheck[2] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["sapphireLoc"]];
 
-        std::string adultAltarJsonText = spoilerFileJson["adultAltar"]["hintText"].get<std::string>();
-        std::string formattedAdultAltarText = FormatJsonHintText(adultAltarJsonText);
-        strncpy(gSaveContext.adultAltarText, formattedAdultAltarText.c_str(), sizeof(gSaveContext.adultAltarText) - 1);
-        gSaveContext.adultAltarText[sizeof(gSaveContext.adultAltarText) - 1] = 0;
+        SohUtils::CopyStringToCharArray(gSaveContext.adultAltarText,
+                                        FormatJsonHintText(spoilerFileJson["adultAltar"]["hintText"]),
+                                        ARRAY_COUNT(gSaveContext.adultAltarText));
         gSaveContext.rewardCheck[3] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["forestMedallionLoc"]];
         gSaveContext.rewardCheck[4] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["fireMedallionLoc"]];
         gSaveContext.rewardCheck[5] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["waterMedallionLoc"]];
@@ -1323,65 +1320,42 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         gSaveContext.rewardCheck[7] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["spiritMedallionLoc"]];
         gSaveContext.rewardCheck[8] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["lightMedallionLoc"]];
 
-        std::string ganonHintJsonText = spoilerFileJson["ganonHintText"].get<std::string>();
-        std::string formattedGanonHintJsonText = FormatJsonHintText(ganonHintJsonText);
-        strncpy(gSaveContext.ganonHintText, formattedGanonHintJsonText.c_str(), sizeof(gSaveContext.ganonHintText) - 1);
-        gSaveContext.ganonHintText[sizeof(gSaveContext.ganonHintText) - 1] = 0;
+        SohUtils::CopyStringToCharArray(gSaveContext.ganonHintText, spoilerFileJson["ganonHintText"],
+                                        ARRAY_COUNT(gSaveContext.ganonHintText));
 
         gSaveContext.masterSwordHintCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["masterSwordHintLoc"]];
 
-        std::string ganonJsonText = spoilerFileJson["ganonText"].get<std::string>();
-        std::string formattedGanonJsonText = FormatJsonHintText(ganonJsonText);
-        strncpy(gSaveContext.ganonText, formattedGanonJsonText.c_str(), sizeof(gSaveContext.ganonText) - 1);
-        gSaveContext.ganonText[sizeof(gSaveContext.ganonText) - 1] = 0;
+        SohUtils::CopyStringToCharArray(gSaveContext.ganonText, spoilerFileJson["ganonText"],
+                                        ARRAY_COUNT(gSaveContext.ganonText));
 
-        std::string dampeJsonText = spoilerFileJson["dampeText"].get<std::string>();
-        std::string formattedDampeJsonText = FormatJsonHintText(dampeJsonText);
-        strncpy(gSaveContext.dampeText, formattedDampeJsonText.c_str(), sizeof(gSaveContext.dampeText) - 1);
-        gSaveContext.dampeText[sizeof(gSaveContext.dampeText) - 1] = 0;
+        SohUtils::CopyStringToCharArray(gSaveContext.dampeText, spoilerFileJson["dampeText"],
+                                        ARRAY_COUNT(gSaveContext.dampeText));
         gSaveContext.dampeCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["dampeHintLoc"]];
 
-        std::string gregJsonText = spoilerFileJson["gregText"].get<std::string>();
-        std::string formattedGregJsonText = FormatJsonHintText(gregJsonText);
-        strncpy(gSaveContext.gregHintText, formattedGregJsonText.c_str(), sizeof(gSaveContext.gregHintText) - 1);
-        gSaveContext.gregHintText[sizeof(gSaveContext.gregHintText) - 1] = 0;
+        SohUtils::CopyStringToCharArray(gSaveContext.gregHintText, spoilerFileJson["gregText"],
+                                        ARRAY_COUNT(gSaveContext.gregHintText));
         gSaveContext.gregCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["gregLoc"]];
 
-        std::string sheikJsonText = spoilerFileJson["sheikText"].get<std::string>();
-        std::string formattedSheikJsonText = FormatJsonHintText(sheikJsonText);
-        strncpy(gSaveContext.sheikText, formattedSheikJsonText.c_str(), sizeof(gSaveContext.sheikText) - 1);
-        gSaveContext.sheikText[sizeof(gSaveContext.sheikText) - 1] = 0;
+        SohUtils::CopyStringToCharArray(gSaveContext.sheikText, spoilerFileJson["sheikText"],
+                                        ARRAY_COUNT(gSaveContext.sheikText));
         gSaveContext.lightArrowHintCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["lightArrowHintLoc"]];
 
-        std::string sariaJsonText = spoilerFileJson["sariaText"].get<std::string>();
-        std::string formattedSariaJsonText = FormatJsonHintText(sariaJsonText);
-        strncpy(gSaveContext.sariaText, formattedSariaJsonText.c_str(), sizeof(gSaveContext.sariaText) - 1);
-        gSaveContext.sariaText[sizeof(gSaveContext.sariaText) - 1] = 0;
+        SohUtils::CopyStringToCharArray(gSaveContext.sariaText, spoilerFileJson["sariaText"],
+                                        ARRAY_COUNT(gSaveContext.sariaText));
         gSaveContext.sariaCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["sariaHintLoc"]];
 
-        std::string warpMinuetJsonText = spoilerFileJson["warpMinuetText"].get<std::string>();
-        strncpy(gSaveContext.warpMinuetText, warpMinuetJsonText.c_str(), sizeof(gSaveContext.warpMinuetText) - 1);
-        gSaveContext.warpMinuetText[sizeof(gSaveContext.warpMinuetText) - 1] = 0;
-
-        std::string warpBoleroJsonText = spoilerFileJson["warpBoleroText"].get<std::string>();
-        strncpy(gSaveContext.warpBoleroText, warpBoleroJsonText.c_str(), sizeof(gSaveContext.warpBoleroText) - 1);
-        gSaveContext.warpBoleroText[sizeof(gSaveContext.warpBoleroText) - 1] = 0;
-
-        std::string warpSerenadeJsonText = spoilerFileJson["warpSerenadeText"].get<std::string>();
-        strncpy(gSaveContext.warpSerenadeText, warpSerenadeJsonText.c_str(), sizeof(gSaveContext.warpSerenadeText) - 1);
-        gSaveContext.warpSerenadeText[sizeof(gSaveContext.warpSerenadeText) - 1] = 0;
-
-        std::string warpRequiemJsonText = spoilerFileJson["warpRequiemText"].get<std::string>();
-        strncpy(gSaveContext.warpRequiemText, warpRequiemJsonText.c_str(), sizeof(gSaveContext.warpRequiemText) - 1);
-        gSaveContext.warpRequiemText[sizeof(gSaveContext.warpRequiemText) - 1] = 0;
-
-        std::string warpNocturneJsonText = spoilerFileJson["warpNocturneText"].get<std::string>();
-        strncpy(gSaveContext.warpNocturneText, warpNocturneJsonText.c_str(), sizeof(gSaveContext.warpNocturneText) - 1);
-        gSaveContext.warpNocturneText[sizeof(gSaveContext.warpNocturneText) - 1] = 0;
-
-        std::string warpPreludeJsonText = spoilerFileJson["warpPreludeText"].get<std::string>();
-        strncpy(gSaveContext.warpPreludeText, warpPreludeJsonText.c_str(), sizeof(gSaveContext.warpPreludeText) - 1);
-        gSaveContext.warpPreludeText[sizeof(gSaveContext.warpPreludeText) - 1] = 0;
+        SohUtils::CopyStringToCharArray(gSaveContext.warpMinuetText, spoilerFileJson["warpMinuetText"],
+                                        ARRAY_COUNT(gSaveContext.warpMinuetText));
+        SohUtils::CopyStringToCharArray(gSaveContext.warpBoleroText, spoilerFileJson["warpBoleroText"],
+                                        ARRAY_COUNT(gSaveContext.warpBoleroText));
+        SohUtils::CopyStringToCharArray(gSaveContext.warpSerenadeText, spoilerFileJson["warpSerenadeText"],
+                                        ARRAY_COUNT(gSaveContext.warpSerenadeText));
+        SohUtils::CopyStringToCharArray(gSaveContext.warpRequiemText, spoilerFileJson["warpRequiemText"],
+                                        ARRAY_COUNT(gSaveContext.warpRequiemText));
+        SohUtils::CopyStringToCharArray(gSaveContext.warpNocturneText, spoilerFileJson["warpNocturneText"],
+                                        ARRAY_COUNT(gSaveContext.warpNocturneText));
+        SohUtils::CopyStringToCharArray(gSaveContext.warpPreludeText, spoilerFileJson["warpPreludeText"],
+                                        ARRAY_COUNT(gSaveContext.warpPreludeText));
 
         json hintsJson = spoilerFileJson["hints"];
         int index = 0;
@@ -1408,10 +1382,7 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
                 gSaveContext.hintLocations[index].area = SpoilerfileAreaNameToEnum[hintInfo["area"]];
             }
 
-            std::string hintMessage = FormatJsonHintText(hintInfo["hint"]);
-            size_t maxHintTextSize = sizeof(gSaveContext.hintLocations[index].hintText);
-            strncpy(gSaveContext.hintLocations[index].hintText, hintMessage.c_str(), maxHintTextSize - 1);
-            gSaveContext.hintLocations[index].hintText[maxHintTextSize - 1] = 0;
+            SohUtils::CopyStringToCharArray(gSaveContext.hintLocations[index].hintText, hintInfo["hint"], ARRAY_COUNT(gSaveContext.hintLocations[index].hintText));
 
             index++;
         }
@@ -1542,9 +1513,8 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
             index++;
         }
 
-        std::string inputSeed = spoilerFileJson["seed"].get<std::string>();
-        strncpy(gSaveContext.inputSeed, inputSeed.c_str(), sizeof(gSaveContext.inputSeed) - 1);
-        gSaveContext.inputSeed[sizeof(gSaveContext.inputSeed) - 1] = 0;
+        SohUtils::CopyStringToCharArray(gSaveContext.inputSeed, spoilerFileJson["seed"],
+                                        ARRAY_COUNT(gSaveContext.inputSeed));
 
         gSaveContext.finalSeed = spoilerFileJson["finalSeed"].get<uint32_t>();
 
@@ -1562,8 +1532,8 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
                         gSaveContext.itemLocations[randomizerCheck].get.fakeRgID =
                             SpoilerfileGetNameToEnum[itemit.value()];
                     } else if (itemit.key() == "trickName") {
-                        strncpy(gSaveContext.itemLocations[randomizerCheck].get.trickName,
-                                std::string(itemit.value()).c_str(), MAX_TRICK_NAME_SIZE);
+                        SohUtils::CopyStringToCharArray(gSaveContext.itemLocations[randomizerCheck].get.trickName,
+                                                        itemit.value(), MAX_TRICK_NAME_SIZE);
                     }
                 }
             } else {
@@ -3186,7 +3156,7 @@ void RandomizerSettingsWindow::DrawElement() {
         );
         ImGui::SameLine();
         if (ImGui::Button("New Seed")) {
-            strncpy(seedString, std::to_string(rand() & 0xFFFFFFFF).c_str(), MAX_SEED_STRING_SIZE);
+            SohUtils::CopyStringToCharArray(seedString, std::to_string(rand() & 0xFFFFFFFF), MAX_SEED_STRING_SIZE);
         }
         UIWidgets::Tooltip("Creates a new random seed value to be used when generating a randomizer");
         ImGui::SameLine();
