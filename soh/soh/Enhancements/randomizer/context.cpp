@@ -157,7 +157,7 @@ void Context::LocationReset() {
 void Context::HintReset() {
     for (RandomizerCheck il : Rando::StaticData::gossipStoneLocations) {
         GetItemLocation(il)->ResetVariables();
-        GetHint((RandomizerHintKey)(il - RC_DMC_GOSSIP_STONE + 1))->ResetVariables();
+        GetHint((RandomizerHintKey)(il - RC_COLOSSUS_GOSSIP_STONE + 1))->ResetVariables();
     }
 }
 

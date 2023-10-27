@@ -13,6 +13,7 @@ public:
       : english(std::move(english_)),
         french(std::move(french_)),
         spanish(std::move(spanish_)) {}
+    Text(std::string english_) : english(std::move(english_)), french(std::move("")), spanish(std::move("")) {}
 
     const std::string& GetEnglish() const {
         return english;

@@ -417,22 +417,23 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
         ParseHintLocationsFile(spoilerFileName);
     }
+    auto ctx = Rando::Context::GetInstance();
 
     CustomMessageManager::Instance->ClearMessageTable(Randomizer::hintMessageTableID);
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::hintMessageTableID);
 
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD,
-        CustomMessage(gSaveContext.childAltarText, gSaveContext.childAltarText, gSaveContext.childAltarText, TEXTBOX_TYPE_BLUE));
+        CustomMessage(ctx->GetHint(RH_ALTAR_CHILD)->GetText().GetEnglish(), ctx->GetHint(RH_ALTAR_CHILD)->GetText().GetEnglish(), ctx->GetHint(RH_ALTAR_CHILD)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT,
-        CustomMessage(gSaveContext.adultAltarText, gSaveContext.adultAltarText, gSaveContext.adultAltarText, TEXTBOX_TYPE_BLUE));
+        CustomMessage(ctx->GetHint(RH_ALTAR_ADULT)->GetText().GetEnglish(), ctx->GetHint(RH_ALTAR_ADULT)->GetText().GetEnglish(), ctx->GetHint(RH_ALTAR_ADULT)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_GANONDORF,
-        CustomMessage(gSaveContext.ganonHintText, gSaveContext.ganonHintText, gSaveContext.ganonHintText));
+        CustomMessage(ctx->GetHint(RH_GANONDORF_HINT)->GetText().GetEnglish(), ctx->GetHint(RH_GANONDORF_HINT)->GetText().GetEnglish(), ctx->GetHint(RH_GANONDORF_HINT)->GetText().GetFrench()));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT,
-        CustomMessage(gSaveContext.ganonText, gSaveContext.ganonText, gSaveContext.ganonText));
+        CustomMessage(ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetFrench()));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_SHEIK_NEED_HOOK,
         CustomMessage("{{message}}", "{{message}}", "{{message}}"));
@@ -441,21 +442,12 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         CustomMessage("{{message}}", "{{message}}", "{{message}}"));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE,
-        CustomMessage(gSaveContext.sariaText, gSaveContext.sariaText, gSaveContext.sariaText, TEXTBOX_TYPE_BLUE));
+        CustomMessage(ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE));
 
-
-    this->childAltarText = gSaveContext.childAltarText;
-    this->adultAltarText = gSaveContext.adultAltarText;
-    this->ganonHintText = gSaveContext.ganonHintText;
-    this->ganonText = gSaveContext.ganonText;
-    this->sheikText = gSaveContext.sheikText;
-    this->sariaText = gSaveContext.sariaText;
-
-    for (const auto& hintLocation : gSaveContext.hintLocations) {
-        if(hintLocation.check == RC_LINKS_POCKET) break;
-        this->hintLocations[hintLocation.check] = hintLocation.hintText;
+    for (int i : Rando::StaticData::gossipStoneLocations) {
+        RandomizerHintKey rhk = RandomizerHintKey(i - RC_COLOSSUS_GOSSIP_STONE + 1);
         CustomMessageManager::Instance->CreateMessage(
-            Randomizer::hintMessageTableID, hintLocation.check, CustomMessage(hintLocation.hintText, hintLocation.hintText, hintLocation.hintText));
+            Randomizer::hintMessageTableID, i, CustomMessage(ctx->GetHint(rhk)->GetText().GetEnglish(), ctx->GetHint(rhk)->GetText().GetEnglish(), ctx->GetHint(rhk)->GetText().GetFrench()));
     }
 
     //Extra Hints
@@ -470,15 +462,15 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY,
-            CustomMessage(gSaveContext.dampeText,
-                gSaveContext.dampeText,
-                gSaveContext.dampeText)
+            CustomMessage(ctx->GetHint(RH_DAMPES_DIARY)->GetText().GetEnglish(),
+                ctx->GetHint(RH_DAMPES_DIARY)->GetText().GetEnglish(),
+                ctx->GetHint(RH_DAMPES_DIARY)->GetText().GetFrench())
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_CHEST_GAME_PROCEED,
-            CustomMessage(gSaveContext.gregHintText,
-                gSaveContext.gregHintText,
-                gSaveContext.gregHintText)
+            CustomMessage(ctx->GetHint(RH_GREG_RUPEE)->GetText().GetEnglish(),
+                ctx->GetHint(RH_GREG_RUPEE)->GetText().GetEnglish(),
+                ctx->GetHint(RH_GREG_RUPEE)->GetText().GetFrench())
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_FROGS_UNDERWATER,
@@ -5286,29 +5278,40 @@ CustomMessage Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
         return messageEntry;
     }
 
-    const char* locationName;
+    auto ctx = Rando::Context::GetInstance();
+    RandomizerHintKey locHintKey = RH_NONE;
     switch (textId) {
         case TEXT_WARP_MINUET_OF_FOREST:
-            locationName = gSaveContext.warpMinuetText;
+            locHintKey = RH_MINUET_WARP_LOC;
             break;
         case TEXT_WARP_BOLERO_OF_FIRE:
-            locationName = gSaveContext.warpBoleroText;
+            locHintKey = RH_BOLERO_WARP_LOC;
             break;
         case TEXT_WARP_SERENADE_OF_WATER:
-            locationName = gSaveContext.warpSerenadeText;
+            locHintKey = RH_SERENADE_WARP_LOC;
             break;
         case TEXT_WARP_REQUIEM_OF_SPIRIT:
-            locationName = gSaveContext.warpRequiemText;
+            locHintKey = RH_REQUIEM_WARP_LOC;
             break;
         case TEXT_WARP_NOCTURNE_OF_SHADOW:
-            locationName = gSaveContext.warpNocturneText;
+            locHintKey = RH_NOCTURNE_WARP_LOC;
             break;
         case TEXT_WARP_PRELUDE_OF_LIGHT:
-            locationName = gSaveContext.warpPreludeText;
+            locHintKey = RH_PRELUDE_WARP_LOC;
+            break;
+    }
+    std::string locationName = "";
+    switch (gSaveContext.language) {
+        case LANGUAGE_FRA:
+            locationName = ctx->GetHint(locHintKey)->GetText().GetFrench();
+            break;
+        case LANGUAGE_ENG:
+        default:
+            locationName = ctx->GetHint(locHintKey)->GetText().GetEnglish();
             break;
     }
 
-    messageEntry.Replace("{{location}}", locationName);
+    messageEntry.Replace("{{location}}", std::move(locationName));
     return messageEntry;
 }
 

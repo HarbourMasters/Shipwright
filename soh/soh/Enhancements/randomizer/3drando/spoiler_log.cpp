@@ -722,22 +722,22 @@ static void WriteHints(int language) {
         return;
     }
     for (const RandomizerCheck key : Rando::StaticData::gossipStoneLocations) {
-        Rando::Hint* hint = ctx->GetHint((RandomizerHintKey)(key - RC_DMC_GOSSIP_STONE + 1));
+        Rando::Hint* hint = ctx->GetHint((RandomizerHintKey)(key - RC_COLOSSUS_GOSSIP_STONE + 1));
         Rando::ItemLocation* hintedLocation = ctx->GetItemLocation(hint->GetHintedLocation());
-        std::string unformattedHintTextString;
+        std::string hintTextString;
         switch (language) {
             case 0:
             default:
-                unformattedHintTextString = hint->GetText().GetEnglish();
+                hintTextString = hint->GetText().GetEnglish();
                 break;
             case 2:
-                unformattedHintTextString = hint->GetText().GetFrench();
+                hintTextString = hint->GetText().GetFrench();
                 break;
         }
 
         HintType hintType = hint->GetHintType();
 
-        std::string textStr = AutoFormatHintTextString(unformattedHintTextString);
+        std::string textStr = hintTextString;
         jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["hint"] = textStr;
         jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["type"] = hintTypeNames.find(hintType)->second;
         if (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_NAMED_ITEM || hintType == HINT_TYPE_WOTH) {

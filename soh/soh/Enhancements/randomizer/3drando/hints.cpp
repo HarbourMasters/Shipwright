@@ -148,6 +148,59 @@ constexpr std::array<HintSetting, 4> hintSettingTable{{
   },
 }};
 
+Text AutoFormatHintText(Text unformattedHintText) {
+  std::array<std::string, LANGUAGE_MAX> strings;
+  for (int i = 0; i < LANGUAGE_MAX; i++) {
+    std::string textStr = unformattedHintText.GetForLanguage(i);
+    // RANDOTODO: don't just make manual exceptions
+    bool needsAutomaicNewlines = true;
+    if (textStr == "Erreur 0x69a504:&Traduction manquante^C'est de la faute à Purple Hato!&J'vous jure!" ||
+      textStr == "Mon très cher @:&Viens vite au château, je t'ai préparé&un délicieux gâteau...^À bientôt, Princesse Zelda" ||
+      textStr == "What about Zelda makes you think&she'd be a better ruler than I?^I saved Lon Lon Ranch,&fed the hungry,&and my castle floats." ||
+      textStr == "Many tricks are up my sleeve,&to save yourself&you'd better leave!" ||
+      textStr == "I've learned this spell,&it's really neat,&I'll keep it later&for your treat!" ||
+      textStr == "Sale petit garnement,&tu fais erreur!&C'est maintenant que marque&ta dernière heure!" ||
+      textStr == "Gamin, ton destin achève,&sous mon sort tu périras!&Cette partie ne fut pas brève,&et cette mort, tu subiras!" ||
+      textStr == "Oh! It's @.&I was expecting someone called Sheik.&Do you know what happened to them?" ||
+      textStr == "Ah, c'est @.&J'attendais un certain Sheik.&Tu sais ce qui lui est arrivé?" ||
+      textStr == "They say \"Forgive me, but-^Your script will not be used.&....After all...^The one writing the rest of the script...&will be me.\"") {
+    needsAutomaicNewlines = false;
+  }
+
+    if (needsAutomaicNewlines) {
+        // insert newlines either manually or when encountering a '&'
+        constexpr size_t lineLength = 34;
+        size_t lastNewline = 0;
+        while (lastNewline + lineLength < textStr.length()) {
+            size_t carrot = textStr.find('^', lastNewline);
+            size_t ampersand = textStr.find('&', lastNewline);
+            size_t lastSpace = textStr.rfind(' ', lastNewline + lineLength);
+            size_t lastPeriod = textStr.rfind('.', lastNewline + lineLength);
+            // replace '&' first if it's within the newline range
+            if (ampersand < lastNewline + lineLength) {
+                lastNewline = ampersand;
+                // or move the lastNewline cursor to the next line if a '^' is encountered
+            } else if (carrot < lastNewline + lineLength) {
+                lastNewline = carrot + 1;
+                // some lines need to be split but don't have spaces, look for periods instead
+            } else if (lastSpace == std::string::npos) {
+                textStr.replace(lastPeriod, 1, ".&");
+                lastNewline = lastPeriod + 2;
+            } else {
+                textStr.replace(lastSpace, 1, "&");
+                lastNewline = lastSpace + 1;
+            }
+        }
+    }
+
+    // todo add colors (see `AddColorsAndFormat` in `custom_messages.cpp`)
+    textStr.erase(std::remove(textStr.begin(), textStr.end(), '#'), textStr.end());
+    strings[i] = textStr;
+  }
+
+  return Text(strings[0], strings[1], strings[2]);
+}
+
 std::array<DungeonHintInfo, 10> dungeonInfoData;
 
 Text childAltarText;
@@ -322,7 +375,7 @@ static void AddHint(Text hint, const RandomizerCheck gossipStone, const std::vec
   //GetLocation(gossipStone)->SetPlacedItem(gossipStone);
 
   auto ctx = Rando::Context::GetInstance();
-  ctx->AddHint((RandomizerHintKey)((gossipStone - RC_DMC_GOSSIP_STONE) + 1), hint, hintedLocation, hintType, GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText());
+  ctx->AddHint((RandomizerHintKey)((gossipStone - RC_COLOSSUS_GOSSIP_STONE) + 1), AutoFormatHintText(hint), hintedLocation, hintType, GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText());
   ctx->GetItemLocation(gossipStone)->SetPlacedItem(RG_HINT);
 }
 
@@ -638,7 +691,8 @@ void CreateGanonAndSheikText() {
   auto ctx = Rando::Context::GetInstance();
   //funny ganon line
   ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
-  CreateMessageFromTextObject(0x70CB, 0, 2, 3, AddColorsAndFormat(ganonText));
+  //CreateMessageFromTextObject(0x70CB, 0, 2, 3, AddColorsAndFormat(ganonText));
+  ctx->AddHint(RH_GANONDORF_NOHINT, AutoFormatHintText(ganonText), RC_UNKNOWN_CHECK, HINT_TYPE_JUNK, Text());
 
   if(ctx->GetOption(RSK_LIGHT_ARROWS_HINT)){
     //Get the location of the light arrows
@@ -659,8 +713,8 @@ void CreateGanonAndSheikText() {
       lightArrowHintLoc = Rando::StaticData::GetLocation(lightArrowLocation[0])->GetName();
     }
     ganonHintText = ganonHintText + "!";
-    CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(ganonHintText));
-    ctx->AddHint(RH_GANONDORF_HINT, ganonHintText, lightArrowLocation[0], HINT_TYPE_STATIC, GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText());
+    //CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(ganonHintText));
+    ctx->AddHint(RH_GANONDORF_HINT, AutoFormatHintText(ganonHintText), lightArrowLocation[0], HINT_TYPE_STATIC, GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText());
 
     if(!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)){
       sheikText = Hint(RHT_SHEIK_LIGHT_ARROW_HINT).GetText() + lightArrowArea + "%w.";
@@ -670,6 +724,7 @@ void CreateGanonAndSheikText() {
     if (IsReachableWithout(locsToCheck,lightArrowLocation[0],true)){
       ctx->GetItemLocation(lightArrowLocation[0])->SetAsHinted();
     }
+    ctx->AddHint(RH_SHEIK_LIGHT_ARROWS, AutoFormatHintText(sheikText), lightArrowLocation[0], HINT_TYPE_STATIC, lightArrowArea);
   }
 }
 
@@ -829,7 +884,7 @@ void CreateAltarText() {
   }
   ctx->AddHint(RH_ALTAR_CHILD, childAltarText, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
 
-  CreateMessageFromTextObject(0x7040, 0, 2, 3, AddColorsAndFormat(childAltarText, {QM_GREEN, QM_RED, QM_BLUE}));
+  //CreateMessageFromTextObject(0x7040, 0, 2, 3, AddColorsAndFormat(childAltarText, {QM_GREEN, QM_RED, QM_BLUE}));
 
   //Adult Altar Text
   adultAltarText = Hint(RHT_ADULT_ALTAR_TEXT_START).GetText() + "^";
@@ -858,7 +913,7 @@ void CreateAltarText() {
 
   //End
   Hint(RHT_ADULT_ALTAR_TEXT_END).GetText();
-  CreateMessageFromTextObject(0x7088, 0, 2, 3, AddColorsAndFormat(adultAltarText, {QM_RED, QM_YELLOW, QM_GREEN, QM_RED, QM_BLUE, QM_YELLOW, QM_PINK, QM_RED, QM_RED, QM_RED, QM_RED}));
+  //CreateMessageFromTextObject(0x7088, 0, 2, 3, AddColorsAndFormat(adultAltarText, {QM_RED, QM_YELLOW, QM_GREEN, QM_RED, QM_BLUE, QM_YELLOW, QM_PINK, QM_RED, QM_RED, QM_RED, QM_RED}));
   ctx->AddHint(RH_ALTAR_ADULT, adultAltarText, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
 }
 
@@ -881,11 +936,11 @@ void CreateMerchantsHints() {
     Text carpetSalesmanTextTwo = Hint(RHT_CARPET_SALESMAN_DIALOG_THIRD).GetText() + carpetSalesmanItemClearText +
                                  Hint(RHT_CARPET_SALESMAN_DIALOG_FOURTH).GetText();
 
-    CreateMessageFromTextObject(0x9120, 0, 2, 3, AddColorsAndFormat(medigoronText, { QM_RED, QM_GREEN }));
-    CreateMessageFromTextObject(0x9121, 0, 2, 3, AddColorsAndFormat(grannyText, { QM_RED, QM_GREEN }));
-    CreateMessageFromTextObject(0x6077, 0, 2, 3, AddColorsAndFormat(carpetSalesmanTextOne, { QM_RED, QM_GREEN }));
-    CreateMessageFromTextObject(0x6078, 0, 2, 3,
-                                AddColorsAndFormat(carpetSalesmanTextTwo, { QM_RED, QM_YELLOW, QM_RED }));
+    // CreateMessageFromTextObject(0x9120, 0, 2, 3, AddColorsAndFormat(medigoronText, { QM_RED, QM_GREEN }));
+    // CreateMessageFromTextObject(0x9121, 0, 2, 3, AddColorsAndFormat(grannyText, { QM_RED, QM_GREEN }));
+    // CreateMessageFromTextObject(0x6077, 0, 2, 3, AddColorsAndFormat(carpetSalesmanTextOne, { QM_RED, QM_GREEN }));
+    // CreateMessageFromTextObject(0x6078, 0, 2, 3,
+                                // AddColorsAndFormat(carpetSalesmanTextTwo, { QM_RED, QM_YELLOW, QM_RED }));
     ctx->AddHint(RH_MEDIGORON, medigoronText, RC_GC_MEDIGORON, HINT_TYPE_STATIC, GetHintRegion(RR_GORON_CITY)->GetHint().GetText());
     ctx->AddHint(RH_GRANNYS_SHOP, grannyText, RC_KAK_GRANNYS_SHOP, HINT_TYPE_STATIC, GetHintRegion(RR_KAKARIKO_VILLAGE)->GetHint().GetText());
     ctx->AddHint(RH_WASTELAND_BOMBCHU_SALESMAN, carpetSalesmanTextOne, RC_WASTELAND_BOMBCHU_SALESMAN, HINT_TYPE_STATIC, GetHintRegion(RR_HAUNTED_WASTELAND)->GetHint().GetText());
@@ -922,7 +977,7 @@ void CreateDampesDiaryText() {
   
   dampesText = temp1 + area + temp2;
   dampeHintLoc = Rando::StaticData::GetLocation(location)->GetName();
-  ctx->AddHint(RH_DAMPES_DIARY, dampesText, location, HINT_TYPE_STATIC, area);
+  ctx->AddHint(RH_DAMPES_DIARY, AutoFormatHintText(dampesText), location, HINT_TYPE_STATIC, area);
 }
 
 void CreateGregRupeeHint() {
@@ -953,7 +1008,7 @@ void CreateGregRupeeHint() {
   };
 
     gregText = temp1 + area + temp2;
-    ctx->AddHint(RH_GREG_RUPEE, gregText, location, HINT_TYPE_STATIC, area);
+    ctx->AddHint(RH_GREG_RUPEE, AutoFormatHintText(gregText), location, HINT_TYPE_STATIC, area);
 }
 
 void CreateSariaText() {
@@ -978,6 +1033,7 @@ void CreateSariaText() {
     if (IsReachableWithout({RC_SARIA_SONG_HINT},magicLocation,true)){
       ctx->GetItemLocation(magicLocation)->SetAsHinted();
     }
+    ctx->AddHint(RH_SARIA, AutoFormatHintText(sariaText), magicLocation, HINT_TYPE_STATIC, area);
   }
 }
 
@@ -1011,21 +1067,27 @@ void CreateWarpSongTexts() {
     switch (entrance->GetIndex()) {
       case 0x0600: // minuet
         warpMinuetText = resolvedHint;
+        ctx->AddHint(RH_MINUET_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
         break;
       case 0x04F6: // bolero
         warpBoleroText = resolvedHint;
+        ctx->AddHint(RH_BOLERO_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
         break;
       case 0x0604: // serenade
         warpSerenadeText = resolvedHint;
+        ctx->AddHint(RH_SERENADE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
         break;
       case 0x01F1: // requiem
         warpRequiemText = resolvedHint;
+        ctx->AddHint(RH_REQUIEM_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
         break;
       case 0x0568: // nocturne
-        warpNocturneText = resolvedHint;
-        break;
+          warpNocturneText = resolvedHint;
+          ctx->AddHint(RH_NOCTURNE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+          break;
       case 0x05F4: // prelude
         warpPreludeText = resolvedHint;
+        ctx->AddHint(RH_PRELUDE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
         break;
     }
   }
