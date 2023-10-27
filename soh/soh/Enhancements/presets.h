@@ -246,6 +246,7 @@ const std::vector<const char*> cheatCvars = {
     "gMoonJumpOnL",
     "gSuperTunic",
     "gEzISG",
+    "gEzQPA",
     "gTimelessEquipment",
     "gCheatEasyPauseBufferEnabled",
     "gCheatEasyInputBufferingEnabled",

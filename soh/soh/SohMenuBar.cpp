@@ -1243,6 +1243,8 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("Makes every tunic have the effects of every other tunic");
         UIWidgets::PaddedEnhancementCheckbox("Easy ISG", "gEzISG", true, false);
         UIWidgets::Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
+        UIWidgets::PaddedEnhancementCheckbox("Easy QPA", "gEzQPA", true, false);
+        UIWidgets::Tooltip("Gives you the glitched damage value of the quick put away glitch.");
         UIWidgets::PaddedEnhancementCheckbox("Timeless Equipment", "gTimelessEquipment", true, false);
         UIWidgets::Tooltip("Allows any item to be equipped, regardless of age\nAlso allows Child to use Adult strength upgrades");
         UIWidgets::PaddedEnhancementCheckbox("Easy Frame Advancing", "gCheatEasyPauseBufferEnabled", true, false);
