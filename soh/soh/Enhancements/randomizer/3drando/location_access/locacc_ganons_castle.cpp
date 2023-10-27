@@ -130,7 +130,7 @@ void AreaTable_Init_GanonsCastle() {
   areaTable[GANONS_CASTLE_MQ_LOBBY] = Area("Ganon's Castle MQ Lobby", "Ganons Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(GANONS_CASTLE_ENTRYWAY, {[]{return true;}}),
-                  Entrance(GANONS_CASTLE_MQ_MAIN,  {[]{return (CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD || CanUse(MEGATON_HAMMER))) || ((HasExplosives || Nuts || CanUse(BOOMERANG)) && CanJumpslash);}}),
+                  Entrance(GANONS_CASTLE_MQ_MAIN,  {[]{return (CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD) || CanUse(MEGATON_HAMMER)) || ((HasExplosives || Nuts || CanUse(BOOMERANG)) && CanJumpslash);}}),
   });
 
   areaTable[GANONS_CASTLE_MQ_MAIN] = Area("Ganon's Castle MQ Main", "Ganons Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
