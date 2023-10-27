@@ -1,0 +1,54 @@
+<Root>
+    <File Name="object_oF1d_map" Segment="6">
+        <Texture Name="object_oF1d_mapTex_009270" OutName="object_oF1d_mapTex_009270" Format="ci8" Width="8" Height="8" Offset="0x9270" TlutOffset="0x9130" AddedByScript="true"/>
+        <Texture Name="object_oF1d_mapTex_0092B0" OutName="object_oF1d_mapTex_0092B0" Format="ci8" Width="8" Height="8" Offset="0x92B0" TlutOffset="0x9130" AddedByScript="true"/>
+        <Texture Name="object_oF1d_mapTex_0092F0" OutName="object_oF1d_mapTex_0092F0" Format="ci8" Width="8" Height="16" Offset="0x92F0" TlutOffset="0x9130" AddedByScript="true"/>
+        <Texture Name="object_oF1d_mapTex_009370" OutName="object_oF1d_mapTex_009370" Format="ci8" Width="32" Height="64" Offset="0x9370" TlutOffset="0x9130" AddedByScript="true"/>
+        <Texture Name="object_oF1d_mapTex_009B70" OutName="object_oF1d_mapTex_009B70" Format="ci8" Width="16" Height="16" Offset="0x9B70" TlutOffset="0x9130" AddedByScript="true"/>
+        <Texture Name="object_oF1d_mapTex_009C70" OutName="object_oF1d_mapTex_009C70" Format="rgba16" Width="64" Height="32" Offset="0x9C70" AddedByScript="true"/>
+        <Texture Name="object_oF1d_mapTex_00C840" OutName="object_oF1d_mapTex_00C840" Format="ci8" Width="8" Height="8" Offset="0xC840" TlutOffset="0xC440" AddedByScript="true"/>
+        <Texture Name="object_oF1d_mapTex_00C880" OutName="object_oF1d_mapTex_00C880" Format="ci8" Width="32" Height="16" Offset="0xC880" TlutOffset="0xC440" AddedByScript="true"/>
+        <Texture Name="object_oF1d_mapTex_00CA80" OutName="object_oF1d_mapTex_00CA80" Format="ci8" Width="32" Height="32" Offset="0xCA80" TlutOffset="0xC440" AddedByScript="true"/>
+        <Texture Name="object_oF1d_mapTex_00EE80" OutName="object_oF1d_mapTex_00EE80" Format="ci8" Width="32" Height="64" Offset="0xEE80" TlutOffset="0xC440" AddedByScript="true"/>
+        <Texture Name="object_oF1d_mapTex_00F680" OutName="object_oF1d_mapTex_00F680" Format="ci8" Width="8" Height="8" Offset="0xF680" TlutOffset="0xC440" AddedByScript="true"/>
+        <Texture Name="object_oF1d_mapTex_00F6C0" OutName="object_oF1d_mapTex_00F6C0" Format="ci8" Width="16" Height="16" Offset="0xF6C0" TlutOffset="0xC440" AddedByScript="true"/>
+        <Texture Name="object_oF1d_mapTex_00F7C0" OutName="object_oF1d_mapTex_00F7C0" Format="ci8" Width="16" Height="16" Offset="0xF7C0" TlutOffset="0xC440" AddedByScript="true"/>
+        <Texture Name="object_oF1d_mapTex_00F8C0" OutName="object_oF1d_mapTex_00F8C0" Format="ci8" Width="32" Height="32" Offset="0xF8C0" TlutOffset="0xC440" AddedByScript="true"/>
+        <Texture Name="object_oF1d_mapTex_00FCC0" OutName="object_oF1d_mapTex_00FCC0" Format="ci8" Width="8" Height="16" Offset="0xFCC0" TlutOffset="0xC440" AddedByScript="true"/>
+        <Texture Name="object_oF1d_mapTLUT_009130" OutName="object_oF1d_mapTLUT_009130" Format="rgba16" Width="16" Height="16" Offset="0x9130" AddedByScript="true"/>
+        <Texture Name="object_oF1d_mapTLUT_00C440" OutName="object_oF1d_mapTLUT_00C440" Format="rgba16" Width="16" Height="16" Offset="0xC440" AddedByScript="true"/>
+        <!-- animations -->
+        <Animation Name="gGoronAnim_000750" Offset="0x750"/>
+        <Animation Name="gGoronAnim_000D5C" Offset="0xD5C"/>
+        <Animation Name="gGoronAnim_00161C" Offset="0x161C"/>
+        <Animation Name="gGoronAnim_001A00" Offset="0x1A00"/>
+        <Animation Name="gGoronAnim_0021D0" Offset="0x21D0"/>
+        <Animation Name="gGoronAnim_0029A8" Offset="0x29A8"/>
+        <Animation Name="gGoronAnim_002D80" Offset="0x2D80"/>
+        <Animation Name="gGoronAnim_003768" Offset="0x3768"/>
+        <Animation Name="gGoronAnim_0038E4" Offset="0x38E4"/>
+        <Animation Name="gGoronAnim_004930" Offset="0x4930"/>
+        <Animation Name="gGoronAnim_010590" Offset="0x10590"/>
+
+        <DList Name="gGoronDL_00BD80" Offset="0xBD80"/>
+        <DList Name="gGoronDL_00C140" Offset="0xC140"/>
+
+        <DList Name="gGoronDL_00FD40" Offset="0xFD40"/>
+        <DList Name="gGoronDL_00FD50" Offset="0xFD50"/>
+
+        <Skeleton Name="gGoronSkel" Type="Flex" LimbType="Standard" Offset="0xFEF0"/>
+
+        <Texture Name="object_oF1d_map_TLUT_00C640" OutName="tlut_0000C640" Format="rgba16" Width="16" Height="16" Offset="0xC640"/>
+
+        <!-- Eye textures -->
+        <Texture Name="gGoronCsEyeOpenTex" OutName="eye_open" Format="ci8" Width="32" Height="32" Offset="0xCE80" TlutOffset="0xC640"/>
+        <Texture Name="gGoronCsEyeHalfTex" OutName="eye_half" Format="ci8" Width="32" Height="32" Offset="0xD280" TlutOffset="0xC640"/>
+        <Texture Name="gGoronCsEyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0xD680" TlutOffset="0xC640"/>
+        <Texture Name="gGoronCsEyeClosed2Tex" OutName="eye_closed2" Format="ci8" Width="32" Height="32" Offset="0xDA80" TlutOffset="0xC640"/>
+
+        <!-- Mouth textures -->
+        <Texture Name="gGoronCsMouthNeutralTex" OutName="mouth_neutral" Format="ci8" Width="64" Height="32" Offset="0xDE80" TlutOffset="0xC640"/>
+        <Texture Name="gGoronCsMouthSmileTex" OutName="mouth_smile" Format="ci8" Width="64" Height="32" Offset="0xE680" TlutOffset="0xC640"/>
+
+    </File>
+</Root>

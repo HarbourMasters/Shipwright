@@ -149,9 +149,14 @@ class SpoilerCollectionCheck {
     static auto MagicBeans() {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS, 0x00, 0x00);
     }
+  
+    static auto MasterSword() {
+      return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MASTER_SWORD, 0x00, 0x00);
+    }
 
     static auto Merchant() {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT, 0x00, 0x00);
+
     }
 
     static auto RandomizerInf() {

@@ -542,6 +542,13 @@ void GameInteractor::RawAction::SetPlayerInvincibility(bool active) {
     }
 }
 
+/// Clears the cutscene pointer to a value safe for wrong warps.
+void GameInteractor::RawAction::ClearCutscenePointer() {
+    if (!gPlayState) return;
+    static uint32_t null_cs[] = {0, 0};
+    gPlayState->csCtx.segment = &null_cs;
+}
+
 GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
 
     if (!GameInteractor::CanSpawnActor()) {

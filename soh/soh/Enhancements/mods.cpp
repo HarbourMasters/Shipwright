@@ -42,8 +42,8 @@ bool performSave = false;
 void ReloadSceneTogglingLinkAge() {
     gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
     gPlayState->sceneLoadFlag = 0x14;
-    gPlayState->fadeTransition = 11;
-    gSaveContext.nextTransitionType = 11;
+    gPlayState->fadeTransition = 42; // Fade Out
+    gSaveContext.nextTransitionType = 42;
     gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
 }
 
@@ -143,6 +143,19 @@ void RegisterInfiniteISG() {
         if (CVarGetInteger("gEzISG", 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
             player->meleeWeaponState = 1;
+        }
+    });
+}
+
+//Permanent quick put away (QPA) glitched damage value
+void RegisterEzQPA() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!gPlayState) return;
+
+        if (CVarGetInteger("gEzQPA", 0) != 0) {
+            Player* player = GET_PLAYER(gPlayState);
+            player->meleeWeaponQuads[0].info.toucher.dmgFlags = 0x16171617;
+            player->meleeWeaponQuads[1].info.toucher.dmgFlags = 0x16171617;
         }
     });
 }
@@ -248,6 +261,8 @@ void AutoSave(GetItemEntry itemEntry) {
     // Don't autosave immediately after buying items from shops to prevent getting them for free!
     // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
     // Don't autosave during the Ganon fight when picking up the Master Sword
+    // Don't autosave in the fishing pond to prevent getting rod on B outside of the pond
+    // Don't autosave in the bombchu bowling alley to prevent having chus on B outside of the minigame
     // Don't autosave in grottos since resuming from grottos breaks the game.
     if ((CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
         (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) && (gPlayState->sceneNum != SCENE_GANON_BOSS)) {
@@ -311,8 +326,9 @@ void AutoSave(GetItemEntry itemEntry) {
                    CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
             performSave = true;
         }
-        if ((gPlayState->sceneNum == SCENE_FAIRYS_FOUNTAIN) || (gPlayState->sceneNum == SCENE_GROTTOS) ||
-                (gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES)) {
+        if (gPlayState->sceneNum == SCENE_FAIRYS_FOUNTAIN || gPlayState->sceneNum == SCENE_GROTTOS ||
+            gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES || gPlayState->sceneNum == SCENE_FISHING_POND ||
+            gPlayState->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) {
             if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS ||
                 CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS ||
                 CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
@@ -1006,7 +1022,7 @@ void RegisterRandomizerSheikSpawn() {
         if (!gPlayState) return;
         bool canSheik = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIAL_COUNT) != RO_GANONS_TRIALS_SKIP && 
           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LIGHT_ARROWS_HINT));
-        if (!gSaveContext.n64ddFlag || !LINK_IS_ADULT || !canSheik) return;
+        if (!IS_RANDO || !LINK_IS_ADULT || !canSheik) return;
         switch (gPlayState->sceneNum) {
             case SCENE_TEMPLE_OF_TIME:
                 if (gPlayState->roomCtx.curRoom.num == 1) {
@@ -1032,6 +1048,7 @@ void InitMods() {
     RegisterInfiniteNayrusLove();
     RegisterMoonJumpOnL();
     RegisterInfiniteISG();
+    RegisterEzQPA();
     RegisterUnrestrictedItems();
     RegisterFreezeTime();
     RegisterSwitchAge();
