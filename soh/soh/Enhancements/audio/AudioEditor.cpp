@@ -101,6 +101,7 @@ void RandomizeGroup(SeqType type) {
                 continue;
             }
             const int randomValue = values.back();
+            CVarClear(std::string("gAudioEditor.ReplacedSequences." + seqData.sfxKey).c_str());
             CVarSetInteger(cvarKey.c_str(), randomValue);
             values.pop_back();
         }
