@@ -95,7 +95,7 @@ void AreaTable_Init_DeathMountain() {
                   LocationAccess(GC_ROLLING_GORON_AS_CHILD, {[]{return IsChild && (HasExplosives || (GoronBracelet && LogicChildRollingWithStrength));}}),
                   LocationAccess(GC_ROLLING_GORON_AS_ADULT, {[]{return StopGCRollingGoronAsAdult;}}),
                   LocationAccess(GC_GS_BOULDER_MAZE,        {[]{return IsChild && CanBlastOrSmash;}}),
-                  LocationAccess(GC_GS_CENTER_PLATFORM,     {[]{return IsAdult;}}),
+                  LocationAccess(GC_GS_CENTER_PLATFORM,     {[]{return CanAdultAttack;}}),
                   LocationAccess(GC_MEDIGORON,              {[]{return IsAdult && AdultsWallet && (CanBlastOrSmash || GoronBracelet);}}),
                   LocationAccess(GC_MAZE_GOSSIP_STONE,      {[]{return CanBlastOrSmash || CanUse(SILVER_GAUNTLETS);}}),
                   LocationAccess(GC_MEDIGORON_GOSSIP_STONE, {[]{return CanBlastOrSmash || GoronBracelet;}}),

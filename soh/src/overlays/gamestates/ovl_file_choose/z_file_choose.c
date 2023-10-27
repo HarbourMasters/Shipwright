@@ -2987,8 +2987,8 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.unk_13EE = 0x32;
     gSaveContext.nayrusLoveTimer = 0;
     gSaveContext.healthAccumulator = 0;
-    gSaveContext.magicState = 0;
-    gSaveContext.prevMagicState = 0;
+    gSaveContext.magicState = MAGIC_STATE_IDLE;
+    gSaveContext.prevMagicState = MAGIC_STATE_IDLE;
     gSaveContext.forcedSeqId = NA_BGM_GENERAL_SFX;
     gSaveContext.skyboxTime = 0;
     gSaveContext.nextTransitionType = 0xFF;

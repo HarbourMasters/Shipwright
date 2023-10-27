@@ -17,6 +17,7 @@
 #include "overlays/actors/ovl_En_Fish/z_en_fish.h"
 #include "overlays/actors/ovl_En_Horse/z_en_horse.h"
 #include "overlays/effects/ovl_Effect_Ss_Fhg_Flash/z_eff_ss_fhg_flash.h"
+#include "overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
@@ -2224,7 +2225,7 @@ s32 func_8083442C(Player* this, PlayState* play) {
     s32 magicArrowType;
 
     if ((this->heldItemAction >= PLAYER_IA_BOW_FIRE) && (this->heldItemAction <= PLAYER_IA_BOW_0E) &&
-        (gSaveContext.magicState != 0)) {
+        (gSaveContext.magicState != MAGIC_STATE_IDLE)) {
         func_80078884(NA_SE_SY_ERROR);
     } else {
         func_80833638(this, func_808351D4);
@@ -2240,7 +2241,7 @@ s32 func_8083442C(Player* this, PlayState* play) {
 
                 if (this->unk_860 >= 0) {
                     if ((magicArrowType >= 0) && (magicArrowType <= 2) &&
-                        !func_80087708(play, sMagicArrowCosts[magicArrowType], 0)) {
+                        !Magic_RequestChange(play, sMagicArrowCosts[magicArrowType], MAGIC_CONSUME_NOW)) {
                         arrowType = ARROW_NORMAL;
                     }
 
@@ -2979,7 +2980,7 @@ void func_80835F44(PlayState* play, Player* this, s32 item) {
             }
 
             if (actionParam == PLAYER_IA_LENS_OF_TRUTH) {
-                if (func_80087708(play, 0, 3)) {
+                if (Magic_RequestChange(play, 0, MAGIC_CONSUME_LENS)) {
                     if (play->actorCtx.lensActive) {
                         Actor_DisableLens(play);
                     } else {
@@ -3004,7 +3005,7 @@ void func_80835F44(PlayState* play, Player* this, s32 item) {
             temp = Player_ActionToMagicSpell(this, actionParam);
             if (temp >= 0) {
                 if (((actionParam == PLAYER_IA_FARORES_WIND) && (gSaveContext.respawn[RESPAWN_MODE_TOP].data > 0)) ||
-                    ((gSaveContext.magicCapacity != 0) && (gSaveContext.magicState == 0) &&
+                    ((gSaveContext.magicCapacity != 0) && (gSaveContext.magicState == MAGIC_STATE_IDLE) &&
                      (gSaveContext.magic >= sMagicSpellCosts[temp]))) {
                     this->itemAction = actionParam;
                     this->unk_6AD = 4;
@@ -4981,7 +4982,7 @@ void func_8083AF44(PlayState* play, Player* this, s32 magicSpell) {
     func_80835DE4(play, this, func_808507F4, 0);
 
     this->unk_84F = magicSpell - 3;
-    func_80087708(play, sMagicSpellCosts[magicSpell], 4);
+    Magic_RequestChange(play, sMagicSpellCosts[magicSpell], MAGIC_CONSUME_WAIT_PREVIEW);
 
     u8 isFastFarores = CVarGetInteger("gFastFarores", 0) && this->itemAction == PLAYER_IA_FARORES_WIND;
 
@@ -9740,7 +9741,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     }
 
     if (gSaveContext.nayrusLoveTimer != 0) {
-        gSaveContext.magicState = 3;
+        gSaveContext.magicState = MAGIC_STATE_METER_FLASH_1;
         func_80846A00(play, this, 1);
         this->stateFlags3 &= ~PLAYER_STATE3_RESTORE_NAYRUS_LOVE;
     }
@@ -10666,8 +10667,8 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
         func_80848C74(play, this);
     }
 
-    if ((this->stateFlags3 & PLAYER_STATE3_RESTORE_NAYRUS_LOVE) && (gSaveContext.nayrusLoveTimer != 0) && (gSaveContext.magicState == 0)) {
-        gSaveContext.magicState = 3;
+    if ((this->stateFlags3 & PLAYER_STATE3_RESTORE_NAYRUS_LOVE) && (gSaveContext.nayrusLoveTimer != 0) && (gSaveContext.magicState == MAGIC_STATE_IDLE)) {
+        gSaveContext.magicState = MAGIC_STATE_METER_FLASH_1;
         func_80846A00(play, this, 1);
         this->stateFlags3 &= ~PLAYER_STATE3_RESTORE_NAYRUS_LOVE;
     }
@@ -11373,7 +11374,7 @@ void Player_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyQuad(play, &this->meleeWeaponQuads[1]);
     Collider_DestroyQuad(play, &this->shieldQuad);
 
-    func_800876C8(play);
+    Magic_Reset(play);
 
     gSaveContext.linkAge = play->linkAgeOnLoad;
 
@@ -12715,8 +12716,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         equipItem = giEntry.itemId;
         equipNow = CVarGetInteger("gAskToEquip", 0) && giEntry.modIndex == MOD_NONE &&
                     equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_TUNIC_ZORA &&
-                   ((gItemAgeReqs[equipItem] == 9 || gItemAgeReqs[equipItem] == gSaveContext.linkAge) ||
-                    CVarGetInteger("gTimelessEquipment", 0));
+                    CHECK_AGE_REQ_ITEM(equipItem);
 
         Message_StartTextbox(play, giEntry.textId, &this->actor);
         // RANDOTODO: Macro this boolean check.
@@ -13098,39 +13098,39 @@ void func_8084EAC0(Player* this, PlayState* play) {
                     }
 
                     if (CVarGetInteger("gBlueManaPercentRestore", 0)) {
-                        if (gSaveContext.magicState != 10) {
+                        if (gSaveContext.magicState != MAGIC_STATE_ADD) {
                             Magic_Fill(play);
                         }
 
-                        func_80087708(play,
+                        Magic_RequestChange(play,
                                       (gSaveContext.magicLevel * 48 * CVarGetInteger("gBluePotionMana", 100) / 100 + 15) /
                                           16 * 16,
-                                      5);
+                                      MAGIC_ADD);
                     } else {
-                        if (gSaveContext.magicState != 10) {
+                        if (gSaveContext.magicState != MAGIC_STATE_ADD) {
                             Magic_Fill(play);
                         }
 
-                        func_80087708(play, CVarGetInteger("gBluePotionMana", 100), 5);
+                        Magic_RequestChange(play, CVarGetInteger("gBluePotionMana", 100), MAGIC_ADD);
                         ;
                     }
                 } else if (CVarGetInteger("gGreenPotionEffect", 0) &&
                            this->itemAction == PLAYER_IA_BOTTLE_POTION_GREEN) {
                     if (CVarGetInteger("gGreenPercentRestore", 0)) {
-                        if (gSaveContext.magicState != 10) {
+                        if (gSaveContext.magicState != MAGIC_STATE_ADD) {
                             Magic_Fill(play);
                         }
 
-                        func_80087708(play,
+                        Magic_RequestChange(play,
                                       (gSaveContext.magicLevel * 48 * CVarGetInteger("gGreenPotionMana", 100) / 100 + 15) /
                                           16 * 16,
-                                      5);
+                                      MAGIC_ADD);
                     } else {
-                        if (gSaveContext.magicState != 10) {
+                        if (gSaveContext.magicState != MAGIC_STATE_ADD) {
                             Magic_Fill(play);
                         }
 
-                        func_80087708(play, CVarGetInteger("gGreenPotionMana", 100), 5);
+                        Magic_RequestChange(play, CVarGetInteger("gGreenPotionMana", 100), MAGIC_ADD);
                         ;
                     }
                 } else if (CVarGetInteger("gMilkEffect", 0) && (this->itemAction == PLAYER_IA_BOTTLE_MILK_FULL ||
@@ -13174,7 +13174,7 @@ void func_8084EAC0(Player* this, PlayState* play) {
         func_8083C0E8(this, play);
         func_8005B1A4(Play_GetCamera(play, 0));
     } else if (this->unk_850 == 1) {
-        if ((gSaveContext.healthAccumulator == 0) && (gSaveContext.magicState != 9)) {
+        if ((gSaveContext.healthAccumulator == 0) && (gSaveContext.magicState != MAGIC_STATE_FILL)) {
             func_80832B78(play, this, &gPlayerAnim_link_bottle_drink_demo_end);
             this->unk_850 = 2;
             Player_UpdateBottleHeld(play, this, ITEM_BOTTLE, PLAYER_IA_BOTTLE);
@@ -13933,7 +13933,7 @@ void func_808507F4(Player* this, PlayState* play) {
     u8 isFastFarores = CVarGetInteger("gFastFarores", 0) && this->itemAction == PLAYER_IA_FARORES_WIND;
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         if (this->unk_84F < 0) {
-            if ((this->itemAction == PLAYER_IA_NAYRUS_LOVE) || isFastFarores || (gSaveContext.magicState == 0)) {
+            if ((this->itemAction == PLAYER_IA_NAYRUS_LOVE) || isFastFarores || (gSaveContext.magicState == MAGIC_STATE_IDLE)) {
                 func_80839FFC(this, play);
                 func_8005B1A4(Play_GetCamera(play, 0));
             }
@@ -13944,10 +13944,10 @@ void func_808507F4(Player* this, PlayState* play) {
                 if (func_80846A00(play, this, this->unk_84F) != NULL) {
                     this->stateFlags1 |= PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE;
                     if ((this->unk_84F != 0) || (gSaveContext.respawn[RESPAWN_MODE_TOP].data <= 0)) {
-                        gSaveContext.magicState = 1;
+                        gSaveContext.magicState = MAGIC_STATE_CONSUME_SETUP;
                     }
                 } else {
-                    func_800876C8(play);
+                    Magic_Reset(play);
                 }
             } else {
                 LinkAnimation_PlayLoopSetSpeed(play, &this->skelAnime, D_80854A64[this->unk_84F], 0.83f * (isFastFarores ? 2 : 1));
@@ -14946,6 +14946,16 @@ void func_80852648(PlayState* play, Player* this, CsCmdActorAction* arg2) {
         this->heldItemId = ITEM_NONE;
         this->modelGroup = this->nextModelGroup = Player_ActionToModelGroup(this, PLAYER_IA_NONE);
         this->leftHandDLists = gPlayerLeftHandOpenDLs;
+        
+        // If MS sword is shuffled and not in the players inventory, then we need to unequip the current sword
+        // and set swordless flag to mimic Link having his weapon knocked out of his hand in the Ganon fight
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
+            Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_NONE);
+            gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+            Flags_SetInfTable(INFTABLE_SWORDLESS);
+            return;
+        }
+        
         Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER);
         gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
         Inventory_DeleteEquipment(play, EQUIP_TYPE_SWORD);
@@ -15134,17 +15144,6 @@ s32 Player_IsDroppingFish(PlayState* play) {
 
 s32 Player_StartFishing(PlayState* play) {
     Player* this = GET_PLAYER(play);
-
-    if (gSaveContext.linkAge == 1) {
-        if (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI)) {
-            gSaveContext.temporaryWeapon = true;
-        }
-        if (this->heldItemId == ITEM_NONE) {
-            this->currentSwordItemId = ITEM_SWORD_KOKIRI;
-            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-            Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_KOKIRI);
-        }
-    }
 
     func_80832564(play, this);
     func_80835F44(play, this, ITEM_FISHING_POLE);

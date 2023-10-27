@@ -176,26 +176,28 @@ namespace Settings {
   };
 
   //Shuffle Settings
-  Option RandomizeShuffle       = Option::Bool("Randomize Settings",     {"No","Yes"}, OptionCategory::Toggle);
-  Option ShuffleRewards         = Option::U8  ("Shuffle Dungeon Rewards",{"End of dungeons", "Any dungeon", "Overworld", "Anywhere"});
-  Option LinksPocketItem        = Option::U8  ("Link's Pocket",          {"Dungeon Reward", "Advancement", "Anything", "Nothing"});
-  Option ShuffleSongs           = Option::U8  ("Shuffle Songs",          {"Song locations", "Dungeon rewards", "Anywhere"});
-  Option Shopsanity             = Option::U8  ("Shopsanity",             {"Off","0 Items","1 Item","2 Items","3 Items","4 Items","Random"});
-  Option ShopsanityPrices       = Option::U8  ("Shopsanity Prices",      {"Balanced", "Starting Wallet", "Adult Wallet", "Giant's Wallet", "Tycoon's Wallet" });
-  Option ShopsanityPricesAffordable   = Option::Bool("Affordable Prices",                {"Off", "On"});
-  Option Tokensanity            = Option::U8  ("Tokensanity",            {"Off", "Dungeons", "Overworld", "All Tokens"});
-  Option Scrubsanity            = Option::U8  ("Scrub Shuffle",          {"Off", "Affordable", "Expensive", "Random Prices"});
-  Option ShuffleCows            = Option::Bool("Shuffle Cows",           {"Off", "On"});
-  Option ShuffleKokiriSword     = Option::Bool("Shuffle Kokiri Sword",   {"Off", "On"});
-  Option ShuffleOcarinas        = Option::Bool("Shuffle Ocarinas",       {"Off", "On"});
-  Option ShuffleWeirdEgg        = Option::Bool("Shuffle Weird Egg",      {"Off", "On"});
-  Option ShuffleGerudoToken     = Option::Bool("Shuffle Gerudo Card",    {"Off", "On"});
-  Option ShuffleMagicBeans      = Option::Bool("Shuffle Magic Beans",    {"Off", "On"});
-  Option ShuffleMerchants       = Option::U8  ("Shuffle Merchants",      {"Off", "On (No Hints)", "On (With Hints)"});
-  Option ShuffleFrogSongRupees  = Option::Bool("Shuffle Frog Song Rupees",{"Off", "On"});
-  Option ShuffleAdultTradeQuest = Option::Bool("Shuffle Adult Trade",    {"Off", "On"});
-  Option ShuffleChestMinigame   = Option::U8  ("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"});
-  Option Shuffle100GSReward     = Option::Bool("Shuffle 100 GS Reward",  {"Off", "On"});
+  Option RandomizeShuffle           = Option::Bool("Randomize Settings",     {"No","Yes"}, OptionCategory::Toggle);
+  Option ShuffleRewards             = Option::U8  ("Shuffle Dungeon Rewards",{"End of dungeons", "Any dungeon", "Overworld", "Anywhere"});
+  Option LinksPocketItem            = Option::U8  ("Link's Pocket",          {"Dungeon Reward", "Advancement", "Anything", "Nothing"});
+  Option ShuffleSongs               = Option::U8  ("Shuffle Songs",          {"Song locations", "Dungeon rewards", "Anywhere"});
+  Option Shopsanity                 = Option::U8  ("Shopsanity",             {"Off","0 Items","1 Item","2 Items","3 Items","4 Items","Random"});
+  Option ShopsanityPrices           = Option::U8  ("Shopsanity Prices",      {"Balanced", "Starting Wallet", "Adult Wallet", "Giant's Wallet", "Tycoon's Wallet" });
+  Option ShopsanityPricesAffordable = Option::Bool("Affordable Prices",      {"Off", "On"});
+  Option Tokensanity                = Option::U8  ("Tokensanity",            {"Off", "Dungeons", "Overworld", "All Tokens"});
+  Option Scrubsanity                = Option::U8  ("Scrub Shuffle",          {"Off", "Affordable", "Expensive", "Random Prices"});
+  Option ShuffleCows                = Option::Bool("Shuffle Cows",           {"Off", "On"});
+  Option ShuffleKokiriSword         = Option::Bool("Shuffle Kokiri Sword",   {"Off", "On"});
+  Option ShuffleMasterSword         = Option::Bool("Shuffle Master Sword",   {"Off", "On"});
+  Option ShuffleOcarinas            = Option::Bool("Shuffle Ocarinas",       {"Off", "On"});
+  Option ShuffleWeirdEgg            = Option::Bool("Shuffle Weird Egg",      {"Off", "On"});
+  Option ShuffleGerudoToken         = Option::Bool("Shuffle Gerudo Card",    {"Off", "On"});
+  Option ShuffleMagicBeans          = Option::Bool("Shuffle Magic Beans",    {"Off", "On"});
+  Option ShuffleMerchants           = Option::U8  ("Shuffle Merchants",      {"Off", "On (No Hints)", "On (With Hints)"});
+  Option ShuffleFrogSongRupees      = Option::Bool("Shuffle Frog Song Rupees",{"Off", "On"});
+  Option ShuffleAdultTradeQuest     = Option::Bool("Shuffle Adult Trade",    {"Off", "On"});
+  Option ShuffleChestMinigame       = Option::U8  ("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"});
+  Option Shuffle100GSReward         = Option::Bool("Shuffle 100 GS Reward",  {"Off", "On"});
+
   std::vector<Option *> shuffleOptions = {
     &RandomizeShuffle,
     &ShuffleRewards,
@@ -208,6 +210,7 @@ namespace Settings {
     &Scrubsanity,
     &ShuffleCows,
     &ShuffleKokiriSword,
+    &ShuffleMasterSword,
     &ShuffleOcarinas,
     &ShuffleWeirdEgg,
     &ShuffleGerudoToken,
@@ -569,6 +572,7 @@ namespace Settings {
   };
 
   Option StartingKokiriSword      = Option::U8  ("Start with Kokiri Sword",         {"Off",             "On"});
+  Option StartingMasterSword      = Option::U8  ("Start with Master Sword",         {"Off",             "On"});
   Option StartingBiggoronSword    = Option::U8  ("Biggoron Sword",       {"Off",             "Giant's Knife",    "Biggoron Sword"});
   Option StartingDekuShield       = Option::U8  ("Start with Deku Shield",          {"Off",             "On"});
   Option StartingHylianShield     = Option::U8  ("Hylian Shield",        {"Off",             "On"});
@@ -582,6 +586,7 @@ namespace Settings {
   Option StartingHearts           = Option::U8  ("Hearts",               {NumOpts(1, 20)}, OptionCategory::Setting, 2); // Default 3 hearts
   Option StartingMagicMeter       = Option::U8  ("Magic Meter",          {"Off",             "Single Magic",     "Double Magic"});
   Option StartingDoubleDefense    = Option::U8  ("Double Defense",       {"Off",             "On"});
+
   std::vector<Option *> startingEquipmentOptions = {
     &StartingKokiriSword,
     &StartingBiggoronSword,
@@ -2277,6 +2282,7 @@ namespace Settings {
     Scrubsanity.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SCRUBS]);
     ShuffleCows.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_COWS]);
     ShuffleKokiriSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD]);
+    ShuffleMasterSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_MASTER_SWORD]);
     ShuffleOcarinas.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_OCARINA]);
 
     // Shuffle Entrances
