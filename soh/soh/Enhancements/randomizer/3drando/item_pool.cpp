@@ -108,9 +108,10 @@ const std::array<uint32_t, 59> alwaysItems = {
   ARROWS_10,
   TREASURE_GAME_HEART,
 };
-const std::array<uint32_t, 43> easyItems = {
+const std::array<uint32_t, 44> easyItems = {
   BIGGORON_SWORD,
   KOKIRI_SWORD,
+  MASTER_SWORD,
   BOOMERANG,
   LENS_OF_TRUTH,
   MEGATON_HAMMER,
@@ -682,6 +683,13 @@ void GenerateItemPool() {
     PlaceItemInLocation(KF_KOKIRI_SWORD_CHEST, KOKIRI_SWORD, false, true);
   }
 
+  if (ShuffleMasterSword) {
+    AddItemToMainPool(MASTER_SWORD);
+    IceTrapModels.push_back(0xE0); //Master Sword without the GI enum
+  } else {
+    PlaceItemInLocation(TOT_MASTER_SWORD, MASTER_SWORD, false, true);
+  }
+
   if (ShuffleWeirdEgg) {
     AddItemToMainPool(WEIRD_EGG);
     IceTrapModels.push_back(GI_WEIRD_EGG);
@@ -1159,6 +1167,10 @@ void GenerateItemPool() {
 
   if (!ShuffleKokiriSword) {
     ReplaceMaxItem(KOKIRI_SWORD, 0);
+  }
+
+  if (!ShuffleMasterSword) {
+    ReplaceMaxItem(MASTER_SWORD, 0);
   }
 
   if (ProgressiveGoronSword) {
