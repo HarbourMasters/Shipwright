@@ -478,16 +478,28 @@ namespace Logic {
     if (ShuffleBossSouls.Is(BOSSSOULS_OFF)) {
       return true;
     }
-    return (itemName == RG_GOHMA_SOUL && CanSummonGohma)         ||
-    (itemName == RG_KING_DODONGO_SOUL && CanSummonKingDodongo)   ||
-    (itemName == RG_BARINADE_SOUL && CanSummonBarinade)          ||
-    (itemName == RG_PHANTOM_GANON_SOUL && CanSummonPhantomGanon) ||
-    (itemName == RG_VOLVAGIA_SOUL && CanSummonVolvagia)          ||
-    (itemName == RG_MORPHA_SOUL && CanSummonMorpha)              ||
-    (itemName == RG_MORPHA_SOUL && CanSummonBongoBongo)          ||
-    (itemName == RG_TWINROVA_SOUL && CanSummonTwinrova)          ||
-    (itemName == RG_GANON_SOUL && CanSummonGanon);
-
+    switch(itemName) {
+      case RG_GOHMA_SOUL:
+        return CanSummonGohma; break;
+      case RG_KING_DODONGO_SOUL:
+        return CanSummonKingDodongo; break;
+      case RG_BARINADE_SOUL:
+        return CanSummonBarinade; break;
+      case RG_PHANTOM_GANON_SOUL:
+        return CanSummonPhantomGanon; break;
+      case RG_VOLVAGIA_SOUL:
+        return CanSummonVolvagia; break;
+      case RG_MORPHA_SOUL:
+        return CanSummonMorpha; break;
+      case RG_BONGO_BONGO_SOUL:
+        return CanSummonBongoBongo; break;
+      case RG_TWINROVA_SOUL:
+        return CanSummonTwinrova; break;
+      case RG_GANON_SOUL:
+        return ShuffleBossSouls.Is(BOSSSOULS_ON_PLUS_GANON) ? CanSummonGanon : true;
+        break;
+      default: break;
+    }
   }
 
   uint8_t GetDifficultyValueFromString(Option& glitchOption) {
