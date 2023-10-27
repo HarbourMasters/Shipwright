@@ -486,6 +486,39 @@ static void GeneratePlaythrough() {
     GetAccessibleLocations(ctx->allLocations, SearchMode::GeneratePlaythrough);
 }
 
+RandomizerArea LookForExternalArea(Area* curArea, std::vector<RandomizerRegion> alreadyChecked){
+  for (auto& entrance : curArea->entrances) {
+    RandomizerArea otherArea = entrance->GetConnectedRegion()->GetArea();
+    if(otherArea != RA_NONE){
+      return otherArea;
+      //if the area hasn't already been checked, check it
+    } else if (std::find(alreadyChecked.begin(), alreadyChecked.end(), entrance->GetConnectedRegionKey()) == alreadyChecked.end()) {
+      alreadyChecked.push_back(entrance->GetConnectedRegionKey());
+      RandomizerArea passdown = LookForExternalArea(entrance->GetConnectedRegion(), alreadyChecked);
+      if(passdown != RA_NONE){
+        return passdown;
+      }
+    }
+  }
+  return RA_NONE;
+}
+
+void SetAreas(){
+  auto ctx = Rando::Context::GetInstance();
+//RANDOTODO give entrances an enum like RandomizerCheck, the give them all areas here, the use those areas to not need to recursivly find ItemLocation areas
+  for (int c = 0; c < RR_MARKER_AREAS_END; c++) {
+    Area region = areaTable[c];
+    RandomizerArea area = region.GetArea();
+    if (area == RA_NONE) {
+      std::vector<RandomizerRegion> alreadyChecked = {(RandomizerRegion)c};
+      area = LookForExternalArea(&region, alreadyChecked);
+    }
+    for (auto& loc : region.locations){
+      ctx->GetItemLocation(loc.GetLocation())->SetArea(area);
+    }
+  }
+}
+
 //Remove unnecessary items from playthrough by removing their location, and checking if game is still beatable
 //To reduce searches, some preprocessing is done in playthrough generation to avoid adding obviously unnecessary items
 static void PareDownPlaythrough() {
@@ -555,34 +588,24 @@ static void CalculateWotH() {
 //Calculate barren locations and assign Barren Candidacy to all locations inside those areas
 static void CalculateBarren() {
   auto ctx = Rando::Context::GetInstance();
-  std::vector<RandomizerCheck> barrenLocations = {};
-  std::vector<RandomizerCheck> potentiallyUsefulLocations = {};
+  std::array<bool, RA_MAX> IsBarren = {true};
 
   for (RandomizerCheck loc : ctx->allLocations) {
+  Rando::ItemLocation* itemLoc = ctx->GetItemLocation(loc);
+  RandomizerArea locArea = itemLoc->GetArea();
   // If a location has a major item or is a way of the hero location, it is not barren
-  if (ctx->GetItemLocation(loc)->GetPlacedItem().IsMajorItem() || ElementInContainer(loc, ctx->wothLocations)) {
-    AddElementsToPool(potentiallyUsefulLocations, std::vector{loc});
-  } else {
-    // Link's Pocket & Triforce Hunt "reward" shouldn't be considered for barren areas because it's clear what
-    // they have to a player.
-    if (loc != RC_LINKS_POCKET && loc != RC_TRIFORCE_COMPLETED) { 
-      AddElementsToPool(barrenLocations, std::vector{loc});
-    }
+  if (IsBarren[locArea] == true && locArea > RA_LINKS_POCKET && (itemLoc->GetPlacedItem().IsMajorItem() || itemLoc->IsWothCandidate())) {
+    IsBarren[locArea] = false;
+  } 
   }
-  }
-  // Leave only locations at barren regions in the list
-  auto finalBarrenLocations = FilterFromPool(barrenLocations, [&potentiallyUsefulLocations](RandomizerCheck loc){
-    for (RandomizerCheck usefulLoc : potentiallyUsefulLocations) {
-      uint32_t barrenKey = GetLocationRegionuint32_t(loc);
-      uint32_t usefulKey = GetLocationRegionuint32_t(usefulLoc);
-      if (barrenKey == usefulKey) {
-        return false;
-      }
-    }
-    return true;
-  });
 
-  return finalBarrenLocations;
+  for (RandomizerCheck loc : ctx->allLocations) {
+    Rando::ItemLocation* itemLoc = ctx->GetItemLocation(loc);
+    if (IsBarren[itemLoc->GetArea()]){
+      itemLoc->SetBarrenCandidate();
+    }
+  }
+
 }
 
 //Will place things completely randomly, no logic checks are performed
@@ -1117,6 +1140,7 @@ int Fill() {
     if(ctx->playthroughBeatable && !placementFailure) {
       printf("Done");
       printf("\x1b[9;10HCalculating Playthrough...");
+      SetAreas();
       PareDownPlaythrough();
       CalculateWotH();
       CalculateBarren(); 

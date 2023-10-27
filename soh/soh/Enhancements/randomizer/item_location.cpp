@@ -59,6 +59,14 @@ RandomizerRegion ItemLocation::GetParentRegionKey() const {
     return parentRegion;
 }
 
+void ItemLocation::SetArea(RandomizerArea newArea) {
+    area = newArea;
+}
+
+RandomizerArea ItemLocation::GetArea() const {
+    return area;
+}
+
 void ItemLocation::PlaceVanillaItem() {
     placedItem = StaticData::GetLocation(rc)->GetVanillaItem();
 }
@@ -189,5 +197,6 @@ void ItemLocation::ResetVariables() {
     hidden = false;
     wothCandidate = false;
     barrenCandidate = false;
+    area = RA_NONE;
 }
 }

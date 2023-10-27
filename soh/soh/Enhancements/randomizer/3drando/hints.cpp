@@ -314,7 +314,7 @@ Area* GetHintRegion(const RandomizerRegion area) {
     alreadyChecked.push_back(region);
     spotQueue.pop_back();
 
-    if (AreaTable(region)->hintKey != RHT_NONE) {
+    if (AreaTable(region)->GetArea() != RA_NONE) {
       return AreaTable(region);
     }
 
@@ -337,17 +337,6 @@ Area* GetHintRegion(const RandomizerRegion area) {
   return AreaTable(RR_NONE);
 }
 
-RandomizerHintTextKey GetHintRegionHintKey(const RandomizerRegion area) {
-    return GetHintRegion(area)->hintKey;
-}
-
-uint32_t GetHintRegionuint32_t(const RandomizerRegion area) {
-  return GetHintRegion(area)->hintKey;
-}
-
-uint32_t GetLocationRegionuint32_t(const RandomizerCheck location) {
-  return GetHintRegion(Rando::Context::GetInstance()->GetItemLocation(location)->GetParentRegionKey())->hintKey;
-}
 
 static std::vector<RandomizerCheck> GetEmptyGossipStones() {
   auto emptyGossipStones = GetEmptyLocations(Rando::StaticData::gossipStoneLocations);
