@@ -15,6 +15,7 @@
 #include "objects/object_masterkokirihead/object_masterkokirihead.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <assert.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
@@ -1005,6 +1006,7 @@ void EnOssan_State_FacingShopkeeper(EnOssan* this, PlayState* play, Player* play
                 Interface_SetDoAction(play, DO_ACTION_DECIDE);
                 this->stickLeftPrompt.isEnabled = false;
                 func_80078884(NA_SE_SY_CURSOR);
+                GameInteractor_ExecuteOnShopSlotChangeHooks(this->cursorIndex, this->shelfSlots[this->cursorIndex]->basePrice);
             }
         } else if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, dRight))) {
             nextIndex = EnOssan_SetCursorIndexFromNeutral(this, 0);
@@ -1014,6 +1016,7 @@ void EnOssan_State_FacingShopkeeper(EnOssan* this, PlayState* play, Player* play
                 Interface_SetDoAction(play, DO_ACTION_DECIDE);
                 this->stickRightPrompt.isEnabled = false;
                 func_80078884(NA_SE_SY_CURSOR);
+                GameInteractor_ExecuteOnShopSlotChangeHooks(this->cursorIndex, this->shelfSlots[this->cursorIndex]->basePrice);
             }
         }
     }
@@ -1277,6 +1280,7 @@ void EnOssan_State_BrowseLeftShelf(EnOssan* this, PlayState* play, Player* playe
         }
         EnOssan_CursorUpDown(this, play);
         if (this->cursorIndex != prevIndex) {
+            GameInteractor_ExecuteOnShopSlotChangeHooks(this->cursorIndex, this->shelfSlots[this->cursorIndex]->basePrice);
             Message_ContinueTextbox(play, this->shelfSlots[this->cursorIndex]->actor.textId);
             func_80078884(NA_SE_SY_CURSOR);
         }
@@ -1346,6 +1350,7 @@ void EnOssan_State_BrowseRightShelf(EnOssan* this, PlayState* play, Player* play
         }
         EnOssan_CursorUpDown(this, play);
         if (this->cursorIndex != prevIndex) {
+            GameInteractor_ExecuteOnShopSlotChangeHooks(this->cursorIndex, this->shelfSlots[this->cursorIndex]->basePrice);
             Message_ContinueTextbox(play, this->shelfSlots[this->cursorIndex]->actor.textId);
             func_80078884(NA_SE_SY_CURSOR);
         }
@@ -2526,6 +2531,15 @@ void EnOssan_DrawKokiriShopkeeper(Actor* thisx, PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+s32 EnGo2_OverrideLimbDrawGoronShopkeeper (PlayState* play, s32 limb, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+    EnOssan* this = (EnOssan*)thisx;
+
+    if (limb == 17) {
+        Matrix_Translate(CVarGetFloat("gCosmetics.Goron_NeckLength", 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
+    }
+    return 0;
+}
+
 void EnOssan_DrawGoronShopkeeper(Actor* thisx, PlayState* play) {
     static void* sGoronShopkeeperEyeTextures[] = { gGoronCsEyeOpenTex, gGoronCsEyeHalfTex, gGoronCsEyeClosedTex };
     EnOssan* this = (EnOssan*)thisx;
@@ -2536,7 +2550,7 @@ void EnOssan_DrawGoronShopkeeper(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sGoronShopkeeperEyeTextures[this->eyeTextureIdx]));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gGoronCsMouthNeutralTex));
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnGo2_OverrideLimbDrawGoronShopkeeper, NULL, this);
     EnOssan_DrawCursor(play, this, this->cursorX, this->cursorY, this->cursorZ, this->drawCursor);
     EnOssan_DrawStickDirectionPrompts(play, this);
 

@@ -1,0 +1,8 @@
+<Root>
+    <File Name="ovl_En_St" BaseAddress="0x808C4D80" RangeStart="0x26A0" RangeEnd="0x2740">
+        <Array Name="sSkulltulaUnusedVtx" Count="4" Offset="0x26A0">
+            <Vtx/>
+        </Array>
+        <DList Name="sSkulltulaUnusedDL" Offset="0x26E0"/>
+    </File>
+</Root>

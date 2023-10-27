@@ -1694,6 +1694,10 @@ void DrawPlayerTab() {
         ImU16 one = 1;
         ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
         DrawGroupWithBorder([&]() {
+            ImGui::Text("Current B Item");
+            ImGui::InputScalar("B Button", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[0], &one, NULL);
+            ImGui::NewLine();
+
             ImGui::Text("Current C Equips");
             ImGui::InputScalar("C Left", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[1], &one, NULL);
             ImGui::SameLine();
