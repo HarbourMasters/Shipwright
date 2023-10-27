@@ -44,6 +44,8 @@ class ItemLocation {
     void SetVisible(bool visibleInImGui_);
     bool IsWothCandidate() const;
     void SetWothCandidate();
+    bool IsBarrenCandidate() const;
+    void SetBarrenCandidate();
     void ResetVariables();
 
   private:
@@ -61,5 +63,6 @@ class ItemLocation {
     bool hidden = false;
     bool visibleInImGui = false;
     bool wothCandidate = false;
+    bool barrenCandidate = false;
 };
 } // namespace Rando

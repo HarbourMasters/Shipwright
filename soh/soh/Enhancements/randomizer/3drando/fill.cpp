@@ -552,6 +552,39 @@ static void CalculateWotH() {
   GetAccessibleLocations(ctx->allLocations);
 }
 
+//Calculate barren locations and assign Barren Candidacy to all locations inside those areas
+static void CalculateBarren() {
+  auto ctx = Rando::Context::GetInstance();
+  std::vector<RandomizerCheck> barrenLocations = {};
+  std::vector<RandomizerCheck> potentiallyUsefulLocations = {};
+
+  for (RandomizerCheck loc : ctx->allLocations) {
+  // If a location has a major item or is a way of the hero location, it is not barren
+  if (ctx->GetItemLocation(loc)->GetPlacedItem().IsMajorItem() || ElementInContainer(loc, ctx->wothLocations)) {
+    AddElementsToPool(potentiallyUsefulLocations, std::vector{loc});
+  } else {
+    // Link's Pocket & Triforce Hunt "reward" shouldn't be considered for barren areas because it's clear what
+    // they have to a player.
+    if (loc != RC_LINKS_POCKET && loc != RC_TRIFORCE_COMPLETED) { 
+      AddElementsToPool(barrenLocations, std::vector{loc});
+    }
+  }
+  }
+  // Leave only locations at barren regions in the list
+  auto finalBarrenLocations = FilterFromPool(barrenLocations, [&potentiallyUsefulLocations](RandomizerCheck loc){
+    for (RandomizerCheck usefulLoc : potentiallyUsefulLocations) {
+      uint32_t barrenKey = GetLocationRegionuint32_t(loc);
+      uint32_t usefulKey = GetLocationRegionuint32_t(usefulLoc);
+      if (barrenKey == usefulKey) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  return finalBarrenLocations;
+}
+
 //Will place things completely randomly, no logic checks are performed
 static void FastFill(std::vector<RandomizerGet> items, std::vector<RandomizerCheck> locations, bool endOnItemsEmpty = false) {
   auto ctx = Rando::Context::GetInstance();
@@ -1086,6 +1119,7 @@ int Fill() {
       printf("\x1b[9;10HCalculating Playthrough...");
       PareDownPlaythrough();
       CalculateWotH();
+      CalculateBarren(); 
       printf("Done");
       ctx->CreateItemOverrides();
       ctx->GetEntranceShuffler()->CreateEntranceOverrides();

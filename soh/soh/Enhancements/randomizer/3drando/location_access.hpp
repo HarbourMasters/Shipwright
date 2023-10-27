@@ -7,6 +7,7 @@
 #include "logic.hpp"
 #include "hint_list.hpp"
 #include "fill.hpp"
+#include "../randomizerTypes.h"
 #include "../context.h"
 
 typedef bool (*ConditionFn)();
@@ -121,7 +122,7 @@ namespace Rando {
 class Area {
 public:
     Area();
-    Area(std::string regionName_, std::string scene_, RandomizerHintTextKey hintKey_,
+    Area(std::string regionName_, std::string scene_, RandomizerArea area,
          bool timePass_,
          std::vector<EventAccess> events_,
          std::vector<LocationAccess> locations_,
@@ -130,8 +131,8 @@ public:
 
     std::string regionName;
     std::string scene;
-    RandomizerHintTextKey     hintKey;
-    bool        timePass;
+    RandomizerArea area;
+    bool timePass;
     std::vector<EventAccess> events;
     std::vector<LocationAccess> locations;
     std::list<Rando::Entrance> exits;
@@ -181,8 +182,8 @@ public:
     //Check to see if an exit can be access as both ages at both times of day
     bool CheckAllAccess(RandomizerRegion exitKey);
 
-    const HintText& GetHint() const {
-      return Hint(hintKey);
+    const RandomizerArea GetArea() const{
+        return area;
     }
 
     //Here checks conditional access based on whether or not both ages have

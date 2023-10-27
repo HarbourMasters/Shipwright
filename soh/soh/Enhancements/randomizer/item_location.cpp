@@ -169,6 +169,14 @@ void ItemLocation::SetWothCandidate() {
     wothCandidate = true;
 }
 
+bool ItemLocation::IsBarrenCandidate() const {
+    return barrenCandidate;
+}
+
+void ItemLocation::SetBarrenCandidate() {
+    barrenCandidate = true;
+}
+
 void ItemLocation::ResetVariables() {
     addedToPool = false;
     placedItem = RG_NONE;
@@ -180,5 +188,6 @@ void ItemLocation::ResetVariables() {
     hasCustomPrice = false;
     hidden = false;
     wothCandidate = false;
+    barrenCandidate = false;
 }
 }

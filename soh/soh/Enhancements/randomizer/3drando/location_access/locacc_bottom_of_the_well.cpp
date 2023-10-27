@@ -10,7 +10,7 @@ void AreaTable_Init_BottomOfTheWell() {
   /*--------------------------
   |    VANILLA/MQ DECIDER    |
   ---------------------------*/
-  areaTable[RR_BOTTOM_OF_THE_WELL_ENTRYWAY] = Area("Bottom of the Well Entryway", "Bottom of the Well", RHT_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_BOTTOM_OF_THE_WELL_ENTRYWAY] = Area("Bottom of the Well Entryway", "Bottom of the Well", RA_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_MAIN_AREA,    {[]{return randoCtx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla() && IsChild && (CanChildAttack || Nuts);}}),
                   Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, {[]{return randoCtx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()      && IsChild;}}),
@@ -21,7 +21,7 @@ void AreaTable_Init_BottomOfTheWell() {
   |     VANILLA DUNGEON      |
   ---------------------------*/
   if (randoCtx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla()) {
-  areaTable[RR_BOTTOM_OF_THE_WELL_MAIN_AREA] = Area("Bottom of the Well Main Area", "Bottom of the Well", RHT_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_BOTTOM_OF_THE_WELL_MAIN_AREA] = Area("Bottom of the Well Main Area", "Bottom of the Well", RA_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&StickPot, {[]{return true;}}),
                   EventAccess(&NutPot,   {[]{return true;}}),
@@ -54,7 +54,7 @@ void AreaTable_Init_BottomOfTheWell() {
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
   if (randoCtx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()) {
-  areaTable[RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER] = Area("Bottom of the Well MQ Perimeter", "Bottom of the Well", RHT_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER] = Area("Bottom of the Well MQ Perimeter", "Bottom of the Well", RA_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   //EventAccess(&WallFairy, {[]{return WallFairy || Slingshot;}}),
   }, {
@@ -71,7 +71,7 @@ void AreaTable_Init_BottomOfTheWell() {
                     //Trick: CanPlay(ZeldasLullaby) || (LogicBotWMQPits && HasExplosives)
   });
 
-  areaTable[RR_BOTTOM_OF_THE_WELL_MQ_MIDDLE] = Area("Bottom of the Well MQ Middle", "Bottom of the Well", RHT_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_BOTTOM_OF_THE_WELL_MQ_MIDDLE] = Area("Bottom of the Well MQ Middle", "Bottom of the Well", RA_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_BOTTOM_OF_THE_WELL_MQ_MAP_CHEST,                        {[]{return true;}}),
                   LocationAccess(RC_BOTTOM_OF_THE_WELL_MQ_LENS_OF_TRUTH_CHEST,              {[]{return HasExplosives && SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}}),
