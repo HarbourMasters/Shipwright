@@ -187,7 +187,7 @@ void BgTokiSwd_Draw(Actor* thisx, PlayState* play2) {
     s32 pad[3];
 
     // Do not draw the Master Sword in the pedestal if the player has not found it yet
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
         return;
     }
 
