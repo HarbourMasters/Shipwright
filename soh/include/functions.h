@@ -1090,8 +1090,8 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange);
 void Rupees_ChangeBy(s16 rupeeChange);
 void Inventory_ChangeAmmo(s16 item, s16 ammoChange);
 void Magic_Fill(PlayState* play);
-void func_800876C8(PlayState* play);
-s32 func_80087708(PlayState* play, s16 arg1, s16 arg2);
+void Magic_Reset(PlayState* play);
+s32 Magic_RequestChange(PlayState* play, s16 amount, s16 type);
 void func_80088AA0(s16 seconds);
 void func_80088AF0(PlayState* play);
 void func_80088B34(s16 arg0);
@@ -2449,12 +2449,17 @@ void Heaps_Free(void);
 
 CollisionHeader* BgCheck_GetCollisionHeader(CollisionContext* colCtx, s32 bgId);
 
-void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
-
 // Exposing these methods to leverage them from the file select screen to render messages
 void Message_OpenText(PlayState* play, u16 textId);
 void Message_Decode(PlayState* play);
 void Message_DrawText(PlayState* play, Gfx** gfxP);
+
+// #region SOH [General]
+
+void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
+void Interface_RandoRestoreSwordless(void);
+
+// #endregion
 
 #ifdef __cplusplus
 #undef this

@@ -109,6 +109,10 @@ void Extractor::ShowCrcErrorBox() const {
     ShowErrorBox("Rom CRC invalid", "Rom CRC did not match the list of known good roms. Please find another.");
 }
 
+void Extractor::ShowCompressedErrorBox() const {
+    ShowErrorBox("File is Compressed", "The selected file appears to be compressed. Please extract before using.");
+}
+
 int Extractor::ShowRomPickBox(uint32_t verCrc) const {
     std::unique_ptr<char[]> boxBuffer = std::make_unique<char[]>(mCurrentRomPath.size() + 100);
     SDL_MessageBoxData boxData = { 0 };
@@ -328,6 +332,24 @@ bool Extractor::ValidateAndFixRom() {
     return false;
 }
 
+// The file box will only allow selecting an n64 rom but typing in the file name will allow selecting anything.
+bool Extractor::ValidateNotCompressed() const {
+    // ZIP file header
+    if (mRomData[0] == 'P' && mRomData[1] == 'K' && mRomData[2] == 0x03 && mRomData[3] == 0x04) {
+        return false;
+    }
+    // RAR file header. Only the first 4 bytes.
+    if (mRomData[0] == 'R' && mRomData[1] == 'a' && mRomData[2] == 'r' && mRomData[3] == 0x21) {
+        return false;
+    }
+    // 7z file header. 37 7A BC AF 27 1C
+    if (mRomData[0] == '7' && mRomData[1] == 'z' && mRomData[2] == 0xBC && mRomData[3] == 0xAF && mRomData[4] == 0x27 && mRomData[5] == 0x1C) {
+        return false;
+    }
+
+    return true;
+}
+
 bool Extractor::ValidateRomSize() const {
     if (mCurRomSize != MB32 && mCurRomSize != MB54 && mCurRomSize != MB64) {
         return false;
@@ -336,6 +358,10 @@ bool Extractor::ValidateRomSize() const {
 }
 
 bool Extractor::ValidateRom(bool skipCrcTextBox) {
+    if (!ValidateNotCompressed()) {
+        ShowCompressedErrorBox();
+        return false;
+    }
     if (!ValidateRomSize()) {
         ShowSizeErrorBox();
         return false;

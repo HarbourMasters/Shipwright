@@ -38,6 +38,7 @@ class Extractor {
     bool ValidateRomSize() const;
 
     bool ValidateRom(bool skipCrcBox = false);
+    bool ValidateNotCompressed() const;
     const char* GetZapdVerStr() const;
 
     void SetRomInfo(const std::string& path);
@@ -46,6 +47,7 @@ class Extractor {
     void GetRoms(std::vector<std::string>& roms);
     void ShowSizeErrorBox() const;
     void ShowCrcErrorBox() const;
+    void ShowCompressedErrorBox() const;
     int ShowRomPickBox(uint32_t verCrc) const;
     bool ManuallySearchForRom();
     bool ManuallySearchForRomMatchingType(RomSearchMode searchMode);

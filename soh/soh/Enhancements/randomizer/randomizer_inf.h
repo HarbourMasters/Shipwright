@@ -187,9 +187,9 @@ typedef enum {
     RAND_INF_BEEHIVE_GV_DEKU_SCRUB_GROTTO,
     RAND_INF_BEEHIVE_COLOSSUS_GROTTO,
     
+    RAND_INF_TOT_MASTER_SWORD,
     RAND_INF_CHILD_FISHING,
     RAND_INF_ADULT_FISHING,
-
     RAND_INF_10_BIG_POES,
 
     // If you add anything to this list, you need to update the size of randomizerInf in z64save.h to be ceil(RAND_INF_MAX / 16)

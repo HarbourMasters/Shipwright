@@ -115,6 +115,8 @@ extern bool LightTrialClear;
 
 //Greg
 extern bool Greg;
+extern bool GregInBridgeLogic;
+extern bool GregInLacsLogic;
 
 // Progression Items
 extern uint8_t ProgressiveBulletBag;
@@ -245,6 +247,8 @@ extern bool IsGlitched;
 extern bool CanBlastOrSmash;
 extern bool CanChildAttack;
 extern bool CanChildDamage;
+extern bool CanAdultAttack;
+extern bool CanAdultDamage;
 extern bool CanCutShrubs;
 extern bool CanDive;
 extern bool CanLeaveForest;

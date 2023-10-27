@@ -342,7 +342,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 
     SaveManager::Instance->SaveData("adultTradeItems", saveContext->adultTradeItems);
 
-    SaveManager::Instance->SaveData("triforcePiecesCollected", gSaveContext.triforcePiecesCollected);
+    SaveManager::Instance->SaveData("triforcePiecesCollected", saveContext->triforcePiecesCollected);
 
     SaveManager::Instance->SaveData("pendingIceTrapCount", saveContext->pendingIceTrapCount);
 
@@ -520,7 +520,7 @@ void SaveManager::InitFileNormal() {
     }
     gSaveContext.adultEquips.equipment = 0;
     gSaveContext.unk_54 = 0;
-    gSaveContext.savedSceneNum = 0x34;
+    gSaveContext.savedSceneNum = SCENE_LINKS_HOUSE;
 
     // Equipment
     for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.buttonItems); button++) {
@@ -568,7 +568,6 @@ void SaveManager::InitFileNormal() {
     gSaveContext.fw.set = 0;
     gSaveContext.fw.tempSwchFlags = 0;
     gSaveContext.fw.tempCollectFlags = 0;
-    gSaveContext.backupFW = gSaveContext.fw;
     for (int flag = 0; flag < ARRAY_COUNT(gSaveContext.gsFlags); flag++) {
         gSaveContext.gsFlags[flag] = 0;
     }
@@ -614,11 +613,17 @@ void SaveManager::InitFileNormal() {
     gSaveContext.magicLevel = 0;
     gSaveContext.infTable[29] = 1;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
+
+    // SoH specific
+    gSaveContext.backupFW = gSaveContext.fw;
     gSaveContext.pendingSale = ITEM_NONE;
     gSaveContext.pendingSaleMod = MOD_NONE;
 
+    // Boss Rush is set ahead of time in z_file_choose, otherwise init the save with the normal quest
     if (IS_BOSS_RUSH) {
         BossRush_InitSave();
+    } else {
+        gSaveContext.questId = QUEST_NORMAL;
     }
 
     //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
