@@ -1293,8 +1293,6 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
         gSaveContext.questId = this->questType[this->buttonIndex];
 
-        gSaveContext.isBossRushPaused = false;
-
         if (this->questType[this->buttonIndex] == QUEST_BOSSRUSH) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             this->prevConfigMode = this->configMode;
@@ -2819,10 +2817,6 @@ void FileChoose_ConfirmFile(GameState* thisx) {
         if (this->confirmButtonIndex == FS_BTN_CONFIRM_YES) {
             func_800AA000(300.0f, 180, 20, 100);
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            // Reset Boss Rush because it's only ever saved in memory.
-            if (IS_BOSS_RUSH) {
-                gSaveContext.questId = QUEST_NORMAL;
-            }
             this->selectMode = SM_FADE_OUT;
             func_800F6964(0xF);
         } else {

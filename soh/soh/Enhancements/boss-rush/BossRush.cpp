@@ -291,6 +291,7 @@ void BossRush_InitSave() {
         gSaveContext.playerName[i] = brPlayerName[i];
     }
 
+    gSaveContext.questId = QUEST_BOSSRUSH;
     gSaveContext.isBossRushPaused = 1;
     gSaveContext.entranceIndex = 107;
     gSaveContext.cutsceneIndex = 0x8000;
