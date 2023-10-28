@@ -337,10 +337,6 @@ std::string AudioCollection::GetCvarLockKey(std::string sfxKey) {
     return "gAudioEditor.ReplacedSequences." + sfxKey + ".locked";
 }
 
-std::string AudioCollection::GetOldCvarKey(std::string sfxKey) {
-    return "gAudioEditor.ReplacedSequences." + sfxKey;
-}
-
 void AudioCollection::AddToCollection(char* otrPath, uint16_t seqNum) {
     std::string fileName = std::filesystem::path(otrPath).filename().string();
     std::vector<std::string> splitFileName = StringHelper::Split(fileName, "_");

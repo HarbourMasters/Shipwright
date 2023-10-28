@@ -803,6 +803,7 @@ extern "C" void InitOTR() {
 
     std::shared_ptr<LUS::Config> conf = OTRGlobals::Instance->context->GetConfig(); 
     conf->RegisterConfigVersionUpdater(std::make_shared<LUS::ConfigVersion1Updater>());
+    conf->RegisterConfigVersionUpdater(std::make_shared<LUS::ConfigVersion2Updater>());
     conf->RunVersionUpdates();
 }
 

@@ -54,20 +54,6 @@ size_t AuthenticCountBySequenceType(SeqType type) {
     }
 }
 
-void SetReplacement(std::string sfxKey, u16 replacement) {
-    if (CVarGet(AudioCollection::Instance->GetOldCvarKey(sfxKey).c_str()) != nullptr) {
-        CVarClear(AudioCollection::Instance->GetOldCvarKey(sfxKey).c_str());
-    }
-    CVarSetInteger(AudioCollection::Instance->GetCvarKey(sfxKey).c_str(), replacement);
-}
-
-void SetLocked(std::string sfxKey, u16 locked) {
-    if (CVarGet(AudioCollection::Instance->GetOldCvarKey(sfxKey).c_str()) != nullptr) {
-        CVarClear(AudioCollection::Instance->GetOldCvarKey(sfxKey).c_str());
-    }
-    CVarSetInteger(AudioCollection::Instance->GetCvarLockKey(sfxKey).c_str(), locked);
-}
-
 // Grabs the current BGM sequence ID and replays it
 // which will lookup the proper override, or reset back to vanilla
 void ReplayCurrentBGM() {
@@ -106,6 +92,7 @@ void RandomizeGroup(SeqType type) {
     }
     Shuffle(values);
     for (const auto& [seqId, seqData] : AudioCollection::Instance->GetAllSequences()) {
+        const std::string cvarKey = AudioCollection::Instance->GetCvarKey(seqData.sfxKey);
         const std::string cvarLockKey = AudioCollection::Instance->GetCvarLockKey(seqData.sfxKey);
         // don't randomize locked entries
         if ((seqData.category & type) && CVarGetInteger(cvarLockKey.c_str(), 0) == 0) {
@@ -114,7 +101,7 @@ void RandomizeGroup(SeqType type) {
                 continue;
             }
             const int randomValue = values.back();
-            SetReplacement(seqData.sfxKey, randomValue);
+            CVarSetInteger(cvarKey.c_str(), randomValue);
             values.pop_back();
         }
     }
@@ -235,7 +222,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
                 }
 
                 if (ImGui::Selectable(seqData.label.c_str())) {
-                    SetReplacement(seqData.sfxKey, value);
+                    CVarSetInteger(cvarKey.c_str(), value);
                     LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     UpdateCurrentBGM(defaultValue, type);
                 }
@@ -272,8 +259,8 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
 
             if (validSequences.size()) {
                 auto it = validSequences.begin();
-                const auto& seqData2 = *std::next(it, rand() % validSequences.size());
-                SetReplacement(seqData.sfxKey, seqData2->sequenceId);
+                const auto& seqData = *std::next(it, rand() % validSequences.size());
+                CVarSetInteger(cvarKey.c_str(), seqData->sequenceId);
                 if (locked) {
                     CVarClear(cvarLockKey.c_str());
                 }
@@ -288,7 +275,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
             if (locked) {
                 CVarClear(cvarLockKey.c_str());
             } else {
-                SetLocked(seqData.sfxKey, 1);
+                CVarSetInteger(cvarLockKey.c_str(), 1);
             }
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
