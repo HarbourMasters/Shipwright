@@ -395,6 +395,13 @@ void ResetPositionAll() {
 
 int hue = 0;
 
+// Runs on scene init to randomize all unlocked cosmetics
+void CosmeticsOnSceneInitHook() {
+    if (CVarGetInteger("gCosmetics.RandomizeAllOnNewScene", 0) == 1) {
+        CosmeticsEditor_RandomizeAll();
+    }
+}
+
 // Runs every frame to update rainbow hue, a potential future optimization is to only run this a once or twice a second and increase the speed of the rainbow hue rotation.
 void CosmeticsUpdateTick() {
     int index = 0;
@@ -1794,14 +1801,11 @@ void CosmeticsEditorWindow::DrawElement() {
     }
     UIWidgets::EnhancementCheckbox("Sync Rainbow colors", "gCosmetics.RainbowSync");
     UIWidgets::EnhancementSliderFloat("Rainbow Speed: %f", "##rainbowSpeed", "gCosmetics.RainbowSpeed", 0.03f, 1.0f, "", 0.6f, false);
+    UIWidgets::EnhancementCheckbox("Randomize All on New Scene", "gCosmetics.RandomizeAllOnNewScene");
+    UIWidgets::Tooltip("Enables randomizing all unlocked cosmetics when you enter a new scene.");
+    
     if (ImGui::Button("Randomize All", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
-        for (auto& [id, cosmeticOption] : cosmeticOptions) {
-            if (!CVarGetInteger(cosmeticOption.lockedCvar, 0) && (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0))) {
-                RandomizeColor(cosmeticOption);
-            }
-        }
-        ApplyOrResetCustomGfxPatches();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        CosmeticsEditor_RandomizeAll();
     }
     ImGui::SameLine();
     if (ImGui::Button("Reset All", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
@@ -1894,6 +1898,12 @@ void RegisterOnGameFrameUpdateHook() {
     });
 }
 
+void Cosmetics_RegisterOnSceneInitHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        CosmeticsOnSceneInitHook();
+    });
+}
+
 void CosmeticsEditorWindow::InitElement() {
     // Convert the `current color` into the format that the ImGui color picker expects
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
@@ -1911,6 +1921,7 @@ void CosmeticsEditorWindow::InitElement() {
 
     RegisterOnLoadGameHook();
     RegisterOnGameFrameUpdateHook();
+    Cosmetics_RegisterOnSceneInitHook();
 }
 
 void CosmeticsEditor_RandomizeAll() {
