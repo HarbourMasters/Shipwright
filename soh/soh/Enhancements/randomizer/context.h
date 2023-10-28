@@ -51,7 +51,7 @@ class Context {
     Settings& GetSettings();
     Option& GetOption(RandomizerSettingKey key);
     Option& GetTrickOption(RandomizerTrick key);
-    GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true);
+    GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
     std::vector<RandomizerCheck> everyPossibleLocation = {};

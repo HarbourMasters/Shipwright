@@ -202,9 +202,12 @@ void Context::SetSpoilerLoaded(bool spoilerLoaded) {
     mSpoilerLoaded = spoilerLoaded;
 }
 
-GetItemEntry Context::GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability) {
+GetItemEntry Context::GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability, GetItemID ogItemId) {
     auto itemLoc = GetItemLocation(rc);
     if (itemLoc->GetPlacedRandomizerGet() == RG_NONE) {
+        if (ogItemId != GI_NONE) {
+            return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, ogItemId);
+        }
         return ItemTableManager::Instance->RetrieveItemEntry(
             MOD_NONE, StaticData::RetrieveItem(StaticData::GetLocation(rc)->GetVanillaItem()).GetItemID());
     }

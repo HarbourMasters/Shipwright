@@ -1676,7 +1676,7 @@ bool Randomizer::IsTrialRequired(RandomizerInf trial) {
 GetItemEntry Randomizer::GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId,
                                           bool checkObtainability) {
     return Rando::Context::GetInstance()->GetFinalGIEntry(GetCheckFromActor(actorId, sceneNum, actorParams),
-                                                          checkObtainability);
+                                                          checkObtainability, ogItemId);
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
