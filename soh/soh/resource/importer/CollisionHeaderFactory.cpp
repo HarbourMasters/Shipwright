@@ -173,21 +173,6 @@ void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, s
     collisionHeader->collisionHeaderData.maxBounds.y = reader->IntAttribute("MaxBoundsY");
     collisionHeader->collisionHeaderData.maxBounds.z = reader->IntAttribute("MaxBoundsZ");
 
-    collisionHeader->collisionHeaderData.numVertices = reader->IntAttribute("NumVertices");
-    collisionHeader->collisionHeaderData.numPolygons = reader->IntAttribute("NumPolygons");
-    collisionHeader->surfaceTypesCount = reader->IntAttribute("NumPolygonTypes");
-    collisionHeader->camDataCount = reader->IntAttribute("NumCameraDatas");
-    collisionHeader->camPosCount = reader->IntAttribute("NumCameraPositionDatas");
-    collisionHeader->collisionHeaderData.numWaterBoxes = reader->IntAttribute("NumWaterBoxes");
-
-    collisionHeader->vertices.reserve(collisionHeader->collisionHeaderData.numVertices);
-    collisionHeader->polygons.reserve(collisionHeader->collisionHeaderData.numPolygons);
-    collisionHeader->surfaceTypes.reserve(collisionHeader->surfaceTypesCount);
-    collisionHeader->camData.reserve(collisionHeader->camDataCount);
-    collisionHeader->camPosDataIndices.reserve(collisionHeader->camDataCount);
-    collisionHeader->camPosData.reserve(collisionHeader->camPosCount);
-    collisionHeader->waterBoxes.reserve(collisionHeader->collisionHeaderData.numWaterBoxes);
-
     Vec3s zero;
     zero.x = 0;
     zero.y = 0;
@@ -267,16 +252,23 @@ void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, s
         child = child->NextSiblingElement();
     }
 
-    for (size_t i = 0; i < collisionHeader->camDataCount; i++) {
+    for (size_t i = 0; i < collisionHeader->camData.size(); i++) {
         int32_t idx = collisionHeader->camPosDataIndices[i];
 
-        if (collisionHeader->camPosCount > 0) {
+        if (collisionHeader->camPosData.size() > 0) {
             collisionHeader->camData[i].camPosData = &collisionHeader->camPosData[idx];
         } else {
             collisionHeader->camData[i].camPosData = &collisionHeader->camPosDataZero;
         }
     }
     
+    collisionHeader->collisionHeaderData.numVertices = collisionHeader->vertices.size();
+    collisionHeader->collisionHeaderData.numPolygons = collisionHeader->polygons.size();
+    collisionHeader->surfaceTypesCount = collisionHeader->surfaceTypes.size();
+    collisionHeader->camDataCount = collisionHeader->camData.size();
+    collisionHeader->camPosCount = collisionHeader->camPosData.size();
+    collisionHeader->collisionHeaderData.numWaterBoxes = collisionHeader->waterBoxes.size();
+
     collisionHeader->collisionHeaderData.vtxList = collisionHeader->vertices.data();
     collisionHeader->collisionHeaderData.polyList = collisionHeader->polygons.data();
     collisionHeader->collisionHeaderData.surfaceTypeList = collisionHeader->surfaceTypes.data();
