@@ -131,6 +131,10 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"a #hole in a volcano# holds", /*french*/"la #grotte dans le volcan# contient", /*spanish*/"bajo el #hoyo de un volcán# yace"},
   });
 
+    hintTable[TOT_MASTER_SWORD] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #pedestal in a temple# holds", /*french*/"un #piédestal dans un temple# contient", /*spanish*/"un #pedestal en un templo# sostiene"},
+  });
 
     hintTable[TOT_LIGHT_ARROWS_CUTSCENE] = HintText::Exclude({
                        //obscure text

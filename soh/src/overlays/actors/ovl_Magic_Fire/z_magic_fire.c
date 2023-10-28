@@ -93,7 +93,7 @@ void MagicFire_Init(Actor* thisx, PlayState* play) {
 }
 
 void MagicFire_Destroy(Actor* thisx, PlayState* play) {
-    func_800876C8(play);
+    Magic_Reset(play);
 }
 
 void MagicFire_UpdateBeforeCast(Actor* thisx, PlayState* play) {

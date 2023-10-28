@@ -545,7 +545,7 @@ void EnZl2_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
         {
             Player* player = GET_PLAYER(play);
             Matrix_Push();
-            if (player->rightHandType == 0xFF) {
+            if (player->rightHandType == PLAYER_MODELTYPE_RH_FF) {
                 Matrix_Put(&player->shieldMf);
                 Matrix_Translate(180.0f, 979.0f, -375.0f, MTXMODE_APPLY);
                 Matrix_RotateZYX(-0x5DE7, -0x53E9, 0x3333, MTXMODE_APPLY);
