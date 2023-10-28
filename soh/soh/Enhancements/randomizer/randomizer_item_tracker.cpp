@@ -86,20 +86,16 @@ std::vector<ItemTrackerItem> triforcePieces = {
 
 std::vector<ItemTrackerItem> bossSoulItems = {
     //Hack for right now, just gonna draw souls as bottles/big poes.
-    ItemTrackerItem(RG_GOHMA_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
-    ItemTrackerItem(RG_KING_DODONGO_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
-    ItemTrackerItem(RG_BARINADE_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
-    ItemTrackerItem(RG_PHANTOM_GANON_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
-    ItemTrackerItem(RG_VOLVAGIA_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
-    ItemTrackerItem(RG_MORPHA_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
-    ItemTrackerItem(RG_BONGO_BONGO_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
-    ItemTrackerItem(RG_TWINROVA_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
-    ItemTrackerItem(RG_GANON_SOUL, "ITEM_BIG_POE", "ITEM_BOTTLE_Faded", 0, DrawItem ),
-    
-    //For when these actually have textures, maybe?
-    // ITEM_TRACKER_ITEM(RG_GOHMA_SOUL, 0, DrawItem),         ITEM_TRACKER_ITEM(RG_KING_DODONGO_SOUL, 0, DrawItem), ITEM_TRACKER_ITEM(RG_BARINADE_SOUL, 0, DrawItem),
-    // ITEM_TRACKER_ITEM(RG_PHANTOM_GANON_SOUL, 0, DrawItem), ITEM_TRACKER_ITEM(RG_VOLVAGIA_SOUL, 0, DrawItem),     ITEM_TRACKER_ITEM(RG_MORPHA_SOUL, 0, DrawItem),
-    // ITEM_TRACKER_ITEM(RG_BONGO_BONGO_SOUL, 0, DrawItem),   ITEM_TRACKER_ITEM(RG_TWINROVA_SOUL, 0, DrawItem),     ITEM_TRACKER_ITEM(RG_GANON_SOUL, 0, DrawItem),
+    //Will replace with other macro once we have a custom texture
+    ITEM_TRACKER_ITEM_CUSTOM(RG_GOHMA_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_KING_DODONGO_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_BARINADE_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_PHANTOM_GANON_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_VOLVAGIA_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_MORPHA_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_BONGO_BONGO_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_TWINROVA_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_GANON_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
 };
 
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsHorizontal = {
@@ -681,8 +677,9 @@ void DrawItem(ItemTrackerItem item) {
             break;
         case RG_GANON_SOUL:
             actualItemId = item.id;
-            hasItem = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS) == RO_BOSS_SOULS_ON_PLUS_GANON ? true :
-                Flags_GetRandomizerInf(RAND_INF_GANON_SOUL);
+            hasItem = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS) == RO_BOSS_SOULS_ON_PLUS_GANON ? 
+                Flags_GetRandomizerInf(RAND_INF_GANON_SOUL) : true;
+                
             itemName = "Ganon's Soul";
             break;
     }
