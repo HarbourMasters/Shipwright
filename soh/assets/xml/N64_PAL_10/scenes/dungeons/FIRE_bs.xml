@@ -1,0 +1,34 @@
+<Root>
+    <File Name="FIRE_bs_scene" Segment="2">
+        <Texture Name="FIRE_bs_sceneTex_002C00" OutName="FIRE_bs_sceneTex_002C00" Format="rgba16" Width="32" Height="32" Offset="0x2C00" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_sceneTex_003400" OutName="FIRE_bs_sceneTex_003400" Format="rgba16" Width="32" Height="32" Offset="0x3400" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_sceneTex_003C00" OutName="FIRE_bs_sceneTex_003C00" Format="rgba16" Width="32" Height="32" Offset="0x3C00" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_sceneTex_004400" OutName="FIRE_bs_sceneTex_004400" Format="rgba16" Width="32" Height="32" Offset="0x4400" AddedByScript="true"/>
+        <Scene Name="FIRE_bs_scene" Offset="0x0"/>
+    </File>
+    <File Name="FIRE_bs_room_0" Segment="3">
+        <Texture Name="FIRE_bs_room_0Tex_002E68" OutName="FIRE_bs_room_0Tex_002E68" Format="ci4" Width="32" Height="32" Offset="0x2E68" TlutOffset="0x2E48" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_0Tex_003068" OutName="FIRE_bs_room_0Tex_003068" Format="ci4" Width="32" Height="64" Offset="0x3068" TlutOffset="0x2E48" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_0Tex_003468" OutName="FIRE_bs_room_0Tex_003468" Format="ci4" Width="64" Height="32" Offset="0x3468" TlutOffset="0x2E28" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_0Tex_003868" OutName="FIRE_bs_room_0Tex_003868" Format="ci4" Width="32" Height="32" Offset="0x3868" TlutOffset="0x2E28" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_0Tex_003A68" OutName="FIRE_bs_room_0Tex_003A68" Format="ci4" Width="32" Height="32" Offset="0x3A68" TlutOffset="0x2E28" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_0Tex_003C68" OutName="FIRE_bs_room_0Tex_003C68" Format="ci4" Width="32" Height="64" Offset="0x3C68" TlutOffset="0x2E48" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_0Tex_004068" OutName="FIRE_bs_room_0Tex_004068" Format="ci4" Width="32" Height="32" Offset="0x4068" TlutOffset="0x2E48" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_0TLUT_002E28" OutName="FIRE_bs_room_0TLUT_002E28" Format="rgba16" Width="4" Height="4" Offset="0x2E28" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_0TLUT_002E48" OutName="FIRE_bs_room_0TLUT_002E48" Format="rgba16" Width="4" Height="4" Offset="0x2E48" AddedByScript="true"/>
+        <Room Name="FIRE_bs_room_0" Offset="0x0"/>
+    </File>
+    <File Name="FIRE_bs_room_1" Segment="3">
+        <Texture Name="FIRE_bs_room_1Tex_0049D8" OutName="FIRE_bs_room_1Tex_0049D8" Format="ci4" Width="32" Height="32" Offset="0x49D8" TlutOffset="0x49B8" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_1Tex_004BD8" OutName="FIRE_bs_room_1Tex_004BD8" Format="rgba16" Width="32" Height="32" Offset="0x4BD8" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_1Tex_0053D8" OutName="FIRE_bs_room_1Tex_0053D8" Format="rgba16" Width="32" Height="32" Offset="0x53D8" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_1Tex_005BD8" OutName="FIRE_bs_room_1Tex_005BD8" Format="ci4" Width="64" Height="32" Offset="0x5BD8" TlutOffset="0x4998" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_1Tex_005FD8" OutName="FIRE_bs_room_1Tex_005FD8" Format="ci4" Width="32" Height="32" Offset="0x5FD8" TlutOffset="0x4998" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_1Tex_0061D8" OutName="FIRE_bs_room_1Tex_0061D8" Format="ci4" Width="32" Height="64" Offset="0x61D8" TlutOffset="0x49B8" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_1Tex_0065D8" OutName="FIRE_bs_room_1Tex_0065D8" Format="rgba16" Width="32" Height="32" Offset="0x65D8" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_1Tex_006DD8" OutName="FIRE_bs_room_1Tex_006DD8" Format="ci4" Width="32" Height="32" Offset="0x6DD8" TlutOffset="0x49B8" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_1TLUT_004998" OutName="FIRE_bs_room_1TLUT_004998" Format="rgba16" Width="4" Height="4" Offset="0x4998" AddedByScript="true"/>
+        <Texture Name="FIRE_bs_room_1TLUT_0049B8" OutName="FIRE_bs_room_1TLUT_0049B8" Format="rgba16" Width="4" Height="4" Offset="0x49B8" AddedByScript="true"/>
+        <Room Name="FIRE_bs_room_1" Offset="0x0"/>
+    </File>
+</Root>

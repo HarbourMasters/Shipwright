@@ -240,7 +240,7 @@ namespace UIWidgets {
         std::string comboName = std::string("##") + std::string(cvarName);
         if (ImGui::BeginCombo(comboName.c_str(), comboArray[selected])) {
             for (uint8_t i = 0; i < comboArray.size(); i++) {
-                if (strlen(comboArray[i]) > 1) {
+                if (strlen(comboArray[i]) > 0) {
                     if (ImGui::Selectable(comboArray[i], i == selected)) {
                         CVarSetInteger(cvarName, i);
                         selected = i;
@@ -689,5 +689,49 @@ namespace UIWidgets {
             ImGui::PopID();
         }
         ImGui::PopID();
+    }
+
+    bool StateButtonEx(const char* str_id, const char* label, ImVec2 size, ImGuiButtonFlags flags) {
+        ImGuiContext& g = *GImGui;
+        ImGuiWindow* window = ImGui::GetCurrentWindow();
+        if (window->SkipItems)
+            return false;
+
+        const ImGuiStyle& style = g.Style;
+        const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true);
+
+        const ImGuiID id = window->GetID(str_id);
+        const ImRect bb(window->DC.CursorPos, window->DC.CursorPos + size);
+        const float default_size = ImGui::GetFrameHeight();
+        ImGui::ItemSize(size, (size.y >= default_size) ? g.Style.FramePadding.y : -1.0f);
+        if (!ImGui::ItemAdd(bb, id))
+            return false;
+
+        if (g.LastItemData.InFlags & ImGuiItemFlags_ButtonRepeat)
+            flags |= ImGuiButtonFlags_Repeat;
+
+        bool hovered, held;
+        bool pressed = ImGui::ButtonBehavior(bb, id, &hovered, &held, flags);
+
+        // Render
+        const ImU32 bg_col = ImGui::GetColorU32((held && hovered) ? ImGuiCol_ButtonActive
+                                         : hovered         ? ImGuiCol_ButtonHovered
+                                                           : ImGuiCol_Button);
+        //const ImU32 text_col = ImGui::GetColorU32(ImGuiCol_Text);
+        ImGui::RenderNavHighlight(bb, id);
+        ImGui::RenderFrame(bb.Min, bb.Max, bg_col, true, g.Style.FrameRounding);
+        ImGui::RenderTextClipped(bb.Min + style.FramePadding, bb.Max - style.FramePadding, label, NULL, &label_size, {0.55f, 0.45f}, &bb);
+        /*ImGui::RenderArrow(window->DrawList,
+                    bb.Min +
+                        ImVec2(ImMax(0.0f, (size.x - g.FontSize) * 0.5f), ImMax(0.0f, (size.y - g.FontSize) * 0.5f)),
+                    text_col, dir);*/
+
+        IMGUI_TEST_ENGINE_ITEM_INFO(id, str_id, g.LastItemData.StatusFlags);
+        return pressed;
+    }
+
+    bool StateButton(const char* str_id, const char* label) {
+        float sz = ImGui::GetFrameHeight();
+        return StateButtonEx(str_id, label, ImVec2(sz, sz), ImGuiButtonFlags_None);
     }
 }

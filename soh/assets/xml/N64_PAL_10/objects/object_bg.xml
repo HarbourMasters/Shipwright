@@ -1,0 +1,50 @@
+<Root>
+    <File Name="object_bg" Segment="6">
+
+        <!-- Bombchu Bowling Girl skeleton -->
+        <Skeleton Name="gChuGirlSkel" Type="Flex" LimbType="Standard" Offset="0x6EB0"/>
+
+        <!-- Bombchu Bowling Girl animations -->
+        <Animation Name="gChuGirlWakeUpAnim" Offset="0x80"/>
+        <Animation Name="gChuGirlNoddingOffAnim" Offset="0x710"/>
+        <Animation Name="gChuGirlLeanOverCounterAnim" Offset="0x72AC"/>
+
+        <!-- Bombchu Bowling Girl limb displaylists -->
+        <DList Name="gChuGirlWaistDL" Offset="0x4038"/>
+        <DList Name="gChuGirlTorsoDL" Offset="0x3DB0"/>
+        <DList Name="gChuGirlNeckDL" Offset="0x33C8"/>
+        <DList Name="gChuGirlHeadDL" Offset="0x2EE0"/>
+        <DList Name="gChuGirlLeftUpperArmDL" Offset="0x3780"/>
+        <DList Name="gChuGirlLeftForearmDL" Offset="0x3670"/>
+        <DList Name="gChuGirlLeftHandDL" Offset="0x3520"/>
+        <DList Name="gChuGirlRightUpperArmDL" Offset="0x3BC8"/>
+        <DList Name="gChuGirlRightForearmDL" Offset="0x3AB8"/>
+        <DList Name="gChuGirlRightHandDL" Offset="0x3968"/>
+
+        <!-- Bombchu Bowling Girl limbs -->
+        <Limb Name="gChuGirlWaistLimb" LimbType="Standard" Offset="0x6E10"/>
+        <Limb Name="gChuGirlTorsoLimb" LimbType="Standard" Offset="0x6E1C"/>
+        <Limb Name="gChuGirlNeckLimb" LimbType="Standard" Offset="0x6E28"/>
+        <Limb Name="gChuGirlHeadLimb" LimbType="Standard" Offset="0x6E34"/>
+        <Limb Name="gChuGirlLeftUpperArmLimb" LimbType="Standard" Offset="0x6E40"/>
+        <Limb Name="gChuGirlLeftForearmLimb" LimbType="Standard" Offset="0x6E4C"/>
+        <Limb Name="gChuGirlLeftHandLimb" LimbType="Standard" Offset="0x6E58"/>
+        <Limb Name="gChuGirlRightUpperArmLimb" LimbType="Standard" Offset="0x6E64"/>
+        <Limb Name="gChuGirlRightForearmLimb" LimbType="Standard" Offset="0x6E70"/>
+        <Limb Name="gChuGirlRightHandLimb" LimbType="Standard" Offset="0x6E7C"/>
+
+        <!-- Bombchu Bowling Girl limb textures -->
+        <Texture Name="gChuGirlMouthTex" OutName="chu_girl_mouth" Format="rgba16" Width="32" Height="32" Offset="0x5910"/>
+        <Texture Name="gChuGirlSkinGradientTex" OutName="chu_girl_skin_gradient" Format="rgba16" Width="16" Height="16" Offset="0x6110"/>
+        <Texture Name="gChuGirlSweaterTex" OutName="chu_girl_sweater" Format="rgba16" Width="32" Height="32" Offset="0x6510"/>
+        <Texture Name="gChuGirlUmbEarLicusTex" OutName="chu_girl_umb_ear_licus" Format="rgba16" Width="16" Height="16" Offset="0x6310"/>
+        <Texture Name="gChuGirlHairTex" OutName="chu_girl_hair" Format="rgba16" Width="8" Height="16" Offset="0x6D10"/>
+
+        <!-- Bombchu Bowling Girl eye textures -->
+        <Texture Name="gChuGirlEyeOpenTex" OutName="chu_girl_eye_open" Format="rgba16" Width="32" Height="32" Offset="0x4110"/>
+        <Texture Name="gChuGirlEyeHalfTex" OutName="chu_girl_eye_half" Format="rgba16" Width="32" Height="32" Offset="0x4910"/>
+        <Texture Name="gChuGirlEyeClosedTex" OutName="chu_girl_eye_closed" Format="rgba16" Width="32" Height="32"  Offset="0x5110"/>
+
+
+    </File>
+</Root>

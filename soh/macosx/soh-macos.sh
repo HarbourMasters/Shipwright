@@ -24,6 +24,12 @@ remap_hashes ()
 	d6342c59007e57c1194661ec6880b2f078403f4e) # n64
 		ROMHASH=0227d7c0074f2d0ac935631990da8ec5914597b4
 		;;
+	d0bdc2eb320668b4ba6893b9aefe4040a73123ff) # v64
+		ROMHASH=328a1f1beba30ce5e178f031662019eb32c5f3b5
+		;;
+	4946ab250f6ac9b32d76b21f309ebb8ebc8103d2) # n64
+		ROMHASH=328a1f1beba30ce5e178f031662019eb32c5f3b5
+		;;
 	663c34f1b2c05a09e5beffe4d0dcd440f7d49dc7) # v64
 		ROMHASH=cfbb98d392e4a9d39da8285d10cbef3974c2f012
 		;;
@@ -103,6 +109,8 @@ if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 					ROM_TYPE=0;;
 				0227d7c0074f2d0ac935631990da8ec5914597b4)
 					ROM_TYPE=0;;
+				328a1f1beba30ce5e178f031662019eb32c5f3b5)
+					ROM_TYPE=0;;
 				cfbb98d392e4a9d39da8285d10cbef3974c2f012)
 					ROM_TYPE=0;;
 				f46239439f59a2a594ef83cf68ef65043b1bffe2)
@@ -172,9 +180,7 @@ if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 		export ASSETDIR
 		cp -r "$RESPATH/assets" "$ASSETDIR"
 		mkdir -p "$ASSETDIR"/tmp
-		mkdir -p "$ASSETDIR"/Extract
 		cp "$ROMPATH" "$ASSETDIR"/tmp/rom.z64
-		cp -r "$ASSETDIR"/assets/game "$ASSETDIR"/Extract/assets/
 		cd "$ASSETDIR" || return
 
 		# If an invalid rom was detected, let the user know
@@ -188,6 +194,9 @@ if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 				OTRNAME="oot.otr";;
 			0227d7c0074f2d0ac935631990da8ec5914597b4)
 				ROM=GC_NMQ_PAL_F
+				OTRNAME="oot.otr";;
+			328a1f1beba30ce5e178f031662019eb32c5f3b5)
+				ROM=N64_PAL_10
 				OTRNAME="oot.otr";;
 			cfbb98d392e4a9d39da8285d10cbef3974c2f012)
 				ROM=N64_PAL_11
