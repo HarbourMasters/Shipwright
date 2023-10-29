@@ -749,18 +749,20 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
 // Check that a soh.otr exists and matches the version of soh running
 // Otherwise show a message and exit
 void CheckSoHOTRVersion(std::string otrPath) {
+    std::string msg;
+
 #if defined(__SWITCH__)
-    const char msq[] = "\x1b[4;2HPlease re-extract it from the download."
+    msq = "\x1b[4;2HPlease re-extract it from the download."
                        "\x1b[6;2HPress the Home button to exit...";
 #elif defined(__WIIU__)
-    const char msg[] = "Please extract the soh.otr from the Ship of Harkinian download\nto your folder.\n\nPress and hold the power button to shutdown...";
+    msg = "Please extract the soh.otr from the Ship of Harkinian download\nto your folder.\n\nPress and hold the power button to shutdown...";
 #else
-    const char msg[] = "Please extract the soh.otr from the Ship of Harkinian download to your folder.\n\nExiting...";
+    msg = "Please extract the soh.otr from the Ship of Harkinian download to your folder.\n\nExiting...";
 #endif
 
     if (!std::filesystem::exists(otrPath)) {
 #if not defined(__SWITCH__) && not defined(__WIIU__)
-        Extractor::ShowErrorBox("soh.otr file is missing", msg);
+        Extractor::ShowErrorBox("soh.otr file is missing", msg.c_str());
         exit(1);
 #elif defined(__SWITCH__)
         LUS::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou are missing the soh.otr file." + msg).c_str());
@@ -774,7 +776,7 @@ void CheckSoHOTRVersion(std::string otrPath) {
 
     if (otrVersion.major != gBuildVersionMajor || otrVersion.minor != gBuildVersionMinor || otrVersion.patch != gBuildVersionPatch) {
 #if not defined(__SWITCH__) && not defined(__WIIU__)
-        Extractor::ShowErrorBox("soh.otr file version does not match", msg);
+        Extractor::ShowErrorBox("soh.otr file version does not match", msg.c_str());
         exit(1);
 #elif defined(__SWITCH__)
         LUS::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou have an old soh.otr file." + msg).c_str());
