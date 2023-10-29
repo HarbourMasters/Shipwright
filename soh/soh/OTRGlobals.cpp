@@ -852,12 +852,19 @@ void DetectOTRVersion(std::string fileName, bool isMQ) {
 }
 
 extern "C" void InitOTR() {
+
+#ifdef __SWITCH__
+    LUS::Switch::Init(LUS::PreInitPhase);
+#elif defined(__WIIU__)
+    LUS::WiiU::Init(appShortName);
+#endif
+
     CheckSoHOTRVersion(LUS::Context::GetPathRelativeToAppBundle("soh.otr"));
 
     if (!std::filesystem::exists(LUS::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName)) &&
         !std::filesystem::exists(LUS::Context::LocateFileAcrossAppDirs("oot.otr", appShortName))){
 
-#if not defined (__SWITCH__) && not defined(__WIIU__)
+#if not defined(__SWITCH__) && not defined(__WIIU__)
         std::string installPath = LUS::Context::GetAppBundlePath();
         if (!std::filesystem::exists(installPath + "/assets/extractor")) {
             Extractor::ShowErrorBox("Extractor assets not found",
@@ -900,12 +907,6 @@ extern "C" void InitOTR() {
 
     DetectOTRVersion("oot.otr", false);
     DetectOTRVersion("oot-mq.otr", true);
-
-#ifdef __SWITCH__
-    LUS::Switch::Init(LUS::PreInitPhase);
-#elif defined(__WIIU__)
-    LUS::WiiU::Init(appShortName);
-#endif
 
     OTRGlobals::Instance = new OTRGlobals();
     CustomMessageManager::Instance = new CustomMessageManager();
