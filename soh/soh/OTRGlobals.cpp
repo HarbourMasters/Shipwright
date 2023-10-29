@@ -749,17 +749,23 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
 // Check that a soh.otr exists and matches the version of soh running
 // Otherwise show a message and exit
 void CheckSoHOTRVersion(std::string otrPath) {
+#if defined(__SWITCH__)
+    const char msq[] = "\x1b[4;2HPlease re-extract it from the download."
+                       "\x1b[6;2HPress the Home button to exit...";
+#elif defined(__WIIU__)
+    const char msg[] = "Please extract the soh.otr from the Ship of Harkinian download\nto your folder.\n\nPress and hold the power button to shutdown...";
+#else
     const char msg[] = "Please extract the soh.otr from the Ship of Harkinian download to your folder.\n\nExiting...";
+#endif
 
     if (!std::filesystem::exists(otrPath)) {
 #if not defined(__SWITCH__) && not defined(__WIIU__)
         Extractor::ShowErrorBox("soh.otr file is missing", msg);
         exit(1);
 #elif defined(__SWITCH__)
-        LUS::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou are missing the soh.otr file."
-                                               "\x1b[4;2HPlease re-extract it from the download.");
+        LUS::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou are missing the soh.otr file." + msg).c_str());
 #elif defined(__WIIU__)
-        OSFatal(msg);
+        OSFatal(("You are missing the soh.otr file\n\n" + msg).c_str());
         exit(1);
 #endif
     }
@@ -771,10 +777,9 @@ void CheckSoHOTRVersion(std::string otrPath) {
         Extractor::ShowErrorBox("soh.otr file version does not match", msg);
         exit(1);
 #elif defined(__SWITCH__)
-        LUS::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou have an old soh.otr file."
-                                               "\x1b[4;2HPlease re-extract it from the download.");
+        LUS::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou have an old soh.otr file." + msg).c_str());
 #elif defined(__WIIU__)
-        OSFatal(msg);
+        OSFatal(("You have an old soh.otr file\n\n" + msg).c_str());
         exit(1);
 #endif
     }
@@ -830,11 +835,15 @@ void DetectOTRVersion(std::string fileName, bool isMQ) {
         } else {
             exit(1);
         }
+
 #elif defined(__SWITCH__)
-        LUS::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship with an old OTR file."
-                                               "\x1b[4;2HPlease regenerate a new OTR and relaunch.");
+        LUS::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship with an old game OTR file."
+                                               "\x1b[4;2HPlease regenerate a new game OTR and relaunch."
+                                               "\x1b[6;2HPress the Home button to exit...");
 #elif defined(__WIIU__)
-        LUS::WiiU::ThrowInvalidOTR();
+        OSFatal("You've launched the Ship with an old a game OTR file.\n\n"
+                "Please generate a game OTR and relaunch.\n\n"
+                "Press and hold the Power button to shutdown...");
         exit(1);
 #endif
     }
@@ -843,10 +852,10 @@ void DetectOTRVersion(std::string fileName, bool isMQ) {
 extern "C" void InitOTR() {
     CheckSoHOTRVersion(LUS::Context::GetPathRelativeToAppBundle("soh.otr"));
 
-#if not defined (__SWITCH__) && not defined(__WIIU__)
     if (!std::filesystem::exists(LUS::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName)) &&
         !std::filesystem::exists(LUS::Context::LocateFileAcrossAppDirs("oot.otr", appShortName))){
 
+#if not defined (__SWITCH__) && not defined(__WIIU__)
         std::string installPath = LUS::Context::GetAppBundlePath();
         if (!std::filesystem::exists(installPath + "/assets/extractor")) {
             Extractor::ShowErrorBox("Extractor assets not found",
@@ -874,8 +883,18 @@ extern "C" void InitOTR() {
                 extract.CallZapd(installPath, LUS::Context::GetAppDirectoryPath(appShortName));
             }
         }
-    }
+
+#elif defined(__SWITCH__)
+        LUS::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship without a game OTR file."
+                                               "\x1b[4;2HPlease generate a game OTR and relaunch."
+                                               "\x1b[6;2HPress the Home button to exit...");
+#elif defined(__WIIU__)
+        OSFatal("You've launched the Ship without a game OTR file.\n\n"
+                "Please generate a game OTR and relaunch.\n\n"
+                "Press and hold the Power button to shutdown...");
+        exit(1);
 #endif
+    }
 
     DetectOTRVersion("oot.otr", false);
     DetectOTRVersion("oot-mq.otr", true);
@@ -883,7 +902,7 @@ extern "C" void InitOTR() {
 #ifdef __SWITCH__
     LUS::Switch::Init(LUS::PreInitPhase);
 #elif defined(__WIIU__)
-    LUS::WiiU::Init("soh");
+    LUS::WiiU::Init(appShortName);
 #endif
 
     OTRGlobals::Instance = new OTRGlobals();
