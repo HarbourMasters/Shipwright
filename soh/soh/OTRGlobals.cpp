@@ -752,7 +752,7 @@ void CheckSoHOTRVersion(std::string otrPath) {
     std::string msg;
 
 #if defined(__SWITCH__)
-    msq = "\x1b[4;2HPlease re-extract it from the download."
+    msg = "\x1b[4;2HPlease re-extract it from the download."
                        "\x1b[6;2HPress the Home button to exit...";
 #elif defined(__WIIU__)
     msg = "Please extract the soh.otr from the Ship of Harkinian download\nto your folder.\n\nPress and hold the power button to shutdown...";
