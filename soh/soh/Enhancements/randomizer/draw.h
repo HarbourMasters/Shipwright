@@ -12,6 +12,7 @@ extern "C" {
 void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawTriforcePiece(PlayState* play, GetItemEntry getItemEntry);
 void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry getItemEntry);
