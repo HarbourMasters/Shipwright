@@ -3,6 +3,7 @@
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "Enhancements/randomizer/context.h"
 #include "Enhancements/randomizer/entrance.h"
+#include "Enhancements/randomizer/dungeon.h"
 
 #include "z64.h"
 #include "functions.h"
@@ -298,11 +299,11 @@ void SaveManager::LoadRandomizerVersion2() {
 
     SaveManager::Instance->LoadData("masterQuestDungeonCount", gSaveContext.mqDungeonCount, (uint8_t)0);
 
-    OTRGlobals::Instance->gRandomizer->masterQuestDungeons.clear();
+    randoContext->GetDungeons()->ClearAllMQ();
     SaveManager::Instance->LoadArray("masterQuestDungeons", gSaveContext.mqDungeonCount, [&](size_t i) {
         uint16_t scene;
         SaveManager::Instance->LoadData("", scene);
-        randomizer->masterQuestDungeons.emplace(scene);
+        randoContext->GetDungeons()->GetDungeonFromScene(SceneID(scene))->SetMQ();
     });
 }
 
@@ -396,11 +397,11 @@ void SaveManager::LoadRandomizerVersion3() {
 
     SaveManager::Instance->LoadData("masterQuestDungeonCount", gSaveContext.mqDungeonCount, (uint8_t)0);
 
-    OTRGlobals::Instance->gRandomizer->masterQuestDungeons.clear();
+    randoContext->GetDungeons()->ClearAllMQ();
     SaveManager::Instance->LoadArray("masterQuestDungeons", gSaveContext.mqDungeonCount, [&](size_t i) {
-        uint16_t scene;
-        SaveManager::Instance->LoadData("", scene);
-        randomizer->masterQuestDungeons.emplace(scene);
+        size_t dungeonId;
+        SaveManager::Instance->LoadData("", dungeonId);
+        randoContext->GetDungeon(dungeonId)->SetMQ();
     });
 }
 
@@ -479,12 +480,10 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 
     SaveManager::Instance->SaveData("masterQuestDungeonCount", saveContext->mqDungeonCount);
 
-    std::vector<uint16_t> masterQuestDungeons;
-    for (const auto scene : randomizer->masterQuestDungeons) {
-        masterQuestDungeons.push_back(scene);
-    }
-    SaveManager::Instance->SaveArray("masterQuestDungeons", masterQuestDungeons.size(), [&](size_t i) {
-        SaveManager::Instance->SaveData("", masterQuestDungeons[i]);
+    SaveManager::Instance->SaveArray("masterQuestDungeons", randoContext->GetDungeons()->GetDungeonListSize(), [&](size_t i) {
+        if (randoContext->GetDungeon(i)->IsMQ()) {
+            SaveManager::Instance->SaveData("", i);
+        }
     });
 }
 

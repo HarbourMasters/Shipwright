@@ -1,7 +1,7 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
 #include "../../entrance.h"
-#include "../dungeon.hpp"
+#include "../../dungeon.h"
 
 using namespace Logic;
 using namespace Rando;
@@ -12,15 +12,15 @@ void AreaTable_Init_ForestTemple() {
   ---------------------------*/
   areaTable[RR_FOREST_TEMPLE_ENTRYWAY] = Area("Forest Temple Entryway", "Forest Temple", RHT_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_FOREST_TEMPLE_FIRST_ROOM, {[]{return Dungeon::ForestTemple.IsVanilla();}}),
-                  Entrance(RR_FOREST_TEMPLE_MQ_LOBBY,   {[]{return Dungeon::ForestTemple.IsMQ();}}),
+                  Entrance(RR_FOREST_TEMPLE_FIRST_ROOM, {[]{return randoCtx->GetDungeon(FOREST_TEMPLE)->IsVanilla();}}),
+                  Entrance(RR_FOREST_TEMPLE_MQ_LOBBY,   {[]{return randoCtx->GetDungeon(FOREST_TEMPLE)->IsMQ();}}),
                   Entrance(RR_SACRED_FOREST_MEADOW,     {[]{return true;}}),
   });
 
   /*--------------------------
   |     VANILLA DUNGEON      |
   ---------------------------*/
-  if (Dungeon::ForestTemple.IsVanilla()) {
+  if (randoCtx->GetDungeon(FOREST_TEMPLE)->IsVanilla()) {
   areaTable[RR_FOREST_TEMPLE_FIRST_ROOM] = Area("Forest Temple First Room", "Forest Temple", RHT_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_FOREST_TEMPLE_FIRST_ROOM_CHEST, {[]{return true;}}),
@@ -279,7 +279,7 @@ void AreaTable_Init_ForestTemple() {
   /*---------------------------
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
-  if (Dungeon::ForestTemple.IsMQ()) {
+  if (randoCtx->GetDungeon(FOREST_TEMPLE)->IsMQ()) {
   areaTable[RR_FOREST_TEMPLE_MQ_LOBBY] = Area("Forest Temple MQ Lobby", "Forest Temple", RHT_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_FOREST_TEMPLE_MQ_FIRST_ROOM_CHEST, {[]{return IsAdult || Bombs || CanUse(RG_STICKS) || Nuts || CanUse(RG_BOOMERANG) || CanUse(RG_DINS_FIRE) || KokiriSword || CanUse(RG_FAIRY_SLINGSHOT);}}),
@@ -411,8 +411,8 @@ void AreaTable_Init_ForestTemple() {
         Area("Forest Temple Boss Entryway", "Forest Temple", RHT_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {},
              {
                  // Exits
-                 Entrance(RR_FOREST_TEMPLE_BOSS_REGION, { [] { return Dungeon::ForestTemple.IsVanilla() && false; } }),
-                 Entrance(RR_FOREST_TEMPLE_MQ_BOSS_REGION, { [] { return Dungeon::ForestTemple.IsMQ() && false; } }),
+                 Entrance(RR_FOREST_TEMPLE_BOSS_REGION, { [] { return randoCtx->GetDungeon(FOREST_TEMPLE)->IsVanilla() && false; } }),
+                 Entrance(RR_FOREST_TEMPLE_MQ_BOSS_REGION, { [] { return randoCtx->GetDungeon(FOREST_TEMPLE)->IsMQ() && false; } }),
                  Entrance(RR_FOREST_TEMPLE_BOSS_ROOM, { [] { return true; } }),
              });
 

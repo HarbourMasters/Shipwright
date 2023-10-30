@@ -1,7 +1,7 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
 #include "../../entrance.h"
-#include "../dungeon.hpp"
+#include "../../dungeon.h"
 
 using namespace Logic;
 using namespace Rando;
@@ -12,15 +12,15 @@ void AreaTable_Init_FireTemple() {
   ---------------------------*/
   areaTable[RR_FIRE_TEMPLE_ENTRYWAY] = Area("Fire Temple Entryway", "Fire Temple", RHT_FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_FIRE_TEMPLE_FIRST_ROOM, {[]{return Dungeon::FireTemple.IsVanilla();}}),
-                  Entrance(RR_FIRE_TEMPLE_MQ_LOWER,   {[]{return Dungeon::FireTemple.IsMQ();}}),
+                  Entrance(RR_FIRE_TEMPLE_FIRST_ROOM, {[]{return randoCtx->GetDungeon(FIRE_TEMPLE)->IsVanilla();}}),
+                  Entrance(RR_FIRE_TEMPLE_MQ_LOWER,   {[]{return randoCtx->GetDungeon(FIRE_TEMPLE)->IsMQ();}}),
                   Entrance(RR_DMC_CENTRAL_LOCAL,      {[]{return true;}}),
   });
 
   /*--------------------------
   |     VANILLA DUNGEON      |
   ---------------------------*/
-  if (Dungeon::FireTemple.IsVanilla()) {
+  if (randoCtx->GetDungeon(FIRE_TEMPLE)->IsVanilla()) {
   areaTable[RR_FIRE_TEMPLE_FIRST_ROOM] = Area("Fire Temple First Room", "Fire Temple", RHT_FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                 }, {
                   //Exits
@@ -311,7 +311,7 @@ void AreaTable_Init_FireTemple() {
   /*---------------------------
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
-  if (Dungeon::FireTemple.IsMQ()) {
+  if (randoCtx->GetDungeon(FIRE_TEMPLE)->IsMQ()) {
   areaTable[RR_FIRE_TEMPLE_MQ_LOWER] = Area("Fire Temple MQ Lower", "Fire Temple", RHT_FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST, {[]{return IsAdult || KokiriSword || Sticks || Slingshot || Bombs || CanUse(RG_DINS_FIRE);}}),
@@ -397,8 +397,8 @@ void AreaTable_Init_FireTemple() {
         Area("Fire Temple Boss Entryway", "Fire Temple", RHT_FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {},
              {
                  // Exits
-                 Entrance(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM, { [] { return Dungeon::FireTemple.IsVanilla() && false; } }),
-                 Entrance(RR_FIRE_TEMPLE_MQ_LOWER, { [] { return Dungeon::FireTemple.IsMQ() && false; } }),
+                 Entrance(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM, { [] { return randoCtx->GetDungeon(FIRE_TEMPLE)->IsVanilla() && false; } }),
+                 Entrance(RR_FIRE_TEMPLE_MQ_LOWER, { [] { return randoCtx->GetDungeon(FIRE_TEMPLE)->IsMQ() && false; } }),
                  Entrance(RR_FIRE_TEMPLE_BOSS_ROOM, { [] { return true; } }),
              });
 

@@ -1,7 +1,7 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
 #include "../../entrance.h"
-#include "../dungeon.hpp"
+#include "../../dungeon.h"
 
 using namespace Logic;
 using namespace Rando;
@@ -12,15 +12,15 @@ void AreaTable_Init_BottomOfTheWell() {
   ---------------------------*/
   areaTable[RR_BOTTOM_OF_THE_WELL_ENTRYWAY] = Area("Bottom of the Well Entryway", "Bottom of the Well", RHT_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_BOTTOM_OF_THE_WELL_MAIN_AREA,    {[]{return Dungeon::BottomOfTheWell.IsVanilla() && IsChild && (CanChildAttack || Nuts);}}),
-                  Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, {[]{return Dungeon::BottomOfTheWell.IsMQ()      && IsChild;}}),
+                  Entrance(RR_BOTTOM_OF_THE_WELL_MAIN_AREA,    {[]{return randoCtx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla() && IsChild && (CanChildAttack || Nuts);}}),
+                  Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, {[]{return randoCtx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()      && IsChild;}}),
                   Entrance(RR_KAKARIKO_VILLAGE,                {[]{return true;}}),
   });
 
   /*--------------------------
   |     VANILLA DUNGEON      |
   ---------------------------*/
-  if (Dungeon::BottomOfTheWell.IsVanilla()) {
+  if (randoCtx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla()) {
   areaTable[RR_BOTTOM_OF_THE_WELL_MAIN_AREA] = Area("Bottom of the Well Main Area", "Bottom of the Well", RHT_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&StickPot, {[]{return true;}}),
@@ -53,7 +53,7 @@ void AreaTable_Init_BottomOfTheWell() {
   /*---------------------------
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
-  if (Dungeon::BottomOfTheWell.IsMQ()) {
+  if (randoCtx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()) {
   areaTable[RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER] = Area("Bottom of the Well MQ Perimeter", "Bottom of the Well", RHT_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   //EventAccess(&WallFairy, {[]{return WallFairy || Slingshot;}}),

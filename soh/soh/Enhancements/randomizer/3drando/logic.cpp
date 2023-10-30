@@ -6,7 +6,7 @@
 #include <string_view>
 #include <vector>
 
-#include "dungeon.hpp"
+#include "../dungeon.h"
 #include "../context.h"
 
 namespace Logic {
@@ -856,7 +856,7 @@ namespace Logic {
      //Keys
      ForestTempleKeys          = 0;
      //If not keysanity, start with 1 logical key to account for automatically unlocking the basement door in vanilla FiT
-     FireTempleKeys            = IsKeysanity || Dungeon::FireTemple.IsMQ() ? 0 : 1;
+     FireTempleKeys            = IsKeysanity || ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsMQ() ? 0 : 1;
      WaterTempleKeys           = 0;
      SpiritTempleKeys          = 0;
      ShadowTempleKeys          = 0;

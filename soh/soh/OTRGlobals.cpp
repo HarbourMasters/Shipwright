@@ -41,6 +41,7 @@
 #include "Enhancements/randomizer/randomizer_check_tracker.h"
 #include "Enhancements/randomizer/3drando/random.hpp"
 #include "Enhancements/randomizer/static_data.h"
+#include "Enhancements/randomizer/dungeon.h"
 #include "Enhancements/gameplaystats.h"
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "frame_interpolation.h"
@@ -1119,8 +1120,7 @@ uint32_t IsSceneMasterQuest(s16 sceneNum) {
             } else {
                 value = 0;
                 if (IS_RANDO &&
-                    !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty() &&
-                    OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
+                    OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(sceneNum)->IsMQ()) {
                     value = 1;
                 }
             }

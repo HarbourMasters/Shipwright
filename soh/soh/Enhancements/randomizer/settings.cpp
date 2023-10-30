@@ -1,5 +1,6 @@
 #include "settings.h"
 #include "3drando/trial.hpp"
+#include "dungeon.h"
 #include "context.h"
 
 namespace Rando {
@@ -898,7 +899,7 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
     // RANDOTODO implement chest shuffle with keysanity
     // ShuffleChestMinigame.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);
     //TODO: RandomizeAllSettings(true) when implementing the ability to randomize the options themselves.
-    auto dungeons = Dungeon::dungeonList;
+    std::array<DungeonInfo*, 12> dungeons = ctx->GetDungeons()->GetDungeonList();
     std::array<bool, 12> dungeonModesKnown;
     std::vector<Option*> dungeonOptions = {
         &mOptions[RSK_MQ_DEKU_TREE],
@@ -996,28 +997,28 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
             }
         }
         if (mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL]) {
-            Dungeon::BottomOfTheWell.SetKeyRing();
+            ctx->GetDungeon(BOTTOM_OF_THE_WELL)->SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_FOREST_TEMPLE]) {
-            Dungeon::ForestTemple.SetKeyRing();
+            ctx->GetDungeon(FOREST_TEMPLE)->SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_FIRE_TEMPLE]) {
-            Dungeon::FireTemple.SetKeyRing();
+            ctx->GetDungeon(FIRE_TEMPLE)->SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_WATER_TEMPLE]) {
-            Dungeon::WaterTemple.SetKeyRing();
+            ctx->GetDungeon(WATER_TEMPLE)->SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE]) {
-            Dungeon::SpiritTemple.SetKeyRing();
+            ctx->GetDungeon(SPIRIT_TEMPLE)->SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_SHADOW_TEMPLE]) {
-            Dungeon::ShadowTemple.SetKeyRing();
+            ctx->GetDungeon(SHADOW_TEMPLE)->SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_GTG]) {
-            Dungeon::GerudoTrainingGrounds.SetKeyRing();
+            ctx->GetDungeon(GERUDO_TRAINING_GROUNDS)->SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_GANONS_CASTLE]) {
-            Dungeon::GanonsCastle.SetKeyRing();
+            ctx->GetDungeon(GANONS_CASTLE)->SetKeyRing();
         }
     }
     auto trials = Trial::trialList;

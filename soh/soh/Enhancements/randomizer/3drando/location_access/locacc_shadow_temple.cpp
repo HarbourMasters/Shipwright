@@ -1,7 +1,7 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
 #include "../../entrance.h"
-#include "../dungeon.hpp"
+#include "../../dungeon.h"
 
 using namespace Logic;
 using namespace Rando;
@@ -12,15 +12,15 @@ void AreaTable_Init_ShadowTemple() {
   ---------------------------*/
   areaTable[RR_SHADOW_TEMPLE_ENTRYWAY] = Area("Shadow Temple Entryway", "Shadow Temple", RHT_SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_SHADOW_TEMPLE_BEGINNING,    {[]{return Dungeon::ShadowTemple.IsVanilla() && (randoCtx->GetTrickOption(RT_LENS_SHADOW) || CanUse(RG_LENS_OF_TRUTH)) && (CanUse(RG_HOVER_BOOTS) || CanUse(RG_HOOKSHOT));}}),
-                  Entrance(RR_SHADOW_TEMPLE_MQ_BEGINNING, {[]{return Dungeon::ShadowTemple.IsMQ()    && (randoCtx->GetTrickOption(RT_LENS_SHADOW_MQ) || CanUse(RG_LENS_OF_TRUTH)) && (CanUse(RG_HOVER_BOOTS) || CanUse(RG_HOOKSHOT));}}),
+                  Entrance(RR_SHADOW_TEMPLE_BEGINNING,    {[]{return randoCtx->GetDungeon(SHADOW_TEMPLE)->IsVanilla() && (randoCtx->GetTrickOption(RT_LENS_SHADOW) || CanUse(RG_LENS_OF_TRUTH)) && (CanUse(RG_HOVER_BOOTS) || CanUse(RG_HOOKSHOT));}}),
+                  Entrance(RR_SHADOW_TEMPLE_MQ_BEGINNING, {[]{return randoCtx->GetDungeon(SHADOW_TEMPLE)->IsMQ()    && (randoCtx->GetTrickOption(RT_LENS_SHADOW_MQ) || CanUse(RG_LENS_OF_TRUTH)) && (CanUse(RG_HOVER_BOOTS) || CanUse(RG_HOOKSHOT));}}),
                   Entrance(RR_GRAVEYARD_WARP_PAD_REGION,  {[]{return true;}}),
   });
 
   /*--------------------------
   |     VANILLA DUNGEON      |
   ---------------------------*/
-  if (Dungeon::ShadowTemple.IsVanilla()) {
+  if (randoCtx->GetDungeon(SHADOW_TEMPLE)->IsVanilla()) {
   areaTable[RR_SHADOW_TEMPLE_BEGINNING] = Area("Shadow Temple Beginning", "Shadow Temple", RHT_SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&NutPot, {[]{return true;}}),
@@ -91,7 +91,7 @@ void AreaTable_Init_ShadowTemple() {
   /*---------------------------
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
-  if (Dungeon::ShadowTemple.IsMQ()) {
+  if (randoCtx->GetDungeon(SHADOW_TEMPLE)->IsMQ()) {
   areaTable[RR_SHADOW_TEMPLE_MQ_BEGINNING] = Area("Shadow Temple MQ Beginning", "Shadow Temple", RHT_SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_SHADOW_TEMPLE_ENTRYWAY,          {[]{return true;}}),
@@ -184,8 +184,8 @@ void AreaTable_Init_ShadowTemple() {
         Area("Shadow Temple Boss Entryway", "Shadow Temple", RHT_SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {},
              {
                  // Exits
-                 Entrance(RR_SHADOW_TEMPLE_BEYOND_BOAT, { [] { return Dungeon::ShadowTemple.IsVanilla() && false; } }),
-                 Entrance(RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT, { [] { return Dungeon::ShadowTemple.IsMQ() && false; } }),
+                 Entrance(RR_SHADOW_TEMPLE_BEYOND_BOAT, { [] { return randoCtx->GetDungeon(SHADOW_TEMPLE)->IsVanilla() && false; } }),
+                 Entrance(RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT, { [] { return randoCtx->GetDungeon(SHADOW_TEMPLE)->IsMQ() && false; } }),
                  Entrance(RR_SHADOW_TEMPLE_BOSS_ROOM, { [] { return true; } }),
              });
 

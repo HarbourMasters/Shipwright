@@ -2,6 +2,7 @@
 #include "randomizer_entrance_tracker.h"
 #include "randomizer_item_tracker.h"
 #include "randomizerTypes.h"
+#include "dungeon.h"
 #include "../../OTRGlobals.h"
 #include "../../UIWidgets.hpp"
 
@@ -924,7 +925,7 @@ void CheckTrackerWindow::DrawElement() {
 
             if (isThisAreaSpoiled) {
                 if (showVOrMQ && RandomizerCheckObjects::AreaIsDungeon(rcArea)) {
-                    if (OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(DungeonSceneLookupByArea(rcArea)))
+                    if (OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(DungeonSceneLookupByArea(rcArea))->IsMQ())
                         ImGui::Text("(%d/%d) - MQ", areaChecksGotten[rcArea], areaChecksTotal);
                     else
                         ImGui::Text("(%d/%d) - Vanilla", areaChecksGotten[rcArea], areaChecksTotal);
@@ -1106,8 +1107,8 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
             (rc != RC_LINKS_POCKET || showLinksPocket) &&
             (!RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()) ||
                 loc->GetQuest() == RCQUEST_BOTH ||
-                loc->GetQuest() == RCQUEST_MQ && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(loc->GetScene()) ||
-                loc->GetQuest() == RCQUEST_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(loc->GetScene())
+                loc->GetQuest() == RCQUEST_MQ && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsMQ() ||
+                loc->GetQuest() == RCQUEST_VANILLA && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsVanilla()
                 ) &&
             (loc->GetRCType() != RCTYPE_SHOP || (showShops && (!hideShopRightChecks || hideShopRightChecks && loc->GetActorParams() > 0x03))) &&
             (loc->GetRandomizerCheck() != RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS) &&
@@ -1148,8 +1149,8 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
     }
     else if (loc->IsVanillaCompletion()) {
         return (loc->GetQuest() == RCQUEST_BOTH ||
-            loc->GetQuest() == RCQUEST_MQ && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(loc->GetScene()) ||
-            loc->GetQuest() == RCQUEST_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(loc->GetScene()) ||
+            loc->GetQuest() == RCQUEST_MQ && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsMQ() ||
+            loc->GetQuest() == RCQUEST_VANILLA && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsVanilla() ||
             rc == RC_GIFT_FROM_SAGES) && rc != RC_LINKS_POCKET;
     }
     return false;

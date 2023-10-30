@@ -1,7 +1,7 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
 #include "../../entrance.h"
-#include "../dungeon.hpp"
+#include "../../dungeon.h"
 
 using namespace Logic;
 using namespace Rando;
@@ -12,15 +12,15 @@ void AreaTable_Init_DekuTree() {
   ---------------------------*/
   areaTable[RR_DEKU_TREE_ENTRYWAY] = Area("Deku Tree Entryway", "Deku Tree", RHT_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_DEKU_TREE_LOBBY,      {[]{return Dungeon::DekuTree.IsVanilla();}}),
-                  Entrance(RR_DEKU_TREE_MQ_LOBBY,   {[]{return Dungeon::DekuTree.IsMQ();}}),
+                  Entrance(RR_DEKU_TREE_LOBBY,      {[]{return randoCtx->GetDungeon(DEKU_TREE)->IsVanilla();}}),
+                  Entrance(RR_DEKU_TREE_MQ_LOBBY,   {[]{return randoCtx->GetDungeon(DEKU_TREE)->IsMQ();}}),
                   Entrance(RR_KF_OUTSIDE_DEKU_TREE, {[]{return true;}}),
   });
 
   /*--------------------------
   |     VANILLA DUNGEON      |
   ---------------------------*/
-  if (Dungeon::DekuTree.IsVanilla()) {
+  if (randoCtx->GetDungeon(DEKU_TREE)->IsVanilla()) {
   areaTable[RR_DEKU_TREE_LOBBY] = Area("Deku Tree Lobby", "Deku Tree", RHT_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&DekuBabaSticks, {[]{return DekuBabaSticks || (IsAdult || KokiriSword || Boomerang);}}),
@@ -150,7 +150,7 @@ void AreaTable_Init_DekuTree() {
   /*---------------------------
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
-  if (Dungeon::DekuTree.IsMQ()) {
+  if (randoCtx->GetDungeon(DEKU_TREE)->IsMQ()) {
   areaTable[RR_DEKU_TREE_MQ_LOBBY] = Area("Deku Tree MQ Lobby", "Deku Tree", RHT_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&DekuBabaSticks, {[]{return DekuBabaSticks || (IsAdult || KokiriSword || Boomerang);}}),
@@ -243,8 +243,8 @@ void AreaTable_Init_DekuTree() {
         Area("Deku Tree Boss Entryway", "Deku Tree", RHT_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {},
              {
                  // Exits
-                 Entrance(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM, { [] { return Dungeon::DekuTree.IsVanilla(); } }),
-                 Entrance(RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM, { [] { return Dungeon::DekuTree.IsMQ(); } }),
+                 Entrance(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM, { [] { return randoCtx->GetDungeon(DEKU_TREE)->IsVanilla(); } }),
+                 Entrance(RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM, { [] { return randoCtx->GetDungeon(DEKU_TREE)->IsMQ(); } }),
                  Entrance(RR_DEKU_TREE_BOSS_ROOM, { [] { return true; } }),
              });
 

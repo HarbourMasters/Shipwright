@@ -31,6 +31,7 @@
 #include "randomizer_settings_window.h"
 #include "savefile.h"
 #include "entrance.h"
+#include "dungeon.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -648,7 +649,7 @@ void Randomizer::LoadMasterQuestDungeons(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
         ParseMasterQuestDungeonsFile(spoilerFileName);
     }
-    gSaveContext.mqDungeonCount = this->masterQuestDungeons.size();
+    gSaveContext.mqDungeonCount = Rando::Context::GetInstance()->GetDungeons()->CountMQ();
 }
 
 void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
@@ -1486,7 +1487,7 @@ void Randomizer::ParseMasterQuestDungeonsFile(const char* spoilerFileName) {
         return;
     }
 
-    this->masterQuestDungeons.clear();
+    // this->masterQuestDungeons.clear();
 
     try {
         json spoilerFileJson;
@@ -1494,7 +1495,7 @@ void Randomizer::ParseMasterQuestDungeonsFile(const char* spoilerFileName) {
         json mqDungeonsJson = spoilerFileJson["masterQuestDungeons"];
 
         for (auto it = mqDungeonsJson.begin(); it != mqDungeonsJson.end(); it++) {
-            this->masterQuestDungeons.emplace(spoilerFileDungeonToScene[it.value()]);
+            // this->masterQuestDungeons.emplace(spoilerFileDungeonToScene[it.value()]);
         }
     } catch (const std::exception& e) {
         return;

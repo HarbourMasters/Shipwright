@@ -1,7 +1,7 @@
 #include "fill.hpp"
 
 #include "custom_messages.hpp"
-#include "dungeon.hpp"
+#include "../dungeon.h"
 #include "../context.h"
 #include "item_pool.hpp"
 #include "location_access.hpp"
@@ -783,7 +783,7 @@ static void FillExcludedLocations() {
 }
 
 //Function to handle the Own Dungeon setting
-static void RandomizeOwnDungeon(const Dungeon::DungeonInfo* dungeon) {
+static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
   auto ctx = Rando::Context::GetInstance();
   std::vector<RandomizerGet> dungeonItems;
 
@@ -837,7 +837,6 @@ static void RandomizeOwnDungeon(const Dungeon::DungeonInfo* dungeon) {
   are randomized separately once the dungeon advancement items have all been placed.*/
 static void RandomizeDungeonItems() {
   auto ctx = Rando::Context::GetInstance();
-  using namespace Dungeon;
 
   //Get Any Dungeon and Overworld group locations
   std::vector<RandomizerCheck> anyDungeonLocations = FilterFromPool(ctx->allLocations, [](const auto loc){return Rando::StaticData::GetLocation(loc)->IsDungeon();});
@@ -847,7 +846,7 @@ static void RandomizeDungeonItems() {
   std::vector<RandomizerGet> anyDungeonItems;
   std::vector<RandomizerGet> overworldItems;
 
-  for (auto dungeon : dungeonList) {
+  for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
     if (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON)) {
       auto dungeonKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
       AddElementsToPool(anyDungeonItems, dungeonKeys);
@@ -896,7 +895,7 @@ static void RandomizeDungeonItems() {
   AssumedFill(overworldItems, Rando::StaticData::overworldLocations, true);
 
   //Randomize maps and compasses after since they're not advancement items
-  for (auto dungeon : dungeonList) {
+  for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
     if (ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON)) {
       auto mapAndCompassItems = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return i == dungeon->GetMap() || i == dungeon->GetCompass();});
       AssumedFill(mapAndCompassItems, anyDungeonLocations, true);
@@ -1040,7 +1039,7 @@ int Fill() {
     RandomizeDungeonRewards();
 
     //Place dungeon items restricted to their Own Dungeon
-    for (auto dungeon : Dungeon::dungeonList) {
+    for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
       RandomizeOwnDungeon(dungeon);
     }
 

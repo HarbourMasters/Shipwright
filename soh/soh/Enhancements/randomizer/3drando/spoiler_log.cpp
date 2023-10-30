@@ -1,6 +1,6 @@
 #include "spoiler_log.hpp"
 
-#include "dungeon.hpp"
+#include "../dungeon.h"
 #include "../static_data.h"
 #include "../context.h"
 #include "../entrance.h"
@@ -478,7 +478,8 @@ static void WriteEnabledTricks(tinyxml2::XMLDocument& spoilerLog) {
 
 // Writes the Master Quest dungeons to the spoiler log, if there are any.
 static void WriteMasterQuestDungeons(tinyxml2::XMLDocument& spoilerLog) {
-    for (const auto* dungeon : Dungeon::dungeonList) {
+    auto ctx = Rando::Context::GetInstance();
+    for (const auto* dungeon : ctx->GetDungeons()->GetDungeonList()) {
         std::string dungeonName;
         if (dungeon->IsVanilla()) {
             continue;

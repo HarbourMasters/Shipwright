@@ -21,6 +21,8 @@
 namespace Rando {
 class EntranceShuffler;
 class Settings;
+class Dungeons;
+class DungeonInfo;
 
 class Context {
   public:
@@ -52,6 +54,8 @@ class Context {
     void SetSpoilerLoaded(bool spoilerLoaded = true);
     std::shared_ptr<Settings> GetSettings();
     const std::shared_ptr<EntranceShuffler> GetEntranceShuffler();
+    std::shared_ptr<Dungeons> GetDungeons();
+    DungeonInfo* GetDungeon(size_t key);
     Option& GetOption(RandomizerSettingKey key);
     Option& GetTrickOption(RandomizerTrick key);
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);
@@ -71,6 +75,7 @@ class Context {
     std::array<ItemLocation, RC_MAX> itemLocationTable = {};
     std::shared_ptr<Settings> mSettings;
     std::shared_ptr<EntranceShuffler> mEntranceShuffler;
+    std::shared_ptr<Dungeons> mDungeons;
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;
 };

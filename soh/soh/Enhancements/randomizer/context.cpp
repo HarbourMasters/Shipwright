@@ -3,7 +3,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/item-tables/ItemTableManager.h"
 #include "3drando/shops.hpp"
-#include "3drando/dungeon.hpp"
+#include "dungeon.h"
 #include "entrance.h"
 #include "settings.h"
 
@@ -17,6 +17,7 @@ Context::Context() {
         itemLocationTable[i] = ItemLocation((RandomizerCheck)i);
     }
     mEntranceShuffler = std::make_shared<EntranceShuffler>();
+    mDungeons = std::make_shared<Dungeons>();
     mSettings = std::make_shared<Settings>();
 }
 
@@ -105,14 +106,14 @@ void Context::GenerateLocationPool() {
     }
     AddLocations(StaticData::overworldLocations);
 
-    for (auto dungeon : Dungeon::dungeonList) {
+    for (auto dungeon : mDungeons->GetDungeonList()) {
         AddLocations(dungeon->GetDungeonLocations());
     }
 }
 
 void Context::AddExcludedOptions() {
     AddLocations(StaticData::overworldLocations, &everyPossibleLocation);
-    for (auto dungeon : Dungeon::dungeonList) {
+    for (auto dungeon : mDungeons->GetDungeonList()) {
         AddLocations(dungeon->GetEveryLocation(), &everyPossibleLocation);
     }
     for (RandomizerCheck rc : everyPossibleLocation) {
@@ -237,6 +238,14 @@ std::shared_ptr<Settings> Context::GetSettings() {
 
 const std::shared_ptr<EntranceShuffler> Context::GetEntranceShuffler() {
     return mEntranceShuffler;
+}
+
+std::shared_ptr<Dungeons> Context::GetDungeons() {
+    return mDungeons;
+}
+
+DungeonInfo* Context::GetDungeon(size_t key) {
+    return mDungeons->GetDungeon(DungeonKey(key));
 }
 
 Rando::Option& Context::GetOption(RandomizerSettingKey key) {

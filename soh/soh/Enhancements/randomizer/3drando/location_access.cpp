@@ -1,6 +1,6 @@
 #include "location_access.hpp"
 
-#include "dungeon.hpp"
+#include "../dungeon.h"
 #include "../static_data.h"
 #include "../context.h"
 #include "item_pool.hpp"

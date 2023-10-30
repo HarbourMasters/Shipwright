@@ -1,6 +1,6 @@
 #include "item_pool.hpp"
 
-#include "dungeon.hpp"
+#include "../dungeon.h"
 #include "fill.hpp"
 #include "../static_data.h"
 #include "../context.h"
@@ -9,9 +9,6 @@
 #include "spoiler_log.hpp"
 #include "z64item.h"
 #include <spdlog/spdlog.h>
-
-
-using namespace Dungeon;
 
 std::vector<RandomizerGet> ItemPool = {};
 std::vector<RandomizerGet> PendingJunkPool = {};
@@ -501,10 +498,10 @@ static void PlaceVanillaDekuScrubItems() {
     ctx->PlaceItemInLocation(RC_LLR_DEKU_SCRUB_GROTTO_CENTER,          RG_DEKU_SEEDS_30, false, true);
 
     //Dungeon Scrubs
-    if (DekuTree.IsMQ()) {
+    if (ctx->GetDungeon(Rando::DEKU_TREE)->IsMQ()) {
         ctx->PlaceItemInLocation(RC_DEKU_TREE_MQ_DEKU_SCRUB, RG_DEKU_SHIELD, false, true);
     }
-    if (DodongosCavern.IsMQ()) {
+    if (ctx->GetDungeon(Rando::DODONGOS_CAVERN)->IsMQ()) {
         ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR, RG_DEKU_STICK_1, false, true);
         ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT, RG_DEKU_SEEDS_30, false, true);
         ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_STAIRCASE, RG_DEKU_SHIELD, false, true);
@@ -516,10 +513,10 @@ static void PlaceVanillaDekuScrubItems() {
       ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT,     RG_DEKU_SEEDS_30, false, true);
       ctx->PlaceItemInLocation(RC_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY,                   RG_DEKU_SHIELD, false, true);
     }
-    if (JabuJabusBelly.IsVanilla()) {
+    if (ctx->GetDungeon(Rando::JABU_JABUS_BELLY)->IsVanilla()) {
         ctx->PlaceItemInLocation(RC_JABU_JABUS_BELLY_DEKU_SCRUB, RG_DEKU_NUTS_5, false, true);
     }
-    if (GanonsCastle.IsMQ()) {
+    if (ctx->GetDungeon(Rando::GANONS_CASTLE)->IsMQ()) {
       ctx->PlaceItemInLocation(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT,         RG_GREEN_POTION_REFILL, false, true);
       ctx->PlaceItemInLocation(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_LEFT,  RG_BOMBS_5, false, true);
       ctx->PlaceItemInLocation(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER,       RG_ARROWS_30, false, true);
@@ -536,23 +533,28 @@ static void PlaceVanillaDekuScrubItems() {
 }
 
 static void PlaceVanillaMapsAndCompasses() {
-  for (auto dungeon : dungeonList) {
+  auto ctx = Rando::Context::GetInstance();
+  for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
     dungeon->PlaceVanillaMap();
     dungeon->PlaceVanillaCompass();
   }
 }
 
 static void PlaceVanillaSmallKeys() {
-  for (auto dungeon : dungeonList) {
+  auto ctx = Rando::Context::GetInstance();
+  for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
     dungeon->PlaceVanillaSmallKeys();
   }
 }
 
 static void PlaceVanillaBossKeys() {
-  for (auto dungeon : dungeonList) {
+  auto ctx = Rando::Context::GetInstance();
+  for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
     dungeon->PlaceVanillaBossKey();
   }
 }
+// TODO: This feels like it could be moved to Dungeons class and probably shorten
+// a few function call chains. Needs investigation.
 
 static void PlaceVanillaCowMilk() {
   auto ctx = Rando::Context::GetInstance();
@@ -566,7 +568,7 @@ static void PlaceVanillaCowMilk() {
   ctx->PlaceItemInLocation(RC_LLR_TOWER_LEFT_COW,    RG_MILK, false, true);
   ctx->PlaceItemInLocation(RC_LLR_TOWER_RIGHT_COW,   RG_MILK, false, true);
 
-  if (JabuJabusBelly.IsMQ()) {
+  if (ctx->GetDungeon(Rando::JABU_JABUS_BELLY)->IsMQ()) {
     ctx->PlaceItemInLocation(RC_JABU_JABUS_BELLY_MQ_COW, RG_MILK, false, true);
   }
 }
@@ -709,7 +711,7 @@ void GenerateItemPool() {
       AddItemToMainPool(GetJunkItem());
     }
     //extra location for Jabu MQ
-    if (JabuJabusBelly.IsMQ()) {
+    if (ctx->GetDungeon(Rando::JABU_JABUS_BELLY)->IsMQ()) {
       AddItemToMainPool(GetJunkItem());
     }
   } else {
@@ -829,10 +831,10 @@ void GenerateItemPool() {
 
   //Ice Traps
   AddItemToMainPool(RG_ICE_TRAP);
-  if (GerudoTrainingGrounds.IsVanilla()) {
+  if (ctx->GetDungeon(Rando::GERUDO_TRAINING_GROUNDS)->IsVanilla()) {
     AddItemToMainPool(RG_ICE_TRAP);
   }
-  if (GanonsCastle.IsVanilla()) {
+  if (ctx->GetDungeon(Rando::GANONS_CASTLE)->IsVanilla()) {
     AddItemToMainPool(RG_ICE_TRAP, 4);
   }
 
@@ -897,7 +899,7 @@ void GenerateItemPool() {
   //For key rings, need to add as many junk items as "missing" keys
   if (ctx->GetOption(RSK_KEYRINGS).IsNot(RO_KEYRINGS_OFF)) {
     uint8_t ringJunkAmt = 0;
-    for (auto dungeon : dungeonList) {
+    for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
       if (dungeon->HasKeyRing()) {
         ringJunkAmt += dungeon->GetSmallKeyCount() - 1;
       }
@@ -914,42 +916,42 @@ void GenerateItemPool() {
 
     //Plentiful small keys
     if (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) || ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON) || ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD)) {
-      if (BottomOfTheWell.HasKeyRing()) {
+      if (ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->HasKeyRing()) {
         AddItemToPool(PendingJunkPool, RG_BOTTOM_OF_THE_WELL_KEY_RING);
       } else {
         AddItemToPool(PendingJunkPool, RG_BOTTOM_OF_THE_WELL_SMALL_KEY);
       }
-      if (ForestTemple.HasKeyRing()) {
+      if (ctx->GetDungeon(Rando::FOREST_TEMPLE)->HasKeyRing()) {
         AddItemToPool(PendingJunkPool, RG_FOREST_TEMPLE_KEY_RING);
       } else {
         AddItemToPool(PendingJunkPool, RG_FOREST_TEMPLE_SMALL_KEY);
       }
-      if (FireTemple.HasKeyRing()) {
+      if (ctx->GetDungeon(Rando::FIRE_TEMPLE)->HasKeyRing()) {
         AddItemToPool(PendingJunkPool, RG_FIRE_TEMPLE_KEY_RING);
       } else {
         AddItemToPool(PendingJunkPool, RG_FIRE_TEMPLE_SMALL_KEY);
       }
-      if (WaterTemple.HasKeyRing()) {
+      if (ctx->GetDungeon(Rando::WATER_TEMPLE)->HasKeyRing()) {
         AddItemToPool(PendingJunkPool, RG_WATER_TEMPLE_KEY_RING);
       } else {
         AddItemToPool(PendingJunkPool, RG_WATER_TEMPLE_SMALL_KEY);
       }
-      if (SpiritTemple.HasKeyRing()) {
+      if (ctx->GetDungeon(Rando::SPIRIT_TEMPLE)->HasKeyRing()) {
         AddItemToPool(PendingJunkPool, RG_SPIRIT_TEMPLE_KEY_RING);
       } else {
         AddItemToPool(PendingJunkPool, RG_SPIRIT_TEMPLE_SMALL_KEY);
       }
-      if (ShadowTemple.HasKeyRing()) {
+      if (ctx->GetDungeon(Rando::SHADOW_TEMPLE)->HasKeyRing()) {
         AddItemToPool(PendingJunkPool, RG_SHADOW_TEMPLE_KEY_RING);
       } else {
         AddItemToPool(PendingJunkPool, RG_SHADOW_TEMPLE_SMALL_KEY);
       }
-      if (GerudoTrainingGrounds.HasKeyRing()) {
+      if (ctx->GetDungeon(Rando::GERUDO_TRAINING_GROUNDS)->HasKeyRing()) {
         AddItemToPool(PendingJunkPool, RG_GERUDO_TRAINING_GROUNDS_KEY_RING);
       } else {
         AddItemToPool(PendingJunkPool, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY);
       }
-      if (GanonsCastle.HasKeyRing()) {
+      if (ctx->GetDungeon(Rando::GANONS_CASTLE)->HasKeyRing()) {
         AddItemToPool(PendingJunkPool, RG_GANONS_CASTLE_KEY_RING);
       } else {
         AddItemToPool(PendingJunkPool, RG_GANONS_CASTLE_SMALL_KEY);
@@ -979,21 +981,21 @@ void GenerateItemPool() {
   //Scrubsanity
   if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).IsNot(RO_SCRUBS_OFF)) {
     //Deku Tree
-    if (DekuTree.IsMQ()) {
+    if (ctx->GetDungeon(Rando::DEKU_TREE)->IsMQ()) {
       AddItemToMainPool(RG_DEKU_SHIELD);
     }
 
     //Dodongos Cavern
     AddItemToMainPool(RG_DEKU_STICK_1);
     AddItemToMainPool(RG_DEKU_SHIELD);
-    if (DodongosCavern.IsMQ()) {
+    if (ctx->GetDungeon(Rando::DODONGOS_CAVERN)->IsMQ()) {
       AddItemToMainPool(RG_RECOVERY_HEART);
     } else {
       AddItemToMainPool(RG_DEKU_NUTS_5);
     }
 
     //Jabu Jabus Belly
-    if (JabuJabusBelly.IsVanilla()) {
+    if (ctx->GetDungeon(Rando::JABU_JABUS_BELLY)->IsVanilla()) {
       AddItemToMainPool(RG_DEKU_NUTS_5);
     }
 
@@ -1001,7 +1003,7 @@ void GenerateItemPool() {
     AddItemToMainPool(RG_BOMBS_5);
     AddItemToMainPool(RG_RECOVERY_HEART);
     AddItemToMainPool(RG_BLUE_RUPEE);
-    if (GanonsCastle.IsMQ()) {
+    if (ctx->GetDungeon(Rando::GANONS_CASTLE)->IsMQ()) {
       AddItemToMainPool(RG_DEKU_NUTS_5);
     }
 
@@ -1024,48 +1026,48 @@ void GenerateItemPool() {
   AddItemsToPool(ItemPool, dungeonRewards);
 
   //Dungeon pools
-  if (DekuTree.IsMQ()) {
+  if (ctx->GetDungeon(Rando::DEKU_TREE)->IsMQ()) {
     AddItemsToPool(ItemPool, DT_MQ);
   } else {
     AddItemsToPool(ItemPool, DT_Vanilla);
   }
-  if (DodongosCavern.IsMQ()) {
+  if (ctx->GetDungeon(Rando::DODONGOS_CAVERN)->IsMQ()) {
     AddItemsToPool(ItemPool, DC_MQ);
   } else {
     AddItemsToPool(ItemPool, DC_Vanilla);
   }
-  if (JabuJabusBelly.IsMQ()) {
+  if (ctx->GetDungeon(Rando::JABU_JABUS_BELLY)->IsMQ()) {
     AddItemsToPool(ItemPool, JB_MQ);
   }
-  if (ForestTemple.IsMQ()) {
+  if (ctx->GetDungeon(Rando::FOREST_TEMPLE)->IsMQ()) {
     AddItemsToPool(ItemPool, FoT_MQ);
   } else {
     AddItemsToPool(ItemPool, FoT_Vanilla);
   }
-  if (FireTemple.IsMQ()) {
+  if (ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsMQ()) {
     AddItemsToPool(ItemPool, FiT_MQ);
   } else {
     AddItemsToPool(ItemPool, FiT_Vanilla);
   }
-  if (SpiritTemple.IsMQ()) {
+  if (ctx->GetDungeon(Rando::SPIRIT_TEMPLE)->IsMQ()) {
     AddItemsToPool(ItemPool, SpT_MQ);
   } else {
     AddItemsToPool(ItemPool, SpT_Vanilla);
   }
-  if (ShadowTemple.IsMQ()) {
+  if (ctx->GetDungeon(Rando::SHADOW_TEMPLE)->IsMQ()) {
     AddItemsToPool(ItemPool, ShT_MQ);
   } else {
     AddItemsToPool(ItemPool, ShT_Vanilla);
   }
-  if (BottomOfTheWell.IsVanilla()) {
+  if (ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla()) {
     AddItemsToPool(ItemPool, BW_Vanilla);
   }
-  if (GerudoTrainingGrounds.IsMQ()) {
+  if (ctx->GetDungeon(Rando::GERUDO_TRAINING_GROUNDS)->IsMQ()) {
     AddItemsToPool(ItemPool, GTG_MQ);
   } else {
     AddItemsToPool(ItemPool, GTG_Vanilla);
   }
-  if (GanonsCastle.IsMQ()) {
+  if (ctx->GetDungeon(Rando::GANONS_CASTLE)->IsMQ()) {
     AddItemsToPool(ItemPool, GC_MQ);
   } else {
     AddItemsToPool(ItemPool, GC_Vanilla);
@@ -1110,7 +1112,7 @@ void GenerateItemPool() {
   if (ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).Is(RO_DUNGEON_ITEM_LOC_VANILLA)) {
     PlaceVanillaMapsAndCompasses();
   } else  {
-    for (auto dungeon : dungeonList) {
+    for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
       if (dungeon->GetMap() != RG_NONE) {
         AddItemToMainPool(dungeon->GetMap());
       }
@@ -1124,7 +1126,7 @@ void GenerateItemPool() {
   if (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_VANILLA)) {
     PlaceVanillaSmallKeys();
   } else {
-    for (auto dungeon : dungeonList) {
+    for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
       if (dungeon->HasKeyRing() && ctx->GetOption(RSK_KEYSANITY).IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH)) {
         AddItemToMainPool(dungeon->GetKeyRing());
       } else {

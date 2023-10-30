@@ -1,7 +1,7 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
 #include "../../entrance.h"
-#include "../dungeon.hpp"
+#include "../../dungeon.h"
 
 using namespace Logic;
 using namespace Rando;
@@ -12,15 +12,15 @@ void AreaTable_Init_WaterTemple() {
   ---------------------------*/
   areaTable[RR_WATER_TEMPLE_ENTRYWAY] = Area("Water Temple Entryway", "Water Temple", RHT_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_WATER_TEMPLE_LOBBY,    {[]{return Dungeon::WaterTemple.IsVanilla();}}),
-                  Entrance(RR_WATER_TEMPLE_MQ_LOBBY, {[]{return Dungeon::WaterTemple.IsMQ();}}),
+                  Entrance(RR_WATER_TEMPLE_LOBBY,    {[]{return randoCtx->GetDungeon(WATER_TEMPLE)->IsVanilla();}}),
+                  Entrance(RR_WATER_TEMPLE_MQ_LOBBY, {[]{return randoCtx->GetDungeon(WATER_TEMPLE)->IsMQ();}}),
                   Entrance(RR_LAKE_HYLIA,            {[]{return true;}}),
   });
 
   /*--------------------------
   |     VANILLA DUNGEON      |
   ---------------------------*/
-  if (Dungeon::WaterTemple.IsVanilla()) {
+  if (randoCtx->GetDungeon(WATER_TEMPLE)->IsVanilla()) {
   //Water Temple logic currently assumes that the locked door leading to the upper water raising location is unlocked from the start
   areaTable[RR_WATER_TEMPLE_LOBBY] = Area("Water Temple Lobby", "Water Temple", RHT_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
@@ -252,7 +252,7 @@ void AreaTable_Init_WaterTemple() {
   /*---------------------------
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
-  if (Dungeon::WaterTemple.IsMQ()) {
+  if (randoCtx->GetDungeon(WATER_TEMPLE)->IsMQ()) {
   areaTable[RR_WATER_TEMPLE_MQ_LOBBY] = Area("Water Temple MQ Lobby", "Water Temple", RHT_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_ENTRYWAY,            {[]{return true;}}),
@@ -308,8 +308,8 @@ void AreaTable_Init_WaterTemple() {
         Area("Water Temple Boss Entryway", "Water Temple", RHT_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {},
              {
                  // Exits
-                 Entrance(RR_WATER_TEMPLE_PRE_BOSS_ROOM, { [] { return Dungeon::WaterTemple.IsVanilla() && false; } }),
-                 Entrance(RR_WATER_TEMPLE_MQ_LOBBY, { [] { return Dungeon::WaterTemple.IsMQ() && false; } }),
+                 Entrance(RR_WATER_TEMPLE_PRE_BOSS_ROOM, { [] { return randoCtx->GetDungeon(WATER_TEMPLE)->IsVanilla() && false; } }),
+                 Entrance(RR_WATER_TEMPLE_MQ_LOBBY, { [] { return randoCtx->GetDungeon(WATER_TEMPLE)->IsMQ() && false; } }),
                  Entrance(RR_WATER_TEMPLE_BOSS_ROOM, { [] { return true; } }),
              });
 

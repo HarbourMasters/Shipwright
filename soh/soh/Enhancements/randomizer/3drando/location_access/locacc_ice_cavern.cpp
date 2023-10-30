@@ -1,7 +1,7 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
 #include "../../entrance.h"
-#include "../dungeon.hpp"
+#include "../../dungeon.h"
 
 using namespace Logic;
 using namespace Rando;
@@ -12,15 +12,15 @@ void AreaTable_Init_IceCavern() {
   ---------------------------*/
   areaTable[RR_ICE_CAVERN_ENTRYWAY] = Area("Ice Cavern Entryway", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_ICE_CAVERN_BEGINNING,    {[]{return Dungeon::IceCavern.IsVanilla();}}),
-                  Entrance(RR_ICE_CAVERN_MQ_BEGINNING, {[]{return Dungeon::IceCavern.IsMQ();}}),
+                  Entrance(RR_ICE_CAVERN_BEGINNING,    {[]{return randoCtx->GetDungeon(ICE_CAVERN)->IsVanilla();}}),
+                  Entrance(RR_ICE_CAVERN_MQ_BEGINNING, {[]{return randoCtx->GetDungeon(ICE_CAVERN)->IsMQ();}}),
                   Entrance(RR_ZORAS_FOUNTAIN,          {[]{return true;}}),
   });
 
   /*--------------------------
   |     VANILLA DUNGEON      |
   ---------------------------*/
-  if (Dungeon::IceCavern.IsVanilla()) {
+  if (randoCtx->GetDungeon(ICE_CAVERN)->IsVanilla()) {
   areaTable[RR_ICE_CAVERN_BEGINNING] = Area("Ice Cavern Beginning", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_ICE_CAVERN_ENTRYWAY, {[]{return true;}}),
@@ -46,7 +46,7 @@ void AreaTable_Init_IceCavern() {
   /*---------------------------
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
-  if (Dungeon::IceCavern.IsMQ()) {
+  if (randoCtx->GetDungeon(ICE_CAVERN)->IsMQ()) {
   areaTable[RR_ICE_CAVERN_MQ_BEGINNING] = Area("Ice Cavern MQ Beginning", "Ice Cavern", RHT_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&FairyPot, {[]{return true;}}),

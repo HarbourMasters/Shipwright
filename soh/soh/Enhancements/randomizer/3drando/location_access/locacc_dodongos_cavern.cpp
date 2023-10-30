@@ -1,7 +1,7 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
 #include "../../entrance.h"
-#include "../dungeon.hpp"
+#include "../../dungeon.h"
 
 using namespace Logic;
 using namespace Rando;
@@ -12,15 +12,15 @@ void AreaTable_Init_DodongosCavern() {
   ---------------------------*/
   areaTable[RR_DODONGOS_CAVERN_ENTRYWAY] = Area("Dodongos Cavern Entryway", "Dodongos Cavern", RHT_DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_DODONGOS_CAVERN_BEGINNING,    {[]{return Dungeon::DodongosCavern.IsVanilla();}}),
-                  Entrance(RR_DODONGOS_CAVERN_MQ_BEGINNING, {[]{return Dungeon::DodongosCavern.IsMQ();}}),
+                  Entrance(RR_DODONGOS_CAVERN_BEGINNING,    {[]{return randoCtx->GetDungeon(DODONGOS_CAVERN)->IsVanilla();}}),
+                  Entrance(RR_DODONGOS_CAVERN_MQ_BEGINNING, {[]{return randoCtx->GetDungeon(DODONGOS_CAVERN)->IsMQ();}}),
                   Entrance(RR_DEATH_MOUNTAIN_TRAIL,         {[]{return true;}}),
   });
 
   /*--------------------------
   |     VANILLA DUNGEON      |
   ---------------------------*/
-  if (Dungeon::DodongosCavern.IsVanilla()) {
+  if (randoCtx->GetDungeon(DODONGOS_CAVERN)->IsVanilla()) {
   areaTable[RR_DODONGOS_CAVERN_BEGINNING] = Area("Dodongos Cavern Beginning", "Dodongos Cavern", RHT_DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_DODONGOS_CAVERN_ENTRYWAY, {[]{return true;}}),
@@ -207,7 +207,7 @@ void AreaTable_Init_DodongosCavern() {
   /*---------------------------
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
-  if (Dungeon::DodongosCavern.IsMQ()) {
+  if (randoCtx->GetDungeon(DODONGOS_CAVERN)->IsMQ()) {
   areaTable[RR_DODONGOS_CAVERN_MQ_BEGINNING] = Area("Dodongos Cavern MQ Beginning", "Dodongos Cavern", RHT_DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_DODONGOS_CAVERN_ENTRYWAY, {[]{return true;}}),
@@ -279,8 +279,8 @@ void AreaTable_Init_DodongosCavern() {
         Area("Dodongos Cavern Boss Entryway", "Dodongos Cavern", RHT_DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {},
              {
                  // Exits
-                 Entrance(RR_DODONGOS_CAVERN_BOSS_AREA, { [] { return Dungeon::DodongosCavern.IsVanilla(); } }),
-                 Entrance(RR_DODONGOS_CAVERN_MQ_BOSS_AREA, { [] { return Dungeon::DodongosCavern.IsMQ(); } }),
+                 Entrance(RR_DODONGOS_CAVERN_BOSS_AREA, { [] { return randoCtx->GetDungeon(DODONGOS_CAVERN)->IsVanilla(); } }),
+                 Entrance(RR_DODONGOS_CAVERN_MQ_BOSS_AREA, { [] { return randoCtx->GetDungeon(DODONGOS_CAVERN)->IsMQ(); } }),
                  Entrance(RR_DODONGOS_CAVERN_BOSS_ROOM, { [] { return true; } }),
              });
 

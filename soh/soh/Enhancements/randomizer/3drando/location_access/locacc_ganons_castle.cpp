@@ -1,7 +1,7 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
 #include "../../entrance.h"
-#include "../dungeon.hpp"
+#include "../../dungeon.h"
 #include "../trial.hpp"
 
 using namespace Logic;
@@ -13,15 +13,15 @@ void AreaTable_Init_GanonsCastle() {
   ---------------------------*/
   areaTable[RR_GANONS_CASTLE_ENTRYWAY] = Area("Ganon's Castle Entryway", "Ganon's Castle", RHT_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_GANONS_CASTLE_LOBBY,    {[]{return Dungeon::GanonsCastle.IsVanilla();}}),
-                  Entrance(RR_GANONS_CASTLE_MQ_LOBBY, {[]{return Dungeon::GanonsCastle.IsMQ();}}),
+                  Entrance(RR_GANONS_CASTLE_LOBBY,    {[]{return randoCtx->GetDungeon(GANONS_CASTLE)->IsVanilla();}}),
+                  Entrance(RR_GANONS_CASTLE_MQ_LOBBY, {[]{return randoCtx->GetDungeon(GANONS_CASTLE)->IsMQ();}}),
                   Entrance(RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE,    {[]{return true;}}),
   });
 
   /*--------------------------
   |     VANILLA DUNGEON      |
   ---------------------------*/
-  if (Dungeon::GanonsCastle.IsVanilla()) {
+  if (randoCtx->GetDungeon(GANONS_CASTLE)->IsVanilla()) {
   areaTable[RR_GANONS_CASTLE_LOBBY] = Area("Ganon's Castle Lobby", "Ganon's Castle", RHT_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_SHEIK_HINT_GC,  {[]{return true;}}), 
@@ -123,7 +123,7 @@ void AreaTable_Init_GanonsCastle() {
   /*---------------------------
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
-  if (Dungeon::GanonsCastle.IsMQ()) {
+  if (randoCtx->GetDungeon(GANONS_CASTLE)->IsMQ()) {
   areaTable[RR_GANONS_CASTLE_MQ_LOBBY] = Area("Ganon's Castle MQ Lobby", "Ganons Castle", RHT_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_SHEIK_HINT_MQ_GC,  {[]{return true;}}),

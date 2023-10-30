@@ -1,7 +1,7 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
 #include "../../entrance.h"
-#include "../dungeon.hpp"
+#include "../../dungeon.h"
 
 using namespace Logic;
 using namespace Rando;
@@ -12,15 +12,15 @@ void AreaTable_Init_SpiritTemple() {
   ---------------------------*/
   areaTable[RR_SPIRIT_TEMPLE_ENTRYWAY] = Area("Spirit Temple Entryway", "Spirit Temple", RHT_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_SPIRIT_TEMPLE_LOBBY,                  {[]{return Dungeon::SpiritTemple.IsVanilla();}}),
-                  Entrance(RR_SPIRIT_TEMPLE_MQ_LOBBY,               {[]{return Dungeon::SpiritTemple.IsMQ();}}),
+                  Entrance(RR_SPIRIT_TEMPLE_LOBBY,                  {[]{return randoCtx->GetDungeon(SPIRIT_TEMPLE)->IsVanilla();}}),
+                  Entrance(RR_SPIRIT_TEMPLE_MQ_LOBBY,               {[]{return randoCtx->GetDungeon(SPIRIT_TEMPLE)->IsMQ();}}),
                   Entrance(RR_DESERT_COLOSSUS_FROM_SPIRIT_ENTRYWAY, {[]{return true;}}),
   });
 
   /*--------------------------
   |     VANILLA DUNGEON      |
   ---------------------------*/
-  if (Dungeon::SpiritTemple.IsVanilla()) {
+  if (randoCtx->GetDungeon(SPIRIT_TEMPLE)->IsVanilla()) {
   areaTable[RR_SPIRIT_TEMPLE_LOBBY] = Area("Spirit Temple Lobby", "Spirit Temple", RHT_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY,    {[]{return true;}}),
@@ -143,7 +143,7 @@ void AreaTable_Init_SpiritTemple() {
   /*---------------------------
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
-  if (Dungeon::SpiritTemple.IsMQ()) {
+  if (randoCtx->GetDungeon(SPIRIT_TEMPLE)->IsMQ()) {
   areaTable[RR_SPIRIT_TEMPLE_MQ_LOBBY] = Area("Spirit Temple MQ Lobby", "Spirit Temple", RHT_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_LEFT_CHEST, {[]{return true;}}),
@@ -249,8 +249,8 @@ void AreaTable_Init_SpiritTemple() {
         "Spirit Temple Boss Entryway", "Spirit Temple", RHT_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {},
         {
             // Exits
-            Entrance(RR_SPIRIT_TEMPLE_INSIDE_STATUE_HEAD, { [] { return Dungeon::SpiritTemple.IsVanilla() && false; } }),
-            Entrance(RR_SPIRIT_TEMPLE_MQ_INSIDE_STATUE_HEAD, { [] { return Dungeon::SpiritTemple.IsMQ() && false; } }),
+            Entrance(RR_SPIRIT_TEMPLE_INSIDE_STATUE_HEAD, { [] { return randoCtx->GetDungeon(SPIRIT_TEMPLE)->IsVanilla() && false; } }),
+            Entrance(RR_SPIRIT_TEMPLE_MQ_INSIDE_STATUE_HEAD, { [] { return randoCtx->GetDungeon(SPIRIT_TEMPLE)->IsMQ() && false; } }),
             Entrance(RR_SPIRIT_TEMPLE_BOSS_ROOM, { [] { return true; } }),
         });
 

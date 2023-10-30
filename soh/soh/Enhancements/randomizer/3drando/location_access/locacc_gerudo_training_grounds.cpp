@@ -1,7 +1,7 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
 #include "../../entrance.h"
-#include "../dungeon.hpp"
+#include "../../dungeon.h"
 
 using namespace Logic;
 using namespace Rando;
@@ -12,15 +12,15 @@ void AreaTable_Init_GerudoTrainingGrounds() {
   ---------------------------*/
   areaTable[RR_GERUDO_TRAINING_GROUNDS_ENTRYWAY] = Area("Gerudo Training Grounds Entryway", "Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_LOBBY,    {[]{return Dungeon::GerudoTrainingGrounds.IsVanilla();}}),
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_LOBBY, {[]{return Dungeon::GerudoTrainingGrounds.IsMQ();}}),
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_LOBBY,    {[]{return randoCtx->GetDungeon(GERUDO_TRAINING_GROUNDS)->IsVanilla();}}),
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_LOBBY, {[]{return randoCtx->GetDungeon(GERUDO_TRAINING_GROUNDS)->IsMQ();}}),
                   Entrance(RR_GERUDO_FORTRESS,                  {[]{return true;}}),
   });
 
   /*--------------------------
   |     VANILLA DUNGEON      |
   ---------------------------*/
-  if (Dungeon::GerudoTrainingGrounds.IsVanilla()) {
+  if (randoCtx->GetDungeon(GERUDO_TRAINING_GROUNDS)->IsVanilla()) {
   areaTable[RR_GERUDO_TRAINING_GROUNDS_LOBBY] = Area("Gerudo Training Grounds Lobby", "Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST,  {[]{return CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT);}}),
@@ -114,7 +114,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
   /*---------------------------
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
-  if (Dungeon::GerudoTrainingGrounds.IsMQ()) {
+  if (randoCtx->GetDungeon(GERUDO_TRAINING_GROUNDS)->IsMQ()) {
   areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_LOBBY] = Area("Gerudo Training Grounds MQ Lobby", "Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_CHEST,       {[]{return true;}}),

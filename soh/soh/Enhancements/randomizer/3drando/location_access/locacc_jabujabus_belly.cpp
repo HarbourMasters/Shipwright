@@ -1,7 +1,7 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
 #include "../../entrance.h"
-#include "../dungeon.hpp"
+#include "../../dungeon.h"
 
 using namespace Logic;
 using namespace Rando;
@@ -12,15 +12,15 @@ void AreaTable_Init_JabuJabusBelly() {
   ---------------------------*/
   areaTable[RR_JABU_JABUS_BELLY_ENTRYWAY] = Area("Jabu Jabus Belly Entryway", "Jabu Jabus Belly", RHT_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_JABU_JABUS_BELLY_BEGINNING,    {[]{return Dungeon::JabuJabusBelly.IsVanilla();}}),
-                  Entrance(RR_JABU_JABUS_BELLY_MQ_BEGINNING, {[]{return Dungeon::JabuJabusBelly.IsMQ();}}),
+                  Entrance(RR_JABU_JABUS_BELLY_BEGINNING,    {[]{return randoCtx->GetDungeon(JABU_JABUS_BELLY)->IsVanilla();}}),
+                  Entrance(RR_JABU_JABUS_BELLY_MQ_BEGINNING, {[]{return randoCtx->GetDungeon(JABU_JABUS_BELLY)->IsMQ();}}),
                   Entrance(RR_ZORAS_FOUNTAIN,                {[]{return true;}}),
   });
 
   /*--------------------------
   |     VANILLA DUNGEON      |
   ---------------------------*/
-  if (Dungeon::JabuJabusBelly.IsVanilla()) {
+  if (randoCtx->GetDungeon(JABU_JABUS_BELLY)->IsVanilla()) {
   areaTable[RR_JABU_JABUS_BELLY_BEGINNING] = Area("Jabu Jabus Belly Beginning", "Jabu Jabus Belly", RHT_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_ENTRYWAY,    {[]{return true;}}),
@@ -161,7 +161,7 @@ void AreaTable_Init_JabuJabusBelly() {
   /*---------------------------
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
-  if (Dungeon::JabuJabusBelly.IsMQ()) {
+  if (randoCtx->GetDungeon(JABU_JABUS_BELLY)->IsMQ()) {
   areaTable[RR_JABU_JABUS_BELLY_MQ_BEGINNING] = Area("Jabu Jabus Belly MQ Beginning", "Jabu Jabus Belly", RHT_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&NutPot, {[]{return true;}}),
@@ -225,8 +225,8 @@ void AreaTable_Init_JabuJabusBelly() {
         Area("Jabu Jabus Belly Boss Entryway", "Jabu Jabus Belly", RHT_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {},
              {
                  // Exits
-                 Entrance(RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM, { [] { return Dungeon::JabuJabusBelly.IsVanilla(); } }),
-                 Entrance(RR_JABU_JABUS_BELLY_MQ_BOSS_AREA, { [] { return Dungeon::JabuJabusBelly.IsMQ(); } }),
+                 Entrance(RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM, { [] { return randoCtx->GetDungeon(JABU_JABUS_BELLY)->IsVanilla(); } }),
+                 Entrance(RR_JABU_JABUS_BELLY_MQ_BOSS_AREA, { [] { return randoCtx->GetDungeon(JABU_JABUS_BELLY)->IsMQ(); } }),
                  Entrance(RR_JABU_JABUS_BELLY_BOSS_ROOM, { [] { return true; } }),
              });
 

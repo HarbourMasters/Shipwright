@@ -1,11 +1,9 @@
 #include "starting_inventory.hpp"
 
-#include "dungeon.hpp"
+#include "../dungeon.h"
 #include "../context.h"
 #include "pool_functions.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"
-
-using namespace Dungeon;
 
 std::vector<RandomizerGet> StartingInventory;
 uint8_t AdditionalHeartContainers;
@@ -19,7 +17,7 @@ void GenerateStartingInventory() {
   StartingInventory.clear();
 
   if (ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).Is(RO_DUNGEON_ITEM_LOC_STARTWITH)) {
-    for (auto* dungeon : dungeonList) {
+    for (auto* dungeon : ctx->GetDungeons()->GetDungeonList()) {
       if (dungeon->GetMap() != RG_NONE) {
         AddItemToInventory(dungeon->GetMap());
       }
@@ -31,7 +29,7 @@ void GenerateStartingInventory() {
   }
 
   if (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_STARTWITH)) {
-    for (auto* dungeon : dungeonList) {
+    for (auto* dungeon : ctx->GetDungeons()->GetDungeonList()) {
       if (dungeon->GetSmallKeyCount() > 0) {
         AddItemToInventory(dungeon->GetSmallKey(), dungeon->GetSmallKeyCount());
       }
@@ -42,7 +40,7 @@ void GenerateStartingInventory() {
     // locked behind the keys, which is not always true in rando.
     // We can resolve this by starting with some extra keys
     // - OoT Randomizer
-    if (SpiritTemple.IsMQ()) {
+    if (ctx->GetDungeon(Rando::SPIRIT_TEMPLE)->IsMQ()) {
       AddItemToInventory(RG_SPIRIT_TEMPLE_SMALL_KEY, 3);
     }
   }

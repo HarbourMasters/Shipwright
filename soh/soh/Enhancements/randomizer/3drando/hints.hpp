@@ -6,7 +6,6 @@
 
 #include "text.hpp"
 #include "random.hpp"
-#include "dungeon.hpp"
 #include <functional>
 struct HintDistributionSetting {
   HintType type;
