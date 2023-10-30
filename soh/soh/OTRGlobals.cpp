@@ -1,4 +1,4 @@
-﻿#include "OTRGlobals.h"
+#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
@@ -768,7 +768,6 @@ void CheckSoHOTRVersion(std::string otrPath) {
         LUS::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou are missing the soh.otr file." + msg).c_str());
 #elif defined(__WIIU__)
         OSFatal(("You are missing the soh.otr file\n\n" + msg).c_str());
-        exit(1);
 #endif
     }
 
@@ -782,7 +781,6 @@ void CheckSoHOTRVersion(std::string otrPath) {
         LUS::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou have an old soh.otr file." + msg).c_str());
 #elif defined(__WIIU__)
         OSFatal(("You have an old soh.otr file\n\n" + msg).c_str());
-        exit(1);
 #endif
     }
 }
@@ -846,7 +844,6 @@ void DetectOTRVersion(std::string fileName, bool isMQ) {
         OSFatal("You've launched the Ship with an old a game OTR file.\n\n"
                 "Please generate a game OTR and relaunch.\n\n"
                 "Press and hold the Power button to shutdown...");
-        exit(1);
 #endif
     }
 }
@@ -901,7 +898,6 @@ extern "C" void InitOTR() {
         OSFatal("You've launched the Ship without a game OTR file.\n\n"
                 "Please generate a game OTR and relaunch.\n\n"
                 "Press and hold the Power button to shutdown...");
-        exit(1);
 #endif
     }
 
