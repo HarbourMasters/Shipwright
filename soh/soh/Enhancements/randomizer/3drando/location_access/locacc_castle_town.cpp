@@ -71,7 +71,7 @@ void AreaTable_Init_CastleTown() {
                   Entrance(TEMPLE_OF_TIME, {[]{return true;}}),
   });
 
-  areaTable[CASTLE_GROUNDS] = Area("Castle Grounds", "Castle Grounds", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[CASTLE_GROUNDS] = Area("Castle Grounds", "Castle Grounds", CASTLE_GROUNDS, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(THE_MARKET,            {[]{return true;}}),
                   Entrance(HYRULE_CASTLE_GROUNDS, {[]{return IsChild;}}),
@@ -157,7 +157,7 @@ void AreaTable_Init_CastleTown() {
     Entrance(GANONS_CASTLE_LEDGE, { [] { return IsAdult; }}),
   });
 
-  areaTable[GANONS_CASTLE_LEDGE] = Area("Ganon's Castle Ledge", "OGC Ganon's Castle Ledge", NONE, NO_DAY_NIGHT_CYCLE,
+  areaTable[GANONS_CASTLE_LEDGE] = Area("Ganon's Castle Ledge", "OGC Ganon's Castle Ledge", OUTSIDE_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE,
   {}, {}, {
     // Exits
     Entrance(GANONS_CASTLE_GROUNDS, {[]{return BuiltRainbowBridge;}}),
