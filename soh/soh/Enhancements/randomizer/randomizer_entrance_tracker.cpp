@@ -19,6 +19,7 @@ extern PlayState* gPlayState;
 }
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "entrance.h"
 
 #define COLOR_ORANGE IM_COL32(230, 159, 0, 255)
 #define COLOR_GREEN IM_COL32(0, 158, 115, 255)
@@ -459,6 +460,7 @@ void SortEntranceListByType(EntranceOverride* entranceList, u8 byDest) {
 }
 
 void SortEntranceListByArea(EntranceOverride* entranceList, u8 byDest) {
+    auto entranceCtx = Rando::Context::GetInstance()->GetEntranceShuffler();
     EntranceOverride tempList[ENTRANCE_OVERRIDES_MAX_COUNT] = { 0 };
 
     // Store to temp
@@ -498,10 +500,10 @@ void SortEntranceListByArea(EntranceOverride* entranceList, u8 byDest) {
         // and otherwise by group
         for (size_t group = ENTRANCE_GROUP_KOKIRI_FOREST; group < SPOILER_ENTRANCE_GROUP_COUNT; group++) {
             for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
-                if (Entrance_EntranceIsNull(&gSaveContext.entranceOverrides[i])) {
+                if (Entrance_EntranceIsNull(&entranceCtx->entranceOverrides[i])) {
                     continue;
                 }
-                const EntranceData* curEntrance = GetEntranceData(gSaveContext.entranceOverrides[i].index);
+                const EntranceData* curEntrance = GetEntranceData(entranceCtx->entranceOverrides[i].index);
                 if (curEntrance->srcGroup != group) {
                     continue;
                 }
@@ -561,6 +563,7 @@ void ClearEntranceTrackingData() {
 }
 
 void InitEntranceTrackingData() {
+    auto entranceCtx = Rando::Context::GetInstance()->GetEntranceShuffler();
     gEntranceTrackingData = {0};
 
     // Check if entrance randomization is disabled
@@ -570,11 +573,11 @@ void InitEntranceTrackingData() {
 
     // Set total and group counts
     for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
-        if (Entrance_EntranceIsNull(&gSaveContext.entranceOverrides[i])) {
+        if (Entrance_EntranceIsNull(&entranceCtx->entranceOverrides[i])) {
             break;
         }
-        const EntranceData* index = GetEntranceData(gSaveContext.entranceOverrides[i].index);
-        const EntranceData* override = GetEntranceData(gSaveContext.entranceOverrides[i].override);
+        const EntranceData* index = GetEntranceData(entranceCtx->entranceOverrides[i].index);
+        const EntranceData* override = GetEntranceData(entranceCtx->entranceOverrides[i].override);
 
         if (index->srcGroup == ENTRANCE_GROUP_ONE_WAY) {
             gEntranceTrackingData.GroupEntranceCounts[ENTRANCE_SOURCE_AREA][ENTRANCE_GROUP_ONE_WAY]++;
@@ -616,10 +619,10 @@ void InitEntranceTrackingData() {
 
     // Sort entrances by group and type in entranceData
     for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
-        srcListSortedByArea[i] = gSaveContext.entranceOverrides[i];
-        destListSortedByArea[i] = gSaveContext.entranceOverrides[i];
-        srcListSortedByType[i] = gSaveContext.entranceOverrides[i];
-        destListSortedByType[i] = gSaveContext.entranceOverrides[i];
+        srcListSortedByArea[i] = entranceCtx->entranceOverrides[i];
+        destListSortedByArea[i] = entranceCtx->entranceOverrides[i];
+        srcListSortedByType[i] = entranceCtx->entranceOverrides[i];
+        destListSortedByType[i] = entranceCtx->entranceOverrides[i];
     }
     SortEntranceListByArea(srcListSortedByArea, 0);
     SortEntranceListByArea(destListSortedByArea, 1);

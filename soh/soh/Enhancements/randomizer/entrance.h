@@ -1,4 +1,5 @@
 #pragma once
+#ifdef __cplusplus
 
 #include "randomizerTypes.h"
 #include "3drando/location_access.hpp"
@@ -112,7 +113,7 @@ using EntrancePools = std::map<EntranceType, std::vector<Entrance*>>;
 
 class EntranceShuffler {
   public:
-    std::list<EntranceOverride> entranceOverrides;
+    std::array<EntranceOverride, ENTRANCE_OVERRIDES_MAX_COUNT> entranceOverrides;
     std::vector<std::list<Entrance*>> playthroughEntrances;
     bool HasNoRandomEntrances();
     void SetNoRandomEntrances(bool noRandomEntrances);
@@ -139,3 +140,10 @@ class EntranceShuffler {
     bool mEntranceShuffleFailure = false;
 };
 } // namespace Rando
+
+extern "C" {
+#endif
+  EntranceOverride* Randomizer_GetEntranceOverrides();
+#ifdef __cplusplus
+}
+#endif

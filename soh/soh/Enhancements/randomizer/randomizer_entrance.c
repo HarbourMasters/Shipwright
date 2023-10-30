@@ -12,6 +12,7 @@
 #include <string.h>
 
 #include "global.h"
+#include "entrance.h"
 
 extern PlayState* gPlayState;
 
@@ -114,6 +115,7 @@ void Entrance_ResetEntranceTable(void) {
 }
 
 void Entrance_Init(void) {
+    EntranceOverride* entranceOverrides = Randomizer_GetEntranceOverrides();
     s32 index;
 
     size_t blueWarpRemapIdx = 0;
@@ -153,13 +155,13 @@ void Entrance_Init(void) {
     // Then overwrite the indices which are shuffled
     for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
 
-        if (Entrance_EntranceIsNull(&gSaveContext.entranceOverrides[i])) {
+        if (Entrance_EntranceIsNull(&entranceOverrides[i])) {
             break;
         }
 
-        s16 originalIndex = gSaveContext.entranceOverrides[i].index;
-        s16 blueWarpIndex = gSaveContext.entranceOverrides[i].blueWarp;
-        s16 overrideIndex = gSaveContext.entranceOverrides[i].override;
+        s16 originalIndex = entranceOverrides[i].index;
+        s16 blueWarpIndex = entranceOverrides[i].blueWarp;
+        s16 overrideIndex = entranceOverrides[i].override;
 
         //Overwrite grotto related indices
         if (originalIndex >= ENTRANCE_RANDO_GROTTO_EXIT_START) {
@@ -784,6 +786,7 @@ u8 Entrance_GetIsEntranceDiscovered(u16 entranceIndex) {
 }
 
 void Entrance_SetEntranceDiscovered(u16 entranceIndex) {
+    EntranceOverride* entranceOverrides = Randomizer_GetEntranceOverrides();
     // Skip if already set to save time from setting the connected entrance or
     // if this entrance is outside of the randomized entrance range (i.e. is a dynamic entrance)
     if (entranceIndex > MAX_ENTRANCE_RANDO_USED_INDEX || Entrance_GetIsEntranceDiscovered(entranceIndex)) {
@@ -797,8 +800,8 @@ void Entrance_SetEntranceDiscovered(u16 entranceIndex) {
         gSaveContext.sohStats.entrancesDiscovered[idx] |= entranceBit;
         // Set connected
         for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
-            if (entranceIndex == gSaveContext.entranceOverrides[i].index) {
-                Entrance_SetEntranceDiscovered(gSaveContext.entranceOverrides[i].overrideDestination);
+            if (entranceIndex == entranceOverrides[i].index) {
+                Entrance_SetEntranceDiscovered(entranceOverrides[i].overrideDestination);
                 break;
             }
         }

@@ -30,6 +30,7 @@
 #include <boost_custom/container_hash/hash_32.hpp>
 #include "randomizer_settings_window.h"
 #include "savefile.h"
+#include "entrance.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -1627,13 +1628,14 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
 }
 
 void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent) {
+    auto entranceCtx = Rando::Context::GetInstance()->GetEntranceShuffler();
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream) {
         return;
     }
 
     // set all the entrances to be 0 to indicate an unshuffled entrance
-    for (auto &entranceOveride : gSaveContext.entranceOverrides) {
+    for (auto &entranceOveride : entranceCtx->entranceOverrides) {
         entranceOveride.index = 0;
         entranceOveride.destination = 0;
         entranceOveride.blueWarp = 0;
@@ -1652,15 +1654,15 @@ void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent)
 
             for (auto entranceIt = entranceJson.begin(); entranceIt != entranceJson.end(); ++entranceIt) {
                 if (entranceIt.key() == "index") {
-                    gSaveContext.entranceOverrides[i].index = entranceIt.value();
+                    entranceCtx->entranceOverrides[i].index = entranceIt.value();
                 } else if (entranceIt.key() == "destination") {
-                    gSaveContext.entranceOverrides[i].destination = entranceIt.value();
+                    entranceCtx->entranceOverrides[i].destination = entranceIt.value();
                 } else if (entranceIt.key() == "blueWarp") {
-                    gSaveContext.entranceOverrides[i].blueWarp = entranceIt.value();
+                    entranceCtx->entranceOverrides[i].blueWarp = entranceIt.value();
                 } else if (entranceIt.key() == "override") {
-                    gSaveContext.entranceOverrides[i].override = entranceIt.value();
+                    entranceCtx->entranceOverrides[i].override = entranceIt.value();
                 } else if (entranceIt.key() == "overrideDestination") {
-                    gSaveContext.entranceOverrides[i].overrideDestination = entranceIt.value();
+                    entranceCtx->entranceOverrides[i].overrideDestination = entranceIt.value();
                 }
             }
         }

@@ -1506,13 +1506,14 @@ int EntranceShuffler::ShuffleAllEntrances() {
 
 void EntranceShuffler::CreateEntranceOverrides() {
     auto ctx = Rando::Context::GetInstance();
-    entranceOverrides.clear();
+    entranceOverrides.fill({0, 0, 0, 0, 0});
     if (mNoRandomEntrances) {
         return;
     }
     SPDLOG_DEBUG("\nCREATING ENTRANCE OVERRIDES\n");
     auto allShuffleableEntrances = GetShuffleableEntrances(EntranceType::All, false);
 
+    int i = 0;
     for (Entrance* entrance : allShuffleableEntrances) {
 
         // Double-check to make sure the entrance is actually shuffled
@@ -1537,18 +1538,23 @@ void EntranceShuffler::CreateEntranceOverrides() {
             destinationIndex = entrance->GetReverse()->GetIndex();
         }
 
-        entranceOverrides.push_back({
+        entranceOverrides[i] = {
             .index = originalIndex,
             .destination = destinationIndex,
             .blueWarp = originalBlueWarp,
             .override = replacementIndex,
             .overrideDestination = replacementDestinationIndex,
-        });
+        };
 
         message = "\tOriginal: " + std::to_string(originalIndex) + "\n";
         SPDLOG_DEBUG(message);
         message = "\tReplacement " + std::to_string(replacementIndex) + "\n";
         SPDLOG_DEBUG(message);
+        i++;
     }
 }
 } // namespace Rando
+
+extern "C" EntranceOverride* Randomizer_GetEntranceOverrides() {
+  return Rando::Context::GetInstance()->GetEntranceShuffler()->entranceOverrides.data();
+}
