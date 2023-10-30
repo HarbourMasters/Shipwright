@@ -1,4 +1,4 @@
-#include "OTRGlobals.h"
+﻿#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
@@ -717,9 +717,9 @@ extern "C" void OTRExtScanner() {
 }
 
 typedef struct {
-    int16_t major;
-    int16_t minor;
-    int16_t patch;
+    uint16_t major;
+    uint16_t minor;
+    uint16_t patch;
 } OTRVersion;
 
 // Read the port version from an OTR file
@@ -735,9 +735,9 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
             auto reader = std::make_shared<LUS::BinaryReader>(stream);
             LUS::Endianness endianness = (LUS::Endianness)reader->ReadUByte();
             reader->SetEndianness(endianness);
-            version.major = reader->ReadInt16();
-            version.minor = reader->ReadInt16();
-            version.patch = reader->ReadInt16();
+            version.major = reader->ReadUInt16();
+            version.minor = reader->ReadUInt16();
+            version.patch = reader->ReadUInt16();
         }
     }
 
