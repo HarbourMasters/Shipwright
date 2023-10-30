@@ -6,6 +6,8 @@
 #include <spdlog/spdlog.h>
 
 namespace Rando {
+EntranceLinkInfo NO_RETURN_ENTRANCE = { EntranceType::None, RR_NONE, RR_NONE, -1 };
+
 Entrance::Entrance(RandomizerRegion connectedRegion_, std::vector<ConditionFn> conditions_met_)
     : connectedRegion(connectedRegion_) {
     conditions_met.resize(2);

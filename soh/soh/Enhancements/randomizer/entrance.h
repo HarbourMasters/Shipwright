@@ -100,8 +100,6 @@ typedef struct {
     int16_t blueWarp;
 } EntranceLinkInfo;
 
-EntranceLinkInfo NO_RETURN_ENTRANCE = { EntranceType::None, RR_NONE, RR_NONE, -1 };
-
 typedef struct {
     std::list<RandomizerRegion> targetRegions;
     std::list<EntranceType> allowedTypes;
