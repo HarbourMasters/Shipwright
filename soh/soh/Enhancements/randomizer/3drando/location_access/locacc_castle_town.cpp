@@ -1,8 +1,9 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
-#include "../entrance.hpp"
+#include "../../entrance.h"
 
 using namespace Logic;
+using namespace Rando;
 
 void AreaTable_Init_CastleTown() {
   areaTable[RR_MARKET_ENTRANCE] = Area("Market Entrance", "Market Entrance", RHT_THE_MARKET, NO_DAY_NIGHT_CYCLE, {}, {}, {

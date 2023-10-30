@@ -4,6 +4,8 @@
 #include "soh/Enhancements/item-tables/ItemTableManager.h"
 #include "3drando/shops.hpp"
 #include "3drando/dungeon.hpp"
+#include "entrance.h"
+#include "settings.h"
 
 #include <spdlog/spdlog.h>
 
@@ -14,6 +16,8 @@ Context::Context() {
     for (int i = 0; i < RC_MAX; i++) {
         itemLocationTable[i] = ItemLocation((RandomizerCheck)i);
     }
+    mEntranceShuffler = std::make_shared<EntranceShuffler>();
+    mSettings = std::make_shared<Settings>();
 }
 
 std::shared_ptr<Context> Context::CreateInstance() {
@@ -56,7 +60,7 @@ void Context::PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bo
     SPDLOG_DEBUG(StaticData::GetLocation(locKey)->GetName());
     SPDLOG_DEBUG("\n\n");
 
-    if (applyEffectImmediately || mSettings.Setting(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS) || mSettings.Setting(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
+    if (applyEffectImmediately || mSettings->Setting(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS) || mSettings->Setting(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
         Rando::StaticData::RetrieveItem(item).ApplyEffect();
     }
 
@@ -96,7 +100,7 @@ void Context::AddLocations(const Container& locations, std::vector<RandomizerChe
 void Context::GenerateLocationPool() {
     allLocations.clear();
     AddLocation(RC_LINKS_POCKET);
-    if (mSettings.Setting(RSK_TRIFORCE_HUNT)) {
+    if (mSettings->Setting(RSK_TRIFORCE_HUNT)) {
         AddLocation(RC_TRIFORCE_COMPLETED);
     }
     AddLocations(StaticData::overworldLocations);
@@ -227,15 +231,19 @@ GetItemEntry Context::GetFinalGIEntry(RandomizerCheck rc, bool checkObtainabilit
     return giEntry;
 }
 
-Settings& Context::GetSettings() {
+std::shared_ptr<Settings> Context::GetSettings() {
     return mSettings;
 }
 
+const std::shared_ptr<EntranceShuffler> Context::GetEntranceShuffler() {
+    return mEntranceShuffler;
+}
+
 Rando::Option& Context::GetOption(RandomizerSettingKey key) {
-    return mSettings.Setting(key);
+    return mSettings->Setting(key);
 }
 
 Rando::Option& Context::GetTrickOption(RandomizerTrick key) {
-    return mSettings.GetTrickOption(key);
+    return mSettings->GetTrickOption(key);
 }
 } // namespace Rando

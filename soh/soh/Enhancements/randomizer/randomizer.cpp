@@ -663,7 +663,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
         spoilerFileStream >> spoilerFileJson;
 
         std::string inputSeed = spoilerFileJson["seed"].get<std::string>();
-        ctx->GetSettings().SetSeedString(inputSeed);
+        ctx->GetSettings()->SetSeedString(inputSeed);
 
         json hashJson = spoilerFileJson["file_hash"];
         int index = 0;

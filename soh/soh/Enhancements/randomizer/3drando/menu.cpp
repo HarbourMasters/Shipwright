@@ -42,11 +42,11 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
         return "";
     }
 
-    ctx->GetSettings().SetSeedString(seedString);
-    uint32_t seedHash = boost::hash_32<std::string>{}(ctx->GetSettings().GetSeedString());
-    ctx->GetSettings().SetSeed(seedHash & 0xFFFFFFFF);
+    ctx->GetSettings()->SetSeedString(seedString);
+    uint32_t seedHash = boost::hash_32<std::string>{}(ctx->GetSettings()->GetSeedString());
+    ctx->GetSettings()->SetSeed(seedHash & 0xFFFFFFFF);
 
-    int ret = Playthrough::Playthrough_Init(ctx->GetSettings().GetSeed(), cvarSettings, excludedLocations, enabledTricks);
+    int ret = Playthrough::Playthrough_Init(ctx->GetSettings()->GetSeed(), cvarSettings, excludedLocations, enabledTricks);
     if (ret < 0) {
         if (ret == -1) { // Failed to generate after 5 tries
             printf("\n\nFailed to generate after 5 tries.\nPress B to go back to the menu.\nA different seed might be "
@@ -61,7 +61,7 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
 
     // Restore settings that were set to a specific value for vanilla logic
     if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
-        for (Rando::Option* setting : ctx->GetSettings().VanillaLogicDefaults) {
+        for (Rando::Option* setting : ctx->GetSettings()->VanillaLogicDefaults) {
             setting->RestoreDelayedOption();
         }
         ctx->GetOption(RSK_KEYSANITY).RestoreDelayedOption();

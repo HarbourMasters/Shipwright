@@ -1,10 +1,11 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
-#include "../entrance.hpp"
+#include "../../entrance.h"
 #include "../dungeon.hpp"
 #include "../trial.hpp"
 
 using namespace Logic;
+using namespace Rando;
 
 void AreaTable_Init_GanonsCastle() {
   /*--------------------------

@@ -1,8 +1,9 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
-#include "../entrance.hpp"
+#include "../../entrance.h"
 
 using namespace Logic;
+using namespace Rando;
 
 void AreaTable_Init_ZorasDomain() {
   areaTable[RR_ZR_FRONT] = Area("ZR Front", "Zora River", RHT_ZORAS_RIVER, DAY_NIGHT_CYCLE, {}, {

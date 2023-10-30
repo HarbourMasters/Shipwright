@@ -1,8 +1,9 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
-#include "../entrance.hpp"
+#include "../../entrance.h"
 
 using namespace Logic;
+using namespace Rando;
 
 void AreaTable_Init_DeathMountain() {
   auto ctx = Rando::Context::GetInstance();

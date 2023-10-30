@@ -143,13 +143,13 @@ void ItemLocation::AddExcludeOption() {
     // RANDOTODO: this without string compares and loops
     bool alreadyAdded = false;
     Rando::Location* loc = StaticData::GetLocation(rc);
-    for (const Rando::Option* location : Rando::Context::GetInstance()->GetSettings().GetExcludeOptionsForGroup(loc->GetCollectionCheckGroup())) {
+    for (const Rando::Option* location : Rando::Context::GetInstance()->GetSettings()->GetExcludeOptionsForGroup(loc->GetCollectionCheckGroup())) {
         if (location->GetName() == excludedOption.GetName()) {
             alreadyAdded = true;
         }
     }
     if (!alreadyAdded) {
-        Rando::Context::GetInstance()->GetSettings().GetExcludeOptionsForGroup(loc->GetCollectionCheckGroup()).push_back(&excludedOption);
+        Rando::Context::GetInstance()->GetSettings()->GetExcludeOptionsForGroup(loc->GetCollectionCheckGroup()).push_back(&excludedOption);
     }
 }
 

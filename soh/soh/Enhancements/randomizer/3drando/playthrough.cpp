@@ -25,10 +25,10 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
     ctx->HintReset();
     Areas::AccessReset();
 
-    ctx->GetSettings().UpdateSettings(cvarSettings, excludedLocations, enabledTricks);
+    ctx->GetSettings()->UpdateSettings(cvarSettings, excludedLocations, enabledTricks);
     // once the settings have been finalized turn them into a string for hashing
     std::string settingsStr;
-    for (const Rando::OptionGroup& optionGroup : ctx->GetSettings().GetOptionGroups()) {
+    for (const Rando::OptionGroup& optionGroup : ctx->GetSettings()->GetOptionGroups()) {
         // don't go through non-menus
         if (optionGroup.GetContainsType() != Rando::OptionGroupType::SUBGROUP) {
             continue;
@@ -41,9 +41,9 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
         }
     }
 
-    uint32_t finalHash = boost::hash_32<std::string>{}(std::to_string(ctx->GetSettings().GetSeed()) + settingsStr);
+    uint32_t finalHash = boost::hash_32<std::string>{}(std::to_string(ctx->GetSettings()->GetSeed()) + settingsStr);
     Random_Init(finalHash);
-    ctx->GetSettings().SetHash(std::to_string(finalHash));
+    ctx->GetSettings()->SetHash(std::to_string(finalHash));
 
     Logic::UpdateHelpers();
 
@@ -90,12 +90,12 @@ int Playthrough_Repeat(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSet
     auto ctx = Rando::Context::GetInstance();
     uint32_t repeatedSeed = 0;
     for (int i = 0; i < count; i++) {
-        ctx->GetSettings().SetSeedString(std::to_string(rand() % 0xFFFFFFFF));
-        repeatedSeed = boost::hash_32<std::string>{}(ctx->GetSettings().GetSeedString());
-        ctx->GetSettings().SetSeed(repeatedSeed % 0xFFFFFFFF);
+        ctx->GetSettings()->SetSeedString(std::to_string(rand() % 0xFFFFFFFF));
+        repeatedSeed = boost::hash_32<std::string>{}(ctx->GetSettings()->GetSeedString());
+        ctx->GetSettings()->SetSeed(repeatedSeed % 0xFFFFFFFF);
         //CitraPrint("testing seed: " + std::to_string(Settings::seed));
         ClearProgress();
-        Playthrough_Init(ctx->GetSettings().GetSeed(), cvarSettings, excludedLocations, enabledTricks);
+        Playthrough_Init(ctx->GetSettings()->GetSeed(), cvarSettings, excludedLocations, enabledTricks);
         printf("\x1b[15;15HSeeds Generated: %d\n", i + 1);
     }
 

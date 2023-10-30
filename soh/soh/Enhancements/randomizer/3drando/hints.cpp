@@ -9,7 +9,7 @@
 #include "fill.hpp"
 #include "hint_list.hpp"
 #include "trial.hpp"
-#include "entrance.hpp"
+#include "../entrance.h"
 #include "z64item.h"
 #include <spdlog/spdlog.h>
 #include "../randomizerTypes.h"
@@ -19,6 +19,7 @@
 using namespace CustomMessages;
 using namespace Logic;
 using namespace Trial;
+using namespace Rando;
 
 const Text& HintText::GetText() const {
   auto ctx = Rando::Context::GetInstance();
@@ -409,7 +410,7 @@ static void CreateLocationHint(const std::vector<RandomizerCheck>& possibleHintL
   //make hint text
   Text locationHintText = Rando::StaticData::GetLocation(hintedLocation)->GetHint()->GetText();
   Text itemHintText = ctx->GetItemLocation(hintedLocation)->GetPlacedItem().GetHint().GetText();
-  Text prefix = Hint(RHT_PREFIX).GetText();
+  Text prefix = ::Hint(RHT_PREFIX).GetText();
   
   Text finalHint = prefix + "%r" + locationHintText + " #%g" + itemHintText + "#%w.";
   SPDLOG_DEBUG("\tMessage: ");
@@ -465,7 +466,7 @@ static void CreateWothHint(uint8_t* remainingDungeonWothHints) {
 
     // form hint text
     Text locationText = GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
-    Text finalWothHint = Hint(RHT_PREFIX).GetText() + "%r#" + locationText + "#%w" + Hint(RHT_WAY_OF_THE_HERO).GetText();
+    Text finalWothHint = ::Hint(RHT_PREFIX).GetText() + "%r#" + locationText + "#%w" + ::Hint(RHT_WAY_OF_THE_HERO).GetText();
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalWothHint.english);
     SPDLOG_DEBUG("\n\n");
@@ -512,7 +513,7 @@ static void CreateBarrenHint(uint8_t* remainingDungeonBarrenHints, std::vector<R
     // form hint text
     Text locationText = GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
     Text finalBarrenHint =
-        Hint(RHT_PREFIX).GetText() + Hint(RHT_PLUNDERING).GetText() + "%r#" + locationText + "#%w" + Hint(RHT_FOOLISH).GetText();
+        ::Hint(RHT_PREFIX).GetText() + ::Hint(RHT_PLUNDERING).GetText() + "%r#" + locationText + "#%w" + ::Hint(RHT_FOOLISH).GetText();
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalBarrenHint.english);
     SPDLOG_DEBUG("\n\n");
@@ -559,13 +560,13 @@ static void CreateRandomLocationHint(const bool goodItem = false) {
   Text locationText = GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
   // RANDOTODO: reconsider dungeon vs non-dungeon item location hints when boss shuffle mixed pools happens
   if (Rando::StaticData::GetLocation(hintedLocation)->IsDungeon()) {
-    Text finalHint = Hint(RHT_PREFIX).GetText()+"%r#"+locationText+"#%w "+Hint(RHT_HOARDS).GetText()+" %g#"+itemText+"#%w.";
+    Text finalHint = ::Hint(RHT_PREFIX).GetText()+"%r#"+locationText+"#%w "+ ::Hint(RHT_HOARDS).GetText()+" %g#"+itemText+"#%w.";
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalHint.english);
     SPDLOG_DEBUG("\n\n");
     AddHint(finalHint, gossipStone, {QM_GREEN, QM_RED}, HINT_TYPE_NAMED_ITEM, hintedLocation);
   } else {
-    Text finalHint = Hint(RHT_PREFIX).GetText()+"%r#"+itemText+"#%w "+Hint(RHT_CAN_BE_FOUND_AT).GetText()+" %g#"+locationText+"#%w.";
+    Text finalHint = ::Hint(RHT_PREFIX).GetText()+"%r#"+itemText+"#%w "+ ::Hint(RHT_CAN_BE_FOUND_AT).GetText()+" %g#"+locationText+"#%w.";
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalHint.english);
     SPDLOG_DEBUG("\n\n");
@@ -635,7 +636,7 @@ static void CreateTrialHints() {
     auto gossipStone = RandomElement(gossipStones, false);
 
     //make hint
-    auto hint = Hint(RHT_PREFIX).GetText() + Hint(RHT_SIX_TRIALS).GetText();
+    auto hint = ::Hint(RHT_PREFIX).GetText() + ::Hint(RHT_SIX_TRIALS).GetText();
     AddHint(hint, gossipStone, { QM_PINK }, HINT_TYPE_TRIAL);
 
     //zero trials
@@ -646,7 +647,7 @@ static void CreateTrialHints() {
     auto gossipStone = RandomElement(gossipStones, false);
 
     //make hint
-    auto hint = Hint(RHT_PREFIX).GetText() + Hint(RHT_ZERO_TRIALS).GetText();
+    auto hint = ::Hint(RHT_PREFIX).GetText() + ::Hint(RHT_ZERO_TRIALS).GetText();
     AddHint(hint, gossipStone, { QM_YELLOW }, HINT_TYPE_TRIAL);
 
     //4 or 5 required trials
@@ -664,7 +665,7 @@ static void CreateTrialHints() {
       auto gossipStone = RandomElement(gossipStones, false);
 
       //make hint
-      auto hint = Hint(RHT_PREFIX).GetText()+"#"+trial->GetName()+"#"+Hint(RHT_FOUR_TO_FIVE_TRIALS).GetText();
+      auto hint = ::Hint(RHT_PREFIX).GetText()+"#"+trial->GetName()+"#"+ ::Hint(RHT_FOUR_TO_FIVE_TRIALS).GetText();
       AddHint(hint, gossipStone, { QM_YELLOW }, HINT_TYPE_TRIAL);
     }
     //1 to 3 trials
@@ -681,7 +682,7 @@ static void CreateTrialHints() {
       auto gossipStone = RandomElement(gossipStones, false);
 
       //make hint
-      auto hint = Hint(RHT_PREFIX).GetText()+"#"+trial->GetName()+"#"+Hint(RHT_ONE_TO_THREE_TRIALS).GetText();
+      auto hint = ::Hint(RHT_PREFIX).GetText()+"#"+trial->GetName()+"#"+::Hint(RHT_ONE_TO_THREE_TRIALS).GetText();
       AddHint(hint, gossipStone, { QM_PINK }, HINT_TYPE_TRIAL);
     }
   }
@@ -704,9 +705,9 @@ void CreateGanonAndSheikText() {
     
 
     //If there is no light arrow location, it was in the player's inventory at the start
-    auto hint = Hint(RHT_LIGHT_ARROW_LOCATION_HINT);
+    auto hint = ::Hint(RHT_LIGHT_ARROW_LOCATION_HINT);
     if (lightArrowLocation.empty()) {
-      ganonHintText = hint.GetText()+Hint(RHT_YOUR_POCKET).GetText();
+      ganonHintText = hint.GetText()+::Hint(RHT_YOUR_POCKET).GetText();
       lightArrowHintLoc = "Link's Pocket";
     } else {
       ganonHintText = hint.GetText() + "%r" + lightArrowArea;
@@ -717,7 +718,7 @@ void CreateGanonAndSheikText() {
     ctx->AddHint(RH_GANONDORF_HINT, AutoFormatHintText(ganonHintText), lightArrowLocation[0], HINT_TYPE_STATIC, GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText());
 
     if(!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)){
-      sheikText = Hint(RHT_SHEIK_LIGHT_ARROW_HINT).GetText() + lightArrowArea + "%w.";
+      sheikText = ::Hint(RHT_SHEIK_LIGHT_ARROW_HINT).GetText() + lightArrowArea + "%w.";
       locsToCheck = {RC_GANONDORF_HINT, RC_SHEIK_HINT_GC, RC_SHEIK_HINT_MQ_GC};
     }
 
@@ -755,15 +756,15 @@ static Text BuildDoorOfTimeText() {
 
   if (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_OPEN)) {
     itemObtained = "$o";
-    doorOfTimeText = Hint(RHT_CHILD_ALTAR_TEXT_END_DOTOPEN).GetText();
+    doorOfTimeText = ::Hint(RHT_CHILD_ALTAR_TEXT_END_DOTOPEN).GetText();
 
   } else if (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_SONGONLY)) {
     itemObtained = "$c";
-    doorOfTimeText = Hint(RHT_CHILD_ALTAR_TEXT_END_DOTSONGONLY).GetText();
+    doorOfTimeText = ::Hint(RHT_CHILD_ALTAR_TEXT_END_DOTSONGONLY).GetText();
 
   } else if (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_CLOSED)) {
     itemObtained = "$i";
-    doorOfTimeText = Hint(RHT_CHILD_ALTAR_TEXT_END_DOTCLOSED).GetText();
+    doorOfTimeText = ::Hint(RHT_CHILD_ALTAR_TEXT_END_DOTCLOSED).GetText();
   }
 
   return Text()+itemObtained+doorOfTimeText;
@@ -771,7 +772,7 @@ static Text BuildDoorOfTimeText() {
 
 //insert the required number into the hint and set the singular/plural form
 static Text BuildCountReq(const RandomizerHintTextKey req, const Rando::Option& count) {
-  Text requirement = Hint(req).GetTextCopy();
+  Text requirement = ::Hint(req).GetTextCopy();
     if (count.Value<uint8_t>() == 1) {
     requirement.SetForm(SINGULAR);
   } else {
@@ -786,10 +787,10 @@ static Text BuildBridgeReqsText() {
   Text bridgeText;
 
   if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_ALWAYS_OPEN)) {
-    bridgeText = Hint(RHT_BRIDGE_OPEN_HINT).GetText();
+    bridgeText = ::Hint(RHT_BRIDGE_OPEN_HINT).GetText();
 
   } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_VANILLA)) {
-      bridgeText = Hint(RHT_BRIDGE_VANILLA_HINT).GetText();
+      bridgeText = ::Hint(RHT_BRIDGE_VANILLA_HINT).GetText();
 
   } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)) {
       bridgeText = BuildCountReq(RHT_BRIDGE_STONES_HINT, ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT));
@@ -807,7 +808,7 @@ static Text BuildBridgeReqsText() {
       bridgeText = BuildCountReq(RHT_BRIDGE_TOKENS_HINT, ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT));
 
   } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_GREG)) {
-      bridgeText = Hint(RHT_BRIDGE_GREG_HINT).GetText();
+      bridgeText = ::Hint(RHT_BRIDGE_GREG_HINT).GetText();
   }
 
   return Text()+"$l"+bridgeText+"^";
@@ -818,28 +819,28 @@ static Text BuildGanonBossKeyText() {
   Text ganonBossKeyText;
 
   if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_STARTWITH)) {
-    ganonBossKeyText = Hint(RHT_GANON_BK_START_WITH_HINT).GetText();
+    ganonBossKeyText = ::Hint(RHT_GANON_BK_START_WITH_HINT).GetText();
 
   } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_VANILLA)) {
-    ganonBossKeyText = Hint(RHT_GANON_BK_VANILLA_HINT).GetText();
+    ganonBossKeyText = ::Hint(RHT_GANON_BK_VANILLA_HINT).GetText();
 
   } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_OWN_DUNGEON)) {
-    ganonBossKeyText = Hint(RHT_GANON_BK_OWN_DUNGEON_HINT).GetText();
+    ganonBossKeyText = ::Hint(RHT_GANON_BK_OWN_DUNGEON_HINT).GetText();
 
   } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_ANY_DUNGEON)) {
-    ganonBossKeyText = Hint(RHT_GANON_BK_ANY_DUNGEON_HINT).GetText();
+    ganonBossKeyText = ::Hint(RHT_GANON_BK_ANY_DUNGEON_HINT).GetText();
 
   } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_OVERWORLD)) {
-    ganonBossKeyText = Hint(RHT_GANON_BK_OVERWORLD_HINT).GetText();
+    ganonBossKeyText = ::Hint(RHT_GANON_BK_OVERWORLD_HINT).GetText();
 
   } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_ANYWHERE)) {
-    ganonBossKeyText = Hint(RHT_GANON_BK_ANYWHERE_HINT).GetText();
+    ganonBossKeyText = ::Hint(RHT_GANON_BK_ANYWHERE_HINT).GetText();
 
   } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
-    ganonBossKeyText = Hint(RHT_GANON_BK_SKULLTULA_HINT).GetText();
+    ganonBossKeyText = ::Hint(RHT_GANON_BK_SKULLTULA_HINT).GetText();
 
   } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_VANILLA)) {
-    ganonBossKeyText = Hint(RHT_LACS_VANILLA_HINT).GetText();
+    ganonBossKeyText = ::Hint(RHT_LACS_VANILLA_HINT).GetText();
 
   } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
     ganonBossKeyText = BuildCountReq(RHT_LACS_STONES_HINT, ctx->GetOption(RSK_LACS_STONE_COUNT));
@@ -857,7 +858,7 @@ static Text BuildGanonBossKeyText() {
     ganonBossKeyText = BuildCountReq(RHT_LACS_TOKENS_HINT, ctx->GetOption(RSK_LACS_TOKEN_COUNT));
 
   } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_TRIFORCE_HUNT)) {
-    ganonBossKeyText = Hint(RHT_GANON_BK_TRIFORCE_HINT).GetText();
+    ganonBossKeyText = ::Hint(RHT_GANON_BK_TRIFORCE_HINT).GetText();
   }
 
   return Text()+"$b"+ganonBossKeyText+"^";
@@ -868,7 +869,7 @@ void CreateAltarText() {
 
   //Child Altar Text
   if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
-    childAltarText = Hint(RHT_SPIRITUAL_STONE_TEXT_START).GetText()+"^"+
+    childAltarText = ::Hint(RHT_SPIRITUAL_STONE_TEXT_START).GetText()+"^"+
     //Spiritual Stones
     // TODO: Starting Inventory Dungeon Rewards
         (/*StartingKokiriEmerald.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
@@ -887,7 +888,7 @@ void CreateAltarText() {
   //CreateMessageFromTextObject(0x7040, 0, 2, 3, AddColorsAndFormat(childAltarText, {QM_GREEN, QM_RED, QM_BLUE}));
 
   //Adult Altar Text
-  adultAltarText = Hint(RHT_ADULT_ALTAR_TEXT_START).GetText() + "^";
+  adultAltarText = ::Hint(RHT_ADULT_ALTAR_TEXT_START).GetText() + "^";
   if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
     adultAltarText = adultAltarText +
     //Medallion Areas
@@ -912,7 +913,7 @@ void CreateAltarText() {
   BuildGanonBossKeyText()+
 
   //End
-  Hint(RHT_ADULT_ALTAR_TEXT_END).GetText();
+  ::Hint(RHT_ADULT_ALTAR_TEXT_END).GetText();
   //CreateMessageFromTextObject(0x7088, 0, 2, 3, AddColorsAndFormat(adultAltarText, {QM_RED, QM_YELLOW, QM_GREEN, QM_RED, QM_BLUE, QM_YELLOW, QM_PINK, QM_RED, QM_RED, QM_RED, QM_RED}));
   ctx->AddHint(RH_ALTAR_ADULT, adultAltarText, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
 }
@@ -929,12 +930,12 @@ void CreateMerchantsHints() {
     Text grannyCapitalItemText = grannyItemText.Capitalize();
 
     Text medigoronText =
-        Hint(RHT_MEDIGORON_DIALOG_FIRST).GetText() + medigoronItemText + Hint(RHT_MEDIGORON_DIALOG_SECOND).GetText();
-    Text grannyText = grannyCapitalItemText + Hint(RHT_GRANNY_DIALOG).GetText();
-    Text carpetSalesmanTextOne = Hint(RHT_CARPET_SALESMAN_DIALOG_FIRST).GetText() + carpetSalesmanItemText +
-                                 Hint(RHT_CARPET_SALESMAN_DIALOG_SECOND).GetText();
-    Text carpetSalesmanTextTwo = Hint(RHT_CARPET_SALESMAN_DIALOG_THIRD).GetText() + carpetSalesmanItemClearText +
-                                 Hint(RHT_CARPET_SALESMAN_DIALOG_FOURTH).GetText();
+        ::Hint(RHT_MEDIGORON_DIALOG_FIRST).GetText() + medigoronItemText + ::Hint(RHT_MEDIGORON_DIALOG_SECOND).GetText();
+    Text grannyText = grannyCapitalItemText + ::Hint(RHT_GRANNY_DIALOG).GetText();
+    Text carpetSalesmanTextOne = ::Hint(RHT_CARPET_SALESMAN_DIALOG_FIRST).GetText() + carpetSalesmanItemText +
+                                 ::Hint(RHT_CARPET_SALESMAN_DIALOG_SECOND).GetText();
+    Text carpetSalesmanTextTwo = ::Hint(RHT_CARPET_SALESMAN_DIALOG_THIRD).GetText() + carpetSalesmanItemClearText +
+                                 ::Hint(RHT_CARPET_SALESMAN_DIALOG_FOURTH).GetText();
 
     // CreateMessageFromTextObject(0x9120, 0, 2, 3, AddColorsAndFormat(medigoronText, { QM_RED, QM_GREEN }));
     // CreateMessageFromTextObject(0x9121, 0, 2, 3, AddColorsAndFormat(grannyText, { QM_RED, QM_GREEN }));

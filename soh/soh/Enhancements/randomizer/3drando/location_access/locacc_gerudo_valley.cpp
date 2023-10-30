@@ -1,8 +1,9 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
-#include "../entrance.hpp"
+#include "../../entrance.h"
 
 using namespace Logic;
+using namespace Rando;
 
 void AreaTable_Init_GerudoValley() {
   areaTable[RR_GERUDO_VALLEY] = Area("Gerudo Valley", "Gerudo Valley", RHT_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {

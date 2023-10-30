@@ -113,8 +113,10 @@ protected:
     bool CanBuy() const;
 };
 
-class Entrance;
-enum class EntranceType;
+namespace Rando {
+    class Entrance;
+    enum class EntranceType;
+}
 
 class Area {
 public:
@@ -123,7 +125,7 @@ public:
          bool timePass_,
          std::vector<EventAccess> events_,
          std::vector<LocationAccess> locations_,
-         std::list<Entrance> exits_);
+         std::list<Rando::Entrance> exits_);
     ~Area();
 
     std::string regionName;
@@ -132,8 +134,8 @@ public:
     bool        timePass;
     std::vector<EventAccess> events;
     std::vector<LocationAccess> locations;
-    std::list<Entrance> exits;
-    std::list<Entrance*> entrances;
+    std::list<Rando::Entrance> exits;
+    std::list<Rando::Entrance*> entrances;
     //^ The above exits are now stored in a list instead of a vector because
     //the entrance randomization algorithm plays around with pointers to these
     //entrances a lot. By putting the entrances in a list, we don't have to
@@ -150,11 +152,11 @@ public:
 
     void AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition);
 
-    void RemoveExit(Entrance* exitToRemove);
+    void RemoveExit(Rando::Entrance* exitToRemove);
 
     void SetAsPrimary(RandomizerRegion exitToBePrimary);
 
-    Entrance* GetExit(RandomizerRegion exit);
+    Rando::Entrance* GetExit(RandomizerRegion exit);
 
     bool Child() const {
       return childDay || childNight;
@@ -246,7 +248,7 @@ namespace Areas {
 
 void  AreaTable_Init();
 Area* AreaTable(const RandomizerRegion areaKey);
-std::vector<Entrance*> GetShuffleableEntrances(EntranceType type, bool onlyPrimary = true);
+std::vector<Rando::Entrance*> GetShuffleableEntrances(Rando::EntranceType type, bool onlyPrimary = true);
 
 // Overworld
 void AreaTable_Init_LostWoods();

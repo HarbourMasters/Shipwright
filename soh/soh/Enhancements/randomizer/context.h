@@ -5,7 +5,6 @@
 #include "item_override.h"
 #include "3drando/text.hpp"
 #include "hint.h"
-#include "settings.h"
 
 #include <memory>
 #include <array>
@@ -20,6 +19,9 @@
  * used as a Singleton.
  */
 namespace Rando {
+class EntranceShuffler;
+class Settings;
+
 class Context {
   public:
     Context();
@@ -48,7 +50,8 @@ class Context {
     void SetSeedGenerated(bool seedGenerated = true);
     bool IsSpoilerLoaded();
     void SetSpoilerLoaded(bool spoilerLoaded = true);
-    Settings& GetSettings();
+    std::shared_ptr<Settings> GetSettings();
+    const std::shared_ptr<EntranceShuffler> GetEntranceShuffler();
     Option& GetOption(RandomizerSettingKey key);
     Option& GetTrickOption(RandomizerTrick key);
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);
@@ -66,7 +69,8 @@ class Context {
     static std::weak_ptr<Context> mContext;
     std::array<Hint, RH_MAX> hintTable = {};
     std::array<ItemLocation, RC_MAX> itemLocationTable = {};
-    Settings mSettings;
+    std::shared_ptr<Settings> mSettings;
+    std::shared_ptr<EntranceShuffler> mEntranceShuffler;
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;
 };

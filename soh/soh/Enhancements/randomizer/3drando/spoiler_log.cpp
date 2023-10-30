@@ -3,7 +3,7 @@
 #include "dungeon.hpp"
 #include "../static_data.h"
 #include "../context.h"
-#include "entrance.hpp"
+#include "../entrance.h"
 #include "random.hpp"
 #include "trial.hpp"
 #include "tinyxml2.h"
@@ -32,6 +32,7 @@
 #include <Context.h>
 
 using json = nlohmann::ordered_json;
+using namespace Rando;
 
 json jsonData;
 std::map<RandomizerHintTextKey, Rando::ItemLocation*> hintedLocations;
@@ -48,7 +49,7 @@ static SpoilerData spoilerData;
 
 void GenerateHash() {
     auto ctx = Rando::Context::GetInstance();
-    std::string hash = ctx->GetSettings().GetHash();
+    std::string hash = ctx->GetSettings()->GetHash();
     // adds leading 0s to the hash string if it has less than 10 digits.
     while (hash.length() < 10) {
         hash = "0" + hash;
@@ -359,7 +360,7 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
 static void WriteSettings(const bool printAll = false) {
     // auto parentNode = spoilerLog.NewElement("settings");
     auto ctx = Rando::Context::GetInstance();
-    auto allOptionGroups = ctx->GetSettings().GetOptionGroups();
+    auto allOptionGroups = ctx->GetSettings()->GetOptionGroups();
     for (const Rando::OptionGroup& optionGroup : allOptionGroups) {
         if (optionGroup.GetName() == "Timesaver Settings") {
             for (const Rando::Option* option : optionGroup.GetOptions()) {
@@ -395,8 +396,8 @@ static void WriteExcludedLocations() {
   // auto parentNode = spoilerLog.NewElement("excluded-locations");
   auto ctx = Rando::Context::GetInstance();
 
-  for (size_t i = 1; i < ctx->GetSettings().GetExcludeLocationsOptions().size(); i++) {
-    for (const auto& location : ctx->GetSettings().GetExcludeLocationsOptions()[i]) {
+  for (size_t i = 1; i < ctx->GetSettings()->GetExcludeLocationsOptions().size(); i++) {
+    for (const auto& location : ctx->GetSettings()->GetExcludeLocationsOptions()[i]) {
       if (location->GetSelectedOptionIndex() == RO_LOCATION_INCLUDE) {
         continue;
       }
@@ -417,7 +418,7 @@ static void WriteExcludedLocations() {
 // Writes the starting inventory to the spoiler log, if there is any.
 static void WriteStartingInventory() {
     auto ctx = Rando::Context::GetInstance();
-    const Rando::OptionGroup& optionGroup = ctx->GetSettings().GetOptionGroup(RSG_STARTING_INVENTORY);
+    const Rando::OptionGroup& optionGroup = ctx->GetSettings()->GetOptionGroup(RSG_STARTING_INVENTORY);
     for (const Rando::OptionGroup* subGroup : optionGroup.GetSubGroups()) {
         if (subGroup->GetContainsType() == Rando::OptionGroupType::DEFAULT) {
             for (const Rando::Option* option : subGroup->GetOptions()) {
@@ -432,7 +433,7 @@ static void WriteEnabledTricks(tinyxml2::XMLDocument& spoilerLog) {
   //auto parentNode = spoilerLog.NewElement("enabled-tricks");
   auto ctx = Rando::Context::GetInstance();
 
-  for (const auto& setting : ctx->GetSettings().GetOptionGroup(RSG_TRICKS).GetOptions()) {
+  for (const auto& setting : ctx->GetSettings()->GetOptionGroup(RSG_TRICKS).GetOptions()) {
     if (setting->GetSelectedOptionIndex() != RO_GENERIC_ON/* || !setting->IsCategory(OptionCategory::Setting)*/) {
       continue;
     }
@@ -525,13 +526,14 @@ static void WritePlaythrough() {
 
 //Write the randomized entrance playthrough to the spoiler log, if applicable
 static void WriteShuffledEntrances() {
-  for (uint32_t i = 0; i < playthroughEntrances.size(); ++i) {
+  auto ctx = Rando::Context::GetInstance();
+  for (uint32_t i = 0; i < ctx->GetEntranceShuffler()->playthroughEntrances.size(); ++i) {
     auto sphereNum = std::to_string(i);
     std::string sphereString = "sphere ";
     if (i < 10) sphereString += "0";
     sphereString += sphereNum;
-    for (Entrance* entrance : playthroughEntrances[i]) {
-      WriteShuffledEntrance(sphereString, entrance);
+    for (Entrance* entrance : ctx->GetEntranceShuffler()->playthroughEntrances[i]) {
+        WriteShuffledEntrance(sphereString, entrance);
     }
   }
 }
@@ -820,8 +822,8 @@ const char* SpoilerLog_Write(int language) {
     jsonData.clear();
 
     jsonData["version"] = (char*) gBuildVersion;
-    jsonData["seed"] = ctx->GetSettings().GetSeedString();
-    jsonData["finalSeed"] = ctx->GetSettings().GetSeed();
+    jsonData["seed"] = ctx->GetSettings()->GetSeedString();
+    jsonData["finalSeed"] = ctx->GetSettings()->GetSeed();
 
     // Write Hash
     int index = 0;

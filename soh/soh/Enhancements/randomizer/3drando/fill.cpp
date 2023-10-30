@@ -11,7 +11,7 @@
 #include "starting_inventory.hpp"
 #include "hints.hpp"
 #include "hint_list.hpp"
-#include "entrance.hpp"
+#include "../entrance.h"
 #include "shops.hpp"
 #include "pool_functions.hpp"
 //#include "debug.hpp"
@@ -23,6 +23,7 @@
 
 using namespace CustomMessages;
 using namespace Logic;
+using namespace Rando;
 
 static bool placementFailure = false;
 
@@ -92,13 +93,13 @@ static bool UpdateToDAccess(Entrance* entrance, SearchMode mode) {
 static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, bool checkOtherEntranceAccess, std::vector<RandomizerRegion>& areaPool) {
   auto ctx = Rando::Context::GetInstance();
   // Condition for validating Temple of Time Access
-  if (mode == SearchMode::TempleOfTimeAccess && ((ctx->GetSettings().ResolvedStartingAge() == RO_AGE_CHILD && AreaTable(RR_TEMPLE_OF_TIME)->Adult()) || (ctx->GetSettings().ResolvedStartingAge() == RO_AGE_ADULT && AreaTable(RR_TEMPLE_OF_TIME)->Child()) || !checkOtherEntranceAccess)) {
+  if (mode == SearchMode::TempleOfTimeAccess && ((ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && AreaTable(RR_TEMPLE_OF_TIME)->Adult()) || (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT && AreaTable(RR_TEMPLE_OF_TIME)->Child()) || !checkOtherEntranceAccess)) {
     mode = SearchMode::ValidStartingRegion;
   }
   // Condition for validating a valid starting region
   if (mode == SearchMode::ValidStartingRegion) {
-    bool childAccess = ctx->GetSettings().ResolvedStartingAge() == RO_AGE_CHILD || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child();
-    bool adultAccess = ctx->GetSettings().ResolvedStartingAge() == RO_AGE_ADULT || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult();
+    bool childAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child();
+    bool adultAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult();
 
     Area* kokiri = AreaTable(RR_KOKIRI_FOREST);
     Area* kakariko = AreaTable(RR_KAKARIKO_VILLAGE);
@@ -120,7 +121,7 @@ static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, 
       Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
     }
     // Reset access as the non-starting age
-    if (ctx->GetSettings().ResolvedStartingAge() == RO_AGE_CHILD) {
+    if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
       for (RandomizerRegion areaKey : areaPool) {
         AreaTable(areaKey)->adultDay = false;
         AreaTable(areaKey)->adultNight = false;
@@ -307,7 +308,7 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
         }
 
         // Add shuffled entrances to the entrance playthrough
-        if (mode == SearchMode::GeneratePlaythrough && exit.IsShuffled() && !exit.IsAddedToPool() && !noRandomEntrances) {
+        if (mode == SearchMode::GeneratePlaythrough && exit.IsShuffled() && !exit.IsAddedToPool() && !ctx->GetEntranceShuffler()->HasNoRandomEntrances()) {
           entranceSphere.push_back(&exit);
           exit.AddToPool();
           // Don't list a two-way coupled entrance from both directions
@@ -424,8 +425,8 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
     if (mode == SearchMode::GeneratePlaythrough && itemSphere.size() > 0) {
       ctx->playthroughLocations.push_back(itemSphere);
     }
-    if (mode == SearchMode::GeneratePlaythrough && entranceSphere.size() > 0 && !noRandomEntrances) {
-      playthroughEntrances.push_back(entranceSphere);
+    if (mode == SearchMode::GeneratePlaythrough && entranceSphere.size() > 0 && !ctx->GetEntranceShuffler()->HasNoRandomEntrances()) {
+      ctx->GetEntranceShuffler()->playthroughEntrances.push_back(entranceSphere);
     }
   }
 
@@ -939,12 +940,12 @@ void VanillaFill() {
   //If necessary, handle ER stuff
   if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
     printf("\x1b[7;10HShuffling Entrances...");
-    ShuffleAllEntrances();
+    ctx->GetEntranceShuffler()->ShuffleAllEntrances();
     printf("\x1b[7;32HDone");
   }
   //Finish up
   ctx->CreateItemOverrides();
-  CreateEntranceOverrides();
+  ctx->GetEntranceShuffler()->CreateEntranceOverrides();
   CreateWarpSongTexts();
 }
 
@@ -963,7 +964,7 @@ int Fill() {
     placementFailure = false;
     //showItemProgress = false;
     ctx->playthroughLocations.clear();
-    playthroughEntrances.clear();
+    ctx->GetEntranceShuffler()->playthroughEntrances.clear();
     ctx->wothLocations.clear();
     AreaTable_Init(); //Reset the world graph to intialize the proper locations
     ctx->ItemReset(); //Reset shops incase of shopsanity random
@@ -978,7 +979,7 @@ int Fill() {
     AddElementsToPool(ItemPool, GetMinVanillaShopItems(32)); //assume worst case shopsanity 4
     if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
       printf("\x1b[7;10HShuffling Entrances");
-      if (ShuffleAllEntrances() == ENTRANCE_SHUFFLE_FAILURE) {
+      if (ctx->GetEntranceShuffler()->ShuffleAllEntrances() == ENTRANCE_SHUFFLE_FAILURE) {
         retries++;
         ClearProgress();
         continue;
@@ -1100,7 +1101,7 @@ int Fill() {
       CalculateWotH();
       printf("Done");
       ctx->CreateItemOverrides();
-      CreateEntranceOverrides();
+      ctx->GetEntranceShuffler()->CreateEntranceOverrides();
       //Always execute ganon hint generation for the funny line  
       CreateGanonAndSheikText();
       CreateAltarText();
