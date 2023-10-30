@@ -22,14 +22,6 @@
 
 class Randomizer {
   private:
-    std::unordered_map<RandomizerCheck, std::string> hintLocations;
-    std::string childAltarText;
-    std::string adultAltarText;
-    std::string ganonHintText;
-    std::string ganonText;
-    std::string dampeText;
-    std::string sheikText;
-    std::string sariaText;
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
     void ParseHintLocationsFile(const char* spoilerFileName);
@@ -74,13 +66,6 @@ class Randomizer {
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     RandomizerCheck GetCheckFromRandomizerInf(RandomizerInf randomizerInf);
     RandomizerInf GetRandomizerInfFromCheck(RandomizerCheck rc);
-    std::string GetChildAltarText() const;
-    std::string GetAdultAltarText() const;
-    std::string GetGanonText() const;
-    std::string GetGanonHintText() const;
-    std::string GetDampeText() const;
-    std::string GetSheikText() const;
-    std::string GetSariaText() const;
     Rando::Location* GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams);
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);

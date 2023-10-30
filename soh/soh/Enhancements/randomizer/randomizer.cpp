@@ -1381,16 +1381,16 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
 
         std::string childAltarJsonText = spoilerFileJson["childAltar"]["hintText"].get<std::string>();
         std::string formattedChildAltarText = FormatJsonHintText(childAltarJsonText);
-        strncpy(gSaveContext.childAltarText, formattedChildAltarText.c_str(), sizeof(gSaveContext.childAltarText) - 1);
-        gSaveContext.childAltarText[sizeof(gSaveContext.childAltarText) - 1] = 0;
+        // strncpy(gSaveContext.childAltarText, formattedChildAltarText.c_str(), sizeof(gSaveContext.childAltarText) - 1);
+        // gSaveContext.childAltarText[sizeof(gSaveContext.childAltarText) - 1] = 0;
         gSaveContext.rewardCheck[0] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["emeraldLoc"]];
         gSaveContext.rewardCheck[1] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["rubyLoc"]];
         gSaveContext.rewardCheck[2] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["sapphireLoc"]];
 
         std::string adultAltarJsonText = spoilerFileJson["adultAltar"]["hintText"].get<std::string>();
         std::string formattedAdultAltarText = FormatJsonHintText(adultAltarJsonText);
-        strncpy(gSaveContext.adultAltarText, formattedAdultAltarText.c_str(), sizeof(gSaveContext.adultAltarText) - 1);
-        gSaveContext.adultAltarText[sizeof(gSaveContext.adultAltarText) - 1] = 0;
+        // strncpy(gSaveContext.adultAltarText, formattedAdultAltarText.c_str(), sizeof(gSaveContext.adultAltarText) - 1);
+        // gSaveContext.adultAltarText[sizeof(gSaveContext.adultAltarText) - 1] = 0;
         gSaveContext.rewardCheck[3] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["forestMedallionLoc"]];
         gSaveContext.rewardCheck[4] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["fireMedallionLoc"]];
         gSaveContext.rewardCheck[5] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["waterMedallionLoc"]];
@@ -1398,58 +1398,58 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         gSaveContext.rewardCheck[7] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["spiritMedallionLoc"]];
         gSaveContext.rewardCheck[8] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["lightMedallionLoc"]];
 
-        ParseSpoilerHintText(spoilerFileJson, "ganonHintText", gSaveContext.ganonHintText, true, sizeof(gSaveContext.ganonHintText));
+        // ParseSpoilerHintText(spoilerFileJson, "ganonHintText", gSaveContext.ganonHintText, true, sizeof(gSaveContext.ganonHintText));
         CheckNameToEnum(spoilerFileJson, "lightArrowHintLoc", &gSaveContext.lightArrowHintCheck);
-        ParseSpoilerHintText(spoilerFileJson, "ganonText", gSaveContext.ganonText, true, sizeof(gSaveContext.ganonText));
+        // ParseSpoilerHintText(spoilerFileJson, "ganonText", gSaveContext.ganonText, true, sizeof(gSaveContext.ganonText));
 
-        ParseSpoilerHintText(spoilerFileJson, "dampeText", gSaveContext.dampeText, true, sizeof(gSaveContext.dampeText));
+        // ParseSpoilerHintText(spoilerFileJson, "dampeText", gSaveContext.dampeText, true, sizeof(gSaveContext.dampeText));
         CheckNameToEnum(spoilerFileJson, "dampeHintLoc", &gSaveContext.dampeCheck);
 
-        ParseSpoilerHintText(spoilerFileJson, "gregText", gSaveContext.gregHintText, true, sizeof(gSaveContext.gregHintText));
+        // ParseSpoilerHintText(spoilerFileJson, "gregText", gSaveContext.gregHintText, true, sizeof(gSaveContext.gregHintText));
         CheckNameToEnum(spoilerFileJson, "gregLoc", &gSaveContext.gregCheck);
 
-        ParseSpoilerHintText(spoilerFileJson, "sheikText", gSaveContext.sheikText, true, sizeof(gSaveContext.sheikText));
+        // ParseSpoilerHintText(spoilerFileJson, "sheikText", gSaveContext.sheikText, true, sizeof(gSaveContext.sheikText));
         
-        ParseSpoilerHintText(spoilerFileJson, "sariaText", gSaveContext.sariaText, true, sizeof(gSaveContext.sariaText));
+        // ParseSpoilerHintText(spoilerFileJson, "sariaText", gSaveContext.sariaText, true, sizeof(gSaveContext.sariaText));
         CheckNameToEnum(spoilerFileJson, "sariaHintLoc", &gSaveContext.sariaCheck);
 
-        ParseSpoilerHintText(spoilerFileJson, "warpMinuetText", gSaveContext.warpMinuetText, false, sizeof(gSaveContext.warpMinuetText));
-        ParseSpoilerHintText(spoilerFileJson, "warpBoleroText", gSaveContext.warpBoleroText, false, sizeof(gSaveContext.warpBoleroText));
-        ParseSpoilerHintText(spoilerFileJson, "warpSerenadeText", gSaveContext.warpSerenadeText, false, sizeof(gSaveContext.warpSerenadeText));
-        ParseSpoilerHintText(spoilerFileJson, "warpRequiemText", gSaveContext.warpRequiemText, false, sizeof(gSaveContext.warpRequiemText));
-        ParseSpoilerHintText(spoilerFileJson, "warpNocturneText", gSaveContext.warpNocturneText, false, sizeof(gSaveContext.warpNocturneText));
-        ParseSpoilerHintText(spoilerFileJson, "warpPreludeText", gSaveContext.warpPreludeText, false, sizeof(gSaveContext.warpPreludeText));
+        // ParseSpoilerHintText(spoilerFileJson, "warpMinuetText", gSaveContext.warpMinuetText, false, sizeof(gSaveContext.warpMinuetText));
+        // ParseSpoilerHintText(spoilerFileJson, "warpBoleroText", gSaveContext.warpBoleroText, false, sizeof(gSaveContext.warpBoleroText));
+        // ParseSpoilerHintText(spoilerFileJson, "warpSerenadeText", gSaveContext.warpSerenadeText, false, sizeof(gSaveContext.warpSerenadeText));
+        // ParseSpoilerHintText(spoilerFileJson, "warpRequiemText", gSaveContext.warpRequiemText, false, sizeof(gSaveContext.warpRequiemText));
+        // ParseSpoilerHintText(spoilerFileJson, "warpNocturneText", gSaveContext.warpNocturneText, false, sizeof(gSaveContext.warpNocturneText));
+        // ParseSpoilerHintText(spoilerFileJson, "warpPreludeText", gSaveContext.warpPreludeText, false, sizeof(gSaveContext.warpPreludeText));
 
 
         json hintsJson = spoilerFileJson["hints"];
         int index = 0;
         for (auto it = hintsJson.begin(); it != hintsJson.end(); ++it) {
-            gSaveContext.hintLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
+            // gSaveContext.hintLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
             auto hintInfo = it.value();
             if (hintInfo["location"].is_null()) {
-                gSaveContext.hintLocations[index].hintedCheck = RC_UNKNOWN_CHECK;
+                // gSaveContext.hintLocations[index].hintedCheck = RC_UNKNOWN_CHECK;
             } else {
-                gSaveContext.hintLocations[index].hintedCheck = SpoilerfileCheckNameToEnum[hintInfo["location"]];
+                // gSaveContext.hintLocations[index].hintedCheck = SpoilerfileCheckNameToEnum[hintInfo["location"]];
             }
             if (hintInfo["item"].is_null()) {
-                gSaveContext.hintLocations[index].rGet = RG_NONE;
+                // gSaveContext.hintLocations[index].rGet = RG_NONE;
             } else {
-                gSaveContext.hintLocations[index].rGet = SpoilerfileGetNameToEnum[hintInfo["item"]];
+                // gSaveContext.hintLocations[index].rGet = SpoilerfileGetNameToEnum[hintInfo["item"]];
             }
-            gSaveContext.hintLocations[index].type = SpoilerfileHintTypeNameToEnum[hintInfo["type"]];
+            // gSaveContext.hintLocations[index].type = SpoilerfileHintTypeNameToEnum[hintInfo["type"]];
 
-            if (gSaveContext.hintLocations[index].type == HINT_TYPE_TRIAL) {
-                gSaveContext.hintLocations[index].area = RCAREA_GANONS_CASTLE;
-            } else if (gSaveContext.hintLocations[index].type == HINT_TYPE_JUNK) {
-                gSaveContext.hintLocations[index].area = RCAREA_INVALID;
-            } else {
-                gSaveContext.hintLocations[index].area = SpoilerfileAreaNameToEnum[hintInfo["area"]];
-            }
+            // if (gSaveContext.hintLocations[index].type == HINT_TYPE_TRIAL) {
+                // gSaveContext.hintLocations[index].area = RCAREA_GANONS_CASTLE;
+            // } else if (gSaveContext.hintLocations[index].type == HINT_TYPE_JUNK) {
+                // gSaveContext.hintLocations[index].area = RCAREA_INVALID;
+            // } else {
+                // gSaveContext.hintLocations[index].area = SpoilerfileAreaNameToEnum[hintInfo["area"]];
+            // }
 
             std::string hintMessage = FormatJsonHintText(hintInfo["hint"]);
-            size_t maxHintTextSize = sizeof(gSaveContext.hintLocations[index].hintText);
-            strncpy(gSaveContext.hintLocations[index].hintText, hintMessage.c_str(), maxHintTextSize - 1);
-            gSaveContext.hintLocations[index].hintText[maxHintTextSize - 1] = 0;
+            // size_t maxHintTextSize = sizeof(gSaveContext.hintLocations[index].hintText);
+            // strncpy(gSaveContext.hintLocations[index].hintText, hintMessage.c_str(), maxHintTextSize - 1);
+            // gSaveContext.hintLocations[index].hintText[maxHintTextSize - 1] = 0;
 
             index++;
         }
@@ -2453,26 +2453,6 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
 bool Randomizer::CheckContainsVanillaItem(RandomizerCheck randoCheck) {
     RandomizerGet randoGet = Rando::Context::GetInstance()->GetItemLocation(randoCheck)->GetPlacedRandomizerGet();
     return IsItemVanilla(randoGet);
-}
-
-std::string Randomizer::GetAdultAltarText() const {
-    return this->adultAltarText;
-}
-
-std::string Randomizer::GetChildAltarText() const {
-    return this->childAltarText;
-}
-
-std::string Randomizer::GetGanonText() const {
-    return ganonText;
-}
-
-std::string Randomizer::GetGanonHintText() const {
-    return ganonHintText;
-}
-
-std::string Randomizer::GetDampeText() const {
-    return dampeText;
 }
 
 // There has been some talk about potentially just using the RC identifier to store flags rather than randomizer inf, so
@@ -5337,6 +5317,7 @@ CustomMessage Randomizer::GetFrogsMessage(u16 originalTextId) {
 }
 
 CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
+    auto ctx = Rando::Context::GetInstance();
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, originalTextId);
     switch (scene) {
         case SCENE_TEMPLE_OF_TIME:
@@ -5355,7 +5336,7 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
         case SCENE_INSIDE_GANONS_CASTLE:
             if (originalTextId == TEXT_SHEIK_NEED_HOOK) {
                 if (INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
-                    messageEntry.Replace("{{message}}", gSaveContext.sheikText, gSaveContext.sheikText, gSaveContext.sheikText);
+                    messageEntry.Replace("{{message}}", ctx->GetHint(RH_SHEIK_LIGHT_ARROWS)->GetText().GetEnglish().c_str(), ctx->GetHint(RH_SHEIK_LIGHT_ARROWS)->GetText().GetEnglish().c_str(), ctx->GetHint(RH_SHEIK_LIGHT_ARROWS)->GetText().GetFrench().c_str());
                 } else {
                     messageEntry.Replace("{{message}}", "You are still ill-equipped to&face %rGanondorf%w."
                     "^Seek out the %cMaster Sword%w,&%rsomething to hold your arrows%w,&and %gmagic%w to summon the %ylight%w.",
