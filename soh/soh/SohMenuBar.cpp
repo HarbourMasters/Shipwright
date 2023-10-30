@@ -1387,6 +1387,8 @@ void DrawDeveloperToolsMenu() {
         UIWidgets::EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
         UIWidgets::Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right, and open the debug menu with L on the pause screen");
         if (CVarGetInteger("gDebugEnabled", 0)) {
+            UIWidgets::EnhancementCheckbox("OoT Registry Editor", "gRegEditEnabled");
+            UIWidgets::Tooltip("Enables the registry editor");
             ImGui::Text("Debug Save File Mode:");
             UIWidgets::EnhancementCombobox("gDebugSaveFileMode", DebugSaveFileModes, 1);
             UIWidgets::Tooltip(
