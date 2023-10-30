@@ -701,39 +701,39 @@ void InitTrickNames() {
      Text{"Piece of Cheese", "Morceau de Fromage", "Piece of Cheese"},
      Text{"Triforce Shard", "Éclat de Triforce", "Triforce Shard"},
      Text{"Shiny Rock", "Caiiloux Brillant", "Shiny Rock"}};
-  trickNameTable[0xE1] = {
+  trickNameTable[0xE0] = {
      Text{"Spider Sense", "", ""},
      Text{"Deku Spirit", "", ""},
      Text("Ghost of Ghoma", "", "")};
-  trickNameTable[0xE2] = {
+  trickNameTable[0xE1] = {
      Text{"Lizard Soul", "", ""},
      Text{"Regal Remains", "", ""},
      Text{"Dodongo's Core", "", ""}};
-  trickNameTable[0xE3] = {
+  trickNameTable[0xE2] = {
      Text{"Parasitic Poltergeist", "", ""},
      Text{"Jabu Insides", "", ""},
      Text{"Barinade Bacteria", "", ""}};
-  trickNameTable[0xE4] = {
+  trickNameTable[0xE3] = {
      Text{"Bigger Poe", "", ""},
      Text{"Sacred Forest Pine Tree", "", ""},
      Text{"Ganon's Phantom", "", ""}};
-  trickNameTable[0xE5] = {
+  trickNameTable[0xE4] = {
      Text{"Dragon Roast", "", ""},
      Text{"Hot n' Ready", "", ""},
      Text{"Volvagia's Vitality", "", ""}};
-  trickNameTable[0xE6] = {
+  trickNameTable[0xE5] = {
      Text{"Dihydrogen Monoxide", "", ""},
      Text{"Morpha Molecules", "", ""},
      Text{"Wet Stuff", "", ""}};
-  trickNameTable[0xE7] = {
+  trickNameTable[0xE6] = {
      Text{"Shadow Soul", "", ""},
      Text{"Dark Essence", "", ""},
      Text{"Bongo Bongo's Bongo", "", ""}};
-  trickNameTable[0xE8] = {
+  trickNameTable[0xE7] = {
      Text{"Sandy Ashes", "", ""},
      Text{"Spiritual Spirit", "", ""},
      Text{"Twin Rovers", "", ""}};
-  trickNameTable[0xE9] = {
+  trickNameTable[0xE8] = {
      Text{"Pure Evil", "", ""},
      Text{"Ganon's Ghost", "", ""},
      Text{"Pork", "", ""}};

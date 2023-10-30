@@ -829,8 +829,18 @@ void GenerateItemPool() {
     AddItemToMainPool(RG_MORPHA_SOUL);
     AddItemToMainPool(RG_BONGO_BONGO_SOUL);
     AddItemToMainPool(RG_TWINROVA_SOUL);
+
+    IceTrapModels.push_back(0xE0);
+    IceTrapModels.push_back(0xE1);
+    IceTrapModels.push_back(0xE2);
+    IceTrapModels.push_back(0xE3);
+    IceTrapModels.push_back(0xE4);
+    IceTrapModels.push_back(0xE5);
+    IceTrapModels.push_back(0xE6);
+    IceTrapModels.push_back(0xE7);
     if (ShuffleBossSouls.Is(BOSSSOULS_ON_PLUS_GANON)) {
       AddItemToMainPool(RG_GANON_SOUL);
+      IceTrapModels.push_back(0xE8);
     }
   }
 
