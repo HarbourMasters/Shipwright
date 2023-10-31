@@ -65,6 +65,8 @@ void EnHs2_Init(Actor* thisx, PlayState* play) {
     this->actionFunc = func_80A6F1A4;
     this->unk_2A8 = 0;
     this->actor.targetMode = 6;
+
+    Actor_Kill(this);
 }
 
 void EnHs2_Destroy(Actor* thisx, PlayState* play) {

@@ -173,6 +173,10 @@ void EnWood02_Init(Actor* thisx, PlayState* play2) {
     f32 floorY;
     s16 extraRot;
 
+    if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE && this->actor.params >= 0 || this->actor.params <= WOOD_TREE_KAKARIKO_ADULT) {
+        Actor_Kill(this);
+    }
+
     // The tree in Kakariko's day scene does not have the same params to spawn the GS
     // as the night scene, For the always spawn GS enhancement we apply the needed
     // params to have the GS drop when bonking

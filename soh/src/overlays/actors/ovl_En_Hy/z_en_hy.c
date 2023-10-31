@@ -829,7 +829,7 @@ s32 EnHy_ShouldSpawn(EnHy* this, PlayState* play) {
             } else if ((this->actor.params & 0x7F) != ENHY_TYPE_BOJ_12 && IS_NIGHT) {
                 return false;
             } else {
-                return true;
+                return false;
             }
         case SCENE_IMPAS_HOUSE:
             if ((this->actor.params & 0x7F) != ENHY_TYPE_BOJ_10) {

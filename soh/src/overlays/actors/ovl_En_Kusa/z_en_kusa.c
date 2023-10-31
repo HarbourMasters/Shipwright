@@ -266,7 +266,12 @@ void EnKusa_Init(Actor* thisx, PlayState* play) {
         return;
     }
 
-    EnKusa_SetupWaitObject(this);
+    if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE) {
+        Actor_Kill(this);
+    } else {
+        EnKusa_SetupWaitObject(this);
+    }
+    
 }
 
 void EnKusa_Destroy(Actor* thisx, PlayState* play2) {

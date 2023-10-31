@@ -105,7 +105,7 @@ void EnToryo_Init(Actor* thisx, PlayState* play) {
             break;
         case SCENE_KAKARIKO_VILLAGE:
             if ((LINK_AGE_IN_YEARS == YEARS_CHILD) && IS_DAY) {
-                this->stateFlags |= 2;
+                Actor_Kill(this);
             }
             break;
         case SCENE_KAKARIKO_CENTER_GUEST_HOUSE:
