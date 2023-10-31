@@ -2138,8 +2138,6 @@ s32 Camera_Parallel1(Camera* camera) {
     OLib_Vec3fDiffToVecSphGeo(&atToEyeDir, at, eye);
     OLib_Vec3fDiffToVecSphGeo(&atToEyeNextDir, at, eyeNext);
 
-    camera->play->manualCamera = false;
-
     switch (camera->animState) {
         case 0:
         case 0xA:
@@ -3083,7 +3081,7 @@ s32 Camera_Battle1(Camera* camera) {
     }
     anim->roll += (((OREG(36) * camera->speedRatio) * (1.0f - distRatio)) - anim->roll) * PCT(OREG(37));
     camera->roll = DEGF_TO_BINANG(anim->roll);
-    camera->fov = Camera_LERPCeilF((player->swordState != 0       ? 0.8f
+    camera->fov = Camera_LERPCeilF((player->meleeWeaponState != 0       ? 0.8f
                                     : gSaveContext.health <= 0x10 ? 0.8f
                                                                   : 1.0f) *
                                        (fov - ((fov * 0.05f) * distRatio)),
@@ -6631,7 +6629,7 @@ s32 Camera_Special7(Camera* camera) {
 
     yOffset = Player_GetHeight(camera->player);
     if (camera->animState == 0) {
-        if (camera->play->sceneNum == SCENE_JYASINZOU) {
+        if (camera->play->sceneNum == SCENE_SPIRIT_TEMPLE) {
             // Spirit Temple
             spec7->idx = 3;
         } else if (playerPosRot->pos.x < 1500.0f) {
@@ -7326,7 +7324,7 @@ s32 Camera_UpdateWater(Camera* camera) {
         if (camera->waterDistortionTimer > 0) {
             camera->waterDistortionTimer--;
             camera->distortionFlags |= DISTORTION_UNDERWATER_STRONG;
-        } else if (camera->play->sceneNum == SCENE_TURIBORI) {
+        } else if (camera->play->sceneNum == SCENE_FISHING_POND) {
             camera->distortionFlags |= DISTORTION_UNDERWATER_FISHING;
         } else {
             camera->distortionFlags |= DISTORTION_UNDERWATER_WEAK;
@@ -7677,7 +7675,7 @@ Vec3s Camera_Update(Camera* camera) {
 
     Camera_UpdateDistortion(camera);
 
-    if ((camera->play->sceneNum == SCENE_SPOT00) && (camera->fov < 59.0f)) {
+    if ((camera->play->sceneNum == SCENE_HYRULE_FIELD) && (camera->fov < 59.0f)) {
         View_SetScale(&camera->play->view, 0.79f);
     } else {
         View_SetScale(&camera->play->view, 1.0f);
@@ -7701,7 +7699,8 @@ Vec3s Camera_Update(Camera* camera) {
                      BINANG_TO_DEGF(camera->camDir.x), camera->camDir.y, BINANG_TO_DEGF(camera->camDir.y));
     }
 
-    if (camera->timer != -1 && CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_DRIGHT) && CVarGetInteger("gDebugCamera", 0)) {
+    if (camera->timer != -1 && CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_DRIGHT) &&
+        CVarGetInteger("gDebugEnabled", 0)) {
         camera->timer = 0;
     }
 
@@ -7887,6 +7886,15 @@ s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags) {
                     break;
             }
         }
+
+        // Clear free camera if an action is performed that would move the camera (targeting, first person, talking)
+        if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1 &&
+            ((mode >= CAM_MODE_TARGET && mode <= CAM_MODE_BATTLE) ||
+             (mode >= CAM_MODE_FIRSTPERSON && mode <= CAM_MODE_CLIMBZ) || mode == CAM_MODE_HANGZ ||
+             mode == CAM_MODE_FOLLOWBOOMERANG)) {
+            camera->play->manualCamera = false;
+        }
+
         func_8005A02C(camera);
         camera->mode = mode;
         return 0x80000000 | mode;
@@ -7920,7 +7928,7 @@ s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags) {
         }
     }
     if (((setting == CAM_SET_MEADOW_BIRDS_EYE) || (setting == CAM_SET_MEADOW_UNUSED)) && LINK_IS_ADULT &&
-        (camera->play->sceneNum == SCENE_SPOT05)) {
+        (camera->play->sceneNum == SCENE_SACRED_FOREST_MEADOW)) {
         camera->unk_14A |= 0x10;
         return -5;
     }

@@ -1,0 +1,21 @@
+<Root>
+    <File Name="object_ganon_anime2" Segment="6">
+        <Animation Name="gGanondorfTurnAroundAnim" Offset="0x1F58"/>
+        <Animation Name="gGanondorfStandIdleAnim" Offset="0x3018"/>
+        <Animation Name="gGanondorfStandUpFromOrganAnim" Offset="0x4304"/>
+        <Animation Name="gGanondorfStopPlayingOrganAnim" Offset="0x4F64"/>
+        <Animation Name="gGanondorfPlayOrganAnim" Offset="0x5FFC"/>
+        <Animation Name="gGanondorfLeanOnOrganAnim" Offset="0x6AF4"/>
+        <Animation Name="gGanondorfRaiseHandStartAnim" Offset="0x7268"/>
+        <Animation Name="gGanondorfRaiseHandLoopAnim" Offset="0x7A64"/>
+        <Animation Name="gGanondorfStandBackwardsAnim" Offset="0x89F8"/>
+        <Animation Name="gGanondorfLaughWhileLeaningAnim" Offset="0x9AE0"/>
+        <Animation Name="gGanondorfCollapseAnim" Offset="0xADDC"/>
+        <Animation Name="gGanondorfVomitStartAnim" Offset="0xB668"/>
+        <Animation Name="gGanondorfVomitLoopAnim" Offset="0xBE38"/>
+        <Animation Name="gGanondorfDefeatedStartAnim" Offset="0xEA00"/>
+        <Animation Name="gGanondorfDefeatedLoopAnim" Offset="0xF19C"/>
+        <Animation Name="gGanondorfYellStartAnim" Offset="0x10298"/>
+        <Animation Name="gGanondorfYellLoopAnim" Offset="0x10514"/>
+    </File>
+</Root>

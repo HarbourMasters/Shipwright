@@ -359,9 +359,7 @@ static void WriteSettings(const bool printAll = false) {
   std::vector<Menu*> allMenus = Settings::GetAllOptionMenus();
 
   for (const Menu* menu : allMenus) {
-    if (menu->name == "Cosmetic Settings" ||
-        menu->name == "Ingame Defaults" ||
-        menu->name == "Item Usability Settings" ||
+    if (menu->name == "Item Usability Settings" ||
         menu->name == "Multiplayer Settings") continue;
 
     if (menu->name == "Timesaver Settings") {
@@ -641,7 +639,7 @@ std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
       size_t lastPeriod = textStr.rfind('.', lastNewline + lineLength);
       //replace '&' first if it's within the newline range
       if (ampersand < lastNewline + lineLength) {
-        lastNewline = ampersand;
+        lastNewline = ampersand + 1;
       //or move the lastNewline cursor to the next line if a '^' is encountered
       } else if (carrot < lastNewline + lineLength) {
         lastNewline = carrot + 1;
@@ -672,6 +670,8 @@ static void WriteHints(int language) {
     std::string unformattedGanonHintText;
     std::string unformattedDampesText;
     std::string unformattedGregText;
+    std::string unformattedSheikText;
+    std::string unformattedSariaText;
 
     switch (language) {
         case 0:
@@ -680,6 +680,8 @@ static void WriteHints(int language) {
             unformattedGanonHintText = GetGanonHintText().GetEnglish();
             unformattedDampesText = GetDampeHintText().GetEnglish();
             unformattedGregText = GetGregHintText().GetEnglish();
+            unformattedSheikText = GetSheikHintText().GetEnglish();
+            unformattedSariaText = GetSariaHintText().GetEnglish();
             jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
             jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
             jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
@@ -694,6 +696,8 @@ static void WriteHints(int language) {
             unformattedGanonHintText = GetGanonHintText().GetFrench();
             unformattedDampesText = GetDampeHintText().GetFrench();
             unformattedGregText = GetGregHintText().GetFrench();
+            unformattedSheikText = GetSheikHintText().GetFrench();
+            unformattedSariaText = GetSariaHintText().GetFrench();
             jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
             jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
             jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
@@ -734,14 +738,20 @@ static void WriteHints(int language) {
     std::string ganonHintText = AutoFormatHintTextString(unformattedGanonHintText);
     std::string dampesText = AutoFormatHintTextString(unformattedDampesText);
     std::string gregText = AutoFormatHintTextString(unformattedGregText);
+    std::string sheikText = AutoFormatHintTextString(unformattedSheikText);
+    std::string sariaText = AutoFormatHintTextString(unformattedSariaText);
 
     jsonData["ganonText"] = ganonText;
     jsonData["ganonHintText"] = ganonHintText;
-    jsonData["ganonHintLoc"] = GetGanonHintLoc();
+    jsonData["lightArrowHintLoc"] = GetLightArrowHintLoc();
+    jsonData["masterSwordHintLoc"] = GetMasterSwordHintLoc();
     jsonData["dampeText"] = dampesText;
     jsonData["dampeHintLoc"] = GetDampeHintLoc();
     jsonData["gregText"] = gregText;
     jsonData["gregLoc"] = GetItemLocation(GREG_RUPEE)->GetName();
+    jsonData["sheikText"] = sheikText;
+    jsonData["sariaText"] = sariaText;
+    jsonData["sariaHintLoc"] = GetSariaHintLoc();
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;
@@ -854,6 +864,7 @@ const char* SpoilerLog_Write(int language) {
 
     jsonData["version"] = (char*) gBuildVersion;
     jsonData["seed"] = Settings::seedString;
+    jsonData["finalSeed"] = Settings::seed;
 
     // Write Hash
     int index = 0;

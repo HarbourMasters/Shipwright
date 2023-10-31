@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_ICON_ITEM_DUNGEON_STATIC_H
+#define TEXTURES_ICON_ITEM_DUNGEON_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -58,3 +59,5 @@ static const ALIGN_ASSET(2) char gDungeonMapLinkHeadTex[] = dgDungeonMapLinkHead
 
 #define dgDungeonMapSkullTex "__OTR__textures/icon_item_dungeon_static/gDungeonMapSkullTex"
 static const ALIGN_ASSET(2) char gDungeonMapSkullTex[] = dgDungeonMapSkullTex;
+
+#endif // TEXTURES_ICON_ITEM_DUNGEON_STATIC_H

@@ -95,7 +95,7 @@ u16 EnGo_GetTextID(PlayState* play, Actor* thisx) {
 
     switch (thisx->params & 0xF0) {
         case 0x90:
-            if (!gSaveContext.n64ddFlag && gSaveContext.bgsFlag) {
+            if (!IS_RANDO && gSaveContext.bgsFlag) {
                 return 0x305E;
             } else if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_CLAIM_CHECK) {
                 if (Environment_GetBgsDayCount() >= CVarGetInteger("gForgeTime", 3)) {
@@ -113,14 +113,14 @@ u16 EnGo_GetTextID(PlayState* play, Actor* thisx) {
                 return 0x3053;
             }
         case 0x00:
-            if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
-                (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) {
+            if ((!IS_RANDO && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
+                (IS_RANDO && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) {
                 if (Flags_GetInfTable(INFTABLE_10F)) {
                     return 0x3042;
                 } else {
                     return 0x3041;
                 }
-            } else if (CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1) || (Flags_GetInfTable(INFTABLE_10D))) {
+            } else if (CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON) || (Flags_GetInfTable(INFTABLE_10D))) {
                 if (Flags_GetInfTable(INFTABLE_SPOKE_TO_GORON_LINK)) {
                     return 0x3038;
                 } else {
@@ -361,16 +361,16 @@ void EnGo_ChangeAnim(EnGo* this, s32 index) {
 s32 EnGo_IsActorSpawned(EnGo* this, PlayState* play) {
     if (((this->actor.params) & 0xF0) == 0x90) {
         return true;
-    } else if (play->sceneNum == SCENE_HIDAN && !Flags_GetSwitch(play, (this->actor.params) >> 8) &&
+    } else if (play->sceneNum == SCENE_FIRE_TEMPLE && !Flags_GetSwitch(play, (this->actor.params) >> 8) &&
                LINK_IS_ADULT && (this->actor.params & 0xF0) == 0x10) {
         return true;
-    } else if (play->sceneNum == SCENE_SPOT18 && LINK_IS_ADULT && (this->actor.params & 0xF0) == 0x00) {
+    } else if (play->sceneNum == SCENE_GORON_CITY && LINK_IS_ADULT && (this->actor.params & 0xF0) == 0x00) {
         return true;
-    } else if (play->sceneNum == SCENE_SPOT16 && LINK_IS_CHILD &&
+    } else if (play->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL && LINK_IS_CHILD &&
                ((this->actor.params & 0xF0) == 0x20 || (this->actor.params & 0xF0) == 0x30 ||
                 (this->actor.params & 0xF0) == 0x40)) {
         return true;
-    } else if (play->sceneNum == SCENE_SPOT18 && LINK_IS_CHILD &&
+    } else if (play->sceneNum == SCENE_GORON_CITY && LINK_IS_CHILD &&
                ((this->actor.params & 0xF0) == 0x50 || (this->actor.params & 0xF0) == 0x60 ||
                 (this->actor.params & 0xF0) == 0x70)) {
         return true;
@@ -651,7 +651,7 @@ void EnGo_Init(Actor* thisx, PlayState* play) {
     switch (this->actor.params & 0xF0) {
         case 0x00:
             Actor_SetScale(&this->actor, 0.008f);
-            if (CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
+            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)) {
                 EnGo_SetMovedPos(this, play);
                 EnGo_SetupAction(this, EnGo_CurledUp);
             } else {
@@ -859,7 +859,7 @@ void func_80A405CC(EnGo* this, PlayState* play) {
 
 void EnGo_BiggoronActionFunc(EnGo* this, PlayState* play) {
     if (((this->actor.params & 0xF0) == 0x90) && (this->interactInfo.talkState == NPC_TALK_STATE_ACTION)) {
-        if (!gSaveContext.n64ddFlag && gSaveContext.bgsFlag) {
+        if (!IS_RANDO && gSaveContext.bgsFlag) {
             this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         } else {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
@@ -958,7 +958,7 @@ void EnGo_GetItem(EnGo* this, PlayState* play) {
         this->unk_20C = 0;
         if ((this->actor.params & 0xF0) == 0x90) {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK) {
-                if (!gSaveContext.n64ddFlag) {
+                if (!IS_RANDO) {
                     getItemId = GI_SWORD_BGS;
                 } else {
                     getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS);
@@ -967,7 +967,7 @@ void EnGo_GetItem(EnGo* this, PlayState* play) {
                 this->unk_20C = 1;
             }
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO) {
                     getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
                     getItemId = getItemEntry.getItemId;
                     Randomizer_ConsumeAdultTradeItem(play, ITEM_EYEDROPS);
@@ -976,7 +976,7 @@ void EnGo_GetItem(EnGo* this, PlayState* play) {
                 }
             }
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_SWORD_BROKEN) {
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO) {
                     getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
                     Randomizer_ConsumeAdultTradeItem(play, ITEM_SWORD_BROKEN);
                     getItemId = getItemEntry.getItemId;
@@ -992,7 +992,7 @@ void EnGo_GetItem(EnGo* this, PlayState* play) {
 
         yDist = fabsf(this->actor.yDistToPlayer) + 1.0f;
         xzDist = this->actor.xzDistToPlayer + 1.0f;
-        if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
+        if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, play, getItemId, xzDist, yDist);
         } else {
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, xzDist, yDist);
@@ -1166,8 +1166,7 @@ void EnGo_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gGoronCsEyeOpenTex));
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gGoronCsMouthNeutralTex));
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnGo_OverrideLimbDraw, EnGo_PostLimbDraw, &this->actor);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnGo_OverrideLimbDraw, EnGo_PostLimbDraw, &this->actor);
         EnGo_DrawDust(this, play);
     }
     CLOSE_DISPS(play->state.gfxCtx);

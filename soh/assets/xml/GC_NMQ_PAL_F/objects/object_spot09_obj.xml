@@ -1,5 +1,26 @@
 <Root>
     <File Name="object_spot09_obj" Segment="6">
+        <Texture Name="object_spot09_objTex_008490" OutName="object_spot09_objTex_008490" Format="rgba16" Width="32" Height="32" Offset="0x8490" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_008C90" OutName="object_spot09_objTex_008C90" Format="rgba16" Width="32" Height="32" Offset="0x8C90" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_009490" OutName="object_spot09_objTex_009490" Format="rgba16" Width="64" Height="32" Offset="0x9490" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_00A490" OutName="object_spot09_objTex_00A490" Format="rgba16" Width="32" Height="32" Offset="0xA490" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_00AC90" OutName="object_spot09_objTex_00AC90" Format="rgba16" Width="32" Height="32" Offset="0xAC90" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_00B490" OutName="object_spot09_objTex_00B490" Format="rgba16" Width="32" Height="32" Offset="0xB490" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_00BC90" OutName="object_spot09_objTex_00BC90" Format="rgba16" Width="32" Height="64" Offset="0xBC90" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_00CC90" OutName="object_spot09_objTex_00CC90" Format="rgba16" Width="64" Height="32" Offset="0xCC90" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_00DC90" OutName="object_spot09_objTex_00DC90" Format="rgba16" Width="32" Height="64" Offset="0xDC90" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_00EC90" OutName="object_spot09_objTex_00EC90" Format="rgba16" Width="64" Height="32" Offset="0xEC90" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_00FC90" OutName="object_spot09_objTex_00FC90" Format="rgba16" Width="16" Height="32" Offset="0xFC90" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_010090" OutName="object_spot09_objTex_010090" Format="rgba16" Width="64" Height="32" Offset="0x10090" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_011090" OutName="object_spot09_objTex_011090" Format="rgba16" Width="32" Height="64" Offset="0x11090" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_012090" OutName="object_spot09_objTex_012090" Format="rgba16" Width="64" Height="32" Offset="0x12090" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_013090" OutName="object_spot09_objTex_013090" Format="rgba16" Width="64" Height="32" Offset="0x13090" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_014090" OutName="object_spot09_objTex_014090" Format="rgba16" Width="64" Height="32" Offset="0x14090" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_015090" OutName="object_spot09_objTex_015090" Format="rgba16" Width="32" Height="64" Offset="0x15090" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_016090" OutName="object_spot09_objTex_016090" Format="rgba16" Width="32" Height="64" Offset="0x16090" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_017090" OutName="object_spot09_objTex_017090" Format="i8" Width="32" Height="32" Offset="0x17090" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_017490" OutName="object_spot09_objTex_017490" Format="i8" Width="32" Height="32" Offset="0x17490" AddedByScript="true"/>
+        <Texture Name="object_spot09_objTex_017890" OutName="object_spot09_objTex_017890" Format="i4" Width="128" Height="64" Offset="0x17890" AddedByScript="true"/>
         <DList Name="gValleyBridgeSidesDL" Offset="0x100"/>
         <DList Name="gValleyBrokenBridgeDL" Offset="0x3970"/>
         <DList Name="gValleyBridgeChildDL" Offset="0x1120"/>

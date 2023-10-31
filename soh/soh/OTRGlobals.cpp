@@ -128,6 +128,34 @@ Color_RGB8 kokiriColor = { 0x1E, 0x69, 0x1B };
 Color_RGB8 goronColor = { 0x64, 0x14, 0x00 };
 Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
 
+// Same as NaviColor type from OoT src (z_actor.c), but modified to be sans alpha channel for Controller LED.
+typedef struct {
+    Color_RGB8 inner;
+    Color_RGB8 outer;
+} NaviColor_RGB8;
+
+static NaviColor_RGB8 defaultIdleColor = { { 255, 255, 255 }, { 0, 0, 255 } };
+static NaviColor_RGB8 defaultNPCColor = { { 150, 150, 255 }, { 150, 150, 255 } };
+static NaviColor_RGB8 defaultEnemyColor = { { 255, 255, 0 }, { 200, 155, 0 } };
+static NaviColor_RGB8 defaultPropsColor = { { 0, 255, 0 }, { 0, 255, 0 } };
+
+// Labeled according to ActorCategory (included through ActorDB.h)
+const NaviColor_RGB8 LEDColorDefaultNaviColorList[] = {
+    defaultPropsColor, // ACTORCAT_SWITCH       Switch
+    defaultPropsColor, // ACTORCAT_BG           Background (Prop type 1)
+    defaultIdleColor,  // ACTORCAT_PLAYER       Player
+    defaultPropsColor, // ACTORCAT_EXPLOSIVE    Bomb
+    defaultNPCColor,   // ACTORCAT_NPC          NPC
+    defaultEnemyColor, // ACTORCAT_ENEMY        Enemy
+    defaultPropsColor, // ACTORCAT_PROP         Prop type 2
+    defaultPropsColor, // ACTORCAT_ITEMACTION   Item/Action
+    defaultPropsColor, // ACTORCAT_MISC         Misc.
+    defaultEnemyColor, // ACTORCAT_BOSS         Boss
+    defaultPropsColor, // ACTORCAT_DOOR         Door
+    defaultPropsColor, // ACTORCAT_CHEST        Chest
+    defaultPropsColor, // ACTORCAT_MAX
+};
+
 // OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
 const char* constCameraStrings[] = {
     "INSUFFICIENT",
@@ -878,6 +906,11 @@ extern "C" void Graph_StartFrame() {
 
     switch (dwScancode) {
         case KbScancode::LUS_KB_F5: {
+            if (CVarGetInteger("gSaveStatesEnabled", 0) == 0) {
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
+                    TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
+                return;
+            }
             const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
             const SaveStateReturn stateReturn =
                 OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
@@ -895,6 +928,11 @@ extern "C" void Graph_StartFrame() {
             break;
         }
         case KbScancode::LUS_KB_F6: {
+            if (CVarGetInteger("gSaveStatesEnabled", 0) == 0) {
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
+                    TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
+                return;
+            }
             unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
             slot++;
             if (slot > 5) {
@@ -905,6 +943,11 @@ extern "C" void Graph_StartFrame() {
             break;
         }
         case KbScancode::LUS_KB_F7: {
+            if (CVarGetInteger("gSaveStatesEnabled", 0) == 0) {
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
+                    TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
+                return;
+            }
             const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
             const SaveStateReturn stateReturn =
                 OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::LOAD });
@@ -1095,11 +1138,11 @@ uint32_t IsSceneMasterQuest(s16 sceneNum) {
         if (OTRGlobals::Instance->HasMasterQuest()) {
             if (!OTRGlobals::Instance->HasOriginal()) {
                 value = 1;
-            } else if (gSaveContext.isMasterQuest) {
+            } else if (IS_MASTER_QUEST) {
                 value = 1;
             } else {
                 value = 0;
-                if (gSaveContext.n64ddFlag &&
+                if (IS_RANDO &&
                     !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty() &&
                     OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
                     value = 1;
@@ -1685,22 +1728,68 @@ Color_RGB8 GetColorForControllerLED() {
         LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL));
         bool criticalOverride = CVarGetInteger("gLedCriticalOverride", 1);
         if (gPlayState && (source == LED_SOURCE_TUNIC_ORIGINAL || source == LED_SOURCE_TUNIC_COSMETICS)) {
-            switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
-                case PLAYER_TUNIC_KOKIRI:
+            switch (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)) {
+                case EQUIP_VALUE_TUNIC_KOKIRI:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
                                 ? CVarGetColor24("gCosmetics.Link_KokiriTunic.Value", kokiriColor)
                                 : kokiriColor;
                     break;
-                case PLAYER_TUNIC_GORON:
+                case EQUIP_VALUE_TUNIC_GORON:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
                                 ? CVarGetColor24("gCosmetics.Link_GoronTunic.Value", goronColor)
                                 : goronColor;
                     break;
-                case PLAYER_TUNIC_ZORA:
+                case EQUIP_VALUE_TUNIC_ZORA:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
                                 ? CVarGetColor24("gCosmetics.Link_ZoraTunic.Value", zoraColor)
                                 : zoraColor;
                     break;
+            }
+        }
+        if (gPlayState && (source == LED_SOURCE_NAVI_ORIGINAL || source == LED_SOURCE_NAVI_COSMETICS)) {
+            Actor* arrowPointedActor = gPlayState->actorCtx.targetCtx.arrowPointedActor;
+            if (arrowPointedActor) {
+                ActorCategory category = (ActorCategory)arrowPointedActor->category;
+                switch (category) {
+                    case ACTORCAT_PLAYER:
+                        if (source == LED_SOURCE_NAVI_COSMETICS &&
+                            CVarGetInteger("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
+                            color = CVarGetColor24("gCosmetics.Navi_IdlePrimary.Value", defaultIdleColor.inner);
+                            break;
+                        }
+                        color = LEDColorDefaultNaviColorList[category].inner;
+                        break;
+                    case ACTORCAT_NPC:
+                        if (source == LED_SOURCE_NAVI_COSMETICS &&
+                            CVarGetInteger("gCosmetics.Navi_NPCPrimary.Changed", 0)) {
+                            color = CVarGetColor24("gCosmetics.Navi_NPCPrimary.Value", defaultNPCColor.inner);
+                            break;
+                        }
+                        color = LEDColorDefaultNaviColorList[category].inner;
+                        break;
+                    case ACTORCAT_ENEMY:
+                    case ACTORCAT_BOSS:
+                        if (source == LED_SOURCE_NAVI_COSMETICS &&
+                            CVarGetInteger("gCosmetics.Navi_EnemyPrimary.Changed", 0)) {
+                            color = CVarGetColor24("gCosmetics.Navi_EnemyPrimary.Value", defaultEnemyColor.inner);
+                            break;
+                        }
+                        color = LEDColorDefaultNaviColorList[category].inner;
+                        break;
+                    default:
+                        if (source == LED_SOURCE_NAVI_COSMETICS &&
+                            CVarGetInteger("gCosmetics.Navi_PropsPrimary.Changed", 0)) {
+                            color = CVarGetColor24("gCosmetics.Navi_PropsPrimary.Value", defaultPropsColor.inner);
+                            break;
+                        }
+                        color = LEDColorDefaultNaviColorList[category].inner;
+                }
+            } else { // No target actor.
+                if (source == LED_SOURCE_NAVI_COSMETICS && CVarGetInteger("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
+                    color = CVarGetColor24("gCosmetics.Navi_IdlePrimary.Value", defaultIdleColor.inner);
+                } else {
+                    color = LEDColorDefaultNaviColorList[ACTORCAT_PLAYER].inner;
+                }
             }
         }
         if (source == LED_SOURCE_CUSTOM) {
@@ -1951,7 +2040,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     const int maxBufferSize = sizeof(font->msgBuf);
     CustomMessage messageEntry;
     s16 actorParams = 0;
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         Player* player = GET_PLAYER(play);
         if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
             if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
@@ -1960,6 +2049,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 if (CVarGetInteger("gLetItSnow", 0)) {
                     messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1);
                 }
+            } else if (player->getItemEntry.getItemId == RG_TRIFORCE_PIECE) {
+                messageEntry = Randomizer::GetTriforcePieceMessage();
             } else {
                 messageEntry = Randomizer_GetCustomGetItemMessage(player);
             }
@@ -2026,11 +2117,14 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
                : CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD);
         } else if (textId == TEXT_GANONDORF) {
-            if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT || !Randomizer_GetSettingValue(RSK_GANONDORF_LIGHT_ARROWS_HINT)) {
+            if ((INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) ||
+              !Randomizer_GetSettingValue(RSK_LIGHT_ARROWS_HINT)) {
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT);
             } else {
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF);
             }
+        } else if (textId == TEXT_SHEIK_NEED_HOOK || textId == TEXT_SHEIK_HAVE_HOOK) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetSheikMessage(gPlayState->sceneNum, textId);            
         // textId: TEXT_SCRUB_RANDOM + (randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT)
         } else if (textId >= TEXT_SCRUB_RANDOM && textId <= TEXT_SCRUB_RANDOM + NUM_SCRUBS) {
             RandomizerInf randoInf = (RandomizerInf)((textId - TEXT_SCRUB_RANDOM) + RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT);
@@ -2081,18 +2175,25 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             }
         } else if (Randomizer_GetSettingValue(RSK_DAMPES_DIARY_HINT) && textId == TEXT_DAMPES_DIARY) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY);
-        } else if (play->sceneNum == SCENE_TAKARAYA &&
+        } else if (play->sceneNum == SCENE_TREASURE_BOX_SHOP &&
                    Randomizer_GetSettingValue(RSK_GREG_HINT) &&
                    (textId == 0x704C || textId == 0x6E || textId == 0x84)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CHEST_GAME_PROCEED);
         } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS) &&
                    (textId >= TEXT_WARP_MINUET_OF_FOREST && textId <= TEXT_WARP_PRELUDE_OF_LIGHT)) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetWarpSongMessage(textId, Randomizer_GetSettingValue(RSK_WARP_SONG_HINTS) == RO_GENERIC_ON);
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetWarpSongMessage(textId, Randomizer_GetSettingValue(RSK_WARP_SONG_HINTS) == RO_GENERIC_OFF);
         } else if (textId == TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI || textId == TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, textId);
         } else if (textId == 0x3052 || (textId >= 0x3069 && textId <= 0x3070)) { //Fire Temple gorons
             u16 choice = Random(0, NUM_GORON_MESSAGES);
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
+        } else if (Randomizer_GetSettingValue(RSK_FROGS_HINT) && textId == TEXT_FROGS_UNDERWATER) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetFrogsMessage(textId);
+        } else if (Randomizer_GetSettingValue(RSK_SARIA_HINT)) {
+            if ((gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && textId == TEXT_SARIA_SFM) || textId == TEXT_SARIAS_SONG_FOREST_SOUNDS ||
+                textId == TEXT_SARIAS_SONG_FOREST_TEMPLE) {
+                messageEntry = OTRGlobals::Instance->gRandomizer->GetSariaMessage(textId);
+            }
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
@@ -2105,14 +2206,14 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             // RANDOTODO: Implement a way to determine if an item came from a skulltula and
             // inject the auto-dismiss control code if it did.
             if (CVarGetInteger("gSkulltulaFreeze", 0) != 0 &&
-                !(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
+                !(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
                 textId = TEXT_GS_NO_FREEZE;
             } else {
                 textId = TEXT_GS_FREEZE;
             }
             // In vanilla, GS token count is incremented prior to the text box displaying
             // In rando we need to bump the token count by one to show the correct count
-            s16 gsCount = gSaveContext.inventory.gsTokens + (gSaveContext.n64ddFlag ? 1 : 0);
+            s16 gsCount = gSaveContext.inventory.gsTokens + (IS_RANDO ? 1 : 0);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
             messageEntry.Replace("{{gsCount}}", std::to_string(gsCount));
         }
@@ -2125,11 +2226,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE);
         messageEntry.Replace("{{heartPieceCount}}", std::to_string(gSaveContext.sohStats.heartPieces + 1));
     }
-    if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger("gMarketSneak", 0) && play->sceneNum == SCENE_ENTRA_N) {
+    if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger("gMarketSneak", 0) && play->sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT);
-    }
-    if (textId == TEXT_RANDO_SAVE_VERSION_WARNING) {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_RANDO_SAVE_VERSION_WARNING);
     }
     font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
     switch (gSaveContext.language) {
@@ -2174,4 +2272,8 @@ extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
 
 extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement) {
     gfx_register_blended_texture(name, mask, replacement);
+}
+
+extern "C" void CheckTracker_OnMessageClose() {
+    CheckTracker::CheckTrackerDialogClosed();
 }

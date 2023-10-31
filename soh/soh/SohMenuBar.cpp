@@ -81,7 +81,9 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
     static const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6] };
     static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
     static const char* autosaveLabels[6] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
+    static const char* DebugSaveFileModes[3] = { "Off", "Vanilla", "Maxed" };
     static const char* FastFileSelect[5] = { "File N.1", "File N.2", "File N.3", "Zelda Map Select (require OoT Debug Mode)", "File select" };
+    static const char* DekuStickCheat[3] = { "Normal", "Unbreakable", "Unbreakable + Always on Fire" };
     static const char* bonkDamageValues[8] = {
         "No Damage",
         "0.25 Heart",
@@ -154,6 +156,12 @@ void DrawShipMenu() {
         }
 #if !defined(__SWITCH__) && !defined(__WIIU__)
         UIWidgets::Spacer(0);
+        if (ImGui::MenuItem("Open App Files Folder")) {
+            std::string filesPath = LUS::Context::GetInstance()->GetAppDirectoryPath();
+            SDL_OpenURL(std::string("file:///" + std::filesystem::absolute(filesPath).string()).c_str());
+        }
+        UIWidgets::Spacer(0);
+
         if (ImGui::MenuItem("Quit")) {
             LUS::Context::GetInstance()->GetWindow()->Close();
         }
@@ -526,7 +534,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Better Owl", "gBetterOwl", true, false);
                 UIWidgets::Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                 UIWidgets::PaddedEnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback", true, false);
-                bool forceSkipScarecrow = gSaveContext.n64ddFlag &&
+                bool forceSkipScarecrow = IS_RANDO &&
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_SCARECROWS_SONG);
                 static const char* forceSkipScarecrowText =
                     "This setting is forcefully enabled because a savefile\nwith \"Skip Scarecrow Song\" is loaded";
@@ -578,6 +586,8 @@ void DrawEnhancementsMenu() {
                     "Wearing the Bunny Hood grants a speed increase like in Majora's Mask. The longer jump option is not accounted for in randomizer logic.\n\n"
                     "Also disables NPC's reactions to wearing the Bunny Hood."
                 );
+                UIWidgets::PaddedEnhancementCheckbox("Bunny Hood Equippable as Adult", "gAdultBunnyHood", true, false, (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) == BUNNY_HOOD_VANILLA), "Only available with increased bunny hood speed", UIWidgets::CheckboxGraphics::Cross, false);
+                UIWidgets::Tooltip("Allows the bunny hood to be equipped normally from the pause menu as adult.");
                 UIWidgets::PaddedEnhancementCheckbox("Mask Select in Inventory", "gMaskSelect", true, false);
                 UIWidgets::Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
                 UIWidgets::PaddedEnhancementCheckbox("Nuts explode bombs", "gNutsExplodeBombs", true, false);
@@ -644,13 +654,15 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Respawn with full health instead of 3 Hearts");
                 UIWidgets::PaddedEnhancementCheckbox("No Random Drops", "gNoRandomDrops", true, false);
                 UIWidgets::Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
-                bool forceEnableBombchuDrops = gSaveContext.n64ddFlag &&
+                bool forceEnableBombchuDrops = IS_RANDO &&
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1;
                 static const char* forceEnableBombchuDropsText =
                     "This setting is forcefully enabled because a savefile\nwith \"Enable Bombchu Drops\" is loaded.";
                 UIWidgets::PaddedEnhancementCheckbox("Enable Bombchu Drops", "gBombchuDrops", true, false,
                                                         forceEnableBombchuDrops, forceEnableBombchuDropsText, UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Bombchus will sometimes drop in place of bombs");
+                UIWidgets::PaddedEnhancementCheckbox("Trees Drop Sticks", "gTreeStickDrops", true, false);
+                UIWidgets::Tooltip("Bonking into trees will have a chance to drop up to 3 sticks. Must already have obtained sticks.");
                 UIWidgets::PaddedEnhancementCheckbox("No Heart Drops", "gNoHeartDrops", true, false);
                 UIWidgets::Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
                 UIWidgets::PaddedEnhancementCheckbox("Hyper Bosses", "gHyperBosses", true, false);
@@ -662,6 +674,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Always Win Dampe Digging Game", "gDampeWin", true, false, SaveManager::Instance->IsRandoFile(),
                                                         "This setting is always enabled in randomizer files", UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Always win the heart piece/purple rupee on the first dig in Dampe's grave digging game, just like in rando\nIn a rando file, this is unconditionally enabled");
+                UIWidgets::PaddedEnhancementCheckbox("All Dogs are Richard", "gAllDogsRichard", true, false);
+                UIWidgets::Tooltip("All dogs can be traded in and will count as Richard.");
                 UIWidgets::Spacer(0);
 
                 if (ImGui::BeginMenu("Potion Values"))
@@ -846,7 +860,7 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Removes the input requirement on textboxes after defeating Ganon, allowing Credits sequence to continue to progress");
 
             // Blue Fire Arrows
-            bool forceEnableBlueFireArrows = gSaveContext.n64ddFlag &&
+            bool forceEnableBlueFireArrows = IS_RANDO &&
                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BLUE_FIRE_ARROWS);
             static const char* forceEnableBlueFireArrowsText =
                 "This setting is forcefully enabled because a savefile\nwith \"Blue Fire Arrows\" is loaded.";
@@ -855,7 +869,7 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Allows Ice Arrows to melt red ice.\nMay require a room reload if toggled during gameplay.");
 
             // Sunlight Arrows
-            bool forceEnableSunLightArrows = gSaveContext.n64ddFlag &&
+            bool forceEnableSunLightArrows = IS_RANDO &&
                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SUNLIGHT_ARROWS);
             static const char* forceEnableSunLightArrowsText =
                 "This setting is forcefully enabled because a savefile\nwith \"Sunlight Arrows\" is loaded.";
@@ -868,6 +882,9 @@ void DrawEnhancementsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Enemy Health Bars", "gEnemyHealthBar", true, false);
             UIWidgets::Tooltip("Renders a health bar for enemies when Z-Targeted");
 
+            UIWidgets::PaddedEnhancementCheckbox("Targetable Hookshot Reticle", "gHookshotableReticle", true, false);
+            UIWidgets::Tooltip("Use a different color when aiming at hookshotable collision");
+
             ImGui::EndMenu();
         }
 
@@ -875,8 +892,19 @@ void DrawEnhancementsMenu() {
 
         if (ImGui::BeginMenu("Graphics"))
         {
-            if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", true, false)) {
-                ShouldClearTextureCacheAtEndOfFrame = true;
+            if (ImGui::BeginMenu("Mods")) {
+                if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", false, false)) {
+                    ShouldClearTextureCacheAtEndOfFrame = true;
+                }
+                UIWidgets::Tooltip("Toggle between standard assets and alternate assets. Usually mods will indicate if this setting has to be used or not.");
+                UIWidgets::PaddedEnhancementCheckbox("Disable Bomb Billboarding", "gDisableBombBillboarding", true, false);
+                UIWidgets::Tooltip("Disables bombs always rotating to face the camera. To be used in conjunction with mods that want to replace bombs with 3D objects.");
+                UIWidgets::PaddedEnhancementCheckbox("Disable Grotto Fixed Rotation", "gDisableGrottoRotation", true, false);
+                UIWidgets::Tooltip("Disables grottos rotating with the camera. To be used in conjunction with mods that want to replace grottos with 3D objects.");
+                UIWidgets::PaddedEnhancementCheckbox("Invisible Bunny Hood", "gHideBunnyHood", true, false);
+                UIWidgets::Tooltip("Turns Bunny Hood invisible while still maintaining its effects.");
+
+                ImGui::EndMenu();
             }
             UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD", true, false);
             UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
@@ -958,6 +986,8 @@ void DrawEnhancementsMenu() {
                                 "This might affect other decal effects\n");
             UIWidgets::PaddedEnhancementSliderInt("Text Spacing: %d", "##TEXTSPACING", "gTextSpacing", 4, 6, "", 6, true, true, true);
             UIWidgets::Tooltip("Space between text characters (useful for HD font textures)");
+            UIWidgets::PaddedEnhancementCheckbox("More info in file select", "gFileSelectMoreInfo", true, false);
+            UIWidgets::Tooltip("Shows what items you have collected in the file select screen, like in N64 randomizer");
             ImGui::EndMenu();
         }
 
@@ -1012,6 +1042,11 @@ void DrawEnhancementsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Fix Poacher's Saw Softlock", "gFixSawSoftlock", true, false, CVarGetInteger("gSkipText", 0),
                 "This is disabled because it is forced on when Skip Text is enabled.", UIWidgets::CheckboxGraphics::Checkmark);
             UIWidgets::Tooltip("Prevents the Poacher's Saw softlock from mashing through the text, or with Skip Text enabled.");
+            UIWidgets::PaddedEnhancementCheckbox("Fix enemies not spawning near water", "gEnemySpawnsOverWaterboxes", true, false);
+            UIWidgets::Tooltip("Causes respawning enemies, like stalchildren, to appear on land near bodies of water. "
+                                "Fixes an incorrect calculation that acted like water underneath ground was above it.");
+            UIWidgets::PaddedEnhancementCheckbox("Fix Bush Item Drops", "gBushDropFix", true, false);
+            UIWidgets::Tooltip("Fixes the bushes to drop items correctly rather than spawning undefined items.");
 
             ImGui::EndMenu();
         }
@@ -1035,6 +1070,8 @@ void DrawEnhancementsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Restore old Gold Skulltula cutscene", "gGsCutscene", true, false);
             UIWidgets::PaddedEnhancementCheckbox("Quick Bongo Kill", "gQuickBongoKill", true, false);
             UIWidgets::Tooltip("Restore a bug from NTSC 1.0 that allows bypassing Bongo Bongo's intro cutscene to quickly kill him");
+            UIWidgets::PaddedEnhancementCheckbox("Original RBA Values", "gRestoreRBAValues", true, false);
+            UIWidgets::Tooltip("Restores the original outcomes when performing Reverse Bottle Adventure.");
 
             ImGui::EndMenu();
         }
@@ -1095,6 +1132,39 @@ void DrawEnhancementsMenu() {
 
             UIWidgets::PaddedEnhancementCheckbox("Shadow Tag Mode", "gShadowTag", true, false);
             UIWidgets::Tooltip("A wallmaster follows Link everywhere, don't get caught!");
+
+            UIWidgets::Spacer(0);
+
+            UIWidgets::PaddedEnhancementCheckbox("Additional Traps", "gAddTraps.enabled", true, false);
+            UIWidgets::Tooltip("Enables additional Trap variants.");
+
+            if (CVarGetInteger("gAddTraps.enabled", 0)) {
+                UIWidgets::PaddedSeparator();
+                if (ImGui::BeginMenu("Trap Options")) {
+                    ImGui::Text("Tier 1 Traps:");
+                    UIWidgets::Spacer(0);
+                    UIWidgets::PaddedEnhancementCheckbox("Freeze Traps", "gAddTraps.Ice", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Burn Traps", "gAddTraps.Burn", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Shock Traps", "gAddTraps.Shock", true, false);
+
+                    UIWidgets::PaddedSeparator();
+                    ImGui::Text("Tier 2 Traps:");
+                    UIWidgets::Spacer(0);
+                    UIWidgets::PaddedEnhancementCheckbox("Knockback Traps", "gAddTraps.Knock", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Speed Traps", "gAddTraps.Speed", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Bomb Traps", "gAddTraps.Bomb", true, false);
+
+                    UIWidgets::PaddedSeparator();
+                    ImGui::Text("Tier 3 Traps:");
+                    UIWidgets::Spacer(0);
+                    UIWidgets::PaddedEnhancementCheckbox("Void Traps", "gAddTraps.Void", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Ammo Traps", "gAddTraps.Ammo", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Death Traps", "gAddTraps.Kill", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Teleport Traps", "gAddTraps.Tele", true, false);
+
+                    ImGui::EndMenu();
+                }
+            }
 
             ImGui::EndMenu();
         }
@@ -1167,7 +1237,9 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("Makes every surface in the game climbable");
         UIWidgets::PaddedEnhancementCheckbox("Hookshot Everything", "gHookshotEverything", true, false);
         UIWidgets::Tooltip("Makes every surface in the game hookshot-able");
+        UIWidgets::Spacer(2.0f);
         UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.1fx", "##gCheatHookshotReachMultiplier", "gCheatHookshotReachMultiplier", 1.0f, 5.0f, "", 1.0f, false);
+        UIWidgets::EnhancementSliderFloat("Bomb Timer Multiplier: %.1fx", "##gBombTimerMultiplier", "gBombTimerMultiplier", 0.1f, 5.0f, "", 1.0f, false);
         UIWidgets::PaddedEnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL", true, false);
         UIWidgets::Tooltip("Holding L makes you float into the air");
         UIWidgets::PaddedEnhancementCheckbox("Super Tunic", "gSuperTunic", true, false);
@@ -1179,6 +1251,9 @@ void DrawCheatsMenu() {
                 CVarSetInteger("gNormalChildHylianShield", 0);
             }
         }
+        UIWidgets::PaddedEnhancementCheckbox("Easy QPA", "gEzQPA", true, false);
+        UIWidgets::Tooltip("Gives you the glitched damage value of the quick put away glitch.");
+        UIWidgets::PaddedEnhancementCheckbox("Timeless Equipment", "gTimelessEquipment", true, false);
         UIWidgets::Tooltip("Allows any item to be equipped, regardless of age\nAlso allows Child to use Adult strength upgrades");
         if (CVarGetInteger("gTimelessEquipment", 0) == 1) {
             UIWidgets::PaddedEnhancementCheckbox("Normal Child Hylian Shield", "gNormalChildHylianShield", true, false);
@@ -1195,14 +1270,44 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("Freezes the time of day");
         UIWidgets::PaddedEnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie", true, false);
         UIWidgets::Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
+        UIWidgets::PaddedEnhancementCheckbox("Fish Don't despawn", "gNoFishDespawn", true, false);
+        UIWidgets::Tooltip("Prevents fish from automatically despawning after a while when dropped");
+        UIWidgets::PaddedEnhancementCheckbox("Bugs Don't despawn", "gNoBugsDespawn", true, false);
+        UIWidgets::Tooltip("Prevents bugs from automatically despawning after a while when dropped");
         UIWidgets::PaddedEnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield", true, false);
         UIWidgets::Tooltip("Prevents the Deku Shield from burning on contact with fire");
         UIWidgets::PaddedEnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded", true, false);
         UIWidgets::Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
         UIWidgets::PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
         UIWidgets::Tooltip("This syncs the ingame time with the real world time");
+        ImGui::Text("Deku Sticks:");
+        UIWidgets::EnhancementCombobox("gDekuStickCheat", DekuStickCheat, DEKU_STICK_NORMAL);
         UIWidgets::PaddedEnhancementCheckbox("No ReDead/Gibdo Freeze", "gNoRedeadFreeze", true, false);
         UIWidgets::Tooltip("Prevents ReDeads and Gibdos from being able to freeze you with their scream");
+        UIWidgets::Spacer(2.0f);
+        if (ImGui::BeginMenu("Save States")) {
+            ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f }, "          " ICON_FA_EXCLAMATION_TRIANGLE);
+            ImGui::SameLine();
+            ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, " WARNING!!!! ");
+            ImGui::SameLine();
+            ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f }, ICON_FA_EXCLAMATION_TRIANGLE);
+            UIWidgets::PaddedText("These are NOT like emulator states.", true, false);
+            UIWidgets::PaddedText("They do not save your game progress, and", true, false);
+            UIWidgets::PaddedText("they WILL break across transitions and", true, false);
+            UIWidgets::PaddedText("load zones (like doors). Support for", true, false);
+            UIWidgets::PaddedText("related issues will not be provided.", true, false);
+            if (UIWidgets::PaddedEnhancementCheckbox("I promise I have read the warning", "gSaveStatePromise", true, false)) {
+                CVarSetInteger("gSaveStatesEnabled", 0);
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            }
+            if (CVarGetInteger("gSaveStatePromise", 0) == 1) {
+                UIWidgets::PaddedEnhancementCheckbox("I understand, enable save states", "gSaveStatesEnabled", true, false);
+                UIWidgets::Tooltip("F5 to save, F6 to change slots, F7 to load");
+            }
+
+            ImGui::EndMenu();
+        }
+        UIWidgets::Spacer(2.0f);
 
         {
             static int32_t betaQuestEnabled = CVarGetInteger("gEnableBetaQuest", 0);
@@ -1267,10 +1372,16 @@ void DrawCheatsMenu() {
             }
         }
 
+        UIWidgets::Spacer(2.0f);
         if (ImGui::Button("Change Age")) {
             CVarSetInteger("gSwitchAge", 1);
         }
-        UIWidgets::Tooltip("Switches Link's age and reloads the area.");   
+        UIWidgets::Tooltip("Switches Link's age and reloads the area.");  
+
+        if (ImGui::Button("Clear Cutscene Pointer")) {
+            GameInteractor::RawAction::ClearCutscenePointer();
+        }
+        UIWidgets::Tooltip("Clears the cutscene pointer to a value safe for wrong warps.");   
 
         ImGui::EndMenu();
     }
@@ -1284,16 +1395,27 @@ extern std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
 extern std::shared_ptr<DLViewerWindow> mDLViewerWindow;
 
 void DrawDeveloperToolsMenu() {
-            if (ImGui::BeginMenu("Developer Tools"))
-    {
+    if (ImGui::BeginMenu("Developer Tools")) {
         UIWidgets::EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
         UIWidgets::Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right, and open the debug menu with L on the pause screen");
+        if (CVarGetInteger("gDebugEnabled", 0)) {
+            UIWidgets::EnhancementCheckbox("OoT Registry Editor", "gRegEditEnabled");
+            UIWidgets::Tooltip("Enables the registry editor");
+            ImGui::Text("Debug Save File Mode:");
+            UIWidgets::EnhancementCombobox("gDebugSaveFileMode", DebugSaveFileModes, 1);
+            UIWidgets::Tooltip(
+                "Changes the behaviour of debug file select creation (creating a save file on slot 1 with debug mode on)\n"
+                "- Off: The debug save file will be a normal savefile\n"
+                "- Vanilla: The debug save file will be the debug save file from the original game\n"
+                "- Maxed: The debug save file will be a save file with all of the items & upgrades"
+            );
+        }
         UIWidgets::PaddedEnhancementCheckbox("OoT Skulltula Debug", "gSkulltulaDebugEnabled", true, false);
         UIWidgets::Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various map icons (boss key, compass, map screen locations, etc) will set the GS bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT.");
         UIWidgets::PaddedEnhancementCheckbox("Fast File Select", "gSkipLogoTitle", true, false);
         UIWidgets::Tooltip("Load the game to the selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only if you toggle on \"Create a new save if none ?\" else it will bring you to the File choose menu");
         if (CVarGetInteger("gSkipLogoTitle", 0)) {
-            ImGui::Text("Loading :");
+            ImGui::Text("Loading:");
             UIWidgets::EnhancementCombobox("gSaveFileID", FastFileSelect, 0);
         };
         UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
@@ -1434,7 +1556,7 @@ void DrawRandomizerMenu() {
                 (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_VANILLA &&
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_OWN_DUNGEON &&
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_STARTWITH) || 
-                !gSaveContext.n64ddFlag) {
+                !IS_RANDO) {
                 disableKeyColors = false;
             }
 

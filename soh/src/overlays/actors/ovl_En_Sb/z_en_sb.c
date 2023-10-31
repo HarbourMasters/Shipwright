@@ -7,6 +7,7 @@
 #include "z_en_sb.h"
 #include "vt.h"
 #include "objects/object_sb/object_sb.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
@@ -456,7 +457,7 @@ void EnSb_Update(Actor* thisx, PlayState* play) {
             } else {
                 Item_DropCollectible(play, &this->actor.world.pos, 8);
             }
-            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SHELLBLADE]++;
+            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
             Actor_Kill(&this->actor);
         }
     } else {
@@ -487,8 +488,7 @@ void EnSb_Draw(Actor* thisx, PlayState* play) {
     s16 fireDecr;
 
     func_8002EBCC(&this->actor, play, 1);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, EnSb_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, EnSb_PostLimbDraw, this);
     if (this->fire != 0) {
         this->actor.colorFilterTimer++;
         fireDecr = this->fire - 1;

@@ -237,6 +237,10 @@ namespace GameControlEditor {
         DrawHelpIcon("Inverts the Camera X Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
         UIWidgets::PaddedEnhancementCheckbox("Invert Aiming Y Axis", "gInvertAimingYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
         DrawHelpIcon("Inverts the Camera Y Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
+        UIWidgets::PaddedEnhancementCheckbox("Invert Shield Aiming Y Axis", "gInvertShieldAimingYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+        DrawHelpIcon("Inverts the Shield Aiming Y Axis");
+        UIWidgets::PaddedEnhancementCheckbox("Invert Shield Aiming X Axis", "gInvertShieldAimingXAxis");
+        DrawHelpIcon("Inverts the Shield Aiming X Axis");
         UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First-Person View", "gDisableAutoCenterViewFirstPerson");
         DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
         if (UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", "gEnableFirstPersonSensitivity", true, false)) {
@@ -327,13 +331,14 @@ namespace GameControlEditor {
 
     void DrawLEDControlPanel(GameControlEditorWindow* window) {
         window->BeginGroupPanelPublic("LED Colors", ImGui::GetContentRegionAvail());
-        static const char* ledSources[4] = { "Original Tunic Colors", "Cosmetics Tunic Colors", "Health Colors", "Custom" };
+        static const char* ledSources[] = { "Original Tunic Colors",          "Cosmetics Tunic Colors",          "Health Colors",
+                                            "Original Navi Targeting Colors", "Cosmetics Navi Targeting Colors", "Custom" };
         UIWidgets::PaddedText("Source");
         UIWidgets::EnhancementCombobox("gLedColorSource", ledSources, LED_SOURCE_TUNIC_ORIGINAL);
         DrawHelpIcon("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when health < 40%. Green otherwise.\n\n" \
                      "Tunics: colors will mirror currently equipped tunic, whether original or the current values in Cosmetics Editor.\n\n" \
                      "Custom: single, solid color");
-        if (CVarGetInteger("gLedColorSource", 1) == 3) {
+        if (CVarGetInteger("gLedColorSource", 1) == LED_SOURCE_CUSTOM) {
             UIWidgets::Spacer(3);
             auto port1Color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
             ImVec4 colorVec = { port1Color.r / 255.0f, port1Color.g / 255.0f, port1Color.b / 255.0f, 1.0f };

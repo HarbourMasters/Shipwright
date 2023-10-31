@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MJIN_H
+#define OBJECTS_OBJECT_MJIN_H 1
 
 #include "align_asset_macro.h"
 
@@ -13,3 +14,5 @@ static const ALIGN_ASSET(2) char gWarpPadSideTex[] = dgWarpPadSideTex;
 
 #define dgWarpPadTopTex "__OTR__objects/object_mjin/gWarpPadTopTex"
 static const ALIGN_ASSET(2) char gWarpPadTopTex[] = dgWarpPadTopTex;
+
+#endif // OBJECTS_OBJECT_MJIN_H

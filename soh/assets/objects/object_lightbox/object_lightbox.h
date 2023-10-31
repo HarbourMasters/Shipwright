@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_LIGHTBOX_H
+#define OBJECTS_OBJECT_LIGHTBOX_H 1
 
 #include "align_asset_macro.h"
 
@@ -34,3 +35,5 @@ static const ALIGN_ASSET(2) char object_lightbox_Tex_001610[] = dobject_lightbox
 
 #define dobject_lightbox_Col_001F10 "__OTR__objects/object_lightbox/object_lightbox_Col_001F10"
 static const ALIGN_ASSET(2) char object_lightbox_Col_001F10[] = dobject_lightbox_Col_001F10;
+
+#endif // OBJECTS_OBJECT_LIGHTBOX_H

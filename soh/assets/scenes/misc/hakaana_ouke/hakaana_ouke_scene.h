@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MISC_HAKAANA_OUKE_SCENE_H
+#define MISC_HAKAANA_OUKE_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -29,3 +30,6 @@ static const ALIGN_ASSET(2) char hakaana_ouke_sceneTex_002AE0[] = dhakaana_ouke_
 #define dhakaana_ouke_sceneCollisionHeader_002250 "__OTR__scenes/nonmq/hakaana_ouke_scene/hakaana_ouke_sceneCollisionHeader_002250"
 
 #define dhakaana_ouke_sceneCollisionHeader_002250 "__OTR__scenes/nonmq/hakaana_ouke_scene/hakaana_ouke_sceneCollisionHeader_002250"
+
+
+#endif // MISC_HAKAANA_OUKE_SCENE_H

@@ -20,6 +20,16 @@ typedef struct {
     uint8_t id;
 } Sprite;
 
+// Check tracker check visibility categories
+typedef enum {
+    RCSHOW_UNCHECKED,
+    RCSHOW_SEEN,
+    RCSHOW_IDENTIFIED,
+    RCSHOW_SCUMMED,
+    RCSHOW_COLLECTED,
+    RCSHOW_SAVED,
+} RandomizerCheckStatus;
+
 typedef enum {
     HINT_TYPE_TRIAL,
     HINT_TYPE_ALWAYS,
@@ -211,6 +221,7 @@ typedef enum {
     RC_MARKET_BOMBCHU_SHOP_ITEM_7,
     RC_MARKET_BOMBCHU_SHOP_ITEM_8,
     RC_TOT_LIGHT_ARROWS_CUTSCENE,
+    RC_TOT_MASTER_SWORD,
     RC_HC_MALON_EGG,
     RC_HC_ZELDAS_LETTER,
     RC_HC_GREAT_FAIRY_REWARD,
@@ -847,6 +858,7 @@ typedef enum {
     RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,
     RC_ZR_OPEN_GROTTO_GOSSIP_STONE,
     RC_GANONDORF_HINT,
+    RC_TRIFORCE_COMPLETED,
     RC_MAX
 } RandomizerCheck;
 
@@ -1112,6 +1124,7 @@ typedef enum {
 typedef enum {
     RG_NONE,
     RG_KOKIRI_SWORD,
+    RG_MASTER_SWORD,
     RG_GIANTS_KNIFE,
     RG_BIGGORON_SWORD,
     RG_DEKU_SHIELD,
@@ -1302,6 +1315,7 @@ typedef enum {
     RG_BUY_RED_POTION_40,
     RG_BUY_RED_POTION_50,
     RG_TRIFORCE,
+    RG_TRIFORCE_PIECE,
     RG_HINT,
     RG_TYCOON_WALLET,
     RG_MAX
@@ -1348,6 +1362,7 @@ typedef enum {
     RSK_STARTING_NOCTURNE_OF_SHADOW, 
     RSK_STARTING_PRELUDE_OF_LIGHT,
     RSK_SHUFFLE_KOKIRI_SWORD,
+    RSK_SHUFFLE_MASTER_SWORD,
     RSK_STARTING_MAPS_COMPASSES,
     RSK_SHUFFLE_DUNGEON_REWARDS,
     RSK_SHUFFLE_SONGS,
@@ -1364,9 +1379,11 @@ typedef enum {
     RSK_ICE_TRAPS,
     RSK_GOSSIP_STONE_HINTS,
     RSK_TOT_ALTAR_HINT,
-    RSK_GANONDORF_LIGHT_ARROWS_HINT,
+    RSK_LIGHT_ARROWS_HINT,
     RSK_DAMPES_DIARY_HINT,
     RSK_GREG_HINT,
+    RSK_SARIA_HINT,
+    RSK_FROGS_HINT,
     RSK_KAK_10_SKULLS_HINT,
     RSK_KAK_20_SKULLS_HINT,
     RSK_KAK_30_SKULLS_HINT,
@@ -1404,6 +1421,18 @@ typedef enum {
     RSK_LINKS_POCKET,
     RSK_RANDOM_MQ_DUNGEONS,
     RSK_MQ_DUNGEON_COUNT,
+    RSK_MQ_DEKU_TREE,
+    RSK_MQ_DODONGOS_CAVERN,
+    RSK_MQ_JABU_JABU,
+    RSK_MQ_FOREST_TEMPLE,
+    RSK_MQ_FIRE_TEMPLE,
+    RSK_MQ_WATER_TEMPLE,
+    RSK_MQ_SPIRIT_TEMPLE,
+    RSK_MQ_SHADOW_TEMPLE,
+    RSK_MQ_BOTTOM_OF_THE_WELL,
+    RSK_MQ_ICE_CAVERN,
+    RSK_MQ_GTG,
+    RSK_MQ_GANONS_CASTLE,
     RSK_LACS_STONE_COUNT,
     RSK_LACS_MEDALLION_COUNT,
     RSK_LACS_REWARD_COUNT,
@@ -1439,8 +1468,18 @@ typedef enum {
     RSK_ALL_LOCATIONS_REACHABLE,
     RSK_SHUFFLE_BOSS_ENTRANCES,
     RSK_SHUFFLE_100_GS_REWARD,
+    RSK_TRIFORCE_HUNT,
+    RSK_TRIFORCE_HUNT_PIECES_TOTAL,
+    RSK_TRIFORCE_HUNT_PIECES_REQUIRED,
     RSK_MAX
 } RandomizerSettingKey;
+
+typedef struct {
+    RandomizerCheckStatus status;
+    uint16_t skipped;
+    int16_t price;
+    uint16_t hintItem;
+} RandomizerCheckTrackerData;
 
 //Generic Settings (any binary option can use this)
 // off/on
@@ -1599,6 +1638,7 @@ typedef enum {
     RO_GANON_BOSS_KEY_LACS_DUNGEONS,
     RO_GANON_BOSS_KEY_LACS_TOKENS,
     RO_GANON_BOSS_KEY_KAK_TOKENS,
+    RO_GANON_BOSS_KEY_TRIFORCE_HUNT,
 } RandoOptionGanonsBossKey;
 
 // LACS Reward Options settings (Standard rewards, Greg as reward, Greg as wildcard)
@@ -1734,6 +1774,7 @@ typedef enum {
     RO_MQ_DUNGEONS_NONE,
     RO_MQ_DUNGEONS_SET_NUMBER,
     RO_MQ_DUNGEONS_RANDOM_NUMBER,
+    RO_MQ_DUNGEONS_SELECTION,
 } RandoOptionMQDungeons;
 
 typedef enum {
@@ -1791,3 +1832,12 @@ typedef enum {
     TRACKER_COMBO_BUTTON_D_LEFT,
     TRACKER_COMBO_BUTTON_D_RIGHT,
 } TrackerComboButton;
+
+typedef enum {
+    TH_MESSAGE_START,
+    TH_MESSAGE_PROGRESS,
+    TH_MESSAGE_HALFWAY,
+    TH_MESSAGE_ALMOSTDONE,
+    TH_MESSAGE_FINISHED,
+    TH_MESSAGE_SURPLUS,
+} TriforceHuntMessages;

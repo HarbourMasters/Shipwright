@@ -7,6 +7,7 @@
 #include "z_en_wallmas.h"
 #include "objects/object_wallmaster/object_wallmaster.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -258,7 +259,7 @@ void EnWallmas_SetupDie(EnWallmas* this, PlayState* play) {
 
     Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xC0);
     this->actionFunc = EnWallmas_Die;
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WALLMASTER]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnWallmas_SetupTakePlayer(EnWallmas* this, PlayState* play) {
@@ -327,7 +328,11 @@ void EnWallmas_WaitToDrop(EnWallmas* this, PlayState* play) {
     }
 
     if (this->timer == 0) {
-        EnWallmas_SetupDrop(this, play);
+        if (this->actor.params == WMT_SHADOWTAG && (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE)) {
+            this->timer = 0x82; // Prevents Shadow Tag Hand from dropping when talking to an NPC or Signpost.
+        } else {
+            EnWallmas_SetupDrop(this, play);
+        }
     }
 }
 
@@ -449,9 +454,9 @@ void EnWallmas_TakePlayer(EnWallmas* this, PlayState* play) {
 
     if (Animation_OnFrame(&this->skelAnime, 1.0f) != 0) {
         if (!LINK_IS_ADULT) {
-            func_8002F7DC(&this->actor, NA_SE_VO_LI_DAMAGE_S_KID);
+            Player_PlaySfx(&this->actor, NA_SE_VO_LI_DAMAGE_S_KID);
         } else {
-            func_8002F7DC(&this->actor, NA_SE_VO_LI_DAMAGE_S);
+            Player_PlaySfx(&this->actor, NA_SE_VO_LI_DAMAGE_S);
         }
 
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_FALL_CATCH);
@@ -474,9 +479,9 @@ void EnWallmas_TakePlayer(EnWallmas* this, PlayState* play) {
 
         if (this->timer == -0x1E) {
             if (!LINK_IS_ADULT) {
-                func_8002F7DC(&this->actor, NA_SE_VO_LI_TAKEN_AWAY_KID);
+                Player_PlaySfx(&this->actor, NA_SE_VO_LI_TAKEN_AWAY_KID);
             } else {
-                func_8002F7DC(&this->actor, NA_SE_VO_LI_TAKEN_AWAY);
+                Player_PlaySfx(&this->actor, NA_SE_VO_LI_TAKEN_AWAY);
             }
         }
         if (this->timer == 0) {
@@ -671,8 +676,7 @@ void EnWallmas_Draw(Actor* thisx, PlayState* play) {
 
     if (this->actionFunc != EnWallmas_WaitToDrop) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnWallMas_OverrideLimbDraw, EnWallMas_PostLimbDraw, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnWallMas_OverrideLimbDraw, EnWallMas_PostLimbDraw, this);
     }
 
     EnWallmas_DrawXlu(this, play);

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SPOT01_OBJECTS_H
+#define OBJECTS_OBJECT_SPOT01_OBJECTS_H 1
 
 #include "align_asset_macro.h"
 
@@ -22,3 +23,5 @@ static const ALIGN_ASSET(2) char gKakarikoWellWaterTex[] = dgKakarikoWellWaterTe
 
 #define dgKakarikoWellArchCol "__OTR__objects/object_spot01_objects/gKakarikoWellArchCol"
 static const ALIGN_ASSET(2) char gKakarikoWellArchCol[] = dgKakarikoWellArchCol;
+
+#endif // OBJECTS_OBJECT_SPOT01_OBJECTS_H

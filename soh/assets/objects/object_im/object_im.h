@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_IM_H
+#define OBJECTS_OBJECT_IM_H 1
 
 #include "align_asset_macro.h"
 
@@ -172,3 +173,6 @@ static const ALIGN_ASSET(2) char gImpaPrepareSealGanonAnim[] = dgImpaPrepareSeal
 
 #define dgImpaSealGanonAnim "__OTR__objects/object_im/gImpaSealGanonAnim"
 static const ALIGN_ASSET(2) char gImpaSealGanonAnim[] = dgImpaSealGanonAnim;
+
+
+#endif // OBJECTS_OBJECT_IM_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GANON_ANIME2_H
+#define OBJECTS_OBJECT_GANON_ANIME2_H 1
 
 #include "align_asset_macro.h"
 
@@ -52,3 +53,5 @@ static const ALIGN_ASSET(2) char gGanondorfYellStartAnim[] = dgGanondorfYellStar
 
 #define dgGanondorfYellLoopAnim "__OTR__objects/object_ganon_anime2/gGanondorfYellLoopAnim"
 static const ALIGN_ASSET(2) char gGanondorfYellLoopAnim[] = dgGanondorfYellLoopAnim;
+
+#endif // OBJECTS_OBJECT_GANON_ANIME2_H

@@ -96,6 +96,8 @@ void SkeletonFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
     } else {
         SPDLOG_ERROR("unknown skeleton type {}", (uint32_t)skeleton->type);
     }
+
+    skeleton->skeletonData.skeletonHeader.skeletonType = (uint8_t)skeleton->type;
 }
 void SkeletonFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<IResource> resource)
 {
@@ -150,6 +152,7 @@ void SkeletonFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_p
     skel->skeletonData.flexSkeletonHeader.sh.limbCount = skel->limbCount;
     skel->skeletonData.flexSkeletonHeader.sh.segment = (void**)skel->skeletonHeaderSegments.data();
     skel->skeletonData.flexSkeletonHeader.dListCount = skel->dListCount;
+    skel->skeletonData.skeletonHeader.skeletonType = (uint8_t)skel->type;
 }
 
 } // namespace LUS

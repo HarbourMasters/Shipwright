@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_efc_lgt_shower" Segment="6">
+        <Texture Name="gEnliveningLightTex" OutName="enlivening_light" Format="i8" Width="64" Height="64" Offset="0x0000"/>
+        <DList Name="gEnliveningLightDL" Offset="0x11D0"/>
+    </File>
+</Root>

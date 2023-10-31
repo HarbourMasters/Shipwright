@@ -1,0 +1,11 @@
+<Root>
+    <File Name="ovl_Oceff_Wipe4" BaseAddress="0x80B7BC40" RangeStart="0x410" RangeEnd="0xF48">
+        <Texture Name="sTex" OutName="scarecrow_song_effect" Format="i8" Width="32" Height="64" Offset="0x410"/>
+        <Array Name="sFrustumVtx" Count="22" Offset="0xC10">
+            <Vtx/>
+        </Array>
+        <DList Name="sMaterialDL" Offset="0xD70"/>
+        <DList Name="sUnusedMaterialDL" Offset="0xDD8"/>
+        <DList Name="sMaterial2DL" Offset="0xE40"/>
+    </File>
+</Root>

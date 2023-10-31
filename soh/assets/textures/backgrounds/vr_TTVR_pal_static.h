@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_VR_TTVR_PAL_STATIC_H
+#define TEXTURES_VR_TTVR_PAL_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gCarpentersTentBg2TLUT[] = dgCarpentersTentBg2T
 
 #define dgCarpentersTentBg3TLUT "__OTR__textures/vr_TTVR_pal_static/gCarpentersTentBg3TLUT"
 static const ALIGN_ASSET(2) char gCarpentersTentBg3TLUT[] = dgCarpentersTentBg3TLUT;
+
+#endif // TEXTURES_VR_TTVR_PAL_STATIC_H

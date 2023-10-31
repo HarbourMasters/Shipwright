@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_ZL4_H
+#define OBJECTS_OBJECT_ZL4_H 1
 
 #include "align_asset_macro.h"
 
@@ -143,6 +144,27 @@ static const ALIGN_ASSET(2) char gChildZeldaCutsceneDressDL[] = dgChildZeldaCuts
 #define dgChildZeldaOcarinaOfTimeDL "__OTR__objects/object_zl4/gChildZeldaOcarinaOfTimeDL"
 static const ALIGN_ASSET(2) char gChildZeldaOcarinaOfTimeDL[] = dgChildZeldaOcarinaOfTimeDL;
 
+#define dobject_zl4TLUT_000670 "__OTR__objects/object_zl4/object_zl4TLUT_000670"
+static const ALIGN_ASSET(2) char object_zl4TLUT_000670[] = dobject_zl4TLUT_000670;
+
+#define dobject_zl4Tex_0017B0 "__OTR__objects/object_zl4/object_zl4Tex_0017B0"
+static const ALIGN_ASSET(2) char object_zl4Tex_0017B0[] = dobject_zl4Tex_0017B0;
+
+#define dobject_zl4Tex_0016B0 "__OTR__objects/object_zl4/object_zl4Tex_0016B0"
+static const ALIGN_ASSET(2) char object_zl4Tex_0016B0[] = dobject_zl4Tex_0016B0;
+
+#define dobject_zl4Tex_001BF0 "__OTR__objects/object_zl4/object_zl4Tex_001BF0"
+static const ALIGN_ASSET(2) char object_zl4Tex_001BF0[] = dobject_zl4Tex_001BF0;
+
+#define dobject_zl4Tex_001CF0 "__OTR__objects/object_zl4/object_zl4Tex_001CF0"
+static const ALIGN_ASSET(2) char object_zl4Tex_001CF0[] = dobject_zl4Tex_001CF0;
+
+#define dobject_zl4Tex_001DF0 "__OTR__objects/object_zl4/object_zl4Tex_001DF0"
+static const ALIGN_ASSET(2) char object_zl4Tex_001DF0[] = dobject_zl4Tex_001DF0;
+
+#define dobject_zl4Tex_00D8B8 "__OTR__objects/object_zl4/object_zl4Tex_00D8B8"
+static const ALIGN_ASSET(2) char object_zl4Tex_00D8B8[] = dobject_zl4Tex_00D8B8;
+
 #define dgChildZeldaSkelLimbsLimb_00DF34DL_00C8D0 "__OTR__objects/object_zl4/gChildZeldaSkelLimbsLimb_00DF34DL_00C8D0"
 static const ALIGN_ASSET(2) char gChildZeldaSkelLimbsLimb_00DF34DL_00C8D0[] = dgChildZeldaSkelLimbsLimb_00DF34DL_00C8D0;
 
@@ -190,27 +212,6 @@ static const ALIGN_ASSET(2) char gChildZeldaSkelLimbsLimb_00DFDCDL_00BC90[] = dg
 
 #define dgChildZeldaSkelLimbsLimb_00DFE8DL_00AFC8 "__OTR__objects/object_zl4/gChildZeldaSkelLimbsLimb_00DFE8DL_00AFC8"
 static const ALIGN_ASSET(2) char gChildZeldaSkelLimbsLimb_00DFE8DL_00AFC8[] = dgChildZeldaSkelLimbsLimb_00DFE8DL_00AFC8;
-
-#define dobject_zl4TLUT_000670 "__OTR__objects/object_zl4/object_zl4TLUT_000670"
-static const ALIGN_ASSET(2) char object_zl4TLUT_000670[] = dobject_zl4TLUT_000670;
-
-#define dobject_zl4Tex_0017B0 "__OTR__objects/object_zl4/object_zl4Tex_0017B0"
-static const ALIGN_ASSET(2) char object_zl4Tex_0017B0[] = dobject_zl4Tex_0017B0;
-
-#define dobject_zl4Tex_0016B0 "__OTR__objects/object_zl4/object_zl4Tex_0016B0"
-static const ALIGN_ASSET(2) char object_zl4Tex_0016B0[] = dobject_zl4Tex_0016B0;
-
-#define dobject_zl4Tex_001BF0 "__OTR__objects/object_zl4/object_zl4Tex_001BF0"
-static const ALIGN_ASSET(2) char object_zl4Tex_001BF0[] = dobject_zl4Tex_001BF0;
-
-#define dobject_zl4Tex_001CF0 "__OTR__objects/object_zl4/object_zl4Tex_001CF0"
-static const ALIGN_ASSET(2) char object_zl4Tex_001CF0[] = dobject_zl4Tex_001CF0;
-
-#define dobject_zl4Tex_001DF0 "__OTR__objects/object_zl4/object_zl4Tex_001DF0"
-static const ALIGN_ASSET(2) char object_zl4Tex_001DF0[] = dobject_zl4Tex_001DF0;
-
-#define dobject_zl4Tex_00D8B8 "__OTR__objects/object_zl4/object_zl4Tex_00D8B8"
-static const ALIGN_ASSET(2) char object_zl4Tex_00D8B8[] = dobject_zl4Tex_00D8B8;
 
 #define dobject_zl4Tex_000C70 "__OTR__objects/object_zl4/object_zl4Tex_000C70"
 static const ALIGN_ASSET(2) char object_zl4Tex_000C70[] = dobject_zl4Tex_000C70;
@@ -283,3 +284,5 @@ static const ALIGN_ASSET(2) char object_zl4TLUT_000870[] = dobject_zl4TLUT_00087
 
 #define dobject_zl4TLUT_000A70 "__OTR__objects/object_zl4/object_zl4TLUT_000A70"
 static const ALIGN_ASSET(2) char object_zl4TLUT_000A70[] = dobject_zl4TLUT_000A70;
+
+#endif // OBJECTS_OBJECT_ZL4_H

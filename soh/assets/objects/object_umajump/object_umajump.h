@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_UMAJUMP_H
+#define OBJECTS_OBJECT_UMAJUMP_H 1
 
 #include "align_asset_macro.h"
 
@@ -13,3 +14,5 @@ static const ALIGN_ASSET(2) char gJumpableHorseFenceDL[] = dgJumpableHorseFenceD
 
 #define dgJumpableHorseFenceCol "__OTR__objects/object_umajump/gJumpableHorseFenceCol"
 static const ALIGN_ASSET(2) char gJumpableHorseFenceCol[] = dgJumpableHorseFenceCol;
+
+#endif // OBJECTS_OBJECT_UMAJUMP_H

@@ -846,7 +846,7 @@ void EnHeishi2_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnHeishi2_OverrideLimbDraw,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnHeishi2_OverrideLimbDraw,
                       EnHeishi2_PostLimbDraw, this);
     if ((this->type == 5) && (Flags_GetInfTable(INFTABLE_GATE_GUARD_PUT_ON_KEATON_MASK))) {
         linkObjBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_LINK_CHILD);

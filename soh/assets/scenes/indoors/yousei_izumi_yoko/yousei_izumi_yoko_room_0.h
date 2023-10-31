@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_YOUSEI_IZUMI_YOKO_ROOM_0_H
+#define INDOORS_YOUSEI_IZUMI_YOKO_ROOM_0_H 1
 
 #include "align_asset_macro.h"
 
@@ -25,3 +26,6 @@ static const ALIGN_ASSET(2) char yousei_izumi_yoko_room_0Set_000210DL_002B88[] =
 
 #define dyousei_izumi_yoko_room_0Set_000210DL_003FF8 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_room_0Set_000210DL_003FF8"
 static const ALIGN_ASSET(2) char yousei_izumi_yoko_room_0Set_000210DL_003FF8[] = dyousei_izumi_yoko_room_0Set_000210DL_003FF8;
+
+
+#endif // INDOORS_YOUSEI_IZUMI_YOKO_ROOM_0_H

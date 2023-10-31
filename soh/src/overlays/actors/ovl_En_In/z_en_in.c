@@ -365,15 +365,15 @@ s32 func_80A7975C(EnIn* this, PlayState* play) {
 }
 
 s32 func_80A79830(EnIn* this, PlayState* play) {
-    if (play->sceneNum == SCENE_SPOT20 && LINK_IS_CHILD && IS_DAY && this->actor.shape.rot.z == 1 &&
+    if (play->sceneNum == SCENE_LON_LON_RANCH && LINK_IS_CHILD && IS_DAY && this->actor.shape.rot.z == 1 &&
         !Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
         return 1;
     }
-    if (play->sceneNum == SCENE_MALON_STABLE && LINK_IS_CHILD && IS_DAY && this->actor.shape.rot.z == 3 &&
+    if (play->sceneNum == SCENE_STABLE && LINK_IS_CHILD && IS_DAY && this->actor.shape.rot.z == 3 &&
         (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE))) {
         return 1;
     }
-    if (play->sceneNum == SCENE_MALON_STABLE && LINK_IS_CHILD && IS_NIGHT) {
+    if (play->sceneNum == SCENE_STABLE && LINK_IS_CHILD && IS_NIGHT) {
         if ((this->actor.shape.rot.z == 2) && !Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
             return 1;
         }
@@ -381,7 +381,7 @@ s32 func_80A79830(EnIn* this, PlayState* play) {
             return 1;
         }
     }
-    if (play->sceneNum == SCENE_SPOT20 && LINK_IS_ADULT && IS_DAY) {
+    if (play->sceneNum == SCENE_LON_LON_RANCH && LINK_IS_ADULT && IS_DAY) {
         if ((this->actor.shape.rot.z == 5) && !Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)) {
             return 2;
         }
@@ -389,7 +389,7 @@ s32 func_80A79830(EnIn* this, PlayState* play) {
             return 4;
         }
     }
-    if (play->sceneNum == SCENE_SOUKO && LINK_IS_ADULT && IS_NIGHT) {
+    if (play->sceneNum == SCENE_LON_LON_BUILDINGS && LINK_IS_ADULT && IS_NIGHT) {
         if (this->actor.shape.rot.z == 6 && !Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)) {
             return 3;
         }
@@ -1000,8 +1000,7 @@ void EnIn_Draw(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gIngoHeadGradient2Tex));
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnIn_OverrideLimbDraw, EnIn_PostLimbDraw, &this->actor);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnIn_OverrideLimbDraw, EnIn_PostLimbDraw, &this->actor);
     }
     CLOSE_DISPS(play->state.gfxCtx);
 }

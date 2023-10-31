@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_HNI_H
+#define OBJECTS_OBJECT_HNI_H 1
 
 #include "align_asset_macro.h"
 
@@ -83,18 +84,6 @@ static const ALIGN_ASSET(2) char gHorseIngoGerudoSaddleFlapTex[] = dgHorseIngoGe
 #define dgHorseIngoEyeTex "__OTR__objects/object_hni/gHorseIngoEyeTex"
 static const ALIGN_ASSET(2) char gHorseIngoEyeTex[] = dgHorseIngoEyeTex;
 
-#define dgHorseIngoSkelLimbsLimb_0047C8DL_002110 "__OTR__objects/object_hni/gHorseIngoSkelLimbsLimb_0047C8DL_002110"
-static const ALIGN_ASSET(2) char gHorseIngoSkelLimbsLimb_0047C8DL_002110[] = dgHorseIngoSkelLimbsLimb_0047C8DL_002110;
-
-#define dgHorseIngoSkelLimbsLimb_004848DL_001C90 "__OTR__objects/object_hni/gHorseIngoSkelLimbsLimb_004848DL_001C90"
-static const ALIGN_ASSET(2) char gHorseIngoSkelLimbsLimb_004848DL_001C90[] = dgHorseIngoSkelLimbsLimb_004848DL_001C90;
-
-#define dgHorseIngoSkelLimbsLimb_0048D8DL_001F90 "__OTR__objects/object_hni/gHorseIngoSkelLimbsLimb_0048D8DL_001F90"
-static const ALIGN_ASSET(2) char gHorseIngoSkelLimbsLimb_0048D8DL_001F90[] = dgHorseIngoSkelLimbsLimb_0048D8DL_001F90;
-
-#define dgHorseIngoSkelLimbsLimb_004958DL_001E10 "__OTR__objects/object_hni/gHorseIngoSkelLimbsLimb_004958DL_001E10"
-static const ALIGN_ASSET(2) char gHorseIngoSkelLimbsLimb_004958DL_001E10[] = dgHorseIngoSkelLimbsLimb_004958DL_001E10;
-
 #define dgHorseIngoHeadLimbDL_002290 "__OTR__objects/object_hni/gHorseIngoHeadLimbDL_002290"
 static const ALIGN_ASSET(2) char gHorseIngoHeadLimbDL_002290[] = dgHorseIngoHeadLimbDL_002290;
 
@@ -115,3 +104,18 @@ static const ALIGN_ASSET(2) char gHorseIngoHoof3LimbDL_002008[] = dgHorseIngoHoo
 
 #define dgHorseIngoHoof4LimbDL_002188 "__OTR__objects/object_hni/gHorseIngoHoof4LimbDL_002188"
 static const ALIGN_ASSET(2) char gHorseIngoHoof4LimbDL_002188[] = dgHorseIngoHoof4LimbDL_002188;
+
+#define dgHorseIngoSkelLimbsLimb_0047C8DL_002110 "__OTR__objects/object_hni/gHorseIngoSkelLimbsLimb_0047C8DL_002110"
+static const ALIGN_ASSET(2) char gHorseIngoSkelLimbsLimb_0047C8DL_002110[] = dgHorseIngoSkelLimbsLimb_0047C8DL_002110;
+
+#define dgHorseIngoSkelLimbsLimb_004848DL_001C90 "__OTR__objects/object_hni/gHorseIngoSkelLimbsLimb_004848DL_001C90"
+static const ALIGN_ASSET(2) char gHorseIngoSkelLimbsLimb_004848DL_001C90[] = dgHorseIngoSkelLimbsLimb_004848DL_001C90;
+
+#define dgHorseIngoSkelLimbsLimb_0048D8DL_001F90 "__OTR__objects/object_hni/gHorseIngoSkelLimbsLimb_0048D8DL_001F90"
+static const ALIGN_ASSET(2) char gHorseIngoSkelLimbsLimb_0048D8DL_001F90[] = dgHorseIngoSkelLimbsLimb_0048D8DL_001F90;
+
+#define dgHorseIngoSkelLimbsLimb_004958DL_001E10 "__OTR__objects/object_hni/gHorseIngoSkelLimbsLimb_004958DL_001E10"
+static const ALIGN_ASSET(2) char gHorseIngoSkelLimbsLimb_004958DL_001E10[] = dgHorseIngoSkelLimbsLimb_004958DL_001E10;
+
+
+#endif // OBJECTS_OBJECT_HNI_H

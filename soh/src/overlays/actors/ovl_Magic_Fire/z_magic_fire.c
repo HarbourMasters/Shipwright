@@ -93,7 +93,7 @@ void MagicFire_Init(Actor* thisx, PlayState* play) {
 }
 
 void MagicFire_Destroy(Actor* thisx, PlayState* play) {
-    func_800876C8(play);
+    Magic_Reset(play);
 }
 
 void MagicFire_UpdateBeforeCast(Actor* thisx, PlayState* play) {
@@ -109,7 +109,7 @@ void MagicFire_UpdateBeforeCast(Actor* thisx, PlayState* play) {
         this->actionTimer--;
     } else {
         this->actor.update = MagicFire_Update;
-        func_8002F7DC(&player->actor, NA_SE_PL_MAGIC_FIRE);
+        Player_PlaySfx(&player->actor, NA_SE_PL_MAGIC_FIRE);
     }
     this->actor.world.pos = player->actor.world.pos;
 }

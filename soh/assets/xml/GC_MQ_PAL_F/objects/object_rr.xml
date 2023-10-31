@@ -1,0 +1,8 @@
+<Root>
+    <File Name="object_rr" Segment="6">
+        <DList Name="gLikeLikeDL" Offset="0x470"/>
+        <Texture Name="gLikeLikeBodyPattern1Tex" OutName="body_pattern_1" Format="rgba16" Width="16" Height="16" Offset="0x800"/>
+        <Texture Name="gLikeLikeBodyPattern2Tex" OutName="body_pattern_2" Format="rgba16" Width="16" Height="16" Offset="0xA00"/>
+        <Texture Name="gLikeLikeHoleTex" OutName="hole" Format="ia16" Width="16" Height="16" Offset="0xC00"/>
+    </File>
+</Root>
