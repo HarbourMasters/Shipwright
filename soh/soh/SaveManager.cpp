@@ -4,6 +4,7 @@
 #include "Enhancements/randomizer/context.h"
 #include "Enhancements/randomizer/entrance.h"
 #include "Enhancements/randomizer/dungeon.h"
+#include "Enhancements/randomizer/trial.h"
 
 #include "z64.h"
 #include "functions.h"
@@ -403,6 +404,13 @@ void SaveManager::LoadRandomizerVersion3() {
         SaveManager::Instance->LoadData("", dungeonId);
         randoContext->GetDungeon(dungeonId)->SetMQ();
     });
+
+    randoContext->GetTrials()->SkipAll();
+    SaveManager::Instance->LoadArray("requiredTrials", randoContext->GetOption(RSK_TRIAL_COUNT).GetSelectedOptionIndex()+1, [&](size_t i) {
+        size_t trialId;
+        SaveManager::Instance->LoadData("", trialId);
+        randoContext->GetTrial(trialId)->SetAsRequired();
+    });
 }
 
 void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -482,6 +490,12 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 
     SaveManager::Instance->SaveArray("masterQuestDungeons", randoContext->GetDungeons()->GetDungeonListSize(), [&](size_t i) {
         if (randoContext->GetDungeon(i)->IsMQ()) {
+            SaveManager::Instance->SaveData("", i);
+        }
+    });
+
+    SaveManager::Instance->SaveArray("requiredTrials", randoContext->GetTrials()->GetTrialListSize(), [&](size_t i) {
+        if (randoContext->GetTrial(i)->IsRequired()) {
             SaveManager::Instance->SaveData("", i);
         }
     });

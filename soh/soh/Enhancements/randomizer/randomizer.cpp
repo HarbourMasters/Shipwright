@@ -32,6 +32,7 @@
 #include "savefile.h"
 #include "entrance.h"
 #include "dungeon.h"
+#include "trial.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -1466,7 +1467,7 @@ void Randomizer::ParseRequiredTrialsFile(const char* spoilerFileName) {
         return;
     }
 
-    this->trialsRequired.clear();
+    // this->trialsRequired.clear();
 
     try {
         json spoilerFileJson;
@@ -1474,7 +1475,7 @@ void Randomizer::ParseRequiredTrialsFile(const char* spoilerFileName) {
         json trialsJson = spoilerFileJson["requiredTrials"];
 
         for (auto it = trialsJson.begin(); it != trialsJson.end(); it++) {
-            this->trialsRequired[spoilerFileTrialToEnum[it.value()]] = true;
+            // this->trialsRequired[spoilerFileTrialToEnum[it.value()]] = true;
         }
     } catch (const std::exception& e) {
         return;
@@ -1673,7 +1674,7 @@ void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent)
 }
 
 bool Randomizer::IsTrialRequired(RandomizerInf trial) {
-    return this->trialsRequired.contains(trial);
+    return Rando::Context::GetInstance()->GetTrial(trial - RAND_INF_TRIALS_DONE_LIGHT_TRIAL);
 }
 
 GetItemEntry Randomizer::GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId,

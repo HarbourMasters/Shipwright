@@ -4,6 +4,7 @@
 #include "soh/Enhancements/item-tables/ItemTableManager.h"
 #include "3drando/shops.hpp"
 #include "dungeon.h"
+#include "trial.h"
 #include "entrance.h"
 #include "settings.h"
 
@@ -246,6 +247,14 @@ std::shared_ptr<Dungeons> Context::GetDungeons() {
 
 DungeonInfo* Context::GetDungeon(size_t key) {
     return mDungeons->GetDungeon(DungeonKey(key));
+}
+
+std::shared_ptr<Trials> Context::GetTrials() {
+    return mTrials;
+}
+
+TrialInfo* Context::GetTrial(size_t key) {
+    return mTrials->GetTrial(TrialKey(key));
 }
 
 Rando::Option& Context::GetOption(RandomizerSettingKey key) {

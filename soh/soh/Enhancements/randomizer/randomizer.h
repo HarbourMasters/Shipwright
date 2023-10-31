@@ -46,7 +46,6 @@ class Randomizer {
     static const std::string randoMiscHintsTableID;
 
     // Public for now to be accessed by SaveManager, will be made private again soon :tm:
-    std::unordered_map<RandomizerInf, bool> trialsRequired;
     std::unordered_map<RandomizerGet, std::array<std::string, 3>> EnumToSpoilerfileGetName;
 
     static Sprite* GetSeedTexture(uint8_t index);

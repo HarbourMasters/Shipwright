@@ -1,5 +1,5 @@
 #include "settings.h"
-#include "3drando/trial.hpp"
+#include "trial.h"
 #include "dungeon.h"
 #include "context.h"
 
@@ -1021,7 +1021,7 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
             ctx->GetDungeon(GANONS_CASTLE)->SetKeyRing();
         }
     }
-    auto trials = Trial::trialList;
+    auto trials = ctx->GetTrials()->GetTrialList();
     Shuffle(trials);
     for (auto& trial : trials) {
         trial->SetAsSkipped();

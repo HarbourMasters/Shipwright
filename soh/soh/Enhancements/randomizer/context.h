@@ -23,6 +23,8 @@ class EntranceShuffler;
 class Settings;
 class Dungeons;
 class DungeonInfo;
+class TrialInfo;
+class Trials;
 
 class Context {
   public:
@@ -56,6 +58,8 @@ class Context {
     const std::shared_ptr<EntranceShuffler> GetEntranceShuffler();
     std::shared_ptr<Dungeons> GetDungeons();
     DungeonInfo* GetDungeon(size_t key);
+    std::shared_ptr<Trials> GetTrials();
+    TrialInfo* GetTrial(size_t key);
     Option& GetOption(RandomizerSettingKey key);
     Option& GetTrickOption(RandomizerTrick key);
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);
@@ -76,6 +80,7 @@ class Context {
     std::shared_ptr<Settings> mSettings;
     std::shared_ptr<EntranceShuffler> mEntranceShuffler;
     std::shared_ptr<Dungeons> mDungeons;
+    std::shared_ptr<Trials> mTrials;
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;
 };

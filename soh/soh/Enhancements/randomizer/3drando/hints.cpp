@@ -7,7 +7,7 @@
 #include "spoiler_log.hpp"
 #include "fill.hpp"
 #include "hint_list.hpp"
-#include "trial.hpp"
+#include "../trial.h"
 #include "../entrance.h"
 #include "z64item.h"
 #include <spdlog/spdlog.h>
@@ -17,7 +17,6 @@
 
 using namespace CustomMessages;
 using namespace Logic;
-using namespace Trial;
 using namespace Rando;
 
 const Text& HintText::GetText() const {
@@ -654,6 +653,7 @@ static void CreateTrialHints() {
 
     //get skipped trials
     std::vector<TrialInfo*> trials = {};
+    auto trialList = ctx->GetTrials()->GetTrialList();
     trials.assign(trialList.begin(), trialList.end());
     auto skippedTrials = FilterFromPool(trials, [](TrialInfo* trial){return trial->IsSkipped();});
 
@@ -671,6 +671,7 @@ static void CreateTrialHints() {
   } else if (ctx->GetOption(RSK_TRIAL_COUNT).Value<uint8_t>() >= 1 && ctx->GetOption(RSK_TRIAL_COUNT).Value<uint8_t>() <= 3) {
     //get requried trials
     std::vector<TrialInfo*> trials = {};
+    auto trialList = ctx->GetTrials()->GetTrialList();
     trials.assign(trialList.begin(), trialList.end());
     auto requiredTrials = FilterFromPool(trials, [](TrialInfo* trial){return trial->IsRequired();});
 

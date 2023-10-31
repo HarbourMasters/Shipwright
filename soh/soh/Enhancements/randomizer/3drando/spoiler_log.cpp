@@ -5,7 +5,7 @@
 #include "../context.h"
 #include "../entrance.h"
 #include "random.hpp"
-#include "trial.hpp"
+#include "../trial.h"
 #include "tinyxml2.h"
 #include "utils.hpp"
 #include "shops.hpp"
@@ -490,7 +490,8 @@ static void WriteMasterQuestDungeons(tinyxml2::XMLDocument& spoilerLog) {
 
 // Writes the required trials to the spoiler log, if there are any.
 static void WriteRequiredTrials() {
-    for (const auto& trial : Trial::trialList) {
+    auto ctx = Rando::Context::GetInstance();
+    for (const auto& trial : ctx->GetTrials()->GetTrialList()) {
         if (trial->IsRequired()) {
             std::string trialName;
             switch (gSaveContext.language) {

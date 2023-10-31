@@ -6,7 +6,7 @@
 #include "item_pool.hpp"
 #include "logic.hpp"
 #include "spoiler_log.hpp"
-#include "trial.hpp"
+#include "../trial.h"
 #include "../entrance.h"
 
 #include <fstream>
