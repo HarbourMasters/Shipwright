@@ -266,7 +266,7 @@ void EnKusa_Init(Actor* thisx, PlayState* play) {
         return;
     }
 
-    if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE) {
+    if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE && this->actor.world.pos.z < 600.0) {
         Actor_Kill(this);
     } else {
         EnKusa_SetupWaitObject(this);
