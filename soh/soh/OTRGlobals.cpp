@@ -128,6 +128,34 @@ Color_RGB8 kokiriColor = { 0x1E, 0x69, 0x1B };
 Color_RGB8 goronColor = { 0x64, 0x14, 0x00 };
 Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
 
+// Same as NaviColor type from OoT src (z_actor.c), but modified to be sans alpha channel for Controller LED.
+typedef struct {
+    Color_RGB8 inner;
+    Color_RGB8 outer;
+} NaviColor_RGB8;
+
+static NaviColor_RGB8 defaultIdleColor = { { 255, 255, 255 }, { 0, 0, 255 } };
+static NaviColor_RGB8 defaultNPCColor = { { 150, 150, 255 }, { 150, 150, 255 } };
+static NaviColor_RGB8 defaultEnemyColor = { { 255, 255, 0 }, { 200, 155, 0 } };
+static NaviColor_RGB8 defaultPropsColor = { { 0, 255, 0 }, { 0, 255, 0 } };
+
+// Labeled according to ActorCategory (included through ActorDB.h)
+const NaviColor_RGB8 LEDColorDefaultNaviColorList[] = {
+    defaultPropsColor, // ACTORCAT_SWITCH       Switch
+    defaultPropsColor, // ACTORCAT_BG           Background (Prop type 1)
+    defaultIdleColor,  // ACTORCAT_PLAYER       Player
+    defaultPropsColor, // ACTORCAT_EXPLOSIVE    Bomb
+    defaultNPCColor,   // ACTORCAT_NPC          NPC
+    defaultEnemyColor, // ACTORCAT_ENEMY        Enemy
+    defaultPropsColor, // ACTORCAT_PROP         Prop type 2
+    defaultPropsColor, // ACTORCAT_ITEMACTION   Item/Action
+    defaultPropsColor, // ACTORCAT_MISC         Misc.
+    defaultEnemyColor, // ACTORCAT_BOSS         Boss
+    defaultPropsColor, // ACTORCAT_DOOR         Door
+    defaultPropsColor, // ACTORCAT_CHEST        Chest
+    defaultPropsColor, // ACTORCAT_MAX
+};
+
 // OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
 const char* constCameraStrings[] = {
     "INSUFFICIENT",
@@ -1700,22 +1728,68 @@ Color_RGB8 GetColorForControllerLED() {
         LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL));
         bool criticalOverride = CVarGetInteger("gLedCriticalOverride", 1);
         if (gPlayState && (source == LED_SOURCE_TUNIC_ORIGINAL || source == LED_SOURCE_TUNIC_COSMETICS)) {
-            switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
-                case PLAYER_TUNIC_KOKIRI:
+            switch (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)) {
+                case EQUIP_VALUE_TUNIC_KOKIRI:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
                                 ? CVarGetColor24("gCosmetics.Link_KokiriTunic.Value", kokiriColor)
                                 : kokiriColor;
                     break;
-                case PLAYER_TUNIC_GORON:
+                case EQUIP_VALUE_TUNIC_GORON:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
                                 ? CVarGetColor24("gCosmetics.Link_GoronTunic.Value", goronColor)
                                 : goronColor;
                     break;
-                case PLAYER_TUNIC_ZORA:
+                case EQUIP_VALUE_TUNIC_ZORA:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
                                 ? CVarGetColor24("gCosmetics.Link_ZoraTunic.Value", zoraColor)
                                 : zoraColor;
                     break;
+            }
+        }
+        if (gPlayState && (source == LED_SOURCE_NAVI_ORIGINAL || source == LED_SOURCE_NAVI_COSMETICS)) {
+            Actor* arrowPointedActor = gPlayState->actorCtx.targetCtx.arrowPointedActor;
+            if (arrowPointedActor) {
+                ActorCategory category = (ActorCategory)arrowPointedActor->category;
+                switch (category) {
+                    case ACTORCAT_PLAYER:
+                        if (source == LED_SOURCE_NAVI_COSMETICS &&
+                            CVarGetInteger("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
+                            color = CVarGetColor24("gCosmetics.Navi_IdlePrimary.Value", defaultIdleColor.inner);
+                            break;
+                        }
+                        color = LEDColorDefaultNaviColorList[category].inner;
+                        break;
+                    case ACTORCAT_NPC:
+                        if (source == LED_SOURCE_NAVI_COSMETICS &&
+                            CVarGetInteger("gCosmetics.Navi_NPCPrimary.Changed", 0)) {
+                            color = CVarGetColor24("gCosmetics.Navi_NPCPrimary.Value", defaultNPCColor.inner);
+                            break;
+                        }
+                        color = LEDColorDefaultNaviColorList[category].inner;
+                        break;
+                    case ACTORCAT_ENEMY:
+                    case ACTORCAT_BOSS:
+                        if (source == LED_SOURCE_NAVI_COSMETICS &&
+                            CVarGetInteger("gCosmetics.Navi_EnemyPrimary.Changed", 0)) {
+                            color = CVarGetColor24("gCosmetics.Navi_EnemyPrimary.Value", defaultEnemyColor.inner);
+                            break;
+                        }
+                        color = LEDColorDefaultNaviColorList[category].inner;
+                        break;
+                    default:
+                        if (source == LED_SOURCE_NAVI_COSMETICS &&
+                            CVarGetInteger("gCosmetics.Navi_PropsPrimary.Changed", 0)) {
+                            color = CVarGetColor24("gCosmetics.Navi_PropsPrimary.Value", defaultPropsColor.inner);
+                            break;
+                        }
+                        color = LEDColorDefaultNaviColorList[category].inner;
+                }
+            } else { // No target actor.
+                if (source == LED_SOURCE_NAVI_COSMETICS && CVarGetInteger("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
+                    color = CVarGetColor24("gCosmetics.Navi_IdlePrimary.Value", defaultIdleColor.inner);
+                } else {
+                    color = LEDColorDefaultNaviColorList[ACTORCAT_PLAYER].inner;
+                }
             }
         }
         if (source == LED_SOURCE_CUSTOM) {
@@ -2043,7 +2117,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
                : CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD);
         } else if (textId == TEXT_GANONDORF) {
-            if ((INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT && CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) ||
+            if ((INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) ||
               !Randomizer_GetSettingValue(RSK_LIGHT_ARROWS_HINT)) {
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT);
             } else {

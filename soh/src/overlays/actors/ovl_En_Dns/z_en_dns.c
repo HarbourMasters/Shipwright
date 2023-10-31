@@ -273,7 +273,7 @@ u32 func_809EF73C(EnDns* this) {
 }
 
 u32 func_809EF800(EnDns* this) {
-    if (gBitFlags[4] & gSaveContext.inventory.equipment) {
+    if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SHIELD, EQUIP_INV_SHIELD_DEKU)) {
         return 1;
     }
     if (gSaveContext.rupees < this->dnsItemEntry->itemPrice) {
