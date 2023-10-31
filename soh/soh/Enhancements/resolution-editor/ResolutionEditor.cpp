@@ -109,20 +109,32 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 #endif
 
-        // The original resolution slider (for convenience)
-        if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f,
-                                              "", 1.0f, true, true,
-                                              (CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0) &&
-                                               CVarGetInteger("gAdvancedResolution.Enabled", 0)) ||
-                                                  CVarGetInteger("gLowResMode", 0))) {
-            LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
-        }
-        UIWidgets::Tooltip("Multiplies your output resolution by the value entered, as a more intensive but effective "
-                           "form of anti-aliasing"); // Description pulled from SohMenuBar.cpp
+        if (ImGui::CollapsingHeader("Original Settings", ImGuiTreeNodeFlags_DefaultOpen)) {
+            // The original resolution slider (for convenience)
+            if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f,
+                                                  2.0f, "", 1.0f, true, true,
+                                                  (CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0) &&
+                                                   CVarGetInteger("gAdvancedResolution.Enabled", 0)) ||
+                                                      CVarGetInteger("gLowResMode", 0))) {
+                LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(
+                    CVarGetFloat("gInternalResolution", 1));
+            }
+            UIWidgets::Tooltip(
+                "Multiplies your output resolution by the value entered."); // Description pulled from SohMenuBar.cpp
 
-        // N64 Mode toggle (again for convenience)
-        // UIWidgets::PaddedEnhancementCheckbox("(Enhancements>Graphics) N64 Mode", "gLowResMode", false, false, false,
-        //                                      "", UIWidgets::CheckboxGraphics::Cross, false);
+            // The original MSAA slider (also for convenience)
+#ifndef __WIIU__
+            if (UIWidgets::PaddedEnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true,
+                                                      false)) {
+                LUS::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger("gMSAAValue", 1));
+            };
+            UIWidgets::Tooltip(
+                "Activates multi-sample anti-aliasing when above 1x up to 8x for 8 samples for every pixel");
+#endif
+
+            // N64 Mode toggle (again for convenience)
+            // UIWidgets::PaddedEnhancementCheckbox("(Enhancements>Graphics) N64 Mode", "gLowResMode", false, false, false, "", UIWidgets::CheckboxGraphics::Cross, false);
+        }
 
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
         // Activator
