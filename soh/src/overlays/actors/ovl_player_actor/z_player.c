@@ -11442,7 +11442,7 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     f32 temp2;
     f32 swimMod = 1.0f;
 
-    if (CVarGetInteger("gEnableWalkModify", 0)) {
+    if (CVarGetInteger("gEnableWalkModify", 0) && !(this->stateFlags2 & PLAYER_STATE2_UNDERWATER)) {
         if (CVarGetInteger("gWalkSpeedToggle", 0)) {
             if (gWalkSpeedToggle1) {
                 swimMod *= CVarGetFloat("gSwimModifierOne", 1.0f);
