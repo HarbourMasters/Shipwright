@@ -3,9 +3,11 @@
 #include "option.h"
 #include "randomizerTypes.h"
 #include "3drando/spoiler_log.hpp"
+
 #include <array>
 #include <set>
 #include <unordered_map>
+#include <nlohmann/json.hpp>
 
 namespace Rando {
 class Settings {
@@ -29,6 +31,7 @@ class Settings {
     const OptionGroup& GetOptionGroup(RandomizerSettingGroupKey key);
     void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings,
                         std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks);
+    void ParseJson(nlohmann::json spoilerFileJson);
     std::vector<Option*> VanillaLogicDefaults = {};
 
   private:
@@ -36,10 +39,11 @@ class Settings {
     std::array<OptionGroup, RSG_MAX> mOptionGroups = {};
     std::array<Option, RT_MAX> mTrickOptions;
     std::vector<std::vector<Option*>> mExcludeLocationsOptionsGroups;
+    std::unordered_map<std::string, RandomizerSettingKey> mSpoilerfileSettingNameToEnum;
     RandoOptionStartingAge mResolvedStartingAge;
     RandoOptionLACSCondition mLACSCondition;
     std::string mHash;
     std::string mSeedString;
-    uint32_t mSeed;
+    uint32_t mFinalSeed;
 };
 } // namespace Rando

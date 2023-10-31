@@ -4,6 +4,8 @@
 #include "randomizerTypes.h"
 #include "3drando/location_access.hpp"
 
+#include <nlohmann/json.hpp>
+
 #define ENTRANCE_SHUFFLE_SUCCESS 0
 #define ENTRANCE_SHUFFLE_FAILURE 1
 
@@ -117,6 +119,8 @@ class EntranceShuffler {
     void SetNoRandomEntrances(bool noRandomEntrances);
     int ShuffleAllEntrances();
     void CreateEntranceOverrides();
+    void UnshuffleAllEntrances();
+    void ParseJson(nlohmann::json spoilerFileJson);
   private:
     std::vector<Entrance*> AssumeEntrancePool(std::vector<Entrance*>& entrancePool);
     bool ShuffleOneWayPriorityEntrances(std::map<std::string, PriorityEntrance>& oneWayPriorities,

@@ -57,6 +57,10 @@ public:
         return english == right.english;
     }
 
+    bool operator==(const std::string& right) const {
+        return english == right || french == right || spanish == right;
+    }
+
     bool operator!=(const Text& right) const {
         return !operator==(right);
     }

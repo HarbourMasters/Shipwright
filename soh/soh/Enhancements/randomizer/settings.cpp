@@ -3,6 +3,8 @@
 #include "dungeon.h"
 #include "context.h"
 
+#include <spdlog/spdlog.h>
+
 namespace Rando {
 std::vector<std::string> NumOpts(int min, int max, int step = 1, std::string textBefore = {}, std::string textAfter = {}) {
     std::vector<std::string> options;
@@ -777,6 +779,147 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_100_GS_REWARD],
         &mOptions[RSK_GOSSIP_STONE_HINTS],
     };
+
+    mSpoilerfileSettingNameToEnum = {
+        { "Logic Options:Logic", RSK_LOGIC_RULES },
+        { "Logic Options:Night Skulltula's Expect Sun's Song", RSK_SKULLS_SUNS_SONG },
+        { "Logic Options:All Locations Reachable", RSK_ALL_LOCATIONS_REACHABLE },
+        { "Item Pool Settings:Item Pool", RSK_ITEM_POOL },
+        { "Item Pool Settings:Ice Traps", RSK_ICE_TRAPS },
+        { "Open Settings:Forest", RSK_FOREST },
+        { "Open Settings:Kakariko Gate", RSK_KAK_GATE },
+        { "Open Settings:Door of Time", RSK_DOOR_OF_TIME },
+        { "Open Settings:Zora's Fountain", RSK_ZORAS_FOUNTAIN },
+        { "Open Settings:Gerudo Fortress", RSK_GERUDO_FORTRESS },
+        { "Open Settings:Rainbow Bridge", RSK_RAINBOW_BRIDGE },
+        { "Open Settings:Ganon's Trials", RSK_GANONS_TRIALS },
+        { "Open Settings:Ganon's Trials Count", RSK_TRIAL_COUNT },
+        { "Open Settings:Stone Count", RSK_RAINBOW_BRIDGE_STONE_COUNT },
+        { "Open Settings:Medallion Count", RSK_RAINBOW_BRIDGE_MEDALLION_COUNT },
+        { "Open Settings:Reward Count", RSK_RAINBOW_BRIDGE_REWARD_COUNT },
+        { "Open Settings:Dungeon Count", RSK_RAINBOW_BRIDGE_DUNGEON_COUNT },
+        { "Open Settings:Token Count", RSK_RAINBOW_BRIDGE_TOKEN_COUNT },
+        { "Open Settings:Bridge Reward Options", RSK_BRIDGE_OPTIONS },
+        { "Shuffle Settings:Shuffle Dungeon Rewards", RSK_SHUFFLE_DUNGEON_REWARDS },
+        { "Shuffle Settings:Link's Pocket", RSK_LINKS_POCKET },
+        { "Shuffle Settings:Shuffle Songs", RSK_SHUFFLE_SONGS },
+        { "Shuffle Settings:Shuffle Gerudo Membership Card", RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD },
+        { "Shuffle Settings:Shopsanity", RSK_SHOPSANITY },
+        { "Shuffle Settings:Shopsanity Prices", RSK_SHOPSANITY_PRICES },
+        { "Shuffle Settings:Affordable Prices", RSK_SHOPSANITY_PRICES_AFFORDABLE },
+        { "Shuffle Settings:Scrub Shuffle", RSK_SHUFFLE_SCRUBS },
+        { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
+        { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
+        { "Shuffle Settings:Shuffle Ocarinas", RSK_SHUFFLE_OCARINA },
+        { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
+        { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
+        { "Shuffle Settings:Shuffle Kokiri Sword", RSK_SHUFFLE_KOKIRI_SWORD },
+        { "Shuffle Settings:Shuffle Weird Egg", RSK_SHUFFLE_WEIRD_EGG },
+        { "Shuffle Settings:Shuffle Frog Song Rupees", RSK_SHUFFLE_FROG_SONG_RUPEES },
+        { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
+        { "Shuffle Settings:Shuffle 100 GS Reward", RSK_SHUFFLE_100_GS_REWARD },
+        { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
+        { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
+        { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
+        { "Start with Zelda's Lullaby", RSK_STARTING_ZELDAS_LULLABY },
+        { "Start with Epona's Song", RSK_STARTING_EPONAS_SONG },
+        { "Start with Saria's Song", RSK_STARTING_SARIAS_SONG },
+        { "Start with Sun's Song", RSK_STARTING_SUNS_SONG },
+        { "Start with Song of Time", RSK_STARTING_SONG_OF_TIME },
+        { "Start with Song of Storms", RSK_STARTING_SONG_OF_STORMS },
+        { "Start with Minuet of Forest", RSK_STARTING_MINUET_OF_FOREST },
+        { "Start with Bolero of Fire", RSK_STARTING_BOLERO_OF_FIRE },
+        { "Start with Serenade of Water", RSK_STARTING_SERENADE_OF_WATER },
+        { "Start with Requiem of Spirit", RSK_STARTING_REQUIEM_OF_SPIRIT },
+        { "Start with Nocturne of Shadow", RSK_STARTING_NOCTURNE_OF_SHADOW },
+        { "Start with Prelude of Light", RSK_STARTING_PRELUDE_OF_LIGHT },
+        { "Shuffle Dungeon Items:Maps/Compasses", RSK_SHUFFLE_MAPANDCOMPASS },
+        { "Shuffle Dungeon Items:Small Keys", RSK_KEYSANITY },
+        { "Shuffle Dungeon Items:Gerudo Fortress Keys", RSK_GERUDO_KEYS },
+        { "Shuffle Dungeon Items:Boss Keys", RSK_BOSS_KEYSANITY },
+        { "Shuffle Dungeon Items:Ganon's Boss Key", RSK_GANONS_BOSS_KEY },
+        { "Shuffle Dungeon Items:Stone Count", RSK_LACS_STONE_COUNT },
+        { "Shuffle Dungeon Items:Medallion Count", RSK_LACS_MEDALLION_COUNT },
+        { "Shuffle Dungeon Items:Reward Count", RSK_LACS_REWARD_COUNT },
+        { "Shuffle Dungeon Items:Dungeon Count", RSK_LACS_DUNGEON_COUNT },
+        { "Shuffle Dungeon Items:Token Count", RSK_LACS_TOKEN_COUNT },
+        { "Shuffle Dungeon Items:LACS Reward Options", RSK_LACS_OPTIONS },
+        { "Shuffle Dungeon Items:Key Rings", RSK_KEYRINGS },
+        { "Shuffle Dungeon Items:Keyring Dungeon Count", RSK_KEYRINGS_RANDOM_COUNT },
+        { "Shuffle Dungeon Items:Gerudo Fortress", RSK_KEYRINGS_GERUDO_FORTRESS },
+        { "Shuffle Dungeon Items:Forest Temple", RSK_KEYRINGS_FOREST_TEMPLE },
+        { "Shuffle Dungeon Items:Fire Temple", RSK_KEYRINGS_FIRE_TEMPLE },
+        { "Shuffle Dungeon Items:Water Temple", RSK_KEYRINGS_WATER_TEMPLE },
+        { "Shuffle Dungeon Items:Spirit Temple", RSK_KEYRINGS_SPIRIT_TEMPLE },
+        { "Shuffle Dungeon Items:Shadow Temple", RSK_KEYRINGS_SHADOW_TEMPLE },
+        { "Shuffle Dungeon Items:Bottom of the Well", RSK_KEYRINGS_BOTTOM_OF_THE_WELL },
+        { "Shuffle Dungeon Items:GTG", RSK_KEYRINGS_GTG },
+        { "Shuffle Dungeon Items:Ganon's Castle", RSK_KEYRINGS_GANONS_CASTLE },
+        { "World Settings:Starting Age", RSK_STARTING_AGE },
+        // TODO: Ammo Drop settings
+        { "World Settings:Bombchu Drops", RSK_ENABLE_BOMBCHU_DROPS },
+        { "World Settings:Bombchus in Logic", RSK_BOMBCHUS_IN_LOGIC },
+        { "World Settings:Shuffle Entrances", RSK_SHUFFLE_ENTRANCES },
+        { "World Settings:Dungeon Entrances", RSK_SHUFFLE_DUNGEON_ENTRANCES },
+        { "World Settings:Boss Entrances", RSK_SHUFFLE_BOSS_ENTRANCES },
+        { "World Settings:Overworld Entrances", RSK_SHUFFLE_OVERWORLD_ENTRANCES },
+        { "World Settings:Interior Entrances", RSK_SHUFFLE_INTERIOR_ENTRANCES },
+        { "World Settings:Grottos Entrances", RSK_SHUFFLE_GROTTO_ENTRANCES },
+        { "World Settings:Owl Drops", RSK_SHUFFLE_OWL_DROPS },
+        { "World Settings:Warp Songs", RSK_SHUFFLE_WARP_SONGS },
+        { "World Settings:Overworld Spawns", RSK_SHUFFLE_OVERWORLD_SPAWNS },
+        { "World Settings:Mixed Entrance Pools", RSK_MIXED_ENTRANCE_POOLS },
+        { "World Settings:Mix Dungeons", RSK_MIX_DUNGEON_ENTRANCES },
+        { "World Settings:Mix Overworld", RSK_MIX_OVERWORLD_ENTRANCES },
+        { "World Settings:Mix Interiors", RSK_MIX_INTERIOR_ENTRANCES },
+        { "World Settings:Mix Grottos", RSK_MIX_GROTTO_ENTRANCES },
+        { "World Settings:Decouple Entrances", RSK_DECOUPLED_ENTRANCES },
+        { "World Settings:Triforce Hunt", RSK_TRIFORCE_HUNT },
+        { "World Settings:Triforce Hunt Total Pieces", RSK_TRIFORCE_HUNT_PIECES_TOTAL },
+        { "World Settings:Triforce Hunt Required Pieces", RSK_TRIFORCE_HUNT_PIECES_REQUIRED },
+        { "Miscellaneous Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
+        { "Miscellaneous Settings:Hint Clarity", RSK_HINT_CLARITY },
+        { "Miscellaneous Settings:ToT Altar Hint", RSK_TOT_ALTAR_HINT },
+        { "Miscellaneous Settings:Light Arrow Hint", RSK_LIGHT_ARROWS_HINT },
+        { "Miscellaneous Settings:Dampe's Diary Hint", RSK_DAMPES_DIARY_HINT },
+        { "Miscellaneous Settings:Greg the Rupee Hint", RSK_GREG_HINT },
+        { "Miscellaneous Settings:Saria's Hint", RSK_SARIA_HINT },
+        { "Miscellaneous Settings:Frog Ocarina Game Hint", RSK_FROGS_HINT },
+        { "Miscellaneous Settings:10 GS Hint", RSK_KAK_10_SKULLS_HINT },
+        { "Miscellaneous Settings:20 GS Hint", RSK_KAK_20_SKULLS_HINT },
+        { "Miscellaneous Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
+        { "Miscellaneous Settings:40 GS Hint", RSK_KAK_40_SKULLS_HINT },
+        { "Miscellaneous Settings:50 GS Hint", RSK_KAK_50_SKULLS_HINT },
+        { "Miscellaneous Settings:Warp Song Hints", RSK_WARP_SONG_HINTS },
+        { "Miscellaneous Settings:Scrub Hint Text", RSK_SCRUB_TEXT_HINT },
+        { "Miscellaneous Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
+        { "Miscellaneous Settings:Blue Fire Arrows", RSK_BLUE_FIRE_ARROWS },
+        { "Miscellaneous Settings:Sunlight Arrows", RSK_SUNLIGHT_ARROWS },
+        { "Timesaver Settings:Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
+        { "Start with Consumables", RSK_STARTING_CONSUMABLES },
+        { "Full Wallets", RSK_FULL_WALLETS },
+        { "Gold Skulltula Tokens", RSK_STARTING_SKULLTULA_TOKEN },
+        { "Timesaver Settings:Cuccos to return", RSK_CUCCO_COUNT },
+        { "Timesaver Settings:Big Poe Target Count", RSK_BIG_POE_COUNT },
+        { "Timesaver Settings:Skip Child Stealth", RSK_SKIP_CHILD_STEALTH },
+        { "Timesaver Settings:Skip Epona Race", RSK_SKIP_EPONA_RACE },
+        { "Timesaver Settings:Skip Tower Escape", RSK_SKIP_TOWER_ESCAPE },
+        { "Timesaver Settings:Complete Mask Quest", RSK_COMPLETE_MASK_QUEST },
+        { "Timesaver Settings:Skip Scarecrow's Song", RSK_SKIP_SCARECROWS_SONG },
+        { "Timesaver Settings:Enable Glitch-Useful Cutscenes", RSK_ENABLE_GLITCH_CUTSCENES },
+        { "World Settings:MQ Dungeon Setting", RSK_MQ_DUNGEON_RANDOM },
+        { "World Settings:MQ Dungeon Count", RSK_MQ_DUNGEON_COUNT },
+        { "World Settings:Set Dungeon Quests", RSK_MQ_DUNGEON_SET },
+        { "Shuffle Dungeon Quest:Forest Temple", RSK_MQ_FOREST_TEMPLE },
+        { "Shuffle Dungeon Quest:Fire Temple", RSK_MQ_FIRE_TEMPLE },
+        { "Shuffle Dungeon Quest:Water Temple", RSK_MQ_WATER_TEMPLE },
+        { "Shuffle Dungeon Quest:Spirit Temple", RSK_MQ_SPIRIT_TEMPLE },
+        { "Shuffle Dungeon Quest:Shadow Temple", RSK_MQ_SHADOW_TEMPLE },
+        { "Shuffle Dungeon Quest:Bottom of the Well", RSK_MQ_BOTTOM_OF_THE_WELL },
+        { "Shuffle Dungeon Quest:Ice Cavern", RSK_MQ_ICE_CAVERN },
+        { "Shuffle Dungeon Quest:GTG", RSK_MQ_GTG },
+        { "Shuffle Dungeon Quest:Ganon's Castle", RSK_MQ_GANONS_CASTLE },
+    };
 }
 
 Option& Settings::Setting(RandomizerSettingKey key) {
@@ -824,11 +967,11 @@ void Settings::SetSeedString(std::string seedString) {
 }
 
 const uint32_t Settings::GetSeed() const {
-    return mSeed;
+    return mFinalSeed;
 }
 
 void Settings::SetSeed(uint32_t seed) {
-    mSeed = seed;
+    mFinalSeed = seed;
 }
 
 const std::array<OptionGroup, RSG_MAX>& Settings::GetOptionGroups() {
@@ -1076,4 +1219,577 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
         mOptions[RSK_KEYSANITY].SetSelectedIndex(3);
     }
 }
+void Settings::ParseJson(nlohmann::json spoilerFileJson) {
+    mSeedString = spoilerFileJson["seed"].template get<std::string>();
+    mFinalSeed = spoilerFileJson["finalSeed"].get<uint32_t>();
+    nlohmann::json settingsJson = spoilerFileJson["settings"];
+    for (auto it = settingsJson.begin(); it != settingsJson.end(); ++it) {
+        // todo load into cvars for UI
+
+        std::string numericValueString;
+        if (mSpoilerfileSettingNameToEnum.count(it.key())) {
+            RandomizerSettingKey index = mSpoilerfileSettingNameToEnum[it.key()];
+            // this is annoying but the same strings are used in different orders
+            // and i don't want the spoilerfile to just have numbers instead of
+            // human readable settings values so it'll have to do for now
+            switch (index) {
+                case RSK_LOGIC_RULES:
+                    if (it.value() == "Glitchless") {
+                        mOptions[index].SetSelectedIndex(RO_LOGIC_GLITCHLESS);
+                    } else if (it.value() == "No Logic") {
+                        mOptions[index].SetSelectedIndex(RO_LOGIC_NO_LOGIC);
+                    }
+                    break;
+                case RSK_FOREST:
+                    if (it.value() == "Closed") {
+                        mOptions[index].SetSelectedIndex(RO_FOREST_CLOSED);
+                    } else if (it.value() == "Open") {
+                        mOptions[index].SetSelectedIndex(RO_FOREST_OPEN);
+                    } else if (it.value() == "Closed Deku") {
+                        mOptions[index].SetSelectedIndex(RO_FOREST_CLOSED_DEKU);
+                    }
+                    break;
+                case RSK_KAK_GATE:
+                    if (it.value() == "Closed") {
+                        mOptions[index].SetSelectedIndex(RO_KAK_GATE_CLOSED);
+                    } else if (it.value() == "Open") {
+                        mOptions[index].SetSelectedIndex(RO_KAK_GATE_OPEN);
+                    }
+                    break;
+                case RSK_DOOR_OF_TIME:
+                    if (it.value() == "Open") {
+                        mOptions[index].SetSelectedIndex(RO_DOOROFTIME_OPEN);
+                    } else if (it.value() == "Song only") {
+                        mOptions[index].SetSelectedIndex(RO_DOOROFTIME_SONGONLY);
+                    } else if (it.value() == "Closed") {
+                        mOptions[index].SetSelectedIndex(RO_DOOROFTIME_CLOSED);
+                    }
+                    break;
+                case RSK_ZORAS_FOUNTAIN:
+                    if (it.value() == "Closed") {
+                        mOptions[index].SetSelectedIndex(RO_ZF_CLOSED);
+                    } else if (it.value() == "Closed as child") {
+                        mOptions[index].SetSelectedIndex(RO_ZF_CLOSED_CHILD);
+                    } else if (it.value() == "Open") {
+                        mOptions[index].SetSelectedIndex(RO_ZF_OPEN);
+                    }
+                    break;
+                case RSK_STARTING_AGE:
+                    if (it.value() == "Child") {
+                        mOptions[index].SetSelectedIndex(RO_AGE_CHILD);
+                    } else if (it.value() == "Adult") {
+                        mOptions[index].SetSelectedIndex(RO_AGE_ADULT);
+                    }
+                    break;
+                case RSK_GERUDO_FORTRESS:
+                    if (it.value() == "Normal") {
+                        mOptions[index].SetSelectedIndex(RO_GF_NORMAL);
+                    } else if (it.value() == "Fast") {
+                        mOptions[index].SetSelectedIndex(RO_GF_FAST);
+                    } else if (it.value() == "Open") {
+                        mOptions[index].SetSelectedIndex(RO_GF_OPEN);
+                    }
+                    break;
+                case RSK_RAINBOW_BRIDGE:
+                    if (it.value() == "Vanilla") {
+                        mOptions[index].SetSelectedIndex(RO_BRIDGE_VANILLA);
+                    } else if (it.value() == "Always open") {
+                        mOptions[index].SetSelectedIndex(RO_BRIDGE_ALWAYS_OPEN);
+                    } else if (it.value() == "Stones") {
+                        mOptions[index].SetSelectedIndex(RO_BRIDGE_STONES);
+                    } else if (it.value() == "Medallions") {
+                        mOptions[index].SetSelectedIndex(RO_BRIDGE_MEDALLIONS);
+                    } else if (it.value() == "Dungeon rewards") {
+                        mOptions[index].SetSelectedIndex(RO_BRIDGE_DUNGEON_REWARDS);
+                    } else if (it.value() == "Dungeons") {
+                        mOptions[index].SetSelectedIndex(RO_BRIDGE_DUNGEONS);
+                    } else if (it.value() == "Tokens") {
+                        mOptions[index].SetSelectedIndex(RO_BRIDGE_TOKENS);
+                    } else if (it.value() == "Greg") {
+                        mOptions[index].SetSelectedIndex(RO_BRIDGE_GREG);
+                    }
+                    break;
+                case RSK_BRIDGE_OPTIONS:
+                    if (it.value() == "Standard Rewards") {
+                        mOptions[index].SetSelectedIndex(RO_BRIDGE_STANDARD_REWARD);
+                    } else if (it.value() == "Greg as Reward") {
+                        mOptions[index].SetSelectedIndex(RO_BRIDGE_GREG_REWARD);
+                    } else if (it.value() == "Greg as Wildcard") {
+                        mOptions[index].SetSelectedIndex(RO_BRIDGE_WILDCARD_REWARD);
+                    }
+                    break;
+                case RSK_LACS_OPTIONS:
+                    if (it.value() == "Standard Reward") {
+                        mOptions[index].SetSelectedIndex(RO_LACS_STANDARD_REWARD);
+                    } else if (it.value() == "Greg as Reward") {
+                        mOptions[index].SetSelectedIndex(RO_LACS_GREG_REWARD);
+                    } else if (it.value() == "Greg as Wildcard") {
+                        mOptions[index].SetSelectedIndex(RO_LACS_WILDCARD_REWARD);
+                    }
+                    break;
+                case RSK_DAMAGE_MULTIPLIER:
+                    if (it.value() == "x1/2") {
+                        mOptions[index].SetSelectedIndex(RO_DAMAGE_MULTIPLIER_HALF);
+                    } else if (it.value() == "x1") {
+                        mOptions[index].SetSelectedIndex(RO_DAMAGE_MULTIPLIER_DEFAULT);
+                    } else if (it.value() == "x2") {
+                        mOptions[index].SetSelectedIndex(RO_DAMAGE_MULTIPLIER_DOUBLE);
+                    } else if (it.value() == "x4") {
+                        mOptions[index].SetSelectedIndex(RO_DAMAGE_MULTIPLIER_QUADRUPLE);
+                    } else if (it.value() == "x8") {
+                        mOptions[index].SetSelectedIndex(RO_DAMAGE_MULTIPLIER_OCTUPLE);
+                    } else if (it.value() == "x16") {
+                        mOptions[index].SetSelectedIndex(RO_DAMAGE_MULTIPLIER_SEXDECUPLE);
+                    } else if (it.value() == "OHKO") {
+                        mOptions[index].SetSelectedIndex(RO_DAMAGE_MULTIPLIER_OHKO);
+                    }
+                    break;
+                case RSK_RAINBOW_BRIDGE_STONE_COUNT:
+                case RSK_RAINBOW_BRIDGE_MEDALLION_COUNT:
+                case RSK_RAINBOW_BRIDGE_REWARD_COUNT:
+                case RSK_RAINBOW_BRIDGE_DUNGEON_COUNT:
+                case RSK_RAINBOW_BRIDGE_TOKEN_COUNT:
+                case RSK_TRIAL_COUNT:
+                case RSK_LACS_STONE_COUNT:
+                case RSK_LACS_MEDALLION_COUNT:
+                case RSK_LACS_REWARD_COUNT:
+                case RSK_LACS_DUNGEON_COUNT:
+                case RSK_LACS_TOKEN_COUNT:
+                case RSK_KEYRINGS_RANDOM_COUNT:
+                case RSK_BIG_POE_COUNT:
+                case RSK_CUCCO_COUNT:
+                case RSK_STARTING_SKULLTULA_TOKEN:
+                case RSK_TRIFORCE_HUNT_PIECES_TOTAL:
+                case RSK_TRIFORCE_HUNT_PIECES_REQUIRED:
+                case RSK_STARTING_HEARTS:
+                    numericValueString = it.value();
+                    mOptions[index].SetSelectedIndex(std::stoi(numericValueString));
+                    break;
+                case RSK_GANONS_TRIALS:
+                    if (it.value() == "Skip") {
+                        mOptions[index].SetSelectedIndex(RO_GANONS_TRIALS_SKIP);
+                    } else if (it.value() == "Set Number") {
+                        mOptions[index].SetSelectedIndex(RO_GANONS_TRIALS_SET_NUMBER);
+                    } else if (it.value() == "Random Number") {
+                        mOptions[index].SetSelectedIndex(RO_GANONS_TRIALS_RANDOM_NUMBER);
+                    }
+                case RSK_SHOPSANITY:
+                    if (it.value() == "Off") {
+                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_OFF);
+                    } else if (it.value() == "0 Items") {
+                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_ZERO_ITEMS);
+                    } else if (it.value() == "1 Item") {
+                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_ONE_ITEM);
+                    } else if (it.value() == "2 Items") {
+                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_TWO_ITEMS);
+                    } else if (it.value() == "3 Items") {
+                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_THREE_ITEMS);
+                    } else if (it.value() == "4 Items") {
+                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_FOUR_ITEMS);
+                    } else if (it.value() == "Random") {
+                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_RANDOM);
+                    }
+                    break;
+                case RSK_SHOPSANITY_PRICES:
+                    if (it.value() == "Random") {
+                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_PRICE_BALANCED);
+                    } else if (it.value() == "Starter Wallet") {
+                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_PRICE_STARTER);
+                    } else if (it.value() == "Adult's Wallet") {
+                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_PRICE_ADULT);
+                    } else if (it.value() == "Giant's Wallet") {
+                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_PRICE_GIANT);
+                    } else if (it.value() == "Tycoon's Wallet") {
+                        mOptions[index].SetSelectedIndex(RO_SHOPSANITY_PRICE_TYCOON);
+                    }
+                case RSK_SHUFFLE_SCRUBS:
+                    if (it.value() == "Off") {
+                        mOptions[index].SetSelectedIndex(RO_SCRUBS_OFF);
+                    } else if (it.value() == "Affordable") {
+                        mOptions[index].SetSelectedIndex(RO_SCRUBS_AFFORDABLE);
+                    } else if (it.value() == "Expensive") {
+                        mOptions[index].SetSelectedIndex(RO_SCRUBS_EXPENSIVE);
+                    } else if (it.value() == "Random Prices") {
+                        mOptions[index].SetSelectedIndex(RO_SCRUBS_RANDOM);
+                    }
+                    break;
+                case RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD:
+                case RSK_SHUFFLE_COWS:
+                case RSK_SHUFFLE_ADULT_TRADE:
+                case RSK_SHUFFLE_MAGIC_BEANS:
+                case RSK_SHUFFLE_KOKIRI_SWORD:
+                case RSK_SHUFFLE_WEIRD_EGG:
+                case RSK_SHUFFLE_FROG_SONG_RUPEES:
+                case RSK_SHUFFLE_100_GS_REWARD:
+                case RSK_SHUFFLE_OCARINA:
+                case RSK_STARTING_DEKU_SHIELD:
+                case RSK_STARTING_KOKIRI_SWORD:
+                case RSK_STARTING_ZELDAS_LULLABY:
+                case RSK_STARTING_EPONAS_SONG:
+                case RSK_STARTING_SARIAS_SONG:
+                case RSK_STARTING_SUNS_SONG:
+                case RSK_STARTING_SONG_OF_TIME:
+                case RSK_STARTING_SONG_OF_STORMS:
+                case RSK_STARTING_MINUET_OF_FOREST:
+                case RSK_STARTING_BOLERO_OF_FIRE:
+                case RSK_STARTING_SERENADE_OF_WATER:
+                case RSK_STARTING_REQUIEM_OF_SPIRIT:
+                case RSK_STARTING_NOCTURNE_OF_SHADOW:
+                case RSK_STARTING_PRELUDE_OF_LIGHT:
+                case RSK_COMPLETE_MASK_QUEST:
+                case RSK_SKIP_SCARECROWS_SONG:
+                case RSK_ENABLE_GLITCH_CUTSCENES:
+                case RSK_SKULLS_SUNS_SONG:
+                case RSK_BLUE_FIRE_ARROWS:
+                case RSK_SUNLIGHT_ARROWS:
+                case RSK_BOMBCHUS_IN_LOGIC:
+                case RSK_TOT_ALTAR_HINT:
+                case RSK_LIGHT_ARROWS_HINT:
+                case RSK_DAMPES_DIARY_HINT:
+                case RSK_GREG_HINT:
+                case RSK_SARIA_HINT:
+                case RSK_FROGS_HINT:
+                case RSK_KAK_10_SKULLS_HINT:
+                case RSK_KAK_20_SKULLS_HINT:
+                case RSK_KAK_30_SKULLS_HINT:
+                case RSK_KAK_40_SKULLS_HINT:
+                case RSK_KAK_50_SKULLS_HINT:
+                case RSK_WARP_SONG_HINTS:
+                case RSK_SCRUB_TEXT_HINT:
+                case RSK_KEYRINGS_GERUDO_FORTRESS:
+                case RSK_KEYRINGS_FOREST_TEMPLE:
+                case RSK_KEYRINGS_FIRE_TEMPLE:
+                case RSK_KEYRINGS_WATER_TEMPLE:
+                case RSK_KEYRINGS_SHADOW_TEMPLE:
+                case RSK_KEYRINGS_SPIRIT_TEMPLE:
+                case RSK_KEYRINGS_BOTTOM_OF_THE_WELL:
+                case RSK_KEYRINGS_GTG:
+                case RSK_KEYRINGS_GANONS_CASTLE:
+                case RSK_SHUFFLE_ENTRANCES:
+                case RSK_SHUFFLE_OVERWORLD_ENTRANCES:
+                case RSK_SHUFFLE_GROTTO_ENTRANCES:
+                case RSK_SHUFFLE_OWL_DROPS:
+                case RSK_SHUFFLE_WARP_SONGS:
+                case RSK_SHUFFLE_OVERWORLD_SPAWNS:
+                case RSK_MIXED_ENTRANCE_POOLS:
+                case RSK_MIX_DUNGEON_ENTRANCES:
+                case RSK_MIX_OVERWORLD_ENTRANCES:
+                case RSK_MIX_INTERIOR_ENTRANCES:
+                case RSK_MIX_GROTTO_ENTRANCES:
+                case RSK_DECOUPLED_ENTRANCES:
+                case RSK_SHOPSANITY_PRICES_AFFORDABLE:
+                case RSK_ALL_LOCATIONS_REACHABLE:
+                case RSK_TRIFORCE_HUNT:
+                case RSK_MQ_DUNGEON_SET:
+                    if (it.value() == "Off") {
+                        mOptions[index].SetSelectedIndex(RO_GENERIC_OFF);
+                    } else if (it.value() == "On") {
+                        mOptions[index].SetSelectedIndex(RO_GENERIC_ON);
+                    }
+                    break;
+                case RSK_KEYRINGS:
+                    if (it.value() == "Off") {
+                        mOptions[index].SetSelectedIndex(RO_KEYRINGS_OFF);
+                    } else if (it.value() == "Random") {
+                        mOptions[index].SetSelectedIndex(RO_KEYRINGS_RANDOM);
+                    } else if (it.value() == "Count") {
+                        mOptions[index].SetSelectedIndex(RO_KEYRINGS_COUNT);
+                    } else if (it.value() == "Selection") {
+                        mOptions[index].SetSelectedIndex(RO_KEYRINGS_SELECTION);
+                    }
+                    break;
+                case RSK_SHUFFLE_MERCHANTS:
+                    if (it.value() == "Off") {
+                        mOptions[index].SetSelectedIndex(RO_SHUFFLE_MERCHANTS_OFF);
+                    } else if (it.value() == "On (No Hints)") {
+                        mOptions[index].SetSelectedIndex(RO_SHUFFLE_MERCHANTS_ON_NO_HINT);
+                    } else if (it.value() == "On (With Hints)") {
+                        mOptions[index].SetSelectedIndex(RO_SHUFFLE_MERCHANTS_ON_HINT);
+                    }
+                    break;
+                // Uses Ammo Drops option for now. "Off" not yet implemented
+                case RSK_ENABLE_BOMBCHU_DROPS:
+                    if (it.value() == "On") {
+                        mOptions[index].SetSelectedIndex(RO_AMMO_DROPS_ON);
+                    } else if (it.value() == "On + Bombchu") {
+                        mOptions[index].SetSelectedIndex(RO_AMMO_DROPS_ON_PLUS_BOMBCHU);
+                    } else if (it.value() == "Off") {
+                        mOptions[index].SetSelectedIndex(RO_AMMO_DROPS_OFF);
+                    }
+                    break;
+                case RSK_STARTING_OCARINA:
+                    if (it.value() == "Off") {
+                        mOptions[index].SetSelectedIndex(RO_STARTING_OCARINA_OFF);
+                    } else if (it.value() == "Fairy Ocarina") {
+                        mOptions[index].SetSelectedIndex(RO_STARTING_OCARINA_FAIRY);
+                    }
+                    break;
+                case RSK_ITEM_POOL:
+                    if (it.value() == "Plentiful") {
+                        mOptions[index].SetSelectedIndex(RO_ITEM_POOL_PLENTIFUL);
+                    } else if (it.value() == "Balanced") {
+                        mOptions[index].SetSelectedIndex(RO_ITEM_POOL_BALANCED);
+                    } else if (it.value() == "Scarce") {
+                        mOptions[index].SetSelectedIndex(RO_ITEM_POOL_SCARCE);
+                    } else if (it.value() == "Minimal") {
+                        mOptions[index].SetSelectedIndex(RO_ITEM_POOL_MINIMAL);
+                    }
+                    break;
+                case RSK_ICE_TRAPS:
+                    if (it.value() == "Off") {
+                        mOptions[index].SetSelectedIndex(RO_ICE_TRAPS_OFF);
+                    } else if (it.value() == "Normal") {
+                        mOptions[index].SetSelectedIndex(RO_ICE_TRAPS_NORMAL);
+                    } else if (it.value() == "Extra") {
+                        mOptions[index].SetSelectedIndex(RO_ICE_TRAPS_EXTRA);
+                    } else if (it.value() == "Mayhem") {
+                        mOptions[index].SetSelectedIndex(RO_ICE_TRAPS_MAYHEM);
+                    } else if (it.value() == "Onslaught") {
+                        mOptions[index].SetSelectedIndex(RO_ICE_TRAPS_ONSLAUGHT);
+                    }
+                    break;
+                case RSK_GOSSIP_STONE_HINTS:
+                    if (it.value() == "No Hints") {
+                        mOptions[index].SetSelectedIndex(RO_GOSSIP_STONES_NONE);
+                    } else if (it.value() == "Need Nothing") {
+                        mOptions[index].SetSelectedIndex(RO_GOSSIP_STONES_NEED_NOTHING);
+                    } else if (it.value() == "Mask of Truth") {
+                        mOptions[index].SetSelectedIndex(RO_GOSSIP_STONES_NEED_TRUTH);
+                    } else if (it.value() == "Stone of Agony") {
+                        mOptions[index].SetSelectedIndex(RO_GOSSIP_STONES_NEED_STONE);
+                    }
+                    break;
+                case RSK_HINT_CLARITY:
+                    if (it.value() == "Obscure") {
+                        mOptions[index].SetSelectedIndex(RO_HINT_CLARITY_OBSCURE);
+                    } else if (it.value() == "Ambiguous") {
+                        mOptions[index].SetSelectedIndex(RO_HINT_CLARITY_AMBIGUOUS);
+                    } else if (it.value() == "Clear") {
+                        mOptions[index].SetSelectedIndex(RO_HINT_CLARITY_CLEAR);
+                    }
+                    break;
+                case RSK_HINT_DISTRIBUTION:
+                    if (it.value() == "Useless") {
+                        mOptions[index].SetSelectedIndex(RO_HINT_DIST_USELESS);
+                    } else if (it.value() == "Balanced") {
+                        mOptions[index].SetSelectedIndex(RO_HINT_DIST_BALANCED);
+                    } else if (it.value() == "Strong") {
+                        mOptions[index].SetSelectedIndex(RO_HINT_DIST_STRONG);
+                    } else if (it.value() == "Very Strong") {
+                        mOptions[index].SetSelectedIndex(RO_HINT_DIST_VERY_STRONG);
+                    }
+                    break;
+                case RSK_GERUDO_KEYS:
+                    if (it.value() == "Vanilla") {
+                        mOptions[index].SetSelectedIndex(RO_GERUDO_KEYS_VANILLA);
+                    } else if (it.value() == "Any Dungeon") {
+                        mOptions[index].SetSelectedIndex(RO_GERUDO_KEYS_ANY_DUNGEON);
+                    } else if (it.value() == "Overworld") {
+                        mOptions[index].SetSelectedIndex(RO_GERUDO_KEYS_OVERWORLD);
+                    } else if (it.value() == "Anywhere") {
+                        mOptions[index].SetSelectedIndex(RO_GERUDO_KEYS_ANYWHERE);
+                    }
+                    break;
+                case RSK_KEYSANITY:
+                case RSK_BOSS_KEYSANITY:
+                case RSK_SHUFFLE_MAPANDCOMPASS:
+                    if (it.value() == "Start With") {
+                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ITEM_LOC_STARTWITH);
+                    } else if (it.value() == "Vanilla") {
+                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ITEM_LOC_VANILLA);
+                    } else if (it.value() == "Own Dungeon") {
+                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
+                    } else if (it.value() == "Any Dungeon") {
+                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON);
+                    } else if (it.value() == "Overworld") {
+                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ITEM_LOC_OVERWORLD);
+                    } else if (it.value() == "Anywhere") {
+                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ITEM_LOC_ANYWHERE);
+                    }
+                    break;
+                case RSK_GANONS_BOSS_KEY:
+                    if (it.value() == "Vanilla") {
+                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_VANILLA);
+                    } else if (it.value() == "Own dungeon") {
+                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_OWN_DUNGEON);
+                    } else if (it.value() == "Start with") {
+                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_STARTWITH);
+                    } else if (it.value() == "Any Dungeon") {
+                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_ANY_DUNGEON);
+                    } else if (it.value() == "Overworld") {
+                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_OVERWORLD);
+                    } else if (it.value() == "Anywhere") {
+                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_ANYWHERE);
+                    } else if (it.value() == "LACS-Vanilla") {
+                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_VANILLA);
+                    } else if (it.value() == "LACS-Stones") {
+                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_STONES);
+                    } else if (it.value() == "LACS-Medallions") {
+                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_MEDALLIONS);
+                    } else if (it.value() == "LACS-Rewards") {
+                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_REWARDS);
+                    } else if (it.value() == "LACS-Dungeons") {
+                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_DUNGEONS);
+                    } else if (it.value() == "LACS-Tokens") {
+                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_LACS_TOKENS);
+                    } else if (it.value() == "100 GS Reward") {
+                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_KAK_TOKENS);
+                    } else if (it.value() == "Triforce Hunt") {
+                        mOptions[index].SetSelectedIndex(RO_GANON_BOSS_KEY_TRIFORCE_HUNT);
+                    }
+                    break;
+                case RSK_MQ_DUNGEON_RANDOM:
+                    if (it.value() == "None") {
+                        mOptions[index].SetSelectedIndex(RO_MQ_DUNGEONS_NONE);
+                    } else if (it.value() == "Random Number") {
+                        mOptions[index].SetSelectedIndex(RO_MQ_DUNGEONS_RANDOM_NUMBER);
+                    } else if (it.value() == "Set Number") {
+                        mOptions[index].SetSelectedIndex(RO_MQ_DUNGEONS_SET_NUMBER);
+                    } else if (it.value() == "Selection Only") {
+                        mOptions[index].SetSelectedIndex(RO_MQ_DUNGEONS_SELECTION);
+                    }
+                    break;
+                case RSK_STARTING_CONSUMABLES:
+                case RSK_FULL_WALLETS:
+                    if (it.value() == "No") {
+                        mOptions[index].SetSelectedIndex(RO_GENERIC_NO);
+                    } else if (it.value() == "Yes") {
+                        mOptions[index].SetSelectedIndex(RO_GENERIC_YES);
+                    }
+                    break;
+                case RSK_SKIP_CHILD_ZELDA:
+                case RSK_SKIP_CHILD_STEALTH:
+                case RSK_SKIP_EPONA_RACE:
+                case RSK_SKIP_TOWER_ESCAPE:
+                    if (it.value() == "Don't Skip") {
+                        mOptions[index].SetSelectedIndex(RO_GENERIC_DONT_SKIP);
+                    } else if (it.value() == "Skip") {
+                        mOptions[index].SetSelectedIndex(RO_GENERIC_SKIP);
+                    }
+                    break;
+                case RSK_SHUFFLE_DUNGEON_REWARDS:
+                    if (it.value() == "End of dungeons") {
+                        mOptions[index].SetSelectedIndex(RO_DUNGEON_REWARDS_END_OF_DUNGEON);
+                    } else if (it.value() == "Any dungeon") {
+                        mOptions[index].SetSelectedIndex(RO_DUNGEON_REWARDS_ANY_DUNGEON);
+                    } else if (it.value() == "Overworld") {
+                        mOptions[index].SetSelectedIndex(RO_DUNGEON_REWARDS_OVERWORLD);
+                    } else if (it.value() == "Anywhere") {
+                        mOptions[index].SetSelectedIndex(RO_DUNGEON_REWARDS_ANYWHERE);
+                    }
+                    break;
+                case RSK_SHUFFLE_SONGS:
+                    if (it.value() == "Song locations") {
+                        mOptions[index].SetSelectedIndex(RO_SONG_SHUFFLE_SONG_LOCATIONS);
+                    } else if (it.value() == "Dungeon rewards") {
+                        mOptions[index].SetSelectedIndex(RO_SONG_SHUFFLE_DUNGEON_REWARDS);
+                    } else if (it.value() == "Anywhere") {
+                        mOptions[index].SetSelectedIndex(RO_SONG_SHUFFLE_ANYWHERE);
+                    }
+                    break;
+                case RSK_SHUFFLE_TOKENS:
+                    if (it.value() == "Off") {
+                        mOptions[index].SetSelectedIndex(RO_TOKENSANITY_OFF);
+                    } else if (it.value() == "Dungeons") {
+                        mOptions[index].SetSelectedIndex(RO_TOKENSANITY_DUNGEONS);
+                    } else if (it.value() == "Overworld") {
+                        mOptions[index].SetSelectedIndex(RO_TOKENSANITY_OVERWORLD);
+                    } else if (it.value() == "All Tokens") {
+                        mOptions[index].SetSelectedIndex(RO_TOKENSANITY_ALL);
+                    }
+                    break;
+                case RSK_LINKS_POCKET:
+                    if (it.value() == "Dungeon Reward") {
+                        mOptions[index].SetSelectedIndex(RO_LINKS_POCKET_DUNGEON_REWARD);
+                    } else if (it.value() == "Advancement") {
+                        mOptions[index].SetSelectedIndex(RO_LINKS_POCKET_ADVANCEMENT);
+                    } else if (it.value() == "Anything") {
+                        mOptions[index].SetSelectedIndex(RO_LINKS_POCKET_ANYTHING);
+                    } else if (it.value() == "Nothing") {
+                        mOptions[index].SetSelectedIndex(RO_LINKS_POCKET_NOTHING);
+                    }
+                    break;
+                case RSK_MQ_DUNGEON_COUNT:
+                    numericValueString = it.value();
+                    mOptions[index].SetSelectedIndex(std::stoi(numericValueString));
+                    break;
+                case RSK_SHUFFLE_DUNGEON_ENTRANCES:
+                    if (it.value() == "Off") {
+                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
+                    } else if (it.value() == "On") {
+                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ENTRANCE_SHUFFLE_ON);
+                    } else if (it.value() == "On + Ganon") {
+                        mOptions[index].SetSelectedIndex(RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON);
+                    }
+                    break;
+                case RSK_SHUFFLE_BOSS_ENTRANCES:
+                    if (it.value() == "Off") {
+                        mOptions[index].SetSelectedIndex(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
+                    } else if (it.value() == "Age Restricted") {
+                        mOptions[index].SetSelectedIndex(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_AGE_RESTRICTED);
+                    } else if (it.value() == "Full") {
+                        mOptions[index].SetSelectedIndex(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL);
+                    }
+                    break;
+                case RSK_SHUFFLE_INTERIOR_ENTRANCES:
+                    if (it.value() == "Off") {
+                        mOptions[index].SetSelectedIndex(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
+                    } else if (it.value() == "Simple") {
+                        mOptions[index].SetSelectedIndex(RO_INTERIOR_ENTRANCE_SHUFFLE_SIMPLE);
+                    } else if (it.value() == "All") {
+                        mOptions[index].SetSelectedIndex(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL);
+                    }
+                    break;
+                case RSK_SHUFFLE_CHEST_MINIGAME:
+                    if (it.value() == "Off") {
+                        mOptions[index].SetSelectedIndex(RO_CHEST_GAME_OFF);
+                    } else if (it.value() == "On (Separate)") {
+                        mOptions[index].SetSelectedIndex(RO_CHEST_GAME_SINGLE_KEYS);
+                    } else if (it.value() == "On (Pack)") {
+                        mOptions[index].SetSelectedIndex(RO_CHEST_GAME_PACK);
+                    }
+                    break;
+                case RSK_MQ_DEKU_TREE:
+                case RSK_MQ_DODONGOS_CAVERN:
+                case RSK_MQ_JABU_JABU:
+                case RSK_MQ_FOREST_TEMPLE:
+                case RSK_MQ_FIRE_TEMPLE:
+                case RSK_MQ_WATER_TEMPLE:
+                case RSK_MQ_SPIRIT_TEMPLE:
+                case RSK_MQ_SHADOW_TEMPLE:
+                case RSK_MQ_BOTTOM_OF_THE_WELL:
+                case RSK_MQ_ICE_CAVERN:
+                case RSK_MQ_GTG:
+                case RSK_MQ_GANONS_CASTLE:
+                    if (it.value() == "Vanilla") {
+                        mOptions[index].SetSelectedIndex(RO_MQ_SET_VANILLA);
+                    } else if (it.value() == "Master Quest") {
+                        mOptions[index].SetSelectedIndex(RO_MQ_SET_MQ);
+                    } else if (it.value() == "Random") {
+                        mOptions[index].SetSelectedIndex(RO_MQ_SET_RANDOM);
+                    }
+                    break;
+                default:
+                    SPDLOG_DEBUG("No string to enum conversion for option: %s", it.key());
+                    break;
+            }
+        }
+    }
+
+    nlohmann::json jsonExcludedLocations = spoilerFileJson["excludedLocations"];
+    auto ctx = Rando::Context::GetInstance();
+
+    ctx->AddExcludedOptions();
+    for (auto it = jsonExcludedLocations.begin(); it != jsonExcludedLocations.end(); it++) {
+        RandomizerCheck rc = ctx->mSpoilerfileCheckNameToEnum[it.value()];
+        ctx->GetItemLocation(rc)->GetExcludedOption()->SetSelectedIndex(RO_GENERIC_ON);
+    }
+
+    nlohmann::json enabledTricksJson = spoilerFileJson["enabledTricks"];
+    for (auto it = enabledTricksJson.begin(); it != enabledTricksJson.end(); it++) {
+        std::string numericValueString = it.value();
+        RandomizerTrick rt = (RandomizerTrick)std::stoi(numericValueString);
+        GetTrickOption(rt).SetSelectedIndex(RO_GENERIC_ON);
+    }
 }
+} // namespace Rando

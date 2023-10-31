@@ -1555,6 +1555,41 @@ void EntranceShuffler::CreateEntranceOverrides() {
         i++;
     }
 }
+
+/// @brief set all the entrances to be 0 to indicate an unshuffled entrance
+void EntranceShuffler::UnshuffleAllEntrances() {
+    for (auto& entranceOveride : entranceOverrides) {
+        entranceOveride.index = 0;
+        entranceOveride.destination = 0;
+        entranceOveride.blueWarp = 0;
+        entranceOveride.override = 0;
+        entranceOveride.overrideDestination = 0;
+    }
+}
+
+void EntranceShuffler::ParseJson(nlohmann::json spoilerFileJson) {
+    UnshuffleAllEntrances();
+    try {
+        nlohmann::json entrancesJson = spoilerFileJson["entrances"];
+        size_t i = 0;
+        for (auto it = entrancesJson.begin(); it != entrancesJson.end(); ++it, i++) {
+            nlohmann::json entranceJson = *it;
+            for (auto entranceIt = entranceJson.begin(); entranceIt != entranceJson.end(); ++entranceIt) {
+                if (entranceIt.key() == "index") {
+                    entranceOverrides[i].index = entranceIt.value();
+                } else if (entranceIt.key() == "destination") {
+                    entranceOverrides[i].destination = entranceIt.value();
+                } else if (entranceIt.key() == "blueWarp") {
+                    entranceOverrides[i].blueWarp = entranceIt.value();
+                } else if (entranceIt.key() == "override") {
+                    entranceOverrides[i].override = entranceIt.value();
+                } else if (entranceIt.key() == "overrideDestination") {
+                    entranceOverrides[i].overrideDestination = entranceIt.value();
+                }
+            }
+        }
+    } catch (const std::exception& e) { throw e; }
+}
 } // namespace Rando
 
 extern "C" EntranceOverride* Randomizer_GetEntranceOverrides() {

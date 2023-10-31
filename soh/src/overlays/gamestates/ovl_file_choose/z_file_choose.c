@@ -946,7 +946,6 @@ void SpriteDraw(FileChooseContext* this, Sprite* sprite, int left, int top, int 
     CLOSE_DISPS(this->state.gfxCtx);
 }
 
-bool fileSelectSpoilerFileLoaded = false;
 
 void DrawSeedHashSprites(FileChooseContext* this) {
     OPEN_DISPS(this->state.gfxCtx);
@@ -1020,30 +1019,15 @@ void FileChoose_UpdateRandomizer() {
 
     if (!SpoilerFileExists(CVarGetString("gSpoilerLog", ""))) {
             CVarSetString("gSpoilerLog", "");
-            fileSelectSpoilerFileLoaded = false;
     }
 
     if ((CVarGetInteger("gNewFileDropped", 0) != 0)) {
-            CVarSetString("gSpoilerLog", CVarGetString("gDroppedFile", "None"));
-            bool silent = true;
-            if ((CVarGetInteger("gNewFileDropped", 0) != 0)) {
-            silent = false;
-            }
+            CVarSetString("gSpoilerLog", CVarGetString("gDroppedFile", ""));
             CVarSetInteger("gNewSeedGenerated", 0);
             CVarSetInteger("gNewFileDropped", 0);
             CVarSetString("gDroppedFile", "");
-            fileSelectSpoilerFileLoaded = false;
             const char* fileLoc = CVarGetString("gSpoilerLog", "");
-            Randomizer_LoadSettings(fileLoc);
-            //Randomizer_LoadHintLocations(fileLoc);
-            //Randomizer_LoadRequiredTrials(fileLoc);
-            //Randomizer_LoadItemLocations(fileLoc, silent);
-            //Randomizer_LoadMerchantMessages(fileLoc);
-            //Randomizer_LoadMasterQuestDungeons(fileLoc);
-            //Randomizer_LoadEntranceOverrides(fileLoc, silent);
-            fileSelectSpoilerFileLoaded = true;
-            Randomizer_SetSeedGenerated(false);
-            Randomizer_SetSpoilerLoaded(true);
+            Randomizer_ParseSpoiler(fileLoc);
     }
 }
 
@@ -1330,7 +1314,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
 void FileChoose_GenerateRandoSeed(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     FileChoose_UpdateRandomizer();
-    if (Randomizer_IsSeedGenerated()) {
+    if (Randomizer_IsSeedGenerated() || Randomizer_IsPlandoLoaded()) {
         static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
         static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
         this->prevConfigMode = this->configMode;
@@ -2993,13 +2977,8 @@ void FileChoose_LoadGame(GameState* thisx) {
 
     this->state.running = false;
 
-    Randomizer_LoadSettings("");
-    Randomizer_LoadHintLocations("");
-    Randomizer_LoadItemLocations("", true);
-    Randomizer_LoadRequiredTrials("");
-    Randomizer_LoadMerchantMessages("");
-    Randomizer_LoadMasterQuestDungeons("");
-    Randomizer_LoadEntranceOverrides("", true);
+    Randomizer_LoadHintMessages();
+    Randomizer_LoadMerchantMessages();
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;
@@ -3620,7 +3599,6 @@ void FileChoose_Init(GameState* thisx) {
     this->questType[0] = MIN_QUEST;
     this->questType[1] = MIN_QUEST;
     this->questType[2] = MIN_QUEST;
-    fileSelectSpoilerFileLoaded = false;
     isFastFileIdIncompatible = 0;
     CVarSetInteger("gOnFileSelectNameEntry", 0);
 

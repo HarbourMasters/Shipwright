@@ -214,9 +214,11 @@ void SaveManager::LoadRandomizerVersion2() {
 
     std::string inputSeed;
     SaveManager::Instance->LoadData("inputSeed", inputSeed);
-    memcpy(gSaveContext.inputSeed, inputSeed.c_str(), inputSeed.length() + 1);
+    randoContext->GetSettings()->SetSeedString(inputSeed);
 
-    SaveManager::Instance->LoadData("finalSeed", gSaveContext.finalSeed);
+    uint32_t finalSeed;
+    SaveManager::Instance->LoadData("finalSeed", finalSeed);
+    randoContext->GetSettings()->SetSeed(finalSeed);
 
     SaveManager::Instance->LoadArray("randoSettings", RSK_MAX, [&](size_t i) {
         int value = 0;
@@ -356,9 +358,11 @@ void SaveManager::LoadRandomizerVersion3() {
 
     std::string inputSeed;
     SaveManager::Instance->LoadData("inputSeed", inputSeed);
-    memcpy(gSaveContext.inputSeed, inputSeed.c_str(), inputSeed.length() + 1);
+    randoContext->GetSettings()->SetSeedString(inputSeed);
 
-    SaveManager::Instance->LoadData("finalSeed", gSaveContext.finalSeed);
+    uint32_t finalSeed;
+    SaveManager::Instance->LoadData("finalSeed", finalSeed);
+    randoContext->GetSettings()->SetSeed(finalSeed);
 
     SaveManager::Instance->LoadArray("randoSettings", RSK_MAX, [&](size_t i) {
         int value = 0;
@@ -452,9 +456,9 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
         SaveManager::Instance->SaveData("", randoContext->hashIconIndexes[i]);
     });
 
-    SaveManager::Instance->SaveData("inputSeed", saveContext->inputSeed);
+    SaveManager::Instance->SaveData("inputSeed", randoContext->GetSettings()->GetSeedString());
 
-    SaveManager::Instance->SaveData("finalSeed", saveContext->finalSeed);
+    SaveManager::Instance->SaveData("finalSeed", randoContext->GetSettings()->GetSeed());
 
     SaveManager::Instance->SaveArray("randoSettings", RSK_MAX, [&](size_t i) {
         SaveManager::Instance->SaveData("", randoContext->GetOption((RandomizerSettingKey(i))).GetSelectedOptionIndex());

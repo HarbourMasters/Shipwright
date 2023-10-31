@@ -62,4 +62,21 @@ std::array<TrialInfo*, 6> Trials::GetTrialList() {
 size_t Trials::GetTrialListSize() {
     return mTrials.size();
 }
+void Trials::ParseJson(nlohmann::json spoilerFileJson) {
+    try {
+        nlohmann::json trialsJson = spoilerFileJson["requiredTrials"];
+        for (auto it = trialsJson.begin(); it != trialsJson.end(); it++) {
+            std::string trialName = it.value().template get<std::string>();
+            for (auto& trial : mTrials) {
+                if (trial.GetName() == trialName) {
+                    trial.SetAsRequired();
+                } else {
+                    trial.SetAsSkipped();
+                }
+            }
+        }
+    } catch (const std::exception& e) {
+        throw e;
+    }
 }
+} // namespace Rando

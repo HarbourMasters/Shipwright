@@ -23,4 +23,5 @@ void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarS
     CVarLoad();
     Rando::Context::GetInstance()->SetSeedGenerated();
     Rando::Context::GetInstance()->SetSpoilerLoaded(false);
+    Rando::Context::GetInstance()->SetPlandoLoaded(false);
 }

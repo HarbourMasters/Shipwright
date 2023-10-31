@@ -3,6 +3,7 @@
 #include "3drando/text.hpp"
 
 #include <array>
+#include <nlohmann/json.hpp>
 
 namespace Rando {
 class TrialInfo {
@@ -39,6 +40,7 @@ class Trials {
     void RequireAll();
     std::array<TrialInfo*, 6> GetTrialList();
     size_t GetTrialListSize();
+    void ParseJson(nlohmann::json spoilerFileJson);
   private:
     std::array<TrialInfo, 6> mTrials;
 };

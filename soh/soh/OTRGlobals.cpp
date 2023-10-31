@@ -1873,36 +1873,20 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
     return 0;
 }
 
-extern "C" void Randomizer_LoadSettings(const char* spoilerFileName) {
-    OTRGlobals::Instance->gRandomizer->LoadRandomizerSettings(spoilerFileName);
+extern "C" void Randomizer_ParseSpoiler(const char* fileLoc) {
+    OTRGlobals::Instance->gRandoContext->ParseSpoiler(fileLoc, CVarGetInteger("gPlandoMode", 0));
 }
 
-extern "C" void Randomizer_LoadHintLocations(const char* spoilerFileName) {
-    OTRGlobals::Instance->gRandomizer->LoadHintLocations(spoilerFileName);
+extern "C" void Randomizer_LoadHintMessages() {
+    OTRGlobals::Instance->gRandomizer->LoadHintMessages();
 }
 
-extern "C" void Randomizer_LoadMerchantMessages(const char* spoilerFileName) {
-    OTRGlobals::Instance->gRandomizer->LoadMerchantMessages(spoilerFileName);
-}
-
-extern "C" void Randomizer_LoadRequiredTrials(const char* spoilerFileName) {
-    OTRGlobals::Instance->gRandomizer->LoadRequiredTrials(spoilerFileName);
-}
-
-extern "C" void Randomizer_LoadMasterQuestDungeons(const char* spoilerFileName) {
-    OTRGlobals::Instance->gRandomizer->LoadMasterQuestDungeons(spoilerFileName);
-}
-
-extern "C" void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent) {
-    OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName, silent);
+extern "C" void Randomizer_LoadMerchantMessages() {
+    OTRGlobals::Instance->gRandomizer->LoadMerchantMessages();
 }
 
 extern "C" bool Randomizer_IsTrialRequired(RandomizerInf trial) {
     return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trial);
-}
-
-extern "C" void Randomizer_LoadEntranceOverrides(const char* spoilerFileName, bool silent) {
-    OTRGlobals::Instance->gRandomizer->LoadEntranceOverrides(spoilerFileName, silent);
 }
 
 extern "C" u32 SpoilerFileExists(const char* spoilerFileName) {
@@ -1980,6 +1964,14 @@ extern "C" uint8_t Randomizer_IsSpoilerLoaded() {
 
 extern "C" void Randomizer_SetSpoilerLoaded(bool spoilerLoaded) {
     OTRGlobals::Instance->gRandoContext->SetSpoilerLoaded(spoilerLoaded);
+}
+
+extern "C" uint8_t Randomizer_IsPlandoLoaded() {
+    return OTRGlobals::Instance->gRandoContext->IsPlandoLoaded() ? 1 : 0;
+}
+
+extern "C" void Randomizer_SetPlandoLoaded(bool plandoLoaded) {
+    OTRGlobals::Instance->gRandoContext->SetPlandoLoaded(plandoLoaded);
 }
 
 CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {

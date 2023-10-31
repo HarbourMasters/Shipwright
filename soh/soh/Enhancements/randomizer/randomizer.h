@@ -23,14 +23,7 @@
 class Randomizer {
   private:
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
-    void ParseRandomizerSettingsFile(const char* spoilerFileName);
-    void ParseHintLocationsFile(const char* spoilerFileName);
-    void ParseRequiredTrialsFile(const char* spoilerFileName);
-    void ParseMasterQuestDungeonsFile(const char* spoilerFileName);
-    void ParseItemLocationsFile(const char* spoilerFileName, bool silent);
-    void ParseEntranceDataFile(const char* spoilerFileName, bool silent);
     bool IsItemVanilla(RandomizerGet randoGet);
-    int16_t GetVanillaMerchantPrice(RandomizerCheck check);
 
   public:
     Randomizer();
@@ -49,17 +42,10 @@ class Randomizer {
     std::unordered_map<RandomizerGet, std::array<std::string, 3>> EnumToSpoilerfileGetName;
 
     static Sprite* GetSeedTexture(uint8_t index);
-    s16 GetItemModelFromId(s16 itemId);
-    s32 GetItemIDFromGetItemID(s32 getItemId);
     bool SpoilerFileExists(const char* spoilerFileName);
-    void LoadRandomizerSettings(const char* spoilerFileName);
-    void LoadHintLocations(const char* spoilerFileName);
-    void LoadMerchantMessages(const char* spoilerFileName);
-    void LoadItemLocations(const char* spoilerFileName, bool silent);
-    void LoadRequiredTrials(const char* spoilerFileName);
-    void LoadMasterQuestDungeons(const char* spoilerFileName);
+    void LoadMerchantMessages();
+    void LoadHintMessages();
     bool IsTrialRequired(RandomizerInf trial);
-    void LoadEntranceOverrides(const char* spoilerFileName, bool silent);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     RandomizerCheck GetCheckFromRandomizerInf(RandomizerInf randomizerInf);

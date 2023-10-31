@@ -705,21 +705,25 @@ static void WriteHints(int language) {
     if (ctx->GetOption(RSK_LIGHT_ARROWS_HINT)){
       jsonData["ganonHintText"] = ganonHintText;
       jsonData["lightArrowHintLoc"] = GetLightArrowHintLoc();
-      if (!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)){
-        jsonData["sheikText"] = sheikText;
+      jsonData["lightArrowRegion"] = ctx->GetHint(RH_GANONDORF_HINT)->GetHintedRegion();
+        if (!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)) {
+          jsonData["sheikText"] = sheikText;
       }
     }
     if (ctx->GetOption(RSK_DAMPES_DIARY_HINT)){
       jsonData["dampeText"] = dampesText;
       jsonData["dampeHintLoc"] = GetDampeHintLoc();
+      jsonData["dampeRegion"] = ctx->GetHint(RH_DAMPES_DIARY)->GetHintedRegion();
     }
     if (ctx->GetOption(RSK_GREG_HINT)){
       jsonData["gregText"] = gregText;
       jsonData["gregLoc"] = Rando::StaticData::GetLocation(GetItemLocation(RG_GREG_RUPEE)->GetRandomizerCheck())->GetName();
+      jsonData["gregRegion"] = ctx->GetHint(RH_GREG_RUPEE)->GetHintedRegion();
     }
     if (ctx->GetOption(RSK_SARIA_HINT)){
       jsonData["sariaText"] = sariaText;
       jsonData["sariaHintLoc"] = GetSariaHintLoc();
+      jsonData["sariaRegion"] = ctx->GetHint(RH_SARIA)->GetHintedRegion();
     }
 
     if (ctx->GetOption(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NONE)) {

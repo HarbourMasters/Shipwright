@@ -5,6 +5,7 @@
 #include <array>
 #include <vector>
 #include <string>
+#include "nlohmann/json.hpp"
 
 namespace Rando {
 class DungeonInfo {
@@ -88,6 +89,7 @@ class Dungeons {
     /// @return 
     std::array<DungeonInfo*, 12> GetDungeonList();
     size_t GetDungeonListSize();
+    void ParseJson(nlohmann::json spoilerFileJson);
   private:
     std::array<DungeonInfo, 12> dungeonList;
 };

@@ -284,13 +284,6 @@ typedef struct {
     // #endregion
     // #region SOH [Randomizer]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to Randomizer
-    /*        */ RandomizerCheck rewardCheck[9];
-    /*        */ RandomizerCheck lightArrowHintCheck;
-    /*        */ RandomizerCheck sariaCheck;
-    /*        */ RandomizerCheck gregCheck;
-    /*        */ RandomizerCheck dampeCheck;
-    /*        */ char inputSeed[1024];
-    /*        */ u32 finalSeed;
     /*        */ u16 randomizerInf[10];
     /*        */ u16 adultTradeItems;
     /*        */ u8 triforcePiecesCollected;

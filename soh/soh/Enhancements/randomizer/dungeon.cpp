@@ -763,4 +763,21 @@ std::array<DungeonInfo*, 12> Dungeons::GetDungeonList() {
 size_t Dungeons::GetDungeonListSize() {
     return dungeonList.size();
 }
+void Dungeons::ParseJson(nlohmann::json spoilerFileJson) {
+    try {
+        nlohmann::json mqDungeonsJson = spoilerFileJson["masterQuestDungeons"];
+        for (auto it = mqDungeonsJson.begin(); it != mqDungeonsJson.end(); it++) {
+            std::string dungeonName = it.value().template get<std::string>();
+            for (auto& dungeon : dungeonList) {
+                if (dungeon.GetName() == dungeonName) {
+                    dungeon.SetMQ();
+                } else {
+                    dungeon.ClearMQ();
+                }
+            }
+        }
+    } catch (const std::exception& e) {
+        throw e;
+    }
 }
+} // namespace Rando

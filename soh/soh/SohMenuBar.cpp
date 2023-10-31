@@ -1463,6 +1463,14 @@ extern std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSe
 
 void DrawRandomizerMenu() {
     if (ImGui::BeginMenu("Randomizer")) {
+        UIWidgets::EnhancementCheckbox("Plando Mode", "gPlandoMode");
+        UIWidgets::Tooltip(
+            "When dropping a spoiler file on the game window, parse the full spoiler file instead of just the "
+            "necessary "
+            "parts to regenerate a seed.\n\nKeep in mind if you do this, all custom text will only be available in the "
+            "language present in the spoilerfile. You can use this to edit a previously generated spoilerfile that has "
+            "been edited with custom hint text and item locations. May be useful for debugging.");
+        UIWidgets::PaddedSeparator();
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
