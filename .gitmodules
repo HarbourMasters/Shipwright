@@ -6,4 +6,4 @@
 	url = https://github.com/HarbourMasters/ZAPDTR
 [submodule "OTRExporter"]
 	path = OTRExporter
-	url = https://github.com/harbourmasters/OTRExporter
+	url = https://github.com/HarbourMasters/OTRExporter.git
