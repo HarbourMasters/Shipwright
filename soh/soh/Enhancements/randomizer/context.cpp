@@ -19,6 +19,7 @@ Context::Context() {
     }
     mEntranceShuffler = std::make_shared<EntranceShuffler>();
     mDungeons = std::make_shared<Dungeons>();
+    mTrials = std::make_shared<Trials>();
     mSettings = std::make_shared<Settings>();
 }
 
