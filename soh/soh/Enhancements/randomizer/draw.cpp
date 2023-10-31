@@ -274,25 +274,32 @@ extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEn
         { 80, 80, 80 },    // Ganon's Castle
 
     };
-    OPEN_DISPS(play->state.gfxCtx); 
-    
+    OPEN_DISPS(play->state.gfxCtx);
+
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-    gSPSegment(POLY_XLU_DISP++, 8, (uintptr_t)Gfx_TwoTexScroll(
-        play->state.gfxCtx, 0, 0 * (play->state.frames * 0),
-        0 * (play->state.frames * 0), 16, 32, 1, 1 * (play->state.frames * 1),
-        -1 * (play->state.frames * 8), 16, 32
-    ));
-    Matrix_Push();
-    Matrix_Translate(0.0f, -50.0f, 0.0f, MTXMODE_APPLY);
-    Matrix_Scale(3.0f, 3.0f, 3.0f, MTXMODE_APPLY);
-    Matrix_ReplaceRotation(&play->billboardMtxF);
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
-    gDPSetGrayscaleColor(POLY_XLU_DISP++, colors[slot][0], colors[slot][1], colors[slot][2], 255);
-    gSPGrayscale(POLY_XLU_DISP++, true);
-    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBlueFireFlameDL);
-    gSPGrayscale(POLY_XLU_DISP++, false);
-    Matrix_Pop();
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gBossSoulSkullDL);
+    
+    
+    // TODO Add flame as backdrop for test model?
+    // Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+    // gSPSegment(POLY_XLU_DISP++, 8, (uintptr_t)Gfx_TwoTexScroll(
+    //     play->state.gfxCtx, 0, 0 * (play->state.frames * 0),
+    //     0 * (play->state.frames * 0), 16, 32, 1, 1 * (play->state.frames * 1),
+    //     -1 * (play->state.frames * 8), 16, 32
+    // ));
+    // Matrix_Push();
+    // gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+    //           G_MTX_MODELVIEW | G_MTX_LOAD);
+    // //Matrix_Translate(0.0f, -50.0f, 0.0f, MTXMODE_APPLY);
+    // //Matrix_Scale(5.0f, 5.0f, 5.0f, MTXMODE_APPLY);
+    // Matrix_ReplaceRotation(&play->billboardMtxF);
+    // gDPSetGrayscaleColor(POLY_XLU_DISP++, colors[slot][0], colors[slot][1], colors[slot][2], 255);
+    // gSPGrayscale(POLY_XLU_DISP++, true);
+    // gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBlueFireFlameDL);
+    // gSPGrayscale(POLY_XLU_DISP++, false);
+    // Matrix_Pop();
 
     CLOSE_DISPS(play->state.gfxCtx);
 
