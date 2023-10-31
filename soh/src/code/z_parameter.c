@@ -1918,17 +1918,23 @@ u8 Item_Give(PlayState* play, u8 item) {
             }
             
         } else if (item == ITEM_SWORD_MASTER) {
-            /*Forces the sword to the Master Sword when:
-            - Drawing the Master Sword from its pedestal
-            - Fighting Ganon, after the first phase
-            Breaks DList Rework for drawing the sword, needed for Gannon Fight.
-            To fix this, only run this code as when Link is an adult, meaning Link MUST be fighting Ganon*/
-            if (LINK_IS_ADULT)
-            {
-                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-                gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
-                gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_MASTER << (EQUIP_TYPE_SWORD * 4);
-            }
+            // TODO - Welcome to the spectacular "Force Master Sword breaks the DList rework" issue.
+            //
+            // This code will force the equipped sword to the Master Sword when:
+            // - Drawing the Master Sword from the pedestal.
+            // - During the final Ganon boss fight.
+            //
+            // According to the original author, Luna (GitHub @MoriyaFaith), this breaks alternate asset loading 
+            // in a way that I still don't properly understand.
+            //
+            // For now, I'm reverting Luna's change to this section of code to what it was before any changes.
+            // The discussion for how to 1. understand and 2. address this issue will be ongoing.
+            // In my opinion it makes the most sense to start this issue over from scratch.
+            // Please review this and submit suggestions on how to fix this issue.
+            //
+            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+            gSaveContext.equips.equipment &= 0xFFF0;
+            gSaveContext.equips.equipment |= 0x0002;
             if (play != NULL) {
                 Interface_LoadItemIcon1(play, 0);
             }

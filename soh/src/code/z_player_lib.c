@@ -9,6 +9,7 @@
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/draw.h"
+#include "soh/Enhancements/AlternateEquipment.h"
 
 #include <stdlib.h>
 
@@ -252,7 +253,7 @@ u8 gPlayerModelTypes[PLAYER_MODELGROUP_MAX][PLAYER_MODELGROUPENTRY_MAX] = {
     },
 };
 
-Gfx* sPlayerRightHandShieldDLs[PLAYER_SHIELD_MAX * 4] = {
+Gfx* sPlayerRightHandShieldDLs[] = {
     // PLAYER_SHIELD_NONE
     gLinkAdultRightHandClosedNearDL,
     gLinkChildRightHandClosedNearDL,
@@ -275,6 +276,7 @@ Gfx* sPlayerRightHandShieldDLs[PLAYER_SHIELD_MAX * 4] = {
     gLinkChildRightHandClosedFarDL,
 };
 
+// Alternate Equipment Loading - Right Fist, Alt DLs.
 Gfx* sRightFistAltDLs[] = {
     gLinkAdultRightHandClosedNearDL, gLinkChildRightHandClosedNearDL, 
     gLinkAdultRightHandClosedFarDL,  gLinkChildRightHandClosedFarDL,
@@ -286,8 +288,7 @@ Gfx* sRightFistAltDLs[] = {
     gLinkAdultRightHandClosedFarDL,  gLinkChildRightHandClosedFarDL,
 };
 
-Gfx* sSheathWithSwordDLs[(PLAYER_SHIELD_MAX + 2) * 4] = {
-    // PLAYER_SHIELD_NONE
+Gfx* sSheathWithSwordDLs[] = {
     gLinkAdultMasterSwordAndSheathNearDL,       gLinkChildSwordAndSheathNearDL,
     gLinkAdultMasterSwordAndSheathFarDL,        gLinkChildSwordAndSheathFarDL,
     // PLAYER_SHIELD_DEKU
@@ -307,39 +308,22 @@ Gfx* sSheathWithSwordDLs[(PLAYER_SHIELD_MAX + 2) * 4] = {
     NULL,                                       gLinkChildDekuShieldWithMatrixDL,
 };
 
-Gfx* sSheathWithoutSwordDLs[(PLAYER_SHIELD_MAX + 2) * 4] = {
-    // PLAYER_SHIELD_NONE
-    gLinkAdultSheathNearDL,
-    gLinkChildSheathNearDL,
-    gLinkAdultSheathFarDL,
-    gLinkChildSheathFarDL,
-    // PLAYER_SHIELD_DEKU
-    gLinkAdultSheathNearDL,
-    gLinkChildDekuShieldAndSheathNearDL,
-    gLinkAdultSheathFarDL,
-    gLinkChildDekuShieldAndSheathFarDL,
-    // PLAYER_SHIELD_HYLIAN
-    gLinkAdultHylianShieldAndSheathNearDL,
-    gLinkChildHylianShieldAndSheathNearDL,
-    gLinkAdultHylianShieldAndSheathFarDL,
-    gLinkChildHylianShieldAndSheathFarDL,
-    // PLAYER_SHIELD_MIRROR
-    gLinkAdultMirrorShieldAndSheathNearDL,
-    gLinkChildSheathNearDL,
-    gLinkAdultMirrorShieldAndSheathFarDL,
-    gLinkChildSheathFarDL,
-    // PLAYER_SHIELD_NONE (child, no sword)
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    // PLAYER_SHIELD_DEKU (child, no sword)
-    gLinkAdultSheathNearDL,
-    gLinkChildDekuShieldWithMatrixDL,
-    gLinkAdultSheathNearDL,
-    gLinkChildDekuShieldWithMatrixDL,
+Gfx* sSheathWithoutSwordDLs[] = {
+    gLinkAdultSheathNearDL,                gLinkChildSheathNearDL,
+    gLinkAdultSheathFarDL,                 gLinkChildSheathFarDL,
+    gLinkAdultSheathNearDL,                gLinkChildDekuShieldAndSheathNearDL,
+    gLinkAdultSheathFarDL,                 gLinkChildDekuShieldAndSheathFarDL,
+    gLinkAdultHylianShieldAndSheathNearDL, gLinkChildHylianShieldAndSheathNearDL,
+    gLinkAdultHylianShieldAndSheathFarDL,  gLinkChildHylianShieldAndSheathFarDL,
+    gLinkAdultMirrorShieldAndSheathNearDL, gLinkChildSheathNearDL,
+    gLinkAdultMirrorShieldAndSheathFarDL,  gLinkChildSheathFarDL,
+    NULL,                                  NULL,
+    NULL,                                  NULL,
+    gLinkAdultSheathNearDL,                gLinkChildDekuShieldWithMatrixDL,
+    gLinkAdultSheathNearDL,                gLinkChildDekuShieldWithMatrixDL,
 };
 
+// Alternate Equipment Loading
 Gfx* sLongNullDLs[] = {
     NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
     NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
@@ -354,6 +338,8 @@ Gfx* gPlayerLeftHandBgsDLs[] = {
     gLinkAdultHandHoldingBrokenGiantsKnifeFarDL, gLinkChildLeftHandHoldingMasterSwordDL,
 };
 
+// Alternate Equipment Loading - sPlayerLeftHandNoBgsDLs
+// AltEquip TODO should we be naming these as more clearly distinct from the vanilla DL lists?
 Gfx* sPlayerLeftHandNoBgsDLs[] = {
     gLinkAdultLeftHandClosedNearDL,     gLinkChildLeftFistNearDL, 
     gLinkAdultLeftHandClosedFarDL,      gLinkChildLeftFistFarDL,
@@ -373,7 +359,7 @@ Gfx* gPlayerLeftHandClosedDLs[] = {
     gLinkChildLeftFistFarDL,
 };
 
-// Identical to `sPlayerLeftHandSwordDLs` and unused
+// Vanilla code. Apparently identical to `sPlayerLeftHandSwordDLs` and unused.
 Gfx* sPlayerLeftHandSwordDLs2[] = {
     gLinkAdultLeftHandHoldingMasterSwordNearDL,
     gLinkChildLeftFistAndKokiriSwordNearDL,
@@ -423,6 +409,7 @@ Gfx* sSheathDLs[] = {
     gLinkChildSheathFarDL,
 };
 
+// Alternate Equipment Loading
 Gfx* sFourNullDLs[] = {
     NULL,
     NULL,
@@ -461,7 +448,7 @@ Gfx* sPlayerRightHandOotDLs[] = {
 Gfx* sPlayerRightHandHookshotDLs[] = {
     gLinkAdultRightHandHoldingHookshotNearDL,
     gLinkChildRightHandNearDL,
-    gLinkAdultRightHandHoldingHookshotNearDL, // Despite there being a 'far' displayList named, it's actually the FPS model. Why? No clue. -Moriya
+    gLinkAdultRightHandHoldingHookshotNearDL, // This is actually the first-person Hookshot model.
     gLinkChildRightHandFarDL,
 };
 
@@ -511,36 +498,38 @@ Gfx* sFirstPersonRightHandHoldingWeaponDLs[] = {
     gLinkChildRightArmStretchedSlingshotDL,
 };
 
+// Alternate Equipment Loading - first-person view hand DLs.
 Gfx* sFirstPersonRightHandDLs[] = {
     gLinkAdultFPSHandDL,
     gLinkChildFPSHandDL,
 };
 
 // Indexed by model types (left hand, right hand, sheath or waist)
-Gfx** sPlayerDListGroups[PLAYER_MODELTYPE_MAX] = {
-    gPlayerLeftHandOpenDLs,           // PLAYER_MODELTYPE_LH_OPEN
-    gPlayerLeftHandClosedDLs,         // PLAYER_MODELTYPE_LH_CLOSED
-    sPlayerLeftHandSwordDLs,          // PLAYER_MODELTYPE_LH_SWORD
-    sPlayerLeftHandSwordDLs2,         // PLAYER_MODELTYPE_LH_SWORD_2
-    gPlayerLeftHandBgsDLs,            // PLAYER_MODELTYPE_LH_BGS
-    sPlayerLeftHandHammerDLs,         // PLAYER_MODELTYPE_LH_HAMMER
-    gPlayerLeftHandBoomerangDLs,      // PLAYER_MODELTYPE_LH_BOOMERANG
-    sPlayerLeftHandBottleDLs,         // PLAYER_MODELTYPE_LH_BOTTLE
-    sPlayerRightHandOpenDLs,          // PLAYER_MODELTYPE_RH_OPEN
-    sPlayerRightHandClosedDLs,        // PLAYER_MODELTYPE_RH_CLOSED
-    sPlayerRightHandShieldDLs,        // PLAYER_MODELTYPE_RH_SHIELD
-    sPlayerRightHandBowSlingshotDLs,  // PLAYER_MODELTYPE_RH_BOW_SLINGSHOT
-    sPlayerRightHandBowSlingshotDLs2, // PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2
-    sPlayerRightHandOcarinaDLs,       // PLAYER_MODELTYPE_RH_OCARINA
-    sPlayerRightHandOotDLs,           // PLAYER_MODELTYPE_RH_OOT
-    sPlayerRightHandHookshotDLs,      // PLAYER_MODELTYPE_RH_HOOKSHOT
-    sSwordAndSheathDLs,               // PLAYER_MODELTYPE_SHEATH_16
-    sSheathDLs,                       // PLAYER_MODELTYPE_SHEATH_17
-    sSheathWithSwordDLs,              // PLAYER_MODELTYPE_SHEATH_18
-    sSheathWithoutSwordDLs,           // PLAYER_MODELTYPE_SHEATH_19
-    sPlayerWaistDLs,                  // PLAYER_MODELTYPE_WAIST
+Gfx** sPlayerDListGroups[] = {
+    gPlayerLeftHandOpenDLs,
+    gPlayerLeftHandClosedDLs,
+    sPlayerLeftHandSwordDLs,
+    sPlayerLeftHandSwordDLs2,
+    gPlayerLeftHandBgsDLs,
+    sPlayerLeftHandHammerDLs,
+    gPlayerLeftHandBoomerangDLs,
+    sPlayerLeftHandBottleDLs,
+    sPlayerRightHandOpenDLs,
+    sPlayerRightHandClosedDLs,
+    sPlayerRightHandShieldDLs,
+    sPlayerRightHandBowSlingshotDLs,
+    sPlayerRightHandBowSlingshotDLs2,
+    sPlayerRightHandOcarinaDLs,
+    sPlayerRightHandOotDLs,
+    sPlayerRightHandHookshotDLs,
+    sSwordAndSheathDLs,
+    sSheathDLs,
+    sSheathWithSwordDLs,
+    sSheathWithoutSwordDLs,
+    sPlayerWaistDLs,
 };
 
+// Alternate Equipment Loading - Alternative Player DListGroups
 Gfx** sPlayerDListGroupsAlt[] = {
     gPlayerLeftHandOpenDLs,
     gPlayerLeftHandClosedDLs,
@@ -626,10 +615,7 @@ void Player_SetBootData(PlayState* play, Player* this) {
 }
 
 s32 Player_IsChildWithHylianShield(Player* this) {
-    if (CVarGetInteger("gNormalChildHylianShield", 0)) {
-        return false;
-    } else
-        return gSaveContext.linkAge != 0 && (this->currentShield == PLAYER_SHIELD_HYLIAN);
+    return gSaveContext.linkAge != 0 && (this->currentShield == PLAYER_SHIELD_HYLIAN);
 }
 
 // Custom method used to determine if we're using a custom model for link
@@ -637,235 +623,6 @@ uint8_t Player_IsCustomLinkModel() {
     return (LINK_IS_ADULT && ResourceGetIsCustomByName(gLinkAdultSkel)) ||
            (LINK_IS_CHILD && ResourceGetIsCustomByName(gLinkChildSkel));
 }
-
-uint8_t Player_CanUseNewLoadingMethod(Player* this) {
-    return false;
-}
-
-uint8_t Player_CanUseNewLoadingMethodLeftHand(Player * this) {
-    switch (this->leftHandType) {
-        case 2: // Unused, but a safe measure
-        case 3:
-            switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
-                case PLAYER_SWORD_KOKIRI:
-                    if (ResourceGetIsCustomByName(gLinkKokiriSwordDL)) {
-                        return true;
-                    }
-                default:
-                    if (ResourceGetIsCustomByName(gLinkMasterSwordDL)) {
-                        return true;
-                    }
-            }
-            break;
-        case 4:
-            if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) {
-                if (ResourceGetIsCustomByName(gLinkBrokenLongswordDL)) {
-                    return true;
-                } else if (ResourceGetIsCustomByName(gLinkLongswordDL)) {
-                    return true;
-                }
-            }
-            break;
-        case 5:
-            if (ResourceGetIsCustomByName(gLinkHammerDL)) {
-                return true;
-            }
-            break;
-        case 6:
-            if (ResourceGetIsCustomByName(gLinkBoomerangDL)) {
-                return true;
-            }
-            break;
-        case 7:
-            if (ResourceGetIsCustomByName(gLinkBottleDL)) 
-            {
-                return true;
-            }
-            break;
-        case 20:
-            if (ResourceGetIsCustomByName(gLinkMasterSwordDL)) {
-                return true;
-            }
-    }
-    return false;
-}
-
-uint8_t Player_CanUseNewLoadingMethodRightHand(Player* this) {
-    switch (this->rightHandType) {
-        case 10:
-            if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU) {
-                if (ResourceGetIsCustomByName(gLinkDekuShieldDL)) {
-                    return true;
-                }
-            } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-                       !Player_IsChildWithHylianShield(
-                           this)) 
-            {
-                if (ResourceGetIsCustomByName(gLinkHylianShieldDL)) {
-                    return true;
-                }
-            } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) 
-            {
-                if (ResourceGetIsCustomByName(gLinkMirrorShieldDL)) {
-                    return true;
-                }
-            }
-            break;
-        case 11:
-            if (this->itemAction == PLAYER_IA_SLINGSHOT) {
-                if (ResourceGetIsCustomByName(gLinkSlingshotDL)) {
-                    return true;
-                }
-            } else {
-                if (ResourceGetIsCustomByName(gLinkBowDL)) {
-                    return true;
-                }
-            }
-            break;
-        case 15: //literally all of these need a check at the same time, otherwise things will crash
-            if (ResourceGetIsCustomByName(gLinkHookshotDL) && ResourceGetIsCustomByName(gLinkHookshotChainDL) &&
-                ResourceGetIsCustomByName(gLinkHookshotTipDL) && ResourceGetIsCustomByName(gLinkHookshotSmallChainDL) &&
-                ResourceGetIsCustomByName(gLinkHookshotSmallTipDL)) {
-                return true;
-            }
-            break;
-    }
-    // Ocarinas check to see if the item is being used instead of rightHandType.
-    // Otherwise, cutscenes for learning Ocarina songs don't work properly.
-    if (this->itemAction == PLAYER_IA_OCARINA_FAIRY) {
-        if (ResourceGetIsCustomByName(gLinkFairyOcarinaDL)) {
-            return true;
-        }
-    }
-    if (this->itemAction == PLAYER_IA_OCARINA_TIME) {
-        if (ResourceGetIsCustomByName(gLinkOcarinaOfTimeDL)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-uint8_t Player_CanUseNewLoadingMethodLeftHandPause(Player* this) {
-            switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
-                case PLAYER_SWORD_KOKIRI:
-                    if (ResourceGetIsCustomByName(gLinkKokiriSwordDL)) {
-                        return true;
-                    }
-                    break;
-                case PLAYER_SWORD_MASTER:
-                    if (ResourceGetIsCustomByName(gLinkMasterSwordDL)) {
-                        return true;
-                    }
-                    break;
-                case PLAYER_SWORD_BGS:
-                    if (ResourceGetIsCustomByName(gLinkBrokenLongswordDL)) {
-                        return true;
-                    } else if (ResourceGetIsCustomByName(gLinkLongswordDL)) {
-                        return true;
-                    }
-                    break;
-            }
-    return false;
-}
-
-uint8_t Player_CanUseNewLoadingMethodRightHandPause(Player* this) {
-    if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU) {
-        if (ResourceGetIsCustomByName(gLinkDekuShieldDL)) {
-            return true;
-        }
-    } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-                !Player_IsChildWithHylianShield(this)) {
-        if (ResourceGetIsCustomByName(gLinkHylianShieldDL)) {
-            return true;
-        }
-    } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
-        if (ResourceGetIsCustomByName(gLinkMirrorShieldDL)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-uint8_t Player_CanUseNewLoadingMethodFirstPerson(Player* this) {
-    switch (this->rightHandType) {
-        case 11:
-            if (this->itemAction == PLAYER_IA_SLINGSHOT) {
-                if (!ResourceGetIsCustomByName(gLinkSlingshotDL)) {
-                    return false;
-                }
-            } else {
-                if (!ResourceGetIsCustomByName(gLinkBowDL)) {
-                    return false;
-                }
-            }
-            break;
-        case 15: // literally all of these need a check at the same time, otherwise things will crash
-            if (!(ResourceGetIsCustomByName(gLinkHookshotDL) && ResourceGetIsCustomByName(gLinkHookshotChainDL) &&
-                ResourceGetIsCustomByName(gLinkHookshotTipDL) && ResourceGetIsCustomByName(gLinkHookshotSmallChainDL) &&
-                ResourceGetIsCustomByName(gLinkHookshotSmallTipDL))) {
-                return false;
-            }
-            break;
-    }
-    if (LINK_IS_ADULT) {
-        if (!ResourceGetIsCustomByName(gLinkAdultFPSHandDL)) {
-            return false;
-        }
-    }
-    if (LINK_IS_CHILD) {
-        if (!ResourceGetIsCustomByName(gLinkChildFPSHandDL)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-uint8_t Player_CanUseNewLoadingMethodSheathSword(Player* this) {
-    switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
-        case PLAYER_SWORD_KOKIRI:
-            if (!(ResourceGetIsCustomByName(gLinkKokiriSwordSheathDL) &&
-                  ResourceGetIsCustomByName(gLinkKokiriSwordInSheathDL))) {
-                return false;
-            }
-            break;
-        case PLAYER_SWORD_MASTER:
-            if (!(ResourceGetIsCustomByName(gLinkMasterSwordSheathDL) &&
-                  ResourceGetIsCustomByName(gLinkMasterSwordInSheathDL))) {
-                return false;
-            }
-            break;
-        case PLAYER_SWORD_BGS:
-            if (!(ResourceGetIsCustomByName(gLinkLongswordSheathDL) &&
-                  ResourceGetIsCustomByName(gLinkLongswordInSheathDL))) {
-                return false;
-            }
-    }
-    return true;
-}
-
-uint8_t Player_CanUseNewLoadingMethodSheathShield(Player* this) {
-    switch (CUR_EQUIP_VALUE(EQUIP_SHIELD)) {
-        case PLAYER_SHIELD_DEKU:
-            if (!ResourceGetIsCustomByName(gLinkDekuShieldOnBackDL)) {
-                return false;
-            }
-            break;
-        case PLAYER_SHIELD_HYLIAN:
-            if (!ResourceGetIsCustomByName(gLinkHylianShieldOnBackDL) && !Player_IsChildWithHylianShield(this)) {
-                return false;
-            }
-            if (!ResourceGetIsCustomByName(gLinkHylianShieldOnChildBackDL) && Player_IsChildWithHylianShield(this)) {
-                return false;
-            }
-            break;
-        case PLAYER_SHIELD_MIRROR:
-            if (!ResourceGetIsCustomByName(gLinkMirrorShieldOnBackDL)) {
-                return false;
-            }
-    }
-    return true;
-}
-
 
 s32 Player_InBlockingCsMode(PlayState* play, Player* this) {
     return (this->stateFlags1 & 0x20000080) || (this->csMode != 0) || (play->sceneLoadFlag == 0x14) ||
@@ -895,21 +652,21 @@ s32 Player_ActionToModelGroup(Player* this, s32 actionParam) {
 }
 
 void Player_SetModelsForHoldingShield(Player* this) {
-    if ((this->stateFlags1 & 0x400000) && ((this->itemAction < 0) || (this->itemAction == this->heldItemAction))) {
-        if ((CVarGetInteger("gShieldTwoHanded", 0) && (this->heldItemAction != PLAYER_IA_STICK) ||
-             !Player_HoldsTwoHandedWeapon(this)) &&
-            !Player_IsChildWithHylianShield(this)) {
-            this->rightHandType = PLAYER_MODELTYPE_RH_SHIELD;
+    if ((this->stateFlags1 & 0x400000) &&
+        ((this->itemAction < 0) || (this->itemAction == this->heldItemAction))) {
+        if ((CVarGetInteger("gShieldTwoHanded", 0) && (this->heldItemAction != PLAYER_IA_DEKU_STICK) ||
+            !Player_HoldsTwoHandedWeapon(this)) && !Player_IsChildWithHylianShield(this)) {
+            this->rightHandType = 10;
             this->rightHandDLists = &sPlayerDListGroups[10][gSaveContext.linkAge];
-            if (Player_CanUseNewLoadingMethodRightHand(this))
-                this->rightHandDLists = &sPlayerDListGroupsAlt[10][gSaveContext.linkAge];
-            if (this->sheathType == PLAYER_MODELTYPE_SHEATH_18) {
-                this->sheathType = PLAYER_MODELTYPE_SHEATH_16;
-            } else if (this->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
-                this->sheathType = PLAYER_MODELTYPE_SHEATH_17;
+
+            if (this->sheathType == 18) {
+                this->sheathType = 16;
+            } else if (this->sheathType == 19) {
+                this->sheathType = 17;
             }
-            this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
-            this->modelAnimType = PLAYER_ANIMTYPE_2;
+            this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
+            
+            this->modelAnimType = 2;
             this->itemAction = -1;
         }
     }
@@ -919,27 +676,22 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     // Left hand
     this->leftHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_LEFT_HAND];
     this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
-    if (Player_CanUseNewLoadingMethodLeftHand(this))
-        this->leftHandDLists = &sPlayerDListGroupsAlt[this->leftHandType][gSaveContext.linkAge];
 
     // Right hand
     this->rightHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_RIGHT_HAND];
     this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
-    if (Player_CanUseNewLoadingMethodRightHand(this))
-        this->rightHandDLists = &sPlayerDListGroupsAlt[this->rightHandType][gSaveContext.linkAge];
 
-    if ((CVarGetInteger("gBowSlingShotAmmoFix", 0) && !Player_CanUseNewLoadingMethodRightHand(this)) &&
-        this->rightHandType == 11) { // If holding Bow/Slingshot without new DList system
+    if ((CVarGetInteger("gBowSlingShotAmmoFix", 0)) && this->rightHandType == 11) { // If holding Bow/Slingshot
         this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
     }
 
     // Sheath
-    this->sheathType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_SHEATH];
+    this->sheathType = gPlayerModelTypes[modelGroup][3];
     this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
+
 
     // Waist
     this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
-    // leftover from waist bomb bag, no alt DList needed here.
 
     Player_SetModelsForHoldingShield(this);
 }
@@ -1105,10 +857,6 @@ s32 Player_HoldsBow(Player* this) {
 
 s32 Player_HoldsSlingshot(Player* this) {
     return this->heldItemAction == PLAYER_IA_SLINGSHOT;
-}
-
-s32 Player_HoldsStick(Player* this) {
-    return this->heldItemAction == PLAYER_IA_STICK;
 }
 
 s32 func_8008F128(Player* this) {
@@ -1591,8 +1339,12 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                 dLists = &gPlayerLeftHandClosedDLs[gSaveContext.linkAge];
                 sLeftHandType = PLAYER_MODELTYPE_LH_CLOSED;
             }
-
-            *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+            Gfx* altDList = *dLists;
+            if (AlternateEquipment_SwapDLists(dLists, altDList, sDListsLodOffset, limbIndex, this)) {
+                *dList = ResourceMgr_LoadGfxByName(altDList);
+            } else {
+                *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+            }
         } else if (limbIndex == PLAYER_LIMB_R_HAND) {
             Gfx** dLists = this->rightHandDLists;
 
@@ -1603,7 +1355,12 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                 sRightHandType = PLAYER_MODELTYPE_RH_CLOSED;
             }
 
-            *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+            Gfx* altDList = *dLists;
+            if (AlternateEquipment_SwapDLists(dLists, altDList, sDListsLodOffset, limbIndex, this)) {
+                *dList = ResourceMgr_LoadGfxByName(altDList);
+            } else {
+                *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+            }
         } else if (limbIndex == PLAYER_LIMB_SHEATH) {
             Gfx** dLists = this->sheathDLists;
 
@@ -1613,16 +1370,19 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                     (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
                     dLists += PLAYER_SHIELD_MAX * 4;
                 }
-            } else if (!LINK_IS_ADULT && ((this->sheathType == PLAYER_MODELTYPE_SHEATH_16) || (this->sheathType == PLAYER_MODELTYPE_SHEATH_17)) &&
-                       (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) &&
-                       !(Player_CanUseNewLoadingMethod(this))) {
-                dLists = &sSheathWithSwordDLs[PLAYER_SHIELD_MAX * 4];
+            } else if (!LINK_IS_ADULT && ((this->sheathType == 16) || (this->sheathType == 17)) &&
+                       (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
+                dLists = &sSheathWithSwordDLs[16];
             }
-
-            if (dLists[sDListsLodOffset] != NULL) {
-                *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+            Gfx* altDList = *dLists;
+            if (AlternateEquipment_SwapDLists(dLists, altDList, sDListsLodOffset, limbIndex, this)) {
+                *dList = ResourceMgr_LoadGfxByName(altDList);
             } else {
-                *dList = NULL;
+                if (dLists[sDListsLodOffset] != NULL) {
+                    *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+                } else {
+                    *dList = NULL;
+                }
             }
 
 
@@ -1671,11 +1431,13 @@ s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, G
                     firstPersonWeaponIndex = 1;
                 }
             }
-            if (Player_CanUseNewLoadingMethodFirstPerson(this))
-                *dList = sFirstPersonRightHandDLs[gSaveContext.linkAge];
-            else
-                *dList = Player_HoldsHookshot(this) ? gLinkAdultRightHandHoldingHookshotFarDL //despite the name, this is the FPS hookshot
+            // Vanilla behavior. "HookshotFarDL" refers to first-person Hookshot.
+            *dList = Player_HoldsHookshot(this) ? gLinkAdultRightHandHoldingHookshotFarDL
                                                 : sFirstPersonRightHandHoldingWeaponDLs[firstPersonWeaponIndex];
+
+            if (AlternateEquipment_CanUseNewLoadingMethodFirstPerson(this)) { // Alternate Equipment Loading behavior
+                *dList = sFirstPersonRightHandDLs[gSaveContext.linkAge];
+            }
         } else {
             *dList = NULL;
         }
@@ -1951,14 +1713,14 @@ Color_RGB8 sBottleColors[] = {
 };
 
 Vec3f sLeftHandArrowVec3 = { 398.0f, 1419.0f, 244.0f };
-Vec3f sChildLeftHandArrowVec3 = { 420.0f, 1210.0f, 380.0f }; //ripped from MM
+Vec3f sChildLeftHandArrowVec3 = { 420.0f, 1210.0f, 380.0f }; // Child's arrow position, derived from Majora's Mask
 
 BowStringData sBowStringData[] = {
     { gLinkAdultBowStringDL, { 0.0f, -360.4f, 0.0f } },       // bow
     { gLinkChildSlinghotStringDL, { 606.0f, 236.0f, 0.0f } }, // slingshot
 };
 
-// Coordinates of the shield quad collider vertices, in the right hand limb's own model space.
+// Vertex coordinates of shield quad collider, attached to the right hand limb.
 Vec3f sRightHandLimbModelShieldQuadVertices[] = {
     { -4500.0f, -3000.0f, -600.0f },
     { 1500.0f, -3000.0f, -600.0f },
@@ -1969,7 +1731,7 @@ Vec3f sRightHandLimbModelShieldQuadVertices[] = {
 Vec3f D_80126184 = { 100.0f, 1500.0f, 0.0f };
 Vec3f D_80126190 = { 100.0f, 1640.0f, 0.0f };
 
-// Coordinates of the shield quad collider vertices, in the sheath limb's own model space.
+// Vertex coordinates of shield quad collider, attached to sheath limb.
 Vec3f sSheathLimbModelShieldQuadVertices[] = {
     { -3000.0f, -3000.0f, -900.0f },
     { 3000.0f, -3000.0f, -900.0f },
@@ -1990,74 +1752,6 @@ Vec3f sLeftRightFootLimbModelFootPos[] = {
 // started working out properly
 #define RETICLE_MAX 3.402823466e+12f
 
-void Player_DrawChildItem(PlayState* play, Gfx* dlist) {
-    OPEN_DISPS(play->state.gfxCtx);
-
-    //rescale child items for adult, otherwise clipping occurs
-    if (LINK_IS_ADULT) {
-        Matrix_Scale(1.35f, 1.35f, 1.35f, MTXMODE_APPLY);
-    }
-
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, dlist);
-
-    CLOSE_DISPS(play->state.gfxCtx);
-
-    if (LINK_IS_ADULT) {
-        // Scale the Matrix back to default, otherwise things get ruined
-        Matrix_Scale(1.0f / 1.35f, 1.0f / 1.35f, 1.0f / 1.35f, MTXMODE_APPLY);
-    }
-}
-
-void Player_DrawAdultItem(PlayState* play, Gfx* dlist) {
-    OPEN_DISPS(play->state.gfxCtx);
-
-    // rescale adult items for child, otherwise clipping occurs
-    if (LINK_IS_CHILD) {
-        Matrix_Scale(1.0f / 1.35f, 1.0f / 1.35f, 1.0f / 1.35f, MTXMODE_APPLY);
-    }
-
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, dlist);
-
-    CLOSE_DISPS(play->state.gfxCtx);
-
-    if (LINK_IS_CHILD) {
-        // Scale the Matrix back to default, otherwise things get ruined
-        Matrix_Scale(1.35f, 1.35f, 1.35f, MTXMODE_APPLY);
-    }
-}
-
-//draws the bow and hookshot, which need an alternate method to make sure bowstrings and hookshot tips scale properly
-void Player_DrawRightHandItem(PlayState* play, Gfx* dlist) {
-    OPEN_DISPS(play->state.gfxCtx);
-
-    // rescale adult items for child, otherwise clipping occurs
-    if (LINK_IS_CHILD) {
-        Matrix_Scale(1.0f / 1.35f, 1.0f / 1.35f, 1.0f / 1.35f, MTXMODE_APPLY);
-    }
-
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, dlist);
-
-    CLOSE_DISPS(play->state.gfxCtx);
-}
-
-void Player_DrawOcarinaItem(PlayState* play, Gfx* dlist) {
-    OPEN_DISPS(play->state.gfxCtx);
-
-    if (LINK_IS_ADULT) {
-        Matrix_Translate(115.0f, 200.0f, 115.0f, MTXMODE_APPLY);
-        Matrix_RotateZYX(7.57f, 3.72f, 0.0f, MTXMODE_APPLY);
-    }
-
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)dlist);
-
-    CLOSE_DISPS(play->state.gfxCtx);
-}
-
 void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
@@ -2071,52 +1765,45 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
         Math_Vec3f_Copy(&this->leftHandPos, D_80160000);
 
-        if (Player_CanUseNewLoadingMethodLeftHand(this) && this->actor.id != 51) {
+        // Alternate Equipment Loading - AltEquip left hand items.
+        if (AlternateEquipment_CanUseNewLoadingMethodLeftHand(this) && this->actor.id != 51) {
+            // AltEquip TODO: Comment from @inspectredc's code review of HarbourMasters/Shipwright#3008
+            //
+            // > If this part is unused, I feel as though it should either break or not be included?
             switch (this->leftHandType) {
-                case 2: // Unused, but a safe measure
-                case 3: 
+                case PLAYER_MODELTYPE_LH_SWORD:   // Left hand is holding a one-handed sword.
+                case PLAYER_MODELTYPE_LH_SWORD_2: // One of these is unused, but the same as the other.
                     switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
                         case PLAYER_SWORD_KOKIRI:
-                            Player_DrawChildItem(play, gLinkKokiriSwordDL);
+                            AlternateEquipment_DrawChildItem(play, gLinkKokiriSwordDL);
                             break;
                         default:
-                            Player_DrawAdultItem(play, gLinkMasterSwordDL);
+                            AlternateEquipment_DrawAdultItem(play, gLinkMasterSwordDL);
                             break;
                     }
                     break;
-                case 4:
-                    if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) {
+
+                case PLAYER_MODELTYPE_LH_BGS: // Left hand is holding a two-handed sword.
+                    if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON) {
                         if (gSaveContext.swordHealth <= 0.0f) {
-                            Player_DrawAdultItem(play, gLinkBrokenLongswordDL);
-                        }
-                        else {
-                            Player_DrawAdultItem(play, gLinkLongswordDL);
+                            AlternateEquipment_DrawAdultItem(play, gLinkBrokenLongswordDL);
+                        } else {
+                            AlternateEquipment_DrawAdultItem(play, gLinkLongswordDL);
                         }
                     }
                     break;
-                case 5:
-                    Player_DrawAdultItem(play, gLinkHammerDL);
+
+                case PLAYER_MODELTYPE_LH_HAMMER: // Left hand is holding Megaton Hammer.
+                    AlternateEquipment_DrawAdultItem(play, gLinkHammerDL);
                     break;
-                case 6:
+
+                case PLAYER_MODELTYPE_LH_BOOMERANG: // Left hand is holding Boomerang.
                     if (!(this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG)) {
-                        Player_DrawChildItem(play, gLinkBoomerangDL);
+                        AlternateEquipment_DrawChildItem(play, gLinkBoomerangDL);
                     }
-                    break;
-                case 20:
-                    // Doesn't call PlayerDrawChildItem due to it being rotated
-                    OPEN_DISPS(play->state.gfxCtx);
-
-                    Matrix_RotateZYX(-0x4400, -0x800, 0x8000, MTXMODE_APPLY);
-                    Matrix_Translate(280, -280, -160, MTXMODE_APPLY);
-
-                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkMasterSwordDL);
-
-                    CLOSE_DISPS(play->state.gfxCtx);
                     break;
             }
-        }
+        } // End of AltEquip left hand items block.
 
         if (this->itemAction == PLAYER_IA_DEKU_STICK) {
             Vec3f sp124[3];
@@ -2138,7 +1825,8 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             Matrix_RotateZYX(-0x8000, 0, 0x4000, MTXMODE_APPLY);
             Matrix_Scale(1.0f, this->unk_85C, 1.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gLinkChildLinkDekuStickDL);
 
             CLOSE_DISPS(play->state.gfxCtx);
@@ -2154,39 +1842,57 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
             func_80090A28(this, spE4);
             func_800906D4(play, this, spE4);
-        }
-
-        if ((*dList != NULL) && (this->leftHandType == PLAYER_MODELTYPE_LH_BOTTLE)) {
+        } // 
+        else if ((*dList != NULL) && (this->leftHandType == 7)) {
             Color_RGB8* bottleColor = &sBottleColors[Player_ActionToBottle(this, this->itemAction)];
 
             OPEN_DISPS(play->state.gfxCtx);
 
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gDPSetEnvColor(POLY_XLU_DISP++, bottleColor->r, bottleColor->g, bottleColor->b, 0);
+            gSPDisplayList(POLY_XLU_DISP++, sBottleDLists[(gSaveContext.linkAge)]);
 
-            if (this->itemAction != PLAYER_IA_BOTTLE && Player_CanUseNewLoadingMethodLeftHand(this)) {
-                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gLinkBottleContentsDL);
-            }
-
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            if (Player_CanUseNewLoadingMethodLeftHand(this)) {
-                gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gLinkBottleDL);
-            }
-            else {
-                gSPDisplayList(POLY_XLU_DISP++, sBottleDLists[(gSaveContext.linkAge)]);
-            }
             CLOSE_DISPS(play->state.gfxCtx);
         }
+        
+
+        // AltEquip TODO: A problematic change to the original code was made here.
+        // if ((*dList != NULL) && (this->leftHandType == 7)) {
+        //     Color_RGB8* bottleColor = &sBottleColors[Player_ActionToBottle(this, this->itemAction)];
+
+        //     OPEN_DISPS(play->state.gfxCtx);
+
+        //     gDPSetEnvColor(POLY_XLU_DISP++, bottleColor->r, bottleColor->g, bottleColor->b, 0);
+
+        //     if (this->itemAction != PLAYER_IA_BOTTLE && AlternateEquipment_CanUseNewLoadingMethodLeftHand(this)) {
+        //         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+        //                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        //         gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gLinkBottleContentsDL);
+        //     }
+
+        //     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        //     if (AlternateEquipment_CanUseNewLoadingMethodLeftHand(this)) {
+        //         gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gLinkBottleDL);
+        //     } else {
+        //         gSPDisplayList(POLY_XLU_DISP++, sBottleDLists[(gSaveContext.linkAge)]);
+        //     }
+        //     CLOSE_DISPS(play->state.gfxCtx);
+        // }
 
         if (this->actor.scale.y >= 0.0f) {
             if (!Player_HoldsHookshot(this) && ((hookedActor = this->heldActor) != NULL)) {
                 if (this->stateFlags1 & 0x200) {
-                    if (LINK_IS_CHILD && CVarGetInteger("gBowSlingShotAmmoFix", 0) &&
-                        this->itemAction != PLAYER_IA_SLINGSHOT)
-                        Matrix_MultVec3f(&sChildLeftHandArrowVec3, &hookedActor->world.pos);
-                    else
-                        Matrix_MultVec3f(&sLeftHandArrowVec3, &hookedActor->world.pos);
+                    // if (!CVarGetInteger("gAltLinkEquip", 1)) { // use vanilla behavior.
+                    Matrix_MultVec3f(&sLeftHandArrowVec3, &hookedActor->world.pos);
+                    // } else { // use Alternate Equipment Loading behavior
+                    //     if (LINK_IS_CHILD && CVarGetInteger("gBowSlingShotAmmoFix", 0) &&
+                    //         this->itemAction != PLAYER_IA_SLINGSHOT) {
+                    //         Matrix_MultVec3f(&sChildLeftHandArrowVec3, &hookedActor->world.pos);
+                    //     } else {
+                    //         Matrix_MultVec3f(&sLeftHandArrowVec3, &hookedActor->world.pos);
+                    //     }
+                    // }
                     Matrix_RotateZYX(0x69E8, -0x5708, 0x458E, MTXMODE_APPLY);
                     Matrix_Get(&sp14C);
                     Matrix_MtxFToYXZRotS(&sp14C, &hookedActor->world.rot, 0);
@@ -2208,29 +1914,47 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 Matrix_MtxFToYXZRotS(&this->mf_9E0, &this->unk_3BC, 0);
             }
         }
-    } 
-    else if (limbIndex == PLAYER_LIMB_R_HAND) {
+    } else if (limbIndex == PLAYER_LIMB_R_HAND) {
         Actor* heldActor = this->heldActor;
-        Vec3f projectedHeadPos;
 
-        SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &this->actor.focus.pos, &projectedHeadPos);
+        // Alternate Equipment Loading - AltEquip right hand items.
+        if (CVarGetInteger("gAltLinkEquip", 1)) {
+            Vec3f projectedHeadPos;
+            SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &this->actor.focus.pos, &projectedHeadPos);
 
-        if (Player_CanUseNewLoadingMethodRightHand(this) && this->actor.id != 51) {
-            switch (this->rightHandType) {
-                case 10:
-                    if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU) {
-                        Player_DrawChildItem(play, gLinkDekuShieldDL);
-                    } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-                               !Player_IsChildWithHylianShield(this)) { //I don't think this check is needed, but I'm playing it safe
-                        Player_DrawAdultItem(play, gLinkHylianShieldDL);
-                    } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
-                        Player_DrawAdultItem(play, gLinkMirrorShieldDL);
-                    }
-                    break;
-                case 11:
-                    if (this->itemAction == PLAYER_IA_SLINGSHOT) {
-                        if (projectedHeadPos.z < -4.0f && this->unk_6AD != 0) {
-                            if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
+            if (AlternateEquipment_CanUseNewLoadingMethodRightHand(this) && this->actor.id != 51) {
+                switch (this->rightHandType) {
+                    case PLAYER_MODELTYPE_RH_SHIELD: // Right hand is holding Shield
+                        if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU) {
+                            AlternateEquipment_DrawChildItem(play, gLinkDekuShieldDL);
+                        } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
+                                   !Player_IsChildWithHylianShield(this)) { // I don't think this check is needed, but I'm playing it safe
+                            AlternateEquipment_DrawAdultItem(play, gLinkHylianShieldDL);
+                        } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
+                            AlternateEquipment_DrawAdultItem(play, gLinkMirrorShieldDL);
+                        }
+                        break;
+
+                    case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT:   // Right hand is holding either Bow or Slingshot.
+                    case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2: // Unused, but same as Bow_Slingshot.
+                        if (this->itemAction == PLAYER_IA_SLINGSHOT) { 
+                            // Item is Slingshot
+                            if (projectedHeadPos.z < -4.0f && this->unk_6AD != 0) {
+                                if (AlternateEquipment_CanUseNewLoadingMethodFirstPerson(this)) {
+                                    OPEN_DISPS(play->state.gfxCtx);
+
+                                    // rescale child items for adult, otherwise clipping occurs
+                                    if (LINK_IS_ADULT) {
+                                        Matrix_Scale(1.35f, 1.35f, 1.35f, MTXMODE_APPLY);
+                                    }
+
+                                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                                    gSPDisplayList(POLY_OPA_DISP++, gLinkSlingshotDL);
+
+                                    CLOSE_DISPS(play->state.gfxCtx);
+                                }
+                            } else {
                                 OPEN_DISPS(play->state.gfxCtx);
 
                                 // rescale child items for adult, otherwise clipping occurs
@@ -2244,50 +1968,39 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                                 CLOSE_DISPS(play->state.gfxCtx);
                             }
-                        } else {
-                            OPEN_DISPS(play->state.gfxCtx);
-
-                            // rescale child items for adult, otherwise clipping occurs
-                            if (LINK_IS_ADULT) {
-                                Matrix_Scale(1.35f, 1.35f, 1.35f, MTXMODE_APPLY);
+                        } else { // Item is Bow
+                            if (projectedHeadPos.z < 0.0f && this->unk_6AD != 0) {
+                                if (AlternateEquipment_CanUseNewLoadingMethodFirstPerson(this)) {
+                                    AlternateEquipment_DrawRightHandItem(play, gLinkBowDL);
+                                }
+                            } else {
+                                AlternateEquipment_DrawRightHandItem(play, gLinkBowDL);
                             }
-
-                            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                            gSPDisplayList(POLY_OPA_DISP++, gLinkSlingshotDL);
-
-                            CLOSE_DISPS(play->state.gfxCtx);
                         }
-                    } else {
+                        break;
+
+                    case PLAYER_MODELTYPE_RH_HOOKSHOT: // Right hand is holding Hookshot
                         if (projectedHeadPos.z < 0.0f && this->unk_6AD != 0) {
-                            if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
-                                Player_DrawRightHandItem(play, gLinkBowDL);
+                            if (AlternateEquipment_CanUseNewLoadingMethodFirstPerson(this)) {
+                                AlternateEquipment_DrawRightHandItem(play, gLinkHookshotDL);
                             }
                         } else {
-                            Player_DrawRightHandItem(play, gLinkBowDL);
+                            AlternateEquipment_DrawRightHandItem(play, gLinkHookshotDL);
                         }
-                    }
-                    break;
-                case 15:
-                    if (projectedHeadPos.z < 0.0f && this->unk_6AD != 0) {
-                        if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
-                            Player_DrawRightHandItem(play, gLinkHookshotDL);
-                        }
-                    } else {
-                        Player_DrawRightHandItem(play, gLinkHookshotDL);
-                    }
-                    break;
+                        break;
+                }
+                // Ocarinas check to see if the item is being used instead of rightHandType.
+                // Otherwise, cutscenes for learning Ocarina songs don't work properly.
+                if (this->itemAction == PLAYER_IA_OCARINA_FAIRY) {
+                    AlternateEquipment_DrawOcarinaItem(play, gLinkFairyOcarinaDL);
+                }
+                if (this->itemAction == PLAYER_IA_OCARINA_OF_TIME) {
+                    AlternateEquipment_DrawOcarinaItem(play, gLinkOcarinaOfTimeDL);
+                }
             }
-            //Ocarinas check to see if the item is being used instead of rightHandType.
-            //Otherwise, cutscenes for learning Ocarina songs don't work properly.
-            if (this->itemAction == PLAYER_IA_OCARINA_FAIRY) {
-                Player_DrawOcarinaItem(play, gLinkFairyOcarinaDL);
-            }
-            if (this->itemAction == PLAYER_IA_OCARINA_TIME) {
-                Player_DrawOcarinaItem(play, gLinkOcarinaOfTimeDL);
-            }
-        }
-        if (this->rightHandType == PLAYER_MODELTYPE_RH_FF) {
+        } // End of AltEquip right hand items block.
+
+        if (this->rightHandType == 0xFF) {
             Matrix_Get(&this->shieldMf);
         } else if ((this->rightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT) || (this->rightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2)) {
             s32 stringModelToUse = gSaveContext.linkAge;
@@ -2327,20 +2040,21 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 Matrix_RotateZ(this->unk_858 * -0.2f, MTXMODE_APPLY);
             }
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, stringData->dList);
 
             Matrix_Pop();
 
             CLOSE_DISPS(play->state.gfxCtx);
-
-        } else if ((this->actor.scale.y >= 0.0f) && (this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD)) {
+        } else if ((this->actor.scale.y >= 0.0f) && (this->rightHandType == 10)) {
             Matrix_Get(&this->shieldMf);
             Player_UpdateShieldCollider(play, this, &this->shieldQuad, sRightHandLimbModelShieldQuadVertices);
         }
 
         if (this->actor.scale.y >= 0.0f) {
-            if ((this->heldItemAction == PLAYER_IA_HOOKSHOT) || (this->heldItemAction == PLAYER_IA_LONGSHOT)) {
+            if ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
+                (this->heldItemAction == PLAYER_IA_LONGSHOT)) {
                 Matrix_MultVec3f(&D_80126184, &this->unk_3C8);
 
                 if (heldActor != NULL) {
@@ -2356,14 +2070,14 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                     if (func_8002DD78(this) != 0) {
                         Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
                         Player_DrawHookshotReticle(
-                            play, this,
-                            ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 77600.0f) *
-                                CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f));
+                            play, this, ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 77600.0f) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f));
                     }
                 }
-            } else if (CVarGetInteger("gBowReticle", 0) &&
-                       ((this->heldItemAction == PLAYER_IA_BOW_FIRE) || (this->heldItemAction == PLAYER_IA_BOW_ICE) ||
-                        (this->heldItemAction == PLAYER_IA_BOW_LIGHT) || (this->heldItemAction == PLAYER_IA_BOW) ||
+            } else if (CVarGetInteger("gBowReticle", 0) && (
+                        (this->heldItemAction == PLAYER_IA_BOW_FIRE) ||
+                        (this->heldItemAction == PLAYER_IA_BOW_ICE) ||
+                        (this->heldItemAction == PLAYER_IA_BOW_LIGHT) ||
+                        (this->heldItemAction == PLAYER_IA_BOW) ||
                         (this->heldItemAction == PLAYER_IA_SLINGSHOT))) {
                 if (heldActor != NULL) {
                     MtxF sp44;
@@ -2393,87 +2107,83 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 }
             }
         }
-    }
-    else if (this->actor.scale.y >= 0.0f) {
+    } else if (this->actor.scale.y >= 0.0f) {
         if (limbIndex == PLAYER_LIMB_SHEATH) {
-                if (!(this->stateFlags2 & PLAYER_STATE2_CRAWLING && this->actor.projectedPos.z < 0.0f) &&
-                this->actor.id != 51)
-                // don't render these if the player's crawling. Or if it's actually dark link.
-                {
-                    switch (CUR_EQUIP_VALUE(EQUIP_SWORD)){
-                        case PLAYER_SWORD_KOKIRI:
-                        Player_DrawChildItem(
-                            play, Player_CanUseNewLoadingMethodSheathSword(this) ? gLinkKokiriSwordSheathDL : gLinkChildSheathNearDL);
-                            if (this->leftHandType != 2 && this->leftHandType != 3) {
-                            Player_DrawChildItem(play, Player_CanUseNewLoadingMethodSheathSword(this)
+
+            // Alternate Equipment Loading - AltEquip sheath items.
+            if (CVarGetInteger("gAltLinkEquip", 1) &&
+                (!(this->stateFlags2 & PLAYER_STATE2_CRAWLING && this->actor.projectedPos.z < 0.0f) &&
+                 this->actor.id != 51)) { // Don't render these if the player's crawling, or if it's actually dark link.
+                switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
+                    case PLAYER_SWORD_KOKIRI:
+                        AlternateEquipment_DrawChildItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathSword(this)
+                                                       ? gLinkKokiriSwordSheathDL
+                                                       : gLinkChildSheathNearDL);
+                        if (this->leftHandType != 2 && this->leftHandType != 3) {
+                            AlternateEquipment_DrawChildItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathSword(this)
                                                            ? gLinkKokiriSwordInSheathDL
                                                            : gLinkChildSwordAndSheathNearDL);
-                            }
-                            break;
-                        case PLAYER_SWORD_MASTER:
-                            Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathSword(this)
-                                                           ? gLinkMasterSwordSheathDL
-                                                           : gLinkAdultSheathNearDL);
-                            if (this->leftHandType != 2 && this->leftHandType != 3) {
-                            Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathSword(this)
+                        }
+                        break;
+                    case PLAYER_SWORD_MASTER:
+                        AlternateEquipment_DrawAdultItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathSword(this)
+                                                       ? gLinkMasterSwordSheathDL
+                                                       : gLinkAdultSheathNearDL);
+                        if (this->leftHandType != 2 && this->leftHandType != 3) {
+                            AlternateEquipment_DrawAdultItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathSword(this)
                                                            ? gLinkMasterSwordInSheathDL
                                                            : gLinkAdultMasterSwordAndSheathNearDL);
-                            }
-                            break;
-                        case PLAYER_SWORD_BGS:
-                            Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathSword(this)
-                                                           ? gLinkLongswordSheathDL
-                                                           : gLinkAdultSheathNearDL);
-                            if (this->leftHandType != 4)
-                            Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathSword(this)
+                        }
+                        break;
+                    case PLAYER_SWORD_BIGGORON:
+                        AlternateEquipment_DrawAdultItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathSword(this)
+                                                       ? gLinkLongswordSheathDL
+                                                       : gLinkAdultSheathNearDL);
+                        if (this->leftHandType != 4)
+                            AlternateEquipment_DrawAdultItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathSword(this)
                                                            ? gLinkLongswordInSheathDL
                                                            : gLinkAdultMasterSwordAndSheathNearDL);
-                            break;
-                        }
-                    if (this->rightHandType != 10) {
-                        switch (CUR_EQUIP_VALUE(EQUIP_SHIELD)) {
-                            case PLAYER_SHIELD_DEKU:
-                            Player_DrawChildItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
+                        break;
+                }
+                if (this->rightHandType != 10) {
+                    switch (CUR_EQUIP_VALUE(EQUIP_SHIELD)) {
+                        case PLAYER_SHIELD_DEKU:
+                            AlternateEquipment_DrawChildItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathShield(this)
                                                            ? gLinkDekuShieldOnBackDL
                                                            : gLinkChildDekuShieldAndSheathNearDL);
-                                break;
-                            case PLAYER_SHIELD_HYLIAN:
-                                if (!Player_IsChildWithHylianShield(this)) {
-                                    Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
-                                                                   ? gLinkHylianShieldOnBackDL
-                                                                   : gLinkAdultHylianShieldAndSheathNearDL);
-                                }
-                                break;
-                            case PLAYER_SHIELD_MIRROR:
-                                Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
-                                                               ? gLinkMirrorShieldOnBackDL
-                                                               : gLinkAdultMirrorShieldAndSheathNearDL);
-                                break;
-                        }
+                            break;
+                        case PLAYER_SHIELD_HYLIAN:
+                            if (!Player_IsChildWithHylianShield(this)) {
+                                AlternateEquipment_DrawAdultItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathShield(this)
+                                                               ? gLinkHylianShieldOnBackDL
+                                                               : gLinkAdultHylianShieldAndSheathNearDL);
+                            }
+                            break;
+                        case PLAYER_SHIELD_MIRROR:
+                            AlternateEquipment_DrawAdultItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathShield(this)
+                                                           ? gLinkMirrorShieldOnBackDL
+                                                           : gLinkAdultMirrorShieldAndSheathNearDL);
+                            break;
                     }
-                    if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN &&
-                        Player_IsChildWithHylianShield(this)) {
-                        Player_DrawChildItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
-                                                       ? gLinkHylianShieldOnChildBackDL
-                                                       : gLinkChildHylianShieldAndSheathNearDL);
-                    }
-            if ((this->rightHandType != PLAYER_MODELTYPE_RH_SHIELD) && (this->rightHandType != PLAYER_MODELTYPE_RH_FF)) {
+                }
+                if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN && Player_IsChildWithHylianShield(this)) {
+                    AlternateEquipment_DrawChildItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathShield(this)
+                                                   ? gLinkHylianShieldOnChildBackDL
+                                                   : gLinkChildHylianShieldAndSheathNearDL);
+                }
+            } // End of AltEquip sheath items block.
+
+            if ((this->rightHandType != 10) && (this->rightHandType != 0xFF)) {
                 if (Player_IsChildWithHylianShield(this)) {
                     Player_UpdateShieldCollider(play, this, &this->shieldQuad, sSheathLimbModelShieldQuadVertices);
                 }
-                if ((this->rightHandType != 10) && (this->rightHandType != 0xFF)) {
-                    if (Player_IsChildWithHylianShield(this)) {
-                        Player_UpdateShieldCollider(play, this, &this->shieldQuad, sSheathLimbModelShieldQuadVertices);
-                    }
 
-                    Matrix_TranslateRotateZYX(&sSheathLimbModelShieldOnBackPos, &sSheathLimbModelShieldOnBackZyxRot);
-                    Matrix_Get(&this->shieldMf);
-                }
+                Matrix_TranslateRotateZYX(&sSheathLimbModelShieldOnBackPos, &sSheathLimbModelShieldOnBackZyxRot);
+                Matrix_Get(&this->shieldMf);
             }
-        else if (limbIndex == PLAYER_LIMB_HEAD) {
-                Matrix_MultVec3f(&D_801260D4, &this->actor.focus.pos);
-        }
-        else {
+        } else if (limbIndex == PLAYER_LIMB_HEAD) {
+            Matrix_MultVec3f(&D_801260D4, &this->actor.focus.pos);
+        } else {
             Vec3f* vec = &sLeftRightFootLimbModelFootPos[(gSaveContext.linkAge)];
 
             Actor_SetFeetPos(&this->actor, limbIndex, PLAYER_LIMB_L_FOOT, vec, PLAYER_LIMB_R_FOOT, vec);
@@ -2483,87 +2193,90 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 }
 }
 
+// Alternate Equipment Loading function.
+// AltEquip TODO write description for this.
 void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
+    // AltEquip TODO: Could this whole function be done in a way that's easier to read?
     if (limbIndex == PLAYER_LIMB_L_HAND) {
-        if (Player_CanUseNewLoadingMethodLeftHandPause(this)) {
+        if (AlternateEquipment_CanUseNewLoadingMethodLeftHandPause(this)) {
             // kokiri sword
             if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_KOKIRI) {
-                Player_DrawChildItem(play, gLinkKokiriSwordDL);
+                AlternateEquipment_DrawChildItem(play, gLinkKokiriSwordDL);
             }
             // master sword
             else if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_MASTER) {
-                Player_DrawAdultItem(play, gLinkMasterSwordDL);
+                AlternateEquipment_DrawAdultItem(play, gLinkMasterSwordDL);
             }
             // biggoron sword
-            else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) && (gSaveContext.swordHealth <= 0.0f)) {
-                Player_DrawAdultItem(play, gLinkBrokenLongswordDL);
-            } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) && !(gSaveContext.swordHealth <= 0.0f)) {
-                Player_DrawAdultItem(play, gLinkLongswordDL);
+            else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON) && (gSaveContext.swordHealth <= 0.0f)) {
+                AlternateEquipment_DrawAdultItem(play, gLinkBrokenLongswordDL);
+            } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON) && !(gSaveContext.swordHealth <= 0.0f)) {
+                AlternateEquipment_DrawAdultItem(play, gLinkLongswordDL);
             }
         }
     } else if (limbIndex == PLAYER_LIMB_R_HAND) {
-        if (Player_CanUseNewLoadingMethodRightHandPause(this)) {
+        if (AlternateEquipment_CanUseNewLoadingMethodRightHandPause(this)) {
             // deku shield
             if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU) &&
-                !(CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS)) {
-                Player_DrawChildItem(play, gLinkDekuShieldDL);
+                !(CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON)) {
+                AlternateEquipment_DrawChildItem(play, gLinkDekuShieldDL);
             }
             // hylian shield
             else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-                     (CVarGetInteger("gNormalChildHylianShield", 0) || LINK_IS_ADULT) &&
-                     !(CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS)) {
-                Player_DrawAdultItem(play, gLinkHylianShieldDL);
+                     (LINK_IS_ADULT) &&
+                     !(CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON)) {
+                AlternateEquipment_DrawAdultItem(play, gLinkHylianShieldDL);
             }
             // mirror shield
             else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR) &&
-                     !(CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS)) {
-                Player_DrawAdultItem(play, gLinkMirrorShieldDL);
+                     !(CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON)) {
+                AlternateEquipment_DrawAdultItem(play, gLinkMirrorShieldDL);
             }
         }
     } else if (limbIndex == PLAYER_LIMB_SHEATH) {
         // Kokiri Sword Sheath
         if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_KOKIRI) {
-            Player_DrawChildItem(play, Player_CanUseNewLoadingMethodSheathSword(this) ? gLinkKokiriSwordSheathDL
+            AlternateEquipment_DrawChildItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathSword(this) ? gLinkKokiriSwordSheathDL
                                                                                       : gLinkChildSheathNearDL);
         }
         // master Sword Sheath
         else if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_MASTER) {
-            Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathSword(this) ? gLinkMasterSwordSheathDL
+            AlternateEquipment_DrawAdultItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathSword(this) ? gLinkMasterSwordSheathDL
                                                                                       : gLinkAdultSheathNearDL);
         }
         // BG Sword Sheath
-        else if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) {
-            Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathSword(this) ? gLinkLongswordSheathDL
+        else if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON) {
+            AlternateEquipment_DrawAdultItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathSword(this) ? gLinkLongswordSheathDL
                                                                                       : gLinkAdultSheathNearDL);
         }
         // Deku Shield on Back
-        if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) &&
+        if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON) &&
             (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU)) {
-            Player_DrawChildItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
+            AlternateEquipment_DrawChildItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathShield(this)
                                            ? gLinkDekuShieldOnBackDL
                                            : gLinkChildDekuShieldAndSheathNearDL);
         }
         // Child Hylian Shield on Back
         else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-            (!CVarGetInteger("gNormalChildHylianShield", 0) && LINK_IS_CHILD)) {
-            Player_DrawChildItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
+                 (LINK_IS_CHILD)) {
+            AlternateEquipment_DrawChildItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathShield(this)
                                            ? gLinkHylianShieldOnChildBackDL
                                            : gLinkChildHylianShieldAndSheathNearDL);
         }
         // Adult Hylian Shield on Back
-        else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) &&
-            (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-            (CVarGetInteger("gNormalChildHylianShield", 0) || LINK_IS_ADULT)) {
-            Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
+        else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON) &&
+                 (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
+                 (LINK_IS_ADULT)) {
+            AlternateEquipment_DrawAdultItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathShield(this)
                                            ? gLinkHylianShieldOnBackDL
                                            : gLinkAdultHylianShieldAndSheathNearDL);
         }
         // Mirror Shield on Back
-        else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) &&
-            (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
-            Player_DrawAdultItem(play, Player_CanUseNewLoadingMethodSheathShield(this)
+        else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BIGGORON) &&
+                 (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
+            AlternateEquipment_DrawAdultItem(play, AlternateEquipment_CanUseNewLoadingMethodSheathShield(this)
                                            ? gLinkMirrorShieldOnBackDL
                                            : gLinkAdultMirrorShieldAndSheathNearDL);
         }
@@ -2609,7 +2322,6 @@ s32 Player_OverrideLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Ve
     s32 dListOffset = 0;
     Gfx** dLists;
     size_t ptrSize = sizeof(uint32_t);
-    Player* this = GET_PLAYER(play);
 
     if ((modelGroup == PLAYER_MODELGROUP_SWORD) && !LINK_IS_ADULT && (playerSwordAndShield[1] == PLAYER_SHIELD_HYLIAN)) {
         modelGroup = PLAYER_MODELGROUP_CHILD_HYLIAN_SHIELD;
@@ -2652,11 +2364,19 @@ s32 Player_OverrideLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         return 0;
     }
 
-    dLists = &sPlayerDListGroupsAlt[type][gSaveContext.linkAge];
-    if (limbIndex == PLAYER_LIMB_L_HAND && !Player_CanUseNewLoadingMethodLeftHandPause(this))
-        dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
-    if (limbIndex == PLAYER_LIMB_R_HAND && !Player_CanUseNewLoadingMethodRightHandPause(this))
-        dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
+    dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
+    
+    // if (CVarGetInteger("gAltLinkEquip", 1)) {
+    //     Player* thisplayer = GET_PLAYER(play);
+    //     dLists = &sPlayerDListGroupsAlt[type][gSaveContext.linkAge];
+    //     if (limbIndex == PLAYER_LIMB_L_HAND && !AlternateEquipment_CanUseNewLoadingMethodLeftHandPause(thisplayer)) {
+    //         dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
+    //     }
+    //     if (limbIndex == PLAYER_LIMB_R_HAND && !AlternateEquipment_CanUseNewLoadingMethodRightHandPause(thisplayer)) {
+    //         dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
+    //     }
+    //     // AltEquip TODO: This is a somewhat confusing and messy way of doing this.
+    // }
 
     *dList = dLists[dListOffset];
 
@@ -2744,8 +2464,13 @@ void Player_DrawPauseImpl(PlayState* play, void* seg04, void* seg06, SkelAnime* 
 
     gSPSegment(POLY_OPA_DISP++, 0x0C, gCullBackDList);
 
-    Player_DrawImpl(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
-                    Player_OverrideLimbDrawPause, Player_PostLimbDrawPause, &playerSwordAndShield);
+    if (!CVarGetInteger("gAltLinkEquip", 1)) { // use vanilla behavior
+        Player_DrawImpl(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
+                        Player_OverrideLimbDrawPause, NULL, &sp12C);
+    } else { // use Alternate Equipment Loading behavior
+        Player_DrawImpl(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
+                        Player_OverrideLimbDrawPause, Player_PostLimbDrawPause, &sp12C);
+    }
 
      if (CVarGetInteger("gPauseTriforce", 0)) {
 
@@ -2814,7 +2539,7 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
             EquipedStance = 1;
         } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) == EQUIP_VALUE_SWORD_NONE) {
             EquipedStance = 2;
-        } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) == EQUIP_VALUE_SWORD_MASTER && LINK_AGE_IN_YEARS == YEARS_CHILD && !(CVarGetInteger("gNormalChildHylianShield", 0))) {
+        } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 2 && LINK_AGE_IN_YEARS == YEARS_CHILD) {
             EquipedStance = 3;
         } else {
             // Link is idle so revert to 0
@@ -2984,7 +2709,7 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
     } else {
 
         if (!LINK_IS_ADULT) {
-            if (shield == PLAYER_SHIELD_DEKU || shield == PLAYER_SHIELD_MIRROR || (shield == PLAYER_SHIELD_HYLIAN && CVarGetInteger("gNormalChildHylianShield", 0))) {
+            if (shield == PLAYER_SHIELD_DEKU) {
                 srcTable = gLinkPauseChildDekuShieldJointTable;
             } else {
                 srcTable = gLinkPauseChildJointTable;

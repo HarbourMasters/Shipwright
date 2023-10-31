@@ -2839,10 +2839,11 @@ s32 func_80835B60(Player* this, PlayState* play) {
     if (!(this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG)) {
         func_80833638(this, func_80835C08);
         LinkAnimation_PlayOnce(play, &this->skelAnime2, &gPlayerAnim_link_boom_catch);
-        if (Player_CanUseNewLoadingMethodLeftHand(this))
-            func_808357E8(this, gPlayerLeftHandClosedDLs);
-        else
+        // if (AlternateEquipment_CanUseNewLoadingMethodLeftHand(this)) {
+        //     func_808357E8(this, gPlayerLeftHandClosedDLs);
+        // } else {
             func_808357E8(this, gPlayerLeftHandBoomerangDLs);
+        // }
         Player_PlaySfx(&this->actor, NA_SE_PL_CATCH_BOOMERANG);
         func_80832698(this, NA_SE_VO_LI_SWORD_N);
         return 1;
@@ -8233,7 +8234,6 @@ void func_80843188(Player* this, PlayState* play) {
     }
 
     this->stateFlags1 |= PLAYER_STATE1_SHIELDING;
-
     Player_SetModelsForHoldingShield(this);
 
     this->unk_6AE |= 0xC1;
@@ -14635,10 +14635,7 @@ void func_80851A50(PlayState* play, Player* this, CsCmdActorAction* arg2) {
         sp2C = &D_808551A4[gSaveContext.linkAge];
         this->interactRangeActor->parent = &this->actor;
 
-        //set's link's handtype to 20, allowing the optimized loading method to be used
-        this->leftHandType = 20;
-
-        if (!LINK_IS_ADULT && !Player_CanUseNewLoadingMethodLeftHand(this)) {
+        if (!LINK_IS_ADULT) {
             dLists = gPlayerLeftHandBgsDLs;
         } else {
             dLists = gPlayerLeftHandClosedDLs;

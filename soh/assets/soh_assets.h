@@ -44,6 +44,22 @@ static const ALIGN_ASSET(2) char gTitleRandomizerSubtitleTex[] = dgTitleRandomiz
 #define dgTitleBossRushSubtitleTex "__OTR__objects/object_mag/gTitleBossRushSubtitleTex"
 static const ALIGN_ASSET(2) char gTitleBossRushSubtitleTex[] = dgTitleBossRushSubtitleTex;
 
+#define dgTriforcePiece0DL "__OTR__objects/object_triforce_piece_0/gTriforcePiece0DL"
+static const ALIGN_ASSET(2) char gTriforcePiece0DL[] = dgTriforcePiece0DL;
+
+#define dgTriforcePiece1DL "__OTR__objects/object_triforce_piece_1/gTriforcePiece1DL"
+static const ALIGN_ASSET(2) char gTriforcePiece1DL[] = dgTriforcePiece1DL;
+
+#define dgTriforcePiece2DL "__OTR__objects/object_triforce_piece_2/gTriforcePiece2DL"
+static const ALIGN_ASSET(2) char gTriforcePiece2DL[] = dgTriforcePiece2DL;
+
+#define dgTriforcePieceCompletedDL "__OTR__objects/object_triforce_completed/gTriforcePieceCompletedDL"
+static const ALIGN_ASSET(2) char gTriforcePieceCompletedDL[] = dgTriforcePieceCompletedDL;
+
+// overlays
+#define dgOptionsDividerChangeLangVtx "__OTR__overlays/ovl_file_choose/gOptionsDividerChangeLangVtx"
+static const ALIGN_ASSET(2) char gOptionsDividerChangeLangVtx[] = dgOptionsDividerChangeLangVtx;
+
 // New Equipment System FPS Hand Basemodels
 #define dgLinkAdultFPSHandDL "__OTR__objects/object_link_boy/gLinkAdultFPSHandDL"
 static const ALIGN_ASSET(2) char gLinkAdultFPSHandDL[] = dgLinkAdultFPSHandDL;
@@ -141,21 +157,6 @@ static const ALIGN_ASSET(2) char gLinkMirrorShieldOnBackDL[] = dgLinkMirrorShiel
 static const ALIGN_ASSET(2) char gLinkBottleDL[] = dgLinkBottleDL;
 #define dgLinkBottleContentsDL "__OTR__objects/object_link_eq/gLinkBottleContentsDL"
 static const ALIGN_ASSET(2) char gLinkBottleContentsDL[] = dgLinkBottleContentsDL;
-#define dgTriforcePiece0DL "__OTR__objects/object_triforce_piece_0/gTriforcePiece0DL"
-static const ALIGN_ASSET(2) char gTriforcePiece0DL[] = dgTriforcePiece0DL;
-
-#define dgTriforcePiece1DL "__OTR__objects/object_triforce_piece_1/gTriforcePiece1DL"
-static const ALIGN_ASSET(2) char gTriforcePiece1DL[] = dgTriforcePiece1DL;
-
-#define dgTriforcePiece2DL "__OTR__objects/object_triforce_piece_2/gTriforcePiece2DL"
-static const ALIGN_ASSET(2) char gTriforcePiece2DL[] = dgTriforcePiece2DL;
-
-#define dgTriforcePieceCompletedDL "__OTR__objects/object_triforce_completed/gTriforcePieceCompletedDL"
-static const ALIGN_ASSET(2) char gTriforcePieceCompletedDL[] = dgTriforcePieceCompletedDL;
-
-// overlays
-#define dgOptionsDividerChangeLangVtx "__OTR__overlays/ovl_file_choose/gOptionsDividerChangeLangVtx"
-static const ALIGN_ASSET(2) char gOptionsDividerChangeLangVtx[] = dgOptionsDividerChangeLangVtx;
 
 // textures
 #define dgDPad "__OTR__textures/parameter_static/gDPad"
