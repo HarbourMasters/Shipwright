@@ -650,7 +650,7 @@ void Randomizer::LoadMasterQuestDungeons(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
         ParseMasterQuestDungeonsFile(spoilerFileName);
     }
-    gSaveContext.mqDungeonCount = Rando::Context::GetInstance()->GetDungeons()->CountMQ();
+    // gSaveContext.mqDungeonCount = Rando::Context::GetInstance()->GetDungeons()->CountMQ();
 }
 
 void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {

@@ -298,10 +298,11 @@ void SaveManager::LoadRandomizerVersion2() {
         });
     });
 
-    SaveManager::Instance->LoadData("masterQuestDungeonCount", gSaveContext.mqDungeonCount, (uint8_t)0);
+    size_t mqDungeonCount;
+    SaveManager::Instance->LoadData("masterQuestDungeonCount", mqDungeonCount, (size_t)0);
 
     randoContext->GetDungeons()->ClearAllMQ();
-    SaveManager::Instance->LoadArray("masterQuestDungeons", gSaveContext.mqDungeonCount, [&](size_t i) {
+    SaveManager::Instance->LoadArray("masterQuestDungeons", mqDungeonCount, [&](size_t i) {
         uint16_t scene;
         SaveManager::Instance->LoadData("", scene);
         randoContext->GetDungeons()->GetDungeonFromScene(SceneID(scene))->SetMQ();
@@ -396,10 +397,11 @@ void SaveManager::LoadRandomizerVersion3() {
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
-    SaveManager::Instance->LoadData("masterQuestDungeonCount", gSaveContext.mqDungeonCount, (uint8_t)0);
+    size_t mqDungeonCount;
+    SaveManager::Instance->LoadData("masterQuestDungeonCount", mqDungeonCount, (size_t)0);
 
     randoContext->GetDungeons()->ClearAllMQ();
-    SaveManager::Instance->LoadArray("masterQuestDungeons", gSaveContext.mqDungeonCount, [&](size_t i) {
+    SaveManager::Instance->LoadArray("masterQuestDungeons", mqDungeonCount, [&](size_t i) {
         size_t dungeonId;
         SaveManager::Instance->LoadData("", dungeonId);
         randoContext->GetDungeon(dungeonId)->SetMQ();
@@ -486,7 +488,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
-    SaveManager::Instance->SaveData("masterQuestDungeonCount", saveContext->mqDungeonCount);
+    SaveManager::Instance->SaveData("masterQuestDungeonCount", randoContext->GetDungeons()->CountMQ());
 
     SaveManager::Instance->SaveArray("masterQuestDungeons", randoContext->GetDungeons()->GetDungeonListSize(), [&](size_t i) {
         if (randoContext->GetDungeon(i)->IsMQ()) {
@@ -580,17 +582,18 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].gregFound = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
     fileMetaInfo[fileNum].defense = gSaveContext.inventory.defenseHearts;
     fileMetaInfo[fileNum].health = gSaveContext.health;
+    auto randoContext = Rando::Context::GetInstance();
 
-    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].seedHash); i++) {
-        fileMetaInfo[fileNum].seedHash[i] = Rando::Context::GetInstance()->hashIconIndexes[i];
+        for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].seedHash); i++) {
+        fileMetaInfo[fileNum].seedHash[i] = randoContext->hashIconIndexes[i];
     }
 
     fileMetaInfo[fileNum].randoSave = IS_RANDO;
     // If the file is marked as a Master Quest file or if we're randomized and have at least one master quest dungeon, we need the mq otr.
-    fileMetaInfo[fileNum].requiresMasterQuest = IS_MASTER_QUEST || (IS_RANDO && gSaveContext.mqDungeonCount > 0);
+    fileMetaInfo[fileNum].requiresMasterQuest = IS_MASTER_QUEST || (IS_RANDO && randoContext->GetDungeons()->CountMQ() > 0);
     // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ dungeons, in which case
     // we don't actually require a vanilla OTR.
-    fileMetaInfo[fileNum].requiresOriginal = !IS_MASTER_QUEST && (!IS_RANDO || gSaveContext.mqDungeonCount < 12);
+    fileMetaInfo[fileNum].requiresOriginal = !IS_MASTER_QUEST && (!IS_RANDO || randoContext->GetDungeons()->CountMQ() < 12);
 
     fileMetaInfo[fileNum].buildVersionMajor = gSaveContext.sohStats.buildVersionMajor;
     fileMetaInfo[fileNum].buildVersionMinor = gSaveContext.sohStats.buildVersionMinor;
