@@ -119,8 +119,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(
                     CVarGetFloat("gInternalResolution", 1));
             }
-            UIWidgets::Tooltip(
-                "Multiplies your output resolution by the value entered."); // Description pulled from SohMenuBar.cpp
+            UIWidgets::Tooltip("Multiplies your output resolution by the value entered.");
 
             // The original MSAA slider (also for convenience)
 #ifndef __WIIU__
@@ -129,7 +128,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 LUS::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger("gMSAAValue", 1));
             };
             UIWidgets::Tooltip(
-                "Activates multi-sample anti-aliasing when above 1x up to 8x for 8 samples for every pixel");
+                "Activates multi-sample anti-aliasing when above 1x, up to 8x for 8 samples for every pixel.\n\n"
+                " " ICON_FA_INFO_CIRCLE
+                " Higher MSAA with low resolution can resemble an authentic \"real N64\" look!");
 #endif
 
             // N64 Mode toggle (again for convenience)
@@ -270,7 +271,10 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         UIWidgets::Spacer(0);
 
         // Integer scaling settings group
-        if (ImGui::CollapsingHeader("Integer Scaling Settings")) {
+        static const ImGuiTreeNodeFlags IntegerScalingResolvedImGuiFlag =
+            CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) ? ImGuiTreeNodeFlags_DefaultOpen
+                                                                      : ImGuiTreeNodeFlags_None;
+        if (ImGui::CollapsingHeader("Integer Scaling Settings", IntegerScalingResolvedImGuiFlag)) {
             // Pixel-perfect Mode
             UIWidgets::PaddedEnhancementCheckbox("Pixel-perfect Mode", "gAdvancedResolution.PixelPerfectMode", true,
                                                  true,
