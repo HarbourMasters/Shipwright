@@ -31,6 +31,7 @@
 #include "randomizer_settings_window.h"
 #include "savefile.h"
 #include "soh/util.h"
+#include "soh/Extractor/portable-file-dialogs.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -53,6 +54,8 @@ std::set<RandomizerTrick> enabledGlitches;
 std::set<std::map<RandomizerCheck, RandomizerCheckTrackerData>> checkTrackerStates;
 
 u8 generated;
+u8 selectSpoiler;
+u8 pickingSpoiler;
 char* seedString;
 
 const std::string Randomizer::getItemMessageTableID = "Randomizer";
@@ -359,6 +362,11 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Quest:GTG", RSK_MQ_GTG },
     { "Shuffle Dungeon Quest:Ganon's Castle", RSK_MQ_GANONS_CASTLE },
 };
+
+void SpoilerError(const std::exception& e) {
+    Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+    CVarSetString("gSpoilerLog", "None");
+}
 
 std::string sanitize(std::string stringValue) {
     // Add backslashes.
@@ -1185,6 +1193,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
 
         success = true;
     } catch (const std::exception& e) {
+        SpoilerError(e);
         return;
     }
 }
@@ -1410,6 +1419,7 @@ void Randomizer::ParseRequiredTrialsFile(const char* spoilerFileName) {
             this->trialsRequired[spoilerFileTrialToEnum[it.value()]] = true;
         }
     } catch (const std::exception& e) {
+        SpoilerError(e);
         return;
     }
 }
@@ -1431,6 +1441,7 @@ void Randomizer::ParseMasterQuestDungeonsFile(const char* spoilerFileName) {
             this->masterQuestDungeons.emplace(spoilerFileDungeonToScene[it.value()]);
         }
     } catch (const std::exception& e) {
+        SpoilerError(e);
         return;
     }
 }
@@ -1552,7 +1563,7 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
         }
         success = true;
     } catch (const std::exception& e) {
-        Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        SpoilerError(e);
         return;
     }
 }
@@ -1596,6 +1607,7 @@ void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent)
             }
         }
     } catch (const std::exception& e) {
+        SpoilerError(e);
         return;
     }
 }
@@ -2820,6 +2832,7 @@ RandomizerCheck Randomizer::GetCheckFromRandomizerInf(RandomizerInf randomizerIn
 }
 
 std::thread randoThread;
+std::thread selectSpoilerThread;
 
 void GenerateRandomizerImgui(std::string seed = "") {
     CVarSetInteger("gRandoGenerating", 1);
@@ -3061,10 +3074,27 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
     return false;
 }
 
+void SpoilerPicker() {
+    auto selection = pfd::open_file("Select a file", LUS::Context::GetInstance()->GetPathRelativeToAppDirectory("Randomizer"), { "Spoilers", "*.json" }, pfd::opt::force_path).result();
+    if (!selection.empty()) {
+        CVarSetInteger("gNewFileDropped", 1);
+        CVarSetString("gDroppedFile", selection[0].c_str());
+        CVarSetString("gSpoilerLog", selection[0].c_str());
+        CVarSave();
+        CVarLoad();
+    }
+    selectSpoiler = 1;
+}
+
 void RandomizerSettingsWindow::DrawElement() {
     if (generated) {
         generated = 0;
         randoThread.join();
+    }
+    if (selectSpoiler) {
+        selectSpoiler = 0;
+        pickingSpoiler = 0;
+        selectSpoilerThread.join();
     }
 
     // Randomizer settings
@@ -3138,7 +3168,7 @@ void RandomizerSettingsWindow::DrawElement() {
         return;
     }
 
-    bool disableEditingRandoSettings = CVarGetInteger("gRandoGenerating", 0) || CVarGetInteger("gOnFileSelectNameEntry", 0);
+    bool disableEditingRandoSettings = CVarGetInteger("gRandoGenerating", 0) || CVarGetInteger("gOnFileSelectNameEntry", 0) || pickingSpoiler;
     if (disableEditingRandoSettings) {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
     }
@@ -3171,6 +3201,11 @@ void RandomizerSettingsWindow::DrawElement() {
     }
 
     UIWidgets::Spacer(0);
+    if (ImGui::Button("Select Spoiler")) {
+        pickingSpoiler = 1;
+        selectSpoilerThread = std::thread(&SpoilerPicker);
+    }
+    ImGui::SameLine();
     std::string spoilerfilepath = CVarGetString("gSpoilerLog", "");
     ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
 
