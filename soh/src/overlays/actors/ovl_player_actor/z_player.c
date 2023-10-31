@@ -11442,7 +11442,7 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     f32 temp2;
     f32 swimMod = 1.0f;
 
-    if (CVarGetInteger("gEnableWalkModify", 0) && !(this->stateFlags2 & PLAYER_STATE2_UNDERWATER)) {
+    if (CVarGetInteger("gEnableWalkModify", 0)){
         if (CVarGetInteger("gWalkSpeedToggle", 0)) {
             if (gWalkSpeedToggle1) {
                 swimMod *= CVarGetFloat("gSwimModifierOne", 1.0f);
@@ -11473,6 +11473,30 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     }
 
     Math_AsymStepToF(arg1, arg2 * 0.8f * swimMod, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
+    Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
+}
+
+//Diving (uses function func_8084AEEC to calculate changes both xz and y velocity (via func_8084DBC4), which is problematic with swim speed modifiers
+//Provide original calculation for y velocity when swim speed mod is active
+void SurfaceWithSwimMod(Player* this, f32* arg1, f32 arg2, s16 arg3) {
+    f32 temp1;
+    f32 temp2;
+
+    temp1 = this->skelAnime.curFrame - 10.0f;
+
+    temp2 = (R_RUN_SPEED_LIMIT / 100.0f) * 0.8f;
+    if (*arg1 > temp2) {
+        *arg1 = temp2;
+    }
+
+    if ((0.0f < temp1) && (temp1 < 10.0f)) {
+        temp1 *= 6.0f;
+    } else {
+        temp1 = 0.0f;
+        arg2 = 0.0f;
+    }
+
+    Math_AsymStepToF(arg1, arg2 * 0.8f, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
     Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
 }
 
@@ -12629,7 +12653,12 @@ void func_8084DBC4(PlayState* play, Player* this, f32 arg2) {
 
     func_80837268(this, &sp2C, &sp2A, 0.0f, play);
     func_8084AEEC(this, &this->linearVelocity, sp2C * 0.5f, sp2A);
-    func_8084AEEC(this, &this->actor.velocity.y, arg2, this->currentYaw);
+    if (CVarGetInteger("gEnableWalkModify", 0)) {
+        SurfaceWithSwimMod(this, &this->actor.velocity.y, arg2, this->currentYaw);
+    }
+    else {
+        func_8084AEEC(this, &this->actor.velocity.y, arg2, this->currentYaw);
+    }
 }
 
 void func_8084DC48(Player* this, PlayState* play) {
