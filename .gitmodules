@@ -3,7 +3,7 @@
 	url = https://github.com/kenix3/libultraship.git
 [submodule "ZAPDTR"]
 	path = ZAPDTR
-	url = https://github.com/harbourmasters/ZAPDTR
+	url = https://github.com/HarbourMasters/ZAPDTR
 [submodule "OTRExporter"]
 	path = OTRExporter
 	url = https://github.com/harbourmasters/OTRExporter
