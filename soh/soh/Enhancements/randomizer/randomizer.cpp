@@ -24,7 +24,6 @@
 #include <tuple>
 #include <functional>
 #include "draw.h"
-#include "rando_hash.h"
 #include "static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <boost_custom/container_hash/hash_32.hpp>
@@ -142,10 +141,6 @@ Randomizer::Randomizer() {
             item.GetName().french,
         };
     }
-}
-
-Sprite* Randomizer::GetSeedTexture(uint8_t index) {
-    return &gSeedTextures[index];
 }
 
 Randomizer::~Randomizer() { 

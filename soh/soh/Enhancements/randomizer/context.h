@@ -63,6 +63,7 @@ class Context {
     DungeonInfo* GetDungeon(size_t key);
     std::shared_ptr<Trials> GetTrials();
     TrialInfo* GetTrial(size_t key);
+    Sprite* GetSeedTexture(uint8_t index);
     Option& GetOption(RandomizerSettingKey key);
     Option& GetTrickOption(RandomizerTrick key);
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);

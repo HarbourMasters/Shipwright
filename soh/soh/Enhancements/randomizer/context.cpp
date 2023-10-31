@@ -548,6 +548,10 @@ TrialInfo* Context::GetTrial(size_t key) {
     return mTrials->GetTrial(TrialKey(key));
 }
 
+Sprite* Context::GetSeedTexture(uint8_t index) {
+    return &gSeedTextures[index];
+}
+
 Rando::Option& Context::GetOption(RandomizerSettingKey key) {
     return mSettings->Setting(key);
 }

@@ -1293,7 +1293,7 @@ extern "C" char* ResourceMgr_LoadIfDListByName(const char* filePath) {
 
 extern "C" Sprite* GetSeedTexture(uint8_t index) {
 
-    return OTRGlobals::Instance->gRandomizer->GetSeedTexture(index);
+    return OTRGlobals::Instance->gRandoContext->GetSeedTexture(index);
 }
 
 extern "C" uint8_t GetSeedIconIndex(uint8_t index) {
