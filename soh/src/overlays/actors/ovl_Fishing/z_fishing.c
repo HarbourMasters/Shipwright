@@ -5174,6 +5174,46 @@ static Vec3s sSinkingLureLocationPos[] = {
     { 553, -48, -508 },
 };
 
+//Function for giving the fishing rod when leaving
+void Fishing_Leave(Fishing* this, PlayState* play) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) && Message_ShouldAdvance(play)) {
+        Message_CloseTextbox(play);
+
+        switch (play->msgCtx.choiceIndex) {
+            case 0:
+                if (D_80B7E084 == 0) {
+                    Message_ContinueTextbox(play, 0x4085);
+                } else if (sLinkAge == 1) {
+                    Message_ContinueTextbox(play, 0x4092);
+                }
+                if (play) {}
+
+                if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE_FADING) {
+                    Player* player = GET_PLAYER(play);
+
+                    if (gSaveContext.temporaryWeapon) {
+                        player->currentSwordItemId = ITEM_NONE;
+                        gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
+                        gSaveContext.temporaryWeapon = false;
+                    }
+
+                    if (D_80B7A68C != 0) {
+                        D_80B7A688 = 1;
+                        D_80B7A68C = 0;
+                    }
+                    D_80B7E0AC = 0;
+                    play->interfaceCtx.unk_260 = 0;
+                }
+                break;
+            case 1:
+                D_80B7A6CC = 11;
+                func_800A9F6C(0.0f, 150, 10, 10);
+                break;
+        }
+    }
+}
+
 void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     Fishing* this = (Fishing*)thisx;
@@ -5480,6 +5520,10 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
         case 11:
             player->actor.world.pos.z = 1360.0f;
             player->actor.speedXZ = 0.0f;
+            
+            if (CVarGetInteger("gFishingRodLeave", 0)) {
+            Fishing_Leave(this, play);
+            }
 
             if (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) {
                 Camera* camera = Play_GetCamera(play, MAIN_CAM);
