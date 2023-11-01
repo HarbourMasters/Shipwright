@@ -15,7 +15,7 @@
 	<PipeSync/>
 	<SetTile Format="G_IM_FMT_I" Size="G_IM_SIZ_8b" Line="4" TMem="0" Tile="0" Palette="0" Cms0="G_TX_WRAP" Cms1="G_TX_NOMIRROR" Cmt0="G_TX_WRAP" Cmt1="G_TX_NOMIRROR" MaskS="5" ShiftS="0" MaskT="5" ShiftT="0"/>
 	<SetTileSize T="0" Uls="0" Ult="0" Lrs="124" Lrt="124"/>
-	<SetPrimColor M="0" L="0" R="255" G="255" B="255" A="255"/>
+	<!-- <SetPrimColor M="0" L="0" R="255" G="255" B="255" A="255"/> -->
 	<EndDisplayList/>
 </DisplayList>
 

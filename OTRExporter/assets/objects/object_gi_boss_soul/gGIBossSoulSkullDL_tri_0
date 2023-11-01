@@ -12,8 +12,8 @@
 	<Triangle1 V00="8" V01="10" V02="11"/>
 	<Triangle1 V00="12" V01="11" V02="10"/>
 	<Triangle1 V00="10" V01="13" V02="12"/>
-	<Triangle1 V00="13" V01="14" V02="12"/>
-	<Triangle1 V00="12" V01="14" V02="15"/>
+	<Triangle1 V00="10" V01="14" V02="13"/>
+	<Triangle1 V00="12" V01="13" V02="15"/>
 	<LoadVertices Path="objects/object_gi_boss_soul/gGIBossSoulSkullDL_vtx_0" VertexBufferIndex="0" VertexOffset="16" Count="16"/>
 	<Triangle1 V00="0" V01="1" V02="2"/>
 	<Triangle1 V00="0" V01="3" V02="1"/>
