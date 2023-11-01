@@ -81,9 +81,8 @@ void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
     forwardEntrance->SetType(forwardEntry.type);
     forwardEntrance->SetAsPrimary();
 
-    // When decouple entrances is on, mark it for entrances except boss rooms
-    if (Settings::DecoupleEntrances && forwardEntry.type != EntranceType::ChildBoss &&
-      forwardEntry.type != EntranceType::AdultBoss) {
+    // When decouple entrances is on, mark the forward entrance
+    if (Settings::DecoupleEntrances) {
       forwardEntrance->SetDecoupled();
     }
 
