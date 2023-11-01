@@ -40,6 +40,11 @@ using EntranceInfoPair = std::pair<EntranceLinkInfo, EntranceLinkInfo>;
 using EntrancePair = std::pair<Entrance*, Entrance*>;
 using EntrancePools = std::map<EntranceType, std::vector<Entrance*>>;
 
+// Construct entrance name from parent and connected region keys
+std::string EntranceNameByRegions(uint32_t parentRegion, uint32_t connectedRegion) {
+  return AreaTable(parentRegion)->regionName + " -> " + AreaTable(connectedRegion)->regionName;
+}
+
 //The entrance randomization algorithm used here is a direct copy of
 //the algorithm used in the original N64 randomizer (except now in C++ instead
 //of python). It may be easier to understand the algorithm by looking at the

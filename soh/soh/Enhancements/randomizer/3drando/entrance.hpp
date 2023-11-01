@@ -288,6 +288,7 @@ private:
 
 int  ShuffleAllEntrances();
 void CreateEntranceOverrides();
+std::string EntranceNameByRegions(uint32_t parentRegion, uint32_t connectedRegion);
 
 extern std::vector<std::list<Entrance*>> playthroughEntrances;
 extern bool noRandomEntrances;
