@@ -690,31 +690,31 @@ int ShuffleAllEntrances() {
   curNumRandomizedEntrances = 0;
 
   std::vector<EntranceInfoPair> entranceShuffleTable = {
-                                   //Parent Region                     Connected Region                      index   blue warp
+                                   //Parent Region                     Connected Region                      index
     {{EntranceType::Dungeon,         KF_OUTSIDE_DEKU_TREE,             DEKU_TREE_ENTRYWAY,                   0x0000},
-     {EntranceType::Dungeon,         DEKU_TREE_ENTRYWAY,               KF_OUTSIDE_DEKU_TREE,                 0x0209, 0x0457}},
+     {EntranceType::Dungeon,         DEKU_TREE_ENTRYWAY,               KF_OUTSIDE_DEKU_TREE,                 0x0209}},
     {{EntranceType::Dungeon,         DEATH_MOUNTAIN_TRAIL,             DODONGOS_CAVERN_ENTRYWAY,             0x0004},
-     {EntranceType::Dungeon,         DODONGOS_CAVERN_ENTRYWAY,         DEATH_MOUNTAIN_TRAIL,                 0x0242, 0x047A}},
+     {EntranceType::Dungeon,         DODONGOS_CAVERN_ENTRYWAY,         DEATH_MOUNTAIN_TRAIL,                 0x0242}},
     {{EntranceType::Dungeon,         ZORAS_FOUNTAIN,                   JABU_JABUS_BELLY_ENTRYWAY,            0x0028},
-     {EntranceType::Dungeon,         JABU_JABUS_BELLY_ENTRYWAY,        ZORAS_FOUNTAIN,                       0x0221, 0x010E}},
+     {EntranceType::Dungeon,         JABU_JABUS_BELLY_ENTRYWAY,        ZORAS_FOUNTAIN,                       0x0221}},
     {{EntranceType::Dungeon,         SACRED_FOREST_MEADOW,             FOREST_TEMPLE_ENTRYWAY,               0x0169},
-     {EntranceType::Dungeon,         FOREST_TEMPLE_ENTRYWAY,           SACRED_FOREST_MEADOW,                 0x0215, 0x0608}},
+     {EntranceType::Dungeon,         FOREST_TEMPLE_ENTRYWAY,           SACRED_FOREST_MEADOW,                 0x0215}},
     {{EntranceType::Dungeon,         DMC_CENTRAL_LOCAL,                FIRE_TEMPLE_ENTRYWAY,                 0x0165},
-     {EntranceType::Dungeon,         FIRE_TEMPLE_ENTRYWAY,             DMC_CENTRAL_LOCAL,                    0x024A, 0x0564}},
+     {EntranceType::Dungeon,         FIRE_TEMPLE_ENTRYWAY,             DMC_CENTRAL_LOCAL,                    0x024A}},
     {{EntranceType::Dungeon,         LAKE_HYLIA,                       WATER_TEMPLE_ENTRYWAY,                0x0010},
-     {EntranceType::Dungeon,         WATER_TEMPLE_ENTRYWAY,            LAKE_HYLIA,                           0x021D, 0x060C}},
+     {EntranceType::Dungeon,         WATER_TEMPLE_ENTRYWAY,            LAKE_HYLIA,                           0x021D}},
     {{EntranceType::Dungeon,         DESERT_COLOSSUS,                  SPIRIT_TEMPLE_ENTRYWAY,               0x0082},
-     {EntranceType::Dungeon,         SPIRIT_TEMPLE_ENTRYWAY,           DESERT_COLOSSUS_FROM_SPIRIT_ENTRYWAY, 0x01E1, 0x0610}},
+     {EntranceType::Dungeon,         SPIRIT_TEMPLE_ENTRYWAY,           DESERT_COLOSSUS_FROM_SPIRIT_ENTRYWAY, 0x01E1}},
     {{EntranceType::Dungeon,         GRAVEYARD_WARP_PAD_REGION,        SHADOW_TEMPLE_ENTRYWAY,               0x0037},
-     {EntranceType::Dungeon,         SHADOW_TEMPLE_ENTRYWAY,           GRAVEYARD_WARP_PAD_REGION,            0x0205, 0x0580}},
+     {EntranceType::Dungeon,         SHADOW_TEMPLE_ENTRYWAY,           GRAVEYARD_WARP_PAD_REGION,            0x0205}},
     {{EntranceType::Dungeon,         KAKARIKO_VILLAGE,                 BOTTOM_OF_THE_WELL_ENTRYWAY,          0x0098},
      {EntranceType::Dungeon,         BOTTOM_OF_THE_WELL_ENTRYWAY,      KAKARIKO_VILLAGE,                     0x02A6}},
     {{EntranceType::Dungeon,         ZORAS_FOUNTAIN,                   ICE_CAVERN_ENTRYWAY,                  0x0088},
      {EntranceType::Dungeon,         ICE_CAVERN_ENTRYWAY,              ZORAS_FOUNTAIN,                       0x03D4}},
     {{EntranceType::Dungeon,         GERUDO_FORTRESS,                  GERUDO_TRAINING_GROUNDS_ENTRYWAY,     0x0008},
      {EntranceType::Dungeon,         GERUDO_TRAINING_GROUNDS_ENTRYWAY, GERUDO_FORTRESS,                      0x03A8}},
-    {{EntranceType::GanonDungeon,    GANONS_CASTLE_LEDGE,            GANONS_CASTLE_ENTRYWAY,               0x0467},
-     {EntranceType::GanonDungeon,    GANONS_CASTLE_ENTRYWAY,     CASTLE_GROUNDS_FROM_GANONS_CASTLE,        0x023D}},
+    {{EntranceType::GanonDungeon,    GANONS_CASTLE_LEDGE,              GANONS_CASTLE_ENTRYWAY,               0x0467},
+     {EntranceType::GanonDungeon,    GANONS_CASTLE_ENTRYWAY,           CASTLE_GROUNDS_FROM_GANONS_CASTLE,    0x023D}},
 
     {{EntranceType::Interior,        KOKIRI_FOREST,                    KF_MIDOS_HOUSE,                       0x0433},
      {EntranceType::Interior,        KF_MIDOS_HOUSE,                   KOKIRI_FOREST,                        0x0443}},
@@ -950,21 +950,30 @@ int ShuffleAllEntrances() {
     {{EntranceType::WarpSong,        PRELUDE_OF_LIGHT_WARP,            TEMPLE_OF_TIME,                       0x05F4}, NO_RETURN_ENTRANCE},
 
     {{EntranceType::ChildBoss, DEKU_TREE_BOSS_ENTRYWAY,        DEKU_TREE_BOSS_ROOM,            0x040F},
-     {EntranceType::ChildBoss, DEKU_TREE_BOSS_ROOM,            DEKU_TREE_BOSS_ENTRYWAY,        0x0252, 0x0457}},
+     {EntranceType::ChildBoss, DEKU_TREE_BOSS_ROOM,            DEKU_TREE_BOSS_ENTRYWAY,        0x0252}},
     {{EntranceType::ChildBoss, DODONGOS_CAVERN_BOSS_ENTRYWAY,  DODONGOS_CAVERN_BOSS_ROOM,      0x040B},
-     {EntranceType::ChildBoss, DODONGOS_CAVERN_BOSS_ROOM,      DODONGOS_CAVERN_BOSS_ENTRYWAY,  0x00C5, 0x047A}},
+     {EntranceType::ChildBoss, DODONGOS_CAVERN_BOSS_ROOM,      DODONGOS_CAVERN_BOSS_ENTRYWAY,  0x00C5}},
     {{EntranceType::ChildBoss, JABU_JABUS_BELLY_BOSS_ENTRYWAY, JABU_JABUS_BELLY_BOSS_ROOM,     0x0301},
-     {EntranceType::ChildBoss, JABU_JABUS_BELLY_BOSS_ROOM,     JABU_JABUS_BELLY_BOSS_ENTRYWAY, 0x0407, 0x010E}},
+     {EntranceType::ChildBoss, JABU_JABUS_BELLY_BOSS_ROOM,     JABU_JABUS_BELLY_BOSS_ENTRYWAY, 0x0407}},
     {{EntranceType::AdultBoss, FOREST_TEMPLE_BOSS_ENTRYWAY,    FOREST_TEMPLE_BOSS_ROOM,        0x000C},
-     {EntranceType::AdultBoss, FOREST_TEMPLE_BOSS_ROOM,        FOREST_TEMPLE_BOSS_ENTRYWAY,    0x024E, 0x0608}},
+     {EntranceType::AdultBoss, FOREST_TEMPLE_BOSS_ROOM,        FOREST_TEMPLE_BOSS_ENTRYWAY,    0x024E}},
     {{EntranceType::AdultBoss, FIRE_TEMPLE_BOSS_ENTRYWAY,      FIRE_TEMPLE_BOSS_ROOM,          0x0305},
-     {EntranceType::AdultBoss, FIRE_TEMPLE_BOSS_ROOM,          FIRE_TEMPLE_BOSS_ENTRYWAY,      0x0175, 0x0564}},
+     {EntranceType::AdultBoss, FIRE_TEMPLE_BOSS_ROOM,          FIRE_TEMPLE_BOSS_ENTRYWAY,      0x0175}},
     {{EntranceType::AdultBoss, WATER_TEMPLE_BOSS_ENTRYWAY,     WATER_TEMPLE_BOSS_ROOM,         0x0417},
-     {EntranceType::AdultBoss, WATER_TEMPLE_BOSS_ROOM,         WATER_TEMPLE_BOSS_ENTRYWAY,     0x0423, 0x060C}},
+     {EntranceType::AdultBoss, WATER_TEMPLE_BOSS_ROOM,         WATER_TEMPLE_BOSS_ENTRYWAY,     0x0423}},
     {{EntranceType::AdultBoss, SPIRIT_TEMPLE_BOSS_ENTRYWAY,    SPIRIT_TEMPLE_BOSS_ROOM,        0x008D},
-     {EntranceType::AdultBoss, SPIRIT_TEMPLE_BOSS_ROOM,        SPIRIT_TEMPLE_BOSS_ENTRYWAY,    0x02F5, 0x0610}},
+     {EntranceType::AdultBoss, SPIRIT_TEMPLE_BOSS_ROOM,        SPIRIT_TEMPLE_BOSS_ENTRYWAY,    0x02F5}},
     {{EntranceType::AdultBoss, SHADOW_TEMPLE_BOSS_ENTRYWAY,    SHADOW_TEMPLE_BOSS_ROOM,        0x0413},
-     {EntranceType::AdultBoss, SHADOW_TEMPLE_BOSS_ROOM,        SHADOW_TEMPLE_BOSS_ENTRYWAY,    0x02B2, 0x0580}},
+     {EntranceType::AdultBoss, SHADOW_TEMPLE_BOSS_ROOM,        SHADOW_TEMPLE_BOSS_ENTRYWAY,    0x02B2}},
+
+    {{EntranceType::BlueWarp, DEKU_TREE_BOSS_ROOM,        KF_OUTSIDE_DEKU_TREE,      0x0457}, NO_RETURN_ENTRANCE},
+    {{EntranceType::BlueWarp, DODONGOS_CAVERN_BOSS_ROOM,  DEATH_MOUNTAIN_TRAIL,      0x047A}, NO_RETURN_ENTRANCE},
+    {{EntranceType::BlueWarp, JABU_JABUS_BELLY_BOSS_ROOM, ZORAS_FOUNTAIN,            0x010E}, NO_RETURN_ENTRANCE},
+    {{EntranceType::BlueWarp, FOREST_TEMPLE_BOSS_ROOM,    SACRED_FOREST_MEADOW,      0x0608}, NO_RETURN_ENTRANCE},
+    {{EntranceType::BlueWarp, FIRE_TEMPLE_BOSS_ROOM,      DMC_CENTRAL_LOCAL,         0x0564}, NO_RETURN_ENTRANCE},
+    {{EntranceType::BlueWarp, WATER_TEMPLE_BOSS_ROOM,     LAKE_HYLIA,                0x060C}, NO_RETURN_ENTRANCE},
+    {{EntranceType::BlueWarp, SPIRIT_TEMPLE_BOSS_ROOM,    DESERT_COLOSSUS,           0x0610}, NO_RETURN_ENTRANCE},
+    {{EntranceType::BlueWarp, SHADOW_TEMPLE_BOSS_ROOM,    GRAVEYARD_WARP_PAD_REGION, 0x0580}, NO_RETURN_ENTRANCE},
   };
 
   std::map<std::string, PriorityEntrance> priorityEntranceTable = {
@@ -1254,6 +1263,87 @@ int ShuffleAllEntrances() {
     ShuffleEntrancePool(pool.second, targetEntrancePools[pool.first]);
     if (entranceShuffleFailure) {
       return ENTRANCE_SHUFFLE_FAILURE;
+    }
+  }
+
+  // Determine blue warp targets
+  if (true /* Settings.BlueWarps.Is(BLUEWARPS_DUNGEON) */) { // RANDOTODO: add bluewarp shuffle
+    // If a boss room is inside a boss door, make the blue warp go outside the dungeon's entrance
+    std::map<std::string, Entrance*> bossExits = {
+        { EntranceNameByRegions(DEKU_TREE_BOSS_ROOM, DEKU_TREE_BOSS_ENTRYWAY),
+          GetEntrance(EntranceNameByRegions(DEKU_TREE_ENTRYWAY, KF_OUTSIDE_DEKU_TREE)) },
+        { EntranceNameByRegions(DODONGOS_CAVERN_BOSS_ROOM, DODONGOS_CAVERN_BOSS_ENTRYWAY),
+          GetEntrance(EntranceNameByRegions(DODONGOS_CAVERN_ENTRYWAY, DEATH_MOUNTAIN_TRAIL)) },
+        { EntranceNameByRegions(JABU_JABUS_BELLY_BOSS_ROOM, JABU_JABUS_BELLY_BOSS_ENTRYWAY),
+          GetEntrance(EntranceNameByRegions(JABU_JABUS_BELLY_ENTRYWAY, ZORAS_FOUNTAIN)) },
+        { EntranceNameByRegions(FOREST_TEMPLE_BOSS_ROOM, FOREST_TEMPLE_BOSS_ENTRYWAY),
+          GetEntrance(EntranceNameByRegions(FOREST_TEMPLE_ENTRYWAY, SACRED_FOREST_MEADOW)) },
+        { EntranceNameByRegions(FIRE_TEMPLE_BOSS_ROOM, FIRE_TEMPLE_BOSS_ENTRYWAY),
+          GetEntrance(EntranceNameByRegions(FIRE_TEMPLE_ENTRYWAY, DMC_CENTRAL_LOCAL)) },
+        { EntranceNameByRegions(WATER_TEMPLE_BOSS_ROOM, WATER_TEMPLE_BOSS_ENTRYWAY),
+          GetEntrance(EntranceNameByRegions(WATER_TEMPLE_ENTRYWAY, LAKE_HYLIA)) },
+        { EntranceNameByRegions(SPIRIT_TEMPLE_BOSS_ROOM, SPIRIT_TEMPLE_BOSS_ENTRYWAY),
+          GetEntrance(EntranceNameByRegions(SPIRIT_TEMPLE_ENTRYWAY, DESERT_COLOSSUS_FROM_SPIRIT_ENTRYWAY)) },
+        { EntranceNameByRegions(SHADOW_TEMPLE_BOSS_ROOM, SHADOW_TEMPLE_BOSS_ENTRYWAY),
+          GetEntrance(EntranceNameByRegions(SHADOW_TEMPLE_ENTRYWAY, GRAVEYARD_WARP_PAD_REGION)) },
+    };
+
+    // If a boss room is inside a dungeon entrance (or inside a dungeon which is inside a dungeon entrance), make the blue warp go to that dungeon's blue warp target
+    std::map<std::string, Entrance*> dungeonExits = {
+        { EntranceNameByRegions(DEKU_TREE_ENTRYWAY, KF_OUTSIDE_DEKU_TREE),
+          GetEntrance(EntranceNameByRegions(DEKU_TREE_BOSS_ROOM, KF_OUTSIDE_DEKU_TREE)) },
+        { EntranceNameByRegions(DODONGOS_CAVERN_ENTRYWAY, DEATH_MOUNTAIN_TRAIL),
+          GetEntrance(EntranceNameByRegions(DODONGOS_CAVERN_BOSS_ROOM, DEATH_MOUNTAIN_TRAIL)) },
+        { EntranceNameByRegions(JABU_JABUS_BELLY_ENTRYWAY, ZORAS_FOUNTAIN),
+          GetEntrance(EntranceNameByRegions(JABU_JABUS_BELLY_BOSS_ROOM, ZORAS_FOUNTAIN)) },
+        { EntranceNameByRegions(FOREST_TEMPLE_ENTRYWAY, SACRED_FOREST_MEADOW),
+          GetEntrance(EntranceNameByRegions(FOREST_TEMPLE_BOSS_ROOM, SACRED_FOREST_MEADOW)) },
+        { EntranceNameByRegions(FIRE_TEMPLE_ENTRYWAY, DMC_CENTRAL_LOCAL),
+          GetEntrance(EntranceNameByRegions(FIRE_TEMPLE_BOSS_ROOM, DMC_CENTRAL_LOCAL)) },
+        { EntranceNameByRegions(WATER_TEMPLE_ENTRYWAY, LAKE_HYLIA),
+          GetEntrance(EntranceNameByRegions(WATER_TEMPLE_BOSS_ROOM, LAKE_HYLIA)) },
+        { EntranceNameByRegions(SPIRIT_TEMPLE_ENTRYWAY, DESERT_COLOSSUS_FROM_SPIRIT_ENTRYWAY),
+          GetEntrance(EntranceNameByRegions(SPIRIT_TEMPLE_BOSS_ROOM, DESERT_COLOSSUS)) },
+        { EntranceNameByRegions(SHADOW_TEMPLE_ENTRYWAY, GRAVEYARD_WARP_PAD_REGION),
+          GetEntrance(EntranceNameByRegions(SHADOW_TEMPLE_BOSS_ROOM, GRAVEYARD_WARP_PAD_REGION)) },
+    };
+
+    // Pair <BlueWarp exit, BossRoom reverse exit>
+    std::vector<EntrancePair> bossRoomExitPairs = {
+        { GetEntrance(EntranceNameByRegions(DEKU_TREE_BOSS_ROOM, KF_OUTSIDE_DEKU_TREE)),
+          GetEntrance(EntranceNameByRegions(DEKU_TREE_BOSS_ROOM, DEKU_TREE_BOSS_ENTRYWAY)) },
+        { GetEntrance(EntranceNameByRegions(DODONGOS_CAVERN_BOSS_ROOM, DEATH_MOUNTAIN_TRAIL)),
+          GetEntrance(EntranceNameByRegions(DODONGOS_CAVERN_BOSS_ROOM, DODONGOS_CAVERN_BOSS_ENTRYWAY)) },
+        { GetEntrance(EntranceNameByRegions(JABU_JABUS_BELLY_BOSS_ROOM, ZORAS_FOUNTAIN)),
+          GetEntrance(EntranceNameByRegions(JABU_JABUS_BELLY_BOSS_ROOM, JABU_JABUS_BELLY_BOSS_ENTRYWAY)) },
+        { GetEntrance(EntranceNameByRegions(FOREST_TEMPLE_BOSS_ROOM, SACRED_FOREST_MEADOW)),
+          GetEntrance(EntranceNameByRegions(FOREST_TEMPLE_BOSS_ROOM, FOREST_TEMPLE_BOSS_ENTRYWAY)) },
+        { GetEntrance(EntranceNameByRegions(FIRE_TEMPLE_BOSS_ROOM, DMC_CENTRAL_LOCAL)),
+          GetEntrance(EntranceNameByRegions(FIRE_TEMPLE_BOSS_ROOM, FIRE_TEMPLE_BOSS_ENTRYWAY)) },
+        { GetEntrance(EntranceNameByRegions(WATER_TEMPLE_BOSS_ROOM, LAKE_HYLIA)),
+          GetEntrance(EntranceNameByRegions(WATER_TEMPLE_BOSS_ROOM, WATER_TEMPLE_BOSS_ENTRYWAY)) },
+        { GetEntrance(EntranceNameByRegions(SPIRIT_TEMPLE_BOSS_ROOM, DESERT_COLOSSUS)),
+          GetEntrance(EntranceNameByRegions(SPIRIT_TEMPLE_BOSS_ROOM, SPIRIT_TEMPLE_BOSS_ENTRYWAY)) },
+        { GetEntrance(EntranceNameByRegions(SHADOW_TEMPLE_BOSS_ROOM, GRAVEYARD_WARP_PAD_REGION)),
+          GetEntrance(EntranceNameByRegions(SHADOW_TEMPLE_BOSS_ROOM, SHADOW_TEMPLE_BOSS_ENTRYWAY)) },
+    };
+
+    for (EntrancePair pair : bossRoomExitPairs) {
+      Entrance* target = pair.second->GetReplacement() != nullptr ? pair.second->GetReplacement() : pair.second;
+
+      if (!Settings::DecoupleEntrances) {
+        while (bossExits.find(target->GetName()) != bossExits.end()) {
+          Entrance* next = bossExits.at(target->GetName());
+          target = next->GetReplacement() != nullptr ? next->GetReplacement() : next;
+        }
+
+        if (dungeonExits.find(target->GetName()) != dungeonExits.end()) {
+          target = dungeonExits.at(target->GetName());
+        }
+      }
+
+      pair.first->Connect(target->Getuint32_t());
+      pair.first->SetReplacement(target);
     }
   }
 

@@ -18,6 +18,7 @@ enum class EntranceType {
     OwlDrop,
     Spawn,
     WarpSong,
+    BlueWarp,
     Dungeon,
     GanonDungeon,
     DungeonReverse,
