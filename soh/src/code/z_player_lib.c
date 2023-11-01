@@ -5,6 +5,7 @@
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
+#include "soh_assets.h"
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/draw.h"
@@ -570,6 +571,23 @@ void Player_SetBootData(PlayState* play, Player* this) {
 uint8_t Player_IsCustomLinkModel() {
     return (LINK_IS_ADULT && ResourceGetIsCustomByName(gLinkAdultSkel)) ||
            (LINK_IS_CHILD && ResourceGetIsCustomByName(gLinkChildSkel));
+}
+
+// Alternate Equipment Loading function. (global function)
+// Checks if player can use new loading method, for Bottles Only.
+uint8_t Player_CanUseNewLoadingMethodBottle(Player* this) {
+    if (!CVarGetInteger("gAltLinkEquip", 1)) {
+        return false;
+    }
+
+    switch (this->leftHandType) {
+        case PLAYER_MODELTYPE_LH_BOTTLE:
+            if (ResourceGetIsCustomByName(gLinkBottleDL)) {
+                return true;
+            }
+            break;
+            return false;
+    }
 }
 
 s32 Player_InBlockingCsMode(PlayState* play, Player* this) {
@@ -1720,11 +1738,22 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
             OPEN_DISPS(play->state.gfxCtx);
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gDPSetEnvColor(POLY_XLU_DISP++, bottleColor->r, bottleColor->g, bottleColor->b, 0);
-            gSPDisplayList(POLY_XLU_DISP++, sBottleDLists[(gSaveContext.linkAge)]);
 
+            if (this->itemAction != PLAYER_IA_BOTTLE && Player_CanUseNewLoadingMethodBottle(this) &&
+                ResourceGetIsCustomByName(gLinkBottleContentsDL)) { //check to make sure that this won't break everything
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                            G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gLinkBottleContentsDL);
+            }
+
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                        G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            if (Player_CanUseNewLoadingMethodBottle(this)) {
+                gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gLinkBottleDL);
+            } else {
+                gSPDisplayList(POLY_XLU_DISP++, sBottleDLists[(gSaveContext.linkAge)]);
+            }
             CLOSE_DISPS(play->state.gfxCtx);
         }
 
