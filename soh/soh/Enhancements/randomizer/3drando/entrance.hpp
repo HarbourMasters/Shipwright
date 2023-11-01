@@ -254,7 +254,7 @@ public:
         AreaTable(ROOT)->AddExit(ROOT, connectedRegion, []{return true;});
         Entrance* targetEntrance = AreaTable(ROOT)->GetExit(connectedRegion);
         targetEntrance->SetReplacement(this);
-        targetEntrance->SetName(GetParentRegion()->regionName + " -> " + GetConnectedRegion()->regionName);
+        targetEntrance->SetName(AreaTable(ROOT)->regionName + " -> " + GetConnectedRegion()->regionName);
         return targetEntrance;
     }
 
