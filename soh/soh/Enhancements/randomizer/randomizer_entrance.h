@@ -26,7 +26,7 @@
 #define ENTRANCE_RANDO_GROTTO_EXIT_START 0x0800
 #define MAX_ENTRANCE_RANDO_USED_INDEX 0x0820
 
-#define ENTRANCE_OVERRIDES_MAX_COUNT 259 // 11 one-way entrances + 124 two-way entrances (x2)
+#define ENTRANCE_OVERRIDES_MAX_COUNT 267 // 19 one-way entrances + 124 two-way entrances (x2)
 #define SHUFFLEABLE_BOSS_COUNT 8
 
 #define SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT 66 // Max entrance rando index is 0x0820, (2080 / 32 == 65) + 1

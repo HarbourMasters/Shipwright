@@ -103,6 +103,7 @@ const EntranceData entranceData[] = {
     { 0x0209, 0x0000, SINGLE_SCENE_INFO(0x00), "Deku Tree",           "KF",                  ENTRANCE_GROUP_KOKIRI_FOREST, ENTRANCE_GROUP_KOKIRI_FOREST, ENTRANCE_TYPE_DUNGEON,   ""},
     { 0x040F, 0x0252, SINGLE_SCENE_INFO(0x00), "Deku Tree Boss Door", "Gohma",               ENTRANCE_GROUP_KOKIRI_FOREST, ENTRANCE_GROUP_KOKIRI_FOREST, ENTRANCE_TYPE_DUNGEON,   "", 1},
     { 0x0252, 0x040F, SINGLE_SCENE_INFO(0x11), "Gohma",               "Deku Tree Boss Door", ENTRANCE_GROUP_KOKIRI_FOREST, ENTRANCE_GROUP_KOKIRI_FOREST, ENTRANCE_TYPE_DUNGEON,   "", 1},
+    { 0x0457, -1,     SINGLE_SCENE_INFO(0x11), "Gohma",               "Deku Tree Blue Warp", ENTRANCE_GROUP_KOKIRI_FOREST, ENTRANCE_GROUP_KOKIRI_FOREST, ENTRANCE_TYPE_ONE_WAY,   "bw", 1},
 
     // Lost Woods
     { 0x020D, 0x05E0, SINGLE_SCENE_INFO(0x5B), "Lost Woods Bridge",        "KF",                       ENTRANCE_GROUP_LOST_WOODS, ENTRANCE_GROUP_KOKIRI_FOREST, ENTRANCE_TYPE_OVERWORLD, "lw"},
@@ -130,6 +131,7 @@ const EntranceData entranceData[] = {
     { 0x0215, 0x0169, SINGLE_SCENE_INFO(0x03), "Forest Temple",           "SFM",                     ENTRANCE_GROUP_SFM, ENTRANCE_GROUP_SFM,        ENTRANCE_TYPE_DUNGEON},
     { 0x000C, 0x024E, SINGLE_SCENE_INFO(0x03), "Forest Temple Boss Door", "Phantom Ganon",           ENTRANCE_GROUP_SFM, ENTRANCE_GROUP_SFM,        ENTRANCE_TYPE_DUNGEON, "", 1},
     { 0x024E, 0x000C, SINGLE_SCENE_INFO(0x14), "Phantom Ganon",           "Forest Temple Boss Door", ENTRANCE_GROUP_SFM, ENTRANCE_GROUP_SFM,        ENTRANCE_TYPE_DUNGEON, "", 1},
+    { 0x0608, -1,     SINGLE_SCENE_INFO(0x14), "Phantom Ganon",           "Forest Temple Blue Warp", ENTRANCE_GROUP_SFM, ENTRANCE_GROUP_SFM,        ENTRANCE_TYPE_ONE_WAY, "bw", 1},
 
     // Kakariko Village
     { 0x017D, 0x00DB, SINGLE_SCENE_INFO(0x52), "Kakariko",              "Hyrule Field",          ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_HYRULE_FIELD,         ENTRANCE_TYPE_OVERWORLD, "hf"},
@@ -178,6 +180,7 @@ const EntranceData entranceData[] = {
     { 0x0205, 0x0037, SINGLE_SCENE_INFO(0x07), "Shadow Temple",           "Graveyard",               ENTRANCE_GROUP_GRAVEYARD, ENTRANCE_GROUP_GRAVEYARD, ENTRANCE_TYPE_DUNGEON},
     { 0x0413, 0x02B2, SINGLE_SCENE_INFO(0x07), "Shadow Temple Boss Door", "Bongo-Bongo",             ENTRANCE_GROUP_GRAVEYARD, ENTRANCE_GROUP_GRAVEYARD, ENTRANCE_TYPE_DUNGEON, "", 1},
     { 0x02B2, 0x0413, SINGLE_SCENE_INFO(0x18), "Bongo-Bongo",             "Shadow Temple Boss Door", ENTRANCE_GROUP_GRAVEYARD, ENTRANCE_GROUP_GRAVEYARD, ENTRANCE_TYPE_DUNGEON, "", 1},
+    { 0x0580, -1,     SINGLE_SCENE_INFO(0x18), "Bongo-Bongo",             "Shadow Temple Blue Warp", ENTRANCE_GROUP_GRAVEYARD, ENTRANCE_GROUP_GRAVEYARD, ENTRANCE_TYPE_ONE_WAY, "bw", 1},
 
     // Death Mountain Trail
     { 0x0191, 0x013D, SINGLE_SCENE_INFO(0x60), "DMT",                        "Kakariko",                   ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL, ENTRANCE_GROUP_KAKARIKO,              ENTRANCE_TYPE_OVERWORLD},
@@ -193,6 +196,7 @@ const EntranceData entranceData[] = {
     { 0x0242, 0x0004, SINGLE_SCENE_INFO(0x01), "Dodongo's Cavern",           "DMT",                        ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL, ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL,  ENTRANCE_TYPE_DUNGEON,   "dc"},
     { 0x040B, 0x00C5, SINGLE_SCENE_INFO(0x01), "Dodongo's Cavern Boss Door", "King Dodongo",               ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL, ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL,  ENTRANCE_TYPE_DUNGEON,   "dc", 1},
     { 0x00C5, 0x040B, SINGLE_SCENE_INFO(0x12), "King Dodongo",               "Dodongo's Cavern Boss Door", ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL, ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL,  ENTRANCE_TYPE_DUNGEON,   "dc", 1},
+    { 0x047A, -1,     SINGLE_SCENE_INFO(0x12), "King Dodongo",               "Dodongo's Cavern Blue Warp", ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL, ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL,  ENTRANCE_TYPE_ONE_WAY,   "dc,bw", 1},
 
     // Death Mountain Crater
     { 0x01C1, 0x0246, SINGLE_SCENE_INFO(0x61), "DMC",                      "Goron City",               ENTRANCE_GROUP_DEATH_MOUNTAIN_CRATER, ENTRANCE_GROUP_GORON_CITY,            ENTRANCE_TYPE_OVERWORLD, "gc"},
@@ -207,6 +211,7 @@ const EntranceData entranceData[] = {
     { 0x024A, 0x0165, SINGLE_SCENE_INFO(0x04), "Fire Temple",              "DMC",                      ENTRANCE_GROUP_DEATH_MOUNTAIN_CRATER, ENTRANCE_GROUP_DEATH_MOUNTAIN_CRATER, ENTRANCE_TYPE_DUNGEON},
     { 0x0305, 0x0175, SINGLE_SCENE_INFO(0x04), "Fire Temple Boss Door",    "Volvagia",                 ENTRANCE_GROUP_DEATH_MOUNTAIN_CRATER, ENTRANCE_GROUP_DEATH_MOUNTAIN_CRATER, ENTRANCE_TYPE_DUNGEON,   "", 1},
     { 0x0175, 0x0305, SINGLE_SCENE_INFO(0x15), "Volvagia",                 "Fire Temple Boss Door",    ENTRANCE_GROUP_DEATH_MOUNTAIN_CRATER, ENTRANCE_GROUP_DEATH_MOUNTAIN_CRATER, ENTRANCE_TYPE_DUNGEON,   "", 1},
+    { 0x0564, -1,     SINGLE_SCENE_INFO(0x15), "Volvagia",                 "Fire Temple Blue Warp",    ENTRANCE_GROUP_DEATH_MOUNTAIN_CRATER, ENTRANCE_GROUP_DEATH_MOUNTAIN_CRATER, ENTRANCE_TYPE_ONE_WAY,   "bw", 1},
 
     // Goron City
     { 0x01B9, 0x014D, SINGLE_SCENE_INFO(0x62), "Goron City",        "DMT",               ENTRANCE_GROUP_GORON_CITY, ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL,  ENTRANCE_TYPE_OVERWORLD, "gc"},
@@ -246,6 +251,7 @@ const EntranceData entranceData[] = {
     { 0x0221, 0x0028, SINGLE_SCENE_INFO(0x02), "Jabu Jabu's Belly",           "ZF",                          ENTRANCE_GROUP_ZORAS_FOUNTAIN, ENTRANCE_GROUP_ZORAS_FOUNTAIN, ENTRANCE_TYPE_DUNGEON},
     { 0x0301, 0x0407, SINGLE_SCENE_INFO(0x02), "Jabu Jabu's Belly Boss Door", "Barinade",                    ENTRANCE_GROUP_ZORAS_FOUNTAIN, ENTRANCE_GROUP_ZORAS_FOUNTAIN, ENTRANCE_TYPE_DUNGEON, "", 1},
     { 0x0407, 0x0301, SINGLE_SCENE_INFO(0x13), "Barinade",                    "Jabu Jabu's Belly Boss Door", ENTRANCE_GROUP_ZORAS_FOUNTAIN, ENTRANCE_GROUP_ZORAS_FOUNTAIN, ENTRANCE_TYPE_DUNGEON, "", 1},
+    { 0x010E, -1,     SINGLE_SCENE_INFO(0x13), "Barinade",                    "Jabu Jabu's Belly Blue Warp", ENTRANCE_GROUP_ZORAS_FOUNTAIN, ENTRANCE_GROUP_ZORAS_FOUNTAIN, ENTRANCE_TYPE_ONE_WAY, "bw", 1},
     { 0x03D4, 0x0088, SINGLE_SCENE_INFO(0x09), "Ice Cavern",                  "ZF",                          ENTRANCE_GROUP_ZORAS_FOUNTAIN, ENTRANCE_GROUP_ZORAS_FOUNTAIN, ENTRANCE_TYPE_DUNGEON},
 
     // Hyrule Field
@@ -297,6 +303,7 @@ const EntranceData entranceData[] = {
     { 0x021D, 0x0010, SINGLE_SCENE_INFO(0x05), "Water Temple",           "Lake Hylia",             ENTRANCE_GROUP_LAKE_HYLIA, ENTRANCE_GROUP_LAKE_HYLIA,   ENTRANCE_TYPE_DUNGEON,   "lh"},
     { 0x0417, 0x0423, SINGLE_SCENE_INFO(0x05), "Water Temple Boss Door", "Morpha",                 ENTRANCE_GROUP_LAKE_HYLIA, ENTRANCE_GROUP_LAKE_HYLIA,   ENTRANCE_TYPE_DUNGEON,   "lh", 1},
     { 0x0423, 0x0417, SINGLE_SCENE_INFO(0x16), "Morpha",                 "Water Temple Boss Door", ENTRANCE_GROUP_LAKE_HYLIA, ENTRANCE_GROUP_LAKE_HYLIA,   ENTRANCE_TYPE_DUNGEON,   "lh", 1},
+    { 0x060C, -1,     SINGLE_SCENE_INFO(0x16), "Morpha",                 "Water Temple Blue Warp", ENTRANCE_GROUP_LAKE_HYLIA, ENTRANCE_GROUP_LAKE_HYLIA,   ENTRANCE_TYPE_ONE_WAY,   "lh,bw", 1},
 
     // Gerudo Area
     { 0x018D, 0x0117, SINGLE_SCENE_INFO(0x5A), "GV",                      "Hyrule Field",            ENTRANCE_GROUP_GERUDO_VALLEY, ENTRANCE_GROUP_HYRULE_FIELD,      ENTRANCE_TYPE_OVERWORLD, "hf"},
@@ -327,6 +334,7 @@ const EntranceData entranceData[] = {
     { 0x01E1, 0x0082, SINGLE_SCENE_INFO(0x06), "Spirit Temple",                 "Desert Colossus",               ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_TYPE_DUNGEON,   "dc"},
     { 0x008D, 0x02F5, SINGLE_SCENE_INFO(0x06), "Spirit Temple Boss Door",       "Twinrova",                      ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_TYPE_DUNGEON,   "", 1},
     { 0x02F5, 0x008D, SINGLE_SCENE_INFO(0x17), "Twinrova",                      "Spirit Temple Boss Door",       ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_TYPE_DUNGEON,   "", 1},
+    { 0x0610, -1,     SINGLE_SCENE_INFO(0x17), "Twinrova",                      "Spirit Temple Blue Warp",       ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_TYPE_ONE_WAY,   "bw", 1},
 
     // Market
     { 0x01FD, 0x0276, {SCENE_NO_SPAWN(0x1B), SCENE_NO_SPAWN(0x1C), SCENE_NO_SPAWN(0x1D)}, "Market Entrance",   "Hyrule Field",        ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_OVERWORLD, "hf"},
@@ -794,6 +802,11 @@ void EntranceTrackerWindow::DrawElement() {
                 (original->oneExit != 1 && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF) &&
                 CVarGetInteger("gEntranceTrackerHideReverseEntrances", 1) == 1) {
                     continue;
+            }
+
+            // RANDOTODO: Only show blue warps if bluewarp shuffle is on
+            if (original->metaTag.ends_with("bw") || override->metaTag.ends_with("bw")) {
+                continue;
             }
 
             bool isDiscovered = IsEntranceDiscovered(entrance.index);
