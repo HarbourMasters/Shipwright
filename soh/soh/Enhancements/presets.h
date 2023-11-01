@@ -228,6 +228,8 @@ const std::vector<const char*> cheatCvars = {
     "gWalkSpeedToggle",
     "gWalkModifierOne",
     "gWalkModifierTwo",
+    "gSwimModifierOne",
+    "gSwimModifierTwo",
     "gGoronPot",
     "gDampeWin",
     "gCustomizeShootingGallery",
