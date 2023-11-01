@@ -1567,9 +1567,9 @@ void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent)
 
     // set all the entrances to be 0 to indicate an unshuffled entrance
     for (auto &entranceOveride : gSaveContext.entranceOverrides) {
+        entranceOveride.type = 0;
         entranceOveride.index = 0;
         entranceOveride.destination = 0;
-        entranceOveride.blueWarp = 0;
         entranceOveride.override = 0;
         entranceOveride.overrideDestination = 0;
     }
@@ -1584,12 +1584,12 @@ void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent)
             json entranceJson = *it;
 
             for (auto entranceIt = entranceJson.begin(); entranceIt != entranceJson.end(); ++entranceIt) {
-                if (entranceIt.key() == "index") {
+                if (entranceIt.key() == "type") {
+                    gSaveContext.entranceOverrides[i].type = entranceIt.value();
+                } else if (entranceIt.key() == "index") {
                     gSaveContext.entranceOverrides[i].index = entranceIt.value();
                 } else if (entranceIt.key() == "destination") {
                     gSaveContext.entranceOverrides[i].destination = entranceIt.value();
-                } else if (entranceIt.key() == "blueWarp") {
-                    gSaveContext.entranceOverrides[i].blueWarp = entranceIt.value();
                 } else if (entranceIt.key() == "override") {
                     gSaveContext.entranceOverrides[i].override = entranceIt.value();
                 } else if (entranceIt.key() == "overrideDestination") {

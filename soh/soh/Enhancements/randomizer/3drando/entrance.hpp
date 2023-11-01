@@ -202,14 +202,6 @@ public:
         index = newIndex;
     }
 
-    int16_t GetBlueWarp() const {
-        return blueWarp;
-    }
-
-    void SetBlueWarp(int16_t newBlueWarp) {
-        blueWarp = newBlueWarp;
-    }
-
     Entrance* GetAssumed() const {
         return assumed;
     }
@@ -279,7 +271,6 @@ private:
     Entrance* assumed = nullptr;
     Entrance* replacement = nullptr;
     int16_t index = 0xFFFF;
-    int16_t blueWarp = 0;
     bool shuffled = false;
     bool primary = false;
     bool addedToPool = false;

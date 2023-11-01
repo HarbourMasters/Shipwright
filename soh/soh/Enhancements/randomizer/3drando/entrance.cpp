@@ -26,7 +26,6 @@ typedef struct {
     AreaKey parentRegion;
     AreaKey connectedRegion;
     int16_t index;
-    int16_t blueWarp;
 } EntranceLinkInfo;
 
 EntranceLinkInfo NO_RETURN_ENTRANCE = {EntranceType::None, NONE, NONE, -1};
@@ -82,7 +81,6 @@ void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
     //set data
     Entrance* forwardEntrance = AreaTable(forwardEntry.parentRegion)->GetExit(forwardEntry.connectedRegion);
     forwardEntrance->SetIndex(forwardEntry.index);
-    forwardEntrance->SetBlueWarp(forwardEntry.blueWarp);
     forwardEntrance->SetType(forwardEntry.type);
     forwardEntrance->SetAsPrimary();
 
@@ -94,7 +92,6 @@ void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
     if (returnEntry.parentRegion != NONE) {
       Entrance* returnEntrance = AreaTable(returnEntry.parentRegion)->GetExit(returnEntry.connectedRegion);
       returnEntrance->SetIndex(returnEntry.index);
-      returnEntrance->SetBlueWarp(returnEntry.blueWarp);
       returnEntrance->SetType(returnEntry.type);
       forwardEntrance->BindTwoWay(returnEntrance);
 
@@ -1369,8 +1366,8 @@ void CreateEntranceOverrides() {
     auto message = "Setting " + entrance->to_string() + "\n";
     SPDLOG_DEBUG(message);
 
+    uint8_t type = (uint8_t)entrance->GetType();
     int16_t originalIndex = entrance->GetIndex();
-    int16_t originalBlueWarp = entrance->GetBlueWarp();
     int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
 
     int16_t destinationIndex = -1;
@@ -1384,9 +1381,9 @@ void CreateEntranceOverrides() {
     }
 
     entranceOverrides.push_back({
+      .type = type,
       .index = originalIndex,
       .destination = destinationIndex,
-      .blueWarp = originalBlueWarp,
       .override = replacementIndex,
       .overrideDestination = replacementDestinationIndex,
     });

@@ -33,9 +33,9 @@
 #define SAVEFILE_SCENES_DISCOVERED_IDX_COUNT 4 // Max scene ID is 0x6E, (110 / 32 == 3) + 1
 
 typedef struct {
+    uint16_t type;
     int16_t index;
     int16_t destination;
-    int16_t blueWarp;
     int16_t override;
     int16_t overrideDestination;
 } EntranceOverride;

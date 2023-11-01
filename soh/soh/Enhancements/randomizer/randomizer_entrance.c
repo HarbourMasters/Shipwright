@@ -25,16 +25,11 @@ s16 dynamicExitList[] = { 0x045B, 0x0482, 0x03E8, 0x044B, 0x02A2, 0x0201, 0x03B8
 // Owl Flights : 0x492064 and 0x492080
 
 static s16 entranceOverrideTable[ENTRANCE_TABLE_SIZE] = {0};
-// Boss scenes (normalize boss scene range to 0 on lookup) to the replaced dungeon scene it is connected to
-static s16 dungeonBossSceneOverrides[SHUFFLEABLE_BOSS_COUNT] = {0};
+// Boss scenes (normalize boss scene range to 0 on lookup) mapped to save/death warp entrance
+static s16 bossSceneSaveDeathWarps[SHUFFLEABLE_BOSS_COUNT] = {0};
 static ActorEntry modifiedLinkActorEntry = {0};
 
 EntranceInfo originalEntranceTable[ENTRANCE_TABLE_SIZE] = {0};
-
-typedef struct {
-    s16 blueWarp;
-    s16 destination;
-} BlueWarpReplacement;
 
 typedef struct {
     s16 entryway;
@@ -79,8 +74,8 @@ static s8 hasModifiedEntranceTable = 0;
 void Entrance_SetEntranceDiscovered(u16 entranceIndex);
 
 u8 Entrance_EntranceIsNull(EntranceOverride* entranceOverride) {
-    return entranceOverride->index == 0 && entranceOverride->destination == 0 && entranceOverride->blueWarp == 0
-        && entranceOverride->override == 0 && entranceOverride->overrideDestination == 0;
+    return entranceOverride->index == 0 && entranceOverride->destination == 0 && entranceOverride->override == 0 &&
+           entranceOverride->overrideDestination == 0;
 }
 
 static void Entrance_SeparateOGCFairyFountainExit(void) {
@@ -96,6 +91,28 @@ static void Entrance_SeparateAdultSpawnAndPrelude() {
     // Adult Spawn index and separate it from Prelude of Light
     for (size_t i = 0; i < 4; ++i) {
         gEntranceTable[0x282 + i] = gEntranceTable[0x5F4 + i];
+    }
+}
+
+// Fix Adult dungeon blue warps as Child by assigning the child values for the warp pads
+static void Entrance_ReplaceChildTempleWarps() {
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
+        Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
+        // Forest Temple
+        gEntranceTable[0x0608] = gEntranceTable[0x0600];
+        gEntranceTable[0x0608 + 1] = gEntranceTable[0x0600 + 1];
+        // Fire Temple
+        gEntranceTable[0x0564] = gEntranceTable[0x04F6];
+        gEntranceTable[0x0564 + 1] = gEntranceTable[0x04F6 + 1];
+        // Water Temple
+        gEntranceTable[0x060C] = gEntranceTable[0x0604];
+        gEntranceTable[0x060C + 1] = gEntranceTable[0x0604 + 1];
+        // Shadow Temple
+        gEntranceTable[0x0580] = gEntranceTable[0x0568];
+        gEntranceTable[0x0580 + 1] = gEntranceTable[0x0568 + 1];
+        // Spirit Temple
+        gEntranceTable[0x0610] = gEntranceTable[0x01F1];
+        gEntranceTable[0x0610 + 1] = gEntranceTable[0x01F1 + 1];
     }
 }
 
@@ -116,9 +133,6 @@ void Entrance_ResetEntranceTable(void) {
 void Entrance_Init(void) {
     s32 index;
 
-    size_t blueWarpRemapIdx = 0;
-    BlueWarpReplacement bluewarps[SHUFFLEABLE_BOSS_COUNT] = {0};
-
     Entrance_CopyOriginalEntranceTable();
 
     // Skip Child Stealth if given by settings
@@ -135,6 +149,7 @@ void Entrance_Init(void) {
 
     Entrance_SeparateOGCFairyFountainExit();
     Entrance_SeparateAdultSpawnAndPrelude();
+    Entrance_ReplaceChildTempleWarps();
 
     // Initialize the entrance override table with each index leading to itself. An
     // index referring to itself means that the entrance is not currently shuffled.
@@ -142,9 +157,9 @@ void Entrance_Init(void) {
         entranceOverrideTable[i] = i;
     }
 
-    // Initialize all boss rooms connected to their vanilla dungeon
+    // Initialize all boss room save/death warps with their vanilla dungeon entryway
     for (s16 i = 1; i < SHUFFLEABLE_BOSS_COUNT; i++) {
-        dungeonBossSceneOverrides[i] = i;
+        bossSceneSaveDeathWarps[i] = dungeons[i].entryway;
     }
 
     // Initialize the grotto exit and load lists
@@ -158,8 +173,29 @@ void Entrance_Init(void) {
         }
 
         s16 originalIndex = gSaveContext.entranceOverrides[i].index;
-        s16 blueWarpIndex = gSaveContext.entranceOverrides[i].blueWarp;
+        s16 originalDestination = gSaveContext.entranceOverrides[i].destination;
         s16 overrideIndex = gSaveContext.entranceOverrides[i].override;
+
+        int16_t bossScene = -1;
+        int16_t saveWarpEntrance = originalDestination; // Default save warp to the original return entrance
+
+        // Search for boss room overrides and look for the matching save/death warp value to use
+        // If the boss room is in a dungeon, use the dungeons entryway as the save warp
+        // Otherwise use the "exit" value for the entrance that lead to the boss room
+        for (int j = 0; j <= SHUFFLEABLE_BOSS_COUNT; j++) {
+            if (overrideIndex == dungeons[j].bossDoor) {
+                bossScene = dungeons[j].bossScene;
+            }
+
+            if (index == dungeons[j].bossDoor) {
+                saveWarpEntrance = dungeons[j].entryway;
+            }
+        }
+
+        // Found a boss scene and a valid save/death warp value
+        if (bossScene != -1 && saveWarpEntrance != -1) {
+            bossSceneSaveDeathWarps[bossScene - SCENE_DEKU_TREE_BOSS] = saveWarpEntrance;
+        }
 
         //Overwrite grotto related indices
         if (originalIndex >= ENTRANCE_RANDO_GROTTO_EXIT_START) {
@@ -174,51 +210,6 @@ void Entrance_Init(void) {
 
         // Overwrite the indices which we want to shuffle, leaving the rest as they are
         entranceOverrideTable[originalIndex] = overrideIndex;
-
-        if (blueWarpIndex != 0) {
-            // When boss shuffle is enabled, we need to know what dungeon the boss room is connected to for
-            // death/save warping, and for the blue warp
-            if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
-                s16 bossScene = -1;
-                s16 replacedDungeonScene = -1;
-                s16 replacedDungeonExit = -1;
-                // Search for the boss scene and replaced blue warp exits
-                for (s16 j = 0; j <= SHUFFLEABLE_BOSS_COUNT; j++) {
-                    if (blueWarpIndex == dungeons[j].blueWarp) {
-                        bossScene = dungeons[j].bossScene;
-                    }
-                    if (overrideIndex == dungeons[j].bossDoorReverse) {
-                        replacedDungeonScene = dungeons[j].scene;
-                        replacedDungeonExit = dungeons[j].exit;
-                    }
-                }
-
-                // assign the boss scene override
-                if (bossScene != -1 && replacedDungeonScene != -1 && replacedDungeonExit != -1) {
-                    dungeonBossSceneOverrides[bossScene - SCENE_DEKU_TREE_BOSS] = replacedDungeonScene;
-                    bluewarps[blueWarpRemapIdx].blueWarp = blueWarpIndex;
-                    bluewarps[blueWarpRemapIdx].destination = replacedDungeonExit;
-                    blueWarpRemapIdx++;
-                }
-            } else {
-                entranceOverrideTable[blueWarpIndex] = overrideIndex;
-            }
-        }
-
-        //Override both land and water entrances for Hyrule Field -> ZR Front and vice versa
-        if (originalIndex == 0x00EA) { //Hyrule Field -> ZR Front land entrance
-            entranceOverrideTable[0x01D9] = overrideIndex;
-        } else if (originalIndex == 0x0181) { //ZR Front -> Hyrule Field land entrance
-            entranceOverrideTable[0x0311] = overrideIndex;
-        }
-    }
-
-    // If we have remapped blue warps from boss shuffle, handle setting those and grabbing the override for
-    // the replaced dungeons exit in the event that dungeon shuffle is also turned on
-    for (size_t i = 0; i < ARRAY_COUNT(bluewarps); i++) {
-        if (bluewarps[i].blueWarp != 0 && bluewarps[i].destination != 0) {
-            entranceOverrideTable[bluewarps[i].blueWarp] = Entrance_GetOverride(bluewarps[i].destination);
-        }
     }
 
     // Stop playing background music during shuffled entrance transitions
@@ -314,13 +305,12 @@ void Entrance_SetGameOverEntrance(void) {
 
     s16 scene = gPlayState->sceneNum;
 
-    // When in a boss room and boss shuffle is on, get the connected dungeon's original boss room entrance
-    // then run the normal game over overrides on it
+    // When in a boss room and boss shuffle is on, use the boss scene to find the death warp entrance
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF &&
         scene >= SCENE_DEKU_TREE_BOSS && scene <= SCENE_SHADOW_TEMPLE_BOSS) {
-        // Normalize boss scene range to 0 on lookup
-        scene = dungeonBossSceneOverrides[scene - SCENE_DEKU_TREE_BOSS];
-        gSaveContext.entranceIndex = dungeons[scene].bossDoor;
+        // Normalize boss scene range to 0 on lookup and handle for grotto entrances
+        gSaveContext.entranceIndex = Grotto_OverrideSpecialEntrance(bossSceneSaveDeathWarps[scene - SCENE_DEKU_TREE_BOSS]);
+        return;
     }
 
     //Set the current entrance depending on which entrance the player last came through
@@ -360,12 +350,12 @@ void Entrance_SetSavewarpEntrance(void) {
 
     s16 scene = gSaveContext.savedSceneNum;
 
-    // When in a boss room and boss shuffle is on, use the boss scene override to remap to its
-    // connected dungeon and use that for the final entrance
+    // When in a boss room and boss shuffle is on, use the boss scene to find the savewarp entrance
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF &&
         scene >= SCENE_DEKU_TREE_BOSS && scene <= SCENE_SHADOW_TEMPLE_BOSS) {
-        // Normalize boss scene range to 0 on lookup
-        scene = dungeonBossSceneOverrides[scene - SCENE_DEKU_TREE_BOSS];
+        // Normalize boss scene range to 0 on lookup and handle for grotto entrances
+        gSaveContext.entranceIndex = Grotto_OverrideSpecialEntrance(bossSceneSaveDeathWarps[scene - SCENE_DEKU_TREE_BOSS]);
+        return;
     }
 
     if (scene == SCENE_DEKU_TREE || scene == SCENE_DEKU_TREE_BOSS) {
@@ -797,10 +787,12 @@ void Entrance_SetEntranceDiscovered(u16 entranceIndex) {
         u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
         gSaveContext.sohStats.entrancesDiscovered[idx] |= entranceBit;
         // Set connected
-        for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
-            if (entranceIndex == gSaveContext.entranceOverrides[i].index) {
-                Entrance_SetEntranceDiscovered(gSaveContext.entranceOverrides[i].overrideDestination);
-                break;
+        if (!Randomizer_GetSettingValue(RSK_DECOUPLED_ENTRANCES)) {
+            for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
+                if (entranceIndex == gSaveContext.entranceOverrides[i].index) {
+                    Entrance_SetEntranceDiscovered(gSaveContext.entranceOverrides[i].overrideDestination);
+                    break;
+                }
             }
         }
     }
