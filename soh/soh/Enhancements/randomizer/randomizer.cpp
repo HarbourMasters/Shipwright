@@ -31,7 +31,6 @@
 #include "randomizer_settings_window.h"
 #include "savefile.h"
 #include "soh/util.h"
-#include "soh/Extractor/portable-file-dialogs.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -3074,27 +3073,10 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
     return false;
 }
 
-void SpoilerPicker() {
-    auto selection = pfd::open_file("Select a file", LUS::Context::GetInstance()->GetPathRelativeToAppDirectory("Randomizer"), { "Spoilers", "*.json" }, pfd::opt::force_path).result();
-    if (!selection.empty()) {
-        CVarSetInteger("gNewFileDropped", 1);
-        CVarSetString("gDroppedFile", selection[0].c_str());
-        CVarSetString("gSpoilerLog", selection[0].c_str());
-        CVarSave();
-        CVarLoad();
-    }
-    selectSpoiler = 1;
-}
-
 void RandomizerSettingsWindow::DrawElement() {
     if (generated) {
         generated = 0;
         randoThread.join();
-    }
-    if (selectSpoiler) {
-        selectSpoiler = 0;
-        pickingSpoiler = 0;
-        selectSpoilerThread.join();
     }
 
     // Randomizer settings
@@ -3168,7 +3150,7 @@ void RandomizerSettingsWindow::DrawElement() {
         return;
     }
 
-    bool disableEditingRandoSettings = CVarGetInteger("gRandoGenerating", 0) || CVarGetInteger("gOnFileSelectNameEntry", 0) || pickingSpoiler;
+    bool disableEditingRandoSettings = CVarGetInteger("gRandoGenerating", 0) || CVarGetInteger("gOnFileSelectNameEntry", 0);
     if (disableEditingRandoSettings) {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
     }
@@ -3202,8 +3184,15 @@ void RandomizerSettingsWindow::DrawElement() {
 
     UIWidgets::Spacer(0);
     if (ImGui::Button("Select Spoiler")) {
-        pickingSpoiler = 1;
-        selectSpoilerThread = std::thread(&SpoilerPicker);
+        ImGui::OpenPopup("Open File");
+    }
+    if (spoiler_dialog.showFileDialog("Open File", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, ImVec2(600, 310), ".json")) {
+        auto path = spoiler_dialog.selected_path.c_str();
+        CVarSetInteger("gNewFileDropped", 1);
+        CVarSetString("gDroppedFile", path);
+        CVarSetString("gSpoilerLog", path);
+        CVarSave();
+        CVarLoad();
     }
     ImGui::SameLine();
     std::string spoilerfilepath = CVarGetString("gSpoilerLog", "");

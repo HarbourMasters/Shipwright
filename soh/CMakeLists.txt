@@ -205,6 +205,12 @@ else()
 # }}}
 endif()
 
+# soh/ImGuiFileBrowser {{{
+file(GLOB_RECURSE soh__ImGuiFileBrowser RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/ImGuiFileBrowser/*.cpp" "soh/ImGuiFileBrowser/*.h")
+
+source_group("soh\\ImGuiFileBrowser" REGULAR_EXPRESSION "soh/ImGuiFileBrowser/*")
+# }}}
+
 # soh/resource {{{
 file(GLOB_RECURSE soh__Resource RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/resource/*.cpp" "soh/resource/*.h")
 
@@ -256,6 +262,7 @@ set(ALL_FILES
     ${soh__config}
     ${soh__Enhancements}
     ${soh__Extractor}
+	${soh__ImGuiFileBrowser}
     ${soh__Resource}
     ${src__}
 )
