@@ -1060,12 +1060,14 @@ void RegisterBossSouls() {
             default: break;
         }
 
-    //Deletes all actors in the boss category if the soul isn't found, with the exception of ToT since Zora's Sapphire becomes a boss for some reason.
-    //See `z_demo_effect.c`
-    if (!Flags_GetRandomizerInf(rand_inf) && actual->category == ACTORCAT_BOSS && gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
-        Actor_Delete(&gPlayState->actorCtx, actual, gPlayState);
-    }
-    });
+    //Deletes all actors in the boss category if the soul isn't found.
+    //Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual bosses,
+    //so ignore any "boss" if `rand_inf` doesn't change from RAND_INF_MAX.
+    if (rand_inf != RAND_INF_MAX) {
+         if (!Flags_GetRandomizerInf(rand_inf) && actual->category == ACTORCAT_BOSS) {
+            Actor_Delete(&gPlayState->actorCtx, actual, gPlayState);
+        }
+    }});
 
 }
 
