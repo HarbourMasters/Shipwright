@@ -1101,20 +1101,13 @@ int Fill() {
       printf("Done");
       ctx->CreateItemOverrides();
       ctx->GetEntranceShuffler()->CreateEntranceOverrides();
-      //Always execute ganon hint generation for the funny line  
-      CreateGanonAndSheikText();
-      CreateAltarText();
-      CreateDampesDiaryText();
-      CreateGregRupeeHint();
-      CreateSariaText();
-      if (ctx->GetOption(RSK_GOSSIP_STONE_HINTS).IsNot(RO_GOSSIP_STONES_NONE)) {
-        printf("\x1b[10;10HCreating Hints...");
-        CreateAllHints();
-        printf("Done");
-      }
-      if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ON_HINT)) {
-        CreateMerchantsHints();
-      }
+      
+      //funny ganon line
+      Text ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
+      CreateMessageFromTextObject(0x70CB, 0, 2, 3, AddColorsAndFormat(ganonText));
+      SetGanonText(ganonText);
+      
+      CreateAllHints();
       CreateWarpSongTexts();
       return 1;
     }

@@ -38,12 +38,13 @@ Context::Context() {
         { "Entrance", HINT_TYPE_ENTRANCE },
         { "Sometimes", HINT_TYPE_SOMETIMES },
         { "Random", HINT_TYPE_RANDOM },
-        { "Item", HINT_TYPE_ITEM },
+        { "Static", HINT_TYPE_STATIC },
         { "Song", HINT_TYPE_SONG },
         { "Overworld", HINT_TYPE_OVERWORLD },
         { "Dungeon", HINT_TYPE_DUNGEON },
         { "Junk", HINT_TYPE_JUNK },
-        { "NamedItem", HINT_TYPE_NAMED_ITEM },
+        { "Named Item", HINT_TYPE_NAMED_ITEM },
+        { "Random", HINT_TYPE_RANDOM }
     };
     for (int i = 0; i < RC_MAX; i++) {
         itemLocationTable[i] = ItemLocation((RandomizerCheck)i);

@@ -37,7 +37,7 @@ extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
 extern std::map<RandomizerCheckArea, std::string> rcAreaNames;
-extern std::unordered_map<HintType, std::string> hintTypeNames;
+extern std::array<std::string, HINT_TYPE_MAX> hintTypeNames;
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
@@ -140,6 +140,18 @@ Randomizer::Randomizer() {
             item.GetName().english,
             item.GetName().french,
         };
+    }
+    for (auto area : rcAreaNames) {
+        SpoilerfileAreaNameToEnum[area.second] = area.first;
+    }
+    SpoilerfileAreaNameToEnum["Inside Ganon's Castle"] = RCAREA_GANONS_CASTLE;
+    SpoilerfileAreaNameToEnum["the Lost Woods"] = RCAREA_LOST_WOODS;
+    SpoilerfileAreaNameToEnum["the Market"] = RCAREA_MARKET;
+    SpoilerfileAreaNameToEnum["the Graveyard"] = RCAREA_GRAVEYARD;
+    SpoilerfileAreaNameToEnum["Haunted Wasteland"] = RCAREA_WASTELAND;
+    SpoilerfileAreaNameToEnum["outside Ganon's Castle"] = RCAREA_HYRULE_CASTLE;
+    for (int c = 0; c < hintTypeNames.size(); c++) {
+        SpoilerfileHintTypeNameToEnum[hintTypeNames[c]] = (HintType)c;
     }
 }
 
