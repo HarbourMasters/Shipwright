@@ -5175,7 +5175,7 @@ static Vec3s sSinkingLureLocationPos[] = {
 };
 
 //Function for giving the fishing rod when leaving
-void Fishing_Leave(Fishing* this, PlayState* play) {
+void Fishing_RodLeave(Fishing* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
 
@@ -5513,7 +5513,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             player->actor.speedXZ = 0.0f;
             
             if (CVarGetInteger("gFishingRodLeave", 0)) {
-            Fishing_Leave(this, play);
+            Fishing_RodLeave(this, play);
             }
 
             if (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) {
