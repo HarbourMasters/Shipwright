@@ -1052,10 +1052,10 @@ void RegisterBossSouls() {
                 rand_inf = RAND_INF_TWINROVA_SOUL;
                 break;
             case SCENE_GANONDORF_BOSS:
-                rand_inf = RAND_INF_GANON_SOUL;
-                break;
             case SCENE_GANON_BOSS:
-                rand_inf = RAND_INF_GANON_SOUL;
+                if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS) == RO_BOSS_SOULS_ON_PLUS_GANON) {
+                    rand_inf = RAND_INF_GANON_SOUL;
+                }
                 break;
             default: break;
         }
