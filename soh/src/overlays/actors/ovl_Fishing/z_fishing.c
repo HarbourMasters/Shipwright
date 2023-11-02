@@ -5189,15 +5189,7 @@ void Fishing_Leave(Fishing* this, PlayState* play) {
                 if (play) {}
 
                 if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE_FADING) {
-                    Player* player = GET_PLAYER(play);
-
-                    if (gSaveContext.temporaryWeapon) {
-                        player->currentSwordItemId = ITEM_NONE;
-                        gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-                        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
-                        gSaveContext.temporaryWeapon = false;
-                    }
-
+                    
                     if (D_80B7A68C != 0) {
                         D_80B7A688 = 1;
                         D_80B7A68C = 0;
@@ -5207,7 +5199,6 @@ void Fishing_Leave(Fishing* this, PlayState* play) {
                 }
                 break;
             case 1:
-                D_80B7A6CC = 11;
                 func_800A9F6C(0.0f, 150, 10, 10);
                 break;
         }
