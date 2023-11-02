@@ -834,6 +834,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Disables the voice audio when Navi calls you");
                 UIWidgets::PaddedEnhancementCheckbox("Disable Hot/Underwater Warning Text", "gDisableTunicWarningText", true, false);
                 UIWidgets::Tooltip("Disables warning text when you don't have on the Goron/Zora Tunic in Hot/Underwater conditions.");
+                
                 ImGui::EndMenu();
             }
 
