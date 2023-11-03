@@ -191,7 +191,7 @@ jobs:
     needs: generate-soh-otr
     runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
     container:
-      image: devkitpro/devkita64:latest
+      image: devkitpro/devkita64:20230929
     steps:
     - name: Install dependencies
       run: |
@@ -230,7 +230,7 @@ jobs:
     needs: generate-soh-otr
     runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
     container:
-      image: devkitpro/devkitppc:20230110
+      image: devkitpro/devkitppc:20230929
     steps:
     - name: Install dependencies
       if: ${{ !vars.LINUX_RUNNER }}
