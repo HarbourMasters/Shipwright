@@ -453,7 +453,6 @@ std::string FormatJsonHintText(std::string jsonHint) {
             formattedHintMessage.replace(start_pos, textToReplace.length(), iconString);
         }
     }
-    formattedHintMessage += 0x02;
     return formattedHintMessage;
 }
 

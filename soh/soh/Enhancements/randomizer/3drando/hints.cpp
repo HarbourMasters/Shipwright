@@ -453,7 +453,7 @@ static bool CreateHint(RandomizerCheck hintedLocation, uint8_t copies, HintType 
     Text itemText = ctx->GetItemLocation(hintedLocation)->GetPlacedItem().GetHint().GetText();
     if (type >= HINT_TYPE_ALWAYS && type < HINT_TYPE_NAMED_ITEM){
       Text locationText = Rando::StaticData::GetLocation(hintedLocation)->GetHint()->GetText();
-      finalHint = prefix + locationText + " #"+itemText+"#.";
+      finalHint = prefix + "%r" + locationText + " %g#"+itemText+"#%w.";
     }
     else if (type == HINT_TYPE_NAMED_ITEM || type == HINT_TYPE_RANDOM){
       Text regionText = GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
