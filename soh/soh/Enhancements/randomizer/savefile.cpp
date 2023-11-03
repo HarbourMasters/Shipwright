@@ -444,6 +444,7 @@ extern "C" void Randomizer_InitSaveFile() {
 
     // Reset triforce pieces collected
     gSaveContext.triforcePiecesCollected = 0;
+    gSaveContext.grantBossKey = 0;
 
     SetStartingItems();
 }

@@ -1968,7 +1968,9 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     s16 actorParams = 0;
     if (IS_RANDO) {
         Player* player = GET_PLAYER(play);
-        if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
+        if (textId == 0x406B && play->sceneNum == SCENE_KAKARIKO_VILLAGE) {
+            messageEntry = Randomizer::GetChristmasTreeMessage();
+        } else if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
             if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
                 u16 iceTrapTextId = Random(0, NUM_ICE_TRAP_MESSAGES);
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, iceTrapTextId);

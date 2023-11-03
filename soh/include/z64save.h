@@ -324,6 +324,7 @@ typedef struct {
     /*        */ u16 randomizerInf[10];
     /*        */ u16 adultTradeItems;
     /*        */ u8 triforcePiecesCollected;
+    /*        */ u8 grantBossKey;
     // #endregion
 } SaveContext; // size = 0x1428
 

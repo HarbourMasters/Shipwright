@@ -517,6 +517,11 @@ void DrawInfoTab() {
     if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
         ImGui::InputScalar("Triforce Pieces", ImGuiDataType_U16, &gSaveContext.triforcePiecesCollected);
         UIWidgets::InsertHelpHoverText("Currently obtained Triforce Pieces. For Triforce Hunt.");
+
+        bool thFlag = gSaveContext.grantBossKey != 0;
+        if (ImGui::Checkbox("Finished Triforce Hunt", &thFlag)) {
+            gSaveContext.grantBossKey = thFlag;
+        }
     }
 
     ImGui::PushItemWidth(ImGui::GetFontSize() * 10);

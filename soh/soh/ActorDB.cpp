@@ -604,8 +604,25 @@ static ActorDBInit EnPartnerInit = {
 };
 extern "C" s16 gEnPartnerId;
 
+#include "src/overlays/actors/ovl_En_ChristmasTree/z_en_christmastree.h"
+static ActorDBInit EnChristmasTreeInit = {
+    "En_ChristmasTree",
+    "Christmas Tree",
+    ACTORCAT_PROP,
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY),
+    OBJECT_GAMEPLAY_KEEP,
+    sizeof(EnChristmasTree),
+    (ActorFunc)EnChristmasTree_Init,
+    (ActorFunc)EnChristmasTree_Destroy,
+    (ActorFunc)EnChristmasTree_Update,
+    (ActorFunc)EnChristmasTree_Draw,
+    nullptr,
+};
+extern "C" s16 gEnChristmasTreeId;
+
 void ActorDB::AddBuiltInCustomActors() {
     gEnPartnerId = ActorDB::Instance->AddEntry(EnPartnerInit).entry.id;
+    gEnChristmasTreeId = ActorDB::Instance->AddEntry(EnChristmasTreeInit).entry.id;
 }
 
 extern "C" ActorDBEntry* ActorDB_Retrieve(const int id) {

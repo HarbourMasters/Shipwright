@@ -60,6 +60,7 @@ const std::string Randomizer::hintMessageTableID = "RandomizerHints";
 const std::string Randomizer::merchantMessageTableID = "RandomizerMerchants";
 const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
 const std::string Randomizer::triforcePieceMessageTableID = "RandomizerTriforcePiece";
+const std::string Randomizer::christmasTreeMessageTableID = "RandomizerChristmasTree";
 const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
 const std::string Randomizer::randoMiscHintsTableID = "RandomizerMiscHints";
@@ -5515,27 +5516,27 @@ CustomMessage Randomizer::GetRupeeMessage(u16 rupeeTextId) {
 void CreateTriforcePieceMessages() {
     CustomMessage TriforcePieceMessages[NUM_TRIFORCE_PIECE_MESSAGES] = {
 
-        { "You found a %yTriforce Piece%w!&%g{{current}}%w down, %c{{remaining}}%w to go. It's a start!",
+        { "You found a %yChristmas Ornament%w!&%g{{current}}%w down, %c{{remaining}}%w to go. It's a start!",
           "Ein %yTriforce-Splitter%w! Du hast&%g{{current}}%w von %c{{required}}%w gefunden. Es ist ein&Anfang!",
           "Vous trouvez un %yFragment de la&Triforce%w! Vous en avez %g{{current}}%w, il en&reste %c{{remaining}}%w à trouver. C'est un début!" },
 
-        { "You found a %yTriforce Piece%w!&%g{{current}}%w down, %c{{remaining}}%w to go. Progress!",
+        { "You found a %yChristmas Ornament%w!&%g{{current}}%w down, %c{{remaining}}%w to go. Progress!",
           "Ein %yTriforce-Splitter%w! Du hast&%g{{current}}%w von %c{{required}}%w gefunden. Es geht voran!",
           "Vous trouvez un %yFragment de la&Triforce%w! Vous en avez %g{{current}}%w, il en&reste %c{{remaining}}%w à trouver. Ça avance!" },
 
-        { "You found a %yTriforce Piece%w!&%g{{current}}%w down, %c{{remaining}}%w to go. Over half-way&there!",
+        { "You found a %yChristmas Ornament%w!&%g{{current}}%w down, %c{{remaining}}%w to go. Over half-way&there!",
           "Ein %yTriforce-Splitter%w! Du hast&schon %g{{current}}%w von %c{{required}}%w gefunden. Schon&über die Hälfte!",
           "Vous trouvez un %yFragment de la&Triforce%w! Vous en avez %g{{current}}%w, il en&reste %c{{remaining}}%w à trouver. Il en reste un&peu moins que la moitié!" },
 
-        { "You found a %yTriforce Piece%w!&%g{{current}}%w down, %c{{remaining}}%w to go. Almost done!",
+        { "You found a %yChristmas Ornament%w!&%g{{current}}%w down, %c{{remaining}}%w to go. Almost done!",
           "Ein %yTriforce-Splitter%w! Du hast&schon %g{{current}}%w von %c{{required}}%w gefunden. Fast&geschafft!",
           "Vous trouvez un %yFragment de la&Triforce%w! Vous en avez %g{{current}}%w, il en&reste %c{{remaining}}%w à trouver. C'est presque&terminé!" },
 
-        { "You completed the %yTriforce of&Courage%w! %gGG%w!",
+        { "You found all of the %yChristmas&Ornaments%w! Visit the %gChristmas&tree%w in Kakariko Village!",
           "Das %yTriforce des Mutes%w! Du hast&alle Splitter gefunden. %gGut gemacht%w!",
           "Vous avez complété la %yTriforce&du Courage%w! %gFélicitations%w!" },
 
-        { "You found a spare %yTriforce Piece%w!&You only needed %c{{required}}%w, but you have %g{{current}}%w!",
+        { "You found a spare %yChristmas Ornament%w!&You only needed %c{{required}}%w, but you have %g{{current}}%w!",
           "Ein übriger %yTriforce-Splitter%w! Du&hast nun %g{{current}}%w von %c{{required}}%w nötigen gefunden.",
           "Vous avez trouvé un %yFragment de&Triforce%w en plus! Vous n'aviez besoin&que de %c{{required}}%w, mais vous en avez %g{{current}}%w en&tout!" },
     };
@@ -5573,6 +5574,39 @@ CustomMessage Randomizer::GetTriforcePieceMessage() {
     messageEntry.Replace("{{current}}", std::to_string(current), std::to_string(current), std::to_string(current));
     messageEntry.Replace("{{remaining}}", std::to_string(remaining), std::to_string(remaining), std::to_string(remaining));
     messageEntry.Replace("{{required}}", std::to_string(required), std::to_string(required), std::to_string(required));
+    return messageEntry;
+}
+void CreateChristmasTreeMessages() {
+    CustomMessage ChristmasTreeMessages[2] = {
+
+        { "The %yChristmas tree%w seems to be&missing some of %gits magic%w... Find all&ornaments to save %rChristmas%w!",
+          "The Christmas tree seems to be&missing some of its magic...",
+          "The Christmas tree seems to be&missing some of its magic..." },
+
+        { "The tree's magic has been fully&restored. %gMerry %rChristmas%w!",
+          "The tree's magic has been fully restored. Merry Christmas!",
+          "The tree's magic has been fully restored. Merry Christmas!" }
+    };
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(Randomizer::christmasTreeMessageTableID);
+    for (unsigned int i = 0; i <= 1; i++) {
+        customMessageManager->CreateMessage(Randomizer::christmasTreeMessageTableID, i, ChristmasTreeMessages[i]);
+    }
+}
+
+CustomMessage Randomizer::GetChristmasTreeMessage() {
+    // Item is only given after the textbox, so reflect that inside the textbox.
+    uint16_t current = gSaveContext.triforcePiecesCollected;
+    uint16_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+    uint8_t messageIndex;
+
+    if (current < required) {
+        messageIndex = 0;
+    } else {
+        messageIndex = 1;
+    }
+
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::christmasTreeMessageTableID, messageIndex);
     return messageEntry;
 }
 
@@ -6108,6 +6142,7 @@ void Randomizer::CreateCustomMessages() {
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();
     CreateTriforcePieceMessages();
+    CreateChristmasTreeMessages();
     CreateNaviRandoMessages();
     CreateIceTrapRandoMessages();
     CreateFireTempleGoronMessages();
