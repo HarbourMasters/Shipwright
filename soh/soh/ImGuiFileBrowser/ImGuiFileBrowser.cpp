@@ -55,6 +55,7 @@ namespace imgui_addons
         repfile_modal_id = "Replace File?";
         selected_fn = "";
         selected_path = "";
+        selected_dir = "";
         input_fn[0] = '\0';
 
         #ifdef OSWIN
@@ -67,6 +68,14 @@ namespace imgui_addons
     ImGuiFileBrowser::~ImGuiFileBrowser()
     {
 
+    }
+
+    void ImGuiFileBrowser::setCurrentPath(const std::string& path) {
+        current_path = path;
+        std::replace(current_path.begin(), current_path.end(), '\\', '/' );
+        if (!current_path.ends_with("/")) {
+            current_path += "/";
+        }
     }
 
     void ImGuiFileBrowser::clearFileList()
@@ -139,6 +148,7 @@ namespace imgui_addons
             {
                 selected_fn.clear();
                 selected_path.clear();
+                selected_dir.clear();
                 if(mode != DialogMode::SELECT)
                 {
                     this->valid_types = valid_types;
@@ -177,6 +187,7 @@ namespace imgui_addons
                     ImGui::OpenPopup(invfile_modal_id.c_str());
                     selected_fn.clear();
                     selected_path.clear();
+                    selected_dir.clear();
                 }
 
                 else if(!check && dialog_mode == DialogMode::SAVE)
@@ -186,6 +197,7 @@ namespace imgui_addons
                 {
                     selected_fn.clear();
                     selected_path.clear();
+                    selected_dir.clear();
                     show_error = true;
                     error_title = "Invalid Directory!";
                     error_msg = "Invalid Directory Selected. Please make sure the directory exists.";
@@ -195,6 +207,7 @@ namespace imgui_addons
                 if(check)
                 {
                     selected_path = current_path + selected_fn;
+                    selected_dir = current_path;
 
                     //Add a trailing "/" to emphasize its a directory not a file. If you want just the dir name it's accessible through "selected_fn"
                     if(dialog_mode == DialogMode::SELECT)
@@ -811,15 +824,17 @@ namespace imgui_addons
         {
             #ifdef OSWIN
             // If we are on Windows and current path is relative then get absolute path from dirent structure
-            if(current_dirlist.empty() && pathdir == "./")
+            if(current_dirlist.empty())
             {
-                const wchar_t* absolute_path = dir->wdirp->patt;
-                std::string current_directory = wStringToString(absolute_path);
-                std::replace(current_directory.begin(), current_directory.end(), '\\', '/');
+                if (pathdir == "./") {
+                    const wchar_t* absolute_path = dir->wdirp->patt;
+                    std::string current_directory = wStringToString(absolute_path);
+                	std::replace(current_directory.begin(), current_directory.end(), '\\', '/');
 
-                //Remove trailing "*" returned by ** dir->wdirp->patt **
-                current_directory.pop_back();
-                current_path = current_directory;
+                    //Remove trailing "*" returned by ** dir->wdirp->patt **
+                    current_directory.pop_back();
+                    current_path = current_directory;
+                }
 
                 //Create a vector of each directory in the file path for the filepath bar. Not Necessary for linux as starting directory is "/"
                 parsePathTabs(current_path);
@@ -973,6 +988,7 @@ namespace imgui_addons
             if (ImGui::Button("Yes", getButtonSize("Yes")))
             {
                 selected_path = current_path + selected_fn;
+                selected_dir = current_path;
                 ImGui::CloseCurrentPopup();
                 ret_val = true;
             }
@@ -982,6 +998,7 @@ namespace imgui_addons
             {
                 selected_fn.clear();
                 selected_path.clear();
+                selected_dir.clear();
                 ImGui::CloseCurrentPopup();
                 ret_val = false;
             }

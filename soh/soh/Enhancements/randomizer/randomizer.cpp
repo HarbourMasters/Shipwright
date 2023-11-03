@@ -3190,6 +3190,7 @@ void RandomizerSettingsWindow::DrawElement() {
         auto path = spoiler_dialog.selected_path.c_str();
         CVarSetInteger("gNewFileDropped", 1);
         CVarSetString("gDroppedFile", path);
+        CVarSetString("gSpoilerLastPath", spoiler_dialog.selected_dir.c_str());
         CVarSetString("gSpoilerLog", path);
         CVarSave();
         CVarLoad();
@@ -6273,4 +6274,5 @@ void RandomizerSettingsWindow::InitElement() {
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     InitRandoItemTable();
+    spoiler_dialog.setCurrentPath(CVarGetString("gSpoilerLastPath", "./"));
 }
