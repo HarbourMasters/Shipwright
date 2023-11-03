@@ -5549,9 +5549,9 @@ void CreateTriforcePieceMessages() {
 
 CustomMessage Randomizer::GetTriforcePieceMessage() {
     // Item is only given after the textbox, so reflect that inside the textbox.
-    uint16_t current = gSaveContext.triforcePiecesCollected + 1;
-    uint16_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
-    uint16_t remaining = required - current;
+    uint8_t current = gSaveContext.triforcePiecesCollected + 1;
+    uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+    uint8_t remaining = required - current;
     float percentageCollected = (float)current / (float)required;
     uint8_t messageIndex;
 
@@ -5580,12 +5580,12 @@ void CreateChristmasTreeMessages() {
     CustomMessage ChristmasTreeMessages[2] = {
 
         { "The %yChristmas tree%w seems to be&missing some of %gits magic%w... Find all&ornaments to save %rChristmas%w!",
-          "The Christmas tree seems to be&missing some of its magic...",
-          "The Christmas tree seems to be&missing some of its magic..." },
+          "The %yChristmas tree%w seems to be&missing some of %gits magic%w... Find all&ornaments to save %rChristmas%w!",
+          "The %yChristmas tree%w seems to be&missing some of %gits magic%w... Find all&ornaments to save %rChristmas%w!" },
 
         { "The tree's magic has been fully&restored. %gMerry %rChristmas%w!",
-          "The tree's magic has been fully restored. Merry Christmas!",
-          "The tree's magic has been fully restored. Merry Christmas!" }
+          "The tree's magic has been fully&restored. %gMerry %rChristmas%w!",
+          "The tree's magic has been fully&restored. %gMerry %rChristmas%w!" }
     };
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::christmasTreeMessageTableID);
@@ -5596,8 +5596,8 @@ void CreateChristmasTreeMessages() {
 
 CustomMessage Randomizer::GetChristmasTreeMessage() {
     // Item is only given after the textbox, so reflect that inside the textbox.
-    uint16_t current = gSaveContext.triforcePiecesCollected;
-    uint16_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+    uint8_t current = gSaveContext.triforcePiecesCollected;
+    uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
     uint8_t messageIndex;
 
     if (current < required) {
