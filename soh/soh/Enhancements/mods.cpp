@@ -641,16 +641,20 @@ void RegisterMirrorModeHandler() {
 f32 triforcePieceScale;
 
 void RegisterTriforceHunt() {
+    static int eventTimer = -1;
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        Player* player = GET_PLAYER(gPlayState);
+        uint8_t currentPieces = gSaveContext.triforcePiecesCollected;
+        uint8_t requiredPieces = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+        
         if (!GameInteractor::IsGameplayPaused() &&
             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
 
             // Warp to credits
             if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
-                gPlayState->nextEntranceIndex = 0x6B;
-                gSaveContext.nextCutsceneIndex = 0xFFF2;
-                gPlayState->sceneLoadFlag = 0x14;
-                gPlayState->fadeTransition = 3;
+                GetItemEntry getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
+                GiveItemEntryWithoutActor(gPlayState, getItemEntry);
+                eventTimer = 1;
                 GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
             }
 
@@ -663,17 +667,42 @@ void RegisterTriforceHunt() {
                 triforcePieceScale = 0.0f;
                 GameInteractor::State::TriforceHuntPieceGiven = 0;
             }
-
-            uint8_t currentPieces = gSaveContext.triforcePiecesCollected;
-            uint8_t requiredPieces = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
-            
-            // Give Boss Key when player loads back into the savefile.
-            if (currentPieces >= requiredPieces && gPlayState->sceneLoadFlag != 0x14 &&
-                (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
-                GetItemEntry getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
-                GiveItemEntryWithoutActor(gPlayState, getItemEntry);
-            }
         }
+
+        if (currentPieces >= requiredPieces && eventTimer >= 1 && eventTimer <= 30) {
+            eventTimer++;
+        } else if (eventTimer > 30 && eventTimer <= 31) {
+            gPlayState->nextEntranceIndex = 0xDB;
+            gSaveContext.nextCutsceneIndex = 0x8000;
+            gPlayState->sceneLoadFlag = 0x14;
+            gPlayState->fadeTransition = 3;
+            eventTimer = 32;
+        }
+
+        if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE && eventTimer == 32) {
+            player->actor.world.pos.x = -1441.043;
+            player->actor.world.pos.y = 55.037;
+            player->actor.world.pos.z = 578.224;
+            player->actor.shape.rot.x = 0;
+            player->actor.shape.rot.y = 17681;
+            player->actor.shape.rot.z = 0;
+
+            GameInteractor::State::NoUIActive = 1;
+            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_END_TITLE, 0, 0, 0, 0, 0, 0, 2, false);
+            eventTimer = 33;
+        }
+
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!gPlayState) {
+            return;
+        }
+        Player* player = GET_PLAYER(gPlayState);
+        if (eventTimer == 33) {
+            player->actor.freezeTimer = 60;
+        }
+
     });
 }
 
