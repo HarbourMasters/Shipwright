@@ -173,14 +173,16 @@ void EnWood02_Init(Actor* thisx, PlayState* play2) {
     f32 floorY;
     s16 extraRot;
 
-    if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE && this->actor.params <= WOOD_TREE_KAKARIKO_ADULT) {
-        Actor_Kill(this);
-    }
+    if (Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT) == 1) {
+        if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE && this->actor.params <= WOOD_TREE_KAKARIKO_ADULT) {
+            Actor_Kill(this);
+        }
 
-    if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE && this->actor.params >= 0) {
-        this->actor.world.pos.x = 754.051;
-        this->actor.world.pos.y = 80.0;
-        this->actor.world.pos.z = 1429.908;
+        if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE && this->actor.params >= 0) {
+            this->actor.world.pos.x = 754.051;
+            this->actor.world.pos.y = 80.0;
+            this->actor.world.pos.z = 1429.908;
+        }
     }
 
     // The tree in Kakariko's day scene does not have the same params to spawn the GS

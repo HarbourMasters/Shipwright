@@ -641,18 +641,16 @@ void RegisterMirrorModeHandler() {
 f32 triforcePieceScale;
 
 void RegisterTriforceHunt() {
-    static int eventTimer = -1;
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
         Player* player = GET_PLAYER(gPlayState);
         uint8_t currentPieces = gSaveContext.triforcePiecesCollected;
         uint8_t requiredPieces = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
-        
+
         if (!GameInteractor::IsGameplayPaused() &&
             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
 
             // Warp to credits
             if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
-                eventTimer = 1;
                 GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
             }
 
@@ -666,52 +664,58 @@ void RegisterTriforceHunt() {
                 GameInteractor::State::TriforceHuntPieceGiven = 0;
             }
         }
-
-        if (currentPieces >= requiredPieces && eventTimer >= 1 && eventTimer <= 30) {
-            eventTimer++;
-        } else if (eventTimer > 30 && eventTimer <= 31) {
-            gPlayState->nextEntranceIndex = 0xDB;
-            gSaveContext.nextCutsceneIndex = 0x8000;
-            gPlayState->sceneLoadFlag = 0x14;
-            gPlayState->fadeTransition = 3;
-            eventTimer = 32;
-        }
-
-        if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE && eventTimer == 32) {
-            player->actor.world.pos.x = -1441.043;
-            player->actor.world.pos.y = 55.037;
-            player->actor.world.pos.z = 578.224;
-            player->actor.shape.rot.x = 0;
-            player->actor.shape.rot.y = 17681;
-            player->actor.shape.rot.z = 0;
-
-            GameInteractor::State::NoUIActive = 1;
-            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_END_TITLE, 0, 0, 0, 0, 0, 0, 2, false);
-            eventTimer = 33;
-        }
-
     });
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!gPlayState) {
-            return;
-        }
-        Player* player = GET_PLAYER(gPlayState);
-        if (eventTimer == 33) {
-            player->actor.freezeTimer = 60;
-        }
-
-    });
+    
 }
 
 void RegisterGrantGanonsBossKey() {
+    static uint16_t eventTimer = -1;
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        Player* player = GET_PLAYER(gPlayState);
+        Actor* aplayer = &GET_PLAYER(gPlayState)->actor;
         // Triforce Hunt needs the check if the player isn't being teleported to the credits scene.
         if (!GameInteractor::IsGameplayPaused() && Flags_GetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY) &&
             gPlayState->sceneLoadFlag != 0x14 && (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
             GetItemEntry getItemEntry =
                 ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
             GiveItemEntryWithoutActor(gPlayState, getItemEntry);
+            if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE) {
+                eventTimer = 0;
+            } else {
+                eventTimer = 1;
+            }
+        }
+
+        if (!GameInteractor::IsGameplayPaused() && gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER] > 0
+            && eventTimer == 0) {
+            eventTimer = 1;
+        }
+        if (eventTimer >= 1 && eventTimer <= 3) {
+            eventTimer++;
+        }
+        if (eventTimer == 4) {
+            if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE) {
+                player->actor.world.pos.x = -929.336;
+                player->actor.world.pos.y = 0;
+                player->actor.world.pos.z = 446.178;
+                player->actor.shape.rot.x = 0;
+                player->actor.shape.rot.y = 17537;
+                player->actor.shape.rot.z = 0;
+                GameInteractor::State::NoUIActive = 1;
+
+                if (!Actor_FindNearby(gPlayState, aplayer, ACTOR_END_TITLE, ACTORCAT_ITEMACTION, 1000)) {
+                    //Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_END_TITLE, 0, 0, 0, 0, 0, 0, 2, false);
+                }
+                
+                player->stateFlags1 = PLAYER_STATE1_INPUT_DISABLED;
+            } else {
+                eventTimer = 5;
+            }
+        }
+        if (eventTimer == 5) {
+            eventTimer = -1;
+            GameInteractor::State::NoUIActive = 0;
         }
     });
 }

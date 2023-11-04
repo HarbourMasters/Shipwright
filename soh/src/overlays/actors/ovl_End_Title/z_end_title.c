@@ -107,12 +107,12 @@ void EndTitle_DrawFull(Actor* thisx, PlayState* play) {
         gDPLoadTextureTile(OVERLAY_DISP++, sOcarinaOfTimeTex, G_IM_FMT_IA, G_IM_SIZ_8b, 112, 16, 0, 0, 112 - 1, 16 - 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 0, 0, 0, 0);
         gSPTextureRectangle(OVERLAY_DISP++, 104 << 2, 177 << 2, 216 << 2, 192 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
         
-        D_801614B0.a = 255;
-        D_801614B0.r = 205;
-        D_801614B0.g = 168;
-        D_801614B0.b = 130;
+        D_801614B0.a = 0;
+        //D_801614B0.r = 205;
+        //D_801614B0.g = 168;
+        //D_801614B0.b = 130;
 
-        gSPGrayscale(OVERLAY_DISP++, true);
+        //gSPGrayscale(OVERLAY_DISP++, true);
     } else {
         if (D_801614B0.a > 0)
 

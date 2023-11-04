@@ -50,6 +50,8 @@ void EnChristmasTree_Init(Actor* thisx, PlayState* play) {
     this->actor.targetMode = 1;
     this->actor.textId = 0x406B; // Hijacking bean seller text ID so I'm sure it doesn't clash
 
+    this->actor.shape.rot.y = -14784;
+
     this->actionFunc = EnChristmasTree_Wait;
 }
 
