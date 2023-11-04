@@ -5548,9 +5548,9 @@ void CreateTriforcePieceMessages() {
 
 CustomMessage Randomizer::GetTriforcePieceMessage() {
     // Item is only given after the textbox, so reflect that inside the textbox.
-    uint16_t current = gSaveContext.triforcePiecesCollected + 1;
-    uint16_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
-    uint16_t remaining = required - current;
+    uint8_t current = gSaveContext.triforcePiecesCollected + 1;
+    uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+    uint8_t remaining = required - current;
     float percentageCollected = (float)current / (float)required;
     uint8_t messageIndex;
 
