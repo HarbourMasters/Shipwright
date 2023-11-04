@@ -236,7 +236,7 @@ void RegisterOcarinaTimeTravel() {
         Actor* nearbyOcarinaSpot = Actor_FindNearby(gPlayState, player, ACTOR_EN_OKARINA_TAG, ACTORCAT_PROP, 120.0f);
         Actor* nearbyDoorOfTime = Actor_FindNearby(gPlayState, player, ACTOR_DOOR_TOKI, ACTORCAT_BG, 500.0f);
         Actor* nearbyFrogs = Actor_FindNearby(gPlayState, player, ACTOR_EN_FR, ACTORCAT_NPC, 300.0f);
-        uint8_t hasMasterSword = (gBitFlags[ITEM_SWORD_MASTER - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD]) & gSaveContext.inventory.equipment;
+        uint8_t hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
         uint8_t hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
         // If TimeTravel + Player have the Ocarina of Time + Have Master Sword + is in proper range
         // TODO: Once Swordless Adult is fixed: Remove the Master Sword check
@@ -387,11 +387,18 @@ void RegisterShadowTag() {
         if (!CVarGetInteger("gShadowTag", 0)) {
             return;
         }
-        if (shouldSpawn && (delayTimer <= 0)) {
-            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3, false);
-            shouldSpawn = false;
+        if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE &&  // Forest Temple Scene
+            gPlayState->roomCtx.curRoom.num == 16 ||        // Green Poe Room
+            gPlayState->roomCtx.curRoom.num == 13 ||        // Blue Poe Room
+            gPlayState->roomCtx.curRoom.num == 12) {        // Red Poe Room
+            return;
         } else {
-            delayTimer--;
+            if (shouldSpawn && (delayTimer <= 0)) {
+                Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3, false);
+                shouldSpawn = false;
+            } else {
+                delayTimer--;
+            }
         }
     });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
@@ -634,16 +641,20 @@ void RegisterMirrorModeHandler() {
 f32 triforcePieceScale;
 
 void RegisterTriforceHunt() {
+    static int eventTimer = -1;
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        Player* player = GET_PLAYER(gPlayState);
+        uint8_t currentPieces = gSaveContext.triforcePiecesCollected;
+        uint8_t requiredPieces = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+        
         if (!GameInteractor::IsGameplayPaused() &&
             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
 
             // Warp to credits
             if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
-                gPlayState->nextEntranceIndex = 0x6B;
-                gSaveContext.nextCutsceneIndex = 0xFFF2;
-                gPlayState->sceneLoadFlag = 0x14;
-                gPlayState->fadeTransition = 3;
+                GetItemEntry getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
+                GiveItemEntryWithoutActor(gPlayState, getItemEntry);
+                eventTimer = 1;
                 GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
             }
 
@@ -664,6 +675,41 @@ void RegisterTriforceHunt() {
                 GiveItemEntryWithoutActor(gPlayState, getItemEntry);
             }
         }
+
+        if (currentPieces >= requiredPieces && eventTimer >= 1 && eventTimer <= 30) {
+            eventTimer++;
+        } else if (eventTimer > 30 && eventTimer <= 31) {
+            gPlayState->nextEntranceIndex = 0xDB;
+            gSaveContext.nextCutsceneIndex = 0x8000;
+            gPlayState->sceneLoadFlag = 0x14;
+            gPlayState->fadeTransition = 3;
+            eventTimer = 32;
+        }
+
+        if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE && eventTimer == 32) {
+            player->actor.world.pos.x = -1441.043;
+            player->actor.world.pos.y = 55.037;
+            player->actor.world.pos.z = 578.224;
+            player->actor.shape.rot.x = 0;
+            player->actor.shape.rot.y = 17681;
+            player->actor.shape.rot.z = 0;
+
+            GameInteractor::State::NoUIActive = 1;
+            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_END_TITLE, 0, 0, 0, 0, 0, 0, 2, false);
+            eventTimer = 33;
+        }
+
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!gPlayState) {
+            return;
+        }
+        Player* player = GET_PLAYER(gPlayState);
+        if (eventTimer == 33) {
+            player->actor.freezeTimer = 60;
+        }
+
     });
 }
 

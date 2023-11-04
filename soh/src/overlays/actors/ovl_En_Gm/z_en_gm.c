@@ -99,9 +99,9 @@ s32 func_80A3D7C8(void) {
     } else if ((IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF) &&
                !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
         return 1;
-    } else if (!(gBitFlags[2] & gSaveContext.inventory.equipment)) { // Don't have giant's knife
+    } else if (!CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON)) { // Don't have giant's knife
         return 1;
-    } else if (gBitFlags[3] & gSaveContext.inventory.equipment) { // Have broken giant's knife
+    } else if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE)) { // Have broken giant's knife
         return 2;
     } else {
         return 3;
