@@ -3,6 +3,8 @@
 	<CallDisplayList Path="objects/object_xmas_tree/gXmasTreeDL_tri_0"/>
 	<CallDisplayList Path="objects/object_xmas_tree/mat_gXmasTreeDL_f3dlite_TreeGreen"/>
 	<CallDisplayList Path="objects/object_xmas_tree/gXmasTreeDL_tri_1"/>
+	<CallDisplayList Path="objects/object_xmas_tree/mat_gXmasTreeDL_f3dlite_TreeTip"/>
+	<CallDisplayList Path="objects/object_xmas_tree/gXmasTreeDL_tri_2"/>
 	<PipeSync/>
 	<SetGeometryMode G_LIGHTING="1" />
 	<ClearGeometryMode G_TEXTURE_GEN="1" />

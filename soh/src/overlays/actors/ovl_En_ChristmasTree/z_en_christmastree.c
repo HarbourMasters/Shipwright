@@ -77,7 +77,7 @@ void EnChristmasTree_Talk(EnChristmasTree* this, PlayState* play) {
             if (gSaveContext.triforcePiecesCollected >= Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED)) {
                 gSaveContext.sohStats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
                 gSaveContext.sohStats.gameComplete = 1;
-                gSaveContext.grantBossKey = 1;
+                Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
                 Play_PerformSave(play);
                 GameInteractor_SetTriforceHuntCreditsWarpActive(true);
             }

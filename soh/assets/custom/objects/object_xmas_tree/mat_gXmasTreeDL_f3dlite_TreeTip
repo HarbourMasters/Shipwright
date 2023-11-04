@@ -8,12 +8,12 @@
 	<Texture S="65535" T="65535" Level="0" Tile="0" On="1"/>
 	<SetTextureLUT Mode="G_TT_NONE"/>
 	<TileSync/>
-	<SetTextureImage Path="objects/object_xmas_tree/LeavesAlpha_shaded_64" Format="G_IM_FMT_RGBA" Size="G_IM_SIZ_16b_LOAD_BLOCK" Width="1"/>
-	<SetTile Format="G_IM_FMT_RGBA" Size="G_IM_SIZ_16b_LOAD_BLOCK" Line="0" TMem="0" Tile="7" Palette="0" Cms0="G_TX_WRAP" Cms1="G_TX_MIRROR" Cmt0="G_TX_CLAMP" Cmt1="G_TX_NOMIRROR" MaskS="6" ShiftS="0" MaskT="6" ShiftT="0"/>
+	<SetTextureImage Path="objects/object_xmas_tree/LeavesAlpha_64" Format="G_IM_FMT_RGBA" Size="G_IM_SIZ_16b_LOAD_BLOCK" Width="1"/>
+	<SetTile Format="G_IM_FMT_RGBA" Size="G_IM_SIZ_16b_LOAD_BLOCK" Line="0" TMem="0" Tile="7" Palette="0" Cms0="G_TX_WRAP" Cms1="G_TX_NOMIRROR" Cmt0="G_TX_WRAP" Cmt1="G_TX_NOMIRROR" MaskS="6" ShiftS="0" MaskT="6" ShiftT="0"/>
 	<LoadSync/>
 	<LoadBlock Tile="7" Uls="0" Ult="0" Lrs="4095" Dxt="128"/>
 	<PipeSync/>
-	<SetTile Format="G_IM_FMT_RGBA" Size="G_IM_SIZ_16b" Line="16" TMem="0" Tile="0" Palette="0" Cms0="G_TX_WRAP" Cms1="G_TX_MIRROR" Cmt0="G_TX_CLAMP" Cmt1="G_TX_NOMIRROR" MaskS="6" ShiftS="0" MaskT="6" ShiftT="0"/>
+	<SetTile Format="G_IM_FMT_RGBA" Size="G_IM_SIZ_16b" Line="16" TMem="0" Tile="0" Palette="0" Cms0="G_TX_WRAP" Cms1="G_TX_NOMIRROR" Cmt0="G_TX_WRAP" Cmt1="G_TX_NOMIRROR" MaskS="6" ShiftS="0" MaskT="6" ShiftT="0"/>
 	<SetTileSize T="0" Uls="0" Ult="0" Lrs="252" Lrt="252"/>
 	<SetPrimColor M="0" L="0" R="255" G="255" B="255" A="255"/>
 	<EndDisplayList/>
