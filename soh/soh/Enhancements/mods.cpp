@@ -670,52 +670,14 @@ void RegisterTriforceHunt() {
 }
 
 void RegisterGrantGanonsBossKey() {
-    static uint16_t eventTimer = -1;
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
         Player* player = GET_PLAYER(gPlayState);
-        Actor* aplayer = &GET_PLAYER(gPlayState)->actor;
         // Triforce Hunt needs the check if the player isn't being teleported to the credits scene.
         if (!GameInteractor::IsGameplayPaused() && Flags_GetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY) &&
             gPlayState->sceneLoadFlag != 0x14 && (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
             GetItemEntry getItemEntry =
                 ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
             GiveItemEntryWithoutActor(gPlayState, getItemEntry);
-            if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE) {
-                eventTimer = 0;
-            } else {
-                eventTimer = 1;
-            }
-        }
-
-        if (!GameInteractor::IsGameplayPaused() && gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER] > 0
-            && eventTimer == 0) {
-            eventTimer = 1;
-        }
-        if (eventTimer >= 1 && eventTimer <= 3) {
-            eventTimer++;
-        }
-        if (eventTimer == 4) {
-            if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE) {
-                player->actor.world.pos.x = -929.336;
-                player->actor.world.pos.y = 0;
-                player->actor.world.pos.z = 446.178;
-                player->actor.shape.rot.x = 0;
-                player->actor.shape.rot.y = 17537;
-                player->actor.shape.rot.z = 0;
-                GameInteractor::State::NoUIActive = 1;
-
-                if (!Actor_FindNearby(gPlayState, aplayer, ACTOR_END_TITLE, ACTORCAT_ITEMACTION, 1000)) {
-                    //Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_END_TITLE, 0, 0, 0, 0, 0, 0, 2, false);
-                }
-                
-                player->stateFlags1 = PLAYER_STATE1_INPUT_DISABLED;
-            } else {
-                eventTimer = 5;
-            }
-        }
-        if (eventTimer == 5) {
-            eventTimer = -1;
-            GameInteractor::State::NoUIActive = 0;
         }
     });
 }

@@ -36,6 +36,10 @@ uint8_t GameInteractor_NoUIActive() {
     return GameInteractor::State::NoUIActive;
 }
 
+void GameInteractor_SetNoUIActive(uint8_t state) {
+    GameInteractor::State::NoUIActive = state;
+}
+
 // MARK: - GameInteractor::State::LinkSize
 GILinkSize GameInteractor_GetLinkSize() {
     return GameInteractor::State::LinkSize;
