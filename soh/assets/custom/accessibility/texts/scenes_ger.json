@@ -1,0 +1,112 @@
+{
+    "0": "Im Deku-Baum",
+    "1": "Dodongos Höhle",
+    "2": "Jabu-Jabus Bauch",
+    "3": "Waldtempel",
+    "4": "Feuertempel",
+    "5": "Wassertempel",
+    "6": "Geistertempel",
+    "7": "Schattentempel",
+    "8": "Grund des Brunnens",
+    "9": "Eishöhle",
+    "10": "", // Treppe zu Ganondorfs Verließ (Keine Title-Card)
+    "11": "Gerudo-Arena",
+    "12": "Diebesversteck",
+    "13": "Ganons Schloß",
+    "14": "", // Flucht aus Ganons Schloß (Keine Title-Card)
+    "15": "", // Flucht aus Ganons Schloß 5 (Keine Title-Card)
+    "16": "Truhenlotterie",
+    "17": "Gepanzerter Spinnenparasit - Gohma",
+    "18": "Infernosaurus - King Dodongo",
+    "19": "Elektroterristrisches Biotentakel - Barinade",
+    "20": "Reitendes Unheil - Phantom-Ganon",
+    "21": "Subterraner Lavadrachoid - Volvagia",
+    "22": "Aquamöbes Wassertentakel - Morpha",
+    "23": "Höllische Hexenarmada - Killa Ohmaz",
+    "24": "Bestialische Schattenmonstrosität - Bongo Bongo",
+    "25": "Großmeister des Bösen - Ganondorf",
+    "26": "",
+    "27": "", // Eingang zum Marktplatz (Keine Title-Card)
+    "28": "",
+    "29": "",
+    "30": "Seitenstraße",
+    "31": "Seitenstraße",
+    "32": "Marktplatz",
+    "33": "Marktplatz",
+    "34": "Marktplatz",
+    "35": "", // Vor der Zitadelle der Zeit (Keine Title-Card)
+    "36": "SCENE_SHRINE_N",
+    "37": "SCENE_SHRINE_R",
+    "38": "", // Haus der Allwissenden Brüder (Keine Title-Card)
+    "39": "", // Haus der Zwillinge (Keine Title-Card)
+    "40": "", // Midos Haus (Keine Title-Card)
+    "41": "", // Salias Haus (Keine Title-Card)
+    "42": "", // Kakariko Haus 1 (Keine Title-Card)
+    "43": "", // Steinstraßen Haus 1 (Keine Title-Card)
+    "44": "Basar",
+    "45": "Kokiri-Laden",
+    "46": "Goronen-Laden",
+    "47": "Zora-Laden",
+    "48": "", // Geschlossener Laden (Keine Title-Card)
+    "49": "Magie-Laden",
+    "50": "", // Krabbelminen-Laden (Keine Title-Card)
+    "51": "Maskenhändler",
+    "52": "", // Links Haus (Keine Title-Card)
+    "53": "", // Haus der Hunde-Dame (Keine Title-Card)
+    "54": "Stall",
+    "55": "", // Impas Haus (Keine Title-Card)
+    "56": "Hylia-See Laboratorium",
+    "57": "", // Zelt des Rennläufers (Keine Title-Card)
+    "58": "Hütte des Totengräbers",
+    "59": "Feen-Quelle",
+    "60": "Feen-Brunnen",
+    "61": "Feen-Quelle",
+    "62": "", // Grotten (Keine Title-Card)
+    "63": "", // Grab 1 (Keine Title-Card)
+    "64": "", // Grab 2 (Keine Title-Card)
+    "65": "Königsgrab",
+    "66": "Schießbude",
+    "67": "Zitadelle der Zeit",
+    "68": "Halle der Weisen",
+    "69": "Burghof",
+    "70": "Burghof",
+    "71": "", // Göttinnen Cutscene (Keine Title-Card)
+    "72": "Unbekannter Ort",
+    "73": "Fischweiher",
+    "74": "Burghof",
+    "75": "Minenbowlingbahn",
+    "76": "", // Lon Lon-Farm Haus/Silo (Keine Title-Card)
+    "77": "", // Wachposten (Keine Title-Card)
+    "78": "", // Magie-Laden (Keine Title-Card)
+    "79": "Ganon",
+    "80": "Skulltulas Haus",
+    "81": "Hylianische Steppe",
+    "82": "Kakariko",
+    "83": "Friedhof",
+    "84": "Zora-Fluß",
+    "85": "Kokiri-Wald",
+    "86": "Waldlichtung",
+    "87": "Hylia-See",
+    "88": "Zoras Reich",
+    "89": "Zoras Quelle",
+    "90": "Gerudotal",
+    "91": "Verlorene Wälder",
+    "92": "Wüstenkoloss",
+    "93": "Gerudo-Festung",
+    "94": "Geisterwüste",
+    "95": "Schloß Hyrule",
+    "96": "Pfad zum Todesberg",
+    "97": "Todeskrater",
+    "98": "Goronia",
+    "99": "Lon Lon-Farm",
+    "100": "",
+    "101": "", // Debug: Test Karte (Keine Title-Card)
+    "102": "", // Debug: Test Raum (Keine Title-Card)
+    "103": "", // Debug: Tiefen Test (Keine Title-Card)
+    "104": "", // Debug: Stalfos-Ritter Miniboss Raum (Keine Title-Card)
+    "105": "", // Debug: Stalfos-Ritter Boss Raum (Keine Title-Card)
+    "106": "", // Debug: Schwarzer Link Raum (Keine Title-Card)
+    "107": "",
+    "108": "", // Debug: SRD Raum (Keine Title-Card)
+    "109": "" // Debug: Schatzkisten Teleport (Keine Title-Card)
+}

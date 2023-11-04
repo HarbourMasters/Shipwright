@@ -3551,7 +3551,7 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[3] = 1;
             }
 
-            if (CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1)) {
+            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON)) {
                 pauseCtx->worldMapPoints[3] = 2;
             }
 
@@ -3705,7 +3705,7 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[11] = 2;
             }
 
-            if (CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1)) {
+            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON)) {
                 pauseCtx->worldMapPoints[11] = 1;
             }
 

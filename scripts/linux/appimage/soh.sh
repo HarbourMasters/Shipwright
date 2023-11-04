@@ -26,7 +26,6 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
                 ln -s "$HERE"/usr/bin/{assets,soh.elf,ZAPD} "$ASSETDIR"
                 export OLDPWD="$PWD"
                 mkdir -p "$ASSETDIR"/tmp
-                mkdir -p "$ASSETDIR"/Extract
                 ln -s "$romfile" "$ASSETDIR"/tmp/rom.z64
                 cd "$ASSETDIR"
                 ROMHASH=$(sha1sum -b "$ASSETDIR"/tmp/rom.z64 | awk '{ print $1 }')
@@ -166,7 +165,6 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
                     continue;;
                 esac
                 if [[ ! -e "$SHIP_HOME"/"$OTRNAME" ]]; then
-                    cp -r "$ASSETDIR"/assets/game "$ASSETDIR"/Extract/assets
                     if [ -n "$ZENITY" ]; then
                         (echo "# 25%"; echo "25"; sleep 2; echo "# 50%"; echo "50"; sleep 3; echo "# 75%"; echo "75"; sleep 2; echo "# 100%"; echo "100"; sleep 3) |
                         zenity --progress --title="OTR Generating..." --timeout=10 --percentage=0 --icon-name=soh --window-icon=soh.png --height=80 --width=400 &

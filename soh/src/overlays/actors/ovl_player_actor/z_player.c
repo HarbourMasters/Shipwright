@@ -3857,7 +3857,7 @@ void func_8083819C(Player* this, PlayState* play) {
     if (this->currentShield == PLAYER_SHIELD_DEKU && (CVarGetInteger("gFireproofDekuShield", 0) == 0)) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_SHIELD, this->actor.world.pos.x,
                     this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 1, true);
-        Inventory_DeleteEquipment(play, EQUIP_SHIELD);
+        Inventory_DeleteEquipment(play, EQUIP_TYPE_SHIELD);
         Message_StartTextbox(play, 0x305F, NULL);
     }
 }
@@ -10591,20 +10591,20 @@ void Player_UseTunicBoots(Player* this, PlayState* play) {
             actionParam = Player_ItemToItemAction(item);
             if (actionParam >= PLAYER_IA_BOOTS_KOKIRI) {
                 u16 bootsValue = actionParam - PLAYER_IA_BOOTS_KOKIRI + 1;
-                if (CUR_EQUIP_VALUE(EQUIP_BOOTS) == bootsValue) {
-                    Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_KOKIRI + 1);
+                if (CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == bootsValue) {
+                    Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_KOKIRI);
                 } else {
-                    Inventory_ChangeEquipment(EQUIP_BOOTS, bootsValue);
+                    Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, bootsValue);
                 }
                 Player_SetEquipmentData(play, this);
-                func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_BOOTS) == PLAYER_BOOTS_IRON + 1 ? NA_SE_PL_WALK_HEAVYBOOTS
+                func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == EQUIP_VALUE_BOOTS_IRON ? NA_SE_PL_WALK_HEAVYBOOTS
                                                                                             : NA_SE_PL_CHANGE_ARMS);
             } else if (actionParam >= PLAYER_IA_TUNIC_KOKIRI) {
                 u16 tunicValue = actionParam - PLAYER_IA_TUNIC_KOKIRI + 1;
-                if (CUR_EQUIP_VALUE(EQUIP_TUNIC) == tunicValue) {
-                    Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_KOKIRI + 1);
+                if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == tunicValue) {
+                    Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_KOKIRI);
                 } else {
-                    Inventory_ChangeEquipment(EQUIP_TUNIC, tunicValue);
+                    Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, tunicValue);
                 }
                 Player_SetEquipmentData(play, this);
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
@@ -11254,7 +11254,7 @@ void Player_Draw(Actor* thisx, PlayState* play2) {
         pos.y = -130.0f;
         pos.z = -150.0f;
         scale = 0.046f;
-    } else if (CUR_EQUIP_VALUE(EQUIP_SWORD) != 2) {
+    } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) != EQUIP_VALUE_SWORD_MASTER) {
         pos.x = 25.0f;
         pos.y = -228.0f;
         pos.z = 60.0f;
@@ -12774,16 +12774,16 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
 
             if (equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_SWORD_BGS) {
                 gSaveContext.equips.buttonItems[0] = equipItem;
-                Inventory_ChangeEquipment(EQUIP_SWORD, equipItem - ITEM_SWORD_KOKIRI + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, equipItem - ITEM_SWORD_KOKIRI + 1);
                 func_808328EC(this, NA_SE_IT_SWORD_PUTAWAY);
 
             } else if (equipItem >= ITEM_SHIELD_DEKU && equipItem <= ITEM_SHIELD_MIRROR) {
-                Inventory_ChangeEquipment(EQUIP_SHIELD, equipItem - ITEM_SHIELD_DEKU + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, equipItem - ITEM_SHIELD_DEKU + 1);
                 func_808328EC(&this->actor, NA_SE_IT_SHIELD_REMOVE);
                 Player_SetEquipmentData(play, this);
 
             } else if (equipItem == ITEM_TUNIC_GORON || equipItem == ITEM_TUNIC_ZORA) {
-                Inventory_ChangeEquipment(EQUIP_TUNIC, equipItem - ITEM_TUNIC_KOKIRI + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, equipItem - ITEM_TUNIC_KOKIRI + 1);
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
                 Player_SetEquipmentData(play, this);
             }
@@ -14949,16 +14949,16 @@ void func_80852648(PlayState* play, Player* this, CsCmdActorAction* arg2) {
         
         // If MS sword is shuffled and not in the players inventory, then we need to unequip the current sword
         // and set swordless flag to mimic Link having his weapon knocked out of his hand in the Ganon fight
-        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) {
-            Inventory_ChangeEquipment(EQUIP_SWORD, 0);
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
+            Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_NONE);
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;
             Flags_SetInfTable(INFTABLE_SWORDLESS);
             return;
         }
         
-        Inventory_ChangeEquipment(EQUIP_SWORD, 2);
+        Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER);
         gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-        Inventory_DeleteEquipment(play, 0);
+        Inventory_DeleteEquipment(play, EQUIP_TYPE_SWORD);
     }
 }
 
