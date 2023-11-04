@@ -15,6 +15,7 @@ void EnChristmasTree_Draw(Actor* thisx, PlayState* play);
 
 void EnChristmasTree_Wait(EnChristmasTree* this, PlayState* play);
 void EnChristmasTree_Talk(EnChristmasTree* this, PlayState* play);
+void EnChristmasTree_SetupEndTitle(EnChristmasTree* this, PlayState* play);
 
 static ColliderCylinderInit sCylinderInit = {
     {
@@ -73,20 +74,39 @@ void EnChristmasTree_Talk(EnChristmasTree* this, PlayState* play) {
     u8 dialogState = Message_GetState(&play->msgCtx);
     if (dialogState != TEXT_STATE_CHOICE) {
         if ((dialogState == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) { // advanced final textbox
-            this->actionFunc = EnChristmasTree_Wait;
-
             // Teleport to credits when goal is reached.
             if (gSaveContext.triforcePiecesCollected >= Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED)) {
                 gSaveContext.sohStats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
                 gSaveContext.sohStats.gameComplete = 1;
-                Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
                 Play_PerformSave(play);
                 GameInteractor_SetTriforceHuntCreditsWarpActive(true);
+                this->actionFunc = EnChristmasTree_SetupEndTitle;
+            } else {
+                this->actionFunc = EnChristmasTree_Wait;
             }
         }
     }
+}
 
-    
+void EnChristmasTree_SetupEndTitle(EnChristmasTree* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
+
+    player->actor.world.pos.x = -929.336;
+    player->actor.world.pos.y = 0;
+    player->actor.world.pos.z = 446.178;
+    player->actor.shape.rot.x = 0;
+    player->actor.shape.rot.y = 17537;
+    player->actor.shape.rot.z = 0;
+
+    GameInteractor_SetNoUIActive(1);
+
+    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_END_TITLE, 0, 0, 0, 0, 0, 0, 2, false);
+
+    player->stateFlags1 = PLAYER_STATE1_INPUT_DISABLED;
+
+    Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
+
+    this->actionFunc = EnChristmasTree_Wait;
 }
 
 void EnChristmasTree_Update(Actor* thisx, PlayState* play) {
