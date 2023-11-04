@@ -56,6 +56,27 @@ static const ALIGN_ASSET(2) char gTriforcePiece2DL[] = dgTriforcePiece2DL;
 #define dgTriforcePieceCompletedDL "__OTR__objects/object_triforce_completed/gTriforcePieceCompletedDL"
 static const ALIGN_ASSET(2) char gTriforcePieceCompletedDL[] = dgTriforcePieceCompletedDL;
 
+#define dgXmasTreeDL "__OTR__objects/object_xmas_tree/gXmasTreeDL"
+static const ALIGN_ASSET(2) char gXmasTreeDL[] = dgXmasTreeDL;
+
+#define dxmas_tree_presents "__OTR__objects/gameplay_holiday/xmas_tree_presents"
+static const ALIGN_ASSET(2) char xmas_tree_presents[] = dxmas_tree_presents;
+
+#define dxmas_tree_star "__OTR__objects/gameplay_holiday/xmas_tree_star"
+static const ALIGN_ASSET(2) char xmas_tree_star[] = dxmas_tree_star;
+
+#define dxmas_tree_bauble_r "__OTR__objects/gameplay_holiday/xmas_tree_bauble_r"
+static const ALIGN_ASSET(2) char xmas_tree_bauble_r[] = dxmas_tree_bauble_r;
+
+#define dxmas_tree_bauble_g "__OTR__objects/gameplay_holiday/xmas_tree_bauble_g"
+static const ALIGN_ASSET(2) char xmas_tree_bauble_g[] = dxmas_tree_bauble_g;
+
+#define dxmas_tree_bauble_b "__OTR__objects/gameplay_holiday/xmas_tree_bauble_b"
+static const ALIGN_ASSET(2) char xmas_tree_bauble_b[] = dxmas_tree_bauble_b;
+
+#define dxmas_tree_bauble_s "__OTR__objects/gameplay_holiday/xmas_tree_bauble_s"
+static const ALIGN_ASSET(2) char xmas_tree_bauble_s[] = dxmas_tree_bauble_s;
+
 // overlays
 #define dgOptionsDividerChangeLangVtx "__OTR__overlays/ovl_file_choose/gOptionsDividerChangeLangVtx"
 static const ALIGN_ASSET(2) char gOptionsDividerChangeLangVtx[] = dgOptionsDividerChangeLangVtx;

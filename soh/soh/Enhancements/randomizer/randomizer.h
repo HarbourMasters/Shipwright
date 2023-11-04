@@ -49,6 +49,7 @@ class Randomizer {
     static const std::string merchantMessageTableID;
     static const std::string rupeeMessageTableID;
     static const std::string triforcePieceMessageTableID;
+    static const std::string christmasTreeMessageTableID;
     static const std::string NaviRandoMessageTableID;
     static const std::string IceTrapRandoMessageTableID;
     static const std::string randoMiscHintsTableID;
@@ -105,6 +106,7 @@ class Randomizer {
     static void CreateCustomMessages();
     static CustomMessage GetRupeeMessage(u16 rupeeTextId);
     static CustomMessage GetTriforcePieceMessage();
+    static CustomMessage GetChristmasTreeMessage();
     bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
 };
 

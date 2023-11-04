@@ -35,6 +35,7 @@ u64 D_801614D0[0xA00];
 PlayState* gPlayState;
 
 s16 gEnPartnerId;
+s16 gEnChristmasTreeId;
 
 void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn);
 
@@ -758,6 +759,10 @@ void Play_Init(GameState* thisx) {
         Actor_Spawn(&play->actorCtx, play, gEnPartnerId, GET_PLAYER(play)->actor.world.pos.x,
                     GET_PLAYER(play)->actor.world.pos.y + Player_GetHeight(GET_PLAYER(play)) + 5.0f,
                     GET_PLAYER(play)->actor.world.pos.z, 0, 0, 0, 1, true);
+    }
+
+    if (play->sceneNum == SCENE_KAKARIKO_VILLAGE && Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT)) {
+        Actor_Spawn(&play->actorCtx, play, gEnChristmasTreeId, -734, 0, 420, 0, 0, 0, 1, true);
     }
 }
 

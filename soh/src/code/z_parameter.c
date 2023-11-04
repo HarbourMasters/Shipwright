@@ -2600,14 +2600,6 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         gSaveContext.triforcePiecesCollected++;
         GameInteractor_SetTriforceHuntPieceGiven(true);
 
-        // Teleport to credits when goal is reached.
-        if (gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED)) {
-            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
-            gSaveContext.sohStats.gameComplete = 1;
-            Play_PerformSave(play);
-            GameInteractor_SetTriforceHuntCreditsWarpActive(true);
-        }
-
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
