@@ -1931,12 +1931,12 @@ void HintTable_Init_Item() {
 
     hintTable[TRIFORCE_PIECE] = HintText::Item({
                        //obscure text
-                       Text{"a triumph fork",  /*french*/"la Tribosse",     /*spanish*/"un trígono del triunfo"},
-                       Text{"cheese",          /*french*/"du fromage",      /*spanish*/"un porción de queso"},
-                       Text{"a gold fragment", /*french*/"un fragment d'or", /*spanish*/"un fragmento dorado"},
+                       Text{"a Christmas Ornament",  /*french*/"la Tribosse",     /*spanish*/"un trígono del triunfo"},
+                       Text{"a Christmas Ornament",          /*french*/"du fromage",      /*spanish*/"un porción de queso"},
+                       Text{"a Christmas Ornament", /*french*/"un fragment d'or", /*spanish*/"un fragmento dorado"},
                      }, {},
                        //clear text
-                       Text{"a Piece of the Triforce", /*french*/"un fragment de la Triforce", /*spanish*/"un fragmento de la Trifuerza"}
+                       Text{"a Christmas Ornament", /*french*/"un fragment de la Triforce", /*spanish*/"un fragmento de la Trifuerza"}
     );
 
     hintTable[EPONA] = HintText::Item({

@@ -106,29 +106,28 @@ void EnChristmasTree_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     Matrix_Scale(treeSize, treeSize, treeSize, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)xmas_tree);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasTreeDL);
     if (percentageCompleted >= 0.17f) {
-        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)xmas_tree_presents);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)xmas_tree_presents);
     }
     if (percentageCompleted >= 0.34f) {
-        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)xmas_tree_bauble_r);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)xmas_tree_bauble_r);
     }
     if (percentageCompleted >= 0.51f) {
-        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)xmas_tree_bauble_g);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)xmas_tree_bauble_g);
     }
     if (percentageCompleted >= 0.68f) {
-        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)xmas_tree_bauble_b);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)xmas_tree_bauble_b);
     }
     if (percentageCompleted >= 0.85f) {
-        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)xmas_tree_bauble_s);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)xmas_tree_bauble_s);
     }
     if (percentageCompleted >= 1.0f) {
-        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)xmas_tree_star);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)xmas_tree_star);
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

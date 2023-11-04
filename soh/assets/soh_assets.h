@@ -56,8 +56,8 @@ static const ALIGN_ASSET(2) char gTriforcePiece2DL[] = dgTriforcePiece2DL;
 #define dgTriforcePieceCompletedDL "__OTR__objects/object_triforce_completed/gTriforcePieceCompletedDL"
 static const ALIGN_ASSET(2) char gTriforcePieceCompletedDL[] = dgTriforcePieceCompletedDL;
 
-#define dxmas_tree "__OTR__objects/gameplay_holiday/xmas_tree"
-static const ALIGN_ASSET(2) char xmas_tree[] = dxmas_tree;
+#define dgXmasTreeDL "__OTR__objects/object_xmas_tree/gXmasTreeDL"
+static const ALIGN_ASSET(2) char gXmasTreeDL[] = dgXmasTreeDL;
 
 #define dxmas_tree_presents "__OTR__objects/gameplay_holiday/xmas_tree_presents"
 static const ALIGN_ASSET(2) char xmas_tree_presents[] = dxmas_tree_presents;

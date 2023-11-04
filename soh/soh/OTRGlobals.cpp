@@ -784,11 +784,8 @@ extern "C" void InitOTR() {
 
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
-    if (tm_now->tm_mon == 11 && tm_now->tm_mday >= 24 && tm_now->tm_mday <= 25) {
-        CVarRegisterInteger("gLetItSnow", 1);
-    } else {
-        CVarClear("gLetItSnow");
-    }
+    
+    CVarRegisterInteger("gLetItSnow", 1);
 
     srand(now);
 #ifdef ENABLE_CROWD_CONTROL

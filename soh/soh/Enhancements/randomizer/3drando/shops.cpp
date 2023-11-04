@@ -699,9 +699,9 @@ void InitTrickNames() {
      Text{"Life Heart", "Cœur de vie", "Vida Corazón"},
      Text{"Lots of Love", "Beaucoup d'amour", "Mucho amor"}};
   trickNameTable[0xDF] = {
-     Text{"Piece of Cheese", "Morceau de Fromage", "Piece of Cheese"},
-     Text{"Triforce Shard", "Éclat de Triforce", "Triforce Shard"},
-     Text{"Shiny Rock", "Caiiloux Brillant", "Shiny Rock"}};
+     Text{"Glass Ball", "Morceau de Fromage", "Piece of Cheese"},
+     Text{"Coal", "Éclat de Triforce", "Triforce Shard"},
+     Text{"Ornamento", "Caiiloux Brillant", "Shiny Rock"}};
 
 /*
   //Names for individual upgrades, in case progressive names are replaced

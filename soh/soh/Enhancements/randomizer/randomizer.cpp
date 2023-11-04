@@ -3543,21 +3543,20 @@ void RandomizerSettingsWindow::DrawElement() {
                 }
 
                 // Triforce Hunt
-                UIWidgets::EnhancementCheckbox("Triforce Hunt", "gRandomizeTriforceHunt");
+                UIWidgets::EnhancementCheckbox("Christmas Ornaments Hunt", "gRandomizeTriforceHunt");
                 UIWidgets::InsertHelpHoverText(
-                    "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n\n"
-                    "When the required amount of pieces have been found, the game is saved and Ganon's Boss key is given "
-                    "to you when you load back into the game if you desire to beat Ganon afterwards.\n\n"
-                    "Keep in mind Ganon might not be logically beatable when \"All Locations Reachable\" is turned off."
+                    "The Christmas ornnaments went missing from the tree in Kakariko Village! Find them back and restore the Christmas "
+                    "magic. The tree will get more and more decorated as you find more of the ornaments. Interact with the completed tree "
+                    "to finish the game! Your game will be saved and Ganon's Boss key will be granted once you load back into the save."
                 );
 
                 if (CVarGetInteger("gRandomizeTriforceHunt", 0)) {
                     // Triforce Hunt (total pieces)
                     UIWidgets::Spacer(0);
                     int totalPieces = CVarGetInteger("gRandomizeTriforceHuntTotalPieces", 30);
-                    ImGui::Text("Triforce Pieces in the world: %d", totalPieces);
+                    ImGui::Text("Ornaments in the world: %d", totalPieces);
                     UIWidgets::InsertHelpHoverText(
-                        "The amount of Triforce pieces that will be placed in the world. "
+                        "The amount of Christmas ornaments that will be placed in the world. "
                         "Keep in mind seed generation can fail if more pieces are placed than there are junk items in the item pool."
                     );
                     ImGui::SameLine();
@@ -3565,9 +3564,9 @@ void RandomizerSettingsWindow::DrawElement() {
 
                     // Triforce Hunt (required pieces)
                     int requiredPieces = CVarGetInteger("gRandomizeTriforceHuntRequiredPieces", 20);
-                    ImGui::Text("Triforce Pieces to win: %d", requiredPieces);
+                    ImGui::Text("Ornaments to win: %d", requiredPieces);
                     UIWidgets::InsertHelpHoverText(
-                        "The amount of Triforce pieces required to win the game."
+                        "The amount of Christmas ornaments required to win the game."
                     );
                     ImGui::SameLine();
                     UIWidgets::EnhancementSliderInt("", "##TriforceHuntRequiredPieces", "gRandomizeTriforceHuntRequiredPieces", 1, totalPieces, "", 20);
