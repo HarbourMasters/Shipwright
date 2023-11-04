@@ -27,7 +27,7 @@ s8 reverbAdd = 0;
 #define SEQ_COUNT_BGM_EVENT 17
 #define SEQ_COUNT_INSTRUMENT 6
 #define SEQ_COUNT_SFX 57
-#define SEQ_COUNT_VOICE 107
+#define SEQ_COUNT_VOICE 108
 
 size_t AuthenticCountBySequenceType(SeqType type) {
     switch (type) {
@@ -82,7 +82,7 @@ void RandomizeGroup(SeqType type) {
     // use a while loop to add duplicates if we don't have enough included sequences
     while (values.size() < AuthenticCountBySequenceType(type)) {
         for (const auto& seqData : AudioCollection::Instance->GetIncludedSequences()) {
-            if (seqData->category & type) {
+            if (seqData->category & type && seqData->canBeUsedAsReplacement) {
                 values.push_back(seqData->sequenceId);
             }
         }
@@ -97,7 +97,7 @@ void RandomizeGroup(SeqType type) {
         // don't randomize locked entries
         if ((seqData.category & type) && CVarGetInteger(cvarLockKey.c_str(), 0) == 0) {
             // Only save authentic sequence CVars
-            if (((seqData.category & SEQ_BGM_CUSTOM) || seqData.category == SEQ_FANFARE) && seqData.sequenceId >= MAX_AUTHENTIC_SEQID) {
+            if ((((seqData.category & SEQ_BGM_CUSTOM) || seqData.category == SEQ_FANFARE) && seqData.sequenceId >= MAX_AUTHENTIC_SEQID) || seqData.canBeReplaced == false) {
                 continue;
             }
             const int randomValue = values.back();
@@ -194,10 +194,11 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
             continue;
         }
         // Do not display custom sequences in the list
-        if (((seqData.category & SEQ_BGM_CUSTOM) || seqData.category == SEQ_FANFARE) && defaultValue >= MAX_AUTHENTIC_SEQID) {
+        if ((((seqData.category & SEQ_BGM_CUSTOM) || seqData.category == SEQ_FANFARE) && defaultValue >= MAX_AUTHENTIC_SEQID) || seqData.canBeReplaced == false) {
             continue;
         }
 
+        const std::string initialSfxKey = seqData.sfxKey;
         const std::string cvarKey = AudioCollection::Instance->GetCvarKey(seqData.sfxKey);
         const std::string cvarLockKey = AudioCollection::Instance->GetCvarLockKey(seqData.sfxKey);
         const std::string hiddenKey = "##" + cvarKey;
@@ -215,7 +216,8 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
         const int initialValue = map.contains(currentValue) ? currentValue : defaultValue;
         if (ImGui::BeginCombo(hiddenKey.c_str(), map.at(initialValue).label.c_str())) {
             for (const auto& [value, seqData] : map) {
-                if (~(seqData.category) & type) {
+                // If excluded as a replacement sequence, don't show in other dropdowns except the effect's own dropdown.
+                if (~(seqData.category) & type || (!seqData.canBeUsedAsReplacement && initialSfxKey != seqData.sfxKey)) {
                     continue;
                 }
 

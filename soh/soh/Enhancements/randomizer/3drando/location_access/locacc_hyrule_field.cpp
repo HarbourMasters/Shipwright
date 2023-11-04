@@ -115,7 +115,7 @@ void AreaTable_Init_HyruleField() {
                   LocationAccess(RC_LH_SUN,                    {[]{return IsAdult && WaterTempleClear && CanUse(RG_FAIRY_BOW);}}),
                   LocationAccess(RC_LH_FREESTANDING_POH,       {[]{return IsAdult && (CanUse(RG_SCARECROW) || CanPlantBean(RR_LAKE_HYLIA));}}),
                   LocationAccess(RC_LH_GS_BEAN_PATCH,          {[]{return CanPlantBugs && CanChildAttack;}}),
-                  LocationAccess(RC_LH_GS_LAB_WALL,            {[]{return IsChild && (HookshotOrBoomerang || (LogicLabWallGS && (Sticks || KokiriSword || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)))) && AtNight && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_LH_GS_LAB_WALL,            {[]{return IsChild && (HookshotOrBoomerang || (LogicLabWallGS && CanJumpslash)) && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(RC_LH_GS_SMALL_ISLAND,        {[]{return IsChild && CanChildAttack && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(RC_LH_GS_TREE,                {[]{return IsAdult && CanUse(RG_LONGSHOT) && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(RC_LH_LAB_GOSSIP_STONE,       {[]{return true;}}),
@@ -138,7 +138,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(RR_LH_FISHING_HOLE, {[]{return true;}}),
   });
 
-  areaTable[RR_LH_OWL_FLIGHT] = Area("LH Owl Flight", "Lake Hylia", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_LH_OWL_FLIGHT] = Area("LH Owl Flight", "Lake Hylia", RHT_LAKE_HYLIA, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
   });

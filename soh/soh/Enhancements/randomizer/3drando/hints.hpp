@@ -42,7 +42,9 @@ enum class HintCategory {
   Altar,
   Validation,
   OtherHint,
+  MasterSword,
   GanonLine,
+  SheikLine,
   MerchantsDialogs,
 };
 
@@ -115,8 +117,16 @@ public:
         return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::OtherHint};
     }
 
+    static auto MasterSword(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
+        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::MasterSword};
+    }
+
     static auto GanonLine(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
         return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::GanonLine};
+    }
+
+    static auto SheikLine(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
+        return HintText{std::move(obscureText), std::move(ambiguousText), std::move(clearText), HintCategory::SheikLine};
     }
 
     static auto MerchantsDialogs(std::vector<Text>&& obscureText, std::vector<Text>&& ambiguousText = {}, Text&& clearText = {}) {
@@ -220,6 +230,7 @@ Text& GetWarpRequiemText();
 Text& GetWarpNocturneText();
 Text& GetWarpPreludeText();
 
+std::string GetMasterSwordHintLoc();
 std::string GetLightArrowHintLoc();
 std::string GetDampeHintLoc();
 std::string GetGregHintLoc();
