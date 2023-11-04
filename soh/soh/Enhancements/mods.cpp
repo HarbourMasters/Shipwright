@@ -652,8 +652,6 @@ void RegisterTriforceHunt() {
 
             // Warp to credits
             if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
-                GetItemEntry getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
-                GiveItemEntryWithoutActor(gPlayState, getItemEntry);
                 eventTimer = 1;
                 GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
             }
