@@ -71,6 +71,6 @@
         <Array Name="ovl_Boss_Ganon2_Vtx_010298" Count="17" Offset="0xFF58">
             <Vtx/>
         </Array>
-        <DList Name="gGanonMasterSwordDL" Offset="0x010168"/>
+        <DList Name="gGanonMasterSwordDL" Offset="0x010068"/>
     </File>
 </Root>

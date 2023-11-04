@@ -33,7 +33,7 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
 
     gDPPipeSync(POLY_KAL_DISP++);
 
-    if (!CHECK_SLOT_AGE(SLOT(item))) {
+    if (!CHECK_AGE_REQ_SLOT(SLOT(item))) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 100, 100, 100, pauseCtx->alpha);
     } else {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
@@ -237,7 +237,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
     s16 oldCursorPoint;
     s16 moveCursorResult;
     bool dpad = (CVarGetInteger("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
-    bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && gSaveContext.n64ddFlag) ||
+    bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
                           (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
 
     // only allow mask select when:
@@ -490,7 +490,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
             pauseCtx->cursorItem[PAUSE_ITEM] = cursorItem;
             pauseCtx->cursorSlot[PAUSE_ITEM] = cursorSlot;
 
-            if (!CHECK_SLOT_AGE(cursorSlot)) {
+            if (!CHECK_AGE_REQ_SLOT(cursorSlot)) {
                 pauseCtx->nameColorSet = 1;
             }
 
@@ -538,12 +538,12 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                         gSelectingMask = cursorSlot == SLOT_TRADE_CHILD;
 
                         gSlotAgeReqs[SLOT_TRADE_CHILD] = gItemAgeReqs[ITEM_MASK_BUNNY] =
-                            ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA || CVarGetInteger("gTimelessEquipment", 0)) &&
+                            ((((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger("gAdultBunnyHood", 0)) || CVarGetInteger("gTimelessEquipment", 0)) &&
                              INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
-                                ? 9
-                                : 1;
+                                ? AGE_REQ_NONE
+                                : AGE_REQ_CHILD;
                     }
-                    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
+                    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
                         cursorSlot == SLOT_TRADE_ADULT && CHECK_BTN_ALL(input->press.button, BTN_A)) {
                         Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                         gSelectingAdultTrade = !gSelectingAdultTrade;
@@ -566,7 +566,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
                     }
                     if (CHECK_BTN_ANY(input->press.button, buttonsToCheck)) {
-                        if (CHECK_SLOT_AGE(cursorSlot) &&
+                        if (CHECK_AGE_REQ_SLOT(cursorSlot) &&
                             (cursorItem != ITEM_SOLD_OUT) && (cursorItem != ITEM_NONE)) {
                             KaleidoScope_SetupItemEquip(play, cursorItem, cursorSlot,
                                                         pauseCtx->itemVtx[index].v.ob[0] * 10,
@@ -618,7 +618,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
 
         if (gSaveContext.inventory.items[i] != ITEM_NONE) {
             if ((pauseCtx->unk_1E4 == 0) && (pauseCtx->pageIndex == PAUSE_ITEM) && (pauseCtx->cursorSpecialPos == 0)) {
-                if (CHECK_SLOT_AGE(i)) {
+                if (CHECK_AGE_REQ_SLOT(i)) {
                     if ((sEquipState == 2) && (i == 3)) {
                         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, magicArrowEffectsR[pauseCtx->equipTargetItem - 0xBF],
                                         magicArrowEffectsG[pauseCtx->equipTargetItem - 0xBF],
@@ -653,7 +653,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
 
             gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[j + 0], 4, 0);
             int itemId = gSaveContext.inventory.items[i];
-            bool not_acquired = !CHECK_ITEM_AGE(itemId);
+            bool not_acquired = !CHECK_AGE_REQ_ITEM(itemId);
             if (not_acquired) {
                 gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                 gSPGrayscale(POLY_KAL_DISP++, true);
@@ -680,7 +680,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
 
     // Adult trade item cycle
     KaleidoScope_DrawItemCycleExtras(play, SLOT_TRADE_ADULT, gSelectingAdultTrade,
-                                     gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
+                                     IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
                                      Randomizer_GetPrevAdultTradeItem(), Randomizer_GetNextAdultTradeItem());
     // Child mask item cycle (mimics the left/right item behavior from the cycling logic above)
     u8 childTradeItem = INV_CONTENT(ITEM_TRADE_CHILD);

@@ -231,8 +231,7 @@ void EnGuest_Draw(Actor* thisx, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x09, func_80A50708(play->state.gfxCtx, 160, 60, 220, 255));
     gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(D_80A50BA4[this->unk_30E]));
 
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnGuest_OverrideLimbDraw, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnGuest_OverrideLimbDraw, NULL, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -387,8 +387,8 @@ static const ALIGN_ASSET(2) char gLinkAdultGauntletPlate1Tex[] = dgLinkAdultGaun
 #define dgLinkAdultGauntletPlate2Tex "__OTR__objects/object_link_boy/gLinkAdultGauntletPlate2Tex"
 static const ALIGN_ASSET(2) char gLinkAdultGauntletPlate2Tex[] = dgLinkAdultGauntletPlate2Tex;
 
-#define dgLinkAdultHookshotRedicleVtx "__OTR__objects/object_link_boy/gLinkAdultHookshotRedicleVtx"
-static const ALIGN_ASSET(2) char gLinkAdultHookshotRedicleVtx[] = dgLinkAdultHookshotRedicleVtx;
+#define dgLinkAdultHookshotReticleVtx "__OTR__objects/object_link_boy/gLinkAdultHookshotReticleVtx"
+static const ALIGN_ASSET(2) char gLinkAdultHookshotReticleVtx[] = dgLinkAdultHookshotReticleVtx;
 
 #define dgLinkAdultHookshotReticleDL "__OTR__objects/object_link_boy/gLinkAdultHookshotReticleDL"
 static const ALIGN_ASSET(2) char gLinkAdultHookshotReticleDL[] = dgLinkAdultHookshotReticleDL;

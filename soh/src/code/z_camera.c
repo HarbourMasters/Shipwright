@@ -2138,8 +2138,6 @@ s32 Camera_Parallel1(Camera* camera) {
     OLib_Vec3fDiffToVecSphGeo(&atToEyeDir, at, eye);
     OLib_Vec3fDiffToVecSphGeo(&atToEyeNextDir, at, eyeNext);
 
-    camera->play->manualCamera = false;
-
     switch (camera->animState) {
         case 0:
         case 0xA:
@@ -3083,7 +3081,7 @@ s32 Camera_Battle1(Camera* camera) {
     }
     anim->roll += (((OREG(36) * camera->speedRatio) * (1.0f - distRatio)) - anim->roll) * PCT(OREG(37));
     camera->roll = DEGF_TO_BINANG(anim->roll);
-    camera->fov = Camera_LERPCeilF((player->swordState != 0       ? 0.8f
+    camera->fov = Camera_LERPCeilF((player->meleeWeaponState != 0       ? 0.8f
                                     : gSaveContext.health <= 0x10 ? 0.8f
                                                                   : 1.0f) *
                                        (fov - ((fov * 0.05f) * distRatio)),
@@ -7888,6 +7886,15 @@ s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags) {
                     break;
             }
         }
+
+        // Clear free camera if an action is performed that would move the camera (targeting, first person, talking)
+        if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1 &&
+            ((mode >= CAM_MODE_TARGET && mode <= CAM_MODE_BATTLE) ||
+             (mode >= CAM_MODE_FIRSTPERSON && mode <= CAM_MODE_CLIMBZ) || mode == CAM_MODE_HANGZ ||
+             mode == CAM_MODE_FOLLOWBOOMERANG)) {
+            camera->play->manualCamera = false;
+        }
+
         func_8005A02C(camera);
         camera->mode = mode;
         return 0x80000000 | mode;

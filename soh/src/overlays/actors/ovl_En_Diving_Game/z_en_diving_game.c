@@ -455,7 +455,7 @@ void func_809EEA00(EnDivingGame* this, PlayState* play) {
     if ((this->unk_292 == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play))) {
         Message_CloseTextbox(play);
         this->actor.parent = NULL;
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_SCALE_SILVER, 90.0f, 10.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZD_DIVING_MINIGAME, GI_SCALE_SILVER);
@@ -470,7 +470,7 @@ void func_809EEA90(EnDivingGame* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actionFunc = func_809EEAF8;
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_SCALE_SILVER, 90.0f, 10.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZD_DIVING_MINIGAME, GI_SCALE_SILVER);
@@ -578,7 +578,6 @@ void EnDivingGame_Draw(Actor* thisx, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x0C, EnDivingGame_EmptyDList(play->state.gfxCtx));
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeTexIndex]));
 
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnDivingGame_OverrideLimbDraw, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnDivingGame_OverrideLimbDraw, NULL, this);
     CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -146,6 +146,9 @@ u16 func_80AF55E0(PlayState* play, Actor* thisx) {
     if (reaction != 0) {
         return reaction;
     }
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SARIA_HINT)) {
+        return 0x10AD;
+    }
     if (CHECK_QUEST_ITEM(QUEST_SONG_SARIA)) {
         return 0x10AD;
     }
@@ -387,7 +390,7 @@ s32 func_80AF5DFC(EnSa* this, PlayState* play) {
         return 1;
     }
     if (play->sceneNum == SCENE_SACRED_FOREST_MEADOW && (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER))) {
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             return 5;
         }
         return CHECK_QUEST_ITEM(QUEST_SONG_SARIA) ? 2 : 5;
@@ -633,7 +636,7 @@ void func_80AF683C(EnSa* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (!(player->actor.world.pos.z >= -2220.0f) && !Play_InCsMode(play)) {
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             GivePlayerRandoRewardSaria(this, play, RC_SONG_FROM_SARIA);
             return;
         }

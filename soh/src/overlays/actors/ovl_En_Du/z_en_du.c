@@ -344,7 +344,7 @@ void func_809FE4A4(EnDu* this, PlayState* play) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_00;
         EnDu_SetupAction(this, func_809FE3C0);
     } else if (play->msgCtx.ocarinaMode >= OCARINA_MODE_06) {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaWrongCs);
             gSaveContext.cutsceneTrigger = 1;
         }
@@ -353,7 +353,7 @@ void func_809FE4A4(EnDu* this, PlayState* play) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaCorrectCs);
             gSaveContext.cutsceneTrigger = 1;
         }
@@ -442,8 +442,8 @@ void func_809FE890(EnDu* this, PlayState* play) {
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     CsCmdActorAction* csAction;
 
-    if (play->csCtx.state == CS_STATE_IDLE || gSaveContext.n64ddFlag) {
-        if (gSaveContext.n64ddFlag) {
+    if (play->csCtx.state == CS_STATE_IDLE || IS_RANDO) {
+        if (IS_RANDO) {
             play->csCtx.state = CS_STATE_IDLE;
         }
         func_8002DF54(play, &this->actor, 1);
@@ -518,9 +518,9 @@ void func_809FEB08(EnDu* this, PlayState* play) {
         EnDu_SetupAction(this, func_809FE3C0);
         return;
     }
-    if ((!gSaveContext.n64ddFlag && CUR_UPG_VALUE(UPG_STRENGTH) <= 0) ||
-         (gSaveContext.n64ddFlag && !Flags_GetTreasure(play, 0x1E))) {
-        if (gSaveContext.n64ddFlag) {
+    if ((!IS_RANDO && CUR_UPG_VALUE(UPG_STRENGTH) <= 0) ||
+         (IS_RANDO && !Flags_GetTreasure(play, 0x1E))) {
+        if (IS_RANDO) {
             Flags_SetTreasure(play, 0x1E);
         }
         this->actor.textId = 0x301C;
@@ -548,7 +548,7 @@ void func_809FEC70(EnDu* this, PlayState* play) {
         EnDu_SetupAction(this, func_809FECE4);
     } else {
         f32 xzRange = this->actor.xzDistToPlayer + 1.0f;
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_BRACELET, xzRange, fabsf(this->actor.yDistToPlayer) + 1.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_DARUNIAS_JOY, GI_BRACELET);

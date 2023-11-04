@@ -35,7 +35,7 @@
         <Animation Name="gSheikPlayingHarp3Anim" Offset="0x35C8"/>
         <Animation Name="gSheikPlayingHarp4Anim" Offset="0x4570"/>
         <Animation Name="gSheikIdleAnim" Offset="0x4828"/>
-        <Texture Name="object_xcTLUT_004A40" OutName="object_xcTLUT_004A40" Format="rgba16" Width="16" Height="16" Offset="0x4A40"/>
+        <Texture Name="object_xc_TLUT_004A40" OutName="tlut_00004A40" Format="rgba16" Width="16" Height="16" Offset="0x4A40"/>
         <Animation Name="gSheikWalkingAnim" Offset="0x12FD0"/>
         <Animation Name="gSheikArmsCrossedIdleAnim" Offset="0x13AA4"/>
         <Animation Name="gSheikFallingFromContortionsAnim" Offset="0x149E4"/>
@@ -49,10 +49,10 @@
         <Animation Name="gSheikAnim_01A048" Offset="0x1A048"/>
         <Animation Name="gSheikPullingOutHarpAnim" Offset="0x1B19C"/>
         <Animation Name="gSheikFallingFromSkyAnim" Offset="0x1C0E8"/>
-        <Texture Name="gSheikEyeOpenTex" OutName="sheik_eye_open" Format="ci8" Width="32" Height="32" Offset="0x4CC0"/>
-        <Texture Name="gSheikEyeHalfClosedTex" OutName="sheik_eye_half_closed" Format="ci8" Width="32" Height="32" Offset="0x50C0"/>
-        <Texture Name="gSheikEyeShutTex" OutName="sheik_eye_shut" Format="ci8" Width="32" Height="32" Offset="0x54C0"/>
-        <Texture Name="gSheikEyeSquintingTex" OutName="sheik_eye_squinting" Format="ci8" Width="32" Height="32" Offset="0x58C0"/>
+        <Texture Name="gSheikEyeOpenTex" OutName="sheik_eye_open" Format="ci8" Width="32" Height="32" Offset="0x4CC0" TlutOffset="0x4A40"/>
+        <Texture Name="gSheikEyeHalfClosedTex" OutName="sheik_eye_half_closed" Format="ci8" Width="32" Height="32" Offset="0x50C0" TlutOffset="0x4A40"/>
+        <Texture Name="gSheikEyeShutTex" OutName="sheik_eye_shut" Format="ci8" Width="32" Height="32" Offset="0x54C0" TlutOffset="0x4A40"/>
+        <Texture Name="gSheikEyeSquintingTex" OutName="sheik_eye_squinting" Format="ci8" Width="32" Height="32" Offset="0x58C0" TlutOffset="0x4A40"/>
         <DList Name="gSheikHarpDL" Offset="0x11150"/>
         <DList Name="gSheikDL_011620" Offset="0x11620"/>
         <DList Name="gSheikDL_012970" Offset="0x12970"/>

@@ -9,6 +9,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
+#include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -179,7 +180,7 @@ void Play_Destroy(GameState* thisx) {
     }
 
     // In ER, remove link from epona when entering somewhere that doesn't support epona
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
         Entrance_HandleEponaState();
     }
 
@@ -261,6 +262,19 @@ void GivePlayerRandoRewardRequiem(PlayState* play, RandomizerCheck check) {
             player->pendingFlag.flagID = 0xAC;
             player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
         }
+    }
+}
+
+void GivePlayerRandoRewardMasterSword(PlayState* play, RandomizerCheck check) {
+    Player* player = GET_PLAYER(play);
+
+    if (gSaveContext.entranceIndex == 0x02CA && LINK_IS_ADULT && player != NULL &&
+        !Player_InBlockingCsMode(play, player) && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+        !Flags_GetRandomizerInf(RAND_INF_TOT_MASTER_SWORD)) {
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_MASTER_SWORD);
+        GiveItemEntryWithoutActor(play, getItemEntry);
+        player->pendingFlag.flagID = RAND_INF_TOT_MASTER_SWORD;
+        player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
     }
 }
 
@@ -469,7 +483,7 @@ void Play_Init(GameState* thisx) {
     // eventChkInf[5] & 0x200 = Got Impa's reward
     // entranceIndex 0x7A, Castle Courtyard - Day from crawlspace
     // entranceIndex 0x400, Zelda's Courtyard
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH) &&
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH) &&
         !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY)) {
         if (gSaveContext.entranceIndex == 0x7A) {
             gSaveContext.entranceIndex = 0x400;
@@ -545,7 +559,7 @@ void Play_Init(GameState* thisx) {
 
     if (gSaveContext.gameMode != 0 || gSaveContext.cutsceneIndex >= 0xFFF0) {
         gSaveContext.nayrusLoveTimer = 0;
-        func_800876C8(play);
+        Magic_Reset(play);
         gSaveContext.sceneSetupIndex = (gSaveContext.cutsceneIndex & 0xF) + 4;
     } else if (!LINK_IS_ADULT && IS_DAY) {
         gSaveContext.sceneSetupIndex = 0;
@@ -653,13 +667,13 @@ void Play_Init(GameState* thisx) {
 
     Fault_AddClient(&D_801614B8, ZeldaArena_Display, NULL, NULL);
     // In order to keep bunny hood equipped on first load, we need to pre-set the age reqs for the item and slot
-    if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA || CVarGetInteger("gTimelessEquipment", 0)) {
-        gItemAgeReqs[ITEM_MASK_BUNNY] = 9;
+    if ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && CVarGetInteger("gAdultBunnyHood", 0)) || CVarGetInteger("gTimelessEquipment", 0)) {
+        gItemAgeReqs[ITEM_MASK_BUNNY] = AGE_REQ_NONE;
         if(INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
-            gSlotAgeReqs[SLOT_TRADE_CHILD] = 9;
+            gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_NONE;
     }
     else {
-        gItemAgeReqs[ITEM_MASK_BUNNY] = gSlotAgeReqs[SLOT_TRADE_CHILD] = 1;
+        gItemAgeReqs[ITEM_MASK_BUNNY] = gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_CHILD;
     }
     func_800304DC(play, &play->actorCtx, play->linkActorEntry);
 
@@ -967,6 +981,7 @@ void Play_Update(PlayState* play) {
                                 R_UPDATE_RATE = 3;
                             }
                             
+                            // Transition end for standard transitions
                             GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
                         }
                         play->sceneLoadFlag = 0;
@@ -1075,6 +1090,9 @@ void Play_Update(PlayState* play) {
                             R_UPDATE_RATE = 3;
                             play->sceneLoadFlag = 0;
                             play->transitionMode = 0;
+
+                            // Transition end for sandstorm effect (delayed until effect is finished)
+                            GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
                         }
                     } else {
                         if (play->envCtx.sandstormEnvA == 255) {
@@ -1109,6 +1127,9 @@ void Play_Update(PlayState* play) {
                             R_UPDATE_RATE = 3;
                             play->sceneLoadFlag = 0;
                             play->transitionMode = 0;
+
+                            // Transition end for sandstorm effect (delayed until effect is finished)
+                            GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
                         }
                     }
                     break;
@@ -1181,7 +1202,7 @@ void Play_Update(PlayState* play) {
                 play->gameplayFrames++;
                 // Gameplay stat tracking
                 if (!gSaveContext.sohStats.gameComplete &&
-                    (!gSaveContext.isBossRush || (gSaveContext.isBossRush && !gSaveContext.isBossRushPaused))) {
+                    (!IS_BOSS_RUSH || (IS_BOSS_RUSH && !gSaveContext.isBossRushPaused))) {
                       gSaveContext.sohStats.playTimer++;
                       gSaveContext.sohStats.sceneTimer++;
                       gSaveContext.sohStats.roomTimer++;
@@ -1419,12 +1440,13 @@ skip:
     Environment_Update(play, &play->envCtx, &play->lightCtx, &play->pauseCtx, &play->msgCtx,
                        &play->gameOverCtx, play->state.gfxCtx);
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         GivePlayerRandoRewardSariaGift(play, RC_LW_GIFT_FROM_SARIA);
         GivePlayerRandoRewardSongOfTime(play, RC_SONG_FROM_OCARINA_OF_TIME);
         GivePlayerRandoRewardZeldaLightArrowsGift(play, RC_TOT_LIGHT_ARROWS_CUTSCENE);
         GivePlayerRandoRewardNocturne(play, RC_SHEIK_IN_KAKARIKO);
         GivePlayerRandoRewardRequiem(play, RC_SHEIK_AT_COLOSSUS);
+        GivePlayerRandoRewardMasterSword(play, RC_TOT_MASTER_SWORD);
     }
 }
 
@@ -1918,7 +1940,7 @@ void* Play_LoadFile(PlayState* play, RomFile* file) {
 
 void Play_InitEnvironment(PlayState* play, s16 skyboxId) {
     // For entrance rando, ensure the correct weather state and sky mode is applied
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         Entrance_OverrideWeatherState();
     }
     Skybox_Init(&play->state, &play->skyboxCtx, skyboxId);
@@ -1955,7 +1977,7 @@ void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
 
     OTRPlay_SpawnScene(play, sceneNum, spawn);
 
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         Entrance_OverrideSpawnScene(sceneNum, spawn);
     }
 }
@@ -2307,18 +2329,13 @@ void Play_PerformSave(PlayState* play) {
     if (play != NULL && gSaveContext.fileNum != 0xFF) {
         Play_SaveSceneFlags(play);
         gSaveContext.savedSceneNum = play->sceneNum;
-        if (gSaveContext.temporaryWeapon) {
-            gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-            GET_PLAYER(play)->currentSwordItemId = ITEM_NONE;
-            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
-            Save_SaveFile();
-            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-            GET_PLAYER(play)->currentSwordItemId = ITEM_SWORD_KOKIRI;
-            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
-        } else {
-            Save_SaveFile();
-        }
-        if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF) {
+        Save_SaveFile();
+
+        uint8_t triforceHuntCompleted =
+            IS_RANDO &&
+            gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) &&
+            Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT);
+        if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF || triforceHuntCompleted) {
             Overlay_DisplayText(3.0f, "Game Saved");
         }
     }
