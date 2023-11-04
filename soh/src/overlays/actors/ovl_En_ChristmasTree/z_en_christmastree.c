@@ -6,6 +6,7 @@
 
 #include "z_en_christmastree.h"
 #include "soh_assets.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 void EnChristmasTree_Init(Actor* thisx, PlayState* play);
 void EnChristmasTree_Destroy(Actor* thisx, PlayState* play);
