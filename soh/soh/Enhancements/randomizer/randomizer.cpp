@@ -483,9 +483,9 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_FISHING_TALK_ABOUT_SOMETHING,
-            CustomMessage(gSaveContext.loachHintText,
-                gSaveContext.loachHintText,
-                gSaveContext.loachHintText)
+            CustomMessage(gSaveContext.loachText,
+                gSaveContext.loachText,
+                gSaveContext.loachText)
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_FROGS_UNDERWATER,
@@ -1346,8 +1346,8 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
                                         ARRAY_COUNT(gSaveContext.gregHintText));
         gSaveContext.gregCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["gregLoc"]];
 
-        SohUtils::CopyStringToCharArray(gSaveContext.loachHintText, spoilerFileJson["loachText"],
-                                        ARRAY_COUNT(gSaveContext.loachHintText));
+        SohUtils::CopyStringToCharArray(gSaveContext.loachText, spoilerFileJson["loachText"],
+                                        ARRAY_COUNT(gSaveContext.loachText));
 
         SohUtils::CopyStringToCharArray(gSaveContext.sheikText, spoilerFileJson["sheikText"],
                                         ARRAY_COUNT(gSaveContext.sheikText));

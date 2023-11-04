@@ -214,7 +214,7 @@ void SaveManager::LoadRandomizerVersion2() {
     SaveManager::Instance->LoadCharArray("gregHintText", gSaveContext.gregHintText,
                                          ARRAY_COUNT(gSaveContext.gregHintText));
 
-    SaveManager::Instance->LoadCharArray("loachHintText", gSaveContext.loachHintText, ARRAY_COUNT(gSaveContext.loachHintText));
+    SaveManager::Instance->LoadCharArray("loachText", gSaveContext.loachText, ARRAY_COUNT(gSaveContext.loachText));
 
     SaveManager::Instance->LoadCharArray("sheikText", gSaveContext.sheikText, ARRAY_COUNT(gSaveContext.sheikText));
 
@@ -312,6 +312,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
     SaveManager::Instance->SaveData("ganonText", saveContext->ganonText);
     SaveManager::Instance->SaveData("dampeText", saveContext->dampeText);
     SaveManager::Instance->SaveData("gregHintText", saveContext->gregHintText);
+    SaveManager::Instance->SaveData("loachText", saveContext->loachText);
     SaveManager::Instance->SaveData("sheikText", saveContext->sheikText);
     SaveManager::Instance->SaveData("sariaText", saveContext->sariaText);
     SaveManager::Instance->SaveData("warpMinuetText", saveContext->warpMinuetText);

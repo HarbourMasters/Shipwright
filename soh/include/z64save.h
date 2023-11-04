@@ -303,7 +303,7 @@ typedef struct {
     /*        */ RandomizerCheck rewardCheck[9];
     /*        */ char ganonHintText[300];
     /*        */ char gregHintText[250];
-    /*        */ char loachHintText[250];
+    /*        */ char loachText[250];
     /*        */ char ganonText[250];
     /*        */ char dampeText[150];
     /*        */ char sheikText[200];
