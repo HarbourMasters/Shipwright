@@ -604,8 +604,31 @@ static ActorDBInit EnPartnerInit = {
 };
 extern "C" s16 gEnPartnerId;
 
+#include "src/overlays/actors/ovl_BossField_Sst/z_bossField_sst.h"
+static ActorDBInit BossFieldSsTInit = {
+    "BossField_SsT",
+    "Bongo Bongo (Field)",
+    ACTORCAT_BOSS,
+    (
+        ACTOR_FLAG_TARGETABLE |
+        ACTOR_FLAG_HOSTILE |
+        ACTOR_FLAG_UPDATE_WHILE_CULLED |
+        ACTOR_FLAG_DRAW_WHILE_CULLED |
+        ACTOR_FLAG_DRAGGED_BY_HOOKSHOT
+    ),
+    OBJECT_SST,
+    sizeof(BossSst),
+    (ActorFunc)BossFieldSst_Init,
+    (ActorFunc)BossFieldSst_Destroy,
+    (ActorFunc)BossFieldSst_UpdateHead,
+    (ActorFunc)BossFieldSst_DrawHead,
+    (ActorResetFunc)BossFieldSst_Reset,
+};
+extern "C" s16 gFieldSstId;
+
 void ActorDB::AddBuiltInCustomActors() {
     gEnPartnerId = ActorDB::Instance->AddEntry(EnPartnerInit).entry.id;
+    gFieldSstId = ActorDB::Instance->AddEntry(BossFieldSsTInit).entry.id;
 }
 
 extern "C" ActorDBEntry* ActorDB_Retrieve(const int id) {

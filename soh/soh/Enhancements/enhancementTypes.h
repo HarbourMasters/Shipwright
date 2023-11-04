@@ -1,3 +1,4 @@
+#pragma once
 typedef enum {
     WARP_MODE_OVERRIDE_OFF,
     WARP_MODE_OVERRIDE_MQ_AS_VANILLA,

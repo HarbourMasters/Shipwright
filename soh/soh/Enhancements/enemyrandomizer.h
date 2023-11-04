@@ -8,6 +8,8 @@ typedef struct EnemyEntry {
 } EnemyEntry;
 
 #define RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE 49
+//MAKE SURE TO CHANGE NUMBER WHEN ADDING MORE BOSSES!!!
+#define RANDOMIZED_BOSS_SPAWN_TABLE_SIZE 1
 
 bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, int16_t params, float posX);
 bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy);
