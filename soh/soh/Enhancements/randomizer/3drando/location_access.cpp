@@ -55,8 +55,8 @@ bool LocationAccess::ConditionsMet() const {
 }
 
 bool LocationAccess::CanBuy() const {
-  //Not a shop location, don't need to check if buyable
-  if (!(Location(location)->IsCategory(Category::cShop))) {
+  //Not a shop or scrub location, don't need to check if buyable
+  if (!(Location(location)->IsCategory(Category::cShop)) && !(Location(location)->IsCategory(Category::cDekuScrub))) {
     return true;
   }
 
