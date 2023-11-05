@@ -147,6 +147,19 @@ void RegisterInfiniteISG() {
     });
 }
 
+//Permanent quick put away (QPA) glitched damage value
+void RegisterEzQPA() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!gPlayState) return;
+
+        if (CVarGetInteger("gEzQPA", 0) != 0) {
+            Player* player = GET_PLAYER(gPlayState);
+            player->meleeWeaponQuads[0].info.toucher.dmgFlags = 0x16171617;
+            player->meleeWeaponQuads[1].info.toucher.dmgFlags = 0x16171617;
+        }
+    });
+}
+
 void RegisterUnrestrictedItems() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!gPlayState) return;
@@ -223,7 +236,7 @@ void RegisterOcarinaTimeTravel() {
         Actor* nearbyOcarinaSpot = Actor_FindNearby(gPlayState, player, ACTOR_EN_OKARINA_TAG, ACTORCAT_PROP, 120.0f);
         Actor* nearbyDoorOfTime = Actor_FindNearby(gPlayState, player, ACTOR_DOOR_TOKI, ACTORCAT_BG, 500.0f);
         Actor* nearbyFrogs = Actor_FindNearby(gPlayState, player, ACTOR_EN_FR, ACTORCAT_NPC, 300.0f);
-        uint8_t hasMasterSword = (gBitFlags[ITEM_SWORD_MASTER - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD]) & gSaveContext.inventory.equipment;
+        uint8_t hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
         uint8_t hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
         // If TimeTravel + Player have the Ocarina of Time + Have Master Sword + is in proper range
         // TODO: Once Swordless Adult is fixed: Remove the Master Sword check
@@ -248,6 +261,8 @@ void AutoSave(GetItemEntry itemEntry) {
     // Don't autosave immediately after buying items from shops to prevent getting them for free!
     // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
     // Don't autosave during the Ganon fight when picking up the Master Sword
+    // Don't autosave in the fishing pond to prevent getting rod on B outside of the pond
+    // Don't autosave in the bombchu bowling alley to prevent having chus on B outside of the minigame
     // Don't autosave in grottos since resuming from grottos breaks the game.
     if ((CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
         (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) && (gPlayState->sceneNum != SCENE_GANON_BOSS)) {
@@ -311,8 +326,9 @@ void AutoSave(GetItemEntry itemEntry) {
                    CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
             performSave = true;
         }
-        if ((gPlayState->sceneNum == SCENE_FAIRYS_FOUNTAIN) || (gPlayState->sceneNum == SCENE_GROTTOS) ||
-                (gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES)) {
+        if (gPlayState->sceneNum == SCENE_FAIRYS_FOUNTAIN || gPlayState->sceneNum == SCENE_GROTTOS ||
+            gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES || gPlayState->sceneNum == SCENE_FISHING_POND ||
+            gPlayState->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) {
             if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS ||
                 CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS ||
                 CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
@@ -371,11 +387,18 @@ void RegisterShadowTag() {
         if (!CVarGetInteger("gShadowTag", 0)) {
             return;
         }
-        if (shouldSpawn && (delayTimer <= 0)) {
-            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3, false);
-            shouldSpawn = false;
+        if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE &&  // Forest Temple Scene
+            gPlayState->roomCtx.curRoom.num == 16 ||        // Green Poe Room
+            gPlayState->roomCtx.curRoom.num == 13 ||        // Blue Poe Room
+            gPlayState->roomCtx.curRoom.num == 12) {        // Red Poe Room
+            return;
         } else {
-            delayTimer--;
+            if (shouldSpawn && (delayTimer <= 0)) {
+                Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3, false);
+                shouldSpawn = false;
+            } else {
+                delayTimer--;
+            }
         }
     });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
@@ -1024,6 +1047,7 @@ void InitMods() {
     RegisterInfiniteNayrusLove();
     RegisterMoonJumpOnL();
     RegisterInfiniteISG();
+    RegisterEzQPA();
     RegisterUnrestrictedItems();
     RegisterFreezeTime();
     RegisterSwitchAge();

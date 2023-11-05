@@ -141,6 +141,7 @@ Text warpRequiemText;
 Text warpNocturneText;
 Text warpPreludeText;
 
+std::string masterSwordHintLoc;
 std::string lightArrowHintLoc;
 std::string dampeHintLoc;
 std::string gregHintLoc;
@@ -205,6 +206,10 @@ Text& GetWarpNocturneText() {
 
 Text& GetWarpPreludeText() {
   return warpPreludeText;
+}
+
+std::string GetMasterSwordHintLoc() {
+    return masterSwordHintLoc;
 }
 
 std::string GetLightArrowHintLoc() {
@@ -541,7 +546,6 @@ void CreateGanonAndSheikText() {
     });
     Text lightArrowArea = GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
     std::vector<RandomizerCheck> locsToCheck = {RC_GANONDORF_HINT};
-    
 
     //If there is no light arrow location, it was in the player's inventory at the start
     auto hint = Hint(RHT_LIGHT_ARROW_LOCATION_HINT);
@@ -549,20 +553,51 @@ void CreateGanonAndSheikText() {
       ganonHintText = hint.GetText()+Hint(RHT_YOUR_POCKET).GetText();
       lightArrowHintLoc = "Link's Pocket";
     } else {
-      ganonHintText = hint.GetText() + "%r" + lightArrowArea;
+      ganonHintText = hint.GetText() + "%r" + lightArrowArea + "%w";
       lightArrowHintLoc = Rando::StaticData::GetLocation(lightArrowLocation[0])->GetName();
     }
     ganonHintText = ganonHintText + "!";
+
+    //Get the location of the master sword
+    auto masterSwordLocation = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
+      return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_MASTER_SWORD;
+    });
+    Text masterSwordArea = GetHintRegion(ctx->GetItemLocation(masterSwordLocation[0])->GetParentRegionKey())->GetHint().GetText();
+
+    if (ShuffleMasterSword) {
+      // Add second text box
+      ganonHintText = ganonHintText + "^";
+      if (masterSwordLocation.empty()) {
+        ganonHintText = ganonHintText + Hint(RHT_MASTER_SWORD_LOCATION_HINT).GetText() + "%r" + Hint(RHT_YOUR_POCKET).GetText() + "%w";
+        masterSwordHintLoc = "Link's Pocket";
+      } else {
+        ganonHintText = ganonHintText + Hint(RHT_MASTER_SWORD_LOCATION_HINT).GetText() + "%r" + masterSwordArea + "%w";
+        masterSwordHintLoc = Rando::StaticData::GetLocation(masterSwordLocation[0])->GetName();
+      }
+      ganonHintText = ganonHintText + "!";
+    }
+
     CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(ganonHintText));
     ctx->AddHint(RH_GANONDORF_HINT, ganonHintText, lightArrowLocation[0], HINT_TYPE_STATIC, GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText());
 
-    if(!Settings::GanonsTrialsCount.Is(0)){
+    if (!Settings::GanonsTrialsCount.Is(0)) {
       sheikText = Hint(RHT_SHEIK_LIGHT_ARROW_HINT).GetText() + lightArrowArea + "%w.";
       locsToCheck = {RC_GANONDORF_HINT, RC_SHEIK_HINT_GC, RC_SHEIK_HINT_MQ_GC};
+
+      if (ShuffleMasterSword) {
+        sheikText = sheikText + "^" + Hint(RHT_SHEIK_MASTER_SWORD_LOCATION_HINT).GetText() + masterSwordArea + "%w.";
+      }
     }
 
-    if (IsReachableWithout(locsToCheck,lightArrowLocation[0],true)){
+    if (IsReachableWithout(locsToCheck, lightArrowLocation[0], true)) {
       ctx->GetItemLocation(lightArrowLocation[0])->SetAsHinted();
+    }
+
+    if (ShuffleMasterSword) {
+      if (IsReachableWithout(locsToCheck, masterSwordLocation[0], true)) {
+        ctx->GetItemLocation(masterSwordLocation[0])->SetHintKey(RH_GANONDORF_HINT);
+        ctx->GetItemLocation(masterSwordLocation[0])->SetAsHinted();
+      }
     }
   }
 }

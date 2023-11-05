@@ -289,7 +289,6 @@ typedef struct {
     /*        */ u8 mqDungeonCount;
     /*        */ u8 pendingIceTrapCount;
     /*        */ SohStats sohStats;
-    /*        */ u8 temporaryWeapon;
     /*        */ FaroresWindData backupFW;
     /*        */ RandomizerCheckTrackerData checkTrackerData[RC_MAX];
     // #endregion
@@ -302,11 +301,11 @@ typedef struct {
     /*        */ char childAltarText[250];
     /*        */ char adultAltarText[750];
     /*        */ RandomizerCheck rewardCheck[9];
-    /*        */ char ganonHintText[150];
+    /*        */ char ganonHintText[300];
     /*        */ char gregHintText[250];
     /*        */ char ganonText[250];
     /*        */ char dampeText[150];
-    /*        */ char sheikText[150];
+    /*        */ char sheikText[200];
     /*        */ char sariaText[150];
     /*        */ char warpMinuetText[100];
     /*        */ char warpBoleroText[100];
@@ -314,6 +313,7 @@ typedef struct {
     /*        */ char warpRequiemText[100];
     /*        */ char warpNocturneText[100];
     /*        */ char warpPreludeText[100];
+    /*        */ RandomizerCheck masterSwordHintCheck;
     /*        */ RandomizerCheck lightArrowHintCheck;
     /*        */ RandomizerCheck sariaCheck;
     /*        */ RandomizerCheck gregCheck;

@@ -70,7 +70,7 @@ void MagicWind_Init(Actor* thisx, PlayState* play) {
 void MagicWind_Destroy(Actor* thisx, PlayState* play) {
     MagicWind* this = (MagicWind*)thisx;
     SkelCurve_Destroy(play, &this->skelCurve);
-    func_800876C8(play);
+    Magic_Reset(play);
     // "wipe out"
     LOG_STRING("消滅");
 }
