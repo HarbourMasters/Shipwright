@@ -2115,12 +2115,13 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
         } else if (Randomizer_GetSettingValue(RSK_LOACH_HINT) &&
                     (
-                        textId == 0x4096 ||
-                        textId == 0x408D ||
-                        textId == 0x408E ||
-                        textId == 0x408F ||
-                        textId == 0x4094 ||
-                        textId == 0x4095
+                        textId == TEXT_FISHING_CLOUDY ||
+                        textId == TEXT_FISHING_TRY_ANOTHER_LURE ||
+                        textId == TEXT_FISHING_SECRETS ||
+                        textId == TEXT_FISHING_GOOD_FISHERMAN ||
+                        textId == TEXT_FISHING_DIFFERENT_POND ||
+                        textId == TEXT_FISHING_SCRATCHING ||
+                        textId == TEXT_FISHING_TRY_ANOTHER_LURE_WITH_SINKING_LURE
                     )) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_FISHING_TALK_ABOUT_SOMETHING);
         } else if (Randomizer_GetSettingValue(RSK_FROGS_HINT) && textId == TEXT_FROGS_UNDERWATER) {
