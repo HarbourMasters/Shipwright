@@ -1034,10 +1034,6 @@ void RegisterBossSouls() {
                 break;
             case SCENE_FOREST_TEMPLE_BOSS:
                 rand_inf = RAND_INF_PHANTOM_GANON_SOUL;
-                //Special case for Phantom Ganon's horse (and fake), as they're considered "background actors."
-                if (actual->id == ACTOR_EN_FHG) {
-                    Actor_Delete(&gPlayState->actorCtx, actual, gPlayState);
-                }
                 break;
             case SCENE_FIRE_TEMPLE_BOSS:
                 rand_inf = RAND_INF_VOLVAGIA_SOUL;
@@ -1067,7 +1063,13 @@ void RegisterBossSouls() {
          if (!Flags_GetRandomizerInf(rand_inf) && actual->category == ACTORCAT_BOSS) {
             Actor_Delete(&gPlayState->actorCtx, actual, gPlayState);
         }
-    }});
+        //Special case for Phantom Ganon's horse (and fake), as they're considered "background actors",
+        //but still control the boss fight flow.
+        if (!Flags_GetRandomizerInf(RAND_INF_PHANTOM_GANON_SOUL) && actual->id == ACTOR_EN_FHG) {
+            Actor_Delete(&gPlayState->actorCtx, actual, gPlayState);
+        }
+    }
+    });
 
 }
 
