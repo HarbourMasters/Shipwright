@@ -3181,7 +3181,7 @@ void RandomizerSettingsWindow::DrawElement() {
     if (ImGui::Button("Generate Randomizer")) {
         GenerateRandomizer(CVarGetInteger("gRandoManualSeedEntry", 0) ? seedString : "");
     }
-
+#ifndef __WIIU__
     UIWidgets::Spacer(0);
     if (ImGui::Button("Select Spoiler")) {
         ImGui::OpenPopup("Open File");
@@ -3196,6 +3196,7 @@ void RandomizerSettingsWindow::DrawElement() {
         CVarLoad();
     }
     ImGui::SameLine();
+#endif
     std::string spoilerfilepath = CVarGetString("gSpoilerLog", "");
     ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
 
@@ -6274,5 +6275,7 @@ void RandomizerSettingsWindow::InitElement() {
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     InitRandoItemTable();
+#ifndef __WIIU__
     spoiler_dialog.setCurrentPath(CVarGetString("gSpoilerLastPath", "./"));
+#endif
 }
