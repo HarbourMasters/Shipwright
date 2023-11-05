@@ -4,10 +4,10 @@
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "variables.h"
-s16 gFieldSstId;
 
 extern "C" {
 #include <z64.h>
+s16 gFieldSstId;
 }
 
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -69,10 +69,6 @@ static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     // Doesn't work {ACTOR_EN_OKUTA, 0}, // Octorok (actor directly uses water box collision to handle hiding/popping up)
     // Doesn't work {ACTOR_EN_REEBA, 0}, // Leever (reliant on surface and also normally used in tandem with a leever spawner, kills itself too quickly otherwise)
     // Kinda doesn't work { ACTOR_EN_FD, 0 }, // Flare Dancer (jumps out of bounds a lot, and possible cause of crashes because of spawning a ton of flame actors)
-};
-
-static EnemyEntry bossesToBeUsedInRandomizationOfEnemies[RANDOMIZED_BOSS_SPAWN_TABLE_SIZE] = { 
-    { gFieldSstId, -1 } 
 };
 
 static int enemiesToRandomize[] = {
@@ -242,13 +238,19 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
         uint32_t finalSeed = seed + (IS_RANDO ? gSaveContext.finalSeed : gSaveContext.sohStats.fileCreatedAt);
         Random_Init(finalSeed);
     }
+
+    static EnemyEntry bossesToBeUsedInRandomizationOfEnemies[] = { 
+        { gFieldSstId, -1 } 
+    };
+
     //Generate a random int here to see if the enemy selected should be from the boss table instead
     //Could re-use randomNumber for the bossGenCheck for efficiency, but used a diff var for clarity
     uint32_t bossGenCheck = Random(1, 101);
     uint32_t randomNumber;
     if (bossGenCheck <= 20) {
-        randomNumber = Random(0, RANDOMIZED_BOSS_SPAWN_TABLE_SIZE);
-        return bossesToBeUsedInRandomizationOfEnemies[randomNumber];
+        /* Will be used in the future when we have more than one entry
+        randomNumber = Random(0, RANDOMIZED_BOSS_SPAWN_TABLE_SIZE);*/
+        return bossesToBeUsedInRandomizationOfEnemies[0];
     } else {
         randomNumber = Random(0, RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE);
         return randomizedEnemySpawnTable[randomNumber];
