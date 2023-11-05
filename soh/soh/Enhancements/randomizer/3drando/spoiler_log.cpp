@@ -37,7 +37,7 @@ using json = nlohmann::ordered_json;
 json jsonData;
 std::map<RandomizerHintTextKey, Rando::ItemLocation*> hintedLocations;
 
-extern std::unordered_map<HintType, std::string> hintTypeNames;
+extern std::array<std::string, HINT_TYPE_MAX> hintTypeNames;
 extern std::array<std::string, 17> hintCategoryNames;
 extern Area* GetHintRegion(uint32_t);
 
@@ -643,7 +643,7 @@ std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
       size_t lastPeriod = textStr.rfind('.', lastNewline + lineLength);
       //replace '&' first if it's within the newline range
       if (ampersand < lastNewline + lineLength) {
-        lastNewline = ampersand;
+        lastNewline = ampersand + 1;
       //or move the lastNewline cursor to the next line if a '^' is encountered
       } else if (carrot < lastNewline + lineLength) {
         lastNewline = carrot + 1;
@@ -689,12 +689,15 @@ static void WriteHints(int language) {
             unformattedGregText = GetGregHintText().GetEnglish();
             unformattedSheikText = GetSheikHintText().GetEnglish();
             unformattedSariaText = GetSariaHintText().GetEnglish();
-            jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
-            jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
-            jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
-            jsonData["warpRequiemText"] = GetWarpRequiemText().GetEnglish();
-            jsonData["warpNocturneText"] = GetWarpNocturneText().GetEnglish();
-            jsonData["warpPreludeText"] = GetWarpPreludeText().GetEnglish();
+
+            if (Settings::ShuffleWarpSongs){
+              jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
+              jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
+              jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
+              jsonData["warpRequiemText"] = GetWarpRequiemText().GetEnglish();
+              jsonData["warpNocturneText"] = GetWarpNocturneText().GetEnglish();
+              jsonData["warpPreludeText"] = GetWarpPreludeText().GetEnglish();
+            }
             jsonData["childAltar"]["hintText"] = GetChildAltarText().GetEnglish();
             jsonData["adultAltar"]["hintText"] = GetAdultAltarText().GetEnglish();
             break;
@@ -705,12 +708,15 @@ static void WriteHints(int language) {
             unformattedGregText = GetGregHintText().GetFrench();
             unformattedSheikText = GetSheikHintText().GetFrench();
             unformattedSariaText = GetSariaHintText().GetFrench();
-            jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
-            jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
-            jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
-            jsonData["warpRequiemText"] = GetWarpRequiemText().GetFrench();
-            jsonData["warpNocturneText"] = GetWarpNocturneText().GetFrench();
-            jsonData["warpPreludeText"] = GetWarpPreludeText().GetFrench();
+
+            if (Settings::ShuffleWarpSongs){
+              jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
+              jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
+              jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
+              jsonData["warpRequiemText"] = GetWarpRequiemText().GetFrench();
+              jsonData["warpNocturneText"] = GetWarpNocturneText().GetFrench();
+              jsonData["warpPreludeText"] = GetWarpPreludeText().GetFrench();
+            }
             jsonData["childAltar"]["hintText"] = GetChildAltarText().GetFrench();
             jsonData["adultAltar"]["hintText"] = GetAdultAltarText().GetFrench();
             break;
@@ -756,16 +762,26 @@ static void WriteHints(int language) {
     std::string sariaText = AutoFormatHintTextString(unformattedSariaText);
 
     jsonData["ganonText"] = ganonText;
-    jsonData["ganonHintText"] = ganonHintText;
-    jsonData["lightArrowHintLoc"] = GetLightArrowHintLoc();
-    jsonData["dampeText"] = dampesText;
-    jsonData["dampeHintLoc"] = GetDampeHintLoc();
-    jsonData["gregText"] = gregText;
-    jsonData["gregLoc"] =
-        Rando::StaticData::GetLocation(GetItemLocation(RG_GREG_RUPEE)->GetRandomizerCheck())->GetName();
-    jsonData["sheikText"] = sheikText;
-    jsonData["sariaText"] = sariaText;
-    jsonData["sariaHintLoc"] = GetSariaHintLoc();
+    if (Settings::LightArrowHintText){
+      jsonData["ganonHintText"] = ganonHintText;
+      jsonData["lightArrowHintLoc"] = GetLightArrowHintLoc();
+      jsonData["masterSwordHintLoc"] = GetMasterSwordHintLoc();
+      if (!Settings::GanonsTrialsCount.Is(0)){
+        jsonData["sheikText"] = sheikText;
+      }
+    }
+    if (Settings::DampeHintText){
+      jsonData["dampeText"] = dampesText;
+      jsonData["dampeHintLoc"] = GetDampeHintLoc();
+    }
+    if (Settings::GregHintText){
+      jsonData["gregText"] = gregText;
+      jsonData["gregLoc"] = GetGregHintLoc();
+    }
+    if (Settings::SariaHintText){
+      jsonData["sariaText"] = sariaText;
+      jsonData["sariaHintLoc"] = GetSariaHintLoc();
+    }
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;
@@ -789,16 +805,16 @@ static void WriteHints(int language) {
 
         std::string textStr = AutoFormatHintTextString(unformattedHintTextString);
         jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["hint"] = textStr;
-        jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["type"] = hintTypeNames.find(hintType)->second;
-        if (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_NAMED_ITEM || hintType == HINT_TYPE_WOTH) {
+        jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["type"] = hintTypeNames[(int)hintType];
+        if ((hintType >= HINT_TYPE_ALWAYS && hintType < HINT_TYPE_JUNK) || hintType == HINT_TYPE_WOTH) {
             jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["item"] = hintedLocation->GetPlacedItemName().GetEnglish();
-            if (hintType != HINT_TYPE_NAMED_ITEM || hintType == HINT_TYPE_WOTH) {
+            if (hintType != HINT_TYPE_NAMED_ITEM) {
                 jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["location"] =
                     Rando::StaticData::GetLocation(hintedLocation->GetRandomizerCheck())->GetName();
             }
         }
         if (hintType != HINT_TYPE_TRIAL && hintType != HINT_TYPE_JUNK) {
-            jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["area"] = hint->GetHintedRegion();
+            jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["area"] = hint->GetHintedRegion(); //RANDOTODO find elegent way to capitalise this
         }
     }
 }

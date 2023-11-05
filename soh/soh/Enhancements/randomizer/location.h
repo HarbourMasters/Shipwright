@@ -84,6 +84,10 @@ class SpoilerCollectionCheck {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS, scene, flag);
     }
 
+    static auto MasterSword() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MASTER_SWORD, 0x00, 0x00);
+    }
+
     static auto Merchant(int8_t scene, uint8_t flag) {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT, scene, flag);
     }
@@ -253,9 +257,8 @@ class Location {
            SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP, bool isVanillaCompletion_ = false);
 
     static Location OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_,
-                              RandomizerCheckArea area_, ActorID actorId_, uint8_t scene, int32_t actorParams_,
-                              uint8_t flag_, std::string&& shortName_, std::string&& spoilerName_,
-                              std::vector<Category>&& categories, bool isVanillaCompletion_ = false);
+                              RandomizerCheckArea area_, ActorID actorId_, uint8_t scene,
+                              std::string&& shortName_, std::string&& spoilerName_, bool isVanillaCompletion_ = false);
 
     static Location HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, uint8_t scene,
                               int32_t actorParams_, uint8_t flag_, std::string&& shortName_, std::string&& spoilerName_,

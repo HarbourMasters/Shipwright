@@ -31,12 +31,13 @@
 #include <boost_custom/container_hash/hash_32.hpp>
 #include "randomizer_settings_window.h"
 #include "savefile.h"
+#include "soh/util.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
 extern std::map<RandomizerCheckArea, std::string> rcAreaNames;
-extern std::unordered_map<HintType, std::string> hintTypeNames;
+extern std::array<std::string, HINT_TYPE_MAX> hintTypeNames;
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
@@ -138,6 +139,18 @@ Randomizer::Randomizer() {
             item.GetName().english,
             item.GetName().french,
         };
+    }
+    for (auto area : rcAreaNames) {
+        SpoilerfileAreaNameToEnum[area.second] = area.first;
+    }
+    SpoilerfileAreaNameToEnum["Inside Ganon's Castle"] = RCAREA_GANONS_CASTLE;
+    SpoilerfileAreaNameToEnum["the Lost Woods"] = RCAREA_LOST_WOODS;
+    SpoilerfileAreaNameToEnum["the Market"] = RCAREA_MARKET;
+    SpoilerfileAreaNameToEnum["the Graveyard"] = RCAREA_GRAVEYARD;
+    SpoilerfileAreaNameToEnum["Haunted Wasteland"] = RCAREA_WASTELAND;
+    SpoilerfileAreaNameToEnum["outside Ganon's Castle"] = RCAREA_HYRULE_CASTLE;
+    for (int c = 0; c < hintTypeNames.size(); c++) {
+        SpoilerfileHintTypeNameToEnum[hintTypeNames[c]] = (HintType)c;
     }
 }
 
@@ -256,6 +269,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
     { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
     { "Shuffle Settings:Shuffle Kokiri Sword", RSK_SHUFFLE_KOKIRI_SWORD },
+    { "Shuffle Settings:Shuffle Master Sword", RSK_SHUFFLE_MASTER_SWORD },
     { "Shuffle Settings:Shuffle Weird Egg", RSK_SHUFFLE_WEIRD_EGG },
     { "Shuffle Settings:Shuffle Frog Song Rupees", RSK_SHUFFLE_FROG_SONG_RUPEES },
     { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
@@ -475,11 +489,15 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY,
-            CustomMessage(gSaveContext.dampeText, gSaveContext.dampeText, gSaveContext.dampeText)
+            CustomMessage(gSaveContext.dampeText,
+                gSaveContext.dampeText,
+                gSaveContext.dampeText)
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_CHEST_GAME_PROCEED,
-            CustomMessage(gSaveContext.gregHintText, gSaveContext.gregHintText, gSaveContext.gregHintText)
+            CustomMessage(gSaveContext.gregHintText,
+                gSaveContext.gregHintText,
+                gSaveContext.gregHintText)
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_FROGS_UNDERWATER,
@@ -491,7 +509,6 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
             Randomizer::randoMiscHintsTableID, TEXT_SARIAS_SONG_FOREST_SOUNDS,
             CustomMessage("{{message}}", "{{message}}", "{{message}}", TEXTBOX_TYPE_BLUE)
         );
-
 
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT,
         CustomMessage("Warp to&{{location}}?\x1B&%gOK&No%w\x02",
@@ -848,6 +865,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_ADULT_TRADE:
                     case RSK_SHUFFLE_MAGIC_BEANS:
                     case RSK_SHUFFLE_KOKIRI_SWORD:
+                    case RSK_SHUFFLE_MASTER_SWORD:
                     case RSK_SHUFFLE_WEIRD_EGG:
                     case RSK_SHUFFLE_FROG_SONG_RUPEES:
                     case RSK_SHUFFLE_100_GS_REWARD:
@@ -1301,31 +1319,39 @@ std::string FormatJsonHintText(std::string jsonHint) {
     return formattedHintMessage;
 }
 
+void ParseSpoilerHintText(json Json, std::string field, char* saveLoc, size_t size){
+    auto jsonIter = Json.find(field);
+    if (jsonIter != Json.end()){
+        SohUtils::CopyStringToCharArray(saveLoc, jsonIter.value(), size);
+    }
+}
+
+void CheckNameToEnum(json Json, std::string field, RandomizerCheck* saveLoc){
+    auto jsonIter = Json.find(field);
+    if (jsonIter != Json.end()){
+        *saveLoc = SpoilerfileCheckNameToEnum[jsonIter.value().get<std::string>()];
+    };
+}
+
 void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
         return;
 
-    bool success = false;
-
-    // Have all these use strncpy so that the null terminator is copied 
-    // and also set the last index to null for safety
     try {
         json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
 
-        std::string childAltarJsonText = spoilerFileJson["childAltar"]["hintText"].get<std::string>();
-        std::string formattedChildAltarText = FormatJsonHintText(childAltarJsonText);
-        strncpy(gSaveContext.childAltarText, formattedChildAltarText.c_str(), sizeof(gSaveContext.childAltarText) - 1);
-        gSaveContext.childAltarText[sizeof(gSaveContext.childAltarText) - 1] = 0;
+        SohUtils::CopyStringToCharArray(gSaveContext.childAltarText,
+                                        FormatJsonHintText(spoilerFileJson["childAltar"]["hintText"]),
+                                        ARRAY_COUNT(gSaveContext.childAltarText));
         gSaveContext.rewardCheck[0] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["emeraldLoc"]];
         gSaveContext.rewardCheck[1] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["rubyLoc"]];
         gSaveContext.rewardCheck[2] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["sapphireLoc"]];
 
-        std::string adultAltarJsonText = spoilerFileJson["adultAltar"]["hintText"].get<std::string>();
-        std::string formattedAdultAltarText = FormatJsonHintText(adultAltarJsonText);
-        strncpy(gSaveContext.adultAltarText, formattedAdultAltarText.c_str(), sizeof(gSaveContext.adultAltarText) - 1);
-        gSaveContext.adultAltarText[sizeof(gSaveContext.adultAltarText) - 1] = 0;
+        SohUtils::CopyStringToCharArray(gSaveContext.adultAltarText,
+                                        FormatJsonHintText(spoilerFileJson["adultAltar"]["hintText"]),
+                                        ARRAY_COUNT(gSaveContext.adultAltarText));
         gSaveContext.rewardCheck[3] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["forestMedallionLoc"]];
         gSaveContext.rewardCheck[4] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["fireMedallionLoc"]];
         gSaveContext.rewardCheck[5] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["waterMedallionLoc"]];
@@ -1333,64 +1359,28 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         gSaveContext.rewardCheck[7] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["spiritMedallionLoc"]];
         gSaveContext.rewardCheck[8] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["lightMedallionLoc"]];
 
-        std::string ganonHintJsonText = spoilerFileJson["ganonHintText"].get<std::string>();
-        std::string formattedGanonHintJsonText = FormatJsonHintText(ganonHintJsonText);
-        strncpy(gSaveContext.ganonHintText, formattedGanonHintJsonText.c_str(), sizeof(gSaveContext.ganonHintText) - 1);
-        gSaveContext.ganonHintText[sizeof(gSaveContext.ganonHintText) - 1] = 0;
-        gSaveContext.lightArrowHintCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["lightArrowHintLoc"]];
+        ParseSpoilerHintText(spoilerFileJson, "ganonHintText", gSaveContext.ganonHintText, ARRAY_COUNT(gSaveContext.ganonHintText));
+        ParseSpoilerHintText(spoilerFileJson, "ganonText", gSaveContext.ganonText, ARRAY_COUNT(gSaveContext.ganonText));
+        CheckNameToEnum(spoilerFileJson, "lightArrowHintLoc", &gSaveContext.lightArrowHintCheck);
+        CheckNameToEnum(spoilerFileJson, "masterSwordHintLoc", &gSaveContext.masterSwordHintCheck);
 
-        std::string ganonJsonText = spoilerFileJson["ganonText"].get<std::string>();
-        std::string formattedGanonJsonText = FormatJsonHintText(ganonJsonText);
-        strncpy(gSaveContext.ganonText, formattedGanonJsonText.c_str(), sizeof(gSaveContext.ganonText) - 1);
-        gSaveContext.ganonText[sizeof(gSaveContext.ganonText) - 1] = 0;
+        ParseSpoilerHintText(spoilerFileJson, "dampeText", gSaveContext.dampeText, ARRAY_COUNT(gSaveContext.dampeText));
+        CheckNameToEnum(spoilerFileJson, "dampeHintLoc", &gSaveContext.dampeCheck);
 
-        std::string dampeJsonText = spoilerFileJson["dampeText"].get<std::string>();
-        std::string formattedDampeJsonText = FormatJsonHintText(dampeJsonText);
-        strncpy(gSaveContext.dampeText, formattedDampeJsonText.c_str(), sizeof(gSaveContext.dampeText) - 1);
-        gSaveContext.dampeText[sizeof(gSaveContext.dampeText) - 1] = 0;
-        gSaveContext.dampeCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["dampeHintLoc"]];
+        ParseSpoilerHintText(spoilerFileJson, "gregText", gSaveContext.gregHintText, ARRAY_COUNT(gSaveContext.gregHintText));
+        CheckNameToEnum(spoilerFileJson, "gregLoc", &gSaveContext.gregCheck);
 
-        std::string gregJsonText = spoilerFileJson["gregText"].get<std::string>();
-        std::string formattedGregJsonText = FormatJsonHintText(gregJsonText);
-        strncpy(gSaveContext.gregHintText, formattedGregJsonText.c_str(), sizeof(gSaveContext.gregHintText) - 1);
-        gSaveContext.gregHintText[sizeof(gSaveContext.gregHintText) - 1] = 0;
-        gSaveContext.gregCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["gregLoc"]];
+        ParseSpoilerHintText(spoilerFileJson, "sheikText", gSaveContext.sheikText, ARRAY_COUNT(gSaveContext.sheikText));
+        
+        ParseSpoilerHintText(spoilerFileJson, "sariaText", gSaveContext.sariaText, ARRAY_COUNT(gSaveContext.sariaText));
+        CheckNameToEnum(spoilerFileJson, "sariaHintLoc", &gSaveContext.sariaCheck);
 
-        std::string sheikJsonText = spoilerFileJson["sheikText"].get<std::string>();
-        std::string formattedSheikJsonText = FormatJsonHintText(sheikJsonText);
-        strncpy(gSaveContext.sheikText, formattedSheikJsonText.c_str(), sizeof(gSaveContext.sheikText) - 1);
-        gSaveContext.sheikText[sizeof(gSaveContext.sheikText) - 1] = 0;
-        gSaveContext.lightArrowHintCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["lightArrowHintLoc"]];
-
-        std::string sariaJsonText = spoilerFileJson["sariaText"].get<std::string>();
-        std::string formattedSariaJsonText = FormatJsonHintText(sariaJsonText);
-        strncpy(gSaveContext.sariaText, formattedSariaJsonText.c_str(), sizeof(gSaveContext.sariaText) - 1);
-        gSaveContext.sariaText[sizeof(gSaveContext.sariaText) - 1] = 0;
-        gSaveContext.sariaCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["sariaHintLoc"]];
-
-        std::string warpMinuetJsonText = spoilerFileJson["warpMinuetText"].get<std::string>();
-        strncpy(gSaveContext.warpMinuetText, warpMinuetJsonText.c_str(), sizeof(gSaveContext.warpMinuetText) - 1);
-        gSaveContext.warpMinuetText[sizeof(gSaveContext.warpMinuetText) - 1] = 0;
-
-        std::string warpBoleroJsonText = spoilerFileJson["warpBoleroText"].get<std::string>();
-        strncpy(gSaveContext.warpBoleroText, warpBoleroJsonText.c_str(), sizeof(gSaveContext.warpBoleroText) - 1);
-        gSaveContext.warpBoleroText[sizeof(gSaveContext.warpBoleroText) - 1] = 0;
-
-        std::string warpSerenadeJsonText = spoilerFileJson["warpSerenadeText"].get<std::string>();
-        strncpy(gSaveContext.warpSerenadeText, warpSerenadeJsonText.c_str(), sizeof(gSaveContext.warpSerenadeText) - 1);
-        gSaveContext.warpSerenadeText[sizeof(gSaveContext.warpSerenadeText) - 1] = 0;
-
-        std::string warpRequiemJsonText = spoilerFileJson["warpRequiemText"].get<std::string>();
-        strncpy(gSaveContext.warpRequiemText, warpRequiemJsonText.c_str(), sizeof(gSaveContext.warpRequiemText) - 1);
-        gSaveContext.warpRequiemText[sizeof(gSaveContext.warpRequiemText) - 1] = 0;
-
-        std::string warpNocturneJsonText = spoilerFileJson["warpNocturneText"].get<std::string>();
-        strncpy(gSaveContext.warpNocturneText, warpNocturneJsonText.c_str(), sizeof(gSaveContext.warpNocturneText) - 1);
-        gSaveContext.warpNocturneText[sizeof(gSaveContext.warpNocturneText) - 1] = 0;
-
-        std::string warpPreludeJsonText = spoilerFileJson["warpPreludeText"].get<std::string>();
-        strncpy(gSaveContext.warpPreludeText, warpPreludeJsonText.c_str(), sizeof(gSaveContext.warpPreludeText) - 1);
-        gSaveContext.warpPreludeText[sizeof(gSaveContext.warpPreludeText) - 1] = 0;
+        ParseSpoilerHintText(spoilerFileJson, "warpMinuetText", gSaveContext.warpMinuetText, ARRAY_COUNT(gSaveContext.warpMinuetText));
+        ParseSpoilerHintText(spoilerFileJson, "warpBoleroText", gSaveContext.warpBoleroText, ARRAY_COUNT(gSaveContext.warpBoleroText));
+        ParseSpoilerHintText(spoilerFileJson, "warpSerenadeText", gSaveContext.warpSerenadeText, ARRAY_COUNT(gSaveContext.warpSerenadeText));
+        ParseSpoilerHintText(spoilerFileJson, "warpRequiemText", gSaveContext.warpRequiemText, ARRAY_COUNT(gSaveContext.warpRequiemText));
+        ParseSpoilerHintText(spoilerFileJson, "warpNocturneText", gSaveContext.warpNocturneText, ARRAY_COUNT(gSaveContext.warpNocturneText));
+        ParseSpoilerHintText(spoilerFileJson, "warpPreludeText", gSaveContext.warpPreludeText, ARRAY_COUNT(gSaveContext.warpPreludeText));
 
         json hintsJson = spoilerFileJson["hints"];
         int index = 0;
@@ -1417,15 +1407,11 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
                 gSaveContext.hintLocations[index].area = SpoilerfileAreaNameToEnum[hintInfo["area"]];
             }
 
-            std::string hintMessage = FormatJsonHintText(hintInfo["hint"]);
-            size_t maxHintTextSize = sizeof(gSaveContext.hintLocations[index].hintText);
-            strncpy(gSaveContext.hintLocations[index].hintText, hintMessage.c_str(), maxHintTextSize - 1);
-            gSaveContext.hintLocations[index].hintText[maxHintTextSize - 1] = 0;
+            SohUtils::CopyStringToCharArray(gSaveContext.hintLocations[index].hintText, hintInfo["hint"], ARRAY_COUNT(gSaveContext.hintLocations[index].hintText));
 
             index++;
         }
 
-        success = true;
     } catch (const std::exception& e) {
         return;
     }
@@ -1551,9 +1537,8 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
             index++;
         }
 
-        std::string inputSeed = spoilerFileJson["seed"].get<std::string>();
-        strncpy(gSaveContext.inputSeed, inputSeed.c_str(), sizeof(gSaveContext.inputSeed) - 1);
-        gSaveContext.inputSeed[sizeof(gSaveContext.inputSeed) - 1] = 0;
+        SohUtils::CopyStringToCharArray(gSaveContext.inputSeed, spoilerFileJson["seed"],
+                                        ARRAY_COUNT(gSaveContext.inputSeed));
 
         gSaveContext.finalSeed = spoilerFileJson["finalSeed"].get<uint32_t>();
 
@@ -1571,8 +1556,8 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
                         gSaveContext.itemLocations[randomizerCheck].get.fakeRgID =
                             SpoilerfileGetNameToEnum[itemit.value()];
                     } else if (itemit.key() == "trickName") {
-                        strncpy(gSaveContext.itemLocations[randomizerCheck].get.trickName,
-                                std::string(itemit.value()).c_str(), MAX_TRICK_NAME_SIZE);
+                        SohUtils::CopyStringToCharArray(gSaveContext.itemLocations[randomizerCheck].get.trickName,
+                                                        itemit.value(), MAX_TRICK_NAME_SIZE);
                     }
                 }
             } else {
@@ -1676,27 +1661,29 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
 
         // Equipment
         case RG_KOKIRI_SWORD:
-            return !CHECK_OWNED_EQUIP(EQUIP_SWORD, 0) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_MASTER_SWORD:
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_BIGGORON_SWORD:
             return !gSaveContext.bgsFlag ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_DEKU_SHIELD:
         case RG_BUY_DEKU_SHIELD:
-            return !CHECK_OWNED_EQUIP(EQUIP_SHIELD, 0) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_SHIELD, EQUIP_INV_SHIELD_DEKU) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_HYLIAN_SHIELD:
         case RG_BUY_HYLIAN_SHIELD:
-            return !CHECK_OWNED_EQUIP(EQUIP_SHIELD, 1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_SHIELD, EQUIP_INV_SHIELD_HYLIAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_MIRROR_SHIELD:
-            return !CHECK_OWNED_EQUIP(EQUIP_SHIELD, 2) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_SHIELD, EQUIP_INV_SHIELD_MIRROR) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GORON_TUNIC:
         case RG_BUY_GORON_TUNIC:
-            return !CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_ZORA_TUNIC:
         case RG_BUY_ZORA_TUNIC:
-            return !CHECK_OWNED_EQUIP(EQUIP_TUNIC, 2) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_IRON_BOOTS:
-            return !CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_HOVER_BOOTS:
-            return !CHECK_OWNED_EQUIP(EQUIP_BOOTS, 2) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_HOVER) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
         // Inventory Items
         case RG_PROGRESSIVE_STICK_UPGRADE:
@@ -2572,6 +2559,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_MARKET_BOMBCHU_SHOP_ITEM_6,                                  RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_6 },
     { RC_MARKET_BOMBCHU_SHOP_ITEM_7,                                  RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_7 },
     { RC_MARKET_BOMBCHU_SHOP_ITEM_8,                                  RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8 },
+    { RC_TOT_MASTER_SWORD,                                            RAND_INF_TOT_MASTER_SWORD                      },
     { RC_GC_MEDIGORON,                                                RAND_INF_MERCHANTS_MEDIGORON                   },
     { RC_KAK_GRANNYS_SHOP,                                            RAND_INF_MERCHANTS_GRANNYS_SHOP                },
     { RC_WASTELAND_BOMBCHU_SALESMAN,                                  RAND_INF_MERCHANTS_CARPET_SALESMAN             },
@@ -2583,6 +2571,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_LH_CHILD_FISHING,                                            RAND_INF_CHILD_FISHING },
     { RC_LH_ADULT_FISHING,                                            RAND_INF_ADULT_FISHING },
     { RC_MARKET_10_BIG_POES,                                          RAND_INF_10_BIG_POES },
+    { RC_KAK_100_GOLD_SKULLTULA_REWARD,                               RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD },
 };
 
 Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
@@ -2875,6 +2864,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_STARTING_KOKIRI_SWORD] = CVarGetInteger("gRandomizeStartingKokiriSword", 0);
     cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD] = CVarGetInteger("gRandomizeShuffleKokiriSword", 0) ||
                                              CVarGetInteger("gRandomizeStartingKokiriSword", 0);
+    cvarSettings[RSK_SHUFFLE_MASTER_SWORD] = CVarGetInteger("gRandomizeShuffleMasterSword", 0);
     cvarSettings[RSK_STARTING_DEKU_SHIELD] = CVarGetInteger("gRandomizeStartingDekuShield", 0);
     cvarSettings[RSK_STARTING_ZELDAS_LULLABY] = CVarGetInteger("gRandomizeStartingZeldasLullaby", 0);
     cvarSettings[RSK_STARTING_EPONAS_SONG] = CVarGetInteger("gRandomizeStartingEponasSong", 0);
@@ -3185,7 +3175,7 @@ void RandomizerSettingsWindow::DrawElement() {
         );
         ImGui::SameLine();
         if (ImGui::Button("New Seed")) {
-            strncpy(seedString, std::to_string(rand() & 0xFFFFFFFF).c_str(), MAX_SEED_STRING_SIZE);
+            SohUtils::CopyStringToCharArray(seedString, std::to_string(rand() & 0xFFFFFFFF), MAX_SEED_STRING_SIZE);
         }
         UIWidgets::Tooltip("Creates a new random seed value to be used when generating a randomizer");
         ImGui::SameLine();
@@ -3834,6 +3824,20 @@ void RandomizerSettingsWindow::DrawElement() {
                     "Shuffles the Kokiri Sword into the item pool.\n"
                     "\n"
                     "This will require the use of sticks until the Kokiri Sword is found."
+                );
+
+                UIWidgets::PaddedSeparator();
+
+                //Shuffle Master Sword
+                //RANDOTODO: Disable when Start with Master Sword is active
+                // bool disableShuffleMasterSword = CvarGetInteger("gRandomizeStartingMasterSword", 0);
+                // static const char* disableShuffleMasterSwordText = "This option is disabled because \"Start with Master Sword\" is enabled.";
+                UIWidgets::EnhancementCheckbox(Settings::ShuffleMasterSword.GetName().c_str(), "gRandomizeShuffleMasterSword");
+                UIWidgets::InsertHelpHoverText(
+                    "Shuffles the Master Sword into the item pool.\n"
+                    "\n"
+                    "Adult Link will start with a second free item instead of the Master Sword.\n"
+                    "If you haven't found the Master Sword before facing Ganon, you won't receive it during the fight."
                 );
 
                 UIWidgets::PaddedSeparator();
@@ -5332,7 +5336,12 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
             break;
         case SCENE_INSIDE_GANONS_CASTLE:
             if (originalTextId == TEXT_SHEIK_NEED_HOOK) {
-                if (INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
+                //If MS shuffle is on, Sheik will hint both MS and LA as long as Link doesn't have both, to prevent hint lockout.
+                //Otherwise, she'll only give LA hint so only LA is required to move on.
+                bool needRequirements = GetRandoSettingValue(RSK_SHUFFLE_MASTER_SWORD) ? 
+                  (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER) || INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) :
+                  (INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT);
+                if (needRequirements) {
                     messageEntry.Replace("{{message}}", gSaveContext.sheikText, gSaveContext.sheikText, gSaveContext.sheikText);
                 } else {
                     messageEntry.Replace("{{message}}", "You are still ill-equipped to&face %rGanondorf%w."
@@ -5343,10 +5352,17 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
                     "Cherche l'%cÉpée de Légende%w,&%rquelque chose pour ranger tes flèches%w&et de la %gmagie%w pour invoquer la&%ylumière%w.");
                 }                   
             } else {
-                messageEntry.Replace("{{message}}",
-                "If you're ready, then proceed.^Good luck.",
-                "Wenn Du bereit bist, so schreite&voran.^Viel Glück.",
-                "Si tu es prêt, tu peux y aller.^Bonne chance.");
+                if (!Flags_GetEventChkInf(EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER)) {
+                    messageEntry.Replace("{{message}}",
+                    "You may have what you need to defeat&%rthe Evil King%w, but the %cbarrier%w still&stands.^Complete the remaining %gtrials%w&to destroy it."
+                    );
+
+                } else {
+                    messageEntry.Replace("{{message}}",
+                    "If you're ready, then proceed.^Good luck.",
+                    "Wenn Du bereit bist, so schreite&voran.^Viel Glück.",
+                    "Si tu es prêt, tu peux y aller.^Bonne chance.");
+                }
             }
             break;
     }
@@ -5881,11 +5897,15 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 65> getItemMessages = {{
+    const std::array<GetItemMessage, 66> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
             "Félicitation! Vous avez trouvé %gGreg%w!"),
+        GIMESSAGE(RG_MASTER_SWORD, ITEM_SWORD_MASTER, 
+            "You found the %gMaster Sword%w!",
+            "Du erhältst dem %gMaster-Schwert%w!",
+            "Vous obtenez %gl'Épée de Légende%w!"),
         GIMESSAGE(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, 
 			"You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
 			"Du erhältst eine %rFlasche mit&blauem Feuer%w! Nutze es um&%rRotes Eis%w zu schmelzen!",
@@ -6143,8 +6163,6 @@ class ExtendedVanillaTableInvalidItemIdException: public std::exception {
         "item, try adding it to randoGetItemTable instead.";
       }
 };
-
-
 
 void RandomizerSettingsWindow::InitElement() {
     Randomizer::CreateCustomMessages();
