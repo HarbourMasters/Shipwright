@@ -10,6 +10,8 @@
 
 void Save_LoadFile(void);
 
+void BossRush_InitSave(void);
+
 /**
  *  Initialize new save.
  *  This save has an empty inventory with 3 hearts and single magic.
@@ -33,6 +35,7 @@ void Sram_InitDebugSave(void) {
 
 void Sram_InitBossRushSave(void) {
     Save_InitFile(false);
+    BossRush_InitSave();
 }
 
 /**
@@ -221,11 +224,15 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
     gSaveContext.n64ddFlag = fileChooseCtx->n64ddFlag;
 
-    if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == QUEST_RANDOMIZER &&
+    u8 currentQuest = fileChooseCtx->questType[fileChooseCtx->buttonIndex];
+
+    if (currentQuest == QUEST_RANDOMIZER &&
         strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
         gSaveContext.questId = QUEST_RANDOMIZER;
 
         Randomizer_InitSaveFile();
+    } else if (currentQuest == QUEST_MASTER) {
+        gSaveContext.questId = QUEST_MASTER;
     }
 
     Save_SaveFile();
