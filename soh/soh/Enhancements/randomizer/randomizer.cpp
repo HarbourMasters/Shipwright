@@ -6276,6 +6276,6 @@ void RandomizerSettingsWindow::InitElement() {
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     InitRandoItemTable();
 #ifndef __WIIU__
-    spoiler_dialog.setCurrentPath(CVarGetString("gSpoilerLastPath", "./"));
+    spoiler_dialog.setCurrentPath(CVarGetString("gSpoilerLastPath", LUS::Context::GetAppDirectoryPath().c_str()));
 #endif
 }
