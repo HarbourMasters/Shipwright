@@ -6920,11 +6920,16 @@ s32 func_8083FD78(Player* this, f32* arg1, s16* arg2, PlayState* play) {
         } else {
             int8_t relStickY;
 
+            //preserves simultaneous left/right-stick aiming
             if (CVarGetInteger("gRightStickAiming", 0) != 0) {
                 if ((sControlInput->rel.stick_y + sControlInput->rel.right_stick_y) >= 0) {
-                    relStickY = max(sControlInput->rel.stick_y, sControlInput->rel.right_stick_y);
+                    relStickY = (((sControlInput->rel.stick_y) > (sControlInput->rel.right_stick_y))
+                                     ? (sControlInput->rel.stick_y)
+                                     : (sControlInput->rel.right_stick_y));
                 } else {
-                    relStickY = min(sControlInput->rel.stick_y, sControlInput->rel.right_stick_y);
+                    relStickY = (((sControlInput->rel.stick_y) < (sControlInput->rel.right_stick_y))
+                                     ? (sControlInput->rel.stick_y)
+                                     : (sControlInput->rel.right_stick_y));
                 }
             }
             else {
