@@ -626,9 +626,31 @@ static ActorDBInit BossFieldSsTInit = {
 };
 extern "C" s16 gFieldSstId;
 
+#include"src/overlays/actors/ovl_BossField_Goma/z_bossField_goma.h"
+static ActorDBInit BossFieldGomaInit = {
+    "BossField_Goma",
+    "Gohma (Field)",
+    ACTORCAT_BOSS,
+    (
+        ACTOR_FLAG_TARGETABLE |
+        ACTOR_FLAG_HOSTILE |
+        ACTOR_FLAG_UPDATE_WHILE_CULLED |
+        ACTOR_FLAG_DRAW_WHILE_CULLED
+    ),
+    OBJECT_GOMA,
+    sizeof(BossGoma),
+    (ActorFunc)BossFieldGoma_Init,
+    (ActorFunc)BossFieldGoma_Destroy,
+    (ActorFunc)BossFieldGoma_Update,
+    (ActorFunc)BossFieldGoma_Draw,
+    nullptr,
+};
+extern "C" s16 gFieldGomaId;
+
 void ActorDB::AddBuiltInCustomActors() {
     gEnPartnerId = ActorDB::Instance->AddEntry(EnPartnerInit).entry.id;
     gFieldSstId = ActorDB::Instance->AddEntry(BossFieldSsTInit).entry.id;
+    gFieldGomaId = ActorDB::Instance->AddEntry(BossFieldGomaInit).entry.id;
 }
 
 extern "C" ActorDBEntry* ActorDB_Retrieve(const int id) {

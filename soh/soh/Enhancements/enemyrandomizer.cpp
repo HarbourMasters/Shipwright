@@ -242,7 +242,6 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
     static EnemyEntry bossesToBeUsedInRandomizationOfEnemies[] = { 
         { gFieldSstId, -1 } 
     };
-
     //Generate a random int here to see if the enemy selected should be from the boss table instead
     //Could re-use randomNumber for the bossGenCheck for efficiency, but used a diff var for clarity
     uint32_t bossGenCheck = Random(1, 101);
@@ -251,7 +250,7 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
         /* Will be used in the future when we have more than one entry
         randomNumber = Random(0, RANDOMIZED_BOSS_SPAWN_TABLE_SIZE);*/
         return bossesToBeUsedInRandomizationOfEnemies[0];
-    } else {
+    }else {
         randomNumber = Random(0, RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE);
         return randomizedEnemySpawnTable[randomNumber];
     }
