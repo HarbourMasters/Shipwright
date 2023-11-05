@@ -13,16 +13,6 @@ void* D_8012A2F8_MQ[] = {
     gYdanTex_00CA18_MQ,
 };
 
-#define dgThievesHideoutNightEntranceTex_MQ "__OTR__scenes/mq/gerudoway_scene/gThievesHideoutNightEntranceTex"
-static const ALIGN_ASSET(2) char gThievesHideoutNightEntranceTex_MQ[] = dgThievesHideoutNightEntranceTex_MQ;
-
-#define dgThievesHideoutDayEntranceTex_MQ "__OTR__scenes/mq/gerudoway_scene/gThievesHideoutDayEntranceTex"
-static const ALIGN_ASSET(2) char gThievesHideoutDayEntranceTex_MQ[] = dgThievesHideoutDayEntranceTex_MQ;
-void* sThievesHideoutEntranceTextures_MQ[] = {
-    gThievesHideoutDayEntranceTex_MQ,
-    gThievesHideoutNightEntranceTex_MQ,
-};
-
 #define dgDCDayEntranceTex_MQ "__OTR__scenes/mq/ddan_scene/gDCDayEntranceTex"
 static const ALIGN_ASSET(2) char gDCDayEntranceTex_MQ[] = dgDCDayEntranceTex_MQ;
 
