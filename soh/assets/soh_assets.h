@@ -56,7 +56,7 @@ static const ALIGN_ASSET(2) char gTriforcePiece2DL[] = dgTriforcePiece2DL;
 #define dgTriforcePieceCompletedDL "__OTR__objects/object_triforce_completed/gTriforcePieceCompletedDL"
 static const ALIGN_ASSET(2) char gTriforcePieceCompletedDL[] = dgTriforcePieceCompletedDL;
 
-#define dgBossSoulSkullDL "__OTR__objects/object_gi_boss_soul/gGIBossSoulSkullDL"
+#define dgBossSoulSkullDL "__OTR__objects/object_boss_soul/gGIBossSoulSkullDL"
 static const ALIGN_ASSET(2) char gBossSoulSkullDL[] = dgBossSoulSkullDL;
 
 // overlays
