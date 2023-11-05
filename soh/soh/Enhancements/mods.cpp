@@ -1038,6 +1038,20 @@ void RegisterRandomizerSheikSpawn() {
     });
 }
 
+void RegisterInstantTransitions() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (CVarGetInteger("gInstantTransitions", 0)) {
+            gPlayState->fadeTransition = 11;
+            gSaveContext.nextTransitionType = 11;
+            //still play the transition when entering the haunted wasteland because if not,
+            //the sandstorm never appears
+            if (gPlayState->nextEntranceIndex == 0x0130 || gPlayState->nextEntranceIndex == 0x0365) {
+                gSaveContext.nextTransitionType = 14;
+            }
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1066,4 +1080,5 @@ void InitMods() {
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
     NameTag_RegisterHooks();
+    RegisterInstantTransitions();
 }
