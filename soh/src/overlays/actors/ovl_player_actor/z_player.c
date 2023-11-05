@@ -10136,15 +10136,15 @@ void func_80847BA0(PlayState* play, Player* this) {
             checkPosB.y = checkPosA.y = this->actor.world.pos.y + 26.0f;
 
             hitWall = BgCheck_EntityLineTest1(&play->colCtx, &checkPosA, &checkPosB,
-                &sWallIntersectPos, &spA0, true, false, false, true, &sp9C);
+                &D_80858AA8, &spA0, true, false, false, true, &sp9C);
 
             if (hitWall) {
                 this->actor.wallPoly = spA0;
                 this->actor.wallBgId = sp9C;
-                this->actor.wallYaw = Math_Atan2S(wallPoly->normal.z, wallPoly->normal.x);
+                this->actor.wallYaw = Math_Atan2S(spA0->normal.z, spA0->normal.x);
                 sp9A = this->actor.shape.rot.y - (s16)(this->actor.wallYaw + 0x8000);
 
-                sTouchedWallFlags = func_80041DB8(&play->colCtx, this->actor.wallPoly, this->actor.wallBgId);
+                D_808535F0 = func_80041DB8(&play->colCtx, this->actor.wallPoly, this->actor.wallBgId);
             }
         }
 
