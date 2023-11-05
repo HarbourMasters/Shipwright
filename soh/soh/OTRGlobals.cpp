@@ -46,6 +46,7 @@
 #include "variables.h"
 #include "z64.h"
 #include "macros.h"
+#include "Fonts.h"
 #include <Utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 
@@ -128,6 +129,8 @@ std::vector<std::shared_ptr<std::string>> cameraStdStrings;
 Color_RGB8 kokiriColor = { 0x1E, 0x69, 0x1B };
 Color_RGB8 goronColor = { 0x64, 0x14, 0x00 };
 Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
+
+float previousImGuiScale;
 
 // Same as NaviColor type from OoT src (z_actor.c), but modified to be sans alpha channel for Controller LED.
 typedef struct {
@@ -298,6 +301,12 @@ OTRGlobals::OTRGlobals() {
 
     hasMasterQuest = hasOriginal = false;
 
+    previousImGuiScale = defaultImGuiScale;
+    defaultFontSmaller = CreateDefaultFontWithSize(10.0f);
+    defaultFontLarger = CreateDefaultFontWithSize(16.0f);
+    defaultFontLargest = CreateDefaultFontWithSize(20.0f);
+    ScaleImGui();
+
     // Move the camera strings from read only memory onto the heap (writable memory)
     // This is in OTRGlobals right now because this is a place that will only ever be run once at the beginning of startup.
     // We should probably find some code in db_camera that does initialization and only run once, and then dealloc on deinitialization.
@@ -350,6 +359,32 @@ OTRGlobals::OTRGlobals() {
 }
 
 OTRGlobals::~OTRGlobals() {
+}
+
+void OTRGlobals::ScaleImGui() {
+    float scale = imguiScaleOptionToValue[CVarGetInteger("gImGuiScale", defaultImGuiScale)];
+    float newScale = scale / previousImGuiScale;
+    ImGui::GetStyle().ScaleAllSizes(newScale);
+    ImGui::GetIO().FontGlobalScale = scale;
+    previousImGuiScale = scale;
+}
+
+ImFont* OTRGlobals::CreateDefaultFontWithSize(float size) {
+    auto mImGuiIo = &ImGui::GetIO();
+    ImFontConfig fontCfg = ImFontConfig();
+    fontCfg.OversampleH = fontCfg.OversampleV = 1;
+    fontCfg.PixelSnapH = true;
+    fontCfg.SizePixels = size;
+    ImFont* font = mImGuiIo->Fonts->AddFontDefault(&fontCfg);
+    // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
+    float iconFontSize = size * 2.0f / 3.0f;
+    static const ImWchar sIconsRanges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
+    ImFontConfig iconsConfig;
+    iconsConfig.MergeMode = true;
+    iconsConfig.PixelSnapH = true;
+    iconsConfig.GlyphMinAdvanceX = iconFontSize;
+    mImGuiIo->Fonts->AddFontFromMemoryCompressedBase85TTF(fontawesome_compressed_data_base85, iconFontSize, &iconsConfig, sIconsRanges);
+    return font;
 }
 
 bool OTRGlobals::HasMasterQuest() {
