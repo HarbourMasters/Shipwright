@@ -329,7 +329,7 @@ void SaveManager::LoadRandomizerVersion3() {
                         "french", randoContext->overrides[static_cast<RandomizerCheck>(i)].GetTrickName().french);
                 });
             }
-            uint16_t price = 0; 
+            uint16_t price = 0;
             SaveManager::Instance->LoadData("price", price, (uint16_t)0);
             if (price > 0) {
                 // Technically an item with a custom price (scrub/shopsanity) could have
@@ -375,22 +375,23 @@ void SaveManager::LoadRandomizerVersion3() {
         SaveManager::Instance->LoadStruct("", [&]() {
             RandomizerHintKey rhk = RH_NONE;
             SaveManager::Instance->LoadData("hintKey", rhk);
-            std::string english, french;
+            std::string english, french, german;
             SaveManager::Instance->LoadStruct("hintText", [&]() {
                 SaveManager::Instance->LoadData("english", english);
                 SaveManager::Instance->LoadData("french", french);
-                // TODO: German Hint Translations
+                SaveManager::Instance->LoadData("german", german);
             });
             RandomizerCheck rc = RC_UNKNOWN_CHECK;
             SaveManager::Instance->LoadData("hintedCheck", rc);
             HintType ht = HINT_TYPE_STATIC;
             SaveManager::Instance->LoadData("hintType", ht);
-            std::string englishRegion, frenchRegion;
+            std::string englishRegion, frenchRegion, germanRegion;
             SaveManager::Instance->LoadStruct("hintedRegion", [&]() {
                 SaveManager::Instance->LoadData("english", englishRegion);
                 SaveManager::Instance->LoadData("french", frenchRegion);
+                SaveManager::Instance->LoadData("german", germanRegion);
             });
-            randoContext->AddHint(rhk, Text(english, french, english), rc, ht, Text(englishRegion, frenchRegion, englishRegion));
+            randoContext->AddHint(rhk, Text(english, french, /*spanish*/"", german), rc, ht, Text(englishRegion, frenchRegion, /*spanish*/"", germanRegion));
         });
     });
 
@@ -472,15 +473,14 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
             SaveManager::Instance->SaveStruct("hintText", [&]() {
                 SaveManager::Instance->SaveData("english", hint->GetText().GetEnglish());
                 SaveManager::Instance->SaveData("french", hint->GetText().GetFrench());
-                SaveManager::Instance->SaveData("german", hint->GetText().GetEnglish());
-                // TODO: German Translation of hints
+                SaveManager::Instance->SaveData("german", hint->GetText().GetGerman());
             });
             SaveManager::Instance->SaveData("hintedCheck", hint->GetHintedLocation());
             SaveManager::Instance->SaveData("hintType", hint->GetHintType());
             SaveManager::Instance->SaveStruct("hintedRegion", [&]() {
                 SaveManager::Instance->SaveData("english", hint->GetHintedRegionText().GetEnglish());
                 SaveManager::Instance->SaveData("french", hint->GetHintedRegionText().GetFrench());
-                SaveManager::Instance->SaveData("german", hint->GetHintedRegionText().GetEnglish());
+                SaveManager::Instance->SaveData("german", hint->GetHintedRegionText().GetGerman());
             });
         });
     });

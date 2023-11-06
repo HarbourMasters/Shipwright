@@ -3174,67 +3174,100 @@ void HintTable_Init() {
     |      MERCHANTS' ITEMS     |
     ---------------------------*/
 
+    hintTable[RHT_BEAN_SALESMAN_FIRST] = HintText::MerchantsDialogs({
+        Text{
+            "I tried to be a #magic bean#&salesman, but it turns out my&marketing skills weren't worth&"
+            "beans!^Anyway, want to buy #",
+            /*french*/ "J'ai essayé d'être un vendeur&de #haricots magiques#, mais&j'étais mauvais au niveau du&marketing et ça "
+            "me courait sur&le haricot...^Enfin bref, ça te dirait de m'acheter #",
+            /*spanish*/ "",
+            /*german*/ "Möchten Sie #"
+        }
+    });
+    hintTable[RHT_BEAN_SALESMAN_SECOND] = HintText::MerchantsDialogs({
+        Text{
+            "# for #60 Rupees#?&" + TWO_WAY_CHOICE() + "#Yes&No#",
+            /*french*/ "# pour #60 Rubis#?&" + TWO_WAY_CHOICE() + "#Oui&Non#",
+            /*spanish*/ "",
+            /*german*/ "# für #60 Rubine#?&" + TWO_WAY_CHOICE() + "#Ja&Nein#"
+        }
+    });
+
     hintTable[RHT_MEDIGORON_DIALOG_FIRST] = HintText::MerchantsDialogs({
         // obscure text
-        Text{ "How about buying ",
-              /*french*/ "Veux-tu acheter ",
-              /*spanish*/ "¿Me compras " },
+        Text{ "How about buying #",
+              /*french*/ "Veux-tu acheter #",
+              /*spanish*/ "¿Me compras #",
+              /*german*/ "Möchtest du #" },
     });
 
     hintTable[RHT_MEDIGORON_DIALOG_SECOND] = HintText::MerchantsDialogs({
         // obscure text
-        Text{ " for #200 Rupees#?&" + TWO_WAY_CHOICE() + "#Buy&Don't buy#",
-              /*french*/ " pour #200 rubis#?&" + TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
-              /*spanish*/ " por #200 rupias#?&" + TWO_WAY_CHOICE() + "#Comprar&No comprar#" },
+        Text{ "# for #200 Rupees#?&" + TWO_WAY_CHOICE() + "#Buy&Don't buy#",
+              /*french*/ "# pour #200 rubis#?&" + TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
+              /*spanish*/ "# por #200 rupias#?&" + TWO_WAY_CHOICE() + "#Comprar&No comprar#",
+              /*german*/ "# für #200 Rubine# kaufen?&" + TWO_WAY_CHOICE() + "#Klar!&Nie im Leben!#" },
     });
 
     hintTable[RHT_CARPET_SALESMAN_DIALOG_FIRST] = HintText::MerchantsDialogs({
         // obscure text
-        Text{ "Welcome!^I am selling stuff, strange and rare, from&all over the world to everybody. Today's&special "
-              "is...^",
+        Text{ "Welcome!^I am selling stuff, strange and rare, from all over the world to everybody. Today's special "
+              "is...^#",
               /*french*/
-              "Bienvenue!^Je vends des objets rares et merveilleux du&monde entier. En spécial aujourd'hui...^",
+              "Bienvenue!^Je vends des objets rares et merveilleux du&monde entier. En spécial aujourd'hui...^#",
               /*spanish*/
               "¡Acércate!^Vendo productos extraños y difíciles de&encontrar... De todo el mundo a todo el&mundo. La "
-              "oferta de hoy es...^¡" },
+              "oferta de hoy es...^#¡",
+              /* german */
+              "Sei gegrüßt!^Ich verkaufe allerlei Kuriorisäten.&Stets sonderliche und seltene Ware&aus "
+              "aller Welt für jedermann.&Das heutige Angebot bleibt...^#" },
     });
 
-    hintTable[RHT_CARPET_SALESMAN_DIALOG_SECOND] = HintText::MerchantsDialogs({
+    hintTable[RHT_CARPET_SALESMAN_DIALOG_MYSTERIOUS] = HintText::MerchantsDialogs({
         // obscure text
-        Text{
-            "! Terrifying!&I won't tell you what it is until I see the&money...^How about #200 Rupees#?&&" +
-                TWO_WAY_CHOICE() + "#Buy&Don't buy#",
-            /*french*/
-                "! Un&concentré de puissance! Mais montre tes&rubis avant que je te dise ce que c'est...^Disons #200 "
-                "rubis#?&&" +
-                TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
-            /*spanish*/
-                "! ¡Terrorífico!&No te revelaré su nombre hasta que&vea el dinero...^#200 rupias#, ¿qué te parece?&&" +
-                TWO_WAY_CHOICE() + "#Comprar&No comprar#" },
+        Text{ "!# Terrifying! I won't tell you what it is until I see the #money#...^How about #200 Rupees#?&&" +
+                  TWO_WAY_CHOICE() + "#Buy&Don't buy#",
+              /*french*/
+              "!# Un concentré de puissance! Mais montre tes #rubis# avant que je te dise ce que c'est...^Disons #200 "
+              "rubis#?&&" +
+                  TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
+              /*spanish*/
+              "!# ¡Terrorífico! No te revelaré su nombre hasta que vea el #dinero#...^#200 rupias#, ¿qué te parece?&&" +
+                  TWO_WAY_CHOICE() + "#Comprar&No comprar#",
+              /*german*/
+              "!# Furchterregend oder? Ich erzähle Euch mehr, wenn ich #Geld# sehe...^Wie wär's mit #200 Rubinen#?&&" +
+                  TWO_WAY_CHOICE() + "#Aber sicher!&Ich bin weg!#" },
     });
 
-    hintTable[RHT_CARPET_SALESMAN_DIALOG_THIRD] = HintText::MerchantsDialogs({
+    hintTable[RHT_CARPET_SALESMAN_DIALOG_HINTED] = HintText::MerchantsDialogs({
         // obscure text
-        Text{ "Thank you very much!^What I'm selling is... #",
-              /*french*/ "Merci beaucoup!^Cet objet extraordinaire est... #",
-              /*spanish*/ "¡Muchas gracias!^Lo que vendo es... #¡" },
+        Text{ "!# It's real, I promise! A lonely man such as myself wouldn't #lie# to you, hmm?^"
+              "How about #200 Rupees#?&&" + TWO_WAY_CHOICE() + "#Buy&Don't buy#",
+              /*french*/
+              "!# C'est vrai! J'te jure! Un gars comme moi ne te #mentirai# pas tu ne crois pas?^Disons #200 "
+              "rubis#?&&" + TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
+              /*spanish*/ // TODO: Flesh this out with the flavor text if we ever support spanish translations
+              "#!^###200 rupias#, ¿qué te parece?&&" + TWO_WAY_CHOICE() + "#Comprar&No comprar#",
+              /*german*/
+              "#! Ich kann versichern es ist ein aufrichtiges Angebot!^Ein einsamer Mann wie ich würde dich doch "
+              "nicht #anlügen#, oder?^Wie wär's mit #200 Rubinen#?&&" + TWO_WAY_CHOICE() + 
+              "#Aber sicher!&Ich bin weg!#" },
     });
 
-    hintTable[RHT_CARPET_SALESMAN_DIALOG_FOURTH] = HintText::MerchantsDialogs({
+    hintTable[RHT_CARPET_SALESMAN_DIALOG_FINAL] = HintText::MerchantsDialogs({
         // obscure text
-        Text{ "!#^The mark that will lead you to the #Spirit&Temple# is the #flag on the " + IF_NOT_MQ() + "left" +
-                  MQ_ELSE() + "right" + MQ_END() + "# outside the shop. Be seeing you!",
-              /*french*/ "!#^La marque qui te mènera au #Temple de l'Esprit# est le #drapeau " + IF_NOT_MQ() +
-                  "gauche" + MQ_ELSE() + "droite" + MQ_END() + "# en sortant d'ici. À la prochaine!",
-              /*spanish*/ "!#^La marca que te guiará al #Templo del&Espíritu# es la #bandera que está a la&" +
-                  IF_NOT_MQ() + "izquierda" + MQ_ELSE() + "derecha" + MQ_END() + "# al salir de aquí. ¡Nos vemos!" },
+        Text{ "Finally! Now I can go back to being &an %rarms dealer%w!",
+              /*french*/ "Squalala! Je vais enfin pouvoir &%rprendre des vacances%w!",
+              /*spanish*/ "", // TODO: Flesh this out with the flavor text if we ever support spanish translations
+              /*german*/ "Endlich! Schon bald kann ich wieder &%rKrabbelminen-Händler%w sein!" },
     });
 
     hintTable[RHT_GRANNY_DIALOG] = HintText::MerchantsDialogs({
         // obscure text
         Text{ "! How about #100 Rupees#?&" + TWO_WAY_CHOICE() + "#Buy&Don't buy#",
               /*french*/ "! Que dis-tu de #100 rubis#?&" + TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
-              /*spanish*/ ". Vendo por #100 rupias#.&" + TWO_WAY_CHOICE() + "#Comprar&No comprar#" },
+              /*spanish*/ ". Vendo por #100 rupias#.&" + TWO_WAY_CHOICE() + "#Comprar&No comprar#",
+              /*german*/ "! Sagen wir #100 Rubine#!&" + TWO_WAY_CHOICE() + "#Gerne!&Auf keinen Fall!#" },
     });
 }
 

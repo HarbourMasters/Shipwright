@@ -554,25 +554,9 @@ static void WriteWayOfTheHeroLocation(tinyxml2::XMLDocument& spoilerLog) {
 }
 
 std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
-  std::string textStr = unformattedHintTextString;
+    std::string textStr = unformattedHintTextString;
 
-  // RANDOTODO: don't just make manual exceptions
-  bool needsAutomaicNewlines = true;
-  if (textStr == "Erreur 0x69a504:&Traduction manquante^C'est de la faute à Purple Hato!&J'vous jure!" ||
-      textStr == "Mon très cher @:&Viens vite au château, je t'ai préparé&un délicieux gâteau...^À bientôt, Princesse Zelda" ||
-      textStr == "What about Zelda makes you think&she'd be a better ruler than I?^I saved Lon Lon Ranch,&fed the hungry,&and my castle floats." ||
-      textStr == "Many tricks are up my sleeve,&to save yourself&you'd better leave!" ||
-      textStr == "I've learned this spell,&it's really neat,&I'll keep it later&for your treat!" ||
-      textStr == "Sale petit garnement,&tu fais erreur!&C'est maintenant que marque&ta dernière heure!" ||
-      textStr == "Gamin, ton destin achève,&sous mon sort tu périras!&Cette partie ne fut pas brève,&et cette mort, tu subiras!" ||
-      textStr == "Oh! It's @.&I was expecting someone called Sheik.&Do you know what happened to them?" ||
-      textStr == "Ah, c'est @.&J'attendais un certain Sheik.&Tu sais ce qui lui est arrivé?" ||
-      textStr == "They say \"Forgive me, but-^Your script will not be used.&....After all...^The one writing the rest of the script...&will be me.\"") {
-    needsAutomaicNewlines = false;
-  }
-
-  if (needsAutomaicNewlines) {
-    //insert newlines either manually or when encountering a '&'
+    // insert newlines either manually or when encountering a '&'
     constexpr size_t lineLength = 34;
     size_t lastNewline = 0;
     while (lastNewline + lineLength < textStr.length()) {
@@ -595,12 +579,11 @@ std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
         lastNewline = lastSpace + 1;
       }
     }
-  }
 
-  // todo add colors (see `AddColorsAndFormat` in `custom_messages.cpp`)
-  textStr.erase(std::remove(textStr.begin(), textStr.end(), '#'), textStr.end());
+    // todo add colors (see `AddColorsAndFormat` in `custom_messages.cpp`)
+    textStr.erase(std::remove(textStr.begin(), textStr.end(), '#'), textStr.end());
 
-  return textStr;
+    return textStr;
 }
 
 Rando::ItemLocation* GetItemLocation(RandomizerGet item) {

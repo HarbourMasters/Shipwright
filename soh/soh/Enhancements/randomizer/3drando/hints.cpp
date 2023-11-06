@@ -1,6 +1,5 @@
 #include "hints.hpp"
 
-#include "custom_messages.hpp"
 #include "item_pool.hpp"
 #include "logic.hpp"
 #include "random.hpp"
@@ -15,7 +14,15 @@
 #include "../context.h"
 #include "pool_functions.hpp"
 
-using namespace CustomMessages;
+#define QM_WHITE "%w"
+#define QM_RED "%r"
+#define QM_GREEN "%g"
+#define QM_BLUE "%b"
+#define QM_LBLUE "%c"
+#define QM_PINK "%p"
+#define QM_YELLOW "%y"
+#define QM_BLACK "%B"
+
 using namespace Logic;
 using namespace Rando;
 
@@ -147,26 +154,11 @@ constexpr std::array<HintSetting, 4> hintSettingTable{{
   },
 }};
 
-Text AutoFormatHintText(Text unformattedHintText) {
-  std::array<std::string, LANGUAGE_MAX> strings;
-  for (int i = 0; i < LANGUAGE_MAX; i++) {
-    std::string textStr = unformattedHintText.GetForLanguage(i);
-    // RANDOTODO: don't just make manual exceptions
-    bool needsAutomaicNewlines = true;
-    if (textStr == "Erreur 0x69a504:&Traduction manquante^C'est de la faute à Purple Hato!&J'vous jure!" ||
-      textStr == "Mon très cher @:&Viens vite au château, je t'ai préparé&un délicieux gâteau...^À bientôt, Princesse Zelda" ||
-      textStr == "What about Zelda makes you think&she'd be a better ruler than I?^I saved Lon Lon Ranch,&fed the hungry,&and my castle floats." ||
-      textStr == "Many tricks are up my sleeve,&to save yourself&you'd better leave!" ||
-      textStr == "I've learned this spell,&it's really neat,&I'll keep it later&for your treat!" ||
-      textStr == "Sale petit garnement,&tu fais erreur!&C'est maintenant que marque&ta dernière heure!" ||
-      textStr == "Gamin, ton destin achève,&sous mon sort tu périras!&Cette partie ne fut pas brève,&et cette mort, tu subiras!" ||
-      textStr == "Oh! It's @.&I was expecting someone called Sheik.&Do you know what happened to them?" ||
-      textStr == "Ah, c'est @.&J'attendais un certain Sheik.&Tu sais ce qui lui est arrivé?" ||
-      textStr == "They say \"Forgive me, but-^Your script will not be used.&....After all...^The one writing the rest of the script...&will be me.\"") {
-    needsAutomaicNewlines = false;
-  }
+Text AutoFormatHintText(Text unformattedHintText, std::vector<std::string> colors = {}) {
+    std::array<std::string, LANGUAGE_MAX> strings;
+    for (int i = 0; i < LANGUAGE_MAX; i++) {
+        std::string textStr = unformattedHintText.GetForLanguage(i);
 
-    if (needsAutomaicNewlines) {
         // insert newlines either manually or when encountering a '&'
         constexpr size_t lineLength = 34;
         size_t lastNewline = 0;
@@ -177,7 +169,7 @@ Text AutoFormatHintText(Text unformattedHintText) {
             size_t lastPeriod = textStr.rfind('.', lastNewline + lineLength);
             // replace '&' first if it's within the newline range
             if (ampersand < lastNewline + lineLength) {
-                lastNewline = ampersand;
+                lastNewline = ampersand + 1;
                 // or move the lastNewline cursor to the next line if a '^' is encountered
             } else if (carrot < lastNewline + lineLength) {
                 lastNewline = carrot + 1;
@@ -190,14 +182,26 @@ Text AutoFormatHintText(Text unformattedHintText) {
                 lastNewline = lastSpace + 1;
             }
         }
+
+        // todo add colors (see `AddColorsAndFormat` in `custom_messages.cpp`)
+        for (auto color: colors) {
+          size_t firstHashtag = textStr.find('#');
+          if (firstHashtag != std::string::npos) {
+            textStr.replace(firstHashtag, 1, color);
+            size_t secondHashtag = textStr.find('#', firstHashtag + 1);
+            if (secondHashtag != std::string::npos) {
+              textStr.replace(secondHashtag, 1, QM_WHITE);
+            } else {
+              SPDLOG_DEBUG("non-matching hashtags in string: \"%s\"", textStr);
+            }
+          }
+        }
+        // Remove any remaining '#' characters.
+        textStr.erase(std::remove(textStr.begin(), textStr.end(), '#'), textStr.end());
+        strings[i] = textStr;
     }
 
-    // todo add colors (see `AddColorsAndFormat` in `custom_messages.cpp`)
-    textStr.erase(std::remove(textStr.begin(), textStr.end(), '#'), textStr.end());
-    strings[i] = textStr;
-  }
-
-  return Text(strings[0], strings[1], strings[2]);
+    return Text(strings[0], strings[1], ""/*spanish*/, strings[2]);
 }
 
 std::array<DungeonHintInfo, 10> dungeonInfoData;
@@ -398,17 +402,17 @@ static void SetAllInRegionAsHinted(RandomizerHintTextKey region, std::vector<Ran
   }
 }
 
-static void AddHint(Text hint, const RandomizerCheck gossipStone, const std::vector<uint8_t>& colors = {}, HintType hintType = HINT_TYPE_NAMED_ITEM, const RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK) {
+static void AddHint(Text hint, const RandomizerCheck gossipStone, const std::vector<std::string>& colors = {}, HintType hintType = HINT_TYPE_NAMED_ITEM, const RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK) {
   //save hints as dummy items for writing to the spoiler log
   //NewItem(gossipStone, Item{RG_HINT, hint, ITEMTYPE_EVENT, GI_RUPEE_BLUE_LOSE, false, &noVariable, NONE});
   //GetLocation(gossipStone)->SetPlacedItem(gossipStone);
 
   auto ctx = Rando::Context::GetInstance();
-  ctx->AddHint((RandomizerHintKey)((gossipStone - RC_COLOSSUS_GOSSIP_STONE) + 1), AutoFormatHintText(hint), hintedLocation, hintType, GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText());
+  ctx->AddHint((RandomizerHintKey)((gossipStone - RC_COLOSSUS_GOSSIP_STONE) + 1), AutoFormatHintText(hint, colors), hintedLocation, hintType, GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText());
   ctx->GetItemLocation(gossipStone)->SetPlacedItem(RG_HINT);
 }
 
-static void AddHintCopies(uint8_t copies, Text hint, std::vector<uint8_t> colours, HintType type, RandomizerCheck location = RC_UNKNOWN_CHECK, RandomizerCheck firstStone = RC_UNKNOWN_CHECK){
+static void AddHintCopies(uint8_t copies, Text hint, std::vector<std::string> colours, HintType type, RandomizerCheck location = RC_UNKNOWN_CHECK, RandomizerCheck firstStone = RC_UNKNOWN_CHECK){
   if (firstStone != RC_UNKNOWN_CHECK && copies > 0){
       AddHint(hint, firstStone, colours, type, location);
       copies -= 1;
@@ -443,30 +447,30 @@ static bool CreateHint(RandomizerCheck hintedLocation, uint8_t copies, HintType 
   //make hint text
   Text finalHint;
   Text prefix = ::Hint(RHT_PREFIX).GetText();
-  std::vector<uint8_t> colours = {QM_GREEN, QM_RED};
+  std::vector<std::string> colours = {QM_GREEN, QM_RED};
   if (type == HINT_TYPE_WOTH){
     Text regionText = GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
-    finalHint = prefix + "%r#" + regionText + "#%w" + ::Hint(RHT_WAY_OF_THE_HERO).GetText();
-    colours = {QM_LBLUE};
+    finalHint = prefix + "#" + regionText + "#" + ::Hint(RHT_WAY_OF_THE_HERO).GetText();
+    colours = {QM_GREEN};
   }
   else if(type == HINT_TYPE_BARREN){
     Text regionText = GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
-    finalHint = prefix + ::Hint(RHT_PLUNDERING).GetText() + "%r#" + regionText + "#%w" + ::Hint(RHT_FOOLISH).GetText();
-    colours = {QM_PINK};
+    finalHint = prefix + ::Hint(RHT_PLUNDERING).GetText() + "#" + regionText + "#" + ::Hint(RHT_FOOLISH).GetText();
+    colours = {QM_GREEN};
   }
   else {
     Text itemText = ctx->GetItemLocation(hintedLocation)->GetPlacedItem().GetHint().GetText();
     if (type >= HINT_TYPE_ALWAYS && type < HINT_TYPE_NAMED_ITEM){
       Text locationText = Rando::StaticData::GetLocation(hintedLocation)->GetHint()->GetText();
-      finalHint = prefix + "%r" + locationText + " %g#"+itemText+"#%w.";
+      finalHint = prefix + locationText + " #"+itemText+"#.";
     }
     else if (type == HINT_TYPE_NAMED_ITEM || type == HINT_TYPE_RANDOM){
       Text regionText = GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
       // RANDOTODO: reconsider dungeon vs non-dungeon item location hints when boss shuffle mixed pools happens
       if (Rando::StaticData::GetLocation(hintedLocation)->IsDungeon()) {
-        finalHint = prefix+"%r#"+regionText+"#%w "+::Hint(RHT_HOARDS).GetText()+" %g#"+itemText+"#%w.";
+        finalHint = prefix+"#"+regionText+"# "+::Hint(RHT_HOARDS).GetText()+" #"+itemText+"#.";
       } else {
-        finalHint = prefix+"%r#"+itemText+"#%w "+::Hint(RHT_CAN_BE_FOUND_AT).GetText()+" %g#"+regionText+"#%w.";
+        finalHint = prefix+"#"+itemText+"# "+::Hint(RHT_CAN_BE_FOUND_AT).GetText()+" #"+regionText+"#.";
         colours = {QM_RED, QM_GREEN};
       }
     }
@@ -656,10 +660,9 @@ void CreateGanonAndSheikText() {
       ganonHintText = ganonHintText + "!";
     }
 
-    //CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(ganonHintText));
     ctx->AddHint(RH_GANONDORF_HINT, AutoFormatHintText(ganonHintText), lightArrowLocation[0], HINT_TYPE_STATIC, GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText());
 
-    if(!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)){
+    if (!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)) {
       sheikText = ::Hint(RHT_SHEIK_LIGHT_ARROW_HINT).GetText() + lightArrowArea + "%w.";
       locsToCheck = {RC_GANONDORF_HINT, RC_SHEIK_HINT_GC, RC_SHEIK_HINT_MQ_GC};
 
@@ -873,30 +876,57 @@ void CreateAltarText() {
 
 void CreateMerchantsHints() {
     auto ctx = Rando::Context::GetInstance();
-    Text medigoronItemText = ctx->GetItemLocation(RC_GC_MEDIGORON)->GetPlacedItem().GetHint().GetText();
-    Text grannyItemText = ctx->GetItemLocation(RC_KAK_GRANNYS_SHOP)->GetPlacedItem().GetHint().GetText().Capitalize();
-    Text carpetSalesmanItemText =
-        ctx->GetItemLocation(RC_WASTELAND_BOMBCHU_SALESMAN)->GetPlacedItem().GetHint().GetText();
-    Text carpetSalesmanItemClearText =
-        ctx->GetItemLocation(RC_WASTELAND_BOMBCHU_SALESMAN)->GetPlacedItem().GetHint().GetClear();
-
+    Text beanSalesmanItemText, medigoronItemText, grannyItemText, carpetSalesmanItemText, carpetSalesmanAfterItemText;
+    if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ON_HINT)) {
+      RandomizerGet beanSalesmanItem = ctx->GetItemLocation(RC_ZR_MAGIC_BEAN_SALESMAN)->GetPlacedRandomizerGet();
+      beanSalesmanItemText = ctx->GetItemLocation(RC_ZR_MAGIC_BEAN_SALESMAN)->GetPlacedItem().GetHint().GetText();
+      if (beanSalesmanItem == RG_ICE_TRAP) {
+        beanSalesmanItemText = ctx->overrides[RC_ZR_MAGIC_BEAN_SALESMAN].GetTrickName();
+      }
+      RandomizerGet medigoronItem = ctx->GetItemLocation(RC_GC_MEDIGORON)->GetPlacedRandomizerGet();
+      medigoronItemText = ctx->GetItemLocation(RC_GC_MEDIGORON)->GetPlacedItem().GetHint().GetText();
+      if (medigoronItem == RG_ICE_TRAP) {
+        medigoronItemText = ctx->overrides[RC_GC_MEDIGORON].GetTrickName();
+      }
+      RandomizerGet grannyItem = ctx->GetItemLocation(RC_KAK_GRANNYS_SHOP)->GetPlacedRandomizerGet();
+      grannyItemText = ctx->GetItemLocation(RC_KAK_GRANNYS_SHOP)->GetPlacedItem().GetHint().GetText().Capitalize();
+      if (grannyItem == RG_ICE_TRAP) {
+        grannyItemText = ctx->overrides[RC_KAK_GRANNYS_SHOP].GetTrickName();
+      }
+      RandomizerGet carpetSalesmanItem = ctx->GetItemLocation(RC_WASTELAND_BOMBCHU_SALESMAN)->GetPlacedRandomizerGet();
+      carpetSalesmanItemText =
+          ctx->GetItemLocation(RC_WASTELAND_BOMBCHU_SALESMAN)->GetPlacedItem().GetHint().GetText();
+      if (carpetSalesmanItem == RG_ICE_TRAP) {
+        carpetSalesmanItemText = ctx->overrides[RC_WASTELAND_BOMBCHU_SALESMAN].GetTrickName();
+      }
+      carpetSalesmanAfterItemText = ::Hint(RHT_CARPET_SALESMAN_DIALOG_HINTED).GetText();
+    } else {
+      medigoronItemText = grannyItemText = carpetSalesmanItemText = hintTable[RHT_HINT_MYSTERIOUS].GetTextCopy();
+      carpetSalesmanAfterItemText = ::Hint(RHT_CARPET_SALESMAN_DIALOG_MYSTERIOUS).GetText();
+      beanSalesmanItemText = Text{ "mysterious item", "objet mystérieux", "objeto misterioso", "mysteriöser gegenstand" };
+    }
 
     Text medigoronText =
         ::Hint(RHT_MEDIGORON_DIALOG_FIRST).GetText() + medigoronItemText + ::Hint(RHT_MEDIGORON_DIALOG_SECOND).GetText();
-    Text grannyText = grannyItemText + ::Hint(RHT_GRANNY_DIALOG).GetText();
+    Text grannyText = Text{"#"} + grannyItemText + "#" + ::Hint(RHT_GRANNY_DIALOG).GetText();
     Text carpetSalesmanTextOne = ::Hint(RHT_CARPET_SALESMAN_DIALOG_FIRST).GetText() + carpetSalesmanItemText +
-                                 ::Hint(RHT_CARPET_SALESMAN_DIALOG_SECOND).GetText();
-    Text carpetSalesmanTextTwo = ::Hint(RHT_CARPET_SALESMAN_DIALOG_THIRD).GetText() + carpetSalesmanItemClearText +
-                                 ::Hint(RHT_CARPET_SALESMAN_DIALOG_FOURTH).GetText();
+                                 carpetSalesmanAfterItemText;
+    Text carpetSalesmanTextTwo = ::Hint(RHT_CARPET_SALESMAN_DIALOG_FINAL).GetText();
+    medigoronText = AutoFormatHintText(medigoronText, {QM_GREEN, QM_YELLOW, QM_GREEN });
+    grannyText = AutoFormatHintText(grannyText, { QM_GREEN, QM_YELLOW, QM_GREEN });
+    carpetSalesmanTextOne = AutoFormatHintText(carpetSalesmanTextOne, { QM_GREEN, QM_RED, QM_YELLOW, QM_GREEN });
 
-    // CreateMessageFromTextObject(0x9120, 0, 2, 3, AddColorsAndFormat(medigoronText, { QM_RED, QM_GREEN }));
-    // CreateMessageFromTextObject(0x9121, 0, 2, 3, AddColorsAndFormat(grannyText, { QM_RED, QM_GREEN }));
-    // CreateMessageFromTextObject(0x6077, 0, 2, 3, AddColorsAndFormat(carpetSalesmanTextOne, { QM_RED, QM_GREEN }));
-    // CreateMessageFromTextObject(0x6078, 0, 2, 3,
-                                // AddColorsAndFormat(carpetSalesmanTextTwo, { QM_RED, QM_YELLOW, QM_RED }));
-    // ctx->AddHint(RH_MEDIGORON, AutoFormatHintText(medigoronText), RC_GC_MEDIGORON, HINT_TYPE_STATIC, GetHintRegion(RR_GORON_CITY)->GetHint().GetText());
-    // ctx->AddHint(RH_GRANNYS_SHOP, AutoFormatHintText(grannyText), RC_KAK_GRANNYS_SHOP, HINT_TYPE_STATIC, GetHintRegion(RR_KAKARIKO_VILLAGE)->GetHint().GetText());
-    // ctx->AddHint(RH_WASTELAND_BOMBCHU_SALESMAN, AutoFormatHintText(carpetSalesmanTextOne), RC_WASTELAND_BOMBCHU_SALESMAN, HINT_TYPE_STATIC, GetHintRegion(RR_HAUNTED_WASTELAND)->GetHint().GetText());
+    if (ctx->GetOption(RSK_SHUFFLE_MAGIC_BEANS)) {
+      Text beanSalesmanText = ::Hint(RHT_BEAN_SALESMAN_FIRST).GetText() + beanSalesmanItemText + ::Hint(RHT_BEAN_SALESMAN_SECOND).GetText();
+      ctx->AddHint(RH_BEAN_SALESMAN, AutoFormatHintText(beanSalesmanText, { QM_RED, QM_GREEN, QM_YELLOW, QM_GREEN }), RC_ZR_MAGIC_BEAN_SALESMAN, HINT_TYPE_STATIC, GetHintRegion(RR_ZORAS_RIVER)->GetHint().GetText());
+    }
+
+    ctx->AddHint(RH_MEDIGORON, medigoronText, RC_GC_MEDIGORON, HINT_TYPE_STATIC, GetHintRegion(RR_GORON_CITY)->GetHint().GetText());
+    ctx->AddHint(RH_GRANNYS_SHOP, grannyText, RC_KAK_GRANNYS_SHOP, HINT_TYPE_STATIC, GetHintRegion(RR_KAKARIKO_VILLAGE)->GetHint().GetText());
+    ctx->AddHint(RH_WASTELAND_BOMBCHU_SALESMAN, carpetSalesmanTextOne, RC_WASTELAND_BOMBCHU_SALESMAN, HINT_TYPE_STATIC, GetHintRegion(RR_HAUNTED_WASTELAND)->GetHint().GetText());
+    // Technically not a hint but this is probably the best place we have to store it for now.
+    ctx->AddHint(RH_WASTELAND_BOMBCHU_SALESMAN_POST, carpetSalesmanTextTwo, RC_WASTELAND_BOMBCHU_SALESMAN, HINT_TYPE_STATIC, GetHintRegion(RR_HAUNTED_WASTELAND)->GetHint().GetText());
+
 }
 
 //RANDOTODO add Better Links Pocket and starting item handling once more starting items are added
