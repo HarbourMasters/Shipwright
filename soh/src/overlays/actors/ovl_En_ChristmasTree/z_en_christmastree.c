@@ -132,24 +132,38 @@ void EnChristmasTree_Draw(Actor* thisx, PlayState* play) {
 
     Matrix_Scale(treeSize, treeSize, treeSize, MTXMODE_APPLY);
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
+
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasTreeDL);
-    if (percentageCompleted >= 0.17f) {
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)xmas_tree_presents);
+
+    if (percentageCompleted >= 0.1f) {
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor10DL);
     }
-    if (percentageCompleted >= 0.34f) {
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)xmas_tree_bauble_r);
+    if (percentageCompleted >= 0.2f) {
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor20DL);
     }
-    if (percentageCompleted >= 0.51f) {
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)xmas_tree_bauble_g);
+    if (percentageCompleted >= 0.3f) {
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor30DL);
     }
-    if (percentageCompleted >= 0.68f) {
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)xmas_tree_bauble_b);
+    if (percentageCompleted >= 0.4f) {
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor40DL);
     }
-    if (percentageCompleted >= 0.85f) {
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)xmas_tree_bauble_s);
+    if (percentageCompleted >= 0.5f) {
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor50DL);
+    }
+    if (percentageCompleted >= 0.6f) {
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor60DL);
+    }
+    if (percentageCompleted >= 0.7f) {
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor70DL);
+    }
+    if (percentageCompleted >= 0.8f) {
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor80DL);
+    }
+    if (percentageCompleted >= 0.9f) {
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor90DL);
     }
     if (percentageCompleted >= 1.0f) {
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)xmas_tree_star);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor100DL);
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

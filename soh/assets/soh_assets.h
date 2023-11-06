@@ -59,23 +59,35 @@ static const ALIGN_ASSET(2) char gTriforcePieceCompletedDL[] = dgTriforcePieceCo
 #define dgXmasTreeDL "__OTR__objects/object_xmas_tree/gXmasTreeDL"
 static const ALIGN_ASSET(2) char gXmasTreeDL[] = dgXmasTreeDL;
 
-#define dxmas_tree_presents "__OTR__objects/gameplay_holiday/xmas_tree_presents"
-static const ALIGN_ASSET(2) char xmas_tree_presents[] = dxmas_tree_presents;
+#define dgXmasDecor10DL "__OTR__objects/object_xmas_tree/gXmasDecor10DL"
+static const ALIGN_ASSET(2) char gXmasDecor10DL[] = dgXmasDecor10DL;
 
-#define dxmas_tree_star "__OTR__objects/gameplay_holiday/xmas_tree_star"
-static const ALIGN_ASSET(2) char xmas_tree_star[] = dxmas_tree_star;
+#define dgXmasDecor20DL "__OTR__objects/object_xmas_tree/gXmasDecor20DL"
+static const ALIGN_ASSET(2) char gXmasDecor20DL[] = dgXmasDecor20DL;
 
-#define dxmas_tree_bauble_r "__OTR__objects/gameplay_holiday/xmas_tree_bauble_r"
-static const ALIGN_ASSET(2) char xmas_tree_bauble_r[] = dxmas_tree_bauble_r;
+#define dgXmasDecor30DL "__OTR__objects/object_xmas_tree/gXmasDecor30DL"
+static const ALIGN_ASSET(2) char gXmasDecor30DL[] = dgXmasDecor30DL;
 
-#define dxmas_tree_bauble_g "__OTR__objects/gameplay_holiday/xmas_tree_bauble_g"
-static const ALIGN_ASSET(2) char xmas_tree_bauble_g[] = dxmas_tree_bauble_g;
+#define dgXmasDecor40DL "__OTR__objects/object_xmas_tree/gXmasDecor40DL"
+static const ALIGN_ASSET(2) char gXmasDecor40DL[] = dgXmasDecor40DL;
 
-#define dxmas_tree_bauble_b "__OTR__objects/gameplay_holiday/xmas_tree_bauble_b"
-static const ALIGN_ASSET(2) char xmas_tree_bauble_b[] = dxmas_tree_bauble_b;
+#define dgXmasDecor50DL "__OTR__objects/object_xmas_tree/gXmasDecor50DL"
+static const ALIGN_ASSET(2) char gXmasDecor50DL[] = dgXmasDecor50DL;
 
-#define dxmas_tree_bauble_s "__OTR__objects/gameplay_holiday/xmas_tree_bauble_s"
-static const ALIGN_ASSET(2) char xmas_tree_bauble_s[] = dxmas_tree_bauble_s;
+#define dgXmasDecor60DL "__OTR__objects/object_xmas_tree/gXmasDecor60DL"
+static const ALIGN_ASSET(2) char gXmasDecor60DL[] = dgXmasDecor60DL;
+
+#define dgXmasDecor70DL "__OTR__objects/object_xmas_tree/gXmasDecor70DL"
+static const ALIGN_ASSET(2) char gXmasDecor70DL[] = dgXmasDecor70DL;
+
+#define dgXmasDecor80DL "__OTR__objects/object_xmas_tree/gXmasDecor80DL"
+static const ALIGN_ASSET(2) char gXmasDecor80DL[] = dgXmasDecor80DL;
+
+#define dgXmasDecor90DL "__OTR__objects/object_xmas_tree/gXmasDecor90DL"
+static const ALIGN_ASSET(2) char gXmasDecor90DL[] = dgXmasDecor90DL;
+
+#define dgXmasDecor100DL "__OTR__objects/object_xmas_tree/gXmasDecor100DL"
+static const ALIGN_ASSET(2) char gXmasDecor100DL[] = dgXmasDecor100DL;
 
 // overlays
 #define dgOptionsDividerChangeLangVtx "__OTR__overlays/ovl_file_choose/gOptionsDividerChangeLangVtx"
