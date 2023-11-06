@@ -582,7 +582,7 @@ std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
       size_t lastPeriod = textStr.rfind('.', lastNewline + lineLength);
       //replace '&' first if it's within the newline range
       if (ampersand < lastNewline + lineLength) {
-        lastNewline = ampersand;
+        lastNewline = ampersand + 1;
       //or move the lastNewline cursor to the next line if a '^' is encountered
       } else if (carrot < lastNewline + lineLength) {
         lastNewline = carrot + 1;
@@ -706,7 +706,8 @@ static void WriteHints(int language) {
       jsonData["ganonHintText"] = ganonHintText;
       jsonData["lightArrowHintLoc"] = GetLightArrowHintLoc();
       jsonData["lightArrowRegion"] = ctx->GetHint(RH_GANONDORF_HINT)->GetHintedRegion();
-        if (!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)) {
+      jsonData["masterSwordHintLoc"] = GetMasterSwordHintLoc();
+      if (!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)) {
           jsonData["sheikText"] = sheikText;
       }
     }

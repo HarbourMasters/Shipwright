@@ -66,13 +66,14 @@ void AreaTable_Init_CastleTown() {
                   //EventAccess(&TimeTravel, {[]{return true;}}),
                 }, {
                   //Locations
+                  LocationAccess(RC_TOT_MASTER_SWORD, {[]{return IsAdult;}}),
                   LocationAccess(RC_SHEIK_AT_TEMPLE, {[]{return ForestMedallion && IsAdult;}}),
                 }, {
                   //Exits
                   Entrance(RR_TEMPLE_OF_TIME, {[]{return true;}}),
   });
 
-  areaTable[RR_CASTLE_GROUNDS] = Area("Castle Grounds", "Castle Grounds", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_CASTLE_GROUNDS] = Area("Castle Grounds", "Castle Grounds", RHT_CASTLE_GROUNDS, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_THE_MARKET,            {[]{return true;}}),
                   Entrance(RR_HYRULE_CASTLE_GROUNDS, {[]{return IsChild;}}),
@@ -158,7 +159,7 @@ void AreaTable_Init_CastleTown() {
     Entrance(RR_GANONS_CASTLE_LEDGE, { [] { return IsAdult; }}),
   });
 
-  areaTable[RR_GANONS_CASTLE_LEDGE] = Area("Ganon's Castle Ledge", "OGC Ganon's Castle Ledge", RHT_NONE, NO_DAY_NIGHT_CYCLE,
+  areaTable[RR_GANONS_CASTLE_LEDGE] = Area("Ganon's Castle Ledge", "OGC Ganon's Castle Ledge", RHT_OUTSIDE_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE,
   {}, {}, {
     // Exits
     Entrance(RR_GANONS_CASTLE_GROUNDS, {[]{return BuiltRainbowBridge;}}),

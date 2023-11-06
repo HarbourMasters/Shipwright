@@ -34,8 +34,8 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_KF_OUTSIDE_DEKU_TREE] = Area("KF Outside Deku Tree", "Kokiri Forest", RHT_KOKIRI_FOREST, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&DekuBabaSticks,           {[]{return DekuBabaSticks || ((IsAdult && randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) || KokiriSword || Boomerang);}}),
-                  EventAccess(&DekuBabaNuts,             {[]{return DekuBabaNuts   || ((IsAdult && randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) || KokiriSword || Slingshot || Sticks || HasExplosives || CanUse(RG_DINS_FIRE));}}),
+                  EventAccess(&DekuBabaSticks,           {[]{return DekuBabaSticks || ((IsAdult && (CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_KOKIRI_SWORD)) && !randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES)) || (IsChild && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BOOMERANG))));}}),
+                  EventAccess(&DekuBabaNuts,             {[]{return DekuBabaNuts   || ((IsAdult && (CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_KOKIRI_SWORD)) && !randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES)) || (IsChild && (CanJumpslash || CanUse(RG_FAIRY_SLINGSHOT) || HasExplosives || CanUse(RG_DINS_FIRE))));}}),
                   EventAccess(&ShowedMidoSwordAndShield, {[]{return ShowedMidoSwordAndShield || (IsChild && KokiriSword && DekuShield);}}),
                 }, {
                   //Locations
@@ -105,7 +105,7 @@ void AreaTable_Init_LostWoods() {
                   Entrance(RR_KOKIRI_FOREST, {[]{return true;}})
   });
 
-  areaTable[RR_LW_FOREST_EXIT] = Area("LW Forest Exit", "Lost Woods", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_LW_FOREST_EXIT] = Area("LW Forest Exit", "Lost Woods", RHT_THE_LOST_WOODS, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_KOKIRI_FOREST, {[]{return true;}})
   });
@@ -144,7 +144,7 @@ void AreaTable_Init_LostWoods() {
                   //Locations
                   LocationAccess(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, {[]{return IsChild && CanStunDeku;}}),
                   LocationAccess(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,  {[]{return IsChild && CanStunDeku;}}),
-                  LocationAccess(RC_LW_GS_ABOVE_THEATER,                   {[]{return IsAdult && AtNight && (CanPlantBean(RR_LW_BEYOND_MIDO) || (randoCtx->GetTrickOption(RT_LW_GS_BEAN) && CanUse(RG_HOOKSHOT) && (CanUse(RG_LONGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || HasBombchus || CanUse(RG_DINS_FIRE)))) && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_LW_GS_ABOVE_THEATER,                   {[]{return IsAdult && AtNight && ((CanPlantBean(RR_LW_BEYOND_MIDO) && CanAdultAttack) || (randoCtx->GetTrickOption(RT_LW_GS_BEAN) && CanUse(RG_HOOKSHOT) && (CanUse(RG_LONGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || HasBombchus || CanUse(RG_DINS_FIRE)))) && CanGetNightTimeGS;}}),
                   LocationAccess(RC_LW_GS_BEAN_PATCH_NEAR_THEATER,         {[]{return CanPlantBugs && (CanChildAttack || (randoCtx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF) && DekuShield));}}),
                 }, {
                   //Exits
@@ -185,7 +185,7 @@ void AreaTable_Init_LostWoods() {
   areaTable[RR_SFM_ENTRYWAY] = Area("SFM Entryway", "Sacred Forest Meadow", RHT_SACRED_FOREST_MEADOW, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_LW_BEYOND_MIDO,       {[]{return true;}}),
-                  Entrance(RR_SACRED_FOREST_MEADOW, {[]{return IsAdult || Slingshot || Sticks || KokiriSword || CanUse(RG_DINS_FIRE) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);}}),
+                  Entrance(RR_SACRED_FOREST_MEADOW, {[]{return CanJumpslash || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_DINS_FIRE) || CanUse(RG_MEGATON_HAMMER);}}),
                   Entrance(RR_SFM_WOLFOS_GROTTO,    {[]{return CanOpenBombGrotto;}}),
   });
 

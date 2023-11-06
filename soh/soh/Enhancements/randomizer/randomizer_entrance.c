@@ -569,6 +569,7 @@ void Entrance_HandleEponaState(void) {
         player->actor.parent = NULL;
         AREG(6) = 0;
         gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0]; //"temp B"
+        Interface_RandoRestoreSwordless();
     }
 }
 

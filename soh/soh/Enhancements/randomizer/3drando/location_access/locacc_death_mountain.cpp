@@ -47,7 +47,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_DMT_GREAT_FAIRY_FOUNTAIN, {[]{return Here(RR_DEATH_MOUNTAIN_SUMMIT, []{return CanBlastOrSmash;});}}),
   });
 
-  areaTable[RR_DMT_OWL_FLIGHT] = Area("DMT Owl Flight", "Death Mountain", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_DMT_OWL_FLIGHT] = Area("DMT Owl Flight", "Death Mountain", RHT_DEATH_MOUNTAIN_TRAIL, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_KAK_IMPAS_ROOFTOP, {[]{return true;}}),
   });
@@ -96,7 +96,7 @@ void AreaTable_Init_DeathMountain() {
                   LocationAccess(RC_GC_ROLLING_GORON_AS_CHILD, {[]{return IsChild && (HasExplosives || (GoronBracelet && randoCtx->GetTrickOption(RT_GC_ROLLING_STRENGTH)));}}),
                   LocationAccess(RC_GC_ROLLING_GORON_AS_ADULT, {[]{return StopGCRollingGoronAsAdult;}}),
                   LocationAccess(RC_GC_GS_BOULDER_MAZE,        {[]{return IsChild && CanBlastOrSmash;}}),
-                  LocationAccess(RC_GC_GS_CENTER_PLATFORM,     {[]{return IsAdult;}}),
+                  LocationAccess(RC_GC_GS_CENTER_PLATFORM,     {[]{return CanAdultAttack;}}),
                   LocationAccess(RC_GC_MEDIGORON,              {[]{return IsAdult && AdultsWallet && (CanBlastOrSmash || GoronBracelet);}}),
                   LocationAccess(RC_GC_MAZE_GOSSIP_STONE,      {[]{return CanBlastOrSmash || CanUse(RG_SILVER_GAUNTLETS);}}),
                   LocationAccess(RC_GC_MEDIGORON_GOSSIP_STONE, {[]{return CanBlastOrSmash || GoronBracelet;}}),
@@ -109,7 +109,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_GC_GROTTO_PLATFORM,   {[]{return IsAdult && ((CanPlay(SongOfTime) && ((EffectiveHealth > 2) || CanUse(RG_GORON_TUNIC) || CanUse(RG_LONGSHOT) || CanUse(RG_NAYRUS_LOVE))) || (EffectiveHealth > 1 && CanUse(RG_GORON_TUNIC) && CanUse(RG_HOOKSHOT)) || (CanUse(RG_NAYRUS_LOVE) && CanUse(RG_HOOKSHOT)) || (EffectiveHealth > 2 && CanUse(RG_HOOKSHOT) && randoCtx->GetTrickOption(RT_GC_GROTTO)));}}),
   });
 
-  areaTable[RR_GC_WOODS_WARP] = Area("GC Woods Warp", "Goron City", RHT_NONE, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_GC_WOODS_WARP] = Area("GC Woods Warp", "Goron City", RHT_GORON_CITY, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&GCWoodsWarpOpen, {[]{return GCWoodsWarpOpen || (CanBlastOrSmash || CanUse(RG_DINS_FIRE));}}),
                 }, {}, {

@@ -1048,6 +1048,11 @@ void HintTable_Init() {
         Text{ "Temple of Time", /*french*/ "le Temple du Temps", /*spanish*/ "el Templo del Tiempo" },
     });
 
+    hintTable[RHT_CASTLE_GROUNDS] = HintText::Exclude({
+        // obscure text
+        Text{ "the Castle Grounds", /*french*/ "le Château d'Hyrule", /*spanish*/ "" },
+    });
+
     hintTable[RHT_HYRULE_CASTLE] = HintText::Exclude({
         // obscure text
         Text{ "Hyrule Castle", /*french*/ "le Château d'Hyrule", /*spanish*/ "el Castillo de Hyrule" },
@@ -2960,14 +2965,36 @@ void HintTable_Init() {
             "Ja, ja, ja... Nunca me derrotarás reflejando mis esferas de energía y desplegando la flecha de luz de " },
     });
 
-    hintTable[RHT_SHEIK_LIGHT_ARROW_HINT] = HintText::OtherHint({
+    hintTable[RHT_SHEIK_LIGHT_ARROW_HINT] = HintText::SheikLine({
         // obscure text
         Text{
-            "I overheard Ganondorf say that he misplaced the %yLight Arrows%w in&%r",
+            "I overheard Ganondorf say that he misplaced the %yLight Arrows%w in %r",
             /*french*/
             "J'ai entendu dire que Ganondorf aurait caché les %yFlèches de Lumière%w dans %r",
             /*spanish*/
             ""},
+    });
+
+    /*--------------------------
+    |MASTER SWORD LOCATION TEXT|
+    ---------------------------*/
+
+    hintTable[RHT_MASTER_SWORD_LOCATION_HINT] = HintText::MasterSword({
+        // obscure text
+        Text{"And even if you do, you'll never find the legendary blade hidden in ",
+            /*french*/
+            "Et même si tu les trouves, tu ne touveras jamais l'épée de légende cachée dans ",
+            /*spanish*/
+            "E incluso si lo haces, nunca encontrarás la espada legendaria escondida en " },
+    });
+
+    hintTable[RHT_SHEIK_MASTER_SWORD_LOCATION_HINT] = HintText::SheikLine({
+        // obscure text
+        Text{"He also stole %gthe Master Sword%w and hid it in %r",
+            /*french*/
+            "Il aurait aussi volé %gl'épée de légende%w, qu'il aurait caché dans %r",
+            /*spanish*/
+            "Él también robó %gla Espada Maestra%w y la escondió en %r" },
     });
 
     hintTable[RHT_YOUR_POCKET] = HintText::Exclude({

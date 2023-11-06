@@ -10,7 +10,7 @@
 
 std::vector<ItemAndPrice> NonShopItems = {};
 
-static std::array<std::vector<Text>, 0xE0> trickNameTable; // Table of trick names for ice traps
+static std::array<std::vector<Text>, 0xE1> trickNameTable; // Table of trick names for ice traps
 bool initTrickNames = false; //Indicates if trick ice trap names have been initialized yet
 
 //Set vanilla shop item locations before potentially shuffling
@@ -225,11 +225,11 @@ void InitTrickNames() {
   trickNameTable[RG_KOKIRI_SWORD] = {
      Text{"Korok Sword", "Épée Korok", "Espada Korok"},
      Text{"Hero's Sword", "Épée du Héros", "Espada del héroe"},
-     Text{"Butter Knife","Couteau à Beurre","cuchillo de mantequilla"}};
-/*  trickNameTable[RG_MASTER_SWORD] = {
+     Text{"Razor Sword", "Lame Rasoir", "Espada de esmeril"}};
+  trickNameTable[RG_MASTER_SWORD] = { //Master Sword without the GI enum
      Text{"Goddess Sword", "Épée de la déesse", "Espada Divina"},
      Text{"Gilded Sword", "Excalibur", "Espada de los Sabios"},
-     Text{"Magical Sword", "Lame dorée", "Fay"}};*/
+     Text{"Magical Sword", "Lame dorée", "Fay"}};
   trickNameTable[RG_GIANTS_KNIFE] = {
      Text{"Medigoron's Sword", "l'Épée de Medigoron", "La espada de Medigoron"},
      Text{"Razor Sword", "Lame Rasoir", "Espada de esmeril"},

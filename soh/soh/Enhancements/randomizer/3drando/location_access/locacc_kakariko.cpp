@@ -190,7 +190,7 @@ void AreaTable_Init_Kakariko() {
 
   areaTable[RR_KAK_REDEAD_GROTTO] = Area("Kak Redead Grotto", "Kak Redead Grotto", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_KAK_REDEAD_GROTTO_CHEST, {[]{return IsAdult || (Sticks || KokiriSword || CanUse(RG_DINS_FIRE) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD));}}),
+                  LocationAccess(RC_KAK_REDEAD_GROTTO_CHEST, {[]{return CanUse(RG_STICKS) || CanUse(RG_KOKIRI_SWORD) || CanUse(RG_DINS_FIRE) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);}}),
                 }, {
                   //Exits
                   Entrance(RR_KAKARIKO_VILLAGE, {[]{return true;}}),
@@ -247,7 +247,7 @@ void AreaTable_Init_Kakariko() {
   areaTable[RR_GRAVEYARD_COMPOSERS_GRAVE] = Area("Graveyard Composers Grave", "Graveyard Composers Grave", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_CHEST, {[]{return HasFireSource;}}),
-                  LocationAccess(RC_SONG_FROM_ROYAL_FAMILYS_TOMB,       {[]{return IsAdult || (Slingshot || Boomerang || Sticks || HasExplosives || KokiriSword || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT));}}),
+                  LocationAccess(RC_SONG_FROM_ROYAL_FAMILYS_TOMB,       {[]{return CanUseProjectile || CanJumpslash || CanUse(RG_MEGATON_HAMMER);}}),
                 }, {
                   //Exits
                   Entrance(RR_THE_GRAVEYARD, {[]{return true;}}),
@@ -287,7 +287,7 @@ void AreaTable_Init_Kakariko() {
                   Entrance(RR_SHADOW_TEMPLE_ENTRYWAY,    {[]{return CanUse(RG_DINS_FIRE) || (randoCtx->GetTrickOption(RT_GY_SHADOW_FIRE_ARROWS) && IsAdult && CanUse(RG_FIRE_ARROWS));}}),
   });
 
-  areaTable[RR_KAK_BEHIND_GATE] = Area("Kak Behind Gate", "Kakariko Village", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_KAK_BEHIND_GATE] = Area("Kak Behind Gate", "Kakariko Village", RHT_KAKARIKO_VILLAGE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_KAKARIKO_VILLAGE,     {[]{return IsAdult || randoCtx->GetTrickOption(RT_VISIBLE_COLLISION) || KakarikoVillageGateOpen || randoCtx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}}),
                   Entrance(RR_DEATH_MOUNTAIN_TRAIL, {[]{return true;}}),

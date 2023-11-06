@@ -278,7 +278,6 @@ typedef struct {
     /*        */ uint8_t bossRushOptions[BOSSRUSH_OPTIONS_AMOUNT];
     /*        */ u8 pendingIceTrapCount;
     /*        */ SohStats sohStats;
-    /*        */ u8 temporaryWeapon;
     /*        */ FaroresWindData backupFW;
     /*        */ RandomizerCheckTrackerData checkTrackerData[RC_MAX];
     // #endregion

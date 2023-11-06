@@ -48,7 +48,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(RR_ZR_BEHIND_WATERFALL, {[]{return CanPlay(ZeldasLullaby) || (IsChild && randoCtx->GetTrickOption(RT_ZR_CUCCO)) || (IsAdult && CanUse(RG_HOVER_BOOTS) && randoCtx->GetTrickOption(RT_ZR_HOVERS));}}),
   });
 
-  areaTable[RR_ZR_BEHIND_WATERFALL] = Area("ZR Behind Waterfall", "Zora River", RHT_NONE, DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_ZR_BEHIND_WATERFALL] = Area("ZR Behind Waterfall", "Zora River", RHT_ZORAS_RIVER, DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_ZORAS_RIVER,  {[]{return true;}}),
                   Entrance(RR_ZORAS_DOMAIN, {[]{return true;}}),
@@ -95,7 +95,7 @@ void AreaTable_Init_ZorasDomain() {
                   LocationAccess(RC_ZD_CHEST,               {[]{return IsChild && CanUse(RG_STICKS);}}),
                   LocationAccess(RC_ZD_KING_ZORA_THAWED,    {[]{return KingZoraThawed;}}),
                   LocationAccess(RC_ZD_TRADE_PRESCRIPTION,  {[]{return KingZoraThawed && Prescription;}}),
-                  LocationAccess(RC_ZD_GS_FROZEN_WATERFALL, {[]{return IsAdult && AtNight && (HookshotOrBoomerang || CanUse(RG_FAIRY_SLINGSHOT) || Bow || MagicMeter || randoCtx->GetTrickOption(RT_ZD_GS)) && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_ZD_GS_FROZEN_WATERFALL, {[]{return IsAdult && AtNight && (HookshotOrBoomerang || CanUse(RG_FAIRY_SLINGSHOT) || Bow || (MagicMeter && (CanUse(RG_MASTER_SWORD) || CanUse(RG_KOKIRI_SWORD) || CanUse(RG_BIGGORON_SWORD))) || (randoCtx->GetTrickOption(RT_ZD_GS) && CanJumpslash)) && CanGetNightTimeGS;}}),
                   LocationAccess(RC_ZD_GOSSIP_STONE,        {[]{return true;}}),
                 }, {
                   //Exits
@@ -106,7 +106,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(RR_ZD_STORMS_GROTTO,    {[]{return CanOpenStormGrotto;}}),
   });
 
-  areaTable[RR_ZD_BEHIND_KING_ZORA] = Area("ZD Behind King Zora", "Zoras Domain", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_ZD_BEHIND_KING_ZORA] = Area("ZD Behind King Zora", "Zoras Domain", RHT_ZORAS_DOMAIN, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_ZORAS_DOMAIN,   {[]{return DeliverLetter || randoCtx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_OPEN) || (randoCtx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_CLOSED_CHILD) && IsAdult);}}),
                   Entrance(RR_ZORAS_FOUNTAIN, {[]{return true;}}),

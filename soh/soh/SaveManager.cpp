@@ -5,6 +5,7 @@
 #include "Enhancements/randomizer/entrance.h"
 #include "Enhancements/randomizer/dungeon.h"
 #include "Enhancements/randomizer/trial.h"
+#include "soh/util.h"
 
 #include "z64.h"
 #include "functions.h"
@@ -486,7 +487,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 
     SaveManager::Instance->SaveData("adultTradeItems", saveContext->adultTradeItems);
 
-    SaveManager::Instance->SaveData("triforcePiecesCollected", gSaveContext.triforcePiecesCollected);
+    SaveManager::Instance->SaveData("triforcePiecesCollected", saveContext->triforcePiecesCollected);
 
     SaveManager::Instance->SaveData("pendingIceTrapCount", saveContext->pendingIceTrapCount);
 
@@ -602,8 +603,8 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].buildVersionMajor = gSaveContext.sohStats.buildVersionMajor;
     fileMetaInfo[fileNum].buildVersionMinor = gSaveContext.sohStats.buildVersionMinor;
     fileMetaInfo[fileNum].buildVersionPatch = gSaveContext.sohStats.buildVersionPatch;
-    strncpy(fileMetaInfo[fileNum].buildVersion, gSaveContext.sohStats.buildVersion, sizeof(fileMetaInfo[fileNum].buildVersion) - 1);
-    fileMetaInfo[fileNum].buildVersion[sizeof(fileMetaInfo[fileNum].buildVersion) - 1] = 0;
+    SohUtils::CopyStringToCharArray(fileMetaInfo[fileNum].buildVersion, gSaveContext.sohStats.buildVersion,
+                                    ARRAY_COUNT(fileMetaInfo[fileNum].buildVersion));
 }
 
 void SaveManager::InitFile(bool isDebug) {
@@ -867,11 +868,11 @@ void SaveManager::InitFileDebug() {
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-        Inventory_ChangeEquipment(EQUIP_SWORD, 1);
+        Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_KOKIRI);
         if (gSaveContext.fileNum == 0xFF) {
             gSaveContext.equips.buttonItems[1] = ITEM_SLINGSHOT;
             gSaveContext.equips.cButtonSlots[0] = SLOT_SLINGSHOT;
-            Inventory_ChangeEquipment(EQUIP_SHIELD, 1);
+            Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_DEKU);
         }
     }
 
@@ -1010,11 +1011,11 @@ void SaveManager::InitFileMaxed() {
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-        Inventory_ChangeEquipment(EQUIP_SWORD, 1);
+        Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_KOKIRI);
         if (gSaveContext.fileNum == 0xFF) {
             gSaveContext.equips.buttonItems[1] = ITEM_SLINGSHOT;
             gSaveContext.equips.cButtonSlots[0] = SLOT_SLINGSHOT;
-            Inventory_ChangeEquipment(EQUIP_SHIELD, 1);
+            Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_DEKU);
         }
     }
 
@@ -1691,10 +1692,8 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadData("gsTokens", gSaveContext.inventory.gsTokens);
     });
     SaveManager::Instance->LoadStruct("sohStats", []() {
-        std::string buildVersion;
-        SaveManager::Instance->LoadData("buildVersion", buildVersion);
-        strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(), ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
-        gSaveContext.sohStats.buildVersion[ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1] = 0;
+        SaveManager::Instance->LoadCharArray("buildVersion", gSaveContext.sohStats.buildVersion,
+                                             ARRAY_COUNT(gSaveContext.sohStats.buildVersion));
         SaveManager::Instance->LoadData("buildVersionMajor", gSaveContext.sohStats.buildVersionMajor);
         SaveManager::Instance->LoadData("buildVersionMinor", gSaveContext.sohStats.buildVersionMinor);
         SaveManager::Instance->LoadData("buildVersionPatch", gSaveContext.sohStats.buildVersionPatch);
@@ -2182,6 +2181,13 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
     SaveManager::Instance->SaveData("dogParams", saveContext->dogParams);
 }
 
+// Load a string into a char array based on size and ensuring it is null terminated when overflowed
+void SaveManager::LoadCharArray(const std::string& name, char* destination, size_t size) {
+    std::string temp;
+    SaveManager::Instance->LoadData(name, temp);
+    SohUtils::CopyStringToCharArray(destination, temp, size);
+}
+
 void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArrayFunc func) {
     // Create an empty array and set it as the current save context, then call the function that saves an array entry.
     nlohmann::json* saveJsonContext = currentJsonContext;
@@ -2305,8 +2311,8 @@ void SaveManager::CopyZeldaFile(int from, int to) {
     fileMetaInfo[to].buildVersionMajor = fileMetaInfo[from].buildVersionMajor;
     fileMetaInfo[to].buildVersionMinor = fileMetaInfo[from].buildVersionMinor;
     fileMetaInfo[to].buildVersionPatch = fileMetaInfo[from].buildVersionPatch;
-    strncpy(fileMetaInfo[to].buildVersion, fileMetaInfo[from].buildVersion, sizeof(fileMetaInfo[to].buildVersion) - 1);
-    fileMetaInfo[to].buildVersion[sizeof(fileMetaInfo[to].buildVersion) - 1] = 0;
+    SohUtils::CopyStringToCharArray(fileMetaInfo[to].buildVersion, fileMetaInfo[from].buildVersion,
+                                    ARRAY_COUNT(fileMetaInfo[to].buildVersion));
 }
 
 void SaveManager::DeleteZeldaFile(int fileNum) {

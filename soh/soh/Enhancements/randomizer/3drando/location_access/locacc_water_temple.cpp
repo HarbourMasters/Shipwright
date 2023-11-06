@@ -122,7 +122,7 @@ void AreaTable_Init_WaterTemple() {
 
   areaTable[RR_WATER_TEMPLE_SOUTH_LOWER] = Area("Water Temple South Lower", "Water Temple", RHT_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_WATER_TEMPLE_GS_BEHIND_GATE, {[]{return CanUse(RG_HOOKSHOT) || (IsAdult && CanUse(RG_HOVER_BOOTS));}}),
+                  LocationAccess(RC_WATER_TEMPLE_GS_BEHIND_GATE, {[]{return (CanJumpslash || CanUse(RG_MEGATON_HAMMER)) && (CanUse(RG_HOOKSHOT) || (IsAdult && CanUse(RG_HOVER_BOOTS)));}}),
                 }, {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_LOBBY, {[]{return CanUse(RG_IRON_BOOTS);}}),
@@ -131,7 +131,7 @@ void AreaTable_Init_WaterTemple() {
   areaTable[RR_WATER_TEMPLE_WEST_LOWER] = Area("Water Temple West Lower", "Water Temple", RHT_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_LOBBY,       {[]{return CanUse(RG_HOOKSHOT) && CanUse(RG_IRON_BOOTS) && GoronBracelet;}}),
-                  Entrance(RR_WATER_TEMPLE_DRAGON_ROOM, {[]{return IsAdult || CanChildAttack;}}),
+                  Entrance(RR_WATER_TEMPLE_DRAGON_ROOM, {[]{return CanJumpslash || CanUseProjectile;}}),
   });
 
   areaTable[RR_WATER_TEMPLE_DRAGON_ROOM] = Area("Water Temple Dragon Room", "Water Temple", RHT_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -257,8 +257,8 @@ void AreaTable_Init_WaterTemple() {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_ENTRYWAY,            {[]{return true;}}),
                   Entrance(RR_WATER_TEMPLE_MQ_DIVE,             {[]{return IsAdult && WaterTimer >= 24 && CanUse(RG_IRON_BOOTS);}}),
-                  Entrance(RR_WATER_TEMPLE_MQ_DARK_LINK_REGION, {[]{return SmallKeys(RR_WATER_TEMPLE, 1) && IsAdult && CanUse(RG_LONGSHOT);}}),
-                  Entrance(RR_WATER_TEMPLE_BOSS_ENTRYWAY,       {[]{return BossKeyWaterTemple && IsAdult && CanUse(RG_LONGSHOT);}}),
+                  Entrance(RR_WATER_TEMPLE_MQ_DARK_LINK_REGION, {[]{return SmallKeys(RR_WATER_TEMPLE, 1) && IsAdult && CanUse(RG_LONGSHOT) && CanJumpslash && Hearts > 0;}}),
+                  Entrance(RR_WATER_TEMPLE_BOSS_ENTRYWAY,       {[]{return BossKeyWaterTemple && IsAdult && CanJumpslash && CanUse(RG_LONGSHOT);}}),
   });
 
   areaTable[RR_WATER_TEMPLE_MQ_DIVE] = Area("Water Temple MQ Dive", "Water Temple", RHT_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -273,7 +273,8 @@ void AreaTable_Init_WaterTemple() {
 
   areaTable[RR_WATER_TEMPLE_MQ_LOWERED_WATER_LEVELS] = Area("Water Temple MQ Lowered Water Levels", "Water Temple", RHT_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_WATER_TEMPLE_MQ_COMPASS_CHEST,                {[]{return (IsAdult && CanUse(RG_FAIRY_BOW)) || CanUse(RG_DINS_FIRE) || Here(RR_WATER_TEMPLE_MQ_LOBBY, []{return IsChild && CanUse(RG_STICKS) && HasExplosives;});}}),
+                  LocationAccess(RC_WATER_TEMPLE_MQ_COMPASS_CHEST,                {[]{return ((IsAdult && CanUse(RG_FAIRY_BOW)) || CanUse(RG_DINS_FIRE) || Here(RR_WATER_TEMPLE_MQ_LOBBY, []{return IsChild && CanUse(RG_STICKS) && HasExplosives;})) &&
+                    (CanJumpslash || CanUseProjectile);}}),
                   LocationAccess(RC_WATER_TEMPLE_MQ_LONGSHOT_CHEST,               {[]{return IsAdult && CanUse(RG_HOOKSHOT);}}),
                   LocationAccess(RC_WATER_TEMPLE_MQ_GS_LIZALFOS_HALLWAY,          {[]{return CanUse(RG_DINS_FIRE);}}),
                   LocationAccess(RC_WATER_TEMPLE_MQ_GS_BEFORE_UPPER_WATER_SWITCH, {[]{return IsAdult && CanUse(RG_LONGSHOT);}}),
@@ -296,7 +297,7 @@ void AreaTable_Init_WaterTemple() {
                   //Locations
                   LocationAccess(RC_WATER_TEMPLE_MQ_FREESTANDING_KEY,         {[]{return HoverBoots || CanUse(RG_SCARECROW) || randoCtx->GetTrickOption(RT_WATER_NORTH_BASEMENT_LEDGE_JUMP);}}),
                   LocationAccess(RC_WATER_TEMPLE_MQ_GS_TRIPLE_WALL_TORCH,     {[]{return CanUse(RG_FIRE_ARROWS) && (HoverBoots || CanUse(RG_SCARECROW));}}),
-                  LocationAccess(RC_WATER_TEMPLE_MQ_GS_FREESTANDING_KEY_AREA, {[]{return randoCtx->GetTrickOption(RT_WATER_MQ_LOCKED_GS) || (SmallKeys(RR_WATER_TEMPLE, 2) && (HoverBoots || CanUse(RG_SCARECROW) || randoCtx->GetTrickOption(RT_WATER_NORTH_BASEMENT_LEDGE_JUMP)));}}),
+                  LocationAccess(RC_WATER_TEMPLE_MQ_GS_FREESTANDING_KEY_AREA, {[]{return randoCtx->GetTrickOption(RT_WATER_MQ_LOCKED_GS) || (SmallKeys(RR_WATER_TEMPLE, 2) && (HoverBoots || CanUse(RG_SCARECROW) || randoCtx->GetTrickOption(RT_WATER_NORTH_BASEMENT_LEDGE_JUMP)) && CanJumpslash);}}),
                     //Trick: LogicWaterMQLockedGS || (SmallKeys(RR_WATER_TEMPLE, 2) && (HoverBoots || CanUse(RG_SCARECROW) || LogicWaterNorthBasementLedgeJump))
   }, {});
   }

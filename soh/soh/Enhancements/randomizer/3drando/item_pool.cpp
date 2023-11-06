@@ -102,9 +102,10 @@ const std::array<RandomizerGet, 59> alwaysItems = {
   RG_ARROWS_10,
   RG_TREASURE_GAME_HEART,
 };
-const std::array<RandomizerGet, 43> easyItems = {
+const std::array<RandomizerGet, 44> easyItems = {
   RG_BIGGORON_SWORD,
   RG_KOKIRI_SWORD,
+  RG_MASTER_SWORD,
   RG_BOOMERANG,
   RG_LENS_OF_TRUTH,
   RG_MEGATON_HAMMER,
@@ -687,6 +688,13 @@ void GenerateItemPool() {
     ctx->PlaceItemInLocation(RC_KF_KOKIRI_SWORD_CHEST, RG_KOKIRI_SWORD, false, true);
   }
 
+  if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {
+    AddItemToMainPool(RG_MASTER_SWORD);
+    ctx->possibleIceTrapModels.push_back(RG_MASTER_SWORD); //Master Sword without the GI enum
+  } else {
+    ctx->PlaceItemInLocation(RC_TOT_MASTER_SWORD, RG_MASTER_SWORD, false, true);
+  }
+
   if (ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG)) {
     AddItemToMainPool(RG_WEIRD_EGG);
     ctx->possibleIceTrapModels.push_back(RG_WEIRD_EGG);
@@ -1165,6 +1173,10 @@ void GenerateItemPool() {
 
   if (!ctx->GetOption(RSK_SHUFFLE_KOKIRI_SWORD)) {
     ReplaceMaxItem(RG_KOKIRI_SWORD, 0);
+  }
+
+  if (!ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {
+    ReplaceMaxItem(RG_MASTER_SWORD, 0);
   }
 
   if (/*ProgressiveGoronSword TODO: Implement Setting*/false) {

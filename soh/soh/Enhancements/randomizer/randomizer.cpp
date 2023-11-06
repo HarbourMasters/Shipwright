@@ -32,6 +32,7 @@
 #include "entrance.h"
 #include "dungeon.h"
 #include "trial.h"
+#include "soh/util.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -510,27 +511,29 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
 
         // Equipment
         case RG_KOKIRI_SWORD:
-            return !CHECK_OWNED_EQUIP(EQUIP_SWORD, 0) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_MASTER_SWORD:
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_BIGGORON_SWORD:
             return !gSaveContext.bgsFlag ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_DEKU_SHIELD:
         case RG_BUY_DEKU_SHIELD:
-            return !CHECK_OWNED_EQUIP(EQUIP_SHIELD, 0) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_SHIELD, EQUIP_INV_SHIELD_DEKU) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_HYLIAN_SHIELD:
         case RG_BUY_HYLIAN_SHIELD:
-            return !CHECK_OWNED_EQUIP(EQUIP_SHIELD, 1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_SHIELD, EQUIP_INV_SHIELD_HYLIAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_MIRROR_SHIELD:
-            return !CHECK_OWNED_EQUIP(EQUIP_SHIELD, 2) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_SHIELD, EQUIP_INV_SHIELD_MIRROR) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GORON_TUNIC:
         case RG_BUY_GORON_TUNIC:
-            return !CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_ZORA_TUNIC:
         case RG_BUY_ZORA_TUNIC:
-            return !CHECK_OWNED_EQUIP(EQUIP_TUNIC, 2) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_IRON_BOOTS:
-            return !CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_HOVER_BOOTS:
-            return !CHECK_OWNED_EQUIP(EQUIP_BOOTS, 2) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_HOVER) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
         // Inventory Items
         case RG_PROGRESSIVE_STICK_UPGRADE:
@@ -1386,6 +1389,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_MARKET_BOMBCHU_SHOP_ITEM_6,                                  RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_6 },
     { RC_MARKET_BOMBCHU_SHOP_ITEM_7,                                  RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_7 },
     { RC_MARKET_BOMBCHU_SHOP_ITEM_8,                                  RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8 },
+    { RC_TOT_MASTER_SWORD,                                            RAND_INF_TOT_MASTER_SWORD                      },
     { RC_GC_MEDIGORON,                                                RAND_INF_MERCHANTS_MEDIGORON                   },
     { RC_KAK_GRANNYS_SHOP,                                            RAND_INF_MERCHANTS_GRANNYS_SHOP                },
     { RC_WASTELAND_BOMBCHU_SALESMAN,                                  RAND_INF_MERCHANTS_CARPET_SALESMAN             },
@@ -1663,6 +1667,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_STARTING_KOKIRI_SWORD] = CVarGetInteger("gRandomizeStartingKokiriSword", 0);
     cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD] = CVarGetInteger("gRandomizeShuffleKokiriSword", 0) ||
                                              CVarGetInteger("gRandomizeStartingKokiriSword", 0);
+    cvarSettings[RSK_SHUFFLE_MASTER_SWORD] = CVarGetInteger("gRandomizeShuffleMasterSword", 0);
     cvarSettings[RSK_STARTING_DEKU_SHIELD] = CVarGetInteger("gRandomizeStartingDekuShield", 0);
     cvarSettings[RSK_STARTING_ZELDAS_LULLABY] = CVarGetInteger("gRandomizeStartingZeldasLullaby", 0);
     cvarSettings[RSK_STARTING_EPONAS_SONG] = CVarGetInteger("gRandomizeStartingEponasSong", 0);
@@ -1976,7 +1981,7 @@ void RandomizerSettingsWindow::DrawElement() {
         );
         ImGui::SameLine();
         if (ImGui::Button("New Seed")) {
-            strncpy(seedString, std::to_string(rand() & 0xFFFFFFFF).c_str(), MAX_SEED_STRING_SIZE);
+            SohUtils::CopyStringToCharArray(seedString, std::to_string(rand() & 0xFFFFFFFF), MAX_SEED_STRING_SIZE);
         }
         UIWidgets::Tooltip("Creates a new random seed value to be used when generating a randomizer");
         ImGui::SameLine();
@@ -2641,6 +2646,20 @@ void RandomizerSettingsWindow::DrawElement() {
                     "Shuffles the Kokiri Sword into the item pool.\n"
                     "\n"
                     "This will require the use of sticks until the Kokiri Sword is found."
+                );
+
+                UIWidgets::PaddedSeparator();
+
+                //Shuffle Master Sword
+                //RANDOTODO: Disable when Start with Master Sword is active
+                // bool disableShuffleMasterSword = CvarGetInteger("gRandomizeStartingMasterSword", 0);
+                // static const char* disableShuffleMasterSwordText = "This option is disabled because \"Start with Master Sword\" is enabled.";
+                UIWidgets::EnhancementCheckbox(Settings::ShuffleMasterSword.GetName().c_str(), "gRandomizeShuffleMasterSword");
+                UIWidgets::InsertHelpHoverText(
+                    "Shuffles the Master Sword into the item pool.\n"
+                    "\n"
+                    "Adult Link will start with a second free item instead of the Master Sword.\n"
+                    "If you haven't found the Master Sword before facing Ganon, you won't receive it during the fight."
                 );
 
                 UIWidgets::PaddedSeparator();
@@ -4143,7 +4162,12 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
             break;
         case SCENE_INSIDE_GANONS_CASTLE:
             if (originalTextId == TEXT_SHEIK_NEED_HOOK) {
-                if (INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
+                //If MS shuffle is on, Sheik will hint both MS and LA as long as Link doesn't have both, to prevent hint lockout.
+                //Otherwise, she'll only give LA hint so only LA is required to move on.
+                bool needRequirements = GetRandoSettingValue(RSK_SHUFFLE_MASTER_SWORD) ? 
+                  (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER) || INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) :
+                  (INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT);
+                if (needRequirements) {
                     messageEntry.Replace("{{message}}", ctx->GetHint(RH_SHEIK_LIGHT_ARROWS)->GetText().GetEnglish().c_str(), ctx->GetHint(RH_SHEIK_LIGHT_ARROWS)->GetText().GetEnglish().c_str(), ctx->GetHint(RH_SHEIK_LIGHT_ARROWS)->GetText().GetFrench().c_str());
                 } else {
                     messageEntry.Replace("{{message}}", "You are still ill-equipped to&face %rGanondorf%w."
@@ -4154,10 +4178,17 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
                     "Cherche l'%cÉpée de Légende%w,&%rquelque chose pour ranger tes flèches%w&et de la %gmagie%w pour invoquer la&%ylumière%w.");
                 }                   
             } else {
-                messageEntry.Replace("{{message}}",
-                "If you're ready, then proceed.^Good luck.",
-                "Wenn Du bereit bist, so schreite&voran.^Viel Glück.",
-                "Si tu es prêt, tu peux y aller.^Bonne chance.");
+                if (!Flags_GetEventChkInf(EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER)) {
+                    messageEntry.Replace("{{message}}",
+                    "You may have what you need to defeat&%rthe Evil King%w, but the %cbarrier%w still&stands.^Complete the remaining %gtrials%w&to destroy it."
+                    );
+
+                } else {
+                    messageEntry.Replace("{{message}}",
+                    "If you're ready, then proceed.^Good luck.",
+                    "Wenn Du bereit bist, so schreite&voran.^Viel Glück.",
+                    "Si tu es prêt, tu peux y aller.^Bonne chance.");
+                }
             }
             break;
     }
@@ -4694,11 +4725,15 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 56> getItemMessages = {{
+    const std::array<GetItemMessage, 57> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
             "Félicitation! Vous avez trouvé %gGreg%w!"),
+        GIMESSAGE(RG_MASTER_SWORD, ITEM_SWORD_MASTER, 
+            "You found the %gMaster Sword%w!",
+            "Du erhältst dem %gMaster-Schwert%w!",
+            "Vous obtenez %gl'Épée de Légende%w!"),
         GIMESSAGE(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, 
 			"You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
 			"Du erhältst eine %rFlasche mit&blauem Feuer%w! Nutze es um&%rRotes Eis%w zu schmelzen!",
@@ -4945,7 +4980,6 @@ class ExtendedVanillaTableInvalidItemIdException: public std::exception {
         "item, try adding it to randoGetItemTable instead.";
       }
 };
-
 
 void RandomizerSettingsWindow::InitElement() {
     Randomizer::CreateCustomMessages();

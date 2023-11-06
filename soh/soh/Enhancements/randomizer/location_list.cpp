@@ -242,6 +242,7 @@ std::vector<RandomizerCheck> Rando::StaticData::overworldLocations = {
     RC_OGC_GREAT_FAIRY_REWARD,
 
     // Temple of Time
+    RC_TOT_MASTER_SWORD,
     RC_SHEIK_AT_TEMPLE,
     RC_TOT_LIGHT_ARROWS_CUTSCENE,
 
@@ -1254,6 +1255,7 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_SHADOW_TEMPLE_BONGO_BONGO_HEART] =    Location::Base(RC_SHADOW_TEMPLE_BONGO_BONGO_HEART,    RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_SHADOW_TEMPLE,    ACTOR_ITEM_B_HEART, SCENE_SHADOW_TEMPLE_BOSS,   0x00, 0x4F, "Bongo Bongo Heart Container",   "Shadow Temple Bongo Bongo Heart Container",    RHT_SHADOW_TEMPLE_BONGO_BONGO_HEART,    RG_HEART_CONTAINER, { Category::cSongDungeonReward }, SpoilerCollectionCheck::Collectable(0x18, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE,   true);
 
     // Cutscenes  Randomizer Check                                    Randomizer Check                Quest         Type             Area                          Actor ID             Scene ID                            Params Flags Short Name                 Spoiler Name                   Hint Text Key                    Vanilla Item                Categories Spoiler Collection Check            Collection Check Group                                    Vanilla Progression
+    locationTable[RC_TOT_MASTER_SWORD] =            Location::Delayed(RC_TOT_MASTER_SWORD,            RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET,                ACTOR_ID_MAX,        SCENE_ID_MAX,                       0x00, 0x00, "ToT Master Sword",         "ToT Master Sword",            RHT_TOT_MASTER_SWORD,            RG_MASTER_SWORD,            {}, SpoilerCollectionCheck::MasterSword(),     SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE,         true);
     locationTable[RC_TOT_LIGHT_ARROWS_CUTSCENE] =   Location::Delayed(RC_TOT_LIGHT_ARROWS_CUTSCENE,   RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET,                ACTOR_ID_MAX,        SCENE_ID_MAX,                       0x00, 0x01, "ToT Light Arrow Cutscene", "ToT Light Arrow Cutscene",    RHT_TOT_LIGHT_ARROWS_CUTSCENE,   RG_LIGHT_ARROWS,            {}, SpoilerCollectionCheck::Chest(0x43, 0x1E), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE,         true);
     locationTable[RC_LW_GIFT_FROM_SARIA] =          Location::Delayed(RC_LW_GIFT_FROM_SARIA,          RCQUEST_BOTH, RCTYPE_OCARINA,  RCAREA_LOST_WOODS,            ACTOR_ID_MAX,        SCENE_LOST_WOODS,                   0x00, 0x02, "Gift From Saria",          "LW Gift From Saria",          RHT_LW_GIFT_FROM_SARIA,          RG_PROGRESSIVE_OCARINA,     {}, SpoilerCollectionCheck::EventChkInf(0xC1), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS,            true);
     locationTable[RC_ZF_GREAT_FAIRY_REWARD] =       Location::Delayed(RC_ZF_GREAT_FAIRY_REWARD,       RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_FOUNTAIN,        ACTOR_BG_DY_YOSEIZO, SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 1,    0x10, "Great Fairy Reward",       "ZF Great Fairy Reward",       RHT_ZF_GREAT_FAIRY_REWARD,       RG_FARORES_WIND,            {}, SpoilerCollectionCheck::Chest(0x3D, 0x01), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN,          true);

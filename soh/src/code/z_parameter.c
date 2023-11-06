@@ -811,6 +811,20 @@ void func_80082850(PlayState* play, s16 maxAlpha) {
     }
 }
 
+// buttonStatus[0] is used to represent if the B button is disabled, but also tracks
+// the last active B button item during mini-games/epona (temp B)
+// Since ITEM_NONE is the same as BTN_DISABLED (255), we need a different value to help us track
+// that the player was swordless before like ITEM_NONE_FE (254)
+#define SWORDLESS_STATUS ITEM_NONE_FE
+
+// Restores swordless state when using the custom value for temp B and then clears temp B
+void Interface_RandoRestoreSwordless(void) {
+    if (IS_RANDO && gSaveContext.buttonStatus[0] == SWORDLESS_STATUS) {
+        gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+        gSaveContext.buttonStatus[0] = BTN_ENABLED;
+    }
+}
+
 void func_80083108(PlayState* play) {
     MessageContext* msgCtx = &play->msgCtx;
     Player* player = GET_PLAYER(play);
@@ -818,13 +832,20 @@ void func_80083108(PlayState* play) {
     s16 i;
     s16 sp28 = 0;
 
+    // Check for the player being swordless in rando (no item on B and swordless flag set)
+    // Child is always assumed due to not finding kokiri sword yet. Adult is only checked with MS shuffle on.
+    u8 randoIsSwordless = IS_RANDO && (LINK_IS_CHILD || Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) &&
+                              gSaveContext.equips.buttonItems[0] == ITEM_NONE && Flags_GetInfTable(INFTABLE_SWORDLESS);
+    u8 randoWasSwordlessBefore = IS_RANDO && gSaveContext.buttonStatus[0] == SWORDLESS_STATUS;
+    u8 randoCanTrackSwordless = randoIsSwordless && !randoWasSwordlessBefore;
+
     if ((gSaveContext.cutsceneIndex < 0xFFF0) ||
         ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.cutsceneIndex == 0xFFF0))) {
         gSaveContext.unk_13E7 = 0;
 
-        if ((player->stateFlags1 & 0x00800000) || (play->shootingGalleryStatus > 1) ||
+        if ((player->stateFlags1 & PLAYER_STATE1_ON_HORSE) || (play->shootingGalleryStatus > 1) ||
             ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
-            if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
+            if (gSaveContext.equips.buttonItems[0] != ITEM_NONE || randoCanTrackSwordless) {
                 gSaveContext.unk_13E7 = 1;
 
                 if (gSaveContext.buttonStatus[0] == BTN_DISABLED) {
@@ -837,8 +858,13 @@ void func_80083108(PlayState* play) {
                 if ((gSaveContext.equips.buttonItems[0] != ITEM_SLINGSHOT) &&
                     (gSaveContext.equips.buttonItems[0] != ITEM_BOW) &&
                     (gSaveContext.equips.buttonItems[0] != ITEM_BOMBCHU) &&
-                    (gSaveContext.equips.buttonItems[0] != ITEM_NONE)) {
+                    (gSaveContext.equips.buttonItems[0] != ITEM_NONE || randoCanTrackSwordless)) {
                     gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
+
+                    // Track swordless status for restoration later
+                    if (randoCanTrackSwordless) {
+                        gSaveContext.buttonStatus[0] = SWORDLESS_STATUS;
+                    }
 
                     if ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38)) {
                         gSaveContext.equips.buttonItems[0] = ITEM_BOMBCHU;
@@ -875,11 +901,11 @@ void func_80083108(PlayState* play) {
                     Interface_ChangeAlpha(8);
                 } else if ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38)) {
                     Interface_ChangeAlpha(8);
-                } else if (player->stateFlags1 & 0x00800000) {
+                } else if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
                     Interface_ChangeAlpha(12);
                 }
             } else {
-                if (player->stateFlags1 & 0x00800000) {
+                if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
                     Interface_ChangeAlpha(12);
                 }
             }
@@ -891,6 +917,12 @@ void func_80083108(PlayState* play) {
             if (play->interfaceCtx.unk_260 != 0) {
                 if (gSaveContext.equips.buttonItems[0] != ITEM_FISHING_POLE) {
                     gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
+
+                    // Track swordless status for restoration later
+                    if (randoCanTrackSwordless) {
+                        gSaveContext.buttonStatus[0] = SWORDLESS_STATUS;
+                    }
+
                     gSaveContext.equips.buttonItems[0] = ITEM_FISHING_POLE;
                     gSaveContext.unk_13EA = 0;
                     Interface_LoadItemIcon1(play, 0);
@@ -903,6 +935,8 @@ void func_80083108(PlayState* play) {
             } else if (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE) {
                 gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
                 gSaveContext.unk_13EA = 0;
+
+                Interface_RandoRestoreSwordless();
 
                 if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
                     Interface_LoadItemIcon1(play, 0);
@@ -974,7 +1008,7 @@ void func_80083108(PlayState* play) {
                 }
 
                 Interface_ChangeAlpha(50);
-            } else if ((player->stateFlags1 & 0x00200000) || (player->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
+            } else if ((player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER) || (player->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
                 if (gSaveContext.buttonStatus[0] != BTN_DISABLED) {
                     gSaveContext.buttonStatus[0] = BTN_DISABLED;
                     gSaveContext.buttonStatus[1] = BTN_DISABLED;
@@ -988,7 +1022,7 @@ void func_80083108(PlayState* play) {
                     Interface_ChangeAlpha(50);
                 }
             } else if ((gSaveContext.eventInf[0] & 0xF) == 1) {
-                if (player->stateFlags1 & 0x00800000) {
+                if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
                     if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) &&
                         (gSaveContext.equips.buttonItems[0] != ITEM_BOW)) {
                         if (gSaveContext.inventory.items[SLOT_BOW] == ITEM_NONE) {
@@ -1009,6 +1043,8 @@ void func_80083108(PlayState* play) {
                             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS) &&
                             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE)) {
                             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+
+                            Interface_RandoRestoreSwordless();
                         } else {
                             gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
                         }
@@ -1048,8 +1084,12 @@ void func_80083108(PlayState* play) {
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOW) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
-                        if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0)) {
+                        if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0) ||
+                            randoWasSwordlessBefore) {
                             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+
+                            Interface_RandoRestoreSwordless();
+
                             sp28 = 1;
 
                             if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
@@ -1071,8 +1111,12 @@ void func_80083108(PlayState* play) {
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOW) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
-                        if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0)) {
+                        if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0) ||
+                            randoWasSwordlessBefore) {
                             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+
+                            Interface_RandoRestoreSwordless();
+
                             sp28 = 1;
 
                             if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
@@ -1394,7 +1438,7 @@ Gfx* Gfx_TextureI8(Gfx* displayListHead, void* texture, s16 textureWidth, s16 te
 
 void Inventory_SwapAgeEquipment(void) {
     s16 i;
-    u16 temp;
+    u16 shieldEquipValue;
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         
@@ -1412,15 +1456,20 @@ void Inventory_SwapAgeEquipment(void) {
         }
 
         // When becoming adult, remove swordless flag since we'll get master sword
+        // (Unless Master Sword is shuffled)
         // Only in rando to keep swordless link bugs in vanilla
-        if (IS_RANDO) {
+        if (IS_RANDO && !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
             Flags_UnsetInfTable(INFTABLE_SWORDLESS);
         }
 
         gSaveContext.childEquips.equipment = gSaveContext.equips.equipment;
 
-        if (gSaveContext.adultEquips.buttonItems[0] == ITEM_NONE) {
-            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+        if (gSaveContext.adultEquips.buttonItems[0] == ITEM_NONE && !(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && gSaveContext.adultEquips.equipment)) {
+            if (!IS_RANDO || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
+                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+            } else {
+                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+            }
 
             if (gSaveContext.inventory.items[SLOT_NUT] != ITEM_NONE) {
                 gSaveContext.equips.buttonItems[1] = ITEM_NUT;
@@ -1433,7 +1482,16 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.buttonItems[3] = gSaveContext.inventory.items[SLOT_OCARINA];
             gSaveContext.equips.cButtonSlots[1] = SLOT_BOMB;
             gSaveContext.equips.cButtonSlots[2] = SLOT_OCARINA;
-            gSaveContext.equips.equipment = 0x1122;
+            
+            gSaveContext.equips.equipment = (EQUIP_VALUE_SWORD_MASTER << (EQUIP_TYPE_SWORD * 4)) |
+                                            (EQUIP_VALUE_SHIELD_HYLIAN << (EQUIP_TYPE_SHIELD * 4)) |
+                                            (EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4)) |
+                                            (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4));
+
+            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && 
+                gSaveContext.equips.buttonItems[0] == ITEM_NONE) {
+                gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
+            }
 
             // Set the dpad to nothing
             gSaveContext.equips.buttonItems[4] = ITEM_NONE;
@@ -1467,13 +1525,13 @@ void Inventory_SwapAgeEquipment(void) {
     } else {
         // When becoming child, set swordless flag if player doesn't have kokiri sword
         // Only in rando to keep swordless link bugs in vanilla
-        if (IS_RANDO && (1 << 0 & gSaveContext.inventory.equipment) == 0) {
+        if (IS_RANDO && (EQUIP_INV_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4) & gSaveContext.inventory.equipment) == 0) {
             Flags_SetInfTable(INFTABLE_SWORDLESS);
         }
 
         // When using enhancements, set swordless flag if player doesn't have kokiri sword or hasn't equipped a sword yet.
         // Then set the child equips button items to item none to ensure kokiri sword is not equipped
-        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && ((1 << 0 & gSaveContext.inventory.equipment) == 0 || Flags_GetInfTable(INFTABLE_SWORDLESS))) {
+        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && ((EQUIP_INV_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4) & gSaveContext.inventory.equipment) == 0 || Flags_GetInfTable(INFTABLE_SWORDLESS))) {
             Flags_SetInfTable(INFTABLE_SWORDLESS);
             gSaveContext.childEquips.buttonItems[0] = ITEM_NONE;
         }
@@ -1507,10 +1565,10 @@ void Inventory_SwapAgeEquipment(void) {
             }
 
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
-            gSaveContext.equips.equipment &= 0xFFF0;
+            gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
             // Equips kokiri sword in the inventory screen only if kokiri sword exists in inventory and a sword has been equipped already
-            if (!((1 << 0 & gSaveContext.inventory.equipment) == 0) && !Flags_GetInfTable(INFTABLE_SWORDLESS)) {
-                gSaveContext.equips.equipment |= 0x0001;
+            if (!((EQUIP_INV_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4) & gSaveContext.inventory.equipment) == 0) && !Flags_GetInfTable(INFTABLE_SWORDLESS)) {
+                gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4);
             }
         } else if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
@@ -1531,15 +1589,15 @@ void Inventory_SwapAgeEquipment(void) {
             }
 
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
-            gSaveContext.equips.equipment &= 0xFFF0;
-            gSaveContext.equips.equipment |= 0x0001;
+            gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
+            gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4);
         } else if (IS_RANDO && Randomizer_GetSettingValue(RSK_STARTING_AGE) == RO_AGE_ADULT) {
             /*If in rando and starting age is adult, childEquips is not initialized and buttonItems[0]
             will be ITEM_NONE. When changing age from adult -> child, reset equips to "default"
             (only kokiri tunic/boots equipped, no sword, no C-button items, no D-Pad items).
             When becoming child, set swordless flag if player doesn't have kokiri sword
             Only in rando to keep swordless link bugs in vanilla*/
-            if (1 << 0 & gSaveContext.inventory.equipment == 0) {
+            if (EQUIP_INV_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4) & gSaveContext.inventory.equipment == 0) {
                 Flags_SetInfTable(INFTABLE_SWORDLESS);
             }
 
@@ -1550,7 +1608,10 @@ void Inventory_SwapAgeEquipment(void) {
                     gSaveContext.equips.cButtonSlots[i-1] = ITEM_NONE;
                 }
             }
-            gSaveContext.equips.equipment = 0x1111;
+            gSaveContext.equips.equipment = (EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4)) |
+                                            (EQUIP_VALUE_SHIELD_DEKU << (EQUIP_TYPE_SHIELD * 4)) |
+                                            (EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4)) |
+                                            (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4));
         }
 
         if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) &&
@@ -1558,17 +1619,18 @@ void Inventory_SwapAgeEquipment(void) {
             Flags_SetInfTable(INFTABLE_SWORDLESS);
             if (gSaveContext.childEquips.equipment == 0) {
                 // force equip kokiri tunic and boots in scenario gSaveContext.childEquips.equipment is uninitialized
-                gSaveContext.equips.equipment &= 0xFFF0;
-                gSaveContext.equips.equipment |= 0x1100;
+                gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
+                gSaveContext.equips.equipment |= (EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4)) |
+                                                 (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4));
             }
         }
     }
     CVarSetInteger("gSwitchTimeline", 0);
-    temp = gEquipMasks[EQUIP_SHIELD] & gSaveContext.equips.equipment;
-    if (temp != 0) {
-        temp >>= gEquipShifts[EQUIP_SHIELD];
-        if (!(gBitFlags[temp + 3] & gSaveContext.inventory.equipment)) {
-            gSaveContext.equips.equipment &= gEquipNegMasks[EQUIP_SHIELD];
+    shieldEquipValue = gEquipMasks[EQUIP_TYPE_SHIELD] & gSaveContext.equips.equipment;
+    if (shieldEquipValue != 0) {
+        shieldEquipValue >>= gEquipShifts[EQUIP_TYPE_SHIELD];
+        if (!CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SHIELD, shieldEquipValue - 1)) {
+            gSaveContext.equips.equipment &= gEquipNegMasks[EQUIP_TYPE_SHIELD];
         }
     }
 }
@@ -1583,10 +1645,10 @@ void Interface_InitHorsebackArchery(PlayState* play) {
 }
 
 void func_800849EC(PlayState* play) {
-    gSaveContext.inventory.equipment |= gBitFlags[2] << gEquipShifts[EQUIP_SWORD];
-    gSaveContext.inventory.equipment ^= 8 << gEquipShifts[EQUIP_SWORD];
+    gSaveContext.inventory.equipment |= OWNED_EQUIP_FLAG(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON);
+    gSaveContext.inventory.equipment ^= OWNED_EQUIP_FLAG_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE);
 
-    if (gBitFlags[3] & gSaveContext.inventory.equipment) {
+    if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE)) {
         gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KNIFE;
     } else {
         gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
@@ -1626,11 +1688,13 @@ void func_80084BF4(PlayState* play, u16 flag) {
                 (gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU) ||
                 (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE)) {
                 gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+                Interface_RandoRestoreSwordless();
                 Interface_LoadItemIcon1(play, 0);
             }
         } else if (gSaveContext.equips.buttonItems[0] == ITEM_NONE) {
             if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0)) {
                 gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+                Interface_RandoRestoreSwordless();
                 Interface_LoadItemIcon1(play, 0);
             }
         }
@@ -1829,17 +1893,21 @@ u8 Item_Give(PlayState* play, u8 item) {
 
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_SWORD_KOKIRI) && (item <= ITEM_SWORD_BGS)) {
-        gSaveContext.inventory.equipment |= gBitFlags[item - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD];
+        gSaveContext.inventory.equipment |= OWNED_EQUIP_FLAG(EQUIP_TYPE_SWORD, item - ITEM_SWORD_KOKIRI + EQUIP_INV_SWORD_KOKIRI);
 
         // Both Giant's Knife and Biggoron Sword have the same Item ID, so this part handles both of them
         if (item == ITEM_SWORD_BGS) {
             gSaveContext.swordHealth = 8;
 
             // In rando, when buying Giant's Knife, also check
-            // for 0xE in case we don't have Kokiri Sword
-            if (ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xF || (IS_RANDO && ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xE)) {
+            // without the Koriri Sword in case we don't have it
+            if (ALL_EQUIP_VALUE(EQUIP_TYPE_SWORD) == 
+                ((1 << EQUIP_INV_SWORD_KOKIRI) | (1 << EQUIP_INV_SWORD_MASTER) | (1 << EQUIP_INV_SWORD_BIGGORON) |
+                 (1 << EQUIP_INV_SWORD_BROKENGIANTKNIFE)) || 
+                (IS_RANDO && ALL_EQUIP_VALUE(EQUIP_TYPE_SWORD) == 
+                ((1 << EQUIP_INV_SWORD_MASTER) | (1 << EQUIP_INV_SWORD_BIGGORON) | (1 << EQUIP_INV_SWORD_BROKENGIANTKNIFE)))) {
 
-                gSaveContext.inventory.equipment ^= 8 << gEquipShifts[EQUIP_SWORD]; 
+                gSaveContext.inventory.equipment ^= OWNED_EQUIP_FLAG_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE);
 
                 if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KNIFE) {
                     gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
@@ -1851,8 +1919,8 @@ u8 Item_Give(PlayState* play, u8 item) {
             
         } else if (item == ITEM_SWORD_MASTER) {
             gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-            gSaveContext.equips.equipment &= 0xFFF0;
-            gSaveContext.equips.equipment |= 0x0002;
+            gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
+            gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_MASTER << (EQUIP_TYPE_SWORD * 4);
             if (play != NULL) {
                 Interface_LoadItemIcon1(play, 0);
             }
@@ -1860,13 +1928,13 @@ u8 Item_Give(PlayState* play, u8 item) {
 
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_SHIELD_DEKU) && (item <= ITEM_SHIELD_MIRROR)) {
-        gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]);
+        gSaveContext.inventory.equipment |= OWNED_EQUIP_FLAG(EQUIP_TYPE_SHIELD, item - ITEM_SHIELD_DEKU);
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_TUNIC_KOKIRI) && (item <= ITEM_TUNIC_ZORA)) {
-        gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_TUNIC_KOKIRI] << gEquipShifts[EQUIP_TUNIC]);
+        gSaveContext.inventory.equipment |= OWNED_EQUIP_FLAG(EQUIP_TYPE_TUNIC, item - ITEM_TUNIC_KOKIRI);
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_BOOTS_KOKIRI) && (item <= ITEM_BOOTS_HOVER)) {
-        gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_BOOTS_KOKIRI] << gEquipShifts[EQUIP_BOOTS]);
+        gSaveContext.inventory.equipment |= OWNED_EQUIP_FLAG(EQUIP_TYPE_BOOTS, item - ITEM_BOOTS_KOKIRI);
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
         gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
@@ -2196,14 +2264,14 @@ u8 Item_Give(PlayState* play, u8 item) {
         }
         return Return_Item(item, MOD_NONE, item);
     } else if (item == ITEM_MAGIC_SMALL) {
-        if (gSaveContext.magicState != 10) {
+        if (gSaveContext.magicState != MAGIC_STATE_ADD) {
             if (play != NULL) {
                 Magic_Fill(play);
             }
         }
 
         if (play != NULL) {
-            func_80087708(play, 12, 5);
+            Magic_RequestChange(play, 12, MAGIC_ADD);
         }
 
         if (!Flags_GetInfTable(INFTABLE_198)) {
@@ -2213,13 +2281,13 @@ u8 Item_Give(PlayState* play, u8 item) {
 
         return Return_Item(item, MOD_NONE, item);
     } else if (item == ITEM_MAGIC_LARGE) {
-        if (gSaveContext.magicState != 10) {
+        if (gSaveContext.magicState != MAGIC_STATE_ADD) {
             if (play != NULL) {
                 Magic_Fill(play);
             }
         }
         if (play != NULL) {
-            func_80087708(play, 24, 5);
+            Magic_RequestChange(play, 24, MAGIC_ADD);
         }
 
         if (!Flags_GetInfTable(INFTABLE_198)) {
@@ -2328,7 +2396,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     slot = SLOT(item);
     if (item == RG_MAGIC_SINGLE) {
         gSaveContext.isMagicAcquired = true;
-        gSaveContext.magicFillTarget = 0x30;
+        gSaveContext.magicFillTarget = MAGIC_NORMAL_METER;
         Magic_Fill(play);
         return Return_Item_Entry(giEntry, RG_NONE);
     } else if (item == RG_MAGIC_DOUBLE) {
@@ -2336,7 +2404,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             gSaveContext.isMagicAcquired = true;
         }
         gSaveContext.isDoubleMagicAcquired = true;
-        gSaveContext.magicFillTarget = 0x60;
+        gSaveContext.magicFillTarget = MAGIC_DOUBLE_METER;
         gSaveContext.magicLevel = 0;
         Magic_Fill(play);
         return Return_Item_Entry(giEntry, RG_NONE);
@@ -2556,6 +2624,13 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
+    if (item == RG_MASTER_SWORD) {
+        if (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
+            gSaveContext.inventory.equipment |= gBitFlags[1] << gEquipShifts[EQUIP_TYPE_SWORD];
+        }
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
     temp = gSaveContext.inventory.items[slot];
     osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, temp);
     INV_CONTENT(item) = item;
@@ -2591,26 +2666,25 @@ u8 Item_CheckObtainability(u8 item) {
     } else if ((item >= ITEM_SWORD_KOKIRI) && (item <= ITEM_SWORD_BGS)) {
         if (item == ITEM_SWORD_BGS) {
             return ITEM_NONE;
-        } else if ((gBitFlags[item - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD]) &
-                   gSaveContext.inventory.equipment) {
+        } else if (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, item - ITEM_SWORD_KOKIRI + EQUIP_INV_SWORD_KOKIRI)) {
             return IS_RANDO ? ITEM_NONE : item;
         } else {
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_SHIELD_DEKU) && (item <= ITEM_SHIELD_MIRROR)) {
-        if ((gBitFlags[item - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]) & gSaveContext.inventory.equipment) {
+        if (CHECK_OWNED_EQUIP(EQUIP_TYPE_SHIELD, item - ITEM_SHIELD_DEKU + EQUIP_INV_SHIELD_DEKU)) {
             return IS_RANDO ? ITEM_NONE : item;
         } else {
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_TUNIC_KOKIRI) && (item <= ITEM_TUNIC_ZORA)) {
-        if ((gBitFlags[item - ITEM_TUNIC_KOKIRI] << gEquipShifts[EQUIP_TUNIC]) & gSaveContext.inventory.equipment) {
+        if (CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, item - ITEM_TUNIC_KOKIRI + EQUIP_INV_TUNIC_KOKIRI)) {
             return IS_RANDO ? ITEM_NONE : item;
         } else {
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_BOOTS_KOKIRI) && (item <= ITEM_BOOTS_HOVER)) {
-        if ((gBitFlags[item - ITEM_BOOTS_KOKIRI] << gEquipShifts[EQUIP_BOOTS]) & gSaveContext.inventory.equipment) {
+        if (CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, item - ITEM_BOOTS_KOKIRI + EQUIP_INV_BOOTS_KOKIRI)) {
             return IS_RANDO ? ITEM_NONE : item;
         } else {
             return ITEM_NONE;
@@ -2782,6 +2856,13 @@ s32 Inventory_HasSpecificBottle(u8 bottleItem) {
     }
 }
 
+void byteSwapInventory() {
+    gSaveContext.inventory.equipment = BE16SWAP(gSaveContext.inventory.equipment);
+    gSaveContext.inventory.upgrades = BE32SWAP(gSaveContext.inventory.upgrades);
+    gSaveContext.inventory.questItems = BE32SWAP(gSaveContext.inventory.questItems);
+    gSaveContext.inventory.gsTokens = BE16SWAP(gSaveContext.inventory.gsTokens);
+}
+
 void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 button) {
     osSyncPrintf("item_no=%x,  c_no=%x,  Pt=%x  Item_Register=%x\n", item, button,
                  gSaveContext.equips.cButtonSlots[button - 1],
@@ -2793,7 +2874,14 @@ void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 button) {
         item = ITEM_MILK_HALF;
     }
 
-    gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
+    if (CVarGetInteger("gRestoreRBAValues",0)) {
+        byteSwapInventory();
+        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
+        byteSwapInventory();
+    } else {
+        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
+    }
+
     gSaveContext.equips.buttonItems[button] = item;
 
     Interface_LoadItemIcon1(play, button);
@@ -3126,96 +3214,96 @@ void Inventory_ChangeAmmo(s16 item, s16 ammoChange) {
 void Magic_Fill(PlayState* play) {
     if (gSaveContext.isMagicAcquired) {
         gSaveContext.prevMagicState = gSaveContext.magicState;
-        gSaveContext.magicFillTarget = (gSaveContext.isDoubleMagicAcquired + 1) * 0x30;
-        gSaveContext.magicState = 9;
+        gSaveContext.magicFillTarget = (gSaveContext.isDoubleMagicAcquired + 1) * MAGIC_NORMAL_METER;
+        gSaveContext.magicState = MAGIC_STATE_FILL;
     }
 }
 
-void func_800876C8(PlayState* play) {
-    if ((gSaveContext.magicState != 8) && (gSaveContext.magicState != 9)) {
-        if (gSaveContext.magicState == 10) {
+void Magic_Reset(PlayState* play) {
+    if ((gSaveContext.magicState != MAGIC_STATE_STEP_CAPACITY) && (gSaveContext.magicState != MAGIC_STATE_FILL)) {
+        if (gSaveContext.magicState == MAGIC_STATE_ADD) {
             gSaveContext.prevMagicState = gSaveContext.magicState;
         }
-        gSaveContext.magicState = 5;
+        gSaveContext.magicState = MAGIC_STATE_RESET;
     }
 }
 
-s32 func_80087708(PlayState* play, s16 arg1, s16 arg2) {
+s32 Magic_RequestChange(PlayState* play, s16 amount, s16 type) {
     if (!gSaveContext.isMagicAcquired) {
-        return 0;
+        return false;
     }
 
-    if ((arg2 != 5) && (gSaveContext.magic - arg1) < 0) {
+    if ((type != 5) && (gSaveContext.magic - amount) < 0) {
         if (gSaveContext.magicCapacity != 0) {
             Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         }
-        return 0;
+        return false;
     }
 
-    switch (arg2) {
-        case 0:
-        case 2:
-            if ((gSaveContext.magicState == 0) || (gSaveContext.magicState == 7)) {
-                if (gSaveContext.magicState == 7) {
+    switch (type) {
+        case MAGIC_CONSUME_NOW:
+        case MAGIC_CONSUME_NOW_ALT:
+            if ((gSaveContext.magicState == MAGIC_STATE_IDLE) || (gSaveContext.magicState == MAGIC_STATE_CONSUME_LENS)) {
+                if (gSaveContext.magicState == MAGIC_STATE_CONSUME_LENS) {
                     play->actorCtx.lensActive = false;
                 }
-                gSaveContext.magicTarget = gSaveContext.magic - arg1;
-                gSaveContext.magicState = 1;
+                gSaveContext.magicTarget = gSaveContext.magic - amount;
+                gSaveContext.magicState = MAGIC_STATE_CONSUME_SETUP;
                 return 1;
             } else {
                 Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                return 0;
+                return false;
             }
-        case 1:
-            if ((gSaveContext.magicState == 0) || (gSaveContext.magicState == 7)) {
-                if (gSaveContext.magicState == 7) {
+        case MAGIC_CONSUME_WAIT_NO_PREVIEW:
+            if ((gSaveContext.magicState == MAGIC_STATE_IDLE) || (gSaveContext.magicState == MAGIC_STATE_CONSUME_LENS)) {
+                if (gSaveContext.magicState == MAGIC_STATE_CONSUME_LENS) {
                     play->actorCtx.lensActive = false;
                 }
-                gSaveContext.magicTarget = gSaveContext.magic - arg1;
-                gSaveContext.magicState = 6;
-                return 1;
+                gSaveContext.magicTarget = gSaveContext.magic - amount;
+                gSaveContext.magicState = MAGIC_STATE_METER_FLASH_3;
+                return true;
             } else {
                 Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                return 0;
+                return false;
             }
-        case 3:
-            if (gSaveContext.magicState == 0) {
+        case MAGIC_CONSUME_LENS:
+            if (gSaveContext.magicState == MAGIC_STATE_IDLE) {
                 if (gSaveContext.magic != 0) {
                     play->interfaceCtx.unk_230 = 80;
-                    gSaveContext.magicState = 7;
-                    return 1;
+                    gSaveContext.magicState = MAGIC_STATE_CONSUME_LENS;
+                    return true;
                 } else {
-                    return 0;
+                    return false;
                 }
             } else {
-                if (gSaveContext.magicState == 7) {
-                    return 1;
+                if (gSaveContext.magicState == MAGIC_STATE_CONSUME_LENS) {
+                    return true;
                 } else {
-                    return 0;
+                    return false;
                 }
             }
-        case 4:
-            if ((gSaveContext.magicState == 0) || (gSaveContext.magicState == 7)) {
-                if (gSaveContext.magicState == 7) {
+        case MAGIC_CONSUME_WAIT_PREVIEW:
+            if ((gSaveContext.magicState == MAGIC_STATE_IDLE) || (gSaveContext.magicState == MAGIC_STATE_CONSUME_LENS)) {
+                if (gSaveContext.magicState == MAGIC_STATE_CONSUME_LENS) {
                     play->actorCtx.lensActive = false;
                 }
-                gSaveContext.magicTarget = gSaveContext.magic - arg1;
-                gSaveContext.magicState = 4;
-                return 1;
+                gSaveContext.magicTarget = gSaveContext.magic - amount;
+                gSaveContext.magicState = MAGIC_STATE_METER_FLASH_2;
+                return true;
             } else {
                 Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                return 0;
+                return false;
             }
-        case 5:
+        case MAGIC_ADD:
             if (gSaveContext.magicCapacity >= gSaveContext.magic) {
-                gSaveContext.magicTarget = gSaveContext.magic + arg1;
+                gSaveContext.magicTarget = gSaveContext.magic + amount;
 
                 if (gSaveContext.magicTarget >= gSaveContext.magicCapacity) {
                     gSaveContext.magicTarget = gSaveContext.magicCapacity;
                 }
 
-                gSaveContext.magicState = 10;
-                return 1;
+                gSaveContext.magicState = MAGIC_STATE_ADD;
+                return true;
             }
             break;
     }
@@ -3264,8 +3352,8 @@ void Interface_UpdateMagicBar(PlayState* play) {
     s16 temp;
 
     switch (gSaveContext.magicState) {
-        case 8:
-            temp = gSaveContext.magicLevel * 0x30;
+        case MAGIC_STATE_STEP_CAPACITY:
+            temp = gSaveContext.magicLevel * MAGIC_NORMAL_METER;
             if (gSaveContext.magicCapacity != temp) {
                 if (gSaveContext.magicCapacity < temp) {
                     gSaveContext.magicCapacity += 8;
@@ -3279,11 +3367,11 @@ void Interface_UpdateMagicBar(PlayState* play) {
                     }
                 }
             } else {
-                gSaveContext.magicState = 9;
+                gSaveContext.magicState = MAGIC_STATE_FILL;
             }
             break;
 
-        case 9:
+        case MAGIC_STATE_FILL:
             gSaveContext.magic += 4;
 
             if (gSaveContext.gameMode == 0 && gSaveContext.sceneSetupIndex < 4) {
@@ -3300,32 +3388,32 @@ void Interface_UpdateMagicBar(PlayState* play) {
             }
             break;
 
-        case 1:
+        case MAGIC_STATE_CONSUME_SETUP:
             sMagicBorderRatio = 2;
-            gSaveContext.magicState = 2;
+            gSaveContext.magicState = MAGIC_STATE_CONSUME;
             break;
 
-        case 2:
+        case MAGIC_STATE_CONSUME:
             gSaveContext.magic -= 2;
             if (gSaveContext.magic <= 0) {
                 gSaveContext.magic = 0;
-                gSaveContext.magicState = 3;
+                gSaveContext.magicState = MAGIC_STATE_METER_FLASH_1;
                 if (CVarGetInteger("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
                     sMagicBorder = CVarGetColor24("gCosmetics.Consumable_MagicBorder.Value", sMagicBorder_ori);
                 } else {
                     sMagicBorder = sMagicBorder_ori;
                 }
             } else if (gSaveContext.magic == gSaveContext.magicTarget) {
-                gSaveContext.magicState = 3;
+                gSaveContext.magicState = MAGIC_STATE_METER_FLASH_1;
                 if (CVarGetInteger("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
                     sMagicBorder = CVarGetColor24("gCosmetics.Consumable_MagicBorder.Value", sMagicBorder_ori);
                 } else {
                     sMagicBorder = sMagicBorder_ori;
                 }
             }
-        case 3:
-        case 4:
-        case 6:
+        case MAGIC_STATE_METER_FLASH_1:
+        case MAGIC_STATE_METER_FLASH_2:
+        case MAGIC_STATE_METER_FLASH_3:
             temp = sMagicBorderIndexes[sMagicBorderStep];
             borderChangeR = ABS(sMagicBorder.r - sMagicBorderColors[temp][0]) / sMagicBorderRatio;
             borderChangeG = ABS(sMagicBorder.g - sMagicBorderColors[temp][1]) / sMagicBorderRatio;
@@ -3362,16 +3450,16 @@ void Interface_UpdateMagicBar(PlayState* play) {
             }
             break;
 
-        case 5:
+        case MAGIC_STATE_RESET:
             if (CVarGetInteger("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
                 sMagicBorder = CVarGetColor24("gCosmetics.Consumable_MagicBorder.Value", sMagicBorder_ori);
             } else {
                 sMagicBorder = sMagicBorder_ori;
             }
-            gSaveContext.magicState = 0;
+            gSaveContext.magicState = MAGIC_STATE_IDLE;
             break;
 
-        case 7:
+        case MAGIC_STATE_CONSUME_LENS:
             if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
                 (msgCtx->msgMode == MSGMODE_NONE) && (play->gameOverCtx.state == GAMEOVER_INACTIVE) &&
                 (play->sceneLoadFlag == 0) && (play->transitionMode == 0) && !Play_InCsMode(play)) {
@@ -3388,7 +3476,7 @@ void Interface_UpdateMagicBar(PlayState* play) {
                     play->actorCtx.lensActive = false;
                     Audio_PlaySoundGeneral(NA_SE_SY_GLASSMODE_OFF, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
-                    gSaveContext.magicState = 0;
+                    gSaveContext.magicState = MAGIC_STATE_IDLE;
                     if (CVarGetInteger("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
                         sMagicBorder = CVarGetColor24("gCosmetics.Consumable_MagicBorder.Value", sMagicBorder_ori);
                     } else {
@@ -3440,7 +3528,7 @@ void Interface_UpdateMagicBar(PlayState* play) {
             }
             break;
 
-        case 10:
+        case MAGIC_STATE_ADD:
             gSaveContext.magic += 4;
             Audio_PlaySoundGeneral(NA_SE_SY_GAUGE_UP - SFX_FLAG, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             if (gSaveContext.magic >= gSaveContext.magicTarget) {
@@ -3451,7 +3539,7 @@ void Interface_UpdateMagicBar(PlayState* play) {
             break;
 
         default:
-            gSaveContext.magicState = 0;
+            gSaveContext.magicState = MAGIC_STATE_IDLE;
             break;
     }
 }
@@ -3584,7 +3672,7 @@ void Interface_DrawMagicBar(PlayState* play) {
                           ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, PRIMITIVE);
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
 
-        if (gSaveContext.magicState == 4) {
+        if (gSaveContext.magicState == MAGIC_STATE_METER_FLASH_2) {
             // Yellow part of the bar indicating the amount of magic to be subtracted
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_yellow.r, magicbar_yellow.g, magicbar_yellow.b, interfaceCtx->magicAlpha);
 
@@ -5231,7 +5319,7 @@ void Interface_Draw(PlayState* play) {
             Interface_DrawLineupTick(play);
         }
 
-        if (fullUi || gSaveContext.magicState > 0) {
+        if (fullUi || gSaveContext.magicState > MAGIC_STATE_IDLE) {
             Interface_DrawMagicBar(play);
         }
 
@@ -5709,6 +5797,7 @@ void Interface_Draw(PlayState* play) {
                 (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE)) {
                 if (gSaveContext.buttonStatus[0] != BTN_ENABLED) {
                     gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+                    Interface_RandoRestoreSwordless();
                 } else {
                     gSaveContext.equips.buttonItems[0] = ITEM_NONE;
                 }
@@ -6414,11 +6503,11 @@ void Interface_Update(PlayState* play) {
     D_80125A58 = Player_GetEnvironmentalHazard(play);
 
     if (D_80125A58 == 1) {
-        if (CUR_EQUIP_VALUE(EQUIP_TUNIC) == 2 || CVarGetInteger("gSuperTunic", 0) != 0) {
+        if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == EQUIP_VALUE_TUNIC_GORON || CVarGetInteger("gSuperTunic", 0) != 0) {
             D_80125A58 = 0;
         }
     } else if ((Player_GetEnvironmentalHazard(play) >= 2) && (Player_GetEnvironmentalHazard(play) < 5)) {
-        if (CUR_EQUIP_VALUE(EQUIP_TUNIC) == 3 || CVarGetInteger("gSuperTunic", 0) != 0) {
+        if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == EQUIP_VALUE_TUNIC_ZORA || CVarGetInteger("gSuperTunic", 0) != 0) {
             D_80125A58 = 0;
         }
     }
@@ -6527,7 +6616,7 @@ void Interface_Update(PlayState* play) {
         ((play->csCtx.state == CS_STATE_IDLE) || !Player_InCsMode(play))) {
         if ((gSaveContext.isMagicAcquired != 0) && (gSaveContext.magicLevel == 0)) {
             gSaveContext.magicLevel = gSaveContext.isDoubleMagicAcquired + 1;
-            gSaveContext.magicState = 8;
+            gSaveContext.magicState = MAGIC_STATE_STEP_CAPACITY;
             osSyncPrintf(VT_FGCOL(YELLOW));
             osSyncPrintf("魔法スター─────ト！！！！！！！！！\n"); // "Magic Start!!!!!!!!!"
             osSyncPrintf("MAGIC_MAX=%d\n", gSaveContext.magicLevel);
