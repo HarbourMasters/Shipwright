@@ -51,6 +51,8 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
     return buttonText;
 }
 
+static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large" };
+
     static const char* filters[3] = {
 #ifdef __WIIU__
             "",
@@ -380,7 +382,15 @@ void DrawSettingsMenu() {
             }
 
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
+            ImGui::Text("ImGui Menu Scale");
+            ImGui::SameLine();
+            ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, "(Experimental)");
+            if (UIWidgets::EnhancementCombobox("gImGuiScale", imguiScaleOptions, 1)) {
+                OTRGlobals::Instance->ScaleImGui();
+            }
+            UIWidgets::Tooltip("Changes the scaling of the ImGui menu elements.");
 
+            UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
             
             static std::unordered_map<LUS::WindowBackend, const char*> windowBackendNames = {
                 { LUS::WindowBackend::DX11, "DirectX" },
