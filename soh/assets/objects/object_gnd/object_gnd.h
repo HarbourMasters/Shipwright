@@ -3,6 +3,9 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_gndTex_012B50 "__OTR__objects/object_gnd/object_gndTex_012B50"
+static const ALIGN_ASSET(2) char object_gndTex_012B50[] = dobject_gndTex_012B50;
+
 #define dgPhantomGanonSkel "__OTR__objects/object_gnd/gPhantomGanonSkel"
 static const ALIGN_ASSET(2) char gPhantomGanonSkel[] = dgPhantomGanonSkel;
 
@@ -176,9 +179,6 @@ static const ALIGN_ASSET(2) char gPhantomGanonBarsDL[] = dgPhantomGanonBarsDL;
 
 #define dgPhantomGanonBarsCol "__OTR__objects/object_gnd/gPhantomGanonBarsCol"
 static const ALIGN_ASSET(2) char gPhantomGanonBarsCol[] = dgPhantomGanonBarsCol;
-
-#define dobject_gndTex_012B50 "__OTR__objects/object_gnd/object_gndTex_012B50"
-static const ALIGN_ASSET(2) char object_gndTex_012B50[] = dobject_gndTex_012B50;
 
 #define dgPhantomGanonSkelLimbsLimb_00C5B0DL_0086F0 "__OTR__objects/object_gnd/gPhantomGanonSkelLimbsLimb_00C5B0DL_0086F0"
 static const ALIGN_ASSET(2) char gPhantomGanonSkelLimbsLimb_00C5B0DL_0086F0[] = dgPhantomGanonSkelLimbsLimb_00C5B0DL_0086F0;
