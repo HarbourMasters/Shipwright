@@ -303,7 +303,10 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32_DIV1000(gravity, -2000, ICHAIN_STOP),
 };
 //Below will be used for when I include logic in how these bosses should be randomized
-static uint16_t ySpawnOffset;
+static int16_t ySpawnOffset;
+// The point of this var is for rooms without many walls...
+// will force her to just climb air if enough time passes
+static int16_t wallClimbTimer = 80;
 
 void BossFieldGoma_Init(Actor* thisx, PlayState* play) {
     s32 pad;
@@ -313,15 +316,13 @@ void BossFieldGoma_Init(Actor* thisx, PlayState* play) {
     ActorShape_Init(&this->actor.shape, 4000.0f, ActorShadow_DrawCircle, 150.0f);
     SkelAnime_Init(play, &this->skelanime, &gGohmaSkel, &gGohmaIdleCrouchedAnim, NULL, NULL, 0);
     Animation_PlayLoop(&this->skelanime, &gGohmaIdleCrouchedAnim);
-    this->actor.shape.rot.x = -0x8000; // upside-down
     this->eyeIrisScaleX = 1.0f;
     this->eyeIrisScaleY = 1.0f;
-    //this->actor.home.pos = this->actor.world.pos;
-    //this->unusedInitX = this->actor.world.pos.x;
-    //this->unusedInitZ = this->actor.world.pos.z;
-    this->actor.world.pos.y = this->actor.home.pos.y + 300.0f; // ceiling
+    //Re-Add +300.0f and the upside down line below if including the intro
+    this->actor.world.pos.y = this->actor.home.pos.y; // + 300.0f;
+    //this->actor.shape.rot.x = -0x8000; // upside-down
     this->actor.gravity = 0.0f;
-    BossFieldGoma_SetupEncounter(this, play);
+    //BossFieldGoma_SetupEncounter(this, play);
     this->actor.colChkInfo.health = 10;
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
     Collider_InitJntSph(play, &this->collider);
@@ -341,6 +342,12 @@ void BossFieldGoma_Init(Actor* thisx, PlayState* play) {
     Gfx_RegisterBlendedTexture(gGohmaEyeTex, sClearPixelTex16, NULL);
     Gfx_RegisterBlendedTexture(gGohmaShellTex, sClearPixelTex32, NULL);
     Gfx_RegisterBlendedTexture(gGohmaIrisTex, sClearPixelTex32, NULL);
+    //Uncomment below for the original intro
+    //BossFieldGoma_SetupEncounter(this, play);
+    //Start on ground automatically
+    this->patienceTimer = 200;
+    this->framesUntilNextAction = 0;
+    BossFieldGoma_FloorIdle(this, play);
 }
 
 void BossFieldGoma_PlayEffectsAndSfx(BossGoma* this, PlayState* play, s16 arg2, s16 amountMinus1) {
@@ -565,13 +572,10 @@ void BossFieldGoma_UpdateCeilingMovement(BossGoma* this, PlayState* play, f32 dz
                                     s16 rotateTowardsCenter) {
     static Vec3f velInit = { 0.0f, 0.0f, 0.0f };
     static Vec3f accelInit = { 0.0f, -0.5f, 0.0f };
-    const roomCenterX = this->actor.home.pos.x;
-    const roomCenterY = this->actor.home.pos.y;
-    const roomCenterZ = this->actor.home.pos.z;
     static Vec3f roomCenter;
-    roomCenter.x = roomCenterX;
-    roomCenter.y = roomCenterY;
-    roomCenter.z = roomCenterZ;
+    roomCenter.x = this->actor.home.pos.x;
+    roomCenter.y = this->actor.home.pos.y + 300;
+    roomCenter.z = this->actor.home.pos.z;
     Vec3f* basePos = NULL;
     s16 i;
     Vec3f vel;
@@ -649,10 +653,6 @@ void BossFieldGoma_Encounter(BossGoma* this, PlayState* play) {
 
         case 1: // player entered the room
             this->actionState = 2;
-            // ceiling center
-            this->actor.world.pos.x = this->actor.home.pos.x;
-            this->actor.world.pos.y = this->actor.home.pos.y + 300.0f;
-            this->actor.world.pos.z = this->actor.home.pos.z;
             // below room entrance
             this->framesUntilNextAction = 50;
             this->timer = 80;
@@ -683,6 +683,7 @@ void BossFieldGoma_Encounter(BossGoma* this, PlayState* play) {
             }
 
             if (this->framesUntilNextAction <= 40) {
+
                 if (this->framesUntilNextAction < 20) {
                     SkelAnime_Update(&this->skelanime);
                     Math_ApproachF(&this->eyeIrisScaleX, 1.0f, 0.8f, 0.4f);
@@ -767,12 +768,10 @@ void BossFieldGoma_Encounter(BossGoma* this, PlayState* play) {
 
         case 140:
             SkelAnime_Update(&this->skelanime);
-            Math_ApproachF(&this->subCameraAt.y, this->actor.focus.pos.y, 0.1f, 10.0f);
 
             if (this->framesUntilNextAction == 0) {
                 this->framesUntilNextAction = 30;
                 this->actionState = 150;
-                Play_ChangeCameraStatus(play, 0, 3);
             }
             break;
 
@@ -816,7 +815,7 @@ void BossFieldGoma_Defeated(BossGoma* this, PlayState* play) {
     Math_ApproachS(&this->actor.shape.rot.x, 0, 2, 0xBB8);
     if (Animation_OnFrame(&this->skelanime, 107.0f)) {
         BossFieldGoma_PlayEffectsAndSfx(this, play, 0, 8);
-        func_800A9F6C(0.0f, 0x96, 0x14, 0x14);
+        //func_800A9F6C(0.0f, 0x96, 0x14, 0x14);
     }
     this->visualState = VISUALSTATE_DEFEATED;
     this->eyeState = EYESTATE_IRIS_NO_FOLLOW_NO_IFRAMES;
@@ -1323,8 +1322,10 @@ void BossFieldGoma_FloorMain(BossGoma* this, PlayState* play) {
     if (this->actor.bgCheckFlags & 1) {
         this->actor.velocity.y = 0.0f;
     }
-
-    if (this->actor.bgCheckFlags & 8) {
+    wallClimbTimer--;
+    if (wallClimbTimer <= 0) {
+        BossFieldGoma_SetupWallClimb(this);
+    }else if (this->actor.bgCheckFlags & 8) {
         BossFieldGoma_SetupWallClimb(this);
     }
 
@@ -1362,8 +1363,6 @@ void BossFieldGoma_CeilingMoveToCenter(BossGoma* this, PlayState* play) {
     s16 angle;
     s16 absDiff;
 
-    BossFieldGoma_UpdateCeilingMovement(this, play, 0.0f, -5.0f, true);
-
     if (this->frameCount % 64 == 0) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOMA_CRY2);
     }
@@ -1381,14 +1380,21 @@ void BossFieldGoma_CeilingMoveToCenter(BossGoma* this, PlayState* play) {
             absDiff = angle - this->actor.wallYaw;
             angle = this->actor.wallYaw + absDiff / 2;
         }
-
-        this->actor.world.pos.z += Math_CosS(angle) * (5.0f + Rand_ZeroOne() * 5.0f) + Rand_CenteredFloat(2.0f);
-        this->actor.world.pos.x += Math_SinS(angle) * (5.0f + Rand_ZeroOne() * 5.0f) + Rand_CenteredFloat(2.0f);
+    }
+    //For some reason Gohma just can't get back into position normally
+    if (this->actor.world.pos.x != this->actor.home.pos.x) {
+        Math_SmoothStepToF(&this->actor.world.pos.x, this->actor.home.pos.x, 0.1f, 12.0f, 0.01f);
+    } else if (this->actor.world.pos.z != this->actor.home.pos.z && this->actor.world.pos.x == this->actor.home.pos.x) {
+        Math_SmoothStepToF(&this->actor.world.pos.z, this->actor.home.pos.z, 0.1f, 12.0f, 0.01f);
     }
 
-    // timer setup to 30-60
-    if (this->framesUntilNextAction == 0 && fabsf(-150.0f - this->actor.world.pos.x) < 100.0f &&
-        fabsf(-350.0f - this->actor.world.pos.z) < 100.0f) {
+    // timer setup to 30-60 * I changed the fabsf functions to instead just make sure her
+    // x and z co-ordinates are what they were when she spawned
+    if (this->framesUntilNextAction == 0 && this->actor.world.pos.x == this->actor.home.pos.x &&
+        this->actor.world.pos.z == this->actor.home.pos.z) {
+        Math_ApproachS(&this->actor.world.rot.y, Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor), 3,
+                       0x7D0);
+        wallClimbTimer = 80;
         BossFieldGoma_SetupCeilingIdle(this);
     }
 }
@@ -1610,8 +1616,8 @@ void BossFieldGoma_Update(Actor* thisx, PlayState* play) {
     } else {
         this->doNotMoveThisFrame = false;
     }
-
-    if (this->actor.world.pos.y < -400.0f) {
+    //Check if slightly higher than floor?
+    if (this->actor.world.pos.y < this->actor.home.pos.y + 10.0f) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 30.0f, 30.0f, 80.0f, 5);
     } else {
         Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 30.0f, 80.0f, 1);
