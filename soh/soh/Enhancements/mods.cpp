@@ -369,7 +369,8 @@ void RegisterRupeeDash() {
         if (rupeeDashTimer >= rdmTime) {
             rupeeDashTimer = 0;
             if (gSaveContext.rupees > 0) {
-                Rupees_ChangeBy(-1);
+                uint16_t walletSize = (CUR_UPG_VALUE(UPG_WALLET) + 1) * -1;
+                Rupees_ChangeBy(walletSize);
             } else {
                 Health_ChangeBy(gPlayState, -16);
             }
