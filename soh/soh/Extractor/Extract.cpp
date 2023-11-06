@@ -225,7 +225,7 @@ void Extractor::GetRoms(std::vector<std::string>& roms) {
     //}
 #elif unix
     // Open the directory of the app.
-    DIR* d = opendir(mSearchPath);
+    DIR* d = opendir(mSearchPath.c_str());
     struct dirent* dir;
 
     if (d != NULL) {
