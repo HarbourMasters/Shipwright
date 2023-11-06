@@ -3202,11 +3202,11 @@ static const char* noRandoGeneratedText[] = {
     ",\nor drop a spoiler log on the game window.",
 #endif
     // French
-    "Ouvrez \"Randomizer Settings\" pour modifier vos\nparamètres, puis appuyez sur A pour générer une\nnouvelle graine"
+    "Ouvrez le menu \"Randomizer Settings\" pour modifier\nvos paramètres, appuyez sur A pour générer\nune nouvelle seed"
 #if (defined(__WIIU__) || defined(__SWITCH__))
     "."
 #else
-    " ou glissez un spoilerlog sur la fenêtre\ndu jeu."
+    " ou glissez un spoilerlog sur la\nfenêtre du jeu."
 #endif
 };
 
