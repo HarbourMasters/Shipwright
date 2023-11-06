@@ -2654,7 +2654,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 //RANDOTODO: Disable when Start with Master Sword is active
                 // bool disableShuffleMasterSword = CvarGetInteger("gRandomizeStartingMasterSword", 0);
                 // static const char* disableShuffleMasterSwordText = "This option is disabled because \"Start with Master Sword\" is enabled.";
-                UIWidgets::EnhancementCheckbox(Settings::ShuffleMasterSword.GetName().c_str(), "gRandomizeShuffleMasterSword");
+                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD).GetName().c_str(), "gRandomizeShuffleMasterSword");
                 UIWidgets::InsertHelpHoverText(
                     "Shuffles the Master Sword into the item pool.\n"
                     "\n"

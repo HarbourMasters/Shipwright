@@ -3188,25 +3188,25 @@ void FileChoose_DrawRandoSaveVersionWarning(GameState* thisx) {
 
 static const char* noRandoGeneratedText[] = {
     // English
-    "No Randomizer seed currently available.\nGenerate one in the Randomizer Settings"
+    "Open Randomizer Settings to change your settings,\nthen press A to generate a new seed"
 #if defined(__WIIU__) || defined(__SWITCH__)
     ".",
 #else
     ",\nor drop a spoiler log on the game window.",
 #endif
     // German
-    "No Randomizer seed currently available.\nGenerate one in the Randomizer Settings"
+    "Open Randomizer Settings to change your settings,\nthen press A to generate a new seed"
 #if defined(__WIIU__) || defined(__SWITCH__)
     ".",
 #else
     ",\nor drop a spoiler log on the game window.",
 #endif
     // French
-    "Aucune Seed de Randomizer actuellement disponible.\nGénérez-en une dans les \"Randomizer Settings\""
+    "Ouvrez \"Randomizer Settings\" pour modifier vos\nparamètres, puis appuyez sur A pour générer une\nnouvelle graine"
 #if (defined(__WIIU__) || defined(__SWITCH__))
     "."
 #else
-    "\nou glissez un spoilerlog sur la fenêtre du jeu."
+    " ou glissez un spoilerlog sur la fenêtre\ndu jeu."
 #endif
 };
 
@@ -3216,7 +3216,7 @@ void FileChoose_DrawNoRandoGeneratedWarning(GameState* thisx) {
     OPEN_DISPS(this->state.gfxCtx);
 
     // Draw rando seed warning when build version doesn't match for Major or Minor number
-    if (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER && !hasRandomizerQuest()) {
+    if (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER && !(Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded())) {
         uint8_t textAlpha = 225;
         uint8_t textboxAlpha = 170;
         float textboxScale = 0.7f;
@@ -3229,12 +3229,18 @@ void FileChoose_DrawNoRandoGeneratedWarning(GameState* thisx) {
         uint16_t textboxWidth = 256 * textboxScale;
         uint16_t textboxHeight = 64 * textboxScale;
         uint8_t leftOffset = 72;
-        uint8_t bottomOffset = 84;
+        uint8_t bottomOffset = 132;
         uint8_t textVerticalOffset;
 #if defined(__WIIU__) || defined(__SWITCH__)
-        textVerticalOffset = 127; // 2 lines
+        textVerticalOffset = 80; // 2 lines
+        if (gSaveContext.language == LANGUAGE_FRA) {
+            textVerticalOffset = 75; // 3 lines
+        }
 #else
-        textVerticalOffset = 122; // 3 lines
+        textVerticalOffset = 75; // 3 lines
+        if (gSaveContext.language == LANGUAGE_FRA) {
+            textVerticalOffset = 70; // 4 lines
+        }
 #endif
 
         Gfx_SetupDL_39Opa(this->state.gfxCtx);
