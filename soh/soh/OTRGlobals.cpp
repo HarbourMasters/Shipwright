@@ -876,12 +876,62 @@ void DetectOTRVersion(std::string fileName, bool isMQ) {
     }
 }
 
+bool IsSubpath(const std::filesystem::path& path, const std::filesystem::path& base) {
+    auto rel = std::filesystem::relative(path, base);
+    return !rel.empty() && rel.native()[0] != '.';
+}
+
+bool PathTestCleanup(FILE* tfile) {
+    try {
+        if (std::filesystem::exists("./text.txt")) std::filesystem::remove("./text.txt");
+        if (std::filesystem::exists("./test/")) std::filesystem::remove("./test/");
+    }
+    catch (std::filesystem::filesystem_error const& ex) { return false; }
+    return true;
+}
+
 extern "C" void InitOTR() {
 
 #ifdef __SWITCH__
     LUS::Switch::Init(LUS::PreInitPhase);
 #elif defined(__WIIU__)
     LUS::WiiU::Init(appShortName);
+#endif
+   #ifdef _WIN32
+    char* tempVar = getenv("TEMP");
+    std::filesystem::path tempPath;
+    try {
+        tempPath = std::filesystem::canonical(tempVar);
+    } catch (std::filesystem::filesystem_error const& ex) {
+        std::string userPath = getenv("USERPROFILE");
+        userPath.append("\\AppData\\Local\\Temp");
+        tempPath = std::filesystem::canonical(userPath);
+    }
+    wchar_t buffer[MAX_PATH];
+    GetModuleFileName(NULL, buffer, _countof(buffer));
+    auto ownPath = std::filesystem::canonical(buffer).parent_path();
+    if (IsSubpath(ownPath, tempPath)) {
+        Extractor::ShowErrorBox("Error", "SoH is running in a temp folder. Extract the .zip and run again.");
+        exit(1);
+    }
+    FILE* tfile = fopen("./text.txt", "w");
+    std::filesystem::path tfolder = std::filesystem::path("./test/");
+    bool error = false;
+    try {
+        create_directories(tfolder);
+    } catch (std::filesystem::filesystem_error const& ex) {
+        error = true;
+    }
+    if (tfile == NULL || error) {
+        Extractor::ShowErrorBox("Error", "SoH does not have proper file permissions. Please move it to a folder that does and run again.");
+        PathTestCleanup(tfile);
+        exit(1);
+    }
+    fclose(tfile);
+    if (!PathTestCleanup(tfile)) {
+        Extractor::ShowErrorBox("Error", "SoH does not have proper file permissions. Please move it to a folder that does and run again.");
+        exit(1);
+    }
 #endif
 
     CheckSoHOTRVersion(LUS::Context::GetPathRelativeToAppBundle("soh.otr"));
