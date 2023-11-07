@@ -286,6 +286,7 @@ static u8 sDeadLimbLifetime[] = {
  * Clear pixels from Gohma's textures
  */
 void BossFieldGoma_ClearPixels(u8* clearPixelTable, s16 i) {
+    return;
     if (clearPixelTable[i]) {
         sClearPixelTex16[i] = 1;
 

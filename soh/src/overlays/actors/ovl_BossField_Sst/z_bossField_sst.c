@@ -338,98 +338,38 @@ void BossFieldSst_HeadSetupIntro(BossSst* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     this->timer = 611;
     this->ready = false;
-    Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
     this->actionFunc = BossFieldSst_HeadIntro;
 }
 
 void BossFieldSst_HeadIntro(BossSst* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 tempo;
-    s32 introStateTimer;
-    s32 revealStateTimer;
-
     if (this->timer != 0) {
         this->timer--;
     }
-
     if (SkelAnime_Update(&this->skelAnime)) {
         Animation_MorphToLoop(&this->skelAnime, &gBongoHeadEyeCloseIdleAnim, -3.0f);
     }
-
-    if (this->timer == 0) {
-        sHands[RIGHT]->actor.flags |= ACTOR_FLAG_TARGETABLE;
-        sHands[LEFT]->actor.flags |= ACTOR_FLAG_TARGETABLE;
-        Flags_SetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE);
-        BossFieldSst_HeadSetupNeutral(this);
-        this->colliderJntSph.base.ocFlags1 |= OC1_ON;
-        sHands[LEFT]->colliderJntSph.base.ocFlags1 |= OC1_ON;
-        sHands[RIGHT]->colliderJntSph.base.ocFlags1 |= OC1_ON;
-        this->timer = 112;
-    } else if (this->timer >= 546) {
-        if (player->actor.bgCheckFlags & 2) {
-            if (!this->ready) {
-                BossFieldSst_MakePlayerBounce(play);
-                this->ready = true;
-                func_800AA000(this->actor.xyzDistToPlayerSq, 0xFF, 0x14, 0x96);
-                Audio_PlayActorSound2(&this->actor, NA_SE_EN_SHADEST_TAIKO_HIGH);
-            } else if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE)) {
-                sHands[RIGHT]->actor.draw = BossFieldSst_DrawHand;
-                sHands[LEFT]->actor.draw = BossFieldSst_DrawHand;
-                this->actor.draw = BossFieldSst_DrawHead;
-                this->timer = 178;
-            } else {
-                this->timer = 546;
-            }
-        }
-    }else if (this->timer >= 448) {
-        if (this->timer == 460) {
-            sHands[RIGHT]->actor.draw = BossFieldSst_DrawHand;
-            sHands[LEFT]->actor.draw = BossFieldSst_DrawHand;
-            this->actor.draw = BossFieldSst_DrawHead;
-            BossFieldSst_HandSetupDownbeat(sHands[RIGHT]);
-        }
-    } else {
-        if (this->timer >= 372) {
-            introStateTimer = this->timer - 372;
-            tempo = 6;
-        } else if (this->timer >= 304) {
-            introStateTimer = this->timer - 304;
-            tempo = 5;
-        } else if (this->timer >= 244) {
-            introStateTimer = this->timer - 244;
-            tempo = 4;
-        } else if (this->timer >= 192) {
-            introStateTimer = this->timer - 192;
-            tempo = 3;
-        } else if (this->timer >= 148) {
-            introStateTimer = this->timer - 148;
-            tempo = 2;
-        } else if (this->timer >= 112) {
-            introStateTimer = this->timer - 112;
-            tempo = 1;
-        } else {
-            introStateTimer = this->timer % 28;
-            tempo = 0;
-        }
-        if (this->timer <= 198) {
-            revealStateTimer = 198 - this->timer;
-            if (this->timer <= 20) {
-                this->vVanish = true;
-                this->actor.flags |= ACTOR_FLAG_LENS;
-            }else if (revealStateTimer >= 45) {
-                if (revealStateTimer == 85) {
-                    Animation_MorphToPlayOnce(&this->skelAnime, &gBongoHeadEyeCloseAnim, -5.0f);
-                    BossFieldSst_HeadSfx(this, NA_SE_EN_SHADEST_DISAPPEAR);
-                }
-            }
-        }
-        if (introStateTimer == 12) {
-            BossFieldSst_HandSetupDownbeat(sHands[RIGHT]);
-        }
-        if ((introStateTimer != 5) && ((introStateTimer % ((tempo * 2) + 7)) == 5)) {
-            BossFieldSst_HandSetupOffbeat(sHands[LEFT]);
-        }
-    }
+    sHands[RIGHT]->actor.flags |= ACTOR_FLAG_TARGETABLE;
+    sHands[LEFT]->actor.flags |= ACTOR_FLAG_TARGETABLE;
+    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE);
+    BossFieldSst_HeadSetupNeutral(this);
+    this->colliderJntSph.base.ocFlags1 |= OC1_ON;
+    sHands[LEFT]->colliderJntSph.base.ocFlags1 |= OC1_ON;
+    sHands[RIGHT]->colliderJntSph.base.ocFlags1 |= OC1_ON;
+    this->timer = 112;
+    BossFieldSst_MakePlayerBounce(play);
+    this->ready = true;
+    func_800AA000(this->actor.xyzDistToPlayerSq, 0xFF, 0x14, 0x96);
+    Audio_PlayActorSound2(&this->actor, NA_SE_EN_SHADEST_TAIKO_HIGH);
+    sHands[RIGHT]->actor.draw = BossFieldSst_DrawHand;
+    sHands[LEFT]->actor.draw = BossFieldSst_DrawHand;
+    this->actor.draw = BossFieldSst_DrawHead;
+    BossFieldSst_HandSetupDownbeat(sHands[RIGHT]);
+    this->vVanish = true;
+    this->actor.flags |= ACTOR_FLAG_LENS;
+    Animation_MorphToPlayOnce(&this->skelAnime, &gBongoHeadEyeCloseAnim, -5.0f);
+    BossFieldSst_HeadSfx(this, NA_SE_EN_SHADEST_DISAPPEAR);
+    BossFieldSst_HandSetupOffbeat(sHands[LEFT]);
 }
 
 void BossFieldSst_HeadSetupWait(BossSst* this) {

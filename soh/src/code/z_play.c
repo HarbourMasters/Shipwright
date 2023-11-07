@@ -37,6 +37,7 @@ PlayState* gPlayState;
 s16 gEnPartnerId;
 s16 gFieldSstId;
 s16 gFieldGomaId;
+s16 gFieldDodongoId;
 
 void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn);
 

@@ -647,10 +647,30 @@ static ActorDBInit BossFieldGomaInit = {
 };
 extern "C" s16 gFieldGomaId;
 
+#include "src/overlays/actors/ovl_BossField_Dodongo/z_bossField_dodongo.h"
+static ActorDBInit BossFieldDodongoInit = {
+    "BossField_Dodongo",
+    "Dodongo (Field)",
+    ACTORCAT_BOSS,
+    (ACTOR_FLAG_TARGETABLE |
+    ACTOR_FLAG_HOSTILE |
+    ACTOR_FLAG_UPDATE_WHILE_CULLED |
+    ACTOR_FLAG_DRAW_WHILE_CULLED),
+    OBJECT_DODONGO,
+    sizeof(BossDodongo),
+    (ActorFunc)BossFieldDodongo_Init,
+    (ActorFunc)BossFieldDodongo_Destroy,
+    (ActorFunc)BossFieldDodongo_Update,
+    (ActorFunc)BossFieldDodongo_Draw,
+    nullptr,
+};
+extern "C" s16 gFieldDodongoId;
+
 void ActorDB::AddBuiltInCustomActors() {
     gEnPartnerId = ActorDB::Instance->AddEntry(EnPartnerInit).entry.id;
     gFieldSstId = ActorDB::Instance->AddEntry(BossFieldSsTInit).entry.id;
     gFieldGomaId = ActorDB::Instance->AddEntry(BossFieldGomaInit).entry.id;
+    gFieldDodongoId = ActorDB::Instance->AddEntry(BossFieldDodongoInit).entry.id;
 }
 
 extern "C" ActorDBEntry* ActorDB_Retrieve(const int id) {

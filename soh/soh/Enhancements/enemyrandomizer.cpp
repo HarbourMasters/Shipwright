@@ -8,6 +8,8 @@
 extern "C" {
 #include <z64.h>
 s16 gFieldSstId;
+s16 gFieldGomaId;
+s16 gFieldDodongoId;
 }
 
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -240,16 +242,17 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
     }
 
     static EnemyEntry bossesToBeUsedInRandomizationOfEnemies[] = { 
-        { gFieldSstId, -1 } 
+        { gFieldSstId, -1 }, 
+        { gFieldGomaId, -1 },
+        { gFieldDodongoId, -1 }
     };
     //Generate a random int here to see if the enemy selected should be from the boss table instead
     //Could re-use randomNumber for the bossGenCheck for efficiency, but used a diff var for clarity
     uint32_t bossGenCheck = Random(1, 101);
     uint32_t randomNumber;
     if (bossGenCheck <= 20) {
-        /* Will be used in the future when we have more than one entry
-        randomNumber = Random(0, RANDOMIZED_BOSS_SPAWN_TABLE_SIZE);*/
-        return bossesToBeUsedInRandomizationOfEnemies[0];
+        randomNumber = Random(0, RANDOMIZED_BOSS_SPAWN_TABLE_SIZE);
+        return bossesToBeUsedInRandomizationOfEnemies[randomNumber];
     }else {
         randomNumber = Random(0, RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE);
         return randomizedEnemySpawnTable[randomNumber];
