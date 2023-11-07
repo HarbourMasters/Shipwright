@@ -3,6 +3,9 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_zl1Tex_00EE58 "__OTR__objects/object_zl1/object_zl1Tex_00EE58"
+static const ALIGN_ASSET(2) char object_zl1Tex_00EE58[] = dobject_zl1Tex_00EE58;
+
 #define dgChildZelda1Skel "__OTR__objects/object_zl1/gChildZelda1Skel"
 static const ALIGN_ASSET(2) char gChildZelda1Skel[] = dgChildZelda1Skel;
 
@@ -231,7 +234,5 @@ static const ALIGN_ASSET(2) char gChildZelda1Anim_13F10[] = dgChildZelda1Anim_13
 #define dgChildZelda1Anim_143A8 "__OTR__objects/object_zl1/gChildZelda1Anim_143A8"
 static const ALIGN_ASSET(2) char gChildZelda1Anim_143A8[] = dgChildZelda1Anim_143A8;
 
-#define dobject_zl1Tex_00EE58 "__OTR__objects/object_zl1/object_zl1Tex_00EE58"
-static const ALIGN_ASSET(2) char object_zl1Tex_00EE58[] = dobject_zl1Tex_00EE58;
 
 #endif // OBJECTS_OBJECT_ZL1_H

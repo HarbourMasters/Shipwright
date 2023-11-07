@@ -236,7 +236,7 @@ void RegisterOcarinaTimeTravel() {
         Actor* nearbyOcarinaSpot = Actor_FindNearby(gPlayState, player, ACTOR_EN_OKARINA_TAG, ACTORCAT_PROP, 120.0f);
         Actor* nearbyDoorOfTime = Actor_FindNearby(gPlayState, player, ACTOR_DOOR_TOKI, ACTORCAT_BG, 500.0f);
         Actor* nearbyFrogs = Actor_FindNearby(gPlayState, player, ACTOR_EN_FR, ACTORCAT_NPC, 300.0f);
-        uint8_t hasMasterSword = (gBitFlags[ITEM_SWORD_MASTER - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD]) & gSaveContext.inventory.equipment;
+        uint8_t hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
         uint8_t hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
         // If TimeTravel + Player have the Ocarina of Time + Have Master Sword + is in proper range
         // TODO: Once Swordless Adult is fixed: Remove the Master Sword check
@@ -369,7 +369,8 @@ void RegisterRupeeDash() {
         if (rupeeDashTimer >= rdmTime) {
             rupeeDashTimer = 0;
             if (gSaveContext.rupees > 0) {
-                Rupees_ChangeBy(-1);
+                uint16_t walletSize = (CUR_UPG_VALUE(UPG_WALLET) + 1) * -1;
+                Rupees_ChangeBy(walletSize);
             } else {
                 Health_ChangeBy(gPlayState, -16);
             }
@@ -387,11 +388,18 @@ void RegisterShadowTag() {
         if (!CVarGetInteger("gShadowTag", 0)) {
             return;
         }
-        if (shouldSpawn && (delayTimer <= 0)) {
-            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3, false);
-            shouldSpawn = false;
+        if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE &&  // Forest Temple Scene
+            gPlayState->roomCtx.curRoom.num == 16 ||        // Green Poe Room
+            gPlayState->roomCtx.curRoom.num == 13 ||        // Blue Poe Room
+            gPlayState->roomCtx.curRoom.num == 12) {        // Red Poe Room
+            return;
         } else {
-            delayTimer--;
+            if (shouldSpawn && (delayTimer <= 0)) {
+                Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3, false);
+                shouldSpawn = false;
+            } else {
+                delayTimer--;
+            }
         }
     });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
@@ -1031,6 +1039,39 @@ void RegisterRandomizerSheikSpawn() {
     });
 }
 
+void RegisterRandomizedEnemySizes() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+        // Randomized Enemy Sizes
+        Player* player = GET_PLAYER(gPlayState);
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        // Only apply to enemies and bosses. Exclude the wobbly platforms in Jabu because they need to act like platforms.
+        if (!CVarGetInteger("gRandomizedEnemySizes", 0) || (actor->category != ACTORCAT_ENEMY && actor->category != ACTORCAT_BOSS) || actor->id == ACTOR_EN_BROB) {
+            return;
+        }
+
+        float randomNumber;
+        float randomScale;
+
+        uint8_t bigActor = rand() % 2;
+
+        // Big actor. Dodongo and Volvagia are always smaller because they're impossible when bigger.
+        if (bigActor && actor->id != ACTOR_BOSS_DODONGO && actor->id != ACTOR_BOSS_FD &&
+            actor->id != ACTOR_BOSS_FD2) {
+            randomNumber = rand() % 200;
+            // Between 100% and 300% size.
+            randomScale = 1.0f + (randomNumber / 100);
+        // Small actor
+        } else {
+            randomNumber = rand() % 90;
+            // Between 10% and 100% size.
+            randomScale = 0.1f + (randomNumber / 100);
+        }
+
+        Actor_SetScale(actor, actor->scale.z * randomScale);
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1058,5 +1099,6 @@ void InitMods() {
     RegisterEnemyDefeatCounts();
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
+    RegisterRandomizedEnemySizes();
     NameTag_RegisterHooks();
 }

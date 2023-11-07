@@ -3,6 +3,54 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_demo_kekkaiTex_000000 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_000000"
+static const ALIGN_ASSET(2) char object_demo_kekkaiTex_000000[] = dobject_demo_kekkaiTex_000000;
+
+#define dobject_demo_kekkaiTex_000800 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_000800"
+static const ALIGN_ASSET(2) char object_demo_kekkaiTex_000800[] = dobject_demo_kekkaiTex_000800;
+
+#define dobject_demo_kekkaiTex_001000 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_001000"
+static const ALIGN_ASSET(2) char object_demo_kekkaiTex_001000[] = dobject_demo_kekkaiTex_001000;
+
+#define dobject_demo_kekkaiTex_002450 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_002450"
+static const ALIGN_ASSET(2) char object_demo_kekkaiTex_002450[] = dobject_demo_kekkaiTex_002450;
+
+#define dobject_demo_kekkaiTex_0036A0 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_0036A0"
+static const ALIGN_ASSET(2) char object_demo_kekkaiTex_0036A0[] = dobject_demo_kekkaiTex_0036A0;
+
+#define dobject_demo_kekkaiTex_003EA0 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_003EA0"
+static const ALIGN_ASSET(2) char object_demo_kekkaiTex_003EA0[] = dobject_demo_kekkaiTex_003EA0;
+
+#define dobject_demo_kekkaiTex_004AC0 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_004AC0"
+static const ALIGN_ASSET(2) char object_demo_kekkaiTex_004AC0[] = dobject_demo_kekkaiTex_004AC0;
+
+#define dobject_demo_kekkaiTex_006140 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_006140"
+static const ALIGN_ASSET(2) char object_demo_kekkaiTex_006140[] = dobject_demo_kekkaiTex_006140;
+
+#define dobject_demo_kekkaiTex_006940 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_006940"
+static const ALIGN_ASSET(2) char object_demo_kekkaiTex_006940[] = dobject_demo_kekkaiTex_006940;
+
+#define dobject_demo_kekkaiTex_007DB0 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_007DB0"
+static const ALIGN_ASSET(2) char object_demo_kekkaiTex_007DB0[] = dobject_demo_kekkaiTex_007DB0;
+
+#define dobject_demo_kekkaiTex_0089D0 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_0089D0"
+static const ALIGN_ASSET(2) char object_demo_kekkaiTex_0089D0[] = dobject_demo_kekkaiTex_0089D0;
+
+#define dobject_demo_kekkaiTex_0092D0 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_0092D0"
+static const ALIGN_ASSET(2) char object_demo_kekkaiTex_0092D0[] = dobject_demo_kekkaiTex_0092D0;
+
+#define dobject_demo_kekkaiTex_00A440 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_00A440"
+static const ALIGN_ASSET(2) char object_demo_kekkaiTex_00A440[] = dobject_demo_kekkaiTex_00A440;
+
+#define dobject_demo_kekkaiTex_00B540 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_00B540"
+static const ALIGN_ASSET(2) char object_demo_kekkaiTex_00B540[] = dobject_demo_kekkaiTex_00B540;
+
+#define dobject_demo_kekkaiTex_00C0B0 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_00C0B0"
+static const ALIGN_ASSET(2) char object_demo_kekkaiTex_00C0B0[] = dobject_demo_kekkaiTex_00C0B0;
+
+#define dobject_demo_kekkaiTex_00C8B0 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_00C8B0"
+static const ALIGN_ASSET(2) char object_demo_kekkaiTex_00C8B0[] = dobject_demo_kekkaiTex_00C8B0;
+
 #define dgTowerBarrierDL "__OTR__objects/object_demo_kekkai/gTowerBarrierDL"
 static const ALIGN_ASSET(2) char gTowerBarrierDL[] = dgTowerBarrierDL;
 
@@ -62,53 +110,5 @@ static const ALIGN_ASSET(2) char gDemoKekkaiDL_005FF0[] = dgDemoKekkaiDL_005FF0;
 
 #define dgGanonsCastleDoorDL "__OTR__objects/object_demo_kekkai/gGanonsCastleDoorDL"
 static const ALIGN_ASSET(2) char gGanonsCastleDoorDL[] = dgGanonsCastleDoorDL;
-
-#define dobject_demo_kekkaiTex_000000 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_000000"
-static const ALIGN_ASSET(2) char object_demo_kekkaiTex_000000[] = dobject_demo_kekkaiTex_000000;
-
-#define dobject_demo_kekkaiTex_004AC0 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_004AC0"
-static const ALIGN_ASSET(2) char object_demo_kekkaiTex_004AC0[] = dobject_demo_kekkaiTex_004AC0;
-
-#define dobject_demo_kekkaiTex_000800 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_000800"
-static const ALIGN_ASSET(2) char object_demo_kekkaiTex_000800[] = dobject_demo_kekkaiTex_000800;
-
-#define dobject_demo_kekkaiTex_007DB0 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_007DB0"
-static const ALIGN_ASSET(2) char object_demo_kekkaiTex_007DB0[] = dobject_demo_kekkaiTex_007DB0;
-
-#define dobject_demo_kekkaiTex_00B540 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_00B540"
-static const ALIGN_ASSET(2) char object_demo_kekkaiTex_00B540[] = dobject_demo_kekkaiTex_00B540;
-
-#define dobject_demo_kekkaiTex_00C8B0 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_00C8B0"
-static const ALIGN_ASSET(2) char object_demo_kekkaiTex_00C8B0[] = dobject_demo_kekkaiTex_00C8B0;
-
-#define dobject_demo_kekkaiTex_00C0B0 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_00C0B0"
-static const ALIGN_ASSET(2) char object_demo_kekkaiTex_00C0B0[] = dobject_demo_kekkaiTex_00C0B0;
-
-#define dobject_demo_kekkaiTex_0036A0 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_0036A0"
-static const ALIGN_ASSET(2) char object_demo_kekkaiTex_0036A0[] = dobject_demo_kekkaiTex_0036A0;
-
-#define dobject_demo_kekkaiTex_003EA0 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_003EA0"
-static const ALIGN_ASSET(2) char object_demo_kekkaiTex_003EA0[] = dobject_demo_kekkaiTex_003EA0;
-
-#define dobject_demo_kekkaiTex_0089D0 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_0089D0"
-static const ALIGN_ASSET(2) char object_demo_kekkaiTex_0089D0[] = dobject_demo_kekkaiTex_0089D0;
-
-#define dobject_demo_kekkaiTex_0092D0 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_0092D0"
-static const ALIGN_ASSET(2) char object_demo_kekkaiTex_0092D0[] = dobject_demo_kekkaiTex_0092D0;
-
-#define dobject_demo_kekkaiTex_00A440 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_00A440"
-static const ALIGN_ASSET(2) char object_demo_kekkaiTex_00A440[] = dobject_demo_kekkaiTex_00A440;
-
-#define dobject_demo_kekkaiTex_006140 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_006140"
-static const ALIGN_ASSET(2) char object_demo_kekkaiTex_006140[] = dobject_demo_kekkaiTex_006140;
-
-#define dobject_demo_kekkaiTex_006940 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_006940"
-static const ALIGN_ASSET(2) char object_demo_kekkaiTex_006940[] = dobject_demo_kekkaiTex_006940;
-
-#define dobject_demo_kekkaiTex_002450 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_002450"
-static const ALIGN_ASSET(2) char object_demo_kekkaiTex_002450[] = dobject_demo_kekkaiTex_002450;
-
-#define dobject_demo_kekkaiTex_001000 "__OTR__objects/object_demo_kekkai/object_demo_kekkaiTex_001000"
-static const ALIGN_ASSET(2) char object_demo_kekkaiTex_001000[] = dobject_demo_kekkaiTex_001000;
 
 #endif // OBJECTS_OBJECT_DEMO_KEKKAI_H

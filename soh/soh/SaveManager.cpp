@@ -603,13 +603,11 @@ void SaveManager::InitFileNormal() {
     gSaveContext.backupFW = gSaveContext.fw;
     gSaveContext.pendingSale = ITEM_NONE;
     gSaveContext.pendingSaleMod = MOD_NONE;
+    gSaveContext.isBossRushPaused = 0;
+    gSaveContext.pendingIceTrapCount = 0;
 
-    // Boss Rush is set ahead of time in z_file_choose, otherwise init the save with the normal quest
-    if (IS_BOSS_RUSH) {
-        BossRush_InitSave();
-    } else {
-        gSaveContext.questId = QUEST_NORMAL;
-    }
+    // Init with normal quest unless only an MQ rom is provided
+    gSaveContext.questId = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
 
     //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
@@ -716,11 +714,11 @@ void SaveManager::InitFileDebug() {
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-        Inventory_ChangeEquipment(EQUIP_SWORD, 1);
+        Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_KOKIRI);
         if (gSaveContext.fileNum == 0xFF) {
             gSaveContext.equips.buttonItems[1] = ITEM_SLINGSHOT;
             gSaveContext.equips.cButtonSlots[0] = SLOT_SLINGSHOT;
-            Inventory_ChangeEquipment(EQUIP_SHIELD, 1);
+            Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_DEKU);
         }
     }
 
@@ -859,11 +857,11 @@ void SaveManager::InitFileMaxed() {
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-        Inventory_ChangeEquipment(EQUIP_SWORD, 1);
+        Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_KOKIRI);
         if (gSaveContext.fileNum == 0xFF) {
             gSaveContext.equips.buttonItems[1] = ITEM_SLINGSHOT;
             gSaveContext.equips.cButtonSlots[0] = SLOT_SLINGSHOT;
-            Inventory_ChangeEquipment(EQUIP_SHIELD, 1);
+            Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_DEKU);
         }
     }
 

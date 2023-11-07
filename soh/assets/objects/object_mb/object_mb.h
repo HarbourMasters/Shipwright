@@ -3,6 +3,48 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_mbTex_008128 "__OTR__objects/object_mb/object_mbTex_008128"
+static const ALIGN_ASSET(2) char object_mbTex_008128[] = dobject_mbTex_008128;
+
+#define dobject_mbTex_008328 "__OTR__objects/object_mb/object_mbTex_008328"
+static const ALIGN_ASSET(2) char object_mbTex_008328[] = dobject_mbTex_008328;
+
+#define dobject_mbTex_008928 "__OTR__objects/object_mb/object_mbTex_008928"
+static const ALIGN_ASSET(2) char object_mbTex_008928[] = dobject_mbTex_008928;
+
+#define dobject_mbTex_008A28 "__OTR__objects/object_mb/object_mbTex_008A28"
+static const ALIGN_ASSET(2) char object_mbTex_008A28[] = dobject_mbTex_008A28;
+
+#define dobject_mbTex_008A48 "__OTR__objects/object_mb/object_mbTex_008A48"
+static const ALIGN_ASSET(2) char object_mbTex_008A48[] = dobject_mbTex_008A48;
+
+#define dobject_mbTex_008BC8 "__OTR__objects/object_mb/object_mbTex_008BC8"
+static const ALIGN_ASSET(2) char object_mbTex_008BC8[] = dobject_mbTex_008BC8;
+
+#define dobject_mbTex_008C48 "__OTR__objects/object_mb/object_mbTex_008C48"
+static const ALIGN_ASSET(2) char object_mbTex_008C48[] = dobject_mbTex_008C48;
+
+#define dobject_mbTex_008C88 "__OTR__objects/object_mb/object_mbTex_008C88"
+static const ALIGN_ASSET(2) char object_mbTex_008C88[] = dobject_mbTex_008C88;
+
+#define dobject_mbTex_00EC00 "__OTR__objects/object_mb/object_mbTex_00EC00"
+static const ALIGN_ASSET(2) char object_mbTex_00EC00[] = dobject_mbTex_00EC00;
+
+#define dobject_mbTex_00EE00 "__OTR__objects/object_mb/object_mbTex_00EE00"
+static const ALIGN_ASSET(2) char object_mbTex_00EE00[] = dobject_mbTex_00EE00;
+
+#define dobject_mbTex_00EF00 "__OTR__objects/object_mb/object_mbTex_00EF00"
+static const ALIGN_ASSET(2) char object_mbTex_00EF00[] = dobject_mbTex_00EF00;
+
+#define dobject_mbTex_00F000 "__OTR__objects/object_mb/object_mbTex_00F000"
+static const ALIGN_ASSET(2) char object_mbTex_00F000[] = dobject_mbTex_00F000;
+
+#define dobject_mbTex_00F200 "__OTR__objects/object_mb/object_mbTex_00F200"
+static const ALIGN_ASSET(2) char object_mbTex_00F200[] = dobject_mbTex_00F200;
+
+#define dobject_mbTex_00F280 "__OTR__objects/object_mb/object_mbTex_00F280"
+static const ALIGN_ASSET(2) char object_mbTex_00F280[] = dobject_mbTex_00F280;
+
 #define dgEnMbSpearSkel "__OTR__objects/object_mb/gEnMbSpearSkel"
 static const ALIGN_ASSET(2) char gEnMbSpearSkel[] = dgEnMbSpearSkel;
 
@@ -167,48 +209,6 @@ static const ALIGN_ASSET(2) char gEnMbDL_013A30[] = dgEnMbDL_013A30;
 
 #define dgEnMbDL_013DF0 "__OTR__objects/object_mb/gEnMbDL_013DF0"
 static const ALIGN_ASSET(2) char gEnMbDL_013DF0[] = dgEnMbDL_013DF0;
-
-#define dobject_mbTex_008328 "__OTR__objects/object_mb/object_mbTex_008328"
-static const ALIGN_ASSET(2) char object_mbTex_008328[] = dobject_mbTex_008328;
-
-#define dobject_mbTex_008128 "__OTR__objects/object_mb/object_mbTex_008128"
-static const ALIGN_ASSET(2) char object_mbTex_008128[] = dobject_mbTex_008128;
-
-#define dobject_mbTex_008BC8 "__OTR__objects/object_mb/object_mbTex_008BC8"
-static const ALIGN_ASSET(2) char object_mbTex_008BC8[] = dobject_mbTex_008BC8;
-
-#define dobject_mbTex_008C48 "__OTR__objects/object_mb/object_mbTex_008C48"
-static const ALIGN_ASSET(2) char object_mbTex_008C48[] = dobject_mbTex_008C48;
-
-#define dobject_mbTex_008C88 "__OTR__objects/object_mb/object_mbTex_008C88"
-static const ALIGN_ASSET(2) char object_mbTex_008C88[] = dobject_mbTex_008C88;
-
-#define dobject_mbTex_008A48 "__OTR__objects/object_mb/object_mbTex_008A48"
-static const ALIGN_ASSET(2) char object_mbTex_008A48[] = dobject_mbTex_008A48;
-
-#define dobject_mbTex_008928 "__OTR__objects/object_mb/object_mbTex_008928"
-static const ALIGN_ASSET(2) char object_mbTex_008928[] = dobject_mbTex_008928;
-
-#define dobject_mbTex_008A28 "__OTR__objects/object_mb/object_mbTex_008A28"
-static const ALIGN_ASSET(2) char object_mbTex_008A28[] = dobject_mbTex_008A28;
-
-#define dobject_mbTex_00F280 "__OTR__objects/object_mb/object_mbTex_00F280"
-static const ALIGN_ASSET(2) char object_mbTex_00F280[] = dobject_mbTex_00F280;
-
-#define dobject_mbTex_00EE00 "__OTR__objects/object_mb/object_mbTex_00EE00"
-static const ALIGN_ASSET(2) char object_mbTex_00EE00[] = dobject_mbTex_00EE00;
-
-#define dobject_mbTex_00EC00 "__OTR__objects/object_mb/object_mbTex_00EC00"
-static const ALIGN_ASSET(2) char object_mbTex_00EC00[] = dobject_mbTex_00EC00;
-
-#define dobject_mbTex_00EF00 "__OTR__objects/object_mb/object_mbTex_00EF00"
-static const ALIGN_ASSET(2) char object_mbTex_00EF00[] = dobject_mbTex_00EF00;
-
-#define dobject_mbTex_00F000 "__OTR__objects/object_mb/object_mbTex_00F000"
-static const ALIGN_ASSET(2) char object_mbTex_00F000[] = dobject_mbTex_00F000;
-
-#define dobject_mbTex_00F200 "__OTR__objects/object_mb/object_mbTex_00F200"
-static const ALIGN_ASSET(2) char object_mbTex_00F200[] = dobject_mbTex_00F200;
 
 #define dgEnMbSpearSkelLimbsLimb_008DE8DL_007908 "__OTR__objects/object_mb/gEnMbSpearSkelLimbsLimb_008DE8DL_007908"
 static const ALIGN_ASSET(2) char gEnMbSpearSkelLimbsLimb_008DE8DL_007908[] = dgEnMbSpearSkelLimbsLimb_008DE8DL_007908;

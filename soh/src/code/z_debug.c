@@ -24,12 +24,35 @@ Color_RGBA8 printTextColors[] = {
 };
 
 InputCombo inputCombos[REG_GROUPS] = {
-    { BTN_L, BTN_CUP },    { BTN_L, BTN_CLEFT }, { BTN_L, BTN_CDOWN }, { BTN_L, BTN_A },          { BTN_R, BTN_CDOWN },
-    { BTN_L, BTN_CRIGHT }, { BTN_L, BTN_R },     { BTN_L, BTN_DLEFT }, { BTN_L, BTN_DRIGHT },     { BTN_L, BTN_DUP },
-    { BTN_L, BTN_B },      { BTN_L, BTN_Z },     { BTN_L, BTN_DDOWN }, { BTN_R, BTN_A },          { BTN_R, BTN_B },
-    { BTN_R, BTN_Z },      { BTN_R, BTN_L },     { BTN_R, BTN_CUP },   { BTN_R, BTN_CRIGHT },     { BTN_R, BTN_DLEFT },
-    { BTN_R, BTN_CLEFT },  { BTN_R, BTN_START }, { BTN_L, BTN_START }, { BTN_R, BTN_DRIGHT },     { BTN_R, BTN_DUP },
-    { BTN_START, BTN_R },  { BTN_START, BTN_A }, { BTN_START, BTN_B }, { BTN_START, BTN_CRIGHT },
+    { BTN_L, BTN_CUP },         //REG
+    { BTN_L, BTN_CLEFT },       //SREG
+    { BTN_L, BTN_CDOWN },       //OREG
+    { BTN_L, BTN_A },           //PREG
+    { BTN_R, BTN_CDOWN },       //QREG
+    { BTN_L, BTN_CRIGHT },      //MREG
+    { BTN_L, BTN_R },           //YREG
+    { BTN_L, BTN_DLEFT },       //DREG
+    { BTN_L, BTN_DRIGHT },      //UREG
+    { BTN_L, BTN_DUP },         //IREG
+    { BTN_L, BTN_B },           //ZREG
+    { BTN_L, BTN_Z },           //CREG
+    { BTN_L, BTN_DDOWN },       //NREG
+    { BTN_R, BTN_A },           //KREG
+    { BTN_R, BTN_B },           //XREG
+    { BTN_R, BTN_Z },           //cREG
+    { BTN_R, BTN_L },           //sREG
+    { BTN_R, BTN_CUP },         //iREG
+    { BTN_R, BTN_CRIGHT },      //WREG
+    { BTN_R, BTN_DLEFT },       //AREG
+    { BTN_R, BTN_CLEFT },       //VREG
+    { BTN_R, BTN_START },       //HREG
+    { BTN_L, BTN_START },       //GREG
+    { BTN_R, BTN_DRIGHT },      //mREG
+    { BTN_R, BTN_DUP },         //nREG
+    { BTN_START, BTN_R },       //BREG
+    { BTN_START, BTN_A },       //dREG
+    { BTN_START, BTN_B },       //kREG
+    { BTN_START, BTN_CRIGHT },  //bREG
 };
 
 char regChar[] = " SOPQMYDUIZCNKXcsiWAVHGmnBdkb";
