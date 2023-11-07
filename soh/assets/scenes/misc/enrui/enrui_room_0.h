@@ -3,7 +3,7 @@
 
 #include "align_asset_macro.h"
 
-#define denrui_room_0DL_000338 "__OTR__scenes/nonmq/enrui_scene/enrui_room_0DL_000338"
+#define denrui_room_0DL_000338 "__OTR__scenes/shared/enrui_scene/enrui_room_0DL_000338"
 static const ALIGN_ASSET(2) char enrui_room_0DL_000338[] = denrui_room_0DL_000338;
 
 

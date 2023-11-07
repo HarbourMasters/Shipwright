@@ -3,6 +3,12 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_ru2Tex_0055C0 "__OTR__objects/object_ru2/object_ru2Tex_0055C0"
+static const ALIGN_ASSET(2) char object_ru2Tex_0055C0[] = dobject_ru2Tex_0055C0;
+
+#define dobject_ru2Tex_0056C0 "__OTR__objects/object_ru2/object_ru2Tex_0056C0"
+static const ALIGN_ASSET(2) char object_ru2Tex_0056C0[] = dobject_ru2Tex_0056C0;
+
 #define dgAdultRutoSkel "__OTR__objects/object_ru2/gAdultRutoSkel"
 static const ALIGN_ASSET(2) char gAdultRutoSkel[] = dgAdultRutoSkel;
 
@@ -156,10 +162,5 @@ static const ALIGN_ASSET(2) char gAdultRutoLookingDownLeftAnim[] = dgAdultRutoLo
 #define dgAdultRutoSwimmingUpAnim "__OTR__objects/object_ru2/gAdultRutoSwimmingUpAnim"
 static const ALIGN_ASSET(2) char gAdultRutoSwimmingUpAnim[] = dgAdultRutoSwimmingUpAnim;
 
-#define dobject_ru2Tex_0055C0 "__OTR__objects/object_ru2/object_ru2Tex_0055C0"
-static const ALIGN_ASSET(2) char object_ru2Tex_0055C0[] = dobject_ru2Tex_0055C0;
-
-#define dobject_ru2Tex_0056C0 "__OTR__objects/object_ru2/object_ru2Tex_0056C0"
-static const ALIGN_ASSET(2) char object_ru2Tex_0056C0[] = dobject_ru2Tex_0056C0;
 
 #endif // OBJECTS_OBJECT_RU2_H

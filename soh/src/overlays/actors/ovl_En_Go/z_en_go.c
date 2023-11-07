@@ -120,7 +120,7 @@ u16 EnGo_GetTextID(PlayState* play, Actor* thisx) {
                 } else {
                     return 0x3041;
                 }
-            } else if (CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1) || (Flags_GetInfTable(INFTABLE_10D))) {
+            } else if (CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON) || (Flags_GetInfTable(INFTABLE_10D))) {
                 if (Flags_GetInfTable(INFTABLE_SPOKE_TO_GORON_LINK)) {
                     return 0x3038;
                 } else {
@@ -651,7 +651,7 @@ void EnGo_Init(Actor* thisx, PlayState* play) {
     switch (this->actor.params & 0xF0) {
         case 0x00:
             Actor_SetScale(&this->actor, 0.008f);
-            if (CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
+            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)) {
                 EnGo_SetMovedPos(this, play);
                 EnGo_SetupAction(this, EnGo_CurledUp);
             } else {
