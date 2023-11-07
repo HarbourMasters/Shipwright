@@ -89,6 +89,9 @@ static const ALIGN_ASSET(2) char gXmasDecor90DL[] = dgXmasDecor90DL;
 #define dgXmasDecor100DL "__OTR__objects/object_xmas_tree/gXmasDecor100DL"
 static const ALIGN_ASSET(2) char gXmasDecor100DL[] = dgXmasDecor100DL;
 
+#define dgXmasStarDL "__OTR__objects/object_xmas_tree/gXmasStarDL"
+static const ALIGN_ASSET(2) char gXmasStarDL[] = dgXmasStarDL;
+
 // overlays
 #define dgOptionsDividerChangeLangVtx "__OTR__overlays/ovl_file_choose/gOptionsDividerChangeLangVtx"
 static const ALIGN_ASSET(2) char gOptionsDividerChangeLangVtx[] = dgOptionsDividerChangeLangVtx;

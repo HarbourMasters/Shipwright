@@ -164,6 +164,7 @@ void EnChristmasTree_Draw(Actor* thisx, PlayState* play) {
     }
     if (percentageCompleted >= 1.0f) {
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor100DL);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasStarDL);
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
