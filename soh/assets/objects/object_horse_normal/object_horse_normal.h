@@ -3,6 +3,30 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_horse_normalTex_0058D8 "__OTR__objects/object_horse_normal/object_horse_normalTex_0058D8"
+static const ALIGN_ASSET(2) char object_horse_normalTex_0058D8[] = dobject_horse_normalTex_0058D8;
+
+#define dobject_horse_normalTex_005918 "__OTR__objects/object_horse_normal/object_horse_normalTex_005918"
+static const ALIGN_ASSET(2) char object_horse_normalTex_005918[] = dobject_horse_normalTex_005918;
+
+#define dobject_horse_normalTex_005B18 "__OTR__objects/object_horse_normal/object_horse_normalTex_005B18"
+static const ALIGN_ASSET(2) char object_horse_normalTex_005B18[] = dobject_horse_normalTex_005B18;
+
+#define dobject_horse_normalTex_005B98 "__OTR__objects/object_horse_normal/object_horse_normalTex_005B98"
+static const ALIGN_ASSET(2) char object_horse_normalTex_005B98[] = dobject_horse_normalTex_005B98;
+
+#define dobject_horse_normalTex_005C98 "__OTR__objects/object_horse_normal/object_horse_normalTex_005C98"
+static const ALIGN_ASSET(2) char object_horse_normalTex_005C98[] = dobject_horse_normalTex_005C98;
+
+#define dobject_horse_normalTex_006F28 "__OTR__objects/object_horse_normal/object_horse_normalTex_006F28"
+static const ALIGN_ASSET(2) char object_horse_normalTex_006F28[] = dobject_horse_normalTex_006F28;
+
+#define dobject_horse_normalTex_007028 "__OTR__objects/object_horse_normal/object_horse_normalTex_007028"
+static const ALIGN_ASSET(2) char object_horse_normalTex_007028[] = dobject_horse_normalTex_007028;
+
+#define dobject_horse_normalTex_007128 "__OTR__objects/object_horse_normal/object_horse_normalTex_007128"
+static const ALIGN_ASSET(2) char object_horse_normalTex_007128[] = dobject_horse_normalTex_007128;
+
 #define dgHorseNormalSkel "__OTR__objects/object_horse_normal/gHorseNormalSkel"
 static const ALIGN_ASSET(2) char gHorseNormalSkel[] = dgHorseNormalSkel;
 
@@ -36,21 +60,6 @@ static const ALIGN_ASSET(2) char gHorseNormalWalkingAnim[] = dgHorseNormalWalkin
 #define dgHorseNormalEyeTex "__OTR__objects/object_horse_normal/gHorseNormalEyeTex"
 static const ALIGN_ASSET(2) char gHorseNormalEyeTex[] = dgHorseNormalEyeTex;
 
-#define dobject_horse_normalTex_005B98 "__OTR__objects/object_horse_normal/object_horse_normalTex_005B98"
-static const ALIGN_ASSET(2) char object_horse_normalTex_005B98[] = dobject_horse_normalTex_005B98;
-
-#define dobject_horse_normalTex_007128 "__OTR__objects/object_horse_normal/object_horse_normalTex_007128"
-static const ALIGN_ASSET(2) char object_horse_normalTex_007128[] = dobject_horse_normalTex_007128;
-
-#define dobject_horse_normalTex_007028 "__OTR__objects/object_horse_normal/object_horse_normalTex_007028"
-static const ALIGN_ASSET(2) char object_horse_normalTex_007028[] = dobject_horse_normalTex_007028;
-
-#define dobject_horse_normalTex_006F28 "__OTR__objects/object_horse_normal/object_horse_normalTex_006F28"
-static const ALIGN_ASSET(2) char object_horse_normalTex_006F28[] = dobject_horse_normalTex_006F28;
-
-#define dobject_horse_normalTex_0058D8 "__OTR__objects/object_horse_normal/object_horse_normalTex_0058D8"
-static const ALIGN_ASSET(2) char object_horse_normalTex_0058D8[] = dobject_horse_normalTex_0058D8;
-
 #define dgHorseNormalSkelLimbsLimb_009C64SkinLimbDL_007528 "__OTR__objects/object_horse_normal/gHorseNormalSkelLimbsLimb_009C64SkinLimbDL_007528"
 static const ALIGN_ASSET(2) char gHorseNormalSkelLimbsLimb_009C64SkinLimbDL_007528[] = dgHorseNormalSkelLimbsLimb_009C64SkinLimbDL_007528;
 
@@ -82,14 +91,5 @@ static const ALIGN_ASSET(2) char gHorseNormalSkelLimbsLimb_009ED4DL_0068F0[] = d
 static const ALIGN_ASSET(2) char gHorseNormalSkelLimbsLimb_009EE4DL_006878[] = dgHorseNormalSkelLimbsLimb_009EE4DL_006878;
 
 #define dgHorseNormalSkelLimbsLimb_009C64SkinLimbDL_007528 "__OTR__objects/object_horse_normal/gHorseNormalSkelLimbsLimb_009C64SkinLimbDL_007528"
-
-#define dobject_horse_normalTex_005918 "__OTR__objects/object_horse_normal/object_horse_normalTex_005918"
-static const ALIGN_ASSET(2) char object_horse_normalTex_005918[] = dobject_horse_normalTex_005918;
-
-#define dobject_horse_normalTex_005C98 "__OTR__objects/object_horse_normal/object_horse_normalTex_005C98"
-static const ALIGN_ASSET(2) char object_horse_normalTex_005C98[] = dobject_horse_normalTex_005C98;
-
-#define dobject_horse_normalTex_005B18 "__OTR__objects/object_horse_normal/object_horse_normalTex_005B18"
-static const ALIGN_ASSET(2) char object_horse_normalTex_005B18[] = dobject_horse_normalTex_005B18;
 
 #endif // OBJECTS_OBJECT_HORSE_NORMAL_H

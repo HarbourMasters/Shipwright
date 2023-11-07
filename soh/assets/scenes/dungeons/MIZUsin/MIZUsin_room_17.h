@@ -3,6 +3,24 @@
 
 #include "align_asset_macro.h"
 
+#define dMIZUsin_room_17Tex_005AA8 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17Tex_005AA8"
+static const ALIGN_ASSET(2) char MIZUsin_room_17Tex_005AA8[] = dMIZUsin_room_17Tex_005AA8;
+
+#define dMIZUsin_room_17Tex_0062A8 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17Tex_0062A8"
+static const ALIGN_ASSET(2) char MIZUsin_room_17Tex_0062A8[] = dMIZUsin_room_17Tex_0062A8;
+
+#define dMIZUsin_room_17Tex_006AA8 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17Tex_006AA8"
+static const ALIGN_ASSET(2) char MIZUsin_room_17Tex_006AA8[] = dMIZUsin_room_17Tex_006AA8;
+
+#define dMIZUsin_room_17Tex_0072A8 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17Tex_0072A8"
+static const ALIGN_ASSET(2) char MIZUsin_room_17Tex_0072A8[] = dMIZUsin_room_17Tex_0072A8;
+
+#define dMIZUsin_room_17Tex_007AA8 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17Tex_007AA8"
+static const ALIGN_ASSET(2) char MIZUsin_room_17Tex_007AA8[] = dMIZUsin_room_17Tex_007AA8;
+
+#define dMIZUsin_room_17Tex_0082A8 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17Tex_0082A8"
+static const ALIGN_ASSET(2) char MIZUsin_room_17Tex_0082A8[] = dMIZUsin_room_17Tex_0082A8;
+
 #define dMIZUsin_room_17DL_003458 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17DL_003458"
 static const ALIGN_ASSET(2) char MIZUsin_room_17DL_003458[] = dMIZUsin_room_17DL_003458;
 
@@ -12,32 +30,14 @@ static const ALIGN_ASSET(2) char MIZUsin_room_17DL_0041C8[] = dMIZUsin_room_17DL
 #define dMIZUsin_room_17DL_001010 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17DL_001010"
 static const ALIGN_ASSET(2) char MIZUsin_room_17DL_001010[] = dMIZUsin_room_17DL_001010;
 
-#define dMIZUsin_room_17Tex_006AA8 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17Tex_006AA8"
-static const ALIGN_ASSET(2) char MIZUsin_room_17Tex_006AA8[] = dMIZUsin_room_17Tex_006AA8;
-
-#define dMIZUsin_room_17Tex_007AA8 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17Tex_007AA8"
-static const ALIGN_ASSET(2) char MIZUsin_room_17Tex_007AA8[] = dMIZUsin_room_17Tex_007AA8;
-
-#define dMIZUsin_room_17Tex_0072A8 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17Tex_0072A8"
-static const ALIGN_ASSET(2) char MIZUsin_room_17Tex_0072A8[] = dMIZUsin_room_17Tex_0072A8;
-
-#define dMIZUsin_room_17Tex_0082A8 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17Tex_0082A8"
-static const ALIGN_ASSET(2) char MIZUsin_room_17Tex_0082A8[] = dMIZUsin_room_17Tex_0082A8;
-
 #define dMIZUsin_room_17DL_005928 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17DL_005928"
 static const ALIGN_ASSET(2) char MIZUsin_room_17DL_005928[] = dMIZUsin_room_17DL_005928;
 
 #define dMIZUsin_room_17DL_0056E8 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17DL_0056E8"
 static const ALIGN_ASSET(2) char MIZUsin_room_17DL_0056E8[] = dMIZUsin_room_17DL_0056E8;
 
-#define dMIZUsin_room_17Tex_005AA8 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17Tex_005AA8"
-static const ALIGN_ASSET(2) char MIZUsin_room_17Tex_005AA8[] = dMIZUsin_room_17Tex_005AA8;
-
 #define dMIZUsin_room_17DL_0016E0 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17DL_0016E0"
 static const ALIGN_ASSET(2) char MIZUsin_room_17DL_0016E0[] = dMIZUsin_room_17DL_0016E0;
-
-#define dMIZUsin_room_17Tex_0062A8 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17Tex_0062A8"
-static const ALIGN_ASSET(2) char MIZUsin_room_17Tex_0062A8[] = dMIZUsin_room_17Tex_0062A8;
 
 #define dMIZUsin_room_17DL_001910 "__OTR__scenes/nonmq/MIZUsin_scene/MIZUsin_room_17DL_001910"
 static const ALIGN_ASSET(2) char MIZUsin_room_17DL_001910[] = dMIZUsin_room_17DL_001910;

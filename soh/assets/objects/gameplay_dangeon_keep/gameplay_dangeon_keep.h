@@ -3,6 +3,75 @@
 
 #include "align_asset_macro.h"
 
+#define dgameplay_dangeon_keepTex_000000 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_000000"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_000000[] = dgameplay_dangeon_keepTex_000000;
+
+#define dgameplay_dangeon_keepTex_000200 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_000200"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_000200[] = dgameplay_dangeon_keepTex_000200;
+
+#define dgameplay_dangeon_keepTex_0005C0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0005C0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0005C0[] = dgameplay_dangeon_keepTex_0005C0;
+
+#define dgameplay_dangeon_keepTex_001280 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_001280"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_001280[] = dgameplay_dangeon_keepTex_001280;
+
+#define dgameplay_dangeon_keepTex_0078A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0078A0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0078A0[] = dgameplay_dangeon_keepTex_0078A0;
+
+#define dgameplay_dangeon_keepTex_007CA0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_007CA0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_007CA0[] = dgameplay_dangeon_keepTex_007CA0;
+
+#define dgameplay_dangeon_keepTex_0080A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0080A0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0080A0[] = dgameplay_dangeon_keepTex_0080A0;
+
+#define dgameplay_dangeon_keepTex_0088A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0088A0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0088A0[] = dgameplay_dangeon_keepTex_0088A0;
+
+#define dgameplay_dangeon_keepTex_00D8A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_00D8A0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_00D8A0[] = dgameplay_dangeon_keepTex_00D8A0;
+
+#define dgameplay_dangeon_keepTex_00E0A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_00E0A0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_00E0A0[] = dgameplay_dangeon_keepTex_00E0A0;
+
+#define dgameplay_dangeon_keepTex_00F8A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_00F8A0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_00F8A0[] = dgameplay_dangeon_keepTex_00F8A0;
+
+#define dgameplay_dangeon_keepTex_0108A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0108A0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0108A0[] = dgameplay_dangeon_keepTex_0108A0;
+
+#define dgameplay_dangeon_keepTex_0118A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0118A0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0118A0[] = dgameplay_dangeon_keepTex_0118A0;
+
+#define dgameplay_dangeon_keepTex_011AA0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_011AA0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_011AA0[] = dgameplay_dangeon_keepTex_011AA0;
+
+#define dgameplay_dangeon_keepTex_011CA0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_011CA0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_011CA0[] = dgameplay_dangeon_keepTex_011CA0;
+
+#define dgameplay_dangeon_keepTex_012CA0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_012CA0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_012CA0[] = dgameplay_dangeon_keepTex_012CA0;
+
+#define dgameplay_dangeon_keepTex_0134A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0134A0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0134A0[] = dgameplay_dangeon_keepTex_0134A0;
+
+#define dgameplay_dangeon_keepTex_013CA0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_013CA0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_013CA0[] = dgameplay_dangeon_keepTex_013CA0;
+
+#define dgameplay_dangeon_keepTex_013CB0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_013CB0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_013CB0[] = dgameplay_dangeon_keepTex_013CB0;
+
+#define dgameplay_dangeon_keepTex_0154B0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0154B0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0154B0[] = dgameplay_dangeon_keepTex_0154B0;
+
+#define dgameplay_dangeon_keepTex_015CB0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_015CB0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_015CB0[] = dgameplay_dangeon_keepTex_015CB0;
+
+#define dgameplay_dangeon_keepTex_0164B0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0164B0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0164B0[] = dgameplay_dangeon_keepTex_0164B0;
+
+#define dgameplay_dangeon_keepTex_016CB0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_016CB0"
+static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_016CB0[] = dgameplay_dangeon_keepTex_016CB0;
+
 #define dgUnusedCandleDL "__OTR__objects/gameplay_dangeon_keep/gUnusedCandleDL"
 static const ALIGN_ASSET(2) char gUnusedCandleDL[] = dgUnusedCandleDL;
 
@@ -146,74 +215,5 @@ static const ALIGN_ASSET(2) char gPotDL[] = dgPotDL;
 
 #define dgPotFragmentDL "__OTR__objects/gameplay_dangeon_keep/gPotFragmentDL"
 static const ALIGN_ASSET(2) char gPotFragmentDL[] = dgPotFragmentDL;
-
-#define dgameplay_dangeon_keepTex_000000 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_000000"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_000000[] = dgameplay_dangeon_keepTex_000000;
-
-#define dgameplay_dangeon_keepTex_000200 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_000200"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_000200[] = dgameplay_dangeon_keepTex_000200;
-
-#define dgameplay_dangeon_keepTex_0005C0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0005C0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0005C0[] = dgameplay_dangeon_keepTex_0005C0;
-
-#define dgameplay_dangeon_keepTex_001280 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_001280"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_001280[] = dgameplay_dangeon_keepTex_001280;
-
-#define dgameplay_dangeon_keepTex_0164B0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0164B0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0164B0[] = dgameplay_dangeon_keepTex_0164B0;
-
-#define dgameplay_dangeon_keepTex_00F8A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_00F8A0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_00F8A0[] = dgameplay_dangeon_keepTex_00F8A0;
-
-#define dgameplay_dangeon_keepTex_011CA0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_011CA0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_011CA0[] = dgameplay_dangeon_keepTex_011CA0;
-
-#define dgameplay_dangeon_keepTex_012CA0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_012CA0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_012CA0[] = dgameplay_dangeon_keepTex_012CA0;
-
-#define dgameplay_dangeon_keepTex_0154B0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0154B0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0154B0[] = dgameplay_dangeon_keepTex_0154B0;
-
-#define dgameplay_dangeon_keepTex_015CB0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_015CB0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_015CB0[] = dgameplay_dangeon_keepTex_015CB0;
-
-#define dgameplay_dangeon_keepTex_016CB0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_016CB0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_016CB0[] = dgameplay_dangeon_keepTex_016CB0;
-
-#define dgameplay_dangeon_keepTex_007CA0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_007CA0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_007CA0[] = dgameplay_dangeon_keepTex_007CA0;
-
-#define dgameplay_dangeon_keepTex_0078A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0078A0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0078A0[] = dgameplay_dangeon_keepTex_0078A0;
-
-#define dgameplay_dangeon_keepTex_00D8A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_00D8A0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_00D8A0[] = dgameplay_dangeon_keepTex_00D8A0;
-
-#define dgameplay_dangeon_keepTex_00E0A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_00E0A0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_00E0A0[] = dgameplay_dangeon_keepTex_00E0A0;
-
-#define dgameplay_dangeon_keepTex_0080A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0080A0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0080A0[] = dgameplay_dangeon_keepTex_0080A0;
-
-#define dgameplay_dangeon_keepTex_0088A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0088A0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0088A0[] = dgameplay_dangeon_keepTex_0088A0;
-
-#define dgameplay_dangeon_keepTex_013CB0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_013CB0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_013CB0[] = dgameplay_dangeon_keepTex_013CB0;
-
-#define dgameplay_dangeon_keepTex_0134A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0134A0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0134A0[] = dgameplay_dangeon_keepTex_0134A0;
-
-#define dgameplay_dangeon_keepTex_013CA0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_013CA0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_013CA0[] = dgameplay_dangeon_keepTex_013CA0;
-
-#define dgameplay_dangeon_keepTex_0108A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0108A0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0108A0[] = dgameplay_dangeon_keepTex_0108A0;
-
-#define dgameplay_dangeon_keepTex_0118A0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_0118A0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0118A0[] = dgameplay_dangeon_keepTex_0118A0;
-
-#define dgameplay_dangeon_keepTex_011AA0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_011AA0"
-static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_011AA0[] = dgameplay_dangeon_keepTex_011AA0;
 
 #endif // OBJECTS_GAMEPLAY_DANGEON_KEEP_H

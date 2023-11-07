@@ -93,7 +93,7 @@ void func_800C4344(GameState* gameState) {
         HREG(95) = CHECK_BTN_ALL(selectedInput->press.button, hReg82);
     }
 
-    if (gIsCtrlr2Valid) {
+    if (CVarGetInteger("gRegEditEnabled", 0) || gIsCtrlr2Valid) {
         func_8006390C(&gameState->input[1]);
     }
 

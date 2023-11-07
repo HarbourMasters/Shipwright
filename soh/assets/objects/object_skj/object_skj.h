@@ -3,6 +3,30 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_skjTex_005300 "__OTR__objects/object_skj/object_skjTex_005300"
+static const ALIGN_ASSET(2) char object_skjTex_005300[] = dobject_skjTex_005300;
+
+#define dobject_skjTex_005500 "__OTR__objects/object_skj/object_skjTex_005500"
+static const ALIGN_ASSET(2) char object_skjTex_005500[] = dobject_skjTex_005500;
+
+#define dobject_skjTex_005700 "__OTR__objects/object_skj/object_skjTex_005700"
+static const ALIGN_ASSET(2) char object_skjTex_005700[] = dobject_skjTex_005700;
+
+#define dobject_skjTex_005900 "__OTR__objects/object_skj/object_skjTex_005900"
+static const ALIGN_ASSET(2) char object_skjTex_005900[] = dobject_skjTex_005900;
+
+#define dobject_skjTex_005B00 "__OTR__objects/object_skj/object_skjTex_005B00"
+static const ALIGN_ASSET(2) char object_skjTex_005B00[] = dobject_skjTex_005B00;
+
+#define dobject_skjTex_005B80 "__OTR__objects/object_skj/object_skjTex_005B80"
+static const ALIGN_ASSET(2) char object_skjTex_005B80[] = dobject_skjTex_005B80;
+
+#define dobject_skjTex_005D80 "__OTR__objects/object_skj/object_skjTex_005D80"
+static const ALIGN_ASSET(2) char object_skjTex_005D80[] = dobject_skjTex_005D80;
+
+#define dobject_skjTex_005DA0 "__OTR__objects/object_skj/object_skjTex_005DA0"
+static const ALIGN_ASSET(2) char object_skjTex_005DA0[] = dobject_skjTex_005DA0;
+
 #define dgSkullKidNeedleDL "__OTR__objects/object_skj/gSkullKidNeedleDL"
 static const ALIGN_ASSET(2) char gSkullKidNeedleDL[] = dgSkullKidNeedleDL;
 
@@ -123,28 +147,5 @@ static const ALIGN_ASSET(2) char gSkullKidUnkLimb_5E2CDL_0036A0[] = dgSkullKidUn
 #define dgSkullKidUnkLimb_5E38DL_003E48 "__OTR__objects/object_skj/gSkullKidUnkLimb_5E38DL_003E48"
 static const ALIGN_ASSET(2) char gSkullKidUnkLimb_5E38DL_003E48[] = dgSkullKidUnkLimb_5E38DL_003E48;
 
-#define dobject_skjTex_005700 "__OTR__objects/object_skj/object_skjTex_005700"
-static const ALIGN_ASSET(2) char object_skjTex_005700[] = dobject_skjTex_005700;
-
-#define dobject_skjTex_005300 "__OTR__objects/object_skj/object_skjTex_005300"
-static const ALIGN_ASSET(2) char object_skjTex_005300[] = dobject_skjTex_005300;
-
-#define dobject_skjTex_005500 "__OTR__objects/object_skj/object_skjTex_005500"
-static const ALIGN_ASSET(2) char object_skjTex_005500[] = dobject_skjTex_005500;
-
-#define dobject_skjTex_005900 "__OTR__objects/object_skj/object_skjTex_005900"
-static const ALIGN_ASSET(2) char object_skjTex_005900[] = dobject_skjTex_005900;
-
-#define dobject_skjTex_005B00 "__OTR__objects/object_skj/object_skjTex_005B00"
-static const ALIGN_ASSET(2) char object_skjTex_005B00[] = dobject_skjTex_005B00;
-
-#define dobject_skjTex_005B80 "__OTR__objects/object_skj/object_skjTex_005B80"
-static const ALIGN_ASSET(2) char object_skjTex_005B80[] = dobject_skjTex_005B80;
-
-#define dobject_skjTex_005D80 "__OTR__objects/object_skj/object_skjTex_005D80"
-static const ALIGN_ASSET(2) char object_skjTex_005D80[] = dobject_skjTex_005D80;
-
-#define dobject_skjTex_005DA0 "__OTR__objects/object_skj/object_skjTex_005DA0"
-static const ALIGN_ASSET(2) char object_skjTex_005DA0[] = dobject_skjTex_005DA0;
 
 #endif // OBJECTS_OBJECT_SKJ_H

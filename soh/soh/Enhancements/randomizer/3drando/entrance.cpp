@@ -1232,6 +1232,11 @@ int ShuffleAllEntrances() {
     }
   }
 
+  // Validate the world one last time to ensure all special conditions are still valid
+  if (!ValidateWorld(nullptr)) {
+    return ENTRANCE_SHUFFLE_FAILURE;
+  }
+
   return ENTRANCE_SHUFFLE_SUCCESS;
 }
 

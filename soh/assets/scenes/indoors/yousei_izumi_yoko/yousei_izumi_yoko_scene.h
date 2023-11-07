@@ -3,62 +3,62 @@
 
 #include "align_asset_macro.h"
 
-#define dgGreatFairyFaroresWindCs "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/gGreatFairyFaroresWindCs"
-static const ALIGN_ASSET(2) char gGreatFairyFaroresWindCs[] = dgGreatFairyFaroresWindCs;
-
-#define dgGreatFairyDinsFireCs "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/gGreatFairyDinsFireCs"
-static const ALIGN_ASSET(2) char gGreatFairyDinsFireCs[] = dgGreatFairyDinsFireCs;
-
-#define dgGreatFairyNayrusLoveCs "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/gGreatFairyNayrusLoveCs"
-static const ALIGN_ASSET(2) char gGreatFairyNayrusLoveCs[] = dgGreatFairyNayrusLoveCs;
-
-#define dyousei_izumi_yoko_sceneCollisionHeader_0039A8 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneCollisionHeader_0039A8"
-static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneCollisionHeader_0039A8[] = dyousei_izumi_yoko_sceneCollisionHeader_0039A8;
-
-#define dyousei_izumi_yoko_sceneTex_00C5A0 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_00C5A0"
-static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_00C5A0[] = dyousei_izumi_yoko_sceneTex_00C5A0;
-
-#define dyousei_izumi_yoko_sceneTex_0085A0 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_0085A0"
-static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_0085A0[] = dyousei_izumi_yoko_sceneTex_0085A0;
-
-#define dyousei_izumi_yoko_sceneTex_0075A0 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_0075A0"
-static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_0075A0[] = dyousei_izumi_yoko_sceneTex_0075A0;
-
-#define dyousei_izumi_yoko_sceneTex_0065A0 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_0065A0"
-static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_0065A0[] = dyousei_izumi_yoko_sceneTex_0065A0;
-
-#define dyousei_izumi_yoko_sceneTex_0045A0 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_0045A0"
-static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_0045A0[] = dyousei_izumi_yoko_sceneTex_0045A0;
-
-#define dyousei_izumi_yoko_sceneTex_009DA0 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_009DA0"
-static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_009DA0[] = dyousei_izumi_yoko_sceneTex_009DA0;
-
-#define dyousei_izumi_yoko_sceneTex_00BDA0 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_00BDA0"
-static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_00BDA0[] = dyousei_izumi_yoko_sceneTex_00BDA0;
-
-#define dyousei_izumi_yoko_sceneTex_0095A0 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_0095A0"
-static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_0095A0[] = dyousei_izumi_yoko_sceneTex_0095A0;
-
-#define dyousei_izumi_yoko_sceneTex_004DA0 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_004DA0"
-static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_004DA0[] = dyousei_izumi_yoko_sceneTex_004DA0;
-
-#define dyousei_izumi_yoko_sceneTex_003DA0 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_003DA0"
+#define dyousei_izumi_yoko_sceneTex_003DA0 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_003DA0"
 static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_003DA0[] = dyousei_izumi_yoko_sceneTex_003DA0;
 
-#define dyousei_izumi_yoko_sceneTex_00ADA0 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_00ADA0"
-static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_00ADA0[] = dyousei_izumi_yoko_sceneTex_00ADA0;
+#define dyousei_izumi_yoko_sceneTex_0045A0 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_0045A0"
+static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_0045A0[] = dyousei_izumi_yoko_sceneTex_0045A0;
 
-#define dyousei_izumi_yoko_sceneTex_00B5A0 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_00B5A0"
-static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_00B5A0[] = dyousei_izumi_yoko_sceneTex_00B5A0;
+#define dyousei_izumi_yoko_sceneTex_004DA0 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_004DA0"
+static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_004DA0[] = dyousei_izumi_yoko_sceneTex_004DA0;
 
-#define dyousei_izumi_yoko_sceneTex_0055A0 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_0055A0"
+#define dyousei_izumi_yoko_sceneTex_0055A0 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_0055A0"
 static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_0055A0[] = dyousei_izumi_yoko_sceneTex_0055A0;
 
-#define dyousei_izumi_yoko_sceneCollisionHeader_0039A8 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneCollisionHeader_0039A8"
+#define dyousei_izumi_yoko_sceneTex_0065A0 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_0065A0"
+static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_0065A0[] = dyousei_izumi_yoko_sceneTex_0065A0;
 
-#define dyousei_izumi_yoko_sceneCollisionHeader_0039A8 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneCollisionHeader_0039A8"
+#define dyousei_izumi_yoko_sceneTex_0075A0 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_0075A0"
+static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_0075A0[] = dyousei_izumi_yoko_sceneTex_0075A0;
 
-#define dyousei_izumi_yoko_sceneCollisionHeader_0039A8 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneCollisionHeader_0039A8"
+#define dyousei_izumi_yoko_sceneTex_0085A0 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_0085A0"
+static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_0085A0[] = dyousei_izumi_yoko_sceneTex_0085A0;
+
+#define dyousei_izumi_yoko_sceneTex_0095A0 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_0095A0"
+static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_0095A0[] = dyousei_izumi_yoko_sceneTex_0095A0;
+
+#define dyousei_izumi_yoko_sceneTex_009DA0 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_009DA0"
+static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_009DA0[] = dyousei_izumi_yoko_sceneTex_009DA0;
+
+#define dyousei_izumi_yoko_sceneTex_00ADA0 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_00ADA0"
+static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_00ADA0[] = dyousei_izumi_yoko_sceneTex_00ADA0;
+
+#define dyousei_izumi_yoko_sceneTex_00B5A0 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_00B5A0"
+static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_00B5A0[] = dyousei_izumi_yoko_sceneTex_00B5A0;
+
+#define dyousei_izumi_yoko_sceneTex_00BDA0 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_00BDA0"
+static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_00BDA0[] = dyousei_izumi_yoko_sceneTex_00BDA0;
+
+#define dyousei_izumi_yoko_sceneTex_00C5A0 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneTex_00C5A0"
+static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_00C5A0[] = dyousei_izumi_yoko_sceneTex_00C5A0;
+
+#define dgGreatFairyFaroresWindCs "__OTR__scenes/shared/yousei_izumi_yoko_scene/gGreatFairyFaroresWindCs"
+static const ALIGN_ASSET(2) char gGreatFairyFaroresWindCs[] = dgGreatFairyFaroresWindCs;
+
+#define dgGreatFairyDinsFireCs "__OTR__scenes/shared/yousei_izumi_yoko_scene/gGreatFairyDinsFireCs"
+static const ALIGN_ASSET(2) char gGreatFairyDinsFireCs[] = dgGreatFairyDinsFireCs;
+
+#define dgGreatFairyNayrusLoveCs "__OTR__scenes/shared/yousei_izumi_yoko_scene/gGreatFairyNayrusLoveCs"
+static const ALIGN_ASSET(2) char gGreatFairyNayrusLoveCs[] = dgGreatFairyNayrusLoveCs;
+
+#define dyousei_izumi_yoko_sceneCollisionHeader_0039A8 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneCollisionHeader_0039A8"
+static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneCollisionHeader_0039A8[] = dyousei_izumi_yoko_sceneCollisionHeader_0039A8;
+
+#define dyousei_izumi_yoko_sceneCollisionHeader_0039A8 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneCollisionHeader_0039A8"
+
+#define dyousei_izumi_yoko_sceneCollisionHeader_0039A8 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneCollisionHeader_0039A8"
+
+#define dyousei_izumi_yoko_sceneCollisionHeader_0039A8 "__OTR__scenes/shared/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneCollisionHeader_0039A8"
 
 
 #endif // INDOORS_YOUSEI_IZUMI_YOKO_SCENE_H
