@@ -225,7 +225,7 @@ void Extractor::GetRoms(std::vector<std::string>& roms) {
     //}
 #elif unix
     // Open the directory of the app.
-    DIR* d = opendir(".");
+    DIR* d = opendir(mSearchPath.c_str());
     struct dirent* dir;
 
     if (d != NULL) {
@@ -248,7 +248,7 @@ void Extractor::GetRoms(std::vector<std::string>& roms) {
     }
     closedir(d);
 #else
-    for (const auto& file : std::filesystem::directory_iterator("./")) {
+    for (const auto& file : std::filesystem::directory_iterator(mSearchPath)) {
         if (file.is_directory())
             continue;
         if ((file.path().extension() == ".n64") || (file.path().extension() == ".z64") ||
@@ -297,7 +297,7 @@ bool Extractor::GetRomPathFromBox() {
     }
     mCurrentRomPath = nameBuffer;
     #else
-    auto selection = pfd::open_file("Select a file", ".", { "N64 Roms", "*.z64 *.n64 *.v64" }).result();
+    auto selection = pfd::open_file("Select a file", mSearchPath, { "N64 Roms", "*.z64 *.n64 *.v64" }).result();
 
     if (selection.empty()) {
         return false;
@@ -430,9 +430,11 @@ bool Extractor::ManuallySearchForRomMatchingType(RomSearchMode searchMode) {
     return true;
 }
 
-bool Extractor::Run(RomSearchMode searchMode) {
+bool Extractor::Run(std::string searchPath, RomSearchMode searchMode) {
     std::vector<std::string> roms;
     std::ifstream inFile;
+
+    mSearchPath = searchPath;
 
     GetRoms(roms);
     FilterRoms(roms, searchMode);

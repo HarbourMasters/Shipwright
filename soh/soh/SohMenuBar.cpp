@@ -51,6 +51,8 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
     return buttonText;
 }
 
+static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large" };
+
     static const char* filters[3] = {
 #ifdef __WIIU__
             "",
@@ -380,7 +382,15 @@ void DrawSettingsMenu() {
             }
 
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
+            ImGui::Text("ImGui Menu Scale");
+            ImGui::SameLine();
+            ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, "(Experimental)");
+            if (UIWidgets::EnhancementCombobox("gImGuiScale", imguiScaleOptions, 1)) {
+                OTRGlobals::Instance->ScaleImGui();
+            }
+            UIWidgets::Tooltip("Changes the scaling of the ImGui menu elements.");
 
+            UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
             
             static std::unordered_map<LUS::WindowBackend, const char*> windowBackendNames = {
                 { LUS::WindowBackend::DX11, "DirectX" },
@@ -1129,7 +1139,7 @@ void DrawEnhancementsMenu() {
 
             if (CVarGetInteger("gRupeeDash", 0)) {
                 UIWidgets::PaddedEnhancementSliderInt(
-                    "Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 3, 5, "", 5, true, true, false,
+                    "Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 1, 10, "", 5, true, true, false,
                     !CVarGetInteger("gRupeeDash", 0),
                     "This option is disabled because \"Rupee Dash Mode\" is turned off");
                 UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");

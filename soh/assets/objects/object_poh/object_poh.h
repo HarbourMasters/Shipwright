@@ -3,6 +3,39 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_pohTex_003010 "__OTR__objects/object_poh/object_pohTex_003010"
+static const ALIGN_ASSET(2) char object_pohTex_003010[] = dobject_pohTex_003010;
+
+#define dobject_pohTex_003910 "__OTR__objects/object_poh/object_pohTex_003910"
+static const ALIGN_ASSET(2) char object_pohTex_003910[] = dobject_pohTex_003910;
+
+#define dobject_pohTex_003D10 "__OTR__objects/object_poh/object_pohTex_003D10"
+static const ALIGN_ASSET(2) char object_pohTex_003D10[] = dobject_pohTex_003D10;
+
+#define dobject_pohTex_004510 "__OTR__objects/object_poh/object_pohTex_004510"
+static const ALIGN_ASSET(2) char object_pohTex_004510[] = dobject_pohTex_004510;
+
+#define dobject_pohTex_004710 "__OTR__objects/object_poh/object_pohTex_004710"
+static const ALIGN_ASSET(2) char object_pohTex_004710[] = dobject_pohTex_004710;
+
+#define dobject_pohTex_004790 "__OTR__objects/object_poh/object_pohTex_004790"
+static const ALIGN_ASSET(2) char object_pohTex_004790[] = dobject_pohTex_004790;
+
+#define dobject_pohTex_004990 "__OTR__objects/object_poh/object_pohTex_004990"
+static const ALIGN_ASSET(2) char object_pohTex_004990[] = dobject_pohTex_004990;
+
+#define dobject_pohTex_004A10 "__OTR__objects/object_poh/object_pohTex_004A10"
+static const ALIGN_ASSET(2) char object_pohTex_004A10[] = dobject_pohTex_004A10;
+
+#define dobject_pohTex_004B10 "__OTR__objects/object_poh/object_pohTex_004B10"
+static const ALIGN_ASSET(2) char object_pohTex_004B10[] = dobject_pohTex_004B10;
+
+#define dobject_pohTex_004D10 "__OTR__objects/object_poh/object_pohTex_004D10"
+static const ALIGN_ASSET(2) char object_pohTex_004D10[] = dobject_pohTex_004D10;
+
+#define dobject_pohTex_004F10 "__OTR__objects/object_poh/object_pohTex_004F10"
+static const ALIGN_ASSET(2) char object_pohTex_004F10[] = dobject_pohTex_004F10;
+
 #define dgPoeAttackAnim "__OTR__objects/object_poh/gPoeAttackAnim"
 static const ALIGN_ASSET(2) char gPoeAttackAnim[] = dgPoeAttackAnim;
 
@@ -33,24 +66,6 @@ static const ALIGN_ASSET(2) char gPoeSoulDL[] = dgPoeSoulDL;
 #define dgPoeSkel "__OTR__objects/object_poh/gPoeSkel"
 static const ALIGN_ASSET(2) char gPoeSkel[] = dgPoeSkel;
 
-#define dobject_pohTex_004D10 "__OTR__objects/object_poh/object_pohTex_004D10"
-static const ALIGN_ASSET(2) char object_pohTex_004D10[] = dobject_pohTex_004D10;
-
-#define dobject_pohTex_004F10 "__OTR__objects/object_poh/object_pohTex_004F10"
-static const ALIGN_ASSET(2) char object_pohTex_004F10[] = dobject_pohTex_004F10;
-
-#define dobject_pohTex_004A10 "__OTR__objects/object_poh/object_pohTex_004A10"
-static const ALIGN_ASSET(2) char object_pohTex_004A10[] = dobject_pohTex_004A10;
-
-#define dobject_pohTex_004990 "__OTR__objects/object_poh/object_pohTex_004990"
-static const ALIGN_ASSET(2) char object_pohTex_004990[] = dobject_pohTex_004990;
-
-#define dobject_pohTex_004B10 "__OTR__objects/object_poh/object_pohTex_004B10"
-static const ALIGN_ASSET(2) char object_pohTex_004B10[] = dobject_pohTex_004B10;
-
-#define dobject_pohTex_003010 "__OTR__objects/object_poh/object_pohTex_003010"
-static const ALIGN_ASSET(2) char object_pohTex_003010[] = dobject_pohTex_003010;
-
 #define dgPoeSkelLimbsLimb_004FB4DL_002F58 "__OTR__objects/object_poh/gPoeSkelLimbsLimb_004FB4DL_002F58"
 static const ALIGN_ASSET(2) char gPoeSkelLimbsLimb_004FB4DL_002F58[] = dgPoeSkelLimbsLimb_004FB4DL_002F58;
 
@@ -75,19 +90,5 @@ static const ALIGN_ASSET(2) char gPoeSkelLimbsLimb_005068DL_001B70[] = dgPoeSkel
 #define dgPoeSkelLimbsLimb_005074DL_001A78 "__OTR__objects/object_poh/gPoeSkelLimbsLimb_005074DL_001A78"
 static const ALIGN_ASSET(2) char gPoeSkelLimbsLimb_005074DL_001A78[] = dgPoeSkelLimbsLimb_005074DL_001A78;
 
-#define dobject_pohTex_003D10 "__OTR__objects/object_poh/object_pohTex_003D10"
-static const ALIGN_ASSET(2) char object_pohTex_003D10[] = dobject_pohTex_003D10;
-
-#define dobject_pohTex_004710 "__OTR__objects/object_poh/object_pohTex_004710"
-static const ALIGN_ASSET(2) char object_pohTex_004710[] = dobject_pohTex_004710;
-
-#define dobject_pohTex_004510 "__OTR__objects/object_poh/object_pohTex_004510"
-static const ALIGN_ASSET(2) char object_pohTex_004510[] = dobject_pohTex_004510;
-
-#define dobject_pohTex_003910 "__OTR__objects/object_poh/object_pohTex_003910"
-static const ALIGN_ASSET(2) char object_pohTex_003910[] = dobject_pohTex_003910;
-
-#define dobject_pohTex_004790 "__OTR__objects/object_poh/object_pohTex_004790"
-static const ALIGN_ASSET(2) char object_pohTex_004790[] = dobject_pohTex_004790;
 
 #endif // OBJECTS_OBJECT_POH_H
