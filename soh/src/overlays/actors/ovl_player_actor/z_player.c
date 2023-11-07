@@ -15169,6 +15169,10 @@ void func_80852C50(PlayState* play, Player* this, CsCmdActorAction* arg2) {
 
     sp24 = D_808547C4[this->unk_446];
     func_80852B4C(play, this, linkCsAction, &D_80854E50[ABS(sp24)]);
+
+    if (CVarGetInteger("gFixEyesOpenWhileSleeping", 0) && (play->csCtx.linkAction->action == 28 || play->csCtx.linkAction->action == 29)) {
+        this->skelAnime.jointTable[22].x = 8;
+    }
 }
 
 void func_80852E14(Player* this, PlayState* play) {
