@@ -29,8 +29,8 @@ class Settings {
     void SetHash(std::string hash);
     const std::array<OptionGroup, RSG_MAX>& GetOptionGroups();
     const OptionGroup& GetOptionGroup(RandomizerSettingGroupKey key);
-    void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings,
-                        std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks);
+    void SetAllFromCVar();
+    void UpdateSettings(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks);
     void ParseJson(nlohmann::json spoilerFileJson);
     std::vector<Option*> VanillaLogicDefaults = {};
 

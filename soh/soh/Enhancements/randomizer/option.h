@@ -16,11 +16,12 @@ class Option {
   public:
     Option() = default;
     static Option Bool(std::string name_, std::vector<std::string> options_ = { "Off", "On" },
-                       OptionCategory category_ = OptionCategory::Setting, uint8_t defaultOption_ = 0,
-                       bool defaultHidden_ = false);
+                       OptionCategory category_ = OptionCategory::Setting, std::string cvarName_ = "",
+                       uint8_t defaultOption_ = 0, bool defaultHidden_ = false);
+    static Option Bool(std::string name_, std::string cvarName_, bool defaultOption_ = 0);
     static Option U8(std::string name_, std::vector<std::string> options_,
-                     OptionCategory category_ = OptionCategory::Setting, uint8_t defaultOption = 0,
-                     bool defaultHidden = false);
+                     OptionCategory category_ = OptionCategory::Setting, std::string cvarName_ = "",
+                     uint8_t defaultOption = 0, bool defaultHidden = false);
     static Option LogicTrick(std::string name_);
 
     template <typename T> T Value() const {
@@ -44,8 +45,11 @@ class Option {
     size_t GetOptionCount() const;
     const std::string& GetName() const;
     const std::string& GetSelectedOptionText() const;
+    const std::string& GetCVarName() const;
     uint8_t GetSelectedOptionIndex() const;
     void SetVariable();
+    void SetCVar();
+    void SetFromCVar();
     void SetDelayedOption();
     void RestoreDelayedOption();
     void SetSelectedIndex(size_t idx);
@@ -56,9 +60,9 @@ class Option {
 
   private:
     Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-           uint8_t defaultOption_, bool defaultHidden_);
+           std::string cvarName_, uint8_t defaultOption_, bool defaultHidden_);
     Option(bool var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-           uint8_t defaultOption_, bool defaultHidden_);
+           std::string cvarName_, uint8_t defaultOption_, bool defaultHidden_);
     std::variant<bool, uint8_t> var;
     std::string name;
     std::vector<std::string> options;
@@ -66,6 +70,7 @@ class Option {
     uint8_t delayedOption = 0;
     bool hidden = false;
     OptionCategory category;
+    std::string cvarName = "";
     uint8_t defaultOption = false;
     bool defaultHidden = false;
 };

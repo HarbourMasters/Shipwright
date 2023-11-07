@@ -1642,197 +1642,8 @@ std::thread randoThread;
 void GenerateRandomizerImgui(std::string seed = "") {
     CVarSetInteger("gRandoGenerating", 1);
     CVarSave();
-
-    std::unordered_map<RandomizerSettingKey, u8> cvarSettings;
-    cvarSettings[RSK_LOGIC_RULES] = CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS);
-    cvarSettings[RSK_ALL_LOCATIONS_REACHABLE] = CVarGetInteger("gRandomizeAllLocationsReachable", RO_GENERIC_ON);
-    cvarSettings[RSK_FOREST] = CVarGetInteger("gRandomizeForest", RO_FOREST_CLOSED);
-    cvarSettings[RSK_KAK_GATE] = CVarGetInteger("gRandomizeKakarikoGate", RO_KAK_GATE_CLOSED);
-    cvarSettings[RSK_DOOR_OF_TIME] = CVarGetInteger("gRandomizeDoorOfTime", RO_DOOROFTIME_CLOSED);
-    cvarSettings[RSK_ZORAS_FOUNTAIN] = CVarGetInteger("gRandomizeZorasFountain", 0);
-    cvarSettings[RSK_STARTING_AGE] = CVarGetInteger("gRandomizeStartingAge", RO_AGE_CHILD);
-    cvarSettings[RSK_GERUDO_FORTRESS] = CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL);
-    cvarSettings[RSK_RAINBOW_BRIDGE] = CVarGetInteger("gRandomizeRainbowBridge", RO_BRIDGE_VANILLA);
-    cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] = CVarGetInteger("gRandomizeStoneCount", 3);
-    cvarSettings[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] = CVarGetInteger("gRandomizeMedallionCount", 6);
-    cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = CVarGetInteger("gRandomizeRewardCount", 9);
-    cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = CVarGetInteger("gRandomizeDungeonCount", 8);
-    cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = CVarGetInteger("gRandomizeTokenCount", 100);
-    cvarSettings[RSK_BRIDGE_OPTIONS] = CVarGetInteger("gRandomizeBridgeRewardOptions", 0);
-    cvarSettings[RSK_GANONS_TRIALS] = CVarGetInteger("gRandomizeGanonTrial", RO_GANONS_TRIALS_SET_NUMBER);
-    cvarSettings[RSK_TRIAL_COUNT] = CVarGetInteger("gRandomizeGanonTrialCount", 6);
-    cvarSettings[RSK_STARTING_OCARINA] = CVarGetInteger("gRandomizeStartingOcarina", 0);
-    cvarSettings[RSK_SHUFFLE_OCARINA] = CVarGetInteger("gRandomizeShuffleOcarinas", 0) ||
-                                        CVarGetInteger("gRandomizeStartingOcarina", 0);
-    cvarSettings[RSK_STARTING_KOKIRI_SWORD] = CVarGetInteger("gRandomizeStartingKokiriSword", 0);
-    cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD] = CVarGetInteger("gRandomizeShuffleKokiriSword", 0) ||
-                                             CVarGetInteger("gRandomizeStartingKokiriSword", 0);
-    cvarSettings[RSK_SHUFFLE_MASTER_SWORD] = CVarGetInteger("gRandomizeShuffleMasterSword", 0);
-    cvarSettings[RSK_STARTING_DEKU_SHIELD] = CVarGetInteger("gRandomizeStartingDekuShield", 0);
-    cvarSettings[RSK_STARTING_ZELDAS_LULLABY] = CVarGetInteger("gRandomizeStartingZeldasLullaby", 0);
-    cvarSettings[RSK_STARTING_EPONAS_SONG] = CVarGetInteger("gRandomizeStartingEponasSong", 0);
-    cvarSettings[RSK_STARTING_SARIAS_SONG] = CVarGetInteger("gRandomizeStartingSariasSong", 0);
-    cvarSettings[RSK_STARTING_SUNS_SONG] = CVarGetInteger("gRandomizeStartingSunsSong", 0);
-    cvarSettings[RSK_STARTING_SONG_OF_TIME] = CVarGetInteger("gRandomizeStartingSongOfTime", 0);
-    cvarSettings[RSK_STARTING_SONG_OF_STORMS] = CVarGetInteger("gRandomizeStartingSongOfStorms", 0);
-    cvarSettings[RSK_STARTING_MINUET_OF_FOREST] = CVarGetInteger("gRandomizeStartingMinuetOfForest", 0);
-    cvarSettings[RSK_STARTING_BOLERO_OF_FIRE] = CVarGetInteger("gRandomizeStartingBoleroOfFire", 0);
-    cvarSettings[RSK_STARTING_SERENADE_OF_WATER] = CVarGetInteger("gRandomizeStartingSerenadeOfWater", 0);
-    cvarSettings[RSK_STARTING_REQUIEM_OF_SPIRIT] = CVarGetInteger("gRandomizeStartingRequiemOfSpirit", 0);
-    cvarSettings[RSK_STARTING_NOCTURNE_OF_SHADOW] = CVarGetInteger("gRandomizeStartingNocturneOfShadow", 0);
-    cvarSettings[RSK_STARTING_PRELUDE_OF_LIGHT] = CVarGetInteger("gRandomizeStartingPreludeOfLight", 0);
-    cvarSettings[RSK_STARTING_SKULLTULA_TOKEN] = CVarGetInteger("gRandomizeStartingSkulltulaToken", 0);
-    cvarSettings[RSK_SHUFFLE_MAPANDCOMPASS] = CVarGetInteger("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
-    cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON);
-    cvarSettings[RSK_SHUFFLE_SONGS] = CVarGetInteger("gRandomizeShuffleSongs", RO_SONG_SHUFFLE_SONG_LOCATIONS);
-    cvarSettings[RSK_SHUFFLE_TOKENS] = CVarGetInteger("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF);
-    cvarSettings[RSK_SHOPSANITY] = CVarGetInteger("gRandomizeShopsanity", RO_SHOPSANITY_OFF);
-    cvarSettings[RSK_SHOPSANITY_PRICES] = CVarGetInteger("gRandomizeShopsanityPrices", RO_SHOPSANITY_PRICE_BALANCED);
-    cvarSettings[RSK_SHOPSANITY_PRICES_AFFORDABLE] = CVarGetInteger("gRandomizeShopsanityPricesAffordable", RO_SHOPSANITY_OFF);
-    cvarSettings[RSK_SHUFFLE_SCRUBS] = CVarGetInteger("gRandomizeShuffleScrubs", RO_SCRUBS_OFF);
-    cvarSettings[RSK_SHUFFLE_COWS] = CVarGetInteger("gRandomizeShuffleCows", 0);
-    cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVarGetInteger("gRandomizeShuffleAdultTrade", 0);
-    cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVarGetInteger("gRandomizeShuffleBeans", 0);
-    cvarSettings[RSK_SHUFFLE_MERCHANTS] = CVarGetInteger("gRandomizeShuffleMerchants", RO_SHUFFLE_MERCHANTS_OFF);
-    cvarSettings[RSK_SHUFFLE_100_GS_REWARD] = CVarGetInteger("gRandomizeShuffle100GSReward", RO_GENERIC_OFF);
-    cvarSettings[RSK_ENABLE_BOMBCHU_DROPS] = CVarGetInteger("gRandomizeEnableBombchuDrops", 0);
-    cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = CVarGetInteger("gRandomizeBombchusInLogic", 0);
-    cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVarGetInteger("gRandomizeSkipChildZelda", 0);
-
-    // if we skip child zelda, we start with zelda's letter, and malon starts
-    // at the ranch, so we should *not* shuffle the weird egg
-    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = ((CVarGetInteger("gRandomizeSkipChildZelda", 0) == 0) &&
-                                            CVarGetInteger("gRandomizeShuffleWeirdEgg", 0));
-    cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = CVarGetInteger("gRandomizeShuffleGerudoToken", 0);
-    cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES] = CVarGetInteger("gRandomizeShuffleFrogSongRupees", 0);
-    cvarSettings[RSK_ITEM_POOL] = CVarGetInteger("gRandomizeItemPool", RO_ITEM_POOL_BALANCED);
-    cvarSettings[RSK_ICE_TRAPS] = CVarGetInteger("gRandomizeIceTraps", RO_ICE_TRAPS_NORMAL);
-    cvarSettings[RSK_TOT_ALTAR_HINT] = CVarGetInteger("gRandomizeAltarHint", RO_GENERIC_ON);
-    cvarSettings[RSK_LIGHT_ARROWS_HINT] = CVarGetInteger("gRandomizeLAHint", RO_GENERIC_ON);
-    cvarSettings[RSK_DAMPES_DIARY_HINT] = CVarGetInteger("gRandomizeDampeHint", RO_GENERIC_OFF);
-    cvarSettings[RSK_GREG_HINT] = CVarGetInteger("gRandomizeGregHint", RO_GENERIC_OFF);
-    cvarSettings[RSK_SARIA_HINT] = CVarGetInteger("gRandomizeSariaHint", RO_GENERIC_OFF);
-    cvarSettings[RSK_FROGS_HINT] = CVarGetInteger("gRandomizeFrogsHint", RO_GENERIC_OFF);
-    cvarSettings[RSK_WARP_SONG_HINTS] = CVarGetInteger("gRandomizeWarpSongText", RO_GENERIC_ON);
-    cvarSettings[RSK_SCRUB_TEXT_HINT] = CVarGetInteger("gRandomizeScrubText", RO_GENERIC_OFF);
-    cvarSettings[RSK_KAK_10_SKULLS_HINT] = CVarGetInteger("gRandomize10GSHint", RO_GENERIC_OFF);
-    cvarSettings[RSK_KAK_20_SKULLS_HINT] = CVarGetInteger("gRandomize20GSHint", RO_GENERIC_OFF);
-    cvarSettings[RSK_KAK_30_SKULLS_HINT] = CVarGetInteger("gRandomize30GSHint", RO_GENERIC_OFF);
-    cvarSettings[RSK_KAK_40_SKULLS_HINT] = CVarGetInteger("gRandomize40GSHint", RO_GENERIC_OFF);
-    cvarSettings[RSK_KAK_50_SKULLS_HINT] = CVarGetInteger("gRandomize50GSHint", RO_GENERIC_OFF);
-    cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVarGetInteger("gRandomizeGossipStoneHints", RO_GOSSIP_STONES_NEED_NOTHING);
-    cvarSettings[RSK_HINT_CLARITY] = CVarGetInteger("gRandomizeHintClarity", RO_HINT_CLARITY_CLEAR);
-    cvarSettings[RSK_HINT_DISTRIBUTION] = CVarGetInteger("gRandomizeHintDistribution", RO_HINT_DIST_BALANCED);
-    cvarSettings[RSK_BLUE_FIRE_ARROWS] = CVarGetInteger("gRandomizeBlueFireArrows", 0);
-    cvarSettings[RSK_SUNLIGHT_ARROWS] = CVarGetInteger("gRandomizeSunlightArrows", 0);
-    cvarSettings[RSK_KEYSANITY] = CVarGetInteger("gRandomizeKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
-    cvarSettings[RSK_GERUDO_KEYS] = CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA);
-    cvarSettings[RSK_KEYRINGS] = CVarGetInteger("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF);
-    int maxKeyringCount = (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
-                       CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) ? 9 : 8;
-    cvarSettings[RSK_KEYRINGS_RANDOM_COUNT] = std::min(CVarGetInteger("gRandomizeShuffleKeyRingsRandomCount", maxKeyringCount), maxKeyringCount);
-    // Don't allow this to be on if Gerudo Fortress Carpenters is anything other than Normal
-    cvarSettings[RSK_KEYRINGS_GERUDO_FORTRESS] =
-        (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
-         CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA)
-            ? CVarGetInteger("gRandomizeShuffleKeyRingsGerudoFortress", RO_GENERIC_OFF) : RO_GENERIC_OFF;
-    cvarSettings[RSK_KEYRINGS_FOREST_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsForestTemple", 0);
-    cvarSettings[RSK_KEYRINGS_FIRE_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsFireTemple", 0);
-    cvarSettings[RSK_KEYRINGS_WATER_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsWaterTemple", 0);
-    cvarSettings[RSK_KEYRINGS_SPIRIT_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsSpiritTemple", 0);
-    cvarSettings[RSK_KEYRINGS_SHADOW_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsShadowTemple", 0);
-    cvarSettings[RSK_KEYRINGS_BOTTOM_OF_THE_WELL] = CVarGetInteger("gRandomizeShuffleKeyRingsBottomOfTheWell", 0);
-    cvarSettings[RSK_KEYRINGS_GTG] = CVarGetInteger("gRandomizeShuffleKeyRingsGTG", 0);
-    cvarSettings[RSK_KEYRINGS_GANONS_CASTLE] = CVarGetInteger("gRandomizeShuffleKeyRingsGanonsCastle", 0);
-    cvarSettings[RSK_BOSS_KEYSANITY] = CVarGetInteger("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
-    cvarSettings[RSK_GANONS_BOSS_KEY] = CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA);
-    cvarSettings[RSK_LACS_STONE_COUNT] = CVarGetInteger("gRandomizeLacsStoneCount", 3);
-    cvarSettings[RSK_LACS_MEDALLION_COUNT] = CVarGetInteger("gRandomizeLacsMedallionCount", 6);
-    cvarSettings[RSK_LACS_REWARD_COUNT] = CVarGetInteger("gRandomizeLacsRewardCount", 9);
-    cvarSettings[RSK_LACS_DUNGEON_COUNT] = CVarGetInteger("gRandomizeLacsDungeonCount", 8);
-    cvarSettings[RSK_LACS_TOKEN_COUNT] = CVarGetInteger("gRandomizeLacsTokenCount", 100);
-    cvarSettings[RSK_LACS_OPTIONS] = CVarGetInteger("gRandomizeLacsRewardOptions", 0);
-    cvarSettings[RSK_STARTING_CONSUMABLES] = CVarGetInteger("gRandomizeStartingConsumables", 0);
-    cvarSettings[RSK_FULL_WALLETS] = CVarGetInteger("gRandomizeFullWallets", 0);
-    
-    // RANDOTODO implement chest minigame shuffle with keysanity
-    cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME] = false;
-
-    cvarSettings[RSK_LANGUAGE] = CVarGetInteger("gLanguages", 0);
-
-    cvarSettings[RSK_CUCCO_COUNT] = CVarGetInteger("gRandomizeCuccosToReturn", 7);
-    cvarSettings[RSK_BIG_POE_COUNT] = CVarGetInteger("gRandomizeBigPoeTargetCount", 10);
-
-    // If we skip child zelda, skip child stealth is pointless, so this needs to be reflected in the spoiler log
-    cvarSettings[RSK_SKIP_CHILD_STEALTH] = !CVarGetInteger("gRandomizeSkipChildZelda", 0) && CVarGetInteger("gRandomizeSkipChildStealth", 0);
-
-    cvarSettings[RSK_SKIP_EPONA_RACE] = CVarGetInteger("gRandomizeSkipEponaRace", 0);
-    cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVarGetInteger("gRandomizeSkipTowerEscape", 0);
-    cvarSettings[RSK_COMPLETE_MASK_QUEST] = CVarGetInteger("gRandomizeCompleteMaskQuest", 0);
-    cvarSettings[RSK_SKIP_SCARECROWS_SONG] = CVarGetInteger("gRandomizeSkipScarecrowsSong", 0);
-    cvarSettings[RSK_ENABLE_GLITCH_CUTSCENES] = CVarGetInteger("gRandomizeEnableGlitchCutscenes", 0);
-
-    cvarSettings[RSK_SKULLS_SUNS_SONG] = CVarGetInteger("gRandomizeGsExpectSunsSong", 0);
-    // Link's Pocket has to have a dungeon reward if the other rewards are shuffled to end of dungeon.
-    cvarSettings[RSK_LINKS_POCKET] = CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) != RO_DUNGEON_REWARDS_END_OF_DUNGEON ? 
-                                        CVarGetInteger("gRandomizeLinksPocket", RO_LINKS_POCKET_DUNGEON_REWARD) : RO_LINKS_POCKET_DUNGEON_REWARD;
-
-    if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
-        // If both OTRs are loaded.
-        cvarSettings[RSK_MQ_DUNGEON_RANDOM] = CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE);
-        cvarSettings[RSK_MQ_DUNGEON_COUNT] = CVarGetInteger("gRandomizeMqDungeonCount", 12);
-    } else if (OTRGlobals::Instance->HasMasterQuest()) {
-        // If only Master Quest is loaded.
-        cvarSettings[RSK_MQ_DUNGEON_RANDOM] = RO_MQ_DUNGEONS_SET_NUMBER;
-        cvarSettings[RSK_MQ_DUNGEON_COUNT] = 12;
-    } else {
-        // If only Original Quest is loaded.
-        cvarSettings[RSK_MQ_DUNGEON_RANDOM] = RO_MQ_DUNGEONS_NONE;
-        cvarSettings[RSK_MQ_DUNGEON_COUNT] = 0;
-    }
-
-    cvarSettings[RSK_TRIFORCE_HUNT] = CVarGetInteger("gRandomizeTriforceHunt", 0);
-    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = CVarGetInteger("gRandomizeTriforceHuntTotalPieces", 30);
-    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = CVarGetInteger("gRandomizeTriforceHuntRequiredPieces", 20);
-    
-    cvarSettings[RSK_MQ_DEKU_TREE] = CVarGetInteger("gRandomizeMqDungeonsDekuTree", RO_MQ_SET_VANILLA);
-    cvarSettings[RSK_MQ_DODONGOS_CAVERN] = CVarGetInteger("gRandomizeMqDungeonsDodongosCavern", RO_MQ_SET_VANILLA);
-    cvarSettings[RSK_MQ_JABU_JABU] = CVarGetInteger("gRandomizeMqDungeonsJabuJabu", RO_MQ_SET_VANILLA);
-    cvarSettings[RSK_MQ_FOREST_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsForestTemple", RO_MQ_SET_VANILLA);
-    cvarSettings[RSK_MQ_FIRE_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsFireTemple", RO_MQ_SET_VANILLA);
-    cvarSettings[RSK_MQ_WATER_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsWaterTemple", RO_MQ_SET_VANILLA);
-    cvarSettings[RSK_MQ_SPIRIT_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsSpiritTemple", RO_MQ_SET_VANILLA);
-    cvarSettings[RSK_MQ_SHADOW_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsShadowTemple", RO_MQ_SET_VANILLA);
-    cvarSettings[RSK_MQ_BOTTOM_OF_THE_WELL] = CVarGetInteger("gRandomizeMqDungeonsBottomOfTheWell", RO_MQ_SET_VANILLA);
-    cvarSettings[RSK_MQ_ICE_CAVERN] = CVarGetInteger("gRandomizeMqDungeonsIceCavern", RO_MQ_SET_VANILLA);
-    cvarSettings[RSK_MQ_GTG] = CVarGetInteger("gRandomizeMqDungeonsGTG", RO_MQ_SET_VANILLA);
-    cvarSettings[RSK_MQ_GANONS_CASTLE] = CVarGetInteger("gRandomizeMqDungeonsGanonsCastle", RO_MQ_SET_VANILLA);
-
-    // Enable if any of the entrance rando options are enabled.
-    cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVarGetInteger("gRandomizeShuffleDungeonsEntrances", RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
-                                          CVarGetInteger("gRandomizeShuffleBossEntrances", RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ||
-                                          CVarGetInteger("gRandomizeShuffleOverworldEntrances", RO_GENERIC_OFF) ||
-                                          CVarGetInteger("gRandomizeShuffleInteriorsEntrances", RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) ||
-                                          CVarGetInteger("gRandomizeShuffleGrottosEntrances", RO_GENERIC_OFF) ||
-                                          CVarGetInteger("gRandomizeShuffleOwlDrops", RO_GENERIC_OFF) ||
-                                          CVarGetInteger("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF) ||
-                                          CVarGetInteger("gRandomizeShuffleOverworldSpawns", RO_GENERIC_OFF);
-
-    cvarSettings[RSK_SHUFFLE_DUNGEON_ENTRANCES] = CVarGetInteger("gRandomizeShuffleDungeonsEntrances", RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
-    cvarSettings[RSK_SHUFFLE_BOSS_ENTRANCES] = CVarGetInteger("gRandomizeShuffleBossEntrances", RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
-    cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = CVarGetInteger("gRandomizeShuffleOverworldEntrances", RO_GENERIC_OFF);
-    cvarSettings[RSK_SHUFFLE_INTERIOR_ENTRANCES] = CVarGetInteger("gRandomizeShuffleInteriorsEntrances", RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
-    cvarSettings[RSK_SHUFFLE_GROTTO_ENTRANCES] = CVarGetInteger("gRandomizeShuffleGrottosEntrances", RO_GENERIC_OFF);
-    cvarSettings[RSK_SHUFFLE_OWL_DROPS] = CVarGetInteger("gRandomizeShuffleOwlDrops", RO_GENERIC_OFF);
-    cvarSettings[RSK_SHUFFLE_WARP_SONGS] = CVarGetInteger("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF);
-    cvarSettings[RSK_SHUFFLE_OVERWORLD_SPAWNS] = CVarGetInteger("gRandomizeShuffleOverworldSpawns", RO_GENERIC_OFF);
-    cvarSettings[RSK_MIXED_ENTRANCE_POOLS] = CVarGetInteger("gRandomizeMixedEntrances", RO_GENERIC_OFF);
-    cvarSettings[RSK_MIX_DUNGEON_ENTRANCES] = CVarGetInteger("gRandomizeMixDungeons", RO_GENERIC_OFF);
-    cvarSettings[RSK_MIX_OVERWORLD_ENTRANCES] = CVarGetInteger("gRandomizeMixOverworld", RO_GENERIC_OFF);
-    cvarSettings[RSK_MIX_INTERIOR_ENTRANCES] = CVarGetInteger("gRandomizeMixInteriors", RO_GENERIC_OFF);
-    cvarSettings[RSK_MIX_GROTTO_ENTRANCES] = CVarGetInteger("gRandomizeMixGrottos", RO_GENERIC_OFF);
-    cvarSettings[RSK_DECOUPLED_ENTRANCES] = CVarGetInteger("gRandomizeDecoupleEntrances", RO_GENERIC_OFF);
-
+    auto ctx = Rando::Context::GetInstance();
+    ctx->GetSettings()->SetAllFromCVar();
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
     std::stringstream excludedLocationStringStream(CVarGetString("gRandomizeExcludedLocations", ""));
@@ -1855,7 +1666,6 @@ void GenerateRandomizerImgui(std::string seed = "") {
     RandomizerCheckObjects::UpdateImGuiVisibility();
 
     // Remove excludes for locations that are no longer allowed to be excluded
-    auto ctx = Rando::Context::GetInstance();
     for (auto& location : Rando::StaticData::GetLocationTable()) {
         auto elfound = excludedLocations.find(location.GetRandomizerCheck());
         if (!ctx->GetItemLocation(location.GetRandomizerCheck())->IsVisible() && elfound != excludedLocations.end()) {
@@ -1863,7 +1673,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
         }
     }
 
-    RandoMain::GenerateRando(cvarSettings, excludedLocations, enabledTricks, seed);
+    RandoMain::GenerateRando(excludedLocations, enabledTricks, seed);
 
     CVarSetInteger("gRandoGenerating", 0);
     CVarSave();

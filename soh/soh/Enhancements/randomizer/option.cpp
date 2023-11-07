@@ -1,18 +1,24 @@
 #include "option.h"
+#include "libultraship/bridge.h"
 
 namespace Rando {
 Option Option::Bool(std::string name_, std::vector<std::string> options_, OptionCategory category_,
-                    uint8_t defaultOption_, bool defaultHidden_) {
-    return Option(false, std::move(name_), std::move(options_), category_, defaultOption_, defaultHidden_);
+                    std::string cvarName_, uint8_t defaultOption_, bool defaultHidden_) {
+    return Option(false, std::move(name_), std::move(options_), category_, std::move(cvarName_), defaultOption_, defaultHidden_);
+}
+
+Option Option::Bool(std::string name_, std::string cvarName_, bool defaultOption_) {
+    return Option(false, std::move(name_), {"Off", "On"}, OptionCategory::Setting, std::move(cvarName_), defaultOption_,
+                  false);
 }
 
 Option Option::U8(std::string name_, std::vector<std::string> options_, OptionCategory category_,
-                  uint8_t defaultOption_, bool defaultHidden_) {
-    return Option(uint8_t(0), std::move(name_), std::move(options_), category_, defaultOption_, defaultHidden_);
+                  std::string cvarName_, uint8_t defaultOption_, bool defaultHidden_) {
+    return Option(uint8_t(0), std::move(name_), std::move(options_), category_, std::move(cvarName_), defaultOption_, defaultHidden_);
 }
 
 Option Option::LogicTrick(std::string name_) {
-    return Option(false, std::move(name_), { "Disabled", "Enabled" }, OptionCategory::Setting, 0, 0);
+    return Option(false, std::move(name_), { "Disabled", "Enabled" }, OptionCategory::Setting, std::move(""), 0, 0);
 }
 
 Option::operator bool() const {
@@ -39,11 +45,27 @@ const std::string& Option::GetSelectedOptionText() const {
     return options[selectedOption];
 }
 
+const std::string& Option::GetCVarName() const {
+    return cvarName;
+}
+
 void Option::SetVariable() {
     if (std::holds_alternative<bool>(var)) {
         var.emplace<bool>(selectedOption != 0);
     } else {
         var.emplace<uint8_t>(selectedOption);
+    }
+}
+
+void Option::SetCVar() {
+    if (!cvarName.empty()) {
+        CVarSetInteger(cvarName.c_str(), GetSelectedOptionIndex());
+    }
+}
+
+void Option::SetFromCVar() {
+    if (!cvarName.empty()) {
+        SetSelectedIndex(CVarGetInteger(cvarName.c_str(), defaultOption));
     }
 }
 
@@ -81,17 +103,17 @@ bool Option::IsCategory(OptionCategory category) const {
 }
 
 Option::Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-               uint8_t defaultOption_, bool defaultHidden_)
+               std::string cvarName_, uint8_t defaultOption_, bool defaultHidden_)
     : var(var_), name(std::move(name_)), options(std::move(options_)), category(category_),
-      defaultOption(defaultOption_), defaultHidden(defaultHidden_) {
+      cvarName(std::move(cvarName_)), defaultOption(defaultOption_), defaultHidden(defaultHidden_) {
     selectedOption = defaultOption;
     hidden = defaultHidden;
     SetVariable();
 }
 Option::Option(bool var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-               uint8_t defaultOption_, bool defaultHidden_)
+               std::string cvarName_, uint8_t defaultOption_, bool defaultHidden_)
     : var(var_), name(std::move(name_)), options(std::move(options_)), category(category_),
-      defaultOption(defaultOption_), defaultHidden(defaultHidden_) {
+      cvarName(std::move(cvarName_)), defaultOption(defaultOption_), defaultHidden(defaultHidden_) {
     selectedOption = defaultOption;
     hidden = defaultHidden;
     SetVariable();
