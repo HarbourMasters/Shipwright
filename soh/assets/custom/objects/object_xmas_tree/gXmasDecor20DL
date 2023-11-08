@@ -1,0 +1,29 @@
+<DisplayList Version="0">
+	<CallDisplayList Path="objects/object_xmas_tree/mat_gXmasDecor20DL_f3dlite_Wrapping_G_64"/>
+	<CallDisplayList Path="objects/object_xmas_tree/gXmasDecor20DL_tri_0"/>
+	<CallDisplayList Path="objects/object_xmas_tree/mat_gXmasDecor20DL_f3dlite_Wrapping_B_32"/>
+	<CallDisplayList Path="objects/object_xmas_tree/gXmasDecor20DL_tri_1"/>
+	<CallDisplayList Path="objects/object_xmas_tree/mat_gXmasDecor20DL_f3dlite_Wrapping_R_32"/>
+	<CallDisplayList Path="objects/object_xmas_tree/gXmasDecor20DL_tri_2"/>
+	<CallDisplayList Path="objects/object_xmas_tree/mat_gXmasDecor20DL_f3dlite_Bauble1_B"/>
+	<CallDisplayList Path="objects/object_xmas_tree/gXmasDecor20DL_tri_3"/>
+	<CallDisplayList Path="objects/object_xmas_tree/mat_gXmasDecor20DL_f3dlite_Bauble3_B"/>
+	<CallDisplayList Path="objects/object_xmas_tree/gXmasDecor20DL_tri_4"/>
+	<CallDisplayList Path="objects/object_xmas_tree/mat_gXmasDecor20DL_f3dlite_Bauble1_R"/>
+	<CallDisplayList Path="objects/object_xmas_tree/gXmasDecor20DL_tri_5"/>
+	<CallDisplayList Path="objects/object_xmas_tree/mat_gXmasDecor20DL_f3dlite_Bauble2_R"/>
+	<CallDisplayList Path="objects/object_xmas_tree/gXmasDecor20DL_tri_6"/>
+	<CallDisplayList Path="objects/object_xmas_tree/mat_gXmasDecor20DL_f3dlite_Bauble3_G"/>
+	<CallDisplayList Path="objects/object_xmas_tree/gXmasDecor20DL_tri_7"/>
+	<CallDisplayList Path="objects/object_xmas_tree/mat_gXmasDecor20DL_f3dlite_Bauble2_G"/>
+	<CallDisplayList Path="objects/object_xmas_tree/gXmasDecor20DL_tri_8"/>
+	<CallDisplayList Path="objects/object_xmas_tree/mat_gXmasDecor20DL_f3dlite_Bauble2_B"/>
+	<CallDisplayList Path="objects/object_xmas_tree/gXmasDecor20DL_tri_9"/>
+	<PipeSync/>
+	<SetGeometryMode G_LIGHTING="1" />
+	<ClearGeometryMode G_TEXTURE_GEN="1" />
+	<SetCombineLERP A0="G_CCMUX_0" B0="G_CCMUX_0" C0="G_CCMUX_0" D0="G_CCMUX_SHADE" Aa0="G_ACMUX_0" Ab0="G_ACMUX_0" Ac0="G_ACMUX_0" Ad0="G_ACMUX_ENVIRONMENT" A1="G_CCMUX_0" B1="G_CCMUX_0" C1="G_CCMUX_0" D1="G_CCMUX_SHADE" Aa1="G_ACMUX_0" Ab1="G_ACMUX_0" Ac1="G_ACMUX_0" Ad1="G_ACMUX_ENVIRONMENT"/>
+	<Texture S="65535" T="65535" Level="0" Tile="0" On="0"/>
+	<EndDisplayList/>
+</DisplayList>
+
