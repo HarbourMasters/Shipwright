@@ -36,63 +36,47 @@ Settings::Settings() : mExcludeLocationsOptionsGroups(SPOILER_COLLECTION_GROUP_C
 }
 
 void Settings::CreateOptions() {
-    mOptionDescriptions[RSK_FOREST] = "Closed - Kokiri sword & shield are required to access "
-                    "the Deku Tree, and completing the Deku Tree is required to "
-                    "access the Hyrule Field exit.\n"
-                    "\n"
-                    "Closed Deku - Kokiri boy no longer blocks the path to Hyrule "
-                    "Field but Mido still requires the Kokiri sword and Deku shield "
-                    "to access the tree.\n"
-                    "\n"
-                    "Open - Mido no longer blocks the path to the Deku Tree. Kokiri "
-                    "boy no longer blocks the path out of the forest.";
-    mOptionDescriptions[RSK_MQ_DUNGEON_SET] = "Choose specific Dungeons to be Master Quest or Vanilla.\n"
-                            "\n"
-                            "If Master Quest Dungeons is set to Set Number or Random, the dungeons chosen "
-                            "to be Master Quest here will count towards that total. Any Dungeons set to Vanilla "
-                            "here will be guaranteed to be Vanilla. If Set Number is higher than the amount of dungeons "
-                            "set to either MQ or Random here, you will have fewer MQ Dungeons than the number you "
-                            "set.";
-    //clang-format off
+    CreateOptionDescriptions();
+    // clang-format off
     mOptions[RSK_FOREST] = Option::U8("Forest", {"Closed", "Closed Deku", "Open"}, OptionCategory::Setting, "gRandomizeForest", mOptionDescriptions[RSK_FOREST], WidgetType::Combobox, RO_FOREST_CLOSED);
-    mOptions[RSK_KAK_GATE] = Option::U8("Kakariko Gate", {"Close", "Open"}, OptionCategory::Setting, "gRandomizeKakarikoGate");
-    mOptions[RSK_DOOR_OF_TIME] = Option::U8("Door of Time", {"Closed", "Song only", "Open"}, OptionCategory::Setting, "gRandomizeDoorOfTime", "", WidgetType::Combobox);
-    mOptions[RSK_ZORAS_FOUNTAIN] = Option::U8("Zora's Fountain", {"Closed", "Closed as child", "Open"}, OptionCategory::Setting, "gRandomizeZorasFountain");
-    mOptions[RSK_GERUDO_FORTRESS] = Option::U8("Gerudo Fortress", {"Normal", "Fast", "Open"}, OptionCategory::Setting, "gRandomizeGerudoFortress");
-    mOptions[RSK_RAINBOW_BRIDGE] = Option::U8("Rainbow Bridge", {"Vanilla", "Always open", "Stones", "Medallions", "Dungeons", "Tokens", "Greg"}, OptionCategory::Setting, "gRandomizeRainbowBridge", "", WidgetType::Combobox, RO_BRIDGE_VANILLA);
+    mOptions[RSK_KAK_GATE] = Option::U8("Kakariko Gate", {"Close", "Open"}, OptionCategory::Setting, "gRandomizeKakarikoGate", mOptionDescriptions[RSK_KAK_GATE]);
+    mOptions[RSK_DOOR_OF_TIME] = Option::U8("Door of Time", {"Closed", "Song only", "Open"}, OptionCategory::Setting, "gRandomizeDoorOfTime", mOptionDescriptions[RSK_DOOR_OF_TIME], WidgetType::Combobox);
+    mOptions[RSK_ZORAS_FOUNTAIN] = Option::U8("Zora's Fountain", {"Closed", "Closed as child", "Open"}, OptionCategory::Setting, "gRandomizeZorasFountain", mOptionDescriptions[RSK_ZORAS_FOUNTAIN]);
+    mOptions[RSK_GERUDO_FORTRESS] = Option::U8("Gerudo Fortress", {"Normal", "Fast", "Open"}, OptionCategory::Setting, "gRandomizeGerudoFortress", mOptionDescriptions[RSK_GERUDO_FORTRESS]);
+    mOptions[RSK_RAINBOW_BRIDGE] = Option::U8("Rainbow Bridge", {"Vanilla", "Always open", "Stones", "Medallions", "Dungeon rewards", "Dungeons", "Tokens", "Greg"}, OptionCategory::Setting, "gRandomizeRainbowBridge", mOptionDescriptions[RSK_RAINBOW_BRIDGE], WidgetType::Combobox, RO_BRIDGE_VANILLA);
     mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT] = Option::U8("Stone Count", {NumOpts(0, 4)}, OptionCategory::Setting, "gRandomizeStoneCount", "", WidgetType::Slider, 3, true);
     mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] = Option::U8("Medallion Count", {NumOpts(0, 7)}, OptionCategory::Setting, "gRandomizeMedallionCount", "", WidgetType::Slider, 6, true);
     mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = Option::U8("Reward Count", {NumOpts(0, 10)}, OptionCategory::Setting, "gRandomizeRewardCount", "", WidgetType::Slider, 9, true);
     mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = Option::U8("Dungeon Count", {NumOpts(0, 9)}, OptionCategory::Setting, "gRandomizeDungeonCount", "", WidgetType::Slider, 8, true);
     mOptions[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = Option::U8("Token Count", {NumOpts(0, 100)}, OptionCategory::Setting, "gRandomizeTokenCount", "", WidgetType::Slider, 100, true);
-    mOptions[RSK_BRIDGE_OPTIONS] = Option::U8("Bridge Reward Options", {"Standard Rewards", "Greg as Reward", "Greg as Wildcard"}, OptionCategory::Setting, "gRandomizeBridgeRewardOptions", "", WidgetType::Combobox);
-    mOptions[RSK_GANONS_TRIALS] = Option::U8("Ganon's Trials", {"Skip", "Set Number", "Random Number"}, OptionCategory::Setting, "gRandomizeGanonTrial", "", WidgetType::Combobox, RO_GANONS_TRIALS_SET_NUMBER);
-    mOptions[RSK_TRIAL_COUNT] = Option::U8("Ganon's Trials Count", {NumOpts(0, 6)}, OptionCategory::Setting, "gRandomizeGanonTrialCount", "", WidgetType::Slider, 6, true);
-    mOptions[RSK_STARTING_AGE] = Option::U8("Starting Age", {"Child", "Adult", "Random"}, OptionCategory::Setting, "gRandomizeStartingAge", "", WidgetType::Combobox, RO_AGE_CHILD);
+    mOptions[RSK_BRIDGE_OPTIONS] = Option::U8("Bridge Reward Options", {"Standard Rewards", "Greg as Reward", "Greg as Wildcard"}, OptionCategory::Setting, "gRandomizeBridgeRewardOptions", mOptionDescriptions[RSK_BRIDGE_OPTIONS], WidgetType::Combobox);
+    mOptions[RSK_GANONS_TRIALS] = Option::U8("Ganon's Trials", {"Skip", "Set Number", "Random Number"}, OptionCategory::Setting, "gRandomizeGanonTrial", mOptionDescriptions[RSK_GANONS_TRIALS], WidgetType::Combobox, RO_GANONS_TRIALS_SET_NUMBER);
+    mOptions[RSK_TRIAL_COUNT] = Option::U8("Ganon's Trials Count", {NumOpts(0, 6)}, OptionCategory::Setting, "gRandomizeGanonTrialCount", mOptionDescriptions[RSK_TRIAL_COUNT], WidgetType::Slider, 6, true);
+    mOptions[RSK_STARTING_AGE] = Option::U8("Starting Age", {"Child", "Adult", "Random"}, OptionCategory::Setting, "gRandomizeStartingAge", mOptionDescriptions[RSK_STARTING_AGE], WidgetType::Combobox, RO_AGE_CHILD);
     mOptions[RSK_SHUFFLE_ENTRANCES] = Option::Bool("Shuffle Entrances");
-    mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES] = Option::U8("Dungeon Entrances", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, "gRandomizeShuffleDungeonsEntrances", "", WidgetType::Combobox, RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
-    mOptions[RSK_SHUFFLE_BOSS_ENTRANCES] = Option::U8("Boss Entrances", {"Off", "Age Restricted", "Full"}, OptionCategory::Setting, "gRandomizeShuffleBossEntrances", "", WidgetType::Combobox, RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
-    mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = Option::Bool("Overworld Entrances", "gRandomizeShuffleOverworldEntrances");
-    mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES] = Option::U8("Interior Entrances", {"Off", "Simple", "All"}, OptionCategory::Setting, "gRandomizeShuffleInteriorsEntrances", "", WidgetType::Combobox, RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
-    mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] = Option::Bool("Grottos Entrances", "gRandomizeShuffleGrottosEntrances");
-    mOptions[RSK_SHUFFLE_OWL_DROPS] = Option::Bool("Owl Drops", "gRandomizeShuffleOwlDrops");
-    mOptions[RSK_SHUFFLE_WARP_SONGS] = Option::Bool("Warp Songs", "gRandomizeShuffleWarpSongs");
-    mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS] = Option::Bool("Overworld Spawns", "gRandomizeShuffleOverworldSpanws");
-    mOptions[RSK_MIXED_ENTRANCE_POOLS] = Option::Bool("Mixed Entrance Pools", "gRandomizeMixedEntrances");
-    mOptions[RSK_MIX_DUNGEON_ENTRANCES] = Option::Bool("Mix Dungeons", "gRandomizeMixDungeons");
-    mOptions[RSK_MIX_OVERWORLD_ENTRANCES] = Option::Bool("Mix Overworld", "gRandomizeMixOverworld");
-    mOptions[RSK_MIX_INTERIOR_ENTRANCES] = Option::Bool("Mix Interiors", "gRandomizeMixInteriors");
-    mOptions[RSK_MIX_GROTTO_ENTRANCES] = Option::Bool("Mix Grottos", "gRandomizeMixGrottos");
-    mOptions[RSK_DECOUPLED_ENTRANCES] = Option::Bool("Decouple Entrances", "gRandomizeDecoupleEntrances");
+    mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES] = Option::U8("Dungeon Entrances", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, "gRandomizeShuffleDungeonsEntrances", mOptionDescriptions[RSK_SHUFFLE_DUNGEON_ENTRANCES], WidgetType::Combobox, RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
+    mOptions[RSK_SHUFFLE_BOSS_ENTRANCES] = Option::U8("Boss Entrances", {"Off", "Age Restricted", "Full"}, OptionCategory::Setting, "gRandomizeShuffleBossEntrances", mOptionDescriptions[RSK_SHUFFLE_BOSS_ENTRANCES], WidgetType::Combobox, RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
+    mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = Option::Bool("Overworld Entrances", "gRandomizeShuffleOverworldEntrances", mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES]);
+    mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES] = Option::U8("Interior Entrances", {"Off", "Simple", "All"}, OptionCategory::Setting, "gRandomizeShuffleInteriorsEntrances", mOptionDescriptions[RSK_SHUFFLE_INTERIOR_ENTRANCES], WidgetType::Combobox, RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
+    mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] = Option::Bool("Grottos Entrances", "gRandomizeShuffleGrottosEntrances", mOptionDescriptions[RSK_SHUFFLE_GROTTO_ENTRANCES]);
+    mOptions[RSK_SHUFFLE_OWL_DROPS] = Option::Bool("Owl Drops", "gRandomizeShuffleOwlDrops", mOptionDescriptions[RSK_SHUFFLE_OWL_DROPS]);
+    mOptions[RSK_SHUFFLE_WARP_SONGS] = Option::Bool("Warp Songs", "gRandomizeShuffleWarpSongs", mOptionDescriptions[RSK_SHUFFLE_WARP_SONGS]);
+    mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS] = Option::Bool("Overworld Spawns", "gRandomizeShuffleOverworldSpanws", mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]);
+    mOptions[RSK_MIXED_ENTRANCE_POOLS] = Option::Bool("Mixed Entrance Pools", "gRandomizeMixedEntrances", mOptionDescriptions[RSK_MIXED_ENTRANCE_POOLS]);
+    mOptions[RSK_MIX_DUNGEON_ENTRANCES] = Option::Bool("Mix Dungeons", "gRandomizeMixDungeons", mOptionDescriptions[RSK_MIX_DUNGEON_ENTRANCES]);
+    mOptions[RSK_MIX_OVERWORLD_ENTRANCES] = Option::Bool("Mix Overworld", "gRandomizeMixOverworld", mOptionDescriptions[RSK_MIX_OVERWORLD_ENTRANCES]);
+    mOptions[RSK_MIX_INTERIOR_ENTRANCES] = Option::Bool("Mix Interiors", "gRandomizeMixInteriors", mOptionDescriptions[RSK_MIX_INTERIOR_ENTRANCES]);
+    mOptions[RSK_MIX_GROTTO_ENTRANCES] = Option::Bool("Mix Grottos", "gRandomizeMixGrottos", mOptionDescriptions[RSK_MIX_GROTTO_ENTRANCES]);
+    mOptions[RSK_DECOUPLED_ENTRANCES] = Option::Bool("Decouple Entrances", "gRandomizeDecoupleEntrances", mOptionDescriptions[RSK_DECOUPLED_ENTRANCES]);
     mOptions[RSK_BOMBCHUS_IN_LOGIC] = Option::Bool("Bombchus in Logic", "gRandomizeBombchusInLogic");
     mOptions[RSK_ENABLE_BOMBCHU_DROPS] = Option::U8("Bombchu Drops", {"No", "Yes"}, OptionCategory::Setting, "gRandomizeEnableBombchuDrops", "", WidgetType::Combobox, RO_AMMO_DROPS_ON);
     // TODO: AmmoDrops and/or HeartDropRefill, combine with/separate Ammo Drops from Bombchu Drops?
-    mOptions[RSK_TRIFORCE_HUNT] = Option::Bool("Triforce Hunt", "gRandomizeTriforceHunt");
-    mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = Option::U8("Triforce Hunt Total Pieces", {NumOpts(1, 100)}, OptionCategory::Setting, "gRandomizeTriforceHuntTotalPieces", "", WidgetType::Slider, 29);
-    mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = Option::U8("Triforce Hunt Required Pieces", {NumOpts(1, 100)}, OptionCategory::Setting, "gRandomizeTriforceHuntRequiredPieces", "", WidgetType::Slider, 19);
-    mOptions[RSK_MQ_DUNGEON_RANDOM] = Option::U8("MQ Dungeon Setting", {"None", "Set Number", "Random", "Selection Only"}, OptionCategory::Setting, "gRandomizeMqDungeons", "", WidgetType::Combobox, RO_MQ_DUNGEONS_NONE, true);
+    mOptions[RSK_TRIFORCE_HUNT] = Option::Bool("Triforce Hunt", "gRandomizeTriforceHunt", mOptionDescriptions[RSK_TRIFORCE_HUNT]);
+    mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = Option::U8("Triforce Hunt Total Pieces", {NumOpts(1, 100)}, OptionCategory::Setting, "gRandomizeTriforceHuntTotalPieces", mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL], WidgetType::Slider, 29);
+    mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = Option::U8("Triforce Hunt Required Pieces", {NumOpts(1, 100)}, OptionCategory::Setting, "gRandomizeTriforceHuntRequiredPieces", mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED], WidgetType::Slider, 19);
+    mOptions[RSK_MQ_DUNGEON_RANDOM] = Option::U8("MQ Dungeon Setting", {"None", "Set Number", "Random", "Selection Only"}, OptionCategory::Setting, "gRandomizeMqDungeons", mOptionDescriptions[RSK_MQ_DUNGEON_RANDOM], WidgetType::Combobox, RO_MQ_DUNGEONS_NONE, true);
     mOptions[RSK_MQ_DUNGEON_COUNT] = Option::U8("MQ Dungeon Count", {NumOpts(0, 12)}, OptionCategory::Setting, "gRandomizeMqDungeonCount", "", WidgetType::Slider, 12, true);
-    mOptions[RSK_MQ_DUNGEON_SET] = Option::Bool("Set Dungeon Quests", {"Off", "On"}, OptionCategory::Setting, "gRandomizeMqDungeonSet", mOptionDescriptions[RSK_MQ_DUNGEON_SET]);
+    mOptions[RSK_MQ_DUNGEON_SET] = Option::Bool("Set Dungeon Quests", {"Off", "On"}, OptionCategory::Setting, "gRandomizeMqDungeonsSelection", mOptionDescriptions[RSK_MQ_DUNGEON_SET]);
     mOptions[RSK_MQ_DEKU_TREE] = Option::U8("Deku Tree", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsDekuTree", "", WidgetType::Combobox, RO_MQ_SET_VANILLA);
     mOptions[RSK_MQ_DODONGOS_CAVERN] = Option::U8("Dodongo's Cavern", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsDodongosCavern", "", WidgetType::Combobox, RO_MQ_SET_VANILLA);
     mOptions[RSK_MQ_JABU_JABU] = Option::U8("Jabu-Jabu's Belly", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsJabuJabu", "", WidgetType::Combobox, RO_MQ_SET_VANILLA);

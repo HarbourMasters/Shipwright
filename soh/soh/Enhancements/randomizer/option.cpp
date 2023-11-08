@@ -183,19 +183,22 @@ void Option::RenderCheckbox() const {
         CVarSetInteger(cvarName.c_str(), val);
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
-    UIWidgets::InsertHelpHoverText(description.c_str());
+    if (!description.empty()) {
+        UIWidgets::InsertHelpHoverText(description.c_str());
+    }
 }
 
 void Option::RenderCombobox() const {
     ImGui::Text("%s", name.c_str());
     uint8_t selected = CVarGetInteger(cvarName.c_str(), defaultOption);
-    UIWidgets::InsertHelpHoverText(description.c_str());
-    UIWidgets::Spacer(0);
+    if (!description.empty()) {
+        UIWidgets::InsertHelpHoverText(description.c_str());
+    }
     ImGui::BeginGroup();
     std::string comboName = std::string("##") + std::string(cvarName);
     if (ImGui::BeginCombo(comboName.c_str(), options[selected].c_str())) {
         for (uint8_t i = 0; i < options.size(); i++) {
-            if (options[selected].length() > 0) {
+            if (options[i].length() > 0) {
                 if (ImGui::Selectable(options[i].c_str(), i == selected)) {
                     CVarSetInteger(cvarName.c_str(), i);
                     selected = i;
@@ -213,7 +216,9 @@ void Option::RenderSlider() const {
     int val = CVarGetInteger(cvarName.c_str(), defaultOption);
     std::string formatName = name + ": %s";
     ImGui::Text(formatName.c_str(), options[val].c_str());
-    UIWidgets::InsertHelpHoverText(description.c_str());
+    if (!description.empty()) {
+        UIWidgets::InsertHelpHoverText(description.c_str());
+    }
     UIWidgets::Spacer(0);
     ImGui::BeginGroup();
     std::string MinusBTNName = " - ##" + cvarName;

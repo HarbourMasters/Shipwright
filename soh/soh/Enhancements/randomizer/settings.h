@@ -35,6 +35,7 @@ class Settings {
     std::vector<Option*> VanillaLogicDefaults = {};
 
   private:
+    void CreateOptionDescriptions();
     std::array<Option, RSK_MAX> mOptions = {};
     std::array<std::string, RSK_MAX> mOptionDescriptions = {};
     std::array<OptionGroup, RSG_MAX> mOptionGroups = {};
