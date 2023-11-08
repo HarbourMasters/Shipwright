@@ -33,8 +33,8 @@ class Context {
     static std::shared_ptr<Context> CreateInstance();
     static std::shared_ptr<Context> GetInstance();
     Hint* GetHint(RandomizerHintKey hintKey);
-    void AddHint(RandomizerHintKey hintId, const Text& text, RandomizerCheck hintedLocation, HintType hintType,
-                 const Text& hintedRegion);
+    void AddHint(RandomizerHintKey hintId, const Text& text, RandomizerCheck hintedLocation, HintType hintType, std::string distributionName,
+                 RandomizerArea hintedArea = RA_NONE);
     ItemLocation* GetItemLocation(RandomizerCheck locKey);
     ItemLocation* GetItemLocation(size_t locKey);
     void PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bool applyEffectImmediately = false,

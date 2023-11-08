@@ -182,7 +182,7 @@ public:
     //Check to see if an exit can be access as both ages at both times of day
     bool CheckAllAccess(RandomizerRegion exitKey);
 
-    const RandomizerArea GetArea() const{
+    RandomizerArea GetArea() const{
         return area;
     }
 

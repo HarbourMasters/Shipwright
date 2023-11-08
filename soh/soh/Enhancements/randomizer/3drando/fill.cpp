@@ -486,15 +486,15 @@ static void GeneratePlaythrough() {
     GetAccessibleLocations(ctx->allLocations, SearchMode::GeneratePlaythrough);
 }
 
-RandomizerArea LookForExternalArea(Area* curArea, std::vector<RandomizerRegion> alreadyChecked){
-  for (auto& entrance : curArea->entrances) {
-    RandomizerArea otherArea = entrance->GetConnectedRegion()->GetArea();
+RandomizerArea LookForExternalArea(Area* curRegion, std::vector<RandomizerRegion> alreadyChecked){//RANDOTODO curREGION
+  for (auto& entrance : curRegion->entrances) {
+    RandomizerArea otherArea = entrance->GetParentRegion()->GetArea();
     if(otherArea != RA_NONE){
       return otherArea;
       //if the area hasn't already been checked, check it
-    } else if (std::find(alreadyChecked.begin(), alreadyChecked.end(), entrance->GetConnectedRegionKey()) == alreadyChecked.end()) {
-      alreadyChecked.push_back(entrance->GetConnectedRegionKey());
-      RandomizerArea passdown = LookForExternalArea(entrance->GetConnectedRegion(), alreadyChecked);
+    } else if (std::find(alreadyChecked.begin(), alreadyChecked.end(), entrance->GetParentRegionKey()) == alreadyChecked.end()) {
+      alreadyChecked.push_back(entrance->GetParentRegionKey());
+      RandomizerArea passdown = LookForExternalArea(entrance->GetParentRegion(), alreadyChecked);
       if(passdown != RA_NONE){
         return passdown;
       }
@@ -836,7 +836,7 @@ static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
   // This accounts for boss room shuffle so that own dungeon items can be placed
   // in the shuffled boss room
   std::vector<RandomizerCheck> dungeonLocations = FilterFromPool(ctx->allLocations, [dungeon, ctx](const auto loc) {
-    return GetHintRegionHintKey(ctx->GetItemLocation(loc)->GetParentRegionKey()) == dungeon->GetHintKey();
+    return ctx->GetItemLocation(loc)->GetArea() == dungeon->GetHintArea();
   });
 
   //filter out locations that may be required to have songs placed at them

@@ -35,8 +35,8 @@ class ItemLocation {
     void SetAsHintable();
     bool IsHintedAt() const;
     void SetAsHinted();
-    RandomizerHintKey GetHintKey() const;
-    void SetHintKey(RandomizerHintKey hintKey);
+    std::vector<RandomizerHintKey> GetHintedBy() const;
+    void AddHintedBy(RandomizerHintKey hintKey);
     bool IsHidden() const;
     bool IsExcluded() const;
     void AddExcludeOption();
@@ -52,7 +52,7 @@ class ItemLocation {
 
   private:
     RandomizerCheck rc;
-    RandomizerHintKey hintedBy = RH_NONE;
+    std::vector<RandomizerHintKey> hintedBy = {};
     bool hintedAt = false;
     bool isHintable = false;
     bool addedToPool = false;

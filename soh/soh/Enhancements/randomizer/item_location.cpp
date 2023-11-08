@@ -114,12 +114,12 @@ void ItemLocation::SetAsHinted() {
     hintedAt = true;
 }
 
-RandomizerHintKey ItemLocation::GetHintKey() const {
+std::vector<RandomizerHintKey> ItemLocation::GetHintedBy() const {
     return hintedBy;
 }
 
-void ItemLocation::SetHintKey(const RandomizerHintKey hintKey) {
-    hintedBy = hintKey;
+void ItemLocation::AddHintedBy(const RandomizerHintKey hintKey) {
+    hintedBy.push_back(hintKey);
 } 
 
 bool ItemLocation::IsHidden() const {
@@ -191,7 +191,7 @@ void ItemLocation::ResetVariables() {
     delayedItem = RG_NONE;
     isHintable = false;
     hintedAt = false;
-    hintedBy = RH_NONE;
+    hintedBy = {};
     price = 0;
     hasCustomPrice = false;
     hidden = false;

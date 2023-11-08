@@ -717,7 +717,8 @@ static void WriteHints(int language) {
     if (ctx->GetOption(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NONE)) {
         return;
     }
-    for (const RandomizerCheck key : Rando::StaticData::gossipStoneLocations) {
+    auto ctx = Rando::Context::GetInstance();
+    for (const RandomizerCheck key : Rando::StaticData::gossipStoneLocations) { //RANDOTODO should be merged with static hints, iterate over hint keys
         Rando::Hint* hint = ctx->GetHint((RandomizerHintKey)(key - RC_COLOSSUS_GOSSIP_STONE + 1));
         Rando::ItemLocation* hintedLocation = ctx->GetItemLocation(hint->GetHintedLocation());
         std::string hintTextString;
@@ -733,18 +734,17 @@ static void WriteHints(int language) {
 
         HintType hintType = hint->GetHintType();
 
-        std::string textStr = hintTextString;
-        jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["hint"] = textStr;
-        jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["type"] = hintTypeNames[(int)hintType];
-        if ((hintType >= HINT_TYPE_ALWAYS && hintType < HINT_TYPE_JUNK) || hintType == HINT_TYPE_WOTH) {
-            jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["item"] = hintedLocation->GetPlacedItemName().GetEnglish();
-            if (hintType != HINT_TYPE_NAMED_ITEM) {
-                jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["location"] =
-                    Rando::StaticData::GetLocation(hintedLocation->GetRandomizerCheck())->GetName();
-            }
+         std::string textStr = hintTextString;
+        std::string name = Rando::StaticData::GetLocation(key)->GetName();
+        jsonData["hints"][name]["hint"] = textStr;
+        jsonData["hints"][name]["distribution"] = hint->GetDistribution();
+        jsonData["hints"][name]["type"] = hintTypeNames[(int)hintType];
+        if (hintType == HINT_TYPE_ITEM_LOCATION || hintType == HINT_TYPE_ITEM_AREA || hintType == HINT_TYPE_WOTH) {
+            jsonData["hints"][name]["item"] = hintedLocation->GetPlacedItemName().GetEnglish();
+            jsonData["hints"][name]["location"] = Rando::StaticData::GetLocation(hintedLocation->GetRandomizerCheck())->GetName();
         }
         if (hintType != HINT_TYPE_TRIAL && hintType != HINT_TYPE_JUNK) {
-            jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["area"] = hint->GetHintedRegion(); //RANDOTODO find elegent way to capitalise this
+            jsonData["hints"][name]["area"] = Hint(hint->GetHintedArea()).GetText().Capitalize().GetEnglish();
         }
     }
 }
@@ -850,7 +850,7 @@ const char* SpoilerLog_Write(int language) {
 
     std::string jsonString = jsonData.dump(4);
     std::ostringstream fileNameStream;
-    for (int i = 0; i < ctx->hashIconIndexes.size(); i ++) {
+    for (uint8_t i = 0; i < ctx->hashIconIndexes.size(); i ++) {
         if (i) {
             fileNameStream << '-';
         }

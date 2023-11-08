@@ -8,19 +8,37 @@
 #include "random.hpp"
 #include <functional>
 struct HintDistributionSetting {
+  std::string name;
   HintType type;
-  size_t weight;
+  uint32_t weight;
   uint8_t fixed;
   uint8_t copies;
+  std::function<bool(RandomizerCheck)> filter;
+  uint8_t dungeonLimit;
+
+  HintDistributionSetting(std::string _name, 
+                          HintType _type, 
+                          uint32_t _weight, 
+                          uint8_t _fixed, 
+                          uint8_t _copies, 
+                          std::function<bool(RandomizerCheck)> _filter,
+                          uint8_t _dungeonLimit = 40){
+    name = _name;
+    type = _type;
+    weight = _weight;
+    fixed = _fixed;
+    copies = _copies;
+    filter = _filter;
+    dungeonLimit = _dungeonLimit;
+  }
 };
 
 struct HintSetting {
-  using DistributionTable = std::array<HintDistributionSetting, static_cast<int>(HINT_TYPE_MAX)>;
-
-  uint8_t dungeonsWothLimit;
-  uint8_t dungeonsBarrenLimit;
-  bool namedItemsRequired;
-  DistributionTable distTable;
+  uint8_t alwaysCopies;
+  uint8_t trialCopies;
+  uint8_t junkWeight;
+  bool namedItemsRequired; //RANDOTODO what is this supposed to do?
+  std::vector<HintDistributionSetting> distTable;
 };
 
 enum class HintCategory {
@@ -197,7 +215,6 @@ extern std::array<DungeonHintInfo, 10> dungeonInfoData;
 
 extern std::array<ConditionalAlwaysHint, 10> conditionalAlwaysHints;
 
-extern RandomizerHintTextKey GetHintRegionHintKey(const RandomizerRegion area);
 extern void CreateAllHints();
 extern void CreateWarpSongTexts();
 

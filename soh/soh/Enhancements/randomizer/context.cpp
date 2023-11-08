@@ -74,9 +74,9 @@ Hint* Context::GetHint(const RandomizerHintKey hintKey) {
 }
 
 void Context::AddHint(const RandomizerHintKey hintId, const Text& text, const RandomizerCheck hintedLocation, const HintType hintType,
-                      const Text& hintedRegion) {
-    hintTable[hintId] = Hint(text, hintedLocation, hintType, hintedRegion);
-    GetItemLocation(hintedLocation)->SetHintKey(hintId);
+                      std::string distributionName, RandomizerArea hintedArea = RA_NONE) {
+    hintTable[hintId] = Hint(text, hintedLocation, hintType, distributionName, hintedArea);
+    GetItemLocation(hintedLocation)->AddHintedBy(hintId);
 }
 
 ItemLocation* Context::GetItemLocation(const RandomizerCheck locKey) {
