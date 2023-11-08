@@ -72,12 +72,12 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
     
     //the default is 90, lower values necessary to prevent camera swing as animation speeds up
     //arrived at via testing camera movement when holding left/right during the animation
-    s16 camCrawlTemp = CVarGetInteger("gCrawlSpeed", 0);
-    s16 camCrawlTimer;
+    s16 camCrawlTemp = CVarGetInteger("gCrawlSpeed", 1);
+    s16 camCrawlTimer = D_8012042C;
 
     switch (camCrawlTemp) { 
         case 1:
-            camCrawlTimer = 90;
+            camCrawlTimer = D_8012042C;
             break;
         case 2:
             camCrawlTimer = 50;
@@ -90,6 +90,9 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             break;
         case 5:
             camCrawlTimer = 26;
+            break;
+        default:
+            camCrawlTimer = D_8012042C;
             break;
     }
     
@@ -353,20 +356,12 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
         case 9601:
             Play_CameraChangeSetting(play, camIdx, CAM_SET_CS_3);
             Play_CameraChangeSetting(play, MAIN_CAM, mainCam->prevSetting);
-            if (CVarGetInteger("gCrawlSpeed", 0) >= 2) {
                 OnePointCutscene_SetCsCamPoints(csCam, D_80120430 | 0x1000, camCrawlTimer, D_80120308, D_80120398);
-            } else {
-                OnePointCutscene_SetCsCamPoints(csCam, D_80120430 | 0x1000, D_8012042C, D_80120308, D_80120398);
-            }
             break;
         case 9602:
             Play_CameraChangeSetting(play, camIdx, CAM_SET_CS_3);
             Play_CameraChangeSetting(play, MAIN_CAM, mainCam->prevSetting);
-            if (CVarGetInteger("gCrawlSpeed", 0) >= 2) {
                 OnePointCutscene_SetCsCamPoints(csCam, D_80120430 | 0x1000, camCrawlTimer, D_80120308, D_80120434);
-            } else {
-                OnePointCutscene_SetCsCamPoints(csCam, D_80120430 | 0x1000, D_8012042C, D_80120308, D_80120434);
-            }
             break;
         case 4175:
             csInfo->keyFrames = D_8012147C;

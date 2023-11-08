@@ -6752,14 +6752,14 @@ s32 func_8083F570(Player* this, PlayState* play) {
 
             if (this->linearVelocity > 0.0f) {
                 this->actor.shape.rot.y = this->actor.wallYaw + 0x8000;
-                if (CVarGetInteger("gCrawlSpeed", 0) < 2) {
-                    func_80832264(play, this, &gPlayerAnim_link_child_tunnel_end);
-                } else {
-                    //animation when exiting a tunnel forward
+                if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
+                    // animation when exiting a tunnel forward
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_end,
-                                         1.0f * ((CVarGetInteger("gCrawlSpeed", 0) + 1.0f) / 2.0f), 0.0f,
+                                         1.0f * ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f), 0.0f,
                                          Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_end), ANIMMODE_ONCE,
                                          0.0f);
+                } else {
+                    func_80832264(play, this, &gPlayerAnim_link_child_tunnel_end);
                 }
                 func_80832F54(play, this, 0x9D);
                 OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
@@ -6767,7 +6767,7 @@ s32 func_8083F570(Player* this, PlayState* play) {
                 this->actor.shape.rot.y = this->actor.wallYaw;
                 // animation when exiting a tunnel backward 
                 LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start, 
-                                    -1.0f * ((CVarGetInteger("gCrawlSpeed",0) + 1.0f) / 2.0f),
+                                    -1.0f * ((CVarGetInteger("gCrawlSpeed",1) + 1.0f) / 2.0f),
                                      Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f, ANIMMODE_ONCE,
                                      0.0f);
                 func_80832F54(play, this, 0x9D);
