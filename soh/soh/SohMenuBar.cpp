@@ -1111,7 +1111,10 @@ void DrawEnhancementsMenu() {
                 "- Random: Enemies are randomized every time you load a room\n"
                 "- Random (Seeded): Enemies are randomized based on the current randomizer seed/file\n"
             );
-
+            UIWidgets::EnhancementSliderInt("Chance For Bosses To Spawn: %d",
+                                            "##gBossSpawnChance", "gBossSpawnChance", 0, 100, "", 0);
+            UIWidgets::Tooltip("Will randomize a boss instead of an enemy based. Chance to do so is based off the "
+                               "number in the slider. Some areas will not be allowed to spawn bosses");
             UIWidgets::PaddedEnhancementCheckbox("Ivan the Fairy (Coop Mode)", "gIvanCoopModeEnabled", true, false);
             UIWidgets::Tooltip("Enables Ivan the Fairy upon the next map change. Player 2 can control Ivan and "
                                 "press the C-Buttons to use items and mess with Player 1!");

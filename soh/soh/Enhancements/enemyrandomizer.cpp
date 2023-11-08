@@ -250,7 +250,7 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
     //Could re-use randomNumber for the bossGenCheck for efficiency, but used a diff var for clarity
     uint32_t bossGenCheck = Random(1, 101);
     uint32_t randomNumber;
-    if (bossGenCheck <= 20) {
+    if (bossGenCheck <= CVarGetInteger("gBossSpawnChance", 0)) {
         randomNumber = Random(0, RANDOMIZED_BOSS_SPAWN_TABLE_SIZE);
         return bossesToBeUsedInRandomizationOfEnemies[randomNumber];
     }else {
