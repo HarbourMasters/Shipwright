@@ -1390,7 +1390,7 @@ void EnSkj_SetupWaitForOcarina(EnSkj* this, PlayState* play) {
     }
 }
 
-void EnSkj_WaitForOcarina(EnSkj* this, PlayState* play) {
+void EnSkj_WaitForOcarina(EnSkj* this, PlayState* play) { 
     Player* player = GET_PLAYER(play);
 
     if (player->stateFlags2 & 0x1000000) {
@@ -1466,7 +1466,9 @@ void EnSkj_WaitForPlayback(EnSkj* this, PlayState* play) {
                 break;
             case MSGMODE_MEMORY_GAME_PLAYER_PLAYING:
                 if (this->songFailTimer != 0) {
-                    this->songFailTimer--;
+                    if (CVarGetInteger("gOcarinaUnlimitedFailTime", 0) == 0) {
+                        this->songFailTimer--;
+                    }
                 } else { // took too long, game failed
                     func_80078884(NA_SE_SY_OCARINA_ERROR);
                     Message_CloseTextbox(play);
