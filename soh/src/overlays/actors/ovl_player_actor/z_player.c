@@ -3159,7 +3159,7 @@ s32 func_80836898(PlayState* play, Player* this, PlayerFuncA74 func) {
     return func_80832528(play, this);
 }
 
-void func_808368EC(Player* this, PlayState* play) {
+void func_808368EC(Player* this, PlayState* play) { 
     s16 previousYaw = this->actor.shape.rot.y;
 
     if (!(this->stateFlags2 & (PLAYER_STATE2_DISABLE_ROTATION_Z_TARGET | PLAYER_STATE2_DISABLE_ROTATION_ALWAYS))) {
@@ -6668,7 +6668,14 @@ s32 func_8083F0C8(Player* this, PlayState* play, u32 arg2) {
                 this->actor.world.pos.z = tempZ + (wallDistance * wallPolyNormZ);
                 func_80832224(this);
                 this->actor.prevPos = this->actor.world.pos;
-                func_80832264(play, this, &gPlayerAnim_link_child_tunnel_start);
+                if (CVarGetInteger("gCrawlSpeed", 0) < 2) {
+                    func_80832264(play, this, &gPlayerAnim_link_child_tunnel_start);
+                } else {
+                    //increase animation speed when entering a tunnel
+                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
+                                         1.0f * ((CVarGetInteger("gCrawlSpeed", 0) + 1.0f) / 2.0f), 0.0f,
+                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), ANIMMODE_ONCE, 0.0f);
+            }
                 func_80832F54(play, this, 0x9D);
 
                 return 1;
@@ -6745,12 +6752,21 @@ s32 func_8083F570(Player* this, PlayState* play) {
 
             if (this->linearVelocity > 0.0f) {
                 this->actor.shape.rot.y = this->actor.wallYaw + 0x8000;
-                func_80832264(play, this, &gPlayerAnim_link_child_tunnel_end);
+                if (CVarGetInteger("gCrawlSpeed", 0) < 2) {
+                    func_80832264(play, this, &gPlayerAnim_link_child_tunnel_end);
+                } else {
+                    //increase animation speed when exiting a tunnel forward
+                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_end,
+                                         1.0f * ((CVarGetInteger("gCrawlSpeed", 0) + 1.0f) / 2.0f), 0.0f,
+                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_end), ANIMMODE_ONCE,
+                                         0.0f);
+                }
                 func_80832F54(play, this, 0x9D);
                 OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
             } else {
                 this->actor.shape.rot.y = this->actor.wallYaw;
-                LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start, -1.0f,
+                LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start, //increase animation speed when exiting a tunnel backward
+                                    -1.0f * ((CVarGetInteger("gCrawlSpeed",0) + 1.0f) / 2.0f),
                                      Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f, ANIMMODE_ONCE,
                                      0.0f);
                 func_80832F54(play, this, 0x9D);
@@ -12127,7 +12143,7 @@ void func_8084C760(Player* this, PlayState* play) {
             }
 
             if (!func_8083F570(this, play)) {
-                this->linearVelocity = sControlInput->rel.stick_y * 0.03f;
+                this->linearVelocity = sControlInput->rel.stick_y * 0.03f * CVarGetInteger("gCrawlSpeed", 0); //increase speed in a tunnel
             }
         }
         return;

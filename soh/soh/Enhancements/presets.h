@@ -70,6 +70,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gForgeTime",
     "gClimbSpeed",
     "gFasterBlockPush",
+    "gCrawlSpeed",
     "gFasterHeavyBlockLift",
     "gNoForcedNavi",
     "gSkulltulaFreeze",
