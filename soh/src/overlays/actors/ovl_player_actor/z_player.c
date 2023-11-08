@@ -75,7 +75,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ u16 sfxId;
     /* 0x02 */ s16 field;
-} struct_80832924; // size = 0x04
+} AnimSfxEntry; // size = 0x04
 
 typedef struct {
     /* 0x00 */ u16 unk_00;
@@ -84,8 +84,8 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ LinkAnimationHeader* anim;
-    /* 0x04 */ u8 unk_04;
-} struct_808540F4; // size = 0x08
+    /* 0x04 */ u8 changeFrame;
+} ItemChangeInfo; // size = 0x08
 
 typedef struct {
     /* 0x00 */ LinkAnimationHeader* unk_00;
@@ -956,54 +956,54 @@ static LinkAnimationHeader* D_80853D7C[][2] = {
     { &gPlayerAnim_link_wait_itemD2_20f, &gPlayerAnim_link_wait_itemD2_20f }
 };
 
-static struct_80832924 D_80853DEC[] = {
+static AnimSfxEntry D_80853DEC[] = {
     { NA_SE_VO_LI_SNEEZE, -0x2008 },
 };
 
-static struct_80832924 D_80853DF0[] = {
+static AnimSfxEntry D_80853DF0[] = {
     { NA_SE_VO_LI_SWEAT, -0x2012 },
 };
 
-static struct_80832924 D_80853DF4[] = {
+static AnimSfxEntry D_80853DF4[] = {
     { NA_SE_VO_LI_BREATH_REST, -0x200D },
 };
 
-static struct_80832924 D_80853DF8[] = {
+static AnimSfxEntry D_80853DF8[] = {
     { NA_SE_VO_LI_BREATH_REST, -0x200A },
 };
 
-static struct_80832924 D_80853DFC[] = {
+static AnimSfxEntry D_80853DFC[] = {
     { NA_SE_PL_CALM_HIT, 0x82C }, { NA_SE_PL_CALM_HIT, 0x830 },  { NA_SE_PL_CALM_HIT, 0x834 },
     { NA_SE_PL_CALM_HIT, 0x838 }, { NA_SE_PL_CALM_HIT, -0x83C },
 };
 
-static struct_80832924 D_80853E10[] = {
+static AnimSfxEntry D_80853E10[] = {
     { 0, 0x4019 }, { 0, 0x401E }, { 0, 0x402C }, { 0, 0x4030 }, { 0, 0x4034 }, { 0, -0x4038 },
 };
 
-static struct_80832924 D_80853E28[] = {
+static AnimSfxEntry D_80853E28[] = {
     { NA_SE_IT_SHIELD_POSTURE, 0x810 },
     { NA_SE_IT_SHIELD_POSTURE, 0x814 },
     { NA_SE_IT_SHIELD_POSTURE, -0x846 },
 };
 
-static struct_80832924 D_80853E34[] = {
+static AnimSfxEntry D_80853E34[] = {
     { NA_SE_IT_HAMMER_SWING, 0x80A },
     { NA_SE_VO_LI_AUTO_JUMP, 0x200A },
     { NA_SE_IT_SWORD_SWING, 0x816 },
     { NA_SE_VO_LI_SWORD_N, -0x2016 },
 };
 
-static struct_80832924 D_80853E44[] = {
+static AnimSfxEntry D_80853E44[] = {
     { NA_SE_IT_SWORD_SWING, 0x827 },
     { NA_SE_VO_LI_SWORD_N, -0x2027 },
 };
 
-static struct_80832924 D_80853E4C[] = {
+static AnimSfxEntry D_80853E4C[] = {
     { NA_SE_VO_LI_RELAX, -0x2014 },
 };
 
-static struct_80832924* D_80853E50[] = {
+static AnimSfxEntry* D_80853E50[] = {
     D_80853DEC, D_80853DF0, D_80853DF4, D_80853DF8, D_80853DFC, D_80853E10,
     D_80853E28, D_80853E34, D_80853E44, D_80853E4C, NULL,
 };
@@ -1250,55 +1250,55 @@ static void (*sItemActionInitFuncs[])(PlayState* play, Player* this) = {
 };
 
 typedef enum {
-    /*  0 */ PLAYER_D_808540F4_0,
-    /*  1 */ PLAYER_D_808540F4_1,
-    /*  2 */ PLAYER_D_808540F4_2,
-    /*  3 */ PLAYER_D_808540F4_3,
-    /*  4 */ PLAYER_D_808540F4_4,
-    /*  5 */ PLAYER_D_808540F4_5,
-    /*  6 */ PLAYER_D_808540F4_6,
-    /*  7 */ PLAYER_D_808540F4_7,
-    /*  8 */ PLAYER_D_808540F4_8,
-    /*  9 */ PLAYER_D_808540F4_9,
-    /* 10 */ PLAYER_D_808540F4_10,
-    /* 11 */ PLAYER_D_808540F4_11,
-    /* 12 */ PLAYER_D_808540F4_12,
-    /* 13 */ PLAYER_D_808540F4_13,
-    /* 14 */ PLAYER_D_808540F4_MAX
-} PlayerD_808540F4Index;
+    /*  0 */ PLAYER_ITEM_CHG_0,
+    /*  1 */ PLAYER_ITEM_CHG_1,
+    /*  2 */ PLAYER_ITEM_CHG_2,
+    /*  3 */ PLAYER_ITEM_CHG_3,
+    /*  4 */ PLAYER_ITEM_CHG_4,
+    /*  5 */ PLAYER_ITEM_CHG_5,
+    /*  6 */ PLAYER_ITEM_CHG_6,
+    /*  7 */ PLAYER_ITEM_CHG_7,
+    /*  8 */ PLAYER_ITEM_CHG_8,
+    /*  9 */ PLAYER_ITEM_CHG_9,
+    /* 10 */ PLAYER_ITEM_CHG_10,
+    /* 11 */ PLAYER_ITEM_CHG_11,
+    /* 12 */ PLAYER_ITEM_CHG_12,
+    /* 13 */ PLAYER_ITEM_CHG_13,
+    /* 14 */ PLAYER_ITEM_CHG_MAX
+} ItemChangeType;
 
-static struct_808540F4 sItemChangeInfo[PLAYER_D_808540F4_MAX] = {
-    /* PLAYER_D_808540F4_0 */ { &gPlayerAnim_link_normal_free2free, 12 },
-    /* PLAYER_D_808540F4_1 */ { &gPlayerAnim_link_normal_normal2fighter, 6 },
-    /* PLAYER_D_808540F4_2 */ { &gPlayerAnim_link_hammer_normal2long, 8 },
-    /* PLAYER_D_808540F4_3 */ { &gPlayerAnim_link_normal_normal2free, 8 },
-    /* PLAYER_D_808540F4_4 */ { &gPlayerAnim_link_fighter_fighter2long, 8 },
-    /* PLAYER_D_808540F4_5 */ { &gPlayerAnim_link_normal_fighter2free, 10 },
-    /* PLAYER_D_808540F4_6 */ { &gPlayerAnim_link_hammer_long2free, 7 },
-    /* PLAYER_D_808540F4_7 */ { &gPlayerAnim_link_hammer_long2long, 11 },
-    /* PLAYER_D_808540F4_8 */ { &gPlayerAnim_link_normal_free2free, 12 },
-    /* PLAYER_D_808540F4_9 */ { &gPlayerAnim_link_normal_normal2bom, 4 },
-    /* PLAYER_D_808540F4_10 */ { &gPlayerAnim_link_normal_long2bom, 4 },
-    /* PLAYER_D_808540F4_11 */ { &gPlayerAnim_link_normal_free2bom, 4 },
-    /* PLAYER_D_808540F4_12 */ { &gPlayerAnim_link_anchor_anchor2fighter, 5 },
-    /* PLAYER_D_808540F4_13 */ { &gPlayerAnim_link_normal_free2freeB, 13 },
+static ItemChangeInfo sItemChangeInfo[PLAYER_ITEM_CHG_MAX] = {
+    /* PLAYER_ITEM_CHG_0 */ { &gPlayerAnim_link_normal_free2free, 12 },
+    /* PLAYER_ITEM_CHG_1 */ { &gPlayerAnim_link_normal_normal2fighter, 6 },
+    /* PLAYER_ITEM_CHG_2 */ { &gPlayerAnim_link_hammer_normal2long, 8 },
+    /* PLAYER_ITEM_CHG_3 */ { &gPlayerAnim_link_normal_normal2free, 8 },
+    /* PLAYER_ITEM_CHG_4 */ { &gPlayerAnim_link_fighter_fighter2long, 8 },
+    /* PLAYER_ITEM_CHG_5 */ { &gPlayerAnim_link_normal_fighter2free, 10 },
+    /* PLAYER_ITEM_CHG_6 */ { &gPlayerAnim_link_hammer_long2free, 7 },
+    /* PLAYER_ITEM_CHG_7 */ { &gPlayerAnim_link_hammer_long2long, 11 },
+    /* PLAYER_ITEM_CHG_8 */ { &gPlayerAnim_link_normal_free2free, 12 },
+    /* PLAYER_ITEM_CHG_9 */ { &gPlayerAnim_link_normal_normal2bom, 4 },
+    /* PLAYER_ITEM_CHG_10 */ { &gPlayerAnim_link_normal_long2bom, 4 },
+    /* PLAYER_ITEM_CHG_11 */ { &gPlayerAnim_link_normal_free2bom, 4 },
+    /* PLAYER_ITEM_CHG_12 */ { &gPlayerAnim_link_anchor_anchor2fighter, 5 },
+    /* PLAYER_ITEM_CHG_13 */ { &gPlayerAnim_link_normal_free2freeB, 13 },
 };
 
 // Maps the appropriate ItemChangeType based on current and next animtype.
 // A negative type value means the corresponding animation should be played in reverse.
 static s8 sItemChangeTypes[PLAYER_ANIMTYPE_MAX][PLAYER_ANIMTYPE_MAX] = {
-    { PLAYER_D_808540F4_8, -PLAYER_D_808540F4_5, -PLAYER_D_808540F4_3, -PLAYER_D_808540F4_6, PLAYER_D_808540F4_8,
-      PLAYER_D_808540F4_11 },
-    { PLAYER_D_808540F4_5, PLAYER_D_808540F4_0, -PLAYER_D_808540F4_1, PLAYER_D_808540F4_4, PLAYER_D_808540F4_5,
-      PLAYER_D_808540F4_9 },
-    { PLAYER_D_808540F4_3, PLAYER_D_808540F4_1, PLAYER_D_808540F4_0, PLAYER_D_808540F4_2, PLAYER_D_808540F4_3,
-      PLAYER_D_808540F4_9 },
-    { PLAYER_D_808540F4_6, -PLAYER_D_808540F4_4, -PLAYER_D_808540F4_2, PLAYER_D_808540F4_7, PLAYER_D_808540F4_6,
-      PLAYER_D_808540F4_10 },
-    { PLAYER_D_808540F4_8, -PLAYER_D_808540F4_5, -PLAYER_D_808540F4_3, -PLAYER_D_808540F4_6, PLAYER_D_808540F4_8,
-      PLAYER_D_808540F4_11 },
-    { PLAYER_D_808540F4_8, -PLAYER_D_808540F4_5, -PLAYER_D_808540F4_3, -PLAYER_D_808540F4_6, PLAYER_D_808540F4_8,
-      PLAYER_D_808540F4_11 },
+    { PLAYER_ITEM_CHG_8, -PLAYER_ITEM_CHG_5, -PLAYER_ITEM_CHG_3, -PLAYER_ITEM_CHG_6, PLAYER_ITEM_CHG_8,
+      PLAYER_ITEM_CHG_11 },
+    { PLAYER_ITEM_CHG_5, PLAYER_ITEM_CHG_0, -PLAYER_ITEM_CHG_1, PLAYER_ITEM_CHG_4, PLAYER_ITEM_CHG_5,
+      PLAYER_ITEM_CHG_9 },
+    { PLAYER_ITEM_CHG_3, PLAYER_ITEM_CHG_1, PLAYER_ITEM_CHG_0, PLAYER_ITEM_CHG_2, PLAYER_ITEM_CHG_3,
+      PLAYER_ITEM_CHG_9 },
+    { PLAYER_ITEM_CHG_6, -PLAYER_ITEM_CHG_4, -PLAYER_ITEM_CHG_2, PLAYER_ITEM_CHG_7, PLAYER_ITEM_CHG_6,
+      PLAYER_ITEM_CHG_10 },
+    { PLAYER_ITEM_CHG_8, -PLAYER_ITEM_CHG_5, -PLAYER_ITEM_CHG_3, -PLAYER_ITEM_CHG_6, PLAYER_ITEM_CHG_8,
+      PLAYER_ITEM_CHG_11 },
+    { PLAYER_ITEM_CHG_8, -PLAYER_ITEM_CHG_5, -PLAYER_ITEM_CHG_3, -PLAYER_ITEM_CHG_6, PLAYER_ITEM_CHG_8,
+      PLAYER_ITEM_CHG_11 },
 };
 
 static ExplosiveInfo sExplosiveInfos[] = {
@@ -1660,7 +1660,7 @@ void func_808328EC(Player* this, u16 sfxId) {
     this->stateFlags2 |= PLAYER_STATE2_FOOTSTEP;
 }
 
-void func_80832924(Player* this, struct_80832924* entry) {
+void func_80832924(Player* this, AnimSfxEntry* entry) {
     s32 data;
     s32 flags;
     u32 cont;
@@ -2298,7 +2298,7 @@ void func_808340DC(Player* this, PlayState* play) {
     if ((sp37 == PLAYER_IA_BOTTLE) || (sp37 == PLAYER_IA_BOOMERANG) ||
         ((sp37 == PLAYER_IA_NONE) &&
          ((this->heldItemAction == PLAYER_IA_BOTTLE) || (this->heldItemAction == PLAYER_IA_BOOMERANG)))) {
-        sp38 = (sp37 == PLAYER_IA_NONE) ? -PLAYER_D_808540F4_13 : PLAYER_D_808540F4_13;
+        sp38 = (sp37 == PLAYER_IA_NONE) ? -PLAYER_ITEM_CHG_13 : PLAYER_ITEM_CHG_13;
     }
 
     this->unk_15A = ABS(sp38);
@@ -2493,13 +2493,13 @@ void func_80834894(Player* this) {
 }
 
 void func_808348EC(PlayState* play, Player* this) {
-    struct_808540F4* ptr = &sItemChangeInfo[this->unk_15A];
-    f32 frame;
+    ItemChangeInfo* itemChangeEntry = &sItemChangeInfo[this->unk_15A];
+    f32 changeFrame;
 
-    frame = ptr->unk_04;
-    frame = (this->skelAnime2.playSpeed < 0.0f) ? frame - 1.0f : frame;
+    changeFrame = itemChangeEntry->changeFrame;
+    changeFrame = (this->skelAnime2.playSpeed < 0.0f) ? changeFrame - 1.0f : changeFrame;
 
-    if (LinkAnimation_OnFrame(&this->skelAnime2, frame)) {
+    if (LinkAnimation_OnFrame(&this->skelAnime2, changeFrame)) {
         func_80834594(play, this);
     }
 
@@ -3196,7 +3196,7 @@ void func_80835F44(PlayState* play, Player* this, s32 item) {
                 if ((this->heldItemAction >= 0) && (Player_ActionToMagicSpell(this, actionParam) < 0) &&
                     (item != this->heldItemId) &&
                     (sItemChangeTypes[gPlayerModelTypes[this->modelGroup][PLAYER_MODELGROUPENTRY_ANIM]][nextAnimType] !=
-                     PLAYER_D_808540F4_0) &&
+                     PLAYER_ITEM_CHG_0) &&
                     (!CVarGetInteger("gSeparateArrows", 0) ||
                      actionParam < PLAYER_IA_BOW || actionParam > PLAYER_IA_BOW_0E ||
                      this->heldItemAction < PLAYER_IA_BOW || this->heldItemAction > PLAYER_IA_BOW_0E)) {
@@ -8492,7 +8492,7 @@ void func_80843954(Player* this, PlayState* play) {
     }
 }
 
-static struct_80832924 D_808545DC[] = {
+static AnimSfxEntry D_808545DC[] = {
     { 0, 0x4014 },
     { 0, -0x401E },
 };
@@ -8564,7 +8564,7 @@ void func_80843AE8(PlayState* play, Player* this) {
     }
 }
 
-static struct_80832924 D_808545F0[] = {
+static AnimSfxEntry D_808545F0[] = {
     { NA_SE_PL_BOUND, 0x103C },
     { 0, 0x408C },
     { 0, 0x40A4 },
@@ -8798,7 +8798,7 @@ void func_8084411C(Player* this, PlayState* play) {
     }
 }
 
-static struct_80832924 D_8085460C[] = {
+static AnimSfxEntry D_8085460C[] = {
     { NA_SE_VO_LI_SWORD_N, 0x2001 },
     { NA_SE_PL_WALK_GROUND, 0x1806 },
     { NA_SE_PL_ROLL, 0x806 },
@@ -9430,7 +9430,7 @@ void func_80846050(Player* this, PlayState* play) {
     Math_ScaledStepToS(&this->unk_3BC.y, 0, 4000);
 }
 
-static struct_80832924 D_8085461C[] = {
+static AnimSfxEntry D_8085461C[] = {
     { NA_SE_VO_LI_SWORD_L, 0x2031 },
     { NA_SE_VO_LI_SWORD_N, -0x20E6 },
 };
@@ -11889,7 +11889,7 @@ void func_8084B840(PlayState* play, Player* this, f32 arg2) {
     }
 }
 
-static struct_80832924 D_80854870[] = {
+static AnimSfxEntry D_80854870[] = {
     { NA_SE_PL_SLIP, 0x1003 },
     { NA_SE_PL_SLIP, -0x1015 },
 };
@@ -11930,7 +11930,7 @@ void func_8084B898(Player* this, PlayState* play) {
     }
 }
 
-static struct_80832924 D_80854878[] = {
+static AnimSfxEntry D_80854878[] = {
     { NA_SE_PL_SLIP, 0x1004 },
     { NA_SE_PL_SLIP, -0x1018 },
 };
@@ -12217,7 +12217,7 @@ void func_8084BF1C(Player* this, PlayState* play) {
 static f32 D_80854898[] = { 10.0f, 20.0f };
 static f32 D_808548A0[] = { 40.0f, 50.0f };
 
-static struct_80832924 D_808548A8[] = {
+static AnimSfxEntry D_808548A8[] = {
     { NA_SE_PL_WALK_LADDER, 0x80A },
     { NA_SE_PL_WALK_LADDER, 0x814 },
     { NA_SE_PL_WALK_LADDER, -0x81E },
@@ -12263,7 +12263,7 @@ void func_8084C5F8(Player* this, PlayState* play) {
     }
 }
 
-static struct_80832924 D_808548B4[] = {
+static AnimSfxEntry D_808548B4[] = {
     { 0, 0x3028 }, { 0, 0x3030 }, { 0, 0x3038 }, { 0, 0x3040 },  { 0, 0x3048 },
     { 0, 0x3050 }, { 0, 0x3058 }, { 0, 0x3060 }, { 0, -0x3068 },
 };
@@ -12288,7 +12288,7 @@ void func_8084C760(Player* this, PlayState* play) {
     func_80832924(this, D_808548B4);
 }
 
-static struct_80832924 D_808548D8[] = {
+static AnimSfxEntry D_808548D8[] = {
     { 0, 0x300A }, { 0, 0x3012 }, { 0, 0x301A }, { 0, 0x3022 },  { 0, 0x3034 },
     { 0, 0x303C }, { 0, 0x3044 }, { 0, 0x304C }, { 0, -0x3054 },
 };
@@ -12434,7 +12434,7 @@ static u8 D_80854998[2][2] = {
 
 static Vec3s D_8085499C = { -69, 7146, -266 };
 
-static struct_80832924 D_808549A4[] = {
+static AnimSfxEntry D_808549A4[] = {
     { NA_SE_PL_CALM_HIT, 0x830 }, { NA_SE_PL_CALM_HIT, 0x83A },  { NA_SE_PL_CALM_HIT, 0x844 },
     { NA_SE_PL_CALM_PAT, 0x85C }, { NA_SE_PL_CALM_PAT, 0x86E },  { NA_SE_PL_CALM_PAT, 0x87E },
     { NA_SE_PL_CALM_PAT, 0x884 }, { NA_SE_PL_CALM_PAT, -0x888 },
@@ -12612,7 +12612,7 @@ void func_8084CC98(Player* this, PlayState* play) {
     }
 }
 
-static struct_80832924 D_808549C4[] = {
+static AnimSfxEntry D_808549C4[] = {
     { 0, 0x2800 },
     { NA_SE_PL_GET_OFF_HORSE, 0x80A },
     { NA_SE_PL_SLIPDOWN, -0x819 },
@@ -12648,7 +12648,7 @@ void func_8084D3E4(Player* this, PlayState* play) {
     }
 }
 
-static struct_80832924 D_808549D0[] = {
+static AnimSfxEntry D_808549D0[] = {
     { NA_SE_PL_SWIM, -0x800 },
 };
 
@@ -13137,7 +13137,7 @@ void func_8084E604(Player* this, PlayState* play) {
     func_8083721C(this);
 }
 
-static struct_80832924 D_808549E0[] = {
+static AnimSfxEntry D_808549E0[] = {
     { 0, 0x3857 },
     { NA_SE_VO_LI_CLIMB_END, 0x2057 },
     { NA_SE_VO_LI_AUTO_JUMP, 0x2045 },
@@ -13219,7 +13219,7 @@ void func_8084E6D4(Player* this, PlayState* play) {
     }
 }
 
-static struct_80832924 D_808549F0[] = {
+static AnimSfxEntry D_808549F0[] = {
     { NA_SE_IT_MASTER_SWORD_SWING, -0x83C },
 };
 
@@ -13227,7 +13227,7 @@ void func_8084E988(Player* this) {
     func_80832924(this, D_808549F0);
 }
 
-static struct_80832924 D_808549F4[] = {
+static AnimSfxEntry D_808549F4[] = {
     { NA_SE_VO_LI_AUTO_JUMP, 0x2005 },
     { 0, -0x280F },
 };
@@ -13495,7 +13495,7 @@ static BottleDropInfo D_80854A28[] = {
     { ACTOR_EN_INSECT, 2 },
 };
 
-static struct_80832924 D_80854A34[] = {
+static AnimSfxEntry D_80854A34[] = {
     { NA_SE_VO_LI_AUTO_JUMP, 0x2026 },
     { NA_SE_EV_BOTTLE_CAP_OPEN, -0x828 },
 };
@@ -13524,7 +13524,7 @@ void func_8084EFC0(Player* this, PlayState* play) {
     func_80832924(this, D_80854A34);
 }
 
-static struct_80832924 D_80854A3C[] = {
+static AnimSfxEntry D_80854A3C[] = {
     { NA_SE_PL_PUT_OUT_ITEM, -0x81E },
 };
 
@@ -14109,13 +14109,13 @@ static LinkAnimationHeader* D_80854A70[] = {
 
 static u8 D_80854A7C[] = { 70, 10, 10 };
 
-static struct_80832924 D_80854A80[] = {
+static AnimSfxEntry D_80854A80[] = {
     { NA_SE_PL_SKIP, 0x814 },
     { NA_SE_VO_LI_SWORD_N, 0x2014 },
     { 0, -0x301A },
 };
 
-static struct_80832924 D_80854A8C[][2] = {
+static AnimSfxEntry D_80854A8C[][2] = {
     {
         { 0, 0x4014 },
         { NA_SE_VO_LI_MAGIC_FROL, -0x201E },
@@ -14282,18 +14282,18 @@ static void (*D_80854AA4[])(PlayState*, Player*, void*) = {
     func_80851050, func_80851194, func_808511B4, func_80851248, func_808512E0,
 };
 
-static struct_80832924 D_80854AF0[] = {
+static AnimSfxEntry D_80854AF0[] = {
     { 0, 0x2822 },
     { NA_SE_PL_CALM_HIT, 0x82D },
     { NA_SE_PL_CALM_HIT, 0x833 },
     { NA_SE_PL_CALM_HIT, -0x840 },
 };
 
-static struct_80832924 D_80854B00[] = {
+static AnimSfxEntry D_80854B00[] = {
     { NA_SE_VO_LI_SURPRISE, 0x2003 }, { 0, 0x300F }, { 0, 0x3018 }, { 0, 0x301E }, { NA_SE_VO_LI_FALL_L, -0x201F },
 };
 
-static struct_80832924 D_80854B14[] = {
+static AnimSfxEntry D_80854B14[] = {
     { 0, -0x300A },
 };
 
@@ -14723,7 +14723,7 @@ void func_80851688(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     }
 }
 
-static struct_80832924 D_80855188[] = {
+static AnimSfxEntry D_80855188[] = {
     { 0, 0x302A },
     { 0, -0x3030 },
 };
@@ -14816,7 +14816,7 @@ static struct_808551A4 D_808551A4[] = {
     { NA_SE_IT_SWORD_STICK_STN, NA_SE_VO_LI_SWORD_N },
 };
 
-static struct_80832924 D_808551AC[] = {
+static AnimSfxEntry D_808551AC[] = {
     { 0, 0x401D },
     { 0, -0x4027 },
 };
@@ -14857,7 +14857,7 @@ void func_80851B90(PlayState* play, Player* this, CsCmdActorAction* arg2) {
                          ANIMMODE_ONCE, 0.0f);
 }
 
-static struct_80832924 D_808551B4[] = {
+static AnimSfxEntry D_808551B4[] = {
     { 0, -0x281E },
 };
 
@@ -14892,7 +14892,7 @@ void func_80851D2C(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     Player_SetModels(this, Player_ActionToModelGroup(this, this->itemAction));
 }
 
-static struct_80832924 D_808551B8[] = {
+static AnimSfxEntry D_808551B8[] = {
     { NA_SE_IT_SWORD_PICKOUT, -0x80C },
 };
 
@@ -14931,7 +14931,7 @@ void func_80851ECC(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     }
 }
 
-void func_80851F14(PlayState* play, Player* this, LinkAnimationHeader* anim, struct_80832924* arg3) {
+void func_80851F14(PlayState* play, Player* this, LinkAnimationHeader* anim, AnimSfxEntry* arg3) {
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         func_808322A4(play, this, anim);
         this->unk_850 = 1;
@@ -14945,7 +14945,7 @@ void func_80851F84(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     func_80851134(play, this, &gPlayerAnim_clink_op3_wait1);
 }
 
-static struct_80832924 D_808551BC[] = {
+static AnimSfxEntry D_808551BC[] = {
     { NA_SE_VO_LI_RELAX, 0x2023 },
     { NA_SE_PL_SLIPDOWN, 0x8EC },
     { NA_SE_PL_SLIPDOWN, -0x900 },
@@ -14963,7 +14963,7 @@ void func_80851FB0(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     }
 }
 
-static struct_80832924 D_808551C8[] = {
+static AnimSfxEntry D_808551C8[] = {
     { NA_SE_PL_LAND_LADDER, 0x843 },
     { 0, 0x4854 },
     { 0, 0x485A },
@@ -14994,7 +14994,7 @@ void func_808520BC(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     this->actor.world.pos.z = distZ * sp4 + startZ;
 }
 
-static struct_80832924 D_808551D8[] = {
+static AnimSfxEntry D_808551D8[] = {
     { NA_SE_PL_BOUND, 0x1014 },
     { NA_SE_PL_BOUND, -0x101E },
 };
@@ -15040,7 +15040,7 @@ void func_80852298(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     }
 }
 
-static struct_80832924 D_808551E0[] = {
+static AnimSfxEntry D_808551E0[] = {
     { 0, 0x300A },
     { 0, -0x3018 },
 };
@@ -15049,7 +15049,7 @@ void func_80852328(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     func_80851F14(play, this, &gPlayerAnim_link_demo_furimuki2_wait, D_808551E0);
 }
 
-static struct_80832924 D_808551E8[] = {
+static AnimSfxEntry D_808551E8[] = {
     { 0, 0x400F },
     { 0, -0x4023 },
 };
@@ -15071,14 +15071,14 @@ void func_80852388(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     }
 }
 
-void func_80852414(PlayState* play, Player* this, LinkAnimationHeader* anim, struct_80832924* arg3) {
+void func_80852414(PlayState* play, Player* this, LinkAnimationHeader* anim, AnimSfxEntry* arg3) {
     func_80851294(play, this, anim);
     if (this->unk_850 == 0) {
         func_80832924(this, arg3);
     }
 }
 
-static struct_80832924 D_808551F0[] = {
+static AnimSfxEntry D_808551F0[] = {
     { 0, 0x300F },
     { 0, -0x3021 },
 };
@@ -15087,7 +15087,7 @@ void func_80852450(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     func_80852414(play, this, &gPlayerAnim_clink_demo_koutai_wait, D_808551F0);
 }
 
-static struct_80832924 D_808551F8[] = {
+static AnimSfxEntry D_808551F8[] = {
     { NA_SE_PL_KNOCK, -0x84E },
 };
 
