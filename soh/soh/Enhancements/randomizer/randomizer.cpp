@@ -2998,11 +2998,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Big Poe Target Count
-                int poes = CVarGetInteger("gRandomizeBigPoeTargetCount", 10);
-                ImGui::Text("Big Poe Target Count: %d", poes);
-                UIWidgets::InsertHelpHoverText("The Poe collector will give a reward for turning in this many Big Poes.");
-                ImGui::SameLine();
-                UIWidgets::EnhancementSliderInt("", "##RandoBigPoeTargetCount", "gRandomizeBigPoeTargetCount", 1, 10, "", 10);
+                ctx->GetOption(RSK_BIG_POE_COUNT).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Skip child stealth

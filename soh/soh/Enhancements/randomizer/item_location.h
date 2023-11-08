@@ -52,7 +52,7 @@ class ItemLocation {
     bool addedToPool = false;
     RandomizerGet placedItem = RG_NONE;
     RandomizerGet delayedItem = RG_NONE;
-    Option excludedOption = Option::Bool(StaticData::GetLocation(rc)->GetName(), {"Include", "Exclude"}, OptionCategory::Setting, "", RO_LOCATION_INCLUDE);
+    Option excludedOption = Option::Bool(StaticData::GetLocation(rc)->GetName(), {"Include", "Exclude"}, OptionCategory::Setting, "", "", RO_LOCATION_INCLUDE);
     uint16_t price = 0;
     RandomizerRegion parentRegion = RR_NONE;
     bool hasCustomPrice = false;

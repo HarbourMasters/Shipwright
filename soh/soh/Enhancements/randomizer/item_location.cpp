@@ -132,13 +132,13 @@ Rando::Option* ItemLocation::GetExcludedOption() {
 void ItemLocation::AddExcludeOption() {
     const std::string name = StaticData::GetLocation(rc)->GetName();
     if (name.length() < 23) {
-        excludedOption = Rando::Option::Bool(name, {"Include", "Exclude"}, OptionCategory::Setting, "", RO_LOCATION_INCLUDE);
+        excludedOption = Rando::Option::Bool(name, {"Include", "Exclude"}, OptionCategory::Setting, "", "", RO_LOCATION_INCLUDE);
     } else {
         size_t lastSpace = name.rfind(' ', 23);
         std::string settingText = name;
         settingText.replace(lastSpace, 1, "\n ");
 
-        excludedOption = Rando::Option::Bool(settingText, {"Include", "Exclude"}, OptionCategory::Setting, "", RO_LOCATION_INCLUDE);
+        excludedOption = Rando::Option::Bool(settingText, {"Include", "Exclude"}, OptionCategory::Setting, "", "", RO_LOCATION_INCLUDE);
     }
     // RANDOTODO: this without string compares and loops
     bool alreadyAdded = false;

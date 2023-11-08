@@ -1,24 +1,26 @@
 #include "option.h"
 #include "libultraship/bridge.h"
+#include <Context.h>
+#include <ImGui/imgui.h>
 
 namespace Rando {
 Option Option::Bool(std::string name_, std::vector<std::string> options_, OptionCategory category_,
-                    std::string cvarName_, uint8_t defaultOption_, bool defaultHidden_) {
-    return Option(false, std::move(name_), std::move(options_), category_, std::move(cvarName_), defaultOption_, defaultHidden_);
+                    std::string cvarName_, std::string description_, uint8_t defaultOption_, bool defaultHidden_) {
+    return Option(false, std::move(name_), std::move(options_), category_, std::move(cvarName_), std::move(description_), defaultOption_, defaultHidden_);
 }
 
-Option Option::Bool(std::string name_, std::string cvarName_, bool defaultOption_) {
-    return Option(false, std::move(name_), {"Off", "On"}, OptionCategory::Setting, std::move(cvarName_), defaultOption_,
+Option Option::Bool(std::string name_, std::string cvarName_, std::string description_, bool defaultOption_) {
+    return Option(false, std::move(name_), {"Off", "On"}, OptionCategory::Setting, std::move(cvarName_), std::move(description_), defaultOption_,
                   false);
 }
 
 Option Option::U8(std::string name_, std::vector<std::string> options_, OptionCategory category_,
-                  std::string cvarName_, uint8_t defaultOption_, bool defaultHidden_) {
-    return Option(uint8_t(0), std::move(name_), std::move(options_), category_, std::move(cvarName_), defaultOption_, defaultHidden_);
+                  std::string cvarName_, std::string description_, uint8_t defaultOption_, bool defaultHidden_) {
+    return Option(uint8_t(0), std::move(name_), std::move(options_), category_, std::move(cvarName_), std::move(description_), defaultOption_, defaultHidden_);
 }
 
 Option Option::LogicTrick(std::string name_) {
-    return Option(false, std::move(name_), { "Disabled", "Enabled" }, OptionCategory::Setting, std::move(""), 0, 0);
+    return Option(false, std::move(name_), { "Disabled", "Enabled" }, OptionCategory::Setting, std::move(""), std::move(""), 0, 0);
 }
 
 Option::operator bool() const {
@@ -102,18 +104,100 @@ bool Option::IsCategory(OptionCategory category) const {
     return category == this->category;
 }
 
+// Automatically adds newlines to break up text longer than a specified number of characters
+// Manually included newlines will still be respected and reset the line length
+// If line is midword when it hits the limit, text should break at the last encountered space
+char* WrappedText(const char* text, unsigned int charactersPerLine) {
+    std::string newText(text);
+    const size_t tipLength = newText.length();
+    int lastSpace = -1;
+    int currentLineLength = 0;
+    for (unsigned int currentCharacter = 0; currentCharacter < tipLength; currentCharacter++) {
+        if (newText[currentCharacter] == '\n') {
+            currentLineLength = 0;
+            lastSpace = -1;
+            continue;
+        } else if (newText[currentCharacter] == ' ') {
+            lastSpace = currentCharacter;
+        }
+
+        if ((currentLineLength >= charactersPerLine) && (lastSpace >= 0)) {
+            newText[lastSpace] = '\n';
+            currentLineLength = currentCharacter - lastSpace - 1;
+            lastSpace = -1;
+        }
+        currentLineLength++;
+    }
+
+    return strdup(newText.c_str());
+}
+
+void Option::RenderImGui() const {
+    bool changed = false;
+    ImGui::BeginGroup();
+    ImGui::Dummy(ImVec2(0.0f, 0.0f));
+    int val = CVarGetInteger(cvarName.c_str(), defaultOption);
+    std::string formatName = name + ": %s";
+    ImGui::Text(formatName.c_str(), options[val].c_str());
+    ImGui::SameLine();
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "?");
+    if (ImGui::IsItemHovered()) {
+        ImGui::BeginTooltip();
+        ImGui::Text("%s", WrappedText(description.c_str(), 60));
+        ImGui::EndTooltip();
+    }
+    ImGui::Dummy(ImVec2(0.0f, 0.0f));
+    std::string MinusBTNName = " - ##" + cvarName;
+    if (ImGui::Button(MinusBTNName.c_str())) {
+        val --;
+        changed = true;
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+    ImGui::PushItemWidth(std::min((ImGui::GetContentRegionAvail().x - 30.0f), 260.0f));
+    std::string id = "##Slider" + cvarName;
+    if (ImGui::SliderInt(id.c_str(), &val, 0, options.size() - 1, "", ImGuiSliderFlags_AlwaysClamp)) {
+        changed = true;
+    }
+    ImGui::PopItemWidth();
+    std::string PlusBTNName = " + ##" + cvarName;
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+    if (ImGui::Button(PlusBTNName.c_str())) {
+        val++;
+        changed = true;
+    }
+    ImGui::EndGroup();
+    ImGui::Dummy(ImVec2(0.0f, 0.0f));
+    ImGui::EndGroup();
+    if (val < 0) {
+        val = 0;
+        changed = true;
+    }
+    if (val > options.size() - 1) {
+        val = options.size() - 1;
+        changed = true;
+    }
+    if (changed) {
+        CVarSetInteger(cvarName.c_str(), val);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+}
+
 Option::Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-               std::string cvarName_, uint8_t defaultOption_, bool defaultHidden_)
+               std::string cvarName_, std::string description_, uint8_t defaultOption_, bool defaultHidden_)
     : var(var_), name(std::move(name_)), options(std::move(options_)), category(category_),
-      cvarName(std::move(cvarName_)), defaultOption(defaultOption_), defaultHidden(defaultHidden_) {
+      cvarName(std::move(cvarName_)), description(std::move(description_)), defaultOption(defaultOption_),
+      defaultHidden(defaultHidden_) {
     selectedOption = defaultOption;
     hidden = defaultHidden;
     SetVariable();
 }
 Option::Option(bool var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-               std::string cvarName_, uint8_t defaultOption_, bool defaultHidden_)
+               std::string cvarName_, std::string description_, uint8_t defaultOption_, bool defaultHidden_)
     : var(var_), name(std::move(name_)), options(std::move(options_)), category(category_),
-      cvarName(std::move(cvarName_)), defaultOption(defaultOption_), defaultHidden(defaultHidden_) {
+      cvarName(std::move(cvarName_)), description(std::move(description_)), defaultOption(defaultOption_),
+      defaultHidden(defaultHidden_) {
     selectedOption = defaultOption;
     hidden = defaultHidden;
     SetVariable();

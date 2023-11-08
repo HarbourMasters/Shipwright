@@ -17,11 +17,11 @@ class Option {
     Option() = default;
     static Option Bool(std::string name_, std::vector<std::string> options_ = { "Off", "On" },
                        OptionCategory category_ = OptionCategory::Setting, std::string cvarName_ = "",
-                       uint8_t defaultOption_ = 0, bool defaultHidden_ = false);
-    static Option Bool(std::string name_, std::string cvarName_, bool defaultOption_ = 0);
+                       std::string description_ = "", uint8_t defaultOption_ = 0, bool defaultHidden_ = false);
+    static Option Bool(std::string name_, std::string cvarName_, std::string description_ = "", bool defaultOption_ = 0);
     static Option U8(std::string name_, std::vector<std::string> options_,
                      OptionCategory category_ = OptionCategory::Setting, std::string cvarName_ = "",
-                     uint8_t defaultOption = 0, bool defaultHidden = false);
+                     std::string description_ = "", uint8_t defaultOption = 0, bool defaultHidden = false);
     static Option LogicTrick(std::string name_);
 
     template <typename T> T Value() const {
@@ -57,12 +57,13 @@ class Option {
     void Unhide();
     bool IsHidden() const;
     bool IsCategory(OptionCategory category) const;
+    void RenderImGui() const;
 
   private:
     Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-           std::string cvarName_, uint8_t defaultOption_, bool defaultHidden_);
+           std::string cvarName_, std::string description_, uint8_t defaultOption_, bool defaultHidden_);
     Option(bool var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-           std::string cvarName_, uint8_t defaultOption_, bool defaultHidden_);
+           std::string cvarName_, std::string description_, uint8_t defaultOption_, bool defaultHidden_);
     std::variant<bool, uint8_t> var;
     std::string name;
     std::vector<std::string> options;
@@ -71,6 +72,7 @@ class Option {
     bool hidden = false;
     OptionCategory category;
     std::string cvarName = "";
+    std::string description = "";
     uint8_t defaultOption = false;
     bool defaultHidden = false;
 };
