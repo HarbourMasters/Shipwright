@@ -369,7 +369,8 @@ void RegisterRupeeDash() {
         if (rupeeDashTimer >= rdmTime) {
             rupeeDashTimer = 0;
             if (gSaveContext.rupees > 0) {
-                Rupees_ChangeBy(-1);
+                uint16_t walletSize = (CUR_UPG_VALUE(UPG_WALLET) + 1) * -1;
+                Rupees_ChangeBy(walletSize);
             } else {
                 Health_ChangeBy(gPlayState, -16);
             }
@@ -1043,6 +1044,39 @@ void RegisterRandomizerSheikSpawn() {
     });
 }
 
+void RegisterRandomizedEnemySizes() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+        // Randomized Enemy Sizes
+        Player* player = GET_PLAYER(gPlayState);
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        // Only apply to enemies and bosses. Exclude the wobbly platforms in Jabu because they need to act like platforms.
+        if (!CVarGetInteger("gRandomizedEnemySizes", 0) || (actor->category != ACTORCAT_ENEMY && actor->category != ACTORCAT_BOSS) || actor->id == ACTOR_EN_BROB) {
+            return;
+        }
+
+        float randomNumber;
+        float randomScale;
+
+        uint8_t bigActor = rand() % 2;
+
+        // Big actor. Dodongo and Volvagia are always smaller because they're impossible when bigger.
+        if (bigActor && actor->id != ACTOR_BOSS_DODONGO && actor->id != ACTOR_BOSS_FD &&
+            actor->id != ACTOR_BOSS_FD2) {
+            randomNumber = rand() % 200;
+            // Between 100% and 300% size.
+            randomScale = 1.0f + (randomNumber / 100);
+        // Small actor
+        } else {
+            randomNumber = rand() % 90;
+            // Between 10% and 100% size.
+            randomScale = 0.1f + (randomNumber / 100);
+        }
+
+        Actor_SetScale(actor, actor->scale.z * randomScale);
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1071,5 +1105,6 @@ void InitMods() {
     RegisterEnemyDefeatCounts();
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
+    RegisterRandomizedEnemySizes();
     NameTag_RegisterHooks();
 }

@@ -3,6 +3,30 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_owlTex_0071A8 "__OTR__objects/object_owl/object_owlTex_0071A8"
+static const ALIGN_ASSET(2) char object_owlTex_0071A8[] = dobject_owlTex_0071A8;
+
+#define dobject_owlTex_0079A8 "__OTR__objects/object_owl/object_owlTex_0079A8"
+static const ALIGN_ASSET(2) char object_owlTex_0079A8[] = dobject_owlTex_0079A8;
+
+#define dobject_owlTex_0081A8 "__OTR__objects/object_owl/object_owlTex_0081A8"
+static const ALIGN_ASSET(2) char object_owlTex_0081A8[] = dobject_owlTex_0081A8;
+
+#define dobject_owlTex_0095A8 "__OTR__objects/object_owl/object_owlTex_0095A8"
+static const ALIGN_ASSET(2) char object_owlTex_0095A8[] = dobject_owlTex_0095A8;
+
+#define dobject_owlTex_009DA8 "__OTR__objects/object_owl/object_owlTex_009DA8"
+static const ALIGN_ASSET(2) char object_owlTex_009DA8[] = dobject_owlTex_009DA8;
+
+#define dobject_owlTex_009FA8 "__OTR__objects/object_owl/object_owlTex_009FA8"
+static const ALIGN_ASSET(2) char object_owlTex_009FA8[] = dobject_owlTex_009FA8;
+
+#define dobject_owlTex_00AFA8 "__OTR__objects/object_owl/object_owlTex_00AFA8"
+static const ALIGN_ASSET(2) char object_owlTex_00AFA8[] = dobject_owlTex_00AFA8;
+
+#define dobject_owlTex_00B7A8 "__OTR__objects/object_owl/object_owlTex_00B7A8"
+static const ALIGN_ASSET(2) char object_owlTex_00B7A8[] = dobject_owlTex_00B7A8;
+
 #define dgOwlFlyingSkel "__OTR__objects/object_owl/gOwlFlyingSkel"
 static const ALIGN_ASSET(2) char gOwlFlyingSkel[] = dgOwlFlyingSkel;
 
@@ -98,30 +122,6 @@ static const ALIGN_ASSET(2) char gObjOwlEyeHalfTex[] = dgObjOwlEyeHalfTex;
 
 #define dgObjOwlEyeClosedTex "__OTR__objects/object_owl/gObjOwlEyeClosedTex"
 static const ALIGN_ASSET(2) char gObjOwlEyeClosedTex[] = dgObjOwlEyeClosedTex;
-
-#define dobject_owlTex_009DA8 "__OTR__objects/object_owl/object_owlTex_009DA8"
-static const ALIGN_ASSET(2) char object_owlTex_009DA8[] = dobject_owlTex_009DA8;
-
-#define dobject_owlTex_0071A8 "__OTR__objects/object_owl/object_owlTex_0071A8"
-static const ALIGN_ASSET(2) char object_owlTex_0071A8[] = dobject_owlTex_0071A8;
-
-#define dobject_owlTex_0079A8 "__OTR__objects/object_owl/object_owlTex_0079A8"
-static const ALIGN_ASSET(2) char object_owlTex_0079A8[] = dobject_owlTex_0079A8;
-
-#define dobject_owlTex_0081A8 "__OTR__objects/object_owl/object_owlTex_0081A8"
-static const ALIGN_ASSET(2) char object_owlTex_0081A8[] = dobject_owlTex_0081A8;
-
-#define dobject_owlTex_0095A8 "__OTR__objects/object_owl/object_owlTex_0095A8"
-static const ALIGN_ASSET(2) char object_owlTex_0095A8[] = dobject_owlTex_0095A8;
-
-#define dobject_owlTex_009FA8 "__OTR__objects/object_owl/object_owlTex_009FA8"
-static const ALIGN_ASSET(2) char object_owlTex_009FA8[] = dobject_owlTex_009FA8;
-
-#define dobject_owlTex_00AFA8 "__OTR__objects/object_owl/object_owlTex_00AFA8"
-static const ALIGN_ASSET(2) char object_owlTex_00AFA8[] = dobject_owlTex_00AFA8;
-
-#define dobject_owlTex_00B7A8 "__OTR__objects/object_owl/object_owlTex_00B7A8"
-static const ALIGN_ASSET(2) char object_owlTex_00B7A8[] = dobject_owlTex_00B7A8;
 
 #define dgOwlPerchingSkelLimbsLimb_00FFCCDL_00F1C0 "__OTR__objects/object_owl/gOwlPerchingSkelLimbsLimb_00FFCCDL_00F1C0"
 static const ALIGN_ASSET(2) char gOwlPerchingSkelLimbsLimb_00FFCCDL_00F1C0[] = dgOwlPerchingSkelLimbsLimb_00FFCCDL_00F1C0;

@@ -3,6 +3,105 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_zl2Tex_000E00 "__OTR__objects/object_zl2/object_zl2Tex_000E00"
+static const ALIGN_ASSET(2) char object_zl2Tex_000E00[] = dobject_zl2Tex_000E00;
+
+#define dobject_zl2Tex_000F00 "__OTR__objects/object_zl2/object_zl2Tex_000F00"
+static const ALIGN_ASSET(2) char object_zl2Tex_000F00[] = dobject_zl2Tex_000F00;
+
+#define dobject_zl2Tex_000F40 "__OTR__objects/object_zl2/object_zl2Tex_000F40"
+static const ALIGN_ASSET(2) char object_zl2Tex_000F40[] = dobject_zl2Tex_000F40;
+
+#define dobject_zl2Tex_001140 "__OTR__objects/object_zl2/object_zl2Tex_001140"
+static const ALIGN_ASSET(2) char object_zl2Tex_001140[] = dobject_zl2Tex_001140;
+
+#define dobject_zl2Tex_001180 "__OTR__objects/object_zl2/object_zl2Tex_001180"
+static const ALIGN_ASSET(2) char object_zl2Tex_001180[] = dobject_zl2Tex_001180;
+
+#define dobject_zl2Tex_001280 "__OTR__objects/object_zl2/object_zl2Tex_001280"
+static const ALIGN_ASSET(2) char object_zl2Tex_001280[] = dobject_zl2Tex_001280;
+
+#define dobject_zl2Tex_0012C0 "__OTR__objects/object_zl2/object_zl2Tex_0012C0"
+static const ALIGN_ASSET(2) char object_zl2Tex_0012C0[] = dobject_zl2Tex_0012C0;
+
+#define dobject_zl2Tex_0016C0 "__OTR__objects/object_zl2/object_zl2Tex_0016C0"
+static const ALIGN_ASSET(2) char object_zl2Tex_0016C0[] = dobject_zl2Tex_0016C0;
+
+#define dobject_zl2Tex_001AC0 "__OTR__objects/object_zl2/object_zl2Tex_001AC0"
+static const ALIGN_ASSET(2) char object_zl2Tex_001AC0[] = dobject_zl2Tex_001AC0;
+
+#define dobject_zl2Tex_001CC0 "__OTR__objects/object_zl2/object_zl2Tex_001CC0"
+static const ALIGN_ASSET(2) char object_zl2Tex_001CC0[] = dobject_zl2Tex_001CC0;
+
+#define dobject_zl2Tex_0024C0 "__OTR__objects/object_zl2/object_zl2Tex_0024C0"
+static const ALIGN_ASSET(2) char object_zl2Tex_0024C0[] = dobject_zl2Tex_0024C0;
+
+#define dobject_zl2Tex_002500 "__OTR__objects/object_zl2/object_zl2Tex_002500"
+static const ALIGN_ASSET(2) char object_zl2Tex_002500[] = dobject_zl2Tex_002500;
+
+#define dobject_zl2Tex_002600 "__OTR__objects/object_zl2/object_zl2Tex_002600"
+static const ALIGN_ASSET(2) char object_zl2Tex_002600[] = dobject_zl2Tex_002600;
+
+#define dobject_zl2Tex_002700 "__OTR__objects/object_zl2/object_zl2Tex_002700"
+static const ALIGN_ASSET(2) char object_zl2Tex_002700[] = dobject_zl2Tex_002700;
+
+#define dobject_zl2Tex_002740 "__OTR__objects/object_zl2/object_zl2Tex_002740"
+static const ALIGN_ASSET(2) char object_zl2Tex_002740[] = dobject_zl2Tex_002740;
+
+#define dobject_zl2Tex_002780 "__OTR__objects/object_zl2/object_zl2Tex_002780"
+static const ALIGN_ASSET(2) char object_zl2Tex_002780[] = dobject_zl2Tex_002780;
+
+#define dobject_zl2Tex_002880 "__OTR__objects/object_zl2/object_zl2Tex_002880"
+static const ALIGN_ASSET(2) char object_zl2Tex_002880[] = dobject_zl2Tex_002880;
+
+#define dobject_zl2Tex_0034C8 "__OTR__objects/object_zl2/object_zl2Tex_0034C8"
+static const ALIGN_ASSET(2) char object_zl2Tex_0034C8[] = dobject_zl2Tex_0034C8;
+
+#define dobject_zl2Tex_003908 "__OTR__objects/object_zl2/object_zl2Tex_003908"
+static const ALIGN_ASSET(2) char object_zl2Tex_003908[] = dobject_zl2Tex_003908;
+
+#define dobject_zl2Tex_003A08 "__OTR__objects/object_zl2/object_zl2Tex_003A08"
+static const ALIGN_ASSET(2) char object_zl2Tex_003A08[] = dobject_zl2Tex_003A08;
+
+#define dobject_zl2Tex_003A48 "__OTR__objects/object_zl2/object_zl2Tex_003A48"
+static const ALIGN_ASSET(2) char object_zl2Tex_003A48[] = dobject_zl2Tex_003A48;
+
+#define dobject_zl2Tex_003AC8 "__OTR__objects/object_zl2/object_zl2Tex_003AC8"
+static const ALIGN_ASSET(2) char object_zl2Tex_003AC8[] = dobject_zl2Tex_003AC8;
+
+#define dobject_zl2Tex_003B48 "__OTR__objects/object_zl2/object_zl2Tex_003B48"
+static const ALIGN_ASSET(2) char object_zl2Tex_003B48[] = dobject_zl2Tex_003B48;
+
+#define dobject_zl2Tex_004448 "__OTR__objects/object_zl2/object_zl2Tex_004448"
+static const ALIGN_ASSET(2) char object_zl2Tex_004448[] = dobject_zl2Tex_004448;
+
+#define dobject_zl2Tex_006548 "__OTR__objects/object_zl2/object_zl2Tex_006548"
+static const ALIGN_ASSET(2) char object_zl2Tex_006548[] = dobject_zl2Tex_006548;
+
+#define dobject_zl2Tex_009738 "__OTR__objects/object_zl2/object_zl2Tex_009738"
+static const ALIGN_ASSET(2) char object_zl2Tex_009738[] = dobject_zl2Tex_009738;
+
+#define dobject_zl2Tex_009938 "__OTR__objects/object_zl2/object_zl2Tex_009938"
+static const ALIGN_ASSET(2) char object_zl2Tex_009938[] = dobject_zl2Tex_009938;
+
+#define dobject_zl2Tex_009A38 "__OTR__objects/object_zl2/object_zl2Tex_009A38"
+static const ALIGN_ASSET(2) char object_zl2Tex_009A38[] = dobject_zl2Tex_009A38;
+
+#define dobject_zl2Tex_009A78 "__OTR__objects/object_zl2/object_zl2Tex_009A78"
+static const ALIGN_ASSET(2) char object_zl2Tex_009A78[] = dobject_zl2Tex_009A78;
+
+#define dobject_zl2Tex_009E78 "__OTR__objects/object_zl2/object_zl2Tex_009E78"
+static const ALIGN_ASSET(2) char object_zl2Tex_009E78[] = dobject_zl2Tex_009E78;
+
+#define dobject_zl2Tex_009F78 "__OTR__objects/object_zl2/object_zl2Tex_009F78"
+static const ALIGN_ASSET(2) char object_zl2Tex_009F78[] = dobject_zl2Tex_009F78;
+
+#define dobject_zl2Tex_009FF8 "__OTR__objects/object_zl2/object_zl2Tex_009FF8"
+static const ALIGN_ASSET(2) char object_zl2Tex_009FF8[] = dobject_zl2Tex_009FF8;
+
+#define dobject_zl2Tex_00A0F8 "__OTR__objects/object_zl2/object_zl2Tex_00A0F8"
+static const ALIGN_ASSET(2) char object_zl2Tex_00A0F8[] = dobject_zl2Tex_00A0F8;
+
 #define dgZelda2Skel "__OTR__objects/object_zl2/gZelda2Skel"
 static const ALIGN_ASSET(2) char gZelda2Skel[] = dgZelda2Skel;
 
@@ -123,103 +222,5 @@ static const ALIGN_ASSET(2) char gZelda2SkelLimbsLimb_010D20DL_00EA58[] = dgZeld
 #define dgZelda2SkelLimbsLimb_010D2CDL_007DC8 "__OTR__objects/object_zl2/gZelda2SkelLimbsLimb_010D2CDL_007DC8"
 static const ALIGN_ASSET(2) char gZelda2SkelLimbsLimb_010D2CDL_007DC8[] = dgZelda2SkelLimbsLimb_010D2CDL_007DC8;
 
-#define dobject_zl2Tex_0024C0 "__OTR__objects/object_zl2/object_zl2Tex_0024C0"
-static const ALIGN_ASSET(2) char object_zl2Tex_0024C0[] = dobject_zl2Tex_0024C0;
-
-#define dobject_zl2Tex_000E00 "__OTR__objects/object_zl2/object_zl2Tex_000E00"
-static const ALIGN_ASSET(2) char object_zl2Tex_000E00[] = dobject_zl2Tex_000E00;
-
-#define dobject_zl2Tex_002500 "__OTR__objects/object_zl2/object_zl2Tex_002500"
-static const ALIGN_ASSET(2) char object_zl2Tex_002500[] = dobject_zl2Tex_002500;
-
-#define dobject_zl2Tex_002600 "__OTR__objects/object_zl2/object_zl2Tex_002600"
-static const ALIGN_ASSET(2) char object_zl2Tex_002600[] = dobject_zl2Tex_002600;
-
-#define dobject_zl2Tex_002700 "__OTR__objects/object_zl2/object_zl2Tex_002700"
-static const ALIGN_ASSET(2) char object_zl2Tex_002700[] = dobject_zl2Tex_002700;
-
-#define dobject_zl2Tex_002740 "__OTR__objects/object_zl2/object_zl2Tex_002740"
-static const ALIGN_ASSET(2) char object_zl2Tex_002740[] = dobject_zl2Tex_002740;
-
-#define dobject_zl2Tex_002780 "__OTR__objects/object_zl2/object_zl2Tex_002780"
-static const ALIGN_ASSET(2) char object_zl2Tex_002780[] = dobject_zl2Tex_002780;
-
-#define dobject_zl2Tex_002880 "__OTR__objects/object_zl2/object_zl2Tex_002880"
-static const ALIGN_ASSET(2) char object_zl2Tex_002880[] = dobject_zl2Tex_002880;
-
-#define dobject_zl2Tex_0012C0 "__OTR__objects/object_zl2/object_zl2Tex_0012C0"
-static const ALIGN_ASSET(2) char object_zl2Tex_0012C0[] = dobject_zl2Tex_0012C0;
-
-#define dobject_zl2Tex_001CC0 "__OTR__objects/object_zl2/object_zl2Tex_001CC0"
-static const ALIGN_ASSET(2) char object_zl2Tex_001CC0[] = dobject_zl2Tex_001CC0;
-
-#define dobject_zl2Tex_0016C0 "__OTR__objects/object_zl2/object_zl2Tex_0016C0"
-static const ALIGN_ASSET(2) char object_zl2Tex_0016C0[] = dobject_zl2Tex_0016C0;
-
-#define dobject_zl2Tex_001AC0 "__OTR__objects/object_zl2/object_zl2Tex_001AC0"
-static const ALIGN_ASSET(2) char object_zl2Tex_001AC0[] = dobject_zl2Tex_001AC0;
-
-#define dobject_zl2Tex_009A38 "__OTR__objects/object_zl2/object_zl2Tex_009A38"
-static const ALIGN_ASSET(2) char object_zl2Tex_009A38[] = dobject_zl2Tex_009A38;
-
-#define dobject_zl2Tex_003A08 "__OTR__objects/object_zl2/object_zl2Tex_003A08"
-static const ALIGN_ASSET(2) char object_zl2Tex_003A08[] = dobject_zl2Tex_003A08;
-
-#define dobject_zl2Tex_009738 "__OTR__objects/object_zl2/object_zl2Tex_009738"
-static const ALIGN_ASSET(2) char object_zl2Tex_009738[] = dobject_zl2Tex_009738;
-
-#define dobject_zl2Tex_009938 "__OTR__objects/object_zl2/object_zl2Tex_009938"
-static const ALIGN_ASSET(2) char object_zl2Tex_009938[] = dobject_zl2Tex_009938;
-
-#define dobject_zl2Tex_009A78 "__OTR__objects/object_zl2/object_zl2Tex_009A78"
-static const ALIGN_ASSET(2) char object_zl2Tex_009A78[] = dobject_zl2Tex_009A78;
-
-#define dobject_zl2Tex_009E78 "__OTR__objects/object_zl2/object_zl2Tex_009E78"
-static const ALIGN_ASSET(2) char object_zl2Tex_009E78[] = dobject_zl2Tex_009E78;
-
-#define dobject_zl2Tex_009F78 "__OTR__objects/object_zl2/object_zl2Tex_009F78"
-static const ALIGN_ASSET(2) char object_zl2Tex_009F78[] = dobject_zl2Tex_009F78;
-
-#define dobject_zl2Tex_009FF8 "__OTR__objects/object_zl2/object_zl2Tex_009FF8"
-static const ALIGN_ASSET(2) char object_zl2Tex_009FF8[] = dobject_zl2Tex_009FF8;
-
-#define dobject_zl2Tex_00A0F8 "__OTR__objects/object_zl2/object_zl2Tex_00A0F8"
-static const ALIGN_ASSET(2) char object_zl2Tex_00A0F8[] = dobject_zl2Tex_00A0F8;
-
-#define dobject_zl2Tex_001140 "__OTR__objects/object_zl2/object_zl2Tex_001140"
-static const ALIGN_ASSET(2) char object_zl2Tex_001140[] = dobject_zl2Tex_001140;
-
-#define dobject_zl2Tex_001180 "__OTR__objects/object_zl2/object_zl2Tex_001180"
-static const ALIGN_ASSET(2) char object_zl2Tex_001180[] = dobject_zl2Tex_001180;
-
-#define dobject_zl2Tex_001280 "__OTR__objects/object_zl2/object_zl2Tex_001280"
-static const ALIGN_ASSET(2) char object_zl2Tex_001280[] = dobject_zl2Tex_001280;
-
-#define dobject_zl2Tex_000F40 "__OTR__objects/object_zl2/object_zl2Tex_000F40"
-static const ALIGN_ASSET(2) char object_zl2Tex_000F40[] = dobject_zl2Tex_000F40;
-
-#define dobject_zl2Tex_000F00 "__OTR__objects/object_zl2/object_zl2Tex_000F00"
-static const ALIGN_ASSET(2) char object_zl2Tex_000F00[] = dobject_zl2Tex_000F00;
-
-#define dobject_zl2Tex_003AC8 "__OTR__objects/object_zl2/object_zl2Tex_003AC8"
-static const ALIGN_ASSET(2) char object_zl2Tex_003AC8[] = dobject_zl2Tex_003AC8;
-
-#define dobject_zl2Tex_0034C8 "__OTR__objects/object_zl2/object_zl2Tex_0034C8"
-static const ALIGN_ASSET(2) char object_zl2Tex_0034C8[] = dobject_zl2Tex_0034C8;
-
-#define dobject_zl2Tex_004448 "__OTR__objects/object_zl2/object_zl2Tex_004448"
-static const ALIGN_ASSET(2) char object_zl2Tex_004448[] = dobject_zl2Tex_004448;
-
-#define dobject_zl2Tex_003A48 "__OTR__objects/object_zl2/object_zl2Tex_003A48"
-static const ALIGN_ASSET(2) char object_zl2Tex_003A48[] = dobject_zl2Tex_003A48;
-
-#define dobject_zl2Tex_006548 "__OTR__objects/object_zl2/object_zl2Tex_006548"
-static const ALIGN_ASSET(2) char object_zl2Tex_006548[] = dobject_zl2Tex_006548;
-
-#define dobject_zl2Tex_003B48 "__OTR__objects/object_zl2/object_zl2Tex_003B48"
-static const ALIGN_ASSET(2) char object_zl2Tex_003B48[] = dobject_zl2Tex_003B48;
-
-#define dobject_zl2Tex_003908 "__OTR__objects/object_zl2/object_zl2Tex_003908"
-static const ALIGN_ASSET(2) char object_zl2Tex_003908[] = dobject_zl2Tex_003908;
 
 #endif // OBJECTS_OBJECT_ZL2_H
