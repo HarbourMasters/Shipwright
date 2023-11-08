@@ -1706,7 +1706,6 @@ void RandomizerSettingsWindow::DrawElement() {
     static const char* randoLogicRules[2] = { "Glitchless", "No logic" };
 
     // Open Settings
-    static const char* randoForest[3] = { "Closed", "Closed Deku", "Open" };
     static const char* randoKakarikoGate[2] = { "Closed", "Open" };
     static const char* randoDoorOfTime[3] = { "Closed", "Song only", "Open" };
     static const char* randoZorasFountain[3] = { "Closed", "Closed as child", "Open" };
@@ -1837,20 +1836,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Forest
-                ImGui::Text("%s", ctx->GetOption(RSK_FOREST).GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Closed - Kokiri sword & shield are required to access "
-                    "the Deku Tree, and completing the Deku Tree is required to "
-                    "access the Hyrule Field exit.\n"
-                    "\n"
-                    "Closed Deku - Kokiri boy no longer blocks the path to Hyrule "
-                    "Field but Mido still requires the Kokiri sword and Deku shield "
-                    "to access the tree.\n"
-                    "\n"
-                    "Open - Mido no longer blocks the path to the Deku Tree. Kokiri "
-                    "boy no longer blocks the path out of the forest."
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeForest", randoForest, RO_FOREST_CLOSED);
+                ctx->GetOption(RSK_FOREST).RenderImGui();
 
                 UIWidgets::PaddedSeparator();
 
@@ -2148,19 +2134,12 @@ void RandomizerSettingsWindow::DrawElement() {
                             12, "", CVarGetInteger("gRandomizeMqDungeonCount", 12), true, true, false);
                     }
                     if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_NONE) {
-                        UIWidgets::EnhancementCheckbox(
-                            ctx->GetOption(RSK_MQ_DUNGEON_SET).GetName().c_str(), "gRandomizeMqDungeonsSelection",
-                            CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SELECTION,
-                            "This option is enabled because Master Quest Dungeons is set to Selection Only",
-                            UIWidgets::CheckboxGraphics::Checkmark);
-                        UIWidgets::InsertHelpHoverText(
-                            "Choose specific Dungeons to be Master Quest or Vanilla.\n"
-                            "\n"
-                            "If Master Quest Dungeons is set to Set Number or Random, the dungeons chosen "
-                            "to be Master Quest here will count towards that total. Any Dungeons set to Vanilla "
-                            "here will be guaranteed to be Vanilla. If Set Number is higher than the amount of dungeons "
-                            "set to either MQ or Random here, you will have fewer MQ Dungeons than the number you "
-                            "set.");
+                        // UIWidgets::EnhancementCheckbox(
+                        //     ctx->GetOption(RSK_MQ_DUNGEON_SET).GetName().c_str(), "gRandomizeMqDungeonsSelection",
+                        //     CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SELECTION,
+                        //     "This option is enabled because Master Quest Dungeons is set to Selection Only",
+                        //     UIWidgets::CheckboxGraphics::Checkmark);
+                        ctx->GetOption(RSK_MQ_DUNGEON_SET).RenderImGui();
                         if (CVarGetInteger("gRandomizeMqDungeonsSelection", RO_GENERIC_OFF) == RO_GENERIC_ON) {
                             UIWidgets::PaddedText("Deku Tree", true, false);
                             UIWidgets::EnhancementCombobox("gRandomizeMqDungeonsDekuTree", randoMqDungeonOptions, RO_MQ_SET_VANILLA);

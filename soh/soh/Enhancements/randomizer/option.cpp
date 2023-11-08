@@ -2,25 +2,31 @@
 #include "libultraship/bridge.h"
 #include <Context.h>
 #include <ImGui/imgui.h>
+#include "soh/UIWidgets.hpp"
 
 namespace Rando {
 Option Option::Bool(std::string name_, std::vector<std::string> options_, OptionCategory category_,
-                    std::string cvarName_, std::string description_, uint8_t defaultOption_, bool defaultHidden_) {
-    return Option(false, std::move(name_), std::move(options_), category_, std::move(cvarName_), std::move(description_), defaultOption_, defaultHidden_);
+                    std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
+                    bool defaultHidden_) {
+    return Option(false, std::move(name_), std::move(options_), category_, std::move(cvarName_), std::move(description_),
+                  widgetType_, defaultOption_, defaultHidden_);
 }
 
-Option Option::Bool(std::string name_, std::string cvarName_, std::string description_, bool defaultOption_) {
-    return Option(false, std::move(name_), {"Off", "On"}, OptionCategory::Setting, std::move(cvarName_), std::move(description_), defaultOption_,
-                  false);
+Option Option::Bool(std::string name_, std::string cvarName_, std::string description_, WidgetType widgetType_, bool defaultOption_) {
+    return Option(false, std::move(name_), {"Off", "On"}, OptionCategory::Setting, std::move(cvarName_),
+                  std::move(description_), widgetType_, defaultOption_, false);
 }
 
 Option Option::U8(std::string name_, std::vector<std::string> options_, OptionCategory category_,
-                  std::string cvarName_, std::string description_, uint8_t defaultOption_, bool defaultHidden_) {
-    return Option(uint8_t(0), std::move(name_), std::move(options_), category_, std::move(cvarName_), std::move(description_), defaultOption_, defaultHidden_);
+                  std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
+                  bool defaultHidden_) {
+    return Option(uint8_t(0), std::move(name_), std::move(options_), category_, std::move(cvarName_),
+                  std::move(description_), widgetType_, defaultOption_, defaultHidden_);
 }
 
 Option Option::LogicTrick(std::string name_) {
-    return Option(false, std::move(name_), { "Disabled", "Enabled" }, OptionCategory::Setting, std::move(""), std::move(""), 0, 0);
+    return Option(false, std::move(name_), { "Disabled", "Enabled" }, OptionCategory::Setting, std::move(""),
+                  std::move(""), WidgetType::Checkbox, 0, 0);
 }
 
 Option::operator bool() const {
@@ -133,23 +139,86 @@ char* WrappedText(const char* text, unsigned int charactersPerLine) {
 }
 
 void Option::RenderImGui() const {
-    bool changed = false;
     ImGui::BeginGroup();
-    ImGui::Dummy(ImVec2(0.0f, 0.0f));
+    UIWidgets::Spacer(0);
+    switch (widgetType) {
+        case WidgetType::Checkbox:
+            RenderCheckbox();
+            break;
+        case WidgetType::Combobox:
+            RenderCombobox();
+            break;
+        case WidgetType::Slider:
+            RenderSlider();
+            break;
+    }
+    UIWidgets::Spacer(0);
+    ImGui::EndGroup();
+}
+
+Option::Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
+               std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
+               bool defaultHidden_)
+    : var(var_), name(std::move(name_)), options(std::move(options_)), category(category_),
+      cvarName(std::move(cvarName_)), description(std::move(description_)), widgetType(widgetType_),
+      defaultOption(defaultOption_), defaultHidden(defaultHidden_) {
+    selectedOption = defaultOption;
+    hidden = defaultHidden;
+    SetVariable();
+}
+Option::Option(bool var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
+               std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
+               bool defaultHidden_)
+    : var(var_), name(std::move(name_)), options(std::move(options_)), category(category_),
+      cvarName(std::move(cvarName_)), description(std::move(description_)), widgetType(widgetType_),
+      defaultOption(defaultOption_), defaultHidden(defaultHidden_) {
+    selectedOption = defaultOption;
+    hidden = defaultHidden;
+    SetVariable();
+}
+
+void Option::RenderCheckbox() const {
+    bool val = (bool)CVarGetInteger(cvarName.c_str(), defaultOption);
+    if (UIWidgets::CustomCheckbox(name.c_str(), &val, false, UIWidgets::CheckboxGraphics::Cross)) {
+        CVarSetInteger(cvarName.c_str(), val);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    UIWidgets::InsertHelpHoverText(description.c_str());
+}
+
+void Option::RenderCombobox() const {
+    ImGui::Text("%s", name.c_str());
+    uint8_t selected = CVarGetInteger(cvarName.c_str(), defaultOption);
+    UIWidgets::InsertHelpHoverText(description.c_str());
+    UIWidgets::Spacer(0);
+    ImGui::BeginGroup();
+    std::string comboName = std::string("##") + std::string(cvarName);
+    if (ImGui::BeginCombo(comboName.c_str(), options[selected].c_str())) {
+        for (uint8_t i = 0; i < options.size(); i++) {
+            if (options[selected].length() > 0) {
+                if (ImGui::Selectable(options[i].c_str(), i == selected)) {
+                    CVarSetInteger(cvarName.c_str(), i);
+                    selected = i;
+                    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                }
+            }
+        }
+        ImGui::EndCombo();
+    }
+    ImGui::EndGroup();
+}
+
+void Option::RenderSlider() const {
+    bool changed = true;
     int val = CVarGetInteger(cvarName.c_str(), defaultOption);
     std::string formatName = name + ": %s";
     ImGui::Text(formatName.c_str(), options[val].c_str());
-    ImGui::SameLine();
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "?");
-    if (ImGui::IsItemHovered()) {
-        ImGui::BeginTooltip();
-        ImGui::Text("%s", WrappedText(description.c_str(), 60));
-        ImGui::EndTooltip();
-    }
-    ImGui::Dummy(ImVec2(0.0f, 0.0f));
+    UIWidgets::InsertHelpHoverText(description.c_str());
+    UIWidgets::Spacer(0);
+    ImGui::BeginGroup();
     std::string MinusBTNName = " - ##" + cvarName;
     if (ImGui::Button(MinusBTNName.c_str())) {
-        val --;
+        val--;
         changed = true;
     }
     ImGui::SameLine();
@@ -168,8 +237,6 @@ void Option::RenderImGui() const {
         changed = true;
     }
     ImGui::EndGroup();
-    ImGui::Dummy(ImVec2(0.0f, 0.0f));
-    ImGui::EndGroup();
     if (val < 0) {
         val = 0;
         changed = true;
@@ -182,25 +249,6 @@ void Option::RenderImGui() const {
         CVarSetInteger(cvarName.c_str(), val);
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
-}
-
-Option::Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-               std::string cvarName_, std::string description_, uint8_t defaultOption_, bool defaultHidden_)
-    : var(var_), name(std::move(name_)), options(std::move(options_)), category(category_),
-      cvarName(std::move(cvarName_)), description(std::move(description_)), defaultOption(defaultOption_),
-      defaultHidden(defaultHidden_) {
-    selectedOption = defaultOption;
-    hidden = defaultHidden;
-    SetVariable();
-}
-Option::Option(bool var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-               std::string cvarName_, std::string description_, uint8_t defaultOption_, bool defaultHidden_)
-    : var(var_), name(std::move(name_)), options(std::move(options_)), category(category_),
-      cvarName(std::move(cvarName_)), description(std::move(description_)), defaultOption(defaultOption_),
-      defaultHidden(defaultHidden_) {
-    selectedOption = defaultOption;
-    hidden = defaultHidden;
-    SetVariable();
 }
 
 OptionGroup::OptionGroup(std::string name, std::vector<Option*> options, OptionGroupType groupType, bool printInSpoiler,

@@ -36,6 +36,7 @@ class Settings {
 
   private:
     std::array<Option, RSK_MAX> mOptions = {};
+    std::array<std::string, RSK_MAX> mOptionDescriptions = {};
     std::array<OptionGroup, RSG_MAX> mOptionGroups = {};
     std::array<Option, RT_MAX> mTrickOptions;
     std::vector<std::vector<Option*>> mExcludeLocationsOptionsGroups;

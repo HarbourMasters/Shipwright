@@ -12,16 +12,25 @@ enum class OptionCategory {
     Toggle,
 };
 
+enum class WidgetType {
+  Checkbox, // Default for Bools, not compatible if options.size() > 2
+  Combobox, // Default for U8s, works with U8s and Bools
+  Slider, // Compatible with U8s. If constructed with NumOpts, consider using this.
+};
+
 class Option {
   public:
     Option() = default;
     static Option Bool(std::string name_, std::vector<std::string> options_ = { "Off", "On" },
                        OptionCategory category_ = OptionCategory::Setting, std::string cvarName_ = "",
-                       std::string description_ = "", uint8_t defaultOption_ = 0, bool defaultHidden_ = false);
-    static Option Bool(std::string name_, std::string cvarName_, std::string description_ = "", bool defaultOption_ = 0);
+                       std::string description_ = "", WidgetType widgetType_ = WidgetType::Checkbox,
+                       uint8_t defaultOption_ = 0, bool defaultHidden_ = false);
+    static Option Bool(std::string name_, std::string cvarName_, std::string description_ = "",
+                       WidgetType widgetType_ = WidgetType::Checkbox, bool defaultOption_ = 0);
     static Option U8(std::string name_, std::vector<std::string> options_,
                      OptionCategory category_ = OptionCategory::Setting, std::string cvarName_ = "",
-                     std::string description_ = "", uint8_t defaultOption = 0, bool defaultHidden = false);
+                     std::string description_ = "", WidgetType widgetType_ = WidgetType::Combobox,
+                     uint8_t defaultOption = 0, bool defaultHidden = false);
     static Option LogicTrick(std::string name_);
 
     template <typename T> T Value() const {
@@ -61,9 +70,14 @@ class Option {
 
   private:
     Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-           std::string cvarName_, std::string description_, uint8_t defaultOption_, bool defaultHidden_);
+           std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
+           bool defaultHidden_);
     Option(bool var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-           std::string cvarName_, std::string description_, uint8_t defaultOption_, bool defaultHidden_);
+           std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
+           bool defaultHidden_);
+    void RenderCheckbox() const;
+    void RenderCombobox() const;
+    void RenderSlider() const;
     std::variant<bool, uint8_t> var;
     std::string name;
     std::vector<std::string> options;
@@ -73,6 +87,7 @@ class Option {
     OptionCategory category;
     std::string cvarName = "";
     std::string description = "";
+    WidgetType widgetType;
     uint8_t defaultOption = false;
     bool defaultHidden = false;
 };
