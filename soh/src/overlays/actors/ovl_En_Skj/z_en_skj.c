@@ -1390,7 +1390,7 @@ void EnSkj_SetupWaitForOcarina(EnSkj* this, PlayState* play) {
     }
 }
 
-void EnSkj_WaitForOcarina(EnSkj* this, PlayState* play) { 
+void EnSkj_WaitForOcarina(EnSkj* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (player->stateFlags2 & 0x1000000) {

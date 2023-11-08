@@ -2078,7 +2078,7 @@ void Audio_OcaMemoryGameStart(u8 minigameRound) {
     }
 }
 
-s32 Audio_OcaMemoryGameGenNote(void) { 
+s32 Audio_OcaMemoryGameGenNote(void) {
     u32 rnd;
     u8 rndNote;
     int noteSpeed = 0x2D;
