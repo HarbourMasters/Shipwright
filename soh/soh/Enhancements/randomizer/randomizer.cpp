@@ -1700,62 +1700,6 @@ void RandomizerSettingsWindow::DrawElement() {
         generated = 0;
         randoThread.join();
     }
-
-    // Randomizer settings
-    // Logic Settings
-    static const char* randoLogicRules[2] = { "Glitchless", "No logic" };
-
-    // Open Settings
-    static const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
-    static const char* randoMqDungeons[4] = { "None", "Set Number", "Random Number", "Selection Only" };
-    static const char* randoMqDungeonOptions[3] = {"Vanilla", "Master Quest", "Random"};
-
-    // World Settings
-    static const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
-    static const char* randoShuffleDungeonsEntrances[3] = { "Off", "On", "On + Ganon" };
-    static const char* randoShuffleBossEntrances[3] = { "Off", "Age Restricted", "Full" };
-    static const char* randoShuffleInteriorsEntrances[3] = { "Off", "Simple", "All" };
-    static const char* randoBombchusInLogic[2] = { "Off", "On" };
-    static const char* randoAmmoDrops[3] = { "On + Bombchu", "Off", "On" };
-    static const char* randoHeartDropsAndRefills[4] = { "On", "No Drop", "No Refill", "Off" };
-
-    // Shuffle Settings
-    static const char* randoShuffleDungeonRewards[4] = { "End of dungeons", "Any dungeon", "Overworld", "Anywhere" };
-    static const char* randoLinksPocket[4] = { "Dungeon Reward", "Advancement", "Anything", "Nothing" };
-    static const char* randoShuffleSongs[3] = { "Song Locations", "Dungeon Rewards", "Anywhere" };
-    static const char* randoShopsanity[7] = { "Off", "0 Items", "1 Item", "2 Items", "3 Items", "4 Items", "Random" };
-    static const char* randoShopsanityPrices[5] = { "Balanced", "Starter Wallet", "Adult Wallet", "Giant's Wallet", "Tycoon's Wallet" };
-    static const char* randoTokensanity[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
-    static const char* randoShuffleScrubs[4] = { "Off", "Affordable", "Expensive", "Random Prices" };
-    static const char* randoShuffleMerchants[3] = { "Off", "On (no hints)", "On (with hints)" };
-
-    // Shuffle Dungeon Items Settings
-    static const char* randoShuffleMapsAndCompasses[6] = { "Start With",  "Vanilla",   "Own Dungeon",
-                                                    "Any Dungeon", "Overworld", "Anywhere" };
-    static const char* randoShuffleSmallKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
-                                             "Any Dungeon", "Overworld", "Anywhere" };
-    static const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
-    static const char* randoShuffleBossKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
-                                            "Any Dungeon", "Overworld", "Anywhere" };
-    static const char* randoShuffleGanonsBossKey[13] = {"Vanilla", "Own dungeon", "Start with", 
-                                                "Any Dungeon", "Overworld", "Anywhere", 
-                                                "LACS-Vanilla", "LACS-Stones", "LACS-Medallions", 
-                                                "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens",
-                                                "100 GS Reward"};
-    static const char* randoLACSRewardOptions[3] = { "Standard Reward", "Greg as Reward", "Greg as Wildcard" };
-    static const char* randoShuffleKeyRings[4] = { "Off", "Random", "Count", "Selection" };
-
-    // Misc Settings
-    static const char* randoGossipStoneHints[4] = { "No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony" };
-    static const char* randoHintClarity[3] = { "Obscure", "Ambiguous", "Clear" };
-    static const char* randoHintDistribution[4] = { "Useless", "Balanced", "Strong", "Very Strong" };
-    static const char* randoStartingTime[2] = { "Day", "Night" };
-    static const char* randoRandomTrapDamage[3] = { "Basic", "Advanced", "Off" };
-
-    // Item Pool Settings
-    static const char* randoItemPool[4] = { "Plentiful", "Balanced", "Scarce", "Minimal" };
-    static const char* randoIceTraps[5] = { "Off", "Normal", "Extra", "Mayhem", "Onslaught" };
-
     static int maxKeyringCount;
     static bool disableGFKeyring = false;
 
@@ -2108,118 +2052,44 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Shuffle Songs
-                ImGui::Text("%s", ctx->GetOption(RSK_SHUFFLE_SONGS).GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Song locations - Songs will only appear at locations that normally teach songs.\n"
-                    "\n"
-                    "Dungeon rewards - Songs appear after beating a major dungeon boss.\n"
-                    "The 4 remaining songs are located at:\n"
-                    "  - Zelda's lullaby location\n"
-                    "  - Ice Cavern's Serenade of Water location\n"
-                    "  - Bottom of the Well Lens of Truth location\n"
-                    "  - Gerudo Training Ground's Ice Arrows location\n"
-                    "\n"
-                    "Anywhere - Songs can appear at any location."
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, RO_SONG_SHUFFLE_SONG_LOCATIONS);
-
+                ctx->GetOption(RSK_SHUFFLE_SONGS).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Tokens
-                ImGui::Text("%s", ctx->GetOption(RSK_SHUFFLE_TOKENS).GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Shuffles Golden Skulltula Tokens into the item pool. This means "
-                    "Golden Skulltulas can contain other items as well.\n"
-                    "\n"
-                    "Off - GS tokens will not be shuffled.\n"
-                    "\n"
-                    "Dungeons - Only shuffle GS tokens that are within dungeons.\n"
-                    "\n"
-                    "Overworld - Only shuffle GS tokens that are outside of dungeons.\n"
-                    "\n"
-                    "All Tokens - Shuffle all 100 GS tokens."
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleTokens", randoTokensanity, RO_TOKENSANITY_OFF);
-
-                UIWidgets::PaddedEnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong", true, false);
-                UIWidgets::InsertHelpHoverText(
-                    "All Golden Skulltulas that require nighttime to appear will only be "
-                    "expected to be collected after getting Sun's Song."
-                );
-
+                ctx->GetOption(RSK_SHUFFLE_TOKENS).RenderImGui();
+                ctx->GetOption(RSK_SKULLS_SUNS_SONG).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Kokiri Sword
                 // Disabled when Start with Kokiri Sword is active
                 bool disableShuffleKokiriSword = CVarGetInteger("gRandomizeStartingKokiriSword", 0);
                 static const char* disableShuffleKokiriSwordText = "This option is disabled because \"Start with Kokiri Sword\" is enabled.";
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SHUFFLE_KOKIRI_SWORD).GetName().c_str(), "gRandomizeShuffleKokiriSword",
-                                                disableShuffleKokiriSword, disableShuffleKokiriSwordText);
-                UIWidgets::InsertHelpHoverText(
-                    "Shuffles the Kokiri Sword into the item pool.\n"
-                    "\n"
-                    "This will require the use of sticks until the Kokiri Sword is found."
-                );
-
+                ctx->GetOption(RSK_SHUFFLE_KOKIRI_SWORD).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 //Shuffle Master Sword
                 //RANDOTODO: Disable when Start with Master Sword is active
                 // bool disableShuffleMasterSword = CvarGetInteger("gRandomizeStartingMasterSword", 0);
                 // static const char* disableShuffleMasterSwordText = "This option is disabled because \"Start with Master Sword\" is enabled.";
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD).GetName().c_str(), "gRandomizeShuffleMasterSword");
-                UIWidgets::InsertHelpHoverText(
-                    "Shuffles the Master Sword into the item pool.\n"
-                    "\n"
-                    "Adult Link will start with a second free item instead of the Master Sword.\n"
-                    "If you haven't found the Master Sword before facing Ganon, you won't receive it during the fight."
-                );
-
+                ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Ocarinas
                 // Disabled when Start with Ocarina is active
                 bool disableShuffleOcarinas = CVarGetInteger("gRandomizeStartingOcarina", 0);
                 static const char* disableShuffleOcarinasText = "This option is disabled because \"Start with Fairy Ocarina\" is enabled.";
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SHUFFLE_OCARINA).GetName().c_str(), "gRandomizeShuffleOcarinas",
-                                              disableShuffleOcarinas, disableShuffleOcarinasText);
-                UIWidgets::InsertHelpHoverText(
-                    "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time into the item pool.\n"
-                    "\n"
-                    "This will require finding an Ocarina before being able to play songs."
-                );
-
+                ctx->GetOption(RSK_SHUFFLE_OCARINA).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Weird Egg
                 // Disabled when Skip Child Zelda is active
                 bool disableShuffleWeirdEgg = CVarGetInteger("gRandomizeSkipChildZelda", 0);
                 static const char* disableShuffleWeirdEggText = "This option is disabled because \"Skip Child Zelda\" is enabled.";
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG).GetName().c_str(), "gRandomizeShuffleWeirdEgg",
-                                              disableShuffleWeirdEgg, disableShuffleWeirdEggText);
-                UIWidgets::InsertHelpHoverText(
-                    "Shuffles the Weird Egg from Malon in to the item pool. Enabling "
-                    "\"Skip Child Zelda\" disables this feature.\n"
-                    "\n"
-                    "The Weird Egg is required to unlock several events:\n"
-                    "  - Zelda's Lullaby from Impa\n"
-                    "  - Saria's song in Sacred Forest Meadow\n"
-                    "  - Epona's song and chicken minigame at Lon Lon Ranch\n"
-                    "  - Zelda's letter for Kakariko gate (if set to closed)\n"
-                    "  - Happy Mask Shop sidequest\n"
-                );
-
+                ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Gerudo Membership Card
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD).GetName().c_str(), "gRandomizeShuffleGerudoToken");
-                UIWidgets::InsertHelpHoverText(
-                    "Shuffles the Gerudo Membership Card into the item pool.\n"
-                    "\n"
-                    "The Gerudo Card is required to enter the Gerudo Training Grounds, opening "
-                    "the gate to Haunted Wasteland and the Horseback Archery minigame."
-                );
-
+                ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 ImGui::PopItemWidth();
@@ -2232,113 +2102,39 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Shopsanity
-                ImGui::Text("%s", ctx->GetOption(RSK_SHOPSANITY).GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Off - All shop items will be the same as vanilla.\n"
-                    "\n"
-                    "0 Items - Vanilla shop items will be shuffled among different shops.\n"
-                    "\n"
-                    "1-4 Items - Vanilla shop items will be shuffled among different shops, and each shop will contain 1-4 non-vanilla shop items.\n"
-                    "\n"
-                    "Random - Vanilla shop items will be shuffled among different shops, and each shop will contain a random number(1-4) of non-vanilla shop items.\n"
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, RO_SHOPSANITY_OFF);
-
+                ctx->GetOption(RSK_SHOPSANITY).RenderImGui();
                 // Shopsanity Prices
                 switch (CVarGetInteger("gRandomizeShopsanity", RO_SHOPSANITY_OFF)) {
                     case RO_SHOPSANITY_OFF:
                     case RO_SHOPSANITY_ZERO_ITEMS: // no need to show it if there aren't shop slots in the pool
                         break;
                     default:
-                        ImGui::Text("%s", ctx->GetOption(RSK_SHOPSANITY_PRICES).GetName().c_str());
-                        UIWidgets::InsertHelpHoverText(
-                            "Balanced - The default randomization. Shop prices for shopsanity items will range between 0 to 300 rupees, "
-                            "with a bias towards values slightly below the middle of the range, in multiples of 5.\n "
-                            "\n"
-                            "X Wallet - Randomized between 5 and the wallet's max size, in multiples of 5"
-                        );
-                        UIWidgets::EnhancementCombobox("gRandomizeShopsanityPrices", randoShopsanityPrices, RO_SHOPSANITY_PRICE_BALANCED);
-                        UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SHOPSANITY_PRICES_AFFORDABLE).GetName().c_str(), "gRandomizeShopsanityPricesAffordable",
-                            CVarGetInteger("gRandomizeShopsanityPrices", RO_SHOPSANITY_PRICE_BALANCED) == RO_SHOPSANITY_PRICE_BALANCED,
-                            "This can only apply to a wallet range.");
-                        UIWidgets::InsertHelpHoverText("Random selection between the selected wallet tier's affordable price and the affordable prices of the preceding wallet tiers.\n\n"
-                            "Affordable prices per tier: starter = 10, adult = 105, giant = 205, tycoon = 505\n\n"
-                            "Use this to enable wallet tier locking, but make shop items not as expensive as they could be.");
+                        ctx->GetOption(RSK_SHOPSANITY_PRICES).RenderImGui();
+                        ctx->GetOption(RSK_SHOPSANITY_PRICES_AFFORDABLE).RenderImGui();
                 }
-
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Scrubs
-                ImGui::Text("%s", ctx->GetOption(RSK_SHUFFLE_SCRUBS).GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the vanilla game "
-                    "(PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.\n"
-                    "\n"
-                    "Affordable - Scrubs will be shuffled and their item will cost 10 rupees.\n"
-                    "\n"
-                    "Expensive - Scrubs will be shuffled and their item will cost the vanilla price.\n"
-                    "\n"
-                    "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n");
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, RO_SCRUBS_OFF);
-
+                ctx->GetOption(RSK_SHUFFLE_SCRUBS).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Cows
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SHUFFLE_COWS).GetName().c_str(), "gRandomizeShuffleCows");
-                UIWidgets::InsertHelpHoverText("Cows give a randomized item from the pool upon performing Epona's Song in front of them.");
-
+                ctx->GetOption(RSK_SHUFFLE_COWS).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SHUFFLE_MAGIC_BEANS).GetName().c_str(), "gRandomizeShuffleBeans");
-                UIWidgets::InsertHelpHoverText(
-                    "Enabling this adds a pack of 10 beans to the item pool and changes the Magic Bean "
-                    "Salesman to sell a random item at a price of 60 rupees."
-                );
-
+                ctx->GetOption(RSK_SHUFFLE_MAGIC_BEANS).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Merchants
-                ImGui::Text("%s", ctx->GetOption(RSK_SHUFFLE_MERCHANTS).GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Enabling this changes Medigoron, Granny and the Carpet Salesman to sell a random item "
-                    "once at a high price (100 for Granny, 200 for the others).\n"
-                    "A Giant's Knife and a pack of Bombchus will be added to the item pool, and "
-                    "one of the bottles will contain a Blue Potion.\n\n"
-                    "On (no hints) - Salesmen will be included but won't tell you what you'll get.\n"
-                    "On (with hints) - Salesmen will be included and you'll know what you're buying.\n"
-                    "\n"
-                    "Granny's item will only be offered after you have traded in the Odd Mushroom when Shuffle Adult Trade is on. "
-                    "Otherwise when off, you will need to have found the Claim Check to buy her item (simulating the trade quest is complete)."
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleMerchants", randoShuffleMerchants, RO_SHUFFLE_MERCHANTS_OFF);
-
+                ctx->GetOption(RSK_SHUFFLE_MERCHANTS).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Frog Song Rupees
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SHUFFLE_FROG_SONG_RUPEES).GetName().c_str(), "gRandomizeShuffleFrogSongRupees");
-                UIWidgets::InsertHelpHoverText(
-                    "Shuffles 5 Purple Rupees into to the item pool, and allows\n"
-                    "you to earn items by playing songs at the Frog Choir.\n"
-                    "\n"
-                    "This setting does not effect the item earned from playing\n"
-                    "the Song of Storms and the frog song minigame."
-                );
-
+                ctx->GetOption(RSK_SHUFFLE_FROG_SONG_RUPEES).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Adult Trade Quest
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE).GetName().c_str(), "gRandomizeShuffleAdultTrade");
-                UIWidgets::InsertHelpHoverText(
-                    "Adds all of the adult trade quest items into the pool, each of which "
-                    "can be traded for a unique reward.\n"
-                    "\n"
-                    "You will be able to choose which of your owned adult trade items is visible "
-                    "in the inventory by selecting the item with A and using the control stick or "
-                    "D-pad.\n"
-                    "\n"
-                    "If disabled, only the Claim Check will be found in the pool."
-                );
-
+                ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle 100 GS Reward
@@ -2346,15 +2142,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 bool forceEnable100GSShuffle =
                     (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) == RO_GANON_BOSS_KEY_KAK_TOKENS);
                 static const char* disable100GSRewardText = "This option is forcefully enabled because \"Ganon's Boss Key\" is set to \"100 GS Reward.\"";
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SHUFFLE_100_GS_REWARD).GetName().c_str(), "gRandomizeShuffle100GSReward",
-                    forceEnable100GSShuffle, disable100GSRewardText, UIWidgets::CheckboxGraphics::Checkmark);
-                UIWidgets::InsertHelpHoverText(
-                    "Shuffle the item the cursed rich man in the House of Skulltula gives when you "
-                    "have collected all 100 Gold Skulltula Tokens.\n"
-                    "\n"
-                    "You can still talk to him multiple times to get Huge Rupees."
-                );
-
+                ctx->GetOption(RSK_SHUFFLE_100_GS_REWARD).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 ImGui::PopItemWidth();
@@ -2367,106 +2155,39 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Shuffle Dungeon Rewards
-                ImGui::Text("%s", ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Shuffles the location of spiritual stones and medallions.\n"
-                    "\n"
-                    "End of dungeons - Spiritual stones and medallions will be given as rewards "
-                    "for beating major dungeons. Link will always start with one stone or medallion.\n"
-                    "\n"
-                    "Any dungeon - Spiritual stones and medallions can be found inside any dungeon.\n"
-                    "\n"
-                    "Overworld - Spiritual stones and medallions can only be found outside of dungeons.\n"
-                    "\n"
-                    "Anywhere - Spiritual stones and medallions can appear anywhere."
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, RO_DUNGEON_REWARDS_END_OF_DUNGEON);
-
+                ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Maps & Compasses
-                ImGui::Text("%s", ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Start with - You will start with Maps & Compasses from all dungeons.\n"
-                    "\n"
-                    "Vanilla - Maps & Compasses will appear in their vanilla locations.\n"
-                    "\n"
-                    "Own dungeon - Maps & Compasses can only appear in their respective dungeon.\n"
-                    "\n"
-                    "Any dungeon - Maps & Compasses can only appear inside of any dungon.\n"
-                    "\n"
-                    "Overworld - Maps & Compasses can only appear outside of dungeons.\n"
-                    "\n"
-                    "Anywhere - Maps & Compasses can appear anywhere in the world."
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
-
+                ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Keysanity
-                ImGui::Text("%s", ctx->GetOption(RSK_KEYSANITY).GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Start with - You will start with all Small Keys from all dungeons.\n"
-                    "\n"
-                    "Vanilla - Small Keys will appear in their vanilla locations. "
-                    "You start with 3 keys in Spirit Temple MQ because the vanilla key layout is not beatable in logic.\n"
-                    "\n"
-                    "Own dungeon - Small Keys can only appear in their respective dungeon. "
-                    "If Fire Temple is not a Master Quest dungeon, the door to the Boss Key chest will be unlocked.\n"
-                    "\n"
-                    "Any dungeon - Small Keys can only appear inside of any dungon.\n"
-                    "\n"
-                    "Overworld - Small Keys can only appear outside of dungeons.\n"
-                    "\n"
-                    "Anywhere - Small Keys can appear anywhere in the world."
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeKeysanity", randoShuffleSmallKeys, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
-
+                ctx->GetOption(RSK_KEYSANITY).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                  // Key Rings
-                ImGui::Text("%s", ctx->GetOption(RSK_KEYRINGS).GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Keyrings will replace all small keys from a particular dungeon with a single keyring that awards all keys for it's associated dungeon\n"
-                    "\n"
-                    "Off - No dungeons will have their keys replaced with keyrings.\n"
-                    "\n"
-                    "Random - A random amount of dungeons(0-8 or 9) will have their keys replaced with keyrings.\n"
-                    "\n"
-                    "Count - A specified amount of randomly selected dungeons will have their keys replaced with keyrings.\n"
-                    "\n"
-                    "Selection - Hand select which dungeons will have their keys replaced with keyrings.\n"
-                    "\n"
-                    "Selecting key ring for dungeons will have no effect if Small Keys are set to Start With or Vanilla.\n"
-                    "\n"
-                    "If Gerudo Fortress Carpenters is set to Normal, and Gerudo Fortress Keys is set to anything "
-                    "other than Vanilla, then the maximum amount of Key Rings that can be selected by Random or "
-                    "Count will be 9. Otherwise, the maximum amount of Key Rings will be 8."
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleKeyRings", randoShuffleKeyRings, RO_KEYRINGS_OFF);
+                ctx->GetOption(RSK_KEYRINGS).RenderImGui();
                 ImGui::PopItemWidth();
                 switch (CVarGetInteger("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF)) {
                     case RO_KEYRINGS_COUNT:
                         maxKeyringCount = (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
                                             CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) ? 9 : 8;
-                        UIWidgets::PaddedEnhancementSliderInt("Key Ring Count: %d",
-                                                              "##RandomizeShuffleKeyRingsRandomCount",
-                                                              "gRandomizeShuffleKeyRingsRandomCount", 1,
-                                                              maxKeyringCount, "", maxKeyringCount, true, true, false);
+                        ctx->GetOption(RSK_KEYRINGS_RANDOM_COUNT).RenderImGui();
                         break;
                     case RO_KEYRINGS_SELECTION:
                         disableGFKeyring =
                             CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) != RO_GF_NORMAL || CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) == RO_GERUDO_KEYS_VANILLA;
-                        UIWidgets::EnhancementCheckbox("Gerudo Fortress##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGerudoFortress",
-                            disableGFKeyring, "Disabled because the currently selected Gerudo Fortress Carpenters\n setting and/or Gerudo Fortress Keys setting is incompatible with \nhaving a Gerudo Fortress keyring.");
-                        UIWidgets::EnhancementCheckbox("Forest Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsForestTemple");
-                        UIWidgets::EnhancementCheckbox("Fire Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsFireTemple");
-                        UIWidgets::EnhancementCheckbox("Water Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsWaterTemple");
-                        UIWidgets::EnhancementCheckbox("Spirit Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsSpiritTemple");
-                        UIWidgets::EnhancementCheckbox("Shadow Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsShadowTemple");
-                        UIWidgets::EnhancementCheckbox("Bottom of the Well##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsBottomOfTheWell");
-                        UIWidgets::EnhancementCheckbox("Gerudo Training Grounds##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGTG");
-                        UIWidgets::EnhancementCheckbox("Ganon's Castle##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGanonsCastle");
+                        ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS).RenderImGui();
+                            //disableGFKeyring, "Disabled because the currently selected Gerudo Fortress Carpenters\n setting and/or Gerudo Fortress Keys setting is incompatible with \nhaving a Gerudo Fortress keyring.");
+                        ctx->GetOption(RSK_KEYRINGS_FOREST_TEMPLE).RenderImGui();
+                        ctx->GetOption(RSK_KEYRINGS_FIRE_TEMPLE).RenderImGui();
+                        ctx->GetOption(RSK_KEYRINGS_WATER_TEMPLE).RenderImGui();
+                        ctx->GetOption(RSK_KEYRINGS_SPIRIT_TEMPLE).RenderImGui();
+                        ctx->GetOption(RSK_KEYRINGS_SHADOW_TEMPLE).RenderImGui();
+                        ctx->GetOption(RSK_KEYRINGS_BOTTOM_OF_THE_WELL).RenderImGui();
+                        ctx->GetOption(RSK_KEYRINGS_GTG).RenderImGui();
+                        ctx->GetOption(RSK_KEYRINGS_GANONS_CASTLE).RenderImGui();
                         break;
                     default:
                         break;
@@ -2476,190 +2197,79 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Gerudo Keys
-                ImGui::Text("%s", ctx->GetOption(RSK_GERUDO_KEYS).GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Vanilla - Thieve's Hideout Keys will appear in their vanilla locations.\n"
-                    "\n"
-                    "Any dungeon - Thieve's Hideout Keys can only appear inside of any dungon.\n"
-                    "\n"
-                    "Overworld - Thieve's Hideout Keys can only appear outside of dungeons.\n"
-                    "\n"
-                    "Anywhere - Thieve's Hideout Keys can appear anywhere in the world."
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeGerudoKeys", randoShuffleGerudoFortressKeys, RO_GERUDO_KEYS_VANILLA);
-
+                ctx->GetOption(RSK_GERUDO_KEYS).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Boss Keysanity
-                ImGui::Text("%s", ctx->GetOption(RSK_BOSS_KEYSANITY).GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Start with - You will start with Boss keys from all dungeons.\n"
-                    "\n"
-                    "Vanilla - Boss Keys will appear in their vanilla locations.\n"
-                    "\n"
-                    "Own dungeon - Boss Keys can only appear in their respective dungeon.\n"
-                    "\n"
-                    "Any dungeon - Boss Keys can only appear inside of any dungon.\n"
-                    "\n"
-                    "Overworld - Boss Keys can only appear outside of dungeons.\n"
-                    "\n"
-                    "Anywhere - Boss Keys can appear anywhere in the world."
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeBossKeysanity", randoShuffleBossKeys, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
-
+                ctx->GetOption(RSK_BOSS_KEYSANITY).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Ganon's Boss Key
-                ImGui::Text("%s", ctx->GetOption(RSK_GANONS_BOSS_KEY).GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Vanilla - Ganon's Boss Key will appear in the vanilla location.\n"
-                    "\n"
-                    "Own dungeon - Ganon's Boss Key can appear anywhere inside Ganon's Castle.\n"
-                    "\n"
-                    "Start with - Places Ganon's Boss Key in your starting inventory."
-                    "\n"
-                    "Any dungeon - Ganon's Boss Key Key can only appear inside of any dungon.\n"
-                    "\n"
-                    "Overworld - Ganon's Boss Key Key can only appear outside of dungeons.\n"
-                    "\n"
-                    "Anywhere - Ganon's Boss Key Key can appear anywhere in the world.\n"
-                    "\n"
-                    "LACS - These settings put the boss key on the Light Arrow Cutscene location, from Zelda in Temple of Time as adult, with differing requirements:\n"
-                    "- Vanilla: Obtain the Shadow Medallion and Spirit Medallion\n"
-                    "- Stones: Obtain the specified amount of spiritual stones.\n"
-                    "- Medallions: Obtain the specified amount of medallions.\n"
-                    "- Dungeon rewards: Obtain the specified total sum of spiritual stones or medallions.\n"
-                    "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping in to the blue warp after the boss.\n"
-                    "- Tokens: Obtain the specified amount of Skulltula tokens.\n"
-                    "\n"
-                    "100 GS Reward - Ganon's Boss Key will be awarded by the cursed rich man after you collect 100 Gold Skulltula Tokens."
-                );
                 bool disableGBK = CVarGetInteger("gRandomizeTriforceHunt", 0);
                 static const char* disableGBKText = "This option is disabled because Triforce Hunt is enabled. Ganon's Boss key\nwill instead be given to you after Triforce Hunt completion.";
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey,
-                                               RO_GANON_BOSS_KEY_VANILLA, disableGBK, disableGBKText,
-                                               RO_GANON_BOSS_KEY_VANILLA);
+                ctx->GetOption(RSK_GANONS_BOSS_KEY).RenderImGui();
                 ImGui::PopItemWidth();
                 switch (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA)) {
                     case RO_GANON_BOSS_KEY_LACS_STONES:
-                        ImGui::Text("Reward Options");
-                        UIWidgets::InsertHelpHoverText(
-                            "Standard Rewards - Greg does not change logic, Greg does not help obtain GBK, max "
-                            "number of rewards on slider does not change.\n"
-                            "\n"
-                            "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
-                            "GBK), Greg helps obtain GBK, max number of rewards on slider increases by 1 to "
-                            "account for Greg. \n"
-                            "\n"
-                            "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
-                            "rewards on slider does not change.");
-
-                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions, RO_LACS_STANDARD_REWARD);
-                        switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
-                            case RO_LACS_STANDARD_REWARD:
-                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount", 
-                                                            "gRandomizeLacsStoneCount", 1, 3, "", 3, true, true, false);
-                                break;
-                            case RO_LACS_GREG_REWARD:
-                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount", 
-                                                            "gRandomizeLacsStoneCount", 1, 4, "", 4, true, true, false);
-                                break;
-                            case RO_LACS_WILDCARD_REWARD:
-                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount", 
-                                                            "gRandomizeLacsStoneCount", 1, 3, "", 3, true, true, false);
-                                break;
-                        }
+                        ctx->GetOption(RSK_LACS_OPTIONS).RenderImGui();
+                        ctx->GetOption(RSK_LACS_STONE_COUNT).RenderImGui();
                         break;
                     case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
-                        ImGui::Text("Reward Options");
-                        UIWidgets::InsertHelpHoverText(
-                            "Standard Rewards - Greg does not change logic, Greg does not help obtain GBK, max "
-                            "number of rewards on slider does not change.\n"
-                            "\n"
-                            "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
-                            "GBK), Greg helps obtain GBK, max number of rewards on slider increases by 1 to "
-                            "account for Greg. \n"
-                            "\n"
-                            "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
-                            "rewards on slider does not change.");
-
-                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions, RO_LACS_STANDARD_REWARD);
-                        switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
-                            case RO_LACS_STANDARD_REWARD:
-                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
-                                                            "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
-                                break;
-                            case RO_LACS_GREG_REWARD:
-                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
-                                                            "gRandomizeLacsMedallionCount", 1, 7, "", 7, true, true, false);
-                                break;
-                            case RO_LACS_WILDCARD_REWARD:
-                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
-                                                            "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
-                                break;
-                        }
+                        ctx->GetOption(RSK_LACS_OPTIONS).RenderImGui();
+                        ctx->GetOption(RSK_LACS_MEDALLION_COUNT).RenderImGui();
+                        // switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
+                        //     case RO_LACS_STANDARD_REWARD:
+                        //         UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
+                        //                                     "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
+                        //         break;
+                        //     case RO_LACS_GREG_REWARD:
+                        //         UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
+                        //                                     "gRandomizeLacsMedallionCount", 1, 7, "", 7, true, true, false);
+                        //         break;
+                        //     case RO_LACS_WILDCARD_REWARD:
+                        //         UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
+                        //                                     "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
+                        //         break;
+                        // }
                         break;
                     case RO_GANON_BOSS_KEY_LACS_REWARDS:
-                        ImGui::Text("Reward Options");
-                        UIWidgets::InsertHelpHoverText(
-                            "Standard Rewards - Greg does not change logic, Greg does not help obtain GBK, max "
-                            "number of rewards on slider does not change.\n"
-                            "\n"
-                            "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
-                            "GBK), Greg helps obtain GBK, max number of rewards on slider increases by 1 to "
-                            "account for Greg. \n"
-                            "\n"
-                            "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
-                            "rewards on slider does not change.");
-
-                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions, RO_LACS_STANDARD_REWARD);
-                        switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
-                            case RO_LACS_STANDARD_REWARD:
-                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
-                                                            "gRandomizeLacsRewardCount", 1, 9, "", 9, true, true, false);
-                                break;
-                            case RO_LACS_GREG_REWARD:
-                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
-                                                            "gRandomizeLacsRewardCount", 1, 10, "", 10, true, true, false);
-                                break;
-                            case RO_LACS_WILDCARD_REWARD:
-                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
-                                                            "gRandomizeLacsRewardCount", 1, 9, "", 9, true, true, false);
-                                break;
-                        }
+                        ctx->GetOption(RSK_LACS_OPTIONS).RenderImGui();
+                        ctx->GetOption(RSK_LACS_REWARD_COUNT).RenderImGui();
+                        // switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
+                        //     case RO_LACS_STANDARD_REWARD:
+                        //         UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
+                        //                                     "gRandomizeLacsRewardCount", 1, 9, "", 9, true, true, false);
+                        //         break;
+                        //     case RO_LACS_GREG_REWARD:
+                        //         UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
+                        //                                     "gRandomizeLacsRewardCount", 1, 10, "", 10, true, true, false);
+                        //         break;
+                        //     case RO_LACS_WILDCARD_REWARD:
+                        //         UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
+                        //                                     "gRandomizeLacsRewardCount", 1, 9, "", 9, true, true, false);
+                        //         break;
+                        // }
                         break;
                     case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
-                        ImGui::Text("Reward Options");
-                        UIWidgets::InsertHelpHoverText(
-                            "Standard Rewards - Greg does not change logic, Greg does not help obtain GBK, max "
-                            "number of rewards on slider does not change.\n"
-                            "\n"
-                            "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
-                            "GBK), Greg helps obtain GBK, max number of rewards on slider increases by 1 to "
-                            "account for Greg. \n"
-                            "\n"
-                            "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
-                            "rewards on slider does not change.");
-
-                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions, RO_LACS_STANDARD_REWARD);
-                        switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
-                            case RO_LACS_STANDARD_REWARD:
-                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
-                                                            "gRandomizeLacsDungeonCount", 1, 8, "", 8, true, true, false);
-                                break;
-                            case RO_LACS_GREG_REWARD:
-                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
-                                                            "gRandomizeLacsDungeonCount", 1, 9, "", 9, true, true, false);
-                                break;
-                            case RO_LACS_WILDCARD_REWARD:
-                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
-                                                            "gRandomizeLacsDungeonCount", 1, 8, "", 8, true, true, false);
-                                break;
-                        }
+                        ctx->GetOption(RSK_LACS_OPTIONS).RenderImGui();
+                        ctx->GetOption(RSK_LACS_DUNGEON_COUNT).RenderImGui();
+                        // switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
+                        //     case RO_LACS_STANDARD_REWARD:
+                        //         UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
+                        //                                     "gRandomizeLacsDungeonCount", 1, 8, "", 8, true, true, false);
+                        //         break;
+                        //     case RO_LACS_GREG_REWARD:
+                        //         UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
+                        //                                     "gRandomizeLacsDungeonCount", 1, 9, "", 9, true, true, false);
+                        //         break;
+                        //     case RO_LACS_WILDCARD_REWARD:
+                        //         UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
+                        //                                     "gRandomizeLacsDungeonCount", 1, 8, "", 8, true, true, false);
+                        //         break;
+                        // }
                         break;
                     case RO_GANON_BOSS_KEY_LACS_TOKENS:
-                        UIWidgets::PaddedEnhancementSliderInt("Token Count: %d", "##RandoLacsTokenCount",
-                                                        "gRandomizeLacsTokenCount", 1, 100, "", 100, true, true, false);
+                        ctx->GetOption(RSK_LACS_TOKEN_COUNT).RenderImGui();
                         break;
                     default:
                         break;
@@ -2693,11 +2303,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::BeginChild("ChildTimeSavers", ImVec2(0, -8));
 
                 // Cuccos to return
-                int cuccos = CVarGetInteger("gRandomizeCuccosToReturn", 7);
-                ImGui::Text("Cuccos to return: %d", cuccos);
-                UIWidgets::InsertHelpHoverText("The amount of cuccos needed to claim the reward from Anju the cucco lady");
-                ImGui::SameLine();
-                UIWidgets::EnhancementSliderInt("", "##RandoCuccosToReturn", "gRandomizeCuccosToReturn", 0, 7, "", 7);
+                ctx->GetOption(RSK_CUCCO_COUNT).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Big Poe Target Count
@@ -2708,42 +2314,27 @@ void RandomizerSettingsWindow::DrawElement() {
                 // Disabled when Skip Child Zelda is active
                 bool disableChildStealth = CVarGetInteger("gRandomizeSkipChildZelda", 0);
                 static const char* disableChildStealthText = "This option is disabled because \"Skip Child Zelda\" is enabled";
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SKIP_CHILD_STEALTH).GetName().c_str(), "gRandomizeSkipChildStealth", disableChildStealth, disableChildStealthText);
-                UIWidgets::InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.");
-
+                ctx->GetOption(RSK_SKIP_CHILD_STEALTH).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Skip child zelda
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SKIP_CHILD_ZELDA).GetName().c_str(), "gRandomizeSkipChildZelda");
-                UIWidgets::InsertHelpHoverText("Start with Zelda's Letter and the item Impa would normally give you and skip the sequence up "
-                                    "until after meeting Zelda. Disables the ability to shuffle Weird Egg.");
-
+                ctx->GetOption(RSK_SKIP_CHILD_ZELDA).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Skip Epona race
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SKIP_EPONA_RACE).GetName().c_str(), "gRandomizeSkipEponaRace");
-                UIWidgets::InsertHelpHoverText("Epona can be summoned with Epona's Song without needing to race Ingo.");
-
+                ctx->GetOption(RSK_SKIP_EPONA_RACE).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Skip tower escape
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SKIP_TOWER_ESCAPE).GetName().c_str(), "gRandomizeSkipTowerEscape");
-                UIWidgets::InsertHelpHoverText("The tower escape sequence between Ganondorf and Ganon will be skipped.");
-
+                ctx->GetOption(RSK_SKIP_TOWER_ESCAPE).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Complete mask quest
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_COMPLETE_MASK_QUEST).GetName().c_str(), "gRandomizeCompleteMaskQuest");
-                UIWidgets::InsertHelpHoverText("Once the happy mask shop is opened, all masks will be available to be borrowed.");
-
+                ctx->GetOption(RSK_COMPLETE_MASK_QUEST).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Skip Scarecrow Song
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_SKIP_SCARECROWS_SONG).GetName().c_str(), "gRandomizeSkipScarecrowsSong");
-                UIWidgets::InsertHelpHoverText(
-                    "Start with the ability to summon Pierre the scarecrow. Pulling out an ocarina in the usual locations will automatically summon him."
-                );
-
+                ctx->GetOption(RSK_SKIP_SCARECROWS_SONG).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 ImGui::EndChild();
@@ -2755,90 +2346,24 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Item Pool Settings
-                ImGui::Text("%s", ctx->GetOption(RSK_ITEM_POOL).GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Sets how many major items appear in the item pool.\n"
-                    "\n"
-                    "Plentiful - Extra major items are added to the pool.\n"
-                    "\n"
-                    "Balanced - Original item pool.\n"
-                    "\n"
-                    "Scarce - Some excess items are removed, including health upgrades.\n"
-                    "\n"
-                    "Minimal - Most excess items are removed."
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeItemPool", randoItemPool, RO_ITEM_POOL_BALANCED);
+                ctx->GetOption(RSK_ITEM_POOL).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Ice Traps
-                ImGui::Text("%s", ctx->GetOption(RSK_ICE_TRAPS).GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Sets how many items are replaced by ice traps.\n"
-                    "\n"
-                    "Off - No ice traps.\n"
-                    "\n"
-                    "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
-                    "\n"
-                    "Extra - Chance to replace added junk items with additional ice traps.\n"
-                    "\n"
-                    "Mayhem - All added junk items will be Ice Traps.\n"
-                    "\n"
-                    "Onslaught - All junk items will be replaced by Ice Traps, even those "
-                    "in the base pool."
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, RO_ICE_TRAPS_NORMAL);
-
+                ctx->GetOption(RSK_ICE_TRAPS).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Gossip Stone Hints
-                ImGui::Text("%s", ctx->GetOption(RSK_GOSSIP_STONE_HINTS).GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Allows Gossip Stones to provide hints on item locations. Hints mentioning "
-                    "\"Way of the Hero\" indicate a location that holds an item required to beat "
-                    "the seed.\n"
-                    "\n"
-                    "No hints - No hints will be given at all.\n"
-                    "\n"
-                    "Need Nothing - Hints are always available from Gossip Stones.\n"
-                    "\n"
-                    "Need Stone of Agony - Hints are only available after obtaining the Stone of Agony.\n"
-                    "\n"
-                    "Need Mask of Truth - Hints are only available whilst wearing the Mask of Truth.\n");
-                UIWidgets::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, RO_GOSSIP_STONES_NEED_NOTHING);
+                ctx->GetOption(RSK_GOSSIP_STONE_HINTS).RenderImGui();
                 if (CVarGetInteger("gRandomizeGossipStoneHints", RO_GOSSIP_STONES_NEED_NOTHING) != RO_GOSSIP_STONES_NONE) {
                     // Hint Clarity
                     UIWidgets::Spacer(0);
                     ImGui::Indent();
-                    ImGui::Text("%s", ctx->GetOption(RSK_HINT_CLARITY).GetName().c_str());
-                    UIWidgets::InsertHelpHoverText(
-                        "Sets the difficulty of hints.\n"
-                        "\n"
-                        "Obscure - Hints are unique for each item, but the writing may be cryptic.\n"
-                        "Ex: Kokiri Sword > a butter knife\n"
-                        "\n"
-                        "Ambiguous - Hints are clearly written, but may refer to more than one item.\n"
-                        "Ex: Kokiri Sword > a sword\n"
-                        "\n"
-                        "Clear - Hints are clearly written and are unique for each item.\n"
-                        "Ex: Kokiri Sword > the Kokiri Sword"
-                    );
-                    UIWidgets::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, RO_HINT_CLARITY_CLEAR);
+                    ctx->GetOption(RSK_HINT_CLARITY).RenderImGui();
 
                     // Hint Distribution
                     UIWidgets::Spacer(0);
-                    ImGui::Text("%s", ctx->GetOption(RSK_HINT_DISTRIBUTION).GetName().c_str());
-                    UIWidgets::InsertHelpHoverText(
-                        "Sets how many hints will be useful.\n"
-                        "\n"
-                        "Useless - Only junk hints.\n"
-                        "\n"
-                        "Balanced - Recommended hint spread.\n"
-                        "\n"
-                        "Strong - More useful hints.\n"
-                        "\n"
-                        "Very Strong - Many powerful hints."
-                    );
-                    UIWidgets::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, RO_HINT_DIST_BALANCED);
+                    ctx->GetOption(RSK_HINT_DISTRIBUTION).RenderImGui();
                     ImGui::Unindent();
                 }
 
@@ -2853,32 +2378,21 @@ void RandomizerSettingsWindow::DrawElement() {
                 
                 ImGui::Indent();
                 //Altar, Light Arrows, and Warp Songs are enabled by default
-                UIWidgets::PaddedEnhancementCheckbox("Altar Text", "gRandomizeAltarHint", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
-                UIWidgets::InsertHelpHoverText("Reading the Temple of Time altar as child will tell you the locations of the Spiritual Stones.\n"
-                    "Reading the Temple of Time altar as adult will tell you the locations of the Medallions, as well as the conditions for building the Rainbow Bridge and getting the Boss Key for Ganon's Castle.");
-                UIWidgets::PaddedEnhancementCheckbox("Light Arrows", "gRandomizeLAHint", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
-                UIWidgets::InsertHelpHoverText("Talking to Ganondorf in his boss room or Sheik inside Ganon's Castle (when trials are enabled) will tell you the location of the Light Arrows."
-                "If this option is enabled and Ganondorf is reachable without Light Arrows, Gossip Stones will never hint the Light Arrows.");
-                UIWidgets::PaddedEnhancementCheckbox("Dampe's Diary (Hookshot)", "gRandomizeDampeHint", true, false);
-                UIWidgets::InsertHelpHoverText("Reading the diary of Dampé the gravekeeper as adult will tell you the location of one of the Hookshots.");
-                UIWidgets::PaddedEnhancementCheckbox("Greg the Green Rupee", "gRandomizeGregHint", true, false);
-                UIWidgets::InsertHelpHoverText("Talking to the chest game owner after buying a key will tell you the location of Greg the Green Rupee.");
-                UIWidgets::PaddedEnhancementCheckbox("Saria (Magic)", "gRandomizeSariaHint", true, false);
-                UIWidgets::InsertHelpHoverText("Talking to Saria either in person or through Saria's Song will tell you the location of a progressive magic meter.");
-                UIWidgets::PaddedEnhancementCheckbox("Frog Ocarina Game", "gRandomizeFrogsHint", true, false);
-                UIWidgets::InsertHelpHoverText("Standing near the pedestal for the frogs in Zora's River will tell you the reward for the frogs' ocarina game.");
-                UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, !CVarGetInteger("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF),
-                 "This option is disabled since warp songs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
-                UIWidgets::InsertHelpHoverText("Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)");
-                UIWidgets::PaddedEnhancementCheckbox("Scrub Item text", "gRandomizeScrubText", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, false);
-                UIWidgets::InsertHelpHoverText("Business scrubs will reveal the identity of what they're selling.");
-                UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 10", "gRandomize10GSHint", true, false);
-                UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 20", "gRandomize20GSHint", true, false);
-                UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 30", "gRandomize30GSHint", true, false);                
-                UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 40", "gRandomize40GSHint", true, false);
-                UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 50", "gRandomize50GSHint", true, false);
+                ctx->GetOption(RSK_TOT_ALTAR_HINT).RenderImGui();
+                ctx->GetOption(RSK_LIGHT_ARROWS_HINT).RenderImGui();
+                ctx->GetOption(RSK_DAMPES_DIARY_HINT).RenderImGui();
+                ctx->GetOption(RSK_GREG_HINT).RenderImGui();
+                ctx->GetOption(RSK_SARIA_HINT).RenderImGui();
+                ctx->GetOption(RSK_FROGS_HINT).RenderImGui();
+                ctx->GetOption(RSK_WARP_SONG_HINTS).RenderImGui();
+                 //"This option is disabled since warp songs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
+                ctx->GetOption(RSK_SCRUB_TEXT_HINT).RenderImGui();
+                ctx->GetOption(RSK_KAK_10_SKULLS_HINT).RenderImGui();
+                ctx->GetOption(RSK_KAK_20_SKULLS_HINT).RenderImGui();
+                ctx->GetOption(RSK_KAK_30_SKULLS_HINT).RenderImGui();                
+                ctx->GetOption(RSK_KAK_40_SKULLS_HINT).RenderImGui();
+                ctx->GetOption(RSK_KAK_50_SKULLS_HINT).RenderImGui();
                 ImGui::Unindent();
-
 
                 UIWidgets::PaddedSeparator();
 
@@ -2891,47 +2405,21 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::BeginChild("ChildAdditionalFeatures", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
-                UIWidgets::EnhancementCheckbox("Full Wallets", "gRandomizeFullWallets");
-                UIWidgets::InsertHelpHoverText("Start with a full wallet. All wallet upgrades come filled with rupees.");
-
+                ctx->GetOption(RSK_FULL_WALLETS).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Bombchus in Logic
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC).GetName().c_str(), "gRandomizeBombchusInLogic");
-                UIWidgets::InsertHelpHoverText(
-                    "Bombchus are properly considered in logic.\n"
-                    "\n"
-                    "The first Bombchu pack will always be 20, and subsequent packs will be "
-                    "5 or 10 based on how many you have.\n"
-                    "Once found, they can be replenished at the Bombchu shop.\n"
-                    "\n"
-                    "Bombchu Bowling is opened by obtaining Bombchus."
-                );
-
+                ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Enable Bombchu Drops
-                UIWidgets::EnhancementCheckbox("Enable Bombchu Drops", "gRandomizeEnableBombchuDrops");
-                UIWidgets::InsertHelpHoverText(
-                    "Once you obtain bombchus for the first time, refills can be found in bushes and other places where bomb drops can normally spawn."
-                );
-
+                ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
-                UIWidgets::EnhancementCheckbox("Blue Fire Arrows", "gRandomizeBlueFireArrows");
-                UIWidgets::InsertHelpHoverText(
-                    "Ice Arrows act like Blue Fire, making them able to melt red ice. "
-                    "Item placement logic will respect this option, so it might be required to use this to progress."
-                );
-
+                ctx->GetOption(RSK_BLUE_FIRE_ARROWS).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
-                UIWidgets::EnhancementCheckbox("Sunlight Arrows", "gRandomizeSunlightArrows");
-                UIWidgets::InsertHelpHoverText(
-                    "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
-                    "Item placement logic will respect this option, so it might be required to use this to progress."
-                );
-
+                ctx->GetOption(RSK_SUNLIGHT_ARROWS).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 ImGui::PopItemWidth();
@@ -3087,35 +2575,16 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::TableNextRow();
                 ImGui::TableNextColumn();
                 ImGui::PushItemWidth(170.0);
-                ImGui::Text("Logic Rules");
-                UIWidgets::InsertHelpHoverText(
-                    "Glitchless - No glitches are required, but may require some minor tricks. Additional tricks may be enabled and disabled below.\n"
-                    "\n"
-                    //"Glitched - Glitches may be required to beat the game. You can disable and enable glitches below.\n"
-                    //"\n"
-                    "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, RO_LOGIC_GLITCHLESS);
+                ctx->GetOption(RSK_LOGIC_RULES).RenderImGui();
                 if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
                     ImGui::SameLine();
-                    UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_ALL_LOCATIONS_REACHABLE).GetName().c_str(), "gRandomizeAllLocationsReachable", false, "", UIWidgets::CheckboxGraphics::Cross, RO_GENERIC_ON);
-                    UIWidgets::InsertHelpHoverText(
-                        "When this options is enabled, the randomizer will "
-                        "guarantee that every item is obtainable and every "
-                        "location is reachable. When disabled, only "
-                        "required items and locations to beat the game "
-                        "will be guaranteed reachable."
-                    );
+                    ctx->GetOption(RSK_ALL_LOCATIONS_REACHABLE).RenderImGui();
                 }
 
                 UIWidgets::PaddedSeparator();
 
                 // Enable Glitch-Useful Cutscenes
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_ENABLE_GLITCH_CUTSCENES).GetName().c_str(), "gRandomizeEnableGlitchCutscenes");
-                UIWidgets::InsertHelpHoverText(
-                    "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
-                    "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise.");
-
+                ctx->GetOption(RSK_ENABLE_GLITCH_CUTSCENES).RenderImGui();
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
@@ -3516,14 +2985,13 @@ void RandomizerSettingsWindow::DrawElement() {
                 // Don't display this option if Dungeon Rewards are Shuffled to End of Dungeon.
                 // TODO: Show this but disabled when we have options for disabled Comboboxes.
                 if (CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) != RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
-                    ImGui::Text("%s", ctx->GetOption(RSK_LINKS_POCKET).GetName().c_str());
-                    UIWidgets::EnhancementCombobox("gRandomizeLinksPocket", randoLinksPocket, RO_LINKS_POCKET_DUNGEON_REWARD);
+                    ctx->GetOption(RSK_LINKS_POCKET).RenderImGui();
                     UIWidgets::PaddedSeparator();
                 }
 
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_STARTING_KOKIRI_SWORD).GetName().c_str(), "gRandomizeStartingKokiriSword");
+                ctx->GetOption(RSK_STARTING_KOKIRI_SWORD).RenderImGui();
                 UIWidgets::PaddedSeparator();
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_STARTING_DEKU_SHIELD).GetName().c_str(), "gRandomizeStartingDekuShield");
+                ctx->GetOption(RSK_STARTING_DEKU_SHIELD).RenderImGui();;
 
                 UIWidgets::PaddedSeparator();
 
@@ -3534,11 +3002,11 @@ void RandomizerSettingsWindow::DrawElement() {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildStartingItems", ImVec2(0, -8));
 
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_STARTING_OCARINA).GetName().c_str(), "gRandomizeStartingOcarina");
+                ctx->GetOption(RSK_STARTING_OCARINA).RenderImGui();
                 UIWidgets::PaddedSeparator();
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_STARTING_CONSUMABLES).GetName().c_str(), "gRandomizeStartingConsumables");
+                ctx->GetOption(RSK_STARTING_CONSUMABLES).RenderImGui();
                 UIWidgets::PaddedSeparator();
-                UIWidgets::EnhancementSliderInt("Gold Skulltula Tokens: %d", "##RandoStartingSkulltulaToken", "gRandomizeStartingSkulltulaToken", 0, 100, "", 0);
+                ctx->GetOption(RSK_STARTING_SKULLTULA_TOKEN).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 ImGui::EndChild();
@@ -3547,22 +3015,22 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildStartingSongs", ImVec2(0, -8));
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_STARTING_ZELDAS_LULLABY).GetName().c_str(), "gRandomizeStartingZeldasLullaby");
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_STARTING_EPONAS_SONG).GetName().c_str(), "gRandomizeStartingEponasSong");
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_STARTING_SARIAS_SONG).GetName().c_str(), "gRandomizeStartingSariasSong");
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_STARTING_SUNS_SONG).GetName().c_str(), "gRandomizeStartingSunsSong");
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_STARTING_SONG_OF_TIME).GetName().c_str(), "gRandomizeStartingSongOfTime");
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_STARTING_SONG_OF_STORMS).GetName().c_str(), "gRandomizeStartingSongOfStorms");
+                ctx->GetOption(RSK_STARTING_ZELDAS_LULLABY).RenderImGui();
+                ctx->GetOption(RSK_STARTING_EPONAS_SONG).RenderImGui();
+                ctx->GetOption(RSK_STARTING_SARIAS_SONG).RenderImGui();
+                ctx->GetOption(RSK_STARTING_SUNS_SONG).RenderImGui();
+                ctx->GetOption(RSK_STARTING_SONG_OF_TIME).RenderImGui();
+                ctx->GetOption(RSK_STARTING_SONG_OF_STORMS).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 ImGui::Text("Warp Songs");
                 UIWidgets::PaddedSeparator();
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_STARTING_MINUET_OF_FOREST).GetName().c_str(), "gRandomizeStartingMinuetOfForest");
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_STARTING_BOLERO_OF_FIRE).GetName().c_str(), "gRandomizeStartingBoleroOfFire");
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_STARTING_SERENADE_OF_WATER).GetName().c_str(), "gRandomizeStartingSerenadeOfWater");
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_STARTING_REQUIEM_OF_SPIRIT).GetName().c_str(), "gRandomizeStartingRequiemOfSpirit");
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_STARTING_NOCTURNE_OF_SHADOW).GetName().c_str(), "gRandomizeStartingNocturneOfShadow");
-                UIWidgets::EnhancementCheckbox(ctx->GetOption(RSK_STARTING_PRELUDE_OF_LIGHT).GetName().c_str(), "gRandomizeStartingPreludeOfLight");
+                ctx->GetOption(RSK_STARTING_MINUET_OF_FOREST).RenderImGui();
+                ctx->GetOption(RSK_STARTING_BOLERO_OF_FIRE).RenderImGui();
+                ctx->GetOption(RSK_STARTING_SERENADE_OF_WATER).RenderImGui();
+                ctx->GetOption(RSK_STARTING_REQUIEM_OF_SPIRIT).RenderImGui();
+                ctx->GetOption(RSK_STARTING_NOCTURNE_OF_SHADOW).RenderImGui();
+                ctx->GetOption(RSK_STARTING_PRELUDE_OF_LIGHT).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 ImGui::EndChild();

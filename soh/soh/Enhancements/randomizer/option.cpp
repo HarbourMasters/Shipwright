@@ -140,7 +140,6 @@ char* WrappedText(const char* text, unsigned int charactersPerLine) {
 
 void Option::RenderImGui() const {
     ImGui::BeginGroup();
-    UIWidgets::Spacer(0);
     switch (widgetType) {
         case WidgetType::Checkbox:
             RenderCheckbox();

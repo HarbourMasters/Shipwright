@@ -179,5 +179,343 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_MIX_OVERWORLD_ENTRANCES] = "Overworld entrances will be part of the mixed pool";
     mOptionDescriptions[RSK_MIX_INTERIOR_ENTRANCES] = "Interior entrances will be part of the mixed pool";
     mOptionDescriptions[RSK_MIX_GROTTO_ENTRANCES] = "Grotto entrances will be part of the mixed pool";
+    mOptionDescriptions[RSK_SHUFFLE_SONGS] =
+        "Song locations - Songs will only appear at locations that normally teach songs.\n"
+        "\n"
+        "Dungeon rewards - Songs appear after beating a major dungeon boss.\n"
+        "The 4 remaining songs are located at:\n"
+        "  - Zelda's lullaby location\n"
+        "  - Ice Cavern's Serenade of Water location\n"
+        "  - Bottom of the Well Lens of Truth location\n"
+        "  - Gerudo Training Ground's Ice Arrows location\n"
+        "\n"
+        "Anywhere - Songs can appear at any location.";
+    mOptionDescriptions[RSK_SHUFFLE_TOKENS] = "Shuffles Golden Skulltula Tokens into the item pool. This means "
+                                              "Golden Skulltulas can contain other items as well.\n"
+                                              "\n"
+                                              "Off - GS tokens will not be shuffled.\n"
+                                              "\n"
+                                              "Dungeons - Only shuffle GS tokens that are within dungeons.\n"
+                                              "\n"
+                                              "Overworld - Only shuffle GS tokens that are outside of dungeons.\n"
+                                              "\n"
+                                              "All Tokens - Shuffle all 100 GS tokens.";
+    mOptionDescriptions[RSK_SKULLS_SUNS_SONG] = "All Golden Skulltulas that require nighttime to appear will only be "
+                                                "expected to be collected after getting Sun's Song.";
+    mOptionDescriptions[RSK_SHUFFLE_KOKIRI_SWORD] =
+        "Shuffles the Kokiri Sword into the item pool.\n"
+        "\n"
+        "This will require the use of sticks until the Kokiri Sword is found.";
+    mOptionDescriptions[RSK_SHUFFLE_MASTER_SWORD] =
+        "Shuffles the Master Sword into the item pool.\n"
+        "\n"
+        "Adult Link will start with a second free item instead of the Master Sword.\n"
+        "If you haven't found the Master Sword before facing Ganon, you won't receive it during the fight.";
+    mOptionDescriptions[RSK_SHUFFLE_OCARINA] =
+        "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time into the item pool.\n"
+        "\n"
+        "This will require finding an Ocarina before being able to play songs.";
+    mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG] = "Shuffles the Weird Egg from Malon in to the item pool. Enabling "
+                                                 "\"Skip Child Zelda\" disables this feature.\n"
+                                                 "\n"
+                                                 "The Weird Egg is required to unlock several events:\n"
+                                                 "  - Zelda's Lullaby from Impa\n"
+                                                 "  - Saria's song in Sacred Forest Meadow\n"
+                                                 "  - Epona's song and chicken minigame at Lon Lon Ranch\n"
+                                                 "  - Zelda's letter for Kakariko gate (if set to closed)\n"
+                                                 "  - Happy Mask Shop sidequest\n";
+    mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] =
+        "Shuffles the Gerudo Membership Card into the item pool.\n"
+        "\n"
+        "The Gerudo Card is required to enter the Gerudo Training Grounds, opening "
+        "the gate to Haunted Wasteland and the Horseback Archery minigame.";
+    mOptionDescriptions[RSK_SHOPSANITY] = "Off - All shop items will be the same as vanilla.\n"
+                                          "\n"
+                                          "0 Items - Vanilla shop items will be shuffled among different shops.\n"
+                                          "\n"
+                                          "1-4 Items - Vanilla shop items will be shuffled among different shops, and "
+                                          "each shop will contain 1-4 non-vanilla shop items.\n"
+                                          "\n"
+                                          "Random - Vanilla shop items will be shuffled among different shops, and "
+                                          "each shop will contain a random number(1-4) of non-vanilla shop items.\n";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES] =
+        "Balanced - The default randomization. Shop prices for shopsanity items will range between 0 to 300 rupees, "
+        "with a bias towards values slightly below the middle of the range, in multiples of 5.\n "
+        "\n"
+        "X Wallet - Randomized between 5 and the wallet's max size, in multiples of 5";
+    mOptionDescriptions[RSK_SHOPSANITY_PRICES_AFFORDABLE] =
+        "Affordable prices per tier: starter = 10, adult = 105, giant = 205, tycoon = 505\n\n"
+        "Use this to enable wallet tier locking, but make shop items not as expensive as they could be.";
+    mOptionDescriptions[RSK_SHUFFLE_SCRUBS] =
+        "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the vanilla game "
+        "(PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.\n"
+        "\n"
+        "Affordable - Scrubs will be shuffled and their item will cost 10 rupees.\n"
+        "\n"
+        "Expensive - Scrubs will be shuffled and their item will cost the vanilla price.\n"
+        "\n"
+        "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n";
+    mOptionDescriptions[RSK_SHUFFLE_COWS] =
+        "Cows give a randomized item from the pool upon performing Epona's Song in front of them.";
+    mOptionDescriptions[RSK_SHUFFLE_MAGIC_BEANS] =
+        "Enabling this adds a pack of 10 beans to the item pool and changes the Magic Bean "
+        "Salesman to sell a random item at a price of 60 rupees.";
+    mOptionDescriptions[RSK_SHUFFLE_MERCHANTS] =
+        "Enabling this changes Medigoron, Granny and the Carpet Salesman to sell a random item "
+        "once at a high price (100 for Granny, 200 for the others).\n"
+        "A Giant's Knife and a pack of Bombchus will be added to the item pool, and "
+        "one of the bottles will contain a Blue Potion.\n\n"
+        "On (no hints) - Salesmen will be included but won't tell you what you'll get.\n"
+        "On (with hints) - Salesmen will be included and you'll know what you're buying.\n"
+        "\n"
+        "Granny's item will only be offered after you have traded in the Odd Mushroom when Shuffle Adult Trade is on. "
+        "Otherwise when off, you will need to have found the Claim Check to buy her item (simulating the trade quest "
+        "is complete).";
+    mOptionDescriptions[RSK_SHUFFLE_FROG_SONG_RUPEES] = "Shuffles 5 Purple Rupees into to the item pool, and allows\n"
+                                                        "you to earn items by playing songs at the Frog Choir.\n"
+                                                        "\n"
+                                                        "This setting does not effect the item earned from playing\n"
+                                                        "the Song of Storms and the frog song minigame.";
+    mOptionDescriptions[RSK_SHUFFLE_ADULT_TRADE] =
+        "Adds all of the adult trade quest items into the pool, each of which "
+        "can be traded for a unique reward.\n"
+        "\n"
+        "You will be able to choose which of your owned adult trade items is visible "
+        "in the inventory by selecting the item with A and using the control stick or "
+        "D-pad.\n"
+        "\n"
+        "If disabled, only the Claim Check will be found in the pool.";
+    mOptionDescriptions[RSK_SHUFFLE_100_GS_REWARD] =
+        "Shuffle the item the cursed rich man in the House of Skulltula gives when you "
+        "have collected all 100 Gold Skulltula Tokens.\n"
+        "\n"
+        "You can still talk to him multiple times to get Huge Rupees.";
+    mOptionDescriptions[RSK_SHUFFLE_DUNGEON_REWARDS] =
+        "Shuffles the location of spiritual stones and medallions.\n"
+        "\n"
+        "End of dungeons - Spiritual stones and medallions will be given as rewards "
+        "for beating major dungeons. Link will always start with one stone or medallion.\n"
+        "\n"
+        "Any dungeon - Spiritual stones and medallions can be found inside any dungeon.\n"
+        "\n"
+        "Overworld - Spiritual stones and medallions can only be found outside of dungeons.\n"
+        "\n"
+        "Anywhere - Spiritual stones and medallions can appear anywhere.";
+    mOptionDescriptions[RSK_SHUFFLE_MAPANDCOMPASS] =
+        "Start with - You will start with Maps & Compasses from all dungeons.\n"
+        "\n"
+        "Vanilla - Maps & Compasses will appear in their vanilla locations.\n"
+        "\n"
+        "Own dungeon - Maps & Compasses can only appear in their respective dungeon.\n"
+        "\n"
+        "Any dungeon - Maps & Compasses can only appear inside of any dungon.\n"
+        "\n"
+        "Overworld - Maps & Compasses can only appear outside of dungeons.\n"
+        "\n"
+        "Anywhere - Maps & Compasses can appear anywhere in the world.";
+    mOptionDescriptions[RSK_KEYSANITY] =
+        "Start with - You will start with all Small Keys from all dungeons.\n"
+        "\n"
+        "Vanilla - Small Keys will appear in their vanilla locations. "
+        "You start with 3 keys in Spirit Temple MQ because the vanilla key layout is not beatable in logic.\n"
+        "\n"
+        "Own dungeon - Small Keys can only appear in their respective dungeon. "
+        "If Fire Temple is not a Master Quest dungeon, the door to the Boss Key chest will be unlocked.\n"
+        "\n"
+        "Any dungeon - Small Keys can only appear inside of any dungon.\n"
+        "\n"
+        "Overworld - Small Keys can only appear outside of dungeons.\n"
+        "\n"
+        "Anywhere - Small Keys can appear anywhere in the world.";
+    mOptionDescriptions[RSK_KEYRINGS] =
+        "Keyrings will replace all small keys from a particular dungeon with a single keyring that awards all keys for "
+        "it's associated dungeon\n"
+        "\n"
+        "Off - No dungeons will have their keys replaced with keyrings.\n"
+        "\n"
+        "Random - A random amount of dungeons(0-8 or 9) will have their keys replaced with keyrings.\n"
+        "\n"
+        "Count - A specified amount of randomly selected dungeons will have their keys replaced with keyrings.\n"
+        "\n"
+        "Selection - Hand select which dungeons will have their keys replaced with keyrings.\n"
+        "\n"
+        "Selecting key ring for dungeons will have no effect if Small Keys are set to Start With or Vanilla.\n"
+        "\n"
+        "If Gerudo Fortress Carpenters is set to Normal, and Gerudo Fortress Keys is set to anything "
+        "other than Vanilla, then the maximum amount of Key Rings that can be selected by Random or "
+        "Count will be 9. Otherwise, the maximum amount of Key Rings will be 8.";
+    mOptionDescriptions[RSK_GERUDO_KEYS] = "Vanilla - Thieve's Hideout Keys will appear in their vanilla locations.\n"
+                                           "\n"
+                                           "Any dungeon - Thieve's Hideout Keys can only appear inside of any dungon.\n"
+                                           "\n"
+                                           "Overworld - Thieve's Hideout Keys can only appear outside of dungeons.\n"
+                                           "\n"
+                                           "Anywhere - Thieve's Hideout Keys can appear anywhere in the world.";
+    mOptionDescriptions[RSK_BOSS_KEYSANITY] = "Start with - You will start with Boss keys from all dungeons.\n"
+                                              "\n"
+                                              "Vanilla - Boss Keys will appear in their vanilla locations.\n"
+                                              "\n"
+                                              "Own dungeon - Boss Keys can only appear in their respective dungeon.\n"
+                                              "\n"
+                                              "Any dungeon - Boss Keys can only appear inside of any dungon.\n"
+                                              "\n"
+                                              "Overworld - Boss Keys can only appear outside of dungeons.\n"
+                                              "\n"
+                                              "Anywhere - Boss Keys can appear anywhere in the world.";
+    mOptionDescriptions[RSK_GANONS_BOSS_KEY] =
+        "Vanilla - Ganon's Boss Key will appear in the vanilla location.\n"
+        "\n"
+        "Own dungeon - Ganon's Boss Key can appear anywhere inside Ganon's Castle.\n"
+        "\n"
+        "Start with - Places Ganon's Boss Key in your starting inventory."
+        "\n"
+        "Any dungeon - Ganon's Boss Key Key can only appear inside of any dungon.\n"
+        "\n"
+        "Overworld - Ganon's Boss Key Key can only appear outside of dungeons.\n"
+        "\n"
+        "Anywhere - Ganon's Boss Key Key can appear anywhere in the world.\n"
+        "\n"
+        "LACS - These settings put the boss key on the Light Arrow Cutscene location, from Zelda in Temple of Time as "
+        "adult, with differing requirements:\n"
+        "- Vanilla: Obtain the Shadow Medallion and Spirit Medallion\n"
+        "- Stones: Obtain the specified amount of spiritual stones.\n"
+        "- Medallions: Obtain the specified amount of medallions.\n"
+        "- Dungeon rewards: Obtain the specified total sum of spiritual stones or medallions.\n"
+        "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping in to "
+        "the blue warp after the boss.\n"
+        "- Tokens: Obtain the specified amount of Skulltula tokens.\n"
+        "\n"
+        "100 GS Reward - Ganon's Boss Key will be awarded by the cursed rich man after you collect 100 Gold Skulltula "
+        "Tokens.";
+    mOptionDescriptions[RSK_LACS_OPTIONS] =
+        "Standard Rewards - Greg does not change logic, Greg does not help obtain GBK, max "
+        "number of rewards on slider does not change.\n"
+        "\n"
+        "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
+        "GBK), Greg helps obtain GBK, max number of rewards on slider increases by 1 to "
+        "account for Greg. \n"
+        "\n"
+        "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
+        "rewards on slider does not change.";
+    mOptionDescriptions[RSK_CUCCO_COUNT] = "The amount of cuccos needed to claim the reward from Anju the cucco lady";
+    mOptionDescriptions[RSK_BIG_POE_COUNT] = "The Poe collector will give a reward for turning in this many Big Poes.";
+    mOptionDescriptions[RSK_SKIP_CHILD_STEALTH] =
+        "The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.";
+    mOptionDescriptions[RSK_SKIP_CHILD_ZELDA] =
+        "Start with Zelda's Letter and the item Impa would normally give you and skip the sequence up "
+        "until after meeting Zelda. Disables the ability to shuffle Weird Egg.";
+    mOptionDescriptions[RSK_SKIP_EPONA_RACE] = "Epona can be summoned with Epona's Song without needing to race Ingo.";
+    mOptionDescriptions[RSK_SKIP_TOWER_ESCAPE] =
+        "The tower escape sequence between Ganondorf and Ganon will be skipped.";
+    mOptionDescriptions[RSK_COMPLETE_MASK_QUEST] =
+        "Once the happy mask shop is opened, all masks will be available to be borrowed.";
+    mOptionDescriptions[RSK_SKIP_SCARECROWS_SONG] =
+        "Start with the ability to summon Pierre the scarecrow. Pulling out an ocarina in the usual locations will "
+        "automatically summon him.";
+    mOptionDescriptions[RSK_ITEM_POOL] = "Sets how many major items appear in the item pool.\n"
+                                         "\n"
+                                         "Plentiful - Extra major items are added to the pool.\n"
+                                         "\n"
+                                         "Balanced - Original item pool.\n"
+                                         "\n"
+                                         "Scarce - Some excess items are removed, including health upgrades.\n"
+                                         "\n"
+                                         "Minimal - Most excess items are removed.";
+    mOptionDescriptions[RSK_ICE_TRAPS] = "Sets how many items are replaced by ice traps.\n"
+                                         "\n"
+                                         "Off - No ice traps.\n"
+                                         "\n"
+                                         "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
+                                         "\n"
+                                         "Extra - Chance to replace added junk items with additional ice traps.\n"
+                                         "\n"
+                                         "Mayhem - All added junk items will be Ice Traps.\n"
+                                         "\n"
+                                         "Onslaught - All junk items will be replaced by Ice Traps, even those "
+                                         "in the base pool.";
+    mOptionDescriptions[RSK_GOSSIP_STONE_HINTS] =
+        "Allows Gossip Stones to provide hints on item locations. Hints mentioning "
+        "\"Way of the Hero\" indicate a location that holds an item required to beat "
+        "the seed.\n"
+        "\n"
+        "No hints - No hints will be given at all.\n"
+        "\n"
+        "Need Nothing - Hints are always available from Gossip Stones.\n"
+        "\n"
+        "Need Stone of Agony - Hints are only available after obtaining the Stone of Agony.\n"
+        "\n"
+        "Need Mask of Truth - Hints are only available whilst wearing the Mask of Truth.\n";
+    mOptionDescriptions[RSK_HINT_CLARITY] =
+        "Sets the difficulty of hints.\n"
+        "\n"
+        "Obscure - Hints are unique for each item, but the writing may be cryptic.\n"
+        "Ex: Kokiri Sword > a butter knife\n"
+        "\n"
+        "Ambiguous - Hints are clearly written, but may refer to more than one item.\n"
+        "Ex: Kokiri Sword > a sword\n"
+        "\n"
+        "Clear - Hints are clearly written and are unique for each item.\n"
+        "Ex: Kokiri Sword > the Kokiri Sword";
+    mOptionDescriptions[RSK_HINT_DISTRIBUTION] = "Sets how many hints will be useful.\n"
+                                                 "\n"
+                                                 "Useless - Only junk hints.\n"
+                                                 "\n"
+                                                 "Balanced - Recommended hint spread.\n"
+                                                 "\n"
+                                                 "Strong - More useful hints.\n"
+                                                 "\n"
+                                                 "Very Strong - Many powerful hints.";
+    mOptionDescriptions[RSK_TOT_ALTAR_HINT] =
+        "Reading the Temple of Time altar as child will tell you the locations of the Spiritual Stones.\n"
+        "Reading the Temple of Time altar as adult will tell you the locations of the Medallions, as well as the "
+        "conditions for building the Rainbow Bridge and getting the Boss Key for Ganon's Castle.";
+    mOptionDescriptions[RSK_LIGHT_ARROWS_HINT] =
+        "Talking to Ganondorf in his boss room or Sheik inside Ganon's Castle (when trials are enabled) will tell you "
+        "the location of the Light Arrows."
+        "If this option is enabled and Ganondorf is reachable without Light Arrows, Gossip Stones will never hint the "
+        "Light Arrows.";
+    mOptionDescriptions[RSK_DAMPES_DIARY_HINT] =
+        "Reading the diary of Dampé the gravekeeper as adult will tell you the location of one of the Hookshots.";
+    mOptionDescriptions[RSK_GREG_HINT] =
+        "Talking to the chest game owner after buying a key will tell you the location of Greg the Green Rupee.";
+    mOptionDescriptions[RSK_SARIA_HINT] = "Talking to Saria either in person or through Saria's Song will tell you the "
+                                          "location of a progressive magic meter.";
+    mOptionDescriptions[RSK_FROGS_HINT] = "Standing near the pedestal for the frogs in Zora's River will tell you the "
+                                          "reward for the frogs' ocarina game.";
+    mOptionDescriptions[RSK_WARP_SONG_HINTS] = "Standing near the pedestal for the frogs in Zora's River will tell you "
+                                               "the reward for the frogs' ocarina game.";
+    mOptionDescriptions[RSK_SCRUB_TEXT_HINT] = "Business scrubs will reveal the identity of what they're selling.";
+    mOptionDescriptions[RSK_FULL_WALLETS] = "Start with a full wallet. All wallet upgrades come filled with rupees.";
+    mOptionDescriptions[RSK_BOMBCHUS_IN_LOGIC] =
+        "Bombchus are properly considered in logic.\n"
+        "\n"
+        "The first Bombchu pack will always be 20, and subsequent packs will be "
+        "5 or 10 based on how many you have.\n"
+        "Once found, they can be replenished at the Bombchu shop.\n"
+        "\n"
+        "Bombchu Bowling is opened by obtaining Bombchus.";
+    mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS] = "Once you obtain bombchus for the first time, refills can be found "
+                                                    "in bushes and other places where bomb drops can normally spawn.";
+    mOptionDescriptions[RSK_BLUE_FIRE_ARROWS] =
+        "Ice Arrows act like Blue Fire, making them able to melt red ice. "
+        "Item placement logic will respect this option, so it might be required to use this to progress.";
+    mOptionDescriptions[RSK_LIGHT_ARROWS_HINT] =
+        "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
+        "Item placement logic will respect this option, so it might be required to use this to progress.";
+    mOptionDescriptions[RSK_LOGIC_RULES] =
+        "Glitchless - No glitches are required, but may require some minor tricks. Additional tricks may be enabled "
+        "and disabled below.\n"
+        "\n"
+        //"Glitched - Glitches may be required to beat the game. You can disable and enable glitches below.\n"
+        //"\n"
+        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.";
+    mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE] = "When this options is enabled, the randomizer will "
+                                                       "guarantee that every item is obtainable and every "
+                                                       "location is reachable. When disabled, only "
+                                                       "required items and locations to beat the game "
+                                                       "will be guaranteed reachable.";
+    mOptionDescriptions[RSK_ENABLE_GLITCH_CUTSCENES] =
+        "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
+        "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise.";
 }
 } // namespace Rando
