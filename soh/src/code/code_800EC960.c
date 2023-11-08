@@ -2065,15 +2065,30 @@ void func_800EE404(void) {
 
 void Audio_OcaMemoryGameStart(u8 minigameRound) {
     u8 i;
+    u8 startingNotes = 3;
+    u8 roundOneCount = CVarGetInteger("gOcarinaGameRoundOneNotes", 5);
+    u8 roundTwoCount = CVarGetInteger("gOcarinaGameRoundTwoNotes", 6);
+    u8 roundThreeCount = CVarGetInteger("gOcarinaGameRoundThreeNotes", 8);
+    u8 modMinigameNoteCnts[] = { roundOneCount, roundTwoCount, roundThreeCount };
+
+    if (CVarGetInteger("gCustomizeOcarinaGame", 0)) {
+        startingNotes = CVarGetInteger("gOcarinaGameStartingNotes", 3);
+    } else {
+        startingNotes = 3;
+    }
 
     if (minigameRound > 2) {
         minigameRound = 2;
     }
 
     sOcaMinigameAppendPos = 0;
-    sOcaMinigameEndPos = sOcaMinigameNoteCnts[minigameRound];
+    if (CVarGetInteger("gCustomizeOcarinaGame", 0)) {
+        sOcaMinigameEndPos = modMinigameNoteCnts[minigameRound];
+    } else {
+        sOcaMinigameEndPos = sOcaMinigameNoteCnts[minigameRound];
+    }
 
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < startingNotes; i++) {
         Audio_OcaMemoryGameGenNote();
     }
 }

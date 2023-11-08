@@ -841,6 +841,25 @@ void DrawEnhancementsMenu() {
                     UIWidgets::Tooltip("Adjust the speed that the skull kids play notes");
                     UIWidgets::PaddedEnhancementCheckbox("Unlimited Playback Time", "gOcarinaUnlimitedFailTime", true, false, disabled, disabledTooltip);
                     UIWidgets::Tooltip("Removes the timer to play back the song");
+                    UIWidgets::PaddedEnhancementSliderInt("Number of Starting Notes: %d", "##OcarinaGameStartingNotes", "gOcarinaGameStartingNotes", 1, 8, "", 3, true, true, false,
+                                                          disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Adjust the number of notes the skull kids play to start the first round");
+                    int roundMin = CVarGetInteger("gOcarinaGameStartingNotes", 3);
+                    UIWidgets::PaddedEnhancementSliderInt("Round One Notes: %d", "##OcarinaGameRoundOne",
+                                                          "gOcarinaGameRoundOneNotes", roundMin, 8, "", 5, true, true,
+                                                          false,
+                                                          disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Adjust the number of notes you need to play to end the first round");
+                    UIWidgets::PaddedEnhancementSliderInt("Round Two Notes: %d", "##OcarinaGameRoundTwoNotes",
+                                                          "gOcarinaGameRoundTwoNotes", roundMin, 8, "", 6, true, true,
+                                                          false,
+                                                          disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Adjust the number of notes you need to play to end the second round");
+                    UIWidgets::PaddedEnhancementSliderInt("Round Three Notes: %d", "##OcarinaGameRoundThreeNotes",
+                                                          "gOcarinaGameRoundThreeNotes", roundMin, 8, "", 8, true, true,
+                                                          false,
+                                                          disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Adjust the number of notes you need to play to end the third round");
                     ImGui::EndMenu();
                 }
 
