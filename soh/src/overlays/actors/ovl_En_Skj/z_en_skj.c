@@ -1412,7 +1412,7 @@ void EnSkj_StartOcarinaMinigame(EnSkj* this, PlayState* play) {
     EnSkj_TurnPlayer(this, player);
 
     if (dialogState == TEXT_STATE_CLOSING) {
-        if (CVarGetInteger("gInstantOcarinaGameWin", 0)) {
+        if (CVarGetInteger("gInstantOcarinaGameWin", 0) && CVarGetInteger("gCustomizeOcarinaGame", 0)) {
             play->msgCtx.ocarinaMode = OCARINA_MODE_0F;
         } else {
             func_8010BD58(play, OCARINA_ACTION_MEMORY_GAME);
@@ -1470,7 +1470,8 @@ void EnSkj_WaitForPlayback(EnSkj* this, PlayState* play) {
                 break;
             case MSGMODE_MEMORY_GAME_PLAYER_PLAYING:
                 if (this->songFailTimer != 0) {
-                    if (CVarGetInteger("gOcarinaUnlimitedFailTime", 0) == 0) {
+                    if (CVarGetInteger("gOcarinaUnlimitedFailTime", 0) == 0 ||
+                        CVarGetInteger("gCustomizeOcarinaGame", 0) == 0) {
                         this->songFailTimer--;
                     }
                 } else { // took too long, game failed

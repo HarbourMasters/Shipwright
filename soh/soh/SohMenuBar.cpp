@@ -837,8 +837,6 @@ void DrawEnhancementsMenu() {
                     static const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
                     UIWidgets::PaddedEnhancementCheckbox("Instant Win", "gInstantOcarinaGameWin", true, false, disabled, disabledTooltip);
                     UIWidgets::Tooltip("Skips the lost woods ocarina game");
-                    UIWidgets::PaddedEnhancementCheckbox("Same Note", "gOcarinaGameOneNote", true, false, disabled, disabledTooltip);
-                    UIWidgets::Tooltip("Skull kids play the same note for the entire song");
                     UIWidgets::PaddedEnhancementSliderInt("Note Play Speed: %dx", "##OcarinaGameNoteSpeed", "gOcarinaGameNoteSpeed", 1, 5, "", 1, true, true, false, disabled, disabledTooltip);
                     UIWidgets::Tooltip("Adjust the speed that the skull kids play notes");
                     UIWidgets::PaddedEnhancementCheckbox("Unlimited Playback Time", "gOcarinaUnlimitedFailTime", true, false, disabled, disabledTooltip);
