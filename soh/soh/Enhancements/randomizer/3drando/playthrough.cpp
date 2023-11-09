@@ -25,7 +25,7 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     ctx->HintReset();
     Areas::AccessReset();
 
-    ctx->GetSettings()->UpdateSettings(excludedLocations, enabledTricks);
+    ctx->GetSettings()->FinalizeSettings(excludedLocations, enabledTricks);
     // once the settings have been finalized turn them into a string for hashing
     std::string settingsStr;
     for (const Rando::OptionGroup& optionGroup : ctx->GetSettings()->GetOptionGroups()) {

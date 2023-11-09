@@ -129,34 +129,6 @@ bool Option::IsCategory(OptionCategory category) const {
     return category == this->category;
 }
 
-// Automatically adds newlines to break up text longer than a specified number of characters
-// Manually included newlines will still be respected and reset the line length
-// If line is midword when it hits the limit, text should break at the last encountered space
-char* WrappedText(const char* text, unsigned int charactersPerLine) {
-    std::string newText(text);
-    const size_t tipLength = newText.length();
-    int lastSpace = -1;
-    int currentLineLength = 0;
-    for (unsigned int currentCharacter = 0; currentCharacter < tipLength; currentCharacter++) {
-        if (newText[currentCharacter] == '\n') {
-            currentLineLength = 0;
-            lastSpace = -1;
-            continue;
-        } else if (newText[currentCharacter] == ' ') {
-            lastSpace = currentCharacter;
-        }
-
-        if ((currentLineLength >= charactersPerLine) && (lastSpace >= 0)) {
-            newText[lastSpace] = '\n';
-            currentLineLength = currentCharacter - lastSpace - 1;
-            lastSpace = -1;
-        }
-        currentLineLength++;
-    }
-
-    return strdup(newText.c_str());
-}
-
 void Option::RenderImGui() const {
     ImGui::BeginGroup();
     switch (widgetType) {
@@ -218,6 +190,11 @@ void Option::RenderCombobox() const {
     }
     ImGui::Text("%s", name.c_str());
     uint8_t selected = CVarGetInteger(cvarName.c_str(), defaultOption);
+    if (selected >= options.size()) {
+        selected--;
+        CVarSetInteger(cvarName.c_str(), selected);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
     if (!description.empty()) {
         UIWidgets::InsertHelpHoverText(description.c_str());
     }
@@ -296,16 +273,15 @@ void Option::RenderSlider() const {
     }
 }
 
-OptionGroup::OptionGroup(std::string name, std::vector<Option*> options, OptionGroupType groupType, bool printInSpoiler,
-                         OptionGroupType containsType)
+OptionGroup::OptionGroup(std::string name, std::vector<Option*> options, OptionGroupType groupType, bool printInSpoiler)
     : mName(std::move(name)), mOptions(std::move(options)), mGroupType(groupType), mPrintInSpoiler(printInSpoiler),
-      mContainsType(containsType) {
+      mContainsType(OptionGroupType::DEFAULT) {
 }
 
 OptionGroup::OptionGroup(std::string name, std::vector<OptionGroup*> subGroups, OptionGroupType groupType,
-                         bool printInSpoiler, OptionGroupType containsType)
+                         bool printInSpoiler)
     : mName(std::move(name)), mSubGroups(std::move(subGroups)), mGroupType(groupType), mPrintInSpoiler(printInSpoiler),
-      mContainsType(containsType) {
+      mContainsType(OptionGroupType::SUBGROUP) {
 }
 
 OptionGroup OptionGroup::SubGroup(std::string name, std::vector<Option*> options, bool printInSpoiler) {
@@ -313,8 +289,7 @@ OptionGroup OptionGroup::SubGroup(std::string name, std::vector<Option*> options
 }
 
 OptionGroup OptionGroup::SubGroup(std::string name, std::vector<OptionGroup*> subGroups, bool printInSpoiler) {
-    return OptionGroup(std::move(name), std::move(subGroups), OptionGroupType::SUBGROUP, printInSpoiler,
-                       OptionGroupType::SUBGROUP);
+    return OptionGroup(std::move(name), std::move(subGroups), OptionGroupType::SUBGROUP, printInSpoiler);
 }
 
 const std::string& OptionGroup::GetName() const {

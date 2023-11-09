@@ -1104,10 +1104,14 @@ void Settings::UpdateOptionProperties() {
         ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS).Disable("Disabled because the currently selected Gerudo Fortress Carpenters\n"
             "setting and/or Gerudo Fortress Keys setting is incompatible with\n"
             "having a Gerudo Fortress Keyring.");
+    } else {
+        ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS).Enable();
     }
     if (CVarGetInteger("gRandomizeTriforceHunt", RO_GENERIC_OFF)) {
         ctx->GetOption(RSK_GANONS_BOSS_KEY).Disable("This option is disabled because Triforcce Hunt is enabled."
             "Ganon's Boss key\nwill instead be given to you after Triforce Hunt completion.");
+    } else {
+        ctx->GetOption(RSK_GANONS_BOSS_KEY).Enable();
     }
     uint8_t lacsOpts = CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD);
     switch (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA)) {
@@ -1172,7 +1176,7 @@ void Settings::UpdateOptionProperties() {
     }
 }
 
-void Settings::UpdateSettings(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks) {
+void Settings::FinalizeSettings(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks) {
     auto ctx = Rando::Context::GetInstance();
     if (!ctx->IsSpoilerLoaded()) {
         // If we've loaded a spoiler file, the settings have already been populated, so we
@@ -1182,28 +1186,54 @@ void Settings::UpdateSettings(std::set<RandomizerCheck> excludedLocations, std::
         // if we skip child zelda, we start with zelda's letter, and malon starts
         // at the ranch, so we should *not* shuffle the weird egg
         if (mOptions[RSK_SKIP_CHILD_ZELDA]) {
-            mOptions[RSK_SHUFFLE_WEIRD_EGG].SetSelectedIndex(0);
+            mOptions[RSK_SHUFFLE_WEIRD_EGG].SetSelectedIndex(RO_GENERIC_OFF);
         }
 
-        // Force 100 GS Shuffle if that's where Ganon's Boss Key is
-        if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
-            mOptions[RSK_SHUFFLE_100_GS_REWARD].SetSelectedIndex(1);
+        // With certain access settings, the seed is only beatable if Starting Age is set to Child.
+        if (mOptions[RSK_FOREST].Is(RO_FOREST_CLOSED) || (mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) &&
+            !mOptions[RSK_SHUFFLE_OCARINA])) {
+            mOptions[RSK_STARTING_AGE].SetSelectedIndex(RO_AGE_CHILD);
         }
 
         if (mOptions[RSK_TRIFORCE_HUNT]) {
             mOptions[RSK_GANONS_BOSS_KEY].SetSelectedIndex(RO_GANON_BOSS_KEY_TRIFORCE_HUNT);
         }
 
+        // Force 100 GS Shuffle if that's where Ganon's Boss Key is
+        if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
+            mOptions[RSK_SHUFFLE_100_GS_REWARD].SetSelectedIndex(1);
+        }
+        
+        // If we only have MQ, set all dungeons to MQ
         if (OTRGlobals::Instance->HasMasterQuest() && !OTRGlobals::Instance->HasOriginal()) {
             mOptions[RSK_MQ_DUNGEON_RANDOM].SetSelectedIndex(RO_MQ_DUNGEONS_SET_NUMBER);
             mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(12);
+            mOptions[RSK_MQ_DUNGEON_SET].SetSelectedIndex(RO_GENERIC_OFF);
         }
 
+        // If we don't have MQ, set all dungeons to Vanilla
         if (OTRGlobals::Instance->HasOriginal() && !OTRGlobals::Instance->HasMasterQuest()) {
             mOptions[RSK_MQ_DUNGEON_RANDOM].SetSelectedIndex(RO_MQ_DUNGEONS_NONE);
             mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(0);
+            mOptions[RSK_MQ_DUNGEON_SET].SetSelectedIndex(RO_GENERIC_OFF);
         }
 
+        // TODO: Historically we have forced the shuffle settings off when we have the corresponding start
+        // with setting on, but 3drando doesn't seem to actually do that. It seems like you can both shuffle
+        // them in the pool and start with them.
+        if (mOptions[RSK_STARTING_KOKIRI_SWORD]) {
+            mOptions[RSK_SHUFFLE_KOKIRI_SWORD].SetSelectedIndex(RO_GENERIC_OFF);
+        }
+
+        if (mOptions[RSK_STARTING_MASTER_SWORD]) {
+            mOptions[RSK_SHUFFLE_MASTER_SWORD].SetSelectedIndex(RO_GENERIC_OFF);
+        }
+
+        if (mOptions[RSK_STARTING_OCARINA].IsNot(RO_STARTING_OCARINA_OFF)) {
+            mOptions[RSK_SHUFFLE_OCARINA].SetSelectedIndex(RO_GENERIC_OFF);
+        }
+
+        // If any of the individual shuffle settings are on, turn on the main Shuffle Entrances option
         if (mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES].IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)
             || mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].IsNot(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)
             || mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES]
@@ -1213,9 +1243,10 @@ void Settings::UpdateSettings(std::set<RandomizerCheck> excludedLocations, std::
             mOptions[RSK_SHUFFLE_ENTRANCES].SetSelectedIndex(RO_GENERIC_ON);
         }
 
-        // ImGui has a slider which returns the actual number, which is off by one since
-        // the ImGui slider can't go down to 0 (the first index aka 1 big poe).
-        // TODO: Revisit Slider mOptions[RSK_BIG_POE_COUNT].SetSelectedIndex(cvarSettings[RSK_BIG_POE_COUNT] - 1);
+        if (mOptions[RSK_SHUFFLE_DUNGEON_REWARDS].Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
+            mOptions[RSK_LINKS_POCKET].SetSelectedIndex(RO_LINKS_POCKET_DUNGEON_REWARD);
+        }
+
         ctx->AddExcludedOptions();
         for (auto locationKey : ctx->everyPossibleLocation) {
             auto location = ctx->GetItemLocation(locationKey);
