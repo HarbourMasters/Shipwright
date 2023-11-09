@@ -5511,8 +5511,9 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
         case 11:
             player->actor.world.pos.z = 1360.0f;
             player->actor.speedXZ = 0.0f;
+            
             if (CVarGetInteger("gQuitFishingAtDoor", 0)) {
-            Fishing_QuitAtDoor(this, play);
+                Fishing_QuitAtDoor(this, play);
             }
 
             if (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) {
