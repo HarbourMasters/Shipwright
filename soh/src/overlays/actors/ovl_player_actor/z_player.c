@@ -2767,7 +2767,9 @@ s32 func_808358F0(Player* this, PlayState* play) {
         AnimationContext_SetCopyAll(play, this->skelAnime.limbCount, this->skelAnime2.jointTable,
                                     this->skelAnime.jointTable);
     } else {
-        LinkAnimation_Update(play, &this->skelAnime2);
+        if (!CVarGetInteger("gBoomerangSway", 0)) {
+            LinkAnimation_Update(play, &this->skelAnime2);
+        }
     }
 
     func_80834EB8(this, play);
@@ -4937,7 +4939,11 @@ s32 func_8083AD4C(PlayState* play, Player* this) {
             
             cameraMode = shouldUseBowCamera ? CAM_MODE_BOWARROW : CAM_MODE_SLINGSHOT;
         } else {
-            cameraMode = CAM_MODE_BOOMERANG;
+            if (CVarGetInteger("gBoomerangFirstPerson", 0)) {
+                cameraMode = CAM_MODE_FIRSTPERSON;
+            } else {
+                cameraMode = CAM_MODE_BOOMERANG;
+            }
         }
     } else {
         cameraMode = CAM_MODE_FIRSTPERSON;
@@ -10308,7 +10314,11 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
                     camMode = CAM_MODE_TALK;
                 } else if (this->stateFlags1 & PLAYER_STATE1_TARGET_LOCKED) {
                     if (this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG) {
-                        camMode = CAM_MODE_FOLLOWBOOMERANG;
+                        if (CVarGetInteger("gBoomerangFirstPerson", 0)) {
+                            camMode = CAM_MODE_TARGET;
+                        } else {
+                            camMode = CAM_MODE_FOLLOWBOOMERANG;
+                        }
                     } else {
                         camMode = CAM_MODE_FOLLOWTARGET;
                     }
@@ -10319,7 +10329,11 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
             } else if (this->stateFlags1 & PLAYER_STATE1_CHARGING_SPIN_ATTACK) {
                 camMode = CAM_MODE_CHARGE;
             } else if (this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG) {
-                camMode = CAM_MODE_FOLLOWBOOMERANG;
+                if (CVarGetInteger("gBoomerangFirstPerson", 0)) {
+                    camMode = CAM_MODE_TARGET;
+                } else {
+                    camMode = CAM_MODE_FOLLOWBOOMERANG;
+                }
                 Camera_SetParam(Play_GetCamera(play, 0), 8, this->boomerangActor);
             } else if (this->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE)) {
                 if (func_80833B2C(this)) {
