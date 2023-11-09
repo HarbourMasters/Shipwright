@@ -14,6 +14,8 @@
 #include <Utils/StringHelper.h>
 #include <libultraship/libultraship.h>
 
+#include "macros.h"
+
 #include "../../UIWidgets.hpp"
 
 namespace GameControlEditor {
@@ -217,11 +219,13 @@ namespace GameControlEditor {
     // CurrentPort is indexed started at 1 here due to the Generic tab, instead of 0 like in InputEditorWindow
     // Therefore CurrentPort - 1 must always be used inside this function instead of CurrentPort
     void DrawCustomButtons() {
-        auto inputEditorWindow = std::reinterpret_pointer_cast<LUS::InputEditorWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Input Editor"));
-        inputEditorWindow->DrawControllerSelect(CurrentPort - 1);
+        auto inputEditorWindow = std::dynamic_pointer_cast<LUS::InputEditorWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Input Editor"));
+        if (inputEditorWindow == nullptr) {
+            return;
+        }
         
-        inputEditorWindow->DrawButton("Modifier 1", BTN_MODIFIER1, CurrentPort - 1, &BtnReading);
-        inputEditorWindow->DrawButton("Modifier 2", BTN_MODIFIER2, CurrentPort - 1, &BtnReading);
+        // inputEditorWindow->DrawButtonLine("Modifier 1", CurrentPort - 1, BTN_MODIFIER1);
+        // inputEditorWindow->DrawButtonLine("Modifier 2", CurrentPort - 1, BTN_MODIFIER2);
     }
 
     void DrawCameraControlPanel(GameControlEditorWindow* window) {
@@ -389,8 +393,17 @@ namespace GameControlEditor {
                 DrawMiscControlPanel(this);
             } else {
                 DrawCustomButtons();
-                if (CurrentPort == 1 && LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0)->CanSetLed()) {
-                    DrawLEDControlPanel(this);
+                if (CurrentPort == 1) {
+                    bool showPanel = false;
+                    for (auto [id, mapping] : LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetLED()->GetAllLEDMappings()) {
+                        if (mapping->GetColorSource() == LED_COLOR_SOURCE_GAME) {
+                            showPanel = true;
+                            break;
+                        }
+                    }
+                    if (showPanel) {
+                        DrawLEDControlPanel(this);
+                    }
                 }
             }
         }
