@@ -120,14 +120,6 @@ typedef struct {
     };
 } struct_80854B18; // size = 0x08
 
-typedef struct {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
-    /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
-} struct_80858AC8; // size = 0x0A
-
 void func_80833770(PlayState* play, Player* this);
 void func_80833790(PlayState* play, Player* this);
 void func_8083379C(PlayState* play, Player* this);
@@ -4630,13 +4622,13 @@ s32 Player_HandleExitsAndVoids(PlayState* play, Player* this, CollisionPoly* pol
  * An offset is applied to the provided base position in the direction of shape y rotation.
  * The resulting position is stored in `dest`
  */
-void Player_GetRelativePosition(Player* this, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3) {
+void Player_GetRelativePosition(Player* this, Vec3f* base, Vec3f* offset, Vec3f* dest) {
     f32 cos = Math_CosS(this->actor.shape.rot.y);
     f32 sin = Math_SinS(this->actor.shape.rot.y);
 
-    arg3->x = arg1->x + ((arg2->x * cos) + (arg2->z * sin));
-    arg3->y = arg1->y + arg2->y;
-    arg3->z = arg1->z + ((arg2->z * cos) - (arg2->x * sin));
+    dest->x = base->x + ((offset->x * cos) + (offset->z * sin));
+    dest->y = base->y + offset->y;
+    dest->z = base->z + ((offset->z * cos) - (offset->x * sin));
 }
 
 Actor* Player_SpawnFairy(PlayState* play, Player* this, Vec3f* arg2, Vec3f* arg3, s32 type) {
@@ -4667,17 +4659,17 @@ f32 func_8083973C(PlayState* play, Player* this, Vec3f* arg2, Vec3f* arg3) {
  * Point B of the line is at player's world position offset by the entire `offset` vector.
  * Point A and B are always at the same height, meaning this is a horizontal line test.
  */
-s32 Player_PosVsWallLineTest(PlayState* play, Player* this, Vec3f* arg2, CollisionPoly** arg3, s32* arg4, Vec3f* arg5) {
-    Vec3f sp44;
-    Vec3f sp38;
+s32 Player_PosVsWallLineTest(PlayState* play, Player* this, Vec3f* offset, CollisionPoly** wallPoly, s32* bgId, Vec3f* posResult) {
+    Vec3f posA;
+    Vec3f posB;
 
-    sp44.x = this->actor.world.pos.x;
-    sp44.y = this->actor.world.pos.y + arg2->y;
-    sp44.z = this->actor.world.pos.z;
+    posA.x = this->actor.world.pos.x;
+    posA.y = this->actor.world.pos.y + offset->y;
+    posA.z = this->actor.world.pos.z;
 
-    Player_GetRelativePosition(this, &this->actor.world.pos, arg2, &sp38);
+    Player_GetRelativePosition(this, &this->actor.world.pos, offset, &posB);
 
-    return BgCheck_EntityLineTest1(&play->colCtx, &sp44, &sp38, arg5, arg3, true, false, false, true, arg4);
+    return BgCheck_EntityLineTest1(&play->colCtx, &posA, &posB, posResult, wallPoly, true, false, false, true, bgId);
 }
 
 s32 func_80839800(Player* this, PlayState* play) {
@@ -5037,17 +5029,17 @@ s32 func_8083A4A8(Player* this, PlayState* play) {
     return 1;
 }
 
-void func_8083A5C4(PlayState* play, Player* this, CollisionPoly* arg2, f32 arg3, LinkAnimationHeader* arg4) {
-    f32 sp24 = COLPOLY_GET_NORMAL(arg2->normal.x);
-    f32 sp20 = COLPOLY_GET_NORMAL(arg2->normal.z);
+void func_8083A5C4(PlayState* play, Player* this, CollisionPoly* arg2, f32 arg3, LinkAnimationHeader* anim) {
+    f32 nx = COLPOLY_GET_NORMAL(arg2->normal.x);
+    f32 nz = COLPOLY_GET_NORMAL(arg2->normal.z);
 
     Player_SetupAction(play, this, func_8084BBE4, 0);
     func_80832564(play, this);
-    Player_AnimPlayOnce(play, this, arg4);
+    Player_AnimPlayOnce(play, this, anim);
 
-    this->actor.world.pos.x -= (arg3 + 1.0f) * sp24;
-    this->actor.world.pos.z -= (arg3 + 1.0f) * sp20;
-    this->actor.shape.rot.y = this->currentYaw = Math_Atan2S(sp20, sp24);
+    this->actor.world.pos.x -= (arg3 + 1.0f) * nx;
+    this->actor.world.pos.z -= (arg3 + 1.0f) * nz;
+    this->actor.shape.rot.y = this->currentYaw = Math_Atan2S(nz, nx);
 
     func_80832224(this);
     Player_SkelAnimeResetPrevTranslRot(this);
@@ -6481,55 +6473,60 @@ s32 func_8083E0FC(Player* this, PlayState* play) {
     return 0;
 }
 
-void Player_GetSlopeDirection(CollisionPoly* arg0, Vec3f* arg1, s16* arg2) {
-    arg1->x = COLPOLY_GET_NORMAL(arg0->normal.x);
-    arg1->y = COLPOLY_GET_NORMAL(arg0->normal.y);
-    arg1->z = COLPOLY_GET_NORMAL(arg0->normal.z);
+void Player_GetSlopeDirection(CollisionPoly* floorPoly, Vec3f* slopeNormal, s16* downwardSlopeYaw) {
+    slopeNormal->x = COLPOLY_GET_NORMAL(floorPoly->normal.x);
+    slopeNormal->y = COLPOLY_GET_NORMAL(floorPoly->normal.y);
+    slopeNormal->z = COLPOLY_GET_NORMAL(floorPoly->normal.z);
 
-    *arg2 = Math_Atan2S(arg1->z, arg1->x);
+    *downwardSlopeYaw = Math_Atan2S(slopeNormal->z, slopeNormal->x);
 }
 
-s32 Player_HandleSlopes(PlayState* play, Player* this, CollisionPoly* arg2) {
-    static LinkAnimationHeader* D_80854590[] = {
+s32 Player_HandleSlopes(PlayState* play, Player* this, CollisionPoly* floorPoly) {
+    static LinkAnimationHeader* sSlopeSlipAnims[] = {
         &gPlayerAnim_link_normal_down_slope_slip,
         &gPlayerAnim_link_normal_up_slope_slip,
     };
     s32 pad;
-    s16 sp4A;
-    Vec3f sp3C;
-    s16 sp3A;
-    f32 temp1;
-    f32 temp2;
-    s16 temp3;
+    s16 playerVelYaw;
+    Vec3f slopeNormal;
+    s16 downwardSlopeYaw;
+    f32 slopeSlowdownSpeed;
+    f32 slopeSlowdownSpeedStep;
+    s16 velYawToDownwardSlope;
 
     if (!Player_InBlockingCsMode(play, this) && (func_8084F390 != this->func_674) &&
-        (SurfaceType_GetSlope(&play->colCtx, arg2, this->actor.floorBgId) == 1)) {
-        sp4A = Math_Atan2S(this->actor.velocity.z, this->actor.velocity.x);
-        Player_GetSlopeDirection(arg2, &sp3C, &sp3A);
-        temp3 = sp3A - sp4A;
+        (SurfaceType_GetSlope(&play->colCtx, floorPoly, this->actor.floorBgId) == 1)) {
+        playerVelYaw = Math_Atan2S(this->actor.velocity.z, this->actor.velocity.x);
+        Player_GetSlopeDirection(floorPoly, &slopeNormal, &downwardSlopeYaw);
+        velYawToDownwardSlope = downwardSlopeYaw - playerVelYaw;
 
-        if (ABS(temp3) > 16000) {
-            temp1 = (1.0f - sp3C.y) * 40.0f;
-            temp2 = (temp1 * temp1) * 0.015f;
-            if (temp2 < 1.2f) {
-                temp2 = 1.2f;
+        if (ABS(velYawToDownwardSlope) > 0x3E80) { // 87.9 degrees
+            // moving parallel or upwards on the slope, player does not slip but does slow down
+            slopeSlowdownSpeed = (1.0f - slopeNormal.y) * 40.0f;
+            slopeSlowdownSpeedStep = (slopeSlowdownSpeed * slopeSlowdownSpeed) * 0.015f;
+
+            if (slopeSlowdownSpeedStep < 1.2f) {
+                slopeSlowdownSpeedStep = 1.2f;
             }
-            this->windDirection = sp3A;
-            Math_StepToF(&this->windSpeed, temp1, temp2);
+
+            // slows down speed as player is climbing a slope
+            this->windDirection = downwardSlopeYaw;
+            Math_StepToF(&this->windSpeed, slopeSlowdownSpeed, slopeSlowdownSpeedStep);
         } else {
+            // moving downward on the slope, causing player to slip
             Player_SetupAction(play, this, func_8084F390, 0);
             func_80832564(play, this);
             if (sFloorShapePitch >= 0) {
                 this->unk_84F = 1;
             }
-            Player_AnimChangeLoopMorph(play, this, D_80854590[this->unk_84F]);
+            Player_AnimChangeLoopMorph(play, this, sSlopeSlipAnims[this->unk_84F]);
             this->linearVelocity = sqrtf(SQ(this->actor.velocity.x) + SQ(this->actor.velocity.z));
-            this->currentYaw = sp4A;
-            return 1;
+            this->currentYaw = playerVelYaw;
+            return true;
         }
     }
 
-    return 0;
+    return false;
 }
 
 // unknown data (unused)
@@ -6795,16 +6792,16 @@ s32 func_8083EB44(Player* this, PlayState* play) {
     return 0;
 }
 
-s32 func_8083EC18(Player* this, PlayState* play, u32 arg2) {
+s32 func_8083EC18(Player* this, PlayState* play, u32 wallFlags) {
     if (this->wallHeight >= 79.0f) {
         if (!(this->stateFlags1 & PLAYER_STATE1_IN_WATER) || (this->currentBoots == PLAYER_BOOTS_IRON) ||
             (this->actor.yDistToWater < this->ageProperties->unk_2C)) {
-            s32 sp8C = (arg2 & 8) ? 2 : 0;
+            s32 sp8C = (wallFlags & 8) ? 2 : 0;
 
-            if ((sp8C != 0) || (arg2 & 2) ||
+            if ((sp8C != 0) || (wallFlags & 2) ||
                 func_80041E4C(&play->colCtx, this->actor.wallPoly, this->actor.wallBgId)) {
                 f32 phi_f20;
-                CollisionPoly* sp84 = this->actor.wallPoly;
+                CollisionPoly* wallPoly = this->actor.wallPoly;
                 f32 sp80;
                 f32 sp7C;
                 f32 phi_f12;
@@ -6822,7 +6819,7 @@ s32 func_8083EC18(Player* this, PlayState* play, u32 arg2) {
                     Vec3f* sp44 = &sp50[0];
                     s32 pad;
 
-                    CollisionPoly_GetVerticesByBgId(sp84, this->actor.wallBgId, &play->colCtx, sp50);
+                    CollisionPoly_GetVerticesByBgId(wallPoly, this->actor.wallBgId, &play->colCtx, sp50);
 
                     sp80 = phi_f12 = sp44->x;
                     sp7C = phi_f14 = sp44->z;
@@ -6849,8 +6846,8 @@ s32 func_8083EC18(Player* this, PlayState* play, u32 arg2) {
                     sp80 = (sp80 + phi_f12) * 0.5f;
                     sp7C = (sp7C + phi_f14) * 0.5f;
 
-                    phi_f12 = ((this->actor.world.pos.x - sp80) * COLPOLY_GET_NORMAL(sp84->normal.z)) -
-                              ((this->actor.world.pos.z - sp7C) * COLPOLY_GET_NORMAL(sp84->normal.x));
+                    phi_f12 = ((this->actor.world.pos.x - sp80) * COLPOLY_GET_NORMAL(wallPoly->normal.z)) -
+                              ((this->actor.world.pos.z - sp7C) * COLPOLY_GET_NORMAL(wallPoly->normal.x));
                     sp48 = this->actor.world.pos.y - phi_f20;
 
                     phi_f20 = ((f32)(s32)((sp48 / 15.000000223517418) + 0.5) * 15.000000223517418) - sp48;
@@ -6858,50 +6855,50 @@ s32 func_8083EC18(Player* this, PlayState* play, u32 arg2) {
                 }
 
                 if (phi_f12 < 8.0f) {
-                    f32 sp3C = COLPOLY_GET_NORMAL(sp84->normal.x);
-                    f32 sp38 = COLPOLY_GET_NORMAL(sp84->normal.z);
+                    f32 wallPolyNormalX = COLPOLY_GET_NORMAL(wallPoly->normal.x);
+                    f32 wallPolyNormalZ = COLPOLY_GET_NORMAL(wallPoly->normal.z);
                     f32 sp34 = this->wallDistance;
-                    LinkAnimationHeader* sp30;
+                    LinkAnimationHeader* anim;
 
                     func_80836898(play, this, func_8083A3B0);
                     this->stateFlags1 |= PLAYER_STATE1_CLIMBING_LADDER;
                     this->stateFlags1 &= ~PLAYER_STATE1_IN_WATER;
 
-                    if ((sp8C != 0) || (arg2 & 2)) {
+                    if ((sp8C != 0) || (wallFlags & 2)) {
                         if ((this->unk_84F = sp8C) != 0) {
                             if (this->actor.bgCheckFlags & 1) {
-                                sp30 = &gPlayerAnim_link_normal_Fclimb_startA;
+                                anim = &gPlayerAnim_link_normal_Fclimb_startA;
                             } else {
-                                sp30 = &gPlayerAnim_link_normal_Fclimb_hold2upL;
+                                anim = &gPlayerAnim_link_normal_Fclimb_hold2upL;
                             }
                             sp34 = (this->ageProperties->unk_38 - 1.0f) - sp34;
                         } else {
-                            sp30 = this->ageProperties->unk_A4;
+                            anim = this->ageProperties->unk_A4;
                             sp34 = sp34 - 1.0f;
                         }
                         this->unk_850 = -2;
                         this->actor.world.pos.y += phi_f20;
                         this->actor.shape.rot.y = this->currentYaw = this->actor.wallYaw + 0x8000;
                     } else {
-                        sp30 = this->ageProperties->unk_A8;
+                        anim = this->ageProperties->unk_A8;
                         this->unk_850 = -4;
                         this->actor.shape.rot.y = this->currentYaw = this->actor.wallYaw;
                     }
 
-                    this->actor.world.pos.x = (sp34 * sp3C) + sp80;
-                    this->actor.world.pos.z = (sp34 * sp38) + sp7C;
+                    this->actor.world.pos.x = (sp34 * wallPolyNormalX) + sp80;
+                    this->actor.world.pos.z = (sp34 * wallPolyNormalZ) + sp7C;
                     func_80832224(this);
                     Math_Vec3f_Copy(&this->actor.prevPos, &this->actor.world.pos);
-                    Player_AnimPlayOnce(play, this, sp30);
+                    Player_AnimPlayOnce(play, this, anim);
                     Player_AnimReplaceApplyFlags(play, this, 0x9F);
 
-                    return 1;
+                    return true;
                 }
             }
         }
     }
 
-    return 0;
+    return false;
 }
 
 void func_8083F070(Player* this, LinkAnimationHeader* anim, PlayState* play) {
@@ -6909,47 +6906,58 @@ void func_8083F070(Player* this, LinkAnimationHeader* anim, PlayState* play) {
     LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, anim, (4.0f / 3.0f));
 }
 
-s32 Player_TryEnteringCrawlspace(Player* this, PlayState* play, u32 arg2) {
+/**
+ * @return true if Player chooses to enter crawlspace
+ */
+s32 Player_TryEnteringCrawlspace(Player* this, PlayState* play, u32 interactWallFlags) {
     CollisionPoly* wallPoly;
     Vec3f wallVertices[3];
-    f32 tempX;
-    f32 temp;
-    f32 tempZ;
-    f32 maxWallZ;
+    f32 xVertex1;
+    f32 xVertex2;
+    f32 zVertex1;
+    f32 zVertex2;
     s32 i;
 
-    if (!LINK_IS_ADULT && !(this->stateFlags1 & PLAYER_STATE1_IN_WATER) && (arg2 & 0x30)) {
+    if (!LINK_IS_ADULT && !(this->stateFlags1 & PLAYER_STATE1_IN_WATER) && (interactWallFlags & 0x30)) {
         wallPoly = this->actor.wallPoly;
         CollisionPoly_GetVerticesByBgId(wallPoly, this->actor.wallBgId, &play->colCtx, wallVertices);
 
-        // compute min and max x/z of wall vertices
-        tempX = temp = wallVertices[0].x;
-        tempZ = maxWallZ = wallVertices[0].z;
+        // Determines min and max vertices for x & z (edges of the crawlspace hole)
+        xVertex1 = xVertex2 = wallVertices[0].x;
+        zVertex1 = zVertex2 = wallVertices[0].z;
         for (i = 1; i < 3; i++) {
-            if (tempX > wallVertices[i].x) {
-                tempX = wallVertices[i].x;
-            } else if (temp < wallVertices[i].x) {
-                temp = wallVertices[i].x;
+            if (xVertex1 > wallVertices[i].x) {
+                // Update x min
+                xVertex1 = wallVertices[i].x;
+            } else if (xVertex2 < wallVertices[i].x) {
+                // Update x max
+                xVertex2 = wallVertices[i].x;
             }
 
-            if (tempZ > wallVertices[i].z) {
-                tempZ = wallVertices[i].z;
-            } else if (maxWallZ < wallVertices[i].z) {
-                maxWallZ = wallVertices[i].z;
+            if (zVertex1 > wallVertices[i].z) {
+                // Update z min
+                zVertex1 = wallVertices[i].z;
+            } else if (zVertex2 < wallVertices[i].z) {
+                // Update z max
+                zVertex2 = wallVertices[i].z;
             }
         }
 
-        // average min and max x/z of wall vertices
-        tempX = (tempX + temp) * 0.5f;
-        tempZ = (tempZ + maxWallZ) * 0.5f;
+        // XZ Center of the crawlspace hole
+        xVertex1 = (xVertex1 + xVertex2) * 0.5f;
+        zVertex1 = (zVertex1 + zVertex2) * 0.5f;
 
-        temp = ((this->actor.world.pos.x - tempX) * COLPOLY_GET_NORMAL(wallPoly->normal.z)) -
-               ((this->actor.world.pos.z - tempZ) * COLPOLY_GET_NORMAL(wallPoly->normal.x));
+        // Perpendicular (sideways) XZ-Distance from player pos to crawlspace line
+        // Uses y-component of crossproduct formula for the distance from a point to a line
+        xVertex2 = ((this->actor.world.pos.x - xVertex1) * COLPOLY_GET_NORMAL(wallPoly->normal.z)) -
+               ((this->actor.world.pos.z - zVertex1) * COLPOLY_GET_NORMAL(wallPoly->normal.x));
 
-        if (fabsf(temp) < 8.0f) {
+        if (fabsf(xVertex2) < 8.0f) {
+            // Give do-action prompt to "Enter on A" for the crawlspace
             this->stateFlags2 |= PLAYER_STATE2_DO_ACTION_ENTER;
 
             if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A)) {
+                // Enter Crawlspace
                 f32 wallPolyNormX = COLPOLY_GET_NORMAL(wallPoly->normal.x);
                 f32 wallPolyNormZ = COLPOLY_GET_NORMAL(wallPoly->normal.z);
                 f32 wallDistance = this->wallDistance;
@@ -6957,19 +6965,19 @@ s32 Player_TryEnteringCrawlspace(Player* this, PlayState* play, u32 arg2) {
                 func_80836898(play, this, func_8083A40C);
                 this->stateFlags2 |= PLAYER_STATE2_CRAWLING;
                 this->actor.shape.rot.y = this->currentYaw = this->actor.wallYaw + 0x8000;
-                this->actor.world.pos.x = tempX + (wallDistance * wallPolyNormX);
-                this->actor.world.pos.z = tempZ + (wallDistance * wallPolyNormZ);
+                this->actor.world.pos.x = xVertex1 + (wallDistance * wallPolyNormX);
+                this->actor.world.pos.z = zVertex1 + (wallDistance * wallPolyNormZ);
                 func_80832224(this);
                 this->actor.prevPos = this->actor.world.pos;
                 Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_start);
                 Player_AnimReplaceApplyFlags(play, this, 0x9D);
 
-                return 1;
+                return true;
             }
         }
     }
 
-    return 0;
+    return false;
 }
 
 s32 func_8083F360(PlayState* play, Player* this, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
@@ -9433,18 +9441,18 @@ s32 func_80845964(PlayState* play, Player* this, CsCmdActorAction* arg2, f32 arg
     return 0;
 }
 
-s32 func_80845BA0(PlayState* play, Player* arg1, f32* arg2, s32 arg3) {
-    f32 dx = arg1->unk_450.x - arg1->actor.world.pos.x;
-    f32 dz = arg1->unk_450.z - arg1->actor.world.pos.z;
+s32 func_80845BA0(PlayState* play, Player* this, f32* arg2, s32 arg3) {
+    f32 dx = this->unk_450.x - this->actor.world.pos.x;
+    f32 dz = this->unk_450.z - this->actor.world.pos.z;
     s32 sp2C = sqrtf(SQ(dx) + SQ(dz));
-    s16 yaw = Math_Vec3f_Yaw(&arg1->actor.world.pos, &arg1->unk_450);
+    s16 yaw = Math_Vec3f_Yaw(&this->actor.world.pos, &this->unk_450);
 
     if (sp2C < arg3) {
         *arg2 = 0.0f;
-        yaw = arg1->actor.shape.rot.y;
+        yaw = this->actor.shape.rot.y;
     }
 
-    if (func_80845964(play, arg1, NULL, *arg2, yaw, 2)) {
+    if (func_80845964(play, this, NULL, *arg2, yaw, 2)) {
         return 0;
     }
 
@@ -11513,7 +11521,13 @@ void Player_Update(Actor* thisx, PlayState* play) {
     GameInteractor_ExecuteOnPlayerUpdate();
 }
 
-static struct_80858AC8 D_80858AC8;
+typedef struct {
+    /* 0x0 */ Vec3s rot;
+    /* 0x6 */ Vec3s angVel;
+} BunnyEarKinematics; // size = 0xC
+
+static BunnyEarKinematics sBunnyEarKinematics;
+
 static Vec3s D_80858AD8[25];
 
 static Gfx* sMaskDlists[PLAYER_MASK_MAX - 1] = {
@@ -11523,8 +11537,7 @@ static Gfx* sMaskDlists[PLAYER_MASK_MAX - 1] = {
 
 static Vec3s D_80854864 = { 0, 0, 0 };
 
-void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
-                         OverrideLimbDrawOpa overrideLimbDraw) {
+void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList, OverrideLimbDrawOpa overrideLimbDraw) {
     static s32 D_8085486C = 255;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -11539,25 +11552,27 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
     if ((overrideLimbDraw == Player_OverrideLimbDrawGameplayDefault) && (this->currentMask != PLAYER_MASK_NONE)) {
         // Fixes a bug in vanilla where ice traps are rendered extremely large while wearing a bunny hood
         if (CVarGetInteger("gFixIceTrapWithBunnyHood", 1)) Matrix_Push();
-        Mtx* sp70 = Graph_Alloc(play->state.gfxCtx, 2 * sizeof(Mtx));
+        Mtx* bunnyEarMtx = Graph_Alloc(play->state.gfxCtx, 2 * sizeof(Mtx));
 
         if (this->currentMask == PLAYER_MASK_BUNNY) {
-            Vec3s sp68;
+            Vec3s earRot;
 
             FrameInterpolation_RecordActorPosRotMatrix();
-            gSPSegment(POLY_OPA_DISP++, 0x0B, sp70);
+            gSPSegment(POLY_OPA_DISP++, 0x0B, bunnyEarMtx);
 
-            sp68.x = D_80858AC8.unk_02 + 0x3E2;
-            sp68.y = D_80858AC8.unk_04 + 0xDBE;
-            sp68.z = D_80858AC8.unk_00 - 0x348A;
-            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVarGetFloat("gCosmetics.BunnyHood_EarLength", 0.0f), -240.0f - CVarGetFloat("gCosmetics.BunnyHood_EarSpread", 0.0f), &sp68);
-            MATRIX_TOMTX(sp70++);
+            // Right ear
+            earRot.x = sBunnyEarKinematics.rot.y + 0x3E2;
+            earRot.y = sBunnyEarKinematics.rot.z + 0xDBE;
+            earRot.z = sBunnyEarKinematics.rot.x - 0x348A;
+            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVarGetFloat("gCosmetics.BunnyHood_EarLength", 0.0f), -240.0f - CVarGetFloat("gCosmetics.BunnyHood_EarSpread", 0.0f), &earRot);
+            MATRIX_TOMTX(bunnyEarMtx++);
 
-            sp68.x = D_80858AC8.unk_02 - 0x3E2;
-            sp68.y = -0xDBE - D_80858AC8.unk_04;
-            sp68.z = D_80858AC8.unk_00 - 0x348A;
-            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVarGetFloat("gCosmetics.BunnyHood_EarLength", 0.0f), 240.0f + CVarGetFloat("gCosmetics.BunnyHood_EarSpread", 0.0f), &sp68);
-            MATRIX_TOMTX(sp70);
+            // Left ear
+            earRot.x = sBunnyEarKinematics.rot.y - 0x3E2;
+            earRot.y = -0xDBE - sBunnyEarKinematics.rot.z;
+            earRot.z = sBunnyEarKinematics.rot.x - 0x348A;
+            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVarGetFloat("gCosmetics.BunnyHood_EarLength", 0.0f), 240.0f + CVarGetFloat("gCosmetics.BunnyHood_EarSpread", 0.0f), &earRot);
+            MATRIX_TOMTX(bunnyEarMtx);
         }
 
        
@@ -14072,44 +14087,50 @@ void func_8084FF7C(Player* this) {
     }
 }
 
+/**
+ * Updates the Bunny Hood's floppy ears' rotation and velocity.
+ */
 void Player_UpdateBunnyEars(Player* this) {
-    s32 pad;
-    s16 sp2A;
-    s16 sp28;
-    s16 sp26;
+    Vec3s force;
+    s16 angle;
 
-    D_80858AC8.unk_06 -= D_80858AC8.unk_06 >> 3;
-    D_80858AC8.unk_08 -= D_80858AC8.unk_08 >> 3;
-    D_80858AC8.unk_06 += -D_80858AC8.unk_00 >> 2;
-    D_80858AC8.unk_08 += -D_80858AC8.unk_02 >> 2;
+    // Damping: decay by 1/8 the previous value each frame
+    sBunnyEarKinematics.angVel.x -= sBunnyEarKinematics.angVel.x >> 3;
+    sBunnyEarKinematics.angVel.y -= sBunnyEarKinematics.angVel.y >> 3;
+    
+    // Elastic restorative force
+    sBunnyEarKinematics.angVel.x += -sBunnyEarKinematics.rot.x >> 2;
+    sBunnyEarKinematics.angVel.y += -sBunnyEarKinematics.rot.y >> 2;
 
-    sp26 = this->actor.world.rot.y - this->actor.shape.rot.y;
+    // Forcing from motion relative to shape frame
+    angle = this->actor.world.rot.y - this->actor.shape.rot.y;
+    force.x = (s32)(this->actor.speedXZ * -200.0f * Math_CosS(angle) * (Rand_CenteredFloat(2.0f) + 10.0f)) & 0xFFFF;
+    force.y = (s32)(this->actor.speedXZ * 100.0f * Math_SinS(angle) * (Rand_CenteredFloat(2.0f) + 10.0f)) & 0xFFFF;
 
-    sp28 = (s32)(this->actor.speedXZ * -200.0f * Math_CosS(sp26) * (Rand_CenteredFloat(2.0f) + 10.0f)) & 0xFFFF;
-    sp2A = (s32)(this->actor.speedXZ * 100.0f * Math_SinS(sp26) * (Rand_CenteredFloat(2.0f) + 10.0f)) & 0xFFFF;
+    sBunnyEarKinematics.angVel.x += force.x >> 2;
+    sBunnyEarKinematics.angVel.y += force.y >> 2;
 
-    D_80858AC8.unk_06 += sp28 >> 2;
-    D_80858AC8.unk_08 += sp2A >> 2;
-
-    if (D_80858AC8.unk_06 > 6000) {
-        D_80858AC8.unk_06 = 6000;
-    } else if (D_80858AC8.unk_06 < -6000) {
-        D_80858AC8.unk_06 = -6000;
+    // Clamp both angular velocities to [-6000, 6000]
+    if (sBunnyEarKinematics.angVel.x > 6000) {
+        sBunnyEarKinematics.angVel.x = 6000;
+    } else if (sBunnyEarKinematics.angVel.x < -6000) {
+        sBunnyEarKinematics.angVel.x = -6000;
+    }
+    if (sBunnyEarKinematics.angVel.y > 6000) {
+        sBunnyEarKinematics.angVel.y = 6000;
+    } else if (sBunnyEarKinematics.angVel.y < -6000) {
+        sBunnyEarKinematics.angVel.y = -6000;
     }
 
-    if (D_80858AC8.unk_08 > 6000) {
-        D_80858AC8.unk_08 = 6000;
-    } else if (D_80858AC8.unk_08 < -6000) {
-        D_80858AC8.unk_08 = -6000;
-    }
+    // Add angular velocity to rotations
+    sBunnyEarKinematics.rot.x += sBunnyEarKinematics.angVel.x;
+    sBunnyEarKinematics.rot.y += sBunnyEarKinematics.angVel.y;
 
-    D_80858AC8.unk_00 += D_80858AC8.unk_06;
-    D_80858AC8.unk_02 += D_80858AC8.unk_08;
-
-    if (D_80858AC8.unk_00 < 0) {
-        D_80858AC8.unk_04 = D_80858AC8.unk_00 >> 1;
+    // swivel ears outwards if bending backwards
+    if (sBunnyEarKinematics.rot.x < 0) {
+        sBunnyEarKinematics.rot.z = sBunnyEarKinematics.rot.x >> 1;
     } else {
-        D_80858AC8.unk_04 = 0;
+        sBunnyEarKinematics.rot.z = 0;
     }
 }
 
