@@ -1312,60 +1312,88 @@ static ExplosiveInfo sExplosiveInfos[] = {
     { ITEM_BOMBCHU, ACTOR_EN_BOM_CHU },
 };
 
-static struct_80854190 D_80854190[] = {
+static struct_80854190 D_80854190[PLAYER_MWA_MAX] = {
+    /* PLAYER_MWA_FORWARD_SLASH_1H */
     { &gPlayerAnim_link_fighter_normal_kiru, &gPlayerAnim_link_fighter_normal_kiru_end,
       &gPlayerAnim_link_fighter_normal_kiru_endR, 1, 4 },
+    /* PLAYER_MWA_FORWARD_SLASH_2H */
     { &gPlayerAnim_link_fighter_Lnormal_kiru, &gPlayerAnim_link_fighter_Lnormal_kiru_end,
       &gPlayerAnim_link_anchor_Lnormal_kiru_endR, 1, 4 },
+    /* PLAYER_MWA_FORWARD_COMBO_1H */
     { &gPlayerAnim_link_fighter_normal_kiru_finsh, &gPlayerAnim_link_fighter_normal_kiru_finsh_end,
       &gPlayerAnim_link_anchor_normal_kiru_finsh_endR, 0, 5 },
+    /* PLAYER_MWA_FORWARD_COMBO_2H */
     { &gPlayerAnim_link_fighter_Lnormal_kiru_finsh, &gPlayerAnim_link_fighter_Lnormal_kiru_finsh_end,
       &gPlayerAnim_link_anchor_Lnormal_kiru_finsh_endR, 1, 7 },
+    /* PLAYER_MWA_RIGHT_SLASH_1H */
     { &gPlayerAnim_link_fighter_Lside_kiru, &gPlayerAnim_link_fighter_Lside_kiru_end,
       &gPlayerAnim_link_anchor_Lside_kiru_endR, 1, 4 },
+    /* PLAYER_MWA_RIGHT_SLASH_2H */
     { &gPlayerAnim_link_fighter_LLside_kiru, &gPlayerAnim_link_fighter_LLside_kiru_end,
       &gPlayerAnim_link_anchor_LLside_kiru_endL, 0, 5 },
+    /* PLAYER_MWA_RIGHT_COMBO_1H */
     { &gPlayerAnim_link_fighter_Lside_kiru_finsh, &gPlayerAnim_link_fighter_Lside_kiru_finsh_end,
       &gPlayerAnim_link_anchor_Lside_kiru_finsh_endR, 2, 8 },
+    /* PLAYER_MWA_RIGHT_COMBO_2H */
     { &gPlayerAnim_link_fighter_LLside_kiru_finsh, &gPlayerAnim_link_fighter_LLside_kiru_finsh_end,
       &gPlayerAnim_link_anchor_LLside_kiru_finsh_endR, 3, 8 },
+    /* PLAYER_MWA_LEFT_SLASH_1H */
     { &gPlayerAnim_link_fighter_Rside_kiru, &gPlayerAnim_link_fighter_Rside_kiru_end,
       &gPlayerAnim_link_anchor_Rside_kiru_endR, 0, 4 },
+    /* PLAYER_MWA_LEFT_SLASH_2H */
     { &gPlayerAnim_link_fighter_LRside_kiru, &gPlayerAnim_link_fighter_LRside_kiru_end,
       &gPlayerAnim_link_anchor_LRside_kiru_endR, 0, 5 },
+    /* PLAYER_MWA_LEFT_COMBO_1H */
     { &gPlayerAnim_link_fighter_Rside_kiru_finsh, &gPlayerAnim_link_fighter_Rside_kiru_finsh_end,
       &gPlayerAnim_link_anchor_Rside_kiru_finsh_endR, 0, 6 },
+    /* PLAYER_MWA_LEFT_COMBO_2H */
     { &gPlayerAnim_link_fighter_LRside_kiru_finsh, &gPlayerAnim_link_fighter_LRside_kiru_finsh_end,
       &gPlayerAnim_link_anchor_LRside_kiru_finsh_endL, 1, 5 },
+    /* PLAYER_MWA_STAB_1H */
     { &gPlayerAnim_link_fighter_pierce_kiru, &gPlayerAnim_link_fighter_pierce_kiru_end,
       &gPlayerAnim_link_anchor_pierce_kiru_endR, 0, 3 },
+    /* PLAYER_MWA_STAB_2H */
     { &gPlayerAnim_link_fighter_Lpierce_kiru, &gPlayerAnim_link_fighter_Lpierce_kiru_end,
       &gPlayerAnim_link_anchor_Lpierce_kiru_endL, 0, 3 },
+    /* PLAYER_MWA_STAB_COMBO_1H */
     { &gPlayerAnim_link_fighter_pierce_kiru_finsh, &gPlayerAnim_link_fighter_pierce_kiru_finsh_end,
       &gPlayerAnim_link_anchor_pierce_kiru_finsh_endR, 1, 9 },
+    /* PLAYER_MWA_STAB_COMBO_2H */
     { &gPlayerAnim_link_fighter_Lpierce_kiru_finsh, &gPlayerAnim_link_fighter_Lpierce_kiru_finsh_end,
       &gPlayerAnim_link_anchor_Lpierce_kiru_finsh_endR, 1, 8 },
+    /* PLAYER_MWA_FLIPSLASH_START */
     { &gPlayerAnim_link_fighter_jump_rollkiru, &gPlayerAnim_link_fighter_jump_kiru_finsh,
       &gPlayerAnim_link_fighter_jump_kiru_finsh, 1, 10 },
+    /* PLAYER_MWA_JUMPSLASH_START */
     { &gPlayerAnim_link_fighter_Lpower_jump_kiru, &gPlayerAnim_link_fighter_Lpower_jump_kiru_hit,
       &gPlayerAnim_link_fighter_Lpower_jump_kiru_hit, 1, 11 },
+    /* PLAYER_MWA_FLIPSLASH_FINISH */
     { &gPlayerAnim_link_fighter_jump_kiru_finsh, &gPlayerAnim_link_fighter_jump_kiru_finsh_end,
       &gPlayerAnim_link_fighter_jump_kiru_finsh_end, 1, 2 },
+    /* PLAYER_MWA_JUMPSLASH_FINISH */
     { &gPlayerAnim_link_fighter_Lpower_jump_kiru_hit, &gPlayerAnim_link_fighter_Lpower_jump_kiru_end,
       &gPlayerAnim_link_fighter_Lpower_jump_kiru_end, 1, 2 },
+    /* PLAYER_MWA_BACKSLASH_RIGHT */
     { &gPlayerAnim_link_fighter_turn_kiruR, &gPlayerAnim_link_fighter_turn_kiruR_end,
       &gPlayerAnim_link_fighter_turn_kiruR_end, 1, 5 },
+    /* PLAYER_MWA_BACKSLASH_LEFT */
     { &gPlayerAnim_link_fighter_turn_kiruL, &gPlayerAnim_link_fighter_turn_kiruL_end,
       &gPlayerAnim_link_fighter_turn_kiruL_end, 1, 4 },
+    /* PLAYER_MWA_HAMMER_FORWARD */
     { &gPlayerAnim_link_hammer_hit, &gPlayerAnim_link_hammer_hit_end, &gPlayerAnim_link_hammer_hit_endR, 3, 10 },
+    /* PLAYER_MWA_HAMMER_SIDE */
     { &gPlayerAnim_link_hammer_side_hit, &gPlayerAnim_link_hammer_side_hit_end, &gPlayerAnim_link_hammer_side_hit_endR,
       2, 11 },
+    /* PLAYER_MWA_SPIN_ATTACK_1H */
     { &gPlayerAnim_link_fighter_rolling_kiru, &gPlayerAnim_link_fighter_rolling_kiru_end,
       &gPlayerAnim_link_anchor_rolling_kiru_endR, 0, 12 },
+    /* PLAYER_MWA_SPIN_ATTACK_2H */
     { &gPlayerAnim_link_fighter_Lrolling_kiru, &gPlayerAnim_link_fighter_Lrolling_kiru_end,
       &gPlayerAnim_link_anchor_Lrolling_kiru_endR, 0, 15 },
+    /* PLAYER_MWA_BIG_SPIN_1H */
     { &gPlayerAnim_link_fighter_Wrolling_kiru, &gPlayerAnim_link_fighter_Wrolling_kiru_end,
       &gPlayerAnim_link_anchor_rolling_kiru_endR, 0, 16 },
+    /* PLAYER_MWA_BIG_SPIN_2H */
     { &gPlayerAnim_link_fighter_Wrolling_kiru, &gPlayerAnim_link_fighter_Wrolling_kiru_end,
       &gPlayerAnim_link_anchor_Lrolling_kiru_endR, 0, 16 },
 };
@@ -1400,8 +1428,8 @@ static LinkAnimationHeader* D_80854378[] = {
     &gPlayerAnim_link_fighter_Lpower_kiru_side_walk,
 };
 
-static u8 D_80854380[2] = { 0x18, 0x19 };
-static u8 D_80854384[2] = { 0x1A, 0x1B };
+static u8 D_80854380[2] = { PLAYER_MWA_SPIN_ATTACK_1H, PLAYER_MWA_SPIN_ATTACK_2H };
+static u8 D_80854384[2] = { PLAYER_MWA_BIG_SPIN_1H, PLAYER_MWA_BIG_SPIN_2H };
 
 static u16 sItemButtons[] = { BTN_B, BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT };
 
@@ -2121,7 +2149,7 @@ void func_80833A20(Player* this, s32 newMeleeWeaponState) {
         voiceSfx = NA_SE_VO_LI_SWORD_N;
         if (this->heldItemAction == PLAYER_IA_HAMMER) {
             itemSfx = NA_SE_IT_HAMMER_SWING;
-        } else if (this->meleeWeaponAnimation >= 0x18) {
+        } else if (this->meleeWeaponAnimation >= PLAYER_MWA_SPIN_ATTACK_1H) {
             itemSfx = 0;
             voiceSfx = NA_SE_VO_LI_SWORD_L;
         } else if (this->unk_845 >= 3) {
@@ -2133,7 +2161,8 @@ void func_80833A20(Player* this, s32 newMeleeWeaponState) {
             func_808328EC(this, itemSfx);
         }
 
-        if ((this->meleeWeaponAnimation < 0x10) || (this->meleeWeaponAnimation >= 0x14)) {
+        if (!((this->meleeWeaponAnimation >= PLAYER_MWA_FLIPSLASH_START) &&
+              (this->meleeWeaponAnimation <= PLAYER_MWA_JUMPSLASH_FINISH))) {
             func_80832698(this, voiceSfx);
         }
 
@@ -3745,8 +3774,8 @@ s32 func_808375D8(Player* this) {
 void func_80837704(PlayState* play, Player* this) {
     LinkAnimationHeader* anim;
 
-    if ((this->meleeWeaponAnimation >= 4) &&
-        (this->meleeWeaponAnimation < 8)) {
+    if ((this->meleeWeaponAnimation >= PLAYER_MWA_RIGHT_SLASH_1H) &&
+        (this->meleeWeaponAnimation <= PLAYER_MWA_RIGHT_COMBO_2H)) {
         anim = D_80854358[Player_HoldsTwoHandedWeapon(this)];
     } else {
         anim = D_80854350[Player_HoldsTwoHandedWeapon(this)];
@@ -3762,8 +3791,18 @@ void func_808377DC(PlayState* play, Player* this) {
     func_80837704(play, this);
 }
 
-static s8 D_80854480[] = { 12, 4, 4, 8 };
-static s8 D_80854484[] = { 22, 23, 22, 23 };
+static s8 D_80854480[] = {
+    PLAYER_MWA_STAB_1H,
+    PLAYER_MWA_RIGHT_SLASH_1H,
+    PLAYER_MWA_RIGHT_SLASH_1H,
+    PLAYER_MWA_LEFT_SLASH_1H,
+};
+static s8 D_80854484[] = {
+    PLAYER_MWA_HAMMER_FORWARD,
+    PLAYER_MWA_HAMMER_SIDE,
+    PLAYER_MWA_HAMMER_FORWARD,
+    PLAYER_MWA_HAMMER_SIDE,
+};
 
 s32 func_80837818(Player* this) {
     s32 sp1C = this->unk_84B[this->unk_846];
@@ -3777,25 +3816,25 @@ s32 func_80837818(Player* this) {
         this->unk_845 = 0;
     } else {
         if (func_808375D8(this)) {
-            sp18 = 24;
+            sp18 = PLAYER_MWA_SPIN_ATTACK_1H;
         } else {
             if (sp1C < 0) {
                 if (func_80833BCC(this)) {
-                    sp18 = 0;
+                    sp18 = PLAYER_MWA_FORWARD_SLASH_1H;
                 } else {
-                    sp18 = 4;
+                    sp18 = PLAYER_MWA_RIGHT_SLASH_1H;
                 }
             } else {
                 sp18 = D_80854480[sp1C];
-                if (sp18 == 12) {
+                if (sp18 == PLAYER_MWA_STAB_1H) {
                     this->stateFlags2 |= PLAYER_STATE2_SWORD_LUNGE;
                     if (!func_80833BCC(this)) {
-                        sp18 = 0;
+                        sp18 = PLAYER_MWA_FORWARD_SLASH_1H;
                     }
                 }
             }
             if (this->heldItemAction == PLAYER_IA_DEKU_STICK) {
-                sp18 = 0;
+                sp18 = PLAYER_MWA_FORWARD_SLASH_1H;
             }
         }
         if (Player_HoldsTwoHandedWeapon(this)) {
@@ -3828,7 +3867,7 @@ void func_80837948(PlayState* play, Player* this, s32 arg2) {
 
     Player_SetupAction(play, this, func_808502D0, 0);
     this->unk_844 = 8;
-    if ((arg2 < 18) || (arg2 >= 20)) {
+    if (!((arg2 >= PLAYER_MWA_FLIPSLASH_FINISH) && (arg2 <= PLAYER_MWA_JUMPSLASH_FINISH))) {
         func_80832318(this);
     }
 
@@ -3844,7 +3883,7 @@ void func_80837948(PlayState* play, Player* this, s32 arg2) {
     this->meleeWeaponAnimation = arg2;
 
     Player_AnimPlayOnceAdjusted(play, this, D_80854190[arg2].unk_00);
-    if ((arg2 != 16) && (arg2 != 17)) {
+    if ((arg2 != PLAYER_MWA_FLIPSLASH_START) && (arg2 != PLAYER_MWA_JUMPSLASH_START)) {
         Player_AnimReplaceApplyFlags(play, this, 0x209);
     }
 
@@ -3856,7 +3895,7 @@ void func_80837948(PlayState* play, Player* this, s32 arg2) {
         temp = Player_GetMeleeWeaponHeld(this) - 1;
     }
 
-    if ((arg2 >= 16) && (arg2 < 20)) {
+    if ((arg2 >= PLAYER_MWA_FLIPSLASH_START) && (arg2 <= PLAYER_MWA_JUMPSLASH_FINISH)) {
         if (CVarGetInteger("gRestoreQPA", 1) && temp == -1) {
             dmgFlags = 0x16171617;
         }
@@ -5561,7 +5600,7 @@ s32 func_8083BB20(Player* this) {
 
 s32 func_8083BBA0(Player* this, PlayState* play) {
     if (func_8083BB20(this) && (sFloorType != 7)) {
-        func_8083BA90(play, this, 17, 3.0f, 4.5f);
+        func_8083BA90(play, this, PLAYER_MWA_JUMPSLASH_START, 3.0f, 4.5f);
         return 1;
     }
 
@@ -5618,7 +5657,7 @@ s32 func_8083BDBC(Player* this, PlayState* play) {
                     }
                 } else {
                     if (Player_GetMeleeWeaponHeld(this) && Player_CanUpdateItems(this)) {
-                        func_8083BA90(play, this, 17, 5.0f, 5.0f);
+                        func_8083BA90(play, this, PLAYER_MWA_JUMPSLASH_START, 5.0f, 5.0f);
                     } else {
                         func_8083BC04(this, play);
                     }
@@ -8190,7 +8229,7 @@ s32 func_808428D8(Player* this, PlayState* play) {
 
     Player_AnimPlayOnce(play, this, &gPlayerAnim_link_normal_defense_kiru);
     this->unk_84F = 1;
-    this->meleeWeaponAnimation = 0xC;
+    this->meleeWeaponAnimation = PLAYER_MWA_STAB_1H;
     this->currentYaw = this->actor.shape.rot.y + this->unk_6BE;
 
     if (!CVarGetInteger("gCrouchStabHammerFix", 0)) {
@@ -8319,7 +8358,7 @@ s32 func_80842DF4(PlayState* play, Player* this) {
     s32 sp48;
 
     if (this->meleeWeaponState > 0) {
-        if (this->meleeWeaponAnimation < 0x18) {
+        if (this->meleeWeaponAnimation < PLAYER_MWA_SPIN_ATTACK_1H) {
             if (!(this->meleeWeaponQuads[0].base.atFlags & AT_BOUNCED) && !(this->meleeWeaponQuads[1].base.atFlags & AT_BOUNCED)) {
                 if (this->skelAnime.curFrame >= 2.0f) {
 
@@ -8375,7 +8414,7 @@ s32 func_80842DF4(PlayState* play, Player* this) {
         temp1 = (this->meleeWeaponQuads[0].base.atFlags & AT_HIT) || (this->meleeWeaponQuads[1].base.atFlags & AT_HIT);
 
         if (temp1) {
-            if (this->meleeWeaponAnimation < 0x18) {
+            if (this->meleeWeaponAnimation < PLAYER_MWA_SPIN_ATTACK_1H) {
                 Actor* at = this->meleeWeaponQuads[temp1 ? 1 : 0].base.at;
 
                 if ((at != NULL) && (at->id != ACTOR_EN_KANBAN)) {
@@ -10626,7 +10665,8 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
                 }
             } else if (this->stateFlags1 & PLAYER_STATE1_FREEFALL) {
                 camMode = CAM_MODE_FREEFALL;
-            } else if ((this->meleeWeaponState != 0) && (this->meleeWeaponAnimation >= 0) && (this->meleeWeaponAnimation < 0x18)) {
+            } else if ((this->meleeWeaponState != 0) && (this->meleeWeaponAnimation >= PLAYER_MWA_FORWARD_SLASH_1H) &&
+                       (this->meleeWeaponAnimation < PLAYER_MWA_SPIN_ATTACK_1H)) {
                 camMode = CAM_MODE_STILL;
             } else {
                 camMode = CAM_MODE_NORMAL;
@@ -14080,7 +14120,7 @@ s32 func_80850224(Player* this, PlayState* play) {
 
             func_80837948(play, this, sp24);
 
-            if (sp24 >= 0x18) {
+            if (sp24 >= PLAYER_MWA_SPIN_ATTACK_1H) {
                 this->stateFlags2 |= PLAYER_STATE2_SPIN_ATTACKING;
                 func_80837530(play, this, 0);
                 return 1;
@@ -14141,7 +14181,8 @@ void func_808502D0(Player* this, PlayState* play) {
                 this->stateFlags3 |= PLAYER_STATE3_FINISHED_ATTACKING;
             }
         } else if (this->heldItemAction == PLAYER_IA_HAMMER) {
-            if ((this->meleeWeaponAnimation == 0x16) || (this->meleeWeaponAnimation == 0x13)) {
+            if ((this->meleeWeaponAnimation == PLAYER_MWA_HAMMER_FORWARD) ||
+                (this->meleeWeaponAnimation == PLAYER_MWA_JUMPSLASH_FINISH)) {
                 static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
                 Vec3f shockwavePos;
                 f32 sp2C;
@@ -14152,8 +14193,8 @@ void func_808502D0(Player* this, PlayState* play) {
                 Math_ScaledStepToS(&this->actor.focus.rot.x, Math_Atan2S(45.0f, sp2C), 800);
                 func_80836AB8(this, 1);
 
-                if ((((this->meleeWeaponAnimation == 0x16) && LinkAnimation_OnFrame(&this->skelAnime, 7.0f)) ||
-                     ((this->meleeWeaponAnimation == 0x13) && LinkAnimation_OnFrame(&this->skelAnime, 2.0f))) &&
+                if ((((this->meleeWeaponAnimation == PLAYER_MWA_HAMMER_FORWARD) && LinkAnimation_OnFrame(&this->skelAnime, 7.0f)) ||
+                     ((this->meleeWeaponAnimation == PLAYER_MWA_JUMPSLASH_FINISH) && LinkAnimation_OnFrame(&this->skelAnime, 2.0f))) &&
                     (sp2C > -40.0f) && (sp2C < 40.0f)) {
                     func_80842A28(play, this);
                     EffectSsBlast_SpawnWhiteShockwave(play, &shockwavePos, &zeroVec, &zeroVec);
