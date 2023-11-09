@@ -47,6 +47,11 @@ std::filesystem::path SaveManager::GetFileName(int fileNum) {
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
 }
 
+std::filesystem::path SaveManager::GetFileTempName(int fileNum) {
+    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
+    return sSavePath / ("file" + std::to_string(fileNum + 1) + ".temp");
+}
+
 SaveManager::SaveManager() {
     coreSectionIDsByName["base"] = SECTION_ID_BASE;
     coreSectionIDsByName["randomizer"] = SECTION_ID_RANDOMIZER;
@@ -915,19 +920,42 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
         svi.func(saveContext, sectionID, false);
     }
 
+    std::filesystem::path fileName = GetFileName(fileNum);
+    std::filesystem::path tempFile = GetFileTempName(fileNum);
+
+    if (std::filesystem::exists(tempFile)) {
+        std::filesystem::remove(tempFile);
+    }
+
 #if defined(__SWITCH__) || defined(__WIIU__)
-    FILE* w = fopen(GetFileName(fileNum).c_str(), "w");
+    FILE* w = fopen(tempFile.c_str(), "w");
     std::string json_string = saveBlock.dump(4);
     fwrite(json_string.c_str(), sizeof(char), json_string.length(), w);
     fclose(w);
 #else
-    std::ofstream output(GetFileName(fileNum));
+    std::ofstream output(tempFile);
     output << std::setw(4) << saveBlock << std::endl;
+    output.close();
 #endif
+
+    if (std::filesystem::exists(fileName)) {
+        std::filesystem::remove(fileName);
+    }
+    
+#if defined(__SWITCH__) || defined(__WIIU__)
+    copy_file(tempFile.c_str(), fileName.c_str());
+#else
+    std::filesystem::copy_file(tempFile, fileName);
+#endif
+    
+    if (std::filesystem::exists(tempFile)) {
+        std::filesystem::remove(tempFile);
+    }
 
     delete saveContext;
     InitMeta(fileNum);
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum);
+    SPDLOG_INFO("Save File Finish - fileNum: {}", fileNum);
 }
 
 // SaveSection creates a copy of gSaveContext to prevent mid-save data modification, and passes its reference to SaveFileThreaded
