@@ -156,7 +156,7 @@ extern "C" void OTRMessage_Init()
                       "Tu as l'air de t'ennuyer. Tu veux&aller faire un tour?\x1B&%gOui&Non%w"));
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_FISHERMAN_LEAVE,
-        CustomMessage("Hey! Hey!&You can't take the rod out of here!^Do you want to quit?\x1B&%gYes&No%w",
-                      "Hey! Hey!&Du kannst die Angel doch nicht&einfach mitnehmen!^Möchtest du aufhören?\x1B&%gJa&Nein%w", //TODO Used AI translation as placeholder
-                      "Holà! Holà!&Les cannes ne sortent pas d'ici!^Voulez-vous arrêter?\x1B&%gOui&Non%w")); //TODO Used AI translation as placeholder
+        CustomMessage("Hey! Hey!&You can't take the rod out of here!&I'm serious!^Do you want to quit?\x1B&%gYes&No%w",
+                      "Hey! Hey!&Du kannst die Angel doch nicht&einfach mitnehmen!&Ganz im Ernst!^Möchtest du aufhören?\x1B&%gJa&Nein%w", //TODO Used AI translation as placeholder
+                      "Holà! Holà!&Les cannes ne sortent pas d'ici!&Je suis sérieux!^Voulez-vous arrêter?\x1B&%gOui&Non%w")); //TODO Used AI translation as placeholder
 }
