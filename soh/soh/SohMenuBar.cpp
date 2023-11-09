@@ -617,7 +617,6 @@ void DrawEnhancementsMenu() {
                 if (UIWidgets::PaddedEnhancementCheckbox("Aim boomerang in first-person mode", "gBoomerangFirstPerson", true, false)) {
                     if (CVarGetInteger("gBoomerangFirstPerson", 0) == 0) {
                         CVarSetInteger("gBoomerangReticle", 0);
-                        CVarSetInteger("gBoomerangSway", 0);
                     }
                 }
                 UIWidgets::Tooltip(
@@ -625,8 +624,6 @@ void DrawEnhancementsMenu() {
                 if (CVarGetInteger("gBoomerangFirstPerson", 0) == 1) {
                     UIWidgets::PaddedEnhancementCheckbox("Aiming reticle for boomerang", "gBoomerangReticle", true, false);
                     UIWidgets::Tooltip("Aiming with the boomerang will display a reticle as with the hookshot");
-                    UIWidgets::PaddedEnhancementCheckbox("Stop sway while aiming boomerang", "gBoomerangSway", true, false);
-                    UIWidgets::Tooltip("Stop Link from swaying back and forth while aiming boomerang");
                 }
                 ImGui::EndMenu();
             }

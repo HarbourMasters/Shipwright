@@ -216,7 +216,6 @@ const std::vector<const char*> enhancementsCvars = {
     "gBowReticle",
     "gBoomerangFirstPerson",
     "gBoomerangReticle",
-    "gBoomerangSway",
     "gFixTexturesOOB",
     "gIvanCoopModeEnabled",
     "gEnemySpawnsOverWaterboxes",

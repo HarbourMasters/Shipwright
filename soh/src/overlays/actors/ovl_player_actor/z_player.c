@@ -2767,7 +2767,7 @@ s32 func_808358F0(Player* this, PlayState* play) {
         AnimationContext_SetCopyAll(play, this->skelAnime.limbCount, this->skelAnime2.jointTable,
                                     this->skelAnime.jointTable);
     } else {
-        if (!CVarGetInteger("gBoomerangSway", 0)) {
+        if (!CVarGetInteger("gBoomerangReticle", 0)) {
             LinkAnimation_Update(play, &this->skelAnime2);
         }
     }
