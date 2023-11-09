@@ -1062,7 +1062,7 @@ void CreateStoneHints() {
 
   uint8_t totalStones = GetEmptyGossipStones().size();
   std::vector<uint8_t> selectedHints = {};
-  for (uint c=0; c < distTable.size(); c++){
+  for (uint8_t c=0; c < distTable.size(); c++){
     selectedHints.push_back(0);
   }
   selectedHints.push_back(0);
