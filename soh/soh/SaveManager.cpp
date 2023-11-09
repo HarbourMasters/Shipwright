@@ -879,6 +879,32 @@ void SaveManager::InitFileMaxed() {
     gSaveContext.sceneFlags[5].swch = 0x40000000;
 }
 
+#if defined(__WIIU__) || defined(__SWITCH__)
+// std::filesystem::copy_file doesn't work properly with the Wii U's toolchain atm
+int copy_file(const char* src, const char* dst) {
+    alignas(0x40) uint8_t buf[4096];
+    FILE* r = fopen(src, "r");
+    if (!r) {
+        return -1;
+    }
+    FILE* w = fopen(dst, "w");
+    if (!w) {
+        return -2;
+    }
+
+    size_t res;
+    while ((res = fread(buf, 1, sizeof(buf), r)) > 0) {
+        if (fwrite(buf, 1, res, w) != res) {
+            break;
+        }
+    }
+
+    fclose(r);
+    fclose(w);
+    return res >= 0 ? 0 : res;
+}
+#endif
+
 // Threaded SaveFile takes copy of gSaveContext for local unmodified storage
 
 void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int sectionID) {
@@ -2137,32 +2163,6 @@ void SaveManager::LoadStruct(const std::string& name, LoadStructFunc func) {
         currentJsonContext = saveJsonContext;
     }
 }
-
-#if defined(__WIIU__) || defined(__SWITCH__)
-// std::filesystem::copy_file doesn't work properly with the Wii U's toolchain atm
-int copy_file(const char* src, const char* dst) {
-    alignas(0x40) uint8_t buf[4096];
-    FILE* r = fopen(src, "r");
-    if (!r) {
-        return -1;
-    }
-    FILE* w = fopen(dst, "w");
-    if (!w) {
-        return -2;
-    }
-
-    size_t res;
-    while ((res = fread(buf, 1, sizeof(buf), r)) > 0) {
-        if (fwrite(buf, 1, res, w) != res) {
-            break;
-        }
-    }
-
-    fclose(r);
-    fclose(w);
-    return res >= 0 ? 0 : res;
-}
-#endif
 
 void SaveManager::CopyZeldaFile(int from, int to) {
     assert(std::filesystem::exists(GetFileName(from)));
