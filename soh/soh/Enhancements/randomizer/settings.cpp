@@ -996,6 +996,182 @@ void Settings::SetAllFromCVar() {
     }
 }
 
+void Settings::UpdateOptionProperties() {
+    auto ctx = Rando::Context::GetInstance();
+    // Starting Age - Disabled when Forest is set to Closed or under very specific conditions
+    if (CVarGetInteger("gRandomizeForest", RO_FOREST_CLOSED) == RO_FOREST_CLOSED ||
+        (CVarGetInteger("gRandomizeDoorOfTime", RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
+        CVarGetInteger("gRandomizeShuffleOcarinas", RO_GENERIC_OFF) == RO_GENERIC_OFF)) /* closed door of time with ocarina shuffle off */ {
+        ctx->GetOption(RSK_STARTING_AGE).Disable("This option is disabled due to other optionos making the game unbeatable");        
+    } else {
+        ctx->GetOption(RSK_STARTING_AGE).Enable();
+    }
+    uint8_t bridgeOpt = CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD);
+    switch (CVarGetInteger("gRandomizeRainbowBridge", RO_BRIDGE_VANILLA)) {
+        case RO_BRIDGE_STONES:
+            if (bridgeOpt == RO_BRIDGE_GREG_REWARD) {
+                if (ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).GetOptionCount() == 4) {
+                    ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).ChangeOptions(NumOpts(0, 4));
+                }
+            } else {
+                if (ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).GetOptionCount() == 5) {
+                    ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).ChangeOptions(NumOpts(0, 3));
+                }
+            }
+            break;
+        case RO_BRIDGE_MEDALLIONS:
+            if (bridgeOpt == RO_BRIDGE_GREG_REWARD) {
+                if (ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).GetOptionCount() == 7) {
+                    ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).ChangeOptions(NumOpts(0, 7));
+                }
+            } else {
+                if (ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).GetOptionCount() == 8) {
+                    ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).ChangeOptions(NumOpts(0, 6));
+                }
+            }
+            break;
+        case RO_BRIDGE_DUNGEON_REWARDS:
+            if (bridgeOpt == RO_BRIDGE_GREG_REWARD) {
+                if (ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).GetOptionCount() == 10) {
+                    ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).ChangeOptions(NumOpts(0, 10));
+                }
+            } else {
+                if (ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).GetOptionCount() == 11) {
+                    ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).ChangeOptions(NumOpts(0, 9));
+                }
+            }
+            break;
+        case RO_BRIDGE_DUNGEONS:
+            if (bridgeOpt == RO_BRIDGE_GREG_REWARD) {
+                if (ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).GetOptionCount() == 9) {
+                    ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).ChangeOptions(NumOpts(0, 9));
+                }
+            } else {
+                if (ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).GetOptionCount() == 10) {
+                    ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).ChangeOptions(NumOpts(0, 8));
+                }
+            }
+            break;
+        default:
+            break;
+    }
+    if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SELECTION) {
+        ctx->GetOption(RSK_MQ_DUNGEON_SET).Disable("This option is force-enabled because Master Quest Dungeons is set to Selection Only", UIWidgets::CheckboxGraphics::Checkmark);
+    } else {
+        ctx->GetOption(RSK_MQ_DUNGEON_SET).Enable();
+    }
+    uint8_t triforceTotal = CVarGetInteger("gRandomizeTriforceHuntTotalPieces", 30);
+    if (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).GetOptionCount() != triforceTotal + 1) {
+        ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).ChangeOptions(NumOpts(1, triforceTotal + 1));
+    }
+    // Shuffle Kokiri Sword - Disabled when Start with Kokiri Sword is active
+    if (CVarGetInteger("gRandomizeStartingKokiriSword", RO_GENERIC_OFF)) {
+        ctx->GetOption(RSK_SHUFFLE_KOKIRI_SWORD).Disable("This option is disabled because \"Start with Kokiri Sword\" is enabled.");
+    } else {
+        ctx->GetOption(RSK_SHUFFLE_KOKIRI_SWORD).Enable();
+    }
+    // Shuffle Master Sword - Disabled when Start with Master Sword is active
+    if (CVarGetInteger("gRandomizeStartingMasterSword", RO_GENERIC_OFF)) {
+        ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD).Disable("This option is disabled because \"Start with Master Sword\" is enabled");
+    } else {
+        ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD).Enable();
+    }
+    // Shuffle Ocarinas - Disabled when Start with Ocarina is active
+    if (CVarGetInteger("gRandomizeStartingOcarina", RO_STARTING_OCARINA_OFF)) {
+        ctx->GetOption(RSK_SHUFFLE_OCARINA).Disable("This option is disabled because \"Start with Fairy Ocarina\" is enabled.");
+    } else {
+        ctx->GetOption(RSK_SHUFFLE_OCARINA).Enable();
+    }
+    // Shuffle Weird Egg - Disabled when Skip Child Zelda is active
+    if (CVarGetInteger("gRandomizeSkipChildZelda", RO_GENERIC_DONT_SKIP)) {
+        ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG).Disable("This option is disabled because \"Skip Child Zelda\" is enabled.");
+    } else {
+        ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG).Enable();
+    }
+    // Shuffle 100 GS Reward - Force-Enabled if Ganon's Boss Key is on the 100 GS Reward
+    if (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) == RO_GANON_BOSS_KEY_KAK_TOKENS) {
+        ctx->GetOption(RSK_SHUFFLE_100_GS_REWARD).Disable("This option is force-enabled because \"Ganon's Boss Key\" is set to \"100 GS Reward.\"", UIWidgets::CheckboxGraphics::Checkmark);
+    } else {
+        ctx->GetOption(RSK_SHUFFLE_100_GS_REWARD).Enable();
+    }
+    uint8_t maxKeyringCount = (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
+                               CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) ? 9 : 8;
+    if (ctx->GetOption(RSK_KEYRINGS_RANDOM_COUNT).GetOptionCount() != maxKeyringCount + 1) {
+        ctx->GetOption(RSK_KEYRINGS_RANDOM_COUNT).ChangeOptions(NumOpts(0, maxKeyringCount));
+    }
+    if (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) != RO_GF_NORMAL ||
+        CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) == RO_GERUDO_KEYS_VANILLA) {
+        ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS).Disable("Disabled because the currently selected Gerudo Fortress Carpenters\n"
+            "setting and/or Gerudo Fortress Keys setting is incompatible with\n"
+            "having a Gerudo Fortress Keyring.");
+    }
+    if (CVarGetInteger("gRandomizeTriforceHunt", RO_GENERIC_OFF)) {
+        ctx->GetOption(RSK_GANONS_BOSS_KEY).Disable("This option is disabled because Triforcce Hunt is enabled."
+            "Ganon's Boss key\nwill instead be given to you after Triforce Hunt completion.");
+    }
+    uint8_t lacsOpts = CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD);
+    switch (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA)) {
+        case RO_GANON_BOSS_KEY_LACS_STONES:
+            if (lacsOpts == RO_LACS_GREG_REWARD) {
+                if (ctx->GetOption(RSK_LACS_STONE_COUNT).GetOptionCount() == 4) {
+                    ctx->GetOption(RSK_LACS_STONE_COUNT).ChangeOptions(NumOpts(0, 4));
+                }
+            } else {
+                if (ctx->GetOption(RSK_LACS_STONE_COUNT).GetOptionCount() == 5) {
+                    ctx->GetOption(RSK_LACS_STONE_COUNT).ChangeOptions(NumOpts(0, 3));
+                }
+            }
+            break;
+        case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
+            if (lacsOpts == RO_LACS_GREG_REWARD) {
+                if (ctx->GetOption(RSK_LACS_MEDALLION_COUNT).GetOptionCount() == 7) {
+                    ctx->GetOption(RSK_LACS_MEDALLION_COUNT).ChangeOptions(NumOpts(0, 7));
+                }
+            } else {
+                if (ctx->GetOption(RSK_LACS_MEDALLION_COUNT).GetOptionCount() == 8) {
+                    ctx->GetOption(RSK_LACS_MEDALLION_COUNT).ChangeOptions(NumOpts(0, 6));
+                }
+            }
+            break;
+        case RO_GANON_BOSS_KEY_LACS_REWARDS:
+            if (lacsOpts == RO_LACS_GREG_REWARD) {
+                if (ctx->GetOption(RSK_LACS_REWARD_COUNT).GetOptionCount() == 10) {
+                    ctx->GetOption(RSK_LACS_REWARD_COUNT).ChangeOptions(NumOpts(0, 10));
+                }
+            } else {
+                if (ctx->GetOption(RSK_LACS_REWARD_COUNT).GetOptionCount() == 11) {
+                    ctx->GetOption(RSK_LACS_REWARD_COUNT).ChangeOptions(NumOpts(0, 9));
+                }
+            }
+            break;
+        case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
+            if (lacsOpts == RO_LACS_GREG_REWARD) {
+                if (ctx->GetOption(RSK_LACS_DUNGEON_COUNT).GetOptionCount() == 9) {
+                    ctx->GetOption(RSK_LACS_DUNGEON_COUNT).ChangeOptions(NumOpts(0, 9));
+                } 
+            } else {
+                if (ctx->GetOption(RSK_LACS_DUNGEON_COUNT).GetOptionCount() == 10) {
+                    ctx->GetOption(RSK_LACS_DUNGEON_COUNT).ChangeOptions(NumOpts(0, 8));
+                }
+            }
+            break;
+        default:
+            break;
+    }
+    // Skip Child Stealth - Disabled when Skip Child Zelda is active
+    if (CVarGetInteger("gRandomizeSkipChildZelda", RO_GENERIC_DONT_SKIP)) {
+        ctx->GetOption(RSK_SKIP_CHILD_STEALTH).Disable("This option is disabled because \"Skip Child Zelda\" is enabled.");
+    } else {
+        ctx->GetOption(RSK_SKIP_CHILD_ZELDA).Enable();
+    }
+    // Link's Pocket - Disabled when Dungeon Rewards are shuffled to End of Dungeon
+    if (CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) == RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
+        ctx->GetOption(RSK_LINKS_POCKET).Disable("This option is disabled because \"Dungeon Rewards\" are shuffled to \"End of Dungeons\".");
+    } else {
+        ctx->GetOption(RSK_LINKS_POCKET).Enable();
+    }
+}
+
 void Settings::UpdateSettings(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks) {
     auto ctx = Rando::Context::GetInstance();
     if (!ctx->IsSpoilerLoaded()) {

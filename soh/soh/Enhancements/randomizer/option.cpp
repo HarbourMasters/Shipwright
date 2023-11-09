@@ -106,6 +106,25 @@ bool Option::IsHidden() const {
     return hidden;
 }
 
+void Option::ChangeOptions(std::vector<std::string> opts) {
+    if (selectedOption >= opts.size()) {
+        selectedOption = opts.size() - 1;
+    }
+    options = std::move(opts);
+}
+
+void Option::Enable() {
+    disabled = false;
+}
+
+void Option::Disable(std::string text, UIWidgets::CheckboxGraphics graphic) {
+    if (!disabled || disabledText != text || disabledGraphic != graphic) {
+        disabled = true;
+        disabledText = std::move(text);
+        disabledGraphic = graphic;
+    }
+}
+
 bool Option::IsCategory(OptionCategory category) const {
     return category == this->category;
 }
@@ -177,17 +196,26 @@ Option::Option(bool var_, std::string name_, std::vector<std::string> options_, 
 }
 
 void Option::RenderCheckbox() const {
+    if (disabled) {
+        UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
+    }
     bool val = (bool)CVarGetInteger(cvarName.c_str(), defaultOption);
-    if (UIWidgets::CustomCheckbox(name.c_str(), &val, false, UIWidgets::CheckboxGraphics::Cross)) {
+    if (UIWidgets::CustomCheckbox(name.c_str(), &val, disabled, disabledGraphic)) {
         CVarSetInteger(cvarName.c_str(), val);
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     if (!description.empty()) {
         UIWidgets::InsertHelpHoverText(description.c_str());
     }
+    if (disabled) {
+        UIWidgets::ReEnableComponent(disabledText.c_str());
+    }
 }
 
 void Option::RenderCombobox() const {
+    if (disabled) {
+        UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
+    }
     ImGui::Text("%s", name.c_str());
     uint8_t selected = CVarGetInteger(cvarName.c_str(), defaultOption);
     if (!description.empty()) {
@@ -208,11 +236,21 @@ void Option::RenderCombobox() const {
         ImGui::EndCombo();
     }
     ImGui::EndGroup();
+    if (disabled) {
+        UIWidgets::ReEnableComponent(disabledText.c_str());
+    }
 }
 
 void Option::RenderSlider() const {
-    bool changed = true;
+    bool changed = false;
     int val = CVarGetInteger(cvarName.c_str(), defaultOption);
+    if (val >= options.size()) {
+        val--;
+        changed = true;
+    }
+    if (disabled) {
+        UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
+    }
     std::string formatName = name + ": %s";
     ImGui::Text(formatName.c_str(), options[val].c_str());
     if (!description.empty()) {
@@ -241,6 +279,9 @@ void Option::RenderSlider() const {
         changed = true;
     }
     ImGui::EndGroup();
+    if (disabled) {
+        UIWidgets::ReEnableComponent(disabledText.c_str());
+    }
     if (val < 0) {
         val = 0;
         changed = true;

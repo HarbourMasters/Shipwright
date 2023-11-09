@@ -29,7 +29,34 @@ class Settings {
     void SetHash(std::string hash);
     const std::array<OptionGroup, RSG_MAX>& GetOptionGroups();
     const OptionGroup& GetOptionGroup(RandomizerSettingGroupKey key);
+
+    /**
+     * @brief sets the `selectedOption` of all Options to the value of the CVar
+     * corresponding to their `cvarName`s.
+    */
     void SetAllFromCVar();
+
+    /**
+     * @brief Updates various properties of options based on the value of other options.
+     * Used to update visibility, whether or not interaction is disabled, and what the
+     * actual option values are.
+     * 
+     * For example, this function handles setting the maximum possible keyring count to 9
+     * when Gerudo's Fortress options are set such that a keyring is possible for that
+     * dungeon.
+    */
+    void UpdateOptionProperties();
+    
+    /**
+     * @brief Runs before seed generation to ensure all options are compatible with each
+     * other and resolve options that have been set to random (such as random trial count,
+     * or starting age).
+     * 
+     * @param excludedLocations Set of locations that should be forced to have junk items.
+     * @param enabledTricks Set of tricks that should be considered logically possible. Tricks
+     * are things that are possible to do in gameplay but are difficult, not intuitive or that
+     * require more extensive game knowledge, i.e. opening invisible chests without the Lens of Truth.
+    */
     void UpdateSettings(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks);
     void ParseJson(nlohmann::json spoilerFileJson);
     std::vector<Option*> VanillaLogicDefaults = {};

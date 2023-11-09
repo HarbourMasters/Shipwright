@@ -1,5 +1,7 @@
 #pragma once
 
+#include "soh/UIWidgets.hpp"
+
 #include <stdint.h>
 #include <string>
 #include <vector>
@@ -57,7 +59,15 @@ class Option {
     const std::string& GetCVarName() const;
     uint8_t GetSelectedOptionIndex() const;
     void SetVariable();
+    /**
+     * @brief Sets the CVar corresponding to the property `cvarName` equal to the value
+     * of the property `selectedValue`.
+    */
     void SetCVar();
+    /**
+     * @brief Sets the value of property `selectedValue` equal to the CVar corresponding
+     * to the property `cvarName`.
+    */
     void SetFromCVar();
     void SetDelayedOption();
     void RestoreDelayedOption();
@@ -65,6 +75,27 @@ class Option {
     void Hide();
     void Unhide();
     bool IsHidden() const;
+    void ChangeOptions(std::vector<std::string> opts);
+    /**
+     * @brief Enables interaction with this option.
+     * 
+     * "Enable" in this context refers to the ability to change the option in the
+     * settings menu. The actual value of the option is not decided by whether or not
+     * the option is "Enabled".
+    */
+    void Enable();
+    /**
+     * @brief Disables interaction with this option.
+     * 
+     * "Disable" in this context refers to the ability to change the option in the
+     * settings menu. The actual value of the option is not decided by whether or not
+     * the option is "Disabled".
+     * 
+     * @param text The tooltip text explaining why the option is disabled.
+     * @param graphic What graphic to display in a disabled checkbox. Defaults to an
+     * "X" symbol.
+     */
+    void Disable(std::string text, UIWidgets::CheckboxGraphics graphic = UIWidgets::CheckboxGraphics::Cross);
     bool IsCategory(OptionCategory category) const;
     void RenderImGui() const;
 
@@ -90,6 +121,9 @@ class Option {
     WidgetType widgetType;
     uint8_t defaultOption = false;
     bool defaultHidden = false;
+    bool disabled = false;
+    UIWidgets::CheckboxGraphics disabledGraphic = UIWidgets::CheckboxGraphics::Cross;
+    std::string disabledText = "";
 };
 
 enum class OptionGroupType {

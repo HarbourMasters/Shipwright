@@ -1696,12 +1696,11 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
 
 void RandomizerSettingsWindow::DrawElement() {
     auto ctx = Rando::Context::GetInstance();
+    ctx->GetSettings()->UpdateOptionProperties();
     if (generated) {
         generated = 0;
         randoThread.join();
     }
-    static int maxKeyringCount;
-    static bool disableGFKeyring = false;
 
     ImGui::SetNextWindowSize(ImVec2(920, 600), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Randomizer Editor", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
@@ -1797,12 +1796,6 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 //Starting Age
-                //Disabled when Forest is set to Closed or under very specific conditions
-                bool disableRandoStartingAge = CVarGetInteger("gRandomizeForest", RO_FOREST_CLOSED) == RO_FOREST_CLOSED || 
-                    ((CVarGetInteger("gRandomizeDoorOfTime", RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED) &&
-                    (CVarGetInteger("gRandomizeShuffleOcarinas", RO_GENERIC_OFF) == RO_GENERIC_OFF)); // closed door of time with ocarina shuffle off
-
-                static const char* disableRandoStartingAgeText = "This option is disabled due to other options making the game unbeatable.";
                 ctx->GetOption(RSK_STARTING_AGE).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
@@ -1821,75 +1814,18 @@ void RandomizerSettingsWindow::DrawElement() {
                     case RO_BRIDGE_STONES:
                         ctx->GetOption(RSK_BRIDGE_OPTIONS).RenderImGui();
                         ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).RenderImGui();
-                        // switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
-                        //     case RO_BRIDGE_STANDARD_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                        //                                         "gRandomizeStoneCount", 1, 3, "", 3, true, true, false);
-                        //         break;
-                        //     case RO_BRIDGE_GREG_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                        //                                         "gRandomizeStoneCount", 1, 4, "", 4, true, true, false);
-                        //         break;
-                        //     case RO_BRIDGE_WILDCARD_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                        //                                         "gRandomizeStoneCount", 1, 3, "", 3, true, true, false);
-                        //         break;
-                        // }
                         break;
                     case RO_BRIDGE_MEDALLIONS:
                         ctx->GetOption(RSK_BRIDGE_OPTIONS).RenderImGui();
                         ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).RenderImGui();
-                        // switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
-                        //     case RO_BRIDGE_STANDARD_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                        //                                         "gRandomizeMedallionCount", 1, 6, "", 6, true, true, false);
-                        //         break;
-                        //     case RO_BRIDGE_GREG_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                        //                                         "gRandomizeMedallionCount", 1, 7, "", 7, true, true, false);
-                        //         break;
-                        //     case RO_BRIDGE_WILDCARD_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                        //                                         "gRandomizeMedallionCount", 1, 6, "", 6, true, true, false);
-                        //         break;
-                        // }
                         break;
                     case RO_BRIDGE_DUNGEON_REWARDS:
                         ctx->GetOption(RSK_BRIDGE_OPTIONS).RenderImGui();
                         ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).RenderImGui();
-                        // switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
-                        //     case RO_BRIDGE_STANDARD_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                        //                                         "gRandomizeRewardCount", 1, 9, "", 9, true, true, false);
-                        //         break;
-                        //     case RO_BRIDGE_GREG_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                        //                                         "gRandomizeRewardCount", 1, 10, "", 10, true, true, false);
-                        //         break;
-                        //     case RO_BRIDGE_WILDCARD_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                        //                                         "gRandomizeRewardCount", 1, 9, "", 9, true, true, false);
-
-                        //         break;
-                        // }
                         break;
                     case RO_BRIDGE_DUNGEONS:
                         ctx->GetOption(RSK_BRIDGE_OPTIONS).RenderImGui();
                         ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).RenderImGui();
-                        // switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
-                        //     case RO_BRIDGE_STANDARD_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                        //                                         "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false);
-                        //         break;
-                        //     case RO_BRIDGE_GREG_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                        //                                         "gRandomizeDungeonCount", 1, 9, "", 9, true, true, false);
-                        //         break;
-                        //     case RO_BRIDGE_WILDCARD_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                        //                                         "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false);
-                        //         break;
-                        // }
                         break;
                     case RO_BRIDGE_TOKENS:
                         ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).RenderImGui();
@@ -1919,11 +1855,6 @@ void RandomizerSettingsWindow::DrawElement() {
                         ctx->GetOption(RSK_MQ_DUNGEON_COUNT).RenderImGui();
                     }
                     if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_NONE) {
-                        // UIWidgets::EnhancementCheckbox(
-                        //     ctx->GetOption(RSK_MQ_DUNGEON_SET).GetName().c_str(), "gRandomizeMqDungeonsSelection",
-                        //     CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SELECTION,
-                        //     "This option is enabled because Master Quest Dungeons is set to Selection Only",
-                        //     UIWidgets::CheckboxGraphics::Checkmark);
                         ctx->GetOption(RSK_MQ_DUNGEON_SET).RenderImGui();
                         if (CVarGetInteger("gRandomizeMqDungeonsSelection", RO_GENERIC_OFF) == RO_GENERIC_ON) {
                             ctx->GetOption(RSK_MQ_DEKU_TREE).RenderImGui();
@@ -2061,30 +1992,18 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Kokiri Sword
-                // Disabled when Start with Kokiri Sword is active
-                bool disableShuffleKokiriSword = CVarGetInteger("gRandomizeStartingKokiriSword", 0);
-                static const char* disableShuffleKokiriSwordText = "This option is disabled because \"Start with Kokiri Sword\" is enabled.";
                 ctx->GetOption(RSK_SHUFFLE_KOKIRI_SWORD).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 //Shuffle Master Sword
-                //RANDOTODO: Disable when Start with Master Sword is active
-                // bool disableShuffleMasterSword = CvarGetInteger("gRandomizeStartingMasterSword", 0);
-                // static const char* disableShuffleMasterSwordText = "This option is disabled because \"Start with Master Sword\" is enabled.";
                 ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Ocarinas
-                // Disabled when Start with Ocarina is active
-                bool disableShuffleOcarinas = CVarGetInteger("gRandomizeStartingOcarina", 0);
-                static const char* disableShuffleOcarinasText = "This option is disabled because \"Start with Fairy Ocarina\" is enabled.";
                 ctx->GetOption(RSK_SHUFFLE_OCARINA).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Weird Egg
-                // Disabled when Skip Child Zelda is active
-                bool disableShuffleWeirdEgg = CVarGetInteger("gRandomizeSkipChildZelda", 0);
-                static const char* disableShuffleWeirdEggText = "This option is disabled because \"Skip Child Zelda\" is enabled.";
                 ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
@@ -2138,10 +2057,6 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle 100 GS Reward
-                // Forcefully enabled if Ganon's Boss Key is on the cursed man
-                bool forceEnable100GSShuffle =
-                    (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) == RO_GANON_BOSS_KEY_KAK_TOKENS);
-                static const char* disable100GSRewardText = "This option is forcefully enabled because \"Ganon's Boss Key\" is set to \"100 GS Reward.\"";
                 ctx->GetOption(RSK_SHUFFLE_100_GS_REWARD).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
@@ -2171,15 +2086,10 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PopItemWidth();
                 switch (CVarGetInteger("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF)) {
                     case RO_KEYRINGS_COUNT:
-                        maxKeyringCount = (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
-                                            CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) ? 9 : 8;
                         ctx->GetOption(RSK_KEYRINGS_RANDOM_COUNT).RenderImGui();
                         break;
                     case RO_KEYRINGS_SELECTION:
-                        disableGFKeyring =
-                            CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) != RO_GF_NORMAL || CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) == RO_GERUDO_KEYS_VANILLA;
                         ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS).RenderImGui();
-                            //disableGFKeyring, "Disabled because the currently selected Gerudo Fortress Carpenters\n setting and/or Gerudo Fortress Keys setting is incompatible with \nhaving a Gerudo Fortress keyring.");
                         ctx->GetOption(RSK_KEYRINGS_FOREST_TEMPLE).RenderImGui();
                         ctx->GetOption(RSK_KEYRINGS_FIRE_TEMPLE).RenderImGui();
                         ctx->GetOption(RSK_KEYRINGS_WATER_TEMPLE).RenderImGui();
@@ -2205,8 +2115,6 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Ganon's Boss Key
-                bool disableGBK = CVarGetInteger("gRandomizeTriforceHunt", 0);
-                static const char* disableGBKText = "This option is disabled because Triforce Hunt is enabled. Ganon's Boss key\nwill instead be given to you after Triforce Hunt completion.";
                 ctx->GetOption(RSK_GANONS_BOSS_KEY).RenderImGui();
                 ImGui::PopItemWidth();
                 switch (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA)) {
@@ -2217,56 +2125,14 @@ void RandomizerSettingsWindow::DrawElement() {
                     case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
                         ctx->GetOption(RSK_LACS_OPTIONS).RenderImGui();
                         ctx->GetOption(RSK_LACS_MEDALLION_COUNT).RenderImGui();
-                        // switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
-                        //     case RO_LACS_STANDARD_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
-                        //                                     "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
-                        //         break;
-                        //     case RO_LACS_GREG_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
-                        //                                     "gRandomizeLacsMedallionCount", 1, 7, "", 7, true, true, false);
-                        //         break;
-                        //     case RO_LACS_WILDCARD_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
-                        //                                     "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
-                        //         break;
-                        // }
                         break;
                     case RO_GANON_BOSS_KEY_LACS_REWARDS:
                         ctx->GetOption(RSK_LACS_OPTIONS).RenderImGui();
                         ctx->GetOption(RSK_LACS_REWARD_COUNT).RenderImGui();
-                        // switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
-                        //     case RO_LACS_STANDARD_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
-                        //                                     "gRandomizeLacsRewardCount", 1, 9, "", 9, true, true, false);
-                        //         break;
-                        //     case RO_LACS_GREG_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
-                        //                                     "gRandomizeLacsRewardCount", 1, 10, "", 10, true, true, false);
-                        //         break;
-                        //     case RO_LACS_WILDCARD_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
-                        //                                     "gRandomizeLacsRewardCount", 1, 9, "", 9, true, true, false);
-                        //         break;
-                        // }
                         break;
                     case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
                         ctx->GetOption(RSK_LACS_OPTIONS).RenderImGui();
                         ctx->GetOption(RSK_LACS_DUNGEON_COUNT).RenderImGui();
-                        // switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
-                        //     case RO_LACS_STANDARD_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
-                        //                                     "gRandomizeLacsDungeonCount", 1, 8, "", 8, true, true, false);
-                        //         break;
-                        //     case RO_LACS_GREG_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
-                        //                                     "gRandomizeLacsDungeonCount", 1, 9, "", 9, true, true, false);
-                        //         break;
-                        //     case RO_LACS_WILDCARD_REWARD:
-                        //         UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
-                        //                                     "gRandomizeLacsDungeonCount", 1, 8, "", 8, true, true, false);
-                        //         break;
-                        // }
                         break;
                     case RO_GANON_BOSS_KEY_LACS_TOKENS:
                         ctx->GetOption(RSK_LACS_TOKEN_COUNT).RenderImGui();
@@ -2311,9 +2177,6 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Skip child stealth
-                // Disabled when Skip Child Zelda is active
-                bool disableChildStealth = CVarGetInteger("gRandomizeSkipChildZelda", 0);
-                static const char* disableChildStealthText = "This option is disabled because \"Skip Child Zelda\" is enabled";
                 ctx->GetOption(RSK_SKIP_CHILD_STEALTH).RenderImGui();
                 UIWidgets::PaddedSeparator();
 
@@ -2982,12 +2845,8 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildStartingEquipment", ImVec2(0, -8));
-                // Don't display this option if Dungeon Rewards are Shuffled to End of Dungeon.
-                // TODO: Show this but disabled when we have options for disabled Comboboxes.
-                if (CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) != RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
-                    ctx->GetOption(RSK_LINKS_POCKET).RenderImGui();
-                    UIWidgets::PaddedSeparator();
-                }
+                ctx->GetOption(RSK_LINKS_POCKET).RenderImGui();
+                UIWidgets::PaddedSeparator();
 
                 ctx->GetOption(RSK_STARTING_KOKIRI_SWORD).RenderImGui();
                 UIWidgets::PaddedSeparator();
