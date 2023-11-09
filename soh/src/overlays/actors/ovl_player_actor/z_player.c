@@ -6668,13 +6668,14 @@ s32 func_8083F0C8(Player* this, PlayState* play, u32 arg2) {
                 this->actor.world.pos.z = tempZ + (wallDistance * wallPolyNormZ);
                 func_80832224(this);
                 this->actor.prevPos = this->actor.world.pos;
-                if (CVarGetInteger("gCrawlSpeed", 0) < 2) {
-                    func_80832264(play, this, &gPlayerAnim_link_child_tunnel_start);
-                } else {
-                    //increase animation speed when entering a tunnel
+                if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
+                    // increase animation speed when entering a tunnel
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
-                                         1.0f * ((CVarGetInteger("gCrawlSpeed", 0) + 1.0f) / 2.0f), 0.0f,
-                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), ANIMMODE_ONCE, 0.0f);
+                                         1.0f * ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f), 0.0f,
+                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), ANIMMODE_ONCE,
+                                         0.0f);
+                } else {
+                    func_80832264(play, this, &gPlayerAnim_link_child_tunnel_start);
             }
                 func_80832F54(play, this, 0x9D);
 
@@ -12145,7 +12146,7 @@ void func_8084C760(Player* this, PlayState* play) {
 
             // player speed in a tunnel
             if (!func_8083F570(this, play)) {
-                this->linearVelocity = sControlInput->rel.stick_y * 0.03f * CVarGetInteger("gCrawlSpeed", 0); 
+                this->linearVelocity = sControlInput->rel.stick_y * 0.03f * CVarGetInteger("gCrawlSpeed", 1); 
             }
         }
         return;
