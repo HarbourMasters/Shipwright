@@ -586,7 +586,7 @@ void CreateGanonAndSheikText() {
     auto masterSwordLocation = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
       return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_MASTER_SWORD;
     });
-    Text masterSwordArea = GetHintRegion(ctx->GetItemLocation(masterSwordLocation[0])->GetParentRegionKey())->GetHint().GetText();
+    Text masterSwordArea = Hint(ctx->GetItemLocation(masterSwordLocation[0])->GetArea()).GetText();
 
     if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {
       // Add second text box
@@ -620,7 +620,7 @@ void CreateGanonAndSheikText() {
 
     if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {
       if (IsReachableWithout(locsToCheck, masterSwordLocation[0], true)) {
-        ctx->GetItemLocation(masterSwordLocation[0])->SetHintKey(RH_GANONDORF_HINT);
+        ctx->GetItemLocation(masterSwordLocation[0])->AddHintedBy(RH_GANONDORF_HINT);
         ctx->GetItemLocation(masterSwordLocation[0])->SetAsHinted();
       }
     }
