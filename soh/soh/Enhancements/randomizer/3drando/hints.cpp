@@ -929,7 +929,7 @@ int32_t getRandomWeight(int32_t totalWeight){
   return Random(1,totalWeight);
 }
 
-static void DistrabuteHints(std::vector<uint8_t>& selected, uint8_t stoneCount, std::vector<HintDistributionSetting> distTable, uint8_t junkWieght, bool addFixed = true){
+static void DistrabuteHints(std::vector<uint8_t>& selected, size_t stoneCount, std::vector<HintDistributionSetting> distTable, uint8_t junkWieght, bool addFixed = true){
   int32_t totalWeight = junkWieght;
 
   for (HintDistributionSetting setting: distTable){
@@ -1060,7 +1060,7 @@ void CreateStoneHints() {
   //Add 'trial' location hints
   CreateTrialHints(hintSetting.trialCopies);
 
-  uint8_t totalStones = GetEmptyGossipStones().size();
+  size_t totalStones = GetEmptyGossipStones().size();
   std::vector<uint8_t> selectedHints = {};
   for (uint8_t c=0; c < distTable.size(); c++){
     selectedHints.push_back(0);
