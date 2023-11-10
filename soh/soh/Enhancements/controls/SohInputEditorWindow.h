@@ -61,10 +61,13 @@ class SohInputEditorWindow : public LUS::GuiWindow {
     void UpdateStickDirectionToMappingIds(uint8_t port);
 
     void GetButtonColorsForLUSDeviceIndex(LUS::LUSDeviceIndex lusIndex, ImVec4& buttonColor, ImVec4& buttonHoveredColor);
-    void DrawPortTab(uint8_t portIndex);
+    void DrawLinkTab();
+    void DrawIvanTab();
+    void DrawDebugPortTab(uint8_t portIndex);
     void DrawDevicesTab();
     std::set<uint16_t> mButtonsBitmasks;
     std::set<uint16_t> mDpadBitmasks;
+    std::set<uint16_t> mModifierButtonsBitmasks;
     void DrawButtonDeviceIcons(uint8_t portIndex, std::set<uint16_t> bitmasks);
     void DrawAnalogStickDeviceIcons(uint8_t portIndex, LUS::Stick stick);
     void DrawRumbleDeviceIcons(uint8_t portIndex);

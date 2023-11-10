@@ -12,6 +12,9 @@
 #define GAME_PLATFORM_N64 0
 #define GAME_PLATFORM_GC 1
 
+#define BTN_MODIFIER1 0x00040
+#define BTN_MODIFIER2 0x00080
+
 #ifdef __cplusplus
 #include <Context.h>
 #include "Enhancements/savestates.h"

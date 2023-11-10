@@ -108,9 +108,6 @@
                                 ? gSaveContext.equips.buttonItems[(button) + 1]       \
                                 : ITEM_NONE)
 
-#define BTN_MODIFIER1 0x00040
-#define BTN_MODIFIER2 0x00080
-
 #define CHECK_BTN_ALL(state, combo) (~((state) | ~(combo)) == 0)
 #define CHECK_BTN_ANY(state, combo) (((state) & (combo)) != 0)
 
