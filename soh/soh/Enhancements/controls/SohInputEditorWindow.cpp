@@ -1,6 +1,8 @@
 #include "SohInputEditorWindow.h"
 #include <Utils/StringHelper.h>
 #include "soh/OTRGlobals.h"
+#include "../../UIWidgets.hpp"
+#include "z64.h"
 
 SohInputEditorWindow::~SohInputEditorWindow() {
     SPDLOG_TRACE("destruct input editor window");
@@ -766,6 +768,14 @@ void SohInputEditorWindow::DrawAddLEDMappingButton(uint8_t port) {
     }
 }
 
+void SohInputEditorWindow::DrawHelpIcon(const std::string& helptext) {
+    // place the ? button to the most of the right side of the cell it is using.
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 22);
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 15);
+    ImGui::SmallButton("?");
+    UIWidgets::Tooltip(helptext.c_str());
+}
+
 void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
     for (auto [id, mapping] :
          LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(port)->GetLED()->GetAllLEDMappings()) {
@@ -795,6 +805,39 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
                         Color_RGB8({ static_cast<uint8_t>(color.x * 255.0), static_cast<uint8_t>(color.y * 255.0),
                                      static_cast<uint8_t>(color.z * 255.0) }));
                 }
+            }
+            // todo: clean this up, probably just hardcode to LED_COLOR_SOURCE_GAME and use SoH options only here
+            if (mapping->GetColorSource() == LED_COLOR_SOURCE_GAME) {
+                static const char* ledSources[] = { "Original Tunic Colors",          "Cosmetics Tunic Colors",          "Health Colors",
+                                                    "Original Navi Targeting Colors", "Cosmetics Navi Targeting Colors", "Custom" };
+                UIWidgets::PaddedText("Source");
+                UIWidgets::EnhancementCombobox("gLedColorSource", ledSources, LED_SOURCE_TUNIC_ORIGINAL);
+                DrawHelpIcon("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when health < 40%. Green otherwise.\n\n" \
+                            "Tunics: colors will mirror currently equipped tunic, whether original or the current values in Cosmetics Editor.\n\n" \
+                            "Custom: single, solid color");
+                if (CVarGetInteger("gLedColorSource", 1) == LED_SOURCE_CUSTOM) {
+                    UIWidgets::Spacer(3);
+                    auto port1Color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
+                    ImVec4 colorVec = { port1Color.r / 255.0f, port1Color.g / 255.0f, port1Color.b / 255.0f, 1.0f };
+                    if (ImGui::ColorEdit3("", (float*)&colorVec, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
+                        Color_RGB8 color;
+                        color.r = colorVec.x * 255.0;
+                        color.g = colorVec.y * 255.0;
+                        color.b = colorVec.z * 255.0;
+
+                        CVarSetColor24("gLedPort1Color", color);
+                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    }
+                    ImGui::SameLine();
+                    ImGui::Text("Custom Color");
+                }
+                UIWidgets::PaddedEnhancementSliderFloat("Brightness: %d%%", "##LED_Brightness", "gLedBrightness",
+                                                        0.0f, 1.0f, "", 1.0f, true, true);
+                DrawHelpIcon("Sets the brightness of controller LEDs. 0% brightness = LEDs off.");
+                UIWidgets::PaddedEnhancementCheckbox("Critical Health Override", "gLedCriticalOverride", true, true, 
+                    CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH, "Override redundant for health source.",
+                    UIWidgets::CheckboxGraphics::Cross, true);
+                DrawHelpIcon("Shows red color when health is critical, otherwise displays according to color source.");
             }
             ImGui::TreePop();
         }

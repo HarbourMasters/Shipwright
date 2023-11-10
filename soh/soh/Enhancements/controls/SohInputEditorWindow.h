@@ -75,4 +75,5 @@ class SohInputEditorWindow : public LUS::GuiWindow {
     void DrawLEDDeviceIcons(uint8_t portIndex);
     bool mInputEditorPopupOpen;
     void DrawSetDefaultsButton(uint8_t portIndex);
+    void DrawHelpIcon(const std::string& helptext);
 };
