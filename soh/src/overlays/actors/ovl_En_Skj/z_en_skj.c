@@ -1415,15 +1415,17 @@ void EnSkj_StartOcarinaMinigame(EnSkj* this, PlayState* play) {
         //Enhancement: Customize Lost Woods Ocarina Game
         if (CVarGetInteger("gInstantOcarinaGameWin", 0) && CVarGetInteger("gCustomizeOcarinaGame", 0)) {
             play->msgCtx.ocarinaMode = OCARINA_MODE_0F;
+            this->songFailTimer = 160;
+            this->actionFunc = EnSkj_WaitForPlayback;
         } else { // vanilla code
             func_8010BD58(play, OCARINA_ACTION_MEMORY_GAME);
             if (sOcarinaMinigameSkullKids[SKULL_KID_LEFT].skullkid != NULL) {
                 sOcarinaMinigameSkullKids[SKULL_KID_LEFT].skullkid->minigameState = SKULL_KID_OCARINA_PLAY_NOTES;
+                this->songFailTimer = 160;
+                this->actionFunc = EnSkj_WaitForPlayback;
             }
         }
         // Enhancement end
-        this->songFailTimer = 160;
-        this->actionFunc = EnSkj_WaitForPlayback;
     }
 }
 
@@ -1472,10 +1474,14 @@ void EnSkj_WaitForPlayback(EnSkj* this, PlayState* play) {
                 break;
             case MSGMODE_MEMORY_GAME_PLAYER_PLAYING:
                 if (this->songFailTimer != 0) {
-                    if (CVarGetInteger("gOcarinaUnlimitedFailTime", 0) == 0 ||
-                        CVarGetInteger("gCustomizeOcarinaGame", 0) == 0) {
+                    // Enhancement: Customize Lost Woods Ocarina Game
+                    if (CVarGetInteger("gOcarinaUnlimitedFailTime", 0) == 1 &&
+                        CVarGetInteger("gCustomizeOcarinaGame", 0) == 1) { 
+                        // don't decrement timer
+                    } else { // vanilla code                       
                         this->songFailTimer--;
                     }
+                    // Enhancement end
                 } else { // took too long, game failed
                     func_80078884(NA_SE_SY_OCARINA_ERROR);
                     Message_CloseTextbox(play);
