@@ -2471,9 +2471,6 @@ void RandomizerSettingsWindow::DrawElement() {
                 if (ctx->GetSettings()->GetOptionGroup(RSG_STARTING_SONGS_IMGUI).RenderImGui()) {
                     changed = true;
                 }
-                // UIWidgets::PaddedSeparator();
-                // ImGui::Text("Warp Songs");
-                // UIWidgets::PaddedSeparator();
                 ImGui::EndChild();
                 ImGui::EndTable();
             }

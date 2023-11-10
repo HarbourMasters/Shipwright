@@ -299,23 +299,26 @@ bool Option::RenderSlider() const {
     return changed;
 }
 
-OptionGroup::OptionGroup(std::string name, std::vector<Option*> options, OptionGroupType groupType, bool printInSpoiler)
+OptionGroup::OptionGroup(std::string name, std::vector<Option*> options, OptionGroupType groupType, bool printInSpoiler,
+                         WidgetContainerType containerType)
     : mName(std::move(name)), mOptions(std::move(options)), mGroupType(groupType), mPrintInSpoiler(printInSpoiler),
-      mContainsType(OptionGroupType::DEFAULT) {
+      mContainsType(OptionGroupType::DEFAULT), mContainerType(containerType) {
 }
 
 OptionGroup::OptionGroup(std::string name, std::vector<OptionGroup*> subGroups, OptionGroupType groupType,
-                         bool printInSpoiler)
+                         bool printInSpoiler, WidgetContainerType containerType)
     : mName(std::move(name)), mSubGroups(std::move(subGroups)), mGroupType(groupType), mPrintInSpoiler(printInSpoiler),
-      mContainsType(OptionGroupType::SUBGROUP) {
+      mContainsType(OptionGroupType::SUBGROUP), mContainerType(containerType) {
 }
 
-OptionGroup OptionGroup::SubGroup(std::string name, std::vector<Option*> options, bool printInSpoiler) {
-    return OptionGroup(std::move(name), std::move(options), OptionGroupType::SUBGROUP, printInSpoiler);
+OptionGroup OptionGroup::SubGroup(std::string name, std::vector<Option*> options, bool printInSpoiler,
+                                  WidgetContainerType containerType) {
+    return OptionGroup(std::move(name), std::move(options), OptionGroupType::SUBGROUP, printInSpoiler, containerType);
 }
 
-OptionGroup OptionGroup::SubGroup(std::string name, std::vector<OptionGroup*> subGroups, bool printInSpoiler) {
-    return OptionGroup(std::move(name), std::move(subGroups), OptionGroupType::SUBGROUP, printInSpoiler);
+OptionGroup OptionGroup::SubGroup(std::string name, std::vector<OptionGroup*> subGroups, bool printInSpoiler,
+                                  WidgetContainerType containerType) {
+    return OptionGroup(std::move(name), std::move(subGroups), OptionGroupType::SUBGROUP, printInSpoiler, containerType);
 }
 
 const std::string& OptionGroup::GetName() const {
@@ -341,27 +344,42 @@ OptionGroupType OptionGroup::GetGroupType() const {
 OptionGroupType OptionGroup::GetContainsType() const {
     return mContainsType;
 }
+
+WidgetContainerType OptionGroup::GetContainerType() const {
+    return mContainerType;
+}
+
 bool OptionGroup::RenderImGui() const {
     bool changed = false;
     if (mContainsType == OptionGroupType::SUBGROUP) {
-        return false;
-    }
-    for (auto option: mOptions) {
-        if (option->IsHidden()) {
-            continue;
+        for (auto optionGroup : mSubGroups) {
+            if (optionGroup->GetContainerType() == WidgetContainerType::SECTION) {
+                UIWidgets::PaddedSeparator();
+                ImGui::Text("%s", optionGroup->GetName().c_str());
+                UIWidgets::PaddedSeparator();
+                if (optionGroup->RenderImGui()) {
+                    changed = true;
+                }
+            }
         }
-        if (option->HasFlag(IMFLAG_INDENT)) {
-            ImGui::Indent();
-        }
-        // If any options changed, changed will end up being true
-        if (option->RenderImGui()) {
-            changed = true;
-        }
-        if (option->HasFlag(IMFLAG_UNINDENT)) {
-            ImGui::Unindent();
-        }
-        if (option->HasFlag(IMFLAG_SEPARATOR_BOTTOM)) {
-            UIWidgets::PaddedSeparator();
+    } else {
+        for (auto option : mOptions) {
+            if (option->IsHidden()) {
+                continue;
+            }
+            if (option->HasFlag(IMFLAG_INDENT)) {
+                ImGui::Indent();
+            }
+            // If any options changed, changed will end up being true
+            if (option->RenderImGui()) {
+                changed = true;
+            }
+            if (option->HasFlag(IMFLAG_UNINDENT)) {
+                ImGui::Unindent();
+            }
+            if (option->HasFlag(IMFLAG_SEPARATOR_BOTTOM)) {
+                UIWidgets::PaddedSeparator();
+            }
         }
     }
     return changed;

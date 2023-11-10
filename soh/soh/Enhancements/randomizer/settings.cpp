@@ -691,20 +691,26 @@ void Settings::CreateOptions() {
         &mOptions[RSK_STARTING_CONSUMABLES],
         &mOptions[RSK_STARTING_SKULLTULA_TOKEN],
     }, false);
-    mOptionGroups[RSG_STARTING_SONGS_IMGUI] = OptionGroup::SubGroup("Starting Songs", {
+    mOptionGroups[RSG_STARTING_NORMAL_SONGS_IMGUI] = OptionGroup::SubGroup("Normal Songs", {
         &mOptions[RSK_STARTING_ZELDAS_LULLABY],
         &mOptions[RSK_STARTING_EPONAS_SONG],
         &mOptions[RSK_STARTING_SARIAS_SONG],
         &mOptions[RSK_STARTING_SUNS_SONG],
         &mOptions[RSK_STARTING_SONG_OF_TIME],
         &mOptions[RSK_STARTING_SONG_OF_STORMS],
+    }, false, WidgetContainerType::SECTION);
+    mOptionGroups[RSG_STARTING_WARP_SONGS_IMGUI] = OptionGroup::SubGroup("Warp Songs", {
         &mOptions[RSK_STARTING_MINUET_OF_FOREST],
         &mOptions[RSK_STARTING_BOLERO_OF_FIRE],
         &mOptions[RSK_STARTING_SERENADE_OF_WATER],
         &mOptions[RSK_STARTING_REQUIEM_OF_SPIRIT],
         &mOptions[RSK_STARTING_NOCTURNE_OF_SHADOW],
         &mOptions[RSK_STARTING_PRELUDE_OF_LIGHT]
-    }, false);
+    }, false, WidgetContainerType::SECTION);
+    mOptionGroups[RSG_STARTING_SONGS_IMGUI] = OptionGroup::SubGroup("Starting Songs", std::initializer_list<OptionGroup*>({
+        &mOptionGroups[RSG_STARTING_NORMAL_SONGS_IMGUI],
+        &mOptionGroups[RSG_STARTING_WARP_SONGS_IMGUI],
+    }), false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_OPEN] = OptionGroup("Open Settings", {
         &mOptions[RSK_FOREST],
         &mOptions[RSK_KAK_GATE],
@@ -868,11 +874,10 @@ void Settings::CreateOptions() {
         &mOptions[RSK_BLUE_FIRE_ARROWS],
         &mOptions[RSK_SUNLIGHT_ARROWS],
     });
-    // TODO: For some reason this group and only this group is an ambiguous constructor call, despite
-    // the initializer list only having Option* in it. For now explictly declare and initialize
-    // a vector of Option* and construct the group with that.
-    std::vector<Option*> itemPoolOptions = {&mOptions[RSK_ITEM_POOL], &mOptions[RSK_ICE_TRAPS]};
-    mOptionGroups[RSG_ITEM_POOL] = OptionGroup("Item Pool Settings", itemPoolOptions);
+    mOptionGroups[RSG_ITEM_POOL] = OptionGroup("Item Pool Settings", std::initializer_list<Option*>({
+        &mOptions[RSK_ITEM_POOL],
+        &mOptions[RSK_ICE_TRAPS]
+    }));
     // TODO: Progressive Goron Sword, Remove Double Defense
     mOptionGroups[RSG_EXCLUDES_KOKIRI_FOREST] = OptionGroup::SubGroup("Kokiri Forest", mExcludeLocationsOptionsGroups[GROUP_KOKIRI_FOREST], false);
     mOptionGroups[RSG_EXCLUDES_LOST_WOODS] = OptionGroup::SubGroup("Lost Woods", mExcludeLocationsOptionsGroups[GROUP_LOST_WOODS], false);

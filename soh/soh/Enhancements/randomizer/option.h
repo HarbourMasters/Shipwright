@@ -11,10 +11,10 @@
 namespace Rando {
 enum ImGuiMenuFlags {
   IMFLAG_NONE = 0,
-  IMFLAG_SEPARATOR_BOTTOM = 1 << 0,
-  IMFLAG_SEPARATOR_TOP = 1 << 1,
-  IMFLAG_INDENT = 1 << 2,
-  IMFLAG_UNINDENT = 1 << 3,
+  IMFLAG_SEPARATOR_BOTTOM = 1 << 0, /** Adds a padded separator below the widget. */
+  IMFLAG_SEPARATOR_TOP = 1 << 1, /** Adds a padded separator above the widget. */
+  IMFLAG_INDENT = 1 << 2, /** Indents this widget and all proceeding widgets. */
+  IMFLAG_UNINDENT = 1 << 3, /** Unindents this widget and all proceeding widgets. */
 };
 
 /**
@@ -332,6 +332,14 @@ enum class OptionGroupType {
     SUBGROUP,
 };
 
+enum class WidgetContainerType {
+  BASIC, /** Barebones container, just lists the options within. */
+  SECTION, /** Similar to Barebones, but has a header with the section name. */
+  COLUMN, /** Signifies the container should be the start of new column within a table. */
+  TABLE, /** Signifies the container is a table (should contain other subgroups with type column)*/
+  TAB, /** Signifies this container should be contained within a tab of a tabbed interface. */
+};
+
 class OptionGroup {
   public:
     OptionGroup() = default;
@@ -346,41 +354,49 @@ class OptionGroup {
      * @param printInSpoiler Whether or not to print the contents of this group to the spoiler/patch file.
      * @param containsType `DEFAULT` if this group contains `Option`s, or `SUBGROUP` if this group contains
      * other groups.
+     * @param containerType Specifies the type of container this widget should render as in ImGui.
      */
-    OptionGroup(std::string name, std::vector<Option*> options, OptionGroupType groupType = OptionGroupType::DEFAULT, bool printInSpoiler = true);
+    OptionGroup(std::string name, std::vector<Option*> options, OptionGroupType groupType = OptionGroupType::DEFAULT,
+                bool printInSpoiler = true, WidgetContainerType containerType = WidgetContainerType::BASIC);
 
     /**
      * @brief Construct a new Option Group containing a list of `OptionGroup` pointers.
-     * 
+     *
      * @param name The name of this option group. Appears in the spoiler/patch file.
      * @param subGroups A vector of OptionGroup pointers that will be subgroups of this group.
      * @param groupType `DEFAULT` if this group is not contained within any other groups, `SUBGROUP` if it is a
      * subgroup of another group.
      * @param printInSpoiler Whether or not to print the contents of this group to spoiler/patch file.
+     * @param containerType Specifies the type of container this widget should render as in ImGui.
      */
-    OptionGroup(std::string name, std::vector<OptionGroup*> subGroups, OptionGroupType groupType = OptionGroupType::DEFAULT, bool printInSpoiler = true);
+    OptionGroup(std::string name, std::vector<OptionGroup*> subGroups, OptionGroupType groupType = OptionGroupType::DEFAULT,
+                bool printInSpoiler = true, WidgetContainerType containerType = WidgetContainerType::BASIC);
 
     /**
      * @brief Convenience function for constructing an OptionGroup of groupType `SUBGROUP` with
      * containsType of `DEFAULT` (contains `Option`s).
-     * 
+     *
      * @param name The name of this option group. Appears in the spoiler/patch file.
      * @param options A vector of Option pointers.
      * @param printInSpoiler Whether or not to print the options of this group to the spoiler/patch file.
-     * @return OptionGroup 
+     * @param containerType Specifies the type of container this widget should render as in ImGui.
+     * @return OptionGroup
      */
-    static OptionGroup SubGroup(std::string name, std::vector<Option*> options, bool printInSpoiler = true);
+    static OptionGroup SubGroup(std::string name, std::vector<Option*> options, bool printInSpoiler = true,
+                                WidgetContainerType containerType = WidgetContainerType::BASIC);
 
     /**
      * @brief Convenience function for constructing an OptionGroup of groupType `SUBGROUP` with
      * containsType of `SUBGROUP` (contains other `OptionGroup`s)
-     * 
+     *
      * @param name The name of this option group. Appears in the spoiler/patch file.
      * @param subGroups A vector of OptionGroup pointers.
      * @param printInSpoiler Whether or not to print the options of this group to the spoiler/patch file.
-     * @return OptionGroup 
+     * @param containerType Specifies the type of container this widget should render as in ImGui.
+     * @return OptionGroup
      */
-    static OptionGroup SubGroup(std::string name, std::vector<OptionGroup*> subGroups, bool printInSpoiler = true);
+    static OptionGroup SubGroup(std::string name, std::vector<OptionGroup*> subGroups, bool printInSpoiler = true,
+                                WidgetContainerType containerType = WidgetContainerType::BASIC);
 
     /**
      * @brief Get the name of the OptionGroup.
@@ -429,6 +445,8 @@ class OptionGroup {
      */
     OptionGroupType GetContainsType() const;
 
+    WidgetContainerType GetContainerType() const;
+
     /**
      * @brief Renders all of the options contained within this `OptionGroup` in the ImGui menu.
      */
@@ -441,5 +459,6 @@ class OptionGroup {
     OptionGroupType mGroupType = OptionGroupType::DEFAULT;
     bool mPrintInSpoiler;
     OptionGroupType mContainsType = OptionGroupType::DEFAULT;
+    WidgetContainerType mContainerType = WidgetContainerType::BASIC;
 };
 } // namespace Rando
