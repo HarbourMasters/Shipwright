@@ -1402,10 +1402,10 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
     ImGui::PopStyleVar();
 
     if (ImGui::BeginPopup(popupId.c_str())) {
-        std::map<LUSDeviceIndex, std::pair<std::string, int32_t>> indexMappings;
+        std::map<LUS::LUSDeviceIndex, std::pair<std::string, int32_t>> indexMappings;
         for (auto [lusIndex, mapping] :
-             Context::GetInstance()->GetControlDeck()->GetDeviceIndexMappingManager()->GetAllDeviceIndexMappings()) {
-            auto wiiuIndexMapping = std::static_pointer_cast<LUSDeviceIndexToWiiUDeviceIndexMapping>(mapping);
+             LUS::Context::GetInstance()->GetControlDeck()->GetDeviceIndexMappingManager()->GetAllDeviceIndexMappings()) {
+            auto wiiuIndexMapping = std::static_pointer_cast<LUS::LUSDeviceIndexToWiiUDeviceIndexMapping>(mapping);
             if (wiiuIndexMapping == nullptr) {
                 continue;
             }
@@ -1442,9 +1442,9 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
                     ImGui::CloseCurrentPopup();
                 }
                 if (ImGui::Button("Set defaults")) {
-                    Context::GetInstance()->GetControlDeck()->GetControllerByPort(portIndex)->ClearAllMappingsForDevice(
+                    LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(portIndex)->ClearAllMappingsForDevice(
                         lusIndex);
-                    Context::GetInstance()->GetControlDeck()->GetControllerByPort(portIndex)->AddDefaultMappings(
+                    LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(portIndex)->AddDefaultMappings(
                         lusIndex);
                     shouldClose = true;
                     ImGui::CloseCurrentPopup();
@@ -1463,12 +1463,12 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
 
 void SohInputEditorWindow::DrawDevicesTab() {
     if (ImGui::BeginTabItem("Devices")) {
-        std::map<LUSDeviceIndex, std::pair<std::string, int32_t>> indexMappings;
-        for (auto [lusIndex, mapping] : Context::GetInstance()
+        std::map<LUS::LUSDeviceIndex, std::pair<std::string, int32_t>> indexMappings;
+        for (auto [lusIndex, mapping] : LUS::Context::GetInstance()
                                             ->GetControlDeck()
                                             ->GetDeviceIndexMappingManager()
                                             ->GetAllDeviceIndexMappingsFromConfig()) {
-            auto wiiuIndexMapping = std::static_pointer_cast<LUSDeviceIndexToWiiUDeviceIndexMapping>(mapping);
+            auto wiiuIndexMapping = std::static_pointer_cast<LUS::LUSDeviceIndexToWiiUDeviceIndexMapping>(mapping);
             if (wiiuIndexMapping == nullptr) {
                 continue;
             }
@@ -1477,8 +1477,8 @@ void SohInputEditorWindow::DrawDevicesTab() {
         }
 
         for (auto [lusIndex, mapping] :
-             Context::GetInstance()->GetControlDeck()->GetDeviceIndexMappingManager()->GetAllDeviceIndexMappings()) {
-            auto wiiuIndexMapping = std::static_pointer_cast<LUSDeviceIndexToWiiUDeviceIndexMapping>(mapping);
+             LUS::Context::GetInstance()->GetControlDeck()->GetDeviceIndexMappingManager()->GetAllDeviceIndexMappings()) {
+            auto wiiuIndexMapping = std::static_pointer_cast<LUS::LUSDeviceIndexToWiiUDeviceIndexMapping>(mapping);
             if (wiiuIndexMapping == nullptr) {
                 continue;
             }
