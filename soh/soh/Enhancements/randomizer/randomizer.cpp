@@ -1695,8 +1695,8 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
 }
 
 void RandomizerSettingsWindow::DrawElement() {
+    bool changed = false;
     auto ctx = Rando::Context::GetInstance();
-    ctx->GetSettings()->UpdateOptionProperties();
     if (generated) {
         generated = 0;
         randoThread.join();
@@ -1770,23 +1770,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildOpenSettings", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
-
-                // Forest
-                ctx->GetOption(RSK_FOREST).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Kakariko Gate
-                ctx->GetOption(RSK_KAK_GATE).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Door of Time
-                ctx->GetOption(RSK_DOOR_OF_TIME).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Zora's Fountain
-                ctx->GetOption(RSK_ZORAS_FOUNTAIN).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
+                if (ctx->GetSettings()->GetOptionGroup(RSG_AREA_ACCESS_IMGUI).RenderImGui()) {
+                    changed = true;
+                }
                 ImGui::EndChild();
 
                 // COLUMN 2 - World Settings
@@ -1794,100 +1780,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildMiscWorldSettings", ImVec2(0,-8));
                 ImGui::PushItemWidth(-FLT_MIN);
-
-                //Starting Age
-                ctx->GetOption(RSK_STARTING_AGE).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Gerudo Fortress
-                ctx->GetOption(RSK_GERUDO_FORTRESS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Rainbow Bridge
-                ctx->GetOption(RSK_RAINBOW_BRIDGE).RenderImGui();
-                ImGui::PopItemWidth();
-                switch (CVarGetInteger("gRandomizeRainbowBridge", RO_BRIDGE_VANILLA)) {
-                    case RO_BRIDGE_ALWAYS_OPEN:
-                        break;
-                    case RO_BRIDGE_VANILLA:
-                        break;
-                    case RO_BRIDGE_STONES:
-                        ctx->GetOption(RSK_BRIDGE_OPTIONS).RenderImGui();
-                        ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).RenderImGui();
-                        break;
-                    case RO_BRIDGE_MEDALLIONS:
-                        ctx->GetOption(RSK_BRIDGE_OPTIONS).RenderImGui();
-                        ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).RenderImGui();
-                        break;
-                    case RO_BRIDGE_DUNGEON_REWARDS:
-                        ctx->GetOption(RSK_BRIDGE_OPTIONS).RenderImGui();
-                        ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).RenderImGui();
-                        break;
-                    case RO_BRIDGE_DUNGEONS:
-                        ctx->GetOption(RSK_BRIDGE_OPTIONS).RenderImGui();
-                        ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).RenderImGui();
-                        break;
-                    case RO_BRIDGE_TOKENS:
-                        ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).RenderImGui();
-                        break;
-                    case RO_BRIDGE_GREG:
-                        break;
+                if (ctx->GetSettings()->GetOptionGroup(RSG_WORLD_IMGUI).RenderImGui()) {
+                    changed = true;
                 }
-
-                UIWidgets::PaddedSeparator();
-
-                // Ganon's Trials
-                ImGui::PushItemWidth(-FLT_MIN);
-                ctx->GetOption(RSK_GANONS_TRIALS).RenderImGui();
-                ImGui::PopItemWidth();
-                if (CVarGetInteger("gRandomizeGanonTrial", RO_GANONS_TRIALS_SET_NUMBER) == RO_GANONS_TRIALS_SET_NUMBER) {
-                    ctx->GetOption(RSK_TRIAL_COUNT).RenderImGui();
-                }
-
-                UIWidgets::PaddedSeparator();
-
-                // Master Quest Dungeons
-                if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
-                    ImGui::PushItemWidth(-FLT_MIN);
-                    ctx->GetOption(RSK_MQ_DUNGEON_RANDOM).RenderImGui();
-                    ImGui::PopItemWidth();
-                    if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SET_NUMBER) {
-                        ctx->GetOption(RSK_MQ_DUNGEON_COUNT).RenderImGui();
-                    }
-                    if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_NONE) {
-                        ctx->GetOption(RSK_MQ_DUNGEON_SET).RenderImGui();
-                        if (CVarGetInteger("gRandomizeMqDungeonsSelection", RO_GENERIC_OFF) == RO_GENERIC_ON) {
-                            ctx->GetOption(RSK_MQ_DEKU_TREE).RenderImGui();
-                            ctx->GetOption(RSK_MQ_DODONGOS_CAVERN).RenderImGui();
-                            ctx->GetOption(RSK_MQ_JABU_JABU).RenderImGui();
-                            ctx->GetOption(RSK_MQ_FOREST_TEMPLE).RenderImGui();
-                            ctx->GetOption(RSK_MQ_FIRE_TEMPLE).RenderImGui();
-                            ctx->GetOption(RSK_MQ_WATER_TEMPLE).RenderImGui();
-                            ctx->GetOption(RSK_MQ_SPIRIT_TEMPLE).RenderImGui();
-                            ctx->GetOption(RSK_MQ_SHADOW_TEMPLE).RenderImGui();
-                            ctx->GetOption(RSK_MQ_BOTTOM_OF_THE_WELL).RenderImGui();
-                            ctx->GetOption(RSK_MQ_ICE_CAVERN).RenderImGui();
-                            ctx->GetOption(RSK_MQ_GTG).RenderImGui();
-                            ctx->GetOption(RSK_MQ_GANONS_CASTLE).RenderImGui();
-                        }
-                    }
-
-                    UIWidgets::PaddedSeparator();
-                }
-
-                // Triforce Hunt
-                ctx->GetOption(RSK_TRIFORCE_HUNT).RenderImGui();
-                if (CVarGetInteger("gRandomizeTriforceHunt", 0)) {
-                    // Triforce Hunt (total pieces)
-                    UIWidgets::Spacer(0);
-                    ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).RenderImGui();
-
-                    // Triforce Hunt (required pieces)
-                    ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).RenderImGui();
-                }
-
-                UIWidgets::PaddedSeparator();
-
                 ImGui::EndChild();
 
                 // COLUMN 3 - Shuffle Entrances
@@ -1895,68 +1790,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildShuffleEntrances", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
-
-                // Shuffle Dungeon Entrances
-                ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Boss Entrances
-                ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Overworld Entrances
-                ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Interior Entrances
-                ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Grotto Entrances
-                ctx->GetOption(RSK_SHUFFLE_GROTTO_ENTRANCES).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Owl Drops
-                ctx->GetOption(RSK_SHUFFLE_OWL_DROPS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Warp Songs
-                ctx->GetOption(RSK_SHUFFLE_WARP_SONGS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Overworld Spawns
-                ctx->GetOption(RSK_SHUFFLE_OVERWORLD_SPAWNS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Decouple Entrances
-                ctx->GetOption(RSK_DECOUPLED_ENTRANCES).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Mixed Entrance Pools
-                ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).RenderImGui();
-                if (CVarGetInteger("gRandomizeMixedEntrances", RO_GENERIC_OFF)) {
-                    if (CVarGetInteger("gRandomizeShuffleDungeonsEntrances", RO_GENERIC_OFF)) {
-                        UIWidgets::Spacer(0);
-                        ImGui::SetCursorPosX(20);
-                        ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES).RenderImGui();
-                    }
-                    if (CVarGetInteger("gRandomizeShuffleOverworldEntrances", RO_GENERIC_OFF)) {
-                        UIWidgets::Spacer(0);
-                        ImGui::SetCursorPosX(20);
-                        ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).RenderImGui();
-                    }
-                    if (CVarGetInteger("gRandomizeShuffleInteriorsEntrances", RO_GENERIC_OFF)) {
-                        UIWidgets::Spacer(0);
-                        ImGui::SetCursorPosX(20);
-                        ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).RenderImGui();
-                    }
-                    if (CVarGetInteger("gRandomizeShuffleGrottosEntrances", RO_GENERIC_OFF)) {
-                        UIWidgets::Spacer(0);
-                        ImGui::SetCursorPosX(20);
-                        ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).RenderImGui();
-                    }
+                if (ctx->GetSettings()->GetOptionGroup(RSG_SHUFFLE_ENTRANCES_IMGUI).RenderImGui()) {
+                    changed = true;
                 }
-
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
                 ImGui::EndTable();
@@ -1981,36 +1817,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildShuffleItems", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
-
-                // Shuffle Songs
-                ctx->GetOption(RSK_SHUFFLE_SONGS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Tokens
-                ctx->GetOption(RSK_SHUFFLE_TOKENS).RenderImGui();
-                ctx->GetOption(RSK_SKULLS_SUNS_SONG).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Kokiri Sword
-                ctx->GetOption(RSK_SHUFFLE_KOKIRI_SWORD).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                //Shuffle Master Sword
-                ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Ocarinas
-                ctx->GetOption(RSK_SHUFFLE_OCARINA).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Weird Egg
-                ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Gerudo Membership Card
-                ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
+                if (ctx->GetSettings()->GetOptionGroup(RSG_SHUFFLE_ITEMS_IMGUI).RenderImGui()) {
+                    changed = true;
+                }
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
 
@@ -2019,47 +1828,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildShuffleNpcs", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
-
-                // Shopsanity
-                ctx->GetOption(RSK_SHOPSANITY).RenderImGui();
-                // Shopsanity Prices
-                switch (CVarGetInteger("gRandomizeShopsanity", RO_SHOPSANITY_OFF)) {
-                    case RO_SHOPSANITY_OFF:
-                    case RO_SHOPSANITY_ZERO_ITEMS: // no need to show it if there aren't shop slots in the pool
-                        break;
-                    default:
-                        ctx->GetOption(RSK_SHOPSANITY_PRICES).RenderImGui();
-                        ctx->GetOption(RSK_SHOPSANITY_PRICES_AFFORDABLE).RenderImGui();
+                if (ctx->GetSettings()->GetOptionGroup(RSG_SHUFFLE_NPCS_IMGUI).RenderImGui()) {
+                    changed = true;
                 }
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Scrubs
-                ctx->GetOption(RSK_SHUFFLE_SCRUBS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Cows
-                ctx->GetOption(RSK_SHUFFLE_COWS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                ctx->GetOption(RSK_SHUFFLE_MAGIC_BEANS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Merchants
-                ctx->GetOption(RSK_SHUFFLE_MERCHANTS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Frog Song Rupees
-                ctx->GetOption(RSK_SHUFFLE_FROG_SONG_RUPEES).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle Adult Trade Quest
-                ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Shuffle 100 GS Reward
-                ctx->GetOption(RSK_SHUFFLE_100_GS_REWARD).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
 
@@ -2068,82 +1839,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildShuffleDungeonItems", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
-
-                // Shuffle Dungeon Rewards
-                ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Maps & Compasses
-                ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Keysanity
-                ctx->GetOption(RSK_KEYSANITY).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                 // Key Rings
-                ctx->GetOption(RSK_KEYRINGS).RenderImGui();
-                ImGui::PopItemWidth();
-                switch (CVarGetInteger("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF)) {
-                    case RO_KEYRINGS_COUNT:
-                        ctx->GetOption(RSK_KEYRINGS_RANDOM_COUNT).RenderImGui();
-                        break;
-                    case RO_KEYRINGS_SELECTION:
-                        ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS).RenderImGui();
-                        ctx->GetOption(RSK_KEYRINGS_FOREST_TEMPLE).RenderImGui();
-                        ctx->GetOption(RSK_KEYRINGS_FIRE_TEMPLE).RenderImGui();
-                        ctx->GetOption(RSK_KEYRINGS_WATER_TEMPLE).RenderImGui();
-                        ctx->GetOption(RSK_KEYRINGS_SPIRIT_TEMPLE).RenderImGui();
-                        ctx->GetOption(RSK_KEYRINGS_SHADOW_TEMPLE).RenderImGui();
-                        ctx->GetOption(RSK_KEYRINGS_BOTTOM_OF_THE_WELL).RenderImGui();
-                        ctx->GetOption(RSK_KEYRINGS_GTG).RenderImGui();
-                        ctx->GetOption(RSK_KEYRINGS_GANONS_CASTLE).RenderImGui();
-                        break;
-                    default:
-                        break;
+                if (ctx->GetSettings()->GetOptionGroup(RSG_SHUFFLE_DUNGEON_ITEMS).RenderImGui()) {
+                    changed = true;
                 }
-                ImGui::PushItemWidth(-FLT_MIN);
-
-                UIWidgets::PaddedSeparator();
-
-                // Gerudo Keys
-                ctx->GetOption(RSK_GERUDO_KEYS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Boss Keysanity
-                ctx->GetOption(RSK_BOSS_KEYSANITY).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Ganon's Boss Key
-                ctx->GetOption(RSK_GANONS_BOSS_KEY).RenderImGui();
-                ImGui::PopItemWidth();
-                switch (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA)) {
-                    case RO_GANON_BOSS_KEY_LACS_STONES:
-                        ctx->GetOption(RSK_LACS_OPTIONS).RenderImGui();
-                        ctx->GetOption(RSK_LACS_STONE_COUNT).RenderImGui();
-                        break;
-                    case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
-                        ctx->GetOption(RSK_LACS_OPTIONS).RenderImGui();
-                        ctx->GetOption(RSK_LACS_MEDALLION_COUNT).RenderImGui();
-                        break;
-                    case RO_GANON_BOSS_KEY_LACS_REWARDS:
-                        ctx->GetOption(RSK_LACS_OPTIONS).RenderImGui();
-                        ctx->GetOption(RSK_LACS_REWARD_COUNT).RenderImGui();
-                        break;
-                    case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
-                        ctx->GetOption(RSK_LACS_OPTIONS).RenderImGui();
-                        ctx->GetOption(RSK_LACS_DUNGEON_COUNT).RenderImGui();
-                        break;
-                    case RO_GANON_BOSS_KEY_LACS_TOKENS:
-                        ctx->GetOption(RSK_LACS_TOKEN_COUNT).RenderImGui();
-                        break;
-                    default:
-                        break;
-                }
-                ImGui::PushItemWidth(-FLT_MIN);
-
-                UIWidgets::PaddedSeparator();
-
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
                 ImGui::EndTable();
@@ -2167,39 +1865,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildTimeSavers", ImVec2(0, -8));
-
-                // Cuccos to return
-                ctx->GetOption(RSK_CUCCO_COUNT).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Big Poe Target Count
-                ctx->GetOption(RSK_BIG_POE_COUNT).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Skip child stealth
-                ctx->GetOption(RSK_SKIP_CHILD_STEALTH).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Skip child zelda
-                ctx->GetOption(RSK_SKIP_CHILD_ZELDA).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Skip Epona race
-                ctx->GetOption(RSK_SKIP_EPONA_RACE).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Skip tower escape
-                ctx->GetOption(RSK_SKIP_TOWER_ESCAPE).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Complete mask quest
-                ctx->GetOption(RSK_COMPLETE_MASK_QUEST).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Skip Scarecrow Song
-                ctx->GetOption(RSK_SKIP_SCARECROWS_SONG).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
+                if (ctx->GetSettings()->GetOptionGroup(RSG_TIMESAVERS_IMGUI).RenderImGui()) {
+                    changed = true;
+                }
                 ImGui::EndChild();
 
                 // COLUMN 2 - Item Pool & Hint Settings
@@ -2207,58 +1875,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildItemPoolHintSettings", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
-
-                // Item Pool Settings
-                ctx->GetOption(RSK_ITEM_POOL).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Ice Traps
-                ctx->GetOption(RSK_ICE_TRAPS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Gossip Stone Hints
-                ctx->GetOption(RSK_GOSSIP_STONE_HINTS).RenderImGui();
-                if (CVarGetInteger("gRandomizeGossipStoneHints", RO_GOSSIP_STONES_NEED_NOTHING) != RO_GOSSIP_STONES_NONE) {
-                    // Hint Clarity
-                    UIWidgets::Spacer(0);
-                    ImGui::Indent();
-                    ctx->GetOption(RSK_HINT_CLARITY).RenderImGui();
-
-                    // Hint Distribution
-                    UIWidgets::Spacer(0);
-                    ctx->GetOption(RSK_HINT_DISTRIBUTION).RenderImGui();
-                    ImGui::Unindent();
+                if (ctx->GetSettings()->GetOptionGroup(RSG_ITEM_POOL_HINTS_IMGUI).RenderImGui()) {
+                    changed = true;
                 }
-
-                UIWidgets::PaddedSeparator();
-                
-                //Extra Hints
-                ImGui::Text("Extra Hints");
-                UIWidgets::InsertHelpHoverText(
-                    "This setting adds some hints at locations other than Gossip Stones.\n\n"
-                    "House of Skulltula: # - Talking to a cursed House of Skulltula resident will tell you the reward they will give you for obtaining that many tokens."
-                );
-                
-                ImGui::Indent();
-                //Altar, Light Arrows, and Warp Songs are enabled by default
-                ctx->GetOption(RSK_TOT_ALTAR_HINT).RenderImGui();
-                ctx->GetOption(RSK_LIGHT_ARROWS_HINT).RenderImGui();
-                ctx->GetOption(RSK_DAMPES_DIARY_HINT).RenderImGui();
-                ctx->GetOption(RSK_GREG_HINT).RenderImGui();
-                ctx->GetOption(RSK_SARIA_HINT).RenderImGui();
-                ctx->GetOption(RSK_FROGS_HINT).RenderImGui();
-                ctx->GetOption(RSK_WARP_SONG_HINTS).RenderImGui();
-                 //"This option is disabled since warp songs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
-                ctx->GetOption(RSK_SCRUB_TEXT_HINT).RenderImGui();
-                ctx->GetOption(RSK_KAK_10_SKULLS_HINT).RenderImGui();
-                ctx->GetOption(RSK_KAK_20_SKULLS_HINT).RenderImGui();
-                ctx->GetOption(RSK_KAK_30_SKULLS_HINT).RenderImGui();                
-                ctx->GetOption(RSK_KAK_40_SKULLS_HINT).RenderImGui();
-                ctx->GetOption(RSK_KAK_50_SKULLS_HINT).RenderImGui();
-                ImGui::Unindent();
-
-                UIWidgets::PaddedSeparator();
-
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
 
@@ -2268,23 +1887,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::BeginChild("ChildAdditionalFeatures", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
-                ctx->GetOption(RSK_FULL_WALLETS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Bombchus in Logic
-                ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                // Enable Bombchu Drops
-                ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                ctx->GetOption(RSK_BLUE_FIRE_ARROWS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                ctx->GetOption(RSK_SUNLIGHT_ARROWS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
+                if (ctx->GetSettings()->GetOptionGroup(RSG_ADDITIONAL_FEATURES_IMGUI).RenderImGui()) {
+                    changed = true;
+                }
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
                 ImGui::EndTable();
@@ -2845,53 +2450,30 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildStartingEquipment", ImVec2(0, -8));
-                ctx->GetOption(RSK_LINKS_POCKET).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                ctx->GetOption(RSK_STARTING_KOKIRI_SWORD).RenderImGui();
-                UIWidgets::PaddedSeparator();
-                ctx->GetOption(RSK_STARTING_DEKU_SHIELD).RenderImGui();;
-
-                UIWidgets::PaddedSeparator();
-
+                if (ctx->GetSettings()->GetOptionGroup(RSG_STARTING_EQUIPMENT_IMGUI).RenderImGui()) {
+                    changed = true;
+                }
                 ImGui::EndChild();
 
                 // COLUMN 2 - STARTING ITEMS
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildStartingItems", ImVec2(0, -8));
-
-                ctx->GetOption(RSK_STARTING_OCARINA).RenderImGui();
-                UIWidgets::PaddedSeparator();
-                ctx->GetOption(RSK_STARTING_CONSUMABLES).RenderImGui();
-                UIWidgets::PaddedSeparator();
-                ctx->GetOption(RSK_STARTING_SKULLTULA_TOKEN).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
+                if (ctx->GetSettings()->GetOptionGroup(RSG_STARTING_ITEMS_IMGUI).RenderImGui()) {
+                    changed = true;
+                }
                 ImGui::EndChild();
 
                 // COLUMN 3 - STARTING SONGS
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildStartingSongs", ImVec2(0, -8));
-                ctx->GetOption(RSK_STARTING_ZELDAS_LULLABY).RenderImGui();
-                ctx->GetOption(RSK_STARTING_EPONAS_SONG).RenderImGui();
-                ctx->GetOption(RSK_STARTING_SARIAS_SONG).RenderImGui();
-                ctx->GetOption(RSK_STARTING_SUNS_SONG).RenderImGui();
-                ctx->GetOption(RSK_STARTING_SONG_OF_TIME).RenderImGui();
-                ctx->GetOption(RSK_STARTING_SONG_OF_STORMS).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
-                ImGui::Text("Warp Songs");
-                UIWidgets::PaddedSeparator();
-                ctx->GetOption(RSK_STARTING_MINUET_OF_FOREST).RenderImGui();
-                ctx->GetOption(RSK_STARTING_BOLERO_OF_FIRE).RenderImGui();
-                ctx->GetOption(RSK_STARTING_SERENADE_OF_WATER).RenderImGui();
-                ctx->GetOption(RSK_STARTING_REQUIEM_OF_SPIRIT).RenderImGui();
-                ctx->GetOption(RSK_STARTING_NOCTURNE_OF_SHADOW).RenderImGui();
-                ctx->GetOption(RSK_STARTING_PRELUDE_OF_LIGHT).RenderImGui();
-                UIWidgets::PaddedSeparator();
-
+                if (ctx->GetSettings()->GetOptionGroup(RSG_STARTING_SONGS_IMGUI).RenderImGui()) {
+                    changed = true;
+                }
+                // UIWidgets::PaddedSeparator();
+                // ImGui::Text("Warp Songs");
+                // UIWidgets::PaddedSeparator();
                 ImGui::EndChild();
                 ImGui::EndTable();
             }
@@ -2906,6 +2488,9 @@ void RandomizerSettingsWindow::DrawElement() {
         UIWidgets::ReEnableComponent("");
     }
     ImGui::End();
+    if (changed) {
+        ctx->GetSettings()->UpdateOptionProperties();
+    }
 }
 
 CustomMessage Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
@@ -3820,4 +3405,5 @@ class ExtendedVanillaTableInvalidItemIdException: public std::exception {
 void RandomizerSettingsWindow::InitElement() {
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
+    Rando::Context::GetInstance()->GetSettings()->UpdateOptionProperties();
 }

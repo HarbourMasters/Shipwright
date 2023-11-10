@@ -9,9 +9,17 @@
 #include <type_traits>
 
 namespace Rando {
-  /**
-   * @brief Affects how options are handled when writing a spoiler/patch file
-   */
+enum ImGuiMenuFlags {
+  IMFLAG_NONE = 0,
+  IMFLAG_SEPARATOR_BOTTOM = 1 << 0,
+  IMFLAG_SEPARATOR_TOP = 1 << 1,
+  IMFLAG_INDENT = 1 << 2,
+  IMFLAG_UNINDENT = 1 << 3,
+};
+
+/**
+ * @brief Affects how options are handled when writing a spoiler/patch file
+ */
 enum class OptionCategory {
     Setting, /** An option that typically affects the logic/item pool/etc. of the seed. Typically gets written out to the spoiler file. */
     Toggle, /** An option that typically affects other options rather than affecting the seed directly. i.e. A toggle for randomizing the values of other options. */
@@ -56,7 +64,7 @@ class Option {
     static Option Bool(std::string name_, std::vector<std::string> options_ = { "Off", "On" },
                        OptionCategory category_ = OptionCategory::Setting, std::string cvarName_ = "",
                        std::string description_ = "", WidgetType widgetType_ = WidgetType::Checkbox,
-                       uint8_t defaultOption_ = 0, bool defaultHidden_ = false);
+                       uint8_t defaultOption_ = 0, bool defaultHidden_ = false, int imFlags_ = IMFLAG_SEPARATOR_BOTTOM);
 
     /**
      * @brief Constructs a boolean option. This constructor was added later for convenience so that a cvarName
@@ -75,7 +83,8 @@ class Option {
      * @return Option 
      */
     static Option Bool(std::string name_, std::string cvarName_, std::string description_ = "",
-                       WidgetType widgetType_ = WidgetType::Checkbox, bool defaultOption_ = 0);
+                       int imFlags_ = IMFLAG_SEPARATOR_BOTTOM, WidgetType widgetType_ = WidgetType::Checkbox,
+                       bool defaultOption_ = 0);
 
     /**
      * @brief Constructs a U8 Option.
@@ -99,7 +108,7 @@ class Option {
     static Option U8(std::string name_, std::vector<std::string> options_,
                      OptionCategory category_ = OptionCategory::Setting, std::string cvarName_ = "",
                      std::string description_ = "", WidgetType widgetType_ = WidgetType::Combobox,
-                     uint8_t defaultOption = 0, bool defaultHidden = false);
+                     uint8_t defaultOption = 0, bool defaultHidden = false, int imFlags_ = IMFLAG_SEPARATOR_BOTTOM);
 
     /**
      * @brief A convenience function for constructing the Option for a trick.
@@ -283,18 +292,23 @@ class Option {
      * U8 options are rendered as Comboboxes, but this can be overriden during construction with
      * the `widgetType` property.
      */
-    void RenderImGui() const;
+    bool RenderImGui() const;
+
+    bool HasFlag(int imFlag_) const;
+    void AddFlag(int imFlag_);
+    void SetFlag(int imFlag_);
+    void RemoveFlag(int imFlag_);
 
   private:
     Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
            std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
-           bool defaultHidden_);
+           bool defaultHidden_, int imFlags_);
     Option(bool var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
            std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
-           bool defaultHidden_);
-    void RenderCheckbox() const;
-    void RenderCombobox() const;
-    void RenderSlider() const;
+           bool defaultHidden_, int imFlags_);
+    bool RenderCheckbox() const;
+    bool RenderCombobox() const;
+    bool RenderSlider() const;
     std::variant<bool, uint8_t> var;
     std::string name;
     std::vector<std::string> options;
@@ -307,6 +321,7 @@ class Option {
     WidgetType widgetType;
     uint8_t defaultOption = false;
     bool defaultHidden = false;
+    int imFlags = IMFLAG_NONE;
     bool disabled = false;
     UIWidgets::CheckboxGraphics disabledGraphic = UIWidgets::CheckboxGraphics::Cross;
     std::string disabledText = "";
@@ -413,6 +428,11 @@ class OptionGroup {
      * @return OptionGroupType 
      */
     OptionGroupType GetContainsType() const;
+
+    /**
+     * @brief Renders all of the options contained within this `OptionGroup` in the ImGui menu.
+     */
+    bool RenderImGui() const;
 
   private:
     std::string mName;

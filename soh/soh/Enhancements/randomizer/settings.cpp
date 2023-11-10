@@ -43,13 +43,13 @@ void Settings::CreateOptions() {
     mOptions[RSK_DOOR_OF_TIME] = Option::U8("Door of Time", {"Closed", "Song only", "Open"}, OptionCategory::Setting, "gRandomizeDoorOfTime", mOptionDescriptions[RSK_DOOR_OF_TIME], WidgetType::Combobox);
     mOptions[RSK_ZORAS_FOUNTAIN] = Option::U8("Zora's Fountain", {"Closed", "Closed as child", "Open"}, OptionCategory::Setting, "gRandomizeZorasFountain", mOptionDescriptions[RSK_ZORAS_FOUNTAIN]);
     mOptions[RSK_GERUDO_FORTRESS] = Option::U8("Gerudo Fortress", {"Normal", "Fast", "Open"}, OptionCategory::Setting, "gRandomizeGerudoFortress", mOptionDescriptions[RSK_GERUDO_FORTRESS]);
-    mOptions[RSK_RAINBOW_BRIDGE] = Option::U8("Rainbow Bridge", {"Vanilla", "Always open", "Stones", "Medallions", "Dungeon rewards", "Dungeons", "Tokens", "Greg"}, OptionCategory::Setting, "gRandomizeRainbowBridge", mOptionDescriptions[RSK_RAINBOW_BRIDGE], WidgetType::Combobox, RO_BRIDGE_VANILLA);
+    mOptions[RSK_RAINBOW_BRIDGE] = Option::U8("Rainbow Bridge", {"Vanilla", "Always open", "Stones", "Medallions", "Dungeon rewards", "Dungeons", "Tokens", "Greg"}, OptionCategory::Setting, "gRandomizeRainbowBridge", mOptionDescriptions[RSK_RAINBOW_BRIDGE], WidgetType::Combobox, RO_BRIDGE_VANILLA, false, IMFLAG_NONE);
     mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT] = Option::U8("Stone Count", {NumOpts(0, 4)}, OptionCategory::Setting, "gRandomizeStoneCount", "", WidgetType::Slider, 3, true);
     mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] = Option::U8("Medallion Count", {NumOpts(0, 7)}, OptionCategory::Setting, "gRandomizeMedallionCount", "", WidgetType::Slider, 6, true);
     mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = Option::U8("Reward Count", {NumOpts(0, 10)}, OptionCategory::Setting, "gRandomizeRewardCount", "", WidgetType::Slider, 9, true);
     mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = Option::U8("Dungeon Count", {NumOpts(0, 9)}, OptionCategory::Setting, "gRandomizeDungeonCount", "", WidgetType::Slider, 8, true);
     mOptions[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = Option::U8("Token Count", {NumOpts(0, 100)}, OptionCategory::Setting, "gRandomizeTokenCount", "", WidgetType::Slider, 100, true);
-    mOptions[RSK_BRIDGE_OPTIONS] = Option::U8("Bridge Reward Options", {"Standard Rewards", "Greg as Reward", "Greg as Wildcard"}, OptionCategory::Setting, "gRandomizeBridgeRewardOptions", mOptionDescriptions[RSK_BRIDGE_OPTIONS], WidgetType::Combobox);
+    mOptions[RSK_BRIDGE_OPTIONS] = Option::U8("Bridge Reward Options", {"Standard Rewards", "Greg as Reward", "Greg as Wildcard"}, OptionCategory::Setting, "gRandomizeBridgeRewardOptions", mOptionDescriptions[RSK_BRIDGE_OPTIONS], WidgetType::Combobox, RO_BRIDGE_STANDARD_REWARD, false, IMFLAG_NONE);
     mOptions[RSK_GANONS_TRIALS] = Option::U8("Ganon's Trials", {"Skip", "Set Number", "Random Number"}, OptionCategory::Setting, "gRandomizeGanonTrial", mOptionDescriptions[RSK_GANONS_TRIALS], WidgetType::Combobox, RO_GANONS_TRIALS_SET_NUMBER);
     mOptions[RSK_TRIAL_COUNT] = Option::U8("Ganon's Trials Count", {NumOpts(0, 6)}, OptionCategory::Setting, "gRandomizeGanonTrialCount", mOptionDescriptions[RSK_TRIAL_COUNT], WidgetType::Slider, 6, true);
     mOptions[RSK_STARTING_AGE] = Option::U8("Starting Age", {"Child", "Adult", "Random"}, OptionCategory::Setting, "gRandomizeStartingAge", mOptionDescriptions[RSK_STARTING_AGE], WidgetType::Combobox, RO_AGE_CHILD);
@@ -63,37 +63,37 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_WARP_SONGS] = Option::Bool("Warp Songs", "gRandomizeShuffleWarpSongs", mOptionDescriptions[RSK_SHUFFLE_WARP_SONGS]);
     mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS] = Option::Bool("Overworld Spawns", "gRandomizeShuffleOverworldSpanws", mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]);
     mOptions[RSK_MIXED_ENTRANCE_POOLS] = Option::Bool("Mixed Entrance Pools", "gRandomizeMixedEntrances", mOptionDescriptions[RSK_MIXED_ENTRANCE_POOLS]);
-    mOptions[RSK_MIX_DUNGEON_ENTRANCES] = Option::Bool("Mix Dungeons", "gRandomizeMixDungeons", mOptionDescriptions[RSK_MIX_DUNGEON_ENTRANCES]);
-    mOptions[RSK_MIX_OVERWORLD_ENTRANCES] = Option::Bool("Mix Overworld", "gRandomizeMixOverworld", mOptionDescriptions[RSK_MIX_OVERWORLD_ENTRANCES]);
-    mOptions[RSK_MIX_INTERIOR_ENTRANCES] = Option::Bool("Mix Interiors", "gRandomizeMixInteriors", mOptionDescriptions[RSK_MIX_INTERIOR_ENTRANCES]);
+    mOptions[RSK_MIX_DUNGEON_ENTRANCES] = Option::Bool("Mix Dungeons", "gRandomizeMixDungeons", mOptionDescriptions[RSK_MIX_DUNGEON_ENTRANCES], IMFLAG_NONE);
+    mOptions[RSK_MIX_OVERWORLD_ENTRANCES] = Option::Bool("Mix Overworld", "gRandomizeMixOverworld", mOptionDescriptions[RSK_MIX_OVERWORLD_ENTRANCES], IMFLAG_NONE);
+    mOptions[RSK_MIX_INTERIOR_ENTRANCES] = Option::Bool("Mix Interiors", "gRandomizeMixInteriors", mOptionDescriptions[RSK_MIX_INTERIOR_ENTRANCES], IMFLAG_NONE);
     mOptions[RSK_MIX_GROTTO_ENTRANCES] = Option::Bool("Mix Grottos", "gRandomizeMixGrottos", mOptionDescriptions[RSK_MIX_GROTTO_ENTRANCES]);
     mOptions[RSK_DECOUPLED_ENTRANCES] = Option::Bool("Decouple Entrances", "gRandomizeDecoupleEntrances", mOptionDescriptions[RSK_DECOUPLED_ENTRANCES]);
     mOptions[RSK_BOMBCHUS_IN_LOGIC] = Option::Bool("Bombchus in Logic", "gRandomizeBombchusInLogic", mOptionDescriptions[RSK_BOMBCHUS_IN_LOGIC]);
     mOptions[RSK_ENABLE_BOMBCHU_DROPS] = Option::U8("Bombchu Drops", {"No", "Yes"}, OptionCategory::Setting, "gRandomizeEnableBombchuDrops", mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS], WidgetType::Combobox, RO_AMMO_DROPS_ON);
     // TODO: AmmoDrops and/or HeartDropRefill, combine with/separate Ammo Drops from Bombchu Drops?
-    mOptions[RSK_TRIFORCE_HUNT] = Option::Bool("Triforce Hunt", "gRandomizeTriforceHunt", mOptionDescriptions[RSK_TRIFORCE_HUNT]);
-    mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = Option::U8("Triforce Hunt Total Pieces", {NumOpts(1, 100)}, OptionCategory::Setting, "gRandomizeTriforceHuntTotalPieces", mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL], WidgetType::Slider, 29);
+    mOptions[RSK_TRIFORCE_HUNT] = Option::Bool("Triforce Hunt", "gRandomizeTriforceHunt", mOptionDescriptions[RSK_TRIFORCE_HUNT], IMFLAG_NONE);
+    mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = Option::U8("Triforce Hunt Total Pieces", {NumOpts(1, 100)}, OptionCategory::Setting, "gRandomizeTriforceHuntTotalPieces", mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL], WidgetType::Slider, 29, false, IMFLAG_NONE);
     mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = Option::U8("Triforce Hunt Required Pieces", {NumOpts(1, 100)}, OptionCategory::Setting, "gRandomizeTriforceHuntRequiredPieces", mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED], WidgetType::Slider, 19);
-    mOptions[RSK_MQ_DUNGEON_RANDOM] = Option::U8("MQ Dungeon Setting", {"None", "Set Number", "Random", "Selection Only"}, OptionCategory::Setting, "gRandomizeMqDungeons", mOptionDescriptions[RSK_MQ_DUNGEON_RANDOM], WidgetType::Combobox, RO_MQ_DUNGEONS_NONE, true);
-    mOptions[RSK_MQ_DUNGEON_COUNT] = Option::U8("MQ Dungeon Count", {NumOpts(0, 12)}, OptionCategory::Setting, "gRandomizeMqDungeonCount", "", WidgetType::Slider, 12, true);
-    mOptions[RSK_MQ_DUNGEON_SET] = Option::Bool("Set Dungeon Quests", {"Off", "On"}, OptionCategory::Setting, "gRandomizeMqDungeonsSelection", mOptionDescriptions[RSK_MQ_DUNGEON_SET]);
-    mOptions[RSK_MQ_DEKU_TREE] = Option::U8("Deku Tree", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsDekuTree", "", WidgetType::Combobox, RO_MQ_SET_VANILLA);
-    mOptions[RSK_MQ_DODONGOS_CAVERN] = Option::U8("Dodongo's Cavern", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsDodongosCavern", "", WidgetType::Combobox, RO_MQ_SET_VANILLA);
-    mOptions[RSK_MQ_JABU_JABU] = Option::U8("Jabu-Jabu's Belly", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsJabuJabu", "", WidgetType::Combobox, RO_MQ_SET_VANILLA);
-    mOptions[RSK_MQ_FOREST_TEMPLE] = Option::U8("Forest Temple", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsForestTemple", "", WidgetType::Combobox, RO_MQ_SET_VANILLA);
-    mOptions[RSK_MQ_FIRE_TEMPLE] = Option::U8("Fire Temple", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsFireTemple", "", WidgetType::Combobox, RO_MQ_SET_VANILLA);
-    mOptions[RSK_MQ_WATER_TEMPLE] = Option::U8("Water Temple", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsWaterTemple", "", WidgetType::Combobox, RO_MQ_SET_VANILLA);
-    mOptions[RSK_MQ_SPIRIT_TEMPLE] = Option::U8("Spirit Temple", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsSpiritTemple", "", WidgetType::Combobox, RO_MQ_SET_VANILLA);
-    mOptions[RSK_MQ_SHADOW_TEMPLE] = Option::U8("Shadow Temple", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsShadowTemple", "", WidgetType::Combobox, RO_MQ_SET_VANILLA);
-    mOptions[RSK_MQ_BOTTOM_OF_THE_WELL] = Option::U8("Bottom of the Well", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsBottomOfTheWell", "", WidgetType::Combobox, RO_MQ_SET_VANILLA);
-    mOptions[RSK_MQ_ICE_CAVERN] = Option::U8("Ice Cavern", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsIceCavern", "", WidgetType::Combobox, RO_MQ_SET_VANILLA);
-    mOptions[RSK_MQ_GTG] = Option::U8("Gerudo Training Grounds", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsGTG", "", WidgetType::Combobox, RO_MQ_SET_VANILLA);
+    mOptions[RSK_MQ_DUNGEON_RANDOM] = Option::U8("MQ Dungeon Setting", {"None", "Set Number", "Random", "Selection Only"}, OptionCategory::Setting, "gRandomizeMqDungeons", mOptionDescriptions[RSK_MQ_DUNGEON_RANDOM], WidgetType::Combobox, RO_MQ_DUNGEONS_NONE, true, IMFLAG_NONE);
+    mOptions[RSK_MQ_DUNGEON_COUNT] = Option::U8("MQ Dungeon Count", {NumOpts(0, 12)}, OptionCategory::Setting, "gRandomizeMqDungeonCount", "", WidgetType::Slider, 12, true, IMFLAG_NONE);
+    mOptions[RSK_MQ_DUNGEON_SET] = Option::Bool("Set Dungeon Quests", {"Off", "On"}, OptionCategory::Setting, "gRandomizeMqDungeonsSelection", mOptionDescriptions[RSK_MQ_DUNGEON_SET], WidgetType::Checkbox, false, false, IMFLAG_NONE);
+    mOptions[RSK_MQ_DEKU_TREE] = Option::U8("Deku Tree", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsDekuTree", "", WidgetType::Combobox, RO_MQ_SET_VANILLA, false, IMFLAG_NONE);
+    mOptions[RSK_MQ_DODONGOS_CAVERN] = Option::U8("Dodongo's Cavern", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsDodongosCavern", "", WidgetType::Combobox, RO_MQ_SET_VANILLA, false, IMFLAG_NONE);
+    mOptions[RSK_MQ_JABU_JABU] = Option::U8("Jabu-Jabu's Belly", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsJabuJabu", "", WidgetType::Combobox, RO_MQ_SET_VANILLA, false, IMFLAG_NONE);
+    mOptions[RSK_MQ_FOREST_TEMPLE] = Option::U8("Forest Temple", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsForestTemple", "", WidgetType::Combobox, RO_MQ_SET_VANILLA, false, IMFLAG_NONE);
+    mOptions[RSK_MQ_FIRE_TEMPLE] = Option::U8("Fire Temple", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsFireTemple", "", WidgetType::Combobox, RO_MQ_SET_VANILLA, false, IMFLAG_NONE);
+    mOptions[RSK_MQ_WATER_TEMPLE] = Option::U8("Water Temple", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsWaterTemple", "", WidgetType::Combobox, RO_MQ_SET_VANILLA, false, IMFLAG_NONE);
+    mOptions[RSK_MQ_SPIRIT_TEMPLE] = Option::U8("Spirit Temple", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsSpiritTemple", "", WidgetType::Combobox, RO_MQ_SET_VANILLA, false, IMFLAG_NONE);
+    mOptions[RSK_MQ_SHADOW_TEMPLE] = Option::U8("Shadow Temple", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsShadowTemple", "", WidgetType::Combobox, RO_MQ_SET_VANILLA, false, IMFLAG_NONE);
+    mOptions[RSK_MQ_BOTTOM_OF_THE_WELL] = Option::U8("Bottom of the Well", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsBottomOfTheWell", "", WidgetType::Combobox, RO_MQ_SET_VANILLA, false, IMFLAG_NONE);
+    mOptions[RSK_MQ_ICE_CAVERN] = Option::U8("Ice Cavern", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsIceCavern", "", WidgetType::Combobox, RO_MQ_SET_VANILLA, false, IMFLAG_NONE);
+    mOptions[RSK_MQ_GTG] = Option::U8("Gerudo Training Grounds", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsGTG", "", WidgetType::Combobox, RO_MQ_SET_VANILLA, false, IMFLAG_NONE);
     mOptions[RSK_MQ_GANONS_CASTLE] = Option::U8("Ganon's Castle", {"Vanilla", "Master Quest", "Random"}, OptionCategory::Setting, "gRandomizeMqDungeonsGanonsCastle", "", WidgetType::Combobox, RO_MQ_SET_VANILLA);
     mOptions[RSK_SHUFFLE_DUNGEON_REWARDS] = Option::U8("Shuffle Dungeon Rewards", {"End of Dungeons", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, "gRandomizeShuffleDungeonReward", mOptionDescriptions[RSK_SHUFFLE_DUNGEON_REWARDS], WidgetType::Combobox, RO_DUNGEON_REWARDS_END_OF_DUNGEON);
     mOptions[RSK_LINKS_POCKET] = Option::U8("Link's Pocket", {"Dungeon Reward", "Advancement", "Anything", "Nothing"}, OptionCategory::Setting, "gRandomizeLinksPocket", "", WidgetType::Combobox, RO_LINKS_POCKET_DUNGEON_REWARD, true);
     mOptions[RSK_SHUFFLE_SONGS] = Option::U8("Shuffle Songs", {"Song Locations", "Dungeon Rewards", "Anywhere"}, OptionCategory::Setting, "gRandomizeShuffleSongs", mOptionDescriptions[RSK_SHUFFLE_SONGS], WidgetType::Combobox, RO_SONG_SHUFFLE_SONG_LOCATIONS);
     mOptions[RSK_SHOPSANITY] = Option::U8("Shopsanity", {"Off", "0 Items", "1 Item", "2 Items", "3 Items", "4 Items", "Random"}, OptionCategory::Setting, "gRandomizeShopsanity", mOptionDescriptions[RSK_SHOPSANITY], WidgetType::Combobox, RO_SHOPSANITY_OFF);
-    mOptions[RSK_SHOPSANITY_PRICES] = Option::U8("Shopsanity Prices", {"Balanced", "Starting Wallet", "Adult Wallet", "Giant's Wallet", "Tycoon's Wallet"}, OptionCategory::Setting, "gRandomizeShopsanityPrices", mOptionDescriptions[RSK_SHOPSANITY_PRICES], WidgetType::Combobox, RO_SHOPSANITY_PRICE_BALANCED);
+    mOptions[RSK_SHOPSANITY_PRICES] = Option::U8("Shopsanity Prices", {"Balanced", "Starting Wallet", "Adult Wallet", "Giant's Wallet", "Tycoon's Wallet"}, OptionCategory::Setting, "gRandomizeShopsanityPrices", mOptionDescriptions[RSK_SHOPSANITY_PRICES], WidgetType::Combobox, RO_SHOPSANITY_PRICE_BALANCED, false, IMFLAG_NONE);
     mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE] = Option::Bool("Affordable Prices", "gRandomizeShopsanityPricesAffordable", mOptionDescriptions[RSK_SHOPSANITY_PRICES_AFFORDABLE]);
     mOptions[RSK_SHUFFLE_TOKENS] = Option::U8("Tokensanity", {"Off", "Dungeons", "Overworld", "All Tokens"}, OptionCategory::Setting, "gRandomizeShuffleTokens", mOptionDescriptions[RSK_SHUFFLE_TOKENS], WidgetType::Combobox, RO_TOKENSANITY_OFF);
     mOptions[RSK_SHUFFLE_SCRUBS] = Option::U8("Scrub Shuffle", {"Off", "Affordable", "Expensive", "Random Prices"}, OptionCategory::Setting, "gRandomizeShuffleScrubs", mOptionDescriptions[RSK_SHUFFLE_SCRUBS], WidgetType::Combobox, RO_SCRUBS_OFF);
@@ -108,7 +108,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES] = Option::Bool("Shuffle Frog Song Rupees", "gRandomizeShuffleFrogSongRupees", mOptionDescriptions[RSK_SHUFFLE_FROG_SONG_RUPEES]);
     mOptions[RSK_SHUFFLE_ADULT_TRADE] = Option::Bool("Shuffle Adult Trade", "gRandomizeShuffleAdultTrade", mOptionDescriptions[RSK_SHUFFLE_ADULT_TRADE]);
     mOptions[RSK_SHUFFLE_CHEST_MINIGAME] = Option::U8("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"});
-    mOptions[RSK_SHUFFLE_100_GS_REWARD] = Option::Bool("Shuffle 100 GS Reward", "gRandomizeShuffle100GSReward", mOptionDescriptions[RSK_SHUFFLE_100_GS_REWARD], WidgetType::Checkbox, RO_GENERIC_OFF);
+    mOptions[RSK_SHUFFLE_100_GS_REWARD] = Option::Bool("Shuffle 100 GS Reward", "gRandomizeShuffle100GSReward", mOptionDescriptions[RSK_SHUFFLE_100_GS_REWARD], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
     mOptions[RSK_SHUFFLE_MAPANDCOMPASS] = Option::U8("Maps/Compasses", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, "gRandomizeStartingMapsCompasses", mOptionDescriptions[RSK_SHUFFLE_MAPANDCOMPASS], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     mOptions[RSK_KEYSANITY] = Option::U8("Small Keys", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, "gRandomizeKeysanity", mOptionDescriptions[RSK_KEYSANITY], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     mOptions[RSK_GERUDO_KEYS] = Option::U8("Gerudo Fortress Keys", {"Vanilla", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, "gRandomizeGerudoKeys", mOptionDescriptions[RSK_GERUDO_KEYS], WidgetType::Combobox, RO_GERUDO_KEYS_VANILLA);
@@ -122,14 +122,14 @@ void Settings::CreateOptions() {
     mOptions[RSK_LACS_OPTIONS] = Option::U8("LACS Reward Options", {"Standard Reward", "Greg as Reward", "Greg as Wildcard"}, OptionCategory::Setting, "gRandomizeLacsRewardOptions", "", WidgetType::Combobox, RO_LACS_STANDARD_REWARD);
     mOptions[RSK_KEYRINGS] = Option::U8("Key Rings", {"Off", "Random", "Count", "Selection"}, OptionCategory::Setting, "gRandomizeShuffleKeyRings", mOptionDescriptions[RSK_KEYRINGS], WidgetType::Combobox, RO_KEYRINGS_OFF);
     mOptions[RSK_KEYRINGS_RANDOM_COUNT] = Option::U8("Keyring Dungeon Count", {NumOpts(0, 9)}, OptionCategory::Setting, "gRandomizeShuffleKeyRingsRandomCount", "", WidgetType::Slider, 8);
-    mOptions[RSK_KEYRINGS_GERUDO_FORTRESS] = Option::Bool("Gerudo Fortress", "gRandomizeShuffleKeyRingsGerudoFortress");
-    mOptions[RSK_KEYRINGS_FOREST_TEMPLE] = Option::Bool("Forest Temple", "gRandomizeShuffleKeyRingsForestTemple");
-    mOptions[RSK_KEYRINGS_FIRE_TEMPLE] = Option::Bool("Fire Temple", "gRandomizeShuffleKeyRingsFireTemple");
-    mOptions[RSK_KEYRINGS_WATER_TEMPLE] = Option::Bool("Water Temple", "gRandomizeShuffleKeyRingsWaterTemple");
-    mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE] = Option::Bool("Spirit Temple", "gRandomizeShuffleKeyRingsSpiritTemple");
-    mOptions[RSK_KEYRINGS_SHADOW_TEMPLE] = Option::Bool("Shadow Temple", "gRandomizeShuffleKeyRingsShadowTemple");
-    mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL] = Option::Bool("Bottom of the Well", "gRandomizeShuffleKeyRingsBottomOfTheWell");
-    mOptions[RSK_KEYRINGS_GTG] = Option::Bool("Gerudo Training Grounds", "gRandomizeShuffleKeyRingsGTG");
+    mOptions[RSK_KEYRINGS_GERUDO_FORTRESS] = Option::Bool("Gerudo Fortress", "gRandomizeShuffleKeyRingsGerudoFortress", "", IMFLAG_NONE);
+    mOptions[RSK_KEYRINGS_FOREST_TEMPLE] = Option::Bool("Forest Temple", "gRandomizeShuffleKeyRingsForestTemple", "", IMFLAG_NONE);
+    mOptions[RSK_KEYRINGS_FIRE_TEMPLE] = Option::Bool("Fire Temple", "gRandomizeShuffleKeyRingsFireTemple", "", IMFLAG_NONE);
+    mOptions[RSK_KEYRINGS_WATER_TEMPLE] = Option::Bool("Water Temple", "gRandomizeShuffleKeyRingsWaterTemple", "", IMFLAG_NONE);
+    mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE] = Option::Bool("Spirit Temple", "gRandomizeShuffleKeyRingsSpiritTemple", "", IMFLAG_NONE);
+    mOptions[RSK_KEYRINGS_SHADOW_TEMPLE] = Option::Bool("Shadow Temple", "gRandomizeShuffleKeyRingsShadowTemple", "", IMFLAG_NONE);
+    mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL] = Option::Bool("Bottom of the Well", "gRandomizeShuffleKeyRingsBottomOfTheWell", "", IMFLAG_NONE);
+    mOptions[RSK_KEYRINGS_GTG] = Option::Bool("Gerudo Training Grounds", "gRandomizeShuffleKeyRingsGTG", "", IMFLAG_NONE);
     mOptions[RSK_KEYRINGS_GANONS_CASTLE] = Option::Bool("Ganon's Castle", "gRandomizeShuffleKeyRingsGanonsCastle");
     mOptions[RSK_SKIP_CHILD_STEALTH] = Option::Bool("Skip Child Stealth", {"Don't Skip", "Skip"}, OptionCategory::Setting, "gRandomizeSkipChildZelda", mOptionDescriptions[RSK_SKIP_CHILD_STEALTH], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
     mOptions[RSK_SKIP_CHILD_ZELDA] = Option::Bool("Skip Child Zelda", {"Don't Skip", "Skip"}, OptionCategory::Setting, "gRandomizeSkipChildZelda", mOptionDescriptions[RSK_SKIP_CHILD_ZELDA], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
@@ -141,21 +141,21 @@ void Settings::CreateOptions() {
     mOptions[RSK_COMPLETE_MASK_QUEST] = Option::Bool("Complete Mask Quest", "gRandomizeCompleteMaskQuest", mOptionDescriptions[RSK_COMPLETE_MASK_QUEST]);
     mOptions[RSK_ENABLE_GLITCH_CUTSCENES] = Option::Bool("Enable Glitch-Useful Cutscenes", "gRandomizeEnableGlitchCutscenes", mOptionDescriptions[RSK_ENABLE_GLITCH_CUTSCENES]);
     mOptions[RSK_GOSSIP_STONE_HINTS] = Option::U8("Gossip Stone Hints", {"No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony"}, OptionCategory::Setting, "gRandomizeGossipStoneHints", mOptionDescriptions[RSK_GOSSIP_STONE_HINTS], WidgetType::Combobox, RO_GOSSIP_STONES_NEED_NOTHING);
-    mOptions[RSK_HINT_CLARITY] = Option::U8("Hint Clarity", {"Obscure", "Ambiguous", "Clear"}, OptionCategory::Setting, "gRandomizeHintClarity", mOptionDescriptions[RSK_HINT_CLARITY], WidgetType::Combobox, RO_HINT_CLARITY_CLEAR);
-    mOptions[RSK_HINT_DISTRIBUTION] = Option::U8("Hint Distribution", {"Useless", "Balanced", "Strong", "Very Strong"}, OptionCategory::Setting, "gRandomizeHintDistribution", mOptionDescriptions[RSK_HINT_DISTRIBUTION], WidgetType::Combobox, RO_HINT_DIST_BALANCED);
-    mOptions[RSK_TOT_ALTAR_HINT] = Option::Bool("ToT Altar Hint", {"Off", "On"}, OptionCategory::Setting, "gRandomizeAltarHint", mOptionDescriptions[RSK_TOT_ALTAR_HINT], WidgetType::Checkbox, RO_GENERIC_ON);
-    mOptions[RSK_LIGHT_ARROWS_HINT] = Option::Bool("Light Arrow Hint", {"Off", "On"}, OptionCategory::Setting, "gRandomizeLAHint", mOptionDescriptions[RSK_LIGHT_ARROWS_HINT], WidgetType::Checkbox, RO_GENERIC_ON);
-    mOptions[RSK_DAMPES_DIARY_HINT] = Option::Bool("Dampe's Diary Hint", "gRandomizeDampeHint", mOptionDescriptions[RSK_DAMPES_DIARY_HINT]);
-    mOptions[RSK_GREG_HINT] = Option::Bool("Greg the Green Rupee Hint", "gRandomizeGregHint", mOptionDescriptions[RSK_GREG_HINT]);
-    mOptions[RSK_SARIA_HINT] = Option::Bool("Saria's Hint", "gRandomizeSariaHint", mOptionDescriptions[RSK_SARIA_HINT]);
-    mOptions[RSK_FROGS_HINT] = Option::Bool("Frog Ocarina Game Hint", "gRandomizeFrogsHint", mOptionDescriptions[RSK_FROGS_HINT]);
-    mOptions[RSK_WARP_SONG_HINTS] = Option::Bool("Warp Song Hints", "gRandomizeWarpSongText", mOptionDescriptions[RSK_WARP_SONG_HINTS], WidgetType::Checkbox, RO_GENERIC_ON);
-    mOptions[RSK_KAK_10_SKULLS_HINT] = Option::Bool("10 GS Hint", "gRandomize10GSHint");
-    mOptions[RSK_KAK_20_SKULLS_HINT] = Option::Bool("20 GS Hint", "gRandomize20GSHint");
-    mOptions[RSK_KAK_30_SKULLS_HINT] = Option::Bool("30 GS Hint", "gRandomize30GSHint");
-    mOptions[RSK_KAK_40_SKULLS_HINT] = Option::Bool("40 GS Hint", "gRandomize40GSHint");
+    mOptions[RSK_HINT_CLARITY] = Option::U8("Hint Clarity", {"Obscure", "Ambiguous", "Clear"}, OptionCategory::Setting, "gRandomizeHintClarity", mOptionDescriptions[RSK_HINT_CLARITY], WidgetType::Combobox, RO_HINT_CLARITY_CLEAR, true, IMFLAG_INDENT);
+    mOptions[RSK_HINT_DISTRIBUTION] = Option::U8("Hint Distribution", {"Useless", "Balanced", "Strong", "Very Strong"}, OptionCategory::Setting, "gRandomizeHintDistribution", mOptionDescriptions[RSK_HINT_DISTRIBUTION], WidgetType::Combobox, RO_HINT_DIST_BALANCED, true, IMFLAG_UNINDENT | IMFLAG_SEPARATOR_BOTTOM);
+    mOptions[RSK_TOT_ALTAR_HINT] = Option::Bool("ToT Altar Hint", {"Off", "On"}, OptionCategory::Setting, "gRandomizeAltarHint", mOptionDescriptions[RSK_TOT_ALTAR_HINT], WidgetType::Checkbox, RO_GENERIC_ON, false, IMFLAG_INDENT);
+    mOptions[RSK_LIGHT_ARROWS_HINT] = Option::Bool("Light Arrow Hint", {"Off", "On"}, OptionCategory::Setting, "gRandomizeLAHint", mOptionDescriptions[RSK_LIGHT_ARROWS_HINT], WidgetType::Checkbox, RO_GENERIC_ON, false, IMFLAG_NONE);
+    mOptions[RSK_DAMPES_DIARY_HINT] = Option::Bool("Dampe's Diary Hint", "gRandomizeDampeHint", mOptionDescriptions[RSK_DAMPES_DIARY_HINT], IMFLAG_NONE);
+    mOptions[RSK_GREG_HINT] = Option::Bool("Greg the Green Rupee Hint", "gRandomizeGregHint", mOptionDescriptions[RSK_GREG_HINT], IMFLAG_NONE);
+    mOptions[RSK_SARIA_HINT] = Option::Bool("Saria's Hint", "gRandomizeSariaHint", mOptionDescriptions[RSK_SARIA_HINT], IMFLAG_NONE);
+    mOptions[RSK_FROGS_HINT] = Option::Bool("Frog Ocarina Game Hint", "gRandomizeFrogsHint", mOptionDescriptions[RSK_FROGS_HINT], IMFLAG_NONE);
+    mOptions[RSK_WARP_SONG_HINTS] = Option::Bool("Warp Song Hints", "gRandomizeWarpSongText", mOptionDescriptions[RSK_WARP_SONG_HINTS], IMFLAG_NONE, WidgetType::Checkbox, RO_GENERIC_ON);
+    mOptions[RSK_KAK_10_SKULLS_HINT] = Option::Bool("10 GS Hint", "gRandomize10GSHint", "", IMFLAG_NONE);
+    mOptions[RSK_KAK_20_SKULLS_HINT] = Option::Bool("20 GS Hint", "gRandomize20GSHint", "", IMFLAG_NONE);
+    mOptions[RSK_KAK_30_SKULLS_HINT] = Option::Bool("30 GS Hint", "gRandomize30GSHint", "", IMFLAG_NONE);
+    mOptions[RSK_KAK_40_SKULLS_HINT] = Option::Bool("40 GS Hint", "gRandomize40GSHint", "", IMFLAG_NONE);
     mOptions[RSK_KAK_50_SKULLS_HINT] = Option::Bool("50 GS Hint", "gRandomize50GSHint");
-    mOptions[RSK_SCRUB_TEXT_HINT] = Option::Bool("Scrub Hint Text", "gRandomizeScrubText", mOptionDescriptions[RSK_SCRUB_TEXT_HINT]);
+    mOptions[RSK_SCRUB_TEXT_HINT] = Option::Bool("Scrub Hint Text", "gRandomizeScrubText", mOptionDescriptions[RSK_SCRUB_TEXT_HINT], IMFLAG_NONE);
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     mOptions[RSK_BLUE_FIRE_ARROWS] = Option::Bool("Blue Fire Arrows", "gRandomizeBlueFireArrows", mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
     mOptions[RSK_SUNLIGHT_ARROWS] = Option::Bool("Sunlight Arrows", "gRandomizeSunlightArrows", mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
@@ -168,17 +168,17 @@ void Settings::CreateOptions() {
     mOptions[RSK_STARTING_MASTER_SWORD] = Option::Bool("Start with Master Sword", "gRandomizeStartingMasterSword");
     mOptions[RSK_STARTING_CONSUMABLES] = Option::Bool("Start with Consumables", {"No", "Yes"}, OptionCategory::Setting, "gRandomizeStartingConsumables", "", WidgetType::Checkbox, RO_GENERIC_OFF);
     mOptions[RSK_FULL_WALLETS] = Option::Bool("Full Wallets", {"No", "Yes"}, OptionCategory::Setting, "gRandomizeFullWallets", mOptionDescriptions[RSK_FULL_WALLETS], WidgetType::Checkbox, RO_GENERIC_OFF);
-    mOptions[RSK_STARTING_ZELDAS_LULLABY] = Option::Bool("Start with Zelda's Lullaby", "gRandomizeStartingZeldasLullaby");
-    mOptions[RSK_STARTING_EPONAS_SONG] = Option::Bool("Start with Epona's Song", "gRandomizeStartingEponasSong");
-    mOptions[RSK_STARTING_SARIAS_SONG] = Option::Bool("Start with Epona's Song", "gRandomizeStartingSariasSong");
-    mOptions[RSK_STARTING_SUNS_SONG] = Option::Bool("Start with Sun's Song", "gRandomizeStartingSunsSong");
-    mOptions[RSK_STARTING_SONG_OF_TIME] = Option::Bool("Start with Song of Time", "gRandomizeStartingSongOfTime");
-    mOptions[RSK_STARTING_SONG_OF_STORMS] = Option::Bool("Start with Song of Storms", "gRandomizeStartingSongOfStorms");
-    mOptions[RSK_STARTING_MINUET_OF_FOREST] = Option::Bool("Start with Minuet of Forest", "gRandomizeStartingMinuetOfForest");
-    mOptions[RSK_STARTING_BOLERO_OF_FIRE] = Option::Bool("Start with Bolero of Fire", "gRandomizeStartingBoleroOfFire");
-    mOptions[RSK_STARTING_SERENADE_OF_WATER] = Option::Bool("Start with Serenade of Water", "gRandomizeStartingSerenadeOfWater");
-    mOptions[RSK_STARTING_REQUIEM_OF_SPIRIT] = Option::Bool("Start with Requiem of Spirit", "gRandomizeStartingRequiemOfSpirit");
-    mOptions[RSK_STARTING_NOCTURNE_OF_SHADOW] = Option::Bool("Start with Nocturne of Shadow", "gRandomizeStartingNocturneOfShadow");
+    mOptions[RSK_STARTING_ZELDAS_LULLABY] = Option::Bool("Start with Zelda's Lullaby", "gRandomizeStartingZeldasLullaby", "", IMFLAG_NONE);
+    mOptions[RSK_STARTING_EPONAS_SONG] = Option::Bool("Start with Epona's Song", "gRandomizeStartingEponasSong", "", IMFLAG_NONE);
+    mOptions[RSK_STARTING_SARIAS_SONG] = Option::Bool("Start with Epona's Song", "gRandomizeStartingSariasSong", "", IMFLAG_NONE);
+    mOptions[RSK_STARTING_SUNS_SONG] = Option::Bool("Start with Sun's Song", "gRandomizeStartingSunsSong", "", IMFLAG_NONE);
+    mOptions[RSK_STARTING_SONG_OF_TIME] = Option::Bool("Start with Song of Time", "gRandomizeStartingSongOfTime", "", IMFLAG_NONE);
+    mOptions[RSK_STARTING_SONG_OF_STORMS] = Option::Bool("Start with Song of Storms", "gRandomizeStartingSongOfStorms", "", IMFLAG_NONE);
+    mOptions[RSK_STARTING_MINUET_OF_FOREST] = Option::Bool("Start with Minuet of Forest", "gRandomizeStartingMinuetOfForest", "", IMFLAG_NONE);
+    mOptions[RSK_STARTING_BOLERO_OF_FIRE] = Option::Bool("Start with Bolero of Fire", "gRandomizeStartingBoleroOfFire", "", IMFLAG_NONE);
+    mOptions[RSK_STARTING_SERENADE_OF_WATER] = Option::Bool("Start with Serenade of Water", "gRandomizeStartingSerenadeOfWater", "", IMFLAG_NONE);
+    mOptions[RSK_STARTING_REQUIEM_OF_SPIRIT] = Option::Bool("Start with Requiem of Spirit", "gRandomizeStartingRequiemOfSpirit", "", IMFLAG_NONE);
+    mOptions[RSK_STARTING_NOCTURNE_OF_SHADOW] = Option::Bool("Start with Nocturne of Shadow", "gRandomizeStartingNocturneOfShadow", "", IMFLAG_NONE);
     mOptions[RSK_STARTING_PRELUDE_OF_LIGHT] = Option::Bool("Start with Prelude of Light", "gRandomizeStartingPreludeOfLight");
     mOptions[RSK_STARTING_SKULLTULA_TOKEN] = Option::U8("Gold Skulltula Tokens", {NumOpts(0, 100)}, OptionCategory::Setting, "", "gRandomizeStartingSkulltulaToken", WidgetType::Slider);
     mOptions[RSK_STARTING_HEARTS] = Option::U8("Hearts", {NumOpts(1, 20)}, OptionCategory::Setting, "", "", WidgetType::Slider, 2);
@@ -545,6 +545,166 @@ void Settings::CreateOptions() {
         &mTrickOptions[RT_GANON_MQ_LIGHT_TRIAL],
     }, false);
     // TODO: Glitches
+    mOptionGroups[RSG_AREA_ACCESS_IMGUI] = OptionGroup::SubGroup("Area Access", {
+        &mOptions[RSK_FOREST],
+        &mOptions[RSK_KAK_GATE],
+        &mOptions[RSK_DOOR_OF_TIME],
+        &mOptions[RSK_ZORAS_FOUNTAIN],
+    }, false);
+    mOptionGroups[RSG_WORLD_IMGUI] = OptionGroup::SubGroup("World Settings", {
+        &mOptions[RSK_STARTING_AGE],
+        &mOptions[RSK_GERUDO_FORTRESS],
+        &mOptions[RSK_RAINBOW_BRIDGE],
+        &mOptions[RSK_BRIDGE_OPTIONS],
+        &mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT],
+        &mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT],
+        &mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT],
+        &mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT],
+        &mOptions[RSK_RAINBOW_BRIDGE_TOKEN_COUNT],
+        &mOptions[RSK_GANONS_TRIALS],
+        &mOptions[RSK_TRIAL_COUNT],
+        &mOptions[RSK_MQ_DUNGEON_RANDOM],
+        &mOptions[RSK_MQ_DUNGEON_COUNT],
+        &mOptions[RSK_MQ_DUNGEON_SET],
+        &mOptions[RSK_MQ_DEKU_TREE],
+        &mOptions[RSK_MQ_DODONGOS_CAVERN],
+        &mOptions[RSK_MQ_JABU_JABU],
+        &mOptions[RSK_MQ_FOREST_TEMPLE],
+        &mOptions[RSK_MQ_FIRE_TEMPLE],
+        &mOptions[RSK_MQ_WATER_TEMPLE],
+        &mOptions[RSK_MQ_SPIRIT_TEMPLE],
+        &mOptions[RSK_MQ_SHADOW_TEMPLE],
+        &mOptions[RSK_MQ_BOTTOM_OF_THE_WELL],
+        &mOptions[RSK_MQ_ICE_CAVERN],
+        &mOptions[RSK_MQ_GTG],
+        &mOptions[RSK_MQ_GANONS_CASTLE],
+        &mOptions[RSK_TRIFORCE_HUNT],
+        &mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL],
+        &mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED]
+    }, false);
+    mOptionGroups[RSG_SHUFFLE_ENTRANCES_IMGUI] = OptionGroup::SubGroup("Shuffle Entrances", {
+        &mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES],
+        &mOptions[RSK_SHUFFLE_BOSS_ENTRANCES],
+        &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES],
+        &mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES],
+        &mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES],
+        &mOptions[RSK_SHUFFLE_OWL_DROPS],
+        &mOptions[RSK_SHUFFLE_WARP_SONGS],
+        &mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS],
+        &mOptions[RSK_DECOUPLED_ENTRANCES],
+        &mOptions[RSK_MIXED_ENTRANCE_POOLS],
+        &mOptions[RSK_MIX_DUNGEON_ENTRANCES],
+        &mOptions[RSK_MIX_OVERWORLD_ENTRANCES],
+        &mOptions[RSK_MIX_INTERIOR_ENTRANCES],
+        &mOptions[RSK_MIX_GROTTO_ENTRANCES]
+    }, false);
+    mOptionGroups[RSG_SHUFFLE_ITEMS_IMGUI] = OptionGroup::SubGroup("Shuffle Items", {
+        &mOptions[RSK_SHUFFLE_SONGS],
+        &mOptions[RSK_SHUFFLE_TOKENS],
+        &mOptions[RSK_SKULLS_SUNS_SONG],
+        &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],
+        &mOptions[RSK_SHUFFLE_MASTER_SWORD],
+        &mOptions[RSK_SHUFFLE_OCARINA],
+        &mOptions[RSK_SHUFFLE_WEIRD_EGG],
+        &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]
+    }, false);
+    mOptionGroups[RSG_SHUFFLE_NPCS_IMGUI] = OptionGroup::SubGroup("Shuffle NPCs", {
+        &mOptions[RSK_SHOPSANITY],
+        &mOptions[RSK_SHOPSANITY_PRICES],
+        &mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE],
+        &mOptions[RSK_SHUFFLE_SCRUBS],
+        &mOptions[RSK_SHUFFLE_COWS],
+        &mOptions[RSK_SHUFFLE_MAGIC_BEANS],
+        &mOptions[RSK_SHUFFLE_MERCHANTS],
+        &mOptions[RSK_SHUFFLE_ADULT_TRADE],
+        &mOptions[RSK_SHUFFLE_100_GS_REWARD]
+    }, false);
+    mOptionGroups[RSG_SHUFFLE_DUNGEON_ITEMS_IMGUI] = OptionGroup::SubGroup("Shuffle Dungeon Items", {
+        &mOptions[RSK_SHUFFLE_MAPANDCOMPASS],
+        &mOptions[RSK_KEYSANITY],
+        &mOptions[RSK_GERUDO_KEYS],
+        &mOptions[RSK_BOSS_KEYSANITY],
+        &mOptions[RSK_GANONS_BOSS_KEY],
+        &mOptions[RSK_LACS_STONE_COUNT],
+        &mOptions[RSK_LACS_MEDALLION_COUNT],
+        &mOptions[RSK_LACS_DUNGEON_COUNT],
+        &mOptions[RSK_LACS_REWARD_COUNT],
+        &mOptions[RSK_LACS_TOKEN_COUNT],
+        &mOptions[RSK_LACS_OPTIONS],
+        &mOptions[RSK_KEYRINGS],
+        &mOptions[RSK_KEYRINGS_RANDOM_COUNT],
+        &mOptions[RSK_KEYRINGS_GERUDO_FORTRESS],
+        &mOptions[RSK_KEYRINGS_FOREST_TEMPLE],
+        &mOptions[RSK_KEYRINGS_FIRE_TEMPLE],
+        &mOptions[RSK_KEYRINGS_WATER_TEMPLE],
+        &mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE],
+        &mOptions[RSK_KEYRINGS_SHADOW_TEMPLE],
+        &mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL],
+        &mOptions[RSK_KEYRINGS_GTG],
+        &mOptions[RSK_KEYRINGS_GANONS_CASTLE],
+    }, false);
+    mOptionGroups[RSG_TIMESAVERS_IMGUI] = OptionGroup::SubGroup("Timesavers", {
+        &mOptions[RSK_CUCCO_COUNT],
+        &mOptions[RSK_BIG_POE_COUNT],
+        &mOptions[RSK_SKIP_CHILD_STEALTH],
+        &mOptions[RSK_SKIP_CHILD_ZELDA],
+        &mOptions[RSK_SKIP_EPONA_RACE],
+        &mOptions[RSK_SKIP_TOWER_ESCAPE],
+        &mOptions[RSK_COMPLETE_MASK_QUEST],
+        &mOptions[RSK_SKIP_SCARECROWS_SONG]
+    }, false);
+    mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI] = OptionGroup::SubGroup("Item Pool & Hints", {
+        &mOptions[RSK_ITEM_POOL],
+        &mOptions[RSK_ICE_TRAPS],
+        &mOptions[RSK_GOSSIP_STONE_HINTS],
+        &mOptions[RSK_HINT_CLARITY],
+        &mOptions[RSK_HINT_DISTRIBUTION],
+        &mOptions[RSK_TOT_ALTAR_HINT],
+        &mOptions[RSK_LIGHT_ARROWS_HINT],
+        &mOptions[RSK_DAMPES_DIARY_HINT],
+        &mOptions[RSK_GREG_HINT],
+        &mOptions[RSK_SARIA_HINT],
+        &mOptions[RSK_FROGS_HINT],
+        &mOptions[RSK_WARP_SONG_HINTS],
+        &mOptions[RSK_SCRUB_TEXT_HINT],
+        &mOptions[RSK_KAK_10_SKULLS_HINT],
+        &mOptions[RSK_KAK_20_SKULLS_HINT],
+        &mOptions[RSK_KAK_30_SKULLS_HINT],
+        &mOptions[RSK_KAK_40_SKULLS_HINT],
+        &mOptions[RSK_KAK_50_SKULLS_HINT]
+    }, false);
+    mOptionGroups[RSG_ADDITIONAL_FEATURES_IMGUI] = OptionGroup::SubGroup("Additional Features", {
+        &mOptions[RSK_FULL_WALLETS],
+        &mOptions[RSK_BOMBCHUS_IN_LOGIC],
+        &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
+        &mOptions[RSK_BLUE_FIRE_ARROWS],
+        &mOptions[RSK_SUNLIGHT_ARROWS]
+    }, false);
+    mOptionGroups[RSG_STARTING_EQUIPMENT_IMGUI] = OptionGroup::SubGroup("Starting Equipment", {
+        &mOptions[RSK_LINKS_POCKET],
+        &mOptions[RSK_STARTING_KOKIRI_SWORD],
+        &mOptions[RSK_STARTING_MASTER_SWORD],
+        &mOptions[RSK_STARTING_DEKU_SHIELD]
+    }, false);
+    mOptionGroups[RSG_STARTING_ITEMS_IMGUI] = OptionGroup::SubGroup("Starting Items", {
+        &mOptions[RSK_STARTING_OCARINA],
+        &mOptions[RSK_STARTING_CONSUMABLES],
+        &mOptions[RSK_STARTING_SKULLTULA_TOKEN],
+    }, false);
+    mOptionGroups[RSG_STARTING_SONGS_IMGUI] = OptionGroup::SubGroup("Starting Songs", {
+        &mOptions[RSK_STARTING_ZELDAS_LULLABY],
+        &mOptions[RSK_STARTING_EPONAS_SONG],
+        &mOptions[RSK_STARTING_SARIAS_SONG],
+        &mOptions[RSK_STARTING_SUNS_SONG],
+        &mOptions[RSK_STARTING_SONG_OF_TIME],
+        &mOptions[RSK_STARTING_SONG_OF_STORMS],
+        &mOptions[RSK_STARTING_MINUET_OF_FOREST],
+        &mOptions[RSK_STARTING_BOLERO_OF_FIRE],
+        &mOptions[RSK_STARTING_SERENADE_OF_WATER],
+        &mOptions[RSK_STARTING_REQUIEM_OF_SPIRIT],
+        &mOptions[RSK_STARTING_NOCTURNE_OF_SHADOW],
+        &mOptions[RSK_STARTING_PRELUDE_OF_LIGHT]
+    }, false);
     mOptionGroups[RSG_OPEN] = OptionGroup("Open Settings", {
         &mOptions[RSK_FOREST],
         &mOptions[RSK_KAK_GATE],
@@ -1006,9 +1166,21 @@ void Settings::UpdateOptionProperties() {
     } else {
         ctx->GetOption(RSK_STARTING_AGE).Enable();
     }
+    // Default to hiding bridge opts and the extra sliders.
+    ctx->GetOption(RSK_RAINBOW_BRIDGE).AddFlag(IMFLAG_SEPARATOR_BOTTOM);
+    ctx->GetOption(RSK_BRIDGE_OPTIONS).Hide();
+    ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).Hide();
+    ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).Hide();
+    ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Hide();
+    ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Hide();
+    ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Hide();
     uint8_t bridgeOpt = CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD);
     switch (CVarGetInteger("gRandomizeRainbowBridge", RO_BRIDGE_VANILLA)) {
         case RO_BRIDGE_STONES:
+            // Show Bridge Options and Stone Count slider
+            ctx->GetOption(RSK_RAINBOW_BRIDGE).RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+            ctx->GetOption(RSK_BRIDGE_OPTIONS).Unhide();
+            ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).Unhide();
             if (bridgeOpt == RO_BRIDGE_GREG_REWARD) {
                 if (ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).GetOptionCount() == 4) {
                     ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).ChangeOptions(NumOpts(0, 4));
@@ -1020,6 +1192,10 @@ void Settings::UpdateOptionProperties() {
             }
             break;
         case RO_BRIDGE_MEDALLIONS:
+            // Show Bridge Options and Medallion Count Slider
+            ctx->GetOption(RSK_RAINBOW_BRIDGE).RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+            ctx->GetOption(RSK_BRIDGE_OPTIONS).Unhide();
+            ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Unhide();
             if (bridgeOpt == RO_BRIDGE_GREG_REWARD) {
                 if (ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).GetOptionCount() == 7) {
                     ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).ChangeOptions(NumOpts(0, 7));
@@ -1031,6 +1207,10 @@ void Settings::UpdateOptionProperties() {
             }
             break;
         case RO_BRIDGE_DUNGEON_REWARDS:
+            // Show Bridge Options and Dungeon Reward Count Slider
+            ctx->GetOption(RSK_RAINBOW_BRIDGE).RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+            ctx->GetOption(RSK_BRIDGE_OPTIONS).Unhide();
+            ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Unhide();
             if (bridgeOpt == RO_BRIDGE_GREG_REWARD) {
                 if (ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).GetOptionCount() == 10) {
                     ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).ChangeOptions(NumOpts(0, 10));
@@ -1042,6 +1222,10 @@ void Settings::UpdateOptionProperties() {
             }
             break;
         case RO_BRIDGE_DUNGEONS:
+            // Show Bridge Options and Dungeon Count Slider
+            ctx->GetOption(RSK_RAINBOW_BRIDGE).RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+            ctx->GetOption(RSK_BRIDGE_OPTIONS).Unhide();
+            ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Unhide();
             if (bridgeOpt == RO_BRIDGE_GREG_REWARD) {
                 if (ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).GetOptionCount() == 9) {
                     ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).ChangeOptions(NumOpts(0, 9));
@@ -1052,17 +1236,135 @@ void Settings::UpdateOptionProperties() {
                 }
             }
             break;
+        case RO_BRIDGE_TOKENS:
+            // Show token count slider (not bridge options)
+            ctx->GetOption(RSK_RAINBOW_BRIDGE).RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+            ctx->GetOption(RSK_BRIDGE_OPTIONS).Hide();
+            ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Unhide();
+            break;
         default:
             break;
     }
+    // Only show the trial count slider if Trials is set to Set Number
+    if (CVarGetInteger("gRandomizeGanonTrial", RO_GANONS_TRIALS_SKIP) == RO_GANONS_TRIALS_SET_NUMBER) {
+        ctx->GetOption(RSK_GANONS_TRIALS).RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+        ctx->GetOption(RSK_TRIAL_COUNT).Unhide();
+    } else {
+        ctx->GetOption(RSK_GANONS_TRIALS).AddFlag(IMFLAG_SEPARATOR_BOTTOM);
+        ctx->GetOption(RSK_TRIAL_COUNT).Hide();
+    }
+    // Don't show any MQ options if both quests aren't available
+    if (!(OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal())) {
+        mOptions[RSK_MQ_DUNGEON_RANDOM].Hide();
+        mOptions[RSK_MQ_DUNGEON_COUNT].Hide();
+        mOptions[RSK_MQ_DUNGEON_SET].Hide();
+        mOptions[RSK_MQ_DEKU_TREE].Hide();
+        mOptions[RSK_MQ_DODONGOS_CAVERN].Hide();
+        mOptions[RSK_MQ_JABU_JABU].Hide();
+        mOptions[RSK_MQ_FOREST_TEMPLE].Hide();
+        mOptions[RSK_MQ_FIRE_TEMPLE].Hide();
+        mOptions[RSK_MQ_WATER_TEMPLE].Hide();
+        mOptions[RSK_MQ_SPIRIT_TEMPLE].Hide();
+        mOptions[RSK_MQ_SHADOW_TEMPLE].Hide();
+        mOptions[RSK_MQ_BOTTOM_OF_THE_WELL].Hide();
+        mOptions[RSK_MQ_ICE_CAVERN].Hide();
+        mOptions[RSK_MQ_GTG].Hide();
+        mOptions[RSK_MQ_GANONS_CASTLE].Hide();
+    } else {
+        // If any MQ Options are available, show the MQ Dungeon Randomization Combobox
+        mOptions[RSK_MQ_DUNGEON_RANDOM].Unhide();
+        switch(CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE)) {
+            // If No MQ Dungeons, add a separator after the combobx and hide
+            // the count slider and the toggle for individual dungeon selections.
+            case RO_MQ_DUNGEONS_NONE:
+                mOptions[RSK_MQ_DUNGEON_RANDOM].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
+                mOptions[RSK_MQ_DUNGEON_COUNT].Hide();
+                mOptions[RSK_MQ_DUNGEON_SET].Hide();
+                break;
+            // If Set Number, remove the separator and show both the count slider and the
+            // individual dungeon selection toggle.
+            case RO_MQ_DUNGEONS_SET_NUMBER:
+                mOptions[RSK_MQ_DUNGEON_RANDOM].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+                mOptions[RSK_MQ_DUNGEON_COUNT].Unhide();
+                mOptions[RSK_MQ_DUNGEON_SET].Unhide();
+                break;
+            // else if random number or selection only, remove the separator and only show
+            // the individual dungeon selection toggle.
+            case RO_MQ_DUNGEONS_RANDOM_NUMBER:
+            case RO_MQ_DUNGEONS_SELECTION:
+                mOptions[RSK_MQ_DUNGEON_RANDOM].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+                mOptions[RSK_MQ_DUNGEON_COUNT].Hide();
+                mOptions[RSK_MQ_DUNGEON_SET].Unhide();
+                break;
+        }
+        // Controls whether or not to show the selectors for individual dungeons.
+        if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_NONE && 
+            CVarGetInteger("gRandomizeMqDungeonsSelection", RO_GENERIC_OFF) == RO_GENERIC_ON) {
+            // if showing the dungeon selectors, remove the separator after the Set Dungeons checkbox.
+            mOptions[RSK_MQ_DUNGEON_SET].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_MQ_DEKU_TREE].Unhide();
+            mOptions[RSK_MQ_DODONGOS_CAVERN].Unhide();
+            mOptions[RSK_MQ_JABU_JABU].Unhide();
+            mOptions[RSK_MQ_FOREST_TEMPLE].Unhide();
+            mOptions[RSK_MQ_FIRE_TEMPLE].Unhide();
+            mOptions[RSK_MQ_WATER_TEMPLE].Unhide();
+            mOptions[RSK_MQ_SPIRIT_TEMPLE].Unhide();
+            mOptions[RSK_MQ_SHADOW_TEMPLE].Unhide();
+            mOptions[RSK_MQ_BOTTOM_OF_THE_WELL].Unhide();
+            mOptions[RSK_MQ_ICE_CAVERN].Unhide();
+            mOptions[RSK_MQ_GTG].Unhide();
+            mOptions[RSK_MQ_GANONS_CASTLE].Unhide();
+        } else {
+            // If those are not shown, add a separator after the Set Dungeons checkbox.
+            mOptions[RSK_MQ_DUNGEON_SET].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_MQ_DEKU_TREE].Hide();
+            mOptions[RSK_MQ_DODONGOS_CAVERN].Hide();
+            mOptions[RSK_MQ_JABU_JABU].Hide();
+            mOptions[RSK_MQ_FOREST_TEMPLE].Hide();
+            mOptions[RSK_MQ_FIRE_TEMPLE].Hide();
+            mOptions[RSK_MQ_WATER_TEMPLE].Hide();
+            mOptions[RSK_MQ_SPIRIT_TEMPLE].Hide();
+            mOptions[RSK_MQ_SHADOW_TEMPLE].Hide();
+            mOptions[RSK_MQ_BOTTOM_OF_THE_WELL].Hide();
+            mOptions[RSK_MQ_ICE_CAVERN].Hide();
+            mOptions[RSK_MQ_GTG].Hide();
+            mOptions[RSK_MQ_GANONS_CASTLE].Hide();
+        }
+    }
+    // Disable interaction with Set Dungeons checkbox if MQ Dungeon Randomization is set to Selection Only.
     if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SELECTION) {
         ctx->GetOption(RSK_MQ_DUNGEON_SET).Disable("This option is force-enabled because Master Quest Dungeons is set to Selection Only", UIWidgets::CheckboxGraphics::Checkmark);
     } else {
         ctx->GetOption(RSK_MQ_DUNGEON_SET).Enable();
     }
+    // Remove the pieces required/total sliders and add a separator after Tirforce Hunt if Triforce Hunt is off
+    if (CVarGetInteger("gRandomizeTriforceHunt", RO_GENERIC_OFF) == RO_GENERIC_OFF) {
+        ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Hide();
+        ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Hide();
+        ctx->GetOption(RSK_TRIFORCE_HUNT).AddFlag(IMFLAG_SEPARATOR_BOTTOM);
+    } else {
+        ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Unhide();
+        ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Unhide();
+        ctx->GetOption(RSK_TRIFORCE_HUNT).RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+    }
+    // Update triforce pieces required to be capped at the current value for pieces total.
     uint8_t triforceTotal = CVarGetInteger("gRandomizeTriforceHuntTotalPieces", 30);
     if (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).GetOptionCount() != triforceTotal + 1) {
         ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).ChangeOptions(NumOpts(1, triforceTotal + 1));
+    }
+    // Show mixed entrance pool options if mixed entrance pools are enabled at all.
+    if (CVarGetInteger("gRandomizeMixedEntrances", RO_GENERIC_OFF)) {
+        mOptions[RSK_MIXED_ENTRANCE_POOLS].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+        mOptions[RSK_MIX_DUNGEON_ENTRANCES].Unhide();
+        mOptions[RSK_MIX_OVERWORLD_ENTRANCES].Unhide();
+        mOptions[RSK_MIX_INTERIOR_ENTRANCES].Unhide();
+        mOptions[RSK_MIX_GROTTO_ENTRANCES].Unhide();
+    } else {
+        mOptions[RSK_MIXED_ENTRANCE_POOLS].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
+        mOptions[RSK_MIX_DUNGEON_ENTRANCES].Hide();
+        mOptions[RSK_MIX_OVERWORLD_ENTRANCES].Hide();
+        mOptions[RSK_MIX_INTERIOR_ENTRANCES].Hide();
+        mOptions[RSK_MIX_GROTTO_ENTRANCES].Hide();
     }
     // Shuffle Kokiri Sword - Disabled when Start with Kokiri Sword is active
     if (CVarGetInteger("gRandomizeStartingKokiriSword", RO_GENERIC_OFF)) {
@@ -1088,11 +1390,58 @@ void Settings::UpdateOptionProperties() {
     } else {
         ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG).Enable();
     }
+    // Hide shopsanity prices if shopsanity is off or zero
+    switch (CVarGetInteger("gRandomizeShopsanity", RO_SHOPSANITY_OFF)) {
+        case RO_SHOPSANITY_OFF:
+        case RO_SHOPSANITY_ZERO_ITEMS:
+            mOptions[RSK_SHOPSANITY].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_SHOPSANITY_PRICES].Hide();
+            mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Hide();
+            break;
+        default:
+            mOptions[RSK_SHOPSANITY].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_SHOPSANITY_PRICES].Unhide();
+            mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Unhide();
+            break;
+    }
     // Shuffle 100 GS Reward - Force-Enabled if Ganon's Boss Key is on the 100 GS Reward
     if (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) == RO_GANON_BOSS_KEY_KAK_TOKENS) {
         ctx->GetOption(RSK_SHUFFLE_100_GS_REWARD).Disable("This option is force-enabled because \"Ganon's Boss Key\" is set to \"100 GS Reward.\"", UIWidgets::CheckboxGraphics::Checkmark);
     } else {
         ctx->GetOption(RSK_SHUFFLE_100_GS_REWARD).Enable();
+    }
+    // Default state for Keyrings GUI
+    mOptions[RSK_KEYRINGS].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
+    mOptions[RSK_KEYRINGS_RANDOM_COUNT].Hide();
+    mOptions[RSK_KEYRINGS_GERUDO_FORTRESS].Hide();
+    mOptions[RSK_KEYRINGS_FOREST_TEMPLE].Hide();
+    mOptions[RSK_KEYRINGS_FIRE_TEMPLE].Hide();
+    mOptions[RSK_KEYRINGS_WATER_TEMPLE].Hide();
+    mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE].Hide();
+    mOptions[RSK_KEYRINGS_SHADOW_TEMPLE].Hide();
+    mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL].Hide();
+    mOptions[RSK_KEYRINGS_GTG].Hide();
+    mOptions[RSK_KEYRINGS_GANONS_CASTLE].Hide();
+    switch (CVarGetInteger("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF)) {
+        case RO_KEYRINGS_COUNT:
+            // Show count slider.
+            mOptions[RSK_KEYRINGS].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_KEYRINGS_RANDOM_COUNT].Unhide();
+            break;
+        case RO_KEYRINGS_SELECTION:
+            // Show checkboxes for each dungeon with keys.
+            mOptions[RSK_KEYRINGS].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_KEYRINGS_GERUDO_FORTRESS].Unhide();
+            mOptions[RSK_KEYRINGS_FOREST_TEMPLE].Unhide();
+            mOptions[RSK_KEYRINGS_FIRE_TEMPLE].Unhide();
+            mOptions[RSK_KEYRINGS_WATER_TEMPLE].Unhide();
+            mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE].Unhide();
+            mOptions[RSK_KEYRINGS_SHADOW_TEMPLE].Unhide();
+            mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL].Unhide();
+            mOptions[RSK_KEYRINGS_GTG].Unhide();
+            mOptions[RSK_KEYRINGS_GANONS_CASTLE].Unhide();
+        default:
+            break;
     }
     uint8_t maxKeyringCount = (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
                                CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) ? 9 : 8;
@@ -1113,9 +1462,18 @@ void Settings::UpdateOptionProperties() {
     } else {
         ctx->GetOption(RSK_GANONS_BOSS_KEY).Enable();
     }
+    mOptions[RSK_GANONS_BOSS_KEY].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+    mOptions[RSK_LACS_OPTIONS].Hide();
+    mOptions[RSK_LACS_STONE_COUNT].Hide();
+    mOptions[RSK_LACS_MEDALLION_COUNT].Hide();
+    mOptions[RSK_LACS_REWARD_COUNT].Hide();
+    mOptions[RSK_LACS_DUNGEON_COUNT].Hide();
+    mOptions[RSK_LACS_TOKEN_COUNT].Hide();
     uint8_t lacsOpts = CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD);
     switch (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA)) {
         case RO_GANON_BOSS_KEY_LACS_STONES:
+            mOptions[RSK_LACS_OPTIONS].Unhide();
+            mOptions[RSK_LACS_STONE_COUNT].Unhide();
             if (lacsOpts == RO_LACS_GREG_REWARD) {
                 if (ctx->GetOption(RSK_LACS_STONE_COUNT).GetOptionCount() == 4) {
                     ctx->GetOption(RSK_LACS_STONE_COUNT).ChangeOptions(NumOpts(0, 4));
@@ -1127,6 +1485,8 @@ void Settings::UpdateOptionProperties() {
             }
             break;
         case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
+            mOptions[RSK_LACS_OPTIONS].Unhide();
+            mOptions[RSK_LACS_MEDALLION_COUNT].Unhide();
             if (lacsOpts == RO_LACS_GREG_REWARD) {
                 if (ctx->GetOption(RSK_LACS_MEDALLION_COUNT).GetOptionCount() == 7) {
                     ctx->GetOption(RSK_LACS_MEDALLION_COUNT).ChangeOptions(NumOpts(0, 7));
@@ -1138,6 +1498,8 @@ void Settings::UpdateOptionProperties() {
             }
             break;
         case RO_GANON_BOSS_KEY_LACS_REWARDS:
+            mOptions[RSK_LACS_OPTIONS].Unhide();
+            mOptions[RSK_LACS_REWARD_COUNT].Unhide();
             if (lacsOpts == RO_LACS_GREG_REWARD) {
                 if (ctx->GetOption(RSK_LACS_REWARD_COUNT).GetOptionCount() == 10) {
                     ctx->GetOption(RSK_LACS_REWARD_COUNT).ChangeOptions(NumOpts(0, 10));
@@ -1149,6 +1511,8 @@ void Settings::UpdateOptionProperties() {
             }
             break;
         case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
+            mOptions[RSK_LACS_OPTIONS].Unhide();
+            mOptions[RSK_LACS_DUNGEON_COUNT].Unhide();
             if (lacsOpts == RO_LACS_GREG_REWARD) {
                 if (ctx->GetOption(RSK_LACS_DUNGEON_COUNT).GetOptionCount() == 9) {
                     ctx->GetOption(RSK_LACS_DUNGEON_COUNT).ChangeOptions(NumOpts(0, 9));
@@ -1159,7 +1523,11 @@ void Settings::UpdateOptionProperties() {
                 }
             }
             break;
+        case RO_GANON_BOSS_KEY_LACS_TOKENS:
+            mOptions[RSK_LACS_TOKEN_COUNT].Unhide();
+            break;
         default:
+            mOptions[RSK_GANONS_BOSS_KEY].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
             break;
     }
     // Skip Child Stealth - Disabled when Skip Child Zelda is active
@@ -1167,6 +1535,15 @@ void Settings::UpdateOptionProperties() {
         ctx->GetOption(RSK_SKIP_CHILD_STEALTH).Disable("This option is disabled because \"Skip Child Zelda\" is enabled.");
     } else {
         ctx->GetOption(RSK_SKIP_CHILD_ZELDA).Enable();
+    }
+    if (CVarGetInteger("gRandomizeGossipStoneHints", RO_GOSSIP_STONES_NEED_NOTHING) == RO_GOSSIP_STONES_NONE) {
+        mOptions[RSK_GOSSIP_STONE_HINTS].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
+        mOptions[RSK_HINT_CLARITY].Hide();
+        mOptions[RSK_HINT_DISTRIBUTION].Hide();
+    } else {
+        mOptions[RSK_GOSSIP_STONE_HINTS].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+        mOptions[RSK_HINT_CLARITY].Unhide();
+        mOptions[RSK_HINT_DISTRIBUTION].Unhide();
     }
     // Link's Pocket - Disabled when Dungeon Rewards are shuffled to End of Dungeon
     if (CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) == RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
