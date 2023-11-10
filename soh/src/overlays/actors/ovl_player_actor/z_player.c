@@ -11444,8 +11444,8 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     // Enhancement: Swim Speed Modifier
     f32 swimMod = 1.0f;
 
-    if (CVarGetInteger("gEnableWalkModify", 0)) {
-        if (CVarGetInteger("gWalkSpeedToggle", 0)) {
+    if (CVarGetInteger("gEnableWalkModify", 0) == 1) {
+        if (CVarGetInteger("gWalkSpeedToggle", 0) == 1) {
             if (gWalkSpeedToggle1) {
                 swimMod *= CVarGetFloat("gSwimModifierOne", 1.0f);
             } else if (gWalkSpeedToggle2) {
@@ -11458,37 +11458,38 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
                 swimMod *= CVarGetFloat("gSwimModifierTwo", 1.0f);
             }
         }
-    }
-    // Enhancement end
+        temp1 = this->skelAnime.curFrame - 10.0f;
 
-    temp1 = this->skelAnime.curFrame - 10.0f;
-
-    // Enhancement: Swim Speed Modifier
-    if (CVarGetInteger("gEnableWalkModify", 0) == 1) {
         temp2 = (R_RUN_SPEED_LIMIT / 100.0f) * 0.8f * swimMod;
         if (*arg1 > temp2) {
             *arg1 = temp2;
         }
+    
+        if ((0.0f < temp1) && (temp1 < 10.0f)) {
+            temp1 *= 6.0f;
+        } else {
+            temp1 = 0.0f;
+            arg2 = 0.0f;
+        }
+
+        Math_AsymStepToF(arg1, arg2 * 0.8f * swimMod, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
+        Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
     } else { // vanilla code
+
+        temp1 = this->skelAnime.curFrame - 10.0f;
+
         temp2 = (R_RUN_SPEED_LIMIT / 100.0f) * 0.8f;
         if (*arg1 > temp2) {
             *arg1 = temp2;
         }
-    }
-    // Enhancement end
 
-    if ((0.0f < temp1) && (temp1 < 10.0f)) {
-        temp1 *= 6.0f;
-    } else {
-        temp1 = 0.0f;
-        arg2 = 0.0f;
-    }
+        if ((0.0f < temp1) && (temp1 < 10.0f)) {
+            temp1 *= 6.0f;
+        } else {
+            temp1 = 0.0f;
+            arg2 = 0.0f;
+        }
 
-    // Enhancement: Swim Speed Modifier
-    if (CVarGetInteger("gEnableWalkModify", 0) == 1) {
-        Math_AsymStepToF(arg1, arg2 * 0.8f * swimMod, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
-        Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
-    } else { // vanilla code
         Math_AsymStepToF(arg1, arg2 * 0.8f, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
         Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
     }
