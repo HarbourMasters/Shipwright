@@ -3,6 +3,9 @@
 #include "soh/OTRGlobals.h"
 #include "../../UIWidgets.hpp"
 #include "z64.h"
+#ifndef __WIIU__
+#include "controller/controldevice/controller/mapping/sdl/SDLAxisDirectionToButtonMapping.h"
+#endif
 
 SohInputEditorWindow::~SohInputEditorWindow() {
     SPDLOG_TRACE("destruct input editor window");
