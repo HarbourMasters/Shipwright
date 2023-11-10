@@ -825,6 +825,12 @@ void EnFr_SetupFrogSong(EnFr* this, PlayState* play) {
             if (CVarGetInteger("gInstantFrogsGameWin", 0) == 1) {
                 this->actor.textId = 0x40AC;
                 EnFr_SetupReward(this, play, false);
+            } else {
+                this->ocarinaNoteIndex = 0;
+                func_8010BD58(play, OCARINA_ACTION_FROGS);
+                this->ocarinaNote = EnFr_GetNextNoteFrogSong(this->ocarinaNoteIndex);
+                EnFr_CheckOcarinaInputFrogSong(this->ocarinaNote);
+                this->actionFunc = EnFr_ContinueFrogSong;
             }
         } else { // vanilla code
             this->frogSongTimer = 40;
@@ -834,8 +840,8 @@ void EnFr_SetupFrogSong(EnFr* this, PlayState* play) {
             EnFr_CheckOcarinaInputFrogSong(this->ocarinaNote);
             this->actionFunc = EnFr_ContinueFrogSong;
         }
+        // Enhancement end
     }
-    // Enhancement end
 }
 
 s32 EnFr_IsFrogSongComplete(EnFr* this, PlayState* play) {
