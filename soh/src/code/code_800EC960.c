@@ -2065,42 +2065,46 @@ void func_800EE404(void) {
 
 void Audio_OcaMemoryGameStart(u8 minigameRound) {
     u8 i;
-    u8 startingNotes = 3;
-    u8 roundOneCount = CVarGetInteger("gOcarinaGameRoundOneNotes", 5);
-    u8 roundTwoCount = CVarGetInteger("gOcarinaGameRoundTwoNotes", 6);
-    u8 roundThreeCount = CVarGetInteger("gOcarinaGameRoundThreeNotes", 8);
-    u8 modMinigameNoteCnts[] = { roundOneCount, roundTwoCount, roundThreeCount };
-
+    
+    // Enhancement: Customize Lost Woods Ocarina Game
     if (CVarGetInteger("gCustomizeOcarinaGame", 0)) {
+        u8 startingNotes = 3;
+        u8 roundOneCount = CVarGetInteger("gOcarinaGameRoundOneNotes", 5);
+        u8 roundTwoCount = CVarGetInteger("gOcarinaGameRoundTwoNotes", 6);
+        u8 roundThreeCount = CVarGetInteger("gOcarinaGameRoundThreeNotes", 8);
+        u8 modMinigameNoteCnts[] = { roundOneCount, roundTwoCount, roundThreeCount };
+
+
         startingNotes = CVarGetInteger("gOcarinaGameStartingNotes", 3);
-    } else {
-        startingNotes = 3;
-    }
 
-    if (minigameRound > 2) {
-        minigameRound = 2;
-    }
+        if (minigameRound > 2) {
+            minigameRound = 2;
+        }
 
-    sOcaMinigameAppendPos = 0;
-    if (CVarGetInteger("gCustomizeOcarinaGame", 0)) {
+        sOcaMinigameAppendPos = 0;
         sOcaMinigameEndPos = modMinigameNoteCnts[minigameRound];
-    } else {
-        sOcaMinigameEndPos = sOcaMinigameNoteCnts[minigameRound];
-    }
 
-    for (i = 0; i < startingNotes; i++) {
-        Audio_OcaMemoryGameGenNote();
+        for (i = 0; i < startingNotes; i++) {
+            Audio_OcaMemoryGameGenNote();
+        }
+    } else { // vanilla code
+        if (minigameRound > 2) {
+            minigameRound = 2;
+        }
+
+        sOcaMinigameAppendPos = 0;
+        sOcaMinigameEndPos = sOcaMinigameNoteCnts[minigameRound];
+
+        for (i = 0; i < 3; i++) {
+            Audio_OcaMemoryGameGenNote();
+        }
     }
+    // Enhancement end
 }
 
 s32 Audio_OcaMemoryGameGenNote(void) {
     u32 rnd;
     u8 rndNote;
-    int noteSpeed = 0x2D;
-
-    if (CVarGetInteger("gCustomizeOcarinaGame", 0)) {
-        noteSpeed = noteSpeed / CVarGetInteger("gOcarinaGameNoteSpeed", 1);
-    }
 
     if (sOcaMinigameAppendPos == sOcaMinigameEndPos) {
         return 1;
@@ -2113,11 +2117,24 @@ s32 Audio_OcaMemoryGameGenNote(void) {
         rndNote = sOcarinaNoteValues[(rnd + 1) % 5];
     }
 
-    sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].noteIdx = rndNote;
-    sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].unk_02 = noteSpeed;
-    sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].volume = 0x50;
-    sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].vibrato = 0;
-    sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].tone = 0;
+    //Enhancement: Customize Lost Woods Ocarina Game
+    if (CVarGetInteger("gCustomizeOcarinaGame", 0)) {
+        int noteSpeed = 0x2D;
+        noteSpeed = noteSpeed / CVarGetInteger("gOcarinaGameNoteSpeed", 1);
+
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].noteIdx = rndNote;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].unk_02 = noteSpeed;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].volume = 0x50;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].vibrato = 0;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].tone = 0;
+    } else { // vanilla code
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].noteIdx = rndNote;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].unk_02 = 0x2D;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].volume = 0x50;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].vibrato = 0;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].tone = 0;
+    }
+    // Enhancement end
 
     sOcaMinigameAppendPos++;
 

@@ -1412,14 +1412,16 @@ void EnSkj_StartOcarinaMinigame(EnSkj* this, PlayState* play) {
     EnSkj_TurnPlayer(this, player);
 
     if (dialogState == TEXT_STATE_CLOSING) {
+        //Enhancement: Customize Lost Woods Ocarina Game
         if (CVarGetInteger("gInstantOcarinaGameWin", 0) && CVarGetInteger("gCustomizeOcarinaGame", 0)) {
             play->msgCtx.ocarinaMode = OCARINA_MODE_0F;
-        } else {
+        } else { // vanilla code
             func_8010BD58(play, OCARINA_ACTION_MEMORY_GAME);
             if (sOcarinaMinigameSkullKids[SKULL_KID_LEFT].skullkid != NULL) {
                 sOcarinaMinigameSkullKids[SKULL_KID_LEFT].skullkid->minigameState = SKULL_KID_OCARINA_PLAY_NOTES;
             }
         }
+        // Enhancement end
         this->songFailTimer = 160;
         this->actionFunc = EnSkj_WaitForPlayback;
     }
