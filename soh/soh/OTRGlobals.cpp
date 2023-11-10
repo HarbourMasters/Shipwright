@@ -2115,15 +2115,15 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 }
 
 extern "C" int Controller_ShouldRumble(size_t slot) {
-    // auto controlDeck = LUS::Context::GetInstance()->GetControlDeck();
-    
-    // if (slot < controlDeck->GetNumConnectedPorts()) {
-    //     auto physicalDevice = controlDeck->GetDeviceFromPortIndex(slot);
-        
-    //     if (physicalDevice->GetProfile(slot)->UseRumble && physicalDevice->CanRumble()) {
-    //         return 1;
-    //     }
-    // }
+    for (auto [id, mapping] : LUS::Context::GetInstance()
+                                  ->GetControlDeck()
+                                  ->GetControllerByPort(static_cast<uint8_t>(slot))
+                                  ->GetRumble()
+                                  ->GetAllRumbleMappings()) {
+        if (mapping->PhysicalDeviceIsConnected()) {
+            return 1;
+        }
+    }
 
     return 0;
 }
