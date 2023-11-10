@@ -6918,27 +6918,31 @@ s32 func_8083FD78(Player* this, f32* arg1, s16* arg2, PlayState* play) {
         if (this->unk_664 != NULL) {
             func_8083DB98(this, 1);
         } else {
-            int8_t relStickY;
+            // Enhancement: Right-Stick Aiming and/or Invert Z-aiming Y-axis
+            if (CVarGetInteger("gRightStickAiming", 0) != 0 || CVarGetInteger("gInvertZAimingYAxis", 1) == 0) {
+                int8_t relStickY;
 
-            //preserves simultaneous left/right-stick aiming
-            if (CVarGetInteger("gRightStickAiming", 0) != 0) {
-                if ((sControlInput->rel.stick_y + sControlInput->rel.right_stick_y) >= 0) {
-                    relStickY = (((sControlInput->rel.stick_y) > (sControlInput->rel.right_stick_y))
-                                     ? (sControlInput->rel.stick_y)
-                                     : (sControlInput->rel.right_stick_y));
+                // preserves simultaneous left/right-stick aiming
+                if (CVarGetInteger("gRightStickAiming", 0) != 0) {
+                    if ((sControlInput->rel.stick_y + sControlInput->rel.right_stick_y) >= 0) {
+                        relStickY = (((sControlInput->rel.stick_y) > (sControlInput->rel.right_stick_y))
+                                         ? (sControlInput->rel.stick_y)
+                                         : (sControlInput->rel.right_stick_y));
+                    } else {
+                        relStickY = (((sControlInput->rel.stick_y) < (sControlInput->rel.right_stick_y))
+                                         ? (sControlInput->rel.stick_y)
+                                         : (sControlInput->rel.right_stick_y));
+                    }
                 } else {
-                    relStickY = (((sControlInput->rel.stick_y) < (sControlInput->rel.right_stick_y))
-                                     ? (sControlInput->rel.stick_y)
-                                     : (sControlInput->rel.right_stick_y));
+                    relStickY = sControlInput->rel.stick_y;
                 }
-            }
-            else {
-                relStickY = sControlInput->rel.stick_y;
-            }
 
-            Math_SmoothStepToS(&this->actor.focus.rot.x, relStickY * (CVarGetInteger("gInvertZAimingYAxis", 1) ? 1 : -1) * 240.0f,
-                               14, 4000, 30);
-
+                Math_SmoothStepToS(&this->actor.focus.rot.x,
+                                   relStickY * (CVarGetInteger("gInvertZAimingYAxis", 1) ? 1 : -1) * 240.0f, 14, 4000, 30);
+            } else { // vanilla code
+                Math_SmoothStepToS(&this->actor.focus.rot.x, sControlInput->rel.stick_y * 240.0f, 14, 4000, 30);
+            }
+            // Enhancement end
             func_80836AB8(this, 1);
         }
     } else {

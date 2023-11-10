@@ -42,16 +42,8 @@ s8 PadUtils_GetCurX(Input* input) {
     return input->cur.stick_x;
 }
 
-s8 PadUtils_GetCurRX(Input* input) {
-    return input->cur.right_stick_x;
-}
-
 s8 PadUtils_GetCurY(Input* input) {
     return input->cur.stick_y;
-}
-
-s8 PadUtils_GetCurRY(Input* input) {
-    return input->cur.right_stick_y;
 }
 
 void PadUtils_SetRelXY(Input* input, s32 x, s32 y) {
@@ -59,41 +51,21 @@ void PadUtils_SetRelXY(Input* input, s32 x, s32 y) {
     input->rel.stick_y = y;
 }
 
-void PadUtils_SetRelRXY(Input* input, s32 x, s32 y) {
-    input->rel.right_stick_x = x;
-    input->rel.right_stick_y = y;
-}
-
 s8 PadUtils_GetRelXImpl(Input* input) {
     return input->rel.stick_x;
-}
-
-s8 PadUtils_GetRelRXImpl(Input* input) {
-    return input->rel.right_stick_x;
 }
 
 s8 PadUtils_GetRelYImpl(Input* input) {
     return input->rel.stick_y;
 }
 
-s8 PadUtils_GetRelRYImpl(Input* input) {
-    return input->rel.right_stick_y;
-}
-
 s8 PadUtils_GetRelX(Input* input) {
     return PadUtils_GetRelXImpl(input);
 }
 
-s8 PadUtils_GetRelRX(Input* input) {
-    return PadUtils_GetRelRXImpl(input);
-}
 
 s8 PadUtils_GetRelY(Input* input) {
     return PadUtils_GetRelYImpl(input);
-}
-
-s8 PadUtils_GetRelRY(Input* input) {
-    return PadUtils_GetRelRYImpl(input);
 }
 
 void PadUtils_UpdateRelXY(Input* input) {
@@ -122,6 +94,36 @@ void PadUtils_UpdateRelXY(Input* input) {
     PadUtils_SetRelXY(input, relX, relY);
 }
 
+// Enhancement: Right-Stick Aiming
+s8 PadUtils_GetCurRX(Input* input) {
+    return input->cur.right_stick_x;
+}
+
+s8 PadUtils_GetCurRY(Input* input) {
+    return input->cur.right_stick_y;
+}
+
+void PadUtils_SetRelRXY(Input* input, s32 x, s32 y) {
+    input->rel.right_stick_x = x;
+    input->rel.right_stick_y = y;
+}
+
+s8 PadUtils_GetRelRXImpl(Input* input) {
+    return input->rel.right_stick_x;
+}
+
+s8 PadUtils_GetRelRYImpl(Input* input) {
+    return input->rel.right_stick_y;
+}
+
+s8 PadUtils_GetRelRX(Input* input) {
+    return PadUtils_GetRelRXImpl(input);
+}
+
+s8 PadUtils_GetRelRY(Input* input) {
+    return PadUtils_GetRelRYImpl(input);
+}
+
 void PadUtils_UpdateRelRXY(Input* input) {
     s32 curX = PadUtils_GetCurRX(input);
     s32 curY = PadUtils_GetCurRY(input);
@@ -147,3 +149,4 @@ void PadUtils_UpdateRelRXY(Input* input) {
 
     PadUtils_SetRelRXY(input, relX, relY);
 }
+// Enhancement end
