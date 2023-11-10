@@ -1339,7 +1339,7 @@ int ShuffleAllEntrances() {
         }
       }
 
-      pair.first->Connect(target->Getuint32_t());
+      pair.first->Connect(target->GetOriginalConnectedRegionKey());
       pair.first->SetReplacement(target);
     }
   }

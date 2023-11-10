@@ -44,6 +44,7 @@ public:
 
     Entrance(uint32_t connectedRegion_, std::vector<ConditionFn> conditions_met_)
         : connectedRegion(connectedRegion_) {
+        originalConnectedRegion = connectedRegion_;
         conditions_met.resize(2);
         for (size_t i = 0; i < conditions_met_.size(); i++) {
             conditions_met[i] = conditions_met_[i];
@@ -136,6 +137,10 @@ public:
 
     uint32_t GetConnectedRegionKey() const {
         return connectedRegion;
+    }
+
+    uint32_t GetOriginalConnectedRegionKey() const {
+        return originalConnectedRegion;
     }
 
     Area* GetConnectedRegion() const {
@@ -262,6 +267,7 @@ public:
 private:
     uint32_t parentRegion;
     uint32_t connectedRegion;
+    uint32_t originalConnectedRegion;
     std::vector<ConditionFn> conditions_met;
 
     //Entrance Randomizer stuff

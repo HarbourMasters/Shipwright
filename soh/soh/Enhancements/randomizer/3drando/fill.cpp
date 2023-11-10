@@ -294,6 +294,7 @@ std::vector<uint32_t> GetAccessibleLocations(const std::vector<uint32_t>& allowe
         }
 
         // Add shuffled entrances to the entrance playthrough
+        // Include bluewarps when unshuffled but dungeon or boss shuffle is on
         if (mode == SearchMode::GeneratePlaythrough &&
             (exit.IsShuffled() || (exit.GetType() == EntranceType::BlueWarp &&
                                    (Settings::ShuffleDungeonEntrances.IsNot(SHUFFLEDUNGEONS_OFF) ||
