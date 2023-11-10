@@ -6915,7 +6915,6 @@ s32 func_8083FD78(Player* this, f32* arg1, s16* arg2, PlayState* play) {
             *arg2 = this->actor.shape.rot.y;
         }
 
-        
         // Enhancement: Right-Stick Aiming and/or Invert Z-aiming Y-axis
         if (CVarGetInteger("gRightStickAiming", 0) != 0 || CVarGetInteger("gInvertZAimingYAxis", 1) == 0) {
             
