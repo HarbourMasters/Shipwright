@@ -1756,46 +1756,8 @@ void RandomizerSettingsWindow::DrawElement() {
     if (ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("World")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ImGui::BeginTable("tableRandoWorld", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("Area Access", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("World Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Shuffle Entrances", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                ImGui::TableHeadersRow();
-                ImGui::PopItemFlag();
-                ImGui::TableNextRow();
-
-                // COLUMN 1 - Area Access
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildOpenSettings", ImVec2(0, -8));
-                ImGui::PushItemWidth(-FLT_MIN);
-                if (ctx->GetSettings()->GetOptionGroup(RSG_AREA_ACCESS_IMGUI).RenderImGui()) {
-                    changed = true;
-                }
-                ImGui::EndChild();
-
-                // COLUMN 2 - World Settings
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildMiscWorldSettings", ImVec2(0,-8));
-                ImGui::PushItemWidth(-FLT_MIN);
-                if (ctx->GetSettings()->GetOptionGroup(RSG_WORLD_IMGUI).RenderImGui()) {
-                    changed = true;
-                }
-                ImGui::EndChild();
-
-                // COLUMN 3 - Shuffle Entrances
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildShuffleEntrances", ImVec2(0, -8));
-                ImGui::PushItemWidth(-FLT_MIN);
-                if (ctx->GetSettings()->GetOptionGroup(RSG_SHUFFLE_ENTRANCES_IMGUI).RenderImGui()) {
-                    changed = true;
-                }
-                ImGui::PopItemWidth();
-                ImGui::EndChild();
-                ImGui::EndTable();
+            if (ctx->GetSettings()->GetOptionGroup(RSG_WORLD_IMGUI_TABLE).RenderImGui()) {
+                changed = true;
             }
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
@@ -1803,48 +1765,8 @@ void RandomizerSettingsWindow::DrawElement() {
 
         if (ImGui::BeginTabItem("Items")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ImGui::BeginTable("tableRandoStartingInventory", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("Shuffle Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Shuffle NPCs & Merchants", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Shuffle Dungeon Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                ImGui::TableHeadersRow();
-                ImGui::PopItemFlag();
-                ImGui::TableNextRow();
-
-                // COLUMN 1 - Shuffle Items
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildShuffleItems", ImVec2(0, -8));
-                ImGui::PushItemWidth(-FLT_MIN);
-                if (ctx->GetSettings()->GetOptionGroup(RSG_SHUFFLE_ITEMS_IMGUI).RenderImGui()) {
-                    changed = true;
-                }
-                ImGui::PopItemWidth();
-                ImGui::EndChild();
-
-                // COLUMN 2 - Shuffle NPCs & Merchants
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildShuffleNpcs", ImVec2(0, -8));
-                ImGui::PushItemWidth(-FLT_MIN);
-                if (ctx->GetSettings()->GetOptionGroup(RSG_SHUFFLE_NPCS_IMGUI).RenderImGui()) {
-                    changed = true;
-                }
-                ImGui::PopItemWidth();
-                ImGui::EndChild();
-
-                // COLUMN 3 - Shuffle Dungeon Items
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildShuffleDungeonItems", ImVec2(0, -8));
-                ImGui::PushItemWidth(-FLT_MIN);
-                if (ctx->GetSettings()->GetOptionGroup(RSG_SHUFFLE_DUNGEON_ITEMS).RenderImGui()) {
-                    changed = true;
-                }
-                ImGui::PopItemWidth();
-                ImGui::EndChild();
-                ImGui::EndTable();
+            if (ctx->GetSettings()->GetOptionGroup(RSG_ITEMS_IMGUI_TABLE).RenderImGui()) {
+                changed = true;
             }
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
@@ -1852,47 +1774,8 @@ void RandomizerSettingsWindow::DrawElement() {
 
         if (ImGui::BeginTabItem("Gameplay")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ImGui::BeginTable("tableRandoGameplay", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Item Pool & Hints", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Additional Features", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                ImGui::TableHeadersRow();
-                ImGui::PopItemFlag();
-                ImGui::TableNextRow();
-
-                // COLUMN 1 - TIME SAVERS
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildTimeSavers", ImVec2(0, -8));
-                if (ctx->GetSettings()->GetOptionGroup(RSG_TIMESAVERS_IMGUI).RenderImGui()) {
-                    changed = true;
-                }
-                ImGui::EndChild();
-
-                // COLUMN 2 - Item Pool & Hint Settings
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildItemPoolHintSettings", ImVec2(0, -8));
-                ImGui::PushItemWidth(-FLT_MIN);
-                if (ctx->GetSettings()->GetOptionGroup(RSG_ITEM_POOL_HINTS_IMGUI).RenderImGui()) {
-                    changed = true;
-                }
-                ImGui::PopItemWidth();
-                ImGui::EndChild();
-
-                // COLUMN 3 - Additional Features
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildAdditionalFeatures", ImVec2(0, -8));
-                ImGui::PushItemWidth(-FLT_MIN);
-
-                if (ctx->GetSettings()->GetOptionGroup(RSG_ADDITIONAL_FEATURES_IMGUI).RenderImGui()) {
-                    changed = true;
-                }
-                ImGui::PopItemWidth();
-                ImGui::EndChild();
-                ImGui::EndTable();
+            if (ctx->GetSettings()->GetOptionGroup(RSG_GAMEPLAY_IMGUI_TABLE).RenderImGui()) {
+                changed = true;
             }
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
@@ -2437,42 +2320,8 @@ void RandomizerSettingsWindow::DrawElement() {
 
         if (ImGui::BeginTabItem("Starting Inventory")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ImGui::BeginTable("tableRandoStartingInventory", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("Starting Equipment", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Starting Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Starting Songs", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                ImGui::TableHeadersRow();
-                ImGui::PopItemFlag();
-                ImGui::TableNextRow();
-
-                // COLUMN 1 - STARTING EQUIPMENT
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildStartingEquipment", ImVec2(0, -8));
-                if (ctx->GetSettings()->GetOptionGroup(RSG_STARTING_EQUIPMENT_IMGUI).RenderImGui()) {
-                    changed = true;
-                }
-                ImGui::EndChild();
-
-                // COLUMN 2 - STARTING ITEMS
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildStartingItems", ImVec2(0, -8));
-                if (ctx->GetSettings()->GetOptionGroup(RSG_STARTING_ITEMS_IMGUI).RenderImGui()) {
-                    changed = true;
-                }
-                ImGui::EndChild();
-
-                // COLUMN 3 - STARTING SONGS
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildStartingSongs", ImVec2(0, -8));
-                if (ctx->GetSettings()->GetOptionGroup(RSG_STARTING_SONGS_IMGUI).RenderImGui()) {
-                    changed = true;
-                }
-                ImGui::EndChild();
-                ImGui::EndTable();
+            if (ctx->GetSettings()->GetOptionGroup(RSG_STARTING_INVENTORY_IMGUI_TABLE).RenderImGui()) {
+                changed = true;
             }
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();

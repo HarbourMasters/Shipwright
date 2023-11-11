@@ -337,7 +337,7 @@ enum class WidgetContainerType {
   SECTION, /** Similar to Barebones, but has a header with the section name. */
   COLUMN, /** Signifies the container should be the start of new column within a table. */
   TABLE, /** Signifies the container is a table (should contain other subgroups with type column)*/
-  TAB, /** Signifies this container should be contained within a tab of a tabbed interface. */
+  TABBED, /** Signifies this container's contents should be contained within a tabbed interface. */
 };
 
 class OptionGroup {

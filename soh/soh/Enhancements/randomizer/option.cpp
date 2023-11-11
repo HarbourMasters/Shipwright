@@ -350,16 +350,41 @@ WidgetContainerType OptionGroup::GetContainerType() const {
 }
 
 bool OptionGroup::RenderImGui() const {
+    ImGuiWindow* window = ImGui::GetCurrentWindow();
     bool changed = false;
+    if (mContainerType == WidgetContainerType::TABBED) {
+        if (ImGui::BeginTabItem(mName.c_str())) {
+            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, ImVec2(8.0f, 8.0f));
+        }
+    }
+    if (mContainerType == WidgetContainerType::TABLE) {
+        if (ImGui::BeginTable(mName.c_str(), mSubGroups.size(), ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+            for (auto column : mSubGroups) {
+                if (column->GetContainerType() == WidgetContainerType::COLUMN) {
+                    ImGui::TableSetupColumn(column->GetName().c_str(), ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                }
+            }
+            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+            ImGui::TableHeadersRow();
+            ImGui::PopItemFlag();
+            ImGui::TableNextRow();
+        }
+    }
+    if (mContainerType == WidgetContainerType::SECTION && !mName.empty()) {
+        UIWidgets::PaddedSeparator();
+        ImGui::Text("%s", mName.c_str());
+        UIWidgets::PaddedSeparator();
+    }
+    if (mContainerType == WidgetContainerType::COLUMN) {
+        ImGui::TableNextColumn();
+        window->DC.CurrLineTextBaseOffset = 0.0f;
+        ImGui::BeginChild(mName.c_str(), ImVec2(0, -8));
+        ImGui::PushItemWidth(-FLT_MIN);
+    }
     if (mContainsType == OptionGroupType::SUBGROUP) {
         for (auto optionGroup : mSubGroups) {
-            if (optionGroup->GetContainerType() == WidgetContainerType::SECTION) {
-                UIWidgets::PaddedSeparator();
-                ImGui::Text("%s", optionGroup->GetName().c_str());
-                UIWidgets::PaddedSeparator();
-                if (optionGroup->RenderImGui()) {
-                    changed = true;
-                }
+            if (optionGroup->RenderImGui()) {
+                changed = true;
             }
         }
     } else {
@@ -381,6 +406,16 @@ bool OptionGroup::RenderImGui() const {
                 UIWidgets::PaddedSeparator();
             }
         }
+    }
+    if (mContainerType == WidgetContainerType::COLUMN) {
+        ImGui::EndChild();
+    }
+    if (mContainerType == WidgetContainerType::TABLE) {
+        ImGui::EndTable();
+    }
+    if (mContainerType == WidgetContainerType::TABBED) {
+        ImGui::PopStyleVar(1);
+        ImGui::EndTabItem();
     }
     return changed;
 }

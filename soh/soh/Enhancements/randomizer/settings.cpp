@@ -140,9 +140,9 @@ void Settings::CreateOptions() {
     mOptions[RSK_CUCCO_COUNT] = Option::U8("Cuccos to return", {NumOpts(0, 7)}, OptionCategory::Setting, "gRandomizeCuccosToReturn", mOptionDescriptions[RSK_CUCCO_COUNT], WidgetType::Checkbox, 7);
     mOptions[RSK_COMPLETE_MASK_QUEST] = Option::Bool("Complete Mask Quest", "gRandomizeCompleteMaskQuest", mOptionDescriptions[RSK_COMPLETE_MASK_QUEST]);
     mOptions[RSK_ENABLE_GLITCH_CUTSCENES] = Option::Bool("Enable Glitch-Useful Cutscenes", "gRandomizeEnableGlitchCutscenes", mOptionDescriptions[RSK_ENABLE_GLITCH_CUTSCENES]);
-    mOptions[RSK_GOSSIP_STONE_HINTS] = Option::U8("Gossip Stone Hints", {"No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony"}, OptionCategory::Setting, "gRandomizeGossipStoneHints", mOptionDescriptions[RSK_GOSSIP_STONE_HINTS], WidgetType::Combobox, RO_GOSSIP_STONES_NEED_NOTHING);
+    mOptions[RSK_GOSSIP_STONE_HINTS] = Option::U8("Gossip Stone Hints", {"No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony"}, OptionCategory::Setting, "gRandomizeGossipStoneHints", mOptionDescriptions[RSK_GOSSIP_STONE_HINTS], WidgetType::Combobox, RO_GOSSIP_STONES_NEED_NOTHING, false, IMFLAG_NONE);
     mOptions[RSK_HINT_CLARITY] = Option::U8("Hint Clarity", {"Obscure", "Ambiguous", "Clear"}, OptionCategory::Setting, "gRandomizeHintClarity", mOptionDescriptions[RSK_HINT_CLARITY], WidgetType::Combobox, RO_HINT_CLARITY_CLEAR, true, IMFLAG_INDENT);
-    mOptions[RSK_HINT_DISTRIBUTION] = Option::U8("Hint Distribution", {"Useless", "Balanced", "Strong", "Very Strong"}, OptionCategory::Setting, "gRandomizeHintDistribution", mOptionDescriptions[RSK_HINT_DISTRIBUTION], WidgetType::Combobox, RO_HINT_DIST_BALANCED, true, IMFLAG_UNINDENT | IMFLAG_SEPARATOR_BOTTOM);
+    mOptions[RSK_HINT_DISTRIBUTION] = Option::U8("Hint Distribution", {"Useless", "Balanced", "Strong", "Very Strong"}, OptionCategory::Setting, "gRandomizeHintDistribution", mOptionDescriptions[RSK_HINT_DISTRIBUTION], WidgetType::Combobox, RO_HINT_DIST_BALANCED, true, IMFLAG_UNINDENT);
     mOptions[RSK_TOT_ALTAR_HINT] = Option::Bool("ToT Altar Hint", {"Off", "On"}, OptionCategory::Setting, "gRandomizeAltarHint", mOptionDescriptions[RSK_TOT_ALTAR_HINT], WidgetType::Checkbox, RO_GENERIC_ON, false, IMFLAG_INDENT);
     mOptions[RSK_LIGHT_ARROWS_HINT] = Option::Bool("Light Arrow Hint", {"Off", "On"}, OptionCategory::Setting, "gRandomizeLAHint", mOptionDescriptions[RSK_LIGHT_ARROWS_HINT], WidgetType::Checkbox, RO_GENERIC_ON, false, IMFLAG_NONE);
     mOptions[RSK_DAMPES_DIARY_HINT] = Option::Bool("Dampe's Diary Hint", "gRandomizeDampeHint", mOptionDescriptions[RSK_DAMPES_DIARY_HINT], IMFLAG_NONE);
@@ -550,7 +550,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KAK_GATE],
         &mOptions[RSK_DOOR_OF_TIME],
         &mOptions[RSK_ZORAS_FOUNTAIN],
-    }, false);
+    }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_WORLD_IMGUI] = OptionGroup::SubGroup("World Settings", {
         &mOptions[RSK_STARTING_AGE],
         &mOptions[RSK_GERUDO_FORTRESS],
@@ -581,7 +581,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_TRIFORCE_HUNT],
         &mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL],
         &mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED]
-    }, false);
+    }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_SHUFFLE_ENTRANCES_IMGUI] = OptionGroup::SubGroup("Shuffle Entrances", {
         &mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES],
         &mOptions[RSK_SHUFFLE_BOSS_ENTRANCES],
@@ -597,7 +597,12 @@ void Settings::CreateOptions() {
         &mOptions[RSK_MIX_OVERWORLD_ENTRANCES],
         &mOptions[RSK_MIX_INTERIOR_ENTRANCES],
         &mOptions[RSK_MIX_GROTTO_ENTRANCES]
-    }, false);
+    }, false, WidgetContainerType::COLUMN);
+    mOptionGroups[RSG_WORLD_IMGUI_TABLE] = OptionGroup::SubGroup("World", {
+        &mOptionGroups[RSG_AREA_ACCESS_IMGUI],
+        &mOptionGroups[RSG_WORLD_IMGUI],
+        &mOptionGroups[RSG_SHUFFLE_ENTRANCES_IMGUI],
+    }, false, WidgetContainerType::TABLE);
     mOptionGroups[RSG_SHUFFLE_ITEMS_IMGUI] = OptionGroup::SubGroup("Shuffle Items", {
         &mOptions[RSK_SHUFFLE_SONGS],
         &mOptions[RSK_SHUFFLE_TOKENS],
@@ -607,8 +612,8 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_OCARINA],
         &mOptions[RSK_SHUFFLE_WEIRD_EGG],
         &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]
-    }, false);
-    mOptionGroups[RSG_SHUFFLE_NPCS_IMGUI] = OptionGroup::SubGroup("Shuffle NPCs", {
+    }, false, WidgetContainerType::COLUMN);
+    mOptionGroups[RSG_SHUFFLE_NPCS_IMGUI] = OptionGroup::SubGroup("Shuffle NPCs & Merchants", {
         &mOptions[RSK_SHOPSANITY],
         &mOptions[RSK_SHOPSANITY_PRICES],
         &mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE],
@@ -618,7 +623,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_MERCHANTS],
         &mOptions[RSK_SHUFFLE_ADULT_TRADE],
         &mOptions[RSK_SHUFFLE_100_GS_REWARD]
-    }, false);
+    }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_SHUFFLE_DUNGEON_ITEMS_IMGUI] = OptionGroup::SubGroup("Shuffle Dungeon Items", {
         &mOptions[RSK_SHUFFLE_MAPANDCOMPASS],
         &mOptions[RSK_KEYSANITY],
@@ -642,7 +647,12 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL],
         &mOptions[RSK_KEYRINGS_GTG],
         &mOptions[RSK_KEYRINGS_GANONS_CASTLE],
-    }, false);
+    }, false, WidgetContainerType::COLUMN);
+    mOptionGroups[RSG_ITEMS_IMGUI_TABLE] = OptionGroup::SubGroup("Items", {
+        &mOptionGroups[RSG_SHUFFLE_ITEMS_IMGUI],
+        &mOptionGroups[RSG_SHUFFLE_NPCS_IMGUI],
+        &mOptionGroups[RSG_SHUFFLE_DUNGEON_ITEMS_IMGUI],
+    }, false, WidgetContainerType::TABLE);
     mOptionGroups[RSG_TIMESAVERS_IMGUI] = OptionGroup::SubGroup("Timesavers", {
         &mOptions[RSK_CUCCO_COUNT],
         &mOptions[RSK_BIG_POE_COUNT],
@@ -652,13 +662,15 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SKIP_TOWER_ESCAPE],
         &mOptions[RSK_COMPLETE_MASK_QUEST],
         &mOptions[RSK_SKIP_SCARECROWS_SONG]
-    }, false);
-    mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI] = OptionGroup::SubGroup("Item Pool & Hints", {
+    }, false, WidgetContainerType::COLUMN);
+    mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI] = OptionGroup::SubGroup("", {
         &mOptions[RSK_ITEM_POOL],
         &mOptions[RSK_ICE_TRAPS],
         &mOptions[RSK_GOSSIP_STONE_HINTS],
         &mOptions[RSK_HINT_CLARITY],
         &mOptions[RSK_HINT_DISTRIBUTION],
+    }, false, WidgetContainerType::SECTION);
+    mOptionGroups[RSG_EXTRA_HINTS_IMGUI] = OptionGroup::SubGroup("Extra Hints", {
         &mOptions[RSK_TOT_ALTAR_HINT],
         &mOptions[RSK_LIGHT_ARROWS_HINT],
         &mOptions[RSK_DAMPES_DIARY_HINT],
@@ -672,25 +684,34 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KAK_30_SKULLS_HINT],
         &mOptions[RSK_KAK_40_SKULLS_HINT],
         &mOptions[RSK_KAK_50_SKULLS_HINT]
-    }, false);
+    }, false, WidgetContainerType::SECTION);
+    mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI_COLUMN] = OptionGroup::SubGroup("Item Pool & Hints", std::initializer_list<OptionGroup*>{
+        &mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI],
+        &mOptionGroups[RSG_EXTRA_HINTS_IMGUI],
+    }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_ADDITIONAL_FEATURES_IMGUI] = OptionGroup::SubGroup("Additional Features", {
         &mOptions[RSK_FULL_WALLETS],
         &mOptions[RSK_BOMBCHUS_IN_LOGIC],
         &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
         &mOptions[RSK_BLUE_FIRE_ARROWS],
         &mOptions[RSK_SUNLIGHT_ARROWS]
-    }, false);
+    }, false, WidgetContainerType::COLUMN);
+    mOptionGroups[RSG_GAMEPLAY_IMGUI_TABLE] = OptionGroup::SubGroup("Gameplay", {
+        &mOptionGroups[RSG_TIMESAVERS_IMGUI],
+        &mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI_COLUMN],
+        &mOptionGroups[RSG_ADDITIONAL_FEATURES_IMGUI]
+    }, false, WidgetContainerType::TABLE);
     mOptionGroups[RSG_STARTING_EQUIPMENT_IMGUI] = OptionGroup::SubGroup("Starting Equipment", {
         &mOptions[RSK_LINKS_POCKET],
         &mOptions[RSK_STARTING_KOKIRI_SWORD],
         &mOptions[RSK_STARTING_MASTER_SWORD],
         &mOptions[RSK_STARTING_DEKU_SHIELD]
-    }, false);
+    }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_STARTING_ITEMS_IMGUI] = OptionGroup::SubGroup("Starting Items", {
         &mOptions[RSK_STARTING_OCARINA],
         &mOptions[RSK_STARTING_CONSUMABLES],
         &mOptions[RSK_STARTING_SKULLTULA_TOKEN],
-    }, false);
+    }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_STARTING_NORMAL_SONGS_IMGUI] = OptionGroup::SubGroup("Normal Songs", {
         &mOptions[RSK_STARTING_ZELDAS_LULLABY],
         &mOptions[RSK_STARTING_EPONAS_SONG],
@@ -711,6 +732,11 @@ void Settings::CreateOptions() {
         &mOptionGroups[RSG_STARTING_NORMAL_SONGS_IMGUI],
         &mOptionGroups[RSG_STARTING_WARP_SONGS_IMGUI],
     }), false, WidgetContainerType::COLUMN);
+    mOptionGroups[RSG_STARTING_INVENTORY_IMGUI_TABLE] = OptionGroup::SubGroup("Starting Inventory", {
+        &mOptionGroups[RSG_STARTING_EQUIPMENT_IMGUI],
+        &mOptionGroups[RSG_STARTING_ITEMS_IMGUI],
+        &mOptionGroups[RSG_STARTING_SONGS_IMGUI]
+    }, false, WidgetContainerType::TABLE);
     mOptionGroups[RSG_OPEN] = OptionGroup("Open Settings", {
         &mOptions[RSK_FOREST],
         &mOptions[RSK_KAK_GATE],
@@ -1542,11 +1568,9 @@ void Settings::UpdateOptionProperties() {
         ctx->GetOption(RSK_SKIP_CHILD_ZELDA).Enable();
     }
     if (CVarGetInteger("gRandomizeGossipStoneHints", RO_GOSSIP_STONES_NEED_NOTHING) == RO_GOSSIP_STONES_NONE) {
-        mOptions[RSK_GOSSIP_STONE_HINTS].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
         mOptions[RSK_HINT_CLARITY].Hide();
         mOptions[RSK_HINT_DISTRIBUTION].Hide();
     } else {
-        mOptions[RSK_GOSSIP_STONE_HINTS].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
         mOptions[RSK_HINT_CLARITY].Unhide();
         mOptions[RSK_HINT_DISTRIBUTION].Unhide();
     }
