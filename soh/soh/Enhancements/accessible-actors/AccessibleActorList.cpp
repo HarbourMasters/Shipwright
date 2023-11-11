@@ -384,6 +384,57 @@ void accessible_climable(AccessibleActor* actor) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_PL_LAND_LADDER, false);
 }
 
+void accessible_en_guard(AccessibleActor* actor) {
+    Player* player = GET_PLAYER(actor->play);
+    f32 guardsfx = NA_SE_IT_SWORD_IMPACT;
+    if (fabs(actor->actor->world.pos.x - player->actor.world.pos.x) >
+        fabs(actor->actor->world.pos.z - player->actor.world.pos.z)) {
+    if (actor->actor->world.rot.y == 16384) {
+        if (actor->actor->world.pos.x < player->actor.world.pos.x) {
+            ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+            ActorAccessibility_SetSoundPitch(actor, 0, 2.0);
+        } else {
+            ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+            ActorAccessibility_SetSoundPitch(actor, 0, 0.2); 
+        }
+    } else if (actor->actor->world.rot.y == -16384) {
+        if (actor->actor->world.pos.x < player->actor.world.pos.x) {
+            ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+            ActorAccessibility_SetSoundPitch(actor, 0, 0.2);
+        } else {
+            ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+            ActorAccessibility_SetSoundPitch(actor, 0, 2.0);
+        }
+    } else {
+        ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+        ActorAccessibility_SetSoundPitch(actor, 0, 1.0);
+    }
+    } else {
+        if (actor->actor->world.rot.y == 0) {
+             if (actor->actor->world.pos.z < player->actor.world.pos.z) {
+                ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+                ActorAccessibility_SetSoundPitch(actor, 0, 2.0);
+            } else {
+                ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+                ActorAccessibility_SetSoundPitch(actor, 0, 0.1);
+            }
+        } else if (actor->actor->world.rot.y == -32768) {
+            if (actor->actor->world.pos.z < player->actor.world.pos.z) {
+                ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+                ActorAccessibility_SetSoundPitch(actor, 0, 0.1);
+            } else {
+                ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+                ActorAccessibility_SetSoundPitch(actor, 0, 2.0);
+            }
+        } else {
+            ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+            ActorAccessibility_SetSoundPitch(actor, 0, 1.0);
+        }
+    }
+    
+
+}
+
 void accessible_goma(AccessibleActor* actor) {
     BossGoma* goma = (BossGoma*)actor->actor;
     if (goma->visualState == 0) {
@@ -502,12 +553,31 @@ void accessible_audio_compass(AccessibleActor* actor) {
     ActorAccessibilityPolicy policy; 
     ActorAccessibility_InitPolicy(&policy, "Rock", accessible_en_ishi, 0);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_ISHI, policy);
-
-    ActorAccessibility_InitPolicy(&policy, "Mido", NULL, NA_SE_VO_NA_HELLO_0);
+    
+    ActorAccessibility_InitPolicy(&policy, "Story NPCs", NULL, NA_SE_VO_NA_HELLO_0);
+    policy.englishName = "Mido";
     policy.n = Npc_Frames;
     policy.distance = 1000;
     policy.pitch = 1.1; 
     ActorAccessibility_AddSupportedActor(ACTOR_EN_MD, policy);
+    policy.englishName = "Malon";
+    policy.distance = 500;
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_MA1, policy);
+    policy.englishName = "Talon";
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_TA, policy);
+
+    ActorAccessibility_InitPolicy(&policy, "Guards", accessible_en_guard, 0);
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_HEISHI1, policy);
+
+    ActorAccessibility_InitPolicy(&policy, "Shopkeepers", NULL, NA_SE_VO_NA_HELLO_1);
+    policy.pitch = 0.6;
+    policy.n = 30;
+    policy.englishName = "Shooting Gallery Man";
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_SYATEKI_MAN, policy);
+    policy.englishName = "Bombchu Bowling Alley Lady";
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_BOM_BOWL_MAN, policy);
+    policy.englishName = "ShopKeeper";
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_OSSAN, policy);
 
     ActorAccessibility_InitPolicy(&policy, "Kokiri Child", accessible_en_NPC_Gen, 0);
     policy.n = Npc_Frames;
@@ -517,8 +587,19 @@ void accessible_audio_compass(AccessibleActor* actor) {
 
     policy.englishName = "Saria";
     ActorAccessibility_AddSupportedActor(ACTOR_EN_SA, policy);
+    policy.englishName = "Happy Mask Shop Customer";
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_GUEST, policy);
+    policy.englishName = "Market Npc";
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_HY, policy);
+    policy.englishName = "Girl Chassing Cucco";
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_NIW_GIRL, policy);
+    policy.englishName = "Honey & Darling";
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_TG, policy);
+    policy.englishName = "Haggling Townspeople";
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_MU, policy);
     policy.englishName = "Skull Kid";
     ActorAccessibility_AddSupportedActor(ACTOR_EN_SKJ, policy);
+
     policy.englishName = "Gossip Stone";
     policy.pitch = 0.75;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_GS, policy);
@@ -536,10 +617,13 @@ void accessible_audio_compass(AccessibleActor* actor) {
 
     //ACTOR_EN_A_OBJ has exactly the same configuration.
     ActorAccessibility_AddSupportedActor(ACTOR_EN_A_OBJ, policy);
+    ActorAccessibility_InitPolicy(&policy, "Large Crate", NULL, NA_SE_EV_WOODBOX_BREAK);
+    ActorAccessibility_AddSupportedActor(ACTOR_OBJ_KIBAKO2, policy);
     ActorAccessibility_InitPolicy(&policy, "deku stick drops", accessible_sticks, 0);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_DEKUBABA, policy);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_KAREBABA, policy);
-
+    ActorAccessibility_InitPolicy(&policy, "Owl", NULL, NA_SE_EN_OWL_FLUTTER);
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_OWL, policy);
     // will probably just get replaced with ghost actors anyways
     // ActorAccessibility_AddSupporte dActor(ACTOR_EN_HOLL, "Room Changing Plane", NULL, 30, 500, 1.0, 1.0,
     //                                      NA_SE_EV_STONEDOOR_STOP /*NOT SURE YET*/);
