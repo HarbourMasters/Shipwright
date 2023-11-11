@@ -613,6 +613,7 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
     DrawStickDirectionLine(ICON_FA_ARROW_LEFT, port, stick, LUS::LEFT, color);
     DrawStickDirectionLine(ICON_FA_ARROW_RIGHT, port, stick, LUS::RIGHT, color);
     ImGui::EndGroup();
+    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::TreeNode(StringHelper::Sprintf("Analog Stick Options##%d", id).c_str())) {
         ImGui::Text("Deadzone:");
 
