@@ -562,12 +562,35 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
         }
 
         ImGui::Text("Notch Snap Angle:");
-        ImGui::SetNextItemWidth(160.0f);
-
         int32_t notchSnapAngle = controllerStick->GetNotchSnapAngle();
+        if (notchSnapAngle == 0) {
+            ImGui::BeginDisabled();
+        }
+        ImGui::PushButtonRepeat(true);
+        if (ImGui::Button("-")) {
+            controllerStick->SetNotchSnapAngle(notchSnapAngle - 1);
+        }
+        ImGui::PopButtonRepeat();
+        if (notchSnapAngle == 0) {
+            ImGui::EndDisabled();
+        }
+        ImGui::SameLine(0.0f,0.0f);
+        ImGui::SetNextItemWidth(160.0f);
         if (ImGui::SliderInt(StringHelper::Sprintf("##NotchProximityThreshold%d", id).c_str(), &notchSnapAngle, 0, 45,
                              "%d°", ImGuiSliderFlags_AlwaysClamp)) {
             controllerStick->SetNotchSnapAngle(notchSnapAngle);
+        }
+        ImGui::SameLine(0.0f,0.0f);
+        if (notchSnapAngle == 45) {
+            ImGui::BeginDisabled();
+        }
+        ImGui::PushButtonRepeat(true);
+        if (ImGui::Button("+")) {
+            controllerStick->SetNotchSnapAngle(notchSnapAngle + 1);
+        }
+        ImGui::PopButtonRepeat();
+        if (notchSnapAngle == 45) {
+            ImGui::EndDisabled();
         }
         if (!controllerStick->NotchSnapAngleIsDefault()) {
             ImGui::SameLine();
