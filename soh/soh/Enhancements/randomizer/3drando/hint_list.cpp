@@ -1046,6 +1046,11 @@ void HintTable_Init() {
         Text{ "Temple of Time", /*french*/ "le Temple du Temps", /*spanish*/ "el Templo del Tiempo" },
     });
 
+    hintTable[CASTLE_GROUNDS] = HintText::Exclude({
+        // obscure text
+        Text{ "the Castle Grounds", /*french*/ "le Château d'Hyrule", /*spanish*/ "" },
+    });
+
     hintTable[HYRULE_CASTLE] = HintText::Exclude({
         // obscure text
         Text{ "Hyrule Castle", /*french*/ "le Château d'Hyrule", /*spanish*/ "el Castillo de Hyrule" },
@@ -2956,6 +2961,20 @@ void HintTable_Init() {
             "Ha ha ha... Pauvre fou! Tu ne pourras jamais me vaincre sans les flèches que j'ai cachées dans ",
             /*spanish*/
             "Ja, ja, ja... Nunca me derrotarás reflejando mis esferas de energía y desplegando la flecha de luz de " },
+    });
+
+
+    /*--------------------------
+    |MASTER SWORD LOCATION TEXT|
+    ---------------------------*/
+
+    hintTable[MASTER_SWORD_LOCATION_HINT] = HintText::MasterSword({
+        // obscure text
+        Text{"And even if you do, you'll never find the legendary blade hidden in ",
+            /*french*/
+            "Et même si tu les trouves, tu ne touveras jamais l'épée de légende cachée dans ",
+            /*spanish*/
+            "E incluso si lo haces, nunca encontrarás la espada legendaria escondida en " },
     });
 
     hintTable[YOUR_POCKET] = HintText::Exclude({

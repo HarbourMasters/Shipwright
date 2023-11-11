@@ -91,7 +91,7 @@ void BgTokiSwd_Init(Actor* thisx, PlayState* play) {
             Player* player = GET_PLAYER(gPlayState);
             player->currentSwordItemId = ITEM_NONE;
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
+            Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_NONE);
         }
     }
 
@@ -122,7 +122,9 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
     if (!LINK_IS_ADULT || (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && !IS_RANDO) || IS_RANDO) {
         if (Actor_HasParent(&this->actor, play)) {
             if (!LINK_IS_ADULT) {
-                Item_Give(play, ITEM_SWORD_MASTER);
+                 if (!IS_RANDO || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
+                    Item_Give(play, ITEM_SWORD_MASTER);
+                 }
                 play->csCtx.segment = D_808BB2F0;
             } else {
                 play->csCtx.segment = D_808BB7A0;
@@ -183,6 +185,11 @@ void BgTokiSwd_Draw(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     BgTokiSwd* this = (BgTokiSwd*)thisx;
     s32 pad[3];
+
+    // Do not draw the Master Sword in the pedestal if the player has not found it yet
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
+        return;
+    }
 
     OPEN_DISPS(play->state.gfxCtx);
 

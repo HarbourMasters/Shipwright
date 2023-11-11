@@ -58,6 +58,7 @@ bool showMerchants;
 bool showCows;
 bool showAdultTrade;
 bool showKokiriSword;
+bool showMasterSword;
 bool showWeirdEgg;
 bool showGerudoCard;
 bool showFrogSongRupees;
@@ -95,7 +96,7 @@ std::map<uint32_t, RandomizerCheck> startingShopItem = { { SCENE_KOKIRI_SHOP, RC
                                                          { SCENE_ZORA_SHOP, RC_ZD_SHOP_ITEM_1 },
                                                          { SCENE_GORON_SHOP, RC_GC_SHOP_ITEM_1 } };
 
-std::map<SceneID, RandomizerCheckArea> RCAreaFromSceneID = {
+std::map<SceneID, RandomizerCheckArea> DungeonRCAreasBySceneID = {
     {SCENE_DEKU_TREE,              RCAREA_DEKU_TREE},
     {SCENE_DODONGOS_CAVERN,        RCAREA_DODONGOS_CAVERN},
     {SCENE_JABU_JABU,              RCAREA_JABU_JABUS_BELLY},
@@ -424,6 +425,7 @@ bool HasItemBeenCollected(RandomizerCheck rc) {
     case SpoilerCollectionCheckType::SPOILER_CHK_COW:
     case SpoilerCollectionCheckType::SPOILER_CHK_SCRUB:
     case SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF:
+    case SpoilerCollectionCheckType::SPOILER_CHK_MASTER_SWORD:
         return Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc));
     case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
         return gSaveContext.eventChkInf[flag / 16] & (0x01 << flag % 16);
@@ -1018,6 +1020,9 @@ void LoadSettings() {
     showKokiriSword = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_KOKIRI_SWORD) == RO_GENERIC_YES
         : true;
+    showMasterSword = IS_RANDO ?
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MASTER_SWORD) == RO_GENERIC_YES
+        : true;
     showWeirdEgg = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_WEIRD_EGG) == RO_GENERIC_YES
         : true;
@@ -1126,6 +1131,7 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
                 rcObj.rc == RC_DMT_TRADE_CLAIM_CHECK // even when shuffle adult trade is off
                 ) &&
             (rcObj.rc != RC_KF_KOKIRI_SWORD_CHEST || showKokiriSword) &&
+            (rcObj.rc != RC_TOT_MASTER_SWORD      || showMasterSword) &&
             (rcObj.rc != RC_ZR_MAGIC_BEAN_SALESMAN || showBeans) &&
             (rcObj.rc != RC_HC_MALON_EGG || showWeirdEgg) &&
             (rcObj.rcType != RCTYPE_FROG_SONG || showFrogSongRupees) &&
@@ -1151,9 +1157,11 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
 
 void UpdateInventoryChecks() {
     //For all the areas with compasses, if you have one, spoil the area
-    for (u8 i = SCENE_DEKU_TREE; i <= SCENE_GERUDO_TRAINING_GROUND; i++)
-        if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, i))
-            areasSpoiled |= (1 << RCAreaFromSceneID.at((SceneID)i));
+    for (auto [scene, area] : DungeonRCAreasBySceneID) {
+        if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, scene)) {
+            areasSpoiled |= (1 << area);
+        }
+    }
 }
 
 void UpdateAreaFullyChecked(RandomizerCheckArea area) {

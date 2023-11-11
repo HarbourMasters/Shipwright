@@ -1102,9 +1102,9 @@ static bool SpeedModifierHandler(std::shared_ptr<LUS::Console> Console, const st
 }
 
 const static std::map<std::string, uint16_t> boots {
-    { "kokiri", PLAYER_BOOTS_KOKIRI },
-    { "iron", PLAYER_BOOTS_IRON },
-    { "hover", PLAYER_BOOTS_HOVER },
+    { "kokiri", EQUIP_VALUE_BOOTS_KOKIRI },
+    { "iron", EQUIP_VALUE_BOOTS_IRON },
+    { "hover", EQUIP_VALUE_BOOTS_HOVER },
 };
 
 static bool BootsHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {

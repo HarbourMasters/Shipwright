@@ -216,6 +216,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gBowReticle",
     "gFixTexturesOOB",
     "gIvanCoopModeEnabled",
+    "gEnemySpawnsOverWaterboxes",
 };
 
 const std::vector<const char*> cheatCvars = {
@@ -248,6 +249,7 @@ const std::vector<const char*> cheatCvars = {
     "gMoonJumpOnL",
     "gSuperTunic",
     "gEzISG",
+    "gEzQPA",
     "gTimelessEquipment",
     "gCheatEasyPauseBufferEnabled",
     "gCheatEasyInputBufferingEnabled",
@@ -524,6 +526,8 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32("gNaviTextFix", 1),
     // Extend Silver Rupee Jingle
     PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
+    // Fix enemies not spawning on ground over water
+    PRESET_ENTRY_S32("gEnemySpawnsOverWaterboxes", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -814,7 +818,7 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32("gRandomizeDampeHint", 1),
     PRESET_ENTRY_S32("gRandomizeDoorOfTime", RO_DOOROFTIME_OPEN),
     PRESET_ENTRY_S32("gRandomizeEnableBombchuDrops", 1),
-    PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "78,142,143,228,"),
+    PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "78,143,144,229,"),
     PRESET_ENTRY_S32("gRandomizeForest", RO_FOREST_OPEN),
     PRESET_ENTRY_S32("gRandomizeFullWallets", 1),
     PRESET_ENTRY_S32("gRandomizeGanonTrial", RO_GANONS_TRIALS_SKIP),
@@ -906,7 +910,7 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32("gRandomizeDampeHint", 1),
     PRESET_ENTRY_S32("gRandomizeDoorOfTime", RO_DOOROFTIME_OPEN),
     PRESET_ENTRY_S32("gRandomizeEnableBombchuDrops", 1),
-    PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "78,142,143,228,"),
+    PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "78,143,144,229,"),
     PRESET_ENTRY_S32("gRandomizeForest", RO_FOREST_OPEN),
     PRESET_ENTRY_S32("gRandomizeFullWallets", 1),
     PRESET_ENTRY_S32("gRandomizeGanonTrial", RO_GANONS_TRIALS_SKIP),
@@ -1021,6 +1025,7 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32("gRandomizeShuffleGerudoToken", 1),
     PRESET_ENTRY_S32("gRandomizeShuffleKeyRings", RO_KEYRINGS_RANDOM),
     PRESET_ENTRY_S32("gRandomizeShuffleKokiriSword", 1),
+    PRESET_ENTRY_S32("gRandomizeShuffleMasterSword", 1),
     PRESET_ENTRY_S32("gRandomizeShuffleOcarinas", 1),
     PRESET_ENTRY_S32("gRandomizeShuffleScrubs", RO_SCRUBS_RANDOM),
     PRESET_ENTRY_S32("gRandomizeShuffleSongs", RO_SONG_SHUFFLE_ANYWHERE),
