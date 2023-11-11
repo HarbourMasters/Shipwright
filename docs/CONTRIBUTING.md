@@ -106,3 +106,5 @@ This does result in some code duplication, but this is just a step to where we w
         }
         // Enhancement end
 ```
+
+In the case of alternative/replacement functions and variables, a simple comment mentioning the change it belongs to (Enhancement, Cheat, Debug, Randomizer Mechanic, etc) will suffice, as almost all the time, those replacements will be notated where they're used in the code following the above principles. The names of these replacements should also mirror the names of what they're replacing, with a short addition referring to the type of change.
