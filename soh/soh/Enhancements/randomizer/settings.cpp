@@ -684,7 +684,9 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KAK_30_SKULLS_HINT],
         &mOptions[RSK_KAK_40_SKULLS_HINT],
         &mOptions[RSK_KAK_50_SKULLS_HINT]
-    }, false, WidgetContainerType::SECTION);
+    }, false, WidgetContainerType::SECTION, "This setting adds some hints at locations other than Gossip Stones.\n\n"
+                    "House of Skulltula: # - Talking to a cursed House of Skulltula resident will tell you the reward"
+                    "they will give you for obtaining that many tokens.");
     mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI_COLUMN] = OptionGroup::SubGroup("Item Pool & Hints", std::initializer_list<OptionGroup*>{
         &mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI],
         &mOptionGroups[RSG_EXTRA_HINTS_IMGUI],

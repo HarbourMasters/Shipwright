@@ -300,25 +300,27 @@ bool Option::RenderSlider() const {
 }
 
 OptionGroup::OptionGroup(std::string name, std::vector<Option*> options, OptionGroupType groupType, bool printInSpoiler,
-                         WidgetContainerType containerType)
+                         WidgetContainerType containerType, std::string description)
     : mName(std::move(name)), mOptions(std::move(options)), mGroupType(groupType), mPrintInSpoiler(printInSpoiler),
-      mContainsType(OptionGroupType::DEFAULT), mContainerType(containerType) {
+      mContainsType(OptionGroupType::DEFAULT), mContainerType(containerType), mDescription(std::move(description)) {
 }
 
 OptionGroup::OptionGroup(std::string name, std::vector<OptionGroup*> subGroups, OptionGroupType groupType,
-                         bool printInSpoiler, WidgetContainerType containerType)
+                         bool printInSpoiler, WidgetContainerType containerType, std::string description)
     : mName(std::move(name)), mSubGroups(std::move(subGroups)), mGroupType(groupType), mPrintInSpoiler(printInSpoiler),
-      mContainsType(OptionGroupType::SUBGROUP), mContainerType(containerType) {
+      mContainsType(OptionGroupType::SUBGROUP), mContainerType(containerType), mDescription(std::move(description)) {
 }
 
 OptionGroup OptionGroup::SubGroup(std::string name, std::vector<Option*> options, bool printInSpoiler,
-                                  WidgetContainerType containerType) {
-    return OptionGroup(std::move(name), std::move(options), OptionGroupType::SUBGROUP, printInSpoiler, containerType);
+                                  WidgetContainerType containerType, std::string description) {
+    return OptionGroup(std::move(name), std::move(options), OptionGroupType::SUBGROUP, printInSpoiler, containerType,
+                       std::move(description));
 }
 
 OptionGroup OptionGroup::SubGroup(std::string name, std::vector<OptionGroup*> subGroups, bool printInSpoiler,
-                                  WidgetContainerType containerType) {
-    return OptionGroup(std::move(name), std::move(subGroups), OptionGroupType::SUBGROUP, printInSpoiler, containerType);
+                                  WidgetContainerType containerType, std::string description) {
+    return OptionGroup(std::move(name), std::move(subGroups), OptionGroupType::SUBGROUP, printInSpoiler, containerType,
+                       std::move(description));
 }
 
 const std::string& OptionGroup::GetName() const {
@@ -349,14 +351,13 @@ WidgetContainerType OptionGroup::GetContainerType() const {
     return mContainerType;
 }
 
+const std::string& OptionGroup::GetDescription() const {
+    return mDescription;
+}
+
 bool OptionGroup::RenderImGui() const {
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     bool changed = false;
-    if (mContainerType == WidgetContainerType::TABBED) {
-        if (ImGui::BeginTabItem(mName.c_str())) {
-            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, ImVec2(8.0f, 8.0f));
-        }
-    }
     if (mContainerType == WidgetContainerType::TABLE) {
         if (ImGui::BeginTable(mName.c_str(), mSubGroups.size(), ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             for (auto column : mSubGroups) {
@@ -364,8 +365,15 @@ bool OptionGroup::RenderImGui() const {
                     ImGui::TableSetupColumn(column->GetName().c_str(), ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 }
             }
-            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-            ImGui::TableHeadersRow();
+            ImGui::PushItemFlag(ImGuiItemFlags_NoNav, true);
+            ImGui::TableNextRow(ImGuiTableRowFlags_Headers);
+            for (int i = 0; i < mSubGroups.size(); i++) {
+                ImGui::TableSetColumnIndex(i);
+                ImGui::TableHeader(mSubGroups[i]->GetName().c_str());
+                if (!mSubGroups[i]->GetDescription().empty()) {
+                    UIWidgets::SetLastItemHoverText(mSubGroups[i]->GetDescription().c_str());
+                }
+            }
             ImGui::PopItemFlag();
             ImGui::TableNextRow();
         }
@@ -373,6 +381,9 @@ bool OptionGroup::RenderImGui() const {
     if (mContainerType == WidgetContainerType::SECTION && !mName.empty()) {
         UIWidgets::PaddedSeparator();
         ImGui::Text("%s", mName.c_str());
+        if (!mDescription.empty()) {
+            UIWidgets::InsertHelpHoverText(mDescription.c_str());
+        }
         UIWidgets::PaddedSeparator();
     }
     if (mContainerType == WidgetContainerType::COLUMN) {
@@ -412,10 +423,6 @@ bool OptionGroup::RenderImGui() const {
     }
     if (mContainerType == WidgetContainerType::TABLE) {
         ImGui::EndTable();
-    }
-    if (mContainerType == WidgetContainerType::TABBED) {
-        ImGui::PopStyleVar(1);
-        ImGui::EndTabItem();
     }
     return changed;
 }
