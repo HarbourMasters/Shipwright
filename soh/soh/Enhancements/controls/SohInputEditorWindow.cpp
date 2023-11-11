@@ -142,7 +142,7 @@ void SohInputEditorWindow::DrawAnalogPreview(const char* label, ImVec2 stick, fl
 #define BUTTON_COLOR_GAMEPAD_PURPLE_HOVERED ImVec4(0.431f, 0.369f, 0.706f, 1.0f)
 
 void SohInputEditorWindow::GetButtonColorsForLUSDeviceIndex(LUS::LUSDeviceIndex lusIndex, ImVec4& buttonColor,
-                                                         ImVec4& buttonHoveredColor) {
+                                                            ImVec4& buttonHoveredColor) {
     switch (lusIndex) {
         case LUS::LUSDeviceIndex::Keyboard:
             buttonColor = BUTTON_COLOR_KEYBOARD_BEIGE;
@@ -232,13 +232,16 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
     }
     auto buttonColor = ImGui::GetStyleColorVec4(ImGuiCol_Button);
     auto buttonHoveredColor = ImGui::GetStyleColorVec4(ImGuiCol_ButtonHovered);
-    auto physicalInputDisplayName = StringHelper::Sprintf("%s %s", icon.c_str(), mapping->GetPhysicalInputName().c_str());
+    auto physicalInputDisplayName =
+        StringHelper::Sprintf("%s %s", icon.c_str(), mapping->GetPhysicalInputName().c_str());
     GetButtonColorsForLUSDeviceIndex(mapping->GetLUSDeviceIndex(), buttonColor, buttonHoveredColor);
     ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
     auto popupId = StringHelper::Sprintf("editButtonMappingPopup##%s", id.c_str());
-    if (ImGui::Button(StringHelper::Sprintf("%s###editButtonMappingButton%s", physicalInputDisplayName.c_str(), id.c_str())
-                          .c_str(), ImVec2(ImGui::CalcTextSize(physicalInputDisplayName.c_str()).x + 12.0f, 0.0f))) {
+    if (ImGui::Button(
+            StringHelper::Sprintf("%s###editButtonMappingButton%s", physicalInputDisplayName.c_str(), id.c_str())
+                .c_str(),
+            ImVec2(ImGui::CalcTextSize(physicalInputDisplayName.c_str()).x + 12.0f, 0.0f))) {
         ImGui::OpenPopup(popupId.c_str());
     }
     if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal | ImGuiHoveredFlags_NoSharedDelay)) {
@@ -283,9 +286,10 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
         GetButtonColorsForLUSDeviceIndex(mapping->GetLUSDeviceIndex(), buttonColor, buttonHoveredColor);
         ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
-        ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f,0.5f));
+        ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f, 0.5f));
         auto popupId = StringHelper::Sprintf("editAxisThresholdPopup##%s", id.c_str());
-        if (ImGui::Button(StringHelper::Sprintf("%s###editAxisThresholdButton%s", ICON_FA_COG, id.c_str()).c_str(), ImVec2(ImGui::CalcTextSize(ICON_FA_COG).x + 10.0f, 0.0f))) {
+        if (ImGui::Button(StringHelper::Sprintf("%s###editAxisThresholdButton%s", ICON_FA_COG, id.c_str()).c_str(),
+                          ImVec2(ImGui::CalcTextSize(ICON_FA_COG).x + 10.0f, 0.0f))) {
             ImGui::OpenPopup(popupId.c_str());
         }
         if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal | ImGuiHoveredFlags_NoSharedDelay)) {
@@ -315,14 +319,14 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
                 if (stickAxisThreshold == 0) {
                     ImGui::EndDisabled();
                 }
-                ImGui::SameLine(0.0f,0.0f);
+                ImGui::SameLine(0.0f, 0.0f);
                 ImGui::SetNextItemWidth(160.0f);
                 if (ImGui::SliderInt(StringHelper::Sprintf("##Stick Axis Threshold%s", id.c_str()).c_str(),
                                      &stickAxisThreshold, 0, 100, "%d%%", ImGuiSliderFlags_AlwaysClamp)) {
                     sdlIndexMapping->SetStickAxisThresholdPercentage(stickAxisThreshold);
                     sdlIndexMapping->SaveToConfig();
                 }
-                ImGui::SameLine(0.0f,0.0f);
+                ImGui::SameLine(0.0f, 0.0f);
                 if (stickAxisThreshold == 100) {
                     ImGui::BeginDisabled();
                 }
@@ -353,14 +357,14 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
                 if (triggerAxisThreshold == 0) {
                     ImGui::EndDisabled();
                 }
-                ImGui::SameLine(0.0f,0.0f);
+                ImGui::SameLine(0.0f, 0.0f);
                 ImGui::SetNextItemWidth(160.0f);
                 if (ImGui::SliderInt(StringHelper::Sprintf("##Trigger Axis Threshold%s", id.c_str()).c_str(),
                                      &triggerAxisThreshold, 0, 100, "%d%%", ImGuiSliderFlags_AlwaysClamp)) {
                     sdlIndexMapping->SetTriggerAxisThresholdPercentage(triggerAxisThreshold);
                     sdlIndexMapping->SaveToConfig();
                 }
-                ImGui::SameLine(0.0f,0.0f);
+                ImGui::SameLine(0.0f, 0.0f);
                 if (triggerAxisThreshold == 100) {
                     ImGui::BeginDisabled();
                 }
@@ -390,8 +394,9 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
 
     ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
-    ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f,0.5f));
-    if (ImGui::Button(StringHelper::Sprintf("%s###removeButtonMappingButton%s", ICON_FA_TIMES, id.c_str()).c_str(), ImVec2(ImGui::CalcTextSize(ICON_FA_TIMES).x + 10.0f, 0.0f))) {
+    ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f, 0.5f));
+    if (ImGui::Button(StringHelper::Sprintf("%s###removeButtonMappingButton%s", ICON_FA_TIMES, id.c_str()).c_str(),
+                      ImVec2(ImGui::CalcTextSize(ICON_FA_TIMES).x + 10.0f, 0.0f))) {
         LUS::Context::GetInstance()
             ->GetControlDeck()
             ->GetControllerByPort(port)
@@ -406,7 +411,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
 }
 
 void SohInputEditorWindow::DrawButtonLine(const char* buttonName, uint8_t port, uint16_t bitmask,
-                                       ImVec4 color = CHIP_COLOR_N64_GREY) {
+                                          ImVec4 color = CHIP_COLOR_N64_GREY) {
     ImGui::NewLine();
     ImGui::SameLine(32.0f);
     DrawInputChip(buttonName, color);
@@ -417,7 +422,8 @@ void SohInputEditorWindow::DrawButtonLine(const char* buttonName, uint8_t port, 
     DrawButtonLineAddMappingButton(port, bitmask);
 }
 
-void SohInputEditorWindow::DrawStickDirectionLineAddMappingButton(uint8_t port, uint8_t stick, LUS::Direction direction) {
+void SohInputEditorWindow::DrawStickDirectionLineAddMappingButton(uint8_t port, uint8_t stick,
+                                                                  LUS::Direction direction) {
     ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f, 0.5f));
     auto popupId = StringHelper::Sprintf("addStickDirectionMappingPopup##%d-%d-%d", port, stick, direction);
     if (ImGui::Button(
@@ -459,8 +465,8 @@ void SohInputEditorWindow::DrawStickDirectionLineAddMappingButton(uint8_t port, 
     }
 }
 
-void SohInputEditorWindow::DrawStickDirectionLineEditMappingButton(uint8_t port, uint8_t stick, LUS::Direction direction,
-                                                                std::string id) {
+void SohInputEditorWindow::DrawStickDirectionLineEditMappingButton(uint8_t port, uint8_t stick,
+                                                                   LUS::Direction direction, std::string id) {
     std::shared_ptr<LUS::ControllerAxisDirectionMapping> mapping = nullptr;
     if (stick == LUS::LEFT) {
         mapping = LUS::Context::GetInstance()
@@ -495,13 +501,16 @@ void SohInputEditorWindow::DrawStickDirectionLineEditMappingButton(uint8_t port,
     }
     auto buttonColor = ImGui::GetStyleColorVec4(ImGuiCol_Button);
     auto buttonHoveredColor = ImGui::GetStyleColorVec4(ImGuiCol_ButtonHovered);
-    auto physicalInputDisplayName = StringHelper::Sprintf("%s %s", icon.c_str(), mapping->GetPhysicalInputName().c_str());
+    auto physicalInputDisplayName =
+        StringHelper::Sprintf("%s %s", icon.c_str(), mapping->GetPhysicalInputName().c_str());
     GetButtonColorsForLUSDeviceIndex(mapping->GetLUSDeviceIndex(), buttonColor, buttonHoveredColor);
     ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
     auto popupId = StringHelper::Sprintf("editStickDirectionMappingPopup##%s", id.c_str());
-    if (ImGui::Button(StringHelper::Sprintf("%s###editStickDirectionMappingButton%s", physicalInputDisplayName.c_str(), id.c_str())
-                          .c_str(), ImVec2(ImGui::CalcTextSize(physicalInputDisplayName.c_str()).x + 12.0f, 0.0f))) {
+    if (ImGui::Button(StringHelper::Sprintf("%s###editStickDirectionMappingButton%s", physicalInputDisplayName.c_str(),
+                                            id.c_str())
+                          .c_str(),
+                      ImVec2(ImGui::CalcTextSize(physicalInputDisplayName.c_str()).x + 12.0f, 0.0f))) {
         ImGui::OpenPopup(popupId.c_str());
     }
     if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal | ImGuiHoveredFlags_NoSharedDelay)) {
@@ -545,9 +554,10 @@ void SohInputEditorWindow::DrawStickDirectionLineEditMappingButton(uint8_t port,
     ImGui::SameLine(0, 0);
     ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
-    ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f,0.5f));
+    ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f, 0.5f));
     if (ImGui::Button(
-            StringHelper::Sprintf("%s###removeStickDirectionMappingButton%s", ICON_FA_TIMES, id.c_str()).c_str(), ImVec2(ImGui::CalcTextSize(ICON_FA_TIMES).x + 10.0f, 0.0f))) {
+            StringHelper::Sprintf("%s###removeStickDirectionMappingButton%s", ICON_FA_TIMES, id.c_str()).c_str(),
+            ImVec2(ImGui::CalcTextSize(ICON_FA_TIMES).x + 10.0f, 0.0f))) {
         if (stick == LUS::LEFT) {
             LUS::Context::GetInstance()
                 ->GetControlDeck()
@@ -569,7 +579,7 @@ void SohInputEditorWindow::DrawStickDirectionLineEditMappingButton(uint8_t port,
 }
 
 void SohInputEditorWindow::DrawStickDirectionLine(const char* axisDirectionName, uint8_t port, uint8_t stick,
-                                               LUS::Direction direction, ImVec4 color = CHIP_COLOR_N64_GREY) {
+                                                  LUS::Direction direction, ImVec4 color = CHIP_COLOR_N64_GREY) {
     ImGui::NewLine();
     ImGui::SameLine();
     ImGui::BeginDisabled();
@@ -584,7 +594,8 @@ void SohInputEditorWindow::DrawStickDirectionLine(const char* axisDirectionName,
     DrawStickDirectionLineAddMappingButton(port, stick, direction);
 }
 
-void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t id, ImVec4 color = CHIP_COLOR_N64_GREY) {
+void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t id,
+                                            ImVec4 color = CHIP_COLOR_N64_GREY) {
     static int8_t sX, sY;
     std::shared_ptr<LUS::ControllerStick> controllerStick = nullptr;
     if (stick == LUS::LEFT) {
@@ -617,13 +628,13 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
         if (deadzonePercentage == 0) {
             ImGui::EndDisabled();
         }
-        ImGui::SameLine(0.0f,0.0f);
+        ImGui::SameLine(0.0f, 0.0f);
         ImGui::SetNextItemWidth(160.0f);
         if (ImGui::SliderInt(StringHelper::Sprintf("##Deadzone%d", id).c_str(), &deadzonePercentage, 0, 100, "%d%%",
                              ImGuiSliderFlags_AlwaysClamp)) {
             controllerStick->SetDeadzone(deadzonePercentage);
         }
-        ImGui::SameLine(0.0f,0.0f);
+        ImGui::SameLine(0.0f, 0.0f);
         if (deadzonePercentage == 100) {
             ImGui::BeginDisabled();
         }
@@ -655,13 +666,13 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
         if (notchSnapAngle == 0) {
             ImGui::EndDisabled();
         }
-        ImGui::SameLine(0.0f,0.0f);
+        ImGui::SameLine(0.0f, 0.0f);
         ImGui::SetNextItemWidth(160.0f);
         if (ImGui::SliderInt(StringHelper::Sprintf("##NotchProximityThreshold%d", id).c_str(), &notchSnapAngle, 0, 45,
                              "%d°", ImGuiSliderFlags_AlwaysClamp)) {
             controllerStick->SetNotchSnapAngle(notchSnapAngle);
         }
-        ImGui::SameLine(0.0f,0.0f);
+        ImGui::SameLine(0.0f, 0.0f);
         if (notchSnapAngle == 45) {
             ImGui::BeginDisabled();
         }
@@ -706,7 +717,8 @@ void SohInputEditorWindow::UpdateStickDirectionToMappingIds(uint8_t port) {
          { std::make_pair<uint8_t, std::shared_ptr<LUS::ControllerStick>>(
                LUS::LEFT, LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(port)->GetLeftStick()),
            std::make_pair<uint8_t, std::shared_ptr<LUS::ControllerStick>>(
-               LUS::RIGHT, LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(port)->GetRightStick()) }) {
+               LUS::RIGHT,
+               LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(port)->GetRightStick()) }) {
         for (auto direction : { LUS::LEFT, LUS::RIGHT, LUS::UP, LUS::DOWN }) {
             for (auto [id, mapping] : stick.second->GetAllAxisDirectionMappingByDirection(direction)) {
                 // using a vector here instead of a set because i want newly added mappings
@@ -806,14 +818,14 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
             if (smallMotorIntensity == 0) {
                 ImGui::EndDisabled();
             }
-            ImGui::SameLine(0.0f,0.0f);
+            ImGui::SameLine(0.0f, 0.0f);
             ImGui::SetNextItemWidth(160.0f);
             if (ImGui::SliderInt(StringHelper::Sprintf("##Small Motor Intensity%s", id.c_str()).c_str(),
                                  &smallMotorIntensity, 0, 100, "%d%%", ImGuiSliderFlags_AlwaysClamp)) {
                 mapping->SetHighFrequencyIntensity(smallMotorIntensity);
                 mapping->SaveToConfig();
             }
-            ImGui::SameLine(0.0f,0.0f);
+            ImGui::SameLine(0.0f, 0.0f);
             if (smallMotorIntensity == 100) {
                 ImGui::BeginDisabled();
             }
@@ -849,14 +861,14 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
             if (largeMotorIntensity == 0) {
                 ImGui::EndDisabled();
             }
-            ImGui::SameLine(0.0f,0.0f);
+            ImGui::SameLine(0.0f, 0.0f);
             ImGui::SetNextItemWidth(160.0f);
             if (ImGui::SliderInt(StringHelper::Sprintf("##Large Motor Intensity%s", id.c_str()).c_str(),
                                  &largeMotorIntensity, 0, 100, "%d%%", ImGuiSliderFlags_AlwaysClamp)) {
                 mapping->SetLowFrequencyIntensity(largeMotorIntensity);
                 mapping->SaveToConfig();
             }
-            ImGui::SameLine(0.0f,0.0f);
+            ImGui::SameLine(0.0f, 0.0f);
             if (largeMotorIntensity == 100) {
                 ImGui::BeginDisabled();
             }
@@ -967,18 +979,23 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
             }
             // todo: clean this up, probably just hardcode to LED_COLOR_SOURCE_GAME and use SoH options only here
             if (mapping->GetColorSource() == LED_COLOR_SOURCE_GAME) {
-                static const char* ledSources[] = { "Original Tunic Colors",          "Cosmetics Tunic Colors",          "Health Colors",
-                                                    "Original Navi Targeting Colors", "Cosmetics Navi Targeting Colors", "Custom" };
+                static const char* ledSources[] = {
+                    "Original Tunic Colors",          "Cosmetics Tunic Colors",          "Health Colors",
+                    "Original Navi Targeting Colors", "Cosmetics Navi Targeting Colors", "Custom"
+                };
                 UIWidgets::PaddedText("Source");
                 UIWidgets::EnhancementCombobox("gLedColorSource", ledSources, LED_SOURCE_TUNIC_ORIGINAL);
-                DrawHelpIcon("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when health < 40%. Green otherwise.\n\n" \
-                            "Tunics: colors will mirror currently equipped tunic, whether original or the current values in Cosmetics Editor.\n\n" \
-                            "Custom: single, solid color");
+                DrawHelpIcon("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when "
+                             "health < 40%. Green otherwise.\n\n"
+                             "Tunics: colors will mirror currently equipped tunic, whether original or the current "
+                             "values in Cosmetics Editor.\n\n"
+                             "Custom: single, solid color");
                 if (CVarGetInteger("gLedColorSource", 1) == LED_SOURCE_CUSTOM) {
                     UIWidgets::Spacer(3);
                     auto port1Color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
                     ImVec4 colorVec = { port1Color.r / 255.0f, port1Color.g / 255.0f, port1Color.b / 255.0f, 1.0f };
-                    if (ImGui::ColorEdit3("", (float*)&colorVec, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
+                    if (ImGui::ColorEdit3("", (float*)&colorVec,
+                                          ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
                         Color_RGB8 color;
                         color.r = colorVec.x * 255.0;
                         color.g = colorVec.y * 255.0;
@@ -990,12 +1007,13 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
                     ImGui::SameLine();
                     ImGui::Text("Custom Color");
                 }
-                UIWidgets::PaddedEnhancementSliderFloat("Brightness: %d%%", "##LED_Brightness", "gLedBrightness",
-                                                        0.0f, 1.0f, "", 1.0f, true, true);
+                UIWidgets::PaddedEnhancementSliderFloat("Brightness: %d%%", "##LED_Brightness", "gLedBrightness", 0.0f,
+                                                        1.0f, "", 1.0f, true, true);
                 DrawHelpIcon("Sets the brightness of controller LEDs. 0% brightness = LEDs off.");
-                UIWidgets::PaddedEnhancementCheckbox("Critical Health Override", "gLedCriticalOverride", true, true, 
-                    CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH, "Override redundant for health source.",
-                    UIWidgets::CheckboxGraphics::Cross, true);
+                UIWidgets::PaddedEnhancementCheckbox(
+                    "Critical Health Override", "gLedCriticalOverride", true, true,
+                    CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH,
+                    "Override redundant for health source.", UIWidgets::CheckboxGraphics::Cross, true);
                 DrawHelpIcon("Shows red color when health is critical, otherwise displays according to color source.");
             }
             ImGui::TreePop();
@@ -1088,14 +1106,14 @@ void SohInputEditorWindow::DrawGyroSection(uint8_t port) {
         if (sensitivity == 0) {
             ImGui::EndDisabled();
         }
-        ImGui::SameLine(0.0f,0.0f);
+        ImGui::SameLine(0.0f, 0.0f);
         ImGui::SetNextItemWidth(160.0f);
         if (ImGui::SliderInt(StringHelper::Sprintf("##GyroSensitivity%s", id.c_str()).c_str(), &sensitivity, 0, 100,
                              "%d%%", ImGuiSliderFlags_AlwaysClamp)) {
             mapping->SetSensitivity(sensitivity);
             mapping->SaveToConfig();
         }
-        ImGui::SameLine(0.0f,0.0f);
+        ImGui::SameLine(0.0f, 0.0f);
         if (sensitivity == 100) {
             ImGui::BeginDisabled();
         }
@@ -1512,7 +1530,9 @@ void SohInputEditorWindow::DrawIvanTab() {
 }
 
 void SohInputEditorWindow::DrawDebugPortTab(uint8_t portIndex, std::string customName) {
-    if (ImGui::BeginTabItem(customName == "" ? StringHelper::Sprintf("Port %d###port%d", portIndex + 1, portIndex).c_str() : customName.c_str())) {
+    if (ImGui::BeginTabItem(customName == ""
+                                ? StringHelper::Sprintf("Port %d###port%d", portIndex + 1, portIndex).c_str()
+                                : customName.c_str())) {
         if (ImGui::Button("Clear All")) {
             ImGui::OpenPopup("Clear All##clearAllPopup");
         }
@@ -1592,8 +1612,10 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
 
     if (ImGui::BeginPopup(popupId.c_str())) {
         std::map<LUS::LUSDeviceIndex, std::pair<std::string, int32_t>> indexMappings;
-        for (auto [lusIndex, mapping] :
-             LUS::Context::GetInstance()->GetControlDeck()->GetDeviceIndexMappingManager()->GetAllDeviceIndexMappings()) {
+        for (auto [lusIndex, mapping] : LUS::Context::GetInstance()
+                                            ->GetControlDeck()
+                                            ->GetDeviceIndexMappingManager()
+                                            ->GetAllDeviceIndexMappings()) {
             auto wiiuIndexMapping = std::static_pointer_cast<LUS::LUSDeviceIndexToWiiUDeviceIndexMapping>(mapping);
             if (wiiuIndexMapping == nullptr) {
                 continue;
@@ -1631,8 +1653,10 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
                     ImGui::CloseCurrentPopup();
                 }
                 if (ImGui::Button("Set defaults")) {
-                    LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(portIndex)->ClearAllMappingsForDevice(
-                        lusIndex);
+                    LUS::Context::GetInstance()
+                        ->GetControlDeck()
+                        ->GetControllerByPort(portIndex)
+                        ->ClearAllMappingsForDevice(lusIndex);
                     LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(portIndex)->AddDefaultMappings(
                         lusIndex);
                     shouldClose = true;
@@ -1665,8 +1689,10 @@ void SohInputEditorWindow::DrawDevicesTab() {
             indexMappings[lusIndex] = { wiiuIndexMapping->GetWiiUControllerName(), -1 };
         }
 
-        for (auto [lusIndex, mapping] :
-             LUS::Context::GetInstance()->GetControlDeck()->GetDeviceIndexMappingManager()->GetAllDeviceIndexMappings()) {
+        for (auto [lusIndex, mapping] : LUS::Context::GetInstance()
+                                            ->GetControlDeck()
+                                            ->GetDeviceIndexMappingManager()
+                                            ->GetAllDeviceIndexMappings()) {
             auto wiiuIndexMapping = std::static_pointer_cast<LUS::LUSDeviceIndexToWiiUDeviceIndexMapping>(mapping);
             if (wiiuIndexMapping == nullptr) {
                 continue;
@@ -1712,8 +1738,10 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
 
     if (ImGui::BeginPopup(popupId.c_str())) {
         std::map<LUS::LUSDeviceIndex, std::pair<std::string, int32_t>> indexMappings;
-        for (auto [lusIndex, mapping] :
-             LUS::Context::GetInstance()->GetControlDeck()->GetDeviceIndexMappingManager()->GetAllDeviceIndexMappings()) {
+        for (auto [lusIndex, mapping] : LUS::Context::GetInstance()
+                                            ->GetControlDeck()
+                                            ->GetDeviceIndexMappingManager()
+                                            ->GetAllDeviceIndexMappings()) {
             auto sdlIndexMapping = std::static_pointer_cast<LUS::LUSDeviceIndexToSDLDeviceIndexMapping>(mapping);
             if (sdlIndexMapping == nullptr) {
                 continue;
@@ -1747,8 +1775,10 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
                     ImGui::CloseCurrentPopup();
                 }
                 if (ImGui::Button("Set defaults")) {
-                    LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(portIndex)->ClearAllMappingsForDevice(
-                        lusIndex);
+                    LUS::Context::GetInstance()
+                        ->GetControlDeck()
+                        ->GetControllerByPort(portIndex)
+                        ->ClearAllMappingsForDevice(lusIndex);
                     LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(portIndex)->AddDefaultMappings(
                         lusIndex);
                     shouldClose = true;
@@ -1781,8 +1811,10 @@ void SohInputEditorWindow::DrawDevicesTab() {
             indexMappings[lusIndex] = { sdlIndexMapping->GetSDLControllerName(), -1 };
         }
 
-        for (auto [lusIndex, mapping] :
-             LUS::Context::GetInstance()->GetControlDeck()->GetDeviceIndexMappingManager()->GetAllDeviceIndexMappings()) {
+        for (auto [lusIndex, mapping] : LUS::Context::GetInstance()
+                                            ->GetControlDeck()
+                                            ->GetDeviceIndexMappingManager()
+                                            ->GetAllDeviceIndexMappings()) {
             auto sdlIndexMapping = std::static_pointer_cast<LUS::LUSDeviceIndexToSDLDeviceIndexMapping>(mapping);
             if (sdlIndexMapping == nullptr) {
                 continue;

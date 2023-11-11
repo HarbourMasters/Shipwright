@@ -54,13 +54,15 @@ class SohInputEditorWindow : public LUS::GuiWindow {
     std::unordered_map<uint8_t, std::unordered_map<uint16_t, std::vector<std::string>>> mBitmaskToMappingIds;
 
     // mStickDirectionToMappingIds[port][stick][direction] = { id0, id1, ... }
-    std::unordered_map<uint8_t, std::unordered_map<uint8_t, std::unordered_map<LUS::Direction, std::vector<std::string>>>>
+    std::unordered_map<uint8_t,
+                       std::unordered_map<uint8_t, std::unordered_map<LUS::Direction, std::vector<std::string>>>>
         mStickDirectionToMappingIds;
 
     void UpdateBitmaskToMappingIds(uint8_t port);
     void UpdateStickDirectionToMappingIds(uint8_t port);
 
-    void GetButtonColorsForLUSDeviceIndex(LUS::LUSDeviceIndex lusIndex, ImVec4& buttonColor, ImVec4& buttonHoveredColor);
+    void GetButtonColorsForLUSDeviceIndex(LUS::LUSDeviceIndex lusIndex, ImVec4& buttonColor,
+                                          ImVec4& buttonHoveredColor);
     void DrawLinkTab();
     void DrawIvanTab();
     void DrawDebugPortTab(uint8_t portIndex, std::string customName = "");
