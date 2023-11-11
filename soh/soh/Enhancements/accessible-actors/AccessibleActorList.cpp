@@ -152,6 +152,10 @@ void accessible_torches(AccessibleActor* actor) {
                 return;
             }
             ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_BOMB_IGNIT, false);
+        } else {
+            if (actor->policy.volume != 1.0) {
+                actor->policy.volume = 1.0;
+            }
         }
         if (actor->frameCount % 30 != 0) {
             return;
