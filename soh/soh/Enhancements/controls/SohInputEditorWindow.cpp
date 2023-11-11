@@ -1562,6 +1562,23 @@ void SohInputEditorWindow::DrawDebugPortTab(uint8_t portIndex, std::string custo
     }
 }
 
+void SohInputEditorWindow::DrawClearAllButton(uint8_t portIndex) {
+    if (ImGui::Button("Clear All", ImGui::CalcTextSize("Clear All") * 2)) {
+        ImGui::OpenPopup("Clear All##clearAllPopup");
+    }
+    if (ImGui::BeginPopupModal("Clear All##clearAllPopup", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+        ImGui::Text("This will clear all mappings for port %d.\n\nContinue?", portIndex + 1);
+        if (ImGui::Button("Cancel")) {
+            ImGui::CloseCurrentPopup();
+        }
+        if (ImGui::Button("Clear All")) {
+            LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(portIndex)->ClearAllMappings();
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+}
+
 #ifdef __WIIU__
 void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
     ImGui::SameLine();
@@ -1753,23 +1770,6 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
             ImGui::CloseCurrentPopup();
         }
 
-        ImGui::EndPopup();
-    }
-}
-
-void SohInputEditorWindow::DrawClearAllButton(uint8_t portIndex) {
-    if (ImGui::Button("Clear All", ImGui::CalcTextSize("Clear All") * 2)) {
-        ImGui::OpenPopup("Clear All##clearAllPopup");
-    }
-    if (ImGui::BeginPopupModal("Clear All##clearAllPopup", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-        ImGui::Text("This will clear all mappings for port %d.\n\nContinue?", portIndex + 1);
-        if (ImGui::Button("Cancel")) {
-            ImGui::CloseCurrentPopup();
-        }
-        if (ImGui::Button("Clear All")) {
-            LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(portIndex)->ClearAllMappings();
-            ImGui::CloseCurrentPopup();
-        }
         ImGui::EndPopup();
     }
 }
