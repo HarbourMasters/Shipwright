@@ -300,25 +300,77 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
 
             if (sdlAxisDirectionToButtonMapping->AxisIsStick()) {
                 ImGui::Text("Stick axis threshold:");
-                ImGui::SetNextItemWidth(160.0f);
 
                 int32_t stickAxisThreshold = sdlIndexMapping->GetStickAxisThresholdPercentage();
+                if (stickAxisThreshold == 0) {
+                    ImGui::BeginDisabled();
+                }
+                ImGui::PushButtonRepeat(true);
+                if (ImGui::Button("-")) {
+                    sdlIndexMapping->SetStickAxisThresholdPercentage(stickAxisThreshold - 1);
+                    sdlIndexMapping->SaveToConfig();
+                }
+                ImGui::PopButtonRepeat();
+                if (stickAxisThreshold == 0) {
+                    ImGui::EndDisabled();
+                }
+                ImGui::SameLine(0.0f,0.0f);
+                ImGui::SetNextItemWidth(160.0f);
                 if (ImGui::SliderInt(StringHelper::Sprintf("##Stick Axis Threshold%s", id.c_str()).c_str(),
                                      &stickAxisThreshold, 0, 100, "%d%%", ImGuiSliderFlags_AlwaysClamp)) {
                     sdlIndexMapping->SetStickAxisThresholdPercentage(stickAxisThreshold);
                     sdlIndexMapping->SaveToConfig();
                 }
+                ImGui::SameLine(0.0f,0.0f);
+                if (stickAxisThreshold == 100) {
+                    ImGui::BeginDisabled();
+                }
+                ImGui::PushButtonRepeat(true);
+                if (ImGui::Button("+")) {
+                    sdlIndexMapping->SetStickAxisThresholdPercentage(stickAxisThreshold + 1);
+                    sdlIndexMapping->SaveToConfig();
+                }
+                ImGui::PopButtonRepeat();
+                if (stickAxisThreshold == 100) {
+                    ImGui::EndDisabled();
+                }
             }
 
             if (sdlAxisDirectionToButtonMapping->AxisIsTrigger()) {
                 ImGui::Text("Trigger axis threshold:");
-                ImGui::SetNextItemWidth(160.0f);
 
                 int32_t triggerAxisThreshold = sdlIndexMapping->GetTriggerAxisThresholdPercentage();
+                if (triggerAxisThreshold == 0) {
+                    ImGui::BeginDisabled();
+                }
+                ImGui::PushButtonRepeat(true);
+                if (ImGui::Button("-")) {
+                    sdlIndexMapping->SetTriggerAxisThresholdPercentage(triggerAxisThreshold - 1);
+                    sdlIndexMapping->SaveToConfig();
+                }
+                ImGui::PopButtonRepeat();
+                if (triggerAxisThreshold == 0) {
+                    ImGui::EndDisabled();
+                }
+                ImGui::SameLine(0.0f,0.0f);
+                ImGui::SetNextItemWidth(160.0f);
                 if (ImGui::SliderInt(StringHelper::Sprintf("##Trigger Axis Threshold%s", id.c_str()).c_str(),
                                      &triggerAxisThreshold, 0, 100, "%d%%", ImGuiSliderFlags_AlwaysClamp)) {
                     sdlIndexMapping->SetTriggerAxisThresholdPercentage(triggerAxisThreshold);
                     sdlIndexMapping->SaveToConfig();
+                }
+                ImGui::SameLine(0.0f,0.0f);
+                if (triggerAxisThreshold == 100) {
+                    ImGui::BeginDisabled();
+                }
+                ImGui::PushButtonRepeat(true);
+                if (ImGui::Button("+")) {
+                    sdlIndexMapping->SetTriggerAxisThresholdPercentage(triggerAxisThreshold + 1);
+                    sdlIndexMapping->SaveToConfig();
+                }
+                ImGui::PopButtonRepeat();
+                if (triggerAxisThreshold == 100) {
+                    ImGui::EndDisabled();
                 }
             }
 
@@ -547,12 +599,36 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
     ImGui::EndGroup();
     if (ImGui::TreeNode(StringHelper::Sprintf("Analog Stick Options##%d", id).c_str())) {
         ImGui::Text("Deadzone:");
-        ImGui::SetNextItemWidth(160.0f);
 
         int32_t deadzonePercentage = controllerStick->GetDeadzonePercentage();
+        if (deadzonePercentage == 0) {
+            ImGui::BeginDisabled();
+        }
+        ImGui::PushButtonRepeat(true);
+        if (ImGui::Button("-")) {
+            controllerStick->SetDeadzone(deadzonePercentage - 1);
+        }
+        ImGui::PopButtonRepeat();
+        if (deadzonePercentage == 0) {
+            ImGui::EndDisabled();
+        }
+        ImGui::SameLine(0.0f,0.0f);
+        ImGui::SetNextItemWidth(160.0f);
         if (ImGui::SliderInt(StringHelper::Sprintf("##Deadzone%d", id).c_str(), &deadzonePercentage, 0, 100, "%d%%",
                              ImGuiSliderFlags_AlwaysClamp)) {
             controllerStick->SetDeadzone(deadzonePercentage);
+        }
+        ImGui::SameLine(0.0f,0.0f);
+        if (deadzonePercentage == 100) {
+            ImGui::BeginDisabled();
+        }
+        ImGui::PushButtonRepeat(true);
+        if (ImGui::Button("+")) {
+            controllerStick->SetDeadzone(deadzonePercentage + 1);
+        }
+        ImGui::PopButtonRepeat();
+        if (deadzonePercentage == 100) {
+            ImGui::EndDisabled();
         }
         if (!controllerStick->DeadzoneIsDefault()) {
             ImGui::SameLine();
@@ -711,13 +787,39 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
         DrawRemoveRumbleMappingButton(port, id);
         if (open) {
             ImGui::Text("Small Motor Intensity:");
-            ImGui::SetNextItemWidth(160.0f);
 
             int32_t smallMotorIntensity = mapping->GetHighFrequencyIntensityPercentage();
+            if (smallMotorIntensity == 0) {
+                ImGui::BeginDisabled();
+            }
+            ImGui::PushButtonRepeat(true);
+            if (ImGui::Button("-")) {
+                mapping->SetHighFrequencyIntensity(smallMotorIntensity - 1);
+                mapping->SaveToConfig();
+            }
+            ImGui::PopButtonRepeat();
+            if (smallMotorIntensity == 0) {
+                ImGui::EndDisabled();
+            }
+            ImGui::SameLine(0.0f,0.0f);
+            ImGui::SetNextItemWidth(160.0f);
             if (ImGui::SliderInt(StringHelper::Sprintf("##Small Motor Intensity%s", id.c_str()).c_str(),
                                  &smallMotorIntensity, 0, 100, "%d%%", ImGuiSliderFlags_AlwaysClamp)) {
                 mapping->SetHighFrequencyIntensity(smallMotorIntensity);
                 mapping->SaveToConfig();
+            }
+            ImGui::SameLine(0.0f,0.0f);
+            if (smallMotorIntensity == 100) {
+                ImGui::BeginDisabled();
+            }
+            ImGui::PushButtonRepeat(true);
+            if (ImGui::Button("+")) {
+                mapping->SetHighFrequencyIntensity(smallMotorIntensity + 1);
+                mapping->SaveToConfig();
+            }
+            ImGui::PopButtonRepeat();
+            if (smallMotorIntensity == 100) {
+                ImGui::EndDisabled();
             }
             if (!mapping->HighFrequencyIntensityIsDefault()) {
                 ImGui::SameLine();
@@ -728,13 +830,39 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
             }
 
             ImGui::Text("Large Motor Intensity:");
-            ImGui::SetNextItemWidth(160.0f);
 
             int32_t largeMotorIntensity = mapping->GetLowFrequencyIntensityPercentage();
+            if (largeMotorIntensity == 0) {
+                ImGui::BeginDisabled();
+            }
+            ImGui::PushButtonRepeat(true);
+            if (ImGui::Button("-")) {
+                mapping->SetLowFrequencyIntensity(largeMotorIntensity - 1);
+                mapping->SaveToConfig();
+            }
+            ImGui::PopButtonRepeat();
+            if (largeMotorIntensity == 0) {
+                ImGui::EndDisabled();
+            }
+            ImGui::SameLine(0.0f,0.0f);
+            ImGui::SetNextItemWidth(160.0f);
             if (ImGui::SliderInt(StringHelper::Sprintf("##Large Motor Intensity%s", id.c_str()).c_str(),
                                  &largeMotorIntensity, 0, 100, "%d%%", ImGuiSliderFlags_AlwaysClamp)) {
                 mapping->SetLowFrequencyIntensity(largeMotorIntensity);
                 mapping->SaveToConfig();
+            }
+            ImGui::SameLine(0.0f,0.0f);
+            if (largeMotorIntensity == 100) {
+                ImGui::BeginDisabled();
+            }
+            ImGui::PushButtonRepeat(true);
+            if (ImGui::Button("+")) {
+                mapping->SetLowFrequencyIntensity(largeMotorIntensity + 1);
+                mapping->SaveToConfig();
+            }
+            ImGui::PopButtonRepeat();
+            if (largeMotorIntensity == 100) {
+                ImGui::EndDisabled();
             }
             if (!mapping->LowFrequencyIntensityIsDefault()) {
                 ImGui::SameLine();
@@ -941,13 +1069,41 @@ void SohInputEditorWindow::DrawGyroSection(uint8_t port) {
 
         ImGui::BeginGroup();
         ImGui::Text("Sensitivity:");
-        ImGui::SetNextItemWidth(160.0f);
+
         int32_t sensitivity = mapping->GetSensitivityPercent();
+        if (sensitivity == 0) {
+            ImGui::BeginDisabled();
+        }
+        ImGui::PushButtonRepeat(true);
+        if (ImGui::Button("-")) {
+            mapping->SetSensitivity(sensitivity - 1);
+            mapping->SaveToConfig();
+        }
+        ImGui::PopButtonRepeat();
+        if (sensitivity == 0) {
+            ImGui::EndDisabled();
+        }
+        ImGui::SameLine(0.0f,0.0f);
+        ImGui::SetNextItemWidth(160.0f);
         if (ImGui::SliderInt(StringHelper::Sprintf("##GyroSensitivity%s", id.c_str()).c_str(), &sensitivity, 0, 100,
                              "%d%%", ImGuiSliderFlags_AlwaysClamp)) {
             mapping->SetSensitivity(sensitivity);
             mapping->SaveToConfig();
         }
+        ImGui::SameLine(0.0f,0.0f);
+        if (sensitivity == 100) {
+            ImGui::BeginDisabled();
+        }
+        ImGui::PushButtonRepeat(true);
+        if (ImGui::Button("+")) {
+            mapping->SetSensitivity(sensitivity + 1);
+            mapping->SaveToConfig();
+        }
+        ImGui::PopButtonRepeat();
+        if (sensitivity == 100) {
+            ImGui::EndDisabled();
+        }
+
         if (!mapping->SensitivityIsDefault()) {
             ImGui::SameLine();
             if (ImGui::Button(StringHelper::Sprintf("Reset to Default###resetGyroSensitivity%s", id.c_str()).c_str())) {
