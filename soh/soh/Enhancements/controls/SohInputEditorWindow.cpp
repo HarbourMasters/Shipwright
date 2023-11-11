@@ -7,7 +7,7 @@
 #include "controller/controldevice/controller/mapping/sdl/SDLAxisDirectionToButtonMapping.h"
 #endif
 
-#define SCALE_IMGUI_SIZE(value) ((value/13.0f) * ImGui::GetFontSize())
+#define SCALE_IMGUI_SIZE(value) ((value / 13.0f) * ImGui::GetFontSize())
 
 SohInputEditorWindow::~SohInputEditorWindow() {
     SPDLOG_TRACE("destruct input editor window");
@@ -61,7 +61,8 @@ void SohInputEditorWindow::UpdateElement() {
 
 void SohInputEditorWindow::DrawAnalogPreview(const char* label, ImVec2 stick, float deadzone, bool gyro) {
     ImGui::BeginChild(label, ImVec2(gyro ? SCALE_IMGUI_SIZE(78) : SCALE_IMGUI_SIZE(96), SCALE_IMGUI_SIZE(85)), false);
-    ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + gyro ? SCALE_IMGUI_SIZE(10) : SCALE_IMGUI_SIZE(18), ImGui::GetCursorPos().y + gyro ? SCALE_IMGUI_SIZE(10) : 0));
+    ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + gyro ? SCALE_IMGUI_SIZE(10) : SCALE_IMGUI_SIZE(18),
+                               ImGui::GetCursorPos().y + gyro ? SCALE_IMGUI_SIZE(10) : 0));
     ImDrawList* drawList = ImGui::GetWindowDrawList();
 
     const ImVec2 cursorScreenPosition = ImGui::GetCursorScreenPos();
@@ -78,8 +79,8 @@ void SohInputEditorWindow::DrawAnalogPreview(const char* label, ImVec2 stick, fl
     float cardinalRadius = SCALE_IMGUI_SIZE(22.5f);
     float diagonalRadius = SCALE_IMGUI_SIZE(22.5f * (69.0f / 85.0f));
 
-    ImVec2 joystickCenterpoint =
-        ImVec2(cursorScreenPosition.x + cardinalRadius + SCALE_IMGUI_SIZE(12), cursorScreenPosition.y + cardinalRadius + SCALE_IMGUI_SIZE(11));
+    ImVec2 joystickCenterpoint = ImVec2(cursorScreenPosition.x + cardinalRadius + SCALE_IMGUI_SIZE(12),
+                                        cursorScreenPosition.y + cardinalRadius + SCALE_IMGUI_SIZE(11));
     drawList->AddQuadFilled(joystickCenterpoint,
                             ImVec2(joystickCenterpoint.x - diagonalRadius, joystickCenterpoint.y + diagonalRadius),
                             ImVec2(joystickCenterpoint.x, joystickCenterpoint.y + cardinalRadius),
@@ -113,7 +114,8 @@ void SohInputEditorWindow::DrawAnalogPreview(const char* label, ImVec2 stick, fl
                               indicatorRadius, ImColor(34, 51, 76, 255), 7);
 
     if (!gyro) {
-        ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x - SCALE_IMGUI_SIZE(8), ImGui::GetCursorPos().y + SCALE_IMGUI_SIZE(72)));
+        ImGui::SetCursorPos(
+            ImVec2(ImGui::GetCursorPos().x - SCALE_IMGUI_SIZE(8), ImGui::GetCursorPos().y + SCALE_IMGUI_SIZE(72)));
         ImGui::Text("X:%3d, Y:%3d", static_cast<int32_t>(stick.x), static_cast<int32_t>(stick.y));
     }
     ImGui::EndChild();
@@ -509,10 +511,11 @@ void SohInputEditorWindow::DrawStickDirectionLineEditMappingButton(uint8_t port,
     ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
     auto popupId = StringHelper::Sprintf("editStickDirectionMappingPopup##%s", id.c_str());
-    if (ImGui::Button(StringHelper::Sprintf("%s###editStickDirectionMappingButton%s", physicalInputDisplayName.c_str(),
-                                            id.c_str())
-                          .c_str(),
-                      ImVec2(ImGui::CalcTextSize(physicalInputDisplayName.c_str()).x + SCALE_IMGUI_SIZE(12.0f), 0.0f))) {
+    if (ImGui::Button(
+            StringHelper::Sprintf("%s###editStickDirectionMappingButton%s", physicalInputDisplayName.c_str(),
+                                  id.c_str())
+                .c_str(),
+            ImVec2(ImGui::CalcTextSize(physicalInputDisplayName.c_str()).x + SCALE_IMGUI_SIZE(12.0f), 0.0f))) {
         ImGui::OpenPopup(popupId.c_str());
     }
     if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal | ImGuiHoveredFlags_NoSharedDelay)) {
@@ -1091,7 +1094,8 @@ void SohInputEditorWindow::DrawGyroSection(uint8_t port) {
         DrawAnalogPreview(StringHelper::Sprintf("###GyroPreview%s", id.c_str()).c_str(),
                           ImVec2(sYaw * (85.0f / 21.0f), sPitch * (85.0f / 21.0f)), 0.0f, true);
         ImGui::SameLine();
-        ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + SCALE_IMGUI_SIZE(8), ImGui::GetCursorPos().y + SCALE_IMGUI_SIZE(8)));
+        ImGui::SetCursorPos(
+            ImVec2(ImGui::GetCursorPos().x + SCALE_IMGUI_SIZE(8), ImGui::GetCursorPos().y + SCALE_IMGUI_SIZE(8)));
 
         ImGui::BeginGroup();
         ImGui::Text("Sensitivity:");
