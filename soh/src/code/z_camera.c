@@ -1679,7 +1679,9 @@ s32 Camera_Normal1(Camera* camera) {
 
     if (anim->startSwingTimer <= 0) {
         // idle camera re-center
-        if (CVarGetInteger("gA11yDisableIdleCam", 0)) return;
+        if (CVarGetInteger("gA11yDisableIdleCam", 0)) {
+            return 1;
+        }
         eyeAdjustment.pitch = atEyeNextGeo.pitch;
         eyeAdjustment.yaw =
             Camera_LERPCeilS(anim->swingYawTarget, atEyeNextGeo.yaw, 1.0f / camera->yawUpdateRateInv, 0xA);

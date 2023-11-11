@@ -541,7 +541,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
     if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         target_compile_options(${PROJECT_NAME} PRIVATE
             -Wall -Wextra -Wno-error
-            -Wno-return-type
             -Wno-unused-parameter
             -Wno-unused-function
             -Wno-unused-variable
@@ -567,7 +566,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
     elseif (CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
         target_compile_options(${PROJECT_NAME} PRIVATE
             -Wall -Wextra -Wno-error
-            -Wno-return-type
             -Wno-unused-parameter
             -Wno-unused-function
             -Wno-unused-variable
@@ -596,7 +594,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
 
             # disable some warnings to not clutter output
             -Wno-multichar
-            -Wno-return-type
             -Wno-narrowing
             -Wno-switch-outside-range
             $<$<COMPILE_LANGUAGE:C>:
@@ -624,6 +621,8 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             -Wno-parentheses
             -Wno-narrowing
             -Wno-missing-braces
+            -Wno-int-conversion
+            -Wno-implicit-int
             $<$<COMPILE_LANGUAGE:C>:
                 -Werror-implicit-function-declaration
                 -Wno-incompatible-pointer-types

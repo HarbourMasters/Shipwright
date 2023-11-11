@@ -6304,7 +6304,9 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
     if(gSaveContext.pendingIceTrapCount) {
         gSaveContext.pendingIceTrapCount--;
         GameInteractor_ExecuteOnItemReceiveHooks(ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ICE_TRAP));
-        if (CVarGetInteger("gAddTraps.enabled", 0)) return;
+        if (CVarGetInteger("gAddTraps.enabled", 0)) {
+            return 1;
+        }
         this->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD);
         this->actor.colChkInfo.damage = 0;
         func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
