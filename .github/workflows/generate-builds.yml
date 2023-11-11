@@ -123,11 +123,25 @@ jobs:
       matrix:
         include:
         - os: ubuntu-20.04
-          gcc: 10
+          compiler: gcc
+          compiler-version: 10
+          cc: gcc
+          cxx: g++
+          upload-build: true
           archive-suffix: compatibility
         - os: ubuntu-22.04
-          gcc: 12
+          compiler: gcc
+          compiler-version: 12
+          cc: gcc
+          cxx: g++
+          upload-build: true
           archive-suffix: performance
+        - os: ubuntu-22.04
+          compiler: clang
+          compiler-version: 16
+          cc: clang
+          cxx: clang++
+          upload-build: false
     runs-on: ${{ (matrix.os == 'ubuntu-20.04' && ((vars.LINUX_COMPATIBILITY_RUNNER && fromJSON(vars.LINUX_COMPATIBILITY_RUNNER)) || matrix.os)) || (matrix.os == 'ubuntu-22.04' && ((vars.LINUX_PERFORMANCE_RUNNER && fromJSON(vars.LINUX_PERFORMANCE_RUNNER)) || matrix.os)) }}
     steps:
     - uses: actions/checkout@v3
@@ -138,6 +152,14 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
+    - name: Install clang
+      if: ${{ matrix.compiler == 'clang' && !vars.LINUX_PERFORMANCE_RUNNER }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
+        wget https://apt.llvm.org/llvm.sh
+        chmod u+x llvm.sh
+        sudo ./llvm.sh ${{ matrix.compiler-version }}
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -178,72 +200,16 @@ jobs:
         mv README.md readme.txt
         mv build-cmake/*.appimage soh.appimage
       env:
-        CC: gcc-${{ matrix.gcc }}
-        CXX: g++-${{ matrix.gcc }}
+        CC: ${{ matrix.cc }}-${{ matrix.compiler-version }}
+        CXX: ${{ matrix.cxx }}-${{ matrix.compiler-version }}
     - name: Upload build
+      if: ${{ matrix.upload-build }}
       uses: actions/upload-artifact@v3
       with:
         name: soh-linux-${{ matrix.archive-suffix }}
         path: |
           soh.appimage
           readme.txt
-  build-linux-clang:
-    needs: generate-soh-otr
-    runs-on: ${{ (vars.LINUX_PERFORMANCE_RUNNER && fromJSON(vars.LINUX_PERFORMANCE_RUNNER)) || 'ubuntu-22.04' }}
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - name: Install dependencies
-      if: ${{ !vars.LINUX_PERFORMANCE_RUNNER }}
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
-        wget https://apt.llvm.org/llvm.sh
-        chmod u+x llvm.sh
-        sudo ./llvm.sh 16
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      with:
-        key: ${{ matrix.os }}-ccache
-    - name: Install latest SDL
-      if: ${{ !vars.LINUX_PERFORMANCE_RUNNER }}
-      run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        wget https://www.libsdl.org/release/SDL2-2.26.1.tar.gz
-        tar -xzf SDL2-2.26.1.tar.gz
-        cd SDL2-2.26.1
-        ./configure
-        make -j 10
-        sudo make install
-        sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Install latest SDL_net
-      if: ${{ !vars.LINUX_PERFORMANCE_RUNNER }}
-      run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
-        tar -xzf SDL2_net-2.2.0.tar.gz
-        cd SDL2_net-2.2.0
-        ./configure
-        make -j 10
-        sudo make install
-        sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Download soh.otr
-      uses: actions/download-artifact@v3
-      with:
-        name: soh.otr
-    - name: Build SoH
-      run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
-        cmake --build build-cmake --config Release -j3
-        (cd build-cmake && cpack -G External)
-
-        mv README.md readme.txt
-        mv build-cmake/*.appimage soh.appimage
-      env:
-        CC: clang-16
-        CXX: clang++-16
   build-switch:
     needs: generate-soh-otr
     runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
