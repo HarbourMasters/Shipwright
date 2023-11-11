@@ -495,13 +495,13 @@ void SohInputEditorWindow::DrawStickDirectionLineEditMappingButton(uint8_t port,
     }
     auto buttonColor = ImGui::GetStyleColorVec4(ImGuiCol_Button);
     auto buttonHoveredColor = ImGui::GetStyleColorVec4(ImGuiCol_ButtonHovered);
+    auto physicalInputDisplayName = StringHelper::Sprintf("%s %s", icon.c_str(), mapping->GetPhysicalInputName().c_str());
     GetButtonColorsForLUSDeviceIndex(mapping->GetLUSDeviceIndex(), buttonColor, buttonHoveredColor);
     ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
     auto popupId = StringHelper::Sprintf("editStickDirectionMappingPopup##%s", id.c_str());
-    if (ImGui::Button(StringHelper::Sprintf("%s %s ###editStickDirectionMappingButton%s", icon.c_str(),
-                                            mapping->GetPhysicalInputName().c_str(), id.c_str())
-                          .c_str())) {
+    if (ImGui::Button(StringHelper::Sprintf("%s###editStickDirectionMappingButton%s", physicalInputDisplayName.c_str(), id.c_str())
+                          .c_str(), ImVec2(ImGui::CalcTextSize(physicalInputDisplayName.c_str()).x + 12.0f, 0.0f))) {
         ImGui::OpenPopup(popupId.c_str());
     }
     if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal | ImGuiHoveredFlags_NoSharedDelay)) {
@@ -545,8 +545,9 @@ void SohInputEditorWindow::DrawStickDirectionLineEditMappingButton(uint8_t port,
     ImGui::SameLine(0, 0);
     ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
+    ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f,0.5f));
     if (ImGui::Button(
-            StringHelper::Sprintf("%s###removeStickDirectionMappingButton%s", ICON_FA_TIMES, id.c_str()).c_str())) {
+            StringHelper::Sprintf("%s###removeStickDirectionMappingButton%s", ICON_FA_TIMES, id.c_str()).c_str(), ImVec2(ImGui::CalcTextSize(ICON_FA_TIMES).x + 10.0f, 0.0f))) {
         if (stick == LUS::LEFT) {
             LUS::Context::GetInstance()
                 ->GetControlDeck()
@@ -563,6 +564,7 @@ void SohInputEditorWindow::DrawStickDirectionLineEditMappingButton(uint8_t port,
     };
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
+    ImGui::PopStyleVar();
     ImGui::SameLine(0, 4.0f);
 }
 
