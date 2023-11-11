@@ -232,13 +232,13 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
     }
     auto buttonColor = ImGui::GetStyleColorVec4(ImGuiCol_Button);
     auto buttonHoveredColor = ImGui::GetStyleColorVec4(ImGuiCol_ButtonHovered);
+    auto physicalInputDisplayName = StringHelper::Sprintf("%s %s", icon.c_str(), mapping->GetPhysicalInputName().c_str());
     GetButtonColorsForLUSDeviceIndex(mapping->GetLUSDeviceIndex(), buttonColor, buttonHoveredColor);
     ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
     auto popupId = StringHelper::Sprintf("editButtonMappingPopup##%s", id.c_str());
-    if (ImGui::Button(StringHelper::Sprintf("%s %s ###editButtonMappingButton%s", icon.c_str(),
-                                            mapping->GetPhysicalInputName().c_str(), id.c_str())
-                          .c_str())) {
+    if (ImGui::Button(StringHelper::Sprintf("%s###editButtonMappingButton%s", physicalInputDisplayName.c_str(), id.c_str())
+                          .c_str(), ImVec2(ImGui::CalcTextSize(physicalInputDisplayName.c_str()).x + 12.0f, 0.0f))) {
         ImGui::OpenPopup(popupId.c_str());
     }
     if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal | ImGuiHoveredFlags_NoSharedDelay)) {
@@ -283,9 +283,9 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
         GetButtonColorsForLUSDeviceIndex(mapping->GetLUSDeviceIndex(), buttonColor, buttonHoveredColor);
         ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
+        ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f,0.5f));
         auto popupId = StringHelper::Sprintf("editAxisThresholdPopup##%s", id.c_str());
-
-        if (ImGui::Button(StringHelper::Sprintf("%s###editAxisThresholdButton%s", ICON_FA_COG, id.c_str()).c_str())) {
+        if (ImGui::Button(StringHelper::Sprintf("%s###editAxisThresholdButton%s", ICON_FA_COG, id.c_str()).c_str(), ImVec2(ImGui::CalcTextSize(ICON_FA_COG).x + 10.0f, 0.0f))) {
             ImGui::OpenPopup(popupId.c_str());
         }
         if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal | ImGuiHoveredFlags_NoSharedDelay)) {
@@ -293,6 +293,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
         }
         ImGui::PopStyleColor();
         ImGui::PopStyleColor();
+        ImGui::PopStyleVar();
 
         if (ImGui::BeginPopup(popupId.c_str())) {
             mInputEditorPopupOpen = true;
@@ -389,7 +390,8 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
 
     ImGui::PushStyleColor(ImGuiCol_Button, buttonColor);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
-    if (ImGui::Button(StringHelper::Sprintf("%s###removeButtonMappingButton%s", ICON_FA_TIMES, id.c_str()).c_str())) {
+    ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f,0.5f));
+    if (ImGui::Button(StringHelper::Sprintf("%s###removeButtonMappingButton%s", ICON_FA_TIMES, id.c_str()).c_str(), ImVec2(ImGui::CalcTextSize(ICON_FA_TIMES).x + 10.0f, 0.0f))) {
         LUS::Context::GetInstance()
             ->GetControlDeck()
             ->GetControllerByPort(port)
@@ -398,6 +400,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
     };
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
+    ImGui::PopStyleVar();
 
     ImGui::SameLine(0, 4.0f);
 }
