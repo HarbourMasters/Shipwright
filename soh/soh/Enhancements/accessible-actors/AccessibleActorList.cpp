@@ -389,45 +389,44 @@ void accessible_en_guard(AccessibleActor* actor) {
     f32 guardsfx = NA_SE_IT_SWORD_IMPACT;
     if (fabs(actor->actor->world.pos.x - player->actor.world.pos.x) >
         fabs(actor->actor->world.pos.z - player->actor.world.pos.z)) {
-    if (actor->actor->world.rot.y == 16384) {
-        if (actor->actor->world.pos.x < player->actor.world.pos.x) {
-            ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+    if (fabs(actor->actor->shape.rot.y - 16384) <1000) {        if (actor->actor->world.pos.x < player->actor.world.pos.x) {
+            ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx, false);
             ActorAccessibility_SetSoundPitch(actor, 0, 2.0);
         } else {
-            ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+            ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx, false);
             ActorAccessibility_SetSoundPitch(actor, 0, 0.2); 
         }
-    } else if (actor->actor->world.rot.y == -16384) {
+    } else if ((actor->actor->shape.rot.y + 16384)<1000) {
         if (actor->actor->world.pos.x < player->actor.world.pos.x) {
-            ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+            ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx, false);
             ActorAccessibility_SetSoundPitch(actor, 0, 0.2);
         } else {
-            ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+            ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx, false);
             ActorAccessibility_SetSoundPitch(actor, 0, 2.0);
         }
     } else {
-        ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+        ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx, false);
         ActorAccessibility_SetSoundPitch(actor, 0, 1.0);
     }
     } else {
-        if (actor->actor->world.rot.y == 0) {
+        if (fabs(actor->actor->shape.rot.y) < 1000) {
              if (actor->actor->world.pos.z < player->actor.world.pos.z) {
-                ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+                ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx, false);
                 ActorAccessibility_SetSoundPitch(actor, 0, 2.0);
             } else {
-                ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
-                ActorAccessibility_SetSoundPitch(actor, 0, 0.1);
+                ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx, false);
+                ActorAccessibility_SetSoundPitch(actor, 0, 0.2);
             }
-        } else if (actor->actor->world.rot.y == -32768) {
+        } else if (fabs(actor->actor->shape.rot.y+32768)<1000) {
             if (actor->actor->world.pos.z < player->actor.world.pos.z) {
-                ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
-                ActorAccessibility_SetSoundPitch(actor, 0, 0.1);
+                ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx, false);
+                ActorAccessibility_SetSoundPitch(actor, 0, 0.2);
             } else {
-                ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+                ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx, false);
                 ActorAccessibility_SetSoundPitch(actor, 0, 2.0);
             }
         } else {
-            ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx /*change*/, false);
+            ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx, false);
             ActorAccessibility_SetSoundPitch(actor, 0, 1.0);
         }
     }
@@ -565,9 +564,15 @@ void accessible_audio_compass(AccessibleActor* actor) {
     ActorAccessibility_AddSupportedActor(ACTOR_EN_MA1, policy);
     policy.englishName = "Talon";
     ActorAccessibility_AddSupportedActor(ACTOR_EN_TA, policy);
+    policy.englishName = "Child Zelda";
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_ZL4, policy);
 
     ActorAccessibility_InitPolicy(&policy, "Guards", accessible_en_guard, 0);
+    policy.n = 10;
+    policy.distance = 500;
+    policy.ydist = 300;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_HEISHI1, policy);
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_HEISHI3, policy);
 
     ActorAccessibility_InitPolicy(&policy, "Shopkeepers", NULL, NA_SE_VO_NA_HELLO_1);
     policy.pitch = 0.6;
@@ -838,6 +843,26 @@ void accessible_audio_compass(AccessibleActor* actor) {
     list = ActorAccessibility_GetVirtualActorList(0, 9); // deku tree b2 lobby
     //ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -639, -1912.5, 188.0 } });
         //Install cues for walls, ledges etc.
+
+    list = ActorAccessibility_GetVirtualActorList(69, 0);
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { 1734.0, 0.0, 140.514 } });
+    AccessibleActor* temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { 1734.0, 0.0, 140.514 } });
+    temp->policy.pitch = 0.5;
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { 1040.0, 0.0, 140.514 } });
+    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { 1734.0, 0.0, 140.514 } });
+    temp->policy.pitch = 0.7;
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { 230.0, 0.0, 188.514 } });
+    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { 1734.0, 0.0, 140.514 } });
+    temp->policy.pitch = 0.9;
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { -426.0, 0.0, 130.514 } });
+    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { 1734.0, 0.0, 140.514 } });
+    temp->policy.pitch = 1.1;
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { -1206.0, 0.0, 133.514 } });
+    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { 1734.0, 0.0, 140.514 } });
+    temp->policy.pitch = 1.3;
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { -1571.0, 0.0, -834.514 } });
+    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { 1734.0, 0.0, 140.514 } });
+    temp->policy.pitch = 1.3;
     ActorAccessibility_InitCues();
 
 }
