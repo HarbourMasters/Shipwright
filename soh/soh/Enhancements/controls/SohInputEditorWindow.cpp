@@ -1330,7 +1330,7 @@ void SohInputEditorWindow::DrawLEDDeviceIcons(uint8_t portIndex) {
 
 void SohInputEditorWindow::DrawLinkTab() {
     uint8_t portIndex = 0;
-    if (ImGui::BeginTabItem(StringHelper::Sprintf("Link###port%d", portIndex).c_str())) {
+    if (ImGui::BeginTabItem(StringHelper::Sprintf("Link (P1)###port%d", portIndex).c_str())) {
         if (ImGui::Button("Clear All")) {
             ImGui::OpenPopup("Clear All##clearAllPopup");
         }
@@ -1435,8 +1435,13 @@ void SohInputEditorWindow::DrawLinkTab() {
 }
 
 void SohInputEditorWindow::DrawIvanTab() {
+    if (CVarGetInteger("gDebugEnabled", 0)) {
+        DrawDebugPortTab(1, "Ivan (P2)");
+        return;
+    }
+
     uint8_t portIndex = 1;
-    if (ImGui::BeginTabItem(StringHelper::Sprintf("Ivan###port%d", portIndex).c_str())) {
+    if (ImGui::BeginTabItem(StringHelper::Sprintf("Ivan (P2)###port%d", portIndex).c_str())) {
         if (ImGui::Button("Clear All")) {
             ImGui::OpenPopup("Clear All##clearAllPopup");
         }
@@ -1501,8 +1506,8 @@ void SohInputEditorWindow::DrawIvanTab() {
     }
 }
 
-void SohInputEditorWindow::DrawDebugPortTab(uint8_t portIndex) {
-    if (ImGui::BeginTabItem(StringHelper::Sprintf("Debug (%d)###port%d", portIndex + 1, portIndex).c_str())) {
+void SohInputEditorWindow::DrawDebugPortTab(uint8_t portIndex, std::string customName) {
+    if (ImGui::BeginTabItem(customName == "" ? StringHelper::Sprintf("Port %d###port%d", portIndex + 1, portIndex).c_str() : customName.c_str())) {
         if (ImGui::Button("Clear All")) {
             ImGui::OpenPopup("Clear All##clearAllPopup");
         }
@@ -1808,8 +1813,10 @@ void SohInputEditorWindow::DrawElement() {
     ImGui::BeginTabBar("##ControllerConfigPortTabs");
     DrawLinkTab();
     DrawIvanTab();
-    DrawDebugPortTab(2);
-    DrawDebugPortTab(3);
+    if (CVarGetInteger("gDebugEnabled", 0)) {
+        DrawDebugPortTab(2);
+        DrawDebugPortTab(3);
+    }
     DrawDevicesTab();
     ImGui::EndTabBar();
     ImGui::End();
