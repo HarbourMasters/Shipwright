@@ -7,6 +7,8 @@
 #include "controller/controldevice/controller/mapping/sdl/SDLAxisDirectionToButtonMapping.h"
 #endif
 
+#define SCALE_IMGUI_SIZE(value) ((value/13.0f) * ImGui::GetFontSize())
+
 SohInputEditorWindow::~SohInputEditorWindow() {
     SPDLOG_TRACE("destruct input editor window");
 }
@@ -58,26 +60,26 @@ void SohInputEditorWindow::UpdateElement() {
 }
 
 void SohInputEditorWindow::DrawAnalogPreview(const char* label, ImVec2 stick, float deadzone, bool gyro) {
-    ImGui::BeginChild(label, ImVec2(gyro ? 78 : 96, 85), false);
-    ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + gyro ? 10 : 18, ImGui::GetCursorPos().y + gyro ? 10 : 0));
+    ImGui::BeginChild(label, ImVec2(gyro ? SCALE_IMGUI_SIZE(78) : SCALE_IMGUI_SIZE(96), SCALE_IMGUI_SIZE(85)), false);
+    ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + gyro ? SCALE_IMGUI_SIZE(10) : SCALE_IMGUI_SIZE(18), ImGui::GetCursorPos().y + gyro ? SCALE_IMGUI_SIZE(10) : 0));
     ImDrawList* drawList = ImGui::GetWindowDrawList();
 
     const ImVec2 cursorScreenPosition = ImGui::GetCursorScreenPos();
 
     // Draw the border box
-    float borderSquareLeft = cursorScreenPosition.x + 2.0f;
-    float borderSquareTop = cursorScreenPosition.y + 2.0f;
-    float borderSquareSize = 65.0f;
+    float borderSquareLeft = cursorScreenPosition.x + SCALE_IMGUI_SIZE(2.0f);
+    float borderSquareTop = cursorScreenPosition.y + SCALE_IMGUI_SIZE(2.0f);
+    float borderSquareSize = SCALE_IMGUI_SIZE(65.0f);
     drawList->AddRect(ImVec2(borderSquareLeft, borderSquareTop),
                       ImVec2(borderSquareLeft + borderSquareSize, borderSquareTop + borderSquareSize),
                       ImColor(100, 100, 100, 255), 0.0f, 0, 1.5f);
 
     // Draw the gate background
-    float cardinalRadius = 22.5f;
-    float diagonalRadius = cardinalRadius * (69.0f / 85.0f);
+    float cardinalRadius = SCALE_IMGUI_SIZE(22.5f);
+    float diagonalRadius = SCALE_IMGUI_SIZE(22.5f * (69.0f / 85.0f));
 
     ImVec2 joystickCenterpoint =
-        ImVec2(cursorScreenPosition.x + cardinalRadius + 12, cursorScreenPosition.y + cardinalRadius + 11);
+        ImVec2(cursorScreenPosition.x + cardinalRadius + SCALE_IMGUI_SIZE(12), cursorScreenPosition.y + cardinalRadius + SCALE_IMGUI_SIZE(11));
     drawList->AddQuadFilled(joystickCenterpoint,
                             ImVec2(joystickCenterpoint.x - diagonalRadius, joystickCenterpoint.y + diagonalRadius),
                             ImVec2(joystickCenterpoint.x, joystickCenterpoint.y + cardinalRadius),
@@ -105,13 +107,13 @@ void SohInputEditorWindow::DrawAnalogPreview(const char* label, ImVec2 stick, fl
         joystickIndicatorDistanceFromCenter =
             ImVec2((stick.x * (cardinalRadius / 85.0f)), -(stick.y * (cardinalRadius / 85.0f)));
     }
-    float indicatorRadius = 5.0f;
+    float indicatorRadius = SCALE_IMGUI_SIZE(5.0f);
     drawList->AddCircleFilled(ImVec2(joystickCenterpoint.x + joystickIndicatorDistanceFromCenter.x,
                                      joystickCenterpoint.y + joystickIndicatorDistanceFromCenter.y),
                               indicatorRadius, ImColor(34, 51, 76, 255), 7);
 
     if (!gyro) {
-        ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x - 8, ImGui::GetCursorPos().y + 72));
+        ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x - SCALE_IMGUI_SIZE(8), ImGui::GetCursorPos().y + SCALE_IMGUI_SIZE(72)));
         ImGui::Text("X:%3d, Y:%3d", static_cast<int32_t>(stick.x), static_cast<int32_t>(stick.y));
     }
     ImGui::EndChild();
@@ -173,7 +175,7 @@ void SohInputEditorWindow::GetButtonColorsForLUSDeviceIndex(LUS::LUSDeviceIndex 
 void SohInputEditorWindow::DrawInputChip(const char* buttonName, ImVec4 color = CHIP_COLOR_N64_GREY) {
     ImGui::BeginDisabled();
     ImGui::PushStyleColor(ImGuiCol_Button, color);
-    ImGui::Button(buttonName, ImVec2(50.0f, 0));
+    ImGui::Button(buttonName, ImVec2(SCALE_IMGUI_SIZE(50.0f), 0));
     ImGui::PopStyleColor();
     ImGui::EndDisabled();
 }
@@ -182,7 +184,7 @@ void SohInputEditorWindow::DrawButtonLineAddMappingButton(uint8_t port, uint16_t
     ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f, 0.5f));
     auto popupId = StringHelper::Sprintf("addButtonMappingPopup##%d-%d", port, bitmask);
     if (ImGui::Button(StringHelper::Sprintf("%s###addButtonMappingButton%d-%d", ICON_FA_PLUS, port, bitmask).c_str(),
-                      ImVec2(20.0f, 0.0f))) {
+                      ImVec2(SCALE_IMGUI_SIZE(20.0f), 0.0f))) {
         ImGui::OpenPopup(popupId.c_str());
     };
     ImGui::PopStyleVar();
@@ -241,7 +243,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
     if (ImGui::Button(
             StringHelper::Sprintf("%s###editButtonMappingButton%s", physicalInputDisplayName.c_str(), id.c_str())
                 .c_str(),
-            ImVec2(ImGui::CalcTextSize(physicalInputDisplayName.c_str()).x + 12.0f, 0.0f))) {
+            ImVec2(ImGui::CalcTextSize(physicalInputDisplayName.c_str()).x + SCALE_IMGUI_SIZE(12.0f), 0.0f))) {
         ImGui::OpenPopup(popupId.c_str());
     }
     if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal | ImGuiHoveredFlags_NoSharedDelay)) {
@@ -289,7 +291,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f, 0.5f));
         auto popupId = StringHelper::Sprintf("editAxisThresholdPopup##%s", id.c_str());
         if (ImGui::Button(StringHelper::Sprintf("%s###editAxisThresholdButton%s", ICON_FA_COG, id.c_str()).c_str(),
-                          ImVec2(ImGui::CalcTextSize(ICON_FA_COG).x + 10.0f, 0.0f))) {
+                          ImVec2(ImGui::CalcTextSize(ICON_FA_COG).x + SCALE_IMGUI_SIZE(10.0f), 0.0f))) {
             ImGui::OpenPopup(popupId.c_str());
         }
         if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal | ImGuiHoveredFlags_NoSharedDelay)) {
@@ -320,7 +322,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
                     ImGui::EndDisabled();
                 }
                 ImGui::SameLine(0.0f, 0.0f);
-                ImGui::SetNextItemWidth(160.0f);
+                ImGui::SetNextItemWidth(SCALE_IMGUI_SIZE(160.0f));
                 if (ImGui::SliderInt(StringHelper::Sprintf("##Stick Axis Threshold%s", id.c_str()).c_str(),
                                      &stickAxisThreshold, 0, 100, "%d%%", ImGuiSliderFlags_AlwaysClamp)) {
                     sdlIndexMapping->SetStickAxisThresholdPercentage(stickAxisThreshold);
@@ -358,7 +360,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
                     ImGui::EndDisabled();
                 }
                 ImGui::SameLine(0.0f, 0.0f);
-                ImGui::SetNextItemWidth(160.0f);
+                ImGui::SetNextItemWidth(SCALE_IMGUI_SIZE(160.0f));
                 if (ImGui::SliderInt(StringHelper::Sprintf("##Trigger Axis Threshold%s", id.c_str()).c_str(),
                                      &triggerAxisThreshold, 0, 100, "%d%%", ImGuiSliderFlags_AlwaysClamp)) {
                     sdlIndexMapping->SetTriggerAxisThresholdPercentage(triggerAxisThreshold);
@@ -396,7 +398,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonHoveredColor);
     ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f, 0.5f));
     if (ImGui::Button(StringHelper::Sprintf("%s###removeButtonMappingButton%s", ICON_FA_TIMES, id.c_str()).c_str(),
-                      ImVec2(ImGui::CalcTextSize(ICON_FA_TIMES).x + 10.0f, 0.0f))) {
+                      ImVec2(ImGui::CalcTextSize(ICON_FA_TIMES).x + SCALE_IMGUI_SIZE(10.0f), 0.0f))) {
         LUS::Context::GetInstance()
             ->GetControlDeck()
             ->GetControllerByPort(port)
@@ -407,15 +409,15 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
     ImGui::PopStyleColor();
     ImGui::PopStyleVar();
 
-    ImGui::SameLine(0, 4.0f);
+    ImGui::SameLine(0, SCALE_IMGUI_SIZE(4.0f));
 }
 
 void SohInputEditorWindow::DrawButtonLine(const char* buttonName, uint8_t port, uint16_t bitmask,
                                           ImVec4 color = CHIP_COLOR_N64_GREY) {
     ImGui::NewLine();
-    ImGui::SameLine(32.0f);
+    ImGui::SameLine(SCALE_IMGUI_SIZE(32.0f));
     DrawInputChip(buttonName, color);
-    ImGui::SameLine(86.0f);
+    ImGui::SameLine(SCALE_IMGUI_SIZE(86.0f));
     for (auto id : mBitmaskToMappingIds[port][bitmask]) {
         DrawButtonLineEditMappingButton(port, bitmask, id);
     }
@@ -429,7 +431,7 @@ void SohInputEditorWindow::DrawStickDirectionLineAddMappingButton(uint8_t port, 
     if (ImGui::Button(
             StringHelper::Sprintf("%s###addStickDirectionMappingButton%d-%d-%d", ICON_FA_PLUS, port, stick, direction)
                 .c_str(),
-            ImVec2(20.0f, 0.0f))) {
+            ImVec2(SCALE_IMGUI_SIZE(20.0f), 0.0f))) {
         ImGui::OpenPopup(popupId.c_str());
     };
     ImGui::PopStyleVar();
@@ -510,7 +512,7 @@ void SohInputEditorWindow::DrawStickDirectionLineEditMappingButton(uint8_t port,
     if (ImGui::Button(StringHelper::Sprintf("%s###editStickDirectionMappingButton%s", physicalInputDisplayName.c_str(),
                                             id.c_str())
                           .c_str(),
-                      ImVec2(ImGui::CalcTextSize(physicalInputDisplayName.c_str()).x + 12.0f, 0.0f))) {
+                      ImVec2(ImGui::CalcTextSize(physicalInputDisplayName.c_str()).x + SCALE_IMGUI_SIZE(12.0f), 0.0f))) {
         ImGui::OpenPopup(popupId.c_str());
     }
     if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal | ImGuiHoveredFlags_NoSharedDelay)) {
@@ -557,7 +559,7 @@ void SohInputEditorWindow::DrawStickDirectionLineEditMappingButton(uint8_t port,
     ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f, 0.5f));
     if (ImGui::Button(
             StringHelper::Sprintf("%s###removeStickDirectionMappingButton%s", ICON_FA_TIMES, id.c_str()).c_str(),
-            ImVec2(ImGui::CalcTextSize(ICON_FA_TIMES).x + 10.0f, 0.0f))) {
+            ImVec2(ImGui::CalcTextSize(ICON_FA_TIMES).x + SCALE_IMGUI_SIZE(10.0f), 0.0f))) {
         if (stick == LUS::LEFT) {
             LUS::Context::GetInstance()
                 ->GetControlDeck()
@@ -575,7 +577,7 @@ void SohInputEditorWindow::DrawStickDirectionLineEditMappingButton(uint8_t port,
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
     ImGui::PopStyleVar();
-    ImGui::SameLine(0, 4.0f);
+    ImGui::SameLine(0, SCALE_IMGUI_SIZE(4.0f));
 }
 
 void SohInputEditorWindow::DrawStickDirectionLine(const char* axisDirectionName, uint8_t port, uint8_t stick,
@@ -584,10 +586,10 @@ void SohInputEditorWindow::DrawStickDirectionLine(const char* axisDirectionName,
     ImGui::SameLine();
     ImGui::BeginDisabled();
     ImGui::PushStyleColor(ImGuiCol_Button, color);
-    ImGui::Button(axisDirectionName, ImVec2(26.0f, 0));
+    ImGui::Button(axisDirectionName, ImVec2(SCALE_IMGUI_SIZE(26.0f), 0));
     ImGui::PopStyleColor();
     ImGui::EndDisabled();
-    ImGui::SameLine(38.0f);
+    ImGui::SameLine(SCALE_IMGUI_SIZE(38.0f));
     for (auto id : mStickDirectionToMappingIds[port][stick][direction]) {
         DrawStickDirectionLineEditMappingButton(port, stick, direction, id);
     }
@@ -630,7 +632,7 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
             ImGui::EndDisabled();
         }
         ImGui::SameLine(0.0f, 0.0f);
-        ImGui::SetNextItemWidth(160.0f);
+        ImGui::SetNextItemWidth(SCALE_IMGUI_SIZE(160.0f));
         if (ImGui::SliderInt(StringHelper::Sprintf("##Deadzone%d", id).c_str(), &deadzonePercentage, 0, 100, "%d%%",
                              ImGuiSliderFlags_AlwaysClamp)) {
             controllerStick->SetDeadzone(deadzonePercentage);
@@ -668,7 +670,7 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
             ImGui::EndDisabled();
         }
         ImGui::SameLine(0.0f, 0.0f);
-        ImGui::SetNextItemWidth(160.0f);
+        ImGui::SetNextItemWidth(SCALE_IMGUI_SIZE(160.0f));
         if (ImGui::SliderInt(StringHelper::Sprintf("##NotchProximityThreshold%d", id).c_str(), &notchSnapAngle, 0, 45,
                              "%d°", ImGuiSliderFlags_AlwaysClamp)) {
             controllerStick->SetNotchSnapAngle(notchSnapAngle);
@@ -738,7 +740,7 @@ void SohInputEditorWindow::DrawRemoveRumbleMappingButton(uint8_t port, std::stri
     ImGui::SameLine();
     ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f, 0.5f));
     if (ImGui::Button(StringHelper::Sprintf("%s###removeRumbleMapping%s", ICON_FA_TIMES, id.c_str()).c_str(),
-                      ImVec2(20.0f, 20.0f))) {
+                      ImVec2(SCALE_IMGUI_SIZE(20.0f), SCALE_IMGUI_SIZE(20.0f)))) {
         LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(port)->GetRumble()->ClearRumbleMapping(id);
     }
     ImGui::PopStyleVar();
@@ -749,7 +751,7 @@ void SohInputEditorWindow::DrawAddRumbleMappingButton(uint8_t port) {
     ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f, 0.5f));
     auto popupId = StringHelper::Sprintf("addRumbleMappingPopup##%d", port);
     if (ImGui::Button(StringHelper::Sprintf("%s###addRumbleMapping%d", ICON_FA_PLUS, port).c_str(),
-                      ImVec2(20.0f, 20.0f))) {
+                      ImVec2(SCALE_IMGUI_SIZE(20.0f), SCALE_IMGUI_SIZE(20.0f)))) {
         ImGui::OpenPopup(popupId.c_str());
     }
     ImGui::PopStyleVar();
@@ -793,7 +795,7 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
         }
         auto open = ImGui::TreeNode(StringHelper::Sprintf("%s###Rumble%s", spaces.c_str(), id.c_str()).c_str());
         ImGui::SameLine();
-        ImGui::SetCursorPosX(30.0f);
+        ImGui::SetCursorPosX(SCALE_IMGUI_SIZE(30.0f));
         // end hackaround
 
         ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
@@ -820,7 +822,7 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
                 ImGui::EndDisabled();
             }
             ImGui::SameLine(0.0f, 0.0f);
-            ImGui::SetNextItemWidth(160.0f);
+            ImGui::SetNextItemWidth(SCALE_IMGUI_SIZE(160.0f));
             if (ImGui::SliderInt(StringHelper::Sprintf("##Small Motor Intensity%s", id.c_str()).c_str(),
                                  &smallMotorIntensity, 0, 100, "%d%%", ImGuiSliderFlags_AlwaysClamp)) {
                 mapping->SetHighFrequencyIntensity(smallMotorIntensity);
@@ -863,7 +865,7 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
                 ImGui::EndDisabled();
             }
             ImGui::SameLine(0.0f, 0.0f);
-            ImGui::SetNextItemWidth(160.0f);
+            ImGui::SetNextItemWidth(SCALE_IMGUI_SIZE(160.0f));
             if (ImGui::SliderInt(StringHelper::Sprintf("##Large Motor Intensity%s", id.c_str()).c_str(),
                                  &largeMotorIntensity, 0, 100, "%d%%", ImGuiSliderFlags_AlwaysClamp)) {
                 mapping->SetLowFrequencyIntensity(largeMotorIntensity);
@@ -889,7 +891,7 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
                     mapping->ResetLowFrequencyIntensityToDefault();
                 }
             }
-            ImGui::Dummy(ImVec2(0, 20));
+            ImGui::Dummy(ImVec2(0, SCALE_IMGUI_SIZE(20)));
 
             ImGui::TreePop();
         }
@@ -904,7 +906,7 @@ void SohInputEditorWindow::DrawRemoveLEDMappingButton(uint8_t port, std::string 
     ImGui::SameLine();
     ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f, 0.5f));
     if (ImGui::Button(StringHelper::Sprintf("%s###removeLEDMapping%s", ICON_FA_TIMES, id.c_str()).c_str(),
-                      ImVec2(20.0f, 20.0f))) {
+                      ImVec2(SCALE_IMGUI_SIZE(20.0f), SCALE_IMGUI_SIZE(20.0f)))) {
         LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(port)->GetLED()->ClearLEDMapping(id);
     }
     ImGui::PopStyleVar();
@@ -915,7 +917,7 @@ void SohInputEditorWindow::DrawAddLEDMappingButton(uint8_t port) {
     ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f, 0.5f));
     auto popupId = StringHelper::Sprintf("addLEDMappingPopup##%d", port);
     if (ImGui::Button(StringHelper::Sprintf("%s###addLEDMapping%d", ICON_FA_PLUS, port).c_str(),
-                      ImVec2(20.0f, 20.0f))) {
+                      ImVec2(SCALE_IMGUI_SIZE(20.0f), SCALE_IMGUI_SIZE(20.0f)))) {
         ImGui::OpenPopup(popupId.c_str());
     }
     ImGui::PopStyleVar();
@@ -942,8 +944,8 @@ void SohInputEditorWindow::DrawAddLEDMappingButton(uint8_t port) {
 
 void SohInputEditorWindow::DrawHelpIcon(const std::string& helptext) {
     // place the ? button to the most of the right side of the cell it is using.
-    ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 22);
-    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 15);
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() - SCALE_IMGUI_SIZE(22));
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - SCALE_IMGUI_SIZE(15));
     ImGui::SmallButton("?");
     UIWidgets::Tooltip(helptext.c_str());
 }
@@ -960,7 +962,7 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
             ImGui::AlignTextToFramePadding();
             ImGui::Text("LED Color:");
             ImGui::SameLine();
-            ImGui::SetNextItemWidth(80.0f);
+            ImGui::SetNextItemWidth(SCALE_IMGUI_SIZE(80.0f));
             int32_t colorSource = mapping->GetColorSource();
             if (ImGui::Combo(StringHelper::Sprintf("###ledColorSource%s", mapping->GetLEDMappingId().c_str()).c_str(),
                              &colorSource, "Off\0Set\0Game\0\0")) {
@@ -1030,7 +1032,7 @@ void SohInputEditorWindow::DrawRemoveGyroMappingButton(uint8_t port, std::string
     ImGui::SameLine();
     ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f, 0.5f));
     if (ImGui::Button(StringHelper::Sprintf("%s###removeGyroMapping%s", ICON_FA_TIMES, id.c_str()).c_str(),
-                      ImVec2(20.0f, 20.0f))) {
+                      ImVec2(SCALE_IMGUI_SIZE(20.0f), SCALE_IMGUI_SIZE(20.0f)))) {
         LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(port)->GetGyro()->ClearGyroMapping();
     }
     ImGui::PopStyleVar();
@@ -1041,7 +1043,7 @@ void SohInputEditorWindow::DrawAddGyroMappingButton(uint8_t port) {
     ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f, 0.5f));
     auto popupId = StringHelper::Sprintf("addGyroMappingPopup##%d", port);
     if (ImGui::Button(StringHelper::Sprintf("%s###addGyroMapping%d", ICON_FA_PLUS, port).c_str(),
-                      ImVec2(20.0f, 20.0f))) {
+                      ImVec2(SCALE_IMGUI_SIZE(20.0f), SCALE_IMGUI_SIZE(20.0f)))) {
         ImGui::OpenPopup(popupId.c_str());
     }
     ImGui::PopStyleVar();
@@ -1079,7 +1081,7 @@ void SohInputEditorWindow::DrawGyroSection(uint8_t port) {
         static float sPitch, sYaw = 0.0f;
         mapping->UpdatePad(sPitch, sYaw);
 
-        ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x, ImGui::GetCursorPos().y - 8));
+        ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x, ImGui::GetCursorPos().y - SCALE_IMGUI_SIZE(8)));
         // to find a reasonable scaling factor gyro values
         // I tried to find the maximum value reported by shaking
         // a PS5 controller as hard as I could without worrying about breaking it
@@ -1089,7 +1091,7 @@ void SohInputEditorWindow::DrawGyroSection(uint8_t port) {
         DrawAnalogPreview(StringHelper::Sprintf("###GyroPreview%s", id.c_str()).c_str(),
                           ImVec2(sYaw * (85.0f / 21.0f), sPitch * (85.0f / 21.0f)), 0.0f, true);
         ImGui::SameLine();
-        ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + 8, ImGui::GetCursorPos().y + 8));
+        ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + SCALE_IMGUI_SIZE(8), ImGui::GetCursorPos().y + SCALE_IMGUI_SIZE(8)));
 
         ImGui::BeginGroup();
         ImGui::Text("Sensitivity:");
@@ -1108,7 +1110,7 @@ void SohInputEditorWindow::DrawGyroSection(uint8_t port) {
             ImGui::EndDisabled();
         }
         ImGui::SameLine(0.0f, 0.0f);
-        ImGui::SetNextItemWidth(160.0f);
+        ImGui::SetNextItemWidth(SCALE_IMGUI_SIZE(160.0f));
         if (ImGui::SliderInt(StringHelper::Sprintf("##GyroSensitivity%s", id.c_str()).c_str(), &sensitivity, 0, 100,
                              "%d%%", ImGuiSliderFlags_AlwaysClamp)) {
             mapping->SetSensitivity(sensitivity);
@@ -1135,13 +1137,13 @@ void SohInputEditorWindow::DrawGyroSection(uint8_t port) {
             }
         }
 
-        ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x, ImGui::GetCursorPos().y + 8));
+        ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x, ImGui::GetCursorPos().y + SCALE_IMGUI_SIZE(8)));
         if (ImGui::Button("Recalibrate")) {
             mapping->Recalibrate();
             mapping->SaveToConfig();
         }
         ImGui::EndGroup();
-        ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x, ImGui::GetCursorPos().y - 8));
+        ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x, ImGui::GetCursorPos().y - SCALE_IMGUI_SIZE(8)));
     } else {
         ImGui::AlignTextToFramePadding();
         ImGui::BulletText("Add gyro device");
