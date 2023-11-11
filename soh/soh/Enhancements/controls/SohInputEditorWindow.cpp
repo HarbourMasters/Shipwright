@@ -1804,7 +1804,7 @@ void SohInputEditorWindow::DrawDevicesTab() {
 #endif
 
 void SohInputEditorWindow::DrawElement() {
-    ImGui::Begin("Controller Configuration", &mIsVisible);
+    ImGui::Begin("Controller Configuration###sohControllerConfigWindowV1", &mIsVisible);
     ImGui::BeginTabBar("##ControllerConfigPortTabs");
     DrawLinkTab();
     DrawIvanTab();
