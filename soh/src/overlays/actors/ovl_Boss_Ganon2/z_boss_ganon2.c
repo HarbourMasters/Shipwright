@@ -153,6 +153,8 @@ void func_808FD27C(PlayState* play, Vec3f* position, Vec3f* velocity, f32 scale)
     }
 }
 
+static u8 hasFoundMasterSword;
+
 void BossGanon2_Init(Actor* thisx, PlayState* play) {
     BossGanon2* this = (BossGanon2*)thisx;
     s32 pad;
@@ -175,6 +177,11 @@ void BossGanon2_Init(Actor* thisx, PlayState* play) {
     func_808FD5C4(this, play);
     this->actor.naviEnemyId = 0x3E;
     this->actor.gravity = 0.0f;
+
+    hasFoundMasterSword = 1;
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
+        hasFoundMasterSword = 0;
+    }
 }
 
 void BossGanon2_Destroy(Actor* thisx, PlayState* play) {
@@ -234,7 +241,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
                 sBossGanon2Zelda->actor.shape.rot.y = -0x7000;
 
                 // In rando, skip past the cutscene to the part where the player takes control again.
-                if (!gSaveContext.n64ddFlag && !gSaveContext.isBossRush) {
+                if (!IS_RANDO && !IS_BOSS_RUSH) {
                     this->csState = 1;
                     this->csTimer = 0;
                 } else {
@@ -2819,8 +2826,7 @@ void BossGanon2_Draw(Actor* thisx, PlayState* play) {
             BossGanon2_SetObjectSegment(this, play, OBJECT_GANON, true);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gGanondorfEmptyEyeTex));
             gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gGanondorfEmptyEyeTex));
-            SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                                  this->skelAnime.dListCount, NULL, BossGanon2_PostLimbDraw2, this);
+            SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, BossGanon2_PostLimbDraw2, this);
             break;
         case 1:
         case 2:
@@ -2837,9 +2843,7 @@ void BossGanon2_Draw(Actor* thisx, PlayState* play) {
             Matrix_Translate(0.0f, 4000.0f, -4000.0f, MTXMODE_APPLY);
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                                  this->skelAnime.dListCount, BossGanon2_OverrideLimbDraw, BossGanon2_PostLimbDraw,
-                                  this);
+            SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, BossGanon2_OverrideLimbDraw, BossGanon2_PostLimbDraw, this);
             POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
             BossGanon2_GenShadowTexture(shadowTexture, this, play);
             BossGanon2_DrawShadowTexture(shadowTexture, this, play);
@@ -2898,6 +2902,11 @@ void func_80905DA8(BossGanon2* this, PlayState* play) {
             effect->velocity.y += effect->accel.y;
             effect->velocity.z += effect->accel.z;
             if (effect->type == 1) {
+                // Prevent invisible master sword from making spark effect/sound when landing in the ground
+                // and prevent the player from picking it up if the player has not found the master sword
+                if (IS_RANDO && !hasFoundMasterSword) {
+                    continue;
+                }
                 if (effect->unk_2E == 0) {
                     effect->unk_38.z += 1.0f;
                     effect->unk_38.y = (2.0f * M_PI) / 5.0f;
@@ -2958,6 +2967,11 @@ void func_809060E8(PlayState* play) {
 
     for (i = 0; i < 1; i++) {
         if (effect->type == 1) {
+            // Do not draw the master sword in the ground if the player has not found it yet
+            if (IS_RANDO && !hasFoundMasterSword) {
+                continue;
+            }
+
             FrameInterpolation_RecordOpenChild("Ganon 809060E8 0", i);
 
             Vec3f spA0;

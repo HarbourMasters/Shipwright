@@ -337,8 +337,7 @@ void func_8097D29C(DemoGo* this, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(mouthTexture));
 
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL,
-                          this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, NULL, NULL, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

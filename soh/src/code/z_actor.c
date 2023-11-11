@@ -668,6 +668,7 @@ void Flags_SetSwitch(PlayState* play, s32 flag) {
     } else {
         play->actorCtx.flags.tempSwch |= (1 << (flag - 0x20));
     }
+    GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_SWITCH, flag);
 }
 
 /**
@@ -680,6 +681,7 @@ void Flags_UnsetSwitch(PlayState* play, s32 flag) {
     } else {
         play->actorCtx.flags.tempSwch &= ~(1 << (flag - 0x20));
     }
+    GameInteractor_ExecuteOnSceneFlagUnset(play->sceneNum, FLAG_SCENE_SWITCH, flag);
 }
 
 /**
@@ -728,6 +730,7 @@ s32 Flags_GetTreasure(PlayState* play, s32 flag) {
 void Flags_SetTreasure(PlayState* play, s32 flag) {
     lusprintf(__FILE__, __LINE__, 2, "Treasure Flag Set - %#x", flag);
     play->actorCtx.flags.chest |= (1 << flag);
+    GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_TREASURE, flag);
 }
 
 /**
@@ -742,6 +745,7 @@ s32 Flags_GetClear(PlayState* play, s32 flag) {
  */
 void Flags_SetClear(PlayState* play, s32 flag) {
     play->actorCtx.flags.clear |= (1 << flag);
+    GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_CLEAR, flag);
 }
 
 /**
@@ -749,6 +753,7 @@ void Flags_SetClear(PlayState* play, s32 flag) {
  */
 void Flags_UnsetClear(PlayState* play, s32 flag) {
     play->actorCtx.flags.clear &= ~(1 << flag);
+    GameInteractor_ExecuteOnSceneFlagUnset(play->sceneNum, FLAG_SCENE_CLEAR, flag);
 }
 
 /**
@@ -795,6 +800,7 @@ void Flags_SetCollectible(PlayState* play, s32 flag) {
             play->actorCtx.flags.tempCollect |= (1 << (flag - 0x20));
         }
     }
+    GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_COLLECTIBLE, flag);
 }
 
 void func_8002CDE4(PlayState* play, TitleCardContext* titleCtx) {
@@ -1983,7 +1989,7 @@ s32 GiveItemEntryWithoutActor(PlayState* play, GetItemEntry getItemEntry) {
 
     if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
         if (((player->heldActor != NULL) && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX)) || 
-            (gSaveContext.n64ddFlag && (getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))) ||
+            (IS_RANDO && (getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))) ||
             (!(player->stateFlags1 & 0x20000800))) {
             if ((getItemEntry.getItemId != GI_NONE)) {
                 player->getItemEntry = getItemEntry;
@@ -2019,8 +2025,8 @@ s32 GiveItemEntryFromActor(Actor* actor, PlayState* play, GetItemEntry getItemEn
 
     if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
         if ((((player->heldActor != NULL) || (actor == player->targetActor)) && 
-            ((!gSaveContext.n64ddFlag && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX))) || 
-                (gSaveContext.n64ddFlag && ((getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))))) ||
+            ((!IS_RANDO && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX))) || 
+                (IS_RANDO && ((getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))))) ||
                     (!(player->stateFlags1 & 0x20000800))) {
             if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
                 s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
@@ -2061,7 +2067,7 @@ s32 func_8002F434(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32
 
     if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
         if ((((player->heldActor != NULL) || (actor == player->targetActor)) && 
-            ((!gSaveContext.n64ddFlag && ((getItemId > GI_NONE) && (getItemId < GI_MAX))) || (gSaveContext.n64ddFlag && ((getItemId > RG_NONE) && (getItemId < RG_MAX))))) ||
+            ((!IS_RANDO && ((getItemId > GI_NONE) && (getItemId < GI_MAX))) || (IS_RANDO && ((getItemId > RG_NONE) && (getItemId < RG_MAX))))) ||
             (!(player->stateFlags1 & 0x20000800))) {
             if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
                 s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
@@ -2446,7 +2452,7 @@ void func_80030488(PlayState* play) {
 void Actor_DisableLens(PlayState* play) {
     if (play->actorCtx.lensActive) {
         play->actorCtx.lensActive = false;
-        func_800876C8(play);
+        Magic_Reset(play);
     }
 }
 
@@ -4720,6 +4726,7 @@ s32 Flags_GetEventChkInf(s32 flag) {
  */
 void Flags_SetEventChkInf(s32 flag) {
     gSaveContext.eventChkInf[flag >> 4] |= (1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, flag);
 }
 
 /**
@@ -4727,6 +4734,7 @@ void Flags_SetEventChkInf(s32 flag) {
  */
 void Flags_UnsetEventChkInf(s32 flag) {
     gSaveContext.eventChkInf[flag >> 4] &= ~(1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagUnset(FLAG_EVENT_CHECK_INF, flag);
 }
 
 /**
@@ -4741,6 +4749,7 @@ s32 Flags_GetItemGetInf(s32 flag) {
  */
 void Flags_SetItemGetInf(s32 flag) {
     gSaveContext.itemGetInf[flag >> 4] |= (1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagSet(FLAG_ITEM_GET_INF, flag);
 }
 
 /**
@@ -4748,6 +4757,7 @@ void Flags_SetItemGetInf(s32 flag) {
  */
 void Flags_UnsetItemGetInf(s32 flag) {
     gSaveContext.itemGetInf[flag >> 4] &= ~(1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagUnset(FLAG_ITEM_GET_INF, flag);
 }
 
 /**
@@ -4762,6 +4772,7 @@ s32 Flags_GetInfTable(s32 flag) {
  */
 void Flags_SetInfTable(s32 flag) {
     gSaveContext.infTable[flag >> 4] |= (1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagSet(FLAG_INF_TABLE, flag);
 }
 
 /**
@@ -4769,6 +4780,7 @@ void Flags_SetInfTable(s32 flag) {
  */
 void Flags_UnsetInfTable(s32 flag) {
     gSaveContext.infTable[flag >> 4] &= ~(1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagUnset(FLAG_INF_TABLE, flag);
 }
 
 /**
@@ -4783,6 +4795,7 @@ s32 Flags_GetEventInf(s32 flag) {
  */
 void Flags_SetEventInf(s32 flag) {
     gSaveContext.eventInf[flag >> 4] |= (1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_INF, flag);
 }
 
 /**
@@ -4790,6 +4803,7 @@ void Flags_SetEventInf(s32 flag) {
  */
 void Flags_UnsetEventInf(s32 flag) {
     gSaveContext.eventInf[flag >> 4] &= ~(1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagUnset(FLAG_EVENT_INF, flag);
 }
 
 /**
@@ -4804,6 +4818,7 @@ s32 Flags_GetRandomizerInf(RandomizerInf flag) {
  */
 void Flags_SetRandomizerInf(RandomizerInf flag) {
     gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagSet(FLAG_RANDOMIZER_INF, flag);
 }
 
 /**
@@ -4811,6 +4826,7 @@ void Flags_SetRandomizerInf(RandomizerInf flag) {
  */
 void Flags_UnsetRandomizerInf(RandomizerInf flag) {
     gSaveContext.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagUnset(FLAG_RANDOMIZER_INF, flag);
 }
 
 u32 func_80035BFC(PlayState* play, s16 arg1) {

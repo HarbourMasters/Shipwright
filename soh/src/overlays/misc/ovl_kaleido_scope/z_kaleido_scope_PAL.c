@@ -734,20 +734,147 @@ static u16 D_8082ABEC[] = {
 };
 
 u8 gSlotAgeReqs[] = {
-    1, 9, 9, 0, 0, 9, 1, 9, 9, 0, 0, 9, 1, 9, 1, 0, 0, 9, 9, 9, 9, 9, 0, 1,
+    AGE_REQ_CHILD,  // SLOT_DEKU_STICK
+    AGE_REQ_NONE,   // SLOT_DEKU_NUT
+    AGE_REQ_NONE,   // SLOT_BOMB
+    AGE_REQ_ADULT,  // SLOT_BOW
+    AGE_REQ_ADULT,  // SLOT_ARROW_FIRE
+    AGE_REQ_NONE,   // SLOT_DINS_FIRE
+    AGE_REQ_CHILD,  // SLOT_SLINGSHOT
+    AGE_REQ_NONE,   // SLOT_OCARINA
+    AGE_REQ_NONE,   // SLOT_BOMBCHU
+    AGE_REQ_ADULT,  // SLOT_HOOKSHOT
+    AGE_REQ_ADULT,  // SLOT_ARROW_ICE
+    AGE_REQ_NONE,   // SLOT_FARORES_WIND
+    AGE_REQ_CHILD,  // SLOT_BOOMERANG
+    AGE_REQ_NONE,   // SLOT_LENS_OF_TRUTH
+    AGE_REQ_CHILD,  // SLOT_MAGIC_BEAN
+    AGE_REQ_ADULT,  // SLOT_HAMMER
+    AGE_REQ_ADULT,  // SLOT_ARROW_LIGHT
+    AGE_REQ_NONE,   // SLOT_NAYRUS_LOVE
+    AGE_REQ_NONE,   // SLOT_BOTTLE_1
+    AGE_REQ_NONE,   // SLOT_BOTTLE_2
+    AGE_REQ_NONE,   // SLOT_BOTTLE_3
+    AGE_REQ_NONE,   // SLOT_BOTTLE_4
+    AGE_REQ_ADULT,  // SLOT_TRADE_ADULT
+    AGE_REQ_CHILD,  // SLOT_TRADE_CHILD
 };
 
 u8 gEquipAgeReqs[][4] = {
-    { 0, 1, 0, 0 },
-    { 9, 1, 9, 0 },
-    { 0, 9, 0, 0 },
-    { 9, 9, 0, 0 },
+    {
+        AGE_REQ_ADULT,  // 0 UPG_QUIVER
+        AGE_REQ_CHILD,  // EQUIP_TYPE_SWORD EQUIP_VALUE_SWORD_KOKIRI
+        AGE_REQ_ADULT,  // EQUIP_TYPE_SWORD EQUIP_VALUE_SWORD_MASTER
+        AGE_REQ_ADULT   // EQUIP_TYPE_SWORD EQUIP_VALUE_SWORD_BIGGORON
+    },
+    {
+        AGE_REQ_NONE,   // 0 UPG_BOMB_BAG
+        AGE_REQ_CHILD,  // EQUIP_TYPE_SHIELD EQUIP_VALUE_SHIELD_DEKU
+        AGE_REQ_NONE,   // EQUIP_TYPE_SHIELD EQUIP_VALUE_SHIELD_HYLIAN
+        AGE_REQ_ADULT   // EQUIP_TYPE_SHIELD EQUIP_VALUE_SHIELD_MIRROR
+    },
+    {
+        AGE_REQ_ADULT,  // 0 UPG_STRENGTH
+        AGE_REQ_NONE,   // EQUIP_TYPE_TUNIC EQUIP_VALUE_TUNIC_KOKIRI
+        AGE_REQ_ADULT,  // EQUIP_TYPE_TUNIC EQUIP_VALUE_TUNIC_GORON
+        AGE_REQ_ADULT   // EQUIP_TYPE_TUNIC EQUIP_VALUE_TUNIC_ZORA
+    },
+    {
+        AGE_REQ_NONE,   // 0 UPG_SCALE
+        AGE_REQ_NONE,   // EQUIP_TYPE_BOOTS EQUIP_VALUE_BOOTS_KOKIRI
+        AGE_REQ_ADULT,  // EQUIP_TYPE_BOOTS EQUIP_VALUE_BOOTS_IRON
+        AGE_REQ_ADULT   // EQUIP_TYPE_BOOTS EQUIP_VALUE_BOOTS_HOVER
+    },
+
 };
 
 u8 gItemAgeReqs[] = {
-    1, 9, 9, 0, 0, 9, 1, 9, 9, 9, 0, 0, 0, 9, 1, 9, 1, 0, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-    9, 9, 9, 9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 1, 9, 0, 9, 0, 0, 9, 0, 0, 1, 1, 1, 0, 0, 0, 9, 9, 9, 1, 0, 0, 9, 9, 0,
+    AGE_REQ_CHILD,  // ITEM_DEKU_STICK
+    AGE_REQ_NONE,   // ITEM_DEKU_NUT
+    AGE_REQ_NONE,   // ITEM_BOMB
+    AGE_REQ_ADULT,  // ITEM_BOW
+    AGE_REQ_ADULT,  // ITEM_ARROW_FIRE
+    AGE_REQ_NONE,   // ITEM_DINS_FIRE
+    AGE_REQ_CHILD,  // ITEM_SLINGSHOT
+    AGE_REQ_NONE,   // ITEM_OCARINA_FAIRY
+    AGE_REQ_NONE,   // ITEM_OCARINA_OF_TIME
+    AGE_REQ_NONE,   // ITEM_BOMBCHU
+    AGE_REQ_ADULT,  // ITEM_HOOKSHOT
+    AGE_REQ_ADULT,  // ITEM_LONGSHOT
+    AGE_REQ_ADULT,  // ITEM_ARROW_ICE
+    AGE_REQ_NONE,   // ITEM_FARORES_WIND
+    AGE_REQ_CHILD,  // ITEM_BOOMERANG
+    AGE_REQ_NONE,   // ITEM_LENS_OF_TRUTH
+    AGE_REQ_CHILD,  // ITEM_MAGIC_BEAN
+    AGE_REQ_ADULT,  // ITEM_HAMMER
+    AGE_REQ_ADULT,  // ITEM_ARROW_LIGHT
+    AGE_REQ_NONE,   // ITEM_NAYRUS_LOVE
+    AGE_REQ_NONE,   // ITEM_BOTTLE_EMPTY
+    AGE_REQ_NONE,   // ITEM_BOTTLE_POTION_RED
+    AGE_REQ_NONE,   // ITEM_BOTTLE_POTION_GREEN
+    AGE_REQ_NONE,   // ITEM_BOTTLE_POTION_BLUE
+    AGE_REQ_NONE,   // ITEM_BOTTLE_FAIRY
+    AGE_REQ_NONE,   // ITEM_BOTTLE_FISH
+    AGE_REQ_NONE,   // ITEM_BOTTLE_MILK_FULL
+    AGE_REQ_NONE,   // ITEM_BOTTLE_RUTOS_LETTER
+    AGE_REQ_NONE,   // ITEM_BOTTLE_BLUE_FIRE
+    AGE_REQ_NONE,   // ITEM_BOTTLE_BUG
+    AGE_REQ_NONE,   // ITEM_BOTTLE_BIG_POE
+    AGE_REQ_NONE,   // ITEM_BOTTLE_MILK_HALF
+    AGE_REQ_NONE,   // ITEM_BOTTLE_POE
+    AGE_REQ_CHILD,  // ITEM_WEIRD_EGG
+    AGE_REQ_CHILD,  // ITEM_CHICKEN
+    AGE_REQ_CHILD,  // ITEM_ZELDAS_LETTER
+    AGE_REQ_CHILD,  // ITEM_MASK_KEATON
+    AGE_REQ_CHILD,  // ITEM_MASK_SKULL
+    AGE_REQ_CHILD,  // ITEM_MASK_SPOOKY
+    AGE_REQ_CHILD,  // ITEM_MASK_BUNNY_HOOD
+    AGE_REQ_CHILD,  // ITEM_MASK_GORON
+    AGE_REQ_CHILD,  // ITEM_MASK_ZORA
+    AGE_REQ_CHILD,  // ITEM_MASK_GERUDO
+    AGE_REQ_CHILD,  // ITEM_MASK_TRUTH
+    AGE_REQ_CHILD,  // ITEM_SOLD_OUT
+    AGE_REQ_ADULT,  // ITEM_POCKET_EGG
+    AGE_REQ_ADULT,  // ITEM_POCKET_CUCCO
+    AGE_REQ_ADULT,  // ITEM_COJIRO
+    AGE_REQ_ADULT,  // ITEM_ODD_MUSHROOM
+    AGE_REQ_ADULT,  // ITEM_ODD_POTION
+    AGE_REQ_ADULT,  // ITEM_POACHERS_SAW
+    AGE_REQ_ADULT,  // ITEM_BROKEN_GORONS_SWORD
+    AGE_REQ_ADULT,  // ITEM_PRESCRIPTION
+    AGE_REQ_ADULT,  // ITEM_EYEBALL_FROG
+    AGE_REQ_ADULT,  // ITEM_EYE_DROPS
+    AGE_REQ_ADULT,  // ITEM_CLAIM_CHECK
+    AGE_REQ_ADULT,  // ITEM_BOW_FIRE
+    AGE_REQ_ADULT,  // ITEM_BOW_ICE
+    AGE_REQ_ADULT,  // ITEM_BOW_LIGHT
+    AGE_REQ_CHILD,  // ITEM_SWORD_KOKIRI
+    AGE_REQ_ADULT,  // ITEM_SWORD_MASTER
+    AGE_REQ_ADULT,  // ITEM_SWORD_BIGGORON
+    AGE_REQ_CHILD,  // ITEM_SHIELD_DEKU
+    AGE_REQ_NONE,   // ITEM_SHIELD_HYLIAN
+    AGE_REQ_ADULT,  // ITEM_SHIELD_MIRROR
+    AGE_REQ_NONE,   // ITEM_TUNIC_KOKIRI
+    AGE_REQ_ADULT,  // ITEM_TUNIC_GORON
+    AGE_REQ_ADULT,  // ITEM_TUNIC_ZORA
+    AGE_REQ_NONE,   // ITEM_BOOTS_KOKIRI
+    AGE_REQ_ADULT,  // ITEM_BOOTS_IRON
+    AGE_REQ_ADULT,  // ITEM_BOOTS_HOVER
+    AGE_REQ_CHILD,  // ITEM_BULLET_BAG_30
+    AGE_REQ_CHILD,  // ITEM_BULLET_BAG_40
+    AGE_REQ_CHILD,  // ITEM_BULLET_BAG_50
+    AGE_REQ_ADULT,  // ITEM_QUIVER_30
+    AGE_REQ_ADULT,  // ITEM_QUIVER_40
+    AGE_REQ_ADULT,  // ITEM_QUIVER_50
+    AGE_REQ_NONE,   // ITEM_BOMB_BAG_20
+    AGE_REQ_NONE,   // ITEM_BOMB_BAG_30
+    AGE_REQ_NONE,   // ITEM_BOMB_BAG_40
+    AGE_REQ_CHILD,  // ITEM_STRENGTH_GORONS_BRACELET
+    AGE_REQ_ADULT,  // ITEM_STRENGTH_SILVER_GAUNTLETS
+    AGE_REQ_ADULT,  // ITEM_STRENGTH_GOLD_GAUNTLETS
+    AGE_REQ_NONE,   // ITEM_SCALE_SILVER
+    AGE_REQ_NONE,   // ITEM_SCALE_GOLDEN
+    AGE_REQ_ADULT,  // ITEM_GIANTS_KNIFE
 };
 
 u8 gAreaGsFlags[] = {
@@ -1514,7 +1641,7 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
                 gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
-                if (!gSaveContext.isBossRush) {
+                if (!IS_BOSS_RUSH) {
                     POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(
                         POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][0], 48, 16, 12);
                 } else {
@@ -1928,7 +2055,7 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
             }
         } else {
             bool pauseAnyCursor =
-                (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && gSaveContext.n64ddFlag) ||
+                (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
                 (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
             if (!pauseCtx->pageIndex && (!pauseAnyCursor || (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE))) { // pageIndex == PAUSE_ITEM
                 pauseCtx->infoPanelVtx[16].v.ob[0] = pauseCtx->infoPanelVtx[18].v.ob[0] =
@@ -2066,7 +2193,7 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
 void KaleidoScope_UpdateNamePanel(PlayState* play) {
     PauseContext* pauseCtx = &play->pauseCtx;
     u16 sp2A;
-    bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && gSaveContext.n64ddFlag) ||
+    bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
                           (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
 
     if ((pauseCtx->namedItem != pauseCtx->cursorItem[pauseCtx->pageIndex]) ||
@@ -3424,7 +3551,7 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[3] = 1;
             }
 
-            if (CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1)) {
+            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON)) {
                 pauseCtx->worldMapPoints[3] = 2;
             }
 
@@ -3578,7 +3705,7 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[11] = 2;
             }
 
-            if (CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1)) {
+            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON)) {
                 pauseCtx->worldMapPoints[11] = 1;
             }
 
@@ -3651,7 +3778,7 @@ void KaleidoScope_Update(PlayState* play)
                 case 0:
                     // Boss Rush skips past the "Save?" window when pressing B while paused.
                     if (CHECK_BTN_ALL(input->press.button, BTN_START) ||
-                        (CHECK_BTN_ALL(input->press.button, BTN_B) && gSaveContext.isBossRush)) {
+                        (CHECK_BTN_ALL(input->press.button, BTN_B) && IS_BOSS_RUSH)) {
                         if (CVarGetInteger("gCheatEasyPauseBufferEnabled", 0) || CVarGetInteger("gCheatEasyInputBufferingEnabled", 0)) {
                             // Easy pause buffer is 13 frames, 12 for kaledio to end, and one more to advance a single frame
                             CVarSetInteger("gCheatEasyPauseBufferTimer", 13);
@@ -4035,7 +4162,7 @@ void KaleidoScope_Update(PlayState* play)
                 VREG(88) = 66;
                 WREG(2) = 0;
                 pauseCtx->alpha = 255;
-                if (!gSaveContext.isBossRush) {
+                if (!IS_BOSS_RUSH) {
                     pauseCtx->state = 0xE;
                 } else {
                     pauseCtx->state = 0xF;
@@ -4083,7 +4210,7 @@ void KaleidoScope_Update(PlayState* play)
 
         case 0x10:
             if (CHECK_BTN_ALL(input->press.button, BTN_A) || CHECK_BTN_ALL(input->press.button, BTN_START)) {
-                if (pauseCtx->promptChoice == 0 && !gSaveContext.isBossRush) {
+                if (pauseCtx->promptChoice == 0 && !IS_BOSS_RUSH) {
                     Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
                     Play_SaveSceneFlags(play);
@@ -4135,7 +4262,7 @@ void KaleidoScope_Update(PlayState* play)
                     }
 
                     // In ER, handle overriding the game over respawn entrance
-                    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+                    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                         Entrance_SetGameOverEntrance();
                     }
                 } else {
@@ -4156,19 +4283,19 @@ void KaleidoScope_Update(PlayState* play)
                     R_PAUSE_MENU_MODE = 0;
                     func_800981B8(&play->objectCtx);
                     func_800418D0(&play->colCtx, play);
-                    if (pauseCtx->promptChoice == 0 && !gSaveContext.isBossRush) {
+                    if (pauseCtx->promptChoice == 0 && !IS_BOSS_RUSH) {
                         Play_TriggerRespawn(play);
                         gSaveContext.respawnFlag = -2;
                         // In ER, handle death warp to last entrance from grottos
-                        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+                        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                             Grotto_ForceGrottoReturn();
                         }
                         gSaveContext.nextTransitionType = 2;
                         gSaveContext.health = CVarGetInteger("gFullHealthSpawn", 0) ? gSaveContext.healthCapacity : 0x30;
                         Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
                         gSaveContext.healthAccumulator = 0;
-                        gSaveContext.magicState = 0;
-                        gSaveContext.prevMagicState = 0;
+                        gSaveContext.magicState = MAGIC_STATE_IDLE;
+                        gSaveContext.prevMagicState = MAGIC_STATE_IDLE;
                         osSyncPrintf(VT_FGCOL(YELLOW));
                         osSyncPrintf("MAGIC_NOW=%d ", gSaveContext.magic);
                         osSyncPrintf("Z_MAGIC_NOW_NOW=%d   →  ", gSaveContext.magicFillTarget);
@@ -4180,7 +4307,6 @@ void KaleidoScope_Update(PlayState* play)
                         osSyncPrintf(VT_RST);
                     } else {
                         play->state.running = 0;
-                        gSaveContext.isBossRush = false;
                         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
                         GameInteractor_ExecuteOnExitGame(gSaveContext.fileNum);
                     }
@@ -4248,6 +4374,9 @@ void KaleidoScope_Update(PlayState* play)
             for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
                 gSaveContext.buttonStatus[buttonIndex] = sButtonStatusSave[buttonIndex];
             }
+
+            // Used to clear swordless temp B after unpause so minigame/epona handling restarts
+            Interface_RandoRestoreSwordless();
 
             interfaceCtx->unk_1FA = interfaceCtx->unk_1FC = 0;
             osSyncPrintf(VT_FGCOL(YELLOW));

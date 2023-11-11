@@ -115,6 +115,8 @@ extern bool LightTrialClear;
 
 //Greg
 extern bool Greg;
+extern bool GregInBridgeLogic;
+extern bool GregInLacsLogic;
 
 // Progression Items
 extern uint8_t ProgressiveBulletBag;
@@ -142,6 +144,9 @@ extern uint8_t GerudoTrainingGroundsKeys;
 extern uint8_t GerudoFortressKeys;
 extern uint8_t GanonsCastleKeys;
 extern uint8_t TreasureGameKeys;
+
+// Triforce Pieces
+extern uint8_t TriforcePieces;
 
 // Boss Keys
 extern bool BossKeyForestTemple;
@@ -242,6 +247,8 @@ extern bool IsGlitched;
 extern bool CanBlastOrSmash;
 extern bool CanChildAttack;
 extern bool CanChildDamage;
+extern bool CanAdultAttack;
+extern bool CanAdultDamage;
 extern bool CanCutShrubs;
 extern bool CanDive;
 extern bool CanLeaveForest;
@@ -298,6 +305,7 @@ extern bool AtDay;
 extern bool AtNight;
 extern bool LinksCow;
 extern uint8_t Age;
+extern bool CanCompleteTriforce;
 
 // Events
 extern bool ShowedMidoSwordAndShield;

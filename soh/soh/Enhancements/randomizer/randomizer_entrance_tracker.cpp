@@ -319,7 +319,7 @@ const EntranceData entranceData[] = {
     { 0x03AC, 0x0130, SINGLE_SCENE_INFO(0x5E), "Haunted Wasteland",             "GF",                            ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_GROUP_GERUDO_VALLEY,     ENTRANCE_TYPE_OVERWORLD, "hw,gerudo fortress"},
     { 0x0123, 0x0365, SINGLE_SCENE_INFO(0x5E), "Haunted Wasteland",             "Desert Colossus",               ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_TYPE_OVERWORLD, "dc,hw"},
     { 0x0365, 0x0123, SINGLE_SCENE_INFO(0x5C), "Desert Colossus",               "Haunted Wasteland",             ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_TYPE_OVERWORLD, "dc,hw"},
-    { 0x0588, 0x057C, SINGLE_SCENE_INFO(0x5C), "Colossus",                      "Colossus Great Fairy Fountain", ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_TYPE_INTERIOR,  "dc", 1},
+    { 0x0588, 0x057C, SINGLE_SCENE_INFO(0x5C), "Desert Colossus",               "Colossus Great Fairy Fountain", ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_TYPE_INTERIOR,  "dc", 1},
     { 0x0700, 0x0800, SINGLE_SCENE_INFO(0x5C), "Desert Colossus",               "Colossus Grotto",               ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_TYPE_GROTTO,    "dc,scrubs", 1},
     { 0x0082, 0x01E1, SINGLE_SCENE_INFO(0x5C), "Desert Colossus",               "Spirit Temple",                 ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_TYPE_DUNGEON,   "dc", 1},
     { 0x057C, 0x0588, {{ 0x3D, 0x02 }},        "Colossus Great Fairy Fountain", "Colossus",                      ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_GROUP_HAUNTED_WASTELAND, ENTRANCE_TYPE_INTERIOR,  "dc"},
@@ -535,6 +535,14 @@ void SortEntranceListByArea(EntranceOverride* entranceList, u8 byDest) {
             }
         }
     }
+}
+
+s16 GetLastEntranceOverride() {
+    return lastEntranceIndex;
+}
+
+s16 GetCurrentGrottoId() {
+    return currentGrottoId;
 }
 
 void SetCurrentGrottoIDForTracker(s16 entranceIndex) {

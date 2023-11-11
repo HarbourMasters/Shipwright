@@ -351,6 +351,12 @@ extern "C" void Randomizer_InitSaveFile() {
         INV_CONTENT(ITEM_LETTER_ZELDA) = ITEM_LETTER_ZELDA;
     }
 
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && startingAge == RO_AGE_ADULT) {
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_MASTER_SWORD, GI_NONE);
+        StartingItemGive(getItemEntry);
+        Flags_SetRandomizerInf(RAND_INF_TOT_MASTER_SWORD);
+    }
+
     HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * Randomizer_GetSettingValue(RSK_BIG_POE_COUNT));
 
     if (Randomizer_GetSettingValue(RSK_SKIP_EPONA_RACE)) {
@@ -435,6 +441,9 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.itemGetInf[3] |= 0x800;  // bunny hood related
         gSaveContext.itemGetInf[3] |= 0x8000; // Obtained Mask of Truth
     }
+
+    // Reset triforce pieces collected
+    gSaveContext.triforcePiecesCollected = 0;
 
     SetStartingItems();
 }

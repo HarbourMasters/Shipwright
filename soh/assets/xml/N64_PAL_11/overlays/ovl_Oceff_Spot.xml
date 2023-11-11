@@ -1,10 +1,10 @@
 <Root>
-    <File Name="ovl_Oceff_Spot" BaseAddress="0x80BA6070" RangeStart="0x7F0" RangeEnd="0xEC8">
-        <Texture Name="sTex" OutName="sun_song_effect" Format="i8" Width="32" Height="32" Offset="0x7F0"/>
-        <Array Name="sCylinderVtx" Count="27" Offset="0xBF0">
+    <File Name="ovl_Oceff_Spot" BaseAddress="0x80B1AA20" RangeStart="0x780" RangeEnd="0xE58">
+        <Texture Name="sTex" OutName="sun_song_effect" Format="i8" Width="32" Height="32" Offset="0x780"/>
+        <Array Name="sCylinderVtx" Count="27" Offset="0xB80">
             <Vtx/>
         </Array>
-        <DList Name="sCylinderMaterialDL" Offset="0xDA0"/>
-        <DList Name="sCylinderModelDL" Offset="0xE38"/>
+        <DList Name="sCylinderMaterialDL" Offset="0xD30"/>
+        <DList Name="sCylinderModelDL" Offset="0xDC8"/>
     </File>
 </Root>

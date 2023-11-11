@@ -13,7 +13,7 @@ using namespace Settings;
 
 std::vector<ItemAndPrice> NonShopItems = {};
 
-static std::array<std::vector<Text>, 0xD5> trickNameTable; //Table of trick names for ice traps
+static std::array<std::vector<Text>, 0xE1> trickNameTable; // Table of trick names for ice traps
 bool initTrickNames = false; //Indicates if trick ice trap names have been initialized yet
 
 //Set vanilla shop item locations before potentially shuffling
@@ -224,11 +224,11 @@ void InitTrickNames() {
   trickNameTable[GI_SWORD_KOKIRI] = {
      Text{"Korok Sword", "Épée Korok", "Espada Korok"},
      Text{"Hero's Sword", "Épée du Héros", "Espada del héroe"},
-     Text{"Butter Knife","Couteau à Beurre","cuchillo de mantequilla"}};
-/*  trickNameTable[GI_SWORD_MASTER] = {
+     Text{"Razor Sword", "Lame Rasoir", "Espada de esmeril"}};
+  trickNameTable[0xE0] = { //Master Sword without the GI enum
      Text{"Goddess Sword", "Épée de la déesse", "Espada Divina"},
      Text{"Gilded Sword", "Excalibur", "Espada de los Sabios"},
-     Text{"Magical Sword", "Lame dorée", "Fay"}};*/
+     Text{"Magical Sword", "Lame dorée", "Fay"}};
   trickNameTable[GI_SWORD_KNIFE] = {
      Text{"Medigoron's Sword", "l'Épée de Medigoron", "La espada de Medigoron"},
      Text{"Razor Sword", "Lame Rasoir", "Espada de esmeril"},
@@ -698,6 +698,10 @@ void InitTrickNames() {
      Text{"Crystal Heart", "Cœur de cristal", "Corazón de cristal"},
      Text{"Life Heart", "Cœur de vie", "Vida Corazón"},
      Text{"Lots of Love", "Beaucoup d'amour", "Mucho amor"}};
+  trickNameTable[0xDF] = {
+     Text{"Piece of Cheese", "Morceau de Fromage", "Piece of Cheese"},
+     Text{"Triforce Shard", "Éclat de Triforce", "Triforce Shard"},
+     Text{"Shiny Rock", "Caiiloux Brillant", "Shiny Rock"}};
 
 /*
   //Names for individual upgrades, in case progressive names are replaced

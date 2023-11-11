@@ -20,6 +20,7 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <assert.h>
+#include "z64save.h"
 
 typedef struct {
     s16 left;
@@ -664,8 +665,8 @@ static void DrawMoreInfo(FileChooseContext* this, s16 fileIndex, u8 alpha) {
     DrawCounters(this, fileIndex, alpha);
 }
 
-#define MIN_QUEST (ResourceMgr_GameHasOriginal() ? FS_QUEST_NORMAL : FS_QUEST_MASTER)
-#define MAX_QUEST FS_QUEST_BOSSRUSH
+#define MIN_QUEST (ResourceMgr_GameHasOriginal() ? QUEST_NORMAL : QUEST_MASTER)
+#define MAX_QUEST QUEST_BOSSRUSH
 
 void Sram_InitDebugSave(void);
 void Sram_InitBossRushSave();
@@ -962,7 +963,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
     // Draw icons on the main menu, when a rando file is selected, and when quest selection is set to rando
     if ((this->configMode == CM_MAIN_MENU &&
         (this->selectMode != SM_CONFIRM_FILE || Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1)) ||
-        (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == FS_QUEST_RANDOMIZER)) {
+        (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER)) {
 
         if (this->fileInfoAlpha[this->selectedFileIndex] > 0) {
             // Use file info alpha to match fading
@@ -988,7 +989,8 @@ void DrawSeedHashSprites(FileChooseContext* this) {
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, alpha);
 
         // Draw Seed Icons for spoiler log
-        if (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == FS_QUEST_RANDOMIZER && strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0 && fileSelectSpoilerFileLoaded) {
+        if (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER &&
+            strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0 && fileSelectSpoilerFileLoaded) {
             u16 xStart = 64;
             for (unsigned int i = 0; i < 5; i++) {
                 SpriteLoad(this, GetSeedTexture(gSaveContext.seedIcons[i]));
@@ -1080,14 +1082,15 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
                 this->logoAlpha = 0;
             } else if(!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(this->buttonIndex))) {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            }  
-            else {
+            } else if (this->n64ddFlags[this->buttonIndex] == this->n64ddFlag) {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                 this->actionTimer = 8;
                 this->selectMode = SM_FADE_MAIN_TO_SELECT;
                 this->selectedFileIndex = this->buttonIndex;
                 this->menuMode = FS_MENU_MODE_SELECT;
                 this->nextTitleLabel = FS_TITLE_OPEN_FILE;
+            } else if (!this->n64ddFlags[this->buttonIndex]) {
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             }
         } else {
             if (this->warningLabel == FS_WARNING_NONE) {
@@ -1263,18 +1266,14 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
             this->questType[this->buttonIndex] += 1;
-            while ((this->questType[this->buttonIndex] == FS_QUEST_MASTER && !ResourceMgr_GameHasMasterQuest()) || 
-                (this->questType[this->buttonIndex] == FS_QUEST_RANDOMIZER && !hasRandomizerQuest())) {
-                // If Master Quest is selected without a Master Quest OTR present or when Randomizer Quest is
-                // selected without a loaded Randomizer seed, skip past it.
+            while (this->questType[this->buttonIndex] == QUEST_MASTER && !ResourceMgr_GameHasMasterQuest()) {
+                // If Master Quest is selected without a Master Quest OTR present, skip past it.
                 this->questType[this->buttonIndex] += 1;
             }
         } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
             this->questType[this->buttonIndex] -= 1;
-            while ((this->questType[this->buttonIndex] == FS_QUEST_MASTER && !ResourceMgr_GameHasMasterQuest()) ||
-                (this->questType[this->buttonIndex] == FS_QUEST_RANDOMIZER && !hasRandomizerQuest())) {
-                // If Master Quest is selected without a Master Quest OTR present or when Randomizer Quest is
-                // selected without a loaded Randomizer seed, skip past it.
+            while (this->questType[this->buttonIndex] == QUEST_MASTER && !ResourceMgr_GameHasMasterQuest()) {
+                // If Master Quest is selected without a Master Quest OTR present, skip past it.
                 this->questType[this->buttonIndex] -= 1;
             }
         }
@@ -1292,20 +1291,18 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
+        gSaveContext.questId = this->questType[this->buttonIndex];
 
-        gSaveContext.isMasterQuest = this->questType[this->buttonIndex] == FS_QUEST_MASTER;
-        gSaveContext.n64ddFlag = this->questType[this->buttonIndex] == FS_QUEST_RANDOMIZER;
-        gSaveContext.isBossRush = this->questType[this->buttonIndex] == FS_QUEST_BOSSRUSH;
-        gSaveContext.isBossRushPaused = false;
-
-        if (this->questType[this->buttonIndex] == FS_QUEST_BOSSRUSH) {
+        if (this->questType[this->buttonIndex] == QUEST_BOSSRUSH) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             this->prevConfigMode = this->configMode;
             this->configMode = CM_ROTATE_TO_BOSS_RUSH_MENU;
             return;
+        } else if (this->questType[this->buttonIndex] == QUEST_RANDOMIZER && !hasRandomizerQuest()) {
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         } else {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            osSyncPrintf("Selected Dungeon Quest: %d\n", gSaveContext.isMasterQuest);
+            osSyncPrintf("Selected Dungeon Quest: %d\n", IS_MASTER_QUEST);
             this->prevConfigMode = this->configMode;
             this->configMode = CM_ROTATE_TO_NAME_ENTRY;
             this->logoAlpha = 0;
@@ -2217,7 +2214,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                 this->stickRightPrompt.stickColorA, this->stickRightPrompt.stickTexX,
                                 this->stickRightPrompt.stickTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
         switch (this->questType[this->buttonIndex]) {
-            case FS_QUEST_NORMAL:
+            case QUEST_NORMAL:
             default:
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
@@ -2225,7 +2222,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, gTitleZeldaShieldLogoTex, 160, 160);
                 break;
 
-            case FS_QUEST_MASTER:
+            case QUEST_MASTER:
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
@@ -2233,16 +2230,20 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 FileChoose_DrawImageRGBA32(this->state.gfxCtx, 182, 180, gTitleMasterQuestSubtitleTex, 128, 32);
                 break;
             
-            case FS_QUEST_RANDOMIZER:
+            case QUEST_RANDOMIZER:
                 DrawSeedHashSprites(this);
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
+                if (hasRandomizerQuest()) {
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
+                } else {
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0x40, 0x40, 0x40, this->logoAlpha);
+                }
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
                 FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, ResourceMgr_GameHasOriginal() ? gTitleZeldaShieldLogoTex : gTitleZeldaShieldLogoMQTex, 160, 160);
                 FileChoose_DrawImageRGBA32(this->state.gfxCtx, 182, 180, gTitleRandomizerSubtitleTex, 128, 32);
                 break;
 
-            case FS_QUEST_BOSSRUSH:
+            case QUEST_BOSSRUSH:
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
@@ -2354,7 +2355,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             // draw file button
             gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[temp], 20, 0);
 
-            isActive = 0;
+            isActive = ((this->n64ddFlag == this->n64ddFlags[i]) || (this->nameBoxAlpha[i] == 0)) ? 0 : 1;
 
             if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i)) && Save_GetSaveMetaInfo(i)->valid) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[1][0], sWindowContentColors[1][1],
@@ -2384,6 +2385,16 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
             gSP1Quadrangle(POLY_OPA_DISP++, 4, 6, 7, 5, 0);
+
+            // draw disk label for 64DD
+            if (this->n64ddFlags[i]) {
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0], sWindowContentColors[isActive][1],
+                                sWindowContentColors[isActive][2], this->nameBoxAlpha[i]);
+                gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelDISKButtonTex, G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0,
+                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                    G_TX_NOLOD, G_TX_NOLOD);
+                gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
+            }
 
             // draw rando label
             if (Save_GetSaveMetaInfo(i)->randoSave) {
@@ -2433,14 +2444,14 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                 G_TX_NOLOD, G_TX_NOLOD);
             gSP1Quadrangle(POLY_OPA_DISP++, 12, 14, 15, 13, 0);
 
-            if (Save_GetSaveMetaInfo(i)->randoSave || Save_GetSaveMetaInfo(i)->requiresMasterQuest) {
+            if (this->n64ddFlags[i] || Save_GetSaveMetaInfo(i)->randoSave || Save_GetSaveMetaInfo(i)->requiresMasterQuest) {
                 gSP1Quadrangle(POLY_OPA_DISP++, 16, 18, 19, 17, 0);
             }
         }
 
         // draw file info
         for (fileIndex = 0; fileIndex < 3; fileIndex++) {
-            isActive = 0;
+            isActive = ((this->n64ddFlag == this->n64ddFlags[fileIndex]) || (this->nameBoxAlpha[fileIndex] == 0)) ? 0 : 1;
             FileChoose_DrawFileInfo(&this->state, fileIndex, isActive);
         }
 
@@ -2806,8 +2817,6 @@ void FileChoose_ConfirmFile(GameState* thisx) {
         if (this->confirmButtonIndex == FS_BTN_CONFIRM_YES) {
             func_800AA000(300.0f, 180, 20, 100);
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            // Reset Boss Rush because it's only ever saved in memory.
-            gSaveContext.isBossRush = 0;
             this->selectMode = SM_FADE_OUT;
             func_800F6964(0xF);
         } else {
@@ -2924,7 +2933,7 @@ void FileChoose_FadeOut(GameState* thisx) {
  */
 void FileChoose_LoadGame(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
-    u16 swordEquipMask;
+    u16 swordEquipValue;
     s32 pad;
 
     Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -2974,8 +2983,8 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.unk_13EE = 0x32;
     gSaveContext.nayrusLoveTimer = 0;
     gSaveContext.healthAccumulator = 0;
-    gSaveContext.magicState = 0;
-    gSaveContext.prevMagicState = 0;
+    gSaveContext.magicState = MAGIC_STATE_IDLE;
+    gSaveContext.prevMagicState = MAGIC_STATE_IDLE;
     gSaveContext.forcedSeqId = NA_BGM_GENERAL_SFX;
     gSaveContext.skyboxTime = 0;
     gSaveContext.nextTransitionType = 0xFF;
@@ -3011,13 +3020,13 @@ void FileChoose_LoadGame(GameState* thisx) {
             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE)) {
 
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-            swordEquipMask = BOMSWAP16(gEquipMasks[EQUIP_SWORD]) & gSaveContext.equips.equipment;
-            gSaveContext.equips.equipment &= gEquipNegMasks[EQUIP_SWORD];
-            gSaveContext.inventory.equipment ^= (gBitFlags[swordEquipMask - 1] << BOMSWAP16(gEquipShifts[EQUIP_SWORD]));
+            swordEquipValue = (BOMSWAP16(gEquipMasks[EQUIP_TYPE_SWORD]) & gSaveContext.equips.equipment) >> (EQUIP_TYPE_SWORD * 4);
+            gSaveContext.equips.equipment &= gEquipNegMasks[EQUIP_TYPE_SWORD];
+            gSaveContext.inventory.equipment ^= (gBitFlags[swordEquipValue - 1] << BOMSWAP16(gEquipShifts[EQUIP_TYPE_SWORD]));
         }
     }
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         // Setup the modified entrance table and entrance shuffle table for rando
         Entrance_Init();
 
@@ -3111,7 +3120,7 @@ static void (*gFileSelectUpdateFuncs[])(GameState*) = {
     FileChoose_SelectModeUpdate,
 };
 
-static const char* randoWarningText[] = {
+static const char* randoVersionWarningText[] = {
     // English
     "This save was created on a different version of SoH.\nThings may be broken. Play at your own risk.",
     // German
@@ -3120,7 +3129,7 @@ static const char* randoWarningText[] = {
     "Cette sauvegarde a été créée sur une version\ndifférente de SoH.\nCertaines fonctionnalités peuvent être corrompues."
 };
 
-void FileChoose_DrawRandoSaveWarning(GameState* thisx) {
+void FileChoose_DrawRandoSaveVersionWarning(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
 
     OPEN_DISPS(this->state.gfxCtx);
@@ -3157,11 +3166,82 @@ void FileChoose_DrawRandoSaveWarning(GameState* thisx) {
                                 (SCREEN_WIDTH - 32) << 2, (SCREEN_HEIGHT - bottomOffset) << 2, G_TX_RENDERTILE, 0, 0,
                                 1 << 10, texCoordinateHeightScale << 1);
 
-            Interface_DrawTextLine(this->state.gfxCtx, randoWarningText[gSaveContext.language], 36,
+            Interface_DrawTextLine(this->state.gfxCtx, randoVersionWarningText[gSaveContext.language], 36,
                                    SCREEN_HEIGHT - height, 255, 255, 255, textAlpha, 0.8f, 1);
         }
     }
 
+    CLOSE_DISPS(this->state.gfxCtx);
+}
+
+static const char* noRandoGeneratedText[] = {
+    // English
+    "No Randomizer seed currently available.\nGenerate one in the Randomizer Settings"
+#if defined(__WIIU__) || defined(__SWITCH__)
+    ".",
+#else
+    ",\nor drop a spoiler log on the game window.",
+#endif
+    // German
+    "No Randomizer seed currently available.\nGenerate one in the Randomizer Settings"
+#if defined(__WIIU__) || defined(__SWITCH__)
+    ".",
+#else
+    ",\nor drop a spoiler log on the game window.",
+#endif
+    // French
+    "Aucune Seed de Randomizer actuellement disponible.\nGénérez-en une dans les \"Randomizer Settings\""
+#if (defined(__WIIU__) || defined(__SWITCH__))
+    "."
+#else
+    "\nou glissez un spoilerlog sur la fenêtre du jeu."
+#endif
+};
+
+void FileChoose_DrawNoRandoGeneratedWarning(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+
+    OPEN_DISPS(this->state.gfxCtx);
+
+    // Draw rando seed warning when build version doesn't match for Major or Minor number
+    if (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER && !hasRandomizerQuest()) {
+        uint8_t textAlpha = 225;
+        uint8_t textboxAlpha = 170;
+        float textboxScale = 0.7f;
+
+        // float math to get a S5.10 number that will squish the texture
+        float texCoordinateHeightF = 512 / textboxScale;
+        uint16_t texCoordinateHeightScale = texCoordinateHeightF + 0.5f;
+        float texCoordinateWidthF = 512 / textboxScale;
+        uint16_t texCoordinateWidthScale = texCoordinateWidthF + 0.5f;
+        uint16_t textboxWidth = 256 * textboxScale;
+        uint16_t textboxHeight = 64 * textboxScale;
+        uint8_t leftOffset = 72;
+        uint8_t bottomOffset = 84;
+        uint8_t textVerticalOffset;
+#if defined(__WIIU__) || defined(__SWITCH__)
+        textVerticalOffset = 127; // 2 lines
+#else
+        textVerticalOffset = 122; // 3 lines
+#endif
+
+        Gfx_SetupDL_39Opa(this->state.gfxCtx);
+        gDPSetAlphaDither(POLY_OPA_DISP++, G_AD_DISABLE);
+        gSPClearGeometryMode(POLY_OPA_DISP++, G_SHADE);
+        gDPSetCombineLERP(POLY_OPA_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0,
+                          0, PRIMITIVE, 0);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, textboxAlpha);
+        gDPLoadTextureBlock_4b(POLY_OPA_DISP++, gDefaultMessageBackgroundTex, G_IM_FMT_I, 128, 64, 0, G_TX_MIRROR,
+                               G_TX_MIRROR, 7, 0, G_TX_NOLOD, G_TX_NOLOD);
+
+        gSPTextureRectangle(POLY_OPA_DISP++, leftOffset << 2, (SCREEN_HEIGHT - bottomOffset - textboxHeight) << 2,
+                            (textboxWidth + leftOffset) << 2, (SCREEN_HEIGHT - bottomOffset) << 2, G_TX_RENDERTILE, 0, 0,
+                            texCoordinateWidthScale << 1, texCoordinateHeightScale << 1);
+
+        Interface_DrawTextLine(this->state.gfxCtx, noRandoGeneratedText[gSaveContext.language], 80, textVerticalOffset,
+                               255, 255, 255, textAlpha, 0.6f, 1);
+    }
+    
     CLOSE_DISPS(this->state.gfxCtx);
 }
 
@@ -3220,6 +3300,8 @@ void FileChoose_Main(GameState* thisx) {
     }
 
     OPEN_DISPS(this->state.gfxCtx);
+
+    this->n64ddFlag = 0;
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
     gSPSegment(POLY_OPA_DISP++, 0x01, this->staticSegment);
@@ -3354,8 +3436,10 @@ void FileChoose_Main(GameState* thisx) {
         gSPTextureRectangle(POLY_OPA_DISP++, 0x0168, 0x0330, 0x03A8, 0x0370, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
     }
 
-    // Draw rando save warning over the controls text, but before the screen fill fade out
-    FileChoose_DrawRandoSaveWarning(&this->state);
+    // Draw rando save version warning over the controls text, but before the screen fill fade out
+    FileChoose_DrawRandoSaveVersionWarning(&this->state);
+
+    FileChoose_DrawNoRandoGeneratedWarning(&this->state);
 
     gDPPipeSync(POLY_OPA_DISP++);
     gSPDisplayList(POLY_OPA_DISP++, sScreenFillSetupDL);
@@ -3559,6 +3643,8 @@ void FileChoose_InitContext(GameState* thisx) {
     for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
         gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
     }
+
+    this->n64ddFlags[0] = this->n64ddFlags[1] = this->n64ddFlags[2] = 0;
 }
 
 void FileChoose_Destroy(GameState* thisx) {

@@ -28,12 +28,12 @@ void HintTable_Init() {
     hintTable[PREFIX] =
         HintText::Exclude({ Text{ "They say that ", /*french*/ "Selon moi, ", /*spanish*/ "Según dicen, " } });
     hintTable[WAY_OF_THE_HERO] =
-        HintText::Exclude({ Text{ " is on the way of the hero.", /*french*/ " est sur la voie du héros.",
+        HintText::Exclude({ Text{ " is on %cthe way of the hero%w.", /*french*/ " est sur %cla voie du héros%w.",
                                   /*spanish*/ " conduce a la senda del héroe." } });
     hintTable[PLUNDERING] =
         HintText::Exclude({ Text{ "plundering ", /*french*/ "explorer ", /*spanish*/ "inspeccionar " } });
     hintTable[FOOLISH] = HintText::Exclude(
-        { Text{ " is a foolish choice.", /*french*/ " est futile.", /*spanish*/ " no es una sabia decisión." } });
+        { Text{ " is %pa foolish choice%w.", /*french*/ " est %pfutile%w.", /*spanish*/ " no es una sabia decisión." } });
     hintTable[CAN_BE_FOUND_AT] =
         HintText::Exclude({ Text{ "can be found at", /*french*/ "se trouve dans", /*spanish*/ "aguarda en" } });
     hintTable[HOARDS] = HintText::Exclude({ Text{ "hoards", /*french*/ "recèle", /*spanish*/ "acapara" } });
@@ -1044,6 +1044,11 @@ void HintTable_Init() {
     hintTable[TEMPLE_OF_TIME] = HintText::Exclude({
         // obscure text
         Text{ "Temple of Time", /*french*/ "le Temple du Temps", /*spanish*/ "el Templo del Tiempo" },
+    });
+
+    hintTable[CASTLE_GROUNDS] = HintText::Exclude({
+        // obscure text
+        Text{ "the Castle Grounds", /*french*/ "le Château d'Hyrule", /*spanish*/ "" },
     });
 
     hintTable[HYRULE_CASTLE] = HintText::Exclude({
@@ -2956,6 +2961,20 @@ void HintTable_Init() {
             "Ha ha ha... Pauvre fou! Tu ne pourras jamais me vaincre sans les flèches que j'ai cachées dans ",
             /*spanish*/
             "Ja, ja, ja... Nunca me derrotarás reflejando mis esferas de energía y desplegando la flecha de luz de " },
+    });
+
+
+    /*--------------------------
+    |MASTER SWORD LOCATION TEXT|
+    ---------------------------*/
+
+    hintTable[MASTER_SWORD_LOCATION_HINT] = HintText::MasterSword({
+        // obscure text
+        Text{"And even if you do, you'll never find the legendary blade hidden in ",
+            /*french*/
+            "Et même si tu les trouves, tu ne touveras jamais l'épée de légende cachée dans ",
+            /*spanish*/
+            "E incluso si lo haces, nunca encontrarás la espada legendaria escondida en " },
     });
 
     hintTable[YOUR_POCKET] = HintText::Exclude({

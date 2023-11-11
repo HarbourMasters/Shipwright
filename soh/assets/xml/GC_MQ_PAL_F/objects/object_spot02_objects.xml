@@ -1,0 +1,44 @@
+<Root>
+    <File Name="object_spot02_objects" Segment="6">
+        <Texture Name="object_spot02_objects_Tex_000000" OutName="tex_00000000" Format="i8" Width="32" Height="64" Offset="0x0"/>
+        <Texture Name="object_spot02_objects_Tex_000800" OutName="tex_00000800" Format="i8" Width="32" Height="64" Offset="0x800"/>
+        <DList Name="object_spot02_objects_DL_0013F0" Offset="0x13F0"/>
+        <Blob Name="object_spot02_objects_Blob_0015D8" Size="0x0008" Offset="0x15D8"/>
+        <DList Name="object_spot02_objects_DL_009620" Offset="0x9620"/>
+        <DList Name="object_spot02_objects_DL_0126F0" Offset="0x126F0"/>
+        <DList Name="object_spot02_objects_DL_0127C0" Offset="0x127C0"/>
+        <Collision Name="object_spot02_objects_Col_0128D8" Offset="0x128D8"/>
+        <DList Name="object_spot02_objects_DL_012A50" Offset="0x12A50"/>
+        <Collision Name="object_spot02_objects_Col_012BA4" Offset="0x12BA4"/>
+        <DList Name="object_spot02_objects_DL_012D30" Offset="0x12D30"/>
+        <DList Name="object_spot02_objects_DL_0130B0" Offset="0x130B0"/>
+        <Collision Name="object_spot02_objects_Col_0133EC" Offset="0x133EC"/>
+        <Texture Name="object_spot02_objects_Tex_013420" OutName="tex_00013420" Format="i4" Width="32" Height="64" Offset="0x13420"/>
+        <Texture Name="object_spot02_objects_Tex_013820" OutName="tex_00013820" Format="rgba16" Width="32" Height="32" Offset="0x13820"/>
+        <Texture Name="object_spot02_objects_Tex_014020" OutName="tex_00014020" Format="rgba16" Width="32" Height="32" Offset="0x14020"/>
+        <Texture Name="object_spot02_objects_Tex_014820" OutName="tex_00014820" Format="rgba16" Width="16" Height="32" Offset="0x14820"/>
+        <Texture Name="object_spot02_objects_Tex_014C20" OutName="tex_00014C20" Format="rgba16" Width="64" Height="32" Offset="0x14C20"/>
+        <Texture Name="object_spot02_objects_Tex_015C20" OutName="tex_00015C20" Format="rgba16" Width="32" Height="32" Offset="0x15C20"/>
+        <Texture Name="object_spot02_objects_Tex_016420" OutName="tex_00016420" Format="rgba16" Width="16" Height="16" Offset="0x16420"/>
+        <Texture Name="gEffSunGraveSpark1Tex" OutName="eff_sun_grave_spark_1" Format="i8" Width="64" Height="64" Offset="0x15E0"/>
+        <Texture Name="gEffSunGraveSpark2Tex" OutName="eff_sun_grave_spark_2" Format="i8" Width="64" Height="64" Offset="0x25E0"/>
+        <Texture Name="gEffSunGraveSpark3Tex" OutName="eff_sun_grave_spark_3" Format="i8" Width="64" Height="64" Offset="0x35E0"/>
+        <Texture Name="gEffSunGraveSpark4Tex" OutName="eff_sun_grave_spark_4" Format="i8" Width="64" Height="64" Offset="0x45E0"/>
+        <Texture Name="gEffSunGraveSpark5Tex" OutName="eff_sun_grave_spark_5" Format="i8" Width="64" Height="64" Offset="0x55E0"/>
+        <Texture Name="gEffSunGraveSpark6Tex" OutName="eff_sun_grave_spark_6" Format="i8" Width="64" Height="64" Offset="0x65E0"/>
+        <Texture Name="gEffSunGraveSpark7Tex" OutName="eff_sun_grave_spark_7" Format="i8" Width="64" Height="64" Offset="0x75E0"/>
+        <Texture Name="gEffSunGraveSpark8Tex" OutName="eff_sun_grave_spark_8" Format="i8" Width="64" Height="64" Offset="0x85E0"/>
+        <Texture Name="object_spot02_objects_Tex_0096B0" OutName="tex_000096B0" Format="i8" Width="32" Height="96" Offset="0x96B0"/>
+        <Texture Name="object_spot02_objects_Tex_00A2B0" OutName="tex_0000A2B0" Format="i8" Width="32" Height="96" Offset="0xA2B0"/>
+        <Texture Name="object_spot02_objects_Tex_00AEB0" OutName="tex_0000AEB0" Format="i8" Width="32" Height="96" Offset="0xAEB0"/>
+        <Texture Name="object_spot02_objects_Tex_00BAB0" OutName="tex_0000BAB0" Format="i8" Width="32" Height="96" Offset="0xBAB0"/>
+        <Texture Name="object_spot02_objects_Tex_00C6B0" OutName="tex_0000C6B0" Format="i8" Width="32" Height="96" Offset="0xC6B0"/>
+        <Texture Name="object_spot02_objects_Tex_00D2B0" OutName="tex_0000D2B0" Format="i8" Width="32" Height="96" Offset="0xD2B0"/>
+        <Texture Name="object_spot02_objects_Tex_00DEB0" OutName="tex_0000DEB0" Format="i8" Width="32" Height="96" Offset="0xDEB0"/>
+        <Texture Name="object_spot02_objects_Tex_00EAB0" OutName="tex_0000EAB0" Format="i8" Width="32" Height="96" Offset="0xEAB0"/>
+        <Texture Name="object_spot02_objects_Tex_00F6B0" OutName="tex_0000F6B0" Format="i8" Width="32" Height="96" Offset="0xF6B0"/>
+        <Texture Name="object_spot02_objects_Tex_0102B0" OutName="tex_000102B0" Format="i8" Width="32" Height="96" Offset="0x102B0"/>
+        <Texture Name="object_spot02_objects_Tex_010EB0" OutName="tex_00010EB0" Format="i8" Width="32" Height="96" Offset="0x10EB0"/>
+        <Texture Name="object_spot02_objects_Tex_011AB0" OutName="tex_00011AB0" Format="i8" Width="32" Height="96" Offset="0x11AB0"/>
+    </File>
+</Root>

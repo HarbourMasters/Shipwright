@@ -54,7 +54,9 @@ void GenerateStartingInventory() {
     AddItemToInventory(SHADOW_TEMPLE_BOSS_KEY);
   }
 
-  if (GanonsBossKey.Is(GANONSBOSSKEY_START_WITH)) {
+  // Add Ganon's Boss key with Triforce Hunt so the game thinks it's obtainable from the start.
+  // During save init, the boss key isn't actually given and it's instead given when completing the triforce.
+  if (GanonsBossKey.Is(GANONSBOSSKEY_START_WITH) || GanonsBossKey.Is(GANONSBOSSKEY_TRIFORCE_HUNT)) {
     AddItemToInventory(GANONS_CASTLE_BOSS_KEY);
   }
 

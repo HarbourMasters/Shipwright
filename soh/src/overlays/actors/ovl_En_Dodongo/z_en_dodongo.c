@@ -923,7 +923,7 @@ void EnDodongo_Draw(Actor* thisx, PlayState* play2) {
     s32 index;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDodongo_OverrideLimbDraw,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnDodongo_OverrideLimbDraw,
                       EnDodongo_PostLimbDraw, this);
 
     if (this->iceTimer != 0) {

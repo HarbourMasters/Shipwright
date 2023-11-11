@@ -48,6 +48,9 @@ cd Shipwright
 
 # If you need to regenerate the asset headers to check them into source
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target ExtractAssetHeaders
+
+# If you need a newer soh.otr only
+& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target GenerateSohOtr
 ```
 
 ### Developing SoH
@@ -81,7 +84,7 @@ cd "build/x64"
 ```
 
 ## Linux
-Requires `gcc >= 10, x11, curl, python3, sdl2 >= 2.0.22, libpng, glew >= 2.2, ninja, cmake, lld`
+Requires `gcc >= 10, x11, curl, python3, sdl2 >= 2.0.22, libpng, glew >= 2.2, ninja, cmake, lld, pulseaudio-libs`
 
 **Important: For maximum performance make sure you have ninja build tools installed!**
 
@@ -110,6 +113,9 @@ cmake --build build-cmake --target clean
 
 # If you need to regenerate the asset headers to check them into source
 cmake --build build-cmake --target ExtractAssetHeaders
+
+# If you need a newer soh.otr only
+cmake --build build-cmake --target GenerateSohOtr
 ```
 
 ### Generating a distributable
@@ -157,6 +163,9 @@ cmake --build build-cmake --target clean
 
 # If you need to regenerate the asset headers to check them into source
 cmake --build build-cmake --target ExtractAssetHeaders
+
+# If you need a newer soh.otr only
+cmake --build build-cmake --target GenerateSohOtr
 ```
 
 ### Generating a distributable
@@ -211,22 +220,7 @@ cmake --build build-wiiu --target soh # --target soh_wuhb (for building .wuhb)
 ```
 
 # Compatible Roms
-```
-OOT_PAL_GC      checksum 0x09465AC3
-OOT_PAL_GC_DBG1 checksum 0x871E1C92 (debug non-master quest)
-```
-
-# OTRExporter Usage
-
-The OTRExporter exports an `oot.otr` archive file which Ship of Harkinian requires to play.
-
-Use the `extract_assets.py` script file to run the exporter using any of the following methods:
-1) Double click on the script after placing one or more roms in the directory.
-2) Drag & Drop a rom onto the script.
-3) In a terminal run `python3 extract_assets.py` after placing one or more roms in the directory.
-4) In a terminal run `python3 extract_assets.py <path_to_rom>`
-
-If the script finds multiple roms the user is prompted which to use. Selection is done using the number keys and then pressing the carriage return key.
+See [`supportedHashes.json`](supportedHashes.json)
 
 ## Getting CI to work on your fork
 

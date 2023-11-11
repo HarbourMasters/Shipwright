@@ -10,6 +10,8 @@
 
 void Save_LoadFile(void);
 
+void BossRush_InitSave(void);
+
 /**
  *  Initialize new save.
  *  This save has an empty inventory with 3 hearts and single magic.
@@ -33,6 +35,7 @@ void Sram_InitDebugSave(void) {
 
 void Sram_InitBossRushSave(void) {
     Save_InitFile(false);
+    BossRush_InitSave();
 }
 
 /**
@@ -155,7 +158,7 @@ void Sram_OpenSave() {
     }
 
     // if zelda cutscene has been watched but lullaby was not obtained, restore cutscene and take away letter
-    if ((Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) && !CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) && !gSaveContext.n64ddFlag) {
+    if ((Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) && !CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) && !IS_RANDO) {
         i = gSaveContext.eventChkInf[4] & ~1;
         gSaveContext.eventChkInf[4] = i;
 
@@ -168,15 +171,16 @@ void Sram_OpenSave() {
         }
     }
 
-    // check for owning kokiri sword.. to restore master sword? bug or debug feature?
-    if (LINK_AGE_IN_YEARS == YEARS_ADULT && !CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) {
-        gSaveContext.inventory.equipment |= gBitFlags[1] << gEquipShifts[EQUIP_SWORD];
-        gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-        gSaveContext.equips.equipment &= ~0xF;
-        gSaveContext.equips.equipment |= 2;
+    if (LINK_AGE_IN_YEARS == YEARS_ADULT && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
+        if (!IS_RANDO || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
+            gSaveContext.inventory.equipment |= OWNED_EQUIP_FLAG(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
+            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+            gSaveContext.equips.equipment &= ~(0xF << (EQUIP_TYPE_SWORD * 4));
+            gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_MASTER << (EQUIP_TYPE_SWORD * 4);
+        }
     }
 
-    if (!(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
+    if (!(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
         for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[i]) {
                 INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
@@ -218,13 +222,17 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.playerName[offset] = Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->playerName[offset];
     }
 
-    if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == 2 && strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
-        // Set N64DD Flags for save file
-        fileChooseCtx->n64ddFlags[fileChooseCtx->buttonIndex] = 1;
-        fileChooseCtx->n64ddFlag = 1;
-        gSaveContext.n64ddFlag = 1;
+    gSaveContext.n64ddFlag = fileChooseCtx->n64ddFlag;
+
+    u8 currentQuest = fileChooseCtx->questType[fileChooseCtx->buttonIndex];
+
+    if (currentQuest == QUEST_RANDOMIZER &&
+        strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
+        gSaveContext.questId = QUEST_RANDOMIZER;
 
         Randomizer_InitSaveFile();
+    } else if (currentQuest == QUEST_MASTER) {
+        gSaveContext.questId = QUEST_MASTER;
     }
 
     Save_SaveFile();

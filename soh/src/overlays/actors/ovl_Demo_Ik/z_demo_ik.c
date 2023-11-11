@@ -292,7 +292,7 @@ void DemoIk_Type1Draw(DemoIk* this, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x08, DemoIk_SetColors(gfxCtx, 245, 225, 155, 30, 30, 0));
     gSPSegment(POLY_OPA_DISP++, 0x09, DemoIk_SetColors(gfxCtx, 255, 40, 0, 40, 0, 0));
     gSPSegment(POLY_OPA_DISP++, 0x0A, DemoIk_SetColors(gfxCtx, 255, 255, 255, 20, 40, 30));
-    SkelAnime_DrawOpa(play, skelAnime->skeleton, skelAnime->jointTable, NULL, DemoIk_Type1PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, NULL, DemoIk_Type1PostLimbDraw, this);
     CLOSE_DISPS(gfxCtx);
 }
 
@@ -460,8 +460,7 @@ void DemoIk_Type2Draw(DemoIk* this, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x08, DemoIk_SetColors(gfxCtx, 245, 225, 155, 30, 30, 0));
     gSPSegment(POLY_OPA_DISP++, 0x09, DemoIk_SetColors(gfxCtx, 255, 40, 0, 40, 0, 0));
     gSPSegment(POLY_OPA_DISP++, 0x0A, DemoIk_SetColors(gfxCtx, 255, 255, 255, 20, 40, 30));
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                          DemoIk_Type2OverrideLimbDraw, DemoIk_Type2PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, DemoIk_Type2OverrideLimbDraw, DemoIk_Type2PostLimbDraw, this);
     CLOSE_DISPS(gfxCtx);
 }
 

@@ -3,6 +3,54 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_sstTex_017FE0 "__OTR__objects/object_sst/object_sstTex_017FE0"
+static const ALIGN_ASSET(2) char object_sstTex_017FE0[] = dobject_sstTex_017FE0;
+
+#define dobject_sstTex_019530 "__OTR__objects/object_sst/object_sstTex_019530"
+static const ALIGN_ASSET(2) char object_sstTex_019530[] = dobject_sstTex_019530;
+
+#define dobject_sstTex_019570 "__OTR__objects/object_sst/object_sstTex_019570"
+static const ALIGN_ASSET(2) char object_sstTex_019570[] = dobject_sstTex_019570;
+
+#define dobject_sstTex_019670 "__OTR__objects/object_sst/object_sstTex_019670"
+static const ALIGN_ASSET(2) char object_sstTex_019670[] = dobject_sstTex_019670;
+
+#define dobject_sstTex_019770 "__OTR__objects/object_sst/object_sstTex_019770"
+static const ALIGN_ASSET(2) char object_sstTex_019770[] = dobject_sstTex_019770;
+
+#define dobject_sstTex_0197B0 "__OTR__objects/object_sst/object_sstTex_0197B0"
+static const ALIGN_ASSET(2) char object_sstTex_0197B0[] = dobject_sstTex_0197B0;
+
+#define dobject_sstTex_0199B0 "__OTR__objects/object_sst/object_sstTex_0199B0"
+static const ALIGN_ASSET(2) char object_sstTex_0199B0[] = dobject_sstTex_0199B0;
+
+#define dobject_sstTex_019AB0 "__OTR__objects/object_sst/object_sstTex_019AB0"
+static const ALIGN_ASSET(2) char object_sstTex_019AB0[] = dobject_sstTex_019AB0;
+
+#define dobject_sstTex_019BB0 "__OTR__objects/object_sst/object_sstTex_019BB0"
+static const ALIGN_ASSET(2) char object_sstTex_019BB0[] = dobject_sstTex_019BB0;
+
+#define dobject_sstTex_019FB0 "__OTR__objects/object_sst/object_sstTex_019FB0"
+static const ALIGN_ASSET(2) char object_sstTex_019FB0[] = dobject_sstTex_019FB0;
+
+#define dobject_sstTex_01A0B0 "__OTR__objects/object_sst/object_sstTex_01A0B0"
+static const ALIGN_ASSET(2) char object_sstTex_01A0B0[] = dobject_sstTex_01A0B0;
+
+#define dobject_sstTex_01A1B0 "__OTR__objects/object_sst/object_sstTex_01A1B0"
+static const ALIGN_ASSET(2) char object_sstTex_01A1B0[] = dobject_sstTex_01A1B0;
+
+#define dobject_sstTex_01A3B0 "__OTR__objects/object_sst/object_sstTex_01A3B0"
+static const ALIGN_ASSET(2) char object_sstTex_01A3B0[] = dobject_sstTex_01A3B0;
+
+#define dobject_sstTex_01A5B0 "__OTR__objects/object_sst/object_sstTex_01A5B0"
+static const ALIGN_ASSET(2) char object_sstTex_01A5B0[] = dobject_sstTex_01A5B0;
+
+#define dobject_sstTex_01A730 "__OTR__objects/object_sst/object_sstTex_01A730"
+static const ALIGN_ASSET(2) char object_sstTex_01A730[] = dobject_sstTex_01A730;
+
+#define dobject_sstTex_01A7B0 "__OTR__objects/object_sst/object_sstTex_01A7B0"
+static const ALIGN_ASSET(2) char object_sstTex_01A7B0[] = dobject_sstTex_01A7B0;
+
 #define dgBongoTitleCardTex "__OTR__objects/object_sst/gBongoTitleCardTex"
 static const ALIGN_ASSET(2) char gBongoTitleCardTex[] = dgBongoTitleCardTex;
 
@@ -110,9 +158,6 @@ static const ALIGN_ASSET(2) char gBongoUnused1Tex[] = dgBongoUnused1Tex;
 
 #define dgBongoUnused2Tex "__OTR__objects/object_sst/gBongoUnused2Tex"
 static const ALIGN_ASSET(2) char gBongoUnused2Tex[] = dgBongoUnused2Tex;
-
-#define dobject_sstTex_017FE0 "__OTR__objects/object_sst/object_sstTex_017FE0"
-static const ALIGN_ASSET(2) char object_sstTex_017FE0[] = dobject_sstTex_017FE0;
 
 #define dgBongoLeftHandSkelLimbsLimb_004C4CDL_0044C8 "__OTR__objects/object_sst/gBongoLeftHandSkelLimbsLimb_004C4CDL_0044C8"
 static const ALIGN_ASSET(2) char gBongoLeftHandSkelLimbsLimb_004C4CDL_0044C8[] = dgBongoLeftHandSkelLimbsLimb_004C4CDL_0044C8;
@@ -294,49 +339,5 @@ static const ALIGN_ASSET(2) char gBongoHeadSkelLimbsLimb_017B78DL_011658[] = dgB
 #define dgBongoHeadSkelLimbsLimb_017B84DL_0119B0 "__OTR__objects/object_sst/gBongoHeadSkelLimbsLimb_017B84DL_0119B0"
 static const ALIGN_ASSET(2) char gBongoHeadSkelLimbsLimb_017B84DL_0119B0[] = dgBongoHeadSkelLimbsLimb_017B84DL_0119B0;
 
-#define dobject_sstTex_01A730 "__OTR__objects/object_sst/object_sstTex_01A730"
-static const ALIGN_ASSET(2) char object_sstTex_01A730[] = dobject_sstTex_01A730;
-
-#define dobject_sstTex_0199B0 "__OTR__objects/object_sst/object_sstTex_0199B0"
-static const ALIGN_ASSET(2) char object_sstTex_0199B0[] = dobject_sstTex_0199B0;
-
-#define dobject_sstTex_019BB0 "__OTR__objects/object_sst/object_sstTex_019BB0"
-static const ALIGN_ASSET(2) char object_sstTex_019BB0[] = dobject_sstTex_019BB0;
-
-#define dobject_sstTex_01A3B0 "__OTR__objects/object_sst/object_sstTex_01A3B0"
-static const ALIGN_ASSET(2) char object_sstTex_01A3B0[] = dobject_sstTex_01A3B0;
-
-#define dobject_sstTex_01A7B0 "__OTR__objects/object_sst/object_sstTex_01A7B0"
-static const ALIGN_ASSET(2) char object_sstTex_01A7B0[] = dobject_sstTex_01A7B0;
-
-#define dobject_sstTex_019AB0 "__OTR__objects/object_sst/object_sstTex_019AB0"
-static const ALIGN_ASSET(2) char object_sstTex_019AB0[] = dobject_sstTex_019AB0;
-
-#define dobject_sstTex_019FB0 "__OTR__objects/object_sst/object_sstTex_019FB0"
-static const ALIGN_ASSET(2) char object_sstTex_019FB0[] = dobject_sstTex_019FB0;
-
-#define dobject_sstTex_01A5B0 "__OTR__objects/object_sst/object_sstTex_01A5B0"
-static const ALIGN_ASSET(2) char object_sstTex_01A5B0[] = dobject_sstTex_01A5B0;
-
-#define dobject_sstTex_01A1B0 "__OTR__objects/object_sst/object_sstTex_01A1B0"
-static const ALIGN_ASSET(2) char object_sstTex_01A1B0[] = dobject_sstTex_01A1B0;
-
-#define dobject_sstTex_0197B0 "__OTR__objects/object_sst/object_sstTex_0197B0"
-static const ALIGN_ASSET(2) char object_sstTex_0197B0[] = dobject_sstTex_0197B0;
-
-#define dobject_sstTex_019570 "__OTR__objects/object_sst/object_sstTex_019570"
-static const ALIGN_ASSET(2) char object_sstTex_019570[] = dobject_sstTex_019570;
-
-#define dobject_sstTex_019530 "__OTR__objects/object_sst/object_sstTex_019530"
-static const ALIGN_ASSET(2) char object_sstTex_019530[] = dobject_sstTex_019530;
-
-#define dobject_sstTex_019670 "__OTR__objects/object_sst/object_sstTex_019670"
-static const ALIGN_ASSET(2) char object_sstTex_019670[] = dobject_sstTex_019670;
-
-#define dobject_sstTex_019770 "__OTR__objects/object_sst/object_sstTex_019770"
-static const ALIGN_ASSET(2) char object_sstTex_019770[] = dobject_sstTex_019770;
-
-#define dobject_sstTex_01A0B0 "__OTR__objects/object_sst/object_sstTex_01A0B0"
-static const ALIGN_ASSET(2) char object_sstTex_01A0B0[] = dobject_sstTex_01A0B0;
 
 #endif // OBJECTS_OBJECT_SST_H

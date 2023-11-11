@@ -308,7 +308,7 @@ void ArmsHook_Draw(Actor* thisx, PlayState* play) {
     f32 sp5C;
     f32 sp58;
 
-    if ((player->actor.draw != NULL) && (player->rightHandType == 15)) {
+    if ((player->actor.draw != NULL) && (player->rightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT)) {
         OPEN_DISPS(play->state.gfxCtx);
 
         if ((ArmsHook_Shoot != this->actionFunc) || (this->timer <= 0)) {

@@ -1,7 +1,7 @@
 <Root>
     <File Name="ovl_Boss_Ganon" BaseAddress="0x809F2C80" RangeStart="0xE388" RangeEnd="0x211D8">
         <Texture Name="ovl_Boss_GanonTex_00E748" OutName="ovl_Boss_GanonTex_00E748" Format="i8" Width="64" Height="64" Offset="0xE418" AddedByScript="true"/>
-        <Texture Name="ovl_Boss_GanonTex_00F848" OutName="ovl_Boss_GanonTex_00F848" Format="ci8" Width="32" Height="32" Offset="0xF518" TluOffset="0xF4D8" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_GanonTex_00F848" OutName="ovl_Boss_GanonTex_00F848" Format="ci8" Width="32" Height="32" Offset="0xF518" TlutOffset="0xF4D8" AddedByScript="true"/>
         <Texture Name="ovl_Boss_GanonTex_010538" OutName="ovl_Boss_GanonTex_010538" Format="i8" Width="64" Height="64" Offset="0x10208" AddedByScript="true"/>
         <Texture Name="ovl_Boss_GanonTex_01A7B0" OutName="ovl_Boss_GanonTex_01A7B0" Format="ia16" Width="32" Height="32" Offset="0x1A480" AddedByScript="true"/>
         <Texture Name="ovl_Boss_GanonTex_01AFB0" OutName="ovl_Boss_GanonTex_01AFB0" Format="i4" Width="64" Height="64" Offset="0x1AC80" AddedByScript="true"/>
@@ -29,7 +29,7 @@
         <Texture Name="gGanondorfLightning11Tex" OutName="lightning_11" Format="i8" Width="32" Height="96" Offset="0x18AD0" Static="Off"/>
         <Texture Name="gGanondorfLightning12Tex" OutName="lightning_12" Format="i8" Width="32" Height="96" Offset="0x196D0" Static="Off"/>
         
-        <Texture Name="gGanondorfWindowShatterTemplateTex" OutName="window_shatter_template" Format="ci8" Width="32" Height="64" Offset="0xFA08" Static="Off"/>
+        <Texture Name="gGanondorfWindowShatterTemplateTex" OutName="window_shatter_template" Format="i8" Width="32" Height="64" Offset="0xFA08" Static="Off"/>
 
         <DList Name="gGanondorfLightStreak1DL" Offset="0x1F9C0" Static="Off"/>
         <DList Name="gGanondorfLightStreak2DL" Offset="0x1F9F8" Static="Off"/>
