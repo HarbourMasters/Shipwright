@@ -8,11 +8,12 @@ namespace Rando {
 Option Option::Bool(std::string name_, std::vector<std::string> options_, OptionCategory category_,
                     std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
                     bool defaultHidden_, int imFlags_) {
-    return Option(false, std::move(name_), std::move(options_), category_, std::move(cvarName_), std::move(description_),
-                  widgetType_, defaultOption_, defaultHidden_, imFlags_);
+    return {false, std::move(name_), std::move(options_), category_, std::move(cvarName_), std::move(description_),
+                  widgetType_, defaultOption_, defaultHidden_, imFlags_};
 }
 
-Option Option::Bool(std::string name_, std::string cvarName_, std::string description_, int imFlags_, WidgetType widgetType_, bool defaultOption_) {
+Option Option::Bool(std::string name_, std::string cvarName_, std::string description_, const int imFlags_,
+    const WidgetType widgetType_, const bool defaultOption_) {
     return Option(false, std::move(name_), {"Off", "On"}, OptionCategory::Setting, std::move(cvarName_),
                   std::move(description_), widgetType_, defaultOption_, false, imFlags_);
 }
@@ -20,21 +21,20 @@ Option Option::Bool(std::string name_, std::string cvarName_, std::string descri
 Option Option::U8(std::string name_, std::vector<std::string> options_, OptionCategory category_,
                   std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
                   bool defaultHidden_, int imFlags_) {
-    return Option(uint8_t(0), std::move(name_), std::move(options_), category_, std::move(cvarName_),
-                  std::move(description_), widgetType_, defaultOption_, defaultHidden_, imFlags_);
+    return {static_cast<uint8_t>(0), std::move(name_), std::move(options_), category_, std::move(cvarName_),
+                  std::move(description_), widgetType_, defaultOption_, defaultHidden_, imFlags_};
 }
 
 Option Option::LogicTrick(std::string name_) {
-    return Option(false, std::move(name_), { "Disabled", "Enabled" }, OptionCategory::Setting, std::move(""),
-                  std::move(""), WidgetType::Checkbox, 0, 0, IMFLAG_NONE);
+    return Option(false, std::move(name_), { "Disabled", "Enabled" }, OptionCategory::Setting, "",
+                  "", WidgetType::Checkbox, 0, false, IMFLAG_NONE);
 }
 
 Option::operator bool() const {
     if (std::holds_alternative<bool>(var)) {
         return Value<bool>();
-    } else {
-        return Value<uint8_t>() != 0;
     }
+    return Value<uint8_t>() != 0;
 }
 
 size_t Option::GetOptionCount() const {
@@ -65,7 +65,7 @@ void Option::SetVariable() {
     }
 }
 
-void Option::SetCVar() {
+void Option::SetCVar() const {
     if (!cvarName.empty()) {
         CVarSetInteger(cvarName.c_str(), GetSelectedOptionIndex());
     }
@@ -86,7 +86,7 @@ void Option::RestoreDelayedOption() {
     SetVariable();
 }
 
-void Option::SetSelectedIndex(size_t idx) {
+void Option::SetSelectedIndex(const size_t idx) {
     selectedOption = idx;
     if (selectedOption >= options.size()) {
         selectedOption = 0;
@@ -117,7 +117,7 @@ void Option::Enable() {
     disabled = false;
 }
 
-void Option::Disable(std::string text, UIWidgets::CheckboxGraphics graphic) {
+void Option::Disable(std::string text, const UIWidgets::CheckboxGraphics graphic) {
     if (!disabled || disabledText != text || disabledGraphic != graphic) {
         disabled = true;
         disabledText = std::move(text);
@@ -125,7 +125,7 @@ void Option::Disable(std::string text, UIWidgets::CheckboxGraphics graphic) {
     }
 }
 
-bool Option::IsCategory(OptionCategory category) const {
+bool Option::IsCategory(const OptionCategory category) const {
     return category == this->category;
 }
 
@@ -148,20 +148,20 @@ bool Option::RenderImGui() const {
     return changed;
 }
 
-bool Option::HasFlag(int imFlag_) const {
+bool Option::HasFlag(const int imFlag_) const {
     return imFlag_ & imFlags;
 }
 
-void Option::AddFlag(int imFlag_) {
+void Option::AddFlag(const int imFlag_) {
     imFlags |= imFlag_;
 }
 
-void Option::SetFlag(int imFlag_) {
+void Option::SetFlag(const int imFlag_) {
     imFlags = imFlag_;
 }
 
-void Option::RemoveFlag(int imFlag_) {
-    imFlags &= ~(imFlag_);
+void Option::RemoveFlag(const int imFlag_) {
+    imFlags &= ~imFlag_;
 }
 
 Option::Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
@@ -190,8 +190,8 @@ bool Option::RenderCheckbox() const {
     if (disabled) {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
     }
-    bool val = (bool)CVarGetInteger(cvarName.c_str(), defaultOption);
-    if (UIWidgets::CustomCheckbox(name.c_str(), &val, disabled, disabledGraphic)) {
+    bool val = static_cast<bool>(CVarGetInteger(cvarName.c_str(), defaultOption));
+    if (CustomCheckbox(name.c_str(), &val, disabled, disabledGraphic)) {
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -222,12 +222,12 @@ bool Option::RenderCombobox() const {
         UIWidgets::InsertHelpHoverText(description.c_str());
     }
     ImGui::BeginGroup();
-    std::string comboName = std::string("##") + std::string(cvarName);
+    const std::string comboName = std::string("##") + std::string(cvarName);
     if (ImGui::BeginCombo(comboName.c_str(), options[selected].c_str())) {
-        for (uint8_t i = 0; i < options.size(); i++) {
-            if (options[i].length() > 0) {
+        for (size_t i = 0; i < options.size(); i++) {
+            if (!options[i].empty()) {
                 if (ImGui::Selectable(options[i].c_str(), i == selected)) {
-                    CVarSetInteger(cvarName.c_str(), i);
+                    CVarSetInteger(cvarName.c_str(), static_cast<int>(i));
                     changed = true;
                     selected = i;
                     LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -253,27 +253,27 @@ bool Option::RenderSlider() const {
     if (disabled) {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
     }
-    std::string formatName = name + ": %s";
+    const std::string formatName = name + ": %s";
     ImGui::Text(formatName.c_str(), options[val].c_str());
     if (!description.empty()) {
         UIWidgets::InsertHelpHoverText(description.c_str());
     }
     UIWidgets::Spacer(0);
     ImGui::BeginGroup();
-    std::string MinusBTNName = " - ##" + cvarName;
+    const std::string MinusBTNName = " - ##" + cvarName;
     if (ImGui::Button(MinusBTNName.c_str())) {
         val--;
         changed = true;
     }
     ImGui::SameLine();
     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-    ImGui::PushItemWidth(std::min((ImGui::GetContentRegionAvail().x - 30.0f), 260.0f));
-    std::string id = "##Slider" + cvarName;
-    if (ImGui::SliderInt(id.c_str(), &val, 0, options.size() - 1, "", ImGuiSliderFlags_AlwaysClamp)) {
+    ImGui::PushItemWidth(std::min(ImGui::GetContentRegionAvail().x - 30.0f, 260.0f));
+    const std::string id = "##Slider" + cvarName;
+    if (ImGui::SliderInt(id.c_str(), &val, 0, static_cast<int>(options.size()) - 1, "", ImGuiSliderFlags_AlwaysClamp)) {
         changed = true;
     }
     ImGui::PopItemWidth();
-    std::string PlusBTNName = " + ##" + cvarName;
+    const std::string PlusBTNName = " + ##" + cvarName;
     ImGui::SameLine();
     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
     if (ImGui::Button(PlusBTNName.c_str())) {
@@ -289,7 +289,7 @@ bool Option::RenderSlider() const {
         changed = true;
     }
     if (val > options.size() - 1) {
-        val = options.size() - 1;
+        val = static_cast<int>(options.size() - 1);
         changed = true;
     }
     if (changed) {
@@ -299,28 +299,28 @@ bool Option::RenderSlider() const {
     return changed;
 }
 
-OptionGroup::OptionGroup(std::string name, std::vector<Option*> options, OptionGroupType groupType, bool printInSpoiler,
-                         WidgetContainerType containerType, std::string description)
+OptionGroup::OptionGroup(std::string name, std::vector<Option*> options, const OptionGroupType groupType,
+                         const bool printInSpoiler, const WidgetContainerType containerType, std::string description)
     : mName(std::move(name)), mOptions(std::move(options)), mGroupType(groupType), mPrintInSpoiler(printInSpoiler),
-      mContainsType(OptionGroupType::DEFAULT), mContainerType(containerType), mDescription(std::move(description)) {
+      mContainerType(containerType), mDescription(std::move(description)) {
 }
 
-OptionGroup::OptionGroup(std::string name, std::vector<OptionGroup*> subGroups, OptionGroupType groupType,
-                         bool printInSpoiler, WidgetContainerType containerType, std::string description)
+OptionGroup::OptionGroup(std::string name, std::vector<OptionGroup*> subGroups, const OptionGroupType groupType,
+                         const bool printInSpoiler, const WidgetContainerType containerType, std::string description)
     : mName(std::move(name)), mSubGroups(std::move(subGroups)), mGroupType(groupType), mPrintInSpoiler(printInSpoiler),
       mContainsType(OptionGroupType::SUBGROUP), mContainerType(containerType), mDescription(std::move(description)) {
 }
 
-OptionGroup OptionGroup::SubGroup(std::string name, std::vector<Option*> options, bool printInSpoiler,
-                                  WidgetContainerType containerType, std::string description) {
-    return OptionGroup(std::move(name), std::move(options), OptionGroupType::SUBGROUP, printInSpoiler, containerType,
-                       std::move(description));
+OptionGroup OptionGroup::SubGroup(std::string name, std::vector<Option*> options, const bool printInSpoiler,
+                                  const WidgetContainerType containerType, std::string description) {
+    return {std::move(name), std::move(options), OptionGroupType::SUBGROUP, printInSpoiler, containerType,
+                       std::move(description)};
 }
 
-OptionGroup OptionGroup::SubGroup(std::string name, std::vector<OptionGroup*> subGroups, bool printInSpoiler,
-                                  WidgetContainerType containerType, std::string description) {
-    return OptionGroup(std::move(name), std::move(subGroups), OptionGroupType::SUBGROUP, printInSpoiler, containerType,
-                       std::move(description));
+OptionGroup OptionGroup::SubGroup(std::string name, std::vector<OptionGroup*> subGroups, const bool printInSpoiler,
+                                  const WidgetContainerType containerType, std::string description) {
+    return {std::move(name), std::move(subGroups), OptionGroupType::SUBGROUP, printInSpoiler, containerType,
+                       std::move(description)};
 }
 
 const std::string& OptionGroup::GetName() const {
@@ -355,12 +355,12 @@ const std::string& OptionGroup::GetDescription() const {
     return mDescription;
 }
 
-bool OptionGroup::RenderImGui() const {
+bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     bool changed = false;
     if (mContainerType == WidgetContainerType::TABLE) {
-        if (ImGui::BeginTable(mName.c_str(), mSubGroups.size(), ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            for (auto column : mSubGroups) {
+        if (ImGui::BeginTable(mName.c_str(), static_cast<int>(mSubGroups.size()), ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+            for (const auto column : mSubGroups) {
                 if (column->GetContainerType() == WidgetContainerType::COLUMN) {
                     ImGui::TableSetupColumn(column->GetName().c_str(), ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 }
@@ -393,13 +393,13 @@ bool OptionGroup::RenderImGui() const {
         ImGui::PushItemWidth(-FLT_MIN);
     }
     if (mContainsType == OptionGroupType::SUBGROUP) {
-        for (auto optionGroup : mSubGroups) {
+        for (const auto optionGroup : mSubGroups) {
             if (optionGroup->RenderImGui()) {
                 changed = true;
             }
         }
     } else {
-        for (auto option : mOptions) {
+        for (const auto option : mOptions) {
             if (option->IsHidden()) {
                 continue;
             }

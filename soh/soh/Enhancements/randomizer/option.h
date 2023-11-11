@@ -2,7 +2,7 @@
 
 #include "soh/UIWidgets.hpp"
 
-#include <stdint.h>
+#include <cstdint>
 #include <string>
 #include <vector>
 #include <variant>
@@ -59,6 +59,7 @@ class Option {
      * `Combobox` or `Slider` would render and function correctly.
      * @param defaultOption_ The default index that should be selected.
      * @param defaultHidden_ Whether or not to display the option (can be changed at runtime later).
+     * @param imFlags_ (see ImGuiMenuFlags type) flags that can modify how this option is rendered.
      * @return Option 
      */
     static Option Bool(std::string name_, std::vector<std::string> options_ = { "Off", "On" },
@@ -77,6 +78,7 @@ class Option {
      * link to any CVar.
      * @param description_ A description of what this option affects. Will be rendered in a tooltip in ImGui.
      * Can be left as an empty string if desired, no tooltip will be rendered.
+     * @param imFlags_ (see ImGuiMenuFlags type) flags that can modify how this option is rendered.
      * @param widgetType_ What type of widget should be rendered. Should probably be `Checkbox` but technically
      * `Combobox` or `Slider` would render and function correctly.
      * @param defaultOption_ The defaulted selected index for this Option.
@@ -84,7 +86,7 @@ class Option {
      */
     static Option Bool(std::string name_, std::string cvarName_, std::string description_ = "",
                        int imFlags_ = IMFLAG_SEPARATOR_BOTTOM, WidgetType widgetType_ = WidgetType::Checkbox,
-                       bool defaultOption_ = 0);
+                       bool defaultOption_ = false);
 
     /**
      * @brief Constructs a U8 Option.
@@ -103,12 +105,13 @@ class Option {
      * This should not be set for `Checkbox` if options_ has more than 2 values.
      * @param defaultOption_ The default index that should be selected.
      * @param defaultHidden_ Whether or not to display the option (can be changed at runtime later).
+     * @param imFlags_ (see ImGuiMenuFlags type) flags that can modify how this option is rendered.
      * @return Option
      */
     static Option U8(std::string name_, std::vector<std::string> options_,
                      OptionCategory category_ = OptionCategory::Setting, std::string cvarName_ = "",
                      std::string description_ = "", WidgetType widgetType_ = WidgetType::Combobox,
-                     uint8_t defaultOption = 0, bool defaultHidden = false, int imFlags_ = IMFLAG_SEPARATOR_BOTTOM);
+                     uint8_t defaultOption_ = 0, bool defaultHidden_ = false, int imFlags_ = IMFLAG_SEPARATOR_BOTTOM);
 
     /**
      * @brief A convenience function for constructing the Option for a trick.
@@ -209,7 +212,7 @@ class Option {
      * @brief Sets the CVar corresponding to the property `cvarName` equal to the value
      * of the property `selectedValue`.
     */
-    void SetCVar();
+    void SetCVar() const;
 
     /**
      * @brief Sets the value of property `selectedValue` equal to the CVar corresponding
@@ -315,16 +318,16 @@ class Option {
     uint8_t selectedOption = 0;
     uint8_t delayedOption = 0;
     bool hidden = false;
-    OptionCategory category;
-    std::string cvarName = "";
-    std::string description = "";
-    WidgetType widgetType;
+    OptionCategory category = OptionCategory::Setting;
+    std::string cvarName;
+    std::string description;
+    WidgetType widgetType = WidgetType::Checkbox;
     uint8_t defaultOption = false;
     bool defaultHidden = false;
     int imFlags = IMFLAG_NONE;
     bool disabled = false;
     UIWidgets::CheckboxGraphics disabledGraphic = UIWidgets::CheckboxGraphics::Cross;
-    std::string disabledText = "";
+    std::string disabledText;
 };
 
 enum class OptionGroupType {
@@ -352,8 +355,6 @@ class OptionGroup {
      * @param groupType `DEFAULT` if this group is not contained within any other groups, `SUBGROUP` if it is a
      * subgroup of another group.
      * @param printInSpoiler Whether or not to print the contents of this group to the spoiler/patch file.
-     * @param containsType `DEFAULT` if this group contains `Option`s, or `SUBGROUP` if this group contains
-     * other groups.
      * @param containerType Specifies the type of container this widget should render as in ImGui.
      * @param description A description that can appear in a tooltip in ImGui.
      */
@@ -467,9 +468,9 @@ class OptionGroup {
     std::vector<Option*> mOptions;
     std::vector<OptionGroup*> mSubGroups;
     OptionGroupType mGroupType = OptionGroupType::DEFAULT;
-    bool mPrintInSpoiler;
+    bool mPrintInSpoiler = true;
     OptionGroupType mContainsType = OptionGroupType::DEFAULT;
     WidgetContainerType mContainerType = WidgetContainerType::BASIC;
-    std::string mDescription = "";
+    std::string mDescription;
 };
 } // namespace Rando
