@@ -592,7 +592,7 @@ void SohInputEditorWindow::DrawStickDirectionLine(const char* axisDirectionName,
     ImGui::Button(axisDirectionName, ImVec2(SCALE_IMGUI_SIZE(26.0f), 0));
     ImGui::PopStyleColor();
     ImGui::EndDisabled();
-    ImGui::SameLine(SCALE_IMGUI_SIZE(38.0f));
+    ImGui::SameLine(0.0f,SCALE_IMGUI_SIZE(4.0f));
     for (auto id : mStickDirectionToMappingIds[port][stick][direction]) {
         DrawStickDirectionLineEditMappingButton(port, stick, direction, id);
     }
