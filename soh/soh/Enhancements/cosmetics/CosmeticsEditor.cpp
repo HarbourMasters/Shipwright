@@ -395,13 +395,6 @@ void ResetPositionAll() {
 
 int hue = 0;
 
-// Runs on scene init to randomize all unlocked cosmetics
-void CosmeticsOnSceneInitHook() {
-    if (CVarGetInteger("gCosmetics.RandomizeAllOnNewScene", 0) == 1) {
-        CosmeticsEditor_RandomizeAll();
-    }
-}
-
 // Runs every frame to update rainbow hue, a potential future optimization is to only run this a once or twice a second and increase the speed of the rainbow hue rotation.
 void CosmeticsUpdateTick() {
     int index = 0;
@@ -1900,7 +1893,9 @@ void RegisterOnGameFrameUpdateHook() {
 
 void Cosmetics_RegisterOnSceneInitHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-        CosmeticsOnSceneInitHook();
+        if (CVarGetInteger("gCosmetics.RandomizeAllOnNewScene", 0)) {
+            CosmeticsEditor_RandomizeAll();
+        }
     });
 }
 
