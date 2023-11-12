@@ -284,6 +284,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ runner.os }}-ccache
+        variant: sccache
     - name: vcpkg
       uses: johnwason/vcpkg-action@v5
       with:
