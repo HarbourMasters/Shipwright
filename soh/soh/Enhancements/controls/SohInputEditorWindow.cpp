@@ -315,7 +315,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
                     ImGui::BeginDisabled();
                 }
                 ImGui::PushButtonRepeat(true);
-                if (ImGui::Button("-")) {
+                if (ImGui::Button(StringHelper::Sprintf("-##Stick Axis Threshold%s", id.c_str()).c_str())) {
                     sdlIndexMapping->SetStickAxisThresholdPercentage(stickAxisThreshold - 1);
                     sdlIndexMapping->SaveToConfig();
                 }
@@ -335,7 +335,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
                     ImGui::BeginDisabled();
                 }
                 ImGui::PushButtonRepeat(true);
-                if (ImGui::Button("+")) {
+                if (ImGui::Button(StringHelper::Sprintf("+##Stick Axis Threshold%s", id.c_str()).c_str())) {
                     sdlIndexMapping->SetStickAxisThresholdPercentage(stickAxisThreshold + 1);
                     sdlIndexMapping->SaveToConfig();
                 }
@@ -353,7 +353,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
                     ImGui::BeginDisabled();
                 }
                 ImGui::PushButtonRepeat(true);
-                if (ImGui::Button("-")) {
+                if (ImGui::Button(StringHelper::Sprintf("-##Trigger Axis Threshold%s", id.c_str()).c_str())) {
                     sdlIndexMapping->SetTriggerAxisThresholdPercentage(triggerAxisThreshold - 1);
                     sdlIndexMapping->SaveToConfig();
                 }
@@ -373,7 +373,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
                     ImGui::BeginDisabled();
                 }
                 ImGui::PushButtonRepeat(true);
-                if (ImGui::Button("+")) {
+                if (ImGui::Button(StringHelper::Sprintf("+##Trigger Axis Threshold%s", id.c_str()).c_str())) {
                     sdlIndexMapping->SetTriggerAxisThresholdPercentage(triggerAxisThreshold + 1);
                     sdlIndexMapping->SaveToConfig();
                 }
@@ -627,7 +627,7 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
             ImGui::BeginDisabled();
         }
         ImGui::PushButtonRepeat(true);
-        if (ImGui::Button("-")) {
+        if (ImGui::Button(StringHelper::Sprintf("-##Deadzone%d", id).c_str())) {
             controllerStick->SetDeadzone(deadzonePercentage - 1);
         }
         ImGui::PopButtonRepeat();
@@ -645,7 +645,7 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
             ImGui::BeginDisabled();
         }
         ImGui::PushButtonRepeat(true);
-        if (ImGui::Button("+")) {
+        if (ImGui::Button(StringHelper::Sprintf("+##Deadzone%d", id).c_str())) {
             controllerStick->SetDeadzone(deadzonePercentage + 1);
         }
         ImGui::PopButtonRepeat();
@@ -665,7 +665,7 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
             ImGui::BeginDisabled();
         }
         ImGui::PushButtonRepeat(true);
-        if (ImGui::Button("-")) {
+        if (ImGui::Button(StringHelper::Sprintf("-##NotchProximityThreshold%d", id).c_str())) {
             controllerStick->SetNotchSnapAngle(notchSnapAngle - 1);
         }
         ImGui::PopButtonRepeat();
@@ -683,7 +683,7 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
             ImGui::BeginDisabled();
         }
         ImGui::PushButtonRepeat(true);
-        if (ImGui::Button("+")) {
+        if (ImGui::Button(StringHelper::Sprintf("+##NotchProximityThreshold%d", id).c_str())) {
             controllerStick->SetNotchSnapAngle(notchSnapAngle + 1);
         }
         ImGui::PopButtonRepeat();
@@ -816,7 +816,7 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
                 ImGui::BeginDisabled();
             }
             ImGui::PushButtonRepeat(true);
-            if (ImGui::Button("-")) {
+            if (ImGui::Button(StringHelper::Sprintf("-##Small Motor Intensity%s", id.c_str()).c_str())) {
                 mapping->SetHighFrequencyIntensity(smallMotorIntensity - 1);
                 mapping->SaveToConfig();
             }
@@ -836,7 +836,7 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
                 ImGui::BeginDisabled();
             }
             ImGui::PushButtonRepeat(true);
-            if (ImGui::Button("+")) {
+            if (ImGui::Button(StringHelper::Sprintf("+##Small Motor Intensity%s", id.c_str()).c_str())) {
                 mapping->SetHighFrequencyIntensity(smallMotorIntensity + 1);
                 mapping->SaveToConfig();
             }
@@ -859,7 +859,7 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
                 ImGui::BeginDisabled();
             }
             ImGui::PushButtonRepeat(true);
-            if (ImGui::Button("-")) {
+            if (ImGui::Button(StringHelper::Sprintf("-##Large Motor Intensity%s", id.c_str()).c_str())) {
                 mapping->SetLowFrequencyIntensity(largeMotorIntensity - 1);
                 mapping->SaveToConfig();
             }
@@ -879,7 +879,7 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
                 ImGui::BeginDisabled();
             }
             ImGui::PushButtonRepeat(true);
-            if (ImGui::Button("+")) {
+            if (ImGui::Button(StringHelper::Sprintf("+##Large Motor Intensity%s", id.c_str()).c_str())) {
                 mapping->SetLowFrequencyIntensity(largeMotorIntensity + 1);
                 mapping->SaveToConfig();
             }
@@ -1105,7 +1105,7 @@ void SohInputEditorWindow::DrawGyroSection(uint8_t port) {
             ImGui::BeginDisabled();
         }
         ImGui::PushButtonRepeat(true);
-        if (ImGui::Button("-")) {
+        if (ImGui::Button(StringHelper::Sprintf("-##GyroSensitivity%s", id.c_str()).c_str())) {
             mapping->SetSensitivity(sensitivity - 1);
             mapping->SaveToConfig();
         }
@@ -1125,7 +1125,7 @@ void SohInputEditorWindow::DrawGyroSection(uint8_t port) {
             ImGui::BeginDisabled();
         }
         ImGui::PushButtonRepeat(true);
-        if (ImGui::Button("+")) {
+        if (ImGui::Button(StringHelper::Sprintf("+##GyroSensitivity%s", id.c_str()).c_str())) {
             mapping->SetSensitivity(sensitivity + 1);
             mapping->SaveToConfig();
         }
