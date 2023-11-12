@@ -65,6 +65,10 @@ SaveManager::SaveManager() {
 
     AddInitFunction(InitFileImpl);
 
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([this](uint32_t fileNum) { ThreadPoolWait(); });
+
+    smThreadPool = std::make_shared<BS::thread_pool>(1);
+
     for (SaveFileMetaInfo& info : fileMetaInfo) {
         info.valid = false;
         info.deaths = 0;
@@ -357,12 +361,12 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
     });
 }
 
+// Init() here is an extension of InitSram, and thus not truly an initializer for SaveManager itself. don't put any class initialization stuff here
 void SaveManager::Init() {
     const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
     auto sOldSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav");
     auto sOldBackupSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.bak");
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([this](uint32_t fileNum) { ThreadPoolWait(); });
 
     // If the save directory does not exist, create it
     if (!std::filesystem::exists(sSavePath)) {
@@ -403,7 +407,6 @@ void SaveManager::Init() {
     } else {
         CreateDefaultGlobal();
     }
-    smThreadPool = std::make_shared<BS::thread_pool>(1);
 
     // Load files to initialize metadata
     for (int fileNum = 0; fileNum < MaxFiles; fileNum++) {
@@ -930,6 +933,10 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
 void SaveManager::SaveSection(int fileNum, int sectionID, bool threaded) {
     // Don't save in Boss rush.
     if (fileNum == 0xFF || fileNum == 0xFE) {
+        return;
+    }
+    // Don't save if after OnExitGame
+    if (!GameInteractor::IsSaveLoaded()) {
         return;
     }
     // Don't save a nonexistent section
