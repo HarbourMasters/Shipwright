@@ -2072,6 +2072,13 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
     // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
     LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetLED()->SetLEDColor(GetColorForControllerLED());
 
+    static std::shared_ptr<SohInputEditorWindow> controllerConfigWindow = nullptr;
+    if (controllerConfigWindow == nullptr) {
+        controllerConfigWindow = std::dynamic_pointer_cast<SohInputEditorWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Input Editor"));
+    } else if (controllerConfigWindow->TestingRumble()) {
+        return;
+    }
+
     if (rumble) {
         LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetRumble()->StartRumble();
     } else {

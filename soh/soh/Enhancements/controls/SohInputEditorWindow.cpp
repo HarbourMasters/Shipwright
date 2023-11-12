@@ -16,6 +16,8 @@ SohInputEditorWindow::~SohInputEditorWindow() {
 void SohInputEditorWindow::InitElement() {
     mGameInputBlockTimer = INT32_MAX;
     mMappingInputBlockTimer = INT32_MAX;
+    mRumbleTimer = INT32_MAX;
+    mRumbleMappingToTest = nullptr;
     mInputEditorPopupOpen = false;
 
     mButtonsBitmasks = { BTN_A, BTN_B, BTN_START, BTN_L, BTN_R, BTN_Z, BTN_CUP, BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT };
@@ -25,6 +27,20 @@ void SohInputEditorWindow::InitElement() {
 
 #define INPUT_EDITOR_WINDOW_GAME_INPUT_BLOCK_ID 95237929
 void SohInputEditorWindow::UpdateElement() {
+    if (mRumbleTimer != INT32_MAX) {
+        mRumbleTimer--;
+        if (mRumbleMappingToTest != nullptr) {
+            mRumbleMappingToTest->StartRumble();
+        }
+        if (mRumbleTimer <= 0) {
+            if (mRumbleMappingToTest != nullptr) {
+                mRumbleMappingToTest->StopRumble();
+            }
+            mRumbleTimer = INT32_MAX;
+            mRumbleMappingToTest = nullptr;
+        }
+    }
+
     if (mInputEditorPopupOpen && ImGui::IsPopupOpen("", ImGuiPopupFlags_AnyPopupId)) {
         LUS::Context::GetInstance()->GetControlDeck()->BlockGameInput(INPUT_EDITOR_WINDOW_GAME_INPUT_BLOCK_ID);
 
@@ -780,6 +796,10 @@ void SohInputEditorWindow::DrawAddRumbleMappingButton(uint8_t port) {
     }
 }
 
+bool SohInputEditorWindow::TestingRumble() {
+    return mRumbleTimer != INT32_MAX;
+}
+
 void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
     for (auto [id, mapping] : LUS::Context::GetInstance()
                                   ->GetControlDeck()
@@ -809,6 +829,17 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
         ImGui::PopItemFlag();
 
         DrawRemoveRumbleMappingButton(port, id);
+        ImGui::SameLine();
+        if (ImGui::Button(StringHelper::Sprintf("%s###rumbleTestButton%s", TestingRumble() ? "Stop" : "Test", id.c_str()).c_str())) {
+            if (mRumbleTimer != INT32_MAX) {
+                mRumbleTimer = INT32_MAX;
+                mRumbleMappingToTest->StopRumble();
+                mRumbleMappingToTest = nullptr;
+            } else {
+                mRumbleTimer = ImGui::GetIO().Framerate;
+                mRumbleMappingToTest = mapping;
+            }
+        }
         if (open) {
             ImGui::Text("Small Motor Intensity:");
 

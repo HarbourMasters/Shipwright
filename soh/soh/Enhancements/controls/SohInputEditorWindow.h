@@ -18,6 +18,7 @@ class SohInputEditorWindow : public LUS::GuiWindow {
     void DrawInputChip(const char* buttonName, ImVec4 color);
     void DrawAnalogPreview(const char* label, ImVec2 stick, float deadzone = 0, bool gyro = false);
     void DrawControllerSchema();
+    bool TestingRumble();
 
   protected:
     void InitElement() override;
@@ -49,6 +50,8 @@ class SohInputEditorWindow : public LUS::GuiWindow {
 
     int32_t mGameInputBlockTimer;
     int32_t mMappingInputBlockTimer;
+    int32_t mRumbleTimer;
+    std::shared_ptr<LUS::ControllerRumbleMapping> mRumbleMappingToTest;
 
     // mBitmaskToMappingIds[port][bitmask] = { id0, id1, ... }
     std::unordered_map<uint8_t, std::unordered_map<uint16_t, std::vector<std::string>>> mBitmaskToMappingIds;
