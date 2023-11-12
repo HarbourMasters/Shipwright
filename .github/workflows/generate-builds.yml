@@ -285,6 +285,7 @@ jobs:
       with:
         key: ${{ runner.os }}-ccache
         variant: sccache
+        max-size: "1G"
     - name: vcpkg
       uses: johnwason/vcpkg-action@v5
       with:
