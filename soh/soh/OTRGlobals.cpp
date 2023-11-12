@@ -2541,7 +2541,9 @@ void OTRAudio_SfxCaptureThread() {
             }
         }
         std::unique_lock<std::mutex> Lock(audio.mutex);
+#if !defined(__SWITCH__) && !defined(__WIIU__)
         ActorAccessibility_DoSoundExtractionStep();
+#endif
         audio.processing = false;
         audio.cv_from_thread.notify_one();
     }
