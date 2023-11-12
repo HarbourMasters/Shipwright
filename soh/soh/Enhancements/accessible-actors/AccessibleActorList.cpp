@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string>
 #include <float.h>
-#include "overlays\actors\ovl_Boss_Goma\z_boss_goma.h"
+#include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
 //Declarations specific to chests.
 #include "overlays/actors/ovl_En_Box/z_en_box.h"
 extern "C" {
@@ -22,7 +22,7 @@ extern "C" {
 void EnKarebaba_DeadItemDrop(EnKarebaba*, PlayState*);
 }
 //Declarations specific to Torches
-#include "overlays\actors\ovl_Obj_Syokudai\z_obj_syokudai.h"
+#include "overlays/actors/ovl_Obj_Syokudai/z_obj_syokudai.h"
 //User data for the general helper VA.
 typedef struct
 {

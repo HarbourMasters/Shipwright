@@ -1042,6 +1042,9 @@ extern "C" void InitOTR() {
 #elif defined(_WIN32)
     SpeechSynthesizer::Instance = new SAPISpeechSynthesizer();
     SpeechSynthesizer::Instance->Init();
+#else
+    SpeechSynthesizer::Instance = new SpeechLogger();
+    SpeechSynthesizer::Instance->Init();
 #endif
     
     clearMtx = (uintptr_t)&gMtxClear;

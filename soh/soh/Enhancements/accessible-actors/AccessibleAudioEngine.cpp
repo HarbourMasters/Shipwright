@@ -39,7 +39,7 @@ typedef float f32;
 typedef int8_t s8;
 typedef uint8_t u8;
 //Processing for our custom audio positioning.
-static float lerp(float x, float y, float z) {
+static float lerp_aae(float x, float y, float z) {
     return (1.0 - z) * x + z * y;
 }
 
@@ -48,9 +48,9 @@ static float lerp(float x, float y, float z) {
         return 0;
     float leftover = ma_volume_db_to_linear(AAE_MAX_DB_REDUCTION);
     float normDist = fabs(extras->distToPlayer) / extras->maxDistance;
-    float db = lerp(0, AAE_MAX_DB_REDUCTION, normDist);
+    float db = lerp_aae(0, AAE_MAX_DB_REDUCTION, normDist);
     float gain = ma_volume_db_to_linear(db);
-    gain -= lerp(0, leftover, normDist);
+    gain -= lerp_aae(0, leftover, normDist);
     return gain;
 }
     //Borrow the pan calculation from the game itself. Todo: this is technical debt, so copy/ revise it or something at some point. 
@@ -148,7 +148,7 @@ void AccessibleAudioEngine::doPrepare(SoundAction& action)
         //This should not loop more than twice.
         uint32_t nextChunk = nFrames;
         ma_pcm_rb_acquire_write(&preparedOutput, &nextChunk, (void**)&chunk);//Might reduce nextChunk if there isn't enough buffer space available to accommodate the request.
-        uint64_t framesRead = 0;
+        ma_uint64 framesRead = 0;
         ma_engine_read_pcm_frames(&engine, chunk, nextChunk, &framesRead);
         //Even if we get fewer frames than expected, we should still submit a full buffer of silence.
         if (framesRead < nextChunk)
@@ -357,7 +357,7 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
             return;
         slot->extras.cutoff = action.cutoff;
         ma_lpf_config config =
-            ma_lpf_config_init(ma_format_f32, AAE_CHANNELS, AAE_SAMPLE_RATE, lerp(0.0, AAE_SAMPLE_RATE / 2, action.cutoff), AAE_LPF_ORDER);
+            ma_lpf_config_init(ma_format_f32, AAE_CHANNELS, AAE_SAMPLE_RATE, lerp_aae(0.0, AAE_SAMPLE_RATE / 2, action.cutoff), AAE_LPF_ORDER);
         ma_lpf_reinit(&config, &slot->extras.filter);
 
     }

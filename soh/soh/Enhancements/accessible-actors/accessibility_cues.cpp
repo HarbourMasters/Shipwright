@@ -2,6 +2,7 @@
 #include "z64.h"
 #include "macros.h"
 #include "functions.h"
+#include <cmath>
 extern "C" {
 s32 func_80839768(PlayState* play, Player* p, Vec3f* arg2, CollisionPoly** arg3, s32* arg4, Vec3f* arg5);
 void func_8083E298(CollisionPoly* arg0, Vec3f* arg1, s16* arg2);
