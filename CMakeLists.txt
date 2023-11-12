@@ -30,7 +30,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     if (CMAKE_C_COMPILER_LAUNCHER STREQUAL "sccache")
         set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT Embedded)
-        set(DEFAULT_CXX_DEBUG_INFORMATION_FORMAT "/Z7")
     endif()
 endif()
 
