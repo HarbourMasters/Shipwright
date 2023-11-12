@@ -7,6 +7,7 @@
 #include "functions.h"
 #include "soh/OTRGlobals.h"
 #include "SfxTable.h"
+#include <sstream>
 const char* GetLanguageCode();
 extern "C" {
 extern Vec3f D_801333D4;
