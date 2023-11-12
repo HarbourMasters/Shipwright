@@ -602,7 +602,7 @@ void HealthMeter_Draw(PlayState* play) {
             {
                 Mtx* matrix = Graph_Alloc(gfxCtx, sizeof(Mtx));
                 
-                if (CVarGetInteger("gNoHUDHeartAnimation", 1)) {
+                if (CVarGetInteger("gNoHUDHeartAnimation", 0)) {
                     Matrix_SetTranslateScaleMtx2(matrix,
                         HeartsScale,          // Scale X
                         HeartsScale,          // Scale Y
