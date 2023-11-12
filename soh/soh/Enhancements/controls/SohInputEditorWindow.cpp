@@ -1735,6 +1735,33 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
         }
 
         bool shouldClose = false;
+        ImGui::PushStyleColor(ImGuiCol_Button, BUTTON_COLOR_KEYBOARD_BEIGE);
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, BUTTON_COLOR_KEYBOARD_BEIGE_HOVERED);
+        if (ImGui::Button(StringHelper::Sprintf("%s Keyboard", ICON_FA_KEYBOARD_O)
+                                .c_str())) {
+            ImGui::OpenPopup("Set Defaults for Keyboard");
+        }
+        ImGui::PopStyleColor();
+        ImGui::PopStyleColor();
+        if (ImGui::BeginPopupModal("Set Defaults for Keyboard", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+            ImGui::Text("This will clear all existing mappings for\nKeyboard on port %d.\n\nContinue?",
+                        portIndex + 1);
+            if (ImGui::Button("Cancel")) {
+                shouldClose = true;
+                ImGui::CloseCurrentPopup();
+            }
+            if (ImGui::Button("Set defaults")) {
+                LUS::Context::GetInstance()
+                    ->GetControlDeck()
+                    ->GetControllerByPort(portIndex)
+                    ->ClearAllMappingsForDevice(LUS::LUSDeviceIndex::Keyboard);
+                LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(portIndex)->AddDefaultMappings(
+                    LUS::LUSDeviceIndex::Keyboard);
+                shouldClose = true;
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::EndPopup();
+        }
         for (auto [lusIndex, info] : indexMappings) {
             auto [name, sdlIndex] = info;
 
