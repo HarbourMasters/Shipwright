@@ -830,7 +830,9 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
 
         DrawRemoveRumbleMappingButton(port, id);
         ImGui::SameLine();
-        if (ImGui::Button(StringHelper::Sprintf("%s###rumbleTestButton%s", TestingRumble() ? "Stop" : "Test", id.c_str()).c_str())) {
+        if (ImGui::Button(
+                StringHelper::Sprintf("%s###rumbleTestButton%s", TestingRumble() ? "Stop" : "Test", id.c_str())
+                    .c_str())) {
             if (mRumbleTimer != INT32_MAX) {
                 mRumbleTimer = INT32_MAX;
                 mRumbleMappingToTest->StopRumble();
