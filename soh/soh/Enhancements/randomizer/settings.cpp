@@ -2036,6 +2036,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                     } else if (it.value() == "Tycoon's Wallet") {
                         mOptions[index].SetSelectedIndex(RO_SHOPSANITY_PRICE_TYCOON);
                     }
+                    break;
                 case RSK_SHUFFLE_SCRUBS:
                     if (it.value() == "Off") {
                         mOptions[index].SetSelectedIndex(RO_SCRUBS_OFF);
