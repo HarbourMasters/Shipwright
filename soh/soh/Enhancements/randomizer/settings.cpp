@@ -137,7 +137,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SKIP_EPONA_RACE] = Option::Bool("Skip Epona Race", {"Don't Skip", "Skip"}, OptionCategory::Setting, "gRandomizeSkipEponaRace", mOptionDescriptions[RSK_SKIP_EPONA_RACE], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
     mOptions[RSK_SKIP_SCARECROWS_SONG] = Option::Bool("Skip Scarecrow's Song", "gRandomizeSkipScarecrowsSong", mOptionDescriptions[RSK_SKIP_SCARECROWS_SONG]);
     mOptions[RSK_BIG_POE_COUNT] = Option::U8("Big Poe Target Count", {NumOpts(1, 10)}, OptionCategory::Setting, "gRandomizeBigPoeTargetCount", mOptionDescriptions[RSK_BIG_POE_COUNT], WidgetType::Slider, 9);
-    mOptions[RSK_CUCCO_COUNT] = Option::U8("Cuccos to return", {NumOpts(0, 7)}, OptionCategory::Setting, "gRandomizeCuccosToReturn", mOptionDescriptions[RSK_CUCCO_COUNT], WidgetType::Checkbox, 7);
+    mOptions[RSK_CUCCO_COUNT] = Option::U8("Cuccos to return", {NumOpts(0, 7)}, OptionCategory::Setting, "gRandomizeCuccosToReturn", mOptionDescriptions[RSK_CUCCO_COUNT], WidgetType::Slider, 7);
     mOptions[RSK_COMPLETE_MASK_QUEST] = Option::Bool("Complete Mask Quest", "gRandomizeCompleteMaskQuest", mOptionDescriptions[RSK_COMPLETE_MASK_QUEST]);
     mOptions[RSK_ENABLE_GLITCH_CUTSCENES] = Option::Bool("Enable Glitch-Useful Cutscenes", "gRandomizeEnableGlitchCutscenes", mOptionDescriptions[RSK_ENABLE_GLITCH_CUTSCENES]);
     mOptions[RSK_GOSSIP_STONE_HINTS] = Option::U8("Gossip Stone Hints", {"No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony"}, OptionCategory::Setting, "gRandomizeGossipStoneHints", mOptionDescriptions[RSK_GOSSIP_STONE_HINTS], WidgetType::Combobox, RO_GOSSIP_STONES_NEED_NOTHING, false, IMFLAG_NONE);
@@ -1622,6 +1622,9 @@ void Settings::FinalizeSettings(std::set<RandomizerCheck> excludedLocations, std
         // If we don't have MQ, set all dungeons to Vanilla
         if (OTRGlobals::Instance->HasOriginal() && !OTRGlobals::Instance->HasMasterQuest()) {
             mOptions[RSK_MQ_DUNGEON_RANDOM].SetSelectedIndex(RO_MQ_DUNGEONS_NONE);
+        }
+
+        if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_NONE)) {
             mOptions[RSK_MQ_DUNGEON_COUNT].SetSelectedIndex(0);
             mOptions[RSK_MQ_DUNGEON_SET].SetSelectedIndex(RO_GENERIC_OFF);
         }
