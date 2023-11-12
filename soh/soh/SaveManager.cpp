@@ -363,6 +363,8 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 
 // Init() here is an extension of InitSram, and thus not truly an initializer for SaveManager itself. don't put any class initialization stuff here
 void SaveManager::Init() {
+    // Wait on saves that snuck through the Wait in OnExitGame
+    ThreadPoolWait();
     const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
     auto sOldSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav");
@@ -933,10 +935,6 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
 void SaveManager::SaveSection(int fileNum, int sectionID, bool threaded) {
     // Don't save in Boss rush.
     if (fileNum == 0xFF || fileNum == 0xFE) {
-        return;
-    }
-    // Don't save if after OnExitGame
-    if (!GameInteractor::IsSaveLoaded()) {
         return;
     }
     // Don't save a nonexistent section
