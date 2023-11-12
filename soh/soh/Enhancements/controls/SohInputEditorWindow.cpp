@@ -305,7 +305,8 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, uint16_
 
         if (ImGui::BeginPopup(popupId.c_str())) {
             mInputEditorPopupOpen = true;
-            ImGui::Text("Axis Threshold");
+            ImGui::Text("Axis Threshold\n\nThe extent to which the joystick\nmust be moved or the trigger\npressed to "
+                        "initiate the assigned\nbutton action.\n\n");
 
             if (sdlAxisDirectionToButtonMapping->AxisIsStick()) {
                 ImGui::Text("Stick axis threshold:");
@@ -592,7 +593,7 @@ void SohInputEditorWindow::DrawStickDirectionLine(const char* axisDirectionName,
     ImGui::Button(axisDirectionName, ImVec2(SCALE_IMGUI_SIZE(26.0f), 0));
     ImGui::PopStyleColor();
     ImGui::EndDisabled();
-    ImGui::SameLine(0.0f,SCALE_IMGUI_SIZE(4.0f));
+    ImGui::SameLine(0.0f, SCALE_IMGUI_SIZE(4.0f));
     for (auto id : mStickDirectionToMappingIds[port][stick][direction]) {
         DrawStickDirectionLineEditMappingButton(port, stick, direction, id);
     }
@@ -1737,15 +1738,13 @@ void SohInputEditorWindow::DrawSetDefaultsButton(uint8_t portIndex) {
         bool shouldClose = false;
         ImGui::PushStyleColor(ImGuiCol_Button, BUTTON_COLOR_KEYBOARD_BEIGE);
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, BUTTON_COLOR_KEYBOARD_BEIGE_HOVERED);
-        if (ImGui::Button(StringHelper::Sprintf("%s Keyboard", ICON_FA_KEYBOARD_O)
-                                .c_str())) {
+        if (ImGui::Button(StringHelper::Sprintf("%s Keyboard", ICON_FA_KEYBOARD_O).c_str())) {
             ImGui::OpenPopup("Set Defaults for Keyboard");
         }
         ImGui::PopStyleColor();
         ImGui::PopStyleColor();
         if (ImGui::BeginPopupModal("Set Defaults for Keyboard", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-            ImGui::Text("This will clear all existing mappings for\nKeyboard on port %d.\n\nContinue?",
-                        portIndex + 1);
+            ImGui::Text("This will clear all existing mappings for\nKeyboard on port %d.\n\nContinue?", portIndex + 1);
             if (ImGui::Button("Cancel")) {
                 shouldClose = true;
                 ImGui::CloseCurrentPopup();
