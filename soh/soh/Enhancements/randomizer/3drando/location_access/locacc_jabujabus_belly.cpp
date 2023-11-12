@@ -76,7 +76,7 @@ void AreaTable_Init_JabuJabusBelly() {
 
   areaTable[RR_JABU_JABUS_BELLY_LIFT_LOWER] = Area("Jabu Jabus Belly Lift Lower", "Jabu Jabus Belly", RHT_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_JABU_JABUS_BELLY_DEKU_SCRUB, {[]{return (IsChild || CanDive || LogicJabuAlcoveJumpDive || CanUse(RG_IRON_BOOTS)) && CanStunDeku;}}),
+                  LocationAccess(RC_JABU_JABUS_BELLY_DEKU_SCRUB, {[]{return (Logic::IsChild || CanDive || LogicJabuAlcoveJumpDive || CanUse(RG_IRON_BOOTS)) && CanStunDeku;}}),
                 }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_SHABOMB_CORRIDOR, {[]{return true;}}),
@@ -154,7 +154,7 @@ void AreaTable_Init_JabuJabusBelly() {
                 }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_LIFT_MIDDLE, {[]{return true;}}),
-                  Entrance(RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, {[]{return CanUse(RG_BOOMERANG) || (LogicJabuNearBossRanged && ((IsAdult && (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW))) || (IsChild && CanUse(RG_FAIRY_SLINGSHOT)))) || (LogicJabuNearBossExplosives && (HasBombchus || (IsAdult && CanUse(RG_HOVER_BOOTS) && Bombs)));}}),
+                  Entrance(RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, {[]{return CanUse(RG_BOOMERANG) || (LogicJabuNearBossRanged && ((IsAdult && (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW))) || (Logic::IsChild && CanUse(RG_FAIRY_SLINGSHOT)))) || (LogicJabuNearBossExplosives && (HasBombchus || (IsAdult && CanUse(RG_HOVER_BOOTS) && Bombs)));}}),
   });
   }
 
@@ -168,11 +168,11 @@ void AreaTable_Init_JabuJabusBelly() {
   }, {
                   //Locations
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_MAP_CHEST,             {[]{return CanBlastOrSmash;}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_FIRST_ROOM_SIDE_CHEST, {[]{return IsChild && CanUse(RG_FAIRY_SLINGSHOT);}}),
+                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_FIRST_ROOM_SIDE_CHEST, {[]{return Logic::IsChild && CanUse(RG_FAIRY_SLINGSHOT);}}),
   }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_ENTRYWAY, {[]{return true;}}),
-                  Entrance(RR_JABU_JABUS_BELLY_MQ_MAIN,  {[]{return Here(RR_JABU_JABUS_BELLY_MQ_BEGINNING, []{return IsChild && CanUse(RG_FAIRY_SLINGSHOT);});}}),
+                  Entrance(RR_JABU_JABUS_BELLY_MQ_MAIN,  {[]{return Here(RR_JABU_JABUS_BELLY_MQ_BEGINNING, []{return Logic::IsChild && CanUse(RG_FAIRY_SLINGSHOT);});}}),
   });
 
   areaTable[RR_JABU_JABUS_BELLY_MQ_MAIN] = Area("Jabu Jabus Belly MQ Main", "Jabu Jabus Belly", RHT_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
@@ -184,12 +184,12 @@ void AreaTable_Init_JabuJabusBelly() {
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST, {[]{return true;}}),
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST,   {[]{return true;}}),
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST,              {[]{return true;}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,      {[]{return CanPlay(SongOfTime) || (LogicJabuMQSoTGS && IsChild && CanUse(RG_BOOMERANG));}}),
-                    //Trick: CanPlay(SongOfTime) || (LogicJabuMQSoTGS && IsChild && CanUse(RG_BOOMERANG))
+                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,      {[]{return CanPlay(SongOfTime) || (LogicJabuMQSoTGS && Logic::IsChild && CanUse(RG_BOOMERANG));}}),
+                    //Trick: CanPlay(SongOfTime) || (LogicJabuMQSoTGS && Logic::IsChild && CanUse(RG_BOOMERANG))
   }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_MQ_BEGINNING, {[]{return true;}}),
-                  Entrance(RR_JABU_JABUS_BELLY_MQ_DEPTHS,    {[]{return HasExplosives && IsChild && CanUse(RG_BOOMERANG);}}),
+                  Entrance(RR_JABU_JABUS_BELLY_MQ_DEPTHS,    {[]{return HasExplosives && Logic::IsChild && CanUse(RG_BOOMERANG);}}),
   });
 
   areaTable[RR_JABU_JABUS_BELLY_MQ_DEPTHS] = Area("Jabu Jabus Belly MQ Depths", "Jabu Jabus Belly", RHT_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {

@@ -18,13 +18,13 @@ void AreaTable_Init_CastleTown() {
                   Entrance(RR_MARKET_ENTRANCE,            {[]{return true;}}),
                   Entrance(RR_TOT_ENTRANCE,               {[]{return true;}}),
                   Entrance(RR_CASTLE_GROUNDS,             {[]{return true;}}),
-                  Entrance(RR_MARKET_BAZAAR,              {[]{return IsChild && AtDay;}}),
-                  Entrance(RR_MARKET_MASK_SHOP,           {[]{return IsChild && AtDay;}}),
-                  Entrance(RR_MARKET_SHOOTING_GALLERY,    {[]{return IsChild && AtDay;}}),
-                  Entrance(RR_MARKET_BOMBCHU_BOWLING,     {[]{return IsChild;}}),
-                  Entrance(RR_MARKET_TREASURE_CHEST_GAME, {[]{return IsChild && AtNight;}}),
-                  Entrance(RR_MARKET_POTION_SHOP,         {[]{return IsChild && AtDay;}}),
-                  Entrance(RR_MARKET_BACK_ALLEY,          {[]{return IsChild;}}),
+                  Entrance(RR_MARKET_BAZAAR,              {[]{return Logic::IsChild && AtDay;}}),
+                  Entrance(RR_MARKET_MASK_SHOP,           {[]{return Logic::IsChild && AtDay;}}),
+                  Entrance(RR_MARKET_SHOOTING_GALLERY,    {[]{return Logic::IsChild && AtDay;}}),
+                  Entrance(RR_MARKET_BOMBCHU_BOWLING,     {[]{return Logic::IsChild;}}),
+                  Entrance(RR_MARKET_TREASURE_CHEST_GAME, {[]{return Logic::IsChild && AtNight;}}),
+                  Entrance(RR_MARKET_POTION_SHOP,         {[]{return Logic::IsChild && AtDay;}}),
+                  Entrance(RR_MARKET_BACK_ALLEY,          {[]{return Logic::IsChild;}}),
   });
 
   areaTable[RR_MARKET_BACK_ALLEY] = Area("Market Back Alley", "Market", RHT_THE_MARKET, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -53,7 +53,7 @@ void AreaTable_Init_CastleTown() {
   areaTable[RR_TEMPLE_OF_TIME] = Area("Temple of Time", "Temple of Time", RHT_TEMPLE_OF_TIME, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_TOT_LIGHT_ARROWS_CUTSCENE, {[]{return IsAdult && CanTriggerLACS;}}),
-                  LocationAccess(RC_ALTAR_HINT_CHILD, {[]{return IsChild;}}),
+                  LocationAccess(RC_ALTAR_HINT_CHILD, {[]{return Logic::IsChild;}}),
                   LocationAccess(RC_ALTAR_HINT_ADULT, {[]{return IsAdult;}}),
                 }, {
                   //Exits
@@ -75,7 +75,7 @@ void AreaTable_Init_CastleTown() {
   areaTable[RR_CASTLE_GROUNDS] = Area("Castle Grounds", "Castle Grounds", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_THE_MARKET,            {[]{return true;}}),
-                  Entrance(RR_HYRULE_CASTLE_GROUNDS, {[]{return IsChild;}}),
+                  Entrance(RR_HYRULE_CASTLE_GROUNDS, {[]{return Logic::IsChild;}}),
                   Entrance(RR_GANONS_CASTLE_GROUNDS, {[]{return IsAdult;}}),
   });
 
@@ -154,7 +154,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE] = Area("Castle Grounds From Ganon's Castle", "Castle Grounds From Ganon's Castle", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
     // Exits
-    Entrance(RR_HYRULE_CASTLE_GROUNDS, { [] { return IsChild; }}),
+    Entrance(RR_HYRULE_CASTLE_GROUNDS, { [] { return Logic::IsChild; }}),
     Entrance(RR_GANONS_CASTLE_LEDGE, { [] { return IsAdult; }}),
   });
 
@@ -168,7 +168,7 @@ void AreaTable_Init_CastleTown() {
   areaTable[RR_MARKET_GUARD_HOUSE] = Area("Market Guard House", "Market Guard House", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_MARKET_10_BIG_POES,    {[]{return IsAdult && BigPoeKill;}}),
-                  LocationAccess(RC_MARKET_GS_GUARD_HOUSE, {[]{return IsChild;}}),
+                  LocationAccess(RC_MARKET_GS_GUARD_HOUSE, {[]{return Logic::IsChild;}}),
                 }, {
                   //Exits
                   Entrance(RR_MARKET_ENTRANCE, {[]{return true;}}),
@@ -200,7 +200,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_MARKET_SHOOTING_GALLERY] = Area("Market Shooting Gallery", "Market Shooting Gallery", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_MARKET_SHOOTING_GALLERY_REWARD, {[]{return IsChild;}}),
+                  LocationAccess(RC_MARKET_SHOOTING_GALLERY_REWARD, {[]{return Logic::IsChild;}}),
                 }, {
                   //Exits
                   Entrance(RR_THE_MARKET, {[]{return true;}}),
@@ -262,7 +262,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_MARKET_DOG_LADY_HOUSE] = Area("Market Dog Lady House", "Market Dog Lady House", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_MARKET_LOST_DOG, {[]{return IsChild && AtNight;}}),
+                  LocationAccess(RC_MARKET_LOST_DOG, {[]{return Logic::IsChild && AtNight;}}),
                 }, {
                   //Exits
                   Entrance(RR_MARKET_BACK_ALLEY, {[]{return true;}}),

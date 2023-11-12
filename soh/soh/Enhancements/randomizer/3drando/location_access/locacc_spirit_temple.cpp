@@ -24,7 +24,7 @@ void AreaTable_Init_SpiritTemple() {
   areaTable[RR_SPIRIT_TEMPLE_LOBBY] = Area("Spirit Temple Lobby", "Spirit Temple", RHT_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY,    {[]{return true;}}),
-                  Entrance(RR_SPIRIT_TEMPLE_CHILD,       {[]{return IsChild;}}),
+                  Entrance(RR_SPIRIT_TEMPLE_CHILD,       {[]{return Logic::IsChild;}}),
                   Entrance(RR_SPIRIT_TEMPLE_EARLY_ADULT, {[]{return CanUse(RG_SILVER_GAUNTLETS);}}),
   });
 
@@ -43,11 +43,11 @@ void AreaTable_Init_SpiritTemple() {
 
   areaTable[RR_SPIRIT_TEMPLE_CHILD_CLIMB] = Area("Child Spirit Temple Climb", "Spirit Temple", RHT_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_SPIRIT_TEMPLE_CHILD_CLIMB_NORTH_CHEST, {[]{return HasProjectile(HasProjectileAge::Both) || ((SmallKeys(RR_SPIRIT_TEMPLE, 3) || (SmallKeys(RR_SPIRIT_TEMPLE, 2) && BombchusInLogic && ShuffleDungeonEntrances.Is(SHUFFLEDUNGEONS_OFF))) && CanUse(RG_SILVER_GAUNTLETS) && HasProjectile(HasProjectileAge::Adult)) || (SmallKeys(RR_SPIRIT_TEMPLE, 5) && IsChild && HasProjectile(HasProjectileAge::Child));}}),
-                  LocationAccess(RC_SPIRIT_TEMPLE_CHILD_CLIMB_EAST_CHEST,  {[]{return HasProjectile(HasProjectileAge::Both) || ((SmallKeys(RR_SPIRIT_TEMPLE, 3) || (SmallKeys(RR_SPIRIT_TEMPLE, 2) && BombchusInLogic && ShuffleDungeonEntrances.Is(SHUFFLEDUNGEONS_OFF))) && CanUse(RG_SILVER_GAUNTLETS) && HasProjectile(HasProjectileAge::Adult)) || (SmallKeys(RR_SPIRIT_TEMPLE, 5) && IsChild && HasProjectile(HasProjectileAge::Child));}}),
+                  LocationAccess(RC_SPIRIT_TEMPLE_CHILD_CLIMB_NORTH_CHEST, {[]{return HasProjectile(HasProjectileAge::Both) || ((SmallKeys(RR_SPIRIT_TEMPLE, 3) || (SmallKeys(RR_SPIRIT_TEMPLE, 2) && BombchusInLogic && ShuffleDungeonEntrances.Is(SHUFFLEDUNGEONS_OFF))) && CanUse(RG_SILVER_GAUNTLETS) && HasProjectile(HasProjectileAge::Adult)) || (SmallKeys(RR_SPIRIT_TEMPLE, 5) && Logic::IsChild && HasProjectile(HasProjectileAge::Child));}}),
+                  LocationAccess(RC_SPIRIT_TEMPLE_CHILD_CLIMB_EAST_CHEST,  {[]{return HasProjectile(HasProjectileAge::Both) || ((SmallKeys(RR_SPIRIT_TEMPLE, 3) || (SmallKeys(RR_SPIRIT_TEMPLE, 2) && BombchusInLogic && ShuffleDungeonEntrances.Is(SHUFFLEDUNGEONS_OFF))) && CanUse(RG_SILVER_GAUNTLETS) && HasProjectile(HasProjectileAge::Adult)) || (SmallKeys(RR_SPIRIT_TEMPLE, 5) && Logic::IsChild && HasProjectile(HasProjectileAge::Child));}}),
                   LocationAccess(RC_SPIRIT_TEMPLE_GS_SUN_ON_FLOOR_ROOM,    {[]{return HasProjectile(HasProjectileAge::Both) || CanUse(RG_DINS_FIRE) ||
                                                                                       (CanTakeDamage && (Sticks || KokiriSword || HasProjectile(HasProjectileAge::Child))) ||
-                                                                                        (IsChild && SmallKeys(RR_SPIRIT_TEMPLE, 5) && HasProjectile(HasProjectileAge::Child)) ||
+                                                                                        (Logic::IsChild && SmallKeys(RR_SPIRIT_TEMPLE, 5) && HasProjectile(HasProjectileAge::Child)) ||
                                                                                           ((SmallKeys(RR_SPIRIT_TEMPLE, 3) || (SmallKeys(RR_SPIRIT_TEMPLE, 2) && BombchusInLogic && ShuffleDungeonEntrances.Is(SHUFFLEDUNGEONS_OFF))) && CanUse(RG_SILVER_GAUNTLETS) && (HasProjectile(HasProjectileAge::Adult) || CanTakeDamage));}}),
                 }, {
                   //Exits
@@ -109,7 +109,7 @@ void AreaTable_Init_SpiritTemple() {
                   LocationAccess(RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST,    {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 4) && CanUse(RG_SILVER_GAUNTLETS) && HasExplosives;}}),
                 }, {
                   //Exits
-                  Entrance(RR_DESERT_COLOSSUS, {[]{return (IsChild && SmallKeys(RR_SPIRIT_TEMPLE, 5)) || (CanUse(RG_SILVER_GAUNTLETS) && ((SmallKeys(RR_SPIRIT_TEMPLE, 3) && HasExplosives) || SmallKeys(RR_SPIRIT_TEMPLE, 5)));}}),
+                  Entrance(RR_DESERT_COLOSSUS, {[]{return (Logic::IsChild && SmallKeys(RR_SPIRIT_TEMPLE, 5)) || (CanUse(RG_SILVER_GAUNTLETS) && ((SmallKeys(RR_SPIRIT_TEMPLE, 3) && HasExplosives) || SmallKeys(RR_SPIRIT_TEMPLE, 5)));}}),
   });
 
   areaTable[RR_SPIRIT_TEMPLE_BEYOND_CENTRAL_LOCKED_DOOR] = Area("Spirit Temple Beyond Central Locked Door", "Spirit Temple", RHT_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -147,12 +147,12 @@ void AreaTable_Init_SpiritTemple() {
   areaTable[RR_SPIRIT_TEMPLE_MQ_LOBBY] = Area("Spirit Temple MQ Lobby", "Spirit Temple", RHT_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_LEFT_CHEST, {[]{return true;}}),
-                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST,  {[]{return Here(RR_SPIRIT_TEMPLE_MQ_LOBBY, []{return CanBlastOrSmash;}) && ((IsChild && CanUse(RG_FAIRY_SLINGSHOT)) || (IsAdult && CanUse(RG_FAIRY_BOW)));}}),
-                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_RIGHT_CHEST, {[]{return HasBombchus || (IsAdult && (CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT))) || (IsChild && (CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG)));}}),
+                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST,  {[]{return Here(RR_SPIRIT_TEMPLE_MQ_LOBBY, []{return CanBlastOrSmash;}) && ((Logic::IsChild && CanUse(RG_FAIRY_SLINGSHOT)) || (IsAdult && CanUse(RG_FAIRY_BOW)));}}),
+                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_RIGHT_CHEST, {[]{return HasBombchus || (IsAdult && (CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT))) || (Logic::IsChild && (CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG)));}}),
   }, {
                   //Exits
                   Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY, {[]{return true;}}),
-                  Entrance(RR_SPIRIT_TEMPLE_MQ_CHILD, {[]{return IsChild;}}),
+                  Entrance(RR_SPIRIT_TEMPLE_MQ_CHILD, {[]{return Logic::IsChild;}}),
                   Entrance(RR_SPIRIT_TEMPLE_MQ_ADULT, {[]{return HasBombchus && IsAdult && CanUse(RG_LONGSHOT) && CanUse(RG_SILVER_GAUNTLETS);}}),
   });
 
@@ -193,7 +193,7 @@ void AreaTable_Init_SpiritTemple() {
   areaTable[RR_SPIRIT_TEMPLE_MQ_SHARED] = Area("Spirit Temple MQ Shared", "Spirit Temple", RHT_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_NORTH_CHEST, {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 6);}}),
-                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_COMPASS_CHEST,           {[]{return (IsChild && CanUse(RG_FAIRY_SLINGSHOT) && SmallKeys(RR_SPIRIT_TEMPLE, 7)) || (IsAdult && CanUse(RG_FAIRY_BOW)) || (Bow && Slingshot);}}),
+                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_COMPASS_CHEST,           {[]{return (Logic::IsChild && CanUse(RG_FAIRY_SLINGSHOT) && SmallKeys(RR_SPIRIT_TEMPLE, 7)) || (IsAdult && CanUse(RG_FAIRY_BOW)) || (Bow && Slingshot);}}),
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM_CHEST,    {[]{return CanPlay(SongOfTime) || LogicSpiritMQSunBlockSoT || IsAdult;}}),
                     //Trick: CanPlay(SongOfTime) || LogicSpiritMQSunBlockSoT || IsAdult
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM,       {[]{return (LogicSpiritMQSunBlockGS && Boomerang && (CanPlay(SongOfTime) || LogicSpiritMQSunBlockSoT)) || IsAdult;}}),

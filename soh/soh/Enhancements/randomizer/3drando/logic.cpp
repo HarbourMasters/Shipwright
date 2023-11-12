@@ -445,11 +445,11 @@ namespace Logic {
       case RG_BIGGORON_SWORD:    return IsAdult || BiggoronSwordAsChild;
 
       // Child items
-      case RG_FAIRY_SLINGSHOT:         return IsChild || SlingshotAsAdult;
-      case RG_BOOMERANG:         return IsChild || BoomerangAsAdult;
-      case RG_KOKIRI_SWORD:      return IsChild || KokiriSwordAsAdult;
-      case RG_STICKS:            return IsChild || StickAsAdult;
-      case RG_DEKU_SHIELD:       return IsChild || DekuShieldAsAdult;
+      case RG_FAIRY_SLINGSHOT:         return Logic::IsChild || SlingshotAsAdult;
+      case RG_BOOMERANG:         return Logic::IsChild || BoomerangAsAdult;
+      case RG_KOKIRI_SWORD:      return Logic::IsChild || KokiriSwordAsAdult;
+      case RG_STICKS:            return Logic::IsChild || StickAsAdult;
+      case RG_DEKU_SHIELD:       return Logic::IsChild || DekuShieldAsAdult;
 
       // Magic items
       default: return MagicMeter && (IsMagicItem(itemName) || (IsMagicArrow(itemName) && CanUse(RG_FAIRY_BOW)));
@@ -483,9 +483,9 @@ namespace Logic {
   bool CanDoGlitch(GlitchType glitch) {
     switch(glitch) {
       case GlitchType::EquipSwapDins:
-        return ((IsAdult && HasItem(RG_DINS_FIRE)) || (IsChild && (HasItem(RG_STICKS) || HasItem(RG_DINS_FIRE)))) && GlitchEquipSwapDins;
+        return ((IsAdult && HasItem(RG_DINS_FIRE)) || (Logic::IsChild && (HasItem(RG_STICKS) || HasItem(RG_DINS_FIRE)))) && GlitchEquipSwapDins;
       case GlitchType::EquipSwap: // todo: add bunny hood to adult item equippable list and child trade item to child item equippable list
-        return ((IsAdult && (HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE))) || (IsChild && (HasItem(RG_STICKS) || HasItem(RG_FAIRY_SLINGSHOT) || HasItem(RG_BOOMERANG) || HasBottle || Nuts || Ocarina || HasItem(RG_LENS_OF_TRUTH) || HasExplosives || (MagicBean || MagicBeanPack) || HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE)))) && GlitchEquipSwap;
+        return ((IsAdult && (HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE))) || (Logic::IsChild && (HasItem(RG_STICKS) || HasItem(RG_FAIRY_SLINGSHOT) || HasItem(RG_BOOMERANG) || HasBottle || Nuts || Ocarina || HasItem(RG_LENS_OF_TRUTH) || HasExplosives || (MagicBean || MagicBeanPack) || HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE)))) && GlitchEquipSwap;
     }
 
     //Shouldn't be reached
@@ -553,17 +553,17 @@ namespace Logic {
     Cojiro       = Cojiro       || (!ShuffleAdultTradeQuest && OddMushroom);
     PocketEgg    = PocketEgg    || (!ShuffleAdultTradeQuest && Cojiro);
 
-    // IsChild = Age == AGE_CHILD;
+    // Logic::IsChild = Age == AGE_CHILD;
     // IsAdult = Age == AGE_ADULT;
 
     CanBlastOrSmash = HasExplosives || CanUse(RG_MEGATON_HAMMER);
-    CanChildAttack  = IsChild && (Slingshot || Boomerang || Sticks || KokiriSword || HasExplosives || CanUse(RG_DINS_FIRE) || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD));
-    CanChildDamage  = IsChild && (Slingshot ||              Sticks || KokiriSword || HasExplosives || CanUse(RG_DINS_FIRE) || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD));
+    CanChildAttack  = Logic::IsChild && (Slingshot || Boomerang || Sticks || KokiriSword || HasExplosives || CanUse(RG_DINS_FIRE) || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD));
+    CanChildDamage  = Logic::IsChild && (Slingshot ||              Sticks || KokiriSword || HasExplosives || CanUse(RG_DINS_FIRE) || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD));
     CanStunDeku     = IsAdult || CanChildAttack || Nuts || HasShield;
     CanCutShrubs    = IsAdult /*|| Sticks*/ || KokiriSword || Boomerang || HasExplosives || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD);
     CanDive         = ProgressiveScale >= 1;
     CanLeaveForest  = OpenForest.IsNot(OPENFOREST_CLOSED) || IsAdult || DekuTreeClear || ShuffleInteriorEntrances || ShuffleOverworldEntrances;
-    CanPlantBugs    = IsChild && Bugs;
+    CanPlantBugs    = Logic::IsChild && Bugs;
     CanRideEpona    = IsAdult && Epona && CanPlay(EponasSong);
     CanSummonGossipFairy            = Ocarina && (ZeldasLullaby || EponasSong || SongOfTime || SunsSong);
     CanSummonGossipFairyWithoutSuns = Ocarina && (ZeldasLullaby || EponasSong || SongOfTime);
@@ -575,7 +575,7 @@ namespace Logic {
     CanSurviveDamage    = !NeedNayrusLove || CanUse(RG_NAYRUS_LOVE);
     CanTakeDamage       = Fairy || CanSurviveDamage;
     CanTakeDamageTwice  = (Fairy && NumBottles >= 2) || ((EffectiveHealth == 2) && (CanUse(RG_NAYRUS_LOVE) || Fairy)) || (EffectiveHealth > 2);
-    //CanPlantBean        = IsChild && (MagicBean || MagicBeanPack);
+    //CanPlantBean        = Logic::IsChild && (MagicBean || MagicBeanPack);
     CanOpenBombGrotto   = CanBlastOrSmash       && (ShardOfAgony || LogicGrottosWithoutAgony);
     CanOpenStormGrotto  = CanPlay(SongOfStorms) && (ShardOfAgony || LogicGrottosWithoutAgony);
     HookshotOrBoomerang = CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
@@ -593,7 +593,7 @@ namespace Logic {
 
     HasShield          = CanUse(RG_HYLIAN_SHIELD) || CanUse(RG_DEKU_SHIELD); //Mirror shield can't reflect attacks
     CanShield          = CanUse(RG_MIRROR_SHIELD) || HasShield;
-    ChildShield        = IsChild && CanUse(RG_DEKU_SHIELD); //hylian shield is not helpful for child
+    ChildShield        = Logic::IsChild && CanUse(RG_DEKU_SHIELD); //hylian shield is not helpful for child
     AdultReflectShield = IsAdult && CanUse(RG_HYLIAN_SHIELD); //Mirror shield can't reflect attacks
     AdultShield        = IsAdult && (CanUse(RG_HYLIAN_SHIELD) || CanUse(RG_MIRROR_SHIELD));
     CanShieldFlick     = ChildShield || AdultShield;
@@ -959,7 +959,7 @@ namespace Logic {
      HasBombchus      = false;
      HasExplosives    = false;
      HasBoots         = false;
-     IsChild          = false;
+     Logic::IsChild          = false;
      IsAdult          = false;
      IsGlitched       = Settings::Logic.Is(LOGIC_GLITCHED);
      CanBlastOrSmash  = false;
