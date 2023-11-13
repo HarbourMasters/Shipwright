@@ -159,6 +159,7 @@ public:
     DEFINE_HOOK(OnSceneSpawnActors, void());
     DEFINE_HOOK(OnPlayerUpdate, void());
     DEFINE_HOOK(OnOcarinaSongAction, void());
+    DEFINE_HOOK(OnShopSlotChange, void(uint8_t cursorIndex, int16_t price));
     DEFINE_HOOK(OnActorInit, void(void* actor));
     DEFINE_HOOK(OnActorUpdate, void(void* actor));
     DEFINE_HOOK(OnActorKill, void(void* actor));
@@ -231,6 +232,7 @@ public:
         static void EmulateRandomButtonPress(uint32_t chancePercentage = 100);
         static void SetRandomWind(bool active);
         static void SetPlayerInvincibility(bool active);
+        static void ClearCutscenePointer();
 
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
         static GameInteractionEffectQueryResult SpawnActor(uint32_t actorId, int32_t actorParams);

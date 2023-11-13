@@ -3,6 +3,9 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_hakach_objectsTex_0062F0 "__OTR__objects/object_hakach_objects/object_hakach_objectsTex_0062F0"
+static const ALIGN_ASSET(2) char object_hakach_objectsTex_0062F0[] = dobject_hakach_objectsTex_0062F0;
+
 #define dgBotwHoleTrap1DL "__OTR__objects/object_hakach_objects/gBotwHoleTrap1DL"
 static const ALIGN_ASSET(2) char gBotwHoleTrap1DL[] = dgBotwHoleTrap1DL;
 
@@ -68,8 +71,5 @@ static const ALIGN_ASSET(2) char gBotwTex_0058F0[] = dgBotwTex_0058F0;
 
 #define dgBotwTex_0060F0 "__OTR__objects/object_hakach_objects/gBotwTex_0060F0"
 static const ALIGN_ASSET(2) char gBotwTex_0060F0[] = dgBotwTex_0060F0;
-
-#define dobject_hakach_objectsTex_0062F0 "__OTR__objects/object_hakach_objects/object_hakach_objectsTex_0062F0"
-static const ALIGN_ASSET(2) char object_hakach_objectsTex_0062F0[] = dobject_hakach_objectsTex_0062F0;
 
 #endif // OBJECTS_OBJECT_HAKACH_OBJECTS_H

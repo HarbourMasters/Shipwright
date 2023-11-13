@@ -994,9 +994,9 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 gSaveContext.nextTransitionType = 2;
                 break;
             case 71:
-                gSaveContext.equips.equipment |= 0x0100;
+                gSaveContext.equips.equipment |= EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4);
                 Player_SetEquipmentData(play, player);
-                gSaveContext.equips.equipment |= 0x1000;
+                gSaveContext.equips.equipment |= EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4);
                 Player_SetEquipmentData(play, player);
                 play->linkAgeOnLoad = 1;
                 play->nextEntranceIndex = 0x0053;

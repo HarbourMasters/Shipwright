@@ -3,14 +3,17 @@
 
 #include "align_asset_macro.h"
 
-#define djyasinzou_room_9DL_0014E0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_9DL_0014E0"
-static const ALIGN_ASSET(2) char jyasinzou_room_9DL_0014E0[] = djyasinzou_room_9DL_0014E0;
+#define djyasinzou_room_9Tex_002DC8 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_9Tex_002DC8"
+static const ALIGN_ASSET(2) char jyasinzou_room_9Tex_002DC8[] = djyasinzou_room_9Tex_002DC8;
+
+#define djyasinzou_room_9Tex_003DC8 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_9Tex_003DC8"
+static const ALIGN_ASSET(2) char jyasinzou_room_9Tex_003DC8[] = djyasinzou_room_9Tex_003DC8;
 
 #define djyasinzou_room_9Tex_0045C8 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_9Tex_0045C8"
 static const ALIGN_ASSET(2) char jyasinzou_room_9Tex_0045C8[] = djyasinzou_room_9Tex_0045C8;
 
-#define djyasinzou_room_9Tex_003DC8 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_9Tex_003DC8"
-static const ALIGN_ASSET(2) char jyasinzou_room_9Tex_003DC8[] = djyasinzou_room_9Tex_003DC8;
+#define djyasinzou_room_9Tex_004DC8 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_9Tex_004DC8"
+static const ALIGN_ASSET(2) char jyasinzou_room_9Tex_004DC8[] = djyasinzou_room_9Tex_004DC8;
 
 #define djyasinzou_room_9Tex_0051C8 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_9Tex_0051C8"
 static const ALIGN_ASSET(2) char jyasinzou_room_9Tex_0051C8[] = djyasinzou_room_9Tex_0051C8;
@@ -18,14 +21,11 @@ static const ALIGN_ASSET(2) char jyasinzou_room_9Tex_0051C8[] = djyasinzou_room_
 #define djyasinzou_room_9Tex_0055C8 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_9Tex_0055C8"
 static const ALIGN_ASSET(2) char jyasinzou_room_9Tex_0055C8[] = djyasinzou_room_9Tex_0055C8;
 
+#define djyasinzou_room_9DL_0014E0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_9DL_0014E0"
+static const ALIGN_ASSET(2) char jyasinzou_room_9DL_0014E0[] = djyasinzou_room_9DL_0014E0;
+
 #define djyasinzou_room_9DL_001FE8 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_9DL_001FE8"
 static const ALIGN_ASSET(2) char jyasinzou_room_9DL_001FE8[] = djyasinzou_room_9DL_001FE8;
-
-#define djyasinzou_room_9Tex_002DC8 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_9Tex_002DC8"
-static const ALIGN_ASSET(2) char jyasinzou_room_9Tex_002DC8[] = djyasinzou_room_9Tex_002DC8;
-
-#define djyasinzou_room_9Tex_004DC8 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_9Tex_004DC8"
-static const ALIGN_ASSET(2) char jyasinzou_room_9Tex_004DC8[] = djyasinzou_room_9Tex_004DC8;
 
 #define djyasinzou_room_9DL_002268 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_9DL_002268"
 static const ALIGN_ASSET(2) char jyasinzou_room_9DL_002268[] = djyasinzou_room_9DL_002268;

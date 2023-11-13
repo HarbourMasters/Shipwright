@@ -5045,8 +5045,8 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
 
                     if (sLinkAge == 1) {
                         if (
-                            (!gSaveContext.n64ddFlag && !(HIGH_SCORE(HS_FISHING) & 0x400)) ||
-                            (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING))
+                            (!IS_RANDO && !(HIGH_SCORE(HS_FISHING) & 0x400)) ||
+                            (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING))
                         ) {
                             if (D_80B7E078 >= Fishing_GetMinimumRequiredScore()) {
                                 HIGH_SCORE(HS_FISHING) |= 0x400;
@@ -5062,8 +5062,8 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                         }
                     } else {
                         if (
-                            (!gSaveContext.n64ddFlag && !(HIGH_SCORE(HS_FISHING) & 0x800)) ||
-                            (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING))
+                            (!IS_RANDO && !(HIGH_SCORE(HS_FISHING) & 0x800)) ||
+                            (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING))
                         ) {
                             if (D_80B7E078 >= Fishing_GetMinimumRequiredScore()) {
                                 HIGH_SCORE(HS_FISHING) |= 0x800;
@@ -5125,16 +5125,6 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
 
             if (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) {
                 this->unk_15C = 0;
-
-                Player* player = GET_PLAYER(play);
-
-                if (gSaveContext.temporaryWeapon) {
-                    player->currentSwordItemId = ITEM_NONE;
-                    gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-                    Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
-                    gSaveContext.temporaryWeapon = false;
-                }
-
                 if (D_80B7A68C != 0) {
                     D_80B7A688 = 1;
                     D_80B7A68C = 0;
