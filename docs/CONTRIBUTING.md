@@ -44,7 +44,7 @@ We want to maintain the readability and integrity of vanilla codeflow as much as
 If you wanted to modify this block with an enhancement to add difficulty options to the frog ocarina game, the first thing you would do is encapsulate it in a comment region as such:
 
 ```c++
-        //Enhancement: Customize Frogs Ocarina Game
+        // #region SOH [Enhancement]
         if (CVarGetInteger("gCustomizeFrogsOcarinaGame", 0) == 1) {
             this->frogSongTimer = 40;
             this->ocarinaNoteIndex = 0;
@@ -52,7 +52,8 @@ If you wanted to modify this block with an enhancement to add difficulty options
             this->ocarinaNote = EnFr_GetNextNoteFrogSong(this->ocarinaNoteIndex);
             EnFr_CheckOcarinaInputFrogSong(this->ocarinaNote);
             this->actionFunc = EnFr_ContinueFrogSong;
-        } else { // vanilla code
+        // #endregion
+        } else {
             this->frogSongTimer = 40;
             this->ocarinaNoteIndex = 0;
             func_8010BD58(play, OCARINA_ACTION_FROGS);
@@ -60,7 +61,6 @@ If you wanted to modify this block with an enhancement to add difficulty options
             EnFr_CheckOcarinaInputFrogSong(this->ocarinaNote);
             this->actionFunc = EnFr_ContinueFrogSong;
         }
-        // Enhancement end
 ```
 
 Incorporate as much of the section as is applicable in a block behind a CVar, with comment mentioning what type of addition it is (enhancement/fix/restoration, etc), label the else block as vanilla code, and put a closing comment at the end. Then, make your changes in the if block. In this instance, it ended up looking like this:
@@ -83,7 +83,7 @@ Incorporate as much of the section as is applicable in a block behind a CVar, wi
 This does result in some code duplication, but this is just a step to where we want to eventually be where enhancement additions are encapsulated in source files housed elsewhere that are called from within the enhancement CVar check, and is more allowable in a situation like we're in, where preserving vanilla code is important to us. The final block ends up looking as such:
 
 ```c++
-        //Enhancement: Customize Frogs Ocarina Game
+        // #region SOH [Enhancement]
         if (CVarGetInteger("gCustomizeFrogsOcarinaGame", 0) == 1) {
             this->frogSongTimer = 40 * CVarGetInteger("gFrogsModifyFailTime", 1);
             if (CVarGetInteger("gInstantFrogsGameWin", 0) == 1) {
@@ -96,7 +96,8 @@ This does result in some code duplication, but this is just a step to where we w
                 EnFr_CheckOcarinaInputFrogSong(this->ocarinaNote);
                 this->actionFunc = EnFr_ContinueFrogSong;
             }
-        } else { // vanilla code
+        // #endregion
+        } else {
             this->frogSongTimer = 40;
             this->ocarinaNoteIndex = 0;
             func_8010BD58(play, OCARINA_ACTION_FROGS);
@@ -104,7 +105,8 @@ This does result in some code duplication, but this is just a step to where we w
             EnFr_CheckOcarinaInputFrogSong(this->ocarinaNote);
             this->actionFunc = EnFr_ContinueFrogSong;
         }
-        // Enhancement end
 ```
 
-In the case of alternative/replacement functions and variables, a simple comment mentioning the change it belongs to (Enhancement, Cheat, Debug, Randomizer Mechanic, etc) will suffice, as almost all the time, those replacements will be notated where they're used in the code following the above principles. The names of these replacements should also mirror the names of what they're replacing, with a short addition referring to the type of change.
+Feel free to add any description you want to the opening `// #region` comment, but none should be necessary with properly named variables and CVars.
+
+In the case of alternative/replacement functions and variables, all that's necessary is making the names of these replacements mirror the names of what they're replacing, with a short addition referring to the type of change. The fact that they're used in a modifying way will be clear enough with the above procedure used where they're actually called.
