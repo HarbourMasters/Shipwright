@@ -1990,14 +1990,19 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_LACS_DUNGEON_COUNT:
                 case RSK_LACS_TOKEN_COUNT:
                 case RSK_KEYRINGS_RANDOM_COUNT:
-                case RSK_BIG_POE_COUNT:
                 case RSK_CUCCO_COUNT:
                 case RSK_STARTING_SKULLTULA_TOKEN:
+                    numericValueString = it.value();
+                    mOptions[index].SetSelectedIndex(std::stoi(numericValueString));
+                    break;
+                // Same as the above section, but the indexes are off by one from the text
+                // (i.e. 10 Big Poes is index 9).
+                case RSK_BIG_POE_COUNT:
                 case RSK_TRIFORCE_HUNT_PIECES_TOTAL:
                 case RSK_TRIFORCE_HUNT_PIECES_REQUIRED:
                 case RSK_STARTING_HEARTS:
                     numericValueString = it.value();
-                    mOptions[index].SetSelectedIndex(std::stoi(numericValueString));
+                    mOptions[index].SetSelectedIndex(std::stoi(numericValueString) - 1);
                     break;
                 case RSK_GANONS_TRIALS:
                     if (it.value() == "Skip") {
