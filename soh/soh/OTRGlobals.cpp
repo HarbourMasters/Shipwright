@@ -1569,6 +1569,11 @@ extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
     return (Gfx*)&res->Instructions[0];
 }
 
+extern "C" uint8_t ResourceMgr_FileIsCustomByName(const char* path) {
+    auto res = std::static_pointer_cast<LUS::DisplayList>(GetResourceByNameHandlingMQ(path));
+    return res->GetInitData()->IsCustom;
+}
+
 typedef struct {
     int index;
     Gfx instruction;
