@@ -33,6 +33,7 @@ u64 D_801614D0[0xA00];
 #endif
 
 PlayState* gPlayState;
+s16 firstInit = 0;
 
 s16 gEnPartnerId;
 
@@ -173,11 +174,6 @@ void Play_Destroy(GameState* thisx) {
     Player* player = GET_PLAYER(play);
 
     GameInteractor_ExecuteOnPlayDestroy();
-
-    // Only initialize the frame counter when exiting the title screen
-    if (gSaveContext.fileNum == 0xFF) {
-        play->gameplayFrames = 0;
-    }
 
     // In ER, remove link from epona when entering somewhere that doesn't support epona
     if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
@@ -488,6 +484,12 @@ void Play_Init(GameState* thisx) {
         if (gSaveContext.entranceIndex == 0x7A) {
             gSaveContext.entranceIndex = 0x400;
         }
+    }
+
+    // Properly initialize the frame counter so it doesn't use garbage data
+    if (!firstInit) {
+        play->gameplayFrames = 0;
+        firstInit = 1;
     }
 
     // Invalid entrance, so immediately exit the game to opening title
