@@ -5186,7 +5186,6 @@ void Fishing_QuitAtDoor(Fishing* this, PlayState* play) {
                 } else if (sLinkAge == 1) {
                     Message_ContinueTextbox(play, 0x4092);
                 }
-                if (play) {}
 
                 if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE_FADING) {
                     
