@@ -3,6 +3,12 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_rlTex_0033E0 "__OTR__objects/object_rl/object_rlTex_0033E0"
+static const ALIGN_ASSET(2) char object_rlTex_0033E0[] = dobject_rlTex_0033E0;
+
+#define dobject_rlTex_003420 "__OTR__objects/object_rl/object_rlTex_003420"
+static const ALIGN_ASSET(2) char object_rlTex_003420[] = dobject_rlTex_003420;
+
 #define dobject_rl_Anim_00040C "__OTR__objects/object_rl/object_rl_Anim_00040C"
 static const ALIGN_ASSET(2) char object_rl_Anim_00040C[] = dobject_rl_Anim_00040C;
 
@@ -101,12 +107,6 @@ static const ALIGN_ASSET(2) char object_rl_Tex_007998[] = dobject_rl_Tex_007998;
 
 #define dobject_rl_Skel_007B38 "__OTR__objects/object_rl/object_rl_Skel_007B38"
 static const ALIGN_ASSET(2) char object_rl_Skel_007B38[] = dobject_rl_Skel_007B38;
-
-#define dobject_rlTex_0033E0 "__OTR__objects/object_rl/object_rlTex_0033E0"
-static const ALIGN_ASSET(2) char object_rlTex_0033E0[] = dobject_rlTex_0033E0;
-
-#define dobject_rlTex_003420 "__OTR__objects/object_rl/object_rlTex_003420"
-static const ALIGN_ASSET(2) char object_rlTex_003420[] = dobject_rlTex_003420;
 
 
 #endif // OBJECTS_OBJECT_RL_H

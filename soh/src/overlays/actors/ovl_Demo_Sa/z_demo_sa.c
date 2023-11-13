@@ -254,7 +254,7 @@ void func_8098E960(DemoSa* this, PlayState* play) {
 
     if ((gSaveContext.chamberCutsceneNum == 0) && (gSaveContext.sceneSetupIndex < 4)) {
         player = GET_PLAYER(play);
-        if (!gSaveContext.isBossRush) {
+        if (!IS_BOSS_RUSH) {
             this->action = 1;
             play->csCtx.segment = D_8099010C;
             gSaveContext.cutsceneTrigger = 2;
@@ -821,8 +821,7 @@ void DemoSa_DrawOpa(DemoSa* this, PlayState* play) {
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
 
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                          DemoSa_OverrideLimbDraw, NULL, &this->actor);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, DemoSa_OverrideLimbDraw, NULL, &this->actor);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

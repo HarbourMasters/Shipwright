@@ -128,6 +128,8 @@ class SaveManager {
         }
     }
 
+    void LoadCharArray(const std::string& name, char* destination, size_t size);
+
     // In the LoadArrayFunc func, the name must be "" to load from the array.
     using LoadArrayFunc = std::function<void(size_t)>;
     void LoadArray(const std::string& name, const size_t size, LoadArrayFunc func);
@@ -151,6 +153,7 @@ class SaveManager {
     static void InitFileImpl(bool isDebug);
     static void InitFileNormal();
     static void InitFileDebug();
+    static void InitFileMaxed();
 
     static void LoadRandomizerVersion1();
     static void LoadRandomizerVersion2();

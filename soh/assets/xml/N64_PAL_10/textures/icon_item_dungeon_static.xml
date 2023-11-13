@@ -1,0 +1,23 @@
+<Root>
+    <File Name="icon_item_dungeon_static" Segment="12">
+        <Texture Name="gDungeonMapBlankFloorButtonTex" OutName="dungeon_map_blank_floor_button" Format="ia8" Width="24" Height="16" Offset="0x0"/>
+        <Texture Name="gDungeonMap1FButtonTex" OutName="dungeon_map_1f_button" Format="ia8" Width="24" Height="16" Offset="0x180"/>
+        <Texture Name="gDungeonMap2FButtonTex" OutName="dungeon_map_2f_button" Format="ia8" Width="24" Height="16" Offset="0x300"/>
+        <Texture Name="gDungeonMap3FButtonTex" OutName="dungeon_map_3f_button" Format="ia8" Width="24" Height="16" Offset="0x480"/>
+        <Texture Name="gDungeonMap4FButtonTex" OutName="dungeon_map_4f_button" Format="ia8" Width="24" Height="16" Offset="0x600"/>
+        <Texture Name="gDungeonMap5FButtonTex" OutName="dungeon_map_5f_button" Format="ia8" Width="24" Height="16" Offset="0x780"/>
+        <Texture Name="gDungeonMap6FButtonTex" OutName="dungeon_map_6f_button" Format="ia8" Width="24" Height="16" Offset="0x900"/>
+        <Texture Name="gDungeonMap7FButtonTex" OutName="dungeon_map_7f_button" Format="ia8" Width="24" Height="16" Offset="0xA80"/>
+        <Texture Name="gDungeonMap8FButtonTex" OutName="dungeon_map_8f_button" Format="ia8" Width="24" Height="16" Offset="0xC00"/>
+        <Texture Name="gDungeonMapB1ButtonTex" OutName="dungeon_map_b1_button" Format="ia8" Width="24" Height="16" Offset="0xD80"/>
+        <Texture Name="gDungeonMapB2ButtonTex" OutName="dungeon_map_b2_button" Format="ia8" Width="24" Height="16" Offset="0xF00"/>
+        <Texture Name="gDungeonMapB3ButtonTex" OutName="dungeon_map_b3_button" Format="ia8" Width="24" Height="16" Offset="0x1080"/>
+        <Texture Name="gDungeonMapB4ButtonTex" OutName="dungeon_map_b4_button" Format="ia8" Width="24" Height="16" Offset="0x1200"/>
+        <Texture Name="gDungeonMapB5ButtonTex" OutName="dungeon_map_b5_button" Format="ia8" Width="24" Height="16" Offset="0x1380"/>
+        <Texture Name="gDungeonMapB6ButtonTex" OutName="dungeon_map_b6_button" Format="ia8" Width="24" Height="16" Offset="0x1500"/>
+        <Texture Name="gDungeonMapB7ButtonTex" OutName="dungeon_map_b7_button" Format="ia8" Width="24" Height="16" Offset="0x1680"/>
+        <Texture Name="gDungeonMapB8ButtonTex" OutName="dungeon_map_b8_button" Format="ia8" Width="24" Height="16" Offset="0x1800"/>
+        <Texture Name="gDungeonMapLinkHeadTex" OutName="dungeon_map_link_head" Format="rgba16" Width="16" Height="16" Offset="0x1980"/>
+        <Texture Name="gDungeonMapSkullTex" OutName="dungeon_map_skull" Format="rgba16" Width="16" Height="16" Offset="0x1B80"/>
+    </File>
+</Root>

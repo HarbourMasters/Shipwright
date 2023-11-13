@@ -1165,8 +1165,7 @@ void BossDodongo_Draw(Actor* thisx, PlayState* play) {
     Matrix_RotateZ(this->unk_23C, MTXMODE_APPLY);
     Matrix_RotateX((this->unk_1C4 / 32768.0f) * 3.14159f, MTXMODE_APPLY);
 
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, BossDodongo_OverrideLimbDraw,
-                      BossDodongo_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, BossDodongo_OverrideLimbDraw, BossDodongo_PostLimbDraw, this);
 
     POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
 
@@ -1632,7 +1631,7 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
 
             if (this->unk_1DA == 820) {
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS_CLEAR);
-                if (!gSaveContext.isBossRush) {
+                if (!IS_BOSS_RUSH) {
                     Actor_Spawn(
                         &play->actorCtx, play, ACTOR_ITEM_B_HEART,
                         Math_SinS(this->actor.shape.rot.y) * -50.0f + this->actor.world.pos.x, this->actor.world.pos.y,
@@ -1651,7 +1650,7 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
                 func_80064534(play, &play->csCtx);
                 func_8002DF54(play, &this->actor, 7);
-                if (!gSaveContext.isBossRush) {
+                if (!IS_BOSS_RUSH) {
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, WARP_DUNGEON_CHILD);
                 } else {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, WARP_DUNGEON_ADULT, false);

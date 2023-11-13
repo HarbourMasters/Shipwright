@@ -461,7 +461,7 @@ void EnMag_UpdateVanilla(Actor* thisx, PlayState* play) {
 
             if (this->effectFadeInTimer == 0) {
                 this->effectPrimLodFrac = 128.0f;
-                
+
                 this->effectPrimColor[2] = 170.0f;
                 this->effectEnvColor[1] = 100.0f;
 
@@ -544,7 +544,7 @@ void EnMag_DrawEffectTextures(Gfx** gfxp, const void* maskTex, void* effectTex, 
                               s16 effectWidth, s16 effectHeight, s16 rectLeft, s16 rectTop, s16 rectWidth,
                               s16 rectHeight, u16 dsdx, u16 dtdy, u16 shifts, u16 shiftt, u16 flag, EnMag* this) {
     Gfx* gfx = *gfxp;
-    
+
     gDPLoadMultiBlock_4b(gfx++, maskTex, 0x0000, 0, G_IM_FMT_I, maskWidth, maskHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
                          G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
@@ -574,21 +574,21 @@ void EnMag_DrawImageRGBA32(Gfx** gfxp, s16 centerX, s16 centerY, const char* sou
     s32 i;
 
     Gfx_SetupDL_56Ptr(&gfx);
-    
+
     rectLeft = centerX - (width / 2);
     rectTop = centerY - (height / 2);
-    
+
     gDPSetTileCustom(gfx++, G_IM_FMT_RGBA, G_IM_SIZ_32b, width, height, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                      G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    
+
     gDPSetTextureImage(gfx++, G_IM_FMT_RGBA, G_IM_SIZ_32b, width, source);
-    
+
     gDPLoadSync(gfx++);
     gDPLoadTile(gfx++, G_TX_LOADTILE, 0, 0, (width - 1) << 2, (height - 1) << 2);
-    
-    gSPTextureRectangle(gfx++, rectLeft << 2, rectTop << 2, (rectLeft + (s32)width) << 2,
-                        (rectTop + height) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-    
+
+    gSPTextureRectangle(gfx++, rectLeft << 2, rectTop << 2, (rectLeft + (s32)width) << 2, (rectTop + height) << 2,
+                        G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+
     *gfxp = gfx;
 }
 
@@ -620,9 +620,9 @@ s16 GetCharArraySize(const char* str) {
 }
 
 static void EnMag_SetCopyValues(const char** copy_tex, u16* copy_width, u16* copy_xl, u16* copy_xh) {
-    u32 gameVersion = ResourceMgr_GetGameVersion(0);
-    switch (gameVersion) {
-        case OOT_PAL_11:
+    u32 platform = ResourceMgr_GetGamePlatform(0);
+    switch (platform) {
+        case GAME_PLATFORM_N64:
             *copy_tex = gTitleCopyright1998Tex;
             *copy_width = 128;
             *copy_xl = 376;
@@ -738,9 +738,8 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
                     (s16)this->copyrightAlpha);
 
     if ((s16)this->copyrightAlpha != 0) {
-        gDPLoadTextureBlock(gfx++, copy_tex, G_IM_FMT_IA, G_IM_SIZ_8b, copy_width, 16, 0,
-                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
-                            G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(gfx++, copy_tex, G_IM_FMT_IA, G_IM_SIZ_8b, copy_width, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
         gSPTextureRectangle(gfx++, copy_xl, 792, copy_xh, 856, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
     }
@@ -924,7 +923,6 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
 
         EnMag_DrawTextureI8(&gfx, gTitleTheLegendOfTextTex, 72, 8, 153, 72, 72, 8, 1024, 1024);
         EnMag_DrawTextureI8(&gfx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 151, 126, 96, 8, 1024, 1024);
-
     }
 
     Gfx_SetupDL_39Ptr(&gfx);
@@ -936,9 +934,8 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
                     (s16)this->copyrightAlpha);
 
     if ((s16)this->copyrightAlpha != 0) {
-        gDPLoadTextureBlock(gfx++, copy_tex, G_IM_FMT_IA, G_IM_SIZ_8b, copy_width, 16, 0,
-                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
-                            G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(gfx++, copy_tex, G_IM_FMT_IA, G_IM_SIZ_8b, copy_width, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
         gSPTextureRectangle(gfx++, copy_xl, 792, copy_xh, 856, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
     }

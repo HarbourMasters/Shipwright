@@ -1,0 +1,44 @@
+<Root>
+    <File Name="souko_scene" Segment="2">
+        <Texture Name="souko_sceneTex_004410" OutName="souko_sceneTex_004410" Format="rgba16" Width="32" Height="32" Offset="0x4410" AddedByScript="true"/>
+        <Texture Name="souko_sceneTex_004C10" OutName="souko_sceneTex_004C10" Format="rgba16" Width="32" Height="16" Offset="0x4C10" AddedByScript="true"/>
+        <Texture Name="souko_sceneTex_005410" OutName="souko_sceneTex_005410" Format="rgba16" Width="32" Height="32" Offset="0x5410" AddedByScript="true"/>
+        <Texture Name="souko_sceneTex_005C10" OutName="souko_sceneTex_005C10" Format="rgba16" Width="64" Height="32" Offset="0x5C10" AddedByScript="true"/>
+        <Texture Name="gLonLonHouseDayEntranceTex" OutName="day_entrance" Format="ia16" Width="64" Height="4" Offset="0x5210"/>
+        <Texture Name="gLonLonHouseNightEntranceTex" OutName="night_entrance" Format="ia16" Width="64" Height="4" Offset="0x5010"/>
+        <Scene Name="souko_scene" Offset="0x0"/>
+    </File>
+    <File Name="souko_room_0" Segment="3">
+        <Texture Name="souko_room_0Tex_0054F8" OutName="souko_room_0Tex_0054F8" Format="i4" Width="64" Height="64" Offset="0x54F8" AddedByScript="true"/>
+        <Texture Name="souko_room_0Tex_005CF8" OutName="souko_room_0Tex_005CF8" Format="rgba16" Width="32" Height="32" Offset="0x5CF8" AddedByScript="true"/>
+        <Texture Name="souko_room_0Tex_0064F8" OutName="souko_room_0Tex_0064F8" Format="rgba16" Width="32" Height="32" Offset="0x64F8" AddedByScript="true"/>
+        <Texture Name="souko_room_0Tex_006CF8" OutName="souko_room_0Tex_006CF8" Format="rgba16" Width="16" Height="32" Offset="0x6CF8" AddedByScript="true"/>
+        <Texture Name="souko_room_0Tex_0070F8" OutName="souko_room_0Tex_0070F8" Format="rgba16" Width="32" Height="32" Offset="0x70F8" AddedByScript="true"/>
+        <Texture Name="souko_room_0Tex_0078F8" OutName="souko_room_0Tex_0078F8" Format="rgba16" Width="32" Height="32" Offset="0x78F8" AddedByScript="true"/>
+        <Texture Name="souko_room_0Tex_0080F8" OutName="souko_room_0Tex_0080F8" Format="rgba16" Width="32" Height="64" Offset="0x80F8" AddedByScript="true"/>
+        <Texture Name="souko_room_0Tex_0090F8" OutName="souko_room_0Tex_0090F8" Format="i4" Width="32" Height="32" Offset="0x90F8" AddedByScript="true"/>
+        <Room Name="souko_room_0" Offset="0x0"/>
+    </File>
+    <File Name="souko_room_1" Segment="3">
+        <Texture Name="souko_room_1Tex_005118" OutName="souko_room_1Tex_005118" Format="rgba16" Width="16" Height="64" Offset="0x5118" AddedByScript="true"/>
+        <Texture Name="souko_room_1Tex_005918" OutName="souko_room_1Tex_005918" Format="rgba16" Width="32" Height="32" Offset="0x5918" AddedByScript="true"/>
+        <Texture Name="souko_room_1Tex_006118" OutName="souko_room_1Tex_006118" Format="rgba16" Width="32" Height="64" Offset="0x6118" AddedByScript="true"/>
+        <Texture Name="souko_room_1Tex_007118" OutName="souko_room_1Tex_007118" Format="rgba16" Width="16" Height="32" Offset="0x7118" AddedByScript="true"/>
+        <Texture Name="souko_room_1Tex_007518" OutName="souko_room_1Tex_007518" Format="rgba16" Width="32" Height="32" Offset="0x7518" AddedByScript="true"/>
+        <Texture Name="souko_room_1Tex_007D18" OutName="souko_room_1Tex_007D18" Format="rgba16" Width="32" Height="64" Offset="0x7D18" AddedByScript="true"/>
+        <Texture Name="souko_room_1Tex_008D18" OutName="souko_room_1Tex_008D18" Format="rgba16" Width="32" Height="32" Offset="0x8D18" AddedByScript="true"/>
+        <Texture Name="souko_room_1Tex_009F28" OutName="souko_room_1Tex_009F28" Format="rgba16" Width="16" Height="16" Offset="0x9F28" AddedByScript="true"/>
+        <Texture Name="souko_room_1Tex_00A128" OutName="souko_room_1Tex_00A128" Format="ia8" Width="16" Height="16" Offset="0xA128" AddedByScript="true"/>
+        <Texture Name="souko_room_1Tex_00A228" OutName="souko_room_1Tex_00A228" Format="ia8" Width="16" Height="32" Offset="0xA228" AddedByScript="true"/>
+        <Room Name="souko_room_1" Offset="0x0"/>
+    </File>
+    <File Name="souko_room_2" Segment="3">
+        <Texture Name="souko_room_2Tex_004EE0" OutName="souko_room_2Tex_004EE0" Format="rgba16" Width="16" Height="32" Offset="0x4EE0" AddedByScript="true"/>
+        <Texture Name="souko_room_2Tex_0052E0" OutName="souko_room_2Tex_0052E0" Format="i4" Width="64" Height="64" Offset="0x52E0" AddedByScript="true"/>
+        <Texture Name="souko_room_2Tex_005AE0" OutName="souko_room_2Tex_005AE0" Format="rgba16" Width="8" Height="128" Offset="0x5AE0" AddedByScript="true"/>
+        <Texture Name="souko_room_2Tex_0062E0" OutName="souko_room_2Tex_0062E0" Format="rgba16" Width="16" Height="64" Offset="0x62E0" AddedByScript="true"/>
+        <Texture Name="souko_room_2Tex_006AE0" OutName="souko_room_2Tex_006AE0" Format="rgba16" Width="32" Height="64" Offset="0x6AE0" AddedByScript="true"/>
+        <Texture Name="souko_room_2Tex_007F78" OutName="souko_room_2Tex_007F78" Format="ia8" Width="16" Height="32" Offset="0x7F78" AddedByScript="true"/>
+        <Room Name="souko_room_2" Offset="0x0"/>
+    </File>
+</Root>

@@ -65,7 +65,7 @@ void MagicDark_Init(Actor* thisx, PlayState* play) {
 
 void MagicDark_Destroy(Actor* thisx, PlayState* play) {
     if (gSaveContext.nayrusLoveTimer == 0) {
-        func_800876C8(play);
+        Magic_Reset(play);
     }
 }
 

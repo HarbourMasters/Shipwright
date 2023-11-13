@@ -1212,11 +1212,7 @@ void func_8009AFE0(PlayState* play) {
 
     { s32 pad[2]; }
 
-    if (ResourceMgr_IsGameMasterQuest()) {
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sThievesHideoutEntranceTextures_MQ[gSaveContext.nightFlag]));
-    } else {
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sThievesHideoutEntranceTextures[gSaveContext.nightFlag]));
-    }
+    gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sThievesHideoutEntranceTextures[gSaveContext.nightFlag]));
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1673,11 +1669,7 @@ void func_8009D31C(PlayState* play) {
 
     { s32 pad[2]; }
 
-    if (ResourceMgr_IsGameMasterQuest()) {
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sLonLonHouseEntranceTextures_MQ[gSaveContext.nightFlag]));
-    } else {
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sLonLonHouseEntranceTextures[gSaveContext.nightFlag]));
-    }
+    gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sLonLonHouseEntranceTextures[gSaveContext.nightFlag]));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -1709,13 +1701,8 @@ void func_8009D438(PlayState* play) {
         var = gSaveContext.nightFlag;
     }
 
-    if (ResourceMgr_IsGameMasterQuest()) {
-        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sGuardHouseView1Textures_MQ[var]));
-        gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sGuardHouseView2Textures_MQ[var]));
-    } else {
-        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sGuardHouseView1Textures[var]));
-        gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sGuardHouseView2Textures[var]));
-    }
+    gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sGuardHouseView1Textures[var]));
+    gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sGuardHouseView2Textures[var]));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -1859,11 +1846,7 @@ void func_8009DD5C(PlayState* play) {
 
     { s32 pad[2]; }
 
-    if (ResourceMgr_IsGameMasterQuest()) {
-        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sKakarikoWindowTextures_MQ[gSaveContext.nightFlag]));
-    } else {
-        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sKakarikoWindowTextures[gSaveContext.nightFlag]));
-    }
+    gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sKakarikoWindowTextures[gSaveContext.nightFlag]));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -1998,12 +1981,8 @@ void func_8009E730(PlayState* play) {
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
-    
-    if (ResourceMgr_IsGameMasterQuest()) {
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sZorasDomainEntranceTextures_MQ[gSaveContext.nightFlag]));
-    } else {
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sZorasDomainEntranceTextures[gSaveContext.nightFlag]));
-    }
+
+    gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sZorasDomainEntranceTextures[gSaveContext.nightFlag]));
 
     { s32 pad[2]; }
 
@@ -2091,12 +2070,12 @@ void func_8009EE44(PlayState* play) {
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
 
 	bool playerHasCojiro = INV_CONTENT(ITEM_COJIRO) == ITEM_COJIRO;
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
         playerHasCojiro = PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_COJIRO);
     }
     if ((play->roomCtx.unk_74[0] == 0) && playerHasCojiro) {
         if (play->roomCtx.unk_74[1] == 50) {
-            func_8002F7DC(&GET_PLAYER(play)->actor, NA_SE_EV_CHICKEN_CRY_M);
+            Player_PlaySfx(&GET_PLAYER(play)->actor, NA_SE_EV_CHICKEN_CRY_M);
             play->roomCtx.unk_74[0] = 1;
         }
         play->roomCtx.unk_74[1]++;
@@ -2136,11 +2115,7 @@ void func_8009F1B4(PlayState* play) {
 
     { s32 pad[2]; }
 
-    if (ResourceMgr_IsGameMasterQuest()) {
-        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_8012A380_MQ[gSaveContext.nightFlag]));
-    } else {
-        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_8012A380[gSaveContext.nightFlag]));
-    }
+    gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_8012A380[gSaveContext.nightFlag]));
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -2273,11 +2248,7 @@ void func_8009F9D0(PlayState* play) {
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetEnvColor(POLY_XLU_DISP++, 128, 128, 128, 128);
 
-    if (ResourceMgr_IsGameMasterQuest()) {
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sGoronCityEntranceTextures_MQ[gSaveContext.nightFlag]));
-    } else {
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sGoronCityEntranceTextures[gSaveContext.nightFlag]));
-    }
+    gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sGoronCityEntranceTextures[gSaveContext.nightFlag]));
 
     { s32 pad[2]; }
 
@@ -2295,11 +2266,7 @@ void func_8009FB74(PlayState* play) {
 
     { s32 pad[2]; }
 
-    if (ResourceMgr_IsGameMasterQuest()) {
-        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sLonLonRanchWindowTextures_MQ[gSaveContext.nightFlag]));
-    } else {
-        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sLonLonRanchWindowTextures[gSaveContext.nightFlag]));
-    }
+    gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sLonLonRanchWindowTextures[gSaveContext.nightFlag]));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
