@@ -400,8 +400,9 @@ void AudioCollection::InitializeShufflePool() {
     if (shufflePoolInitialized) return;
     
     for (auto& [seqId, seqInfo] : sequenceMap) {
+        if (!seqInfo.canBeUsedAsReplacement) continue;
         const std::string cvarKey = "gAudioEditor.Excluded." + seqInfo.sfxKey;
-        if (CVarGetInteger(cvarKey.c_str(), 0) && !seqInfo.canBeUsedAsReplacement) {
+        if (CVarGetInteger(cvarKey.c_str(), 0)) {
             excludedSequences.insert(&seqInfo);
         } else {
             includedSequences.insert(&seqInfo);
