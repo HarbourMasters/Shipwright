@@ -552,13 +552,18 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
             "\x12\x38\x82" "Aufgeben! Ich verkaufe dir einen&%g{{item}}%w&für %r{{price}} Rubine%w!\x07\x10\xA3",
             "\x12\x38\x82" "J'abandonne! Tu veux bien m'acheter&un %g{{item}}%w?&Ça fera %r{{price}} Rubis%w!\x07\x10\xA3"));
     CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN,
+        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_10,
         CustomMessage("I tried to be a %rmagic bean%w salesman,&but it turns out my marketing skills&weren't worth "
             "beans!^Anyway, want to buy my&%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
             "Möchten Sie einen geheimnisvollen&Gegenstand für 60 Rubine?\x1B&%gJa&Nein%w",
             "J'ai essayé d'être un vendeur de&%rharicots magiques%w, mais j'étais&mauvais au niveau du marketing et&ça "
             "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter un&"
             "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w"));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100,
+        CustomMessage("I never thought I'd say this, but I'm &selling the last %rMagic Bean%w. %r99%w Rupees...\x1B&%gYes&No%w",
+            "",
+            "\x1B&%gOui&Non%w"));
 
 
     //Setup for merchant text boxes
@@ -570,7 +575,7 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
             "Wie wäre es mit %g&{{item}}%w für %y200 Rubine?%w\x1B&%gJa!&Nein!%w",
             "Veux-tu acheter %g&{{item}}%w pour %y200 rubis?%w\x1B&%gOui&Non&w"));
 
-    //Granny Shopy
+    //Granny Shop
     //RANDOTODO: Implement obscure/ambiguous hints
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_GRANNYS_SHOP,
@@ -5352,7 +5357,7 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
 }
 
 CustomMessage Randomizer::GetSariaMessage(u16 originalTextId) {
-    if (originalTextId == TEXT_SARIA_SFM || (originalTextId >= TEXT_SARIAS_SONG_TEXT_START && originalTextId <= TEXT_SARIAS_SONG_TEXT_END)) {
+    if (originalTextId == TEXT_SARIA_SFM || (originalTextId >= TEXT_SARIAS_SONG_FACE_TO_FACE && originalTextId <= TEXT_SARIAS_SONG_CHANNELING_POWER)) {
         CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE);
         CustomMessage messageEntry2 = messageEntry;
         std::string code = originalTextId == TEXT_SARIA_SFM ? "" : "\x0B";
