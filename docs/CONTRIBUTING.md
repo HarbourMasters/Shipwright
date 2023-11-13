@@ -63,7 +63,7 @@ If you wanted to modify this block with an enhancement to add difficulty options
         }
 ```
 
-Incorporate as much of the section as is applicable in a block behind a CVar, with comment mentioning what type of addition it is (enhancement/fix/restoration, etc), label the else block as vanilla code, and put a closing comment at the end. Then, make your changes in the if block. In this instance, it ended up looking like this:
+Incorporate as much of the section as is applicable in a block behind a CVar, with comment mentioning what type of addition it is (main categories are `Enhancement`, `Cheat`, `Randomizer`, or `Debug`), and put the `// #endregion` comment before the else block. Then, make your changes in the if block. In this instance, it ended up looking like this:
 
 ```c++
         if (CVarGetInteger("gCustomizeFrogsOcarinaGame", 0) == 1) {
