@@ -175,6 +175,11 @@ void Play_Destroy(GameState* thisx) {
 
     GameInteractor_ExecuteOnPlayDestroy();
 
+    // Only initialize the frame counter when exiting the title screen
+    if (gSaveContext.fileNum == 0xFF) {
+        play->gameplayFrames = 0;
+    }
+
     // In ER, remove link from epona when entering somewhere that doesn't support epona
     if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
         Entrance_HandleEponaState();
