@@ -1,5 +1,6 @@
 #include "location.h"
 #include "3drando/hint_list.hpp"
+#include <algorithm>
 
 RandomizerCheck Rando::Location::GetRandomizerCheck() const {
     return rc;

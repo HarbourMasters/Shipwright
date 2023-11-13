@@ -1,7 +1,7 @@
 #include "fill.hpp"
 
 #include "custom_messages.hpp"
-#include "dungeon.hpp"
+#include "../dungeon.h"
 #include "../context.h"
 #include "item_pool.hpp"
 #include "location_access.hpp"
@@ -11,8 +11,9 @@
 #include "starting_inventory.hpp"
 #include "hints.hpp"
 #include "hint_list.hpp"
-#include "entrance.hpp"
+#include "../entrance.h"
 #include "shops.hpp"
+#include "pool_functions.hpp"
 //#include "debug.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"
 
@@ -22,7 +23,7 @@
 
 using namespace CustomMessages;
 using namespace Logic;
-using namespace Settings;
+using namespace Rando;
 
 static bool placementFailure = false;
 
@@ -90,14 +91,15 @@ static bool UpdateToDAccess(Entrance* entrance, SearchMode mode) {
 
 // Various checks that need to pass for the world to be validated as completable
 static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, bool checkOtherEntranceAccess, std::vector<RandomizerRegion>& areaPool) {
+  auto ctx = Rando::Context::GetInstance();
   // Condition for validating Temple of Time Access
-  if (mode == SearchMode::TempleOfTimeAccess && ((Settings::ResolvedStartingAge == AGE_CHILD && AreaTable(RR_TEMPLE_OF_TIME)->Adult()) || (Settings::ResolvedStartingAge == AGE_ADULT && AreaTable(RR_TEMPLE_OF_TIME)->Child()) || !checkOtherEntranceAccess)) {
+  if (mode == SearchMode::TempleOfTimeAccess && ((ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && AreaTable(RR_TEMPLE_OF_TIME)->Adult()) || (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT && AreaTable(RR_TEMPLE_OF_TIME)->Child()) || !checkOtherEntranceAccess)) {
     mode = SearchMode::ValidStartingRegion;
   }
   // Condition for validating a valid starting region
   if (mode == SearchMode::ValidStartingRegion) {
-    bool childAccess = Settings::ResolvedStartingAge == AGE_CHILD || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child();
-    bool adultAccess = Settings::ResolvedStartingAge == AGE_ADULT || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult();
+    bool childAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child();
+    bool adultAccess = ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT || AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult();
 
     Area* kokiri = AreaTable(RR_KOKIRI_FOREST);
     Area* kakariko = AreaTable(RR_KAKARIKO_VILLAGE);
@@ -119,7 +121,7 @@ static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, 
       Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
     }
     // Reset access as the non-starting age
-    if (Settings::ResolvedStartingAge == AGE_CHILD) {
+    if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
       for (RandomizerRegion areaKey : areaPool) {
         AreaTable(areaKey)->adultDay = false;
         AreaTable(areaKey)->adultNight = false;
@@ -142,11 +144,11 @@ static int GetMaxGSCount() {
   //If bridge or LACS is set to tokens, get how many are required
   int maxBridge = 0;
   int maxLACS = 0;
-  if (Settings::Bridge.Is(RAINBOWBRIDGE_TOKENS)) {
-    maxBridge = Settings::BridgeTokenCount.Value<uint8_t>();
+  if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)) {
+    maxBridge = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Value<uint8_t>();
   }
-  if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_TOKENS)) {
-    maxLACS = Settings::LACSTokenCount.Value<uint8_t>();
+  if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
+    maxLACS = ctx->GetOption(RSK_LACS_TOKEN_COUNT).Value<uint8_t>();
   }
   maxBridge = std::max(maxBridge, maxLACS);
   //Get the max amount of GS which could be useful from token reward locations
@@ -171,7 +173,7 @@ static int GetMaxGSCount() {
       maxUseful = 10;
   }
   //Return max of the two possible reasons tokens could be important, minus the tokens in the starting inventory
-  return std::max(maxUseful, maxBridge) - StartingSkulltulaToken.Value<uint8_t>();
+  return std::max(maxUseful, maxBridge) - ctx->GetOption(RSK_STARTING_SKULLTULA_TOKEN).Value<uint8_t>();
 }
 
 std::string GetShopItemBaseName(std::string itemName) {
@@ -306,7 +308,7 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
         }
 
         // Add shuffled entrances to the entrance playthrough
-        if (mode == SearchMode::GeneratePlaythrough && exit.IsShuffled() && !exit.IsAddedToPool() && !noRandomEntrances) {
+        if (mode == SearchMode::GeneratePlaythrough && exit.IsShuffled() && !exit.IsAddedToPool() && !ctx->GetEntranceShuffler()->HasNoRandomEntrances()) {
           entranceSphere.push_back(&exit);
           exit.AddToPool();
           // Don't list a two-way coupled entrance from both directions
@@ -384,7 +386,8 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
                 }
                 //Handle buy items
                 //If ammo drops are off, don't do this step, since buyable ammo becomes logically important
-                else if (AmmoDrops.IsNot(AMMODROPS_NONE) && !(bombchus && bombchusFound) && type == ITEMTYPE_SHOP) {
+                // TODO: Reimplement Ammo Drops setting
+                else if (/*AmmoDrops.IsNot(AMMODROPS_NONE) &&*/ !(bombchus && bombchusFound) && type == ITEMTYPE_SHOP) {
                   //Only check each buy item once
                   std::string buyItem = GetShopItemBaseName(itemName);
                   //Buy item not in list to ignore, add it to list and write to playthrough
@@ -394,7 +397,7 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
                   }
                 }
                 //Add all other advancement items
-                else if (!bombchus && type != ITEMTYPE_TOKEN && (AmmoDrops.Is(AMMODROPS_NONE) || type != ITEMTYPE_SHOP)) {
+                else if (!bombchus && type != ITEMTYPE_TOKEN && (/*AmmoDrops.Is(AMMODROPS_NONE) ||*/ type != ITEMTYPE_SHOP)) {
                   exclude = false;
                 }
                 //Has not been excluded, add to playthrough
@@ -422,8 +425,8 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
     if (mode == SearchMode::GeneratePlaythrough && itemSphere.size() > 0) {
       ctx->playthroughLocations.push_back(itemSphere);
     }
-    if (mode == SearchMode::GeneratePlaythrough && entranceSphere.size() > 0 && !noRandomEntrances) {
-      playthroughEntrances.push_back(entranceSphere);
+    if (mode == SearchMode::GeneratePlaythrough && entranceSphere.size() > 0 && !ctx->GetEntranceShuffler()->HasNoRandomEntrances()) {
+      ctx->GetEntranceShuffler()->playthroughEntrances.push_back(entranceSphere);
     }
   }
 
@@ -605,7 +608,7 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
         return;
     }
 
-    if (Settings::Logic.Is(LOGIC_NONE)) {
+    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC)) {
         FastFill(items, GetEmptyLocations(allowedLocations), true);
         return;
     }
@@ -683,7 +686,7 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
 
             // If ALR is off, then we check beatability after placing the item.
             // If the game is beatable, then we can stop placing items with logic.
-            if (!LocationsReachable) {
+            if (!ctx->GetOption(RSK_ALL_LOCATIONS_REACHABLE)) {
                 ctx->playthroughBeatable = false;
                 LogicReset();
                 GetAccessibleLocations(ctx->allLocations, SearchMode::CheckBeatable);
@@ -702,22 +705,23 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
 //setting, or randomize one dungeon reward to Link's Pocket if that setting is on
 static void RandomizeDungeonRewards() {
   auto ctx = Rando::Context::GetInstance();
+  std::array<uint32_t, 9> rDungeonRewardOverrides{};
   //quest item bit mask of each stone/medallion for the savefile
-  static constexpr std::array<uint32_t, 9> bitMaskTable = {
-    0x00040000, //Kokiri Emerald
-    0x00080000, //Goron Ruby
-    0x00100000, //Zora Sapphire
-    0x00000001, //Forest Medallion
-    0x00000002, //Fire Medallion
-    0x00000004, //Water Medallion
-    0x00000008, //Spirit Medallion
-    0x00000010, //Shadow Medallion
-    0x00000020, //Light Medallion
-  };
+  // static constexpr std::array<uint32_t, 9> bitMaskTable = {
+  //   0x00040000, //Kokiri Emerald
+  //   0x00080000, //Goron Ruby
+  //   0x00100000, //Zora Sapphire
+  //   0x00000001, //Forest Medallion
+  //   0x00000002, //Fire Medallion
+  //   0x00000004, //Water Medallion
+  //   0x00000008, //Spirit Medallion
+  //   0x00000010, //Shadow Medallion
+  //   0x00000020, //Light Medallion
+  // };
   int baseOffset = Rando::StaticData::RetrieveItem(RG_KOKIRI_EMERALD).GetItemID();
 
   //End of Dungeons includes Link's Pocket
-  if (ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON)) {
+  if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
     //get stones and medallions
     std::vector<RandomizerGet> rewards = FilterAndEraseFromPool(ItemPool, [](const auto i) {return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;});
 
@@ -727,7 +731,7 @@ static void RandomizeDungeonRewards() {
       ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
     }
 
-    if (Settings::Logic.Is(LOGIC_VANILLA)) { //Place dungeon rewards in vanilla locations
+    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) { //Place dungeon rewards in vanilla locations
       for (RandomizerCheck loc : Rando::StaticData::dungeonRewardLocations) {
         ctx->GetItemLocation(loc)->PlaceVanillaItem();
       }
@@ -742,11 +746,11 @@ static void RandomizeDungeonRewards() {
       //set the player's dungeon reward on file creation instead of pushing it to them at the start.
       //This is done mainly because players are already familiar with seeing their dungeon reward
       //before opening up their file
-      if (i == Rando::StaticData::dungeonRewardLocations.size()-1) {
-        LinksPocketRewardBitMask = bitMaskTable[index];
-      }
+      // if (i == Rando::StaticData::dungeonRewardLocations.size()-1) {
+      //   LinksPocketRewardBitMask = bitMaskTable[index];
+      // }
     }
-  } else if (LinksPocketItem.Is(LINKSPOCKETITEM_DUNGEON_REWARD)) {
+  } else if (ctx->GetOption(RSK_LINKS_POCKET).Is(RO_LINKS_POCKET_DUNGEON_REWARD)) {
     //get 1 stone/medallion
     std::vector<RandomizerGet> rewards = FilterFromPool(
         ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
@@ -757,7 +761,7 @@ static void RandomizeDungeonRewards() {
     }
     RandomizerGet startingReward = RandomElement(rewards, true);
 
-    LinksPocketRewardBitMask = bitMaskTable[Rando::StaticData::RetrieveItem(startingReward).GetItemID() - baseOffset];
+    //LinksPocketRewardBitMask = bitMaskTable[Rando::StaticData::RetrieveItem(startingReward).GetItemID() - baseOffset];
     ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingReward);
     //erase the stone/medallion from the Item Pool
     FilterAndEraseFromPool(ItemPool, [startingReward](const RandomizerGet i) {return i == startingReward;});
@@ -779,7 +783,7 @@ static void FillExcludedLocations() {
 }
 
 //Function to handle the Own Dungeon setting
-static void RandomizeOwnDungeon(const Dungeon::DungeonInfo* dungeon) {
+static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
   auto ctx = Rando::Context::GetInstance();
   std::vector<RandomizerGet> dungeonItems;
 
@@ -791,24 +795,24 @@ static void RandomizeOwnDungeon(const Dungeon::DungeonInfo* dungeon) {
   });
 
   //filter out locations that may be required to have songs placed at them
-  dungeonLocations = FilterFromPool(dungeonLocations, [](const auto loc){
-    if (ShuffleSongs.Is(SONGSHUFFLE_SONG_LOCATIONS)) {
+  dungeonLocations = FilterFromPool(dungeonLocations, [ctx](const auto loc){
+    if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_SONG_LOCATIONS)) {
       return !(Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSong));
     }
-    if (ShuffleSongs.Is(SONGSHUFFLE_DUNGEON_REWARDS)) {
+    if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_SONG_LOCATIONS)) {
       return !(Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSongDungeonReward));
     }
     return true;
   });
 
   //Add specific items that need be randomized within this dungeon
-  if (Keysanity.Is(KEYSANITY_OWN_DUNGEON) && dungeon->GetSmallKey() != RG_NONE) {
+  if (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) && dungeon->GetSmallKey() != RG_NONE) {
     std::vector<RandomizerGet> dungeonSmallKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){ return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
     AddElementsToPool(dungeonItems, dungeonSmallKeys);
   }
 
-  if ((BossKeysanity.Is(BOSSKEYSANITY_OWN_DUNGEON) && dungeon->GetBossKey() != RG_GANONS_CASTLE_BOSS_KEY) ||
-      (GanonsBossKey.Is(GANONSBOSSKEY_OWN_DUNGEON) && dungeon->GetBossKey() == RG_GANONS_CASTLE_BOSS_KEY)) {
+  if ((ctx->GetOption(RSK_BOSS_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) && dungeon->GetBossKey() != RG_GANONS_CASTLE_BOSS_KEY) ||
+      (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_OWN_DUNGEON) && dungeon->GetBossKey() == RG_GANONS_CASTLE_BOSS_KEY)) {
         auto dungeonBossKey = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){ return i == dungeon->GetBossKey();});
         AddElementsToPool(dungeonItems, dungeonBossKey);
   }
@@ -817,7 +821,7 @@ static void RandomizeOwnDungeon(const Dungeon::DungeonInfo* dungeon) {
   AssumedFill(dungeonItems, dungeonLocations);
 
   //randomize map and compass separately since they're not progressive
-  if (MapsAndCompasses.Is(MAPSANDCOMPASSES_OWN_DUNGEON) && dungeon->GetMap() != RG_NONE && dungeon->GetCompass() != RG_NONE) {
+  if (ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) && dungeon->GetMap() != RG_NONE && dungeon->GetCompass() != RG_NONE) {
     auto dungeonMapAndCompass = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){ return i == dungeon->GetMap() || i == dungeon->GetCompass();});
     AssumedFill(dungeonMapAndCompass, dungeonLocations);
   }
@@ -833,7 +837,6 @@ static void RandomizeOwnDungeon(const Dungeon::DungeonInfo* dungeon) {
   are randomized separately once the dungeon advancement items have all been placed.*/
 static void RandomizeDungeonItems() {
   auto ctx = Rando::Context::GetInstance();
-  using namespace Dungeon;
 
   //Get Any Dungeon and Overworld group locations
   std::vector<RandomizerCheck> anyDungeonLocations = FilterFromPool(ctx->allLocations, [](const auto loc){return Rando::StaticData::GetLocation(loc)->IsDungeon();});
@@ -843,45 +846,45 @@ static void RandomizeDungeonItems() {
   std::vector<RandomizerGet> anyDungeonItems;
   std::vector<RandomizerGet> overworldItems;
 
-  for (auto dungeon : dungeonList) {
-    if (Keysanity.Is(KEYSANITY_ANY_DUNGEON)) {
+  for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
+    if (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON)) {
       auto dungeonKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
       AddElementsToPool(anyDungeonItems, dungeonKeys);
-    } else if (Keysanity.Is(KEYSANITY_OVERWORLD)) {
+    } else if (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD)) {
       auto dungeonKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
       AddElementsToPool(overworldItems, dungeonKeys);
     }
 
-    if (BossKeysanity.Is(BOSSKEYSANITY_ANY_DUNGEON) && dungeon->GetBossKey() != RG_GANONS_CASTLE_BOSS_KEY) {
+    if (ctx->GetOption(RSK_BOSS_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON) && dungeon->GetBossKey() != RG_GANONS_CASTLE_BOSS_KEY) {
       auto bossKey = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return i == dungeon->GetBossKey();});
       AddElementsToPool(anyDungeonItems, bossKey);
-    } else if (BossKeysanity.Is(BOSSKEYSANITY_OVERWORLD) && dungeon->GetBossKey() != RG_GANONS_CASTLE_BOSS_KEY) {
+    } else if (ctx->GetOption(RSK_BOSS_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) && dungeon->GetBossKey() != RG_GANONS_CASTLE_BOSS_KEY) {
       auto bossKey = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return i == dungeon->GetBossKey();});
       AddElementsToPool(overworldItems, bossKey);
     }
 
-    if (GanonsBossKey.Is(GANONSBOSSKEY_ANY_DUNGEON)) {
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_ANY_DUNGEON)) {
       auto ganonBossKey = FilterAndEraseFromPool(ItemPool, [](const auto i){return i == RG_GANONS_CASTLE_BOSS_KEY;});
       AddElementsToPool(anyDungeonItems, ganonBossKey);
-    } else if (GanonsBossKey.Is(GANONSBOSSKEY_OVERWORLD)) {
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_OVERWORLD)) {
         auto ganonBossKey = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GANONS_CASTLE_BOSS_KEY; });
       AddElementsToPool(overworldItems, ganonBossKey);
     }
   }
 
-  if (GerudoKeys.Is(GERUDOKEYS_ANY_DUNGEON)) {
+  if (ctx->GetOption(RSK_GERUDO_KEYS).Is(RO_GERUDO_KEYS_ANY_DUNGEON)) {
       auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GERUDO_FORTRESS_SMALL_KEY; });
     AddElementsToPool(anyDungeonItems, gerudoKeys);
-  } else if (GerudoKeys.Is(GERUDOKEYS_OVERWORLD)) {
+  } else if (ctx->GetOption(RSK_GERUDO_KEYS).Is(RO_GERUDO_KEYS_OVERWORLD)) {
       auto gerudoKeys = FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GERUDO_FORTRESS_SMALL_KEY; });
     AddElementsToPool(overworldItems, gerudoKeys);
   }
 
-  if (ShuffleRewards.Is(REWARDSHUFFLE_ANY_DUNGEON)) {
+  if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_ANY_DUNGEON)) {
       auto rewards = FilterAndEraseFromPool(
           ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
     AddElementsToPool(anyDungeonItems, rewards);
-  } else if (ShuffleRewards.Is(REWARDSHUFFLE_OVERWORLD)) {
+  } else if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_OVERWORLD)) {
       auto rewards = FilterAndEraseFromPool(
           ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
     AddElementsToPool(overworldItems, rewards);
@@ -892,11 +895,11 @@ static void RandomizeDungeonItems() {
   AssumedFill(overworldItems, Rando::StaticData::overworldLocations, true);
 
   //Randomize maps and compasses after since they're not advancement items
-  for (auto dungeon : dungeonList) {
-    if (MapsAndCompasses.Is(MAPSANDCOMPASSES_ANY_DUNGEON)) {
+  for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
+    if (ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON)) {
       auto mapAndCompassItems = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return i == dungeon->GetMap() || i == dungeon->GetCompass();});
       AssumedFill(mapAndCompassItems, anyDungeonLocations, true);
-    } else if (MapsAndCompasses.Is(MAPSANDCOMPASSES_OVERWORLD)) {
+    } else if (ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD)) {
       auto mapAndCompassItems = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i){return i == dungeon->GetMap() || i == dungeon->GetCompass();});
       AssumedFill(mapAndCompassItems, Rando::StaticData::overworldLocations, true);
     }
@@ -905,7 +908,7 @@ static void RandomizeDungeonItems() {
 
 static void RandomizeLinksPocket() {
   auto ctx = Rando::Context::GetInstance();
-  if (LinksPocketItem.Is(LINKSPOCKETITEM_ADVANCEMENT)) {
+  if (ctx->GetOption(RSK_LINKS_POCKET).Is(RO_LINKS_POCKET_ADVANCEMENT)) {
    //Get all the advancement items                                                                                                     don't include tokens
       std::vector<RandomizerGet> advancementItems = FilterAndEraseFromPool(ItemPool, [](const auto i) {
           return Rando::StaticData::RetrieveItem(i).IsAdvancement() && Rando::StaticData::RetrieveItem(i).GetItemType() != ITEMTYPE_TOKEN;
@@ -916,7 +919,7 @@ static void RandomizeLinksPocket() {
    AddElementsToPool(ItemPool, advancementItems);
 
    ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingItem);
- } else if (LinksPocketItem.Is(LINKSPOCKETITEM_NOTHING)) {
+ } else if (ctx->GetOption(RSK_LINKS_POCKET).Is(RO_LINKS_POCKET_NOTHING)) {
    ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
  }
 }
@@ -934,14 +937,14 @@ void VanillaFill() {
     ctx->GetItemLocation(loc)->PlaceVanillaItem();
   }
   //If necessary, handle ER stuff
-  if (ShuffleEntrances) {
+  if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
     printf("\x1b[7;10HShuffling Entrances...");
-    ShuffleAllEntrances();
+    ctx->GetEntranceShuffler()->ShuffleAllEntrances();
     printf("\x1b[7;32HDone");
   }
   //Finish up
   ctx->CreateItemOverrides();
-  CreateEntranceOverrides();
+  ctx->GetEntranceShuffler()->CreateEntranceOverrides();
   CreateWarpSongTexts();
 }
 
@@ -960,7 +963,7 @@ int Fill() {
     placementFailure = false;
     //showItemProgress = false;
     ctx->playthroughLocations.clear();
-    playthroughEntrances.clear();
+    ctx->GetEntranceShuffler()->playthroughEntrances.clear();
     ctx->wothLocations.clear();
     AreaTable_Init(); //Reset the world graph to intialize the proper locations
     ctx->ItemReset(); //Reset shops incase of shopsanity random
@@ -973,9 +976,9 @@ int Fill() {
     //Temporarily add shop items to the ItemPool so that entrance randomization
     //can validate the world using deku/hylian shields
     AddElementsToPool(ItemPool, GetMinVanillaShopItems(32)); //assume worst case shopsanity 4
-    if (ShuffleEntrances) {
+    if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
       printf("\x1b[7;10HShuffling Entrances");
-      if (ShuffleAllEntrances() == ENTRANCE_SHUFFLE_FAILURE) {
+      if (ctx->GetEntranceShuffler()->ShuffleAllEntrances() == ENTRANCE_SHUFFLE_FAILURE) {
         retries++;
         ClearProgress();
         continue;
@@ -988,11 +991,11 @@ int Fill() {
     //ctx->showItemProgress = true;
     //Place shop items first, since a buy shield is needed to place a dungeon reward on Gohma due to access
     NonShopItems = {};
-    if (Shopsanity.Is(SHOPSANITY_OFF)) {
+    if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
       PlaceVanillaShopItems(); //Place vanilla shop items in vanilla location
     } else {
       int total_replaced = 0;
-      if (Shopsanity.IsNot(SHOPSANITY_ZERO)) { //Shopsanity 1-4, random
+      if (ctx->GetOption(RSK_SHOPSANITY).IsNot(RO_SHOPSANITY_ZERO_ITEMS)) { //Shopsanity 1-4, random
         //Initialize NonShopItems
         ItemAndPrice init;
         init.Name = Text{"No Item", "Sin objeto", "Pas d'objet"};
@@ -1010,7 +1013,7 @@ int Fill() {
             int shopsanityPrice = GetRandomShopPrice();
             NonShopItems[TransformShopIndex(i * 8 + itemindex - 1)].Price =
                 shopsanityPrice; // Set price to be retrieved by the patch and textboxes
-            ctx->GetItemLocation(Rando::StaticData::shopLocationLists[i][itemindex - 1])->SetShopsanityPrice(shopsanityPrice);
+            ctx->GetItemLocation(Rando::StaticData::shopLocationLists[i][itemindex - 1])->SetCustomPrice(shopsanityPrice);
           }
         }
       }
@@ -1023,7 +1026,7 @@ int Fill() {
       for (size_t i = 0; i < Rando::StaticData::shopLocationLists.size(); i++) {
         for (size_t j = 0; j < Rando::StaticData::shopLocationLists[i].size(); j++) {
           RandomizerCheck loc = Rando::StaticData::shopLocationLists[i][j];
-          if (!(ctx->GetItemLocation(loc)->HasShopsanityPrice())) {
+          if (!(ctx->GetItemLocation(loc)->HasCustomPrice())) {
             shopLocations.push_back(loc);
           }
         }
@@ -1036,12 +1039,12 @@ int Fill() {
     RandomizeDungeonRewards();
 
     //Place dungeon items restricted to their Own Dungeon
-    for (auto dungeon : Dungeon::dungeonList) {
+    for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
       RandomizeOwnDungeon(dungeon);
     }
 
     //Then Place songs if song shuffle is set to specific locations
-    if (ShuffleSongs.IsNot(SONGSHUFFLE_ANYWHERE)) {
+    if (ctx->GetOption(RSK_SHUFFLE_SONGS).IsNot(RO_SONG_SHUFFLE_ANYWHERE)) {
 
       //Get each song
       std::vector<RandomizerGet> songs = FilterAndEraseFromPool(
@@ -1049,11 +1052,11 @@ int Fill() {
 
       //Get each song location
       std::vector<RandomizerCheck> songLocations;
-      if (ShuffleSongs.Is(SONGSHUFFLE_SONG_LOCATIONS)) {
+      if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_SONG_LOCATIONS)) {
           songLocations = FilterFromPool(
               ctx->allLocations, [](const auto loc) { return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSong); });
 
-      } else if (ShuffleSongs.Is(SONGSHUFFLE_DUNGEON_REWARDS)) {
+      } else if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_DUNGEON_REWARDS)) {
           songLocations = FilterFromPool(ctx->allLocations, [](const auto loc) {
               return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSongDungeonReward);
           });
@@ -1077,14 +1080,14 @@ int Fill() {
     FastFill(remainingPool, GetAllEmptyLocations(), false);
 
     //Add prices for scrubsanity, this is unique to SoH because we write/read scrub prices to/from the spoilerfile.
-    if (Scrubsanity.Is(SCRUBSANITY_AFFORDABLE)) {
+    if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_AFFORDABLE)) {
       for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
-        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetScrubsanityPrice(10);
+        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(10);
       }
-    } else if (Scrubsanity.Is(SCRUBSANITY_RANDOM_PRICES)) {
+    } else if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_RANDOM)) {
       for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
         int randomPrice = GetRandomScrubPrice();
-        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetScrubsanityPrice(randomPrice);
+        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(randomPrice);
       }
     }
 
@@ -1097,8 +1100,8 @@ int Fill() {
       CalculateWotH();
       printf("Done");
       ctx->CreateItemOverrides();
-      CreateEntranceOverrides();
-
+      ctx->GetEntranceShuffler()->CreateEntranceOverrides();
+      
       //funny ganon line
       Text ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
       CreateMessageFromTextObject(0x70CB, 0, 2, 3, AddColorsAndFormat(ganonText));

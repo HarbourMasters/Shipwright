@@ -4,6 +4,7 @@
 #include "../item_location.h"
 #include "location_access.hpp"
 #include "rando_main.hpp"
+#include "../context.h"
 // #include <soh/Enhancements/randomizer.h>
 #include <libultraship/bridge.h>
 #include <Context.h>
@@ -17,9 +18,10 @@ void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarS
     // CVarSetString("gLoadedPreset", settingsFileName.c_str());
 
     std::string fileName = LUS::Context::GetPathRelativeToAppDirectory(GenerateRandomizer(cvarSettings, excludedLocations, enabledTricks, seedString).c_str());
-    CVarSetString("gSpoilerLog", fileName.c_str());
 
     CVarSave();
     CVarLoad();
-    CVarSetInteger("gNewSeedGenerated", 1);
+    Rando::Context::GetInstance()->SetSeedGenerated();
+    Rando::Context::GetInstance()->SetSpoilerLoaded(false);
+    Rando::Context::GetInstance()->SetPlandoLoaded(false);
 }

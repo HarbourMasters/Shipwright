@@ -15,16 +15,17 @@ class Hint {
     HintType GetHintType();
     void SetHintType (HintType type);
     std::string GetHintedRegion();
+    const Text& GetHintedRegionText();
     void SetHintedRegion (Text region);
     void ResetVariables();
     bool IsAddedToPool();
     void AddToPool();
 
     private:
-    Text text;
-    RandomizerCheck hintedLocation;
-    HintType hintType;
-    Text hintedRegion;
-    bool addedToPool;
+    Text text = Text();
+    RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK;
+    HintType hintType = HINT_TYPE_STATIC;
+    Text hintedRegion = Text();
+    bool addedToPool = false;
 };
 }

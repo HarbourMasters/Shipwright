@@ -22,24 +22,8 @@
 
 class Randomizer {
   private:
-    std::unordered_map<RandomizerCheck, RandomizerGetData> itemLocations;
-    std::unordered_map<RandomizerCheck, std::string> hintLocations;
-    std::string childAltarText;
-    std::string adultAltarText;
-    std::string ganonHintText;
-    std::string ganonText;
-    std::string dampeText;
-    std::string sheikText;
-    std::string sariaText;
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
-    void ParseRandomizerSettingsFile(const char* spoilerFileName);
-    void ParseHintLocationsFile(const char* spoilerFileName);
-    void ParseRequiredTrialsFile(const char* spoilerFileName);
-    void ParseMasterQuestDungeonsFile(const char* spoilerFileName);
-    void ParseItemLocationsFile(const char* spoilerFileName, bool silent);
-    void ParseEntranceDataFile(const char* spoilerFileName, bool silent);
     bool IsItemVanilla(RandomizerGet randoGet);
-    int16_t GetVanillaMerchantPrice(RandomizerCheck check);
 
   public:
     Randomizer();
@@ -55,37 +39,17 @@ class Randomizer {
     static const std::string randoMiscHintsTableID;
 
     // Public for now to be accessed by SaveManager, will be made private again soon :tm:
-    std::unordered_map<RandomizerInf, bool> trialsRequired;
-    std::unordered_set<uint16_t> masterQuestDungeons;
-    std::unordered_map<RandomizerCheck, u16> merchantPrices;
     std::unordered_map<RandomizerGet, std::array<std::string, 3>> EnumToSpoilerfileGetName;
 
     static Sprite* GetSeedTexture(uint8_t index);
-    s16 GetItemModelFromId(s16 itemId);
-    s32 GetItemIDFromGetItemID(s32 getItemId);
     bool SpoilerFileExists(const char* spoilerFileName);
-    void LoadRandomizerSettings(const char* spoilerFileName);
-    void LoadHintLocations(const char* spoilerFileName);
-    void LoadMerchantMessages(const char* spoilerFileName);
-    void LoadItemLocations(const char* spoilerFileName, bool silent);
-    void LoadRequiredTrials(const char* spoilerFileName);
-    void LoadMasterQuestDungeons(const char* spoilerFileName);
+    void LoadMerchantMessages();
+    void LoadHintMessages();
     bool IsTrialRequired(RandomizerInf trial);
-    void LoadEntranceOverrides(const char* spoilerFileName, bool silent);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     RandomizerCheck GetCheckFromRandomizerInf(RandomizerInf randomizerInf);
     RandomizerInf GetRandomizerInfFromCheck(RandomizerCheck rc);
-    RandomizerGetData GetRandomizerGetDataFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
-    RandomizerGetData GetRandomizerGetDataFromKnownCheck(RandomizerCheck randomizerCheck);
-    GetItemEntry GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability = true);
-    std::string GetChildAltarText() const;
-    std::string GetAdultAltarText() const;
-    std::string GetGanonText() const;
-    std::string GetGanonHintText() const;
-    std::string GetDampeText() const;
-    std::string GetSheikText() const;
-    std::string GetSariaText() const;
     Rando::Location* GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams);
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);

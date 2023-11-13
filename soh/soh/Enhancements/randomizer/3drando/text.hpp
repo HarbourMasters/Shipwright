@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "z64.h"
 
 #define PLURAL 0
 #define SINGULAR 1
@@ -12,6 +13,7 @@ public:
       : english(std::move(english_)),
         french(std::move(french_)),
         spanish(std::move(spanish_)) {}
+    Text(std::string english_) : english(std::move(english_)), french(std::move("")), spanish(std::move("")) {}
 
     const std::string& GetEnglish() const {
         return english;
@@ -31,6 +33,18 @@ public:
         return english;
     }
 
+    const std::string& GetForLanguage(uint8_t language) const {
+        switch (language) {
+            case LANGUAGE_ENG:
+                return english;
+            case LANGUAGE_FRA:
+                return french;
+            case LANGUAGE_GER:
+            default:
+                return english; // TODO: German
+        }
+    }
+
     Text operator+ (const Text& right) const {
         return Text{english + right.GetEnglish(), french + right.GetFrench(), spanish + right.GetSpanish()};
     }
@@ -41,6 +55,10 @@ public:
 
     bool operator==(const Text& right) const {
         return english == right.english;
+    }
+
+    bool operator==(const std::string& right) const {
+        return english == right || french == right || spanish == right;
     }
 
     bool operator!=(const Text& right) const {

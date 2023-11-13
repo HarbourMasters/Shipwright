@@ -2,6 +2,7 @@
 #include "randomizer_entrance_tracker.h"
 #include "randomizer_item_tracker.h"
 #include "randomizerTypes.h"
+#include "dungeon.h"
 #include "../../OTRGlobals.h"
 #include "../../UIWidgets.hpp"
 
@@ -732,8 +733,8 @@ void LoadFile() {
         areaChecksGotten[startingArea]++;
     }
 
-    showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_RANDOM_NUMBER ||
-                (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_SET_NUMBER &&
+    showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) == RO_MQ_DUNGEONS_RANDOM_NUMBER ||
+                (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) == RO_MQ_DUNGEONS_SET_NUMBER &&
                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) < 12));
     LinksPocket();
     SongFromImpa();
@@ -926,7 +927,7 @@ void CheckTrackerWindow::DrawElement() {
 
             if (isThisAreaSpoiled) {
                 if (showVOrMQ && RandomizerCheckObjects::AreaIsDungeon(rcArea)) {
-                    if (OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(DungeonSceneLookupByArea(rcArea)))
+                    if (OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(DungeonSceneLookupByArea(rcArea))->IsMQ())
                         ImGui::Text("(%d/%d) - MQ", areaChecksGotten[rcArea], areaChecksTotal);
                     else
                         ImGui::Text("(%d/%d) - Vanilla", areaChecksGotten[rcArea], areaChecksTotal);
@@ -1033,7 +1034,7 @@ void LoadSettings() {
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FROG_SONG_RUPEES) == RO_GENERIC_YES
         : false;
     showStartingMapsCompasses = IS_RANDO ?
-        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) != RO_DUNGEON_ITEM_LOC_VANILLA
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MAPANDCOMPASS) != RO_DUNGEON_ITEM_LOC_VANILLA
         : false;
     showKeysanity = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) != RO_DUNGEON_ITEM_LOC_VANILLA
@@ -1111,8 +1112,8 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
             (rc != RC_LINKS_POCKET || showLinksPocket) &&
             (!RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()) ||
                 loc->GetQuest() == RCQUEST_BOTH ||
-                loc->GetQuest() == RCQUEST_MQ && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(loc->GetScene()) ||
-                loc->GetQuest() == RCQUEST_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(loc->GetScene())
+                loc->GetQuest() == RCQUEST_MQ && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsMQ() ||
+                loc->GetQuest() == RCQUEST_VANILLA && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsVanilla()
                 ) &&
             (loc->GetRCType() != RCTYPE_SHOP || (showShops && (!hideShopRightChecks || hideShopRightChecks && loc->GetActorParams() > 0x03))) &&
             (loc->GetRandomizerCheck() != RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS) &&
@@ -1154,8 +1155,8 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
     }
     else if (loc->IsVanillaCompletion()) {
         return (loc->GetQuest() == RCQUEST_BOTH ||
-            loc->GetQuest() == RCQUEST_MQ && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(loc->GetScene()) ||
-            loc->GetQuest() == RCQUEST_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(loc->GetScene()) ||
+            loc->GetQuest() == RCQUEST_MQ && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsMQ() ||
+            loc->GetQuest() == RCQUEST_VANILLA && OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc->GetScene())->IsVanilla() ||
             rc == RC_GIFT_FROM_SAGES) && rc != RC_LINKS_POCKET;
     }
     return false;
@@ -1242,6 +1243,7 @@ void DrawLocation(RandomizerCheck rc) {
     std::string txt;
     bool showHidden = CVarGetInteger("gCheckTrackerOptionShowHidden", 0);
     Rando::Location* loc = Rando::StaticData::GetLocation(rc);
+    Rando::ItemLocation* itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
     RandomizerCheckTrackerData checkData = gSaveContext.checkTrackerData[rc];
     RandomizerCheckStatus status = checkData.status;
     bool skipped = checkData.skipped;
@@ -1335,7 +1337,7 @@ void DrawLocation(RandomizerCheck rc) {
             case RCSHOW_COLLECTED:
             case RCSHOW_SCUMMED:
                 if (IS_RANDO) {
-                    txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rc].get.rgID][gSaveContext.language];
+                    txt = itemLoc->GetPlacedItem().GetName().GetForLanguage(gSaveContext.language);
                 } else {
                     if (IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID())) {
                         if (gSaveContext.language == LANGUAGE_ENG || gSaveContext.language == LANGUAGE_GER) {
@@ -1349,14 +1351,14 @@ void DrawLocation(RandomizerCheck rc) {
             case RCSHOW_IDENTIFIED:
             case RCSHOW_SEEN:
                 if (IS_RANDO) {
-                    if (gSaveContext.itemLocations[rc].get.rgID == RG_ICE_TRAP) {
+                    if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
                         if (status == RCSHOW_IDENTIFIED) {
-                            txt = gSaveContext.itemLocations[rc].get.trickName;
+                            txt = OTRGlobals::Instance->gRandoContext->overrides[rc].GetTrickName().GetForLanguage(gSaveContext.language);
                         } else {
-                            txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rc].get.fakeRgID][gSaveContext.language];
+                            txt = Rando::StaticData::RetrieveItem(OTRGlobals::Instance->gRandoContext->overrides[rc].LooksLike()).GetName().GetForLanguage(gSaveContext.language);
                         }
                     } else {
-                        txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rc].get.rgID][gSaveContext.language];
+                        txt = itemLoc->GetPlacedItem().GetName().GetForLanguage(gSaveContext.language);
                     }
                     if (status == RCSHOW_IDENTIFIED) {
                         txt += fmt::format(" - {}", gSaveContext.checkTrackerData[rc].price);

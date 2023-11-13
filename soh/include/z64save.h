@@ -149,22 +149,12 @@ typedef struct {
 
 typedef struct {
     RandomizerCheck check;
-    RandomizerGetData get;
-} ItemLocationRando;
-
-typedef struct {
-    RandomizerCheck check;
     RandomizerCheck hintedCheck;
     RandomizerGet rGet;
     RandomizerCheckArea area;
     HintType type;
     char hintText[200];
 } HintLocationRando;
-
-typedef struct {
-    RandomizerSettingKey key;
-    u8 value;
-} RandoSetting;
 
 typedef struct {
     /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
@@ -286,7 +276,6 @@ typedef struct {
     /*        */ uint8_t questId;
     /*        */ uint32_t isBossRushPaused;
     /*        */ uint8_t bossRushOptions[BOSSRUSH_OPTIONS_AMOUNT];
-    /*        */ u8 mqDungeonCount;
     /*        */ u8 pendingIceTrapCount;
     /*        */ SohStats sohStats;
     /*        */ FaroresWindData backupFW;
@@ -294,33 +283,6 @@ typedef struct {
     // #endregion
     // #region SOH [Randomizer]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to Randomizer
-    /*        */ RandoSetting randoSettings[300];
-    /*        */ ItemLocationRando itemLocations[RC_MAX];
-    /*        */ HintLocationRando hintLocations[50];
-    /*        */ EntranceOverride entranceOverrides[ENTRANCE_OVERRIDES_MAX_COUNT];
-    /*        */ char childAltarText[250];
-    /*        */ char adultAltarText[750];
-    /*        */ RandomizerCheck rewardCheck[9];
-    /*        */ char ganonHintText[300];
-    /*        */ char gregHintText[250];
-    /*        */ char ganonText[250];
-    /*        */ char dampeText[150];
-    /*        */ char sheikText[200];
-    /*        */ char sariaText[150];
-    /*        */ char warpMinuetText[100];
-    /*        */ char warpBoleroText[100];
-    /*        */ char warpSerenadeText[100];
-    /*        */ char warpRequiemText[100];
-    /*        */ char warpNocturneText[100];
-    /*        */ char warpPreludeText[100];
-    /*        */ RandomizerCheck masterSwordHintCheck;
-    /*        */ RandomizerCheck lightArrowHintCheck;
-    /*        */ RandomizerCheck sariaCheck;
-    /*        */ RandomizerCheck gregCheck;
-    /*        */ RandomizerCheck dampeCheck;
-    /*        */ char inputSeed[1024];
-    /*        */ u32 finalSeed;
-    /*        */ u8 seedIcons[5];
     /*        */ u16 randomizerInf[10];
     /*        */ u16 adultTradeItems;
     /*        */ u8 triforcePiecesCollected;
