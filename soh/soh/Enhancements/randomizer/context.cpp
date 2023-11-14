@@ -353,121 +353,16 @@ void Context::ParseItemLocationsJson(nlohmann::json spoilerFileJson) {
     }
 }
 
-std::string AltarIconString(char iconChar) {
-    std::string iconString = "";
-    switch (iconChar) {
-        case '0':
-            // Kokiri Emerald
-            iconString += 0x13;
-            iconString += 0x6C;
-            break;
-        case '1':
-            // Goron Ruby
-            iconString += 0x13;
-            iconString += 0x6D;
-            break;
-        case '2':
-            // Zora Sapphire
-            iconString += 0x13;
-            iconString += 0x6E;
-            break;
-        case '3':
-            // Forest Medallion
-            iconString += 0x13;
-            iconString += 0x66;
-            break;
-        case '4':
-            // Fire Medallion
-            iconString += 0x13;
-            iconString += 0x67;
-            break;
-        case '5':
-            // Water Medallion
-            iconString += 0x13;
-            iconString += 0x68;
-            break;
-        case '6':
-            // Spirit Medallion
-            iconString += 0x13;
-            iconString += 0x69;
-            break;
-        case '7':
-            // Shadow Medallion
-            iconString += 0x13;
-            iconString += 0x6A;
-            break;
-        case '8':
-            // Light Medallion
-            iconString += 0x13;
-            iconString += 0x6B;
-            break;
-        case 'o':
-            // Open DOT (master sword)
-            iconString += 0x13;
-            iconString += 0x3C;
-            break;
-        case 'c':
-            // Closed DOT (fairy ocarina)
-            iconString += 0x13;
-            iconString += 0x07;
-            break;
-        case 'i':
-            // Intended DOT (oot)
-            iconString += 0x13;
-            iconString += 0x08;
-            break;
-        case 'l':
-            // Light Arrow (for bridge reqs)
-            iconString += 0x13;
-            iconString += 0x12;
-            break;
-        case 'b':
-            // Boss Key (ganon boss key location)
-            iconString += 0x13;
-            iconString += 0x74;
-            break;
-        case 'L':
-            // Bow with Light Arrow
-            iconString += 0x13;
-            iconString += 0x3A;
-            break;
-        case 'k':
-            // Kokiri Tunic
-            iconString += 0x13;
-            iconString += 0x41;
-            break;
-    }
-    return iconString;
-}
-
-std::string FormatJsonHintText(std::string jsonHint) {
-    std::string formattedHintMessage = jsonHint;
-
-    // add icons to altar text
-    for (char iconChar : { '0', '1', '2', '3', '4', '5', '6', '7', '8', 'o', 'c', 'i', 'l', 'b', 'L', 'k' }) {
-        std::string textToReplace = "$";
-        textToReplace += iconChar;
-        size_t start_pos = formattedHintMessage.find(textToReplace);
-        if (!(start_pos == std::string::npos)) {
-            std::string iconString = AltarIconString(iconChar);
-            formattedHintMessage.replace(start_pos, textToReplace.length(), iconString);
-        }
-    }
-    return formattedHintMessage;
-}
-
 void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
     // Child Altar
     std::string childAltarJsonText = spoilerFileJson["childAltar"]["hintText"].template get<std::string>();
-    std::string formattedChildAltarText = FormatJsonHintText(childAltarJsonText);
-    AddHint(RH_ALTAR_CHILD, Text(formattedChildAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    AddHint(RH_ALTAR_CHILD, Text(childAltarJsonText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
     mEmeraldLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["emeraldLoc"]];
     mRubyLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["rubyLoc"]];
     mSapphireLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["sapphireLoc"]];
     // Adult Altar
     std::string adultAltarJsonText = spoilerFileJson["adultAltar"]["hintText"].template get<std::string>();
-    std::string formattedAdultAltarText = FormatJsonHintText(adultAltarJsonText);
-    AddHint(RH_ALTAR_ADULT, Text(formattedAdultAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    AddHint(RH_ALTAR_ADULT, Text(adultAltarJsonText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
     mForestMedallionLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["forestMedallionLoc"].template get<std::string>()];
     mFireMedallionLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["fireMedallionLoc"].template get<std::string>()];
     mWaterMedallionLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["waterMedallionLoc"].template get<std::string>()];
@@ -475,48 +370,48 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
     mSpiritMedallionLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["spiritMedallionLoc"].template get<std::string>()];
     mLightMedallionLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["lightMedallionLoc"].template get<std::string>()];
     // Ganondorf and Sheik Light Arrow Hints
-    std::string ganonHintText = FormatJsonHintText(spoilerFileJson["ganonHintText"].template get<std::string>());
+    std::string ganonHintText = spoilerFileJson["ganonHintText"].template get<std::string>();
     RandomizerCheck lightArrowLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["lightArrowHintLoc"].template get<std::string>()];
     std::string lightArrowRegion = spoilerFileJson["lightArrowHintRegion"].template get<std::string>();
     AddHint(RH_GANONDORF_HINT, Text(ganonHintText), lightArrowLoc, HINT_TYPE_STATIC, Text(lightArrowRegion));
-    std::string sheikText = FormatJsonHintText(spoilerFileJson["sheikText"].template get<std::string>());
+    std::string sheikText = spoilerFileJson["sheikText"].template get<std::string>();
     AddHint(RH_SHEIK_LIGHT_ARROWS, Text(sheikText), lightArrowLoc, HINT_TYPE_STATIC, lightArrowRegion);
-    std::string ganonText = FormatJsonHintText(spoilerFileJson["ganonText"].template get<std::string>());
+    std::string ganonText = spoilerFileJson["ganonText"].template get<std::string>();
     AddHint(RH_GANONDORF_NOHINT, Text(ganonText), RC_UNKNOWN_CHECK, HINT_TYPE_JUNK, Text());
     // Dampe Hookshot Hint
-    std::string dampeText = FormatJsonHintText(spoilerFileJson["dampeText"].template get<std::string>());
+    std::string dampeText = spoilerFileJson["dampeText"].template get<std::string>();
     std::string dampeRegion = spoilerFileJson["dampeRegion"].template get<std::string>();
     RandomizerCheck dampeHintLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["dampeHintLoc"].template get<std::string>()];
     AddHint(RH_DAMPES_DIARY, Text(dampeText), dampeHintLoc, HINT_TYPE_STATIC, Text(dampeRegion));
     // Greg Hint
-    std::string gregText = FormatJsonHintText(spoilerFileJson["gregText"].template get<std::string>());
+    std::string gregText = spoilerFileJson["gregText"].template get<std::string>();
     std::string gregRegion = spoilerFileJson["gregRegion"].template get<std::string>();
     RandomizerCheck gregLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["gregLoc"].template get<std::string>()];
     AddHint(RH_GREG_RUPEE, Text(gregText), gregLoc, HINT_TYPE_STATIC, Text(gregRegion));
     // Saria Magic Hint
-    std::string sariaText = FormatJsonHintText(spoilerFileJson["sariaText"].template get<std::string>());
+    std::string sariaText = spoilerFileJson["sariaText"].template get<std::string>();
     std::string sariaRegion = spoilerFileJson["sariaRegion"].template get<std::string>();
     RandomizerCheck sariaHintLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["sariaHintLoc"].template get<std::string>()];
     AddHint(RH_SARIA, Text(sariaText), sariaHintLoc, HINT_TYPE_STATIC, Text(sariaRegion));
     // Warp Songs
-    std::string warpMinuetText = FormatJsonHintText(spoilerFileJson["warpMinuetText"].template get<std::string>());
+    std::string warpMinuetText = spoilerFileJson["warpMinuetText"].template get<std::string>();
     AddHint(RH_MINUET_WARP_LOC, Text(warpMinuetText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpMinuetText));
-    std::string warpBoleroText = FormatJsonHintText(spoilerFileJson["warpBoleroText"].template get<std::string>());
+    std::string warpBoleroText = spoilerFileJson["warpBoleroText"].template get<std::string>();
     AddHint(RH_BOLERO_WARP_LOC, Text(warpBoleroText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpBoleroText));
-    std::string warpSerenadeText = FormatJsonHintText(spoilerFileJson["warpSerenadeText"].template get<std::string>());
+    std::string warpSerenadeText = spoilerFileJson["warpSerenadeText"].template get<std::string>();
     AddHint(RH_SERENADE_WARP_LOC, Text(warpSerenadeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpSerenadeText));
-    std::string warpRequiemText = FormatJsonHintText(spoilerFileJson["warpRequiemText"].template get<std::string>());
+    std::string warpRequiemText = spoilerFileJson["warpRequiemText"].template get<std::string>();
     AddHint(RH_REQUIEM_WARP_LOC, Text(warpRequiemText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpRequiemText));
-    std::string warpNocturneText = FormatJsonHintText(spoilerFileJson["warpNocturneText"].template get<std::string>());
+    std::string warpNocturneText = spoilerFileJson["warpNocturneText"].template get<std::string>();
     AddHint(RH_NOCTURNE_WARP_LOC, Text(warpNocturneText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpNocturneText));
-    std::string warpPreludeText = FormatJsonHintText(spoilerFileJson["warpPreludeText"].template get<std::string>());
+    std::string warpPreludeText = spoilerFileJson["warpPreludeText"].template get<std::string>();
     AddHint(RH_PRELUDE_WARP_LOC, Text(warpPreludeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpPreludeText));
     // Gossip Stones
     nlohmann::json hintsJson = spoilerFileJson["hints"];
     for (auto it = hintsJson.begin(); it != hintsJson.end(); it++) {
         RandomizerCheck gossipStoneLoc = mSpoilerfileCheckNameToEnum[it.key()];
         nlohmann::json hintInfo = it.value();
-        std::string hintText = FormatJsonHintText(hintInfo["hint"].template get<std::string>());
+        std::string hintText = hintInfo["hint"].template get<std::string>();
         HintType hintType = mSpoilerfileHintTypeNameToEnum[hintInfo["type"].template get<std::string>()];
         RandomizerCheck hintedLocation = mSpoilerfileCheckNameToEnum[hintInfo["location"]];
         std::string hintedArea = hintInfo["area"].template get<std::string>();

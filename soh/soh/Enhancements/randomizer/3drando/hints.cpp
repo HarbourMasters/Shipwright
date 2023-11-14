@@ -154,14 +154,103 @@ constexpr std::array<HintSetting, 4> hintSettingTable{{
   },
 }};
 
+static std::map<std::string, int> pixelWidthTable = {
+    { " ", 6 },  { "!", 6 },  { "\"", 5 },     { "#", 7 },  { "$", 7 },  { "%", 11 }, { "&", 9 },  { "\'", 3 },
+    { "(", 6 },  { ")", 6 },  { "*", 6 },      { "+", 7 },  { ",", 3 },  { "-", 5 },  { ".", 3 },  { "/", 7 },
+    { "0", 8 },  { "1", 4 },  { "2", 7 },      { "3", 7 },  { "4", 8 },  { "5", 7 },  { "6", 7 },  { "7", 7 },
+    { "8", 7 },  { "9", 7 },  { ":", 5 },      { ";", 5 },  { "<", 7 },  { "=", 9 },  { ">", 7 },  { "?", 9 },
+    { "@", 10 }, { "A", 9 },  { "B", 7 },      { "C", 9 },  { "D", 9 },  { "E", 6 },  { "F", 6 },  { "G", 9 },
+    { "H", 8 },  { "I", 3 },  { "J", 6 },      { "K", 8 },  { "L", 6 },  { "M", 10 }, { "N", 9 },  { "O", 10 },
+    { "P", 7 },  { "Q", 10 }, { "R", 8 },      { "S", 8 },  { "T", 7 },  { "U", 8 },  { "V", 9 },  { "W", 12 },
+    { "X", 9 },  { "Y", 8 },  { "Z", 8 },      { "[", 6 },  { "\\", 8 }, { "]", 6 },  { "^", 8 },  { "_", 7 },
+    { "`", 4 },  { "a", 6 },  { "b", 7 },      { "c", 6 },  { "d", 7 },  { "e", 7 },  { "f", 5 },  { "g", 7 },
+    { "h", 6 },  { "i", 3 },  { "j", 5 },      { "k", 6 },  { "l", 3 },  { "m", 9 },  { "n", 7 },  { "o", 7 },
+    { "p", 7 },  { "q", 7 },  { "r", 6 },      { "s", 6 },  { "t", 6 },  { "u", 6 },  { "v", 7 },  { "w", 9 },
+    { "x", 6 },  { "y", 7 },  { "z", 6 },      { "{", 6 },  { "¦", 4 },  { "}", 6 },  { "¡", 5 },  { "¢", 7 },
+    { "£", 8 },  { "¤", 7 },  { "¥", 8 },      { "|", 4 },  { "§", 12 }, { "¨", 12 }, { "©", 10 }, { "ª", 5 },
+    { "«", 8 },  { "¬", 7 },  { "\u00AD", 6 }, { "®", 10 }, { "¯", 8 },  { "°", 12 }, { "±", 12 }, { "²", 5 },
+    { "³", 5 },  { "µ", 6 },  { "¶", 8 },      { "·", 4 },  { "¹", 4 },  { "º", 5 },  { "»", 9 },  { "¼", 9 },
+    { "½", 9 },  { "¾", 10 }, { "¿", 7 },      { "À", 11 }, { "Á", 9 },  { "Â", 9 },  { "Ã", 9 },  { "Ä", 9 },
+    { "Å", 9 },  { "Æ", 12 }, { "Ç", 9 },      { "È", 6 },  { "É", 6 },  { "Ê", 6 },  { "Ë", 6 },  { "Ì", 5 },
+    { "Í", 5 },  { "Î", 5 },  { "Ï", 5 },      { "Ð", 10 }, { "Ñ", 9 },  { "Ò", 10 }, { "Ó", 10 }, { "Ô", 10 },
+    { "Õ", 10 }, { "Ö", 10 }, { "×", 9 },      { "Ø", 10 }, { "Ù", 8 },  { "Ú", 8 },  { "Û", 8 },  { "Ü", 8 },
+    { "Ý", 10 }, { "Þ", 8 },  { "ß", 7 },      { "à", 6 },  { "á", 6 },  { "â", 6 },  { "ã", 6 },  { "ä", 6 },
+    { "å", 6 },  { "æ", 11 }, { "ç", 6 },      { "è", 7 },  { "é", 7 },  { "ê", 7 },  { "ë", 7 },  { "ì", 5 },
+    { "í", 5 },  { "î", 5 },  { "ï", 5 },      { "ð", 7 },  { "ñ", 7 },  { "ò", 7 },  { "ó", 7 },  { "ô", 7 },
+    { "õ", 7 },  { "ö", 7 },  { "÷", 11 },     { "ø", 9 },  { "ù", 7 },  { "ú", 7 },  { "û", 7 },  { "ü", 7 },
+    { "ý", 8 },  { "þ", 8 },  { "ÿ", 8 },      { "Œ", 11 }, { "œ", 11 }, { "„", 5 },  { "”", 5 },  { "€", 10 },
+    { "Ÿ", 10 }, { "~", 8 }
+};
+
+static size_t NextLineLength(const std::string* textStr, const size_t lastNewline, bool hasIcon = false) {
+  const  size_t maxLinePixelWidth = hasIcon ? 200 : 216;
+
+
+  size_t totalPixelWidth = 0;
+  size_t currentPos = lastNewline;
+
+  // Looping through the string from the lastNewline until the total
+  // width of counted characters exceeds the maximum pixels in a line.
+  size_t nextPosJump = 0;
+  while (totalPixelWidth < maxLinePixelWidth && currentPos < textStr->length()) {
+    // Skip over control codes
+    if (textStr->at(currentPos) == '%') {
+      nextPosJump = 2;
+    } else if (textStr->at(currentPos) == '$') {
+      nextPosJump = 2;
+    } else if (textStr->at(currentPos) == '@') {
+      nextPosJump = 1;
+      // Assume worst case for player name 12 * 8 (widest character * longest name length)
+      totalPixelWidth += 96;
+    } else {
+      // Some characters only one byte while others are two bytes
+      // So check both possibilities when checking for a character
+      if (pixelWidthTable.count(textStr->substr(currentPos, 1))) {
+        totalPixelWidth += pixelWidthTable[textStr->substr(currentPos, 1)];
+        nextPosJump = 1;
+      } else if (pixelWidthTable.count(textStr->substr(currentPos, 2))) {
+        totalPixelWidth += pixelWidthTable[textStr->substr(currentPos, 2)];
+        nextPosJump = 2;
+      } else {
+        SPDLOG_DEBUG("Table does not contain " + textStr->substr(currentPos, 1) + "/" + textStr->substr(currentPos, 2));
+        SPDLOG_DEBUG("Full string: " + *textStr);
+        nextPosJump = 1;
+      }
+    }
+    currentPos += nextPosJump;
+  }
+  // return the total number of characters we looped through
+  if (totalPixelWidth > maxLinePixelWidth && textStr->at(currentPos - nextPosJump) != ' ') {
+    return currentPos - lastNewline - nextPosJump;
+  } else {
+    return currentPos - lastNewline;
+  }
+}
+
 Text AutoFormatHintText(Text unformattedHintText, std::vector<std::string> colors = {}) {
     std::array<std::string, LANGUAGE_MAX> strings;
     for (int i = 0; i < LANGUAGE_MAX; i++) {
         std::string textStr = unformattedHintText.GetForLanguage(i);
 
+        for (auto color: colors) {
+          size_t firstHashtag = textStr.find('#');
+          if (firstHashtag != std::string::npos) {
+            textStr.replace(firstHashtag, 1, color);
+            size_t secondHashtag = textStr.find('#', firstHashtag + 1);
+            if (secondHashtag != std::string::npos) {
+              textStr.replace(secondHashtag, 1, QM_WHITE);
+            } else {
+              SPDLOG_DEBUG("non-matching hashtags in string: \"%s\"", textStr);
+            }
+          }
+        }
+        // Remove any remaining '#' characters.
+        textStr.erase(std::remove(textStr.begin(), textStr.end(), '#'), textStr.end());
+
         // insert newlines either manually or when encountering a '&'
-        constexpr size_t lineLength = 34;
         size_t lastNewline = 0;
+        bool hasIcon = textStr.find('$', 0) != std::string::npos;
+        size_t lineLength = NextLineLength(&textStr, lastNewline, hasIcon);
         while (lastNewline + lineLength < textStr.length()) {
             size_t carrot = textStr.find('^', lastNewline);
             size_t ampersand = textStr.find('&', lastNewline);
@@ -181,27 +270,12 @@ Text AutoFormatHintText(Text unformattedHintText, std::vector<std::string> color
                 textStr.replace(lastSpace, 1, "&");
                 lastNewline = lastSpace + 1;
             }
+          lineLength = NextLineLength(&textStr, lastNewline, hasIcon);
         }
-
-        // todo add colors (see `AddColorsAndFormat` in `custom_messages.cpp`)
-        for (auto color: colors) {
-          size_t firstHashtag = textStr.find('#');
-          if (firstHashtag != std::string::npos) {
-            textStr.replace(firstHashtag, 1, color);
-            size_t secondHashtag = textStr.find('#', firstHashtag + 1);
-            if (secondHashtag != std::string::npos) {
-              textStr.replace(secondHashtag, 1, QM_WHITE);
-            } else {
-              SPDLOG_DEBUG("non-matching hashtags in string: \"%s\"", textStr);
-            }
-          }
-        }
-        // Remove any remaining '#' characters.
-        textStr.erase(std::remove(textStr.begin(), textStr.end(), '#'), textStr.end());
         strings[i] = textStr;
     }
 
-    return Text(strings[0], strings[1], ""/*spanish*/, strings[2]);
+    return {strings[0], strings[1], ""/*spanish*/, strings[2]};
 }
 
 std::array<DungeonHintInfo, 10> dungeonInfoData;
@@ -686,11 +760,13 @@ void CreateGanonAndSheikText() {
 }
 
 //Find the location which has the given itemKey and create the generic altar text for the reward
-static Text BuildDungeonRewardText(const RandomizerGet itemKey, bool isChild) {
+static Text BuildDungeonRewardText(const ItemID itemID, const RandomizerGet itemKey) {
     auto ctx = Rando::Context::GetInstance();
     RandomizerCheck altarLoc = RC_ALTAR_HINT_ADULT;
-    if(isChild){altarLoc = RC_ALTAR_HINT_CHILD;}
-    RandomizerCheck location = FilterFromPool(ctx->allLocations, [itemKey, ctx](const RandomizerCheck loc) {
+    if (itemKey == RG_KOKIRI_EMERALD || itemKey == RG_GORON_RUBY || itemKey == RG_ZORA_SAPPHIRE) {
+      altarLoc = RC_ALTAR_HINT_CHILD;
+    }
+    const RandomizerCheck location = FilterFromPool(ctx->allLocations, [itemKey, ctx](const RandomizerCheck loc) {
         return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == itemKey;
     })[0];
     if (IsReachableWithout({altarLoc}, location, true) || ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)){ //RANDOTODO check if works properly
@@ -700,9 +776,9 @@ static Text BuildDungeonRewardText(const RandomizerGet itemKey, bool isChild) {
     std::string rewardString = "$" + std::to_string(itemKey - RG_KOKIRI_EMERALD);
 
     // RANDOTODO implement colors for locations
-    return Text() + rewardString +
+    return Text() + rewardString + "#" +
            GetHintRegion(ctx->GetItemLocation(location)->GetParentRegionKey())->GetHint().GetText().Capitalize() +
-           "...^";
+           "#...^";
 }
 
 static Text BuildDoorOfTimeText() {
@@ -829,17 +905,17 @@ void CreateAltarText() {
     //Spiritual Stones
     // TODO: Starting Inventory Dungeon Rewards
         (/*StartingKokiriEmerald.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
-                                                : BuildDungeonRewardText(RG_KOKIRI_EMERALD, true)) +
+                                                : BuildDungeonRewardText(ITEM_KOKIRI_EMERALD, RG_KOKIRI_EMERALD)) +
         (/*StartingGoronRuby.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
-                                            : BuildDungeonRewardText(RG_GORON_RUBY, true)) +
+                                            : BuildDungeonRewardText(ITEM_GORON_RUBY, RG_GORON_RUBY)) +
         (/*StartingZoraSapphire.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
-                                              : BuildDungeonRewardText(RG_ZORA_SAPPHIRE, true)) +
+                                              : BuildDungeonRewardText(ITEM_ZORA_SAPPHIRE, RG_ZORA_SAPPHIRE)) +
     //How to open Door of Time, the event trigger is necessary to read the altar multiple times
     BuildDoorOfTimeText();
   } else {
     childAltarText = BuildDoorOfTimeText();
   }
-  ctx->AddHint(RH_ALTAR_CHILD, childAltarText, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+  ctx->AddHint(RH_ALTAR_CHILD, AutoFormatHintText(childAltarText, { QM_GREEN, QM_RED, QM_BLUE }), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
 
   //CreateMessageFromTextObject(0x7040, 0, 2, 3, AddColorsAndFormat(childAltarText, {QM_GREEN, QM_RED, QM_BLUE}));
 
@@ -849,17 +925,17 @@ void CreateAltarText() {
     adultAltarText = adultAltarText +
     //Medallion Areas
         (/*StartingLightMedallion.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
-                                                : BuildDungeonRewardText(RG_LIGHT_MEDALLION, false)) +
+                                                : BuildDungeonRewardText(ITEM_MEDALLION_LIGHT, RG_LIGHT_MEDALLION)) +
         (/*StartingForestMedallion.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
-                                                  : BuildDungeonRewardText(RG_FOREST_MEDALLION, false)) +
+                                                  : BuildDungeonRewardText(ITEM_MEDALLION_FOREST, RG_FOREST_MEDALLION)) +
         (/*StartingFireMedallion.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
-                                                : BuildDungeonRewardText(RG_FIRE_MEDALLION, false)) +
+                                                : BuildDungeonRewardText(ITEM_MEDALLION_FIRE, RG_FIRE_MEDALLION)) +
         (/*StartingWaterMedallion.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
-                                                : BuildDungeonRewardText(RG_WATER_MEDALLION, false)) +
+                                                : BuildDungeonRewardText(ITEM_MEDALLION_WATER, RG_WATER_MEDALLION)) +
         (/*StartingSpiritMedallion.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
-                                                  : BuildDungeonRewardText(RG_SPIRIT_MEDALLION, false)) +
+                                                  : BuildDungeonRewardText(ITEM_MEDALLION_SPIRIT, RG_SPIRIT_MEDALLION)) +
         (/*StartingShadowMedallion.Value<uint8_t>()*/false ? Text{ "##", "##", "##" }
-                                                  : BuildDungeonRewardText(RG_SHADOW_MEDALLION, false));
+                                                  : BuildDungeonRewardText(ITEM_MEDALLION_SHADOW, RG_SHADOW_MEDALLION));
   }
   adultAltarText = adultAltarText + 
   //Bridge requirement
@@ -871,7 +947,7 @@ void CreateAltarText() {
   //End
   ::Hint(RHT_ADULT_ALTAR_TEXT_END).GetText();
   //CreateMessageFromTextObject(0x7088, 0, 2, 3, AddColorsAndFormat(adultAltarText, {QM_RED, QM_YELLOW, QM_GREEN, QM_RED, QM_BLUE, QM_YELLOW, QM_PINK, QM_RED, QM_RED, QM_RED, QM_RED}));
-  ctx->AddHint(RH_ALTAR_ADULT, adultAltarText, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+  ctx->AddHint(RH_ALTAR_ADULT, AutoFormatHintText(adultAltarText, { QM_RED, QM_YELLOW, QM_GREEN, QM_RED, QM_BLUE, QM_YELLOW, QM_PINK, QM_RED, QM_RED, QM_RED, QM_RED }), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
 }
 
 void CreateMerchantsHints() {

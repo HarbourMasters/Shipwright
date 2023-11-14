@@ -393,6 +393,7 @@ std::unordered_map<RandomizerGet, EnGirlAShopItem> randomizerGetToEnGirlShopItem
 };
 
 void Randomizer::LoadMerchantMessages() {
+    auto ctx = Rando::Context::GetInstance();
     CustomMessageManager::Instance->ClearMessageTable(Randomizer::merchantMessageTableID);
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::merchantMessageTableID);
 
@@ -407,12 +408,9 @@ void Randomizer::LoadMerchantMessages() {
             "\x12\x38\x82" "J'abandonne! Tu veux bien m'acheter&un %g{{item}}%w?&Ça fera %r{{price}} Rubis%w!\x07\x10\xA3"));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN,
-        CustomMessage("I tried to be a %rmagic bean%w salesman,&but it turns out my marketing skills&weren't worth "
-            "beans!^Anyway, want to buy my&%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
-            "Möchten Sie einen geheimnisvollen&Gegenstand für 60 Rubine?\x1B&%gJa&Nein%w",
-            "J'ai essayé d'être un vendeur de&%rharicots magiques%w, mais j'étais&mauvais au niveau du marketing et&ça "
-            "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter un&"
-            "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w"));
+        CustomMessage(ctx->GetHint(RH_BEAN_SALESMAN)->GetText().GetEnglish(),
+            ctx->GetHint(RH_BEAN_SALESMAN)->GetText().GetGerman(),
+            ctx->GetHint(RH_BEAN_SALESMAN)->GetText().GetFrench()));
 
 
     //Setup for merchant text boxes
@@ -420,51 +418,30 @@ void Randomizer::LoadMerchantMessages() {
     //RANDOTODO: Implement obscure/ambiguous hints
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_MEDIGORON,
-        CustomMessage("How about buying %g&{{item}}%w for %y200 rupees%w?\x1B&%gYes&No%w",
-            "Wie wäre es mit %g&{{item}}%w für %y200 Rubine?%w\x1B&%gJa!&Nein!%w",
-            "Veux-tu acheter %g&{{item}}%w pour %y200 rubis?%w\x1B&%gOui&Non&w"));
+        CustomMessage(ctx->GetHint(RH_MEDIGORON)->GetText().GetEnglish(),
+            ctx->GetHint(RH_MEDIGORON)->GetText().GetGerman(),
+            ctx->GetHint(RH_MEDIGORON)->GetText().GetFrench()));
 
     //Granny Shopy
     //RANDOTODO: Implement obscure/ambiguous hints
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_GRANNYS_SHOP,
-        CustomMessage("%g{{item}}%w!&How about %y100 rupees%w?\x1B&%gYes&No%w",
-            "%g{{item}}%w!&Wie wäre es mit %y100 Rubine?%w\x1B&%gJa!&Nein!%w",
-            "%g{{item}}%w!&Que dis-tu de %y100 rubis?%w\x1B&%gOui&Non&w"));
+        CustomMessage(ctx->GetHint(RH_GRANNYS_SHOP)->GetText().GetEnglish(),
+            ctx->GetHint(RH_GRANNYS_SHOP)->GetText().GetGerman(),
+            ctx->GetHint(RH_GRANNYS_SHOP)->GetText().GetFrench()));
 
     //Carpet Salesman
     //RANDOTODO: Implement obscure/ambiguous hints
-    std::vector<std::string> cgBoxTwoText;
-    if (Randomizer::GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ON_HINT) {
-        cgBoxTwoText = {
-            "!%w&It's real, I promise!&A lonely man such as myself&wouldn't %rlie%w to you, hmm?^",
-            "!%w&Ich kann versichern es ist ein&aufrichtiges Angebot!^Ein einsamer Mann wie ich würde dich&doch nicht %ranlügen%w, oder?^",
-            "!%w&C'est vrai! J'te jure!&Un gars comme moi ne te %rmentirai%w pas&tu ne crois pas?^"
-        };
-    } else {
-        cgBoxTwoText = {
-            "!%w&I won't tell you what it is until I see&the money...^",
-            "!%w&Erst kommt das Geld, dann die Ware...^",
-            "!%w&Je ne te dirai pas ce que c'est avant&d'être payé rubis sur l'ongle...^"
-            };
-        }
-        CustomMessageManager::Instance->CreateMessage(
-            Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_1,
-            CustomMessage("Welcome!^I am selling stuff, strange and rare, &from all over the world to "
-                          "everybody.&Today's special is...^%g{{item}}" +
-                              cgBoxTwoText[0] + "How about %y200 Rupees?%w\x1B&&%gYes&No%w",
-                          "Sei gegrüßt!^Ich verkaufe allerlei Kuriorisäten.&Stets sonderliche und seltene Ware&aus "
-                          "aller Welt für jedermann.&Das heutige Angebot bleibt...^%g{{item}}" +
-                              cgBoxTwoText[1] + "Wie wäre es mit %y200 Rubinen?%w\x1B&&%gJa!&Nein!%w",
-                          "Bienvenue!^Je vends des trucs étranges et rares,&de partout dans le monde et à tout "
-                          "le&monde! L'objet du jour est...^%g{{item}}" +
-                              cgBoxTwoText[2] + "Alors, marché conclu pour %y200 rubis?%w\x1B&&%gOui&Non%w"));
-
-        CustomMessageManager::Instance->CreateMessage(
-            Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_2,
-            CustomMessage("Finally! Now I can go back to being &an %rarms dealer%w!",
-              "Endlich! Schon bald kann ich wieder &%rKrabbelminen-Händler%w sein!",
-              "Squalala! Je vais enfin pouvoir &%rprendre des vacances%w!"));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_1,
+        CustomMessage(ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN)->GetText().GetEnglish(),
+            ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN)->GetText().GetGerman(),
+            ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_2,
+        CustomMessage(ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN_POST)->GetText().GetEnglish(),
+            ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN_POST)->GetText().GetGerman(),
+            ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN_POST)->GetText().GetFrench()));
 
         // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
         // prompted buy/don't buy
