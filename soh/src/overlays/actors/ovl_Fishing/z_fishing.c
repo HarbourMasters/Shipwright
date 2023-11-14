@@ -5174,7 +5174,7 @@ static Vec3s sSinkingLureLocationPos[] = {
     { 553, -48, -508 },
 };
 
-//Enhancement: Quit Fishing At Door
+// #region SOH [Enhancement]
 void Fishing_QuitAtDoor(Fishing* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
@@ -5203,7 +5203,7 @@ void Fishing_QuitAtDoor(Fishing* this, PlayState* play) {
         }
     }
 }
-// Enhancement end
+// #endregion
 
 void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
@@ -5512,11 +5512,11 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             player->actor.world.pos.z = 1360.0f;
             player->actor.speedXZ = 0.0f;
             
-            // Enhancement: Quit Fishing At Door
+            // #region SOH [Enhancement]
             if (CVarGetInteger("gQuitFishingAtDoor", 0)) {
                 Fishing_QuitAtDoor(this, play);
             }
-            // Enhancement end
+            // #endregion
 
             if (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) {
                 Camera* camera = Play_GetCamera(play, MAIN_CAM);
