@@ -33,6 +33,7 @@ u64 D_801614D0[0xA00];
 #endif
 
 PlayState* gPlayState;
+s16 firstInit = 0;
 
 s16 gEnPartnerId;
 
@@ -488,6 +489,12 @@ void Play_Init(GameState* thisx) {
         if (gSaveContext.entranceIndex == 0x7A) {
             gSaveContext.entranceIndex = 0x400;
         }
+    }
+
+    // Properly initialize the frame counter so it doesn't use garbage data
+    if (!firstInit) {
+        play->gameplayFrames = 0;
+        firstInit = 1;
     }
 
     // Invalid entrance, so immediately exit the game to opening title
