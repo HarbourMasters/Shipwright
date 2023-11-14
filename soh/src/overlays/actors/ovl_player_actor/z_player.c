@@ -6668,7 +6668,7 @@ s32 func_8083F0C8(Player* this, PlayState* play, u32 arg2) {
                 this->actor.world.pos.z = tempZ + (wallDistance * wallPolyNormZ);
                 func_80832224(this);
                 this->actor.prevPos = this->actor.world.pos;
-                // Enhancement: Modify Crawl Speed
+                // #region SOH [Enhancement]
                 if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
                     // increase animation speed when entering a tunnel
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
@@ -6676,11 +6676,11 @@ s32 func_8083F0C8(Player* this, PlayState* play, u32 arg2) {
                                          Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), ANIMMODE_ONCE,
                                          0.0f);
                     func_80832F54(play, this, 0x9D);
-                } else { // vanilla code
+                // #endregion
+                } else {
                     func_80832264(play, this, &gPlayerAnim_link_child_tunnel_start);
                     func_80832F54(play, this, 0x9D);
                 }
-                // Enhancement end
 
                 return 1;
             }
@@ -6756,7 +6756,7 @@ s32 func_8083F570(Player* this, PlayState* play) {
 
             if (this->linearVelocity > 0.0f) {
                 this->actor.shape.rot.y = this->actor.wallYaw + 0x8000;
-                // Enhancement: Modify Crawl Speed
+                // #region SOH [Enhancement]
                 if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
                     // animation when exiting a tunnel forward
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_end,
@@ -6765,15 +6765,15 @@ s32 func_8083F570(Player* this, PlayState* play) {
                                          0.0f);
                     func_80832F54(play, this, 0x9D);
                     OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
-                } else { // vanilla code
+                // #endregion
+                } else {
                     func_80832264(play, this, &gPlayerAnim_link_child_tunnel_end);
                     func_80832F54(play, this, 0x9D);
                     OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
                 }
-                // Enhancement End
             } else {
                 this->actor.shape.rot.y = this->actor.wallYaw;
-                // Enhancement: Modify Crawl Speed
+                // #region SOH [Enhancement]
                 // animation when exiting a tunnel backward 
                 if (CVarGetInteger("gCrawlSpeed",1) > 1) {
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
@@ -6781,14 +6781,14 @@ s32 func_8083F570(Player* this, PlayState* play) {
                                          Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f, ANIMMODE_ONCE, 0.0f);
                     func_80832F54(play, this, 0x9D);
                     OnePointCutscene_Init(play, 9602, 999, NULL, MAIN_CAM);
+                // #endregion
                 }
-                else { // vanilla code
+                else {
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start, -1.0f,
                                          Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f, ANIMMODE_ONCE, 0.0f);
                     func_80832F54(play, this, 0x9D);
                     OnePointCutscene_Init(play, 9602, 999, NULL, MAIN_CAM);
                 }
-                // Enhancement end
             }
 
             this->currentYaw = this->actor.shape.rot.y;
@@ -12162,14 +12162,13 @@ void func_8084C760(Player* this, PlayState* play) {
 
             // player speed in a tunnel
             if (!func_8083F570(this, play)) {
-                // Enhancement: Modify Crawl Speed
+                // #region SOH [Enhancement]
                 if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
                     this->linearVelocity = sControlInput->rel.stick_y * 0.03f * CVarGetInteger("gCrawlSpeed", 1);
-                }
-                else { // vanilla code
+                // #endregion
+                } else {
                     this->linearVelocity = sControlInput->rel.stick_y * 0.03f;
                 }
-                // Enhancement end
             }
         }
         return;
