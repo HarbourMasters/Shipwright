@@ -11491,7 +11491,7 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     f32 temp1;
     f32 temp2;
     
-    // Enhancement: Swim Speed Modifier
+    // #region SOH [Enhancement]
     f32 swimMod = 1.0f;
 
     if (CVarGetInteger("gEnableWalkModify", 0) == 1) {
@@ -11524,7 +11524,8 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
 
         Math_AsymStepToF(arg1, arg2 * 0.8f * swimMod, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
         Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
-    } else { // vanilla code
+    // #endregion
+    } else {
 
         temp1 = this->skelAnime.curFrame - 10.0f;
 
@@ -11543,11 +11544,10 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
         Math_AsymStepToF(arg1, arg2 * 0.8f, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
         Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
     }
-    // Enhancement end
 }
 
-// Enhancement: Swim Speed Modifier
-//Diving (uses function func_8084AEEC to calculate changes both xz and y velocity (via func_8084DBC4), which is problematic with swim speed modifiers
+// #region SOH [Enhancement]
+//Diving uses function func_8084AEEC to calculate changes both xz and y velocity (via func_8084DBC4)
 //Provide original calculation for y velocity when swim speed mod is active
 void SurfaceWithSwimMod(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     f32 temp1;
@@ -11570,7 +11570,7 @@ void SurfaceWithSwimMod(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     Math_AsymStepToF(arg1, arg2 * 0.8f, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
     Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
 }
-// Enhancement end
+// #endregion
 
 void func_8084B000(Player* this) {
     f32 phi_f18;
@@ -12725,14 +12725,13 @@ void func_8084DBC4(PlayState* play, Player* this, f32 arg2) {
 
     func_80837268(this, &sp2C, &sp2A, 0.0f, play);
     func_8084AEEC(this, &this->linearVelocity, sp2C * 0.5f, sp2A);
-    // Enhancement: Swim Speed Modifier
+    // #region SOH [Enhancement]
     if (CVarGetInteger("gEnableWalkModify", 0)) {
         SurfaceWithSwimMod(this, &this->actor.velocity.y, arg2, this->currentYaw);
-    }
-    else { // vanilla code
+    // #endregion
+    } else {
         func_8084AEEC(this, &this->actor.velocity.y, arg2, this->currentYaw);
     }
-    // Enhancement end
 }
 
 void func_8084DC48(Player* this, PlayState* play) {
