@@ -1020,7 +1020,7 @@ void RegisterRandomizerSheikSpawn() {
 
 void UpdateHurtContainerModeState(bool newState) {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([newState]() {
-        bool hurtEnabled;
+        static bool hurtEnabled = false;
         if (hurtEnabled == newState) {
             return;
         }
