@@ -2767,14 +2767,14 @@ s32 func_808358F0(Player* this, PlayState* play) {
         AnimationContext_SetCopyAll(play, this->skelAnime.limbCount, this->skelAnime2.jointTable,
                                     this->skelAnime.jointTable);
     } else {
-        // Enhancement: Boomerang Reticle
+        // #region SOH [Enhancement]
         if (CVarGetInteger("gBoomerangReticle", 0) == 1) {
             // don't play animation
         }
-        else { // vanilla code
+        else {
             LinkAnimation_Update(play, &this->skelAnime2);
         }
-        // Enhancement end
+        // #endregion
     }
 
     func_80834EB8(this, play);
@@ -4944,13 +4944,13 @@ s32 func_8083AD4C(PlayState* play, Player* this) {
             
             cameraMode = shouldUseBowCamera ? CAM_MODE_BOWARROW : CAM_MODE_SLINGSHOT;
         } else {
-            // Enhancement: Boomerang First-Person Aiming
+            // #region SOH [Enhancement]
             if (CVarGetInteger("gBoomerangFirstPerson", 0)) {
                 cameraMode = CAM_MODE_FIRSTPERSON;
-            } else { // vanilla code
+            } else {
                 cameraMode = CAM_MODE_BOOMERANG;
             }
-            // Enhancement end
+            // #endregion
         }
     } else {
         cameraMode = CAM_MODE_FIRSTPERSON;
@@ -10321,13 +10321,13 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
                     camMode = CAM_MODE_TALK;
                 } else if (this->stateFlags1 & PLAYER_STATE1_TARGET_LOCKED) {
                     if (this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG) {
-                        // Enhancement: Boomerang First-Person Aiming
+                        // // #region SOH [Enhancement]
                         if (CVarGetInteger("gBoomerangFirstPerson", 0) == 1) {
                             camMode = CAM_MODE_TARGET;
-                        } else { // vanilla code
+                        } else {
                             camMode = CAM_MODE_FOLLOWBOOMERANG;
                         }
-                        // Enhancement end
+                        // #endregion
                     } else {
                         camMode = CAM_MODE_FOLLOWTARGET;
                     }
@@ -10338,15 +10338,15 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
             } else if (this->stateFlags1 & PLAYER_STATE1_CHARGING_SPIN_ATTACK) {
                 camMode = CAM_MODE_CHARGE;
             } else if (this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG) {
-                // Enhancement: Boomerang First-Person Aiming
+                // #region SOH [Enhancement]
                 if (CVarGetInteger("gBoomerangFirstPerson", 0)) {
                     camMode = CAM_MODE_TARGET;
                     Camera_SetParam(Play_GetCamera(play, 0), 8, this->boomerangActor);
-                } else { // vanilla code
+                } else {
                     camMode = CAM_MODE_FOLLOWBOOMERANG;
                     Camera_SetParam(Play_GetCamera(play, 0), 8, this->boomerangActor);
                 }
-                // Enhancement end
+                // #endregion
             } else if (this->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE)) {
                 if (func_80833B2C(this)) {
                     camMode = CAM_MODE_HANGZ;
