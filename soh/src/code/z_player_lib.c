@@ -1875,7 +1875,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                         Player_DrawHookshotReticle(play, this, 38600.0f);
                     }
                 }
-                // #endregion
+            // #endregion
             }
 
             if ((this->unk_862 != 0) || ((func_8002DD6C(this) == 0) && (heldActor != NULL))) {

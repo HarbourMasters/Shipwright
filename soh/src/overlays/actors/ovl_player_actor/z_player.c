@@ -2770,11 +2770,11 @@ s32 func_808358F0(Player* this, PlayState* play) {
         // #region SOH [Enhancement]
         if (CVarGetInteger("gBoomerangReticle", 0) == 1) {
             // don't play animation
+        // #endregion
         }
         else {
             LinkAnimation_Update(play, &this->skelAnime2);
         }
-        // #endregion
     }
 
     func_80834EB8(this, play);
@@ -4947,10 +4947,10 @@ s32 func_8083AD4C(PlayState* play, Player* this) {
             // #region SOH [Enhancement]
             if (CVarGetInteger("gBoomerangFirstPerson", 0)) {
                 cameraMode = CAM_MODE_FIRSTPERSON;
+            // #endregion
             } else {
                 cameraMode = CAM_MODE_BOOMERANG;
             }
-            // #endregion
         }
     } else {
         cameraMode = CAM_MODE_FIRSTPERSON;
@@ -10321,13 +10321,13 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
                     camMode = CAM_MODE_TALK;
                 } else if (this->stateFlags1 & PLAYER_STATE1_TARGET_LOCKED) {
                     if (this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG) {
-                        // // #region SOH [Enhancement]
+                        // #region SOH [Enhancement]
                         if (CVarGetInteger("gBoomerangFirstPerson", 0) == 1) {
                             camMode = CAM_MODE_TARGET;
+                        // #endregion
                         } else {
                             camMode = CAM_MODE_FOLLOWBOOMERANG;
                         }
-                        // #endregion
                     } else {
                         camMode = CAM_MODE_FOLLOWTARGET;
                     }
@@ -10342,11 +10342,11 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
                 if (CVarGetInteger("gBoomerangFirstPerson", 0)) {
                     camMode = CAM_MODE_TARGET;
                     Camera_SetParam(Play_GetCamera(play, 0), 8, this->boomerangActor);
+                // #endregion
                 } else {
                     camMode = CAM_MODE_FOLLOWBOOMERANG;
                     Camera_SetParam(Play_GetCamera(play, 0), 8, this->boomerangActor);
                 }
-                // #endregion
             } else if (this->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE)) {
                 if (func_80833B2C(this)) {
                     camMode = CAM_MODE_HANGZ;
