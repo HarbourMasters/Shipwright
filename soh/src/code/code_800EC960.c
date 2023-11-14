@@ -2066,7 +2066,7 @@ void func_800EE404(void) {
 void Audio_OcaMemoryGameStart(u8 minigameRound) {
     u8 i;
     
-    // Enhancement: Customize Lost Woods Ocarina Game
+    // #region SOH [Enhancement]
     if (CVarGetInteger("gCustomizeOcarinaGame", 0)) {
         u8 startingNotes = 3;
         u8 roundOneCount = CVarGetInteger("gOcarinaGameRoundOneNotes", 5);
@@ -2087,7 +2087,8 @@ void Audio_OcaMemoryGameStart(u8 minigameRound) {
         for (i = 0; i < startingNotes; i++) {
             Audio_OcaMemoryGameGenNote();
         }
-    } else { // vanilla code
+    // #endregion
+    } else {
         if (minigameRound > 2) {
             minigameRound = 2;
         }
@@ -2099,7 +2100,6 @@ void Audio_OcaMemoryGameStart(u8 minigameRound) {
             Audio_OcaMemoryGameGenNote();
         }
     }
-    // Enhancement end
 }
 
 s32 Audio_OcaMemoryGameGenNote(void) {
@@ -2117,7 +2117,7 @@ s32 Audio_OcaMemoryGameGenNote(void) {
         rndNote = sOcarinaNoteValues[(rnd + 1) % 5];
     }
 
-    //Enhancement: Customize Lost Woods Ocarina Game
+    // #region SOH [Enhancement]
     if (CVarGetInteger("gCustomizeOcarinaGame", 0)) {
         int noteSpeed = 0x2D;
         noteSpeed = noteSpeed / CVarGetInteger("gOcarinaGameNoteSpeed", 1);
@@ -2127,14 +2127,14 @@ s32 Audio_OcaMemoryGameGenNote(void) {
         sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].volume = 0x50;
         sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].vibrato = 0;
         sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].tone = 0;
-    } else { // vanilla code
+    // #endregion
+    } else {
         sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].noteIdx = rndNote;
         sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].unk_02 = 0x2D;
         sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].volume = 0x50;
         sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].vibrato = 0;
         sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].tone = 0;
     }
-    // Enhancement end
 
     sOcaMinigameAppendPos++;
 
