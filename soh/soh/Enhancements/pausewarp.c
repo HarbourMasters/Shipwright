@@ -61,7 +61,9 @@ void PauseWarp_Main() {
     if (aButtonPressed && !state.aButtonCooldown && !(state.warpInitiated || state.textboxInitiated || state.inChoosingState)) {
         int song = play->pauseCtx.cursorPoint[PAUSE_QUEST];
         if (CHECK_QUEST_ITEM(song) && song >= QUEST_SONG_MINUET && song <= QUEST_SONG_PRELUDE) {
-            InitiateWarp(play, player, song);
+            if (gSaveContext.inventory.items[SLOT_OCARINA] != ITEM_NONE) { // Added this line
+                InitiateWarp(play, player, song);
+            }
         }
     }
 }
@@ -72,7 +74,10 @@ void PauseWarp_Idle() {
     PlayState* play = gPlayState;
     Player* player = GET_PLAYER(play);
 
-    if (gSaveContext.inventory.items[SLOT_OCARINA] == ITEM_NONE) return ResetStateFlags(&state);
+    if (gSaveContext.inventory.items[SLOT_OCARINA] == ITEM_NONE) {
+        ResetStateFlags(&state);
+        return;
+    }
 
     int currentSong = play->pauseCtx.cursorPoint[PAUSE_QUEST];
     
