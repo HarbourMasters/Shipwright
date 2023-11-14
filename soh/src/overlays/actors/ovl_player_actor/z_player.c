@@ -6915,7 +6915,7 @@ s32 func_8083FD78(Player* this, f32* arg1, s16* arg2, PlayState* play) {
             *arg2 = this->actor.shape.rot.y;
         }
 
-        // Enhancement: Right-Stick Aiming and/or Invert Z-aiming Y-axis
+        // #region SOH [Enhancement]
         if (CVarGetInteger("gRightStickAiming", 0) != 0 || CVarGetInteger("gInvertZAimingYAxis", 1) == 0) {
             
             if (this->unk_664 != NULL) {
@@ -6941,8 +6941,9 @@ s32 func_8083FD78(Player* this, f32* arg1, s16* arg2, PlayState* play) {
                 Math_SmoothStepToS(&this->actor.focus.rot.x,
                                    relStickY * (CVarGetInteger("gInvertZAimingYAxis", 1) ? 1 : -1) * 240.0f, 14, 4000, 30);
                 func_80836AB8(this, 1);
-            } 
-        } else { // vanilla code
+            }
+        // #endregion
+        } else {
             if (this->unk_664 != NULL) {
                 func_8083DB98(this, 1);
             } else {
@@ -6950,7 +6951,6 @@ s32 func_8083FD78(Player* this, f32* arg1, s16* arg2, PlayState* play) {
                 func_80836AB8(this, 1);
             }
         }
-        // Enhancement end
     } else {
         if (this->unk_664 != NULL) {
             return func_8083FC68(this, *arg1, *arg2);

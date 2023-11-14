@@ -63,7 +63,6 @@ s8 PadUtils_GetRelX(Input* input) {
     return PadUtils_GetRelXImpl(input);
 }
 
-
 s8 PadUtils_GetRelY(Input* input) {
     return PadUtils_GetRelYImpl(input);
 }
@@ -94,7 +93,7 @@ void PadUtils_UpdateRelXY(Input* input) {
     PadUtils_SetRelXY(input, relX, relY);
 }
 
-// Enhancement: Right-Stick Aiming
+// #region SOH [Enhancement]
 s8 PadUtils_GetCurRX(Input* input) {
     return input->cur.right_stick_x;
 }
@@ -149,4 +148,4 @@ void PadUtils_UpdateRelRXY(Input* input) {
 
     PadUtils_SetRelRXY(input, relX, relY);
 }
-// Enhancement end
+// #endregion
