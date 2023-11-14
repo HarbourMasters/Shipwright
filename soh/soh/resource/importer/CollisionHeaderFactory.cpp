@@ -160,7 +160,6 @@ void LUS::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
     }
     collisionHeader->collisionHeaderData.waterBoxes = collisionHeader->waterBoxes.data();
 }
-}
 
 void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<IResource> resource) {
     std::shared_ptr<CollisionHeader> collisionHeader = std::static_pointer_cast<CollisionHeader>(resource);
@@ -192,11 +191,11 @@ void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, s
         } else if (childName == "Polygon") {
             CollisionPoly polygon;
 
-            polygon.type = child->IntAttribute("Type");
+            polygon.type = child->UnsignedAttribute("Type");
         
-            polygon.flags_vIA = child->IntAttribute("VertexA");
-            polygon.flags_vIB = child->IntAttribute("VertexB");
-            polygon.vIC = child->IntAttribute("VertexC");
+            polygon.flags_vIA = child->UnsignedAttribute("VertexA");
+            polygon.flags_vIB = child->UnsignedAttribute("VertexB");
+            polygon.vIC = child->UnsignedAttribute("VertexC");
 
             polygon.normal.x = child->IntAttribute("NormalX");
             polygon.normal.y = child->IntAttribute("NormalY");
@@ -208,13 +207,13 @@ void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, s
         } else if (childName == "PolygonType") {
             SurfaceType surfaceType;
 
-            surfaceType.data[0] = child->IntAttribute("Data1");
-            surfaceType.data[1] = child->IntAttribute("Data2");
+            surfaceType.data[0] = child->UnsignedAttribute("Data1");
+            surfaceType.data[1] = child->UnsignedAttribute("Data2");
 
             collisionHeader->surfaceTypes.push_back(surfaceType);
         } else if (childName == "CameraData") {
             CamData camDataEntry;
-            camDataEntry.cameraSType = child->IntAttribute("SType");
+            camDataEntry.cameraSType = child->UnsignedAttribute("SType");
             camDataEntry.numCameras = child->IntAttribute("NumData");
             collisionHeader->camData.push_back(camDataEntry);
         
@@ -275,4 +274,5 @@ void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, s
     collisionHeader->collisionHeaderData.cameraDataList = collisionHeader->camData.data();
     collisionHeader->collisionHeaderData.cameraDataListLen = collisionHeader->camDataCount;
     collisionHeader->collisionHeaderData.waterBoxes = collisionHeader->waterBoxes.data();
+}
 }
