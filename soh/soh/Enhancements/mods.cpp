@@ -1019,7 +1019,6 @@ void RegisterRandomizerSheikSpawn() {
 }
 
 void UpdateHurtContainerModeState(bool newState) {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([newState]() {
         static bool hurtEnabled = false;
         if (hurtEnabled == newState) {
             return;
@@ -1034,7 +1033,6 @@ void UpdateHurtContainerModeState(bool newState) {
         } else {
             gSaveContext.healthCapacity = 48 + ((getHeartPieces + getHeartContainers) * 16);
         }
-    });
 }
 
 void RegisterHurtContainerModeHandler() {
