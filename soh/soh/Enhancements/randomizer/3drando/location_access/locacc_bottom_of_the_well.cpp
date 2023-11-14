@@ -12,8 +12,8 @@ void AreaTable_Init_BottomOfTheWell() {
   ---------------------------*/
   areaTable[RR_BOTTOM_OF_THE_WELL_ENTRYWAY] = Area("Bottom of the Well Entryway", "Bottom of the Well", RHT_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_BOTTOM_OF_THE_WELL_MAIN_AREA,    {[]{return Dungeon::BottomOfTheWell.IsVanilla() && IsChild && (CanChildAttack || Nuts);}}),
-                  Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, {[]{return Dungeon::BottomOfTheWell.IsMQ()      && IsChild;}}),
+                  Entrance(RR_BOTTOM_OF_THE_WELL_MAIN_AREA,    {[]{return Dungeon::BottomOfTheWell.IsVanilla() && Logic::IsChild && (CanChildAttack || Nuts);}}),
+                  Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, {[]{return Dungeon::BottomOfTheWell.IsMQ()      && Logic::IsChild;}}),
                   Entrance(RR_KAKARIKO_VILLAGE,                {[]{return true;}}),
   });
 

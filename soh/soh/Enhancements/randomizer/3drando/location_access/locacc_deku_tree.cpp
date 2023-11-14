@@ -118,7 +118,7 @@ void AreaTable_Init_DekuTree() {
                   Entrance(RR_DEKU_TREE_BASEMENT_TORCH_ROOM, {[]{return true;}}),
                   Entrance(RR_DEKU_TREE_BASEMENT_BACK_ROOM,  {[]{return Here(RR_DEKU_TREE_BASEMENT_BACK_LOBBY, []{return HasFireSourceWithTorch || CanUse(RG_FAIRY_BOW);}) &&
                                                                      Here(RR_DEKU_TREE_BASEMENT_BACK_LOBBY, []{return CanBlastOrSmash;});}}),
-                  Entrance(RR_DEKU_TREE_BASEMENT_UPPER,      {[]{return Here(RR_DEKU_TREE_BASEMENT_BACK_LOBBY, []{return HasFireSourceWithTorch || CanUse(RG_FAIRY_BOW);}) && IsChild;}}),
+                  Entrance(RR_DEKU_TREE_BASEMENT_UPPER,      {[]{return Here(RR_DEKU_TREE_BASEMENT_BACK_LOBBY, []{return HasFireSourceWithTorch || CanUse(RG_FAIRY_BOW);}) && Logic::IsChild;}}),
   });
 
   areaTable[RR_DEKU_TREE_BASEMENT_BACK_ROOM] = Area("Deku Tree Basement Back Room", "Deku Tree", RHT_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -136,7 +136,7 @@ void AreaTable_Init_DekuTree() {
                 }, {}, {
                   //Exits
                   Entrance(RR_DEKU_TREE_BASEMENT_LOWER,      {[]{return true;}}),
-                  Entrance(RR_DEKU_TREE_BASEMENT_BACK_LOBBY, {[]{return IsChild;}}),
+                  Entrance(RR_DEKU_TREE_BASEMENT_BACK_LOBBY, {[]{return Logic::IsChild;}}),
                   Entrance(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM,   {[]{return Here(RR_DEKU_TREE_BASEMENT_UPPER, []{return HasFireSourceWithTorch || (LogicDekuB1WebsWithBow && IsAdult && CanUse(RG_FAIRY_BOW));});}}),
   });
 
@@ -165,9 +165,9 @@ void AreaTable_Init_DekuTree() {
   }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_ENTRYWAY,                     {[]{return true;}}),
-                  Entrance(RR_DEKU_TREE_MQ_COMPASS_ROOM,              {[]{return Here(RR_DEKU_TREE_MQ_LOBBY, []{return (IsChild && CanUse(RG_FAIRY_SLINGSHOT)) || (IsAdult && CanUse(RG_FAIRY_BOW));}) &&
+                  Entrance(RR_DEKU_TREE_MQ_COMPASS_ROOM,              {[]{return Here(RR_DEKU_TREE_MQ_LOBBY, []{return (Logic::IsChild && CanUse(RG_FAIRY_SLINGSHOT)) || (IsAdult && CanUse(RG_FAIRY_BOW));}) &&
                                                                                Here(RR_DEKU_TREE_MQ_LOBBY, []{return HasFireSourceWithTorch || (IsAdult && CanUse(RG_FAIRY_BOW));});}}),
-                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, {[]{return Here(RR_DEKU_TREE_MQ_LOBBY, []{return (IsChild && CanUse(RG_FAIRY_SLINGSHOT)) || (IsAdult && CanUse(RG_FAIRY_BOW));}) &&
+                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, {[]{return Here(RR_DEKU_TREE_MQ_LOBBY, []{return (Logic::IsChild && CanUse(RG_FAIRY_SLINGSHOT)) || (IsAdult && CanUse(RG_FAIRY_BOW));}) &&
                                                                                Here(RR_DEKU_TREE_MQ_LOBBY, []{return HasFireSourceWithTorch;});}}),
                   Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE,            {[]{return LogicDekuB1Skip || Here(RR_DEKU_TREE_MQ_LOBBY, []{return IsAdult;});}}),
   });
@@ -189,7 +189,7 @@ void AreaTable_Init_DekuTree() {
                   LocationAccess(RC_DEKU_TREE_MQ_BEFORE_SPINNING_LOG_CHEST, {[]{return true;}}),
   }, {
                   //Exits
-                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, {[]{return LogicDekuMQLog ||  (IsChild && (DekuShield || HylianShield)) ||
+                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, {[]{return LogicDekuMQLog ||  (Logic::IsChild && (DekuShield || HylianShield)) ||
                                                                              (IsAdult && (CanUse(RG_LONGSHOT) || (CanUse(RG_HOOKSHOT) && CanUse(RG_IRON_BOOTS))));}}),
                   Entrance(RR_DEKU_TREE_MQ_LOBBY,                    {[]{return true;}}),
   });
@@ -199,7 +199,7 @@ void AreaTable_Init_DekuTree() {
                   LocationAccess(RC_DEKU_TREE_MQ_AFTER_SPINNING_LOG_CHEST, {[]{return CanPlay(SongOfTime);}}),
   }, {
                   //Exits
-                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_BACK_ROOM,        {[]{return Here(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, []{return (IsChild && CanUse(RG_STICKS)) || CanUse(RG_DINS_FIRE) ||
+                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_BACK_ROOM,        {[]{return Here(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, []{return (Logic::IsChild && CanUse(RG_STICKS)) || CanUse(RG_DINS_FIRE) ||
                                                                                Here(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, []{return IsAdult && CanUse(RG_FIRE_ARROWS);});}) &&
                                                                                  Here(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, []{return IsAdult || KokiriSword || CanUseProjectile || (Nuts && Sticks);});}}),
                   Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, {[]{return true;}}),
@@ -211,8 +211,8 @@ void AreaTable_Init_DekuTree() {
                   LocationAccess(RC_DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM,   {[]{return HasFireSourceWithTorch && HookshotOrBoomerang;}}),
   }, {
                   //Exits
-                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE,           {[]{return IsChild;}}),
-                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, {[]{return (IsChild && CanUse(RG_KOKIRI_SWORD)) || CanUseProjectile || (Nuts && (IsChild && CanUse(RG_STICKS)));}}),
+                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE,           {[]{return Logic::IsChild;}}),
+                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, {[]{return (Logic::IsChild && CanUse(RG_KOKIRI_SWORD)) || CanUseProjectile || (Nuts && (Logic::IsChild && CanUse(RG_STICKS)));}}),
   });
 
   areaTable[RR_DEKU_TREE_MQ_BASEMENT_LEDGE] = Area("Deku Tree MQ Basement Ledge", "Deku Tree", RHT_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -220,7 +220,7 @@ void AreaTable_Init_DekuTree() {
                   LocationAccess(RC_DEKU_TREE_MQ_DEKU_SCRUB, {[]{return CanStunDeku;}}),
   }, {
                   //Exits
-                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_BACK_ROOM, {[]{return IsChild;}}),
+                  Entrance(RR_DEKU_TREE_MQ_BASEMENT_BACK_ROOM, {[]{return Logic::IsChild;}}),
                   Entrance(RR_DEKU_TREE_MQ_LOBBY,              {[]{return true;}}),
                   Entrance(RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM,
                          { [] { return Here(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, [] { return HasFireSourceWithTorch; }); } }),

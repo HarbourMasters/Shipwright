@@ -24,7 +24,7 @@ void AreaTable_Init_ForestTemple() {
   areaTable[RR_FOREST_TEMPLE_FIRST_ROOM] = Area("Forest Temple First Room", "Forest Temple", RHT_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_FOREST_TEMPLE_FIRST_ROOM_CHEST, {[]{return true;}}),
-                  LocationAccess(RC_FOREST_TEMPLE_GS_FIRST_ROOM,    {[]{return (IsAdult && Bombs) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG) || CanUse(RG_FAIRY_SLINGSHOT) || HasBombchus || CanUse(RG_DINS_FIRE) || (LogicForestFirstGS && (CanJumpslash || (IsChild && Bombs)));}}),
+                  LocationAccess(RC_FOREST_TEMPLE_GS_FIRST_ROOM,    {[]{return (IsAdult && Bombs) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG) || CanUse(RG_FAIRY_SLINGSHOT) || HasBombchus || CanUse(RG_DINS_FIRE) || (LogicForestFirstGS && (CanJumpslash || (Logic::IsChild && Bombs)));}}),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_ENTRYWAY,       {[]{return true;}}),
@@ -47,7 +47,7 @@ void AreaTable_Init_ForestTemple() {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_SOUTH_CORRIDOR,    {[]{return true;}}),
                   Entrance(RR_FOREST_TEMPLE_NORTH_CORRIDOR,    {[]{return true;}}),
-                  Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_LOWER, {[]{return CanPlay(SongOfTime) || IsChild;}}),
+                  Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_LOWER, {[]{return CanPlay(SongOfTime) || Logic::IsChild;}}),
                   Entrance(RR_FOREST_TEMPLE_NE_OUTDOORS_LOWER, {[]{return CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT);}}),
                   Entrance(RR_FOREST_TEMPLE_WEST_CORRIDOR,     {[]{return SmallKeys(RR_FOREST_TEMPLE, 1, 5);}}),
                   Entrance(RR_FOREST_TEMPLE_EAST_CORRIDOR,     {[]{return false;}}),
@@ -295,12 +295,12 @@ void AreaTable_Init_ForestTemple() {
                   EventAccess(&FairyPot, {[]{return true;}}),
   }, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_WOLFOS_CHEST,       {[]{return (CanPlay(SongOfTime) || IsChild) && (IsAdult || CanUse(RG_DINS_FIRE) || CanUse(RG_STICKS) || CanUse(RG_FAIRY_SLINGSHOT) || KokiriSword);}}),
+                  LocationAccess(RC_FOREST_TEMPLE_MQ_WOLFOS_CHEST,       {[]{return (CanPlay(SongOfTime) || Logic::IsChild) && (IsAdult || CanUse(RG_DINS_FIRE) || CanUse(RG_STICKS) || CanUse(RG_FAIRY_SLINGSHOT) || KokiriSword);}}),
                   LocationAccess(RC_FOREST_TEMPLE_MQ_GS_BLOCK_PUSH_ROOM, {[]{return IsAdult || KokiriSword;}}),
   }, {
                   //Exits
-                  Entrance(RR_FOREST_TEMPLE_MQ_NW_OUTDOORS,        {[]{return (IsAdult && CanUse(RG_FAIRY_BOW)) || (IsChild && CanUse(RG_FAIRY_SLINGSHOT));}}),
-                  Entrance(RR_FOREST_TEMPLE_MQ_NE_OUTDOORS,        {[]{return (IsAdult && CanUse(RG_FAIRY_BOW)) || (IsChild && CanUse(RG_FAIRY_SLINGSHOT));}}), //This is as far as child can get
+                  Entrance(RR_FOREST_TEMPLE_MQ_NW_OUTDOORS,        {[]{return (IsAdult && CanUse(RG_FAIRY_BOW)) || (Logic::IsChild && CanUse(RG_FAIRY_SLINGSHOT));}}),
+                  Entrance(RR_FOREST_TEMPLE_MQ_NE_OUTDOORS,        {[]{return (IsAdult && CanUse(RG_FAIRY_BOW)) || (Logic::IsChild && CanUse(RG_FAIRY_SLINGSHOT));}}), //This is as far as child can get
                   Entrance(RR_FOREST_TEMPLE_MQ_AFTER_BLOCK_PUZZLE, {[]{return IsAdult && (GoronBracelet || (LogicForestMQBlockPuzzle && HasBombchus && IsAdult && CanUse(RG_HOOKSHOT)));}}),
                     //Trick: IsAdult && (GoronBracelet || (LogicForestMQBlockPuzzle && HasBombchus && IsAdult && CanUse(RG_HOOKSHOT)))
                   Entrance(RR_FOREST_TEMPLE_MQ_OUTDOOR_LEDGE,      {[]{return (LogicForestMQHallwaySwitchJS && IsAdult && CanUse(RG_HOVER_BOOTS)) || (LogicForestMQHallwaySwitchBoomerang && CanUse(RG_BOOMERANG)) || (LogicForestMQHallwaySwitchHookshot && IsAdult && CanUse(RG_HOOKSHOT));}}),
@@ -314,7 +314,7 @@ void AreaTable_Init_ForestTemple() {
   }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_MQ_BOW_REGION,    {[]{return SmallKeys(RR_FOREST_TEMPLE, 4);}}),
-                  Entrance(RR_FOREST_TEMPLE_MQ_OUTDOOR_LEDGE, {[]{return  SmallKeys(RR_FOREST_TEMPLE, 3) || (LogicForestMQHallwaySwitchJS && ((IsAdult && CanUse(RG_HOOKSHOT)) || (LogicForestOutsideBackdoor && (IsAdult || (IsChild && CanUse(RG_STICKS))))));}}),
+                  Entrance(RR_FOREST_TEMPLE_MQ_OUTDOOR_LEDGE, {[]{return  SmallKeys(RR_FOREST_TEMPLE, 3) || (LogicForestMQHallwaySwitchJS && ((IsAdult && CanUse(RG_HOOKSHOT)) || (LogicForestOutsideBackdoor && (IsAdult || (Logic::IsChild && CanUse(RG_STICKS))))));}}),
                     //Trick (Doing the hallway switch jumpslash as child requires sticks and has been added above): SmallKeys(RR_FOREST_TEMPLE, 3) || (LogicForestMQHallwaySwitchJS && ((IsAdult && CanUse(RG_HOOKSHOT)) || LogicForestOutsideBackdoor))
                   Entrance(RR_FOREST_TEMPLE_MQ_NW_OUTDOORS,   {[]{return SmallKeys(RR_FOREST_TEMPLE, 2);}}),
   });
@@ -343,9 +343,9 @@ void AreaTable_Init_ForestTemple() {
                   EventAccess(&DekuBabaNuts,   {[]{return DekuBabaNuts   || (IsAdult || KokiriSword || Slingshot || Sticks || HasExplosives || CanUse(RG_DINS_FIRE));}}),
   }, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_WELL_CHEST,                 {[]{return (IsAdult && CanUse(RG_FAIRY_BOW)) || (IsChild && CanUse(RG_FAIRY_SLINGSHOT));}}),
+                  LocationAccess(RC_FOREST_TEMPLE_MQ_WELL_CHEST,                 {[]{return (IsAdult && CanUse(RG_FAIRY_BOW)) || (Logic::IsChild && CanUse(RG_FAIRY_SLINGSHOT));}}),
                   LocationAccess(RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD, {[]{return HookshotOrBoomerang || (IsAdult && CanUse(RG_FIRE_ARROWS) && (CanPlay(SongOfTime) || (CanUse(RG_HOVER_BOOTS) && LogicForestDoorFrame)));}}),
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_GS_WELL,                    {[]{return (IsAdult && ((CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT)) || CanUse(RG_FAIRY_BOW))) || (IsChild && CanUse(RG_FAIRY_SLINGSHOT));}}),
+                  LocationAccess(RC_FOREST_TEMPLE_MQ_GS_WELL,                    {[]{return (IsAdult && ((CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT)) || CanUse(RG_FAIRY_BOW))) || (Logic::IsChild && CanUse(RG_FAIRY_SLINGSHOT));}}),
   }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_MQ_OUTDOORS_TOP_LEDGES, {[]{return IsAdult && CanUse(RG_HOOKSHOT) && (CanUse(RG_LONGSHOT) || CanUse(RG_HOVER_BOOTS) || CanPlay(SongOfTime));}}),

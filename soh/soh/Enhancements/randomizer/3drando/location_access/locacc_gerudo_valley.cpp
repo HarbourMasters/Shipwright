@@ -8,17 +8,17 @@ using namespace Settings;
 void AreaTable_Init_GerudoValley() {
   areaTable[RR_GERUDO_VALLEY] = Area("Gerudo Valley", "Gerudo Valley", RHT_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&BugRock, {[]{return BugRock || IsChild;}}),
+                  EventAccess(&BugRock, {[]{return BugRock || Logic::IsChild;}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_GV_GS_SMALL_BRIDGE, {[]{return IsChild && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_GV_GS_SMALL_BRIDGE, {[]{return Logic::IsChild && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD,      {[]{return true;}}),
                   Entrance(RR_GV_UPPER_STREAM,   {[]{return true;}}),
-                  Entrance(RR_GV_CRATE_LEDGE,    {[]{return IsChild || CanUse(RG_LONGSHOT);}}),
+                  Entrance(RR_GV_CRATE_LEDGE,    {[]{return Logic::IsChild || CanUse(RG_LONGSHOT);}}),
                   Entrance(RR_GV_GROTTO_LEDGE,   {[]{return true;}}),
-                  Entrance(RR_GV_FORTRESS_SIDE,  {[]{return (IsAdult && (CanRideEpona || CanUse(RG_LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue)) || (IsChild && CanUse(RG_HOOKSHOT));}}),
+                  Entrance(RR_GV_FORTRESS_SIDE,  {[]{return (IsAdult && (CanRideEpona || CanUse(RG_LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue)) || (Logic::IsChild && CanUse(RG_HOOKSHOT));}}),
   });
 
   areaTable[RR_GV_UPPER_STREAM] = Area("GV Upper Stream", "Gerudo Valley", RHT_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
@@ -29,7 +29,7 @@ void AreaTable_Init_GerudoValley() {
                   //Locations
                   LocationAccess(RC_GV_WATERFALL_FREESTANDING_POH, {[]{return true;}}),
                   LocationAccess(RC_GV_GS_BEAN_PATCH,              {[]{return CanPlantBugs && CanChildAttack;}}),
-                  LocationAccess(RC_GV_COW,                        {[]{return IsChild && CanPlay(EponasSong);}}),
+                  LocationAccess(RC_GV_COW,                        {[]{return Logic::IsChild && CanPlay(EponasSong);}}),
                   LocationAccess(RC_GV_GOSSIP_STONE,               {[]{return true;}}),
                 }, {
                   //Exits
@@ -69,7 +69,7 @@ void AreaTable_Init_GerudoValley() {
                   //Exits
                   Entrance(RR_GERUDO_FORTRESS,   {[]{return true;}}),
                   Entrance(RR_GV_UPPER_STREAM,   {[]{return true;}}),
-                  Entrance(RR_GERUDO_VALLEY,     {[]{return IsChild || CanRideEpona || CanUse(RG_LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue;}}),
+                  Entrance(RR_GERUDO_VALLEY,     {[]{return Logic::IsChild || CanRideEpona || CanUse(RG_LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue;}}),
                   Entrance(RR_GV_CARPENTER_TENT, {[]{return IsAdult;}}),
                   Entrance(RR_GV_STORMS_GROTTO,  {[]{return IsAdult && CanOpenStormGrotto;}}),
                   Entrance(RR_GV_CRATE_LEDGE, {[]{return false;}}),

@@ -28,7 +28,7 @@ std::vector<EventAccess> grottoEvents = {
 //set the logic to be a specific age and time of day and see if the condition still holds
 bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
 
-  IsChild = false;
+  Logic::IsChild = false;
   IsAdult = false;
   AtDay   = false;
   AtNight = false;
@@ -45,8 +45,8 @@ bool LocationAccess::ConditionsMet() const {
   Area* parentRegion = AreaTable(Rando::Context::GetInstance()->GetItemLocation(location)->GetParentRegionKey());
   bool conditionsMet = false;
 
-  if ((parentRegion->childDay   && CheckConditionAtAgeTime(IsChild, AtDay))   ||
-      (parentRegion->childNight && CheckConditionAtAgeTime(IsChild, AtNight)) ||
+  if ((parentRegion->childDay   && CheckConditionAtAgeTime(Logic::IsChild, AtDay))   ||
+      (parentRegion->childNight && CheckConditionAtAgeTime(Logic::IsChild, AtNight)) ||
       (parentRegion->adultDay   && CheckConditionAtAgeTime(IsAdult, AtDay))   ||
       (parentRegion->adultNight && CheckConditionAtAgeTime(IsAdult, AtNight))) {
         conditionsMet = true;
@@ -128,8 +128,8 @@ bool Area::UpdateEvents(SearchMode mode) {
       continue;
     }
 
-    if ((childDay   && event.CheckConditionAtAgeTime(IsChild, AtDay))    ||
-        (childNight && event.CheckConditionAtAgeTime(IsChild, AtNight))  ||
+    if ((childDay   && event.CheckConditionAtAgeTime(Logic::IsChild, AtDay))    ||
+        (childNight && event.CheckConditionAtAgeTime(Logic::IsChild, AtNight))  ||
         (adultDay   && event.CheckConditionAtAgeTime(IsAdult, AtDay))    ||
         (adultNight && event.CheckConditionAtAgeTime(IsAdult, AtNight))) {
           event.EventOccurred();
@@ -269,7 +269,7 @@ void AreaTable_Init() {
 
   areaTable[RR_ROOT_EXITS] = Area("Root Exits", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_CHILD_SPAWN,             {[]{return IsChild;}}),
+                  Entrance(RR_CHILD_SPAWN,             {[]{return Logic::IsChild;}}),
                   Entrance(RR_ADULT_SPAWN,             {[]{return IsAdult;}}),
                   Entrance(RR_MINUET_OF_FOREST_WARP,   {[]{return CanPlay(MinuetOfForest);}}),
                   Entrance(RR_BOLERO_OF_FIRE_WARP,     {[]{return CanPlay(BoleroOfFire)     && CanLeaveForest;}}),

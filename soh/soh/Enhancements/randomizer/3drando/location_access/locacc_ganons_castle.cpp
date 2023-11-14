@@ -83,7 +83,7 @@ void AreaTable_Init_GanonsCastle() {
                   EventAccess(&ShadowTrialClear, {[]{return CanUse(RG_LIGHT_ARROWS) && Hammer && ((FireArrows && (LogicLensCastle || CanUse(RG_LENS_OF_TRUTH))) || (CanUse(RG_LONGSHOT) && (CanUse(RG_HOVER_BOOTS) || (DinsFire && (LogicLensCastle || CanUse(RG_LENS_OF_TRUTH))))));}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_GANONS_CASTLE_SHADOW_TRIAL_FRONT_CHEST,            {[]{return CanUse(RG_FIRE_ARROWS) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || CanPlay(SongOfTime) || IsChild;}}),
+                  LocationAccess(RC_GANONS_CASTLE_SHADOW_TRIAL_FRONT_CHEST,            {[]{return CanUse(RG_FIRE_ARROWS) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || CanPlay(SongOfTime) || Logic::IsChild;}}),
                   LocationAccess(RC_GANONS_CASTLE_SHADOW_TRIAL_GOLDEN_GAUNTLETS_CHEST, {[]{return CanUse(RG_FIRE_ARROWS) || (CanUse(RG_LONGSHOT) && (CanUse(RG_HOVER_BOOTS) || CanUse(RG_DINS_FIRE)));}}),
   }, {});
 
@@ -162,7 +162,7 @@ void AreaTable_Init_GanonsCastle() {
                   EventAccess(&ForestTrialClear, {[]{return IsAdult && CanUse(RG_LIGHT_ARROWS) && CanPlay(SongOfTime);}}),
   }, {
                   //Locations
-                  LocationAccess(RC_GANONS_CASTLE_MQ_FOREST_TRIAL_EYE_SWITCH_CHEST,        {[]{return (IsAdult && CanUse(RG_FAIRY_BOW)) || (IsChild && CanUse(RG_FAIRY_SLINGSHOT));}}),
+                  LocationAccess(RC_GANONS_CASTLE_MQ_FOREST_TRIAL_EYE_SWITCH_CHEST,        {[]{return (IsAdult && CanUse(RG_FAIRY_BOW)) || (Logic::IsChild && CanUse(RG_FAIRY_SLINGSHOT));}}),
                   LocationAccess(RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FROZEN_EYE_SWITCH_CHEST, {[]{return HasFireSource;}}),
                   LocationAccess(RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FREESTANDING_KEY,        {[]{return HookshotOrBoomerang;}}),
   }, {});
