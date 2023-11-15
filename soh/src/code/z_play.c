@@ -36,6 +36,7 @@ PlayState* gPlayState;
 
 s16 gEnPartnerId;
 s16 gEnChristmasTreeId;
+s16 gEnChristmasDecoId;
 
 void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn);
 
@@ -762,8 +763,10 @@ void Play_Init(GameState* thisx) {
     }
 
     if (play->sceneNum == SCENE_KAKARIKO_VILLAGE && Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT)) {
-        Actor_Spawn(&play->actorCtx, play, gEnChristmasTreeId, -734, 0, 420, 0, 0, 0, 1, true);
+        Actor_Spawn(&play->actorCtx, play, gEnChristmasTreeId, -734, 0, 420, 0, 0, 0, 0, true);
     }
+
+    Actor_Spawn(&play->actorCtx, play, gEnChristmasDecoId, 0, 0, 0, 0, 0, 0, 0, true);
 }
 
 void Play_Update(PlayState* play) {
