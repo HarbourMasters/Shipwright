@@ -452,6 +452,63 @@ bool HasItemBeenCollected(RandomizerCheck rc) {
     return false;
 }
 
+void CheckTrackerLoadGame(int32_t fileNum) {
+    LoadSettings();
+    TrySetAreas();
+    for (auto [rc, rcObj] : RandomizerCheckObjects::GetAllRCObjects()) {
+        RandomizerCheckTrackerData rcTrackerData = gSaveContext.checkTrackerData[rc];
+        if (rc == RC_UNKNOWN_CHECK || rc == RC_MAX || rc == RC_LINKS_POCKET ||
+            !RandomizerCheckObjects::GetAllRCObjects().contains(rc))
+            continue;
+
+        RandomizerCheckObject realRcObj;
+        if (rc == RC_GIFT_FROM_SAGES && !IS_RANDO) {
+            realRcObj = RCO_RAORU;
+        } else {
+            realRcObj = rcObj;
+        }
+        if (!IsVisibleInCheckTracker(realRcObj)) continue;
+
+        checksByArea.find(realRcObj.rcArea)->second.push_back(realRcObj);
+        if (rcTrackerData.status == RCSHOW_SAVED || rcTrackerData.skipped) {
+            areaChecksGotten[realRcObj.rcArea]++;
+        }
+
+        if (areaChecksGotten[realRcObj.rcArea] != 0 || RandomizerCheckObjects::AreaIsOverworld(realRcObj.rcArea)) {
+            areasSpoiled |= (1 << realRcObj.rcArea);
+        }
+    }
+    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING && IS_RANDO) {
+        s8 startingAge = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_AGE);
+        RandomizerCheckArea startingArea;
+        switch (startingAge) {
+            case RO_AGE_CHILD:
+                startingArea = RCAREA_KOKIRI_FOREST;
+                break;
+            case RO_AGE_ADULT:
+                startingArea = RCAREA_MARKET;
+                break;
+            default:
+                startingArea = RCAREA_KOKIRI_FOREST;
+                break;
+        }
+        RandomizerCheckObject linksPocket = { RC_LINKS_POCKET, RCVORMQ_BOTH, RCTYPE_LINKS_POCKET, startingArea, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, "Link's Pocket", "Link's Pocket" };
+        
+        checksByArea.find(startingArea)->second.push_back(linksPocket);
+        areaChecksGotten[startingArea]++;
+    }
+
+    showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_RANDOM_NUMBER ||
+                (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_SET_NUMBER &&
+                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) < 12));
+    LinksPocket();
+    SongFromImpa();
+    GiftFromSages();
+    initialized = true;
+    UpdateAllOrdering();
+    UpdateInventoryChecks();
+}
+
 void CheckTrackerDialogClosed() {
     if (messageCloseCheck) {
         messageCloseCheck = false;
@@ -679,9 +736,6 @@ void SaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
 }
 
 void LoadFile() {
-    Teardown();
-    LoadSettings();
-    TrySetAreas();
     SaveManager::Instance->LoadArray("checks", RC_MAX, [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&]() {
             SaveManager::Instance->LoadData("status", gSaveContext.checkTrackerData[i].status);
@@ -689,58 +743,7 @@ void LoadFile() {
             SaveManager::Instance->LoadData("price", gSaveContext.checkTrackerData[i].price);
             SaveManager::Instance->LoadData("hintItem", gSaveContext.checkTrackerData[i].hintItem);
         });
-        RandomizerCheckTrackerData entry = gSaveContext.checkTrackerData[i];
-        RandomizerCheck rc = static_cast<RandomizerCheck>(i);
-        if (rc == RC_UNKNOWN_CHECK || rc == RC_MAX ||
-            !RandomizerCheckObjects::GetAllRCObjects().contains(rc))
-            return;
-
-        RandomizerCheckObject entry2;
-        if (rc == RC_GIFT_FROM_SAGES && !IS_RANDO) {
-            entry2 = RCO_RAORU;
-        } else {
-            entry2 = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
-        }
-        if (!IsVisibleInCheckTracker(entry2)) return;
-
-        checksByArea.find(entry2.rcArea)->second.push_back(entry2);
-        if (entry.status == RCSHOW_SAVED || entry.skipped) {
-            areaChecksGotten[entry2.rcArea]++;
-        }
-
-        if (areaChecksGotten[entry2.rcArea] != 0 || RandomizerCheckObjects::AreaIsOverworld(entry2.rcArea)) {
-            areasSpoiled |= (1 << entry2.rcArea);
-        }
     });
-    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING && IS_RANDO) {
-        s8 startingAge = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_AGE);
-        RandomizerCheckArea startingArea;
-        switch (startingAge) {
-            case RO_AGE_CHILD:
-                startingArea = RCAREA_KOKIRI_FOREST;
-                break;
-            case RO_AGE_ADULT:
-                startingArea = RCAREA_MARKET;
-                break;
-            default:
-                startingArea = RCAREA_KOKIRI_FOREST;
-                break;
-        }
-        RandomizerCheckObject linksPocket = { RC_LINKS_POCKET, RCVORMQ_BOTH, RCTYPE_LINKS_POCKET, startingArea, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, "Link's Pocket", "Link's Pocket" };
-        
-        checksByArea.find(startingArea)->second.push_back(linksPocket);
-        areaChecksGotten[startingArea]++;
-    }
-
-    showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_RANDOM_NUMBER ||
-                (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_SET_NUMBER &&
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) < 12));
-    LinksPocket();
-    SongFromImpa();
-    GiftFromSages();
-    initialized = true;
-    UpdateAllOrdering();
-    UpdateInventoryChecks();
 }
 
 void Teardown() {
@@ -1533,6 +1536,7 @@ void CheckTrackerWindow::InitElement() {
     SaveManager::Instance->AddInitFunction(InitTrackerData);
     sectionId = SaveManager::Instance->AddSaveFunction("trackerData", 1, SaveFile, true, -1);
     SaveManager::Instance->AddLoadFunction("trackerData", 1, LoadFile);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>(CheckTrackerLoadGame);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([](uint32_t fileNum) {
         Teardown();
     });
