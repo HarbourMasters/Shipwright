@@ -10131,6 +10131,55 @@ void func_80847BA0(PlayState* play, Player* this) {
 
         D_808535F0 = func_80041DB8(&play->colCtx, this->actor.wallPoly, this->actor.wallBgId);
 
+        if (CVarGetInteger("gFixVineFall", 0)) {
+            /* This fixes the "started climbing a wall and then immediately fell off" bug.
+            * The main idea is if a climbing wall is detected, double-check that it will
+            * still be valid once climbing begins by doing a second raycast with a small
+            * margin to make sure it still hits a climbable poly. Then update the flags
+            * in D_808535F0 again and proceed as normal.
+            */
+            if (D_808535F0 & 8) {
+                Vec3f checkPosA;
+                Vec3f checkPosB;
+                f32 yawCos;
+                f32 yawSin;
+                s32 hitWall;
+
+                /* Angle the raycast slightly out towards the side based on the angle of
+                * attack the player takes coming at the climb wall. This is necessary because
+                * the player's XZ position actually wobbles very slightly while climbing
+                * due to small rounding errors in the sin/cos lookup tables. This wobble
+                * can cause wall checks while climbing to be slightly left or right of
+                * the wall check to start the climb. By adding this buffer it accounts for
+                * any possible wobble. The end result is the player has to be further than
+                * some epsilon distance from the edge of the climbing poly to actually
+                * start the climb. I divide it by 2 to make that epsilon slightly smaller,
+                * mainly for visuals. Using the full sp9A leaves a noticeable gap on
+                * the edges that can't be climbed. But with the half distance it looks like
+                * the player is climbing right on the edge, and still works.
+                */
+                yawCos = Math_CosS(this->actor.wallYaw - (sp9A / 2) + 0x8000);
+                yawSin = Math_SinS(this->actor.wallYaw - (sp9A / 2) + 0x8000);
+                checkPosA.x = this->actor.world.pos.x + (-20.0f * yawSin);
+                checkPosA.z = this->actor.world.pos.z + (-20.0f * yawCos);
+                checkPosB.x = this->actor.world.pos.x + (50.0f * yawSin);
+                checkPosB.z = this->actor.world.pos.z + (50.0f * yawCos);
+                checkPosB.y = checkPosA.y = this->actor.world.pos.y + 26.0f;
+
+                hitWall = BgCheck_EntityLineTest1(&play->colCtx, &checkPosA, &checkPosB,
+                    &D_80858AA8, &spA0, true, false, false, true, &sp9C);
+
+                if (hitWall) {
+                    this->actor.wallPoly = spA0;
+                    this->actor.wallBgId = sp9C;
+                    this->actor.wallYaw = Math_Atan2S(spA0->normal.z, spA0->normal.x);
+                    sp9A = this->actor.shape.rot.y - (s16)(this->actor.wallYaw + 0x8000);
+
+                    D_808535F0 = func_80041DB8(&play->colCtx, this->actor.wallPoly, this->actor.wallBgId);
+                }
+            }
+        }
+
         D_80853608 = ABS(sp9A);
 
         sp9A = this->currentYaw - (s16)(this->actor.wallYaw + 0x8000);
@@ -15150,6 +15199,10 @@ void func_80852C50(PlayState* play, Player* this, CsCmdActorAction* arg2) {
 
     sp24 = D_808547C4[this->unk_446];
     func_80852B4C(play, this, linkCsAction, &D_80854E50[ABS(sp24)]);
+
+    if (CVarGetInteger("gFixEyesOpenWhileSleeping", 0) && (play->csCtx.linkAction->action == 28 || play->csCtx.linkAction->action == 29)) {
+        this->skelAnime.jointTable[22].x = 8;
+    }
 }
 
 void func_80852E14(Player* this, PlayState* play) {

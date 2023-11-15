@@ -3,6 +3,39 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_horse_ganonTex_00A570 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00A570"
+static const ALIGN_ASSET(2) char object_horse_ganonTex_00A570[] = dobject_horse_ganonTex_00A570;
+
+#define dobject_horse_ganonTex_00A5F0 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00A5F0"
+static const ALIGN_ASSET(2) char object_horse_ganonTex_00A5F0[] = dobject_horse_ganonTex_00A5F0;
+
+#define dobject_horse_ganonTex_00A7F0 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00A7F0"
+static const ALIGN_ASSET(2) char object_horse_ganonTex_00A7F0[] = dobject_horse_ganonTex_00A7F0;
+
+#define dobject_horse_ganonTex_00A810 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00A810"
+static const ALIGN_ASSET(2) char object_horse_ganonTex_00A810[] = dobject_horse_ganonTex_00A810;
+
+#define dobject_horse_ganonTex_00AA10 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00AA10"
+static const ALIGN_ASSET(2) char object_horse_ganonTex_00AA10[] = dobject_horse_ganonTex_00AA10;
+
+#define dobject_horse_ganonTex_00B010 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00B010"
+static const ALIGN_ASSET(2) char object_horse_ganonTex_00B010[] = dobject_horse_ganonTex_00B010;
+
+#define dobject_horse_ganonTex_00B110 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00B110"
+static const ALIGN_ASSET(2) char object_horse_ganonTex_00B110[] = dobject_horse_ganonTex_00B110;
+
+#define dobject_horse_ganonTex_00B510 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00B510"
+static const ALIGN_ASSET(2) char object_horse_ganonTex_00B510[] = dobject_horse_ganonTex_00B510;
+
+#define dobject_horse_ganonTex_00B610 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00B610"
+static const ALIGN_ASSET(2) char object_horse_ganonTex_00B610[] = dobject_horse_ganonTex_00B610;
+
+#define dobject_horse_ganonTex_00B690 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00B690"
+static const ALIGN_ASSET(2) char object_horse_ganonTex_00B690[] = dobject_horse_ganonTex_00B690;
+
+#define dobject_horse_ganonTex_00BE90 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00BE90"
+static const ALIGN_ASSET(2) char object_horse_ganonTex_00BE90[] = dobject_horse_ganonTex_00BE90;
+
 #define dgHorseGanonSkel "__OTR__objects/object_horse_ganon/gHorseGanonSkel"
 static const ALIGN_ASSET(2) char gHorseGanonSkel[] = dgHorseGanonSkel;
 
@@ -32,21 +65,6 @@ static const ALIGN_ASSET(2) char gHorseGanonHeadHairTex[] = dgHorseGanonHeadHair
 
 #define dgHorseGanonLegTex "__OTR__objects/object_horse_ganon/gHorseGanonLegTex"
 static const ALIGN_ASSET(2) char gHorseGanonLegTex[] = dgHorseGanonLegTex;
-
-#define dobject_horse_ganonTex_00BE90 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00BE90"
-static const ALIGN_ASSET(2) char object_horse_ganonTex_00BE90[] = dobject_horse_ganonTex_00BE90;
-
-#define dobject_horse_ganonTex_00A7F0 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00A7F0"
-static const ALIGN_ASSET(2) char object_horse_ganonTex_00A7F0[] = dobject_horse_ganonTex_00A7F0;
-
-#define dobject_horse_ganonTex_00B010 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00B010"
-static const ALIGN_ASSET(2) char object_horse_ganonTex_00B010[] = dobject_horse_ganonTex_00B010;
-
-#define dobject_horse_ganonTex_00A5F0 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00A5F0"
-static const ALIGN_ASSET(2) char object_horse_ganonTex_00A5F0[] = dobject_horse_ganonTex_00A5F0;
-
-#define dobject_horse_ganonTex_00AA10 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00AA10"
-static const ALIGN_ASSET(2) char object_horse_ganonTex_00AA10[] = dobject_horse_ganonTex_00AA10;
 
 #define dgHorseGanonSkelLimbsLimb_008294SkinLimbDL_009D20 "__OTR__objects/object_horse_ganon/gHorseGanonSkelLimbsLimb_008294SkinLimbDL_009D20"
 static const ALIGN_ASSET(2) char gHorseGanonSkelLimbsLimb_008294SkinLimbDL_009D20[] = dgHorseGanonSkelLimbsLimb_008294SkinLimbDL_009D20;
@@ -100,23 +118,5 @@ static const ALIGN_ASSET(2) char gHorseGanonSkelLimbsLimb_008574DL_001A90[] = dg
 static const ALIGN_ASSET(2) char gHorseGanonSkelLimbsLimb_008584DL_001CE0[] = dgHorseGanonSkelLimbsLimb_008584DL_001CE0;
 
 #define dgHorseGanonSkelLimbsLimb_008294SkinLimbDL_009D20 "__OTR__objects/object_horse_ganon/gHorseGanonSkelLimbsLimb_008294SkinLimbDL_009D20"
-
-#define dobject_horse_ganonTex_00B510 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00B510"
-static const ALIGN_ASSET(2) char object_horse_ganonTex_00B510[] = dobject_horse_ganonTex_00B510;
-
-#define dobject_horse_ganonTex_00B110 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00B110"
-static const ALIGN_ASSET(2) char object_horse_ganonTex_00B110[] = dobject_horse_ganonTex_00B110;
-
-#define dobject_horse_ganonTex_00A570 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00A570"
-static const ALIGN_ASSET(2) char object_horse_ganonTex_00A570[] = dobject_horse_ganonTex_00A570;
-
-#define dobject_horse_ganonTex_00A810 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00A810"
-static const ALIGN_ASSET(2) char object_horse_ganonTex_00A810[] = dobject_horse_ganonTex_00A810;
-
-#define dobject_horse_ganonTex_00B690 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00B690"
-static const ALIGN_ASSET(2) char object_horse_ganonTex_00B690[] = dobject_horse_ganonTex_00B690;
-
-#define dobject_horse_ganonTex_00B610 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00B610"
-static const ALIGN_ASSET(2) char object_horse_ganonTex_00B610[] = dobject_horse_ganonTex_00B610;
 
 #endif // OBJECTS_OBJECT_HORSE_GANON_H

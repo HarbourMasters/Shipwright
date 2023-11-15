@@ -3,6 +3,57 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_oF1d_mapTex_009270 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_009270"
+static const ALIGN_ASSET(2) char object_oF1d_mapTex_009270[] = dobject_oF1d_mapTex_009270;
+
+#define dobject_oF1d_mapTex_0092B0 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_0092B0"
+static const ALIGN_ASSET(2) char object_oF1d_mapTex_0092B0[] = dobject_oF1d_mapTex_0092B0;
+
+#define dobject_oF1d_mapTex_0092F0 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_0092F0"
+static const ALIGN_ASSET(2) char object_oF1d_mapTex_0092F0[] = dobject_oF1d_mapTex_0092F0;
+
+#define dobject_oF1d_mapTex_009370 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_009370"
+static const ALIGN_ASSET(2) char object_oF1d_mapTex_009370[] = dobject_oF1d_mapTex_009370;
+
+#define dobject_oF1d_mapTex_009B70 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_009B70"
+static const ALIGN_ASSET(2) char object_oF1d_mapTex_009B70[] = dobject_oF1d_mapTex_009B70;
+
+#define dobject_oF1d_mapTex_009C70 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_009C70"
+static const ALIGN_ASSET(2) char object_oF1d_mapTex_009C70[] = dobject_oF1d_mapTex_009C70;
+
+#define dobject_oF1d_mapTex_00C840 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00C840"
+static const ALIGN_ASSET(2) char object_oF1d_mapTex_00C840[] = dobject_oF1d_mapTex_00C840;
+
+#define dobject_oF1d_mapTex_00C880 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00C880"
+static const ALIGN_ASSET(2) char object_oF1d_mapTex_00C880[] = dobject_oF1d_mapTex_00C880;
+
+#define dobject_oF1d_mapTex_00CA80 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00CA80"
+static const ALIGN_ASSET(2) char object_oF1d_mapTex_00CA80[] = dobject_oF1d_mapTex_00CA80;
+
+#define dobject_oF1d_mapTex_00EE80 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00EE80"
+static const ALIGN_ASSET(2) char object_oF1d_mapTex_00EE80[] = dobject_oF1d_mapTex_00EE80;
+
+#define dobject_oF1d_mapTex_00F680 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00F680"
+static const ALIGN_ASSET(2) char object_oF1d_mapTex_00F680[] = dobject_oF1d_mapTex_00F680;
+
+#define dobject_oF1d_mapTex_00F6C0 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00F6C0"
+static const ALIGN_ASSET(2) char object_oF1d_mapTex_00F6C0[] = dobject_oF1d_mapTex_00F6C0;
+
+#define dobject_oF1d_mapTex_00F7C0 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00F7C0"
+static const ALIGN_ASSET(2) char object_oF1d_mapTex_00F7C0[] = dobject_oF1d_mapTex_00F7C0;
+
+#define dobject_oF1d_mapTex_00F8C0 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00F8C0"
+static const ALIGN_ASSET(2) char object_oF1d_mapTex_00F8C0[] = dobject_oF1d_mapTex_00F8C0;
+
+#define dobject_oF1d_mapTex_00FCC0 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00FCC0"
+static const ALIGN_ASSET(2) char object_oF1d_mapTex_00FCC0[] = dobject_oF1d_mapTex_00FCC0;
+
+#define dobject_oF1d_mapTLUT_009130 "__OTR__objects/object_oF1d_map/object_oF1d_mapTLUT_009130"
+static const ALIGN_ASSET(2) char object_oF1d_mapTLUT_009130[] = dobject_oF1d_mapTLUT_009130;
+
+#define dobject_oF1d_mapTLUT_00C440 "__OTR__objects/object_oF1d_map/object_oF1d_mapTLUT_00C440"
+static const ALIGN_ASSET(2) char object_oF1d_mapTLUT_00C440[] = dobject_oF1d_mapTLUT_00C440;
+
 #define dgGoronAnim_000750 "__OTR__objects/object_oF1d_map/gGoronAnim_000750"
 static const ALIGN_ASSET(2) char gGoronAnim_000750[] = dgGoronAnim_000750;
 
@@ -72,27 +123,6 @@ static const ALIGN_ASSET(2) char gGoronCsMouthNeutralTex[] = dgGoronCsMouthNeutr
 #define dgGoronCsMouthSmileTex "__OTR__objects/object_oF1d_map/gGoronCsMouthSmileTex"
 static const ALIGN_ASSET(2) char gGoronCsMouthSmileTex[] = dgGoronCsMouthSmileTex;
 
-#define dobject_oF1d_mapTex_009C70 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_009C70"
-static const ALIGN_ASSET(2) char object_oF1d_mapTex_009C70[] = dobject_oF1d_mapTex_009C70;
-
-#define dobject_oF1d_mapTex_009270 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_009270"
-static const ALIGN_ASSET(2) char object_oF1d_mapTex_009270[] = dobject_oF1d_mapTex_009270;
-
-#define dobject_oF1d_mapTLUT_009130 "__OTR__objects/object_oF1d_map/object_oF1d_mapTLUT_009130"
-static const ALIGN_ASSET(2) char object_oF1d_mapTLUT_009130[] = dobject_oF1d_mapTLUT_009130;
-
-#define dobject_oF1d_mapTex_0092B0 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_0092B0"
-static const ALIGN_ASSET(2) char object_oF1d_mapTex_0092B0[] = dobject_oF1d_mapTex_0092B0;
-
-#define dobject_oF1d_mapTex_0092F0 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_0092F0"
-static const ALIGN_ASSET(2) char object_oF1d_mapTex_0092F0[] = dobject_oF1d_mapTex_0092F0;
-
-#define dobject_oF1d_mapTex_009370 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_009370"
-static const ALIGN_ASSET(2) char object_oF1d_mapTex_009370[] = dobject_oF1d_mapTex_009370;
-
-#define dobject_oF1d_mapTex_009B70 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_009B70"
-static const ALIGN_ASSET(2) char object_oF1d_mapTex_009B70[] = dobject_oF1d_mapTex_009B70;
-
 #define dgGoronSkelLimbsLimb_00FDECDL_008708 "__OTR__objects/object_oF1d_map/gGoronSkelLimbsLimb_00FDECDL_008708"
 static const ALIGN_ASSET(2) char gGoronSkelLimbsLimb_00FDECDL_008708[] = dgGoronSkelLimbsLimb_00FDECDL_008708;
 
@@ -138,34 +168,5 @@ static const ALIGN_ASSET(2) char gGoronSkelLimbsLimb_00FE94DL_007FF0[] = dgGoron
 #define dgGoronSkelLimbsLimb_00FEA0DL_007458 "__OTR__objects/object_oF1d_map/gGoronSkelLimbsLimb_00FEA0DL_007458"
 static const ALIGN_ASSET(2) char gGoronSkelLimbsLimb_00FEA0DL_007458[] = dgGoronSkelLimbsLimb_00FEA0DL_007458;
 
-#define dobject_oF1d_mapTLUT_00C440 "__OTR__objects/object_oF1d_map/object_oF1d_mapTLUT_00C440"
-static const ALIGN_ASSET(2) char object_oF1d_mapTLUT_00C440[] = dobject_oF1d_mapTLUT_00C440;
-
-#define dobject_oF1d_mapTex_00C840 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00C840"
-static const ALIGN_ASSET(2) char object_oF1d_mapTex_00C840[] = dobject_oF1d_mapTex_00C840;
-
-#define dobject_oF1d_mapTex_00C880 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00C880"
-static const ALIGN_ASSET(2) char object_oF1d_mapTex_00C880[] = dobject_oF1d_mapTex_00C880;
-
-#define dobject_oF1d_mapTex_00CA80 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00CA80"
-static const ALIGN_ASSET(2) char object_oF1d_mapTex_00CA80[] = dobject_oF1d_mapTex_00CA80;
-
-#define dobject_oF1d_mapTex_00F680 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00F680"
-static const ALIGN_ASSET(2) char object_oF1d_mapTex_00F680[] = dobject_oF1d_mapTex_00F680;
-
-#define dobject_oF1d_mapTex_00EE80 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00EE80"
-static const ALIGN_ASSET(2) char object_oF1d_mapTex_00EE80[] = dobject_oF1d_mapTex_00EE80;
-
-#define dobject_oF1d_mapTex_00FCC0 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00FCC0"
-static const ALIGN_ASSET(2) char object_oF1d_mapTex_00FCC0[] = dobject_oF1d_mapTex_00FCC0;
-
-#define dobject_oF1d_mapTex_00F8C0 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00F8C0"
-static const ALIGN_ASSET(2) char object_oF1d_mapTex_00F8C0[] = dobject_oF1d_mapTex_00F8C0;
-
-#define dobject_oF1d_mapTex_00F7C0 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00F7C0"
-static const ALIGN_ASSET(2) char object_oF1d_mapTex_00F7C0[] = dobject_oF1d_mapTex_00F7C0;
-
-#define dobject_oF1d_mapTex_00F6C0 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00F6C0"
-static const ALIGN_ASSET(2) char object_oF1d_mapTex_00F6C0[] = dobject_oF1d_mapTex_00F6C0;
 
 #endif // OBJECTS_OBJECT_OF1D_MAP_H
