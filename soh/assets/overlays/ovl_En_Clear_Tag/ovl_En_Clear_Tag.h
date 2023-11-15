@@ -3,6 +3,48 @@
 
 #include "align_asset_macro.h"
 
+#define dovl_En_Clear_TagTex_003308 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_003308"
+static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_003308[] = dovl_En_Clear_TagTex_003308;
+
+#define dovl_En_Clear_TagTex_003388 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_003388"
+static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_003388[] = dovl_En_Clear_TagTex_003388;
+
+#define dovl_En_Clear_TagTex_003B88 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_003B88"
+static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_003B88[] = dovl_En_Clear_TagTex_003B88;
+
+#define dovl_En_Clear_TagTex_004B88 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_004B88"
+static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_004B88[] = dovl_En_Clear_TagTex_004B88;
+
+#define dovl_En_Clear_TagTex_005388 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_005388"
+static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_005388[] = dovl_En_Clear_TagTex_005388;
+
+#define dovl_En_Clear_TagTex_005B88 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_005B88"
+static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_005B88[] = dovl_En_Clear_TagTex_005B88;
+
+#define dovl_En_Clear_TagTex_006458 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_006458"
+static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_006458[] = dovl_En_Clear_TagTex_006458;
+
+#define dovl_En_Clear_TagTex_006708 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_006708"
+static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_006708[] = dovl_En_Clear_TagTex_006708;
+
+#define dovl_En_Clear_TagTex_006808 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_006808"
+static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_006808[] = dovl_En_Clear_TagTex_006808;
+
+#define dovl_En_Clear_TagTex_006AD0 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_006AD0"
+static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_006AD0[] = dovl_En_Clear_TagTex_006AD0;
+
+#define dovl_En_Clear_TagTex_006ED0 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_006ED0"
+static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_006ED0[] = dovl_En_Clear_TagTex_006ED0;
+
+#define dovl_En_Clear_TagTex_0071C8 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_0071C8"
+static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_0071C8[] = dovl_En_Clear_TagTex_0071C8;
+
+#define dovl_En_Clear_TagTex_008288 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_008288"
+static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_008288[] = dovl_En_Clear_TagTex_008288;
+
+#define dovl_En_Clear_TagTex_008540 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_008540"
+static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_008540[] = dovl_En_Clear_TagTex_008540;
+
 #define dgArwingDL "__OTR__overlays/ovl_En_Clear_Tag/gArwingDL"
 static const ALIGN_ASSET(2) char gArwingDL[] = dgArwingDL;
 
@@ -32,47 +74,5 @@ static const ALIGN_ASSET(2) char gArwingFlashEffectGroundDL[] = dgArwingFlashEff
 
 #define dgArwingShadowDL "__OTR__overlays/ovl_En_Clear_Tag/gArwingShadowDL"
 static const ALIGN_ASSET(2) char gArwingShadowDL[] = dgArwingShadowDL;
-
-#define dovl_En_Clear_TagTex_003B88 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_003B88"
-static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_003B88[] = dovl_En_Clear_TagTex_003B88;
-
-#define dovl_En_Clear_TagTex_004B88 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_004B88"
-static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_004B88[] = dovl_En_Clear_TagTex_004B88;
-
-#define dovl_En_Clear_TagTex_003388 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_003388"
-static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_003388[] = dovl_En_Clear_TagTex_003388;
-
-#define dovl_En_Clear_TagTex_005388 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_005388"
-static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_005388[] = dovl_En_Clear_TagTex_005388;
-
-#define dovl_En_Clear_TagTex_005B88 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_005B88"
-static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_005B88[] = dovl_En_Clear_TagTex_005B88;
-
-#define dovl_En_Clear_TagTex_003308 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_003308"
-static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_003308[] = dovl_En_Clear_TagTex_003308;
-
-#define dovl_En_Clear_TagTex_006458 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_006458"
-static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_006458[] = dovl_En_Clear_TagTex_006458;
-
-#define dovl_En_Clear_TagTex_006708 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_006708"
-static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_006708[] = dovl_En_Clear_TagTex_006708;
-
-#define dovl_En_Clear_TagTex_006808 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_006808"
-static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_006808[] = dovl_En_Clear_TagTex_006808;
-
-#define dovl_En_Clear_TagTex_006AD0 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_006AD0"
-static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_006AD0[] = dovl_En_Clear_TagTex_006AD0;
-
-#define dovl_En_Clear_TagTex_006ED0 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_006ED0"
-static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_006ED0[] = dovl_En_Clear_TagTex_006ED0;
-
-#define dovl_En_Clear_TagTex_0071C8 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_0071C8"
-static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_0071C8[] = dovl_En_Clear_TagTex_0071C8;
-
-#define dovl_En_Clear_TagTex_008288 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_008288"
-static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_008288[] = dovl_En_Clear_TagTex_008288;
-
-#define dovl_En_Clear_TagTex_008540 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_008540"
-static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_008540[] = dovl_En_Clear_TagTex_008540;
 
 #endif // OVERLAYS_OVL_EN_CLEAR_TAG_H

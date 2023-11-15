@@ -3,6 +3,27 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_jya_objTex_00B4B8 "__OTR__objects/object_jya_obj/object_jya_objTex_00B4B8"
+static const ALIGN_ASSET(2) char object_jya_objTex_00B4B8[] = dobject_jya_objTex_00B4B8;
+
+#define dobject_jya_objTex_011A80 "__OTR__objects/object_jya_obj/object_jya_objTex_011A80"
+static const ALIGN_ASSET(2) char object_jya_objTex_011A80[] = dobject_jya_objTex_011A80;
+
+#define dobject_jya_objTex_016140 "__OTR__objects/object_jya_obj/object_jya_objTex_016140"
+static const ALIGN_ASSET(2) char object_jya_objTex_016140[] = dobject_jya_objTex_016140;
+
+#define dobject_jya_objTex_017140 "__OTR__objects/object_jya_obj/object_jya_objTex_017140"
+static const ALIGN_ASSET(2) char object_jya_objTex_017140[] = dobject_jya_objTex_017140;
+
+#define dobject_jya_objTex_01B340 "__OTR__objects/object_jya_obj/object_jya_objTex_01B340"
+static const ALIGN_ASSET(2) char object_jya_objTex_01B340[] = dobject_jya_objTex_01B340;
+
+#define dobject_jya_objTex_01B740 "__OTR__objects/object_jya_obj/object_jya_objTex_01B740"
+static const ALIGN_ASSET(2) char object_jya_objTex_01B740[] = dobject_jya_objTex_01B740;
+
+#define dobject_jya_objTLUT_011A60 "__OTR__objects/object_jya_obj/object_jya_objTLUT_011A60"
+static const ALIGN_ASSET(2) char object_jya_objTLUT_011A60[] = dobject_jya_objTLUT_011A60;
+
 #define dg1fliftDL "__OTR__objects/object_jya_obj/g1fliftDL"
 static const ALIGN_ASSET(2) char g1fliftDL[] = dg1fliftDL;
 
@@ -230,26 +251,5 @@ static const ALIGN_ASSET(2) char gZurerukabeDL[] = dgZurerukabeDL;
 
 #define dgZurerukabeCol "__OTR__objects/object_jya_obj/gZurerukabeCol"
 static const ALIGN_ASSET(2) char gZurerukabeCol[] = dgZurerukabeCol;
-
-#define dobject_jya_objTex_017140 "__OTR__objects/object_jya_obj/object_jya_objTex_017140"
-static const ALIGN_ASSET(2) char object_jya_objTex_017140[] = dobject_jya_objTex_017140;
-
-#define dobject_jya_objTex_01B340 "__OTR__objects/object_jya_obj/object_jya_objTex_01B340"
-static const ALIGN_ASSET(2) char object_jya_objTex_01B340[] = dobject_jya_objTex_01B340;
-
-#define dobject_jya_objTex_01B740 "__OTR__objects/object_jya_obj/object_jya_objTex_01B740"
-static const ALIGN_ASSET(2) char object_jya_objTex_01B740[] = dobject_jya_objTex_01B740;
-
-#define dobject_jya_objTex_00B4B8 "__OTR__objects/object_jya_obj/object_jya_objTex_00B4B8"
-static const ALIGN_ASSET(2) char object_jya_objTex_00B4B8[] = dobject_jya_objTex_00B4B8;
-
-#define dobject_jya_objTex_016140 "__OTR__objects/object_jya_obj/object_jya_objTex_016140"
-static const ALIGN_ASSET(2) char object_jya_objTex_016140[] = dobject_jya_objTex_016140;
-
-#define dobject_jya_objTex_011A80 "__OTR__objects/object_jya_obj/object_jya_objTex_011A80"
-static const ALIGN_ASSET(2) char object_jya_objTex_011A80[] = dobject_jya_objTex_011A80;
-
-#define dobject_jya_objTLUT_011A60 "__OTR__objects/object_jya_obj/object_jya_objTLUT_011A60"
-static const ALIGN_ASSET(2) char object_jya_objTLUT_011A60[] = dobject_jya_objTLUT_011A60;
 
 #endif // OBJECTS_OBJECT_JYA_OBJ_H
