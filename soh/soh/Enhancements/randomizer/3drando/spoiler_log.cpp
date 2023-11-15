@@ -553,39 +553,6 @@ static void WriteWayOfTheHeroLocation(tinyxml2::XMLDocument& spoilerLog) {
     }
 }
 
-std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
-    std::string textStr = unformattedHintTextString;
-
-    // insert newlines either manually or when encountering a '&'
-    constexpr size_t lineLength = 34;
-    size_t lastNewline = 0;
-    while (lastNewline + lineLength < textStr.length()) {
-      size_t carrot     = textStr.find('^', lastNewline);
-      size_t ampersand  = textStr.find('&', lastNewline);
-      size_t lastSpace  = textStr.rfind(' ', lastNewline + lineLength);
-      size_t lastPeriod = textStr.rfind('.', lastNewline + lineLength);
-      //replace '&' first if it's within the newline range
-      if (ampersand < lastNewline + lineLength) {
-        lastNewline = ampersand + 1;
-      //or move the lastNewline cursor to the next line if a '^' is encountered
-      } else if (carrot < lastNewline + lineLength) {
-        lastNewline = carrot + 1;
-      //some lines need to be split but don't have spaces, look for periods instead
-      } else if (lastSpace == std::string::npos) {
-        textStr.replace(lastPeriod, 1, ".&");
-        lastNewline = lastPeriod + 2;
-      } else {
-        textStr.replace(lastSpace, 1, "&");
-        lastNewline = lastSpace + 1;
-      }
-    }
-
-    // todo add colors (see `AddColorsAndFormat` in `custom_messages.cpp`)
-    textStr.erase(std::remove(textStr.begin(), textStr.end(), '#'), textStr.end());
-
-    return textStr;
-}
-
 Rando::ItemLocation* GetItemLocation(RandomizerGet item) {
     auto ctx = Rando::Context::GetInstance();
     return ctx->GetItemLocation(FilterFromPool(ctx->allLocations, [item, ctx](const RandomizerCheck loc) {

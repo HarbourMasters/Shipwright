@@ -201,23 +201,7 @@ extern RandomizerHintTextKey GetHintRegionHintKey(const RandomizerRegion area);
 extern void CreateAllHints();
 extern void CreateWarpSongTexts();
 
-
-Text& GetChildAltarText();
-Text& GetAdultAltarText();
-Text& GetGanonText();
 void SetGanonText(Text text);
-Text& GetGanonHintText();
-Text& GetDampeHintText();
-Text& GetGregHintText();
-Text& GetSheikHintText();
-Text& GetSariaHintText();
-
-Text& GetWarpMinuetText();
-Text& GetWarpBoleroText();
-Text& GetWarpSerenadeText();
-Text& GetWarpRequiemText();
-Text& GetWarpNocturneText();
-Text& GetWarpPreludeText();
 
 std::string GetMasterSwordHintLoc();
 std::string GetLightArrowHintLoc();

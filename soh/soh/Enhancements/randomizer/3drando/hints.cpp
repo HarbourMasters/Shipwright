@@ -299,65 +299,8 @@ std::string dampeHintLoc;
 std::string gregHintLoc;
 std::string sariaHintLoc;
 
-
-Text& GetChildAltarText() {
-  return childAltarText;
-}
-
-Text& GetAdultAltarText() {
-  return adultAltarText;
-}
-
 void SetGanonText(Text text){
   ganonText = text;
-}
-
-Text& GetGanonText() {
-  return ganonText;
-}
-
-Text& GetGanonHintText() {
-  return ganonHintText;
-}
-
-Text& GetDampeHintText() {
-  return dampesText;
-}
-
-Text& GetGregHintText() {
-  return gregText;
-}
-
-Text& GetSheikHintText() {
-  return sheikText;
-}
-
-Text& GetSariaHintText() {
-  return sariaText;
-}
-
-Text& GetWarpMinuetText() {
-  return warpMinuetText;
-}
-
-Text& GetWarpBoleroText() {
-  return warpBoleroText;
-}
-
-Text& GetWarpSerenadeText() {
-  return warpSerenadeText;
-}
-
-Text& GetWarpRequiemText() {
-  return warpRequiemText;
-}
-
-Text& GetWarpNocturneText() {
-  return warpNocturneText;
-}
-
-Text& GetWarpPreludeText() {
-  return warpPreludeText;
 }
 
 std::string GetMasterSwordHintLoc() {
