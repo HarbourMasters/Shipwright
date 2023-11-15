@@ -1216,6 +1216,19 @@ void CreateStoneHints() {
   GetAccessibleLocations({});
 }
 
+void CreateFrogsHint() {
+  const auto ctx = Rando::Context::GetInstance();
+  Rando::ItemLocation* itemLoc = ctx->GetItemLocation(RC_ZR_FROGS_OCARINA_GAME);
+  Text itemText = itemLoc->GetPlacedItem().GetHint().GetText();
+  if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
+    itemText = ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].GetTrickName();
+  }
+  Text hintText = ::Hint(RHT_FROGS_HINT01).GetText() + itemText + ::Hint(RHT_FROGS_HINT02).GetText();
+  Text area = GetHintRegion(itemLoc->GetParentRegionKey())->GetHint().GetText();
+  itemLoc->SetAsHinted();
+  ctx->AddHint(RH_FROGS, AutoFormatHintText(hintText, { QM_GREEN }), RC_ZR_FROGS_OCARINA_GAME, HINT_TYPE_STATIC, area);
+}
+
 void CreateAllHints(){
   auto ctx = Rando::Context::GetInstance();
   CreateGanonAndSheikText();
@@ -1226,6 +1239,9 @@ void CreateAllHints(){
 
   if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ON_HINT)) {
     CreateMerchantsHints();
+  }
+  if (ctx->GetOption(RSK_FROGS_HINT)) {
+    CreateFrogsHint();
   }
   if (ctx->GetOption(RSK_GOSSIP_STONE_HINTS).IsNot(RO_GOSSIP_STONES_NONE)) {
     printf("\x1b[10;10HCreating Hints...");

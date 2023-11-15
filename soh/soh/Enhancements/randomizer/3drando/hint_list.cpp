@@ -3111,6 +3111,19 @@ void HintTable_Init() {
         }
     });
 
+    hintTable[RHT_FROGS_HINT01] = HintText::OtherHint({Text{
+        "Some frogs holding #",
+        "Des grenouilles se trouvant sous l'eau vous fixent attentivement, tenant fermement #",
+        "",
+        "Unter Wasser gibt es Frösche, die #"
+    }});
+    hintTable[RHT_FROGS_HINT02] = HintText::OtherHint({Text{
+        "# are looking at you from underwater...",
+        "#.",
+        "",
+        "# bei sich haben und Dich neugierig beobachten..."
+    }});
+
     /*--------------------------
     |      GANON LINE TEXT     |
     ---------------------------*/

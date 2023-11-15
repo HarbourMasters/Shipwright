@@ -1908,6 +1908,7 @@ typedef enum {
     RH_REQUIEM_WARP_LOC,
     RH_NOCTURNE_WARP_LOC,
     RH_PRELUDE_WARP_LOC,
+    RH_FROGS,
     RH_MAX,
 } RandomizerHintKey;
 
@@ -3209,6 +3210,8 @@ typedef enum {
     RHT_SARIA_TEXT02,
     RHT_WARP_TO,
     RHT_WARP_CHOICE,
+    RHT_FROGS_HINT01,
+    RHT_FROGS_HINT02,
     // Ganon Line
     RHT_GANON_LINE01,
     RHT_GANON_LINE02,

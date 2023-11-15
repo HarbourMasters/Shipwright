@@ -335,9 +335,9 @@ void Randomizer::LoadHintMessages() {
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_FROGS_UNDERWATER,
-            CustomMessage("Some frogs holding&%g{{item}}%w&are looking at you from underwater...",
-            "Unter Wasser gibt es Frösche,&die %g{{item}}%w&bei sich haben und Dich neugierig&beobachten...",
-            "Des grenouilles se trouvant&sous l'eau vous fixent attentivement,&tenant fermement&%g{{item}}%w.", TEXTBOX_TYPE_BLUE)
+            CustomMessage(ctx->GetHint(RH_FROGS)->GetText().GetEnglish(),
+                ctx->GetHint(RH_FROGS)->GetText().GetGerman(),
+                ctx->GetHint(RH_FROGS)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE)
         );
     CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_MINUET_OF_FOREST,
         CustomMessage(ctx->GetHint(RH_MINUET_WARP_LOC)->GetText().GetEnglish(),
@@ -4062,25 +4062,6 @@ void RandomizerSettingsWindow::DrawElement() {
         UIWidgets::ReEnableComponent("");
     }
     ImGui::End();
-}
-
-CustomMessage Randomizer::GetFrogsMessage(u16 originalTextId) {
-    auto ctx = Rando::Context::GetInstance();
-    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, originalTextId);
-        RandomizerGet frogsGet = ctx->GetItemLocation(RC_ZR_FROGS_OCARINA_GAME)->GetPlacedRandomizerGet();
-        std::array<std::string, LANGUAGE_MAX> frogItemName;
-        if (frogsGet == RG_ICE_TRAP) {
-            frogsGet = ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].LooksLike();
-            frogItemName = {
-                ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].GetTrickName().english,
-                ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].GetTrickName().french,
-                ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].GetTrickName().english
-            };
-        } else {
-            frogItemName = EnumToSpoilerfileGetName[frogsGet];
-        }
-        messageEntry.Replace("{{item}}", std::move(frogItemName[0]), std::move(frogItemName[1]), std::move(frogItemName[2]));
-        return messageEntry;
 }
 
 CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
