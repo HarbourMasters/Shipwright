@@ -207,6 +207,7 @@ static bool ResetHandler(std::shared_ptr<LUS::Console> Console, std::vector<std:
         return 1;
     }
 
+    gPlayState->gameplayFrames = 0;
     SET_NEXT_GAMESTATE(&gPlayState->state, TitleSetup_Init, GameState);
     gPlayState->state.running = false;
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnExitGame>(gSaveContext.fileNum);
