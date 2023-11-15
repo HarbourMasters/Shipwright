@@ -51,6 +51,8 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
     return buttonText;
 }
 
+static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large" };
+
     static const char* filters[3] = {
 #ifdef __WIIU__
             "",
@@ -380,7 +382,15 @@ void DrawSettingsMenu() {
             }
 
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
+            ImGui::Text("ImGui Menu Scale");
+            ImGui::SameLine();
+            ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, "(Experimental)");
+            if (UIWidgets::EnhancementCombobox("gImGuiScale", imguiScaleOptions, 1)) {
+                OTRGlobals::Instance->ScaleImGui();
+            }
+            UIWidgets::Tooltip("Changes the scaling of the ImGui menu elements.");
 
+            UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
             
             static std::unordered_map<LUS::WindowBackend, const char*> windowBackendNames = {
                 { LUS::WindowBackend::DX11, "DirectX" },
@@ -522,6 +532,8 @@ void DrawEnhancementsMenu() {
                     " - Small keys: Small silver chest\n"
                     " - Boss keys: Vanilla size and texture\n"
                     " - Skulltula Tokens: Small skulltula chest\n"
+                    "\n"
+                    "NOTE: Textures will not apply if you are using a mod pack with a custom chest model."
                 );
                 if (CVarGetInteger("gChestSizeAndTextureMatchesContents", CSMC_DISABLED) != CSMC_DISABLED) {
                     UIWidgets::PaddedEnhancementCheckbox("Chests of Agony", "gChestSizeDependsStoneOfAgony", true, false);
@@ -903,6 +915,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Disables grottos rotating with the camera. To be used in conjunction with mods that want to replace grottos with 3D objects.");
                 UIWidgets::PaddedEnhancementCheckbox("Invisible Bunny Hood", "gHideBunnyHood", true, false);
                 UIWidgets::Tooltip("Turns Bunny Hood invisible while still maintaining its effects.");
+                UIWidgets::PaddedEnhancementCheckbox("Disable HUD Heart animations", "gNoHUDHeartAnimation", true, false);
+                UIWidgets::Tooltip("Disables the beating animation of the hearts on the HUD.");
 
                 ImGui::EndMenu();
             }
@@ -1042,8 +1056,15 @@ void DrawEnhancementsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Fix Poacher's Saw Softlock", "gFixSawSoftlock", true, false, CVarGetInteger("gSkipText", 0),
                 "This is disabled because it is forced on when Skip Text is enabled.", UIWidgets::CheckboxGraphics::Checkmark);
             UIWidgets::Tooltip("Prevents the Poacher's Saw softlock from mashing through the text, or with Skip Text enabled.");
+            UIWidgets::PaddedEnhancementCheckbox("Fix enemies not spawning near water", "gEnemySpawnsOverWaterboxes", true, false);
+            UIWidgets::Tooltip("Causes respawning enemies, like stalchildren, to appear on land near bodies of water. "
+                                "Fixes an incorrect calculation that acted like water underneath ground was above it.");
             UIWidgets::PaddedEnhancementCheckbox("Fix Bush Item Drops", "gBushDropFix", true, false);
             UIWidgets::Tooltip("Fixes the bushes to drop items correctly rather than spawning undefined items.");
+            UIWidgets::PaddedEnhancementCheckbox("Fix falling from vine edges", "gFixVineFall", true, false); 
+            UIWidgets::Tooltip("Prevents immediately falling off climbable surfaces if climbing on the edges."); 
+            UIWidgets::PaddedEnhancementCheckbox("Fix Link's eyes open while sleeping", "gFixEyesOpenWhileSleeping", true, false);
+            UIWidgets::Tooltip("Fixes Link's eyes being open in the opening cutscene when he is supposed to be sleeping.");
 
             ImGui::EndMenu();
         }
@@ -1112,6 +1133,9 @@ void DrawEnhancementsMenu() {
                 "- Random (Seeded): Enemies are randomized based on the current randomizer seed/file\n"
             );
 
+            UIWidgets::PaddedEnhancementCheckbox("Randomized Enemy Sizes", "gRandomizedEnemySizes", true, false);
+            UIWidgets::Tooltip("Enemies and Bosses spawn with random sizes.");
+
             UIWidgets::PaddedEnhancementCheckbox("Ivan the Fairy (Coop Mode)", "gIvanCoopModeEnabled", true, false);
             UIWidgets::Tooltip("Enables Ivan the Fairy upon the next map change. Player 2 can control Ivan and "
                                 "press the C-Buttons to use items and mess with Player 1!");
@@ -1121,7 +1145,7 @@ void DrawEnhancementsMenu() {
 
             if (CVarGetInteger("gRupeeDash", 0)) {
                 UIWidgets::PaddedEnhancementSliderInt(
-                    "Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 3, 5, "", 5, true, true, false,
+                    "Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 1, 10, "", 5, true, true, false,
                     !CVarGetInteger("gRupeeDash", 0),
                     "This option is disabled because \"Rupee Dash Mode\" is turned off");
                 UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
@@ -1387,6 +1411,8 @@ void DrawDeveloperToolsMenu() {
         UIWidgets::EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
         UIWidgets::Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right, and open the debug menu with L on the pause screen");
         if (CVarGetInteger("gDebugEnabled", 0)) {
+            UIWidgets::EnhancementCheckbox("OoT Registry Editor", "gRegEditEnabled");
+            UIWidgets::Tooltip("Enables the registry editor");
             ImGui::Text("Debug Save File Mode:");
             UIWidgets::EnhancementCombobox("gDebugSaveFileMode", DebugSaveFileModes, 1);
             UIWidgets::Tooltip(

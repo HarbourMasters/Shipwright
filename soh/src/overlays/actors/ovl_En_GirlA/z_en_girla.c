@@ -565,7 +565,8 @@ s32 EnGirlA_CanBuy_BluePotion(PlayState* play, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_Longsword(PlayState* play, EnGirlA* this) {
-    if ((gBitFlags[2] & gSaveContext.inventory.equipment) && !(gBitFlags[3] & gSaveContext.inventory.equipment)) {
+    if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON) &&
+        !CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (gSaveContext.rupees < this->basePrice) {
@@ -578,7 +579,7 @@ s32 EnGirlA_CanBuy_Longsword(PlayState* play, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_HylianShield(PlayState* play, EnGirlA* this) {
-    if (gBitFlags[5] & gSaveContext.inventory.equipment) {
+    if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SHIELD, EQUIP_INV_SHIELD_HYLIAN)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (gSaveContext.rupees < this->basePrice) {
@@ -591,7 +592,7 @@ s32 EnGirlA_CanBuy_HylianShield(PlayState* play, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_DekuShield(PlayState* play, EnGirlA* this) {
-    if (gBitFlags[4] & gSaveContext.inventory.equipment) {
+    if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SHIELD, EQUIP_INV_SHIELD_DEKU)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (gSaveContext.rupees < this->basePrice) {
@@ -608,7 +609,7 @@ s32 EnGirlA_CanBuy_GoronTunic(PlayState* play, EnGirlA* this) {
         (!IS_RANDO || Randomizer_GetSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_OFF)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
-    if (gBitFlags[9] & gSaveContext.inventory.equipment) {
+    if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (gSaveContext.rupees < this->basePrice) {
@@ -625,7 +626,7 @@ s32 EnGirlA_CanBuy_ZoraTunic(PlayState* play, EnGirlA* this) {
         (!IS_RANDO || Randomizer_GetSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_OFF)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
-    if (gBitFlags[10] & gSaveContext.inventory.equipment) {
+    if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (gSaveContext.rupees < this->basePrice) {
