@@ -8,8 +8,10 @@
 #include "SohGui.hpp"
 
 #include <spdlog/spdlog.h>
-#include <ImGui/imgui.h>
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
+#endif
+#include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 #include <libultraship/libultraship.h>
 #include <Fast3D/gfx_pc.h>
