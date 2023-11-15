@@ -2962,7 +2962,7 @@ void HintTable_Init() {
             "dans le monde...",
             /*spanish*/
             "Con el Héroe del Tiempo, aquellos&que despierten detendrán el mal y&volverán al mundo de luz la paz...",
-            /*german*/"$kZusammen mit dem Auserwählten wer-&den diese ihre Kräfte einsetzen, um&der Welt den Frieden wiederzugeben." },
+            /*german*/"$kZusammen mit dem Auserwählten wer-den diese ihre Kräfte einsetzen, um der Welt den Frieden wiederzugeben." },
     });
 
     /*--------------------------

@@ -227,17 +227,15 @@ static size_t NextLineLength(const std::string* textStr, const size_t lastNewlin
   }
 }
 
-Text AutoFormatHintText(Text unformattedHintText, std::vector<std::string> colors = {}) {
+Text AutoFormatHintText(const Text& unformattedHintText, const std::vector<std::string>& colors = {}) {
     std::array<std::string, LANGUAGE_MAX> strings;
     for (int i = 0; i < LANGUAGE_MAX; i++) {
         std::string textStr = unformattedHintText.GetForLanguage(i);
 
-        for (auto color: colors) {
-          size_t firstHashtag = textStr.find('#');
-          if (firstHashtag != std::string::npos) {
+        for (const auto& color: colors) {
+          if (const size_t firstHashtag = textStr.find('#'); firstHashtag != std::string::npos) {
             textStr.replace(firstHashtag, 1, color);
-            size_t secondHashtag = textStr.find('#', firstHashtag + 1);
-            if (secondHashtag != std::string::npos) {
+            if (const size_t secondHashtag = textStr.find('#', firstHashtag + 1); secondHashtag != std::string::npos) {
               textStr.replace(secondHashtag, 1, QM_WHITE);
             } else {
               SPDLOG_DEBUG("non-matching hashtags in string: \"%s\"", textStr);
@@ -245,17 +243,17 @@ Text AutoFormatHintText(Text unformattedHintText, std::vector<std::string> color
           }
         }
         // Remove any remaining '#' characters.
-        textStr.erase(std::remove(textStr.begin(), textStr.end(), '#'), textStr.end());
+        std::erase(textStr, '#');
 
         // insert newlines either manually or when encountering a '&'
         size_t lastNewline = 0;
-        bool hasIcon = textStr.find('$', 0) != std::string::npos;
+        const bool hasIcon = textStr.find('$', 0) != std::string::npos;
         size_t lineLength = NextLineLength(&textStr, lastNewline, hasIcon);
         while (lastNewline + lineLength < textStr.length()) {
-            size_t carrot = textStr.find('^', lastNewline);
-            size_t ampersand = textStr.find('&', lastNewline);
-            size_t lastSpace = textStr.rfind(' ', lastNewline + lineLength);
-            size_t lastPeriod = textStr.rfind('.', lastNewline + lineLength);
+            const size_t carrot = textStr.find('^', lastNewline);
+            const size_t ampersand = textStr.find('&', lastNewline);
+            const size_t lastSpace = textStr.rfind(' ', lastNewline + lineLength);
+            const size_t lastPeriod = textStr.rfind('.', lastNewline + lineLength);
             // replace '&' first if it's within the newline range
             if (ampersand < lastNewline + lineLength) {
                 lastNewline = ampersand + 1;
