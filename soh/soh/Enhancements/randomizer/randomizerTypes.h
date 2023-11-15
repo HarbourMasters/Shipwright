@@ -3207,6 +3207,8 @@ typedef enum {
     RHT_GREG_HINT02,
     RHT_SARIA_TEXT01,
     RHT_SARIA_TEXT02,
+    RHT_WARP_TO,
+    RHT_WARP_CHOICE,
     // Ganon Line
     RHT_GANON_LINE01,
     RHT_GANON_LINE02,

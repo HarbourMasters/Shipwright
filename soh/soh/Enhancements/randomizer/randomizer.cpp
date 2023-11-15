@@ -303,7 +303,7 @@ void Randomizer::LoadHintMessages() {
         CustomMessage("{{message}}", "{{message}}", "{{message}}"));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE,
-        CustomMessage(ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE));
+        CustomMessage(ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetGerman(), ctx->GetHint(RH_SARIA)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE));
 
     for (int i : Rando::StaticData::gossipStoneLocations) {
         RandomizerHintKey rhk = RandomizerHintKey(i - RC_COLOSSUS_GOSSIP_STONE + 1);
@@ -339,15 +339,30 @@ void Randomizer::LoadHintMessages() {
             "Unter Wasser gibt es Frösche,&die %g{{item}}%w&bei sich haben und Dich neugierig&beobachten...",
             "Des grenouilles se trouvant&sous l'eau vous fixent attentivement,&tenant fermement&%g{{item}}%w.", TEXTBOX_TYPE_BLUE)
         );
-        CustomMessageManager::Instance->CreateMessage(
-            Randomizer::randoMiscHintsTableID, TEXT_SARIAS_SONG_FOREST_SOUNDS,
-            CustomMessage("{{message}}", "{{message}}", "{{message}}", TEXTBOX_TYPE_BLUE)
-        );
-
-    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT,
-        CustomMessage("Warp to&{{location}}?\x1B&%gOK&No%w\x02",
-        "Zu {{location}}?\x1B&%gOK&No%w\x02",
-        "Se téléporter vers&{{location}}?\x1B&%gOK!&Non%w\x02"));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_MINUET_OF_FOREST,
+        CustomMessage(ctx->GetHint(RH_MINUET_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_MINUET_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_MINUET_WARP_LOC)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_BOLERO_OF_FIRE,
+        CustomMessage(ctx->GetHint(RH_BOLERO_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_BOLERO_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_BOLERO_WARP_LOC)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_SERENADE_OF_WATER,
+        CustomMessage(ctx->GetHint(RH_SERENADE_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_SERENADE_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_SERENADE_WARP_LOC)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_REQUIEM_OF_SPIRIT,
+        CustomMessage(ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_NOCTURNE_OF_SHADOW,
+        CustomMessage(ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_PRELUDE_OF_LIGHT,
+        CustomMessage(ctx->GetHint(RH_PRELUDE_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_PRELUDE_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_PRELUDE_WARP_LOC)->GetText().GetFrench()));
 
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN,
         CustomMessage("Water level control system.&Keep away!",
@@ -4047,58 +4062,6 @@ void RandomizerSettingsWindow::DrawElement() {
         UIWidgets::ReEnableComponent("");
     }
     ImGui::End();
-}
-
-CustomMessage Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
-    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(
-        Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT);
-    if (mysterious) {
-        std::array<const char*, LANGUAGE_MAX> locationName ={
-            "a mysterious place",
-            "ein mysteriöser Ort",
-            "un endroit mystérieux",
-        };
-
-        messageEntry.Replace("{{location}}", locationName[0],
-            locationName[1], locationName[2]);
-        return messageEntry;
-    }
-
-    auto ctx = Rando::Context::GetInstance();
-    RandomizerHintKey locHintKey = RH_NONE;
-    switch (textId) {
-        case TEXT_WARP_MINUET_OF_FOREST:
-            locHintKey = RH_MINUET_WARP_LOC;
-            break;
-        case TEXT_WARP_BOLERO_OF_FIRE:
-            locHintKey = RH_BOLERO_WARP_LOC;
-            break;
-        case TEXT_WARP_SERENADE_OF_WATER:
-            locHintKey = RH_SERENADE_WARP_LOC;
-            break;
-        case TEXT_WARP_REQUIEM_OF_SPIRIT:
-            locHintKey = RH_REQUIEM_WARP_LOC;
-            break;
-        case TEXT_WARP_NOCTURNE_OF_SHADOW:
-            locHintKey = RH_NOCTURNE_WARP_LOC;
-            break;
-        case TEXT_WARP_PRELUDE_OF_LIGHT:
-            locHintKey = RH_PRELUDE_WARP_LOC;
-            break;
-    }
-    std::string locationName = "";
-    switch (gSaveContext.language) {
-        case LANGUAGE_FRA:
-            locationName = ctx->GetHint(locHintKey)->GetText().GetFrench();
-            break;
-        case LANGUAGE_ENG:
-        default:
-            locationName = ctx->GetHint(locHintKey)->GetText().GetEnglish();
-            break;
-    }
-
-    messageEntry.Replace("{{location}}", std::move(locationName));
-    return messageEntry;
 }
 
 CustomMessage Randomizer::GetFrogsMessage(u16 originalTextId) {

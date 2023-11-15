@@ -59,7 +59,6 @@ class Randomizer {
     GetItemID GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
-    CustomMessage GetWarpSongMessage(u16 textId, bool mysterious = false);
     CustomMessage GetSheikMessage(s16 scene, u16 originalTextId);
     CustomMessage GetFrogsMessage(u16 originalTextId);
     CustomMessage GetSariaMessage(u16 originalTextId);

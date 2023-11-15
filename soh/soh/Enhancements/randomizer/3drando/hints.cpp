@@ -971,56 +971,48 @@ void CreateSpecialItemHint(uint32_t item, RandomizerHintKey hintKey, std::vector
 
 void CreateWarpSongTexts() {
   auto ctx = Rando::Context::GetInstance();
-  if (!ctx->GetOption(RSK_WARP_SONG_HINTS)) {
-    warpMinuetText = Text();
-    warpBoleroText = Text();
-    warpSerenadeText = Text();
-    warpRequiemText = Text();
-    warpNocturneText = Text();
-    warpPreludeText = Text();
-    return;
-  }
 
   auto warpSongEntrances = GetShuffleableEntrances(EntranceType::WarpSong, false);
-
   for (auto entrance : warpSongEntrances) {
     Text resolvedHint;
+    Text resolvedRegion;
     // Start with entrance location text
-    auto region = entrance->GetConnectedRegion()->regionName;
-    resolvedHint = Text{"","",""} + region;
-
-    auto destination = entrance->GetConnectedRegion()->GetHint().GetText();
-    // Prefer hint location when available
-    if (destination.GetEnglish() != "No Hint") {
-      resolvedHint = destination;
+    if (ctx->GetOption(RSK_WARP_SONG_HINTS)) {
+      resolvedRegion = Text("a mysterious place", "un endroit mystérieux", "", "ein mysteriöser Ort");
+    } else {
+      auto region = entrance->GetConnectedRegion()->regionName;
+      resolvedRegion = Text{"","",""} + region;
+      Text destination = entrance->GetConnectedRegion()->GetHint().GetText();
+      // Prefer hint location when available
+      if (destination.GetEnglish() != "No Hint") {
+        resolvedRegion = destination;
+      }
     }
-
+    resolvedHint = ::Hint(RHT_WARP_TO).GetText() + resolvedRegion + ::Hint(RHT_WARP_CHOICE).GetText();
+    RandomizerHintKey hintKey = RH_NONE;
     switch (entrance->GetIndex()) {
       case 0x0600: // minuet
-        warpMinuetText = resolvedHint;
-        ctx->AddHint(RH_MINUET_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+        hintKey = RH_MINUET_WARP_LOC;
         break;
       case 0x04F6: // bolero
-        warpBoleroText = resolvedHint;
-        ctx->AddHint(RH_BOLERO_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+        hintKey = RH_BOLERO_WARP_LOC;
         break;
       case 0x0604: // serenade
-        warpSerenadeText = resolvedHint;
-        ctx->AddHint(RH_SERENADE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+        hintKey = RH_SERENADE_WARP_LOC;
         break;
       case 0x01F1: // requiem
-        warpRequiemText = resolvedHint;
-        ctx->AddHint(RH_REQUIEM_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+        hintKey = RH_REQUIEM_WARP_LOC;
         break;
       case 0x0568: // nocturne
-          warpNocturneText = resolvedHint;
-          ctx->AddHint(RH_NOCTURNE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
-          break;
+        hintKey = RH_NOCTURNE_WARP_LOC;
+        break;
       case 0x05F4: // prelude
-        warpPreludeText = resolvedHint;
-        ctx->AddHint(RH_PRELUDE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+        hintKey = RH_PRELUDE_WARP_LOC;
+        break;
+      default:
         break;
     }
+    ctx->AddHint(hintKey, AutoFormatHintText(resolvedHint, { QM_RED, QM_GREEN }), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedRegion);
   }
 }
 

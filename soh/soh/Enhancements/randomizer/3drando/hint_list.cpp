@@ -3095,6 +3095,22 @@ void HintTable_Init() {
             "%w.$C"},
     });
 
+    hintTable[RHT_WARP_TO] = HintText::OtherHint({
+        Text{
+            "Warp to&#",
+            "Se téléporter vers&#",
+            "",
+            "Zu&#"},
+        });
+    hintTable[RHT_WARP_CHOICE] = HintText::OtherHint({
+        Text{
+            "#?&" + TWO_WAY_CHOICE() + "#OK&No#",
+            "#?&" + TWO_WAY_CHOICE() + "#OK!&Non#",
+            "###",
+            "#?&" + TWO_WAY_CHOICE() + "#OK&No#"
+        }
+    });
+
     /*--------------------------
     |      GANON LINE TEXT     |
     ---------------------------*/
