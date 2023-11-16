@@ -34,7 +34,7 @@ static ColliderCylinderInit sCylinderInit = {
         BUMP_NONE,
         OCELEM_ON,
     },
-    { 50, 150, 0, { 0, 0, 0 } },
+    { 100, 330, 0, { 0, 0, 0 } },
 };
 
 static CollisionCheckInfoInit2 sColChkInfoInit = { 0, 0, 0, 0, MASS_IMMOVABLE };
@@ -42,7 +42,7 @@ static CollisionCheckInfoInit2 sColChkInfoInit = { 0, 0, 0, 0, MASS_IMMOVABLE };
 void EnChristmasTree_Init(Actor* thisx, PlayState* play) {
     EnChristmasTree* this = (EnChristmasTree*)thisx;
 
-    ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 90.0f);
+    ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 160.0f);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
@@ -91,13 +91,6 @@ void EnChristmasTree_Talk(EnChristmasTree* this, PlayState* play) {
 void EnChristmasTree_SetupEndTitle(EnChristmasTree* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    player->actor.world.pos.x = -929.336;
-    player->actor.world.pos.y = 0;
-    player->actor.world.pos.z = 446.178;
-    player->actor.shape.rot.x = 0;
-    player->actor.shape.rot.y = 17537;
-    player->actor.shape.rot.z = 0;
-
     GameInteractor_SetNoUIActive(1);
 
     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_END_TITLE, 0, 0, 0, 0, 0, 0, 2, false);
@@ -122,9 +115,11 @@ void EnChristmasTree_Update(Actor* thisx, PlayState* play) {
 }
 
 void EnChristmasTree_Draw(Actor* thisx, PlayState* play) {
+    EnChristmasTree* this = (EnChristmasTree*)thisx;
+
     float percentageCompleted = (float)gSaveContext.triforcePiecesCollected /
                                 (float)Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
-    float treeSize = 30.0f;
+    float treeSize = 55.0f;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -165,6 +160,11 @@ void EnChristmasTree_Draw(Actor* thisx, PlayState* play) {
     if (percentageCompleted >= 1.0f) {
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor100DL);
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasStarDL);
+    }
+    if (percentageCompleted >= 1.0f && this->spawnedRupee == 0) {
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_WONDER_ITEM, this->actor.world.pos.x, this->actor.world.pos.y + 280,
+                    this->actor.world.pos.z, 0, 0, LINK_IS_ADULT ? 1 : 4, 0x1ABF, false);
+        this->spawnedRupee = 1;
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

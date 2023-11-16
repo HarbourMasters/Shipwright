@@ -1077,6 +1077,17 @@ void RegisterRandomizedEnemySizes() {
     });
 }
 
+void RegisterChristmas() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        Actor* player = &GET_PLAYER(gPlayState)->actor;
+        Actor* nearbyEndTitle = Actor_FindNearby(gPlayState, player, ACTOR_END_TITLE, ACTORCAT_ITEMACTION, 3000.0f);
+
+        if (gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER] > 0 && nearbyEndTitle) {
+            Camera_ChangeMode(Play_GetCamera(gPlayState, gPlayState->mainCamera.thisIdx), CAM_MODE_STILL);
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1107,4 +1118,5 @@ void InitMods() {
     RegisterRandomizerSheikSpawn();
     RegisterRandomizedEnemySizes();
     NameTag_RegisterHooks();
+    RegisterChristmas();
 }

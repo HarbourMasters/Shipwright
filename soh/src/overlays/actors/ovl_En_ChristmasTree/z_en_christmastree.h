@@ -12,6 +12,7 @@ typedef struct EnChristmasTree {
     Actor actor;
     ColliderCylinder collider;
     EnChristmasTreeActionFunc actionFunc;
+    u8 spawnedRupee;
 } EnChristmasTree;
 
 #ifdef __cplusplus
