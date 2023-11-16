@@ -105,7 +105,12 @@ void EnToryo_Init(Actor* thisx, PlayState* play) {
             break;
         case SCENE_KAKARIKO_VILLAGE:
             if ((LINK_AGE_IN_YEARS == YEARS_CHILD) && IS_DAY) {
-                Actor_Kill(this);
+                this->actor.world.pos.x = 756.0;
+                this->actor.world.pos.y = 80.0;
+                this->actor.world.pos.z = 1378.0;
+                this->actor.shape.rot.y = 32534;
+
+                this->stateFlags |= 2;
             }
             break;
         case SCENE_KAKARIKO_CENTER_GUEST_HOUSE:

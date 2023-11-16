@@ -609,7 +609,7 @@ static ActorDBInit EnChristmasTreeInit = {
     "En_ChristmasTree",
     "Christmas Tree",
     ACTORCAT_PROP,
-    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY),
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED),
     OBJECT_GAMEPLAY_KEEP,
     sizeof(EnChristmasTree),
     (ActorFunc)EnChristmasTree_Init,

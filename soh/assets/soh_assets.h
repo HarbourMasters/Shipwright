@@ -95,6 +95,9 @@ static const ALIGN_ASSET(2) char gXmasStarDL[] = dgXmasStarDL;
 #define dgFrontGateDecorDL "__OTR__objects/object_kakariko_decor/gFrontGateDecorDL"
 static const ALIGN_ASSET(2) char gFrontGateDecorDL[] = dgFrontGateDecorDL;
 
+#define dgKakarikoDecorDL "__OTR__objects/object_kakariko_decor/gKakarikoDecorDL"
+static const ALIGN_ASSET(2) char gKakarikoDecorDL[] = dgKakarikoDecorDL;
+
 // overlays
 #define dgOptionsDividerChangeLangVtx "__OTR__overlays/ovl_file_choose/gOptionsDividerChangeLangVtx"
 static const ALIGN_ASSET(2) char gOptionsDividerChangeLangVtx[] = dgOptionsDividerChangeLangVtx;

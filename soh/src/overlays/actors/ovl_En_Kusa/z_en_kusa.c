@@ -267,11 +267,12 @@ void EnKusa_Init(Actor* thisx, PlayState* play) {
     }
 
     if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE && this->actor.world.pos.z < 600.0) {
-        Actor_Kill(this);
-    } else {
-        EnKusa_SetupWaitObject(this);
+        this->actor.world.pos.x += 1620.672;
+        this->actor.world.pos.y += 80;
+        this->actor.world.pos.z += 900.884;
     }
-    
+
+    EnKusa_SetupWaitObject(this);
 }
 
 void EnKusa_Destroy(Actor* thisx, PlayState* play2) {
