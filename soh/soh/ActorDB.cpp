@@ -439,7 +439,7 @@ static std::unordered_map<u16, const char*> actorDescriptions = {
     { ACTOR_EN_DAIKU_KAKARIKO, "Carpenters (Kakariko)" },
     { ACTOR_BG_BOWL_WALL, "Bombchu Bowling Alley Wall" },
     { ACTOR_EN_WALL_TUBO, "Bombchu Bowling Alley Bullseyes" },
-    { ACTOR_EN_PO_DESERT, "Poe Guide (Desert Wasteland)" },
+    { ACTOR_EN_PO_DESERT, "Poe Guide (Haunted Wasteland)" },
     { ACTOR_EN_CROW, "Guay" },
     { ACTOR_DOOR_KILLER, "Fake Door" },
     { ACTOR_BG_SPOT11_OASIS, "Oasis (Desert Colossus)" },

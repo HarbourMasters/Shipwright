@@ -1469,6 +1469,7 @@ void Inventory_SwapAgeEquipment(void) {
                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
             } else {
                 gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                Flags_SetInfTable(INFTABLE_SWORDLESS);
             }
 
             if (gSaveContext.inventory.items[SLOT_NUT] != ITEM_NONE) {

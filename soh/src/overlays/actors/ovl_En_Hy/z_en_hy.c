@@ -898,17 +898,19 @@ void EnHy_Init(Actor* thisx, PlayState* play) {
         Actor_Kill(&this->actor);
     }
 
-    if (this->actor.params == 1929) {
-        this->actor.world.pos.x = 261.826;
-        this->actor.world.pos.y = 240.0;
-        this->actor.world.pos.z = 1669.660;
-        this->actor.shape.rot.y = 23784;
-    }
-    if (this->actor.params == 1930) {
-        this->actor.world.pos.x = 262.224;
-        this->actor.world.pos.y = 240.0;
-        this->actor.world.pos.z = 1594.390;
-        this->actor.shape.rot.y = 7728;
+    if (play->sceneNum == SCENE_KAKARIKO_VILLAGE) {
+        if (this->actor.params == 1929) {
+            this->actor.world.pos.x = 261.826;
+            this->actor.world.pos.y = 240.0;
+            this->actor.world.pos.z = 1669.660;
+            this->actor.shape.rot.y = 23784;
+        }
+        if (this->actor.params == 1930) {
+            this->actor.world.pos.x = 262.224;
+            this->actor.world.pos.y = 240.0;
+            this->actor.world.pos.z = 1594.390;
+            this->actor.shape.rot.y = 7728;
+        }
     }
 
     this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
