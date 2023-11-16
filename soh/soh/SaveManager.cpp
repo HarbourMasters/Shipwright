@@ -231,9 +231,11 @@ void SaveManager::LoadRandomizerVersion2() {
         SaveManager::Instance->LoadStruct("", [&]() {
             RandomizerCheck rc = RC_UNKNOWN_CHECK;
             SaveManager::Instance->LoadData("check", rc);
-            std::string hintText;
-            SaveManager::Instance->LoadData("hintText", hintText);
-            randoContext->AddHint(RandomizerHintKey(rc - RC_COLOSSUS_GOSSIP_STONE + 1), Text(hintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+            if (rc != RC_UNKNOWN_CHECK) {
+                std::string hintText;
+                SaveManager::Instance->LoadData("hintText", hintText);
+                randoContext->AddHint(RandomizerHintKey(rc - RC_COLOSSUS_GOSSIP_STONE + 1), Text(hintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+            }
         });
     });
 
