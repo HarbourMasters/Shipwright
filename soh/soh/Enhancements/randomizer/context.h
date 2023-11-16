@@ -80,11 +80,13 @@ class Context {
     std::unordered_map<std::string, RandomizerCheck> mSpoilerfileCheckNameToEnum;
     bool playthroughBeatable = false;
     bool allLocationsReachable = false;
+    RandomizerArea GetAreaFromString(std::string str);
 
   private:
     static std::weak_ptr<Context> mContext;
     std::unordered_map<std::string, RandomizerGet> mSpoilerfileGetNameToEnum;
     std::unordered_map<std::string, HintType> mSpoilerfileHintTypeNameToEnum;
+    std::unordered_map<std::string, RandomizerArea> mSpoilerfileAreaNameToEnum;
     std::array<Hint, RH_MAX> hintTable = {};
     RandomizerCheck mEmeraldLoc = RC_UNKNOWN_CHECK;
     RandomizerCheck mRubyLoc = RC_UNKNOWN_CHECK;

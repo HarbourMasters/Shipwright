@@ -692,7 +692,7 @@ static void WriteHints(int language) {
     if (ctx->GetOption(RSK_LIGHT_ARROWS_HINT)){
       jsonData["ganonHintText"] = ganonHintText;
       jsonData["lightArrowHintLoc"] = GetLightArrowHintLoc();
-      jsonData["lightArrowRegion"] = ctx->GetHint(RH_GANONDORF_HINT)->GetHintedRegion();
+      jsonData["lightArrowArea"] = ::Hint(ctx->GetHint(RH_GANONDORF_HINT)->GetHintedArea()).GetText().GetEnglish();
       jsonData["masterSwordHintLoc"] = GetMasterSwordHintLoc();
       if (!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)) {
           jsonData["sheikText"] = sheikText;
@@ -701,23 +701,22 @@ static void WriteHints(int language) {
     if (ctx->GetOption(RSK_DAMPES_DIARY_HINT)){
       jsonData["dampeText"] = dampesText;
       jsonData["dampeHintLoc"] = GetDampeHintLoc();
-      jsonData["dampeRegion"] = ctx->GetHint(RH_DAMPES_DIARY)->GetHintedRegion();
+      jsonData["dampeRegion"] = ::Hint(ctx->GetHint(RH_DAMPES_DIARY)->GetHintedArea()).GetText().GetEnglish();
     }
     if (ctx->GetOption(RSK_GREG_HINT)){
       jsonData["gregText"] = gregText;
       jsonData["gregLoc"] = GetGregHintLoc();
-      jsonData["gregRegion"] = ctx->GetHint(RH_GREG_RUPEE)->GetHintedRegion();
+      jsonData["gregRegion"] = ::Hint(ctx->GetHint(RH_GREG_RUPEE)->GetHintedArea()).GetText().GetEnglish();
     }
     if (ctx->GetOption(RSK_SARIA_HINT)){
       jsonData["sariaText"] = sariaText;
       jsonData["sariaHintLoc"] = GetSariaHintLoc();
-      jsonData["sariaRegion"] = ctx->GetHint(RH_SARIA)->GetHintedRegion();
+      jsonData["sariaRegion"] = ::Hint(ctx->GetHint(RH_SARIA)->GetHintedArea()).GetText().GetEnglish();
     }
 
     if (ctx->GetOption(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NONE)) {
         return;
     }
-    auto ctx = Rando::Context::GetInstance();
     for (const RandomizerCheck key : Rando::StaticData::gossipStoneLocations) { //RANDOTODO should be merged with static hints, iterate over hint keys
         Rando::Hint* hint = ctx->GetHint((RandomizerHintKey)(key - RC_COLOSSUS_GOSSIP_STONE + 1));
         Rando::ItemLocation* hintedLocation = ctx->GetItemLocation(hint->GetHintedLocation());
@@ -744,7 +743,7 @@ static void WriteHints(int language) {
             jsonData["hints"][name]["location"] = Rando::StaticData::GetLocation(hintedLocation->GetRandomizerCheck())->GetName();
         }
         if (hintType != HINT_TYPE_TRIAL && hintType != HINT_TYPE_JUNK) {
-            jsonData["hints"][name]["area"] = Hint(hint->GetHintedArea()).GetText().Capitalize().GetEnglish();
+            jsonData["hints"][name]["area"] = ::Hint(hint->GetHintedArea()).GetText().Capitalize().GetEnglish();
         }
     }
 }

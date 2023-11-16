@@ -44,9 +44,6 @@ std::string Hint::GetDistribution() {
     return distribution;
 }
 
-const Text& Hint::GetHintedRegionText() {
-    return hintedRegion;
-};
 
 void Hint::ResetVariables() {
     hintedLocation = RC_UNKNOWN_CHECK;

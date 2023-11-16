@@ -27,7 +27,7 @@ class Hint {
     RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK;
     HintType hintType = HINT_TYPE_STATIC;
     RandomizerArea hintedArea = RA_NONE;
-    std::string distribution = Text();
+    std::string distribution = "";
     bool addedToPool = false;
 };
 }

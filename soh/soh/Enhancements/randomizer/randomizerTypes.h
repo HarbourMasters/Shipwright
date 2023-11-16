@@ -31,7 +31,7 @@ typedef enum {
 } RandomizerCheckStatus;
 
 typedef enum {
-HINT_TYPE_STATIC,
+    HINT_TYPE_STATIC,
     HINT_TYPE_TRIAL,
     HINT_TYPE_WOTH, // Way of the Hero
     HINT_TYPE_BARREN,

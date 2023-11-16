@@ -47,8 +47,8 @@ std::array<std::string, HINT_TYPE_MAX> hintTypeNames = {
     "WotH",
     "Barren",
     "Entrance",
-    "Item Location",
     "Item Area",
+    "Item Location",
     "Junk"
 };
 
@@ -413,12 +413,12 @@ static bool CreateHint(RandomizerCheck hintedLocation, uint8_t copies, HintType 
   Text prefix = ::Hint(RHT_PREFIX).GetText();
   std::vector<uint8_t> colours;
   if (type == HINT_TYPE_WOTH){
-    Text areaText = Hint(ctx->GetItemLocation(hintedLocation)->GetArea()).GetText();
+    Text areaText = ::Hint(ctx->GetItemLocation(hintedLocation)->GetArea()).GetText();
     finalHint = prefix + "%r#" + areaText + "#%w" + ::Hint(RHT_WAY_OF_THE_HERO).GetText();
     colours = {QM_LBLUE};
   }
   else if(type == HINT_TYPE_BARREN){
-    Text areaText = Hint(ctx->GetItemLocation(hintedLocation)->GetArea()).GetText();
+    Text areaText = ::Hint(ctx->GetItemLocation(hintedLocation)->GetArea()).GetText();
     finalHint = prefix + ::Hint(RHT_PLUNDERING).GetText() + "%r#" + areaText + "#%w" + ::Hint(RHT_FOOLISH).GetText();
     colours = {QM_PINK};
   }
@@ -430,7 +430,7 @@ static bool CreateHint(RandomizerCheck hintedLocation, uint8_t copies, HintType 
       colours = {QM_GREEN, QM_RED};
     }
     else if (type == HINT_TYPE_ITEM_AREA){
-      Text areaText = Hint(ctx->GetItemLocation(hintedLocation)->GetArea()).GetText();
+      Text areaText = ::Hint(ctx->GetItemLocation(hintedLocation)->GetArea()).GetText();
       if (Rando::StaticData::GetLocation(hintedLocation)->IsDungeon()) {
         finalHint = prefix+"%r#"+areaText+"#%w "+::Hint(RHT_HOARDS).GetText()+" %g#"+itemText+"#%w.";
         colours = {QM_GREEN, QM_RED};
@@ -568,7 +568,7 @@ void CreateGanonAndSheikText() {
       return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_LIGHT_ARROWS;
     });
     RandomizerArea lightArrowArea = ctx->GetItemLocation(lightArrowLocation[0])->GetArea();
-    Text LightArrowAreaText = Hint(lightArrowArea).GetText();
+    Text LightArrowAreaText = ::Hint(lightArrowArea).GetText();
     std::vector<RandomizerCheck> locsToCheck = {RC_GANONDORF_HINT};
 
     //If there is no light arrow location, it was in the player's inventory at the start
@@ -586,7 +586,7 @@ void CreateGanonAndSheikText() {
     auto masterSwordLocation = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
       return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_MASTER_SWORD;
     });
-    Text masterSwordArea = Hint(ctx->GetItemLocation(masterSwordLocation[0])->GetArea()).GetText();
+    Text masterSwordArea = ::Hint(ctx->GetItemLocation(masterSwordLocation[0])->GetArea()).GetText();
 
     if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {
       // Add second text box
@@ -616,7 +616,7 @@ void CreateGanonAndSheikText() {
     if (IsReachableWithout(locsToCheck, lightArrowLocation[0], true)) {
       ctx->GetItemLocation(lightArrowLocation[0])->SetAsHinted();
     }
-    ctx->AddHint(RH_SHEIK_LIGHT_ARROWS, AutoFormatHintText(sheikText), lightArrowLocation[0], HINT_TYPE_STATIC, lightArrowArea);
+    ctx->AddHint(RH_SHEIK_LIGHT_ARROWS, AutoFormatHintText(sheikText), lightArrowLocation[0], HINT_TYPE_STATIC, "Static", lightArrowArea);
 
     if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {
       if (IsReachableWithout(locsToCheck, masterSwordLocation[0], true)) {
@@ -643,7 +643,7 @@ static Text BuildDungeonRewardText(const RandomizerGet itemKey, bool isChild) {
 
     // RANDOTODO implement colors for locations
     return Text() + rewardString +
-           Hint(ctx->GetItemLocation(location)->GetArea()).GetText().Capitalize() +
+           ::Hint(ctx->GetItemLocation(location)->GetArea()).GetText().Capitalize() +
            "...^";
 }
 
@@ -833,7 +833,7 @@ void CreateMerchantsHints() {
                                  ::Hint(RHT_CARPET_SALESMAN_DIALOG_SECOND).GetText();
     Text carpetSalesmanTextTwo = ::Hint(RHT_CARPET_SALESMAN_DIALOG_THIRD).GetText() + carpetSalesmanItemClearText +
                                  ::Hint(RHT_CARPET_SALESMAN_DIALOG_FOURTH).GetText();
-
+    //RANDOTODO WTF is this?
     // CreateMessageFromTextObject(0x9120, 0, 2, 3, AddColorsAndFormat(medigoronText, { QM_RED, QM_GREEN }));
     // CreateMessageFromTextObject(0x9121, 0, 2, 3, AddColorsAndFormat(grannyText, { QM_RED, QM_GREEN }));
     // CreateMessageFromTextObject(0x6077, 0, 2, 3, AddColorsAndFormat(carpetSalesmanTextOne, { QM_RED, QM_GREEN }));
@@ -857,10 +857,10 @@ void CreateSpecialItemHint(uint32_t item, RandomizerHintKey hintKey, std::vector
       ctx->GetItemLocation(location)->SetAsHinted();
     }
     
-    Text area = Hint(ctx->GetItemLocation(location)->GetArea()).GetText();
-    textLoc = ::Hint(text1).GetText() + area + ::Hint(text2).GetText();
+    RandomizerArea area = ctx->GetItemLocation(location)->GetArea();
+    textLoc = ::Hint(text1).GetText() + ::Hint(area).GetText() + ::Hint(text2).GetText();
     nameLoc = Rando::StaticData::GetLocation(location)->GetName();
-    ctx->AddHint(hintKey, AutoFormatHintText(textLoc), location, HINT_TYPE_STATIC, area);
+    ctx->AddHint(hintKey, AutoFormatHintText(textLoc), location, HINT_TYPE_STATIC, "Static", area);
   } else {
     textLoc = Text();
     nameLoc = "";
@@ -882,41 +882,37 @@ void CreateWarpSongTexts() {
   auto warpSongEntrances = GetShuffleableEntrances(EntranceType::WarpSong, false);
 
   for (auto entrance : warpSongEntrances) {
-    Text resolvedHint;
-    // Start with entrance location text
-    auto region = entrance->GetConnectedRegion()->regionName;
-    resolvedHint = Text{"","",""} + region;
-
-    auto destination = Hint(entrance->GetConnectedRegion()->GetArea()).GetText();
-    // Prefer hint location when available
-    if (destination.GetEnglish() != "No Hint") {
-      resolvedHint = destination;
+    auto destination = entrance->GetConnectedRegion()->GetArea();
+    Text resolvedHint = ::Hint(destination).GetText();
+    // If no Hint Area, use Region text
+    if (destination == RA_NONE) {
+      resolvedHint = Text{"","",""} + entrance->GetConnectedRegion()->regionName;
     }
 
     switch (entrance->GetIndex()) {
-      case 0x0600: // minuet
+      case 0x0600: // minuet RANDOTODO make an entrance enum and use it here
         warpMinuetText = resolvedHint;
-        ctx->AddHint(RH_MINUET_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+        ctx->AddHint(RH_MINUET_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", destination);
         break;
       case 0x04F6: // bolero
         warpBoleroText = resolvedHint;
-        ctx->AddHint(RH_BOLERO_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+        ctx->AddHint(RH_BOLERO_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", destination);
         break;
       case 0x0604: // serenade
         warpSerenadeText = resolvedHint;
-        ctx->AddHint(RH_SERENADE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+        ctx->AddHint(RH_SERENADE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", destination);
         break;
       case 0x01F1: // requiem
         warpRequiemText = resolvedHint;
-        ctx->AddHint(RH_REQUIEM_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+        ctx->AddHint(RH_REQUIEM_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", destination);
         break;
       case 0x0568: // nocturne
           warpNocturneText = resolvedHint;
-          ctx->AddHint(RH_NOCTURNE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+          ctx->AddHint(RH_NOCTURNE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", destination);
           break;
       case 0x05F4: // prelude
         warpPreludeText = resolvedHint;
-        ctx->AddHint(RH_PRELUDE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+        ctx->AddHint(RH_PRELUDE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", destination);
         break;
     }
   }

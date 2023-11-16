@@ -836,7 +836,7 @@ static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
   // This accounts for boss room shuffle so that own dungeon items can be placed
   // in the shuffled boss room
   std::vector<RandomizerCheck> dungeonLocations = FilterFromPool(ctx->allLocations, [dungeon, ctx](const auto loc) {
-    return ctx->GetItemLocation(loc)->GetArea() == dungeon->GetHintArea();
+    return ctx->GetItemLocation(loc)->GetArea() == dungeon->GetArea();
   });
 
   //filter out locations that may be required to have songs placed at them
