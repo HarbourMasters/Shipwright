@@ -769,7 +769,7 @@ void Play_Init(GameState* thisx) {
                     GET_PLAYER(play)->actor.world.pos.z, 0, 0, 0, 1, true);
     }
 
-    if (play->sceneNum == SCENE_KAKARIKO_VILLAGE && Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT)) {
+    if (play->sceneNum == SCENE_KAKARIKO_VILLAGE) {
         Actor_Spawn(&play->actorCtx, play, gEnChristmasTreeId, -734, 0, 420, 0, 0, 0, 0, true);
     }
 

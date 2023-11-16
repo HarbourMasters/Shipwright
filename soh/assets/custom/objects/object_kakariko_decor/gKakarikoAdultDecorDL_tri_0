@@ -1,0 +1,7 @@
+<DisplayList Version="0">
+	<LoadVertices Path="objects/object_kakariko_decor/gKakarikoAdultDecorDL_vtx_0" VertexBufferIndex="0" VertexOffset="0" Count="8"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
+	<Triangles2 V00="4" V01="5" V02="6" Flag0="0" V10="4" V11="6" V12="7" Flag1="0"/>
+	<EndDisplayList/>
+</DisplayList>
+

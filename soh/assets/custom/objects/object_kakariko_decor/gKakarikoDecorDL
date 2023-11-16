@@ -8,10 +8,16 @@
 	<CallDisplayList Path="objects/object_kakariko_decor/gKakarikoDecorDL_tri_1"/>
 	<CallDisplayList Path="objects/object_kakariko_decor/mat_gKakarikoDecorDL_f3dlite_StringBYBY"/>
 	<CallDisplayList Path="objects/object_kakariko_decor/gKakarikoDecorDL_tri_2"/>
-	<CallDisplayList Path="objects/object_kakariko_decor/mat_gKakarikoDecorDL_f3dlite_material_004"/>
+	<CallDisplayList Path="objects/object_kakariko_decor/mat_gKakarikoDecorDL_f3dlite_snowlayer"/>
 	<CallDisplayList Path="objects/object_kakariko_decor/gKakarikoDecorDL_tri_3"/>
 	<CallDisplayList Path="objects/object_kakariko_decor/mat_gKakarikoDecorDL_f3dlite_CuccoBedding"/>
 	<CallDisplayList Path="objects/object_kakariko_decor/gKakarikoDecorDL_tri_4"/>
+	<CallDisplayList Path="objects/object_kakariko_decor/mat_gKakarikoDecorDL_f3dlite_snowdissolve"/>
+	<CallDisplayList Path="objects/object_kakariko_decor/gKakarikoDecorDL_tri_5"/>
+	<CallDisplayList Path="objects/object_kakariko_decor/mat_gKakarikoDecorDL_f3dlite_YukiUsagiBody"/>
+	<CallDisplayList Path="objects/object_kakariko_decor/gKakarikoDecorDL_tri_6"/>
+	<CallDisplayList Path="objects/object_kakariko_decor/mat_gKakarikoDecorDL_f3dlite_UsagiLeaf"/>
+	<CallDisplayList Path="objects/object_kakariko_decor/gKakarikoDecorDL_tri_7"/>
 	<PipeSync/>
 	<SetGeometryMode G_LIGHTING="1" />
 	<ClearGeometryMode G_TEXTURE_GEN="1" />

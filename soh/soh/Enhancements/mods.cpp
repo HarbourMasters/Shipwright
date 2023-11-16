@@ -655,7 +655,9 @@ void RegisterGrantGanonsBossKey() {
         Player* player = GET_PLAYER(gPlayState);
         // Triforce Hunt needs the check if the player isn't being teleported to the credits scene.
         if (!GameInteractor::IsGameplayPaused() && Flags_GetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY) &&
-            gPlayState->sceneLoadFlag != 0x14 && (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
+                gPlayState->sceneLoadFlag != 0x14 &&
+                (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0 && player->stateFlags1 !=
+                PLAYER_STATE1_INPUT_DISABLED) {
             GetItemEntry getItemEntry =
                 ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
             GiveItemEntryWithoutActor(gPlayState, getItemEntry);
@@ -1057,17 +1059,6 @@ void RegisterRandomizedEnemySizes() {
     });
 }
 
-void RegisterChristmas() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        Actor* player = &GET_PLAYER(gPlayState)->actor;
-        Actor* nearbyEndTitle = Actor_FindNearby(gPlayState, player, ACTOR_END_TITLE, ACTORCAT_ITEMACTION, 3000.0f);
-
-        if (gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER] > 0 && nearbyEndTitle) {
-            Camera_ChangeMode(Play_GetCamera(gPlayState, gPlayState->mainCamera.thisIdx), CAM_MODE_STILL);
-        }
-    });
-}
-
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1098,5 +1089,4 @@ void InitMods() {
     RegisterRandomizerSheikSpawn();
     RegisterRandomizedEnemySizes();
     NameTag_RegisterHooks();
-    RegisterChristmas();
 }
