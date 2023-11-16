@@ -717,15 +717,15 @@ void BossFieldSst_HeadSetupDeath(BossSst* this, PlayState* play) {
 
     Animation_MorphToLoop(&this->skelAnime, &gBongoHeadEyeOpenIdleAnim, -5.0f);
     BossFieldSst_HeadSfx(this, NA_SE_EN_SHADEST_DEAD);
-    Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 60);
-    Actor_SetColorFilter(&sHands[LEFT]->actor, 0x4000, 0xFF, 0, 60);
-    Actor_SetColorFilter(&sHands[RIGHT]->actor, 0x4000, 0xFF, 0, 60);
+    //Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 60);
+    //Actor_SetColorFilter(&sHands[LEFT]->actor, 0x4000, 0xFF, 0, 60);
+    //Actor_SetColorFilter(&sHands[RIGHT]->actor, 0x4000, 0xFF, 0, 60);
     this->timer = 60;
     this->colliderCyl.base.acFlags &= ~AC_ON;
     this->colliderJntSph.base.ocFlags1 &= ~OC1_ON;
     sHands[LEFT]->colliderJntSph.base.ocFlags1 &= ~OC1_ON;
     sHands[RIGHT]->colliderJntSph.base.ocFlags1 &= ~OC1_ON;
-    Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
+    //Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
     this->actionFunc = BossFieldSst_HeadDeath;
 }
 
@@ -780,12 +780,12 @@ void BossFieldSst_HeadDarken(BossSst* this, PlayState* play) {
 
     if (this->timer >= 80) {
         if (this->timer == 80) {
-            sBodyStatic = true;
+            //sBodyStatic = true;
         }
-        sBodyColor.r = sBodyColor.g = sBodyColor.b = (this->timer * 3) - 240;
+        //sBodyColor.r = sBodyColor.g = sBodyColor.b = (this->timer * 3) - 240;
     } else {
-        sBodyColor.b = (80 - this->timer) / 1.0f;
-        sBodyColor.r = sBodyColor.g = sStaticColor.r = sStaticColor.g = sStaticColor.b = (80 - this->timer) / 8.0f;
+        //sBodyColor.b = (80 - this->timer) / 1.0f;
+        //sBodyColor.r = sBodyColor.g = sStaticColor.r = sStaticColor.g = sStaticColor.b = (80 - this->timer) / 8.0f;
         if (this->timer == 0) {
             BossFieldSst_HeadSetupFall(this);
         }
@@ -2199,8 +2199,6 @@ void BossFieldSst_HeadCollisionCheck(BossSst* this, PlayState* play) {
                 if (Actor_ApplyDamage(&this->actor) == 0) {
                     Enemy_StartFinishingBlow(play, &this->actor);
                     BossFieldSst_HeadSetupDeath(this, play);
-                    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
-                    BossRush_HandleCompleteBoss(play);
                 } else {
                     BossFieldSst_HeadSetupDamage(this);
                 }
