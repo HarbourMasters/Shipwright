@@ -532,6 +532,8 @@ void DrawEnhancementsMenu() {
                     " - Small keys: Small silver chest\n"
                     " - Boss keys: Vanilla size and texture\n"
                     " - Skulltula Tokens: Small skulltula chest\n"
+                    "\n"
+                    "NOTE: Textures will not apply if you are using a mod pack with a custom chest model."
                 );
                 if (CVarGetInteger("gChestSizeAndTextureMatchesContents", CSMC_DISABLED) != CSMC_DISABLED) {
                     UIWidgets::PaddedEnhancementCheckbox("Chests of Agony", "gChestSizeDependsStoneOfAgony", true, false);
@@ -913,6 +915,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Disables grottos rotating with the camera. To be used in conjunction with mods that want to replace grottos with 3D objects.");
                 UIWidgets::PaddedEnhancementCheckbox("Invisible Bunny Hood", "gHideBunnyHood", true, false);
                 UIWidgets::Tooltip("Turns Bunny Hood invisible while still maintaining its effects.");
+                UIWidgets::PaddedEnhancementCheckbox("Disable HUD Heart animations", "gNoHUDHeartAnimation", true, false);
+                UIWidgets::Tooltip("Disables the beating animation of the hearts on the HUD.");
 
                 ImGui::EndMenu();
             }
@@ -1059,6 +1063,8 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Fixes the bushes to drop items correctly rather than spawning undefined items.");
             UIWidgets::PaddedEnhancementCheckbox("Fix falling from vine edges", "gFixVineFall", true, false); 
             UIWidgets::Tooltip("Prevents immediately falling off climbable surfaces if climbing on the edges."); 
+            UIWidgets::PaddedEnhancementCheckbox("Fix Link's eyes open while sleeping", "gFixEyesOpenWhileSleeping", true, false);
+            UIWidgets::Tooltip("Fixes Link's eyes being open in the opening cutscene when he is supposed to be sleeping.");
 
             ImGui::EndMenu();
         }

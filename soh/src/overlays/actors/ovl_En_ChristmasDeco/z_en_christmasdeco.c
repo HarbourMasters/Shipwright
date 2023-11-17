@@ -13,7 +13,7 @@ void EnChristmasDeco_Update(Actor* thisx, PlayState* play);
 void EnChristmasDeco_Draw(Actor* thisx, PlayState* play);
 
 void EnChristmasDeco_Init(Actor* thisx, PlayState* play) {
-    
+
 }
 
 void EnChristmasDeco_Destroy(Actor* thisx, PlayState* play) {
@@ -25,17 +25,24 @@ void EnChristmasDeco_Update(Actor* thisx, PlayState* play) {
 }
 
 void EnChristmasDeco_Draw(Actor* thisx, PlayState* play) {
-    float decoSize = 1000.0f;
+    float decoSize = 10.0f;
 
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     Matrix_Scale(decoSize, decoSize, decoSize, MTXMODE_APPLY);
+
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
 
+    // Assertion Halt in Debug mode, switch to Release when testing.
     if (play->sceneNum == SCENE_KAKARIKO_VILLAGE) {
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFrontGateDecorDL);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gKakarikoDecorDL);
+        if (LINK_IS_CHILD) {
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gKakarikoChildDecorDL);
+        } else {
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gKakarikoAdultDecorDL);
+        }
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

@@ -34,7 +34,7 @@ static ColliderCylinderInit sCylinderInit = {
         BUMP_NONE,
         OCELEM_ON,
     },
-    { 50, 150, 0, { 0, 0, 0 } },
+    { 100, 330, 0, { 0, 0, 0 } },
 };
 
 static CollisionCheckInfoInit2 sColChkInfoInit = { 0, 0, 0, 0, MASS_IMMOVABLE };
@@ -42,7 +42,7 @@ static CollisionCheckInfoInit2 sColChkInfoInit = { 0, 0, 0, 0, MASS_IMMOVABLE };
 void EnChristmasTree_Init(Actor* thisx, PlayState* play) {
     EnChristmasTree* this = (EnChristmasTree*)thisx;
 
-    ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 90.0f);
+    ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 160.0f);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
@@ -65,7 +65,7 @@ void EnChristmasTree_Destroy(Actor* thisx, PlayState* play) {
 void EnChristmasTree_Wait(EnChristmasTree* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) { // if talk is initiated
         this->actionFunc = EnChristmasTree_Talk;
-    } else if ((this->actor.xzDistToPlayer < 170.0f)) { // talk range
+    } else if ((this->actor.xzDistToPlayer < 170.0f) && Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT)) { // talk range
         func_8002F2CC(&this->actor, play, 170.0f);
     }
 }
@@ -91,20 +91,17 @@ void EnChristmasTree_Talk(EnChristmasTree* this, PlayState* play) {
 void EnChristmasTree_SetupEndTitle(EnChristmasTree* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    player->actor.world.pos.x = -929.336;
-    player->actor.world.pos.y = 0;
-    player->actor.world.pos.z = 446.178;
-    player->actor.shape.rot.x = 0;
-    player->actor.shape.rot.y = 17537;
-    player->actor.shape.rot.z = 0;
-
     GameInteractor_SetNoUIActive(1);
 
-    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_END_TITLE, 0, 0, 0, 0, 0, 0, 2, false);
+    Actor_Spawn(&play->actorCtx, play, ACTOR_END_TITLE, 0, 0, 0, 0, 0, 0, 2, false);
 
     player->stateFlags1 = PLAYER_STATE1_INPUT_DISABLED;
 
     Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
+
+    Play_PerformSave(play);
+
+    Camera_ChangeMode(Play_GetCamera(play, play->mainCamera.thisIdx), CAM_MODE_STILL);
 
     this->actionFunc = EnChristmasTree_Wait;
 }
@@ -118,13 +115,26 @@ void EnChristmasTree_Update(Actor* thisx, PlayState* play) {
 
     Actor_SetFocus(&this->actor, 80.0f);
 
+    uint8_t triforceHuntActive = Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT);
+    float percentageCompleted = (float)gSaveContext.triforcePiecesCollected /
+                                (float)Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+
+    if ((percentageCompleted >= 1.0f || !triforceHuntActive) && !this->spawnedRupee) {
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_WONDER_ITEM, this->actor.world.pos.x, this->actor.world.pos.y + 280,
+                    this->actor.world.pos.z, 0, 0, LINK_IS_ADULT ? 1 : 4, 0x1ABF, false);
+        this->spawnedRupee = 1;
+    }
+
     this->actionFunc(this, play);
 }
 
 void EnChristmasTree_Draw(Actor* thisx, PlayState* play) {
+    EnChristmasTree* this = (EnChristmasTree*)thisx;
+    
+    float treeSize = 55.0f;
+    uint8_t triforceHuntActive = Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT);
     float percentageCompleted = (float)gSaveContext.triforcePiecesCollected /
                                 (float)Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
-    float treeSize = 30.0f;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -135,34 +145,34 @@ void EnChristmasTree_Draw(Actor* thisx, PlayState* play) {
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasTreeDL);
 
-    if (percentageCompleted >= 0.1f) {
+    if (percentageCompleted >= 0.1f || !triforceHuntActive) {
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor10DL);
     }
-    if (percentageCompleted >= 0.2f) {
+    if (percentageCompleted >= 0.2f || !triforceHuntActive) {
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor20DL);
     }
-    if (percentageCompleted >= 0.3f) {
+    if (percentageCompleted >= 0.3f || !triforceHuntActive) {
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor30DL);
     }
-    if (percentageCompleted >= 0.4f) {
+    if (percentageCompleted >= 0.4f || !triforceHuntActive) {
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor40DL);
     }
-    if (percentageCompleted >= 0.5f) {
+    if (percentageCompleted >= 0.5f || !triforceHuntActive) {
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor50DL);
     }
-    if (percentageCompleted >= 0.6f) {
+    if (percentageCompleted >= 0.6f || !triforceHuntActive) {
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor60DL);
     }
-    if (percentageCompleted >= 0.7f) {
+    if (percentageCompleted >= 0.7f || !triforceHuntActive) {
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor70DL);
     }
-    if (percentageCompleted >= 0.8f) {
+    if (percentageCompleted >= 0.8f || !triforceHuntActive) {
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor80DL);
     }
-    if (percentageCompleted >= 0.9f) {
+    if (percentageCompleted >= 0.9f || !triforceHuntActive) {
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor90DL);
     }
-    if (percentageCompleted >= 1.0f) {
+    if (percentageCompleted >= 1.0f || !triforceHuntActive) {
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasDecor100DL);
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gXmasStarDL);
     }
