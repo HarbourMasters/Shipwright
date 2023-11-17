@@ -477,7 +477,8 @@ namespace Logic {
   }
 
   bool HasBossSoul(RandomizerGet itemName) {
-    if (ShuffleBossSouls.Is(BOSSSOULS_OFF)) {
+    auto ctx = Rando::Context::GetInstance();
+    if (!ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS)) {
       return true;
     }
     switch(itemName) {
@@ -498,7 +499,7 @@ namespace Logic {
       case RG_TWINROVA_SOUL:
         return CanSummonTwinrova; break;
       case RG_GANON_SOUL:
-        return ShuffleBossSouls.Is(BOSSSOULS_ON_PLUS_GANON) ? CanSummonGanon : true;
+        return ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON) ? CanSummonGanon : true;
         break;
       default: break;
     }

@@ -2848,7 +2848,7 @@ void RandomizerSettingsWindow::DrawElement() {
 
                 // Shuffle Boss Souls
                 // Forces players to find a boss's soul before defeating them in their lair.
-                ImGui::Text("%s", Settings::ShuffleBossSouls.GetName().c_str());
+                ImGui::Text("%s", ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).GetName().c_str());
                 UIWidgets::InsertHelpHoverText("Shuffles 8 boss souls (one for each blue warp dungeon). A boss will not appear until you collect its respective soul."
                 "\n\"On + Ganon\" will also hide Ganon and Ganondorf behind a boss soul.");
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleBossSouls", randoShuffleBossSouls, RO_BOSS_SOULS_OFF);

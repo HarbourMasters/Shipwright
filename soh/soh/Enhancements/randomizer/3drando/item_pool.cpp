@@ -829,7 +829,7 @@ void GenerateItemPool() {
     ctx->PlaceItemInLocation(RC_KAK_100_GOLD_SKULLTULA_REWARD, RG_HUGE_RUPEE, false, true);
   }
 
-  if (ShuffleBossSouls.IsNot(BOSSSOULS_OFF)) {
+  if (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS)) {
     AddItemToMainPool(RG_GOHMA_SOUL);
     AddItemToMainPool(RG_KING_DODONGO_SOUL);
     AddItemToMainPool(RG_BARINADE_SOUL);
@@ -839,17 +839,17 @@ void GenerateItemPool() {
     AddItemToMainPool(RG_BONGO_BONGO_SOUL);
     AddItemToMainPool(RG_TWINROVA_SOUL);
 
-    IceTrapModels.push_back(0xE0);
-    IceTrapModels.push_back(0xE1);
-    IceTrapModels.push_back(0xE2);
-    IceTrapModels.push_back(0xE3);
-    IceTrapModels.push_back(0xE4);
-    IceTrapModels.push_back(0xE5);
-    IceTrapModels.push_back(0xE6);
-    IceTrapModels.push_back(0xE7);
-    if (ShuffleBossSouls.Is(BOSSSOULS_ON_PLUS_GANON)) {
+    ctx->possibleIceTrapModels.push_back(RG_GOHMA_SOUL);
+    ctx->possibleIceTrapModels.push_back(RG_KING_DODONGO_SOUL);
+    ctx->possibleIceTrapModels.push_back(RG_BARINADE_SOUL);
+    ctx->possibleIceTrapModels.push_back(RG_PHANTOM_GANON_SOUL);
+    ctx->possibleIceTrapModels.push_back(RG_VOLVAGIA_SOUL);
+    ctx->possibleIceTrapModels.push_back(RG_MORPHA_SOUL);
+    ctx->possibleIceTrapModels.push_back(RG_BONGO_BONGO_SOUL);
+    ctx->possibleIceTrapModels.push_back(RG_TWINROVA_SOUL);
+    if (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON)) {
       AddItemToMainPool(RG_GANON_SOUL);
-      IceTrapModels.push_back(0xE8);
+      ctx->possibleIceTrapModels.push_back(RG_GANON_SOUL);
     }
   }
 

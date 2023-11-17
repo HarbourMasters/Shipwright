@@ -703,39 +703,39 @@ void InitTrickNames() {
      Text{"Piece of Cheese", "Morceau de Fromage", "Piece of Cheese"},
      Text{"Triforce Shard", "Éclat de Triforce", "Triforce Shard"},
      Text{"Shiny Rock", "Caiiloux Brillant", "Shiny Rock"}};
-  trickNameTable[0xE0] = {
+  trickNameTable[RG_GOHMA_SOUL] = {
      Text{"Spider Sense", "", ""},
      Text{"Deku Spirit", "", ""},
      Text("Ghost of Ghoma", "", "")};
-  trickNameTable[0xE1] = {
+  trickNameTable[RG_KING_DODONGO_SOUL] = {
      Text{"Lizard Soul", "", ""},
      Text{"Regal Remains", "", ""},
      Text{"Dodongo's Core", "", ""}};
-  trickNameTable[0xE2] = {
+  trickNameTable[RG_BARINADE_SOUL] = {
      Text{"Parasitic Poltergeist", "", ""},
      Text{"Jabu Insides", "", ""},
      Text{"Barinade Bacteria", "", ""}};
-  trickNameTable[0xE3] = {
+  trickNameTable[RG_PHANTOM_GANON_SOUL] = {
      Text{"Bigger Poe", "", ""},
      Text{"Sacred Forest Pine Tree", "", ""},
      Text{"Ganon's Phantom", "", ""}};
-  trickNameTable[0xE4] = {
+  trickNameTable[RG_VOLVAGIA_SOUL] = {
      Text{"Dragon Roast", "", ""},
      Text{"Hot n' Ready", "", ""},
      Text{"Volvagia's Vitality", "", ""}};
-  trickNameTable[0xE5] = {
+  trickNameTable[RG_MORPHA_SOUL] = {
      Text{"Dihydrogen Monoxide", "", ""},
      Text{"Morpha Molecules", "", ""},
      Text{"Wet Stuff", "", ""}};
-  trickNameTable[0xE6] = {
+  trickNameTable[RG_BONGO_BONGO_SOUL] = {
      Text{"Shadow Soul", "", ""},
      Text{"Dark Essence", "", ""},
      Text{"Bongo Bongo's Bongo", "", ""}};
-  trickNameTable[0xE7] = {
+  trickNameTable[RG_TWINROVA_SOUL] = {
      Text{"Sandy Ashes", "", ""},
      Text{"Spiritual Spirit", "", ""},
      Text{"Twin Rovers", "", ""}};
-  trickNameTable[0xE8] = {
+  trickNameTable[RG_GANON_SOUL] = {
      Text{"Pure Evil", "", ""},
      Text{"Ganon's Ghost", "", ""},
      Text{"Pork", "", ""}};
