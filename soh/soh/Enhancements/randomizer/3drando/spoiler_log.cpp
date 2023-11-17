@@ -1,12 +1,11 @@
 #include "spoiler_log.hpp"
 
-#include "dungeon.hpp"
+#include "../dungeon.h"
 #include "../static_data.h"
 #include "../context.h"
-#include "entrance.hpp"
+#include "../entrance.h"
 #include "random.hpp"
-#include "settings.hpp"
-#include "trial.hpp"
+#include "../trial.h"
 #include "tinyxml2.h"
 #include "utils.hpp"
 #include "shops.hpp"
@@ -33,6 +32,7 @@
 #include <Context.h>
 
 using json = nlohmann::ordered_json;
+using namespace Rando;
 
 json jsonData;
 std::map<RandomizerHintTextKey, Rando::ItemLocation*> hintedLocations;
@@ -48,14 +48,15 @@ std::string placementtxt;
 static SpoilerData spoilerData;
 
 void GenerateHash() {
-    std::string hash = Settings::hash;
+    auto ctx = Rando::Context::GetInstance();
+    std::string hash = ctx->GetSettings()->GetHash();
     // adds leading 0s to the hash string if it has less than 10 digits.
     while (hash.length() < 10) {
         hash = "0" + hash;
     }
-    for (size_t i = 0, j = 0; i < Settings::hashIconIndexes.size(); i++, j += 2) {
+    for (size_t i = 0, j = 0; i < ctx->hashIconIndexes.size(); i++, j += 2) {
         int number = std::stoi(hash.substr(j, 2));
-        Settings::hashIconIndexes[i] = number;
+        ctx->hashIconIndexes[i] = number;
     }
 
     // Clear out spoiler log data here, in case we aren't going to re-generate it
@@ -114,26 +115,26 @@ void WriteIngameSpoilerLog() {
         //     continue;
         // }
         // Cows
-        if (!Settings::ShuffleCows && loc->IsCategory(Category::cCow)) {
+        if (!ctx->GetOption(RSK_SHUFFLE_COWS) && loc->IsCategory(Category::cCow)) {
             continue;
         }
         // Merchants
-        else if (Settings::ShuffleMerchants.Is(SHUFFLEMERCHANTS_OFF) && loc->IsCategory(Category::cMerchant)) {
+        else if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_OFF) && loc->IsCategory(Category::cMerchant)) {
             continue;
         }
         // Adult Trade
-        else if (!Settings::ShuffleAdultTradeQuest && loc->IsCategory(Category::cAdultTrade)) {
+        else if (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && loc->IsCategory(Category::cAdultTrade)) {
             continue;
         }
         // Chest Minigame
-        else if (Settings::ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_OFF) &&
+        else if (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_GENERIC_OFF) &&
                  loc->IsCategory(Category::cChestMinigame)) {
             continue;
         }
         // Gerudo Fortress
-        else if ((Settings::GerudoFortress.Is(GERUDOFORTRESS_OPEN) &&
+        else if ((ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_NORMAL) &&
                   (loc->IsCategory(Category::cVanillaGFSmallKey) || loc->GetHintKey() == RHT_GF_GERUDO_MEMBERSHIP_CARD)) ||
-                 (Settings::GerudoFortress.Is(GERUDOFORTRESS_FAST) && loc->IsCategory(Category::cVanillaGFSmallKey) &&
+                 (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST) && loc->IsCategory(Category::cVanillaGFSmallKey) &&
                   loc->GetHintKey() != RHT_GF_NORTH_F1_CARPENTER)) {
             continue;
         }
@@ -186,7 +187,7 @@ void WriteIngameSpoilerLog() {
         }
         // Shops
         else if (loc->IsShop()) {
-            if (Settings::Shopsanity.Is(SHOPSANITY_OFF)) {
+            if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
                 spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
             } else {
                 spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_SCENE;
@@ -199,14 +200,14 @@ void WriteIngameSpoilerLog() {
         }
         // Gold Skulltulas
         else if (loc->IsCategory(Category::cSkulltula) &&
-                 ((Settings::Tokensanity.Is(TOKENSANITY_OFF)) ||
-                  (Settings::Tokensanity.Is(TOKENSANITY_DUNGEONS) && !loc->IsDungeon()) ||
-                  (Settings::Tokensanity.Is(TOKENSANITY_OVERWORLD) && loc->IsDungeon()))) {
+                 ((ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OFF)) ||
+                  (ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_DUNGEONS) && !loc->IsDungeon()) ||
+                  (ctx->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OVERWORLD) && loc->IsDungeon()))) {
             spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
         }
         // Deku Scrubs
         else if (loc->IsCategory(Category::cDekuScrub) && !loc->IsCategory(Category::cDekuScrubUpgrades) &&
-                 Settings::Scrubsanity.Is(SCRUBSANITY_OFF)) {
+                 ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF)) {
             spoilerData.ItemLocations[spoilerItemIndex].CollectType = COLLECTTYPE_REPEATABLE;
             spoilerData.ItemLocations[spoilerItemIndex].RevealType = REVEALTYPE_ALWAYS;
         }
@@ -226,7 +227,7 @@ void WriteIngameSpoilerLog() {
     }
     spoilerData.ItemLocationsCount = spoilerItemIndex;
 
-    if (Settings::IngameSpoilers) {
+    if (/*Settings::IngameSpoilers TODO: Remove: don't think we have any need for this*/ false) {
         bool playthroughItemNotFound = false;
         // Write playthrough data to in-game spoiler log
         if (!spoilerOutOfSpace) {
@@ -357,76 +358,47 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
 
 // Writes the settings (without excluded locations, starting inventory and tricks) to the spoilerLog document.
 static void WriteSettings(const bool printAll = false) {
-  // auto parentNode = spoilerLog.NewElement("settings");
-
-  std::vector<Menu*> allMenus = Settings::GetAllOptionMenus();
-
-  for (const Menu* menu : allMenus) {
-    if (menu->name == "Item Usability Settings" ||
-        menu->name == "Multiplayer Settings") continue;
-
-    if (menu->name == "Timesaver Settings") {
-      for (const Option* setting : *menu->settingsList) {
-        if (setting->GetName() == "Big Poe Target Count" ||
-            setting->GetName() == "Cuccos to return" ||
-            setting->GetName() == "Skip Epona Race" ||
-            setting->GetName() == "Skip Tower Escape" ||
-            setting->GetName() == "Skip Child Stealth" ||
-            setting->GetName() == "Complete Mask Quest" ||
-            setting->GetName() == "Skip Scarecrow's Song" ||
-            setting->GetName() == "Enable Glitch-Useful Cutscenes") {
-            std::string settingName = menu->name + ":" + setting->GetName();
-            jsonData["settings"][settingName] = setting->GetSelectedOptionText();
+    // auto parentNode = spoilerLog.NewElement("settings");
+    auto ctx = Rando::Context::GetInstance();
+    auto allOptionGroups = ctx->GetSettings()->GetOptionGroups();
+    for (const Rando::OptionGroup& optionGroup : allOptionGroups) {
+        if (optionGroup.GetName() == "Timesaver Settings") {
+            for (const Rando::Option* option : optionGroup.GetOptions()) {
+                if (option->GetName() == "Big Poe Target Count" || option->GetName() == "Cuccos to return" ||
+                    option->GetName() == "Skip Epona Race" || option->GetName() == "Skip Tower Escape" ||
+                    option->GetName() == "Skip Child Stealth" || option->GetName() == "Complete Mask Quest" ||
+                    option->GetName() == "Skip Scarecrow's Song" ||
+                    option->GetName() == "Enable Glitch-Useful Cutscenes") {
+                    std::string settingName = optionGroup.GetName() + ":" + option->GetName();
+                    jsonData["settings"][settingName] = option->GetSelectedOptionText();
+                }
+            }
+            continue;
         }
-      }
-      continue;
+        if (optionGroup.GetContainsType() == Rando::OptionGroupType::DEFAULT && optionGroup.PrintInSpoiler()) {
+            for (const Rando::Option* option : optionGroup.GetOptions()) {
+                std::string settingName = optionGroup.GetName() + ":" + option->GetName();
+                jsonData["settings"][settingName] = option->GetSelectedOptionText();
+            }
+        }
     }
 
-    //This is a menu of settings, write them
-    if (menu->mode == OPTION_SUB_MENU && menu->printInSpoiler) {
-      for (const Option* setting : *menu->settingsList) {
-        std::string settingName = menu->name + ":" + setting->GetName();
-        jsonData["settings"][settingName] = setting->GetSelectedOptionText();
-      }
+    // spoilerLog.RootElement()->InsertEndChild(parentNode);
 
-
-      // for (const Option* setting : *menu->settingsList) {
-      //   if (printAll || (!setting->IsHidden() && setting->IsCategory(OptionCategory::Setting))) {
-      //     auto node = parentNode->InsertNewChildElement("setting");
-      //     node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
-      //     node->SetText(setting->GetSelectedOptionText().c_str());
-      //   }
-      // }
-    }
-  }
-
-  // 3drando doesn't have a "skip child zelda" setting, manually add it to the spoilerfile
-  jsonData["settings"]["Skip Child Zelda"] = Settings::skipChildZelda;
-
-  // 3drando uses an MQ dungeon count of 13 to mean random, manually add that to the spoilerfile as a bool
-  if (Settings::MQDungeonCount.GetSelectedOptionIndex() == 0) {
-    jsonData["settings"]["World Settings:MQ Dungeons"] = "None";
-  } else if (Settings::MQDungeonCount.GetSelectedOptionIndex() == 13) {
-    jsonData["settings"]["World Settings:MQ Dungeons"] = "Random Number";
-  } else {
-    jsonData["settings"]["World Settings:MQ Dungeons"] = "Set Number";
-  }
-
-  // spoilerLog.RootElement()->InsertEndChild(parentNode);
-
-  //     for (const uint32_t key : allLocations) {
-  //       ItemLocation* location = GetLocation(key);
-  //       settingsJsonData["locations"][location->GetName()] = location->GetPlacedItemName().english;
-  //   }
+    //     for (const uint32_t key : allLocations) {
+    //       ItemLocation* location = GetLocation(key);
+    //       settingsJsonData["locations"][location->GetName()] = location->GetPlacedItemName().english;
+    //   }
 }
 
 // Writes the excluded locations to the spoiler log, if there are any.
 static void WriteExcludedLocations() {
   // auto parentNode = spoilerLog.NewElement("excluded-locations");
+  auto ctx = Rando::Context::GetInstance();
 
-  for (size_t i = 1; i < Settings::excludeLocationsOptionsVector.size(); i++) {
-    for (const auto& location : Settings::excludeLocationsOptionsVector[i]) {
-      if (location->GetSelectedOptionIndex() == INCLUDE) {
+  for (size_t i = 1; i < ctx->GetSettings()->GetExcludeLocationsOptions().size(); i++) {
+    for (const auto& location : ctx->GetSettings()->GetExcludeLocationsOptions()[i]) {
+      if (location->GetSelectedOptionIndex() == RO_LOCATION_INCLUDE) {
         continue;
       }
 
@@ -445,61 +417,24 @@ static void WriteExcludedLocations() {
 
 // Writes the starting inventory to the spoiler log, if there is any.
 static void WriteStartingInventory() {
-  std::vector<std::vector<Option *>*> startingInventoryOptions = {
-    &Settings::startingItemsOptions,
-    &Settings::startingSongsOptions,
-    &Settings::startingEquipmentOptions,
-    &Settings::startingStonesMedallionsOptions,
-    &Settings::startingOthersOptions
-  };
-
-  for (std::vector<Option*>* menu : startingInventoryOptions) {
-      for (size_t i = 0; i < menu->size(); ++i) {
-          const auto setting = menu->at(i);
-          // Starting Songs
-          if (setting->GetName() == "Start with Zelda's Lullaby" || 
-              setting->GetName() == "Start with Epona's Song" ||
-              setting->GetName() == "Start with Saria's Song" || 
-              setting->GetName() == "Start with Sun's Song" ||
-              setting->GetName() == "Start with Song of Time" || 
-              setting->GetName() == "Start with Song of Storms" ||
-              setting->GetName() == "Start with Minuet of Forest" || 
-              setting->GetName() == "Start with Bolero of Fire" ||
-              setting->GetName() == "Start with Serenade of Water" || 
-              setting->GetName() == "Start with Requiem of Spirit" ||
-              setting->GetName() == "Start with Nocturne of Shadow" || 
-              setting->GetName() == "Start with Prelude of Light") {
-              jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
-          }
-      }
-  }
-  for (std::vector<Option *>* menu : startingInventoryOptions) {
-    for (size_t i = 0; i < menu->size(); ++i) {
-      const auto setting = menu->at(i);
-   
-      // we need to write these every time because we're not clearing jsondata, so
-      // the default logic of only writing it when we aren't using the default value
-      // doesn't work, and because it'd be bad to set every single possible starting
-      // inventory item as "false" in the json, we're just going to check
-      // to see if the name is one of the 3 we're using rn
-      if (setting->GetName() == "Start with Consumables" ||
-          setting->GetName() == "Start with Max Rupees" ||
-          setting->GetName() == "Gold Skulltula Tokens" ||
-          setting->GetName() == "Start with Fairy Ocarina" ||
-          setting->GetName() == "Start with Kokiri Sword" ||
-          setting->GetName() == "Start with Deku Shield") {
-        jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
-      }
+    auto ctx = Rando::Context::GetInstance();
+    const Rando::OptionGroup& optionGroup = ctx->GetSettings()->GetOptionGroup(RSG_STARTING_INVENTORY);
+    for (const Rando::OptionGroup* subGroup : optionGroup.GetSubGroups()) {
+        if (subGroup->GetContainsType() == Rando::OptionGroupType::DEFAULT) {
+            for (const Rando::Option* option : subGroup->GetOptions()) {
+                jsonData["settings"][option->GetName()] = option->GetSelectedOptionText();
+            }
+        }
     }
-  }
 }
 
 // Writes the enabled tricks to the spoiler log, if there are any.
 static void WriteEnabledTricks(tinyxml2::XMLDocument& spoilerLog) {
   //auto parentNode = spoilerLog.NewElement("enabled-tricks");
+  auto ctx = Rando::Context::GetInstance();
 
-  for (const auto& setting : Settings::trickOptions) {
-    if (setting->GetSelectedOptionIndex() != TRICK_ENABLED/* || !setting->IsCategory(OptionCategory::Setting)*/) {
+  for (const auto& setting : ctx->GetSettings()->GetOptionGroup(RSG_TRICKS).GetOptions()) {
+    if (setting->GetSelectedOptionIndex() != RO_GENERIC_ON/* || !setting->IsCategory(OptionCategory::Setting)*/) {
       continue;
     }
     jsonData["enabledTricks"].push_back(RemoveLineBreaks(RandomizerTricks::GetRTName((RandomizerTrick)std::stoi(setting->GetName()))).c_str());
@@ -513,36 +448,38 @@ static void WriteEnabledTricks(tinyxml2::XMLDocument& spoilerLog) {
 }
 
 // Writes the enabled glitches to the spoiler log, if there are any.
-static void WriteEnabledGlitches(tinyxml2::XMLDocument& spoilerLog) {
-  auto parentNode = spoilerLog.NewElement("enabled-glitches");
+// TODO: Implement Glitches
+// static void WriteEnabledGlitches(tinyxml2::XMLDocument& spoilerLog) {
+//   auto parentNode = spoilerLog.NewElement("enabled-glitches");
 
-  for (const auto& setting : Settings::glitchCategories) {
-    if (setting->Value<uint8_t>() == 0) {
-      continue;
-    }
+//   for (const auto& setting : Settings::glitchCategories) {
+//     if (setting->Value<uint8_t>() == 0) {
+//       continue;
+//     }
 
-    auto node = parentNode->InsertNewChildElement("glitch-category");
-    node->SetAttribute("name", setting->GetName().c_str());
-    node->SetText(setting->GetSelectedOptionText().c_str());
-  }
+//     auto node = parentNode->InsertNewChildElement("glitch-category");
+//     node->SetAttribute("name", setting->GetName().c_str());
+//     node->SetText(setting->GetSelectedOptionText().c_str());
+//   }
 
-  for (const auto& setting : Settings::miscGlitches) {
-    if (!setting->Value<bool>()) {
-      continue;
-    }
+//   for (const auto& setting : Settings::miscGlitches) {
+//     if (!setting->Value<bool>()) {
+//       continue;
+//     }
 
-    auto node = parentNode->InsertNewChildElement("misc-glitch");
-    node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
-  }
+//     auto node = parentNode->InsertNewChildElement("misc-glitch");
+//     node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
+//   }
 
-  if (!parentNode->NoChildren()) {
-    spoilerLog.RootElement()->InsertEndChild(parentNode);
-  }
-}
+//   if (!parentNode->NoChildren()) {
+//     spoilerLog.RootElement()->InsertEndChild(parentNode);
+//   }
+// }
 
 // Writes the Master Quest dungeons to the spoiler log, if there are any.
 static void WriteMasterQuestDungeons(tinyxml2::XMLDocument& spoilerLog) {
-    for (const auto* dungeon : Dungeon::dungeonList) {
+    auto ctx = Rando::Context::GetInstance();
+    for (const auto* dungeon : ctx->GetDungeons()->GetDungeonList()) {
         std::string dungeonName;
         if (dungeon->IsVanilla()) {
             continue;
@@ -553,7 +490,8 @@ static void WriteMasterQuestDungeons(tinyxml2::XMLDocument& spoilerLog) {
 
 // Writes the required trials to the spoiler log, if there are any.
 static void WriteRequiredTrials() {
-    for (const auto& trial : Trial::trialList) {
+    auto ctx = Rando::Context::GetInstance();
+    for (const auto& trial : ctx->GetTrials()->GetTrialList()) {
         if (trial->IsRequired()) {
             std::string trialName;
             switch (gSaveContext.language) {
@@ -590,13 +528,14 @@ static void WritePlaythrough() {
 
 //Write the randomized entrance playthrough to the spoiler log, if applicable
 static void WriteShuffledEntrances() {
-  for (uint32_t i = 0; i < playthroughEntrances.size(); ++i) {
+  auto ctx = Rando::Context::GetInstance();
+  for (uint32_t i = 0; i < ctx->GetEntranceShuffler()->playthroughEntrances.size(); ++i) {
     auto sphereNum = std::to_string(i);
     std::string sphereString = "sphere ";
     if (i < 10) sphereString += "0";
     sphereString += sphereNum;
-    for (Entrance* entrance : playthroughEntrances[i]) {
-      WriteShuffledEntrance(sphereString, entrance);
+    for (Entrance* entrance : ctx->GetEntranceShuffler()->playthroughEntrances[i]) {
+        WriteShuffledEntrance(sphereString, entrance);
     }
   }
 }
@@ -673,6 +612,7 @@ Rando::ItemLocation* GetItemLocation(RandomizerGet item) {
 
 // Writes the hints to the spoiler log, if they are enabled.
 static void WriteHints(int language) {
+    auto ctx = Rando::Context::GetInstance();
     std::string unformattedGanonText;
     std::string unformattedGanonHintText;
     std::string unformattedDampesText;
@@ -690,7 +630,7 @@ static void WriteHints(int language) {
             unformattedSheikText = GetSheikHintText().GetEnglish();
             unformattedSariaText = GetSariaHintText().GetEnglish();
 
-            if (Settings::ShuffleWarpSongs){
+            if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)){
               jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
               jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
               jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
@@ -709,7 +649,7 @@ static void WriteHints(int language) {
             unformattedSheikText = GetSheikHintText().GetFrench();
             unformattedSariaText = GetSariaHintText().GetFrench();
 
-            if (Settings::ShuffleWarpSongs){
+            if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)){
               jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
               jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
               jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
@@ -762,48 +702,51 @@ static void WriteHints(int language) {
     std::string sariaText = AutoFormatHintTextString(unformattedSariaText);
 
     jsonData["ganonText"] = ganonText;
-    if (Settings::LightArrowHintText){
+    if (ctx->GetOption(RSK_LIGHT_ARROWS_HINT)){
       jsonData["ganonHintText"] = ganonHintText;
       jsonData["lightArrowHintLoc"] = GetLightArrowHintLoc();
+      jsonData["lightArrowRegion"] = ctx->GetHint(RH_GANONDORF_HINT)->GetHintedRegion();
       jsonData["masterSwordHintLoc"] = GetMasterSwordHintLoc();
-      if (!Settings::GanonsTrialsCount.Is(0)){
-        jsonData["sheikText"] = sheikText;
+      if (!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)) {
+          jsonData["sheikText"] = sheikText;
       }
     }
-    if (Settings::DampeHintText){
+    if (ctx->GetOption(RSK_DAMPES_DIARY_HINT)){
       jsonData["dampeText"] = dampesText;
       jsonData["dampeHintLoc"] = GetDampeHintLoc();
+      jsonData["dampeRegion"] = ctx->GetHint(RH_DAMPES_DIARY)->GetHintedRegion();
     }
-    if (Settings::GregHintText){
+    if (ctx->GetOption(RSK_GREG_HINT)){
       jsonData["gregText"] = gregText;
       jsonData["gregLoc"] = GetGregHintLoc();
+      jsonData["gregRegion"] = ctx->GetHint(RH_GREG_RUPEE)->GetHintedRegion();
     }
-    if (Settings::SariaHintText){
+    if (ctx->GetOption(RSK_SARIA_HINT)){
       jsonData["sariaText"] = sariaText;
       jsonData["sariaHintLoc"] = GetSariaHintLoc();
+      jsonData["sariaRegion"] = ctx->GetHint(RH_SARIA)->GetHintedRegion();
     }
 
-    if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
+    if (ctx->GetOption(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NONE)) {
         return;
     }
-    auto ctx = Rando::Context::GetInstance();
     for (const RandomizerCheck key : Rando::StaticData::gossipStoneLocations) {
-        Rando::Hint* hint = ctx->GetHint((RandomizerHintKey)(key - RC_DMC_GOSSIP_STONE + 1));
+        Rando::Hint* hint = ctx->GetHint((RandomizerHintKey)(key - RC_COLOSSUS_GOSSIP_STONE + 1));
         Rando::ItemLocation* hintedLocation = ctx->GetItemLocation(hint->GetHintedLocation());
-        std::string unformattedHintTextString;
+        std::string hintTextString;
         switch (language) {
             case 0:
             default:
-                unformattedHintTextString = hint->GetText().GetEnglish();
+                hintTextString = hint->GetText().GetEnglish();
                 break;
             case 2:
-                unformattedHintTextString = hint->GetText().GetFrench();
+                hintTextString = hint->GetText().GetFrench();
                 break;
         }
 
         HintType hintType = hint->GetHintType();
 
-        std::string textStr = AutoFormatHintTextString(unformattedHintTextString);
+        std::string textStr = hintTextString;
         jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["hint"] = textStr;
         jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["type"] = hintTypeNames[(int)hintType];
         if ((hintType >= HINT_TYPE_ALWAYS && hintType < HINT_TYPE_JUNK) || hintType == HINT_TYPE_WOTH) {
@@ -837,8 +780,7 @@ static void WriteAllLocations(int language) {
 
         // If it's a simple item (not an ice trap, doesn't have a price)
         // just add the name of the item and move on
-        if (!location->HasScrubsanityPrice() &&
-            !location->HasShopsanityPrice() &&
+        if (!location->HasCustomPrice() &&
             location->GetPlacedRandomizerGet() != RG_ICE_TRAP) {
             
             jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()] = placedItemName;
@@ -848,7 +790,7 @@ static void WriteAllLocations(int language) {
         // We're dealing with a complex item, build out the json object for it
         jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["item"] = placedItemName;
 
-        if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
+        if (location->HasCustomPrice()) {
             jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["price"] =
                 location->GetPrice();
         }
@@ -861,15 +803,15 @@ static void WriteAllLocations(int language) {
               case 0:
               default:
                   jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["model"] =
-                      Rando::StaticData::ItemFromGIID(ctx->iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
+                      Rando::StaticData::RetrieveItem(ctx->overrides[location->GetRandomizerCheck()].LooksLike()).GetName().english;
                   jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["trickName"] = 
-                      GetIceTrapName(ctx->iceTrapModels[location->GetRandomizerCheck()]).english;
+                      ctx->overrides[location->GetRandomizerCheck()].GetTrickName().english;
                   break;
               case 2:
                   jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["model"] =
-                      Rando::StaticData::ItemFromGIID(ctx->iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
+                      Rando::StaticData::RetrieveItem(ctx->overrides[location->GetRandomizerCheck()].LooksLike()).GetName().french;
                   jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["trickName"] =
-                      GetIceTrapName(ctx->iceTrapModels[location->GetRandomizerCheck()]).french;
+                      ctx->overrides[location->GetRandomizerCheck()].GetTrickName().french;
                   break;
           }
       }
@@ -877,6 +819,7 @@ static void WriteAllLocations(int language) {
 }
 
 const char* SpoilerLog_Write(int language) {
+    auto ctx = Rando::Context::GetInstance();
     auto spoilerLog = tinyxml2::XMLDocument(false);
     spoilerLog.InsertEndChild(spoilerLog.NewDeclaration());
 
@@ -886,12 +829,12 @@ const char* SpoilerLog_Write(int language) {
     jsonData.clear();
 
     jsonData["version"] = (char*) gBuildVersion;
-    jsonData["seed"] = Settings::seedString;
-    jsonData["finalSeed"] = Settings::seed;
+    jsonData["seed"] = ctx->GetSettings()->GetSeedString();
+    jsonData["finalSeed"] = ctx->GetSettings()->GetSeed();
 
     // Write Hash
     int index = 0;
-    for (uint8_t seed_value : Settings::hashIconIndexes) {
+    for (uint8_t seed_value : ctx->hashIconIndexes) {
         jsonData["file_hash"][index] = seed_value;
         index++;
     }
@@ -908,7 +851,6 @@ const char* SpoilerLog_Write(int language) {
     WritePlaythrough();
     //WriteWayOfTheHeroLocation(spoilerLog);
 
-    auto ctx = Rando::Context::GetInstance();
     ctx->playthroughLocations.clear();
     ctx->playthroughBeatable = false;
     ctx->wothLocations.clear();
@@ -923,14 +865,14 @@ const char* SpoilerLog_Write(int language) {
 
     std::string jsonString = jsonData.dump(4);
     std::ostringstream fileNameStream;
-    for (int i = 0; i < Settings::hashIconIndexes.size(); i ++) {
+    for (int i = 0; i < ctx->hashIconIndexes.size(); i ++) {
         if (i) {
             fileNameStream << '-';
         }
-        if (Settings::hashIconIndexes[i] < 10) {
+        if (ctx->hashIconIndexes[i] < 10) {
             fileNameStream << '0';
         }
-        fileNameStream << std::to_string(Settings::hashIconIndexes[i]);
+        fileNameStream << std::to_string(ctx->hashIconIndexes[i]);
     }
     std::string fileName = fileNameStream.str();
     std::ofstream jsonFile(LUS::Context::GetPathRelativeToAppDirectory(
@@ -960,14 +902,15 @@ bool PlacementLog_Write() {
     auto rootNode = placementLog.NewElement("placement-log");
     placementLog.InsertEndChild(rootNode);
 
-    rootNode->SetAttribute("version", Settings::version.c_str());
-    rootNode->SetAttribute("seed", Settings::seed);
+    // rootNode->SetAttribute("version", Settings::version.c_str());
+    // rootNode->SetAttribute("seed", Settings::seed);
+    // TODO: Do we even use this?
 
     // WriteSettings(placementLog, true); // Include hidden settings.
     // WriteExcludedLocations(placementLog);
     // WriteStartingInventory(placementLog);
     WriteEnabledTricks(placementLog);
-    WriteEnabledGlitches(placementLog);
+    //WriteEnabledGlitches(placementLog);
     WriteMasterQuestDungeons(placementLog);
     //WriteRequiredTrials(placementLog);
 

@@ -5,14 +5,9 @@
 #include <memory>
 
 #include "3drando/text.hpp"
-#include "3drando/settings.hpp"
 #include "3drando/hint_list.hpp"
 #include "randomizerTypes.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
-
-namespace Rando {
-union ItemOverride_Value;
-}
 
 enum ItemType {
     ITEMTYPE_ITEM,
@@ -51,7 +46,6 @@ class Item {
     void ApplyEffect();
     void UndoEffect();
 
-    Rando::ItemOverride_Value Value() const;
     
     const Text& GetName() const;
     bool IsAdvancement() const;
@@ -60,7 +54,7 @@ class Item {
     RandomizerGet GetRandomizerGet();
     uint16_t GetPrice() const;
     std::shared_ptr<GetItemEntry> GetGIEntry() const;
-    GetItemEntry GetGIEntry_Copy();
+    GetItemEntry GetGIEntry_Copy() const;
     void SetPrice(uint16_t price_);
     void SetAsPlaythrough();
     void SetCustomDrawFunc(CustomDrawFunc);

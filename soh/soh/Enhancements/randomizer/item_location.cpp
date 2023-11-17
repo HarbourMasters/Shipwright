@@ -1,4 +1,5 @@
 #include "item_location.h"
+#include "context.h"
 
 namespace Rando {
 ItemLocation::ItemLocation(RandomizerCheck rc_) : rc(rc_) {}
@@ -21,6 +22,10 @@ void ItemLocation::RemoveFromPool() {
 
 const Item& ItemLocation::GetPlacedItem() const {
     return Rando::StaticData::RetrieveItem(placedItem);
+}
+
+RandomizerGet& ItemLocation::RefPlacedItem() {
+    return placedItem;
 }
 
 const Text& ItemLocation::GetPlacedItemName() const {
@@ -69,28 +74,19 @@ uint16_t ItemLocation::GetPrice() const {
 }
 
 void ItemLocation::SetPrice(uint16_t price_) {
-    if (hasShopsanityPrice || hasScrubsanityPrice) {
+    if (hasCustomPrice) {
         return;
     }
     price = price_;
 }
 
-bool ItemLocation::HasShopsanityPrice() const {
-    return hasShopsanityPrice;
+bool ItemLocation::HasCustomPrice() const {
+    return hasCustomPrice;
 }
 
-void ItemLocation::SetShopsanityPrice(uint16_t price_) {
+void ItemLocation::SetCustomPrice(uint16_t price_) {
     price = price_;
-    hasShopsanityPrice = true;
-}
-
-bool ItemLocation::HasScrubsanityPrice() const {
-    return hasScrubsanityPrice;
-}
-
-void ItemLocation::SetScrubsanityPrice(uint16_t price_) {
-    price = price_;
-    hasScrubsanityPrice = true;
+    hasCustomPrice = true;
 }
 
 bool ItemLocation::IsHintable() const {
@@ -129,31 +125,31 @@ bool ItemLocation::IsExcluded() const {
     return excludedOption.Value<bool>();
 }
 
-Option* ItemLocation::GetExcludedOption() {
+Rando::Option* ItemLocation::GetExcludedOption() {
     return &excludedOption;
 }
 
 void ItemLocation::AddExcludeOption() {
     const std::string name = StaticData::GetLocation(rc)->GetName();
     if (name.length() < 23) {
-        excludedOption = Option::Bool(name, {"Include", "Exclude"});
+        excludedOption = Rando::Option::Bool(name, {"Include", "Exclude"});
     } else {
         size_t lastSpace = name.rfind(' ', 23);
         std::string settingText = name;
         settingText.replace(lastSpace, 1, "\n ");
 
-        excludedOption = Option::Bool(settingText, {"Include", "Exclude"});
+        excludedOption = Rando::Option::Bool(settingText, {"Include", "Exclude"});
     }
     // RANDOTODO: this without string compares and loops
     bool alreadyAdded = false;
     Rando::Location* loc = StaticData::GetLocation(rc);
-    for (const Option* location : Settings::excludeLocationsOptionsVector[loc->GetCollectionCheckGroup()]) {
+    for (const Rando::Option* location : Rando::Context::GetInstance()->GetSettings()->GetExcludeOptionsForGroup(loc->GetCollectionCheckGroup())) {
         if (location->GetName() == excludedOption.GetName()) {
             alreadyAdded = true;
         }
     }
     if (!alreadyAdded) {
-        Settings::excludeLocationsOptionsVector[loc->GetCollectionCheckGroup()].push_back(&excludedOption);
+        Rando::Context::GetInstance()->GetSettings()->GetExcludeOptionsForGroup(loc->GetCollectionCheckGroup()).push_back(&excludedOption);
     }
 }
 
@@ -165,15 +161,6 @@ void ItemLocation::SetVisible(bool visibleInImGui_) {
 
 }
 
-ItemOverride_Key ItemLocation::Key() const {
-    ItemOverride_Key key;
-    key.all = 0;
-
-    key.scene = Rando::StaticData::GetLocation(rc)->GetScene();
-    key.type = static_cast<uint8_t>(StaticData::GetLocation(rc)->GetLocationType()); // TODO make sure these match up
-    return key;
-}
-
 void ItemLocation::ResetVariables() {
     addedToPool = false;
     placedItem = RG_NONE;
@@ -182,8 +169,7 @@ void ItemLocation::ResetVariables() {
     hintedAt = false;
     hintedBy = RH_NONE;
     price = 0;
-    hasShopsanityPrice = false;
-    hasScrubsanityPrice = false;
+    hasCustomPrice = false;
     hidden = false;
 }
 }

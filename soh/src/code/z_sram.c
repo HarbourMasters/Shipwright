@@ -221,8 +221,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
     gSaveContext.n64ddFlag = fileChooseCtx->n64ddFlag;
 
-    if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == QUEST_RANDOMIZER &&
-        strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
+    if (Randomizer_IsSeedGenerated()) {
         gSaveContext.questId = QUEST_RANDOMIZER;
 
         Randomizer_InitSaveFile();

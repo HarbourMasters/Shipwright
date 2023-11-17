@@ -1,9 +1,9 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
-#include "../entrance.hpp"
+#include "../../entrance.h"
 
 using namespace Logic;
-using namespace Settings;
+using namespace Rando;
 
 void AreaTable_Init_HyruleField() {
   areaTable[RR_HYRULE_FIELD] = Area("Hyrule Field", "Hyrule Field", RHT_HYRULE_FIELD, DAY_NIGHT_CYCLE, {
@@ -115,7 +115,7 @@ void AreaTable_Init_HyruleField() {
                   LocationAccess(RC_LH_SUN,                    {[]{return IsAdult && WaterTempleClear && CanUse(RG_FAIRY_BOW);}}),
                   LocationAccess(RC_LH_FREESTANDING_POH,       {[]{return IsAdult && (CanUse(RG_SCARECROW) || CanPlantBean(RR_LAKE_HYLIA));}}),
                   LocationAccess(RC_LH_GS_BEAN_PATCH,          {[]{return CanPlantBugs && CanChildAttack;}}),
-                  LocationAccess(RC_LH_GS_LAB_WALL,            {[]{return IsChild && (HookshotOrBoomerang || (LogicLabWallGS && CanJumpslash)) && AtNight && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_LH_GS_LAB_WALL,            {[]{return IsChild && (HookshotOrBoomerang || (randoCtx->GetTrickOption(RT_LH_LAB_WALL_GS) && CanJumpslash)) && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(RC_LH_GS_SMALL_ISLAND,        {[]{return IsChild && CanChildAttack && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(RC_LH_GS_TREE,                {[]{return IsAdult && CanUse(RG_LONGSHOT) && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(RC_LH_LAB_GOSSIP_STONE,       {[]{return true;}}),
@@ -128,7 +128,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(RR_LH_OWL_FLIGHT,         {[]{return IsChild;}}),
                   Entrance(RR_LH_FISHING_ISLAND,     {[]{return IsChild || CanUse(RG_SCARECROW) || CanPlantBean(RR_LAKE_HYLIA) || WaterTempleClear;}}),
                   Entrance(RR_LH_LAB,                {[]{return true;}}),
-                  Entrance(RR_WATER_TEMPLE_ENTRYWAY, {[]{return CanUse(RG_HOOKSHOT) && ((CanUse(RG_IRON_BOOTS) || (LogicWaterHookshotEntry && ProgressiveScale >= 2)) || (IsAdult && CanUse(RG_LONGSHOT) && ProgressiveScale >= 2));}}),
+                  Entrance(RR_WATER_TEMPLE_ENTRYWAY, {[]{return CanUse(RG_HOOKSHOT) && ((CanUse(RG_IRON_BOOTS) || (randoCtx->GetTrickOption(RT_LH_WATER_HOOKSHOT) && ProgressiveScale >= 2)) || (IsAdult && CanUse(RG_LONGSHOT) && ProgressiveScale >= 2));}}),
                   Entrance(RR_LH_GROTTO,             {[]{return true;}}),
   });
 
@@ -148,7 +148,7 @@ void AreaTable_Init_HyruleField() {
                   EventAccess(&EyedropsAccess, {[]{return EyedropsAccess || (IsAdult && (EyeballFrogAccess || (EyeballFrog && DisableTradeRevert)));}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_LH_LAB_DIVE,     {[]{return ProgressiveScale >= 2 || (LogicLabDiving && CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT));}}),
+                  LocationAccess(RC_LH_LAB_DIVE,     {[]{return ProgressiveScale >= 2 || (randoCtx->GetTrickOption(RT_LH_LAB_DIVING) && CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT));}}),
                   LocationAccess(RC_LH_TRADE_FROG,   {[]{return IsAdult && EyeballFrog;}}),
                   LocationAccess(RC_LH_GS_LAB_CRATE, {[]{return CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT);}}),
                 }, {

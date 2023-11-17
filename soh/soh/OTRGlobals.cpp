@@ -41,6 +41,7 @@
 #include "Enhancements/randomizer/randomizer_check_tracker.h"
 #include "Enhancements/randomizer/3drando/random.hpp"
 #include "Enhancements/randomizer/static_data.h"
+#include "Enhancements/randomizer/dungeon.h"
 #include "Enhancements/gameplaystats.h"
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "frame_interpolation.h"
@@ -295,6 +296,8 @@ OTRGlobals::OTRGlobals() {
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandoContext = Rando::Context::CreateInstance();
+    gRandoContext->AddExcludedOptions();
+    gRandoContext->GetSettings()->CreateOptions();
     gRandomizer = std::make_shared<Randomizer>();
 
     hasMasterQuest = hasOriginal = false;
@@ -1144,10 +1147,11 @@ uint32_t IsSceneMasterQuest(s16 sceneNum) {
                 value = 1;
             } else {
                 value = 0;
-                if (IS_RANDO &&
-                    !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty() &&
-                    OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
-                    value = 1;
+                if (IS_RANDO) {
+                    auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(sceneNum);
+                    if (dungeon != nullptr && dungeon->IsMQ()) {
+                        value = 1;
+                    }
                 }
             }
         }
@@ -1316,7 +1320,12 @@ extern "C" char* ResourceMgr_LoadIfDListByName(const char* filePath) {
 }
 
 extern "C" Sprite* GetSeedTexture(uint8_t index) {
-    return OTRGlobals::Instance->gRandomizer->GetSeedTexture(index);
+
+    return OTRGlobals::Instance->gRandoContext->GetSeedTexture(index);
+}
+
+extern "C" uint8_t GetSeedIconIndex(uint8_t index) {
+    return OTRGlobals::Instance->gRandoContext->hashIconIndexes[index];
 }
 
 extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
@@ -1938,36 +1947,20 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
     return 0;
 }
 
-extern "C" void Randomizer_LoadSettings(const char* spoilerFileName) {
-    OTRGlobals::Instance->gRandomizer->LoadRandomizerSettings(spoilerFileName);
+extern "C" void Randomizer_ParseSpoiler(const char* fileLoc) {
+    OTRGlobals::Instance->gRandoContext->ParseSpoiler(fileLoc, CVarGetInteger("gPlandoMode", 0));
 }
 
-extern "C" void Randomizer_LoadHintLocations(const char* spoilerFileName) {
-    OTRGlobals::Instance->gRandomizer->LoadHintLocations(spoilerFileName);
+extern "C" void Randomizer_LoadHintMessages() {
+    OTRGlobals::Instance->gRandomizer->LoadHintMessages();
 }
 
-extern "C" void Randomizer_LoadMerchantMessages(const char* spoilerFileName) {
-    OTRGlobals::Instance->gRandomizer->LoadMerchantMessages(spoilerFileName);
-}
-
-extern "C" void Randomizer_LoadRequiredTrials(const char* spoilerFileName) {
-    OTRGlobals::Instance->gRandomizer->LoadRequiredTrials(spoilerFileName);
-}
-
-extern "C" void Randomizer_LoadMasterQuestDungeons(const char* spoilerFileName) {
-    OTRGlobals::Instance->gRandomizer->LoadMasterQuestDungeons(spoilerFileName);
-}
-
-extern "C" void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent) {
-    OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName, silent);
+extern "C" void Randomizer_LoadMerchantMessages() {
+    OTRGlobals::Instance->gRandomizer->LoadMerchantMessages();
 }
 
 extern "C" bool Randomizer_IsTrialRequired(RandomizerInf trial) {
     return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trial);
-}
-
-extern "C" void Randomizer_LoadEntranceOverrides(const char* spoilerFileName, bool silent) {
-    OTRGlobals::Instance->gRandomizer->LoadEntranceOverrides(spoilerFileName, silent);
 }
 
 extern "C" u32 SpoilerFileExists(const char* spoilerFileName) {
@@ -1975,7 +1968,7 @@ extern "C" u32 SpoilerFileExists(const char* spoilerFileName) {
 }
 
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey) {
-    return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(randoSettingKey);
+    return OTRGlobals::Instance->gRandoContext->GetOption(randoSettingKey).GetSelectedOptionIndex();
 }
 
 extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
@@ -2023,6 +2016,38 @@ extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(
     return OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck);
 }
 
+extern "C" void Randomizer_GenerateSeed() {
+    std::string seed = "";
+    if (OTRGlobals::Instance->gRandoContext->IsSpoilerLoaded()) {
+        seed = OTRGlobals::Instance->gRandoContext->GetSettings()->GetSeedString();
+    }
+    GenerateRandomizer(seed);
+}
+
+extern "C" uint8_t Randomizer_IsSeedGenerated() {
+    return OTRGlobals::Instance->gRandoContext->IsSeedGenerated() ? 1 : 0;
+}
+
+extern "C" void Randomizer_SetSeedGenerated(bool seedGenerated) {
+    OTRGlobals::Instance->gRandoContext->SetSeedGenerated(seedGenerated);
+}
+
+extern "C" uint8_t Randomizer_IsSpoilerLoaded() {
+    return OTRGlobals::Instance->gRandoContext->IsSpoilerLoaded() ? 1 : 0;
+}
+
+extern "C" void Randomizer_SetSpoilerLoaded(bool spoilerLoaded) {
+    OTRGlobals::Instance->gRandoContext->SetSpoilerLoaded(spoilerLoaded);
+}
+
+extern "C" uint8_t Randomizer_IsPlandoLoaded() {
+    return OTRGlobals::Instance->gRandoContext->IsPlandoLoaded() ? 1 : 0;
+}
+
+extern "C" void Randomizer_SetPlandoLoaded(bool plandoLoaded) {
+    OTRGlobals::Instance->gRandoContext->SetPlandoLoaded(plandoLoaded);
+}
+
 CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
     s16 giid;
     if (player->getItemEntry.objectId != OBJECT_INVALID) {
@@ -2057,7 +2082,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 messageEntry = Randomizer_GetCustomGetItemMessage(player);
             }
         } else if (textId == TEXT_ITEM_DUNGEON_MAP || textId == TEXT_ITEM_COMPASS) {
-            if (DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_STARTING_MAPS_COMPASSES)) {
+            if (DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS)) {
                 if (textId == TEXT_ITEM_DUNGEON_MAP) {
                     messageEntry = OTRGlobals::Instance->gRandomizer->GetMapGetItemMessageWithHint(player->getItemEntry);
                 } else {

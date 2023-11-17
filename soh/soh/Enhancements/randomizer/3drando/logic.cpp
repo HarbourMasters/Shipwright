@@ -6,10 +6,8 @@
 #include <string_view>
 #include <vector>
 
-#include "settings.hpp"
-#include "dungeon.hpp"
-
-using namespace Settings;
+#include "../dungeon.h"
+#include "../context.h"
 
 namespace Logic {
 
@@ -440,29 +438,30 @@ namespace Logic {
 
     switch (itemName) {
       // Adult items
-      case RG_FAIRY_BOW:               return IsAdult || BowAsChild;
-      case RG_MEGATON_HAMMER:    return IsAdult || HammerAsChild;
-      case RG_IRON_BOOTS:        return IsAdult || IronBootsAsChild;
-      case RG_HOVER_BOOTS:       return IsAdult || HoverBootsAsChild;
-      case RG_HOOKSHOT:          return IsAdult || HookshotAsChild;
-      case RG_LONGSHOT:          return IsAdult || HookshotAsChild;
+      // TODO: Uncomment those if we ever implement more item usability settings
+      case RG_FAIRY_BOW:               return IsAdult;// || BowAsChild;
+      case RG_MEGATON_HAMMER:    return IsAdult;// || HammerAsChild;
+      case RG_IRON_BOOTS:        return IsAdult;// || IronBootsAsChild;
+      case RG_HOVER_BOOTS:       return IsAdult;// || HoverBootsAsChild;
+      case RG_HOOKSHOT:          return IsAdult;// || HookshotAsChild;
+      case RG_LONGSHOT:          return IsAdult;// || HookshotAsChild;
       case RG_SILVER_GAUNTLETS:  return IsAdult;
       case RG_GOLDEN_GAUNTLETS:  return IsAdult;
-      case RG_GORON_TUNIC:       return IsAdult || GoronTunicAsChild;
-      case RG_ZORA_TUNIC:        return IsAdult || ZoraTunicAsChild;
-      case RG_SCARECROW:         return IsAdult || HookshotAsChild;
-      case RG_DISTANT_SCARECROW: return IsAdult || HookshotAsChild;
+      case RG_GORON_TUNIC:       return IsAdult;// || GoronTunicAsChild;
+      case RG_ZORA_TUNIC:        return IsAdult;// || ZoraTunicAsChild;
+      case RG_SCARECROW:         return IsAdult;// || HookshotAsChild;
+      case RG_DISTANT_SCARECROW: return IsAdult;// || HookshotAsChild;
       case RG_HYLIAN_SHIELD:     return IsAdult;
-      case RG_MIRROR_SHIELD:     return IsAdult || MirrorShieldAsChild;
-      case RG_MASTER_SWORD:      return IsAdult || MasterSwordAsChild;
-      case RG_BIGGORON_SWORD:    return IsAdult || BiggoronSwordAsChild;
+      case RG_MIRROR_SHIELD:     return IsAdult;// || MirrorShieldAsChild;
+      case RG_MASTER_SWORD:      return IsAdult;// || MasterSwordAsChild;
+      case RG_BIGGORON_SWORD:    return IsAdult;// || BiggoronSwordAsChild;
 
       // Child items
-      case RG_FAIRY_SLINGSHOT:         return IsChild || SlingshotAsAdult;
-      case RG_BOOMERANG:         return IsChild || BoomerangAsAdult;
-      case RG_KOKIRI_SWORD:      return IsChild || KokiriSwordAsAdult;
-      case RG_STICKS:            return IsChild || StickAsAdult;
-      case RG_DEKU_SHIELD:       return IsChild || DekuShieldAsAdult;
+      case RG_FAIRY_SLINGSHOT:         return IsChild;// || SlingshotAsAdult;
+      case RG_BOOMERANG:         return IsChild;// || BoomerangAsAdult;
+      case RG_KOKIRI_SWORD:      return IsChild;// || KokiriSwordAsAdult;
+      case RG_STICKS:            return IsChild;// || StickAsAdult;
+      case RG_DEKU_SHIELD:       return IsChild;// || DekuShieldAsAdult;
 
       // Magic items
       default: return MagicMeter && (IsMagicItem(itemName) || (IsMagicArrow(itemName) && CanUse(RG_FAIRY_BOW)));
@@ -505,7 +504,7 @@ namespace Logic {
     }
   }
 
-  uint8_t GetDifficultyValueFromString(Option& glitchOption) {
+  uint8_t GetDifficultyValueFromString(Rando::Option& glitchOption) {
     return 0;
   }
 
@@ -522,11 +521,12 @@ namespace Logic {
   }
 
   bool CanDoGlitch(GlitchType glitch) {
+    // TODO: Uncomment when glitches are implemented
     switch(glitch) {
       case GlitchType::EquipSwapDins:
-        return ((IsAdult && HasItem(RG_DINS_FIRE)) || (IsChild && (HasItem(RG_STICKS) || HasItem(RG_DINS_FIRE)))) && GlitchEquipSwapDins;
+        return ((IsAdult && HasItem(RG_DINS_FIRE)) || (IsChild && (HasItem(RG_STICKS) || HasItem(RG_DINS_FIRE)))) && false;//GlitchEquipSwapDins;
       case GlitchType::EquipSwap: // todo: add bunny hood to adult item equippable list and child trade item to child item equippable list
-        return ((IsAdult && (HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE))) || (IsChild && (HasItem(RG_STICKS) || HasItem(RG_FAIRY_SLINGSHOT) || HasItem(RG_BOOMERANG) || HasBottle || Nuts || Ocarina || HasItem(RG_LENS_OF_TRUTH) || HasExplosives || (MagicBean || MagicBeanPack) || HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE)))) && GlitchEquipSwap;
+        return ((IsAdult && (HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE))) || (IsChild && (HasItem(RG_STICKS) || HasItem(RG_FAIRY_SLINGSHOT) || HasItem(RG_BOOMERANG) || HasBottle || Nuts || Ocarina || HasItem(RG_LENS_OF_TRUTH) || HasExplosives || (MagicBean || MagicBeanPack) || HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE)))) && false;//GlitchEquipSwap;
     }
 
     //Shouldn't be reached
@@ -535,6 +535,7 @@ namespace Logic {
 
   //Updates all logic helpers. Should be called whenever a non-helper is changed
   void UpdateHelpers() {
+    auto ctx = Rando::Context::GetInstance();
     NumBottles      = ((NoBottles) ? 0 : (Bottles + ((DeliverLetter) ? 1 : 0)));
     HasBottle       = NumBottles >= 1;
     Slingshot       = (ProgressiveBulletBag >= 1) && (BuySeed || AmmoCanDrop);
@@ -553,7 +554,7 @@ namespace Logic {
     AdultsWallet    = ProgressiveWallet     >= 1;
     BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
-    ScarecrowSong    = ScarecrowSong || FreeScarecrow || (ChildScarecrow && AdultScarecrow);
+    ScarecrowSong    = ScarecrowSong || ctx->GetOption(RSK_SKIP_SCARECROWS_SONG) || (ChildScarecrow && AdultScarecrow);
     Scarecrow        = Hookshot && CanPlay(ScarecrowSong);
     DistantScarecrow = Longshot && CanPlay(ScarecrowSong);
 
@@ -570,28 +571,29 @@ namespace Logic {
     Nuts         = DekuNutDrop || Nuts;
     Sticks       = DekuStickDrop || Sticks;
     Bugs         = HasBottle && BugsAccess;
-    BlueFire     = (HasBottle && BlueFireAccess) || (BlueFireArrows && CanUse(RG_ICE_ARROWS));
+    BlueFire     = (HasBottle && BlueFireAccess) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
     Fish         = HasBottle && FishAccess;
     Fairy        = HasBottle && FairyAccess;
 
     FoundBombchus   = (BombchuDrop || Bombchus || Bombchus5 || Bombchus10 || Bombchus20);
-    CanPlayBowling  = (BombchusInLogic && FoundBombchus) || (!BombchusInLogic && BombBag);
-    HasBombchus     = (BuyBombchus10 || BuyBombchus20 || (AmmoDrops.Is(AMMODROPS_BOMBCHU) && FoundBombchus));
+    CanPlayBowling  = (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && FoundBombchus) || (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && BombBag);
+    // TODO: Implement Ammo Drop Setting in place of bombchu drops
+    HasBombchus     = (BuyBombchus10 || BuyBombchus20 || (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON_PLUS_BOMBCHU) && FoundBombchus));
 
-    HasExplosives =  Bombs || (BombchusInLogic && HasBombchus);
+    HasExplosives =  Bombs || (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && HasBombchus);
 
     HasBoots = IronBoots || HoverBoots;
 
     //Unshuffled adult trade quest
-    Eyedrops     = Eyedrops     || (!ShuffleAdultTradeQuest && ClaimCheck);
-    EyeballFrog  = EyeballFrog  || (!ShuffleAdultTradeQuest && Eyedrops);
-    Prescription = Prescription || (!ShuffleAdultTradeQuest && EyeballFrog);
-    BrokenSword  = BrokenSword  || (!ShuffleAdultTradeQuest && Prescription);
-    PoachersSaw  = PoachersSaw  || (!ShuffleAdultTradeQuest && BrokenSword);
-    OddPoultice  = OddPoultice  || (!ShuffleAdultTradeQuest && PoachersSaw);
-    OddMushroom  = OddMushroom  || (!ShuffleAdultTradeQuest && OddPoultice);
-    Cojiro       = Cojiro       || (!ShuffleAdultTradeQuest && OddMushroom);
-    PocketEgg    = PocketEgg    || (!ShuffleAdultTradeQuest && Cojiro);
+    Eyedrops     = Eyedrops     || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && ClaimCheck);
+    EyeballFrog  = EyeballFrog  || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Eyedrops);
+    Prescription = Prescription || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && EyeballFrog);
+    BrokenSword  = BrokenSword  || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Prescription);
+    PoachersSaw  = PoachersSaw  || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && BrokenSword);
+    OddPoultice  = OddPoultice  || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && PoachersSaw);
+    OddMushroom  = OddMushroom  || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && OddPoultice);
+    Cojiro       = Cojiro       || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && OddMushroom);
+    PocketEgg    = PocketEgg    || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Cojiro);
 
     // IsChild = Age == AGE_CHILD;
     // IsAdult = Age == AGE_ADULT;
@@ -604,34 +606,34 @@ namespace Logic {
     CanStunDeku     = CanAdultAttack || CanChildAttack || Nuts || HasShield;
     CanCutShrubs    = CanUse(RG_KOKIRI_SWORD) || CanUse(RG_BOOMERANG) || HasExplosives || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD);
     CanDive         = ProgressiveScale >= 1;
-    CanLeaveForest  = OpenForest.IsNot(OPENFOREST_CLOSED) || IsAdult || DekuTreeClear || ShuffleInteriorEntrances || ShuffleOverworldEntrances;
+    CanLeaveForest  = ctx->GetOption(RSK_FOREST).IsNot(RO_FOREST_CLOSED) || IsAdult || DekuTreeClear || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES);
     CanPlantBugs    = IsChild && Bugs;
     CanRideEpona    = IsAdult && Epona && CanPlay(EponasSong);
     CanSummonGossipFairy            = Ocarina && (ZeldasLullaby || EponasSong || SongOfTime || SunsSong);
     CanSummonGossipFairyWithoutSuns = Ocarina && (ZeldasLullaby || EponasSong || SongOfTime);
     Hearts          = BaseHearts + HeartContainer + (PieceOfHeart >> 2);
     EffectiveHealth = ((Hearts << (2 + DoubleDefense)) >> Multiplier) + ((Hearts << (2 + DoubleDefense)) % (1 << Multiplier) > 0); //Number of half heart hits to die, ranges from 1 to 160
-    FireTimer       = CanUse(RG_GORON_TUNIC) ? 255 : (LogicFewerTunicRequirements) ? (Hearts * 8) : 0;
-    WaterTimer      = CanUse(RG_ZORA_TUNIC) ? 255 : (LogicFewerTunicRequirements) ? (Hearts * 8) : 0;
+    FireTimer       = CanUse(RG_GORON_TUNIC) ? 255 : (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS)) ? (Hearts * 8) : 0;
+    WaterTimer      = CanUse(RG_ZORA_TUNIC) ? 255 : (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS)) ? (Hearts * 8) : 0;
     NeedNayrusLove      = (EffectiveHealth == 1);
     CanSurviveDamage    = !NeedNayrusLove || CanUse(RG_NAYRUS_LOVE);
     CanTakeDamage       = Fairy || CanSurviveDamage;
     CanTakeDamageTwice  = (Fairy && NumBottles >= 2) || ((EffectiveHealth == 2) && (CanUse(RG_NAYRUS_LOVE) || Fairy)) || (EffectiveHealth > 2);
     //CanPlantBean        = IsChild && (MagicBean || MagicBeanPack);
-    CanOpenBombGrotto   = CanBlastOrSmash       && (ShardOfAgony || LogicGrottosWithoutAgony);
-    CanOpenStormGrotto  = CanPlay(SongOfStorms) && (ShardOfAgony || LogicGrottosWithoutAgony);
+    CanOpenBombGrotto   = CanBlastOrSmash       && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
+    CanOpenStormGrotto  = CanPlay(SongOfStorms) && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
     HookshotOrBoomerang = CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
-    CanGetNightTimeGS   = (CanPlay(SunsSong) || !NightGSExpectSuns);
+    CanGetNightTimeGS   = (CanPlay(SunsSong) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG));
 
-    GuaranteeTradePath     = ShuffleInteriorEntrances || ShuffleOverworldEntrances || LogicBiggoronBolero || CanBlastOrSmash || StopGCRollingGoronAsAdult;
+    GuaranteeTradePath     = ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetTrickOption(RT_DMT_BOLERO_BIGGORON) || CanBlastOrSmash || StopGCRollingGoronAsAdult;
   //GuaranteeHint          = (hints == "Mask" && MaskofTruth) || (hints == "Agony") || (hints != "Mask" && hints != "Agony");
     HasFireSource          = CanUse(RG_DINS_FIRE) || CanUse(RG_FIRE_ARROWS);
     HasFireSourceWithTorch = HasFireSource || CanUse(RG_STICKS);
 
     //Gerudo Fortress
-    CanFinishGerudoFortress = (GerudoFortress.Is(GERUDOFORTRESS_NORMAL)    && GerudoFortressKeys >= 4 && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (GerudoToken || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || LogicGerudoKitchen)) ||
-                              (GerudoFortress.Is(GERUDOFORTRESS_FAST)      && GerudoFortressKeys >= 1 && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD))) ||
-                              (GerudoFortress.IsNot(GERUDOFORTRESS_NORMAL) && GerudoFortress.IsNot(GERUDOFORTRESS_FAST));
+    CanFinishGerudoFortress = (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_NORMAL)    && GerudoFortressKeys >= 4 && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (GerudoToken || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
+                              (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_FAST)      && GerudoFortressKeys >= 1 && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD))) ||
+                              (ctx->GetOption(RSK_GERUDO_FORTRESS).IsNot(RO_GF_NORMAL) && ctx->GetOption(RSK_GERUDO_FORTRESS).IsNot(RO_GF_FAST));
 
     HasShield          = CanUse(RG_HYLIAN_SHIELD) || CanUse(RG_DEKU_SHIELD); //Mirror shield can't reflect attacks
     CanShield          = CanUse(RG_MIRROR_SHIELD) || HasShield;
@@ -649,26 +651,25 @@ namespace Logic {
     DungeonCount          = (DekuTreeClear ? 1:0) + (DodongosCavernClear ? 1:0) + (JabuJabusBellyClear ? 1:0) + (ForestTempleClear ? 1:0) + (FireTempleClear ? 1:0) + (WaterTempleClear ? 1:0) + (SpiritTempleClear ? 1:0) + (ShadowTempleClear ? 1:0);
     HasAllStones          = StoneCount == 3;
     HasAllMedallions      = MedallionCount == 6;
-    GregInBridgeLogic     = BridgeRewardOptions.Is(BRIDGE_OPTION_GREG);
-    GregInLacsLogic       = LACSRewardOptions.Is(LACS_OPTION_GREG);
+    GregInBridgeLogic     = ctx->GetOption(RSK_BRIDGE_OPTIONS).Is(RO_BRIDGE_GREG);
+    GregInLacsLogic       = ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD);
 
-    CanBuildRainbowBridge = Bridge.Is(RAINBOWBRIDGE_OPEN)                                                                         ||
-                           (Bridge.Is(RAINBOWBRIDGE_VANILLA)    && ShadowMedallion && SpiritMedallion && LightArrows)             ||
-                           (Bridge.Is(RAINBOWBRIDGE_STONES)     && StoneCount + (Greg && GregInBridgeLogic ? 1 : 0) >= BridgeStoneCount.Value<uint8_t>())                    ||
-                           (Bridge.Is(RAINBOWBRIDGE_MEDALLIONS) && MedallionCount + (Greg && GregInBridgeLogic ? 1 : 0) >= BridgeMedallionCount.Value<uint8_t>())            ||
-                           (Bridge.Is(RAINBOWBRIDGE_REWARDS)    && StoneCount + MedallionCount + (Greg && GregInBridgeLogic ? 1 : 0) >= BridgeRewardCount.Value<uint8_t>())  ||
-                           (Bridge.Is(RAINBOWBRIDGE_DUNGEONS)   && DungeonCount + (Greg && GregInBridgeLogic ? 1 : 0) >= BridgeDungeonCount.Value<uint8_t>())                ||
-                           (Bridge.Is(RAINBOWBRIDGE_TOKENS)     && GoldSkulltulaTokens >= BridgeTokenCount.Value<uint8_t>()) ||
-                           (Bridge.Is(RAINBOWBRIDGE_GREG)       && Greg);
+    CanBuildRainbowBridge = ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_ALWAYS_OPEN)                                                                         ||
+                           (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_VANILLA)    && ShadowMedallion && SpiritMedallion && LightArrows)             ||
+                           (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)     && StoneCount + (Greg && GregInBridgeLogic ? 1 : 0) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).Value<uint8_t>())                    ||
+                           (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS) && MedallionCount + (Greg && GregInBridgeLogic ? 1 : 0) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).Value<uint8_t>())            ||
+                           (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS)    && StoneCount + MedallionCount + (Greg && GregInBridgeLogic ? 1 : 0) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Value<uint8_t>())  ||
+                           (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)   && DungeonCount + (Greg && GregInBridgeLogic ? 1 : 0) >= ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Value<uint8_t>())                ||
+                           (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)     && GoldSkulltulaTokens >= ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Value<uint8_t>()) ||
+                           (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_GREG)       && Greg);
 
-    CanTriggerLACS = (LACSCondition == LACSCONDITION_VANILLA    && ShadowMedallion && SpiritMedallion)                          ||
-                     (LACSCondition == LACSCONDITION_STONES     && StoneCount + (Greg && GregInLacsLogic ? 1 : 0) >= LACSStoneCount.Value<uint8_t>())                    ||
-                     (LACSCondition == LACSCONDITION_MEDALLIONS && MedallionCount + (Greg && GregInLacsLogic ? 1 : 0) >= LACSMedallionCount.Value<uint8_t>())            ||
-                     (LACSCondition == LACSCONDITION_REWARDS    && StoneCount + MedallionCount + (Greg && GregInLacsLogic ? 1 : 0) >= LACSRewardCount.Value<uint8_t>())  ||
-                     (LACSCondition == LACSCONDITION_DUNGEONS   && DungeonCount + (Greg && GregInLacsLogic ? 1 : 0) >= LACSDungeonCount.Value<uint8_t>())                ||
-                     (LACSCondition == LACSCONDITION_TOKENS     && GoldSkulltulaTokens >= LACSTokenCount.Value<uint8_t>());
-    CanCompleteTriforce = TriforcePieces >= TriforceHuntRequired.Value<uint8_t>();
-
+    CanTriggerLACS = (ctx->GetSettings()->LACSCondition() == RO_LACS_VANILLA    && ShadowMedallion && SpiritMedallion)                          ||
+                     (ctx->GetSettings()->LACSCondition() == RO_LACS_STONES     && StoneCount + (Greg && GregInLacsLogic ? 1 : 0) >= ctx->GetOption(RSK_LACS_STONE_COUNT).Value<uint8_t>())                    ||
+                     (ctx->GetSettings()->LACSCondition() == RO_LACS_MEDALLIONS && MedallionCount + (Greg && GregInLacsLogic ? 1 : 0) >= ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Value<uint8_t>())            ||
+                     (ctx->GetSettings()->LACSCondition() == RO_LACS_REWARDS    && StoneCount + MedallionCount + (Greg && GregInLacsLogic ? 1 : 0) >= ctx->GetOption(RSK_LACS_REWARD_COUNT).Value<uint8_t>())  ||
+                     (ctx->GetSettings()->LACSCondition() == RO_LACS_DUNGEONS   && DungeonCount + (Greg && GregInLacsLogic ? 1 : 0) >= ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Value<uint8_t>())                ||
+                     (ctx->GetSettings()->LACSCondition() == RO_LACS_TOKENS     && GoldSkulltulaTokens >= ctx->GetOption(RSK_LACS_TOKEN_COUNT).Value<uint8_t>());
+    CanCompleteTriforce = TriforcePieces >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Value<uint8_t>();
   }
 
   bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount) {
@@ -769,9 +770,12 @@ namespace Logic {
 
    //Reset All Logic to false
    void LogicReset() {
+    auto ctx = Rando::Context::GetInstance();
      //Settings-dependent variables
-     IsKeysanity = Keysanity.Is(KEYSANITY_ANYWHERE) || Keysanity.Is(KEYSANITY_OVERWORLD) || Keysanity.Is(KEYSANITY_ANY_DUNGEON);
-     AmmoCanDrop = AmmoDrops.IsNot(AMMODROPS_NONE);
+     IsKeysanity = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) || 
+                   ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) || 
+                   ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE);
+     AmmoCanDrop = /*AmmoDrops.IsNot(AMMODROPS_NONE) TODO: AmmoDrop setting*/ true;
 
      //Child item logic
      KokiriSword   = false;
@@ -897,7 +901,7 @@ namespace Logic {
      //Keys
      ForestTempleKeys          = 0;
      //If not keysanity, start with 1 logical key to account for automatically unlocking the basement door in vanilla FiT
-     FireTempleKeys            = IsKeysanity || Dungeon::FireTemple.IsMQ() ? 0 : 1;
+     FireTempleKeys            = IsKeysanity || ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsMQ() ? 0 : 1;
      WaterTempleKeys           = 0;
      SpiritTempleKeys          = 0;
      ShadowTempleKeys          = 0;
@@ -1018,7 +1022,7 @@ namespace Logic {
      HasBoots         = false;
      IsChild          = false;
      IsAdult          = false;
-     IsGlitched       = Settings::Logic.Is(LOGIC_GLITCHED);
+     IsGlitched       = ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHED);
      CanBlastOrSmash  = false;
      CanChildAttack   = false;
      CanChildDamage   = false;
@@ -1036,9 +1040,9 @@ namespace Logic {
      BigPoeKill          = false;
      HookshotOrBoomerang = false;
 
-     BaseHearts      = StartingHearts.Value<uint8_t>() + 1;
+     BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).Value<uint8_t>() + 1;
      Hearts          = 0;
-     Multiplier      = (DamageMultiplier.Value<uint8_t>() < 6) ? DamageMultiplier.Value<uint8_t>() : 10;
+     Multiplier      = (ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Value<uint8_t>() < 6) ? ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Value<uint8_t>() : 10;
      EffectiveHealth = 0;
      FireTimer       = 0;
      WaterTimer      = 0;
@@ -1070,7 +1074,7 @@ namespace Logic {
      //Other
      AtDay         = false;
      AtNight       = false;
-     Age           = Settings::ResolvedStartingAge;
+     Age           = ctx->GetSettings()->ResolvedStartingAge();
 
      //Events
      ShowedMidoSwordAndShield  = false;

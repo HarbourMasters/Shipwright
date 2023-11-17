@@ -1,20 +1,18 @@
 #include "location_access.hpp"
 
-#include "dungeon.hpp"
+#include "../dungeon.h"
 #include "../static_data.h"
 #include "../context.h"
 #include "item_pool.hpp"
 #include "logic.hpp"
-#include "settings.hpp"
 #include "spoiler_log.hpp"
-#include "trial.hpp"
-#include "entrance.hpp"
+#include "../trial.h"
+#include "../entrance.h"
 
 #include <fstream>
 #include <iostream>
 
 using namespace Logic;
-using namespace Settings;
 
 //generic grotto event list
 std::vector<EventAccess> grottoEvents = {
@@ -80,7 +78,8 @@ bool LocationAccess::CanBuy() const {
   }
   // If bombchus in logic, need to have found chus to buy; if not just need bomb bag
   else if (placed == RG_BUY_BOMBCHU_10 || placed == RG_BUY_BOMBCHU_20) {
-      OtherCondition = (!BombchusInLogic && Bombs) || (BombchusInLogic && FoundBombchus);
+      OtherCondition =
+          (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && Bombs) || (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && FoundBombchus);
   }
 
   return SufficientWallet && OtherCondition;
@@ -91,7 +90,7 @@ Area::Area(std::string regionName_, std::string scene_, RandomizerHintTextKey hi
          bool timePass_,
          std::vector<EventAccess> events_,
          std::vector<LocationAccess> locations_,
-         std::list<Entrance> exits_)
+         std::list<Rando::Entrance> exits_)
   : regionName(std::move(regionName_)),
     scene(std::move(scene_)),
     hintKey(hintKey_),
@@ -139,13 +138,13 @@ bool Area::UpdateEvents(SearchMode mode) {
 }
 
 void Area::AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition) {
-  Entrance newExit = Entrance(newExitKey, {condition});
+  Rando::Entrance newExit = Rando::Entrance(newExitKey, {condition});
   newExit.SetParentRegion(parentKey);
   exits.push_front(newExit);
 }
 
 //The exit will be completely removed from this area
-void Area::RemoveExit(Entrance* exitToRemove) {
+void Area::RemoveExit(Rando::Entrance* exitToRemove) {
   exits.remove_if([exitToRemove](const auto exit){return &exit == exitToRemove;});
 }
 
@@ -158,7 +157,7 @@ void Area::SetAsPrimary(RandomizerRegion exitToBePrimary) {
   }
 }
 
-Entrance* Area::GetExit(RandomizerRegion exitToReturn) {
+Rando::Entrance* Area::GetExit(RandomizerRegion exitToReturn) {
   for (auto& exit : exits) {
     if (exit.Getuint32_t() == exitToReturn) {
       return &exit;
@@ -200,7 +199,7 @@ bool Area::CheckAllAccess(const RandomizerRegion exitKey) {
     return false;
   }
 
-  for (Entrance& exit : exits) {
+  for (Rando::Entrance& exit : exits) {
     if (exit.GetConnectedRegionKey() == exitKey) {
       return exit.CheckConditionAtAgeTime(Logic::IsChild, Logic::AtDay)   &&
              exit.CheckConditionAtAgeTime(Logic::IsChild, Logic::AtNight) &&
@@ -248,9 +247,11 @@ bool HasAccessTo(const RandomizerRegion area) {
   return areaTable[area].HasAccess();
 }
 
-
+std::shared_ptr<Rando::Context> randoCtx;
 
 void AreaTable_Init() {
+  using namespace Rando;
+  randoCtx = Context::GetInstance();
   //Clear the array from any previous playthrough attempts. This is important so that
   //locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
   areaTable.fill(Area("Invalid Area", "Invalid Area", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {}));
@@ -380,18 +381,19 @@ namespace Areas {
   }
 
   void AccessReset() {
+    auto ctx = Rando::Context::GetInstance();
       for (const RandomizerRegion area : GetAllAreas()) {
       AreaTable(area)->ResetVariables();
     }
 
-    if(Settings::HasNightStart) {
-        if(Settings::ResolvedStartingAge == AGE_CHILD) {
+    if(/*Settings::HasNightStart TODO:: Randomize Starting Time*/ false) {
+        if(ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
           AreaTable(RR_ROOT)->childNight = true;
         } else {
           AreaTable(RR_ROOT)->adultNight = true;
         }
       } else {
-        if(Settings::ResolvedStartingAge == AGE_CHILD) {
+        if(ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
           AreaTable(RR_ROOT)->childDay = true;
         } else {
           AreaTable(RR_ROOT)->adultDay = true;
@@ -401,6 +403,7 @@ namespace Areas {
 
   //Reset exits and clear items from locations
   void ResetAllLocations() {
+    auto ctx = Rando::Context::GetInstance();
       for (const RandomizerRegion area : GetAllAreas()) {
       AreaTable(area)->ResetVariables();
       //Erase item from every location in this exit
@@ -410,14 +413,14 @@ namespace Areas {
       }
     }
 
-    if(Settings::HasNightStart) {
-        if(Settings::ResolvedStartingAge == AGE_CHILD) {
+    if (/*Settings::HasNightStart TODO:: Randomize Starting Time*/ false) {
+        if(ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
           AreaTable(RR_ROOT)->childNight = true;
         } else {
           AreaTable(RR_ROOT)->adultNight = true;
         }
-      } else {
-        if(Settings::ResolvedStartingAge == AGE_CHILD) {
+    } else {
+        if(ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
           AreaTable(RR_ROOT)->childDay = true;
         } else {
           AreaTable(RR_ROOT)->adultDay = true;
@@ -428,7 +431,7 @@ namespace Areas {
   bool HasTimePassAccess(uint8_t age) {
       for (const RandomizerRegion areaKey : GetAllAreas()) {
       auto area = AreaTable(areaKey);
-      if (area->timePass && ((age == AGE_CHILD && area->Child()) || (age == AGE_ADULT && area->Adult()))) {
+      if (area->timePass && ((age == RO_AGE_CHILD && area->Child()) || (age == RO_AGE_ADULT && area->Adult()))) {
         return true;
       }
     }
@@ -495,11 +498,11 @@ Area* AreaTable(const RandomizerRegion areaKey) {
 }
 
 //Retrieve all the shuffable entrances of a specific type
-std::vector<Entrance*> GetShuffleableEntrances(EntranceType type, bool onlyPrimary /*= true*/) {
-  std::vector<Entrance*> entrancesToShuffle = {};
+std::vector<Rando::Entrance*> GetShuffleableEntrances(Rando::EntranceType type, bool onlyPrimary /*= true*/) {
+  std::vector<Rando::Entrance*> entrancesToShuffle = {};
     for (RandomizerRegion area : Areas::GetAllAreas()) {
     for (auto& exit: AreaTable(area)->exits) {
-      if ((exit.GetType() == type || type == EntranceType::All) && (exit.IsPrimary() || !onlyPrimary) && exit.GetType() != EntranceType::None) {
+      if ((exit.GetType() == type || type == Rando::EntranceType::All) && (exit.IsPrimary() || !onlyPrimary) && exit.GetType() != Rando::EntranceType::None) {
         entrancesToShuffle.push_back(&exit);
       }
     }

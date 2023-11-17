@@ -1,9 +1,9 @@
 #include "../location_access.hpp"
 #include "../logic.hpp"
-#include "../entrance.hpp"
+#include "../../entrance.h"
 
 using namespace Logic;
-using namespace Settings;
+using namespace Rando;
 
 void AreaTable_Init_CastleTown() {
   areaTable[RR_MARKET_ENTRANCE] = Area("Market Entrance", "Market Entrance", RHT_THE_MARKET, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -58,7 +58,7 @@ void AreaTable_Init_CastleTown() {
                 }, {
                   //Exits
                   Entrance(RR_TOT_ENTRANCE,            {[]{return true;}}),
-                  Entrance(RR_TOT_BEYOND_DOOR_OF_TIME, {[]{return OpenDoorOfTime.Is(OPENDOOROFTIME_OPEN) || (CanPlay(SongOfTime) && (OpenDoorOfTime.Is(OPENDOOROFTIME_SONGONLY) || (HasAllStones && OcarinaOfTime)));}}),
+                  Entrance(RR_TOT_BEYOND_DOOR_OF_TIME, {[]{return randoCtx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_OPEN) || (CanPlay(SongOfTime) && (randoCtx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_SONGONLY) || (HasAllStones && OcarinaOfTime)));}}),
   });
 
   areaTable[RR_TOT_BEYOND_DOOR_OF_TIME] = Area("Beyond Door of Time", "Beyond Door of Time", RHT_TEMPLE_OF_TIME, NO_DAY_NIGHT_CYCLE, {
@@ -94,7 +94,7 @@ void AreaTable_Init_CastleTown() {
                 }, {
                   //Exits
                   Entrance(RR_CASTLE_GROUNDS,          {[]{return true;}}),
-                  Entrance(RR_HC_GARDEN,               {[]{return WeirdEgg || !ShuffleWeirdEgg;}}),
+                  Entrance(RR_HC_GARDEN,               {[]{return WeirdEgg || !randoCtx->GetOption(RSK_SHUFFLE_WEIRD_EGG);}}),
                   Entrance(RR_HC_GREAT_FAIRY_FOUNTAIN, {[]{return CanBlastOrSmash;}}),
                   Entrance(RR_HC_STORMS_GROTTO,        {[]{return CanOpenStormGrotto;}}),
   });
@@ -125,7 +125,7 @@ void AreaTable_Init_CastleTown() {
                   EventAccess(&WanderingBugs,    {[]{return WanderingBugs    || CanBlastOrSmash;}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_HC_GS_STORMS_GROTTO,           {[]{return (CanBlastOrSmash && HookshotOrBoomerang) || (Boomerang && LogicCastleStormsGS);}}),
+                  LocationAccess(RC_HC_GS_STORMS_GROTTO,           {[]{return (CanBlastOrSmash && HookshotOrBoomerang) || (Boomerang && randoCtx->GetTrickOption(RT_HC_STORMS_GS));}}),
                   LocationAccess(RC_HC_STORMS_GROTTO_GOSSIP_STONE, {[]{return CanBlastOrSmash;}}),
                 }, {
                   //Exits
@@ -192,8 +192,8 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_MARKET_MASK_SHOP] = Area("Market Mask Shop", "Market Mask Shop", RHT_NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&SkullMask,   {[]{return SkullMask   || (ZeldasLetter && (CompleteMaskQuest ||  ChildCanAccess(RR_KAKARIKO_VILLAGE)));}}),
-                  EventAccess(&MaskOfTruth, {[]{return MaskOfTruth || (SkullMask && (CompleteMaskQuest || (ChildCanAccess(RR_THE_LOST_WOODS) && CanPlay(SariasSong) && AreaTable(RR_THE_GRAVEYARD)->childDay && ChildCanAccess(RR_HYRULE_FIELD) && HasAllStones)));}}),
+                  EventAccess(&SkullMask,   {[]{return SkullMask   || (ZeldasLetter && (randoCtx->GetOption(RSK_COMPLETE_MASK_QUEST) ||  ChildCanAccess(RR_KAKARIKO_VILLAGE)));}}),
+                  EventAccess(&MaskOfTruth, {[]{return MaskOfTruth || (SkullMask && (randoCtx->GetOption(RSK_COMPLETE_MASK_QUEST) || (ChildCanAccess(RR_THE_LOST_WOODS) && CanPlay(SariasSong) && AreaTable(RR_THE_GRAVEYARD)->childDay && ChildCanAccess(RR_HYRULE_FIELD) && HasAllStones)));}}),
                 }, {}, {
                   //Exits
                   Entrance(RR_THE_MARKET, {[]{return true;}}),
@@ -235,12 +235,12 @@ void AreaTable_Init_CastleTown() {
   areaTable[RR_MARKET_TREASURE_CHEST_GAME] = Area("Market Treasure Chest Game", "Market Treasure Chest Game", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_GREG_HINT, {[]{return true;}}),
-                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_REWARD, {[]{return (CanUse(RG_LENS_OF_TRUTH) && !ShuffleChestMinigame) || (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_SINGLE_KEYS) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 6)) || (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_PACK) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1));}}),
-                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, {[]{return (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_SINGLE_KEYS) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_PACK) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (CanUse(RG_LENS_OF_TRUTH) && !ShuffleChestMinigame);}}),
-                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, {[]{return (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_SINGLE_KEYS) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 2)) || (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_PACK) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (CanUse(RG_LENS_OF_TRUTH) && !ShuffleChestMinigame);}}),
-                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, {[]{return (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_SINGLE_KEYS) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 3)) || (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_PACK) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (CanUse(RG_LENS_OF_TRUTH) && !ShuffleChestMinigame);}}),
-                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, {[]{return (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_SINGLE_KEYS) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 4)) || (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_PACK) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (CanUse(RG_LENS_OF_TRUTH) && !ShuffleChestMinigame);}}),
-                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, {[]{return (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_SINGLE_KEYS) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 5)) || (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_PACK) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (CanUse(RG_LENS_OF_TRUTH) && !ShuffleChestMinigame);}}),
+                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_REWARD, {[]{return (CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 6)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1));}}),
+                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, {[]{return (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME));}}),
+                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, {[]{return (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 2)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME));}}),
+                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, {[]{return (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 3)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME));}}),
+                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, {[]{return (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 4)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME));}}),
+                  LocationAccess(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, {[]{return (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 5)) || (randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && SmallKeys(RR_MARKET_TREASURE_CHEST_GAME, 1)) || (CanUse(RG_LENS_OF_TRUTH) && !randoCtx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME));}}),
                 }, {
                   //Exits
                   Entrance(RR_THE_MARKET, {[]{return true;}}),
