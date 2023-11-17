@@ -4,6 +4,7 @@
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 #include "vt.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include <soh_assets.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -601,6 +602,20 @@ s32 EnNiwLady_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3
     return false;
 }
 
+s32 EnNiwLady_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+    EnNiwLady* this = (EnNiwLady*)thisx;
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 15) {
+            OPEN_DISPS(play->state.gfxCtx);
+            gSPDisplayList(POLY_OPA_DISP++, gCuccoLadyHatDL);
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+    }
+
+    return false;
+}
+
 void EnNiwLady_Draw(Actor* thisx, PlayState* play) {
     static void* sEyeTextures[] = { gCuccoLadyEyeOpenTex, gCuccoLadyEyeHalfTex, gCuccoLadyEyeClosedTex };
     EnNiwLady* this = (EnNiwLady*)thisx;
@@ -612,7 +627,7 @@ void EnNiwLady_Draw(Actor* thisx, PlayState* play) {
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->faceState]));
         gSPSegment(POLY_OPA_DISP++, 0x0C, func_80ABB0A0(play->state.gfxCtx));
-        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnNiwLady_OverrideLimbDraw, NULL, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnNiwLady_OverrideLimbDraw, EnNiwLady_PostLimbDraw, this);
     }
     CLOSE_DISPS(play->state.gfxCtx);
 }
