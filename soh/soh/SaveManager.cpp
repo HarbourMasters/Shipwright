@@ -1039,7 +1039,6 @@ void SaveManager::LoadFile(int fileNum) {
     switch (saveBlock["version"].get<int>()) {
         case 1:
             for (auto& block : saveBlock["sections"].items()) {
-                int sectionVersion = block.value()["version"];
                 std::string sectionName = block.key();
                 if (!sectionLoadHandlers.contains(sectionName)) {
                     // Unloadable sections aren't necessarily errors, they are probably mods that were unloaded
@@ -1047,6 +1046,21 @@ void SaveManager::LoadFile(int fileNum) {
                     SPDLOG_WARN("Save " + GetFileName(fileNum).string() + " contains unloadable section " + sectionName);
                     continue;
                 }
+                if (!block.value().contains("version")) {
+                    // We're trying to load a section without a version, this means this
+                    // section of the save file is invalid
+                    // Report the error so that the user can rectify the error.
+                    // TODO report in a more noticeable manner
+                    SPDLOG_ERROR("Save " + GetFileName(fileNum).string() + " contains section " + sectionName +
+                                 " with NO version");
+                    if (sectionName == "sohStats") {
+                        SPDLOG_WARN("Loading save without stats section...");
+                        continue;
+                    }
+                    assert(false);
+                    continue;
+                }
+                int sectionVersion = block.value()["version"];
                 SectionLoadHandler& handler = sectionLoadHandlers[sectionName];
                 if (!handler.contains(sectionVersion)) {
                     // A section that has a loader without a handler for the specific version means that the user has a mod
