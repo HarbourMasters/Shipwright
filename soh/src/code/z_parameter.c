@@ -2605,6 +2605,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         if (gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED)) {
             gSaveContext.sohStats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
             gSaveContext.sohStats.gameComplete = 1;
+            Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
             Play_PerformSave(play);
             GameInteractor_SetTriforceHuntCreditsWarpActive(true);
         }
