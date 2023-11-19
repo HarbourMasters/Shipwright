@@ -3,6 +3,9 @@
 
 #include "align_asset_macro.h"
 
+#define dddan_sceneTLUT_011D70 "__OTR__scenes/nonmq/ddan_scene/ddan_sceneTLUT_011D70"
+static const ALIGN_ASSET(2) char ddan_sceneTLUT_011D70[] = dddan_sceneTLUT_011D70;
+
 #define dgDCDayEntranceTex "__OTR__scenes/nonmq/ddan_scene/gDCDayEntranceTex"
 static const ALIGN_ASSET(2) char gDCDayEntranceTex[] = dgDCDayEntranceTex;
 
@@ -39,7 +42,5 @@ static const ALIGN_ASSET(2) char gDcOpeningCs[] = dgDcOpeningCs;
 #define dddan_sceneCollisionHeader_011D40 "__OTR__scenes/nonmq/ddan_scene/ddan_sceneCollisionHeader_011D40"
 static const ALIGN_ASSET(2) char ddan_sceneCollisionHeader_011D40[] = dddan_sceneCollisionHeader_011D40;
 
-#define dddan_sceneTLUT_011D70 "__OTR__scenes/nonmq/ddan_scene/ddan_sceneTLUT_011D70"
-static const ALIGN_ASSET(2) char ddan_sceneTLUT_011D70[] = dddan_sceneTLUT_011D70;
 
 #endif // DUNGEONS_DDAN_SCENE_H

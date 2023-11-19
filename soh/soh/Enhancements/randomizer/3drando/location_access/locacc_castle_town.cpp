@@ -52,7 +52,6 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[TEMPLE_OF_TIME] = Area("Temple of Time", "Temple of Time", TEMPLE_OF_TIME, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(TOT_MASTER_SWORD, {[]{return IsAdult;}}),
                   LocationAccess(TOT_LIGHT_ARROWS_CUTSCENE, {[]{return IsAdult && CanTriggerLACS;}}),
                 }, {
                   //Exits
@@ -65,13 +64,14 @@ void AreaTable_Init_CastleTown() {
                   //EventAccess(&TimeTravel, {[]{return true;}}),
                 }, {
                   //Locations
+                  LocationAccess(TOT_MASTER_SWORD, {[]{return IsAdult;}}),
                   LocationAccess(SHEIK_AT_TEMPLE, {[]{return ForestMedallion && IsAdult;}}),
                 }, {
                   //Exits
                   Entrance(TEMPLE_OF_TIME, {[]{return true;}}),
   });
 
-  areaTable[CASTLE_GROUNDS] = Area("Castle Grounds", "Castle Grounds", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[CASTLE_GROUNDS] = Area("Castle Grounds", "Castle Grounds", CASTLE_GROUNDS, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(THE_MARKET,            {[]{return true;}}),
                   Entrance(HYRULE_CASTLE_GROUNDS, {[]{return IsChild;}}),
@@ -157,7 +157,7 @@ void AreaTable_Init_CastleTown() {
     Entrance(GANONS_CASTLE_LEDGE, { [] { return IsAdult; }}),
   });
 
-  areaTable[GANONS_CASTLE_LEDGE] = Area("Ganon's Castle Ledge", "OGC Ganon's Castle Ledge", NONE, NO_DAY_NIGHT_CYCLE,
+  areaTable[GANONS_CASTLE_LEDGE] = Area("Ganon's Castle Ledge", "OGC Ganon's Castle Ledge", OUTSIDE_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE,
   {}, {}, {
     // Exits
     Entrance(GANONS_CASTLE_GROUNDS, {[]{return BuiltRainbowBridge;}}),

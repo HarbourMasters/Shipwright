@@ -108,7 +108,7 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
         pos.y = -130.0f;
         pos.z = -150.0f;
         scale = 0.046f;
-    } else if (CUR_EQUIP_VALUE(EQUIP_SWORD) != 2 && !CVarGetInteger("gPauseTriforce", 0)) {
+    } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) != EQUIP_VALUE_SWORD_MASTER && !CVarGetInteger("gPauseTriforce", 0)) {
         pos.x = 25.0f;
         pos.y = -228.0f;
         pos.z = 60.0f;
@@ -153,8 +153,10 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
     extern int fbTest;
     gsSPSetFB(play->state.gfxCtx->polyOpa.p++, fbTest);
     Player_DrawPause(play, pauseCtx->playerSegment, &pauseCtx->playerSkelAnime, &pos, &link_kaleido_rot, scale,
-                  CUR_EQUIP_VALUE(EQUIP_SWORD), CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1, CUR_EQUIP_VALUE(EQUIP_SHIELD),
-                  CUR_EQUIP_VALUE(EQUIP_BOOTS) - 1);
+                     SWORD_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD)),
+                     TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)),
+                     SHIELD_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD)),
+                     BOOTS_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS)));
     gsSPResetFB(play->state.gfxCtx->polyOpa.p++);
 }
 
@@ -464,7 +466,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         if ((pauseCtx->cursorY[PAUSE_EQUIP] == 0) && (pauseCtx->cursorX[PAUSE_EQUIP] == 3)) {
             if (gSaveContext.bgsFlag != 0) {
                 cursorItem = ITEM_HEART_PIECE_2;
-            } else if (gBitFlags[3] & gSaveContext.inventory.equipment) {
+            } else if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE)) {
                 cursorItem = ITEM_SWORD_KNIFE;
             }
         }
@@ -523,28 +525,28 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                         
                         // If we're on the "swords" section of the equipment screen AND we're on a currently-equipped BGS/Giant's Knife
                         if (pauseCtx->cursorY[PAUSE_EQUIP] == 0 && pauseCtx->cursorX[PAUSE_EQUIP] == 3 
-                            && CUR_EQUIP_VALUE(EQUIP_SWORD) == 3 && CHECK_OWNED_EQUIP(0,1)){ // And we have the Master Sword
-                            Inventory_ChangeEquipment(EQUIP_SWORD, 2); // "Unequip" it by equipping Master Sword
+                            && CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) == EQUIP_VALUE_SWORD_BIGGORON && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)){ // And we have the Master Sword
+                            Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER); // "Unequip" it by equipping Master Sword
                             gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
                             gSaveContext.infTable[29] = 0;
                             goto RESUME_EQUIPMENT_SWORD;               // Skip to here so we don't re-equip it
                         }
 
                         // If we're on the "shields" section of the equipment screen AND we're on a currently-equipped shield
-                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 1 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_SHIELD)) {
-                            Inventory_ChangeEquipment(EQUIP_SHIELD, 0); // Unequip it
+                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 1 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD)) {
+                            Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_NONE); // Unequip it
                             goto RESUME_EQUIPMENT;                      // Skip to here so we don't re-equip it
                         }
 
                         // If we're on the "tunics" section of the equipment screen AND we're on a currently-equipped tunic
-                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 2 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_TUNIC)) {
-                            Inventory_ChangeEquipment(EQUIP_TUNIC, 1); // "Unequip" it (by equipping Kokiri Tunic)
+                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 2 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)) {
+                            Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_KOKIRI); // "Unequip" it (by equipping Kokiri Tunic)
                             goto RESUME_EQUIPMENT;                     // Skip to here so we don't re-equip it
                         }
 
                         // If we're on the "boots" section of the equipment screen AND we're on currently-equipped boots
-                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 3 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_BOOTS)) {
-                            Inventory_ChangeEquipment(EQUIP_BOOTS, 1); // "Unequip" it (by equipping Kokiri Boots)
+                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 3 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS)) {
+                            Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_KOKIRI); // "Unequip" it (by equipping Kokiri Boots)
                             goto RESUME_EQUIPMENT;                     // Skip to here so we don't re-equip it
                         }
                     }
@@ -568,7 +570,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
                             }
                             if ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS) && (gSaveContext.bgsFlag == 0) &&
-                                (gBitFlags[3] & gSaveContext.inventory.equipment)) {
+                                CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE)) {
                                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KNIFE;
                             }
                         }

@@ -3,6 +3,9 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_boxTex_004F80 "__OTR__objects/object_box/object_boxTex_004F80"
+static const ALIGN_ASSET(2) char object_boxTex_004F80[] = dobject_boxTex_004F80;
+
 #define dgTreasureChestCurveSkel "__OTR__objects/object_box/gTreasureChestCurveSkel"
 static const ALIGN_ASSET(2) char gTreasureChestCurveSkel[] = dgTreasureChestCurveSkel;
 
@@ -72,7 +75,5 @@ static const ALIGN_ASSET(2) char gTreasureChestCurveSkelLimbsLimb_005E50Curve2DL
 #define dgTreasureChestCurveSkelLimbsLimb_005E74Curve2DL_005AB8 "__OTR__objects/object_box/gTreasureChestCurveSkelLimbsLimb_005E74Curve2DL_005AB8"
 static const ALIGN_ASSET(2) char gTreasureChestCurveSkelLimbsLimb_005E74Curve2DL_005AB8[] = dgTreasureChestCurveSkelLimbsLimb_005E74Curve2DL_005AB8;
 
-#define dobject_boxTex_004F80 "__OTR__objects/object_box/object_boxTex_004F80"
-static const ALIGN_ASSET(2) char object_boxTex_004F80[] = dobject_boxTex_004F80;
 
 #endif // OBJECTS_OBJECT_BOX_H

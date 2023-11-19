@@ -88,6 +88,7 @@ Gfx gKeyTreasureChestChestFrontDL[128] = {0};
 Gfx gChristmasRedTreasureChestChestFrontDL[128] = {0};
 Gfx gChristmasGreenTreasureChestChestFrontDL[128] = {0};
 u8 hasCreatedRandoChestTextures = 0;
+u8 hasCustomChestDLs = 0;
 u8 hasChristmasChestTexturesAvailable = 0;
 
 void EnBox_SetupAction(EnBox* this, EnBoxActionFunc actionFunc) {
@@ -690,7 +691,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     }
 
     // Change texture
-    if (!isVanilla && (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE)) {
+    if (!isVanilla && hasCreatedRandoChestTextures && !hasCustomChestDLs && (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_MAJOR:
                 this->boxBodyDL = gGoldTreasureChestChestFrontDL;
@@ -725,7 +726,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
         }
     }
 
-    if (CVarGetInteger("gLetItSnow", 0) && hasChristmasChestTexturesAvailable) {
+    if (CVarGetInteger("gLetItSnow", 0) && hasChristmasChestTexturesAvailable && hasCreatedRandoChestTextures && !hasCustomChestDLs) {
         if (this->dyna.actor.scale.x == 0.01f) {
             this->boxBodyDL = gChristmasRedTreasureChestChestFrontDL;
             this->boxLidDL = gChristmasRedTreasureChestChestSideAndLidDL;
@@ -767,7 +768,18 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
 }
 
 void EnBox_CreateExtraChestTextures() {
+    // Don't patch textures for custom chest models, as they do not import textures the exact same way as vanilla chests
+    // OTRTODO: Make it so model packs can provide a unique DL per chest type, instead of us copying the brown chest and attempting to patch
+    if (ResourceMgr_FileIsCustomByName(gTreasureChestChestFrontDL) ||
+        ResourceMgr_FileIsCustomByName(gTreasureChestChestSideAndLidDL)) {
+        hasCustomChestDLs = 1;
+        return;
+    }
+
+    hasCustomChestDLs = 0;
+
     if (hasCreatedRandoChestTextures) return;
+
     Gfx gTreasureChestChestTextures[] = {
         gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gSkullTreasureChestFrontTex),
         gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gSkullTreasureChestSideAndTopTex),

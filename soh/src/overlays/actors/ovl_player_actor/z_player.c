@@ -3857,7 +3857,7 @@ void func_8083819C(Player* this, PlayState* play) {
     if (this->currentShield == PLAYER_SHIELD_DEKU && (CVarGetInteger("gFireproofDekuShield", 0) == 0)) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_SHIELD, this->actor.world.pos.x,
                     this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 1, true);
-        Inventory_DeleteEquipment(play, EQUIP_SHIELD);
+        Inventory_DeleteEquipment(play, EQUIP_TYPE_SHIELD);
         Message_StartTextbox(play, 0x305F, NULL);
     }
 }
@@ -10135,6 +10135,55 @@ void func_80847BA0(PlayState* play, Player* this) {
 
         D_808535F0 = func_80041DB8(&play->colCtx, this->actor.wallPoly, this->actor.wallBgId);
 
+        if (CVarGetInteger("gFixVineFall", 0)) {
+            /* This fixes the "started climbing a wall and then immediately fell off" bug.
+            * The main idea is if a climbing wall is detected, double-check that it will
+            * still be valid once climbing begins by doing a second raycast with a small
+            * margin to make sure it still hits a climbable poly. Then update the flags
+            * in D_808535F0 again and proceed as normal.
+            */
+            if (D_808535F0 & 8) {
+                Vec3f checkPosA;
+                Vec3f checkPosB;
+                f32 yawCos;
+                f32 yawSin;
+                s32 hitWall;
+
+                /* Angle the raycast slightly out towards the side based on the angle of
+                * attack the player takes coming at the climb wall. This is necessary because
+                * the player's XZ position actually wobbles very slightly while climbing
+                * due to small rounding errors in the sin/cos lookup tables. This wobble
+                * can cause wall checks while climbing to be slightly left or right of
+                * the wall check to start the climb. By adding this buffer it accounts for
+                * any possible wobble. The end result is the player has to be further than
+                * some epsilon distance from the edge of the climbing poly to actually
+                * start the climb. I divide it by 2 to make that epsilon slightly smaller,
+                * mainly for visuals. Using the full sp9A leaves a noticeable gap on
+                * the edges that can't be climbed. But with the half distance it looks like
+                * the player is climbing right on the edge, and still works.
+                */
+                yawCos = Math_CosS(this->actor.wallYaw - (sp9A / 2) + 0x8000);
+                yawSin = Math_SinS(this->actor.wallYaw - (sp9A / 2) + 0x8000);
+                checkPosA.x = this->actor.world.pos.x + (-20.0f * yawSin);
+                checkPosA.z = this->actor.world.pos.z + (-20.0f * yawCos);
+                checkPosB.x = this->actor.world.pos.x + (50.0f * yawSin);
+                checkPosB.z = this->actor.world.pos.z + (50.0f * yawCos);
+                checkPosB.y = checkPosA.y = this->actor.world.pos.y + 26.0f;
+
+                hitWall = BgCheck_EntityLineTest1(&play->colCtx, &checkPosA, &checkPosB,
+                    &D_80858AA8, &spA0, true, false, false, true, &sp9C);
+
+                if (hitWall) {
+                    this->actor.wallPoly = spA0;
+                    this->actor.wallBgId = sp9C;
+                    this->actor.wallYaw = Math_Atan2S(spA0->normal.z, spA0->normal.x);
+                    sp9A = this->actor.shape.rot.y - (s16)(this->actor.wallYaw + 0x8000);
+
+                    D_808535F0 = func_80041DB8(&play->colCtx, this->actor.wallPoly, this->actor.wallBgId);
+                }
+            }
+        }
+
         D_80853608 = ABS(sp9A);
 
         sp9A = this->currentYaw - (s16)(this->actor.wallYaw + 0x8000);
@@ -10625,20 +10674,20 @@ void Player_UseTunicBoots(Player* this, PlayState* play) {
             actionParam = Player_ItemToItemAction(item);
             if (actionParam >= PLAYER_IA_BOOTS_KOKIRI) {
                 u16 bootsValue = actionParam - PLAYER_IA_BOOTS_KOKIRI + 1;
-                if (CUR_EQUIP_VALUE(EQUIP_BOOTS) == bootsValue) {
-                    Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_KOKIRI + 1);
+                if (CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == bootsValue) {
+                    Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_KOKIRI);
                 } else {
-                    Inventory_ChangeEquipment(EQUIP_BOOTS, bootsValue);
+                    Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, bootsValue);
                 }
                 Player_SetEquipmentData(play, this);
-                func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_BOOTS) == PLAYER_BOOTS_IRON + 1 ? NA_SE_PL_WALK_HEAVYBOOTS
+                func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == EQUIP_VALUE_BOOTS_IRON ? NA_SE_PL_WALK_HEAVYBOOTS
                                                                                             : NA_SE_PL_CHANGE_ARMS);
             } else if (actionParam >= PLAYER_IA_TUNIC_KOKIRI) {
                 u16 tunicValue = actionParam - PLAYER_IA_TUNIC_KOKIRI + 1;
-                if (CUR_EQUIP_VALUE(EQUIP_TUNIC) == tunicValue) {
-                    Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_KOKIRI + 1);
+                if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == tunicValue) {
+                    Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_KOKIRI);
                 } else {
-                    Inventory_ChangeEquipment(EQUIP_TUNIC, tunicValue);
+                    Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, tunicValue);
                 }
                 Player_SetEquipmentData(play, this);
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
@@ -11288,7 +11337,7 @@ void Player_Draw(Actor* thisx, PlayState* play2) {
         pos.y = -130.0f;
         pos.z = -150.0f;
         scale = 0.046f;
-    } else if (CUR_EQUIP_VALUE(EQUIP_SWORD) != 2) {
+    } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) != EQUIP_VALUE_SWORD_MASTER) {
         pos.x = 25.0f;
         pos.y = -228.0f;
         pos.z = 60.0f;
@@ -12808,16 +12857,16 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
 
             if (equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_SWORD_BGS) {
                 gSaveContext.equips.buttonItems[0] = equipItem;
-                Inventory_ChangeEquipment(EQUIP_SWORD, equipItem - ITEM_SWORD_KOKIRI + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, equipItem - ITEM_SWORD_KOKIRI + 1);
                 func_808328EC(this, NA_SE_IT_SWORD_PUTAWAY);
 
             } else if (equipItem >= ITEM_SHIELD_DEKU && equipItem <= ITEM_SHIELD_MIRROR) {
-                Inventory_ChangeEquipment(EQUIP_SHIELD, equipItem - ITEM_SHIELD_DEKU + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, equipItem - ITEM_SHIELD_DEKU + 1);
                 func_808328EC(&this->actor, NA_SE_IT_SHIELD_REMOVE);
                 Player_SetEquipmentData(play, this);
 
             } else if (equipItem == ITEM_TUNIC_GORON || equipItem == ITEM_TUNIC_ZORA) {
-                Inventory_ChangeEquipment(EQUIP_TUNIC, equipItem - ITEM_TUNIC_KOKIRI + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, equipItem - ITEM_TUNIC_KOKIRI + 1);
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
                 Player_SetEquipmentData(play, this);
             }
@@ -14990,16 +15039,16 @@ void func_80852648(PlayState* play, Player* this, CsCmdActorAction* arg2) {
         
         // If MS sword is shuffled and not in the players inventory, then we need to unequip the current sword
         // and set swordless flag to mimic Link having his weapon knocked out of his hand in the Ganon fight
-        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) {
-            Inventory_ChangeEquipment(EQUIP_SWORD, 0);
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
+            Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_NONE);
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;
             Flags_SetInfTable(INFTABLE_SWORDLESS);
             return;
         }
         
-        Inventory_ChangeEquipment(EQUIP_SWORD, 2);
+        Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER);
         gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-        Inventory_DeleteEquipment(play, 0);
+        Inventory_DeleteEquipment(play, EQUIP_TYPE_SWORD);
     }
 }
 
@@ -15161,6 +15210,10 @@ void func_80852C50(PlayState* play, Player* this, CsCmdActorAction* arg2) {
 
     sp24 = D_808547C4[this->unk_446];
     func_80852B4C(play, this, linkCsAction, &D_80854E50[ABS(sp24)]);
+
+    if (CVarGetInteger("gFixEyesOpenWhileSleeping", 0) && (play->csCtx.linkAction->action == 28 || play->csCtx.linkAction->action == 29)) {
+        this->skelAnime.jointTable[22].x = 8;
+    }
 }
 
 void func_80852E14(Player* this, PlayState* play) {
