@@ -869,9 +869,9 @@ void func_80986B2C(PlayState* play) {
 
         // In entrance rando have impa bring link back to the front of castle grounds
         if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-            play->nextEntranceIndex = 0x0138;
+            play->nextEntranceIndex = ENTR_HYRULE_CASTLE_0;
         } else {
-            play->nextEntranceIndex = 0xCD;
+            play->nextEntranceIndex = ENTR_HYRULE_FIELD_0;
         }
         play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
         play->transitionTrigger = TRANS_TRIGGER_START;
@@ -918,9 +918,9 @@ void GivePlayerRandoRewardImpa(Actor* impa, PlayState* play, RandomizerCheck che
         gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
         // In entrance rando have impa bring link back to the front of castle grounds
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-            play->nextEntranceIndex = 0x0138;
+            play->nextEntranceIndex = ENTR_HYRULE_CASTLE_0;
         } else {
-            play->nextEntranceIndex = 0x0594;
+            play->nextEntranceIndex = ENTR_HYRULE_FIELD_17;
         }
         gSaveContext.nextCutsceneIndex = 0;
     }

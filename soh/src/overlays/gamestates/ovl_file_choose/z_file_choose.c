@@ -2966,7 +2966,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     Randomizer_LoadMasterQuestDungeons("");
     Randomizer_LoadEntranceOverrides("", true);
 
-    gSaveContext.respawn[0].entranceIndex = -1;
+    gSaveContext.respawn[0].entranceIndex = ENTR_LOAD_OPENING;
     gSaveContext.respawnFlag = 0;
     gSaveContext.seqId = (u8)NA_BGM_DISABLED;
     gSaveContext.natureAmbienceId = 0xFF;
@@ -3035,7 +3035,7 @@ void FileChoose_LoadGame(GameState* thisx) {
         // the entrance index is -1 from shuffle overwarld spawn
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) && ((!CVarGetInteger("gRememberSaveLocation", 0) ||
             gSaveContext.savedSceneNum == SCENE_FAIRYS_FOUNTAIN || gSaveContext.savedSceneNum == SCENE_GROTTOS) ||
-            (CVarGetInteger("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == -1))) {
+            (CVarGetInteger("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == ENTR_LOAD_OPENING))) {
             Entrance_SetSavewarpEntrance();
         }
     }

@@ -948,9 +948,9 @@ void EnOssan_State_StartConversation(EnOssan* this, PlayState* play, Player* pla
             case OSSAN_HAPPY_STATE_ANGRY:
                 // In ER, handle happy mask throwing link out with not enough rupees
                 if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-                    play->nextEntranceIndex = Entrance_OverrideNextIndex(0x1D1);
+                    play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_MARKET_DAY_9);
                 } else {
-                    play->nextEntranceIndex = 0x1D1;
+                    play->nextEntranceIndex = ENTR_MARKET_DAY_9;
                 }
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);

@@ -1250,7 +1250,7 @@ s32 Object_IsLoaded(ObjectContext* objectCtx, s32 bankIndex);
 void func_800981B8(ObjectContext* objectCtx);
 s32 Scene_ExecuteCommands(PlayState* play, SceneCmd* sceneCmd);
 void TransitionActor_InitContext(GameState* state, TransitionActorContext* transiActorCtx);
-void func_800994A0(PlayState* play);
+void Scene_SetTransitionForNextEntrance(PlayState* play);
 void Scene_Draw(PlayState* play);
 void SkelAnime_DrawLod(PlayState* play, void** skeleton, Vec3s* jointTable,
                        OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw, void* arg, s32 dListIndex);

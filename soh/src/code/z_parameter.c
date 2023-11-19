@@ -1724,7 +1724,7 @@ void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
     }
     // Use ITEM_KEY_BOSS only for Ganon's boss key - not any other boss keys
     if (play != NULL) {
-        if (item == ITEM_KEY_BOSS && play->sceneNum != 13 && play->sceneNum != 10) {
+        if (item == ITEM_KEY_BOSS && play->sceneNum != SCENE_INSIDE_GANONS_CASTLE && play->sceneNum != SCENE_GANONS_TOWER) {
             return;
         }
     }
@@ -5071,7 +5071,7 @@ void Interface_Draw(PlayState* play) {
         aButtonColor = (Color_RGB8){ 0, 200, 50 };
     }
 
-    static s16 spoilingItemEntrances[] = { 0x01AD, 0x0153, 0x0153 };
+    static s16 spoilingItemEntrances[] = { ENTR_LOST_WOODS_2, ENTR_ZORAS_DOMAIN_3, ENTR_ZORAS_DOMAIN_3 };
     static f32 D_80125B54[] = { -40.0f, -35.0f }; // unused
     static s16 D_80125B5C[] = { 91, 91 };         // unused
     static s16 D_8015FFE0;

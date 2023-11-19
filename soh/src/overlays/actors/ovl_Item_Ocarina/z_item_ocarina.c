@@ -176,7 +176,7 @@ void ItemOcarina_StartSoTCutscene(ItemOcarina* this, PlayState* play) {
             play->transitionTrigger = TRANS_TRIGGER_START;
             play->transitionType = TRANS_TYPE_FADE_WHITE;
             gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
-            play->nextEntranceIndex = 0x050F;
+            play->nextEntranceIndex = ENTR_HYRULE_FIELD_16;
             gSaveContext.nextCutsceneIndex = 0;
         }
     }

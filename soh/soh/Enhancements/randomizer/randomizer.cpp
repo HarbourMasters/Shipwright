@@ -2715,7 +2715,7 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
 
     RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_EN_GIRLA, 
         // Bazaar (SHOP1) scene is reused, so if entering from Kak use debug scene to identify
-        (sceneNum == SCENE_BAZAAR && gSaveContext.entranceIndex == 0xB7) ? SCENE_TEST01 : sceneNum, slotIndex);
+        (sceneNum == SCENE_BAZAAR && gSaveContext.entranceIndex == ENTR_BAZAAR_0) ? SCENE_TEST01 : sceneNum, slotIndex);
 
     if (rcObject.rc != RC_UNKNOWN_CHECK) {
         shopItemIdentity.randomizerInf = rcToRandomizerInf[rcObject.rc];

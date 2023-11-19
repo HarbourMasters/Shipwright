@@ -177,11 +177,11 @@ void DoorWarp1_SetupWarp(DoorWarp1* this, PlayState* play) {
             DoorWarp1_SetupAction(this, DoorWarp1_AwaitClearFlag);
             break;
         case WARP_DESTINATION:
-            if ((!(gSaveContext.entranceIndex == 0x608 ||  // sacred forest meadow
-                   gSaveContext.entranceIndex == 0x564 ||  // death mountain crater
-                   gSaveContext.entranceIndex == 0x60C ||  // lake hylia
-                   gSaveContext.entranceIndex == 0x610 ||  // desert colossus
-                   gSaveContext.entranceIndex == 0x580) && // graveyard
+            if ((!(gSaveContext.entranceIndex == ENTR_SACRED_FOREST_MEADOW_3 ||  // sacred forest meadow
+                   gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_CRATER_5 ||  // death mountain crater
+                   gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_9 ||  // lake hylia
+                   gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_8 ||  // desert colossus
+                   gSaveContext.entranceIndex == ENTR_GRAVEYARD_8) && // graveyard
                  gSaveContext.sceneSetupIndex < 4) ||
                 (GET_PLAYER(play)->actor.params & 0xF00) != 0x200) {
                 Actor_Kill(&this->actor);
@@ -283,7 +283,7 @@ void DoorWarp1_SetupPurpleCrystal(DoorWarp1* this, PlayState* play) {
     this->unk_1BC = 1.f;
     this->actor.shape.yOffset = 800.0f;
 
-    if (gSaveContext.entranceIndex != 0x53) {
+    if (gSaveContext.entranceIndex != ENTR_TEMPLE_OF_TIME_0) {
         this->actor.scale.x = 0.0499f;
         this->actor.scale.y = 0.077f;
         this->actor.scale.z = 0.09f;
@@ -574,15 +574,15 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
                 Flags_SetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP);
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
                 if (IS_RANDO) {
-                    play->nextEntranceIndex = 0x47A;
+                    play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_5;
                     gSaveContext.nextCutsceneIndex = 0;
                 } else {
                     Item_Give(play, ITEM_GORON_RUBY);
-                    play->nextEntranceIndex = 0x13D;
+                    play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_0;
                     gSaveContext.nextCutsceneIndex = 0xFFF1;
                 }
             } else {
-                play->nextEntranceIndex = 0x47A;
+                play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_5;
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (play->sceneNum == SCENE_DEKU_TREE_BOSS) {
@@ -591,21 +591,21 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
                 Flags_SetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP);
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE);
                 if (IS_RANDO) {
-                    play->nextEntranceIndex = 0x0457;
+                    play->nextEntranceIndex = ENTR_KOKIRI_FOREST_11;
                     gSaveContext.nextCutsceneIndex = 0;
                     // Skip Mido complaining about dead Deku tree
                     Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH);
                 } else {
                     Item_Give(play, ITEM_KOKIRI_EMERALD);
-                    play->nextEntranceIndex = 0xEE;
+                    play->nextEntranceIndex = ENTR_KOKIRI_FOREST_0;
                     gSaveContext.nextCutsceneIndex = 0xFFF1;
                 }
             } else {
-                play->nextEntranceIndex = 0x457;
+                play->nextEntranceIndex = ENTR_KOKIRI_FOREST_11;
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (play->sceneNum == SCENE_JABU_JABU_BOSS) {
-            play->nextEntranceIndex = 0x10E;
+            play->nextEntranceIndex = ENTR_ZORAS_FOUNTAIN_0;
             gSaveContext.nextCutsceneIndex = 0;
         }
 
@@ -708,11 +708,11 @@ void DoorWarp1_RutoWarpOut(DoorWarp1* this, PlayState* play) {
         Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY);
 
         if (IS_RANDO) {
-            play->nextEntranceIndex = 0x10E;
+            play->nextEntranceIndex = ENTR_ZORAS_FOUNTAIN_0;
             gSaveContext.nextCutsceneIndex = 0;
         } else {
             Item_Give(play, ITEM_ZORA_SAPPHIRE);
-            play->nextEntranceIndex = 0x10E;
+            play->nextEntranceIndex = ENTR_ZORAS_FOUNTAIN_0;
             gSaveContext.nextCutsceneIndex = 0xFFF0;
         }
 
@@ -834,19 +834,19 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE);
 
                 if (IS_RANDO) {
-                    play->nextEntranceIndex = 0x608;
+                    play->nextEntranceIndex = ENTR_SACRED_FOREST_MEADOW_3;
                     gSaveContext.nextCutsceneIndex = 0;
                 } else {
                     Item_Give(play, ITEM_MEDALLION_FOREST);
-                    play->nextEntranceIndex = 0x6B;
+                    play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                     gSaveContext.nextCutsceneIndex = 0;
                     gSaveContext.chamberCutsceneNum = CHAMBER_CS_FOREST;
                 }
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = 0x600;
+                    play->nextEntranceIndex = ENTR_SACRED_FOREST_MEADOW_2;
                 } else {
-                    play->nextEntranceIndex = 0x608;
+                    play->nextEntranceIndex = ENTR_SACRED_FOREST_MEADOW_3;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
@@ -856,20 +856,20 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE);
 
                 if (IS_RANDO) {
-                    play->nextEntranceIndex = 0x564;
+                    play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_5;
                     gSaveContext.nextCutsceneIndex = 0;
                     // Change Death Mountain cloud since we aren't warping to the cutscene
                     Flags_SetEventChkInf(EVENTCHKINF_DEATH_MOUNTAIN_ERUPTED);
                 } else {
                     Item_Give(play, ITEM_MEDALLION_FIRE);
-                    play->nextEntranceIndex = 0xDB;
+                    play->nextEntranceIndex = ENTR_KAKARIKO_VILLAGE_0;
                     gSaveContext.nextCutsceneIndex = 0xFFF3;
                 }
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = 0x4F6;
+                    play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_4;
                 } else {
-                    play->nextEntranceIndex = 0x564;
+                    play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_5;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
@@ -879,21 +879,21 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE);
 
                 if (IS_RANDO) {
-                    play->nextEntranceIndex = 0x60C;
+                    play->nextEntranceIndex = ENTR_LAKE_HYLIA_9;
                     gSaveContext.nextCutsceneIndex = 0;
                     // Fill Lake Hylia since we aren't warping to the cutscene
                     Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
                 } else {
                     Item_Give(play, ITEM_MEDALLION_WATER);
-                    play->nextEntranceIndex = 0x6B;
+                    play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                     gSaveContext.nextCutsceneIndex = 0;
                     gSaveContext.chamberCutsceneNum = CHAMBER_CS_WATER;
                 }
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = 0x604;
+                    play->nextEntranceIndex = ENTR_LAKE_HYLIA_8;
                 } else {
-                    play->nextEntranceIndex = 0x60C;
+                    play->nextEntranceIndex = ENTR_LAKE_HYLIA_9;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
@@ -902,19 +902,19 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
 
                 if (IS_RANDO) {
-                    play->nextEntranceIndex = 0x610;
+                    play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_8;
                     gSaveContext.nextCutsceneIndex = 0;
                 } else {
                     Item_Give(play, ITEM_MEDALLION_SPIRIT);
-                    play->nextEntranceIndex = 0x6B;
+                    play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                     gSaveContext.nextCutsceneIndex = 0;
                     gSaveContext.chamberCutsceneNum = CHAMBER_CS_SPIRIT;
                 }
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = 0x1F1;
+                    play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_5;
                 } else {
-                    play->nextEntranceIndex = 0x610;
+                    play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_8;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
@@ -923,19 +923,19 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
 
                 if (IS_RANDO) {
-                    play->nextEntranceIndex = 0x580;
+                    play->nextEntranceIndex = ENTR_GRAVEYARD_8;
                     gSaveContext.nextCutsceneIndex = 0;
                 } else {
                     Item_Give(play, ITEM_MEDALLION_SHADOW);
-                    play->nextEntranceIndex = 0x6B;
+                    play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                     gSaveContext.nextCutsceneIndex = 0;
                     gSaveContext.chamberCutsceneNum = CHAMBER_CS_SHADOW;
                 }
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = 0x568;
+                    play->nextEntranceIndex = ENTR_GRAVEYARD_7;
                 } else {
-                    play->nextEntranceIndex = 0x580;
+                    play->nextEntranceIndex = ENTR_GRAVEYARD_8;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }

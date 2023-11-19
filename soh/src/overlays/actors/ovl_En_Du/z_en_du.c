@@ -299,7 +299,7 @@ void EnDu_Init(Actor* thisx, PlayState* play) {
         play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDarunia01Cs);
         gSaveContext.cutsceneTrigger = 1;
         EnDu_SetupAction(this, func_809FE890);
-    } else if (play->sceneNum == 4) {
+    } else if (play->sceneNum == SCENE_FIRE_TEMPLE) {
         EnDu_SetupAction(this, func_809FE638);
     } else if (!LINK_IS_ADULT) {
         EnDu_SetupAction(this, func_809FE3C0);
