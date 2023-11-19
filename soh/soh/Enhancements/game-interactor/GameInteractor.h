@@ -5,6 +5,7 @@
 
 #include "GameInteractionEffect.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
+#include <z64.h>
 
 typedef enum {
     /* 0x00 */ GI_LINK_SIZE_NORMAL,
@@ -52,13 +53,13 @@ typedef enum {
 } GIColors;
 
 typedef enum {
-    /*      */ GI_TP_DEST_LINKSHOUSE = 187,
-    /*      */ GI_TP_DEST_MINUET = 1536,
-    /*      */ GI_TP_DEST_BOLERO = 1270,
-    /*      */ GI_TP_DEST_SERENADE = 1540,
-    /*      */ GI_TP_DEST_REQUIEM = 497,
-    /*      */ GI_TP_DEST_NOCTURNE = 1384,
-    /*      */ GI_TP_DEST_PRELUDE = 1524,
+    /*      */ GI_TP_DEST_LINKSHOUSE = ENTR_LINKS_HOUSE_0,
+    /*      */ GI_TP_DEST_MINUET = ENTR_SACRED_FOREST_MEADOW_2,
+    /*      */ GI_TP_DEST_BOLERO = ENTR_DEATH_MOUNTAIN_CRATER_4,
+    /*      */ GI_TP_DEST_SERENADE = ENTR_LAKE_HYLIA_8,
+    /*      */ GI_TP_DEST_REQUIEM = ENTR_DESERT_COLOSSUS_5,
+    /*      */ GI_TP_DEST_NOCTURNE = ENTR_GRAVEYARD_7,
+    /*      */ GI_TP_DEST_PRELUDE = ENTR_TEMPLE_OF_TIME_7,
 } GITeleportDestinations;
 
 #ifdef __cplusplus
