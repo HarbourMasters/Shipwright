@@ -630,8 +630,8 @@ void RegisterTriforceHunt() {
             if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
                 gPlayState->nextEntranceIndex = 0x6B;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
-                gPlayState->sceneLoadFlag = 0x14;
-                gPlayState->fadeTransition = 3;
+                gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+                gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
                 GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
             }
 
@@ -652,7 +652,7 @@ void RegisterGrantGanonsBossKey() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
         // Triforce Hunt needs the check if the player isn't being teleported to the credits scene.
         if (!GameInteractor::IsGameplayPaused() &&
-            Flags_GetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY) && gPlayState->sceneLoadFlag != 0x14 &&
+            Flags_GetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY) && gPlayState->transitionTrigger != TRANS_TRIGGER_START &&
             (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
                 GetItemEntry getItemEntry =
                     ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
