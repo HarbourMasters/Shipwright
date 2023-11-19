@@ -397,9 +397,9 @@ static bool EntranceHandler(std::shared_ptr<LUS::Console> Console, const std::ve
     }
 
     gPlayState->nextEntranceIndex = entrance;
-    gPlayState->sceneLoadFlag = 0x14;
-    gPlayState->fadeTransition = 11;
-    gSaveContext.nextTransitionType = 11;
+    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+    gPlayState->transitionType = TRANS_TYPE_INSTANT;
+    gSaveContext.nextTransitionType = TRANS_TYPE_INSTANT;
 }
 
 static bool VoidHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
@@ -407,10 +407,10 @@ static bool VoidHandler(std::shared_ptr<LUS::Console> Console, const std::vector
             gSaveContext.respawn[RESPAWN_MODE_DOWN].tempSwchFlags = gPlayState->actorCtx.flags.tempSwch;
             gSaveContext.respawn[RESPAWN_MODE_DOWN].tempCollectFlags = gPlayState->actorCtx.flags.tempCollect;
             gSaveContext.respawnFlag = 1;
-            gPlayState->sceneLoadFlag = 0x14;
+            gPlayState->transitionTrigger = TRANS_TRIGGER_START;
             gPlayState->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
-            gPlayState->fadeTransition = 2;
-            gSaveContext.nextTransitionType = 2;
+            gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
+            gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
     } else {
         ERROR_MESSAGE("gPlayState == nullptr");
         return 1;
@@ -421,9 +421,9 @@ static bool VoidHandler(std::shared_ptr<LUS::Console> Console, const std::vector
 static bool ReloadHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (gPlayState != nullptr) {
         gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
-        gPlayState->sceneLoadFlag = 0x14;
-        gPlayState->fadeTransition = 11;
-        gSaveContext.nextTransitionType = 11;
+        gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+        gPlayState->transitionType = TRANS_TYPE_INSTANT;
+        gSaveContext.nextTransitionType = TRANS_TYPE_INSTANT;
     } else {
         ERROR_MESSAGE("gPlayState == nullptr");
         return 1;
@@ -457,9 +457,9 @@ static bool FWHandler(std::shared_ptr<LUS::Console> Console, const std::vector<s
                 break;
             case 1: //warp
                 if (gSaveContext.respawn[RESPAWN_MODE_TOP].data > 0) {
-                    gPlayState->sceneLoadFlag = 0x14;
+                    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
                     gPlayState->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
-                    gPlayState->fadeTransition = 5;
+                    gPlayState->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
                 } else {
                     ERROR_MESSAGE("Farore's wind not set!");
                     return 1;

@@ -406,8 +406,8 @@ void Entrance_SetSavewarpEntrance(void) {
 }
 
 void Entrance_SetWarpSongEntrance(void) {
-    gPlayState->sceneLoadFlag = 0x14;
-    gPlayState->fadeTransition = 5;
+    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+    gPlayState->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
     switch (gPlayState->msgCtx.lastPlayedSong) {
         case 0:
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0600); // Minuet
@@ -428,7 +428,7 @@ void Entrance_SetWarpSongEntrance(void) {
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x05F4); // Prelude
             break;
         default:
-            gPlayState->sceneLoadFlag = 0; // if something goes wrong, the animation plays normally
+            gPlayState->transitionTrigger = TRANS_TRIGGER_OFF; // if something goes wrong, the animation plays normally
     }
 
     // If one of the warp songs happens to lead to a grotto return, then we
@@ -481,8 +481,8 @@ void Entrance_OverrideCutsceneEntrance(u16 cutsceneCmd) {
     switch (cutsceneCmd) {
         case 24: // Dropping a fish for Jabu Jabu
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(newJabuJabusBellyEntrance);
-            gPlayState->sceneLoadFlag = 0x14;
-            gPlayState->fadeTransition = 2;
+            gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+            gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
             // In case Jabu's mouth leads to a grotto return
             Grotto_ForceGrottoReturnOnSpecialEntrance();
             break;

@@ -273,8 +273,8 @@ void EnGe1_KickPlayer(EnGe1* this, PlayState* play) {
             Entrance_OverrideGeurdoGuardCapture();
         }
 
-        play->fadeTransition = 0x26;
-        play->sceneLoadFlag = 0x14;
+        play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
+        play->transitionTrigger = TRANS_TRIGGER_START;
     }
 }
 
@@ -656,8 +656,8 @@ void EnGe1_BeginGame_Archery(EnGe1* this, PlayState* play) {
                     Rupees_ChangeBy(-20);
                     play->nextEntranceIndex = 0x129;
                     gSaveContext.nextCutsceneIndex = 0xFFF0;
-                    play->fadeTransition = 0x26;
-                    play->sceneLoadFlag = 0x14;
+                    play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
+                    play->transitionTrigger = TRANS_TRIGGER_START;
                     gSaveContext.eventInf[0] |= 0x100;
                     Flags_SetEventChkInf(EVENTCHKINF_PLAYED_HORSEBACK_ARCHERY);
 

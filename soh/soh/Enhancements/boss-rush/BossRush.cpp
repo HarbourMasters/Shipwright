@@ -218,8 +218,8 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
             } else if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) {
                 play->nextEntranceIndex = 0x6B;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
-                play->sceneLoadFlag = 0x14;
-                play->fadeTransition = 3;
+                play->transitionTrigger = TRANS_TRIGGER_START;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
             }
         }
     }

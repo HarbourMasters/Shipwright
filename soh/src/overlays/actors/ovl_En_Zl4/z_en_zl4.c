@@ -800,8 +800,8 @@ s32 EnZl4_CsAskName(EnZl4* this, PlayState* play) {
                 play->msgCtx.msgMode = MSGMODE_PAUSED;
                 play->nextEntranceIndex = 0xA0;
                 gSaveContext.nextCutsceneIndex = 0xFFF7;
-                play->sceneLoadFlag = 0x14;
-                play->fadeTransition = 3;
+                play->transitionTrigger = TRANS_TRIGGER_START;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
             }
             break;
     }

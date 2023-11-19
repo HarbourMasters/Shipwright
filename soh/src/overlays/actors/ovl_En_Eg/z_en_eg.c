@@ -55,7 +55,7 @@ void func_809FFDC8(EnEg* this, PlayState* play) {
         Play_TriggerRespawn(play);
         gSaveContext.respawnFlag = -2;
         Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
-        play->fadeTransition = 2;
+        play->transitionType = TRANS_TYPE_FADE_BLACK;
         EnEg_PlayVoidOutSFX();
         voided = true;
     }

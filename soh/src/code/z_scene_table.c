@@ -875,7 +875,7 @@ void func_800994A0(PlayState* play) {
         }
     }
 
-    play->fadeTransition = gEntranceTable[computedEntranceIndex].field & 0x7F; // Fade out
+    play->transitionType = gEntranceTable[computedEntranceIndex].field & 0x7F; // Fade out
 }
 
 // Scene Draw Config 0

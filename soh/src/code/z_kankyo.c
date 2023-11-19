@@ -289,7 +289,7 @@ void Environment_Init(PlayState* play2, EnvironmentContext* envCtx, s32 unused) 
     envCtx->skyboxFilterColor[1] = 0;
     envCtx->skyboxFilterColor[2] = 0;
     envCtx->skyboxFilterColor[3] = 0;
-    envCtx->sandstormState = 0;
+    envCtx->sandstormState = SANDSTORM_OFF;
     envCtx->sandstormPrimA = 0;
     envCtx->sandstormEnvA = 0;
 
@@ -925,7 +925,7 @@ void Environment_Update(PlayState* play, EnvironmentContext* envCtx, LightContex
         if ((pauseCtx->state == 0) && (gameOverCtx->state == GAMEOVER_INACTIVE)) {
             if (((msgCtx->msgLength == 0) && (msgCtx->msgMode == 0)) || (((void)0, gSaveContext.gameMode) == 3)) {
                 if ((envCtx->unk_1A == 0) && !FrameAdvance_IsEnabled(play) &&
-                    (play->transitionMode == 0 || ((void)0, gSaveContext.gameMode) != 0)) {
+                    (play->transitionMode == TRANS_MODE_OFF || ((void)0, gSaveContext.gameMode) != 0)) {
 
                     if (IS_DAY || gTimeIncrement >= 0x190) {
                         gSaveContext.dayTime += gTimeIncrement;
@@ -2336,7 +2336,7 @@ void Environment_DrawSandstorm(PlayState* play, u8 sandstormState) {
     Environment_PatchSandstorm(play);
 
     switch (sandstormState) {
-        case 3:
+        case SANDSTORM_ACTIVE:
             if ((play->sceneNum == SCENE_HAUNTED_WASTELAND) && (play->roomCtx.curRoom.num == 0)) {
                 envA1 = 0;
                 primA1 = (play->envCtx.sandstormEnvA > 128) ? 255 : play->envCtx.sandstormEnvA >> 1;
@@ -2349,11 +2349,11 @@ void Environment_DrawSandstorm(PlayState* play, u8 sandstormState) {
                 envA1 = 128;
             }
             break;
-        case 1:
+        case SANDSTORM_FILL:
             primA1 = 255;
             envA1 = (play->envCtx.sandstormPrimA >= 255) ? 255 : 128;
             break;
-        case 2:
+        case SANDSTORM_UNFILL:
             envA1 = 128;
             if (play->envCtx.sandstormEnvA > 128) {
                 primA1 = 0xFF;
@@ -2365,15 +2365,15 @@ void Environment_DrawSandstorm(PlayState* play, u8 sandstormState) {
                 primA1 += 73;
             }
             if ((primA1 >= primA) && (primA1 != 255)) {
-                play->envCtx.sandstormState = 3;
+                play->envCtx.sandstormState = SANDSTORM_ACTIVE;
             }
             break;
-        case 4:
+        case SANDSTORM_DISSIPATE:
             envA1 = 0;
             primA1 = (play->envCtx.sandstormEnvA > 128) ? 255 : play->envCtx.sandstormEnvA >> 1;
 
             if (primA == 0) {
-                play->envCtx.sandstormState = 0;
+                play->envCtx.sandstormState = SANDSTORM_OFF;
             }
             break;
     }
@@ -2541,9 +2541,9 @@ void Environment_WarpSongLeave(PlayState* play) {
     gSaveContext.cutsceneIndex = 0;
     gSaveContext.respawnFlag = -3;
     play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex;
-    play->sceneLoadFlag = 0x14;
-    play->fadeTransition = 3;
-    gSaveContext.nextTransitionType = 3;
+    play->transitionTrigger = TRANS_TRIGGER_START;
+    play->transitionType = TRANS_TYPE_FADE_WHITE;
+    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
 
     switch (play->nextEntranceIndex) {
         case 0x147:
