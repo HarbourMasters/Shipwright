@@ -207,6 +207,7 @@ static bool ResetHandler(std::shared_ptr<LUS::Console> Console, std::vector<std:
         return 1;
     }
 
+    gPlayState->gameplayFrames = 0;
     SET_NEXT_GAMESTATE(&gPlayState->state, TitleSetup_Init, GameState);
     gPlayState->state.running = false;
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnExitGame>(gSaveContext.fileNum);
@@ -1102,9 +1103,9 @@ static bool SpeedModifierHandler(std::shared_ptr<LUS::Console> Console, const st
 }
 
 const static std::map<std::string, uint16_t> boots {
-    { "kokiri", PLAYER_BOOTS_KOKIRI },
-    { "iron", PLAYER_BOOTS_IRON },
-    { "hover", PLAYER_BOOTS_HOVER },
+    { "kokiri", EQUIP_VALUE_BOOTS_KOKIRI },
+    { "iron", EQUIP_VALUE_BOOTS_IRON },
+    { "hover", EQUIP_VALUE_BOOTS_HOVER },
 };
 
 static bool BootsHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {

@@ -33,6 +33,7 @@ u64 D_801614D0[0xA00];
 #endif
 
 PlayState* gPlayState;
+s16 firstInit = 0;
 
 s16 gEnPartnerId;
 
@@ -489,6 +490,12 @@ void Play_Init(GameState* thisx) {
         if (gSaveContext.entranceIndex == 0x7A) {
             gSaveContext.entranceIndex = 0x400;
         }
+    }
+
+    // Properly initialize the frame counter so it doesn't use garbage data
+    if (!firstInit) {
+        play->gameplayFrames = 0;
+        firstInit = 1;
     }
 
     // Invalid entrance, so immediately exit the game to opening title
@@ -1204,7 +1211,7 @@ void Play_Update(PlayState* play) {
                 play->gameplayFrames++;
                 // Gameplay stat tracking
                 if (!gSaveContext.sohStats.gameComplete &&
-                    (!IS_BOSS_RUSH || (IS_BOSS_RUSH && !gSaveContext.isBossRushPaused))) {
+                    (!IS_BOSS_RUSH || !gSaveContext.isBossRushPaused)) {
                       gSaveContext.sohStats.playTimer++;
                       gSaveContext.sohStats.sceneTimer++;
                       gSaveContext.sohStats.roomTimer++;
@@ -2331,7 +2338,27 @@ void Play_PerformSave(PlayState* play) {
     if (play != NULL && gSaveContext.fileNum != 0xFF) {
         Play_SaveSceneFlags(play);
         gSaveContext.savedSceneNum = play->sceneNum;
+
+        // Track values from temp B
+        uint8_t prevB = gSaveContext.equips.buttonItems[0];
+        uint8_t prevStatus = gSaveContext.buttonStatus[0];
+
+        // Replicate the B button restore from minigames/epona that kaleido does
+        if (gSaveContext.equips.buttonItems[0] == ITEM_SLINGSHOT ||
+            gSaveContext.equips.buttonItems[0] == ITEM_BOW ||
+            gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU ||
+            gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE ||
+            (gSaveContext.equips.buttonItems[0] == ITEM_NONE && !Flags_GetInfTable(INFTABLE_SWORDLESS))) {
+
+            gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+            Interface_RandoRestoreSwordless();
+        }
+
         Save_SaveFile();
+
+        // Restore temp B values back
+        gSaveContext.equips.buttonItems[0] = prevB;
+        gSaveContext.buttonStatus[0] = prevStatus;
 
         uint8_t triforceHuntCompleted =
             IS_RANDO &&

@@ -128,6 +128,8 @@ class SaveManager {
         }
     }
 
+    void LoadCharArray(const std::string& name, char* destination, size_t size);
+
     // In the LoadArrayFunc func, the name must be "" to load from the array.
     using LoadArrayFunc = std::function<void(size_t)>;
     void LoadArray(const std::string& name, const size_t size, LoadArrayFunc func);
@@ -140,6 +142,7 @@ class SaveManager {
 
   private:
     std::filesystem::path GetFileName(int fileNum);
+    std::filesystem::path GetFileTempName(int fileNum);
     nlohmann::json saveBlock;
 
     void ConvertFromUnversioned();

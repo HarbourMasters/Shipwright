@@ -7,6 +7,7 @@
 #include "Extract.h"
 #include "portable-file-dialogs.h"
 #include <Utils/BitConverter.h>
+#include "variables.h"
 
 #ifdef unix
 #include <dirent.h>
@@ -107,6 +108,10 @@ void Extractor::ShowSizeErrorBox() const {
 
 void Extractor::ShowCrcErrorBox() const {
     ShowErrorBox("Rom CRC invalid", "Rom CRC did not match the list of known good roms. Please find another.");
+}
+
+void Extractor::ShowCompressedErrorBox() const {
+    ShowErrorBox("File is Compressed", "The selected file appears to be compressed. Please extract before using.");
 }
 
 int Extractor::ShowRomPickBox(uint32_t verCrc) const {
@@ -220,7 +225,7 @@ void Extractor::GetRoms(std::vector<std::string>& roms) {
     //}
 #elif unix
     // Open the directory of the app.
-    DIR* d = opendir(".");
+    DIR* d = opendir(mSearchPath.c_str());
     struct dirent* dir;
 
     if (d != NULL) {
@@ -243,7 +248,7 @@ void Extractor::GetRoms(std::vector<std::string>& roms) {
     }
     closedir(d);
 #else
-    for (const auto& file : std::filesystem::directory_iterator("./")) {
+    for (const auto& file : std::filesystem::directory_iterator(mSearchPath)) {
         if (file.is_directory())
             continue;
         if ((file.path().extension() == ".n64") || (file.path().extension() == ".z64") ||
@@ -292,7 +297,7 @@ bool Extractor::GetRomPathFromBox() {
     }
     mCurrentRomPath = nameBuffer;
     #else
-    auto selection = pfd::open_file("Select a file", ".", { "N64 Roms", "*.z64 *.n64 *.v64" }).result();
+    auto selection = pfd::open_file("Select a file", mSearchPath, { "N64 Roms", "*.z64 *.n64 *.v64" }).result();
 
     if (selection.empty()) {
         return false;
@@ -328,6 +333,24 @@ bool Extractor::ValidateAndFixRom() {
     return false;
 }
 
+// The file box will only allow selecting an n64 rom but typing in the file name will allow selecting anything.
+bool Extractor::ValidateNotCompressed() const {
+    // ZIP file header
+    if (mRomData[0] == 'P' && mRomData[1] == 'K' && mRomData[2] == 0x03 && mRomData[3] == 0x04) {
+        return false;
+    }
+    // RAR file header. Only the first 4 bytes.
+    if (mRomData[0] == 'R' && mRomData[1] == 'a' && mRomData[2] == 'r' && mRomData[3] == 0x21) {
+        return false;
+    }
+    // 7z file header. 37 7A BC AF 27 1C
+    if (mRomData[0] == '7' && mRomData[1] == 'z' && mRomData[2] == 0xBC && mRomData[3] == 0xAF && mRomData[4] == 0x27 && mRomData[5] == 0x1C) {
+        return false;
+    }
+
+    return true;
+}
+
 bool Extractor::ValidateRomSize() const {
     if (mCurRomSize != MB32 && mCurRomSize != MB54 && mCurRomSize != MB64) {
         return false;
@@ -336,6 +359,10 @@ bool Extractor::ValidateRomSize() const {
 }
 
 bool Extractor::ValidateRom(bool skipCrcTextBox) {
+    if (!ValidateNotCompressed()) {
+        ShowCompressedErrorBox();
+        return false;
+    }
     if (!ValidateRomSize()) {
         ShowSizeErrorBox();
         return false;
@@ -403,9 +430,11 @@ bool Extractor::ManuallySearchForRomMatchingType(RomSearchMode searchMode) {
     return true;
 }
 
-bool Extractor::Run(RomSearchMode searchMode) {
+bool Extractor::Run(std::string searchPath, RomSearchMode searchMode) {
     std::vector<std::string> roms;
     std::ifstream inFile;
+
+    mSearchPath = searchPath;
 
     GetRoms(roms);
     FilterRoms(roms, searchMode);
@@ -531,9 +560,10 @@ std::string Extractor::Mkdtemp() {
 extern "C" int zapd_main(int argc, char** argv);
 
 bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
-    constexpr int argc = 16;
+    constexpr int argc = 18;
     char xmlPath[1024];
     char confPath[1024];
+    char portVersion[18]; // 5 digits for int16_max (x3) + separators + terminator
     std::array<const char*, argc> argv;
     const char* version = GetZapdVerStr();
     const char* otrFile = IsMasterQuest() ? "oot-mq.otr" : "oot.otr";
@@ -555,6 +585,7 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
 
     snprintf(xmlPath, 1024, "assets/extractor/xmls/%s", version);
     snprintf(confPath, 1024, "assets/extractor/Config_%s.xml", version);
+    snprintf(portVersion, 18, "%d.%d.%d", gBuildVersionMajor, gBuildVersionMinor, gBuildVersionPatch);
 
     argv[0] = "ZAPD";
     argv[1] = "ed";
@@ -572,6 +603,8 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     argv[13] = "OTR";
     argv[14] = "--otrfile";
     argv[15] = otrFile;
+    argv[16] = "--portVer";
+    argv[17] = portVersion;
 
 #ifdef _WIN32
     // Grab a handle to the command window.
@@ -580,6 +613,9 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     // Normally the command window is hidden. We want the window to be shown here so the user can see the progess of the extraction.
     ShowWindow(cmdWindow, SW_SHOW);
     SetWindowPos(cmdWindow, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
+#else
+    // Show extraction in background message until linux/mac can have visual progress
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Extracting", "Extraction will now begin in the background.\n\nPlease be patient for the process to finish. Do not close the main program.", nullptr);
 #endif
 
     zapd_main(argc, (char**)argv.data());
@@ -597,4 +633,3 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
 
     return 0;
 }
-

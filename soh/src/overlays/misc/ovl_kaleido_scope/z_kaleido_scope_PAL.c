@@ -3551,7 +3551,7 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[3] = 1;
             }
 
-            if (CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1)) {
+            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON)) {
                 pauseCtx->worldMapPoints[3] = 2;
             }
 
@@ -3705,7 +3705,7 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[11] = 2;
             }
 
-            if (CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1)) {
+            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON)) {
                 pauseCtx->worldMapPoints[11] = 1;
             }
 
@@ -4290,6 +4290,8 @@ void KaleidoScope_Update(PlayState* play)
                         if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                             Grotto_ForceGrottoReturn();
                         }
+                        // Reset frame counter to prevent autosave on respawn
+                        play->gameplayFrames = 0;
                         gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
                         gSaveContext.health = CVarGetInteger("gFullHealthSpawn", 0) ? gSaveContext.healthCapacity : 0x30;
                         Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
@@ -4307,9 +4309,6 @@ void KaleidoScope_Update(PlayState* play)
                         osSyncPrintf(VT_RST);
                     } else {
                         play->state.running = 0;
-                        if (IS_BOSS_RUSH) {
-                            gSaveContext.questId = QUEST_NORMAL;
-                        }
                         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
                         GameInteractor_ExecuteOnExitGame(gSaveContext.fileNum);
                     }
