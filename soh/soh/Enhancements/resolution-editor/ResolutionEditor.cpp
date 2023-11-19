@@ -435,6 +435,8 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         if (updateCountdown > 0) {
             updateCountdown--;
         } else {
+            CVarSetInteger("gAdvancedResolution.UIComboItem.AspectRatio", item_aspectRatio);
+            CVarSetInteger("gAdvancedResolution.UIComboItem.PixelCount", item_pixelCount);
             CVarSave();
         }
     }
