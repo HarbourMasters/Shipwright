@@ -1,7 +1,9 @@
 #include "ConfigUpdaters.h"
+#include "soh/Enhancements/audio/AudioCollection.h"
 
 namespace LUS {
     ConfigVersion1Updater::ConfigVersion1Updater() : ConfigVersionUpdater(1) {}
+    ConfigVersion2Updater::ConfigVersion2Updater() : ConfigVersionUpdater(2) {}
     
     void ConfigVersion1Updater::Update(Config* conf) {
         if (conf->GetInt("Window.Width", 640) == 640) {
@@ -59,5 +61,11 @@ namespace LUS {
             }
         }
         CVarClear("gSeededRandomizedEnemies");
+    }
+
+    void ConfigVersion2Updater::Update(Config* conf) {
+        for (auto seq : AudioCollection::Instance->GetAllSequences()) {
+            CVarClear(std::string("gAudioEditor.ReplacedSequences." + seq.second.sfxKey).c_str());
+        }
     }
 }

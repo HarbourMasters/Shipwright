@@ -672,14 +672,14 @@ void func_80B15424(EnTa* this, PlayState* play) {
         play->nextEntranceIndex = 0x5E4;
 
         if (gSaveContext.eventInf[0] & 0x100) {
-            play->fadeTransition = 46;
-            gSaveContext.nextTransitionType = 3;
+            play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
+            gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
         } else {
-            play->fadeTransition = 38;
-            gSaveContext.nextTransitionType = 2;
+            play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
+            gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
         }
 
-        play->sceneLoadFlag = 0x14;
+        play->transitionTrigger = TRANS_TRIGGER_START;
         gSaveContext.eventInf[0] |= 0x400;
         this->actionFunc = func_80B153D4;
         this->unk_2CC = 22;

@@ -219,7 +219,7 @@ std::unordered_map<RandomizerTrickArea, std::string> rtAreaNames = {
     { RTAREA_LAKE_HYLIA, "Lake Hylia"},
     { RTAREA_GERUDO_VALLEY, "Gerudo Valley"},
     { RTAREA_GERUDO_FORTRESS, "Gerudo Fortress"},
-    { RTAREA_WASTELAND, "Desert Wasteland"},   
+    { RTAREA_WASTELAND, "Haunted Wasteland"},   
     { RTAREA_DESERT_COLOSSUS, "Desert Colossus"},
     { RTAREA_MARKET, "Hyrule Market"},
     { RTAREA_HYRULE_CASTLE, "Hyrule Castle"},

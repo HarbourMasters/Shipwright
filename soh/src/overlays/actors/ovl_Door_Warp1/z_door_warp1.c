@@ -567,7 +567,7 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
     this->warpTimer++;
 
     if (sWarpTimerTarget < this->warpTimer && gSaveContext.nextCutsceneIndex == 0xFFEF) {
-        osSyncPrintf("\n\n\nじかんがきたからおーしまい fade_direction=[%d]", play->sceneLoadFlag, 0x14);
+        osSyncPrintf("\n\n\nじかんがきたからおーしまい fade_direction=[%d]", play->transitionTrigger, TRANS_TRIGGER_START);
 
         if (play->sceneNum == SCENE_DODONGOS_CAVERN_BOSS) {
             if (!Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
@@ -615,9 +615,9 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
         }
 
         osSyncPrintf("\n\n\nおわりおわり");
-        play->sceneLoadFlag = 0x14;
-        play->fadeTransition = 7;
-        gSaveContext.nextTransitionType = 3;
+        play->transitionTrigger = TRANS_TRIGGER_START;
+        play->transitionType = TRANS_TYPE_FADE_WHITE_SLOW;
+        gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
     }
 
     Math_StepToF(&this->unk_194, 2.0f, 0.01f);
@@ -721,8 +721,8 @@ void DoorWarp1_RutoWarpOut(DoorWarp1* this, PlayState* play) {
             Entrance_OverrideBlueWarp();
         }
 
-        play->sceneLoadFlag = 0x14;
-        play->fadeTransition = 7;
+        play->transitionTrigger = TRANS_TRIGGER_START;
+        play->transitionType = TRANS_TYPE_FADE_WHITE_SLOW;
     }
 
     Math_StepToF(&this->unk_194, 2.0f, 0.01f);
@@ -946,9 +946,9 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
             Entrance_OverrideBlueWarp();
         }
 
-        play->sceneLoadFlag = 0x14;
-        play->fadeTransition = 3;
-        gSaveContext.nextTransitionType = 7;
+        play->transitionTrigger = TRANS_TRIGGER_START;
+        play->transitionType = TRANS_TYPE_FADE_WHITE;
+        gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE_SLOW;
     }
     if (this->warpTimer >= 141) {
         f32 screenFillAlpha;

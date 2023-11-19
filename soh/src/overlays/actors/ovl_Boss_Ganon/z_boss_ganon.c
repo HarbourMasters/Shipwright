@@ -1538,7 +1538,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
             }
 
             if (this->csTimer == 180) {
-                play->sceneLoadFlag = 0x14;
+                play->transitionTrigger = TRANS_TRIGGER_START;
                 if ((IS_RANDO && Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE) || IS_BOSS_RUSH)) {
                     Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
                     play->nextEntranceIndex = 0x517;
@@ -1546,7 +1546,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
                 else {
                     play->nextEntranceIndex = 0x43F;
                 }
-                play->fadeTransition = 5;
+                play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
             }
             break;
 

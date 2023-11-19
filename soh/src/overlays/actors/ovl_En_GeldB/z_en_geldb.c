@@ -1579,8 +1579,8 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
                     Entrance_OverrideGeurdoGuardCapture();
                 }
 
-                play->fadeTransition = 0x26;
-                play->sceneLoadFlag = 0x14;
+                play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
+                play->transitionTrigger = TRANS_TRIGGER_START;
             }
         }
     }

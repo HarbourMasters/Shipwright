@@ -3,6 +3,12 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_oE1sTex_000478 "__OTR__objects/object_oE1s/object_oE1sTex_000478"
+static const ALIGN_ASSET(2) char object_oE1sTex_000478[] = dobject_oE1sTex_000478;
+
+#define dobject_oE1sTLUT_0001A8 "__OTR__objects/object_oE1s/object_oE1sTLUT_0001A8"
+static const ALIGN_ASSET(2) char object_oE1sTLUT_0001A8[] = dobject_oE1sTLUT_0001A8;
+
 #define dobject_oE1s_Anim_00007C "__OTR__objects/object_oE1s/object_oE1s_Anim_00007C"
 static const ALIGN_ASSET(2) char object_oE1s_Anim_00007C[] = dobject_oE1s_Anim_00007C;
 
@@ -87,10 +93,5 @@ static const ALIGN_ASSET(2) char object_oE1s_DL_006340[] = dobject_oE1s_DL_00634
 #define dobject_oE1s_DL_006490 "__OTR__objects/object_oE1s/object_oE1s_DL_006490"
 static const ALIGN_ASSET(2) char object_oE1s_DL_006490[] = dobject_oE1s_DL_006490;
 
-#define dobject_oE1sTex_000478 "__OTR__objects/object_oE1s/object_oE1sTex_000478"
-static const ALIGN_ASSET(2) char object_oE1sTex_000478[] = dobject_oE1sTex_000478;
-
-#define dobject_oE1sTLUT_0001A8 "__OTR__objects/object_oE1s/object_oE1sTLUT_0001A8"
-static const ALIGN_ASSET(2) char object_oE1sTLUT_0001A8[] = dobject_oE1sTLUT_0001A8;
 
 #endif // OBJECTS_OBJECT_OE1S_H
