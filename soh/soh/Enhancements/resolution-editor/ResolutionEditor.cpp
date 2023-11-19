@@ -109,11 +109,11 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 
         if (ImGui::CollapsingHeader("Original Settings", ImGuiTreeNodeFlags_DefaultOpen)) {
             // The original resolution slider (for convenience)
+            const bool cantUseResolutionSlider = (CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0) &&
+                                                  CVarGetInteger("gAdvancedResolution.Enabled", 0)) ||
+                                                 CVarGetInteger("gLowResMode", 0);
             if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f,
-                                                  2.0f, "", 1.0f, true, true,
-                                                  (CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0) &&
-                                                   CVarGetInteger("gAdvancedResolution.Enabled", 0)) ||
-                                                      CVarGetInteger("gLowResMode", 0))) {
+                                                  2.0f, "", 1.0f, true, true, cantUseResolutionSlider)) {
                 LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(
                     CVarGetFloat("gInternalResolution", 1));
             }
