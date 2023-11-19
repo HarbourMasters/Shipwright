@@ -46,9 +46,9 @@ extern "C"
 	extern OSViMode osViModeFpalLan1;
 	extern u32 __additional_scanline;
 	extern u8 gBuildVersion[];
-	extern s16 gBuildVersionMajor;
-	extern s16 gBuildVersionMinor;
-	extern s16 gBuildVersionPatch;
+	extern u16 gBuildVersionMajor;
+	extern u16 gBuildVersionMinor;
+	extern u16 gBuildVersionPatch;
     extern u8 gBuildTeam[];
 	extern u8 gBuildDate[];
 	extern u8 gBuildMakeOption[];
@@ -82,7 +82,7 @@ extern "C"
 	extern s16 gSpoilingItems[3];
 	extern s16 gSpoilingItemReverts[3];
 	extern FlexSkeletonHeader* gPlayerSkelHeaders[2];
-	extern u8 gPlayerModelTypes[][5];
+	extern u8 gPlayerModelTypes[PLAYER_MODELGROUP_MAX][PLAYER_MODELGROUPENTRY_MAX];
 	extern Gfx* gPlayerLeftHandBgsDLs[];
 	extern Gfx* gPlayerLeftHandOpenDLs[];
 	extern Gfx* gPlayerLeftHandClosedDLs[];

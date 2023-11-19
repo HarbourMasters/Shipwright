@@ -114,12 +114,12 @@ AudioCollection::AudioCollection() {
         SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_4,                      "End Credits IV",                           "NA_BGM_STAFF_4",                 SEQ_BGM_EVENT,    false,    false), // Previously SEQ_UNUSED, so not shown anywhere?
         
         // SEQ_INSTRUMENT
-        SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 1,               "Ocarina",                                  "OCARINA_INSTRUMENT_DEFAULT",     SEQ_INSTRUMENT,   true,     false),
-        SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 2,               "Malon",                                    "OCARINA_INSTRUMENT_MALON",       SEQ_INSTRUMENT,   true,     false),
-        SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 3,               "Whistle",                                  "OCARINA_INSTRUMENT_WHISTLE",     SEQ_INSTRUMENT,   true,     false),
-        SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 4,               "Harp",                                     "OCARINA_INSTRUMENT_HARP",        SEQ_INSTRUMENT,   true,     false),
-        SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 5,               "Organ",                                    "OCARINA_INSTRUMENT_GRIND_ORGAN", SEQ_INSTRUMENT,   true,     false),
-        SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 6,               "Flute",                                    "OCARINA_INSTRUMENT_FLUTE",       SEQ_INSTRUMENT,   true,     false),
+        SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 1,               "Ocarina",                                  "OCARINA_INSTRUMENT_DEFAULT",     SEQ_INSTRUMENT,   true,     true),
+        SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 2,               "Malon",                                    "OCARINA_INSTRUMENT_MALON",       SEQ_INSTRUMENT,   true,     true),
+        SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 3,               "Whistle",                                  "OCARINA_INSTRUMENT_WHISTLE",     SEQ_INSTRUMENT,   true,     true),
+        SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 4,               "Harp",                                     "OCARINA_INSTRUMENT_HARP",        SEQ_INSTRUMENT,   true,     true),
+        SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 5,               "Organ",                                    "OCARINA_INSTRUMENT_GRIND_ORGAN", SEQ_INSTRUMENT,   true,     true),
+        SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 6,               "Flute",                                    "OCARINA_INSTRUMENT_FLUTE",       SEQ_INSTRUMENT,   true,     true),
 
         // SEQ_SFX
         SEQUENCE_MAP_ENTRY(NA_SE_EV_SMALL_DOG_BARK,             "Bark",                                     "NA_SE_EV_SMALL_DOG_BARK",        SEQ_SFX,          true,     true),
@@ -400,8 +400,9 @@ void AudioCollection::InitializeShufflePool() {
     if (shufflePoolInitialized) return;
     
     for (auto& [seqId, seqInfo] : sequenceMap) {
+        if (!seqInfo.canBeUsedAsReplacement) continue;
         const std::string cvarKey = "gAudioEditor.Excluded." + seqInfo.sfxKey;
-        if (CVarGetInteger(cvarKey.c_str(), 0) && !seqInfo.canBeUsedAsReplacement) {
+        if (CVarGetInteger(cvarKey.c_str(), 0)) {
             excludedSequences.insert(&seqInfo);
         } else {
             includedSequences.insert(&seqInfo);

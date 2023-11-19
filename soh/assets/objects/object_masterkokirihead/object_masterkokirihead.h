@@ -3,6 +3,12 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_masterkokiriheadTex_0009F0 "__OTR__objects/object_masterkokirihead/object_masterkokiriheadTex_0009F0"
+static const ALIGN_ASSET(2) char object_masterkokiriheadTex_0009F0[] = dobject_masterkokiriheadTex_0009F0;
+
+#define dobject_masterkokiriheadTex_000A30 "__OTR__objects/object_masterkokirihead/object_masterkokiriheadTex_000A30"
+static const ALIGN_ASSET(2) char object_masterkokiriheadTex_000A30[] = dobject_masterkokiriheadTex_000A30;
+
 #define dgKokiriShopkeeperHeadDL "__OTR__objects/object_masterkokirihead/gKokiriShopkeeperHeadDL"
 static const ALIGN_ASSET(2) char gKokiriShopkeeperHeadDL[] = dgKokiriShopkeeperHeadDL;
 
@@ -32,11 +38,5 @@ static const ALIGN_ASSET(2) char gKokiriShopkeeperHatTex[] = dgKokiriShopkeeperH
 
 #define dgKokiriShopkeeperMouthAndNoseTex "__OTR__objects/object_masterkokirihead/gKokiriShopkeeperMouthAndNoseTex"
 static const ALIGN_ASSET(2) char gKokiriShopkeeperMouthAndNoseTex[] = dgKokiriShopkeeperMouthAndNoseTex;
-
-#define dobject_masterkokiriheadTex_0009F0 "__OTR__objects/object_masterkokirihead/object_masterkokiriheadTex_0009F0"
-static const ALIGN_ASSET(2) char object_masterkokiriheadTex_0009F0[] = dobject_masterkokiriheadTex_0009F0;
-
-#define dobject_masterkokiriheadTex_000A30 "__OTR__objects/object_masterkokirihead/object_masterkokiriheadTex_000A30"
-static const ALIGN_ASSET(2) char object_masterkokiriheadTex_000A30[] = dobject_masterkokiriheadTex_000A30;
 
 #endif // OBJECTS_OBJECT_MASTERKOKIRIHEAD_H

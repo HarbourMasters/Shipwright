@@ -24,7 +24,6 @@ if (CPACK_GENERATOR MATCHES "Bundle")
     set(CPACK_BUNDLE_NAME "soh")
     set(CPACK_BUNDLE_PLIST "macosx/Info.plist")
     set(CPACK_BUNDLE_ICON "macosx/soh.icns")
-    set(CPACK_BUNDLE_STARTUP_COMMAND "../soh/macosx/soh-macos.sh")
+    set(CPACK_BUNDLE_STARTUP_COMMAND "macosx/soh-macos.sh")
     set(CPACK_BUNDLE_APPLE_CERT_APP "-")
 endif()
-

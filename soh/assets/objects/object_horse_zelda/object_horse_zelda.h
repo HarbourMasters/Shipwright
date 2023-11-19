@@ -3,6 +3,42 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_horse_zeldaTex_000408 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_000408"
+static const ALIGN_ASSET(2) char object_horse_zeldaTex_000408[] = dobject_horse_zeldaTex_000408;
+
+#define dobject_horse_zeldaTex_000888 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_000888"
+static const ALIGN_ASSET(2) char object_horse_zeldaTex_000888[] = dobject_horse_zeldaTex_000888;
+
+#define dobject_horse_zeldaTex_000988 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_000988"
+static const ALIGN_ASSET(2) char object_horse_zeldaTex_000988[] = dobject_horse_zeldaTex_000988;
+
+#define dobject_horse_zeldaTex_002578 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_002578"
+static const ALIGN_ASSET(2) char object_horse_zeldaTex_002578[] = dobject_horse_zeldaTex_002578;
+
+#define dobject_horse_zeldaTex_002678 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_002678"
+static const ALIGN_ASSET(2) char object_horse_zeldaTex_002678[] = dobject_horse_zeldaTex_002678;
+
+#define dobject_horse_zeldaTex_002778 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_002778"
+static const ALIGN_ASSET(2) char object_horse_zeldaTex_002778[] = dobject_horse_zeldaTex_002778;
+
+#define dobject_horse_zeldaTex_002978 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_002978"
+static const ALIGN_ASSET(2) char object_horse_zeldaTex_002978[] = dobject_horse_zeldaTex_002978;
+
+#define dobject_horse_zeldaTex_003178 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_003178"
+static const ALIGN_ASSET(2) char object_horse_zeldaTex_003178[] = dobject_horse_zeldaTex_003178;
+
+#define dobject_horse_zeldaTex_003278 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_003278"
+static const ALIGN_ASSET(2) char object_horse_zeldaTex_003278[] = dobject_horse_zeldaTex_003278;
+
+#define dobject_horse_zeldaTex_003378 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_003378"
+static const ALIGN_ASSET(2) char object_horse_zeldaTex_003378[] = dobject_horse_zeldaTex_003378;
+
+#define dobject_horse_zeldaTex_0033F8 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_0033F8"
+static const ALIGN_ASSET(2) char object_horse_zeldaTex_0033F8[] = dobject_horse_zeldaTex_0033F8;
+
+#define dobject_horse_zeldaTex_0034F8 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_0034F8"
+static const ALIGN_ASSET(2) char object_horse_zeldaTex_0034F8[] = dobject_horse_zeldaTex_0034F8;
+
 #define dgHorseZeldaSkel "__OTR__objects/object_horse_zelda/gHorseZeldaSkel"
 static const ALIGN_ASSET(2) char gHorseZeldaSkel[] = dgHorseZeldaSkel;
 
@@ -20,33 +56,6 @@ static const ALIGN_ASSET(2) char gHorseZeldaNoseTex[] = dgHorseZeldaNoseTex;
 
 #define dgHorseZeldaLegTex "__OTR__objects/object_horse_zelda/gHorseZeldaLegTex"
 static const ALIGN_ASSET(2) char gHorseZeldaLegTex[] = dgHorseZeldaLegTex;
-
-#define dobject_horse_zeldaTex_0034F8 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_0034F8"
-static const ALIGN_ASSET(2) char object_horse_zeldaTex_0034F8[] = dobject_horse_zeldaTex_0034F8;
-
-#define dobject_horse_zeldaTex_0033F8 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_0033F8"
-static const ALIGN_ASSET(2) char object_horse_zeldaTex_0033F8[] = dobject_horse_zeldaTex_0033F8;
-
-#define dobject_horse_zeldaTex_003378 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_003378"
-static const ALIGN_ASSET(2) char object_horse_zeldaTex_003378[] = dobject_horse_zeldaTex_003378;
-
-#define dobject_horse_zeldaTex_003278 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_003278"
-static const ALIGN_ASSET(2) char object_horse_zeldaTex_003278[] = dobject_horse_zeldaTex_003278;
-
-#define dobject_horse_zeldaTex_003178 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_003178"
-static const ALIGN_ASSET(2) char object_horse_zeldaTex_003178[] = dobject_horse_zeldaTex_003178;
-
-#define dobject_horse_zeldaTex_002978 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_002978"
-static const ALIGN_ASSET(2) char object_horse_zeldaTex_002978[] = dobject_horse_zeldaTex_002978;
-
-#define dobject_horse_zeldaTex_002778 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_002778"
-static const ALIGN_ASSET(2) char object_horse_zeldaTex_002778[] = dobject_horse_zeldaTex_002778;
-
-#define dobject_horse_zeldaTex_002678 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_002678"
-static const ALIGN_ASSET(2) char object_horse_zeldaTex_002678[] = dobject_horse_zeldaTex_002678;
-
-#define dobject_horse_zeldaTex_002578 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_002578"
-static const ALIGN_ASSET(2) char object_horse_zeldaTex_002578[] = dobject_horse_zeldaTex_002578;
 
 #define dgHorseZeldaSkelLimbsLimb_0067E4SkinLimbDL_0036F8 "__OTR__objects/object_horse_zelda/gHorseZeldaSkelLimbsLimb_0067E4SkinLimbDL_0036F8"
 static const ALIGN_ASSET(2) char gHorseZeldaSkelLimbsLimb_0067E4SkinLimbDL_0036F8[] = dgHorseZeldaSkelLimbsLimb_0067E4SkinLimbDL_0036F8;
@@ -79,14 +88,5 @@ static const ALIGN_ASSET(2) char gHorseZeldaSkelLimbsLimb_006A54DL_002140[] = dg
 static const ALIGN_ASSET(2) char gHorseZeldaSkelLimbsLimb_006A64DL_002088[] = dgHorseZeldaSkelLimbsLimb_006A64DL_002088;
 
 #define dgHorseZeldaSkelLimbsLimb_0067E4SkinLimbDL_0036F8 "__OTR__objects/object_horse_zelda/gHorseZeldaSkelLimbsLimb_0067E4SkinLimbDL_0036F8"
-
-#define dobject_horse_zeldaTex_000988 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_000988"
-static const ALIGN_ASSET(2) char object_horse_zeldaTex_000988[] = dobject_horse_zeldaTex_000988;
-
-#define dobject_horse_zeldaTex_000888 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_000888"
-static const ALIGN_ASSET(2) char object_horse_zeldaTex_000888[] = dobject_horse_zeldaTex_000888;
-
-#define dobject_horse_zeldaTex_000408 "__OTR__objects/object_horse_zelda/object_horse_zeldaTex_000408"
-static const ALIGN_ASSET(2) char object_horse_zeldaTex_000408[] = dobject_horse_zeldaTex_000408;
 
 #endif // OBJECTS_OBJECT_HORSE_ZELDA_H
