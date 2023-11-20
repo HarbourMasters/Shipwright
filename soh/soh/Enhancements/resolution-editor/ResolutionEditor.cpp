@@ -235,8 +235,10 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                     if (horizontalPixelCount < SCREEN_WIDTH) {
                         horizontalPixelCount = (minVerticalPixelCount / 3.0f) * 4.0f;
                     }
-                    aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
+                    aspectRatioX = horizontalPixelCount;
+                    aspectRatioY = verticalPixelCount;
                     update[UPDATE_aspectRatioX] = true;
+                    update[UPDATE_aspectRatioY] = true;
                 }
             } else { // Display a notice instead.
                 ImGui::TextColored(messageColor[MESSAGE_QUESTION],
@@ -261,8 +263,11 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             // Account for the natural instinct to enter horizontal first.
             // Ignore vertical resolutions that are below the lower clamp constant.
             if (showHorizontalResField && !(verticalPixelCount < minVerticalPixelCount)) {
-                aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
+                item_aspectRatio = default_aspectRatio;
+                aspectRatioX = horizontalPixelCount;
+                aspectRatioY = verticalPixelCount;
                 update[UPDATE_aspectRatioX] = true;
+                update[UPDATE_aspectRatioY] = true;
             }
         }
 
@@ -343,7 +348,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 #endif
 
             // A requested addiition; an alternative way of displaying the resolution field.
-            if (ImGui::Checkbox("Show a horizontal resolution field.", &showHorizontalResField)) {
+            if (ImGui::Checkbox("Show a horizontal resolution field, instead of aspect ratio.", &showHorizontalResField)) {
                 if (!showHorizontalResField && (aspectRatioX > 0.0f)) { // when turning this setting off
                     // Refresh relevant values
                     aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
