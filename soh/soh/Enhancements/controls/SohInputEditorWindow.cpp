@@ -10,7 +10,6 @@
 #define SCALE_IMGUI_SIZE(value) ((value / 13.0f) * ImGui::GetFontSize())
 
 SohInputEditorWindow::~SohInputEditorWindow() {
-    SPDLOG_TRACE("destruct input editor window");
 }
 
 void SohInputEditorWindow::InitElement() {
