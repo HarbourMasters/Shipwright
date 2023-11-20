@@ -56,31 +56,16 @@ typedef struct {
 } DungeonEntranceInfo;
 
 static DungeonEntranceInfo dungeons[] = {
-    //entryway                   exit,                         boss,                        reverse,                  bluewarp,                         dungeon scene,         boss scene
-    { DEKU_TREE_ENTRANCE,        ENTR_KOKIRI_FOREST_1,         ENTR_DEKU_TREE_BOSS_0,       ENTR_DEKU_TREE_1,         ENTR_KOKIRI_FOREST_11,            SCENE_DEKU_TREE,       SCENE_DEKU_TREE_BOSS },
-    { DODONGOS_CAVERN_ENTRANCE,  ENTR_DEATH_MOUNTAIN_TRAIL_3,  ENTR_DODONGOS_CAVERN_BOSS_0, ENTR_DODONGOS_CAVERN_1,   ENTR_DEATH_MOUNTAIN_TRAIL_5,      SCENE_DODONGOS_CAVERN, SCENE_DODONGOS_CAVERN_BOSS },
-    { JABU_JABUS_BELLY_ENTRANCE, ENTR_ZORAS_FOUNTAIN_1,        ENTR_JABU_JABU_BOSS_0,       ENTR_JABU_JABU_1,         ENTR_ZORAS_FOUNTAIN_0,            SCENE_JABU_JABU,       SCENE_JABU_JABU_BOSS },
-    { FOREST_TEMPLE_ENTRANCE,    ENTR_SACRED_FOREST_MEADOW_1,  ENTR_FOREST_TEMPLE_BOSS_0,   ENTR_FOREST_TEMPLE_1,     ENTR_SACRED_FOREST_MEADOW_3,      SCENE_FOREST_TEMPLE,   SCENE_FOREST_TEMPLE_BOSS },
-    { FIRE_TEMPLE_ENTRANCE,      ENTR_DEATH_MOUNTAIN_CRATER_2, ENTR_FIRE_TEMPLE_BOSS_0,     ENTR_FIRE_TEMPLE_1,       ENTR_DEATH_MOUNTAIN_CRATER_5,     SCENE_FIRE_TEMPLE,     SCENE_FIRE_TEMPLE_BOSS },
-    { WATER_TEMPLE_ENTRANCE,     ENTR_LAKE_HYLIA_2,            ENTR_WATER_TEMPLE_BOSS_0,    ENTR_WATER_TEMPLE_1,      ENTR_LAKE_HYLIA_9,                SCENE_WATER_TEMPLE,    SCENE_WATER_TEMPLE_BOSS },
-    { SPIRIT_TEMPLE_ENTRANCE,    ENTR_DESERT_COLOSSUS_1,       ENTR_SPIRIT_TEMPLE_BOSS_0,   ENTR_SPIRIT_TEMPLE_1,     ENTR_DESERT_COLOSSUS_8,           SCENE_SPIRIT_TEMPLE,   SCENE_SPIRIT_TEMPLE_BOSS },
-    { SHADOW_TEMPLE_ENTRANCE,    ENTR_GRAVEYARD_1,             ENTR_SHADOW_TEMPLE_BOSS_0,   ENTR_SHADOW_TEMPLE_1,     ENTR_GRAVEYARD_8,                 SCENE_SHADOW_TEMPLE,   SCENE_SHADOW_TEMPLE_BOSS },
+    //entryway                exit,                         boss,                        reverse,                bluewarp,                     dungeon scene,         boss scene
+    { ENTR_DEKU_TREE_0,       ENTR_KOKIRI_FOREST_1,         ENTR_DEKU_TREE_BOSS_0,       ENTR_DEKU_TREE_1,       ENTR_KOKIRI_FOREST_11,        SCENE_DEKU_TREE,       SCENE_DEKU_TREE_BOSS },
+    { ENTR_DODONGOS_CAVERN_0, ENTR_DEATH_MOUNTAIN_TRAIL_3,  ENTR_DODONGOS_CAVERN_BOSS_0, ENTR_DODONGOS_CAVERN_1, ENTR_DEATH_MOUNTAIN_TRAIL_5,  SCENE_DODONGOS_CAVERN, SCENE_DODONGOS_CAVERN_BOSS },
+    { ENTR_JABU_JABU_0,       ENTR_ZORAS_FOUNTAIN_1,        ENTR_JABU_JABU_BOSS_0,       ENTR_JABU_JABU_1,       ENTR_ZORAS_FOUNTAIN_0,        SCENE_JABU_JABU,       SCENE_JABU_JABU_BOSS },
+    { ENTR_FOREST_TEMPLE_0,   ENTR_SACRED_FOREST_MEADOW_1,  ENTR_FOREST_TEMPLE_BOSS_0,   ENTR_FOREST_TEMPLE_1,   ENTR_SACRED_FOREST_MEADOW_3,  SCENE_FOREST_TEMPLE,   SCENE_FOREST_TEMPLE_BOSS },
+    { ENTR_FIRE_TEMPLE_0,     ENTR_DEATH_MOUNTAIN_CRATER_2, ENTR_FIRE_TEMPLE_BOSS_0,     ENTR_FIRE_TEMPLE_1,     ENTR_DEATH_MOUNTAIN_CRATER_5, SCENE_FIRE_TEMPLE,     SCENE_FIRE_TEMPLE_BOSS },
+    { ENTR_WATER_TEMPLE_0,    ENTR_LAKE_HYLIA_2,            ENTR_WATER_TEMPLE_BOSS_0,    ENTR_WATER_TEMPLE_1,    ENTR_LAKE_HYLIA_9,            SCENE_WATER_TEMPLE,    SCENE_WATER_TEMPLE_BOSS },
+    { ENTR_SPIRIT_TEMPLE_0,   ENTR_DESERT_COLOSSUS_1,       ENTR_SPIRIT_TEMPLE_BOSS_0,   ENTR_SPIRIT_TEMPLE_1,   ENTR_DESERT_COLOSSUS_8,       SCENE_SPIRIT_TEMPLE,   SCENE_SPIRIT_TEMPLE_BOSS },
+    { ENTR_SHADOW_TEMPLE_0,   ENTR_GRAVEYARD_1,             ENTR_SHADOW_TEMPLE_BOSS_0,   ENTR_SHADOW_TEMPLE_1,   ENTR_GRAVEYARD_8,             SCENE_SHADOW_TEMPLE,   SCENE_SHADOW_TEMPLE_BOSS },
 };
-
-//These variables store the new entrance indices for dungeons so that
-//savewarping and game overs respawn players at the proper entrance.
-//By default, these will be their vanilla values.
-static s16 newDekuTreeEntrance              = DEKU_TREE_ENTRANCE;
-static s16 newDodongosCavernEntrance        = DODONGOS_CAVERN_ENTRANCE;
-static s16 newJabuJabusBellyEntrance        = JABU_JABUS_BELLY_ENTRANCE;
-static s16 newForestTempleEntrance          = FOREST_TEMPLE_ENTRANCE;
-static s16 newFireTempleEntrance            = FIRE_TEMPLE_ENTRANCE;
-static s16 newWaterTempleEntrance           = WATER_TEMPLE_ENTRANCE;
-static s16 newSpiritTempleEntrance          = SPIRIT_TEMPLE_ENTRANCE;
-static s16 newShadowTempleEntrance          = SHADOW_TEMPLE_ENTRANCE;
-static s16 newBottomOfTheWellEntrance       = BOTTOM_OF_THE_WELL_ENTRANCE;
-static s16 newGerudoTrainingGroundsEntrance = GERUDO_TRAINING_GROUNDS_ENTRANCE;
-static s16 newIceCavernEntrance             = ICE_CAVERN_ENTRANCE;
 
 static s8 hasCopiedEntranceTable = 0;
 static s8 hasModifiedEntranceTable = 0;
@@ -337,28 +322,28 @@ void Entrance_SetGameOverEntrance(void) {
     //Set the current entrance depending on which entrance the player last came through
     switch (gSaveContext.entranceIndex) {
         case ENTR_DEKU_TREE_BOSS_0 : //Deku Tree Boss Room
-            gSaveContext.entranceIndex = newDekuTreeEntrance;
+            gSaveContext.entranceIndex = ENTR_DEKU_TREE_0;
             return;
         case ENTR_DODONGOS_CAVERN_BOSS_0 : //Dodongos Cavern Boss Room
-            gSaveContext.entranceIndex = newDodongosCavernEntrance;
+            gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_0;
             return;
         case ENTR_JABU_JABU_BOSS_0 : //Jabu Jabus Belly Boss Room
-            gSaveContext.entranceIndex = newJabuJabusBellyEntrance;
+            gSaveContext.entranceIndex = ENTR_JABU_JABU_0;
             return;
         case ENTR_FOREST_TEMPLE_BOSS_0 : //Forest Temple Boss Room
-            gSaveContext.entranceIndex = newForestTempleEntrance;
+            gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_0;
             return;
         case ENTR_FIRE_TEMPLE_BOSS_0 : //Fire Temple Boss Room
-            gSaveContext.entranceIndex = newFireTempleEntrance;
+            gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_0;
             return;
         case ENTR_WATER_TEMPLE_BOSS_0 : //Water Temple Boss Room
-            gSaveContext.entranceIndex = newWaterTempleEntrance;
+            gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_0;
             return;
         case ENTR_SPIRIT_TEMPLE_BOSS_0 : //Spirit Temple Boss Room
-            gSaveContext.entranceIndex = newSpiritTempleEntrance;
+            gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_0;
             return;
         case ENTR_SHADOW_TEMPLE_BOSS_0 : //Shadow Temple Boss Room
-            gSaveContext.entranceIndex = newShadowTempleEntrance;
+            gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_0;
             return;
         case ENTR_GANONDORF_BOSS_0 : //Ganondorf Boss Room
             gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0; // Inside Ganon's Castle -> Ganon's Tower Climb
@@ -380,37 +365,37 @@ void Entrance_SetSavewarpEntrance(void) {
     }
 
     if (scene == SCENE_DEKU_TREE || scene == SCENE_DEKU_TREE_BOSS) {
-        gSaveContext.entranceIndex = newDekuTreeEntrance;
+        gSaveContext.entranceIndex = ENTR_DEKU_TREE_0;
     } else if (scene == SCENE_DODONGOS_CAVERN || scene == SCENE_DODONGOS_CAVERN_BOSS) {
-        gSaveContext.entranceIndex = newDodongosCavernEntrance;
+        gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_0;
     } else if (scene == SCENE_JABU_JABU || scene == SCENE_JABU_JABU_BOSS) {
-        gSaveContext.entranceIndex = newJabuJabusBellyEntrance;
+        gSaveContext.entranceIndex = ENTR_JABU_JABU_0;
     } else if (scene == SCENE_FOREST_TEMPLE || scene == SCENE_FOREST_TEMPLE_BOSS) { //Forest Temple Boss Room
-        gSaveContext.entranceIndex = newForestTempleEntrance;
+        gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_0;
     } else if (scene == SCENE_FIRE_TEMPLE || scene == SCENE_FIRE_TEMPLE_BOSS) { //Fire Temple Boss Room
-        gSaveContext.entranceIndex = newFireTempleEntrance;
+        gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_0;
     } else if (scene == SCENE_WATER_TEMPLE || scene == SCENE_WATER_TEMPLE_BOSS) { //Water Temple Boss Room
-        gSaveContext.entranceIndex = newWaterTempleEntrance;
+        gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_0;
     } else if (scene == SCENE_SPIRIT_TEMPLE || scene == SCENE_SPIRIT_TEMPLE_BOSS) { //Spirit Temple Boss Room
-        gSaveContext.entranceIndex = newSpiritTempleEntrance;
+        gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_0;
     } else if (scene == SCENE_SHADOW_TEMPLE || scene == SCENE_SHADOW_TEMPLE_BOSS) { //Shadow Temple Boss Room
-        gSaveContext.entranceIndex = newShadowTempleEntrance;
+        gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_0;
     } else if (scene == SCENE_BOTTOM_OF_THE_WELL) { // BOTW
-        gSaveContext.entranceIndex = newBottomOfTheWellEntrance;
+        gSaveContext.entranceIndex = ENTR_BOTTOM_OF_THE_WELL_0;
     } else if (scene == SCENE_GERUDO_TRAINING_GROUND) { // GTG
-        gSaveContext.entranceIndex = newGerudoTrainingGroundsEntrance;
+        gSaveContext.entranceIndex = ENTR_GERUDO_TRAINING_GROUND_0;
     } else if (scene == SCENE_ICE_CAVERN) { // Ice cavern
-        gSaveContext.entranceIndex = newIceCavernEntrance;
+        gSaveContext.entranceIndex = ENTR_ICE_CAVERN_0;
     } else if (scene == SCENE_INSIDE_GANONS_CASTLE) {
-        gSaveContext.entranceIndex = GANONS_CASTLE_ENTRANCE;
+        gSaveContext.entranceIndex = ENTR_INSIDE_GANONS_CASTLE_0;
     } else if (scene == SCENE_GANONS_TOWER || scene == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE || scene == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR || scene == SCENE_GANON_BOSS || scene == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
         gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0; // Inside Ganon's Castle -> Ganon's Tower Climb
     } else if (scene == SCENE_THIEVES_HIDEOUT) { // Theives hideout
         gSaveContext.entranceIndex = ENTR_THIEVES_HIDEOUT_0; // Gerudo Fortress -> Thieve's Hideout spawn 0
     } else if (scene == SCENE_LINKS_HOUSE) {
-        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(LINK_HOUSE_SAVEWARP_ENTRANCE);
+        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(ENTR_LINKS_HOUSE_0);
     } else if (LINK_IS_CHILD) {
-        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(LINK_HOUSE_SAVEWARP_ENTRANCE); // Child Overworld Spawn
+        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(ENTR_LINKS_HOUSE_0); // Child Overworld Spawn
     } else {
         gSaveContext.entranceIndex = Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_10); // Adult Overworld Spawn (Normally 0x5F4 (ENTR_TEMPLE_OF_TIME_7), but 0x282 (ENTR_HYRULE_FIELD_10) has been repurposed to differentiate from Prelude which also uses 0x5F4)
     }
@@ -491,7 +476,7 @@ void Entrance_OverrideBlueWarp(void) {
 void Entrance_OverrideCutsceneEntrance(u16 cutsceneCmd) {
     switch (cutsceneCmd) {
         case 24: // Dropping a fish for Jabu Jabu
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(newJabuJabusBellyEntrance);
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_JABU_JABU_0);
             gPlayState->transitionTrigger = TRANS_TRIGGER_START;
             gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
             // In case Jabu's mouth leads to a grotto return
