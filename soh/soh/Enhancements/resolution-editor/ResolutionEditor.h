@@ -6,9 +6,6 @@ class AdvancedResolutionSettingsWindow : public LUS::GuiWindow {
   private:
     bool IsDroppingFrames();
 
-  protected:
-    bool IsBoolArrayTrue(bool*);
-
   public:
     using LUS::GuiWindow::GuiWindow;
 

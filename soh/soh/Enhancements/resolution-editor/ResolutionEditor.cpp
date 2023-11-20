@@ -61,11 +61,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(497, 599), ImGuiCond_FirstUseEver);
     if (ImGui::Begin("Advanced Resolution Settings", &mIsVisible)) {
         // Initialise update flags.
-        bool update[sizeof(setting)];
-        for (unsigned short i = 0; i < sizeof(setting); i++)
+        bool update[3];
+        for (unsigned short i = 0; i < sizeof(update); i++)
             update[i] = false;
-        static short updateCountdown = 0;
-        short countdownStartingValue = CVarGetInteger("gInterpolationFPS", 20) / 2; // half of a second, in frames.
 
         // Initialise integer scale bounds.
         short max_integerScaleFactor = default_maxIntegerScaleFactor; // default value, which may or may not get
@@ -174,13 +172,13 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             item_aspectRatio != default_aspectRatio) { // don't change anything if "Custom" is selected.
             aspectRatioX = aspectRatioPresetsX[item_aspectRatio];
             aspectRatioY = aspectRatioPresetsY[item_aspectRatio];
-            update[UPDATE_aspectRatioX] = true;
-            update[UPDATE_aspectRatioY] = true;
 
             if (showHorizontalResField) {
                 horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
             }
 
+            CVarSetFloat("gAdvancedResolution.AspectRatioX", aspectRatioX);
+            CVarSetFloat("gAdvancedResolution.AspectRatioY", aspectRatioY);
             CVarSetInteger("gAdvancedResolution.UIComboItem.AspectRatio", item_aspectRatio);
             CVarSave();
         }
@@ -216,12 +214,12 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                          IM_ARRAYSIZE(pixelCountPresetLabels)) &&
             item_pixelCount != default_pixelCount) { // don't change anything if "Custom" is selected.
             verticalPixelCount = pixelCountPresets[item_pixelCount];
-            update[UPDATE_verticalPixelCount] = true;
 
             if (showHorizontalResField) {
                 horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
             }
 
+            CVarSetInteger("gAdvancedResolution.VerticalPixelCount", verticalPixelCount);
             CVarSetInteger("gAdvancedResolution.UIComboItem.PixelCount", item_pixelCount);
             CVarSave();
         }
@@ -410,7 +408,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         } // End of additional settings
 
         // Clamp and update the CVars that don't use UIWidgets
-        if (IsBoolArrayTrue(update)) {
+        if (update[UPDATE_aspectRatioX] || update[UPDATE_aspectRatioY] || update[UPDATE_verticalPixelCount]) {
             if (update[UPDATE_aspectRatioX]) {
                 if (aspectRatioX < 0.0f) {
                     aspectRatioX = 0.0f;
@@ -434,12 +432,6 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 }
                 CVarSetInteger("gAdvancedResolution.VerticalPixelCount", verticalPixelCount);
             }
-            // Delay saving this set of CVars by a predetermined length of time, in frames.
-            updateCountdown = countdownStartingValue;
-        }
-        if (updateCountdown > 0) {
-            updateCountdown--;
-        } else {
             CVarSetInteger("gAdvancedResolution.UIComboItem.AspectRatio", item_aspectRatio);
             CVarSetInteger("gAdvancedResolution.UIComboItem.PixelCount", item_pixelCount);
             CVarSave();
@@ -457,12 +449,5 @@ bool AdvancedResolutionSettingsWindow::IsDroppingFrames() {
     const short targetFPS = CVarGetInteger("gInterpolationFPS", 20);
     const float threshold = targetFPS / 20.0f + 4.1f;
     return ImGui::GetIO().Framerate < targetFPS - threshold;
-}
-
-bool AdvancedResolutionSettingsWindow::IsBoolArrayTrue(bool* foo) {
-    for (unsigned short i = 0; i < sizeof(&foo); i++)
-        if (&foo[i])
-            return true;
-    return false;
 }
 } // namespace AdvancedResolutionSettings
