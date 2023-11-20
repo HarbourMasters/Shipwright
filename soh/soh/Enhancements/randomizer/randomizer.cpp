@@ -2715,7 +2715,7 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
 
     RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_EN_GIRLA, 
         // Bazaar (SHOP1) scene is reused, so if entering from Kak use debug scene to identify
-        (sceneNum == SCENE_BAZAAR && gSaveContext.entranceIndex == 0xB7) ? SCENE_TEST01 : sceneNum, slotIndex);
+        (sceneNum == SCENE_BAZAAR && gSaveContext.entranceIndex == ENTR_BAZAAR_0) ? SCENE_TEST01 : sceneNum, slotIndex);
 
     if (rcObject.rc != RC_UNKNOWN_CHECK) {
         shopItemIdentity.randomizerInf = rcToRandomizerInf[rcObject.rc];
@@ -5548,9 +5548,9 @@ void CreateTriforcePieceMessages() {
 
 CustomMessage Randomizer::GetTriforcePieceMessage() {
     // Item is only given after the textbox, so reflect that inside the textbox.
-    uint16_t current = gSaveContext.triforcePiecesCollected + 1;
-    uint16_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
-    uint16_t remaining = required - current;
+    uint8_t current = gSaveContext.triforcePiecesCollected + 1;
+    uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+    uint8_t remaining = required - current;
     float percentageCollected = (float)current / (float)required;
     uint8_t messageIndex;
 
