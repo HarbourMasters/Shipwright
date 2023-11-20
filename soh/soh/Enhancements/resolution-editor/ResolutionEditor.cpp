@@ -39,7 +39,7 @@ const int pixelCountPresets[] = { 480, 240, 480, 720, 960, 1200, 1440, 1080, 216
 const int default_pixelCount = 0; // Default combo list option
 
 // Resolution clamp values as defined in LUS::Gui::ApplyResolutionChanges()
-const uint32_t minVerticalPixelCount = 240;  // SCREEN_HEIGHT
+const uint32_t minVerticalPixelCount = SCREEN_HEIGHT;
 const uint32_t maxVerticalPixelCount = 4320; // 18x native, or 8K TV resolution
 
 const unsigned short default_maxIntegerScaleFactor = 6; // Default size of Integer scale factor slider.
@@ -232,7 +232,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 // So basically we're "faking" this one by setting aspectRatioX instead.
                 if (ImGui::InputInt("Horiz. Pixel Count", &horizontalPixelCount, 8, 320)) {
                     item_aspectRatio = default_aspectRatio;
-                    if (horizontalPixelCount < (minVerticalPixelCount / 3.0f) * 4.0f) {
+                    if (horizontalPixelCount < SCREEN_WIDTH) {
                         horizontalPixelCount = (minVerticalPixelCount / 3.0f) * 4.0f;
                     }
                     aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
