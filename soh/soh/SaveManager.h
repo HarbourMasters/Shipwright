@@ -142,6 +142,7 @@ class SaveManager {
 
   private:
     std::filesystem::path GetFileName(int fileNum);
+    std::filesystem::path GetFileTempName(int fileNum);
     nlohmann::json saveBlock;
 
     void ConvertFromUnversioned();

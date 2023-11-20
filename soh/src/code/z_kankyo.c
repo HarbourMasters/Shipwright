@@ -289,7 +289,7 @@ void Environment_Init(PlayState* play2, EnvironmentContext* envCtx, s32 unused) 
     envCtx->skyboxFilterColor[1] = 0;
     envCtx->skyboxFilterColor[2] = 0;
     envCtx->skyboxFilterColor[3] = 0;
-    envCtx->sandstormState = 0;
+    envCtx->sandstormState = SANDSTORM_OFF;
     envCtx->sandstormPrimA = 0;
     envCtx->sandstormEnvA = 0;
 
@@ -925,7 +925,7 @@ void Environment_Update(PlayState* play, EnvironmentContext* envCtx, LightContex
         if ((pauseCtx->state == 0) && (gameOverCtx->state == GAMEOVER_INACTIVE)) {
             if (((msgCtx->msgLength == 0) && (msgCtx->msgMode == 0)) || (((void)0, gSaveContext.gameMode) == 3)) {
                 if ((envCtx->unk_1A == 0) && !FrameAdvance_IsEnabled(play) &&
-                    (play->transitionMode == 0 || ((void)0, gSaveContext.gameMode) != 0)) {
+                    (play->transitionMode == TRANS_MODE_OFF || ((void)0, gSaveContext.gameMode) != 0)) {
 
                     if (IS_DAY || gTimeIncrement >= 0x190) {
                         gSaveContext.dayTime += gTimeIncrement;
@@ -1322,7 +1322,7 @@ void Environment_DrawSunAndMoon(PlayState* play) {
         play->envCtx.sunPos.z = +(Math_CosS(((void)0, gSaveContext.dayTime) - 0x8000) * 20.0f) * 25.0f;
     }
 
-    if (gSaveContext.entranceIndex != 0xCD || ((void)0, gSaveContext.sceneSetupIndex) != 5) {
+    if (gSaveContext.entranceIndex != ENTR_HYRULE_FIELD_0 || ((void)0, gSaveContext.sceneSetupIndex) != 5) {
         Matrix_Translate(play->view.eye.x + play->envCtx.sunPos.x,
                          play->view.eye.y + play->envCtx.sunPos.y,
                          play->view.eye.z + play->envCtx.sunPos.z, MTXMODE_NEW);
@@ -2004,7 +2004,7 @@ void Environment_PlaySceneSequence(PlayState* play) {
     play->envCtx.unk_E0 = 0xFF;
 
     // both lost woods exits on the bridge from kokiri to hyrule field
-    if (((void)0, gSaveContext.entranceIndex) == 0x4DE || ((void)0, gSaveContext.entranceIndex) == 0x5E0) {
+    if (((void)0, gSaveContext.entranceIndex) == ENTR_LOST_WOODS_8 || ((void)0, gSaveContext.entranceIndex) == ENTR_LOST_WOODS_9) {
         Audio_PlayNatureAmbienceSequence(NATURE_ID_KOKIRI_REGION);
     } else if (((void)0, gSaveContext.forcedSeqId) != NA_BGM_GENERAL_SFX) {
         if (!Environment_IsForcedSequenceDisabled()) {
@@ -2336,7 +2336,7 @@ void Environment_DrawSandstorm(PlayState* play, u8 sandstormState) {
     Environment_PatchSandstorm(play);
 
     switch (sandstormState) {
-        case 3:
+        case SANDSTORM_ACTIVE:
             if ((play->sceneNum == SCENE_HAUNTED_WASTELAND) && (play->roomCtx.curRoom.num == 0)) {
                 envA1 = 0;
                 primA1 = (play->envCtx.sandstormEnvA > 128) ? 255 : play->envCtx.sandstormEnvA >> 1;
@@ -2349,11 +2349,11 @@ void Environment_DrawSandstorm(PlayState* play, u8 sandstormState) {
                 envA1 = 128;
             }
             break;
-        case 1:
+        case SANDSTORM_FILL:
             primA1 = 255;
             envA1 = (play->envCtx.sandstormPrimA >= 255) ? 255 : 128;
             break;
-        case 2:
+        case SANDSTORM_UNFILL:
             envA1 = 128;
             if (play->envCtx.sandstormEnvA > 128) {
                 primA1 = 0xFF;
@@ -2365,15 +2365,15 @@ void Environment_DrawSandstorm(PlayState* play, u8 sandstormState) {
                 primA1 += 73;
             }
             if ((primA1 >= primA) && (primA1 != 255)) {
-                play->envCtx.sandstormState = 3;
+                play->envCtx.sandstormState = SANDSTORM_ACTIVE;
             }
             break;
-        case 4:
+        case SANDSTORM_DISSIPATE:
             envA1 = 0;
             primA1 = (play->envCtx.sandstormEnvA > 128) ? 255 : play->envCtx.sandstormEnvA >> 1;
 
             if (primA == 0) {
-                play->envCtx.sandstormState = 0;
+                play->envCtx.sandstormState = SANDSTORM_OFF;
             }
             break;
     }
@@ -2541,27 +2541,27 @@ void Environment_WarpSongLeave(PlayState* play) {
     gSaveContext.cutsceneIndex = 0;
     gSaveContext.respawnFlag = -3;
     play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex;
-    play->sceneLoadFlag = 0x14;
-    play->fadeTransition = 3;
-    gSaveContext.nextTransitionType = 3;
+    play->transitionTrigger = TRANS_TRIGGER_START;
+    play->transitionType = TRANS_TYPE_FADE_WHITE;
+    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
 
     switch (play->nextEntranceIndex) {
-        case 0x147:
+        case ENTR_DEATH_MOUNTAIN_CRATER_0:
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEATH_MOUNTAIN_CRATER);
             break;
-        case 0x0102:
+        case ENTR_LAKE_HYLIA_0:
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_LAKE_HYLIA);
             break;
-        case 0x0123:
+        case ENTR_DESERT_COLOSSUS_0:
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DESERT_COLOSSUS);
             break;
-        case 0x00E4:
+        case ENTR_GRAVEYARD_0:
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GRAVEYARD);
             break;
-        case 0x0053:
+        case ENTR_TEMPLE_OF_TIME_0:
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_TEMPLE_OF_TIME);
             break;
-        case 0x00FC:
+        case ENTR_SACRED_FOREST_MEADOW_0:
             break;
     }
 }

@@ -573,7 +573,7 @@ uint8_t Player_IsCustomLinkModel() {
 }
 
 s32 Player_InBlockingCsMode(PlayState* play, Player* this) {
-    return (this->stateFlags1 & 0x20000080) || (this->csMode != 0) || (play->sceneLoadFlag == 0x14) ||
+    return (this->stateFlags1 & 0x20000080) || (this->csMode != 0) || (play->transitionTrigger == TRANS_TRIGGER_START) ||
            (this->stateFlags1 & 1) || (this->stateFlags3 & 0x80) ||
            ((gSaveContext.magicState != MAGIC_STATE_IDLE) && (Player_ActionToMagicSpell(this, this->itemAction) >= 0));
 }

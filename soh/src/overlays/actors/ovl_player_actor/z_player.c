@@ -2182,7 +2182,7 @@ void func_80834298(Player* this, PlayState* play) {
         ((this->heldItemAction == this->itemAction) || (this->stateFlags1 & PLAYER_STATE1_SHIELDING)) &&
         (gSaveContext.health != 0) && (play->csCtx.state == CS_STATE_IDLE) && (this->csMode == 0) &&
         (play->shootingGalleryStatus == 0) && (play->activeCamera == MAIN_CAM) &&
-        (play->sceneLoadFlag != 0x14) && (gSaveContext.timer1State != 10)) {
+        (play->transitionTrigger != TRANS_TRIGGER_START) && (gSaveContext.timer1State != 10)) {
         func_80833DF8(this, play);
     }
 
@@ -3332,7 +3332,7 @@ s32 func_80836FAC(PlayState* play, Player* this, f32* arg2, s16* arg3, f32 arg4)
     f32 temp_f14;
     f32 temp_f12;
 
-    if ((this->unk_6AD != 0) || (play->sceneLoadFlag == 0x14) || (this->stateFlags1 & PLAYER_STATE1_LOADING)) {
+    if ((this->unk_6AD != 0) || (play->transitionTrigger == TRANS_TRIGGER_START) || (this->stateFlags1 & PLAYER_STATE1_LOADING)) {
         *arg2 = 0.0f;
         *arg3 = this->actor.shape.rot.y;
     } else {
@@ -3903,7 +3903,7 @@ s32 func_808382DC(Player* this, PlayState* play) {
 
             if (sp68) {
                 Play_TriggerRespawn(play);
-                func_800994A0(play);
+                Scene_SetTransitionForNextEntrance(play);
             } else {
                 // Special case for getting crushed in Forest Temple's Checkboard Ceiling Hall or Shadow Temple's
                 // Falling Spike Trap Room, to respawn the player in a specific place
@@ -4193,7 +4193,7 @@ void func_80838F5C(PlayState* play, Player* this) {
 }
 
 s32 func_80838FB8(PlayState* play, Player* this) {
-    if ((play->sceneLoadFlag == 0) && (this->stateFlags1 & PLAYER_STATE1_FLOOR_DISABLED)) {
+    if ((play->transitionTrigger == TRANS_TRIGGER_OFF) && (this->stateFlags1 & PLAYER_STATE1_FLOOR_DISABLED)) {
         func_80838F5C(play, this);
         func_80832284(play, this, &gPlayerAnim_link_normal_landing_wait);
         func_80832698(this, NA_SE_VO_LI_FALL_S);
@@ -4204,24 +4204,58 @@ s32 func_80838FB8(PlayState* play, Player* this) {
     return 0;
 }
 
-s16 D_808544F8[] = {
-    0x045B, // DMT from Magic Fairy Fountain
-    0x0482, // DMC from Double Defense Fairy Fountain
-    0x0340, // Hyrule Castle from Dins Fire Fairy Fountain
-    0x044B, // Kakariko from Potion Shop
-    0x02A2, // Market (child day) from Potion Shop
-    0x0201, // Kakariko from Bazaar
-    0x03B8, // Market (child day) from Bazaar
-    0x04EE, // Kakariko from House of Skulltulas
-    0x03C0, // Back Alley (day) from Bombchu Shop
-    0x0463, // Kakariko from Shooting Gallery
-    0x01CD, // Market (child day) from Shooting Gallery
-    0x0394, // Zoras Fountain from Farores Wind Fairy Fountain
-    0x0340, // Hyrule Castle from Dins Fire Fairy Fountain
-    0x057C, // Desert Colossus from Nayrus Love Fairy Fountain
+/**
+ * The actual entrances each "return entrance" value can map to.
+ * This is used by scenes that are shared between locations, like child/adult Shooting Gallery or Great Fairy Fountains.
+ *
+ * This 1D array is split into groups of entrances.
+ * The start of each group is indexed by `sReturnEntranceGroupIndices` values.
+ * The resulting groups are then indexed by the spawn value.
+ *
+ * The spawn value (`PlayState.spawn`) is set to a different value depending on the entrance used to enter the
+ * scene, which allows these dynamic "return entrances" to link back to the previous scene.
+ *
+ * Note: grottos and normal fairy fountains use `ENTR_RETURN_GROTTO`
+ */
+s16 sReturnEntranceGroupData[] = {
+    // ENTR_RETURN_GREAT_FAIRYS_FOUNTAIN_MAGIC
+    /*  0 */ ENTR_DEATH_MOUNTAIN_TRAIL_4,  // from Magic Fairy Fountain
+    /*  1 */ ENTR_DEATH_MOUNTAIN_CRATER_3, // from Double Magic Fairy Fountain
+    /*  2 */ ENTR_HYRULE_CASTLE_2,         // from Double Defense Fairy Fountain (as adult)
+
+    // ENTR_RETURN_2
+    /*  3 */ ENTR_KAKARIKO_VILLAGE_9, // from Potion Shop in Kakariko
+    /*  4 */ ENTR_MARKET_DAY_5,       // from Potion Shop in Market
+
+    // ENTR_RETURN_BAZAAR
+    /*  5 */ ENTR_KAKARIKO_VILLAGE_3,
+    /*  6 */ ENTR_MARKET_DAY_6,
+
+    // ENTR_RETURN_4
+    /*  7 */ ENTR_KAKARIKO_VILLAGE_11, // from House of Skulltulas
+    /*  8 */ ENTR_BACK_ALLEY_DAY_2,    // from Bombchu Shop
+
+    // ENTR_RETURN_SHOOTING_GALLERY
+    /*  9 */ ENTR_KAKARIKO_VILLAGE_10,
+    /* 10 */ ENTR_MARKET_DAY_8,
+
+    // ENTR_RETURN_GREAT_FAIRYS_FOUNTAIN_SPELLS
+    /* 11 */ ENTR_ZORAS_FOUNTAIN_5,  // from Farores Wind Fairy Fountain
+    /* 12 */ ENTR_HYRULE_CASTLE_2,   // from Dins Fire Fairy Fountain (as child)
+    /* 13 */ ENTR_DESERT_COLOSSUS_7, // from Nayrus Love Fairy Fountain
 };
 
-u8 D_80854514[] = { 11, 9, 3, 5, 7, 0 };
+/**
+ * The values are indices into `sReturnEntranceGroupData` marking the start of each group
+ */
+u8 sReturnEntranceGroupIndices[] = {
+    11, // ENTR_RETURN_GREAT_FAIRYS_FOUNTAIN_SPELLS
+    9,  // ENTR_RETURN_SHOOTING_GALLERY
+    3,  // ENTR_RETURN_2
+    5,  // ENTR_RETURN_BAZAAR
+    7,  // ENTR_RETURN_4
+    0,  // ENTR_RETURN_GREAT_FAIRYS_FOUNTAIN_MAGIC
+};
 
 s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) {
     s32 sp3C;
@@ -4233,7 +4267,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
     if (this->actor.category == ACTORCAT_PLAYER) {
         sp3C = 0;
 
-        if (!(this->stateFlags1 & PLAYER_STATE1_DEAD) && (play->sceneLoadFlag == 0) && (this->csMode == 0) &&
+        if (!(this->stateFlags1 & PLAYER_STATE1_DEAD) && (play->transitionTrigger == TRANS_TRIGGER_OFF) && (this->csMode == 0) &&
             !(this->stateFlags1 & PLAYER_STATE1_LOADING) &&
             (((poly != NULL) && (sp3C = SurfaceType_GetSceneExitIndex(&play->colCtx, poly, bgId), sp3C != 0)) ||
              (func_8083816C(D_808535E4) && (this->unk_A7A == 12)))) {
@@ -4247,7 +4281,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
 
             if (sp3C == 0) {
                 Play_TriggerVoidOut(play);
-                func_800994A0(play);
+                Scene_SetTransitionForNextEntrance(play);
             } else {
                 play->nextEntranceIndex = play->setupExitList[sp3C - 1];
 
@@ -4256,21 +4290,21 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                     play->nextEntranceIndex = Entrance_OverrideNextIndex(play->nextEntranceIndex);
                 }
 
-                if (play->nextEntranceIndex == 0x7FFF) {
+                if (play->nextEntranceIndex == ENTR_RETURN_GROTTO) {
                     gSaveContext.respawnFlag = 2;
                     play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex;
-                    play->fadeTransition = 3;
-                    gSaveContext.nextTransitionType = 3;
-                } else if (play->nextEntranceIndex >= 0x7FF9) {
+                    play->transitionType = TRANS_TYPE_FADE_WHITE;
+                    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
+                } else if (play->nextEntranceIndex >= ENTR_RETURN_YOUSEI_IZUMI_YOKO) {
                     // handle dynamic exits
                     if (IS_RANDO) {
-                        play->nextEntranceIndex = Entrance_OverrideDynamicExit(D_80854514[play->nextEntranceIndex - 0x7FF9] + play->curSpawn);
+                        play->nextEntranceIndex = Entrance_OverrideDynamicExit(sReturnEntranceGroupIndices[play->nextEntranceIndex - ENTR_RETURN_YOUSEI_IZUMI_YOKO] + play->curSpawn);
                     } else {
                         play->nextEntranceIndex =
-                            D_808544F8[D_80854514[play->nextEntranceIndex - 0x7FF9] + play->curSpawn];
+                            sReturnEntranceGroupData[sReturnEntranceGroupIndices[play->nextEntranceIndex - ENTR_RETURN_YOUSEI_IZUMI_YOKO] + play->curSpawn];
                     }
 
-                    func_800994A0(play);
+                    Scene_SetTransitionForNextEntrance(play);
                 } else {
                     if (SurfaceType_GetSlope(&play->colCtx, poly, bgId) == 2) {
                         gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex = play->nextEntranceIndex;
@@ -4278,9 +4312,9 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                         gSaveContext.respawnFlag = -2;
                     }
                     gSaveContext.retainWeatherMode = 1;
-                    func_800994A0(play);
+                    Scene_SetTransitionForNextEntrance(play);
                 }
-                play->sceneLoadFlag = 0x14;
+                play->transitionTrigger = TRANS_TRIGGER_START;
             }
 
             if (!(this->stateFlags1 & (PLAYER_STATE1_ON_HORSE | PLAYER_STATE1_IN_CUTSCENE)) &&
@@ -4326,7 +4360,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
 
             return 1;
         } else {
-            if (play->sceneLoadFlag == 0) {
+            if (play->transitionTrigger == TRANS_TRIGGER_OFF) {
 
                 if ((this->actor.world.pos.y < -4000.0f) ||
                     (((this->unk_A7A == 5) || (this->unk_A7A == 12)) &&
@@ -4340,7 +4374,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                         } else {
                             Play_TriggerVoidOut(play);
                         }
-                        play->fadeTransition = 4;
+                        play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                         func_80078884(NA_SE_OC_ABYSS);
                     } else {
                         func_80838F5C(play, this);
@@ -9702,7 +9736,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
         if (gSaveContext.showTitleCard) {
             if ((gSaveContext.sceneSetupIndex < 4) &&
                 (gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].field &
-                 0x4000) &&
+                 ENTRANCE_INFO_DISPLAY_TITLE_CARD_FLAG) &&
                 ((play->sceneNum != SCENE_DODONGOS_CAVERN) || (Flags_GetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN))) &&
                 ((play->sceneNum != SCENE_BOMBCHU_SHOP) || (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)))) {
                 TitleCard_InitPlaceName(play, &play->actorCtx.titleCtx, this->giObjectSegment, 160, 120, 144,
@@ -10897,7 +10931,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
                 }
             } else {
                 if ((this->actor.parent == NULL) &&
-                    ((play->sceneLoadFlag == 0x14) || (this->unk_A87 != 0) || !func_808382DC(this, play))) {
+                    ((play->transitionTrigger == TRANS_TRIGGER_START) || (this->unk_A87 != 0) || !func_808382DC(this, play))) {
                     func_8083AA10(this, play);
                 } else {
                     this->fallStartHeight = this->actor.world.pos.y;
@@ -12205,7 +12239,7 @@ s32 func_8084C9BC(Player* this, PlayState* play) {
             }
         }
 
-        if ((play->csCtx.state == CS_STATE_IDLE) && (play->transitionMode == 0) &&
+        if ((play->csCtx.state == CS_STATE_IDLE) && (play->transitionMode == TRANS_MODE_OFF) &&
             (EN_HORSE_CHECK_1(rideActor) || EN_HORSE_CHECK_4(rideActor))) {
             this->stateFlags2 |= PLAYER_STATE2_DO_ACTION_DOWN;
 
@@ -12843,10 +12877,10 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
     } else {
         if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
             if (this->getItemId == GI_GAUNTLETS_SILVER && !IS_RANDO) {
-                play->nextEntranceIndex = 0x0123;
-                play->sceneLoadFlag = 0x14;
+                play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_0;
+                play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;
-                play->fadeTransition = 0xF;
+                play->transitionType = TRANS_TYPE_SANDSTORM_END;
                 this->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
                 func_80852FFC(play, NULL, 8);
             }
@@ -12915,7 +12949,14 @@ void func_8084E368(Player* this, PlayState* play) {
     func_8084AEEC(this, &this->linearVelocity, 0.0f, this->actor.shape.rot.y);
 }
 
-static s16 D_808549D4[] = { 0x0600, 0x04F6, 0x0604, 0x01F1, 0x0568, 0x05F4 };
+static s16 sWarpSongEntrances[] = {
+    ENTR_SACRED_FOREST_MEADOW_2,
+    ENTR_DEATH_MOUNTAIN_CRATER_4,
+    ENTR_LAKE_HYLIA_8,
+    ENTR_DESERT_COLOSSUS_5,
+    ENTR_GRAVEYARD_7,
+    ENTR_TEMPLE_OF_TIME_7,
+};
 
 void func_8084E3C4(Player* this, PlayState* play) {
     if (LinkAnimation_Update(play, &this->skelAnime)) {
@@ -12949,7 +12990,7 @@ void func_8084E3C4(Player* this, PlayState* play) {
         this->stateFlags2 &= ~(PLAYER_STATE2_NEAR_OCARINA_ACTOR | PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR | PLAYER_STATE2_PLAY_FOR_ACTOR);
         this->unk_6A8 = NULL;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_02) {
-        gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex = D_808549D4[play->msgCtx.lastPlayedSong];
+        gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex = sWarpSongEntrances[play->msgCtx.lastPlayedSong];
         gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x5FF;
         gSaveContext.respawn[RESPAWN_MODE_RETURN].data = play->msgCtx.lastPlayedSong;
 
@@ -13560,12 +13601,12 @@ void func_8084F710(Player* this, PlayState* play) {
 void func_8084F88C(Player* this, PlayState* play) {
     LinkAnimation_Update(play, &this->skelAnime);
 
-    if ((this->unk_850++ > 8) && (play->sceneLoadFlag == 0)) {
+    if ((this->unk_850++ > 8) && (play->transitionTrigger == TRANS_TRIGGER_OFF)) {
 
         if (this->unk_84F != 0) {
             if (play->sceneNum == SCENE_ICE_CAVERN) {
                 Play_TriggerRespawn(play);
-                play->nextEntranceIndex = 0x0088;
+                play->nextEntranceIndex = ENTR_ICE_CAVERN_0;
             } else if (this->unk_84F < 0) {
                 Play_TriggerRespawn(play);
                 // In ER, handle DMT and other special void outs to respawn from last entrance from grotto 
@@ -13576,16 +13617,16 @@ void func_8084F88C(Player* this, PlayState* play) {
                 Play_TriggerVoidOut(play);
             }
 
-            play->fadeTransition = 4;
+            play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
             func_80078884(NA_SE_OC_ABYSS);
         } else {
-            play->fadeTransition = 2;
-            gSaveContext.nextTransitionType = 2;
+            play->transitionType = TRANS_TYPE_FADE_BLACK;
+            gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
             gSaveContext.seqId = (u8)NA_BGM_DISABLED;
             gSaveContext.natureAmbienceId = 0xFF;
         }
 
-        play->sceneLoadFlag = 0x14;
+        play->transitionTrigger = TRANS_TRIGGER_START;
     }
 }
 
@@ -13903,9 +13944,9 @@ void func_8085063C(Player* this, PlayState* play) {
 
         if (play->msgCtx.choiceIndex == 0) { //Returns to FW
             gSaveContext.respawnFlag = 3;
-            play->sceneLoadFlag = 0x14;
+            play->transitionTrigger = TRANS_TRIGGER_START;
             play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
-            play->fadeTransition = 5;
+            play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
             func_80088AF0(play);
             return;
         }
@@ -15169,6 +15210,10 @@ void func_80852C50(PlayState* play, Player* this, CsCmdActorAction* arg2) {
 
     sp24 = D_808547C4[this->unk_446];
     func_80852B4C(play, this, linkCsAction, &D_80854E50[ABS(sp24)]);
+
+    if (CVarGetInteger("gFixEyesOpenWhileSleeping", 0) && (play->csCtx.linkAction->action == 28 || play->csCtx.linkAction->action == 29)) {
+        this->skelAnime.jointTable[22].x = 8;
+    }
 }
 
 void func_80852E14(Player* this, PlayState* play) {

@@ -12,6 +12,9 @@
 #define GAME_PLATFORM_N64 0
 #define GAME_PLATFORM_GC 1
 
+#define BTN_MODIFIER1 0x00040
+#define BTN_MODIFIER2 0x00080
+
 #ifdef __cplusplus
 #include <Context.h>
 #include "Enhancements/savestates.h"
@@ -101,6 +104,7 @@ AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path);
 char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
 Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
 Gfx* ResourceMgr_LoadGfxByName(const char* path);
+uint8_t ResourceMgr_FileIsCustomByName(const char* path);
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path);
