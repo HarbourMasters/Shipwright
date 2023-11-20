@@ -277,6 +277,13 @@ void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 h
     bg->b.imagePal = 0;
     bg->b.imageFlip = CVarGetInteger("gMirroredWorld", 0) ? G_BG_FLAG_FLIPS : 0;
 
+    // When an alt resource exists for the background, we need to unload the original asset
+    // to clear the cache so the alt asset will be loaded instead
+    // OTRTODO: If Alt loading over original cache is fixed, this block can most likely be removed
+    if (CVarGetInteger("gAltAssets", 0) && ResourceMgr_FileAltExists((char*) source)) {
+        ResourceMgr_UnloadResource((char*) source);
+    }
+
     if (ResourceMgr_ResourceIsBackground((char*) source)) {
         char* blob = (char*) ResourceGetDataByName((char *) source);
         swapAndConvertJPEG(blob);

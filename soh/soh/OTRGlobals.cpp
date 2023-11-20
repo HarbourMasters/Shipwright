@@ -1415,6 +1415,14 @@ extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
     LUS::Context::GetInstance()->GetResourceManager()->DirtyDirectory(resName);
 }
 
+extern "C" void ResourceMgr_UnloadResource(const char* resName) {
+    std::string path = resName;
+    if (path.substr(0, 7) == "__OTR__") {
+        path = path.substr(7);
+    }
+    auto res = LUS::Context::GetInstance()->GetResourceManager()->UnloadResource(path);
+}
+
 // OTRTODO: There is probably a more elegant way to go about this...
 // Kenix: This is definitely leaking memory when it's called.
 extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
@@ -1436,6 +1444,19 @@ extern "C" uint8_t ResourceMgr_FileExists(const char* filePath) {
     std::string path = filePath;
     if(path.substr(0, 7) == "__OTR__"){
         path = path.substr(7);
+    }
+
+    return ExtensionCache.contains(path);
+}
+
+extern "C" uint8_t ResourceMgr_FileAltExists(const char* filePath) {
+    std::string path = filePath;
+    if (path.substr(0, 7) == "__OTR__") {
+        path = path.substr(7);
+    }
+
+    if (path.substr(0, 4) != "alt/") {
+        path = "alt/" + path;
     }
 
     return ExtensionCache.contains(path);
