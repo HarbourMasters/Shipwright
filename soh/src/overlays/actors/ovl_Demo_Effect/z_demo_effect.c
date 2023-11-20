@@ -495,7 +495,7 @@ void DemoEffect_Init(Actor* thisx, PlayState* play2) {
             this->jewel.type = DEMO_EFFECT_JEWEL_ZORA;
             this->jewel.isPositionInit = 0;
             DemoEffect_InitJewel(play, this);
-            Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTOR_EN_DOOR);
+            Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_BOSS);
             if ((play->sceneNum == SCENE_JABU_JABU) && (Flags_GetInfTable(INFTABLE_145))) {
                 Actor_Kill(&this->actor);
                 return;

@@ -10,6 +10,7 @@
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
+#include "objects/object_gi_fire/object_gi_fire.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "soh_assets.h"
@@ -276,4 +277,53 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
         gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceCompletedDL);
     }
     CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEntry) {
+    s16 slot = getItemEntry->getItemId - RG_GOHMA_SOUL;
+    s16 flameColors[9][3] = {
+        { 0, 255, 0 },     // Gohma
+        { 255, 0, 100 },   // King Dodongo
+        { 50, 255, 255},   // Barinade
+        { 4, 195, 46 },    // Phantom Ganon
+        { 237, 95, 95 },   // Volvagia
+        { 85, 180, 223 },  // Morpha
+        { 126, 16, 177 },  // Bongo Bongo
+        { 222, 158, 47 },  // Twinrova
+        { 80, 80, 80 },    // Ganon/Dorf
+    }; 
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    if (slot == 8) { // For Ganon only...
+        gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, 255);
+    } else {
+        gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
+    }
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gBossSoulSkullDL);
+    
+    if (slot >= 0) {
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+        gSPSegment(POLY_XLU_DISP++, 8, (uintptr_t)Gfx_TwoTexScroll(
+            play->state.gfxCtx, 0, 0 * (play->state.frames * 0),
+            0 * (play->state.frames * 0), 16, 32, 1, 1 * (play->state.frames * 1),
+            -1 * (play->state.frames * 8), 16, 32
+        ));
+        Matrix_Push();
+        Matrix_Translate(0.0f, -70.0f, 0.0f, MTXMODE_APPLY);
+        Matrix_Scale(5.0f, 5.0f, 5.0f, MTXMODE_APPLY);
+        Matrix_ReplaceRotation(&play->billboardMtxF);
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                  G_MTX_MODELVIEW | G_MTX_LOAD);
+        gDPSetGrayscaleColor(POLY_XLU_DISP++, flameColors[slot][0], flameColors[slot][1], flameColors[slot][2], 255);
+        gSPGrayscale(POLY_XLU_DISP++, true);
+        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBlueFireFlameDL);
+        gSPGrayscale(POLY_XLU_DISP++, false);
+        Matrix_Pop();
+    }
+
+    CLOSE_DISPS(play->state.gfxCtx);
+
 }

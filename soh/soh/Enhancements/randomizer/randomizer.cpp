@@ -1695,6 +1695,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVarGetInteger("gRandomizeShuffleBeans", 0);
     cvarSettings[RSK_SHUFFLE_MERCHANTS] = CVarGetInteger("gRandomizeShuffleMerchants", RO_SHUFFLE_MERCHANTS_OFF);
     cvarSettings[RSK_SHUFFLE_100_GS_REWARD] = CVarGetInteger("gRandomizeShuffle100GSReward", RO_GENERIC_OFF);
+    cvarSettings[RSK_SHUFFLE_BOSS_SOULS] = CVarGetInteger("gRandomizeShuffleBossSouls", RO_BOSS_SOULS_OFF);
     cvarSettings[RSK_ENABLE_BOMBCHU_DROPS] = CVarGetInteger("gRandomizeEnableBombchuDrops", 0);
     cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = CVarGetInteger("gRandomizeBombchusInLogic", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVarGetInteger("gRandomizeSkipChildZelda", 0);
@@ -1926,6 +1927,7 @@ void RandomizerSettingsWindow::DrawElement() {
     static const char* randoTokensanity[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
     static const char* randoShuffleScrubs[4] = { "Off", "Affordable", "Expensive", "Random Prices" };
     static const char* randoShuffleMerchants[3] = { "Off", "On (no hints)", "On (with hints)" };
+    static const char* randoShuffleBossSouls[3] = { "Off", "On", "On + Ganon"};
 
     // Shuffle Dungeon Items Settings
     static const char* randoShuffleMapsAndCompasses[6] = { "Start With",  "Vanilla",   "Own Dungeon",
@@ -2841,6 +2843,15 @@ void RandomizerSettingsWindow::DrawElement() {
                     "\n"
                     "You can still talk to him multiple times to get Huge Rupees."
                 );
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Boss Souls
+                // Forces players to find a boss's soul before defeating them in their lair.
+                ImGui::Text("%s", ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).GetName().c_str());
+                UIWidgets::InsertHelpHoverText("Shuffles 8 boss souls (one for each blue warp dungeon). A boss will not appear until you collect its respective soul."
+                "\n\"On + Ganon\" will also hide Ganon and Ganondorf behind a boss soul.");
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleBossSouls", randoShuffleBossSouls, RO_BOSS_SOULS_OFF);
 
                 UIWidgets::PaddedSeparator();
 
@@ -4725,7 +4736,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 57> getItemMessages = {{
+    const std::array<GetItemMessage, 66> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
@@ -4959,7 +4970,18 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_TYCOON_WALLET, ITEM_WALLET_GIANT,
 			"You got a %rTycoon's Wallet%w!&It's gigantic! Now you can carry&up to %y999 rupees%w!",
 			"Du erhältst die %rGoldene&Geldbörse%w! Die größte aller&Geldbörsen! Jetzt kannst Du bis&zu %y999 Rubine%w mit dir führen!",
-			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!")
+			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!"),
+
+        GIMESSAGE_UNTRANSLATED(RG_GOHMA_SOUL, ITEM_BIG_POE, "You found the soul for %gGohma%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_KING_DODONGO_SOUL, ITEM_BIG_POE, "You found the soul for %rKing&Dodongo%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_BARINADE_SOUL, ITEM_BIG_POE, "You found the soul for %bBarinade%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_PHANTOM_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %gPhantom&Ganon%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_VOLVAGIA_SOUL, ITEM_BIG_POE, "You found the soul for %rVolvagia%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_MORPHA_SOUL, ITEM_BIG_POE, "You found the soul for %bMorpha%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_BONGO_BONGO_SOUL, ITEM_BIG_POE, "You found the soul for %pBongo&Bongo%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_TWINROVA_SOUL, ITEM_BIG_POE, "You found the soul for %yTwinrova%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %cGanon%w!"),
+        
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();

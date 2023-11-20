@@ -117,7 +117,7 @@ void AreaTable_Init_GanonsCastle() {
                   //Locations
                   LocationAccess(RC_GANONS_TOWER_BOSS_KEY_CHEST, {[]{return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);}}),
                   LocationAccess(RC_GANONDORF_HINT,              {[]{return BossKeyGanonsCastle && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD));}}),
-                  LocationAccess(RC_GANON,                       {[]{return BossKeyGanonsCastle && CanUse(RG_LIGHT_ARROWS) && CanUse(RG_MASTER_SWORD);}}),
+                  LocationAccess(RC_GANON,                       {[]{return HasBossSoul(RG_GANON_SOUL) && BossKeyGanonsCastle && CanUse(RG_LIGHT_ARROWS) && CanUse(RG_MASTER_SWORD);}}),
   }, {});
 
   /*---------------------------

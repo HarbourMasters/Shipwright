@@ -315,6 +315,16 @@ namespace Logic {
   uint8_t Age             = 0;
   bool CanCompleteTriforce = false;
 
+  bool CanSummonGohma        = false;
+  bool CanSummonKingDodongo  = false;
+  bool CanSummonBarinade     = false;
+  bool CanSummonPhantomGanon = false;
+  bool CanSummonVolvagia     = false;
+  bool CanSummonMorpha       = false;
+  bool CanSummonBongoBongo   = false;
+  bool CanSummonTwinrova     = false;
+  bool CanSummonGanon        = false;
+
   //Events
   bool ShowedMidoSwordAndShield  = false;
   bool CarpenterRescue           = false;
@@ -464,6 +474,35 @@ namespace Logic {
            (age == HasProjectileAge::Adult  && (Hookshot  || Bow      )) ||
            (age == HasProjectileAge::Both   && (Slingshot || Boomerang)  && (Hookshot || Bow)) ||
            (age == HasProjectileAge::Either && (Slingshot || Boomerang   ||  Hookshot || Bow));
+  }
+
+  bool HasBossSoul(RandomizerGet itemName) {
+    auto ctx = Rando::Context::GetInstance();
+    if (!ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS)) {
+      return true;
+    }
+    switch(itemName) {
+      case RG_GOHMA_SOUL:
+        return CanSummonGohma; break;
+      case RG_KING_DODONGO_SOUL:
+        return CanSummonKingDodongo; break;
+      case RG_BARINADE_SOUL:
+        return CanSummonBarinade; break;
+      case RG_PHANTOM_GANON_SOUL:
+        return CanSummonPhantomGanon; break;
+      case RG_VOLVAGIA_SOUL:
+        return CanSummonVolvagia; break;
+      case RG_MORPHA_SOUL:
+        return CanSummonMorpha; break;
+      case RG_BONGO_BONGO_SOUL:
+        return CanSummonBongoBongo; break;
+      case RG_TWINROVA_SOUL:
+        return CanSummonTwinrova; break;
+      case RG_GANON_SOUL:
+        return ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON) ? CanSummonGanon : true;
+        break;
+      default: break;
+    }
   }
 
   uint8_t GetDifficultyValueFromString(Rando::Option& glitchOption) {
@@ -891,6 +930,17 @@ namespace Logic {
 
      //Triforce Pieces
      TriforcePieces = 0;
+
+     //Boss Souls
+     CanSummonGohma        = false;
+     CanSummonKingDodongo  = false;
+     CanSummonBarinade     = false;
+     CanSummonPhantomGanon = false;
+     CanSummonVolvagia     = false;
+     CanSummonMorpha       = false;
+     CanSummonBongoBongo   = false;
+     CanSummonTwinrova     = false;
+     CanSummonGanon        = false;
 
      //Drops and Bottle Contents Access
      DekuNutDrop      = false;

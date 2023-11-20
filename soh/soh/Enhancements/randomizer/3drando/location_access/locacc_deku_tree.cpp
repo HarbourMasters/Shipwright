@@ -254,9 +254,9 @@ void AreaTable_Init_DekuTree() {
              {
                  // Events
                  EventAccess(&DekuTreeClear, { [] {
-                                                  return DekuTreeClear ||
+                                                  return DekuTreeClear || (HasBossSoul(RG_GOHMA_SOUL) && 
                                                          (CanJumpslash && (Nuts || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) ||
-                                                                           HookshotOrBoomerang));
+                                                                           HookshotOrBoomerang)));
                                               }}),
              },
              {

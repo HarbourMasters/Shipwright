@@ -195,10 +195,10 @@ void AreaTable_Init_ShadowTemple() {
              {
                  // Events
                  EventAccess(&ShadowTempleClear, { [] {
-                     return ShadowTempleClear ||
+                     return ShadowTempleClear || (HasBossSoul(RG_BONGO_BONGO_SOUL) &&
                             ((CanUse(RG_LENS_OF_TRUTH) || randoCtx->GetTrickOption(RT_LENS_BONGO)) &&
                              (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) &&
-                             (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || randoCtx->GetTrickOption(RT_SHADOW_BONGO)));
+                             (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || randoCtx->GetTrickOption(RT_SHADOW_BONGO))));
                  } }),
              },
              {
