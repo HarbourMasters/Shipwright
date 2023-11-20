@@ -24,26 +24,26 @@ class Settings {
     std::string GetHash() const;
     const std::string& GetSeedString() const;
     void SetSeedString(std::string seedString);
-    const uint32_t GetSeed() const;
+    uint32_t GetSeed() const;
     void SetSeed(uint32_t seed);
     void SetHash(std::string hash);
     const std::array<OptionGroup, RSG_MAX>& GetOptionGroups();
     const OptionGroup& GetOptionGroup(RandomizerSettingGroupKey key);
     void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings,
-                        std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks);
+                        const std::set<RandomizerCheck>& excludedLocations, const std::set<RandomizerTrick>& enabledTricks);
     void ParseJson(nlohmann::json spoilerFileJson);
     std::vector<Option*> VanillaLogicDefaults = {};
 
   private:
     std::array<Option, RSK_MAX> mOptions = {};
     std::array<OptionGroup, RSG_MAX> mOptionGroups = {};
-    std::array<Option, RT_MAX> mTrickOptions;
-    std::vector<std::vector<Option*>> mExcludeLocationsOptionsGroups;
+    std::array<Option, RT_MAX> mTrickOptions = {};
+    std::vector<std::vector<Option*>> mExcludeLocationsOptionsGroups = {};
     std::unordered_map<std::string, RandomizerSettingKey> mSpoilerfileSettingNameToEnum;
-    RandoOptionStartingAge mResolvedStartingAge;
-    RandoOptionLACSCondition mLACSCondition;
+    RandoOptionStartingAge mResolvedStartingAge =  RO_AGE_CHILD;
+    RandoOptionLACSCondition mLACSCondition = RO_LACS_VANILLA;
     std::string mHash;
     std::string mSeedString;
-    uint32_t mFinalSeed;
+    uint32_t mFinalSeed = 0;
 };
 } // namespace Rando
