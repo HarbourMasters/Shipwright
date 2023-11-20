@@ -97,8 +97,8 @@ void GameInteractor::RawAction::SetWeatherStorm(bool active) {
 
 void GameInteractor::RawAction::ForceEquipBoots(int8_t boots) {
     Player* player = GET_PLAYER(gPlayState);
-    player->currentBoots = boots;
-    Inventory_ChangeEquipment(EQUIP_BOOTS, boots + 1);
+    player->currentBoots = BOOTS_EQUIP_TO_PLAYER(boots);
+    Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, boots);
     Player_SetBootData(gPlayState, player);
 }
 
@@ -274,24 +274,24 @@ void GameInteractor::RawAction::GiveOrTakeShield(int32_t shield) {
                 break;
         }
 
-        gSaveContext.inventory.equipment &= ~(gBitFlags[shield - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]);
+        gSaveContext.inventory.equipment &= ~(gBitFlags[shield - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_TYPE_SHIELD]);
 
         if (player->currentShield == shieldToCheck) {
             player->currentShield = PLAYER_SHIELD_NONE;
-            Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_NONE);
+            Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_NONE);
         }
     } else {
         Item_Give(gPlayState, shield);
         if (player->currentShield == PLAYER_SHIELD_NONE) {
             if (LINK_IS_CHILD && shield == ITEM_SHIELD_DEKU) {
                 player->currentShield = PLAYER_SHIELD_DEKU;
-                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_DEKU);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_DEKU);
             } else if (LINK_IS_ADULT && shield == ITEM_SHIELD_MIRROR) {
                 player->currentShield = PLAYER_SHIELD_MIRROR;
-                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_MIRROR);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_MIRROR);
             } else if (shield == ITEM_SHIELD_HYLIAN) {
                 player->currentShield = PLAYER_SHIELD_HYLIAN;
-                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_HYLIAN);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_HYLIAN);
             }
         }
     }
@@ -326,9 +326,9 @@ void GameInteractor::RawAction::UpdateActor(void* refActor) {
 void GameInteractor::RawAction::TeleportPlayer(int32_t nextEntrance) {
     Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
     gPlayState->nextEntranceIndex = nextEntrance;
-    gPlayState->sceneLoadFlag = 0x14;
-    gPlayState->fadeTransition = 2;
-    gSaveContext.nextTransitionType = 2;
+    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+    gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
+    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
 }
 
 void GameInteractor::RawAction::ClearAssignedButtons(uint8_t buttonSet) {

@@ -30,6 +30,7 @@
 #include <AudioPlayer.h>
 #include "Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "Enhancements/controls/GameControlEditor.h"
+#include "Enhancements/controls/SohInputEditorWindow.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/audio/AudioCollection.h"
 #include "Enhancements/audio/AudioEditor.h"
@@ -46,6 +47,7 @@
 #include "variables.h"
 #include "z64.h"
 #include "macros.h"
+#include "Fonts.h"
 #include <Utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 
@@ -66,6 +68,7 @@
 #include <port/switch/SwitchImpl.h>
 #elif defined(__WIIU__)
 #include <port/wiiu/WiiUImpl.h>
+#include <coreinit/debug.h> // OSFatal
 #endif
 
 
@@ -127,6 +130,36 @@ std::vector<std::shared_ptr<std::string>> cameraStdStrings;
 Color_RGB8 kokiriColor = { 0x1E, 0x69, 0x1B };
 Color_RGB8 goronColor = { 0x64, 0x14, 0x00 };
 Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
+
+float previousImGuiScale;
+
+// Same as NaviColor type from OoT src (z_actor.c), but modified to be sans alpha channel for Controller LED.
+typedef struct {
+    Color_RGB8 inner;
+    Color_RGB8 outer;
+} NaviColor_RGB8;
+
+static NaviColor_RGB8 defaultIdleColor = { { 255, 255, 255 }, { 0, 0, 255 } };
+static NaviColor_RGB8 defaultNPCColor = { { 150, 150, 255 }, { 150, 150, 255 } };
+static NaviColor_RGB8 defaultEnemyColor = { { 255, 255, 0 }, { 200, 155, 0 } };
+static NaviColor_RGB8 defaultPropsColor = { { 0, 255, 0 }, { 0, 255, 0 } };
+
+// Labeled according to ActorCategory (included through ActorDB.h)
+const NaviColor_RGB8 LEDColorDefaultNaviColorList[] = {
+    defaultPropsColor, // ACTORCAT_SWITCH       Switch
+    defaultPropsColor, // ACTORCAT_BG           Background (Prop type 1)
+    defaultIdleColor,  // ACTORCAT_PLAYER       Player
+    defaultPropsColor, // ACTORCAT_EXPLOSIVE    Bomb
+    defaultNPCColor,   // ACTORCAT_NPC          NPC
+    defaultEnemyColor, // ACTORCAT_ENEMY        Enemy
+    defaultPropsColor, // ACTORCAT_PROP         Prop type 2
+    defaultPropsColor, // ACTORCAT_ITEMACTION   Item/Action
+    defaultPropsColor, // ACTORCAT_MISC         Misc.
+    defaultEnemyColor, // ACTORCAT_BOSS         Boss
+    defaultPropsColor, // ACTORCAT_DOOR         Door
+    defaultPropsColor, // ACTORCAT_CHEST        Chest
+    defaultPropsColor, // ACTORCAT_MAX
+};
 
 // OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
 const char* constCameraStrings[] = {
@@ -247,9 +280,26 @@ OTRGlobals::OTRGlobals() {
         OOT_PAL_GC_DBG1,
         OOT_PAL_GC_DBG2
     };
-    // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
-    context = LUS::Context::CreateInstance("Ship of Harkinian", appShortName, "shipofharkinian.json", OTRFiles, {}, 3);
 
+    context = LUS::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
+
+    context->InitLogging();
+    context->InitConfiguration();
+    context->InitConsoleVariables();
+
+    // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
+    context->InitResourceManager(OTRFiles, {}, 3);
+    
+    context->InitControlDeck({BTN_MODIFIER1, BTN_MODIFIER2});
+    context->GetControlDeck()->SetSinglePlayerMappingMode(true);
+
+    context->InitCrashHandler();
+    context->InitConsole();
+
+    auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>("gControllerConfigurationEnabled", "Input Editor");
+    context->InitWindow(sohInputEditorWindow);
+    context->InitAudio();
+    
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Animation, "Animation", std::make_shared<LUS::AnimationFactory>());
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_PlayerAnimation, "PlayerAnimation", std::make_shared<LUS::PlayerAnimationFactory>());
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Room, "Room", std::make_shared<LUS::SceneFactory>()); // Is room scene? maybe?
@@ -268,6 +318,12 @@ OTRGlobals::OTRGlobals() {
     gRandomizer = std::make_shared<Randomizer>();
 
     hasMasterQuest = hasOriginal = false;
+
+    previousImGuiScale = defaultImGuiScale;
+    defaultFontSmaller = CreateDefaultFontWithSize(10.0f);
+    defaultFontLarger = CreateDefaultFontWithSize(16.0f);
+    defaultFontLargest = CreateDefaultFontWithSize(20.0f);
+    ScaleImGui();
 
     // Move the camera strings from read only memory onto the heap (writable memory)
     // This is in OTRGlobals right now because this is a place that will only ever be run once at the beginning of startup.
@@ -321,6 +377,32 @@ OTRGlobals::OTRGlobals() {
 }
 
 OTRGlobals::~OTRGlobals() {
+}
+
+void OTRGlobals::ScaleImGui() {
+    float scale = imguiScaleOptionToValue[CVarGetInteger("gImGuiScale", defaultImGuiScale)];
+    float newScale = scale / previousImGuiScale;
+    ImGui::GetStyle().ScaleAllSizes(newScale);
+    ImGui::GetIO().FontGlobalScale = scale;
+    previousImGuiScale = scale;
+}
+
+ImFont* OTRGlobals::CreateDefaultFontWithSize(float size) {
+    auto mImGuiIo = &ImGui::GetIO();
+    ImFontConfig fontCfg = ImFontConfig();
+    fontCfg.OversampleH = fontCfg.OversampleV = 1;
+    fontCfg.PixelSnapH = true;
+    fontCfg.SizePixels = size;
+    ImFont* font = mImGuiIo->Fonts->AddFontDefault(&fontCfg);
+    // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
+    float iconFontSize = size * 2.0f / 3.0f;
+    static const ImWchar sIconsRanges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
+    ImFontConfig iconsConfig;
+    iconsConfig.MergeMode = true;
+    iconsConfig.PixelSnapH = true;
+    iconsConfig.GlyphMinAdvanceX = iconFontSize;
+    mImGuiIo->Fonts->AddFontFromMemoryCompressedBase85TTF(fontawesome_compressed_data_base85, iconFontSize, &iconsConfig, sIconsRanges);
+    return font;
 }
 
 bool OTRGlobals::HasMasterQuest() {
@@ -715,23 +797,215 @@ extern "C" void OTRExtScanner() {
     }
 }
 
+typedef struct {
+    uint16_t major;
+    uint16_t minor;
+    uint16_t patch;
+} OTRVersion;
+
+// Read the port version from an OTR file
+OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
+    OTRVersion version = {};
+
+    // Use a temporary archive instance to load the otr and read the version file
+    auto archive = std::make_shared<LUS::Archive>(otrPath, "", std::unordered_set<uint32_t>(), false);
+    if (archive->IsMainMPQValid()) {
+        auto t = archive->LoadFile("portVersion", false);
+        if (t != nullptr && t->IsLoaded) {
+            auto stream = std::make_shared<LUS::MemoryStream>(t->Buffer.data(), t->Buffer.size());
+            auto reader = std::make_shared<LUS::BinaryReader>(stream);
+            LUS::Endianness endianness = (LUS::Endianness)reader->ReadUByte();
+            reader->SetEndianness(endianness);
+            version.major = reader->ReadUInt16();
+            version.minor = reader->ReadUInt16();
+            version.patch = reader->ReadUInt16();
+        }
+    }
+
+    archive = nullptr;
+
+    return version;
+}
+
+// Check that a soh.otr exists and matches the version of soh running
+// Otherwise show a message and exit
+void CheckSoHOTRVersion(std::string otrPath) {
+    std::string msg;
+
+#if defined(__SWITCH__)
+    msg = "\x1b[4;2HPlease re-extract it from the download."
+                       "\x1b[6;2HPress the Home button to exit...";
+#elif defined(__WIIU__)
+    msg = "Please extract the soh.otr from the Ship of Harkinian download\nto your folder.\n\nPress and hold the power button to shutdown...";
+#else
+    msg = "Please extract the soh.otr from the Ship of Harkinian download to your folder.\n\nExiting...";
+#endif
+
+    if (!std::filesystem::exists(otrPath)) {
+#if not defined(__SWITCH__) && not defined(__WIIU__)
+        Extractor::ShowErrorBox("soh.otr file is missing", msg.c_str());
+        exit(1);
+#elif defined(__SWITCH__)
+        LUS::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou are missing the soh.otr file." + msg).c_str());
+#elif defined(__WIIU__)
+        OSFatal(("You are missing the soh.otr file\n\n" + msg).c_str());
+#endif
+    }
+
+    OTRVersion otrVersion = ReadPortVersionFromOTR(otrPath);
+
+    if (otrVersion.major != gBuildVersionMajor || otrVersion.minor != gBuildVersionMinor || otrVersion.patch != gBuildVersionPatch) {
+#if not defined(__SWITCH__) && not defined(__WIIU__)
+        Extractor::ShowErrorBox("soh.otr file version does not match", msg.c_str());
+        exit(1);
+#elif defined(__SWITCH__)
+        LUS::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou have an old soh.otr file." + msg).c_str());
+#elif defined(__WIIU__)
+        OSFatal(("You have an old soh.otr file\n\n" + msg).c_str());
+#endif
+    }
+}
+
+// Checks the program version stored in the otr and compares the major value to soh
+// For Windows/Mac/Linux if the version doesn't match, offer to 
+void DetectOTRVersion(std::string fileName, bool isMQ) {
+    bool isOtrOld = false;
+    std::string otrPath = LUS::Context::LocateFileAcrossAppDirs(fileName, appShortName);
+
+    // Doesn't exist so nothing to do here
+    if (!std::filesystem::exists(otrPath)) {
+        return;
+    }
+
+    OTRVersion otrVersion = ReadPortVersionFromOTR(otrPath);
+
+    if (otrVersion.major != gBuildVersionMajor) {
+        isOtrOld = true;
+    }
+
+    if (isOtrOld) {
+#if not defined(__SWITCH__) && not defined(__WIIU__)
+        char msgBuf[250];
+        char version[18]; // 5 digits for int16_max (x3) + separators + terminator
+
+        if (otrVersion.major != 0 || otrVersion.minor != 0 || otrVersion.patch != 0) {
+            snprintf(version, 18, "%d.%d.%d", otrVersion.major, otrVersion.minor, otrVersion.patch);
+        } else {
+            snprintf(version, 18, "no version found");
+        }
+
+        snprintf(msgBuf, 250,
+            "The %s file was generated with a different version of Ship of Harkinian.\nOTR version: %s\n\n"
+            "You must regenerate to be able to play, otherwise the program will exit.\nWould you like to regenerate it now?",
+            fileName.c_str(), version);
+
+        if (Extractor::ShowYesNoBox("Old OTR File Found", msgBuf) == IDYES) {
+            std::string installPath = LUS::Context::GetAppBundlePath();
+            if (!std::filesystem::exists(installPath + "/assets/extractor")) {
+                Extractor::ShowErrorBox("Extractor assets not found",
+                    "Unable to regenerate. Missing assets/extractor folder needed to generate OTR file.\n\nExiting...");
+                exit(1);
+            }
+
+            Extractor extract;
+            if (!extract.Run(LUS::Context::GetAppDirectoryPath(appShortName), isMQ ? RomSearchMode::MQ : RomSearchMode::Vanilla)) {
+                Extractor::ShowErrorBox("Error", "An error occured, no OTR file was generated.\n\nExiting...");
+                exit(1);
+            }
+            extract.CallZapd(installPath, LUS::Context::GetAppDirectoryPath(appShortName));
+        } else {
+            exit(1);
+        }
+
+#elif defined(__SWITCH__)
+        LUS::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship with an old game OTR file."
+                                               "\x1b[4;2HPlease regenerate a new game OTR and relaunch."
+                                               "\x1b[6;2HPress the Home button to exit...");
+#elif defined(__WIIU__)
+        OSFatal("You've launched the Ship with an old a game OTR file.\n\n"
+                "Please generate a game OTR and relaunch.\n\n"
+                "Press and hold the Power button to shutdown...");
+#endif
+    }
+}
+
+bool IsSubpath(const std::filesystem::path& path, const std::filesystem::path& base) {
+    auto rel = std::filesystem::relative(path, base);
+    return !rel.empty() && rel.native()[0] != '.';
+}
+
+bool PathTestCleanup(FILE* tfile) {
+    try {
+        if (std::filesystem::exists("./text.txt")) std::filesystem::remove("./text.txt");
+        if (std::filesystem::exists("./test/")) std::filesystem::remove("./test/");
+    }
+    catch (std::filesystem::filesystem_error const& ex) { return false; }
+    return true;
+}
+
 extern "C" void InitOTR() {
-#if not defined (__SWITCH__) && not defined(__WIIU__)
+
+#ifdef __SWITCH__
+    LUS::Switch::Init(LUS::PreInitPhase);
+#elif defined(__WIIU__)
+    LUS::WiiU::Init(appShortName);
+#endif
+
+#ifdef _WIN32
+    char* tempVar = getenv("TEMP");
+    std::filesystem::path tempPath;
+    try {
+        tempPath = std::filesystem::canonical(tempVar);
+    } catch (std::filesystem::filesystem_error const& ex) {
+        std::string userPath = getenv("USERPROFILE");
+        userPath.append("\\AppData\\Local\\Temp");
+        tempPath = std::filesystem::canonical(userPath);
+    }
+    wchar_t buffer[MAX_PATH];
+    GetModuleFileName(NULL, buffer, _countof(buffer));
+    auto ownPath = std::filesystem::canonical(buffer).parent_path();
+    if (IsSubpath(ownPath, tempPath)) {
+        Extractor::ShowErrorBox("Error", "SoH is running in a temp folder. Extract the .zip and run again.");
+        exit(1);
+    }
+    FILE* tfile = fopen("./text.txt", "w");
+    std::filesystem::path tfolder = std::filesystem::path("./test/");
+    bool error = false;
+    try {
+        create_directories(tfolder);
+    } catch (std::filesystem::filesystem_error const& ex) {
+        error = true;
+    }
+    if (tfile == NULL || error) {
+        Extractor::ShowErrorBox("Error", "SoH does not have proper file permissions. Please move it to a folder that does and run again.");
+        PathTestCleanup(tfile);
+        exit(1);
+    }
+    fclose(tfile);
+    if (!PathTestCleanup(tfile)) {
+        Extractor::ShowErrorBox("Error", "SoH does not have proper file permissions. Please move it to a folder that does and run again.");
+        exit(1);
+    }
+#endif
+
+    CheckSoHOTRVersion(LUS::Context::GetPathRelativeToAppBundle("soh.otr"));
+
     if (!std::filesystem::exists(LUS::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName)) &&
         !std::filesystem::exists(LUS::Context::LocateFileAcrossAppDirs("oot.otr", appShortName))){
 
+#if not defined(__SWITCH__) && not defined(__WIIU__)
         std::string installPath = LUS::Context::GetAppBundlePath();
         if (!std::filesystem::exists(installPath + "/assets/extractor")) {
             Extractor::ShowErrorBox("Extractor assets not found",
-                "No OTR files found. Missing assets/extractor folder needed to generate OTR file. Exiting...");
+                "No OTR files found. Missing assets/extractor folder needed to generate OTR file.\n\nExiting...");
             exit(1);
         }
 
         bool generatedOtrIsMQ = false;
         if (Extractor::ShowYesNoBox("No OTR Files", "No OTR files found. Generate one now?") == IDYES) {
             Extractor extract;
-            if (!extract.Run()) {
-                Extractor::ShowErrorBox("Error", "An error occured, no OTR file was generated. Exiting...");
+            if (!extract.Run(LUS::Context::GetAppDirectoryPath(appShortName))) {
+                Extractor::ShowErrorBox("Error", "An error occured, no OTR file was generated.\n\nExiting...");
                 exit(1);
             }
             extract.CallZapd(installPath, LUS::Context::GetAppDirectoryPath(appShortName));
@@ -741,20 +1015,26 @@ extern "C" void InitOTR() {
         }
         if (Extractor::ShowYesNoBox("Extraction Complete", "ROM Extracted. Extract another?") == IDYES) {
             Extractor extract;
-            if (!extract.Run(generatedOtrIsMQ ? RomSearchMode::Vanilla : RomSearchMode::MQ)) {
-                Extractor::ShowErrorBox("Error", "An error occured, an OTR file may have been generated by a different step. Continuing...");
+            if (!extract.Run(LUS::Context::GetAppDirectoryPath(appShortName), generatedOtrIsMQ ? RomSearchMode::Vanilla : RomSearchMode::MQ)) {
+                Extractor::ShowErrorBox("Error", "An error occured, an OTR file may have been generated by a different step.\n\nContinuing...");
             } else {
                 extract.CallZapd(installPath, LUS::Context::GetAppDirectoryPath(appShortName));
             }
         }
-    }
-#endif
 
-#ifdef __SWITCH__
-    LUS::Switch::Init(LUS::PreInitPhase);
+#elif defined(__SWITCH__)
+        LUS::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship without a game OTR file."
+                                               "\x1b[4;2HPlease generate a game OTR and relaunch."
+                                               "\x1b[6;2HPress the Home button to exit...");
 #elif defined(__WIIU__)
-    LUS::WiiU::Init("soh");
+        OSFatal("You've launched the Ship without a game OTR file.\n\n"
+                "Please generate a game OTR and relaunch.\n\n"
+                "Press and hold the Power button to shutdown...");
 #endif
+    }
+
+    DetectOTRVersion("oot.otr", false);
+    DetectOTRVersion("oot-mq.otr", true);
 
     OTRGlobals::Instance = new OTRGlobals();
     CustomMessageManager::Instance = new CustomMessageManager();
@@ -803,6 +1083,7 @@ extern "C" void InitOTR() {
 
     std::shared_ptr<LUS::Config> conf = OTRGlobals::Instance->context->GetConfig(); 
     conf->RegisterConfigVersionUpdater(std::make_shared<LUS::ConfigVersion1Updater>());
+    conf->RegisterConfigVersionUpdater(std::make_shared<LUS::ConfigVersion2Updater>());
     conf->RunVersionUpdates();
 }
 
@@ -1306,6 +1587,11 @@ extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
     return (Gfx*)&res->Instructions[0];
 }
 
+extern "C" uint8_t ResourceMgr_FileIsCustomByName(const char* path) {
+    auto res = std::static_pointer_cast<LUS::DisplayList>(GetResourceByNameHandlingMQ(path));
+    return res->GetInitData()->IsCustom;
+}
+
 typedef struct {
     int index;
     Gfx instruction;
@@ -1337,6 +1623,11 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
     // index /= 2;
     // }
 
+    // Do not patch custom assets as they most likely do not have the same instructions as authentic assets
+    if (res->GetInitData()->IsCustom) {
+        return;
+    }
+
     Gfx* gfx = (Gfx*)&res->Instructions[index];
 
     if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
@@ -1352,6 +1643,11 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
 extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex, int sourceIndex) {
     auto res = std::static_pointer_cast<LUS::DisplayList>(
         LUS::Context::GetInstance()->GetResourceManager()->LoadResource(path));
+
+    // Do not patch custom assets as they most likely do not have the same instructions as authentic assets
+    if (res->GetInitData()->IsCustom) {
+        return;
+    }
 
     Gfx* destinationGfx = (Gfx*)&res->Instructions[destinationIndex];
     Gfx sourceGfx = res->Instructions[sourceIndex];
@@ -1700,22 +1996,68 @@ Color_RGB8 GetColorForControllerLED() {
         LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL));
         bool criticalOverride = CVarGetInteger("gLedCriticalOverride", 1);
         if (gPlayState && (source == LED_SOURCE_TUNIC_ORIGINAL || source == LED_SOURCE_TUNIC_COSMETICS)) {
-            switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
-                case PLAYER_TUNIC_KOKIRI:
+            switch (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)) {
+                case EQUIP_VALUE_TUNIC_KOKIRI:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
                                 ? CVarGetColor24("gCosmetics.Link_KokiriTunic.Value", kokiriColor)
                                 : kokiriColor;
                     break;
-                case PLAYER_TUNIC_GORON:
+                case EQUIP_VALUE_TUNIC_GORON:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
                                 ? CVarGetColor24("gCosmetics.Link_GoronTunic.Value", goronColor)
                                 : goronColor;
                     break;
-                case PLAYER_TUNIC_ZORA:
+                case EQUIP_VALUE_TUNIC_ZORA:
                     color = source == LED_SOURCE_TUNIC_COSMETICS
                                 ? CVarGetColor24("gCosmetics.Link_ZoraTunic.Value", zoraColor)
                                 : zoraColor;
                     break;
+            }
+        }
+        if (gPlayState && (source == LED_SOURCE_NAVI_ORIGINAL || source == LED_SOURCE_NAVI_COSMETICS)) {
+            Actor* arrowPointedActor = gPlayState->actorCtx.targetCtx.arrowPointedActor;
+            if (arrowPointedActor) {
+                ActorCategory category = (ActorCategory)arrowPointedActor->category;
+                switch (category) {
+                    case ACTORCAT_PLAYER:
+                        if (source == LED_SOURCE_NAVI_COSMETICS &&
+                            CVarGetInteger("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
+                            color = CVarGetColor24("gCosmetics.Navi_IdlePrimary.Value", defaultIdleColor.inner);
+                            break;
+                        }
+                        color = LEDColorDefaultNaviColorList[category].inner;
+                        break;
+                    case ACTORCAT_NPC:
+                        if (source == LED_SOURCE_NAVI_COSMETICS &&
+                            CVarGetInteger("gCosmetics.Navi_NPCPrimary.Changed", 0)) {
+                            color = CVarGetColor24("gCosmetics.Navi_NPCPrimary.Value", defaultNPCColor.inner);
+                            break;
+                        }
+                        color = LEDColorDefaultNaviColorList[category].inner;
+                        break;
+                    case ACTORCAT_ENEMY:
+                    case ACTORCAT_BOSS:
+                        if (source == LED_SOURCE_NAVI_COSMETICS &&
+                            CVarGetInteger("gCosmetics.Navi_EnemyPrimary.Changed", 0)) {
+                            color = CVarGetColor24("gCosmetics.Navi_EnemyPrimary.Value", defaultEnemyColor.inner);
+                            break;
+                        }
+                        color = LEDColorDefaultNaviColorList[category].inner;
+                        break;
+                    default:
+                        if (source == LED_SOURCE_NAVI_COSMETICS &&
+                            CVarGetInteger("gCosmetics.Navi_PropsPrimary.Changed", 0)) {
+                            color = CVarGetColor24("gCosmetics.Navi_PropsPrimary.Value", defaultPropsColor.inner);
+                            break;
+                        }
+                        color = LEDColorDefaultNaviColorList[category].inner;
+                }
+            } else { // No target actor.
+                if (source == LED_SOURCE_NAVI_COSMETICS && CVarGetInteger("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
+                    color = CVarGetColor24("gCosmetics.Navi_IdlePrimary.Value", defaultIdleColor.inner);
+                } else {
+                    color = LEDColorDefaultNaviColorList[ACTORCAT_PLAYER].inner;
+                }
             }
         }
         if (source == LED_SOURCE_CUSTOM) {
@@ -1741,15 +2083,22 @@ Color_RGB8 GetColorForControllerLED() {
 }
 
 extern "C" void OTRControllerCallback(uint8_t rumble) {
-    auto physicalDevice = LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0);
+    // We call this every tick, SDL accounts for this use and prevents driver spam
+    // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
+    LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetLED()->SetLEDColor(GetColorForControllerLED());
 
-    if (physicalDevice->CanSetLed()) {
-        // We call this every tick, SDL accounts for this use and prevents driver spam
-        // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
-        physicalDevice->SetLedColor(0, GetColorForControllerLED());
+    static std::shared_ptr<SohInputEditorWindow> controllerConfigWindow = nullptr;
+    if (controllerConfigWindow == nullptr) {
+        controllerConfigWindow = std::dynamic_pointer_cast<SohInputEditorWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Input Editor"));
+    } else if (controllerConfigWindow->TestingRumble()) {
+        return;
     }
 
-    physicalDevice->SetRumble(0, rumble);
+    if (rumble) {
+        LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetRumble()->StartRumble();
+    } else {
+        LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetRumble()->StopRumble();
+    }
 }
 
 extern "C" float OTRGetAspectRatio() {
@@ -1788,12 +2137,12 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 }
 
 extern "C" int Controller_ShouldRumble(size_t slot) {
-    auto controlDeck = LUS::Context::GetInstance()->GetControlDeck();
-    
-    if (slot < controlDeck->GetNumConnectedPorts()) {
-        auto physicalDevice = controlDeck->GetDeviceFromPortIndex(slot);
-        
-        if (physicalDevice->GetProfile(slot)->UseRumble && physicalDevice->CanRumble()) {
+    for (auto [id, mapping] : LUS::Context::GetInstance()
+                                  ->GetControlDeck()
+                                  ->GetControllerByPort(static_cast<uint8_t>(slot))
+                                  ->GetRumble()
+                                  ->GetAllRumbleMappings()) {
+        if (mapping->PhysicalDeviceIsConnected()) {
             return 1;
         }
     }
@@ -2018,7 +2367,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             actorParams = stone->params;
 
             // if we're in a generic grotto
-            if (play->sceneNum == 62 && actorParams == 14360) {
+            if (play->sceneNum == SCENE_GROTTOS && actorParams == 14360) {
                 // look for the chest in the actorlist to determine
                 // which grotto we're in
                 int numOfActorLists =
@@ -2043,7 +2392,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
                : CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD);
         } else if (textId == TEXT_GANONDORF) {
-            if ((INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT && CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) ||
+            if ((INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) ||
               !Randomizer_GetSettingValue(RSK_LIGHT_ARROWS_HINT)) {
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT);
             } else {
@@ -2116,8 +2465,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if (Randomizer_GetSettingValue(RSK_FROGS_HINT) && textId == TEXT_FROGS_UNDERWATER) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetFrogsMessage(textId);
         } else if (Randomizer_GetSettingValue(RSK_SARIA_HINT)) {
-            if ((gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && textId == TEXT_SARIA_SFM) || textId == TEXT_SARIAS_SONG_FOREST_SOUNDS ||
-                textId == TEXT_SARIAS_SONG_FOREST_TEMPLE) {
+            if ((gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && textId == TEXT_SARIA_SFM) || (textId >= TEXT_SARIAS_SONG_TEXT_START && textId <= TEXT_SARIAS_SONG_TEXT_END)) {
                 messageEntry = OTRGlobals::Instance->gRandomizer->GetSariaMessage(textId);
             }
         }

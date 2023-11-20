@@ -30,6 +30,14 @@ typedef enum {
     /* 13 */ SKYBOX_DMA_PAL2_START
 } SkyboxDmaState;
 
+typedef enum {
+    /* 0 */ SANDSTORM_OFF,
+    /* 1 */ SANDSTORM_FILL,
+    /* 2 */ SANDSTORM_UNFILL,
+    /* 3 */ SANDSTORM_ACTIVE,
+    /* 4 */ SANDSTORM_DISSIPATE
+} SandstormState;
+
 typedef struct {
     /* 0x00 */ u8 state;
     /* 0x01 */ u8 flashRed;

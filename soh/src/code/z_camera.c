@@ -2138,8 +2138,6 @@ s32 Camera_Parallel1(Camera* camera) {
     OLib_Vec3fDiffToVecSphGeo(&atToEyeDir, at, eye);
     OLib_Vec3fDiffToVecSphGeo(&atToEyeNextDir, at, eyeNext);
 
-    camera->play->manualCamera = false;
-
     switch (camera->animState) {
         case 0:
         case 0xA:
@@ -7596,7 +7594,7 @@ Vec3s Camera_Update(Camera* camera) {
             D_8011D3F0--;
             sCameraInterfaceFlags = 0x3200;
             Camera_UpdateInterface(sCameraInterfaceFlags);
-        } else if (camera->play->transitionMode != 0) {
+        } else if (camera->play->transitionMode != TRANS_MODE_OFF) {
             sCameraInterfaceFlags = 0xF200;
             Camera_UpdateInterface(sCameraInterfaceFlags);
         } else if (camera->play->csCtx.state != CS_STATE_IDLE) {
@@ -7888,6 +7886,15 @@ s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags) {
                     break;
             }
         }
+
+        // Clear free camera if an action is performed that would move the camera (targeting, first person, talking)
+        if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1 &&
+            ((mode >= CAM_MODE_TARGET && mode <= CAM_MODE_BATTLE) ||
+             (mode >= CAM_MODE_FIRSTPERSON && mode <= CAM_MODE_CLIMBZ) || mode == CAM_MODE_HANGZ ||
+             mode == CAM_MODE_FOLLOWBOOMERANG)) {
+            camera->play->manualCamera = false;
+        }
+
         func_8005A02C(camera);
         camera->mode = mode;
         return 0x80000000 | mode;

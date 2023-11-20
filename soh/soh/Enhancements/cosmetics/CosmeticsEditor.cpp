@@ -1535,7 +1535,7 @@ void DrawSillyTab() {
         CVarClear("gCosmetics.BunnyHood_EarSpread");
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
-    UIWidgets::EnhancementSliderFloat("Goron Neck Length: %f", "##Goron_NeckLength", "gCosmetics.Goron_NeckLength", 0.0f, 1000.0f, "", 0.0f, false);
+    UIWidgets::EnhancementSliderFloat("Goron Neck Length: %f", "##Goron_NeckLength", "gCosmetics.Goron_NeckLength", 0.0f, 5000.0f, "", 0.0f, false);
     ImGui::SameLine();
     if (ImGui::Button("Reset##Goron_NeckLength")) {
         CVarClear("gCosmetics.Goron_NeckLength");
@@ -1767,6 +1767,10 @@ void CosmeticsEditorWindow::DrawElement() {
     ImGui::SameLine();
     UIWidgets::EnhancementCombobox("gCosmetics.DefaultColorScheme", colorSchemes, COLORSCHEME_N64);
     UIWidgets::EnhancementCheckbox("Advanced Mode", "gCosmetics.AdvancedMode");
+    UIWidgets::InsertHelpHoverText(
+        "Some cosmetic options may not apply if you have any mods that provide custom models for the cosmetic option.\n\n"
+        "For example, if you have custom Link model, then the Link's Hair color option will most likely not apply."
+    );
     if (CVarGetInteger("gCosmetics.AdvancedMode", 0)) {
         if (ImGui::Button("Lock All Advanced", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
             for (auto& [id, cosmeticOption] : cosmeticOptions) {

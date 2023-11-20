@@ -515,7 +515,7 @@ void DrawInfoTab() {
     UIWidgets::InsertHelpHoverText("Z-Targeting behavior");
 
     if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
-        ImGui::InputScalar("Triforce Pieces", ImGuiDataType_U16, &gSaveContext.triforcePiecesCollected);
+        ImGui::InputScalar("Triforce Pieces", ImGuiDataType_U8, &gSaveContext.triforcePiecesCollected);
         UIWidgets::InsertHelpHoverText("Currently obtained Triforce Pieces. For Triforce Hunt.");
     }
 
@@ -1602,17 +1602,17 @@ void DrawPlayerTab() {
             if (ImGui::Selectable("None")) {
                 player->currentSwordItemId = ITEM_NONE;
                 gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_NONE);
             }
             if (ImGui::Selectable("Kokiri Sword")) {
                 player->currentSwordItemId = ITEM_SWORD_KOKIRI;
                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_KOKIRI);
             }
             if (ImGui::Selectable("Master Sword")) {
                 player->currentSwordItemId = ITEM_SWORD_MASTER;
                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_MASTER);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER);
             }
             if (ImGui::Selectable("Biggoron's Sword")) {
                 if (gSaveContext.bgsFlag) {
@@ -1629,12 +1629,12 @@ void DrawPlayerTab() {
                     gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KNIFE;
                 }
                 
-                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_BIGGORON);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_BIGGORON);
             }
             if (ImGui::Selectable("Fishing Pole")) {
                 player->currentSwordItemId = ITEM_FISHING_POLE;
                 gSaveContext.equips.buttonItems[0] = ITEM_FISHING_POLE;
-                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_MASTER);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER);
             }
             ImGui::EndCombo();
 
@@ -1642,19 +1642,19 @@ void DrawPlayerTab() {
         if (ImGui::BeginCombo("Shield", curShield)) {
             if (ImGui::Selectable("None")) {
                 player->currentShield = PLAYER_SHIELD_NONE;
-                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_NONE);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_NONE);
             }
             if (ImGui::Selectable("Deku Shield")) {
                 player->currentShield = PLAYER_SHIELD_DEKU;
-                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_DEKU);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_DEKU);
             }
             if (ImGui::Selectable("Hylian Shield")) {
                 player->currentShield = PLAYER_SHIELD_HYLIAN;
-                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_HYLIAN);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_HYLIAN);
             }
             if (ImGui::Selectable("Mirror Shield")) {
                 player->currentShield = PLAYER_SHIELD_MIRROR;
-                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_MIRROR);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_MIRROR);
             }
             ImGui::EndCombo();
         }
@@ -1662,15 +1662,15 @@ void DrawPlayerTab() {
         if (ImGui::BeginCombo("Tunic", curTunic)) {
             if (ImGui::Selectable("Kokiri Tunic")) {
                 player->currentTunic = PLAYER_TUNIC_KOKIRI;
-                Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_KOKIRI + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_KOKIRI);
             }
             if (ImGui::Selectable("Goron Tunic")) {
                 player->currentTunic = PLAYER_TUNIC_GORON;
-                Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_GORON + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_GORON);
             }
             if (ImGui::Selectable("Zora Tunic")) {
                 player->currentTunic = PLAYER_TUNIC_ZORA;
-                Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_ZORA + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_ZORA);
             }
             ImGui::EndCombo();
         }
@@ -1678,15 +1678,15 @@ void DrawPlayerTab() {
         if (ImGui::BeginCombo("Boots", curBoots)) {
             if (ImGui::Selectable("Kokiri Boots")) {
                 player->currentBoots = PLAYER_BOOTS_KOKIRI;
-                Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_KOKIRI + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_KOKIRI);
             }
             if (ImGui::Selectable("Iron Boots")) {
                 player->currentBoots = PLAYER_BOOTS_IRON;
-                Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_IRON + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_IRON);
             }
             if (ImGui::Selectable("Hover Boots")) {
                 player->currentBoots = PLAYER_BOOTS_HOVER;
-                Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_HOVER + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_HOVER);
             }
             ImGui::EndCombo();
         }

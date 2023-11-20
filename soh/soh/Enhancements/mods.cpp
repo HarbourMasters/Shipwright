@@ -35,15 +35,13 @@ extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
 uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 }
-bool performDelayedSave = false;
-bool performSave = false;
 
 // TODO: When there's more uses of something like this, create a new GI::RawAction?
 void ReloadSceneTogglingLinkAge() {
     gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
-    gPlayState->sceneLoadFlag = 0x14;
-    gPlayState->fadeTransition = 42; // Fade Out
-    gSaveContext.nextTransitionType = 42;
+    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+    gPlayState->transitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST); // Fade Out
+    gSaveContext.nextTransitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST);
     gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
 }
 
@@ -147,6 +145,19 @@ void RegisterInfiniteISG() {
     });
 }
 
+//Permanent quick put away (QPA) glitched damage value
+void RegisterEzQPA() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!gPlayState) return;
+
+        if (CVarGetInteger("gEzQPA", 0) != 0) {
+            Player* player = GET_PLAYER(gPlayState);
+            player->meleeWeaponQuads[0].info.toucher.dmgFlags = 0x16171617;
+            player->meleeWeaponQuads[1].info.toucher.dmgFlags = 0x16171617;
+        }
+    });
+}
+
 void RegisterUnrestrictedItems() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!gPlayState) return;
@@ -194,8 +205,8 @@ void RegisterSwitchAge() {
             warped = true;
         }
 
-        if (warped && gPlayState->sceneLoadFlag != 0x0014 &&
-            gSaveContext.nextTransitionType == 255) {
+        if (warped && gPlayState->transitionTrigger != TRANS_TRIGGER_START &&
+            gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT) {
             GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
             GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
             if (roomNum != roomCtx->curRoom.num) {
@@ -223,7 +234,7 @@ void RegisterOcarinaTimeTravel() {
         Actor* nearbyOcarinaSpot = Actor_FindNearby(gPlayState, player, ACTOR_EN_OKARINA_TAG, ACTORCAT_PROP, 120.0f);
         Actor* nearbyDoorOfTime = Actor_FindNearby(gPlayState, player, ACTOR_DOOR_TOKI, ACTORCAT_BG, 500.0f);
         Actor* nearbyFrogs = Actor_FindNearby(gPlayState, player, ACTOR_EN_FR, ACTORCAT_NPC, 300.0f);
-        uint8_t hasMasterSword = (gBitFlags[ITEM_SWORD_MASTER - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD]) & gSaveContext.inventory.equipment;
+        uint8_t hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
         uint8_t hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
         // If TimeTravel + Player have the Ocarina of Time + Have Master Sword + is in proper range
         // TODO: Once Swordless Adult is fixed: Remove the Master Sword check
@@ -245,14 +256,12 @@ void RegisterOcarinaTimeTravel() {
 
 void AutoSave(GetItemEntry itemEntry) {
     u8 item = itemEntry.itemId;
+    bool performSave = false;
     // Don't autosave immediately after buying items from shops to prevent getting them for free!
     // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
     // Don't autosave during the Ganon fight when picking up the Master Sword
-    // Don't autosave in the fishing pond to prevent getting rod on B outside of the pond
-    // Don't autosave in the bombchu bowling alley to prevent having chus on B outside of the minigame
-    // Don't autosave in grottos since resuming from grottos breaks the game.
     if ((CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
-        (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) && (gPlayState->sceneNum != SCENE_GANON_BOSS)) {
+        (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) && (gPlayState->sceneNum != SCENE_GANON_BOSS) && (gPlayState->sceneNum != SCENE_CHAMBER_OF_THE_SAGES)) {
         if (((CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS) || (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_ALL_ITEMS)) && (item != ITEM_NONE)) {
             // Autosave for all items
             performSave = true;
@@ -313,25 +322,9 @@ void AutoSave(GetItemEntry itemEntry) {
                    CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
             performSave = true;
         }
-        if (gPlayState->sceneNum == SCENE_FAIRYS_FOUNTAIN || gPlayState->sceneNum == SCENE_GROTTOS ||
-            gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES || gPlayState->sceneNum == SCENE_FISHING_POND ||
-            gPlayState->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) {
-            if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS ||
-                CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS ||
-                CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
-                performSave = false;
-                return;
-            }
-            if (performSave) {
-                performSave = false;
-                performDelayedSave = true;
-            }
-            return;
-        }
-        if (performSave || performDelayedSave) {
+        if (performSave) {
             Play_PerformSave(gPlayState);
             performSave = false;
-            performDelayedSave = false;
         }
     }
 }
@@ -356,7 +349,8 @@ void RegisterRupeeDash() {
         if (rupeeDashTimer >= rdmTime) {
             rupeeDashTimer = 0;
             if (gSaveContext.rupees > 0) {
-                Rupees_ChangeBy(-1);
+                uint16_t walletSize = (CUR_UPG_VALUE(UPG_WALLET) + 1) * -1;
+                Rupees_ChangeBy(walletSize);
             } else {
                 Health_ChangeBy(gPlayState, -16);
             }
@@ -374,11 +368,18 @@ void RegisterShadowTag() {
         if (!CVarGetInteger("gShadowTag", 0)) {
             return;
         }
-        if (shouldSpawn && (delayTimer <= 0)) {
-            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3, false);
-            shouldSpawn = false;
+        if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE &&  // Forest Temple Scene
+            gPlayState->roomCtx.curRoom.num == 16 ||        // Green Poe Room
+            gPlayState->roomCtx.curRoom.num == 13 ||        // Blue Poe Room
+            gPlayState->roomCtx.curRoom.num == 12) {        // Red Poe Room
+            return;
         } else {
-            delayTimer--;
+            if (shouldSpawn && (delayTimer <= 0)) {
+                Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3, false);
+                shouldSpawn = false;
+            } else {
+                delayTimer--;
+            }
         }
     });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
@@ -700,10 +701,10 @@ void RegisterTriforceHunt() {
 
             // Warp to credits
             if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
-                gPlayState->nextEntranceIndex = 0x6B;
+                gPlayState->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
-                gPlayState->sceneLoadFlag = 0x14;
-                gPlayState->fadeTransition = 3;
+                gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+                gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
                 GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
             }
 
@@ -716,16 +717,19 @@ void RegisterTriforceHunt() {
                 triforcePieceScale = 0.0f;
                 GameInteractor::State::TriforceHuntPieceGiven = 0;
             }
+        }
+    });
+}
 
-            uint8_t currentPieces = gSaveContext.triforcePiecesCollected;
-            uint8_t requiredPieces = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
-            
-            // Give Boss Key when player loads back into the savefile.
-            if (currentPieces >= requiredPieces && gPlayState->sceneLoadFlag != 0x14 &&
-                (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
-                GetItemEntry getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
+void RegisterGrantGanonsBossKey() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        // Triforce Hunt needs the check if the player isn't being teleported to the credits scene.
+        if (!GameInteractor::IsGameplayPaused() &&
+            Flags_GetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY) && gPlayState->transitionTrigger != TRANS_TRIGGER_START &&
+            (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
+                GetItemEntry getItemEntry =
+                    ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
                 GiveItemEntryWithoutActor(gPlayState, getItemEntry);
-            }
         }
     });
 }
@@ -1091,6 +1095,39 @@ void RegisterRandomizerSheikSpawn() {
     });
 }
 
+void RegisterRandomizedEnemySizes() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+        // Randomized Enemy Sizes
+        Player* player = GET_PLAYER(gPlayState);
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        // Only apply to enemies and bosses. Exclude the wobbly platforms in Jabu because they need to act like platforms.
+        if (!CVarGetInteger("gRandomizedEnemySizes", 0) || (actor->category != ACTORCAT_ENEMY && actor->category != ACTORCAT_BOSS) || actor->id == ACTOR_EN_BROB) {
+            return;
+        }
+
+        float randomNumber;
+        float randomScale;
+
+        uint8_t bigActor = rand() % 2;
+
+        // Big actor. Dodongo and Volvagia are always smaller because they're impossible when bigger.
+        if (bigActor && actor->id != ACTOR_BOSS_DODONGO && actor->id != ACTOR_BOSS_FD &&
+            actor->id != ACTOR_BOSS_FD2) {
+            randomNumber = rand() % 200;
+            // Between 100% and 300% size.
+            randomScale = 1.0f + (randomNumber / 100);
+        // Small actor
+        } else {
+            randomNumber = rand() % 90;
+            // Between 10% and 100% size.
+            randomScale = 0.1f + (randomNumber / 100);
+        }
+
+        Actor_SetScale(actor, actor->scale.z * randomScale);
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1100,6 +1137,7 @@ void InitMods() {
     RegisterInfiniteNayrusLove();
     RegisterMoonJumpOnL();
     RegisterInfiniteISG();
+    RegisterEzQPA();
     RegisterUnrestrictedItems();
     RegisterFreezeTime();
     RegisterSwitchAge();
@@ -1114,9 +1152,11 @@ void InitMods() {
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
     RegisterTriforceHunt();
+    RegisterGrantGanonsBossKey();
     RegisterEnemyDefeatCounts();
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
+    RegisterRandomizedEnemySizes();
     NameTag_RegisterHooks();
     RegisterNoSwim();
 }

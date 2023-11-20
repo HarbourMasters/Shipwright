@@ -3,6 +3,9 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_aniTex_0011D8 "__OTR__objects/object_ani/object_aniTex_0011D8"
+static const ALIGN_ASSET(2) char object_aniTex_0011D8[] = dobject_aniTex_0011D8;
+
 #define dgRoofManSkel "__OTR__objects/object_ani/gRoofManSkel"
 static const ALIGN_ASSET(2) char gRoofManSkel[] = dgRoofManSkel;
 
@@ -99,7 +102,5 @@ static const ALIGN_ASSET(2) char gRoofManGettingUpAfterKnockbackAnim[] = dgRoofM
 #define dgRoofManIdleAnim "__OTR__objects/object_ani/gRoofManIdleAnim"
 static const ALIGN_ASSET(2) char gRoofManIdleAnim[] = dgRoofManIdleAnim;
 
-#define dobject_aniTex_0011D8 "__OTR__objects/object_ani/object_aniTex_0011D8"
-static const ALIGN_ASSET(2) char object_aniTex_0011D8[] = dobject_aniTex_0011D8;
 
 #endif // OBJECTS_OBJECT_ANI_H

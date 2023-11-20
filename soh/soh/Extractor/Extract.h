@@ -28,6 +28,7 @@ enum class RomSearchMode {
 class Extractor {
     std::unique_ptr<unsigned char[]> mRomData = std::make_unique<unsigned char[]>(MB64);
     std::string mCurrentRomPath;
+    std::string mSearchPath;
     size_t mCurRomSize = 0;
 
     bool GetRomPathFromBox();
@@ -38,6 +39,7 @@ class Extractor {
     bool ValidateRomSize() const;
 
     bool ValidateRom(bool skipCrcBox = false);
+    bool ValidateNotCompressed() const;
     const char* GetZapdVerStr() const;
 
     void SetRomInfo(const std::string& path);
@@ -46,6 +48,7 @@ class Extractor {
     void GetRoms(std::vector<std::string>& roms);
     void ShowSizeErrorBox() const;
     void ShowCrcErrorBox() const;
+    void ShowCompressedErrorBox() const;
     int ShowRomPickBox(uint32_t verCrc) const;
     bool ManuallySearchForRom();
     bool ManuallySearchForRomMatchingType(RomSearchMode searchMode);
@@ -56,7 +59,7 @@ class Extractor {
     static void ShowErrorBox(const char* title, const char* text);
     bool IsMasterQuest() const;
 
-    bool Run(RomSearchMode searchMode = RomSearchMode::Both);
+    bool Run(std::string searchPath, RomSearchMode searchMode = RomSearchMode::Both);
     bool CallZapd(std::string installPath, std::string exportdir);
     const char* GetZapdStr();
     std::string Mkdtemp();

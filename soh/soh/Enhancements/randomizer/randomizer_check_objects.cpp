@@ -783,7 +783,7 @@ std::map<RandomizerCheckArea, std::string> rcAreaNames = {
     { RCAREA_LAKE_HYLIA, "Lake Hylia"},
     { RCAREA_GERUDO_VALLEY, "Gerudo Valley"},
     { RCAREA_GERUDO_FORTRESS, "Gerudo Fortress"},
-    { RCAREA_WASTELAND, "Desert Wasteland"},
+    { RCAREA_WASTELAND, "Haunted Wasteland"},
     { RCAREA_DESERT_COLOSSUS, "Desert Colossus"},
     { RCAREA_MARKET, "Hyrule Market"},
     { RCAREA_HYRULE_CASTLE, "Hyrule Castle"},
