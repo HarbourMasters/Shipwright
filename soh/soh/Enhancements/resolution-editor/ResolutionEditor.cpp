@@ -198,8 +198,8 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         } else if (showHorizontalResField) { // Show calculated aspect ratio
             if (item_aspectRatio) {
                 UIWidgets::Spacer(2);
-                float resolvedAspectRatio = (float)gfx_current_dimensions.height / gfx_current_dimensions.width;
-                ImGui::Text("Aspect ratio: %.4f", resolvedAspectRatio);
+                float resolvedAspectRatio = (float)gfx_current_dimensions.width / gfx_current_dimensions.height;
+                ImGui::Text("Aspect ratio: %.2f:1", resolvedAspectRatio);
             } else {
                 UIWidgets::Spacer(enhancementSpacerHeight);
             }
