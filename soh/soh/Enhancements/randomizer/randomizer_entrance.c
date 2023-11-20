@@ -113,20 +113,20 @@ static void Entrance_ReplaceChildTempleWarps() {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
         Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
         // Forest Temple
-        gEntranceTable[0x0608] = gEntranceTable[0x0600];
-        gEntranceTable[0x0608 + 1] = gEntranceTable[0x0600 + 1];
+        gEntranceTable[ENTR_SACRED_FOREST_MEADOW_3] = gEntranceTable[ENTR_SACRED_FOREST_MEADOW_2];
+        gEntranceTable[ENTR_SACRED_FOREST_MEADOW_3_1] = gEntranceTable[ENTR_SACRED_FOREST_MEADOW_2_1];
         // Fire Temple
-        gEntranceTable[0x0564] = gEntranceTable[0x04F6];
-        gEntranceTable[0x0564 + 1] = gEntranceTable[0x04F6 + 1];
+        gEntranceTable[ENTR_DEATH_MOUNTAIN_CRATER_5] = gEntranceTable[ENTR_DEATH_MOUNTAIN_CRATER_4];
+        gEntranceTable[ENTR_DEATH_MOUNTAIN_CRATER_5_1] = gEntranceTable[ENTR_DEATH_MOUNTAIN_CRATER_4_1];
         // Water Temple
-        gEntranceTable[0x060C] = gEntranceTable[0x0604];
-        gEntranceTable[0x060C + 1] = gEntranceTable[0x0604 + 1];
+        gEntranceTable[ENTR_LAKE_HYLIA_9] = gEntranceTable[ENTR_LAKE_HYLIA_8];
+        gEntranceTable[ENTR_LAKE_HYLIA_9_1] = gEntranceTable[ENTR_LAKE_HYLIA_8_1];
         // Shadow Temple
-        gEntranceTable[0x0580] = gEntranceTable[0x0568];
-        gEntranceTable[0x0580 + 1] = gEntranceTable[0x0568 + 1];
+        gEntranceTable[ENTR_GRAVEYARD_8] = gEntranceTable[ENTR_GRAVEYARD_7];
+        gEntranceTable[ENTR_GRAVEYARD_8_1] = gEntranceTable[ENTR_GRAVEYARD_7_1];
         // Spirit Temple
-        gEntranceTable[0x0610] = gEntranceTable[0x01F1];
-        gEntranceTable[0x0610 + 1] = gEntranceTable[0x01F1 + 1];
+        gEntranceTable[ENTR_DESERT_COLOSSUS_8] = gEntranceTable[ENTR_DESERT_COLOSSUS_5];
+        gEntranceTable[ENTR_DESERT_COLOSSUS_8_1] = gEntranceTable[ENTR_DESERT_COLOSSUS_5_1];
     }
 }
 
