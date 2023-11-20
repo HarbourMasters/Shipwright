@@ -2,7 +2,8 @@
 #include "context.h"
 
 namespace Rando {
-ItemLocation::ItemLocation(RandomizerCheck rc_) : rc(rc_) {}
+ItemLocation::ItemLocation() : rc(RC_UNKNOWN_CHECK) {}
+ItemLocation::ItemLocation(const RandomizerCheck rc_) : rc(rc_) {}
 
 RandomizerCheck ItemLocation::GetRandomizerCheck() const {
     return rc;
@@ -21,7 +22,7 @@ void ItemLocation::RemoveFromPool() {
 }
 
 const Item& ItemLocation::GetPlacedItem() const {
-    return Rando::StaticData::RetrieveItem(placedItem);
+    return StaticData::RetrieveItem(placedItem);
 }
 
 RandomizerGet& ItemLocation::RefPlacedItem() {
@@ -29,7 +30,7 @@ RandomizerGet& ItemLocation::RefPlacedItem() {
 }
 
 const Text& ItemLocation::GetPlacedItemName() const {
-    return Rando::StaticData::RetrieveItem(placedItem).GetName();
+    return StaticData::RetrieveItem(placedItem).GetName();
 }
 
 RandomizerGet ItemLocation::GetPlacedRandomizerGet() const {
@@ -50,7 +51,7 @@ void ItemLocation::SaveDelayedItem () {
     delayedItem = RG_NONE;
 }
 
-void ItemLocation::SetParentRegion(RandomizerRegion region) {
+void ItemLocation::SetParentRegion(const RandomizerRegion region) {
     parentRegion = region;
 }
 
@@ -59,21 +60,21 @@ RandomizerRegion ItemLocation::GetParentRegionKey() const {
 }
 
 void ItemLocation::PlaceVanillaItem() {
-    placedItem = Rando::StaticData::GetLocation(rc)->GetVanillaItem();
+    placedItem = StaticData::GetLocation(rc)->GetVanillaItem();
 }
 
-void ItemLocation::ApplyPlacedItemEffect() {
-    Rando::StaticData::RetrieveItem(placedItem).ApplyEffect();
+void ItemLocation::ApplyPlacedItemEffect() const {
+    StaticData::RetrieveItem(placedItem).ApplyEffect();
 }
 
 uint16_t ItemLocation::GetPrice() const {
     if (StaticData::RetrieveItem(placedItem).GetItemType() == ITEMTYPE_SHOP) {
-        return Rando::StaticData::RetrieveItem(placedItem).GetPrice();
+        return StaticData::RetrieveItem(placedItem).GetPrice();
     }
     return price;
 }
 
-void ItemLocation::SetPrice(uint16_t price_) {
+void ItemLocation::SetPrice(const uint16_t price_) {
     if (hasCustomPrice) {
         return;
     }
@@ -84,7 +85,7 @@ bool ItemLocation::HasCustomPrice() const {
     return hasCustomPrice;
 }
 
-void ItemLocation::SetCustomPrice(uint16_t price_) {
+void ItemLocation::SetCustomPrice(const uint16_t price_) {
     price = price_;
     hasCustomPrice = true;
 }
@@ -109,7 +110,7 @@ RandomizerHintKey ItemLocation::GetHintKey() const {
     return hintedBy;
 }
 
-void ItemLocation::SetHintKey(RandomizerHintKey hintKey) {
+void ItemLocation::SetHintKey(const RandomizerHintKey hintKey) {
     hintedBy = hintKey;
 } 
 
@@ -125,38 +126,37 @@ bool ItemLocation::IsExcluded() const {
     return excludedOption.Value<bool>();
 }
 
-Rando::Option* ItemLocation::GetExcludedOption() {
+Option* ItemLocation::GetExcludedOption() {
     return &excludedOption;
 }
 
 void ItemLocation::AddExcludeOption() {
-    const std::string name = StaticData::GetLocation(rc)->GetName();
-    if (name.length() < 23) {
-        excludedOption = Rando::Option::Bool(name, {"Include", "Exclude"});
+    if (const std::string name = StaticData::GetLocation(rc)->GetName(); name.length() < 23) {
+        excludedOption = Option::Bool(name, {"Include", "Exclude"});
     } else {
-        size_t lastSpace = name.rfind(' ', 23);
+        const size_t lastSpace = name.rfind(' ', 23);
         std::string settingText = name;
         settingText.replace(lastSpace, 1, "\n ");
 
-        excludedOption = Rando::Option::Bool(settingText, {"Include", "Exclude"});
+        excludedOption = Option::Bool(settingText, {"Include", "Exclude"});
     }
     // RANDOTODO: this without string compares and loops
     bool alreadyAdded = false;
-    Rando::Location* loc = StaticData::GetLocation(rc);
-    for (const Rando::Option* location : Rando::Context::GetInstance()->GetSettings()->GetExcludeOptionsForGroup(loc->GetCollectionCheckGroup())) {
+    const Location* loc = StaticData::GetLocation(rc);
+    for (const Option* location : Context::GetInstance()->GetSettings()->GetExcludeOptionsForGroup(loc->GetCollectionCheckGroup())) {
         if (location->GetName() == excludedOption.GetName()) {
             alreadyAdded = true;
         }
     }
     if (!alreadyAdded) {
-        Rando::Context::GetInstance()->GetSettings()->GetExcludeOptionsForGroup(loc->GetCollectionCheckGroup()).push_back(&excludedOption);
+        Context::GetInstance()->GetSettings()->GetExcludeOptionsForGroup(loc->GetCollectionCheckGroup()).push_back(&excludedOption);
     }
 }
 
 bool ItemLocation::IsVisible() const {
     return visibleInImGui;
 }
-void ItemLocation::SetVisible(bool visibleInImGui_) {
+void ItemLocation::SetVisible(const bool visibleInImGui_) {
     visibleInImGui = visibleInImGui_;
 
 }
