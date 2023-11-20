@@ -14,6 +14,8 @@
 #include <Utils/StringHelper.h>
 #include <libultraship/libultraship.h>
 
+#include "macros.h"
+
 #include "../../UIWidgets.hpp"
 
 namespace GameControlEditor {
@@ -214,16 +216,6 @@ namespace GameControlEditor {
         ImGui::EndTable();
     }
 
-    // CurrentPort is indexed started at 1 here due to the Generic tab, instead of 0 like in InputEditorWindow
-    // Therefore CurrentPort - 1 must always be used inside this function instead of CurrentPort
-    void DrawCustomButtons() {
-        auto inputEditorWindow = std::reinterpret_pointer_cast<LUS::InputEditorWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Input Editor"));
-        inputEditorWindow->DrawControllerSelect(CurrentPort - 1);
-        
-        inputEditorWindow->DrawButton("Modifier 1", BTN_MODIFIER1, CurrentPort - 1, &BtnReading);
-        inputEditorWindow->DrawButton("Modifier 2", BTN_MODIFIER2, CurrentPort - 1, &BtnReading);
-    }
-
     void DrawCameraControlPanel(GameControlEditorWindow* window) {
         if (!ImGui::CollapsingHeader("Camera Controls")) {
             return;
@@ -329,70 +321,14 @@ namespace GameControlEditor {
         window->EndGroupPanelPublic(0);
     }
 
-    void DrawLEDControlPanel(GameControlEditorWindow* window) {
-        window->BeginGroupPanelPublic("LED Colors", ImGui::GetContentRegionAvail());
-        static const char* ledSources[] = { "Original Tunic Colors",          "Cosmetics Tunic Colors",          "Health Colors",
-                                            "Original Navi Targeting Colors", "Cosmetics Navi Targeting Colors", "Custom" };
-        UIWidgets::PaddedText("Source");
-        UIWidgets::EnhancementCombobox("gLedColorSource", ledSources, LED_SOURCE_TUNIC_ORIGINAL);
-        DrawHelpIcon("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when health < 40%. Green otherwise.\n\n" \
-                     "Tunics: colors will mirror currently equipped tunic, whether original or the current values in Cosmetics Editor.\n\n" \
-                     "Custom: single, solid color");
-        if (CVarGetInteger("gLedColorSource", 1) == LED_SOURCE_CUSTOM) {
-            UIWidgets::Spacer(3);
-            auto port1Color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
-            ImVec4 colorVec = { port1Color.r / 255.0f, port1Color.g / 255.0f, port1Color.b / 255.0f, 1.0f };
-            if (ImGui::ColorEdit3("", (float*)&colorVec, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
-                Color_RGB8 color;
-                color.r = colorVec.x * 255.0;
-                color.g = colorVec.y * 255.0;
-                color.b = colorVec.z * 255.0;
-
-                CVarSetColor24("gLedPort1Color", color);
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            }
-            ImGui::SameLine();
-            ImGui::Text("Custom Color");
-        }
-        UIWidgets::PaddedEnhancementSliderFloat("Brightness: %d%%", "##LED_Brightness", "gLedBrightness",
-                                                0.0f, 1.0f, "", 1.0f, true, true);
-        DrawHelpIcon("Sets the brightness of controller LEDs. 0% brightness = LEDs off.");
-        UIWidgets::PaddedEnhancementCheckbox("Critical Health Override", "gLedCriticalOverride", true, true, 
-            CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH, "Override redundant for health source.",
-            UIWidgets::CheckboxGraphics::Cross, true);
-        DrawHelpIcon("Shows red color when health is critical, otherwise displays according to color source.");
-        window->EndGroupPanelPublic(0);
-    }
 
     void GameControlEditorWindow::DrawElement() {
         ImGui::SetNextWindowSize(ImVec2(465, 430), ImGuiCond_FirstUseEver);
         if (ImGui::Begin("Game Controls Configuration", &mIsVisible)) {
-            ImGui::BeginTabBar("##CustomControllers");
-            if (ImGui::BeginTabItem("Generic")) {
-                CurrentPort = 0;
-                ImGui::EndTabItem();
-            }
-
-            for (int i = 1; i <= 4; i++) {
-                if (ImGui::BeginTabItem(StringHelper::Sprintf("Port %d", i).c_str())) {
-                    CurrentPort = i;
-                    ImGui::EndTabItem();
-                }
-            }
-
-            ImGui::EndTabBar();
-
-            if (CurrentPort == 0) {
-                DrawOcarinaControlPanel(this);
-                DrawCameraControlPanel(this);
-                DrawDpadControlPanel(this);
-                DrawMiscControlPanel(this);
-            } else {
-                DrawCustomButtons();
-                if (CurrentPort == 1 && LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0)->CanSetLed()) {
-                    DrawLEDControlPanel(this);
-                }
-            }
+            DrawOcarinaControlPanel(this);
+            DrawCameraControlPanel(this);
+            DrawDpadControlPanel(this);
+            DrawMiscControlPanel(this);
         }
         ImGui::End();
     }
