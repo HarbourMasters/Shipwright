@@ -1,30 +1,33 @@
 #include "item_override.h"
 
+#include <utility>
+
 namespace Rando {
-ItemOverride::ItemOverride(RandomizerCheck location_, RandomizerGet looksLike_)
-    : location(location_), looksLike(looksLike_) {};
+ItemOverride::ItemOverride() : mLocation(RC_UNKNOWN_CHECK), mLooksLike(RG_NONE) {}
+ItemOverride::ItemOverride(const RandomizerCheck location, const RandomizerGet looksLike)
+    : mLocation(location), mLooksLike(looksLike) {}
 
 RandomizerCheck ItemOverride::GetLocation() const {
-    return location;
+    return mLocation;
 }
 
-void ItemOverride::SetLocation(RandomizerCheck location_) {
-    location = location_;
+void ItemOverride::SetLocation(const RandomizerCheck location) {
+    mLocation = location;
 }
 
 RandomizerGet ItemOverride::LooksLike() const {
-    return looksLike;
+    return mLooksLike;
 }
 
 RandomizerGet& ItemOverride::RefLooksLike() {
-    return looksLike;
+    return mLooksLike;
 }
 
 Text& ItemOverride::GetTrickName() {
-    return trickName;
+    return mTrickName;
 }
 
-void ItemOverride::SetTrickName(Text trickName_) {
-    trickName = trickName_;
+void ItemOverride::SetTrickName(Text trickName) {
+    mTrickName = std::move(trickName);
 }
 } // namespace Rando
