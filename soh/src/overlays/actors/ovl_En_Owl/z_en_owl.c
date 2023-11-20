@@ -963,12 +963,12 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                     osSyncPrintf(VT_RST);
                     if (IS_RANDO) {
                         if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
-                            play->nextEntranceIndex = Entrance_OverrideNextIndex(0x027E);
+                            play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_9);
                         } else {
-                            play->nextEntranceIndex = 0x027E;
+                            play->nextEntranceIndex = ENTR_HYRULE_FIELD_9;
                         }
-                        play->sceneLoadFlag = 0x14;
-                        play->fadeTransition = 2;
+                        play->transitionTrigger = TRANS_TRIGGER_START;
+                        play->transitionType = TRANS_TYPE_FADE_BLACK;
                         break;
                     }
                     play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gLakeHyliaOwlCs);
@@ -978,12 +978,12 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                 case 9:
                     if (IS_RANDO) {
                         if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
-                            play->nextEntranceIndex = Entrance_OverrideNextIndex(0x0554);
+                            play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_KAKARIKO_VILLAGE_14);
                         } else {
-                            play->nextEntranceIndex = 0x0554;
+                            play->nextEntranceIndex = ENTR_KAKARIKO_VILLAGE_14;
                         }
-                        play->sceneLoadFlag = 0x14;
-                        play->fadeTransition = 2;
+                        play->transitionTrigger = TRANS_TRIGGER_START;
+                        play->transitionType = TRANS_TYPE_FADE_BLACK;
                         break;
                     }
                     play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gDMTOwlCs);
