@@ -2992,7 +2992,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 57> getItemMessages = {{
+    const std::array<GetItemMessage, 66> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
@@ -3226,7 +3226,18 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_TYCOON_WALLET, ITEM_WALLET_GIANT,
 			"You got a %rTycoon's Wallet%w!&It's gigantic! Now you can carry&up to %y999 rupees%w!",
 			"Du erhältst die %rGoldene&Geldbörse%w! Die größte aller&Geldbörsen! Jetzt kannst Du bis&zu %y999 Rubine%w mit dir führen!",
-			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!")
+			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!"),
+
+        GIMESSAGE_UNTRANSLATED(RG_GOHMA_SOUL, ITEM_BIG_POE, "You found the soul for %gGohma%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_KING_DODONGO_SOUL, ITEM_BIG_POE, "You found the soul for %rKing&Dodongo%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_BARINADE_SOUL, ITEM_BIG_POE, "You found the soul for %bBarinade%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_PHANTOM_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %gPhantom&Ganon%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_VOLVAGIA_SOUL, ITEM_BIG_POE, "You found the soul for %rVolvagia%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_MORPHA_SOUL, ITEM_BIG_POE, "You found the soul for %bMorpha%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_BONGO_BONGO_SOUL, ITEM_BIG_POE, "You found the soul for %pBongo&Bongo%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_TWINROVA_SOUL, ITEM_BIG_POE, "You found the soul for %yTwinrova%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %cGanon%w!"),
+
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();

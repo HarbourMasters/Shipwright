@@ -319,8 +319,8 @@ void AreaTable_Init_WaterTemple() {
         {
             // Events
             EventAccess(&WaterTempleClear, { [] {
-                return WaterTempleClear ||
-                       (CanUse(RG_HOOKSHOT) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)));
+                return WaterTempleClear || (HasBossSoul(RG_MORPHA_SOUL) &&
+                       (CanUse(RG_HOOKSHOT) && (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD))));
             } }),
         },
         {

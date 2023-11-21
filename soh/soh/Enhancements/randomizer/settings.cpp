@@ -109,6 +109,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_ADULT_TRADE] = Option::Bool("Shuffle Adult Trade", "gRandomizeShuffleAdultTrade", mOptionDescriptions[RSK_SHUFFLE_ADULT_TRADE]);
     mOptions[RSK_SHUFFLE_CHEST_MINIGAME] = Option::U8("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"});
     mOptions[RSK_SHUFFLE_100_GS_REWARD] = Option::Bool("Shuffle 100 GS Reward", "gRandomizeShuffle100GSReward", mOptionDescriptions[RSK_SHUFFLE_100_GS_REWARD], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
+    mOptions[RSK_SHUFFLE_BOSS_SOULS] = Option::U8("Shuffle Boss Souls", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, "gRandomizeShuffleBossSouls", mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS], WidgetType::Combobox);
     mOptions[RSK_SHUFFLE_MAPANDCOMPASS] = Option::U8("Maps/Compasses", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, "gRandomizeStartingMapsCompasses", mOptionDescriptions[RSK_SHUFFLE_MAPANDCOMPASS], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     mOptions[RSK_KEYSANITY] = Option::U8("Small Keys", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, "gRandomizeKeysanity", mOptionDescriptions[RSK_KEYSANITY], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     mOptions[RSK_GERUDO_KEYS] = Option::U8("Gerudo Fortress Keys", {"Vanilla", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, "gRandomizeGerudoKeys", mOptionDescriptions[RSK_GERUDO_KEYS], WidgetType::Combobox, RO_GERUDO_KEYS_VANILLA);
@@ -622,7 +623,8 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_MAGIC_BEANS],
         &mOptions[RSK_SHUFFLE_MERCHANTS],
         &mOptions[RSK_SHUFFLE_ADULT_TRADE],
-        &mOptions[RSK_SHUFFLE_100_GS_REWARD]
+        &mOptions[RSK_SHUFFLE_100_GS_REWARD],
+        &mOptions[RSK_SHUFFLE_BOSS_SOULS],
     }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_SHUFFLE_DUNGEON_ITEMS_IMGUI] = OptionGroup::SubGroup("Shuffle Dungeon Items", {
         &mOptions[RSK_SHUFFLE_MAPANDCOMPASS],
@@ -815,6 +817,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_ADULT_TRADE],
         &mOptions[RSK_SHUFFLE_CHEST_MINIGAME],
         &mOptions[RSK_SHUFFLE_100_GS_REWARD],
+        &mOptions[RSK_SHUFFLE_BOSS_SOULS],
     });
     mOptionGroups[RSG_SHUFFLE_DUNGEON_ITEMS] = OptionGroup("Shuffle Dungeon Items", {
         &mOptions[RSK_SHUFFLE_MAPANDCOMPASS],
@@ -1019,6 +1022,7 @@ void Settings::CreateOptions() {
         { "Shuffle Settings:Shuffle Frog Song Rupees", RSK_SHUFFLE_FROG_SONG_RUPEES },
         { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
         { "Shuffle Settings:Shuffle 100 GS Reward", RSK_SHUFFLE_100_GS_REWARD },
+        { "Shuffle Settings:Shuffle Boss Souls", RSK_SHUFFLE_BOSS_SOULS },
         { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
         { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
         { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
@@ -1195,7 +1199,7 @@ void Settings::UpdateOptionProperties() {
     if (CVarGetInteger("gRandomizeForest", RO_FOREST_CLOSED) == RO_FOREST_CLOSED ||
         (CVarGetInteger("gRandomizeDoorOfTime", RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
         CVarGetInteger("gRandomizeShuffleOcarinas", RO_GENERIC_OFF) == RO_GENERIC_OFF)) /* closed door of time with ocarina shuffle off */ {
-        ctx->GetOption(RSK_STARTING_AGE).Disable("This option is disabled due to other optionos making the game unbeatable");        
+        ctx->GetOption(RSK_STARTING_AGE).Disable("This option is disabled due to other optionos making the game unbeatable");
     } else {
         ctx->GetOption(RSK_STARTING_AGE).Enable();
     }
@@ -1331,7 +1335,7 @@ void Settings::UpdateOptionProperties() {
                 break;
         }
         // Controls whether or not to show the selectors for individual dungeons.
-        if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_NONE && 
+        if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_NONE &&
             CVarGetInteger("gRandomizeMqDungeonsSelection", RO_GENERIC_OFF) == RO_GENERIC_ON) {
             // if showing the dungeon selectors, remove the separator after the Set Dungeons checkbox.
             mOptions[RSK_MQ_DUNGEON_SET].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
@@ -1549,7 +1553,7 @@ void Settings::UpdateOptionProperties() {
             if (lacsOpts == RO_LACS_GREG_REWARD) {
                 if (ctx->GetOption(RSK_LACS_DUNGEON_COUNT).GetOptionCount() == 9) {
                     ctx->GetOption(RSK_LACS_DUNGEON_COUNT).ChangeOptions(NumOpts(0, 9));
-                } 
+                }
             } else {
                 if (ctx->GetOption(RSK_LACS_DUNGEON_COUNT).GetOptionCount() == 10) {
                     ctx->GetOption(RSK_LACS_DUNGEON_COUNT).ChangeOptions(NumOpts(0, 8));
@@ -1611,7 +1615,7 @@ void Settings::FinalizeSettings(std::set<RandomizerCheck> excludedLocations, std
         if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
             mOptions[RSK_SHUFFLE_100_GS_REWARD].SetSelectedIndex(1);
         }
-        
+
         // If we only have MQ, set all dungeons to MQ
         if (OTRGlobals::Instance->HasMasterQuest() && !OTRGlobals::Instance->HasOriginal()) {
             mOptions[RSK_MQ_DUNGEON_RANDOM].SetSelectedIndex(RO_MQ_DUNGEONS_SET_NUMBER);
@@ -2157,6 +2161,14 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                         mOptions[index].SetSelectedIndex(RO_AMMO_DROPS_OFF);
                     }
                     break;
+                case RSK_SHUFFLE_BOSS_SOULS:
+                    if (it.value() == "Off") {
+                        mOptions[index].SetSelectedIndex(RO_BOSS_SOULS_OFF);
+                    } else if (it.value() == "On") {
+                        mOptions[index].SetSelectedIndex(RO_BOSS_SOULS_ON);
+                    } else if (it.value() == "On + Ganon") {
+                        mOptions[index].SetSelectedIndex(RO_BOSS_SOULS_ON_PLUS_GANON);
+                    }
                 case RSK_STARTING_OCARINA:
                     if (it.value() == "Off") {
                         mOptions[index].SetSelectedIndex(RO_STARTING_OCARINA_OFF);

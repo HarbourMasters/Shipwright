@@ -294,10 +294,10 @@ void AreaTable_Init_DodongosCavern() {
                  // Events
                  EventAccess(&DodongosCavernClear,
                              { [] {
-                                  return DodongosCavernClear ||
+                                  return DodongosCavernClear || (HasBossSoul(RG_KING_DODONGO_SOUL) &&
                                          (Here(RR_DODONGOS_CAVERN_BOSS_ROOM,
                                                [] { return HasExplosives || (CanUse(RG_MEGATON_HAMMER) && randoCtx->GetTrickOption(RT_DC_HAMMER_FLOOR)); }) &&
-                                          (Bombs || GoronBracelet) && CanJumpslash); /*todo add chu kill to tricks*/
+                                          (Bombs || GoronBracelet) && CanJumpslash)); /*todo add chu kill to tricks*/
                               }}),
              },
              {

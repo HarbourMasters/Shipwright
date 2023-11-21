@@ -517,5 +517,7 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_ENABLE_GLITCH_CUTSCENES] =
         "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
         "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise.";
+    mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS] = "Shuffles 8 boss souls (one for each blue warp dungeon). A boss will not appear until you collect its respective soul."
+                "\n\"On + Ganon\" will also hide Ganon and Ganondorf behind a boss soul.";
 }
 } // namespace Rando
