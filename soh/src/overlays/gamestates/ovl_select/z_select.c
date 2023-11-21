@@ -359,7 +359,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Hyrule Field", "Von der Hylianischen Steppe", "Depuis la Plaine d'Hyrule", ENTR_LON_LON_RANCH_0, 0 },
         { "From Ranch House", "Vom Farmhaus", "Depuis la Maison du Ranch", ENTR_LON_LON_RANCH_4, 0 },
         { "From Stables", "Vom Stall", "Depuis l'Etable", ENTR_LON_LON_RANCH_5, 0 },
-        { "From Silo", "Vom Silo", "Depuis Silo du Ranch", ENTR_LON_LON_RANCH_10, 0 },
+        { "From Back Tower", "Vom Silo", "Depuis Silo du Ranch", ENTR_LON_LON_RANCH_10, 0 },
         { "Epona Song Cutscene", "Eponas Song Cutscene", "Cinematique du Chant d'Epona", ENTR_LON_LON_RANCH_1, 0 },
     }},
     { "14:Lon Lon Ranch Buildings", "14:Lon Lon-Farm Gebaeude", "14:Batiments du Ranch Lon Lon", Select_LoadGame, 3, {
