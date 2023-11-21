@@ -46,9 +46,9 @@ Context::Context() {
         { "Named Item", HINT_TYPE_NAMED_ITEM },
         { "Random", HINT_TYPE_RANDOM }
     };
-    for (int i = 0; i < RC_MAX; i++) {
-        itemLocationTable[i] = ItemLocation(static_cast<RandomizerCheck>(i));
-    }
+
+    int i = 0;
+    std::ranges::generate(itemLocationTable, [&i]{ return ItemLocation(static_cast<RandomizerCheck>(i++)); });
     mEntranceShuffler = std::make_shared<EntranceShuffler>();
     mDungeons = std::make_shared<Dungeons>();
     mTrials = std::make_shared<Trials>();
