@@ -3,6 +3,45 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_po_composerTex_001450 "__OTR__objects/object_po_composer/object_po_composerTex_001450"
+static const ALIGN_ASSET(2) char object_po_composerTex_001450[] = dobject_po_composerTex_001450;
+
+#define dobject_po_composerTex_0054E0 "__OTR__objects/object_po_composer/object_po_composerTex_0054E0"
+static const ALIGN_ASSET(2) char object_po_composerTex_0054E0[] = dobject_po_composerTex_0054E0;
+
+#define dobject_po_composerTex_0056E0 "__OTR__objects/object_po_composer/object_po_composerTex_0056E0"
+static const ALIGN_ASSET(2) char object_po_composerTex_0056E0[] = dobject_po_composerTex_0056E0;
+
+#define dobject_po_composerTex_0058E0 "__OTR__objects/object_po_composer/object_po_composerTex_0058E0"
+static const ALIGN_ASSET(2) char object_po_composerTex_0058E0[] = dobject_po_composerTex_0058E0;
+
+#define dobject_po_composerTex_005AE0 "__OTR__objects/object_po_composer/object_po_composerTex_005AE0"
+static const ALIGN_ASSET(2) char object_po_composerTex_005AE0[] = dobject_po_composerTex_005AE0;
+
+#define dobject_po_composerTex_005CE0 "__OTR__objects/object_po_composer/object_po_composerTex_005CE0"
+static const ALIGN_ASSET(2) char object_po_composerTex_005CE0[] = dobject_po_composerTex_005CE0;
+
+#define dobject_po_composerTex_0060E0 "__OTR__objects/object_po_composer/object_po_composerTex_0060E0"
+static const ALIGN_ASSET(2) char object_po_composerTex_0060E0[] = dobject_po_composerTex_0060E0;
+
+#define dobject_po_composerTex_0062E0 "__OTR__objects/object_po_composer/object_po_composerTex_0062E0"
+static const ALIGN_ASSET(2) char object_po_composerTex_0062E0[] = dobject_po_composerTex_0062E0;
+
+#define dobject_po_composerTex_0064E0 "__OTR__objects/object_po_composer/object_po_composerTex_0064E0"
+static const ALIGN_ASSET(2) char object_po_composerTex_0064E0[] = dobject_po_composerTex_0064E0;
+
+#define dobject_po_composerTex_0066E0 "__OTR__objects/object_po_composer/object_po_composerTex_0066E0"
+static const ALIGN_ASSET(2) char object_po_composerTex_0066E0[] = dobject_po_composerTex_0066E0;
+
+#define dobject_po_composerTex_0068E0 "__OTR__objects/object_po_composer/object_po_composerTex_0068E0"
+static const ALIGN_ASSET(2) char object_po_composerTex_0068E0[] = dobject_po_composerTex_0068E0;
+
+#define dobject_po_composerTex_006AE0 "__OTR__objects/object_po_composer/object_po_composerTex_006AE0"
+static const ALIGN_ASSET(2) char object_po_composerTex_006AE0[] = dobject_po_composerTex_006AE0;
+
+#define dobject_po_composerTex_006CE0 "__OTR__objects/object_po_composer/object_po_composerTex_006CE0"
+static const ALIGN_ASSET(2) char object_po_composerTex_006CE0[] = dobject_po_composerTex_006CE0;
+
 #define dgPoeComposerAttackAnim "__OTR__objects/object_po_composer/gPoeComposerAttackAnim"
 static const ALIGN_ASSET(2) char gPoeComposerAttackAnim[] = dgPoeComposerAttackAnim;
 
@@ -42,39 +81,6 @@ static const ALIGN_ASSET(2) char gPoeComposerBurnDL[] = dgPoeComposerBurnDL;
 #define dgPoeComposerSkel "__OTR__objects/object_po_composer/gPoeComposerSkel"
 static const ALIGN_ASSET(2) char gPoeComposerSkel[] = dgPoeComposerSkel;
 
-#define dobject_po_composerTex_001450 "__OTR__objects/object_po_composer/object_po_composerTex_001450"
-static const ALIGN_ASSET(2) char object_po_composerTex_001450[] = dobject_po_composerTex_001450;
-
-#define dobject_po_composerTex_0056E0 "__OTR__objects/object_po_composer/object_po_composerTex_0056E0"
-static const ALIGN_ASSET(2) char object_po_composerTex_0056E0[] = dobject_po_composerTex_0056E0;
-
-#define dobject_po_composerTex_0058E0 "__OTR__objects/object_po_composer/object_po_composerTex_0058E0"
-static const ALIGN_ASSET(2) char object_po_composerTex_0058E0[] = dobject_po_composerTex_0058E0;
-
-#define dobject_po_composerTex_005AE0 "__OTR__objects/object_po_composer/object_po_composerTex_005AE0"
-static const ALIGN_ASSET(2) char object_po_composerTex_005AE0[] = dobject_po_composerTex_005AE0;
-
-#define dobject_po_composerTex_0068E0 "__OTR__objects/object_po_composer/object_po_composerTex_0068E0"
-static const ALIGN_ASSET(2) char object_po_composerTex_0068E0[] = dobject_po_composerTex_0068E0;
-
-#define dobject_po_composerTex_0062E0 "__OTR__objects/object_po_composer/object_po_composerTex_0062E0"
-static const ALIGN_ASSET(2) char object_po_composerTex_0062E0[] = dobject_po_composerTex_0062E0;
-
-#define dobject_po_composerTex_0064E0 "__OTR__objects/object_po_composer/object_po_composerTex_0064E0"
-static const ALIGN_ASSET(2) char object_po_composerTex_0064E0[] = dobject_po_composerTex_0064E0;
-
-#define dobject_po_composerTex_0060E0 "__OTR__objects/object_po_composer/object_po_composerTex_0060E0"
-static const ALIGN_ASSET(2) char object_po_composerTex_0060E0[] = dobject_po_composerTex_0060E0;
-
-#define dobject_po_composerTex_005CE0 "__OTR__objects/object_po_composer/object_po_composerTex_005CE0"
-static const ALIGN_ASSET(2) char object_po_composerTex_005CE0[] = dobject_po_composerTex_005CE0;
-
-#define dobject_po_composerTex_006CE0 "__OTR__objects/object_po_composer/object_po_composerTex_006CE0"
-static const ALIGN_ASSET(2) char object_po_composerTex_006CE0[] = dobject_po_composerTex_006CE0;
-
-#define dobject_po_composerTex_006AE0 "__OTR__objects/object_po_composer/object_po_composerTex_006AE0"
-static const ALIGN_ASSET(2) char object_po_composerTex_006AE0[] = dobject_po_composerTex_006AE0;
-
 #define dgPoeComposerSkelLimbsLimb_006EE0DL_002970 "__OTR__objects/object_po_composer/gPoeComposerSkelLimbsLimb_006EE0DL_002970"
 static const ALIGN_ASSET(2) char gPoeComposerSkelLimbsLimb_006EE0DL_002970[] = dgPoeComposerSkelLimbsLimb_006EE0DL_002970;
 
@@ -105,10 +111,5 @@ static const ALIGN_ASSET(2) char gPoeComposerSkelLimbsLimb_006F4CDL_004100[] = d
 #define dgPoeComposerSkelLimbsLimb_006F58DL_002B70 "__OTR__objects/object_po_composer/gPoeComposerSkelLimbsLimb_006F58DL_002B70"
 static const ALIGN_ASSET(2) char gPoeComposerSkelLimbsLimb_006F58DL_002B70[] = dgPoeComposerSkelLimbsLimb_006F58DL_002B70;
 
-#define dobject_po_composerTex_0054E0 "__OTR__objects/object_po_composer/object_po_composerTex_0054E0"
-static const ALIGN_ASSET(2) char object_po_composerTex_0054E0[] = dobject_po_composerTex_0054E0;
-
-#define dobject_po_composerTex_0066E0 "__OTR__objects/object_po_composer/object_po_composerTex_0066E0"
-static const ALIGN_ASSET(2) char object_po_composerTex_0066E0[] = dobject_po_composerTex_0066E0;
 
 #endif // OBJECTS_OBJECT_PO_COMPOSER_H

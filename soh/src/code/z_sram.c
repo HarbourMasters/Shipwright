@@ -10,6 +10,8 @@
 
 void Save_LoadFile(void);
 
+void BossRush_InitSave(void);
+
 /**
  *  Initialize new save.
  *  This save has an empty inventory with 3 hearts and single magic.
@@ -33,6 +35,7 @@ void Sram_InitDebugSave(void) {
 
 void Sram_InitBossRushSave(void) {
     Save_InitFile(false);
+    BossRush_InitSave();
 }
 
 /**
@@ -168,12 +171,13 @@ void Sram_OpenSave() {
         }
     }
 
-    // check for owning kokiri sword.. to restore master sword? bug or debug feature?
-    if (LINK_AGE_IN_YEARS == YEARS_ADULT && !CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) {
-        gSaveContext.inventory.equipment |= gBitFlags[1] << gEquipShifts[EQUIP_SWORD];
-        gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-        gSaveContext.equips.equipment &= ~0xF;
-        gSaveContext.equips.equipment |= 2;
+    if (LINK_AGE_IN_YEARS == YEARS_ADULT && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
+        if (!IS_RANDO || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
+            gSaveContext.inventory.equipment |= OWNED_EQUIP_FLAG(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
+            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+            gSaveContext.equips.equipment &= ~(0xF << (EQUIP_TYPE_SWORD * 4));
+            gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_MASTER << (EQUIP_TYPE_SWORD * 4);
+        }
     }
 
     if (!(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
@@ -220,11 +224,15 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
     gSaveContext.n64ddFlag = fileChooseCtx->n64ddFlag;
 
-    if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == QUEST_RANDOMIZER &&
+    u8 currentQuest = fileChooseCtx->questType[fileChooseCtx->buttonIndex];
+
+    if (currentQuest == QUEST_RANDOMIZER &&
         strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
         gSaveContext.questId = QUEST_RANDOMIZER;
 
         Randomizer_InitSaveFile();
+    } else if (currentQuest == QUEST_MASTER) {
+        gSaveContext.questId = QUEST_MASTER;
     }
 
     Save_SaveFile();

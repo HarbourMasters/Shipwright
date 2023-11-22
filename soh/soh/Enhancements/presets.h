@@ -74,6 +74,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gNoForcedNavi",
     "gSkulltulaFreeze",
     "gMMBunnyHood",
+    "gAdultBunnyHood",
     "gFastChests",
     "gChestSizeAndTextureMatchesContents",
     "gFastDrops",
@@ -166,6 +167,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gBombchusOOB",
     "gQuickPutaway",
     "gGsCutscene",
+    "gRestoreRBAValues",
     "gSkipSaveConfirmation",
     "gAutosave",
     "gDisableCritWiggle",
@@ -214,6 +216,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gBowReticle",
     "gFixTexturesOOB",
     "gIvanCoopModeEnabled",
+    "gEnemySpawnsOverWaterboxes",
 };
 
 const std::vector<const char*> cheatCvars = {
@@ -244,6 +247,7 @@ const std::vector<const char*> cheatCvars = {
     "gMoonJumpOnL",
     "gSuperTunic",
     "gEzISG",
+    "gEzQPA",
     "gTimelessEquipment",
     "gCheatEasyPauseBufferEnabled",
     "gCheatEasyInputBufferingEnabled",
@@ -520,6 +524,8 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32("gNaviTextFix", 1),
     // Extend Silver Rupee Jingle
     PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
+    // Fix enemies not spawning on ground over water
+    PRESET_ENTRY_S32("gEnemySpawnsOverWaterboxes", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -545,6 +551,8 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32("gSkulltulaFreeze", 1),
     // MM Bunny Hood
     PRESET_ENTRY_S32("gMMBunnyHood", BUNNY_HOOD_FAST_AND_JUMP),
+    // Adult Bunny Hood
+    PRESET_ENTRY_S32("gAdultBunnyHood", 1),
     // Fast Chests
     PRESET_ENTRY_S32("gFastChests", 1),
     // Fast Drops
@@ -665,6 +673,8 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gSkulltulaFreeze", 1),
     // MM Bunny Hood
     PRESET_ENTRY_S32("gMMBunnyHood", BUNNY_HOOD_FAST_AND_JUMP),
+    // Adult Bunny Hood
+    PRESET_ENTRY_S32("gAdultBunnyHood", 1),
     // Fast Chests
     PRESET_ENTRY_S32("gFastChests", 1),
     // Fast Drops
@@ -763,6 +773,7 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32("gInstantPutaway", 1),
     PRESET_ENTRY_S32("gFastBoomerang", 1),
     PRESET_ENTRY_S32("gDpadNoDropOcarinaInput", 1),
+    PRESET_ENTRY_S32("gAdultBunnyHood", 1),
     PRESET_ENTRY_S32("gMMBunnyHood", BUNNY_HOOD_FAST),
     PRESET_ENTRY_S32("gSeparateArrows", 1),
     PRESET_ENTRY_S32("gAssignableTunicsAndBoots", 1),
@@ -805,7 +816,7 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32("gRandomizeDampeHint", 1),
     PRESET_ENTRY_S32("gRandomizeDoorOfTime", RO_DOOROFTIME_OPEN),
     PRESET_ENTRY_S32("gRandomizeEnableBombchuDrops", 1),
-    PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "78,142,143,228,"),
+    PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "78,143,144,229,"),
     PRESET_ENTRY_S32("gRandomizeForest", RO_FOREST_OPEN),
     PRESET_ENTRY_S32("gRandomizeFullWallets", 1),
     PRESET_ENTRY_S32("gRandomizeGanonTrial", RO_GANONS_TRIALS_SKIP),
@@ -835,6 +846,7 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
 };
 
 const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
+    PRESET_ENTRY_S32("gAdultBunnyHood", 1),
     PRESET_ENTRY_S32("gAdultMinimumWeightFish", 6),
     PRESET_ENTRY_S32("gAssignableTunicsAndBoots", 1),
     PRESET_ENTRY_S32("gCheatEasyPauseBufferEnabled", 1),
@@ -896,7 +908,7 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32("gRandomizeDampeHint", 1),
     PRESET_ENTRY_S32("gRandomizeDoorOfTime", RO_DOOROFTIME_OPEN),
     PRESET_ENTRY_S32("gRandomizeEnableBombchuDrops", 1),
-    PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "78,142,143,228,"),
+    PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "78,143,144,229,"),
     PRESET_ENTRY_S32("gRandomizeForest", RO_FOREST_OPEN),
     PRESET_ENTRY_S32("gRandomizeFullWallets", 1),
     PRESET_ENTRY_S32("gRandomizeGanonTrial", RO_GANONS_TRIALS_SKIP),
@@ -945,6 +957,7 @@ const std::vector<PresetEntry> s6PresetEntries = {
     PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", CSMC_BOTH),
     PRESET_ENTRY_S32("gFastChests", 1),
     PRESET_ENTRY_S32("gMMBunnyHood", BUNNY_HOOD_FAST),
+    PRESET_ENTRY_S32("gAdultBunnyHood", 1),
     PRESET_ENTRY_S32("gRandomizeBigPoeTargetCount", 1),
     PRESET_ENTRY_S32("gRandomizeCuccosToReturn", 4),
     PRESET_ENTRY_S32("gRandomizeDoorOfTime", RO_DOOROFTIME_OPEN),
@@ -978,6 +991,7 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", CSMC_BOTH),
     PRESET_ENTRY_S32("gFastChests", 1),
     PRESET_ENTRY_S32("gMMBunnyHood", BUNNY_HOOD_FAST),
+    PRESET_ENTRY_S32("gAdultBunnyHood", 1),
     PRESET_ENTRY_S32("gRandomizeBigPoeTargetCount", 1),
     PRESET_ENTRY_S32("gRandomizeBlueFireArrows", 1),
     PRESET_ENTRY_S32("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_ANYWHERE),
@@ -1009,6 +1023,7 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32("gRandomizeShuffleGerudoToken", 1),
     PRESET_ENTRY_S32("gRandomizeShuffleKeyRings", RO_KEYRINGS_RANDOM),
     PRESET_ENTRY_S32("gRandomizeShuffleKokiriSword", 1),
+    PRESET_ENTRY_S32("gRandomizeShuffleMasterSword", 1),
     PRESET_ENTRY_S32("gRandomizeShuffleOcarinas", 1),
     PRESET_ENTRY_S32("gRandomizeShuffleScrubs", RO_SCRUBS_RANDOM),
     PRESET_ENTRY_S32("gRandomizeShuffleSongs", RO_SONG_SHUFFLE_ANYWHERE),
