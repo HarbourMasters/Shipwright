@@ -2069,7 +2069,7 @@ void func_80833DF8(Player* this, PlayState* play) {
 
             if (gSaveContext.equips.buttonItems[0] != maskItem && gSaveContext.equips.buttonItems[1] != maskItem &&
                 gSaveContext.equips.buttonItems[2] != maskItem && gSaveContext.equips.buttonItems[3] != maskItem &&
-                !hasOnDpad) {
+                !hasOnDpad && !CVarGetInteger("gKeepMasks", 0)) {
                 this->currentMask = sMaskMemory = PLAYER_MASK_NONE;
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
             }
