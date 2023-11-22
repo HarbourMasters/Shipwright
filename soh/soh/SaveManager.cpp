@@ -1915,6 +1915,7 @@ void SaveManager::LoadBaseVersion4() {
         SaveManager::Instance->LoadData("tempCollectFlags", gSaveContext.backupFW.tempCollectFlags);
     });
     SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
+    SaveManager::Instance->LoadData("maskMemory", gSaveContext.maskMemory);
 }
 
 void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -2084,6 +2085,7 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
         SaveManager::Instance->SaveData("tempCollectFlags", saveContext->backupFW.tempCollectFlags);
     });
     SaveManager::Instance->SaveData("dogParams", saveContext->dogParams);
+    SaveManager::Instance->SaveData("maskMemory", saveContext->maskMemory);
 }
 
 // Load a string into a char array based on size and ensuring it is null terminated when overflowed

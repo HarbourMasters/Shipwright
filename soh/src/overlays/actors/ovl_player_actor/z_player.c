@@ -1064,7 +1064,6 @@ static s8 sItemActionParams[] = {
     PLAYER_IA_BOOTS_HOVER,
 };
 
-static u8 sMaskMemory;
 u8 gWalkSpeedToggle1;
 u8 gWalkSpeedToggle2;
 
@@ -2070,7 +2069,7 @@ void func_80833DF8(Player* this, PlayState* play) {
             if (gSaveContext.equips.buttonItems[0] != maskItem && gSaveContext.equips.buttonItems[1] != maskItem &&
                 gSaveContext.equips.buttonItems[2] != maskItem && gSaveContext.equips.buttonItems[3] != maskItem &&
                 !hasOnDpad && !CVarGetInteger("gKeepMasks", 0)) {
-                this->currentMask = sMaskMemory = PLAYER_MASK_NONE;
+                this->currentMask = gSaveContext.maskMemory = PLAYER_MASK_NONE;
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
             }
         } else {
@@ -3021,7 +3020,7 @@ void func_80835F44(PlayState* play, Player* this, s32 item) {
                 } else {
                     this->currentMask = actionParam - PLAYER_IA_MASK_KEATON + 1;
                 }
-                sMaskMemory = this->currentMask;
+                gSaveContext.maskMemory = this->currentMask;
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
                 return;
             }
@@ -4648,7 +4647,7 @@ void func_8083A0F4(PlayState* play, Player* this) {
             this->interactRangeActor->parent = &this->actor;
             func_80835C58(play, this, func_8084F608, 0);
             this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
-            sMaskMemory = PLAYER_MASK_NONE;
+            gSaveContext.maskMemory = PLAYER_MASK_NONE;
         } else {
             LinkAnimationHeader* anim;
 
@@ -8408,7 +8407,7 @@ void func_80843AE8(PlayState* play, Player* this) {
         OnePointCutscene_Init(play, 9908, 125, &this->actor, MAIN_CAM);
     } else if (play->gameOverCtx.state == GAMEOVER_DEATH_WAIT_GROUND) {
         play->gameOverCtx.state = GAMEOVER_DEATH_DELAY_MENU;
-        sMaskMemory = PLAYER_MASK_NONE;
+        gSaveContext.maskMemory = PLAYER_MASK_NONE;
     }
 }
 
@@ -9663,9 +9662,9 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     this->prevBoots = this->currentBoots;
     if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
         if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT) {
-            sMaskMemory = PLAYER_MASK_NONE;
+            gSaveContext.maskMemory = PLAYER_MASK_NONE;
         }
-        this->currentMask = sMaskMemory;
+        this->currentMask = gSaveContext.maskMemory;
     }
     Player_InitCommon(this, play, gPlayerSkelHeaders[((void)0, gSaveContext.linkAge)]);
     this->giObjectSegment = (void*)(((uintptr_t)ZELDA_ARENA_MALLOC_DEBUG(0x3008) + 8) & ~0xF);
