@@ -168,13 +168,13 @@ void func_808C12C4(u8* arg1, s16 arg2) {
 // Same as func_808C1554 but works with u32 values for RGBA32 raw textures
 void func_808C1554_Raw(void* arg0, void* floorTex, s32 arg2, f32 arg3) {
     u16 width = ResourceGetTexWidthByName(arg0);
-    size_t size = ResourceGetTexHeightByName(arg0) * width;
+    s32 size = ResourceGetTexHeightByName(arg0) * width;
 
     u32* temp_s3 = sLavaWavyTexRaw;
     u32* temp_s1 = sLavaFloorModifiedTexRaw;
     s32 i;
     s32 i2;
-    u32 sp54[size]; // Match the size for lava floor tex
+    u32* sp54 = malloc(size * sizeof(u32)); // Match the size for lava floor tex
     s32 temp;
     s32 temp2;
 
@@ -198,6 +198,8 @@ void func_808C1554_Raw(void* arg0, void* floorTex, s32 arg2, f32 arg3) {
             temp_s3[i + temp2] = sp54[i + i2];
         }
     }
+
+    free(sp54);
 
     // Need to clear the cache after updating sLavaWavyTexRaw
     gfx_texture_cache_clear();
