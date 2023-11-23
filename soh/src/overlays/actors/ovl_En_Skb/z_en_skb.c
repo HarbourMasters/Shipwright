@@ -384,7 +384,9 @@ void func_80AFD6CC(EnSkb* this, PlayState* play) {
     u8* new_var;
 
     new_var = &this->unk_283;
-    if ((this->unk_283 != 1) || BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, 1)) {
+    if ((this->unk_283 != 1) ||
+        BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, 1,
+                             this->skelAnime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX)) {
         if ((*new_var) != 0) {
             this->unk_283 = (*new_var) | 2;
         }
@@ -421,7 +423,8 @@ void func_80AFD7B4(EnSkb* this, PlayState* play) {
 }
 
 void func_80AFD880(EnSkb* this, PlayState* play) {
-    if (BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, 1)) {
+    if (BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, 1,
+                             this->skelAnime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX)) {
         if (this->actor.scale.x == 0.01f) {
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x10);
         } else if (this->actor.scale.x <= 0.015f) {

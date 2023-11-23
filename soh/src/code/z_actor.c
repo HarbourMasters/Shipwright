@@ -3572,7 +3572,7 @@ void BodyBreak_SetInfo(BodyBreak* bodyBreak, s32 limbIndex, s32 minLimbIndex, s3
     bodyBreak->prevLimbIndex = limbIndex;
 }
 
-s32 BodyBreak_SpawnParts(Actor* actor, BodyBreak* bodyBreak, PlayState* play, s16 type) {
+s32 BodyBreak_SpawnParts(Actor* actor, BodyBreak* bodyBreak, PlayState* play, s16 type, bool isFlex) {
     EnPart* spawnedEnPart;
     MtxF* mtx;
     s16 objBankIndex;
@@ -3599,8 +3599,11 @@ s32 BodyBreak_SpawnParts(Actor* actor, BodyBreak* bodyBreak, PlayState* play, s1
         spawnedEnPart = (EnPart*)Actor_SpawnAsChild(&play->actorCtx, actor, play, ACTOR_EN_PART, mtx->xw,
                                                     mtx->yw, mtx->zw, 0, 0, objBankIndex, type);
 
-        if (spawnedEnPart != NULL) {
-            Matrix_MtxFToYXZRotS(&bodyBreak->matrices[bodyBreak->count], &spawnedEnPart->actor.shape.rot, 0);
+        if (spawnedEnPart != NULL) 
+        {
+            if (!isFlex)
+                Matrix_MtxFToYXZRotS(&bodyBreak->matrices[bodyBreak->count], &spawnedEnPart->actor.shape.rot, 0);
+            
             spawnedEnPart->displayList = bodyBreak->dLists[bodyBreak->count];
             spawnedEnPart->actor.scale = actor->scale;
         }

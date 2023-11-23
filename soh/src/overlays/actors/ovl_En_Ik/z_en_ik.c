@@ -617,7 +617,8 @@ void func_80A75790(EnIk* this) {
 
 void func_80A758B0(EnIk* this, PlayState* play) {
     Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 1.0f, 1.0f, 0.0f);
-    if (BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, this->actor.params + 4)) {
+    if (BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, this->actor.params + 4,
+                             this->skelAnime.skeletonHeader->skeletonType == SKELANIME_TYPE_FLEX)) {
         this->bodyBreak.val = BODYBREAK_STATUS_FINISHED;
     }
     if (SkelAnime_Update(&this->skelAnime)) {
