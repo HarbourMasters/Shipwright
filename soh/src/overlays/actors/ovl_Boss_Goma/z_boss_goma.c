@@ -1367,6 +1367,9 @@ void BossGoma_FloorDamaged(BossGoma* this, PlayState* play) {
 
     this->eyeState = EYESTATE_IRIS_NO_FOLLOW_NO_IFRAMES;
     Math_ApproachF(&this->eyeIrisScaleX, 0.4f, 0.5f, 0.2f);
+    if (CVarGetInteger("gPhotosensitiveMode", 0)) {
+        return;
+    }
     this->visualState = VISUALSTATE_HIT;
 }
 
@@ -1426,6 +1429,11 @@ void BossGoma_FloorStunned(BossGoma* this, PlayState* play) {
     Math_ApproachS(&this->actor.shape.rot.x, 0, 2, 0xBB8);
     this->eyeState = EYESTATE_IRIS_NO_FOLLOW_NO_IFRAMES;
     Math_ApproachF(&this->eyeIrisScaleX, 0.4f, 0.5f, 0.2f);
+
+    if (CVarGetInteger("gPhotosensitiveMode", 0)) {
+        return;
+    }
+
     this->visualState = VISUALSTATE_STUNNED;
 }
 
@@ -1876,6 +1884,10 @@ void BossGoma_UpdateMainEnvColor(BossGoma* this) {
         { 255.0f, 17.0f, 0.0f },  { 0.0f, 255.0f, 170.0f }, { 50.0f, 50.0f, 50.0f },
         { 0.0f, 255.0f, 170.0f }, { 0.0f, 0.0f, 255.0f },   { 255.0f, 17.0f, 0.0f },
     };
+
+    if (CVarGetInteger("gPhotosensitiveMode", 0)) {
+        return;
+    }
 
     if (this->visualState == VISUALSTATE_DEFAULT && this->frameCount & 0x10) {
         Math_ApproachF(&this->mainEnvColor[0], 50.0f, 0.5f, 20.0f);
