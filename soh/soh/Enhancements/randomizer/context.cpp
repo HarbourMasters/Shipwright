@@ -205,7 +205,8 @@ void Context::CreateItemOverrides() {
     for (RandomizerCheck locKey : allLocations) {
         const auto loc = StaticData::GetLocation(locKey);
         // If this is an ice trap, store the disguise model in iceTrapModels
-        if (const auto itemLoc = GetItemLocation(locKey); itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
+        const auto itemLoc = GetItemLocation(locKey);
+        if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
             ItemOverride val(locKey, RandomElement(possibleIceTrapModels));
             iceTrapModels[locKey] = val.LooksLike();
             val.SetTrickName(GetIceTrapName(val.LooksLike()));
