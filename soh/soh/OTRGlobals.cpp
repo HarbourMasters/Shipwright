@@ -1,4 +1,4 @@
-#include "OTRGlobals.h"
+﻿#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
@@ -1508,6 +1508,11 @@ extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
     fclose(file);
 
     return data;
+}
+
+extern "C" uint8_t ResourceMgr_TexIsRaw(const char* texPath) {
+    auto res = std::static_pointer_cast<LUS::Texture>(GetResourceByNameHandlingMQ(texPath));
+    return res->Flags & TEX_FLAG_LOAD_AS_RAW;
 }
 
 extern "C" uint8_t ResourceMgr_ResourceIsBackground(char* texPath) {
