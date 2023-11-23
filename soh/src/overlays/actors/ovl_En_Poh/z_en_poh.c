@@ -1085,12 +1085,12 @@ void EnPoh_DrawRegular(Actor* thisx, PlayState* play) {
     if (this->lightColor.a == 255 || this->lightColor.a == 0) {
         gDPSetEnvColor(POLY_OPA_DISP++, this->lightColor.r, this->lightColor.g, this->lightColor.b, this->lightColor.a);
         gSPSegment(POLY_OPA_DISP++, 0x08, D_80116280 + 2);
-        POLY_OPA_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+        POLY_OPA_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
                                        EnPoh_OverrideLimbDraw, EnPoh_PostLimbDraw, &this->actor, POLY_OPA_DISP);
     } else {
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, this->lightColor.a);
         gSPSegment(POLY_XLU_DISP++, 0x08, D_80116280);
-        POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+        POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
                                        EnPoh_OverrideLimbDraw, EnPoh_PostLimbDraw, &this->actor, POLY_XLU_DISP);
     }
     gDPPipeSync(POLY_OPA_DISP++);

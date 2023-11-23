@@ -1055,7 +1055,7 @@ void DoorWarp1_DrawBlueCrystal(DoorWarp1* this, PlayState* play) {
     gDPSetPrimColor(POLY_XLU_DISP++, 0xFF, 0xFF, 200, 255, 255, (u8)this->crystalAlpha);
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, (u8)this->crystalAlpha);
 
-    POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL,
+    POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime, NULL, NULL,
                                    &this->actor, POLY_XLU_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -1079,7 +1079,7 @@ void DoorWarp1_DrawPurpleCrystal(DoorWarp1* this, PlayState* play) {
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, (u8)this->crystalAlpha);
     gDPSetEnvColor(POLY_XLU_DISP++, 150, 0, 100, (u8)this->crystalAlpha);
 
-    POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL,
+    POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime, NULL, NULL,
                                    &this->actor, POLY_XLU_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);

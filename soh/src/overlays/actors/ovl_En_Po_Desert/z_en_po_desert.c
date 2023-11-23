@@ -267,7 +267,7 @@ void EnPoDesert_Draw(Actor* thisx, PlayState* play) {
     } else {
         gSPSegment(POLY_XLU_DISP++, 0x0C, D_80116280 + 2);
     }
-    POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+    POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
                                    EnPoDesert_OverrideLimbDraw, EnPoDesert_PostLimbDraw, &this->actor, POLY_XLU_DISP);
     CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -837,8 +837,9 @@ void EnFirefly_Draw(Actor* thisx, PlayState* play) {
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     }
 
-    POLY_OPA_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                                   EnFirefly_OverrideLimbDraw, EnFirefly_PostLimbDraw, &this->actor, POLY_OPA_DISP);
+    POLY_OPA_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime, EnFirefly_OverrideLimbDraw, EnFirefly_PostLimbDraw,
+                                            &this->actor, POLY_OPA_DISP);
+    
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
@@ -854,7 +855,7 @@ void EnFirefly_DrawInvisible(Actor* thisx, PlayState* play) {
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, 255);
     }
 
-    POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+    POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
                                    EnFirefly_OverrideLimbDraw, EnFirefly_PostLimbDraw, this, POLY_XLU_DISP);
     CLOSE_DISPS(play->state.gfxCtx);
 }
