@@ -1,4 +1,4 @@
-﻿#include "OTRGlobals.h"
+#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
@@ -1216,6 +1216,7 @@ extern "C" void Graph_StartFrame() {
         case KbScancode::LUS_KB_TAB: {
             // Toggle HD Assets
             CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
+            GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
             ShouldClearTextureCacheAtEndOfFrame = true;
             break;
         }
