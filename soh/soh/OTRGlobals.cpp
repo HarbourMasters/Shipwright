@@ -1216,6 +1216,7 @@ extern "C" void Graph_StartFrame() {
         case KbScancode::LUS_KB_TAB: {
             // Toggle HD Assets
             CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
+            GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
             ShouldClearTextureCacheAtEndOfFrame = true;
             break;
         }
@@ -1415,6 +1416,14 @@ extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
     LUS::Context::GetInstance()->GetResourceManager()->DirtyDirectory(resName);
 }
 
+extern "C" void ResourceMgr_UnloadResource(const char* resName) {
+    std::string path = resName;
+    if (path.substr(0, 7) == "__OTR__") {
+        path = path.substr(7);
+    }
+    auto res = LUS::Context::GetInstance()->GetResourceManager()->UnloadResource(path);
+}
+
 // OTRTODO: There is probably a more elegant way to go about this...
 // Kenix: This is definitely leaking memory when it's called.
 extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
@@ -1439,6 +1448,27 @@ extern "C" uint8_t ResourceMgr_FileExists(const char* filePath) {
     }
 
     return ExtensionCache.contains(path);
+}
+
+extern "C" uint8_t ResourceMgr_FileAltExists(const char* filePath) {
+    std::string path = filePath;
+    if (path.substr(0, 7) == "__OTR__") {
+        path = path.substr(7);
+    }
+
+    if (path.substr(0, 4) != "alt/") {
+        path = "alt/" + path;
+    }
+
+    return ExtensionCache.contains(path);
+}
+
+// Unloads a resource if an alternate version exists when alt assets are enabled
+// The resource is only removed from the internal cache to prevent it from used in the next resource lookup
+extern "C" void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName) {
+    if (CVarGetInteger("gAltAssets", 0) && ResourceMgr_FileAltExists((char*) resName)) {
+        ResourceMgr_UnloadResource((char*) resName);
+    }
 }
 
 extern "C" void ResourceMgr_LoadFile(const char* resName) {
@@ -1478,6 +1508,11 @@ extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
     fclose(file);
 
     return data;
+}
+
+extern "C" uint8_t ResourceMgr_TexIsRaw(const char* texPath) {
+    auto res = std::static_pointer_cast<LUS::Texture>(GetResourceByNameHandlingMQ(texPath));
+    return res->Flags & TEX_FLAG_LOAD_AS_RAW;
 }
 
 extern "C" uint8_t ResourceMgr_ResourceIsBackground(char* texPath) {
@@ -1565,6 +1600,11 @@ extern "C" void ResourceMgr_PushCurrentDirectory(char* path)
 
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
 {
+    // When an alt resource exists for the DL, we need to unload the original asset
+    // to clear the cache so the alt asset will be loaded instead
+    // OTRTODO: If Alt loading over original cache is fixed, this line can most likely be removed
+    ResourceMgr_UnloadOriginalWhenAltExists(path);
+
     auto res = std::static_pointer_cast<LUS::DisplayList>(GetResourceByNameHandlingMQ(path));
     return (Gfx*)&res->Instructions[0];
 }

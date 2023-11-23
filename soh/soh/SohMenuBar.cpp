@@ -907,6 +907,7 @@ void DrawEnhancementsMenu() {
             if (ImGui::BeginMenu("Mods")) {
                 if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", false, false)) {
                     ShouldClearTextureCacheAtEndOfFrame = true;
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
                 }
                 UIWidgets::Tooltip("Toggle between standard assets and alternate assets. Usually mods will indicate if this setting has to be used or not.");
                 UIWidgets::PaddedEnhancementCheckbox("Disable Bomb Billboarding", "gDisableBombBillboarding", true, false);
