@@ -63,7 +63,7 @@ Rando::LocationType Rando::Location::GetLocationType() const {
 }
 
 bool Rando::Location::IsCategory(Category category) const {
-    return std::ranges::any_of(categories.begin(), categories.end(), [category](auto entry) { return entry == category; });
+    return std::any_of(categories.begin(), categories.end(), [category](auto entry) { return entry == category; });
 }
 
 bool Rando::Location::IsDungeon() const {
