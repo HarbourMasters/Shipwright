@@ -85,13 +85,13 @@ static AnimationInfo sAnimationInfo[] = {
     { &gDaruniaHitLinkAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -10.0f },
     { &gDaruniaHitBreastAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -10.0f },
     { &gDaruniaStandUpAfterFallingAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -10.0f },
-    { &gDaruniaDancingLoop1Anim, 1.0f, 0.0f, -1.0f, ANIMMODE_ONCE, -10.0f },
-    { &gDaruniaDancingLoop1Anim, 1.0f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f },
-    { &gDaruniaDancingLoop2Anim, 1.0f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f },
-    { &gDaruniaDancingLoop3Anim, 1.0f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f },
+    { &gDaruniaDancingLoop1Anim, 0.78f, 0.0f, -1.0f, ANIMMODE_ONCE, -10.0f },
+    { &gDaruniaDancingLoop1Anim, 0.78f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f },
+    { &gDaruniaDancingLoop2Anim, 0.78f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f },
+    { &gDaruniaDancingLoop3Anim, 0.78f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f },
     { &gDaruniaWrongSongAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f },
     { &gDaruniaWrongSongEndAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gDaruniaDancingLoop4Anim, 1.0f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f },
+    { &gDaruniaDancingLoop4Anim, 0.78f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f },
     { &gDaruniaDancingEndAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_ONCE, -6.0f },
 };
 
