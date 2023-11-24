@@ -1060,8 +1060,7 @@ void DrawEnhancementsMenu() {
                                 "Fixes an incorrect calculation that acted like water underneath ground was above it.");
             UIWidgets::PaddedEnhancementCheckbox("Fix Bush Item Drops", "gBushDropFix", true, false);
             UIWidgets::Tooltip("Fixes the bushes to drop items correctly rather than spawning undefined items.");
-            UIWidgets::PaddedEnhancementCheckbox("Fix falling from vine edges", "gFixVineFall", true, false,
-                                                 CVarGetInteger("gClimbEverything", 0), "Disabled because Climb Everything cheat is on."); 
+            UIWidgets::PaddedEnhancementCheckbox("Fix falling from vine edges", "gFixVineFall", true, false); 
             UIWidgets::Tooltip("Prevents immediately falling off climbable surfaces if climbing on the edges."); 
             UIWidgets::PaddedEnhancementCheckbox("Fix Link's eyes open while sleeping", "gFixEyesOpenWhileSleeping", true, false);
             UIWidgets::Tooltip("Fixes Link's eyes being open in the opening cutscene when he is supposed to be sleeping.");
