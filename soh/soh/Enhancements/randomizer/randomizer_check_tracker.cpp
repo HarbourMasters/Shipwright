@@ -586,6 +586,12 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         } else if (giEntry.itemId == ITEM_SONG_SARIA) {
             SetCheckCollected(RC_SONG_FROM_SARIA);
             return;
+        } else if (giEntry.itemId == ITEM_BEAN) {
+            SetCheckCollected(RC_ZR_MAGIC_BEAN_SALESMAN);
+            return;
+        } else if (giEntry.itemId == ITEM_BRACELET) {
+            SetCheckCollected(RC_GC_DARUNIAS_JOY);
+            return;
         }/* else if (giEntry.itemId == ITEM_SONG_SUN) {
             SetCheckCollected(RC_SONG_FROM_ROYAL_FAMILYS_TOMB);
             return;
@@ -613,13 +619,7 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         } else if (giEntry.itemId == ITEM_SONG_PRELUDE) {
             SetCheckCollected(RC_SHEIK_AT_TEMPLE);
             return;
-        } else if (giEntry.itemId == ITEM_BRACELET) {
-            SetCheckCollected(RC_GC_DARUNIAS_JOY);
-            return;
-        }*/ else if (giEntry.itemId == ITEM_BEAN) {
-            SetCheckCollected(RC_ZR_MAGIC_BEAN_SALESMAN);
-            return;
-        }
+        }*/
     }
 }
 
@@ -665,10 +665,24 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
             if (!IS_RANDO) {
                 if (flag == 402) {
                     SetCheckCollected(RC_LW_DEKU_SCRUB_NEAR_BRIDGE);
+                } else if (flag == 403) {
+                    SetCheckCollected(RC_LW_DEKU_SCRUB_GROTTO_FRONT);
                 }
             }
             break;
         case FLAG_ITEM_GET_INF:
+            if (!IS_RANDO) {
+                if (flag == 30) {
+                    SetCheckCollected(RC_DEKU_THEATER_SKULL_MASK);
+                    return;
+                } else if (flag == 31) {
+                    SetCheckCollected(RC_DEKU_THEATER_MASK_OF_TRUTH);
+                    return;
+                } else if (flag == 11) {
+                    SetCheckCollected(RC_HF_DEKU_SCRUB_GROTTO);
+                    return;
+                }
+            }
             checkMatchType = SpoilerCollectionCheckType::SPOILER_CHK_ITEM_GET_INF;
             break;
         case FLAG_RANDOMIZER_INF:
