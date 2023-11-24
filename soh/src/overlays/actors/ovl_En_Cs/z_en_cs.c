@@ -1,6 +1,7 @@
 #include "z_en_cs.h"
 #include "objects/object_cs/object_cs.h"
 #include "objects/object_link_child/object_link_child.h"
+#include "soh_assets.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
@@ -520,5 +521,20 @@ void EnCs_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, 
         Matrix_RotateX(0.0f, MTXMODE_APPLY);
         Matrix_RotateZ(5.0 * M_PI / 9.0, MTXMODE_APPLY);
         Matrix_Get(&this->spookyMaskMtx);
+    }
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 15) {
+            OPEN_DISPS(play->state.gfxCtx);
+            Matrix_Push();
+            Matrix_RotateZYX(8191, -5757, -24133, MTXMODE_APPLY);
+            Matrix_Translate(270.27f, 297.297f, -513.514f, MTXMODE_APPLY);
+            Matrix_Scale(1.135f, 1.135f, 1.135f, MTXMODE_APPLY);
+            gDPSetEnvColor(POLY_OPA_DISP++, 255, 0, 0, 255);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gPaperCrownGenericDL);
+            Matrix_Pop();
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
     }
 }

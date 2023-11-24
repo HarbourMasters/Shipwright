@@ -608,7 +608,14 @@ s32 EnNiwLady_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* r
     if (CVarGetInteger("gLetItSnow", 0)) {
         if (limbIndex == 15) {
             OPEN_DISPS(play->state.gfxCtx);
-            gSPDisplayList(POLY_OPA_DISP++, gCuccoLadyHatDL);
+            Matrix_Push();
+            Matrix_RotateZYX(-886, -3322, -5093, MTXMODE_APPLY);
+            Matrix_Translate(824.324f, 283.782f, -202.703f, MTXMODE_APPLY);
+            Matrix_Scale(0.762f, 0.762f, 0.762f, MTXMODE_APPLY);
+            gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 255, 255);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gPaperCrownGenericDL);
+            Matrix_Pop();
             CLOSE_DISPS(play->state.gfxCtx);
         }
     }

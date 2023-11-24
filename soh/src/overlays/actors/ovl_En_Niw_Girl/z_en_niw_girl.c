@@ -7,6 +7,7 @@
 #include "z_en_niw_girl.h"
 #include "objects/object_gr/object_gr.h"
 #include "vt.h"
+#include "soh_assets.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -248,6 +249,27 @@ s32 EnNiwGirlOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f
 
 static Vec3f sConstVec3f = { 0.2f, 0.2f, 0.2f };
 
+s32 EnNiwGirl_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+    EnNiwGirl* this = (EnNiwGirl*)thisx;
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 4) {
+            OPEN_DISPS(play->state.gfxCtx);
+            Matrix_Push();
+            Matrix_RotateZYX(0, 0, 0, MTXMODE_APPLY);
+            Matrix_Translate(945.945f, 0.0f, 0.0f, MTXMODE_APPLY);
+            Matrix_Scale(0.676f, 0.676f, 0.676f, MTXMODE_APPLY);
+            gDPSetEnvColor(POLY_OPA_DISP++, 255, 0, 255, 255);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gPaperCrownGenericDL);
+            Matrix_Pop();
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+    }
+
+    return false;
+}
+
 void EnNiwGirl_Draw(Actor* thisx, PlayState* play) {
     static void* eyeTextures[] = { gNiwGirlEyeOpenTex, gNiwGirlEyeHalfTex, gNiwGirlEyeClosedTex };
     EnNiwGirl* this = (EnNiwGirl*)thisx;
@@ -258,7 +280,7 @@ void EnNiwGirl_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnNiwGirlOverrideLimbDraw, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnNiwGirlOverrideLimbDraw, EnNiwGirl_PostLimbDraw, this);
     func_80033C30(&this->actor.world.pos, &sp4C, 255, play);
 
     CLOSE_DISPS(play->state.gfxCtx);

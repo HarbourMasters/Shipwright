@@ -7,6 +7,7 @@
 #include "z_en_elf.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include <assert.h>
+#include "soh_assets.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
@@ -1504,6 +1505,26 @@ s32 EnElf_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
     return false;
 }
 
+s32 EnElf_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+    EnElf* this = (EnElf*)thisx;
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 2) {
+            OPEN_DISPS(play->state.gfxCtx);
+            Matrix_Push();
+            Matrix_RotateZYX(0, 0, 17047, MTXMODE_APPLY);
+            Matrix_Translate(202.0f, 0.0f, 0.0f, MTXMODE_APPLY);
+            Matrix_Scale(0.595f, 0.595f, 0.595f, MTXMODE_APPLY);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gSantaHatGenericDL);
+            Matrix_Pop();
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+    }
+
+    return false;
+}
+
 void EnElf_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     f32 alphaScale;
@@ -1541,7 +1562,7 @@ void EnElf_Draw(Actor* thisx, PlayState* play) {
             gDPSetEnvColor(POLY_XLU_DISP++, (u8)this->outerColor.r, (u8)this->outerColor.g, (u8)this->outerColor.b,
                            (u8)(envAlpha * alphaScale));
             POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                                           EnElf_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
+                                           EnElf_OverrideLimbDraw, EnElf_PostLimbDraw, this, POLY_XLU_DISP);
 
             CLOSE_DISPS(play->state.gfxCtx);
         }

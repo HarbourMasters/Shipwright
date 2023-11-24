@@ -10,6 +10,7 @@
 #include "objects/object_boj/object_boj.h"
 #include <assert.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh_assets.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -424,6 +425,21 @@ void EnSth_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 
             gSPDisplayList(POLY_OPA_DISP++, D_80B0A3C0);
 
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+    }
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 15) {
+            OPEN_DISPS(play->state.gfxCtx);
+            Matrix_Push();
+            Matrix_RotateZYX(-4207, -665, -4650, MTXMODE_APPLY);
+            Matrix_Translate(932.432f, 162.163f, 81.082f, MTXMODE_APPLY);
+            Matrix_Scale(0.73f, 0.73f, 0.73f, MTXMODE_APPLY);
+            gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 0, 255);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gPaperCrownGenericDL);
+            Matrix_Pop();
             CLOSE_DISPS(play->state.gfxCtx);
         }
     }
