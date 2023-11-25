@@ -492,6 +492,8 @@ extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
     {
+        ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+
         DrawPresetSelector(PRESET_TYPE_ENHANCEMENTS);
 
         UIWidgets::PaddedSeparator();
@@ -1199,6 +1201,8 @@ void DrawEnhancementsMenu() {
 
         UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
 
+        ImGui::EndDisabled();
+
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
@@ -1240,6 +1244,8 @@ void DrawEnhancementsMenu() {
 void DrawCheatsMenu() {
     if (ImGui::BeginMenu("Cheats"))
     {
+        ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+
         if (ImGui::BeginMenu("Infinite...")) {
             UIWidgets::EnhancementCheckbox("Money", "gInfiniteMoney");
             UIWidgets::PaddedEnhancementCheckbox("Health", "gInfiniteHealth", true, false);
@@ -1394,6 +1400,8 @@ void DrawCheatsMenu() {
         }
         UIWidgets::Tooltip("Clears the cutscene pointer to a value safe for wrong warps.");   
 
+        ImGui::EndDisabled();
+
         ImGui::EndMenu();
     }
 }
@@ -1407,6 +1415,8 @@ extern std::shared_ptr<DLViewerWindow> mDLViewerWindow;
 
 void DrawDeveloperToolsMenu() {
     if (ImGui::BeginMenu("Developer Tools")) {
+        ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+
         UIWidgets::EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
         UIWidgets::Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right, and open the debug menu with L on the pause screen");
         if (CVarGetInteger("gDebugEnabled", 0)) {
@@ -1478,6 +1488,8 @@ void DrawDeveloperToolsMenu() {
 
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);
+
+        ImGui::EndDisabled();
 
         ImGui::EndMenu();
     }

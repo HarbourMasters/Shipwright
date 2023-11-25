@@ -3144,7 +3144,9 @@ void RandomizerSettingsWindow::DrawElement() {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
     }
 
+    ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
     DrawPresetSelector(PRESET_TYPE_RANDOMIZER);
+    ImGui::EndDisabled();
 
     UIWidgets::Spacer(0);
     UIWidgets::EnhancementCheckbox("Manual seed entry", "gRandoManualSeedEntry", false, "");
@@ -3180,6 +3182,8 @@ void RandomizerSettingsWindow::DrawElement() {
     // ImGui::Text("Settings File: %s", presetfilepath.c_str());
 
     UIWidgets::PaddedSeparator();
+
+    ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
 
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     static ImVec2 cellPadding(8.0f, 8.0f);
@@ -5225,6 +5229,8 @@ void RandomizerSettingsWindow::DrawElement() {
 
         ImGui::EndTabBar();
     }
+
+    ImGui::EndDisabled();
     
     if (disableEditingRandoSettings) {
         UIWidgets::ReEnableComponent("");
