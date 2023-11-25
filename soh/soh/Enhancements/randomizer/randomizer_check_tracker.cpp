@@ -628,6 +628,9 @@ void CheckTrackerSceneFlagSet(int16_t sceneNum, int16_t flagType, int32_t flag) 
         return;
     }
     for (auto [rc, rcObj] : RandomizerCheckObjects::GetAllRCObjects()) {
+        if (!IsVisibleInCheckTracker(rcObj)) {
+            continue;
+        }
         SpoilerCollectionCheckType checkMatchType = flagType == FLAG_SCENE_TREASURE ? SpoilerCollectionCheckType::SPOILER_CHK_CHEST : SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE;
         SpoilerCollectionCheck scCheck = Location(rc)->GetCollectionCheck();
         if (scCheck.scene == sceneNum && scCheck.flag == flag && scCheck.type == checkMatchType) {
@@ -1175,8 +1178,8 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
     }
     else if (rcObj.vanillaCompletion) {
         return (rcObj.vOrMQ == RCVORMQ_BOTH ||
-            rcObj.vOrMQ == RCVORMQ_MQ && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) ||
-            rcObj.vOrMQ == RCVORMQ_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) ||
+            (rcObj.vOrMQ == RCVORMQ_MQ && IS_MASTER_QUEST) ||
+            (rcObj.vOrMQ == RCVORMQ_VANILLA && !IS_MASTER_QUEST) ||
             rcObj.rc == RC_GIFT_FROM_SAGES) && rcObj.rc != RC_LINKS_POCKET;
     }
     return false;
