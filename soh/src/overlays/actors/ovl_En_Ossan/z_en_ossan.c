@@ -16,6 +16,7 @@
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh_assets.h"
 #include <assert.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
@@ -2457,6 +2458,56 @@ void EnOssan_DrawStickDirectionPrompts(PlayState* play, EnOssan* this) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+s32 EnOssan_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+    EnOssan* this = (EnOssan*)thisx;
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 8) {
+            switch(this->actor.params) {
+                case 4: {
+                    OPEN_DISPS(play->state.gfxCtx);
+                    Matrix_Push();
+                    Matrix_RotateZYX(-11071, -443, -3986, MTXMODE_APPLY);
+                    Matrix_Translate(878.378f, 351.351f, 540.541f, MTXMODE_APPLY);
+                    Matrix_Scale(1.352f, 1.352f, 1.352f, MTXMODE_APPLY);
+                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                    gSPDisplayList(POLY_OPA_DISP++, gSantaHatGenericDL);
+                    Matrix_Pop();
+                    CLOSE_DISPS(play->state.gfxCtx);
+                    break;
+                }
+                case 3: {
+                    OPEN_DISPS(play->state.gfxCtx);
+                    Matrix_Push();
+                    Matrix_RotateZYX(-6643, 1992, -1772, MTXMODE_APPLY);
+                    Matrix_Translate(918.919f, 121.622f, 256.757f, MTXMODE_APPLY);
+                    Matrix_Scale(0.73f, 0.73f, 0.73f, MTXMODE_APPLY);
+                    gDPSetEnvColor(POLY_OPA_DISP++, 0, 255, 0, 255);
+                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                    gSPDisplayList(POLY_OPA_DISP++, gPaperCrownGenericDL);
+                    Matrix_Pop();
+                    CLOSE_DISPS(play->state.gfxCtx);
+                    break;
+                }
+                default: {
+                    OPEN_DISPS(play->state.gfxCtx);
+                    Matrix_Push();
+                    Matrix_RotateZYX(-11071, -443, -3986, MTXMODE_APPLY);
+                    Matrix_Translate(878.378f, 351.351f, 540.541f, MTXMODE_APPLY);
+                    Matrix_Scale(1.352f, 1.352f, 1.352f, MTXMODE_APPLY);
+                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                    gSPDisplayList(POLY_OPA_DISP++, gSantaHatGenericDL);
+                    Matrix_Pop();
+                    CLOSE_DISPS(play->state.gfxCtx);
+                    break;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
 void EnOssan_DrawBazaarShopkeeper(Actor* thisx, PlayState* play) {
     static void* sBazaarShopkeeperEyeTextures[] = { gOssanEyeOpenTex, gOssanEyeHalfTex, gOssanEyeClosedTex };
     EnOssan* this = (EnOssan*)thisx;
@@ -2466,7 +2517,7 @@ void EnOssan_DrawBazaarShopkeeper(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sBazaarShopkeeperEyeTextures[this->eyeTextureIdx]));
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnOssan_OverrideLimbDrawDefaultShopkeeper, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnOssan_OverrideLimbDrawDefaultShopkeeper, EnOssan_PostLimbDraw, this);
     EnOssan_DrawCursor(play, this, this->cursorX, this->cursorY, this->cursorZ, this->drawCursor);
     EnOssan_DrawStickDirectionPrompts(play, this);
 
@@ -2596,7 +2647,7 @@ void EnOssan_DrawPotionShopkeeper(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sPotionShopkeeperEyeTextures[this->eyeTextureIdx]));
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, EnOssan_PostLimbDraw, this);
     EnOssan_DrawCursor(play, this, this->cursorX, this->cursorY, this->cursorZ, this->drawCursor);
     EnOssan_DrawStickDirectionPrompts(play, this);
 

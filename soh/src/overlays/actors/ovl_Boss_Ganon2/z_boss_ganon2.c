@@ -8,6 +8,7 @@
 #include "objects/object_geff/object_geff.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
+#include "soh_assets.h"
 
 #include <string.h>
 
@@ -2658,6 +2659,18 @@ void BossGanon2_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s*
         }
     }
 
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 16) {
+            Matrix_Push();
+            Matrix_RotateZYX(5977, 4649, 18154, MTXMODE_APPLY);
+            Matrix_Translate(364.865f, 67.568f, 378.378f, MTXMODE_APPLY);
+            Matrix_Scale(4.595f, 4.595f, 4.595f, MTXMODE_APPLY);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gSantaHatGenericDL);
+            Matrix_Pop();
+        }
+    }
+
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
@@ -2781,6 +2794,21 @@ void BossGanon2_PostLimbDraw2(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
         CLOSE_DISPS(play->state.gfxCtx);
     } else if (limbIndex == 10) {
         Matrix_MultVec3f(&D_80907164, &this->unk_1B8);
+    }
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 11) {
+            OPEN_DISPS(play->state.gfxCtx);
+            Matrix_Push();
+            Matrix_RotateZYX(0, 0, -15056, MTXMODE_APPLY);
+            Matrix_Translate(824.324f, 472.973f, 0.0f, MTXMODE_APPLY);
+            Matrix_Scale(0.845f, 0.845f, 0.845f, MTXMODE_APPLY);
+            gDPSetEnvColor(POLY_OPA_DISP++, 255, 100, 100, 255);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gPaperCrownGenericDL);
+            Matrix_Pop();
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
     }
 }
 

@@ -5,6 +5,7 @@
 #include "scenes/dungeons/ddan_boss/ddan_boss_room_1.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
+#include "soh_assets.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -1134,6 +1135,21 @@ void BossDodongo_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
         Matrix_MultVec3f(&D_808CA48C, &this->unk_404);
     }
     Collider_UpdateSpheres(limbIndex, &this->collider);
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 7) {
+            OPEN_DISPS(play->state.gfxCtx);
+            Matrix_Push();
+            Matrix_RotateZYX(-6643, 1771, -14834, MTXMODE_APPLY);
+            Matrix_Translate(2000.0f, 5000.0f, 4000.0f, MTXMODE_APPLY);
+            Matrix_Scale(6.114f, 6.114f, 6.114f, MTXMODE_APPLY);
+            gDPSetEnvColor(POLY_OPA_DISP++, 255, 0, 0, 255);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gPaperCrownGenericDL);
+            Matrix_Pop();
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+    }
 }
 
 void BossDodongo_Draw(Actor* thisx, PlayState* play) {

@@ -8,6 +8,27 @@
 // On Mac, not using aligned resource names was causing crashes in release builds
 
 // objects
+#define dgLinkAdultHatTrimDL "__OTR__objects/object_festivehats/gLinkAdultHatTrimDL"
+static const ALIGN_ASSET(2) char gLinkAdultHatTrimDL[] = dgLinkAdultHatTrimDL;
+
+#define dgLinkAdultPompomDL "__OTR__objects/object_festivehats/gLinkAdultPompomDL"
+static const ALIGN_ASSET(2) char gLinkAdultPompomDL[] = dgLinkAdultPompomDL;
+
+#define dgLinkChildHatTrimDL "__OTR__objects/object_festivehats/gLinkChildHatTrimDL"
+static const ALIGN_ASSET(2) char gLinkChildHatTrimDL[] = dgLinkChildHatTrimDL;
+
+#define dgPaperCrownGenericDL "__OTR__objects/object_festivehats/gPaperCrownGenericDL"
+static const ALIGN_ASSET(2) char gPaperCrownGenericDL[] = dgPaperCrownGenericDL;
+
+#define dgSantaHatGenericDL "__OTR__objects/object_festivehats/gSantaHatGenericDL"
+static const ALIGN_ASSET(2) char gSantaHatGenericDL[] = dgSantaHatGenericDL;
+
+#define dgHorseAntlersDL "__OTR__objects/object_festivehats/gHorseAntlersDL"
+static const ALIGN_ASSET(2) char gHorseAntlersDL[] = dgHorseAntlersDL;
+
+#define dgEponaRudolphHatDL "__OTR__objects/object_festivehats/gEponaRudolphHatDL"
+static const ALIGN_ASSET(2) char gEponaRudolphHatDL[] = dgEponaRudolphHatDL;
+
 #define dgChristmasGreenTreasureChestFrontTex "__OTR__objects/object_box/gChristmasGreenTreasureChestFrontTex"
 static const ALIGN_ASSET(2) char gChristmasGreenTreasureChestFrontTex[] = dgChristmasGreenTreasureChestFrontTex;
 

@@ -10,6 +10,7 @@
 #include "soh/Enhancements/randomizer/draw.h"
 
 #include <stdlib.h>
+#include <soh_assets.h>
 
 typedef struct {
     /* 0x00 */ u8 flag;
@@ -1670,6 +1671,52 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
     if (*dList != NULL) {
         Matrix_MultVec3f(&sZeroVec, D_80160000);
+    }
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == PLAYER_LIMB_HEAD) {
+            OPEN_DISPS(play->state.gfxCtx);
+
+            Matrix_Push();
+            if (LINK_IS_ADULT) {
+                Matrix_RotateZYX(24000, -16000, -7000, MTXMODE_APPLY);
+                Matrix_Translate(32.0f, 0.0f, 0.0f, MTXMODE_APPLY);
+                Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHatTrimDL);
+            } else {
+                Matrix_RotateZYX(24000, -16000, -7000, MTXMODE_APPLY);
+                Matrix_Translate(32.0f, 0.0f, 0.0f, MTXMODE_APPLY);
+                Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPDisplayList(POLY_OPA_DISP++, gLinkChildHatTrimDL);
+            }
+
+            Matrix_Pop();
+
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+
+        if (limbIndex == PLAYER_LIMB_HAT) {
+            OPEN_DISPS(play->state.gfxCtx);
+
+            Matrix_Push();
+            if (LINK_IS_ADULT) {
+                Matrix_RotateZYX(0, 0, 17500, MTXMODE_APPLY);
+                Matrix_Translate(-195.0f, 1500.0f, -95.0f, MTXMODE_APPLY);
+                Matrix_Scale(2.0f, 2.0f, 2.0f, MTXMODE_APPLY);
+            } else {
+                Matrix_RotateZYX(0, 0, 27000, MTXMODE_APPLY);
+                Matrix_Translate(-950.0f, 2600.0f, -75.0f, MTXMODE_APPLY);
+                Matrix_Scale(2.0f, 2.0f, 2.0f, MTXMODE_APPLY);
+            }
+
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultPompomDL);
+            Matrix_Pop();
+
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
     }
 
     if (limbIndex == PLAYER_LIMB_L_HAND) {

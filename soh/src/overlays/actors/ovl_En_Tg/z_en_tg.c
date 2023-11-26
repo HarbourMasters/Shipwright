@@ -6,6 +6,7 @@
 
 #include "z_en_tg.h"
 #include "objects/object_mu/object_mu.h"
+#include "soh_assets.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
@@ -167,6 +168,34 @@ void EnTg_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, 
     if (limbIndex == 9) {
         // Place the target point at the guy's head instead of the center of the actor
         Matrix_MultVec3f(&targetOffset, &this->actor.focus.pos);
+    }
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 20) {
+            OPEN_DISPS(play->state.gfxCtx);
+            Matrix_Push();
+            Matrix_RotateZYX(-2657, -1550, 1549, MTXMODE_APPLY);
+            Matrix_Translate(594.594f, -135.135f, -54.054f, MTXMODE_APPLY);
+            Matrix_Scale(0.966f, 0.966f, 0.966f, MTXMODE_APPLY);
+            gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 255, 255);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gPaperCrownGenericDL);
+            Matrix_Pop();
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+
+        if (limbIndex == 9) {
+            OPEN_DISPS(play->state.gfxCtx);
+            Matrix_Push();
+            Matrix_RotateZYX(-3100, 1992, 2435, MTXMODE_APPLY);
+            Matrix_Translate(864.865f, -121.622f, 175.676f, MTXMODE_APPLY);
+            Matrix_Scale(0.865f, 0.865f, 0.865f, MTXMODE_APPLY);
+            gDPSetEnvColor(POLY_OPA_DISP++, 255, 0, 255, 255);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gPaperCrownGenericDL);
+            Matrix_Pop();
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
     }
 }
 

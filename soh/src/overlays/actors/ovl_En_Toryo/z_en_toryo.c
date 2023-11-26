@@ -7,6 +7,7 @@
 #include "z_en_toryo.h"
 #include "objects/object_toryo/object_toryo.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
+#include "soh_assets.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
@@ -429,5 +430,19 @@ void EnToryo_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* ro
         case 15:
             Matrix_MultVec3f(&sMultVec, &this->actor.focus.pos);
             break;
+    }
+
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        if (limbIndex == 15) {
+            OPEN_DISPS(play->state.gfxCtx);
+            Matrix_Push();
+            Matrix_RotateZYX(-23691, 664, -2879, MTXMODE_APPLY);
+            Matrix_Translate(810.811f, -243.243f, 270.27f, MTXMODE_APPLY);
+            Matrix_Scale(1.216f, 1.216f, 1.216f, MTXMODE_APPLY);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gSantaHatGenericDL);
+            Matrix_Pop();
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
     }
 }
