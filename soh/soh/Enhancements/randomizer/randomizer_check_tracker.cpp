@@ -12,9 +12,6 @@
 #include "3drando/item_location.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "z64item.h"
-#ifdef ENABLE_REMOTE_CONTROL
-#include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
-#endif
 
 extern "C" {
 #include "variables.h"
@@ -115,7 +112,6 @@ bool optExpandAll;       // A bool that will expand all checks once
 RandomizerCheck lastLocationChecked = RC_UNKNOWN_CHECK;
 RandomizerCheckArea previousArea = RCAREA_INVALID;
 RandomizerCheckArea currentArea = RCAREA_INVALID;
-std::vector<GetItemEntry> itemsReceived;
 OSContPad* trackerButtonsPressed;
 
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
@@ -243,10 +239,6 @@ void SetCheckCollected(RandomizerCheck rc) {
     }
     SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
 
-#ifdef ENABLE_REMOTE_CONTROL
-    Anchor_UpdateCheckData(rc);
-#endif
-
     doAreaScroll = true;
     UpdateOrdering(rcObj.rcArea);
     UpdateInventoryChecks();
@@ -349,14 +341,6 @@ bool vector_contains_scene(std::vector<SceneID> vec, const int16_t scene) {
 
 std::vector<SceneID> skipScenes = {SCENE_GANON_BOSS, SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR, SCENE_GANON_BOSS, SCENE_INSIDE_GANONS_CASTLE_COLLAPSE, SCENE_GANONS_TOWER_COLLAPSE_INTERIOR};
 
-void AddItemReceived(GetItemEntry giEntry) {
-    itemsReceived.push_back(giEntry);
-}
-
-void AddToChecksCollected(RandomizerCheck rc) {
-    areaChecksGotten[RandomizerCheckObjects::GetAllRCObjects().find(rc)->second.rcArea]++;
-}
-
 void ClearAreaTotals() {
     for (auto& [rcArea, vec] : checksByArea) {
         areaChecksGotten[rcArea] = 0;
@@ -372,9 +356,6 @@ void SetShopSeen(uint32_t sceneNum, bool prices) {
     for (int i = start; i < start + 8; i++) {
         if (gSaveContext.checkTrackerData[i].status == RCSHOW_UNCHECKED) {
             gSaveContext.checkTrackerData[i].status = RCSHOW_SEEN;
-#ifdef ENABLE_REMOTE_CONTROL
-            Anchor_UpdateCheckData(i);
-#endif
             statusChanged = true;
         }
     }
@@ -505,9 +486,6 @@ void CheckTrackerShopSlotChange(uint8_t cursorSlot, int16_t basePrice) {
         gSaveContext.checkTrackerData[slot].status = RCSHOW_IDENTIFIED;
         gSaveContext.checkTrackerData[slot].price = basePrice;
         SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
-#ifdef ENABLE_REMOTE_CONTROL
-        Anchor_UpdateCheckData(slot);
-#endif
     }
 }
 
@@ -1325,9 +1303,6 @@ void DrawLocation(RandomizerCheckObject rcObj) {
                 gSaveContext.checkTrackerData[rcObj.rc].skipped = true;
                 areaChecksGotten[rcObj.rcArea]++;
             }
-#ifdef ENABLE_REMOTE_CONTROL
-            Anchor_UpdateCheckData(rcObj.rc);
-#endif
             UpdateOrdering(rcObj.rcArea);
             UpdateInventoryChecks();
             SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
