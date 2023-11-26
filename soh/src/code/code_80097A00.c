@@ -204,6 +204,17 @@ u8 Inventory_DeleteEquipment(PlayState* play, s16 equipment) {
 
         if (equipment == EQUIP_TYPE_TUNIC) {
             gSaveContext.equips.equipment |= EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4);
+            // non-vanilla: remove goron and zora tunics from item buttons if assignable tunics is on
+            if (CVarGetInteger("gAssignableTunicsAndBoots", 0) && equipValue != EQUIP_VALUE_TUNIC_KOKIRI) {
+                ItemID item = (equipValue == EQUIP_VALUE_TUNIC_GORON ? ITEM_TUNIC_GORON : ITEM_TUNIC_ZORA);
+                for (int i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                    if (gSaveContext.equips.buttonItems[i] == item) {
+                        gSaveContext.equips.buttonItems[i] = ITEM_NONE;
+                        gSaveContext.equips.cButtonSlots[i - 1] = SLOT_NONE;
+                    }
+                }
+            }
+            // end non-vanilla
         }
 
         if (equipment == EQUIP_TYPE_SWORD) {

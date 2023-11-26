@@ -49,15 +49,13 @@ s32 func_8083721C(Player* player);
 s32 func_80835C58(PlayState* play, Player* player, PlayerFunc674 func, s32 flags);
 void func_80832264(PlayState* play, Player* player, LinkAnimationHeader* anim);
 }
-bool performDelayedSave = false;
-bool performSave = false;
 
 // TODO: When there's more uses of something like this, create a new GI::RawAction?
 void ReloadSceneTogglingLinkAge() {
     gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
-    gPlayState->sceneLoadFlag = 0x14;
-    gPlayState->fadeTransition = 42; // Fade Out
-    gSaveContext.nextTransitionType = 42;
+    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+    gPlayState->transitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST); // Fade Out
+    gSaveContext.nextTransitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST);
     gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
 }
 
@@ -221,8 +219,8 @@ void RegisterSwitchAge() {
             warped = true;
         }
 
-        if (warped && gPlayState->sceneLoadFlag != 0x0014 &&
-            gSaveContext.nextTransitionType == 255) {
+        if (warped && gPlayState->transitionTrigger != TRANS_TRIGGER_START &&
+            gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT) {
             GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
             GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
             if (roomNum != roomCtx->curRoom.num) {
@@ -272,14 +270,12 @@ void RegisterOcarinaTimeTravel() {
 
 void AutoSave(GetItemEntry itemEntry) {
     u8 item = itemEntry.itemId;
+    bool performSave = false;
     // Don't autosave immediately after buying items from shops to prevent getting them for free!
     // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
     // Don't autosave during the Ganon fight when picking up the Master Sword
-    // Don't autosave in the fishing pond to prevent getting rod on B outside of the pond
-    // Don't autosave in the bombchu bowling alley to prevent having chus on B outside of the minigame
-    // Don't autosave in grottos since resuming from grottos breaks the game.
     if ((CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
-        (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) && (gPlayState->sceneNum != SCENE_GANON_BOSS)) {
+        (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) && (gPlayState->sceneNum != SCENE_GANON_BOSS) && (gPlayState->sceneNum != SCENE_CHAMBER_OF_THE_SAGES)) {
         if (((CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS) || (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_ALL_ITEMS)) && (item != ITEM_NONE)) {
             // Autosave for all items
             performSave = true;
@@ -340,25 +336,9 @@ void AutoSave(GetItemEntry itemEntry) {
                    CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
             performSave = true;
         }
-        if (gPlayState->sceneNum == SCENE_FAIRYS_FOUNTAIN || gPlayState->sceneNum == SCENE_GROTTOS ||
-            gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES || gPlayState->sceneNum == SCENE_FISHING_POND ||
-            gPlayState->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) {
-            if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS ||
-                CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS ||
-                CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
-                performSave = false;
-                return;
-            }
-            if (performSave) {
-                performSave = false;
-                performDelayedSave = true;
-            }
-            return;
-        }
-        if (performSave || performDelayedSave) {
+        if (performSave) {
             Play_PerformSave(gPlayState);
             performSave = false;
-            performDelayedSave = false;
         }
     }
 }
@@ -662,10 +642,10 @@ void RegisterTriforceHunt() {
 
             // Warp to credits
             if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
-                gPlayState->nextEntranceIndex = 0x6B;
+                gPlayState->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
-                gPlayState->sceneLoadFlag = 0x14;
-                gPlayState->fadeTransition = 3;
+                gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+                gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
                 GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
             }
 
@@ -678,16 +658,19 @@ void RegisterTriforceHunt() {
                 triforcePieceScale = 0.0f;
                 GameInteractor::State::TriforceHuntPieceGiven = 0;
             }
+        }
+    });
+}
 
-            uint8_t currentPieces = gSaveContext.triforcePiecesCollected;
-            uint8_t requiredPieces = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
-            
-            // Give Boss Key when player loads back into the savefile.
-            if (currentPieces >= requiredPieces && gPlayState->sceneLoadFlag != 0x14 &&
-                (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
-                GetItemEntry getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
+void RegisterGrantGanonsBossKey() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        // Triforce Hunt needs the check if the player isn't being teleported to the credits scene.
+        if (!GameInteractor::IsGameplayPaused() &&
+            Flags_GetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY) && gPlayState->transitionTrigger != TRANS_TRIGGER_START &&
+            (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
+                GetItemEntry getItemEntry =
+                    ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
                 GiveItemEntryWithoutActor(gPlayState, getItemEntry);
-            }
         }
     });
 }
@@ -1124,6 +1107,7 @@ void InitMods() {
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
     RegisterTriforceHunt();
+    RegisterGrantGanonsBossKey();
     RegisterEnemyDefeatCounts();
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();

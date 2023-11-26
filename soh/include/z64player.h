@@ -494,8 +494,8 @@ typedef struct {
 #define PLAYER_STATE3_RESTORE_NAYRUS_LOVE (1 << 6) // Set by ocarina effects actors when destroyed to signal Nayru's Love may be restored (see `ACTOROVL_ALLOC_ABSOLUTE`)
 #define PLAYER_STATE3_HOOKSHOT_TRAVELLING (1 << 7) //Travelling to target
 
-typedef void (*PlayerFunc674)(struct Player*, struct PlayState*);
-typedef s32 (*PlayerFunc82C)(struct Player*, struct PlayState*);
+typedef void (*PlayerActionFunc)(struct Player*, struct PlayState*);
+typedef s32 (*UpperActionFunc)(struct Player*, struct PlayState*);
 typedef void (*PlayerFuncA74)(struct PlayState*, struct Player*);
 
 typedef struct Player {
@@ -512,7 +512,7 @@ typedef struct Player {
     /* 0x0155 */ char       unk_155[0x003];
     /* 0x0158 */ u8         modelGroup;
     /* 0x0159 */ u8         nextModelGroup;
-    /* 0x015A */ s8         unk_15A;
+    /* 0x015A */ s8         itemChangeType;
     /* 0x015B */ u8         modelAnimType;
     /* 0x015C */ u8         leftHandType;
     /* 0x015D */ u8         rightHandType;
@@ -548,11 +548,11 @@ typedef struct Player {
     /* 0x043C */ s8         mountSide;
     /* 0x043D */ char       unk_43D[0x003];
     /* 0x0440 */ Actor*     rideActor;
-    /* 0x0444 */ u8         csMode;
-    /* 0x0445 */ u8         prevCsMode;
-    /* 0x0446 */ u8         unk_446;
+    /* 0x0444 */ u8         csAction;
+    /* 0x0445 */ u8         prevCsAction;
+    /* 0x0446 */ u8         cueId;
     /* 0x0447 */ u8         unk_447;
-    /* 0x0448 */ Actor*     unk_448;
+    /* 0x0448 */ Actor*     csActor;
     /* 0x044C */ char       unk_44C[0x004];
     /* 0x0450 */ Vec3f      unk_450;
     /* 0x045C */ Vec3f      unk_45C;
@@ -567,7 +567,7 @@ typedef struct Player {
     /* 0x0668 */ char       unk_668[0x004];
     /* 0x066C */ s32        unk_66C;
     /* 0x0670 */ s32        meleeWeaponEffectIndex;
-    /* 0x0674 */ PlayerFunc674 func_674;
+    /* 0x0674 */ PlayerActionFunc actionFunc;
     /* 0x0678 */ PlayerAgeProperties* ageProperties;
     /* 0x067C */ u32        stateFlags1;
     /* 0x0680 */ u32        stateFlags2;
@@ -581,7 +581,7 @@ typedef struct Player {
     /* 0x0698 */ f32        targetActorDistance;
     /* 0x069C */ char       unk_69C[0x004];
     /* 0x06A0 */ f32        unk_6A0;
-    /* 0x06A4 */ f32        unk_6A4;
+    /* 0x06A4 */ f32        closestSecretDistSq;
     /* 0x06A8 */ Actor*     unk_6A8;
     /* 0x06AC */ s8         unk_6AC;
     /* 0x06AD */ u8         unk_6AD;
@@ -596,18 +596,18 @@ typedef struct Player {
     /* 0x06C0 */ s16        unk_6C0;
     /* 0x06C2 */ s16        unk_6C2;
     /* 0x06C4 */ f32        unk_6C4;
-    /* 0x06C8 */ SkelAnime  skelAnime2;
-    /* 0x070C */ Vec3s      jointTable2[PLAYER_LIMB_BUF_COUNT];
-    /* 0x079C */ Vec3s      morphTable2[PLAYER_LIMB_BUF_COUNT];
-    /* 0x082C */ PlayerFunc82C func_82C;
-    /* 0x0830 */ f32        unk_830;
+    /* 0x06C8 */ SkelAnime  upperSkelAnime;
+    /* 0x070C */ Vec3s      upperJointTable[PLAYER_LIMB_BUF_COUNT];
+    /* 0x079C */ Vec3s      upperMorphTable[PLAYER_LIMB_BUF_COUNT];
+    /* 0x082C */ UpperActionFunc upperActionFunc;
+    /* 0x0830 */ f32        upperAnimBlendWeight;
     /* 0x0834 */ s16        unk_834;
     /* 0x0836 */ s8         unk_836;
     /* 0x0837 */ u8         unk_837;
     /* 0x0838 */ f32        linearVelocity;
     /* 0x083C */ s16        currentYaw;
     /* 0x083E */ s16        targetYaw;
-    /* 0x0840 */ u16        unk_840;
+    /* 0x0840 */ u16        underwaterTimer;
     /* 0x0842 */ s8         meleeWeaponAnimation;
     /* 0x0843 */ s8         meleeWeaponState;
     /* 0x0844 */ s8         unk_844;
@@ -631,8 +631,8 @@ typedef struct Player {
     /* 0x087C */ s16        unk_87C;
     /* 0x087E */ s16        unk_87E;
     /* 0x0880 */ f32        unk_880;
-    /* 0x0884 */ f32        wallHeight; // height used to determine whether link can climb or grab a ledge at the top
-    /* 0x0888 */ f32        wallDistance; // distance to the colliding wall plane
+    /* 0x0884 */ f32        yDistToLedge; // y distance to ground above an interact wall. LEDGE_DIST_MAX if no ground is found
+    /* 0x0888 */ f32        distToInteractWall; // distance to the colliding wall plane
     /* 0x088C */ u8         unk_88C;
     /* 0x088D */ u8         unk_88D;
     /* 0x088E */ u8         unk_88E;
@@ -643,17 +643,17 @@ typedef struct Player {
     /* 0x0893 */ u8         hoverBootsTimer;
     /* 0x0894 */ s16        fallStartHeight; // last truncated Y position before falling
     /* 0x0896 */ s16        fallDistance; // truncated Y distance the player has fallen so far (positive is down)
-    /* 0x0898 */ s16        unk_898;
-    /* 0x089A */ s16        unk_89A;
+    /* 0x0898 */ s16        floorPitch; // angle of the floor slope in the direction of current world yaw (positive for ascending slope)
+    /* 0x089A */ s16        floorPitchAlt; // the calculation for this value is bugged and doesn't represent anything meaningful
     /* 0x089C */ s16        unk_89C;
-    /* 0x089E */ u16        unk_89E;
+    /* 0x089E */ u16        floorSfxOffset;
     /* 0x08A0 */ u8         unk_8A0;
     /* 0x08A1 */ u8         unk_8A1;
     /* 0x08A2 */ s16        unk_8A2;
     /* 0x08A4 */ f32        unk_8A4;
     /* 0x08A8 */ f32        unk_8A8;
-    /* 0x08AC */ f32        windSpeed; // Pushing player, examples include water currents, floor conveyors, climbing sloped surfaces // Upstream TODO: pushedSpeed
-    /* 0x08B0 */ s16        windDirection; // Yaw direction of player being pushed // Upstream TODO: pushedYaw
+    /* 0x08AC */ f32        pushedSpeed; // Pushing player, examples include water currents, floor conveyors, climbing sloped surfaces
+    /* 0x08B0 */ s16        pushedYaw; // Yaw direction of player being pushed
     /* 0x08B4 */ WeaponInfo meleeWeaponInfo[3];
     /* 0x0908 */ Vec3f      bodyPartsPos[PLAYER_BODYPART_MAX];
     /* 0x09E0 */ MtxF       mf_9E0;
