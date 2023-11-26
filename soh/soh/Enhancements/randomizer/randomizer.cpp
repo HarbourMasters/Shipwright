@@ -53,6 +53,8 @@ std::set<RandomizerTrick> enabledGlitches;
 std::set<std::map<RandomizerCheck, RandomizerCheckTrackerData>> checkTrackerStates;
 
 u8 generated;
+u8 selectSpoiler;
+u8 pickingSpoiler;
 char* seedString;
 
 const std::string Randomizer::getItemMessageTableID = "Randomizer";
@@ -360,6 +362,11 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Quest:GTG", RSK_MQ_GTG },
     { "Shuffle Dungeon Quest:Ganon's Castle", RSK_MQ_GANONS_CASTLE },
 };
+
+void SpoilerError(const std::exception& e) {
+    Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+    CVarSetString("gSpoilerLog", "None");
+}
 
 std::string sanitize(std::string stringValue) {
     // Add backslashes.
@@ -1186,6 +1193,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
 
         success = true;
     } catch (const std::exception& e) {
+        SpoilerError(e);
         return;
     }
 }
@@ -1411,6 +1419,7 @@ void Randomizer::ParseRequiredTrialsFile(const char* spoilerFileName) {
             this->trialsRequired[spoilerFileTrialToEnum[it.value()]] = true;
         }
     } catch (const std::exception& e) {
+        SpoilerError(e);
         return;
     }
 }
@@ -1432,6 +1441,7 @@ void Randomizer::ParseMasterQuestDungeonsFile(const char* spoilerFileName) {
             this->masterQuestDungeons.emplace(spoilerFileDungeonToScene[it.value()]);
         }
     } catch (const std::exception& e) {
+        SpoilerError(e);
         return;
     }
 }
@@ -1553,7 +1563,7 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
         }
         success = true;
     } catch (const std::exception& e) {
-        Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        SpoilerError(e);
         return;
     }
 }
@@ -1597,6 +1607,7 @@ void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent)
             }
         }
     } catch (const std::exception& e) {
+        SpoilerError(e);
         return;
     }
 }
@@ -2821,6 +2832,7 @@ RandomizerCheck Randomizer::GetCheckFromRandomizerInf(RandomizerInf randomizerIn
 }
 
 std::thread randoThread;
+std::thread selectSpoilerThread;
 
 void GenerateRandomizerImgui(std::string seed = "") {
     CVarSetInteger("gRandoGenerating", 1);
@@ -3170,8 +3182,22 @@ void RandomizerSettingsWindow::DrawElement() {
     if (ImGui::Button("Generate Randomizer")) {
         GenerateRandomizer(CVarGetInteger("gRandoManualSeedEntry", 0) ? seedString : "");
     }
-
+#ifndef __WIIU__
     UIWidgets::Spacer(0);
+    if (ImGui::Button("Select Spoiler")) {
+        ImGui::OpenPopup("Open File");
+    }
+    if (spoiler_dialog.showFileDialog("Open File", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, ImVec2(600, 310), ".json")) {
+        auto path = spoiler_dialog.selected_path.c_str();
+        CVarSetInteger("gNewFileDropped", 1);
+        CVarSetString("gDroppedFile", path);
+        CVarSetString("gSpoilerLastPath", spoiler_dialog.selected_dir.c_str());
+        CVarSetString("gSpoilerLog", path);
+        CVarSave();
+        CVarLoad();
+    }
+    ImGui::SameLine();
+#endif
     std::string spoilerfilepath = CVarGetString("gSpoilerLog", "");
     ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
 
@@ -6250,4 +6276,7 @@ void RandomizerSettingsWindow::InitElement() {
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     InitRandoItemTable();
+#ifndef __WIIU__
+    spoiler_dialog.setCurrentPath(CVarGetString("gSpoilerLastPath", LUS::Context::GetAppDirectoryPath().c_str()));
+#endif
 }
