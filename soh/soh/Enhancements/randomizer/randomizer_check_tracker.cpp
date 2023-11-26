@@ -952,9 +952,7 @@ void CheckTrackerWindow::DrawElement() {
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(extraColor.r / 255.0f, extraColor.g / 255.0f,
                                                         extraColor.b / 255.0f, extraColor.a / 255.0f));
 
-            isThisAreaSpoiled = areasSpoiled & areaMask || CVarGetInteger("gCheckTrackerOptionMQSpoilers", 0) || !IS_RANDO ||
-                                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) == 0 || 
-                                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) == 12;
+            isThisAreaSpoiled = areasSpoiled & areaMask || CVarGetInteger("gCheckTrackerOptionMQSpoilers", 0) || !IS_RANDO;
 
             if (isThisAreaSpoiled) {
                 if (showVOrMQ && RandomizerCheckObjects::AreaIsDungeon(rcArea)) {
