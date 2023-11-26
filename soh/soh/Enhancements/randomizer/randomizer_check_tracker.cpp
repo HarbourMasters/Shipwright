@@ -341,8 +341,9 @@ bool vector_contains_scene(std::vector<SceneID> vec, const int16_t scene) {
 
 std::vector<SceneID> skipScenes = {SCENE_GANON_BOSS, SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR, SCENE_GANON_BOSS, SCENE_INSIDE_GANONS_CASTLE_COLLAPSE, SCENE_GANONS_TOWER_COLLAPSE_INTERIOR};
 
-void ClearAreaTotals() {
+void ClearAreaChecksAndTotals() {
     for (auto& [rcArea, vec] : checksByArea) {
+        vec.clear();
         areaChecksGotten[rcArea] = 0;
     }
 }
@@ -755,7 +756,7 @@ void LoadFile() {
 
 void Teardown() {
     initialized = false;
-    ClearAreaTotals();
+    ClearAreaChecksAndTotals();
     checksByArea.clear();
     areasSpoiled = 0;
 
