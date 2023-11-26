@@ -197,6 +197,9 @@ namespace Settings {
   Option ShuffleAdultTradeQuest     = Option::Bool("Shuffle Adult Trade",    {"Off", "On"});
   Option ShuffleChestMinigame       = Option::U8  ("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"});
   Option Shuffle100GSReward         = Option::Bool("Shuffle 100 GS Reward",  {"Off", "On"});
+  Option Fishsanity                 = Option::U8  ("Fishsanity",             {"Off", "Shuffle Fishing Pond"});
+  Option FishsanityPondCount        = Option::U8  ("Pond Fish Count",        {NumOpts(0, 17, 1)}, OptionCategory::Setting, 0, true);
+  Option FishsanityAgeSplit         = Option::Bool("Split Pond Fish",        {"Off", "On"});
 
   std::vector<Option *> shuffleOptions = {
     &RandomizeShuffle,
@@ -208,6 +211,9 @@ namespace Settings {
     &ShopsanityPricesAffordable,
     &Tokensanity,
     &Scrubsanity,
+    &Fishsanity,
+    &FishsanityPondCount,
+    &FishsanityAgeSplit,
     &ShuffleCows,
     &ShuffleKokiriSword,
     &ShuffleMasterSword,
@@ -219,7 +225,7 @@ namespace Settings {
     &ShuffleFrogSongRupees,
     &ShuffleAdultTradeQuest,
     &ShuffleChestMinigame,
-    &Shuffle100GSReward,
+    &Shuffle100GSReward
   };
 
   //Shuffle Dungeon Items
@@ -1324,6 +1330,9 @@ namespace Settings {
     ctx.shuffleAdultTradeQuest = (ShuffleAdultTradeQuest) ? 1 : 0;
     ctx.shuffleChestMinigame = ShuffleChestMinigame.Value<uint8_t>();
     ctx.shuffle100GsReward   = (Shuffle100GSReward) ? 1 : 0;
+    ctx.fishsanity           = Fishsanity.Value<uint8_t>();
+    ctx.fishsanityPondCount  = FishsanityPondCount.Value<uint8_t>();
+    ctx.fishsanityAgeSplit   = (FishsanityAgeSplit) ? 1 : 0;
 
     ctx.mapsAndCompasses     = MapsAndCompasses.Value<uint8_t>();
     ctx.keysanity            = Keysanity.Value<uint8_t>();
@@ -1606,6 +1615,18 @@ namespace Settings {
       Unhide(cowLocations);
     } else {
       IncludeAndHide(cowLocations);
+    }
+
+    //Force include fish locations based on fishsanity settings
+    std::vector<uint32_t> allFish = GetLocations(everyPossibleLocation, Category::cFish);
+    if (Fishsanity.Is(FISHSANITY_OFF)) {
+      // Fishsanity is off; no need to do any extra work.
+      IncludeAndHide(allFish);
+    } else {
+      // Force include inactive fish & unhide active fish
+      auto [activeFish, inactiveFish] = GetFishsanityLocations();
+      Unhide(activeFish);
+      IncludeAndHide(inactiveFish);
     }
 
     //Force include the Kokiri Sword Chest if Shuffle Kokiri Sword is Off
@@ -1949,6 +1970,17 @@ namespace Settings {
       if (GanonsBossKey.Is(GANONSBOSSKEY_FINAL_GS_REWARD)) {
         Shuffle100GSReward.SetSelectedIndex(ON);
       }
+
+      // Fishsanity settings should not appear if fishsanity is off
+      if (!Fishsanity.Is(FISHSANITY_OFF)) {
+        FishsanityPondCount.Unhide();
+        FishsanityAgeSplit.Unhide();
+      } else {
+        FishsanityPondCount.Hide();
+        FishsanityPondCount.SetSelectedIndex(0);
+        FishsanityAgeSplit.Hide();
+        FishsanityAgeSplit.SetSelectedIndex(0);
+      }
     }
 
     //Force Link's Pocket Item to be a dungeon reward if Shuffle Rewards is end of dungeons
@@ -2075,6 +2107,9 @@ namespace Settings {
     &ShuffleAdultTradeQuest,
     &Shuffle100GSReward,
     &GossipStoneHints,
+    &Fishsanity,
+    &FishsanityPondCount,
+    &FishsanityAgeSplit
   };
 
   // Randomizes all settings in a category if chosen
@@ -2280,6 +2315,9 @@ namespace Settings {
     ShopsanityPrices.SetSelectedIndex(cvarSettings[RSK_SHOPSANITY_PRICES]);
     ShopsanityPricesAffordable.SetSelectedIndex(cvarSettings[RSK_SHOPSANITY_PRICES_AFFORDABLE]);
     Scrubsanity.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SCRUBS]);
+    Fishsanity.SetSelectedIndex(cvarSettings[RSK_FISHSANITY]);
+    FishsanityPondCount.SetSelectedIndex(cvarSettings[RSK_FISHSANITY_POND_COUNT]);
+    FishsanityAgeSplit.SetSelectedIndex(cvarSettings[RSK_FISHSANITY_AGE_SPLIT]);
     ShuffleCows.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_COWS]);
     ShuffleKokiriSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD]);
     ShuffleMasterSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_MASTER_SWORD]);

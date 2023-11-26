@@ -52,6 +52,40 @@ void LocationTable_Init() {
 
     //Lake Hylia
     locationTable[LH_CHILD_FISHING]                      = ItemLocation::Base       (RC_LH_CHILD_FISHING,                           0x49,       "LH Child Fishing",                     LH_CHILD_FISHING,                      PIECE_OF_HEART,            {},                                                   SpoilerCollectionCheck::RandomizerInf(),         SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_1]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_1,							0x49,		"LH Child Pond Fish 1",					LH_CHILD_FISH_1,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_2]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_2,							0x49,		"LH Child Pond Fish 2",					LH_CHILD_FISH_2,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_3]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_3,							0x49,		"LH Child Pond Fish 3",					LH_CHILD_FISH_3,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_4]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_4,							0x49,		"LH Child Pond Fish 4",					LH_CHILD_FISH_4,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_5]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_5,							0x49,		"LH Child Pond Fish 5",					LH_CHILD_FISH_5,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_6]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_6,							0x49,		"LH Child Pond Fish 6",					LH_CHILD_FISH_6,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_7]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_7,							0x49,		"LH Child Pond Fish 7",					LH_CHILD_FISH_7,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_8]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_8,							0x49,		"LH Child Pond Fish 8",					LH_CHILD_FISH_8,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_9]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_9,							0x49,		"LH Child Pond Fish 9",					LH_CHILD_FISH_9,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_10]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_10,							0x49,		"LH Child Pond Fish 10",				LH_CHILD_FISH_10,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_11]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_11,							0x49,		"LH Child Pond Fish 11",				LH_CHILD_FISH_11,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_12]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_12,							0x49,		"LH Child Pond Fish 12",				LH_CHILD_FISH_12,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_13]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_13,							0x49,		"LH Child Pond Fish 13",				LH_CHILD_FISH_13,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_14]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_14,							0x49,		"LH Child Pond Fish 14",				LH_CHILD_FISH_14,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_15]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_15,							0x49,		"LH Child Pond Fish 15",				LH_CHILD_FISH_15,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_LOACH_1]						 = ItemLocation::Base		(RC_LH_CHILD_LOACH_1,							0x49,		"LH Child Pond Loach 1",				LH_CHILD_LOACH_1,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_LOACH_2]						 = ItemLocation::Base		(RC_LH_CHILD_LOACH_2,							0x49,		"LH Child Pond Loach 2",				LH_CHILD_LOACH_2,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISHING]                      = ItemLocation::Base       (RC_LH_ADULT_FISHING,                           0x49,       "LH Adult Fishing",                     LH_ADULT_FISHING,                      PROGRESSIVE_SCALE,         {},                                                   SpoilerCollectionCheck::RandomizerInf(),         SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_1]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_1,							0x49,		"LH Adult Pond Fish 1",					LH_ADULT_FISH_1,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_2]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_2,							0x49,		"LH Adult Pond Fish 2",					LH_ADULT_FISH_2,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_3]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_3,							0x49,		"LH Adult Pond Fish 3",					LH_ADULT_FISH_3,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_4]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_4,							0x49,		"LH Adult Pond Fish 4",					LH_ADULT_FISH_4,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_5]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_5,							0x49,		"LH Adult Pond Fish 5",					LH_ADULT_FISH_5,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_6]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_6,							0x49,		"LH Adult Pond Fish 6",					LH_ADULT_FISH_6,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_7]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_7,							0x49,		"LH Adult Pond Fish 7",					LH_ADULT_FISH_7,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_8]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_8,							0x49,		"LH Adult Pond Fish 8",					LH_ADULT_FISH_8,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_9]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_9,							0x49,		"LH Adult Pond Fish 9",					LH_ADULT_FISH_9,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_10]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_10,							0x49,		"LH Adult Pond Fish 10",				LH_ADULT_FISH_10,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_11]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_11,							0x49,		"LH Adult Pond Fish 11",				LH_ADULT_FISH_11,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_12]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_12,							0x49,		"LH Adult Pond Fish 12",				LH_ADULT_FISH_12,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_13]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_13,							0x49,		"LH Adult Pond Fish 13",				LH_ADULT_FISH_13,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_14]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_14,							0x49,		"LH Adult Pond Fish 14",				LH_ADULT_FISH_14,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_15]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_15,							0x49,		"LH Adult Pond Fish 15",				LH_ADULT_FISH_15,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_LOACH]						 = ItemLocation::Base		(RC_LH_ADULT_LOACH,							    0x49,		"LH Adult Pond Loach",					LH_ADULT_LOACH,					       NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
     locationTable[LH_ADULT_FISHING]                      = ItemLocation::Base       (RC_LH_ADULT_FISHING,                           0x49,       "LH Adult Fishing",                     LH_ADULT_FISHING,                      PROGRESSIVE_SCALE,         {},                                                   SpoilerCollectionCheck::RandomizerInf(),         SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
     locationTable[LH_LAB_DIVE]                           = ItemLocation::Base       (RC_LH_LAB_DIVE,                                0x38,       "LH Lab Dive",                          LH_LAB_DIVE,                           PIECE_OF_HEART,            {},                                                   SpoilerCollectionCheck::ItemGetInf(24),          SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
     locationTable[LH_TRADE_FROG]                         = ItemLocation::Base       (RC_LH_TRADE_FROG,                              0x38,       "LH Lab Trade Eyeball Frog",            LH_TRADE_FROG,                         EYEDROPS,                  {Category::cAdultTrade},                              SpoilerCollectionCheck::RandomizerInf(),         SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
@@ -1066,6 +1100,37 @@ std::vector<uint32_t> ScrubLocations = {
   GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT,
 };
 
+std::vector<uint32_t> pondFishLocations = {
+    LH_CHILD_FISH_1,  LH_CHILD_FISH_2,  LH_CHILD_FISH_3,  LH_CHILD_FISH_4,  LH_CHILD_FISH_5,  LH_CHILD_FISH_6,
+    LH_CHILD_FISH_7,  LH_CHILD_FISH_8,  LH_CHILD_FISH_9,  LH_CHILD_FISH_10, LH_CHILD_FISH_11, LH_CHILD_FISH_12,
+    LH_CHILD_FISH_13, LH_CHILD_FISH_14, LH_CHILD_FISH_15, LH_CHILD_LOACH_1, LH_CHILD_LOACH_2, LH_ADULT_FISH_1,
+    LH_ADULT_FISH_2,  LH_ADULT_FISH_3,  LH_ADULT_FISH_4,  LH_ADULT_FISH_5,  LH_ADULT_FISH_6,  LH_ADULT_FISH_7,
+    LH_ADULT_FISH_8,  LH_ADULT_FISH_9,  LH_ADULT_FISH_10, LH_ADULT_FISH_11, LH_ADULT_FISH_12, LH_ADULT_FISH_13,
+    LH_ADULT_FISH_14, LH_ADULT_FISH_15, LH_ADULT_LOACH,
+};
+std::unordered_map<uint32_t, uint8_t> pondFishLocationAgeMap = {
+    { LH_CHILD_FISH_1, AGE_CHILD },  { LH_CHILD_FISH_2, AGE_CHILD },  { LH_CHILD_FISH_3, AGE_CHILD },
+    { LH_CHILD_FISH_4, AGE_CHILD },  { LH_CHILD_FISH_5, AGE_CHILD },  { LH_CHILD_FISH_6, AGE_CHILD },
+    { LH_CHILD_FISH_7, AGE_CHILD },  { LH_CHILD_FISH_8, AGE_CHILD },  { LH_CHILD_FISH_9, AGE_CHILD },
+    { LH_CHILD_FISH_10, AGE_CHILD }, { LH_CHILD_FISH_11, AGE_CHILD }, { LH_CHILD_FISH_12, AGE_CHILD },
+    { LH_CHILD_FISH_13, AGE_CHILD }, { LH_CHILD_FISH_14, AGE_CHILD }, { LH_CHILD_FISH_15, AGE_CHILD },
+    { LH_CHILD_LOACH_1, AGE_CHILD }, { LH_CHILD_LOACH_2, AGE_CHILD }, { LH_ADULT_FISH_1, AGE_ADULT },
+    { LH_ADULT_FISH_2, AGE_ADULT },  { LH_ADULT_FISH_3, AGE_ADULT },  { LH_ADULT_FISH_4, AGE_ADULT },
+    { LH_ADULT_FISH_5, AGE_ADULT },  { LH_ADULT_FISH_6, AGE_ADULT },  { LH_ADULT_FISH_7, AGE_ADULT },
+    { LH_ADULT_FISH_8, AGE_ADULT },  { LH_ADULT_FISH_9, AGE_ADULT },  { LH_ADULT_FISH_10, AGE_ADULT },
+    { LH_ADULT_FISH_11, AGE_ADULT }, { LH_ADULT_FISH_12, AGE_ADULT }, { LH_ADULT_FISH_13, AGE_ADULT },
+    { LH_ADULT_FISH_14, AGE_ADULT }, { LH_ADULT_FISH_15, AGE_ADULT }, { LH_ADULT_LOACH, AGE_ADULT }
+};
+std::vector<uint32_t> pondFishChildLocations = { LH_CHILD_FISH_1,  LH_CHILD_FISH_2,  LH_CHILD_FISH_3,  LH_CHILD_FISH_4,
+                                                 LH_CHILD_FISH_5,  LH_CHILD_FISH_6,  LH_CHILD_FISH_7,  LH_CHILD_FISH_8,
+                                                 LH_CHILD_FISH_9,  LH_CHILD_FISH_10, LH_CHILD_FISH_11, LH_CHILD_FISH_12,
+                                                 LH_CHILD_FISH_13, LH_CHILD_FISH_14, LH_CHILD_FISH_15, LH_CHILD_LOACH_1,
+                                                 LH_CHILD_LOACH_2 };
+std::vector<uint32_t> pondFishAdultLocations = { LH_ADULT_FISH_1,  LH_ADULT_FISH_2,  LH_ADULT_FISH_3,  LH_ADULT_FISH_4,
+                                                 LH_ADULT_FISH_5,  LH_ADULT_FISH_6,  LH_ADULT_FISH_7,  LH_ADULT_FISH_8,
+                                                 LH_ADULT_FISH_9,  LH_ADULT_FISH_10, LH_ADULT_FISH_11, LH_ADULT_FISH_12,
+                                                 LH_ADULT_FISH_13, LH_ADULT_FISH_14, LH_ADULT_FISH_15, LH_ADULT_LOACH };
+
 //List of gossip stone locations for hints
 std::vector<uint32_t> gossipStoneLocations = {
   DMC_GOSSIP_STONE,
@@ -1530,6 +1595,12 @@ void GenerateLocationPool() {
   }
   AddLocations(overworldLocations);
 
+  // Add active fishsanity locations
+  if (Settings::Fishsanity.IsNot(FISHSANITY_OFF)) {
+    auto fishsanityLocations = GetFishsanityLocations();
+    AddLocations(fishsanityLocations.first);
+  }
+
   for (auto dungeon : Dungeon::dungeonList) {
     AddLocations(dungeon->GetDungeonLocations());
   }
@@ -1577,6 +1648,39 @@ std::vector<uint32_t> GetLocations(const std::vector<uint32_t>& locationPool, Ca
     }
   }
   return locationsInCategory;
+}
+
+std::pair<std::vector<uint32_t>, std::vector<uint32_t>> GetFishsanityLocations() {
+  uint8_t numFish = Settings::FishsanityPondCount.Value<uint8_t>();
+  bool splitPond = Settings::FishsanityAgeSplit.Value<bool>();
+  std::vector<uint32_t> activeFish;
+  std::vector<uint32_t> remainingFish = std::vector(pondFishLocations);
+  // No pond fish shuffled
+  if (numFish == 0) {
+    return std::make_pair(activeFish, remainingFish);
+  }
+  // Every pond fish is shuffled, so we can save some time
+  if (numFish > 16) {
+    // Child and adult pond fish are both shuffled, set activeFish to remainingFish and return an empty vector for inactive fish.
+    if (splitPond) {
+      return std::make_pair(remainingFish, activeFish);
+    }
+    // Activate all child fish only
+    activeFish = FilterAndEraseFromPool(remainingFish, [](const uint32_t loc) { return pondFishLocationAgeMap[loc] == AGE_CHILD; });
+    return std::make_pair(activeFish, remainingFish);
+  }
+  // Only some pond fish are shuffled, so we have to only activate the requested number.
+  activeFish.insert(activeFish.end(), pondFishChildLocations.begin(), pondFishChildLocations.begin() + numFish);
+  // If pond is split, also add the requested number of adult fish.
+  if (splitPond) {
+    activeFish.insert(activeFish.end(), pondFishAdultLocations.begin(),
+                      pondFishAdultLocations.begin() + std::min<uint8_t>(numFish, 16));
+  }
+  // NOTE: This only works because we can assume activeFish is already sorted; changes that break this assumption will also break this
+  FilterAndEraseFromPool(remainingFish,
+                         [&](uint32_t loc) { return std::binary_search(activeFish.begin(), activeFish.end(), loc); });
+
+  return std::make_pair(activeFish, remainingFish);
 }
 
 void LocationReset() {

@@ -29,6 +29,10 @@ typedef struct {
     /* 0x02 */ Vec3s pos;
     /* 0x08 */ u8 baseLength;
     /* 0x0C */ f32 perception;
+    // not super happy about adding these to the init,
+    // but feels better than imposing hidden contiguity requirements elsewhere
+    RandomizerCheck childCheck;
+    RandomizerCheck adultCheck;
 } FishingFishInit; // size = 0x10
 
 typedef enum {
@@ -823,12 +827,24 @@ void Fishing_InitPondProps(Fishing* this, PlayState* play) {
 }
 
 static FishingFishInit sFishInits[] = {
-    { 0, { 666, -45, 354 }, 38, 0.1f },    { 0, { 681, -45, 240 }, 36, 0.1f },   { 0, { 670, -45, 90 }, 41, 0.05f },
-    { 0, { 615, -45, -450 }, 35, 0.2f },   { 0, { 500, -45, -420 }, 39, 0.1f },  { 0, { 420, -45, -550 }, 44, 0.05f },
-    { 0, { -264, -45, -640 }, 40, 0.1f },  { 0, { -470, -45, -540 }, 34, 0.2f }, { 0, { -557, -45, -430 }, 54, 0.01f },
-    { 0, { -260, -60, -330 }, 47, 0.05f }, { 0, { -500, -60, 330 }, 42, 0.06f }, { 0, { 428, -40, -283 }, 33, 0.2f },
-    { 0, { 409, -70, -230 }, 57, 0.0f },   { 0, { 450, -67, -300 }, 63, 0.0f },  { 0, { -136, -65, -196 }, 71, 0.0f },
-    { 1, { -561, -35, -547 }, 45, 0.0f },  { 1, { 667, -35, 317 }, 43, 0.0f },
+    /* isLoach		   pos			baseLength	 perception 		childCheck			 adultCheck */
+    { false,	{ 666, -45, 354 },		38,			0.1f,		RC_LH_CHILD_FISH_1,	 RC_LH_ADULT_FISH_1 },
+    { false,	{ 681, -45, 240 },		36,			0.1f,		RC_LH_CHILD_FISH_2,	 RC_LH_ADULT_FISH_2 },
+    { false,	{ 670, -45, 90 },		41,			0.05f,		RC_LH_CHILD_FISH_3,	 RC_LH_ADULT_FISH_3 },
+    { false,	{ 615, -45, -450 },		35,			0.2f,		RC_LH_CHILD_FISH_4,	 RC_LH_ADULT_FISH_4 },
+    { false,	{ 500, -45, -420 },		39,			0.1f,		RC_LH_CHILD_FISH_5,	 RC_LH_ADULT_FISH_5 },
+    { false,	{ 420, -45, -550 },		44,			0.05f,		RC_LH_CHILD_FISH_6,	 RC_LH_ADULT_FISH_6 },
+    { false,	{ -264, -45, -640 },	40,			0.1f,		RC_LH_CHILD_FISH_7,  RC_LH_ADULT_FISH_7 },
+    { false,	{ -470, -45, -540 },	34,			0.2f,		RC_LH_CHILD_FISH_8,  RC_LH_ADULT_FISH_8 },
+    { false,	{ -557, -45, -430 },	54,			0.01f,		RC_LH_CHILD_FISH_9,  RC_LH_ADULT_FISH_9 },
+    { false,	{ -260, -60, -330 },	47,			0.05f,		RC_LH_CHILD_FISH_10, RC_LH_ADULT_FISH_10 },
+    { false,	{ -500, -60, 330 },		42,			0.06f,		RC_LH_CHILD_FISH_11, RC_LH_ADULT_FISH_11 },
+    { false,	{ 428, -40, -283 },		33,			0.2f,		RC_LH_CHILD_FISH_12, RC_LH_ADULT_FISH_12 },
+    { false,	{ 409, -70, -230 },		57,			0.0f,		RC_LH_CHILD_FISH_13, RC_LH_ADULT_FISH_13 },
+    { false,	{ 450, -67, -300 },		63,			0.0f,		RC_LH_CHILD_FISH_14, RC_LH_ADULT_FISH_14 },
+    { false,	{ -136, -65, -196 },	71,			0.0f,		RC_LH_CHILD_FISH_15, RC_LH_ADULT_FISH_15 },
+    { true,		{ -561, -35, -547 },	45,			0.0f,		RC_LH_CHILD_LOACH_1, RC_LH_ADULT_LOACH },
+    { true,		{ 667, -35, 317 },		43,			0.0f,		RC_LH_CHILD_LOACH_2, RC_UNKNOWN_CHECK },    // Second loach only appears as child
 };
 
 static InitChainEntry sInitChain[] = {
@@ -978,7 +994,9 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
                            ENKANBAN_FISHING);
         Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, 0.0f, 0.0f, 0.0f, 0, 0, 0, 200, true);
 
+        // Loach(es) will spawn every fourth game
         if ((KREG(1) == 1) || ((sFishGameNumber & 3) == 3)) {
+            // Fishes 16 and 17 are loaches. Only 16 is spawned as adult; child also spawns 17.
             if (sLinkAge != LINK_AGE_CHILD) {
                 fishCount = 16;
             } else {
@@ -990,7 +1008,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
 
         for (i = 0; i < fishCount; i++) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, sFishInits[i].pos.x, sFishInits[i].pos.y,
-                        sFishInits[i].pos.z, 0, Rand_ZeroFloat(0x10000), 0, 100 + i, true);
+                        sFishInits[i].pos.z, 0, Rand_ZeroFloat(0x10000), 0, EN_FISH_PARAM + i, true);
         }
     } else {
         if ((thisx->params < (EN_FISH_PARAM + 15)) || (thisx->params == EN_FISH_AQUARIUM)) {

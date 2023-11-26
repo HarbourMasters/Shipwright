@@ -721,6 +721,23 @@ void GenerateItemPool() {
     PlaceVanillaCowMilk();
   }
 
+  if (Fishsanity.Value<uint8_t>() != FISHSANITY_OFF) {
+    // 17 max child pond fish
+    uint8_t pondCt = FishsanityPondCount.Value<uint8_t>();
+    for (uint8_t i = 0; i < pondCt; i++) {
+      AddItemToMainPool(GetJunkItem());
+    }
+
+    if (FishsanityAgeSplit) {
+      // 16 max adult pond fish, have to reduce to 16 if every fish is enabled
+      if (pondCt > 16)
+        pondCt = 16;
+      for (uint8_t i = 0; i < pondCt; i++) {
+        AddItemToMainPool(GetJunkItem());
+      }
+    }
+  }
+
   if (ShuffleMagicBeans) {
     AddItemToMainPool(MAGIC_BEAN_PACK);
     if (ItemPoolValue.Is(ITEMPOOL_PLENTIFUL)) {

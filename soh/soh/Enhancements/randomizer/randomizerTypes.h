@@ -69,6 +69,7 @@ typedef enum {
     RCTYPE_BOSS_HEART_OR_OTHER_REWARD, // Boss heart container or lesser dungeon rewards (lens, ice arrow)
     RCTYPE_DUNGEON_REWARD,             // Dungeon rewards (blue warps)
     RCTYPE_OCARINA,                    // Ocarina locations
+    RCTYPE_FISH                        // Fish
 } RandomizerCheckType;
 
 typedef enum { RCVORMQ_VANILLA, RCVORMQ_MQ, RCVORMQ_BOTH } RandomizerCheckVanillaOrMQ;
@@ -370,7 +371,40 @@ typedef enum {
     RC_ZF_GS_HIDDEN_CAVE,
     RC_LH_UNDERWATER_ITEM,
     RC_LH_CHILD_FISHING,
+    RC_LH_CHILD_FISH_1,
+    RC_LH_CHILD_FISH_2,
+    RC_LH_CHILD_FISH_3,
+    RC_LH_CHILD_FISH_4,
+    RC_LH_CHILD_FISH_5,
+    RC_LH_CHILD_FISH_6,
+    RC_LH_CHILD_FISH_7,
+    RC_LH_CHILD_FISH_8,
+    RC_LH_CHILD_FISH_9,
+    RC_LH_CHILD_FISH_10,
+    RC_LH_CHILD_FISH_11,
+    RC_LH_CHILD_FISH_12,
+    RC_LH_CHILD_FISH_13,
+    RC_LH_CHILD_FISH_14,
+    RC_LH_CHILD_FISH_15,
+    RC_LH_CHILD_LOACH_1,
+    RC_LH_CHILD_LOACH_2,
     RC_LH_ADULT_FISHING,
+    RC_LH_ADULT_FISH_1,
+    RC_LH_ADULT_FISH_2,
+    RC_LH_ADULT_FISH_3,
+    RC_LH_ADULT_FISH_4,
+    RC_LH_ADULT_FISH_5,
+    RC_LH_ADULT_FISH_6,
+    RC_LH_ADULT_FISH_7,
+    RC_LH_ADULT_FISH_8,
+    RC_LH_ADULT_FISH_9,
+    RC_LH_ADULT_FISH_10,
+    RC_LH_ADULT_FISH_11,
+    RC_LH_ADULT_FISH_12,
+    RC_LH_ADULT_FISH_13,
+    RC_LH_ADULT_FISH_14,
+    RC_LH_ADULT_FISH_15,
+    RC_LH_ADULT_LOACH,
     RC_LH_LAB_DIVE,
     RC_LH_TRADE_FROG,
     RC_LH_FREESTANDING_POH,
@@ -1471,6 +1505,9 @@ typedef enum {
     RSK_TRIFORCE_HUNT,
     RSK_TRIFORCE_HUNT_PIECES_TOTAL,
     RSK_TRIFORCE_HUNT_PIECES_REQUIRED,
+    RSK_FISHSANITY,
+    RSK_FISHSANITY_POND_COUNT,
+    RSK_FISHSANITY_AGE_SPLIT,
     RSK_MAX
 } RandomizerSettingKey;
 
@@ -1587,6 +1624,12 @@ typedef enum {
     RO_SCRUBS_EXPENSIVE,
     RO_SCRUBS_RANDOM,
 } RandoOptionScrubsanity;
+
+//Fishsanity settings (off, pond only)
+typedef enum {
+    RO_FISHSANITY_OFF,
+    RO_FISHSANITY_POND
+} RandoOptionsFishsanity;
 
 //Ammo drop settings (on, "on+bombchu", off)
 typedef enum {
@@ -1805,6 +1848,11 @@ typedef struct CowIdentity {
     RandomizerInf randomizerInf;
     RandomizerCheck randomizerCheck;
 } CowIdentity;
+
+typedef struct FishIdentity {
+    RandomizerInf randomizerInf;
+    RandomizerCheck randomizerCheck;
+} FishIdentity;
 
 typedef enum {
     TRACKER_WINDOW_FLOATING,

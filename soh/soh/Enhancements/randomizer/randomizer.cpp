@@ -250,6 +250,9 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Scrub Shuffle", RSK_SHUFFLE_SCRUBS },
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
+    { "Shuffle Settings:Fishsanity", RSK_FISHSANITY },
+    { "Shuffle Settings:Pond Fish Count", RSK_FISHSANITY_POND_COUNT },
+    { "Shuffle Settings:Split Pond Fish", RSK_FISHSANITY_AGE_SPLIT },
     { "Shuffle Settings:Shuffle Ocarinas", RSK_SHUFFLE_OCARINA },
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
     { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
@@ -539,6 +542,28 @@ std::unordered_map<RandomizerGet, EnGirlAShopItem> randomizerGetToEnGirlShopItem
     { RG_BUY_RED_POTION_50, SI_RED_POTION_R50 },
 };
 
+// Reference soh/src/overlays/actors/ovl_Fishing/z_fishing.c
+static constexpr std::array<std::pair<RandomizerCheck, RandomizerCheck>, 17> randomizerFishingPondFish = {{
+    /*   Child Check           Adult Check    */
+    { RC_LH_CHILD_FISH_1,   RC_LH_ADULT_FISH_1 },
+    { RC_LH_CHILD_FISH_2,   RC_LH_ADULT_FISH_2 },
+    { RC_LH_CHILD_FISH_3,   RC_LH_ADULT_FISH_3 },
+    { RC_LH_CHILD_FISH_4,   RC_LH_ADULT_FISH_4 },
+    { RC_LH_CHILD_FISH_5,   RC_LH_ADULT_FISH_5 },
+    { RC_LH_CHILD_FISH_6,   RC_LH_ADULT_FISH_6 },
+    { RC_LH_CHILD_FISH_7,   RC_LH_ADULT_FISH_7 },
+    { RC_LH_CHILD_FISH_8,   RC_LH_ADULT_FISH_8 },
+    { RC_LH_CHILD_FISH_9,   RC_LH_ADULT_FISH_9 },
+    { RC_LH_CHILD_FISH_10,  RC_LH_ADULT_FISH_10 },
+    { RC_LH_CHILD_FISH_11,  RC_LH_ADULT_FISH_11 },
+    { RC_LH_CHILD_FISH_12,  RC_LH_ADULT_FISH_12 },
+    { RC_LH_CHILD_FISH_13,  RC_LH_ADULT_FISH_13 },
+    { RC_LH_CHILD_FISH_14,  RC_LH_ADULT_FISH_14 },
+    { RC_LH_CHILD_FISH_15,  RC_LH_ADULT_FISH_15 },
+    { RC_LH_CHILD_LOACH_1,  RC_LH_ADULT_LOACH },
+    { RC_LH_CHILD_LOACH_2,  RC_UNKNOWN_CHECK }
+}};
+
 void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
     CustomMessageManager::Instance->ClearMessageTable(Randomizer::merchantMessageTableID);
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::merchantMessageTableID);
@@ -798,8 +823,16 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_STARTING_SKULLTULA_TOKEN:
                     case RSK_TRIFORCE_HUNT_PIECES_TOTAL:
                     case RSK_TRIFORCE_HUNT_PIECES_REQUIRED:
+                    case RSK_FISHSANITY_POND_COUNT:
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
+                        break;
+                    case RSK_FISHSANITY:
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = RO_FISHSANITY_OFF;
+                        } else if (it.value() == "Shuffle Fishing Pond") {
+                            gSaveContext.randoSettings[index].value = RO_FISHSANITY_POND;
+                        }
                         break;
                     case RSK_SHOPSANITY:
                         if(it.value() == "Off") {
@@ -909,6 +942,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHOPSANITY_PRICES_AFFORDABLE:
                     case RSK_ALL_LOCATIONS_REACHABLE:
                     case RSK_TRIFORCE_HUNT:
+                    case RSK_FISHSANITY_AGE_SPLIT:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = RO_GENERIC_OFF;
                         } else if(it.value() == "On") {
@@ -2545,7 +2579,40 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_LH_TRADE_FROG,                                               RAND_INF_ADULT_TRADES_LH_TRADE_FROG },
     { RC_DMT_TRADE_EYEDROPS,                                          RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS },
     { RC_LH_CHILD_FISHING,                                            RAND_INF_CHILD_FISHING },
+    { RC_LH_CHILD_FISH_1,                                             RAND_INF_CHILD_FISH_1 },
+    { RC_LH_CHILD_FISH_2,                                             RAND_INF_CHILD_FISH_2 },
+    { RC_LH_CHILD_FISH_3,                                             RAND_INF_CHILD_FISH_3 },
+    { RC_LH_CHILD_FISH_4,                                             RAND_INF_CHILD_FISH_4 },
+    { RC_LH_CHILD_FISH_5,                                             RAND_INF_CHILD_FISH_5 },
+    { RC_LH_CHILD_FISH_6,                                             RAND_INF_CHILD_FISH_6 },
+    { RC_LH_CHILD_FISH_7,                                             RAND_INF_CHILD_FISH_7 },
+    { RC_LH_CHILD_FISH_8,                                             RAND_INF_CHILD_FISH_8 },
+    { RC_LH_CHILD_FISH_9,                                             RAND_INF_CHILD_FISH_9 },
+    { RC_LH_CHILD_FISH_10,                                            RAND_INF_CHILD_FISH_10 },
+    { RC_LH_CHILD_FISH_11,                                            RAND_INF_CHILD_FISH_11 },
+    { RC_LH_CHILD_FISH_12,                                            RAND_INF_CHILD_FISH_12 },
+    { RC_LH_CHILD_FISH_13,                                            RAND_INF_CHILD_FISH_13 },
+    { RC_LH_CHILD_FISH_14,                                            RAND_INF_CHILD_FISH_14 },
+    { RC_LH_CHILD_FISH_15,                                            RAND_INF_CHILD_FISH_15 },
+    { RC_LH_CHILD_LOACH_1,                                            RAND_INF_CHILD_LOACH_1 },
+    { RC_LH_CHILD_LOACH_2,                                            RAND_INF_CHILD_LOACH_2 },
     { RC_LH_ADULT_FISHING,                                            RAND_INF_ADULT_FISHING },
+    { RC_LH_ADULT_FISH_1,                                             RAND_INF_ADULT_FISH_1 },
+    { RC_LH_ADULT_FISH_2,                                             RAND_INF_ADULT_FISH_2 },
+    { RC_LH_ADULT_FISH_3,                                             RAND_INF_ADULT_FISH_3 },
+    { RC_LH_ADULT_FISH_4,                                             RAND_INF_ADULT_FISH_4 },
+    { RC_LH_ADULT_FISH_5,                                             RAND_INF_ADULT_FISH_5 },
+    { RC_LH_ADULT_FISH_6,                                             RAND_INF_ADULT_FISH_6 },
+    { RC_LH_ADULT_FISH_7,                                             RAND_INF_ADULT_FISH_7 },
+    { RC_LH_ADULT_FISH_8,                                             RAND_INF_ADULT_FISH_8 },
+    { RC_LH_ADULT_FISH_9,                                             RAND_INF_ADULT_FISH_9 },
+    { RC_LH_ADULT_FISH_10,                                            RAND_INF_ADULT_FISH_10 },
+    { RC_LH_ADULT_FISH_11,                                            RAND_INF_ADULT_FISH_11 },
+    { RC_LH_ADULT_FISH_12,                                            RAND_INF_ADULT_FISH_12 },
+    { RC_LH_ADULT_FISH_13,                                            RAND_INF_ADULT_FISH_13 },
+    { RC_LH_ADULT_FISH_14,                                            RAND_INF_ADULT_FISH_14 },
+    { RC_LH_ADULT_FISH_15,                                            RAND_INF_ADULT_FISH_15 },
+    { RC_LH_ADULT_LOACH,                                              RAND_INF_ADULT_LOACH },
     { RC_MARKET_10_BIG_POES,                                          RAND_INF_10_BIG_POES },
 };
 
@@ -2647,6 +2714,15 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                 specialRc = RC_DODONGOS_CAVERN_GOSSIP_STONE;
             }
             break;
+        case SCENE_FISHING_POND:
+            // different checks exist for child and adult
+            if (actorId == ACTOR_FISHING && actorParams >= 100 && actorParams != 200) {
+                if (LINK_IS_ADULT) {
+                    specialRc = randomizerFishingPondFish[actorParams - 100].second;
+                } else {
+                    specialRc = randomizerFishingPondFish[actorParams - 100].first;
+                }
+            }
     }
 
     if (specialRc != RC_UNKNOWN_CHECK) {
@@ -2755,6 +2831,22 @@ CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
     }
 
     return cowIdentity;
+}
+
+FishIdentity Randomizer::IdentifyFish(s32 sceneNum, s16 actorId, s32 actorParams) {
+    struct FishIdentity fishIdentity;
+
+    fishIdentity.randomizerInf = RAND_INF_MAX;
+    fishIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_FISHING, sceneNum, actorParams);
+
+    if (rcObject.rc != RC_UNKNOWN_CHECK) {
+        fishIdentity.randomizerInf = rcToRandomizerInf[rcObject.rc];
+        fishIdentity.randomizerCheck = rcObject.rc;
+    }
+
+    return fishIdentity;
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
@@ -2872,6 +2964,9 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_SHOPSANITY_PRICES] = CVarGetInteger("gRandomizeShopsanityPrices", RO_SHOPSANITY_PRICE_BALANCED);
     cvarSettings[RSK_SHOPSANITY_PRICES_AFFORDABLE] = CVarGetInteger("gRandomizeShopsanityPricesAffordable", RO_SHOPSANITY_OFF);
     cvarSettings[RSK_SHUFFLE_SCRUBS] = CVarGetInteger("gRandomizeShuffleScrubs", RO_SCRUBS_OFF);
+    cvarSettings[RSK_FISHSANITY] = CVarGetInteger("gRandomizeFishsanity", RO_FISHSANITY_OFF);
+    cvarSettings[RSK_FISHSANITY_POND_COUNT] = CVarGetInteger("gRandomizeFishsanityPondCount", 0);
+    cvarSettings[RSK_FISHSANITY_AGE_SPLIT] = CVarGetInteger("gRandomizeFishsanityAgeSplit", 0);
     cvarSettings[RSK_SHUFFLE_COWS] = CVarGetInteger("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVarGetInteger("gRandomizeShuffleAdultTrade", 0);
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVarGetInteger("gRandomizeShuffleBeans", 0);
@@ -3101,6 +3196,7 @@ void RandomizerSettingsWindow::DrawElement() {
     static const char* randoTokensanity[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
     static const char* randoShuffleScrubs[4] = { "Off", "Affordable", "Expensive", "Random Prices" };
     static const char* randoShuffleMerchants[3] = { "Off", "On (no hints)", "On (with hints)" };
+    static const char* randoFishsanity[2] = { "Off", "Shuffle Fishing Pond" };
 
     // Shuffle Dungeon Items Settings
     static const char* randoShuffleMapsAndCompasses[6] = { "Start With",  "Vanilla",   "Own Dungeon",
@@ -3926,6 +4022,45 @@ void RandomizerSettingsWindow::DrawElement() {
                     "\n"
                     "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n");
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, RO_SCRUBS_OFF);
+
+                UIWidgets::PaddedSeparator();
+
+                // Fishsanity
+                ImGui::Text("%s", Settings::Fishsanity.GetName().c_str());
+                UIWidgets::InsertHelpHoverText(
+                    "Off - Fish will not be shuffled. No changes will be made to fishing behavior.\n"
+                    "\n"
+                    "Shuffle Fishing Pond - The fishing pond's fish will be shuffled. Catching a fish in the fishing pond will grant a reward."
+                );
+                UIWidgets::EnhancementCombobox("gRandomizeFishsanity", randoFishsanity, RO_FISHSANITY_OFF);
+                // Don't show additional options if fishsanity is disabled
+                if (CVarGetInteger("gRandomizeFishsanity", RO_FISHSANITY_OFF) != RO_FISHSANITY_OFF) {
+                    // Number of shuffled fish in fishing pond
+                    int fishCount = CVarGetInteger("gRandomizeFishsanityPondCount", 0);
+                    if (fishCount == 0) {
+                        ImGui::Text("Pond Fish Shuffled: None");
+                    } else if (fishCount == 17) {
+                        ImGui::Text("Pond Fish Shuffled: Every Fish");
+                    }
+                    else {
+                        ImGui::Text("Pond Fish Shuffled: %d", fishCount);
+                    }
+                    UIWidgets::InsertHelpHoverText(
+                        "The number of fish to randomize in the fishing pool.\n"
+                        "If set to maximum, each fish will have a unique check, including a Hyrule Loach which appears only as child, and caught fish will disappear.\n"
+                        "Otherwise, any fish caught in the pond will give a reward, until all rewards have been given."
+                    );
+                    ImGui::SameLine();
+                    UIWidgets::EnhancementSliderInt("", "##FishsanityPondCount", "gRandomizeFishsanityPondCount", 0, 17, "", 0);
+
+                    // Whether child and adult fish should be split
+                    UIWidgets::EnhancementCheckbox(Settings::FishsanityAgeSplit.GetName().c_str(), "gRandomizeFishsanityAgeSplit");
+                    UIWidgets::InsertHelpHoverText(
+                        "Enabling this will split the fishing pond fish by age, making fishing pond fish grant different rewards as child and adult.\n"
+                        "If disabled, then the child pond will be shuffled and shared between both ages.\n"
+                        "Note that, as child, there is a second loach availble in the pond!"
+                    );
+                }
 
                 UIWidgets::PaddedSeparator();
 
@@ -5871,239 +6006,239 @@ void Randomizer::CreateCustomMessages() {
     // with GIMESSAGE(getItemID, itemID, english, german, french).
     const std::array<GetItemMessage, 57> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
-			"You found %gGreg%w!",
-			"%gGreg%w! Du hast ihn wirklich gefunden!",
+            "You found %gGreg%w!",
+            "%gGreg%w! Du hast ihn wirklich gefunden!",
             "Félicitation! Vous avez trouvé %gGreg%w!"),
         GIMESSAGE(RG_MASTER_SWORD, ITEM_SWORD_MASTER, 
             "You found the %gMaster Sword%w!",
             "Du erhältst dem %gMaster-Schwert%w!",
             "Vous obtenez %gl'Épée de Légende%w!"),
         GIMESSAGE(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, 
-			"You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
-			"Du erhältst eine %rFlasche mit&blauem Feuer%w! Nutze es um&%rRotes Eis%w zu schmelzen!",
+            "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
+            "Du erhältst eine %rFlasche mit&blauem Feuer%w! Nutze es um&%rRotes Eis%w zu schmelzen!",
             "Vous obtenez une %rBouteille avec&une Flamme Bleue%w! Utilisez-la&pour faire fondre la %rGlace&Rouge%w!"),
         GIMESSAGE(RG_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
-			"You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!",
-			"Du hast einen %rNachtschwärmer%w&in einer Flasche gefangen!&Gehe zum %rGespenstermarkt%w&und verkaufe ihn!",
-			"Vous obtenez une %rBouteille avec&une Âme%w! Vendez-la au Marchand&d'Âme"),
+            "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!",
+            "Du hast einen %rNachtschwärmer%w&in einer Flasche gefangen!&Gehe zum %rGespenstermarkt%w&und verkaufe ihn!",
+            "Vous obtenez une %rBouteille avec&une Âme%w! Vendez-la au Marchand&d'Âme"),
         GIMESSAGE(RG_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
-			"You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!",
-			"Du erhältst ein %rBlaues Elexier%w!&Nutze es, um deine %rMagie- und&Energieleiste%w komplett&aufzufüllen!",
-			"Vous obtenez une %rBouteille avec&une Potion Bleue%w! Buvez-la pour&restaurer votre %rénergie vitale%w&ainsi que votre %gmagie%w!"),
+            "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!",
+            "Du erhältst ein %rBlaues Elexier%w!&Nutze es, um deine %rMagie- und&Energieleiste%w komplett&aufzufüllen!",
+            "Vous obtenez une %rBouteille avec&une Potion Bleue%w! Buvez-la pour&restaurer votre %rénergie vitale%w&ainsi que votre %gmagie%w!"),
         GIMESSAGE(RG_BOTTLE_WITH_FISH, ITEM_FISH,
             "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!",
-			"Du hast jetzt einen %rFisch in&einer Flasche%w! Er sieht richtig&frisch aus! Man sagt,&Lord Jabu-Jabu liebt Fische!",
+            "Du hast jetzt einen %rFisch in&einer Flasche%w! Er sieht richtig&frisch aus! Man sagt,&Lord Jabu-Jabu liebt Fische!",
             "Vous obtenez une %rBouteille avec&un Poisson%w! Il a l'air délicieux!&Il paraîtrait que %bJabu-Jabu %wen&serait friand!"),
         GIMESSAGE(RG_BOTTLE_WITH_BUGS, ITEM_BUG,
-			"You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!",
-			"Du hast jetzt %rKäfer in einer&Flasche&%w!&Sie graben gerne&in Erdlöchern.",
+            "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!",
+            "Du hast jetzt %rKäfer in einer&Flasche&%w!&Sie graben gerne&in Erdlöchern.",
             "Vous obtenez une %rBouteille avec&des Insectes%w! Ils adorent creuser&dans la terre meuble!"),
         GIMESSAGE(RG_BOTTLE_WITH_FAIRY, ITEM_FAIRY,
-			"You got a %rFairy in a Bottle%w!&Use it wisely!",
-			"Du hast jetzt eine %rFee in einer&Flasche%w! Nutze sie weise!",
-			"Vous obtenez une %rBouteille avec&une Fée%w! Faites-en bon usage!"),
+            "You got a %rFairy in a Bottle%w!&Use it wisely!",
+            "Du hast jetzt eine %rFee in einer&Flasche%w! Nutze sie weise!",
+            "Vous obtenez une %rBouteille avec&une Fée%w! Faites-en bon usage!"),
         GIMESSAGE(RG_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
             "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!",
-			"Du erhältst ein %rRotes Elexier%w!&Nutze es, um deine %rEnergieleiste&%weinmalig komplett aufzufüllen!",
+            "Du erhältst ein %rRotes Elexier%w!&Nutze es, um deine %rEnergieleiste&%weinmalig komplett aufzufüllen!",
             "Vous obtenez une %rBouteille avec&une Potion Rouge%w! Buvez-la pour&restaurer votre %rénergie vitale%w!"),
         GIMESSAGE(RG_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
             "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!",
-			"Du erhältst ein %rGrünes Elexier%w!&Nutze es, um deine %bMagieleiste&%weinmalig komplett aufzufüllen!",
+            "Du erhältst ein %rGrünes Elexier%w!&Nutze es, um deine %bMagieleiste&%weinmalig komplett aufzufüllen!",
             "Vous obtenez une %rBouteille avec&une Potion Verte%w! Buvez-la pour&restaurer votre %gmagie%w!"),
         GIMESSAGE(RG_BOTTLE_WITH_POE, ITEM_POE,
             "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...",
-			"Du hast jetzt ein %rIrrlicht in einer&Flasche%w! Der %rGespenstermarkt%w&interessiert sich für vielleicht&dafür...",
+            "Du hast jetzt ein %rIrrlicht in einer&Flasche%w! Der %rGespenstermarkt%w&interessiert sich für vielleicht&dafür...",
             "Vous obtenez une %rBouteille avec&un Esprit%w! Ça intéresserait&peut-être le vendeur d'Âme "),
 
         GIMESSAGE(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL,
-			"You found a %yThieves Hideout &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für das %yDiebesversteck%w!",
-			"Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
+            "You found a %yThieves Hideout &%wSmall Key!",
+            "Du erhältst einen %rKleinen&Schlüssel%w für das %yDiebesversteck%w!",
+            "Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
         GIMESSAGE(RG_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
-			"You found a %gForest Temple &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %gWaldtempel%w!",
-			"Vous obtenez une %rPetite Clé %w&du %gTemple de la Forêt%w!"),
+            "You found a %gForest Temple &%wSmall Key!",
+            "Du erhältst einen %rKleinen&Schlüssel%w für den %gWaldtempel%w!",
+            "Vous obtenez une %rPetite Clé %w&du %gTemple de la Forêt%w!"),
         GIMESSAGE(RG_FIRE_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
-			"You found a %rFire Temple &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %rFeuertempel%w!",
-			"Vous obtenez une %rPetite Clé %w&du %rTemple du Feu%w!"),
+            "You found a %rFire Temple &%wSmall Key!",
+            "Du erhältst einen %rKleinen&Schlüssel%w für den %rFeuertempel%w!",
+            "Vous obtenez une %rPetite Clé %w&du %rTemple du Feu%w!"),
         GIMESSAGE(RG_WATER_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
-			"You found a %bWater Temple &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %bWassertempel%w!",
-			"Vous obtenez une %rPetite Clé %w&du %bTemple de l'Eau%w!"),
+            "You found a %bWater Temple &%wSmall Key!",
+            "Du erhältst einen %rKleinen&Schlüssel%w für den %bWassertempel%w!",
+            "Vous obtenez une %rPetite Clé %w&du %bTemple de l'Eau%w!"),
         GIMESSAGE(RG_SPIRIT_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
-			"You found a %ySpirit Temple &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %yGeistertempel%w!",
-			"Vous obtenez une %rPetite Clé %w&du %yTemple de l'Esprit%w!"),
+            "You found a %ySpirit Temple &%wSmall Key!",
+            "Du erhältst einen %rKleinen&Schlüssel%w für den %yGeistertempel%w!",
+            "Vous obtenez une %rPetite Clé %w&du %yTemple de l'Esprit%w!"),
         GIMESSAGE(RG_SHADOW_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
-			"You found a %pShadow Temple &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %pSchattentempel%w!",
-			"Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
+            "You found a %pShadow Temple &%wSmall Key!",
+            "Du erhältst einen %rKleinen&Schlüssel%w für den %pSchattentempel%w!",
+            "Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
         GIMESSAGE(RG_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL,
-			"You found a %pBottom of the &Well %wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für den %pGrund des Brunnens%w!",
-			"Vous obtenez une %rPetite Clé %w&du %pPuits%w!"),
+            "You found a %pBottom of the &Well %wSmall Key!",
+            "Du erhältst einen %rKleinen&Schlüssel%w für den %pGrund des Brunnens%w!",
+            "Vous obtenez une %rPetite Clé %w&du %pPuits%w!"),
         GIMESSAGE(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, ITEM_KEY_SMALL,
-			"You found a %yGerudo Training &Grounds %wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für die %yGerudo&Trainingsarena%w!",
-			"Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
+            "You found a %yGerudo Training &Grounds %wSmall Key!",
+            "Du erhältst einen %rKleinen&Schlüssel%w für die %yGerudo&Trainingsarena%w!",
+            "Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
         GIMESSAGE(RG_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL,
-			"You found a %rGanon's Castle &%wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für die %rGanons Schloß%w!",
-			"Vous obtenez une %rPetite Clé %w&du %rChâteau de Ganon%w!"),
+            "You found a %rGanon's Castle &%wSmall Key!",
+            "Du erhältst einen %rKleinen&Schlüssel%w für die %rGanons Schloß%w!",
+            "Vous obtenez une %rPetite Clé %w&du %rChâteau de Ganon%w!"),
 
         GIMESSAGE(RG_GERUDO_FORTRESS_KEY_RING, ITEM_KEY_SMALL,
-			"You found a %yThieves Hideout &%wKeyring!",
-			"Du erhältst ein %rSchlüsselbund%w&für das %yDiebesversteck%w!",
-			"Vous obtenez un trousseau de&clés du %yRepaire des Voleurs%w!"),
+            "You found a %yThieves Hideout &%wKeyring!",
+            "Du erhältst ein %rSchlüsselbund%w&für das %yDiebesversteck%w!",
+            "Vous obtenez un trousseau de&clés du %yRepaire des Voleurs%w!"),
         GIMESSAGE(RG_FOREST_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
-			"You found a %gForest Temple &%wKeyring!",
-			"Du erhältst ein %rSchlüsselbund%w&für den %gWaldtempel%w!",
-			"Vous obtenez un trousseau de&clés du %gTemple de la Forêt%w!"),
+            "You found a %gForest Temple &%wKeyring!",
+            "Du erhältst ein %rSchlüsselbund%w&für den %gWaldtempel%w!",
+            "Vous obtenez un trousseau de&clés du %gTemple de la Forêt%w!"),
         GIMESSAGE(RG_FIRE_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
-			"You found a %rFire Temple &%wKeyring!",
-			"Du erhältst ein %rSchlüsselbund%w&für den %rFeuertempel%w!",
-			"Vous obtenez un trousseau de&clés du %rTemple du Feu%w!"),
+            "You found a %rFire Temple &%wKeyring!",
+            "Du erhältst ein %rSchlüsselbund%w&für den %rFeuertempel%w!",
+            "Vous obtenez un trousseau de&clés du %rTemple du Feu%w!"),
         GIMESSAGE(RG_WATER_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
-			"You found a %bWater Temple &%wKeyring!",
-			"Du erhältst ein %rSchlüsselbund%w&für den %bWassertempel%w!",
-			"Vous obtenez un trousseau de&clés du %bTemple de l'Eau%w!"),
+            "You found a %bWater Temple &%wKeyring!",
+            "Du erhältst ein %rSchlüsselbund%w&für den %bWassertempel%w!",
+            "Vous obtenez un trousseau de&clés du %bTemple de l'Eau%w!"),
         GIMESSAGE(RG_SPIRIT_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
-			"You found a %ySpirit Temple &%wKeyring!",
-			"Du erhältst ein %rSchlüsselbund%w&für den %yGeistertempel%w!",
-			"Vous obtenez un trousseau de&clés du %yTemple de l'Esprit%w!"),
+            "You found a %ySpirit Temple &%wKeyring!",
+            "Du erhältst ein %rSchlüsselbund%w&für den %yGeistertempel%w!",
+            "Vous obtenez un trousseau de&clés du %yTemple de l'Esprit%w!"),
         GIMESSAGE(RG_SHADOW_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
-			"You found a %pShadow Temple &%wKeyring!",
-			"Du erhältst ein %rSchlüsselbund%w&für den %pSchattentempel%w!",
-			"Vous obtenez un trousseau de&clés du %pTemple de l'Ombre%w!"),
+            "You found a %pShadow Temple &%wKeyring!",
+            "Du erhältst ein %rSchlüsselbund%w&für den %pSchattentempel%w!",
+            "Vous obtenez un trousseau de&clés du %pTemple de l'Ombre%w!"),
         GIMESSAGE(RG_BOTTOM_OF_THE_WELL_KEY_RING, ITEM_KEY_SMALL,
-			"You found a %pBottom of the &Well %wKeyring!",
-			"Du erhältst ein %rSchlüsselbund%w&für den %pGrund des Brunnens%w!",
-			"Vous obtenez un trousseau de&clés du %pPuits%w!"),
+            "You found a %pBottom of the &Well %wKeyring!",
+            "Du erhältst ein %rSchlüsselbund%w&für den %pGrund des Brunnens%w!",
+            "Vous obtenez un trousseau de&clés du %pPuits%w!"),
         GIMESSAGE(RG_GERUDO_TRAINING_GROUNDS_KEY_RING, ITEM_KEY_SMALL,
-			"You found a %yGerudo Training &Grounds %wKeyring!",
-			"Du erhältst ein %rSchlüsselbund%w&für die %yGerudo Trainingsarena%w!",
-			"Vous obtenez un trousseau de&clés du %yGymnase Gerudo%w!"),
+            "You found a %yGerudo Training &Grounds %wKeyring!",
+            "Du erhältst ein %rSchlüsselbund%w&für die %yGerudo Trainingsarena%w!",
+            "Vous obtenez un trousseau de&clés du %yGymnase Gerudo%w!"),
         GIMESSAGE(RG_GANONS_CASTLE_KEY_RING, ITEM_KEY_SMALL, 
-			"You found a %rGanon's Castle &%wKeyring!",
-			"Du erhältst ein %rSchlüsselbund%w&für %rGanons Schloß%w!",
-			"Vous obtenez un trousseau de&clés du %rChâteau de Ganon%w!"),
+            "You found a %rGanon's Castle &%wKeyring!",
+            "Du erhältst ein %rSchlüsselbund%w&für %rGanons Schloß%w!",
+            "Vous obtenez un trousseau de&clés du %rChâteau de Ganon%w!"),
 
         GIMESSAGE(RG_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
-			"You found the %gForest Temple &%wBoss Key!",
-			"Du erhältst den %rMaster-Schlüssel%w&für den %gWaldtempel%w!",
-			"Vous obtenez la %rClé d'or %wdu&%gTemple de la Forêt%w!"),
+            "You found the %gForest Temple &%wBoss Key!",
+            "Du erhältst den %rMaster-Schlüssel%w&für den %gWaldtempel%w!",
+            "Vous obtenez la %rClé d'or %wdu&%gTemple de la Forêt%w!"),
         GIMESSAGE(RG_FIRE_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
-			"You found the %rFire Temple &%wBoss Key!",
-			"Du erhältst den %rMaster-Schlüssel%w&für den %rFeuertempel%w!",
-			"Vous obtenez la %rClé d'or %wdu&%rTemple du Feu%w!"),
+            "You found the %rFire Temple &%wBoss Key!",
+            "Du erhältst den %rMaster-Schlüssel%w&für den %rFeuertempel%w!",
+            "Vous obtenez la %rClé d'or %wdu&%rTemple du Feu%w!"),
         GIMESSAGE(RG_WATER_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
-			"You found the %bWater Temple &%wBoss Key!",
-			"Du erhältst den %rMaster-Schlüssel%w&für den %bWassertempel%w!",
-			"Vous obtenez la %rClé d'or %wdu&%bTemple de l'Eau%w!"),
+            "You found the %bWater Temple &%wBoss Key!",
+            "Du erhältst den %rMaster-Schlüssel%w&für den %bWassertempel%w!",
+            "Vous obtenez la %rClé d'or %wdu&%bTemple de l'Eau%w!"),
         GIMESSAGE(RG_SPIRIT_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
-			"You found the %ySpirit Temple &%wBoss Key!",
-			"Du erhältst den %rMaster-Schlüssel%w&für den %yGeistertempel%w!",
-			"Vous obtenez la %rClé d'or %wdu&%yTemple de l'Esprit%w!"),
+            "You found the %ySpirit Temple &%wBoss Key!",
+            "Du erhältst den %rMaster-Schlüssel%w&für den %yGeistertempel%w!",
+            "Vous obtenez la %rClé d'or %wdu&%yTemple de l'Esprit%w!"),
         GIMESSAGE(RG_SHADOW_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
-			"You found the %pShadow Temple &%wBoss Key!",
-			"Du erhältst den %rMaster-Schlüssel%w&für den %pSchattentempel%w!",
-			"Vous obtenez la %rClé d'or %wdu&%pTemple de l'Ombre%w!"),
+            "You found the %pShadow Temple &%wBoss Key!",
+            "Du erhältst den %rMaster-Schlüssel%w&für den %pSchattentempel%w!",
+            "Vous obtenez la %rClé d'or %wdu&%pTemple de l'Ombre%w!"),
         GIMESSAGE(RG_GANONS_CASTLE_BOSS_KEY, ITEM_KEY_BOSS,
-			"You found the %rGanon's Castle &%wBoss Key!",
-			"Du erhältst den %rMaster-Schlüssel%w&für %rGanons Schloß%w!",
-			"Vous obtenez la %rClé d'or %wdu&%rChâteau de Ganon%w!"),
+            "You found the %rGanon's Castle &%wBoss Key!",
+            "Du erhältst den %rMaster-Schlüssel%w&für %rGanons Schloß%w!",
+            "Vous obtenez la %rClé d'or %wdu&%rChâteau de Ganon%w!"),
 
         GIMESSAGE(RG_DEKU_TREE_MAP, ITEM_DUNGEON_MAP,
-			"You found the %gDeku Tree &%wMap!{{typeHint}}",
-			"Du erhältst die %rKarte%w für den&%gDeku-Baum%w!{{typeHint}}",
-			"Vous obtenez la %rCarte %wde&l'%gArbre Mojo%w!{{typeHint}}"),
+            "You found the %gDeku Tree &%wMap!{{typeHint}}",
+            "Du erhältst die %rKarte%w für den&%gDeku-Baum%w!{{typeHint}}",
+            "Vous obtenez la %rCarte %wde&l'%gArbre Mojo%w!{{typeHint}}"),
         GIMESSAGE(RG_DODONGOS_CAVERN_MAP, ITEM_DUNGEON_MAP,
-			"You found the %rDodongo's Cavern &%wMap!{{typeHint}}",
-			"Du erhältst die %rKarte%w für&%rDodongos Höhle%w!{{typeHint}}",
-			"Vous obtenez la %rCarte %wde la&%rCaverne Dodongo%w!{{typeHint}}"),
+            "You found the %rDodongo's Cavern &%wMap!{{typeHint}}",
+            "Du erhältst die %rKarte%w für&%rDodongos Höhle%w!{{typeHint}}",
+            "Vous obtenez la %rCarte %wde la&%rCaverne Dodongo%w!{{typeHint}}"),
         GIMESSAGE(RG_JABU_JABUS_BELLY_MAP, ITEM_DUNGEON_MAP,
-			"You found the %bJabu Jabu's Belly &%wMap!{{typeHint}}",
-			"Du erhältst die %rKarte%w für&%bJabu-Jabus Bauch%w!{{typeHint}}",
-			"Vous obtenez la %rCarte %wdu &%bVentre de Jabu-Jabu%w!{{typeHint}}"),
+            "You found the %bJabu Jabu's Belly &%wMap!{{typeHint}}",
+            "Du erhältst die %rKarte%w für&%bJabu-Jabus Bauch%w!{{typeHint}}",
+            "Vous obtenez la %rCarte %wdu &%bVentre de Jabu-Jabu%w!{{typeHint}}"),
         GIMESSAGE(RG_FOREST_TEMPLE_MAP, ITEM_DUNGEON_MAP,
-			"You found the %gForest Temple &%wMap!{{typeHint}}",
-			"Du erhältst die %rKarte%w für den&%gWaldtempel%w!{{typeHint}}",
-			"Vous obtenez la %rCarte %wdu &%gTemple de la Forêt%w!{{typeHint}}"),
+            "You found the %gForest Temple &%wMap!{{typeHint}}",
+            "Du erhältst die %rKarte%w für den&%gWaldtempel%w!{{typeHint}}",
+            "Vous obtenez la %rCarte %wdu &%gTemple de la Forêt%w!{{typeHint}}"),
         GIMESSAGE(RG_FIRE_TEMPLE_MAP, ITEM_DUNGEON_MAP,
-			"You found the %rFire Temple &%wMap!{{typeHint}}",
-			"Du erhältst die %rKarte%w für den&%rFeuertempel%w!{{typeHint}}",
-			"Vous obtenez la %rCarte %wdu &%rTemple du Feu%w!{{typeHint}}"),
+            "You found the %rFire Temple &%wMap!{{typeHint}}",
+            "Du erhältst die %rKarte%w für den&%rFeuertempel%w!{{typeHint}}",
+            "Vous obtenez la %rCarte %wdu &%rTemple du Feu%w!{{typeHint}}"),
         GIMESSAGE(RG_WATER_TEMPLE_MAP, ITEM_DUNGEON_MAP,
-			"You found the %bWater Temple &%wMap!{{typeHint}}",
-			"Du erhältst die %rKarte%w für den&%bWassertempel%w!{{typeHint}}",
-			"Vous obtenez la %rCarte %wdu &%bTemple de l'Eau%w!{{typeHint}}"),
+            "You found the %bWater Temple &%wMap!{{typeHint}}",
+            "Du erhältst die %rKarte%w für den&%bWassertempel%w!{{typeHint}}",
+            "Vous obtenez la %rCarte %wdu &%bTemple de l'Eau%w!{{typeHint}}"),
         GIMESSAGE(RG_SPIRIT_TEMPLE_MAP, ITEM_DUNGEON_MAP,
-			"You found the %ySpirit Temple &%wMap!{{typeHint}}",
-			"Du erhältst die %rKarte%w für den&%yGeistertempel%w!{{typeHint}}",
-			"Vous obtenez la %rCarte %wdu &%yTemple de l'Esprit%w!{{typeHint}}"),
+            "You found the %ySpirit Temple &%wMap!{{typeHint}}",
+            "Du erhältst die %rKarte%w für den&%yGeistertempel%w!{{typeHint}}",
+            "Vous obtenez la %rCarte %wdu &%yTemple de l'Esprit%w!{{typeHint}}"),
         GIMESSAGE(RG_SHADOW_TEMPLE_MAP, ITEM_DUNGEON_MAP,
-			"You found the %pShadow Temple &%wMap!{{typeHint}}",
-			"Du erhältst die %rKarte%w für den&%pSchattentempel%w!{{typeHint}}",
-			"Vous obtenez la %rCarte %wdu &%pTemple de l'Ombre%w!{{typeHint}}"),
+            "You found the %pShadow Temple &%wMap!{{typeHint}}",
+            "Du erhältst die %rKarte%w für den&%pSchattentempel%w!{{typeHint}}",
+            "Vous obtenez la %rCarte %wdu &%pTemple de l'Ombre%w!{{typeHint}}"),
         GIMESSAGE(RG_BOTTOM_OF_THE_WELL_MAP, ITEM_DUNGEON_MAP,
-			"You found the %pBottom of the &Well %wMap!{{typeHint}}",
-			"Du erhältst die %rKarte%w für den&%pGrund des Brunnens%w!{{typeHint}}",
-			"Vous obtenez la %rCarte %wdu &%pPuits%w!{{typeHint}}"),
+            "You found the %pBottom of the &Well %wMap!{{typeHint}}",
+            "Du erhältst die %rKarte%w für den&%pGrund des Brunnens%w!{{typeHint}}",
+            "Vous obtenez la %rCarte %wdu &%pPuits%w!{{typeHint}}"),
         GIMESSAGE(RG_ICE_CAVERN_MAP, ITEM_DUNGEON_MAP,
-			"You found the %cIce Cavern &%wMap!{{typeHint}}",
-			"Du erhältst die %rKarte%w für die&%cEishöhle%w!{{typeHint}}",
-			"Vous obtenez la %rCarte %wde &la %cCaverne Polaire%w!{{typeHint}}"),
+            "You found the %cIce Cavern &%wMap!{{typeHint}}",
+            "Du erhältst die %rKarte%w für die&%cEishöhle%w!{{typeHint}}",
+            "Vous obtenez la %rCarte %wde &la %cCaverne Polaire%w!{{typeHint}}"),
 
         GIMESSAGE(RG_DEKU_TREE_COMPASS, ITEM_COMPASS,
-			"You found the %gDeku Tree &%wCompass!",
-			"Du erhältst den %rKompaß%w für den&%gDeku-Baum%w!",
-			"Vous obtenez la %rBoussole %wde&l'%gArbre Mojo%w!"),
+            "You found the %gDeku Tree &%wCompass!",
+            "Du erhältst den %rKompaß%w für den&%gDeku-Baum%w!",
+            "Vous obtenez la %rBoussole %wde&l'%gArbre Mojo%w!"),
         GIMESSAGE(RG_DODONGOS_CAVERN_COMPASS, ITEM_COMPASS,
-			"You found the %rDodongo's Cavern &%wCompass!",
-			"Du erhältst den %rKompaß%w für&%rDodongos Höhle%w!",
-			"Vous obtenez la %rBoussole %wde la&%rCaverne Dodongo%w!"),
+            "You found the %rDodongo's Cavern &%wCompass!",
+            "Du erhältst den %rKompaß%w für&%rDodongos Höhle%w!",
+            "Vous obtenez la %rBoussole %wde la&%rCaverne Dodongo%w!"),
         GIMESSAGE(RG_JABU_JABUS_BELLY_COMPASS, ITEM_COMPASS,
-			"You found the %bJabu Jabu's Belly &%wCompass!",
-			"Du erhältst den %rKompaß%w für den&%bJabu-Jabus Bauch%w!",
-			"Vous obtenez la %rBoussole %wdu &%bVentre de Jabu-Jabu%w!"),
+            "You found the %bJabu Jabu's Belly &%wCompass!",
+            "Du erhältst den %rKompaß%w für den&%bJabu-Jabus Bauch%w!",
+            "Vous obtenez la %rBoussole %wdu &%bVentre de Jabu-Jabu%w!"),
         GIMESSAGE(RG_FOREST_TEMPLE_COMPASS, ITEM_COMPASS,
-			"You found the %gForest Temple &%wCompass!",
-			"Du erhältst den %rKompaß%w für den&%gWaldtempel%w!",
-			"Vous obtenez la %rBoussole %wdu &%gTemple de la Forêt%w!"),
+            "You found the %gForest Temple &%wCompass!",
+            "Du erhältst den %rKompaß%w für den&%gWaldtempel%w!",
+            "Vous obtenez la %rBoussole %wdu &%gTemple de la Forêt%w!"),
         GIMESSAGE(RG_FIRE_TEMPLE_COMPASS, ITEM_COMPASS,
-			"You found the %rFire Temple &%wCompass!",
-			"Du erhältst den %rKompaß%w für den&%rFeuertempel%w!",
-			"Vous obtenez la %rBoussole %wdu &%rTemple du Feu%w!"),
+            "You found the %rFire Temple &%wCompass!",
+            "Du erhältst den %rKompaß%w für den&%rFeuertempel%w!",
+            "Vous obtenez la %rBoussole %wdu &%rTemple du Feu%w!"),
         GIMESSAGE(RG_WATER_TEMPLE_COMPASS, ITEM_COMPASS,
-			"You found the %bWater Temple &%wCompass!",
-			"Du erhältst den %rKompaß%w für den&%bWassertempel%w!",
-			"Vous obtenez la %rBoussole %wdu &%bTemple de l'Eau%w!"),
+            "You found the %bWater Temple &%wCompass!",
+            "Du erhältst den %rKompaß%w für den&%bWassertempel%w!",
+            "Vous obtenez la %rBoussole %wdu &%bTemple de l'Eau%w!"),
         GIMESSAGE(RG_SPIRIT_TEMPLE_COMPASS, ITEM_COMPASS,
-			"You found the %ySpirit Temple &%wCompass!",
-			"Du erhältst den %rKompaß%w für den&%yGeistertempel%w!",
-			"Vous obtenez la %rBoussole %wdu &%yTemple de l'Esprit%w!"),
+            "You found the %ySpirit Temple &%wCompass!",
+            "Du erhältst den %rKompaß%w für den&%yGeistertempel%w!",
+            "Vous obtenez la %rBoussole %wdu &%yTemple de l'Esprit%w!"),
         GIMESSAGE(RG_SHADOW_TEMPLE_COMPASS, ITEM_COMPASS,
-			"You found the %pShadow Temple &%wCompass!",
-			"Du erhältst den %rKompaß%w für den&%pSchattentempel%w!",
-			"Vous obtenez la %rBoussole %wdu &%pTemple de l'Ombre%w!"),
+            "You found the %pShadow Temple &%wCompass!",
+            "Du erhältst den %rKompaß%w für den&%pSchattentempel%w!",
+            "Vous obtenez la %rBoussole %wdu &%pTemple de l'Ombre%w!"),
         GIMESSAGE(RG_BOTTOM_OF_THE_WELL_COMPASS, ITEM_COMPASS,
-			"You found the %pBottom of the &Well %wCompass!",
-			"Du erhältst den %rKompaß%w für den&%pGrund des Brunnens%w!",
-			"Vous obtenez la %rBoussole %wdu &%pPuits%w!"),
+            "You found the %pBottom of the &Well %wCompass!",
+            "Du erhältst den %rKompaß%w für den&%pGrund des Brunnens%w!",
+            "Vous obtenez la %rBoussole %wdu &%pPuits%w!"),
         GIMESSAGE(RG_ICE_CAVERN_COMPASS, ITEM_COMPASS,
-			"You found the %cIce Cavern &%wCompass!",
-			"Du erhältst den %rKompaß%w für die&%cEishöhle%w!",
-			"Vous obtenez la %rBoussole %wde &la %cCaverne Polaire%w!"),
+            "You found the %cIce Cavern &%wCompass!",
+            "Du erhältst den %rKompaß%w für die&%cEishöhle%w!",
+            "Vous obtenez la %rBoussole %wde &la %cCaverne Polaire%w!"),
 
         GIMESSAGE(RG_MAGIC_BEAN_PACK, ITEM_BEAN,
-			"You got a %rPack of Magic Beans%w!&Find a suitable spot for a garden&and plant them. Then, wait for&something fun to happen!",
-			"Du erhältst eine %rPackung&Wundererbsen%w! Suche nach einer&Stelle um sie einzupflanzen.&Warte ab, was passiert!",
-			"Vous obtenez un %rPaquet de&Haricots Magiques%w! Trouvez&un endroit approprié pour un&jardin et plantez-les.^Attendez ensuite que quelque&chose d'amusant se produise!"),
+            "You got a %rPack of Magic Beans%w!&Find a suitable spot for a garden&and plant them. Then, wait for&something fun to happen!",
+            "Du erhältst eine %rPackung&Wundererbsen%w! Suche nach einer&Stelle um sie einzupflanzen.&Warte ab, was passiert!",
+            "Vous obtenez un %rPaquet de&Haricots Magiques%w! Trouvez&un endroit approprié pour un&jardin et plantez-les.^Attendez ensuite que quelque&chose d'amusant se produise!"),
         GIMESSAGE(RG_TYCOON_WALLET, ITEM_WALLET_GIANT,
-			"You got a %rTycoon's Wallet%w!&It's gigantic! Now you can carry&up to %y999 rupees%w!",
-			"Du erhältst die %rGoldene&Geldbörse%w! Die größte aller&Geldbörsen! Jetzt kannst Du bis&zu %y999 Rubine%w mit dir führen!",
-			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!")
+            "You got a %rTycoon's Wallet%w!&It's gigantic! Now you can carry&up to %y999 rupees%w!",
+            "Du erhältst die %rGoldene&Geldbörse%w! Die größte aller&Geldbörsen! Jetzt kannst Du bis&zu %y999 Rubine%w mit dir führen!",
+            "Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!")
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();

@@ -87,6 +87,13 @@ void WriteIngameSpoilerLog() {
     uint8_t currentGroup = SpoilerCollectionCheckGroup::SPOILER_COLLECTION_GROUP_COUNT;
     bool spoilerOutOfSpace = false;
 
+    // Prepare list of inactive fish if fishsanity is on
+    std::vector<uint32_t> inactiveFish;
+    if (Settings::Fishsanity.IsNot(FISHSANITY_OFF)) {
+        inactiveFish = GetFishsanityLocations().second;
+        std::sort(inactiveFish.begin(), inactiveFish.end());
+    }
+
     // Create map of string data offsets for all _unique_ item locations and names in the playthrough
     // Some item names, like gold skulltula tokens, can appear many times in a playthrough
     std::unordered_map<uint32_t, uint16_t>
@@ -133,6 +140,14 @@ void WriteIngameSpoilerLog() {
                   (loc->IsCategory(Category::cVanillaGFSmallKey) || loc->GetHintKey() == GF_GERUDO_MEMBERSHIP_CARD)) ||
                  (Settings::GerudoFortress.Is(GERUDOFORTRESS_FAST) && loc->IsCategory(Category::cVanillaGFSmallKey) &&
                   loc->GetHintKey() != GF_NORTH_F1_CARPENTER)) {
+            continue;
+        }
+        // Fish
+        else if (Settings::Fishsanity.Is(FISHSANITY_OFF) && loc->IsCategory(Category::cFish)) {
+            continue;
+        }
+        // Hide inactive fish
+        else if (Settings::Fishsanity.IsNot(FISHSANITY_OFF) && std::binary_search(inactiveFish.begin(), inactiveFish.end(), key)) {
             continue;
         }
 

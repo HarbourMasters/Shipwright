@@ -56,6 +56,7 @@ bool showBeans;
 bool showScrubs;
 bool showMerchants;
 bool showCows;
+bool showFish;
 bool showAdultTrade;
 bool showKokiriSword;
 bool showMasterSword;
@@ -72,6 +73,9 @@ bool show100SkullReward;
 bool showLinksPocket;
 bool fortressFast;
 bool fortressNormal;
+
+u8 fishsanityPondCount;
+bool fishsanityPondSplit;
 
 bool bypassRandoCheck = true;
 // persistent during gameplay
@@ -1014,6 +1018,15 @@ void LoadSettings() {
     showCows = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_COWS) == RO_GENERIC_YES
         : false;
+    showFish = IS_RANDO ?
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) != RO_FISHSANITY_OFF
+        : false;
+    fishsanityPondCount = (IS_RANDO && showFish) ?
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT)
+        : 0;
+    fishsanityPondSplit = (IS_RANDO && showFish) ?
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_AGE_SPLIT) != RO_FISHSANITY_OFF
+        : false;
     showAdultTrade = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) == RO_GENERIC_YES
         : true;
@@ -1125,6 +1138,11 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
                 (showDungeonTokens && RandomizerCheckObjects::AreaIsDungeon(rcObj.rcArea))
                 ) &&
             (rcObj.rcType != RCTYPE_COW || showCows) &&
+            (rcObj.rcType != RCTYPE_FISH || (showFish && fishsanityPondCount > 0 && (
+                // HACK: We're just going to assume that adult checks will always follow child checks
+                (rcObj.rc < RC_LH_ADULT_FISH_1 && fishsanityPondCount > (rcObj.actorParams - 100)) ||
+                (rcObj.rc >= RC_LH_ADULT_FISH_1 && fishsanityPondSplit && fishsanityPondCount > (rcObj.actorParams - 100))
+                ))) &&
             (rcObj.rcType != RCTYPE_ADULT_TRADE ||
                 showAdultTrade ||
                 rcObj.rc == RC_KAK_ANJU_AS_ADULT ||  // adult trade checks that are always shuffled
@@ -1280,6 +1298,15 @@ void DrawLocation(RandomizerCheckObject rcObj) {
     txt = rcObj.rcShortName;
     if (lastLocationChecked == rcObj.rc)
         txt = "* " + txt;
+
+    // If we aren't splitting pond fish by age, then remove "Child" from the check name, unless it's the child-exclusive loach.
+    if (rcObj.rcType == RCTYPE_FISH && CVarGetInteger("gRandomizeFishsanity", RO_FISHSANITY_OFF) != RO_FISHSANITY_OFF &&
+        CVarGetInteger("gRandomizeFishsanityAgeSplit", RO_GENERIC_OFF) == RO_GENERIC_OFF && rcObj.actorParams != 116) {
+        size_t idx = txt.find("Child");
+        if (idx != std::string::npos) {
+            txt.erase(txt.begin() + idx, txt.begin() + idx + 6);
+        }
+    }
  
     // Draw button - for Skipped/Seen/Scummed/Unchecked only
     if (status == RCSHOW_UNCHECKED || status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED || status == RCSHOW_SCUMMED || skipped) {

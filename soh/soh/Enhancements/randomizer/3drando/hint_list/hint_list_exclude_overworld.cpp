@@ -1,4 +1,5 @@
 #include "../hint_list.hpp"
+#include "../item_location.hpp"
 
 void HintTable_Init_Exclude_Overworld() {
     hintTable[KF_KOKIRI_SWORD_CHEST] = HintText::Exclude({
@@ -1356,4 +1357,12 @@ void HintTable_Init_Exclude_Overworld() {
                        //obscure text
                        Text{"a #cow in a luxurious hole# offers", /*french*/"la #vache dans une grotte luxueuse# donne", /*spanish*/"una #vaca de un lujoso hoyo# brinda"},
   });
+
+  // Fishsanity hints, just going to copy the pond hints for now
+    for (LocationKey loc : pondFishChildLocations) {
+        hintTable[loc] = hintTable[LH_CHILD_FISHING];
+    }
+    for (LocationKey loc : pondFishAdultLocations) {
+        hintTable[loc] = hintTable[LH_ADULT_FISHING];
+    }
 }
