@@ -755,10 +755,7 @@ void LoadFile() {
 
 void Teardown() {
     initialized = false;
-    for (auto& [rcArea, vec] : checksByArea) {
-        vec.clear();
-        areaChecksGotten[rcArea] = 0;
-    }
+    ClearAreaTotals();
     checksByArea.clear();
     areasSpoiled = 0;
 
