@@ -46,8 +46,8 @@ void func_80838940(Player* player, LinkAnimationHeader* anim, f32 arg2, PlayStat
 void func_8083A098(Player* player, LinkAnimationHeader* anim, PlayState* play);
 void func_80832698(Player* player, u16 sfxId);
 s32 func_8083721C(Player* player);
-s32 func_80835C58(PlayState* play, Player* player, PlayerFunc674 func, s32 flags);
-void func_80832264(PlayState* play, Player* player, LinkAnimationHeader* anim);
+s32 Player_SetupAction(PlayState* play, Player* player, PlayerActionFunc actionFunc, s32 flags);
+void Player_AnimPlayOnce(PlayState* play, Player* player, LinkAnimationHeader* anim);
 }
 
 // TODO: When there's more uses of something like this, create a new GI::RawAction?
@@ -1184,8 +1184,8 @@ void InitMods() {
             if (AMMO(ITEM_NUT) != 0) {
                 if ((play->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_2) && (player->actor.bgCheckFlags & 1) &&
                     (AMMO(ITEM_NUT) != 0)) {
-                    func_80835C58(play, player, Player_ThrowDekuNutFunctionCopy, 0);
-                    func_80832264(play, player, (LinkAnimationHeader*)(&gPlayerAnim_link_normal_light_bom));
+                    Player_SetupAction(play, player, Player_ThrowDekuNutFunctionCopy, 0);
+                    Player_AnimPlayOnce(play, player, (LinkAnimationHeader*)(&gPlayerAnim_link_normal_light_bom));
                     player->unk_6AD = 0;
                 }
             } else {
