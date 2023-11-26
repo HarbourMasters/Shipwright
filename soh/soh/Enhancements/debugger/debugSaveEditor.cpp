@@ -1573,7 +1573,7 @@ void DrawPlayerTab() {
         ImGui::InputScalar("Y Velocity", ImGuiDataType_Float, &player->actor.velocity.y);
         UIWidgets::InsertHelpHoverText("Link's speed along the Y plane. Caps at -20");
 
-        ImGui::InputScalar("Wall Height", ImGuiDataType_Float, &player->wallHeight);
+        ImGui::InputScalar("Wall Height", ImGuiDataType_Float, &player->yDistToLedge);
         UIWidgets::InsertHelpHoverText("Height used to determine whether Link can climb or grab a ledge at the top");
 
         ImGui::InputScalar("Invincibility Timer", ImGuiDataType_S8, &player->invincibilityTimer);
