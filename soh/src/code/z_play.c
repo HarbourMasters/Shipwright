@@ -36,6 +36,7 @@ PlayState* gPlayState;
 s16 firstInit = 0;
 
 s16 gEnPartnerId;
+s16 gEnSnowballId;
 s16 gEnChristmasTreeId;
 s16 gEnChristmasDecoId;
 
