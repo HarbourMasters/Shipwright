@@ -1008,7 +1008,7 @@ void KaleidoScope_SetDefaultCursor(PlayState* play) {
     PauseContext* pauseCtx = &play->pauseCtx;
     s16 s;
     s16 i;
-    gSelectingMask = false;
+    KaleidoScope_ResetTradeSelect();
 
     switch (pauseCtx->pageIndex) {
         case PAUSE_ITEM:
@@ -1042,7 +1042,6 @@ void KaleidoScope_SetDefaultCursor(PlayState* play) {
 void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
     pauseCtx->unk_1E4 = 1;
     pauseCtx->unk_1EA = 0;
-    gSelectingMask = false;
 
     if (!pt) {
         pauseCtx->mode = pauseCtx->pageIndex * 2 + 1;

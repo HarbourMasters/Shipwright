@@ -14,8 +14,6 @@ u8 gAmmoItems[] = {
 static s16 sEquipState = 0;
 static s16 sEquipAnimTimer = 0;
 static s16 sEquipMoveTimer = 10;
-bool gSelectingMask;
-bool gSelectingAdultTrade;
 
 static s16 sAmmoVtxOffset[] = {
     0, 2, 4, 6, 99, 99, 8, 99, 10, 99, 99, 99, 99, 99, 12,
@@ -89,6 +87,8 @@ void KaleidoScope_SetItemCursorVtx(PauseContext* pauseCtx) {
 
 #pragma region Item Cycling
 
+s8 gCurrentItemCyclingSlot;
+
 // Vertices for the extra items
 static Vtx sCycleExtraItemVtx[] = {
     // Left Item
@@ -129,8 +129,10 @@ static Vtx sCycleAButtonVtx[] = {
 static sSlotCycleActiveAnimTimer[24] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 // Renders a left and/or right item for any item slot that can support cycling
-void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 isCycling, u8 canCycle, u8 leftItem, u8 rightItem) {
+void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 canCycle, u8 leftItem, u8 rightItem) {
     PauseContext* pauseCtx = &play->pauseCtx;
+
+    u8 isCycling = gCurrentItemCyclingSlot == slot;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -222,26 +224,26 @@ void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 isCycling, u8
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool* enabled, bool cond, u8 prevItem, u8 nextItem) {
+void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle, u8 leftItem, u8 rightItem) {
     Input* input = &play->state.input[0];
     PauseContext* pauseCtx = &play->pauseCtx;
     bool dpad = (CVarGetInteger("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
-    if (cond && pauseCtx->cursorSlot[PAUSE_ITEM] == slot && CHECK_BTN_ALL(input->press.button, BTN_A)) {
+    if (canCycle && pauseCtx->cursorSlot[PAUSE_ITEM] == slot && CHECK_BTN_ALL(input->press.button, BTN_A)) {
         Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        *enabled = !*enabled;
+        gCurrentItemCyclingSlot = gCurrentItemCyclingSlot == slot ? -1 : slot;
     }
-    if (*enabled) {
+    if (gCurrentItemCyclingSlot == slot) {
         pauseCtx->cursorColorSet = 8;
         if ((pauseCtx->stickRelX > 30 || pauseCtx->stickRelY > 30) ||
              dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT | BTN_DUP)) {
             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            gSaveContext.inventory.items[slot] = nextItem;
+            gSaveContext.inventory.items[slot] = rightItem;
         } else if ((pauseCtx->stickRelX < -30 || pauseCtx->stickRelY < -30) ||
             dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DDOWN)) {
             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            gSaveContext.inventory.items[slot] = prevItem;
+            gSaveContext.inventory.items[slot] = leftItem;
         }
-        *enabled = pauseCtx->cursorSlot[PAUSE_ITEM] == slot;
+        gCurrentItemCyclingSlot = pauseCtx->cursorSlot[PAUSE_ITEM] == slot ? slot : -1;
     }
 }
 
@@ -261,7 +263,6 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
     KaleidoScope_HandleItemCycleExtras(
         play,
         SLOT_TRADE_CHILD,
-        &gSelectingMask,
         CanMaskSelect(),
         INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_KEATON || INV_CONTENT(ITEM_TRADE_CHILD) > ITEM_MASK_TRUTH ?
             ITEM_MASK_TRUTH :
@@ -274,7 +275,6 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
     KaleidoScope_HandleItemCycleExtras(
         play,
         SLOT_TRADE_ADULT,
-        &gSelectingAdultTrade,
         IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
         Randomizer_GetPrevAdultTradeItem(),
         Randomizer_GetNextAdultTradeItem()
@@ -284,17 +284,7 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
 void KaleidoScope_DrawItemCycles(PlayState* play) {
     KaleidoScope_DrawItemCycleExtras(
         play,
-        SLOT_TRADE_ADULT,
-        gSelectingAdultTrade,
-        IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
-        Randomizer_GetPrevAdultTradeItem(),
-        Randomizer_GetNextAdultTradeItem()
-    );
-
-    KaleidoScope_DrawItemCycleExtras(
-        play,
         SLOT_TRADE_CHILD,
-        gSelectingMask,
         CanMaskSelect(),
         INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_KEATON || INV_CONTENT(ITEM_TRADE_CHILD) > ITEM_MASK_TRUTH ?
             ITEM_MASK_TRUTH :
@@ -303,6 +293,22 @@ void KaleidoScope_DrawItemCycles(PlayState* play) {
             ITEM_MASK_KEATON :
             INV_CONTENT(ITEM_TRADE_CHILD) + 1
     );
+    
+    KaleidoScope_DrawItemCycleExtras(
+        play,
+        SLOT_TRADE_ADULT,
+        IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
+        Randomizer_GetPrevAdultTradeItem(),
+        Randomizer_GetNextAdultTradeItem()
+    );
+}
+
+bool IsItemCycling() {
+    return gCurrentItemCyclingSlot != -1;
+}
+
+void KaleidoScope_ResetTradeSelect() {
+    gCurrentItemCyclingSlot = -1;
 }
 
 #pragma endregion
@@ -337,7 +343,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
     pauseCtx->nameColorSet = 0;
 
     if ((pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0) && (pauseCtx->pageIndex == PAUSE_ITEM)) {
-        moveCursorResult = 0 || gSelectingMask || gSelectingAdultTrade;
+        moveCursorResult = 0 || IsItemCycling();
         oldCursorPoint = pauseCtx->cursorPoint[PAUSE_ITEM];
 
         cursorItem = pauseCtx->cursorItem[PAUSE_ITEM];
@@ -511,7 +517,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
         if (pauseCtx->cursorSpecialPos == 0) {
             if (cursorItem != PAUSE_ITEM_NONE) {
                 if ((ABS(pauseCtx->stickRelY) > 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
-                    moveCursorResult = 0 || gSelectingMask || gSelectingAdultTrade;
+                    moveCursorResult = 0 || IsItemCycling();
 
                     cursorPoint = pauseCtx->cursorPoint[PAUSE_ITEM];
                     cursorY = pauseCtx->cursorY[PAUSE_ITEM];
@@ -702,8 +708,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
 void KaleidoScope_SetupItemEquip(PlayState* play, u16 item, u16 slot, s16 animX, s16 animY) {
     Input* input = &play->state.input[0];
     PauseContext* pauseCtx = &play->pauseCtx;
-    gSelectingMask = false;
-    gSelectingAdultTrade = false;
+    KaleidoScope_ResetTradeSelect();
 
     if (CHECK_BTN_ALL(input->press.button, BTN_CLEFT)) {
         pauseCtx->equipTargetCBtn = 0;
@@ -1086,9 +1091,4 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
             pauseCtx->equipAnimAlpha = 255;
         }
     }
-}
-
-void KaleidoScope_ResetTradeSelect() {
-    gSelectingMask = false;
-    gSelectingAdultTrade = false;
 }

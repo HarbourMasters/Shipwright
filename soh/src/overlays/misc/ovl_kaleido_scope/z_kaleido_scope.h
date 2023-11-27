@@ -11,7 +11,6 @@ extern u8 gEquipAgeReqs[][4];
 extern u8 gSlotAgeReqs[];
 extern u8 gItemAgeReqs[];
 extern u8 gAreaGsFlags[];
-extern bool gSelectingMask;
 
 #define AGE_REQ_ADULT LINK_AGE_ADULT
 #define AGE_REQ_CHILD LINK_AGE_CHILD
