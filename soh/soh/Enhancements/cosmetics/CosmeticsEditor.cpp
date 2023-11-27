@@ -190,9 +190,9 @@ typedef struct {
     colors were darker than the gDPSetPrimColor. You will see many more examples of this below in the `ApplyOrResetCustomGfxPatches` method
 */
 static std::map<std::string, CosmeticOption> cosmeticOptions = {
-    COSMETIC_OPTION("Link_KokiriTunic",              "Kokiri Tunic",         GROUP_LINK,         ImVec4( 30, 105,  27, 255), false, true, false),
-    COSMETIC_OPTION("Link_GoronTunic",               "Goron Tunic",          GROUP_LINK,         ImVec4(100,  20,   0, 255), false, true, false),
-    COSMETIC_OPTION("Link_ZoraTunic",                "Zora Tunic",           GROUP_LINK,         ImVec4(  0,  60, 100, 255), false, true, false),
+    COSMETIC_OPTION("Link_KokiriTunic",              "Kokiri Tunic",         GROUP_LINK,         ImVec4(255,   0,   0, 255), false, true, false),
+    COSMETIC_OPTION("Link_GoronTunic",               "Goron Tunic",          GROUP_LINK,         ImVec4(255,   0,   0, 255), false, true, false),
+    COSMETIC_OPTION("Link_ZoraTunic",                "Zora Tunic",           GROUP_LINK,         ImVec4(255,   0,   0, 255), false, true, false),
     COSMETIC_OPTION("Link_Hair",                     "Hair",                 GROUP_LINK,         ImVec4(255, 173,  27, 255), false, true, true),
     COSMETIC_OPTION("Link_Linen",                    "Linen",                GROUP_LINK,         ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Link_Boots",                    "Boots",                GROUP_LINK,         ImVec4( 93,  44,  18, 255), false, true, true),
@@ -325,7 +325,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("NPC_Dog1",                      "Dog 1",                GROUP_NPC,          ImVec4(255, 255, 200, 255), false, true, true),
     COSMETIC_OPTION("NPC_Dog2",                      "Dog 2",                GROUP_NPC,          ImVec4(150, 100,  50, 255), false, true, true),
     COSMETIC_OPTION("NPC_GoldenSkulltula",           "Golden Skulltula",     GROUP_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
-    COSMETIC_OPTION("NPC_Kokiri",                    "Kokiri",               GROUP_NPC,          ImVec4(  0, 130,  70, 255), false, true, false),
+    COSMETIC_OPTION("NPC_Kokiri",                    "Kokiri",               GROUP_NPC,          ImVec4(255,   0,   0, 255), false, true, false),
     COSMETIC_OPTION("NPC_Gerudo",                    "Gerudo",               GROUP_NPC,          ImVec4( 90,   0, 140, 255), false, true, false),
     COSMETIC_OPTION("NPC_MetalTrap",                 "Metal Trap",           GROUP_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("NPC_IronKnuckles",              "Iron Knuckles",        GROUP_NPC,          ImVec4(245, 255, 205, 255), false, true, false),
