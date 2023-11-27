@@ -606,7 +606,7 @@ void CheckTrackerSceneFlagSet(int16_t sceneNum, int16_t flagType, int32_t flag) 
     if (flagType != FLAG_SCENE_TREASURE && flagType != FLAG_SCENE_COLLECTIBLE) {
         return;
     }
-    if (sceneNum == 83 && flag == 31 && flagType == FLAG_SCENE_COLLECTIBLE) { // Gravedigging tour special case
+    if (sceneNum == SCENE_GRAVEYARD && flag == 31 && flagType == FLAG_SCENE_COLLECTIBLE) { // Gravedigging tour special case
         SetCheckCollected(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR);
         return;
     }
@@ -630,41 +630,43 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
             checkMatchType = SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA;
             break;
         case FLAG_EVENT_CHECK_INF:
-            if (flag == 0x0F) {
-                SetCheckCollected(RC_HIDEOUT_GERUDO_MEMBERSHIP_CARD);
+            if ((flag == EVENTCHKINF_CARPENTERS_FREE(0) || flag == EVENTCHKINF_CARPENTERS_FREE(1) ||
+                 flag == EVENTCHKINF_CARPENTERS_FREE(2) || flag == EVENTCHKINF_CARPENTERS_FREE(3)) 
+                && GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
+                SetCheckCollected(RC_GF_GERUDO_MEMBERSHIP_CARD);
                 return;
             }
             checkMatchType = SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF;
             break;
         case FLAG_INF_TABLE:
-            if (flag == 400) {
+            if (flag == INFTABLE_190) {
                 SetCheckCollected(RC_GF_HBA_1000_POINTS);
-            } else if (flag == 286) {
+            } else if (flag == INFTABLE_11E) {
                 SetCheckCollected(RC_GC_ROLLING_GORON_AS_CHILD);
-            } else if (flag == 265) {
+            } else if (flag == INFTABLE_GORON_CITY_DOORS_UNLOCKED) {
                 SetCheckCollected(RC_GC_ROLLING_GORON_AS_ADULT);
-            } else if (flag == 313) {
+            } else if (flag == INFTABLE_139) {
                 SetCheckCollected(RC_ZD_KING_ZORA_THAWED);
-            } else if (flag == 401) {
+            } else if (flag == INFTABLE_191) {
                 SetCheckCollected(RC_MARKET_LOST_DOG);
             }
             if (!IS_RANDO) {
-                if (flag == 402) {
+                if (flag == INFTABLE_192) {
                     SetCheckCollected(RC_LW_DEKU_SCRUB_NEAR_BRIDGE);
-                } else if (flag == 403) {
+                } else if (flag == INFTABLE_193) {
                     SetCheckCollected(RC_LW_DEKU_SCRUB_GROTTO_FRONT);
                 }
             }
             break;
         case FLAG_ITEM_GET_INF:
             if (!IS_RANDO) {
-                if (flag == 30) {
+                if (flag == ITEMGETINF_OBTAINED_STICK_UPGRADE_FROM_STAGE) {
                     SetCheckCollected(RC_DEKU_THEATER_SKULL_MASK);
                     return;
-                } else if (flag == 31) {
+                } else if (flag == ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE) {
                     SetCheckCollected(RC_DEKU_THEATER_MASK_OF_TRUTH);
                     return;
-                } else if (flag == 11) {
+                } else if (flag == ITEMGETINF_0B) {
                     SetCheckCollected(RC_HF_DEKU_SCRUB_GROTTO);
                     return;
                 }
@@ -679,9 +681,12 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
         return;
     }
     for (auto [rc, rcObj] : RandomizerCheckObjects::GetAllRCObjects()) {
-        if (!IS_RANDO && ((rcObj.vOrMQ == RCVORMQ_MQ && !IS_MASTER_QUEST) || (rcObj.vOrMQ == RCVORMQ_VANILLA && IS_MASTER_QUEST)) ||
-            IS_RANDO && (OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) && rcObj.vOrMQ == RCVORMQ_VANILLA) || 
-                         !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) && rcObj.vOrMQ == RCVORMQ_MQ){
+        if ((!IS_RANDO && ((rcObj.vOrMQ == RCVORMQ_MQ && !IS_MASTER_QUEST) ||
+                           (rcObj.vOrMQ == RCVORMQ_VANILLA && IS_MASTER_QUEST))) ||
+            (IS_RANDO && ((OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) &&
+                                rcObj.vOrMQ == RCVORMQ_VANILLA) ||
+                          !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) &&
+                                rcObj.vOrMQ == RCVORMQ_MQ))) {
             continue;
         }
         SpoilerCollectionCheck scCheck = Location(rc)->GetCollectionCheck();
