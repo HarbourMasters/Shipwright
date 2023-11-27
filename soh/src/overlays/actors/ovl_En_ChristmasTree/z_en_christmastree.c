@@ -16,6 +16,7 @@ void EnChristmasTree_Draw(Actor* thisx, PlayState* play);
 void EnChristmasTree_Wait(EnChristmasTree* this, PlayState* play);
 void EnChristmasTree_Talk(EnChristmasTree* this, PlayState* play);
 void EnChristmasTree_SetupEndTitle(EnChristmasTree* this, PlayState* play);
+void EnChristmasTree_HandleEndTitle(EnChristmasTree* this, PlayState* play);
 
 static ColliderCylinderInit sCylinderInit = {
     {
@@ -91,8 +92,6 @@ void EnChristmasTree_Talk(EnChristmasTree* this, PlayState* play) {
 void EnChristmasTree_SetupEndTitle(EnChristmasTree* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    GameInteractor_SetNoUIActive(1);
-
     Actor_Spawn(&play->actorCtx, play, ACTOR_END_TITLE, 0, 0, 0, 0, 0, 0, 2, false);
 
     player->stateFlags1 = PLAYER_STATE1_INPUT_DISABLED;
@@ -101,9 +100,41 @@ void EnChristmasTree_SetupEndTitle(EnChristmasTree* this, PlayState* play) {
 
     Play_PerformSave(play);
 
-    Camera_ChangeMode(Play_GetCamera(play, play->mainCamera.thisIdx), CAM_MODE_STILL);
+    this->actionFunc = EnChristmasTree_HandleEndTitle;
+}
 
-    this->actionFunc = EnChristmasTree_Wait;
+void EnChristmasTree_HandleEndTitle(EnChristmasTree* this, PlayState* play) {
+    Camera* camera = Play_GetCamera(play, play->mainCamera.thisIdx);
+    Player* player = GET_PLAYER(play);
+    Vec3f camAt;
+    Vec3f camEye;
+
+    // Not forcing camera mode makes the camera jitter for a bit after setting position.
+    // Also forces letterbox bars.
+    Camera_ChangeMode(camera, CAM_MODE_STILL);
+
+    // Christmas Tree's position
+    camAt.x = -734.0f;
+    camAt.y = 130.0f;
+    camAt.z = 420.0f;
+
+    // Camera's position
+    camEye.x = -1237.0f;
+    camEye.y = 218.0f;
+    camEye.z = 408.0f;
+
+    // Not setting fov manually makes camera zoom in after setting the above for a little bit.
+    camera->fov = 60.0f;
+
+    // Set camera
+    Play_CameraSetAtEye(play, play->mainCamera.thisIdx, &camAt, &camEye);
+
+    // Hide player so he's not visible in the final screen. Also move him so target arrow on tree dissapears.
+    player->actor.scale.x = player->actor.scale.y = player->actor.scale.z = 0.00001f;
+    player->actor.world.pos.y = -200.0f;
+
+    // Hide HUD
+    Interface_ChangeAlpha(1);
 }
 
 void EnChristmasTree_Update(Actor* thisx, PlayState* play) {
