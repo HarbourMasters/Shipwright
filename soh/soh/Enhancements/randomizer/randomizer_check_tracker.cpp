@@ -675,7 +675,9 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
         return;
     }
     for (auto [rc, rcObj] : RandomizerCheckObjects::GetAllRCObjects()) {
-        if (!IS_RANDO && ((rcObj.vOrMQ == RCVORMQ_MQ && !IS_MASTER_QUEST) || (rcObj.vOrMQ == RCVORMQ_VANILLA && IS_MASTER_QUEST))) {
+        if (!IS_RANDO && ((rcObj.vOrMQ == RCVORMQ_MQ && !IS_MASTER_QUEST) || (rcObj.vOrMQ == RCVORMQ_VANILLA && IS_MASTER_QUEST)) ||
+            IS_RANDO && (OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) && rcObj.vOrMQ == RCVORMQ_VANILLA) || 
+                         !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) && rcObj.vOrMQ == RCVORMQ_MQ){
             continue;
         }
         SpoilerCollectionCheck scCheck = Location(rc)->GetCollectionCheck();
@@ -932,7 +934,7 @@ void CheckTrackerWindow::DrawElement() {
                                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_NONE ||
                                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_SELECTION ||
                                (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_SET_NUMBER &&
-                                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) < 12);
+                                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) == 12);
 
             if (isThisAreaSpoiled) {
                 if (showVOrMQ && RandomizerCheckObjects::AreaIsDungeon(rcArea)) {
