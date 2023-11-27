@@ -32,6 +32,7 @@ extern "C" {
 #include "functions.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
+extern "C" s16 gEnSnowballId;
 extern void Overlay_DisplayText(float duration, const char* text);
 uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 }
@@ -1059,6 +1060,40 @@ void RegisterRandomizedEnemySizes() {
     });
 }
 
+static CollisionPoly snowballPoly;
+static Vec3f snowballPos;
+static f32 raycastResult;
+
+void RegisterSnowballs() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
+        if (gPlayState->sceneNum != SCENE_HYRULE_FIELD && gPlayState->sceneNum != SCENE_KAKARIKO_VILLAGE) {
+            return;
+        }
+
+        int actorsSpawned = 0;
+
+        while (actorsSpawned < 30) {
+            snowballPos.x = (float)(Random(
+                (gPlayState->sceneNum == SCENE_HYRULE_FIELD ? -10000 : -2700) + 10000,
+                (gPlayState->sceneNum == SCENE_HYRULE_FIELD ? 5000 : 2000) + 10000
+            ) - (float)10000.0f);
+            snowballPos.y = 5000;
+            snowballPos.z = (float)(Random(
+                (gPlayState->sceneNum == SCENE_HYRULE_FIELD ? -1000 : -2000) + 10000,
+                (gPlayState->sceneNum == SCENE_HYRULE_FIELD ? 15000 : 2000) + 10000
+            ) - (float)10000.0f);
+
+            raycastResult = BgCheck_AnyRaycastFloor1(&gPlayState->colCtx, &snowballPoly, &snowballPos);
+
+            if (raycastResult > BGCHECK_Y_MIN) {
+                Actor_Spawn(&gPlayState->actorCtx, gPlayState, gEnSnowballId, snowballPos.x, raycastResult,
+                            snowballPos.z, 0, 0, 0, gPlayState->sceneNum == SCENE_HYRULE_FIELD, 0);
+                actorsSpawned++;
+            }
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1088,5 +1123,6 @@ void InitMods() {
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
     RegisterRandomizedEnemySizes();
+    RegisterSnowballs();
     NameTag_RegisterHooks();
 }
