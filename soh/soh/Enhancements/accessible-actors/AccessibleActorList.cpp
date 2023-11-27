@@ -708,8 +708,6 @@ void accessible_audio_compass(AccessibleActor* actor) {
     ActorAccessibility_AddSupportedActor(ACTOR_EN_ANI, policy);
     policy.englishName = "Cursed Skulltula People";
     ActorAccessibility_AddSupportedActor(ACTOR_EN_SSH, policy);
-    policy.englishName = "Ingo";
-    ActorAccessibility_AddSupportedActor(ACTOR_EN_IN, policy);
     policy.englishName = "Gossip Stone";
     policy.pitch = 0.75;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_GS, policy);
