@@ -212,10 +212,20 @@ void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 canCycle, u8 
         gSPVertex(POLY_KAL_DISP++, sCycleExtraItemVtx, 8, 0);
 
         if (showLeftItem) {
+            if (!CHECK_AGE_REQ_ITEM(leftItem)) {
+                gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
+                gSPGrayscale(POLY_KAL_DISP++, true);
+            }
             KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[leftItem], 32, 32, 0);
+            gSPGrayscale(POLY_KAL_DISP++, false);
         }
         if (showRightItem) {
+            if (!CHECK_AGE_REQ_ITEM(rightItem)) {
+                gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
+                gSPGrayscale(POLY_KAL_DISP++, true);
+            }
             KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[rightItem], 32, 32, 4);
+            gSPGrayscale(POLY_KAL_DISP++, false);
         }
 
         Matrix_Pop();
@@ -271,6 +281,21 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
             ITEM_MASK_KEATON :
             INV_CONTENT(ITEM_TRADE_CHILD) + 1
     );
+
+    gSlotAgeReqs[SLOT_TRADE_CHILD] =
+        (
+            ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger("gAdultBunnyHood", 0)) ||
+            CVarGetInteger("gTimelessEquipment", 0)
+        ) &&
+        INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY
+            ? AGE_REQ_NONE
+            : AGE_REQ_CHILD;
+    
+    gItemAgeReqs[ITEM_MASK_BUNNY] =
+        ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger("gAdultBunnyHood", 0)) ||
+        CVarGetInteger("gTimelessEquipment", 0)
+            ? AGE_REQ_NONE
+            : AGE_REQ_CHILD;
 
     KaleidoScope_HandleItemCycleExtras(
         play,
