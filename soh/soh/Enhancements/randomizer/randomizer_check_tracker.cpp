@@ -606,6 +606,10 @@ void CheckTrackerSceneFlagSet(int16_t sceneNum, int16_t flagType, int32_t flag) 
     if (flagType != FLAG_SCENE_TREASURE && flagType != FLAG_SCENE_COLLECTIBLE) {
         return;
     }
+    if (sceneNum == 83 && flag == 31 && flagType == FLAG_SCENE_COLLECTIBLE) { // Gravedigging tour special case
+        SetCheckCollected(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR);
+        return;
+    }
     for (auto [rc, rcObj] : RandomizerCheckObjects::GetAllRCObjects()) {
         if (!IsVisibleInCheckTracker(rcObj)) {
             continue;
