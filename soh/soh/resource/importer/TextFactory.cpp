@@ -66,6 +66,10 @@ void LUS::TextFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
 	text->messages.push_back(entry);
     }
 }
+
+// This is a special character that we use to replace the null terminator in the message, otherwise tinyxml2 will stop reading the string
+const char* XML_NULL_TERMINATOR = "\x7F";
+
 void TextFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<IResource> resource) {
     std::shared_ptr<Text> txt = std::static_pointer_cast<Text>(resource);
 
@@ -80,10 +84,16 @@ void TextFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<I
             entry.textboxType = child->IntAttribute("TextboxType");
             entry.textboxYPos = child->IntAttribute("TextboxYPos");
             entry.msg = child->Attribute("Message");
-            entry.msg += "\x2";
+
+            // Replace the special string with a null terminator if it exists
+            size_t nullTerminatorPos = entry.msg.find(XML_NULL_TERMINATOR);
+            while (nullTerminatorPos != std::string::npos) {
+                entry.msg.replace(nullTerminatorPos, strlen(XML_NULL_TERMINATOR), " ");
+                entry.msg[nullTerminatorPos] = '\0';
+                nullTerminatorPos = entry.msg.find(XML_NULL_TERMINATOR);
+            }
 
             txt->messages.push_back(entry);
-            int bp = 0;
         }
 
         child = child->NextSiblingElement();
