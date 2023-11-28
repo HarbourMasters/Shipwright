@@ -1571,7 +1571,7 @@ void Settings::UpdateOptionProperties() {
     if (CVarGetInteger("gRandomizeSkipChildZelda", RO_GENERIC_DONT_SKIP)) {
         ctx->GetOption(RSK_SKIP_CHILD_STEALTH).Disable("This option is disabled because \"Skip Child Zelda\" is enabled.");
     } else {
-        ctx->GetOption(RSK_SKIP_CHILD_ZELDA).Enable();
+        ctx->GetOption(RSK_SKIP_CHILD_STEALTH).Enable();
     }
     if (CVarGetInteger("gRandomizeGossipStoneHints", RO_GOSSIP_STONES_NEED_NOTHING) == RO_GOSSIP_STONES_NONE) {
         mOptions[RSK_HINT_CLARITY].Hide();
