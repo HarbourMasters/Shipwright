@@ -1064,6 +1064,20 @@ static CollisionPoly snowballPoly;
 static Vec3f snowballPos;
 static f32 raycastResult;
 
+static u32 iceBlockParams[] = {
+    0x214,
+    0x1,
+    0x11,
+    0x11,
+    0x10,
+    0x12,
+    0x12,
+    0x12,
+    0x20,
+    0x23,
+    0x123,
+};
+
 void RegisterSnowballs() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
         if (gPlayState->sceneNum != SCENE_HYRULE_FIELD && gPlayState->sceneNum != SCENE_KAKARIKO_VILLAGE) {
@@ -1088,6 +1102,55 @@ void RegisterSnowballs() {
             if (raycastResult > BGCHECK_Y_MIN) {
                 Actor_Spawn(&gPlayState->actorCtx, gPlayState, gEnSnowballId, snowballPos.x, raycastResult,
                             snowballPos.z, 0, 0, 0, gPlayState->sceneNum == SCENE_HYRULE_FIELD, 0);
+                actorsSpawned++;
+            }
+        }
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
+        if (gPlayState->sceneNum != SCENE_LAKE_HYLIA) {
+            return;
+        }
+
+        int actorsSpawned = 0;
+
+        Vec3f spawnedIceBlockPos[20];
+
+        while (actorsSpawned < 20) {
+            Vec3f iceBlockPos;
+            iceBlockPos.x = (float)(Random(
+                (-4200) + 10000,
+                (3000) + 10000
+            ) - (float)10000.0f);
+            iceBlockPos.y = -1313.0;
+            iceBlockPos.z = (float)(Random(
+                (2600) + 10000,
+                (9000) + 10000
+            ) - (float)10000.0f);
+
+            raycastResult = BgCheck_AnyRaycastFloor1(&gPlayState->colCtx, &snowballPoly, &iceBlockPos);
+
+            if (raycastResult > BGCHECK_Y_MIN) {
+
+                bool overlaps = false;
+                for (int i = 0; i < actorsSpawned; i++) {
+                    if (Math_Vec3f_DistXZ(&spawnedIceBlockPos[i], &iceBlockPos) < 300.0f) {
+                        overlaps = true;
+                        break;
+                    }
+                }
+
+                if (overlaps) {
+                    continue;
+                }
+
+                if (LINK_IS_ADULT && !Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER)) {
+                    iceBlockPos.y = raycastResult;
+                }
+
+                Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_BG_SPOT08_ICEBLOCK, iceBlockPos.x, iceBlockPos.y,
+                            iceBlockPos.z, 0, (s16)Random(0, 0xFFFF), 0, RandomElement(iceBlockParams), 0);
+                spawnedIceBlockPos[actorsSpawned] = iceBlockPos;
                 actorsSpawned++;
             }
         }
