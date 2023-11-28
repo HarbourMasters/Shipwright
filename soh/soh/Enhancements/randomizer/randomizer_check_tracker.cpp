@@ -350,6 +350,9 @@ void ClearAreaChecksAndTotals() {
 
 void SetShopSeen(uint32_t sceneNum, bool prices) {
     RandomizerCheck start = startingShopItem.find(sceneNum)->second;
+    if (sceneNum == SCENE_POTION_SHOP_KAKARIKO && !LINK_IS_ADULT) {
+        return;
+    }
     if (GetCheckArea() == RCAREA_KAKARIKO_VILLAGE && sceneNum == SCENE_BAZAAR) {
         start = RC_KAK_BAZAAR_ITEM_1;
     }
