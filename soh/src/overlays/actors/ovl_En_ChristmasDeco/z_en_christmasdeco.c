@@ -13,7 +13,10 @@ void EnChristmasDeco_Update(Actor* thisx, PlayState* play);
 void EnChristmasDeco_Draw(Actor* thisx, PlayState* play);
 
 void EnChristmasDeco_Init(Actor* thisx, PlayState* play) {
-
+    if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
+        EnChristmasDeco* this = (EnChristmasDeco*)thisx;
+        this->actor.room = -1;
+    }
 }
 
 void EnChristmasDeco_Destroy(Actor* thisx, PlayState* play) {
@@ -42,6 +45,15 @@ void EnChristmasDeco_Draw(Actor* thisx, PlayState* play) {
             gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gKakarikoChildDecorDL);
         } else {
             gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gKakarikoAdultDecorDL);
+        }
+    }
+
+    if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gTempleOfTimeDecorDL);
+        if (LINK_IS_CHILD) {
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gTempleOfTimeDecorDL);
+        } else {
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gTempleOfTimeDecorDL);
         }
     }
 
