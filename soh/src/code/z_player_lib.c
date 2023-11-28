@@ -1681,7 +1681,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         Matrix_MultVec3f(&sZeroVec, D_80160000);
     }
 
-    if (CVarGetInteger("gLetItSnow", 0) && !(this->stateFlags1 & PLAYER_STATE1_FIRST_PERSON)) {
+    if (CVarGetInteger("gLetItSnow", 0) && !(this->stateFlags1 & PLAYER_STATE1_FIRST_PERSON) && !(this->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
         if (limbIndex == PLAYER_LIMB_HEAD) {
             OPEN_DISPS(play->state.gfxCtx);
 

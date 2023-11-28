@@ -2556,10 +2556,10 @@ s32 EnOssan_OverrideLimbDrawKokiriShopkeeper(PlayState* play, s32 limbIndex, Gfx
         gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(sKokiriShopkeeperEyeTextures[this->eyeTextureIdx]));
     }
 
-    if (limbIndex == 9) {
+    if (limbIndex == 15) {
         Matrix_Push();
-        Matrix_RotateZYX(13948, 0, -1550, MTXMODE_APPLY);
-        Matrix_Translate(1837.838f, 0.000f, 540.541f, MTXMODE_APPLY);
+        Matrix_RotateZYX(14169, -2215, 0, MTXMODE_APPLY);
+        Matrix_Translate(1810.811f, -351.351f, -94.595f, MTXMODE_APPLY);
         Matrix_Scale(1.068f, 1.068f, 1.068f, MTXMODE_APPLY);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gSantaHatGenericDL);
