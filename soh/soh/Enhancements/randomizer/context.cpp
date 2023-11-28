@@ -95,7 +95,7 @@ void Context::PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bo
     SPDLOG_DEBUG(StaticData::GetLocation(locKey)->GetName());
     SPDLOG_DEBUG("\n\n");
 
-    if (applyEffectImmediately || mSettings->Setting(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS) || mSettings->Setting(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
+    if (applyEffectImmediately || mSettings->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS) || mSettings->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
         Rando::StaticData::RetrieveItem(item).ApplyEffect();
     }
 
@@ -135,7 +135,7 @@ void Context::AddLocations(const Container& locations, std::vector<RandomizerChe
 void Context::GenerateLocationPool() {
     allLocations.clear();
     AddLocation(RC_LINKS_POCKET);
-    if (mSettings->Setting(RSK_TRIFORCE_HUNT)) {
+    if (mSettings->GetOption(RSK_TRIFORCE_HUNT)) {
         AddLocation(RC_TRIFORCE_COMPLETED);
     }
     AddLocations(StaticData::overworldLocations);
@@ -553,7 +553,7 @@ Sprite* Context::GetSeedTexture(uint8_t index) {
 }
 
 Rando::Option& Context::GetOption(RandomizerSettingKey key) {
-    return mSettings->Setting(key);
+    return mSettings->GetOption(key);
 }
 
 Rando::Option& Context::GetTrickOption(RandomizerTrick key) {

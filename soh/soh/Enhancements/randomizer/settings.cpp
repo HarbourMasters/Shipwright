@@ -1127,7 +1127,7 @@ void Settings::CreateOptions() {
     };
 }
 
-Option& Settings::Setting(RandomizerSettingKey key) {
+Option& Settings::GetOption(RandomizerSettingKey key) {
     return mOptions[key];
 }
 

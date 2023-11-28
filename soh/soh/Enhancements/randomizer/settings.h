@@ -26,7 +26,7 @@ class Settings {
      * @param key 
      * @return Option& 
      */
-    Option& Setting(RandomizerSettingKey key);
+    Option& GetOption(RandomizerSettingKey key);
 
     /**
      * @brief Get a reference to the `Option` corresponding to the provided RandomizerTrick key.
