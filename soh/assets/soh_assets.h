@@ -116,6 +116,9 @@ static const ALIGN_ASSET(2) char gXmasStarDL[] = dgXmasStarDL;
 #define dgKakarikoDecorDL "__OTR__objects/object_kakariko_decor/gKakarikoDecorDL"
 static const ALIGN_ASSET(2) char gKakarikoDecorDL[] = dgKakarikoDecorDL;
 
+#define dgTempleOfTimeDecorDL "__OTR__objects/object_temple_of_time_decor/gTempleOfTimeDecorDL"
+static const ALIGN_ASSET(2) char gTempleOfTimeDecorDL[] = dgTempleOfTimeDecorDL;
+
 #define dgKakarikoChildDecorDL "__OTR__objects/object_kakariko_decor/gKakarikoChildDecorDL"
 static const ALIGN_ASSET(2) char gKakarikoChildDecorDL[] = dgKakarikoChildDecorDL;
 

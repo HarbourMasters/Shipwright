@@ -1,0 +1,87 @@
+<DisplayList Version="0">
+	<LoadVertices Path="objects/object_temple_of_time_decor/gTempleOfTimeDecorDL_vtx_5" VertexBufferIndex="0" VertexOffset="0" Count="32"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
+	<Triangles2 V00="4" V01="5" V02="6" Flag0="0" V10="4" V11="6" V12="7" Flag1="0"/>
+	<Triangles2 V00="8" V01="9" V02="10" Flag0="0" V10="8" V11="10" V12="11" Flag1="0"/>
+	<Triangles2 V00="12" V01="13" V02="14" Flag0="0" V10="12" V11="14" V12="15" Flag1="0"/>
+	<Triangles2 V00="16" V01="17" V02="18" Flag0="0" V10="16" V11="18" V12="19" Flag1="0"/>
+	<Triangles2 V00="20" V01="21" V02="22" Flag0="0" V10="20" V11="22" V12="23" Flag1="0"/>
+	<Triangles2 V00="24" V01="25" V02="26" Flag0="0" V10="24" V11="26" V12="27" Flag1="0"/>
+	<Triangles2 V00="28" V01="29" V02="30" Flag0="0" V10="28" V11="30" V12="31" Flag1="0"/>
+	<LoadVertices Path="objects/object_temple_of_time_decor/gTempleOfTimeDecorDL_vtx_5" VertexBufferIndex="0" VertexOffset="32" Count="32"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
+	<Triangles2 V00="4" V01="5" V02="6" Flag0="0" V10="4" V11="6" V12="7" Flag1="0"/>
+	<Triangles2 V00="8" V01="9" V02="10" Flag0="0" V10="8" V11="10" V12="11" Flag1="0"/>
+	<Triangles2 V00="12" V01="13" V02="14" Flag0="0" V10="12" V11="14" V12="15" Flag1="0"/>
+	<Triangles2 V00="16" V01="17" V02="18" Flag0="0" V10="16" V11="18" V12="19" Flag1="0"/>
+	<Triangles2 V00="20" V01="21" V02="22" Flag0="0" V10="20" V11="22" V12="23" Flag1="0"/>
+	<Triangles2 V00="24" V01="25" V02="26" Flag0="0" V10="24" V11="26" V12="27" Flag1="0"/>
+	<Triangles2 V00="28" V01="29" V02="30" Flag0="0" V10="28" V11="30" V12="31" Flag1="0"/>
+	<LoadVertices Path="objects/object_temple_of_time_decor/gTempleOfTimeDecorDL_vtx_5" VertexBufferIndex="0" VertexOffset="64" Count="32"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
+	<Triangles2 V00="4" V01="5" V02="6" Flag0="0" V10="4" V11="6" V12="7" Flag1="0"/>
+	<Triangles2 V00="8" V01="9" V02="10" Flag0="0" V10="8" V11="10" V12="11" Flag1="0"/>
+	<Triangles2 V00="12" V01="13" V02="14" Flag0="0" V10="12" V11="14" V12="15" Flag1="0"/>
+	<Triangles2 V00="16" V01="17" V02="18" Flag0="0" V10="16" V11="18" V12="19" Flag1="0"/>
+	<Triangles2 V00="20" V01="21" V02="22" Flag0="0" V10="20" V11="22" V12="23" Flag1="0"/>
+	<Triangles2 V00="24" V01="25" V02="26" Flag0="0" V10="24" V11="26" V12="27" Flag1="0"/>
+	<Triangles2 V00="28" V01="29" V02="30" Flag0="0" V10="28" V11="30" V12="31" Flag1="0"/>
+	<LoadVertices Path="objects/object_temple_of_time_decor/gTempleOfTimeDecorDL_vtx_5" VertexBufferIndex="0" VertexOffset="96" Count="30"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
+	<Triangles2 V00="4" V01="5" V02="6" Flag0="0" V10="4" V11="6" V12="7" Flag1="0"/>
+	<Triangles2 V00="8" V01="9" V02="10" Flag0="0" V10="8" V11="10" V12="11" Flag1="0"/>
+	<Triangles2 V00="12" V01="13" V02="14" Flag0="0" V10="12" V11="14" V12="15" Flag1="0"/>
+	<Triangles2 V00="16" V01="17" V02="18" Flag0="0" V10="16" V11="18" V12="19" Flag1="0"/>
+	<Triangles2 V00="20" V01="16" V02="19" Flag0="0" V10="20" V11="19" V12="21" Flag1="0"/>
+	<Triangles2 V00="22" V01="23" V02="24" Flag0="0" V10="22" V11="24" V12="25" Flag1="0"/>
+	<Triangles2 V00="26" V01="27" V02="28" Flag0="0" V10="26" V11="28" V12="29" Flag1="0"/>
+	<LoadVertices Path="objects/object_temple_of_time_decor/gTempleOfTimeDecorDL_vtx_5" VertexBufferIndex="0" VertexOffset="126" Count="32"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
+	<Triangles2 V00="4" V01="5" V02="6" Flag0="0" V10="4" V11="6" V12="7" Flag1="0"/>
+	<Triangles2 V00="8" V01="9" V02="10" Flag0="0" V10="8" V11="10" V12="11" Flag1="0"/>
+	<Triangles2 V00="12" V01="13" V02="14" Flag0="0" V10="12" V11="14" V12="15" Flag1="0"/>
+	<Triangles2 V00="16" V01="17" V02="18" Flag0="0" V10="16" V11="18" V12="19" Flag1="0"/>
+	<Triangles2 V00="20" V01="21" V02="22" Flag0="0" V10="20" V11="22" V12="23" Flag1="0"/>
+	<Triangles2 V00="24" V01="25" V02="26" Flag0="0" V10="24" V11="26" V12="27" Flag1="0"/>
+	<Triangles2 V00="28" V01="29" V02="30" Flag0="0" V10="28" V11="30" V12="31" Flag1="0"/>
+	<LoadVertices Path="objects/object_temple_of_time_decor/gTempleOfTimeDecorDL_vtx_5" VertexBufferIndex="0" VertexOffset="158" Count="32"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
+	<Triangles2 V00="4" V01="5" V02="6" Flag0="0" V10="4" V11="6" V12="7" Flag1="0"/>
+	<Triangles2 V00="8" V01="9" V02="10" Flag0="0" V10="8" V11="10" V12="11" Flag1="0"/>
+	<Triangles2 V00="12" V01="13" V02="14" Flag0="0" V10="12" V11="14" V12="15" Flag1="0"/>
+	<Triangles2 V00="16" V01="17" V02="18" Flag0="0" V10="16" V11="18" V12="19" Flag1="0"/>
+	<Triangles2 V00="20" V01="21" V02="22" Flag0="0" V10="20" V11="22" V12="23" Flag1="0"/>
+	<Triangles2 V00="24" V01="25" V02="26" Flag0="0" V10="24" V11="26" V12="27" Flag1="0"/>
+	<Triangles2 V00="28" V01="29" V02="30" Flag0="0" V10="28" V11="30" V12="31" Flag1="0"/>
+	<LoadVertices Path="objects/object_temple_of_time_decor/gTempleOfTimeDecorDL_vtx_5" VertexBufferIndex="0" VertexOffset="190" Count="30"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
+	<Triangles2 V00="4" V01="5" V02="6" Flag0="0" V10="4" V11="6" V12="7" Flag1="0"/>
+	<Triangles2 V00="8" V01="9" V02="10" Flag0="0" V10="8" V11="11" V12="9" Flag1="0"/>
+	<Triangles2 V00="12" V01="11" V02="8" Flag0="0" V10="12" V11="13" V12="11" Flag1="0"/>
+	<Triangles2 V00="14" V01="15" V02="16" Flag0="0" V10="14" V11="16" V12="17" Flag1="0"/>
+	<Triangles2 V00="18" V01="19" V02="20" Flag0="0" V10="18" V11="20" V12="21" Flag1="0"/>
+	<Triangles2 V00="22" V01="23" V02="24" Flag0="0" V10="22" V11="24" V12="25" Flag1="0"/>
+	<Triangles2 V00="26" V01="27" V02="28" Flag0="0" V10="26" V11="28" V12="29" Flag1="0"/>
+	<LoadVertices Path="objects/object_temple_of_time_decor/gTempleOfTimeDecorDL_vtx_5" VertexBufferIndex="0" VertexOffset="220" Count="32"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
+	<Triangles2 V00="4" V01="5" V02="6" Flag0="0" V10="4" V11="6" V12="7" Flag1="0"/>
+	<Triangles2 V00="8" V01="9" V02="10" Flag0="0" V10="8" V11="10" V12="11" Flag1="0"/>
+	<Triangles2 V00="12" V01="13" V02="14" Flag0="0" V10="12" V11="14" V12="15" Flag1="0"/>
+	<Triangles2 V00="16" V01="17" V02="18" Flag0="0" V10="16" V11="18" V12="19" Flag1="0"/>
+	<Triangles2 V00="20" V01="16" V02="19" Flag0="0" V10="20" V11="19" V12="21" Flag1="0"/>
+	<Triangles2 V00="21" V01="19" V02="22" Flag0="0" V10="21" V11="22" V12="23" Flag1="0"/>
+	<Triangles2 V00="24" V01="20" V02="21" Flag0="0" V10="24" V11="21" V12="25" Flag1="0"/>
+	<Triangles2 V00="26" V01="27" V02="28" Flag0="0" V10="26" V11="28" V12="29" Flag1="0"/>
+	<Triangles2 V00="30" V01="26" V02="29" Flag0="0" V10="30" V11="29" V12="31" Flag1="0"/>
+	<LoadVertices Path="objects/object_temple_of_time_decor/gTempleOfTimeDecorDL_vtx_5" VertexBufferIndex="0" VertexOffset="252" Count="30"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
+	<Triangles2 V00="4" V01="5" V02="0" Flag0="0" V10="4" V11="0" V12="6" Flag1="0"/>
+	<Triangles2 V00="7" V01="8" V02="9" Flag0="0" V10="7" V11="9" V12="10" Flag1="0"/>
+	<Triangles2 V00="11" V01="12" V02="13" Flag0="0" V10="11" V11="13" V12="14" Flag1="0"/>
+	<Triangles2 V00="15" V01="16" V02="17" Flag0="0" V10="15" V11="17" V12="5" Flag1="0"/>
+	<Triangles2 V00="18" V01="19" V02="20" Flag0="0" V10="18" V11="20" V12="21" Flag1="0"/>
+	<Triangles2 V00="22" V01="23" V02="24" Flag0="0" V10="22" V11="24" V12="25" Flag1="0"/>
+	<Triangles2 V00="26" V01="27" V02="28" Flag0="0" V10="26" V11="28" V12="29" Flag1="0"/>
+	<EndDisplayList/>
+</DisplayList>
+
