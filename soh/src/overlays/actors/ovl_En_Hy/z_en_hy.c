@@ -1278,6 +1278,14 @@ void EnHy_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, 
                     gSPDisplayList(POLY_OPA_DISP++, gPaperCrownGenericDL);
                     break;
                 }
+                case 1939: {
+                    Matrix_RotateZYX(2656, 1328, 1992, MTXMODE_APPLY);
+                    Matrix_Translate(1094.594f, 94.594f, 0.0f, MTXMODE_APPLY);
+                    Matrix_Scale(1.351f, 1.351f, 1.351f, MTXMODE_APPLY);
+                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                    gSPDisplayList(POLY_OPA_DISP++, gSantaHatGenericDL);
+                    break;
+                }
                 default: {
                     Matrix_RotateZYX(0, 0, 664, MTXMODE_APPLY);
                     Matrix_Translate(783.784f, 94.594f, 0.0f, MTXMODE_APPLY);
