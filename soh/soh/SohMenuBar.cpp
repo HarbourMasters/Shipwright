@@ -699,6 +699,9 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Always win the heart piece/purple rupee on the first dig in Dampe's grave digging game, just like in rando\nIn a rando file, this is unconditionally enabled");
                 UIWidgets::PaddedEnhancementCheckbox("All Dogs are Richard", "gAllDogsRichard", true, false);
                 UIWidgets::Tooltip("All dogs can be traded in and will count as Richard.");
+                UIWidgets::PaddedEnhancementSliderInt("Leever Spawn Rate: %dx slower", "##LeeverSpawnRate", "gLeeverSpawnRate",
+                                                      1, 10, "", 1, true, true, false);
+                UIWidgets::Tooltip("The time inbetween spawning a new group of leevers will increase based on the slider.");
                 UIWidgets::Spacer(0);
 
                 if (ImGui::BeginMenu("Potion Values"))
