@@ -1695,7 +1695,6 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
 }
 
 void RandomizerSettingsWindow::DrawElement() {
-    bool changed = false;
     auto ctx = Rando::Context::GetInstance();
     if (generated) {
         generated = 0;
@@ -1756,8 +1755,8 @@ void RandomizerSettingsWindow::DrawElement() {
     if (ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("World")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ctx->GetSettings()->GetOptionGroup(RSG_WORLD_IMGUI_TABLE).RenderImGui()) {
-                changed = true;
+            if (mSettings->GetOptionGroup(RSG_WORLD_IMGUI_TABLE).RenderImGui()) {
+                mNeedsUpdate = true;
             }
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
@@ -1765,8 +1764,8 @@ void RandomizerSettingsWindow::DrawElement() {
 
         if (ImGui::BeginTabItem("Items")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ctx->GetSettings()->GetOptionGroup(RSG_ITEMS_IMGUI_TABLE).RenderImGui()) {
-                changed = true;
+            if (mSettings->GetOptionGroup(RSG_ITEMS_IMGUI_TABLE).RenderImGui()) {
+                mNeedsUpdate = true;
             }
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
@@ -1774,8 +1773,8 @@ void RandomizerSettingsWindow::DrawElement() {
 
         if (ImGui::BeginTabItem("Gameplay")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ctx->GetSettings()->GetOptionGroup(RSG_GAMEPLAY_IMGUI_TABLE).RenderImGui()) {
-                changed = true;
+            if (mSettings->GetOptionGroup(RSG_GAMEPLAY_IMGUI_TABLE).RenderImGui()) {
+                mNeedsUpdate = true;
             }
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
@@ -1926,16 +1925,22 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::TableNextRow();
                 ImGui::TableNextColumn();
                 ImGui::PushItemWidth(170.0);
-                ctx->GetOption(RSK_LOGIC_RULES).RenderImGui();
+                if (mSettings->GetOption(RSK_LOGIC_RULES).RenderImGui()) {
+                    mNeedsUpdate = true;
+                }
                 if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
                     ImGui::SameLine();
-                    ctx->GetOption(RSK_ALL_LOCATIONS_REACHABLE).RenderImGui();
+                    if (mSettings->GetOption(RSK_ALL_LOCATIONS_REACHABLE).RenderImGui()) {
+                        mNeedsUpdate = true;
+                    }
                 }
 
                 UIWidgets::PaddedSeparator();
 
                 // Enable Glitch-Useful Cutscenes
-                ctx->GetOption(RSK_ENABLE_GLITCH_CUTSCENES).RenderImGui();
+                if (mSettings->GetOption(RSK_ENABLE_GLITCH_CUTSCENES).RenderImGui()) {
+                    mNeedsUpdate = true;
+                }
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
@@ -2320,8 +2325,8 @@ void RandomizerSettingsWindow::DrawElement() {
 
         if (ImGui::BeginTabItem("Starting Inventory")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ctx->GetSettings()->GetOptionGroup(RSG_STARTING_INVENTORY_IMGUI_TABLE).RenderImGui()) {
-                changed = true;
+            if (mSettings->GetOptionGroup(RSG_STARTING_INVENTORY_IMGUI_TABLE).RenderImGui()) {
+                mNeedsUpdate = true;
             }
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
@@ -2334,8 +2339,11 @@ void RandomizerSettingsWindow::DrawElement() {
         UIWidgets::ReEnableComponent("");
     }
     ImGui::End();
-    if (changed) {
-        ctx->GetSettings()->UpdateOptionProperties();
+}
+
+void RandomizerSettingsWindow::UpdateElement() {
+    if (mNeedsUpdate) {
+        mSettings->UpdateOptionProperties();
     }
 }
 
@@ -3260,6 +3268,7 @@ class ExtendedVanillaTableInvalidItemIdException: public std::exception {
 };
 
 void RandomizerSettingsWindow::InitElement() {
+    mSettings = Rando::Context::GetInstance()->GetSettings();
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     Rando::Context::GetInstance()->GetSettings()->UpdateOptionProperties();
