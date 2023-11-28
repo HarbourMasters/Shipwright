@@ -514,6 +514,7 @@ void CheckTrackerFrame() {
     if (!GameInteractor::IsSaveLoaded()) {
         return;
     }
+    // TODO: Move to OnAmmoChange hook once it gets added.
     if (gSaveContext.checkTrackerData[RC_ZR_MAGIC_BEAN_SALESMAN].status != RCSHOW_COLLECTED &&
         gSaveContext.checkTrackerData[RC_ZR_MAGIC_BEAN_SALESMAN].status != RCSHOW_SAVED) {
         if (BEANS_BOUGHT >= 10) {
@@ -606,7 +607,7 @@ void CheckTrackerSceneFlagSet(int16_t sceneNum, int16_t flagType, int32_t flag) 
     if (flagType != FLAG_SCENE_TREASURE && flagType != FLAG_SCENE_COLLECTIBLE) {
         return;
     }
-    if (sceneNum == SCENE_GRAVEYARD && flag == 31 && flagType == FLAG_SCENE_COLLECTIBLE) { // Gravedigging tour special case
+    if (sceneNum == SCENE_GRAVEYARD && flag == 0x19 && flagType == FLAG_SCENE_COLLECTIBLE) { // Gravedigging tour special case
         SetCheckCollected(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR);
         return;
     }
@@ -641,20 +642,27 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
         case FLAG_INF_TABLE:
             if (flag == INFTABLE_190) {
                 SetCheckCollected(RC_GF_HBA_1000_POINTS);
+                return;
             } else if (flag == INFTABLE_11E) {
                 SetCheckCollected(RC_GC_ROLLING_GORON_AS_CHILD);
+                return;
             } else if (flag == INFTABLE_GORON_CITY_DOORS_UNLOCKED) {
                 SetCheckCollected(RC_GC_ROLLING_GORON_AS_ADULT);
+                return;
             } else if (flag == INFTABLE_139) {
                 SetCheckCollected(RC_ZD_KING_ZORA_THAWED);
+                return;
             } else if (flag == INFTABLE_191) {
                 SetCheckCollected(RC_MARKET_LOST_DOG);
+                return;
             }
             if (!IS_RANDO) {
                 if (flag == INFTABLE_192) {
                     SetCheckCollected(RC_LW_DEKU_SCRUB_NEAR_BRIDGE);
+                    return;
                 } else if (flag == INFTABLE_193) {
                     SetCheckCollected(RC_LW_DEKU_SCRUB_GROTTO_FRONT);
+                    return;
                 }
             }
             break;
@@ -703,10 +711,6 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
                 return;
             }
             continue;
-        }
-        if (checkMatchType == FLAG_ITEM_GET_INF && flag == 0x1000) {
-            SetCheckCollected(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR);
-            return;
         }
         int16_t checkFlag = scCheck.flag;
         if (checkMatchType == SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA) {
