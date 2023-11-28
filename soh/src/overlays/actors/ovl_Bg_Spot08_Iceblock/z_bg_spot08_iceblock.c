@@ -308,7 +308,7 @@ void BgSpot08Iceblock_Init(Actor* thisx, PlayState* play) {
             break;
     }
 
-    if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
+    if (LINK_AGE_IN_YEARS == YEARS_CHILD && play->sceneNum == SCENE_ZORAS_FOUNTAIN) {
         Actor_Kill(&this->dyna.actor);
         return;
     }

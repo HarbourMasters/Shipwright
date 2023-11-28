@@ -2229,21 +2229,6 @@ void EnZf_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, 
             Matrix_MultVec3f(&zeroVec, &this->bodyPartsPos[bodyPart]);
         }
     }
-
-    if (CVarGetInteger("gLetItSnow", 0)) {
-        if (limbIndex == 9) {
-            OPEN_DISPS(play->state.gfxCtx);
-            Matrix_Push();
-            Matrix_RotateZYX(0, 0, -22584, MTXMODE_APPLY);
-            Matrix_Translate(0.0f, 270.27f, 0.0f, MTXMODE_APPLY);
-            Matrix_Scale(0.628f, 0.628f, 0.628f, MTXMODE_APPLY);
-            gDPSetEnvColor(POLY_OPA_DISP++, 255, 0, 0, 255);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_OPA_DISP++, gPaperCrownGenericDL);
-            Matrix_Pop();
-            CLOSE_DISPS(play->state.gfxCtx);
-        }
-    }
 }
 
 static Gfx D_80B4A2F8[] = {
