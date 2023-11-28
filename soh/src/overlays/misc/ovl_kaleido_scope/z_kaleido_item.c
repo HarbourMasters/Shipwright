@@ -234,7 +234,7 @@ void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 canCycle, u8 
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle, u8 leftItem, u8 rightItem) {
+void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle, u8 leftItem, u8 rightItem, bool replaceCButtons) {
     Input* input = &play->state.input[0];
     PauseContext* pauseCtx = &play->pauseCtx;
     bool dpad = (CVarGetInteger("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
@@ -256,10 +256,36 @@ void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle,
         if ((pauseCtx->stickRelX > 30 || pauseCtx->stickRelY > 30) ||
              dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT | BTN_DUP)) {
             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            if (replaceCButtons) {
+                for (int i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                    if (gSaveContext.equips.buttonItems[i] == gSaveContext.inventory.items[slot]) {
+                        if (CHECK_AGE_REQ_ITEM(rightItem)) {
+                            gSaveContext.equips.buttonItems[i] = rightItem;
+                            Interface_LoadItemIcon1(play, i);
+                        } else {
+                            gSaveContext.equips.buttonItems[i] = ITEM_NONE;
+                        }
+                        break;
+                    }
+                }
+            }
             gSaveContext.inventory.items[slot] = rightItem;
         } else if ((pauseCtx->stickRelX < -30 || pauseCtx->stickRelY < -30) ||
             dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DDOWN)) {
             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            if (replaceCButtons) {
+                for (int i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                    if (gSaveContext.equips.buttonItems[i] == gSaveContext.inventory.items[slot]) {
+                        if (CHECK_AGE_REQ_ITEM(leftItem)) {
+                            gSaveContext.equips.buttonItems[i] = leftItem;
+                            Interface_LoadItemIcon1(play, i);
+                        } else {
+                            gSaveContext.equips.buttonItems[i] = ITEM_NONE;
+                        }
+                        break;
+                    }
+                }
+            }
             gSaveContext.inventory.items[slot] = leftItem;
         }
         gCurrentItemCyclingSlot = pauseCtx->cursorSlot[PAUSE_ITEM] == slot ? slot : -1;
@@ -288,7 +314,8 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
             INV_CONTENT(ITEM_TRADE_CHILD) - 1,
         INV_CONTENT(ITEM_TRADE_CHILD) >= ITEM_MASK_TRUTH || INV_CONTENT(ITEM_TRADE_CHILD) < ITEM_MASK_KEATON ?
             ITEM_MASK_KEATON :
-            INV_CONTENT(ITEM_TRADE_CHILD) + 1
+            INV_CONTENT(ITEM_TRADE_CHILD) + 1,
+        true
     );
 
     gSlotAgeReqs[SLOT_TRADE_CHILD] =
@@ -311,7 +338,8 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
         SLOT_TRADE_ADULT,
         IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
         Randomizer_GetPrevAdultTradeItem(),
-        Randomizer_GetNextAdultTradeItem()
+        Randomizer_GetNextAdultTradeItem(),
+        true
     );
 }
 
