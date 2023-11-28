@@ -238,7 +238,16 @@ void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle,
     Input* input = &play->state.input[0];
     PauseContext* pauseCtx = &play->pauseCtx;
     bool dpad = (CVarGetInteger("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
-    if (canCycle && pauseCtx->cursorSlot[PAUSE_ITEM] == slot && CHECK_BTN_ALL(input->press.button, BTN_A)) {
+    u8 slotItem = gSaveContext.inventory.items[slot];
+    u8 hasLeftItem = leftItem != ITEM_NONE && slotItem != leftItem;
+    u8 hasRightItem = rightItem != ITEM_NONE && slotItem != rightItem && leftItem != rightItem;
+
+    if (
+        canCycle &&
+        pauseCtx->cursorSlot[PAUSE_ITEM] == slot &&
+        CHECK_BTN_ALL(input->press.button, BTN_A) &&
+        (hasLeftItem || hasRightItem)
+    ) {
         Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         gCurrentItemCyclingSlot = gCurrentItemCyclingSlot == slot ? -1 : slot;
     }
