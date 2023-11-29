@@ -663,7 +663,7 @@ void RegisterGrantGanonsBossKey() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
         Player* player = GET_PLAYER(gPlayState);
         // Triforce Hunt needs the check if the player isn't being teleported to the credits scene.
-        if (!GameInteractor::IsGameplayPaused() && Flags_GetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY) &&
+        if (!GameInteractor::IsGameplayPaused() && IS_RANDO && Flags_GetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY) &&
                 gPlayState->sceneLoadFlag != 0x14 &&
                 (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0 && player->stateFlags1 !=
                 PLAYER_STATE1_INPUT_DISABLED) {
