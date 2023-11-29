@@ -7,7 +7,7 @@
 
 /*  Console Variables are grouped under gAdvancedResolution. (e.g. "gAdvancedResolution.Enabled")
 
-    The following CVars are used in Libultraship and can be edited here:
+    The following cvars are used in Libultraship and can be edited here:
         - Enabled                                       - Turns Advanced Resolution Mode on.
         - AspectRatioX, AspectRatioY                    - Aspect ratio controls. To toggle off, set either to zero.
         - VerticalPixelCount, VerticalResolutionToggle  - Resolution controls.
@@ -15,7 +15,7 @@
         - IntegerScale.FitAutomatically                 - Automatic resizing for Pixel Perfect Mode.
         - IntegerScale.NeverExceedBounds                - Prevents manual resizing from exceeding screen bounds.
 
-    The following CVars are also implemented in LUS for niche use cases:
+    The following cvars are also implemented in LUS for niche use cases:
         - IgnoreAspectCorrection                        - Stretch framebuffer to fill screen.
             This is something of a power-user setting for niche setups that most people won't need or care about,
             but may be useful if playing the Switch/Wii U ports on a 4:3 television.
@@ -104,7 +104,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         const bool disabled_pixelCount = !CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0);
 
 #ifdef __APPLE__
-        ImGui::Text("Note: these settings may behave incorrectly on Apple Retina Displays.");
+        // Display HiDPI warning. (Remove this once we can definitively say it's fixed.)
+        ImGui::TextColored(messageColor[MESSAGE_INFO],
+                           ICON_FA_INFO_CIRCLE " These settings may behave incorrectly on Retina displays.");
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 #endif
 
@@ -190,11 +192,10 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         }
         // Hide aspect ratio input fields if using one of the presets.
         if (item_aspectRatio == default_aspectRatio && !showHorizontalResField) {
-            // Declaring the Y input interaction in particular as a variable beforehand
-            // will prevent a bug where the Y field would disappear when modifying X.
-            bool inputX = ImGui::InputFloat("X", &aspectRatioX, 0.1f, 1.0f, "%.3f");
-            bool inputY = ImGui::InputFloat("Y", &aspectRatioY, 0.1f, 1.0f, "%.3f");
-            if (inputX || inputY) {
+            // Declare input interaction bools outside of IF statement to prevent Y field from disappearing.
+            const bool input_X = ImGui::InputFloat("X", &aspectRatioX, 0.1f, 1.0f, "%.3f");
+            const bool input_Y = ImGui::InputFloat("Y", &aspectRatioY, 0.1f, 1.0f, "%.3f");
+            if (input_X || input_Y) {
                 item_aspectRatio = default_aspectRatio;
                 update[UPDATE_aspectRatioX] = true;
                 update[UPDATE_aspectRatioY] = true;
@@ -202,7 +203,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         } else if (showHorizontalResField) { // Show calculated aspect ratio
             if (item_aspectRatio) {
                 UIWidgets::Spacer(2);
-                float resolvedAspectRatio = (float)gfx_current_dimensions.width / gfx_current_dimensions.height;
+                const float resolvedAspectRatio = (float)gfx_current_dimensions.width / gfx_current_dimensions.height;
                 ImGui::Text("Aspect ratio: %.2f:1", resolvedAspectRatio);
             } else {
                 UIWidgets::Spacer(enhancementSpacerHeight);
@@ -287,7 +288,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 
         UIWidgets::Spacer(0);
 
-        // Integer scaling settings group
+        // Integer scaling settings group (Pixel-perfect Mode)
         static const ImGuiTreeNodeFlags IntegerScalingResolvedImGuiFlag =
             CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) ? ImGuiTreeNodeFlags_DefaultOpen
                                                                       : ImGuiTreeNodeFlags_None;
@@ -444,7 +445,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 
         } // End of additional settings
 
-        // Clamp and update the CVars that don't use UIWidgets
+        // Clamp and update the cvars that don't use UIWidgets
         if (update[UPDATE_aspectRatioX] || update[UPDATE_aspectRatioY] || update[UPDATE_verticalPixelCount]) {
             if (update[UPDATE_aspectRatioX]) {
                 if (aspectRatioX < 0.0f) {
@@ -460,7 +461,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             }
             if (update[UPDATE_verticalPixelCount]) {
                 // There's a upper and lower clamp on the Libultraship side too,
-                // so clamping it here is purely visual, so the vertical resolution field reflects it.
+                // so clamping it here is entirely visual, so the vertical resolution field reflects it.
                 if (verticalPixelCount < minVerticalPixelCount) {
                     verticalPixelCount = minVerticalPixelCount;
                 }
