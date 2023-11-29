@@ -131,7 +131,7 @@ void EnChristmasTree_HandleEndTitle(EnChristmasTree* this, PlayState* play) {
 
     // Hide player so he's not visible in the final screen. Also move him so target arrow on tree dissapears.
     player->actor.scale.x = player->actor.scale.y = player->actor.scale.z = 0.00001f;
-    player->actor.world.pos.y = -200.0f;
+    player->actor.world.pos.z = 500.0f;
 
     // Hide HUD
     Interface_ChangeAlpha(1);
