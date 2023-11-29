@@ -4216,48 +4216,48 @@ void KaleidoScope_Update(PlayState* play)
                     Play_SaveSceneFlags(play);
 
                     switch (gSaveContext.entranceIndex) {
-                        case 0x0000:
-                        case 0x0004:
-                        case 0x0028:
-                        case 0x0169:
-                        case 0x0165:
-                        case 0x0010:
-                        case 0x0082:
-                        case 0x0037:
-                        case 0x041B:
-                        case 0x0008:
-                        case 0x0088:
-                        case 0x0486:
-                        case 0x0098:
-                        case 0x0467:
-                        case 0x0179:
+                        case ENTR_DEKU_TREE_0:
+                        case ENTR_DODONGOS_CAVERN_0:
+                        case ENTR_JABU_JABU_0:
+                        case ENTR_FOREST_TEMPLE_0:
+                        case ENTR_FIRE_TEMPLE_0:
+                        case ENTR_WATER_TEMPLE_0:
+                        case ENTR_SPIRIT_TEMPLE_0:
+                        case ENTR_SHADOW_TEMPLE_0:
+                        case ENTR_GANONS_TOWER_0:
+                        case ENTR_GERUDO_TRAINING_GROUND_0:
+                        case ENTR_ICE_CAVERN_0:
+                        case ENTR_THIEVES_HIDEOUT_0:
+                        case ENTR_BOTTOM_OF_THE_WELL_0:
+                        case ENTR_INSIDE_GANONS_CASTLE_0:
+                        case ENTR_GANONS_TOWER_COLLAPSE_INTERIOR_0:
                             break;
-                        case 0x040F:
-                            gSaveContext.entranceIndex = 0x0000;
+                        case ENTR_DEKU_TREE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_DEKU_TREE_0;
                             break;
-                        case 0x040B:
-                            gSaveContext.entranceIndex = 0x0004;
+                        case ENTR_DODONGOS_CAVERN_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_0;
                             break;
-                        case 0x0301:
-                            gSaveContext.entranceIndex = 0x0028;
+                        case ENTR_JABU_JABU_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_JABU_JABU_0;
                             break;
-                        case 0x000C:
-                            gSaveContext.entranceIndex = 0x0169;
+                        case ENTR_FOREST_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_0;
                             break;
-                        case 0x0305:
-                            gSaveContext.entranceIndex = 0x0165;
+                        case ENTR_FIRE_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_0;
                             break;
-                        case 0x0417:
-                            gSaveContext.entranceIndex = 0x0010;
+                        case ENTR_WATER_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_0;
                             break;
-                        case 0x008D:
-                            gSaveContext.entranceIndex = 0x0082;
+                        case ENTR_SPIRIT_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_0;
                             break;
-                        case 0x0413:
-                            gSaveContext.entranceIndex = 0x0037;
+                        case ENTR_SHADOW_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_0;
                             break;
-                        case 0x041F:
-                            gSaveContext.entranceIndex = 0x041B;
+                        case ENTR_GANONDORF_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0;
                             break;
                     }
 
@@ -4292,7 +4292,7 @@ void KaleidoScope_Update(PlayState* play)
                         }
                         // Reset frame counter to prevent autosave on respawn
                         play->gameplayFrames = 0;
-                        gSaveContext.nextTransitionType = 2;
+                        gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
                         gSaveContext.health = CVarGetInteger("gFullHealthSpawn", 0) ? gSaveContext.healthCapacity : 0x30;
                         Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
                         gSaveContext.healthAccumulator = 0;
