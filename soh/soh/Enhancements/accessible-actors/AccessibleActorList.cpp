@@ -284,10 +284,11 @@ void accessible_maruta(AccessibleActor* actor) {
 
 void accessible_area_change(AccessibleActor* actor) {
     Player* player = GET_PLAYER(actor->play);
-    actor->policy.distance = 2000;
+    actor->policy.distance = 1500;
     actor->policy.ydist = 2000;
 
-    if (actor->yDistToPlayer > 500.0 && actor->sceneIndex != 96 && actor->play->sceneNum !=81) {
+    if (actor->yDistToPlayer > 500.0 && actor->sceneIndex != 96 && actor->play->sceneNum != 81 &&
+        actor->play->sceneNum != 82) {
         return;
     }
     /*switch (actor->sceneIndex) { 
@@ -299,10 +300,11 @@ void accessible_area_change(AccessibleActor* actor) {
             ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_FANTOM_WARP_L, false);
     }*/
     
-        
-        if (actor->xzDistToPlayer > 700 && actor->play->sceneNum==81) {
-            actor->policy.distance = actor->xzDistToPlayer*1.2;
-            if (actor->xzDistToPlayer>8000) {
+        //hyrule field attenuation
+        if (actor->play->sceneNum == 81) {
+        if (actor->xzDistToPlayer > 700) {
+            actor->policy.distance = actor->xzDistToPlayer * 1.2;
+            if (actor->xzDistToPlayer > 8000) {
                 return;
             }
         } else {
@@ -311,7 +313,41 @@ void accessible_area_change(AccessibleActor* actor) {
                 return;
             }
         }
-    
+    }
+        //kakariko village attenuation
+        if (actor->play->sceneNum == 82) {
+            if (actor->sceneIndex == 83 || actor->sceneIndex == 81 || actor->sceneIndex == 96) {
+                actor->policy.runsAlways == true;
+                actor->policy.ydist = 5000;
+                if (actor->xzDistToPlayer > 700) {
+                    if (actor->sceneIndex == 81) {
+                        actor->policy.distance = actor->xyzDistToPlayer * 1.4;
+                    } else {
+                        actor->policy.distance = actor->xyzDistToPlayer * 1.2;
+                    }
+                    if (actor->xzDistToPlayer > 8000) {
+                        return;
+                    }
+                } else {
+                    actor->policy.distance = 1500;
+                    if (actor->xzDistToPlayer > 1500) {
+                        return;
+                    }
+                }
+            } else if (actor->sceneIndex == 8) {
+                if (!(((gSaveContext.eventChkInf[6]) >> (7)) & 1))
+                    return;
+            }
+                else {
+                actor->policy.ydist = 500;
+                    actor->policy.distance = 1000;
+                if (actor->xzDistToPlayer > 1000) {
+                    return;
+                }
+                } 
+            }
+            
+        
         if (actor->play->sceneNum == 91 || actor->play->sceneNum == 69 || actor->play->sceneNum == 70) {
             actor->policy.distance = 1000;
             if (actor->xzDistToPlayer > 1000) {
@@ -321,7 +357,9 @@ void accessible_area_change(AccessibleActor* actor) {
    /* if (actor->play->sceneNum <= 11) {
         actor->policy.distance = 500;
     }*/
-    
+        if (actor->xzDistToPlayer > 1500) {
+            return;
+        }
     if (actor->sceneIndex == 85 || actor->sceneIndex == 91) {
         if (actor->play->sceneNum == 91 && gSaveContext.entranceIndex != 1504 && gSaveContext.entranceIndex != 1246) {
             return;
@@ -360,6 +398,8 @@ void accessible_area_change(AccessibleActor* actor) {
         }
         
         //ToT sound
+    } else if (actor->sceneIndex == 69 || actor->sceneIndex == 70) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_MUSI_SINK, false);
     } else if (actor->sceneIndex == 82) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_CHICKEN_CRY_M, false);
         //kakariko sound
@@ -503,7 +543,8 @@ void accessible_en_dogs(AccessibleActor* actor) {
     if (actor->frameCount % 30 != 0) {
         return;
     }
-    if (actor->actor->params == 608 || actor->actor->params == 336 || actor->actor->params == 3088 ||
+    if (actor->actor->params == 608 || actor->actor->params == 336 || actor->actor->params == 304 ||
+        actor->actor->params == 3088 ||
         actor->actor->params == 2576 || actor->actor->params <0) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_SMALL_DOG_BARK, false);
         
@@ -793,6 +834,9 @@ void accessible_audio_compass(AccessibleActor* actor) {
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SWITCH, policy);
     ActorAccessibility_InitPolicy(&policy, "Ocarina Spots", NULL, NA_SE_EV_DIAMOND_SWITCH);
+    policy.n = 30;
+    policy.distance = 800;
+    policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_OKARINA_TAG, policy);
     ActorAccessibility_InitPolicy(&policy, "Pushable Block", accessible_test, 0);
     policy.n = 30;
@@ -819,6 +863,7 @@ void accessible_audio_compass(AccessibleActor* actor) {
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_MARUTA, policy);
     ActorAccessibility_InitPolicy(&policy, "bombable wall", NULL, NA_SE_EN_OCTAROCK_ROCK);
     ActorAccessibility_AddSupportedActor(ACTOR_BG_BREAKWALL, policy);
+    ActorAccessibility_AddSupportedActor(ACTOR_BG_BOMBWALL, policy);
     ActorAccessibility_InitPolicy(&policy, "231 dekus", accessible_231_dekus, 0);
     policy.distance = 2000;
     policy.n = 50;
@@ -837,7 +882,7 @@ void accessible_audio_compass(AccessibleActor* actor) {
     policy.distance = 5000;
     policy.ydist = 2000;
     ActorAccessibility_AddSupportedActor(ACTOR_BOSS_GOMA, policy);
-    ActorAccessibility_InitPolicy(&policy, "bombflowers", NULL, NA_SE_IT_BOMB_EXPLOSION);
+    ActorAccessibility_InitPolicy(&policy, "bombflowers", NULL, NA_SE_EV_BOMB_BOUND);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_BOMBF, policy);
 
     ActorAccessibility_InitPolicy(&policy, "door of time", accessible_door_of_time, 0);
