@@ -1083,14 +1083,8 @@ static u32 iceBlockParams[] = {
     0x214,
     0x1,
     0x11,
-    0x11,
     0x10,
-    0x12,
-    0x12,
-    0x12,
     0x20,
-    0x23,
-    0x123,
 };
 
 void RegisterSnowballs() {
@@ -1129,15 +1123,15 @@ void RegisterSnowballs() {
 
         int actorsSpawned = 0;
 
-        Vec3f spawnedIceBlockPos[20];
+        Vec3f spawnedIceBlockPos[15];
 
-        while (actorsSpawned < 20) {
+        while (actorsSpawned < 15) {
             Vec3f iceBlockPos;
             iceBlockPos.x = (float)(Random(
                 (-4200) + 10000,
                 (3000) + 10000
             ) - (float)10000.0f);
-            iceBlockPos.y = -1313.0;
+            iceBlockPos.y = -1713.0f;
             iceBlockPos.z = (float)(Random(
                 (2600) + 10000,
                 (9000) + 10000
@@ -1149,7 +1143,7 @@ void RegisterSnowballs() {
 
                 bool overlaps = false;
                 for (int i = 0; i < actorsSpawned; i++) {
-                    if (Math_Vec3f_DistXZ(&spawnedIceBlockPos[i], &iceBlockPos) < 300.0f) {
+                    if (Math_Vec3f_DistXZ(&spawnedIceBlockPos[i], &iceBlockPos) < 500.0f) {
                         overlaps = true;
                         break;
                     }
@@ -1161,6 +1155,8 @@ void RegisterSnowballs() {
 
                 if (LINK_IS_ADULT && !Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER)) {
                     iceBlockPos.y = raycastResult;
+                } else {
+                    iceBlockPos.y = -1310.0f;
                 }
 
                 Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_BG_SPOT08_ICEBLOCK, iceBlockPos.x, iceBlockPos.y,
