@@ -95,6 +95,26 @@ static AnimationInfo sAnimationInfo[] = {
     { &gDaruniaDancingEndAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_ONCE, -6.0f },
 };
 
+// #region SOH [Enhancement] Only animations too fast need to be slowed down, otherwise not touched
+static AnimationInfo sAnimationInfoFix[] = {
+    { NULL },
+    { NULL },
+    { NULL },
+    { NULL },
+    { NULL },
+    { NULL },
+    { NULL },
+    { &gDaruniaDancingLoop1Anim, 0.78f, 0.0f, -1.0f, ANIMMODE_ONCE, -10.0f }, //
+    { &gDaruniaDancingLoop1Anim, 0.77f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f }, // hop
+    { &gDaruniaDancingLoop2Anim, 0.78f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f }, // from hop to spin
+    { &gDaruniaDancingLoop3Anim, 0.77f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f }, // spin
+    { NULL },
+    { NULL },
+    { &gDaruniaDancingLoop4Anim, 0.78f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f }, // from spin to hop
+    { NULL },
+};
+// #endregion
+
 void EnDu_SetupAction(EnDu* this, EnDuActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
@@ -255,7 +275,13 @@ void func_809FE040(EnDu* this) {
         if (this->unk_1E6 >= 8) {
             this->unk_1E6 = 0;
         }
-        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, animationIndices[this->unk_1E6]);
+        // #region SOH[Enhancement]
+        if (CVarGetInteger("gEnhancements.FixDaruniaDanceSpeed", 1)) {
+            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfoFix, animationIndices[this->unk_1E6]);
+        // #endregion
+        } else {
+            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, animationIndices[this->unk_1E6]);
+        }
     }
 }
 
@@ -271,7 +297,13 @@ void func_809FE104(EnDu* this) {
         if (Animation_OnFrame(&this->skelAnime, this->skelAnime.endFrame)) {
             this->unk_1E6++;
             if (this->unk_1E6 < 4) {
-                Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, animationIndices[this->unk_1E6]);
+                // #region SOH[Enhancement]
+                if (CVarGetInteger("gEnhancements.FixDaruniaDanceSpeed", 1) && this->unk_1E6 <= 1) {
+                    Animation_ChangeByInfo(&this->skelAnime, sAnimationInfoFix, animationIndices[this->unk_1E6]);
+                // #endregion
+                } else {
+                    Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, animationIndices[this->unk_1E6]);
+                }
             }
         }
     }
@@ -465,7 +497,13 @@ void func_809FE890(EnDu* this, PlayState* play) {
             }
             if (csAction->action == 7 || csAction->action == 8) {
                 this->unk_1E6 = 0;
-                Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENDU_ANIM_7);
+                // #region SOH[Enhancement]
+                if (CVarGetInteger("gEnhancements.FixDaruniaDanceSpeed", 1)) {
+                    Animation_ChangeByInfo(&this->skelAnime, sAnimationInfoFix, ENDU_ANIM_7);
+                // #endregion
+                } else {
+                    Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENDU_ANIM_7);
+                }
             }
             this->unk_1EA = csAction->action;
             if (this->unk_1EA == 7) {
