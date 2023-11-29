@@ -493,6 +493,8 @@ extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
     {
+        ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+
         DrawPresetSelector(PRESET_TYPE_ENHANCEMENTS);
 
         UIWidgets::PaddedSeparator();
@@ -608,7 +610,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Nuts explode bombs", "gNutsExplodeBombs", true, false);
                 UIWidgets::Tooltip("Makes nuts explode bombs, similar to how they interact with bombchus. This does not affect bombflowers.");
                 UIWidgets::PaddedEnhancementCheckbox("Equip Multiple Arrows at Once", "gSeparateArrows", true, false);
-                UIWidgets::Tooltip("Allow the bow and magic arrows to be equipped at the same time on different slots");
+                UIWidgets::Tooltip("Allow the bow and magic arrows to be equipped at the same time on different slots. (Note this will disable the behaviour of the 'Equip Dupe' glitch)");
                 UIWidgets::PaddedEnhancementCheckbox("Bow as Child/Slingshot as Adult", "gBowSlingShotAmmoFix", true, false);
                 UIWidgets::Tooltip("Allows child to use bow with arrows.\nAllows adult to use slingshot with seeds.\n\nRequires glitches or 'Timeless Equipment' cheat to equip.");
                 UIWidgets::PaddedEnhancementCheckbox("Better Farore's Wind", "gBetterFW", true, false);
@@ -918,6 +920,7 @@ void DrawEnhancementsMenu() {
             if (ImGui::BeginMenu("Mods")) {
                 if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", false, false)) {
                     ShouldClearTextureCacheAtEndOfFrame = true;
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
                 }
                 UIWidgets::Tooltip("Toggle between standard assets and alternate assets. Usually mods will indicate if this setting has to be used or not.");
                 UIWidgets::PaddedEnhancementCheckbox("Disable Bomb Billboarding", "gDisableBombBillboarding", true, false);
@@ -1076,6 +1079,9 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Prevents immediately falling off climbable surfaces if climbing on the edges."); 
             UIWidgets::PaddedEnhancementCheckbox("Fix Link's eyes open while sleeping", "gFixEyesOpenWhileSleeping", true, false);
             UIWidgets::Tooltip("Fixes Link's eyes being open in the opening cutscene when he is supposed to be sleeping.");
+            UIWidgets::PaddedEnhancementCheckbox("Fix Darunia dancing too fast", "gEnhancements.FixDaruniaDanceSpeed",
+                                                 true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+            UIWidgets::Tooltip("Fixes Darunia's dancing speed so he dances to the beat of Saria's Song, like in vanilla.");
 
             ImGui::EndMenu();
         }
@@ -1211,6 +1217,8 @@ void DrawEnhancementsMenu() {
 
         UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
 
+        ImGui::EndDisabled();
+
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
@@ -1252,6 +1260,8 @@ void DrawEnhancementsMenu() {
 void DrawCheatsMenu() {
     if (ImGui::BeginMenu("Cheats"))
     {
+        ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+
         if (ImGui::BeginMenu("Infinite...")) {
             UIWidgets::EnhancementCheckbox("Money", "gInfiniteMoney");
             UIWidgets::PaddedEnhancementCheckbox("Health", "gInfiniteHealth", true, false);
@@ -1406,6 +1416,8 @@ void DrawCheatsMenu() {
         }
         UIWidgets::Tooltip("Clears the cutscene pointer to a value safe for wrong warps.");   
 
+        ImGui::EndDisabled();
+
         ImGui::EndMenu();
     }
 }
@@ -1420,6 +1432,8 @@ extern std::shared_ptr<ValueViewerWindow> mValueViewerWindow;
 
 void DrawDeveloperToolsMenu() {
     if (ImGui::BeginMenu("Developer Tools")) {
+        ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+
         UIWidgets::EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
         UIWidgets::Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right, and open the debug menu with L on the pause screen");
         if (CVarGetInteger("gDebugEnabled", 0)) {
@@ -1497,6 +1511,8 @@ void DrawDeveloperToolsMenu() {
 
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);
+
+        ImGui::EndDisabled();
 
         ImGui::EndMenu();
     }

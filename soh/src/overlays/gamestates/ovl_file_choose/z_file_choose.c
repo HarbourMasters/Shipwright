@@ -1,6 +1,7 @@
 ﻿#include "file_choose.h"
 
 #include <string.h>
+#include <stdio.h>
 
 #include "textures/title_static/title_static.h"
 #include "textures/parameter_static/parameter_static.h"
@@ -1024,7 +1025,7 @@ void FileChoose_UpdateRandomizer() {
             return;
     }
 
-    if (!SpoilerFileExists(CVarGetString("gSpoilerLog", ""))) {
+    if (!SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && !CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
             CVarSetString("gSpoilerLog", "");
             fileSelectSpoilerFileLoaded = false;
     }
@@ -1051,6 +1052,10 @@ void FileChoose_UpdateRandomizer() {
             Randomizer_LoadMasterQuestDungeons(fileLoc);
             Randomizer_LoadEntranceOverrides(fileLoc, silent);
             fileSelectSpoilerFileLoaded = true;
+
+            if (SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
+                remove(fileLoc);
+            }
     }
 }
 
@@ -1071,6 +1076,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     Input* input = &this->state.input[0];
     bool dpad = CVarGetInteger("gDpadText", 0);
 
+    SoH_ProcessDroppedFiles();
     FileChoose_UpdateRandomizer();
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
@@ -1261,6 +1267,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     s8 i = 0;
     bool dpad = CVarGetInteger("gDpadText", 0);
 
+    SoH_ProcessDroppedFiles();
     FileChoose_UpdateRandomizer();
 
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
@@ -3686,4 +3693,7 @@ void FileChoose_Init(GameState* thisx) {
     Font_LoadOrderedFont(&this->font);
     Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
     func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
+    
+    // Originally this was only set when transitioning from the title screen, but gSkipLogoTitle skips that process so we're ensuring it's set here
+    gSaveContext.gameMode = GAMEMODE_FILE_SELECT;
 }

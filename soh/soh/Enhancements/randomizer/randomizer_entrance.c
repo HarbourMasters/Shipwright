@@ -90,7 +90,7 @@ static s16 newIceCavernEntrance             = ICE_CAVERN_ENTRANCE;
 static s8 hasCopiedEntranceTable = 0;
 static s8 hasModifiedEntranceTable = 0;
 
-void Entrance_SetEntranceDiscovered(u16 entranceIndex);
+void Entrance_SetEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance);
 
 u8 Entrance_EntranceIsNull(EntranceOverride* entranceOverride) {
     return entranceOverride->index == 0 && entranceOverride->destination == 0 && entranceOverride->blueWarp == 0
@@ -290,13 +290,13 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
         return nextEntranceIndex;
     }
 
-    Entrance_SetEntranceDiscovered(nextEntranceIndex);
+    Entrance_SetEntranceDiscovered(nextEntranceIndex, false);
     EntranceTracker_SetLastEntranceOverride(nextEntranceIndex);
     return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(nextEntranceIndex));
 }
 
 s16 Entrance_OverrideDynamicExit(s16 dynamicExitIndex) {
-    Entrance_SetEntranceDiscovered(dynamicExitList[dynamicExitIndex]);
+    Entrance_SetEntranceDiscovered(dynamicExitList[dynamicExitIndex], false);
     EntranceTracker_SetLastEntranceOverride(dynamicExitList[dynamicExitIndex]);
     return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(dynamicExitList[dynamicExitIndex]));
 }
@@ -799,7 +799,7 @@ u8 Entrance_GetIsEntranceDiscovered(u16 entranceIndex) {
     return 0;
 }
 
-void Entrance_SetEntranceDiscovered(u16 entranceIndex) {
+void Entrance_SetEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance) {
     // Skip if already set to save time from setting the connected entrance or
     // if this entrance is outside of the randomized entrance range (i.e. is a dynamic entrance)
     if (entranceIndex > MAX_ENTRANCE_RANDO_USED_INDEX || Entrance_GetIsEntranceDiscovered(entranceIndex)) {
@@ -811,14 +811,20 @@ void Entrance_SetEntranceDiscovered(u16 entranceIndex) {
     if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
         u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
         gSaveContext.sohStats.entrancesDiscovered[idx] |= entranceBit;
-        // Set connected
-        for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
-            if (entranceIndex == gSaveContext.entranceOverrides[i].index) {
-                Entrance_SetEntranceDiscovered(gSaveContext.entranceOverrides[i].overrideDestination);
-                break;
+
+        // Set reverse entrance when not decoupled
+        if (!Randomizer_GetSettingValue(RSK_DECOUPLED_ENTRANCES) && !isReversedEntrance) {
+            for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
+                if (entranceIndex == gSaveContext.entranceOverrides[i].index) {
+                    Entrance_SetEntranceDiscovered(gSaveContext.entranceOverrides[i].overrideDestination, true);
+                    break;
+                }
             }
         }
     }
-    // Save entrancesDiscovered
-    Save_SaveSection(SECTION_ID_ENTRANCES);
+
+    // Save entrancesDiscovered when it is not the reversed entrance
+    if (!isReversedEntrance) {
+        Save_SaveSection(SECTION_ID_ENTRANCES);
+    }
 }

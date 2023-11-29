@@ -181,3 +181,9 @@ void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode) {
 void GameInteractor_ExecuteOnSetGameLanguage() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
 }
+
+// MARK: - System
+
+void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void)) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAssetAltChange>(fn);
+}
