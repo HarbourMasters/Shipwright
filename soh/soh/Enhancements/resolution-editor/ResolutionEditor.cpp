@@ -335,16 +335,18 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         // Collapsible panel for additional settings
         if (ImGui::CollapsingHeader("Additional Settings")) {
             UIWidgets::Spacer(0);
+
 #if defined(__SWITCH__) || defined(__WIIU__)
             // Disable aspect correction, stretching the framebuffer to fill the viewport.
             // This option is only really needed on systems limited to 16:9 TV resolutions, such as consoles.
-            // The associated CVar is still functional on PC platforms if you want to use it though.
+            // The associated cvar is still functional on PC platforms if you want to use it though.
             UIWidgets::PaddedEnhancementCheckbox("Disable aspect correction and stretch the output image.\n"
                                                  "(Might be useful for 4:3 televisions!)\n"
                                                  "Not available in Pixel Perfect Mode.",
                                                  "gAdvancedResolution.IgnoreAspectCorrection", false, true,
-                                                 CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "",
-                                                 UIWidgets::CheckboxGraphics::Cross, false);
+                                                 CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) ||
+                                                     disabled_everything,
+                                                 "", UIWidgets::CheckboxGraphics::Cross, false);
 #else
             if (CVarGetInteger("gAdvancedResolution.IgnoreAspectCorrection", 0)) {
                 // This setting is intentionally not exposed on PC platforms,
@@ -360,7 +362,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             }
 #endif
 
-            // A requested addiition; an alternative way of displaying the resolution field.
+            // A requested addition; an alternative way of displaying the resolution field.
             if (ImGui::Checkbox("Show a horizontal resolution field, instead of aspect ratio.", &showHorizontalResField)) {
                 if (!showHorizontalResField && (aspectRatioX > 0.0f)) { // when turning this setting off
                     // Refresh relevant values
@@ -376,49 +378,69 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 }
                 update[UPDATE_aspectRatioX] = true;
             }
+                        
+            // Beginning of Integer Scaling additional settings.
+            {
+                // UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
+                
+                // Integer Scaling - Never Exceed Bounds.
+                const bool disabled_neverExceedBounds =
+                    !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) ||
+                    CVarGetInteger("gAdvancedResolution.IntegerScale.FitAutomatically", 0) || disabled_everything;
+                const bool checkbox_neverExceedBounds = 
+                    UIWidgets::PaddedEnhancementCheckbox("Prevent integer scaling from exceeding screen bounds.\n"
+                                                         "(Makes screen bounds take priority over specified factor.)",
+                                                         "gAdvancedResolution.IntegerScale.NeverExceedBounds", 
+                                                         true, false, disabled_neverExceedBounds, "",
+                                                         UIWidgets::CheckboxGraphics::Cross, true);
+                UIWidgets::Tooltip(
+                    "Prevents integer scaling factor from exceeding screen bounds.\n\n"
+                    "Enabled: Will clamp the scaling factor and display a gentle warning in the resolution editor.\n"
+                    "Disabled: Will allow scaling to exceed screen bounds, for users who want to crop overscan.\n\n"
+                    " " ICON_FA_INFO_CIRCLE
+                    " Please note that exceeding screen bounds may show a scroll bar on-screen.");
 
-            UIWidgets::PaddedEnhancementCheckbox(
-                "Prevent integer scaling from exceeding screen bounds.\n"
-                "(Makes screen bounds take priority over specified factor.)",
-                "gAdvancedResolution.IntegerScale.NeverExceedBounds", true, false,
-                !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) ||
-                    CVarGetInteger("gAdvancedResolution.IntegerScale.FitAutomatically", 0) || disabled_everything,
-                "", UIWidgets::CheckboxGraphics::Cross, true);
-            UIWidgets::Tooltip(
-                "Prevents integer scaling factor from exceeding screen bounds.\n\n"
-                "Enabled: Will clamp the scaling factor and display a gentle warning in the resolution editor.\n"
-                "Disabled: Will allow scaling factor to exceed screen bounds, for users who want to crop overscan.\n\n"
-                " " ICON_FA_INFO_CIRCLE " Please note that exceeding screen bounds may show a scroll bar on-screen.");
-
-            if (!CVarGetInteger("gAdvancedResolution.IntegerScale.NeverExceedBounds", 1) ||
-                CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0)) {
-                ImGui::TextColored(messageColor[MESSAGE_INFO],
-                                   " " ICON_FA_INFO_CIRCLE
-                                   " A scroll bar may become visible if screen bounds are exceeded.");
-                // Another helpful button, to disable the unused "Exceed Bounds" cvar.
-                if (CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0)) {
-                    if (ImGui::Button("Click to reset a console variable that may be causing this.")) {
-                        CVarSetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0);
-                        CVarSave();
-                    }
+                // Initialise the (currently unused) "Exceed Bounds By" cvar if it's been changed.
+                if (checkbox_neverExceedBounds &&
+                    CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0)) {
+                    CVarSetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0);
+                    CVarSave();
                 }
-            } else {
-                UIWidgets::Spacer(enhancementSpacerHeight);
-            }
 
-            // A popular feature in some emulators/frontends/upscalers, sometimes called "crop overscan" or "1080p 5x".
-            // I've ended up dummying this one out because it doesn't function in a satisfactory way.
-            // Consider this idea on the table, but I don't deem it an important enough feature to push for.
-            /*
-            UIWidgets::PaddedEnhancementCheckbox("Allow integer scale factor to go +1 above maximum screen bounds.",
-                                                 "gAdvancedResolution.IntegerScale.ExceedBoundsBy", false, false,
-                                                 !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "",
-                                                 UIWidgets::CheckboxGraphics::Cross, false);
-            if (CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0)) {
-                ImGui::TextColored(messageColor[MESSAGE_INFO],
-                                   " " ICON_FA_INFO_CIRCLE
-                                   " A scroll bar may become visible if screen bounds are exceeded.");
-            }*/
+                // Integer Scaling - Exceed Bounds By 1x/Offset.
+                // A popular feature in some retro frontends/upscalers, sometimes called "crop overscan" or "1080p 5x". 
+                /*
+                UIWidgets::PaddedEnhancementCheckbox("Allow integer scale factor to go +1 above maximum screen bounds.", "gAdvancedResolution.IntegerScale.ExceedBoundsBy", false, false, !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) || disabled_everything, "", UIWidgets::CheckboxGraphics::Cross, false);
+                */
+                // It does actually function as expected, but exceeding the bottom of the screen shows a scroll bar.
+                // I've ended up commenting this one out because of the scroll bar, and for simplicity.
+
+                // Display an info message about the scroll bar.
+                if (!CVarGetInteger("gAdvancedResolution.IntegerScale.NeverExceedBounds", 1) ||
+                    CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0)) {
+                    if (disabled_neverExceedBounds) { // Dim this help text accordingly
+                        UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
+                    }
+                    ImGui::TextColored(messageColor[MESSAGE_INFO],
+                                       " " ICON_FA_INFO_CIRCLE
+                                       " A scroll bar may become visible if screen bounds are exceeded.");
+                    if (disabled_neverExceedBounds) { // Dim this help text accordingly
+                        UIWidgets::ReEnableComponent("disabledTooltipText");
+                    }
+                    
+                    // Another support helper button, to disable the unused "Exceed Bounds By" cvar.
+                    // (Remove this button if uncommenting the checkbox.)
+                    if (CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0)) {
+                        if (ImGui::Button("Click to reset a console variable that may be causing this.")) {
+                            CVarSetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0);
+                            CVarSave();
+                        }
+                    }
+                } else {
+                    ImGui::Text(" ");
+                }
+                // UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
+            } // End of Integer Scaling additional settings.
 
         } // End of additional settings
 
