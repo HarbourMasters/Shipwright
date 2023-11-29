@@ -912,6 +912,7 @@ void DrawEnhancementsMenu() {
                     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
                 }
                 UIWidgets::Tooltip("Toggle between standard assets and alternate assets. Usually mods will indicate if this setting has to be used or not.");
+                UIWidgets::PaddedEnhancementCheckbox("Load all assets at boot", "gLoadAssetsAtBoot", false, false);
                 UIWidgets::PaddedEnhancementCheckbox("Disable Bomb Billboarding", "gDisableBombBillboarding", true, false);
                 UIWidgets::Tooltip("Disables bombs always rotating to face the camera. To be used in conjunction with mods that want to replace bombs with 3D objects.");
                 UIWidgets::PaddedEnhancementCheckbox("Disable Grotto Fixed Rotation", "gDisableGrottoRotation", true, false);

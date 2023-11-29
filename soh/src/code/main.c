@@ -61,6 +61,9 @@ int main(int argc, char** argv)
 
     GameConsole_Init();
     InitOTR();
+    if (CVarGetInteger("gLoadAssetsAtBoot", 0)) {
+        ResourceLoadDirectoryAsync("*");
+    }
     // TODO: Was moved to below InitOTR because it requires window to be setup. But will be late to catch crashes.
     CrashHandlerRegisterCallback(CrashHandler_PrintSohData);
     BootCommands_Init();
