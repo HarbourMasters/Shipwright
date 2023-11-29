@@ -38,7 +38,7 @@ const char* pixelCountPresetLabels[] = { "Custom",     "Native N64 (240p)", "2x 
 const int pixelCountPresets[] = { 480, 240, 480, 720, 960, 1200, 1440, 1080, 2160 };
 const int default_pixelCount = 0; // Default combo list option
 
-// Resolution clamp values as defined in LUS::Gui::ApplyResolutionChanges()
+// Resolution clamp values as hardcoded in LUS::Gui::ApplyResolutionChanges()
 const uint32_t minVerticalPixelCount = SCREEN_HEIGHT;
 const uint32_t maxVerticalPixelCount = 4320; // 18x native, or 8K TV resolution
 
@@ -62,7 +62,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
     if (ImGui::Begin("Advanced Resolution Settings", &mIsVisible)) {
         // Initialise update flags.
         bool update[3];
-        for (unsigned short i = 0; i < sizeof(update); i++)
+        for (uint8_t i = 0; i < sizeof(update); i++)
             update[i] = false;
 
         // Initialise integer scale bounds.
@@ -99,6 +99,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         // Additional settings
         static bool showHorizontalResField = false;
         static int horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+        // Disabling flags
+        const bool disabled_everything = !CVarGetInteger("gAdvancedResolution.Enabled", 0);
+        const bool disabled_pixelCount = !CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0);
 
 #ifdef __APPLE__
         ImGui::Text("Note: these settings may behave incorrectly on Apple Retina Displays.");
@@ -107,11 +110,11 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 
         if (ImGui::CollapsingHeader("Original Settings", ImGuiTreeNodeFlags_DefaultOpen)) {
             // The original resolution slider (for convenience)
-            const bool cantUseResolutionSlider = (CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0) &&
-                                                  CVarGetInteger("gAdvancedResolution.Enabled", 0)) ||
-                                                 CVarGetInteger("gLowResMode", 0);
+            const bool disabled_resolutionSlider = (CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0) &&
+                                                    CVarGetInteger("gAdvancedResolution.Enabled", 0)) ||
+                                                   CVarGetInteger("gLowResMode", 0);
             if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f,
-                                                  2.0f, "", 1.0f, true, true, cantUseResolutionSlider)) {
+                                                  2.0f, "", 1.0f, true, true, disabled_resolutionSlider)) {
                 LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(
                     CVarGetFloat("gInternalResolution", 1));
             }
@@ -126,7 +129,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             UIWidgets::Tooltip(
                 "Activates multi-sample anti-aliasing when above 1x, up to 8x for 8 samples for every pixel.\n\n"
                 " " ICON_FA_INFO_CIRCLE
-                " Higher MSAA with low resolution can resemble an authentic \"real N64\" look!");
+                " (Higher MSAA with low resolution can approximate an authentic \"real N64\" look!)");
 #endif
 
             // N64 Mode toggle (again for convenience)
@@ -151,7 +154,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                                ICON_FA_QUESTION_CIRCLE " \"N64 Mode\" is overriding these settings.");
             ImGui::SameLine();
             if (ImGui::Button("Click to disable")) {
-                CVarSetInteger("gLowResMode", (int)false);
+                CVarSetInteger("gLowResMode", 0);
                 CVarSave();
             }
         }
@@ -161,6 +164,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         ImGui::Text("Internal resolution: %d x %d", gfx_current_dimensions.width, gfx_current_dimensions.height);
 
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
+        if (disabled_everything) { // Hide aspect ratio controls.
+            UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
+        }
 
         // Aspect Ratio
         ImGui::Text("Force aspect ratio:");
@@ -203,13 +209,20 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             }
         }
 
+        if (disabled_everything) { // Hide aspect ratio controls.
+            UIWidgets::ReEnableComponent("disabledTooltipText");
+        }
         UIWidgets::Spacer(0);
+
         // Vertical Resolution
         UIWidgets::PaddedEnhancementCheckbox("Set fixed vertical resolution (disables Resolution slider)",
-                                             "gAdvancedResolution.VerticalResolutionToggle", true, false, false, "",
-                                             UIWidgets::CheckboxGraphics::Cross, false);
+                                             "gAdvancedResolution.VerticalResolutionToggle", true, false,
+                                             disabled_everything, "", UIWidgets::CheckboxGraphics::Cross, false);
         UIWidgets::Tooltip(
             "Override the resolution scale slider and use the settings below, irrespective of window size.");
+        if (disabled_pixelCount || disabled_everything) { // Hide pixel count controls.
+            UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
+        }
         if (ImGui::Combo("Pixel Count Presets", &item_pixelCount, pixelCountPresetLabels,
                          IM_ARRAYSIZE(pixelCountPresetLabels)) &&
             item_pixelCount != default_pixelCount) { // don't change anything if "Custom" is selected.
@@ -268,6 +281,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 update[UPDATE_aspectRatioY] = true;
             }
         }
+        if (disabled_pixelCount || disabled_everything) { // Hide pixel count controls.
+            UIWidgets::ReEnableComponent("disabledTooltipText");
+        }
 
         UIWidgets::Spacer(0);
 
@@ -276,23 +292,23 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) ? ImGuiTreeNodeFlags_DefaultOpen
                                                                       : ImGuiTreeNodeFlags_None;
         if (ImGui::CollapsingHeader("Integer Scaling Settings", IntegerScalingResolvedImGuiFlag)) {
+            const bool disabled_pixelPerfectMode =
+                !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) || disabled_everything;
             // Pixel-perfect Mode
             UIWidgets::PaddedEnhancementCheckbox("Pixel-perfect Mode", "gAdvancedResolution.PixelPerfectMode", true,
-                                                 true,
-                                                 !CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0), "",
+                                                 true, disabled_pixelCount || disabled_everything, "",
                                                  UIWidgets::CheckboxGraphics::Cross, false);
             UIWidgets::Tooltip("Don't scale image to fill window.");
-            if (!CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0)) {
-                CVarSetInteger("gAdvancedResolution.PixelPerfectMode", (int)false);
+            if (disabled_pixelCount && CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0)) {
+                CVarSetInteger("gAdvancedResolution.PixelPerfectMode", 0);
                 CVarSave();
             }
 
             // Integer Scaling
-            UIWidgets::EnhancementSliderInt("Integer scale factor: %d", "##ARSIntScale",
-                                            "gAdvancedResolution.IntegerScale.Factor", 1, max_integerScaleFactor, "%d",
-                                            1, true,
-                                            !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) ||
-                                                CVarGetInteger("gAdvancedResolution.IntegerScale.FitAutomatically", 0));
+            UIWidgets::EnhancementSliderInt(
+                "Integer scale factor: %d", "##ARSIntScale", "gAdvancedResolution.IntegerScale.Factor", 1,
+                max_integerScaleFactor, "%d", 1, true,
+                disabled_pixelPerfectMode || CVarGetInteger("gAdvancedResolution.IntegerScale.FitAutomatically", 0));
             UIWidgets::Tooltip("Integer scales the image. Only available in pixel-perfect mode.");
             // Display warning if size is being clamped or if framebuffer is larger than viewport.
             if (CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) &&
@@ -302,10 +318,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 ImGui::TextColored(messageColor[MESSAGE_WARNING], ICON_FA_EXCLAMATION_TRIANGLE " Window exceeded.");
             }
 
-            UIWidgets::PaddedEnhancementCheckbox("Automatically scale image to fit viewport",
-                                                 "gAdvancedResolution.IntegerScale.FitAutomatically", true, true,
-                                                 !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "",
-                                                 UIWidgets::CheckboxGraphics::Cross, false);
+            UIWidgets::PaddedEnhancementCheckbox(
+                "Automatically scale image to fit viewport", "gAdvancedResolution.IntegerScale.FitAutomatically", true,
+                true, disabled_pixelPerfectMode, "", UIWidgets::CheckboxGraphics::Cross, false);
             UIWidgets::Tooltip("Automatically sets scale factor to fit window. Only available in pixel-perfect mode.");
             if (CVarGetInteger("gAdvancedResolution.IntegerScale.FitAutomatically", 0)) {
                 // This is just here to update the value shown on the slider.
@@ -338,7 +353,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 ImGui::TextColored(messageColor[MESSAGE_QUESTION], ICON_FA_QUESTION_CIRCLE
                                    " If the image is stretched and you don't know why, click this.");
                 if (ImGui::Button("Click to reenable aspect correction.")) {
-                    CVarSetInteger("gAdvancedResolution.IgnoreAspectCorrection", (int)false);
+                    CVarSetInteger("gAdvancedResolution.IgnoreAspectCorrection", 0);
                     CVarSave();
                 }
                 UIWidgets::Spacer(2);
@@ -367,7 +382,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 "(Makes screen bounds take priority over specified factor.)",
                 "gAdvancedResolution.IntegerScale.NeverExceedBounds", true, false,
                 !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) ||
-                    CVarGetInteger("gAdvancedResolution.IntegerScale.FitAutomatically", 0),
+                    CVarGetInteger("gAdvancedResolution.IntegerScale.FitAutomatically", 0) || disabled_everything,
                 "", UIWidgets::CheckboxGraphics::Cross, true);
             UIWidgets::Tooltip(
                 "Prevents integer scaling factor from exceeding screen bounds.\n\n"

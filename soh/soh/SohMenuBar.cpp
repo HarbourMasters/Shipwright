@@ -261,10 +261,10 @@ void DrawSettingsMenu() {
 
         if (ImGui::BeginMenu("Graphics")) {
         #ifndef __APPLE__
-            const bool cantUseResolutionSlider = CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0) &&
-                                                 CVarGetInteger("gAdvancedResolution.Enabled", 0);
+            const bool disabled_resolutionSlider = CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0) &&
+                                                   CVarGetInteger("gAdvancedResolution.Enabled", 0);
             if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f,
-                                                  2.0f, "", 1.0f, true, true, cantUseResolutionSlider)) {
+                                                  2.0f, "", 1.0f, true, true, disabled_resolutionSlider)) {
                 LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
             }
             UIWidgets::Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
