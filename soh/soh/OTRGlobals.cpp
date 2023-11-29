@@ -1062,6 +1062,8 @@ extern "C" void InitOTR() {
     tm *tm_now = localtime(&now);
     
     CVarRegisterInteger("gLetItSnow", 1);
+    CVarRegisterInteger("gCosmetics.Consumable_Hearts.Changed", 1);
+    CVarRegisterColor("gCosmetics.Consumable_Hearts.Value", Color_RGBA8{ 255, 158, 0, 255 });
     CVarRegisterInteger("gCosmetics.Consumable_Magic.Changed", 1);
     CVarRegisterColor("gCosmetics.Consumable_Magic.Value", Color_RGBA8{ 255, 0, 0, 255 });
 
