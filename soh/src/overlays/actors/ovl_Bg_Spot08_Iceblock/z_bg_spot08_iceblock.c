@@ -332,6 +332,11 @@ void BgSpot08Iceblock_Init(Actor* thisx, PlayState* play) {
     this->surfaceNormal.y = 1.0f;
     this->rotationAxis.x = 1.0f;
 
+    if (LINK_IS_ADULT && !Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER) && play->sceneNum == SCENE_LAKE_HYLIA) {
+        BgSpot08Iceblock_SetupNoAction(this);
+        return;
+    }
+
     switch (this->dyna.actor.params & 0xF) {
         case 0:
         case 1:
