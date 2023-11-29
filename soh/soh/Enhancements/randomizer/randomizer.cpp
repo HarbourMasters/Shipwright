@@ -361,37 +361,35 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Quest:Ganon's Castle", RSK_MQ_GANONS_CASTLE },
 };
 
-std::string sanitize(std::string stringValue) {
-    // Add backslashes.
-    for (auto i = stringValue.begin();;) {
-        auto const pos = std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
-        if (pos == stringValue.end()) {
-            break;
-        }
-        i = std::next(stringValue.insert(pos, '\\'), 2);
-    }
-
-    // Removes others.
-    stringValue.erase(std::remove_if(stringValue.begin(), stringValue.end(), [](char const c) {
-        return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; }), stringValue.end());
-
-    return stringValue;
-}
-
 #pragma optimize("", off)
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
 bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
-    if (strcmp(spoilerFileName, "") != 0) {
-        std::ifstream spoilerFileStream(sanitize(spoilerFileName));
-        if (!spoilerFileStream) {
-            return false;
-        } else {
+    try {
+        if (strcmp(spoilerFileName, "") != 0) {
+            std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
+            if (!spoilerFileStream) {
+                return false;
+            }
+
+            json spoilerFileJson;
+            spoilerFileStream >> spoilerFileJson;
+
+            if (!spoilerFileJson.contains("version") || !spoilerFileJson.contains("finalSeed")) {
+                return false;
+            }
+
             return true;
         }
-    }
 
-    return false;
+        return false;
+    } catch (std::exception& e) {
+        SPDLOG_ERROR("Error checking if spoiler file exists: {}", e.what());
+        return false;
+    } catch (...) {
+        SPDLOG_ERROR("Error checking if spoiler file exists");
+        return false;
+    }
 }
 #pragma GCC pop_options
 #pragma optimize("", on)
@@ -660,7 +658,7 @@ void Randomizer::LoadMasterQuestDungeons(const char* spoilerFileName) {
 }
 
 void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
-    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
     if (!spoilerFileStream)
         return;
 
@@ -1294,7 +1292,7 @@ std::string FormatJsonHintText(std::string jsonHint) {
 }
 
 void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
-    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
     if (!spoilerFileStream)
         return;
 
@@ -1395,7 +1393,7 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
 }
 
 void Randomizer::ParseRequiredTrialsFile(const char* spoilerFileName) {
-    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
     if (!spoilerFileStream) {
         return;
     }
@@ -1416,7 +1414,7 @@ void Randomizer::ParseRequiredTrialsFile(const char* spoilerFileName) {
 }
 
 void Randomizer::ParseMasterQuestDungeonsFile(const char* spoilerFileName) {
-    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
     if (!spoilerFileStream) {
         return;
     }
@@ -1496,7 +1494,7 @@ int16_t Randomizer::GetVanillaMerchantPrice(RandomizerCheck check) {
 }
 
 void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent) {
-    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
     if (!spoilerFileStream)
         return;
 
@@ -1559,7 +1557,7 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
 }
 
 void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent) {
-    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
     if (!spoilerFileStream) {
         return;
     }
@@ -2548,6 +2546,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_LH_CHILD_FISHING,                                            RAND_INF_CHILD_FISHING },
     { RC_LH_ADULT_FISHING,                                            RAND_INF_ADULT_FISHING },
     { RC_MARKET_10_BIG_POES,                                          RAND_INF_10_BIG_POES },
+    { RC_KAK_100_GOLD_SKULLTULA_REWARD,                               RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD },
 };
 
 RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
@@ -3144,7 +3143,9 @@ void RandomizerSettingsWindow::DrawElement() {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
     }
 
+    ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
     DrawPresetSelector(PRESET_TYPE_RANDOMIZER);
+    ImGui::EndDisabled();
 
     UIWidgets::Spacer(0);
     UIWidgets::EnhancementCheckbox("Manual seed entry", "gRandoManualSeedEntry", false, "");
@@ -3167,19 +3168,25 @@ void RandomizerSettingsWindow::DrawElement() {
     }
 
     UIWidgets::Spacer(0);
+    ImGui::BeginDisabled(CVarGetInteger("gRandomizerDontGenerateSpoiler", 0) && gSaveContext.gameMode != GAMEMODE_FILE_SELECT);
     if (ImGui::Button("Generate Randomizer")) {
         GenerateRandomizer(CVarGetInteger("gRandoManualSeedEntry", 0) ? seedString : "");
     }
+    ImGui::EndDisabled();
 
     UIWidgets::Spacer(0);
-    std::string spoilerfilepath = CVarGetString("gSpoilerLog", "");
-    ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
+    if (!CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
+        std::string spoilerfilepath = CVarGetString("gSpoilerLog", "");
+        ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
+    }
 
     // RANDOTODO settings presets
     // std::string presetfilepath = CVarGetString("gLoadedPreset", "");
     // ImGui::Text("Settings File: %s", presetfilepath.c_str());
 
     UIWidgets::PaddedSeparator();
+
+    ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
 
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     static ImVec2 cellPadding(8.0f, 8.0f);
@@ -5224,6 +5231,8 @@ void RandomizerSettingsWindow::DrawElement() {
 
         ImGui::EndTabBar();
     }
+
+    ImGui::EndDisabled();
     
     if (disableEditingRandoSettings) {
         UIWidgets::ReEnableComponent("");

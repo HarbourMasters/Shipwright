@@ -17,6 +17,10 @@ void gfx_texture_cache_clear();
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
+#define LAVA_TEX_WIDTH 32
+#define LAVA_TEX_HEIGHT 64
+#define LAVA_TEX_SIZE 2048
+
 void BossDodongo_Init(Actor* thisx, PlayState* play);
 void BossDodongo_Destroy(Actor* thisx, PlayState* play);
 void BossDodongo_Update(Actor* thisx, PlayState* play);
@@ -70,8 +74,8 @@ static u8 sMaskTexLava[32 * 64] = { { 0 } };
 
 static u32* sLavaFloorModifiedTexRaw = NULL;
 static u32* sLavaWavyTexRaw = NULL;
-static u16 sLavaFloorModifiedTex[4096];
-static u16 sLavaWavyTex[2048];
+static u16 sLavaFloorModifiedTex[LAVA_TEX_SIZE];
+static u16 sLavaWavyTex[LAVA_TEX_SIZE];
 
 static u8 hasRegisteredBlendedHook = 0;
 
@@ -105,7 +109,7 @@ void BossDodongo_RegisterBlendedLavaTextureUpdate() {
 
     // When the texture is HD (raw) we need to work with u32 values for RGBA32
     // Otherwise the original asset is u16 for RGBA16
-    if (ResourceMgr_TexIsRaw(sLavaFloorLavaTex)) {
+    if (ResourceMgr_TexIsRaw(gDodongosCavernBossLavaFloorTex)) {
         u32* lavaTex = ResourceGetDataByName(sLavaFloorLavaTex);
         size_t lavaSize = ResourceGetSizeByName(sLavaFloorLavaTex);
         size_t floorSize = ResourceGetSizeByName(gDodongosCavernBossLavaFloorTex);
@@ -127,14 +131,13 @@ void BossDodongo_RegisterBlendedLavaTextureUpdate() {
         // Register the blended effect for the raw texture
         Gfx_RegisterBlendedTexture(gDodongosCavernBossLavaFloorTex, sMaskTexLava, sLavaWavyTexRaw);
     } else {
-        u16* lavaTex = ResourceGetDataByName(sLavaFloorLavaTex);
-        memcpy(sLavaFloorModifiedTex, lavaTex, sizeof(sLavaFloorModifiedTex));
-
         // When KD is dead, just immediately copy the rock texture
         if (Flags_GetClear(gPlayState, gPlayState->roomCtx.curRoom.num)) {
             u16* rockTex = ResourceGetDataByName(sLavaFloorRockTex);
-            size_t rockSize = ResourceGetSizeByName(sLavaFloorRockTex);
-            memcpy(sLavaFloorModifiedTex, rockTex, rockSize);
+            memcpy(sLavaFloorModifiedTex, rockTex, sizeof(sLavaFloorModifiedTex));
+        } else {
+            u16* lavaTex = ResourceGetDataByName(sLavaFloorLavaTex);
+            memcpy(sLavaFloorModifiedTex, lavaTex, sizeof(sLavaFloorModifiedTex));
         }
 
         // Register the blended effect for the non-raw texture
@@ -183,7 +186,7 @@ void func_808C1554_Raw(void* arg0, void* floorTex, s32 arg2, f32 arg3) {
     // Applying sqrt(multiplier) to arg3 is to control how many pixels move left/right for the selected row
     // Applying to arg2 and M_PI help to space out the wave effect
     // It's not perfect but close enough
-    u16 multiplier = width / 32;
+    u16 multiplier = width / LAVA_TEX_WIDTH;
 
     for (i = 0; i < size; i += width) {
         temp = sinf((((i / width) + (s32)(((arg2 * multiplier) * 50.0f) / 100.0f)) & (width - 1)) * (M_PI / (16 * multiplier))) * (arg3 * sqrt(multiplier));
@@ -1166,14 +1169,14 @@ void BossDodongo_Update(Actor* thisx, PlayState* play2) {
             s16 i2;
 
             // Get the scale based on the original texture size
-            u16 widthScale = width / 32;
-            u16 heightScale = height / 64;
+            u16 widthScale = width / LAVA_TEX_WIDTH;
+            u16 heightScale = height / LAVA_TEX_HEIGHT;
             u32 size = width * height;
 
             for (i2 = 0; i2 < 20; i2++) {
-                s16 new_var = this->unk_1C2 & 0x7FF;
+                s16 new_var = this->unk_1C2 & (LAVA_TEX_SIZE - 1);
                 // Compute the index to a scaled position (scaling pseudo x,y as a 1D value)
-                s32 indexStart = ((new_var % 32) * widthScale) + ((new_var / 32) * width * heightScale);
+                s32 indexStart = ((new_var % LAVA_TEX_WIDTH) * widthScale) + ((new_var / LAVA_TEX_WIDTH) * width * heightScale);
 
                 // From the starting index, apply extra pixels right/down based on the scale
                 for (size_t j = 0; j < heightScale; j++) {

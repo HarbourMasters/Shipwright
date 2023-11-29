@@ -49,6 +49,9 @@
 #include "Fonts.h"
 #include <Utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
+#include "Enhancements/presets.h"
+#include "util.h"
+#include <boost_custom/container_hash/hash_32.hpp>
 
 #if not defined (__SWITCH__) && not defined(__WIIU__)
 #include "Extractor/Extract.h"
@@ -253,15 +256,26 @@ OTRGlobals::OTRGlobals() {
         OTRFiles.push_back(sohOtrPath);
     }
     std::string patchesPath = LUS::Context::LocateFileAcrossAppDirs("mods", appShortName);
+    std::vector<std::string> patchOTRs = {};
     if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
         if (std::filesystem::is_directory(patchesPath)) {
             for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath, std::filesystem::directory_options::follow_directory_symlink)) {
                 if (StringHelper::IEquals(p.path().extension().string(), ".otr")) {
-                    OTRFiles.push_back(p.path().generic_string());
+                    patchOTRs.push_back(p.path().generic_string());
                 }
             }
         }
     }
+    std::sort(patchOTRs.begin(), patchOTRs.end(), [](const std::string& a, const std::string& b) {
+        return std::lexicographical_compare(
+            a.begin(), a.end(),
+            b.begin(), b.end(),
+            [](char c1, char c2) {
+                return std::tolower(c1) < std::tolower(c2);
+            }
+        );
+    });
+    OTRFiles.insert(OTRFiles.end(), patchOTRs.begin(), patchOTRs.end());
     std::unordered_set<uint32_t> ValidHashes = { 
         OOT_PAL_MQ,
         OOT_NTSC_JP_MQ,
@@ -2562,6 +2576,70 @@ extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* repla
     gfx_register_blended_texture(name, mask, replacement);
 }
 
-extern "C" void CheckTracker_OnMessageClose() {
-    CheckTracker::CheckTrackerDialogClosed();
+// #region SOH [TODO] Ideally this should move to being event based, it's currently run every frame on the file select screen
+extern "C" void SoH_ProcessDroppedFiles() {
+    const char* droppedFile = CVarGetString("gDroppedFile", "");
+    if (CVarGetInteger("gNewFileDropped", 0) && strcmp(droppedFile, "") != 0) {
+        try {
+            std::ifstream configStream(SohUtils::Sanitize(droppedFile));
+            if (!configStream) {
+                return;
+            }
+
+            nlohmann::json configJson;
+            configStream >> configJson;
+
+            if (!configJson.contains("CVars")) {
+                return;
+            }
+
+            clearCvars(enhancementsCvars);
+            clearCvars(cheatCvars);
+            clearCvars(randomizerCvars);
+
+            // Flatten everything under CVars into a single array
+            auto cvars = configJson["CVars"].flatten();
+
+            for (auto& [key, value] : cvars.items()) {
+                // Replace slashes with dots in key, and remove leading dot
+                std::string path = key;
+                std::replace(path.begin(), path.end(), '/', '.');
+                if (path[0] == '.') {
+                    path.erase(0, 1);
+                }
+                if (value.is_string()) {
+                    CVarSetString(path.c_str(), value.get<std::string>().c_str());
+                } else if (value.is_number_integer()) {
+                    CVarSetInteger(path.c_str(), value.get<int>());
+                } else if (value.is_number_float()) {
+                    CVarSetFloat(path.c_str(), value.get<float>());
+                }
+            }
+
+            auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
+            gui->GetGuiWindow("Console")->Hide();
+            gui->GetGuiWindow("Actor Viewer")->Hide();
+            gui->GetGuiWindow("Collision Viewer")->Hide();
+            gui->GetGuiWindow("Save Editor")->Hide();
+            gui->GetGuiWindow("Display List Viewer")->Hide();
+            gui->GetGuiWindow("Stats")->Hide();
+            std::dynamic_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->ClearBindings();
+
+            gui->SaveConsoleVariablesOnNextTick();
+
+            uint32_t finalHash = boost::hash_32<std::string>{}(configJson.dump());
+            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Configuration Loaded. Hash: %d", finalHash);
+        } catch (std::exception& e) {
+            SPDLOG_ERROR("Failed to load config file: {}", e.what());
+            auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
+            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
+            return;
+        } catch (...) {
+            SPDLOG_ERROR("Failed to load config file");
+            auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
+            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
+            return;
+        }
+    }
 }
+// #endregion
