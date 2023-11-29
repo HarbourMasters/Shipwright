@@ -2715,14 +2715,33 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
             }
             break;
         case SCENE_FISHING_POND:
-            // different checks exist for child and adult
+            // NOTE: The identity of any given fish actor is not stable:
+            // -    Unless every fish is randomized, every fish effectively has the same identity at any given time,
+            //      because the check increments when a fish is caught.
+            // -    If the player has released their held fish (i.e., by catching a different fish), then identity actually gets
+            //      passed around; the caught fish's actor will just take on the scoring+visual properties of the held fish.
             if (actorId == ACTOR_FISHING && actorParams >= 100 && actorParams != 200) {
-                if (LINK_IS_ADULT) {
-                    specialRc = randomizerFishingPondFish[actorParams - 100].second;
+                uint8_t pondCount = GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT);
+
+                if (pondCount < 1)
+                    break;
+
+                bool adultPond = LINK_IS_ADULT && GetRandoSettingValue(RSK_FISHSANITY_AGE_SPLIT) != RO_GENERIC_OFF;
+                std::pair<RandomizerCheck, RandomizerCheck> tableEntry;
+                
+                if (pondCount > 16) {
+                    // every fish shuffled, map by given params
+                    tableEntry = randomizerFishingPondFish[actorParams - 100];
                 } else {
-                    specialRc = randomizerFishingPondFish[actorParams - 100].first;
+                    // only some fish shuffled, map by number of caught fish
+                    // but don't map beyond the configured number of fish
+                    uint8_t fishCaught =
+                        std::min(adultPond ? gSaveContext.fishCaughtAdult : gSaveContext.fishCaughtChild, (uint8_t)(pondCount - 1));
+                    tableEntry = randomizerFishingPondFish[fishCaught];
                 }
+                specialRc = adultPond ? tableEntry.second : tableEntry.first;
             }
+            break;
     }
 
     if (specialRc != RC_UNKNOWN_CHECK) {
@@ -2833,7 +2852,7 @@ CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
     return cowIdentity;
 }
 
-FishIdentity Randomizer::IdentifyFish(s32 sceneNum, s16 actorId, s32 actorParams) {
+FishIdentity Randomizer::IdentifyFish(s32 sceneNum, s32 actorParams) {
     struct FishIdentity fishIdentity;
 
     fishIdentity.randomizerInf = RAND_INF_MAX;

@@ -2227,6 +2227,10 @@ extern "C" CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) 
     return OTRGlobals::Instance->gRandomizer->IdentifyCow(sceneNum, posX, posZ);
 }
 
+extern "C" FishIdentity Randomizer_IdentifyFish(s32 sceneNum, s32 actorParams) {
+    return OTRGlobals::Instance->gRandomizer->IdentifyFish(sceneNum, actorParams);
+}
+
 extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
     GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, getItemID);
     return giEntry;

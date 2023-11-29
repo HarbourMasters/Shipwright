@@ -15,6 +15,7 @@
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 #define WATER_SURFACE_Y(play) play->colCtx.colHeader->waterBoxes->ySurface
+#define IS_FISHSANITY (IS_RANDO && Fishsanity_GetEnabled())
 
 void Fishing_Init(Actor* thisx, PlayState* play);
 void Fishing_Destroy(Actor* thisx, PlayState* play);
@@ -22,17 +23,22 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play);
 void Fishing_UpdateOwner(Actor* thisx, PlayState* play);
 void Fishing_DrawFish(Actor* thisx, PlayState* play);
 void Fishing_DrawOwner(Actor* thisx, PlayState* play);
+bool Fishing_AwardFishsanity(Fishing* this, PlayState* play);
 void Fishing_Reset(void);
+
+bool Fishsanity_GetEnabled();
+u8 Fishsanity_GetPondCount();
+bool Fishsanity_GetPondSplit();
+void Fishsanity_Init(Fishing* this, PlayState* play);
+FishIdentity Fishsanity_GetFish(u8 params, PlayState* play);
+void Fishsanity_FlagCatch(u8 params, PlayState* play);
+bool Fishsanity_IsCaught(u8 params, PlayState* play);
 
 typedef struct {
     /* 0x00 */ u8 isLoach;
     /* 0x02 */ Vec3s pos;
     /* 0x08 */ u8 baseLength;
     /* 0x0C */ f32 perception;
-    // not super happy about adding these to the init,
-    // but feels better than imposing hidden contiguity requirements elsewhere
-    RandomizerCheck childCheck;
-    RandomizerCheck adultCheck;
 } FishingFishInit; // size = 0x10
 
 typedef enum {
@@ -433,6 +439,8 @@ static f32 sFishGroupAngle2;
 static f32 sFishGroupAngle3;
 static FishingEffect sFishingEffects[FISHING_EFFECT_COUNT];
 static Vec3f sStreamSoundProjectedPos;
+static u8 sFishOnHandParams;
+static u8 sFishsanityPendingParams;
 
 void Fishing_SetColliderElement(s32 index, ColliderJntSph* collider, Vec3f* pos, f32 scale) {
     collider->elements[index].dim.worldSphere.center.x = pos->x;
@@ -827,24 +835,24 @@ void Fishing_InitPondProps(Fishing* this, PlayState* play) {
 }
 
 static FishingFishInit sFishInits[] = {
-    /* isLoach		   pos			baseLength	 perception 		childCheck			 adultCheck */
-    { false,	{ 666, -45, 354 },		38,			0.1f,		RC_LH_CHILD_FISH_1,	 RC_LH_ADULT_FISH_1 },
-    { false,	{ 681, -45, 240 },		36,			0.1f,		RC_LH_CHILD_FISH_2,	 RC_LH_ADULT_FISH_2 },
-    { false,	{ 670, -45, 90 },		41,			0.05f,		RC_LH_CHILD_FISH_3,	 RC_LH_ADULT_FISH_3 },
-    { false,	{ 615, -45, -450 },		35,			0.2f,		RC_LH_CHILD_FISH_4,	 RC_LH_ADULT_FISH_4 },
-    { false,	{ 500, -45, -420 },		39,			0.1f,		RC_LH_CHILD_FISH_5,	 RC_LH_ADULT_FISH_5 },
-    { false,	{ 420, -45, -550 },		44,			0.05f,		RC_LH_CHILD_FISH_6,	 RC_LH_ADULT_FISH_6 },
-    { false,	{ -264, -45, -640 },	40,			0.1f,		RC_LH_CHILD_FISH_7,  RC_LH_ADULT_FISH_7 },
-    { false,	{ -470, -45, -540 },	34,			0.2f,		RC_LH_CHILD_FISH_8,  RC_LH_ADULT_FISH_8 },
-    { false,	{ -557, -45, -430 },	54,			0.01f,		RC_LH_CHILD_FISH_9,  RC_LH_ADULT_FISH_9 },
-    { false,	{ -260, -60, -330 },	47,			0.05f,		RC_LH_CHILD_FISH_10, RC_LH_ADULT_FISH_10 },
-    { false,	{ -500, -60, 330 },		42,			0.06f,		RC_LH_CHILD_FISH_11, RC_LH_ADULT_FISH_11 },
-    { false,	{ 428, -40, -283 },		33,			0.2f,		RC_LH_CHILD_FISH_12, RC_LH_ADULT_FISH_12 },
-    { false,	{ 409, -70, -230 },		57,			0.0f,		RC_LH_CHILD_FISH_13, RC_LH_ADULT_FISH_13 },
-    { false,	{ 450, -67, -300 },		63,			0.0f,		RC_LH_CHILD_FISH_14, RC_LH_ADULT_FISH_14 },
-    { false,	{ -136, -65, -196 },	71,			0.0f,		RC_LH_CHILD_FISH_15, RC_LH_ADULT_FISH_15 },
-    { true,		{ -561, -35, -547 },	45,			0.0f,		RC_LH_CHILD_LOACH_1, RC_LH_ADULT_LOACH },
-    { true,		{ 667, -35, 317 },		43,			0.0f,		RC_LH_CHILD_LOACH_2, RC_UNKNOWN_CHECK },    // Second loach only appears as child
+    /* isLoach		   pos			baseLength	 perception */
+    { false,	{ 666, -45, 354 },		38,			0.1f },
+    { false,	{ 681, -45, 240 },		36,			0.1f },
+    { false,	{ 670, -45, 90 },		41,			0.05f },
+    { false,	{ 615, -45, -450 },		35,			0.2f },
+    { false,	{ 500, -45, -420 },		39,			0.1f },
+    { false,	{ 420, -45, -550 },		44,			0.05f },
+    { false,	{ -264, -45, -640 },	40,			0.1f },
+    { false,	{ -470, -45, -540 },	34,			0.2f },
+    { false,	{ -557, -45, -430 },	54,			0.01f },
+    { false,	{ -260, -60, -330 },	47,			0.05f },
+    { false,	{ -500, -60, 330 },		42,			0.06f },
+    { false,	{ 428, -40, -283 },		33,			0.2f },
+    { false,	{ 409, -70, -230 },		57,			0.0f },
+    { false,	{ 450, -67, -300 },		63,			0.0f },
+    { false,	{ -136, -65, -196 },	71,			0.0f },
+    { true,		{ -561, -35, -547 },	45,			0.0f },
+    { true,		{ 667, -35, 317 },		43,			0.0f },    // Second loach only appears as child
 };
 
 static InitChainEntry sInitChain[] = {
@@ -1036,6 +1044,11 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
             this->fishLength = sFishInits[thisx->params - EN_FISH_PARAM].baseLength;
 
             this->fishLength += Rand_ZeroFloat(4.99999f);
+
+            // Set up fishsanity metadata
+            if (IS_FISHSANITY) {
+                Fishsanity_Init(this, play);
+            }
 
             // small chance to make big fish even bigger.
             if ((this->fishLength >= 65.0f) && (Rand_ZeroOne() < 0.05f)) {
@@ -2952,6 +2965,55 @@ bool getFishNeverEscape() {
     return CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gFishNeverEscape", 0);
 }
 
+bool Fishsanity_GetEnabled() {
+    return CVarGetInteger("gRandomizeFishsanity", RO_GENERIC_OFF) != RO_GENERIC_OFF;
+}
+
+u8 Fishsanity_GetPondCount() {
+    return CVarGetInteger("gRandomizeFishsanity", RO_GENERIC_OFF) != RO_GENERIC_OFF
+               ? CVarGetInteger("gRandomizeFishsanityPondCount", 0)
+               : 0;
+}
+
+bool Fishsanity_GetPondSplit() {
+    return CVarGetInteger("gRandomizeFishsanityAgeSplit", RO_GENERIC_OFF) != RO_GENERIC_OFF;
+}
+
+void Fishsanity_Init(Fishing* this, PlayState* play) {
+    this->fishsanity = (FishsanityMeta) {
+        .params = this->actor.params
+    };
+}
+
+FishIdentity Fishsanity_GetFish(u8 params, PlayState* play) {
+    return Randomizer_IdentifyFish(play->sceneNum, params);
+}
+
+void Fishsanity_FlagCatch(u8 params, PlayState* play) {
+    FishIdentity fish = Fishsanity_GetFish(params, play);
+    Player* player = GET_PLAYER(play);
+    player->pendingFlag.flagID = fish.randomizerInf;
+    player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
+}
+
+bool Fishsanity_IsCaught(u8 params, PlayState* play) {
+    FishIdentity fish = Fishsanity_GetFish(params, play);
+    return Flags_GetRandomizerInf(fish.randomizerInf);
+}
+
+bool Fishing_AwardFishsanity(Fishing* this, PlayState* play) {
+    if (sFishsanityPendingParams != 0 && !Fishsanity_IsCaught(sFishsanityPendingParams, play)) {
+        if (Actor_HasParent(&this->actor, play))
+            return false;
+        Fishsanity_FlagCatch(sFishsanityPendingParams, play);
+        FishIdentity fish = Fishsanity_GetFish(sFishsanityPendingParams, play);
+        GetItemEntry gi = Randomizer_GetItemFromKnownCheck(fish.randomizerCheck, GI_NONE);
+        GiveItemEntryFromActor(&this->actor, play, gi, 10000.0f, 100.0f);
+        return false;
+    }
+    return true;
+}
+
 void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
     s16 i;
     s16 rotXYScale = 10;
@@ -3992,17 +4054,26 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                             if (Message_ShouldAdvance(play)) {
                                 Message_CloseTextbox(play);
                                 if (play->msgCtx.choiceIndex == 0) {
+                                    // Player chose to keep the fish
                                     if (sFishOnHandLength == 0.0f) {
+                                        // No fish currently held, fish gets caught
                                         sFishOnHandLength = this->fishLength;
                                         sFishOnHandIsLoach = this->isLoach;
                                         sLureCaughtWith = sLureEquipped;
+                                        if (IS_FISHSANITY) {
+                                            sFishOnHandParams = this->fishsanity.params;
+                                            sFishsanityPendingParams = this->fishsanity.params;
+                                        }
                                         Actor_Kill(&this->actor);
                                     } else if ((this->isLoach == 0) && (sFishOnHandIsLoach == 0) &&
                                                ((s16)this->fishLength < (s16)sFishOnHandLength)) {
+                                        // Currently holding a fish that's longer than the caught fish, and neither fish is a loach.
+                                        // Player is asked to confirm if they really want to keep it
                                         this->keepState = 1;
                                         this->timerArray[0] = 0x3C;
                                         Message_StartTextbox(play, 0x4098, NULL);
                                     } else {
+                                        // Currently holding a fish that's smaller, or either the held or caught fish are a loach.
                                         f32 lengthTemp = sFishOnHandLength;
                                         s16 loachTemp = sFishOnHandIsLoach;
                                         sFishOnHandLength = this->fishLength;
@@ -4010,9 +4081,16 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                         sLureCaughtWith = sLureEquipped;
                                         this->fishLength = lengthTemp;
                                         this->isLoach = loachTemp;
+                                        if (IS_FISHSANITY) {
+                                            u8 paramsTemp = sFishOnHandParams;
+                                            sFishOnHandParams = this->fishsanity.params;
+                                            sFishsanityPendingParams = this->fishsanity.params;
+                                            this->fishsanity.params = paramsTemp;
+                                        }
                                     }
                                 }
                                 if (this->keepState == 0) {
+                                    // Finished with catch cutscene
                                     sRodCastState = 0;
                                 }
                             }
@@ -4024,13 +4102,22 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                             if (Message_ShouldAdvance(play)) {
                                 Message_CloseTextbox(play);
                                 if (play->msgCtx.choiceIndex != 0) {
+                                    // Player decided to keep the caught fish & release the held fish
                                     f32 temp1 = sFishOnHandLength;
                                     s16 temp2 = sFishOnHandIsLoach;
                                     sFishOnHandLength = this->fishLength;
                                     sLureCaughtWith = sLureEquipped;
                                     this->fishLength = temp1;
                                     this->isLoach = temp2;
+                                    if (IS_FISHSANITY) {
+                                        u8 paramsTemp = sFishOnHandParams;
+                                        sFishOnHandParams = this->fishsanity.params;
+                                        sFishsanityPendingParams = this->fishsanity.params;
+                                        this->fishsanity.params = paramsTemp;
+                                    }
                                 }
+
+                                // Finished with catch cutscene
                                 sRodCastState = 0;
                             }
                         }
@@ -4038,7 +4125,9 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 }
             }
 
+            // Finished resolving catch
             if (sRodCastState == 0) {
+                // Fish was released (either as itself or the prior held fish)
                 if (this->actor.update != NULL) {
                     this->fishState = this->fishStateNext = 0;
                     this->unk_1A4 = 10000;
@@ -5358,6 +5447,13 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
 
     switch (sFishingPlayerCinematicState) {
         case 0:
+            // Try to award any fishsanity prize; if successful, then clear out the pending award.
+            if (IS_FISHSANITY && sFishsanityPendingParams != 0) {
+                if (Fishsanity_IsCaught(sFishsanityPendingParams, play) || Fishing_AwardFishsanity(this, play)) {
+                    this->actor.parent = NULL;
+                    sFishsanityPendingParams = 0;
+                }
+            }
             break;
 
         case 1: {

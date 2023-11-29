@@ -5,6 +5,13 @@
 #include "global.h"
 
 struct Fishing;
+struct FishsanityMeta;
+
+// keeping this a struct for now in case i figure out we need some more data
+typedef struct FishsanityMeta {
+    s16 params;
+    bool killAfterCollect;
+} FishsanityMeta;
 
 typedef struct Fishing {
     /* 0x0000 */ Actor actor;
@@ -56,6 +63,8 @@ typedef struct Fishing {
     /* 0x0220 */ LightInfo lightInfo;
     /* 0x0230 */ ColliderJntSph collider;
     /* 0x0250 */ ColliderJntSphElement colliderElements[12];
+    /* ==== FISHSANITY ==== */
+    /*        */ FishsanityMeta fishsanity;
 } Fishing; // size = 0x0550
 
 #define EN_FISH_OWNER 1      // param for owner of pond. default if params<100
