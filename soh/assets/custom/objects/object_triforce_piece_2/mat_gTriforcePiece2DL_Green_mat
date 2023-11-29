@@ -8,7 +8,7 @@
 	<Texture S="1984" T="1984" Level="0" Tile="0" On="1"/>
 	<SetTextureLUT Mode="G_TT_NONE"/>
 	<TileSync/>
-	<SetTextureImage Path="objects/object_triforce_piece_2/image_copy" Format="G_IM_FMT_I" Size="G_IM_SIZ_8b_LOAD_BLOCK" Width="1"/>
+	<SetTextureImage Path="objects/object_triforce_piece_2/image" Format="G_IM_FMT_I" Size="G_IM_SIZ_8b_LOAD_BLOCK" Width="1"/>
 	<SetTile Format="G_IM_FMT_I" Size="G_IM_SIZ_8b_LOAD_BLOCK" Line="0" TMem="0" Tile="7" Palette="0" Cms0="G_TX_WRAP" Cms1="G_TX_NOMIRROR" Cmt0="G_TX_WRAP" Cmt1="G_TX_NOMIRROR" MaskS="5" ShiftS="0" MaskT="5" ShiftT="0"/>
 	<LoadSync/>
 	<LoadBlock Tile="7" Uls="0" Ult="0" Lrs="511" Dxt="512"/>
