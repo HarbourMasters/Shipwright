@@ -312,7 +312,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 disabled_pixelPerfectMode || CVarGetInteger("gAdvancedResolution.IntegerScale.FitAutomatically", 0));
             UIWidgets::Tooltip("Integer scales the image. Only available in pixel-perfect mode.");
             // Display warning if size is being clamped or if framebuffer is larger than viewport.
-            if (CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) &&
+            if (!disabled_pixelPerfectMode &&
                 (CVarGetInteger("gAdvancedResolution.IntegerScale.NeverExceedBounds", 1) &&
                  CVarGetInteger("gAdvancedResolution.IntegerScale.Factor", 1) > integerScale_maximumBounds)) {
                 ImGui::SameLine();
