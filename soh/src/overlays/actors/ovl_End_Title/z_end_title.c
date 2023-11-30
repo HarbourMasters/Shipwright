@@ -38,9 +38,6 @@ void EndTitle_Init(Actor* thisx, PlayState* play) {
     if (this->actor.params == 1) {
         this->actor.draw = EndTitle_DrawNintendoLogo;
     }
-    if (this->actor.params == 2) {
-        EndTitle_DrawFull(thisx, play);
-    }
 }
 
 void EndTitle_Destroy(Actor* thisx, PlayState* play) {
@@ -75,14 +72,16 @@ void EndTitle_DrawFull(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
+    uint8_t isKak = play->sceneNum == SCENE_KAKARIKO_VILLAGE;
+
     // Draw title cards on the screen
-    if ((frameCount > 890) && (this->endAlpha < 200)) {
+    if ((frameCount > 890 || isKak) && (this->endAlpha < 200)) {
         this->endAlpha += 7;
     }
-    if ((frameCount > 810) && (this->tlozAlpha < 200)) {
+    if ((frameCount > 810 || isKak) && (this->tlozAlpha < 200)) {
         this->tlozAlpha += 15;
     }
-    if ((frameCount > 850) && (this->ootAlpha < 200)) {
+    if ((frameCount > 850 || isKak) && (this->ootAlpha < 200)) {
         this->ootAlpha += 15;
     }
     
