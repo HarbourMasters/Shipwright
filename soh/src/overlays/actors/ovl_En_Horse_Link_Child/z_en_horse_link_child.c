@@ -352,7 +352,7 @@ void func_80A6A068(EnHorseLinkChild* this, PlayState* play) {
     player = GET_PLAYER(play);
     distFromLink = Actor_WorldDistXZToActor(&this->actor, &player->actor);
 
-    if (gSaveContext.entranceIndex == 0x2AE) {
+    if (gSaveContext.entranceIndex == ENTR_LON_LON_RANCH_1) {
         Audio_PlaySoundGeneral(NA_SE_EV_KID_HORSE_NEIGH, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
                                &D_801333E8);
         func_80A6A724(this);
