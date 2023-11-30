@@ -1,5 +1,6 @@
 #include "playthrough.hpp"
 
+#include <libultraship/libultraship.h>
 #include <boost_custom/container_hash/hash_32.hpp>
 #include "custom_messages.hpp"
 #include "fill.hpp"
@@ -8,6 +9,7 @@
 #include "random.hpp"
 #include "spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "variables.h"
 
 namespace Playthrough {
 
@@ -37,6 +39,10 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
                 settingsStr += setting->GetSelectedOptionText();
             }
         }
+    }
+
+    if (CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
+        settingsStr += (char*)gBuildVersion;
     }
 
     uint32_t finalHash = boost::hash_32<std::string>{}(std::to_string(Settings::seed) + settingsStr);

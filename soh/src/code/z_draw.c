@@ -1043,7 +1043,7 @@ void GetItem_DrawTriforcePiece(PlayState* play, s16 drawId) {
 
     Matrix_Scale(0.035f, 0.035f, 0.035f, MTXMODE_APPLY);
 
-    uint16_t index = gSaveContext.triforcePiecesCollected % 3;
+    uint8_t index = gSaveContext.triforcePiecesCollected % 3;
     Gfx* triforcePieceDL;
 
     switch (index) {
