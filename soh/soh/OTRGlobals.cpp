@@ -1145,7 +1145,7 @@ extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
     OTRGlobals::Instance->context->GetWindow()->MainLoop(run_one_game_iter);
 }
 
-extern bool ShouldClearTextureCacheAtEndOfFrame;
+extern bool ToggleAltAssetsAtEndOfFrame;
 
 extern "C" void Graph_StartFrame() {
 #ifndef __WIIU__
@@ -1228,10 +1228,7 @@ extern "C" void Graph_StartFrame() {
         }
 #endif
         case KbScancode::LUS_KB_TAB: {
-            // Toggle HD Assets
-            CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
-            GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
-            ShouldClearTextureCacheAtEndOfFrame = true;
+            ToggleAltAssetsAtEndOfFrame = true;
             break;
         }
     }
@@ -1301,10 +1298,14 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         }
     }
 
-    if (ShouldClearTextureCacheAtEndOfFrame) {
+    if (ToggleAltAssetsAtEndOfFrame) {
+        ToggleAltAssetsAtEndOfFrame = false;
+
+        // Actually update the CVar now before runing the alt asset update listeners
+        CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
         gfx_texture_cache_clear();
         LUS::SkeletonPatcher::UpdateSkeletons();
-        ShouldClearTextureCacheAtEndOfFrame = false;
+        GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
     }
 
     // OTRTODO: FIGURE OUT END FRAME POINT
