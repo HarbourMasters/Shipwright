@@ -4647,7 +4647,9 @@ void func_8083A0F4(PlayState* play, Player* this) {
             this->interactRangeActor->parent = &this->actor;
             func_80835C58(play, this, func_8084F608, 0);
             this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
-            gSaveContext.maskMemory = PLAYER_MASK_NONE;
+            if (!CVarGetInteger("gKeepBunnyHoodThroughTime", 0) || !CVarGetInteger("gAdultBunnyHood", 0) || gSaveContext.maskMemory != PLAYER_MASK_BUNNY) {
+                gSaveContext.maskMemory = PLAYER_MASK_NONE;
+            }
         } else {
             LinkAnimationHeader* anim;
 
@@ -8407,7 +8409,9 @@ void func_80843AE8(PlayState* play, Player* this) {
         OnePointCutscene_Init(play, 9908, 125, &this->actor, MAIN_CAM);
     } else if (play->gameOverCtx.state == GAMEOVER_DEATH_WAIT_GROUND) {
         play->gameOverCtx.state = GAMEOVER_DEATH_DELAY_MENU;
-        gSaveContext.maskMemory = PLAYER_MASK_NONE;
+        if (!CVarGetInteger("gKeepMasksOnDeath", 0)) {
+            gSaveContext.maskMemory = PLAYER_MASK_NONE;
+        }
     }
 }
 

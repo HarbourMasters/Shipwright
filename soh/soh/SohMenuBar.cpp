@@ -600,10 +600,14 @@ void DrawEnhancementsMenu() {
                 );
                 UIWidgets::PaddedEnhancementCheckbox("Bunny Hood Equippable as Adult", "gAdultBunnyHood", true, false, (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) == BUNNY_HOOD_VANILLA), "Only available with increased bunny hood speed", UIWidgets::CheckboxGraphics::Cross, false);
                 UIWidgets::Tooltip("Allows the bunny hood to be equipped normally from the pause menu as adult.");
+                UIWidgets::PaddedEnhancementCheckbox("Keep Bunny Hood through time", "gKeepBunnyHoodThroughTime", true, false, !CVarGetInteger("gAdultBunnyHood", 0), "Only available with \"Bunny Hood Equippable as Adult\"", UIWidgets::CheckboxGraphics::Cross, false);
+                UIWidgets::Tooltip("Stops the bunny hood from automatically unequipping when travelling through time.");
                 UIWidgets::PaddedEnhancementCheckbox("Stop automatic mask unequipping", "gKeepMasks", true, false);
                 UIWidgets::Tooltip("Stops masks from automatically unequipping when not in any C button or the dpad.");
                 UIWidgets::PaddedEnhancementCheckbox("Save equipped mask to file", "gSaveMasksToFile", true, false);
                 UIWidgets::Tooltip("If you save and quit with a mask on, it'll still be on when you load back in.");
+                UIWidgets::PaddedEnhancementCheckbox("Keep mask on death", "gKeepMasksOnDeath", true, false);
+                UIWidgets::Tooltip("Stops masks from automatically unequipping when dying.");
                 UIWidgets::PaddedEnhancementCheckbox("Mask Select in Inventory", "gMaskSelect", true, false);
                 UIWidgets::Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
                 UIWidgets::PaddedEnhancementCheckbox("Nuts explode bombs", "gNutsExplodeBombs", true, false);
