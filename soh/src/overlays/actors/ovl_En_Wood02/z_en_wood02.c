@@ -456,14 +456,14 @@ void EnWood02_Draw(Actor* thisx, PlayState* play) {
 
     if ((type == WOOD_TREE_OVAL_GREEN_SPAWNER) || (type == WOOD_TREE_OVAL_GREEN_SPAWNED) ||
         (type == WOOD_TREE_OVAL_GREEN) || (type == WOOD_LEAF_GREEN)) {
-        red = 50;
-        green = 170;
-        blue = 70;
+        red = 255;
+        green = 255;
+        blue = 255;
     } else if ((type == WOOD_TREE_OVAL_YELLOW_SPAWNER) || (type == WOOD_TREE_OVAL_YELLOW_SPAWNED) ||
                (type == WOOD_LEAF_YELLOW)) {
-        red = 180;
-        green = 155;
-        blue = 0;
+        red = 255;
+        green = 255;
+        blue = 255;
     } else {
         red = green = blue = 255;
     }

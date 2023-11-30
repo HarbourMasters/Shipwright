@@ -47,6 +47,13 @@ extern PlayState* gPlayState;
 #include "objects/object_gjyo_objects/object_gjyo_objects.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 #include "objects/object_gi_rabit_mask/object_gi_rabit_mask.h"
+#include "objects/object_wood02/object_wood02.h"
+#include "scenes/overworld/spot00/spot00_room_0.h"
+#include "scenes/overworld/spot04/spot04_room_0.h"
+#include "scenes/overworld/spot04/spot04_room_1.h"
+#include "scenes/overworld/spot20/spot20_room_0.h"
+#include "scenes/overworld/spot03/spot03_room_0.h"
+#include "scenes/overworld/spot15/spot15_room_0.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex, int sourceIndex);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
@@ -441,6 +448,24 @@ void CosmeticsUpdateTick() {
     5. GFX Command: The GFX command you want to insert
 */
 void ApplyOrResetCustomGfxPatches(bool manualChange) {
+    if (manualChange) {
+        PATCH_GFX(object_wood02_DL_007968,                        "Tree1",                    "gLetItSnow",                        17, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+        PATCH_GFX(object_wood02_DL_000090,                        "Tree2",                    "gLetItSnow",                        17, gsDPSetPrimColor(0, 0, 200, 255, 255, 255));
+        PATCH_GFX(object_wood02_DL_000340,                        "Tree3",                    "gLetItSnow",                        17, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+        PATCH_GFX(object_wood02_DL_000340,                        "Tree4",                    "gLetItSnow",                        24, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+        PATCH_GFX(spot00_room_0DL_0139A8,                         "Path1",                    "gLetItSnow",                        23, gsDPSetPrimColor(0, 0, 100, 150, 255, 60));
+        PATCH_GFX(spot00_room_0DL_013250,                         "Path2",                    "gLetItSnow",                        23, gsDPSetPrimColor(0, 0, 100, 150, 255, 60));
+        PATCH_GFX(spot00_room_0DL_0143C8,                         "Path3",                    "gLetItSnow",                        23, gsDPSetPrimColor(0, 0, 100, 150, 255, 60));
+        PATCH_GFX(spot04_room_0DL_018048,                         "Path4",                    "gLetItSnow",                        24, gsDPSetPrimColor(0, 0, 100, 150, 255, 60));
+        PATCH_GFX(spot04_room_1DL_007810,                         "Path5",                    "gLetItSnow",                        24, gsDPSetPrimColor(0, 0, 100, 150, 255, 60));
+        PATCH_GFX(spot20_room_0DL_0062D0,                         "Path6",                    "gLetItSnow",                        23, gsDPSetPrimColor(0, 0, 200, 230, 255, 30));
+        PATCH_GFX(spot20_room_0DL_004460,                         "Path8",                    "gLetItSnow",                        31, gsDPSetPrimColor(0, 0, 200, 230, 255, 30));
+        PATCH_GFX(spot20_room_0DL_004460,                         "Path9",                    "gLetItSnow",                       118, gsDPSetPrimColor(0, 0, 200, 230, 255, 30));
+        PATCH_GFX(spot20_room_0DL_0065E8,                         "Path10",                   "gLetItSnow",                        24, gsDPSetPrimColor(0, 0, 200, 230, 255, 30));
+        PATCH_GFX(spot03_room_0DL_00C4B0,                         "Path11",                   "gLetItSnow",                        23, gsDPSetPrimColor(0, 0, 200, 230, 255, 30));
+        PATCH_GFX(spot15_room_0DL_00C748,                         "Path12",                   "gLetItSnow",                        23, gsDPSetPrimColor(0, 0, 200, 230, 255, 30));
+    }
+
     static CosmeticOption& linkGoronTunic = cosmeticOptions.at("Link_GoronTunic");
     if (manualChange || CVarGetInteger(linkGoronTunic.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {linkGoronTunic.defaultColor.x, linkGoronTunic.defaultColor.y, linkGoronTunic.defaultColor.z, linkGoronTunic.defaultColor.w};
