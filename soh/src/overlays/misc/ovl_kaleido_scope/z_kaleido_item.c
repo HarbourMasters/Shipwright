@@ -1054,8 +1054,9 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
 
                 //Fix for Equip Dupe
                 if (pauseCtx->equipTargetItem == ITEM_BOW) {
-                    if ((gSaveContext.equips.buttonItems[otherButtonIndex] >= ITEM_BOW_ARROW_FIRE) &&
-                        (gSaveContext.equips.buttonItems[otherButtonIndex] <= ITEM_BOW_ARROW_LIGHT)) {
+                    if (gSaveContext.equips.buttonItems[otherButtonIndex] >= ITEM_BOW_ARROW_FIRE &&
+                        gSaveContext.equips.buttonItems[otherButtonIndex] <= ITEM_BOW_ARROW_LIGHT &&
+                        !CVarGetInteger("gSeparateArrows", 0)) {
                             gSaveContext.equips.buttonItems[otherButtonIndex] = gSaveContext.equips.buttonItems[targetButtonIndex];
                             gSaveContext.equips.cButtonSlots[otherSlotIndex] = gSaveContext.equips.cButtonSlots[pauseCtx->equipTargetCBtn];
                             Interface_LoadItemIcon2(play, otherButtonIndex);
