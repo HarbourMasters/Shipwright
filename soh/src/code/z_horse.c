@@ -68,7 +68,7 @@ void func_8006D0EC(PlayState* play, Player* player) {
         horseActor =
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, 3586.0f, 1413.0f, -402.0f, 0, 0x4000, 0, 1, true);
         horseActor->room = -1;
-    } else if ((gSaveContext.entranceIndex == 1230) && (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED))) {
+    } else if ((gSaveContext.entranceIndex == ENTR_LON_LON_RANCH_7) && (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED))) {
         Actor* horseActor =
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, -25.0f, 0.0f, -1600.0f, 0, -0x4000, 0, 1, true);
         assert(horseActor != NULL);
@@ -134,8 +134,8 @@ void func_8006D684(PlayState* play, Player* player) {
     s32 i;
     Vec3s spawnPos;
 
-    if ((gSaveContext.entranceIndex == 0x028A || gSaveContext.entranceIndex == 0x028E ||
-         gSaveContext.entranceIndex == 0x0292 || gSaveContext.entranceIndex == 0x0476) &&
+    if ((gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_11 || gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_12 ||
+         gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_13 || gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_15) &&
         (gSaveContext.respawnFlag == 0)) {
         Vec3s spawnPositions[] = {
             { 0xF46F, 0x0139, 0x1E14 },
@@ -144,13 +144,13 @@ void func_8006D684(PlayState* play, Player* player) {
             { 0xF6F7, 0x0139, 0x1766 },
         };
 
-        if (gSaveContext.entranceIndex == 0x028A) {
+        if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_11) {
             spawnPos = spawnPositions[0];
-        } else if (gSaveContext.entranceIndex == 0x028E) {
+        } else if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_12) {
             spawnPos = spawnPositions[1];
-        } else if (gSaveContext.entranceIndex == 0x0292) {
+        } else if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_13) {
             spawnPos = spawnPositions[2];
-        } else {
+        } else { // entranceIndex == ENTR_HYRULE_FIELD_15
             spawnPos = spawnPositions[3];
         }
 
@@ -253,8 +253,8 @@ void func_8006DC68(PlayState* play, Player* player) {
 
         if (func_8006CFC0(play->sceneNum)) {
             if ((gSaveContext.sceneSetupIndex > 3) ||
-                ((gSaveContext.entranceIndex == 0x028A || gSaveContext.entranceIndex == 0x028E ||
-                  gSaveContext.entranceIndex == 0x0292 || gSaveContext.entranceIndex == 0x0476) &&
+                ((gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_11 || gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_12 ||
+                  gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_13 || gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_15) &&
                  (gSaveContext.respawnFlag == 0)) ||
                 ((play->sceneNum == SCENE_LON_LON_RANCH) && ((gSaveContext.eventInf[0] & 0xF) == 6) &&
                  !Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) && (DREG(1) == 0))) {

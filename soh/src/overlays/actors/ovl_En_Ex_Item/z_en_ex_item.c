@@ -244,7 +244,7 @@ void EnExItem_WaitForObject(EnExItem* this, PlayState* play) {
                             break;
                     }
                 } else {
-                    if (play->sceneNum == 16) {
+                    if (play->sceneNum == SCENE_TREASURE_BOX_SHOP) {
                         this->giDrawId = GetChestGameRandoGiDrawId(play->roomCtx.curRoom.num, GID_RUPEE_GREEN, play);
                     }
                 }
