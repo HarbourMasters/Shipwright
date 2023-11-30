@@ -30,6 +30,7 @@
 #include <AudioPlayer.h>
 #include "Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "Enhancements/controls/GameControlEditor.h"
+#include "Enhancements/controls/SohInputEditorWindow.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/audio/AudioCollection.h"
 #include "Enhancements/audio/AudioEditor.h"
@@ -49,6 +50,9 @@
 #include "Fonts.h"
 #include <Utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
+#include "Enhancements/presets.h"
+#include "util.h"
+#include <boost_custom/container_hash/hash_32.hpp>
 
 #if not defined (__SWITCH__) && not defined(__WIIU__)
 #include "Extractor/Extract.h"
@@ -253,15 +257,26 @@ OTRGlobals::OTRGlobals() {
         OTRFiles.push_back(sohOtrPath);
     }
     std::string patchesPath = LUS::Context::LocateFileAcrossAppDirs("mods", appShortName);
+    std::vector<std::string> patchOTRs = {};
     if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
         if (std::filesystem::is_directory(patchesPath)) {
-            for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath)) {
+            for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath, std::filesystem::directory_options::follow_directory_symlink)) {
                 if (StringHelper::IEquals(p.path().extension().string(), ".otr")) {
-                    OTRFiles.push_back(p.path().generic_string());
+                    patchOTRs.push_back(p.path().generic_string());
                 }
             }
         }
     }
+    std::sort(patchOTRs.begin(), patchOTRs.end(), [](const std::string& a, const std::string& b) {
+        return std::lexicographical_compare(
+            a.begin(), a.end(),
+            b.begin(), b.end(),
+            [](char c1, char c2) {
+                return std::tolower(c1) < std::tolower(c2);
+            }
+        );
+    });
+    OTRFiles.insert(OTRFiles.end(), patchOTRs.begin(), patchOTRs.end());
     std::unordered_set<uint32_t> ValidHashes = { 
         OOT_PAL_MQ,
         OOT_NTSC_JP_MQ,
@@ -279,9 +294,26 @@ OTRGlobals::OTRGlobals() {
         OOT_PAL_GC_DBG1,
         OOT_PAL_GC_DBG2
     };
-    // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
-    context = LUS::Context::CreateInstance("Ship of Harkinian", appShortName, "shipofharkinian.json", OTRFiles, {}, 3);
 
+    context = LUS::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
+
+    context->InitLogging();
+    context->InitConfiguration();
+    context->InitConsoleVariables();
+
+    // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
+    context->InitResourceManager(OTRFiles, {}, 3);
+    
+    context->InitControlDeck({BTN_MODIFIER1, BTN_MODIFIER2});
+    context->GetControlDeck()->SetSinglePlayerMappingMode(true);
+
+    context->InitCrashHandler();
+    context->InitConsole();
+
+    auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>("gControllerConfigurationEnabled", "Input Editor");
+    context->InitWindow(sohInputEditorWindow);
+    context->InitAudio();
+    
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Animation, "Animation", std::make_shared<LUS::AnimationFactory>());
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_PlayerAnimation, "PlayerAnimation", std::make_shared<LUS::PlayerAnimationFactory>());
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Room, "Room", std::make_shared<LUS::SceneFactory>()); // Is room scene? maybe?
@@ -1216,6 +1248,7 @@ extern "C" void Graph_StartFrame() {
         case KbScancode::LUS_KB_TAB: {
             // Toggle HD Assets
             CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
+            GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
             ShouldClearTextureCacheAtEndOfFrame = true;
             break;
         }
@@ -1415,6 +1448,14 @@ extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
     LUS::Context::GetInstance()->GetResourceManager()->DirtyDirectory(resName);
 }
 
+extern "C" void ResourceMgr_UnloadResource(const char* resName) {
+    std::string path = resName;
+    if (path.substr(0, 7) == "__OTR__") {
+        path = path.substr(7);
+    }
+    auto res = LUS::Context::GetInstance()->GetResourceManager()->UnloadResource(path);
+}
+
 // OTRTODO: There is probably a more elegant way to go about this...
 // Kenix: This is definitely leaking memory when it's called.
 extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
@@ -1439,6 +1480,27 @@ extern "C" uint8_t ResourceMgr_FileExists(const char* filePath) {
     }
 
     return ExtensionCache.contains(path);
+}
+
+extern "C" uint8_t ResourceMgr_FileAltExists(const char* filePath) {
+    std::string path = filePath;
+    if (path.substr(0, 7) == "__OTR__") {
+        path = path.substr(7);
+    }
+
+    if (path.substr(0, 4) != "alt/") {
+        path = "alt/" + path;
+    }
+
+    return ExtensionCache.contains(path);
+}
+
+// Unloads a resource if an alternate version exists when alt assets are enabled
+// The resource is only removed from the internal cache to prevent it from used in the next resource lookup
+extern "C" void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName) {
+    if (CVarGetInteger("gAltAssets", 0) && ResourceMgr_FileAltExists((char*) resName)) {
+        ResourceMgr_UnloadResource((char*) resName);
+    }
 }
 
 extern "C" void ResourceMgr_LoadFile(const char* resName) {
@@ -1478,6 +1540,11 @@ extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
     fclose(file);
 
     return data;
+}
+
+extern "C" uint8_t ResourceMgr_TexIsRaw(const char* texPath) {
+    auto res = std::static_pointer_cast<LUS::Texture>(GetResourceByNameHandlingMQ(texPath));
+    return res->Flags & TEX_FLAG_LOAD_AS_RAW;
 }
 
 extern "C" uint8_t ResourceMgr_ResourceIsBackground(char* texPath) {
@@ -1565,6 +1632,11 @@ extern "C" void ResourceMgr_PushCurrentDirectory(char* path)
 
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
 {
+    // When an alt resource exists for the DL, we need to unload the original asset
+    // to clear the cache so the alt asset will be loaded instead
+    // OTRTODO: If Alt loading over original cache is fixed, this line can most likely be removed
+    ResourceMgr_UnloadOriginalWhenAltExists(path);
+
     auto res = std::static_pointer_cast<LUS::DisplayList>(GetResourceByNameHandlingMQ(path));
     return (Gfx*)&res->Instructions[0];
 }
@@ -2065,15 +2137,22 @@ Color_RGB8 GetColorForControllerLED() {
 }
 
 extern "C" void OTRControllerCallback(uint8_t rumble) {
-    auto physicalDevice = LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0);
+    // We call this every tick, SDL accounts for this use and prevents driver spam
+    // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
+    LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetLED()->SetLEDColor(GetColorForControllerLED());
 
-    if (physicalDevice->CanSetLed()) {
-        // We call this every tick, SDL accounts for this use and prevents driver spam
-        // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
-        physicalDevice->SetLedColor(0, GetColorForControllerLED());
+    static std::shared_ptr<SohInputEditorWindow> controllerConfigWindow = nullptr;
+    if (controllerConfigWindow == nullptr) {
+        controllerConfigWindow = std::dynamic_pointer_cast<SohInputEditorWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Input Editor"));
+    } else if (controllerConfigWindow->TestingRumble()) {
+        return;
     }
 
-    physicalDevice->SetRumble(0, rumble);
+    if (rumble) {
+        LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetRumble()->StartRumble();
+    } else {
+        LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetRumble()->StopRumble();
+    }
 }
 
 extern "C" float OTRGetAspectRatio() {
@@ -2112,12 +2191,12 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 }
 
 extern "C" int Controller_ShouldRumble(size_t slot) {
-    auto controlDeck = LUS::Context::GetInstance()->GetControlDeck();
-    
-    if (slot < controlDeck->GetNumConnectedPorts()) {
-        auto physicalDevice = controlDeck->GetDeviceFromPortIndex(slot);
-        
-        if (physicalDevice->GetProfile(slot)->UseRumble && physicalDevice->CanRumble()) {
+    for (auto [id, mapping] : LUS::Context::GetInstance()
+                                  ->GetControlDeck()
+                                  ->GetControllerByPort(static_cast<uint8_t>(slot))
+                                  ->GetRumble()
+                                  ->GetAllRumbleMappings()) {
+        if (mapping->PhysicalDeviceIsConnected()) {
             return 1;
         }
     }
@@ -2342,7 +2421,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             actorParams = stone->params;
 
             // if we're in a generic grotto
-            if (play->sceneNum == 62 && actorParams == 14360) {
+            if (play->sceneNum == SCENE_GROTTOS && actorParams == 14360) {
                 // look for the chest in the actorlist to determine
                 // which grotto we're in
                 int numOfActorLists =
@@ -2523,6 +2602,70 @@ extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* repla
     gfx_register_blended_texture(name, mask, replacement);
 }
 
-extern "C" void CheckTracker_OnMessageClose() {
-    CheckTracker::CheckTrackerDialogClosed();
+// #region SOH [TODO] Ideally this should move to being event based, it's currently run every frame on the file select screen
+extern "C" void SoH_ProcessDroppedFiles() {
+    const char* droppedFile = CVarGetString("gDroppedFile", "");
+    if (CVarGetInteger("gNewFileDropped", 0) && strcmp(droppedFile, "") != 0) {
+        try {
+            std::ifstream configStream(SohUtils::Sanitize(droppedFile));
+            if (!configStream) {
+                return;
+            }
+
+            nlohmann::json configJson;
+            configStream >> configJson;
+
+            if (!configJson.contains("CVars")) {
+                return;
+            }
+
+            clearCvars(enhancementsCvars);
+            clearCvars(cheatCvars);
+            clearCvars(randomizerCvars);
+
+            // Flatten everything under CVars into a single array
+            auto cvars = configJson["CVars"].flatten();
+
+            for (auto& [key, value] : cvars.items()) {
+                // Replace slashes with dots in key, and remove leading dot
+                std::string path = key;
+                std::replace(path.begin(), path.end(), '/', '.');
+                if (path[0] == '.') {
+                    path.erase(0, 1);
+                }
+                if (value.is_string()) {
+                    CVarSetString(path.c_str(), value.get<std::string>().c_str());
+                } else if (value.is_number_integer()) {
+                    CVarSetInteger(path.c_str(), value.get<int>());
+                } else if (value.is_number_float()) {
+                    CVarSetFloat(path.c_str(), value.get<float>());
+                }
+            }
+
+            auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
+            gui->GetGuiWindow("Console")->Hide();
+            gui->GetGuiWindow("Actor Viewer")->Hide();
+            gui->GetGuiWindow("Collision Viewer")->Hide();
+            gui->GetGuiWindow("Save Editor")->Hide();
+            gui->GetGuiWindow("Display List Viewer")->Hide();
+            gui->GetGuiWindow("Stats")->Hide();
+            std::dynamic_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->ClearBindings();
+
+            gui->SaveConsoleVariablesOnNextTick();
+
+            uint32_t finalHash = boost::hash_32<std::string>{}(configJson.dump());
+            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Configuration Loaded. Hash: %d", finalHash);
+        } catch (std::exception& e) {
+            SPDLOG_ERROR("Failed to load config file: {}", e.what());
+            auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
+            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
+            return;
+        } catch (...) {
+            SPDLOG_ERROR("Failed to load config file");
+            auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
+            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
+            return;
+        }
+    }
 }
+// #endregion

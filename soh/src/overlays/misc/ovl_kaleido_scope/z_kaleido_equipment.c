@@ -1,6 +1,7 @@
 #include "z_kaleido_scope.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/parameter_static/parameter_static.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
 static u8 sChildUpgrades[] = { UPG_BULLET_BAG, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
 static u8 sAdultUpgrades[] = { UPG_QUIVER, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
@@ -12,6 +13,15 @@ static u8 sUpgradeItemOffsets[] = { 0x00, 0x03, 0x06, 0x09 };
 
 static u8 sEquipmentItemOffsets[] = {
     0x00, 0x00, 0x01, 0x02, 0x00, 0x03, 0x04, 0x05, 0x00, 0x06, 0x07, 0x08, 0x00, 0x09, 0x0A, 0x0B,
+};
+
+// Vertices for A button indicator (coordinates 0.75x the texture size)
+// pt (-97, -36)
+static Vtx sStrengthAButtonVtx[] = {
+    VTX(-9,  6, 0, 0 << 5, 0 << 5, 0xFF, 0xFF, 0xFF, 0xFF),
+    VTX( 9,  6, 0, 24 << 5, 0 << 5, 0xFF, 0xFF, 0xFF, 0xFF),
+    VTX(-9, -6, 0, 0 << 5, 16 << 5, 0xFF, 0xFF, 0xFF, 0xFF),
+    VTX( 9, -6, 0, 24 << 5, 16 << 5, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
 static s16 sEquipTimer = 0;
@@ -86,6 +96,30 @@ void KaleidoScope_DrawEquipmentImage(PlayState* play, void* source, u32 width, u
         vtxIndex += 4;
     }
 
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+void KaleidoScope_DrawAButton(PlayState* play, Vtx* vtx, int16_t xTranslate, int16_t yTranslate) {
+    PauseContext* pauseCtx = &play->pauseCtx;
+    OPEN_DISPS(play->state.gfxCtx);
+    Matrix_Push();
+
+    Matrix_Translate(xTranslate, yTranslate, 0, MTXMODE_APPLY);
+    gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    Color_RGB8 aButtonColor = { 0, 100, 255 };
+    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
+        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+        aButtonColor = (Color_RGB8){ 0, 255, 100 };
+    }
+
+    gSPVertex(POLY_KAL_DISP++, vtx, 4, 0);
+    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, pauseCtx->alpha);
+    gDPLoadTextureBlock(POLY_KAL_DISP++, gABtnSymbolTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0,
+                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
+    gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+    Matrix_Pop();
+    gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
@@ -504,6 +538,18 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
 
         KaleidoScope_SetCursorVtx(pauseCtx, cursorSlot * 4, pauseCtx->equipVtx);
 
+        // Allow Toggling of Strength when Pressing A on Strength Upgrade Slot
+        if ((pauseCtx->cursorSpecialPos == 0) && (pauseCtx->state == 6) &&
+            (pauseCtx->unk_1E4 == 0) && CHECK_BTN_ALL(input->press.button, BTN_A) &&
+            (pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 2) && CVarGetInteger("gToggleStrength", 0)) {
+            CVarSetInteger("gStrengthDisabled", !CVarGetInteger("gStrengthDisabled", 0));
+            // Equip success sound
+            Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            // Wait 10 frames before accepting input again
+            pauseCtx->unk_1E4 = 7;
+            sEquipTimer = 10;
+        }
+
         u16 buttonsToCheck = BTN_A | BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
         if (CVarGetInteger("gDpadEquips", 0) && (!CVarGetInteger("gDpadPause", 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
             buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
@@ -640,6 +686,19 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         }
     }
 
+
+    // Grey Out Strength Upgrade Name when Disabled
+    // Do not Grey Out Strength Upgrade Name when Enabled
+    // This needs to be outside the previous block since otherwise the nameColorSet is cleared to 0 by other menu pages when toggling
+    if ((pauseCtx->pageIndex == PAUSE_EQUIP) && (pauseCtx->cursorX[PAUSE_EQUIP] == 0) &&
+        (pauseCtx->cursorY[PAUSE_EQUIP] == 2) && CVarGetInteger("gToggleStrength", 0)) {
+        if (CVarGetInteger("gStrengthDisabled", 0)) {
+            pauseCtx->nameColorSet = 1;
+        } else {
+            pauseCtx->nameColorSet = 0;
+        }
+    }
+
     for (rowStart = 0, i = 0, point = 4; i < 4; i++, rowStart += 4, point += 16) {
 
         for (k = 0, temp = rowStart + 1, bit = rowStart, j = point; k < 3; k++, bit++, j += 4, temp++) {
@@ -661,6 +720,22 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         }
     }
 
+    // Add zoom effect to strength item if cursor is hovering over it when toggle option is on
+    if ((pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 2) &&
+        CVarGetInteger("gToggleStrength", 0) && pauseCtx->cursorSpecialPos == 0) {
+        u8 row = 2;
+        u8 column = 0;
+        u8 equipVtxIndex = 16 * row + 4 * column;
+        pauseCtx->equipVtx[equipVtxIndex].v.ob[0] = pauseCtx->equipVtx[equipVtxIndex + 2].v.ob[0] =
+            pauseCtx->equipVtx[equipVtxIndex].v.ob[0] - 2;
+        pauseCtx->equipVtx[equipVtxIndex + 1].v.ob[0] = pauseCtx->equipVtx[equipVtxIndex + 3].v.ob[0] =
+            pauseCtx->equipVtx[equipVtxIndex + 1].v.ob[0] + 4;
+        pauseCtx->equipVtx[equipVtxIndex].v.ob[1] = pauseCtx->equipVtx[equipVtxIndex + 1].v.ob[1] =
+            pauseCtx->equipVtx[equipVtxIndex].v.ob[1] + 2;
+        pauseCtx->equipVtx[equipVtxIndex + 2].v.ob[1] = pauseCtx->equipVtx[equipVtxIndex + 3].v.ob[1] =
+            pauseCtx->equipVtx[equipVtxIndex + 2].v.ob[1] - 4;
+    }
+
     Gfx_SetupDL_42Opa(play->state.gfxCtx);
 
     gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -672,9 +747,12 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
             point = CUR_UPG_VALUE(sChildUpgrades[i]);
             if ((point != 0) && (CUR_UPG_VALUE(sChildUpgrades[i]) != 0)) {
-                if (drawGreyItems &&
+                // Grey Out the Gauntlets as Child
+                // Grey Out Strength Upgrades when Disabled and the Toggle Strength Option is on
+                if ((drawGreyItems &&
                     ((sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_SILVER || 
-                    (sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_GOLD)) { // Grey Out the Gauntlets
+                    (sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_GOLD)) ||
+                    (CVarGetInteger("gToggleStrength", 0) && CVarGetInteger("gStrengthDisabled", 0) && sChildUpgrades[i] == UPG_STRENGTH)) {
                     gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                     gSPGrayscale(POLY_KAL_DISP++, true);
                 }
@@ -690,9 +768,12 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1], 32, 32, 0);
                 gSPGrayscale(POLY_KAL_DISP++, false);
             } else if (CUR_UPG_VALUE(sAdultUpgrades[i]) != 0) {
-                if (drawGreyItems &&
-                    ((sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1) == ITEM_BRACELET &&
-                        !(IS_RANDO))) { // Grey Out the Goron Bracelet when Not Randomized
+                // Grey Out the Goron Bracelet when Not Randomized and Toggle Strength Option is off
+                // Grey Out Strength Upgrades when Disabled and the Toggle Strength Option is on
+                if ((drawGreyItems &&
+                    (((sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1) == ITEM_BRACELET &&
+                        !(IS_RANDO) && !CVarGetInteger("gToggleStrength", 0)))) || 
+                     (CVarGetInteger("gToggleStrength", 0) && CVarGetInteger("gStrengthDisabled", 0) && sAdultUpgrades[i] == UPG_STRENGTH)) {
                     gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                     gSPGrayscale(POLY_KAL_DISP++, true);
                 }
@@ -718,6 +799,20 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             }
             gSPGrayscale(POLY_KAL_DISP++, false);
         }
+    }
+
+    // Render A button indicator when hovered over strength
+    if ((pauseCtx->cursorX[PAUSE_EQUIP] == 0) && (pauseCtx->cursorY[PAUSE_EQUIP] == 2) &&
+        CVarGetInteger("gToggleStrength", 0) && pauseCtx->cursorSpecialPos == 0
+        && pauseCtx->unk_1E4 == 0 && pauseCtx->state == 6) {
+        u8 row = 2;
+        u8 column = 0;
+        u8 equipVtxIndex = 16 * row + 4 * column;
+        // Get Bottom Bisector of the Quad
+        s16 translateX = (pauseCtx->equipVtx[equipVtxIndex].v.ob[0] + pauseCtx->equipVtx[equipVtxIndex + 1].v.ob[0]) / 2;
+        // Add 4 since the icon will be zoomed in on
+        s16 translateY = pauseCtx->equipVtx[equipVtxIndex + 2].v.ob[1] + 4;
+        KaleidoScope_DrawAButton(play, sStrengthAButtonVtx, translateX, translateY);
     }
 
     KaleidoScope_DrawPlayerWork(play);

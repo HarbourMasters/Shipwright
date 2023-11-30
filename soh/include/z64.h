@@ -1119,6 +1119,82 @@ typedef struct {
     /* 0x4C */ u32 unk_4C;
 } PreRender; // size = 0x50
 
+#define TRANS_TRIGGER_OFF 0 // transition is not active
+#define TRANS_TRIGGER_START 20 // start transition (exiting an area)
+#define TRANS_TRIGGER_END -20 // transition is ending (arriving in a new area)
+
+typedef enum {
+    /*  0 */ TRANS_MODE_OFF,
+    /*  1 */ TRANS_MODE_SETUP,
+    /*  2 */ TRANS_MODE_INSTANCE_INIT,
+    /*  3 */ TRANS_MODE_INSTANCE_RUNNING,
+    /*  4 */ TRANS_MODE_FILL_WHITE_INIT,
+    /*  5 */ TRANS_MODE_FILL_IN,
+    /*  6 */ TRANS_MODE_FILL_OUT,
+    /*  7 */ TRANS_MODE_FILL_BROWN_INIT,
+    /*  8 */ TRANS_MODE_08, // unused
+    /*  9 */ TRANS_MODE_09, // unused
+    /* 10 */ TRANS_MODE_INSTANT,
+    /* 11 */ TRANS_MODE_INSTANCE_WAIT,
+    /* 12 */ TRANS_MODE_SANDSTORM_INIT,
+    /* 13 */ TRANS_MODE_SANDSTORM,
+    /* 14 */ TRANS_MODE_SANDSTORM_END_INIT,
+    /* 15 */ TRANS_MODE_SANDSTORM_END,
+    /* 16 */ TRANS_MODE_CS_BLACK_FILL_INIT,
+    /* 17 */ TRANS_MODE_CS_BLACK_FILL
+} TransitionMode;
+
+typedef enum {
+    /*  0 */ TRANS_TYPE_WIPE,
+    /*  1 */ TRANS_TYPE_TRIFORCE,
+    /*  2 */ TRANS_TYPE_FADE_BLACK,
+    /*  3 */ TRANS_TYPE_FADE_WHITE,
+    /*  4 */ TRANS_TYPE_FADE_BLACK_FAST,
+    /*  5 */ TRANS_TYPE_FADE_WHITE_FAST,
+    /*  6 */ TRANS_TYPE_FADE_BLACK_SLOW,
+    /*  7 */ TRANS_TYPE_FADE_WHITE_SLOW,
+    /*  8 */ TRANS_TYPE_WIPE_FAST,
+    /*  9 */ TRANS_TYPE_FILL_WHITE2, 
+    /* 10 */ TRANS_TYPE_FILL_WHITE,
+    /* 11 */ TRANS_TYPE_INSTANT,
+    /* 12 */ TRANS_TYPE_FILL_BROWN,
+    /* 13 */ TRANS_TYPE_FADE_WHITE_CS_DELAYED,
+    /* 14 */ TRANS_TYPE_SANDSTORM_PERSIST,
+    /* 15 */ TRANS_TYPE_SANDSTORM_END,
+    /* 16 */ TRANS_TYPE_CS_BLACK_FILL,
+    /* 17 */ TRANS_TYPE_FADE_WHITE_INSTANT,
+    /* 18 */ TRANS_TYPE_FADE_GREEN,
+    /* 19 */ TRANS_TYPE_FADE_BLUE,
+    // transition types 20 - 31 are unused
+    // transition types 32 - 55 are constructed using the TRANS_TYPE_CIRCLE macro
+    /* 56 */ TRANS_TYPE_MAX = 56
+} TransitionType;
+
+#define TRANS_NEXT_TYPE_DEFAULT 0xFF // when `nextTransitionType` is set to default, the type will be taken from the entrance table for the ending transition
+
+typedef enum {
+    /* 0 */ TCA_NORMAL,
+    /* 1 */ TCA_WAVE,
+    /* 2 */ TCA_RIPPLE,
+    /* 3 */ TCA_STARBURST
+} TransitionCircleAppearance;
+
+typedef enum {
+    /* 0 */ TCC_BLACK,
+    /* 1 */ TCC_WHITE,
+    /* 2 */ TCC_GRAY,
+    /* 3 */ TCC_SPECIAL // color varies depending on appearance. unused and appears broken
+} TransitionCircleColor;
+
+typedef enum {
+    /* 0 */ TCS_FAST,
+    /* 1 */ TCS_SLOW
+} TransitionCircleSpeed;
+
+#define TC_SET_PARAMS (1 << 7)
+
+#define TRANS_TYPE_CIRCLE(appearance, color, speed) ((1 << 5) | ((color & 3) << 3) | ((appearance & 3) << 1) | (speed & 1))
+
 typedef struct {
     union {
         TransitionFade fade;
@@ -1381,14 +1457,14 @@ typedef struct PlayState {
     /* 0x11E0C */ ElfMessage* cUpElfMsgs;
     /* 0x11E10 */ void* specialEffects;
     /* 0x11E14 */ u8 skyboxId;
-    /* 0x11E15 */ s8 sceneLoadFlag; // "fade_direction"
+    /* 0x11E15 */ s8 transitionTrigger; // "fade_direction"
     /* 0x11E16 */ s16 unk_11E16;
     /* 0x11E18 */ s16 unk_11E18;
     /* 0x11E1A */ s16 nextEntranceIndex;
     /* 0x11E1C */ char unk_11E1C[0x40];
     /* 0x11E5C */ s8 shootingGalleryStatus;
     /* 0x11E5D */ s8 bombchuBowlingStatus; // "bombchu_game_flag"
-    /* 0x11E5E */ u8 fadeTransition;
+    /* 0x11E5E */ u8 transitionType;
     /* 0x11E60 */ CollisionCheckContext colChkCtx;
     /* 0x120FC */ u16 envFlags[20];
     /* 0x12124 */ PreRender pauseBgPreRender;
@@ -1509,6 +1585,20 @@ typedef struct {
     int16_t bossRushUIAlpha;
     uint16_t bossRushArrowOffset;
 } FileChooseContext; // size = 0x1CAE0
+
+// Macros for `EntranceInfo.field`
+#define ENTRANCE_INFO_CONTINUE_BGM_FLAG (1 << 15)
+#define ENTRANCE_INFO_DISPLAY_TITLE_CARD_FLAG (1 << 14)
+#define ENTRANCE_INFO_END_TRANS_TYPE_MASK 0x3F80
+#define ENTRANCE_INFO_END_TRANS_TYPE_SHIFT 7
+#define ENTRANCE_INFO_END_TRANS_TYPE(field)          \
+    (((field) >> ENTRANCE_INFO_END_TRANS_TYPE_SHIFT) \
+     & (ENTRANCE_INFO_END_TRANS_TYPE_MASK >> ENTRANCE_INFO_END_TRANS_TYPE_SHIFT))
+#define ENTRANCE_INFO_START_TRANS_TYPE_MASK 0x7F
+#define ENTRANCE_INFO_START_TRANS_TYPE_SHIFT 0
+#define ENTRANCE_INFO_START_TRANS_TYPE(field)          \
+    (((field) >> ENTRANCE_INFO_START_TRANS_TYPE_SHIFT) \
+     & (ENTRANCE_INFO_START_TRANS_TYPE_MASK >> ENTRANCE_INFO_START_TRANS_TYPE_SHIFT))
 
 typedef enum {
     DPM_UNK = 0,

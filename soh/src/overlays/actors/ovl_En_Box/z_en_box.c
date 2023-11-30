@@ -449,7 +449,7 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
 
         // treasure chest game rando
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
-            if (IS_RANDO && play->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
+            if (IS_RANDO && play->sceneNum == SCENE_TREASURE_BOX_SHOP && (this->dyna.actor.params & 0x60) != 0x20) {
                 if((this->dyna.actor.params & 0xF) < 2) {
                     Flags_SetCollectible(play, 0x1B);
                 }
@@ -477,7 +477,7 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
             
             // RANDOTODO treasure chest game rando
             if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
-                if (IS_RANDO && play->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
+                if (IS_RANDO && play->sceneNum == SCENE_TREASURE_BOX_SHOP && (this->dyna.actor.params & 0x60) != 0x20) {
                     if((this->dyna.actor.params & 0xF) < 2) {
                         if(Flags_GetCollectible(play, 0x1B)) {
                             sItem = blueRupee;
