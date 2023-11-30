@@ -2289,17 +2289,17 @@ void Environment_FillScreen(GraphicsContext* gfxCtx, u8 red, u8 green, u8 blue, 
 }
 
 Color_RGB8 sSandstormPrimColors[] = {
-    { 210, 156, 85 },
-    { 255, 200, 100 },
-    { 225, 160, 50 },
-    { 105, 90, 40 },
+    { 210, 210, 210 },
+    { 255, 255, 255 },
+    { 225, 225, 225 },
+    { 105, 105, 105 },
 };
 
 Color_RGB8 sSandstormEnvColors[] = {
-    { 155, 106, 35 },
-    { 200, 150, 50 },
-    { 170, 110, 0 },
-    { 50, 40, 0 },
+    { 155, 155, 155 },
+    { 200, 200, 200 },
+    { 170, 170, 170 },
+    { 50, 50, 50 },
 };
 
 u16 previousPatchedSandstormScreenSize = 0;
