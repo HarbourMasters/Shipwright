@@ -1856,10 +1856,10 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
                 break;
             }
         case 20:
-            play->nextEntranceIndex = 0x6B;
+            play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
             gSaveContext.nextCutsceneIndex = 0xFFF2;
-            play->sceneLoadFlag = 0x14;
-            play->fadeTransition = 3;
+            play->transitionTrigger = TRANS_TRIGGER_START;
+            play->transitionType = TRANS_TYPE_FADE_WHITE;
             play->linkAgeOnLoad = 1;
             break;
     }
