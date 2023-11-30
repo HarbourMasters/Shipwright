@@ -1452,7 +1452,7 @@ void BossGanondrof_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec
     if (((this->flyMode != GND_FLY_PAINTING) || (this->actionFunc == BossGanondrof_Intro)) && (limbIndex <= 25)) {
         Matrix_MultVec3f(&zeroVec, &this->bodyPartsPos[limbIndex - 1]);
     }
-    if (CVarGetInteger("gLetItSnow", 0)) {
+    if (CVarGetInteger("gLetItSnow", 0) && this->deathState == NOT_DEAD) {
         if (limbIndex == 15) {
             OPEN_DISPS(play->state.gfxCtx);
             Matrix_Push();
