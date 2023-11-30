@@ -1,6 +1,7 @@
 ﻿#include "file_choose.h"
 
 #include <string.h>
+#include <stdio.h>
 
 #include "textures/title_static/title_static.h"
 #include "textures/parameter_static/parameter_static.h"
@@ -1024,7 +1025,7 @@ void FileChoose_UpdateRandomizer() {
             return;
     }
 
-    if (!SpoilerFileExists(CVarGetString("gSpoilerLog", ""))) {
+    if (!SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && !CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
             CVarSetString("gSpoilerLog", "");
             fileSelectSpoilerFileLoaded = false;
     }
@@ -1051,6 +1052,10 @@ void FileChoose_UpdateRandomizer() {
             Randomizer_LoadMasterQuestDungeons(fileLoc);
             Randomizer_LoadEntranceOverrides(fileLoc, silent);
             fileSelectSpoilerFileLoaded = true;
+
+            if (SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
+                remove(fileLoc);
+            }
     }
 }
 
@@ -1071,6 +1076,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     Input* input = &this->state.input[0];
     bool dpad = CVarGetInteger("gDpadText", 0);
 
+    SoH_ProcessDroppedFiles();
     FileChoose_UpdateRandomizer();
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
@@ -1261,6 +1267,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     s8 i = 0;
     bool dpad = CVarGetInteger("gDpadText", 0);
 
+    SoH_ProcessDroppedFiles();
     FileChoose_UpdateRandomizer();
 
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
@@ -2966,7 +2973,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     Randomizer_LoadMasterQuestDungeons("");
     Randomizer_LoadEntranceOverrides("", true);
 
-    gSaveContext.respawn[0].entranceIndex = -1;
+    gSaveContext.respawn[0].entranceIndex = ENTR_LOAD_OPENING;
     gSaveContext.respawnFlag = 0;
     gSaveContext.seqId = (u8)NA_BGM_DISABLED;
     gSaveContext.natureAmbienceId = 0xFF;
@@ -2987,7 +2994,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.prevMagicState = MAGIC_STATE_IDLE;
     gSaveContext.forcedSeqId = NA_BGM_GENERAL_SFX;
     gSaveContext.skyboxTime = 0;
-    gSaveContext.nextTransitionType = 0xFF;
+    gSaveContext.nextTransitionType = TRANS_NEXT_TYPE_DEFAULT;
     gSaveContext.nextCutsceneIndex = 0xFFEF;
     gSaveContext.cutsceneTrigger = 0;
     gSaveContext.chamberCutsceneNum = 0;
@@ -3035,7 +3042,7 @@ void FileChoose_LoadGame(GameState* thisx) {
         // the entrance index is -1 from shuffle overwarld spawn
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) && ((!CVarGetInteger("gRememberSaveLocation", 0) ||
             gSaveContext.savedSceneNum == SCENE_FAIRYS_FOUNTAIN || gSaveContext.savedSceneNum == SCENE_GROTTOS) ||
-            (CVarGetInteger("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == -1))) {
+            (CVarGetInteger("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == ENTR_LOAD_OPENING))) {
             Entrance_SetSavewarpEntrance();
         }
     }
@@ -3686,4 +3693,7 @@ void FileChoose_Init(GameState* thisx) {
     Font_LoadOrderedFont(&this->font);
     Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
     func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
+    
+    // Originally this was only set when transitioning from the title screen, but gSkipLogoTitle skips that process so we're ensuring it's set here
+    gSaveContext.gameMode = GAMEMODE_FILE_SELECT;
 }

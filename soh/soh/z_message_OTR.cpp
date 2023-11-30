@@ -72,6 +72,9 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
             _message_0xFFFC_nes = (char*)file->messages[i].msg.c_str();
     }
 
+    // Assert that the first message starts at the first text ID
+    assert(table[0].textId == 0x0001);
+
     return table;
 }
 
@@ -104,6 +107,9 @@ extern "C" void OTRMessage_Init()
             sStaffMessageEntryTablePtr[i].segment = file2->messages[i].msg.c_str();
             sStaffMessageEntryTablePtr[i].msgSize = file2->messages[i].msg.size();
         }
+
+        // Assert staff credits start at the first credits ID
+        assert(sStaffMessageEntryTablePtr[0].textId == 0x0500);
     }
 
     CustomMessageManager::Instance->AddCustomMessageTable(customMessageTableID);

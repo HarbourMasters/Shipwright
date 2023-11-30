@@ -48,10 +48,7 @@ void Teardown();
 void UpdateAllOrdering();
 bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj);
 void InitTrackerData(bool isDebug);
-void SetLastItemGetRC(RandomizerCheck rc);
 RandomizerCheckArea GetCheckArea();
-void CheckTrackerDialogClosed();
-void ToggleShopRightChecks();
 void UpdateCheck(uint32_t, RandomizerCheckTrackerData);
 } // namespace CheckTracker
 
