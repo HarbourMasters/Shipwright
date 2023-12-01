@@ -304,6 +304,7 @@ namespace GameControlEditor {
         DrawHelpIcon("Allows the cursor on the pause menu to be over any slot. Sometimes required in rando to select "
                      "certain items.");
         UIWidgets::Spacer(0);
+        ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
         UIWidgets::PaddedEnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify", true, false);
         DrawHelpIcon("Hold the assigned button to change the maximum walking speed\nTo change the assigned button, go into the Ports tabs above");
          if (CVarGetInteger("gEnableWalkModify", 0)) {
@@ -315,6 +316,7 @@ namespace GameControlEditor {
             UIWidgets::PaddedEnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
             window->EndGroupPanelPublic(0);
         }
+        ImGui::EndDisabled();
         UIWidgets::Spacer(0);
         UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
         DrawHelpIcon("Speak to Navi with L but enter first-person camera with C-Up");
