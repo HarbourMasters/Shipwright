@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include <span>
+#include <format>
 #include <stdint.h>
 #include <ImGui/imgui.h>
 
