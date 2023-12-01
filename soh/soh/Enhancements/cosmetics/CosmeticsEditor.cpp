@@ -1485,6 +1485,7 @@ void Draw_Placements(){
 }
 
 void DrawSillyTab() {
+    ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
     if (CVarGetInteger("gLetItSnow", 0)) {
         if (UIWidgets::EnhancementCheckbox("Let It Snow", "gLetItSnow")) {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -1569,6 +1570,7 @@ void DrawSillyTab() {
         CVarClear("gCosmetics.Kak_Windmill_Speed.Changed");
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
+    ImGui::EndDisabled();
 }
 
 // Copies the RGB values from one cosmetic option to another, multiplied by the passed in amount, this
@@ -1767,6 +1769,10 @@ void CosmeticsEditorWindow::DrawElement() {
     ImGui::SameLine();
     UIWidgets::EnhancementCombobox("gCosmetics.DefaultColorScheme", colorSchemes, COLORSCHEME_N64);
     UIWidgets::EnhancementCheckbox("Advanced Mode", "gCosmetics.AdvancedMode");
+    UIWidgets::InsertHelpHoverText(
+        "Some cosmetic options may not apply if you have any mods that provide custom models for the cosmetic option.\n\n"
+        "For example, if you have custom Link model, then the Link's Hair color option will most likely not apply."
+    );
     if (CVarGetInteger("gCosmetics.AdvancedMode", 0)) {
         if (ImGui::Button("Lock All Advanced", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
             for (auto& [id, cosmeticOption] : cosmeticOptions) {

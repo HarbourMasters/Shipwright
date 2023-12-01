@@ -193,6 +193,7 @@ typedef enum {
     RAND_INF_ADULT_FISH_15,
     RAND_INF_ADULT_LOACH,
     RAND_INF_10_BIG_POES,
+    RAND_INF_GRANT_GANONS_BOSSKEY,
 
     // If you add anything to this list, you need to update the size of randomizerInf in z64save.h to be ceil(RAND_INF_MAX / 16)
 
