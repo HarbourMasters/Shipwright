@@ -506,7 +506,7 @@ void DrawItemCount(ItemTrackerItem item) {
         uint8_t piecesTotal = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL);
         ImU32 currentColor = gSaveContext.triforcePiecesCollected >= piecesRequired ? IM_COL_GREEN : IM_COL_WHITE;
         ImU32 maxColor = IM_COL_GREEN;
-        int32_t trackerTriforcePieceNumberDisplayMode = CVarGetInteger("gItemTrackerTriforcePieceTrack", TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX);
+        int32_t trackerTriforcePieceNumberDisplayMode = CVarGetInteger("gItemTrackerTriforcePieceTrack", TRIFORCE_PIECE_COLLECTED_REQUIRED);
 
         currentString += std::to_string(gSaveContext.triforcePiecesCollected);
         currentString += "/";
@@ -1149,7 +1149,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
     UIWidgets::Spacer(0);
 
     ImGui::Text("Christmas ornament Count Tracking");
-    UIWidgets::EnhancementCombobox("gItemTrackerTriforcePieceTrack", itemTrackerTriforcePieceTrackOptions, TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX);
+    UIWidgets::EnhancementCombobox("gItemTrackerTriforcePieceTrack", itemTrackerTriforcePieceTrackOptions, TRIFORCE_PIECE_COLLECTED_REQUIRED);
     UIWidgets::InsertHelpHoverText("Customize what numbers are shown for ornament tracking.");
 
     ImGui::TableNextColumn();
