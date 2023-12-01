@@ -180,17 +180,17 @@ void DrawSettingsMenu() {
     if (ImGui::BeginMenu("Settings"))
     {
         if (ImGui::BeginMenu("Audio")) {
-            UIWidgets::PaddedEnhancementSliderFloat("Master Volume: %d %%", "##Master_Vol", "gGameMasterVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true);
-            if (UIWidgets::PaddedEnhancementSliderFloat("Main Music Volume: %d %%", "##Main_Music_Vol", "gMainMusicVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
+            UIWidgets::PaddedEnhancementSliderFloat("Master Volume: %.1f %%", "##Master_Vol", "gGameMasterVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true);
+            if (UIWidgets::PaddedEnhancementSliderFloat("Main Music Volume: %.1f %%", "##Main_Music_Vol", "gMainMusicVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
                 Audio_SetGameVolume(SEQ_BGM_MAIN, CVarGetFloat("gMainMusicVolume", 1.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Sub Music Volume: %d %%", "##Sub_Music_Vol", "gSubMusicVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
+            if (UIWidgets::PaddedEnhancementSliderFloat("Sub Music Volume: %.1f %%", "##Sub_Music_Vol", "gSubMusicVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
                 Audio_SetGameVolume(SEQ_BGM_SUB, CVarGetFloat("gSubMusicVolume", 1.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Sound Effects Volume: %d %%", "##Sound_Effect_Vol", "gSFXMusicVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
+            if (UIWidgets::PaddedEnhancementSliderFloat("Sound Effects Volume: %.1f %%", "##Sound_Effect_Vol", "gSFXMusicVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
                 Audio_SetGameVolume(SEQ_SFX, CVarGetFloat("gSFXMusicVolume", 1.0f));
             }
-            if (UIWidgets::PaddedEnhancementSliderFloat("Fanfare Volume: %d %%", "##Fanfare_Vol", "gFanfareVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
+            if (UIWidgets::PaddedEnhancementSliderFloat("Fanfare Volume: %.1f %%", "##Fanfare_Vol", "gFanfareVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
                 Audio_SetGameVolume(SEQ_FANFARE, CVarGetFloat("gFanfareVolume", 1.0f));
             }
 
@@ -248,7 +248,7 @@ void DrawSettingsMenu() {
         #endif
             UIWidgets::PaddedEnhancementCheckbox("Show Inputs", "gInputEnabled", true, false);
             UIWidgets::Tooltip("Shows currently pressed inputs on the bottom right of the screen");
-            UIWidgets::PaddedEnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false, true, true, false);
+            UIWidgets::PaddedEnhancementSliderFloat("Input Scale: %.2f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false, true, true, false);
             UIWidgets::Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
             UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", "gSimulatedInputLag", 0, 6, "", 0, true, true, false);
             UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
@@ -260,7 +260,7 @@ void DrawSettingsMenu() {
 
         if (ImGui::BeginMenu("Graphics")) {
         #ifndef __APPLE__
-            if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f, "", 1.0f, true)) {
+            if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %.1f %%", "##IMul", "gInternalResolution", 0.5f, 2.0f, "", 1.0f, true)) {
                 LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
             };
             UIWidgets::Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
@@ -1191,8 +1191,6 @@ void DrawEnhancementsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Shadow Tag Mode", "gShadowTag", true, false);
             UIWidgets::Tooltip("A wallmaster follows Link everywhere, don't get caught!");
 
-            UIWidgets::Spacer(0);
-
             UIWidgets::PaddedEnhancementCheckbox("Additional Traps", "gAddTraps.enabled", true, false);
             UIWidgets::Tooltip("Enables additional Trap variants.");
 
@@ -1308,11 +1306,11 @@ void DrawCheatsMenu() {
         ImGui::Text("Deku Sticks:");
         UIWidgets::EnhancementCombobox("gDekuStickCheat", DekuStickCheat, DEKU_STICK_NORMAL);
         UIWidgets::Spacer(2.0f);
-        UIWidgets::EnhancementSliderFloat("Bomb Timer Multiplier: %.1fx", "##gBombTimerMultiplier", "gBombTimerMultiplier", 0.1f, 5.0f, "", 1.0f, false);
+        UIWidgets::EnhancementSliderFloat("Bomb Timer Multiplier: %.2fx", "##gBombTimerMultiplier", "gBombTimerMultiplier", 0.1f, 5.0f, "", 1.0f, false);
         UIWidgets::PaddedEnhancementCheckbox("Hookshot Everything", "gHookshotEverything", true, false);
         UIWidgets::Tooltip("Makes every surface in the game hookshot-able");
         UIWidgets::Spacer(0);
-        UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.1fx", "##gCheatHookshotReachMultiplier", "gCheatHookshotReachMultiplier", 1.0f, 5.0f, "", 1.0f, false);
+        UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.2fx", "##gCheatHookshotReachMultiplier", "gCheatHookshotReachMultiplier", 1.0f, 5.0f, "", 1.0f, false);
         UIWidgets::Spacer(2.0f);
         if (ImGui::Button("Change Age")) {
             CVarSetInteger("gSwitchAge", 1);
