@@ -594,6 +594,21 @@ void DrawInfoTab() {
                     gSaveContext.highScores[i]|=(fishSize) << 16;
                 }
                 UIWidgets::InsertHelpHoverText("Determines weather and school size during dawn/dusk.");
+                if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) != RO_FISHSANITY_OFF) {
+                    FishBool = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_AGE_SPLIT) != RO_GENERIC_OFF;
+                    fishSize = gSaveContext.fishCaughtChild;
+                    if (ImGui::InputScalar(FishBool ? "Child Fish Caught" : "Fish Caught", ImGuiDataType_U8, &fishSize)) {
+                        gSaveContext.fishCaughtChild = fishSize;
+                    }
+                    std::sprintf(fishMsg, "Number of fish caught%s", (FishBool ? " as a child" : ""));
+                    UIWidgets::InsertHelpHoverText(fishMsg);
+                    fishSize = gSaveContext.fishCaughtAdult;
+                    if (FishBool) {
+                        if (ImGui::InputScalar("Adult Fish Caught", ImGuiDataType_U8, &fishSize))
+                            gSaveContext.fishCaughtAdult = fishSize;
+                        UIWidgets::InsertHelpHoverText("Number of fish caught as an adult");
+                    }
+                }
                 
                 ImGui::TreePop();
                 continue;
@@ -1123,6 +1138,35 @@ void DrawFlagsTab() {
                     }
                 });
             }
+
+            // make some buttons to help with fishsanity debugging
+            if (flagTable.flagTableType == RANDOMIZER_INF &&
+                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) != RO_FISHSANITY_OFF) {
+                if (ImGui::Button("Catch All (Child)")) {
+                    for (int k = RAND_INF_CHILD_FISH_1; k <= RAND_INF_CHILD_LOACH_2; k++) {
+                        Flags_SetRandomizerInf((RandomizerInf)k);
+                    }
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Uncatch All (Child)")) {
+                    for (int k = RAND_INF_CHILD_FISH_1; k <= RAND_INF_CHILD_LOACH_2; k++) {
+                        Flags_UnsetRandomizerInf((RandomizerInf)k);
+                    }
+                }
+
+                if (ImGui::Button("Catch All (Adult)")) {
+                    for (int k = RAND_INF_ADULT_FISH_1; k <= RAND_INF_ADULT_LOACH; k++) {
+                        Flags_SetRandomizerInf((RandomizerInf)k);
+                    }
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Uncatch All (Adult)")) {
+                    for (int k = RAND_INF_ADULT_FISH_1; k <= RAND_INF_ADULT_LOACH; k++) {
+                        Flags_UnsetRandomizerInf((RandomizerInf)k);
+                    }
+                }
+            }
+
             ImGui::TreePop();
         }
     }

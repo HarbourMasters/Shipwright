@@ -4067,6 +4067,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     UIWidgets::InsertHelpHoverText(
                         "The number of fish to randomize in the fishing pool.\n"
                         "If set to maximum, each fish will have a unique check, including a Hyrule Loach which appears only as child, and caught fish will disappear.\n"
+                        "All fish will reappear after each fish is caught to ensure the vanilla fishing prizes remain accessible.\n"
                         "Otherwise, any fish caught in the pond will give a reward, until all rewards have been given."
                     );
                     ImGui::SameLine();
@@ -4077,7 +4078,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     UIWidgets::InsertHelpHoverText(
                         "Enabling this will split the fishing pond fish by age, making fishing pond fish grant different rewards as child and adult.\n"
                         "If disabled, then the child pond will be shuffled and shared between both ages.\n"
-                        "Note that, as child, there is a second loach availble in the pond!"
+                        "Note that, as child, there is a second loach available in the pond!"
                     );
                 }
 

@@ -26,6 +26,7 @@ void Fishing_DrawOwner(Actor* thisx, PlayState* play);
 bool Fishing_AwardFishsanity(Fishing* this, PlayState* play);
 void Fishing_Reset(void);
 
+bool getShouldSpawnLoaches();
 bool Fishsanity_GetEnabled();
 u8 Fishsanity_GetPondCount();
 bool Fishsanity_GetPondSplit();
@@ -1002,8 +1003,8 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
                            ENKANBAN_FISHING);
         Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, 0.0f, 0.0f, 0.0f, 0, 0, 0, 200, true);
 
-        // Loach(es) will spawn every fourth game
-        if ((KREG(1) == 1) || ((sFishGameNumber & 3) == 3)) {
+        // Loach(es) will spawn every fourth game, or if "Loaches Always Appear" is enabled
+        if (getShouldSpawnLoaches()) {
             // Fishes 16 and 17 are loaches. Only 16 is spawned as adult; child also spawns 17.
             if (sLinkAge != LINK_AGE_CHILD) {
                 fishCount = 16;
@@ -2965,21 +2966,33 @@ bool getFishNeverEscape() {
     return CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gFishNeverEscape", 0);
 }
 
+bool getShouldSpawnLoaches() {
+    return (CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gLoachesAlwaysAppear", 0))
+        || ((KREG(1) == 1) || ((sFishGameNumber & 3) == 3));
+}
+
 bool Fishsanity_GetEnabled() {
-    return CVarGetInteger("gRandomizeFishsanity", RO_GENERIC_OFF) != RO_GENERIC_OFF;
+    return Randomizer_GetSettingValue(RSK_FISHSANITY) != RO_GENERIC_OFF;
 }
 
 u8 Fishsanity_GetPondCount() {
-    return CVarGetInteger("gRandomizeFishsanity", RO_GENERIC_OFF) != RO_GENERIC_OFF
-               ? CVarGetInteger("gRandomizeFishsanityPondCount", 0)
-               : 0;
+    return IS_FISHSANITY ? Randomizer_GetSettingValue(RSK_FISHSANITY_POND_COUNT) : 0;
 }
 
 bool Fishsanity_GetPondSplit() {
-    return CVarGetInteger("gRandomizeFishsanityAgeSplit", RO_GENERIC_OFF) != RO_GENERIC_OFF;
+    return Randomizer_GetSettingValue(RSK_FISHSANITY_AGE_SPLIT) != RO_GENERIC_OFF;
 }
 
 void Fishsanity_Init(Fishing* this, PlayState* play) {
+    u8 caughtCt =
+        (LINK_IS_ADULT && Fishsanity_GetPondSplit()) ? gSaveContext.fishCaughtAdult : gSaveContext.fishCaughtChild;
+    // With all fish randomized, remove fish that have already been caught, unless we've already caught all the fish.
+    if (Fishsanity_GetPondCount() > 16 && ((LINK_IS_ADULT && caughtCt < 16) || (!LINK_IS_ADULT && caughtCt < 17)) &&
+        Fishsanity_IsCaught(this->actor.params, play)) {
+        Actor_Kill(&this->actor);
+        return;
+    }
+
     this->fishsanity = (FishsanityMeta) {
         .params = this->actor.params
     };
@@ -5452,6 +5465,11 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
                 if (Fishsanity_IsCaught(sFishsanityPendingParams, play) || Fishing_AwardFishsanity(this, play)) {
                     this->actor.parent = NULL;
                     sFishsanityPendingParams = 0;
+                    if (!LINK_IS_ADULT || !Fishsanity_GetPondSplit()) {
+                        gSaveContext.fishCaughtChild++;
+                    } else {
+                        gSaveContext.fishCaughtAdult++;
+                    }
                 }
             }
             break;
