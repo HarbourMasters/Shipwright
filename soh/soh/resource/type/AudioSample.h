@@ -20,6 +20,13 @@ namespace LUS {
         /* 0x08 */ s16* book; // size 8 * order * npredictors. 8-byte aligned
     } AdpcmBook; // s
 
+    enum class AudioFormat {
+        WAV = 0,
+        AIFF = 1,
+        MP3 = 2,
+        OGG = 3
+    };
+
     typedef struct {
         union {
             struct {
@@ -36,7 +43,7 @@ namespace LUS {
         /* 0x08 */ AdpcmLoop* loop;
         /* 0x0C */ AdpcmBook* book;
         u32 sampleRateMagicValue; // For wav samples only...
-        s32 sampleRate;           // For wav samples only...
+        float sampleRate;           // For wav samples only...
     } Sample; // size = 0x10
 
     class AudioSample : public Resource<Sample> {
