@@ -6,6 +6,16 @@
 #include <libultraship/libultra/types.h>
 
 namespace LUS {
+
+    typedef enum {
+        /* 0 */ CODEC_ADPCM,
+        /* 1 */ CODEC_S8,
+        /* 2 */ CODEC_S16_INMEMORY,
+        /* 3 */ CODEC_SMALL_ADPCM,
+        /* 4 */ CODEC_REVERB,
+        /* 5 */ CODEC_S16
+    } SampleCodec;
+
     typedef struct {
         /* 0x00 */ uintptr_t start;
         /* 0x04 */ uintptr_t end;
@@ -22,9 +32,8 @@ namespace LUS {
 
     enum class AudioFormat {
         WAV = 0,
-        AIFF = 1,
         MP3 = 2,
-        OGG = 3
+        FLAC = 3
     };
 
     typedef struct {

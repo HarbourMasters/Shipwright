@@ -6,8 +6,12 @@
 #include <dr_libs/mp3.h>
 #define DRWAV_IMPLEMENTATION
 #include <dr_libs/wav.h>
+#define DRFLAC_IMPLEMENTATION
+#include <dr_libs/flac.h>
 
-#define CODEC_S16 5
+#define AUDIO_SAMPLE_VERSION_0 0x00
+#define AUDIO_SAMPLE_VERSION_2 0x02
+#define CUSTOM_AUDIO_SAMPLE_VERSION_0 0xC0
 
 namespace LUS {
 std::shared_ptr<IResource>
@@ -16,13 +20,13 @@ AudioSampleFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
     switch (resource->GetInitData()->ResourceVersion) {
-        case 0:
+        case AUDIO_SAMPLE_VERSION_0:
             factory = std::make_shared<AudioSampleFactoryV0>();
             break;
-        case 2:
+        case AUDIO_SAMPLE_VERSION_2:
             factory = std::make_shared<AudioSampleFactoryV0>();
             break;
-        case 0xC0:
+        case CUSTOM_AUDIO_SAMPLE_VERSION_0:
             factory = std::make_shared<AudioCustomSampleFactoryV0>();
             break;
     }
@@ -72,7 +76,7 @@ void LUS::AudioCustomSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRead
             drmp3_uint64 totalPcm;
             drmp3_int16* pcmData = drmp3_open_memory_and_read_pcm_frames_s16(bytes, length, &mp3Info, &totalPcm, nullptr);
 
-            audioSample->sample.size = totalPcm * mp3Info.channels * sizeof(short);
+            audioSample->sample.size = totalPcm * mp3Info.channels * sizeof(int16_t);
             audioSample->sample.sampleAddr = reinterpret_cast<uint8_t *>(pcmData);
             audioSample->sample.codec = CODEC_S16;
 
@@ -82,6 +86,25 @@ void LUS::AudioCustomSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRead
             audioSample->sample.sampleRateMagicValue = 'RIFF';
             audioSample->sample.sampleRate = mp3Info.sampleRate * pitch;
             audioSample->sample.loop = &audioSample->loop;
+            break;
+        }
+        case AudioFormat::FLAC: {
+            drflac_uint64 totalPcm;
+            uint32_t channels;
+            uint32_t sampleRate;
+            drmp3_int16* pcmData = drflac_open_memory_and_read_pcm_frames_s16(bytes, length, &channels, &sampleRate, &totalPcm, nullptr);
+
+            audioSample->sample.size = totalPcm * channels * sizeof(int16_t);
+            audioSample->sample.sampleAddr = reinterpret_cast<uint8_t *>(pcmData);
+            audioSample->sample.codec = CODEC_S16;
+
+            audioSample->loop.start = 0;
+            audioSample->loop.end = audioSample->sample.size;
+            audioSample->loop.count = 0;
+            audioSample->sample.sampleRateMagicValue = 'RIFF';
+            audioSample->sample.sampleRate = sampleRate * pitch;
+            audioSample->sample.loop = &audioSample->loop;
+
             break;
         }
         default: {
