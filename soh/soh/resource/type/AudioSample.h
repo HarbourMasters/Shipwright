@@ -32,8 +32,8 @@ namespace LUS {
 
     enum class AudioFormat {
         WAV = 0,
-        MP3 = 2,
-        FLAC = 3
+        MP3 = 1,
+        FLAC = 2
     };
 
     typedef struct {
