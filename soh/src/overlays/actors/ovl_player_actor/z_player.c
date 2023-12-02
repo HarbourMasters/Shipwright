@@ -11822,58 +11822,69 @@ void Player_Destroy(Actor* thisx, PlayState* play) {
 
 //first person manipulate player actor
 s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
-    s32 temp1;
-    s16 temp2;
-    s16 temp3;
-    bool gInvertAimingXAxis = (CVarGetInteger("gInvertAimingXAxis", 0) && !CVarGetInteger("gMirroredWorld", 0)) || (!CVarGetInteger("gInvertAimingXAxis", 0) && CVarGetInteger("gMirroredWorld", 0));
+    s32 temp1 = 0;
+    s16 temp2 = 0;
+    s16 temp3 = 0;
+    s8 invertXAxisMulti = ((CVarGetInteger("gInvertAimingXAxis", 0) && !CVarGetInteger("gMirroredWorld", 0)) || (!CVarGetInteger("gInvertAimingXAxis", 0) && CVarGetInteger("gMirroredWorld", 0))) ? -1 : 1;
+    s8 invertYAxisMulti = CVarGetInteger("gInvertAimingYAxis", 1) ? 1 : -1;
+    f32 xAxisMulti = CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f);
+    f32 yAxisMulti = CVarGetFloat("gFirstPersonCameraSensitivityY", 1.0f);
 
-    if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0) && !CVarGetInteger("gDisableAutoCenterViewFirstPerson", 0)) {
-        temp2 = sControlInput->rel.stick_y * 240.0f * (CVarGetInteger("gInvertAimingYAxis", 1) ? 1 : -1); // Sensitivity not applied here because higher than default sensitivies will allow the camera to escape the autocentering, and glitch out massively
-        Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
+    if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) { // First person without weapon
+        // Y Axis
+        if (CVarGetInteger("gRightStickAiming", 0) && fabsf(sControlInput->cur.right_stick_y) > 15.0f) {
+            temp2 += sControlInput->cur.right_stick_y * 240.0f * invertYAxisMulti * yAxisMulti;
+        }
+        if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
+            temp2 += (-sControlInput->cur.gyro_x) * 750.0f;
+        }
+        if (CVarGetInteger("gDisableAutoCenterViewFirstPerson", 0)) {
+            this->actor.focus.rot.x += temp2 * 0.1f;
+            this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -14000, 14000);
+        } else {
+            Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
+        }
 
-        temp2 = sControlInput->rel.stick_x * -16.0f * (gInvertAimingXAxis ? -1 : 1) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
+        // X Axis
+        temp2 = 0;
+        if (CVarGetInteger("gRightStickAiming", 0) && fabsf(sControlInput->cur.right_stick_x) > 15.0f) {
+            temp2 += sControlInput->cur.right_stick_x * -16.0f * invertXAxisMulti * xAxisMulti;
+        }
+        if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
+            temp2 += (sControlInput->cur.gyro_y) * 750.0f * invertXAxisMulti;
+        }
         temp2 = CLAMP(temp2, -3000, 3000);
         this->actor.focus.rot.y += temp2;
-    } else {
+    } else { // First person with weapon
+        // Y Axis
         temp1 = (this->stateFlags1 & PLAYER_STATE1_ON_HORSE) ? 3500 : 14000;
-        temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
-                (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f *
-                        (CVarGetInteger("gInvertAimingYAxis", 1) ? 1 : -1)) * (CVarGetFloat("gFirstPersonCameraSensitivityY", 1.0f));
-        this->actor.focus.rot.x += temp3;
-
+        if (CVarGetInteger("gRightStickAiming", 0) && fabsf(sControlInput->cur.right_stick_y) > 15.0f) {
+            temp3 += ((sControlInput->cur.right_stick_y >= 0) ? 1 : -1) *
+                    (s32)((1.0f - Math_CosS(sControlInput->cur.right_stick_y * 200)) * 1500.0f) * invertYAxisMulti * yAxisMulti;
+        }
         if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
-            this->actor.focus.rot.x -= (sControlInput->cur.gyro_x) * 750.0f;
+            temp3 += (-sControlInput->cur.gyro_x) * 750.0f;
         }
-
-        if (fabsf(sControlInput->cur.right_stick_y) > 15.0f && CVarGetInteger("gRightStickAiming", 0) != 0) {
-            this->actor.focus.rot.x -=
-                (sControlInput->cur.right_stick_y) * 10.0f * (CVarGetInteger("gInvertAimingYAxis", 1) ? -1 : 1) * (CVarGetFloat("gFirstPersonCameraSensitivityY", 1.0f));
-        }
-
+        this->actor.focus.rot.x += temp3;
         this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
 
+        // X Axis
         temp1 = 19114;
         temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
-        temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
-                (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f *
-                        (gInvertAimingXAxis ? -1 : 1)) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
-        temp2 += temp3;
-
-        this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
-
+        temp3 = 0;
+        if (CVarGetInteger("gRightStickAiming", 0) && fabsf(sControlInput->cur.right_stick_x) > 15.0f) {
+            temp3 += ((sControlInput->cur.right_stick_x >= 0) ? 1 : -1) *
+                    (s32)((1.0f - Math_CosS(sControlInput->cur.right_stick_x * 200)) * -1500.0f) * invertXAxisMulti * xAxisMulti;
+        }
         if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
-            this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
+            temp3 += (sControlInput->cur.gyro_y) * 750.0f * invertXAxisMulti;
         }
-
-        if (fabsf(sControlInput->cur.right_stick_x) > 15.0f && CVarGetInteger("gRightStickAiming", 0) != 0) {
-            this->actor.focus.rot.y +=
-                (sControlInput->cur.right_stick_x) * 10.0f * (gInvertAimingXAxis ? 1 : -1) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
-        }
+        temp2 += temp3;
+        this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
     }
 
     this->unk_6AE |= 2;
-    return func_80836AB8(this, (play->shootingGalleryStatus != 0) || func_8002DD78(this) || func_808334B4(this)) -
-           arg3;
+    return func_80836AB8(this, (play->shootingGalleryStatus != 0) || func_8002DD78(this) || func_808334B4(this)) - arg3;
 }
 
 void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
