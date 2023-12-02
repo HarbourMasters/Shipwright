@@ -55,39 +55,37 @@ void LUS::AudioCustomSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRead
 
     switch (format) {
         case AudioFormat::WAV: {
-            drwav_uint32 channels;
-            drwav_uint32 sampleRate;
-            drwav_uint64 totalPcm;
-            bool hasLoop = false;
             drwav wav;
             drwav_init_memory_with_metadata(&wav, bytes, length, 0, nullptr);
 
-            if(wav.pMetadata != nullptr && wav.pMetadata->type == drwav_metadata_type_smpl) {
-                const auto metadata = wav.pMetadata->data.smpl;
+            if(wav.pMetadata != nullptr) {
+                for(size_t id = 0; id < wav.metadataCount; id++) {
+                    const auto metadata = wav.pMetadata[id];
 
-                if(metadata.sampleLoopCount > 0) {
-                    audioSample->loop.start = metadata.pLoops[0].firstSampleByteOffset;
-                    audioSample->loop.end = metadata.pLoops[0].lastSampleByteOffset;
-                    audioSample->loop.count = 1;
-                    audioSample->loopStateCount = 1;
-                    hasLoop = true;
+                    if(metadata.type == drwav_metadata_type_smpl) {
+                        const auto smpl = wav.pMetadata->data.smpl;
+                        if(smpl.sampleLoopCount > 0) {
+                            audioSample->loop.start = smpl.pLoops[0].firstSampleByteOffset;
+                            audioSample->loop.end = smpl.pLoops[0].lastSampleByteOffset;
+                            audioSample->loop.count = 1;
+                            audioSample->loopStateCount = 1;
+                            break;
+                        }
+                    }
                 }
-            }
-
-            const auto pcmData = drwav__read_pcm_frames_and_close_s16(&wav, &channels, &sampleRate, &totalPcm);
-
-            audioSample->sample.size = totalPcm * channels * sizeof(int16_t);
-            audioSample->sample.sampleAddr = reinterpret_cast<uint8_t *>(pcmData);
-            audioSample->sample.codec = CODEC_S16;
-
-            if(!hasLoop) {
+            } else {
                 audioSample->loop.count = 0;
                 audioSample->loop.start = 0;
-                audioSample->loop.end = totalPcm;
+                audioSample->loop.end = wav.totalPCMFrameCount;
             }
 
+            const auto pcmData = drwav__read_pcm_frames_and_close_s16(&wav, nullptr, nullptr, nullptr);
+
+            audioSample->sample.size = wav.totalPCMFrameCount * wav.channels * sizeof(int16_t);
+            audioSample->sample.sampleAddr = reinterpret_cast<uint8_t *>(pcmData);
+            audioSample->sample.codec = CODEC_S16;
             audioSample->sample.sampleRateMagicValue = 'RIFF';
-            audioSample->sample.sampleRate = sampleRate * pitch;
+            audioSample->sample.sampleRate = wav.sampleRate * pitch;
             audioSample->sample.loop = &audioSample->loop;
             break;
         }
