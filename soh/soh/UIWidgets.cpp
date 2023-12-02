@@ -441,7 +441,9 @@ namespace UIWidgets {
         }
 
         if (changed) {
-            val = std::stof(std::vformat("{:.{}f}", std::make_format_args(val, ticks)));
+            std::stringstream ss;
+            ss << std::setprecision(ticks) << val;
+            val = std::stof(ss.str());
             CVarSetFloat(cvarName, val);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
