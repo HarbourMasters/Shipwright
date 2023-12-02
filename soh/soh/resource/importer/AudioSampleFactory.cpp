@@ -58,14 +58,34 @@ void LUS::AudioCustomSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRead
             drwav_uint32 channels;
             drwav_uint32 sampleRate;
             drwav_uint64 totalPcm;
-            drmp3_int16* pcmData = drwav_open_memory_and_read_pcm_frames_s16(bytes, length, &channels, &sampleRate, &totalPcm, nullptr);
-            audioSample->sample.size = totalPcm;
+            bool hasLoop = false;
+            drwav wav;
+            drwav_init_memory_with_metadata(&wav, bytes, length, 0, nullptr);
+
+            if(wav.pMetadata != nullptr && wav.pMetadata->type == drwav_metadata_type_smpl) {
+                const auto metadata = wav.pMetadata->data.smpl;
+
+                if(metadata.sampleLoopCount > 0) {
+                    audioSample->loop.start = metadata.pLoops[0].firstSampleByteOffset;
+                    audioSample->loop.end = metadata.pLoops[0].lastSampleByteOffset;
+                    audioSample->loop.count = 1;
+                    audioSample->loopStateCount = 1;
+                    hasLoop = true;
+                }
+            }
+
+            const auto pcmData = drwav__read_pcm_frames_and_close_s16(&wav, &channels, &sampleRate, &totalPcm);
+
+            audioSample->sample.size = totalPcm * channels * sizeof(int16_t);
             audioSample->sample.sampleAddr = reinterpret_cast<uint8_t *>(pcmData);
             audioSample->sample.codec = CODEC_S16;
 
-            audioSample->loop.start = 0;
-            audioSample->loop.end = totalPcm - 1;
-            audioSample->loop.count = 0;
+            if(!hasLoop) {
+                audioSample->loop.count = 0;
+                audioSample->loop.start = 0;
+                audioSample->loop.end = totalPcm;
+            }
+
             audioSample->sample.sampleRateMagicValue = 'RIFF';
             audioSample->sample.sampleRate = sampleRate * pitch;
             audioSample->sample.loop = &audioSample->loop;
