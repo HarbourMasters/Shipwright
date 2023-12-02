@@ -56,6 +56,7 @@ void LUS::AudioCustomSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRead
     switch (format) {
         case AudioFormat::WAV: {
             drwav wav;
+            bool hasLoop = false;
             drwav_init_memory_with_metadata(&wav, bytes, length, 0, nullptr);
 
             if(wav.pMetadata != nullptr) {
@@ -69,11 +70,14 @@ void LUS::AudioCustomSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRead
                             audioSample->loop.end = smpl.pLoops[0].lastSampleByteOffset;
                             audioSample->loop.count = 1;
                             audioSample->loopStateCount = 1;
+                            hasLoop = true;
                             break;
                         }
                     }
                 }
-            } else {
+            }
+
+            if(!hasLoop) {
                 audioSample->loop.count = 0;
                 audioSample->loop.start = 0;
                 audioSample->loop.end = wav.totalPCMFrameCount;
