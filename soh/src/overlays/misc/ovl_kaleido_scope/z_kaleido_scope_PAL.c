@@ -1205,6 +1205,8 @@ Gfx* KaleidoScope_DrawPageSections(Gfx* gfx, Vtx* vertices, void** textures) {
     return gfx;
 }
 
+static uint8_t mapMask[4080];
+
 void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
     static Color_RGB8 D_8082ACF4[12] = {
         { 0, 0, 0 }, { 0, 0, 0 },     { 0, 0, 0 },    { 0, 0, 0 }, { 255, 255, 0 }, { 0, 0, 0 },
@@ -1372,6 +1374,8 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 D_8082AD50 = 0;
             }
         }
+
+        gSPInvalidateTexCache(POLY_KAL_DISP++, mapMask);
 
         if (pauseCtx->pageIndex) { // pageIndex != PAUSE_ITEM
             gDPPipeSync(OVERLAY_DISP++);
@@ -3315,13 +3319,118 @@ void KaleidoScope_UpdateCursorSize(PauseContext* pauseCtx) {
     pauseCtx->cursorVtx[14].v.ob[1] = pauseCtx->cursorVtx[15].v.ob[1] = pauseCtx->cursorVtx[12].v.ob[1] - 16;
 }
 
+static uint8_t map1TexModified[2040];
+static uint8_t map2TexModified[2040];
+
+static uint8_t* map1TexModifiedRaw = NULL;
+static uint8_t* map2TexModifiedRaw = NULL;
+
+void KaleidoScope_ConvertRawRGBA32ToCI4(u8* dest, u8* src, size_t size) {
+    for (size_t i = 0; i < size; i += 2) {
+        // if (i == 6140) {
+        //     printf("");
+        // }
+
+        // u32 pixel1 = src[i];
+        // u32 pixel2 = src[i + 1];
+        // u8 greyscale1 = pixel1 & 0xFF;
+        // u8 greyscale2 = pixel2 & 0xFF;
+        // u8 index1 = (greyscale1 / 16) & 0xF;
+        // u8 index2 = (greyscale2 / 16) & 0xF;
+        // dest[i / 2] = (greyscale1 << 4) + greyscale2;
+        u8 pixel1 = src[4 * i];
+        u8 palIdx1 = pixel1 / 16;
+        u8 pixel2 = src[4 * (i + 1)];
+        u8 palIdx2 = pixel2 / 16;
+        dest[i / 2] = (palIdx2 << 4) | palIdx1;
+    }
+}
+
+#include "overlays/ovl_Boss_Dodongo/ovl_Boss_Dodongo.h"
+
 void KaleidoScope_LoadDungeonMap(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
 
+    if (map1TexModifiedRaw != NULL) {
+        free(map1TexModifiedRaw);
+        map1TexModifiedRaw = NULL;
+    }
+    if (map2TexModifiedRaw != NULL) {
+        free(map2TexModifiedRaw);
+        map2TexModifiedRaw = NULL;
+    }
+
+    for (size_t i = 0; i < ARRAY_COUNT(mapMask); i++) {
+        mapMask[i] = 1;
+    }
+
+    ResourceMgr_UnloadOriginalWhenAltExists(sDungeonMapTexs[R_MAP_TEX_INDEX]);
+    ResourceMgr_UnloadOriginalWhenAltExists(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]);
+
     interfaceCtx->mapSegmentName[0] = sDungeonMapTexs[R_MAP_TEX_INDEX];
     interfaceCtx->mapSegmentName[1] = sDungeonMapTexs[R_MAP_TEX_INDEX + 1];
-    interfaceCtx->mapSegment[0] = ResourceGetDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX]);
-    interfaceCtx->mapSegment[1] = ResourceGetDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]);
+
+    if (ResourceMgr_TexIsRaw(interfaceCtx->mapSegmentName[0])) {
+        u8* map1TexRaw = ResourceGetDataByName(interfaceCtx->mapSegmentName[0]);
+        u8* map2TexRaw = ResourceGetDataByName(interfaceCtx->mapSegmentName[1]);
+        u32 width = ResourceGetTexWidthByName(interfaceCtx->mapSegmentName[0]);
+        u32 height = ResourceGetTexHeightByName(interfaceCtx->mapSegmentName[0]);
+        size_t size = width * height;
+
+        map1TexModifiedRaw = malloc(size / 2);
+        map2TexModifiedRaw = malloc(size / 2);
+
+        if (false) {
+            // KaleidoScope_ConvertRawRGBA32ToCI4(map1TexModifiedRaw, map1TexRaw, size);
+            // KaleidoScope_ConvertRawRGBA32ToCI4(map2TexModifiedRaw, map2TexRaw, size);
+        } else {
+            memcpy(map1TexModifiedRaw, map1TexRaw, size / 2);
+            memcpy(map2TexModifiedRaw, map2TexRaw, size / 2);
+        }
+
+        interfaceCtx->mapSegment[0] = map1TexModifiedRaw;
+        interfaceCtx->mapSegment[1] = map2TexModifiedRaw;
+
+        // interfaceCtx->mapSegmentName[0] = sLavaFloorRockTex;
+
+        // Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapMask, sLavaFloorLavaTex);
+        // Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapMask, sLavaFloorRockTex);
+        // Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapMask, interfaceCtx->mapSegmentName[1]);
+        // Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapMask, interfaceCtx->mapSegmentName[0]);
+
+        Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapMask, interfaceCtx->mapSegment[0]);
+        Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapMask, interfaceCtx->mapSegment[1]);
+    } else {
+        u8* map1Tex = ResourceGetDataByName(interfaceCtx->mapSegmentName[0]);
+        u8* map2Tex = ResourceGetDataByName(interfaceCtx->mapSegmentName[1]);
+
+        memcpy(map1TexModified, map1Tex, 2040);
+        memcpy(map2TexModified, map2Tex, 2040);
+
+        interfaceCtx->mapSegment[0] = map1TexModified;
+        interfaceCtx->mapSegment[1] = map2TexModified;
+
+        // interfaceCtx->mapSegmentName[0] = sLavaFloorRockTex;
+
+        // Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapMask, sLavaFloorLavaTex);
+
+        // interfaceCtx->mapSegmentName[0] = interfaceCtx->mapSegment[0];
+        // Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapMask, NULL);
+        // Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapMask, interfaceCtx->mapSegmentName[1]);
+        
+        Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapMask, interfaceCtx->mapSegment[0]);
+        Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapMask, interfaceCtx->mapSegment[1]);
+    }
+}
+
+static uint8_t registeredDungeonMapTextureHook = false;
+
+void KaleidoScope_RegisterUpdatedDungeonMapTexture() {
+    if (gPlayState == NULL) {
+        return;
+    }
+
+    KaleidoScope_UpdateDungeonMap(gPlayState);
 }
 
 void KaleidoScope_UpdateDungeonMap(PlayState* play) {
@@ -3333,18 +3442,31 @@ void KaleidoScope_UpdateDungeonMap(PlayState* play) {
     KaleidoScope_LoadDungeonMap(play);
     Map_SetFloorPalettesData(play, pauseCtx->dungeonMapSlot - 3);
 
+    s32 size = 2040;
+
+    if (ResourceMgr_TexIsRaw(interfaceCtx->mapSegmentName[0])) {
+        u32 width = ResourceGetTexWidthByName(interfaceCtx->mapSegmentName[0]);
+        u32 height = ResourceGetTexHeightByName(interfaceCtx->mapSegmentName[0]);
+        size = (width * height) / 2;
+    }
+
     if ((play->sceneNum >= SCENE_DEKU_TREE) && (play->sceneNum <= SCENE_TREASURE_BOX_SHOP)) {
         if ((VREG(30) + 3) == pauseCtx->cursorPoint[PAUSE_MAP]) {
             // HDTODO: Handle Runtime Modified Textures (HD)
-            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[0], 2040, interfaceCtx->mapPaletteIndex, 14);
+            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[0], size, interfaceCtx->mapPaletteIndex, 14);
         }
     }
 
     if ((play->sceneNum >= SCENE_DEKU_TREE) && (play->sceneNum <= SCENE_TREASURE_BOX_SHOP)) {
         if ((VREG(30) + 3) == pauseCtx->cursorPoint[PAUSE_MAP]) {
             // HDTODO: Handle Runtime Modified Textures (HD)
-            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[1], 2040, interfaceCtx->mapPaletteIndex, 14);
+            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[1], size, interfaceCtx->mapPaletteIndex, 14);
         }
+    }
+
+    if (!registeredDungeonMapTextureHook) {
+        registeredDungeonMapTextureHook = true;
+        GameInteractor_RegisterOnAssetAltChange(KaleidoScope_RegisterUpdatedDungeonMapTexture);
     }
 }
 
