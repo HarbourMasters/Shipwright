@@ -21,9 +21,11 @@ void LocationTable_Init() {
     locationTable[KF_MIDOS_BOTTOM_LEFT_CHEST]            = ItemLocation::Chest      (RC_KF_MIDOS_BOTTOM_LEFT_CHEST,                 0x28, 0x02, "KF Mido Bottom Left Chest",            KF_MIDOS_BOTTOM_LEFT_CHEST,            GREG_RUPEE,                {},                                                                                                    SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
     locationTable[KF_MIDOS_BOTTOM_RIGHT_CHEST]           = ItemLocation::Chest      (RC_KF_MIDOS_BOTTOM_RIGHT_CHEST,                0x28, 0x03, "KF Mido Bottom Right Chest",           KF_MIDOS_BOTTOM_RIGHT_CHEST,           RECOVERY_HEART,            {},                                                                                                    SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
     locationTable[KF_STORMS_GROTTO_CHEST]                = ItemLocation::Chest      (RC_KF_STORMS_GROTTO_CHEST,                     0x3E, 0x0C, "KF Storms Grotto Chest",               KF_STORMS_GROTTO_CHEST,                RED_RUPEE,                 {},                                                                                                    SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+    locationTable[KF_STORMS_GROTTO_FISH]                 = ItemLocation::Base       (RC_KF_STORMS_GROTTO_FISH,                      0x3E,       "KF Storms Grotto Fish",                KF_STORMS_GROTTO_FISH,                 FISH,                      {Category::cFish},                                    SpoilerCollectionCheck::GrottoFish(0x2C),        SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
 
     //Lost Woods
     locationTable[LW_NEAR_SHORTCUTS_GROTTO_CHEST]        = ItemLocation::Chest      (RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST,             0x3E, 0x14, "LW Near Shortcuts Grotto Chest",       LW_NEAR_SHORTCUTS_GROTTO_CHEST,        BLUE_RUPEE,                {},                                                                                                    SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+    locationTable[LW_NEAR_SHORTCUTS_GROTTO_FISH]         = ItemLocation::Base       (RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,              0x3E,       "LW Near Shortcuts Grotto Fish",        LW_NEAR_SHORTCUTS_GROTTO_FISH,         FISH,                      {Category::cFish},                                    SpoilerCollectionCheck::GrottoFish(0x14),        SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
     locationTable[LW_SKULL_KID]                          = ItemLocation::Base       (RC_LW_SKULL_KID,                               0x5B,       "LW Skull Kid",                         LW_SKULL_KID,                          PIECE_OF_HEART,            {},                                                   SpoilerCollectionCheck::ItemGetInf(22),          SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
     locationTable[LW_TRADE_COJIRO]                       = ItemLocation::Base       (RC_LW_TRADE_COJIRO,                            0x5B,       "LW Trade Cojiro",                      LW_TRADE_COJIRO,                       ODD_MUSHROOM,              {Category::cAdultTrade},                              SpoilerCollectionCheck::RandomizerInf(),         SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
     locationTable[LW_TRADE_ODD_POTION]                   = ItemLocation::Base       (RC_LW_TRADE_ODD_POTION,                        0x5B,       "LW Trade Odd Potion",                  LW_TRADE_ODD_POTION,                   ODD_POTION,                {Category::cAdultTrade},                              SpoilerCollectionCheck::ItemGetInf(49),          SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
@@ -44,48 +46,51 @@ void LocationTable_Init() {
 
     //Hyrule Field
     locationTable[HF_SOUTHEAST_GROTTO_CHEST]             = ItemLocation::Chest      (RC_HF_SOUTHEAST_GROTTO_CHEST,                  0x3E, 0x02, "HF Southeast Grotto Chest",            HF_SOUTHEAST_GROTTO_CHEST,             RED_RUPEE,                 {},                                                                                                    SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
+    locationTable[HF_SOUTHEAST_GROTTO_FISH]              = ItemLocation::Base       (RC_HF_SOUTHEAST_GROTTO_FISH,                   0x3E,       "HF Southeast Grotto Fish",             HF_SOUTHEAST_GROTTO_FISH,              FISH,                      {Category::cFish},                                    SpoilerCollectionCheck::GrottoFish(0x22),        SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
     locationTable[HF_OPEN_GROTTO_CHEST]                  = ItemLocation::Chest      (RC_HF_OPEN_GROTTO_CHEST,                       0x3E, 0x03, "HF Open Grotto Chest",                 HF_OPEN_GROTTO_CHEST,                  BLUE_RUPEE,                {},                                                                                                    SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
+    locationTable[HF_OPEN_GROTTO_FISH]                   = ItemLocation::Base       (RC_HF_OPEN_GROTTO_FISH,                        0x3E,       "HF Open Grotto Fish",                  HF_OPEN_GROTTO_FISH,                   FISH,                      {Category::cFish},                                    SpoilerCollectionCheck::GrottoFish(0x03),        SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
     locationTable[HF_NEAR_MARKET_GROTTO_CHEST]           = ItemLocation::Chest      (RC_HF_NEAR_MARKET_GROTTO_CHEST,                0x3E, 0x00, "HF Near Market Grotto Chest",          HF_NEAR_MARKET_GROTTO_CHEST,           BLUE_RUPEE,                {},                                                                                                    SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
+    locationTable[HF_NEAR_MARKET_GROTTO_FISH]            = ItemLocation::Base       (RC_HF_NEAR_MARKET_GROTTO_FISH,                 0x3E,       "HF Near Market Grotto Fish",           HF_NEAR_MARKET_GROTTO_FISH,            FISH,                      {Category::cFish},                                    SpoilerCollectionCheck::GrottoFish(0x00),        SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
     locationTable[HF_OCARINA_OF_TIME_ITEM]               = ItemLocation::Base       (RC_HF_OCARINA_OF_TIME_ITEM,                    0x51,       "HF Ocarina of Time Item",              HF_OCARINA_OF_TIME_ITEM,               PROGRESSIVE_OCARINA,       {},                                                   SpoilerCollectionCheck::EventChkInf(0x43),       SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
     locationTable[HF_TEKTITE_GROTTO_FREESTANDING_POH]    = ItemLocation::Collectable(RC_HF_TEKTITE_GROTTO_FREESTANDING_POH,         0x3E, 0x01, "HF Tektite Grotto Freestanding PoH",   HF_TEKTITE_GROTTO_FREESTANDING_POH,    PIECE_OF_HEART,            {},                                                                                                    SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
     locationTable[HF_DEKU_SCRUB_GROTTO]                  = ItemLocation::GrottoScrub(RC_HF_DEKU_SCRUB_GROTTO,                       0xE6,       "HF Deku Scrub Grotto",                 HF_DEKU_SCRUB_GROTTO,                  PIECE_OF_HEART,            {Category::cDekuScrub, Category::cDekuScrubUpgrades}, SpoilerCollectionCheck::Scrub(),                 SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
 
     //Lake Hylia
     locationTable[LH_CHILD_FISHING]                      = ItemLocation::Base       (RC_LH_CHILD_FISHING,                           0x49,       "LH Child Fishing",                     LH_CHILD_FISHING,                      PIECE_OF_HEART,            {},                                                   SpoilerCollectionCheck::RandomizerInf(),         SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_FISH_1]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_1,							0x49,		"LH Child Pond Fish 1",					LH_CHILD_FISH_1,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_FISH_2]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_2,							0x49,		"LH Child Pond Fish 2",					LH_CHILD_FISH_2,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_FISH_3]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_3,							0x49,		"LH Child Pond Fish 3",					LH_CHILD_FISH_3,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_FISH_4]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_4,							0x49,		"LH Child Pond Fish 4",					LH_CHILD_FISH_4,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_FISH_5]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_5,							0x49,		"LH Child Pond Fish 5",					LH_CHILD_FISH_5,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_FISH_6]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_6,							0x49,		"LH Child Pond Fish 6",					LH_CHILD_FISH_6,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_FISH_7]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_7,							0x49,		"LH Child Pond Fish 7",					LH_CHILD_FISH_7,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_FISH_8]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_8,							0x49,		"LH Child Pond Fish 8",					LH_CHILD_FISH_8,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_FISH_9]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_9,							0x49,		"LH Child Pond Fish 9",					LH_CHILD_FISH_9,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_FISH_10]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_10,							0x49,		"LH Child Pond Fish 10",				LH_CHILD_FISH_10,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_FISH_11]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_11,							0x49,		"LH Child Pond Fish 11",				LH_CHILD_FISH_11,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_FISH_12]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_12,							0x49,		"LH Child Pond Fish 12",				LH_CHILD_FISH_12,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_FISH_13]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_13,							0x49,		"LH Child Pond Fish 13",				LH_CHILD_FISH_13,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_FISH_14]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_14,							0x49,		"LH Child Pond Fish 14",				LH_CHILD_FISH_14,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_FISH_15]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_15,							0x49,		"LH Child Pond Fish 15",				LH_CHILD_FISH_15,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_LOACH_1]						 = ItemLocation::Base		(RC_LH_CHILD_LOACH_1,							0x49,		"LH Child Pond Loach 1",				LH_CHILD_LOACH_1,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_CHILD_LOACH_2]						 = ItemLocation::Base		(RC_LH_CHILD_LOACH_2,							0x49,		"LH Child Pond Loach 2",				LH_CHILD_LOACH_2,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_1]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_1,							0x49,		"LH Child Pond Fish 1",					LH_CHILD_FISH_1,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_2]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_2,							0x49,		"LH Child Pond Fish 2",					LH_CHILD_FISH_2,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_3]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_3,							0x49,		"LH Child Pond Fish 3",					LH_CHILD_FISH_3,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_4]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_4,							0x49,		"LH Child Pond Fish 4",					LH_CHILD_FISH_4,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_5]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_5,							0x49,		"LH Child Pond Fish 5",					LH_CHILD_FISH_5,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_6]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_6,							0x49,		"LH Child Pond Fish 6",					LH_CHILD_FISH_6,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_7]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_7,							0x49,		"LH Child Pond Fish 7",					LH_CHILD_FISH_7,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_8]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_8,							0x49,		"LH Child Pond Fish 8",					LH_CHILD_FISH_8,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_9]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_9,							0x49,		"LH Child Pond Fish 9",					LH_CHILD_FISH_9,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_10]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_10,							0x49,		"LH Child Pond Fish 10",				LH_CHILD_FISH_10,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_11]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_11,							0x49,		"LH Child Pond Fish 11",				LH_CHILD_FISH_11,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_12]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_12,							0x49,		"LH Child Pond Fish 12",				LH_CHILD_FISH_12,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_13]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_13,							0x49,		"LH Child Pond Fish 13",				LH_CHILD_FISH_13,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_14]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_14,							0x49,		"LH Child Pond Fish 14",				LH_CHILD_FISH_14,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_FISH_15]						 = ItemLocation::Base		(RC_LH_CHILD_FISH_15,							0x49,		"LH Child Pond Fish 15",				LH_CHILD_FISH_15,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_LOACH_1]						 = ItemLocation::Base		(RC_LH_CHILD_LOACH_1,							0x49,		"LH Child Pond Loach 1",				LH_CHILD_LOACH_1,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_CHILD_LOACH_2]						 = ItemLocation::Base		(RC_LH_CHILD_LOACH_2,							0x49,		"LH Child Pond Loach 2",				LH_CHILD_LOACH_2,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
     locationTable[LH_ADULT_FISHING]                      = ItemLocation::Base       (RC_LH_ADULT_FISHING,                           0x49,       "LH Adult Fishing",                     LH_ADULT_FISHING,                      PROGRESSIVE_SCALE,         {},                                                   SpoilerCollectionCheck::RandomizerInf(),         SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_ADULT_FISH_1]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_1,							0x49,		"LH Adult Pond Fish 1",					LH_ADULT_FISH_1,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_ADULT_FISH_2]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_2,							0x49,		"LH Adult Pond Fish 2",					LH_ADULT_FISH_2,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_ADULT_FISH_3]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_3,							0x49,		"LH Adult Pond Fish 3",					LH_ADULT_FISH_3,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_ADULT_FISH_4]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_4,							0x49,		"LH Adult Pond Fish 4",					LH_ADULT_FISH_4,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_ADULT_FISH_5]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_5,							0x49,		"LH Adult Pond Fish 5",					LH_ADULT_FISH_5,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_ADULT_FISH_6]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_6,							0x49,		"LH Adult Pond Fish 6",					LH_ADULT_FISH_6,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_ADULT_FISH_7]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_7,							0x49,		"LH Adult Pond Fish 7",					LH_ADULT_FISH_7,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_ADULT_FISH_8]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_8,							0x49,		"LH Adult Pond Fish 8",					LH_ADULT_FISH_8,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_ADULT_FISH_9]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_9,							0x49,		"LH Adult Pond Fish 9",					LH_ADULT_FISH_9,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_ADULT_FISH_10]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_10,							0x49,		"LH Adult Pond Fish 10",				LH_ADULT_FISH_10,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_ADULT_FISH_11]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_11,							0x49,		"LH Adult Pond Fish 11",				LH_ADULT_FISH_11,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_ADULT_FISH_12]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_12,							0x49,		"LH Adult Pond Fish 12",				LH_ADULT_FISH_12,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_ADULT_FISH_13]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_13,							0x49,		"LH Adult Pond Fish 13",				LH_ADULT_FISH_13,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_ADULT_FISH_14]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_14,							0x49,		"LH Adult Pond Fish 14",				LH_ADULT_FISH_14,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_ADULT_FISH_15]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_15,							0x49,		"LH Adult Pond Fish 15",				LH_ADULT_FISH_15,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[LH_ADULT_LOACH]						 = ItemLocation::Base		(RC_LH_ADULT_LOACH,							    0x49,		"LH Adult Pond Loach",					LH_ADULT_LOACH,					       NONE,					  {Category::cFish},									SpoilerCollectionCheck::RandomizerInf(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_1]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_1,							0x49,		"LH Adult Pond Fish 1",					LH_ADULT_FISH_1,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_2]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_2,							0x49,		"LH Adult Pond Fish 2",					LH_ADULT_FISH_2,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_3]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_3,							0x49,		"LH Adult Pond Fish 3",					LH_ADULT_FISH_3,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_4]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_4,							0x49,		"LH Adult Pond Fish 4",					LH_ADULT_FISH_4,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_5]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_5,							0x49,		"LH Adult Pond Fish 5",					LH_ADULT_FISH_5,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_6]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_6,							0x49,		"LH Adult Pond Fish 6",					LH_ADULT_FISH_6,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_7]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_7,							0x49,		"LH Adult Pond Fish 7",					LH_ADULT_FISH_7,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_8]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_8,							0x49,		"LH Adult Pond Fish 8",					LH_ADULT_FISH_8,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_9]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_9,							0x49,		"LH Adult Pond Fish 9",					LH_ADULT_FISH_9,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_10]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_10,							0x49,		"LH Adult Pond Fish 10",				LH_ADULT_FISH_10,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_11]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_11,							0x49,		"LH Adult Pond Fish 11",				LH_ADULT_FISH_11,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_12]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_12,							0x49,		"LH Adult Pond Fish 12",				LH_ADULT_FISH_12,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_13]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_13,							0x49,		"LH Adult Pond Fish 13",				LH_ADULT_FISH_13,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_14]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_14,							0x49,		"LH Adult Pond Fish 14",				LH_ADULT_FISH_14,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_FISH_15]						 = ItemLocation::Base		(RC_LH_ADULT_FISH_15,							0x49,		"LH Adult Pond Fish 15",				LH_ADULT_FISH_15,					   NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_ADULT_LOACH]						 = ItemLocation::Base		(RC_LH_ADULT_LOACH,							    0x49,		"LH Adult Pond Loach",					LH_ADULT_LOACH,					       NONE,					  {Category::cFish},									SpoilerCollectionCheck::PondFish(),		 SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
     locationTable[LH_ADULT_FISHING]                      = ItemLocation::Base       (RC_LH_ADULT_FISHING,                           0x49,       "LH Adult Fishing",                     LH_ADULT_FISHING,                      PROGRESSIVE_SCALE,         {},                                                   SpoilerCollectionCheck::RandomizerInf(),         SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
     locationTable[LH_LAB_DIVE]                           = ItemLocation::Base       (RC_LH_LAB_DIVE,                                0x38,       "LH Lab Dive",                          LH_LAB_DIVE,                           PIECE_OF_HEART,            {},                                                   SpoilerCollectionCheck::ItemGetInf(16),          SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
     locationTable[LH_TRADE_FROG]                         = ItemLocation::Base       (RC_LH_TRADE_FROG,                              0x38,       "LH Lab Trade Eyeball Frog",            LH_TRADE_FROG,                         EYEDROPS,                  {Category::cAdultTrade},                              SpoilerCollectionCheck::RandomizerInf(),         SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
@@ -144,6 +149,7 @@ void LocationTable_Init() {
     //Kakariko
     locationTable[KAK_REDEAD_GROTTO_CHEST]               = ItemLocation::Chest      (RC_KAK_REDEAD_GROTTO_CHEST,                    0x3E, 0x0A, "Kak Redead Grotto Chest",              KAK_REDEAD_GROTTO_CHEST,               HUGE_RUPEE,                {},                                                                                                    SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
     locationTable[KAK_OPEN_GROTTO_CHEST]                 = ItemLocation::Chest      (RC_KAK_OPEN_GROTTO_CHEST,                      0x3E, 0x08, "Kak Open Grotto Chest",                KAK_OPEN_GROTTO_CHEST,                 RED_RUPEE,                 {},                                                                                                    SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[KAK_OPEN_GROTTO_FISH]                  = ItemLocation::Base       (RC_KAK_OPEN_GROTTO_FISH,                       0x3E,       "Kak Open Grotto Fish",                 KAK_OPEN_GROTTO_FISH,                  FISH,                      {Category::cFish},                                    SpoilerCollectionCheck::GrottoFish(0x28),        SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
     locationTable[KAK_10_GOLD_SKULLTULA_REWARD]          = ItemLocation::Base       (RC_KAK_10_GOLD_SKULLTULA_REWARD,               0x50,       "Kak 10 Gold Skulltula Reward",         KAK_10_GOLD_SKULLTULA_REWARD,          PROGRESSIVE_WALLET,        {},                                                   SpoilerCollectionCheck::EventChkInf(0xDA),       SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
     locationTable[KAK_20_GOLD_SKULLTULA_REWARD]          = ItemLocation::Base       (RC_KAK_20_GOLD_SKULLTULA_REWARD,               0x50,       "Kak 20 Gold Skulltula Reward",         KAK_20_GOLD_SKULLTULA_REWARD,          STONE_OF_AGONY,            {},                                                   SpoilerCollectionCheck::EventChkInf(0xDB),       SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
     locationTable[KAK_30_GOLD_SKULLTULA_REWARD]          = ItemLocation::Base       (RC_KAK_30_GOLD_SKULLTULA_REWARD,               0x50,       "Kak 30 Gold Skulltula Reward",         KAK_30_GOLD_SKULLTULA_REWARD,          PROGRESSIVE_WALLET,        {},                                                   SpoilerCollectionCheck::EventChkInf(0xDC),       SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
@@ -172,6 +178,7 @@ void LocationTable_Init() {
     //Death Mountain
     locationTable[DMT_CHEST]                             = ItemLocation::Chest      (RC_DMT_CHEST,                                  0x60, 0x01, "DMT Chest",                            DMT_CHEST,                             PURPLE_RUPEE,              {},                                                                                                    SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
     locationTable[DMT_STORMS_GROTTO_CHEST]               = ItemLocation::Chest      (RC_DMT_STORMS_GROTTO_CHEST,                    0x3E, 0x17, "DMT Storms Grotto Chest",              DMT_STORMS_GROTTO_CHEST,               HUGE_RUPEE,                {},                                                                                                    SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[DMT_STORMS_GROTTO_FISH]                = ItemLocation::Base       (RC_DMT_STORMS_GROTTO_FISH,                     0x3E,       "DMT Storms Grotto Fish",               DMT_STORMS_GROTTO_FISH,                FISH,                      {Category::cFish},                                    SpoilerCollectionCheck::GrottoFish(0x57),        SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
     locationTable[DMT_TRADE_BROKEN_SWORD]                = ItemLocation::Base       (RC_DMT_TRADE_BROKEN_SWORD,                     0x60,       "DMT Trade Broken Sword",               DMT_TRADE_BROKEN_SWORD,                PRESCRIPTION,              {Category::cAdultTrade},                              SpoilerCollectionCheck::RandomizerInf(),         SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
     locationTable[DMT_TRADE_EYEDROPS]                    = ItemLocation::Base       (RC_DMT_TRADE_EYEDROPS,                         0x60,       "DMT Trade Eyedrops",                   DMT_TRADE_EYEDROPS,                    CLAIM_CHECK,               {Category::cAdultTrade},                              SpoilerCollectionCheck::RandomizerInf(),         SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
     locationTable[DMT_TRADE_CLAIM_CHECK]                 = ItemLocation::Base       (RC_DMT_TRADE_CLAIM_CHECK,                      0x60,       "DMT Trade Claim Check",                DMT_TRADE_CLAIM_CHECK,                 BIGGORON_SWORD,            {},                                                   SpoilerCollectionCheck::Chest(0x60, 0x1F),       SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
@@ -192,6 +199,7 @@ void LocationTable_Init() {
 
     //Death Mountain Crater
     locationTable[DMC_UPPER_GROTTO_CHEST]                = ItemLocation::Chest      (RC_DMC_UPPER_GROTTO_CHEST,                     0x3E, 0x1A, "DMC Upper Grotto Chest",               DMC_UPPER_GROTTO_CHEST,                BOMBS_20,                  {},                                                                                                    SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[DMC_UPPER_GROTTO_FISH]                 = ItemLocation::Base       (RC_DMC_UPPER_GROTTO_FISH,                      0x3E,       "DMC Upper Grotto Fish",                DMC_UPPER_GROTTO_FISH,                 FISH,                      {Category::cFish},                                    SpoilerCollectionCheck::GrottoFish(0x7A),        SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
     locationTable[DMC_WALL_FREESTANDING_POH]             = ItemLocation::Collectable(RC_DMC_WALL_FREESTANDING_POH,                  0x61, 0x02, "DMC Wall Freestanding PoH",            DMC_WALL_FREESTANDING_POH,             PIECE_OF_HEART,            {},                                                                                                    SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
     locationTable[DMC_VOLCANO_FREESTANDING_POH]          = ItemLocation::Collectable(RC_DMC_VOLCANO_FREESTANDING_POH,               0x61, 0x08, "DMC Volcano Freestanding PoH",         DMC_VOLCANO_FREESTANDING_POH,          PIECE_OF_HEART,            {},                                                                                                    SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
     locationTable[DMC_DEKU_SCRUB]                        = ItemLocation::Base       (RC_DMC_DEKU_SCRUB,                             0x61,       "DMC Deku Scrub",                       DMC_DEKU_SCRUB,                        BUY_BOMBS_535,             {Category::cDekuScrub},                               SpoilerCollectionCheck::Scrub(),                 SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
@@ -201,6 +209,7 @@ void LocationTable_Init() {
 
     //Zoras River
     locationTable[ZR_OPEN_GROTTO_CHEST]                  = ItemLocation::Chest      (RC_ZR_OPEN_GROTTO_CHEST,                       0x3E, 0x09, "ZR Open Grotto Chest",                 ZR_OPEN_GROTTO_CHEST,                  RED_RUPEE,                 {},                                                                                                    SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[ZR_OPEN_GROTTO_FISH]                   = ItemLocation::Base       (RC_ZR_OPEN_GROTTO_FISH,                        0x3E,       "ZR Open Grotto Fish",                  ZR_OPEN_GROTTO_FISH,                   FISH,                      {Category::cFish},                                    SpoilerCollectionCheck::GrottoFish(0x29),        SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
     locationTable[ZR_MAGIC_BEAN_SALESMAN]                = ItemLocation::Base       (RC_ZR_MAGIC_BEAN_SALESMAN,                     0x54,       "ZR Magic Bean Salesman",               ZR_MAGIC_BEAN_SALESMAN,                MAGIC_BEAN,                {},                                                   SpoilerCollectionCheck::MagicBeans(),            SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
     locationTable[ZR_FROGS_ZELDAS_LULLABY]               = ItemLocation::Base       (RC_ZR_FROGS_ZELDAS_LULLABY,                    0x54,       "ZR Frogs Zelda's Lullaby",             ZR_FROGS_ZELDAS_LULLABY,               PURPLE_RUPEE,              {},                                                   SpoilerCollectionCheck::EventChkInf(0xD1),       SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
     locationTable[ZR_FROGS_EPONAS_SONG]                  = ItemLocation::Base       (RC_ZR_FROGS_EPONAS_SONG,                       0x54,       "ZR Frogs Epona's Song",                ZR_FROGS_EPONAS_SONG,                  PURPLE_RUPEE,              {},                                                   SpoilerCollectionCheck::EventChkInf(0xD2),       SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
@@ -1131,6 +1140,12 @@ std::vector<uint32_t> pondFishAdultLocations = { LH_ADULT_FISH_1,  LH_ADULT_FISH
                                                  LH_ADULT_FISH_9,  LH_ADULT_FISH_10, LH_ADULT_FISH_11, LH_ADULT_FISH_12,
                                                  LH_ADULT_FISH_13, LH_ADULT_FISH_14, LH_ADULT_FISH_15, LH_ADULT_LOACH };
 
+std::vector<uint32_t> grottoFishLocations = { DMC_UPPER_GROTTO_FISH,    DMT_STORMS_GROTTO_FISH,
+                                              HF_SOUTHEAST_GROTTO_FISH, HF_NEAR_MARKET_GROTTO_FISH,
+                                              HF_OPEN_GROTTO_FISH,      KAK_OPEN_GROTTO_FISH,
+                                              KF_STORMS_GROTTO_FISH,    LW_NEAR_SHORTCUTS_GROTTO_FISH,
+                                              ZR_OPEN_GROTTO_FISH };
+
 //List of gossip stone locations for hints
 std::vector<uint32_t> gossipStoneLocations = {
   DMC_GOSSIP_STONE,
@@ -1650,23 +1665,29 @@ std::vector<uint32_t> GetLocations(const std::vector<uint32_t>& locationPool, Ca
   return locationsInCategory;
 }
 
-std::pair<std::vector<uint32_t>, std::vector<uint32_t>> GetFishsanityLocations() {
+std::pair<std::vector<uint32_t>, std::vector<uint32_t>> GetFishingPondLocations() {
+  uint8_t fsMode = Settings::Fishsanity.Value<uint8_t>();
   uint8_t numFish = Settings::FishsanityPondCount.Value<uint8_t>();
   bool splitPond = Settings::FishsanityAgeSplit.Value<bool>();
   std::vector<uint32_t> activeFish;
-  std::vector<uint32_t> remainingFish = std::vector(pondFishLocations);
+  std::vector<uint32_t> remainingFish;
+
+  remainingFish.insert(remainingFish.end(), pondFishLocations.begin(), pondFishLocations.end());
+
   // No pond fish shuffled
   if (numFish == 0) {
     return std::make_pair(activeFish, remainingFish);
   }
   // Every pond fish is shuffled, so we can save some time
   if (numFish > 16) {
-    // Child and adult pond fish are both shuffled, set activeFish to remainingFish and return an empty vector for inactive fish.
+    // Child and adult pond fish are both shuffled, set activeFish to remainingFish and return an empty vector for
+    // inactive fish.
     if (splitPond) {
       return std::make_pair(remainingFish, activeFish);
     }
     // Activate all child fish only
-    activeFish = FilterAndEraseFromPool(remainingFish, [](const uint32_t loc) { return pondFishLocationAgeMap[loc] == AGE_CHILD; });
+    activeFish = FilterAndEraseFromPool(remainingFish,
+                                        [](const uint32_t loc) { return pondFishLocationAgeMap[loc] == AGE_CHILD; });
     return std::make_pair(activeFish, remainingFish);
   }
   // Only some pond fish are shuffled, so we have to only activate the requested number.
@@ -1676,9 +1697,33 @@ std::pair<std::vector<uint32_t>, std::vector<uint32_t>> GetFishsanityLocations()
     activeFish.insert(activeFish.end(), pondFishAdultLocations.begin(),
                       pondFishAdultLocations.begin() + std::min<uint8_t>(numFish, 16));
   }
-  // NOTE: This only works because we can assume activeFish is already sorted; changes that break this assumption will also break this
+  // NOTE: This only works because we can assume activeFish is already sorted; changes that break this assumption will
+  // also break this
   FilterAndEraseFromPool(remainingFish,
                          [&](uint32_t loc) { return std::binary_search(activeFish.begin(), activeFish.end(), loc); });
+
+  return std::make_pair(activeFish, remainingFish);
+}
+
+std::pair<std::vector<uint32_t>, std::vector<uint32_t>> GetFishsanityLocations() {
+  uint8_t fsMode = Settings::Fishsanity.Value<uint8_t>();
+  uint8_t numFish = Settings::FishsanityPondCount.Value<uint8_t>();
+  bool splitPond = Settings::FishsanityAgeSplit.Value<bool>();
+  std::vector<uint32_t> activeFish;
+  std::vector<uint32_t> remainingFish;
+
+  // Add pond fish
+  if (fsMode == RO_FISHSANITY_POND || fsMode == RO_FISHSANITY_BOTH) {
+    auto pondLocations = GetFishingPondLocations();
+    activeFish.insert(activeFish.end(), pondLocations.first.begin(), pondLocations.first.end());
+    remainingFish.insert(remainingFish.end(), pondLocations.second.begin(), pondLocations.second.end());
+  }
+
+  // Add grotto fish
+  if (fsMode == RO_FISHSANITY_GROTTOS || fsMode == RO_FISHSANITY_BOTH) {
+    activeFish.insert(activeFish.end(), grottoFishLocations.begin(), grottoFishLocations.end());
+  }
+
 
   return std::make_pair(activeFish, remainingFish);
 }

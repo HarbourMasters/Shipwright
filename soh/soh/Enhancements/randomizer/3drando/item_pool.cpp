@@ -570,6 +570,12 @@ static void PlaceVanillaCowMilk() {
   }
 }
 
+static void PlaceVanillaGrottoFish() {
+  for (uint32_t loc : grottoFishLocations) {
+    PlaceItemInLocation(loc, FISH, false, true);
+  }
+}
+
 static void SetScarceItemPool() {
   ReplaceMaxItem(PROGRESSIVE_BOMBCHUS, 3);
   ReplaceMaxItem(BOMBCHU_5, 1);
@@ -721,21 +727,34 @@ void GenerateItemPool() {
     PlaceVanillaCowMilk();
   }
 
-  if (Fishsanity.Value<uint8_t>() != FISHSANITY_OFF) {
-    // 17 max child pond fish
-    uint8_t pondCt = FishsanityPondCount.Value<uint8_t>();
-    for (uint8_t i = 0; i < pondCt; i++) {
-      AddItemToMainPool(GetJunkItem());
-    }
-
-    if (FishsanityAgeSplit) {
-      // 16 max adult pond fish, have to reduce to 16 if every fish is enabled
-      if (pondCt > 16)
-        pondCt = 16;
+  uint8_t fsMode = Fishsanity.Value<uint8_t>();
+  if (fsMode != FISHSANITY_OFF) {
+    if (fsMode == FISHSANITY_PONDONLY || fsMode == FISHSANITY_BOTH) {
+      // 17 max child pond fish
+      uint8_t pondCt = FishsanityPondCount.Value<uint8_t>();
       for (uint8_t i = 0; i < pondCt; i++) {
         AddItemToMainPool(GetJunkItem());
       }
+
+      if (FishsanityAgeSplit) {
+        // 16 max adult pond fish, have to reduce to 16 if every fish is enabled
+        if (pondCt > 16)
+            pondCt = 16;
+        for (uint8_t i = 0; i < pondCt; i++) {
+            AddItemToMainPool(GetJunkItem());
+        }
+      }
     }
+
+    // 9 grotto fish
+    if (fsMode == FISHSANITY_GROTTOSONLY || fsMode == FISHSANITY_BOTH) {
+      for (uint8_t i = 0; i < 9; i++)
+        AddItemToMainPool(GetJunkItem());
+    } else {
+      PlaceVanillaGrottoFish();
+    }
+  } else {
+    PlaceVanillaGrottoFish();
   }
 
   if (ShuffleMagicBeans) {

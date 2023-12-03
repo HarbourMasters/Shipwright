@@ -89,7 +89,7 @@ void WriteIngameSpoilerLog() {
 
     // Prepare list of inactive fish if fishsanity is on
     std::vector<uint32_t> inactiveFish;
-    if (Settings::Fishsanity.IsNot(FISHSANITY_OFF)) {
+    if (Settings::Fishsanity.IsNot(FISHSANITY_OFF) && Settings::Fishsanity.IsNot(FISHSANITY_GROTTOSONLY)) {
         inactiveFish = GetFishsanityLocations().second;
         std::sort(inactiveFish.begin(), inactiveFish.end());
     }
@@ -146,8 +146,8 @@ void WriteIngameSpoilerLog() {
         else if (Settings::Fishsanity.Is(FISHSANITY_OFF) && loc->IsCategory(Category::cFish)) {
             continue;
         }
-        // Hide inactive fish
-        else if (Settings::Fishsanity.IsNot(FISHSANITY_OFF) && std::binary_search(inactiveFish.begin(), inactiveFish.end(), key)) {
+        // Hide inactive pond fish
+        else if (Settings::Fishsanity.IsNot(FISHSANITY_OFF) && Settings::Fishsanity.IsNot(FISHSANITY_GROTTOSONLY) && std::binary_search(inactiveFish.begin(), inactiveFish.end(), key)) {
             continue;
         }
 

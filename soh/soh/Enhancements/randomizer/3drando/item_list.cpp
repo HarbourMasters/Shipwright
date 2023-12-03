@@ -186,6 +186,7 @@ void ItemTable_Init() {                              // RandomizerGet           
     itemTable[HEART_CONTAINER]                   = Item(RG_HEART_CONTAINER,                   Text{"Heart Container",                 "Réceptacle de Coeur",              "Contenedor de corazón"},                   ITEMTYPE_ITEM, GI_HEART_CONTAINER_2, true,  &HeartContainer, HEART_CONTAINER);
     itemTable[ICE_TRAP]                          = Item(RG_ICE_TRAP,                          Text{"Ice Trap",                        "Piège de Glace",                   "Trampa de hielo"},                         ITEMTYPE_ITEM, GI_ICE_TRAP,          false, &noVariable,     ICE_TRAP);
     itemTable[MILK]                              = Item(RG_MILK,                              Text{"Milk",                            "Lait",                             "Leche Lon Lon"},                           ITEMTYPE_ITEM, GI_MILK,              false, &noVariable,     NONE);
+    itemTable[FISH]                              = Item(RG_FISH,                              Text{"Fish",                            "Poisson",                          "Pez"},                                     ITEMTYPE_ITEM, GI_FISH,              false, &noVariable,     NONE);
 
     //Refills
     itemTable[BOMBS_5]                           = Item(RG_BOMBS_5,                           Text{"Bombs (5)",                       "Bombes (5)",                       "Bombas (5)"},                              ITEMTYPE_REFILL, GI_BOMBS_5,        false, &noVariable,  BOMBS_5);

@@ -197,7 +197,7 @@ namespace Settings {
   Option ShuffleAdultTradeQuest     = Option::Bool("Shuffle Adult Trade",    {"Off", "On"});
   Option ShuffleChestMinigame       = Option::U8  ("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"});
   Option Shuffle100GSReward         = Option::Bool("Shuffle 100 GS Reward",  {"Off", "On"});
-  Option Fishsanity                 = Option::U8  ("Fishsanity",             {"Off", "Shuffle Fishing Pond"});
+  Option Fishsanity                 = Option::U8  ("Fishsanity",             {"Off", "Shuffle Fishing Pond", "Shuffle Grotto Fish", "Shuffle Both"});
   Option FishsanityPondCount        = Option::U8  ("Pond Fish Count",        {NumOpts(0, 17, 1)}, OptionCategory::Setting, 0, true);
   Option FishsanityAgeSplit         = Option::Bool("Split Pond Fish",        {"Off", "On"});
 
@@ -1618,10 +1618,9 @@ namespace Settings {
     }
 
     //Force include fish locations based on fishsanity settings
-    std::vector<uint32_t> allFish = GetLocations(everyPossibleLocation, Category::cFish);
     if (Fishsanity.Is(FISHSANITY_OFF)) {
       // Fishsanity is off; no need to do any extra work.
-      IncludeAndHide(allFish);
+      IncludeAndHide(GetLocations(everyPossibleLocation, Category::cFish));
     } else {
       // Force include inactive fish & unhide active fish
       auto [activeFish, inactiveFish] = GetFishsanityLocations();

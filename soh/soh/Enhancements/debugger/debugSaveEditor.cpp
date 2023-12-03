@@ -594,7 +594,9 @@ void DrawInfoTab() {
                     gSaveContext.highScores[i]|=(fishSize) << 16;
                 }
                 UIWidgets::InsertHelpHoverText("Determines weather and school size during dawn/dusk.");
-                if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) != RO_FISHSANITY_OFF) {
+                if (IS_RANDO &&
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) != RO_FISHSANITY_OFF &&
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) != RO_FISHSANITY_GROTTOS) {
                     FishBool = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_AGE_SPLIT) != RO_GENERIC_OFF;
                     fishSize = gSaveContext.fishCaughtChild;
                     if (ImGui::InputScalar(FishBool ? "Child Fish Caught" : "Fish Caught", ImGuiDataType_U8, &fishSize)) {
@@ -1140,8 +1142,9 @@ void DrawFlagsTab() {
             }
 
             // make some buttons to help with fishsanity debugging
+            uint8_t fsMode = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY);
             if (flagTable.flagTableType == RANDOMIZER_INF &&
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) != RO_FISHSANITY_OFF) {
+                fsMode != RO_FISHSANITY_OFF && fsMode != RO_FISHSANITY_GROTTOS) {
                 if (ImGui::Button("Catch All (Child)")) {
                     for (int k = RAND_INF_CHILD_FISH_1; k <= RAND_INF_CHILD_LOACH_2; k++) {
                         Flags_SetRandomizerInf((RandomizerInf)k);

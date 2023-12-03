@@ -2972,7 +2972,8 @@ bool getShouldSpawnLoaches() {
 }
 
 bool Fishsanity_GetEnabled() {
-    return Randomizer_GetSettingValue(RSK_FISHSANITY) != RO_GENERIC_OFF;
+    uint8_t fsMode = Randomizer_GetSettingValue(RSK_FISHSANITY);
+    return fsMode != RO_FISHSANITY_OFF && fsMode != RO_FISHSANITY_GROTTOS;
 }
 
 u8 Fishsanity_GetPondCount() {

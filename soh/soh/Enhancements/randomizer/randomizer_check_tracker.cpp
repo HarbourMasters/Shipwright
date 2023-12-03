@@ -57,6 +57,7 @@ bool showScrubs;
 bool showMerchants;
 bool showCows;
 bool showFish;
+bool showGrottoFish;
 bool showAdultTrade;
 bool showKokiriSword;
 bool showMasterSword;
@@ -394,6 +395,8 @@ bool HasItemBeenCollected(RandomizerCheck rc) {
     case SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT:
     case SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM:
     case SpoilerCollectionCheckType::SPOILER_CHK_COW:
+    case SpoilerCollectionCheckType::SPOILER_CHK_POND_FISH:
+    case SpoilerCollectionCheckType::SPOILER_CHK_GROTTO_FISH:
     case SpoilerCollectionCheckType::SPOILER_CHK_SCRUB:
     case SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF:
     case SpoilerCollectionCheckType::SPOILER_CHK_MASTER_SWORD:
@@ -710,6 +713,8 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
               (scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_COW ||
+               scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_POND_FISH ||
+               scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_GROTTO_FISH ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_SCRUB ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_MASTER_SWORD ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF)) {
@@ -1047,7 +1052,12 @@ void LoadSettings() {
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_COWS) == RO_GENERIC_YES
         : false;
     showFish = IS_RANDO ?
-        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) != RO_FISHSANITY_OFF
+        (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) != RO_FISHSANITY_OFF &&
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) != RO_FISHSANITY_GROTTOS)
+        : false;
+    showGrottoFish = IS_RANDO ?
+        (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) != RO_FISHSANITY_OFF &&
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) != RO_FISHSANITY_POND)
         : false;
     fishsanityPondCount = (IS_RANDO && showFish) ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT)
@@ -1166,11 +1176,12 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
                 (showDungeonTokens && RandomizerCheckObjects::AreaIsDungeon(rcObj.rcArea))
                 ) &&
             (rcObj.rcType != RCTYPE_COW || showCows) &&
-            (rcObj.rcType != RCTYPE_FISH || (showFish && fishsanityPondCount > 0 && (
+            (rcObj.rcType != RCTYPE_FISH || (showFish && fishsanityPondCount > 0 && rcObj.sceneId == SCENE_FISHING_POND && rcObj.actorId == ACTOR_FISHING && (
                 // HACK: We're just going to assume that adult checks will always follow child checks
-                (rcObj.rc < RC_LH_ADULT_FISH_1 && fishsanityPondCount > (rcObj.actorParams - 100)) ||
-                (rcObj.rc >= RC_LH_ADULT_FISH_1 && fishsanityPondSplit && fishsanityPondCount > (rcObj.actorParams - 100))
-                ))) &&
+                (rcObj.rc >= RC_LH_CHILD_FISH_1 && rcObj.rc < RC_LH_ADULT_FISH_1 && fishsanityPondCount > (rcObj.actorParams - 100)) ||
+                (rcObj.rc >= RC_LH_ADULT_FISH_1 && rcObj.rc <= RC_LH_ADULT_LOACH && fishsanityPondSplit && fishsanityPondCount > (rcObj.actorParams - 100))
+                )) || (showGrottoFish && rcObj.actorId == ACTOR_EN_FISH && rcObj.sceneId == SCENE_GROTTOS && rcObj.actorParams == 1)
+                ) &&
             (rcObj.rcType != RCTYPE_ADULT_TRADE ||
                 showAdultTrade ||
                 rcObj.rc == RC_KAK_ANJU_AS_ADULT ||  // adult trade checks that are always shuffled
@@ -1329,7 +1340,8 @@ void DrawLocation(RandomizerCheckObject rcObj) {
 
     // If we aren't splitting pond fish by age, then remove "Child" from the check name, unless it's the child-exclusive loach.
     if (rcObj.rcType == RCTYPE_FISH && CVarGetInteger("gRandomizeFishsanity", RO_FISHSANITY_OFF) != RO_FISHSANITY_OFF &&
-        CVarGetInteger("gRandomizeFishsanityAgeSplit", RO_GENERIC_OFF) == RO_GENERIC_OFF && rcObj.actorParams != 116) {
+        CVarGetInteger("gRandomizeFishsanity", RO_FISHSANITY_OFF) != RO_FISHSANITY_GROTTOS &&
+        CVarGetInteger("gRandomizeFishsanityAgeSplit", RO_GENERIC_OFF) == RO_GENERIC_OFF && rcObj.actorParams != 116 && rcObj.actorId != ACTOR_EN_FISH) {
         size_t idx = txt.find("Child");
         if (idx != std::string::npos) {
             txt.erase(txt.begin() + idx, txt.begin() + idx + 6);

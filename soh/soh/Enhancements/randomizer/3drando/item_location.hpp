@@ -122,6 +122,14 @@ class SpoilerCollectionCheck {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_COW, 0x00, 0x00);
     }
 
+    static auto PondFish() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_POND_FISH, 0x00, 0x00);
+    }
+
+    static auto GrottoFish(int8_t flag) {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_GROTTO_FISH, 0x00, flag);
+    }
+
     static auto Fishing() {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME, 0x00, 0x00);
     }
@@ -507,6 +515,7 @@ extern std::vector<uint32_t> pondFishLocations;
 extern std::unordered_map<uint32_t, uint8_t> pondFishLocationAgeMap;
 extern std::vector<uint32_t> pondFishChildLocations;
 extern std::vector<uint32_t> pondFishAdultLocations;
+extern std::vector<uint32_t> grottoFishLocations;
 
 extern std::vector<uint32_t> gossipStoneLocations;
 

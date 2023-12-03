@@ -184,7 +184,9 @@ typedef enum {
 
 typedef enum {
     FISHSANITY_OFF,
-    FISHSANITY_PONDONLY
+    FISHSANITY_PONDONLY,
+    FISHSANITY_GROTTOSONLY,
+    FISHSANITY_BOTH
 } FishsanitySetting;
 
 typedef enum {

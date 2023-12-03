@@ -193,6 +193,7 @@ void AreaTable_Init_Kakariko() {
   areaTable[KAK_OPEN_GROTTO] = Area("Kak Open Grotto", "Kak Open Grotto", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(KAK_OPEN_GROTTO_CHEST,        {[]{return true;}}),
+                  LocationAccess(KAK_OPEN_GROTTO_FISH,         {[]{return HasBottle;}}),
                   LocationAccess(KAK_OPEN_GROTTO_GOSSIP_STONE, {[]{return true;}}),
                 }, {
                   //Exits

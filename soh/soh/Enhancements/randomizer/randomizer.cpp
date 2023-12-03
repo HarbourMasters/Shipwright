@@ -563,6 +563,18 @@ static constexpr std::array<std::pair<RandomizerCheck, RandomizerCheck>, 17> ran
     { RC_LH_CHILD_LOACH_2,  RC_UNKNOWN_CHECK }
 }};
 
+static std::unordered_map<int8_t, RandomizerCheck> randomizerGrottoFishMap = {
+    { 0x2C, RC_KF_STORMS_GROTTO_FISH },
+    { 0x14, RC_LW_NEAR_SHORTCUTS_GROTTO_FISH },
+    { 0x22, RC_HF_SOUTHEAST_GROTTO_FISH },
+    { 0x03, RC_HF_OPEN_GROTTO_FISH },
+    { 0x00, RC_HF_NEAR_MARKET_GROTTO_FISH },
+    { 0x28, RC_KAK_OPEN_GROTTO_FISH },
+    { 0x57, RC_DMT_STORMS_GROTTO_FISH },
+    { 0x7A, RC_DMC_UPPER_GROTTO_FISH },
+    { 0x29, RC_ZR_OPEN_GROTTO_FISH }
+};
+
 void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
     CustomMessageManager::Instance->ClearMessageTable(Randomizer::merchantMessageTableID);
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::merchantMessageTableID);
@@ -831,6 +843,10 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_FISHSANITY_OFF;
                         } else if (it.value() == "Shuffle Fishing Pond") {
                             gSaveContext.randoSettings[index].value = RO_FISHSANITY_POND;
+                        } else if (it.value() == "Shuffle Grotto Fish") {
+                            gSaveContext.randoSettings[index].value = RO_FISHSANITY_GROTTOS;
+                        } else if (it.value() == "Shuffle Both") {
+                            gSaveContext.randoSettings[index].value = RO_FISHSANITY_BOTH;
                         }
                         break;
                     case RSK_SHOPSANITY:
@@ -1797,6 +1813,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
 
         // Bottle Refills
         case RG_MILK:
+        case RG_FISH:
         case RG_RED_POTION_REFILL:
         case RG_GREEN_POTION_REFILL:
         case RG_BLUE_POTION_REFILL:
@@ -2177,6 +2194,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_BLUE_POTION_REFILL:
         case RG_BUY_BLUE_POTION:
             return GI_POTION_BLUE;
+        case RG_FISH:
         case RG_BUY_FISH:
             return GI_FISH;
         case RG_BUY_BLUE_FIRE:
@@ -2359,6 +2377,7 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_PIECE_OF_HEART:
         case RG_HEART_CONTAINER:
         case RG_MILK:
+        case RG_FISH:
         case RG_BOMBS_5:
         case RG_BOMBS_10:
         case RG_BOMBS_20:
@@ -2614,6 +2633,15 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_LH_ADULT_LOACH,                                              RAND_INF_ADULT_LOACH },
     { RC_MARKET_10_BIG_POES,                                          RAND_INF_10_BIG_POES },
     { RC_KAK_100_GOLD_SKULLTULA_REWARD,                               RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD },
+    { RC_ZR_OPEN_GROTTO_FISH,                                         RAND_INF_GROTTO_FISH_ZR_OPEN_GROTTO },
+    { RC_DMC_UPPER_GROTTO_FISH,                                       RAND_INF_GROTTO_FISH_DMC_UPPER_GROTTO },
+    { RC_DMT_STORMS_GROTTO_FISH,                                      RAND_INF_GROTTO_FISH_DMT_STORMS_GROTTO },
+    { RC_KAK_OPEN_GROTTO_FISH,                                        RAND_INF_GROTTO_FISH_KAK_OPEN_GROTTO },
+    { RC_HF_NEAR_MARKET_GROTTO_FISH,                                  RAND_INF_GROTTO_FISH_HF_NEAR_MARKET_GROTTO },
+    { RC_HF_OPEN_GROTTO_FISH,                                         RAND_INF_GROTTO_FISH_HF_OPEN_GROTTO },
+    { RC_HF_SOUTHEAST_GROTTO_FISH,                                    RAND_INF_GROTTO_FISH_HF_SOUTHEAST_GROTTO },
+    { RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,                               RAND_INF_GROTTO_FISH_LW_NEAR_SHORTCUTS_GROTTO },
+    { RC_KF_STORMS_GROTTO_FISH,                                       RAND_INF_GROTTO_FISH_KF_STORMS_GROTTO },
 };
 
 RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
@@ -2742,6 +2770,15 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                 specialRc = adultPond ? tableEntry.second : tableEntry.first;
             }
             break;
+        case SCENE_GROTTOS:
+            // Generic grotto fish are identified by respawn data
+            if (actorId == ACTOR_EN_FISH && actorParams == 1) {
+                int8_t data = gSaveContext.respawn[RESPAWN_MODE_RETURN].data;
+                if (randomizerGrottoFishMap.contains(data)) {
+                    specialRc = randomizerGrottoFishMap[data];
+                }
+            }
+            break;
     }
 
     if (specialRc != RC_UNKNOWN_CHECK) {
@@ -2858,7 +2895,7 @@ FishIdentity Randomizer::IdentifyFish(s32 sceneNum, s32 actorParams) {
     fishIdentity.randomizerInf = RAND_INF_MAX;
     fishIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
 
-    RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_FISHING, sceneNum, actorParams);
+    RandomizerCheckObject rcObject = GetCheckObjectFromActor(sceneNum == SCENE_FISHING_POND ? ACTOR_FISHING : ACTOR_EN_FISH, sceneNum, actorParams);
 
     if (rcObject.rc != RC_UNKNOWN_CHECK) {
         fishIdentity.randomizerInf = rcToRandomizerInf[rcObject.rc];
@@ -3215,7 +3252,7 @@ void RandomizerSettingsWindow::DrawElement() {
     static const char* randoTokensanity[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
     static const char* randoShuffleScrubs[4] = { "Off", "Affordable", "Expensive", "Random Prices" };
     static const char* randoShuffleMerchants[3] = { "Off", "On (no hints)", "On (with hints)" };
-    static const char* randoFishsanity[2] = { "Off", "Shuffle Fishing Pond" };
+    static const char* randoFishsanity[4] = { "Off", "Shuffle Fishing Pond", "Shuffle Grotto Fish", "Shuffle Both" };
 
     // Shuffle Dungeon Items Settings
     static const char* randoShuffleMapsAndCompasses[6] = { "Start With",  "Vanilla",   "Own Dungeon",
@@ -4055,13 +4092,14 @@ void RandomizerSettingsWindow::DrawElement() {
                 // Fishsanity
                 ImGui::Text("%s", Settings::Fishsanity.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
-                    "Off - Fish will not be shuffled. No changes will be made to fishing behavior.\n"
-                    "\n"
-                    "Shuffle Fishing Pond - The fishing pond's fish will be shuffled. Catching a fish in the fishing pond will grant a reward."
+                    "Off - Fish will not be shuffled. No changes will be made to fishing behavior.\n\n"
+                    "Shuffle Fishing Pond - The fishing pond's fish will be shuffled. Catching a fish in the fishing pond will grant a reward.\n\n"
+                    "Shuffle Grotto Fish - Fish in generic grottos will be shuffled. Catching a grotto fish in a bottle will give a reward.\n\n"
+                    "Shuffle Both - Both grotto fish and fish in the fishing pond will be shuffled."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeFishsanity", randoFishsanity, RO_FISHSANITY_OFF);
-                // Don't show additional options if fishsanity is disabled
-                if (CVarGetInteger("gRandomizeFishsanity", RO_FISHSANITY_OFF) != RO_FISHSANITY_OFF) {
+                // Don't show additional pond options if fishsanity is disabled or set to grottos only
+                if (CVarGetInteger("gRandomizeFishsanity", RO_FISHSANITY_OFF) != RO_FISHSANITY_OFF && CVarGetInteger("gRandomizeFishsanity", RO_FISHSANITY_OFF) != RO_FISHSANITY_GROTTOS) {
                     // Number of shuffled fish in fishing pond
                     int fishCount = CVarGetInteger("gRandomizeFishsanityPondCount", 0);
                     if (fishCount == 0) {
