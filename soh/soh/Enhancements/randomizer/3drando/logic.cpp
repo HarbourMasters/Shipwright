@@ -276,6 +276,7 @@ namespace Logic {
   bool BigPoeKill          = false;
   bool HookshotOrBoomerang = false;
   bool CanGetNightTimeGS   = false;
+  bool CanAccessChildFish  = false;
 
   uint8_t   BaseHearts      = 0;
   uint8_t   Hearts          = 0;
@@ -584,6 +585,7 @@ namespace Logic {
     CanOpenStormGrotto  = CanPlay(SongOfStorms) && (ShardOfAgony || LogicGrottosWithoutAgony);
     HookshotOrBoomerang = CanUse(HOOKSHOT) || CanUse(BOOMERANG);
     CanGetNightTimeGS   = (CanPlay(SunsSong) || !NightGSExpectSuns);
+    CanAccessChildFish  = (IsChild || (IsAdult && !FishsanityAgeSplit));
 
     GuaranteeTradePath     = ShuffleInteriorEntrances || ShuffleOverworldEntrances || LogicBiggoronBolero || CanBlastOrSmash || StopGCRollingGoronAsAdult;
   //GuaranteeHint          = (hints == "Mask" && MaskofTruth) || (hints == "Agony") || (hints != "Mask" && hints != "Agony");
