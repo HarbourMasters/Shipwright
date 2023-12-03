@@ -562,8 +562,8 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100,
         CustomMessage("I never thought I'd say this, but I'm &selling the last %rMagic Bean%w. %r99%w Rupees...\x1B&%gYes&No%w",
-            "",
-            "\x1B&%gOui&Non%w"));
+            "\x1B&%gJa&Nein%w",
+            "Je te vends mon dernier %rHaricot&magique%w pour %r99 Rubis%w.\x1B&%gAcheter&Ne pas acheter%w"));
 
 
     //Setup for merchant text boxes
