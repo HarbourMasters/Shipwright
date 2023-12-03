@@ -37,6 +37,7 @@
 
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "Enhancements/cosmetics/authenticGfxPatches.h"
+#include "Enhancements/debugger/MessageViewer.h"
 
 bool ShouldClearTextureCacheAtEndOfFrame = false;
 bool isBetaQuestEnabled = false;
@@ -118,6 +119,7 @@ namespace SohGui {
     std::shared_ptr<ColViewerWindow> mColViewerWindow;
     std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
     std::shared_ptr<DLViewerWindow> mDLViewerWindow;
+    std::shared_ptr<MessageViewer> mMessageViewerWindow;
     std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
     std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
     std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
@@ -169,6 +171,8 @@ namespace SohGui {
         gui->AddGuiWindow(mSaveEditorWindow);
         mDLViewerWindow = std::make_shared<DLViewerWindow>("gDLViewerEnabled", "Display List Viewer");
         gui->AddGuiWindow(mDLViewerWindow);
+        mMessageViewerWindow = std::make_shared<MessageViewer>("gMessageViewerEnabled", "Message Viewer");
+        gui->AddGuiWindow(mMessageViewerWindow);
         mGameplayStatsWindow = std::make_shared<GameplayStatsWindow>("gGameplayStatsEnabled", "Gameplay Stats");
         gui->AddGuiWindow(mGameplayStatsWindow);
         mCheckTrackerWindow = std::make_shared<CheckTracker::CheckTrackerWindow>("gCheckTrackerEnabled", "Check Tracker");
