@@ -223,9 +223,9 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
 };
 
 std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEnum = {
-    { "Detailed Logic Settings:Logic", RSK_LOGIC_RULES },
-    { "Detailed Logic Settings:Night GSs Expect Sun's", RSK_SKULLS_SUNS_SONG },
-    { "Detailed Logic Settings:All Locations Reachable", RSK_ALL_LOCATIONS_REACHABLE },
+    { "Logic Options:Logic", RSK_LOGIC_RULES },
+    { "Logic Options:Night GSs Expect Sun's", RSK_SKULLS_SUNS_SONG },
+    { "Logic Options:All Locations Reachable", RSK_ALL_LOCATIONS_REACHABLE },
     { "Item Pool Settings:Item Pool", RSK_ITEM_POOL },
     { "Item Pool Settings:Ice Traps", RSK_ICE_TRAPS },
     { "Open Settings:Forest", RSK_FOREST },
@@ -691,6 +691,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_LOGIC_GLITCHLESS;
                         } else if (it.value() == "No Logic") {
                             gSaveContext.randoSettings[index].value = RO_LOGIC_NO_LOGIC;
+                        } else if (it.value() == "Vanilla") {
+                            gSaveContext.randoSettings[index].value = RO_LOGIC_VANILLA;
                         }
                         break;
                     case RSK_FOREST:
@@ -3069,7 +3071,7 @@ void RandomizerSettingsWindow::DrawElement() {
 
     // Randomizer settings
     // Logic Settings
-    static const char* randoLogicRules[2] = { "Glitchless", "No logic" };
+    static const char* randoLogicRules[3] = { "Glitchless", "No logic", "Vanilla" };
 
     // Open Settings
     static const char* randoForest[3] = { "Closed", "Closed Deku", "Open" };
@@ -3203,6 +3205,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PopItemFlag();
                 ImGui::TableNextRow();
 
+                ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
                 // COLUMN 1 - Area Access
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
@@ -3497,6 +3500,8 @@ void RandomizerSettingsWindow::DrawElement() {
 
                 UIWidgets::PaddedSeparator();
 
+                ImGui::EndDisabled();
+
                 // Master Quest Dungeons
                 if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
                     ImGui::PushItemWidth(-FLT_MIN);
@@ -3549,6 +3554,8 @@ void RandomizerSettingsWindow::DrawElement() {
                     UIWidgets::PaddedSeparator();
                 }
 
+                ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
+
                 // Triforce Hunt
                 UIWidgets::EnhancementCheckbox("Triforce Hunt", "gRandomizeTriforceHunt");
                 UIWidgets::InsertHelpHoverText(
@@ -3583,6 +3590,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 ImGui::EndChild();
+                ImGui::EndDisabled();
 
                 // COLUMN 3 - Shuffle Entrances
                 ImGui::TableNextColumn();
@@ -3744,6 +3752,7 @@ void RandomizerSettingsWindow::DrawElement() {
             ImGui::EndTabItem();
         }
 
+        ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
         if (ImGui::BeginTabItem("Items")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoStartingInventory", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
@@ -4329,7 +4338,9 @@ void RandomizerSettingsWindow::DrawElement() {
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
+        ImGui::EndDisabled();
 
+        ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
         if (ImGui::BeginTabItem("Gameplay")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoGameplay", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
@@ -4599,7 +4610,9 @@ void RandomizerSettingsWindow::DrawElement() {
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
+        ImGui::EndDisabled();
 
+        ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
         static bool locationsTabOpen = false;
         if (ImGui::BeginTabItem("Locations")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
@@ -4718,6 +4731,7 @@ void RandomizerSettingsWindow::DrawElement() {
         } else {
             locationsTabOpen = false;
         }
+        ImGui::EndDisabled();
 
         static bool tricksTabOpen = false;
         if (ImGui::BeginTabItem("Tricks/Glitches")) {
@@ -4751,10 +4765,12 @@ void RandomizerSettingsWindow::DrawElement() {
                     "\n"
                     //"Glitched - Glitches may be required to beat the game. You can disable and enable glitches below.\n"
                     //"\n"
-                    "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
+                    "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.\n"
+                    "\n"
+                    "Vanilla - Places all items and dungeon rewards in their vanilla locations."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, RO_LOGIC_GLITCHLESS);
-                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
+                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHLESS) {
                     ImGui::SameLine();
                     UIWidgets::EnhancementCheckbox(Settings::LocationsReachable.GetName().c_str(), "gRandomizeAllLocationsReachable", false, "", UIWidgets::CheckboxGraphics::Cross, RO_GENERIC_ON);
                     UIWidgets::InsertHelpHoverText(
@@ -4764,6 +4780,10 @@ void RandomizerSettingsWindow::DrawElement() {
                         "required items and locations to beat the game "
                         "will be guaranteed reachable."
                     );
+                }
+                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA) {
+                    ImGui::SameLine();
+                    ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Heads up! This will disable all rando settings except for entrance shuffle and starter items");
                 }
 
                 UIWidgets::PaddedSeparator();
@@ -4777,6 +4797,8 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
+
+            ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
 
             // Tricks
             static std::unordered_map<RandomizerTrickArea, bool> areaTreeDisabled {
@@ -5150,6 +5172,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 }
                 ImGui::EndTable();
             }
+            ImGui::EndDisabled();
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         } else {
@@ -5171,13 +5194,14 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildStartingEquipment", ImVec2(0, -8));
-                // Don't display this option if Dungeon Rewards are Shuffled to End of Dungeon.
-                // TODO: Show this but disabled when we have options for disabled Comboboxes.
-                if (CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) != RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
-                    ImGui::Text("%s", Settings::LinksPocketItem.GetName().c_str());
-                    UIWidgets::EnhancementCombobox("gRandomizeLinksPocket", randoLinksPocket, RO_LINKS_POCKET_DUNGEON_REWARD);
-                    UIWidgets::PaddedSeparator();
-                }
+                ImGui::BeginDisabled(
+                    CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) == RO_DUNGEON_REWARDS_END_OF_DUNGEON ||
+                    CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA
+                );
+                ImGui::Text("%s", Settings::LinksPocketItem.GetName().c_str());
+                UIWidgets::EnhancementCombobox("gRandomizeLinksPocket", randoLinksPocket, RO_LINKS_POCKET_DUNGEON_REWARD);
+                UIWidgets::PaddedSeparator();
+                ImGui::EndDisabled();
 
                 UIWidgets::EnhancementCheckbox(Settings::StartingKokiriSword.GetName().c_str(), "gRandomizeStartingKokiriSword");
                 UIWidgets::PaddedSeparator();
@@ -5192,8 +5216,10 @@ void RandomizerSettingsWindow::DrawElement() {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildStartingItems", ImVec2(0, -8));
 
+                ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
                 UIWidgets::EnhancementCheckbox(Settings::StartingOcarina.GetName().c_str(), "gRandomizeStartingOcarina");
                 UIWidgets::PaddedSeparator();
+                ImGui::EndDisabled();
                 UIWidgets::EnhancementCheckbox(Settings::StartingConsumables.GetName().c_str(), "gRandomizeStartingConsumables");
                 UIWidgets::PaddedSeparator();
                 UIWidgets::EnhancementSliderInt("Gold Skulltula Tokens: %d", "##RandoStartingSkulltulaToken", "gRandomizeStartingSkulltulaToken", 0, 100, "", 0);
