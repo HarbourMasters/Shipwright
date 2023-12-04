@@ -245,7 +245,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 if (ImGui::InputInt("Horiz. Pixel Count", &horizontalPixelCount, 8, 320)) {
                     item_aspectRatio = default_aspectRatio;
                     if (horizontalPixelCount < SCREEN_WIDTH) {
-                        horizontalPixelCount = (minVerticalPixelCount / 3.0f) * 4.0f;
+                        horizontalPixelCount = SCREEN_WIDTH;
                     }
                     aspectRatioX = horizontalPixelCount;
                     aspectRatioY = verticalPixelCount;
