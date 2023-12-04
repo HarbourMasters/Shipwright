@@ -255,7 +255,7 @@ namespace UIWidgets {
         if (disabled) {
             ReEnableComponent(disabledTooltipText);
 
-            if (disabledValue >= 0 && selected != disabledValue) {
+            if (disabledValue != UINT8_MAX && selected != disabledValue) {
                 CVarSetInteger(cvarName, disabledValue);
                 changed = true;
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();

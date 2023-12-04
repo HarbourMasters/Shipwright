@@ -108,11 +108,26 @@ class Randomizer {
     bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
 };
 
+struct RandomSettingsOptions {
+    bool randomizeWorldSettings;
+    bool randomizeItemSettings;
+    bool randomizeGameplaySettings;
+    bool randomizeStartingInventorySettings;
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+void GenerateRandomizerImgui(std::string seed);
+void RandomizeWorldSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSettings);
+void RandomizeItemSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSettings);
+void RandomizeGameplaySettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSettings);
+void RandomizeInventorySettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSettings);
+void RandomizeDependentSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSettings,
+                                RandomSettingsOptions& options);
 bool GenerateRandomizer(std::string seed = "");
+int RandomDistribution(std::initializer_list<u8> balanceDistribution);
+int RandomizeItemCount(int max, int setNumberCount, std::initializer_list<u8> balanceDistribution);
 
 #ifdef __cplusplus
 }
