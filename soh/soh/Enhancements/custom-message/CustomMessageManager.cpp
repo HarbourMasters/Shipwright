@@ -19,7 +19,8 @@ static const std::unordered_map<std::string, char> colors = { { "w", QM_WHITE },
                                                               { "y", QM_YELLOW }, { "B", QM_BLACK } };
 static const std::unordered_map<std::string, char> variables = { { "TWO_WAY_CHOICE", '\x1B' }, { "COLOR", '\x05' },
                                                                  { "PLAYER", '\x0F' }, { "NEWLINE", '\x01' },
-                                                                 { "BOX_BREAK", '\x04' }, { "ITEM_ICON", '\x13' }, {"SFX", '\x12'}};
+                                                                 { "BOX_BREAK", '\x04' }, { "ITEM_ICON", '\x13' },
+                                                                 { "SFX", '\x12' }, { "THREE_WAY_CHOICE", '\x1C' } };
 static const std::unordered_map<std::string, char> colorValues = { { "DEFAULT", QM_WHITE }, { "RED", QM_RED },
                                                                    { "GREEN", QM_GREEN }, { "BLUE", QM_BLUE },
                                                                    { "CYAN", QM_LBLUE }, { "PINK", QM_PINK },
