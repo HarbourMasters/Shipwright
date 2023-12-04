@@ -59,8 +59,14 @@ void SkyboxDraw_Draw(SkyboxContext* skyboxCtx, GraphicsContext* gfxCtx, s16 skyb
         gSPDisplayList(POLY_OPA_DISP++, skyboxCtx->dListBuf[2]);
         gSPDisplayList(POLY_OPA_DISP++, skyboxCtx->dListBuf[3]);
 
-        if (skyboxId != SKYBOX_BAZAAR) {
-            if (skyboxId <= SKYBOX_HOUSE_KAKARIKO || skyboxId > SKYBOX_BOMBCHU_SHOP) {
+        //! @bug All shops only provide 2 faces for their sky box. Mask shop is missing from the condition
+        // meaning that the Mask shop will render the previously loaded sky box values, or uninitialized data.
+        // This effect is not noticed as the faces are behind the camera, but will cause a crash in SoH.
+        // SOH General: We have added the Mask shop to this check so only the 2 expected faces are rendered.
+        if (skyboxId != SKYBOX_BAZAAR && skyboxId != SKYBOX_HAPPY_MASK_SHOP) {
+            if (skyboxId < SKYBOX_KOKIRI_SHOP || skyboxId > SKYBOX_BOMBCHU_SHOP) {
+                // Skip remaining faces for most shop skyboxes
+
                 gDPPipeSync(POLY_OPA_DISP++);
                 gDPLoadTLUT_pal256(POLY_OPA_DISP++, skyboxCtx->palettes[2]);
                 gSPDisplayList(POLY_OPA_DISP++, skyboxCtx->dListBuf[4]);

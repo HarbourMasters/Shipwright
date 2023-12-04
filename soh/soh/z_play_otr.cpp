@@ -29,11 +29,13 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
 
     //osSyncPrintf("\nSCENE SIZE %fK\n", (scene->sceneFile.vromEnd - scene->sceneFile.vromStart) / 1024.0f);
 
-    std::string sceneVersion;
-    if (IsGameMasterQuest()) {
-        sceneVersion = "mq";
-    } else {
-        sceneVersion = "nonmq";
+    // Scenes considered "dungeon" with a MQ variant
+    int16_t inNonSharedScene = (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_ICE_CAVERN) ||
+                               sceneNum == SCENE_GERUDO_TRAINING_GROUND || sceneNum == SCENE_INSIDE_GANONS_CASTLE;
+
+    std::string sceneVersion = "shared";
+    if (inNonSharedScene) {
+        sceneVersion = IsGameMasterQuest() ? "mq" : "nonmq";
     }
     std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName, scene->sceneFile.fileName);
 

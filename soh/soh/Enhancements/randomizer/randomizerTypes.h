@@ -9,7 +9,14 @@
 // This should probably go in a less rando-specific location
 // but the best location will probably be in the modding engine
 // which doesn't exist yet.
-typedef enum { MOD_NONE, MOD_RANDOMIZER } ModIndex;
+typedef enum {
+    MOD_NONE,
+    MOD_RANDOMIZER
+} ModIndex;
+typedef enum {
+    TABLE_VANILLA = MOD_NONE,
+    TABLE_RANDOMIZER = MOD_RANDOMIZER
+} TableIndex;
 
 typedef struct {
     char tex[512];

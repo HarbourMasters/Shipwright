@@ -573,7 +573,7 @@ uint8_t Player_IsCustomLinkModel() {
 }
 
 s32 Player_InBlockingCsMode(PlayState* play, Player* this) {
-    return (this->stateFlags1 & 0x20000080) || (this->csMode != 0) || (play->sceneLoadFlag == 0x14) ||
+    return (this->stateFlags1 & 0x20000080) || (this->csAction != 0) || (play->transitionTrigger == TRANS_TRIGGER_START) ||
            (this->stateFlags1 & 1) || (this->stateFlags3 & 0x80) ||
            ((gSaveContext.magicState != MAGIC_STATE_IDLE) && (Player_ActionToMagicSpell(this, this->itemAction) >= 0));
 }
@@ -668,10 +668,10 @@ void func_8008EC70(Player* this) {
 }
 
 void Player_SetEquipmentData(PlayState* play, Player* this) {
-    if (this->csMode != 0x56) {
-        this->currentShield = CUR_EQUIP_VALUE(EQUIP_SHIELD);
-        this->currentTunic = CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1;
-        this->currentBoots = CUR_EQUIP_VALUE(EQUIP_BOOTS) - 1;
+    if (this->csAction != 0x56) {
+        this->currentShield = SHIELD_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD));
+        this->currentTunic = TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC));
+        this->currentBoots = BOOTS_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS));
         this->currentSwordItemId = B_BTN_ITEM;
         Player_SetModelGroup(this, Player_ActionToModelGroup(this, this->heldItemAction));
         Player_SetBootData(play, this);
@@ -742,6 +742,10 @@ s32 Player_IsBurningStickInRange(PlayState* play, Vec3f* pos, f32 xzRange, f32 y
 
 s32 Player_GetStrength(void) {
     s32 strengthUpgrade = CUR_UPG_VALUE(UPG_STRENGTH);
+
+    if (CVarGetInteger("gToggleStrength", 0) && CVarGetInteger("gStrengthDisabled", 0)) {
+        return PLAYER_STR_NONE;
+    }
 
     if (CVarGetInteger("gTimelessEquipment", 0) || LINK_IS_ADULT) {
         return strengthUpgrade;
@@ -889,8 +893,8 @@ s32 Player_GetEnvironmentalHazard(PlayState* play) {
 
     if (play->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3) { // Room is hot
         var = 0;
-    } else if ((this->unk_840 > 80) &&
-               ((this->currentBoots == PLAYER_BOOTS_IRON) || (this->unk_840 >= 300))) { // Deep underwater
+    } else if ((this->underwaterTimer > 80) &&
+               ((this->currentBoots == PLAYER_BOOTS_IRON) || (this->underwaterTimer >= 300))) { // Deep underwater
         var = ((this->currentBoots == PLAYER_BOOTS_IRON) && (this->actor.bgCheckFlags & 1)) ? 1 : 3;
     } else if (this->stateFlags1 & 0x8000000) { // Swimming
         var = 2;
@@ -2117,11 +2121,11 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
     if (CVarGetInteger("gPauseLiveLink", 0) || CVarGetInteger("gPauseTriforce", 0)) {
         uintptr_t anim = 0; // Initialise anim
 
-        if (CUR_EQUIP_VALUE(EQUIP_SWORD) >= 3) {
+        if (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) >= EQUIP_VALUE_SWORD_BIGGORON) {
             EquipedStance = 1;
-        } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 0) {
+        } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) == EQUIP_VALUE_SWORD_NONE) {
             EquipedStance = 2;
-        } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 2 && LINK_AGE_IN_YEARS == YEARS_CHILD) {
+        } else if (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) == EQUIP_VALUE_SWORD_MASTER && LINK_AGE_IN_YEARS == YEARS_CHILD) {
             EquipedStance = 3;
         } else {
             // Link is idle so revert to 0
@@ -2192,8 +2196,8 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
                 if (FrameCountSinceLastAnim >= SwitchAtFrame) {
                     LastAnim = SelectedAnim;
                     if (LastAnim==1) {
-                        if ((CUR_EQUIP_VALUE(EQUIP_SWORD)!=PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)!= PLAYER_SHIELD_NONE)) { // if the player has a sword and shield equipped
-                            if ((LINK_AGE_IN_YEARS == YEARS_ADULT) || (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU)) { // if he's an adult or a kid with the deku shield
+                        if ((CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) != EQUIP_VALUE_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) != EQUIP_VALUE_SHIELD_NONE)) { // if the player has a sword and shield equipped
+                            if ((LINK_AGE_IN_YEARS == YEARS_ADULT) || (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) == EQUIP_VALUE_SHIELD_DEKU)) { // if he's an adult or a kid with the deku shield
                                 SelectedAnim = (rand() % (6 - 2 + 1)) + 2; // select any 5 animations that aren't the default standing anim
                             } else { //else if he's a child with a shield that isn't the deku shield
                                 s16 randval = (rand() % (5 - 2 + 1)) + 2; // 4 animations
@@ -2203,15 +2207,15 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
                                     SelectedAnim=randval;
                                 }
                             }
-                        } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) != PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)==PLAYER_SHIELD_NONE)) { // if the player has a sword equipped but no shield
+                        } else if ((CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) != EQUIP_VALUE_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) == EQUIP_VALUE_SHIELD_NONE)) { // if the player has a sword equipped but no shield
                             s16 randval = (rand() % (5 - 2 + 1)) + 2; // 4 animations
                             if (randval==4) { //if its the shield anim
                                 SelectedAnim==6; // set to yawn anim
                             } else {
                                 SelectedAnim=randval;
                             }
-                        } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)!=PLAYER_SHIELD_NONE)) { //if the player has a shield equipped but no sword
-                            if ((LINK_AGE_IN_YEARS == YEARS_ADULT) || (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU)) {// if he's an adult or a kid with the deku shield
+                        } else if ((CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) == EQUIP_VALUE_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) != EQUIP_VALUE_SHIELD_NONE)) { //if the player has a shield equipped but no sword
+                            if ((LINK_AGE_IN_YEARS == YEARS_ADULT) || (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) == EQUIP_VALUE_SHIELD_DEKU)) {// if he's an adult or a kid with the deku shield
                             s16 randval = (rand() % (5 - 2 + 1)) + 2; // 4 animations
                             if (randval==5) { //if its the sword anim
                                 SelectedAnim==6; // set to yawn anim
@@ -2226,7 +2230,7 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
                                     SelectedAnim=randval;
                                 }
                             } 
-                        } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)==PLAYER_SHIELD_NONE)) { // if the player has no sword or shield equipped
+                        } else if ((CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) == EQUIP_VALUE_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) == EQUIP_VALUE_SHIELD_NONE)) { // if the player has no sword or shield equipped
                             s16 randval = (rand() % (4 - 2 + 1)) + 2; // 3 animations
                             if (randval==4) { //if its the shield anim
                                 SelectedAnim==6; // set to yawn anim
@@ -2297,7 +2301,7 @@ void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f*
                 srcTable = gLinkPauseChildJointTable;
             }
         } else {
-            if (sword == 3) {
+            if (sword == PLAYER_SWORD_BIGGORON) {
                 srcTable = gLinkPauseAdultBgsJointTable;
             } else if (shield != PLAYER_SHIELD_NONE) {
                 srcTable = gLinkPauseAdultShieldJointTable;
