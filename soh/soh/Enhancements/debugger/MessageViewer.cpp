@@ -71,6 +71,7 @@ void MessageViewer::DrawElement() {
     if (ImGui::Button("Display Message##CustomMessage")) {
         mDisplayCustomMessageClicked = true;
     }
+    ImGui::End();
     // ReSharper restore CppDFAUnreachableCode
 }
 
