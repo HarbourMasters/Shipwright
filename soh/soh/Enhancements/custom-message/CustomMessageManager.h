@@ -76,6 +76,11 @@ class CustomMessage {
     void ReplaceSpecialCharacters();
 
     /**
+     * @brief Replaces variables `@{VARIABLE:VALUE}` with control codes where applicable.
+     */
+    void ReplaceVariables();
+
+    /**
      * @brief Replaces our color variable strings with the OoT control codes.
      */
     void ReplaceColors();
