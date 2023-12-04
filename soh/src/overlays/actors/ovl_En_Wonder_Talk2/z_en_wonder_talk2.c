@@ -257,13 +257,13 @@ void func_80B3A4F8(EnWonderTalk2* this, PlayState* play) {
                 if (IS_RANDO) {
                     // Scenes for which all of this type of wonder talk should be skipped.
                     switch (play->sceneNum) {
-                        case 0x0007: // Shadow Temple
+                        case SCENE_SHADOW_TEMPLE: // Shadow Temple
                             randoSkipText = true;
                             break;
-                        case 0x000B: // Gerudo Training Grounds
+                        case SCENE_GERUDO_TRAINING_GROUND: // Gerudo Training Grounds
                             randoSkipText = true;
                             break;
-                        case 0x000C: // Inside Gerudo Fortress
+                        case SCENE_THIEVES_HIDEOUT: // Inside Gerudo Fortress
                             randoSkipText = true;
                             break;
                         default:
