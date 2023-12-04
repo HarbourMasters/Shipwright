@@ -50,7 +50,7 @@ private:
     char* mTextIdBuf;
     uint16_t mTextId;
     int mTextIdBase = HEXADECIMAL;
-    size_t mLanguage;
+    size_t mLanguage = LANGUAGE_ENG;
     char* mCustomMessageBuf;
     std::string mCustomMessageString;
     bool mDisplayExistingMessageClicked = false;

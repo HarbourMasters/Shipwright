@@ -10,6 +10,8 @@
 #include "variables.h"
 #include "soh/util.h"
 
+extern "C" u8 sMessageHasSetSfx;
+
 void MessageViewer::InitElement() {
     CustomMessageManager::Instance->AddCustomMessageTable(TABLE_ID);
     mTableIdBuf = static_cast<char*>(calloc(MAX_STRING_SIZE, sizeof(char)));
@@ -188,6 +190,7 @@ void MessageDebug_StartTextBox(const char* tableId, uint16_t textId, uint8_t lan
     MessageContext* msgCtx = &play->msgCtx;
     msgCtx->ocarinaAction = 0xFFFF;
     Font* font = &msgCtx->font;
+    sMessageHasSetSfx = 0;
     for (u32 i = 0; i < FONT_CHAR_TEX_SIZE * 120; i += FONT_CHAR_TEX_SIZE) {
         if (&font->charTexBuf[i] != nullptr) {
             gSPInvalidateTexCache(play->state.gfxCtx->polyOpa.p++, reinterpret_cast<uintptr_t>(&font->charTexBuf[i]));
