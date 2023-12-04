@@ -3,6 +3,87 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_fdTex_000458 "__OTR__objects/object_fd/object_fdTex_000458"
+static const ALIGN_ASSET(2) char object_fdTex_000458[] = dobject_fdTex_000458;
+
+#define dobject_fdTex_000658 "__OTR__objects/object_fd/object_fdTex_000658"
+static const ALIGN_ASSET(2) char object_fdTex_000658[] = dobject_fdTex_000658;
+
+#define dobject_fdTex_000A78 "__OTR__objects/object_fd/object_fdTex_000A78"
+static const ALIGN_ASSET(2) char object_fdTex_000A78[] = dobject_fdTex_000A78;
+
+#define dobject_fdTex_0040A8 "__OTR__objects/object_fd/object_fdTex_0040A8"
+static const ALIGN_ASSET(2) char object_fdTex_0040A8[] = dobject_fdTex_0040A8;
+
+#define dobject_fdTex_0048A8 "__OTR__objects/object_fd/object_fdTex_0048A8"
+static const ALIGN_ASSET(2) char object_fdTex_0048A8[] = dobject_fdTex_0048A8;
+
+#define dobject_fdTex_0050A8 "__OTR__objects/object_fd/object_fdTex_0050A8"
+static const ALIGN_ASSET(2) char object_fdTex_0050A8[] = dobject_fdTex_0050A8;
+
+#define dobject_fdTex_0052A8 "__OTR__objects/object_fd/object_fdTex_0052A8"
+static const ALIGN_ASSET(2) char object_fdTex_0052A8[] = dobject_fdTex_0052A8;
+
+#define dobject_fdTex_0054A8 "__OTR__objects/object_fd/object_fdTex_0054A8"
+static const ALIGN_ASSET(2) char object_fdTex_0054A8[] = dobject_fdTex_0054A8;
+
+#define dobject_fdTex_0056A8 "__OTR__objects/object_fd/object_fdTex_0056A8"
+static const ALIGN_ASSET(2) char object_fdTex_0056A8[] = dobject_fdTex_0056A8;
+
+#define dobject_fdTex_005B60 "__OTR__objects/object_fd/object_fdTex_005B60"
+static const ALIGN_ASSET(2) char object_fdTex_005B60[] = dobject_fdTex_005B60;
+
+#define dobject_fdTex_005D60 "__OTR__objects/object_fd/object_fdTex_005D60"
+static const ALIGN_ASSET(2) char object_fdTex_005D60[] = dobject_fdTex_005D60;
+
+#define dobject_fdTex_005F60 "__OTR__objects/object_fd/object_fdTex_005F60"
+static const ALIGN_ASSET(2) char object_fdTex_005F60[] = dobject_fdTex_005F60;
+
+#define dobject_fdTex_009208 "__OTR__objects/object_fd/object_fdTex_009208"
+static const ALIGN_ASSET(2) char object_fdTex_009208[] = dobject_fdTex_009208;
+
+#define dobject_fdTex_009780 "__OTR__objects/object_fd/object_fdTex_009780"
+static const ALIGN_ASSET(2) char object_fdTex_009780[] = dobject_fdTex_009780;
+
+#define dobject_fdTex_009980 "__OTR__objects/object_fd/object_fdTex_009980"
+static const ALIGN_ASSET(2) char object_fdTex_009980[] = dobject_fdTex_009980;
+
+#define dobject_fdTex_00A050 "__OTR__objects/object_fd/object_fdTex_00A050"
+static const ALIGN_ASSET(2) char object_fdTex_00A050[] = dobject_fdTex_00A050;
+
+#define dobject_fdTex_00A918 "__OTR__objects/object_fd/object_fdTex_00A918"
+static const ALIGN_ASSET(2) char object_fdTex_00A918[] = dobject_fdTex_00A918;
+
+#define dobject_fdTex_00AA18 "__OTR__objects/object_fd/object_fdTex_00AA18"
+static const ALIGN_ASSET(2) char object_fdTex_00AA18[] = dobject_fdTex_00AA18;
+
+#define dobject_fdTex_00B458 "__OTR__objects/object_fd/object_fdTex_00B458"
+static const ALIGN_ASSET(2) char object_fdTex_00B458[] = dobject_fdTex_00B458;
+
+#define dobject_fdTex_00BC58 "__OTR__objects/object_fd/object_fdTex_00BC58"
+static const ALIGN_ASSET(2) char object_fdTex_00BC58[] = dobject_fdTex_00BC58;
+
+#define dobject_fdTex_00BE58 "__OTR__objects/object_fd/object_fdTex_00BE58"
+static const ALIGN_ASSET(2) char object_fdTex_00BE58[] = dobject_fdTex_00BE58;
+
+#define dobject_fdTex_00C058 "__OTR__objects/object_fd/object_fdTex_00C058"
+static const ALIGN_ASSET(2) char object_fdTex_00C058[] = dobject_fdTex_00C058;
+
+#define dobject_fdTex_00D170 "__OTR__objects/object_fd/object_fdTex_00D170"
+static const ALIGN_ASSET(2) char object_fdTex_00D170[] = dobject_fdTex_00D170;
+
+#define dobject_fdTex_00D438 "__OTR__objects/object_fd/object_fdTex_00D438"
+static const ALIGN_ASSET(2) char object_fdTex_00D438[] = dobject_fdTex_00D438;
+
+#define dobject_fdTLUT_000438 "__OTR__objects/object_fd/object_fdTLUT_000438"
+static const ALIGN_ASSET(2) char object_fdTLUT_000438[] = dobject_fdTLUT_000438;
+
+#define dobject_fdTLUT_000A58 "__OTR__objects/object_fd/object_fdTLUT_000A58"
+static const ALIGN_ASSET(2) char object_fdTLUT_000A58[] = dobject_fdTLUT_000A58;
+
+#define dobject_fdTLUT_0032A8 "__OTR__objects/object_fd/object_fdTLUT_0032A8"
+static const ALIGN_ASSET(2) char object_fdTLUT_0032A8[] = dobject_fdTLUT_0032A8;
+
 #define dgVolvagiaTitleCardTex "__OTR__objects/object_fd/gVolvagiaTitleCardTex"
 static const ALIGN_ASSET(2) char gVolvagiaTitleCardTex[] = dgVolvagiaTitleCardTex;
 
@@ -150,72 +231,6 @@ static const ALIGN_ASSET(2) char gVolvagiaPlatformDL[] = dgVolvagiaPlatformDL;
 #define dgVolvagiaRockDL "__OTR__objects/object_fd/gVolvagiaRockDL"
 static const ALIGN_ASSET(2) char gVolvagiaRockDL[] = dgVolvagiaRockDL;
 
-#define dobject_fdTex_005B60 "__OTR__objects/object_fd/object_fdTex_005B60"
-static const ALIGN_ASSET(2) char object_fdTex_005B60[] = dobject_fdTex_005B60;
-
-#define dobject_fdTex_005F60 "__OTR__objects/object_fd/object_fdTex_005F60"
-static const ALIGN_ASSET(2) char object_fdTex_005F60[] = dobject_fdTex_005F60;
-
-#define dobject_fdTex_005D60 "__OTR__objects/object_fd/object_fdTex_005D60"
-static const ALIGN_ASSET(2) char object_fdTex_005D60[] = dobject_fdTex_005D60;
-
-#define dobject_fdTex_009208 "__OTR__objects/object_fd/object_fdTex_009208"
-static const ALIGN_ASSET(2) char object_fdTex_009208[] = dobject_fdTex_009208;
-
-#define dobject_fdTex_00AA18 "__OTR__objects/object_fd/object_fdTex_00AA18"
-static const ALIGN_ASSET(2) char object_fdTex_00AA18[] = dobject_fdTex_00AA18;
-
-#define dobject_fdTex_00C058 "__OTR__objects/object_fd/object_fdTex_00C058"
-static const ALIGN_ASSET(2) char object_fdTex_00C058[] = dobject_fdTex_00C058;
-
-#define dobject_fdTex_00BE58 "__OTR__objects/object_fd/object_fdTex_00BE58"
-static const ALIGN_ASSET(2) char object_fdTex_00BE58[] = dobject_fdTex_00BE58;
-
-#define dobject_fdTex_00BC58 "__OTR__objects/object_fd/object_fdTex_00BC58"
-static const ALIGN_ASSET(2) char object_fdTex_00BC58[] = dobject_fdTex_00BC58;
-
-#define dobject_fdTex_00B458 "__OTR__objects/object_fd/object_fdTex_00B458"
-static const ALIGN_ASSET(2) char object_fdTex_00B458[] = dobject_fdTex_00B458;
-
-#define dobject_fdTex_0040A8 "__OTR__objects/object_fd/object_fdTex_0040A8"
-static const ALIGN_ASSET(2) char object_fdTex_0040A8[] = dobject_fdTex_0040A8;
-
-#define dobject_fdTex_0048A8 "__OTR__objects/object_fd/object_fdTex_0048A8"
-static const ALIGN_ASSET(2) char object_fdTex_0048A8[] = dobject_fdTex_0048A8;
-
-#define dobject_fdTex_00A918 "__OTR__objects/object_fd/object_fdTex_00A918"
-static const ALIGN_ASSET(2) char object_fdTex_00A918[] = dobject_fdTex_00A918;
-
-#define dobject_fdTex_00D170 "__OTR__objects/object_fd/object_fdTex_00D170"
-static const ALIGN_ASSET(2) char object_fdTex_00D170[] = dobject_fdTex_00D170;
-
-#define dobject_fdTex_00D438 "__OTR__objects/object_fd/object_fdTex_00D438"
-static const ALIGN_ASSET(2) char object_fdTex_00D438[] = dobject_fdTex_00D438;
-
-#define dobject_fdTex_009780 "__OTR__objects/object_fd/object_fdTex_009780"
-static const ALIGN_ASSET(2) char object_fdTex_009780[] = dobject_fdTex_009780;
-
-#define dobject_fdTex_009980 "__OTR__objects/object_fd/object_fdTex_009980"
-static const ALIGN_ASSET(2) char object_fdTex_009980[] = dobject_fdTex_009980;
-
-#define dobject_fdTex_000A78 "__OTR__objects/object_fd/object_fdTex_000A78"
-static const ALIGN_ASSET(2) char object_fdTex_000A78[] = dobject_fdTex_000A78;
-
-#define dobject_fdTLUT_000A58 "__OTR__objects/object_fd/object_fdTLUT_000A58"
-static const ALIGN_ASSET(2) char object_fdTLUT_000A58[] = dobject_fdTLUT_000A58;
-
-#define dobject_fdTex_000658 "__OTR__objects/object_fd/object_fdTex_000658"
-static const ALIGN_ASSET(2) char object_fdTex_000658[] = dobject_fdTex_000658;
-
-#define dobject_fdTLUT_000438 "__OTR__objects/object_fd/object_fdTLUT_000438"
-static const ALIGN_ASSET(2) char object_fdTLUT_000438[] = dobject_fdTLUT_000438;
-
-#define dobject_fdTex_000458 "__OTR__objects/object_fd/object_fdTex_000458"
-static const ALIGN_ASSET(2) char object_fdTex_000458[] = dobject_fdTex_000458;
-
-#define dobject_fdTex_00A050 "__OTR__objects/object_fd/object_fdTex_00A050"
-static const ALIGN_ASSET(2) char object_fdTex_00A050[] = dobject_fdTex_00A050;
-
 #define dgVolvagiaLeftArmSkelLimbsLimb_011480DL_0024E8 "__OTR__objects/object_fd/gVolvagiaLeftArmSkelLimbsLimb_011480DL_0024E8"
 static const ALIGN_ASSET(2) char gVolvagiaLeftArmSkelLimbsLimb_011480DL_0024E8[] = dgVolvagiaLeftArmSkelLimbsLimb_011480DL_0024E8;
 
@@ -267,19 +282,5 @@ static const ALIGN_ASSET(2) char gVolvagiaHeadSkelLimbsLimb_011630DL_0020A8[] = 
 #define dgVolvagiaHeadSkelLimbsLimb_01163CDL_001DB0 "__OTR__objects/object_fd/gVolvagiaHeadSkelLimbsLimb_01163CDL_001DB0"
 static const ALIGN_ASSET(2) char gVolvagiaHeadSkelLimbsLimb_01163CDL_001DB0[] = dgVolvagiaHeadSkelLimbsLimb_01163CDL_001DB0;
 
-#define dobject_fdTex_0050A8 "__OTR__objects/object_fd/object_fdTex_0050A8"
-static const ALIGN_ASSET(2) char object_fdTex_0050A8[] = dobject_fdTex_0050A8;
-
-#define dobject_fdTex_0054A8 "__OTR__objects/object_fd/object_fdTex_0054A8"
-static const ALIGN_ASSET(2) char object_fdTex_0054A8[] = dobject_fdTex_0054A8;
-
-#define dobject_fdTex_0052A8 "__OTR__objects/object_fd/object_fdTex_0052A8"
-static const ALIGN_ASSET(2) char object_fdTex_0052A8[] = dobject_fdTex_0052A8;
-
-#define dobject_fdTex_0056A8 "__OTR__objects/object_fd/object_fdTex_0056A8"
-static const ALIGN_ASSET(2) char object_fdTex_0056A8[] = dobject_fdTex_0056A8;
-
-#define dobject_fdTLUT_0032A8 "__OTR__objects/object_fd/object_fdTLUT_0032A8"
-static const ALIGN_ASSET(2) char object_fdTLUT_0032A8[] = dobject_fdTLUT_0032A8;
 
 #endif // OBJECTS_OBJECT_FD_H

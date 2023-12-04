@@ -948,12 +948,12 @@ void EnOssan_State_StartConversation(EnOssan* this, PlayState* play, Player* pla
             case OSSAN_HAPPY_STATE_ANGRY:
                 // In ER, handle happy mask throwing link out with not enough rupees
                 if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-                    play->nextEntranceIndex = Entrance_OverrideNextIndex(0x1D1);
+                    play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_MARKET_DAY_9);
                 } else {
-                    play->nextEntranceIndex = 0x1D1;
+                    play->nextEntranceIndex = ENTR_MARKET_DAY_9;
                 }
-                play->sceneLoadFlag = 0x14;
-                play->fadeTransition = 0x2E;
+                play->transitionTrigger = TRANS_TRIGGER_START;
+                play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
                 return;
         }
 
@@ -2531,6 +2531,15 @@ void EnOssan_DrawKokiriShopkeeper(Actor* thisx, PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+s32 EnGo2_OverrideLimbDrawGoronShopkeeper (PlayState* play, s32 limb, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+    EnOssan* this = (EnOssan*)thisx;
+
+    if (limb == 17) {
+        Matrix_Translate(CVarGetFloat("gCosmetics.Goron_NeckLength", 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
+    }
+    return 0;
+}
+
 void EnOssan_DrawGoronShopkeeper(Actor* thisx, PlayState* play) {
     static void* sGoronShopkeeperEyeTextures[] = { gGoronCsEyeOpenTex, gGoronCsEyeHalfTex, gGoronCsEyeClosedTex };
     EnOssan* this = (EnOssan*)thisx;
@@ -2541,7 +2550,7 @@ void EnOssan_DrawGoronShopkeeper(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sGoronShopkeeperEyeTextures[this->eyeTextureIdx]));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gGoronCsMouthNeutralTex));
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnGo2_OverrideLimbDrawGoronShopkeeper, NULL, this);
     EnOssan_DrawCursor(play, this, this->cursorX, this->cursorY, this->cursorZ, this->drawCursor);
     EnOssan_DrawStickDirectionPrompts(play, this);
 

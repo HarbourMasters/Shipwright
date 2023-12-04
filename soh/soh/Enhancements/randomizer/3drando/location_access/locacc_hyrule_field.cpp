@@ -138,7 +138,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(LH_FISHING_HOLE, {[]{return true;}}),
   });
 
-  areaTable[LH_OWL_FLIGHT] = Area("LH Owl Flight", "Lake Hylia", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[LH_OWL_FLIGHT] = Area("LH Owl Flight", "Lake Hylia", LAKE_HYLIA, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(HYRULE_FIELD, {[]{return true;}}),
   });

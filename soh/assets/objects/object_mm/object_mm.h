@@ -3,6 +3,33 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_mmTex_000930 "__OTR__objects/object_mm/object_mmTex_000930"
+static const ALIGN_ASSET(2) char object_mmTex_000930[] = dobject_mmTex_000930;
+
+#define dobject_mmTex_000970 "__OTR__objects/object_mm/object_mmTex_000970"
+static const ALIGN_ASSET(2) char object_mmTex_000970[] = dobject_mmTex_000970;
+
+#define dobject_mmTex_0009B0 "__OTR__objects/object_mm/object_mmTex_0009B0"
+static const ALIGN_ASSET(2) char object_mmTex_0009B0[] = dobject_mmTex_0009B0;
+
+#define dobject_mmTex_0009F0 "__OTR__objects/object_mm/object_mmTex_0009F0"
+static const ALIGN_ASSET(2) char object_mmTex_0009F0[] = dobject_mmTex_0009F0;
+
+#define dobject_mmTex_000A30 "__OTR__objects/object_mm/object_mmTex_000A30"
+static const ALIGN_ASSET(2) char object_mmTex_000A30[] = dobject_mmTex_000A30;
+
+#define dobject_mmTex_000B30 "__OTR__objects/object_mm/object_mmTex_000B30"
+static const ALIGN_ASSET(2) char object_mmTex_000B30[] = dobject_mmTex_000B30;
+
+#define dobject_mmTex_001030 "__OTR__objects/object_mm/object_mmTex_001030"
+static const ALIGN_ASSET(2) char object_mmTex_001030[] = dobject_mmTex_001030;
+
+#define dobject_mmTex_001130 "__OTR__objects/object_mm/object_mmTex_001130"
+static const ALIGN_ASSET(2) char object_mmTex_001130[] = dobject_mmTex_001130;
+
+#define dobject_mmTex_001330 "__OTR__objects/object_mm/object_mmTex_001330"
+static const ALIGN_ASSET(2) char object_mmTex_001330[] = dobject_mmTex_001330;
+
 #define dgRunningManSkel "__OTR__objects/object_mm/gRunningManSkel"
 static const ALIGN_ASSET(2) char gRunningManSkel[] = dgRunningManSkel;
 
@@ -78,31 +105,5 @@ static const ALIGN_ASSET(2) char gRunningManSkelLimbsLimb_005DC4DL_004CC8[] = dg
 #define dgRunningManSkelLimbsLimb_005DD0DL_004348 "__OTR__objects/object_mm/gRunningManSkelLimbsLimb_005DD0DL_004348"
 static const ALIGN_ASSET(2) char gRunningManSkelLimbsLimb_005DD0DL_004348[] = dgRunningManSkelLimbsLimb_005DD0DL_004348;
 
-#define dobject_mmTex_001330 "__OTR__objects/object_mm/object_mmTex_001330"
-static const ALIGN_ASSET(2) char object_mmTex_001330[] = dobject_mmTex_001330;
-
-#define dobject_mmTex_001130 "__OTR__objects/object_mm/object_mmTex_001130"
-static const ALIGN_ASSET(2) char object_mmTex_001130[] = dobject_mmTex_001130;
-
-#define dobject_mmTex_000930 "__OTR__objects/object_mm/object_mmTex_000930"
-static const ALIGN_ASSET(2) char object_mmTex_000930[] = dobject_mmTex_000930;
-
-#define dobject_mmTex_000970 "__OTR__objects/object_mm/object_mmTex_000970"
-static const ALIGN_ASSET(2) char object_mmTex_000970[] = dobject_mmTex_000970;
-
-#define dobject_mmTex_001030 "__OTR__objects/object_mm/object_mmTex_001030"
-static const ALIGN_ASSET(2) char object_mmTex_001030[] = dobject_mmTex_001030;
-
-#define dobject_mmTex_0009B0 "__OTR__objects/object_mm/object_mmTex_0009B0"
-static const ALIGN_ASSET(2) char object_mmTex_0009B0[] = dobject_mmTex_0009B0;
-
-#define dobject_mmTex_0009F0 "__OTR__objects/object_mm/object_mmTex_0009F0"
-static const ALIGN_ASSET(2) char object_mmTex_0009F0[] = dobject_mmTex_0009F0;
-
-#define dobject_mmTex_000A30 "__OTR__objects/object_mm/object_mmTex_000A30"
-static const ALIGN_ASSET(2) char object_mmTex_000A30[] = dobject_mmTex_000A30;
-
-#define dobject_mmTex_000B30 "__OTR__objects/object_mm/object_mmTex_000B30"
-static const ALIGN_ASSET(2) char object_mmTex_000B30[] = dobject_mmTex_000B30;
 
 #endif // OBJECTS_OBJECT_MM_H
