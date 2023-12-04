@@ -893,7 +893,7 @@ void func_80083108(PlayState* play) {
                     Interface_ChangeAlpha(6);
                 }
 
-                if (play->transitionMode != 0) {
+                if (play->transitionMode != TRANS_MODE_OFF) {
                     Interface_ChangeAlpha(1);
                 } else if (gSaveContext.minigameState == 1) {
                     Interface_ChangeAlpha(8);
@@ -1344,7 +1344,7 @@ void func_80083108(PlayState* play) {
 
     if (sp28) {
         gSaveContext.unk_13EA = 0;
-        if ((play->sceneLoadFlag == 0) && (play->transitionMode == 0)) {
+        if ((play->transitionTrigger == TRANS_TRIGGER_OFF) && (play->transitionMode == TRANS_MODE_OFF)) {
             Interface_ChangeAlpha(50);
             osSyncPrintf("????????  alpha_change( 50 );  ?????\n");
         } else {
@@ -1526,13 +1526,13 @@ void Inventory_SwapAgeEquipment(void) {
     } else {
         // When becoming child, set swordless flag if player doesn't have kokiri sword
         // Only in rando to keep swordless link bugs in vanilla
-        if (IS_RANDO && (EQUIP_INV_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4) & gSaveContext.inventory.equipment) == 0) {
+        if (IS_RANDO && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) {
             Flags_SetInfTable(INFTABLE_SWORDLESS);
         }
 
         // When using enhancements, set swordless flag if player doesn't have kokiri sword or hasn't equipped a sword yet.
         // Then set the child equips button items to item none to ensure kokiri sword is not equipped
-        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && ((EQUIP_INV_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4) & gSaveContext.inventory.equipment) == 0 || Flags_GetInfTable(INFTABLE_SWORDLESS))) {
+        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0 || Flags_GetInfTable(INFTABLE_SWORDLESS))) {
             Flags_SetInfTable(INFTABLE_SWORDLESS);
             gSaveContext.childEquips.buttonItems[0] = ITEM_NONE;
         }
@@ -1568,7 +1568,7 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
             gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
             // Equips kokiri sword in the inventory screen only if kokiri sword exists in inventory and a sword has been equipped already
-            if (!((EQUIP_INV_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4) & gSaveContext.inventory.equipment) == 0) && !Flags_GetInfTable(INFTABLE_SWORDLESS)) {
+            if (!(CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) && !Flags_GetInfTable(INFTABLE_SWORDLESS)) {
                 gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4);
             }
         } else if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
@@ -1598,7 +1598,7 @@ void Inventory_SwapAgeEquipment(void) {
             (only kokiri tunic/boots equipped, no sword, no C-button items, no D-Pad items).
             When becoming child, set swordless flag if player doesn't have kokiri sword
             Only in rando to keep swordless link bugs in vanilla*/
-            if (EQUIP_INV_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4) & gSaveContext.inventory.equipment == 0) {
+            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) {
                 Flags_SetInfTable(INFTABLE_SWORDLESS);
             }
 
@@ -1724,7 +1724,7 @@ void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
     }
     // Use ITEM_KEY_BOSS only for Ganon's boss key - not any other boss keys
     if (play != NULL) {
-        if (item == ITEM_KEY_BOSS && play->sceneNum != 13 && play->sceneNum != 10) {
+        if (item == ITEM_KEY_BOSS && play->sceneNum != SCENE_INSIDE_GANONS_CASTLE && play->sceneNum != SCENE_GANONS_TOWER) {
             return;
         }
     }
@@ -1801,15 +1801,25 @@ u8 Return_Item_Entry(GetItemEntry itemEntry, ItemID returnItem ) {
 u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
     // ITEM_SOLD_OUT doesn't have an ItemTable entry, so pass custom entry instead
     if (itemID == ITEM_SOLD_OUT) {
-        GetItemEntry gie = { ITEM_SOLD_OUT, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_LESSER, NULL };
+        GetItemEntry gie = { ITEM_SOLD_OUT, 0, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_LESSER, NULL };
         return Return_Item_Entry(gie, returnItem);
     }
-    int32_t get = GetGIID(itemID);
-    if (get == -1) {
-        modId = MOD_RANDOMIZER;
-        get = itemID;
+
+    GetItemID getItemID = RetrieveGetItemIDFromItemID(itemID);
+    if (getItemID != GI_MAX) {
+        // Vanilla ItemID with an associated GetItemID
+        return Return_Item_Entry(ItemTable_RetrieveEntry(modId, getItemID), returnItem);
     }
-    return Return_Item_Entry(ItemTable_RetrieveEntry(modId, get), returnItem);
+
+    RandomizerGet randomizerGet = RetrieveRandomizerGetFromItemID(itemID);
+    if (randomizerGet != RG_MAX) {
+        // Vanilla ItemID with an associated RandomizerGet (These are items in extendedVanillaGetItemTable)
+        return Return_Item_Entry(ItemTable_RetrieveEntry(MOD_RANDOMIZER, randomizerGet), returnItem);
+    }
+
+    // All randomizer items should go through Randomizer_Item_Give, so this should never be reached
+    // but leaving this here just in case, as it was in the original behavior
+    return Return_Item_Entry(ItemTable_RetrieveEntry(MOD_RANDOMIZER, itemID), returnItem);
 }
 
 /**
@@ -2605,6 +2615,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         if (gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED)) {
             gSaveContext.sohStats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
             gSaveContext.sohStats.gameComplete = 1;
+            Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
             Play_PerformSave(play);
             GameInteractor_SetTriforceHuntCreditsWarpActive(true);
         }
@@ -3463,7 +3474,7 @@ void Interface_UpdateMagicBar(PlayState* play) {
         case MAGIC_STATE_CONSUME_LENS:
             if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
                 (msgCtx->msgMode == MSGMODE_NONE) && (play->gameOverCtx.state == GAMEOVER_INACTIVE) &&
-                (play->sceneLoadFlag == 0) && (play->transitionMode == 0) && !Play_InCsMode(play)) {
+                (play->transitionTrigger == TRANS_TRIGGER_OFF) && (play->transitionMode == TRANS_MODE_OFF) && !Play_InCsMode(play)) {
                 bool hasLens = false;
                 for (int buttonIndex = 1; buttonIndex < (CVarGetInteger("gDpadEquips", 0) != 0) ? ARRAY_COUNT(gSaveContext.equips.buttonItems) : 4; buttonIndex++) {
                     if (gSaveContext.equips.buttonItems[buttonIndex] == ITEM_LENS) {
@@ -5071,7 +5082,7 @@ void Interface_Draw(PlayState* play) {
         aButtonColor = (Color_RGB8){ 0, 200, 50 };
     }
 
-    static s16 spoilingItemEntrances[] = { 0x01AD, 0x0153, 0x0153 };
+    static s16 spoilingItemEntrances[] = { ENTR_LOST_WOODS_2, ENTR_ZORAS_DOMAIN_3, ENTR_ZORAS_DOMAIN_3 };
     static f32 D_80125B54[] = { -40.0f, -35.0f }; // unused
     static s16 D_80125B5C[] = { 91, 91 };         // unused
     static s16 D_8015FFE0;
@@ -5788,8 +5799,8 @@ void Interface_Draw(PlayState* play) {
             // Trade quest timer reached 0
             D_8015FFE6 = 40;
             gSaveContext.cutsceneIndex = 0;
-            play->sceneLoadFlag = 0x14;
-            play->fadeTransition = 3;
+            play->transitionTrigger = TRANS_TRIGGER_START;
+            play->transitionType = TRANS_TYPE_FADE_WHITE;
             gSaveContext.timer2State = 0;
 
             if ((gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) &&
@@ -5824,8 +5835,8 @@ void Interface_Draw(PlayState* play) {
 
         if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
             (play->gameOverCtx.state == GAMEOVER_INACTIVE) && (msgCtx->msgMode == MSGMODE_NONE) &&
-            !(player->stateFlags2 & 0x01000000) && (play->sceneLoadFlag == 0) &&
-            (play->transitionMode == 0) && !Play_InCsMode(play) && (gSaveContext.minigameState != 1) &&
+            !(player->stateFlags2 & 0x01000000) && (play->transitionTrigger == TRANS_TRIGGER_OFF) &&
+            (play->transitionMode == TRANS_MODE_OFF) && !Play_InCsMode(play) && (gSaveContext.minigameState != 1) &&
             (play->shootingGalleryStatus <= 1) &&
             !((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
             svar6 = 0;
@@ -6516,8 +6527,8 @@ void Interface_Update(PlayState* play) {
     HealthMeter_Update(play);
 
     if ((gSaveContext.timer1State >= 3) && (play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
-        (msgCtx->msgMode == MSGMODE_NONE) && !(player->stateFlags2 & 0x01000000) && (play->sceneLoadFlag == 0) &&
-        (play->transitionMode == 0) && !Play_InCsMode(play)) {}
+        (msgCtx->msgMode == MSGMODE_NONE) && !(player->stateFlags2 & 0x01000000) && (play->transitionTrigger == TRANS_TRIGGER_OFF) &&
+        (play->transitionMode == TRANS_MODE_OFF) && !Play_InCsMode(play)) {}
 
     if (gSaveContext.rupeeAccumulator != 0) {
         if (gSaveContext.rupeeAccumulator > 0) {
@@ -6555,11 +6566,15 @@ void Interface_Update(PlayState* play) {
             gSaveContext.pendingSale = ITEM_NONE;
             gSaveContext.pendingSaleMod = MOD_NONE;
             if (tempSaleMod == MOD_NONE) {
-                s16 giid = GetGIID(tempSaleItem);
-                if (giid == -1) {
-                    tempSaleMod = MOD_RANDOMIZER;
+                GetItemID getItemID = RetrieveGetItemIDFromItemID(tempSaleItem);
+                RandomizerGet randomizerGet = RetrieveRandomizerGetFromItemID(tempSaleItem);
+                if (getItemID != GI_MAX) {
+                    tempSaleItem = getItemID;
                 } else {
-                    tempSaleItem = giid;
+                    if (randomizerGet != RG_MAX) {
+                        tempSaleItem = randomizerGet;
+                    }
+                    tempSaleMod = MOD_RANDOMIZER;
                 }
             }
             GameInteractor_ExecuteOnSaleEndHooks(ItemTable_RetrieveEntry(tempSaleMod, tempSaleItem));
@@ -6612,8 +6627,8 @@ void Interface_Update(PlayState* play) {
     WREG(7) = interfaceCtx->unk_1F4;
 
     if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
-        (msgCtx->msgMode == MSGMODE_NONE) && (play->sceneLoadFlag == 0) &&
-        (play->gameOverCtx.state == GAMEOVER_INACTIVE) && (play->transitionMode == 0) &&
+        (msgCtx->msgMode == MSGMODE_NONE) && (play->transitionTrigger == TRANS_TRIGGER_OFF) &&
+        (play->gameOverCtx.state == GAMEOVER_INACTIVE) && (play->transitionMode == TRANS_MODE_OFF) &&
         ((play->csCtx.state == CS_STATE_IDLE) || !Player_InCsMode(play))) {
         if ((gSaveContext.isMagicAcquired != 0) && (gSaveContext.magicLevel == 0)) {
             gSaveContext.magicLevel = gSaveContext.isDoubleMagicAcquired + 1;
@@ -6710,19 +6725,19 @@ void Interface_Update(PlayState* play) {
                    (interfaceCtx->restrictions.sunsSong != 3)) {
             if ((gSaveContext.dayTime >= 0x4555) && (gSaveContext.dayTime < 0xC001)) {
                 gSaveContext.nextDayTime = 0;
-                play->fadeTransition = 4;
-                gSaveContext.nextTransitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
                 play->unk_11DE9 = 1;
             } else {
                 gSaveContext.nextDayTime = 0x8001;
-                play->fadeTransition = 5;
-                gSaveContext.nextTransitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
                 play->unk_11DE9 = 1;
             }
 
             if (play->sceneNum == SCENE_HAUNTED_WASTELAND) {
-                play->fadeTransition = 14;
-                gSaveContext.nextTransitionType = 14;
+                play->transitionType = TRANS_TYPE_SANDSTORM_PERSIST;
+                gSaveContext.nextTransitionType = TRANS_TYPE_SANDSTORM_PERSIST;
             }
 
             gSaveContext.respawnFlag = -2;
@@ -6733,7 +6748,7 @@ void Interface_Update(PlayState* play) {
                 Grotto_ForceGrottoReturn();
             }
 
-            play->sceneLoadFlag = 0x14;
+            play->transitionTrigger = TRANS_TRIGGER_START;
             gSaveContext.sunsSongState = SUNSSONG_INACTIVE;
             func_800F6964(30);
             gSaveContext.seqId = (u8)NA_BGM_DISABLED;

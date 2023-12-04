@@ -39,14 +39,15 @@ uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 // TODO: When there's more uses of something like this, create a new GI::RawAction?
 void ReloadSceneTogglingLinkAge() {
     gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
-    gPlayState->sceneLoadFlag = 0x14;
-    gPlayState->fadeTransition = 42; // Fade Out
-    gSaveContext.nextTransitionType = 42;
+    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+    gPlayState->transitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST); // Fade Out
+    gSaveContext.nextTransitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST);
     gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
 }
 
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!GameInteractor::IsSaveLoaded()) return;
         if (CVarGetInteger("gInfiniteMoney", 0) != 0) {
             if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
                 gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
@@ -57,6 +58,7 @@ void RegisterInfiniteMoney() {
 
 void RegisterInfiniteHealth() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!GameInteractor::IsSaveLoaded()) return;
         if (CVarGetInteger("gInfiniteHealth", 0) != 0) {
             if (gSaveContext.health < gSaveContext.healthCapacity) {
                 gSaveContext.health = gSaveContext.healthCapacity;
@@ -67,6 +69,7 @@ void RegisterInfiniteHealth() {
 
 void RegisterInfiniteAmmo() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!GameInteractor::IsSaveLoaded()) return;
         if (CVarGetInteger("gInfiniteAmmo", 0) != 0) {
             // Deku Sticks
             if (AMMO(ITEM_STICK) < CUR_CAPACITY(UPG_STICKS)) {
@@ -103,6 +106,7 @@ void RegisterInfiniteAmmo() {
 
 void RegisterInfiniteMagic() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!GameInteractor::IsSaveLoaded()) return;
         if (CVarGetInteger("gInfiniteMagic", 0) != 0) {
             if (gSaveContext.isMagicAcquired && gSaveContext.magic != (gSaveContext.isDoubleMagicAcquired + 1) * 0x30) {
                 gSaveContext.magic = (gSaveContext.isDoubleMagicAcquired + 1) * 0x30;
@@ -113,6 +117,7 @@ void RegisterInfiniteMagic() {
 
 void RegisterInfiniteNayrusLove() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!GameInteractor::IsSaveLoaded()) return;
         if (CVarGetInteger("gInfiniteNayru", 0) != 0) {
             gSaveContext.nayrusLoveTimer = 0x44B;
         }
@@ -121,7 +126,7 @@ void RegisterInfiniteNayrusLove() {
 
 void RegisterMoonJumpOnL() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!gPlayState) return;
+        if (!GameInteractor::IsSaveLoaded()) return;
         
         if (CVarGetInteger("gMoonJumpOnL", 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
@@ -136,7 +141,7 @@ void RegisterMoonJumpOnL() {
 
 void RegisterInfiniteISG() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!gPlayState) return;
+        if (!GameInteractor::IsSaveLoaded()) return;
 
         if (CVarGetInteger("gEzISG", 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
@@ -148,7 +153,7 @@ void RegisterInfiniteISG() {
 //Permanent quick put away (QPA) glitched damage value
 void RegisterEzQPA() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!gPlayState) return;
+        if (!GameInteractor::IsSaveLoaded()) return;
 
         if (CVarGetInteger("gEzQPA", 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
@@ -160,7 +165,7 @@ void RegisterEzQPA() {
 
 void RegisterUnrestrictedItems() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!gPlayState) return;
+        if (!GameInteractor::IsSaveLoaded()) return;
 
         if (CVarGetInteger("gNoRestrictItems", 0) != 0) {
             u8 sunsBackup = gPlayState->interfaceCtx.restrictions.sunsSong;
@@ -188,13 +193,15 @@ void RegisterFreezeTime() {
 /// Switches Link's age and respawns him at the last entrance he entered.
 void RegisterSwitchAge() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!GameInteractor::IsSaveLoaded()) {
+            CVarClear("gSwitchAge");
+            return;
+        }
         static bool warped = false;
         static Vec3f playerPos;
         static int16_t playerYaw;
         static RoomContext* roomCtx;
         static s32 roomNum;
-
-        if (!gPlayState) return;
 
         if (CVarGetInteger("gSwitchAge", 0) && !warped) {
             playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
@@ -205,8 +212,8 @@ void RegisterSwitchAge() {
             warped = true;
         }
 
-        if (warped && gPlayState->sceneLoadFlag != 0x0014 &&
-            gSaveContext.nextTransitionType == 255) {
+        if (warped && gPlayState->transitionTrigger != TRANS_TRIGGER_START &&
+            gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT) {
             GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
             GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
             if (roomNum != roomCtx->curRoom.num) {
@@ -215,7 +222,7 @@ void RegisterSwitchAge() {
                 func_80097534(gPlayState, roomCtx);  // load map for new room (unloading the previous room)
             }
             warped = false;
-            CVarSetInteger("gSwitchAge", 0);
+            CVarClear("gSwitchAge");
         }
     });
 }
@@ -224,7 +231,8 @@ void RegisterSwitchAge() {
 void RegisterOcarinaTimeTravel() {
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnOcarinaSongAction>([]() {
-        if (!gPlayState) {
+        if (!GameInteractor::IsSaveLoaded()) {
+            CVarClear("gTimeTravel");
             return;
         }
 
@@ -628,10 +636,10 @@ void RegisterTriforceHunt() {
 
             // Warp to credits
             if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
-                gPlayState->nextEntranceIndex = 0x6B;
+                gPlayState->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
-                gPlayState->sceneLoadFlag = 0x14;
-                gPlayState->fadeTransition = 3;
+                gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+                gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
                 GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
             }
 
@@ -644,16 +652,19 @@ void RegisterTriforceHunt() {
                 triforcePieceScale = 0.0f;
                 GameInteractor::State::TriforceHuntPieceGiven = 0;
             }
+        }
+    });
+}
 
-            uint8_t currentPieces = gSaveContext.triforcePiecesCollected;
-            uint8_t requiredPieces = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
-            
-            // Give Boss Key when player loads back into the savefile.
-            if (currentPieces >= requiredPieces && gPlayState->sceneLoadFlag != 0x14 &&
-                (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
-                GetItemEntry getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
+void RegisterGrantGanonsBossKey() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        // Triforce Hunt needs the check if the player isn't being teleported to the credits scene.
+        if (!GameInteractor::IsGameplayPaused() && IS_RANDO &&
+            Flags_GetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY) && gPlayState->transitionTrigger != TRANS_TRIGGER_START &&
+            (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
+                GetItemEntry getItemEntry =
+                    ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
                 GiveItemEntryWithoutActor(gPlayState, getItemEntry);
-            }
         }
     });
 }
@@ -1025,8 +1036,16 @@ void RegisterRandomizedEnemySizes() {
         Player* player = GET_PLAYER(gPlayState);
         Actor* actor = static_cast<Actor*>(refActor);
 
-        // Only apply to enemies and bosses. Exclude the wobbly platforms in Jabu because they need to act like platforms.
-        if (!CVarGetInteger("gRandomizedEnemySizes", 0) || (actor->category != ACTORCAT_ENEMY && actor->category != ACTORCAT_BOSS) || actor->id == ACTOR_EN_BROB) {
+        // Exclude wobbly platforms in Jabu because they need to act like platforms.
+        // Exclude Dead Hand hands and Bongo Bongo main body because they make the fights (near) impossible.
+        uint8_t excludedEnemy = actor->id == ACTOR_EN_BROB || actor->id == ACTOR_EN_DHA || (actor->id == ACTOR_BOSS_SST && actor->params == -1);
+
+        // Dodongo, Volvagia and Dead Hand are always smaller because they're impossible when bigger.
+        uint8_t smallOnlyEnemy =
+            actor->id == ACTOR_BOSS_DODONGO || actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || ACTOR_EN_DH;
+
+        // Only apply to enemies and bosses.
+        if (!CVarGetInteger("gRandomizedEnemySizes", 0) || (actor->category != ACTORCAT_ENEMY && actor->category != ACTORCAT_BOSS) || excludedEnemy) {
             return;
         }
 
@@ -1035,9 +1054,8 @@ void RegisterRandomizedEnemySizes() {
 
         uint8_t bigActor = rand() % 2;
 
-        // Big actor. Dodongo and Volvagia are always smaller because they're impossible when bigger.
-        if (bigActor && actor->id != ACTOR_BOSS_DODONGO && actor->id != ACTOR_BOSS_FD &&
-            actor->id != ACTOR_BOSS_FD2) {
+        // Big actor
+        if (bigActor && !smallOnlyEnemy) {
             randomNumber = rand() % 200;
             // Between 100% and 300% size.
             randomScale = 1.0f + (randomNumber / 100);
@@ -1076,6 +1094,7 @@ void InitMods() {
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
     RegisterTriforceHunt();
+    RegisterGrantGanonsBossKey();
     RegisterEnemyDefeatCounts();
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
