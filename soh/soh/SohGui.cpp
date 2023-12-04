@@ -202,6 +202,7 @@ namespace SohGui {
         mGameplayStatsWindow = nullptr;
         mDLViewerWindow = nullptr;
         mValueViewerWindow = nullptr;
+        mMessageViewerWindow = nullptr;
         mSaveEditorWindow = nullptr;
         mColViewerWindow = nullptr;
         mActorViewerWindow = nullptr;
