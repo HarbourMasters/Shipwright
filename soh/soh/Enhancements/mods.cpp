@@ -45,6 +45,12 @@ void ReloadSceneTogglingLinkAge() {
     gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
 }
 
+bool ShouldUpdateCustomSkeletonsNextFrame = false;
+
+void SetRefreshCustomSkeletonFlag() {
+    ShouldUpdateCustomSkeletonsNextFrame = true;
+}
+
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded()) return;

@@ -7,6 +7,7 @@
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/mods.h"
 #include "soh/Enhancements/randomizer/draw.h"
 
 #include <stdlib.h>
@@ -1905,6 +1906,7 @@ u32 func_80091738(PlayState* play, u8* segment, SkelAnime* skelAnime) {
     gSegments[4] = VIRTUAL_TO_PHYSICAL(segment + 0x3800);
     gSegments[6] = VIRTUAL_TO_PHYSICAL(segment + 0x8800);
 
+    SetRefreshCustomSkeletonFlag();
     SkelAnime_InitLink(play, skelAnime, gPlayerSkelHeaders[gSaveContext.linkAge], &gPlayerAnim_link_normal_wait, 9,
                        ptr, ptr, PLAYER_LIMB_MAX);
 

@@ -1196,6 +1196,7 @@ extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
 }
 
 extern bool ShouldClearTextureCacheAtEndOfFrame;
+extern bool ShouldUpdateCustomSkeletonsNextFrame;
 
 extern "C" void Graph_StartFrame() {
 #ifndef __WIIU__
@@ -1295,7 +1296,6 @@ void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>
         gfx_end_frame();
     }
 }
-
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     {
@@ -1354,7 +1354,13 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     if (ShouldClearTextureCacheAtEndOfFrame) {
         gfx_texture_cache_clear();
         LUS::SkeletonPatcher::UpdateSkeletons();
+        ShouldUpdateCustomSkeletonsNextFrame = true;
         ShouldClearTextureCacheAtEndOfFrame = false;
+    }
+
+    if (ShouldUpdateCustomSkeletonsNextFrame) {
+        LUS::SkeletonPatcher::UpdateCustomSkeletons();
+        ShouldUpdateCustomSkeletonsNextFrame = false;
     }
 
     // OTRTODO: FIGURE OUT END FRAME POINT

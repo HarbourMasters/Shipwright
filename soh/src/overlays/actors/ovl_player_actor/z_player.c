@@ -31,6 +31,9 @@
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/frame_interpolation.h"
 
+#include "soh/OTRGlobals.h"
+#include "soh/Enhancements/mods.h"
+
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -10017,6 +10020,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
         }
         this->currentMask = sMaskMemory;
     }
+    SetRefreshCustomSkeletonFlag();
     Player_InitCommon(this, play, gPlayerSkelHeaders[((void)0, gSaveContext.linkAge)]);
     this->giObjectSegment = (void*)(((uintptr_t)ZELDA_ARENA_MALLOC_DEBUG(0x3008) + 8) & ~0xF);
 

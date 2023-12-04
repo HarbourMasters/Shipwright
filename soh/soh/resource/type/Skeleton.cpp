@@ -2,6 +2,11 @@
 #include "Skeleton.h"
 #include "soh/OTRGlobals.h"
 #include "libultraship/libultraship.h"
+#include <variables.h>
+#include <macros.h>
+#include <soh_assets.h>
+#include <objects/object_link_child/object_link_child.h>
+#include <objects/object_link_boy/object_link_boy.h>
 
 namespace LUS {
 SkeletonData* Skeleton::GetPointer() {
@@ -28,8 +33,6 @@ void SkeletonPatcher::RegisterSkeleton(std::string& path, SkelAnime* skelAnime) 
     SkeletonPatchInfo info;
 
     info.skelAnime = skelAnime;
-
-    static const std::string sOtr = "__OTR__";
 
     if (path.starts_with(sOtr)) {
         path = path.substr(sOtr.length());
@@ -65,11 +68,12 @@ void SkeletonPatcher::ClearSkeletons()
 }
 
 void SkeletonPatcher::UpdateSkeletons() {
-    bool isHD = CVarGetInteger("gAltAssets", 0);
-    for (auto skel : skeletons) {
+    bool isAlt = CVarGetInteger("gAltAssets", 0);
+    for (auto skel : skeletons) 
+    {
         Skeleton* newSkel =
             (Skeleton*)LUS::Context::GetInstance()->GetResourceManager()
-                ->LoadResource((isHD ? LUS::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
+                ->LoadResource((isAlt ? LUS::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
                 .get();
 
         if (newSkel != nullptr) {
@@ -77,6 +81,94 @@ void SkeletonPatcher::UpdateSkeletons() {
             uintptr_t skelPtr = (uintptr_t)newSkel->GetPointer();
             memcpy(&skel.skelAnime->skeletonHeader, &skelPtr, sizeof(uintptr_t)); // Dumb thing that needs to be done because cast is not cooperating
         }
+    }
+}
+
+void SkeletonPatcher::UpdateCustomSkeletons() {
+    for (auto skel : skeletons) {
+        UpdateTunicSkeletons(skel);
+    }
+}
+
+void SkeletonPatcher::UpdateTunicSkeletons(SkeletonPatchInfo& skel) {
+    std::string skeletonPath = "";
+
+    // Check if this is one of Link's skeletons
+    if (sOtr + skel.vanillaSkeletonPath == std::string(gLinkAdultSkel)) {
+        // Check what Link's current tunic is
+        switch (TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TUNIC))) {
+            case PLAYER_TUNIC_KOKIRI:
+                skeletonPath = std::string(gLinkAdultKokiriTunicSkel).substr(sOtr.length());
+                break;
+            case PLAYER_TUNIC_GORON:
+                skeletonPath = std::string(gLinkAdultGoronTunicSkel).substr(sOtr.length());
+                break;
+            case PLAYER_TUNIC_ZORA:
+                skeletonPath = std::string(gLinkAdultZoraTunicSkel).substr(sOtr.length());
+                break;
+            default:
+                return;
+        }
+
+        UpdateCustomSkeletonFromPath(skeletonPath, skel);
+    } else if (sOtr + skel.vanillaSkeletonPath == std::string(gLinkChildSkel)) {
+        // Check what Link's current tunic is
+        switch (TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TUNIC))) {
+            case PLAYER_TUNIC_KOKIRI:
+                skeletonPath = std::string(gLinkChildKokiriTunicSkel).substr(sOtr.length());
+                break;
+            case PLAYER_TUNIC_GORON:
+                skeletonPath = std::string(gLinkChildGoronTunicSkel).substr(sOtr.length());
+                break;
+            case PLAYER_TUNIC_ZORA:
+                skeletonPath = std::string(gLinkChildZoraTunicSkel).substr(sOtr.length());
+                break;
+            default:
+                return;
+        }
+
+        UpdateCustomSkeletonFromPath(skeletonPath, skel);
+    }
+}
+
+void SkeletonPatcher::UpdateCustomSkeletonFromPath(const std::string& skeletonPath, SkeletonPatchInfo& skel) {
+    Skeleton* newSkel = nullptr;
+    Skeleton* altSkel = nullptr;
+    bool isAlt = CVarGetInteger("gAltAssets", 0);
+
+    // If alt assets are on, look for alt tagged skeletons
+    if (isAlt) {
+        altSkel = 
+            (Skeleton*)LUS::Context::GetInstance()
+                ->GetResourceManager()
+                ->LoadResource(LUS::IResource::gAltAssetPrefix + skeletonPath, true)
+                .get();
+
+        // Override non-alt skeleton if necessary
+        if (altSkel != nullptr) {
+            newSkel = altSkel;
+        }
+    }
+
+    // Load new skeleton based on the custom model if it exists
+    if (altSkel == nullptr) {
+        newSkel = 
+            (Skeleton*)LUS::Context::GetInstance()
+                ->GetResourceManager()
+                ->LoadResource(skeletonPath, true)
+                .get();
+    }
+
+    // Change back to the original skeleton if no skeleton's were found
+    if (newSkel == nullptr && skeletonPath != skel.vanillaSkeletonPath) {
+        UpdateCustomSkeletonFromPath(skel.vanillaSkeletonPath, skel);
+        return;
+    }
+    
+    if (newSkel != nullptr) {
+        skel.skelAnime->skeleton = newSkel->skeletonData.skeletonHeader.segment;
+        uintptr_t skelPtr = (uintptr_t)newSkel->GetPointer();
+        memcpy(&skel.skelAnime->skeletonHeader, &skelPtr, sizeof(uintptr_t));
     }
 }
 } // namespace LUS

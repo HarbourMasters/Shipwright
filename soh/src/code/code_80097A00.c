@@ -3,6 +3,8 @@
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "textures/parameter_static/parameter_static.h"
 
+#include "soh/Enhancements/mods.h"
+
 // Bit Flag array in which gBitFlags[n] is literally (1 << n)
 u32 gBitFlags[] = {
     (1 << 0),  (1 << 1),  (1 << 2),  (1 << 3),  (1 << 4),  (1 << 5),  (1 << 6),  (1 << 7),
@@ -186,6 +188,7 @@ u8 gItemSlots[] = {
 void Inventory_ChangeEquipment(s16 equipment, u16 value) {
     gSaveContext.equips.equipment &= gEquipNegMasks[equipment];
     gSaveContext.equips.equipment |= value << gEquipShifts[equipment];
+    SetRefreshCustomSkeletonFlag();
 }
 
 u8 Inventory_DeleteEquipment(PlayState* play, s16 equipment) {

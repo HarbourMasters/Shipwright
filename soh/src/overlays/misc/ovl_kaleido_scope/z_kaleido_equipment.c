@@ -3,6 +3,8 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
+#include "soh/Enhancements/mods.h"
+
 static u8 sChildUpgrades[] = { UPG_BULLET_BAG, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
 static u8 sAdultUpgrades[] = { UPG_QUIVER, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
 
