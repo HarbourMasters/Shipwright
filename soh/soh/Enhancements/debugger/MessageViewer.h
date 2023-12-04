@@ -35,7 +35,7 @@ private:
     std::string mTableId;
     char* mTextIdBuf;
     uint16_t mTextId;
-    int mTextIdBase;
+    int mTextIdBase = HEXADECIMAL;
     size_t mLanguage;
     char* mCustomMessageBuf;
     std::string mCustomMessageString;

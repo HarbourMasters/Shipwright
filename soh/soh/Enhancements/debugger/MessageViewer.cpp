@@ -29,16 +29,17 @@ void MessageViewer::DrawElement() {
     UIWidgets::InsertHelpHoverText("Leave blank for vanilla table");
     ImGui::Text("Text ID");
     ImGui::SameLine();
-    switch (mTextId) {
+    switch (mTextIdBase) {
         case DECIMAL:
             ImGui::InputText("##TextID", mTextIdBuf, MAX_STRING_SIZE, ImGuiInputTextFlags_CharsDecimal);
+            UIWidgets::InsertHelpHoverText("Decimal Text ID of the message to load. Decimal digits only (0-9).");
             break;
         case HEXADECIMAL:
         default:
             ImGui::InputText("##TextID", mTextIdBuf, MAX_STRING_SIZE, ImGuiInputTextFlags_CharsHexadecimal);
+            UIWidgets::InsertHelpHoverText("Hexadecimal Text ID of the message to load. Hexadecimal digits only (0-9/A-F).");
             break;
     }
-    UIWidgets::InsertHelpHoverText("Hexadecimal Text ID of the message to load. Hexadecimal digits only (0-9/A-F).");
     if (ImGui::RadioButton("Hexadecimal", &mTextIdBase, HEXADECIMAL)) {
         memset(mTextIdBuf, 0, sizeof(char) * MAX_STRING_SIZE);
     }
