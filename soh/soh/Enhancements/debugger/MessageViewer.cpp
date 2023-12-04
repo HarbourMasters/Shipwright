@@ -100,14 +100,11 @@ void MessageViewer::UpdateElement() {
 }
 
 void MessageViewer::DisplayExistingMessage() const {
-    CustomMessageDebug_StartTextBox(gPlayState, mTableId.c_str(), mTextId, mLanguage);
+    MessageDebug_StartTextBox(mTableId.c_str(), mTextId, mLanguage);
 }
 
 void MessageViewer::DisplayCustomMessage() const {
-    CustomMessageManager::Instance->ClearMessageTable(TABLE_ID);
-    CustomMessageManager::Instance->CreateMessage(TABLE_ID, 0,
-        CustomMessage(mCustomMessageString, mCustomMessageString, mCustomMessageString));
-    CustomMessageDebug_StartTextBox(gPlayState, TABLE_ID, 0, 0);
+    MessageDebug_DisplayCustomMessage(mCustomMessageString.c_str());
 }
 
 extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
@@ -183,9 +180,11 @@ static const char* msgStaticTbl[] =
     gMessageArrowTex
 };
 
-void CustomMessageDebug_StartTextBox(PlayState* play, const char* tableId, uint16_t textId, uint8_t language) {
+void MessageDebug_StartTextBox(const char* tableId, uint16_t textId, uint8_t language) {
+    PlayState* play = gPlayState;
     static int16_t messageStaticIndices[] = { 0, 1, 3, 2 };
     const auto player = GET_PLAYER(gPlayState);
+    player->actor.flags |= ACTOR_FLAG_PLAYER_TALKED_TO;
     MessageContext* msgCtx = &play->msgCtx;
     msgCtx->ocarinaAction = 0xFFFF;
     Font* font = &msgCtx->font;
@@ -265,4 +264,12 @@ void CustomMessageDebug_StartTextBox(PlayState* play, const char* tableId, uint1
     msgCtx->textDelayTimer = 0;
     msgCtx->ocarinaMode = OCARINA_MODE_00;
 }
+
+void MessageDebug_DisplayCustomMessage(const char* customMessage) {
+    CustomMessageManager::Instance->ClearMessageTable(MessageViewer::TABLE_ID);
+    CustomMessageManager::Instance->CreateMessage(MessageViewer::TABLE_ID, 0,
+        CustomMessage(customMessage, customMessage, customMessage));
+    MessageDebug_StartTextBox(MessageViewer::TABLE_ID, 0, 0);
+}
+
 
