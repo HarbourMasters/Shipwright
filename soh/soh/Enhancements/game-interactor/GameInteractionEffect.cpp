@@ -373,7 +373,7 @@ namespace GameInteractionEffect {
         GameInteractor::RawAction::ForceEquipBoots(parameters[0]);
     }
     void ForceEquipBoots::_Remove() {
-        GameInteractor::RawAction::ForceEquipBoots(PLAYER_BOOTS_KOKIRI);
+        GameInteractor::RawAction::ForceEquipBoots(EQUIP_VALUE_BOOTS_KOKIRI);
     }
 
     // MARK: - ModifyRunSpeedModifier
@@ -425,9 +425,9 @@ namespace GameInteractionEffect {
     GameInteractionEffectQueryResult GiveOrTakeShield::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else if ((parameters[0] > 0 && ((gBitFlags[parameters[0] - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]) &
+        } else if ((parameters[0] > 0 && ((gBitFlags[parameters[0] - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_TYPE_SHIELD]) &
                                            gSaveContext.inventory.equipment)) ||
-                   (parameters[0] < 0 && !((gBitFlags[(parameters[0] * -1) - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]) &
+                   (parameters[0] < 0 && !((gBitFlags[(parameters[0] * -1) - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_TYPE_SHIELD]) &
                                            gSaveContext.inventory.equipment))) {
             return GameInteractionEffectQueryResult::NotPossible;
         } else {

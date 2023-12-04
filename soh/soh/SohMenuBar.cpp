@@ -22,13 +22,14 @@
 #include "Enhancements/debugger/colViewer.h"
 #include "Enhancements/debugger/debugSaveEditor.h"
 #include "Enhancements/debugger/dlViewer.h"
+#include "Enhancements/debugger/valueViewer.h"
 #include "Enhancements/gameplaystatswindow.h"
 #include "Enhancements/randomizer/randomizer_check_tracker.h"
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
 #include "Enhancements/randomizer/randomizer_settings_window.h"
 
-extern bool ShouldClearTextureCacheAtEndOfFrame;
+extern bool ToggleAltAssetsAtEndOfFrame;
 extern bool isBetaQuestEnabled;
 
 extern "C" PlayState* gPlayState;
@@ -50,6 +51,8 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
     if (!menuOpen) { strcat(buttonText, "  "); }
     return buttonText;
 }
+
+static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large" };
 
     static const char* filters[3] = {
 #ifdef __WIIU__
@@ -380,7 +383,15 @@ void DrawSettingsMenu() {
             }
 
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
+            ImGui::Text("ImGui Menu Scale");
+            ImGui::SameLine();
+            ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, "(Experimental)");
+            if (UIWidgets::EnhancementCombobox("gImGuiScale", imguiScaleOptions, 1)) {
+                OTRGlobals::Instance->ScaleImGui();
+            }
+            UIWidgets::Tooltip("Changes the scaling of the ImGui menu elements.");
 
+            UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
             
             static std::unordered_map<LUS::WindowBackend, const char*> windowBackendNames = {
                 { LUS::WindowBackend::DX11, "DirectX" },
@@ -482,6 +493,8 @@ extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
     {
+        ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+
         DrawPresetSelector(PRESET_TYPE_ENHANCEMENTS);
 
         UIWidgets::PaddedSeparator();
@@ -522,6 +535,8 @@ void DrawEnhancementsMenu() {
                     " - Small keys: Small silver chest\n"
                     " - Boss keys: Vanilla size and texture\n"
                     " - Skulltula Tokens: Small skulltula chest\n"
+                    "\n"
+                    "NOTE: Textures will not apply if you are using a mod pack with a custom chest model."
                 );
                 if (CVarGetInteger("gChestSizeAndTextureMatchesContents", CSMC_DISABLED) != CSMC_DISABLED) {
                     UIWidgets::PaddedEnhancementCheckbox("Chests of Agony", "gChestSizeDependsStoneOfAgony", true, false);
@@ -567,6 +582,8 @@ void DrawEnhancementsMenu() {
                     "- Obtained the Master Sword\n"
                     "- Not within range of Time Block\n"
                     "- Not within range of Ocarina playing spots");
+                UIWidgets::PaddedEnhancementCheckbox("Skip water take breath animation", "gSkipSwimDeepEndAnim", true, false);
+                UIWidgets::Tooltip("Skips Link's taking breath animation after coming up from water. This setting does not interfere with getting items from underwater.");
                 ImGui::EndMenu();
             }
 
@@ -593,17 +610,25 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Nuts explode bombs", "gNutsExplodeBombs", true, false);
                 UIWidgets::Tooltip("Makes nuts explode bombs, similar to how they interact with bombchus. This does not affect bombflowers.");
                 UIWidgets::PaddedEnhancementCheckbox("Equip Multiple Arrows at Once", "gSeparateArrows", true, false);
-                UIWidgets::Tooltip("Allow the bow and magic arrows to be equipped at the same time on different slots");
+                UIWidgets::Tooltip("Allow the bow and magic arrows to be equipped at the same time on different slots. (Note this will disable the behaviour of the 'Equip Dupe' glitch)");
                 UIWidgets::PaddedEnhancementCheckbox("Bow as Child/Slingshot as Adult", "gBowSlingShotAmmoFix", true, false);
                 UIWidgets::Tooltip("Allows child to use bow with arrows.\nAllows adult to use slingshot with seeds.\n\nRequires glitches or 'Timeless Equipment' cheat to equip.");
                 UIWidgets::PaddedEnhancementCheckbox("Better Farore's Wind", "gBetterFW", true, false);
                 UIWidgets::Tooltip("Helps FW persist between ages, gives child and adult separate FW points, and can be used in more places.");
+                UIWidgets::PaddedEnhancementCheckbox("Remove Explosive Limit", "gRemoveExplosiveLimit", true, false);
+                UIWidgets::Tooltip("Removes the cap of 3 active explosives being deployed at once.");
                 UIWidgets::PaddedEnhancementCheckbox("Static Explosion Radius", "gStaticExplosionRadius", true, false);
                 UIWidgets::Tooltip("Explosions are now a static size, like in Majora's Mask and OoT3D. Makes bombchu hovering much easier.");
                 UIWidgets::PaddedEnhancementCheckbox("Prevent Bombchus Forcing First-Person", "gDisableFirstPersonChus", true, false);
                 UIWidgets::Tooltip("Prevent bombchus from forcing the camera into first-person mode when released.");
                 UIWidgets::PaddedEnhancementCheckbox("Aiming reticle for the bow/slingshot", "gBowReticle", true, false);
                 UIWidgets::Tooltip("Aiming with a bow or slingshot will display a reticle as with the hookshot when the projectile is ready to fire.");
+                if (UIWidgets::PaddedEnhancementCheckbox("Allow strength equipment to be toggled", "gToggleStrength", true, false)) {
+                    if (!CVarGetInteger("gToggleStrength", 0)) {
+                        CVarSetInteger("gStrengthDisabled", 0);
+                    }
+                }
+                UIWidgets::Tooltip("Allows strength to be toggled on and off by pressing A on the strength upgrade in the equipment subscreen of the pause menu (This allows performing some glitches that require the player to not have strength).");
                 ImGui::EndMenu();
             }
 
@@ -898,7 +923,10 @@ void DrawEnhancementsMenu() {
         {
             if (ImGui::BeginMenu("Mods")) {
                 if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", false, false)) {
-                    ShouldClearTextureCacheAtEndOfFrame = true;
+                    // The checkbox will flip the alt asset CVar, but we instead want it to change at the end of the game frame
+                    // We toggle it back while setting the flag to update the CVar later
+                    CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
+                    ToggleAltAssetsAtEndOfFrame = true;
                 }
                 UIWidgets::Tooltip("Toggle between standard assets and alternate assets. Usually mods will indicate if this setting has to be used or not.");
                 UIWidgets::PaddedEnhancementCheckbox("Disable Bomb Billboarding", "gDisableBombBillboarding", true, false);
@@ -907,6 +935,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Disables grottos rotating with the camera. To be used in conjunction with mods that want to replace grottos with 3D objects.");
                 UIWidgets::PaddedEnhancementCheckbox("Invisible Bunny Hood", "gHideBunnyHood", true, false);
                 UIWidgets::Tooltip("Turns Bunny Hood invisible while still maintaining its effects.");
+                UIWidgets::PaddedEnhancementCheckbox("Disable HUD Heart animations", "gNoHUDHeartAnimation", true, false);
+                UIWidgets::Tooltip("Disables the beating animation of the hearts on the HUD.");
 
                 ImGui::EndMenu();
             }
@@ -1046,8 +1076,18 @@ void DrawEnhancementsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Fix Poacher's Saw Softlock", "gFixSawSoftlock", true, false, CVarGetInteger("gSkipText", 0),
                 "This is disabled because it is forced on when Skip Text is enabled.", UIWidgets::CheckboxGraphics::Checkmark);
             UIWidgets::Tooltip("Prevents the Poacher's Saw softlock from mashing through the text, or with Skip Text enabled.");
+            UIWidgets::PaddedEnhancementCheckbox("Fix enemies not spawning near water", "gEnemySpawnsOverWaterboxes", true, false);
+            UIWidgets::Tooltip("Causes respawning enemies, like stalchildren, to appear on land near bodies of water. "
+                                "Fixes an incorrect calculation that acted like water underneath ground was above it.");
             UIWidgets::PaddedEnhancementCheckbox("Fix Bush Item Drops", "gBushDropFix", true, false);
             UIWidgets::Tooltip("Fixes the bushes to drop items correctly rather than spawning undefined items.");
+            UIWidgets::PaddedEnhancementCheckbox("Fix falling from vine edges", "gFixVineFall", true, false); 
+            UIWidgets::Tooltip("Prevents immediately falling off climbable surfaces if climbing on the edges."); 
+            UIWidgets::PaddedEnhancementCheckbox("Fix Link's eyes open while sleeping", "gFixEyesOpenWhileSleeping", true, false);
+            UIWidgets::Tooltip("Fixes Link's eyes being open in the opening cutscene when he is supposed to be sleeping.");
+            UIWidgets::PaddedEnhancementCheckbox("Fix Darunia dancing too fast", "gEnhancements.FixDaruniaDanceSpeed",
+                                                 true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+            UIWidgets::Tooltip("Fixes Darunia's dancing speed so he dances to the beat of Saria's Song, like in vanilla.");
 
             ImGui::EndMenu();
         }
@@ -1116,6 +1156,9 @@ void DrawEnhancementsMenu() {
                 "- Random (Seeded): Enemies are randomized based on the current randomizer seed/file\n"
             );
 
+            UIWidgets::PaddedEnhancementCheckbox("Randomized Enemy Sizes", "gRandomizedEnemySizes", true, false);
+            UIWidgets::Tooltip("Enemies and Bosses spawn with random sizes.");
+
             UIWidgets::PaddedEnhancementCheckbox("Ivan the Fairy (Coop Mode)", "gIvanCoopModeEnabled", true, false);
             UIWidgets::Tooltip("Enables Ivan the Fairy upon the next map change. Player 2 can control Ivan and "
                                 "press the C-Buttons to use items and mess with Player 1!");
@@ -1125,7 +1168,7 @@ void DrawEnhancementsMenu() {
 
             if (CVarGetInteger("gRupeeDash", 0)) {
                 UIWidgets::PaddedEnhancementSliderInt(
-                    "Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 3, 5, "", 5, true, true, false,
+                    "Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 1, 10, "", 5, true, true, false,
                     !CVarGetInteger("gRupeeDash", 0),
                     "This option is disabled because \"Rupee Dash Mode\" is turned off");
                 UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
@@ -1180,6 +1223,8 @@ void DrawEnhancementsMenu() {
 
         UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
 
+        ImGui::EndDisabled();
+
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
@@ -1221,6 +1266,8 @@ void DrawEnhancementsMenu() {
 void DrawCheatsMenu() {
     if (ImGui::BeginMenu("Cheats"))
     {
+        ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+
         if (ImGui::BeginMenu("Infinite...")) {
             UIWidgets::EnhancementCheckbox("Money", "gInfiniteMoney");
             UIWidgets::PaddedEnhancementCheckbox("Health", "gInfiniteHealth", true, false);
@@ -1375,6 +1422,8 @@ void DrawCheatsMenu() {
         }
         UIWidgets::Tooltip("Clears the cutscene pointer to a value safe for wrong warps.");   
 
+        ImGui::EndDisabled();
+
         ImGui::EndMenu();
     }
 }
@@ -1385,12 +1434,17 @@ extern std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
 extern std::shared_ptr<ColViewerWindow> mColViewerWindow;
 extern std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
 extern std::shared_ptr<DLViewerWindow> mDLViewerWindow;
+extern std::shared_ptr<ValueViewerWindow> mValueViewerWindow;
 
 void DrawDeveloperToolsMenu() {
     if (ImGui::BeginMenu("Developer Tools")) {
+        ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
+
         UIWidgets::EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
         UIWidgets::Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right, and open the debug menu with L on the pause screen");
         if (CVarGetInteger("gDebugEnabled", 0)) {
+            UIWidgets::EnhancementCheckbox("OoT Registry Editor", "gRegEditEnabled");
+            UIWidgets::Tooltip("Enables the registry editor");
             ImGui::Text("Debug Save File Mode:");
             UIWidgets::EnhancementCombobox("gDebugSaveFileMode", DebugSaveFileModes, 1);
             UIWidgets::Tooltip(
@@ -1454,9 +1508,17 @@ void DrawDeveloperToolsMenu() {
                 mDLViewerWindow->ToggleVisibility();
             }
         }
+        UIWidgets::Spacer(0);
+        if (mValueViewerWindow) {
+            if (ImGui::Button(GetWindowButtonText("Value Viewer", CVarGetInteger("gValueViewer.WindowOpen", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mValueViewerWindow->ToggleVisibility();
+            }
+        }
 
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);
+
+        ImGui::EndDisabled();
 
         ImGui::EndMenu();
     }

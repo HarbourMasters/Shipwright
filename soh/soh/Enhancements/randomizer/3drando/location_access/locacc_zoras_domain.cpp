@@ -48,7 +48,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(ZR_BEHIND_WATERFALL, {[]{return CanPlay(ZeldasLullaby) || (IsChild && LogicZoraWithCucco) || (IsAdult && CanUse(HOVER_BOOTS) && LogicZoraWithHovers);}}),
   });
 
-  areaTable[ZR_BEHIND_WATERFALL] = Area("ZR Behind Waterfall", "Zora River", NONE, DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[ZR_BEHIND_WATERFALL] = Area("ZR Behind Waterfall", "Zora River", ZORAS_RIVER, DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(ZORAS_RIVER,  {[]{return true;}}),
                   Entrance(ZORAS_DOMAIN, {[]{return true;}}),
@@ -106,7 +106,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(ZD_STORMS_GROTTO,    {[]{return CanOpenStormGrotto;}}),
   });
 
-  areaTable[ZD_BEHIND_KING_ZORA] = Area("ZD Behind King Zora", "Zoras Domain", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[ZD_BEHIND_KING_ZORA] = Area("ZD Behind King Zora", "Zoras Domain", ZORAS_DOMAIN, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(ZORAS_DOMAIN,   {[]{return DeliverLetter || ZorasFountain.Is(ZORASFOUNTAIN_OPEN) || (ZorasFountain.Is(ZORASFOUNTAIN_ADULT) && IsAdult);}}),
                   Entrance(ZORAS_FOUNTAIN, {[]{return true;}}),

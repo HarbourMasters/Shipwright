@@ -3,6 +3,21 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_moTex_000000 "__OTR__objects/object_mo/object_moTex_000000"
+static const ALIGN_ASSET(2) char object_moTex_000000[] = dobject_moTex_000000;
+
+#define dobject_moTex_000680 "__OTR__objects/object_mo/object_moTex_000680"
+static const ALIGN_ASSET(2) char object_moTex_000680[] = dobject_moTex_000680;
+
+#define dobject_moTex_004D20 "__OTR__objects/object_mo/object_moTex_004D20"
+static const ALIGN_ASSET(2) char object_moTex_004D20[] = dobject_moTex_004D20;
+
+#define dobject_moTex_005520 "__OTR__objects/object_mo/object_moTex_005520"
+static const ALIGN_ASSET(2) char object_moTex_005520[] = dobject_moTex_005520;
+
+#define dobject_moTex_005D20 "__OTR__objects/object_mo/object_moTex_005D20"
+static const ALIGN_ASSET(2) char object_moTex_005D20[] = dobject_moTex_005D20;
+
 #define dgMorphaTitleCardTex "__OTR__objects/object_mo/gMorphaTitleCardTex"
 static const ALIGN_ASSET(2) char gMorphaTitleCardTex[] = dgMorphaTitleCardTex;
 
@@ -173,20 +188,5 @@ static const ALIGN_ASSET(2) char gMorphaVtx_006938[] = dgMorphaVtx_006938;
 
 #define dgMorphaVtx_007BB8 "__OTR__objects/object_mo/gMorphaVtx_007BB8"
 static const ALIGN_ASSET(2) char gMorphaVtx_007BB8[] = dgMorphaVtx_007BB8;
-
-#define dobject_moTex_004D20 "__OTR__objects/object_mo/object_moTex_004D20"
-static const ALIGN_ASSET(2) char object_moTex_004D20[] = dobject_moTex_004D20;
-
-#define dobject_moTex_005D20 "__OTR__objects/object_mo/object_moTex_005D20"
-static const ALIGN_ASSET(2) char object_moTex_005D20[] = dobject_moTex_005D20;
-
-#define dobject_moTex_005520 "__OTR__objects/object_mo/object_moTex_005520"
-static const ALIGN_ASSET(2) char object_moTex_005520[] = dobject_moTex_005520;
-
-#define dobject_moTex_000000 "__OTR__objects/object_mo/object_moTex_000000"
-static const ALIGN_ASSET(2) char object_moTex_000000[] = dobject_moTex_000000;
-
-#define dobject_moTex_000680 "__OTR__objects/object_mo/object_moTex_000680"
-static const ALIGN_ASSET(2) char object_moTex_000680[] = dobject_moTex_000680;
 
 #endif // OBJECTS_OBJECT_MO_H

@@ -219,21 +219,24 @@ if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 			*)
 				osascript -e 'display notification "One or more invalid ROM provided" with title "Ship Of Harkinian"'
 				rm -r "$ASSETDIR"
+				cd "$SNAME"
 				continue;
 		esac
 
 		# Only generate OTR if we don't have on of this type yet
 		if [ -e "$SHIP_HOME"/"$OTRNAME" ]; then
 			rm -r "$ASSETDIR"
+			cd "$SNAME"
 			continue;
 		fi
 
 		osascript -e 'display notification "Generating OTR..." with title "Ship Of Harkinian"'
-		assets/extractor/ZAPD.out ed -i assets/extractor/xmls/"${ROM}" -b tmp/rom.z64 -fl assets/extractor/filelists -o placeholder -osf placeholder -gsf 1 -rconf assets/extractor/Config_"${ROM}".xml -se OTR
+		assets/extractor/ZAPD.out ed -i assets/extractor/xmls/"${ROM}" -b tmp/rom.z64 -fl assets/extractor/filelists -o placeholder -osf placeholder -gsf 1 -rconf assets/extractor/Config_"${ROM}".xml -se OTR --portVer "@CMAKE_PROJECT_VERSION@"
 		if [ -e "$ASSETDIR"/oot.otr ]; then
 			osascript -e 'display notification "OTR successfully generated" with title "Ship Of Harkinian"'
 			cp "$ASSETDIR"/oot.otr "$SHIP_HOME"/"$OTRNAME"
 			rm -r "$ASSETDIR"
+			cd "$SNAME"
 		fi
 	done
 
@@ -242,6 +245,8 @@ if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 		exit 1;
 	fi
 fi
+
+cd "$SNAME"
 
 arch_name="$(uname -m)"
 launch_arch="arm64"
