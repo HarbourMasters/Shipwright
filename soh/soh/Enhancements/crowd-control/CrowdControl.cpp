@@ -380,13 +380,13 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->category = kEffectCatBoots;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
-            effect->giEffect->parameters[0] = PLAYER_BOOTS_IRON;
+            effect->giEffect->parameters[0] = EQUIP_VALUE_BOOTS_IRON;
             break;
         case kEffectForceHoverBoots:
             effect->category = kEffectCatBoots;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
-            effect->giEffect->parameters[0] = PLAYER_BOOTS_HOVER;
+            effect->giEffect->parameters[0] = EQUIP_VALUE_BOOTS_HOVER;
             break;
         case kEffectSlipperyFloor:
             effect->category = kEffectCatSlipperyFloor;

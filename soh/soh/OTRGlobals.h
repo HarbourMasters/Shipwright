@@ -12,6 +12,9 @@
 #define GAME_PLATFORM_N64 0
 #define GAME_PLATFORM_GC 1
 
+#define BTN_MODIFIER1 0x00040
+#define BTN_MODIFIER2 0x00080
+
 #ifdef __cplusplus
 #include <Context.h>
 #include "Enhancements/savestates.h"
@@ -20,6 +23,14 @@
 
 const std::string customMessageTableID = "BaseGameOverrides";
 const std::string appShortName = "soh";
+
+#ifdef __WIIU__
+const uint32_t defaultImGuiScale = 3;
+#else
+const uint32_t defaultImGuiScale = 1;
+#endif
+
+const float imguiScaleOptionToValue[4] = { 0.75f, 1.0f, 1.5f, 2.0f };
 
 class OTRGlobals
 {
@@ -30,8 +41,14 @@ public:
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
 
+    ImFont* defaultFontSmaller;
+    ImFont* defaultFontLarger;
+    ImFont* defaultFontLargest;
+
     OTRGlobals();
     ~OTRGlobals();
+    
+    void ScaleImGui();
 
     bool HasMasterQuest();
     bool HasOriginal();
@@ -42,6 +59,7 @@ private:
 	void CheckSaveFile(size_t sramSize) const;
     bool hasMasterQuest;
     bool hasOriginal;
+    ImFont* CreateDefaultFontWithSize(float size);
 };
 
 uint32_t IsGameMasterQuest();
@@ -71,11 +89,15 @@ uint32_t ResourceMgr_GetGameVersion(int index);
 uint32_t ResourceMgr_GetGamePlatform(int index);
 uint32_t ResourceMgr_GetGameRegion(int index);
 void ResourceMgr_LoadDirectory(const char* resName);
+void ResourceMgr_UnloadResource(const char* resName);
 char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
 uint8_t ResourceMgr_FileExists(const char* resName);
+uint8_t ResourceMgr_FileAltExists(const char* resName);
+void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName);
 char* GetResourceDataByNameHandlingMQ(const char* path);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
+uint8_t ResourceMgr_TexIsRaw(const char* texPath);
 uint8_t ResourceMgr_ResourceIsBackground(char* texPath);
 char* ResourceMgr_LoadJPEG(char* data, size_t dataSize);
 uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
@@ -86,6 +108,7 @@ AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path);
 char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
 Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
 Gfx* ResourceMgr_LoadGfxByName(const char* path);
+uint8_t ResourceMgr_FileIsCustomByName(const char* path);
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path);
@@ -155,8 +178,10 @@ void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
 void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement);
 void SaveManager_ThreadPoolWait();
 void CheckTracker_OnMessageClose();
+void SoH_ProcessDroppedFiles();
 
-int32_t GetGIID(uint32_t itemID);
+GetItemID RetrieveGetItemIDFromItemID(ItemID itemID);
+RandomizerGet RetrieveRandomizerGetFromItemID(ItemID itemID);
 #endif
 
 #ifdef __cplusplus

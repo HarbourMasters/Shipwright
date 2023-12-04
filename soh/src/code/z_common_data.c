@@ -14,6 +14,6 @@ void SaveContext_Init(void) {
     gSaveContext.nextDayTime = 0xFFFF;
     gSaveContext.skyboxTime = 0;
     gSaveContext.dogIsLost = true;
-    gSaveContext.nextTransitionType = 0xFF;
+    gSaveContext.nextTransitionType = TRANS_NEXT_TYPE_DEFAULT;
     gSaveContext.unk_13EE = 50;
 }
