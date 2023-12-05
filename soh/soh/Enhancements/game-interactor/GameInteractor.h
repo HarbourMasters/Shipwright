@@ -139,7 +139,13 @@ public:
 
     // Game Hooks
     template <typename H> struct RegisteredGameHooks { inline static std::vector<typename H::fn> functions; };
-    template <typename H> void RegisterGameHook(typename H::fn h) { RegisteredGameHooks<H>::functions.push_back(h); }
+    template <typename H> size_t RegisterGameHook(typename H::fn h) {
+        RegisteredGameHooks<H>::functions.push_back(h);
+        return RegisteredGameHooks<H>::functions.size() - 1;
+    }
+    template <typename H> void UnregisterGameHook(size_t index) {
+        RegisteredGameHooks<H>::functions.erase(RegisteredGameHooks<H>::functions.begin() + index);
+    }
     template <typename H, typename... Args> void ExecuteHooks(Args&&... args) {
         for (auto& fn : RegisteredGameHooks<H>::functions) {
             fn(std::forward<Args>(args)...);
@@ -172,12 +178,12 @@ public:
     DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));
     DEFINE_HOOK(OnLoadFile, void(int32_t fileNum));
     DEFINE_HOOK(OnDeleteFile, void(int32_t fileNum));
-    
+
     DEFINE_HOOK(OnDialogMessage, void());
     DEFINE_HOOK(OnPresentTitleCard, void());
     DEFINE_HOOK(OnInterfaceUpdate, void());
     DEFINE_HOOK(OnKaleidoscopeUpdate, void(int16_t inDungeonScene));
-    
+
     DEFINE_HOOK(OnPresentFileSelect, void());
     DEFINE_HOOK(OnUpdateFileSelectSelection, void(uint16_t optionIndex));
     DEFINE_HOOK(OnUpdateFileSelectConfirmationSelection, void(uint16_t optionIndex));
@@ -191,7 +197,7 @@ public:
     DEFINE_HOOK(OnUpdateFileQuestSelection, void(uint8_t questIndex));
     DEFINE_HOOK(OnUpdateFileBossRushOptionSelection, void(uint8_t optionIndex, uint8_t optionValue));
     DEFINE_HOOK(OnUpdateFileNameSelection, void(int16_t charCode));
-    
+
     DEFINE_HOOK(OnSetGameLanguage, void());
 
     DEFINE_HOOK(OnAssetAltChange, void());

@@ -116,8 +116,13 @@ CrowdControl* CrowdControl::Instance;
 #include "soh/resource/importer/SkeletonLimbFactory.h"
 #include "soh/resource/importer/TextFactory.h"
 #include "soh/resource/importer/BackgroundFactory.h"
-
 #include "soh/config/ConfigUpdaters.h"
+#include "soh/Enhancements/scripting-layer/bridge.h"
+
+#include "soh/Enhancements/scripting-layer/interactors/game-interactor/gi-bridge.h"
+#include "soh/Enhancements/scripting-layer/interactors/libultraship/imgui-bridge.h"
+#include "soh/Enhancements/scripting-layer/interactors/n64-native/n64-bridge.h"
+#include "soh/Enhancements/scripting-layer/interactors/soh/soh-bridge.h"
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
@@ -126,6 +131,7 @@ ItemTableManager* ItemTableManager::Instance;
 GameInteractor* GameInteractor::Instance;
 AudioCollection* AudioCollection::Instance;
 SpeechSynthesizer* SpeechSynthesizer::Instance;
+GameBridge* GameBridge::Instance;
 
 extern "C" char** cameraStrings;
 std::vector<std::shared_ptr<std::string>> cameraStdStrings;
@@ -1090,6 +1096,13 @@ extern "C" void InitOTR() {
     GameInteractor::Instance = new GameInteractor();
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
+    GameBridge::Instance = new GameBridge();
+
+    GameInteractorBridge::Initialize();
+    N64Bridge::Initialize();
+    ImGuiBridge::Initialize();
+    SOHBridge::Initialize();
+
 #ifdef __APPLE__
     SpeechSynthesizer::Instance = new DarwinSpeechSynthesizer();
     SpeechSynthesizer::Instance->Init();
@@ -1097,7 +1110,7 @@ extern "C" void InitOTR() {
     SpeechSynthesizer::Instance = new SAPISpeechSynthesizer();
     SpeechSynthesizer::Instance->Init();
 #endif
-    
+
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
