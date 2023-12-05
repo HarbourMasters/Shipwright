@@ -1205,7 +1205,7 @@ Gfx* KaleidoScope_DrawPageSections(Gfx* gfx, Vtx* vertices, void** textures) {
     return gfx;
 }
 
-static uint8_t mapMask[4080];
+static uint8_t mapBlendMask[4080];
 
 void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
     static Color_RGB8 D_8082ACF4[12] = {
@@ -1375,7 +1375,7 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
             }
         }
 
-        gSPInvalidateTexCache(POLY_KAL_DISP++, mapMask);
+        gSPInvalidateTexCache(POLY_KAL_DISP++, mapBlendMask);
 
         if (pauseCtx->pageIndex) { // pageIndex != PAUSE_ITEM
             gDPPipeSync(OVERLAY_DISP++);
@@ -3321,36 +3321,14 @@ void KaleidoScope_UpdateCursorSize(PauseContext* pauseCtx) {
 
 static uint8_t map1TexModified[2040];
 static uint8_t map2TexModified[2040];
-
 static uint8_t* map1TexModifiedRaw = NULL;
 static uint8_t* map2TexModifiedRaw = NULL;
 
-void KaleidoScope_ConvertRawRGBA32ToCI4(u8* dest, u8* src, size_t size) {
-    for (size_t i = 0; i < size; i += 2) {
-        // if (i == 6140) {
-        //     printf("");
-        // }
-
-        // u32 pixel1 = src[i];
-        // u32 pixel2 = src[i + 1];
-        // u8 greyscale1 = pixel1 & 0xFF;
-        // u8 greyscale2 = pixel2 & 0xFF;
-        // u8 index1 = (greyscale1 / 16) & 0xF;
-        // u8 index2 = (greyscale2 / 16) & 0xF;
-        // dest[i / 2] = (greyscale1 << 4) + greyscale2;
-        u8 pixel1 = src[4 * i];
-        u8 palIdx1 = pixel1 / 16;
-        u8 pixel2 = src[4 * (i + 1)];
-        u8 palIdx2 = pixel2 / 16;
-        dest[i / 2] = (palIdx2 << 4) | palIdx1;
-    }
-}
-
-#include "overlays/ovl_Boss_Dodongo/ovl_Boss_Dodongo.h"
 
 void KaleidoScope_LoadDungeonMap(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
 
+    // Free old textures
     if (map1TexModifiedRaw != NULL) {
         free(map1TexModifiedRaw);
         map1TexModifiedRaw = NULL;
@@ -3360,46 +3338,48 @@ void KaleidoScope_LoadDungeonMap(PlayState* play) {
         map2TexModifiedRaw = NULL;
     }
 
-    for (size_t i = 0; i < ARRAY_COUNT(mapMask); i++) {
-        mapMask[i] = 1;
-    }
-
+    // Unload original textures to bypass cache result for lookups
     ResourceMgr_UnloadOriginalWhenAltExists(sDungeonMapTexs[R_MAP_TEX_INDEX]);
     ResourceMgr_UnloadOriginalWhenAltExists(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]);
 
     interfaceCtx->mapSegmentName[0] = sDungeonMapTexs[R_MAP_TEX_INDEX];
     interfaceCtx->mapSegmentName[1] = sDungeonMapTexs[R_MAP_TEX_INDEX + 1];
 
+    // When the texture is HD (raw) we need to copy a dynamic amount of data
+    // Otherwise the original asset has a static size
     if (ResourceMgr_TexIsRaw(interfaceCtx->mapSegmentName[0])) {
-        u8* map1TexRaw = ResourceGetDataByName(interfaceCtx->mapSegmentName[0]);
-        u8* map2TexRaw = ResourceGetDataByName(interfaceCtx->mapSegmentName[1]);
         u32 width = ResourceGetTexWidthByName(interfaceCtx->mapSegmentName[0]);
         u32 height = ResourceGetTexHeightByName(interfaceCtx->mapSegmentName[0]);
-        size_t size = width * height;
+        size_t size = (width * height) / 2; // account for CI4 size
 
-        map1TexModifiedRaw = malloc(size / 2);
-        map2TexModifiedRaw = malloc(size / 2);
+        // Resource size being larger than the calculated CI size means it is most likely not a CI4 texture
+        // Abort early end undo the blended effect by clearing the mask to avoid crashing
+        if (size < ResourceGetTexSizeByName(interfaceCtx->mapSegmentName[0])) {
+            if (mapBlendMask[0] != 0) {
+                for (size_t i = 0; i < ARRAY_COUNT(mapBlendMask); i++) {
+                    mapBlendMask[i] = 0;
+                }
+            }
 
-        if (false) {
-            // KaleidoScope_ConvertRawRGBA32ToCI4(map1TexModifiedRaw, map1TexRaw, size);
-            // KaleidoScope_ConvertRawRGBA32ToCI4(map2TexModifiedRaw, map2TexRaw, size);
-        } else {
-            memcpy(map1TexModifiedRaw, map1TexRaw, size / 2);
-            memcpy(map2TexModifiedRaw, map2TexRaw, size / 2);
+            interfaceCtx->mapSegment[0] = NULL;
+            interfaceCtx->mapSegment[1] = NULL;
+
+            Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapBlendMask, NULL);
+            Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapBlendMask, NULL);
+            return;
         }
+
+        u8* map1TexRaw = ResourceGetDataByName(interfaceCtx->mapSegmentName[0]);
+        u8* map2TexRaw = ResourceGetDataByName(interfaceCtx->mapSegmentName[1]);
+
+        map1TexModifiedRaw = malloc(size);
+        map2TexModifiedRaw = malloc(size);
+
+        memcpy(map1TexModifiedRaw, map1TexRaw, size);
+        memcpy(map2TexModifiedRaw, map2TexRaw, size);
 
         interfaceCtx->mapSegment[0] = map1TexModifiedRaw;
         interfaceCtx->mapSegment[1] = map2TexModifiedRaw;
-
-        // interfaceCtx->mapSegmentName[0] = sLavaFloorRockTex;
-
-        // Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapMask, sLavaFloorLavaTex);
-        // Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapMask, sLavaFloorRockTex);
-        // Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapMask, interfaceCtx->mapSegmentName[1]);
-        // Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapMask, interfaceCtx->mapSegmentName[0]);
-
-        Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapMask, interfaceCtx->mapSegment[0]);
-        Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapMask, interfaceCtx->mapSegment[1]);
     } else {
         u8* map1Tex = ResourceGetDataByName(interfaceCtx->mapSegmentName[0]);
         u8* map2Tex = ResourceGetDataByName(interfaceCtx->mapSegmentName[1]);
@@ -3409,18 +3389,17 @@ void KaleidoScope_LoadDungeonMap(PlayState* play) {
 
         interfaceCtx->mapSegment[0] = map1TexModified;
         interfaceCtx->mapSegment[1] = map2TexModified;
-
-        // interfaceCtx->mapSegmentName[0] = sLavaFloorRockTex;
-
-        // Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapMask, sLavaFloorLavaTex);
-
-        // interfaceCtx->mapSegmentName[0] = interfaceCtx->mapSegment[0];
-        // Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapMask, NULL);
-        // Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapMask, interfaceCtx->mapSegmentName[1]);
-        
-        Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapMask, interfaceCtx->mapSegment[0]);
-        Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapMask, interfaceCtx->mapSegment[1]);
     }
+
+    // Mark and register the blend mask for the copied textures
+    if (mapBlendMask[0] != 1) {
+        for (size_t i = 0; i < ARRAY_COUNT(mapBlendMask); i++) {
+            mapBlendMask[i] = 1;
+        }
+    }
+
+    Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapBlendMask, interfaceCtx->mapSegment[0]);
+    Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapBlendMask, interfaceCtx->mapSegment[1]);
 }
 
 static uint8_t registeredDungeonMapTextureHook = false;
@@ -3430,7 +3409,28 @@ void KaleidoScope_RegisterUpdatedDungeonMapTexture() {
         return;
     }
 
+    PauseContext* pauseCtx = &gPlayState->pauseCtx;
+
+    // Kaleido is not open in a dungeon so there is nothing to do
+    if (R_PAUSE_MENU_MODE < 3 || pauseCtx->state < 4 || pauseCtx->state > 7 || !sInDungeonScene) {
+        return;
+    }
+
     KaleidoScope_UpdateDungeonMap(gPlayState);
+
+    // KaleidoScope_UpdateDungeonMap will update the palette index for the current floor if the cursor is on the floor
+    // If the player toggles alt assets while the cursor is not in the floor level, then we handle the palette index here
+    if (gPlayState->sceneNum >= SCENE_DEKU_TREE && gPlayState->sceneNum <= SCENE_TREASURE_BOX_SHOP &&
+        (VREG(30) + 3) == pauseCtx->dungeonMapSlot && (VREG(30) + 3) != pauseCtx->cursorPoint[PAUSE_MAP]) {
+
+        InterfaceContext* interfaceCtx = &gPlayState->interfaceCtx;
+        u32 width = ResourceGetTexWidthByName(interfaceCtx->mapSegmentName[0]);
+        u32 height = ResourceGetTexHeightByName(interfaceCtx->mapSegmentName[0]);
+        size_t size = (width * height) / 2;
+
+        KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[0], size, interfaceCtx->mapPaletteIndex, 14);
+        KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[1], size, interfaceCtx->mapPaletteIndex, 14);
+    }
 }
 
 void KaleidoScope_UpdateDungeonMap(PlayState* play) {
@@ -3452,14 +3452,12 @@ void KaleidoScope_UpdateDungeonMap(PlayState* play) {
 
     if ((play->sceneNum >= SCENE_DEKU_TREE) && (play->sceneNum <= SCENE_TREASURE_BOX_SHOP)) {
         if ((VREG(30) + 3) == pauseCtx->cursorPoint[PAUSE_MAP]) {
-            // HDTODO: Handle Runtime Modified Textures (HD)
             KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[0], size, interfaceCtx->mapPaletteIndex, 14);
         }
     }
 
     if ((play->sceneNum >= SCENE_DEKU_TREE) && (play->sceneNum <= SCENE_TREASURE_BOX_SHOP)) {
         if ((VREG(30) + 3) == pauseCtx->cursorPoint[PAUSE_MAP]) {
-            // HDTODO: Handle Runtime Modified Textures (HD)
             KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[1], size, interfaceCtx->mapPaletteIndex, 14);
         }
     }

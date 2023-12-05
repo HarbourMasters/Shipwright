@@ -7,42 +7,6 @@
 #include "textures/icon_item_dungeon_static/icon_item_dungeon_static.h"
 #include "textures/icon_item_nes_static/icon_item_nes_static.h"
 
-#include <stdlib.h> // malloc
-#include <string.h> // memcpy
-
-void gfx_texture_cache_clear();
-
-static uint8_t* map1TexModifiedRawRGBA = NULL;
-static uint8_t* map2TexModifiedRawRGBA = NULL;
-
-static uint8_t mapMask[4080];
-
-void KaleidoScope_ConvertRawCI4ToRGBA32(PlayState* play, u8* dest, u8* src, size_t size) {
-    InterfaceContext* interfaceCtx = &play->interfaceCtx;
-
-    for (size_t i = 0; i < size; i++) {
-        u8 first = i % 2;
-
-        u8 pixel = !first ? ((src[i / 2] & 0xF) >> 4) : (src[i / 2] & 0xF);
-
-        // dest[4 * i + 0] = pixel * 16;
-        // dest[4 * i + 1] = pixel * 16;
-        // dest[4 * i + 2] = pixel * 16;
-        // dest[4 * i + 3] = pixel ? 255 : 0;
-
-        uint16_t col16 = (interfaceCtx->mapPalette[pixel * 2] << 8) | interfaceCtx->mapPalette[pixel * 2 + 1];
-        uint8_t a = col16 & 1;
-        uint8_t r = col16 >> 11;
-        uint8_t g = (col16 >> 6) & 0x1F;
-        uint8_t b = (col16 >> 1) & 0x1F;
-
-        dest[4 * i + 0] = (r * 0xFF) / 0x1F;
-        dest[4 * i + 1] = (g * 0xFF) / 0x1F;
-        dest[4 * i + 2] = (b * 0xFF) / 0x1F;
-        dest[4 * i + 3] = a ? 255 : 0;
-    }
-}
-
 void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     static void* dungeonItemTexs[] = {
         gQuestIconDungeonBossKeyTex,
@@ -374,46 +338,6 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     gDPLoadTLUT_pal16(POLY_KAL_DISP++, 0, interfaceCtx->mapPalette);
     gDPSetTextureLUT(POLY_KAL_DISP++, G_TT_RGBA16);
 
-    uint32_t mapWidth = 48;
-    uint32_t mapHeight = 85;
-
-    // if (ResourceMgr_TexIsRaw(interfaceCtx->mapSegmentName[0])) {
-        // size_t width = ResourceGetTexWidthByName(interfaceCtx->mapSegmentName[0]);
-        // size_t height = ResourceGetTexHeightByName(interfaceCtx->mapSegmentName[0]);
-        // size_t size = width * height;
-
-        // if (map1TexModifiedRawRGBA != NULL) {
-        //     free(map1TexModifiedRawRGBA);
-        //     map1TexModifiedRawRGBA = NULL;
-        // }
-        // if (map2TexModifiedRawRGBA != NULL) {
-        //     free(map2TexModifiedRawRGBA);
-        //     map2TexModifiedRawRGBA = NULL;
-        // }
-
-        // for (size_t i = 0; i < ARRAY_COUNT(mapMask); i++) {
-        //     mapMask[i] = 1;
-        // }
-
-        // map1TexModifiedRawRGBA = malloc(size * sizeof(uint32_t));
-        // map2TexModifiedRawRGBA = malloc(size * sizeof(uint32_t));
-
-        // KaleidoScope_ConvertRawCI4ToRGBA32(play, map1TexModifiedRawRGBA, interfaceCtx->mapSegment[0], size);
-        // KaleidoScope_ConvertRawCI4ToRGBA32(play, map2TexModifiedRawRGBA, interfaceCtx->mapSegment[1], size);
-
-        // Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapMask, map1TexModifiedRawRGBA);
-        // Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapMask, map2TexModifiedRawRGBA);
-
-        // for (size_t i = 0; i < 8; i++) {
-        //     if (pauseCtx->mapPageVtx[60 + i].v.tc[0] != 0) {
-        //         pauseCtx->mapPageVtx[60 + i].v.tc[0] = mapWidth << 5;
-        //     }
-        //     if (pauseCtx->mapPageVtx[60 + i].v.tc[1] != 0) {
-        //         pauseCtx->mapPageVtx[60 + i].v.tc[1] = mapHeight << 5;
-        //     }
-        // }
-    // }
-
     u8 mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
     u8 mirrorMode = mirroredWorld ? G_TX_MIRROR : G_TX_NOMIRROR;
     // Offset the U value of each vertex to be in the mirror boundary for the map textures
@@ -430,12 +354,6 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     gSPInvalidateTexCache(POLY_KAL_DISP++, interfaceCtx->mapSegment[1]);
     gSPInvalidateTexCache(POLY_KAL_DISP++, interfaceCtx->mapSegmentName[0]);
     gSPInvalidateTexCache(POLY_KAL_DISP++, interfaceCtx->mapSegmentName[1]);
-    // gSPInvalidateTexCache(POLY_KAL_DISP++, map1TexModifiedRawRGBA);
-    // gSPInvalidateTexCache(POLY_KAL_DISP++, map2TexModifiedRawRGBA);
-
-    // gfx_texture_cache_clear();
-
-    gDPNoOpString(POLY_KAL_DISP++, "mystring", 0);
 
     gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegmentName[0], G_IM_FMT_CI, 48, 85, 0, G_TX_WRAP | mirrorMode,
                            G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
