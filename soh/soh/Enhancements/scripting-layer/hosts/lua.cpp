@@ -2,6 +2,7 @@
 #include "soh/Enhancements/scripting-layer/exceptions/hostapiexception.h"
 #include "soh/Enhancements/scripting-layer/types/methodcall.h"
 #include "soh/Enhancements/scripting-layer/types/hostfunction.h"
+#include <cstring>
 
 #include <filesystem>
 #include <unordered_map>
