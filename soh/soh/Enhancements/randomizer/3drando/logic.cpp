@@ -208,6 +208,7 @@ namespace Logic {
   uint8_t   PieceOfHeart     = 0;
   uint8_t   HeartContainer   = 0;
   bool DoubleDefense    = false;
+  bool FishingPole       = false;
 
   /* --- HELPERS, EVENTS, AND LOCATION ACCESS --- */
   /* These are used to simplify reading the logic, but need to be updated

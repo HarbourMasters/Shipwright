@@ -200,6 +200,7 @@ namespace Settings {
   Option Fishsanity                 = Option::U8  ("Fishsanity",             {"Off", "Shuffle Fishing Pond", "Shuffle Grotto Fish", "Shuffle Both"});
   Option FishsanityPondCount        = Option::U8  ("Pond Fish Count",        {NumOpts(0, 17, 1)}, OptionCategory::Setting, 0, true);
   Option FishsanityAgeSplit         = Option::Bool("Split Pond Fish",        {"Off", "On"});
+  Option ShuffleFishingPole         = Option::Bool("Shuffle Fishing Pole",   {"Off", "On"});
 
   std::vector<Option *> shuffleOptions = {
     &RandomizeShuffle,
@@ -214,6 +215,7 @@ namespace Settings {
     &Fishsanity,
     &FishsanityPondCount,
     &FishsanityAgeSplit,
+    &ShuffleFishingPole,
     &ShuffleCows,
     &ShuffleKokiriSword,
     &ShuffleMasterSword,
@@ -343,6 +345,7 @@ namespace Settings {
   Option Kak40GSHintText     = Option::Bool("40 GS Hint",             {"Off", "On"}, OptionCategory::Setting, 0);
   Option Kak50GSHintText     = Option::Bool("50 GS Hint",             {"Off", "On"}, OptionCategory::Setting, 0);
   Option ScrubHintText       = Option::Bool("Scrub Hint Text",        {"Off", "On"}, OptionCategory::Setting, 0);
+  Option FishingPoleHint     = Option::Bool("Fishing Pole Hint",      {"Off", "On"}, OptionCategory::Setting, 0);
   Option CompassesShowReward = Option::U8  ("Compasses Show Rewards", {"No", "Yes"}, OptionCategory::Setting, 1);
   Option CompassesShowWotH   = Option::U8  ("Compasses Show WotH",    {"No", "Yes"}, OptionCategory::Setting, 1);
   Option MapsShowDungeonMode = Option::U8  ("Maps Show Dungeon Modes",{"No", "Yes"}, OptionCategory::Setting, 1);
@@ -1333,6 +1336,7 @@ namespace Settings {
     ctx.fishsanity           = Fishsanity.Value<uint8_t>();
     ctx.fishsanityPondCount  = FishsanityPondCount.Value<uint8_t>();
     ctx.fishsanityAgeSplit   = (FishsanityAgeSplit) ? 1 : 0;
+    ctx.shuffleFishingPole   = (ShuffleFishingPole) ? 1 : 0;
 
     ctx.mapsAndCompasses     = MapsAndCompasses.Value<uint8_t>();
     ctx.keysanity            = Keysanity.Value<uint8_t>();
@@ -2317,6 +2321,7 @@ namespace Settings {
     Fishsanity.SetSelectedIndex(cvarSettings[RSK_FISHSANITY]);
     FishsanityPondCount.SetSelectedIndex(cvarSettings[RSK_FISHSANITY_POND_COUNT]);
     FishsanityAgeSplit.SetSelectedIndex(cvarSettings[RSK_FISHSANITY_AGE_SPLIT]);
+    ShuffleFishingPole.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_FISHING_POLE]);
     ShuffleCows.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_COWS]);
     ShuffleKokiriSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD]);
     ShuffleMasterSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_MASTER_SWORD]);
@@ -2411,6 +2416,7 @@ namespace Settings {
     Kak40GSHintText.SetSelectedIndex(cvarSettings[RSK_KAK_40_SKULLS_HINT]);
     Kak50GSHintText.SetSelectedIndex(cvarSettings[RSK_KAK_50_SKULLS_HINT]);
     ScrubHintText.SetSelectedIndex(cvarSettings[RSK_SCRUB_TEXT_HINT]);
+    FishingPoleHint.SetSelectedIndex(cvarSettings[RSK_FISHING_POLE_HINT]);
     HintDistribution.SetSelectedIndex(cvarSettings[RSK_HINT_DISTRIBUTION]);
     BlueFireArrows.SetSelectedIndex(cvarSettings[RSK_BLUE_FIRE_ARROWS]);
     SunlightArrows.SetSelectedIndex(cvarSettings[RSK_SUNLIGHT_ARROWS]);

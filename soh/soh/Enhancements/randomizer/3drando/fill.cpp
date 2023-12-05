@@ -1083,6 +1083,7 @@ int Fill() {
       CreateAltarText();
       CreateDampesDiaryText();
       CreateGregRupeeHint();
+      CreateFishingPoleHint();
       CreateSheikText();
       CreateSariaText();
       CreateWarpSongTexts();

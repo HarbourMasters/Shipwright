@@ -186,7 +186,7 @@ void ItemTable_Init() {                              // RandomizerGet           
     itemTable[HEART_CONTAINER]                   = Item(RG_HEART_CONTAINER,                   Text{"Heart Container",                 "Réceptacle de Coeur",              "Contenedor de corazón"},                   ITEMTYPE_ITEM, GI_HEART_CONTAINER_2, true,  &HeartContainer, HEART_CONTAINER);
     itemTable[ICE_TRAP]                          = Item(RG_ICE_TRAP,                          Text{"Ice Trap",                        "Piège de Glace",                   "Trampa de hielo"},                         ITEMTYPE_ITEM, GI_ICE_TRAP,          false, &noVariable,     ICE_TRAP);
     itemTable[MILK]                              = Item(RG_MILK,                              Text{"Milk",                            "Lait",                             "Leche Lon Lon"},                           ITEMTYPE_ITEM, GI_MILK,              false, &noVariable,     NONE);
-    itemTable[FISH]                              = Item(RG_FISH,                              Text{"Fish",                            "Poisson",                          "Pez"},                                     ITEMTYPE_ITEM, GI_FISH,              false, &noVariable,     NONE);
+    itemTable[FISH]                              = Item(RG_FISH,                              Text{"Fish",                            "Poisson",                          "Pez"},                                     ITEMTYPE_ITEM, GI_FISH,              true,  &FishAccess,     NONE);
 
     //Refills
     itemTable[BOMBS_5]                           = Item(RG_BOMBS_5,                           Text{"Bombs (5)",                       "Bombes (5)",                       "Bombas (5)"},                              ITEMTYPE_REFILL, GI_BOMBS_5,        false, &noVariable,  BOMBS_5);
@@ -244,6 +244,7 @@ void ItemTable_Init() {                              // RandomizerGet           
     itemTable[BUY_RED_POTION_50]                 = Item(RG_BUY_RED_POTION_50,                 Text{"Buy Red Potion [50]",             "Acheter: Potion Rouge [50]",       "Comprar poción roja [50]"},                ITEMTYPE_SHOP, 0x31, false, &noVariable,     BOTTLE_WITH_RED_POTION,    50);
 
     itemTable[TRIFORCE_PIECE]                    = Item(RG_TRIFORCE_PIECE,                    Text{"Triforce Piece",                  "Triforce Piece",                   "Triforce Piece"},                          ITEMTYPE_ITEM, 0xDF, true,  &TriforcePieces, TRIFORCE_PIECE);
+    itemTable[FISHING_POLE]                      = Item(RG_FISHING_POLE,                      Text{"Fishing Pole",                    "Canne à Pêche",                    "Caña de Pescar"},                          ITEMTYPE_ITEM, 0xE1, true,  &FishingPole,    FISHING_POLE);
     itemTable[TRIFORCE]                          = Item(RG_TRIFORCE,                          Text{"Triforce",                        "Triforce",                         "Trifuerza"},                               ITEMTYPE_EVENT, GI_RUPEE_RED_LOSE,  false, &noVariable, NONE);
     itemTable[HINT]                              = Item(RG_HINT,                              Text{"Hint",                            "Indice",                           "Pista"},                                   ITEMTYPE_EVENT, GI_RUPEE_BLUE_LOSE, false, &noVariable, NONE);
 

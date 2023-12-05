@@ -205,6 +205,8 @@ typedef enum {
     RAND_INF_GROTTO_FISH_LW_NEAR_SHORTCUTS_GROTTO,
     RAND_INF_GROTTO_FISH_KF_STORMS_GROTTO,
 
+    RAND_INF_FISHING_POLE_FOUND,
+
     // If you add anything to this list, you need to update the size of randomizerInf in z64save.h to be ceil(RAND_INF_MAX / 16)
 
     RAND_INF_MAX,

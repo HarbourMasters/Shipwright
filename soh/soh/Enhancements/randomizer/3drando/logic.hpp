@@ -201,6 +201,7 @@ extern bool MagicRefill;
 extern uint8_t PieceOfHeart;
 extern uint8_t HeartContainer;
 extern bool DoubleDefense;
+extern bool FishingPole;
 
 /* --- HELPERS --- */
 /* These are used to simplify reading the logic, but need to be updated

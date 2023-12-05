@@ -431,6 +431,7 @@ typedef struct {
     uint8_t fishsanity;
     uint8_t fishsanityPondCount;
     uint8_t fishsanityAgeSplit;
+    uint8_t shuffleFishingPole;
 
     uint8_t mapsAndCompasses;
     uint8_t keysanity;
@@ -813,6 +814,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option Fishsanity;
   extern Option FishsanityPondCount;
   extern Option FishsanityAgeSplit;
+  extern Option ShuffleFishingPole;
   extern Option ShuffleCows;
   extern Option ShuffleKokiriSword;
   extern Option ShuffleMasterSword;
@@ -881,6 +883,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option Kak50GSHintText;
   extern Option ScrubHintText;
   extern Option WarpSongHints;
+  extern Option FishingPoleHint;
   extern Option DamageMultiplier;
   extern Option StartingTime;
   extern Option ChestAnimations;

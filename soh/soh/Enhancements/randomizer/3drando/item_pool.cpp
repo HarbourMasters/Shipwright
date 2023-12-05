@@ -757,6 +757,14 @@ void GenerateItemPool() {
     PlaceVanillaGrottoFish();
   }
 
+  // Add pole to main pool if fishing pond fish are shuffled
+  if (ShuffleFishingPole && (fsMode == FISHSANITY_BOTH || fsMode == FISHSANITY_PONDONLY)) {
+    AddItemToMainPool(FISHING_POLE);
+    IceTrapModels.push_back(0xE1);
+  } else if (ShuffleFishingPole) {
+    AddItemToPool(PendingJunkPool, FISHING_POLE);
+  }
+
   if (ShuffleMagicBeans) {
     AddItemToMainPool(MAGIC_BEAN_PACK);
     if (ItemPoolValue.Is(ITEMPOOL_PLENTIFUL)) {
@@ -951,6 +959,10 @@ void GenerateItemPool() {
   if (ItemPoolValue.Is(ITEMPOOL_PLENTIFUL)) {
     if (ShuffleGerudoToken) {
       AddItemToPool(PendingJunkPool, GERUDO_MEMBERSHIP_CARD);
+    }
+
+    if (ShuffleFishingPole) {
+      AddItemToPool(PendingJunkPool, FISHING_POLE);
     }
 
     //Plentiful small keys

@@ -1839,7 +1839,7 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
 
 extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 {
-	uintptr_t i = (uintptr_t)(imgData);
+    uintptr_t i = (uintptr_t)(imgData);
 
 // if (i == 0xD9000000 || i == 0xE7000000 || (i & 1) == 1)
     if ((i & 1) == 1)
@@ -2228,7 +2228,7 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
                                 "&"
                                 "Nein!"
                                 "%w\x02",
-				"\x04\x1A\x08"
+                "\x04\x1A\x08"
                                 "D\x96sirez-vous l'\x96quiper maintenant?"
                                 "\x09&&"
                                 "\x1B%g"
@@ -2530,6 +2530,9 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             if ((gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && textId == TEXT_SARIA_SFM) || (textId >= TEXT_SARIAS_SONG_TEXT_START && textId <= TEXT_SARIAS_SONG_TEXT_END)) {
                 messageEntry = OTRGlobals::Instance->gRandomizer->GetSariaMessage(textId);
             }
+        } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_FISHING_POLE) && !Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND) &&
+                  (textId == TEXT_FISHING_POND_START || textId == TEXT_FISHING_POND_START_MET)) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetFishingPondOwnerMessage(textId);
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {

@@ -143,12 +143,14 @@ Text warpSerenadeText;
 Text warpRequiemText;
 Text warpNocturneText;
 Text warpPreludeText;
+Text fishingPoleText;
 
 
 std::string lightArrowHintLoc;
 std::string masterSwordHintLoc;
 std::string sariaHintLoc;
 std::string dampeHintLoc;
+std::string fishingPoleLoc;
 
 Text& GetChildAltarText() {
   return childAltarText;
@@ -172,6 +174,10 @@ Text& GetDampeHintText() {
 
 Text& GetGregHintText() {
   return gregText;
+}
+
+Text& GetFishingPoleText() {
+  return fishingPoleText;
 }
 
 Text& GetSheikHintText() {
@@ -220,6 +226,10 @@ std::string GetDampeHintLoc() {
 
 std::string GetSariaHintLoc() {
   return sariaHintLoc;
+}
+
+std::string GetFishingPoleLoc() {
+  return fishingPoleLoc;
 }
 
 Area* GetHintRegion(const uint32_t area) {
@@ -874,6 +884,35 @@ void CreateGregRupeeHint() {
   };
 
     gregText = temp1 + area + temp2;
+}
+
+void CreateFishingPoleHint() {
+  if (!ShuffleFishingPole) {
+    fishingPoleText = Text();
+    fishingPoleLoc = "";
+    return;
+  }
+  uint32_t location = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlacedItemKey() == FISHING_POLE;})[0];
+  Text area = GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText();
+  fishingPoleText = Text(
+      "Sorry, but the pond is closed. I've lost my good %rfishing pole%w... Can't go fishing without it!",
+      "",
+      ""
+  );
+
+  if (FishingPoleHint) {
+    fishingPoleText = fishingPoleText + Text(
+        "^If I remember correctly, I lost it somewhere in %r",
+        "",
+        ""
+    ) + area + Text(
+        "%w...&Let me know if you find it!",
+        "",
+        ""
+    );
+  }
+
+  fishingPoleLoc = Location(location)->GetName();
 }
 
 void CreateSheikText() {

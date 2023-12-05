@@ -2971,6 +2971,11 @@ bool getShouldSpawnLoaches() {
         || ((KREG(1) == 1) || ((sFishGameNumber & 3) == 3));
 }
 
+bool getHasFishingPole() {
+    return !IS_RANDO || Randomizer_GetSettingValue(RSK_SHUFFLE_FISHING_POLE) == RO_GENERIC_OFF ||
+           Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
+}
+
 bool Fishsanity_GetEnabled() {
     uint8_t fsMode = Randomizer_GetSettingValue(RSK_FISHSANITY);
     return fsMode != RO_FISHSANITY_OFF && fsMode != RO_FISHSANITY_GROTTOS;
@@ -4977,6 +4982,9 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                         this->stateAndTimer = 3;
                         break;
                 }
+            } else if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
+                Message_CloseTextbox(play);
+                this->stateAndTimer = 0;
             }
             break;
 

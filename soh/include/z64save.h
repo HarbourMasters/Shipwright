@@ -306,6 +306,7 @@ typedef struct {
     /*        */ char dampeText[150];
     /*        */ char sheikText[200];
     /*        */ char sariaText[150];
+    /*        */ char fishingPoleText[200];
     /*        */ char warpMinuetText[100];
     /*        */ char warpBoleroText[100];
     /*        */ char warpSerenadeText[100];
@@ -317,6 +318,7 @@ typedef struct {
     /*        */ RandomizerCheck sariaCheck;
     /*        */ RandomizerCheck gregCheck;
     /*        */ RandomizerCheck dampeCheck;
+    /*        */ RandomizerCheck fishingPoleCheck;
     /*        */ char inputSeed[1024];
     /*        */ u32 finalSeed;
     /*        */ u8 seedIcons[5];

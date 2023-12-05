@@ -103,6 +103,7 @@ class Randomizer {
     CustomMessage GetCursedSkullMessage(s16 params);
     CustomMessage GetGoronMessage(u16 index);
     CustomMessage GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
+    CustomMessage GetFishingPondOwnerMessage(u16 originalTextId);
     static void CreateCustomMessages();
     static CustomMessage GetRupeeMessage(u16 rupeeTextId);
     static CustomMessage GetTriforcePieceMessage();
