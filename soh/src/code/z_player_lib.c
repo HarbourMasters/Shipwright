@@ -573,7 +573,7 @@ uint8_t Player_IsCustomLinkModel() {
 }
 
 s32 Player_InBlockingCsMode(PlayState* play, Player* this) {
-    return (this->stateFlags1 & 0x20000080) || (this->csMode != 0) || (play->transitionTrigger == TRANS_TRIGGER_START) ||
+    return (this->stateFlags1 & 0x20000080) || (this->csAction != 0) || (play->transitionTrigger == TRANS_TRIGGER_START) ||
            (this->stateFlags1 & 1) || (this->stateFlags3 & 0x80) ||
            ((gSaveContext.magicState != MAGIC_STATE_IDLE) && (Player_ActionToMagicSpell(this, this->itemAction) >= 0));
 }
@@ -668,7 +668,7 @@ void func_8008EC70(Player* this) {
 }
 
 void Player_SetEquipmentData(PlayState* play, Player* this) {
-    if (this->csMode != 0x56) {
+    if (this->csAction != 0x56) {
         this->currentShield = SHIELD_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD));
         this->currentTunic = TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC));
         this->currentBoots = BOOTS_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS));
@@ -742,6 +742,10 @@ s32 Player_IsBurningStickInRange(PlayState* play, Vec3f* pos, f32 xzRange, f32 y
 
 s32 Player_GetStrength(void) {
     s32 strengthUpgrade = CUR_UPG_VALUE(UPG_STRENGTH);
+
+    if (CVarGetInteger("gToggleStrength", 0) && CVarGetInteger("gStrengthDisabled", 0)) {
+        return PLAYER_STR_NONE;
+    }
 
     if (CVarGetInteger("gTimelessEquipment", 0) || LINK_IS_ADULT) {
         return strengthUpgrade;
@@ -889,8 +893,8 @@ s32 Player_GetEnvironmentalHazard(PlayState* play) {
 
     if (play->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3) { // Room is hot
         var = 0;
-    } else if ((this->unk_840 > 80) &&
-               ((this->currentBoots == PLAYER_BOOTS_IRON) || (this->unk_840 >= 300))) { // Deep underwater
+    } else if ((this->underwaterTimer > 80) &&
+               ((this->currentBoots == PLAYER_BOOTS_IRON) || (this->underwaterTimer >= 300))) { // Deep underwater
         var = ((this->currentBoots == PLAYER_BOOTS_IRON) && (this->actor.bgCheckFlags & 1)) ? 1 : 3;
     } else if (this->stateFlags1 & 0x8000000) { // Swimming
         var = 2;
