@@ -3,6 +3,8 @@
 #include "hostapi.h"
 #include <unordered_map>
 
+struct GameBinding;
+
 class LuaHost : public HostAPI {
 private:
     std::unordered_map<std::string, GameBinding> mBindings;

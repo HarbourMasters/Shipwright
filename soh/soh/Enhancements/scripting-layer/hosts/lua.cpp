@@ -9,6 +9,13 @@
 #include <fstream>
 
 extern "C" {
+// Fixed dumb error because switch seems to not have limits.h
+#if defined(__SWITCH__) || defined(__WIIU__)
+#define LLONG_MAX 9223372036854775807LL
+#define LLONG_MIN  (-LLONG_MAX-1LL)
+#define ULLONG_MAX (LLONG_MAX*2ULL+1ULL)
+#endif
+
 #include <lib/lua/lua.h>
 #include <lib/lua/lualib.h>
 #include <lib/lua/lauxlib.h>
