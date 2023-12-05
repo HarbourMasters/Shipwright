@@ -17,14 +17,6 @@ static const std::unordered_map<std::string, char> textBoxSpecialCharacters = {
 static const std::unordered_map<std::string, char> colors = { { "w", QM_WHITE },  { "r", QM_RED },   { "g", QM_GREEN },
                                                               { "b", QM_BLUE },   { "c", QM_LBLUE }, { "p", QM_PINK },
                                                               { "y", QM_YELLOW }, { "B", QM_BLACK } };
-static const std::unordered_map<std::string, char> variables = { { "TWO_WAY_CHOICE", '\x1B' }, { "COLOR", '\x05' },
-                                                                 { "PLAYER", '\x0F' }, { "NEWLINE", '\x01' },
-                                                                 { "BOX_BREAK", '\x04' }, { "ITEM_ICON", '\x13' },
-                                                                 { "SFX", '\x12' }, { "THREE_WAY_CHOICE", '\x1C' } };
-static const std::unordered_map<std::string, char> colorValues = { { "DEFAULT", QM_WHITE }, { "RED", QM_RED },
-                                                                   { "GREEN", QM_GREEN }, { "BLUE", QM_BLUE },
-                                                                   { "CYAN", QM_LBLUE }, { "PINK", QM_PINK },
-                                                                   { "YELLOW", QM_YELLOW }, { "BLACK", QM_BLACK } };
 
 CustomMessage::CustomMessage(std::string english_, std::string german_, std::string french_, TextBoxType type_,
                              TextBoxPosition position_)
@@ -135,7 +127,7 @@ void CustomMessage::Format() {
     }
     ReplaceSpecialCharacters();
     ReplaceColors();
-    ReplaceVariables();
+    ReplaceControlCodeVariables();
     *this += MESSAGE_END();
 }
 
@@ -160,28 +152,44 @@ void CustomMessage::ReplaceSpecialCharacters() {
     }
 }
 
-void CustomMessage::ReplaceVariables() {
+void CustomMessage::ReplaceControlCodeVariables() {
     for (std::string* str : { &english, &french, &german}) {
-        std::string replacement;
         size_t position = 0;
         size_t endPosition = 0;
         while ((position = str->find('$', position)) != std::string::npos) {
+            std::string replacement;
             if ((*str)[position + 1] == '{') {
                 if ((endPosition = str->find('}', position)) != std::string::npos) {
                     std::string variable = str->substr(position + 2, endPosition - (position + 2));
                     const size_t colonPos = variable.find(':', 0);
                     std::string name = variable.substr(0, colonPos);
-                    std::string value = colonPos == std::string::npos ? "" : variable.substr(colonPos + 1);
-                    replacement += variables.at(name);
-                    if (!value.empty()) {
-                        if (name == "COLOR") {
-                            replacement += colorValues.at(value);
-                        } else if (name == "ITEM_ICON") {
-                            replacement += static_cast<char>(std::stoi(value, nullptr, 0));
-                        } else if (name == "SFX") {
-                            uint16_t sfx = std::stoi(value, nullptr, 0);
-                            replacement += static_cast<char>(sfx >> 8 & 0xFF);
-                            replacement += static_cast<char>(sfx & 0xFF);
+                    const auto& [controlCode, type] = mControlCodeVariables.at(name);
+                    if (controlCode != 0) {
+                        replacement += mControlCodeVariables.at(name).controlCode;
+                    }
+                    if (type != ValueType::NONE) {
+                        uint32_t bytes = 0;
+                        std::string value = colonPos == std::string::npos ? "" : variable.substr(colonPos + 1);
+                        switch (type) {
+                            case ValueType::COLOR:
+                                replacement += mColors.at(value);
+                                break;
+                            case ValueType::BYTE:
+                                replacement += static_cast<char>(std::stoi(value, nullptr, 0));
+                                break;
+                            case ValueType::TWO_BYTES:
+                                bytes = std::stoi(value, nullptr, 0);
+                                replacement += static_cast<char>(bytes >> 8 & 0xFF);
+                                replacement += static_cast<char>(bytes & 0xFF);
+                                break;
+                            case ValueType::THREE_BYTES:
+                                bytes = std::stoi(value, nullptr, 0);
+                                replacement += static_cast<char>(bytes >> 16 & 0xFF);
+                                replacement += static_cast<char>(bytes >> 8 & 0xFF);
+                                replacement += static_cast<char>(bytes & 0xFF);
+                                break;
+                            default:
+                                break;
                         }
                     }
                 }

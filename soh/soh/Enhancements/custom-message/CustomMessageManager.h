@@ -4,8 +4,8 @@
 #include <cstdint>
 #include <exception>
 
-#include "../../../include/z64item.h"
-#include "../../../include/message_data_textbox_types.h"
+#include "z64item.h"
+#include "message_data_textbox_types.h"
 
 #undef MESSAGE_END
 
@@ -19,11 +19,11 @@
 #define QM_BLACK 0x47
 
 /**
- * @brief Encapsulates logic surrounding languages, and formatting strings for OoT's textboxes and
- * performing variable replacement across all of them at once. Also stores a message's text box type
- * (i.e. black, blue, none, typically describes the background but also changes what a few codes mean),
- * and position (i.e. top, bottom, middle).
- */
+* @brief Encapsulates logic surrounding languages, and formatting strings for OoT's textboxes and
+* performing variable replacement across all of them at once. Also stores a message's text box type
+* (i.e. black, blue, none, typically describes the background but also changes what a few codes mean),
+* and position (i.e. top, bottom, middle).
+*/
 class CustomMessage {
   public:
     CustomMessage() = default;
@@ -50,7 +50,7 @@ class CustomMessage {
      * @param oldStr the string to be replaced
      * @param newStr the string to replace with
      */
-    void Replace(std::string&& oldStr, std::string&& newStr);
+    void Replace(std::string&&oldStr, std::string&&newStr);
 
     /**
      * @brief Finds an instance of oldStr in each language of the CustomMessage,
@@ -76,9 +76,9 @@ class CustomMessage {
     void ReplaceSpecialCharacters();
 
     /**
-     * @brief Replaces variables `@{VARIABLE:VALUE}` with control codes where applicable.
+     * @brief Replaces variables `${VARIABLE:VALUE}` with control codes where applicable.
      */
-    void ReplaceVariables();
+    void ReplaceControlCodeVariables();
 
     /**
      * @brief Replaces our color variable strings with the OoT control codes.
@@ -102,6 +102,56 @@ class CustomMessage {
     void Format();
 
   private:
+    enum class ValueType {
+        NONE,
+        BYTE,
+        TWO_BYTES,
+        THREE_BYTES,
+        COLOR,
+    };
+
+    struct ControlCodeVariableValue {
+        char controlCode;
+        ValueType type;
+    };
+
+    inline static const std::unordered_map<std::string, ControlCodeVariableValue> mControlCodeVariables = {
+        {"NEWLINE", {'\x01', ValueType::NONE}},
+        {"END_TEXT", {'\x02', ValueType::NONE}},
+        {"BOX_BREAK", {'\x04', ValueType::NONE}},
+        { "COLOR", {'\x05', ValueType::COLOR}},
+        {"SHIFT_RIGHT", {'\x06', ValueType::BYTE}},
+        {"START_INSTANT_TEXT", {'\x08', ValueType::NONE}},
+        {"END_INSTANT_TEXT", {'\x09', ValueType::NONE}},
+        {"KEEP_OPEN", {'\x0A', ValueType::NONE}},
+        {"DELEGATE_CONTROL", {'\x0B', ValueType::NONE}},
+        {"BREAK_DELAY", {'\x0C', ValueType::BYTE}},
+        {"WAIT_FOR_INPUT", {'\x0D', ValueType::NONE}}, // maybe unused?
+        {"FADE_OUT", {'\x0E', ValueType::BYTE}},
+        {"PLAYER", {'\x0F', ValueType::NONE}},
+        {"START_OCARINA", {'\x10', ValueType::NONE}},
+        {"UNUSED_FADE", {'\x11', ValueType::BYTE}}, // maybe unused?
+        {"SFX", {'\x12', ValueType::TWO_BYTES}},
+        {"ITEM_ICON", {'\x13', ValueType::BYTE}},
+        {"TEXT_DELAY", {'\x14', ValueType::BYTE}},
+        {"SET_BACKGROUND", {'\x15', ValueType::THREE_BYTES}},
+        {"MARATHON_TIME", {'\x16', ValueType::NONE}},
+        {"RACE_TIME", {'\x17', ValueType::NONE}},
+        {"UNKNOWN_POINTS", {'\x18', ValueType::NONE}},
+        {"SKULL_TOKENS", {'\x19', ValueType::NONE}},
+        {"PREVENT_SKIP", {'\x1A', ValueType::NONE}},
+        {"TWO_WAY_CHOICE", {'\x1B', ValueType::NONE}},
+        {"THREE_WAY_CHOICE", {'\x1C', ValueType::NONE}},
+        {"FISH_WEIGHT", {'\x1D', ValueType::NONE}},
+        {"HIGH_SCORES", {'\x1E', ValueType::BYTE}},
+        {"TIME", {'\x1F', ValueType::NONE}}
+    };
+
+    inline static const std::unordered_map<std::string, char> mColors = {
+        { "DEFAULT", QM_WHITE }, { "RED", QM_RED }, { "GREEN", QM_GREEN }, { "BLUE", QM_BLUE },
+        { "CYAN", QM_LBLUE }, { "PINK", QM_PINK }, { "YELLOW", QM_YELLOW }, { "BLACK", QM_BLACK }
+    };
+
     const std::string MESSAGE_END() const;
     const std::string ITEM_OBTAINED(uint8_t x) const;
     const std::string NEWLINE() const;
@@ -119,11 +169,11 @@ class CustomMessage {
 typedef std::unordered_map<uint16_t, CustomMessage> CustomMessageTable;
 
 /**
- * @brief Encapsulates data and functions for creating custom message tables and storing and retrieving
- * `CustomMessage`s from them. It also converts a more user-friendly string syntax to the raw control
- * characters that OoT's message system uses (i.e. & for newline, ^ for new page (wait for input), and %
- * followed by various letters for colors).
- */
+* @brief Encapsulates data and functions for creating custom message tables and storing and retrieving
+* `CustomMessage`s from them. It also converts a more user-friendly string syntax to the raw control
+* characters that OoT's message system uses (i.e. & for newline, ^ for new page (wait for input), and %
+* followed by various letters for colors).
+*/
 class CustomMessageManager {
   private:
     std::unordered_map<std::string, CustomMessageTable> messageTables;
