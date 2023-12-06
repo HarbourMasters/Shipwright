@@ -1737,14 +1737,14 @@ void GenerateRandomizerImgui(std::string seed = "") {
         (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
          CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA)
             ? CVarGetInteger("gRandomizeShuffleKeyRingsGerudoFortress", RO_GENERIC_OFF) : RO_GENERIC_OFF;
-    cvarSettings[RSK_KEYRINGS_FOREST_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsForestTemple", 0);
-    cvarSettings[RSK_KEYRINGS_FIRE_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsFireTemple", 0);
-    cvarSettings[RSK_KEYRINGS_WATER_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsWaterTemple", 0);
-    cvarSettings[RSK_KEYRINGS_SPIRIT_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsSpiritTemple", 0);
-    cvarSettings[RSK_KEYRINGS_SHADOW_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsShadowTemple", 0);
-    cvarSettings[RSK_KEYRINGS_BOTTOM_OF_THE_WELL] = CVarGetInteger("gRandomizeShuffleKeyRingsBottomOfTheWell", 0);
-    cvarSettings[RSK_KEYRINGS_GTG] = CVarGetInteger("gRandomizeShuffleKeyRingsGTG", 0);
-    cvarSettings[RSK_KEYRINGS_GANONS_CASTLE] = CVarGetInteger("gRandomizeShuffleKeyRingsGanonsCastle", 0);
+    cvarSettings[RSK_KEYRINGS_FOREST_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsForestTemple", RO_KEYRING_FOR_DUNGEON_OFF);
+    cvarSettings[RSK_KEYRINGS_FIRE_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsFireTemple", RO_KEYRING_FOR_DUNGEON_OFF);
+    cvarSettings[RSK_KEYRINGS_WATER_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsWaterTemple", RO_KEYRING_FOR_DUNGEON_OFF);
+    cvarSettings[RSK_KEYRINGS_SPIRIT_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsSpiritTemple", RO_KEYRING_FOR_DUNGEON_OFF);
+    cvarSettings[RSK_KEYRINGS_SHADOW_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsShadowTemple", RO_KEYRING_FOR_DUNGEON_OFF);
+    cvarSettings[RSK_KEYRINGS_BOTTOM_OF_THE_WELL] = CVarGetInteger("gRandomizeShuffleKeyRingsBottomOfTheWell", RO_KEYRING_FOR_DUNGEON_OFF);
+    cvarSettings[RSK_KEYRINGS_GTG] = CVarGetInteger("gRandomizeShuffleKeyRingsGTG", RO_KEYRING_FOR_DUNGEON_OFF);
+    cvarSettings[RSK_KEYRINGS_GANONS_CASTLE] = CVarGetInteger("gRandomizeShuffleKeyRingsGanonsCastle", RO_KEYRING_FOR_DUNGEON_OFF);
     cvarSettings[RSK_BOSS_KEYSANITY] = CVarGetInteger("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     cvarSettings[RSK_GANONS_BOSS_KEY] = CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA);
     cvarSettings[RSK_LACS_STONE_COUNT] = CVarGetInteger("gRandomizeLacsStoneCount", 3);
@@ -2955,16 +2955,16 @@ void RandomizerSettingsWindow::DrawElement() {
                     case RO_KEYRINGS_SELECTION:
                         disableGFKeyring =
                             CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) != RO_GF_NORMAL || CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) == RO_GERUDO_KEYS_VANILLA;
-                        UIWidgets::EnhancementCheckbox("Gerudo Fortress##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGerudoFortress",
+                        UIWidgets::EnhancementCheckboxTristate("Gerudo Fortress##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGerudoFortress",
                             disableGFKeyring, "Disabled because the currently selected Gerudo Fortress Carpenters\n setting and/or Gerudo Fortress Keys setting is incompatible with \nhaving a Gerudo Fortress keyring.");
-                        UIWidgets::EnhancementCheckbox("Forest Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsForestTemple");
-                        UIWidgets::EnhancementCheckbox("Fire Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsFireTemple");
-                        UIWidgets::EnhancementCheckbox("Water Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsWaterTemple");
-                        UIWidgets::EnhancementCheckbox("Spirit Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsSpiritTemple");
-                        UIWidgets::EnhancementCheckbox("Shadow Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsShadowTemple");
-                        UIWidgets::EnhancementCheckbox("Bottom of the Well##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsBottomOfTheWell");
-                        UIWidgets::EnhancementCheckbox("Gerudo Training Grounds##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGTG");
-                        UIWidgets::EnhancementCheckbox("Ganon's Castle##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGanonsCastle");
+                        UIWidgets::EnhancementCheckboxTristate("Forest Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsForestTemple");
+                        UIWidgets::EnhancementCheckboxTristate("Fire Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsFireTemple");
+                        UIWidgets::EnhancementCheckboxTristate("Water Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsWaterTemple");
+                        UIWidgets::EnhancementCheckboxTristate("Spirit Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsSpiritTemple");
+                        UIWidgets::EnhancementCheckboxTristate("Shadow Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsShadowTemple");
+                        UIWidgets::EnhancementCheckboxTristate("Bottom of the Well##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsBottomOfTheWell");
+                        UIWidgets::EnhancementCheckboxTristate("Gerudo Training Grounds##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGTG");
+                        UIWidgets::EnhancementCheckboxTristate("Ganon's Castle##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGanonsCastle");
                         break;
                     default:
                         break;

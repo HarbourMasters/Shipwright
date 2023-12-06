@@ -3603,6 +3603,12 @@ typedef enum {
     RO_KEYRINGS_SELECTION,
 } RandoOptionKeyrings;
 
+typedef enum {
+    RO_KEYRING_FOR_DUNGEON_OFF,
+    RO_KEYRING_FOR_DUNGEON_RANDOM,
+    RO_KEYRING_FOR_DUNGEON_ON,
+} RandoOptionKeyringForDungeon;
+
 //Ganon's Boss Key Settings (vanilla, own dungeon, start with,
 //overworld, anywhere, 100 GS reward)
 typedef enum {
