@@ -312,9 +312,13 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
   std::string name = entrance->GetName();
   std::string text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
 
+  // Track the reverse destination, useful for savewarp handling
   if (entrance->GetReverse() != nullptr) {
     destinationIndex = entrance->GetReverse()->GetIndex();
-    replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+    // When decouple is off we track the replacement's reverse destination, useful for recording visited entrances
+    if (!entrance->IsDecoupled()) {
+      replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+    }
   }
 
   json entranceJson = json::object({
