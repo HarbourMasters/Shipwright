@@ -1212,7 +1212,7 @@ void Settings::UpdateOptionProperties() {
     mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT].Hide();
     mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT].Hide();
     mOptions[RSK_RAINBOW_BRIDGE_TOKEN_COUNT].Hide();
-    uint8_t bridgeOpt = CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD);
+    const uint8_t bridgeOpt = CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD);
     switch (CVarGetInteger("gRandomizeRainbowBridge", RO_BRIDGE_VANILLA)) {
         case RO_BRIDGE_STONES:
             // Show Bridge Options and Stone Count slider
@@ -1334,6 +1334,8 @@ void Settings::UpdateOptionProperties() {
                 mOptions[RSK_MQ_DUNGEON_COUNT].Hide();
                 mOptions[RSK_MQ_DUNGEON_SET].Unhide();
                 break;
+            default:
+                break;
         }
         // Controls whether or not to show the selectors for individual dungeons.
         if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_NONE &&
@@ -1386,7 +1388,7 @@ void Settings::UpdateOptionProperties() {
         mOptions[RSK_TRIFORCE_HUNT].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
     }
     // Update triforce pieces required to be capped at the current value for pieces total.
-    uint8_t triforceTotal = CVarGetInteger("gRandomizeTriforceHuntTotalPieces", 30);
+    const uint8_t triforceTotal = CVarGetInteger("gRandomizeTriforceHuntTotalPieces", 30);
     if (mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED].GetOptionCount() != triforceTotal + 1) {
         mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED].ChangeOptions(NumOpts(1, triforceTotal + 1));
     }
@@ -1481,7 +1483,7 @@ void Settings::UpdateOptionProperties() {
         default:
             break;
     }
-    uint8_t maxKeyringCount = (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
+    const uint8_t maxKeyringCount = (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
                                CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) ? 9 : 8;
     if (mOptions[RSK_KEYRINGS_RANDOM_COUNT].GetOptionCount() != maxKeyringCount + 1) {
         mOptions[RSK_KEYRINGS_RANDOM_COUNT].ChangeOptions(NumOpts(0, maxKeyringCount));
@@ -1507,7 +1509,7 @@ void Settings::UpdateOptionProperties() {
     mOptions[RSK_LACS_REWARD_COUNT].Hide();
     mOptions[RSK_LACS_DUNGEON_COUNT].Hide();
     mOptions[RSK_LACS_TOKEN_COUNT].Hide();
-    uint8_t lacsOpts = CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD);
+    const uint8_t lacsOpts = CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD);
     switch (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA)) {
         case RO_GANON_BOSS_KEY_LACS_STONES:
             mOptions[RSK_LACS_OPTIONS].Unhide();
