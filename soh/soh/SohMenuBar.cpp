@@ -579,7 +579,6 @@ void DrawEnhancementsMenu() {
                     "Requirements:\n"
                     "- Obtained the Ocarina of Time (depends on selection)\n"
                     "- Obtained the Song of Time\n"
-                    "- Obtained the Master Sword\n"
                     "- Not within range of Time Block\n"
                     "- Not within range of Ocarina playing spots");
                 UIWidgets::PaddedEnhancementCheckbox("Skip water take breath animation", "gSkipSwimDeepEndAnim", true, false);
