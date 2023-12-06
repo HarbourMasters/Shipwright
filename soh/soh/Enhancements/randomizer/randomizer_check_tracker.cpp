@@ -118,6 +118,7 @@ RandomizerCheck lastLocationChecked = RC_UNKNOWN_CHECK;
 RandomizerCheckArea previousArea = RCAREA_INVALID;
 RandomizerCheckArea currentArea = RCAREA_INVALID;
 OSContPad* trackerButtonsPressed;
+std::unordered_map<RandomizerCheck, std::string> checkNameOverrides;
 
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheckObject, RandomizerCheckObject);
@@ -450,6 +451,14 @@ void CheckTrackerLoadGame(int32_t fileNum) {
 
         if (areaChecksGotten[realRcObj.rcArea] != 0 || RandomizerCheckObjects::AreaIsOverworld(realRcObj.rcArea)) {
             areasSpoiled |= (1 << realRcObj.rcArea);
+        }
+
+        // Create check name overrides for child pond fish if age split is disabled
+        if (showFish && rcObj.rcType == RCTYPE_FISH && rcObj.sceneId == SCENE_FISHING_POND && rcObj.actorParams != 116 &&
+            !OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_AGE_SPLIT)) {
+            if (rcObj.rcShortName.starts_with("Child")) {
+                checkNameOverrides[rc] = rcObj.rcShortName.substr(6);
+            }
         }
     }
     if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING && IS_RANDO) {
@@ -1334,19 +1343,13 @@ void DrawLocation(RandomizerCheckObject rcObj) {
     }
  
     //Main Text
-    txt = rcObj.rcShortName;
+    if (checkNameOverrides.contains(rcObj.rc))
+        txt = checkNameOverrides[rcObj.rc];
+    else
+        txt = rcObj.rcShortName;
+
     if (lastLocationChecked == rcObj.rc)
         txt = "* " + txt;
-
-    // If we aren't splitting pond fish by age, then remove "Child" from the check name, unless it's the child-exclusive loach.
-    if (rcObj.rcType == RCTYPE_FISH && CVarGetInteger("gRandomizeFishsanity", RO_FISHSANITY_OFF) != RO_FISHSANITY_OFF &&
-        CVarGetInteger("gRandomizeFishsanity", RO_FISHSANITY_OFF) != RO_FISHSANITY_GROTTOS &&
-        CVarGetInteger("gRandomizeFishsanityAgeSplit", RO_GENERIC_OFF) == RO_GENERIC_OFF && rcObj.actorParams != 116 && rcObj.actorId != ACTOR_EN_FISH) {
-        size_t idx = txt.find("Child");
-        if (idx != std::string::npos) {
-            txt.erase(txt.begin() + idx, txt.begin() + idx + 6);
-        }
-    }
  
     // Draw button - for Skipped/Seen/Scummed/Unchecked only
     if (status == RCSHOW_UNCHECKED || status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED || status == RCSHOW_SCUMMED || skipped) {
