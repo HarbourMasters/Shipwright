@@ -19,7 +19,7 @@ enum class BindingType {
 struct GameBinding {
     BindingType type;
     std::variant<FunctionPtr, std::any> binding;
-    ModName modName;
+    std::string module = ROOT_MODULE;
 };
 
 class MethodCall {

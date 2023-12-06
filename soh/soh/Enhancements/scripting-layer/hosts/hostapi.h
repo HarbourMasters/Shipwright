@@ -1,14 +1,12 @@
 #pragma once
 
-#include <string>
 #include <any>
 #include <vector>
-#include <variant>
 
 struct GameBinding;
 
 #define IS_TYPE(t, value) value.type() == typeid(t)
-typedef std::variant<std::string, std::monostate> ModName;
+#define ROOT_MODULE "root"
 
 class HostAPI {
 public:

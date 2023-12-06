@@ -1,12 +1,12 @@
 #pragma once
 
 #include "hostapi.h"
+#include <string>
 #include <unordered_map>
 
 struct GameBinding;
 
 class LuaHost : public HostAPI {
-private:
     std::unordered_map<std::string, GameBinding> mBindings;
 public:
     bool Initialize() override;

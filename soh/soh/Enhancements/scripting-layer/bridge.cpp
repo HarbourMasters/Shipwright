@@ -16,7 +16,7 @@
 #define ERROR_MESSAGE std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->SendErrorMessage
 #define INFO_MESSAGE std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->SendInfoMessage
 
-static bool RunScript(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool RunScript(const std::shared_ptr<LUS::Console>&, const std::vector<std::string>& args, std::string*) {
     if (args.size() > 1) {
         auto path = std::filesystem::path("scripts") / args[1];
         auto ext = path.extension().string().substr(1);
@@ -55,13 +55,13 @@ static bool RunScript(std::shared_ptr<LUS::Console> Console, const std::vector<s
     return false;
 }
 
-static bool KillScript(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
+static bool KillScript(const std::shared_ptr<LUS::Console>&, const std::vector<std::string>& args, std::string*) {
     if (args.size() > 1) {
         try {
-            uint16_t pid = std::stoi(args[1]);
+            const uint16_t pid = std::stoi(args[1]);
             GameBridge::Instance->Kill(pid);
             INFO_MESSAGE("Script with pid %d killed", pid);
-        } catch (std::invalid_argument& e) {
+        } catch (std::invalid_argument&) {
             ERROR_MESSAGE("Invalid pid: %s", args[1].c_str());
             return true;
         }
@@ -74,11 +74,11 @@ static bool KillScript(std::shared_ptr<LUS::Console> Console, const std::vector<
 
 void GameBridge::Initialize() {
     this->RegisterHost("lua", std::make_shared<LuaHost>());
-    this->BindFunction("print", [](uintptr_t ctx, MethodCall* method) {
-        size_t count = method->ArgumentCount();
+    this->BindFunction("print", [](uintptr_t, MethodCall* method) {
+        const size_t count = method->ArgumentCount();
         std::stringstream message;
         for(size_t i = 0; i < count; i++) {
-            std::any value = method->RawArgument(i);
+            std::any value = method->RawArgument(static_cast<int>(i));
             if (IS_TYPE(std::string, value)) {
                 message << std::any_cast<std::string>(value);
             } else if (IS_TYPE(bool, value)) {
@@ -100,27 +100,27 @@ void GameBridge::Initialize() {
         method->success();
     });
     // TODO: Find a way to automatically bind all hooks
-    this->BindFunction("hook", [](uintptr_t ctx, MethodCall* method) {
-        auto mode = method->GetArgument<std::string>(0);
-        auto hook = method->GetArgument<std::string>(1);
+    this->BindFunction("hook", [](uintptr_t, MethodCall* method) {
+        const auto mode = method->GetArgument<std::string>(0);
+        const auto hook = method->GetArgument<std::string>(1);
         if(mode == "add"){
             auto function = method->GetArgument<HostFunction*>(2);
             if(hook == "update"){
-                size_t idx = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([function]() {
+                const size_t idx = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([function]() {
                     try {
                         function->execute();
                     } catch (HostAPIException& e) {
                         ERROR_MESSAGE("Error while executing script: %s", e.what());
                     }
                 });
-                method->success((int) idx);
+                method->success(static_cast<int>(idx));
                 return;
             }
             method->error("Unknown hook: " + hook);
             return;
         }
         if(mode == "remove"){
-            auto idx = method->GetArgument<int>(2);
+            const auto idx = method->GetArgument<int>(2);
             if(hook == "update"){
                 GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(idx);
                 method->success();
@@ -140,23 +140,23 @@ void GameBridge::Initialize() {
 }
 
 uint16_t GameBridge::Execute(const std::string& script, const std::string& hostname){
-    auto host = this->hosts.find(hostname);
+    const auto host = this->hosts.find(hostname);
     if(host == this->hosts.end()){
         throw GameBridgeException("Host api not found: " + hostname);
     }
 
-    uint16_t pid = host->second->Execute(script);
+    const uint16_t pid = host->second->Execute(script);
     this->pids[pid] = host->second;
 
     return pid;
 }
 
-void GameBridge::Kill(uint16_t pid){
+void GameBridge::Kill(const uint16_t pid) const {
     if(!this->pids.contains(pid)){
         return;
     }
 
-    auto host = this->pids.find(pid);
+    const auto host = this->pids.find(pid);
     return host->second->Kill(pid);
 }
 
@@ -167,24 +167,22 @@ void GameBridge::RegisterHost(const std::string& name, std::shared_ptr<HostAPI> 
     this->hosts[name] = std::move(host);
 }
 
-void GameBridge::Register(std::vector<NamedEntry> entries, const std::variant<std::string, std::monostate>& mod_name) {
-    for (auto& host : this->hosts) {
-        for (auto& entry : entries) {
-            host.second->Bind(entry.name, { (BindingType) entry.link.index(), entry.link, mod_name });
+void GameBridge::Register(const std::vector<NamedEntry>& entries, const std::string& mod_name) const {
+    for (const auto& [fst, snd] : this->hosts) {
+        for (auto& [name, link] : entries) {
+            snd->Bind(name, { static_cast<BindingType>(link.index()), link, mod_name });
         }
     }
 }
 
-[[deprecated]]
-void GameBridge::BindField(const std::string& name, const std::any& field, const std::variant<std::string, std::monostate>& mod_name){
-    for(auto& host : this->hosts){
-        host.second->Bind(name, { BindingType::KField, field, mod_name });
+void GameBridge::BindField(const std::string& name, const std::any& field, const std::string& mod_name) const {
+    for(const auto& [fst, snd] : this->hosts){
+        snd->Bind(name, { BindingType::KField, field, mod_name });
     }
 }
 
-[[deprecated]]
-void GameBridge::BindFunction(const std::string& name, FunctionPtr function, const std::variant<std::string, std::monostate>& mod_name){
-    for(auto& host : this->hosts){
-        host.second->Bind(name, { BindingType::KFunction, function, mod_name });
+void GameBridge::BindFunction(const std::string& name, FunctionPtr function, const std::string& mod_name) const {
+    for(const auto& [fst, snd] : this->hosts){
+        snd->Bind(name, { BindingType::KFunction, function, mod_name });
     }
 }
