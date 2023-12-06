@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdint.h>
+#include <cstdint>
 #include <string>
 #include <vector>
 #include <variant>
@@ -19,8 +19,8 @@ class Option {
                        OptionCategory category_ = OptionCategory::Setting, uint8_t defaultOption_ = 0,
                        bool defaultHidden_ = false);
     static Option U8(std::string name_, std::vector<std::string> options_,
-                     OptionCategory category_ = OptionCategory::Setting, uint8_t defaultOption = 0,
-                     bool defaultHidden = false);
+                     OptionCategory category_ = OptionCategory::Setting, uint8_t defaultOption_ = 0,
+                     bool defaultHidden_ = false);
     static Option LogicTrick(std::string name_);
 
     template <typename T> T Value() const {
@@ -65,7 +65,7 @@ class Option {
     uint8_t selectedOption = 0;
     uint8_t delayedOption = 0;
     bool hidden = false;
-    OptionCategory category;
+    OptionCategory category = OptionCategory::Setting;
     uint8_t defaultOption = false;
     bool defaultHidden = false;
 };
@@ -94,7 +94,7 @@ class OptionGroup {
     std::vector<Option*> mOptions;
     std::vector<OptionGroup*> mSubGroups;
     OptionGroupType mGroupType = OptionGroupType::DEFAULT;
-    bool mPrintInSpoiler;
+    bool mPrintInSpoiler = true;
     OptionGroupType mContainsType = OptionGroupType::DEFAULT;
 };
 } // namespace Rando

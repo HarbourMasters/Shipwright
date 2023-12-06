@@ -5,25 +5,27 @@
 
 #include <spdlog/spdlog.h>
 
+#include <utility>
+
 namespace Rando {
-std::vector<std::string> NumOpts(int min, int max, int step = 1, std::string textBefore = {}, std::string textAfter = {}) {
+std::vector<std::string> NumOpts(const int min, const int max, const int step = 1, const std::string& textBefore = {}, const std::string& textAfter = {}) {
     std::vector<std::string> options;
     options.reserve((max - min) / step + 1);
     for (int i = min; i <= max; i += step) {
-        options.push_back(textBefore + std::to_string(i) + textAfter);
+        options.push_back(textBefore + std::to_string(i) += textAfter);
     }
     return options;
 }
 
-std::vector<std::string> MultiVecOpts(std::vector<std::vector<std::string>> optionsVector) {
+std::vector<std::string> MultiVecOpts(const std::vector<std::vector<std::string>>& optionsVector) {
     uint32_t totalSize = 0;
-    for (auto vector: optionsVector) {
+    for (const auto& vector: optionsVector) {
         totalSize += vector.size();
     }
     std::vector<std::string> options;
     options.reserve(totalSize);
-    for (auto vector : optionsVector) {
-        for (auto op : vector) {
+    for (const auto& vector : optionsVector) {
+        for (const auto& op : vector) {
             options.push_back(op);
         }
     }
@@ -708,7 +710,7 @@ void Settings::CreateOptions() {
     // TODO: For some reason this group and only this group is an ambiguous constructor call, despite
     // the initializer list only having Option* in it. For now explictly declare and initialize
     // a vector of Option* and construct the group with that.
-    std::vector<Option*> itemPoolOptions = {&mOptions[RSK_ITEM_POOL], &mOptions[RSK_ICE_TRAPS]};
+    const std::vector<Option*> itemPoolOptions = {&mOptions[RSK_ITEM_POOL], &mOptions[RSK_ICE_TRAPS]};
     mOptionGroups[RSG_ITEM_POOL] = OptionGroup("Item Pool Settings", itemPoolOptions);
     // TODO: Progressive Goron Sword, Remove Double Defense
     mOptionGroups[RSG_EXCLUDES_KOKIRI_FOREST] = OptionGroup::SubGroup("Kokiri Forest", mExcludeLocationsOptionsGroups[GROUP_KOKIRI_FOREST], false);
@@ -928,11 +930,11 @@ void Settings::CreateOptions() {
     };
 }
 
-Option& Settings::Setting(RandomizerSettingKey key) {
+Option& Settings::Setting(const RandomizerSettingKey key) {
     return mOptions[key];
 }
 
-Option& Settings::GetTrickOption(RandomizerTrick key) {
+Option& Settings::GetTrickOption(const RandomizerTrick key) {
     return mTrickOptions[key];
 }
 
@@ -940,7 +942,7 @@ const std::array<Option, RSK_MAX>& Settings::GetAllOptions() const {
     return mOptions;
 }
 
-std::vector<Option *>& Settings::GetExcludeOptionsForGroup(SpoilerCollectionCheckGroup group) {
+std::vector<Option *>& Settings::GetExcludeOptionsForGroup(const SpoilerCollectionCheckGroup group) {
     return mExcludeLocationsOptionsGroups[group];
 }
 
@@ -961,7 +963,7 @@ std::string Settings::GetHash() const {
 }
 
 void Settings::SetHash(std::string hash) {
-    mHash = hash;
+    mHash = std::move(hash);
 }
 
 const std::string& Settings::GetSeedString() const {
@@ -969,14 +971,14 @@ const std::string& Settings::GetSeedString() const {
 }
 
 void Settings::SetSeedString(std::string seedString) {
-    mSeedString = seedString;
+    mSeedString = std::move(seedString);
 }
 
-const uint32_t Settings::GetSeed() const {
+uint32_t Settings::GetSeed() const {
     return mFinalSeed;
 }
 
-void Settings::SetSeed(uint32_t seed) {
+void Settings::SetSeed(const uint32_t seed) {
     mFinalSeed = seed;
 }
 
@@ -984,12 +986,12 @@ const std::array<OptionGroup, RSG_MAX>& Settings::GetOptionGroups() {
     return mOptionGroups;
 }
 
-const OptionGroup& Settings::GetOptionGroup(RandomizerSettingGroupKey key) {
+const OptionGroup& Settings::GetOptionGroup(const RandomizerSettingGroupKey key) {
     return mOptionGroups[key];
 }
 
-void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks) {
-    auto ctx = Rando::Context::GetInstance();
+void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, const std::set<RandomizerCheck>& excludedLocations, const std::set<RandomizerTrick>& enabledTricks) {
+    const auto ctx = Context::GetInstance();
     if (!ctx->IsSpoilerLoaded()) {
         // If we've loaded a spoiler file, the settings have already been populated, so we
         // only need to do things like resolve the starting age or determine MQ dungeons.
@@ -1003,6 +1005,9 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
                 break;
             case RO_LOGIC_NO_LOGIC:
                 mOptions[RSK_LOGIC_RULES].SetSelectedIndex(RO_LOGIC_NO_LOGIC);
+                break;
+            default:
+                mOptions[RSK_LOGIC_RULES].SetSelectedIndex(RO_LOGIC_GLITCHLESS);
                 break;
         }
         
@@ -1031,16 +1036,15 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
         // the ImGui slider can't go down to 0 (the first index aka 1 big poe).
         mOptions[RSK_BIG_POE_COUNT].SetSelectedIndex(cvarSettings[RSK_BIG_POE_COUNT] - 1);
         ctx->AddExcludedOptions();
-        for (auto locationKey : ctx->everyPossibleLocation) {
-            auto location = ctx->GetItemLocation(locationKey);
-            if (excludedLocations.count(location->GetRandomizerCheck())) {
+        for (const auto locationKey : ctx->everyPossibleLocation) {
+            if (const auto location = ctx->GetItemLocation(locationKey); excludedLocations.contains(location->GetRandomizerCheck())) {
                 location->GetExcludedOption()->SetSelectedIndex(1);
             } else {
                 location->GetExcludedOption()->SetSelectedIndex(0);
             }
         }
         // Tricks
-        for (auto randomizerTrick : enabledTricks) {
+        for (const auto randomizerTrick : enabledTricks) {
             mTrickOptions[randomizerTrick].SetSelectedIndex(1);
         }
     }
@@ -1049,8 +1053,8 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
     // ShuffleChestMinigame.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);
     //TODO: RandomizeAllSettings(true) when implementing the ability to randomize the options themselves.
     std::array<DungeonInfo*, 12> dungeons = ctx->GetDungeons()->GetDungeonList();
-    std::array<bool, 12> dungeonModesKnown;
-    std::vector<Option*> dungeonOptions = {
+    std::array<bool, 12> dungeonModesKnown{};
+    const std::vector<Option*> dungeonOptions = {
         &mOptions[RSK_MQ_DEKU_TREE],
         &mOptions[RSK_MQ_DODONGOS_CAVERN],
         &mOptions[RSK_MQ_JABU_JABU],
@@ -1064,13 +1068,13 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
         &mOptions[RSK_MQ_GTG],
         &mOptions[RSK_MQ_GANONS_CASTLE]
     };
-    uint8_t mqSet = mOptions[RSK_MQ_DUNGEON_COUNT].Value<uint8_t>();
+    auto mqSet = mOptions[RSK_MQ_DUNGEON_COUNT].Value<uint8_t>();
     if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_SELECTION)) {
         mqSet = 0;
     }
-    uint8_t dungeonCount = 0;
     std::vector<uint8_t> randMQOption = {};
     if (mOptions[RSK_MQ_DUNGEON_SET]) {
+        uint8_t dungeonCount = 0;
         for (size_t i = 0; i < dungeons.size(); i++) {
             dungeons[i]->ClearMQ();
             dungeonModesKnown[i] = true;
@@ -1083,11 +1087,13 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
                     randMQOption.push_back(i);
                     dungeonModesKnown[i] = false;
                     break;
+                default:
+                    break;
             }
         }
         Shuffle(randMQOption);
         if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_RANDOM_NUMBER)) {
-            mqSet = dungeonCount + Random(0, randMQOption.size() + 1);
+            mqSet = dungeonCount + Random(0, static_cast<int>(randMQOption.size()) + 1);
         }
         for (uint8_t i = 0; dungeonCount < mqSet; i++) {
             if (i > randMQOption.size()) {
@@ -1101,12 +1107,12 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
         }
     } else {
         Shuffle(dungeons);
-        for (size_t i = 0; i < dungeons.size(); i++) {
-            dungeons[i]->ClearMQ();
+        for (const auto dungeon : dungeons) {
+            dungeon->ClearMQ();
         }
-        bool allDungeonModesKnown = mqSet == 0 || mqSet == dungeons.size();
-        for (uint8_t i = 0; i < sizeof(dungeonModesKnown); ++i) {
-            dungeonModesKnown[i] = allDungeonModesKnown;
+        const bool allDungeonModesKnown = mqSet == 0 || mqSet == dungeons.size();
+        for (bool & i : dungeonModesKnown) {
+            i = allDungeonModesKnown;
         }
         if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_RANDOM_NUMBER)) {
             mqSet = Random(0, 13);
@@ -1117,11 +1123,11 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
     }
 
     // Set key ring for each dungeon
-    for (size_t i = 0; i < dungeons.size(); i++) {
-        dungeons[i]->ClearKeyRing();
+    for (const auto dungeon : dungeons) {
+        dungeon->ClearKeyRing();
     }
 
-    std::vector<Option*> keyRingOptions = {
+    const std::vector<Option*> keyRingOptions = {
         &mOptions[RSK_KEYRINGS_FOREST_TEMPLE],
         &mOptions[RSK_KEYRINGS_FIRE_TEMPLE],
         &mOptions[RSK_KEYRINGS_WATER_TEMPLE],
@@ -1139,7 +1145,7 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
             if (mOptions[RSK_GERUDO_FORTRESS].Is(RO_GF_NORMAL) && mOptions[RSK_GERUDO_KEYS].IsNot(RO_GERUDO_KEYS_VANILLA)) {
                 keyrings.push_back(&mOptions[RSK_KEYRINGS_GERUDO_FORTRESS]);
             }
-            int keyRingCount = mOptions[RSK_KEYRINGS].Is(RO_KEYRINGS_COUNT) ? mOptions[RSK_KEYRINGS_RANDOM_COUNT].Value<uint8_t>() : Random(0, keyrings.size());
+            const uint32_t keyRingCount = mOptions[RSK_KEYRINGS].Is(RO_KEYRINGS_COUNT) ? mOptions[RSK_KEYRINGS_RANDOM_COUNT].Value<uint8_t>() : Random(0, static_cast<int>(keyrings.size()));
             Shuffle(keyrings);
             for (size_t i = 0; i < keyRingCount; i++) {
                 keyrings[i]->SetSelectedIndex(RO_GENERIC_ON);
@@ -1172,11 +1178,11 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
     }
     auto trials = ctx->GetTrials()->GetTrialList();
     Shuffle(trials);
-    for (auto& trial : trials) {
+    for (const auto trial : trials) {
         trial->SetAsSkipped();
     }
     if (mOptions[RSK_GANONS_TRIALS].Is(RO_GANONS_TRIALS_RANDOM_NUMBER)) {
-        mOptions[RSK_TRIAL_COUNT].SetSelectedIndex(Random(0, mOptions[RSK_TRIAL_COUNT].GetOptionCount()));
+        mOptions[RSK_TRIAL_COUNT].SetSelectedIndex(Random(0, static_cast<int>(mOptions[RSK_TRIAL_COUNT].GetOptionCount())));
     }
     for (uint8_t i = 0; i < mOptions[RSK_TRIAL_COUNT].Value<uint8_t>(); i++) {
         trials[i]->SetAsRequired();
@@ -1190,8 +1196,7 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
     }
 
     if (mOptions[RSK_STARTING_AGE].Is(RO_AGE_RANDOM)) {
-        int choice = Random(0, 2);
-        if (choice == 0) {
+        if (const uint32_t choice = Random(0, 2); choice == 0) {
             mResolvedStartingAge = RO_AGE_CHILD;
         } else {
             mResolvedStartingAge = RO_AGE_ADULT;
@@ -1226,19 +1231,18 @@ void Settings::UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> 
     }
 }
 void Settings::ParseJson(nlohmann::json spoilerFileJson) {
-    mSeedString = spoilerFileJson["seed"].template get<std::string>();
+    mSeedString = spoilerFileJson["seed"].get<std::string>();
     mFinalSeed = spoilerFileJson["finalSeed"].get<uint32_t>();
     nlohmann::json settingsJson = spoilerFileJson["settings"];
     for (auto it = settingsJson.begin(); it != settingsJson.end(); ++it) {
         // todo load into cvars for UI
 
-        std::string numericValueString;
-        if (mSpoilerfileSettingNameToEnum.count(it.key())) {
-            RandomizerSettingKey index = mSpoilerfileSettingNameToEnum[it.key()];
+        if (mSpoilerfileSettingNameToEnum.contains(it.key())) {
+            std::string numericValueString;
             // this is annoying but the same strings are used in different orders
             // and i don't want the spoilerfile to just have numbers instead of
             // human readable settings values so it'll have to do for now
-            switch (index) {
+            switch (const RandomizerSettingKey index = mSpoilerfileSettingNameToEnum[it.key()]) {
                 case RSK_LOGIC_RULES:
                     if (it.value() == "Glitchless") {
                         mOptions[index].SetSelectedIndex(RO_LOGIC_GLITCHLESS);
@@ -1791,18 +1795,18 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
     }
 
     nlohmann::json jsonExcludedLocations = spoilerFileJson["excludedLocations"];
-    auto ctx = Rando::Context::GetInstance();
+    const auto ctx = Context::GetInstance();
 
     ctx->AddExcludedOptions();
-    for (auto it = jsonExcludedLocations.begin(); it != jsonExcludedLocations.end(); it++) {
-        RandomizerCheck rc = ctx->mSpoilerfileCheckNameToEnum[it.value()];
+    for (auto it = jsonExcludedLocations.begin(); it != jsonExcludedLocations.end(); ++it) {
+        const RandomizerCheck rc = ctx->mSpoilerfileCheckNameToEnum[it.value()];
         ctx->GetItemLocation(rc)->GetExcludedOption()->SetSelectedIndex(RO_GENERIC_ON);
     }
 
     nlohmann::json enabledTricksJson = spoilerFileJson["enabledTricks"];
-    for (auto it = enabledTricksJson.begin(); it != enabledTricksJson.end(); it++) {
+    for (auto it = enabledTricksJson.begin(); it != enabledTricksJson.end(); ++it) {
         std::string numericValueString = it.value();
-        RandomizerTrick rt = (RandomizerTrick)std::stoi(numericValueString);
+        const auto rt = static_cast<RandomizerTrick>(std::stoi(numericValueString));
         GetTrickOption(rt).SetSelectedIndex(RO_GENERIC_ON);
     }
 }

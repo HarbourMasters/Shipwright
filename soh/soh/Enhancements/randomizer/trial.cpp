@@ -1,7 +1,7 @@
 #include "trial.h"
 
 namespace Rando {
-TrialInfo::TrialInfo(const Text name_) : name(std::move(name_)) {}
+TrialInfo::TrialInfo(Text name_) : name(std::move(name_)) {}
 TrialInfo::TrialInfo() = default;
 TrialInfo::~TrialInfo() = default;
 
@@ -35,7 +35,7 @@ Trials::Trials() {
 }
 Trials::~Trials() = default;
 
-TrialInfo* Trials::GetTrial(TrialKey key) {
+TrialInfo* Trials::GetTrial(const TrialKey key) {
     return &mTrials[key];
 }
 
@@ -52,31 +52,27 @@ void Trials::RequireAll() {
 }
 
 std::array<TrialInfo*, 6> Trials::GetTrialList() {
-    std::array<TrialInfo*, 6> trialList;
+    std::array<TrialInfo*, 6> trialList{};
     for (size_t i = 0; i < mTrials.size(); i++) {
         trialList[i] = &mTrials[i];
     }
     return trialList;
 }
 
-size_t Trials::GetTrialListSize() {
+size_t Trials::GetTrialListSize() const {
     return mTrials.size();
 }
 void Trials::ParseJson(nlohmann::json spoilerFileJson) {
-    try {
-        nlohmann::json trialsJson = spoilerFileJson["requiredTrials"];
-        for (auto it = trialsJson.begin(); it != trialsJson.end(); it++) {
-            std::string trialName = it.value().template get<std::string>();
-            for (auto& trial : mTrials) {
-                if (trial.GetName() == trialName) {
-                    trial.SetAsRequired();
-                } else {
-                    trial.SetAsSkipped();
-                }
+    nlohmann::json trialsJson = spoilerFileJson["requiredTrials"];
+    for (auto it = trialsJson.begin(); it != trialsJson.end(); ++it) {
+        std::string trialName = it.value().get<std::string>();
+        for (auto& trial : mTrials) {
+            if (trial.GetName() == trialName) {
+                trial.SetAsRequired();
+            } else {
+                trial.SetAsSkipped();
             }
         }
-    } catch (const std::exception& e) {
-        throw e;
     }
 }
 } // namespace Rando

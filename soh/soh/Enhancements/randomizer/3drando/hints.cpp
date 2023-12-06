@@ -152,7 +152,7 @@ Text AutoFormatHintText(Text unformattedHintText) {
   for (int i = 0; i < LANGUAGE_MAX; i++) {
     std::string textStr = unformattedHintText.GetForLanguage(i);
     // RANDOTODO: don't just make manual exceptions
-    bool needsAutomaicNewlines = true;
+    bool needsAutomaticNewlines = true;
     if (textStr == "Erreur 0x69a504:&Traduction manquante^C'est de la faute à Purple Hato!&J'vous jure!" ||
       textStr == "Mon très cher @:&Viens vite au château, je t'ai préparé&un délicieux gâteau...^À bientôt, Princesse Zelda" ||
       textStr == "What about Zelda makes you think&she'd be a better ruler than I?^I saved Lon Lon Ranch,&fed the hungry,&and my castle floats." ||
@@ -163,10 +163,10 @@ Text AutoFormatHintText(Text unformattedHintText) {
       textStr == "Oh! It's @.&I was expecting someone called Sheik.&Do you know what happened to them?" ||
       textStr == "Ah, c'est @.&J'attendais un certain Sheik.&Tu sais ce qui lui est arrivé?" ||
       textStr == "They say \"Forgive me, but-^Your script will not be used.&....After all...^The one writing the rest of the script...&will be me.\"") {
-    needsAutomaicNewlines = false;
+    needsAutomaticNewlines = false;
   }
 
-    if (needsAutomaicNewlines) {
+    if (needsAutomaticNewlines) {
         // insert newlines either manually or when encountering a '&'
         constexpr size_t lineLength = 34;
         size_t lastNewline = 0;

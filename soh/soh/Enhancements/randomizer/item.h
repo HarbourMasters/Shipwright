@@ -28,36 +28,36 @@ enum ItemType {
 namespace Rando {
 class Item {
   public:
-    Item() = default;
+    Item();
     Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
                      bool* logicVar_, RandomizerHintTextKey hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
                      uint16_t textId_, uint16_t field_, int16_t chestAnimation_, GetItemCategory category_,
-                     uint16_t modIndex_, bool progressive = false, uint16_t price_ = 0);
+                     uint16_t modIndex_, bool progressive_ = false, uint16_t price_ = 0);
     Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
               uint8_t* logicVar_, RandomizerHintTextKey hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
               uint16_t textId_, uint16_t field_, int16_t chestAnimation_, GetItemCategory category_, uint16_t modIndex_,
-              bool progressive = false, uint16_t price_ = 0);
-    Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
-              bool* logicVar_, RandomizerHintTextKey hintKey_, bool progressive = false, uint16_t price = 0);
-    Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
-              uint8_t* logicVar_, RandomizerHintTextKey hintKey_, bool progressive = false, uint16_t price = 0);
+              bool progressive_ = false, uint16_t price_ = 0);
+    Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
+              bool* logicVar_, RandomizerHintTextKey hintKey_, bool progressive_ = false, uint16_t price_ = 0);
+    Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
+              uint8_t* logicVar_, RandomizerHintTextKey hintKey_, bool progressive_ = false, uint16_t price_ = 0);
     ~Item();
 
-    void ApplyEffect();
-    void UndoEffect();
+    void ApplyEffect() const;
+    void UndoEffect() const;
 
     
     const Text& GetName() const;
     bool IsAdvancement() const;
     int GetItemID() const;
     ItemType GetItemType() const;
-    RandomizerGet GetRandomizerGet();
+    RandomizerGet GetRandomizerGet() const;
     uint16_t GetPrice() const;
     std::shared_ptr<GetItemEntry> GetGIEntry() const;
     GetItemEntry GetGIEntry_Copy() const;
     void SetPrice(uint16_t price_);
     void SetAsPlaythrough();
-    void SetCustomDrawFunc(CustomDrawFunc);
+    void SetCustomDrawFunc(CustomDrawFunc) const;
     bool IsPlaythrough() const;
     bool IsBottleItem() const;
     bool IsMajorItem() const;
@@ -74,9 +74,9 @@ class Item {
     bool advancement;
     std::variant<bool*, uint8_t*> logicVar;
     RandomizerHintTextKey hintKey;
-    bool progressive = false;
+    bool progressive;
     uint16_t price;
     bool playthrough = false;
-   std::shared_ptr<GetItemEntry> giEntry = nullptr;
+   std::shared_ptr<GetItemEntry> giEntry;
 };
 }

@@ -33,8 +33,8 @@ class Context {
     static std::shared_ptr<Context> CreateInstance();
     static std::shared_ptr<Context> GetInstance();
     Hint* GetHint(RandomizerHintKey hintKey);
-    void AddHint(RandomizerHintKey hintId, Text text, RandomizerCheck hintedLocation, HintType hintType,
-                 Text hintedRegion);
+    void AddHint(RandomizerHintKey hintId, const Text& text, RandomizerCheck hintedLocation, HintType hintType,
+                 const Text& hintedRegion);
     ItemLocation* GetItemLocation(RandomizerCheck locKey);
     ItemLocation* GetItemLocation(size_t locKey);
     void PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bool applyEffectImmediately = false,
@@ -44,28 +44,28 @@ class Context {
     template <typename Container>
     void AddLocations(const Container& locations, std::vector<RandomizerCheck>* destination = nullptr);
     void GenerateLocationPool();
-    std::vector<RandomizerCheck> GetLocations(const std::vector<RandomizerCheck>& locationPool,
+    static std::vector<RandomizerCheck> GetLocations(const std::vector<RandomizerCheck>& locationPool,
                                               Category categoryInclude, Category categoryExclude = Category::cNull);
     void AddExcludedOptions();
     void LocationReset();
     void ItemReset();
     void HintReset();
     void CreateItemOverrides();
-    bool IsSeedGenerated();
+    bool IsSeedGenerated() const;
     void SetSeedGenerated(bool seedGenerated = true);
-    bool IsSpoilerLoaded();
+    bool IsSpoilerLoaded() const;
     void SetSpoilerLoaded(bool spoilerLoaded = true);
-    bool IsPlandoLoaded();
+    bool IsPlandoLoaded() const;
     void SetPlandoLoaded(bool plandoLoaded = true);
     std::shared_ptr<Settings> GetSettings();
-    const std::shared_ptr<EntranceShuffler> GetEntranceShuffler();
+    std::shared_ptr<EntranceShuffler> GetEntranceShuffler();
     std::shared_ptr<Dungeons> GetDungeons();
-    DungeonInfo* GetDungeon(size_t key);
+    DungeonInfo* GetDungeon(size_t key) const;
     std::shared_ptr<Trials> GetTrials();
-    TrialInfo* GetTrial(size_t key);
-    Sprite* GetSeedTexture(uint8_t index);
-    Option& GetOption(RandomizerSettingKey key);
-    Option& GetTrickOption(RandomizerTrick key);
+    TrialInfo* GetTrial(size_t key) const;
+    static Sprite* GetSeedTexture(uint8_t index);
+    Option& GetOption(RandomizerSettingKey key) const;
+    Option& GetTrickOption(RandomizerTrick key) const;
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);
     void ParseSpoiler(const char* spoilerFileName, bool plandoMode);
     void ParseHashIconIndexesJson(nlohmann::json spoilerFileJson);
@@ -87,15 +87,15 @@ class Context {
     std::unordered_map<std::string, RandomizerGet> mSpoilerfileGetNameToEnum;
     std::unordered_map<std::string, HintType> mSpoilerfileHintTypeNameToEnum;
     std::array<Hint, RH_MAX> hintTable = {};
-    RandomizerCheck mEmeraldLoc;
-    RandomizerCheck mRubyLoc;
-    RandomizerCheck mSapphireLoc;
-    RandomizerCheck mForestMedallionLoc;
-    RandomizerCheck mFireMedallionLoc;
-    RandomizerCheck mWaterMedallionLoc;
-    RandomizerCheck mShadowMedallionLoc;
-    RandomizerCheck mSpiritMedallionLoc;
-    RandomizerCheck mLightMedallionLoc;
+    RandomizerCheck mEmeraldLoc = RC_UNKNOWN_CHECK;
+    RandomizerCheck mRubyLoc = RC_UNKNOWN_CHECK;
+    RandomizerCheck mSapphireLoc = RC_UNKNOWN_CHECK;
+    RandomizerCheck mForestMedallionLoc = RC_UNKNOWN_CHECK;
+    RandomizerCheck mFireMedallionLoc = RC_UNKNOWN_CHECK;
+    RandomizerCheck mWaterMedallionLoc = RC_UNKNOWN_CHECK;
+    RandomizerCheck mShadowMedallionLoc = RC_UNKNOWN_CHECK;
+    RandomizerCheck mSpiritMedallionLoc = RC_UNKNOWN_CHECK;
+    RandomizerCheck mLightMedallionLoc = RC_UNKNOWN_CHECK;
     std::array<ItemLocation, RC_MAX> itemLocationTable = {};
     std::shared_ptr<Settings> mSettings;
     std::shared_ptr<EntranceShuffler> mEntranceShuffler;

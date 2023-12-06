@@ -59,7 +59,8 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
     GenerateHash();
     WriteIngameSpoilerLog();
 
-    if (/*Settings::GenerateSpoilerLog TODO: do we ever not want to write a spoiler log?*/ true) {
+    if (true) {
+        //TODO: Handle different types of file output (i.e. Spoiler Log, Plando Template, Patch Files, Race Files, etc.)
         // write logs
         printf("\x1b[11;10HWriting Spoiler Log...");
         if (SpoilerLog_Write(cvarSettings[RSK_LANGUAGE])) {

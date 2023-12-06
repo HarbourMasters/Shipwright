@@ -5,17 +5,18 @@
 #include "context.h"
 
 namespace Rando {
-DungeonInfo::DungeonInfo(std::string name_, RandomizerHintTextKey hintKey_, RandomizerGet map_, RandomizerGet compass_,
-                         RandomizerGet smallKey_, RandomizerGet keyRing_, RandomizerGet bossKey_,
-                         uint8_t vanillaKeyCount_, uint8_t mqKeyCount_, std::vector<RandomizerCheck> vanillaLocations_,
-                         std::vector<RandomizerCheck> mqLocations_, std::vector<RandomizerCheck> sharedLocations_,
-                         std::vector<RandomizerCheck> bossRoomLocations_)
+DungeonInfo::DungeonInfo(std::string name_, const RandomizerHintTextKey hintKey_, const RandomizerGet map_,
+    const RandomizerGet compass_, const RandomizerGet smallKey_, const RandomizerGet keyRing_,
+    const RandomizerGet bossKey_, const uint8_t vanillaKeyCount_, const uint8_t mqKeyCount_,
+    std::vector<RandomizerCheck> vanillaLocations_, std::vector<RandomizerCheck> mqLocations_,
+    std::vector<RandomizerCheck> sharedLocations_, std::vector<RandomizerCheck> bossRoomLocations_)
     : name(std::move(name_)), hintKey(hintKey_), map(map_), compass(compass_), smallKey(smallKey_), keyRing(keyRing_),
       bossKey(bossKey_), vanillaKeyCount(vanillaKeyCount_), mqKeyCount(mqKeyCount_),
       vanillaLocations(std::move(vanillaLocations_)), mqLocations(std::move(mqLocations_)),
       sharedLocations(std::move(sharedLocations_)), bossRoomLocations(std::move(bossRoomLocations_)) {
 }
-DungeonInfo::DungeonInfo() = default;
+DungeonInfo::DungeonInfo() : hintKey(RHT_NONE), map(RG_NONE), compass(RG_NONE), smallKey(RG_NONE), keyRing(RG_NONE),
+    bossKey(RG_NONE) {}
 DungeonInfo::~DungeonInfo() = default;
 
 const std::string& DungeonInfo::GetName() const {
@@ -51,7 +52,7 @@ bool DungeonInfo::IsVanilla() const {
 }
 
 uint8_t DungeonInfo::GetSmallKeyCount() const {
-    return (masterQuest) ? mqKeyCount : vanillaKeyCount;
+    return masterQuest ? mqKeyCount : vanillaKeyCount;
 }
 
 RandomizerHintTextKey DungeonInfo::GetHintKey() const {
@@ -78,52 +79,52 @@ RandomizerGet DungeonInfo::GetBossKey() const {
     return bossKey;
 }
 
-void DungeonInfo::PlaceVanillaMap() {
+void DungeonInfo::PlaceVanillaMap() const {
     if (map == RG_NONE) {
         return;
     }
 
     auto dungeonLocations = GetDungeonLocations();
-    auto mapLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
+    const auto mapLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
         return StaticData::GetLocation(loc)->IsCategory(Category::cVanillaMap);
     })[0];
     Context::GetInstance()->PlaceItemInLocation(mapLocation, map);
 }
 
-void DungeonInfo::PlaceVanillaCompass() {
+void DungeonInfo::PlaceVanillaCompass() const {
     if (compass == RG_NONE) {
         return;
     }
 
     auto dungeonLocations = GetDungeonLocations();
-    auto compassLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
+    const auto compassLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
         return StaticData::GetLocation(loc)->IsCategory(Category::cVanillaCompass);
     })[0];
     Context::GetInstance()->PlaceItemInLocation(compassLocation, compass);
 }
 
-void DungeonInfo::PlaceVanillaBossKey() {
+void DungeonInfo::PlaceVanillaBossKey() const {
     if (bossKey == RG_NONE || bossKey == RG_GANONS_CASTLE_BOSS_KEY) {
         return;
     }
 
     auto dungeonLocations = GetDungeonLocations();
-    auto bossKeyLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
+    const auto bossKeyLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
         return StaticData::GetLocation(loc)->IsCategory(Category::cVanillaBossKey);
     })[0];
     Context::GetInstance()->PlaceItemInLocation(bossKeyLocation, bossKey);
 }
 
-void DungeonInfo::PlaceVanillaSmallKeys() {
+void DungeonInfo::PlaceVanillaSmallKeys() const {
     if (smallKey == RG_NONE) {
         return;
     }
 
     auto dungeonLocations = GetDungeonLocations();
-    auto smallKeyLocations = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
+    const auto smallKeyLocations = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
         return StaticData::GetLocation(loc)->IsCategory(Category::cVanillaSmallKey);
     });
-    for (auto location : smallKeyLocations) {
+    for (const auto location : smallKeyLocations) {
         Context::GetInstance()->PlaceItemInLocation(location, smallKey);
     }
 }
@@ -701,11 +702,11 @@ Dungeons::Dungeons() {
 
 Dungeons::~Dungeons() = default;
 
-DungeonInfo* Dungeons::GetDungeon(DungeonKey key) {
+DungeonInfo* Dungeons::GetDungeon(const DungeonKey key) {
     return &dungeonList[key];
 }
 
-DungeonInfo* Dungeons::GetDungeonFromScene(uint16_t scene) {
+DungeonInfo* Dungeons::GetDungeonFromScene(const uint16_t scene) {
     switch (scene) {
         case SCENE_DEKU_TREE:
             return &dungeonList[DEKU_TREE];
@@ -753,31 +754,27 @@ void Dungeons::ClearAllMQ() {
 }
 
 std::array<DungeonInfo*, 12> Dungeons::GetDungeonList() {
-    std::array<DungeonInfo*, 12> dungeonList_;
+    std::array<DungeonInfo*, 12> dungeonList_{};
     for (size_t i = 0; i < dungeonList.size(); i++) {
         dungeonList_[i] = &dungeonList[i];
     }
     return dungeonList_;
 }
 
-size_t Dungeons::GetDungeonListSize() {
+size_t Dungeons::GetDungeonListSize() const {
     return dungeonList.size();
 }
 void Dungeons::ParseJson(nlohmann::json spoilerFileJson) {
-    try {
-        nlohmann::json mqDungeonsJson = spoilerFileJson["masterQuestDungeons"];
-        for (auto it = mqDungeonsJson.begin(); it != mqDungeonsJson.end(); it++) {
-            std::string dungeonName = it.value().template get<std::string>();
-            for (auto& dungeon : dungeonList) {
-                if (dungeon.GetName() == dungeonName) {
-                    dungeon.SetMQ();
-                } else {
-                    dungeon.ClearMQ();
-                }
+    nlohmann::json mqDungeonsJson = spoilerFileJson["masterQuestDungeons"];
+    for (auto it = mqDungeonsJson.begin(); it != mqDungeonsJson.end(); ++it) {
+        std::string dungeonName = it.value().get<std::string>();
+        for (auto& dungeon : dungeonList) {
+            if (dungeon.GetName() == dungeonName) {
+                dungeon.SetMQ();
+            } else {
+                dungeon.ClearMQ();
             }
         }
-    } catch (const std::exception& e) {
-        throw e;
     }
 }
 } // namespace Rando
