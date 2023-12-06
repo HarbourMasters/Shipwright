@@ -46,12 +46,12 @@ class Option {
     /**
      * @brief Constructs a boolean option. This overload of this function typically requires more
      * options to be specified rather than left as default.
-     * 
+     *
      * @param name_ The name of the option. Appears in the spoiler/patch file.
      * @param options_ A vector of value names for this Option. This vector should have a size of 2.
      * The name corresponding to the selected index for this option will be printed to the spoiler/patch file.
      * @param category_ The desired `OptionCategory` for this option.
-     * @param cvarName_ The name ofthe CVar this option should correspond with. Set as an empty string to not 
+     * @param cvarName_ The name ofthe CVar this option should correspond with. Set as an empty string to not
      * link to any Cvar.
      * @param description_ A description of what this option affects. Will be rendered in a toolip in ImGui.
      * Can be left as an empty string if desired, no tooltip will be rendered.
@@ -60,7 +60,7 @@ class Option {
      * @param defaultOption_ The default index that should be selected.
      * @param defaultHidden_ Whether or not to display the option (can be changed at runtime later).
      * @param imFlags_ (see ImGuiMenuFlags type) flags that can modify how this option is rendered.
-     * @return Option 
+     * @return Option
      */
     static Option Bool(std::string name_, std::vector<std::string> options_ = { "Off", "On" },
                        OptionCategory category_ = OptionCategory::Setting, std::string cvarName_ = "",
@@ -72,7 +72,7 @@ class Option {
      * could be specified without needing to fill in options that were previously left at default in
      * existing calls to the other overload of this function. The options vector will be { "Off", "On" }
      * when using this overload. If you want your option to have different value names, use the other overload.
-     * 
+     *
      * @param name_ The name of the option. Appears in the spoiler/patch file.
      * @param cvarName_ The name of the CVar this option should correspond with. Set as an empty string to not
      * link to any CVar.
@@ -82,7 +82,7 @@ class Option {
      * @param widgetType_ What type of widget should be rendered. Should probably be `Checkbox` but technically
      * `Combobox` or `Slider` would render and function correctly.
      * @param defaultOption_ The defaulted selected index for this Option.
-     * @return Option 
+     * @return Option
      */
     static Option Bool(std::string name_, std::string cvarName_, std::string description_ = "",
                        int imFlags_ = IMFLAG_SEPARATOR_BOTTOM, WidgetType widgetType_ = WidgetType::Checkbox,
@@ -115,17 +115,17 @@ class Option {
 
     /**
      * @brief A convenience function for constructing the Option for a trick.
-     * 
+     *
      * @param name_ The name of the trick. Appears in the spoiler/patch file.
-     * @return Option 
+     * @return Option
      */
     static Option LogicTrick(std::string name_);
 
     /**
      * @brief Gets the selected index or boolean value of the Option.
-     * 
+     *
      * @tparam T uint8_t or bool, depending on how the option was constructed.
-     * @return T 
+     * @return T
      */
     template <typename T> T Value() const {
         return std::get<T>(var);
@@ -133,7 +133,7 @@ class Option {
 
     /**
      * @brief Determines if the value/selected index of this Option matches the provided value.
-     * 
+     *
      * @tparam T uint8_t, bool, or an enum (which will be cast to uint8_t).
      * @param other The value to compare.
      * @return true
@@ -150,11 +150,11 @@ class Option {
 
     /**
      * @brief Determines if the value/selected index of this Option does not match the provided value.
-     * 
+     *
      * @tparam T uint8_t, book, or an enum (which will be cast to uint8_t).
      * @param other The value to compare.
-     * @return true 
-     * @return false 
+     * @return true
+     * @return false
      */
     template <typename T> bool IsNot(T other) const {
         return !Is(other);
@@ -162,44 +162,44 @@ class Option {
 
     /**
      * @brief Allows the option to be used as a boolean value directly.
-     * 
-     * @return true 
-     * @return false 
+     *
+     * @return true
+     * @return false
      */
     explicit operator bool() const;
 
     /**
      * @brief Get the size of the options array.
-     * 
-     * @return size_t 
+     *
+     * @return size_t
      */
     size_t GetOptionCount() const;
 
     /**
      * @brief Get the name of the Option.
-     * 
-     * @return const std::string& 
+     *
+     * @return const std::string&
      */
     const std::string& GetName() const;
 
     /**
      * @brief Get the value name corresponding to the selected index.
-     * 
-     * @return const std::string& 
+     *
+     * @return const std::string&
      */
     const std::string& GetSelectedOptionText() const;
 
     /**
      * @brief Get the CVar name for this Option.
-     * 
-     * @return const std::string& 
+     *
+     * @return const std::string&
      */
     const std::string& GetCVarName() const;
 
     /**
      * @brief Get the selected index for this Option.
-     * 
-     * @return uint8_t 
+     *
+     * @return uint8_t
      */
     uint8_t GetSelectedOptionIndex() const;
 
@@ -232,7 +232,7 @@ class Option {
 
     /**
      * @brief Set the selected index for this Option. Also calls `SetVariable()`.
-     * 
+     *
      * @param idx the index to set as the selected index.
      */
     void SetSelectedIndex(size_t idx);
@@ -250,9 +250,9 @@ class Option {
 
     /**
      * @brief Whether or not this Option is currently hidden.
-     * 
-     * @return true 
-     * @return false 
+     *
+     * @return true
+     * @return false
      */
 
     bool IsHidden() const;
@@ -261,14 +261,14 @@ class Option {
      * If the new vector is smaller than the old one and the current selected
      * index is out of range, this function changes the selected index to the
      * last index of the new vector.
-     * 
+     *
      * @param opts The new vector of options.
      */
     void ChangeOptions(std::vector<std::string> opts);
 
     /**
      * @brief Enables interaction with this option.
-     * 
+     *
      * "Enable" in this context refers to the ability to change the option in the
      * settings menu. The actual value of the option is not decided by whether or not
      * the option is "Enabled".
@@ -277,11 +277,11 @@ class Option {
 
     /**
      * @brief Disables interaction with this option.
-     * 
+     *
      * "Disable" in this context refers to the ability to change the option in the
      * settings menu. The actual value of the option is not decided by whether or not
      * the option is "Disabled".
-     * 
+     *
      * @param text The tooltip text explaining why the option is disabled.
      * @param graphic What graphic to display in a disabled checkbox. Defaults to an
      * "X" symbol.
@@ -409,31 +409,31 @@ class OptionGroup {
 
     /**
      * @brief Get the name of the OptionGroup.
-     * 
-     * @return const std::string& 
+     *
+     * @return const std::string&
      */
     const std::string& GetName() const;
 
     /**
      * @brief Get the list of `Option`s contained within this `OptionGroup`.
-     * 
-     * @return const std::vector<Option*>& 
+     *
+     * @return const std::vector<Option*>&
      */
     const std::vector<Option*>& GetOptions() const;
 
     /**
      * @brief Get the list of `OptionGroup`s contained within this `OptionGroup`.
-     * 
-     * @return const std::vector<OptionGroup*>& 
+     *
+     * @return const std::vector<OptionGroup*>&
      */
     const std::vector<OptionGroup*>& GetSubGroups() const;
 
     /**
-     * @brief Returns whether or not this `OptionGroup`'s contents should be printed to the 
+     * @brief Returns whether or not this `OptionGroup`'s contents should be printed to the
      * spoiler/patch file.
-     * 
-     * @return true 
-     * @return false 
+     *
+     * @return true
+     * @return false
      */
     bool PrintInSpoiler() const;
 
@@ -441,16 +441,16 @@ class OptionGroup {
      * @brief Get the Group Type of this `OptionGroup`. `DEFAULT` means this group is not contained
      * within any other groups, while `SUBGROUP` means that it is contained within at least one other.
      * `OptionGroup`.
-     * 
-     * @return OptionGroupType 
+     *
+     * @return OptionGroupType
      */
     OptionGroupType GetGroupType() const;
 
     /**
      * @brief Get the type of values contained in this `OptionGroup`. `DEFAULT` means this group contains
      * `Options`, and `SUBGROUP` means this group contains other `OptionGroup`s.
-     * 
-     * @return OptionGroupType 
+     *
+     * @return OptionGroupType
      */
     OptionGroupType GetContainsType() const;
 

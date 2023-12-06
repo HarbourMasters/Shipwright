@@ -8,8 +8,8 @@
 namespace Rando {
 class ItemLocation {
   public:
-    ItemLocation() = default;
-    ItemLocation(RandomizerCheck rc);
+    ItemLocation();
+    explicit ItemLocation(RandomizerCheck rc_);
     RandomizerCheck GetRandomizerCheck() const;
     bool IsAddedToPool() const;
     void AddToPool();
@@ -17,13 +17,13 @@ class ItemLocation {
     const Item& GetPlacedItem() const;
     const Text& GetPlacedItemName() const;
     RandomizerGet GetPlacedRandomizerGet() const;
-    void SetPlacedItem(const RandomizerGet item);
+    void SetPlacedItem(RandomizerGet item);
     RandomizerGet& RefPlacedItem();
-    void SetDelayedItem(const RandomizerGet item);
+    void SetDelayedItem(RandomizerGet item);
     RandomizerRegion GetParentRegionKey() const;
     void SetParentRegion (RandomizerRegion region);
     void PlaceVanillaItem();
-    void ApplyPlacedItemEffect();
+    void ApplyPlacedItemEffect() const;
     void SaveDelayedItem();
     uint16_t GetPrice() const;
     void SetPrice(uint16_t price_);
@@ -39,14 +39,14 @@ class ItemLocation {
     bool IsExcluded() const;
     void AddExcludeOption();
     Option* GetExcludedOption();
-    void SetHidden(const bool hidden_);
+    void SetHidden(bool hidden_);
     bool IsVisible() const;
     void SetVisible(bool visibleInImGui_);
     void ResetVariables();
 
   private:
     RandomizerCheck rc;
-    RandomizerHintKey hintedBy;
+    RandomizerHintKey hintedBy = RH_NONE;
     bool hintedAt = false;
     bool isHintable = false;
     bool addedToPool = false;

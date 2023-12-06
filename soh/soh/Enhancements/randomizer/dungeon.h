@@ -33,10 +33,10 @@ class DungeonInfo {
     RandomizerGet GetMap() const;
     RandomizerGet GetCompass() const;
     RandomizerGet GetBossKey() const;
-    void PlaceVanillaMap();
-    void PlaceVanillaCompass();
-    void PlaceVanillaBossKey();
-    void PlaceVanillaSmallKeys();
+    void PlaceVanillaMap() const;
+    void PlaceVanillaCompass() const;
+    void PlaceVanillaBossKey() const;
+    void PlaceVanillaSmallKeys() const;
     std::vector<RandomizerCheck> GetDungeonLocations() const;
     std::vector<RandomizerCheck> GetEveryLocation() const;
 
@@ -48,8 +48,8 @@ class DungeonInfo {
     RandomizerGet smallKey;
     RandomizerGet keyRing;
     RandomizerGet bossKey;
-    uint8_t vanillaKeyCount;
-    uint8_t mqKeyCount;
+    uint8_t vanillaKeyCount{};
+    uint8_t mqKeyCount{};
     bool masterQuest = false;
     bool hasKeyRing = false;
     std::vector<RandomizerCheck> vanillaLocations;
@@ -88,7 +88,7 @@ class Dungeons {
     /// function from either here or the Context class.
     /// @return 
     std::array<DungeonInfo*, 12> GetDungeonList();
-    size_t GetDungeonListSize();
+    size_t GetDungeonListSize() const;
     void ParseJson(nlohmann::json spoilerFileJson);
   private:
     std::array<DungeonInfo, 12> dungeonList;

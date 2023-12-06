@@ -8,7 +8,7 @@
 namespace Rando {
 class TrialInfo {
   public:
-    TrialInfo(const Text name_);
+    explicit TrialInfo(Text name_);
     TrialInfo();
     ~TrialInfo();
 
@@ -39,7 +39,7 @@ class Trials {
     void SkipAll();
     void RequireAll();
     std::array<TrialInfo*, 6> GetTrialList();
-    size_t GetTrialListSize();
+    size_t GetTrialListSize() const;
     void ParseJson(nlohmann::json spoilerFileJson);
   private:
     std::array<TrialInfo, 6> mTrials;

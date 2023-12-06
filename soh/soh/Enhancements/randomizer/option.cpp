@@ -5,9 +5,9 @@
 #include "soh/UIWidgets.hpp"
 
 namespace Rando {
-Option Option::Bool(std::string name_, std::vector<std::string> options_, OptionCategory category_,
-                    std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
-                    bool defaultHidden_, int imFlags_) {
+Option Option::Bool(std::string name_, std::vector<std::string> options_, const OptionCategory category_,
+                    std::string cvarName_, std::string description_, WidgetType widgetType_, const uint8_t defaultOption_,
+                    const bool defaultHidden_, int imFlags_) {
     return {false, std::move(name_), std::move(options_), category_, std::move(cvarName_), std::move(description_),
                   widgetType_, defaultOption_, defaultHidden_, imFlags_};
 }
@@ -18,9 +18,9 @@ Option Option::Bool(std::string name_, std::string cvarName_, std::string descri
                   std::move(description_), widgetType_, defaultOption_, false, imFlags_);
 }
 
-Option Option::U8(std::string name_, std::vector<std::string> options_, OptionCategory category_,
-                  std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
-                  bool defaultHidden_, int imFlags_) {
+Option Option::U8(std::string name_, std::vector<std::string> options_, const OptionCategory category_,
+                  std::string cvarName_, std::string description_, WidgetType widgetType_, const uint8_t defaultOption_,
+                  const bool defaultHidden_, int imFlags_) {
     return {static_cast<uint8_t>(0), std::move(name_), std::move(options_), category_, std::move(cvarName_),
                   std::move(description_), widgetType_, defaultOption_, defaultHidden_, imFlags_};
 }
@@ -174,9 +174,9 @@ Option::Option(uint8_t var_, std::string name_, std::vector<std::string> options
     hidden = defaultHidden;
     SetVariable();
 }
-Option::Option(bool var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-               std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
-               bool defaultHidden_, int imFlags_)
+Option::Option(bool var_, std::string name_, std::vector<std::string> options_, const OptionCategory category_,
+               std::string cvarName_, std::string description_, WidgetType widgetType_, const uint8_t defaultOption_,
+               const bool defaultHidden_, int imFlags_)
     : var(var_), name(std::move(name_)), options(std::move(options_)), category(category_),
       cvarName(std::move(cvarName_)), description(std::move(description_)), widgetType(widgetType_),
       defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_) {
