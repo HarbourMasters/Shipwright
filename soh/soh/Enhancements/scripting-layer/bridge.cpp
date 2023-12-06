@@ -9,6 +9,11 @@
 #include "soh/Enhancements/scripting-layer/types/hostfunction.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
+#include "interactors/game-interactor/gi-bridge.h"
+#include "interactors/libultraship/imgui-bridge.h"
+#include "interactors/n64-native/n64-bridge.h"
+#include "interactors/soh/soh-bridge.h"
+
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
 
@@ -74,6 +79,11 @@ static bool KillScript(const std::shared_ptr<LUS::Console>&, const std::vector<s
 
 void GameBridge::Initialize() {
     this->RegisterHost("lua", std::make_shared<LuaHost>());
+    GameInteractorBridge::Initialize();
+    N64Bridge::Initialize();
+    ImGuiBridge::Initialize();
+    SOHBridge::Initialize();
+
     this->BindFunction("print", [](uintptr_t, MethodCall* method) {
         const size_t count = method->ArgumentCount();
         std::stringstream message;
@@ -131,6 +141,13 @@ void GameBridge::Initialize() {
         }
         method->error("Unknown mode: " + mode);
     }, "Game");
+
+    for (const auto& [fst, snd] : this->hosts) {
+        if(!snd->Initialize()){
+            throw GameBridgeException("Failed to initialize host api: " + fst);
+        }
+    }
+
     CMD_REGISTER("run", { RunScript, "Tries to execute an script", {
         { "path", LUS::ArgumentType::TEXT, true }
     }});
@@ -161,9 +178,6 @@ void GameBridge::Kill(const uint16_t pid) const {
 }
 
 void GameBridge::RegisterHost(const std::string& name, std::shared_ptr<HostAPI> host){
-    if(!host->Initialize()){
-        throw GameBridgeException("Failed to initialize host api: " + name);
-    }
     this->hosts[name] = std::move(host);
 }
 

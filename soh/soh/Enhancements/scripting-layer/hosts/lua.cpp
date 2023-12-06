@@ -24,7 +24,8 @@ extern "C" {
 typedef int(*LuaFunction)(lua_State*);
 typedef std::variant<LuaFunction, std::any> LuaBinding;
 std::unordered_map<std::string, std::unordered_map<std::string, LuaBinding>> mLuaBindings;
-std::vector<lua_State*> mLuaStates;
+lua_State* mLuaState;
+std::vector<int> mLuaRefs;
 
 const char* tryCatchImpl = R"(
 function try(f, catch_f)
@@ -48,8 +49,39 @@ struct EmptyTable {};
 
 bool LuaHost::Initialize() {
     this->BindRequireOverride();
+    this->CreateLuaState();
     return true;
 }
+
+void LuaHost::CreateLuaState() {
+    mLuaState = luaL_newstate();
+
+    const luaL_Reg *lib = mLuaLibs;
+    for (; lib->func; lib++) {
+        lua_pushcfunction(mLuaState, lib->func);
+        lua_pushstring(mLuaState, lib->name);
+        lua_call(mLuaState, 1, 0);
+    }
+
+    for (auto& [fst, snd] : mLuaBindings[ROOT_MODULE]) {
+
+        LuaBinding binding = snd;
+
+        if(binding.index() == 0){
+            lua_pushlightuserdata(mLuaState, this);
+            lua_pushlightuserdata(mLuaState, &this->mBindings[fst]);
+            lua_pushcclosure(mLuaState, std::get<LuaFunction>(binding), 2);
+        } else {
+            auto value = std::get<std::any>(binding);
+            PushIntoLua(reinterpret_cast<uintptr_t>(mLuaState), value);
+        }
+
+        lua_setglobal(mLuaState, fst.c_str());
+    }
+
+    luaL_dostring(mLuaState, tryCatchImpl);
+}
+
 
 void LuaHost::BindRequireOverride() {
     FunctionPtr call = [](uintptr_t ctx, MethodCall* method) {
@@ -61,7 +93,7 @@ void LuaHost::BindRequireOverride() {
             auto path = std::filesystem::path("scripts") / _module;
             auto ext = path.extension().string().substr(1);
 
-            if(!exists(path)) {
+            if(!std::filesystem::exists(path)) {
                 method->error("File not found");
                 return;
             }
@@ -130,48 +162,54 @@ void LuaHost::PushIntoLua(const uintptr_t context, const std::any& value) {
             PushIntoLua(context, item);
             lua_rawseti(state, -2, index++);
         }
-    } else if (IS_TYPE(std::monostate, value) || IS_TYPE(nullptr, value)) {
+    } else if (IS_TYPE(std::monostate, value) || IS_TYPE(nullptr, value) || IS_TYPE(std::nullopt, value)) {
         lua_pushnil(state);
     } else if (IS_TYPE(EmptyTable, value)) {
         // TODO: Remove this, it's a workaround for the import function
     } else {
-        throw HostAPIException("Unknown type" + std::string(value.type().name()));
+        throw HostAPIException("Unknown type " + std::string(value.type().name()));
     }
 }
 
 void LuaHost::Bind(std::string name, GameBinding binding) {
     mBindings[name] = binding;
-    if (binding.type == BindingType::KFunction) {
-        LuaFunction func = [](lua_State* state) -> int {
-            auto* api = static_cast<LuaHost*>(const_cast<void*>(lua_topointer(state, lua_upvalueindex(1))));
-            const auto* bind = static_cast<const GameBinding *>(lua_topointer(state, lua_upvalueindex(2)));
 
-            auto* result = new MethodCall(api, reinterpret_cast<uintptr_t>(state));
-            const auto execute = std::get<FunctionPtr>(bind->binding);
-            execute(reinterpret_cast<uintptr_t>(state), result);
+    switch (binding.type) {
+        case BindingType::KFunction: {
+            LuaFunction func = [](lua_State* state) -> int {
+                auto* api = static_cast<LuaHost*>(const_cast<void*>(lua_topointer(state, lua_upvalueindex(1))));
+                const auto* bind = static_cast<const GameBinding *>(lua_topointer(state, lua_upvalueindex(2)));
 
-            const std::vector<std::any> results = result->result();
+                auto* result = new MethodCall(api, reinterpret_cast<uintptr_t>(state));
+                const auto execute = std::get<FunctionPtr>(bind->binding);
+                execute(reinterpret_cast<uintptr_t>(state), result);
 
-            if(results.empty()){
-                throw HostAPIException("No results returned from function");
-            }
+                const std::vector<std::any> results = result->result();
 
-            if (result->succeed()) {
-                for (auto& value : results) {
-                    PushIntoLua(reinterpret_cast<uintptr_t>(state), value);
+                if(results.empty()){
+                    throw HostAPIException("No results returned from function");
                 }
-            } else {
-                luaL_error(state, std::any_cast<std::string>(results[0]).c_str());
-            }
-            return static_cast<int>(results.size());
-        };
 
-        mLuaBindings[binding.module].insert({ name, func });
-        return;
-    }
+                if (result->succeed()) {
+                    for (auto& value : results) {
+                        PushIntoLua(reinterpret_cast<uintptr_t>(state), value);
+                    }
+                } else {
+                    luaL_error(state, std::any_cast<std::string>(results[0]).c_str());
+                }
+                return static_cast<int>(results.size());
+            };
 
-    if (binding.type == BindingType::KField) {
-        mLuaBindings[binding.module].insert({ name, std::get<std::any>(binding.binding) });
+            mLuaBindings[binding.module].insert({ name, func });
+            break;
+        }
+        case BindingType::KField: {
+            mLuaBindings[binding.module].insert({ name, std::get<std::any>(binding.binding) });
+            break;
+        }
+        default: {
+            throw HostAPIException("Unknown binding type");
+        }
     }
 }
 
@@ -233,58 +271,48 @@ size_t LuaHost::GetArgumentCount(const uintptr_t context) {
 }
 
 uint16_t LuaHost::Execute(const std::string& script) {
-    lua_State* state = luaL_newstate();
+    const int ret = luaL_dostring(mLuaState, script.c_str());
 
-    const luaL_Reg *lib = mLuaLibs;
-    for (; lib->func; lib++) {
-        lua_pushcfunction(state, lib->func);
-        lua_pushstring(state, lib->name);
-        lua_call(state, 1, 0);
-    }
-
-    for (auto& [fst, snd] : mLuaBindings[ROOT_MODULE]) {
-
-        LuaBinding binding = snd;
-
-        if(binding.index() == 0){
-            lua_pushlightuserdata(state, this);
-            lua_pushlightuserdata(state, &this->mBindings[fst]);
-            lua_pushcclosure(state, std::get<LuaFunction>(binding), 2);
-        } else {
-            auto value = std::get<std::any>(binding);
-            PushIntoLua(reinterpret_cast<uintptr_t>(state), value);
-        }
-
-        lua_setglobal(state, fst.c_str());
-    }
-
-    luaL_dostring(state, tryCatchImpl);
-
-    
-
-    const int ret = luaL_dostring(state, script.c_str());
     if (ret != LUA_OK) {
-        const std::string error(lua_tostring(state, -1));
-        lua_close(state);
+        const std::string error(lua_tostring(mLuaState, -1));
         throw HostAPIException(error);
     }
 
-    mLuaStates.push_back(state);
-    return static_cast<uint16_t>(mLuaStates.size()) - 1;
+    const int curr = static_cast<uint16_t>(mLuaRefs.size()) - 1;
+    // _ENV Table
+    lua_newtable(mLuaState);
+    // Metatable
+    lua_newtable(mLuaState);
+    lua_getglobal(mLuaState, "_G");
+    lua_setfield(mLuaState, -2, "__index");
+    lua_setmetatable(mLuaState, -2);
+
+    // Push script id
+    const auto scriptId = "_REF" + std::to_string(curr);
+    lua_setfield(mLuaState, LUA_REGISTRYINDEX, scriptId.c_str());
+    //Retrieve it.
+    const auto ref = lua_getfield(mLuaState, LUA_REGISTRYINDEX, scriptId.c_str());
+
+    lua_setupvalue(mLuaState, 1, 1);
+    //Run chunks
+    lua_pcall(mLuaState, 0, LUA_MULTRET, 0);
+
+    mLuaRefs.push_back(ref);
+    return static_cast<uint16_t>(mLuaRefs.size()) - 1;
 }
 
 void LuaHost::Kill(const uint16_t pid) {
-    if (pid > mLuaStates.size()) {
+    if (pid > mLuaRefs.size()) {
         return;
     }
 
-    lua_State* state = mLuaStates[pid];
+    const auto scriptId = "_REF" + std::to_string(mLuaRefs[pid]);
+    lua_getfield(mLuaState, LUA_REGISTRYINDEX, scriptId.c_str());
 
-    lua_getglobal(state, "onExit");
-    if(lua_isfunction(state, -1)){
-        lua_pcall(state, 0, 0, 0);
+    lua_getglobal(mLuaState, "onExit");
+    if(lua_isfunction(mLuaState, -1)){
+        lua_pcall(mLuaState, 0, 0, 0);
     }
 
-    lua_close(state);
-    mLuaStates.erase(mLuaStates.begin() + pid);
+    mLuaRefs.erase(mLuaRefs.begin() + pid);
 }

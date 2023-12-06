@@ -5,6 +5,13 @@
 
 #include <libultraship/libultraship.h>
 
+extern "C"{
+#include "z64.h"
+#include "macros.h"
+extern PlayState* gPlayState;
+extern s32 func_8083A4A8(Player* p, PlayState* play);
+}
+
 void BindUIWidgets(){
 
     const auto entries = {
@@ -60,7 +67,34 @@ void BindSohImgui(){
     GameBridge::Instance->Register(entries, "SohImGui");
 }
 
+void BindPlayer(){
+    const auto entries = {
+        BIND_FUNCTION("IsJumping", [](uintptr_t, MethodCall* method) {
+            if(gPlayState == nullptr) {
+                method->error("No play state");
+                return;
+            }
+
+            const auto player = GET_PLAYER(gPlayState);
+            method->success(static_cast<bool>(player->unk_850));
+        }),
+        BIND_FUNCTION("func_8083A4A8", [](uintptr_t, MethodCall* method) {
+            if(gPlayState == nullptr) {
+                method->error("No play state");
+                return;
+            }
+
+            func_8083A4A8(GET_PLAYER(gPlayState), gPlayState);
+
+            method->success();
+        })
+    };
+
+    GameBridge::Instance->Register(entries, "OOTPlayer");
+}
+
 void SOHBridge::Initialize() {
     BindUIWidgets();
+    BindPlayer();
     // BindSohImgui();
 }

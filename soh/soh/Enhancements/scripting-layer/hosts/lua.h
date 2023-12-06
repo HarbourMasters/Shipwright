@@ -8,6 +8,8 @@ struct GameBinding;
 
 class LuaHost : public HostAPI {
     std::unordered_map<std::string, GameBinding> mBindings;
+    void CreateLuaState();
+    void BindRequireOverride();
 public:
     bool Initialize() override;
     void Bind(std::string name, GameBinding binding) override;
@@ -19,6 +21,4 @@ public:
 
     // LuaHost specific methods
     static void PushIntoLua(uintptr_t state, const std::any& value);
-
-    void BindRequireOverride();
 };

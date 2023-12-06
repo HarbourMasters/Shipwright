@@ -21,9 +21,6 @@ class GameBridge {
     void BindField(const std::string& name, const std::any& field, const std::string& mod_name = ROOT_MODULE) const;
     void BindFunction(const std::string& name, FunctionPtr function, const std::string& mod_name = ROOT_MODULE) const;
 public:
-    GameBridge() {
-        this->Initialize();
-    }
     static GameBridge* Instance;
     void Initialize();
     uint16_t Execute(const std::string& script, const std::string& hostname);

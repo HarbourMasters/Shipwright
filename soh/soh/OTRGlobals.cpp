@@ -119,11 +119,6 @@ CrowdControl* CrowdControl::Instance;
 #include "soh/config/ConfigUpdaters.h"
 #include "soh/Enhancements/scripting-layer/bridge.h"
 
-#include "soh/Enhancements/scripting-layer/interactors/game-interactor/gi-bridge.h"
-#include "soh/Enhancements/scripting-layer/interactors/libultraship/imgui-bridge.h"
-#include "soh/Enhancements/scripting-layer/interactors/n64-native/n64-bridge.h"
-#include "soh/Enhancements/scripting-layer/interactors/soh/soh-bridge.h"
-
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
@@ -1097,11 +1092,7 @@ extern "C" void InitOTR() {
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
     GameBridge::Instance = new GameBridge();
-
-    GameInteractorBridge::Initialize();
-    N64Bridge::Initialize();
-    ImGuiBridge::Initialize();
-    SOHBridge::Initialize();
+    GameBridge::Instance->Initialize();
 
 #ifdef __APPLE__
     SpeechSynthesizer::Instance = new DarwinSpeechSynthesizer();
