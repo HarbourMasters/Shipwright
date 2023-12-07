@@ -92,7 +92,6 @@ const std::array<HintSetting, 4> hintSettingTable{{
     .alwaysCopies = 0,
     .trialCopies = 0,
     .junkWeight = 1, //RANDOTODO when the hint pool is not implicitly an itemLocations, handle junk like other hint types
-    .namedItemsRequired = false, 
     .distTable = {} /*RANDOTODO Instead of loading a function into this, 
     apply this filter on all possible hintables in advance and then filter by what is acually in the seed at the start of generation.
     This allows the distTable to hold the current status in hint generation (reducing potential doubled work) and
@@ -103,7 +102,6 @@ const std::array<HintSetting, 4> hintSettingTable{{
     .alwaysCopies = 1,
     .trialCopies = 1,
     .junkWeight = 6,
-    .namedItemsRequired = false,
     .distTable = {
       {"WotH",       HINT_TYPE_WOTH,          7,  0, 1, FilterWotHLocations,      2},
       {"Barren",     HINT_TYPE_BARREN,        4,  0, 1, FilterBarrenLocations,    1},
@@ -120,7 +118,6 @@ const std::array<HintSetting, 4> hintSettingTable{{
     .alwaysCopies = 2,
     .trialCopies = 1,
     .junkWeight = 0,
-    .namedItemsRequired = true,
     .distTable = {
       {"WotH",       HINT_TYPE_WOTH,         12, 0, 2, FilterWotHLocations,      2},
       {"Barren",     HINT_TYPE_BARREN,       12, 0, 1, FilterBarrenLocations,    1},
@@ -137,7 +134,6 @@ const std::array<HintSetting, 4> hintSettingTable{{
     .alwaysCopies = 2,
     .trialCopies = 1,
     .junkWeight = 0,
-    .namedItemsRequired = true,
     .distTable = {
       {"WotH",       HINT_TYPE_WOTH,         15, 0, 2, FilterWotHLocations},
       {"Barren",     HINT_TYPE_BARREN,       15, 0, 1, FilterBarrenLocations},
@@ -833,16 +829,15 @@ void CreateMerchantsHints() {
                                  ::Hint(RHT_CARPET_SALESMAN_DIALOG_SECOND).GetText();
     Text carpetSalesmanTextTwo = ::Hint(RHT_CARPET_SALESMAN_DIALOG_THIRD).GetText() + carpetSalesmanItemClearText +
                                  ::Hint(RHT_CARPET_SALESMAN_DIALOG_FOURTH).GetText();
-    //RANDOTODO WTF is this?
+    
     // CreateMessageFromTextObject(0x9120, 0, 2, 3, AddColorsAndFormat(medigoronText, { QM_RED, QM_GREEN }));
     // CreateMessageFromTextObject(0x9121, 0, 2, 3, AddColorsAndFormat(grannyText, { QM_RED, QM_GREEN }));
     // CreateMessageFromTextObject(0x6077, 0, 2, 3, AddColorsAndFormat(carpetSalesmanTextOne, { QM_RED, QM_GREEN }));
     // CreateMessageFromTextObject(0x6078, 0, 2, 3,
                                 // AddColorsAndFormat(carpetSalesmanTextTwo, { QM_RED, QM_YELLOW, QM_RED }));
-
-    // ctx->AddHint(RH_MEDIGORON, AutoFormatHintText(medigoronText), RC_GC_MEDIGORON, HINT_TYPE_STATIC, "Static", ctx->GetItemLocation(RC_GC_MEDIGORON)->GetArea());
-    // ctx->AddHint(RH_GRANNYS_SHOP, AutoFormatHintText(grannyText), RC_KAK_GRANNYS_SHOP, HINT_TYPE_STATIC, "Static", ctx->GetItemLocation(RC_KAK_GRANNYS_SHOP)->GetArea());
-    // ctx->AddHint(RH_WASTELAND_BOMBCHU_SALESMAN, AutoFormatHintText(carpetSalesmanTextOne), RC_WASTELAND_BOMBCHU_SALESMAN, HINT_TYPE_STATIC, "Static", ctx->GetItemLocation(RC_WASTELAND_BOMBCHU_SALESMAN)->GetArea());
+    // ctx->AddHint(RH_MEDIGORON, AutoFormatHintText(medigoronText), RC_GC_MEDIGORON, HINT_TYPE_STATIC, GetHintRegion(RR_GORON_CITY)->GetHint().GetText());
+    // ctx->AddHint(RH_GRANNYS_SHOP, AutoFormatHintText(grannyText), RC_KAK_GRANNYS_SHOP, HINT_TYPE_STATIC, GetHintRegion(RR_KAKARIKO_VILLAGE)->GetHint().GetText());
+    // ctx->AddHint(RH_WASTELAND_BOMBCHU_SALESMAN, AutoFormatHintText(carpetSalesmanTextOne), RC_WASTELAND_BOMBCHU_SALESMAN, HINT_TYPE_STATIC, GetHintRegion(RR_HAUNTED_WASTELAND)->GetHint().GetText());
 }
 
 //RANDOTODO add Better Links Pocket and starting item handling once more starting items are added
@@ -925,7 +920,7 @@ int32_t getRandomWeight(int32_t totalWeight){
   return Random(1,totalWeight);
 }
 
-static void DistrabuteHints(std::vector<uint8_t>& selected, size_t stoneCount, std::vector<HintDistributionSetting> distTable, uint8_t junkWieght, bool addFixed = true){
+static void DistributeHints(std::vector<uint8_t>& selected, size_t stoneCount, std::vector<HintDistributionSetting> distTable, uint8_t junkWieght, bool addFixed = true){
   int32_t totalWeight = junkWieght;
 
   for (HintDistributionSetting setting: distTable){
@@ -974,7 +969,7 @@ uint8_t PlaceHints(std::vector<uint8_t>& selectedHints,
     for (uint8_t numHint = 0; numHint < selectedHints[curSlot]; numHint++){
 
       SPDLOG_DEBUG("Attempting to make hint of type: ");
-      SPDLOG_DEBUG(hintTypeNames[(int)distribution.type]);
+      SPDLOG_DEBUG(hintTypeNames[static_cast<int>(distribution.type)]);
       SPDLOG_DEBUG("\n");
 
       RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK;
@@ -1062,12 +1057,12 @@ void CreateStoneHints() {
     selectedHints.push_back(0);
   }
   selectedHints.push_back(0);
-  DistrabuteHints(selectedHints, totalStones, distTable, hintSetting.junkWeight);
+  DistributeHints(selectedHints, totalStones, distTable, hintSetting.junkWeight);
 
   while(totalStones != 0){
     totalStones = PlaceHints(selectedHints, distTable);
     if (totalStones != 0){
-      DistrabuteHints(selectedHints, totalStones, distTable, hintSetting.junkWeight, false);
+      DistributeHints(selectedHints, totalStones, distTable, hintSetting.junkWeight, false);
     }
   }
 

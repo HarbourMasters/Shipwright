@@ -37,7 +37,6 @@ struct HintSetting {
   uint8_t alwaysCopies;
   uint8_t trialCopies;
   uint8_t junkWeight;
-  bool namedItemsRequired; //RANDOTODO what is this supposed to do?
   std::vector<HintDistributionSetting> distTable;
 };
 

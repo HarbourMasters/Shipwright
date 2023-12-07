@@ -387,11 +387,9 @@ void SaveManager::LoadRandomizerVersion3() {
             SaveManager::Instance->LoadData("hintedCheck", rc);
             HintType ht = HINT_TYPE_STATIC;
             SaveManager::Instance->LoadData("hintType", ht);
-            std::string englishArea;
-            SaveManager::Instance->LoadStruct("hintedRegion", [&]() {
-                SaveManager::Instance->LoadData("english", englishArea);
-            });
-            randoContext->AddHint(rhk, Text(english, french, english), rc, ht, "Unknown", randoContext->GetAreaFromString(englishArea));//RANDOTODO, maybe store and load distrabution, but it's a string...
+            RandomizerArea savedArea;
+            SaveManager::Instance->LoadData("hintedArea", savedArea);
+            randoContext->AddHint(rhk, Text(english, french, english), rc, ht, "Unknown", savedArea);//RANDOTODO, maybe store and load distrabution, but it's a string...
         });
     });
 
@@ -478,11 +476,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
             });
             SaveManager::Instance->SaveData("hintedCheck", hint->GetHintedLocation());
             SaveManager::Instance->SaveData("hintType", hint->GetHintType());
-            SaveManager::Instance->SaveStruct("hintedRegion", [&]() {
-                SaveManager::Instance->SaveData("english", ::Hint(hint->GetHintedArea()).GetText().GetEnglish());
-                SaveManager::Instance->SaveData("french", ::Hint(hint->GetHintedArea()).GetText().GetFrench());
-                SaveManager::Instance->SaveData("german", ::Hint(hint->GetHintedArea()).GetText().GetEnglish());
-            });
+            SaveManager::Instance->SaveData("hintedArea", hint->GetHintedArea());
         });
     });
 

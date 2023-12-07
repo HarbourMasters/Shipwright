@@ -203,12 +203,9 @@ std::vector<RandomizerCheck> GetAllEmptyLocations() {
     });
 }
 
-bool IsBombchus(RandomizerGet item){
-  return (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) || item == RG_PROGRESSIVE_BOMBCHUS;
-}
-
-bool IsBombchusIncludingShop(RandomizerGet item){
-  return IsBombchus(item) || item == RG_BUY_BOMBCHU_10 || item == RG_BUY_BOMBCHU_20;
+bool IsBombchus(RandomizerGet item, bool includeShops = false){
+  return (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) || item == RG_PROGRESSIVE_BOMBCHUS || 
+    (includeShops && (item == RG_BUY_BOMBCHU_10 || item == RG_BUY_BOMBCHU_20));
 }
 
 bool IsBeatableWithout(RandomizerCheck excludedCheck, bool replaceItem, RandomizerGet ignore = RG_NONE){ //RANDOTODO make excludCheck an ItemLocation
@@ -363,10 +360,10 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
                   newItemLocations.push_back(location);
                 }
                 //If we want to ignore bombchus, only add if bombchu is not in the name
-                else if (IsBombchus(ignore) && IsBombchusIncludingShop(locItem)) {
+                else if (IsBombchus(ignore) && IsBombchus(locItem, true)) {
                   newItemLocations.push_back(location);
                 }
-                //We want to ignore a specific Buy item. Buy items with different RandomiserGets are recognised by a shared GetLogicVar
+                //We want to ignore a specific Buy item. Buy items with different RandomizerGets are recognised by a shared GetLogicVar
                 else if (ignore != RG_GOLD_SKULLTULA_TOKEN && IsBombchus(ignore)) {
                   if ((type == ITEMTYPE_SHOP && Rando::StaticData::GetItemTable()[ignore].GetLogicVar() != location->GetPlacedItem().GetLogicVar()) || type != ITEMTYPE_SHOP) {
                     newItemLocations.push_back(location);
@@ -385,7 +382,7 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
               //Item is an advancement item, figure out if it should be added to this sphere
               if (!ctx->playthroughBeatable && location->GetPlacedItem().IsAdvancement()) {
                 ItemType type = location->GetPlacedItem().GetItemType();
-                bool bombchus = IsBombchusIncludingShop(locItem); //Is a bombchu location
+                bool bombchus = IsBombchus(locItem, true); //Is a bombchu location
 
                 //Decide whether to exclude this location
                 //This preprocessing is done to reduce the amount of searches performed in PareDownPlaythrough
@@ -534,7 +531,7 @@ static void PareDownPlaythrough() {
       RandomizerGet locGet = ctx->GetItemLocation(loc)->GetPlacedRandomizerGet();
 
       RandomizerGet ignore = RG_NONE;
-      if (locGet == RG_GOLD_SKULLTULA_TOKEN || IsBombchusIncludingShop(locGet)
+      if (locGet == RG_GOLD_SKULLTULA_TOKEN || IsBombchus(locGet, true)
         || Rando::StaticData::RetrieveItem(locGet).GetItemType() == ITEMTYPE_SHOP) {
         ignore = locGet;
       }

@@ -5,7 +5,7 @@ Hint::Hint() : text(std::move(Text())) {}
 Hint::Hint(Text text_): text(std::move(text_)) {}
 Hint::Hint(Text text_, RandomizerCheck hintedLocation_, HintType hintType_, std::string distributionName_, RandomizerArea hintedArea_)
     : text(std::move(text_)), hintedLocation(hintedLocation_), hintType(hintType_),
-      distribution(distributionName_), hintedArea(hintedArea_) { //not sure if removing std::move is correct, did it for safety, replace it if it's wise
+      hintedArea(hintedArea_), distribution(std::move(distributionName_)) {
 }
 
 const Text& Hint::GetText() const {
@@ -40,7 +40,7 @@ void Hint::SetDistribution(std::string distributionName) {
     distribution = distributionName;
 }
 
-std::string Hint::GetDistribution() {
+const std::string Hint::GetDistribution() {
     return distribution;
 }
 
