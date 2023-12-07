@@ -16,10 +16,10 @@ class Hint {
     void SetHintType (HintType type);
     RandomizerArea GetHintedArea();
     void SetHintedArea (RandomizerArea area);
-    const std::string GetDistribution();
+    const std::string& GetDistribution();
     void SetDistribution (std::string distribution);
     void ResetVariables();
-    bool IsAddedToPool(); //RANDOTODO what is this for
+    bool IsAddedToPool();
     void AddToPool();
 
     private:

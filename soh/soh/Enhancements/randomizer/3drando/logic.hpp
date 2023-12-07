@@ -192,7 +192,7 @@ extern bool BombchuDrop;
 extern bool BuyBombchus;
 extern bool BuyArrow;
 extern bool BuyBomb;
-extern bool BuyPotion;
+extern bool BuyMagicPotion;
 extern bool BuySeed;
 extern bool MagicRefill;
 

@@ -35,7 +35,7 @@ class ItemLocation {
     void SetAsHintable();
     bool IsHintedAt() const;
     void SetAsHinted();
-    const std::vector<RandomizerHintKey> GetHintedBy() const;
+    const std::vector<RandomizerHintKey>& GetHintedBy() const;
     void AddHintedBy(RandomizerHintKey hintKey);
     bool IsHidden() const;
     bool IsExcluded() const;

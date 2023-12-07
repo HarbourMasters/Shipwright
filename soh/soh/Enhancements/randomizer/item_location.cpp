@@ -114,7 +114,7 @@ void ItemLocation::SetAsHinted() {
     hintedAt = true;
 }
 
-const std::vector<RandomizerHintKey> ItemLocation::GetHintedBy() const {
+const std::vector<RandomizerHintKey>& ItemLocation::GetHintedBy() const {
     return hintedBy;
 }
 

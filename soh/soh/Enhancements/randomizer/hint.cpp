@@ -40,7 +40,7 @@ void Hint::SetDistribution(std::string distributionName) {
     distribution = distributionName;
 }
 
-const std::string Hint::GetDistribution() {
+const std::string& Hint::GetDistribution() {
     return distribution;
 }
 

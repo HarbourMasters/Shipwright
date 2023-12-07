@@ -198,7 +198,7 @@ namespace Logic {
   bool BuySeed          = false;
   bool BuyArrow         = false;
   bool BuyBomb          = false;
-  bool BuyPotion        = false;
+  bool BuyMagicPotion        = false;
   bool MagicRefill      = false;
 
   uint8_t   PieceOfHeart     = 0;
@@ -540,7 +540,7 @@ namespace Logic {
     Slingshot       = (ProgressiveBulletBag >= 1) && (BuySeed || AmmoCanDrop);
     Ocarina         = ProgressiveOcarina    >= 1;
     OcarinaOfTime   = ProgressiveOcarina    >= 2;
-    MagicMeter      = (ProgressiveMagic     >= 1) && (AmmoCanDrop || (HasBottle && (BuyPotion)));
+    MagicMeter      = (ProgressiveMagic     >= 1) && (AmmoCanDrop || (HasBottle && (BuyMagicPotion)));
     BombBag         = (ProgressiveBombBag   >= 1) && (BuyBomb || AmmoCanDrop);
     Hookshot        = ProgressiveHookshot   >= 1;
     Longshot        = ProgressiveHookshot   >= 2;
@@ -969,7 +969,7 @@ namespace Logic {
      BuySeed          = false;
      BuyArrow         = false;
      BuyBomb          = false;
-     BuyPotion        = false;
+     BuyMagicPotion        = false;
      MagicRefill      = false;
 
      PieceOfHeart     = 0;
