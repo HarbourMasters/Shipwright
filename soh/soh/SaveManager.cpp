@@ -112,7 +112,7 @@ void SaveManager::LoadRandomizerVersion1() {
         });
     }
 
-    for (int i = 0; i < randoContext->hashIconIndexes.size(); i++) {
+    for (uint32_t i = 0; i < randoContext->hashIconIndexes.size(); i++) {
         SaveManager::Instance->LoadData("seed" + std::to_string(i), randoContext->hashIconIndexes[i]);
     }
 
@@ -130,32 +130,32 @@ void SaveManager::LoadRandomizerVersion1() {
         for (int j = 0; j < ARRAY_COUNT(hintText); j++) {
             SaveManager::Instance->LoadData("ht" + std::to_string(i) + "-" + std::to_string(j), hintText[j]);
         }
-        randoContext->AddHint(RandomizerHintKey(check - RC_COLOSSUS_GOSSIP_STONE + 1), Text(hintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+        randoContext->AddHint(RandomizerHintKey(check - RC_COLOSSUS_GOSSIP_STONE + 1), Text(hintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     }
 
     char childAltarText[250];
     for (int i = 0; i < ARRAY_COUNT(childAltarText); i++) {
         SaveManager::Instance->LoadData("cat" + std::to_string(i), childAltarText[i]);
     }
-    randoContext->AddHint(RH_ALTAR_CHILD, Text(childAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_ALTAR_CHILD, Text(childAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
 
     char adultAltarText[750];
     for (int i = 0; i < ARRAY_COUNT(adultAltarText); i++) {
         SaveManager::Instance->LoadData("aat" + std::to_string(i), adultAltarText[i]);
     }
-    randoContext->AddHint(RH_ALTAR_ADULT, Text(adultAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_ALTAR_ADULT, Text(adultAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
 
     char ganonHintText[150];
     for (int i = 0; i < ARRAY_COUNT(ganonHintText); i++) {
         SaveManager::Instance->LoadData("ght" + std::to_string(i), ganonHintText[i]);
     }
-    randoContext->AddHint(RH_GANONDORF_HINT, Text(ganonHintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_GANONDORF_HINT, Text(ganonHintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
 
     char ganonText[250];
     for (int i = 0; i < ARRAY_COUNT(ganonText); i++) {
         SaveManager::Instance->LoadData("gt" + std::to_string(i), ganonText[i]);
     }
-    randoContext->AddHint(RH_GANONDORF_NOHINT, Text(ganonText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_GANONDORF_NOHINT, Text(ganonText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
 
@@ -234,53 +234,53 @@ void SaveManager::LoadRandomizerVersion2() {
             if (rc != RC_UNKNOWN_CHECK) {
                 std::string hintText;
                 SaveManager::Instance->LoadData("hintText", hintText);
-                randoContext->AddHint(RandomizerHintKey(rc - RC_COLOSSUS_GOSSIP_STONE + 1), Text(hintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+                randoContext->AddHint(RandomizerHintKey(rc - RC_COLOSSUS_GOSSIP_STONE + 1), Text(hintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
             }
         });
     });
 
     std::string childAltarText;
     SaveManager::Instance->LoadData("childAltarText", childAltarText);
-    randoContext->AddHint(RH_ALTAR_CHILD, Text(childAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_ALTAR_CHILD, Text(childAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string adultAltarText;
     SaveManager::Instance->LoadData("adultAltarText", adultAltarText);
-    randoContext->AddHint(RH_ALTAR_ADULT, Text(adultAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_ALTAR_ADULT, Text(adultAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string ganonHintText;
     SaveManager::Instance->LoadData("ganonHintText", ganonHintText);
-    randoContext->AddHint(RH_GANONDORF_HINT, Text(ganonHintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_GANONDORF_HINT, Text(ganonHintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string ganonText;
     SaveManager::Instance->LoadData("ganonText", ganonText);
-    randoContext->AddHint(RH_GANONDORF_NOHINT, Text(ganonText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_GANONDORF_NOHINT, Text(ganonText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string dampeText;
     SaveManager::Instance->LoadData("dampeText", dampeText);
-    randoContext->AddHint(RH_DAMPES_DIARY, Text(dampeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_DAMPES_DIARY, Text(dampeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string gregHintText;
     SaveManager::Instance->LoadData("gregHintText", gregHintText);
-    randoContext->AddHint(RH_GREG_RUPEE, Text(gregHintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_GREG_RUPEE, Text(gregHintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string sheikText;
     SaveManager::Instance->LoadData("sheikText", sheikText);
-    randoContext->AddHint(RH_SHEIK_LIGHT_ARROWS, Text(sheikText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_SHEIK_LIGHT_ARROWS, Text(sheikText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string sariaText;
     SaveManager::Instance->LoadData("sariaText", sariaText);
-    randoContext->AddHint(RH_SARIA, Text(sariaText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_SARIA, Text(sariaText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string warpMinuetText;
     SaveManager::Instance->LoadData("warpMinuetText", warpMinuetText);
-    randoContext->AddHint(RH_MINUET_WARP_LOC, Text(warpMinuetText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpMinuetText));
+    randoContext->AddHint(RH_MINUET_WARP_LOC, Text(warpMinuetText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpMinuetText));
     std::string warpBoleroText;
     SaveManager::Instance->LoadData("warpBoleroText", warpBoleroText);
-    randoContext->AddHint(RH_BOLERO_WARP_LOC, Text(warpBoleroText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpBoleroText));
+    randoContext->AddHint(RH_BOLERO_WARP_LOC, Text(warpBoleroText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpBoleroText));
     std::string warpSerenadeText;
     SaveManager::Instance->LoadData("warpSerenadeText", warpSerenadeText);
-    randoContext->AddHint(RH_SERENADE_WARP_LOC, Text(warpSerenadeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpSerenadeText));
+    randoContext->AddHint(RH_SERENADE_WARP_LOC, Text(warpSerenadeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpSerenadeText));
     std::string warpRequiemText;
     SaveManager::Instance->LoadData("warpRequiemText", warpRequiemText);
-    randoContext->AddHint(RH_REQUIEM_WARP_LOC, Text(warpRequiemText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpRequiemText));
+    randoContext->AddHint(RH_REQUIEM_WARP_LOC, Text(warpRequiemText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpRequiemText));
     std::string warpNocturneText;
     SaveManager::Instance->LoadData("warpNocturneText", warpNocturneText);
-    randoContext->AddHint(RH_NOCTURNE_WARP_LOC, Text(warpNocturneText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpNocturneText));
+    randoContext->AddHint(RH_NOCTURNE_WARP_LOC, Text(warpNocturneText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpNocturneText));
     std::string warpPreludeText;
     SaveManager::Instance->LoadData("warpPreludeText", warpPreludeText);
-    randoContext->AddHint(RH_PRELUDE_WARP_LOC, Text(warpPreludeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpPreludeText));
+    randoContext->AddHint(RH_PRELUDE_WARP_LOC, Text(warpPreludeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpPreludeText));
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
 
@@ -387,12 +387,9 @@ void SaveManager::LoadRandomizerVersion3() {
             SaveManager::Instance->LoadData("hintedCheck", rc);
             HintType ht = HINT_TYPE_STATIC;
             SaveManager::Instance->LoadData("hintType", ht);
-            std::string englishRegion, frenchRegion;
-            SaveManager::Instance->LoadStruct("hintedRegion", [&]() {
-                SaveManager::Instance->LoadData("english", englishRegion);
-                SaveManager::Instance->LoadData("french", frenchRegion);
-            });
-            randoContext->AddHint(rhk, Text(english, french, english), rc, ht, Text(englishRegion, frenchRegion, englishRegion));
+            RandomizerArea savedArea;
+            SaveManager::Instance->LoadData("hintedArea", savedArea);
+            randoContext->AddHint(rhk, Text(english, french, english), rc, ht, "Unknown", savedArea);//RANDOTODO, maybe store and load distrabution, but it's a string...
         });
     });
 
@@ -479,11 +476,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
             });
             SaveManager::Instance->SaveData("hintedCheck", hint->GetHintedLocation());
             SaveManager::Instance->SaveData("hintType", hint->GetHintType());
-            SaveManager::Instance->SaveStruct("hintedRegion", [&]() {
-                SaveManager::Instance->SaveData("english", hint->GetHintedRegionText().GetEnglish());
-                SaveManager::Instance->SaveData("french", hint->GetHintedRegionText().GetFrench());
-                SaveManager::Instance->SaveData("german", hint->GetHintedRegionText().GetEnglish());
-            });
+            SaveManager::Instance->SaveData("hintedArea", hint->GetHintedArea());
         });
     });
 

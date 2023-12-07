@@ -59,6 +59,14 @@ RandomizerRegion ItemLocation::GetParentRegionKey() const {
     return parentRegion;
 }
 
+void ItemLocation::SetArea(RandomizerArea newArea) {
+    area = newArea;
+}
+
+RandomizerArea ItemLocation::GetArea() const {
+    return area;
+}
+
 void ItemLocation::PlaceVanillaItem() {
     placedItem = StaticData::GetLocation(rc)->GetVanillaItem();
 }
@@ -106,12 +114,12 @@ void ItemLocation::SetAsHinted() {
     hintedAt = true;
 }
 
-RandomizerHintKey ItemLocation::GetHintKey() const {
+const std::vector<RandomizerHintKey>& ItemLocation::GetHintedBy() const {
     return hintedBy;
 }
 
-void ItemLocation::SetHintKey(const RandomizerHintKey hintKey) {
-    hintedBy = hintKey;
+void ItemLocation::AddHintedBy(const RandomizerHintKey hintKey) {
+    hintedBy.push_back(hintKey);
 } 
 
 bool ItemLocation::IsHidden() const {
@@ -161,15 +169,34 @@ void ItemLocation::SetVisible(const bool visibleInImGui_) {
 
 }
 
+bool ItemLocation::IsWothCandidate() const {
+    return wothCandidate;
+}
+
+void ItemLocation::SetWothCandidate() {
+    wothCandidate = true;
+}
+
+bool ItemLocation::IsBarrenCandidate() const {
+    return barrenCandidate;
+}
+
+void ItemLocation::SetBarrenCandidate() {
+    barrenCandidate = true;
+}
+
 void ItemLocation::ResetVariables() {
     addedToPool = false;
     placedItem = RG_NONE;
     delayedItem = RG_NONE;
     isHintable = false;
     hintedAt = false;
-    hintedBy = RH_NONE;
+    hintedBy = {};
     price = 0;
     hasCustomPrice = false;
     hidden = false;
+    wothCandidate = false;
+    barrenCandidate = false;
+    area = RA_NONE;
 }
 }

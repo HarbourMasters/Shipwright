@@ -79,7 +79,6 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
     }
 
     ctx->playthroughLocations.clear();
-    ctx->wothLocations.clear();
     ctx->playthroughBeatable = false;
 
     return 1;

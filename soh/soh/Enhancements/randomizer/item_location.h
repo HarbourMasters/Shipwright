@@ -22,6 +22,8 @@ class ItemLocation {
     void SetDelayedItem(RandomizerGet item);
     RandomizerRegion GetParentRegionKey() const;
     void SetParentRegion (RandomizerRegion region);
+    RandomizerArea GetArea() const;
+    void SetArea (RandomizerArea region);
     void PlaceVanillaItem();
     void ApplyPlacedItemEffect() const;
     void SaveDelayedItem();
@@ -33,8 +35,8 @@ class ItemLocation {
     void SetAsHintable();
     bool IsHintedAt() const;
     void SetAsHinted();
-    RandomizerHintKey GetHintKey() const;
-    void SetHintKey(RandomizerHintKey hintKey);
+    const std::vector<RandomizerHintKey>& GetHintedBy() const;
+    void AddHintedBy(RandomizerHintKey hintKey);
     bool IsHidden() const;
     bool IsExcluded() const;
     void AddExcludeOption();
@@ -42,11 +44,15 @@ class ItemLocation {
     void SetHidden(bool hidden_);
     bool IsVisible() const;
     void SetVisible(bool visibleInImGui_);
+    bool IsWothCandidate() const;
+    void SetWothCandidate();
+    bool IsBarrenCandidate() const;
+    void SetBarrenCandidate();
     void ResetVariables();
 
   private:
     RandomizerCheck rc;
-    RandomizerHintKey hintedBy = RH_NONE;
+    std::vector<RandomizerHintKey> hintedBy = {};
     bool hintedAt = false;
     bool isHintable = false;
     bool addedToPool = false;
@@ -55,8 +61,11 @@ class ItemLocation {
     Option excludedOption = Option::Bool(StaticData::GetLocation(rc)->GetName(), {"Include", "Exclude"});
     uint16_t price = 0;
     RandomizerRegion parentRegion = RR_NONE;
+    RandomizerArea area = RA_NONE;
     bool hasCustomPrice = false;
     bool hidden = false;
     bool visibleInImGui = false;
+    bool wothCandidate = false;
+    bool barrenCandidate = false;
 };
 } // namespace Rando

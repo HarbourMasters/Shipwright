@@ -459,7 +459,7 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
     // Conditions will be checked during the search and any that fail will be figured out
     // afterwards
     Logic::LogicReset();
-    GetAccessibleLocations({}, SearchMode::ValidateWorld, "", checkPoeCollectorAccess, checkOtherEntranceAccess);
+    GetAccessibleLocations({}, SearchMode::ValidateWorld, RG_NONE, checkPoeCollectorAccess, checkOtherEntranceAccess);
 
     if (!ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
         // Unless entrances are decoupled, we don't want the player to end up through certain entrances as the wrong age
@@ -521,10 +521,10 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
         // When cows are shuffled, ensure both Impa's House entrances are in the same hint area because the cow is
         // reachable from both sides
         if (ctx->GetOption(RSK_SHUFFLE_COWS)) {
-            auto impasHouseFrontHintRegion = GetHintRegionHintKey(RR_KAK_IMPAS_HOUSE);
-            auto impasHouseBackHintRegion = GetHintRegionHintKey(RR_KAK_IMPAS_HOUSE_BACK);
-            if (impasHouseFrontHintRegion != RHT_NONE && impasHouseBackHintRegion != RHT_NONE &&
-                impasHouseBackHintRegion != RHT_LINKS_POCKET && impasHouseFrontHintRegion != RHT_LINKS_POCKET &&
+            auto impasHouseFrontHintRegion = areaTable[RR_KAK_IMPAS_HOUSE].GetArea();
+            auto impasHouseBackHintRegion = areaTable[RR_KAK_IMPAS_HOUSE_BACK].GetArea();
+            if (impasHouseFrontHintRegion != RA_NONE && impasHouseBackHintRegion != RA_NONE &&
+                impasHouseBackHintRegion != RA_LINKS_POCKET && impasHouseFrontHintRegion != RA_LINKS_POCKET &&
                 impasHouseBackHintRegion != impasHouseFrontHintRegion) {
                 auto message = "Kak Impas House entrances are not in the same hint area\n";
                 SPDLOG_DEBUG(message);
@@ -805,7 +805,7 @@ bool EntranceShuffler::PlaceOtherImpasHouseEntrance(std::vector<Entrance*> entra
         // If the entrance is already connected or it doesn't have the same hint region as the already placed impas
         // house entrance, then don't try to use it
         if (entrance->GetConnectedRegionKey() != RR_NONE ||
-            (GetHintRegionHintKey(otherImpaRegion) != GetHintRegionHintKey(entrance->GetParentRegionKey()))) {
+            (areaTable[otherImpaRegion].GetArea() != areaTable[entrance->GetParentRegionKey()].GetArea())) {
             continue;
         }
         // If the placement succeeds, we return true

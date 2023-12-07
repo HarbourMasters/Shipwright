@@ -98,6 +98,10 @@ ItemType Item::GetItemType() const {
     return type;
 }
 
+std::variant<bool*, uint8_t*> Item::GetLogicVar() const {
+    return logicVar;
+}
+
 RandomizerGet Item::GetRandomizerGet() const {
     return randomizerGet;
 }

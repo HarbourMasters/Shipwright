@@ -51,7 +51,7 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
         if (ret == -1) { // Failed to generate after 5 tries
             printf("\n\nFailed to generate after 5 tries.\nPress B to go back to the menu.\nA different seed might be "
                    "successful.");
-            SPDLOG_DEBUG("\nRANDOMIZATION FAILED COMPLETELY. PLZ FIX\n");
+            SPDLOG_DEBUG("\nRANDOMIZATION FAILED COMPLETELY. PLZ FIX\n");//RANDOTODO print seed for reproduction purposes
             return "";
         } else {
             printf("\n\nError %d with fill.\nPress Select to exit or B to go back to the menu.\n", ret);
