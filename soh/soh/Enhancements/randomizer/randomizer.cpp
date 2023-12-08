@@ -6468,8 +6468,7 @@ void InitRandoItemTable() {
         GET_ITEM(RG_TYCOON_WALLET,                     OBJECT_GI_PURSE,    GID_WALLET_GIANT,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_TYCOON_WALLET),
         GET_ITEM(RG_PROGRESSIVE_BOMBCHUS,              OBJECT_GI_BOMB_2,   GID_BOMBCHU,          0x33,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_PROGRESSIVE_BOMBCHUS),
         GET_ITEM(RG_TRIFORCE_PIECE,                    OBJECT_GI_BOMB_2,   GID_TRIFORCE_PIECE,   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_TRIFORCE_PIECE),
-        // TODO: need a better model than just a fish bottle...
-        GET_ITEM(RG_FISHING_POLE,                      OBJECT_GI_FISH,     GID_FISH,             TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_FISHING_POLE),
+        GET_ITEM(RG_FISHING_POLE,                      OBJECT_GI_FISH,     GID_FISHING_POLE,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_FISHING_POLE),
     };
     ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
     for (int i = 0; i < ARRAY_COUNT(extendedVanillaGetItemTable); i++) {
@@ -6489,6 +6488,8 @@ void InitRandoItemTable() {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawMasterSword;
         } else if (randoGetItemTable[i].itemId == RG_TRIFORCE_PIECE) {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawTriforcePiece;
+        } else if (randoGetItemTable[i].itemId == RG_FISHING_POLE) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawFishingPoleGI;
         }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }

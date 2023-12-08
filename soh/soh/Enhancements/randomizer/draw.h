@@ -16,6 +16,7 @@ void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getItemEntry);
 void Randomizer_DrawMasterSword(PlayState* play, GetItemEntry getItemEntry);
 void Randomizer_DrawTriforcePiece(PlayState* play, GetItemEntry getItemEntry);
 void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry getItemEntry);
+void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry getItemEntry);
 #ifdef __cplusplus
 };
 #endif
