@@ -1026,6 +1026,7 @@ int Fill() {
       }
       printf("\x1b[7;32HDone");
     }
+    SetAreas();
     //erase temporary shop items
     FilterAndEraseFromPool(ItemPool, [](const auto item) { return Rando::StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_SHOP; });
 
@@ -1137,7 +1138,6 @@ int Fill() {
     if(ctx->playthroughBeatable && !placementFailure) {
       printf("Done");
       printf("\x1b[9;10HCalculating Playthrough...");
-      SetAreas();
       PareDownPlaythrough();
       CalculateWotH();
       CalculateBarren(); 

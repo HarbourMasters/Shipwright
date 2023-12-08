@@ -30,7 +30,7 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
     std::string settingsStr;
     for (const Rando::OptionGroup& optionGroup : ctx->GetSettings()->GetOptionGroups()) {
         // don't go through non-menus
-        if (optionGroup.GetContainsType() != Rando::OptionGroupType::SUBGROUP) {
+        if (optionGroup.GetContainsType() == Rando::OptionGroupType::SUBGROUP) {
             continue;
         }
 
