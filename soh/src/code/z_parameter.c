@@ -6522,14 +6522,14 @@ void Interface_Update(PlayState* play) {
 
     if (gSaveContext.rupeeAccumulator != 0) {
         if (gSaveContext.rupeeAccumulator > 0) {
-            if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
+            while (gSaveContext.rupeeAccumulator > 0 && gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
                 gSaveContext.rupeeAccumulator--;
                 gSaveContext.rupees++;
                 Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            } else {
-                // "Rupee Amount MAX = %d"
-                osSyncPrintf("ルピー数ＭＡＸ = %d\n", CUR_CAPACITY(UPG_WALLET));
-                gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
+            }
+            // If the wallet is full and there are still rupees in the accumulator, add them to the player's balance
+            if (gSaveContext.rupeeAccumulator > 0) {
+                gSaveContext.playerBalance += gSaveContext.rupeeAccumulator;
                 gSaveContext.rupeeAccumulator = 0;
             }
         } else if (gSaveContext.rupees != 0) {

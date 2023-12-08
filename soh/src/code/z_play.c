@@ -18,6 +18,9 @@
 #include <time.h>
 #include <assert.h>
 
+//For Banker enhancement
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+
 void* D_8012D1F0 = NULL;
 //UNK_TYPE D_8012D1F4 = 0; // unused
 Input* D_8012D1F8 = NULL;
@@ -1469,6 +1472,13 @@ void Play_DrawOverlayElements(PlayState* play) {
     }
 
     Message_Draw(play);
+
+    //Banker code start
+    if (play->msgCtx.textId == TEXT_BANKER_WITHDRAWAL_AMOUNT) {
+        Gfx** gfx = &play->state.gfxCtx->overlay.p;
+        DrawBankerDigitOverlay(play, gfx);
+    }
+    //Banker code end
 
     if (play->gameOverCtx.state != GAMEOVER_INACTIVE) {
         GameOver_FadeInLights(play);

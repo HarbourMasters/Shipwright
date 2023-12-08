@@ -2557,6 +2557,25 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger("gMarketSneak", 0) && play->sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT);
     }
+    if (textId == TEXT_BEGGAR_VANILLA && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_GREETING);
+    }
+    if (textId == TEXT_BANKER_OPTIONS && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_OPTIONS);
+    }
+    if (textId == TEXT_BANKER_BALANCE && CVarGetInteger("gBanker", 0)) {
+        s32 playerBalance = gSaveContext.playerBalance;
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_BALANCE);
+        messageEntry.Replace("{{playerBalance}}", std::to_string(playerBalance));
+    }
+    if (textId == TEXT_BANKER_WITHDRAWAL_AMOUNT && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_WITHDRAWAL_AMOUNT);
+    }
+    if (textId == TEXT_BANKER_WITHDRAWAL_CONFIRM && CVarGetInteger("gBanker", 0)) {
+        s32 playerBalance = gSaveContext.playerBalance;
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_WITHDRAWAL_CONFIRM);
+        messageEntry.Replace("{{playerBalance}}", std::to_string(playerBalance));
+}
     font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
     switch (gSaveContext.language) {
         case LANGUAGE_FRA:

@@ -13,7 +13,7 @@ extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
 extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
 extern "C" MessageTableEntry* sStaffMessageEntryTablePtr;
-//extern "C" MessageTableEntry* _message_0xFFFC_nes;	
+//extern "C" MessageTableEntry* _message_0xFFFC_nes;  
 
 MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
     auto file = std::static_pointer_cast<LUS::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(filePath));
@@ -160,4 +160,32 @@ extern "C" void OTRMessage_Init()
         CustomMessage("You look bored. Wanna go out for a&walk?\x1B&%gYes&No%w",
                       "Du siehst gelangweilt aus.&Willst du einen Spaziergang machen?\x1B&%gJa&Nein%w",
                       "Tu as l'air de t'ennuyer. Tu veux&aller faire un tour?\x1B&%gOui&Non%w"));
+
+    const char* THREE_WAY_CHOICE = "\x1C";
+    
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_GREETING,
+        CustomMessage("Hey there, @!&You got something to sell?&Or are you here to make a&withdrawal?",
+                      "Hallo, @!&Hast du etwas zu verkaufen?&Oder möchtest du etwas&abheben?",
+                      "Salut, @!&Tu as quelque chose à vendre ?&Ou es-tu là pour faire un&retrait ?"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_OPTIONS,
+        CustomMessage(std::string("What would you like to do?") + THREE_WAY_CHOICE + "&%gSell Something&%gWithdrawal Rupees&%gNothing%w",
+                      std::string("Was möchtest du tun?") + THREE_WAY_CHOICE + "&%gEtwas verkaufen&%gRubine abheben&%gNichts%w",
+                      std::string("Que souhaitez-vous faire ?") + THREE_WAY_CHOICE + "&%gVendre quelque chose&%gRetirer des rubis&%gRein%w"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_BALANCE,
+        CustomMessage("If I remember, as of your&last warp transfer your&balance is %y{{playerBalance}}%w rupees.",
+                      "Wenn ich mich recht erinnere, beträgt&dein Guthaben seit deiner&letzten Warpenübertragung %y{{playerBalance}}%w Rubine.",
+                      "Si je me souviens bien, depuis votre&dernier transfert par warp, votre&solde est de %y{{playerBalance}}%w rubis."));
+    CustomMessageManager::Instance->CreateMessage(
+            customMessageTableID, TEXT_BANKER_WITHDRAWAL_AMOUNT,
+            CustomMessage("Select Withdrawal Amount:&     rupees.&Set the amount with \xAA and&press \x9F to decide.\x0A",
+                        "Wähle den Abhebungsbetrag:&     Rubine.&Stelle den Betrag mit \xAA ein und&drücke \x9F, um zu entscheiden.\x0A",
+                        "Sélectionnez le montant du retrait :&     rubis.&Réglez le montant avec \xAA et&appuyez sur \x9F pour décider.\x0A"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_WITHDRAWAL_CONFIRM,
+        CustomMessage("Here are your rupees.&Your new balance is:&%y{{playerBalance}}%w rupees.&See you later!",
+                      "Hier sind deine Rubine.&Dein neues Guthaben beträgt:&%y{{playerBalance}}%w Rubine.&Bis später!",
+                      "Voici vos rubis.&Votre nouveau solde est :&%y{{playerBalance}}%w rubis.&À plus tard !"));
 }

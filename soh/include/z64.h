@@ -1478,8 +1478,10 @@ typedef struct PlayState {
     /* 0x1242B */ u8 unk_1242B;
     /* 0x1242C */ SceneTableEntry* loadedScene;
     /* 0x12430 */ char unk_12430[0xE8];
-} PlayState; // size = 0x12518
-
+    // New members for banker overlay
+    /* 0x12518 */ s16 value;
+    /* 0x1251A */ s16 selectedDigit;
+} PlayState; // size = 0x1251C
 typedef struct {
     /* 0x0000 */ GameState state;
     /* 0x00A8 */ View view;
