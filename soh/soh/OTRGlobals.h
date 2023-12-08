@@ -182,7 +182,8 @@ void SaveManager_ThreadPoolWait();
 void CheckTracker_OnMessageClose();
 void SoH_ProcessDroppedFiles();
 
-int32_t GetGIID(uint32_t itemID);
+GetItemID RetrieveGetItemIDFromItemID(ItemID itemID);
+RandomizerGet RetrieveRandomizerGetFromItemID(ItemID itemID);
 #endif
 
 #ifdef __cplusplus

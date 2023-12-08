@@ -1159,7 +1159,7 @@ void LoadSettings() {
 }
 
 bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
-    if (IS_RANDO) {
+    if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) != RO_LOGIC_VANILLA) {
         return
             (rcObj.rcArea != RCAREA_INVALID) &&         // don't show Invalid locations
             (rcObj.rcType != RCTYPE_GOSSIP_STONE) &&    //TODO: Don't show hints until tracker supports them
