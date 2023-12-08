@@ -665,7 +665,7 @@ extern "C" void VanillaItemTable_Init() {
     }
 }
 
-std::unordered_map<uint32_t, uint32_t> ItemIDtoGetItemID{
+std::unordered_map<ItemID, GetItemID> ItemIDtoGetItemIDMap {
     { ITEM_ARROWS_LARGE, GI_ARROWS_LARGE },
     { ITEM_ARROWS_MEDIUM, GI_ARROWS_MEDIUM },
     { ITEM_ARROWS_SMALL, GI_ARROWS_SMALL },
@@ -695,7 +695,8 @@ std::unordered_map<uint32_t, uint32_t> ItemIDtoGetItemID{
     { ITEM_BUG, GI_BUGS },
     { ITEM_BULLET_BAG_30, GI_BULLET_BAG_30 },
     { ITEM_BULLET_BAG_40, GI_BULLET_BAG_40 },
-    { ITEM_BULLET_BAG_50, GI_BULLET_BAG_50 }, { ITEM_CHICKEN, GI_CHICKEN },
+    { ITEM_BULLET_BAG_50, GI_BULLET_BAG_50 }, 
+    { ITEM_CHICKEN, GI_CHICKEN },
     { ITEM_CLAIM_CHECK, GI_CLAIM_CHECK },
     { ITEM_COJIRO, GI_COJIRO },
     { ITEM_COMPASS, GI_COMPASS },
@@ -791,11 +792,42 @@ std::unordered_map<uint32_t, uint32_t> ItemIDtoGetItemID{
     { ITEM_WEIRD_EGG, GI_WEIRD_EGG }
 };
 
-extern "C" int32_t GetGIID(uint32_t itemID) {
-    if (ItemIDtoGetItemID.contains(itemID)) {
-        return ItemIDtoGetItemID.at(itemID);
+extern "C" GetItemID RetrieveGetItemIDFromItemID(ItemID itemID) {
+    if (ItemIDtoGetItemIDMap.contains(itemID)) {
+        return ItemIDtoGetItemIDMap.at(itemID);
     }
-    return -1;
+    return GI_MAX;
+}
+
+std::unordered_map<ItemID, RandomizerGet> ItemIDtoRandomizerGetMap {
+    { ITEM_SONG_MINUET, RG_MINUET_OF_FOREST },
+    { ITEM_SONG_BOLERO, RG_BOLERO_OF_FIRE },
+    { ITEM_SONG_SERENADE, RG_SERENADE_OF_WATER },
+    { ITEM_SONG_REQUIEM, RG_REQUIEM_OF_SPIRIT },
+    { ITEM_SONG_NOCTURNE, RG_NOCTURNE_OF_SHADOW },
+    { ITEM_SONG_PRELUDE, RG_PRELUDE_OF_LIGHT },
+    { ITEM_SONG_LULLABY, RG_ZELDAS_LULLABY },
+    { ITEM_SONG_EPONA, RG_EPONAS_SONG },
+    { ITEM_SONG_SARIA, RG_SARIAS_SONG },
+    { ITEM_SONG_SUN, RG_SUNS_SONG },
+    { ITEM_SONG_TIME, RG_SONG_OF_TIME },
+    { ITEM_SONG_STORMS, RG_SONG_OF_STORMS },
+    { ITEM_MEDALLION_FOREST, RG_FOREST_MEDALLION },
+    { ITEM_MEDALLION_FIRE, RG_FIRE_MEDALLION },
+    { ITEM_MEDALLION_WATER, RG_WATER_MEDALLION },
+    { ITEM_MEDALLION_SPIRIT, RG_SPIRIT_MEDALLION },
+    { ITEM_MEDALLION_SHADOW, RG_SHADOW_MEDALLION },
+    { ITEM_MEDALLION_LIGHT, RG_LIGHT_MEDALLION },
+    { ITEM_KOKIRI_EMERALD, RG_KOKIRI_EMERALD },
+    { ITEM_GORON_RUBY, RG_GORON_RUBY },
+    { ITEM_ZORA_SAPPHIRE, RG_ZORA_SAPPHIRE },
+};
+
+extern "C" RandomizerGet RetrieveRandomizerGetFromItemID(ItemID itemID) {
+    if (ItemIDtoRandomizerGetMap.contains(itemID)) {
+        return ItemIDtoRandomizerGetMap.at(itemID);
+    }
+    return RG_MAX;
 }
 
 extern "C" void OTRExtScanner() {
@@ -1163,7 +1195,7 @@ extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
     OTRGlobals::Instance->context->GetWindow()->MainLoop(run_one_game_iter);
 }
 
-extern bool ShouldClearTextureCacheAtEndOfFrame;
+extern bool ToggleAltAssetsAtEndOfFrame;
 
 extern "C" void Graph_StartFrame() {
 #ifndef __WIIU__
@@ -1246,10 +1278,7 @@ extern "C" void Graph_StartFrame() {
         }
 #endif
         case KbScancode::LUS_KB_TAB: {
-            // Toggle HD Assets
-            CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
-            GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
-            ShouldClearTextureCacheAtEndOfFrame = true;
+            ToggleAltAssetsAtEndOfFrame = true;
             break;
         }
     }
@@ -1319,10 +1348,14 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         }
     }
 
-    if (ShouldClearTextureCacheAtEndOfFrame) {
+    if (ToggleAltAssetsAtEndOfFrame) {
+        ToggleAltAssetsAtEndOfFrame = false;
+
+        // Actually update the CVar now before runing the alt asset update listeners
+        CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
         gfx_texture_cache_clear();
         LUS::SkeletonPatcher::UpdateSkeletons();
-        ShouldClearTextureCacheAtEndOfFrame = false;
+        GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
     }
 
     // OTRTODO: FIGURE OUT END FRAME POINT
