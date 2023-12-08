@@ -1009,6 +1009,7 @@ int Fill() {
     AreaTable_Init(); //Reset the world graph to intialize the proper locations
     ctx->ItemReset(); //Reset shops incase of shopsanity random
     ctx->GenerateLocationPool();
+    SetAreas();
     GenerateItemPool();
     GenerateStartingInventory();
     RemoveStartingItemsFromPool();
@@ -1137,7 +1138,6 @@ int Fill() {
     if(ctx->playthroughBeatable && !placementFailure) {
       printf("Done");
       printf("\x1b[9;10HCalculating Playthrough...");
-      SetAreas();
       PareDownPlaythrough();
       CalculateWotH();
       CalculateBarren(); 
