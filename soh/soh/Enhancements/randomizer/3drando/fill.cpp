@@ -1009,7 +1009,6 @@ int Fill() {
     AreaTable_Init(); //Reset the world graph to intialize the proper locations
     ctx->ItemReset(); //Reset shops incase of shopsanity random
     ctx->GenerateLocationPool();
-    SetAreas();
     GenerateItemPool();
     GenerateStartingInventory();
     RemoveStartingItemsFromPool();
@@ -1027,6 +1026,7 @@ int Fill() {
       }
       printf("\x1b[7;32HDone");
     }
+    SetAreas();
     //erase temporary shop items
     FilterAndEraseFromPool(ItemPool, [](const auto item) { return Rando::StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_SHOP; });
 
