@@ -294,6 +294,7 @@ namespace UIWidgets {
     bool EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool disabled, const char* disabledTooltipText) {
         bool changed = false;
         int val = CVarGetInteger(cvarName, defaultValue);
+        const int oldVal = val;
 
         if (disabled) {
             DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
@@ -345,7 +346,7 @@ namespace UIWidgets {
             changed = true;
         }
 
-        if (changed) {
+        if (changed && (oldVal != val)) {
             CVarSetInteger(cvarName, val);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
@@ -356,6 +357,7 @@ namespace UIWidgets {
     bool EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton, bool disabled, const char* disabledTooltipText) {
         bool changed = false;
         float val = CVarGetFloat(cvarName, defaultValue);
+        const float oldVal = val;
         if (disabled) {
             DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
         }
@@ -440,7 +442,7 @@ namespace UIWidgets {
             changed = true;
         }
 
-        if (changed) {
+        if (changed && (oldVal != val)) {
             std::stringstream ss;
             ss << std::setprecision(ticks) << val;
             val = std::stof(ss.str());
