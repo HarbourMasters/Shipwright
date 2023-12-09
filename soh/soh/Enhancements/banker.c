@@ -31,8 +31,8 @@ Color_RGBA8 highlightColor = { 255, 255, 0, 255 };
 void DrawDigit(PlayState* play, Gfx** gfx, s16 digit, s16 posX, s16 posY, bool isSelected);
 void UpdateDigitOverlay(PlayState* play, Gfx** gfx, s16 value, s16 selectedDigit);
 void ProcessInput(PlayState* play, s16* value, s16* selectedDigit);
-void HandleBankerOptions(PlayState* play, MessageContext* msgCtx);
 void HandleBankerWithdrawalAmount(PlayState* play, MessageContext* msgCtx);
+void HandleBankerDepositAmount(PlayState* play, MessageContext* msgCtx);
 
 // Function to draw a single digit
 void DrawDigit(PlayState* play, Gfx** gfx, s16 digit, s16 posX, s16 posY, bool isSelected) {
@@ -103,8 +103,8 @@ void ProcessInput(PlayState* play, s16* value, s16* selectedDigit) {
     Input* input = &play->state.input[0];
     bool playSound = false;
 
-    // Only process input if the TEXT_BANKER_WITHDRAWAL_AMOUNT textbox is present
-    if (play->msgCtx.textId == TEXT_BANKER_WITHDRAWAL_AMOUNT) {
+    // Only process input if the TEXT_BANKER_WITHDRAWAL_AMOUNT or TEXT_BANKER_DEPOSIT_AMOUNT textbox is present
+    if (play->msgCtx.textId == TEXT_BANKER_WITHDRAWAL_AMOUNT || play->msgCtx.textId == TEXT_BANKER_DEPOSIT_AMOUNT) {
         // Check if the B button was pressed
         if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
             // Close the textbox
@@ -162,6 +162,20 @@ void HandleBankerWithdrawalAmount(PlayState* play, MessageContext* msgCtx) {
     }
 }
 
+void HandleBankerDepositAmount(PlayState* play, MessageContext* msgCtx) {
+    // Check if the A button was pressed to confirm the deposit amount
+    if (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_A)) {
+        // Check if the player's wallet can carry the deposit amount
+        if (gBankerValue <= gSaveContext.rupees) {
+            // Use Rupees_ChangeBy to deduct the deposit amount from the player's wallet
+            Rupees_ChangeBy(-gBankerValue);
+
+            // Add the deposit amount to the player's balance
+            gSaveContext.playerBalance += gBankerValue;
+        }
+    }
+}
+
 void HandleBankerTextbox(PlayState* play, MessageContext* msgCtx) {
     Input* input = &play->state.input[0];
 
@@ -169,8 +183,8 @@ void HandleBankerTextbox(PlayState* play, MessageContext* msgCtx) {
         Message_ContinueTextbox(play, TEXT_BANKER_OPTIONS);
     } else if (msgCtx->textId == TEXT_BANKER_OPTIONS && Message_ShouldAdvance(play)) {
         switch (msgCtx->choiceIndex) {
-            case 0: // Sell Something
-                Message_ContinueTextbox(play, TEXT_BEGGAR_VANILLA, NULL);
+            case 0: // Deposit Rupees
+                Message_ContinueTextbox(play, TEXT_BANKER_BALANCE, NULL);
                 break;
             case 1: // Withdrawal Rupees
                 Message_ContinueTextbox(play, TEXT_BANKER_BALANCE, NULL);
@@ -182,7 +196,11 @@ void HandleBankerTextbox(PlayState* play, MessageContext* msgCtx) {
                 break;
         }
     } else if (msgCtx->textId == TEXT_BANKER_BALANCE && Message_ShouldAdvance(play)) {
-        Message_ContinueTextbox(play, TEXT_BANKER_WITHDRAWAL_AMOUNT);
+        if (msgCtx->choiceIndex == 0) { // Deposit
+            Message_ContinueTextbox(play, TEXT_BANKER_DEPOSIT_AMOUNT);
+        } else { // Withdrawal
+            Message_ContinueTextbox(play, TEXT_BANKER_WITHDRAWAL_AMOUNT);
+        }
     } else if (msgCtx->textId == TEXT_BANKER_WITHDRAWAL_AMOUNT) {
         if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
             if (gBankerValue + gSaveContext.rupees <= CUR_CAPACITY(UPG_WALLET)) {
@@ -193,7 +211,19 @@ void HandleBankerTextbox(PlayState* play, MessageContext* msgCtx) {
                 Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             }
         }
+    } else if (msgCtx->textId == TEXT_BANKER_DEPOSIT_AMOUNT) {
+        if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
+            if (gBankerValue <= gSaveContext.rupees) {
+                HandleBankerDepositAmount(play, msgCtx);
+                Message_ContinueTextbox(play, TEXT_BANKER_DEPOSIT_CONFIRM);
+            } else {
+                // Play the error sound
+                Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            }
+        }
     } else if (msgCtx->textId == TEXT_BANKER_WITHDRAWAL_CONFIRM && Message_ShouldAdvance(play)) {
+        Message_CloseTextbox(play);
+    } else if (msgCtx->textId == TEXT_BANKER_DEPOSIT_CONFIRM && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
     }
 }
@@ -210,8 +240,8 @@ void BankerMain(PlayState* play, GraphicsContext* gfxCtx) {
     // Increment the blink timer and reset if it exceeds the duration
     gBlinkTimer = (gBlinkTimer + 1) % (BLINK_DURATION * 2);
 
-    // Check if the current textbox is TEXT_BANKER_WITHDRAWAL
-    if (play->msgCtx.textId == TEXT_BANKER_WITHDRAWAL_AMOUNT) {
+    // Check if the current textbox is TEXT_BANKER_WITHDRAWAL_AMOUNT or TEXT_BANKER_DEPOSIT_AMOUNT
+    if (play->msgCtx.textId == TEXT_BANKER_WITHDRAWAL_AMOUNT || play->msgCtx.textId == TEXT_BANKER_DEPOSIT_AMOUNT) {
         // Update the digit overlay only if the correct textbox
         Gfx** gfx = &gfxCtx->overlay.p;
         UpdateDigitOverlay(play, gfx, gBankerValue, gBankerSelectedDigit);
