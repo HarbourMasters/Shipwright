@@ -69,7 +69,7 @@ static u8 sMaskTex16x32[16 * 32] = { { 0 } };
 static u8 sMaskTex32x16[32 * 16] = { { 0 } };
 static u8 sMaskTex8x8[8 * 8] = { { 0 } };
 static u8 sMaskTex8x32[8 * 32] = { { 0 } };
-static u8 sMaskTexLava[LAVA_TEX_HEIGHT * LAVA_TEX_HEIGHT] = { { 0 } };
+static u8 sMaskTexLava[LAVA_TEX_WIDTH * LAVA_TEX_HEIGHT] = { { 0 } };
 
 static u32* sLavaFloorModifiedTexRaw = NULL;
 static u32* sLavaWavyTexRaw = NULL;
