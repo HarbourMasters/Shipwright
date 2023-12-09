@@ -2761,28 +2761,16 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
         case SCENE_FISHING_POND:
             // NOTE: The identity of any given fish actor is not stable:
             // -    Unless every fish is randomized, every fish effectively has the same identity at any given time,
-            //      because the check increments when a fish is caught.
+            //      because the check increments when a fish is caught. (see GetNextPondFish below)
             // -    If the player has released their held fish (i.e., by catching a different fish), then identity actually gets
             //      passed around; the caught fish's actor will just take on the scoring+visual properties of the held fish.
             if (actorId == ACTOR_FISHING && actorParams >= 100 && actorParams != 200) {
                 uint8_t pondCount = GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT);
-
+                // no randomized pond fish, no check here
                 if (pondCount < 1)
                     break;
-
                 bool adultPond = LINK_IS_ADULT && GetRandoSettingValue(RSK_FISHSANITY_AGE_SPLIT) != RO_GENERIC_OFF;
-                std::pair<RandomizerCheck, RandomizerCheck> tableEntry;
-                
-                if (pondCount > 16) {
-                    // every fish shuffled, map by given params
-                    tableEntry = randomizerFishingPondFish[actorParams - 100];
-                } else {
-                    // only some fish shuffled, map by number of caught fish
-                    // but don't map beyond the configured number of fish
-                    uint8_t fishCaught =
-                        std::min(adultPond ? gSaveContext.fishCaughtAdult : gSaveContext.fishCaughtChild, (uint8_t)(pondCount - 1));
-                    tableEntry = randomizerFishingPondFish[fishCaught];
-                }
+                std::pair<RandomizerCheck, RandomizerCheck> tableEntry = randomizerFishingPondFish[actorParams - 100];
                 specialRc = adultPond ? tableEntry.second : tableEntry.first;
             }
             break;
@@ -2903,6 +2891,53 @@ CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
     }
 
     return cowIdentity;
+}
+
+s16 Randomizer::GetNextPondFish(s16 params) {
+    u8 pondCount = GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT);
+    // no need to check if every fish is randomized, just use params as-is
+    if (pondCount > 16)
+        return params;
+    bool adultPond = LINK_IS_ADULT && GetRandoSettingValue(RSK_FISHSANITY_AGE_SPLIT);
+
+    // find the first inf that isn't set yet
+    // but don't go past the max number
+    pondCount -= 1;
+    int i;
+    std::pair<RandomizerCheck, RandomizerCheck> tableEntry;
+    RandomizerCheck rc;
+    for (i = 0; i < pondCount; i++) {
+        tableEntry = randomizerFishingPondFish[i];
+        rc = adultPond ? tableEntry.second : tableEntry.first;
+        if (!Flags_GetRandomizerInf(rcToRandomizerInf[rc]))
+            break;
+    }
+    // get equivalent params for our fish
+    return 100 + i;
+}
+
+bool Randomizer::GetPondCleared() {
+    u8 pondCount = GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT);
+    // no fish shuffled, so pond is always cleared :thumbsup:
+    if (pondCount == 0)
+        return true;
+
+    bool adultPond = LINK_IS_ADULT && GetRandoSettingValue(RSK_FISHSANITY_AGE_SPLIT);
+    // if we've collected the final shuffled fish, pond is complete
+    if (pondCount <= 16) {
+        auto tableEntry = randomizerFishingPondFish[pondCount - 1];
+        return Flags_GetRandomizerInf(rcToRandomizerInf[adultPond ? tableEntry.second : tableEntry.first]);
+    }
+
+    // the last two checks actually don't matter because logically they will never be true, but maybe one day they will
+    // if every fish is shuffled, check if we've collected every fish
+    for (auto tableEntry : randomizerFishingPondFish) {
+        RandomizerCheck rc = adultPond ? tableEntry.second : tableEntry.first;
+        // if we haven't collected this fish, then we're not done yet! get back in there, soldier
+        if (rc != RC_UNKNOWN_CHECK && !Flags_GetRandomizerInf(rcToRandomizerInf[rc]))
+            return false;
+    }
+    return true;
 }
 
 FishIdentity Randomizer::IdentifyFish(s32 sceneNum, s32 actorParams) {

@@ -2993,7 +2993,7 @@ void Fishsanity_Init(Fishing* this, PlayState* play) {
     u8 caughtCt =
         (LINK_IS_ADULT && Fishsanity_GetPondSplit()) ? gSaveContext.fishCaughtAdult : gSaveContext.fishCaughtChild;
     // With all fish randomized, remove fish that have already been caught, unless we've already caught all the fish.
-    if (Fishsanity_GetPondCount() > 16 && ((LINK_IS_ADULT && caughtCt < 16) || (!LINK_IS_ADULT && caughtCt < 17)) &&
+    if (Fishsanity_GetPondCount() > 16 && !Randomizer_GetPondCleared() &&
         Fishsanity_IsCaught(this->actor.params, play)) {
         Actor_Kill(&this->actor);
         return;
@@ -3022,8 +3022,6 @@ bool Fishsanity_IsCaught(u8 params, PlayState* play) {
 
 bool Fishing_AwardFishsanity(Fishing* this, PlayState* play) {
     if (sFishsanityPendingParams != 0 && !Fishsanity_IsCaught(sFishsanityPendingParams, play)) {
-        if (Actor_HasParent(&this->actor, play))
-            return false;
         Fishsanity_FlagCatch(sFishsanityPendingParams, play);
         FishIdentity fish = Fishsanity_GetFish(sFishsanityPendingParams, play);
         GetItemEntry gi = Randomizer_GetItemFromKnownCheck(fish.randomizerCheck, GI_NONE);
@@ -4081,7 +4079,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                         sLureCaughtWith = sLureEquipped;
                                         if (IS_FISHSANITY) {
                                             sFishOnHandParams = this->fishsanity.params;
-                                            sFishsanityPendingParams = this->fishsanity.params;
+                                            sFishsanityPendingParams = Randomizer_GetNextPondFish(this->fishsanity.params);
                                         }
                                         Actor_Kill(&this->actor);
                                     } else if ((this->isLoach == 0) && (sFishOnHandIsLoach == 0) &&
@@ -4103,7 +4101,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                         if (IS_FISHSANITY) {
                                             u8 paramsTemp = sFishOnHandParams;
                                             sFishOnHandParams = this->fishsanity.params;
-                                            sFishsanityPendingParams = this->fishsanity.params;
+                                            sFishsanityPendingParams = Randomizer_GetNextPondFish(this->fishsanity.params);
                                             this->fishsanity.params = paramsTemp;
                                         }
                                     }
@@ -4131,7 +4129,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                     if (IS_FISHSANITY) {
                                         u8 paramsTemp = sFishOnHandParams;
                                         sFishOnHandParams = this->fishsanity.params;
-                                        sFishsanityPendingParams = this->fishsanity.params;
+                                        sFishsanityPendingParams = Randomizer_GetNextPondFish(this->fishsanity.params);
                                         this->fishsanity.params = paramsTemp;
                                     }
                                 }
@@ -5469,7 +5467,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
 
     switch (sFishingPlayerCinematicState) {
         case 0:
-            // Try to award any fishsanity prize; if successful, then clear out the pending award.
+            // Try to award any fishsanity prize; if successful (or if the prize has been collected already), then clear out the pending award.
             if (IS_FISHSANITY && sFishsanityPendingParams != 0) {
                 if (Fishsanity_IsCaught(sFishsanityPendingParams, play) || Fishing_AwardFishsanity(this, play)) {
                     this->actor.parent = NULL;

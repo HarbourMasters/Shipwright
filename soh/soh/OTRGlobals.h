@@ -154,6 +154,8 @@ RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 acto
 ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
 ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex);
 CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
+s16 Randomizer_GetNextPondFish(s16 params);
+bool Randomizer_GetPondCleared();
 FishIdentity Randomizer_IdentifyFish(s32 sceneNum, s32 actorParams);
 void Randomizer_LoadHintLocations(const char* spoilerFileName);
 void Randomizer_LoadMerchantMessages(const char* spoilerFileName);

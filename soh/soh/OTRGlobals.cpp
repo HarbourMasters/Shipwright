@@ -2354,6 +2354,14 @@ extern "C" CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) 
     return OTRGlobals::Instance->gRandomizer->IdentifyCow(sceneNum, posX, posZ);
 }
 
+extern "C" s16 Randomizer_GetNextPondFish(s16 params) {
+    return OTRGlobals::Instance->gRandomizer->GetNextPondFish(params);
+}
+
+extern "C" bool Randomizer_GetPondCleared() {
+    return OTRGlobals::Instance->gRandomizer->GetPondCleared();
+}
+
 extern "C" FishIdentity Randomizer_IdentifyFish(s32 sceneNum, s32 actorParams) {
     return OTRGlobals::Instance->gRandomizer->IdentifyFish(sceneNum, actorParams);
 }
