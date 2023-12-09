@@ -2,6 +2,7 @@
 
 #include "../dungeon.h"
 #include "../context.h"
+#include "../logic.h"
 #include "pool_functions.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"
 
@@ -191,5 +192,6 @@ void ApplyStartingInventory() {
       continue;
 
     Rando::StaticData::RetrieveItem(item).ApplyEffect();
+    Rando::Context::GetInstance()->GetLogic()->UpdateHelpers();
   }
 }

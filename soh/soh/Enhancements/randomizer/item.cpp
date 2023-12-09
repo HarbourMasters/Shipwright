@@ -1,7 +1,7 @@
 #include "item.h"
 #include "item_location.h"
 
-#include "3drando/logic.hpp"
+#include "context.h"
 #include "3drando/item_pool.hpp"
 #include "z64item.h"
 #include "variables.h"
@@ -66,7 +66,6 @@ void Item::ApplyEffect() const {
             *std::get<uint8_t*>(logicVar) += 1;
         }
     }
-    Logic::UpdateHelpers();
 }
 
 void Item::UndoEffect() const {
@@ -79,7 +78,6 @@ void Item::UndoEffect() const {
             *std::get<uint8_t*>(logicVar) -= 1;
         }
     }
-    Logic::UpdateHelpers();
 }
 
 const Text& Item::GetName() const {

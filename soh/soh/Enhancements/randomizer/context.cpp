@@ -4,6 +4,7 @@
 #include "soh/Enhancements/item-tables/ItemTableManager.h"
 #include "3drando/shops.hpp"
 #include "dungeon.h"
+#include "logic.h"
 #include "trial.h"
 #include "entrance.h"
 #include "settings.h"
@@ -87,6 +88,8 @@ Context::Context() {
     }
     mEntranceShuffler = std::make_shared<EntranceShuffler>();
     mDungeons = std::make_shared<Dungeons>();
+    mSaveContext = std::make_shared<SaveContext>();
+    mLogic = std::make_shared<Logic>();
     mTrials = std::make_shared<Trials>();
     mSettings = std::make_shared<Settings>();
 }
@@ -137,6 +140,7 @@ void Context::PlaceItemInLocation(const RandomizerCheck locKey, const Randomizer
 
     if (applyEffectImmediately || mSettings->Setting(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS) || mSettings->Setting(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
         StaticData::RetrieveItem(item).ApplyEffect();
+        logic->UpdateHelpers();
     }
 
     // TODO? Show Progress
@@ -569,6 +573,14 @@ std::shared_ptr<Dungeons> Context::GetDungeons() {
 
 DungeonInfo* Context::GetDungeon(size_t key) const {
     return mDungeons->GetDungeon(static_cast<DungeonKey>(key));
+}
+
+std::shared_ptr<Logic> Context::GetLogic() {
+    return mLogic;
+}
+
+void Context::ResetLogic() {
+    mLogic = std::make_shared<Logic>();
 }
 
 std::shared_ptr<Trials> Context::GetTrials() {
