@@ -409,6 +409,7 @@ class Logic {
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
     bool EventsUpdated();
+    void Reset();
 
   private:
     static bool IsMagicItem(RandomizerGet item);

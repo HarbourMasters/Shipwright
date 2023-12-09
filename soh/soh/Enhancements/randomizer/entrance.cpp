@@ -458,7 +458,7 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
     // Search the world to verify that all necessary conditions are still being held
     // Conditions will be checked during the search and any that fail will be figured out
     // afterwards
-    ctx->ResetLogic();
+    ctx->GetLogic()->Reset();
     GetAccessibleLocations({}, SearchMode::ValidateWorld, RG_NONE, checkPoeCollectorAccess, checkOtherEntranceAccess);
 
     if (!ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
@@ -754,7 +754,7 @@ static std::array<std::vector<Entrance*>, 2> SplitEntrancesByRequirements(std::v
     std::vector<Entrance*> restrictiveEntrances = {};
     std::vector<Entrance*> softEntrances = {};
 
-    randoCtx->ResetLogic();
+    logic->Reset();
     // Apply the effects of all advancement items to search for entrance accessibility
     std::vector<RandomizerGet> items = FilterFromPool(
         ItemPool, [](const RandomizerGet i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });

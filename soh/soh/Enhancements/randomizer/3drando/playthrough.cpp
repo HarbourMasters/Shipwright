@@ -22,7 +22,7 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
     CustomMessages::ClearMessages();
     ctx->ItemReset();
     ctx->HintReset();
-    ctx->ResetLogic();
+    ctx->GetLogic()->Reset();
     Areas::AccessReset();
 
     ctx->GetSettings()->UpdateSettings(cvarSettings, excludedLocations, enabledTricks);
