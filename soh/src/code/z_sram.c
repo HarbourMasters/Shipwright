@@ -239,6 +239,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
     gSaveContext.n64ddFlag = fileChooseCtx->n64ddFlag;
 
+    u8 currentQuest = fileChooseCtx->questType[fileChooseCtx->buttonIndex];
+
     if (Randomizer_IsSeedGenerated()) {
         gSaveContext.questId = QUEST_RANDOMIZER;
 

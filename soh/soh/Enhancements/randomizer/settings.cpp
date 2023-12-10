@@ -1878,6 +1878,8 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                         mOptions[index].SetSelectedIndex(RO_LOGIC_GLITCHLESS);
                     } else if (it.value() == "No Logic") {
                         mOptions[index].SetSelectedIndex(RO_LOGIC_NO_LOGIC);
+                    } else if (it.value() == "Vanilla") {
+                        mOptions[index].SetSelectedIndex(RO_LOGIC_VANILLA);
                     }
                     break;
                 case RSK_FOREST:

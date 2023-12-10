@@ -31,7 +31,7 @@ void AreaTable_Init_GanonsCastle() {
                   Entrance(RR_GANONS_CASTLE_MAIN,     {[]{return true;}}),
   });
 
-  areaTable[RR_GANONS_CASTLE_MAIN] = Area("Ganon's Castle Main", "Ganon's Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_GANONS_CASTLE_MAIN] = Area("Ganon's Castle Main", "Ganon's Castle", RA_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_GANONS_CASTLE_LOBBY,        {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_FOREST_TRIAL, {[]{return true;}}),
@@ -136,10 +136,10 @@ void AreaTable_Init_GanonsCastle() {
                 }, {
                   //Exits
                   Entrance(RR_GANONS_CASTLE_ENTRYWAY, {[]{return true;}}),
-                  Entrance(RR_GANONS_CASTLE_MQ_MAIN,  {[]{return (CanUse(RG_MASTER_SWORD) || CanUse(BIGGORON_SWORD) || CanUse(MEGATON_HAMMER)) || ((HasExplosives || Nuts || CanUse(BOOMERANG)) && CanJumpslash);}}),
+                  Entrance(RR_GANONS_CASTLE_MQ_MAIN,  {[]{return (CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER)) || ((HasExplosives || Nuts || CanUse(RG_BOOMERANG)) && CanJumpslash);}}),
   });
 
-  areaTable[RR_GANONS_CASTLE_MQ_MAIN] = Area("Ganon's Castle MQ Main", "Ganons Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_GANONS_CASTLE_MQ_MAIN] = Area("Ganon's Castle MQ Main", "Ganons Castle", RA_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_GANONS_CASTLE_MQ_LOBBY,        {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_MQ_FOREST_TRIAL, {[]{return true;}}),

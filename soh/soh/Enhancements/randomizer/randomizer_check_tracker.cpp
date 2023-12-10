@@ -614,7 +614,7 @@ void CheckTrackerSceneFlagSet(int16_t sceneNum, int16_t flagType, int32_t flag) 
         SetCheckCollected(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR);
         return;
     }
-    for (auto& loc : Rando::StaticData::GetLocationTable) {
+    for (auto& loc : Rando::StaticData::GetLocationTable()) {
         if (!IsVisibleInCheckTracker(loc.GetRandomizerCheck())) {
             continue;
         }
@@ -709,7 +709,7 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_SCRUB ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_MASTER_SWORD ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF)) {
-            if (flag == OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc)) {
+            if (flag == OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(loc.GetRandomizerCheck())) {
                 SetCheckCollected(loc.GetRandomizerCheck());
                 return;
             }
