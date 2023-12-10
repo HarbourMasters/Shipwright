@@ -123,6 +123,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gGuaranteeFishingBite",
     "gFishNeverEscape",
     "gLoachesAlwaysAppear",
+    "gSkipKeepConfirmation",
     "gChildMinimumWeightFish",
     "gAdultMinimumWeightFish",
     "gLowHpAlarm",

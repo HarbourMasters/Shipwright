@@ -839,6 +839,8 @@ void DrawEnhancementsMenu() {
                     UIWidgets::Tooltip("Once a hook has been set, fish will never let go while being reeled in.");
                     UIWidgets::PaddedEnhancementCheckbox("Loaches Always Appear", "gLoachesAlwaysAppear", true, false, disabled, disabledTooltip);
                     UIWidgets::Tooltip("Loaches will always appear in the fishing pond instead of every four visits.");
+                    UIWidgets::PaddedEnhancementCheckbox("Skip Keep Confirmation", "gSkipKeepConfirmation", true, false, disabled, disabledTooltip);
+                    UIWidgets::Tooltip("The pond owner will not ask to confirm if you want to keep a smaller fish.");
                     UIWidgets::PaddedEnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 3, 10, "", 10, true, true, false, disabled, disabledTooltip);
                     UIWidgets::Tooltip("The minimum weight for the unique fishing reward as a child");
                     UIWidgets::PaddedEnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 6, 13, "", 13, true, true, false, disabled, disabledTooltip);

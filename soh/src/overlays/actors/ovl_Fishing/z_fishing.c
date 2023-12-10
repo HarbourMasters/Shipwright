@@ -2971,6 +2971,10 @@ bool getShouldSpawnLoaches() {
         || ((KREG(1) == 1) || ((sFishGameNumber & 3) == 3));
 }
 
+bool getShouldConfirmKeep() {
+    return !CVarGetInteger("gCustomizeFishing", 0) || !CVarGetInteger("gSkipKeepConfirmation", 0);
+}
+
 bool getHasFishingPole() {
     return !IS_RANDO || Randomizer_GetSettingValue(RSK_SHUFFLE_FISHING_POLE) == RO_GENERIC_OFF ||
            Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
@@ -4082,7 +4086,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                             sFishsanityPendingParams = Randomizer_GetNextPondFish(this->fishsanity.params);
                                         }
                                         Actor_Kill(&this->actor);
-                                    } else if ((this->isLoach == 0) && (sFishOnHandIsLoach == 0) &&
+                                    } else if (getShouldConfirmKeep() && (this->isLoach == 0) && (sFishOnHandIsLoach == 0) &&
                                                ((s16)this->fishLength < (s16)sFishOnHandLength)) {
                                         // Currently holding a fish that's longer than the caught fish, and neither fish is a loach.
                                         // Player is asked to confirm if they really want to keep it
