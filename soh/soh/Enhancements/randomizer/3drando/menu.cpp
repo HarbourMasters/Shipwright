@@ -21,7 +21,7 @@ std::vector<std::string> presetEntries;
 Rando::Option* currentSetting;
 } // namespace
 
-std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
+std::string GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
     std::string seedString) {
     auto ctx = Rando::Context::GetInstance();
 
@@ -38,7 +38,7 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
         } catch (std::out_of_range &e) {
             count = 1;
         }
-        Playthrough::Playthrough_Repeat(cvarSettings, excludedLocations, enabledTricks, count);
+        Playthrough::Playthrough_Repeat(excludedLocations, enabledTricks, count);
         return "";
     }
 
@@ -46,7 +46,7 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
     uint32_t seedHash = boost::hash_32<std::string>{}(ctx->GetSettings()->GetSeedString());
     ctx->GetSettings()->SetSeed(seedHash & 0xFFFFFFFF);
 
-    int ret = Playthrough::Playthrough_Init(ctx->GetSettings()->GetSeed(), cvarSettings, excludedLocations, enabledTricks);
+    int ret = Playthrough::Playthrough_Init(ctx->GetSettings()->GetSeed(), excludedLocations, enabledTricks);
     if (ret < 0) {
         if (ret == -1) { // Failed to generate after 5 tries
             printf("\n\nFailed to generate after 5 tries.\nPress B to go back to the menu.\nA different seed might be "
