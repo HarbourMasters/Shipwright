@@ -497,6 +497,10 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
             Randomizer::randoMiscHintsTableID, TEXT_FISHING_POND_START,
             CustomMessage(gSaveContext.fishingPoleText, gSaveContext.fishingPoleText, gSaveContext.fishingPoleText)
         );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_FISHING_POND_START_MET,
+            CustomMessage(gSaveContext.fishingPoleText, gSaveContext.fishingPoleText, gSaveContext.fishingPoleText)
+        );
 
 
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT,
