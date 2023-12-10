@@ -30,7 +30,7 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     std::string settingsStr;
     for (const Rando::OptionGroup& optionGroup : ctx->GetSettings()->GetOptionGroups()) {
         // don't go through non-menus
-        if (optionGroup.GetContainsType() != Rando::OptionGroupType::SUBGROUP) {
+        if (optionGroup.GetContainsType() == Rando::OptionGroupType::SUBGROUP) {
             continue;
         }
 
@@ -79,7 +79,6 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     }
 
     ctx->playthroughLocations.clear();
-    ctx->wothLocations.clear();
     ctx->playthroughBeatable = false;
 
     return 1;

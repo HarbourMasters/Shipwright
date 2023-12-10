@@ -33,8 +33,8 @@ class Context {
     static std::shared_ptr<Context> CreateInstance();
     static std::shared_ptr<Context> GetInstance();
     Hint* GetHint(RandomizerHintKey hintKey);
-    void AddHint(RandomizerHintKey hintId, const Text& text, RandomizerCheck hintedLocation, HintType hintType,
-                 const Text& hintedRegion);
+    void AddHint(RandomizerHintKey hintId, const Text& text, RandomizerCheck hintedLocation, HintType hintType, std::string distributionName,
+                 RandomizerArea hintedArea = RA_NONE);
     ItemLocation* GetItemLocation(RandomizerCheck locKey);
     ItemLocation* GetItemLocation(size_t locKey);
     void PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bool applyEffectImmediately = false,
@@ -74,18 +74,19 @@ class Context {
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
     std::vector<RandomizerCheck> everyPossibleLocation = {};
-    std::vector<RandomizerCheck> wothLocations = {};
     std::vector<RandomizerGet> possibleIceTrapModels = {};
     std::unordered_map<RandomizerCheck, RandomizerGet> iceTrapModels = {};
     std::array<uint8_t, 5> hashIconIndexes = {};
     std::unordered_map<std::string, RandomizerCheck> mSpoilerfileCheckNameToEnum;
     bool playthroughBeatable = false;
     bool allLocationsReachable = false;
+    RandomizerArea GetAreaFromString(std::string str);
 
   private:
     static std::weak_ptr<Context> mContext;
     std::unordered_map<std::string, RandomizerGet> mSpoilerfileGetNameToEnum;
     std::unordered_map<std::string, HintType> mSpoilerfileHintTypeNameToEnum;
+    std::unordered_map<std::string, RandomizerArea> mSpoilerfileAreaNameToEnum;
     std::array<Hint, RH_MAX> hintTable = {};
     RandomizerCheck mEmeraldLoc = RC_UNKNOWN_CHECK;
     RandomizerCheck mRubyLoc = RC_UNKNOWN_CHECK;

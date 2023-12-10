@@ -47,103 +47,102 @@ std::array<std::string, HINT_TYPE_MAX> hintTypeNames = {
     "WotH",
     "Barren",
     "Entrance",
-    "Always",
-    "Sometimes",
-    "Song",
-    "Overworld",
-    "Dungeon",
-    "Named Item",
-    "Random",
+    "Item Area",
+    "Item Location",
     "Junk"
 };
 
-constexpr std::array<HintSetting, 4> hintSettingTable{{
+bool FilterWotHLocations(RandomizerCheck loc){
+  auto ctx = Rando::Context::GetInstance();
+  return ctx->GetItemLocation(loc)->IsWothCandidate();
+}
+
+bool FilterBarrenLocations(RandomizerCheck loc){
+  auto ctx = Rando::Context::GetInstance();
+  return ctx->GetItemLocation(loc)->IsBarrenCandidate();
+}
+
+bool FilterSongLocations(RandomizerCheck loc){
+  auto ctx = Rando::Context::GetInstance();
+  return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSong);
+}
+
+bool FilterOverworldLocations(RandomizerCheck loc){
+  auto ctx = Rando::Context::GetInstance();
+  return Rando::StaticData::GetLocation(loc)->IsOverworld();
+}
+
+bool FilterDungeonLocations(RandomizerCheck loc){
+  auto ctx = Rando::Context::GetInstance();
+  return Rando::StaticData::GetLocation(loc)->IsDungeon();
+}
+
+bool FilterGoodItems(RandomizerCheck loc){
+  auto ctx = Rando::Context::GetInstance();
+  return ctx->GetItemLocation(loc)->GetPlacedItem().IsMajorItem();
+}
+
+bool NoFilter(RandomizerCheck loc){
+  return true;
+}
+
+const std::array<HintSetting, 4> hintSettingTable{{
   // Useless hints
   {
-    .dungeonsWothLimit = 2,
-    .dungeonsBarrenLimit = 1,
-    .namedItemsRequired = false,
-    .distTable = {{
-      {.type = HINT_TYPE_STATIC,    .weight =  0, .fixed = 0, .copies = 0},
-      {.type = HINT_TYPE_TRIAL,     .weight =  0, .fixed = 0, .copies = 0},
-      {.type = HINT_TYPE_WOTH,      .weight =  0, .fixed = 0, .copies = 0},
-      {.type = HINT_TYPE_BARREN,    .weight =  0, .fixed = 0, .copies = 0},
-      {.type = HINT_TYPE_ENTRANCE,  .weight =  0, .fixed = 0, .copies = 0},
-      {.type = HINT_TYPE_ALWAYS,    .weight =  0, .fixed = 0, .copies = 0},
-      {.type = HINT_TYPE_SOMETIMES, .weight =  0, .fixed = 0, .copies = 0},
-      {.type = HINT_TYPE_SONG,      .weight =  0, .fixed = 0, .copies = 0},
-      {.type = HINT_TYPE_OVERWORLD, .weight =  0, .fixed = 0, .copies = 0},
-      {.type = HINT_TYPE_DUNGEON,   .weight =  0, .fixed = 0, .copies = 0},
-      {.type = HINT_TYPE_NAMED_ITEM,.weight =  0, .fixed = 0, .copies = 0},
-      {.type = HINT_TYPE_RANDOM,    .weight =  0, .fixed = 0, .copies = 0},
-      {.type = HINT_TYPE_JUNK,      .weight =  1, .fixed = 0, .copies = 1},
-    }},
+    .alwaysCopies = 0,
+    .trialCopies = 0,
+    .junkWeight = 1, //RANDOTODO when the hint pool is not implicitly an itemLocations, handle junk like other hint types
+    .distTable = {} /*RANDOTODO Instead of loading a function into this, 
+    apply this filter on all possible hintables in advance and then filter by what is acually in the seed at the start of generation.
+    This allows the distTable to hold the current status in hint generation (reducing potential doubled work) and
+    will make handling custom hint pools easier later*/
   },
-
   // Balanced hints
   {
-    .dungeonsWothLimit = 2,
-    .dungeonsBarrenLimit = 1,
-    .namedItemsRequired = true,
-    .distTable = {{
-      {.type = HINT_TYPE_STATIC,    .weight =  0, .fixed = 0, .copies = 0},
-      {.type = HINT_TYPE_TRIAL,     .weight =  0, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_WOTH,      .weight =  7, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_BARREN,    .weight =  4, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_ENTRANCE,  .weight =  0, .fixed = 0, .copies = 1}, //not yet implemented, should be 6 weight
-      {.type = HINT_TYPE_ALWAYS,    .weight =  0, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_SOMETIMES, .weight =  0, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_SONG,      .weight =  2, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_OVERWORLD, .weight =  4, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_DUNGEON,   .weight =  3, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_NAMED_ITEM,.weight = 10, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_RANDOM,    .weight = 12, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_JUNK,      .weight =  6, .fixed = 0, .copies = 1}, //Junk is hardcoded to 1 copy to avoid fill in issues, this setting is ignored
-    }},
+    .alwaysCopies = 1,
+    .trialCopies = 1,
+    .junkWeight = 6,
+    .distTable = {
+      {"WotH",       HINT_TYPE_WOTH,          7,  0, 1, FilterWotHLocations,      2},
+      {"Barren",     HINT_TYPE_BARREN,        4,  0, 1, FilterBarrenLocations,    1},
+      //("Entrance",   HINT_TYPE_ENTRANCE,      6,  0, 1), //not yet implemented
+      {"Song",       HINT_TYPE_ITEM_LOCATION, 2,  0, 1, FilterSongLocations},
+      {"Overworld",  HINT_TYPE_ITEM_LOCATION, 4,  0, 1, FilterOverworldLocations},
+      {"Dungeon",    HINT_TYPE_ITEM_LOCATION, 3,  0, 1, FilterDungeonLocations},
+      {"Named Item", HINT_TYPE_ITEM_AREA,    10,  0, 1, FilterGoodItems},
+      {"Random"    , HINT_TYPE_ITEM_AREA,    12,  0, 1, NoFilter}
+    } 
   },
-
   // Strong hints
   {
-    .dungeonsWothLimit = 2,
-    .dungeonsBarrenLimit = 1,
-    .namedItemsRequired = true,
-    .distTable = {{
-      {.type = HINT_TYPE_STATIC,    .weight =  0, .fixed = 0, .copies = 0},
-      {.type = HINT_TYPE_TRIAL,     .weight =  0, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_WOTH,      .weight = 12, .fixed = 0, .copies = 2},
-      {.type = HINT_TYPE_BARREN,    .weight = 12, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_ENTRANCE,  .weight =  0, .fixed = 0, .copies = 1}, //not yet implemented, should be 4 weight
-      {.type = HINT_TYPE_ALWAYS,    .weight =  0, .fixed = 0, .copies = 2},
-      {.type = HINT_TYPE_SOMETIMES, .weight =  0, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_SONG,      .weight =  4, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_OVERWORLD, .weight =  6, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_DUNGEON,   .weight =  6, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_NAMED_ITEM,.weight =  8, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_RANDOM,    .weight =  8, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_JUNK,      .weight =  0, .fixed = 0, .copies = 1},
-    }},
+    .alwaysCopies = 2,
+    .trialCopies = 1,
+    .junkWeight = 0,
+    .distTable = {
+      {"WotH",       HINT_TYPE_WOTH,         12, 0, 2, FilterWotHLocations,      2},
+      {"Barren",     HINT_TYPE_BARREN,       12, 0, 1, FilterBarrenLocations,    1},
+      //{"Entrance",   HINT_TYPE_ENTRANCE,      4, 0, 1}, //not yet implemented
+      {"Song",       HINT_TYPE_ITEM_LOCATION, 4, 0, 1, FilterSongLocations},
+      {"Overworld",  HINT_TYPE_ITEM_LOCATION, 6, 0, 1, FilterOverworldLocations},
+      {"Dungeon",    HINT_TYPE_ITEM_LOCATION, 6, 0, 1, FilterDungeonLocations},
+      {"Named Item", HINT_TYPE_ITEM_AREA,     8, 0, 1, FilterGoodItems},
+      {"Random"    , HINT_TYPE_ITEM_AREA,     8, 0, 1, NoFilter},
+    },
   },
-
   // Very strong hints
   {
-    .dungeonsWothLimit = 40,
-    .dungeonsBarrenLimit = 40,
-    .namedItemsRequired = true,
-    .distTable = {{
-      {.type = HINT_TYPE_STATIC,    .weight =  0, .fixed = 0, .copies = 0},
-      {.type = HINT_TYPE_TRIAL,     .weight =  0, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_WOTH,      .weight = 15, .fixed = 0, .copies = 2},
-      {.type = HINT_TYPE_BARREN,    .weight = 15, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_ENTRANCE,  .weight =  0, .fixed = 0, .copies = 1}, //not yet implemented, should be 10 weight
-      {.type = HINT_TYPE_ALWAYS,    .weight =  0, .fixed = 0, .copies = 2},
-      {.type = HINT_TYPE_SOMETIMES, .weight =  0, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_SONG,      .weight =  2, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_OVERWORLD, .weight =  7, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_DUNGEON,   .weight =  7, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_NAMED_ITEM,.weight =  5, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_RANDOM,    .weight =  0, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_JUNK,      .weight =  0, .fixed = 0, .copies = 1},
-    }},
+    .alwaysCopies = 2,
+    .trialCopies = 1,
+    .junkWeight = 0,
+    .distTable = {
+      {"WotH",       HINT_TYPE_WOTH,         15, 0, 2, FilterWotHLocations},
+      {"Barren",     HINT_TYPE_BARREN,       15, 0, 1, FilterBarrenLocations},
+      //{"Entrance",   HINT_TYPE_ENTRANCE,     10, 0, 1}, //not yet implemented
+      {"Song",       HINT_TYPE_ITEM_LOCATION, 2, 0, 1, FilterSongLocations},
+      {"Overworld",  HINT_TYPE_ITEM_LOCATION, 7, 0, 1, FilterOverworldLocations},
+      {"Dungeon",    HINT_TYPE_ITEM_LOCATION, 7, 0, 1, FilterDungeonLocations},
+      {"Named Item", HINT_TYPE_ITEM_AREA,     5, 0, 1, FilterGoodItems},
+    },
   },
 }};
 
@@ -304,51 +303,6 @@ std::string GetSariaHintLoc() {
   return sariaHintLoc;
 }
 
-Area* GetHintRegion(const RandomizerRegion area) {
-
-  std::vector<RandomizerRegion> alreadyChecked = {};
-  std::vector<RandomizerRegion> spotQueue = {area};
-
-  while (!spotQueue.empty()) {
-    RandomizerRegion region = spotQueue.back();
-    alreadyChecked.push_back(region);
-    spotQueue.pop_back();
-
-    if (AreaTable(region)->hintKey != RHT_NONE) {
-      return AreaTable(region);
-    }
-
-    //add unchecked entrances to spot queue
-    bool checked = false;
-    for (auto& entrance : AreaTable(region)->entrances) {
-      for (RandomizerRegion checkedEntrance : alreadyChecked) {
-        if (entrance->GetParentRegionKey() == checkedEntrance) {
-          checked = true;
-          break;
-        }
-      }
-
-      if (!checked) {
-        spotQueue.insert(spotQueue.begin(), entrance->GetParentRegionKey());
-      }
-    }
-  }
-
-  return AreaTable(RR_NONE);
-}
-
-RandomizerHintTextKey GetHintRegionHintKey(const RandomizerRegion area) {
-    return GetHintRegion(area)->hintKey;
-}
-
-uint32_t GetHintRegionuint32_t(const RandomizerRegion area) {
-  return GetHintRegion(area)->hintKey;
-}
-
-uint32_t GetLocationRegionuint32_t(const RandomizerCheck location) {
-  return GetHintRegion(Rando::Context::GetInstance()->GetItemLocation(location)->GetParentRegionKey())->hintKey;
-}
-
 static std::vector<RandomizerCheck> GetEmptyGossipStones() {
   auto emptyGossipStones = GetEmptyLocations(Rando::StaticData::gossipStoneLocations);
   return emptyGossipStones;
@@ -371,7 +325,7 @@ static std::vector<RandomizerCheck> GetAccessibleGossipStones(const RandomizerCh
 
 bool IsReachableWithout(std::vector<RandomizerCheck> locsToCheck, RandomizerCheck excludedCheck, bool resetAfter = true){
   //temporarily remove the hinted location's item, and then perform a
-  //reachability search for this check
+  //reachability search for this check RANDOTODO convert excludedCheck to an ItemLocation
   auto ctx = Rando::Context::GetInstance();
   RandomizerGet originalItem = ctx->GetItemLocation(excludedCheck)->GetPlacedRandomizerGet();
   ctx->GetItemLocation(excludedCheck)->SetPlacedItem(RG_NONE);
@@ -388,29 +342,40 @@ bool IsReachableWithout(std::vector<RandomizerCheck> locsToCheck, RandomizerChec
   return true;
 }
 
-static void SetAllInRegionAsHinted(RandomizerHintTextKey region, std::vector<RandomizerCheck> locations){
+static void SetAllInRegionAsHinted(RandomizerArea area, std::vector<RandomizerCheck> locations){
   auto ctx = Rando::Context::GetInstance();
-  std::vector<RandomizerCheck> locsInRegion = FilterFromPool(locations, [region, ctx](const RandomizerCheck loc){
-                                        return GetHintRegion(ctx->GetItemLocation(loc)->GetParentRegionKey())->hintKey == region;
+  std::vector<RandomizerCheck> locsInRegion = FilterFromPool(locations, [area, ctx](const RandomizerCheck loc){
+                                        return ctx->GetItemLocation(loc)->GetArea() == area;
                                       });
   for(RandomizerCheck loc: locsInRegion){
     ctx->GetItemLocation(loc)->SetAsHinted();
   }
 }
 
-static void AddHint(Text hint, const RandomizerCheck gossipStone, const std::vector<uint8_t>& colors = {}, HintType hintType = HINT_TYPE_NAMED_ITEM, const RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK) {
+static void AddGossipStoneHint(Text hint, 
+                                const RandomizerCheck gossipStone,
+                                const std::vector<uint8_t>& colors,
+                                HintType hintType,
+                                std::string distributionName,
+                                const RandomizerCheck hintedLocation) {
   //save hints as dummy items for writing to the spoiler log
   //NewItem(gossipStone, Item{RG_HINT, hint, ITEMTYPE_EVENT, GI_RUPEE_BLUE_LOSE, false, &noVariable, NONE});
   //GetLocation(gossipStone)->SetPlacedItem(gossipStone);
 
   auto ctx = Rando::Context::GetInstance();
-  ctx->AddHint((RandomizerHintKey)((gossipStone - RC_COLOSSUS_GOSSIP_STONE) + 1), AutoFormatHintText(hint), hintedLocation, hintType, GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText());
-  ctx->GetItemLocation(gossipStone)->SetPlacedItem(RG_HINT);
+  ctx->AddHint((RandomizerHintKey)((gossipStone - RC_COLOSSUS_GOSSIP_STONE) + 1), AutoFormatHintText(hint), hintedLocation, hintType, distributionName, ctx->GetItemLocation(hintedLocation)->GetArea());
+  ctx->GetItemLocation(gossipStone)->SetPlacedItem(RG_HINT); //RANDOTODO, better gossip stone to location to hint key system
 }
 
-static void AddHintCopies(uint8_t copies, Text hint, std::vector<uint8_t> colours, HintType type, RandomizerCheck location = RC_UNKNOWN_CHECK, RandomizerCheck firstStone = RC_UNKNOWN_CHECK){
+static void AddGossipStoneHintCopies(uint8_t copies, 
+                                      Text hint, 
+                                      std::vector<uint8_t> colours, 
+                                      HintType type, 
+                                      std::string distributionName,
+                                      RandomizerCheck location = RC_UNKNOWN_CHECK, 
+                                      RandomizerCheck firstStone = RC_UNKNOWN_CHECK){
   if (firstStone != RC_UNKNOWN_CHECK && copies > 0){
-      AddHint(hint, firstStone, colours, type, location);
+      AddGossipStoneHint(hint, firstStone, colours, type, distributionName, location);
       copies -= 1;
   }
   for(int c=0; c<copies; c++){
@@ -422,12 +387,11 @@ static void AddHintCopies(uint8_t copies, Text hint, std::vector<uint8_t> colour
     }
     auto gossipStone = RandomElement(gossipStones, false);
 
-    AddHint(hint, gossipStone, colours, type, location);
+    AddGossipStoneHint(hint, gossipStone, colours, type, distributionName, location);
   }
 }
 
-
-static bool CreateHint(RandomizerCheck hintedLocation, uint8_t copies, HintType type){
+static bool CreateHint(RandomizerCheck hintedLocation, uint8_t copies, HintType type, std::string distributionName){
   auto ctx = Rando::Context::GetInstance();
   //get a gossip stone accessible without the hinted item
   std::vector<RandomizerCheck> gossipStoneLocations;
@@ -443,30 +407,31 @@ static bool CreateHint(RandomizerCheck hintedLocation, uint8_t copies, HintType 
   //make hint text
   Text finalHint;
   Text prefix = ::Hint(RHT_PREFIX).GetText();
-  std::vector<uint8_t> colours = {QM_GREEN, QM_RED};
+  std::vector<uint8_t> colours;
   if (type == HINT_TYPE_WOTH){
-    Text regionText = GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
-    finalHint = prefix + "%r#" + regionText + "#%w" + ::Hint(RHT_WAY_OF_THE_HERO).GetText();
+    Text areaText = ::Hint(ctx->GetItemLocation(hintedLocation)->GetArea()).GetText();
+    finalHint = prefix + "%r#" + areaText + "#%w" + ::Hint(RHT_WAY_OF_THE_HERO).GetText();
     colours = {QM_LBLUE};
   }
   else if(type == HINT_TYPE_BARREN){
-    Text regionText = GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
-    finalHint = prefix + ::Hint(RHT_PLUNDERING).GetText() + "%r#" + regionText + "#%w" + ::Hint(RHT_FOOLISH).GetText();
+    Text areaText = ::Hint(ctx->GetItemLocation(hintedLocation)->GetArea()).GetText();
+    finalHint = prefix + ::Hint(RHT_PLUNDERING).GetText() + "%r#" + areaText + "#%w" + ::Hint(RHT_FOOLISH).GetText();
     colours = {QM_PINK};
   }
   else {
     Text itemText = ctx->GetItemLocation(hintedLocation)->GetPlacedItem().GetHint().GetText();
-    if (type >= HINT_TYPE_ALWAYS && type < HINT_TYPE_NAMED_ITEM){
+    if (type == HINT_TYPE_ITEM_LOCATION){
       Text locationText = Rando::StaticData::GetLocation(hintedLocation)->GetHint()->GetText();
       finalHint = prefix + "%r" + locationText + " %g#"+itemText+"#%w.";
+      colours = {QM_GREEN, QM_RED};
     }
-    else if (type == HINT_TYPE_NAMED_ITEM || type == HINT_TYPE_RANDOM){
-      Text regionText = GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
-      // RANDOTODO: reconsider dungeon vs non-dungeon item location hints when boss shuffle mixed pools happens
+    else if (type == HINT_TYPE_ITEM_AREA){
+      Text areaText = ::Hint(ctx->GetItemLocation(hintedLocation)->GetArea()).GetText();
       if (Rando::StaticData::GetLocation(hintedLocation)->IsDungeon()) {
-        finalHint = prefix+"%r#"+regionText+"#%w "+::Hint(RHT_HOARDS).GetText()+" %g#"+itemText+"#%w.";
+        finalHint = prefix+"%r#"+areaText+"#%w "+::Hint(RHT_HOARDS).GetText()+" %g#"+itemText+"#%w.";
+        colours = {QM_GREEN, QM_RED};
       } else {
-        finalHint = prefix+"%r#"+itemText+"#%w "+::Hint(RHT_CAN_BE_FOUND_AT).GetText()+" %g#"+regionText+"#%w.";
+        finalHint = prefix+"%r#"+itemText+"#%w "+::Hint(RHT_CAN_BE_FOUND_AT).GetText()+" %g#"+areaText+"#%w.";
         colours = {QM_RED, QM_GREEN};
       }
     }
@@ -482,13 +447,16 @@ static bool CreateHint(RandomizerCheck hintedLocation, uint8_t copies, HintType 
   SPDLOG_DEBUG(finalHint.english);
   SPDLOG_DEBUG("\n\n");
 
-  AddHintCopies(copies, finalHint, colours, type, hintedLocation, gossipStone);
+  AddGossipStoneHintCopies(copies, finalHint, colours, type, distributionName, hintedLocation, gossipStone);
 
   return true;
 }
 
 
-static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck>& possibleHintLocations, uint8_t copies, HintType type) {
+static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck>& possibleHintLocations, 
+                                        uint8_t copies,
+                                        HintType type,
+                                        std::string distributionName) {
   auto ctx = Rando::Context::GetInstance();
 
   //return if there aren't any hintable locations or gossip stones available
@@ -514,103 +482,75 @@ static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck>& possibleHi
     SPDLOG_DEBUG(ctx->GetItemLocation(hintedLocation)->GetPlacedItemName().GetEnglish());
     SPDLOG_DEBUG("\n");
 
-    placed = CreateHint(hintedLocation, copies, type);
+    placed = CreateHint(hintedLocation, copies, type, distributionName);
   }
   if (type == HINT_TYPE_BARREN){
-     SetAllInRegionAsHinted(GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->hintKey, possibleHintLocations);
+     SetAllInRegionAsHinted(ctx->GetItemLocation(hintedLocation)->GetArea(), possibleHintLocations);
   }
   return hintedLocation;
 }
 
-static std::vector<RandomizerCheck> FilterHintability(std::vector<RandomizerCheck>& locations, const bool goodItemsOnly = false, const bool dungeonsOK = true){
+static std::vector<RandomizerCheck> FilterHintability(std::vector<RandomizerCheck>& locations, 
+                                                      std::function<bool(RandomizerCheck)> extraFilter = NoFilter){
   auto ctx = Rando::Context::GetInstance();
-  return FilterFromPool(locations, [goodItemsOnly, dungeonsOK, ctx](const RandomizerCheck loc) {
-    return ctx->GetItemLocation(loc)->IsHintable() && !(ctx->GetItemLocation(loc)->IsHintedAt()) && 
-    (!goodItemsOnly || ctx->GetItemLocation(loc)->GetPlacedItem().IsMajorItem()) && (dungeonsOK || Rando::StaticData::GetLocation(loc)->IsOverworld());
+  return FilterFromPool(locations, [extraFilter, ctx](const RandomizerCheck loc) {
+    return ctx->GetItemLocation(loc)->IsHintable() && !(ctx->GetItemLocation(loc)->IsHintedAt()
+    && extraFilter(loc));
   });
 }
 
-static void CreateJunkHint() {
-  //duplicate junk hints are possible for now
-  const HintText junkHint = RandomElement(GetHintCategory(HintCategory::Junk));
-  Text hint = junkHint.GetText();
+static void CreateJunkHints(uint8_t numHints) {
+  for(uint8_t c = 0; c < numHints; c++){
+    //duplicate junk hints are possible for now
+    const HintText junkHint = RandomElement(GetHintCategory(HintCategory::Junk));
+    Text hint = junkHint.GetText();
 
-  SPDLOG_DEBUG("\tMessage: ");
-  SPDLOG_DEBUG(hint.english);
-  SPDLOG_DEBUG("\n\n");
+    SPDLOG_DEBUG("\tMessage: ");
+    SPDLOG_DEBUG(hint.english);
+    SPDLOG_DEBUG("\n\n");
 
-  AddHintCopies(1, hint, {QM_PINK}, HINT_TYPE_JUNK);
-}
-
-static std::vector<RandomizerCheck> CalculateBarrenRegions() {
-  auto ctx = Rando::Context::GetInstance();
-  std::vector<RandomizerCheck> barrenLocations = {};
-  std::vector<RandomizerCheck> potentiallyUsefulLocations = {};
-
-  for (RandomizerCheck loc : ctx->allLocations) {
-    // If a location has a major item or is a way of the hero location, it is not barren
-    if (ctx->GetItemLocation(loc)->GetPlacedItem().IsMajorItem() || ElementInContainer(loc, ctx->wothLocations)) {
-      AddElementsToPool(potentiallyUsefulLocations, std::vector{loc});
-    } else {
-      // Link's Pocket & Triforce Hunt "reward" shouldn't be considered for barren areas because it's clear what
-      // they have to a player.
-      if (loc != RC_LINKS_POCKET && loc != RC_TRIFORCE_COMPLETED) { 
-        AddElementsToPool(barrenLocations, std::vector{loc});
-      }
-    }
+    AddGossipStoneHintCopies(1, hint, {QM_PINK}, HINT_TYPE_JUNK, "Junk");
   }
-
-  // Leave only locations at barren regions in the list
-  auto finalBarrenLocations = FilterFromPool(barrenLocations, [&potentiallyUsefulLocations](RandomizerCheck loc){
-    for (RandomizerCheck usefulLoc : potentiallyUsefulLocations) {
-      uint32_t barrenKey = GetLocationRegionuint32_t(loc);
-      uint32_t usefulKey = GetLocationRegionuint32_t(usefulLoc);
-      if (barrenKey == usefulKey) {
-        return false;
-      }
-    }
-    return true;
-  });
-
-  return finalBarrenLocations;
 }
 
 static void CreateTrialHints(uint8_t copies) {
-  auto ctx = Rando::Context::GetInstance();
+  if (copies > 0) {
+    auto ctx = Rando::Context::GetInstance();
   Text prefix = ::Hint(RHT_PREFIX).GetText();
-    //six trials
-  if (ctx->GetOption(RSK_GANONS_TRIALS).IsNot(RO_GANONS_TRIALS_SKIP) && ctx->GetOption(RSK_TRIAL_COUNT).Is(6)) {
-    AddHintCopies(copies, prefix + ::Hint(RHT_SIX_TRIALS).GetText(), {QM_PINK}, HINT_TYPE_TRIAL);
-    //zero trials
-  } else if (ctx->GetOption(RSK_GANONS_TRIALS).IsNot(RO_GANONS_TRIALS_SKIP) && ctx->GetOption(RSK_TRIAL_COUNT).Is(0)) {
-    AddHintCopies(copies, prefix + ::Hint(RHT_ZERO_TRIALS).GetText(), {QM_YELLOW}, HINT_TYPE_TRIAL);
-    //4 or 5 required trials
-  } else if (ctx->GetOption(RSK_TRIAL_COUNT).Is(5) || ctx->GetOption(RSK_TRIAL_COUNT).Is(4)) {
-    //get skipped trials
-    std::vector<TrialInfo*> trials = {};
-    auto trialList = ctx->GetTrials()->GetTrialList();
+      //six trials
+    if (ctx->GetOption(RSK_GANONS_TRIALS).IsNot(RO_GANONS_TRIALS_SKIP) && ctx->GetOption(RSK_TRIAL_COUNT).Is(6)) {
+      AddGossipStoneHintCopies(copies, prefix + ::Hint(RHT_SIX_TRIALS).GetText(), {QM_PINK}, HINT_TYPE_TRIAL, "Trial");
+      //zero trials
+    } else if (ctx->GetOption(RSK_GANONS_TRIALS).IsNot(RO_GANONS_TRIALS_SKIP) && ctx->GetOption(RSK_TRIAL_COUNT).Is(0)) {
+      AddGossipStoneHintCopies(copies, prefix + ::Hint(RHT_ZERO_TRIALS).GetText(), {QM_YELLOW}, HINT_TYPE_TRIAL, "Trial");
+      //4 or 5 required trials
+    } else if (ctx->GetOption(RSK_TRIAL_COUNT).Is(5) || ctx->GetOption(RSK_TRIAL_COUNT).Is(4)) {
+      //get skipped trials
+      std::vector<TrialInfo*> trials = {};
+      auto trialList = ctx->GetTrials()->GetTrialList();
     trials.assign(trialList.begin(), trialList.end());
-    auto skippedTrials = FilterFromPool(trials, [](TrialInfo* trial){return trial->IsSkipped();});
+      auto skippedTrials = FilterFromPool(trials, [](TrialInfo* trial){return trial->IsSkipped();});
 
-    //create a hint for each skipped trial
-    for (auto& trial : skippedTrials) {
-      //make hint
-      auto hint = prefix+"#"+trial->GetName()+"#"+::Hint(RHT_FOUR_TO_FIVE_TRIALS).GetText();
-      AddHintCopies(copies, hint, {QM_YELLOW}, HINT_TYPE_TRIAL);
-    }
-    //1 to 3 trials
-  } else if (ctx->GetOption(RSK_TRIAL_COUNT).Value<uint8_t>() >= 1 && ctx->GetOption(RSK_TRIAL_COUNT).Value<uint8_t>() <= 3) {
-    //get requried trials
-    std::vector<TrialInfo*> trials = {};
-    auto trialList = ctx->GetTrials()->GetTrialList();
+      //create a hint for each skipped trial
+      for (auto& trial : skippedTrials) {
+        //make hint
+        auto hint = prefix+"#"+trial->GetName()+"#"+::Hint(RHT_FOUR_TO_FIVE_TRIALS).GetText();
+        AddGossipStoneHintCopies(copies, hint, {QM_YELLOW}, HINT_TYPE_TRIAL, "Trial");
+      }
+      //1 to 3 trials
+    } else if (ctx->GetOption(RSK_TRIAL_COUNT).Value<uint8_t>() >= 1 && ctx->GetOption(RSK_TRIAL_COUNT).Value<uint8_t>() <= 3) {
+      //get requried trials
+      std::vector<TrialInfo*> trials = {};
+      auto trialList = ctx->GetTrials()->GetTrialList();
     trials.assign(trialList.begin(), trialList.end());
-    auto requiredTrials = FilterFromPool(trials, [](TrialInfo* trial){return trial->IsRequired();});
+      auto requiredTrials = FilterFromPool(trials, [](TrialInfo* trial){return trial->IsRequired();});
 
-    //create a hint for each required trial
-    for (auto& trial : requiredTrials) {
-      //make hint
-      auto hint = prefix+"#"+trial->GetName()+"#"+::Hint(RHT_ONE_TO_THREE_TRIALS).GetText();
-      AddHintCopies(copies, hint, {QM_PINK}, HINT_TYPE_TRIAL);
+      //create a hint for each required trial
+      for (auto& trial : requiredTrials) {
+        //make hint
+        auto hint = prefix+"#"+trial->GetName()+"#"+::Hint(RHT_ONE_TO_THREE_TRIALS).GetText();
+        AddGossipStoneHintCopies(copies, hint, {QM_PINK}, HINT_TYPE_TRIAL, "Trial");
+      }
     }
   }
 }
@@ -623,7 +563,8 @@ void CreateGanonAndSheikText() {
     auto lightArrowLocation = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
       return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_LIGHT_ARROWS;
     });
-    Text lightArrowArea = GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
+    RandomizerArea lightArrowArea = ctx->GetItemLocation(lightArrowLocation[0])->GetArea();
+    Text LightArrowAreaText = ::Hint(lightArrowArea).GetText();
     std::vector<RandomizerCheck> locsToCheck = {RC_GANONDORF_HINT};
 
     //If there is no light arrow location, it was in the player's inventory at the start
@@ -632,7 +573,7 @@ void CreateGanonAndSheikText() {
       ganonHintText = hint.GetText()+::Hint(RHT_YOUR_POCKET).GetText();
       lightArrowHintLoc = "Link's Pocket";
     } else {
-      ganonHintText = hint.GetText() + "%r" + lightArrowArea + "%w";
+      ganonHintText = hint.GetText() + "%r" + LightArrowAreaText + "%w";
       lightArrowHintLoc = Rando::StaticData::GetLocation(lightArrowLocation[0])->GetName();
     }
     ganonHintText = ganonHintText + "!";
@@ -641,7 +582,7 @@ void CreateGanonAndSheikText() {
     auto masterSwordLocation = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
       return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_MASTER_SWORD;
     });
-    Text masterSwordArea = GetHintRegion(ctx->GetItemLocation(masterSwordLocation[0])->GetParentRegionKey())->GetHint().GetText();
+    Text masterSwordArea = ::Hint(ctx->GetItemLocation(masterSwordLocation[0])->GetArea()).GetText();
 
     if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {
       // Add second text box
@@ -657,10 +598,10 @@ void CreateGanonAndSheikText() {
     }
 
     //CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(ganonHintText));
-    ctx->AddHint(RH_GANONDORF_HINT, AutoFormatHintText(ganonHintText), lightArrowLocation[0], HINT_TYPE_STATIC, GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText());
+    ctx->AddHint(RH_GANONDORF_HINT, AutoFormatHintText(ganonHintText), lightArrowLocation[0], HINT_TYPE_STATIC, "Static", lightArrowArea);
 
     if(!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)){
-      sheikText = ::Hint(RHT_SHEIK_LIGHT_ARROW_HINT).GetText() + lightArrowArea + "%w.";
+      sheikText = ::Hint(RHT_SHEIK_LIGHT_ARROW_HINT).GetText() + LightArrowAreaText + "%w.";
       locsToCheck = {RC_GANONDORF_HINT, RC_SHEIK_HINT_GC, RC_SHEIK_HINT_MQ_GC};
 
       if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {
@@ -671,11 +612,11 @@ void CreateGanonAndSheikText() {
     if (IsReachableWithout(locsToCheck, lightArrowLocation[0], true)) {
       ctx->GetItemLocation(lightArrowLocation[0])->SetAsHinted();
     }
-    ctx->AddHint(RH_SHEIK_LIGHT_ARROWS, AutoFormatHintText(sheikText), lightArrowLocation[0], HINT_TYPE_STATIC, lightArrowArea);
+    ctx->AddHint(RH_SHEIK_LIGHT_ARROWS, AutoFormatHintText(sheikText), lightArrowLocation[0], HINT_TYPE_STATIC, "Static", lightArrowArea);
 
     if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {
       if (IsReachableWithout(locsToCheck, masterSwordLocation[0], true)) {
-        ctx->GetItemLocation(masterSwordLocation[0])->SetHintKey(RH_GANONDORF_HINT);
+        ctx->GetItemLocation(masterSwordLocation[0])->AddHintedBy(RH_GANONDORF_HINT);
         ctx->GetItemLocation(masterSwordLocation[0])->SetAsHinted();
       }
     }
@@ -698,7 +639,7 @@ static Text BuildDungeonRewardText(const RandomizerGet itemKey, bool isChild) {
 
     // RANDOTODO implement colors for locations
     return Text() + rewardString +
-           GetHintRegion(ctx->GetItemLocation(location)->GetParentRegionKey())->GetHint().GetText().Capitalize() +
+           ::Hint(ctx->GetItemLocation(location)->GetArea()).GetText().Capitalize() +
            "...^";
 }
 
@@ -836,7 +777,7 @@ void CreateAltarText() {
   } else {
     childAltarText = BuildDoorOfTimeText();
   }
-  ctx->AddHint(RH_ALTAR_CHILD, childAltarText, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+  ctx->AddHint(RH_ALTAR_CHILD, childAltarText, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
 
   //CreateMessageFromTextObject(0x7040, 0, 2, 3, AddColorsAndFormat(childAltarText, {QM_GREEN, QM_RED, QM_BLUE}));
 
@@ -868,7 +809,7 @@ void CreateAltarText() {
   //End
   ::Hint(RHT_ADULT_ALTAR_TEXT_END).GetText();
   //CreateMessageFromTextObject(0x7088, 0, 2, 3, AddColorsAndFormat(adultAltarText, {QM_RED, QM_YELLOW, QM_GREEN, QM_RED, QM_BLUE, QM_YELLOW, QM_PINK, QM_RED, QM_RED, QM_RED, QM_RED}));
-  ctx->AddHint(RH_ALTAR_ADULT, adultAltarText, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+  ctx->AddHint(RH_ALTAR_ADULT, adultAltarText, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
 }
 
 void CreateMerchantsHints() {
@@ -888,7 +829,7 @@ void CreateMerchantsHints() {
                                  ::Hint(RHT_CARPET_SALESMAN_DIALOG_SECOND).GetText();
     Text carpetSalesmanTextTwo = ::Hint(RHT_CARPET_SALESMAN_DIALOG_THIRD).GetText() + carpetSalesmanItemClearText +
                                  ::Hint(RHT_CARPET_SALESMAN_DIALOG_FOURTH).GetText();
-
+    
     // CreateMessageFromTextObject(0x9120, 0, 2, 3, AddColorsAndFormat(medigoronText, { QM_RED, QM_GREEN }));
     // CreateMessageFromTextObject(0x9121, 0, 2, 3, AddColorsAndFormat(grannyText, { QM_RED, QM_GREEN }));
     // CreateMessageFromTextObject(0x6077, 0, 2, 3, AddColorsAndFormat(carpetSalesmanTextOne, { QM_RED, QM_GREEN }));
@@ -911,16 +852,15 @@ void CreateSpecialItemHint(uint32_t item, RandomizerHintKey hintKey, std::vector
       ctx->GetItemLocation(location)->SetAsHinted();
     }
     
-    Text area = GetHintRegion(ctx->GetItemLocation(location)->GetParentRegionKey())->GetHint().GetText();
-    textLoc = ::Hint(text1).GetText() + area + ::Hint(text2).GetText();
+    RandomizerArea area = ctx->GetItemLocation(location)->GetArea();
+    textLoc = ::Hint(text1).GetText() + ::Hint(area).GetText() + ::Hint(text2).GetText();
     nameLoc = Rando::StaticData::GetLocation(location)->GetName();
-    ctx->AddHint(hintKey, AutoFormatHintText(textLoc), location, HINT_TYPE_STATIC, area);
+    ctx->AddHint(hintKey, AutoFormatHintText(textLoc), location, HINT_TYPE_STATIC, "Static", area);
   } else {
     textLoc = Text();
     nameLoc = "";
   }
 }
-
 
 void CreateWarpSongTexts() {
   auto ctx = Rando::Context::GetInstance();
@@ -937,46 +877,41 @@ void CreateWarpSongTexts() {
   auto warpSongEntrances = GetShuffleableEntrances(EntranceType::WarpSong, false);
 
   for (auto entrance : warpSongEntrances) {
-    Text resolvedHint;
-    // Start with entrance location text
-    auto region = entrance->GetConnectedRegion()->regionName;
-    resolvedHint = Text{"","",""} + region;
-
-    auto destination = entrance->GetConnectedRegion()->GetHint().GetText();
-    // Prefer hint location when available
-    if (destination.GetEnglish() != "No Hint") {
-      resolvedHint = destination;
+    auto destination = entrance->GetConnectedRegion()->GetArea();
+    Text resolvedHint = ::Hint(destination).GetText();
+    // If no Hint Area, use Region text
+    if (destination == RA_NONE) {
+      resolvedHint = Text{"","",""} + entrance->GetConnectedRegion()->regionName;
     }
 
     switch (entrance->GetIndex()) {
-      case 0x0600: // minuet
+      case 0x0600: // minuet RANDOTODO make an entrance enum and use it here
         warpMinuetText = resolvedHint;
-        ctx->AddHint(RH_MINUET_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+        ctx->AddHint(RH_MINUET_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", destination);
         break;
       case 0x04F6: // bolero
         warpBoleroText = resolvedHint;
-        ctx->AddHint(RH_BOLERO_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+        ctx->AddHint(RH_BOLERO_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", destination);
         break;
       case 0x0604: // serenade
         warpSerenadeText = resolvedHint;
-        ctx->AddHint(RH_SERENADE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+        ctx->AddHint(RH_SERENADE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", destination);
         break;
       case 0x01F1: // requiem
         warpRequiemText = resolvedHint;
-        ctx->AddHint(RH_REQUIEM_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+        ctx->AddHint(RH_REQUIEM_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", destination);
         break;
       case 0x0568: // nocturne
           warpNocturneText = resolvedHint;
-          ctx->AddHint(RH_NOCTURNE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+          ctx->AddHint(RH_NOCTURNE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", destination);
           break;
       case 0x05F4: // prelude
         warpPreludeText = resolvedHint;
-        ctx->AddHint(RH_PRELUDE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, resolvedHint);
+        ctx->AddHint(RH_PRELUDE_WARP_LOC, resolvedHint, RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", destination);
         break;
     }
   }
 }
-
 
 int32_t getRandomWeight(int32_t totalWeight){
   if (totalWeight <= 1){
@@ -985,11 +920,8 @@ int32_t getRandomWeight(int32_t totalWeight){
   return Random(1,totalWeight);
 }
 
-
-static void DistrabuteHints(std::array<uint8_t, HINT_TYPE_MAX>& selected, uint8_t stoneCount, std::array<HintDistributionSetting, (int)HINT_TYPE_MAX> distTable, bool addFixed = true){
-  int32_t totalWeight = 0;
-
-  distTable[HINT_TYPE_JUNK].copies = 1; //Junk is hardcoded to 1 copy to avoid fill in issues
+static void DistributeHints(std::vector<uint8_t>& selected, size_t stoneCount, std::vector<HintDistributionSetting> distTable, uint8_t junkWieght, bool addFixed = true){
+  int32_t totalWeight = junkWieght;
 
   for (HintDistributionSetting setting: distTable){
     totalWeight += setting.weight;
@@ -998,102 +930,68 @@ static void DistrabuteHints(std::array<uint8_t, HINT_TYPE_MAX>& selected, uint8_
       stoneCount -= setting.fixed * setting.copies;
     }
   }
-
   int32_t currentWeight = getRandomWeight(totalWeight);
   while(stoneCount > 0 && totalWeight > 0){
-    for (uint8_t hintType = 0; hintType < HINT_TYPE_MAX; hintType++){
-      currentWeight -= distTable[hintType].weight;
+    for (uint8_t distribution = 0; distribution < distTable.size(); distribution++){
+      currentWeight -= distTable[distribution].weight;
       if (currentWeight <= 0){
-        if (stoneCount >= distTable[hintType].copies){
-          selected[hintType] += 1;
-          stoneCount -= distTable[hintType].copies;
+        if (stoneCount >= distTable[distribution].copies){
+          selected[distribution] += 1;
+          stoneCount -= distTable[distribution].copies;
           break;
         }
         else {
-          totalWeight -= distTable[hintType].weight;
-          distTable[hintType].weight = 0;
+          totalWeight -= distTable[distribution].weight;
+          distTable[distribution].weight = 0;
           break;
         }
       }
+    }
+    //if there's still weight, then it's junk
+    if (currentWeight > 0){
+      selected[selected.size()-1] += 1;
+      stoneCount -= 1;
     }
     currentWeight = getRandomWeight(totalWeight);
   }
   //if stones are left, assign junk
   if (stoneCount > 0){
-    selected[HINT_TYPE_JUNK] += stoneCount;
+    selected[selected.size()-1] += stoneCount;
   }
 }
 
-
-uint8_t PlaceHints(std::array<uint8_t, HINT_TYPE_MAX>& selectedHints,
-                std::array<HintDistributionSetting, (int)HINT_TYPE_MAX>& distTable, 
-                uint8_t* remainingDungeonWothHints,
-                uint8_t* remainingDungeonBarrenHints){
-
-  std::vector<RandomizerCheck> blankList = {};
+uint8_t PlaceHints(std::vector<uint8_t>& selectedHints,
+                std::vector<HintDistributionSetting>& distTable){
   auto ctx = Rando::Context::GetInstance();
-
-  std::array<std::vector<RandomizerCheck>, HINT_TYPE_MAX> hintTypePools = {
-      blankList, //static, should not happen
-      blankList, //trial, should not happen
-      ctx->wothLocations, //woth
-      CalculateBarrenRegions(), //Barren
-      blankList, //enternce, not yet implemented
-      blankList, // always, should not happen
-      FilterFromPool(ctx->allLocations, [](const RandomizerCheck loc){return Rando::StaticData::GetLocation(loc)->GetHint()->GetType() == HintCategory::Sometimes;}), //sometimes
-      FilterFromPool(ctx->allLocations, [](const RandomizerCheck loc){return Rando::StaticData::GetLocation(loc)->IsCategory(Category::cSong);}), //songs
-      FilterFromPool(ctx->allLocations, [](const RandomizerCheck loc){return Rando::StaticData::GetLocation(loc)->IsOverworld();}), //overworld
-      FilterFromPool(ctx->allLocations, [](const RandomizerCheck loc){return Rando::StaticData::GetLocation(loc)->IsDungeon();}), //dungeon
-      ctx->allLocations, //Named item
-      ctx->allLocations, //random
-      blankList //junk, irrelevent
-  };
-
-  for (uint8_t hintType = 0; hintType < HINT_TYPE_MAX; hintType++){
-    for (uint8_t numHint = 0; numHint < selectedHints[hintType]; numHint++){
+  uint8_t curSlot = 0;
+  for (HintDistributionSetting distribution : distTable){
+    std::vector<RandomizerCheck> hintTypePool = FilterHintability(ctx->allLocations, distribution.filter);
+    for (uint8_t numHint = 0; numHint < selectedHints[curSlot]; numHint++){
 
       SPDLOG_DEBUG("Attempting to make hint of type: ");
-      SPDLOG_DEBUG(hintTypeNames[hintType]);
+      SPDLOG_DEBUG(hintTypeNames[static_cast<int>(distribution.type)]);
       SPDLOG_DEBUG("\n");
 
       RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK;
 
-      //create the appropriate hint for the type
-      if (hintType == HINT_TYPE_JUNK){
-        CreateJunkHint();
+      hintedLocation = CreateRandomHint(hintTypePool, distribution.copies, distribution.type, distribution.name);
+      if (hintedLocation == RC_UNKNOWN_CHECK){ //if hint failed to place
+        uint8_t hintsToRemove = (selectedHints[curSlot] - numHint) * distribution.copies;
+        selectedHints[curSlot] = 0;
+        distTable[curSlot].copies = 0;
+        return hintsToRemove;
       }
-      else{
-        hintTypePools[hintType] = FilterHintability(hintTypePools[hintType], (hintType == HINT_TYPE_NAMED_ITEM));
-        hintedLocation = CreateRandomHint(hintTypePools[hintType], distTable[hintType].copies, (HintType)hintType);
-        if (hintedLocation == RC_UNKNOWN_CHECK){ //if hint failed to place
-          uint8_t hintsToRemove = (selectedHints[hintType] - numHint) * distTable[hintType].copies;
-          selectedHints[hintType] = 0; //RANDOTODO is there a better way to filter out things hinted between hintTypePools creation and now
-          distTable[hintType].weight = 0;
-          return hintsToRemove;
+      if(Rando::StaticData::GetLocation(hintedLocation)->IsDungeon()){
+        distribution.dungeonLimit -= 1;
+        if (distribution.dungeonLimit == 0){
+          FilterFromPool(hintTypePool, FilterOverworldLocations);
         }
       }
-
-      switch(hintType){
-        case HINT_TYPE_WOTH:
-          if (Rando::StaticData::GetLocation(hintedLocation)->IsDungeon()){
-            *remainingDungeonWothHints -= 1;
-            if (*remainingDungeonWothHints <= 0){
-              hintTypePools[hintType] = FilterHintability(hintTypePools[hintType], false, false);
-            }
-          }
-          break;
-        case HINT_TYPE_BARREN:
-          if (Rando::StaticData::GetLocation(hintedLocation)->IsDungeon()){
-            *remainingDungeonBarrenHints -= 1;
-            if (*remainingDungeonBarrenHints <= 0){
-              hintTypePools[hintType] = FilterHintability(hintTypePools[hintType], false, false);
-            }
-          }
-          break;
-      }
     }
-    selectedHints[hintType] = 0;
+    selectedHints[curSlot] = 0;
+    curSlot += 1;
   }
+  CreateJunkHints(selectedHints[selectedHints.size() - 1]);
   return 0;
 }
 
@@ -1101,10 +999,7 @@ void CreateStoneHints() {
   auto ctx = Rando::Context::GetInstance();
   SPDLOG_DEBUG("\nNOW CREATING HINTS\n");
   const HintSetting& hintSetting = hintSettingTable[ctx->GetOption(RSK_HINT_DISTRIBUTION).Value<uint8_t>()];
-  std::array<HintDistributionSetting, (int)HINT_TYPE_MAX> distTable = hintSetting.distTable;
-
-  uint8_t* remainingDungeonWothHints = new uint8_t(hintSetting.dungeonsWothLimit);
-  uint8_t* remainingDungeonBarrenHints = new uint8_t(hintSetting.dungeonsBarrenLimit);
+  std::vector<HintDistributionSetting> distTable = hintSetting.distTable;
 
   // Apply Special hint exclusions with no requirements
   if (ctx->GetOption(RSK_KAK_10_SKULLS_HINT)){
@@ -1130,8 +1025,7 @@ void CreateStoneHints() {
   }
 
   // Add 'always' location hints
-  auto alwaysCopies = distTable[static_cast<int>(HINT_TYPE_ALWAYS)].copies;
-  if (alwaysCopies > 0) {
+  if (hintSetting.alwaysCopies > 0) {
       // Only filter locations that had a random item placed at them (e.g. don't get cow locations if shuffle cows is
       // off)
       auto alwaysHintLocations = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
@@ -1150,24 +1044,25 @@ void CreateStoneHints() {
       }
 
     for (RandomizerCheck location : alwaysHintLocations) {
-      CreateHint(location, alwaysCopies, HINT_TYPE_ALWAYS);
+      CreateHint(location, hintSetting.alwaysCopies, HINT_TYPE_ITEM_LOCATION, "Always");
     }
   }
 
   //Add 'trial' location hints
-  auto trialCopies = distTable[static_cast<int>(HINT_TYPE_TRIAL)].copies;
-  if (trialCopies > 0) {
-    CreateTrialHints(trialCopies);
-  }
+  CreateTrialHints(hintSetting.trialCopies);
 
-  uint8_t totalStones = GetEmptyGossipStones().size();
-  std::array<uint8_t, HINT_TYPE_MAX> selectedHints = {};
-  DistrabuteHints(selectedHints, totalStones, distTable);
+  size_t totalStones = GetEmptyGossipStones().size();
+  std::vector<uint8_t> selectedHints = {};
+  for (uint8_t c=0; c < distTable.size(); c++){
+    selectedHints.push_back(0);
+  }
+  selectedHints.push_back(0);
+  DistributeHints(selectedHints, totalStones, distTable, hintSetting.junkWeight);
 
   while(totalStones != 0){
-    totalStones = PlaceHints(selectedHints, distTable, remainingDungeonWothHints, remainingDungeonBarrenHints);
+    totalStones = PlaceHints(selectedHints, distTable);
     if (totalStones != 0){
-      DistrabuteHints(selectedHints, totalStones, distTable, false);
+      DistributeHints(selectedHints, totalStones, distTable, hintSetting.junkWeight, false);
     }
   }
 

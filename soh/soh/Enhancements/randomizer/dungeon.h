@@ -11,8 +11,8 @@ namespace Rando {
 class DungeonInfo {
   public:
     DungeonInfo(std::string name_, RandomizerHintTextKey hintKey_, RandomizerGet map_, RandomizerGet compass_,
-                RandomizerGet smallKey_, RandomizerGet keyRing_, RandomizerGet bossKey_, uint8_t vanillaKeyCount_,
-                uint8_t mqKeyCount_, std::vector<RandomizerCheck> vanillaLocations_,
+                RandomizerGet smallKey_, RandomizerGet keyRing_, RandomizerGet bossKey_, RandomizerArea area_, 
+                uint8_t vanillaKeyCount_, uint8_t mqKeyCount_, std::vector<RandomizerCheck> vanillaLocations_,
                 std::vector<RandomizerCheck> mqLocations_, std::vector<RandomizerCheck> sharedLocations_,
                 std::vector<RandomizerCheck> bossRoomLocations_);
     DungeonInfo();
@@ -28,6 +28,7 @@ class DungeonInfo {
     bool IsVanilla() const;
     uint8_t GetSmallKeyCount() const;
     RandomizerHintTextKey GetHintKey() const;
+    RandomizerArea GetArea() const;
     RandomizerGet GetSmallKey() const;
     RandomizerGet GetKeyRing() const;
     RandomizerGet GetMap() const;
@@ -43,6 +44,7 @@ class DungeonInfo {
   private:
     std::string name;
     RandomizerHintTextKey hintKey;
+    RandomizerArea area;
     RandomizerGet map;
     RandomizerGet compass;
     RandomizerGet smallKey;

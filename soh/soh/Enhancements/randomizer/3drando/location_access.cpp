@@ -86,14 +86,14 @@ bool LocationAccess::CanBuy() const {
 }
 
 Area::Area() = default;
-Area::Area(std::string regionName_, std::string scene_, RandomizerHintTextKey hintKey_,
+Area::Area(std::string regionName_, std::string scene_, RandomizerArea area,
          bool timePass_,
          std::vector<EventAccess> events_,
          std::vector<LocationAccess> locations_,
          std::list<Rando::Entrance> exits_)
   : regionName(std::move(regionName_)),
     scene(std::move(scene_)),
-    hintKey(hintKey_),
+    area(area),
     timePass(timePass_),
     events(std::move(events_)),
     locations(std::move(locations_)),
@@ -254,10 +254,10 @@ void AreaTable_Init() {
   randoCtx = Context::GetInstance();
   //Clear the array from any previous playthrough attempts. This is important so that
   //locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
-  areaTable.fill(Area("Invalid Area", "Invalid Area", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {}));
+  areaTable.fill(Area("Invalid Area", "Invalid Area", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {}));
 
                        //name, scene, hint text,                       events, locations, exits
-  areaTable[RR_ROOT] = Area("Root", "", RHT_LINKS_POCKET, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_ROOT] = Area("Root", "", RA_LINKS_POCKET, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_LINKS_POCKET,       {[]{return true;}}),
                   LocationAccess(RC_TRIFORCE_COMPLETED, {[]{return CanCompleteTriforce;}}),
@@ -267,7 +267,7 @@ void AreaTable_Init() {
                   Entrance(RR_ROOT_EXITS, {[]{return true;}})
   });
 
-  areaTable[RR_ROOT_EXITS] = Area("Root Exits", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_ROOT_EXITS] = Area("Root Exits", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_CHILD_SPAWN,             {[]{return IsChild;}}),
                   Entrance(RR_ADULT_SPAWN,             {[]{return IsAdult;}}),
@@ -279,42 +279,42 @@ void AreaTable_Init() {
                   Entrance(RR_PRELUDE_OF_LIGHT_WARP,   {[]{return CanPlay(PreludeOfLight)   && CanLeaveForest;}}),
   });
 
-  areaTable[RR_CHILD_SPAWN] = Area("Child Spawn", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_CHILD_SPAWN] = Area("Child Spawn", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_KF_LINKS_HOUSE, {[]{return true;}}),
   });
 
-  areaTable[RR_ADULT_SPAWN] = Area("Adult Spawn", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_ADULT_SPAWN] = Area("Adult Spawn", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_TEMPLE_OF_TIME, {[]{return true;}}),
   });
 
-  areaTable[RR_MINUET_OF_FOREST_WARP] = Area("Minuet of Forest Warp", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_MINUET_OF_FOREST_WARP] = Area("Minuet of Forest Warp", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_SACRED_FOREST_MEADOW, {[]{return true;}}),
   });
 
-  areaTable[RR_BOLERO_OF_FIRE_WARP] = Area("Bolero of Fire Warp", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_BOLERO_OF_FIRE_WARP] = Area("Bolero of Fire Warp", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_DMC_CENTRAL_LOCAL, {[]{return true;}}),
   });
 
-  areaTable[RR_SERENADE_OF_WATER_WARP] = Area("Serenade of Water Warp", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_SERENADE_OF_WATER_WARP] = Area("Serenade of Water Warp", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_LAKE_HYLIA, {[]{return true;}}),
   });
 
-  areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Area("Requiem of Spirit Warp", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Area("Requiem of Spirit Warp", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_DESERT_COLOSSUS, {[]{return true;}}),
   });
 
-  areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Area("Nocturne of Shadow Warp", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Area("Nocturne of Shadow Warp", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_GRAVEYARD_WARP_PAD_REGION, {[]{return true;}}),
   });
 
-  areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Area("Prelude of Light Warp", "", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Area("Prelude of Light Warp", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_TEMPLE_OF_TIME, {[]{return true;}}),
   });

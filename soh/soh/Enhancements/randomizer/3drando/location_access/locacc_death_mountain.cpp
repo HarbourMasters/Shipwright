@@ -7,7 +7,7 @@ using namespace Rando;
 
 void AreaTable_Init_DeathMountain() {
   auto ctx = Rando::Context::GetInstance();
-  areaTable[RR_DEATH_MOUNTAIN_TRAIL] = Area("Death Mountain", "Death Mountain", RHT_DEATH_MOUNTAIN_TRAIL, DAY_NIGHT_CYCLE, {
+  areaTable[RR_DEATH_MOUNTAIN_TRAIL] = Area("Death Mountain", "Death Mountain", RA_DEATH_MOUNTAIN_TRAIL, DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&BeanPlantFairy, {[]{return BeanPlantFairy || (CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL) && CanPlay(SongOfStorms) && (HasExplosives || GoronBracelet));}}),
                 }, {
@@ -26,7 +26,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_DMT_STORMS_GROTTO,        {[]{return CanOpenStormGrotto;}}),
   });
 
-  areaTable[RR_DEATH_MOUNTAIN_SUMMIT] = Area("Death Mountain Summit", "Death Mountain", RHT_DEATH_MOUNTAIN_TRAIL, DAY_NIGHT_CYCLE, {
+  areaTable[RR_DEATH_MOUNTAIN_SUMMIT] = Area("Death Mountain Summit", "Death Mountain", RA_DEATH_MOUNTAIN_TRAIL, DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&PrescriptionAccess, {[]{return PrescriptionAccess || (IsAdult && (BrokenSwordAccess || BrokenSword));}}),
                   EventAccess(&GossipStoneFairy,   {[]{return GossipStoneFairy   || CanSummonGossipFairy;}}),
@@ -47,12 +47,12 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_DMT_GREAT_FAIRY_FOUNTAIN, {[]{return Here(RR_DEATH_MOUNTAIN_SUMMIT, []{return CanBlastOrSmash;});}}),
   });
 
-  areaTable[RR_DMT_OWL_FLIGHT] = Area("DMT Owl Flight", "Death Mountain", RHT_DEATH_MOUNTAIN_TRAIL, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_DMT_OWL_FLIGHT] = Area("DMT Owl Flight", "Death Mountain", RA_DEATH_MOUNTAIN_TRAIL, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_KAK_IMPAS_ROOFTOP, {[]{return true;}}),
   });
 
-  areaTable[RR_DMT_COW_GROTTO] = Area("DMT Cow Grotto", "DMT Cow Grotto", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_DMT_COW_GROTTO] = Area("DMT Cow Grotto", "DMT Cow Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_DMT_COW_GROTTO_COW, {[]{return CanPlay(EponasSong);}}),
                 }, {
@@ -61,7 +61,7 @@ void AreaTable_Init_DeathMountain() {
 
   });
 
-  areaTable[RR_DMT_STORMS_GROTTO] = Area("DMT Storms Grotto", "DMT Storms Grotto", RHT_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
+  areaTable[RR_DMT_STORMS_GROTTO] = Area("DMT Storms Grotto", "DMT Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(RC_DMT_STORMS_GROTTO_CHEST,        {[]{return true;}}),
                   LocationAccess(RC_DMT_STORMS_GROTTO_GOSSIP_STONE, {[]{return true;}}),
@@ -70,7 +70,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_DEATH_MOUNTAIN_TRAIL, {[]{return true;}}),
   });
 
-  areaTable[RR_DMT_GREAT_FAIRY_FOUNTAIN] = Area("DMT Great Fairy Fountain", "DMT Great Fairy Fountain", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_DMT_GREAT_FAIRY_FOUNTAIN] = Area("DMT Great Fairy Fountain", "DMT Great Fairy Fountain", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_DMT_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby);}}),
                 }, {
@@ -78,7 +78,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_DEATH_MOUNTAIN_SUMMIT, {[]{return true;}}),
   });
 
-  areaTable[RR_GORON_CITY] = Area("Goron City", "Goron City", RHT_GORON_CITY, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_GORON_CITY] = Area("Goron City", "Goron City", RA_GORON_CITY, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&GossipStoneFairy,          {[]{return GossipStoneFairy          || CanSummonGossipFairyWithoutSuns;}}),
                   EventAccess(&StickPot,                  {[]{return StickPot                  || IsChild;}}),
@@ -109,7 +109,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_GC_GROTTO_PLATFORM,   {[]{return IsAdult && ((CanPlay(SongOfTime) && ((EffectiveHealth > 2) || CanUse(RG_GORON_TUNIC) || CanUse(RG_LONGSHOT) || CanUse(RG_NAYRUS_LOVE))) || (EffectiveHealth > 1 && CanUse(RG_GORON_TUNIC) && CanUse(RG_HOOKSHOT)) || (CanUse(RG_NAYRUS_LOVE) && CanUse(RG_HOOKSHOT)) || (EffectiveHealth > 2 && CanUse(RG_HOOKSHOT) && randoCtx->GetTrickOption(RT_GC_GROTTO)));}}),
   });
 
-  areaTable[RR_GC_WOODS_WARP] = Area("GC Woods Warp", "Goron City", RHT_GORON_CITY, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_GC_WOODS_WARP] = Area("GC Woods Warp", "Goron City", RA_GORON_CITY, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&GCWoodsWarpOpen, {[]{return GCWoodsWarpOpen || (CanBlastOrSmash || CanUse(RG_DINS_FIRE));}}),
                 }, {}, {
@@ -118,7 +118,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_THE_LOST_WOODS, {[]{return true;}}),
   });
 
-  areaTable[RR_GC_DARUNIAS_CHAMBER] = Area("GC Darunias Chamber", "Goron City", RHT_GORON_CITY, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_GC_DARUNIAS_CHAMBER] = Area("GC Darunias Chamber", "Goron City", RA_GORON_CITY, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&GoronCityChildFire, {[]{return GoronCityChildFire || (IsChild && CanUse(RG_STICKS));}}),
                 }, {
@@ -130,13 +130,13 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_DMC_LOWER_LOCAL, {[]{return IsAdult;}}),
   });
 
-  areaTable[RR_GC_GROTTO_PLATFORM] = Area("GC Grotto Platform", "Goron City", RHT_GORON_CITY, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_GC_GROTTO_PLATFORM] = Area("GC Grotto Platform", "Goron City", RA_GORON_CITY, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_GC_GROTTO,  {[]{return true;}}),
                   Entrance(RR_GORON_CITY, {[]{return EffectiveHealth > 2 || CanUse(RG_GORON_TUNIC) || CanUse(RG_NAYRUS_LOVE) || ((IsChild || CanPlay(SongOfTime)) && CanUse(RG_LONGSHOT));}}),
   });
 
-  areaTable[RR_GC_SHOP] = Area("GC Shop", "GC Shop", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GC_SHOP] = Area("GC Shop", "GC Shop", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_GC_SHOP_ITEM_1, {[]{return true;}}),
                   LocationAccess(RC_GC_SHOP_ITEM_2, {[]{return true;}}),
@@ -151,7 +151,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_GORON_CITY, {[]{return true;}}),
   });
 
-  areaTable[RR_GC_GROTTO] = Area("GC Grotto", "GC Grotto", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_GC_GROTTO] = Area("GC Grotto", "GC Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_GC_DEKU_SCRUB_GROTTO_LEFT,   {[]{return CanStunDeku;}}),
                   LocationAccess(RC_GC_DEKU_SCRUB_GROTTO_RIGHT,  {[]{return CanStunDeku;}}),
@@ -161,14 +161,14 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_GC_GROTTO_PLATFORM, {[]{return true;}}),
   });
 
-  areaTable[RR_DMC_UPPER_NEARBY] = Area("DMC Upper Nearby", "Death Mountain Crater", RHT_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_DMC_UPPER_NEARBY] = Area("DMC Upper Nearby", "Death Mountain Crater", RA_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_DMC_UPPER_LOCAL,       {[]{return FireTimer >= 48;}}),
                   Entrance(RR_DEATH_MOUNTAIN_SUMMIT, {[]{return true;}}),
                   Entrance(RR_DMC_UPPER_GROTTO,      {[]{return Here(RR_DMC_UPPER_NEARBY, []{return CanBlastOrSmash && (FireTimer >= 8 || Hearts >= 3);});}})
   });
 
-  areaTable[RR_DMC_UPPER_LOCAL] = Area("DMC Upper Local", "Death Mountain Crater", RHT_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_DMC_UPPER_LOCAL] = Area("DMC Upper Local", "Death Mountain Crater", RA_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&GossipStoneFairy, {[]{return GossipStoneFairy || (HasExplosives && CanSummonGossipFairyWithoutSuns && (FireTimer >= 16 || Hearts >= 3));}}),
                 }, {
@@ -184,7 +184,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_DMC_LOWER_NEARBY,         {[]{return false;}}),
   });
 
-  areaTable[RR_DMC_LADDER_AREA_NEARBY] = Area("DMC Ladder Area Nearby", "Death Mountain Crater", RHT_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_DMC_LADDER_AREA_NEARBY] = Area("DMC Ladder Area Nearby", "Death Mountain Crater", RA_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_DMC_DEKU_SCRUB, {[]{return IsChild && CanStunDeku;}}),
                 }, {
@@ -193,7 +193,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_DMC_LOWER_NEARBY, {[]{return Hearts >= 3 && (CanUse(RG_HOVER_BOOTS) || (randoCtx->GetTrickOption(RT_DMC_BOULDER_JS) && IsAdult && CanUse(RG_MEGATON_HAMMER)) || (randoCtx->GetTrickOption(RT_DMC_BOULDER_SKIP) && IsAdult));}}),
   });
 
-  areaTable[RR_DMC_LOWER_NEARBY] = Area("DMC Lower Nearby", "Death Mountain Crater", RHT_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_DMC_LOWER_NEARBY] = Area("DMC Lower Nearby", "Death Mountain Crater", RA_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_DMC_LOWER_LOCAL,          {[]{return FireTimer >= 48;}}),
                   Entrance(RR_GC_DARUNIAS_CHAMBER,      {[]{return true;}}),
@@ -201,7 +201,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_DMC_HAMMER_GROTTO,        {[]{return IsAdult && CanUse(RG_MEGATON_HAMMER);}}),
   });
 
-  areaTable[RR_DMC_LOWER_LOCAL] = Area("DMC Lower Local", "Death Mountain Crater", RHT_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_DMC_LOWER_LOCAL] = Area("DMC Lower Local", "Death Mountain Crater", RA_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_DMC_LOWER_NEARBY,       {[]{return true;}}),
                   Entrance(RR_DMC_LADDER_AREA_NEARBY, {[]{return FireTimer >= 8 || Hearts >= 3;}}),
@@ -209,7 +209,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_DMC_CENTRAL_LOCAL,      {[]{return (CanUse(RG_HOVER_BOOTS) || CanUse(RG_HOOKSHOT) || (IsAdult && CanShield && randoCtx->GetTrickOption(RT_DMC_BOLERO_JUMP))) && FireTimer >= 24;}}),
   });
 
-  areaTable[RR_DMC_CENTRAL_NEARBY] = Area("DMC Central Nearby", "Death Mountain Crater", RHT_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_DMC_CENTRAL_NEARBY] = Area("DMC Central Nearby", "Death Mountain Crater", RA_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_DMC_VOLCANO_FREESTANDING_POH, {[]{return IsAdult && Hearts >= 3 && (CanPlantBean(RR_DMC_CENTRAL_LOCAL) || (randoCtx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && HoverBoots));}}),
                   LocationAccess(RC_SHEIK_IN_CRATER,              {[]{return IsAdult && (FireTimer >= 8 || Hearts >= 3);}}),
@@ -218,7 +218,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_DMC_CENTRAL_LOCAL, {[]{return FireTimer >= 48;}}),
   });
 
-  areaTable[RR_DMC_CENTRAL_LOCAL] = Area("DMC Central Local", "Death Mountain Crater", RHT_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {
+  areaTable[RR_DMC_CENTRAL_LOCAL] = Area("DMC Central Local", "Death Mountain Crater", RA_DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&BeanPlantFairy, {[]{return BeanPlantFairy || (CanPlantBean(RR_DMC_CENTRAL_LOCAL) && CanPlay(SongOfStorms));}}),
                 }, {
@@ -232,7 +232,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_FIRE_TEMPLE_ENTRYWAY, {[]{return (IsChild && Hearts >= 3 && randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) || (IsAdult && FireTimer >= 24);}}),
   });
 
-  areaTable[RR_DMC_GREAT_FAIRY_FOUNTAIN] = Area("DMC Great Fairy Fountain", "DMC Great Fairy Fountain", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_DMC_GREAT_FAIRY_FOUNTAIN] = Area("DMC Great Fairy Fountain", "DMC Great Fairy Fountain", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_DMC_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby);}}),
                 }, {
@@ -240,7 +240,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_DMC_LOWER_LOCAL, {[]{return true;}}),
   });
 
-  areaTable[RR_DMC_UPPER_GROTTO] = Area("DMC Upper Grotto", "DMC Upper Grotto", RHT_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
+  areaTable[RR_DMC_UPPER_GROTTO] = Area("DMC Upper Grotto", "DMC Upper Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(RC_DMC_UPPER_GROTTO_CHEST,        {[]{return true;}}),
                   LocationAccess(RC_DMC_UPPER_GROTTO_GOSSIP_STONE, {[]{return true;}}),
@@ -249,7 +249,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_DMC_UPPER_LOCAL, {[]{return true;}}),
   });
 
-  areaTable[RR_DMC_HAMMER_GROTTO] = Area("DMC Hammer Grotto", "DMC Hammer Grotto", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_DMC_HAMMER_GROTTO] = Area("DMC Hammer Grotto", "DMC Hammer Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_DMC_DEKU_SCRUB_GROTTO_LEFT,   {[]{return CanStunDeku;}}),
                   LocationAccess(RC_DMC_DEKU_SCRUB_GROTTO_RIGHT,  {[]{return CanStunDeku;}}),

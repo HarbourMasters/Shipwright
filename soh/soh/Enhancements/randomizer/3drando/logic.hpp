@@ -189,12 +189,10 @@ extern bool FreeFairies;
 extern bool FairyPond;
 extern bool BombchuDrop;
 
-extern bool BuyBombchus10;
-extern bool BuyBombchus20;
+extern bool BuyBombchus;
 extern bool BuyArrow;
 extern bool BuyBomb;
-extern bool BuyGPotion;
-extern bool BuyBPotion;
+extern bool BuyMagicPotion;
 extern bool BuySeed;
 extern bool MagicRefill;
 

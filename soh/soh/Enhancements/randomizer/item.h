@@ -51,6 +51,7 @@ class Item {
     bool IsAdvancement() const;
     int GetItemID() const;
     ItemType GetItemType() const;
+    std::variant<bool*, uint8_t*> GetLogicVar() const;
     RandomizerGet GetRandomizerGet() const;
     uint16_t GetPrice() const;
     std::shared_ptr<GetItemEntry> GetGIEntry() const;
