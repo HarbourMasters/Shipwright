@@ -57,6 +57,17 @@ std::array<std::string, HINT_TYPE_MAX> hintTypeNames = {
     "Junk"
 };
 
+std::array<std::pair<RandomizerCheck,RandomizerSettingKey>, 8> staticHintLocations = {{
+  {RC_KAK_10_GOLD_SKULLTULA_REWARD, RSK_KAK_10_SKULLS_HINT},
+  {RC_KAK_20_GOLD_SKULLTULA_REWARD, RSK_KAK_20_SKULLS_HINT},
+  {RC_KAK_30_GOLD_SKULLTULA_REWARD, RSK_KAK_30_SKULLS_HINT},
+  {RC_KAK_40_GOLD_SKULLTULA_REWARD, RSK_KAK_40_SKULLS_HINT},
+  {RC_KAK_50_GOLD_SKULLTULA_REWARD, RSK_KAK_50_SKULLS_HINT},
+  {RC_SONG_FROM_IMPA,               RSK_SKIP_CHILD_ZELDA},
+  {RC_ZR_FROGS_OCARINA_GAME,        RSK_FROGS_HINT},
+  {RC_DMT_TRADE_CLAIM_CHECK,        RSK_BIGGORON_HINT},
+  }};
+
 bool FilterWotHLocations(RandomizerCheck loc){
   auto ctx = Rando::Context::GetInstance();
   return ctx->GetItemLocation(loc)->IsWothCandidate();
@@ -280,9 +291,6 @@ Text adultAltarText;
 Text ganonText;
 Text ganonHintText;
 Text sheikText;
-Text sariaText;
-Text dampesText;
-Text gregText;
 Text warpMinuetText;
 Text warpBoleroText;
 Text warpSerenadeText;
@@ -292,12 +300,24 @@ Text warpPreludeText;
 
 std::string masterSwordHintLoc;
 std::string lightArrowHintLoc;
-std::string dampeHintLoc;
-std::string gregHintLoc;
-std::string sariaHintLoc;
+StaticHintData dampeHintData;
+StaticHintData gregHintData;
+StaticHintData sariaHintData;
 
 void SetGanonText(Text text){
   ganonText = text;
+}
+
+const StaticHintData& GetDampeHintData() {
+  return dampeHintData;
+}
+
+const StaticHintData& GetGregHintData() {
+  return gregHintData;
+}
+
+const StaticHintData& GetSariaHintData() {
+  return sariaHintData;
 }
 
 std::string GetMasterSwordHintLoc() {
@@ -306,18 +326,6 @@ std::string GetMasterSwordHintLoc() {
 
 std::string GetLightArrowHintLoc() {
     return lightArrowHintLoc;
-}
-
-std::string GetDampeHintLoc() {
-    return dampeHintLoc;
-}
-
-std::string GetGregHintLoc() {
-    return gregHintLoc;
-}
-
-std::string GetSariaHintLoc() {
-  return sariaHintLoc;
 }
 
 static std::vector<RandomizerCheck> GetEmptyGossipStones() {
@@ -885,7 +893,7 @@ void CreateMerchantsHints() {
 }
 
 //RANDOTODO add Better Links Pocket and starting item handling once more starting items are added
-void CreateSpecialItemHint(uint32_t item, RandomizerHintKey hintKey, std::vector<RandomizerCheck> hints, RandomizerHintTextKey text1, RandomizerHintTextKey text2, Text& textLoc, std::string& nameLoc, bool condition, bool yourpocket = false) {
+void CreateSpecialItemHint(uint32_t item, RandomizerHintKey hintKey, std::vector<RandomizerCheck> hints, RandomizerHintTextKey text1, RandomizerHintTextKey text2, StaticHintData& hintData, bool condition, bool yourpocket = false) {
   auto ctx = Rando::Context::GetInstance();
   if(condition){
       RandomizerCheck location = FilterFromPool(ctx->allLocations, [item, ctx](const RandomizerCheck loc) {
@@ -896,14 +904,11 @@ void CreateSpecialItemHint(uint32_t item, RandomizerHintKey hintKey, std::vector
       ctx->GetItemLocation(location)->SetAsHinted();
     }
     
-    RandomizerArea area = ctx->GetItemLocation(location)->GetArea();
-    textLoc = ::Hint(text1).GetText() + ::Hint(area).GetText() + ::Hint(text2).GetText();
-    nameLoc = Rando::StaticData::GetLocation(location)->GetName();
-    ctx->AddHint(hintKey, AutoFormatHintText(textLoc), location, HINT_TYPE_STATIC, "Static", area);
-  } else {
-    textLoc = Text();
-    nameLoc = "";
-  }
+    hintData.hintArea = ctx->GetItemLocation(location)->GetArea();
+    hintData.hintText = ::Hint(text1).GetText() + ::Hint(hintData.hintArea).GetText() + ::Hint(text2).GetText();
+    hintData.hintLoc = location;
+    ctx->AddHint(hintKey, AutoFormatHintText(hintData.hintText), location, HINT_TYPE_STATIC, "Static", hintData.hintArea);
+  } 
 }
 
 void CreateWarpSongTexts() {
@@ -1033,27 +1038,11 @@ void CreateStoneHints() {
   const HintSetting& hintSetting = hintSettingTable[ctx->GetOption(RSK_HINT_DISTRIBUTION).Value<uint8_t>()];
   std::vector<HintDistributionSetting> distTable = hintSetting.distTable;
 
-  // Apply Special hint exclusions with no requirements
-  if (ctx->GetOption(RSK_KAK_10_SKULLS_HINT)){
-      ctx->GetItemLocation(RC_KAK_10_GOLD_SKULLTULA_REWARD)->SetAsHinted();
-  }
-  if (ctx->GetOption(RSK_KAK_20_SKULLS_HINT)){
-      ctx->GetItemLocation(RC_KAK_20_GOLD_SKULLTULA_REWARD)->SetAsHinted();
-  }
-  if (ctx->GetOption(RSK_KAK_30_SKULLS_HINT)){
-      ctx->GetItemLocation(RC_KAK_30_GOLD_SKULLTULA_REWARD)->SetAsHinted();
-  }
-  if (ctx->GetOption(RSK_KAK_40_SKULLS_HINT)){
-      ctx->GetItemLocation(RC_KAK_40_GOLD_SKULLTULA_REWARD)->SetAsHinted();
-  }
-  if (ctx->GetOption(RSK_KAK_50_SKULLS_HINT)){
-      ctx->GetItemLocation(RC_KAK_50_GOLD_SKULLTULA_REWARD)->SetAsHinted();
-  }
-  if (ctx->GetOption(RSK_FROGS_HINT)){
-      ctx->GetItemLocation(RC_ZR_FROGS_OCARINA_GAME)->SetAsHinted();
-  }
-  if (ctx->GetOption(RSK_SKIP_CHILD_ZELDA)){
-      ctx->GetItemLocation(RC_SONG_FROM_IMPA)->SetAsHinted();
+  // Apply Static hint exclusions with no in-game requirements
+  for (int c = 0; c < staticHintLocations.size(); c++){
+      if(ctx->GetOption(staticHintLocations[c].second)){
+          ctx->GetItemLocation(staticHintLocations[c].first)->SetAsHinted();
+      }
   }
 
   // Add 'always' location hints
@@ -1122,9 +1111,9 @@ void CreateAllHints(){
   auto ctx = Rando::Context::GetInstance();
   CreateGanonAndSheikText();
   CreateAltarText();
-  CreateSpecialItemHint(RG_PROGRESSIVE_HOOKSHOT, RH_DAMPES_DIARY, {RC_DAMPE_HINT}, RHT_DAMPE_DIARY01, RHT_DAMPE_DIARY02, dampesText, dampeHintLoc, (bool)ctx->GetOption(RSK_DAMPES_DIARY_HINT));
-  CreateSpecialItemHint(RG_GREG_RUPEE, RH_GREG_RUPEE, {RC_GREG_HINT}, RHT_GREG_HINT01, RHT_GREG_HINT02, gregText, gregHintLoc, (bool)ctx->GetOption(RSK_GREG_HINT));
-  CreateSpecialItemHint(RG_PROGRESSIVE_MAGIC_METER, RH_SARIA, {RC_SARIA_SONG_HINT, RC_SONG_FROM_SARIA}, RHT_SARIA_TEXT01, RHT_SARIA_TEXT02, sariaText, sariaHintLoc, (bool)ctx->GetOption(RSK_SARIA_HINT));
+  CreateSpecialItemHint(RG_PROGRESSIVE_HOOKSHOT, RH_DAMPES_DIARY, {RC_DAMPE_HINT}, RHT_DAMPE_DIARY01, RHT_DAMPE_DIARY02, dampeHintData, (bool)ctx->GetOption(RSK_DAMPES_DIARY_HINT));
+  CreateSpecialItemHint(RG_GREG_RUPEE, RH_GREG_RUPEE, {RC_GREG_HINT}, RHT_GREG_HINT01, RHT_GREG_HINT02, gregHintData, (bool)ctx->GetOption(RSK_GREG_HINT));
+  CreateSpecialItemHint(RG_PROGRESSIVE_MAGIC_METER, RH_SARIA, {RC_SARIA_SONG_HINT, RC_SONG_FROM_SARIA}, RHT_SARIA_TEXT01, RHT_SARIA_TEXT02, sariaHintData, (bool)ctx->GetOption(RSK_SARIA_HINT));
 
   if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ON_HINT)) {
     CreateMerchantsHints();

@@ -1416,14 +1416,14 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_DMC_UPPER_GROTTO_GOSSIP_STONE] =   Location::HintStone(RC_DMC_UPPER_GROTTO_GOSSIP_STONE,   RCQUEST_BOTH,    RCAREA_DEATH_MOUNTAIN_CRATER, SCENE_GROTTOS,               -23802, 0x3A, "Upper Grotto Gossip Stone",     "DMC Upper Grotto Gossip Stone",   {});
 
     // Other Hints
-    locationTable[RC_GANONDORF_HINT]    = Location::OtherHint(RC_GANONDORF_HINT,   RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE, RCAREA_GANONS_CASTLE, ACTOR_EN_GANON_MANT, SCENE_GANON_BOSS,           "Ganondorf Hint",   "Ganondorf Hint");
-    locationTable[RC_SHEIK_HINT_GC]     = Location::OtherHint(RC_SHEIK_HINT_GC,    RCQUEST_VANILLA, RCTYPE_GOSSIP_STONE, RCAREA_GANONS_CASTLE, ACTOR_EN_XC,         SCENE_INSIDE_GANONS_CASTLE, "Sheik Hint",       "Sheik Hint in Ganons Castle");
-    locationTable[RC_SHEIK_HINT_MQ_GC]  = Location::OtherHint(RC_SHEIK_HINT_MQ_GC, RCQUEST_MQ,      RCTYPE_GOSSIP_STONE, RCAREA_GANONS_CASTLE, ACTOR_EN_XC,         SCENE_INSIDE_GANONS_CASTLE, "Sheik Hint",       "Sheik Hint in MQ Ganons Castle");
-    locationTable[RC_DAMPE_HINT]        = Location::OtherHint(RC_DAMPE_HINT,       RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE, RCAREA_GRAVEYARD,     ACTOR_ID_MAX,        SCENE_GRAVEKEEPERS_HUT,     "Diary Hint",       "Dampe's Diary Hint");
-    locationTable[RC_GREG_HINT]         = Location::OtherHint(RC_GREG_HINT,        RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE, RCAREA_MARKET,        ACTOR_EN_TAKARA_MAN, SCENE_TREASURE_BOX_SHOP,    "Greg Hint",        "Greg Hint");
-    locationTable[RC_SARIA_SONG_HINT]   = Location::OtherHint(RC_SARIA_SONG_HINT,  RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE, RCAREA_KOKIRI_FOREST, ACTOR_ID_MAX,        SCENE_ID_MAX,               "Sarias Song Hint", "Magic Hint Via Saria's Song");
-    locationTable[RC_ALTAR_HINT_CHILD]  = Location::OtherHint(RC_ALTAR_HINT_CHILD, RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE, RCAREA_MARKET,        ACTOR_ID_MAX,        SCENE_TEMPLE_OF_TIME,       "Child Altar Hint", "ToT Child Altar Text");
-    locationTable[RC_ALTAR_HINT_ADULT]  = Location::OtherHint(RC_ALTAR_HINT_ADULT, RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE, RCAREA_MARKET,        ACTOR_ID_MAX,        SCENE_TEMPLE_OF_TIME,       "Adult Altar Hint", "ToT Adult Altar Text");
+    locationTable[RC_GANONDORF_HINT]    = Location::OtherHint(RC_GANONDORF_HINT,   RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE, RCAREA_GANONS_CASTLE,        ACTOR_EN_GANON_MANT, SCENE_GANON_BOSS,           "Ganondorf Hint",   "Ganondorf Hint");
+    locationTable[RC_SHEIK_HINT_GC]     = Location::OtherHint(RC_SHEIK_HINT_GC,    RCQUEST_VANILLA, RCTYPE_GOSSIP_STONE, RCAREA_GANONS_CASTLE,        ACTOR_EN_XC,         SCENE_INSIDE_GANONS_CASTLE, "Sheik Hint",       "Sheik Hint in Ganons Castle");
+    locationTable[RC_SHEIK_HINT_MQ_GC]  = Location::OtherHint(RC_SHEIK_HINT_MQ_GC, RCQUEST_MQ,      RCTYPE_GOSSIP_STONE, RCAREA_GANONS_CASTLE,        ACTOR_EN_XC,         SCENE_INSIDE_GANONS_CASTLE, "Sheik Hint",       "Sheik Hint in MQ Ganons Castle");
+    locationTable[RC_DAMPE_HINT]        = Location::OtherHint(RC_DAMPE_HINT,       RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE, RCAREA_GRAVEYARD,            ACTOR_ID_MAX,        SCENE_GRAVEKEEPERS_HUT,     "Diary Hint",       "Dampe's Diary Hint");
+    locationTable[RC_GREG_HINT]         = Location::OtherHint(RC_GREG_HINT,        RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE, RCAREA_MARKET,               ACTOR_EN_TAKARA_MAN, SCENE_TREASURE_BOX_SHOP,    "Greg Hint",        "Greg Hint");
+    locationTable[RC_SARIA_SONG_HINT]   = Location::OtherHint(RC_SARIA_SONG_HINT,  RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE, RCAREA_KOKIRI_FOREST,        ACTOR_ID_MAX,        SCENE_ID_MAX,               "Sarias Song Hint", "Magic Hint Via Saria's Song");
+    locationTable[RC_ALTAR_HINT_CHILD]  = Location::OtherHint(RC_ALTAR_HINT_CHILD, RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE, RCAREA_MARKET,               ACTOR_ID_MAX,        SCENE_TEMPLE_OF_TIME,       "Child Altar Hint", "ToT Child Altar Text");
+    locationTable[RC_ALTAR_HINT_ADULT]  = Location::OtherHint(RC_ALTAR_HINT_ADULT, RCQUEST_BOTH,    RCTYPE_GOSSIP_STONE, RCAREA_MARKET,               ACTOR_ID_MAX,        SCENE_TEMPLE_OF_TIME,       "Adult Altar Hint", "ToT Adult Altar Text");
     
     locationTable[RC_TRIFORCE_COMPLETED] = Location::Reward(RC_TRIFORCE_COMPLETED, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, 0x00, "Completed Triforce", "Completed Triforce", RHT_NONE, RG_NONE, {}, SpoilerCollectionCheck::None(), SpoilerCollectionCheckGroup::GROUP_NO_GROUP);
     // clang-format on

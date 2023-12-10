@@ -551,6 +551,11 @@ Rando::ItemLocation* GetItemLocation(RandomizerGet item) {
 // Writes the hints to the spoiler log, if they are enabled.
 static void WriteHints() {
     auto ctx = Rando::Context::GetInstance();
+
+    StaticHintData dampeHintData = GetDampeHintData();
+    StaticHintData sariaHintData = GetSariaHintData();
+    StaticHintData gregHintData = GetGregHintData();
+
     int language = ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex();
     if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
         jsonData["warpMinuetText"] = ctx->GetHint(RH_MINUET_WARP_LOC)->GetText().GetForLanguage(language);
@@ -607,17 +612,17 @@ static void WriteHints() {
     }
     if (ctx->GetOption(RSK_DAMPES_DIARY_HINT)){
       jsonData["dampeText"] = ctx->GetHint(RH_DAMPES_DIARY)->GetText().GetForLanguage(language);
-      jsonData["dampeHintLoc"] = GetDampeHintLoc();
+      jsonData["dampeHintLoc"] = Rando::StaticData::GetLocation(dampeHintData.hintLoc)->GetHint()->GetText().GetForLanguage(language);
       jsonData["dampeRegion"] = ::Hint(ctx->GetHint(RH_DAMPES_DIARY)->GetHintedArea()).GetText().GetEnglish();
     }
     if (ctx->GetOption(RSK_GREG_HINT)){
       jsonData["gregText"] = ctx->GetHint(RH_GREG_RUPEE)->GetText().GetForLanguage(language);
-      jsonData["gregLoc"] = GetGregHintLoc();
+      jsonData["gregLoc"] = Rando::StaticData::GetLocation(gregHintData.hintLoc)->GetHint()->GetText().GetForLanguage(language);
       jsonData["gregRegion"] = ::Hint(ctx->GetHint(RH_GREG_RUPEE)->GetHintedArea()).GetText().GetEnglish();
     }
     if (ctx->GetOption(RSK_SARIA_HINT)){
       jsonData["sariaText"] = ctx->GetHint(RH_SARIA)->GetText().GetForLanguage(language);
-      jsonData["sariaHintLoc"] = GetSariaHintLoc();
+      jsonData["sariaHintLoc"] = Rando::StaticData::GetLocation(sariaHintData.hintLoc)->GetHint()->GetText().GetForLanguage(language);
       jsonData["sariaRegion"] = ::Hint(ctx->GetHint(RH_SARIA)->GetHintedArea()).GetText().GetEnglish();
     }
 
@@ -630,7 +635,7 @@ static void WriteHints() {
         std::string hintTextString = hint->GetText().GetForLanguage(language);
         HintType hintType = hint->GetHintType();
 
-         std::string textStr = hintTextString;
+        std::string textStr = hintTextString;
         std::string name = Rando::StaticData::GetLocation(key)->GetName();
         jsonData["hints"][name]["hint"] = textStr;
         jsonData["hints"][name]["distribution"] = hint->GetDistribution();

@@ -349,6 +349,13 @@ void Randomizer::LoadHintMessages() {
         CustomMessage(ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetText().GetEnglish(),
             ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetText().GetGerman(),
             ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::randoMiscHintsTableID, TEXT_BIGGORON_HINT,
+        CustomMessage(ctx->GetHint(RH_BIGGORON_HINT)->GetText().GetEnglish(),
+            ctx->GetHint(RH_BIGGORON_HINT)->GetText().GetEnglish(),
+            ctx->GetHint(RH_BIGGORON_HINT)->GetText().GetFrench())
+    );
+
     CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_NOCTURNE_OF_SHADOW,
         CustomMessage(ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetText().GetEnglish(),
             ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetText().GetGerman(),

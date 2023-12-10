@@ -161,6 +161,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_KAK_30_SKULLS_HINT] = Option::Bool("30 GS Hint", "gRandomize30GSHint", "", IMFLAG_NONE);
     mOptions[RSK_KAK_40_SKULLS_HINT] = Option::Bool("40 GS Hint", "gRandomize40GSHint", "", IMFLAG_NONE);
     mOptions[RSK_KAK_50_SKULLS_HINT] = Option::Bool("50 GS Hint", "gRandomize50GSHint");
+    mOptions[RSK_BIGGORON_HINT] = Option::Bool("Biggoron's Hint");
     mOptions[RSK_SCRUB_TEXT_HINT] = Option::Bool("Scrub Hint Text", "gRandomizeScrubText", mOptionDescriptions[RSK_SCRUB_TEXT_HINT], IMFLAG_NONE);
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     mOptions[RSK_BLUE_FIRE_ARROWS] = Option::Bool("Blue Fire Arrows", "gRandomizeBlueFireArrows", mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
@@ -929,6 +930,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KAK_30_SKULLS_HINT],
         &mOptions[RSK_KAK_40_SKULLS_HINT],
         &mOptions[RSK_KAK_50_SKULLS_HINT],
+        &mOptions[RSK_BIGGORON_HINT],
         &mOptions[RSK_SCRUB_TEXT_HINT],
         // TODO: Compasses show Reward/WOTH, Maps show Dungeon Mode, Starting Time
         &mOptions[RSK_DAMAGE_MULTIPLIER],
@@ -1126,6 +1128,7 @@ void Settings::CreateOptions() {
         { "Miscellaneous Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
         { "Miscellaneous Settings:40 GS Hint", RSK_KAK_40_SKULLS_HINT },
         { "Miscellaneous Settings:50 GS Hint", RSK_KAK_50_SKULLS_HINT },
+        { "Miscellaneous Settings:Biggoron's Hint", RSK_BIGGORON_HINT },
         { "Miscellaneous Settings:Warp Song Hints", RSK_WARP_SONG_HINTS },
         { "Miscellaneous Settings:Scrub Hint Text", RSK_SCRUB_TEXT_HINT },
         { "Miscellaneous Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
@@ -2171,6 +2174,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_KAK_30_SKULLS_HINT:
                 case RSK_KAK_40_SKULLS_HINT:
                 case RSK_KAK_50_SKULLS_HINT:
+                case RSK_BIGGORON_HINT:
                 case RSK_WARP_SONG_HINTS:
                 case RSK_SCRUB_TEXT_HINT:
                 case RSK_KEYRINGS_GERUDO_FORTRESS:

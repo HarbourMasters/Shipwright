@@ -3129,6 +3129,26 @@ void HintTable_Init() {
         "# bei sich haben und Dich neugierig beobachten..."
     }});
 
+    hintTable[RHT_BIGGORON_TEXT01] = HintText::OtherHint({
+        // obscure text RANDOTODO polish
+        Text{
+            "Aaaaare you here to claim my finest %r", 
+            /*french*/
+            "%r",
+            /*german?*/
+            "%r"},
+    });
+
+    hintTable[RHT_BIGGORON_TEXT02] = HintText::OtherHint({
+        // obscure text
+        Text{
+            "%w. ?.",
+            /*french*/
+            "%w. ",
+            /*german?*/
+            "%w. "},
+    });
+
     /*--------------------------
     |      GANON LINE TEXT     |
     ---------------------------*/
@@ -3448,7 +3468,11 @@ std::array<ConditionalAlwaysHint, 10> conditionalAlwaysHints = {
     std::make_pair(RC_SONG_FROM_OCARINA_OF_TIME, []() { return StonesRequiredBySettings() < 2; }),
     std::make_pair(RC_HF_OCARINA_OF_TIME_ITEM, []() { return StonesRequiredBySettings() < 2; }),
     std::make_pair(RC_SHEIK_IN_KAKARIKO, []() { return MedallionsRequiredBySettings() < 5; }),
-    std::make_pair(RC_DMT_TRADE_CLAIM_CHECK, []() { return false; }),
+    std::make_pair(RC_DMT_TRADE_CLAIM_CHECK,
+                   []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return !ctx->GetOption(RSK_BIGGORON_HINT);
+                   }),
     std::make_pair(RC_KAK_30_GOLD_SKULLTULA_REWARD,
                    []() {
                        auto ctx = Rando::Context::GetInstance();
