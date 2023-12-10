@@ -67,49 +67,49 @@ namespace Rando {
             // Adult items
             // TODO: Uncomment those if we ever implement more item usability settings
             case RG_FAIRY_BOW:
-                return IsAdult;// || BowAsChild;
+                return CanBeAdult;// || BowAsChild;
             case RG_MEGATON_HAMMER:
-                return IsAdult;// || HammerAsChild;
+                return CanBeAdult;// || HammerAsChild;
             case RG_IRON_BOOTS:
-                return IsAdult;// || IronBootsAsChild;
+                return CanBeAdult;// || IronBootsAsChild;
             case RG_HOVER_BOOTS:
-                return IsAdult;// || HoverBootsAsChild;
+                return CanBeAdult;// || HoverBootsAsChild;
             case RG_HOOKSHOT:
-                return IsAdult;// || HookshotAsChild;
+                return CanBeAdult;// || HookshotAsChild;
             case RG_LONGSHOT:
-                return IsAdult;// || HookshotAsChild;
+                return CanBeAdult;// || HookshotAsChild;
             case RG_SILVER_GAUNTLETS:
-                return IsAdult;
+                return CanBeAdult;
             case RG_GOLDEN_GAUNTLETS:
-                return IsAdult;
+                return CanBeAdult;
             case RG_GORON_TUNIC:
-                return IsAdult;// || GoronTunicAsChild;
+                return CanBeAdult;// || GoronTunicAsChild;
             case RG_ZORA_TUNIC:
-                return IsAdult;// || ZoraTunicAsChild;
+                return CanBeAdult;// || ZoraTunicAsChild;
             case RG_SCARECROW:
-                return IsAdult;// || HookshotAsChild;
+                return CanBeAdult;// || HookshotAsChild;
             case RG_DISTANT_SCARECROW:
-                return IsAdult;// || HookshotAsChild;
+                return CanBeAdult;// || HookshotAsChild;
             case RG_HYLIAN_SHIELD:
-                return IsAdult;
+                return CanBeAdult;
             case RG_MIRROR_SHIELD:
-                return IsAdult;// || MirrorShieldAsChild;
+                return CanBeAdult;// || MirrorShieldAsChild;
             case RG_MASTER_SWORD:
-                return IsAdult;// || MasterSwordAsChild;
+                return CanBeAdult;// || MasterSwordAsChild;
             case RG_BIGGORON_SWORD:
-                return IsAdult;// || BiggoronSwordAsChild;
+                return CanBeAdult;// || BiggoronSwordAsChild;
 
             // Child items
             case RG_FAIRY_SLINGSHOT:
-                return IsChild;// || SlingshotAsAdult;
+                return CanBeChild;// || SlingshotAsAdult;
             case RG_BOOMERANG:
-                return IsChild;// || BoomerangAsAdult;
+                return CanBeChild;// || BoomerangAsAdult;
             case RG_KOKIRI_SWORD:
-                return IsChild;// || KokiriSwordAsAdult;
+                return CanBeChild;// || KokiriSwordAsAdult;
             case RG_STICKS:
-                return IsChild;// || StickAsAdult;
+                return CanBeChild;// || StickAsAdult;
             case RG_DEKU_SHIELD:
-                return IsChild;// || DekuShieldAsAdult;
+                return CanBeChild;// || DekuShieldAsAdult;
 
             // Magic items
             default:
@@ -174,9 +174,9 @@ namespace Rando {
         // TODO: Uncomment when glitches are implemented
         switch(glitch) {
             case GlitchType::EquipSwapDins:
-                return ((IsAdult && HasItem(RG_DINS_FIRE)) || (IsChild && (HasItem(RG_STICKS) || HasItem(RG_DINS_FIRE)))) && false; //GlitchEquipSwapDins;
+                return ((CanBeAdult && HasItem(RG_DINS_FIRE)) || (CanBeChild && (HasItem(RG_STICKS) || HasItem(RG_DINS_FIRE)))) && false; //GlitchEquipSwapDins;
             case GlitchType::EquipSwap: // todo: add bunny hood to adult item equippable list and child trade item to child item equippable list
-                return ((IsAdult && (HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE))) || (IsChild && (HasItem(RG_STICKS) || 
+                return ((CanBeAdult && (HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE))) || (CanBeChild && (HasItem(RG_STICKS) || 
                     HasItem(RG_FAIRY_SLINGSHOT) || HasItem(RG_BOOMERANG) || HasBottle || Nuts || Ocarina || HasItem(RG_LENS_OF_TRUTH) || HasExplosives ||
                     (MagicBean || MagicBeanPack) || HasItem(RG_DINS_FIRE) || HasItem(RG_FARORES_WIND) || HasItem(RG_NAYRUS_LOVE)))) && false; //GlitchEquipSwap;
         }
@@ -185,7 +185,13 @@ namespace Rando {
         return false;
     }
 
-    Logic::Logic() {}
+    Logic::Logic(SaveContext *saveContext) {
+        if (saveContext != nullptr) {
+            mSaveContext = saveContext;
+        } else {
+            mSaveContext = new SaveContext();
+        }
+    }
 
     // Updates all logic helpers. Should be called whenever a non-helper is changed
     void Logic::UpdateHelpers() {
@@ -249,20 +255,20 @@ namespace Rando {
         Cojiro       = Cojiro       || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && OddMushroom);
         PocketEgg    = PocketEgg    || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && Cojiro);
 
-        // IsChild = Age == AGE_CHILD;
-        // IsAdult = Age == AGE_ADULT;
+        // CanBeChild = Age == AGE_CHILD;
+        // CanBeAdult = Age == AGE_ADULT;
 
         CanBlastOrSmash = HasExplosives || CanUse(RG_MEGATON_HAMMER);
-        CanChildAttack  = IsChild && (Slingshot || Boomerang || Sticks || KokiriSword || HasExplosives || CanUse(RG_DINS_FIRE) || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD));
-        CanChildDamage  = IsChild && (Slingshot ||              Sticks || KokiriSword || HasExplosives || CanUse(RG_DINS_FIRE) || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD));
-        CanAdultAttack  = IsAdult && (CanUse(RG_FAIRY_BOW) || CanUse(RG_BOOMERANG)       || CanUse(RG_STICKS) || CanUse(RG_KOKIRI_SWORD) || HasExplosives || CanUse(RG_DINS_FIRE) || MasterSword || Hammer || BiggoronSword || Hookshot);
-        CanAdultDamage  = IsAdult && (CanUse(RG_FAIRY_BOW) || CanUse(RG_STICKS)          || CanUse(RG_KOKIRI_SWORD) || HasExplosives || CanUse(RG_DINS_FIRE) || MasterSword || Hammer || BiggoronSword);
+        CanChildAttack  = CanBeChild && (Slingshot || Boomerang || Sticks || KokiriSword || HasExplosives || CanUse(RG_DINS_FIRE) || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD));
+        CanChildDamage  = CanBeChild && (Slingshot ||              Sticks || KokiriSword || HasExplosives || CanUse(RG_DINS_FIRE) || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD));
+        CanAdultAttack  = CanBeAdult && (CanUse(RG_FAIRY_BOW) || CanUse(RG_BOOMERANG)       || CanUse(RG_STICKS) || CanUse(RG_KOKIRI_SWORD) || HasExplosives || CanUse(RG_DINS_FIRE) || MasterSword || Hammer || BiggoronSword || Hookshot);
+        CanAdultDamage  = CanBeAdult && (CanUse(RG_FAIRY_BOW) || CanUse(RG_STICKS)          || CanUse(RG_KOKIRI_SWORD) || HasExplosives || CanUse(RG_DINS_FIRE) || MasterSword || Hammer || BiggoronSword);
         CanStunDeku     = CanAdultAttack || CanChildAttack || Nuts || HasShield;
         CanCutShrubs    = CanUse(RG_KOKIRI_SWORD) || CanUse(RG_BOOMERANG) || HasExplosives || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD);
         CanDive         = ProgressiveScale >= 1;
-        CanLeaveForest  = ctx->GetOption(RSK_FOREST).IsNot(RO_FOREST_CLOSED) || IsAdult || DekuTreeClear || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES);
-        CanPlantBugs    = IsChild && Bugs;
-        CanRideEpona    = IsAdult && Epona && CanPlay(EponasSong);
+        CanLeaveForest  = ctx->GetOption(RSK_FOREST).IsNot(RO_FOREST_CLOSED) || CanBeAdult || DekuTreeClear || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES);
+        CanPlantBugs    = CanBeChild && Bugs;
+        CanRideEpona    = CanBeAdult && Epona && CanPlay(EponasSong);
         CanSummonGossipFairy            = Ocarina && (ZeldasLullaby || EponasSong || SongOfTime || SunsSong);
         CanSummonGossipFairyWithoutSuns = Ocarina && (ZeldasLullaby || EponasSong || SongOfTime);
         Hearts          = BaseHearts + HeartContainer + (PieceOfHeart >> 2);
@@ -273,7 +279,7 @@ namespace Rando {
         CanSurviveDamage    = !NeedNayrusLove || CanUse(RG_NAYRUS_LOVE);
         CanTakeDamage       = Fairy || CanSurviveDamage;
         CanTakeDamageTwice  = (Fairy && NumBottles >= 2) || ((EffectiveHealth == 2) && (CanUse(RG_NAYRUS_LOVE) || Fairy)) || (EffectiveHealth > 2);
-        //CanPlantBean        = IsChild && (MagicBean || MagicBeanPack);
+        //CanPlantBean        = CanBeChild && (MagicBean || MagicBeanPack);
         CanOpenBombGrotto   = CanBlastOrSmash       && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
         CanOpenStormGrotto  = CanPlay(SongOfStorms) && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
         HookshotOrBoomerang = CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
@@ -291,9 +297,9 @@ namespace Rando {
 
         HasShield          = CanUse(RG_HYLIAN_SHIELD) || CanUse(RG_DEKU_SHIELD); //Mirror shield can't reflect attacks
         CanShield          = CanUse(RG_MIRROR_SHIELD) || HasShield;
-        ChildShield        = IsChild && CanUse(RG_DEKU_SHIELD); //hylian shield is not helpful for child
-        AdultReflectShield = IsAdult && CanUse(RG_HYLIAN_SHIELD); //Mirror shield can't reflect attacks
-        AdultShield        = IsAdult && (CanUse(RG_HYLIAN_SHIELD) || CanUse(RG_MIRROR_SHIELD));
+        ChildShield        = CanBeChild && CanUse(RG_DEKU_SHIELD); //hylian shield is not helpful for child
+        AdultReflectShield = CanBeAdult && CanUse(RG_HYLIAN_SHIELD); //Mirror shield can't reflect attacks
+        AdultShield        = CanBeAdult && (CanUse(RG_HYLIAN_SHIELD) || CanUse(RG_MIRROR_SHIELD));
         CanShieldFlick     = ChildShield || AdultShield;
         CanJumpslash       = CanUse(RG_STICKS) || CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD); // Not including hammer as hammer jump attacks can be weird
         CanUseProjectile   = HasExplosives || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG);
@@ -670,8 +676,8 @@ namespace Rando {
         HasBombchus      = false;
         HasExplosives    = false;
         HasBoots         = false;
-        IsChild          = false;
-        IsAdult          = false;
+        CanBeChild          = false;
+        CanBeAdult          = false;
         IsGlitched       = ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHED);
         CanBlastOrSmash  = false;
         CanChildAttack   = false;

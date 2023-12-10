@@ -57,19 +57,19 @@ static bool UpdateToDAccess(Entrance* entrance, SearchMode mode) {
   Area* parent = entrance->GetParentRegion();
   Area* connection = entrance->GetConnectedRegion();
 
-  if (!connection->childDay && parent->childDay && entrance->CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) {
+  if (!connection->childDay && parent->childDay && entrance->CheckConditionAtAgeTime(logic->CanBeChild, logic->AtDay)) {
     connection->childDay = true;
     ageTimePropogated = true;
   }
-  if (!connection->childNight && parent->childNight && entrance->CheckConditionAtAgeTime(logic->IsChild, logic->AtNight)) {
+  if (!connection->childNight && parent->childNight && entrance->CheckConditionAtAgeTime(logic->CanBeChild, logic->AtNight)) {
     connection->childNight = true;
     ageTimePropogated = true;
   }
-  if (!connection->adultDay && parent->adultDay && entrance->CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay)) {
+  if (!connection->adultDay && parent->adultDay && entrance->CheckConditionAtAgeTime(logic->CanBeAdult, logic->AtDay)) {
     connection->adultDay = true;
     ageTimePropogated = true;
   }
-  if (!connection->adultNight && parent->adultNight && entrance->CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight)) {
+  if (!connection->adultNight && parent->adultNight && entrance->CheckConditionAtAgeTime(logic->CanBeAdult, logic->AtNight)) {
     connection->adultNight = true;
     ageTimePropogated = true;
   }

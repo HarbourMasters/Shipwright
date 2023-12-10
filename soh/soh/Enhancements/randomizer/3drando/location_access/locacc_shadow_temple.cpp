@@ -42,7 +42,7 @@ void AreaTable_Init_ShadowTemple() {
                   LocationAccess(RC_SHADOW_TEMPLE_GS_NEAR_SHIP,             {[]{return false;}}),
                 }, {
                   //Exits
-                  Entrance(RR_SHADOW_TEMPLE_HUGE_PIT,    {[]{return logic->HasExplosives && logic->IsAdult && logic->SmallKeys(RR_SHADOW_TEMPLE, 1, 2);}}),
+                  Entrance(RR_SHADOW_TEMPLE_HUGE_PIT,    {[]{return logic->HasExplosives && logic->CanBeAdult && logic->SmallKeys(RR_SHADOW_TEMPLE, 1, 2);}}),
                   Entrance(RR_SHADOW_TEMPLE_BEYOND_BOAT, {[]{return false;}}),
   });
 
@@ -93,15 +93,15 @@ void AreaTable_Init_ShadowTemple() {
   areaTable[RR_SHADOW_TEMPLE_MQ_BEGINNING] = Area("Shadow Temple MQ Beginning", "Shadow Temple", RA_SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_SHADOW_TEMPLE_ENTRYWAY,          {[]{return true;}}),
-                  Entrance(RR_SHADOW_TEMPLE_MQ_FIRST_BEAMOS,   {[]{return logic->IsAdult && (logic->CanUse(RG_FIRE_ARROWS) || logic->HoverBoots || (randoCtx->GetTrickOption(RT_SHADOW_MQ_GAP) && logic->CanUse(RG_LONGSHOT)));}}),
-                    //Trick: logic->IsAdult && (logic->CanUse(RG_FIRE_ARROWS) || logic->HoverBoots || (LogicShadowMQGap && logic->CanUse(RG_LONGSHOT)))
+                  Entrance(RR_SHADOW_TEMPLE_MQ_FIRST_BEAMOS,   {[]{return logic->CanBeAdult && (logic->CanUse(RG_FIRE_ARROWS) || logic->HoverBoots || (randoCtx->GetTrickOption(RT_SHADOW_MQ_GAP) && logic->CanUse(RG_LONGSHOT)));}}),
+                    //Trick: logic->CanBeAdult && (logic->CanUse(RG_FIRE_ARROWS) || logic->HoverBoots || (LogicShadowMQGap && logic->CanUse(RG_LONGSHOT)))
                   Entrance(RR_SHADOW_TEMPLE_MQ_DEAD_HAND_AREA, {[]{return logic->HasExplosives && logic->SmallKeys(RR_SHADOW_TEMPLE, 6);}}),
   });
 
   areaTable[RR_SHADOW_TEMPLE_MQ_DEAD_HAND_AREA] = Area("Shadow Temple MQ Dead Hand Area", "Shadow Temple", RA_SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_SHADOW_TEMPLE_MQ_COMPASS_CHEST,     {[]{return logic->CanJumpslash;}}),
-                  LocationAccess(RC_SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST, {[]{return logic->CanJumpslash && logic->CanPlay(logic->SongOfTime) && logic->IsAdult && logic->CanUse(RG_FAIRY_BOW);}}),
+                  LocationAccess(RC_SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST, {[]{return logic->CanJumpslash && logic->CanPlay(logic->SongOfTime) && logic->CanBeAdult && logic->CanUse(RG_FAIRY_BOW);}}),
   }, {});
 
   areaTable[RR_SHADOW_TEMPLE_MQ_FIRST_BEAMOS] = Area("Shadow Temple MQ First Beamos", "Shadow Temple", RA_SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -128,7 +128,7 @@ void AreaTable_Init_ShadowTemple() {
 
   areaTable[RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT] = Area("Shadow Temple MQ Lower Huge Pit", "Shadow Temple", RA_SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_SHADOW_TEMPLE_MQ_BEAMOS_SILVER_RUPEES_CHEST,  {[]{return logic->IsAdult && logic->CanUse(RG_LONGSHOT);}}),
+                  LocationAccess(RC_SHADOW_TEMPLE_MQ_BEAMOS_SILVER_RUPEES_CHEST,  {[]{return logic->CanBeAdult && logic->CanUse(RG_LONGSHOT);}}),
                   LocationAccess(RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_LOWER_CHEST,  {[]{return true;}}),
                   LocationAccess(RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_UPPER_CHEST,  {[]{return (randoCtx->GetTrickOption(RT_SHADOW_UMBRELLA) && logic->HoverBoots) || logic->GoronBracelet;}}),
                   LocationAccess(RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_SWITCH_CHEST, {[]{return (randoCtx->GetTrickOption(RT_SHADOW_UMBRELLA) && logic->HoverBoots) || logic->GoronBracelet;}}),
@@ -162,7 +162,7 @@ void AreaTable_Init_ShadowTemple() {
                   LocationAccess(RC_SHADOW_TEMPLE_MQ_GS_NEAR_BOSS,   {[]{return logic->Bow || (randoCtx->GetTrickOption(RT_SHADOW_STATUE) && logic->HasBombchus);}}),
   }, {
                   //Exits
-                  Entrance(RR_SHADOW_TEMPLE_MQ_INVISIBLE_MAZE, {[]{return logic->Bow && logic->CanPlay(logic->SongOfTime) && logic->IsAdult && logic->CanUse(RG_LONGSHOT);}}),
+                  Entrance(RR_SHADOW_TEMPLE_MQ_INVISIBLE_MAZE, {[]{return logic->Bow && logic->CanPlay(logic->SongOfTime) && logic->CanBeAdult && logic->CanUse(RG_LONGSHOT);}}),
                   Entrance(RR_SHADOW_TEMPLE_BOSS_ENTRYWAY,     {[]{return (logic->CanUse(RG_FAIRY_BOW) || (randoCtx->GetTrickOption(RT_SHADOW_STATUE) && logic->HasBombchus)) && logic->CanUse(RG_HOVER_BOOTS) && logic->BossKeyShadowTemple;}}),
   });
 

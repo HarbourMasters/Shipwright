@@ -55,16 +55,16 @@ std::string Entrance::GetName() const {
 void Entrance::printAgeTimeAccess() {
     // CitraPrint("Name: ");
     // CitraPrint(name);
-    auto message = "Child Day:   " + std::to_string(CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) +
+    auto message = "Child Day:   " + std::to_string(CheckConditionAtAgeTime(logic->CanBeChild, logic->AtDay)) +
                    "\t"
                    "Child Night: " +
-                   std::to_string(CheckConditionAtAgeTime(logic->IsChild, logic->AtNight)) +
+                   std::to_string(CheckConditionAtAgeTime(logic->CanBeChild, logic->AtNight)) +
                    "\t"
                    "Adult Day:   " +
-                   std::to_string(CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay)) +
+                   std::to_string(CheckConditionAtAgeTime(logic->CanBeAdult, logic->AtDay)) +
                    "\t"
                    "Adult Night: " +
-                   std::to_string(CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight));
+                   std::to_string(CheckConditionAtAgeTime(logic->CanBeAdult, logic->AtNight));
     // CitraPrint(message);
 }
 
@@ -78,10 +78,10 @@ bool Entrance::ConditionsMet(bool allAgeTimes) const {
     }
 
     // check all possible day/night condition combinations
-    conditionsMet = (parent->childDay && CheckConditionAtAgeTime(logic->IsChild, logic->AtDay, allAgeTimes)) +
-                    (parent->childNight && CheckConditionAtAgeTime(logic->IsChild, logic->AtNight, allAgeTimes)) +
-                    (parent->adultDay && CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay, allAgeTimes)) +
-                    (parent->adultNight && CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight, allAgeTimes));
+    conditionsMet = (parent->childDay && CheckConditionAtAgeTime(logic->CanBeChild, logic->AtDay, allAgeTimes)) +
+                    (parent->childNight && CheckConditionAtAgeTime(logic->CanBeChild, logic->AtNight, allAgeTimes)) +
+                    (parent->adultDay && CheckConditionAtAgeTime(logic->CanBeAdult, logic->AtDay, allAgeTimes)) +
+                    (parent->adultNight && CheckConditionAtAgeTime(logic->CanBeAdult, logic->AtNight, allAgeTimes));
 
     return conditionsMet && (!allAgeTimes || conditionsMet == 4);
 }
@@ -93,8 +93,8 @@ uint32_t Entrance::Getuint32_t() const {
 // set the logic to be a specific age and time of day and see if the condition still holds
 bool Entrance::CheckConditionAtAgeTime(bool& age, bool& time, bool passAnyway) const {
 
-    logic->IsChild = false;
-    logic->IsAdult = false;
+    logic->CanBeChild = false;
+    logic->CanBeAdult = false;
     logic->AtDay = false;
     logic->AtNight = false;
 
@@ -1406,7 +1406,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
                 BuildOneWayTargets(validTargetTypes, { std::make_pair(RR_PRELUDE_OF_LIGHT_WARP, RR_TEMPLE_OF_TIME) });
             // Owl Drops are only accessible as child, so targets should reflect that
             for (Entrance* target : oneWayTargetEntrancePools[poolType]) {
-                target->SetCondition([] { return logic->IsChild; });
+                target->SetCondition([] { return logic->CanBeChild; });
             }
 
         } else if (poolType == EntranceType::Spawn) {

@@ -263,8 +263,8 @@ class Logic {
     bool HasBombchus = false;
     bool HasExplosives = false;
     bool HasBoots = false;
-    bool IsChild = false;
-    bool IsAdult = false;
+    bool CanBeChild = false;
+    bool CanBeAdult = false;
     bool IsGlitched = false;
     bool CanBlastOrSmash = false;
     bool CanChildAttack = false;
@@ -397,8 +397,8 @@ class Logic {
     bool BuyDekuShieldPast = false;
     bool TimeTravelPast = false;
 
-    std::shared_ptr<SaveContext> mSaveContext;
-    Logic();
+    SaveContext* mSaveContext;
+    Logic(SaveContext *saveContext);
     void UpdateHelpers();
     bool CanPlay(bool song);
     bool CanUse(RandomizerGet itemName);
