@@ -349,6 +349,8 @@ namespace UIWidgets {
         if (changed && (oldVal != val)) {
             CVarSetInteger(cvarName, val);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        } else {
+            changed = false;
         }
 
         return changed;
@@ -442,12 +444,14 @@ namespace UIWidgets {
             changed = true;
         }
 
-        if (changed && (oldVal != val)) {
+        if (changed && !(abs(oldVal - val) < 0.000001f)) {
             std::stringstream ss;
             ss << std::setprecision(ticks) << val;
             val = std::stof(ss.str());
             CVarSetFloat(cvarName, val);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        } else {
+            changed = false;
         }
 
         return changed;
