@@ -281,13 +281,20 @@ jobs:
       with:
         submodules: true
     - name: ccache
-      uses: dcvz/ccache-action@27b9f33213c0079872f064f6b6ba0233dfa16ba2
+      uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ runner.os }}-ccache
-    - uses: ilammy/msvc-dev-cmd@v1
+    - name: vcpkg
+      uses: johnwason/vcpkg-action@v5
+      with:
+        pkgs: zlib bzip2 libpng sdl2 sdl2-net glew glfw3
+        token: ${{ github.token }}
+        triplet: 'x64-windows-static'
+    - name: Configure Developer Command Prompt
+      uses: ilammy/msvc-dev-cmd@v1
     - name: Build SoH
       env: 
-        VCPKG_ROOT: D:/a/vcpkg
+        VCPKG_ROOT: ${{github.workspace}}/vcpkg
       run: |
         set $env:PATH="$env:USERPROFILE/.cargo/bin;$env:PATH"
         cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache

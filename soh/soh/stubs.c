@@ -260,7 +260,7 @@ void Audio_osWritebackDCache(void* mem, s32 size)
 
 s32 osAiSetFrequency(u32 freq)
 {
-
+	return 1;
 }
 
 s32 osEPiStartDma(OSPiHandle* handle, OSIoMesg* mb, s32 direction)

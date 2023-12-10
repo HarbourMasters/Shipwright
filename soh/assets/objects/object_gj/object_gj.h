@@ -3,6 +3,36 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_gjTex_003B20 "__OTR__objects/object_gj/object_gjTex_003B20"
+static const ALIGN_ASSET(2) char object_gjTex_003B20[] = dobject_gjTex_003B20;
+
+#define dobject_gjTex_003C20 "__OTR__objects/object_gj/object_gjTex_003C20"
+static const ALIGN_ASSET(2) char object_gjTex_003C20[] = dobject_gjTex_003C20;
+
+#define dobject_gjTex_003D20 "__OTR__objects/object_gj/object_gjTex_003D20"
+static const ALIGN_ASSET(2) char object_gjTex_003D20[] = dobject_gjTex_003D20;
+
+#define dobject_gjTex_003F20 "__OTR__objects/object_gj/object_gjTex_003F20"
+static const ALIGN_ASSET(2) char object_gjTex_003F20[] = dobject_gjTex_003F20;
+
+#define dobject_gjTex_004F20 "__OTR__objects/object_gj/object_gjTex_004F20"
+static const ALIGN_ASSET(2) char object_gjTex_004F20[] = dobject_gjTex_004F20;
+
+#define dobject_gjTex_005F20 "__OTR__objects/object_gj/object_gjTex_005F20"
+static const ALIGN_ASSET(2) char object_gjTex_005F20[] = dobject_gjTex_005F20;
+
+#define dobject_gjTex_006F20 "__OTR__objects/object_gj/object_gjTex_006F20"
+static const ALIGN_ASSET(2) char object_gjTex_006F20[] = dobject_gjTex_006F20;
+
+#define dobject_gjTex_007320 "__OTR__objects/object_gj/object_gjTex_007320"
+static const ALIGN_ASSET(2) char object_gjTex_007320[] = dobject_gjTex_007320;
+
+#define dobject_gjTex_007720 "__OTR__objects/object_gj/object_gjTex_007720"
+static const ALIGN_ASSET(2) char object_gjTex_007720[] = dobject_gjTex_007720;
+
+#define dobject_gjTex_007B20 "__OTR__objects/object_gj/object_gjTex_007B20"
+static const ALIGN_ASSET(2) char object_gjTex_007B20[] = dobject_gjTex_007B20;
+
 #define dgGanonsCastleRubbleAroundArenaDL "__OTR__objects/object_gj/gGanonsCastleRubbleAroundArenaDL"
 static const ALIGN_ASSET(2) char gGanonsCastleRubbleAroundArenaDL[] = dgGanonsCastleRubbleAroundArenaDL;
 
@@ -59,35 +89,5 @@ static const ALIGN_ASSET(2) char gGanonsCastleUnusedWallTex[] = dgGanonsCastleUn
 
 #define dgGanonsCastleUnusedTex_00A320 "__OTR__objects/object_gj/gGanonsCastleUnusedTex_00A320"
 static const ALIGN_ASSET(2) char gGanonsCastleUnusedTex_00A320[] = dgGanonsCastleUnusedTex_00A320;
-
-#define dobject_gjTex_003D20 "__OTR__objects/object_gj/object_gjTex_003D20"
-static const ALIGN_ASSET(2) char object_gjTex_003D20[] = dobject_gjTex_003D20;
-
-#define dobject_gjTex_003B20 "__OTR__objects/object_gj/object_gjTex_003B20"
-static const ALIGN_ASSET(2) char object_gjTex_003B20[] = dobject_gjTex_003B20;
-
-#define dobject_gjTex_004F20 "__OTR__objects/object_gj/object_gjTex_004F20"
-static const ALIGN_ASSET(2) char object_gjTex_004F20[] = dobject_gjTex_004F20;
-
-#define dobject_gjTex_003C20 "__OTR__objects/object_gj/object_gjTex_003C20"
-static const ALIGN_ASSET(2) char object_gjTex_003C20[] = dobject_gjTex_003C20;
-
-#define dobject_gjTex_003F20 "__OTR__objects/object_gj/object_gjTex_003F20"
-static const ALIGN_ASSET(2) char object_gjTex_003F20[] = dobject_gjTex_003F20;
-
-#define dobject_gjTex_005F20 "__OTR__objects/object_gj/object_gjTex_005F20"
-static const ALIGN_ASSET(2) char object_gjTex_005F20[] = dobject_gjTex_005F20;
-
-#define dobject_gjTex_007B20 "__OTR__objects/object_gj/object_gjTex_007B20"
-static const ALIGN_ASSET(2) char object_gjTex_007B20[] = dobject_gjTex_007B20;
-
-#define dobject_gjTex_007320 "__OTR__objects/object_gj/object_gjTex_007320"
-static const ALIGN_ASSET(2) char object_gjTex_007320[] = dobject_gjTex_007320;
-
-#define dobject_gjTex_007720 "__OTR__objects/object_gj/object_gjTex_007720"
-static const ALIGN_ASSET(2) char object_gjTex_007720[] = dobject_gjTex_007720;
-
-#define dobject_gjTex_006F20 "__OTR__objects/object_gj/object_gjTex_006F20"
-static const ALIGN_ASSET(2) char object_gjTex_006F20[] = dobject_gjTex_006F20;
 
 #endif // OBJECTS_OBJECT_GJ_H

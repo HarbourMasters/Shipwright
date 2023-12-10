@@ -3,6 +3,66 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_hidan_objectsTex_000040 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_000040"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_000040[] = dobject_hidan_objectsTex_000040;
+
+#define dobject_hidan_objectsTex_000240 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_000240"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_000240[] = dobject_hidan_objectsTex_000240;
+
+#define dobject_hidan_objectsTex_000A40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_000A40"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_000A40[] = dobject_hidan_objectsTex_000A40;
+
+#define dobject_hidan_objectsTex_001A40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_001A40"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_001A40[] = dobject_hidan_objectsTex_001A40;
+
+#define dobject_hidan_objectsTex_002A40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_002A40"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_002A40[] = dobject_hidan_objectsTex_002A40;
+
+#define dobject_hidan_objectsTex_003A40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_003A40"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_003A40[] = dobject_hidan_objectsTex_003A40;
+
+#define dobject_hidan_objectsTex_004240 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_004240"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_004240[] = dobject_hidan_objectsTex_004240;
+
+#define dobject_hidan_objectsTex_004A40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_004A40"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_004A40[] = dobject_hidan_objectsTex_004A40;
+
+#define dobject_hidan_objectsTex_005240 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_005240"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_005240[] = dobject_hidan_objectsTex_005240;
+
+#define dobject_hidan_objectsTex_005640 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_005640"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_005640[] = dobject_hidan_objectsTex_005640;
+
+#define dobject_hidan_objectsTex_005A40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_005A40"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_005A40[] = dobject_hidan_objectsTex_005A40;
+
+#define dobject_hidan_objectsTex_005E40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_005E40"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_005E40[] = dobject_hidan_objectsTex_005E40;
+
+#define dobject_hidan_objectsTex_006640 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_006640"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_006640[] = dobject_hidan_objectsTex_006640;
+
+#define dobject_hidan_objectsTex_006A40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_006A40"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_006A40[] = dobject_hidan_objectsTex_006A40;
+
+#define dobject_hidan_objectsTex_006C40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_006C40"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_006C40[] = dobject_hidan_objectsTex_006C40;
+
+#define dobject_hidan_objectsTex_006E40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_006E40"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_006E40[] = dobject_hidan_objectsTex_006E40;
+
+#define dobject_hidan_objectsTex_00FB20 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_00FB20"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_00FB20[] = dobject_hidan_objectsTex_00FB20;
+
+#define dobject_hidan_objectsTex_010D90 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_010D90"
+static const ALIGN_ASSET(2) char object_hidan_objectsTex_010D90[] = dobject_hidan_objectsTex_010D90;
+
+#define dobject_hidan_objectsTLUT_000000 "__OTR__objects/object_hidan_objects/object_hidan_objectsTLUT_000000"
+static const ALIGN_ASSET(2) char object_hidan_objectsTLUT_000000[] = dobject_hidan_objectsTLUT_000000;
+
+#define dobject_hidan_objectsTLUT_000020 "__OTR__objects/object_hidan_objects/object_hidan_objectsTLUT_000020"
+static const ALIGN_ASSET(2) char object_hidan_objectsTLUT_000020[] = dobject_hidan_objectsTLUT_000020;
+
 #define dgFireTempleHammerableTotemBodyDL "__OTR__objects/object_hidan_objects/gFireTempleHammerableTotemBodyDL"
 static const ALIGN_ASSET(2) char gFireTempleHammerableTotemBodyDL[] = dgFireTempleHammerableTotemBodyDL;
 
@@ -203,65 +263,5 @@ static const ALIGN_ASSET(2) char gFireTempleDoorBackDL[] = dgFireTempleDoorBackD
 
 #define dgFireTempleDoorKillerTex "__OTR__objects/object_hidan_objects/gFireTempleDoorKillerTex"
 static const ALIGN_ASSET(2) char gFireTempleDoorKillerTex[] = dgFireTempleDoorKillerTex;
-
-#define dobject_hidan_objectsTex_000A40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_000A40"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_000A40[] = dobject_hidan_objectsTex_000A40;
-
-#define dobject_hidan_objectsTex_002A40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_002A40"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_002A40[] = dobject_hidan_objectsTex_002A40;
-
-#define dobject_hidan_objectsTex_000040 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_000040"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_000040[] = dobject_hidan_objectsTex_000040;
-
-#define dobject_hidan_objectsTLUT_000000 "__OTR__objects/object_hidan_objects/object_hidan_objectsTLUT_000000"
-static const ALIGN_ASSET(2) char object_hidan_objectsTLUT_000000[] = dobject_hidan_objectsTLUT_000000;
-
-#define dobject_hidan_objectsTex_004A40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_004A40"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_004A40[] = dobject_hidan_objectsTex_004A40;
-
-#define dobject_hidan_objectsTex_005640 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_005640"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_005640[] = dobject_hidan_objectsTex_005640;
-
-#define dobject_hidan_objectsTex_006640 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_006640"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_006640[] = dobject_hidan_objectsTex_006640;
-
-#define dobject_hidan_objectsTex_006A40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_006A40"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_006A40[] = dobject_hidan_objectsTex_006A40;
-
-#define dobject_hidan_objectsTex_004240 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_004240"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_004240[] = dobject_hidan_objectsTex_004240;
-
-#define dobject_hidan_objectsTex_005E40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_005E40"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_005E40[] = dobject_hidan_objectsTex_005E40;
-
-#define dobject_hidan_objectsTex_006C40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_006C40"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_006C40[] = dobject_hidan_objectsTex_006C40;
-
-#define dobject_hidan_objectsTex_005240 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_005240"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_005240[] = dobject_hidan_objectsTex_005240;
-
-#define dobject_hidan_objectsTex_003A40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_003A40"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_003A40[] = dobject_hidan_objectsTex_003A40;
-
-#define dobject_hidan_objectsTex_005A40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_005A40"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_005A40[] = dobject_hidan_objectsTex_005A40;
-
-#define dobject_hidan_objectsTLUT_000020 "__OTR__objects/object_hidan_objects/object_hidan_objectsTLUT_000020"
-static const ALIGN_ASSET(2) char object_hidan_objectsTLUT_000020[] = dobject_hidan_objectsTLUT_000020;
-
-#define dobject_hidan_objectsTex_001A40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_001A40"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_001A40[] = dobject_hidan_objectsTex_001A40;
-
-#define dobject_hidan_objectsTex_000240 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_000240"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_000240[] = dobject_hidan_objectsTex_000240;
-
-#define dobject_hidan_objectsTex_006E40 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_006E40"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_006E40[] = dobject_hidan_objectsTex_006E40;
-
-#define dobject_hidan_objectsTex_00FB20 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_00FB20"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_00FB20[] = dobject_hidan_objectsTex_00FB20;
-
-#define dobject_hidan_objectsTex_010D90 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_010D90"
-static const ALIGN_ASSET(2) char object_hidan_objectsTex_010D90[] = dobject_hidan_objectsTex_010D90;
 
 #endif // OBJECTS_OBJECT_HIDAN_OBJECTS_H

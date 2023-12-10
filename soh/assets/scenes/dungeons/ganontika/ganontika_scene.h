@@ -3,6 +3,24 @@
 
 #include "align_asset_macro.h"
 
+#define dganontika_sceneTex_01F580 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_01F580"
+static const ALIGN_ASSET(2) char ganontika_sceneTex_01F580[] = dganontika_sceneTex_01F580;
+
+#define dganontika_sceneTex_01F780 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_01F780"
+static const ALIGN_ASSET(2) char ganontika_sceneTex_01F780[] = dganontika_sceneTex_01F780;
+
+#define dganontika_sceneTex_01FF80 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_01FF80"
+static const ALIGN_ASSET(2) char ganontika_sceneTex_01FF80[] = dganontika_sceneTex_01FF80;
+
+#define dganontika_sceneTex_020380 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_020380"
+static const ALIGN_ASSET(2) char ganontika_sceneTex_020380[] = dganontika_sceneTex_020380;
+
+#define dganontika_sceneTex_020B80 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_020B80"
+static const ALIGN_ASSET(2) char ganontika_sceneTex_020B80[] = dganontika_sceneTex_020B80;
+
+#define dganontika_sceneTLUT_01F380 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTLUT_01F380"
+static const ALIGN_ASSET(2) char ganontika_sceneTLUT_01F380[] = dganontika_sceneTLUT_01F380;
+
 #define dgForestTrialSageCs "__OTR__scenes/nonmq/ganontika_scene/gForestTrialSageCs"
 static const ALIGN_ASSET(2) char gForestTrialSageCs[] = dgForestTrialSageCs;
 
@@ -45,22 +63,5 @@ static const ALIGN_ASSET(2) char gShadowBarrierCs[] = dgShadowBarrierCs;
 #define dganontika_sceneCollisionHeader_019EAC "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneCollisionHeader_019EAC"
 static const ALIGN_ASSET(2) char ganontika_sceneCollisionHeader_019EAC[] = dganontika_sceneCollisionHeader_019EAC;
 
-#define dganontika_sceneTex_01F780 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_01F780"
-static const ALIGN_ASSET(2) char ganontika_sceneTex_01F780[] = dganontika_sceneTex_01F780;
-
-#define dganontika_sceneTLUT_01F380 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTLUT_01F380"
-static const ALIGN_ASSET(2) char ganontika_sceneTLUT_01F380[] = dganontika_sceneTLUT_01F380;
-
-#define dganontika_sceneTex_020380 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_020380"
-static const ALIGN_ASSET(2) char ganontika_sceneTex_020380[] = dganontika_sceneTex_020380;
-
-#define dganontika_sceneTex_020B80 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_020B80"
-static const ALIGN_ASSET(2) char ganontika_sceneTex_020B80[] = dganontika_sceneTex_020B80;
-
-#define dganontika_sceneTex_01F580 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_01F580"
-static const ALIGN_ASSET(2) char ganontika_sceneTex_01F580[] = dganontika_sceneTex_01F580;
-
-#define dganontika_sceneTex_01FF80 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_01FF80"
-static const ALIGN_ASSET(2) char ganontika_sceneTex_01FF80[] = dganontika_sceneTex_01FF80;
 
 #endif // DUNGEONS_GANONTIKA_SCENE_H
