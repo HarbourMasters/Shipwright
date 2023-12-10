@@ -165,9 +165,9 @@ extern "C" void OTRMessage_Init()
     
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_BANKER_GREETING,
-        CustomMessage("Hey there, @!&You got something to sell?&Or are you here to make a&withdrawal?",
-                      "Hallo, @!&Hast du etwas zu verkaufen?&Oder möchtest du etwas&abheben?",
-                      "Salut, @!&Tu as quelque chose à vendre ?&Ou es-tu là pour faire un&retrait ?"));
+        CustomMessage("Hey there, @!&You making a deposit?&Or are you here to make a&withdrawal?",
+                    "Hallo, @!&Machst du eine Einzahlung?&Oder möchtest du etwas&abheben?",
+                    "Salut, @!&Tu fais un dépôt ?&Ou es-tu là pour faire un&retrait ?"));
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_BANKER_OPTIONS,
         CustomMessage(std::string("What would you like to do?") + THREE_WAY_CHOICE + "&%gDeposit Rupees&%gWithdrawal Rupees&%gNothing%w",
@@ -180,9 +180,9 @@ extern "C" void OTRMessage_Init()
                       "Si je me souviens bien, depuis votre&dernier transfert par warp, votre&solde est de %y{{playerBalance}}%w rubis."));
     CustomMessageManager::Instance->CreateMessage(
             customMessageTableID, TEXT_BANKER_WITHDRAWAL_AMOUNT,
-            CustomMessage("Select Withdrawal Amount:&     rupees.&Set the amount with \xAA and&press \x9F to decide.\x0A",
-                        "Wähle den Abhebungsbetrag:&     Rubine.&Stelle den Betrag mit \xAA ein und&drücke \x9F, um zu entscheiden.\x0A",
-                        "Sélectionnez le montant du retrait :&     rubis.&Réglez le montant avec \xAA et&appuyez sur \x9F pour décider.\x0A"));
+            CustomMessage("\x08Select Withdrawal Amount:&     rupees.&Set the amount with \xAA and&press \x9F to decide.\x0A",
+                        "\x08Wähle den Abhebungsbetrag:&     Rubine.&Stelle den Betrag mit \xAA ein und&drücke \x9F, um zu entscheiden.\x0A",
+                        "\x08Sélectionnez le montant du retrait :&     rubis.&Réglez le montant avec \xAA et&appuyez sur \x9F pour décider.\x0A"));
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_BANKER_WITHDRAWAL_CONFIRM,
         CustomMessage("Here are your rupees.&Your new balance is:&%y{{playerBalance}}%w rupees.&See you later!",
@@ -190,9 +190,9 @@ extern "C" void OTRMessage_Init()
                       "Voici vos rubis.&Votre nouveau solde est :&%y{{playerBalance}}%w rubis.&À plus tard !"));
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_BANKER_DEPOSIT_AMOUNT,
-        CustomMessage("Select Deposit Amount:&     rupees.&Set the amount with \xAA and&press \x9F to decide.\x0A",
-                    "Wähle den Einzahlungsbetrag:&     Rubine.&Stelle den Betrag mit \xAA ein und&drücke \x9F, um zu entscheiden.\x0A",
-                    "Sélectionnez le montant du dépôt :&     rubis.&Réglez le montant avec \xAA et&appuyez sur \x9F pour décider.\x0A"));
+        CustomMessage("\x08Select Deposit Amount:&     rupees.&Set the amount with \xAA and&press \x9F to decide.\x0A",
+                    "\x08Wähle den Einzahlungsbetrag:&     Rubine.&Stelle den Betrag mit \xAA ein und&drücke \x9F, um zu entscheiden.\x0A",
+                    "\x08Sélectionnez le montant du dépôt :&     rubis.&Réglez le montant avec \xAA et&appuyez sur \x9F pour décider.\x0A"));
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_BANKER_DEPOSIT_CONFIRM,
         CustomMessage("You've deposited your rupees.&Your new balance is:&%y{{playerBalance}}%w rupees.&See you later!",
