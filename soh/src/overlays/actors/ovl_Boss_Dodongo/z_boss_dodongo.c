@@ -112,9 +112,10 @@ void BossDodongo_RegisterBlendedLavaTextureUpdate() {
         u32* lavaTex = ResourceGetDataByName(sLavaFloorLavaTex);
         size_t lavaSize = ResourceGetSizeByName(sLavaFloorLavaTex);
         size_t floorSize = ResourceGetSizeByName(gDodongosCavernBossLavaFloorTex);
+        size_t rockSize = ResourceGetSizeByName(sLavaFloorRockTex);
 
         // If the sizes don't match, then don't bother with the blended effect to avoid crashing
-        if (lavaSize != floorSize) {
+        if (floorSize != lavaSize || floorSize != rockSize) {
             uint8_t maskVal = !!Flags_GetClear(gPlayState, gPlayState->roomCtx.curRoom.num);
 
             if (sMaskTexLava[0] != maskVal) {
@@ -134,7 +135,6 @@ void BossDodongo_RegisterBlendedLavaTextureUpdate() {
         // When KD is dead, just immediately copy the rock texture
         if (Flags_GetClear(gPlayState, gPlayState->roomCtx.curRoom.num)) {
             u32* rockTex = ResourceGetDataByName(sLavaFloorRockTex);
-            size_t rockSize = ResourceGetSizeByName(sLavaFloorRockTex);
             memcpy(sLavaFloorModifiedTexRaw, rockTex, rockSize);
         }
 
