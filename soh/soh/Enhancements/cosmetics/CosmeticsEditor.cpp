@@ -17,7 +17,6 @@
 extern "C" {
 #include <z64.h>
 #include "macros.h"
-#include "variables.h"
 extern PlayState* gPlayState;
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
@@ -953,7 +952,6 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
             ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_StartGrayscale", 2, gsSPGrayscale(true));
             ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_MakeGreen", 10, gsDPSetGrayscaleColor(color.r, color.g, color.b, color.a));
             ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_EndGrayscaleAndEndDlist", 79, gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
-            
         } else {
             ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge_StartGrayscale");
             ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge_MakeGreen");
