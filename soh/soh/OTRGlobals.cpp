@@ -2612,12 +2612,15 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             u16 choice = Random(0, NUM_GORON_MESSAGES);
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
         } else if (Randomizer_GetSettingValue(RSK_FROGS_HINT) && textId == TEXT_FROGS_UNDERWATER) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, textId);
-        } else if (Randomizer_GetSettingValue(RSK_SARIA_HINT)) {
-            if ((gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && textId == TEXT_SARIA_SFM) || (textId >= TEXT_SARIAS_SONG_FACE_TO_FACE && textId <= TEXT_SARIAS_SONG_CHANNELING_POWER)) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_FROGS_UNDERWATER, RC_ZR_FROGS_OCARINA_GAME);
+        } else if (Randomizer_GetSettingValue(RSK_SARIA_HINT) &&
+        (gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && textId == TEXT_SARIA_SFM) || (textId >= TEXT_SARIAS_SONG_FACE_TO_FACE && textId <= TEXT_SARIAS_SONG_CHANNELING_POWER)) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetSariaMessage(textId);
         }
-        }
+        } else if (Randomizer_GetSettingValue(RSK_BIGGORON_HINT) && (textId == TEXT_BIGGORON_BETTER_AT_SMITHING || TEXT_BIGGORON_WAITING_FOR_YOU || TEXT_BIGGORON_RETURN_AFTER_A_FEW_DAYS)) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_BIGGORON_BETTER_AT_SMITHING, RC_DMT_TRADE_CLAIM_CHECK);
+        } else if (Randomizer_GetSettingValue(RSK_BIG_POES_HINT) && (textId == TEXT_GHOST_SHOP_EXPLAINATION || textId == TEXT_GHOST_SHOP_CARD_HAS_POINTS)) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_GHOST_SHOP_CARD_HAS_POINTS, RC_MARKET_10_BIG_POES);
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
         if (CVarGetInteger("gInjectItemCounts", 0) != 0) {

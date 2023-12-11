@@ -3129,26 +3129,6 @@ void HintTable_Init() {
         "# bei sich haben und Dich neugierig beobachten..."
     }});
 
-    hintTable[RHT_BIGGORON_TEXT01] = HintText::OtherHint({
-        // obscure text RANDOTODO polish
-        Text{
-            "Aaaaare you here to claim my finest %r", 
-            /*french*/
-            "%r",
-            /*german?*/
-            "%r"},
-    });
-
-    hintTable[RHT_BIGGORON_TEXT02] = HintText::OtherHint({
-        // obscure text
-        Text{
-            "%w. ?.",
-            /*french*/
-            "%w. ",
-            /*german?*/
-            "%w. "},
-    });
-
     /*--------------------------
     |      GANON LINE TEXT     |
     ---------------------------*/
@@ -3458,7 +3438,7 @@ std::array<ConditionalAlwaysHint, 10> conditionalAlwaysHints = {
     std::make_pair(RC_MARKET_10_BIG_POES,
                    []() {
                        auto ctx = Rando::Context::GetInstance();
-                       return ctx->GetOption(RSK_BIG_POE_COUNT).Value<uint8_t>() >= 3;
+                       return ctx->GetOption(RSK_BIG_POE_COUNT).Value<uint8_t>() >= 3 && !ctx->GetOption(RSK_BIG_POES_HINT);
                    }), // Remember, the option's value being 3 means 4 are required
     std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH,
                    []() {

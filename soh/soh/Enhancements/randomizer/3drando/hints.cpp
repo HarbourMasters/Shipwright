@@ -57,7 +57,7 @@ std::array<std::string, HINT_TYPE_MAX> hintTypeNames = {
     "Junk"
 };
 
-std::array<std::pair<RandomizerCheck,RandomizerSettingKey>, 8> staticHintLocations = {{
+std::array<std::pair<RandomizerCheck,RandomizerSettingKey>, 9> staticHintLocations = {{
   {RC_KAK_10_GOLD_SKULLTULA_REWARD, RSK_KAK_10_SKULLS_HINT},
   {RC_KAK_20_GOLD_SKULLTULA_REWARD, RSK_KAK_20_SKULLS_HINT},
   {RC_KAK_30_GOLD_SKULLTULA_REWARD, RSK_KAK_30_SKULLS_HINT},
@@ -66,6 +66,7 @@ std::array<std::pair<RandomizerCheck,RandomizerSettingKey>, 8> staticHintLocatio
   {RC_SONG_FROM_IMPA,               RSK_SKIP_CHILD_ZELDA},
   {RC_ZR_FROGS_OCARINA_GAME,        RSK_FROGS_HINT},
   {RC_DMT_TRADE_CLAIM_CHECK,        RSK_BIGGORON_HINT},
+  {RC_MARKET_10_BIG_POES,           RSK_BIG_POES_HINT},
   }};
 
 bool FilterWotHLocations(RandomizerCheck loc){

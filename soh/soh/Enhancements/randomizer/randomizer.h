@@ -12,6 +12,7 @@
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
+#include "../custom-message/CustomMessageTypes.h"
 
 #define MAX_SEED_STRING_SIZE 1024
 #define NUM_TRIFORCE_PIECE_MESSAGES 6
@@ -59,6 +60,7 @@ class Randomizer {
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
     CustomMessage GetSheikMessage(s16 scene, u16 originalTextId);
+    CustomMessage Randomizer::GetMiscHintMessage(TextIDs textToGet, RandomizerCheck hintedCheck);
     CustomMessage GetSariaMessage(u16 originalTextId);
     CustomMessage GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
     CustomMessage GetCursedSkullMessage(s16 params);
