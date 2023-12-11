@@ -1038,8 +1038,8 @@ void RegisterRandomizedEnemySizes() {
         uint8_t excludedEnemy = actor->id == ACTOR_EN_BROB || actor->id == ACTOR_EN_DHA || (actor->id == ACTOR_BOSS_SST && actor->params == -1);
 
         // Dodongo, Volvagia and Dead Hand are always smaller because they're impossible when bigger.
-        uint8_t smallOnlyEnemy =
-            actor->id == ACTOR_BOSS_DODONGO || actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || ACTOR_EN_DH;
+        uint8_t smallOnlyEnemy = actor->id == ACTOR_BOSS_DODONGO || actor->id == ACTOR_BOSS_FD ||
+                                 actor->id == ACTOR_BOSS_FD2 || actor->id == ACTOR_EN_DH;
 
         // Only apply to enemies and bosses.
         if (!CVarGetInteger("gRandomizedEnemySizes", 0) || (actor->category != ACTORCAT_ENEMY && actor->category != ACTORCAT_BOSS) || excludedEnemy) {
