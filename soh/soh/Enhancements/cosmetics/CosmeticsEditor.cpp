@@ -1001,7 +1001,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
                 ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27, gsDPSetGrayscaleColor(212, 0, 255, 255));
             } else {
                 ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple", 142, gsDPSetGrayscaleColor(255, 255, 255, color.a));
-                ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_MakePurple", 27, gsDPSetGrayscaleColor(255, 255, 255, color.a));
+                ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27, gsDPSetGrayscaleColor(255, 255, 255, color.a));
             }
             
             ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_EndGrayscaleAndEndDlist", 160, gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
