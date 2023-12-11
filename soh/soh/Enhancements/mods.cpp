@@ -1084,7 +1084,7 @@ void RegisterRandomizedEnemySizes() {
     });
 }
 
-void PatchToTdMedallions() {
+void PatchToTMedallions() {
     // TODO: Refactor the DemoEffect_UpdateJewelAdult and DemoEffect_UpdateJewelChild from z_demo_effect
     // effects to take effect in there
     if (CVarGetInteger("gToTMedallionsColours", 0)) {
@@ -1156,7 +1156,7 @@ void RegisterToTMedallionsFromItem() {
         if (!CVarGetInteger("gToTMedallionsColours", 0)) {
             return;
         }
-        PatchToTdMedallions();
+        PatchToTMedallions();
     });
 }
 
@@ -1165,7 +1165,7 @@ void RegisterToTMedallionsFromScene() {
         if (!CVarGetInteger("gToTMedallionsColours", 0) && gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
             return;
         }
-        PatchToTdMedallions();
+        PatchToTMedallions();
     });
 }
 
