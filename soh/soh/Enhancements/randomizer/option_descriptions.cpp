@@ -487,6 +487,8 @@ void Settings::CreateOptionDescriptions() {
                                           "location of a progressive magic meter.";
     mOptionDescriptions[RSK_FROGS_HINT] = "Standing near the pedestal for the frogs in Zora's River will tell you the "
                                           "reward for the frogs' ocarina game.";
+    mOptionDescriptions[RSK_BIGGORON_HINT] = "Talking to Biggoron will tell you the item he will give you in exchange for the Claim Check.";
+    mOptionDescriptions[RSK_BIG_POES_HINT] = "Talking to the Poe Collector in the Market Guardhouse while adult will tell you what you recieve for handing in Big Poes.";
     mOptionDescriptions[RSK_WARP_SONG_HINTS] = "Standing near the pedestal for the frogs in Zora's River will tell you "
                                                "the reward for the frogs' ocarina game.";
     mOptionDescriptions[RSK_SCRUB_TEXT_HINT] = "Business scrubs will reveal the identity of what they're selling.";

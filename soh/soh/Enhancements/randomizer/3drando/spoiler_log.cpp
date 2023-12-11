@@ -556,7 +556,8 @@ static void WriteHints() {
     StaticHintData sariaHintData = GetSariaHintData();
     StaticHintData gregHintData = GetGregHintData();
 
-    int language = ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex();
+    uint8_t language = ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex();
+
     if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
         jsonData["warpMinuetText"] = ctx->GetHint(RH_MINUET_WARP_LOC)->GetText().GetForLanguage(language);
         jsonData["warpBoleroText"] = ctx->GetHint(RH_BOLERO_WARP_LOC)->GetText().GetForLanguage(language);
