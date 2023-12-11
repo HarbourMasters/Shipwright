@@ -962,8 +962,10 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Always shows dungeon entrance icons on the minimap");
             UIWidgets::PaddedEnhancementCheckbox("Show Gauntlets in First Person", "gFPSGauntlets", true, false);
             UIWidgets::Tooltip("Renders Gauntlets when using the Bow and Hookshot like in OOT3D");
-            UIWidgets::PaddedEnhancementCheckbox("Colour Temple of Time's Medallions", "gToTMedallionsColours", true, false);
-            UIWidgets::Tooltip("Colours (or not) the Temple of Time Medallions\nThis needs a scene reload to take effect");
+            if (UIWidgets::PaddedEnhancementCheckbox("Colour Temple of Time's Medallions", "gToTMedallionsColours", true, false)) {
+                PatchToTMedallions();
+            }
+            UIWidgets::Tooltip("Colours (or not) the Temple of Time Medallions");
             UIWidgets::Spacer(0);
             if (ImGui::BeginMenu("Animated Link in Pause Menu")) {
                 ImGui::Text("Rotation");
