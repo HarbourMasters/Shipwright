@@ -1084,7 +1084,9 @@ void RegisterRandomizedEnemySizes() {
     });
 }
 
-void PatchToTStonesAndMedallions() {
+void PatchToTdMedallions() {
+    // TODO: Refactor the DemoEffect_UpdateJewelAdult and DemoEffect_UpdateJewelChild from z_demo_effect
+    // effects to take effect in there
     if (CVarGetInteger("gStonesAndMedallionsColours", 0)) {
         ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_StartGrayscale", 7, gsSPGrayscale(true));
         ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_StartGrayscale", 7, gsSPGrayscale(true));
@@ -1150,21 +1152,21 @@ void PatchToTStonesAndMedallions() {
     }
 }
 
-void RegisterToTStonesAndMedallionsFromItem() {
+void RegisterToTMedallionsFromItem() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry _unused) { 
-        if (!CVarGetInteger("gStonesAndMedallionsColours", 0)) {
+        if (!CVarGetInteger("gToTMedallionsColours", 0)) {
             return;
         }
-        PatchToTStonesAndMedallions();
+        PatchToTdMedallions();
     });
 }
 
-void RegisterToTStonesAndMedallionsFromScene() {
+void RegisterToTMedallionsFromScene() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) { 
-        if (!CVarGetInteger("gStonesAndMedallionsColours", 0) && !gPlayState->sceneNum == SCENE_TEMPLE_OF_TIME) {
+        if (!CVarGetInteger("gToTMedallionsColours", 0) && !gPlayState->sceneNum == SCENE_TEMPLE_OF_TIME) {
             return;
         }
-        PatchToTStonesAndMedallions();
+        PatchToTdMedallions();
     });
 }
 
@@ -1197,7 +1199,7 @@ void InitMods() {
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
     RegisterRandomizedEnemySizes();
-    RegisterToTStonesAndMedallionsFromItem();
-    RegisterToTStonesAndMedallionsFromScene();
+    RegisterToTMedallionsFromItem();
+    RegisterToTMedallionsFromScene();
     NameTag_RegisterHooks();
 }
