@@ -193,6 +193,7 @@ public:
     
     DEFINE_HOOK(OnSetGameLanguage, void());
 
+    DEFINE_HOOK(OnFileDropped, void(std::string filePath));
     DEFINE_HOOK(OnAssetAltChange, void());
 
     // Helpers

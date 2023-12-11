@@ -364,31 +364,16 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
 bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
-    try {
-        if (strcmp(spoilerFileName, "") != 0) {
-            std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
-            if (!spoilerFileStream) {
-                return false;
-            }
-
-            json spoilerFileJson;
-            spoilerFileStream >> spoilerFileJson;
-
-            if (!spoilerFileJson.contains("version") || !spoilerFileJson.contains("finalSeed")) {
-                return false;
-            }
-
+    if (strcmp(spoilerFileName, "") != 0) {
+        std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
+        if (!spoilerFileStream) {
+            return false;
+        } else {
             return true;
         }
-
-        return false;
-    } catch (std::exception& e) {
-        SPDLOG_ERROR("Error checking if spoiler file exists: {}", e.what());
-        return false;
-    } catch (...) {
-        SPDLOG_ERROR("Error checking if spoiler file exists");
-        return false;
     }
+
+    return false;
 }
 #pragma GCC pop_options
 #pragma optimize("", on)
