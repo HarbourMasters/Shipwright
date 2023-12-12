@@ -2355,6 +2355,9 @@ extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
 }
 
 extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 tableID, s16 getItemID) {
+    if (tableID == MOD_RANDOMIZER) {
+        return Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(getItemID)).GetGIEntry_Copy();
+    }
     return ItemTableManager::Instance->RetrieveItemEntry(tableID, getItemID);
 }
 

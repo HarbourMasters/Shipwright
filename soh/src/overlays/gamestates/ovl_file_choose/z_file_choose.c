@@ -1336,7 +1336,8 @@ void FileChoose_GenerateRandoSeed(GameState* thisx) {
         memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName,
                CVarGetInteger("gLinkDefaultName", 0) ? &linkName : &emptyName, 8);
         return;
-    } else {
+    }
+    if (!generating) {
         Randomizer_GenerateSeed();
     }
 }
