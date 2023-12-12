@@ -1939,6 +1939,17 @@ void HintTable_Init_Item() {
                        Text{"a Piece of the Triforce", /*french*/"un fragment de la Triforce", /*spanish*/"un fragmento de la Trifuerza"}
     );
 
+    hintTable[FISHING_POLE] = HintText::Item({
+                       //obscure text
+                       Text{"a fish-puller", /*french*/"(canne à pêche)", /*spanish*/"(caña de pescar)"},
+                     }, {
+                       //ambiguous text
+                       Text{"the pond owner's property", /*french*/"(canne à pêche)", /*spanish*/"(caña de pescar)"},
+                     },
+                       //clear text
+                       Text{"a fishing pole", /*french*/"canne à pêche", /*spanish*/"caña de pescar"}
+    );
+
     hintTable[EPONA] = HintText::Item({
                        //obscure text
                        Text{"a horse",              /*french*/"un fidèle destrier", /*spanish*/"una yegua"},

@@ -9,7 +9,14 @@
 // This should probably go in a less rando-specific location
 // but the best location will probably be in the modding engine
 // which doesn't exist yet.
-typedef enum { MOD_NONE, MOD_RANDOMIZER } ModIndex;
+typedef enum {
+    MOD_NONE,
+    MOD_RANDOMIZER
+} ModIndex;
+typedef enum {
+    TABLE_VANILLA = MOD_NONE,
+    TABLE_RANDOMIZER = MOD_RANDOMIZER
+} TableIndex;
 
 typedef struct {
     char tex[512];
@@ -1360,6 +1367,7 @@ typedef enum {
     RG_BUY_RED_POTION_50,
     RG_TRIFORCE,
     RG_TRIFORCE_PIECE,
+    RG_FISHING_POLE,
     RG_HINT,
     RG_TYCOON_WALLET,
     RG_MAX
@@ -1435,6 +1443,7 @@ typedef enum {
     RSK_KAK_50_SKULLS_HINT,
     RSK_WARP_SONG_HINTS,
     RSK_SCRUB_TEXT_HINT,
+    RSK_FISHING_POLE_HINT,
     RSK_HINT_CLARITY,
     RSK_HINT_DISTRIBUTION,
     RSK_KEYSANITY,
@@ -1518,6 +1527,7 @@ typedef enum {
     RSK_FISHSANITY,
     RSK_FISHSANITY_POND_COUNT,
     RSK_FISHSANITY_AGE_SPLIT,
+    RSK_SHUFFLE_FISHING_POLE,
     RSK_MAX
 } RandomizerSettingKey;
 
@@ -1822,6 +1832,7 @@ typedef enum {
     RO_LOGIC_GLITCHLESS,
     //RO_LOGIC_GLITCHED,
     RO_LOGIC_NO_LOGIC,
+    RO_LOGIC_VANILLA,
 } RandoOptionLogic;
 
 // MQ Dungeons

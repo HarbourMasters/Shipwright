@@ -913,6 +913,8 @@ void VanillaFill() {
     ShuffleAllEntrances();
     printf("\x1b[7;32HDone");
   }
+  // Populate the playthrough for entrances so they are placed in the spoiler log
+  GeneratePlaythrough();
   //Finish up
   CreateItemOverrides();
   CreateEntranceOverrides();
@@ -1083,6 +1085,7 @@ int Fill() {
       CreateAltarText();
       CreateDampesDiaryText();
       CreateGregRupeeHint();
+      CreateFishingPoleHint();
       CreateSheikText();
       CreateSariaText();
       CreateWarpSongTexts();

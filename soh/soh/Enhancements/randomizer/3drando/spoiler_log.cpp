@@ -687,6 +687,7 @@ static void WriteHints(int language) {
     std::string unformattedGregText;
     std::string unformattedSheikText;
     std::string unformattedSariaText;
+    std::string unformattedFishingPoleText;
 
     switch (language) {
         case 0:
@@ -697,6 +698,7 @@ static void WriteHints(int language) {
             unformattedGregText = GetGregHintText().GetEnglish();
             unformattedSheikText = GetSheikHintText().GetEnglish();
             unformattedSariaText = GetSariaHintText().GetEnglish();
+            unformattedFishingPoleText = GetFishingPoleText().GetEnglish();
             jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
             jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
             jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
@@ -713,6 +715,7 @@ static void WriteHints(int language) {
             unformattedGregText = GetGregHintText().GetFrench();
             unformattedSheikText = GetSheikHintText().GetFrench();
             unformattedSariaText = GetSariaHintText().GetFrench();
+            unformattedFishingPoleText = GetFishingPoleText().GetFrench();
             jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
             jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
             jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
@@ -755,6 +758,7 @@ static void WriteHints(int language) {
     std::string gregText = AutoFormatHintTextString(unformattedGregText);
     std::string sheikText = AutoFormatHintTextString(unformattedSheikText);
     std::string sariaText = AutoFormatHintTextString(unformattedSariaText);
+    std::string fishingPoleText = AutoFormatHintTextString(unformattedFishingPoleText);
 
     jsonData["ganonText"] = ganonText;
     jsonData["ganonHintText"] = ganonHintText;
@@ -767,6 +771,8 @@ static void WriteHints(int language) {
     jsonData["sheikText"] = sheikText;
     jsonData["sariaText"] = sariaText;
     jsonData["sariaHintLoc"] = GetSariaHintLoc();
+    jsonData["fishingPoleText"] = fishingPoleText;
+    jsonData["fishingPoleLoc"] = GetFishingPoleLoc();
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;

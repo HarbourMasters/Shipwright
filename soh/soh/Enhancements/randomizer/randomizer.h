@@ -89,6 +89,8 @@ class Randomizer {
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
     CowIdentity IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
+    s16 GetNextPondFish(s16 params);
+    bool GetPondCleared();
     FishIdentity IdentifyFish(s32 sceneNum, s32 actorParams);
     GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability = true);
     GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId, bool checkObtainability = true);
@@ -103,6 +105,7 @@ class Randomizer {
     CustomMessage GetCursedSkullMessage(s16 params);
     CustomMessage GetGoronMessage(u16 index);
     CustomMessage GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
+    CustomMessage GetFishingPondOwnerMessage(u16 originalTextId);
     static void CreateCustomMessages();
     static CustomMessage GetRupeeMessage(u16 rupeeTextId);
     static CustomMessage GetTriforcePieceMessage();

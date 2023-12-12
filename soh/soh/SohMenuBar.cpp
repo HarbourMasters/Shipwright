@@ -29,7 +29,7 @@
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
 #include "Enhancements/randomizer/randomizer_settings_window.h"
 
-extern bool ShouldClearTextureCacheAtEndOfFrame;
+extern bool ToggleAltAssetsAtEndOfFrame;
 extern bool isBetaQuestEnabled;
 
 extern "C" PlayState* gPlayState;
@@ -839,6 +839,8 @@ void DrawEnhancementsMenu() {
                     UIWidgets::Tooltip("Once a hook has been set, fish will never let go while being reeled in.");
                     UIWidgets::PaddedEnhancementCheckbox("Loaches Always Appear", "gLoachesAlwaysAppear", true, false, disabled, disabledTooltip);
                     UIWidgets::Tooltip("Loaches will always appear in the fishing pond instead of every four visits.");
+                    UIWidgets::PaddedEnhancementCheckbox("Skip Keep Confirmation", "gSkipKeepConfirmation", true, false, disabled, disabledTooltip);
+                    UIWidgets::Tooltip("The pond owner will not ask to confirm if you want to keep a smaller fish.");
                     UIWidgets::PaddedEnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 3, 10, "", 10, true, true, false, disabled, disabledTooltip);
                     UIWidgets::Tooltip("The minimum weight for the unique fishing reward as a child");
                     UIWidgets::PaddedEnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 6, 13, "", 13, true, true, false, disabled, disabledTooltip);
@@ -921,8 +923,10 @@ void DrawEnhancementsMenu() {
         {
             if (ImGui::BeginMenu("Mods")) {
                 if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", false, false)) {
-                    ShouldClearTextureCacheAtEndOfFrame = true;
-                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
+                    // The checkbox will flip the alt asset CVar, but we instead want it to change at the end of the game frame
+                    // We toggle it back while setting the flag to update the CVar later
+                    CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
+                    ToggleAltAssetsAtEndOfFrame = true;
                 }
                 UIWidgets::Tooltip("Toggle between standard assets and alternate assets. Usually mods will indicate if this setting has to be used or not.");
                 UIWidgets::PaddedEnhancementCheckbox("Disable Bomb Billboarding", "gDisableBombBillboarding", true, false);
