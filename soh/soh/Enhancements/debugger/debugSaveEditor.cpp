@@ -594,23 +594,6 @@ void DrawInfoTab() {
                     gSaveContext.highScores[i]|=(fishSize) << 16;
                 }
                 UIWidgets::InsertHelpHoverText("Determines weather and school size during dawn/dusk.");
-                if (IS_RANDO &&
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) != RO_FISHSANITY_OFF &&
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) != RO_FISHSANITY_GROTTOS) {
-                    FishBool = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_AGE_SPLIT) != RO_GENERIC_OFF;
-                    fishSize = gSaveContext.fishCaughtChild;
-                    if (ImGui::InputScalar(FishBool ? "Child Fish Caught" : "Fish Caught", ImGuiDataType_U8, &fishSize)) {
-                        gSaveContext.fishCaughtChild = fishSize;
-                    }
-                    std::sprintf(fishMsg, "Number of fish caught%s", (FishBool ? " as a child" : ""));
-                    UIWidgets::InsertHelpHoverText(fishMsg);
-                    fishSize = gSaveContext.fishCaughtAdult;
-                    if (FishBool) {
-                        if (ImGui::InputScalar("Adult Fish Caught", ImGuiDataType_U8, &fishSize))
-                            gSaveContext.fishCaughtAdult = fishSize;
-                        UIWidgets::InsertHelpHoverText("Number of fish caught as an adult");
-                    }
-                }
                 
                 ImGui::TreePop();
                 continue;

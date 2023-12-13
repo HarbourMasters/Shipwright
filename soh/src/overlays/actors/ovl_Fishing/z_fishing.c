@@ -2994,8 +2994,6 @@ bool Fishsanity_GetPondSplit() {
 }
 
 void Fishsanity_Init(Fishing* this, PlayState* play) {
-    u8 caughtCt =
-        (LINK_IS_ADULT && Fishsanity_GetPondSplit()) ? gSaveContext.fishCaughtAdult : gSaveContext.fishCaughtChild;
     // With all fish randomized, remove fish that have already been caught, unless we've already caught all the fish.
     if (Fishsanity_GetPondCount() > 16 && !Randomizer_GetPondCleared() &&
         Fishsanity_IsCaught(this->actor.params, play)) {
@@ -5476,11 +5474,6 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
                 if (Fishsanity_IsCaught(sFishsanityPendingParams, play) || Fishing_AwardFishsanity(this, play)) {
                     this->actor.parent = NULL;
                     sFishsanityPendingParams = 0;
-                    if (!LINK_IS_ADULT || !Fishsanity_GetPondSplit()) {
-                        gSaveContext.fishCaughtChild++;
-                    } else {
-                        gSaveContext.fishCaughtAdult++;
-                    }
                 }
             }
             break;
