@@ -2814,7 +2814,9 @@ void Actor_DrawLensActors(PlayState* play, s32 numInvisibleActors, Actor** invis
     for (i = 0; i < numInvisibleActors; i++) {
         // "Magic lens invisible Actor display"
         gDPNoOpString(POLY_OPA_DISP++, "魔法のメガネ 見えないＡcｔｏｒ表示", i);
-        Actor_Draw(play, *(invisibleActor++));
+        if (!CVarGetInteger("gCollisionGoggles", 0)) {
+            Actor_Draw(play, *(invisibleActor++));
+        }
     }
 
     // "Magic lens invisible Actor display END"
@@ -2926,7 +2928,9 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
                         invisibleActorCounter++;
                     } else {
                         if ((HREG(64) != 1) || ((HREG(65) != -1) && (HREG(65) != HREG(66))) || (HREG(72) == 0)) {
-                            Actor_Draw(play, actor);
+                            if (!CVarGetInteger("gCollisionGoggles", 0)) {
+                                Actor_Draw(play, actor);
+                            }
                             actor->isDrawn = true;
                         }
                     }

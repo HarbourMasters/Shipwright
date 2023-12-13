@@ -1193,6 +1193,30 @@ void DrawEnhancementsMenu() {
                 }
             }
 
+            ImGui::Dummy(ImVec2(0,0));
+
+            if (ImGui::Button("Toggle Collision Goggles")) {
+                if (!CVarGetInteger("gCollisionGoggles", 0)) {
+                    CVarSetInteger("gCollisionGoggles", 1);
+                    CVarSetInteger("gColViewerEnabled", 1);
+                    CVarSetInteger("gColViewerDecal", 1);
+                    CVarSetInteger("gColViewerScene", COLVIEW_TRANSPARENT);
+                    CVarSetInteger("gColViewerBgActors", COLVIEW_TRANSPARENT);
+                    CVarSetInteger("gColViewerColCheck", COLVIEW_TRANSPARENT);
+                    CVarSetInteger("gColViewerWaterbox", COLVIEW_TRANSPARENT);
+                } else {
+                    CVarSetInteger("gCollisionGoggles", 0);
+                    CVarSetInteger("gColViewerEnabled", 0);
+                    CVarSetInteger("gColViewerDecal", 0);
+                    CVarSetInteger("gColViewerScene", COLVIEW_DISABLED);
+                    CVarSetInteger("gColViewerBgActors", COLVIEW_DISABLED);
+                    CVarSetInteger("gColViewerColCheck", COLVIEW_DISABLED);
+                    CVarSetInteger("gColViewerWaterbox", COLVIEW_DISABLED);
+                }
+            }
+            UIWidgets::Tooltip(
+                "Disables rendering of the scene and actors, and instead only shows the collision of everything.");
+
             ImGui::EndMenu();
         }
 

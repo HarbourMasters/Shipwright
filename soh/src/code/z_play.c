@@ -1646,9 +1646,11 @@ void Play_Draw(PlayState* play) {
                         } else {
                             sp80 = HREG(84);
                         }
-                        Scene_Draw(play);
-                        Room_Draw(play, &play->roomCtx.curRoom, sp80 & 3);
-                        Room_Draw(play, &play->roomCtx.prevRoom, sp80 & 3);
+                        if (!CVarGetInteger("gCollisionGoggles", 0)) {
+                            Scene_Draw(play);
+                            Room_Draw(play, &play->roomCtx.curRoom, sp80 & 3);
+                            Room_Draw(play, &play->roomCtx.prevRoom, sp80 & 3);
+                        }
                     }
                 }
 
