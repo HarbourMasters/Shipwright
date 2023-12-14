@@ -229,6 +229,7 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "The Gerudo Card is required to enter the Gerudo Training Grounds, opening "
         "the gate to Haunted Wasteland and the Horseback Archery minigame.";
+    mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "";
     mOptionDescriptions[RSK_SHOPSANITY] = "Off - All shop items will be the same as vanilla.\n"
                                           "\n"
                                           "0 Items - Vanilla shop items will be shuffled among different shops.\n"
@@ -246,6 +247,9 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SHOPSANITY_PRICES_AFFORDABLE] =
         "Affordable prices per tier: starter = 10, adult = 105, giant = 205, tycoon = 505\n\n"
         "Use this to enable wallet tier locking, but make shop items not as expensive as they could be.";
+    mOptionDescriptions[RSK_FISHSANITY] = "";
+    mOptionDescriptions[RSK_FISHSANITY_POND_COUNT] = "";
+    mOptionDescriptions[RSK_FISHSANITY_AGE_SPLIT] = "";
     mOptionDescriptions[RSK_SHUFFLE_SCRUBS] =
         "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the vanilla game "
         "(PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.\n"
@@ -480,6 +484,7 @@ void Settings::CreateOptionDescriptions() {
         "Talking to the chest game owner after buying a key will tell you the location of Greg the Green Rupee.";
     mOptionDescriptions[RSK_SARIA_HINT] = "Talking to Saria either in person or through Saria's Song will tell you the "
                                           "location of a progressive magic meter.";
+    mOptionDescriptions[RSK_FISHING_POLE_HINT] = "";
     mOptionDescriptions[RSK_FROGS_HINT] = "Standing near the pedestal for the frogs in Zora's River will tell you the "
                                           "reward for the frogs' ocarina game.";
     mOptionDescriptions[RSK_WARP_SONG_HINTS] = "Standing near the pedestal for the frogs in Zora's River will tell you "

@@ -528,6 +528,9 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
     std::string sariaRegion = spoilerFileJson["sariaRegion"].get<std::string>();
     RandomizerCheck sariaHintLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["sariaHintLoc"].get<std::string>()];
     AddHint(RH_SARIA, Text(sariaText), sariaHintLoc, HINT_TYPE_STATIC, "Static", mSpoilerfileAreaNameToEnum[sariaRegion]);
+
+    // Fishing Pole Hint
+
     
     // Warp Songs
     std::string warpMinuetText = FormatJsonHintText(spoilerFileJson["warpMinuetText"].get<std::string>()); //RANDOTODO fall back for if location is used
