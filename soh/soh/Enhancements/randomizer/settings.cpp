@@ -1686,6 +1686,24 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         for (const auto randomizerTrick : enabledTricks) {
             mTrickOptions[randomizerTrick].SetSelectedIndex(1);
         }
+        if (!mOptions[RSK_SHUFFLE_KOKIRI_SWORD]) {
+            if (mOptions[RSK_STARTING_KOKIRI_SWORD]) {
+                ctx->GetItemLocation(RC_KF_KOKIRI_SWORD_CHEST)->GetExcludedOption()->SetSelectedIndex(1);
+            }
+        }
+        if (!mOptions[RSK_SHUFFLE_MASTER_SWORD]) {
+            if (mOptions[RSK_STARTING_MASTER_SWORD]) {
+                ctx->GetItemLocation(RC_MASTER_SWORD_PEDESTAL)->GetExcludedOption()->SetSelectedIndex(1);
+            }
+        }
+        if (!mOptions[RSK_SHUFFLE_OCARINA]) {
+            if (mOptions[RSK_STARTING_OCARINA].IsNot(RO_STARTING_OCARINA_OFF)) {
+                ctx->GetItemLocation(RC_LW_GIFT_FROM_SARIA)->GetExcludedOption()->SetSelectedIndex(1);
+                if (mOptions[RSK_STARTING_OCARINA].Is(RO_STARTING_OCARINA_TIME)) {
+                    ctx->GetItemLocation(RC_HF_OCARINA_OF_TIME_ITEM)->GetExcludedOption()->SetSelectedIndex(1);
+                }
+            }
+        }
     }
 
     // RANDOTODO implement chest shuffle with keysanity
