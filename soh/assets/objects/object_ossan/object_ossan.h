@@ -3,6 +3,36 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_ossanTex_005078 "__OTR__objects/object_ossan/object_ossanTex_005078"
+static const ALIGN_ASSET(2) char object_ossanTex_005078[] = dobject_ossanTex_005078;
+
+#define dobject_ossanTex_005178 "__OTR__objects/object_ossan/object_ossanTex_005178"
+static const ALIGN_ASSET(2) char object_ossanTex_005178[] = dobject_ossanTex_005178;
+
+#define dobject_ossanTex_005278 "__OTR__objects/object_ossan/object_ossanTex_005278"
+static const ALIGN_ASSET(2) char object_ossanTex_005278[] = dobject_ossanTex_005278;
+
+#define dobject_ossanTex_005AB8 "__OTR__objects/object_ossan/object_ossanTex_005AB8"
+static const ALIGN_ASSET(2) char object_ossanTex_005AB8[] = dobject_ossanTex_005AB8;
+
+#define dobject_ossanTex_008A38 "__OTR__objects/object_ossan/object_ossanTex_008A38"
+static const ALIGN_ASSET(2) char object_ossanTex_008A38[] = dobject_ossanTex_008A38;
+
+#define dobject_ossanTex_008AB8 "__OTR__objects/object_ossan/object_ossanTex_008AB8"
+static const ALIGN_ASSET(2) char object_ossanTex_008AB8[] = dobject_ossanTex_008AB8;
+
+#define dobject_ossanTex_008CB8 "__OTR__objects/object_ossan/object_ossanTex_008CB8"
+static const ALIGN_ASSET(2) char object_ossanTex_008CB8[] = dobject_ossanTex_008CB8;
+
+#define dobject_ossanTex_008EB8 "__OTR__objects/object_ossan/object_ossanTex_008EB8"
+static const ALIGN_ASSET(2) char object_ossanTex_008EB8[] = dobject_ossanTex_008EB8;
+
+#define dobject_ossanTex_0096B8 "__OTR__objects/object_ossan/object_ossanTex_0096B8"
+static const ALIGN_ASSET(2) char object_ossanTex_0096B8[] = dobject_ossanTex_0096B8;
+
+#define dobject_ossanTex_0098B8 "__OTR__objects/object_ossan/object_ossanTex_0098B8"
+static const ALIGN_ASSET(2) char object_ossanTex_0098B8[] = dobject_ossanTex_0098B8;
+
 #define dgObjectOssanAnim_000338 "__OTR__objects/object_ossan/gObjectOssanAnim_000338"
 static const ALIGN_ASSET(2) char gObjectOssanAnim_000338[] = dgObjectOssanAnim_000338;
 
@@ -30,18 +60,6 @@ static const ALIGN_ASSET(2) char gObjectOssanEnSyatekiManDL_007E28[] = dgObjectO
 #define dgObjectOssanSkel "__OTR__objects/object_ossan/gObjectOssanSkel"
 static const ALIGN_ASSET(2) char gObjectOssanSkel[] = dgObjectOssanSkel;
 
-#define dobject_ossanTex_005078 "__OTR__objects/object_ossan/object_ossanTex_005078"
-static const ALIGN_ASSET(2) char object_ossanTex_005078[] = dobject_ossanTex_005078;
-
-#define dobject_ossanTex_005AB8 "__OTR__objects/object_ossan/object_ossanTex_005AB8"
-static const ALIGN_ASSET(2) char object_ossanTex_005AB8[] = dobject_ossanTex_005AB8;
-
-#define dobject_ossanTex_005178 "__OTR__objects/object_ossan/object_ossanTex_005178"
-static const ALIGN_ASSET(2) char object_ossanTex_005178[] = dobject_ossanTex_005178;
-
-#define dobject_ossanTex_005278 "__OTR__objects/object_ossan/object_ossanTex_005278"
-static const ALIGN_ASSET(2) char object_ossanTex_005278[] = dobject_ossanTex_005278;
-
 #define dgObjectOssanSkelLimbsLimb_009AB8DL_002E30 "__OTR__objects/object_ossan/gObjectOssanSkelLimbsLimb_009AB8DL_002E30"
 static const ALIGN_ASSET(2) char gObjectOssanSkelLimbsLimb_009AB8DL_002E30[] = dgObjectOssanSkelLimbsLimb_009AB8DL_002E30;
 
@@ -66,22 +84,5 @@ static const ALIGN_ASSET(2) char gObjectOssanSkelLimbsLimb_009B00DL_003708[] = d
 #define dgObjectOssanSkelLimbsLimb_009B0CDL_007428 "__OTR__objects/object_ossan/gObjectOssanSkelLimbsLimb_009B0CDL_007428"
 static const ALIGN_ASSET(2) char gObjectOssanSkelLimbsLimb_009B0CDL_007428[] = dgObjectOssanSkelLimbsLimb_009B0CDL_007428;
 
-#define dobject_ossanTex_008EB8 "__OTR__objects/object_ossan/object_ossanTex_008EB8"
-static const ALIGN_ASSET(2) char object_ossanTex_008EB8[] = dobject_ossanTex_008EB8;
-
-#define dobject_ossanTex_008A38 "__OTR__objects/object_ossan/object_ossanTex_008A38"
-static const ALIGN_ASSET(2) char object_ossanTex_008A38[] = dobject_ossanTex_008A38;
-
-#define dobject_ossanTex_0096B8 "__OTR__objects/object_ossan/object_ossanTex_0096B8"
-static const ALIGN_ASSET(2) char object_ossanTex_0096B8[] = dobject_ossanTex_0096B8;
-
-#define dobject_ossanTex_0098B8 "__OTR__objects/object_ossan/object_ossanTex_0098B8"
-static const ALIGN_ASSET(2) char object_ossanTex_0098B8[] = dobject_ossanTex_0098B8;
-
-#define dobject_ossanTex_008AB8 "__OTR__objects/object_ossan/object_ossanTex_008AB8"
-static const ALIGN_ASSET(2) char object_ossanTex_008AB8[] = dobject_ossanTex_008AB8;
-
-#define dobject_ossanTex_008CB8 "__OTR__objects/object_ossan/object_ossanTex_008CB8"
-static const ALIGN_ASSET(2) char object_ossanTex_008CB8[] = dobject_ossanTex_008CB8;
 
 #endif // OBJECTS_OBJECT_OSSAN_H

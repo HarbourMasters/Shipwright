@@ -24,10 +24,16 @@ void AreaTable_Init_GanonsCastle() {
   if (randoCtx->GetDungeon(GANONS_CASTLE)->IsVanilla()) {
   areaTable[RR_GANONS_CASTLE_LOBBY] = Area("Ganon's Castle Lobby", "Ganon's Castle", RA_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_SHEIK_HINT_GC,  {[]{return true;}}), 
+                  LocationAccess(RC_SHEIK_HINT_GC,  {[]{return true;}}),
                 }, {
                   //Exits
-                  Entrance(RR_GANONS_CASTLE_ENTRYWAY,     {[]{return true;}}),
+                  Entrance(RR_GANONS_CASTLE_ENTRYWAY, {[]{return true;}}),
+                  Entrance(RR_GANONS_CASTLE_MAIN,     {[]{return true;}}),
+  });
+
+  areaTable[RR_GANONS_CASTLE_MAIN] = Area("Ganon's Castle Main", "Ganon's Castle", RA_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+                  //Exits
+                  Entrance(RR_GANONS_CASTLE_LOBBY,        {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_FOREST_TRIAL, {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_FIRE_TRIAL,   {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_WATER_TRIAL,  {[]{return true;}}),
@@ -129,7 +135,13 @@ void AreaTable_Init_GanonsCastle() {
                   LocationAccess(RC_SHEIK_HINT_MQ_GC,  {[]{return true;}}),
                 }, {
                   //Exits
-                  Entrance(RR_GANONS_CASTLE_ENTRYWAY,        {[]{return (CanUse(RG_MASTER_SWORD) || (HasExplosives || ((Nuts || Boomerang) && (Sticks || KokiriSword))));}}),
+                  Entrance(RR_GANONS_CASTLE_ENTRYWAY, {[]{return true;}}),
+                  Entrance(RR_GANONS_CASTLE_MQ_MAIN,  {[]{return (CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_MEGATON_HAMMER)) || ((HasExplosives || Nuts || CanUse(RG_BOOMERANG)) && CanJumpslash);}}),
+  });
+
+  areaTable[RR_GANONS_CASTLE_MQ_MAIN] = Area("Ganon's Castle MQ Main", "Ganons Castle", RA_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+                  //Exits
+                  Entrance(RR_GANONS_CASTLE_MQ_LOBBY,        {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_MQ_FOREST_TRIAL, {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_MQ_FIRE_TRIAL,   {[]{return true;}}),
                   Entrance(RR_GANONS_CASTLE_MQ_WATER_TRIAL,  {[]{return true;}}),

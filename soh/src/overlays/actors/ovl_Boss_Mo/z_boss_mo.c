@@ -854,7 +854,7 @@ void BossMo_Tentacle(BossMo* this, PlayState* play) {
                     if (&this->actor == player->actor.parent) {
                         player->unk_850 = 0x65;
                         player->actor.parent = NULL;
-                        player->csMode = 0;
+                        player->csAction = 0;
                         if (this->timers[0] == 0) {
                             func_8002F6D4(play, &this->actor, 20.0f, this->actor.shape.rot.y + 0x8000, 10.0f, 0);
                         }
@@ -884,7 +884,7 @@ void BossMo_Tentacle(BossMo* this, PlayState* play) {
             if (&this->actor == player->actor.parent) {
                 player->unk_850 = 0x65;
                 player->actor.parent = NULL;
-                player->csMode = 0;
+                player->csAction = 0;
             }
             Math_ApproachF(&this->tentRippleSize, 0.15f, 0.5f, 0.01);
             if (this->meltIndex < 41) {
@@ -1806,7 +1806,7 @@ void BossMo_CoreCollisionCheck(BossMo* this, PlayState* play) {
                         if (player->actor.parent != NULL) {
                             player->unk_850 = 0x65;
                             player->actor.parent = NULL;
-                            player->csMode = 0;
+                            player->csAction = 0;
                         }
                     } else {
                         this->actor.colChkInfo.health = 1;
@@ -1825,7 +1825,7 @@ void BossMo_CoreCollisionCheck(BossMo* this, PlayState* play) {
                     if (player->actor.parent == &sMorphaTent1->actor) {
                         player->unk_850 = 0x65;
                         player->actor.parent = NULL;
-                        player->csMode = 0;
+                        player->csAction = 0;
                     }
                 }
                 this->work[MO_TENT_ACTION_STATE] = MO_CORE_STUNNED;

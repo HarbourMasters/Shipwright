@@ -46,9 +46,9 @@ extern "C"
 	extern OSViMode osViModeFpalLan1;
 	extern u32 __additional_scanline;
 	extern u8 gBuildVersion[];
-	extern s16 gBuildVersionMajor;
-	extern s16 gBuildVersionMinor;
-	extern s16 gBuildVersionPatch;
+	extern u16 gBuildVersionMajor;
+	extern u16 gBuildVersionMinor;
+	extern u16 gBuildVersionPatch;
     extern u8 gBuildTeam[];
 	extern u8 gBuildDate[];
 	extern u8 gBuildMakeOption[];
@@ -107,7 +107,7 @@ extern "C"
 	extern s16 gLinkObjectIds[2];
 	extern u32 gObjectTableSize;
 	extern RomFile gObjectTable[OBJECT_ID_MAX];
-	extern EntranceInfo gEntranceTable[1556];
+	extern EntranceInfo gEntranceTable[ENTR_MAX];
 	extern SceneTableEntry gSceneTable[SCENE_ID_MAX];
 	extern u16 gSramSlotOffsets[];
 	// 4 16-colors palettes

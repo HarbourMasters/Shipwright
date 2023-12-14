@@ -508,7 +508,9 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         //"Glitched - Glitches may be required to beat the game. You can disable and enable glitches below.\n"
         //"\n"
-        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.";
+        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.\n"
+        "\n"
+        "Vanilla - Places all items and dungeon rewards in their vanilla locations.";
     mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE] = "When this options is enabled, the randomizer will "
                                                        "guarantee that every item is obtainable and every "
                                                        "location is reachable. When disabled, only "

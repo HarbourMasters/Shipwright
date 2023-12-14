@@ -228,6 +228,68 @@ void RegisterOnKaleidoscopeUpdateHook() {
             return;
         }
 
+        // Game over + prompts
+        if (pauseCtx->state >= 0xC && pauseCtx->state <= 0x10) {
+            // Reset prompt tracker after state change
+            if (prevState != pauseCtx->state) {
+                prevPromptChoice = -1;
+            }
+
+            switch (pauseCtx->state) {
+                // Game over in full alpha
+                case 0xC: {
+                    // Fire once on state change
+                    if (prevState != pauseCtx->state) {
+                        auto translation = GetParameritizedText("game_over", TEXT_BANK_KALEIDO, nullptr);
+                        SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                    }
+                    break;
+                }
+                // Prompt for save
+                case 0xE: {
+                    if (prevPromptChoice != pauseCtx->promptChoice) {
+                        auto prompt = GetParameritizedText(pauseCtx->promptChoice == 0 ? "yes" : "no", TEXT_BANK_MISC, nullptr);
+                        if (prevPromptChoice == -1) {
+                            auto translation = GetParameritizedText("save_prompt", TEXT_BANK_KALEIDO, nullptr);
+                            SpeechSynthesizer::Instance->Speak((translation + " - " + prompt).c_str(), GetLanguageCode());
+                        } else {
+                            SpeechSynthesizer::Instance->Speak(prompt.c_str(), GetLanguageCode());
+                        }
+
+                        prevPromptChoice = pauseCtx->promptChoice;
+                    }
+                    break;
+                }
+                // Game saved
+                case 0xF: {
+                    // Fire once on state change
+                    if (prevState != pauseCtx->state) {
+                        auto translation = GetParameritizedText("game_saved", TEXT_BANK_KALEIDO, nullptr);
+                        SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                    }
+                    break;
+                }
+                // Prompt to continue playing
+                case 0x10: {
+                    if (prevPromptChoice != pauseCtx->promptChoice) {
+                        auto prompt = GetParameritizedText(pauseCtx->promptChoice == 0 ? "yes" : "no", TEXT_BANK_MISC, nullptr);
+                        if (prevPromptChoice == -1) {
+                            auto translation = GetParameritizedText("continue_game", TEXT_BANK_KALEIDO, nullptr);
+                            SpeechSynthesizer::Instance->Speak((translation + " - " + prompt).c_str(), GetLanguageCode());
+                        } else {
+                            SpeechSynthesizer::Instance->Speak(prompt.c_str(), GetLanguageCode());
+                        }
+
+                        prevPromptChoice = pauseCtx->promptChoice;
+                    }
+                    break;
+                }
+            }
+
+            prevState = pauseCtx->state;
+            return;
+        }
+
         // Announce page when
         // Kaleido pages are rotating and page halfway rotated
         // Or Kaleido was just opened

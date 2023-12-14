@@ -77,7 +77,7 @@ void EnHoll_SetupAction(EnHoll* this, EnHollActionFunc func) {
 }
 
 s32 EnHoll_IsKokiriSetup8() {
-    return gSaveContext.entranceIndex == 0x00EE && gSaveContext.sceneSetupIndex == 8;
+    return gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0 && gSaveContext.sceneSetupIndex == 8;
 }
 
 void EnHoll_ChooseAction(EnHoll* this) {

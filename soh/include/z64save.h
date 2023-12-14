@@ -269,10 +269,10 @@ typedef struct {
     /* 0x1420 */ s16 worldMapArea;
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
     /* 0x1424 */ s16 healthAccumulator;
-    /* 0x1426 */ u16 pendingSale;
-    /* 0x1428 */ u16 pendingSaleMod;
     // #region SOH [General]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to SoH
+    /*        */ u16 pendingSale;
+    /*        */ u16 pendingSaleMod;
     /*        */ uint8_t questId;
     /*        */ uint32_t isBossRushPaused;
     /*        */ uint8_t bossRushOptions[BOSSRUSH_OPTIONS_AMOUNT];
@@ -284,6 +284,7 @@ typedef struct {
     // #region SOH [Randomizer]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to Randomizer
     /*        */ u16 randomizerInf[10];
+    /*        */ u8 mqDungeonCount;
     /*        */ u16 adultTradeItems;
     /*        */ u8 triforcePiecesCollected;
     // #endregion

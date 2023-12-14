@@ -462,6 +462,8 @@ class OptionGroup {
      * @brief Renders all of the options contained within this `OptionGroup` in the ImGui menu.
      */
     bool RenderImGui() const;
+    void Disable();
+    void Enable();
 
   private:
     std::string mName;
@@ -472,5 +474,6 @@ class OptionGroup {
     OptionGroupType mContainsType = OptionGroupType::DEFAULT;
     WidgetContainerType mContainerType = WidgetContainerType::BASIC;
     std::string mDescription;
+    bool mDisabled = false;
 };
 } // namespace Rando

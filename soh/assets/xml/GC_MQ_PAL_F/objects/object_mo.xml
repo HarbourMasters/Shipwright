@@ -8,7 +8,7 @@
         <!-- Morpha's Title Card -->
         <Texture Name="gMorphaTitleCardTex" Format="i8" Width="128" Height="120" Offset="0x1010"/>
         <Texture Name="gMorphaWaterTex" Format="rgba16" Width="32" Height="32" Offset="0x8870"/>
-				
+
         <!-- DLists for Morpha's Core -->
         <DList Name="gMorphaCoreMembraneDL" Offset="0x6700"/>
         <DList Name="gMorphaCoreNucleusDL" Offset="0x6838"/>
@@ -69,17 +69,17 @@
         <!-- Unused content -->
 
         <!-- This is the dlist for EnVbBall for some reason. -->
-        <DList Name="gMorphaDL_000550" Offset="0x550"/> 
+        <DList Name="gMorphaDL_000550" Offset="0x550"/>
 
         <DList Name="gMorphaDL_000EC0" Offset="0xEC0"/>
         <DList Name="gMorphaDL_000EF8" Offset="0xEF8"/>
         <DList Name="gMorphaDL_007BF8" Offset="0x7BF8"/>
-        
+
         <Array Name="gMorphaVtx_006938" Count="14" Offset="0x6938">
             <Vtx/>
         </Array>
 
-        <Array Name="gMorphaVtx_007BB8" Count="4" Offset="0x7BB8">
+        <Array Name="gMorphaVtx_006A18" Count="286" Offset="0x006A18">
             <Vtx/>
         </Array>
 

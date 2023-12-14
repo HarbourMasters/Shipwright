@@ -601,13 +601,24 @@ void HealthMeter_Draw(PlayState* play) {
 
             {
                 Mtx* matrix = Graph_Alloc(gfxCtx, sizeof(Mtx));
-                Matrix_SetTranslateScaleMtx2(matrix, 
-                HeartsScale+(HeartsScale/3) - ((HeartsScale/3) * sp144), 
-                HeartsScale+(HeartsScale/3) - ((HeartsScale/3) * sp144),
-                HeartsScale+(HeartsScale/3) - ((HeartsScale/3) * sp144), 
-                -130+offsetX, //Pos X
-                (-94+offsetY) *-1, //Pos Y
-                0.0f);
+                
+                if (CVarGetInteger("gNoHUDHeartAnimation", 0)) {
+                    Matrix_SetTranslateScaleMtx2(matrix,
+                        HeartsScale,          // Scale X
+                        HeartsScale,          // Scale Y
+                        HeartsScale,          // Scale Z
+                        -130 + offsetX,       // Pos X
+                        (-94 + offsetY) * -1, // Pos Y
+                        0.0f);
+                } else {
+                    Matrix_SetTranslateScaleMtx2(matrix, HeartsScale + (HeartsScale / 3) - ((HeartsScale / 3) * sp144),
+                        HeartsScale + (HeartsScale / 3) - ((HeartsScale / 3) * sp144),
+                        HeartsScale + (HeartsScale / 3) - ((HeartsScale / 3) * sp144),
+                        -130 + offsetX,       // Pos X
+                        (-94 + offsetY) * -1, // Pos Y
+                        0.0f);
+                }
+
                 gSPMatrix(OVERLAY_DISP++, matrix, G_MTX_MODELVIEW | G_MTX_LOAD);
                 gSPVertex(OVERLAY_DISP++, sp154, 4, 0);
                 gSP1Quadrangle(OVERLAY_DISP++, 0, 2, 3, 1, 0);

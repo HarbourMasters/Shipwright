@@ -1589,6 +1589,48 @@ void Settings::UpdateOptionProperties() {
     } else {
         mOptions[RSK_LINKS_POCKET].Enable();
     }
+
+    if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA) {
+        mOptionGroups[RSG_AREA_ACCESS_IMGUI].Disable();
+        mOptions[RSK_STARTING_AGE].Disable("");
+        mOptions[RSK_GERUDO_FORTRESS].Disable("");
+        mOptions[RSK_RAINBOW_BRIDGE].Disable("");
+        mOptions[RSK_BRIDGE_OPTIONS].Disable("");
+        mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT].Disable("");
+        mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT].Disable("");
+        mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT].Disable("");
+        mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT].Disable("");
+        mOptions[RSK_RAINBOW_BRIDGE_TOKEN_COUNT].Disable("");
+        mOptions[RSK_GANONS_TRIALS].Disable("");
+        mOptions[RSK_TRIAL_COUNT].Disable("");
+        mOptions[RSK_TRIFORCE_HUNT].Disable("");
+        mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL].Disable("");
+        mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED].Disable("");
+        mOptionGroups[RSG_ITEMS_IMGUI_TABLE].Disable();
+        mOptionGroups[RSG_GAMEPLAY_IMGUI_TABLE].Disable();
+        mOptions[RSK_LINKS_POCKET].Disable("");
+        mOptions[RSK_STARTING_OCARINA].Disable("");
+    } else {
+        mOptionGroups[RSG_AREA_ACCESS_IMGUI].Enable();
+        mOptions[RSK_STARTING_AGE].Enable();
+        mOptions[RSK_GERUDO_FORTRESS].Enable();
+        mOptions[RSK_RAINBOW_BRIDGE].Enable();
+        mOptions[RSK_BRIDGE_OPTIONS].Enable();
+        mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT].Enable();
+        mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT].Enable();
+        mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT].Enable();
+        mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT].Enable();
+        mOptions[RSK_RAINBOW_BRIDGE_TOKEN_COUNT].Enable();
+        mOptions[RSK_GANONS_TRIALS].Enable();
+        mOptions[RSK_TRIAL_COUNT].Enable();
+        mOptions[RSK_TRIFORCE_HUNT].Enable();
+        mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL].Enable();
+        mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED].Enable();
+        mOptionGroups[RSG_ITEMS_IMGUI_TABLE].Enable();
+        mOptionGroups[RSG_GAMEPLAY_IMGUI_TABLE].Enable();
+        mOptions[RSK_LINKS_POCKET].Enable();
+        mOptions[RSK_STARTING_OCARINA].Enable();
+    }
 }
 
 void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocations, const std::set<RandomizerTrick>& enabledTricks) {
@@ -1878,6 +1920,8 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                         mOptions[index].SetSelectedIndex(RO_LOGIC_GLITCHLESS);
                     } else if (it.value() == "No Logic") {
                         mOptions[index].SetSelectedIndex(RO_LOGIC_NO_LOGIC);
+                    } else if (it.value() == "Vanilla") {
+                        mOptions[index].SetSelectedIndex(RO_LOGIC_VANILLA);
                     }
                     break;
                 case RSK_FOREST:

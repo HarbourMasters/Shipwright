@@ -425,15 +425,15 @@ void func_80A79AB4(EnIn* this, PlayState* play) {
     }
 }
 
-void func_80A79BAC(EnIn* this, PlayState* play, s32 index, u32 arg3) {
-    s16 entrances[] = { 0x0558, 0x04CA, 0x0157 };
+void func_80A79BAC(EnIn* this, PlayState* play, s32 index, u32 transitionType) {
+    s16 entrances[] = { ENTR_LON_LON_RANCH_8, ENTR_LON_LON_RANCH_6, ENTR_LON_LON_RANCH_0 };
 
     play->nextEntranceIndex = entrances[index];
     if (index == 2) {
         gSaveContext.nextCutsceneIndex = 0xFFF0;
     }
-    play->fadeTransition = arg3;
-    play->sceneLoadFlag = 0x14;
+    play->transitionType = transitionType;
+    play->transitionTrigger = TRANS_TRIGGER_START;
     func_8002DF54(play, &this->actor, 8);
     Interface_ChangeAlpha(1);
     if (index == 0) {
@@ -641,7 +641,7 @@ void func_80A7A4BC(EnIn* this, PlayState* play) {
 
 void func_80A7A4C8(EnIn* this, PlayState* play) {
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
-        func_80A79BAC(this, play, 1, 0x20);
+        func_80A79BAC(this, play, 1, TRANS_TYPE_CIRCLE(TCA_NORMAL, TCC_BLACK, TCS_FAST));
         gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x000F) | 0x0001;
         gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
         Flags_UnsetInfTable(INFTABLE_A2);
@@ -655,7 +655,7 @@ void func_80A7A4C8(EnIn* this, PlayState* play) {
 void func_80A7A568(EnIn* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s32 phi_a2;
-    s32 phi_a3;
+    s32 transitionType;
 
     if (!Flags_GetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO) && (player->stateFlags1 & 0x800000)) {
         Flags_SetInfTable(INFTABLE_AB);
@@ -677,7 +677,7 @@ void func_80A7A568(EnIn* this, PlayState* play) {
                 (gSaveContext.eventInf[0] & ~0x10) | (((EnHorse*)GET_PLAYER(play)->rideActor)->type << 4);
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0xF) | 2;
             phi_a2 = 2;
-            phi_a3 = 2;
+            transitionType = TRANS_TYPE_FADE_BLACK;
         } else {
             Audio_PlaySoundGeneral(NA_SE_SY_FOUND, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             if (!Flags_GetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO)) {
@@ -688,9 +688,9 @@ void func_80A7A568(EnIn* this, PlayState* play) {
             }
             gSaveContext.eventInf[0] &= ~0xF;
             phi_a2 = 0;
-            phi_a3 = 0x20;
+            transitionType = TRANS_TYPE_CIRCLE(TCA_NORMAL, TCC_BLACK, TCS_FAST);
         }
-        func_80A79BAC(this, play, phi_a2, phi_a3);
+        func_80A79BAC(this, play, phi_a2, transitionType);
         play->msgCtx.stateTimer = 0;
         gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
         play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
@@ -722,7 +722,7 @@ void func_80A7A848(EnIn* this, PlayState* play) {
             gSaveContext.eventInf[0] &= ~0xF;
             this->actionFunc = func_80A7A4C8;
         } else {
-            func_80A79BAC(this, play, 2, 0x26);
+            func_80A79BAC(this, play, 2, TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST));
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0xF) | 2;
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
             play->msgCtx.stateTimer = 0;
@@ -747,7 +747,7 @@ void func_80A7A940(EnIn* this, PlayState* play) {
     }
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
-        func_80A79BAC(this, play, 2, 0x26);
+        func_80A79BAC(this, play, 2, TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST));
         gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x000F) | 0x0002;
         gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
         play->msgCtx.stateTimer = 0;
@@ -870,9 +870,9 @@ void func_80A7AEF0(EnIn* this, PlayState* play) {
     pos.z += 90.0f * Math_CosS(this->actor.shape.rot.y);
     yaw = Math_Vec3f_Yaw(&pos, &player->actor.world.pos);
     if (ABS(yaw) > 0x4000) {
-        play->nextEntranceIndex = 0x0476;
-        play->sceneLoadFlag = 0x14;
-        play->fadeTransition = 5;
+        play->nextEntranceIndex = ENTR_HYRULE_FIELD_15;
+        play->transitionTrigger = TRANS_TRIGGER_START;
+        play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
         this->actionFunc = func_80A7B018;
     } else if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         play->msgCtx.stateTimer = 4;
@@ -896,7 +896,7 @@ void func_80A7B024(EnIn* this, PlayState* play) {
             Flags_SetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO);
             Flags_SetInfTable(INFTABLE_AB);
         }
-        func_80A79BAC(this, play, 0, 0x26);
+        func_80A79BAC(this, play, 0, TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST));
         gSaveContext.eventInf[0] = gSaveContext.eventInf[0] & ~0xF;
         gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
         play->msgCtx.stateTimer = 4;
