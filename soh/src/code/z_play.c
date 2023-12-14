@@ -2362,7 +2362,7 @@ void Play_PerformSave(PlayState* play) {
 
         uint8_t triforceHuntCompleted =
             IS_RANDO &&
-            gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) &&
+            gSaveContext.triforcePiecesCollected == (Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1) &&
             Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT);
         if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF || triforceHuntCompleted) {
             Overlay_DisplayText(3.0f, "Game Saved");
