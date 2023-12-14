@@ -209,6 +209,7 @@ std::vector<RandomizerCheck> Rando::StaticData::overworldLocations = {
     RC_MARKET_TREASURE_CHEST_GAME_ITEM_4,
     RC_MARKET_TREASURE_CHEST_GAME_ITEM_5,
     RC_MARKET_GUARD_HOUSE_CHILD_POT_1,
+    RC_MARKET_GUARD_HOUSE_CHILD_POT_2,
 
     // Market Shops
     RC_MARKET_BOMBCHU_SHOP_ITEM_1,
@@ -1293,8 +1294,9 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_GV_COW] =                  Location::Base(RC_GV_COW,                  RCQUEST_BOTH, RCTYPE_COW, RCAREA_GERUDO_VALLEY,        ACTOR_EN_COW, SCENE_GERUDO_VALLEY,     0x00,                         0x15, "Cow",               "GV Cow",                  RHT_GV_COW,                  RG_MILK, { Category::cCow }, SpoilerCollectionCheck::Cow(0x5A, 0x15), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
     locationTable[RC_JABU_JABUS_BELLY_MQ_COW] = Location::Base(RC_JABU_JABUS_BELLY_MQ_COW, RCQUEST_MQ,   RCTYPE_COW, RCAREA_JABU_JABUS_BELLY,     ACTOR_EN_COW, SCENE_JABU_JABU,         0x00,                         0x15, "MQ Cow",            "Jabu Jabus Belly MQ Cow", RHT_JABU_JABUS_BELLY_MQ_COW, RG_MILK, { Category::cCow }, SpoilerCollectionCheck::Cow(0x02, 0x15), SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
 
-    // Pots       Randomizer Check                                Randomizer Check               Quest         Type        Area           Actor ID         Scene ID                  Params                           Flags Short Name                 Spoiler Name                  Hint Text Key           Vanilla         Item Categories     Spoiler Collection Check                 Collection Check Group
+    // Pots       Randomizer Check                                Randomizer Check               Quest         Type        Area           Actor ID         Scene ID                  Params                                   Flags Short Name                 Spoiler Name                  Hint Text Key                          Vanilla         Item Categories     Spoiler Collection Check                 Collection Check Group
     locationTable[RC_MARKET_GUARD_HOUSE_CHILD_POT_1] = Location::Base(RC_MARKET_GUARD_HOUSE_CHILD_POT_1, RCQUEST_BOTH, RCTYPE_POT, RCAREA_MARKET, ACTOR_OBJ_TSUBO, SCENE_MARKET_GUARD_HOUSE, THREE_ACTOR_PARAMS(-80, 0, -7),  0x00, "Guard House Child Pot 1", "MK Guard House Child Pot 1", RHT_SHUFFLE_POTS_MARKET_GUARD_HOUSE_1, RG_GREEN_RUPEE, { Category::cPot }, SpoilerCollectionCheck::Pot(0x4D, 0x00), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_GUARD_HOUSE_CHILD_POT_2] = Location::Base(RC_MARKET_GUARD_HOUSE_CHILD_POT_2, RCQUEST_BOTH, RCTYPE_POT, RCAREA_MARKET, ACTOR_OBJ_TSUBO, SCENE_MARKET_GUARD_HOUSE, THREE_ACTOR_PARAMS(-65, 0, -45), 0x00, "Guard House Child Pot 2", "MK Guard House Child Pot 2", RHT_SHUFFLE_POTS_MARKET_GUARD_HOUSE_2, RG_GREEN_RUPEE, { Category::cPot }, SpoilerCollectionCheck::Pot(0x4D, 0x00), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
 
     /*-------------------------------
               --- SHOPS ---

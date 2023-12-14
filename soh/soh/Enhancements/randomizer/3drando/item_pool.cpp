@@ -577,6 +577,7 @@ static void PlaceVanillaCowMilk() {
 static void PlaceVanillaPotContents() {
   auto ctx = Rando::Context::GetInstance();
   ctx->PlaceItemInLocation(RC_MARKET_GUARD_HOUSE_CHILD_POT_1, RG_GREEN_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_MARKET_GUARD_HOUSE_CHILD_POT_2, RG_GREEN_RUPEE, false, true);
 }
 
 static void SetScarceItemPool() {

@@ -171,6 +171,7 @@ void AreaTable_Init_CastleTown() {
                   LocationAccess(RC_MARKET_10_BIG_POES,         {[]{return IsAdult && BigPoeKill;}}),
                   LocationAccess(RC_MARKET_GS_GUARD_HOUSE,      {[]{return IsChild;}}),
                   LocationAccess(RC_MARKET_GUARD_HOUSE_CHILD_POT_1, {[]{return CanBreakPots();}}),
+                  LocationAccess(RC_MARKET_GUARD_HOUSE_CHILD_POT_2, {[]{return CanBreakPots();}}),
                 }, {
                   //Exits
                   Entrance(RR_MARKET_ENTRANCE, {[]{return true;}}),
