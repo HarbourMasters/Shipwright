@@ -28,6 +28,7 @@ typedef enum {
     SPOILER_CHK_MERCHANT,
     SPOILER_CHK_GRAVEDIGGER,
     SPOILER_CHK_RANDOMIZER_INF,
+    SPOILER_CHK_POT,
 } SpoilerCollectionCheckType;
 
 // GetLocation groups for checks, used to group the checks by logical location

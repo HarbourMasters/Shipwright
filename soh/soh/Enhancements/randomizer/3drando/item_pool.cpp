@@ -574,6 +574,11 @@ static void PlaceVanillaCowMilk() {
   }
 }
 
+static void PlaceVanillaPotContents() {
+  auto ctx = Rando::Context::GetInstance();
+  ctx->PlaceItemInLocation(RC_MARKET_GUARD_HOUSE_CHILD_POT_1, RG_GREEN_RUPEE, false, true);
+}
+
 static void SetScarceItemPool() {
   ReplaceMaxItem(RG_PROGRESSIVE_BOMBCHUS, 3);
   ReplaceMaxItem(RG_BOMBCHU_5, 1);
@@ -724,6 +729,12 @@ void GenerateItemPool() {
     }
   } else {
     PlaceVanillaCowMilk();
+  }
+
+  if (ctx->GetOption(RSK_SHUFFLE_POTS)) {
+    AddItemToMainPool(RG_GREEN_RUPEE);
+  } else {
+    PlaceVanillaPotContents();
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_MAGIC_BEANS)) {

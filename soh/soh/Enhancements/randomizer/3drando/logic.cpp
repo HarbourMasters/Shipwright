@@ -503,6 +503,10 @@ namespace Logic {
     }
   }
 
+  bool CanBreakPots() {
+    return true;
+  }
+
   uint8_t GetDifficultyValueFromString(Rando::Option& glitchOption) {
     return 0;
   }

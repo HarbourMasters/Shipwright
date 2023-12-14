@@ -229,6 +229,8 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "The Gerudo Card is required to enter the Gerudo Training Grounds, opening "
         "the gate to Haunted Wasteland and the Horseback Archery minigame.";
+    mOptionDescriptions[RSK_SHUFFLE_POTS] =
+        "Freestanding pots will drop a randomized item the first time they're broken and collected. Pots will have a different appearance when they hold a randomized item.";
     mOptionDescriptions[RSK_SHOPSANITY] = "Off - All shop items will be the same as vanilla.\n"
                                           "\n"
                                           "0 Items - Vanilla shop items will be shuffled among different shops.\n"

@@ -380,6 +380,7 @@ bool CanPlay(bool song);
 bool CanUse(RandomizerGet itemName);
 bool HasProjectile(HasProjectileAge age);
 bool HasBossSoul(RandomizerGet itemName);
+bool CanBreakPots();
 bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
 bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
 bool CanDoGlitch(GlitchType glitch);

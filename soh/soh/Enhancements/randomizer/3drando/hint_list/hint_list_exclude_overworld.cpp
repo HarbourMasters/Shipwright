@@ -1356,4 +1356,9 @@ void HintTable_Init_Exclude_Overworld() {
                        //obscure text
                        Text{"a #cow in a luxurious hole# offers", /*french*/"la #vache dans une grotte luxueuse# donne", /*spanish*/"una #vaca de un lujoso hoyo# brinda"},
   });
+
+    hintTable[RHT_SHUFFLE_POTS_MARKET_GUARD_HOUSE_1] = HintText::Exclude({
+                    //obscure text
+                    Text{"a #pot in a room# holds", /*french*/"a #pot in a room# holds", /*spanish*/"a #pot in a room# holds"},
+  });
 }

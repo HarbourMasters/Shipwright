@@ -7,6 +7,7 @@
 #include <map>
 
 #define TWO_ACTOR_PARAMS(a, b) (abs(a) << 16) | abs(b)
+#define THREE_ACTOR_PARAMS(a, b, c) (abs(a) << 10) | (abs(a) << 20) | abs(c)
 
 namespace RandomizerCheckObjects {
     bool AreaIsDungeon(RandomizerCheckArea area);

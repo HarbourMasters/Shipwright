@@ -170,6 +170,8 @@ typedef enum {
     RAND_INF_TWINROVA_SOUL,
     RAND_INF_GANON_SOUL,
 
+    RAND_INF_SHUFFLE_POTS_MARKET_GUARD_HOUSE_CHILD_1,
+
     // If you add anything to this list, you need to update the size of randomizerInf in z64save.h to be ceil(RAND_INF_MAX / 16)
 
     RAND_INF_MAX,

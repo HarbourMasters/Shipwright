@@ -101,10 +101,11 @@ typedef enum {
     RCTYPE_CHEST_GAME,     // todo replace this once we implement it, just using it to exclude for now
     RCTYPE_LINKS_POCKET,   // todo this feels hacky
     RCTYPE_GOSSIP_STONE,
-    RCTYPE_SONG_LOCATION,              // Song locations
+    RCTYPE_SONG_LOCATION,  // Song locations
     RCTYPE_BOSS_HEART_OR_OTHER_REWARD, // Boss heart container or lesser dungeon rewards (lens, ice arrow)
-    RCTYPE_DUNGEON_REWARD,             // Dungeon rewards (blue warps)
-    RCTYPE_OCARINA,                    // Ocarina locations
+    RCTYPE_DUNGEON_REWARD, // Dungeon rewards (blue warps)
+    RCTYPE_OCARINA,        // Ocarina locations
+    RCTYPE_POT,            // Shuffle Pots
 } RandomizerCheckType;
 
 typedef enum { RCQUEST_VANILLA, RCQUEST_MQ, RCQUEST_BOTH } RandomizerCheckQuest;
@@ -746,6 +747,7 @@ typedef enum {
     RC_MARKET_BOMBCHU_SHOP_ITEM_6,
     RC_MARKET_BOMBCHU_SHOP_ITEM_7,
     RC_MARKET_BOMBCHU_SHOP_ITEM_8,
+    RC_MARKET_GUARD_HOUSE_CHILD_POT_1,
     RC_TOT_LIGHT_ARROWS_CUTSCENE,
     RC_TOT_MASTER_SWORD,
     RC_HC_MALON_EGG,
@@ -3277,6 +3279,8 @@ typedef enum {
     RHT_CARPET_SALESMAN_DIALOG_THIRD,
     RHT_CARPET_SALESMAN_DIALOG_FOURTH,
     RHT_GRANNY_DIALOG,
+    // Shuffle Pots
+    RHT_SHUFFLE_POTS_MARKET_GUARD_HOUSE_1,
     RHT_MAX
 } RandomizerHintTextKey;
 
@@ -3400,6 +3404,7 @@ typedef enum {
     RSK_SHUFFLE_COWS,
     RSK_SHUFFLE_WEIRD_EGG,
     RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD,
+    RSK_SHUFFLE_POTS,
     RSK_SHUFFLE_FROG_SONG_RUPEES,
     RSK_ITEM_POOL,
     RSK_ICE_TRAPS,
@@ -3880,6 +3885,11 @@ typedef struct CowIdentity {
     RandomizerInf randomizerInf;
     RandomizerCheck randomizerCheck;
 } CowIdentity;
+
+typedef struct PotIdentity {
+    RandomizerInf randomizerInf;
+    RandomizerCheck randomizerCheck;
+} PotIdentity;
 
 typedef enum {
     TRACKER_WINDOW_FLOATING,

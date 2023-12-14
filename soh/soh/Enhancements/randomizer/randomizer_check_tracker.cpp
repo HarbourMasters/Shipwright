@@ -64,6 +64,7 @@ bool showKokiriSword;
 bool showMasterSword;
 bool showWeirdEgg;
 bool showGerudoCard;
+bool showPots;
 bool showFrogSongRupees;
 bool showStartingMapsCompasses;
 bool showKeysanity;
@@ -426,6 +427,7 @@ bool HasItemBeenCollected(RandomizerCheck rc) {
     case SpoilerCollectionCheckType::SPOILER_CHK_SCRUB:
     case SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF:
     case SpoilerCollectionCheckType::SPOILER_CHK_MASTER_SWORD:
+    case SpoilerCollectionCheckType::SPOILER_CHK_POT:
         return Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc));
     case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
         return gSaveContext.eventChkInf[flag / 16] & (0x01 << flag % 16);
@@ -1030,6 +1032,9 @@ void LoadSettings() {
     showGerudoCard = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) == RO_GENERIC_YES
         : true;
+    showPots = IS_RANDO ?
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_POTS) == RO_GENERIC_YES
+        : true;
     showFrogSongRupees = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FROG_SONG_RUPEES) == RO_GENERIC_YES
         : false;
@@ -1132,6 +1137,7 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
                 (showDungeonTokens && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))
                 ) &&
             (loc->GetRCType() != RCTYPE_COW || showCows) &&
+            (loc->GetRCType() != RCTYPE_POT || showPots) &&
             (loc->GetRCType() != RCTYPE_ADULT_TRADE ||
                 showAdultTrade ||
                 rc == RC_KAK_ANJU_AS_ADULT ||  // adult trade checks that are always shuffled

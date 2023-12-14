@@ -1402,6 +1402,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_LH_ADULT_FISHING,                                            RAND_INF_ADULT_FISHING },
     { RC_MARKET_10_BIG_POES,                                          RAND_INF_10_BIG_POES },
     { RC_KAK_100_GOLD_SKULLTULA_REWARD,                               RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD },
+    { RC_MARKET_GUARD_HOUSE_CHILD_POT_1,                              RAND_INF_SHUFFLE_POTS_MARKET_GUARD_HOUSE_CHILD_1 },
 };
 
 Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
@@ -1607,6 +1608,24 @@ CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
     }
 
     return cowIdentity;
+}
+
+PotIdentity Randomizer::IdentifyPot(s32 sceneNum, s32 posX, s32 posY, s32 posZ) {
+    struct PotIdentity potIdentity;
+
+    potIdentity.randomizerInf = RAND_INF_MAX;
+    potIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    s32 actorParams = THREE_ACTOR_PARAMS(posX, posY, posZ);
+
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_OBJ_TSUBO, sceneNum, actorParams);
+
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        potIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        potIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return potIdentity;
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {

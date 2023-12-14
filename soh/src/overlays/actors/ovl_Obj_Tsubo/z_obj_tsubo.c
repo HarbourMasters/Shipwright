@@ -83,7 +83,29 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneScale, 100, ICHAIN_CONTINUE),   ICHAIN_F32(uncullZoneDownward, 800, ICHAIN_STOP),
 };
 
+s8 ObjTsubo_HoldsRandomizedItem(ObjTsubo* this, PlayState* play) {
+    return Randomizer_GetSettingValue(RSK_SHUFFLE_POTS) &&
+           !Flags_GetRandomizerInf(this->potIdentity.randomizerInf) &&
+           this->potIdentity.randomizerCheck != RC_UNKNOWN_CHECK;
+}
+
 void ObjTsubo_SpawnCollectible(ObjTsubo* this, PlayState* play) {
+
+    if (IS_RANDO && ObjTsubo_HoldsRandomizedItem(this, play)) {
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(this->potIdentity.randomizerCheck, GI_NONE);
+
+        EnItem00* actor = (EnItem00*)Item_DropCollectible2(play, &this->actor.world.pos, ITEM00_SMALL_KEY);
+        actor->randoCheck = this->potIdentity.randomizerCheck;
+        actor->randoGiEntry = getItemEntry;
+        actor->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
+        actor->randoInf = this->potIdentity.randomizerInf;
+        actor->actor.velocity.y = 8.0f;
+        actor->actor.speedXZ = 2.0f;
+        actor->actor.gravity = -0.9f;
+        actor->actor.world.rot.y = Rand_CenteredFloat(65536.0f);
+        return;
+    }
+
     s16 dropParams = this->actor.params & 0x1F;
 
     if ((dropParams >= ITEM00_RUPEE_GREEN) && (dropParams <= ITEM00_BOMBS_SPECIAL)) {
@@ -144,6 +166,16 @@ void ObjTsubo_Init(Actor* thisx, PlayState* play) {
     } else {
         ObjTsubo_SetupWaitForObject(this);
         osSyncPrintf("(dungeon keep 壷)(arg_data 0x%04x)\n", this->actor.params);
+    }
+    if (IS_RANDO) {
+        this->potIdentity = Randomizer_IdentifyPot(play->sceneNum, (s16)this->actor.world.pos.x,
+                                                   (s16)this->actor.world.pos.y, (s16)this->actor.world.pos.z);
+
+        if (ObjTsubo_HoldsRandomizedItem(this, play)) {
+            this->actor.scale.x = 0.1f;
+            this->actor.scale.y = 0.1f;
+            this->actor.scale.z = 0.1f;
+        }
     }
 }
 
