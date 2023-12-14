@@ -100,7 +100,7 @@ std::map<uint32_t, RandomizerCheck> startingShopItem = { { SCENE_KOKIRI_SHOP, RC
                                                          { SCENE_ZORA_SHOP, RC_ZD_SHOP_ITEM_1 },
                                                          { SCENE_GORON_SHOP, RC_GC_SHOP_ITEM_1 } };
 
-std::map<SceneID, RandomizerCheckArea> RCAreaFromSceneID = {
+std::map<SceneID, RandomizerCheckArea> DungeonRCAreasBySceneID = {
     {SCENE_DEKU_TREE,              RCAREA_DEKU_TREE},
     {SCENE_DODONGOS_CAVERN,        RCAREA_DODONGOS_CAVERN},
     {SCENE_JABU_JABU,              RCAREA_JABU_JABUS_BELLY},
@@ -1164,9 +1164,11 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
 
 void UpdateInventoryChecks() {
     //For all the areas with compasses, if you have one, spoil the area
-    for (u8 i = SCENE_DEKU_TREE; i <= SCENE_GERUDO_TRAINING_GROUND; i++)
-        if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, i))
-            areasSpoiled |= (1 << RCAreaFromSceneID.at((SceneID)i));
+    for (auto [scene, area] : DungeonRCAreasBySceneID) {
+        if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, scene)) {
+            areasSpoiled |= (1 << area);
+        }
+    }
 }
 
 void UpdateAreaFullyChecked(RandomizerCheckArea area) {
