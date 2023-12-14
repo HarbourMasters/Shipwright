@@ -489,9 +489,18 @@ void Settings::CreateOptionDescriptions() {
                                           "reward for the frogs' ocarina game.";
     mOptionDescriptions[RSK_BIGGORON_HINT] = "Talking to Biggoron will tell you the item he will give you in exchange for the Claim Check.";
     mOptionDescriptions[RSK_BIG_POES_HINT] = "Talking to the Poe Collector in the Market Guardhouse while adult will tell you what you recieve for handing in Big Poes.";
+    mOptionDescriptions[RSK_CHICKENS_HINT] = "Talking to Anju as a child will tell you the item she will give you for delivering her Cuccos to the pen";
+    mOptionDescriptions[RSK_MALON_HINT] = "Talking to Malon as adult will tell you the item on \"Link's cow\", the cow you win from beating her time on the Lon Lon Obsticle Course.";
     mOptionDescriptions[RSK_WARP_SONG_HINTS] = "Standing near the pedestal for the frogs in Zora's River will tell you "
                                                "the reward for the frogs' ocarina game.";
     mOptionDescriptions[RSK_SCRUB_TEXT_HINT] = "Business scrubs will reveal the identity of what they're selling.";
+    mOptionDescriptions[RSK_KAK_10_SKULLS_HINT] = "";
+    mOptionDescriptions[RSK_KAK_20_SKULLS_HINT] = "";
+    mOptionDescriptions[RSK_KAK_30_SKULLS_HINT] = "";
+    mOptionDescriptions[RSK_KAK_40_SKULLS_HINT] = "";
+    mOptionDescriptions[RSK_KAK_50_SKULLS_HINT] = "";
+    mOptionDescriptions[RSK_KAK_100_SKULLS_HINT] = "";
+    
     mOptionDescriptions[RSK_FULL_WALLETS] = "Start with a full wallet. All wallet upgrades come filled with rupees.";
     mOptionDescriptions[RSK_BOMBCHUS_IN_LOGIC] =
         "Bombchus are properly considered in logic.\n"

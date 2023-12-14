@@ -218,7 +218,7 @@ typedef enum {
 //10 dungeons as GTG and GC are excluded
 extern std::array<DungeonHintInfo, 10> dungeonInfoData;
 
-extern std::array<ConditionalAlwaysHint, 10> conditionalAlwaysHints;
+extern std::array<ConditionalAlwaysHint, 12> conditionalAlwaysHints;
 
 extern void CreateAllHints();
 extern void CreateWarpSongTexts();

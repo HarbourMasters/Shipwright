@@ -155,15 +155,18 @@ void Settings::CreateOptions() {
     mOptions[RSK_GREG_HINT] = Option::Bool("Greg the Green Rupee Hint", "gRandomizeGregHint", mOptionDescriptions[RSK_GREG_HINT], IMFLAG_NONE);
     mOptions[RSK_SARIA_HINT] = Option::Bool("Saria's Hint", "gRandomizeSariaHint", mOptionDescriptions[RSK_SARIA_HINT], IMFLAG_NONE);
     mOptions[RSK_FROGS_HINT] = Option::Bool("Frog Ocarina Game Hint", "gRandomizeFrogsHint", mOptionDescriptions[RSK_FROGS_HINT], IMFLAG_NONE);
+    mOptions[RSK_BIGGORON_HINT] = Option::Bool("Biggoron's Hint", "gRandomizeBiggoronHint", mOptionDescriptions[RSK_BIGGORON_HINT], IMFLAG_NONE);
+    mOptions[RSK_BIG_POES_HINT] = Option::Bool("Big Poes Hint", "gRandomizeBigPoesHint", mOptionDescriptions[RSK_BIG_POES_HINT], IMFLAG_NONE);
+    mOptions[RSK_CHICKENS_HINT] = Option::Bool("Chickens Hint", "gRandomizeChickensHint", mOptionDescriptions[RSK_CHICKENS_HINT], IMFLAG_NONE);
+    mOptions[RSK_MALON_HINT] = Option::Bool("Malon Hint", "gRandomizeMalonHint", mOptionDescriptions[RSK_MALON_HINT], IMFLAG_NONE);
     mOptions[RSK_WARP_SONG_HINTS] = Option::Bool("Warp Song Hints", "gRandomizeWarpSongText", mOptionDescriptions[RSK_WARP_SONG_HINTS], IMFLAG_NONE, WidgetType::Checkbox, RO_GENERIC_ON);
+    mOptions[RSK_SCRUB_TEXT_HINT] = Option::Bool("Scrub Hint Text", "gRandomizeScrubText", mOptionDescriptions[RSK_SCRUB_TEXT_HINT], IMFLAG_NONE);
     mOptions[RSK_KAK_10_SKULLS_HINT] = Option::Bool("10 GS Hint", "gRandomize10GSHint", "", IMFLAG_NONE);
     mOptions[RSK_KAK_20_SKULLS_HINT] = Option::Bool("20 GS Hint", "gRandomize20GSHint", "", IMFLAG_NONE);
     mOptions[RSK_KAK_30_SKULLS_HINT] = Option::Bool("30 GS Hint", "gRandomize30GSHint", "", IMFLAG_NONE);
     mOptions[RSK_KAK_40_SKULLS_HINT] = Option::Bool("40 GS Hint", "gRandomize40GSHint", "", IMFLAG_NONE);
-    mOptions[RSK_KAK_50_SKULLS_HINT] = Option::Bool("50 GS Hint", "gRandomize50GSHint", "");
-    mOptions[RSK_BIGGORON_HINT] = Option::Bool("Biggoron's Hint", "gRandomizeBiggoronHint", mOptionDescriptions[RSK_BIGGORON_HINT], IMFLAG_NONE);
-    mOptions[RSK_BIG_POES_HINT] = Option::Bool("Big Poes Hint", "gRandomizeBigPoesHint", mOptionDescriptions[RSK_BIG_POES_HINT], IMFLAG_NONE);
-    mOptions[RSK_SCRUB_TEXT_HINT] = Option::Bool("Scrub Hint Text", "gRandomizeScrubText", mOptionDescriptions[RSK_SCRUB_TEXT_HINT], IMFLAG_NONE);
+    mOptions[RSK_KAK_50_SKULLS_HINT] = Option::Bool("50 GS Hint", "gRandomize50GSHint", "", IMFLAG_NONE);
+    mOptions[RSK_KAK_100_SKULLS_HINT] = Option::Bool("100 GS Hint", "gRandomize100GSHint", "");
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     mOptions[RSK_BLUE_FIRE_ARROWS] = Option::Bool("Blue Fire Arrows", "gRandomizeBlueFireArrows", mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
     mOptions[RSK_SUNLIGHT_ARROWS] = Option::Bool("Sunlight Arrows", "gRandomizeSunlightArrows", mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
@@ -712,13 +715,16 @@ void Settings::CreateOptions() {
         &mOptions[RSK_FROGS_HINT],
         &mOptions[RSK_BIGGORON_HINT],
         &mOptions[RSK_BIG_POES_HINT],
+        &mOptions[RSK_CHICKENS_HINT],
+        &mOptions[RSK_MALON_HINT],
         &mOptions[RSK_WARP_SONG_HINTS],
         &mOptions[RSK_SCRUB_TEXT_HINT],
         &mOptions[RSK_KAK_10_SKULLS_HINT],
         &mOptions[RSK_KAK_20_SKULLS_HINT],
         &mOptions[RSK_KAK_30_SKULLS_HINT],
         &mOptions[RSK_KAK_40_SKULLS_HINT],
-        &mOptions[RSK_KAK_50_SKULLS_HINT]
+        &mOptions[RSK_KAK_50_SKULLS_HINT],
+        &mOptions[RSK_KAK_100_SKULLS_HINT]
     }, false, WidgetContainerType::SECTION, "This setting adds some hints at locations other than Gossip Stones.\n\n"
                     "House of Skulltula: # - Talking to a cursed House of Skulltula resident will tell you the reward"
                     "they will give you for obtaining that many tokens.");
@@ -929,14 +935,14 @@ void Settings::CreateOptions() {
         &mOptions[RSK_FROGS_HINT],
         &mOptions[RSK_BIGGORON_HINT],
         &mOptions[RSK_BIG_POES_HINT],
-        &mOptions[RSK_WARP_SONG_HINTS],
+        &mOptions[RSK_CHICKENS_HINT],
+        &mOptions[RSK_MALON_HINT],
         &mOptions[RSK_KAK_10_SKULLS_HINT],
         &mOptions[RSK_KAK_20_SKULLS_HINT],
         &mOptions[RSK_KAK_30_SKULLS_HINT],
         &mOptions[RSK_KAK_40_SKULLS_HINT],
         &mOptions[RSK_KAK_50_SKULLS_HINT],
-        &mOptions[RSK_BIGGORON_HINT],
-        &mOptions[RSK_BIG_POES_HINT],
+        &mOptions[RSK_KAK_100_SKULLS_HINT],
         &mOptions[RSK_SCRUB_TEXT_HINT],
         // TODO: Compasses show Reward/WOTH, Maps show Dungeon Mode, Starting Time
         &mOptions[RSK_DAMAGE_MULTIPLIER],
@@ -1134,6 +1140,7 @@ void Settings::CreateOptions() {
         { "Miscellaneous Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
         { "Miscellaneous Settings:40 GS Hint", RSK_KAK_40_SKULLS_HINT },
         { "Miscellaneous Settings:50 GS Hint", RSK_KAK_50_SKULLS_HINT },
+        { "Miscellaneous Settings:50 GS Hint", RSK_KAK_100_SKULLS_HINT },
         { "Miscellaneous Settings:Biggoron's Hint", RSK_BIGGORON_HINT },
         { "Miscellaneous Settings:Big Poes Hint", RSK_BIG_POES_HINT },
         { "Miscellaneous Settings:Warp Song Hints", RSK_WARP_SONG_HINTS },
@@ -2181,8 +2188,11 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_KAK_30_SKULLS_HINT:
                 case RSK_KAK_40_SKULLS_HINT:
                 case RSK_KAK_50_SKULLS_HINT:
+                case RSK_KAK_100_SKULLS_HINT:
                 case RSK_BIGGORON_HINT:
                 case RSK_BIG_POES_HINT:
+                case RSK_CHICKENS_HINT:
+                case RSK_MALON_HINT:
                 case RSK_WARP_SONG_HINTS:
                 case RSK_SCRUB_TEXT_HINT:
                 case RSK_KEYRINGS_GERUDO_FORTRESS:
