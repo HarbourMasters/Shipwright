@@ -3,6 +3,57 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_tkTex_003980 "__OTR__objects/object_tk/object_tkTex_003980"
+static const ALIGN_ASSET(2) char object_tkTex_003980[] = dobject_tkTex_003980;
+
+#define dobject_tkTex_0039C0 "__OTR__objects/object_tk/object_tkTex_0039C0"
+static const ALIGN_ASSET(2) char object_tkTex_0039C0[] = dobject_tkTex_0039C0;
+
+#define dobject_tkTex_003A00 "__OTR__objects/object_tk/object_tkTex_003A00"
+static const ALIGN_ASSET(2) char object_tkTex_003A00[] = dobject_tkTex_003A00;
+
+#define dobject_tkTex_003A40 "__OTR__objects/object_tk/object_tkTex_003A40"
+static const ALIGN_ASSET(2) char object_tkTex_003A40[] = dobject_tkTex_003A40;
+
+#define dobject_tkTex_005340 "__OTR__objects/object_tk/object_tkTex_005340"
+static const ALIGN_ASSET(2) char object_tkTex_005340[] = dobject_tkTex_005340;
+
+#define dobject_tkTex_005440 "__OTR__objects/object_tk/object_tkTex_005440"
+static const ALIGN_ASSET(2) char object_tkTex_005440[] = dobject_tkTex_005440;
+
+#define dobject_tkTex_0056C0 "__OTR__objects/object_tk/object_tkTex_0056C0"
+static const ALIGN_ASSET(2) char object_tkTex_0056C0[] = dobject_tkTex_0056C0;
+
+#define dobject_tkTex_009B00 "__OTR__objects/object_tk/object_tkTex_009B00"
+static const ALIGN_ASSET(2) char object_tkTex_009B00[] = dobject_tkTex_009B00;
+
+#define dobject_tkTex_009C00 "__OTR__objects/object_tk/object_tkTex_009C00"
+static const ALIGN_ASSET(2) char object_tkTex_009C00[] = dobject_tkTex_009C00;
+
+#define dobject_tkTex_009C80 "__OTR__objects/object_tk/object_tkTex_009C80"
+static const ALIGN_ASSET(2) char object_tkTex_009C80[] = dobject_tkTex_009C80;
+
+#define dobject_tkTex_009CC0 "__OTR__objects/object_tk/object_tkTex_009CC0"
+static const ALIGN_ASSET(2) char object_tkTex_009CC0[] = dobject_tkTex_009CC0;
+
+#define dobject_tkTex_009D40 "__OTR__objects/object_tk/object_tkTex_009D40"
+static const ALIGN_ASSET(2) char object_tkTex_009D40[] = dobject_tkTex_009D40;
+
+#define dobject_tkTex_00B088 "__OTR__objects/object_tk/object_tkTex_00B088"
+static const ALIGN_ASSET(2) char object_tkTex_00B088[] = dobject_tkTex_00B088;
+
+#define dobject_tkTex_00B288 "__OTR__objects/object_tk/object_tkTex_00B288"
+static const ALIGN_ASSET(2) char object_tkTex_00B288[] = dobject_tkTex_00B288;
+
+#define dobject_tkTex_00B488 "__OTR__objects/object_tk/object_tkTex_00B488"
+static const ALIGN_ASSET(2) char object_tkTex_00B488[] = dobject_tkTex_00B488;
+
+#define dobject_tkTLUT_003780 "__OTR__objects/object_tk/object_tkTLUT_003780"
+static const ALIGN_ASSET(2) char object_tkTLUT_003780[] = dobject_tkTLUT_003780;
+
+#define dobject_tkTLUT_009AB0 "__OTR__objects/object_tk/object_tkTLUT_009AB0"
+static const ALIGN_ASSET(2) char object_tkTLUT_009AB0[] = dobject_tkTLUT_009AB0;
+
 #define dgDampeDigAnim "__OTR__objects/object_tk/gDampeDigAnim"
 static const ALIGN_ASSET(2) char gDampeDigAnim[] = dgDampeDigAnim;
 
@@ -44,27 +95,6 @@ static const ALIGN_ASSET(2) char gDampeEff2DL[] = dgDampeEff2DL;
 
 #define dgDampeSkel "__OTR__objects/object_tk/gDampeSkel"
 static const ALIGN_ASSET(2) char gDampeSkel[] = dgDampeSkel;
-
-#define dobject_tkTLUT_003780 "__OTR__objects/object_tk/object_tkTLUT_003780"
-static const ALIGN_ASSET(2) char object_tkTLUT_003780[] = dobject_tkTLUT_003780;
-
-#define dobject_tkTex_009CC0 "__OTR__objects/object_tk/object_tkTex_009CC0"
-static const ALIGN_ASSET(2) char object_tkTex_009CC0[] = dobject_tkTex_009CC0;
-
-#define dobject_tkTex_009D40 "__OTR__objects/object_tk/object_tkTex_009D40"
-static const ALIGN_ASSET(2) char object_tkTex_009D40[] = dobject_tkTex_009D40;
-
-#define dobject_tkTex_009C80 "__OTR__objects/object_tk/object_tkTex_009C80"
-static const ALIGN_ASSET(2) char object_tkTex_009C80[] = dobject_tkTex_009C80;
-
-#define dobject_tkTex_00B288 "__OTR__objects/object_tk/object_tkTex_00B288"
-static const ALIGN_ASSET(2) char object_tkTex_00B288[] = dobject_tkTex_00B288;
-
-#define dobject_tkTex_00B088 "__OTR__objects/object_tk/object_tkTex_00B088"
-static const ALIGN_ASSET(2) char object_tkTex_00B088[] = dobject_tkTex_00B088;
-
-#define dobject_tkTex_00B488 "__OTR__objects/object_tk/object_tkTex_00B488"
-static const ALIGN_ASSET(2) char object_tkTex_00B488[] = dobject_tkTex_00B488;
 
 #define dgDampeSkelLimbsLimb_00BD30DL_008020 "__OTR__objects/object_tk/gDampeSkelLimbsLimb_00BD30DL_008020"
 static const ALIGN_ASSET(2) char gDampeSkelLimbsLimb_00BD30DL_008020[] = dgDampeSkelLimbsLimb_00BD30DL_008020;
@@ -117,34 +147,5 @@ static const ALIGN_ASSET(2) char gDampeSkelLimbsLimb_00BDE4DL_008410[] = dgDampe
 #define dgDampeSkelLimbsLimb_00BDF0DL_008958 "__OTR__objects/object_tk/gDampeSkelLimbsLimb_00BDF0DL_008958"
 static const ALIGN_ASSET(2) char gDampeSkelLimbsLimb_00BDF0DL_008958[] = dgDampeSkelLimbsLimb_00BDF0DL_008958;
 
-#define dobject_tkTex_005440 "__OTR__objects/object_tk/object_tkTex_005440"
-static const ALIGN_ASSET(2) char object_tkTex_005440[] = dobject_tkTex_005440;
-
-#define dobject_tkTex_0056C0 "__OTR__objects/object_tk/object_tkTex_0056C0"
-static const ALIGN_ASSET(2) char object_tkTex_0056C0[] = dobject_tkTex_0056C0;
-
-#define dobject_tkTex_003980 "__OTR__objects/object_tk/object_tkTex_003980"
-static const ALIGN_ASSET(2) char object_tkTex_003980[] = dobject_tkTex_003980;
-
-#define dobject_tkTex_009B00 "__OTR__objects/object_tk/object_tkTex_009B00"
-static const ALIGN_ASSET(2) char object_tkTex_009B00[] = dobject_tkTex_009B00;
-
-#define dobject_tkTLUT_009AB0 "__OTR__objects/object_tk/object_tkTLUT_009AB0"
-static const ALIGN_ASSET(2) char object_tkTLUT_009AB0[] = dobject_tkTLUT_009AB0;
-
-#define dobject_tkTex_009C00 "__OTR__objects/object_tk/object_tkTex_009C00"
-static const ALIGN_ASSET(2) char object_tkTex_009C00[] = dobject_tkTex_009C00;
-
-#define dobject_tkTex_005340 "__OTR__objects/object_tk/object_tkTex_005340"
-static const ALIGN_ASSET(2) char object_tkTex_005340[] = dobject_tkTex_005340;
-
-#define dobject_tkTex_003A40 "__OTR__objects/object_tk/object_tkTex_003A40"
-static const ALIGN_ASSET(2) char object_tkTex_003A40[] = dobject_tkTex_003A40;
-
-#define dobject_tkTex_0039C0 "__OTR__objects/object_tk/object_tkTex_0039C0"
-static const ALIGN_ASSET(2) char object_tkTex_0039C0[] = dobject_tkTex_0039C0;
-
-#define dobject_tkTex_003A00 "__OTR__objects/object_tk/object_tkTex_003A00"
-static const ALIGN_ASSET(2) char object_tkTex_003A00[] = dobject_tkTex_003A00;
 
 #endif // OBJECTS_OBJECT_TK_H

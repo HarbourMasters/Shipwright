@@ -355,9 +355,18 @@ const std::string& OptionGroup::GetDescription() const {
     return mDescription;
 }
 
+void OptionGroup::Enable() {
+    mDisabled = false;
+}
+
+void OptionGroup::Disable() {
+    mDisabled = true;
+}
+
 bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     bool changed = false;
+    ImGui::BeginDisabled(mDisabled);
     if (mContainerType == WidgetContainerType::TABLE) {
         if (ImGui::BeginTable(mName.c_str(), static_cast<int>(mSubGroups.size()), ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             for (const auto column : mSubGroups) {
@@ -424,6 +433,7 @@ bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
     if (mContainerType == WidgetContainerType::TABLE) {
         ImGui::EndTable();
     }
+    ImGui::EndDisabled();
     return changed;
 }
 } // namespace Rando

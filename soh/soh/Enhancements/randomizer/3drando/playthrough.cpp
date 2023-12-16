@@ -1,5 +1,6 @@
 #include "playthrough.hpp"
 
+#include <libultraship/libultraship.h>
 #include <boost_custom/container_hash/hash_32.hpp>
 #include "custom_messages.hpp"
 #include "fill.hpp"
@@ -39,6 +40,10 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
                 settingsStr += option->GetSelectedOptionText();
             }
         }
+    }
+
+    if (CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
+        settingsStr += (char*)gBuildVersion;
     }
 
     uint32_t finalHash = boost::hash_32<std::string>{}(std::to_string(ctx->GetSettings()->GetSeed()) + settingsStr);

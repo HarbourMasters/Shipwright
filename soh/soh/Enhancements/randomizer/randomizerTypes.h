@@ -9,7 +9,14 @@
 // This should probably go in a less rando-specific location
 // but the best location will probably be in the modding engine
 // which doesn't exist yet.
-typedef enum { MOD_NONE, MOD_RANDOMIZER } ModIndex;
+typedef enum {
+    MOD_NONE,
+    MOD_RANDOMIZER
+} ModIndex;
+typedef enum {
+    TABLE_VANILLA = MOD_NONE,
+    TABLE_RANDOMIZER = MOD_RANDOMIZER
+} TableIndex;
 
 typedef struct {
     char tex[512];
@@ -601,6 +608,7 @@ typedef enum {
     RR_GERUDO_TRAINING_GROUNDS_MQ_CENTRAL_MAZE_RIGHT,
 
     RR_GANONS_CASTLE_LOBBY,
+    RR_GANONS_CASTLE_MAIN,
     RR_GANONS_CASTLE_DEKU_SCRUBS,
     RR_GANONS_CASTLE_FOREST_TRIAL,
     RR_GANONS_CASTLE_FIRE_TRIAL,
@@ -611,6 +619,7 @@ typedef enum {
     RR_GANONS_CASTLE_TOWER,
 
     RR_GANONS_CASTLE_MQ_LOBBY,
+    RR_GANONS_CASTLE_MQ_MAIN,
     RR_GANONS_CASTLE_MQ_DEKU_SCRUBS,
     RR_GANONS_CASTLE_MQ_FOREST_TRIAL,
     RR_GANONS_CASTLE_MQ_FIRE_TRIAL,
@@ -3462,7 +3471,7 @@ typedef enum {
     RSK_STARTING_DEKU_SHIELD,
     RSK_STARTING_KOKIRI_SWORD,
     RSK_STARTING_MASTER_SWORD,
-    RSK_STARTING_ZELDAS_LULLABY, 
+    RSK_STARTING_ZELDAS_LULLABY,
     RSK_STARTING_EPONAS_SONG, 
     RSK_STARTING_SARIAS_SONG, 
     RSK_STARTING_SUNS_SONG,
@@ -3912,7 +3921,7 @@ typedef enum {
     RO_LOGIC_GLITCHLESS,
     RO_LOGIC_GLITCHED,
     RO_LOGIC_NO_LOGIC,
-    RO_LOGIC_VANILLA
+    RO_LOGIC_VANILLA,
 } RandoOptionLogic;
 
 // Damage Multiplier

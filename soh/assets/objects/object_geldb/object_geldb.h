@@ -3,6 +3,54 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_geldbTex_002700 "__OTR__objects/object_geldb/object_geldbTex_002700"
+static const ALIGN_ASSET(2) char object_geldbTex_002700[] = dobject_geldbTex_002700;
+
+#define dobject_geldbTex_002740 "__OTR__objects/object_geldb/object_geldbTex_002740"
+static const ALIGN_ASSET(2) char object_geldbTex_002740[] = dobject_geldbTex_002740;
+
+#define dobject_geldbTex_002780 "__OTR__objects/object_geldb/object_geldbTex_002780"
+static const ALIGN_ASSET(2) char object_geldbTex_002780[] = dobject_geldbTex_002780;
+
+#define dobject_geldbTex_002880 "__OTR__objects/object_geldb/object_geldbTex_002880"
+static const ALIGN_ASSET(2) char object_geldbTex_002880[] = dobject_geldbTex_002880;
+
+#define dobject_geldbTex_002980 "__OTR__objects/object_geldb/object_geldbTex_002980"
+static const ALIGN_ASSET(2) char object_geldbTex_002980[] = dobject_geldbTex_002980;
+
+#define dobject_geldbTex_002A80 "__OTR__objects/object_geldb/object_geldbTex_002A80"
+static const ALIGN_ASSET(2) char object_geldbTex_002A80[] = dobject_geldbTex_002A80;
+
+#define dobject_geldbTex_002B80 "__OTR__objects/object_geldb/object_geldbTex_002B80"
+static const ALIGN_ASSET(2) char object_geldbTex_002B80[] = dobject_geldbTex_002B80;
+
+#define dobject_geldbTex_005F68 "__OTR__objects/object_geldb/object_geldbTex_005F68"
+static const ALIGN_ASSET(2) char object_geldbTex_005F68[] = dobject_geldbTex_005F68;
+
+#define dobject_geldbTex_0063E8 "__OTR__objects/object_geldb/object_geldbTex_0063E8"
+static const ALIGN_ASSET(2) char object_geldbTex_0063E8[] = dobject_geldbTex_0063E8;
+
+#define dobject_geldbTex_0064E8 "__OTR__objects/object_geldb/object_geldbTex_0064E8"
+static const ALIGN_ASSET(2) char object_geldbTex_0064E8[] = dobject_geldbTex_0064E8;
+
+#define dobject_geldbTex_006568 "__OTR__objects/object_geldb/object_geldbTex_006568"
+static const ALIGN_ASSET(2) char object_geldbTex_006568[] = dobject_geldbTex_006568;
+
+#define dobject_geldbTex_0069A8 "__OTR__objects/object_geldb/object_geldbTex_0069A8"
+static const ALIGN_ASSET(2) char object_geldbTex_0069A8[] = dobject_geldbTex_0069A8;
+
+#define dobject_geldbTex_006A28 "__OTR__objects/object_geldb/object_geldbTex_006A28"
+static const ALIGN_ASSET(2) char object_geldbTex_006A28[] = dobject_geldbTex_006A28;
+
+#define dobject_geldbTex_006B28 "__OTR__objects/object_geldb/object_geldbTex_006B28"
+static const ALIGN_ASSET(2) char object_geldbTex_006B28[] = dobject_geldbTex_006B28;
+
+#define dobject_geldbTex_006C28 "__OTR__objects/object_geldb/object_geldbTex_006C28"
+static const ALIGN_ASSET(2) char object_geldbTex_006C28[] = dobject_geldbTex_006C28;
+
+#define dobject_geldbTLUT_002500 "__OTR__objects/object_geldb/object_geldbTLUT_002500"
+static const ALIGN_ASSET(2) char object_geldbTLUT_002500[] = dobject_geldbTLUT_002500;
+
 #define dgGerudoRedSkel "__OTR__objects/object_geldb/gGerudoRedSkel"
 static const ALIGN_ASSET(2) char gGerudoRedSkel[] = dgGerudoRedSkel;
 
@@ -111,52 +159,5 @@ static const ALIGN_ASSET(2) char gGerudoRedSkelLimbsLimb_00A3E4DL_009108[] = dgG
 #define dgGerudoRedSkelLimbsLimb_00A3F0DL_005420 "__OTR__objects/object_geldb/gGerudoRedSkelLimbsLimb_00A3F0DL_005420"
 static const ALIGN_ASSET(2) char gGerudoRedSkelLimbsLimb_00A3F0DL_005420[] = dgGerudoRedSkelLimbsLimb_00A3F0DL_005420;
 
-#define dobject_geldbTLUT_002500 "__OTR__objects/object_geldb/object_geldbTLUT_002500"
-static const ALIGN_ASSET(2) char object_geldbTLUT_002500[] = dobject_geldbTLUT_002500;
-
-#define dobject_geldbTex_002700 "__OTR__objects/object_geldb/object_geldbTex_002700"
-static const ALIGN_ASSET(2) char object_geldbTex_002700[] = dobject_geldbTex_002700;
-
-#define dobject_geldbTex_002980 "__OTR__objects/object_geldb/object_geldbTex_002980"
-static const ALIGN_ASSET(2) char object_geldbTex_002980[] = dobject_geldbTex_002980;
-
-#define dobject_geldbTex_002880 "__OTR__objects/object_geldb/object_geldbTex_002880"
-static const ALIGN_ASSET(2) char object_geldbTex_002880[] = dobject_geldbTex_002880;
-
-#define dobject_geldbTex_002780 "__OTR__objects/object_geldb/object_geldbTex_002780"
-static const ALIGN_ASSET(2) char object_geldbTex_002780[] = dobject_geldbTex_002780;
-
-#define dobject_geldbTex_002740 "__OTR__objects/object_geldb/object_geldbTex_002740"
-static const ALIGN_ASSET(2) char object_geldbTex_002740[] = dobject_geldbTex_002740;
-
-#define dobject_geldbTex_006A28 "__OTR__objects/object_geldb/object_geldbTex_006A28"
-static const ALIGN_ASSET(2) char object_geldbTex_006A28[] = dobject_geldbTex_006A28;
-
-#define dobject_geldbTex_0063E8 "__OTR__objects/object_geldb/object_geldbTex_0063E8"
-static const ALIGN_ASSET(2) char object_geldbTex_0063E8[] = dobject_geldbTex_0063E8;
-
-#define dobject_geldbTex_005F68 "__OTR__objects/object_geldb/object_geldbTex_005F68"
-static const ALIGN_ASSET(2) char object_geldbTex_005F68[] = dobject_geldbTex_005F68;
-
-#define dobject_geldbTex_006C28 "__OTR__objects/object_geldb/object_geldbTex_006C28"
-static const ALIGN_ASSET(2) char object_geldbTex_006C28[] = dobject_geldbTex_006C28;
-
-#define dobject_geldbTex_0069A8 "__OTR__objects/object_geldb/object_geldbTex_0069A8"
-static const ALIGN_ASSET(2) char object_geldbTex_0069A8[] = dobject_geldbTex_0069A8;
-
-#define dobject_geldbTex_006B28 "__OTR__objects/object_geldb/object_geldbTex_006B28"
-static const ALIGN_ASSET(2) char object_geldbTex_006B28[] = dobject_geldbTex_006B28;
-
-#define dobject_geldbTex_002A80 "__OTR__objects/object_geldb/object_geldbTex_002A80"
-static const ALIGN_ASSET(2) char object_geldbTex_002A80[] = dobject_geldbTex_002A80;
-
-#define dobject_geldbTex_002B80 "__OTR__objects/object_geldb/object_geldbTex_002B80"
-static const ALIGN_ASSET(2) char object_geldbTex_002B80[] = dobject_geldbTex_002B80;
-
-#define dobject_geldbTex_0064E8 "__OTR__objects/object_geldb/object_geldbTex_0064E8"
-static const ALIGN_ASSET(2) char object_geldbTex_0064E8[] = dobject_geldbTex_0064E8;
-
-#define dobject_geldbTex_006568 "__OTR__objects/object_geldb/object_geldbTex_006568"
-static const ALIGN_ASSET(2) char object_geldbTex_006568[] = dobject_geldbTex_006568;
 
 #endif // OBJECTS_OBJECT_GELDB_H
