@@ -94,6 +94,7 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 
 #include <vector>
 #include <functional>
+#include <string>
 
 #define DEFINE_HOOK(name, type)         \
     struct name {                       \
