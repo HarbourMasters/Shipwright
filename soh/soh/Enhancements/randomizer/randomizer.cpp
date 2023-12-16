@@ -33,6 +33,7 @@
 #include "dungeon.h"
 #include "trial.h"
 #include "soh/util.h"
+#include "fishsanity.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -705,6 +706,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_MAGIC_SINGLE:
         case RG_MAGIC_DOUBLE:
             return gSaveContext.magicLevel < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_FISHING_POLE:
+            return !Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
         // Songs
         case RG_ZELDAS_LULLABY:
@@ -1560,6 +1563,22 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
                 specialRc = RC_DODONGOS_CAVERN_GOSSIP_STONE;
             }
             break;
+        case SCENE_FISHING_POND:
+            // Pond fish use params to differentiate between fish
+            if (actorId == ACTOR_FISHING && actorParams >= 100 && actorParams != 200 && Randomizer_GetPondFishShuffled()) {
+                auto pair = Rando::StaticData::randomizerFishingPondFish[actorParams - 100];
+                specialRc = Randomizer_IsAdultPond() ? pair.second : pair.first;
+            }
+            break;
+        case SCENE_GROTTOS:
+            // Grotto fish are identified by respawn data
+            if (actorId == ACTOR_EN_FISH && actorParams == 1) {
+                int8_t data = gSaveContext.respawn[RESPAWN_MODE_RETURN].data;
+                if (Rando::StaticData::randomizerGrottoFishMap.contains(data)) {
+                    specialRc = Rando::StaticData::randomizerGrottoFishMap[data];
+                }
+            }
+            break;
     }
 
     if (specialRc != RC_UNKNOWN_CHECK) {
@@ -1665,6 +1684,22 @@ CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
     }
 
     return cowIdentity;
+}
+
+FishIdentity Randomizer::IdentifyFish(s32 sceneNum, s32 actorParams) {
+    struct FishIdentity fishIdentity;
+
+    fishIdentity.randomizerInf = RAND_INF_MAX;
+    fishIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    Rando::Location* location = GetCheckObjectFromActor(sceneNum == SCENE_FISHING_POND ? ACTOR_FISHING : ACTOR_EN_FISH, sceneNum, actorParams);
+
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        fishIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        fishIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return fishIdentity;
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {

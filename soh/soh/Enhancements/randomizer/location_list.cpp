@@ -1391,6 +1391,7 @@ void Rando::StaticData::InitLocationTable() {
     /* +--------------+
        |  FISHSANITY  |
        +--------------+ */
+
     //            Randomizer Check                                 Randomizer Check               Quest         Type         Area                       Actor ID        Scene ID                   Params Flags Short Name                      Spoiler Name                    Hint Text Key               Vanilla Item    Categories           Spoiler Collection Check            Collection Check Group
     locationTable[RC_LH_CHILD_FISH_1] =             Location::Base(RC_LH_CHILD_FISH_1,            RCQUEST_BOTH, RCTYPE_FISH, RCAREA_LAKE_HYLIA,         ACTOR_FISHING,  SCENE_FISHING_POND,         100,  0x00, "Child Pond Fish 1",            "LH Child Pond Fish 1",         RHT_LH_CHILD_FISH_1,        RG_NONE,        { Category::cFish }, SpoilerCollectionCheck::Fish(0xFF), SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
     locationTable[RC_LH_CHILD_FISH_2] =             Location::Base(RC_LH_CHILD_FISH_2,            RCQUEST_BOTH, RCTYPE_FISH, RCAREA_LAKE_HYLIA,         ACTOR_FISHING,  SCENE_FISHING_POND,         101,  0x00, "Child Pond Fish 2",            "LH Child Pond Fish 2",         RHT_LH_CHILD_FISH_2,        RG_NONE,        { Category::cFish }, SpoilerCollectionCheck::Fish(0xFF), SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);

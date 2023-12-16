@@ -15,12 +15,12 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "z64item.h"
 #include "randomizerTypes.h"
+#include "fishsanity.h"
 
 extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
-#include "fishsanity.h"
 extern PlayState* gPlayState;
 }
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
