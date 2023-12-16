@@ -55,6 +55,10 @@ class SpoilerCollectionCheck {
         return SpoilerCollectionCheck(SPOILER_CHK_COW, scene, flag);
     }
 
+    static auto PondFish(const uint8_t flag) {
+        return SpoilerCollectionCheck(SPOILER_CHK_POND_FISH, SCENE_FISHING_POND, flag);
+    }
+
     static auto Fishing(const uint8_t bit) {
         return SpoilerCollectionCheck(SPOILER_CHK_MINIGAME, 0x00, bit);
     }
