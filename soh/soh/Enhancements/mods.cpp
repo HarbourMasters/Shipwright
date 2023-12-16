@@ -30,6 +30,7 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 #include "functions.h"
+#include "randomizer/fishsanity.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
@@ -1126,6 +1127,17 @@ void RegisterRandomizedEnemySizes() {
         }
 
         Actor_SetScale(actor, actor->scale.z * randomScale);
+    });
+}
+
+void RegisterFishsanity() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+        if (!IS_RANDO || !Randomizer_GetPondFishShuffled()) return;
+        // With every pond fish shuffled, caught fish will not spawn unless all fish have been caught.
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        if (actor->id != ACTOR_FISHING)
+            return;
     });
 }
 

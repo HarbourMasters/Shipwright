@@ -20,6 +20,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+#include "fishsanity.h"
 extern PlayState* gPlayState;
 }
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -75,6 +76,10 @@ bool show100SkullReward;
 bool showLinksPocket;
 bool fortressFast;
 bool fortressNormal;
+
+u8 fishsanityMode;
+u8 fishsanityPondCount;
+bool fishsanityAgeSplit;
 
 // persistent during gameplay
 bool initialized;
@@ -1127,6 +1132,10 @@ void LoadSettings() {
             fortressNormal = true;
             break;
     }
+
+    fishsanityMode = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY);
+    fishsanityPondCount = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT);
+    fishsanityAgeSplit = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_AGE_SPLIT);
 }
 
 bool IsVisibleInCheckTracker(RandomizerCheck rc) {
@@ -1160,6 +1169,7 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
                 (showDungeonTokens && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))
                 ) &&
             (loc->GetRCType() != RCTYPE_COW || showCows) &&
+            (loc->GetRCType() != RCTYPE_FISH || Randomizer_FishLocationIncluded(loc, fishsanityMode, fishsanityPondCount, fishsanityAgeSplit)) &&
             (loc->GetRCType() != RCTYPE_ADULT_TRADE ||
                 showAdultTrade ||
                 rc == RC_KAK_ANJU_AS_ADULT ||  // adult trade checks that are always shuffled

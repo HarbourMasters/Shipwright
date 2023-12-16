@@ -13708,6 +13708,7 @@ void func_8084ECA4(Player* this, PlayState* play) {
                             this->unk_84F = i + 1;
                             this->unk_850 = 0;
                             this->interactRangeActor->parent = &this->actor;
+                            // TODO: this should probably be refactored a bit, maybe rehome some of this to rando instead
                             if (IS_RANDO) {
                                 // Check if fishsanity applies for this actor
                                 if (fsMode != RO_FISHSANITY_OFF && fsMode != RO_FISHSANITY_POND) {
