@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <unordered_map>
 #include "randomizerTypes.h"
 #include "item.h"
 #include "location.h"
