@@ -81,9 +81,11 @@
 #include "SohGui.hpp"
 #include "ActorDB.h"
 
-#ifdef ENABLE_CROWD_CONTROL
+#ifdef ENABLE_REMOTE_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
+#include "Enhancements/game-interactor/GameInteractor_Sail.h"
 CrowdControl* CrowdControl::Instance;
+GameInteractorSail* GameInteractorSail::Instance;
 #endif
 
 #include "Enhancements/mods.h"
@@ -1097,7 +1099,12 @@ extern "C" void InitOTR() {
     SpeechSynthesizer::Instance = new SAPISpeechSynthesizer();
     SpeechSynthesizer::Instance->Init();
 #endif
-    
+
+#ifdef ENABLE_REMOTE_CONTROL
+    CrowdControl::Instance = new CrowdControl();
+    GameInteractorSail::Instance = new GameInteractorSail();
+#endif
+
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
@@ -1117,13 +1124,17 @@ extern "C" void InitOTR() {
     }
 
     srand(now);
-#ifdef ENABLE_CROWD_CONTROL
-    CrowdControl::Instance = new CrowdControl();
-    CrowdControl::Instance->Init();
-    if (CVarGetInteger("gCrowdControl", 0)) {
-        CrowdControl::Instance->Enable();
-    } else {
-        CrowdControl::Instance->Disable();
+#ifdef ENABLE_REMOTE_CONTROL
+    SDLNet_Init();
+    if (CVarGetInteger("gRemote.Enabled", 0)) {
+        switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+            case GI_SCHEME_SAIL:
+                GameInteractorSail::Instance->Enable();
+                break;
+            case GI_SCHEME_CROWD_CONTROL:
+                CrowdControl::Instance->Enable();
+                break;
+        }
     }
 #endif
 
@@ -1140,9 +1151,18 @@ extern "C" void SaveManager_ThreadPoolWait() {
 extern "C" void DeinitOTR() {
     SaveManager_ThreadPoolWait();
     OTRAudio_Exit();
-#ifdef ENABLE_CROWD_CONTROL
-    CrowdControl::Instance->Disable();
-    CrowdControl::Instance->Shutdown();
+#ifdef ENABLE_REMOTE_CONTROL
+    if (CVarGetInteger("gRemote.Enabled", 0)) {
+        switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+            case GI_SCHEME_SAIL:
+                GameInteractorSail::Instance->Disable();
+                break;
+            case GI_SCHEME_CROWD_CONTROL:
+                CrowdControl::Instance->Disable();
+                break;
+        }
+    }
+    SDLNet_Quit();
 #endif
 
     // Destroying gui here because we have shared ptrs to LUS objects which output to SPDLOG which is destroyed before these shared ptrs.
