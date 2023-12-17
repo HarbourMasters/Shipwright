@@ -99,6 +99,7 @@ void AreaTable_Init_LostWoods() {
   areaTable[RR_KF_STORMS_GROTTO] = Area("KF Storms Grotto", "KF Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(RC_KF_STORMS_GROTTO_CHEST,        {[]{return true;}}),
+                  LocationAccess(RC_KF_STORMS_GROTTO_FISH,         {[]{return HasBottle;}}),
                   LocationAccess(RC_KF_STORMS_GOSSIP_STONE, {[]{return true;}}),
                 }, {
                   //Exits
@@ -158,6 +159,7 @@ void AreaTable_Init_LostWoods() {
   areaTable[RR_LW_NEAR_SHORTCUTS_GROTTO] = Area("LW Near Shortcuts Grotto", "LW Near Shortcuts Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST,        {[]{return true;}}),
+                  LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,         {[]{return HasBottle;}}),
                   LocationAccess(RC_LW_NEAR_SHORTCUTS_GOSSIP_STONE, {[]{return true;}}),
                 }, {
                   //Exits

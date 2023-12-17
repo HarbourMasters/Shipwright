@@ -2588,6 +2588,9 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
         } else if (Randomizer_GetSettingValue(RSK_FROGS_HINT) && textId == TEXT_FROGS_UNDERWATER) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetFrogsMessage(textId);
+        } else if (Randomizer_GetSettingValue(RSK_FISHING_POLE_HINT) && !Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND) &&
+                (textId == TEXT_FISHING_POND_START || textId == TEXT_FISHING_POND_START_MET)) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetFishingPondOwnerMessage(textId);
         } else if (Randomizer_GetSettingValue(RSK_SARIA_HINT)) {
             if ((gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && textId == TEXT_SARIA_SFM) || (textId >= TEXT_SARIAS_SONG_FACE_TO_FACE && textId <= TEXT_SARIAS_SONG_CHANNELING_POWER)) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetSariaMessage(textId);

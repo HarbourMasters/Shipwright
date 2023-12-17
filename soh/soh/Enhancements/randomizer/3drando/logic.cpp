@@ -273,7 +273,9 @@ namespace Logic {
   bool HookshotOrBoomerang = false;
   bool CanGetNightTimeGS   = false;
   bool CanGetChildFish     = false;
+  bool CanGetAdultFish     = false;
   bool FishingPole         = false;
+  bool CanFish             = false;
 
   uint8_t   BaseHearts      = 0;
   uint8_t   Hearts          = 0;
@@ -427,6 +429,7 @@ namespace Logic {
            (itemName == RG_DEKU_SHIELD       && DekuShield)      ||
            (itemName == RG_FIRE_ARROWS       && FireArrows)      ||
            (itemName == RG_ICE_ARROWS        && IceArrows)       ||
+           (itemName == RG_FISHING_POLE      && FishingPole)     ||
            (itemName == RG_LIGHT_ARROWS      && LightArrows);
 
   }
@@ -462,6 +465,9 @@ namespace Logic {
       case RG_KOKIRI_SWORD:      return IsChild;// || KokiriSwordAsAdult;
       case RG_STICKS:            return IsChild;// || StickAsAdult;
       case RG_DEKU_SHIELD:       return IsChild;// || DekuShieldAsAdult;
+
+      // Misc. items
+      case RG_FISHING_POLE:      return true; // as long as you have enough rubies
 
       // Magic items
       default: return MagicMeter && (IsMagicItem(itemName) || (IsMagicArrow(itemName) && CanUse(RG_FAIRY_BOW)));
@@ -625,7 +631,9 @@ namespace Logic {
     CanOpenStormGrotto  = CanPlay(SongOfStorms) && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
     HookshotOrBoomerang = CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
     CanGetNightTimeGS   = (CanPlay(SunsSong) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG));
-    CanGetChildFish     = IsChild || (IsAdult && !false);
+    CanFish             = CanUse(RG_FISHING_POLE) || !ctx->GetOption(RSK_SHUFFLE_FISHING_POLE);
+    CanGetChildFish     = CanFish && (IsChild || (IsAdult && !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)));
+    CanGetAdultFish     = CanFish && IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT);
 
     GuaranteeTradePath     = ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetTrickOption(RT_DMT_BOLERO_BIGGORON) || CanBlastOrSmash || StopGCRollingGoronAsAdult;
   //GuaranteeHint          = (hints == "Mask" && MaskofTruth) || (hints == "Agony") || (hints != "Mask" && hints != "Agony");
@@ -1039,6 +1047,10 @@ namespace Logic {
      CanOpenStormGrotto  = false;
      BigPoeKill          = false;
      HookshotOrBoomerang = false;
+     CanGetChildFish     = false;
+     CanGetAdultFish     = false;
+     FishingPole         = false;
+     CanFish             = false;
 
      BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).Value<uint8_t>() + 1;
      Hearts          = 0;

@@ -209,6 +209,7 @@ Text sheikText;
 Text sariaText;
 Text dampesText;
 Text gregText;
+Text fishingPoleText;
 Text warpMinuetText;
 Text warpBoleroText;
 Text warpSerenadeText;
@@ -221,6 +222,7 @@ std::string lightArrowHintLoc;
 std::string dampeHintLoc;
 std::string gregHintLoc;
 std::string sariaHintLoc;
+std::string fishingPoleHintLoc;
 
 
 Text& GetChildAltarText() {
@@ -257,6 +259,10 @@ Text& GetSheikHintText() {
 
 Text& GetSariaHintText() {
   return sariaText;
+}
+
+Text& GetFishingPoleHintText() {
+  return fishingPoleText;
 }
 
 Text& GetWarpMinuetText() {
@@ -301,6 +307,10 @@ std::string GetGregHintLoc() {
 
 std::string GetSariaHintLoc() {
   return sariaHintLoc;
+}
+
+std::string GetFishingPoleHintLoc() {
+  return fishingPoleHintLoc;
 }
 
 static std::vector<RandomizerCheck> GetEmptyGossipStones() {
@@ -1079,6 +1089,7 @@ void CreateAllHints(){
   CreateSpecialItemHint(RG_PROGRESSIVE_HOOKSHOT, RH_DAMPES_DIARY, {RC_DAMPE_HINT}, RHT_DAMPE_DIARY01, RHT_DAMPE_DIARY02, dampesText, dampeHintLoc, (bool)ctx->GetOption(RSK_DAMPES_DIARY_HINT));
   CreateSpecialItemHint(RG_GREG_RUPEE, RH_GREG_RUPEE, {RC_GREG_HINT}, RHT_GREG_HINT01, RHT_GREG_HINT02, gregText, gregHintLoc, (bool)ctx->GetOption(RSK_GREG_HINT));
   CreateSpecialItemHint(RG_PROGRESSIVE_MAGIC_METER, RH_SARIA, {RC_SARIA_SONG_HINT, RC_SONG_FROM_SARIA}, RHT_SARIA_TEXT01, RHT_SARIA_TEXT02, sariaText, sariaHintLoc, (bool)ctx->GetOption(RSK_SARIA_HINT));
+  CreateSpecialItemHint(RG_FISHING_POLE, RH_FISHING_POLE, {RC_FISHING_POLE_HINT}, RHT_FISHING_POLE_HINT01, RHT_FISHING_POLE_HINT02, fishingPoleText, fishingPoleHintLoc, (bool)ctx->GetOption(RSK_FISHING_POLE_HINT));
 
   if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ON_HINT)) {
     CreateMerchantsHints();

@@ -360,6 +360,18 @@ void Randomizer::LoadHintMessages() {
             Randomizer::randoMiscHintsTableID, TEXT_SARIAS_SONG_FACE_TO_FACE,
             CustomMessage("{{message}}", "{{message}}", "{{message}}", TEXTBOX_TYPE_BLUE)
         );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_FISHING_POND_START,
+            CustomMessage(ctx->GetHint(RH_FISHING_POLE)->GetText().GetEnglish(),
+                ctx->GetHint(RH_FISHING_POLE)->GetText().GetEnglish(),
+                ctx->GetHint(RH_FISHING_POLE)->GetText().GetFrench())
+        );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_FISHING_POND_START_MET,
+            CustomMessage(ctx->GetHint(RH_FISHING_POLE)->GetText().GetEnglish(),
+                ctx->GetHint(RH_FISHING_POLE)->GetText().GetEnglish(),
+                ctx->GetHint(RH_FISHING_POLE)->GetText().GetFrench())
+        );
 
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT,
         CustomMessage("Warp to&{{location}}?\x1B&%gOK&No%w\x02",
@@ -655,6 +667,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
 
         // Bottle Refills
         case RG_MILK:
+        case RG_FISH:
         case RG_RED_POTION_REFILL:
         case RG_GREEN_POTION_REFILL:
         case RG_BLUE_POTION_REFILL:
@@ -1037,6 +1050,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_BLUE_POTION_REFILL:
         case RG_BUY_BLUE_POTION:
             return GI_POTION_BLUE;
+        case RG_FISH:
         case RG_BUY_FISH:
             return GI_FISH;
         case RG_BUY_BLUE_FIRE:
@@ -1219,6 +1233,7 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_PIECE_OF_HEART:
         case RG_HEART_CONTAINER:
         case RG_MILK:
+        case RG_FISH:
         case RG_BOMBS_5:
         case RG_BOMBS_10:
         case RG_BOMBS_20:
@@ -2596,6 +2611,32 @@ CustomMessage Randomizer::GetSariaMessage(u16 originalTextId) {
         messageEntry2.Replace("$C", std::move(code));
         return messageEntry2;
     }
+}
+
+CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
+    CustomMessage hintMessageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_FISHING_POND_START);
+    CustomMessage messageEntry = CustomMessage(
+      "Sorry, but the pond is closed. I've lost my good %rfishing pole%w... Can't go fishing without it!",
+      "",
+      ""
+    );
+
+    if (Rando::Context::GetInstance()->GetOption(RSK_FISHING_POLE_HINT)) {
+        messageEntry = messageEntry + hintMessageEntry;
+    }
+
+    // if the fishing pond guy doesnt remember me i will cry :(
+    if (originalTextId == TEXT_FISHING_POND_START_MET) {
+        messageEntry = CustomMessage(
+            "Hey, mister! I remember you!&It's been a long time!^",
+            "",
+            ""
+        ) + messageEntry;
+    }
+
+    messageEntry.Format();
+
+    return messageEntry;
 }
 
 CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious) {

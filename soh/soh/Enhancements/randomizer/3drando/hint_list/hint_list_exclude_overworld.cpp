@@ -1,4 +1,5 @@
 #include "../hint_list.hpp"
+#include <soh/Enhancements/randomizer/static_data.h>
 
 void HintTable_Init_Exclude_Overworld() {
     hintTable[RHT_KF_KOKIRI_SWORD_CHEST] = HintText::Exclude({
@@ -91,9 +92,19 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"a #hole in a field near a drawbridge# holds", /*french*/"la #grotte près d'un pont# contient", /*spanish*/"bajo el #hoyo de una llanura cercano a un puente# yace"},
   });
 
+    hintTable[RHT_HF_NEAR_MARKET_GROTTO_FISH] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #fish in a hole in a field near a drawbridge# holds", /*french*/"la #grotte près d'un pont# contient", /*spanish*/"bajo el #hoyo de una llanura cercano a un puente# yace"},
+  });
+
     hintTable[RHT_HF_SOUTHEAST_GROTTO_CHEST] = HintText::Exclude({
                        //obscure text
                        Text{"a #hole amongst trees in a field# holds", /*french*/"la #grotte près des arbres# contient", /*spanish*/"bajo el #hoyo de una llanura rodeado de árboles# yace"},
+  });
+    
+    hintTable[RHT_HF_SOUTHEAST_GROTTO_FISH] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #fish in a hole amongst trees in a field# holds", /*french*/"la #grotte près des arbres# contient", /*spanish*/"bajo el #hoyo de una llanura rodeado de árboles# yace"},
   });
 
     hintTable[RHT_HF_OPEN_GROTTO_CHEST] = HintText::Exclude({
@@ -101,9 +112,19 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"an #open hole in a field# holds", /*french*/"la #grotte dans les plaines# contient", /*spanish*/"bajo el #hoyo descubierto de una llanura# yace"},
   });
 
+    hintTable[RHT_HF_OPEN_GROTTO_FISH] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #fish in an open hole in a field# holds", /*french*/"la #grotte dans les plaines# contient", /*spanish*/"bajo el #hoyo descubierto de una llanura# yace"},
+  });
+
     hintTable[RHT_KAK_OPEN_GROTTO_CHEST] = HintText::Exclude({
                        //obscure text
                        Text{"an #open hole in a town# holds", /*french*/"la #grotte dans le village# contient", /*spanish*/"bajo el #hoyo descubierto de un pueblo# yace"},
+  });
+
+    hintTable[RHT_KAK_OPEN_GROTTO_FISH] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #fish in an open hole in a town# holds", /*french*/"la #grotte dans le village# contient", /*spanish*/"bajo el #hoyo descubierto de un pueblo# yace"},
   });
 
     hintTable[RHT_ZR_OPEN_GROTTO_CHEST] = HintText::Exclude({
@@ -111,9 +132,19 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"a #hole along a river# holds", /*french*/"la #grotte près du fleuve# contient", /*spanish*/"bajo un #hoyo junto a un río# yace"},
   });
 
+    hintTable[RHT_ZR_OPEN_GROTTO_FISH] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #fish in a hole along a river# holds", /*french*/"la #grotte près du fleuve# contient", /*spanish*/"bajo un #hoyo junto a un río# yace"},
+  });
+
     hintTable[RHT_KF_STORMS_GROTTO_CHEST] = HintText::Exclude({
                        //obscure text
                        Text{"a #hole in a forest village# holds", /*french*/"la #grotte inondée de pluie dans le Village Kokiri# révèle", /*spanish*/"bajo el #hoyo de una tribu del bosque# yace"},
+  });
+
+    hintTable[RHT_KF_STORMS_GROTTO_FISH] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #fish in a hole in a forest village# holds", /*french*/"la #grotte inondée de pluie dans le Village Kokiri# révèle", /*spanish*/"bajo el #hoyo de una tribu del bosque# yace"},
   });
 
     hintTable[RHT_LW_NEAR_SHORTCUTS_GROTTO_CHEST] = HintText::Exclude({
@@ -121,14 +152,29 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"a #hole in a wooded maze# holds", /*french*/"la #grotte dans le labyrinthe sylvestre# contient", /*spanish*/"bajo un #hoyo de un laberinto forestal# yace"},
   });
 
+    hintTable[RHT_LW_NEAR_SHORTCUTS_GROTTO_FISH] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #fish in a hole in a wooded maze# holds", /*french*/"la #grotte dans le labyrinthe sylvestre# contient", /*spanish*/"bajo un #hoyo de un laberinto forestal# yace"},
+  });
+
     hintTable[RHT_DMT_STORMS_GROTTO_CHEST] = HintText::Exclude({
                        //obscure text
                        Text{"#hole flooded with rain on a mountain# holds", /*french*/"la #grotte inondée de pluie sur la montagne# contient", /*spanish*/"bajo un #hoyo de una montaña inundado de lluvia# yace"},
   });
 
+    hintTable[RHT_DMT_STORMS_GROTTO_FISH] = HintText::Exclude({
+                       //obscure text
+                       Text{"#fish in a hole flooded with rain on a mountain# holds", /*french*/"la #grotte inondée de pluie sur la montagne# contient", /*spanish*/"bajo un #hoyo de una montaña inundado de lluvia# yace"},
+  });
+
     hintTable[RHT_DMC_UPPER_GROTTO_CHEST] = HintText::Exclude({
                        //obscure text
                        Text{"a #hole in a volcano# holds", /*french*/"la #grotte dans le volcan# contient", /*spanish*/"bajo el #hoyo de un volcán# yace"},
+  });
+
+    hintTable[RHT_DMC_UPPER_GROTTO_FISH] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #fish in a hole in a volcano# holds", /*french*/"la #grotte dans le volcan# contient", /*spanish*/"bajo el #hoyo de un volcán# yace"},
   });
 
     hintTable[RHT_TOT_MASTER_SWORD] = HintText::Exclude({
@@ -1356,4 +1402,19 @@ void HintTable_Init_Exclude_Overworld() {
                        //obscure text
                        Text{"a #cow in a luxurious hole# offers", /*french*/"la #vache dans une grotte luxueuse# donne", /*spanish*/"una #vaca de un lujoso hoyo# brinda"},
   });
+
+    // Fishing pond fish hints
+    // TODO: probably some better text to put here than the text for child/adult fishing
+    for (auto [childLoc, adultLoc] : Rando::StaticData::randomizerFishingPondFish) {
+        hintTable[childLoc] = HintText::Exclude({
+            //obscure text
+            Text{"#fishing in youth# bestows", /*french*/"#pêcher dans sa jeunesse# promet", /*spanish*/"#pescar en la juventud# conduce a"}
+        });
+        if (adultLoc == RC_UNKNOWN_CHECK)
+            continue;
+        hintTable[adultLoc] = HintText::Exclude({
+            //obscure text
+            Text{"#fishing in maturity# bestows", /*french*/"#pêcher dans sa maturité# promet", /*spanish*/"#pescar en la madurez# conduce a"}
+        });
+    }
 }

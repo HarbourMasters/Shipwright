@@ -227,6 +227,7 @@ Text& GetDampeHintText();
 Text& GetGregHintText();
 Text& GetSheikHintText();
 Text& GetSariaHintText();
+Text& GetFishingPoleHintText();
 
 Text& GetWarpMinuetText();
 Text& GetWarpBoleroText();
@@ -240,3 +241,4 @@ std::string GetLightArrowHintLoc();
 std::string GetDampeHintLoc();
 std::string GetGregHintLoc();
 std::string GetSariaHintLoc();
+std::string GetFishingPoleHintLoc();

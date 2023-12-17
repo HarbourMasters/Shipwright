@@ -64,6 +64,7 @@ void AreaTable_Init_DeathMountain() {
   areaTable[RR_DMT_STORMS_GROTTO] = Area("DMT Storms Grotto", "DMT Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(RC_DMT_STORMS_GROTTO_CHEST,        {[]{return true;}}),
+                  LocationAccess(RC_DMT_STORMS_GROTTO_FISH,         {[]{return HasBottle;}}),
                   LocationAccess(RC_DMT_STORMS_GROTTO_GOSSIP_STONE, {[]{return true;}}),
                 }, {
                   //Exits
@@ -243,6 +244,7 @@ void AreaTable_Init_DeathMountain() {
   areaTable[RR_DMC_UPPER_GROTTO] = Area("DMC Upper Grotto", "DMC Upper Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(RC_DMC_UPPER_GROTTO_CHEST,        {[]{return true;}}),
+                  LocationAccess(RC_DMC_UPPER_GROTTO_FISH,         {[]{return HasBottle;}}),
                   LocationAccess(RC_DMC_UPPER_GROTTO_GOSSIP_STONE, {[]{return true;}}),
                 }, {
                   //Exits

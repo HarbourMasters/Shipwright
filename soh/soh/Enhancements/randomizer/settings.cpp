@@ -689,8 +689,8 @@ void Settings::CreateOptions() {
         &mOptions[RSK_DAMPES_DIARY_HINT],
         &mOptions[RSK_GREG_HINT],
         &mOptions[RSK_SARIA_HINT],
-        &mOptions[RSK_FISHING_POLE_HINT],
         &mOptions[RSK_FROGS_HINT],
+        &mOptions[RSK_FISHING_POLE_HINT],
         &mOptions[RSK_WARP_SONG_HINTS],
         &mOptions[RSK_SCRUB_TEXT_HINT],
         &mOptions[RSK_KAK_10_SKULLS_HINT],
@@ -826,6 +826,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_OCARINA],
         &mOptions[RSK_SHUFFLE_WEIRD_EGG],
         &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
+        &mOptions[RSK_SHUFFLE_FISHING_POLE],
         &mOptions[RSK_SHUFFLE_MAGIC_BEANS],
         &mOptions[RSK_SHUFFLE_MERCHANTS],
         &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
@@ -908,6 +909,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_GREG_HINT],
         &mOptions[RSK_SARIA_HINT],
         &mOptions[RSK_FROGS_HINT],
+        &mOptions[RSK_FISHING_POLE_HINT],
         &mOptions[RSK_WARP_SONG_HINTS],
         &mOptions[RSK_KAK_10_SKULLS_HINT],
         &mOptions[RSK_KAK_20_SKULLS_HINT],
@@ -1477,6 +1479,10 @@ void Settings::UpdateOptionProperties() {
             mOptions[RSK_FISHSANITY].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
             mOptions[RSK_FISHSANITY_POND_COUNT].Hide();
             mOptions[RSK_FISHSANITY_AGE_SPLIT].Hide();
+    }
+    // Disable fishing pole hint if the fishing pole is not shuffled
+    if (!CVarGetInteger("gRandomizeShuffleFishingPole", RO_GENERIC_OFF)) {
+        mOptions[RSK_FISHING_POLE_HINT].Disable("This option is disabled since the fishing pole is not shuffled.");
     }
     // Shuffle 100 GS Reward - Force-Enabled if Ganon's Boss Key is on the 100 GS Reward
     if (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) == RO_GANON_BOSS_KEY_KAK_TOKENS) {

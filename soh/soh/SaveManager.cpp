@@ -272,6 +272,9 @@ void SaveManager::LoadRandomizerVersion2() {
     std::string sariaText;
     SaveManager::Instance->LoadData("sariaText", sariaText);
     randoContext->AddHint(RH_SARIA, Text(sariaText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+    std::string fishingPoleText;
+    SaveManager::Instance->LoadData("fishingPoleText", fishingPoleText);
+    randoContext->AddHint(RH_FISHING_POLE, Text(fishingPoleText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string warpMinuetText;
     SaveManager::Instance->LoadData("warpMinuetText", warpMinuetText);
     randoContext->AddHint(RH_MINUET_WARP_LOC, Text(warpMinuetText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpMinuetText));

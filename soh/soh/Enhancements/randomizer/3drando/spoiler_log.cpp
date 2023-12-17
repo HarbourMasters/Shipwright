@@ -606,6 +606,7 @@ static void WriteHints() {
     std::string unformattedGregText;
     std::string unformattedSheikText;
     std::string unformattedSariaText;
+    std::string unformattedFishingPoleText;
 
     switch (ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex()) {
         case 0:
@@ -616,6 +617,7 @@ static void WriteHints() {
             unformattedGregText = GetGregHintText().GetEnglish();
             unformattedSheikText = GetSheikHintText().GetEnglish();
             unformattedSariaText = GetSariaHintText().GetEnglish();
+            unformattedFishingPoleText = GetFishingPoleHintText().GetEnglish();
 
             if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)){
               jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
@@ -635,6 +637,7 @@ static void WriteHints() {
             unformattedGregText = GetGregHintText().GetFrench();
             unformattedSheikText = GetSheikHintText().GetFrench();
             unformattedSariaText = GetSariaHintText().GetFrench();
+            unformattedFishingPoleText = GetFishingPoleHintText().GetFrench();
 
             if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)){
               jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
@@ -687,6 +690,7 @@ static void WriteHints() {
     std::string gregText = AutoFormatHintTextString(unformattedGregText);
     std::string sheikText = AutoFormatHintTextString(unformattedSheikText);
     std::string sariaText = AutoFormatHintTextString(unformattedSariaText);
+    std::string fishingPoleText = AutoFormatHintTextString(unformattedFishingPoleText);
 
     jsonData["ganonText"] = ganonText;
     if (ctx->GetOption(RSK_LIGHT_ARROWS_HINT)){
@@ -712,6 +716,11 @@ static void WriteHints() {
       jsonData["sariaText"] = sariaText;
       jsonData["sariaHintLoc"] = GetSariaHintLoc();
       jsonData["sariaRegion"] = ::Hint(ctx->GetHint(RH_SARIA)->GetHintedArea()).GetText().GetEnglish();
+    }
+    if (ctx->GetOption(RSK_FISHING_POLE_HINT)) {
+      jsonData["fishingPoleText"] = fishingPoleText;
+      jsonData["fishingPoleHintLoc"] = GetFishingPoleHintLoc();
+      jsonData["fishingPoleRegion"] = ::Hint(ctx->GetHint(RH_FISHING_POLE)->GetHintedArea()).GetText().GetEnglish();
     }
 
     if (ctx->GetOption(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NONE)) {

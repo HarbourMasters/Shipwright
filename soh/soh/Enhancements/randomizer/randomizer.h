@@ -64,6 +64,7 @@ class Randomizer {
     CustomMessage GetSheikMessage(s16 scene, u16 originalTextId);
     CustomMessage GetFrogsMessage(u16 originalTextId);
     CustomMessage GetSariaMessage(u16 originalTextId);
+    CustomMessage GetFishingPondOwnerMessage(u16 originalTextId);
     CustomMessage GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
     CustomMessage GetCursedSkullMessage(s16 params);
     CustomMessage GetGoronMessage(u16 index);

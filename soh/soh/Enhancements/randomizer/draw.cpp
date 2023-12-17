@@ -329,7 +329,7 @@ extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEn
 
 }
 
-extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry getItemEntry) {
+extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getItemEntry) {
     Vec3f pos;
     OPEN_DISPS(play->state.gfxCtx);
 
