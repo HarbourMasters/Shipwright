@@ -31,7 +31,7 @@ set(CPACK_SYSTEM_NAME ${LSB_RELEASE_CODENAME_SHORT})
 # if set, then instead of some-application-0.9.2-Linux.deb
 # you'll get some-application_0.9.2_amd64.deb (note the underscores too)
 #set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
-execute_process(COMMAND dpkg --print-architecture OUTPUT_VARIABLE ARCHITECTURE OUTPUT_STRIP_TRAILING_WHITESPACE)
+#execute_process(COMMAND dpkg --print-architecture OUTPUT_VARIABLE ARCHITECTURE OUTPUT_STRIP_TRAILING_WHITESPACE)
 set( CPACK_DEBIAN_FILE_NAME ${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_SYSTEM_NAME}-${ARCHITECTURE}.deb )
 # if you want every group to have its own package,
 # although the same happens if this is not sent (so it defaults to ONE_PER_GROUP)
@@ -41,10 +41,10 @@ set(CPACK_COMPONENTS_GROUPING ALL_COMPONENTS_IN_ONE)#ONE_PER_GROUP)
 set(CPACK_DEB_COMPONENT_INSTALL YES)
 
 set(CPACK_EXTERNAL_ENABLE_STAGING YES)
-set(CPACK_EXTERNAL_PACKAGE_SCRIPT "${PROJECT_BINARY_DIR}/appimage-generate.cmake")
+set(CPACK_EXTERNAL_PACKAGE_SCRIPT "${PROJECT_BINARY_DIR}/appimage-generate-")
 
 file(GENERATE
-  OUTPUT "${PROJECT_BINARY_DIR}/appimage-generate.cmake"
+  OUTPUT "${PROJECT_BINARY_DIR}/appimage-generate-$<CONFIG>.cmake"
   CONTENT [[
 include(CMakePrintHelpers)
 cmake_print_variables(CPACK_TEMPORARY_DIRECTORY)

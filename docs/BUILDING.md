@@ -99,11 +99,11 @@ git submodule update --init
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
 # Generate Ninja project
-cmake -H. -Bbuild-cmake -GNinja # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging) -DPython3_EXECUTABLE=$(which python3) (if you are using non-standard Python installations such as PyEnv)
+cmake -H. -Bbuild-cmake -G "Ninja Multi-Config" # -DPython3_EXECUTABLE=$(which python3) (if you are using non-standard Python installations such as PyEnv)
 # Extract assets & generate OTR (run this anytime you need to regenerate OTR)
 cmake --build build-cmake --target ExtractAssets
 # Compile the project
-cmake --build build-cmake # --config Release (if you're packaging)
+cmake --build build-cmake --config Release
 
 # Now you can run the executable in ./build-cmake/soh/soh.elf
 # To develop the project open the repository in VSCode (or your preferred editor)
@@ -124,9 +124,8 @@ After compiling the project you can generate a distributable by running of the f
 # Go to build folder
 cd build-cmake
 # Generate
-cpack -G DEB
-cpack -G ZIP
-cpack -G External (creates appimage)
+cpack -C Release -G ZIP
+cpack -C Release -G External (creates appimage)
 ```
 
 ## macOS
@@ -145,11 +144,11 @@ git submodule update --init
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
 # Generate Ninja project
-cmake -H. -Bbuild-cmake -GNinja # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
+cmake -H. -Bbuild-cmake -G "Ninja Multi-Config"
 # Extract assets & generate OTR (run this anytime you need to regenerate OTR)
 cmake --build build-cmake --target ExtractAssets
 # Compile the project
-cmake --build build-cmake # --config Release (if you're packaging)
+cmake --build build-cmake --config Release
 
 # Copy oot.otr into the Application Support directory
 cp build-cmake/soh/oot.otr ~/Library/Application\ Support/com.shipofharkinian.soh/
@@ -174,7 +173,7 @@ After compiling the project you can generate a distributable by running of the f
 # Go to build folder
 cd build-cmake
 # Generate
-cpack
+cpack -C Release
 ```
 
 ## Switch
