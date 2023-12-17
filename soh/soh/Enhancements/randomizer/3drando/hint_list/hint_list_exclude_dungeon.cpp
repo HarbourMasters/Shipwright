@@ -1961,4 +1961,793 @@ void HintTable_Init_Exclude_Dungeon() {
                        //obscure text
                        Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le Château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
   });
+
+    hintTable[RHT_DODONGOS_CAVERN_LIZALFOS_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_LIZALFOS_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_LIZALFOS_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_LIZALFOS_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_SIDE_ROOM_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_SIDE_ROOM_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_SIDE_ROOM_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_SIDE_ROOM_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_SIDE_ROOM_POT_5] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_SIDE_ROOM_POT_6] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_TORCH_ROOM_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_TORCH_ROOM_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_TORCH_ROOM_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_TORCH_ROOM_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_STAIRCASE_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_STAIRCASE_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_STAIRCASE_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_STAIRCASE_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_SINGLE_EYE_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_SINGLE_EYE_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_BLADE_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_BLADE_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_DOUBLE_EYE_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_DOUBLE_EYE_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_BACK_ROOM_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_BACK_ROOM_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_BACK_ROOM_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_DODONGOS_CAVERN_BACK_ROOM_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_ABOVE_BIG_OCTO_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_ABOVE_BIG_OCTO_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_ABOVE_BIG_OCTO_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_BARINADE_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_BARINADE_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_BARINADE_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_BARINADE_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_BARINADE_POT_5] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_BARINADE_POT_6] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_BASEMENT_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_BASEMENT_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_BASEMENT_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_TWO_OCTOROK_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_TWO_OCTOROK_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_TWO_OCTOROK_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_TWO_OCTOROK_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_JABU_JABUS_BELLY_TWO_OCTOROK_POT_5] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_LOBBY_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_LOBBY_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_LOBBY_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_LOBBY_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_LOBBY_POT_5] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_LOBBY_POT_6] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_LOWER_STALFOS_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_LOWER_STALFOS_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_GREEN_POE_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_GREEN_POE_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_UPPER_STALFOS_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_UPPER_STALFOS_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_UPPER_STALFOS_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_UPPER_STALFOS_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_BLUE_POE_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_BLUE_POE_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_BLUE_POE_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_FROZEN_EYE_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FOREST_TEMPLE_FROZEN_EYE_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FIRE_TEMPLE_NEAR_BOSS_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FIRE_TEMPLE_NEAR_BOSS_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FIRE_TEMPLE_NEAR_BOSS_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FIRE_TEMPLE_NEAR_BOSS_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FIRE_TEMPLE_BIG_LAVA_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FIRE_TEMPLE_BIG_LAVA_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FIRE_TEMPLE_BIG_LAVA_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FIRE_TEMPLE_FLAME_MAZE_LEFT_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FIRE_TEMPLE_FLAME_MAZE_LEFT_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FIRE_TEMPLE_FLAME_MAZE_LEFT_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FIRE_TEMPLE_FLAME_MAZE_LEFT_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FIRE_TEMPLE_FLAME_MAZE_RIGHT_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FIRE_TEMPLE_FLAME_MAZE_RIGHT_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FIRE_TEMPLE_FLAME_MAZE_RIGHT_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_FIRE_TEMPLE_FLAME_MAZE_RIGHT_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_MAIN_LEVEL_2_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_MAIN_LEVEL_2_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_MAIN_LEVEL_1_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_MAIN_LEVEL_1_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_TORCH_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_TORCH_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_NEAR_COMPASS_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_NEAR_COMPASS_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_NEAR_COMPASS_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_CENTRAL_BOW_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_CENTRAL_BOW_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_BEHIND_GATE_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_BEHIND_GATE_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_BEHIND_GATE_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_BEHIND_GATE_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_BASEMENT_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_BASEMENT_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_RIVER_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_RIVER_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_LIKE_LIKE_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_WATER_TEMPLE_LIKE_LIKE_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_NEAR_DEAD_HAND_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_WHISPERING_WALLS_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_WHISPERING_WALLS_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_WHISPERING_WALLS_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_WHISPERING_WALLS_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_WHISPERING_WALLS_POT_5] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_MAP_CHEST_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_MAP_CHEST_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_FALLING_SPIKES_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_FALLING_SPIKES_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_FALLING_SPIKES_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_FALLING_SPIKES_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_AFTER_WIND_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_AFTER_WIND_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_SPIKE_WALLS_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_FLOORMASTER_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_FLOORMASTER_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_AFTER_BOAT_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_AFTER_BOAT_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_AFTER_BOAT_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SHADOW_TEMPLE_AFTER_BOAT_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SPIRIT_TEMPLE_LOBBY_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SPIRIT_TEMPLE_LOBBY_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SPIRIT_TEMPLE_ANUBIS_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SPIRIT_TEMPLE_ANUBIS_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SPIRIT_TEMPLE_ANUBIS_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SPIRIT_TEMPLE_ANUBIS_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SPIRIT_TEMPLE_CHILD_CLIMB_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SPIRIT_TEMPLE_AFTER_SUN_BLOCK_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SPIRIT_TEMPLE_AFTER_SUN_BLOCK_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_5] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_6] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_SPIRIT_TEMPLE_BEAMOS_HALL_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_FOREST_TRIAL_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_FOREST_TRIAL_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_FIRE_TRIAL_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_FIRE_TRIAL_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_WATER_TRIAL_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_WATER_TRIAL_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_SHADOW_TRIAL_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_SHADOW_TRIAL_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_SHADOW_TRIAL_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_SHADOW_TRIAL_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_SPIRIT_TRIAL_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_SPIRIT_TRIAL_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_LIGHT_TRIAL_BOULDER_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_LIGHT_TRIAL_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_LIGHT_TRIAL_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_5] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_6] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_7] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_8] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_9] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_10] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_11] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_12] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_13] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_14] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_15] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_16] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_17] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_GANONS_CASTLE_GANONS_TOWER_POT_18] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_POT_4] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_POT_5] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_POT_6] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_POT_7] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_POT_8] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_POT_9] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_POT_10] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_POT_11] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_POT_12] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_LEFT_SIDE_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_LEFT_SIDE_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_LEFT_SIDE_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_NEAR_ENTRANCE_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_NEAR_ENTRANCE_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_FIRE_KEESE_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_BOTTOM_OF_THE_WELL_UNDERWATER_POT] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_ICE_CAVERN_HALL_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_ICE_CAVERN_HALL_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_ICE_CAVERN_SPINNING_BLADE_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_ICE_CAVERN_SPINNING_BLADE_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_ICE_CAVERN_SPINNING_BLADE_POT_3] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_ICE_CAVERN_NEAR_END_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_ICE_CAVERN_NEAR_END_POT_2] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
+    hintTable[RHT_ICE_CAVERN_FROZEN_POT_1] = HintText::Exclude({
+        // obscure text
+        Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds", /*spanish*/ "a #pot in a room# holds" },
+    });
 }
