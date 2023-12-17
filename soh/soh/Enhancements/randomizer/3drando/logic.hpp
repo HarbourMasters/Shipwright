@@ -268,6 +268,8 @@ extern bool CanOpenStormGrotto;
 extern bool HookshotOrBoomerang;
 extern bool CanGetNightTimeGS;
 extern bool CanAccessChildFish;
+extern bool CanAccessAdultFish;
+extern bool CanFish;
 extern bool BigPoeKill;
 
 extern uint8_t BaseHearts;

@@ -278,6 +278,8 @@ namespace Logic {
   bool HookshotOrBoomerang = false;
   bool CanGetNightTimeGS   = false;
   bool CanAccessChildFish  = false;
+  bool CanAccessAdultFish  = false;
+  bool CanFish             = false;
 
   uint8_t   BaseHearts      = 0;
   uint8_t   Hearts          = 0;
@@ -421,6 +423,7 @@ namespace Logic {
            (itemName == DEKU_SHIELD       && DekuShield)      ||
            (itemName == FIRE_ARROWS       && FireArrows)      ||
            (itemName == ICE_ARROWS        && IceArrows)       ||
+           (itemName == FISHING_POLE      && FishingPole)     ||
            (itemName == LIGHT_ARROWS      && LightArrows);
 
   }
@@ -455,6 +458,8 @@ namespace Logic {
       case KOKIRI_SWORD:      return IsChild || KokiriSwordAsAdult;
       case STICKS:            return IsChild || StickAsAdult;
       case DEKU_SHIELD:       return IsChild || DekuShieldAsAdult;
+
+      case FISHING_POLE:      return true;
 
       // Magic items
       default: return MagicMeter && (IsMagicItem(itemName) || (IsMagicArrow(itemName) && CanUse(BOW)));
@@ -586,7 +591,9 @@ namespace Logic {
     CanOpenStormGrotto  = CanPlay(SongOfStorms) && (ShardOfAgony || LogicGrottosWithoutAgony);
     HookshotOrBoomerang = CanUse(HOOKSHOT) || CanUse(BOOMERANG);
     CanGetNightTimeGS   = (CanPlay(SunsSong) || !NightGSExpectSuns);
-    CanAccessChildFish  = (IsChild || (IsAdult && !FishsanityAgeSplit));
+    CanFish             = CanUse(FISHING_POLE) || !ShuffleFishingPole;
+    CanAccessChildFish  = CanFish && (IsChild || (IsAdult && !FishsanityAgeSplit));
+    CanAccessAdultFish  = CanFish && IsAdult && FishsanityAgeSplit;
 
     GuaranteeTradePath     = ShuffleInteriorEntrances || ShuffleOverworldEntrances || LogicBiggoronBolero || CanBlastOrSmash || StopGCRollingGoronAsAdult;
   //GuaranteeHint          = (hints == "Mask" && MaskofTruth) || (hints == "Agony") || (hints != "Mask" && hints != "Agony");
@@ -927,6 +934,7 @@ namespace Logic {
      PieceOfHeart     = 0;
      HeartContainer   = 0;
      DoubleDefense    = false;
+     FishingPole      = false;
 
      /* --- HELPERS, EVENTS, AND LOCATION ACCESS --- */
      /* These are used to simplify reading the logic, but need to be updated
@@ -988,6 +996,9 @@ namespace Logic {
      CanOpenStormGrotto  = false;
      BigPoeKill          = false;
      HookshotOrBoomerang = false;
+     CanFish             = false;
+     CanAccessChildFish  = false;
+     CanAccessAdultFish  = false;
 
      BaseHearts      = StartingHearts.Value<uint8_t>() + 1;
      Hearts          = 0;
