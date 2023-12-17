@@ -94,6 +94,7 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 
 #include <vector>
 #include <functional>
+#include <string>
 
 #define DEFINE_HOOK(name, type)         \
     struct name {                       \
@@ -193,6 +194,7 @@ public:
     
     DEFINE_HOOK(OnSetGameLanguage, void());
 
+    DEFINE_HOOK(OnFileDropped, void(std::string filePath));
     DEFINE_HOOK(OnAssetAltChange, void());
 
     // Helpers
