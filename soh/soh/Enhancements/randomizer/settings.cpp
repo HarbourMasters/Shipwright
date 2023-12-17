@@ -819,6 +819,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_FISHSANITY],
         &mOptions[RSK_FISHSANITY_POND_COUNT],
         &mOptions[RSK_FISHSANITY_AGE_SPLIT],
+        &mOptions[RSK_SHUFFLE_FISHING_POLE],
         &mOptions[RSK_SHUFFLE_TOKENS],
         &mOptions[RSK_SHUFFLE_SCRUBS],
         &mOptions[RSK_SHUFFLE_COWS],
@@ -826,7 +827,6 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_OCARINA],
         &mOptions[RSK_SHUFFLE_WEIRD_EGG],
         &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
-        &mOptions[RSK_SHUFFLE_FISHING_POLE],
         &mOptions[RSK_SHUFFLE_MAGIC_BEANS],
         &mOptions[RSK_SHUFFLE_MERCHANTS],
         &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
@@ -909,7 +909,6 @@ void Settings::CreateOptions() {
         &mOptions[RSK_GREG_HINT],
         &mOptions[RSK_SARIA_HINT],
         &mOptions[RSK_FROGS_HINT],
-        &mOptions[RSK_FISHING_POLE_HINT],
         &mOptions[RSK_WARP_SONG_HINTS],
         &mOptions[RSK_KAK_10_SKULLS_HINT],
         &mOptions[RSK_KAK_20_SKULLS_HINT],
@@ -917,6 +916,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KAK_40_SKULLS_HINT],
         &mOptions[RSK_KAK_50_SKULLS_HINT],
         &mOptions[RSK_SCRUB_TEXT_HINT],
+        &mOptions[RSK_FISHING_POLE_HINT],
         // TODO: Compasses show Reward/WOTH, Maps show Dungeon Mode, Starting Time
         &mOptions[RSK_DAMAGE_MULTIPLIER],
         &mOptions[RSK_BLUE_FIRE_ARROWS],
@@ -1481,7 +1481,9 @@ void Settings::UpdateOptionProperties() {
             mOptions[RSK_FISHSANITY_AGE_SPLIT].Hide();
     }
     // Disable fishing pole hint if the fishing pole is not shuffled
-    if (!CVarGetInteger("gRandomizeShuffleFishingPole", RO_GENERIC_OFF)) {
+    if (CVarGetInteger("gRandomizeShuffleFishingPole", RO_GENERIC_OFF)) {
+        mOptions[RSK_FISHING_POLE_HINT].Enable();
+    } else {
         mOptions[RSK_FISHING_POLE_HINT].Disable("This option is disabled since the fishing pole is not shuffled.");
     }
     // Shuffle 100 GS Reward - Force-Enabled if Ganon's Boss Key is on the 100 GS Reward
