@@ -757,12 +757,10 @@ void GenerateItemPool() {
     PlaceVanillaGrottoFish();
   }
 
-  // Add pole to main pool if fishing pond fish are shuffled
-  if (ShuffleFishingPole && (fsMode == FISHSANITY_BOTH || fsMode == FISHSANITY_PONDONLY)) {
+  // Add pole to main pool
+  if (ShuffleFishingPole) {
     AddItemToMainPool(FISHING_POLE);
     IceTrapModels.push_back(0xE1);
-  } else if (ShuffleFishingPole) {
-    AddItemToPool(PendingJunkPool, FISHING_POLE);
   }
 
   if (ShuffleMagicBeans) {
