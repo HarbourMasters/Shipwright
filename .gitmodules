@@ -7,3 +7,6 @@
 [submodule "OTRExporter"]
 	path = OTRExporter
 	url = https://github.com/harbourmasters/OTRExporter
+[submodule "soh/lib/lua"]
+	path = soh/lib/lua
+	url = https://github.com/lua/lua

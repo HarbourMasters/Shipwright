@@ -113,6 +113,7 @@ source_group("headers" FILES ${Header_Files})
 
 # include {{{
 file(GLOB Header_Files__include "include/*.h" "include/*.inc")
+file(GLOB Header_Files__include "lib/*/*.h")
 list(APPEND Header_Files__include ${CMAKE_CURRENT_SOURCE_DIR}/include/libc/stdarg.h)
 list(REMOVE_ITEM Header_Files__include ${CMAKE_CURRENT_SOURCE_DIR}/include/bgm.h)
 list(REMOVE_ITEM Header_Files__include ${CMAKE_CURRENT_SOURCE_DIR}/include/math_n64.h)
@@ -126,6 +127,11 @@ source_group("include" FILES ${Header_Files__include})
 # soh (root)
 file(GLOB soh__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/*.c" "soh/*.cpp" "soh/*.h")
 source_group("soh" FILES ${soh__})
+
+file(GLOB lib__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "lib/*/*.c")
+list(REMOVE_ITEM lib__ "lib/lua/onelua.c")
+list(REMOVE_ITEM lib__ "lib/lua/lua.c")
+source_group("lib" FILES ${lib__})
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set_source_files_properties(soh/OTRGlobals.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
@@ -253,6 +259,7 @@ set(ALL_FILES
     ${Header_Files}
     ${Header_Files__include}
     ${soh__}
+	${lib__}
     ${soh__config}
     ${soh__Enhancements}
     ${soh__Extractor}
