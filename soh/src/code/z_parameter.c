@@ -1526,13 +1526,13 @@ void Inventory_SwapAgeEquipment(void) {
     } else {
         // When becoming child, set swordless flag if player doesn't have kokiri sword
         // Only in rando to keep swordless link bugs in vanilla
-        if (IS_RANDO && (EQUIP_INV_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4) & gSaveContext.inventory.equipment) == 0) {
+        if (IS_RANDO && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) {
             Flags_SetInfTable(INFTABLE_SWORDLESS);
         }
 
         // When using enhancements, set swordless flag if player doesn't have kokiri sword or hasn't equipped a sword yet.
         // Then set the child equips button items to item none to ensure kokiri sword is not equipped
-        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && ((EQUIP_INV_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4) & gSaveContext.inventory.equipment) == 0 || Flags_GetInfTable(INFTABLE_SWORDLESS))) {
+        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0 || Flags_GetInfTable(INFTABLE_SWORDLESS))) {
             Flags_SetInfTable(INFTABLE_SWORDLESS);
             gSaveContext.childEquips.buttonItems[0] = ITEM_NONE;
         }
@@ -1568,7 +1568,7 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
             gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
             // Equips kokiri sword in the inventory screen only if kokiri sword exists in inventory and a sword has been equipped already
-            if (!((EQUIP_INV_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4) & gSaveContext.inventory.equipment) == 0) && !Flags_GetInfTable(INFTABLE_SWORDLESS)) {
+            if (!(CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) && !Flags_GetInfTable(INFTABLE_SWORDLESS)) {
                 gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4);
             }
         } else if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
@@ -1598,7 +1598,7 @@ void Inventory_SwapAgeEquipment(void) {
             (only kokiri tunic/boots equipped, no sword, no C-button items, no D-Pad items).
             When becoming child, set swordless flag if player doesn't have kokiri sword
             Only in rando to keep swordless link bugs in vanilla*/
-            if (EQUIP_INV_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4) & gSaveContext.inventory.equipment == 0) {
+            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) {
                 Flags_SetInfTable(INFTABLE_SWORDLESS);
             }
 
@@ -1801,15 +1801,25 @@ u8 Return_Item_Entry(GetItemEntry itemEntry, ItemID returnItem ) {
 u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
     // ITEM_SOLD_OUT doesn't have an ItemTable entry, so pass custom entry instead
     if (itemID == ITEM_SOLD_OUT) {
-        GetItemEntry gie = { ITEM_SOLD_OUT, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_LESSER, NULL };
+        GetItemEntry gie = { ITEM_SOLD_OUT, 0, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_LESSER, NULL };
         return Return_Item_Entry(gie, returnItem);
     }
-    int32_t get = GetGIID(itemID);
-    if (get == -1) {
-        modId = MOD_RANDOMIZER;
-        get = itemID;
+
+    GetItemID getItemID = RetrieveGetItemIDFromItemID(itemID);
+    if (getItemID != GI_MAX) {
+        // Vanilla ItemID with an associated GetItemID
+        return Return_Item_Entry(ItemTable_RetrieveEntry(modId, getItemID), returnItem);
     }
-    return Return_Item_Entry(ItemTable_RetrieveEntry(modId, get), returnItem);
+
+    RandomizerGet randomizerGet = RetrieveRandomizerGetFromItemID(itemID);
+    if (randomizerGet != RG_MAX) {
+        // Vanilla ItemID with an associated RandomizerGet (These are items in extendedVanillaGetItemTable)
+        return Return_Item_Entry(ItemTable_RetrieveEntry(MOD_RANDOMIZER, randomizerGet), returnItem);
+    }
+
+    // All randomizer items should go through Randomizer_Item_Give, so this should never be reached
+    // but leaving this here just in case, as it was in the original behavior
+    return Return_Item_Entry(ItemTable_RetrieveEntry(MOD_RANDOMIZER, itemID), returnItem);
 }
 
 /**
@@ -6556,11 +6566,15 @@ void Interface_Update(PlayState* play) {
             gSaveContext.pendingSale = ITEM_NONE;
             gSaveContext.pendingSaleMod = MOD_NONE;
             if (tempSaleMod == MOD_NONE) {
-                s16 giid = GetGIID(tempSaleItem);
-                if (giid == -1) {
-                    tempSaleMod = MOD_RANDOMIZER;
+                GetItemID getItemID = RetrieveGetItemIDFromItemID(tempSaleItem);
+                RandomizerGet randomizerGet = RetrieveRandomizerGetFromItemID(tempSaleItem);
+                if (getItemID != GI_MAX) {
+                    tempSaleItem = getItemID;
                 } else {
-                    tempSaleItem = giid;
+                    if (randomizerGet != RG_MAX) {
+                        tempSaleItem = randomizerGet;
+                    }
+                    tempSaleMod = MOD_RANDOMIZER;
                 }
             }
             GameInteractor_ExecuteOnSaleEndHooks(ItemTable_RetrieveEntry(tempSaleMod, tempSaleItem));

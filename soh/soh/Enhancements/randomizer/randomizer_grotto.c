@@ -140,7 +140,7 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
     // If Link hits a grotto exit, load the entrance index from the grotto exit list
     // based on the current grotto ID
     if (nextEntranceIndex == ENTR_RETURN_GROTTO) {
-        Entrance_SetEntranceDiscovered(ENTRANCE_RANDO_GROTTO_EXIT_START + grottoId);
+        Entrance_SetEntranceDiscovered(ENTRANCE_RANDO_GROTTO_EXIT_START + grottoId, false);
         EntranceTracker_SetLastEntranceOverride(ENTRANCE_RANDO_GROTTO_EXIT_START + grottoId);
         nextEntranceIndex = grottoExitList[grottoId];
     }
@@ -211,7 +211,7 @@ void Grotto_OverrideActorEntrance(Actor* thisx) {
 
         if (grottoContent == grottoLoadTable[index].content && gPlayState->sceneNum == grottoLoadTable[index].scene) {
             // Find the override for the matching index from the grotto Load List
-            Entrance_SetEntranceDiscovered(ENTRANCE_RANDO_GROTTO_LOAD_START + index);
+            Entrance_SetEntranceDiscovered(ENTRANCE_RANDO_GROTTO_LOAD_START + index, false);
             EntranceTracker_SetLastEntranceOverride(ENTRANCE_RANDO_GROTTO_LOAD_START + index);
             index = grottoLoadList[index];
 
