@@ -100,6 +100,7 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 #include <thread>
 #include <vector>
 #include <functional>
+#include <string>
 
 #ifdef ENABLE_REMOTE_CONTROL
 #include <SDL2/SDL_net.h>
@@ -218,6 +219,7 @@ public:
     
     DEFINE_HOOK(OnSetGameLanguage, void());
 
+    DEFINE_HOOK(OnFileDropped, void(std::string filePath));
     DEFINE_HOOK(OnAssetAltChange, void());
 
     // Helpers
