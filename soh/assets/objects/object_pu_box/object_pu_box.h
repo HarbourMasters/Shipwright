@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_PU_BOX_H
+#define OBJECTS_OBJECT_PU_BOX_H 1
 
 #include "align_asset_macro.h"
 
@@ -28,3 +29,5 @@ static const ALIGN_ASSET(2) char gBlockTallestCol[] = dgBlockTallestCol;
 
 #define dgBlockTex "__OTR__objects/object_pu_box/gBlockTex"
 static const ALIGN_ASSET(2) char gBlockTex[] = dgBlockTex;
+
+#endif // OBJECTS_OBJECT_PU_BOX_H

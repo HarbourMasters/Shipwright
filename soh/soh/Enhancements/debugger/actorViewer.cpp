@@ -2,6 +2,8 @@
 #include "../../util.h"
 #include "../../UIWidgets.hpp"
 #include "soh/ActorDB.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/nametag.h"
 
 #include <array>
 #include <bit>
@@ -24,6 +26,7 @@ extern PlayState* gPlayState;
 }
 
 #define DEKUNUTS_FLOWER 10
+#define DEBUG_ACTOR_NAMETAG_TAG "debug_actor_viewer"
 
 typedef struct {
     u16 id;
@@ -53,6 +56,13 @@ std::array<const char*, 12> acMapping = {
     "Door",
     "Chest"
 };
+
+typedef enum {
+    ACTORVIEWER_NAMETAGS_NONE,
+    ACTORVIEWER_NAMETAGS_DESC,
+    ACTORVIEWER_NAMETAGS_NAME,
+    ACTORVIEWER_NAMETAGS_BOTH,
+} ActorViewerNameTagsType;
 
 const std::string GetActorDescription(u16 id) {
     return ActorDB::Instance->RetrieveEntry(id).entry.valid ? ActorDB::Instance->RetrieveEntry(id).entry.desc : "???";
@@ -876,6 +886,43 @@ std::vector<u16> GetActorsWithDescriptionContainingString(std::string s) {
     return actors;
 }
 
+void ActorViewer_AddTagForActor(Actor* actor) {
+    int val = CVarGetInteger("gDebugActorViewerNameTags", ACTORVIEWER_NAMETAGS_NONE);
+    auto entry = ActorDB::Instance->RetrieveEntry(actor->id);
+    std::string tag;
+
+    if (val > 0 && entry.entry.valid) {
+        switch (val) {
+            case ACTORVIEWER_NAMETAGS_DESC:
+                tag = entry.desc;
+                break;
+            case ACTORVIEWER_NAMETAGS_NAME:
+                tag = entry.name;
+                break;
+            case ACTORVIEWER_NAMETAGS_BOTH:
+                tag = entry.name + '\n' + entry.desc;
+                break;
+        }
+
+        NameTag_RegisterForActorWithOptions(actor, tag.c_str(), { .tag = DEBUG_ACTOR_NAMETAG_TAG });
+    }
+}
+
+void ActorViewer_AddTagForAllActors() {
+    if (gPlayState == nullptr) {
+        return;
+    }
+
+    for (size_t i = 0; i < ARRAY_COUNT(gPlayState->actorCtx.actorLists); i++) {
+        ActorListEntry currList = gPlayState->actorCtx.actorLists[i];
+        Actor* currAct = currList.head;
+        while (currAct != nullptr) {
+            ActorViewer_AddTagForActor(currAct);
+            currAct = currAct->next;
+        }
+    }
+}
+
 void ActorViewerWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Actor Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
@@ -1077,7 +1124,7 @@ void ActorViewerWindow::DrawElement() {
                 }
             }
 
-            ImGui::Text(GetActorDescription(newActor.id).c_str());
+            ImGui::Text("%s", GetActorDescription(newActor.id).c_str());
             if (ImGui::InputScalar("ID", ImGuiDataType_S16, &newActor.id, &one)) {
                 newActor.params = 0;
             }
@@ -1151,6 +1198,22 @@ void ActorViewerWindow::DrawElement() {
 
             ImGui::TreePop();
         }
+
+        static const char* nameTagOptions[] = {
+            "None",
+            "Short Description",
+            "Actor ID",
+            "Both"
+        };
+
+        UIWidgets::Spacer(0);
+
+        ImGui::Text("Actor Name Tags");
+        if (UIWidgets::EnhancementCombobox("gDebugActorViewerNameTags", nameTagOptions, ACTORVIEWER_NAMETAGS_NONE)) {
+            NameTag_RemoveAllByTag(DEBUG_ACTOR_NAMETAG_TAG);
+            ActorViewer_AddTagForAllActors();
+        }
+        UIWidgets::Tooltip("Adds \"name tags\" above actors for identification");
     } else {
         ImGui::Text("Global Context needed for actor info!");
         if (needs_reset) {
@@ -1166,7 +1229,13 @@ void ActorViewerWindow::DrawElement() {
             actors.clear();
         }
     }
-    
 
     ImGui::End();
+}
+
+void ActorViewerWindow::InitElement() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+        ActorViewer_AddTagForActor(actor);
+    });
 }

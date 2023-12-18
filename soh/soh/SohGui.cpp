@@ -31,14 +31,15 @@
 #include "soh/resource/type/Skeleton.h"
 #include "libultraship/libultraship.h"
 
-#ifdef ENABLE_CROWD_CONTROL
+#ifdef ENABLE_REMOTE_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
+#include "Enhancements/game-interactor/GameInteractor_Sail.h"
 #endif
 
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "Enhancements/cosmetics/authenticGfxPatches.h"
 
-bool ShouldClearTextureCacheAtEndOfFrame = false;
+bool ToggleAltAssetsAtEndOfFrame = false;
 bool isBetaQuestEnabled = false;
 
 extern "C" {
@@ -118,6 +119,7 @@ namespace SohGui {
     std::shared_ptr<ColViewerWindow> mColViewerWindow;
     std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
     std::shared_ptr<DLViewerWindow> mDLViewerWindow;
+    std::shared_ptr<ValueViewerWindow> mValueViewerWindow;
     std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
     std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
     std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
@@ -169,6 +171,8 @@ namespace SohGui {
         gui->AddGuiWindow(mSaveEditorWindow);
         mDLViewerWindow = std::make_shared<DLViewerWindow>("gDLViewerEnabled", "Display List Viewer");
         gui->AddGuiWindow(mDLViewerWindow);
+        mValueViewerWindow = std::make_shared<ValueViewerWindow>("gValueViewer.WindowOpen", "Value Viewer");
+        gui->AddGuiWindow(mValueViewerWindow);
         mGameplayStatsWindow = std::make_shared<GameplayStatsWindow>("gGameplayStatsEnabled", "Gameplay Stats");
         gui->AddGuiWindow(mGameplayStatsWindow);
         mCheckTrackerWindow = std::make_shared<CheckTracker::CheckTrackerWindow>("gCheckTrackerEnabled", "Check Tracker");
@@ -194,6 +198,7 @@ namespace SohGui {
         mCheckTrackerSettingsWindow = nullptr;
         mGameplayStatsWindow = nullptr;
         mDLViewerWindow = nullptr;
+        mValueViewerWindow = nullptr;
         mSaveEditorWindow = nullptr;
         mColViewerWindow = nullptr;
         mActorViewerWindow = nullptr;

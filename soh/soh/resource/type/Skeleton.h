@@ -24,6 +24,7 @@ enum class SkeletonType {
 typedef struct {
     /* 0x00 */ void** segment;
     /* 0x04 */ uint8_t limbCount;
+               uint8_t skeletonType;
 } SkeletonHeader; // size = 0x8
 
 // Model has limbs with flexible meshes

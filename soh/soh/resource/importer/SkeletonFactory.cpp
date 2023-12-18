@@ -96,42 +96,48 @@ void SkeletonFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
     } else {
         SPDLOG_ERROR("unknown skeleton type {}", (uint32_t)skeleton->type);
     }
+
+    skeleton->skeletonData.skeletonHeader.skeletonType = (uint8_t)skeleton->type;
 }
 void SkeletonFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<IResource> resource)
 {
     std::shared_ptr<Skeleton> skel = std::static_pointer_cast<Skeleton>(resource);
 
-    std::string skeletonType = reader->Attribute("Type");
-    // std::string skeletonLimbType = reader->Attribute("LimbType");
-    int numLimbs = reader->IntAttribute("LimbCount");
-    int numDLs = reader->IntAttribute("DisplayListCount");
+    skel->type = SkeletonType::Flex; // Default to Flex for legacy reasons
+    if (reader->FindAttribute("Type")) {
+        std::string skeletonType = reader->Attribute("Type");
 
-    if (skeletonType == "Flex") {
-        skel->type = SkeletonType::Flex;
-    } else if (skeletonType == "Curve") {
-        skel->type = SkeletonType::Curve;
-    } else if (skeletonType == "Normal") {
-        skel->type = SkeletonType::Normal;
+        if (skeletonType == "Flex") {
+            skel->type = SkeletonType::Flex;
+        } else if (skeletonType == "Curve") {
+            skel->type = SkeletonType::Curve;
+        } else if (skeletonType == "Normal") {
+            skel->type = SkeletonType::Normal;
+        }
     }
 
-    skel->type = SkeletonType::Flex;
-    skel->limbType = LimbType::LOD;
+    skel->limbType = LimbType::LOD; // Default to LOD for legacy reasons
+    if (reader->FindAttribute("LimbType")) {
+        std::string skeletonLimbType = reader->Attribute("LimbType");
 
-    // if (skeletonLimbType == "Standard")
-    // skel->limbType = LimbType::Standard;
-    // else if (skeletonLimbType == "LOD")
-    // skel->limbType = LimbType::LOD;
-    // else if (skeletonLimbType == "Curve")
-    // skel->limbType = LimbType::Curve;
-    // else if (skeletonLimbType == "Skin")
-    // skel->limbType = LimbType::Skin;
-    // else if (skeletonLimbType == "Legacy")
-    // Sskel->limbType = LimbType::Legacy;
+        if (skeletonLimbType == "Standard") {
+            skel->limbType = LimbType::Standard;
+        } else if (skeletonLimbType == "LOD") {
+            skel->limbType = LimbType::LOD;
+        } else if (skeletonLimbType == "Curve") {
+            skel->limbType = LimbType::Curve;
+        } else if (skeletonLimbType == "Skin") {
+            skel->limbType = LimbType::Skin;
+        } else if (skeletonLimbType == "Legacy") {
+            skel->limbType = LimbType::Legacy;
+        }
+    }
+
+
+    skel->limbCount = reader->IntAttribute("LimbCount");
+    skel->dListCount = reader->IntAttribute("DisplayListCount");
 
     auto child = reader->FirstChildElement();
-
-    skel->limbCount = numLimbs;
-    skel->dListCount = numDLs;
 
     while (child != nullptr) {
         std::string childName = child->Name();
@@ -150,6 +156,7 @@ void SkeletonFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_p
     skel->skeletonData.flexSkeletonHeader.sh.limbCount = skel->limbCount;
     skel->skeletonData.flexSkeletonHeader.sh.segment = (void**)skel->skeletonHeaderSegments.data();
     skel->skeletonData.flexSkeletonHeader.dListCount = skel->dListCount;
+    skel->skeletonData.skeletonHeader.skeletonType = (uint8_t)skel->type;
 }
 
 } // namespace LUS

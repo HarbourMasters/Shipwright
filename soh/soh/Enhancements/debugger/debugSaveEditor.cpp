@@ -10,6 +10,7 @@
 #include <string>
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
+#include "soh_assets.h"
 
 extern "C" {
 #include <z64.h>
@@ -144,6 +145,10 @@ std::map<uint32_t, ItemMapEntry> gregMapping = {
     {ITEM_RUPEE_GREEN, {ITEM_RUPEE_GREEN, "ITEM_RUPEE_GREEN", "ITEM_RUPEE_GREEN_Faded", gRupeeCounterIconTex}}
 };
 
+std::map<uint32_t, ItemMapEntry> triforcePieceMapping = {
+    {RG_TRIFORCE_PIECE, {RG_TRIFORCE_PIECE, "RG_TRIFORCE_PIECE", "RG_TRIFORCE_PIECE_Faded", gTriforcePieceTex}}
+};
+
 // Maps entries in the GS flag array to the area name it represents
 std::vector<std::string> gsMapping = {
     "Deku Tree",
@@ -197,18 +202,18 @@ typedef struct {
 
 // Maps quest items ids to info for use in ImGui
 std::map<uint32_t, QuestMapEntry> questMapping = {
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_FOREST, dgForestMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_FIRE, dgFireMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_WATER, dgWaterMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_SPIRIT, dgSpiritMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_SHADOW, dgShadowMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_LIGHT, dgLightMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_KOKIRI_EMERALD, dgKokiriEmeraldIconTex),
-    QUEST_MAP_ENTRY(QUEST_GORON_RUBY, dgGoronRubyIconTex),
-    QUEST_MAP_ENTRY(QUEST_ZORA_SAPPHIRE, dgZoraSapphireIconTex),
-    QUEST_MAP_ENTRY(QUEST_STONE_OF_AGONY, dgStoneOfAgonyIconTex),
-    QUEST_MAP_ENTRY(QUEST_GERUDO_CARD, dgGerudosCardIconTex),
-    QUEST_MAP_ENTRY(QUEST_SKULL_TOKEN, dgGoldSkulltulaIconTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_FOREST, dgQuestIconMedallionForestTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_FIRE, dgQuestIconMedallionFireTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_WATER, dgQuestIconMedallionWaterTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_SPIRIT, dgQuestIconMedallionSpiritTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_SHADOW, dgQuestIconMedallionShadowTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_LIGHT, dgQuestIconMedallionLightTex),
+    QUEST_MAP_ENTRY(QUEST_KOKIRI_EMERALD, dgQuestIconKokiriEmeraldTex),
+    QUEST_MAP_ENTRY(QUEST_GORON_RUBY, dgQuestIconGoronRubyTex),
+    QUEST_MAP_ENTRY(QUEST_ZORA_SAPPHIRE, dgQuestIconZoraSapphireTex),
+    QUEST_MAP_ENTRY(QUEST_STONE_OF_AGONY, dgQuestIconStoneOfAgonyTex),
+    QUEST_MAP_ENTRY(QUEST_GERUDO_CARD, dgQuestIconGerudosCardTex),
+    QUEST_MAP_ENTRY(QUEST_SKULL_TOKEN, dgQuestIconGoldSkulltulaTex),
 };
 
 typedef struct {
@@ -509,6 +514,10 @@ void DrawInfoTab() {
     }
     UIWidgets::InsertHelpHoverText("Z-Targeting behavior");
 
+    if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
+        ImGui::InputScalar("Triforce Pieces", ImGuiDataType_U8, &gSaveContext.triforcePiecesCollected);
+        UIWidgets::InsertHelpHoverText("Currently obtained Triforce Pieces. For Triforce Hunt.");
+    }
 
     ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
     static std::array<const char*, 7> minigameHS = { "Horseback Archery", 
@@ -699,7 +708,7 @@ void DrawInventoryTab() {
                                            ImVec2(0, 0), ImVec2(1, 1), 0)) {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
                         // Set adult trade item flag if you're playing adult trade shuffle in rando  
-                        if (gSaveContext.n64ddFlag &&
+                        if (IS_RANDO &&
                             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
                             selectedIndex == SLOT_TRADE_ADULT &&
                             slotEntry.id >= ITEM_POCKET_EGG && slotEntry.id <= ITEM_CLAIM_CHECK) {
@@ -744,7 +753,7 @@ void DrawInventoryTab() {
     
     // Trade quest flags are only used when shuffling the trade sequence, so
     // don't show this if it isn't needed.
-    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE)
+    if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE)
         && ImGui::TreeNode("Adult trade quest items")) {
         for (int i = ITEM_POCKET_EGG; i <= ITEM_CLAIM_CHECK; i++) {
             DrawBGSItemFlag(i);
@@ -1071,7 +1080,7 @@ void DrawFlagsTab() {
 
         // If playing a Randomizer Save with Shuffle Skull Tokens on anything other than "Off" we don't want to keep
         // GS Token Count updated, since Gold Skulltulas killed will not correlate to GS Tokens Collected.
-        if (!(gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
+        if (!(IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
             static bool keepGsCountUpdated = true;
             ImGui::Checkbox("Keep GS Count Updated", &keepGsCountUpdated);
             UIWidgets::InsertHelpHoverText("Automatically adjust the number of gold skulltula tokens acquired based on set flags.");
@@ -1087,14 +1096,14 @@ void DrawFlagsTab() {
 
     for (int i = 0; i < flagTables.size(); i++) {
         const FlagTable& flagTable = flagTables[i];
-        if (flagTable.flagTableType == RANDOMIZER_INF && !gSaveContext.n64ddFlag && !gSaveContext.isBossRush) {
+        if (flagTable.flagTableType == RANDOMIZER_INF && !IS_RANDO && !IS_BOSS_RUSH) {
             continue;
         }
 
         if (ImGui::TreeNode(flagTable.name)) {
             for (int j = 0; j < flagTable.size + 1; j++) {
                 DrawGroupWithBorder([&]() {
-                    ImGui::Text(fmt::format("{:<2x}", j).c_str());
+                    ImGui::Text("%s", fmt::format("{:<2x}", j).c_str());
                     switch (flagTable.flagTableType) {
                         case EVENT_CHECK_INF:
                             DrawFlagTableArray16(flagTable, j, gSaveContext.eventChkInf[j]);
@@ -1281,7 +1290,7 @@ void DrawEquipmentTab() {
         "Giant (500)",
     };
     // only display Tycoon wallet if you're in a save file that would allow it.
-    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS) {
+    if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS) {
         const std::string walletName = "Tycoon (999)";
         walletNamesImpl.push_back(walletName);
     }
@@ -1418,10 +1427,10 @@ void DrawQuestStatusTab() {
     DrawGroupWithBorder([&]() {
         ImGui::Text("Dungeon Items");
 
-        static int32_t dungeonItemsScene = SCENE_YDAN;
+        static int32_t dungeonItemsScene = SCENE_DEKU_TREE;
         ImGui::PushItemWidth(-ImGui::GetWindowWidth() * 0.35f);
         if (ImGui::BeginCombo("##DungeonSelect", SohUtils::GetSceneName(dungeonItemsScene).c_str())) {
-            for (int32_t dungeonIndex = SCENE_YDAN; dungeonIndex < SCENE_BDAN_BOSS + 1; dungeonIndex++) {
+            for (int32_t dungeonIndex = SCENE_DEKU_TREE; dungeonIndex < SCENE_JABU_JABU_BOSS + 1; dungeonIndex++) {
                 if (ImGui::Selectable(SohUtils::GetSceneName(dungeonIndex).c_str(),
                                       dungeonIndex == dungeonItemsScene)) {
                     dungeonItemsScene = dungeonIndex;
@@ -1438,7 +1447,7 @@ void DrawQuestStatusTab() {
         ImGui::SameLine();
         DrawDungeonItemButton(ITEM_DUNGEON_MAP, dungeonItemsScene);
 
-        if (dungeonItemsScene != SCENE_BDAN_BOSS) {
+        if (dungeonItemsScene != SCENE_JABU_JABU_BOSS) {
             float lineHeight = ImGui::GetTextLineHeightWithSpacing();
             ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[ITEM_KEY_SMALL].name), ImVec2(lineHeight, lineHeight));
             ImGui::SameLine();
@@ -1564,7 +1573,7 @@ void DrawPlayerTab() {
         ImGui::InputScalar("Y Velocity", ImGuiDataType_Float, &player->actor.velocity.y);
         UIWidgets::InsertHelpHoverText("Link's speed along the Y plane. Caps at -20");
 
-        ImGui::InputScalar("Wall Height", ImGuiDataType_Float, &player->wallHeight);
+        ImGui::InputScalar("Wall Height", ImGuiDataType_Float, &player->yDistToLedge);
         UIWidgets::InsertHelpHoverText("Height used to determine whether Link can climb or grab a ledge at the top");
 
         ImGui::InputScalar("Invincibility Timer", ImGuiDataType_S8, &player->invincibilityTimer);
@@ -1593,17 +1602,17 @@ void DrawPlayerTab() {
             if (ImGui::Selectable("None")) {
                 player->currentSwordItemId = ITEM_NONE;
                 gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_NONE);
             }
             if (ImGui::Selectable("Kokiri Sword")) {
                 player->currentSwordItemId = ITEM_SWORD_KOKIRI;
                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_KOKIRI);
             }
             if (ImGui::Selectable("Master Sword")) {
                 player->currentSwordItemId = ITEM_SWORD_MASTER;
                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_MASTER);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER);
             }
             if (ImGui::Selectable("Biggoron's Sword")) {
                 if (gSaveContext.bgsFlag) {
@@ -1620,12 +1629,12 @@ void DrawPlayerTab() {
                     gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KNIFE;
                 }
                 
-                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_BGS);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_BIGGORON);
             }
             if (ImGui::Selectable("Fishing Pole")) {
                 player->currentSwordItemId = ITEM_FISHING_POLE;
                 gSaveContext.equips.buttonItems[0] = ITEM_FISHING_POLE;
-                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_MASTER);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER);
             }
             ImGui::EndCombo();
 
@@ -1633,19 +1642,19 @@ void DrawPlayerTab() {
         if (ImGui::BeginCombo("Shield", curShield)) {
             if (ImGui::Selectable("None")) {
                 player->currentShield = PLAYER_SHIELD_NONE;
-                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_NONE);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_NONE);
             }
             if (ImGui::Selectable("Deku Shield")) {
                 player->currentShield = PLAYER_SHIELD_DEKU;
-                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_DEKU);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_DEKU);
             }
             if (ImGui::Selectable("Hylian Shield")) {
                 player->currentShield = PLAYER_SHIELD_HYLIAN;
-                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_HYLIAN);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_HYLIAN);
             }
             if (ImGui::Selectable("Mirror Shield")) {
                 player->currentShield = PLAYER_SHIELD_MIRROR;
-                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_MIRROR);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_MIRROR);
             }
             ImGui::EndCombo();
         }
@@ -1653,15 +1662,15 @@ void DrawPlayerTab() {
         if (ImGui::BeginCombo("Tunic", curTunic)) {
             if (ImGui::Selectable("Kokiri Tunic")) {
                 player->currentTunic = PLAYER_TUNIC_KOKIRI;
-                Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_KOKIRI + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_KOKIRI);
             }
             if (ImGui::Selectable("Goron Tunic")) {
                 player->currentTunic = PLAYER_TUNIC_GORON;
-                Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_GORON + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_GORON);
             }
             if (ImGui::Selectable("Zora Tunic")) {
                 player->currentTunic = PLAYER_TUNIC_ZORA;
-                Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_ZORA + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_ZORA);
             }
             ImGui::EndCombo();
         }
@@ -1669,15 +1678,15 @@ void DrawPlayerTab() {
         if (ImGui::BeginCombo("Boots", curBoots)) {
             if (ImGui::Selectable("Kokiri Boots")) {
                 player->currentBoots = PLAYER_BOOTS_KOKIRI;
-                Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_KOKIRI + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_KOKIRI);
             }
             if (ImGui::Selectable("Iron Boots")) {
                 player->currentBoots = PLAYER_BOOTS_IRON;
-                Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_IRON + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_IRON);
             }
             if (ImGui::Selectable("Hover Boots")) {
                 player->currentBoots = PLAYER_BOOTS_HOVER;
-                Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_HOVER + 1);
+                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_HOVER);
             }
             ImGui::EndCombo();
         }
@@ -1685,6 +1694,10 @@ void DrawPlayerTab() {
         ImU16 one = 1;
         ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
         DrawGroupWithBorder([&]() {
+            ImGui::Text("Current B Item");
+            ImGui::InputScalar("B Button", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[0], &one, NULL);
+            ImGui::NewLine();
+
             ImGui::Text("Current C Equips");
             ImGui::InputScalar("C Left", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[1], &one, NULL);
             ImGui::SameLine();
@@ -1725,7 +1738,7 @@ void DrawPlayerTab() {
         }
         DrawGroupWithBorder([&]() {
             ImGui::Text("Sword");
-            ImGui::Text("  %d", player->swordState);
+            ImGui::Text("  %d", player->meleeWeaponState);
         });
 
     } else {
@@ -1789,6 +1802,10 @@ void SaveEditorWindow::InitElement() {
         gregFadedGreen.w = 0.3f;
         LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, gregGreen);
         LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, gregFadedGreen);
+    }
+    for (const auto& entry : triforcePieceMapping) {
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
     for (const auto& entry : questMapping) {
         LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));

@@ -10,6 +10,8 @@
 
 void Save_LoadFile(void);
 
+void BossRush_InitSave(void);
+
 /**
  *  Initialize new save.
  *  This save has an empty inventory with 3 hearts and single magic.
@@ -33,7 +35,27 @@ void Sram_InitDebugSave(void) {
 
 void Sram_InitBossRushSave(void) {
     Save_InitFile(false);
+    BossRush_InitSave();
 }
+
+static s16 sDungeonEntrances[] = {
+    ENTR_DEKU_TREE_0,                      // SCENE_DEKU_TREE
+    ENTR_DODONGOS_CAVERN_0,                // SCENE_DODONGOS_CAVERN
+    ENTR_JABU_JABU_0,                      // SCENE_JABU_JABU
+    ENTR_FOREST_TEMPLE_0,                  // SCENE_FOREST_TEMPLE
+    ENTR_FIRE_TEMPLE_0,                    // SCENE_FIRE_TEMPLE
+    ENTR_WATER_TEMPLE_0,                   // SCENE_WATER_TEMPLE
+    ENTR_SPIRIT_TEMPLE_0,                  // SCENE_SPIRIT_TEMPLE
+    ENTR_SHADOW_TEMPLE_0,                  // SCENE_SHADOW_TEMPLE
+    ENTR_BOTTOM_OF_THE_WELL_0,             // SCENE_BOTTOM_OF_THE_WELL
+    ENTR_ICE_CAVERN_0,                     // SCENE_ICE_CAVERN
+    ENTR_GANONS_TOWER_0,                   // SCENE_GANONS_TOWER
+    ENTR_GERUDO_TRAINING_GROUND_0,         // SCENE_GERUDO_TRAINING_GROUND
+    ENTR_THIEVES_HIDEOUT_0,                // SCENE_THIEVES_HIDEOUT
+    ENTR_INSIDE_GANONS_CASTLE_0,           // SCENE_INSIDE_GANONS_CASTLE
+    ENTR_GANONS_TOWER_COLLAPSE_INTERIOR_0, // SCENE_GANONS_TOWER_COLLAPSE_INTERIOR
+    ENTR_INSIDE_GANONS_CASTLE_COLLAPSE_0,  // SCENE_INSIDE_GANONS_CASTLE_COLLAPSE
+};
 
 /**
  *  Copy save currently on the buffer to Save Context and complete various tasks to open the save.
@@ -46,72 +68,68 @@ void Sram_InitBossRushSave(void) {
  *  - Revert any trade items that spoil
  */
 void Sram_OpenSave() {
-    static s16 dungeonEntrances[] = {
-        0x0000, 0x0004, 0x0028, 0x0169, 0x0165, 0x0010, 0x0082, 0x0037,
-        0x0098, 0x0088, 0x041B, 0x0008, 0x0486, 0x0467, 0x0179, 0x056C,
-    };
     u16 i;
     u16 j;
     u8* ptr;
 
     Save_LoadFile();
 
-    if (!CVarGetInteger("gRememberSaveLocation", 0) || gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE ||
-        gSaveContext.savedSceneNum == SCENE_KAKUSIANA) {
+    if (!CVarGetInteger("gRememberSaveLocation", 0) || gSaveContext.savedSceneNum == SCENE_FAIRYS_FOUNTAIN ||
+        gSaveContext.savedSceneNum == SCENE_GROTTOS) {
         switch (gSaveContext.savedSceneNum) {
-            case SCENE_YDAN:
-            case SCENE_DDAN:
-            case SCENE_BDAN:
-            case SCENE_BMORI1:
-            case SCENE_HIDAN:
-            case SCENE_MIZUSIN:
-            case SCENE_JYASINZOU:
-            case SCENE_HAKADAN:
-            case SCENE_HAKADANCH:
-            case SCENE_ICE_DOUKUTO:
-            case SCENE_GANON:
-            case SCENE_MEN:
-            case SCENE_GERUDOWAY:
-            case SCENE_GANONTIKA:
-                gSaveContext.entranceIndex = dungeonEntrances[gSaveContext.savedSceneNum];
+            case SCENE_DEKU_TREE:
+            case SCENE_DODONGOS_CAVERN:
+            case SCENE_JABU_JABU:
+            case SCENE_FOREST_TEMPLE:
+            case SCENE_FIRE_TEMPLE:
+            case SCENE_WATER_TEMPLE:
+            case SCENE_SPIRIT_TEMPLE:
+            case SCENE_SHADOW_TEMPLE:
+            case SCENE_BOTTOM_OF_THE_WELL:
+            case SCENE_ICE_CAVERN:
+            case SCENE_GANONS_TOWER:
+            case SCENE_GERUDO_TRAINING_GROUND:
+            case SCENE_THIEVES_HIDEOUT:
+            case SCENE_INSIDE_GANONS_CASTLE:
+                gSaveContext.entranceIndex = sDungeonEntrances[gSaveContext.savedSceneNum];
                 break;
-            case SCENE_YDAN_BOSS:
-                gSaveContext.entranceIndex = 0;
+            case SCENE_DEKU_TREE_BOSS:
+                gSaveContext.entranceIndex = ENTR_DEKU_TREE_0;
                 break;
-            case SCENE_DDAN_BOSS:
-                gSaveContext.entranceIndex = 4;
+            case SCENE_DODONGOS_CAVERN_BOSS:
+                gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_0;
                 break;
-            case SCENE_BDAN_BOSS:
-                gSaveContext.entranceIndex = 0x28;
+            case SCENE_JABU_JABU_BOSS:
+                gSaveContext.entranceIndex = ENTR_JABU_JABU_0;
                 break;
-            case SCENE_MORIBOSSROOM:
-                gSaveContext.entranceIndex = 0x169;
+            case SCENE_FOREST_TEMPLE_BOSS:
+                gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_0;
                 break;
-            case SCENE_FIRE_BS:
-                gSaveContext.entranceIndex = 0x165;
+            case SCENE_FIRE_TEMPLE_BOSS:
+                gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_0;
                 break;
-            case SCENE_MIZUSIN_BS:
-                gSaveContext.entranceIndex = 0x10;
+            case SCENE_WATER_TEMPLE_BOSS:
+                gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_0;
                 break;
-            case SCENE_JYASINBOSS:
-                gSaveContext.entranceIndex = 0x82;
+            case SCENE_SPIRIT_TEMPLE_BOSS:
+                gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_0;
                 break;
-            case SCENE_HAKADAN_BS:
-                gSaveContext.entranceIndex = 0x37;
+            case SCENE_SHADOW_TEMPLE_BOSS:
+                gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_0;
                 break;
-            case SCENE_GANON_SONOGO:
-            case SCENE_GANONTIKA_SONOGO:
+            case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
+            case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
+            case SCENE_GANONDORF_BOSS:
+            case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
             case SCENE_GANON_BOSS:
-            case SCENE_GANON_FINAL:
-            case SCENE_GANON_DEMO:
-                gSaveContext.entranceIndex = 0x41B;
+                gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0;
                 break;
 
             default:
-                if (gSaveContext.savedSceneNum != SCENE_LINK_HOME) {
-                    gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? 0xBB : 0x5F4;
+                if (gSaveContext.savedSceneNum != SCENE_LINKS_HOUSE) {
+                    gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? ENTR_LINKS_HOUSE_0 : ENTR_TEMPLE_OF_TIME_7;
                 } else {
-                    gSaveContext.entranceIndex = 0xBB;
+                    gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_0;
                 }
                 break;
         }
@@ -155,7 +173,7 @@ void Sram_OpenSave() {
     }
 
     // if zelda cutscene has been watched but lullaby was not obtained, restore cutscene and take away letter
-    if ((Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) && !CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) && !gSaveContext.n64ddFlag) {
+    if ((Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) && !CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) && !IS_RANDO) {
         i = gSaveContext.eventChkInf[4] & ~1;
         gSaveContext.eventChkInf[4] = i;
 
@@ -168,15 +186,16 @@ void Sram_OpenSave() {
         }
     }
 
-    // check for owning kokiri sword.. to restore master sword? bug or debug feature?
-    if (LINK_AGE_IN_YEARS == YEARS_ADULT && !CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) {
-        gSaveContext.inventory.equipment |= gBitFlags[1] << gEquipShifts[EQUIP_SWORD];
-        gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-        gSaveContext.equips.equipment &= ~0xF;
-        gSaveContext.equips.equipment |= 2;
+    if (LINK_AGE_IN_YEARS == YEARS_ADULT && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
+        if (!IS_RANDO || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
+            gSaveContext.inventory.equipment |= OWNED_EQUIP_FLAG(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
+            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+            gSaveContext.equips.equipment &= ~(0xF << (EQUIP_TYPE_SWORD * 4));
+            gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_MASTER << (EQUIP_TYPE_SWORD * 4);
+        }
     }
 
-    if (!(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
+    if (!(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
         for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[i]) {
                 INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
@@ -205,7 +224,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         Sram_InitDebugSave();
     }
 
-    gSaveContext.entranceIndex = 0xBB;
+    gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_0;
     gSaveContext.linkAge = 1;
     gSaveContext.dayTime = 0x6AAB;
     gSaveContext.cutsceneIndex = 0xFFF1;
@@ -218,13 +237,17 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.playerName[offset] = Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->playerName[offset];
     }
 
-    if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == 2 && strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
-        // Set N64DD Flags for save file
-        fileChooseCtx->n64ddFlags[fileChooseCtx->buttonIndex] = 1;
-        fileChooseCtx->n64ddFlag = 1;
-        gSaveContext.n64ddFlag = 1;
+    gSaveContext.n64ddFlag = fileChooseCtx->n64ddFlag;
+
+    u8 currentQuest = fileChooseCtx->questType[fileChooseCtx->buttonIndex];
+
+    if (currentQuest == QUEST_RANDOMIZER &&
+        strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
+        gSaveContext.questId = QUEST_RANDOMIZER;
 
         Randomizer_InitSaveFile();
+    } else if (currentQuest == QUEST_MASTER) {
+        gSaveContext.questId = QUEST_MASTER;
     }
 
     Save_SaveFile();

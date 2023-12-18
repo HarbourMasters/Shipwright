@@ -1,6 +1,22 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_DNK_H
+#define OBJECTS_OBJECT_DNK_H 1
 
 #include "align_asset_macro.h"
+
+#define dobject_dnkTex_001BD0 "__OTR__objects/object_dnk/object_dnkTex_001BD0"
+static const ALIGN_ASSET(2) char object_dnkTex_001BD0[] = dobject_dnkTex_001BD0;
+
+#define dobject_dnkTex_0023D0 "__OTR__objects/object_dnk/object_dnkTex_0023D0"
+static const ALIGN_ASSET(2) char object_dnkTex_0023D0[] = dobject_dnkTex_0023D0;
+
+#define dobject_dnkTex_002650 "__OTR__objects/object_dnk/object_dnkTex_002650"
+static const ALIGN_ASSET(2) char object_dnkTex_002650[] = dobject_dnkTex_002650;
+
+#define dobject_dnkTex_0026D0 "__OTR__objects/object_dnk/object_dnkTex_0026D0"
+static const ALIGN_ASSET(2) char object_dnkTex_0026D0[] = dobject_dnkTex_0026D0;
+
+#define dobject_dnkTex_002850 "__OTR__objects/object_dnk/object_dnkTex_002850"
+static const ALIGN_ASSET(2) char object_dnkTex_002850[] = dobject_dnkTex_002850;
 
 #define dgDntStageSkel "__OTR__objects/object_dnk/gDntStageSkel"
 static const ALIGN_ASSET(2) char gDntStageSkel[] = dgDntStageSkel;
@@ -71,17 +87,5 @@ static const ALIGN_ASSET(2) char gDntStageSkelLimbsLimb_002AB0DL_001700[] = dgDn
 #define dgDntStageSkelLimbsLimb_002ABCDL_0017B0 "__OTR__objects/object_dnk/gDntStageSkelLimbsLimb_002ABCDL_0017B0"
 static const ALIGN_ASSET(2) char gDntStageSkelLimbsLimb_002ABCDL_0017B0[] = dgDntStageSkelLimbsLimb_002ABCDL_0017B0;
 
-#define dobject_dnkTex_001BD0 "__OTR__objects/object_dnk/object_dnkTex_001BD0"
-static const ALIGN_ASSET(2) char object_dnkTex_001BD0[] = dobject_dnkTex_001BD0;
 
-#define dobject_dnkTex_002850 "__OTR__objects/object_dnk/object_dnkTex_002850"
-static const ALIGN_ASSET(2) char object_dnkTex_002850[] = dobject_dnkTex_002850;
-
-#define dobject_dnkTex_0023D0 "__OTR__objects/object_dnk/object_dnkTex_0023D0"
-static const ALIGN_ASSET(2) char object_dnkTex_0023D0[] = dobject_dnkTex_0023D0;
-
-#define dobject_dnkTex_002650 "__OTR__objects/object_dnk/object_dnkTex_002650"
-static const ALIGN_ASSET(2) char object_dnkTex_002650[] = dobject_dnkTex_002650;
-
-#define dobject_dnkTex_0026D0 "__OTR__objects/object_dnk/object_dnkTex_0026D0"
-static const ALIGN_ASSET(2) char object_dnkTex_0026D0[] = dobject_dnkTex_0026D0;
+#endif // OBJECTS_OBJECT_DNK_H

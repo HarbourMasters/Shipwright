@@ -95,7 +95,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
     EnGe1* this = (EnGe1*)thisx;
 
     // When spawning the gate operator, also spawn an extra gate operator on the wasteland side
-    if (gSaveContext.n64ddFlag && (Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) ||
+    if (IS_RANDO && (Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) ||
         Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) && (this->actor.params & 0xFF) == GE1_TYPE_GATE_OPERATOR) {
         // Spawn the extra gaurd with params matching the custom type added (0x0300 + 0x02)
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0, 0x95B0, 0,
@@ -121,7 +121,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
     Actor_SetScale(&this->actor, 0.01f);
 
     // In Gerudo Valley
-    this->actor.uncullZoneForward = ((play->sceneNum == SCENE_SPOT09) ? 1000.0f : 1200.0f);
+    this->actor.uncullZoneForward = ((play->sceneNum == SCENE_GERUDO_VALLEY) ? 1000.0f : 1200.0f);
 
     switch (this->actor.params & 0xFF) {
 
@@ -185,7 +185,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
 
             if (EnGe1_CheckCarpentersFreed()) {
                 // If the gtg gate is permanently open, don't let the gaurd charge to open it again
-                if (gSaveContext.n64ddFlag && gSaveContext.sceneFlags[93].swch & 0x00000004) {
+                if (IS_RANDO && gSaveContext.sceneFlags[93].swch & 0x00000004) {
                     this->actionFunc = EnGe1_SetNormalText;
                 } else {
                     this->actionFunc = EnGe1_CheckForCard_GTGGuard;
@@ -235,7 +235,7 @@ void EnGe1_SetAnimationIdle(EnGe1* this) {
 }
 
 s32 EnGe1_CheckCarpentersFreed(void) {
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         if (CHECK_QUEST_ITEM(QUEST_GERUDO_CARD)) {
             return 1;
         } else {
@@ -262,19 +262,19 @@ void EnGe1_KickPlayer(EnGe1* this, PlayState* play) {
         func_8006D074(play);
 
         if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
-            play->nextEntranceIndex = 0x1A5;
+            play->nextEntranceIndex = ENTR_GERUDO_VALLEY_1;
         } else if (Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO)) { // Caught previously
-            play->nextEntranceIndex = 0x5F8;
+            play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_18;
         } else {
-            play->nextEntranceIndex = 0x3B4;
+            play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_17;
         }
 
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             Entrance_OverrideGeurdoGuardCapture();
         }
 
-        play->fadeTransition = 0x26;
-        play->sceneLoadFlag = 0x14;
+        play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
+        play->transitionTrigger = TRANS_TRIGGER_START;
     }
 }
 
@@ -532,7 +532,7 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
     s32 getItemId;
 
     if (Actor_HasParent(&this->actor, play)) {
-        if (gSaveContext.n64ddFlag && gSaveContext.minigameScore >= 1500 && !Flags_GetInfTable(INFTABLE_190)) {
+        if (IS_RANDO && gSaveContext.minigameScore >= 1500 && !Flags_GetInfTable(INFTABLE_190)) {
             Flags_SetItemGetInf(ITEMGETINF_0F);
             Flags_SetInfTable(INFTABLE_190);
             this->stateFlags |= GE1_STATE_GIVE_QUIVER;
@@ -549,7 +549,7 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
         }
     } else {
         if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
-            if (!gSaveContext.n64ddFlag) {
+            if (!IS_RANDO) {
                 switch (CUR_UPG_VALUE(UPG_QUIVER)) {
                     //! @bug Asschest. See next function for details
                     case 1:
@@ -564,7 +564,7 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
                 getItemId = getItemEntry.getItemId;
             }
         } else {
-            if (!gSaveContext.n64ddFlag) {
+            if (!IS_RANDO) {
                 getItemId = GI_HEART_PIECE;
             } else {
                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1000_POINTS, GI_HEART_PIECE);
@@ -572,7 +572,7 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
             }
         }
 
-        if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
+        if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, play, getItemId, 10000.0f, 50.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
@@ -590,7 +590,7 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, PlayState* play) {
     }
 
     if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             switch (CUR_UPG_VALUE(UPG_QUIVER)) {
                 //! @bug Asschest. See next function for details
                 case 1:
@@ -605,7 +605,7 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, PlayState* play) {
             getItemId = getItemEntry.getItemId;
         }
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             getItemId = GI_HEART_PIECE;
         } else {
             getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_HBA_1000_POINTS, GI_HEART_PIECE);
@@ -613,7 +613,7 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, PlayState* play) {
         }
     }
 
-    if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
+    if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
         func_8002F434(&this->actor, play, getItemId, 10000.0f, 50.0f);
     } else {
         GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
@@ -654,10 +654,10 @@ void EnGe1_BeginGame_Archery(EnGe1* this, PlayState* play) {
                     this->actionFunc = EnGe1_TalkTooPoor_Archery;
                 } else {
                     Rupees_ChangeBy(-20);
-                    play->nextEntranceIndex = 0x129;
+                    play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_0;
                     gSaveContext.nextCutsceneIndex = 0xFFF0;
-                    play->fadeTransition = 0x26;
-                    play->sceneLoadFlag = 0x14;
+                    play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
+                    play->transitionTrigger = TRANS_TRIGGER_START;
                     gSaveContext.eventInf[0] |= 0x100;
                     Flags_SetEventChkInf(EVENTCHKINF_PLAYED_HORSEBACK_ARCHERY);
 
@@ -880,8 +880,7 @@ void EnGe1_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeIndex]));
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnGe1_OverrideLimbDraw, EnGe1_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnGe1_OverrideLimbDraw, EnGe1_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_HORSE_H
+#define OBJECTS_OBJECT_HORSE_H 1
 
 #include "align_asset_macro.h"
 
@@ -142,3 +143,6 @@ static const ALIGN_ASSET(2) char gEponaHoof3LimbDL_001170[] = dgEponaHoof3LimbDL
 
 #define dgEponaHoof4LimbDL_001540 "__OTR__objects/object_horse/gEponaHoof4LimbDL_001540"
 static const ALIGN_ASSET(2) char gEponaHoof4LimbDL_001540[] = dgEponaHoof4LimbDL_001540;
+
+
+#endif // OBJECTS_OBJECT_HORSE_H

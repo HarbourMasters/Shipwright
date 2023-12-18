@@ -1678,12 +1678,13 @@ s32 Camera_Normal1(Camera* camera) {
         Camera_ClampDist(camera, eyeAdjustment.r, norm1->distMin, norm1->distMax, anim->unk_28);
 
     if (anim->startSwingTimer <= 0) {
+        // idle camera re-center
         if (CVarGetInteger("gA11yDisableIdleCam", 0)) return;
         eyeAdjustment.pitch = atEyeNextGeo.pitch;
         eyeAdjustment.yaw =
             Camera_LERPCeilS(anim->swingYawTarget, atEyeNextGeo.yaw, 1.0f / camera->yawUpdateRateInv, 0xA);
     } else if (anim->swing.unk_18 != 0) {
-        if (CVarGetInteger("gA11yDisableIdleCam", 0)) return;
+        // camera adjustments when obstructed/pushed by scene geometry
         eyeAdjustment.yaw =
             Camera_LERPCeilS(anim->swing.unk_16, atEyeNextGeo.yaw, 1.0f / camera->yawUpdateRateInv, 0xA);
         eyeAdjustment.pitch =
@@ -1708,19 +1709,19 @@ s32 Camera_Normal1(Camera* camera) {
     if ((camera->status == CAM_STAT_ACTIVE) && (!(norm1->interfaceFlags & 0x10))) {
         anim->swingYawTarget = BINANG_ROT180(camera->playerPosRot.rot.y);
         if (!CVarGetInteger("gFixCameraSwing", 0)) {
-        if (anim->startSwingTimer > 0) {
-            func_80046E20(camera, &eyeAdjustment, norm1->distMin, norm1->unk_0C, &sp98, &anim->swing);
-        } else {
-            sp88 = *eyeNext;
-            anim->swing.swingUpdateRate = camera->yawUpdateRateInv = norm1->unk_0C * 2.0f;
-            if (Camera_BGCheck(camera, at, &sp88)) {
-                anim->swingYawTarget = atEyeNextGeo.yaw;
-                anim->startSwingTimer = -1;
+            if (anim->startSwingTimer > 0) {
+                func_80046E20(camera, &eyeAdjustment, norm1->distMin, norm1->unk_0C, &sp98, &anim->swing);
             } else {
-                *eye = *eyeNext;
+                sp88 = *eyeNext;
+                anim->swing.swingUpdateRate = camera->yawUpdateRateInv = norm1->unk_0C * 2.0f;
+                if (Camera_BGCheck(camera, at, &sp88)) {
+                    anim->swingYawTarget = atEyeNextGeo.yaw;
+                    anim->startSwingTimer = -1;
+                } else {
+                    *eye = *eyeNext;
+                }
+                anim->swing.unk_18 = 0;
             }
-            anim->swing.unk_18 = 0;
-        }
         } else {
             if (anim->startSwingTimer <= 0) {
                 anim->swing.swingUpdateRate = camera->yawUpdateRateInv = norm1->unk_0C * 2.0f;
@@ -2136,8 +2137,6 @@ s32 Camera_Parallel1(Camera* camera) {
 
     OLib_Vec3fDiffToVecSphGeo(&atToEyeDir, at, eye);
     OLib_Vec3fDiffToVecSphGeo(&atToEyeNextDir, at, eyeNext);
-
-    camera->play->manualCamera = false;
 
     switch (camera->animState) {
         case 0:
@@ -3082,7 +3081,7 @@ s32 Camera_Battle1(Camera* camera) {
     }
     anim->roll += (((OREG(36) * camera->speedRatio) * (1.0f - distRatio)) - anim->roll) * PCT(OREG(37));
     camera->roll = DEGF_TO_BINANG(anim->roll);
-    camera->fov = Camera_LERPCeilF((player->swordState != 0       ? 0.8f
+    camera->fov = Camera_LERPCeilF((player->meleeWeaponState != 0       ? 0.8f
                                     : gSaveContext.health <= 0x10 ? 0.8f
                                                                   : 1.0f) *
                                        (fov - ((fov * 0.05f) * distRatio)),
@@ -4522,7 +4521,7 @@ s32 Camera_Subj4(Camera* camera) {
     if ((anim->unk_28 < temp_f16) && !anim->unk_2E) {
         player = camera->player;
         anim->unk_2E = true;
-        func_800F4010(&player->actor.projectedPos, player->unk_89E + 0x8B0, 4.0f);
+        func_800F4010(&player->actor.projectedPos, player->floorSfxOffset + 0x8B0, 4.0f);
     } else if (anim->unk_28 > temp_f16) {
         anim->unk_2E = false;
     }
@@ -6630,7 +6629,7 @@ s32 Camera_Special7(Camera* camera) {
 
     yOffset = Player_GetHeight(camera->player);
     if (camera->animState == 0) {
-        if (camera->play->sceneNum == SCENE_JYASINZOU) {
+        if (camera->play->sceneNum == SCENE_SPIRIT_TEMPLE) {
             // Spirit Temple
             spec7->idx = 3;
         } else if (playerPosRot->pos.x < 1500.0f) {
@@ -7325,7 +7324,7 @@ s32 Camera_UpdateWater(Camera* camera) {
         if (camera->waterDistortionTimer > 0) {
             camera->waterDistortionTimer--;
             camera->distortionFlags |= DISTORTION_UNDERWATER_STRONG;
-        } else if (camera->play->sceneNum == SCENE_TURIBORI) {
+        } else if (camera->play->sceneNum == SCENE_FISHING_POND) {
             camera->distortionFlags |= DISTORTION_UNDERWATER_FISHING;
         } else {
             camera->distortionFlags |= DISTORTION_UNDERWATER_WEAK;
@@ -7595,7 +7594,7 @@ Vec3s Camera_Update(Camera* camera) {
             D_8011D3F0--;
             sCameraInterfaceFlags = 0x3200;
             Camera_UpdateInterface(sCameraInterfaceFlags);
-        } else if (camera->play->transitionMode != 0) {
+        } else if (camera->play->transitionMode != TRANS_MODE_OFF) {
             sCameraInterfaceFlags = 0xF200;
             Camera_UpdateInterface(sCameraInterfaceFlags);
         } else if (camera->play->csCtx.state != CS_STATE_IDLE) {
@@ -7676,7 +7675,7 @@ Vec3s Camera_Update(Camera* camera) {
 
     Camera_UpdateDistortion(camera);
 
-    if ((camera->play->sceneNum == SCENE_SPOT00) && (camera->fov < 59.0f)) {
+    if ((camera->play->sceneNum == SCENE_HYRULE_FIELD) && (camera->fov < 59.0f)) {
         View_SetScale(&camera->play->view, 0.79f);
     } else {
         View_SetScale(&camera->play->view, 1.0f);
@@ -7700,7 +7699,8 @@ Vec3s Camera_Update(Camera* camera) {
                      BINANG_TO_DEGF(camera->camDir.x), camera->camDir.y, BINANG_TO_DEGF(camera->camDir.y));
     }
 
-    if (camera->timer != -1 && CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_DRIGHT) && CVarGetInteger("gDebugCamera", 0)) {
+    if (camera->timer != -1 && CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_DRIGHT) &&
+        CVarGetInteger("gDebugEnabled", 0)) {
         camera->timer = 0;
     }
 
@@ -7732,7 +7732,7 @@ void Camera_Finish(Camera* camera) {
             player->actor.freezeTimer = 0;
             player->stateFlags1 &= ~0x20000000;
 
-            if (player->csMode != 0) {
+            if (player->csAction != 0) {
                 func_8002DF54(camera->play, &player->actor, 7);
                 osSyncPrintf("camera: player demo end!!\n");
             }
@@ -7886,6 +7886,15 @@ s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags) {
                     break;
             }
         }
+
+        // Clear free camera if an action is performed that would move the camera (targeting, first person, talking)
+        if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1 &&
+            ((mode >= CAM_MODE_TARGET && mode <= CAM_MODE_BATTLE) ||
+             (mode >= CAM_MODE_FIRSTPERSON && mode <= CAM_MODE_CLIMBZ) || mode == CAM_MODE_HANGZ ||
+             mode == CAM_MODE_FOLLOWBOOMERANG)) {
+            camera->play->manualCamera = false;
+        }
+
         func_8005A02C(camera);
         camera->mode = mode;
         return 0x80000000 | mode;
@@ -7919,7 +7928,7 @@ s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags) {
         }
     }
     if (((setting == CAM_SET_MEADOW_BIRDS_EYE) || (setting == CAM_SET_MEADOW_UNUSED)) && LINK_IS_ADULT &&
-        (camera->play->sceneNum == SCENE_SPOT05)) {
+        (camera->play->sceneNum == SCENE_SACRED_FOREST_MEADOW)) {
         camera->unk_14A |= 0x10;
         return -5;
     }

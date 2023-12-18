@@ -1,6 +1,40 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_FD2_H
+#define OBJECTS_OBJECT_FD2_H 1
 
 #include "align_asset_macro.h"
+
+#define dobject_fd2Tex_003308 "__OTR__objects/object_fd2/object_fd2Tex_003308"
+static const ALIGN_ASSET(2) char object_fd2Tex_003308[] = dobject_fd2Tex_003308;
+
+#define dobject_fd2Tex_003B08 "__OTR__objects/object_fd2/object_fd2Tex_003B08"
+static const ALIGN_ASSET(2) char object_fd2Tex_003B08[] = dobject_fd2Tex_003B08;
+
+#define dobject_fd2Tex_004308 "__OTR__objects/object_fd2/object_fd2Tex_004308"
+static const ALIGN_ASSET(2) char object_fd2Tex_004308[] = dobject_fd2Tex_004308;
+
+#define dobject_fd2Tex_004508 "__OTR__objects/object_fd2/object_fd2Tex_004508"
+static const ALIGN_ASSET(2) char object_fd2Tex_004508[] = dobject_fd2Tex_004508;
+
+#define dobject_fd2Tex_004708 "__OTR__objects/object_fd2/object_fd2Tex_004708"
+static const ALIGN_ASSET(2) char object_fd2Tex_004708[] = dobject_fd2Tex_004708;
+
+#define dobject_fd2Tex_004908 "__OTR__objects/object_fd2/object_fd2Tex_004908"
+static const ALIGN_ASSET(2) char object_fd2Tex_004908[] = dobject_fd2Tex_004908;
+
+#define dobject_fd2Tex_004BE8 "__OTR__objects/object_fd2/object_fd2Tex_004BE8"
+static const ALIGN_ASSET(2) char object_fd2Tex_004BE8[] = dobject_fd2Tex_004BE8;
+
+#define dobject_fd2Tex_004FA0 "__OTR__objects/object_fd2/object_fd2Tex_004FA0"
+static const ALIGN_ASSET(2) char object_fd2Tex_004FA0[] = dobject_fd2Tex_004FA0;
+
+#define dobject_fd2Tex_0051A0 "__OTR__objects/object_fd2/object_fd2Tex_0051A0"
+static const ALIGN_ASSET(2) char object_fd2Tex_0051A0[] = dobject_fd2Tex_0051A0;
+
+#define dobject_fd2Tex_0053A0 "__OTR__objects/object_fd2/object_fd2Tex_0053A0"
+static const ALIGN_ASSET(2) char object_fd2Tex_0053A0[] = dobject_fd2Tex_0053A0;
+
+#define dobject_fd2TLUT_002508 "__OTR__objects/object_fd2/object_fd2TLUT_002508"
+static const ALIGN_ASSET(2) char object_fd2TLUT_002508[] = dobject_fd2TLUT_002508;
 
 #define dgHoleVolvagiaSkel "__OTR__objects/object_fd2/gHoleVolvagiaSkel"
 static const ALIGN_ASSET(2) char gHoleVolvagiaSkel[] = dgHoleVolvagiaSkel;
@@ -167,35 +201,5 @@ static const ALIGN_ASSET(2) char gHoleVolvagiaSkelLimbsLimb_0119D0DL_001308[] = 
 #define dgHoleVolvagiaSkelLimbsLimb_0119DCDL_001010 "__OTR__objects/object_fd2/gHoleVolvagiaSkelLimbsLimb_0119DCDL_001010"
 static const ALIGN_ASSET(2) char gHoleVolvagiaSkelLimbsLimb_0119DCDL_001010[] = dgHoleVolvagiaSkelLimbsLimb_0119DCDL_001010;
 
-#define dobject_fd2Tex_004BE8 "__OTR__objects/object_fd2/object_fd2Tex_004BE8"
-static const ALIGN_ASSET(2) char object_fd2Tex_004BE8[] = dobject_fd2Tex_004BE8;
 
-#define dobject_fd2Tex_004FA0 "__OTR__objects/object_fd2/object_fd2Tex_004FA0"
-static const ALIGN_ASSET(2) char object_fd2Tex_004FA0[] = dobject_fd2Tex_004FA0;
-
-#define dobject_fd2Tex_0053A0 "__OTR__objects/object_fd2/object_fd2Tex_0053A0"
-static const ALIGN_ASSET(2) char object_fd2Tex_0053A0[] = dobject_fd2Tex_0053A0;
-
-#define dobject_fd2Tex_0051A0 "__OTR__objects/object_fd2/object_fd2Tex_0051A0"
-static const ALIGN_ASSET(2) char object_fd2Tex_0051A0[] = dobject_fd2Tex_0051A0;
-
-#define dobject_fd2Tex_003308 "__OTR__objects/object_fd2/object_fd2Tex_003308"
-static const ALIGN_ASSET(2) char object_fd2Tex_003308[] = dobject_fd2Tex_003308;
-
-#define dobject_fd2Tex_003B08 "__OTR__objects/object_fd2/object_fd2Tex_003B08"
-static const ALIGN_ASSET(2) char object_fd2Tex_003B08[] = dobject_fd2Tex_003B08;
-
-#define dobject_fd2Tex_004308 "__OTR__objects/object_fd2/object_fd2Tex_004308"
-static const ALIGN_ASSET(2) char object_fd2Tex_004308[] = dobject_fd2Tex_004308;
-
-#define dobject_fd2Tex_004708 "__OTR__objects/object_fd2/object_fd2Tex_004708"
-static const ALIGN_ASSET(2) char object_fd2Tex_004708[] = dobject_fd2Tex_004708;
-
-#define dobject_fd2Tex_004508 "__OTR__objects/object_fd2/object_fd2Tex_004508"
-static const ALIGN_ASSET(2) char object_fd2Tex_004508[] = dobject_fd2Tex_004508;
-
-#define dobject_fd2Tex_004908 "__OTR__objects/object_fd2/object_fd2Tex_004908"
-static const ALIGN_ASSET(2) char object_fd2Tex_004908[] = dobject_fd2Tex_004908;
-
-#define dobject_fd2TLUT_002508 "__OTR__objects/object_fd2/object_fd2TLUT_002508"
-static const ALIGN_ASSET(2) char object_fd2TLUT_002508[] = dobject_fd2TLUT_002508;
+#endif // OBJECTS_OBJECT_FD2_H

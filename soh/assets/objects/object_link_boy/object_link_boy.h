@@ -1,6 +1,28 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_LINK_BOY_H
+#define OBJECTS_OBJECT_LINK_BOY_H 1
 
 #include "align_asset_macro.h"
+
+#define dobject_link_boyTLUT_005400 "__OTR__objects/object_link_boy/object_link_boyTLUT_005400"
+static const ALIGN_ASSET(2) char object_link_boyTLUT_005400[] = dobject_link_boyTLUT_005400;
+
+#define dobject_link_boyTLUT_005800 "__OTR__objects/object_link_boy/object_link_boyTLUT_005800"
+static const ALIGN_ASSET(2) char object_link_boyTLUT_005800[] = dobject_link_boyTLUT_005800;
+
+#define dobject_link_boyTLUT_005A00 "__OTR__objects/object_link_boy/object_link_boyTLUT_005A00"
+static const ALIGN_ASSET(2) char object_link_boyTLUT_005A00[] = dobject_link_boyTLUT_005A00;
+
+#define dobject_link_boyTLUT_00CB40 "__OTR__objects/object_link_boy/object_link_boyTLUT_00CB40"
+static const ALIGN_ASSET(2) char object_link_boyTLUT_00CB40[] = dobject_link_boyTLUT_00CB40;
+
+#define dobject_link_boyTLUT_00CD48 "__OTR__objects/object_link_boy/object_link_boyTLUT_00CD48"
+static const ALIGN_ASSET(2) char object_link_boyTLUT_00CD48[] = dobject_link_boyTLUT_00CD48;
+
+#define dobject_link_boyTLUT_00CF50 "__OTR__objects/object_link_boy/object_link_boyTLUT_00CF50"
+static const ALIGN_ASSET(2) char object_link_boyTLUT_00CF50[] = dobject_link_boyTLUT_00CF50;
+
+#define dobject_link_boyTLUT_00D078 "__OTR__objects/object_link_boy/object_link_boyTLUT_00D078"
+static const ALIGN_ASSET(2) char object_link_boyTLUT_00D078[] = dobject_link_boyTLUT_00D078;
 
 #define dgLinkAdultSkel "__OTR__objects/object_link_boy/gLinkAdultSkel"
 static const ALIGN_ASSET(2) char gLinkAdultSkel[] = dgLinkAdultSkel;
@@ -365,6 +387,9 @@ static const ALIGN_ASSET(2) char gLinkAdultGauntletPlate1Tex[] = dgLinkAdultGaun
 #define dgLinkAdultGauntletPlate2Tex "__OTR__objects/object_link_boy/gLinkAdultGauntletPlate2Tex"
 static const ALIGN_ASSET(2) char gLinkAdultGauntletPlate2Tex[] = dgLinkAdultGauntletPlate2Tex;
 
+#define dgLinkAdultHookshotReticleVtx "__OTR__objects/object_link_boy/gLinkAdultHookshotReticleVtx"
+static const ALIGN_ASSET(2) char gLinkAdultHookshotReticleVtx[] = dgLinkAdultHookshotReticleVtx;
+
 #define dgLinkAdultHookshotReticleDL "__OTR__objects/object_link_boy/gLinkAdultHookshotReticleDL"
 static const ALIGN_ASSET(2) char gLinkAdultHookshotReticleDL[] = dgLinkAdultHookshotReticleDL;
 
@@ -485,23 +510,5 @@ static const ALIGN_ASSET(2) char gLinkAdultVtx_0340A0[] = dgLinkAdultVtx_0340A0;
 #define dgLinkAdultVtx_02E7E0 "__OTR__objects/object_link_boy/gLinkAdultVtx_02E7E0"
 static const ALIGN_ASSET(2) char gLinkAdultVtx_02E7E0[] = dgLinkAdultVtx_02E7E0;
 
-#define dobject_link_boyTLUT_005800 "__OTR__objects/object_link_boy/object_link_boyTLUT_005800"
-static const ALIGN_ASSET(2) char object_link_boyTLUT_005800[] = dobject_link_boyTLUT_005800;
 
-#define dobject_link_boyTLUT_005A00 "__OTR__objects/object_link_boy/object_link_boyTLUT_005A00"
-static const ALIGN_ASSET(2) char object_link_boyTLUT_005A00[] = dobject_link_boyTLUT_005A00;
-
-#define dobject_link_boyTLUT_005400 "__OTR__objects/object_link_boy/object_link_boyTLUT_005400"
-static const ALIGN_ASSET(2) char object_link_boyTLUT_005400[] = dobject_link_boyTLUT_005400;
-
-#define dobject_link_boyTLUT_00CD48 "__OTR__objects/object_link_boy/object_link_boyTLUT_00CD48"
-static const ALIGN_ASSET(2) char object_link_boyTLUT_00CD48[] = dobject_link_boyTLUT_00CD48;
-
-#define dobject_link_boyTLUT_00CF50 "__OTR__objects/object_link_boy/object_link_boyTLUT_00CF50"
-static const ALIGN_ASSET(2) char object_link_boyTLUT_00CF50[] = dobject_link_boyTLUT_00CF50;
-
-#define dobject_link_boyTLUT_00CB40 "__OTR__objects/object_link_boy/object_link_boyTLUT_00CB40"
-static const ALIGN_ASSET(2) char object_link_boyTLUT_00CB40[] = dobject_link_boyTLUT_00CB40;
-
-#define dobject_link_boyTLUT_00D078 "__OTR__objects/object_link_boy/object_link_boyTLUT_00D078"
-static const ALIGN_ASSET(2) char object_link_boyTLUT_00D078[] = dobject_link_boyTLUT_00D078;
+#endif // OBJECTS_OBJECT_LINK_BOY_H

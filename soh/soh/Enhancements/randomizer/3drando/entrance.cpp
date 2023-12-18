@@ -5,7 +5,6 @@
 #include "item_list.hpp"
 #include "item_pool.hpp"
 #include "item_location.hpp"
-#include "debug.hpp"
 #include "spoiler_log.hpp"
 #include "hints.hpp"
 #include "location_access.hpp"
@@ -1231,6 +1230,11 @@ int ShuffleAllEntrances() {
     if (entranceShuffleFailure) {
       return ENTRANCE_SHUFFLE_FAILURE;
     }
+  }
+
+  // Validate the world one last time to ensure all special conditions are still valid
+  if (!ValidateWorld(nullptr)) {
+    return ENTRANCE_SHUFFLE_FAILURE;
   }
 
   return ENTRANCE_SHUFFLE_SUCCESS;

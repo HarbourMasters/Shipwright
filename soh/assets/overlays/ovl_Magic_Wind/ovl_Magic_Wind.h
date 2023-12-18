@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OVERLAYS_OVL_MAGIC_WIND_H
+#define OVERLAYS_OVL_MAGIC_WIND_H 1
 
 #include "align_asset_macro.h"
 
@@ -19,3 +20,6 @@ static const ALIGN_ASSET(2) char sInnerCylinderDL[] = dsInnerCylinderDL;
 
 #define dsOuterCylinderDL "__OTR__overlays/ovl_Magic_Wind/sOuterCylinderDL"
 static const ALIGN_ASSET(2) char sOuterCylinderDL[] = dsOuterCylinderDL;
+
+
+#endif // OVERLAYS_OVL_MAGIC_WIND_H

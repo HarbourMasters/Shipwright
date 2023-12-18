@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_JJ_H
+#define OBJECTS_OBJECT_JJ_H 1
 
 #include "align_asset_macro.h"
 
@@ -106,3 +107,6 @@ static const ALIGN_ASSET(2) char gJabuJabuBodyCol[] = dgJabuJabuBodyCol;
 
 #define dgJabuJabuUnusedCol "__OTR__objects/object_jj/gJabuJabuUnusedCol"
 static const ALIGN_ASSET(2) char gJabuJabuUnusedCol[] = dgJabuJabuUnusedCol;
+
+
+#endif // OBJECTS_OBJECT_JJ_H

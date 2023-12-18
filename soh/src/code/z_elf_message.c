@@ -46,8 +46,8 @@ u32 ElfMessage_CheckCondition(ElfMessage* msg) {
                     return ((msg->byte0 & 1) == 1) == ((msg->byte1 & 0x0F) == CUR_UPG_VALUE(UPG_STRENGTH));
                 case (ELF_MSG_CONDITION_BOOTS << 4):
                     return ((msg->byte0 & 1) == 1) ==
-                           (((gBitFlags[msg->byte3 - ITEM_BOOTS_KOKIRI] << gEquipShifts[EQUIP_BOOTS]) &
-                             gSaveContext.inventory.equipment) != 0);
+                           (CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS,
+                                              msg->byte3 - ITEM_BOOTS_KOKIRI + EQUIP_INV_BOOTS_KOKIRI) != 0);
                 case (ELF_MSG_CONDITION_SONG << 4):
                     return ((msg->byte0 & 1) == 1) ==
                            (CHECK_QUEST_ITEM(msg->byte3 - ITEM_SONG_MINUET + QUEST_SONG_MINUET) != 0);
@@ -155,6 +155,9 @@ u16 ElfMessage_GetSariaText(PlayState* play) {
 
     if (!LINK_IS_ADULT) {
         if (Actor_FindNearby(play, &player->actor, ACTOR_EN_SA, 4, 800.0f) == NULL) {
+             if (IS_RANDO && Randomizer_GetSettingValue(RSK_SARIA_HINT)) {
+                return 0x161;
+            }
             msgs = sChildSariaMsgs;
         } else {
             return 0x0160; // Special text about Saria preferring to talk to you face-to-face

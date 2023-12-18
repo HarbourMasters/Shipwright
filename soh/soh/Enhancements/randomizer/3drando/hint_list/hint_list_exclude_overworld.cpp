@@ -131,6 +131,10 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"a #hole in a volcano# holds", /*french*/"la #grotte dans le volcan# contient", /*spanish*/"bajo el #hoyo de un volcán# yace"},
   });
 
+    hintTable[TOT_MASTER_SWORD] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #pedestal in a temple# holds", /*french*/"un #piédestal dans un temple# contient", /*spanish*/"un #pedestal en un templo# sostiene"},
+  });
 
     hintTable[TOT_LIGHT_ARROWS_CUTSCENE] = HintText::Exclude({
                        //obscure text
@@ -423,6 +427,11 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"#Medigoron# sells", /*french*/"#Medigoron# vend", /*spanish*/"#Medigoron# vende"},
   });
 
+  hintTable[KAK_GRANNYS_SHOP] = HintText::Exclude({
+                       // obscure text
+                       Text{"the #potion shop lady# sells", /*french*/"la #dame du magasin de potion# vend", /*spanish*/"la #señora de la tienda de pociones# vende" },
+  });
+
     hintTable[KAK_IMPAS_HOUSE_FREESTANDING_POH] = HintText::Exclude({
                        //obscure text
                        Text{"#imprisoned in a house# lies", /*french*/"#encagé dans une maison# gît", /*spanish*/"#en una casa entre rejas# yace"},
@@ -483,7 +492,7 @@ void HintTable_Init_Exclude_Overworld() {
 
     hintTable[GV_WATERFALL_FREESTANDING_POH] = HintText::Exclude({
                        //obscure text
-                       Text{"behind a #desert waterfall# is", /*french*/"#derrière la cascade du désert# se cache", /*spanish*/"tras una #desierta cascada# yace"},
+                       Text{"behind a #valley waterfall# is", /*french*/"#derrière la cascade du désert# se cache", /*spanish*/"tras una #desierta cascada# yace"},
   });
 
     hintTable[GV_CRATE_FREESTANDING_POH] = HintText::Exclude({

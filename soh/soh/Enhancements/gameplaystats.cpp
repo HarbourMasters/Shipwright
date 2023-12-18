@@ -7,6 +7,7 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "../UIWidgets.hpp"
+#include "soh/util.h"
 
 #include <vector>
 #include <string>
@@ -279,17 +280,15 @@ std::string formatHexOnlyGameplayStat(uint32_t value) {
 
 extern "C" char* GameplayStats_GetCurrentTime() {
     std::string timeString = formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME).c_str();
-    const int stringLength = timeString.length();
-    char* timeChar = new char[stringLength + 1];
+    const size_t stringLength = timeString.length();
+    char* timeChar = (char*)malloc(stringLength + 1); // We need to use malloc so we can free this from a C file.
     strcpy(timeChar, timeString.c_str());
     return timeChar;
 }
 
 void LoadStatsVersion1() {
-    std::string buildVersion;
-    SaveManager::Instance->LoadData("buildVersion", buildVersion);
-    strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(), ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
-    gSaveContext.sohStats.buildVersion[ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1] = 0;
+    SaveManager::Instance->LoadCharArray("buildVersion", gSaveContext.sohStats.buildVersion,
+                                         ARRAY_COUNT(gSaveContext.sohStats.buildVersion));
     SaveManager::Instance->LoadData("buildVersionMajor", gSaveContext.sohStats.buildVersionMajor);
     SaveManager::Instance->LoadData("buildVersionMinor", gSaveContext.sohStats.buildVersionMinor);
     SaveManager::Instance->LoadData("buildVersionPatch", gSaveContext.sohStats.buildVersionPatch);
@@ -334,9 +333,6 @@ void LoadStatsVersion1() {
     SaveManager::Instance->LoadArray("entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.sohStats.entrancesDiscovered[i]);
     });
-    SaveManager::Instance->LoadArray("locationsSkipped", ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.sohStats.locationsSkipped[i]);
-    });
 }
 
 void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -378,16 +374,13 @@ void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveManager::Instance->SaveArray("entrancesDiscovered", ARRAY_COUNT(saveContext->sohStats.entrancesDiscovered), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->sohStats.entrancesDiscovered[i]);
     });
-    SaveManager::Instance->SaveArray("locationsSkipped", ARRAY_COUNT(saveContext->sohStats.locationsSkipped), [&](size_t i) {
-        SaveManager::Instance->SaveData("", saveContext->sohStats.locationsSkipped[i]);
-    });
 }
 
-void GameplayStatsRow(const char* label, std::string value, ImVec4 color = COLOR_WHITE) {
+void GameplayStatsRow(const char* label, const std::string& value, ImVec4 color = COLOR_WHITE) {
     ImGui::PushStyleColor(ImGuiCol_Text, color);
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
-    ImGui::Text(label);
+    ImGui::Text("%s", label);
     ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(value.c_str()).x - 8.0f));
     ImGui::Text("%s", value.c_str());
     ImGui::PopStyleColor();
@@ -398,7 +391,7 @@ bool compareTimestampInfoByTime(const TimestampInfo& a, const TimestampInfo& b) 
 }
 
 const char* ResolveSceneID(int sceneID, int roomID){
-    if (sceneID == SCENE_KAKUSIANA) {
+    if (sceneID == SCENE_GROTTOS) {
         switch (roomID) {
             case 0:
                 return "Generic Grotto";
@@ -429,7 +422,7 @@ const char* ResolveSceneID(int sceneID, int roomID){
             case 13:
                 return "Big Skulltula Grotto";
         };
-    } else if (sceneID == SCENE_HAKASITARELAY) {
+    } else if (sceneID == SCENE_WINDMILL_AND_DAMPES_GRAVE) {
         //Only the last room of Dampe's Grave (rm 6) is considered the windmill
         return roomID == 6 ? "Windmill" : "Dampe's Grave";
     } else if (sceneID < SCENE_ID_MAX) {
@@ -573,7 +566,7 @@ void DrawGameplayStatsBreakdownTab() {
     for (int i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
         std::string sceneName = ResolveSceneID(gSaveContext.sohStats.sceneTimestamps[i].scene, gSaveContext.sohStats.sceneTimestamps[i].room);
         std::string name;
-        if (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) && gSaveContext.sohStats.sceneTimestamps[i].scene != SCENE_KAKUSIANA) {
+        if (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) && gSaveContext.sohStats.sceneTimestamps[i].scene != SCENE_GROTTOS) {
             name = fmt::format("{:s} Room {:d}", sceneName, gSaveContext.sohStats.sceneTimestamps[i].room);    
         } else {
             name = sceneName;
@@ -596,7 +589,7 @@ void DrawGameplayStatsBreakdownTab() {
         }
     }
     std::string toPass;
-    if (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) && gSaveContext.sohStats.sceneNum != SCENE_KAKUSIANA) {
+    if (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) && gSaveContext.sohStats.sceneNum != SCENE_GROTTOS) {
         toPass = fmt::format("{:s} Room {:d}", ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum), gSaveContext.sohStats.roomNum);
     } else {
         toPass = ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum);
@@ -625,7 +618,7 @@ void DrawGameplayStatsOptionsTab() {
 }
 
 void GameplayStatsWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(480, 550), ImGuiCond_Appearing);
+    ImGui::SetNextWindowSize(ImVec2(480, 550), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Gameplay Stats", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
@@ -688,12 +681,9 @@ void InitStats(bool isDebug) {
     for (int entrancesIdx = 0; entrancesIdx < ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered); entrancesIdx++) {
         gSaveContext.sohStats.entrancesDiscovered[entrancesIdx] = 0;
     }
-    for (int rc = 0; rc < ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped); rc++) {
-        gSaveContext.sohStats.locationsSkipped[rc] = 0;
-    }
 
-    strncpy(gSaveContext.sohStats.buildVersion, (const char*) gBuildVersion, sizeof(gSaveContext.sohStats.buildVersion) - 1);
-    gSaveContext.sohStats.buildVersion[sizeof(gSaveContext.sohStats.buildVersion) - 1] = 0;
+    SohUtils::CopyStringToCharArray(gSaveContext.sohStats.buildVersion, std::string((char*)gBuildVersion),
+                                    ARRAY_COUNT(gSaveContext.sohStats.buildVersion));
     gSaveContext.sohStats.buildVersionMajor = gBuildVersionMajor;
     gSaveContext.sohStats.buildVersionMinor = gBuildVersionMinor;
     gSaveContext.sohStats.buildVersionPatch = gBuildVersionPatch;
@@ -793,6 +783,7 @@ void SetupDisplayNames() {
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_FINISH],      "Boss Rush Finished: ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:         ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_TRIFORCE_COMPLETED],   "Triforce Completed: ");
 }
 
 void SetupDisplayColors() {
@@ -839,6 +830,7 @@ void SetupDisplayColors() {
             case ITEM_ARROW_LIGHT:
             case TIMESTAMP_DEFEAT_GANONDORF:
             case TIMESTAMP_DEFEAT_GANON:
+            case TIMESTAMP_TRIFORCE_COMPLETED:
                 itemTimestampDisplayColor[i] = COLOR_YELLOW;
                 break;
             case ITEM_SONG_STORMS:

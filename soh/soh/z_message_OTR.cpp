@@ -72,6 +72,9 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
             _message_0xFFFC_nes = (char*)file->messages[i].msg.c_str();
     }
 
+    // Assert that the first message starts at the first text ID
+    assert(table[0].textId == 0x0001);
+
     return table;
 }
 
@@ -104,6 +107,9 @@ extern "C" void OTRMessage_Init()
             sStaffMessageEntryTablePtr[i].segment = file2->messages[i].msg.c_str();
             sStaffMessageEntryTablePtr[i].msgSize = file2->messages[i].msg.size();
         }
+
+        // Assert staff credits start at the first credits ID
+        assert(sStaffMessageEntryTablePtr[0].textId == 0x0500);
     }
 
     CustomMessageManager::Instance->AddCustomMessageTable(customMessageTableID);
@@ -154,12 +160,4 @@ extern "C" void OTRMessage_Init()
         CustomMessage("You look bored. Wanna go out for a&walk?\x1B&%gYes&No%w",
                       "Du siehst gelangweilt aus.&Willst du einen Spaziergang machen?\x1B&%gJa&Nein%w",
                       "Tu as l'air de t'ennuyer. Tu veux&aller faire un tour?\x1B&%gOui&Non%w"));
-    CustomMessageManager::Instance->CreateMessage(
-        customMessageTableID, TEXT_RANDO_SAVE_VERSION_WARNING,
-        CustomMessage(
-            "This save was created on&a different version of SoH.&&Things may be broken.",
-            "Dieser Spielstand wurde auf einer&anderen Version von SoH erstellt.&&Es könnten Fehler auftreten.",
-            "Cette sauvegarde a été créée sur&une version différente de SoH.&Certaines fonctionnalités&peuvent être "
-            "corrompues.",
-            TEXTBOX_TYPE_NONE_BOTTOM));
 }

@@ -1576,6 +1576,7 @@ void Message_Decode(PlayState* play) {
 extern const char* msgStaticTbl[];
 
 void Message_OpenText(PlayState* play, u16 textId) {
+    lusprintf(__FILE__, __LINE__, 2, "Display Text - textId: %#x", textId);
     static s16 messageStaticIndices[] = { 0, 1, 3, 2 };
     MessageContext* msgCtx = &play->msgCtx;
     Font* font = &msgCtx->font;
@@ -1616,9 +1617,9 @@ void Message_OpenText(PlayState* play, u16 textId) {
         // Increments text id based on piece of heart count, assumes the piece of heart text is all
         // in order and that you don't have more than the intended amount of heart pieces.
         textId += (gSaveContext.inventory.questItems & 0xF0000000 & 0xF0000000) >> 0x1C;
-    } else if (!gSaveContext.n64ddFlag && (msgCtx->textId == 0xC && CHECK_OWNED_EQUIP(EQUIP_SWORD, 2))) {
+    } else if (!IS_RANDO && (msgCtx->textId == 0xC && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON))) {
         textId = 0xB; // Traded Giant's Knife for Biggoron Sword
-    } else if (!gSaveContext.n64ddFlag && (msgCtx->textId == 0xB4 && (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_CURSED_MAN_IN_SKULL_HOUSE)))) {
+    } else if (!IS_RANDO && (msgCtx->textId == 0xB4 && (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_CURSED_MAN_IN_SKULL_HOUSE)))) {
         textId = 0xB5; // Destroyed Gold Skulltula
     }
     // Ocarina Staff + Dialog
@@ -2003,7 +2004,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
     };
     static s16 sOcarinaEffectActorParams[] = { 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 0x0000 };
     static void* sOcarinaNoteTextures[] = {
-        gOcarinaATex, gOcarinaCDownTex, gOcarinaCRightTex, gOcarinaCLeftTex, gOcarinaCUpTex,
+        gOcarinaBtnIconATex, gOcarinaBtnIconCDownTex, gOcarinaBtnIconCRightTex, gOcarinaBtnIconCLeftTex, gOcarinaBtnIconCUpTex,
     };
     static Color_RGB8 sOcarinaNoteAPrimColors[2] = {
         { 80, 150, 255 },
@@ -2516,7 +2517,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     if (msgCtx->lastPlayedSong < OCARINA_SONG_SARIAS &&
                         (msgCtx->ocarinaAction < OCARINA_ACTION_PLAYBACK_MINUET ||
                          msgCtx->ocarinaAction >= OCARINA_ACTION_PLAYBACK_SARIA)) {
-                        if (msgCtx->disableWarpSongs || (interfaceCtx->restrictions.warpSongs == 3 && !gSaveContext.n64ddFlag)) {
+                        if (msgCtx->disableWarpSongs || (interfaceCtx->restrictions.warpSongs == 3 && !IS_RANDO)) {
                             Message_StartTextbox(play, 0x88C, NULL); // "You can't warp here!"
                             play->msgCtx.ocarinaMode = OCARINA_MODE_04;
                         } else if ((gSaveContext.eventInf[0] & 0xF) != 1) {
@@ -2602,7 +2603,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     msgCtx->lastPlayedSong = msgCtx->ocarinaStaff->state;
                     msgCtx->msgMode = MSGMODE_SONG_PLAYBACK_SUCCESS;
 
-                    if (!gSaveContext.n64ddFlag) {
+                    if (!IS_RANDO) {
                         Item_Give(play, ITEM_SONG_MINUET + gOcarinaSongItemMap[msgCtx->ocarinaStaff->state]);
                     }
 
@@ -3153,7 +3154,7 @@ void Message_Update(PlayState* play) {
                 if (D_8014B2F4 >= 4) {
                     var = true;
                 }
-            } else if (YREG(15) != 0 || play->sceneNum == SCENE_HAIRAL_NIWA) {
+            } else if (YREG(15) != 0 || play->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_DAY) {
                 var = true;
             } else if (D_8014B2F4 >= 4 || msgCtx->talkActor == NULL) {
                 var = true;
@@ -3180,7 +3181,7 @@ void Message_Update(PlayState* play) {
                 var = msgCtx->textBoxType;
 
                 if (!msgCtx->textBoxPos) { // variable position
-                    if (YREG(15) != 0 || play->sceneNum == SCENE_HAIRAL_NIWA) {
+                    if (YREG(15) != 0 || play->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_DAY) {
                         if (averageY < XREG(92)) {
                             R_TEXTBOX_Y_TARGET = sTextboxLowerYPositions[var];
                         } else {
@@ -3383,6 +3384,7 @@ void Message_Update(PlayState* play) {
             }
             sLastPlayedSong = 0xFF;
             osSyncPrintf("OCARINA_MODE=%d   chk_ocarina_no=%d\n", play->msgCtx.ocarinaMode, msgCtx->unk_E3F2);
+            // TODO: OnMessageClose hook
             break;
         case MSGMODE_PAUSED:
             break;

@@ -37,96 +37,96 @@ u32 gGsFlagsMasks[] = { 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000 };
 u32 gGsFlagsShifts[] = { 0, 8, 16, 24 };
 
 void* gItemIcons[] = {
-    gDekuStickIconTex,
-    gDekuNutIconTex,
-    gBombIconTex,
-    gFairyBowIconTex,
-    gFireArrowIconTex,
-    gDinsFireIconTex,
-    gFairySlingshotIconTex,
-    gFairyOcarinaIconTex,
-    gOcarinaofTimeIconTex,
-    gBombchuIconTex,
-    gHookshotIconTex,
-    gLongshotIconTex,
-    gIceArrowIconTex,
-    gFaroresWindIconTex,
-    gBoomerangIconTex,
-    gLensofTruthIconTex,
-    gMagicBeansIconTex,
-    gMegatonHammerIconTex,
-    gLightArrowIconTex,
-    gNayrusLoveIconTex,
-    gEmptyBottleIconTex,
-    gRedPotionIconTex,
-    gGreenPotionIconTex,
-    gBluePotionIconTex,
-    gBottledFairyIconTex,
-    gFishIconTex,
-    gMilkFullIconTex,
-    gRutosLetterIconTex,
-    gBlueFireIconTex,
-    gBugIconTex,
-    gBigPoeIconTex,
-    gMilkhalfIconTex,
-    gPoeIconTex,
-    gWeirdEggIconTex,
-    gCuccoIconTex,
-    gZeldasLetterIconTex,
-    gKeatonMaskIconTex,
-    gSkullMaskIconTex,
-    gSpookyMaskIconTex,
-    gBunnyHoodIconTex,
-    gGoronMaskIconTex,
-    gZoraMaskIconTex,
-    gGerudoMaskIconTex,
-    gMaskofTruthIconTex,
-    gSoldOutIconTex,
-    gPocketEggIconTex,
-    gPocketCuccoIconTex,
-    gCojiroIconTex,
-    gOddMushroomIconTex,
-    gOddPotionIconTex,
-    gPoachersSawIconTex,
-    gBrokenBiggoronSwordIconTex,
-    gPrescriptionIconTex,
-    gEyeBallFrogIconTex,
-    gEyeDropsIconTex,
-    gClaimCheckIconTex,
-    gFairyBowFireIconTex,
-    gFairyBowIceIconTex,
-    gFairyBowLightIconTex,
-    gKokiriSwordIconTex,
-    gMasterSwordIconTex,
-    gBiggoronSwordIconTex,
-    gDekuShieldIconTex,
-    gHylianShieldIconTex,
-    gMirrorShieldIconTex,
-    gKokiriTunicIconTex,
-    gGoronTunicIconTex,
-    gZoraTunicIconTex,
-    gKokiriBootsIconTex,
-    gIronBootsIconTex,
-    gHoverBootsIconTex,
-    gBulletBag30IconTex,
-    gBulletBag40IconTex,
-    gBulletBag50IconTex,
-    gQuiver30IconTex,
-    gQuiver40IconTex,
-    gQuiver50IconTex,
-    gBombBag20IconTex,
-    gBombBag30IconTex,
-    gBombBag40IconTex,
-    gGoronsBraceletIconTex,
-    gSilverGauntletsIconTex,
-    gGoldenGauntletsIconTex,
-    gSilverScaleIconTex,
-    gGoldenScaleIconTex,
-    gBrokenGiantsKnifeIconTex,
-    gAdultsWalletIconTex,
-    gGiantsWalletIconTex,
-    gDekuSeedsIconTex,
-    gFishingPoleIconTex,
+    gItemIconDekuStickTex,
+    gItemIconDekuNutTex,
+    gItemIconBombTex,
+    gItemIconBowTex,
+    gItemIconArrowFireTex,
+    gItemIconDinsFireTex,
+    gItemIconSlingshotTex,
+    gItemIconOcarinaFairyTex,
+    gItemIconOcarinaOfTimeTex,
+    gItemIconBombchuTex,
+    gItemIconHookshotTex,
+    gItemIconLongshotTex,
+    gItemIconArrowIceTex,
+    gItemIconFaroresWindTex,
+    gItemIconBoomerangTex,
+    gItemIconLensOfTruthTex,
+    gItemIconMagicBeanTex,
+    gItemIconHammerTex,
+    gItemIconArrowLightTex,
+    gItemIconNayrusLoveTex,
+    gItemIconBottleEmptyTex,
+    gItemIconBottlePotionRedTex,
+    gItemIconBottlePotionGreenTex,
+    gItemIconBottlePotionBlueTex,
+    gItemIconBottleFairyTex,
+    gItemIconBottleFishTex,
+    gItemIconBottleMilkFullTex,
+    gItemIconBottleRutosLetterTex,
+    gItemIconBottleBlueFireTex,
+    gItemIconBottleBugTex,
+    gItemIconBottleBigPoeTex,
+    gItemIconBottleMilkHalfTex,
+    gItemIconBottlePoeTex,
+    gItemIconWeirdEggTex,
+    gItemIconChickenTex,
+    gItemIconZeldasLetterTex,
+    gItemIconMaskKeatonTex,
+    gItemIconMaskSkullTex,
+    gItemIconMaskSpookyTex,
+    gItemIconMaskBunnyHoodTex,
+    gItemIconMaskGoronTex,
+    gItemIconMaskZoraTex,
+    gItemIconMaskGerudoTex,
+    gItemIconMaskTruthTex,
+    gItemIconSoldOutTex,
+    gItemIconPocketEggTex,
+    gItemIconPocketCuccoTex,
+    gItemIconCojiroTex,
+    gItemIconOddMushroomTex,
+    gItemIconOddPotionTex,
+    gItemIconPoachersSawTex,
+    gItemIconBrokenGoronsSwordTex,
+    gItemIconPrescriptionTex,
+    gItemIconEyeballFrogTex,
+    gItemIconEyeDropsTex,
+    gItemIconClaimCheckTex,
+    gItemIconBowFireTex,
+    gItemIconBowIceTex,
+    gItemIconBowLightTex,
+    gItemIconSwordKokiriTex,
+    gItemIconSwordMasterTex,
+    gItemIconSwordBiggoronTex,
+    gItemIconShieldDekuTex,
+    gItemIconShieldHylianTex,
+    gItemIconShieldMirrorTex,
+    gItemIconTunicKokiriTex,
+    gItemIconTunicGoronTex,
+    gItemIconTunicZoraTex,
+    gItemIconBootsKokiriTex,
+    gItemIconBootsIronTex,
+    gItemIconBootsHoverTex,
+    gItemIconBulletBag30Tex,
+    gItemIconBulletBag40Tex,
+    gItemIconBulletBag50Tex,
+    gItemIconQuiver30Tex,
+    gItemIconQuiver40Tex,
+    gItemIconQuiver50Tex,
+    gItemIconBombBag20Tex,
+    gItemIconBombBag30Tex,
+    gItemIconBombBag40Tex,
+    gItemIconGoronsBraceletTex,
+    gItemIconSilverGauntletsTex,
+    gItemIconGoldenGauntletsTex,
+    gItemIconScaleSilverTex,
+    gItemIconScaleGoldenTex,
+    gItemIconBrokenGiantsKnifeTex,
+    gItemIconAdultsWalletTex,
+    gItemIconGiantsWalletTex,
+    gItemIconDekuSeedsTex,
+    gItemIconFishingPoleTex,
     gSongNoteTex,
     gSongNoteTex,
     gSongNoteTex,
@@ -139,34 +139,34 @@ void* gItemIcons[] = {
     gSongNoteTex,
     gSongNoteTex,
     gSongNoteTex,
-    gForestMedallionIconTex,
-    gFireMedallionIconTex,
-    gWaterMedallionIconTex,
-    gSpiritMedallionIconTex,
-    gShadowMedallionIconTex,
-    gLightMedallionIconTex,
-    gKokiriEmeraldIconTex,
-    gGoronRubyIconTex,
-    gZoraSapphireIconTex,
-    gStoneOfAgonyIconTex,
-    gGerudosCardIconTex,
-    gGoldSkulltulaIconTex,
-    gHeartContainerIconTex,
-    gUnusedPieceOfHeartIconTex,
-    gBossKeyIconTex,
-    gCompassIconTex,
-    gDungeonMapIconTex,
-    gSmallKeyIconTex,
-    gSmallMagicJarIconTex,
-    gBigMagicJarIconTex,
+    gQuestIconMedallionForestTex,
+    gQuestIconMedallionFireTex,
+    gQuestIconMedallionWaterTex,
+    gQuestIconMedallionSpiritTex,
+    gQuestIconMedallionShadowTex,
+    gQuestIconMedallionLightTex,
+    gQuestIconKokiriEmeraldTex,
+    gQuestIconGoronRubyTex,
+    gQuestIconZoraSapphireTex,
+    gQuestIconStoneOfAgonyTex,
+    gQuestIconGerudosCardTex,
+    gQuestIconGoldSkulltulaTex,
+    gQuestIconHeartContainerTex,
+    gQuestIconHeartPieceTex,
+    gQuestIconDungeonBossKeyTex,
+    gQuestIconDungeonCompassTex,
+    gQuestIconDungeonMapTex,
+    gQuestIconSmallKeyTex,
+    gQuestIconMagicJarSmallTex,
+    gQuestIconMagicJarBigTex,
     gHeartPieceIcon1Tex,
     gHeartPieceIcon2Tex,
     gHeartPieceIcon3Tex,
-    gOcarinaCUpTex,
-    gOcarinaCDownTex,
-    gOcarinaCLeftTex,
-    gOcarinaCRightTex,
-    gOcarinaATex,
+    gOcarinaBtnIconCUpTex,
+    gOcarinaBtnIconCDownTex,
+    gOcarinaBtnIconCLeftTex,
+    gOcarinaBtnIconCRightTex,
+    gOcarinaBtnIconATex,
 };
 
 // Used to map item IDs to inventory slots
@@ -191,22 +191,33 @@ void Inventory_ChangeEquipment(s16 equipment, u16 value) {
 u8 Inventory_DeleteEquipment(PlayState* play, s16 equipment) {
     Player* player = GET_PLAYER(play);
     s32 pad;
-    u16 sp26 = gSaveContext.equips.equipment & gEquipMasks[equipment];
+    u16 equipValue = gSaveContext.equips.equipment & gEquipMasks[equipment];
 
     // "Erasing equipment item = %d  zzz=%d"
-    osSyncPrintf("装備アイテム抹消 = %d  zzz=%d\n", equipment, sp26);
+    osSyncPrintf("装備アイテム抹消 = %d  zzz=%d\n", equipment, equipValue);
 
-    if (sp26) {
-        sp26 >>= gEquipShifts[equipment];
+    if (equipValue) {
+        equipValue >>= gEquipShifts[equipment];
 
         gSaveContext.equips.equipment &= gEquipNegMasks[equipment];
-        gSaveContext.inventory.equipment ^= gBitFlags[sp26 - 1] << gEquipShifts[equipment];
+        gSaveContext.inventory.equipment ^= OWNED_EQUIP_FLAG(equipment, equipValue - 1);
 
-        if (equipment == EQUIP_TUNIC) {
-            gSaveContext.equips.equipment |= 0x0100;
+        if (equipment == EQUIP_TYPE_TUNIC) {
+            gSaveContext.equips.equipment |= EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4);
+            // non-vanilla: remove goron and zora tunics from item buttons if assignable tunics is on
+            if (CVarGetInteger("gAssignableTunicsAndBoots", 0) && equipValue != EQUIP_VALUE_TUNIC_KOKIRI) {
+                ItemID item = (equipValue == EQUIP_VALUE_TUNIC_GORON ? ITEM_TUNIC_GORON : ITEM_TUNIC_ZORA);
+                for (int i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                    if (gSaveContext.equips.buttonItems[i] == item) {
+                        gSaveContext.equips.buttonItems[i] = ITEM_NONE;
+                        gSaveContext.equips.cButtonSlots[i - 1] = SLOT_NONE;
+                    }
+                }
+            }
+            // end non-vanilla
         }
 
-        if (equipment == EQUIP_SWORD) {
+        if (equipment == EQUIP_TYPE_SWORD) {
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;
             gSaveContext.infTable[29] = 1;
         }
@@ -215,7 +226,7 @@ u8 Inventory_DeleteEquipment(PlayState* play, s16 equipment) {
         play->pauseCtx.cursorSpecialPos = PAUSE_CURSOR_PAGE_LEFT;
     }
 
-    return sp26;
+    return equipValue;
 }
 
 void Inventory_ChangeUpgrade(s16 upgrade, s16 value) {

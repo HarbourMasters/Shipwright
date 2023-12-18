@@ -641,7 +641,7 @@ void DrawWaterboxList() {
     }
 
     // Zora's Domain has a special, hard-coded waterbox with a bottom so you can go under the waterfall
-    if (gPlayState->sceneNum == SCENE_SPOT07) {
+    if (gPlayState->sceneNum == SCENE_ZORAS_DOMAIN) {
         DrawWaterbox(dl, &zdWaterBox, zdWaterBoxMinY);
     }
 }
@@ -693,11 +693,23 @@ extern "C" void DrawColViewer() {
 
     OPEN_DISPS(gPlayState->state.gfxCtx);
 
+    uint8_t mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
+    // Col viewer needs inverted culling in mirror mode for both OPA and XLU buffers
+    if (mirroredWorld) {
+        gSPSetExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
+        gSPSetExtraGeometryMode(POLY_XLU_DISP++, G_EX_INVERT_CULLING);
+    }
+
     opaDl.push_back(gsSPEndDisplayList());
     gSPDisplayList(POLY_OPA_DISP++, opaDl.data());
 
     xluDl.push_back(gsSPEndDisplayList());
     gSPDisplayList(POLY_XLU_DISP++, xluDl.data());
+
+    if (mirroredWorld) {
+        gSPClearExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
+        gSPClearExtraGeometryMode(POLY_XLU_DISP++, G_EX_INVERT_CULLING);
+    }
 
     CLOSE_DISPS(gPlayState->state.gfxCtx);
 }

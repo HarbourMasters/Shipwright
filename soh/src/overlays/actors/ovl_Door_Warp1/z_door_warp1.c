@@ -177,11 +177,11 @@ void DoorWarp1_SetupWarp(DoorWarp1* this, PlayState* play) {
             DoorWarp1_SetupAction(this, DoorWarp1_AwaitClearFlag);
             break;
         case WARP_DESTINATION:
-            if ((!(gSaveContext.entranceIndex == 0x608 ||  // sacred forest meadow
-                   gSaveContext.entranceIndex == 0x564 ||  // death mountain crater
-                   gSaveContext.entranceIndex == 0x60C ||  // lake hylia
-                   gSaveContext.entranceIndex == 0x610 ||  // desert colossus
-                   gSaveContext.entranceIndex == 0x580) && // graveyard
+            if ((!(gSaveContext.entranceIndex == ENTR_SACRED_FOREST_MEADOW_3 ||  // sacred forest meadow
+                   gSaveContext.entranceIndex == ENTR_DEATH_MOUNTAIN_CRATER_5 ||  // death mountain crater
+                   gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_9 ||  // lake hylia
+                   gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_8 ||  // desert colossus
+                   gSaveContext.entranceIndex == ENTR_GRAVEYARD_8) && // graveyard
                  gSaveContext.sceneSetupIndex < 4) ||
                 (GET_PLAYER(play)->actor.params & 0xF00) != 0x200) {
                 Actor_Kill(&this->actor);
@@ -252,7 +252,7 @@ void DoorWarp1_SetupBlueCrystal(DoorWarp1* this, PlayState* play) {
             -255;
     }
 
-    if (!gSaveContext.isBossRush) {
+    if (!IS_BOSS_RUSH) {
         play->envCtx.adjFogNear = -500;
         this->warpTimer = 30;
     } else {
@@ -283,7 +283,7 @@ void DoorWarp1_SetupPurpleCrystal(DoorWarp1* this, PlayState* play) {
     this->unk_1BC = 1.f;
     this->actor.shape.yOffset = 800.0f;
 
-    if (gSaveContext.entranceIndex != 0x53) {
+    if (gSaveContext.entranceIndex != ENTR_TEMPLE_OF_TIME_0) {
         this->actor.scale.x = 0.0499f;
         this->actor.scale.y = 0.077f;
         this->actor.scale.z = 0.09f;
@@ -299,7 +299,7 @@ void DoorWarp1_SetPlayerPos(DoorWarp1* this, PlayState* play) {
 
     player->actor.velocity.y = 0.0f;
     player->actor.world.pos.x = this->actor.world.pos.x;
-    if (!gSaveContext.isBossRush) {
+    if (!IS_BOSS_RUSH) {
         player->actor.world.pos.y = this->actor.world.pos.y + 55.0f;
     } else {
         player->actor.world.pos.y = this->actor.world.pos.y;
@@ -323,7 +323,7 @@ void func_80999214(DoorWarp1* this, PlayState* play) {
 
     Math_SmoothStepToF(&this->crystalAlpha, 255.0f, 0.2f, 5.0f, 0.1f);
 
-    if (!gSaveContext.isBossRush) {
+    if (!IS_BOSS_RUSH) {
         darkness = (f32)(40 - this->warpTimer) / 40.0f;
         darkness = CLAMP_MIN(darkness, 0);
     } else {
@@ -366,7 +366,7 @@ void func_80999348(DoorWarp1* this, PlayState* play) {
 void DoorWarp1_FloatPlayer(DoorWarp1* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (!gSaveContext.isBossRush) {
+    if (!IS_BOSS_RUSH) {
         player->actor.gravity = -0.1f;
     }
 }
@@ -533,7 +533,7 @@ void DoorWarp1_ChildWarpIdle(DoorWarp1* this, PlayState* play) {
     if (DoorWarp1_PlayerInRange(this, play)) {
         player = GET_PLAYER(play);
         
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             GivePlayerRandoReward(this, player, play, 0, 0);
             return;
         }
@@ -567,57 +567,57 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
     this->warpTimer++;
 
     if (sWarpTimerTarget < this->warpTimer && gSaveContext.nextCutsceneIndex == 0xFFEF) {
-        osSyncPrintf("\n\n\nじかんがきたからおーしまい fade_direction=[%d]", play->sceneLoadFlag, 0x14);
+        osSyncPrintf("\n\n\nじかんがきたからおーしまい fade_direction=[%d]", play->transitionTrigger, TRANS_TRIGGER_START);
 
-        if (play->sceneNum == SCENE_DDAN_BOSS) {
+        if (play->sceneNum == SCENE_DODONGOS_CAVERN_BOSS) {
             if (!Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
                 Flags_SetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP);
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
-                if (gSaveContext.n64ddFlag) {
-                    play->nextEntranceIndex = 0x47A;
+                if (IS_RANDO) {
+                    play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_5;
                     gSaveContext.nextCutsceneIndex = 0;
                 } else {
                     Item_Give(play, ITEM_GORON_RUBY);
-                    play->nextEntranceIndex = 0x13D;
+                    play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_0;
                     gSaveContext.nextCutsceneIndex = 0xFFF1;
                 }
             } else {
-                play->nextEntranceIndex = 0x47A;
+                play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_TRAIL_5;
                 gSaveContext.nextCutsceneIndex = 0;
             }
-        } else if (play->sceneNum == SCENE_YDAN_BOSS) {
-            if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD) || gSaveContext.n64ddFlag) {
+        } else if (play->sceneNum == SCENE_DEKU_TREE_BOSS) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD) || IS_RANDO) {
                 Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
                 Flags_SetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP);
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE);
-                if (gSaveContext.n64ddFlag) {
-                    play->nextEntranceIndex = 0x0457;
+                if (IS_RANDO) {
+                    play->nextEntranceIndex = ENTR_KOKIRI_FOREST_11;
                     gSaveContext.nextCutsceneIndex = 0;
                     // Skip Mido complaining about dead Deku tree
                     Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH);
                 } else {
                     Item_Give(play, ITEM_KOKIRI_EMERALD);
-                    play->nextEntranceIndex = 0xEE;
+                    play->nextEntranceIndex = ENTR_KOKIRI_FOREST_0;
                     gSaveContext.nextCutsceneIndex = 0xFFF1;
                 }
             } else {
-                play->nextEntranceIndex = 0x457;
+                play->nextEntranceIndex = ENTR_KOKIRI_FOREST_11;
                 gSaveContext.nextCutsceneIndex = 0;
             }
-        } else if (play->sceneNum == SCENE_BDAN_BOSS) {
-            play->nextEntranceIndex = 0x10E;
+        } else if (play->sceneNum == SCENE_JABU_JABU_BOSS) {
+            play->nextEntranceIndex = ENTR_ZORAS_FOUNTAIN_0;
             gSaveContext.nextCutsceneIndex = 0;
         }
 
-        if (gSaveContext.n64ddFlag && (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
+        if (IS_RANDO && (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
             Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
             Entrance_OverrideBlueWarp();
         }
 
         osSyncPrintf("\n\n\nおわりおわり");
-        play->sceneLoadFlag = 0x14;
-        play->fadeTransition = 7;
-        gSaveContext.nextTransitionType = 3;
+        play->transitionTrigger = TRANS_TRIGGER_START;
+        play->transitionType = TRANS_TYPE_FADE_WHITE_SLOW;
+        gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
     }
 
     Math_StepToF(&this->unk_194, 2.0f, 0.01f);
@@ -636,7 +636,7 @@ void DoorWarp1_RutoWarpIdle(DoorWarp1* this, PlayState* play) {
 
     if (this->rutoWarpState != WARP_BLUE_RUTO_STATE_INITIAL && DoorWarp1_PlayerInRange(this, play)) {
 
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             GivePlayerRandoReward(this, GET_PLAYER(play), play, 1, 0);
             return;
         }
@@ -670,7 +670,7 @@ void func_80999EE0(DoorWarp1* this, PlayState* play) {
         Play_CameraSetAtEye(play, sRutoWarpSubCamId, &at, &eye);
         Play_CameraSetFov(play, sRutoWarpSubCamId, 90.0f);
         this->rutoWarpState = WARP_BLUE_RUTO_STATE_TALKING;
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             Message_StartTextbox(play, 0x4022, NULL);
         }
         DoorWarp1_SetupAction(this, func_80999FE4);
@@ -707,22 +707,22 @@ void DoorWarp1_RutoWarpOut(DoorWarp1* this, PlayState* play) {
         Flags_SetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP);
         Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY);
 
-        if (gSaveContext.n64ddFlag) {
-            play->nextEntranceIndex = 0x10E;
+        if (IS_RANDO) {
+            play->nextEntranceIndex = ENTR_ZORAS_FOUNTAIN_0;
             gSaveContext.nextCutsceneIndex = 0;
         } else {
             Item_Give(play, ITEM_ZORA_SAPPHIRE);
-            play->nextEntranceIndex = 0x10E;
+            play->nextEntranceIndex = ENTR_ZORAS_FOUNTAIN_0;
             gSaveContext.nextCutsceneIndex = 0xFFF0;
         }
 
-        if (gSaveContext.n64ddFlag && (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
+        if (IS_RANDO && (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
             Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
             Entrance_OverrideBlueWarp();
         }
 
-        play->sceneLoadFlag = 0x14;
-        play->fadeTransition = 7;
+        play->transitionTrigger = TRANS_TRIGGER_START;
+        play->transitionType = TRANS_TYPE_FADE_WHITE_SLOW;
     }
 
     Math_StepToF(&this->unk_194, 2.0f, 0.01f);
@@ -761,13 +761,13 @@ void DoorWarp1_AdultWarpIdle(DoorWarp1* this, PlayState* play) {
 
     if (DoorWarp1_PlayerInRange(this, play)) {
         // Heal player in Boss Rush
-        if (gSaveContext.isBossRush) {
+        if (IS_BOSS_RUSH) {
             BossRush_HandleBlueWarpHeal(play);
         }
 
         player = GET_PLAYER(play);
 
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             GivePlayerRandoReward(this, player, play, 0, 1);
             return;
         }
@@ -826,129 +826,129 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
     this->warpTimer++;
 
     if (this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF) {
-        if (gSaveContext.isBossRush) {
+        if (IS_BOSS_RUSH) {
             BossRush_HandleBlueWarp(play, this->actor.world.pos.x, this->actor.world.pos.z);
-        } else if (play->sceneNum == SCENE_MORIBOSSROOM) {
+        } else if (play->sceneNum == SCENE_FOREST_TEMPLE_BOSS) {
             if (!Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) {
                 Flags_SetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP);
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE);
 
-                if (gSaveContext.n64ddFlag) {
-                    play->nextEntranceIndex = 0x608;
+                if (IS_RANDO) {
+                    play->nextEntranceIndex = ENTR_SACRED_FOREST_MEADOW_3;
                     gSaveContext.nextCutsceneIndex = 0;
                 } else {
                     Item_Give(play, ITEM_MEDALLION_FOREST);
-                    play->nextEntranceIndex = 0x6B;
+                    play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                     gSaveContext.nextCutsceneIndex = 0;
                     gSaveContext.chamberCutsceneNum = CHAMBER_CS_FOREST;
                 }
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = 0x600;
+                    play->nextEntranceIndex = ENTR_SACRED_FOREST_MEADOW_2;
                 } else {
-                    play->nextEntranceIndex = 0x608;
+                    play->nextEntranceIndex = ENTR_SACRED_FOREST_MEADOW_3;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
-        } else if (play->sceneNum == SCENE_FIRE_BS) {
+        } else if (play->sceneNum == SCENE_FIRE_TEMPLE_BOSS) {
             if (!Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) {
                 Flags_SetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP);
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE);
 
-                if (gSaveContext.n64ddFlag) {
-                    play->nextEntranceIndex = 0x564;
+                if (IS_RANDO) {
+                    play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_5;
                     gSaveContext.nextCutsceneIndex = 0;
                     // Change Death Mountain cloud since we aren't warping to the cutscene
                     Flags_SetEventChkInf(EVENTCHKINF_DEATH_MOUNTAIN_ERUPTED);
                 } else {
                     Item_Give(play, ITEM_MEDALLION_FIRE);
-                    play->nextEntranceIndex = 0xDB;
+                    play->nextEntranceIndex = ENTR_KAKARIKO_VILLAGE_0;
                     gSaveContext.nextCutsceneIndex = 0xFFF3;
                 }
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = 0x4F6;
+                    play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_4;
                 } else {
-                    play->nextEntranceIndex = 0x564;
+                    play->nextEntranceIndex = ENTR_DEATH_MOUNTAIN_CRATER_5;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
-        } else if (play->sceneNum == SCENE_MIZUSIN_BS) {
+        } else if (play->sceneNum == SCENE_WATER_TEMPLE_BOSS) {
             if (!Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
                 Flags_SetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP);
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE);
 
-                if (gSaveContext.n64ddFlag) {
-                    play->nextEntranceIndex = 0x60C;
+                if (IS_RANDO) {
+                    play->nextEntranceIndex = ENTR_LAKE_HYLIA_9;
                     gSaveContext.nextCutsceneIndex = 0;
                     // Fill Lake Hylia since we aren't warping to the cutscene
                     Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
                 } else {
                     Item_Give(play, ITEM_MEDALLION_WATER);
-                    play->nextEntranceIndex = 0x6B;
+                    play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                     gSaveContext.nextCutsceneIndex = 0;
                     gSaveContext.chamberCutsceneNum = CHAMBER_CS_WATER;
                 }
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = 0x604;
+                    play->nextEntranceIndex = ENTR_LAKE_HYLIA_8;
                 } else {
-                    play->nextEntranceIndex = 0x60C;
+                    play->nextEntranceIndex = ENTR_LAKE_HYLIA_9;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
-        } else if (play->sceneNum == SCENE_JYASINBOSS) {
-            if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) || gSaveContext.n64ddFlag) {
+        } else if (play->sceneNum == SCENE_SPIRIT_TEMPLE_BOSS) {
+            if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) || IS_RANDO) {
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
 
-                if (gSaveContext.n64ddFlag) {
-                    play->nextEntranceIndex = 0x610;
+                if (IS_RANDO) {
+                    play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_8;
                     gSaveContext.nextCutsceneIndex = 0;
                 } else {
                     Item_Give(play, ITEM_MEDALLION_SPIRIT);
-                    play->nextEntranceIndex = 0x6B;
+                    play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                     gSaveContext.nextCutsceneIndex = 0;
                     gSaveContext.chamberCutsceneNum = CHAMBER_CS_SPIRIT;
                 }
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = 0x1F1;
+                    play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_5;
                 } else {
-                    play->nextEntranceIndex = 0x610;
+                    play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_8;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
-        } else if (play->sceneNum == SCENE_HAKADAN_BS) {
-            if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) || gSaveContext.n64ddFlag) {
+        } else if (play->sceneNum == SCENE_SHADOW_TEMPLE_BOSS) {
+            if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) || IS_RANDO) {
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
 
-                if (gSaveContext.n64ddFlag) {
-                    play->nextEntranceIndex = 0x580;
+                if (IS_RANDO) {
+                    play->nextEntranceIndex = ENTR_GRAVEYARD_8;
                     gSaveContext.nextCutsceneIndex = 0;
                 } else {
                     Item_Give(play, ITEM_MEDALLION_SHADOW);
-                    play->nextEntranceIndex = 0x6B;
+                    play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                     gSaveContext.nextCutsceneIndex = 0;
                     gSaveContext.chamberCutsceneNum = CHAMBER_CS_SHADOW;
                 }
             } else {
                 if (!LINK_IS_ADULT) {
-                    play->nextEntranceIndex = 0x568;
+                    play->nextEntranceIndex = ENTR_GRAVEYARD_7;
                 } else {
-                    play->nextEntranceIndex = 0x580;
+                    play->nextEntranceIndex = ENTR_GRAVEYARD_8;
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
         }
 
-        if (gSaveContext.n64ddFlag && (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
+        if (IS_RANDO && (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
             Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
             Entrance_OverrideBlueWarp();
         }
 
-        play->sceneLoadFlag = 0x14;
-        play->fadeTransition = 3;
-        gSaveContext.nextTransitionType = 7;
+        play->transitionTrigger = TRANS_TRIGGER_START;
+        play->transitionType = TRANS_TYPE_FADE_WHITE;
+        gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE_SLOW;
     }
     if (this->warpTimer >= 141) {
         f32 screenFillAlpha;

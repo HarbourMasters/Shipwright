@@ -734,20 +734,147 @@ static u16 D_8082ABEC[] = {
 };
 
 u8 gSlotAgeReqs[] = {
-    1, 9, 9, 0, 0, 9, 1, 9, 9, 0, 0, 9, 1, 9, 1, 0, 0, 9, 9, 9, 9, 9, 0, 1,
+    AGE_REQ_CHILD,  // SLOT_DEKU_STICK
+    AGE_REQ_NONE,   // SLOT_DEKU_NUT
+    AGE_REQ_NONE,   // SLOT_BOMB
+    AGE_REQ_ADULT,  // SLOT_BOW
+    AGE_REQ_ADULT,  // SLOT_ARROW_FIRE
+    AGE_REQ_NONE,   // SLOT_DINS_FIRE
+    AGE_REQ_CHILD,  // SLOT_SLINGSHOT
+    AGE_REQ_NONE,   // SLOT_OCARINA
+    AGE_REQ_NONE,   // SLOT_BOMBCHU
+    AGE_REQ_ADULT,  // SLOT_HOOKSHOT
+    AGE_REQ_ADULT,  // SLOT_ARROW_ICE
+    AGE_REQ_NONE,   // SLOT_FARORES_WIND
+    AGE_REQ_CHILD,  // SLOT_BOOMERANG
+    AGE_REQ_NONE,   // SLOT_LENS_OF_TRUTH
+    AGE_REQ_CHILD,  // SLOT_MAGIC_BEAN
+    AGE_REQ_ADULT,  // SLOT_HAMMER
+    AGE_REQ_ADULT,  // SLOT_ARROW_LIGHT
+    AGE_REQ_NONE,   // SLOT_NAYRUS_LOVE
+    AGE_REQ_NONE,   // SLOT_BOTTLE_1
+    AGE_REQ_NONE,   // SLOT_BOTTLE_2
+    AGE_REQ_NONE,   // SLOT_BOTTLE_3
+    AGE_REQ_NONE,   // SLOT_BOTTLE_4
+    AGE_REQ_ADULT,  // SLOT_TRADE_ADULT
+    AGE_REQ_CHILD,  // SLOT_TRADE_CHILD
 };
 
 u8 gEquipAgeReqs[][4] = {
-    { 0, 1, 0, 0 },
-    { 9, 1, 9, 0 },
-    { 0, 9, 0, 0 },
-    { 9, 9, 0, 0 },
+    {
+        AGE_REQ_ADULT,  // 0 UPG_QUIVER
+        AGE_REQ_CHILD,  // EQUIP_TYPE_SWORD EQUIP_VALUE_SWORD_KOKIRI
+        AGE_REQ_ADULT,  // EQUIP_TYPE_SWORD EQUIP_VALUE_SWORD_MASTER
+        AGE_REQ_ADULT   // EQUIP_TYPE_SWORD EQUIP_VALUE_SWORD_BIGGORON
+    },
+    {
+        AGE_REQ_NONE,   // 0 UPG_BOMB_BAG
+        AGE_REQ_CHILD,  // EQUIP_TYPE_SHIELD EQUIP_VALUE_SHIELD_DEKU
+        AGE_REQ_NONE,   // EQUIP_TYPE_SHIELD EQUIP_VALUE_SHIELD_HYLIAN
+        AGE_REQ_ADULT   // EQUIP_TYPE_SHIELD EQUIP_VALUE_SHIELD_MIRROR
+    },
+    {
+        AGE_REQ_ADULT,  // 0 UPG_STRENGTH
+        AGE_REQ_NONE,   // EQUIP_TYPE_TUNIC EQUIP_VALUE_TUNIC_KOKIRI
+        AGE_REQ_ADULT,  // EQUIP_TYPE_TUNIC EQUIP_VALUE_TUNIC_GORON
+        AGE_REQ_ADULT   // EQUIP_TYPE_TUNIC EQUIP_VALUE_TUNIC_ZORA
+    },
+    {
+        AGE_REQ_NONE,   // 0 UPG_SCALE
+        AGE_REQ_NONE,   // EQUIP_TYPE_BOOTS EQUIP_VALUE_BOOTS_KOKIRI
+        AGE_REQ_ADULT,  // EQUIP_TYPE_BOOTS EQUIP_VALUE_BOOTS_IRON
+        AGE_REQ_ADULT   // EQUIP_TYPE_BOOTS EQUIP_VALUE_BOOTS_HOVER
+    },
+
 };
 
 u8 gItemAgeReqs[] = {
-    1, 9, 9, 0, 0, 9, 1, 9, 9, 9, 0, 0, 0, 9, 1, 9, 1, 0, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-    9, 9, 9, 9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 1, 9, 0, 9, 0, 0, 9, 0, 0, 1, 1, 1, 0, 0, 0, 9, 9, 9, 1, 0, 0, 9, 9, 0,
+    AGE_REQ_CHILD,  // ITEM_DEKU_STICK
+    AGE_REQ_NONE,   // ITEM_DEKU_NUT
+    AGE_REQ_NONE,   // ITEM_BOMB
+    AGE_REQ_ADULT,  // ITEM_BOW
+    AGE_REQ_ADULT,  // ITEM_ARROW_FIRE
+    AGE_REQ_NONE,   // ITEM_DINS_FIRE
+    AGE_REQ_CHILD,  // ITEM_SLINGSHOT
+    AGE_REQ_NONE,   // ITEM_OCARINA_FAIRY
+    AGE_REQ_NONE,   // ITEM_OCARINA_OF_TIME
+    AGE_REQ_NONE,   // ITEM_BOMBCHU
+    AGE_REQ_ADULT,  // ITEM_HOOKSHOT
+    AGE_REQ_ADULT,  // ITEM_LONGSHOT
+    AGE_REQ_ADULT,  // ITEM_ARROW_ICE
+    AGE_REQ_NONE,   // ITEM_FARORES_WIND
+    AGE_REQ_CHILD,  // ITEM_BOOMERANG
+    AGE_REQ_NONE,   // ITEM_LENS_OF_TRUTH
+    AGE_REQ_CHILD,  // ITEM_MAGIC_BEAN
+    AGE_REQ_ADULT,  // ITEM_HAMMER
+    AGE_REQ_ADULT,  // ITEM_ARROW_LIGHT
+    AGE_REQ_NONE,   // ITEM_NAYRUS_LOVE
+    AGE_REQ_NONE,   // ITEM_BOTTLE_EMPTY
+    AGE_REQ_NONE,   // ITEM_BOTTLE_POTION_RED
+    AGE_REQ_NONE,   // ITEM_BOTTLE_POTION_GREEN
+    AGE_REQ_NONE,   // ITEM_BOTTLE_POTION_BLUE
+    AGE_REQ_NONE,   // ITEM_BOTTLE_FAIRY
+    AGE_REQ_NONE,   // ITEM_BOTTLE_FISH
+    AGE_REQ_NONE,   // ITEM_BOTTLE_MILK_FULL
+    AGE_REQ_NONE,   // ITEM_BOTTLE_RUTOS_LETTER
+    AGE_REQ_NONE,   // ITEM_BOTTLE_BLUE_FIRE
+    AGE_REQ_NONE,   // ITEM_BOTTLE_BUG
+    AGE_REQ_NONE,   // ITEM_BOTTLE_BIG_POE
+    AGE_REQ_NONE,   // ITEM_BOTTLE_MILK_HALF
+    AGE_REQ_NONE,   // ITEM_BOTTLE_POE
+    AGE_REQ_CHILD,  // ITEM_WEIRD_EGG
+    AGE_REQ_CHILD,  // ITEM_CHICKEN
+    AGE_REQ_CHILD,  // ITEM_ZELDAS_LETTER
+    AGE_REQ_CHILD,  // ITEM_MASK_KEATON
+    AGE_REQ_CHILD,  // ITEM_MASK_SKULL
+    AGE_REQ_CHILD,  // ITEM_MASK_SPOOKY
+    AGE_REQ_CHILD,  // ITEM_MASK_BUNNY_HOOD
+    AGE_REQ_CHILD,  // ITEM_MASK_GORON
+    AGE_REQ_CHILD,  // ITEM_MASK_ZORA
+    AGE_REQ_CHILD,  // ITEM_MASK_GERUDO
+    AGE_REQ_CHILD,  // ITEM_MASK_TRUTH
+    AGE_REQ_CHILD,  // ITEM_SOLD_OUT
+    AGE_REQ_ADULT,  // ITEM_POCKET_EGG
+    AGE_REQ_ADULT,  // ITEM_POCKET_CUCCO
+    AGE_REQ_ADULT,  // ITEM_COJIRO
+    AGE_REQ_ADULT,  // ITEM_ODD_MUSHROOM
+    AGE_REQ_ADULT,  // ITEM_ODD_POTION
+    AGE_REQ_ADULT,  // ITEM_POACHERS_SAW
+    AGE_REQ_ADULT,  // ITEM_BROKEN_GORONS_SWORD
+    AGE_REQ_ADULT,  // ITEM_PRESCRIPTION
+    AGE_REQ_ADULT,  // ITEM_EYEBALL_FROG
+    AGE_REQ_ADULT,  // ITEM_EYE_DROPS
+    AGE_REQ_ADULT,  // ITEM_CLAIM_CHECK
+    AGE_REQ_ADULT,  // ITEM_BOW_FIRE
+    AGE_REQ_ADULT,  // ITEM_BOW_ICE
+    AGE_REQ_ADULT,  // ITEM_BOW_LIGHT
+    AGE_REQ_CHILD,  // ITEM_SWORD_KOKIRI
+    AGE_REQ_ADULT,  // ITEM_SWORD_MASTER
+    AGE_REQ_ADULT,  // ITEM_SWORD_BIGGORON
+    AGE_REQ_CHILD,  // ITEM_SHIELD_DEKU
+    AGE_REQ_NONE,   // ITEM_SHIELD_HYLIAN
+    AGE_REQ_ADULT,  // ITEM_SHIELD_MIRROR
+    AGE_REQ_NONE,   // ITEM_TUNIC_KOKIRI
+    AGE_REQ_ADULT,  // ITEM_TUNIC_GORON
+    AGE_REQ_ADULT,  // ITEM_TUNIC_ZORA
+    AGE_REQ_NONE,   // ITEM_BOOTS_KOKIRI
+    AGE_REQ_ADULT,  // ITEM_BOOTS_IRON
+    AGE_REQ_ADULT,  // ITEM_BOOTS_HOVER
+    AGE_REQ_CHILD,  // ITEM_BULLET_BAG_30
+    AGE_REQ_CHILD,  // ITEM_BULLET_BAG_40
+    AGE_REQ_CHILD,  // ITEM_BULLET_BAG_50
+    AGE_REQ_ADULT,  // ITEM_QUIVER_30
+    AGE_REQ_ADULT,  // ITEM_QUIVER_40
+    AGE_REQ_ADULT,  // ITEM_QUIVER_50
+    AGE_REQ_NONE,   // ITEM_BOMB_BAG_20
+    AGE_REQ_NONE,   // ITEM_BOMB_BAG_30
+    AGE_REQ_NONE,   // ITEM_BOMB_BAG_40
+    AGE_REQ_CHILD,  // ITEM_STRENGTH_GORONS_BRACELET
+    AGE_REQ_ADULT,  // ITEM_STRENGTH_SILVER_GAUNTLETS
+    AGE_REQ_ADULT,  // ITEM_STRENGTH_GOLD_GAUNTLETS
+    AGE_REQ_NONE,   // ITEM_SCALE_SILVER
+    AGE_REQ_NONE,   // ITEM_SCALE_GOLDEN
+    AGE_REQ_ADULT,  // ITEM_GIANTS_KNIFE
 };
 
 u8 gAreaGsFlags[] = {
@@ -1078,6 +1205,8 @@ Gfx* KaleidoScope_DrawPageSections(Gfx* gfx, Vtx* vertices, void** textures) {
     return gfx;
 }
 
+static uint8_t mapBlendMask[MAP_48x85_TEX_WIDTH * MAP_48x85_TEX_HEIGHT];
+
 void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
     static Color_RGB8 D_8082ACF4[12] = {
         { 0, 0, 0 }, { 0, 0, 0 },     { 0, 0, 0 },    { 0, 0, 0 }, { 255, 255, 0 }, { 0, 0, 0 },
@@ -1245,6 +1374,10 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 D_8082AD50 = 0;
             }
         }
+
+        // Need to invalidate the blend mask every frame. Ideally this would be done in KaleidoScope_DrawDungeonMap
+        // but the reference is not shared between files
+        gSPInvalidateTexCache(POLY_KAL_DISP++, mapBlendMask);
 
         if (pauseCtx->pageIndex) { // pageIndex != PAUSE_ITEM
             gDPPipeSync(OVERLAY_DISP++);
@@ -1514,7 +1647,7 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
                 gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
-                if (!gSaveContext.isBossRush) {
+                if (!IS_BOSS_RUSH) {
                     POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(
                         POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][0], 48, 16, 12);
                 } else {
@@ -1867,7 +2000,7 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
                 gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
                 gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 0);
 
-                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gGoldSkulltulaIconTex, 24, 24, 0);
+                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gQuestIconGoldSkulltulaTex, 24, 24, 0);
             }
         }
     } else if ((pauseCtx->unk_1E4 < 3) || (pauseCtx->unk_1E4 == 7) || (pauseCtx->unk_1E4 == 8)) {
@@ -1928,7 +2061,7 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
             }
         } else {
             bool pauseAnyCursor =
-                (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && gSaveContext.n64ddFlag) ||
+                (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
                 (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
             if (!pauseCtx->pageIndex && (!pauseAnyCursor || (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE))) { // pageIndex == PAUSE_ITEM
                 pauseCtx->infoPanelVtx[16].v.ob[0] = pauseCtx->infoPanelVtx[18].v.ob[0] =
@@ -2066,7 +2199,7 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
 void KaleidoScope_UpdateNamePanel(PlayState* play) {
     PauseContext* pauseCtx = &play->pauseCtx;
     u16 sp2A;
-    bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && gSaveContext.n64ddFlag) ||
+    bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
                           (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
 
     if ((pauseCtx->namedItem != pauseCtx->cursorItem[pauseCtx->pageIndex]) ||
@@ -3188,13 +3321,118 @@ void KaleidoScope_UpdateCursorSize(PauseContext* pauseCtx) {
     pauseCtx->cursorVtx[14].v.ob[1] = pauseCtx->cursorVtx[15].v.ob[1] = pauseCtx->cursorVtx[12].v.ob[1] - 16;
 }
 
+// Modifed map texture buffers for registered blend effects and the room indicator color
+static uint8_t mapLeftTexModified[MAP_48x85_TEX_SIZE];
+static uint8_t mapRightTexModified[MAP_48x85_TEX_SIZE];
+static uint8_t* mapLeftTexModifiedRaw = NULL;
+static uint8_t* mapRightTexModifiedRaw = NULL;
+
+// Load dungeon maps into the interface context
+// SoH [General] - Modified to account for our resource system and HD textures
 void KaleidoScope_LoadDungeonMap(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
 
+    // Free old textures
+    if (mapLeftTexModifiedRaw != NULL) {
+        free(mapLeftTexModifiedRaw);
+        mapLeftTexModifiedRaw = NULL;
+    }
+    if (mapRightTexModifiedRaw != NULL) {
+        free(mapRightTexModifiedRaw);
+        mapRightTexModifiedRaw = NULL;
+    }
+
+    // Unload original textures to bypass cache result for lookups
+    ResourceMgr_UnloadOriginalWhenAltExists(sDungeonMapTexs[R_MAP_TEX_INDEX]);
+    ResourceMgr_UnloadOriginalWhenAltExists(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]);
+
     interfaceCtx->mapSegmentName[0] = sDungeonMapTexs[R_MAP_TEX_INDEX];
     interfaceCtx->mapSegmentName[1] = sDungeonMapTexs[R_MAP_TEX_INDEX + 1];
-    interfaceCtx->mapSegment[0] = ResourceGetDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX]);
-    interfaceCtx->mapSegment[1] = ResourceGetDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]);
+
+    // When the texture is HD (raw) we need to copy a dynamic amount of data
+    // Otherwise the original asset has a static size
+    if (ResourceMgr_TexIsRaw(interfaceCtx->mapSegmentName[0])) {
+        u32 width = ResourceGetTexWidthByName(interfaceCtx->mapSegmentName[0]);
+        u32 height = ResourceGetTexHeightByName(interfaceCtx->mapSegmentName[0]);
+        size_t size = (width * height) / 2; // account for CI4 size
+
+        // Resource size being larger than the calculated CI size means it is most likely not a CI4 texture
+        // Abort early end undo the blended effect by clearing the mask to avoid crashing
+        if (size < ResourceGetTexSizeByName(interfaceCtx->mapSegmentName[0])) {
+            if (mapBlendMask[0] != 0) {
+                for (size_t i = 0; i < ARRAY_COUNT(mapBlendMask); i++) {
+                    mapBlendMask[i] = 0;
+                }
+            }
+
+            interfaceCtx->mapSegment[0] = NULL;
+            interfaceCtx->mapSegment[1] = NULL;
+
+            Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapBlendMask, NULL);
+            Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapBlendMask, NULL);
+            return;
+        }
+
+        u8* map1TexRaw = ResourceGetDataByName(interfaceCtx->mapSegmentName[0]);
+        u8* map2TexRaw = ResourceGetDataByName(interfaceCtx->mapSegmentName[1]);
+
+        mapLeftTexModifiedRaw = malloc(size);
+        mapRightTexModifiedRaw = malloc(size);
+
+        memcpy(mapLeftTexModifiedRaw, map1TexRaw, size);
+        memcpy(mapRightTexModifiedRaw, map2TexRaw, size);
+
+        interfaceCtx->mapSegment[0] = mapLeftTexModifiedRaw;
+        interfaceCtx->mapSegment[1] = mapRightTexModifiedRaw;
+    } else {
+        u8* map1Tex = ResourceGetDataByName(interfaceCtx->mapSegmentName[0]);
+        u8* map2Tex = ResourceGetDataByName(interfaceCtx->mapSegmentName[1]);
+
+        memcpy(mapLeftTexModified, map1Tex, MAP_48x85_TEX_SIZE);
+        memcpy(mapRightTexModified, map2Tex, MAP_48x85_TEX_SIZE);
+
+        interfaceCtx->mapSegment[0] = mapLeftTexModified;
+        interfaceCtx->mapSegment[1] = mapRightTexModified;
+    }
+
+    // Mark and register the blend mask for the copied textures
+    if (mapBlendMask[0] != 1) {
+        for (size_t i = 0; i < ARRAY_COUNT(mapBlendMask); i++) {
+            mapBlendMask[i] = 1;
+        }
+    }
+
+    Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapBlendMask, interfaceCtx->mapSegment[0]);
+    Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapBlendMask, interfaceCtx->mapSegment[1]);
+}
+
+static uint8_t registeredDungeonMapTextureHook = false;
+
+void KaleidoScope_RegisterUpdatedDungeonMapTexture() {
+    if (gPlayState == NULL) {
+        return;
+    }
+
+    PauseContext* pauseCtx = &gPlayState->pauseCtx;
+
+    // Kaleido is not open in a dungeon so there is nothing to do
+    if (R_PAUSE_MENU_MODE < 3 || pauseCtx->state < 4 || pauseCtx->state > 7 || !sInDungeonScene) {
+        return;
+    }
+
+    KaleidoScope_UpdateDungeonMap(gPlayState);
+
+    // KaleidoScope_UpdateDungeonMap will update the palette index for the current floor if the cursor is on the floor
+    // If the player toggles alt assets while the cursor is not in the floor level, then we handle the palette index here
+    if (gPlayState->sceneNum >= SCENE_DEKU_TREE && gPlayState->sceneNum <= SCENE_TREASURE_BOX_SHOP &&
+        (VREG(30) + 3) == pauseCtx->dungeonMapSlot && (VREG(30) + 3) != pauseCtx->cursorPoint[PAUSE_MAP]) {
+
+        InterfaceContext* interfaceCtx = &gPlayState->interfaceCtx;
+        int32_t size = ResourceGetTexSizeByName(interfaceCtx->mapSegmentName[0]);
+
+        KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[0], size, interfaceCtx->mapPaletteIndex, 14);
+        KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[1], size, interfaceCtx->mapPaletteIndex, 14);
+    }
 }
 
 void KaleidoScope_UpdateDungeonMap(PlayState* play) {
@@ -3206,18 +3444,28 @@ void KaleidoScope_UpdateDungeonMap(PlayState* play) {
     KaleidoScope_LoadDungeonMap(play);
     Map_SetFloorPalettesData(play, pauseCtx->dungeonMapSlot - 3);
 
-    if ((play->sceneNum >= SCENE_YDAN) && (play->sceneNum <= SCENE_TAKARAYA)) {
+    s32 size = MAP_48x85_TEX_SIZE;
+
+    if (ResourceMgr_TexIsRaw(interfaceCtx->mapSegmentName[0])) {
+        size = ResourceGetTexSizeByName(interfaceCtx->mapSegmentName[0]);
+    }
+
+    if ((play->sceneNum >= SCENE_DEKU_TREE) && (play->sceneNum <= SCENE_TREASURE_BOX_SHOP)) {
         if ((VREG(30) + 3) == pauseCtx->cursorPoint[PAUSE_MAP]) {
-            // HDTODO: Handle Runtime Modified Textures (HD)
-            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[0], 2040, interfaceCtx->mapPaletteIndex, 14);
+            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[0], size, interfaceCtx->mapPaletteIndex, 14);
         }
     }
 
-    if ((play->sceneNum >= SCENE_YDAN) && (play->sceneNum <= SCENE_TAKARAYA)) {
+    if ((play->sceneNum >= SCENE_DEKU_TREE) && (play->sceneNum <= SCENE_TREASURE_BOX_SHOP)) {
         if ((VREG(30) + 3) == pauseCtx->cursorPoint[PAUSE_MAP]) {
-            // HDTODO: Handle Runtime Modified Textures (HD)
-            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[1], 2040, interfaceCtx->mapPaletteIndex, 14);
+            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[1], size, interfaceCtx->mapPaletteIndex, 14);
         }
+    }
+
+    // Register alt listener to update the blended dungeon map textures on alt toggle
+    if (!registeredDungeonMapTextureHook) {
+        registeredDungeonMapTextureHook = true;
+        GameInteractor_RegisterOnAssetAltChange(KaleidoScope_RegisterUpdatedDungeonMapTexture);
     }
 }
 
@@ -3300,24 +3548,24 @@ void KaleidoScope_Update(PlayState* play)
 #endif
 
             switch (play->sceneNum) {
-                case SCENE_YDAN:
-                case SCENE_DDAN:
-                case SCENE_BDAN:
-                case SCENE_BMORI1:
-                case SCENE_HIDAN:
-                case SCENE_MIZUSIN:
-                case SCENE_JYASINZOU:
-                case SCENE_HAKADAN:
-                case SCENE_HAKADANCH:
-                case SCENE_ICE_DOUKUTO:
-                case SCENE_YDAN_BOSS:
-                case SCENE_DDAN_BOSS:
-                case SCENE_BDAN_BOSS:
-                case SCENE_MORIBOSSROOM:
-                case SCENE_FIRE_BS:
-                case SCENE_MIZUSIN_BS:
-                case SCENE_JYASINBOSS:
-                case SCENE_HAKADAN_BS:
+                case SCENE_DEKU_TREE:
+                case SCENE_DODONGOS_CAVERN:
+                case SCENE_JABU_JABU:
+                case SCENE_FOREST_TEMPLE:
+                case SCENE_FIRE_TEMPLE:
+                case SCENE_WATER_TEMPLE:
+                case SCENE_SPIRIT_TEMPLE:
+                case SCENE_SHADOW_TEMPLE:
+                case SCENE_BOTTOM_OF_THE_WELL:
+                case SCENE_ICE_CAVERN:
+                case SCENE_DEKU_TREE_BOSS:
+                case SCENE_DODONGOS_CAVERN_BOSS:
+                case SCENE_JABU_JABU_BOSS:
+                case SCENE_FOREST_TEMPLE_BOSS:
+                case SCENE_FIRE_TEMPLE_BOSS:
+                case SCENE_WATER_TEMPLE_BOSS:
+                case SCENE_SPIRIT_TEMPLE_BOSS:
+                case SCENE_SHADOW_TEMPLE_BOSS:
 #if 1
                     sInDungeonScene = true;
                     //size2 = (uintptr_t)_icon_item_dungeon_staticSegmentRomEnd - (uintptr_t)_icon_item_dungeon_staticSegmentRomStart;
@@ -3424,7 +3672,7 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[3] = 1;
             }
 
-            if (CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1)) {
+            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON)) {
                 pauseCtx->worldMapPoints[3] = 2;
             }
 
@@ -3578,7 +3826,7 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[11] = 2;
             }
 
-            if (CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1)) {
+            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, EQUIP_INV_BOOTS_IRON)) {
                 pauseCtx->worldMapPoints[11] = 1;
             }
 
@@ -3651,12 +3899,10 @@ void KaleidoScope_Update(PlayState* play)
                 case 0:
                     // Boss Rush skips past the "Save?" window when pressing B while paused.
                     if (CHECK_BTN_ALL(input->press.button, BTN_START) ||
-                        (CHECK_BTN_ALL(input->press.button, BTN_B) && gSaveContext.isBossRush)) {
+                        (CHECK_BTN_ALL(input->press.button, BTN_B) && IS_BOSS_RUSH)) {
                         if (CVarGetInteger("gCheatEasyPauseBufferEnabled", 0) || CVarGetInteger("gCheatEasyInputBufferingEnabled", 0)) {
-                            CVarSetInteger("gPauseBufferBlockInputFrame", 9);
-                        }
-                        if (CVarGetInteger("gCheatEasyPauseBufferEnabled", 0)) {
-                            CVarSetInteger("gCheatEasyPauseBufferFrameAdvance", 13);
+                            // Easy pause buffer is 13 frames, 12 for kaledio to end, and one more to advance a single frame
+                            CVarSetInteger("gCheatEasyPauseBufferTimer", 13);
                         }
                         Interface_SetDoAction(play, DO_ACTION_NONE);
                         pauseCtx->state = 0x12;
@@ -4037,7 +4283,7 @@ void KaleidoScope_Update(PlayState* play)
                 VREG(88) = 66;
                 WREG(2) = 0;
                 pauseCtx->alpha = 255;
-                if (!gSaveContext.isBossRush) {
+                if (!IS_BOSS_RUSH) {
                     pauseCtx->state = 0xE;
                 } else {
                     pauseCtx->state = 0xF;
@@ -4085,59 +4331,59 @@ void KaleidoScope_Update(PlayState* play)
 
         case 0x10:
             if (CHECK_BTN_ALL(input->press.button, BTN_A) || CHECK_BTN_ALL(input->press.button, BTN_START)) {
-                if (pauseCtx->promptChoice == 0 && !gSaveContext.isBossRush) {
+                if (pauseCtx->promptChoice == 0 && !IS_BOSS_RUSH) {
                     Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
                     Play_SaveSceneFlags(play);
 
                     switch (gSaveContext.entranceIndex) {
-                        case 0x0000:
-                        case 0x0004:
-                        case 0x0028:
-                        case 0x0169:
-                        case 0x0165:
-                        case 0x0010:
-                        case 0x0082:
-                        case 0x0037:
-                        case 0x041B:
-                        case 0x0008:
-                        case 0x0088:
-                        case 0x0486:
-                        case 0x0098:
-                        case 0x0467:
-                        case 0x0179:
+                        case ENTR_DEKU_TREE_0:
+                        case ENTR_DODONGOS_CAVERN_0:
+                        case ENTR_JABU_JABU_0:
+                        case ENTR_FOREST_TEMPLE_0:
+                        case ENTR_FIRE_TEMPLE_0:
+                        case ENTR_WATER_TEMPLE_0:
+                        case ENTR_SPIRIT_TEMPLE_0:
+                        case ENTR_SHADOW_TEMPLE_0:
+                        case ENTR_GANONS_TOWER_0:
+                        case ENTR_GERUDO_TRAINING_GROUND_0:
+                        case ENTR_ICE_CAVERN_0:
+                        case ENTR_THIEVES_HIDEOUT_0:
+                        case ENTR_BOTTOM_OF_THE_WELL_0:
+                        case ENTR_INSIDE_GANONS_CASTLE_0:
+                        case ENTR_GANONS_TOWER_COLLAPSE_INTERIOR_0:
                             break;
-                        case 0x040F:
-                            gSaveContext.entranceIndex = 0x0000;
+                        case ENTR_DEKU_TREE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_DEKU_TREE_0;
                             break;
-                        case 0x040B:
-                            gSaveContext.entranceIndex = 0x0004;
+                        case ENTR_DODONGOS_CAVERN_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_0;
                             break;
-                        case 0x0301:
-                            gSaveContext.entranceIndex = 0x0028;
+                        case ENTR_JABU_JABU_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_JABU_JABU_0;
                             break;
-                        case 0x000C:
-                            gSaveContext.entranceIndex = 0x0169;
+                        case ENTR_FOREST_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_0;
                             break;
-                        case 0x0305:
-                            gSaveContext.entranceIndex = 0x0165;
+                        case ENTR_FIRE_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_0;
                             break;
-                        case 0x0417:
-                            gSaveContext.entranceIndex = 0x0010;
+                        case ENTR_WATER_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_0;
                             break;
-                        case 0x008D:
-                            gSaveContext.entranceIndex = 0x0082;
+                        case ENTR_SPIRIT_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_0;
                             break;
-                        case 0x0413:
-                            gSaveContext.entranceIndex = 0x0037;
+                        case ENTR_SHADOW_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_0;
                             break;
-                        case 0x041F:
-                            gSaveContext.entranceIndex = 0x041B;
+                        case ENTR_GANONDORF_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0;
                             break;
                     }
 
                     // In ER, handle overriding the game over respawn entrance
-                    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+                    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                         Entrance_SetGameOverEntrance();
                     }
                 } else {
@@ -4158,19 +4404,21 @@ void KaleidoScope_Update(PlayState* play)
                     R_PAUSE_MENU_MODE = 0;
                     func_800981B8(&play->objectCtx);
                     func_800418D0(&play->colCtx, play);
-                    if (pauseCtx->promptChoice == 0 && !gSaveContext.isBossRush) {
+                    if (pauseCtx->promptChoice == 0 && !IS_BOSS_RUSH) {
                         Play_TriggerRespawn(play);
                         gSaveContext.respawnFlag = -2;
                         // In ER, handle death warp to last entrance from grottos
-                        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+                        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                             Grotto_ForceGrottoReturn();
                         }
-                        gSaveContext.nextTransitionType = 2;
+                        // Reset frame counter to prevent autosave on respawn
+                        play->gameplayFrames = 0;
+                        gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
                         gSaveContext.health = CVarGetInteger("gFullHealthSpawn", 0) ? gSaveContext.healthCapacity : 0x30;
                         Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
                         gSaveContext.healthAccumulator = 0;
-                        gSaveContext.magicState = 0;
-                        gSaveContext.prevMagicState = 0;
+                        gSaveContext.magicState = MAGIC_STATE_IDLE;
+                        gSaveContext.prevMagicState = MAGIC_STATE_IDLE;
                         osSyncPrintf(VT_FGCOL(YELLOW));
                         osSyncPrintf("MAGIC_NOW=%d ", gSaveContext.magic);
                         osSyncPrintf("Z_MAGIC_NOW_NOW=%d   →  ", gSaveContext.magicFillTarget);
@@ -4182,7 +4430,6 @@ void KaleidoScope_Update(PlayState* play)
                         osSyncPrintf(VT_RST);
                     } else {
                         play->state.running = 0;
-                        gSaveContext.isBossRush = false;
                         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
                         GameInteractor_ExecuteOnExitGame(gSaveContext.fileNum);
                     }
@@ -4225,24 +4472,24 @@ void KaleidoScope_Update(PlayState* play)
             func_800418D0(&play->colCtx, play);
 
             switch (play->sceneNum) {
-                case SCENE_YDAN:
-                case SCENE_DDAN:
-                case SCENE_BDAN:
-                case SCENE_BMORI1:
-                case SCENE_HIDAN:
-                case SCENE_MIZUSIN:
-                case SCENE_JYASINZOU:
-                case SCENE_HAKADAN:
-                case SCENE_HAKADANCH:
-                case SCENE_ICE_DOUKUTO:
-                case SCENE_YDAN_BOSS:
-                case SCENE_DDAN_BOSS:
-                case SCENE_BDAN_BOSS:
-                case SCENE_MORIBOSSROOM:
-                case SCENE_FIRE_BS:
-                case SCENE_MIZUSIN_BS:
-                case SCENE_JYASINBOSS:
-                case SCENE_HAKADAN_BS:
+                case SCENE_DEKU_TREE:
+                case SCENE_DODONGOS_CAVERN:
+                case SCENE_JABU_JABU:
+                case SCENE_FOREST_TEMPLE:
+                case SCENE_FIRE_TEMPLE:
+                case SCENE_WATER_TEMPLE:
+                case SCENE_SPIRIT_TEMPLE:
+                case SCENE_SHADOW_TEMPLE:
+                case SCENE_BOTTOM_OF_THE_WELL:
+                case SCENE_ICE_CAVERN:
+                case SCENE_DEKU_TREE_BOSS:
+                case SCENE_DODONGOS_CAVERN_BOSS:
+                case SCENE_JABU_JABU_BOSS:
+                case SCENE_FOREST_TEMPLE_BOSS:
+                case SCENE_FIRE_TEMPLE_BOSS:
+                case SCENE_WATER_TEMPLE_BOSS:
+                case SCENE_SPIRIT_TEMPLE_BOSS:
+                case SCENE_SHADOW_TEMPLE_BOSS:
                     Map_InitData(play, play->interfaceCtx.mapRoomNum);
                     break;
             }
@@ -4250,6 +4497,9 @@ void KaleidoScope_Update(PlayState* play)
             for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
                 gSaveContext.buttonStatus[buttonIndex] = sButtonStatusSave[buttonIndex];
             }
+
+            // Used to clear swordless temp B after unpause so minigame/epona handling restarts
+            Interface_RandoRestoreSwordless();
 
             interfaceCtx->unk_1FA = interfaceCtx->unk_1FC = 0;
             osSyncPrintf(VT_FGCOL(YELLOW));

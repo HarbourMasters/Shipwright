@@ -21,7 +21,7 @@ void EnPartner_Draw(Actor* thisx, PlayState* play);
 void EnPartner_SpawnSparkles(EnPartner* this, PlayState* play, s32 sparkleLife);
 
 void func_808328EC(Player* this, u16 sfxId);
-void func_808429B4(PlayState* play, s32 speed, s32 y, s32 countdown);
+void Player_RequestQuake(PlayState* play, s32 speed, s32 y, s32 countdown);
 s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play);
 
 static InitChainEntry sInitChain[] = {
@@ -195,7 +195,7 @@ void UseBow(Actor* thisx, PlayState* play, u8 started, u8 arrowType) {
     } else if (started == 0) {
         if (this->itemTimer <= 0) {
             if (AMMO(ITEM_BOW) > 0) {
-                if (arrowType >= 1 && !func_80087708(play, magicArrowCosts[arrowType], 0)) {
+                if (arrowType >= 1 && !Magic_RequestChange(play, magicArrowCosts[arrowType], MAGIC_CONSUME_NOW)) {
                     func_80078884(NA_SE_SY_ERROR);
                     this->canMove = 1;
                     return;
@@ -278,8 +278,8 @@ void UseHammer(Actor* thisx, PlayState* play, u8 started) {
             static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
             Vec3f shockwavePos = this->actor.world.pos;
 
-            func_808429B4(play, 27767, 7, 20);
-            func_8002F7DC(&this->actor, NA_SE_IT_HAMMER_HIT);
+            Player_RequestQuake(play, 27767, 7, 20);
+            Player_PlaySfx(&this->actor, NA_SE_IT_HAMMER_HIT);
 
             EffectSsBlast_SpawnWhiteShockwave(play, &shockwavePos, &zeroVec, &zeroVec);
 
@@ -455,7 +455,7 @@ void UseSpell(Actor* thisx, PlayState* play, u8 started, u8 spellType) {
 
         if (started == 0 && this->usedSpell != 0) {
             this->itemTimer = 10;
-            gSaveContext.magicState = 5;
+            gSaveContext.magicState = MAGIC_STATE_RESET;
 
             switch (this->usedSpell) {
                 case 1:
@@ -487,7 +487,7 @@ void UseSpell(Actor* thisx, PlayState* play, u8 started, u8 spellType) {
                         break;
                 }
 
-                gSaveContext.magicState = 3;
+                gSaveContext.magicState = MAGIC_STATE_METER_FLASH_1;
                 this->magicTimer--;
                 if (this->magicTimer <= 0) {
                     gSaveContext.magic--;
@@ -497,7 +497,7 @@ void UseSpell(Actor* thisx, PlayState* play, u8 started, u8 spellType) {
 
                         this->itemTimer = 10;
                         this->usedSpell = 0;
-                        gSaveContext.magicState = 5;
+                        gSaveContext.magicState = MAGIC_STATE_RESET;
                     }
                 }
             }
@@ -510,58 +510,60 @@ void UseItem(uint8_t usedItem, u8 started, Actor* thisx, PlayState* play) {
 
     if (this->usedItem != 0xFF && this->itemTimer <= 0) {
         switch (usedItem) {
-            case SLOT_STICK:
+            case ITEM_STICK:
                 UseDekuStick(this, play, started);
                 break;
-            case SLOT_BOMB:
+            case ITEM_BOMB:
                 UseBombs(this, play, started);
                 break;
-            case SLOT_BOMBCHU:
+            case ITEM_BOMBCHU:
                 UseBombchus(this, play, started);
                 break;
-            case SLOT_NUT:
+            case ITEM_NUT:
                 UseNuts(this, play, started);
                 break;
-            case SLOT_BOW:
+            case ITEM_BOW:
                 UseBow(this, play, started, 0);
                 break;
-            case SLOT_ARROW_FIRE:
+            case ITEM_ARROW_FIRE:
                 UseBow(this, play, started, 1);
                 break;
-            case SLOT_ARROW_ICE:
+            case ITEM_ARROW_ICE:
                 UseBow(this, play, started, 2);
                 break;
-            case SLOT_ARROW_LIGHT:
+            case ITEM_ARROW_LIGHT:
                 UseBow(this, play, started, 3);
                 break;
-            case SLOT_SLINGSHOT:
+            case ITEM_SLINGSHOT:
                 UseSlingshot(this, play, started);
                 break;
-            case SLOT_OCARINA:
+            case ITEM_OCARINA_FAIRY:
+            case ITEM_OCARINA_TIME:
                 UseOcarina(this, play, started);
                 break;
-            case SLOT_HOOKSHOT:
+            case ITEM_HOOKSHOT:
+            case ITEM_LONGSHOT:
                 UseHookshot(this, play, started);
                 break;
-            case SLOT_DINS_FIRE:
+            case ITEM_DINS_FIRE:
                 UseSpell(this, play, started, 1);
                 break;
-            case SLOT_NAYRUS_LOVE:
+            case ITEM_NAYRUS_LOVE:
                 UseSpell(this, play, started, 2);
                 break;
-            case SLOT_FARORES_WIND:
+            case ITEM_FARORES_WIND:
                 UseSpell(this, play, started, 3);
                 break;
-            case SLOT_HAMMER:
+            case ITEM_HAMMER:
                 UseHammer(this, play, started);
                 break;
-            case SLOT_BOOMERANG:
+            case ITEM_BOOMERANG:
                 UseBoomerang(this, play, started);
                 break;
-            case SLOT_LENS:
+            case ITEM_LENS:
                 UseLens(this, play, started);
                 break;
-            case SLOT_BEAN:
+            case ITEM_BEAN:
                 UseBeans(this, play, started);
                 break;
         }
@@ -685,39 +687,35 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
         uint8_t released = 0;
         uint8_t current = 0;
 
+        uint16_t partnerButtons[7] = { BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT};
+        uint8_t buttonMax = 3;
+        if (CVarGetInteger("gDpadEquips", 0) != 0) {
+            buttonMax = ARRAY_COUNT(gSaveContext.equips.cButtonSlots);
+        }
+
         if (this->usedItem == 0xFF && this->itemTimer <= 0) {
-            if (CHECK_BTN_ALL(sControlInput.press.button, BTN_CLEFT)) {
-                this->usedItem = gSaveContext.equips.cButtonSlots[0];
-                this->usedItemButton = 0;
-                pressed = 1;
-            } else if (CHECK_BTN_ALL(sControlInput.press.button, BTN_CDOWN)) {
-                this->usedItem = gSaveContext.equips.cButtonSlots[1];
-                this->usedItemButton = 1;
-                pressed = 1;
-            } else if (CHECK_BTN_ALL(sControlInput.press.button, BTN_CRIGHT)) {
-                this->usedItem = gSaveContext.equips.cButtonSlots[2];
-                this->usedItemButton = 2;
-                pressed = 1;
+            for (uint8_t i = 0; i < buttonMax; i++) {
+                if (CHECK_BTN_ALL(sControlInput.press.button, partnerButtons[i])) {
+                    this->usedItem = gSaveContext.equips.buttonItems[i+1];
+                    this->usedItemButton = i;
+                    pressed = 1;
+                }
             }
         }
 
         if (this->usedItem != 0xFF) {
-            if (CHECK_BTN_ALL(sControlInput.cur.button, BTN_CLEFT) && this->usedItemButton == 0) {
-                current = 1;
-            } else if (CHECK_BTN_ALL(sControlInput.cur.button, BTN_CDOWN) && this->usedItemButton == 1) {
-                current = 1;
-            } else if (CHECK_BTN_ALL(sControlInput.cur.button, BTN_CRIGHT) && this->usedItemButton == 2) {
-                current = 1;
+            for (uint8_t i = 0; i < buttonMax; i++) {
+                if (CHECK_BTN_ALL(sControlInput.cur.button, partnerButtons[i]) && this->usedItemButton == i) {
+                    current = 1;
+                }
             }
         }
 
         if (this->usedItem != 0xFF) {
-            if (CHECK_BTN_ALL(sControlInput.rel.button, BTN_CLEFT) && this->usedItemButton == 0) {
-                released = 1;
-            } else if (CHECK_BTN_ALL(sControlInput.rel.button, BTN_CDOWN) && this->usedItemButton == 1) {
-                released = 1;
-            } else if (CHECK_BTN_ALL(sControlInput.rel.button, BTN_CRIGHT) && this->usedItemButton == 2) {
-                released = 1;
+            for (uint8_t i = 0; i < buttonMax; i++) {
+                if (CHECK_BTN_ALL(sControlInput.rel.button, partnerButtons[i]) && this->usedItemButton == i) {
+                    released = 1;
+                }
             }
         }
 

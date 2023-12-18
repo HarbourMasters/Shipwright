@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_WALLMASTER_H
+#define OBJECTS_OBJECT_WALLMASTER_H 1
 
 #include "align_asset_macro.h"
 
@@ -106,3 +107,6 @@ static const ALIGN_ASSET(2) char gWallmasterSkelLimbsLimb_008F38DL_006800[] = dg
 
 #define dgWallmasterSkelLimbsLimb_008F44DL_006660 "__OTR__objects/object_wallmaster/gWallmasterSkelLimbsLimb_008F44DL_006660"
 static const ALIGN_ASSET(2) char gWallmasterSkelLimbsLimb_008F44DL_006660[] = dgWallmasterSkelLimbsLimb_008F44DL_006660;
+
+
+#endif // OBJECTS_OBJECT_WALLMASTER_H

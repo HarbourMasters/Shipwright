@@ -82,7 +82,7 @@ void BgSpot00Hanebasi_Init(Actor* thisx, PlayState* play) {
         if (gSaveContext.sceneSetupIndex != 6) {
             // Don't close the bridge in rando to accomodate hyrule castle exit
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && CHECK_QUEST_ITEM(QUEST_GORON_RUBY) &&
-                CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE) && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE) && !(gSaveContext.n64ddFlag)) {
+                CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE) && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE) && !(IS_RANDO)) {
                 this->dyna.actor.shape.rot.x = -0x4000;
             }
         }
@@ -212,7 +212,7 @@ void BgSpot00Hanebasi_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (this->dyna.actor.params == DT_DRAWBRIDGE) {
-        if (play->sceneNum == SCENE_SPOT00) {
+        if (play->sceneNum == SCENE_HYRULE_FIELD) {
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && CHECK_QUEST_ITEM(QUEST_GORON_RUBY) &&
                 CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE) && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE) && LINK_IS_CHILD) {
                 Player* player = GET_PLAYER(play);
@@ -224,10 +224,10 @@ void BgSpot00Hanebasi_Update(Actor* thisx, PlayState* play) {
                     Flags_SetEventChkInf(EVENTCHKINF_DRAWBRIDGE_OPENED_AFTER_ZELDA_FLED);
                     this->actionFunc = BgSpot00Hanebasi_DoNothing;
                     func_8002DF54(play, &player->actor, 8);
-                    play->nextEntranceIndex = 0x00CD;
+                    play->nextEntranceIndex = ENTR_HYRULE_FIELD_0;
                     gSaveContext.nextCutsceneIndex = 0xFFF1;
-                    play->sceneLoadFlag = 0x14;
-                    play->fadeTransition = 4;
+                    play->transitionTrigger = TRANS_TRIGGER_START;
+                    play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                 } else if (Actor_IsFacingAndNearPlayer(&this->dyna.actor, 3000.0f, 0x7530)) {
                     play->envCtx.gloomySkyMode = 1;
                 }

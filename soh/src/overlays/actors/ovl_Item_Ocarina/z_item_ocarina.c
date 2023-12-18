@@ -169,14 +169,14 @@ void ItemOcarina_DoNothing(ItemOcarina* this, PlayState* play) {
 
 void ItemOcarina_StartSoTCutscene(ItemOcarina* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gHyruleFieldZeldaSongOfTimeCs);
             gSaveContext.cutsceneTrigger = 1;
         } else {
-            play->sceneLoadFlag = 0x14;
-            play->fadeTransition = 3;
-            gSaveContext.nextTransitionType = 3;
-            play->nextEntranceIndex = 0x050F;
+            play->transitionTrigger = TRANS_TRIGGER_START;
+            play->transitionType = TRANS_TYPE_FADE_WHITE;
+            gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
+            play->nextEntranceIndex = ENTR_HYRULE_FIELD_16;
             gSaveContext.nextCutsceneIndex = 0;
         }
     }
@@ -189,7 +189,7 @@ void ItemOcarina_WaitInWater(ItemOcarina* this, PlayState* play) {
         this->actionFunc = ItemOcarina_StartSoTCutscene;
         this->actor.draw = NULL;
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_OCARINA_OOT, 30.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
@@ -214,7 +214,7 @@ void ItemOcarina_Draw(Actor* thisx, PlayState* play) {
     func_8002EBCC(thisx, play, 0);
     func_8002ED80(thisx, play, 0);
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         GetItemEntry randoGetItem = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
         EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
         GetItemEntry_Draw(play, randoGetItem);

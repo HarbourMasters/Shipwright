@@ -277,6 +277,11 @@ void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 h
     bg->b.imagePal = 0;
     bg->b.imageFlip = CVarGetInteger("gMirroredWorld", 0) ? G_BG_FLAG_FLIPS : 0;
 
+    // When an alt resource exists for the background, we need to unload the original asset
+    // to clear the cache so the alt asset will be loaded instead
+    // OTRTODO: If Alt loading over original cache is fixed, this line can most likely be removed
+    ResourceMgr_UnloadOriginalWhenAltExists((char*) source);
+
     if (ResourceMgr_ResourceIsBackground((char*) source)) {
         char* blob = (char*) ResourceGetDataByName((char *) source);
         swapAndConvertJPEG(blob);
@@ -403,9 +408,10 @@ BgImage* func_80096A74(PolygonType1* polygon1, PlayState* play) {
 
     camera = GET_ACTIVE_CAM(play);
     camId = camera->camDataIdx;
-    if (camId == -1 && CVarGetInteger("gNoRestrictItems", 0)) {
+    if (camId == -1 && (CVarGetInteger("gNoRestrictItems", 0) || CVarGetInteger("gCrowdControl", 0))) {
         // This prevents a crash when using items that change the
-        // camera (such as din's fire) on scenes with prerendered backgrounds
+        // camera (such as din's fire), voiding out or dying on 
+        // scenes with prerendered backgrounds.
         return NULL;
     }
 
@@ -578,7 +584,7 @@ s32 func_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomNum) {
     size_t size;
 
     // In ER, override roomNum to load based on scene and spawn
-    if (gSaveContext.n64ddFlag && gSaveContext.respawnFlag <= 0 &&
+    if (IS_RANDO && gSaveContext.respawnFlag <= 0 &&
         Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         roomNum = Entrance_OverrideSpawnSceneRoom(play->sceneNum, play->curSpawn, roomNum);
     }
@@ -645,7 +651,7 @@ void func_80097534(PlayState* play, RoomContext* roomCtx) {
     func_80031B14(play, &play->actorCtx); //kills all actors without room num set to -1
     Actor_SpawnTransitionActors(play, &play->actorCtx);
     Map_InitRoomData(play, roomCtx->curRoom.num);
-    if (!((play->sceneNum >= SCENE_SPOT00) && (play->sceneNum <= SCENE_SPOT20))) {
+    if (!((play->sceneNum >= SCENE_HYRULE_FIELD) && (play->sceneNum <= SCENE_LON_LON_RANCH))) {
         Map_SavePlayerInitialInfo(play);
     }
     Audio_SetEnvReverb(play->roomCtx.curRoom.echo);
