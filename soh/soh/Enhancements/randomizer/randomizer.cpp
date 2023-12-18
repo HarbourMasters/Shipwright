@@ -1795,6 +1795,7 @@ void RandomizerSettingsWindow::DrawElement() {
             }
             ImGui::EndDisabled();
             ImGui::PopStyleVar(1);
+            ImGui::EndDisabled();
             ImGui::EndTabItem();
         }
         ImGui::EndDisabled();
