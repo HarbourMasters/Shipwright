@@ -1793,8 +1793,8 @@ void RandomizerSettingsWindow::DrawElement() {
             if (mSettings->GetOptionGroup(RSG_ITEMS_IMGUI_TABLE).RenderImGui()) {
                 mNeedsUpdate = true;
             }
-            ImGui::PopStyleVar(1);
             ImGui::EndDisabled();
+            ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
         ImGui::EndDisabled();
