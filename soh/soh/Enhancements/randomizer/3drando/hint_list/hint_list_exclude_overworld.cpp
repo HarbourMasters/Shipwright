@@ -1405,14 +1405,14 @@ void HintTable_Init_Exclude_Overworld() {
 
     // Fishing pond fish hints
     // TODO: probably some better text to put here than the text for child/adult fishing
-    for (auto [childLoc, adultLoc] : Rando::StaticData::randomizerFishingPondFish) {
-        hintTable[childLoc] = HintText::Exclude({
+    for (int i = RHT_LH_CHILD_FISH_1; i <= RHT_LH_CHILD_LOACH_2; i++) {
+        hintTable[i] = HintText::Exclude({
             //obscure text
             Text{"#fishing in youth# bestows", /*french*/"#pêcher dans sa jeunesse# promet", /*spanish*/"#pescar en la juventud# conduce a"}
         });
-        if (adultLoc == RC_UNKNOWN_CHECK)
-            continue;
-        hintTable[adultLoc] = HintText::Exclude({
+    }
+    for (int i = RHT_LH_ADULT_FISH_1; i <= RHT_LH_ADULT_LOACH; i++) {
+        hintTable[i] = HintText::Exclude({
             //obscure text
             Text{"#fishing in maturity# bestows", /*french*/"#pêcher dans sa maturité# promet", /*spanish*/"#pescar en la madurez# conduce a"}
         });

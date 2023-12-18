@@ -11,6 +11,7 @@
 
 #include <fstream>
 #include <spdlog/spdlog.h>
+#include "fishsanity.h"
 
 namespace Rando {
 std::weak_ptr<Context> Context::mContext;
@@ -194,6 +195,13 @@ void Context::GenerateLocationPool() {
         AddLocation(RC_TRIFORCE_COMPLETED);
     }
     AddLocations(StaticData::overworldLocations);
+
+    if (mSettings->GetOption(RSK_FISHSANITY).IsNot(RO_FISHSANITY_OFF)) {
+        AddLocations(Randomizer_GetFishsanityLocations(
+            mSettings->GetOption(RSK_FISHSANITY).GetSelectedOptionIndex(),
+            mSettings->GetOption(RSK_FISHSANITY_POND_COUNT).GetSelectedOptionIndex(),
+            (bool)mSettings->GetOption(RSK_FISHSANITY_AGE_SPLIT)).first);
+    }
 
     for (const auto dungeon : mDungeons->GetDungeonList()) {
         AddLocations(dungeon->GetDungeonLocations());
