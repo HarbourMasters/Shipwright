@@ -1406,24 +1406,6 @@ void Settings::UpdateOptionProperties() {
         mOptions[RSK_MIX_INTERIOR_ENTRANCES].Hide();
         mOptions[RSK_MIX_GROTTO_ENTRANCES].Hide();
     }
-    // Shuffle Kokiri Sword - Disabled when Start with Kokiri Sword is active
-    if (CVarGetInteger("gRandomizeStartingKokiriSword", RO_GENERIC_OFF)) {
-        mOptions[RSK_SHUFFLE_KOKIRI_SWORD].Disable("This option is disabled because \"Start with Kokiri Sword\" is enabled.");
-    } else {
-        mOptions[RSK_SHUFFLE_KOKIRI_SWORD].Enable();
-    }
-    // Shuffle Master Sword - Disabled when Start with Master Sword is active
-    if (CVarGetInteger("gRandomizeStartingMasterSword", RO_GENERIC_OFF)) {
-        mOptions[RSK_SHUFFLE_MASTER_SWORD].Disable("This option is disabled because \"Start with Master Sword\" is enabled");
-    } else {
-        mOptions[RSK_SHUFFLE_MASTER_SWORD].Enable();
-    }
-    // Shuffle Ocarinas - Disabled when Start with Ocarina is active
-    if (CVarGetInteger("gRandomizeStartingOcarina", RO_STARTING_OCARINA_OFF)) {
-        mOptions[RSK_SHUFFLE_OCARINA].Disable("This option is disabled because \"Start with Fairy Ocarina\" is enabled.");
-    } else {
-        mOptions[RSK_SHUFFLE_OCARINA].Enable();
-    }
     // Shuffle Weird Egg - Disabled when Skip Child Zelda is active
     if (CVarGetInteger("gRandomizeSkipChildZelda", RO_GENERIC_DONT_SKIP)) {
         mOptions[RSK_SHUFFLE_WEIRD_EGG].Disable("This option is disabled because \"Skip Child Zelda\" is enabled.");
@@ -1497,7 +1479,7 @@ void Settings::UpdateOptionProperties() {
         mOptions[RSK_KEYRINGS_GERUDO_FORTRESS].Enable();
     }
     if (CVarGetInteger("gRandomizeTriforceHunt", RO_GENERIC_OFF)) {
-        mOptions[RSK_GANONS_BOSS_KEY].Disable("This option is disabled because Triforcce Hunt is enabled."
+        mOptions[RSK_GANONS_BOSS_KEY].Disable("This option is disabled because Triforce Hunt is enabled."
             "Ganon's Boss key\nwill instead be given to you after Triforce Hunt completion.");
     } else {
         mOptions[RSK_GANONS_BOSS_KEY].Enable();
@@ -1678,21 +1660,6 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
             mOptions[RSK_MQ_DUNGEON_SET].SetSelectedIndex(RO_GENERIC_OFF);
         }
 
-        // TODO: Historically we have forced the shuffle settings off when we have the corresponding start
-        // with setting on, but 3drando doesn't seem to actually do that. It seems like you can both shuffle
-        // them in the pool and start with them.
-        if (mOptions[RSK_STARTING_KOKIRI_SWORD]) {
-            mOptions[RSK_SHUFFLE_KOKIRI_SWORD].SetSelectedIndex(RO_GENERIC_OFF);
-        }
-
-        if (mOptions[RSK_STARTING_MASTER_SWORD]) {
-            mOptions[RSK_SHUFFLE_MASTER_SWORD].SetSelectedIndex(RO_GENERIC_OFF);
-        }
-
-        if (mOptions[RSK_STARTING_OCARINA].IsNot(RO_STARTING_OCARINA_OFF)) {
-            mOptions[RSK_SHUFFLE_OCARINA].SetSelectedIndex(RO_GENERIC_OFF);
-        }
-
         // If any of the individual shuffle settings are on, turn on the main Shuffle Entrances option
         if (mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES].IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)
             || mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].IsNot(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)
@@ -1718,6 +1685,24 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         // Tricks
         for (const auto randomizerTrick : enabledTricks) {
             mTrickOptions[randomizerTrick].SetSelectedIndex(1);
+        }
+        if (!mOptions[RSK_SHUFFLE_KOKIRI_SWORD]) {
+            if (mOptions[RSK_STARTING_KOKIRI_SWORD]) {
+                ctx->GetItemLocation(RC_KF_KOKIRI_SWORD_CHEST)->GetExcludedOption()->SetSelectedIndex(1);
+            }
+        }
+        if (!mOptions[RSK_SHUFFLE_MASTER_SWORD]) {
+            if (mOptions[RSK_STARTING_MASTER_SWORD]) {
+                ctx->GetItemLocation(RC_MASTER_SWORD_PEDESTAL)->GetExcludedOption()->SetSelectedIndex(1);
+            }
+        }
+        if (!mOptions[RSK_SHUFFLE_OCARINA]) {
+            if (mOptions[RSK_STARTING_OCARINA].IsNot(RO_STARTING_OCARINA_OFF)) {
+                ctx->GetItemLocation(RC_LW_GIFT_FROM_SARIA)->GetExcludedOption()->SetSelectedIndex(1);
+                if (mOptions[RSK_STARTING_OCARINA].Is(RO_STARTING_OCARINA_TIME)) {
+                    ctx->GetItemLocation(RC_HF_OCARINA_OF_TIME_ITEM)->GetExcludedOption()->SetSelectedIndex(1);
+                }
+            }
         }
     }
 
