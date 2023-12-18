@@ -1,5 +1,6 @@
 #include "SohMenuBar.h"
 #include "ImGui/imgui.h"
+#include "regex"
 #include "public/bridge/consolevariablebridge.h"
 #include <libultraship/libultraship.h>
 #include "UIWidgets.hpp"
@@ -10,8 +11,9 @@
 #include "soh/Enhancements/presets.h"
 #include "soh/Enhancements/mods.h"
 #include "Enhancements/cosmetics/authenticGfxPatches.h"
-#ifdef ENABLE_CROWD_CONTROL
+#ifdef ENABLE_REMOTE_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
+#include "Enhancements/game-interactor/GameInteractor_Sail.h"
 #endif
 
 
@@ -1116,17 +1118,6 @@ void DrawEnhancementsMenu() {
         UIWidgets::Spacer(0);
 
         if (ImGui::BeginMenu("Extra Modes")) {
-        #ifdef ENABLE_CROWD_CONTROL
-            if (UIWidgets::PaddedEnhancementCheckbox("Crowd Control", "gCrowdControl", false, false)) {
-                if (CVarGetInteger("gCrowdControl", 0)) {
-                    CrowdControl::Instance->Enable();
-                } else {
-                    CrowdControl::Instance->Disable();
-                }
-            }
-            UIWidgets::Tooltip("Will attempt to connect to the Crowd Control server. Check out crowdcontrol.live for more information.");
-        #endif
-
             UIWidgets::PaddedText("Mirrored World", true, false);
             if (UIWidgets::EnhancementCombobox("gMirroredWorldMode", mirroredWorldModes, MIRRORED_WORLD_OFF) && gPlayState != NULL) {
                 UpdateMirrorModeState(gPlayState->sceneNum);
@@ -1520,6 +1511,135 @@ void DrawDeveloperToolsMenu() {
     }
 }
 
+bool isStringEmpty(std::string str) {
+    // Remove spaces at the beginning of the string
+    std::string::size_type start = str.find_first_not_of(' ');
+    // Remove spaces at the end of the string
+    std::string::size_type end = str.find_last_not_of(' ');
+
+    // Check if the string is empty after stripping spaces
+    if (start == std::string::npos || end == std::string::npos)
+        return true; // The string is empty
+    else
+        return false; // The string is not empty
+}
+
+#ifdef ENABLE_REMOTE_CONTROL
+void DrawRemoteControlMenu() {
+    if (ImGui::BeginMenu("Network")) {
+        static std::string ip = CVarGetString("gRemote.IP", "127.0.0.1");
+        static uint16_t port = CVarGetInteger("gRemote.Port", 43384);
+        bool isFormValid = !isStringEmpty(CVarGetString("gRemote.IP", "127.0.0.1")) && port > 1024 && port < 65535;
+
+        const char* remoteOptions[2] = { "Sail", "Crowd Control"};
+
+        ImGui::BeginDisabled(GameInteractor::Instance->isRemoteInteractorEnabled);
+        ImGui::Text("Remote Interaction Scheme");
+        if (UIWidgets::EnhancementCombobox("gRemote.Scheme", remoteOptions, GI_SCHEME_SAIL)) {
+            switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+                case GI_SCHEME_SAIL:
+                case GI_SCHEME_CROWD_CONTROL:
+                    CVarSetString("gRemote.IP", "127.0.0.1");
+                    CVarSetInteger("gRemote.Port", 43384);
+                    ip = "127.0.0.1";
+                    port = 43384;
+                    break;
+            }
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        }
+        switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+            case GI_SCHEME_SAIL:
+                UIWidgets::InsertHelpHoverText(
+                    "Sail is a networking protocol designed to facilitate remote "
+                    "control of the Ship of Harkinian client. It is intended to "
+                    "be utilized alongside a Sail server, for which we provide a "
+                    "few straightforward implementations on our GitHub. The current "
+                    "implementations available allow integration with Twitch chat "
+                    "and SAMMI Bot, feel free to contribute your own!\n"
+                    "\n"
+                    "Click the question mark to copy the link to the Sail Github "
+                    "page to your clipboard."
+                );
+                if (ImGui::IsItemClicked()) {
+                    ImGui::SetClipboardText("https://github.com/HarbourMasters/sail");
+                }
+                break;
+            case GI_SCHEME_CROWD_CONTROL:
+                UIWidgets::InsertHelpHoverText(
+                    "Crowd Control is a platform that allows viewers to interact "
+                    "with a streamer's game in real time.\n"
+                    "\n"
+                    "Click the question mark to copy the link to the Crowd Control "
+                    "website to your clipboard."
+                );
+                if (ImGui::IsItemClicked()) {
+                    ImGui::SetClipboardText("https://crowdcontrol.live");
+                }
+                break;
+        }
+
+        ImGui::Text("Remote IP & Port");
+        if (ImGui::InputText("##gRemote.IP", (char*)ip.c_str(), ip.capacity() + 1)) {
+            CVarSetString("gRemote.IP", ip.c_str());
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        }
+
+        ImGui::SameLine();
+        ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
+        if (ImGui::InputScalar("##gRemote.Port", ImGuiDataType_U16, &port)) {
+            CVarSetInteger("gRemote.Port", port);
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        }
+
+        ImGui::PopItemWidth();
+        ImGui::EndDisabled();
+
+        ImGui::Spacing();
+
+        ImGui::BeginDisabled(!isFormValid);
+        const char* buttonLabel = GameInteractor::Instance->isRemoteInteractorEnabled ? "Disable" : "Enable";
+        if (ImGui::Button(buttonLabel, ImVec2(-1.0f, 0.0f))) {
+            if (GameInteractor::Instance->isRemoteInteractorEnabled) {
+                CVarSetInteger("gRemote.Enabled", 0);
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+                    case GI_SCHEME_SAIL:
+                        GameInteractorSail::Instance->Disable();
+                        break;
+                    case GI_SCHEME_CROWD_CONTROL:
+                        CrowdControl::Instance->Disable();
+                        break;
+                }
+            } else {
+                CVarSetInteger("gRemote.Enabled", 1);
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+                    case GI_SCHEME_SAIL:
+                        GameInteractorSail::Instance->Enable();
+                        break;
+                    case GI_SCHEME_CROWD_CONTROL:
+                        CrowdControl::Instance->Enable();
+                        break;
+                }
+            }
+        }
+        ImGui::EndDisabled();
+
+        if (GameInteractor::Instance->isRemoteInteractorEnabled) {
+            ImGui::Spacing();
+            if (GameInteractor::Instance->isRemoteInteractorConnected) {
+                ImGui::Text("Connected");
+            } else {
+                ImGui::Text("Connecting...");
+            }
+        }
+
+        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+        ImGui::EndMenu();
+    }
+}
+#endif
+
 extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 extern std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
 extern std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
@@ -1657,6 +1777,12 @@ void SohMenuBar::DrawElement() {
         DrawDeveloperToolsMenu();
 
         ImGui::SetCursorPosY(0.0f);
+
+        #ifdef ENABLE_REMOTE_CONTROL
+        DrawRemoteControlMenu();
+
+        ImGui::SetCursorPosY(0.0f);
+        #endif
 
         DrawRandomizerMenu();
 
