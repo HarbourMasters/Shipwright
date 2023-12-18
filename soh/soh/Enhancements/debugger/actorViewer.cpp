@@ -1129,7 +1129,12 @@ void ActorViewerWindow::DrawElement() {
                 newActor.params = 0;
             }
 
-            if (std::find(noParamsActors.begin(), noParamsActors.end(), newActor.id) == noParamsActors.end()) {
+            UIWidgets::EnhancementCheckbox("Advanced mode", "gActorViewerAdvancedParams");
+            UIWidgets::InsertHelpHoverText("Changes the actor specific param menus with a direct input");
+
+            if (CVarGetInteger("gActorViewerAdvancedParams", 0)) {
+                ImGui::InputScalar("params", ImGuiDataType_S16, &newActor.params, &one);
+            } else if (std::find(noParamsActors.begin(), noParamsActors.end(), newActor.id) == noParamsActors.end()) {
                 CreateActorSpecificData();
                 if (actorSpecificData.find(newActor.id) == actorSpecificData.end()) {
                     ImGui::InputScalar("params", ImGuiDataType_S16, &newActor.params, &one);
