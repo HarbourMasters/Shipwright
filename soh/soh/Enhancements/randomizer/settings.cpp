@@ -159,14 +159,15 @@ void Settings::CreateOptions() {
     mOptions[RSK_BIG_POES_HINT] = Option::Bool("Big Poes Hint", "gRandomizeBigPoesHint", mOptionDescriptions[RSK_BIG_POES_HINT], IMFLAG_NONE);
     mOptions[RSK_CHICKENS_HINT] = Option::Bool("Chickens Hint", "gRandomizeChickensHint", mOptionDescriptions[RSK_CHICKENS_HINT], IMFLAG_NONE);
     mOptions[RSK_MALON_HINT] = Option::Bool("Malon Hint", "gRandomizeMalonHint", mOptionDescriptions[RSK_MALON_HINT], IMFLAG_NONE);
+    mOptions[RSK_HBA_HINT] = Option::Bool("Horseback Archery Hint", "gRandomizeHBAHint", mOptionDescriptions[RSK_HBA_HINT], IMFLAG_NONE);
     mOptions[RSK_WARP_SONG_HINTS] = Option::Bool("Warp Song Hints", "gRandomizeWarpSongText", mOptionDescriptions[RSK_WARP_SONG_HINTS], IMFLAG_NONE, WidgetType::Checkbox, RO_GENERIC_ON);
     mOptions[RSK_SCRUB_TEXT_HINT] = Option::Bool("Scrub Hint Text", "gRandomizeScrubText", mOptionDescriptions[RSK_SCRUB_TEXT_HINT], IMFLAG_NONE);
-    mOptions[RSK_KAK_10_SKULLS_HINT] = Option::Bool("10 GS Hint", "gRandomize10GSHint", "", IMFLAG_NONE);
-    mOptions[RSK_KAK_20_SKULLS_HINT] = Option::Bool("20 GS Hint", "gRandomize20GSHint", "", IMFLAG_NONE);
-    mOptions[RSK_KAK_30_SKULLS_HINT] = Option::Bool("30 GS Hint", "gRandomize30GSHint", "", IMFLAG_NONE);
-    mOptions[RSK_KAK_40_SKULLS_HINT] = Option::Bool("40 GS Hint", "gRandomize40GSHint", "", IMFLAG_NONE);
-    mOptions[RSK_KAK_50_SKULLS_HINT] = Option::Bool("50 GS Hint", "gRandomize50GSHint", "", IMFLAG_NONE);
-    mOptions[RSK_KAK_100_SKULLS_HINT] = Option::Bool("100 GS Hint", "gRandomize100GSHint", "");
+    mOptions[RSK_KAK_10_SKULLS_HINT] = Option::Bool("10 GS Hint", "gRandomize10GSHint", mOptionDescriptions[RSK_KAK_10_SKULLS_HINT], IMFLAG_NONE);
+    mOptions[RSK_KAK_20_SKULLS_HINT] = Option::Bool("20 GS Hint", "gRandomize20GSHint", mOptionDescriptions[RSK_KAK_20_SKULLS_HINT], IMFLAG_NONE);
+    mOptions[RSK_KAK_30_SKULLS_HINT] = Option::Bool("30 GS Hint", "gRandomize30GSHint", mOptionDescriptions[RSK_KAK_30_SKULLS_HINT], IMFLAG_NONE);
+    mOptions[RSK_KAK_40_SKULLS_HINT] = Option::Bool("40 GS Hint", "gRandomize40GSHint", mOptionDescriptions[RSK_KAK_40_SKULLS_HINT], IMFLAG_NONE);
+    mOptions[RSK_KAK_50_SKULLS_HINT] = Option::Bool("50 GS Hint", "gRandomize50GSHint", mOptionDescriptions[RSK_KAK_50_SKULLS_HINT], IMFLAG_NONE);
+    mOptions[RSK_KAK_100_SKULLS_HINT] = Option::Bool("100 GS Hint", "gRandomize100GSHint", mOptionDescriptions[RSK_KAK_100_SKULLS_HINT]);
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     mOptions[RSK_BLUE_FIRE_ARROWS] = Option::Bool("Blue Fire Arrows", "gRandomizeBlueFireArrows", mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
     mOptions[RSK_SUNLIGHT_ARROWS] = Option::Bool("Sunlight Arrows", "gRandomizeSunlightArrows", mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
@@ -717,6 +718,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_BIG_POES_HINT],
         &mOptions[RSK_CHICKENS_HINT],
         &mOptions[RSK_MALON_HINT],
+        &mOptions[RSK_HBA_HINT],
         &mOptions[RSK_WARP_SONG_HINTS],
         &mOptions[RSK_SCRUB_TEXT_HINT],
         &mOptions[RSK_KAK_10_SKULLS_HINT],
@@ -725,9 +727,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KAK_40_SKULLS_HINT],
         &mOptions[RSK_KAK_50_SKULLS_HINT],
         &mOptions[RSK_KAK_100_SKULLS_HINT]
-    }, false, WidgetContainerType::SECTION, "This setting adds some hints at locations other than Gossip Stones.\n\n"
-                    "House of Skulltula: # - Talking to a cursed House of Skulltula resident will tell you the reward"
-                    "they will give you for obtaining that many tokens.");
+    }, false, WidgetContainerType::SECTION, "This setting adds some hints at locations other than Gossip Stones.");
     mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI_COLUMN] = OptionGroup::SubGroup("Item Pool & Hints", std::initializer_list<OptionGroup*>{
         &mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI],
         &mOptionGroups[RSG_EXTRA_HINTS_IMGUI],
@@ -937,6 +937,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_BIG_POES_HINT],
         &mOptions[RSK_CHICKENS_HINT],
         &mOptions[RSK_MALON_HINT],
+        &mOptions[RSK_HBA_HINT],
         &mOptions[RSK_KAK_10_SKULLS_HINT],
         &mOptions[RSK_KAK_20_SKULLS_HINT],
         &mOptions[RSK_KAK_30_SKULLS_HINT],
@@ -1663,6 +1664,24 @@ void Settings::UpdateOptionProperties() {
         mOptions[RSK_HINT_CLARITY].Unhide();
         mOptions[RSK_HINT_DISTRIBUTION].Unhide();
     }
+
+    if (CVarGetInteger("gRandomizeShuffleCows", RO_GENERIC_OFF)) {
+        mOptions[RSK_MALON_HINT].Enable();
+        } else {
+        mOptions[RSK_MALON_HINT].Disable("Malon's hint points to a cow, so requires cows to be shuffled.");
+    }
+
+    if (CVarGetInteger("gRandomizeShuffle100GSReward", RO_GENERIC_OFF)) {
+        mOptions[RSK_KAK_100_SKULLS_HINT].Enable();
+        } else {
+        mOptions[RSK_KAK_100_SKULLS_HINT].Disable("There is no point to hinting 100 skulls if it is not shuffled");
+    }
+
+    if (CVarGetInteger("gRandomizeCuccosToReturn", 7) == 0) {
+        mOptions[RSK_CHICKENS_HINT].Disable("Anju will just give you the item instead with 0 chickens");
+    } else {
+        mOptions[RSK_CHICKENS_HINT].Enable();
+    }
 }
 
 void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocations, const std::set<RandomizerTrick>& enabledTricks) {
@@ -1944,6 +1963,18 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         mOptions[RSK_KEYSANITY].SetDelayedOption();
         mOptions[RSK_KEYSANITY].SetSelectedIndex(3);
     }
+
+    if (!mOptions[RSK_SHUFFLE_COWS]) {
+        mOptions[RSK_MALON_HINT].SetSelectedIndex(RO_GENERIC_OFF);
+    }
+
+    if (!mOptions[RSK_SHUFFLE_100_GS_REWARD]) {
+        mOptions[RSK_KAK_100_SKULLS_HINT].SetSelectedIndex(RO_GENERIC_OFF);
+    }
+
+    if (mOptions[RSK_CUCCO_COUNT].Is(0)) {
+        mOptions[RSK_CHICKENS_HINT].SetSelectedIndex(RO_GENERIC_OFF);
+    }
 }
 void Settings::ParseJson(nlohmann::json spoilerFileJson) {
     mSeedString = spoilerFileJson["seed"].get<std::string>();
@@ -2193,6 +2224,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_BIG_POES_HINT:
                 case RSK_CHICKENS_HINT:
                 case RSK_MALON_HINT:
+                case RSK_HBA_HINT:
                 case RSK_WARP_SONG_HINTS:
                 case RSK_SCRUB_TEXT_HINT:
                 case RSK_KEYRINGS_GERUDO_FORTRESS:

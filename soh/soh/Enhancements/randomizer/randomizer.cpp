@@ -352,42 +352,78 @@ void Randomizer::LoadHintMessages() {
 
     CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_BIGGORON_BETTER_AT_SMITHING,
-            CustomMessage("Arrrrrre you here to claim my finest %g{{item1}}%w?& Shoooooow me your %rClaim Check.%w",
+            CustomMessage("Arrrrrre you here to claim my finest&%g{{item1}}%w?&Shoooooow me your %rClaim Check.%w",
             "",
             "")
         );
 
     CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_GHOST_SHOP_CARD_HAS_POINTS,
-            CustomMessage("You have %g\x1E01 %rPoe Points%w!& Reach 1000 and You'll get a %g{{item1}}%w!",
+            CustomMessage("You have %g\x1E\x01%r Poe Points%w!&Reach 1000 and you'll get a&%g{{item1}}%w!",
             "",
             "")
         );
 
     CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_ANJU_PLEASE_BRING_MY_CUCCOS_BACK,
-            CustomMessage("You! Please! Bring my Cucco's back to my pen!&I'll give you my %g{{item1}}%w!",
+            CustomMessage("You! Please!&Bring my Cucco's back to my pen!&I'll give you my %g{{item1}}%w!",
             "",
             "")
         );
 
     CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_MALON_OBSTICLE_COURSE,
-            CustomMessage("How about trying your skill on the %rObsticle Course?%w& If you beat my time I'll let you keep my favourite cow Elsie and& her toy %g{{item1}}%w!&x1B&%gLet's go&No thanks%w",
+            CustomMessage("How about trying the %rObsticle Course?%w&If you beat my time I'll let you keep&my favourite cow Elsie and&her toy %g{{item1}}%w!^"
+            "Challenge the %rObsticle Course?&\x1B&%gLet's go&No thanks%w",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_MALON_HOW_IS_EPONA_DOING,
+            CustomMessage("@! You should come back &with Epona and try to beat my time&on the %rObsticle Course%w!^If you beat my time, I'll give you&my favourite %rcow%w Elsie and&her toy %g{{item1}}%w!",
             "",
             "")
         );
 
     CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_MALON_EVERYONE_TURNING_EVIL,
-            CustomMessage("@? Is that you? &If I ran the ranch, I'd build an %rObsticle Course%w, and whoever gets the best time would win a cow!& Elsie loves sharing her %g{{item1}}%w&with new people, It'll be fun!&...But Ingo won't let me...",
+            CustomMessage("@? Is that you? ^If I ran the ranch, I'd build an &%rObsticle Course%w, and whoever gets&the best time would win a %rcow%w!^Elsie loves sharing her %g{{item1}}%w&with new people, It'll be fun!^...But Ingo won't let me...",
             "",
             "")
         );
 
     CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED,
-            CustomMessage("@! You should come back in the morning and try to beat my time on the %rObsticle Course%w!&If you beat my time, I'll let you keep Elsie and& her toy %g{{item1}}%w!",
+            CustomMessage("@! You should come back in&the morning and try to beat my time&on the %rObsticle Course%w!^If you beat my time, I'll give you&my favourite %rcow%w Elsie and&her toy %g{{item1}}%w!",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_HBA_NOT_ON_HORSE,
+            CustomMessage("Hey, rookie!&Come back on your %rhorse%w&and take on the&%rHorseback Archery%w challenge!^Impress me with a high score of 1000&to win a %g{{item1}}%w&or score 1500 for my&%g{{item2}}%w!",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_HBA_INITIAL_EXPLAINATION,
+            CustomMessage("Hey, rookie!&Want to take on the&%rHorseback Archery%w challenge?^Impress me with a high score of 1000&to win a %g{{item1}}%w&or score 1500 for my&%g{{item2}}%w!\x0B",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_HBA_ALREADY_HAVE_1000,
+            CustomMessage("Hey, newcomer!&Want to take on the&%rHorseback Archery%w challenge?^Prove yourself to be a horsemaster&by scoring 1500 points to win &my %g{{item1}}%w!\x0B",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_GF_HBA_SIGN,
+            CustomMessage("%rHorseback Archery%w Range Prizes:&1000: %g{{item1}}%w&1500: %g{{item2}}%w^@'s Record: %g\x1E\x00%w",
             "",
             "")
         );
@@ -1886,6 +1922,7 @@ void RandomizerSettingsWindow::DrawElement() {
             }
             ImGui::EndDisabled();
             ImGui::PopStyleVar(1);
+            ImGui::EndDisabled();
             ImGui::EndTabItem();
         }
         ImGui::EndDisabled();

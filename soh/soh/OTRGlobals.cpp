@@ -2617,21 +2617,31 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if (Randomizer_GetSettingValue(RSK_SARIA_HINT) &&
         (gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && textId == TEXT_SARIA_SFM) || (textId >= TEXT_SARIAS_SONG_FACE_TO_FACE && textId <= TEXT_SARIAS_SONG_CHANNELING_POWER)) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetSariaMessage(textId);
-        }
         } else if (Randomizer_GetSettingValue(RSK_BIGGORON_HINT) && (textId == TEXT_BIGGORON_BETTER_AT_SMITHING || textId ==  TEXT_BIGGORON_WAITING_FOR_YOU || textId ==  TEXT_BIGGORON_RETURN_AFTER_A_FEW_DAYS)) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_BIGGORON_BETTER_AT_SMITHING, RC_DMT_TRADE_CLAIM_CHECK);
         } else if (Randomizer_GetSettingValue(RSK_BIG_POES_HINT) && (textId == TEXT_GHOST_SHOP_EXPLAINATION || textId == TEXT_GHOST_SHOP_CARD_HAS_POINTS)) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_GHOST_SHOP_CARD_HAS_POINTS, RC_MARKET_10_BIG_POES);
         } else if (Randomizer_GetSettingValue(RSK_CHICKENS_HINT) && (textId >= TEXT_ANJU_PLEASE_BRING_MY_CUCCOS_BACK && textId <= TEXT_ANJU_PLEASE_BRING_1_CUCCO)) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_ANJU_PLEASE_BRING_MY_CUCCOS_BACK, RC_KAK_ANJU_AS_CHILD);
-        } else if (Randomizer_GetSettingValue(RSK_MALON_HINT) && (textId >= TEXT_MALON_EVERYONE_TURNING_EVIL && textId == TEXT_MALON_I_SING_THIS_SONG)) {
+        } else if (Randomizer_GetSettingValue(RSK_MALON_HINT) && (textId == TEXT_MALON_EVERYONE_TURNING_EVIL || textId == TEXT_MALON_I_SING_THIS_SONG)) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_MALON_EVERYONE_TURNING_EVIL, RC_KF_LINKS_HOUSE_COW);
-        } else if (Randomizer_GetSettingValue(RSK_MALON_HINT) && textId >= TEXT_MALON_OBSTICLE_COURSE) {
+        } else if (Randomizer_GetSettingValue(RSK_MALON_HINT) && textId == TEXT_MALON_HOW_IS_EPONA_DOING) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_MALON_HOW_IS_EPONA_DOING, RC_KF_LINKS_HOUSE_COW);
+        } else if (Randomizer_GetSettingValue(RSK_MALON_HINT) && textId == TEXT_MALON_OBSTICLE_COURSE) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_MALON_OBSTICLE_COURSE, RC_KF_LINKS_HOUSE_COW);
         } else if (Randomizer_GetSettingValue(RSK_MALON_HINT) && textId == TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED, RC_KF_LINKS_HOUSE_COW);
         } else if (Randomizer_GetSettingValue(RSK_KAK_100_SKULLS_HINT) && textId == TEXT_SKULLTULA_PEOPLE_MAKE_YOU_VERY_RICH) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetCursedSkullMessage(100, RC_KAK_100_GOLD_SKULLTULA_REWARD);
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetCursedSkullMessage(10, RC_KAK_100_GOLD_SKULLTULA_REWARD);
+        } else if (Randomizer_GetSettingValue(RSK_HBA_HINT) && textId == TEXT_GF_HBA_SIGN) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_GF_HBA_SIGN, RC_GF_HBA_1000_POINTS, RC_GF_HBA_1500_POINTS);
+        } else if (Randomizer_GetSettingValue(RSK_HBA_HINT) && textId == TEXT_HBA_NOT_ON_HORSE) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_HBA_NOT_ON_HORSE, RC_GF_HBA_1000_POINTS, RC_GF_HBA_1500_POINTS);
+        } else if (Randomizer_GetSettingValue(RSK_HBA_HINT) && textId == TEXT_HBA_INITIAL_EXPLAINATION) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_HBA_INITIAL_EXPLAINATION, RC_GF_HBA_1000_POINTS, RC_GF_HBA_1500_POINTS);
+        } else if (Randomizer_GetSettingValue(RSK_HBA_HINT) && textId == TEXT_HBA_ALREADY_HAVE_1000) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscHintMessage(TEXT_HBA_ALREADY_HAVE_1000, RC_GF_HBA_1500_POINTS);
+        }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
         if (CVarGetInteger("gInjectItemCounts", 0) != 0) {
