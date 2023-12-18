@@ -121,6 +121,8 @@ GameInteractorSail* GameInteractorSail::Instance;
 
 #include "soh/config/ConfigUpdaters.h"
 
+void SoH_ProcessDroppedFiles(std::string filePath);
+
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
@@ -1087,9 +1089,9 @@ extern "C" void InitOTR() {
     OTRGlobals::Instance = new OTRGlobals();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
+    GameInteractor::Instance = new GameInteractor();
     SaveManager::Instance = new SaveManager();
     SohGui::SetupGuiElements();
-    GameInteractor::Instance = new GameInteractor();
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
 #ifdef __APPLE__
@@ -1114,6 +1116,11 @@ extern "C" void InitOTR() {
 
     InitMods();
     ActorDB::AddBuiltInCustomActors();
+    // #region SOH [Randomizer] TODO: Remove these and refactor spoiler file handling for randomizer
+    CVarClear("gRandomizerNewFileDropped");
+    CVarClear("gRandomizerDroppedFile");
+    // #endregion
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFileDropped>(SoH_ProcessDroppedFiles);
 
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
@@ -1303,6 +1310,16 @@ extern "C" void Graph_StartFrame() {
         }
     }
 #endif
+
+    if (CVarGetInteger("gNewFileDropped", 0)) {
+        std::string filePath = SohUtils::Sanitize(CVarGetString("gDroppedFile", ""));
+        if (!filePath.empty()) {
+            GameInteractor::Instance->ExecuteHooks<GameInteractor::OnFileDropped>(filePath);
+        }
+        CVarClear("gNewFileDropped");
+        CVarClear("gDroppedFile");
+    }
+
     OTRGlobals::Instance->context->GetWindow()->StartFrame();
 }
 
@@ -2170,10 +2187,10 @@ Color_RGB8 GetColorForControllerLED() {
         if (source == LED_SOURCE_CUSTOM) {
             color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
         }
-        if (criticalOverride || source == LED_SOURCE_HEALTH) {
+        if (gPlayState && (criticalOverride || source == LED_SOURCE_HEALTH)) {
             if (HealthMeter_IsCritical()) {
                 color = { 0xFF, 0, 0 };
-            } else if (source == LED_SOURCE_HEALTH) {
+            } else if (gSaveContext.healthCapacity != 0 && source == LED_SOURCE_HEALTH) {
                 if (gSaveContext.health / gSaveContext.healthCapacity <= 0.4f) {
                     color = { 0xFF, 0xFF, 0 };
                 } else {
@@ -2566,6 +2583,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetWarpSongMessage(textId, Randomizer_GetSettingValue(RSK_WARP_SONG_HINTS) == RO_GENERIC_OFF);
         } else if (textId == TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI || textId == TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, textId);
+        } else if (textId == TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW);
         } else if (textId == 0x3052 || (textId >= 0x3069 && textId <= 0x3070)) { //Fire Temple gorons
             u16 choice = Random(0, NUM_GORON_MESSAGES);
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
@@ -2655,70 +2674,74 @@ extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* repla
     gfx_register_blended_texture(name, mask, replacement);
 }
 
-// #region SOH [TODO] Ideally this should move to being event based, it's currently run every frame on the file select screen
-extern "C" void SoH_ProcessDroppedFiles() {
-    const char* droppedFile = CVarGetString("gDroppedFile", "");
-    if (CVarGetInteger("gNewFileDropped", 0) && strcmp(droppedFile, "") != 0) {
-        try {
-            std::ifstream configStream(SohUtils::Sanitize(droppedFile));
-            if (!configStream) {
-                return;
-            }
-
-            nlohmann::json configJson;
-            configStream >> configJson;
-
-            if (!configJson.contains("CVars")) {
-                return;
-            }
-
-            clearCvars(enhancementsCvars);
-            clearCvars(cheatCvars);
-            clearCvars(randomizerCvars);
-
-            // Flatten everything under CVars into a single array
-            auto cvars = configJson["CVars"].flatten();
-
-            for (auto& [key, value] : cvars.items()) {
-                // Replace slashes with dots in key, and remove leading dot
-                std::string path = key;
-                std::replace(path.begin(), path.end(), '/', '.');
-                if (path[0] == '.') {
-                    path.erase(0, 1);
-                }
-                if (value.is_string()) {
-                    CVarSetString(path.c_str(), value.get<std::string>().c_str());
-                } else if (value.is_number_integer()) {
-                    CVarSetInteger(path.c_str(), value.get<int>());
-                } else if (value.is_number_float()) {
-                    CVarSetFloat(path.c_str(), value.get<float>());
-                }
-            }
-
-            auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
-            gui->GetGuiWindow("Console")->Hide();
-            gui->GetGuiWindow("Actor Viewer")->Hide();
-            gui->GetGuiWindow("Collision Viewer")->Hide();
-            gui->GetGuiWindow("Save Editor")->Hide();
-            gui->GetGuiWindow("Display List Viewer")->Hide();
-            gui->GetGuiWindow("Stats")->Hide();
-            std::dynamic_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->ClearBindings();
-
-            gui->SaveConsoleVariablesOnNextTick();
-
-            uint32_t finalHash = boost::hash_32<std::string>{}(configJson.dump());
-            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Configuration Loaded. Hash: %d", finalHash);
-        } catch (std::exception& e) {
-            SPDLOG_ERROR("Failed to load config file: {}", e.what());
-            auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
-            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
-            return;
-        } catch (...) {
-            SPDLOG_ERROR("Failed to load config file");
-            auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
-            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
+void SoH_ProcessDroppedFiles(std::string filePath) {
+    try {
+        std::ifstream configStream(filePath);
+        if (!configStream) {
             return;
         }
+
+        nlohmann::json configJson;
+        configStream >> configJson;
+
+        // #region SOH [Randomizer] TODO: Refactor spoiler file handling for randomizer 
+        if (configJson.contains("version") && configJson.contains("finalSeed")) {
+            CVarSetString("gRandomizerDroppedFile", filePath.c_str());
+            CVarSetInteger("gRandomizerNewFileDropped", 1);
+            return;
+        }
+        // #endregion
+
+        if (!configJson.contains("CVars")) {
+            return;
+        }
+
+        clearCvars(enhancementsCvars);
+        clearCvars(cheatCvars);
+        clearCvars(randomizerCvars);
+
+        // Flatten everything under CVars into a single array
+        auto cvars = configJson["CVars"].flatten();
+
+        for (auto& [key, value] : cvars.items()) {
+            // Replace slashes with dots in key, and remove leading dot
+            std::string path = key;
+            std::replace(path.begin(), path.end(), '/', '.');
+            if (path[0] == '.') {
+                path.erase(0, 1);
+            }
+            if (value.is_string()) {
+                CVarSetString(path.c_str(), value.get<std::string>().c_str());
+            } else if (value.is_number_integer()) {
+                CVarSetInteger(path.c_str(), value.get<int>());
+            } else if (value.is_number_float()) {
+                CVarSetFloat(path.c_str(), value.get<float>());
+            }
+        }
+
+        auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
+        gui->GetGuiWindow("Console")->Hide();
+        gui->GetGuiWindow("Actor Viewer")->Hide();
+        gui->GetGuiWindow("Collision Viewer")->Hide();
+        gui->GetGuiWindow("Save Editor")->Hide();
+        gui->GetGuiWindow("Display List Viewer")->Hide();
+        gui->GetGuiWindow("Stats")->Hide();
+        std::dynamic_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->ClearBindings();
+
+        gui->SaveConsoleVariablesOnNextTick();
+
+        uint32_t finalHash = boost::hash_32<std::string>{}(configJson.dump());
+        gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Configuration Loaded. Hash: %d", finalHash);
+    } catch (std::exception& e) {
+        SPDLOG_ERROR("Failed to load config file: {}", e.what());
+        auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
+        gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
+        return;
+    } catch (...) {
+        SPDLOG_ERROR("Failed to load config file");
+        auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
+        gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
+        return;
     }
 }
 // #endregion
