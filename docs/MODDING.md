@@ -19,7 +19,7 @@ cd <path to where you'll clone (eg, ~/Documents)>
 git clone https://github.com/<GITHUB USERNAME>/Shipwright.git
 ```
 
-At this point, I will now direct you to our [BUILDING](building.md) guide, it will have the most up to date documentation on getting the Ship running on your local machine. Once you have successfully built and launched the executable you may return here.
+At this point, I will now direct you to our [BUILDING](BUILDING.md) guide, it will have the most up to date documentation on getting the Ship running on your local machine. Once you have successfully built and launched the executable you may return here.
 
 ## Look at all those branches!
 

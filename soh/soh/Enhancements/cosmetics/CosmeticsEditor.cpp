@@ -75,6 +75,7 @@ typedef enum {
     GROUP_SPIN_ATTACK,
     GROUP_TRAILS,
     GROUP_NAVI,
+    GROUP_IVAN,
 } CosmeticGroup;
 
 std::map<CosmeticGroup, const char*> groupLabels = {
@@ -93,6 +94,7 @@ std::map<CosmeticGroup, const char*> groupLabels = {
     { GROUP_SPIN_ATTACK, "Spin Attack" },
     { GROUP_TRAILS, "Trails" },
     { GROUP_NAVI, "Navi" },
+    { GROUP_IVAN, "Ivan" } 
 };
 
 typedef struct {
@@ -316,6 +318,9 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Navi_EnemySecondary",           "Enemy Secondary",      GROUP_NAVI,         ImVec4(200, 155,   0,   0), false, true, true),
     COSMETIC_OPTION("Navi_PropsPrimary",             "Props Primary",        GROUP_NAVI,         ImVec4(  0, 255,   0, 255), false, true, false),
     COSMETIC_OPTION("Navi_PropsSecondary",           "Props Secondary",      GROUP_NAVI,         ImVec4(  0, 255,   0,   0), false, true, true),
+    
+    COSMETIC_OPTION("Ivan_IdlePrimary",              "Ivan Idle Primary",    GROUP_IVAN,         ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Ivan_IdleSecondary",            "Ivan Idle Secondary",  GROUP_IVAN,         ImVec4(  0, 255,   0, 255), false, true, true),
 
     COSMETIC_OPTION("NPC_FireKeesePrimary",          "Fire Keese Primary",   GROUP_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("NPC_FireKeeseSecondary",        "Fire Keese Secondary", GROUP_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
@@ -1619,13 +1624,15 @@ void RandomizeColor(CosmeticOption& cosmeticOption) {
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Equipment_BowHandle"), 1.0f);
         CopyMultipliedColor(cosmeticOption, cosmeticOption, 4.0f);
     } else if (cosmeticOption.label == "Idle Primary") {
-        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_IdleSecondary"), 0.5f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_IdleSecondary"), 0.5f);
     } else if (cosmeticOption.label == "Enemy Primary") {
-        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_EnemySecondary"), 0.5f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_EnemySecondary"), 0.5f);
     } else if (cosmeticOption.label == "NPC Primary") {
-        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_NPCSecondary"), 1.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_NPCSecondary"), 1.0f);
     } else if (cosmeticOption.label == "Props Primary") {
-        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_PropsSecondary"), 1.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_PropsSecondary"), 1.0f);
+    } else if (cosmeticOption.label == "Ivan Idle Primary") {
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Ivan_IdleSecondary"), 0.5f);
     } else if (cosmeticOption.label == "Level 1 Secondary") {
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("SpinAttack_Level1Primary"), 2.0f);
     } else if (cosmeticOption.label == "Level 2 Secondary") {
@@ -1861,6 +1868,7 @@ void CosmeticsEditorWindow::DrawElement() {
         if (ImGui::BeginTabItem("World & NPCs")) {
             DrawCosmeticGroup(GROUP_WORLD);
             DrawCosmeticGroup(GROUP_NAVI);
+            DrawCosmeticGroup(GROUP_IVAN);
             DrawCosmeticGroup(GROUP_NPC);
             ImGui::EndTabItem();
         }
