@@ -101,7 +101,7 @@ MessageTableEntry* OTRMessage_LoadTable(const std::string& filePath, bool isNES)
         if (isNES && file->messages[i].id == 0xFFFC)
             _message_0xFFFC_nes = (char*)file->messages[i].msg.c_str();
     }
-    OTRMessage_LoadCustom("custom/" + filePath.substr(0, filePath.find_last_of('/')) + "/*", table, file->messages.size() + 1);
+    OTRMessage_LoadCustom("override/" + filePath.substr(0, filePath.find_last_of('/')) + "/*", table, file->messages.size() + 1);
 
     // Assert that the first message starts at the first text ID
     assert(table[0].textId == 0x0001);
@@ -134,7 +134,7 @@ extern "C" void OTRMessage_Init()
         for (size_t i = 0; i < file2->messages.size(); i++) {
             SetMessageEntry(sStaffMessageEntryTablePtr[i], file2->messages[i]);
         }
-        OTRMessage_LoadCustom("custom/text/staff_message_data_static/*", sStaffMessageEntryTablePtr, file2->messages.size());
+        OTRMessage_LoadCustom("override/text/staff_message_data_static/*", sStaffMessageEntryTablePtr, file2->messages.size());
 
         // Assert staff credits start at the first credits ID
         assert(sStaffMessageEntryTablePtr[0].textId == 0x0500);
