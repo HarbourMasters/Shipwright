@@ -37,6 +37,10 @@ std::unordered_map<int8_t, RandomizerCheck> Rando::StaticData::randomizerGrottoF
 namespace Rando {
     const FishIdentity Fishsanity::defaultIdentity = { RAND_INF_MAX, RC_UNKNOWN_CHECK };
     const FishsanityMeta Fishsanity::defaultMeta = { 0, false, Fishsanity::defaultIdentity, GI_NONE };
+    bool Fishsanity::fishsanityHelpersInit = false;
+    std::unordered_map<RandomizerCheck, LinkAge> Fishsanity::pondFishAgeMap;
+    std::vector<RandomizerCheck> Fishsanity::childPondFish;
+    std::vector<RandomizerCheck> Fishsanity::adultPondFish;
 
     Fishsanity::Fishsanity() {
         InitializeHelpers();
@@ -47,7 +51,7 @@ namespace Rando {
     }
 
     bool Fishsanity::GetFishLocationIncluded(Rando::Location* loc,
-                                             FishsanityOptionsSource optionsSource = FSO_SOURCE_RANDO) {
+                                             FishsanityOptionsSource optionsSource) {
         auto [mode, numFish, ageSplit] = GetOptions();
 
         if (loc->GetRCType() != RCTYPE_FISH || mode == RO_FISHSANITY_OFF)
@@ -74,12 +78,12 @@ namespace Rando {
     }
 
     std::pair<std::vector<RandomizerCheck>, std::vector<RandomizerCheck>>
-    Fishsanity::GetFishingPondLocations(FishsanityOptionsSource optionsSource = FSO_SOURCE_RANDO) {
+    Fishsanity::GetFishingPondLocations(FishsanityOptionsSource optionsSource) {
         auto [mode, numFish, ageSplit] = GetOptions();
         std::vector<RandomizerCheck> activeFish;
         std::vector<RandomizerCheck> remainingFish;
 
-        Fishsanity_InitializeHelpers();
+        // Fishsanity_InitializeHelpers();
         remainingFish.insert(remainingFish.end(), Rando::StaticData::pondFishLocations.begin(),
                              Rando::StaticData::pondFishLocations.end());
 
@@ -115,7 +119,7 @@ namespace Rando {
     }
 
     std::pair<std::vector<RandomizerCheck>, std::vector<RandomizerCheck>>
-    Fishsanity::GetFishsanityLocations(FishsanityOptionsSource optionsSource = FSO_SOURCE_RANDO) {
+    Fishsanity::GetFishsanityLocations(FishsanityOptionsSource optionsSource) {
         auto [mode, numFish, ageSplit] = GetOptions();
         std::vector<RandomizerCheck> activeFish;
         std::vector<RandomizerCheck> remainingFish;
@@ -151,7 +155,7 @@ namespace Rando {
         return (LINK_IS_ADULT ? mCurrPondFish.second : mCurrPondFish.first).fish;
     }
 
-    FishsanityOptions Fishsanity::GetOptions(FishsanityOptionsSource optionsSource = FSO_SOURCE_RANDO) {
+    FishsanityOptions Fishsanity::GetOptions(FishsanityOptionsSource optionsSource) {
         FishsanityOptions options;
         switch (optionsSource) {
             case FSO_SOURCE_CVARS:
@@ -168,7 +172,7 @@ namespace Rando {
         return options;
     }
 
-    FishsanityMeta Fishsanity::GetPondFishMetaFromParams(s16 params, FishsanityMeta* current = NULL) {
+    FishsanityMeta Fishsanity::GetPondFishMetaFromParams(s16 params, FishsanityMeta* current) {
         auto [mode, numFish, ageSplit] = GetOptions();
         FishsanityMeta meta = defaultMeta;
 
@@ -463,11 +467,4 @@ extern "C" bool Randomizer_GetPondCleared() {
             return false;
     }
     return true;
-}
-
-extern "C" FishIdentity Fishing_IdentifyFishsanity(Fishing* fish) {
-    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT) > 16) {
-        // metadata is initialized in mods.cpp, no need to update anything
-        return fish->fishsanity.fish;
-    }
 }

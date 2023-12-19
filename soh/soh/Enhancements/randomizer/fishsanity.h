@@ -4,7 +4,6 @@
 
 #include <z64.h>
 #include "randomizerTypes.h"
-#include "overlays/actors/ovl_Fishing/z_fishing.h"
 #include "macros.h"
 
 #define RAND_INF_FISH(num, adult) ((RandomizerInf)MIN((adult ? RAND_INF_ADULT_FISH_1 : RAND_INF_CHILD_FISH_1) + num, (adult ? RAND_INF_ADULT_LOACH : RAND_INF_CHILD_LOACH_2)))
