@@ -1987,8 +1987,8 @@ extern "C" CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) 
     return OTRGlobals::Instance->gRandomizer->IdentifyCow(sceneNum, posX, posZ);
 }
 
-extern "C" PotIdentity Randomizer_IdentifyPot(s32 sceneNum, s32 posX, s32 posY, s32 posZ) {
-    return OTRGlobals::Instance->gRandomizer->IdentifyPot(sceneNum, posX, posY, posZ);
+extern "C" PotIdentity Randomizer_IdentifyPot(s32 sceneNum, s32 posX, s32 posZ) {
+    return OTRGlobals::Instance->gRandomizer->IdentifyPot(sceneNum, posX, posZ);
 }
 
 extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {

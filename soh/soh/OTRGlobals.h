@@ -133,7 +133,7 @@ RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 acto
 ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
 ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex);
 CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
-PotIdentity Randomizer_IdentifyPot(s32 sceneNum, s32 posX, s32 posY, s32 posZ);
+PotIdentity Randomizer_IdentifyPot(s32 sceneNum, s32 posX, s32 posZ);
 void Randomizer_ParseSpoiler(const char* fileLoc);
 void Randomizer_LoadHintMessages();
 void Randomizer_LoadMerchantMessages();

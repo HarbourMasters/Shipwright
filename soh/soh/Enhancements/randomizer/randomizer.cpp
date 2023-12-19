@@ -1947,13 +1947,13 @@ CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
     return cowIdentity;
 }
 
-PotIdentity Randomizer::IdentifyPot(s32 sceneNum, s32 posX, s32 posY, s32 posZ) {
+PotIdentity Randomizer::IdentifyPot(s32 sceneNum, s32 posX, s32 posZ) {
     struct PotIdentity potIdentity;
 
     potIdentity.randomizerInf = RAND_INF_MAX;
     potIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
 
-    s32 actorParams = THREE_ACTOR_PARAMS(posX, posY, posZ);
+    s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
 
     Rando::Location* location = GetCheckObjectFromActor(ACTOR_OBJ_TSUBO, sceneNum, actorParams);
 

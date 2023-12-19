@@ -169,8 +169,7 @@ void ObjTsubo_Init(Actor* thisx, PlayState* play) {
         osSyncPrintf("(dungeon keep 壷)(arg_data 0x%04x)\n", this->actor.params);
     }
     if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_POTS)) {
-        this->potIdentity = Randomizer_IdentifyPot(play->sceneNum, (s16)this->actor.world.pos.x,
-                                                   (s16)this->actor.world.pos.y, (s16)this->actor.world.pos.z);
+        this->potIdentity = Randomizer_IdentifyPot(play->sceneNum, (s16)this->actor.world.pos.x, (s16)this->actor.world.pos.z);
     }
 }
 
