@@ -156,6 +156,8 @@ Randomizer::Randomizer() {
     for (int c = 0; c < hintTypeNames.size(); c++) {
         SpoilerfileHintTypeNameToEnum[hintTypeNames[c]] = (HintType)c;
     }
+
+    fishsanity = std::make_shared<Rando::Fishsanity>();
 }
 
 Randomizer::~Randomizer() {
@@ -1579,10 +1581,11 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
             }
             break;
         case SCENE_FISHING_POND:
+            auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
             // Pond fish use params to differentiate between fish
-            if (actorId == ACTOR_FISHING && actorParams >= 100 && actorParams != 200 && Randomizer_GetPondFishShuffled()) {
+            if (actorId == ACTOR_FISHING && actorParams >= 100 && actorParams != 200 && fs->GetPondFishShuffled()) {
                 auto pair = Rando::StaticData::randomizerFishingPondFish[actorParams - 100];
-                specialRc = Randomizer_IsAdultPond() ? pair.second : pair.first;
+                specialRc = fs->IsAdultPond() ? pair.second : pair.first;
             }
             break;
         case SCENE_GROTTOS:
@@ -3413,6 +3416,10 @@ void Randomizer::CreateCustomMessages() {
     CreateNaviRandoMessages();
     CreateIceTrapRandoMessages();
     CreateFireTempleGoronMessages();
+}
+
+std::shared_ptr<Rando::Fishsanity> Randomizer::GetFishsanity() {
+    return fishsanity;
 }
 
 class ExtendedVanillaTableInvalidItemIdException: public std::exception {

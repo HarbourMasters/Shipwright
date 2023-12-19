@@ -1133,7 +1133,9 @@ void RegisterRandomizedEnemySizes() {
 
 void RegisterFishsanity() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
-        if (!IS_RANDO || !Randomizer_GetPondFishShuffled()) return;
+        auto fs = OTRGlobals::Instance->gRandomizer->GetFishsanity();
+
+        if (!IS_RANDO || !fs->GetPondFishShuffled()) return;
 
         Actor* actor = static_cast<Actor*>(refActor);
         if (actor->id != ACTOR_FISHING || gPlayState->sceneNum != SCENE_FISHING_POND)
@@ -1149,7 +1151,7 @@ void RegisterFishsanity() {
 
         // With every pond fish shuffled, caught fish will not spawn unless all fish have been caught.
         if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT) > 16 &&
-            !Randomizer_GetPondCleared()) {
+            !fs->GetPondCleared()) {
             // Has this fish been caught?
             
             if (Flags_GetRandomizerInf(fish.randomizerInf))

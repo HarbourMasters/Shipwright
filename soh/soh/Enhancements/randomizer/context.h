@@ -63,7 +63,6 @@ class Context {
     std::shared_ptr<Settings> GetSettings();
     std::shared_ptr<EntranceShuffler> GetEntranceShuffler();
     std::shared_ptr<Dungeons> GetDungeons();
-    std::shared_ptr<Fishsanity> GetFishsanity();
     DungeonInfo* GetDungeon(size_t key) const;
     std::shared_ptr<Trials> GetTrials();
     TrialInfo* GetTrial(size_t key) const;
@@ -106,7 +105,6 @@ class Context {
     std::shared_ptr<EntranceShuffler> mEntranceShuffler;
     std::shared_ptr<Dungeons> mDungeons;
     std::shared_ptr<Trials> mTrials;
-    std::shared_ptr<Fishsanity> mFishsanity;
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;
     bool mPlandoLoaded = false;

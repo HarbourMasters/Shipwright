@@ -29,6 +29,7 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
+#include "soh/Enhancements/randomizer/fishsanity.h"
 #include "soh/frame_interpolation.h"
 
 #include <string.h>
@@ -13635,7 +13636,6 @@ void func_8084ECA4(Player* this, PlayState* play) {
     BottleCatchInfo* catchInfo;
     s32 temp;
     s32 i, j;
-    u8 fsMode = Randomizer_GetSettingValue(RSK_FISHSANITY);
     FishIdentity fish;
     GetItemEntry gi = GET_ITEM_NONE;
     RandomizerCheck rc = RC_UNKNOWN_CHECK;
@@ -13711,7 +13711,7 @@ void func_8084ECA4(Player* this, PlayState* play) {
                             // TODO: this should probably be refactored a bit, maybe rehome some of this to rando instead
                             if (IS_RANDO) {
                                 // Check if fishsanity applies for this actor
-                                if (fsMode != RO_FISHSANITY_OFF && fsMode != RO_FISHSANITY_POND) {
+                                if (Randomizer_GetGrottoFishShuffled()) {
                                     fish = Randomizer_IdentifyFish(play->sceneNum, this->interactRangeActor->params);
                                     if (fish.randomizerCheck != RC_UNKNOWN_CHECK && !Flags_GetRandomizerInf(fish.randomizerInf)) {
                                         gi = Randomizer_GetItemFromKnownCheck(fish.randomizerCheck, GI_FISH);

@@ -13,6 +13,7 @@
 #include "soh/Enhancements/randomizer/randomizer_tricks.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
+#include "soh/Enhancements/randomizer/fishsanity.h"
 
 #define MAX_SEED_STRING_SIZE 1024
 #define NUM_TRIFORCE_PIECE_MESSAGES 6
@@ -23,6 +24,8 @@
 class Randomizer {
   private:
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
+    // not sure where this should go...
+    std::shared_ptr<Rando::Fishsanity> fishsanity;
     bool IsItemVanilla(RandomizerGet randoGet);
 
   public:
@@ -73,6 +76,8 @@ class Randomizer {
     static CustomMessage GetRupeeMessage(u16 rupeeTextId);
     static CustomMessage GetTriforcePieceMessage();
     bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
+    // does this need a public interface, or should it only be directly utilized by the rando instance?
+    std::shared_ptr<Rando::Fishsanity> GetFishsanity();
 };
 
 #ifdef __cplusplus

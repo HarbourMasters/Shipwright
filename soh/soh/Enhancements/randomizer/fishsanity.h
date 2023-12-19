@@ -8,18 +8,20 @@
 
 #define RAND_INF_FISH(num, adult) ((RandomizerInf)MIN((adult ? RAND_INF_ADULT_FISH_1 : RAND_INF_CHILD_FISH_1) + num, (adult ? RAND_INF_ADULT_LOACH : RAND_INF_CHILD_LOACH_2)))
 
-typedef struct FishsanityOptions {
+typedef struct FishsanityPondOptions {
     u8 mode;
     u8 numFish;
     bool ageSplit;
-} FishsanityOptions;
+} FishsanityPondOptions;
 
 typedef enum FishsanityOptionsSource {
     FSO_SOURCE_RANDO,
     FSO_SOURCE_CVARS
 };
 
-/// Fishsanity-related metadata for fishing pond fish
+/**
+ * @brief Fishsanity-related metadata for fishing pond fish
+*/
 typedef struct FishsanityMeta {
     s16 params;
     bool killAfterCollect;
@@ -29,6 +31,10 @@ typedef struct FishsanityMeta {
 
 #ifdef __cplusplus
 namespace Rando {
+
+/**
+ * @brief Class to provide an interface for and direct Fishsanity features
+*/
 class Fishsanity {
   public:
     Fishsanity();
@@ -55,22 +61,24 @@ class Fishsanity {
 
     /**
      * @brief Get all active fishsanity locations, and all inactive fishing pond locations.
+     * 
      * @param optionsSource Optionally declare from which source to pull settings 
      * @return A pair of vectors, where the first is all active fishsanity checks, and the second is all inactive fishsanity checks.
     */
     std::pair<std::vector<RandomizerCheck>, std::vector<RandomizerCheck>> GetFishsanityLocations(FishsanityOptionsSource optionsSource = FSO_SOURCE_RANDO);
 
     /**
-     * @brief Returns the identity for a caught pond fish given its params
+     * @brief Returns the identity for a caught pond fish given its params.
+     * Not for use externally from rando, use Randomizer::IdentifyFish or Randomizer_IdentifyFish for that
      * 
      * @param fishParams Actor parameters for the fish to identify
     */
     FishIdentity IdentifyPondFish(u8 fishParams);
 
     /**
-     * @brief Get fishsanity options from the requested source
+     * @brief Get fishsanity fishing pond options from the requested source
     */
-    FishsanityOptions GetOptions(FishsanityOptionsSource optionsSource = FSO_SOURCE_RANDO);
+    FishsanityPondOptions GetOptions(FishsanityOptionsSource optionsSource = FSO_SOURCE_RANDO);
 
     /**
      * @brief Get metadata for a fish given its params
@@ -90,53 +98,84 @@ class Fishsanity {
     */
     void InitializeFromSave();
 
+    /**
+     * @brief Returns true if the fishing pond is shuffled
+    */
     bool GetPondFishShuffled();
+
+    /**
+     * @brief Returns true if grotto fish are shuffled 
+    */
     bool GetGrottoFishShuffled();
+
+    /**
+     * @brief Returns true if the fishing pond is currently adult (i.e., age split is enabled and Link is adult)
+    */
     bool IsAdultPond();
+
+    /**
+     * @brief Returns true if all available pond fish checks have been collected for the current age
+    */
     bool GetPondCleared();
   private:
+    /**
+     * @brief Initialize helper statics if they have not been initialized yet
+    */
     void InitializeHelpers();
-    /// Resolves a FishIdentity directly from params & pond age
+    
+    /**
+     * @brief Resolves a FishIdentity directly from params & pond age
+     * 
+     * @param params Params for Fishing actor
+     * @param adultPond Whether to resolve this fish as an adult check
+     * @return A FishIdentity for the described fish
+    */
     FishIdentity GetPondFish(s16 params, bool adultPond);
-    /// Current pond fish when all pond fish are not randomized
+    
+    /**
+     * @brief Current pond fish when all pond fish are not randomized
+    */
     std::pair<FishsanityMeta, FishsanityMeta> mCurrPondFish;
-    /// Metadata for the currently held fish in the fishing pond minigame
+    
+    /**
+     * @brief Metadata for the currently held fish in the fishing pond minigame
+    */
     FishsanityMeta mHeldMetadata;
-    /// True if fishsanity helpers have been initialized
+    
+    /**
+     * @brief True if fishsanity helpers have been initialized
+    */
     static bool fishsanityHelpersInit;
-    // Helper data structures derived from static data
+
+    /////////////////////////////////////////////////////////
+    //// Helper data structures derived from static data ////
+    /////////////////////////////////////////////////////////
+
+    /**
+     * @brief Mapping from pond fish check to the age where that check can be collected
+    */
     static std::unordered_map<RandomizerCheck, LinkAge> pondFishAgeMap;
+
+    /**
+     * @brief List of child pond fish checks
+    */
     static std::vector<RandomizerCheck> childPondFish;
+
+    /**
+     * @brief List of adult pond fish checks
+    */
     static std::vector<RandomizerCheck> adultPondFish;
 };
-
-/// Returns true if the given fish location is active with the provided fishsanity settings
-bool Randomizer_FishLocationIncluded(Rando::Location* loc, u8 mode, u8 numFish, bool ageSplit);
-/// Constructs a pair of vectors, where the fist is all active pond fish checks, and the second is all inactive pond
-/// fish checks.
-std::pair<std::vector<RandomizerCheck>, std::vector<RandomizerCheck>>
-Randomizer_GetFishingPondLocations(u8 mode, u8 numFish, bool ageSplit);
-/// Get a pair of vectors, where the first is all active fishsanity checks, and the second is all inactive pond fish
-/// checks.
-std::pair<std::vector<RandomizerCheck>, std::vector<RandomizerCheck>>
-Randomizer_GetFishsanityLocations(u8 mode, u8 numFish, bool ageSplit);
 }
 
 extern "C" {
 #endif
-
 /// Returns true if pond fish should be shuffled based on fishsanity settings.
 bool Randomizer_GetPondFishShuffled();
 /// Returns true if grotto fish should be shuffled based on fishsanity settings.
 bool Randomizer_GetGrottoFishShuffled();
 /// Returns true if the adult fishing pond should be used for fishsanity.
 bool Randomizer_IsAdultPond();
-/// Returns the RandomizerInf associated with the given fish number (Fishing.actor.params - 100)
-RandomizerInf Randomizer_GetPondFishInf(u8 fishNum);
-/// Gets equivalent params for the next pond fish according to fishsanity settings
-s16 Randomizer_GetNextPondFishParams(s16 params);
-/// Returns true if all currently available pond fish checks have been collected
-bool Randomizer_GetPondCleared();
 #ifdef __cplusplus
 }
 #endif
