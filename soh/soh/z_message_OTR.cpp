@@ -38,11 +38,6 @@ static void OTRMessage_LoadCustom(const std::string& folderPath, MessageTableEnt
             if (existingIndex < tableSize) {
                 // Replace existing message
                 SetMessageEntry(table[existingIndex], file->messages[j]);
-            } else {
-                // Add new message
-                table = (MessageTableEntry*)realloc(table, sizeof(MessageTableEntry) * (tableSize + 1));
-                SetMessageEntry(table[tableSize], file->messages[j]);
-                ++tableSize;
             }
         }
     }
