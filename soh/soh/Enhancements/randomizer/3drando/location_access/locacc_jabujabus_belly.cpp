@@ -152,7 +152,7 @@ void AreaTable_Init_JabuJabusBelly() {
                 }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_LIFT_MIDDLE, {[]{return true;}}),
-                  Entrance(RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, {[]{return logic->CanUse(RG_BOOMERANG) || (randoCtx->GetTrickOption(RT_JABU_NEAR_BOSS_RANGED) && ((logic->IsAdult && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_FAIRY_BOW))) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)))) || (randoCtx->GetTrickOption(RT_JABU_NEAR_BOSS_EXPLOSIVES) && (logic->HasBombchus || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->Bombs)));}}),
+                  Entrance(RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, {[]{return logic->CanUse(RG_BOOMERANG) || (randoCtx->GetTrickOption(RT_JABU_NEAR_BOSS_RANGED) && ((logic->IsAdult && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_FAIRY_BOW))) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)))) || (randoCtx->GetTrickOption(RT_JABU_NEAR_BOSS_EXPLOSIVES) && (logic->Bombchus || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->Bombs)));}}),
   });
   }
 

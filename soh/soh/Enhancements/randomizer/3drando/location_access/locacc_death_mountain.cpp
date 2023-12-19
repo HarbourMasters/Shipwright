@@ -90,7 +90,7 @@ void AreaTable_Init_DeathMountain() {
                   LocationAccess(RC_GC_MAZE_LEFT_CHEST,        {[]{return logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_SILVER_GAUNTLETS) || (randoCtx->GetTrickOption(RT_GC_LEFTMOST) && logic->HasExplosives && logic->CanUse(RG_HOVER_BOOTS));}}),
                   LocationAccess(RC_GC_MAZE_CENTER_CHEST,      {[]{return logic->CanBlastOrSmash  || logic->CanUse(RG_SILVER_GAUNTLETS);}}),
                   LocationAccess(RC_GC_MAZE_RIGHT_CHEST,       {[]{return logic->CanBlastOrSmash  || logic->CanUse(RG_SILVER_GAUNTLETS);}}),
-                  LocationAccess(RC_GC_POT_FREESTANDING_POH,   {[]{return logic->IsChild && logic->GoronCityChildFire && (logic->Bombs || (logic->GoronBracelet && randoCtx->GetTrickOption(RT_GC_POT_STRENGTH)) || (logic->HasBombchus && randoCtx->GetTrickOption(RT_GC_POT)));}}),
+                  LocationAccess(RC_GC_POT_FREESTANDING_POH,   {[]{return logic->IsChild && logic->GoronCityChildFire && (logic->Bombs || (logic->GoronBracelet && randoCtx->GetTrickOption(RT_GC_POT_STRENGTH)) || (logic->Bombchus && randoCtx->GetTrickOption(RT_GC_POT)));}}),
                   LocationAccess(RC_GC_ROLLING_GORON_AS_CHILD, {[]{return logic->IsChild && (logic->HasExplosives || (logic->GoronBracelet && randoCtx->GetTrickOption(RT_GC_ROLLING_STRENGTH)));}}),
                   LocationAccess(RC_GC_ROLLING_GORON_AS_ADULT, {[]{return logic->StopGCRollingGoronAsAdult;}}),
                   LocationAccess(RC_GC_GS_BOULDER_MAZE,        {[]{return logic->IsChild && logic->CanBlastOrSmash;}}),

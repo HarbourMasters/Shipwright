@@ -392,9 +392,9 @@ std::unordered_map<RandomizerGet, EnGirlAShopItem> randomizerGetToEnGirlShopItem
     { RG_BUY_DEKU_SHIELD,   SI_DEKU_SHIELD },
     { RG_BUY_GORON_TUNIC,   SI_GORON_TUNIC },
     { RG_BUY_ZORA_TUNIC,    SI_ZORA_TUNIC },
-    { RG_BUY_HEART,         SI_HEART },
-    { RG_BUY_BOMBCHU_10,    SI_BOMBCHU_10_1 },
-    { RG_BUY_BOMBCHU_20,    SI_BOMBCHU_20_1 },
+    { RG_BUY_HEART,         SI_RECOVERY_HEART },
+    { RG_BUY_BOMBCHUS_10,    SI_BOMBCHU_10_1 },
+    { RG_BUY_BOMBCHUS_20,    SI_BOMBCHU_20_1 },
     { RG_BUY_DEKU_SEEDS_30, SI_DEKU_SEEDS_30 },
     { RG_BUY_BLUE_FIRE,     SI_BLUE_FIRE },
     { RG_BUY_BOTTLE_BUG,    SI_BUGS },
@@ -572,17 +572,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BOMBCHU_20:
         case RG_PROGRESSIVE_BOMBCHUS:
             return CAN_OBTAIN;
-        case RG_BUY_BOMBCHU_10:
-        case RG_BUY_BOMBCHU_20:
-        case RG_BOMBCHU_DROP:
-            // If Bombchus aren't in logic, you need a bomb bag to purchase them
-            // If they are in logic, you need to have already obtained them somewhere else
-            // Bombchu Drop is only used as a bowling reward, so it needs the same logic
-            if (GetRandoSettingValue(RSK_BOMBCHUS_IN_LOGIC)) {
-                return INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
-            } else {
-                return CUR_UPG_VALUE(UPG_BOMB_BAG) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
-            }
+        case RG_BUY_BOMBCHUS_10:
+        case RG_BUY_BOMBCHUS_20:
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {
                 case ITEM_NONE:
@@ -964,13 +955,11 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_OCARINA_OOT;
             }
         case RG_BOMBCHU_5:
-        case RG_BOMBCHU_DROP:
-            return GI_BOMBCHUS_5;
         case RG_BOMBCHU_10:
-        case RG_BUY_BOMBCHU_10:
+        case RG_BUY_BOMBCHUS_10:
             return GI_BOMBCHUS_10;
         case RG_BOMBCHU_20:
-        case RG_BUY_BOMBCHU_20:
+        case RG_BUY_BOMBCHUS_20:
             return GI_BOMBCHUS_20;
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {
@@ -1224,7 +1213,6 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BOMBCHU_5:
         case RG_BOMBCHU_10:
         case RG_BOMBCHU_20:
-        case RG_BOMBCHU_DROP:
         case RG_ARROWS_5:
         case RG_ARROWS_10:
         case RG_ARROWS_30:
@@ -1253,8 +1241,8 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BUY_GORON_TUNIC:
         case RG_BUY_ZORA_TUNIC:
         case RG_BUY_HEART:
-        case RG_BUY_BOMBCHU_10:
-        case RG_BUY_BOMBCHU_20:
+        case RG_BUY_BOMBCHUS_10:
+        case RG_BUY_BOMBCHUS_20:
         case RG_BUY_DEKU_SEEDS_30:
         case RG_SOLD_OUT:
         case RG_BUY_BLUE_FIRE:

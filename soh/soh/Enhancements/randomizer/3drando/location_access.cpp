@@ -68,9 +68,9 @@ bool LocationAccess::CanBuy() const {
       OtherCondition = logic->HasBottle;
   }
   // If bombchus in logic, need to have found chus to buy; if not just need bomb bag
-  else if (placed == RG_BUY_BOMBCHU_10 || placed == RG_BUY_BOMBCHU_20) {
+  else if (placed == RG_BUY_BOMBCHUS_10 || placed == RG_BUY_BOMBCHUS_20) {
       OtherCondition =
-          (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->Bombs) || (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->FoundBombchus);
+          (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->Bombs) || (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->BombchuBag);
   }
 
   return SufficientWallet && OtherCondition;

@@ -174,7 +174,7 @@ void AreaTable_Init_DekuTree() {
                   //Locations
                   LocationAccess(RC_DEKU_TREE_MQ_COMPASS_CHEST,   {[]{return true;}}),
                   LocationAccess(RC_DEKU_TREE_MQ_GS_COMPASS_ROOM, {[]{return logic->HookshotOrBoomerang &&
-                                                                               Here(RR_DEKU_TREE_MQ_COMPASS_ROOM, []{return logic->HasBombchus ||
+                                                                               Here(RR_DEKU_TREE_MQ_COMPASS_ROOM, []{return logic->Bombchus ||
                                                                                (logic->Bombs && (logic->CanUse(RG_SONG_OF_TIME) || logic->IsAdult)) ||
                                                                                (logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER) && (logic->CanUse(RG_SONG_OF_TIME) || randoCtx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS)));});}}),
   }, {

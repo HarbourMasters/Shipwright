@@ -75,6 +75,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_BOMBCHUS_IN_LOGIC] = Option::Bool("Bombchus in Logic", "gRandomizeBombchusInLogic", mOptionDescriptions[RSK_BOMBCHUS_IN_LOGIC]);
     mOptions[RSK_ENABLE_BOMBCHU_DROPS] = Option::U8("Bombchu Drops", {"No", "Yes"}, OptionCategory::Setting, "gRandomizeEnableBombchuDrops", mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS], WidgetType::Combobox, RO_AMMO_DROPS_ON);
     // TODO: AmmoDrops and/or HeartDropRefill, combine with/separate Ammo Drops from Bombchu Drops?
+    mOptions[RSK_BETTER_BOMBCHU_SHOPPING] = Option::Bool("Better Bombchu Shopping", {"On", "Off"}, OptionCategory::Setting, "gRandomizeBetterBombchuShopping", mOptionDescriptions[RSK_BETTER_BOMBCHU_SHOPPING]);
     mOptions[RSK_TRIFORCE_HUNT] = Option::Bool("Triforce Hunt", "gRandomizeTriforceHunt", mOptionDescriptions[RSK_TRIFORCE_HUNT], IMFLAG_NONE);
     mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = Option::U8("Triforce Hunt Total Pieces", {NumOpts(1, 100)}, OptionCategory::Setting, "gRandomizeTriforceHuntTotalPieces", mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL], WidgetType::Slider, 29, false, IMFLAG_NONE);
     mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = Option::U8("Triforce Hunt Required Pieces", {NumOpts(1, 100)}, OptionCategory::Setting, "gRandomizeTriforceHuntRequiredPieces", mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED], WidgetType::Slider, 19);
@@ -726,6 +727,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_FULL_WALLETS],
         &mOptions[RSK_BOMBCHUS_IN_LOGIC],
         &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
+        &mOptions[RSK_BETTER_BOMBCHU_SHOPPING],
         &mOptions[RSK_BLUE_FIRE_ARROWS],
         &mOptions[RSK_SUNLIGHT_ARROWS]
     }, false, WidgetContainerType::COLUMN);
@@ -805,6 +807,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_DECOUPLED_ENTRANCES],
         &mOptions[RSK_BOMBCHUS_IN_LOGIC],
         &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
+        &mOptions[RSK_BETTER_BOMBCHU_SHOPPING],
         &mOptions[RSK_TRIFORCE_HUNT],
         &mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL],
         &mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED],
@@ -1095,6 +1098,7 @@ void Settings::CreateOptions() {
         // TODO: Ammo Drop settings
         { "World Settings:Bombchu Drops", RSK_ENABLE_BOMBCHU_DROPS },
         { "World Settings:Bombchus in Logic", RSK_BOMBCHUS_IN_LOGIC },
+        { "World Settings:Better Bombchu Shopping", RSK_BETTER_BOMBCHU_SHOPPING },
         { "World Settings:Shuffle Entrances", RSK_SHUFFLE_ENTRANCES },
         { "World Settings:Dungeon Entrances", RSK_SHUFFLE_DUNGEON_ENTRANCES },
         { "World Settings:Boss Entrances", RSK_SHUFFLE_BOSS_ENTRANCES },
@@ -2235,6 +2239,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                         mOptions[index].SetSelectedIndex(RO_AMMO_DROPS_OFF);
                     }
                     break;
+                case RSK_BETTER_BOMBCHU_SHOPPING:
                 case RSK_SHUFFLE_BOSS_SOULS:
                     if (it.value() == "Off") {
                         mOptions[index].SetSelectedIndex(RO_BOSS_SOULS_OFF);

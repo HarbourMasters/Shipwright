@@ -15,7 +15,7 @@ typedef struct EnGirlA {
     /* 0x0000 */ Actor actor;
     /* 0x014C */ SkelAnime skelAnime;
     /* 0x0190 */ EnGirlAActionFunc actionFunc;
-    /* 0x0194 */ s8 objBankIndex;
+    /* 0x0194 */ s8 requiredObjectSlot;
     /* 0x0198 */ EnGirlAActionFunc actionFunc2;
     /* 0x019C */ s32 isInitialized;
     /* 0x01A0 */ s16 itemBuyPromptTextId;
@@ -53,7 +53,7 @@ typedef enum {
     /* 0x0D */ SI_DEKU_SHIELD,
     /* 0x0E */ SI_GORON_TUNIC,
     /* 0x0F */ SI_ZORA_TUNIC,
-    /* 0x10 */ SI_HEART,
+    /* 0x10 */ SI_RECOVERY_HEART,
     /* 0x11 */ SI_MILK_BOTTLE,
     /* 0x12 */ SI_WEIRD_EGG,
     /* 0x13 */ SI_19,

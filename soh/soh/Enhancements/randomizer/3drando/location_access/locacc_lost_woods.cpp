@@ -150,7 +150,7 @@ void AreaTable_Init_LostWoods() {
                   //Locations
                   LocationAccess(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, {[]{return logic->IsChild && logic->CanStunDeku;}}),
                   LocationAccess(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,  {[]{return logic->IsChild && logic->CanStunDeku;}}),
-                  LocationAccess(RC_LW_GS_ABOVE_THEATER,                   {[]{return logic->IsAdult && logic->AtNight && ((CanPlantBean(RR_LW_BEYOND_MIDO) && logic->CanAdultAttack) || (randoCtx->GetTrickOption(RT_LW_GS_BEAN) && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->HasBombchus || logic->CanUse(RG_DINS_FIRE)))) && logic->CanGetNightTimeGS;}}),
+                  LocationAccess(RC_LW_GS_ABOVE_THEATER,                   {[]{return logic->IsAdult && logic->AtNight && ((CanPlantBean(RR_LW_BEYOND_MIDO) && logic->CanAdultAttack) || (randoCtx->GetTrickOption(RT_LW_GS_BEAN) && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->Bombchus || logic->CanUse(RG_DINS_FIRE)))) && logic->CanGetNightTimeGS;}}),
                   LocationAccess(RC_LW_GS_BEAN_PATCH_NEAR_THEATER,         {[]{return logic->CanPlantBugs && (logic->CanChildAttack || (randoCtx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF) && logic->DekuShield));}}),
                 }, {
                   //Exits

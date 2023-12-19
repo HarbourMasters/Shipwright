@@ -87,12 +87,12 @@ void AreaTable_Init_GanonsCastle() {
 
   areaTable[RR_GANONS_CASTLE_SPIRIT_TRIAL] = Area("Ganon's Castle Spirit Trial", "Ganon's Castle", RA_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->NutPot,           {[]{return logic->NutPot || (((randoCtx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) && logic->CanJumpslash) || logic->CanUse(RG_HOOKSHOT)) && logic->HasBombchus && logic->CanUse(RG_FAIRY_BOW) && (logic->CanUse(RG_MIRROR_SHIELD) || (randoCtx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS))));}}),
-                  EventAccess(&logic->SpiritTrialClear, {[]{return logic->CanUse(RG_LIGHT_ARROWS) && (logic->CanUse(RG_MIRROR_SHIELD) || randoCtx->GetOption(RSK_SUNLIGHT_ARROWS)) && logic->HasBombchus && ((randoCtx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) && logic->CanJumpslash) || logic->CanUse(RG_HOOKSHOT));}}),
+                  EventAccess(&logic->NutPot,           {[]{return logic->NutPot || (((randoCtx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) && logic->CanJumpslash) || logic->CanUse(RG_HOOKSHOT)) && logic->Bombchus && logic->CanUse(RG_FAIRY_BOW) && (logic->CanUse(RG_MIRROR_SHIELD) || (randoCtx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS))));}}),
+                  EventAccess(&logic->SpiritTrialClear, {[]{return logic->CanUse(RG_LIGHT_ARROWS) && (logic->CanUse(RG_MIRROR_SHIELD) || randoCtx->GetOption(RSK_SUNLIGHT_ARROWS)) && logic->Bombchus && ((randoCtx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) && logic->CanJumpslash) || logic->CanUse(RG_HOOKSHOT));}}),
                 }, {
                   //Locations
                   LocationAccess(RC_GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST, {[]{return (randoCtx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) || logic->CanUse(RG_HOOKSHOT)) && logic->CanJumpslash;}}),
-                  LocationAccess(RC_GANONS_CASTLE_SPIRIT_TRIAL_INVISIBLE_CHEST,      {[]{return (randoCtx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) || logic->CanUse(RG_HOOKSHOT)) && logic->HasBombchus && (randoCtx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH));}}),
+                  LocationAccess(RC_GANONS_CASTLE_SPIRIT_TRIAL_INVISIBLE_CHEST,      {[]{return (randoCtx->GetTrickOption(RT_GANON_SPIRIT_TRIAL_HOOKSHOT) || logic->CanUse(RG_HOOKSHOT)) && logic->Bombchus && (randoCtx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH));}}),
   }, {});
 
   areaTable[RR_GANONS_CASTLE_LIGHT_TRIAL] = Area("Ganon's Castle Light Trial", "Ganon's Castle", RA_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
@@ -193,16 +193,16 @@ void AreaTable_Init_GanonsCastle() {
 
   areaTable[RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL] = Area("Ganon's Castle MQ Spirit Castle", "Ganons Castle", RA_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->SpiritTrialClear, {[]{return logic->IsAdult && logic->CanUse(RG_LIGHT_ARROWS) && logic->Hammer && logic->HasBombchus && ((logic->FireArrows && logic->MirrorShield) || randoCtx->GetOption(RSK_SUNLIGHT_ARROWS));}}),
-                  EventAccess(&logic->NutPot,           {[]{return logic->NutPot || (logic->Hammer && logic->HasBombchus && logic->IsAdult && ((logic->CanUse(RG_FIRE_ARROWS) && logic->MirrorShield) || (randoCtx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS))));}}),
+                  EventAccess(&logic->SpiritTrialClear, {[]{return logic->IsAdult && logic->CanUse(RG_LIGHT_ARROWS) && logic->Hammer && logic->Bombchus && ((logic->FireArrows && logic->MirrorShield) || randoCtx->GetOption(RSK_SUNLIGHT_ARROWS));}}),
+                  EventAccess(&logic->NutPot,           {[]{return logic->NutPot || (logic->Hammer && logic->Bombchus && logic->IsAdult && ((logic->CanUse(RG_FIRE_ARROWS) && logic->MirrorShield) || (randoCtx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS))));}}),
   }, {
                   //Locations
                   LocationAccess(RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_FIRST_CHEST,             {[]{return logic->IsAdult && (logic->Bow || randoCtx->GetTrickOption(RT_RUSTED_SWITCHES)) && logic->Hammer;}}),
-                  LocationAccess(RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_INVISIBLE_CHEST,         {[]{return logic->IsAdult && (logic->Bow || randoCtx->GetTrickOption(RT_RUSTED_SWITCHES)) && logic->Hammer && logic->HasBombchus && (randoCtx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH));}}),
-                  LocationAccess(RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_FRONT_LEFT_CHEST,    {[]{return logic->IsAdult && logic->Hammer && logic->HasBombchus && ((logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_MIRROR_SHIELD)) || (randoCtx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS)));}}),
-                  LocationAccess(RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_LEFT_CHEST,     {[]{return logic->IsAdult && logic->Hammer && logic->HasBombchus && ((logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_MIRROR_SHIELD)) || (randoCtx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS)));}}),
-                  LocationAccess(RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_GOLDEN_GAUNTLETS_CHEST,  {[]{return logic->IsAdult && logic->Hammer && logic->HasBombchus && ((logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_MIRROR_SHIELD)) || (randoCtx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS)));}}),
-                  LocationAccess(RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_RIGHT_CHEST,    {[]{return logic->IsAdult && logic->Hammer && logic->HasBombchus && ((logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_MIRROR_SHIELD)) || (randoCtx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS)));}}),
+                  LocationAccess(RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_INVISIBLE_CHEST,         {[]{return logic->IsAdult && (logic->Bow || randoCtx->GetTrickOption(RT_RUSTED_SWITCHES)) && logic->Hammer && logic->Bombchus && (randoCtx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH));}}),
+                  LocationAccess(RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_FRONT_LEFT_CHEST,    {[]{return logic->IsAdult && logic->Hammer && logic->Bombchus && ((logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_MIRROR_SHIELD)) || (randoCtx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS)));}}),
+                  LocationAccess(RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_LEFT_CHEST,     {[]{return logic->IsAdult && logic->Hammer && logic->Bombchus && ((logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_MIRROR_SHIELD)) || (randoCtx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS)));}}),
+                  LocationAccess(RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_GOLDEN_GAUNTLETS_CHEST,  {[]{return logic->IsAdult && logic->Hammer && logic->Bombchus && ((logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_MIRROR_SHIELD)) || (randoCtx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS)));}}),
+                  LocationAccess(RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_RIGHT_CHEST,    {[]{return logic->IsAdult && logic->Hammer && logic->Bombchus && ((logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_MIRROR_SHIELD)) || (randoCtx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS)));}}),
   }, {});
 
   areaTable[RR_GANONS_CASTLE_MQ_LIGHT_TRIAL] = Area("Ganon's Castle MQ Light Trial", "Ganons Castle", RA_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {

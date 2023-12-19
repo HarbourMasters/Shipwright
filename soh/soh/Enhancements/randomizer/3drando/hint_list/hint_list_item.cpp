@@ -1772,7 +1772,7 @@ void HintTable_Init_Item() {
                        Text{"Bombs (20 pieces)", /*french*/"une vingtaine de bombes", /*spanish*/"unas (20) bombas"}
     );
 
-    hintTable[RHT_BOMBCHU_5] = HintText::Item({
+    hintTable[RHT_BOMBCHUS_5] = HintText::Item({
                        //obscure text
                        Text{"a few mice bombs",     /*french*/"une poignée de mignons explosifs", /*spanish*/"un par de bombas roedoras"},
                        Text{"a few proximity mice", /*french*/"une poignée de jouets à remonter", /*spanish*/"un par de explosivos ratoncitos"},
@@ -1787,7 +1787,7 @@ void HintTable_Init_Item() {
                        Text{"Bombchus (5 pieces)", /*french*/"une demi-dizaine de Missiles", /*spanish*/"unos (5) bombchus"}
     );
 
-    hintTable[RHT_BOMBCHU_10] = HintText::Item({
+    hintTable[RHT_BOMBCHUS_10] = HintText::Item({
                        //obscure text
                        Text{"some mice bombs",     /*french*/"un paquet de mignons explosifs", /*spanish*/"unas cuantas bombas roedoras"},
                        Text{"some proximity mice", /*french*/"un paquet de jouets à remonter", /*spanish*/"unos cuantos explosivos ratoncitos"},
@@ -1802,7 +1802,7 @@ void HintTable_Init_Item() {
                        Text{"Bombchus (10 pieces)", /*french*/"une dizaine de Missiles", /*spanish*/"unos (10) bombchus"}
     );
 
-    hintTable[RHT_BOMBCHU_20] = HintText::Item({
+    hintTable[RHT_BOMBCHUS_20] = HintText::Item({
                        //obscure text
                        Text{"plenty of mice bombs",     /*french*/"une abondance de mignons explosifs", /*spanish*/"bastantes bombas roedoras"},
                        Text{"plenty of proximity mice", /*french*/"une abondance de jouets à remonter", /*spanish*/"bastantes explosivos ratoncitos"},
@@ -1817,7 +1817,7 @@ void HintTable_Init_Item() {
                        Text{"Bombchus (20 pieces)", /*french*/"une vingtaine de Missiles", /*spanish*/"unos (20) bombchus"}
     );
 
-  //RHT_BOMBCHU_DROP
+  //RHT_BOMBCHUS_DROP
 
     hintTable[RHT_ARROWS_5] = HintText::Item({
                        //obscure text

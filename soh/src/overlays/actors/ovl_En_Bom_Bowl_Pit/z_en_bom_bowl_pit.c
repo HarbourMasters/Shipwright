@@ -193,10 +193,6 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, PlayState* play) {
                 this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
                 this->getItemId = this->getItemEntry.getItemId;
                 break;
-            case EXITEM_BOMBCHUS_BOWLING:
-                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
-                this->getItemId = this->getItemEntry.getItemId;
-                break;
         }
     }
 

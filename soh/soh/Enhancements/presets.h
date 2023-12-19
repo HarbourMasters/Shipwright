@@ -198,6 +198,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gBowSlingShotAmmoFix",
     "gBetterFW",
     "gDisableFirstPersonChus",
+    "gBetterBombchuShopping",
     "gHyperBosses",
     "gRupeeDash",
     "gDashInterval",
@@ -647,6 +648,9 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
 
     // Autosave
     PRESET_ENTRY_S32("gAutosave", AUTOSAVE_LOCATION_AND_MAJOR_ITEMS),
+
+    // Bombchu shop doesn't sell out, and 10 bombchus cost 99 instead of 100
+    PRESET_ENTRY_S32("gBetterBombchuShopping", 1),
 };
 
 const std::vector<PresetEntry> randomizerPresetEntries = {
