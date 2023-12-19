@@ -8,10 +8,10 @@
 #include "entrance.h"
 #include "settings.h"
 #include "rando_hash.h"
+#include "fishsanity.h"
 
 #include <fstream>
 #include <spdlog/spdlog.h>
-#include "fishsanity.h"
 
 namespace Rando {
 std::weak_ptr<Context> Context::mContext;
@@ -91,6 +91,7 @@ Context::Context() {
     mDungeons = std::make_shared<Dungeons>();
     mTrials = std::make_shared<Trials>();
     mSettings = std::make_shared<Settings>();
+    mFishsanity = std::make_shared<Fishsanity>();
 }
 
 RandomizerArea Context::GetAreaFromString(std::string str) {
@@ -594,6 +595,10 @@ std::shared_ptr<EntranceShuffler> Context::GetEntranceShuffler() {
 
 std::shared_ptr<Dungeons> Context::GetDungeons() {
     return mDungeons;
+}
+
+std::shared_ptr<Fishsanity> Context::GetFishsanity() {
+    return mFishsanity;
 }
 
 DungeonInfo* Context::GetDungeon(size_t key) const {

@@ -4,6 +4,7 @@
 #include <string>
 #include <string_view>
 #include <cstdint>
+#include "../randomizerTypes.h"
 
 using RandomizerHash = std::array<std::string, 5>;
 
@@ -75,7 +76,7 @@ typedef enum {
 } SpoilerItemRevealType;
 
 #define SPOILER_SPHERES_MAX 50
-#define SPOILER_ITEMS_MAX 512
+#define SPOILER_ITEMS_MAX RC_MAX
 #define SPOILER_STRING_DATA_SIZE 16384
 
 typedef struct {

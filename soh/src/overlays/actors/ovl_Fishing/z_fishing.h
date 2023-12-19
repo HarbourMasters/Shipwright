@@ -3,8 +3,10 @@
 
 #include <libultraship/libultra.h>
 #include "global.h"
+#include "soh/Enhancements/randomizer/fishsanity.h"
 
 struct Fishing;
+struct FishsanityMeta;
 
 typedef struct Fishing {
     /* 0x0000 */ Actor actor;
@@ -56,6 +58,7 @@ typedef struct Fishing {
     /* 0x0220 */ LightInfo lightInfo;
     /* 0x0230 */ ColliderJntSph collider;
     /* 0x0250 */ ColliderJntSphElement colliderElements[12];
+    /*        */ FishsanityMeta fishsanity;
 } Fishing; // size = 0x0550
 
 #define EN_FISH_OWNER 1      // param for owner of pond. default if params<100

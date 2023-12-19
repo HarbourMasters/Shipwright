@@ -15,6 +15,8 @@
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 #define WATER_SURFACE_Y(play) play->colCtx.colHeader->waterBoxes->ySurface
+#define IS_FISHSANITY (IS_RANDO && Randomizer_GetPondFishShuffled())
+#define FISHID(params) (Randomizer_IdentifyFish(play->sceneNum, params))
 
 void Fishing_Init(Actor* thisx, PlayState* play);
 void Fishing_Destroy(Actor* thisx, PlayState* play);
@@ -22,7 +24,10 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play);
 void Fishing_UpdateOwner(Actor* thisx, PlayState* play);
 void Fishing_DrawFish(Actor* thisx, PlayState* play);
 void Fishing_DrawOwner(Actor* thisx, PlayState* play);
+void Fishing_AwardFishsanity(Fishing* this, PlayState* play);
 void Fishing_Reset(void);
+
+bool getShouldSpawnLoaches();
 
 typedef struct {
     /* 0x00 */ u8 isLoach;
@@ -429,6 +434,8 @@ static f32 sFishGroupAngle2;
 static f32 sFishGroupAngle3;
 static FishingEffect sFishingEffects[FISHING_EFFECT_COUNT];
 static Vec3f sStreamSoundProjectedPos;
+static u8 sFishOnHandParams;
+static u8 sFishsanityPendingParams;
 
 void Fishing_SetColliderElement(s32 index, ColliderJntSph* collider, Vec3f* pos, f32 scale) {
     collider->elements[index].dim.worldSphere.center.x = pos->x;
@@ -2932,6 +2939,15 @@ bool getGuaranteeBite() {
 
 bool getFishNeverEscape() {
     return CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gFishNeverEscape", 0);
+}
+
+bool getShouldSpawnLoaches() {
+    return (CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gLoachesAlwaysAppear", 0))
+        || ((KREG(1) == 1) || ((sFishGameNumber & 3) == 3));
+}
+
+bool getShouldConfirmKeep() {
+    return !CVarGetInteger("gCustomizeFishing", 0) || !CVarGetInteger("gSkipKeepConfirmation", 0);
 }
 
 void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {

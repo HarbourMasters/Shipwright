@@ -24,6 +24,7 @@
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
+#include "src/overlays//actors/ovl_Fishing/z_fishing.h"
 
 extern "C" {
 #include <z64.h>
@@ -1133,11 +1134,27 @@ void RegisterRandomizedEnemySizes() {
 void RegisterFishsanity() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
         if (!IS_RANDO || !Randomizer_GetPondFishShuffled()) return;
-        // With every pond fish shuffled, caught fish will not spawn unless all fish have been caught.
-        Actor* actor = static_cast<Actor*>(refActor);
 
-        if (actor->id != ACTOR_FISHING)
+        Actor* actor = static_cast<Actor*>(refActor);
+        if (actor->id != ACTOR_FISHING || gPlayState->sceneNum != SCENE_FISHING_POND)
             return;
+
+        // Initialize fishsanity metadata on this actor
+        Fishing* fishActor = static_cast<Fishing*>(refActor);
+        FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+        fishActor->fishsanity = {
+            actor->params,
+            false
+        };
+
+        // With every pond fish shuffled, caught fish will not spawn unless all fish have been caught.
+        if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT) > 16 &&
+            !Randomizer_GetPondCleared()) {
+            // Has this fish been caught?
+            
+            if (Flags_GetRandomizerInf(fish.randomizerInf))
+                Actor_Kill(actor);
+        }
     });
 }
 
@@ -1171,5 +1188,6 @@ void InitMods() {
     RegisterRandomizerSheikSpawn();
     RegisterBossSouls();
     RegisterRandomizedEnemySizes();
+    RegisterFishsanity();
     NameTag_RegisterHooks();
 }
