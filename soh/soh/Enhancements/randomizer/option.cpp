@@ -221,7 +221,6 @@ bool Option::RenderCombobox() const {
     if (!description.empty()) {
         UIWidgets::InsertHelpHoverText(description.c_str());
     }
-    ImGui::BeginGroup();
     const std::string comboName = std::string("##") + std::string(cvarName);
     if (ImGui::BeginCombo(comboName.c_str(), options[selected].c_str())) {
         for (size_t i = 0; i < options.size(); i++) {
@@ -236,7 +235,6 @@ bool Option::RenderCombobox() const {
         }
         ImGui::EndCombo();
     }
-    ImGui::EndGroup();
     if (disabled) {
         UIWidgets::ReEnableComponent(disabledText.c_str());
     }
