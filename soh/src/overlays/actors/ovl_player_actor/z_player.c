@@ -11003,7 +11003,14 @@ void Player_UseTunicBoots(Player* this, PlayState* play) {
     s32 i;
     s32 item;
     s32 itemAction;
-    if (!(this->stateFlags1 & PLAYER_STATE1_INPUT_DISABLED || this->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || this->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE || this->stateFlags1 & PLAYER_STATE1_TEXT_ON_SCREEN || this->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING)) {
+    if (!(
+        this->stateFlags1 & PLAYER_STATE1_INPUT_DISABLED || 
+        this->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || 
+        this->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE || 
+        this->stateFlags1 & PLAYER_STATE1_TEXT_ON_SCREEN || 
+        this->stateFlags1 & PLAYER_STATE1_DEAD || 
+        this->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING
+    )) {
         for (i = 0; i < ARRAY_COUNT(sItemButtons); i++) {
             if (CHECK_BTN_ALL(sControlInput->press.button, sItemButtons[i])) {
                 break;
