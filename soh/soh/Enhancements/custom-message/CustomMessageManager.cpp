@@ -127,6 +127,7 @@ void CustomMessage::Format() {
     }
     ReplaceSpecialCharacters();
     ReplaceColors();
+    ReplaceControlCodeVariables();
     *this += MESSAGE_END();
 }
 
@@ -147,6 +148,54 @@ void CustomMessage::ReplaceSpecialCharacters() {
                 str->replace(start_pos, specialCharacterPair.first.length(), textBoxSpecialCharacterString);
                 start_pos += textBoxSpecialCharacterString.length();
             }
+        }
+    }
+}
+
+void CustomMessage::ReplaceControlCodeVariables() {
+    for (std::string* str : { &english, &french, &german}) {
+        size_t position = 0;
+        size_t endPosition = 0;
+        while ((position = str->find('$', position)) != std::string::npos) {
+            std::string replacement;
+            if ((*str)[position + 1] == '{') {
+                if ((endPosition = str->find('}', position)) != std::string::npos) {
+                    std::string variable = str->substr(position + 2, endPosition - (position + 2));
+                    const size_t colonPos = variable.find(':', 0);
+                    std::string name = variable.substr(0, colonPos);
+                    const auto& [controlCode, type] = mControlCodeVariables.at(name);
+                    if (controlCode != 0) {
+                        replacement += mControlCodeVariables.at(name).controlCode;
+                    }
+                    if (type != ValueType::NONE) {
+                        uint32_t bytes = 0;
+                        std::string value = colonPos == std::string::npos ? "" : variable.substr(colonPos + 1);
+                        switch (type) {
+                            case ValueType::COLOR:
+                                replacement += mColors.at(value);
+                                break;
+                            case ValueType::BYTE:
+                                replacement += static_cast<char>(std::stoi(value, nullptr, 0));
+                                break;
+                            case ValueType::TWO_BYTES:
+                                bytes = std::stoi(value, nullptr, 0);
+                                replacement += static_cast<char>(bytes >> 8 & 0xFF);
+                                replacement += static_cast<char>(bytes & 0xFF);
+                                break;
+                            case ValueType::THREE_BYTES:
+                                bytes = std::stoi(value, nullptr, 0);
+                                replacement += static_cast<char>(bytes >> 16 & 0xFF);
+                                replacement += static_cast<char>(bytes >> 8 & 0xFF);
+                                replacement += static_cast<char>(bytes & 0xFF);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            str->replace(position, endPosition - position + 1, replacement);
+            position += replacement.size();
         }
     }
 }
