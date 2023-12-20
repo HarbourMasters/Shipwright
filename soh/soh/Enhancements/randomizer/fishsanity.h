@@ -117,6 +117,12 @@ class Fishsanity {
      * @brief Returns true if all available pond fish checks have been collected for the current age
     */
     bool GetPondCleared();
+
+    /**
+     * @brief Advances current fishing pond check; no effect if every fish is shuffled
+     * @return The new FishsanityMeta for the current pond, or default metadata if every fish is shuffled
+    */
+    FishsanityMeta AdvancePond();
   private:
     /**
      * @brief Initialize helper statics if they have not been initialized yet

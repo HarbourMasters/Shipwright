@@ -24,8 +24,6 @@
 class Randomizer {
   private:
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
-    // not sure where this should go...
-    std::shared_ptr<Rando::Fishsanity> fishsanity;
     bool IsItemVanilla(RandomizerGet randoGet);
 
   public:
@@ -76,8 +74,6 @@ class Randomizer {
     static CustomMessage GetRupeeMessage(u16 rupeeTextId);
     static CustomMessage GetTriforcePieceMessage();
     bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
-    // does this need a public interface, or should it only be directly utilized by the rando instance?
-    std::shared_ptr<Rando::Fishsanity> GetFishsanity();
 };
 
 #ifdef __cplusplus

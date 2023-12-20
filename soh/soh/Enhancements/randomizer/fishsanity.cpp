@@ -4,7 +4,7 @@
 #include "3drando/pool_functions.hpp"
 #include <functions.h>
 
-#define FSi OTRGlobals::Instance->gRandomizer->GetFishsanity()
+#define FSi OTRGlobals::Instance->gRandoContext->GetFishsanity()
 
 // Reference soh/src/overlays/actors/ovl_Fishing/z_fishing.c
 std::array<std::pair<RandomizerCheck, RandomizerCheck>, 17> Rando::StaticData::randomizerFishingPondFish = {
@@ -299,6 +299,47 @@ namespace Rando {
             OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc),
             rc
         };
+    }
+
+    FishsanityMeta Fishsanity::AdvancePond() {
+        auto [mode, pondCount, ageSplit] = GetOptions();
+
+        // No need to update state with full pond shuffle
+        if (pondCount > 16) {
+            return defaultMeta;
+        }
+
+        bool adultPond = IsAdultPond();
+        FishsanityMeta currMeta = (adultPond ? mCurrPondFish.second : mCurrPondFish.first);
+        RandomizerCheck rcNext = RC_UNKNOWN_CHECK, rcPrev = RC_UNKNOWN_CHECK,
+                        rcCurr = currMeta.fish.randomizerCheck;
+        // Find the next check for the current pond
+        for (auto pair : Rando::StaticData::randomizerFishingPondFish) {
+            if (rcPrev != RC_UNKNOWN_CHECK && rcPrev == rcCurr) {
+                rcNext = adultPond ? pair.second : pair.first;
+                break;
+            }
+            rcPrev = adultPond ? pair.second : pair.first;
+        }
+        // must have cleared adult pond or something else weird happened
+        if (rcNext == RC_UNKNOWN_CHECK) {
+            return defaultMeta;
+        }
+
+        FishsanityMeta newMeta = {
+            currMeta.params + 1,
+            false,
+            { OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rcNext), rcNext },
+            OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(rcNext, GI_NONE, false).getItemId
+        };
+
+        if (adultPond) {
+            mCurrPondFish.second = newMeta;
+        } else {
+            mCurrPondFish.first = newMeta;
+        }
+
+        return newMeta;
     }
 } // namespace Rando
 

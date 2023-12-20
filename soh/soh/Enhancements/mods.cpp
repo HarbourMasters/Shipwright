@@ -1133,29 +1133,23 @@ void RegisterRandomizedEnemySizes() {
 
 void RegisterFishsanity() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
-        auto fs = OTRGlobals::Instance->gRandomizer->GetFishsanity();
-
-        if (!IS_RANDO || !fs->GetPondFishShuffled()) return;
-
+        if (!IS_RANDO) return;
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
         Actor* actor = static_cast<Actor*>(refActor);
-        if (actor->id != ACTOR_FISHING || gPlayState->sceneNum != SCENE_FISHING_POND)
-            return;
+        // Initialize pond fish for fishsanity
+        if (fs->GetPondFishShuffled() && actor->id == ACTOR_FISHING && gPlayState->sceneNum == SCENE_FISHING_POND) {
+            // Initialize fishsanity metadata on this actor
+            Fishing* fishActor = static_cast<Fishing*>(refActor);
+            fishActor->fishsanity = fs->GetPondFishMetaFromParams(actor->params);
+            FishIdentity fish = fishActor->fishsanity.fish;
 
-        // Initialize fishsanity metadata on this actor
-        Fishing* fishActor = static_cast<Fishing*>(refActor);
-        FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
-        fishActor->fishsanity = {
-            actor->params,
-            false
-        };
-
-        // With every pond fish shuffled, caught fish will not spawn unless all fish have been caught.
-        if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT) > 16 &&
-            !fs->GetPondCleared()) {
-            // Has this fish been caught?
-            
-            if (Flags_GetRandomizerInf(fish.randomizerInf))
-                Actor_Kill(actor);
+            // With every pond fish shuffled, caught fish will not spawn unless all fish have been caught.
+            if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT) > 16 &&
+                !fs->GetPondCleared()) {
+                // Has this fish been caught?
+                if (Flags_GetRandomizerInf(fish.randomizerInf))
+                    Actor_Kill(actor);
+            }
         }
     });
 }

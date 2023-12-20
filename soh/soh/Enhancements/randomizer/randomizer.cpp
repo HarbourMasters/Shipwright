@@ -156,8 +156,6 @@ Randomizer::Randomizer() {
     for (int c = 0; c < hintTypeNames.size(); c++) {
         SpoilerfileHintTypeNameToEnum[hintTypeNames[c]] = (HintType)c;
     }
-
-    fishsanity = std::make_shared<Rando::Fishsanity>();
 }
 
 Randomizer::~Randomizer() {
@@ -1483,6 +1481,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
 };
 
 Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
+    auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
     RandomizerCheck specialRc = RC_UNKNOWN_CHECK;
     // TODO: Migrate these special cases into table, or at least document why they are special
     switch(sceneNum) {
@@ -1581,7 +1580,6 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
             }
             break;
         case SCENE_FISHING_POND:
-            auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
             // Pond fish use params to differentiate between fish
             if (actorId == ACTOR_FISHING && actorParams >= 100 && actorParams != 200 && fs->GetPondFishShuffled()) {
                 auto pair = Rando::StaticData::randomizerFishingPondFish[actorParams - 100];
@@ -3416,10 +3414,6 @@ void Randomizer::CreateCustomMessages() {
     CreateNaviRandoMessages();
     CreateIceTrapRandoMessages();
     CreateFireTempleGoronMessages();
-}
-
-std::shared_ptr<Rando::Fishsanity> Randomizer::GetFishsanity() {
-    return fishsanity;
 }
 
 class ExtendedVanillaTableInvalidItemIdException: public std::exception {

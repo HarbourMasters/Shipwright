@@ -91,6 +91,7 @@ Context::Context() {
     mDungeons = std::make_shared<Dungeons>();
     mTrials = std::make_shared<Trials>();
     mSettings = std::make_shared<Settings>();
+    mFishsanity = std::make_shared<Fishsanity>();
 }
 
 RandomizerArea Context::GetAreaFromString(std::string str) {
@@ -197,10 +198,7 @@ void Context::GenerateLocationPool() {
     AddLocations(StaticData::overworldLocations);
 
     if (mSettings->GetOption(RSK_FISHSANITY).IsNot(RO_FISHSANITY_OFF)) {
-        AddLocations(Randomizer_GetFishsanityLocations(
-            mSettings->GetOption(RSK_FISHSANITY).GetSelectedOptionIndex(),
-            mSettings->GetOption(RSK_FISHSANITY_POND_COUNT).GetSelectedOptionIndex(),
-            (bool)mSettings->GetOption(RSK_FISHSANITY_AGE_SPLIT)).first);
+        AddLocations(mFishsanity->GetFishsanityLocations().first);
     }
 
     for (const auto dungeon : mDungeons->GetDungeonList()) {
@@ -594,6 +592,10 @@ std::shared_ptr<EntranceShuffler> Context::GetEntranceShuffler() {
 
 std::shared_ptr<Dungeons> Context::GetDungeons() {
     return mDungeons;
+}
+
+std::shared_ptr<Fishsanity> Context::GetFishsanity() {
+    return mFishsanity;
 }
 
 DungeonInfo* Context::GetDungeon(size_t key) const {

@@ -154,10 +154,7 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              ((CVarGetInteger("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_DUNGEONS) &&
               RandomizerCheckObjects::AreaIsDungeon(location.GetArea()))) &&
             (location.GetRCType() != RCTYPE_COW || CVarGetInteger("gRandomizeShuffleCows", RO_GENERIC_NO)) &&
-            (location.GetRCType() != RCTYPE_FISH || Randomizer_FishLocationIncluded(&location,
-                CVarGetInteger("gRandomizeFishsanity", RO_FISHSANITY_OFF),
-                CVarGetInteger("gRandomizeFishsanityPondCount", 0),
-                CVarGetInteger("gRandomizeFishsanityAgeSplit", 0))) &&
+            (location.GetRCType() != RCTYPE_FISH || ctx->GetFishsanity()->GetFishLocationIncluded(&location, FSO_SOURCE_CVARS)) &&
             (location.GetRCType() != RCTYPE_ADULT_TRADE ||
              CVarGetInteger("gRandomizeShuffleAdultTrade", RO_GENERIC_NO)) &&
             (location.GetRandomizerCheck() != RC_KF_KOKIRI_SWORD_CHEST ||
