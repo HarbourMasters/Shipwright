@@ -373,7 +373,7 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
 
                 if (this->newFileNameCharCount < 0) {
                     this->newFileNameCharCount = 0;
-                    if (this->prevConfigMode == CM_QUEST_MENU) {
+                    if (this->prevConfigMode == CM_QUEST_MENU || this->prevConfigMode == CM_GENERATE_SEED) {
                         this->configMode = CM_NAME_ENTRY_TO_QUEST_MENU;
                         Randomizer_SetSeedGenerated(false);
                     } else {
