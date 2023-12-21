@@ -4,9 +4,6 @@
 
 #include <z64.h>
 #include "randomizerTypes.h"
-#include "macros.h"
-
-#define RAND_INF_FISH(num, adult) ((RandomizerInf)MIN((adult ? RAND_INF_ADULT_FISH_1 : RAND_INF_CHILD_FISH_1) + num, (adult ? RAND_INF_ADULT_LOACH : RAND_INF_CHILD_LOACH_2)))
 
 typedef struct FishsanityPondOptions {
     u8 mode;
@@ -19,6 +16,12 @@ typedef enum FishsanityOptionsSource {
     FSO_SOURCE_CVARS
 };
 
+typedef enum FishsanityCheckType {
+    FSC_NONE,
+    FSC_POND,
+    FSC_GROTTO
+};
+
 /**
  * @brief Fishsanity-related metadata for fishing pond fish
 */
@@ -26,7 +29,6 @@ typedef struct FishsanityMeta {
     s16 params;
     bool killAfterCollect;
     FishIdentity fish;
-    s16 getItemId;
 } FishsanityMeta;
 
 #ifdef __cplusplus
@@ -42,6 +44,13 @@ class Fishsanity {
 
     static const FishIdentity defaultIdentity;
     static const FishsanityMeta defaultMeta;
+
+    /**
+     * @brief Gets the type of a fishsanity check
+     * @param rc The RandomizerCheck to categorize
+     * @return The check's fishsanity type, or FSC_NONE
+     */
+    static FishsanityCheckType GetCheckType(RandomizerCheck rc);
 
     /**
      * @brief Returns true if the given fish location is active
@@ -86,7 +95,7 @@ class Fishsanity {
      * @param params Actor parameters for the pond fish
      * @param current Current metadata associated with this fish, if any. 
     */
-    FishsanityMeta GetPondFishMetaFromParams(s16 params, FishsanityMeta* current = NULL);
+    FishsanityMeta GetPondFishMetaFromParams(s16 params);
     
     /**
      * @brief Updates current pond fish according to save data
@@ -123,6 +132,7 @@ class Fishsanity {
      * @return The new FishsanityMeta for the current pond, or default metadata if every fish is shuffled
     */
     FishsanityMeta AdvancePond();
+
   private:
     /**
      * @brief Initialize helper statics if they have not been initialized yet
@@ -130,13 +140,13 @@ class Fishsanity {
     void InitializeHelpers();
     
     /**
-     * @brief Resolves a FishIdentity directly from params & pond age
+     * @brief Resolves a pond fish's FishIdentity directly from params & pond age
      * 
      * @param params Params for Fishing actor
      * @param adultPond Whether to resolve this fish as an adult check
-     * @return A FishIdentity for the described fish
+     * @return The FishIdentity for the described fish
     */
-    FishIdentity GetPondFish(s16 params, bool adultPond);
+    static FishIdentity GetPondFish(s16 params, bool adultPond);
     
     /**
      * @brief Current pond fish when all pond fish are not randomized

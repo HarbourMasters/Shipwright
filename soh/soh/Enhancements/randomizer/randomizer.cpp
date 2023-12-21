@@ -1579,13 +1579,6 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
                 specialRc = RC_DODONGOS_CAVERN_GOSSIP_STONE;
             }
             break;
-        case SCENE_FISHING_POND:
-            // Pond fish use params to differentiate between fish
-            if (actorId == ACTOR_FISHING && actorParams >= 100 && actorParams != 200 && fs->GetPondFishShuffled()) {
-                auto pair = Rando::StaticData::randomizerFishingPondFish[actorParams - 100];
-                specialRc = fs->IsAdultPond() ? pair.second : pair.first;
-            }
-            break;
         case SCENE_GROTTOS:
             // Grotto fish are identified by respawn data
             if (actorId == ACTOR_EN_FISH && actorParams == 1) {
@@ -1595,6 +1588,11 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
                 }
             }
             break;
+        case SCENE_ZORAS_DOMAIN:
+            // TODO: figure out ZD fish
+            if (actorId == ACTOR_EN_FISH && actorParams == -1) {
+
+            }
     }
 
     if (specialRc != RC_UNKNOWN_CHECK) {
@@ -1708,7 +1706,12 @@ FishIdentity Randomizer::IdentifyFish(s32 sceneNum, s32 actorParams) {
     fishIdentity.randomizerInf = RAND_INF_MAX;
     fishIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
 
-    Rando::Location* location = GetCheckObjectFromActor(sceneNum == SCENE_FISHING_POND ? ACTOR_FISHING : ACTOR_EN_FISH, sceneNum, actorParams);
+    // Fishsanity will determine what the identity of the fish should be
+    if (sceneNum == SCENE_FISHING_POND) {
+        return OTRGlobals::Instance->gRandoContext->GetFishsanity()->IdentifyPondFish(actorParams);
+    }
+
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_FISH, sceneNum, actorParams);
 
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
         fishIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];

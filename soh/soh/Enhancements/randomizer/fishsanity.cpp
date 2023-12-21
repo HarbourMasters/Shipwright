@@ -1,23 +1,26 @@
+#include "3drando/pool_functions.hpp"
 #include "../../OTRGlobals.h"
 #include "fishsanity.h"
 #include "variables.h"
-#include "3drando/pool_functions.hpp"
-#include <functions.h>
+#include "functions.h"
+#include "macros.h"
 
 #define FSi OTRGlobals::Instance->gRandoContext->GetFishsanity()
 
-// Reference soh/src/overlays/actors/ovl_Fishing/z_fishing.c
+/**
+ * @brief Parallel list of pond fish checks for both ages
+*/
 std::array<std::pair<RandomizerCheck, RandomizerCheck>, 17> Rando::StaticData::randomizerFishingPondFish = {
     { /*   Child Check           Adult Check    */
-      { RC_LH_CHILD_FISH_1, RC_LH_ADULT_FISH_1 },
-      { RC_LH_CHILD_FISH_2, RC_LH_ADULT_FISH_2 },
-      { RC_LH_CHILD_FISH_3, RC_LH_ADULT_FISH_3 },
-      { RC_LH_CHILD_FISH_4, RC_LH_ADULT_FISH_4 },
-      { RC_LH_CHILD_FISH_5, RC_LH_ADULT_FISH_5 },
-      { RC_LH_CHILD_FISH_6, RC_LH_ADULT_FISH_6 },
-      { RC_LH_CHILD_FISH_7, RC_LH_ADULT_FISH_7 },
-      { RC_LH_CHILD_FISH_8, RC_LH_ADULT_FISH_8 },
-      { RC_LH_CHILD_FISH_9, RC_LH_ADULT_FISH_9 },
+      { RC_LH_CHILD_FISH_1,  RC_LH_ADULT_FISH_1 },
+      { RC_LH_CHILD_FISH_2,  RC_LH_ADULT_FISH_2 },
+      { RC_LH_CHILD_FISH_3,  RC_LH_ADULT_FISH_3 },
+      { RC_LH_CHILD_FISH_4,  RC_LH_ADULT_FISH_4 },
+      { RC_LH_CHILD_FISH_5,  RC_LH_ADULT_FISH_5 },
+      { RC_LH_CHILD_FISH_6,  RC_LH_ADULT_FISH_6 },
+      { RC_LH_CHILD_FISH_7,  RC_LH_ADULT_FISH_7 },
+      { RC_LH_CHILD_FISH_8,  RC_LH_ADULT_FISH_8 },
+      { RC_LH_CHILD_FISH_9,  RC_LH_ADULT_FISH_9 },
       { RC_LH_CHILD_FISH_10, RC_LH_ADULT_FISH_10 },
       { RC_LH_CHILD_FISH_11, RC_LH_ADULT_FISH_11 },
       { RC_LH_CHILD_FISH_12, RC_LH_ADULT_FISH_12 },
@@ -38,7 +41,7 @@ std::unordered_map<int8_t, RandomizerCheck> Rando::StaticData::randomizerGrottoF
 
 namespace Rando {
     const FishIdentity Fishsanity::defaultIdentity = { RAND_INF_MAX, RC_UNKNOWN_CHECK };
-    const FishsanityMeta Fishsanity::defaultMeta = { 0, false, Fishsanity::defaultIdentity, GI_NONE };
+    const FishsanityMeta Fishsanity::defaultMeta = { 0, false, Fishsanity::defaultIdentity };
     bool Fishsanity::fishsanityHelpersInit = false;
     std::unordered_map<RandomizerCheck, LinkAge> Fishsanity::pondFishAgeMap;
     std::vector<RandomizerCheck> Fishsanity::childPondFish;
@@ -54,7 +57,7 @@ namespace Rando {
 
     bool Fishsanity::GetFishLocationIncluded(Rando::Location* loc,
                                              FishsanityOptionsSource optionsSource) {
-        auto [mode, numFish, ageSplit] = GetOptions();
+        auto [mode, numFish, ageSplit] = GetOptions(optionsSource);
 
         if (loc->GetRCType() != RCTYPE_FISH || mode == RO_FISHSANITY_OFF)
             return false;
@@ -72,7 +75,7 @@ namespace Rando {
         }
         // Are grotto fish enabled, and is this a grotto fish location?
         if (mode != RO_FISHSANITY_POND && loc->GetScene() == SCENE_GROTTOS && loc->GetActorID() == ACTOR_EN_FISH &&
-            loc->GetActorParams() == 1) {
+                loc->GetActorParams() < 100) {
             return true;
         }
         // Must not be an included fish location!
@@ -81,7 +84,7 @@ namespace Rando {
 
     std::pair<std::vector<RandomizerCheck>, std::vector<RandomizerCheck>>
     Fishsanity::GetFishingPondLocations(FishsanityOptionsSource optionsSource) {
-        auto [mode, numFish, ageSplit] = GetOptions();
+        auto [mode, numFish, ageSplit] = GetOptions(optionsSource);
         std::vector<RandomizerCheck> activeFish;
         std::vector<RandomizerCheck> remainingFish;
 
@@ -122,7 +125,7 @@ namespace Rando {
 
     std::pair<std::vector<RandomizerCheck>, std::vector<RandomizerCheck>>
     Fishsanity::GetFishsanityLocations(FishsanityOptionsSource optionsSource) {
-        auto [mode, numFish, ageSplit] = GetOptions();
+        auto [mode, numFish, ageSplit] = GetOptions(optionsSource);
         std::vector<RandomizerCheck> activeFish;
         std::vector<RandomizerCheck> remainingFish;
 
@@ -151,10 +154,12 @@ namespace Rando {
         }
 
         if (pondCount > 16) {
-            return GetPondFish(fishParams, IsAdultPond());
+            identity = GetPondFish(fishParams, IsAdultPond());
+        } else {
+            identity = (LINK_IS_ADULT ? mCurrPondFish.second : mCurrPondFish.first).fish;
         }
 
-        return (LINK_IS_ADULT ? mCurrPondFish.second : mCurrPondFish.first).fish;
+        return identity;
     }
 
     FishsanityPondOptions Fishsanity::GetOptions(FishsanityOptionsSource optionsSource) {
@@ -175,19 +180,13 @@ namespace Rando {
         return options;
     }
 
-    FishsanityMeta Fishsanity::GetPondFishMetaFromParams(s16 params, FishsanityMeta* current) {
+    FishsanityMeta Fishsanity::GetPondFishMetaFromParams(s16 params) {
         auto [mode, numFish, ageSplit] = GetOptions();
         FishsanityMeta meta = defaultMeta;
 
         // Every pond fish shuffled, params determine meta
         if (numFish > 16) {
-            // This fish's metadata is (semi) stable, trust that whatever we've been given is correct.
-            if (current != NULL) {
-                return meta;
-            }
-
             meta = { params, false, GetPondFish(params, IsAdultPond()) };
-            meta.getItemId = OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(meta.fish.randomizerCheck, GI_NONE, false).getItemId;
         } else {
             meta = LINK_IS_ADULT ? mCurrPondFish.second : mCurrPondFish.first;
         }
@@ -212,15 +211,11 @@ namespace Rando {
                 if (!Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(tableEntry.first))) {
                     // Found first child check
                     if (mCurrPondFish.first.params == 0) {
-                        mCurrPondFish.first = { params, false, GetPondFish(params, false),
-                            OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(tableEntry.first, GI_NONE, false).getItemId
-                        };
+                        mCurrPondFish.first = { params, false, GetPondFish(params, false) };
                     }
 
                     if (!ageSplit && mCurrPondFish.second.params == 0) {
-                        mCurrPondFish.second = { params, false, GetPondFish(params, false),
-                            OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(tableEntry.first, GI_NONE, false).getItemId
-                        };
+                        mCurrPondFish.second = { params, false, GetPondFish(params, false) };
                         // both ages are resolved! we can quit here
                         break;
                     }
@@ -228,9 +223,7 @@ namespace Rando {
 
                 if (ageSplit && mCurrPondFish.second.params == 0 && tableEntry.second != RC_UNKNOWN_CHECK &&
                     !Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(tableEntry.second))) {
-                    mCurrPondFish.second = mCurrPondFish.second = { params, false, GetPondFish(params, true),
-                        OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(tableEntry.second, GI_NONE, false).getItemId
-                    };
+                    mCurrPondFish.second = mCurrPondFish.second = { params, false, GetPondFish(params, true) };
                 }
             }
         }
@@ -294,11 +287,7 @@ namespace Rando {
     FishIdentity Fishsanity::GetPondFish(s16 params, bool adultPond) {
         auto pair = Rando::StaticData::randomizerFishingPondFish[params - 100];
         RandomizerCheck rc = adultPond ? pair.second : pair.first;
-
-        return {
-            OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc),
-            rc
-        };
+        return { OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc), rc };
     }
 
     FishsanityMeta Fishsanity::AdvancePond() {
@@ -309,37 +298,22 @@ namespace Rando {
             return defaultMeta;
         }
 
-        bool adultPond = IsAdultPond();
-        FishsanityMeta currMeta = (adultPond ? mCurrPondFish.second : mCurrPondFish.first);
-        RandomizerCheck rcNext = RC_UNKNOWN_CHECK, rcPrev = RC_UNKNOWN_CHECK,
-                        rcCurr = currMeta.fish.randomizerCheck;
-        // Find the next check for the current pond
-        for (auto pair : Rando::StaticData::randomizerFishingPondFish) {
-            if (rcPrev != RC_UNKNOWN_CHECK && rcPrev == rcCurr) {
-                rcNext = adultPond ? pair.second : pair.first;
-                break;
-            }
-            rcPrev = adultPond ? pair.second : pair.first;
-        }
-        // must have cleared adult pond or something else weird happened
-        if (rcNext == RC_UNKNOWN_CHECK) {
-            return defaultMeta;
-        }
+        UpdateCurrentPondFish();
 
-        FishsanityMeta newMeta = {
-            currMeta.params + 1,
-            false,
-            { OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rcNext), rcNext },
-            OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(rcNext, GI_NONE, false).getItemId
-        };
+        return IsAdultPond() ? mCurrPondFish.second : mCurrPondFish.first;
+    }
 
-        if (adultPond) {
-            mCurrPondFish.second = newMeta;
-        } else {
-            mCurrPondFish.first = newMeta;
-        }
+    FishsanityCheckType Fishsanity::GetCheckType(RandomizerCheck rc) {
+        // Is this a pond fish?
+        if (std::binary_search(Rando::StaticData::pondFishLocations.begin(), Rando::StaticData::pondFishLocations.end(), rc))
+            return FSC_POND;
 
-        return newMeta;
+        // Is this a grotto fish?
+        if (std::binary_search(Rando::StaticData::grottoFishLocations.begin(), Rando::StaticData::grottoFishLocations.end(), rc))
+            return FSC_GROTTO;
+        
+        // Must not be a fishsanity check
+        return FSC_NONE;
     }
 } // namespace Rando
 
