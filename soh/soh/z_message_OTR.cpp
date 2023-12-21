@@ -30,14 +30,13 @@ static void OTRMessage_LoadCustom(const std::string& folderPath, MessageTableEnt
 
         for (size_t j = 0; j < file->messages.size(); ++j) {
             // Check if same text ID exists already
-            size_t existingIndex = 0;
-            while (existingIndex < tableSize && table[existingIndex].textId != file->messages[j].id) {
-                ++existingIndex;
-            }
+            auto existingEntry = std::find_if(table, table + tableSize, [id = file->messages[j].id](const auto& entry) {
+                return entry.textId == id;
+            });
 
-            if (existingIndex < tableSize) {
+            if (existingEntry != table + tableSize) {
                 // Replace existing message
-                SetMessageEntry(table[existingIndex], file->messages[j]);
+                SetMessageEntry(*existingEntry, file->messages[j]);
             }
         }
     }
