@@ -1761,6 +1761,7 @@ void RandomizerSettingsWindow::DrawElement() {
         ctx->SetSpoilerLoaded(false);
         GenerateRandomizer(CVarGetInteger("gRandoManualSeedEntry", 0) ? seedString : "");
     }
+    UIWidgets::Tooltip("You can also press L on the Quest Select screen to generate a new seed");
     ImGui::EndDisabled();
 
     UIWidgets::Spacer(0);
