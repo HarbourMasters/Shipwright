@@ -2507,7 +2507,7 @@ CustomMessage Randomizer::ReplaceWithItemName(CustomMessage message, std::string
 }
 
 
-CustomMessage Randomizer::GetMiscHintMessage(TextIDs textToGet, RandomizerCheck hintedCheck, RandomizerCheck otherCheck = RC_UNKNOWN_CHECK) {
+CustomMessage Randomizer::GetMiscHintMessage(TextIDs textToGet, RandomizerCheck hintedCheck, RandomizerCheck otherCheck) {
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, textToGet);
     messageEntry = ReplaceWithItemName(messageEntry, "{{item1}}", hintedCheck);
     if (otherCheck != RC_UNKNOWN_CHECK){
