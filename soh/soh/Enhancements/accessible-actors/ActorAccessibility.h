@@ -147,6 +147,7 @@ typedef enum {
     VA_SPIKE,
     VA_GENERAL_HELPER, // Room announcements, action icon and other misc help.
     VA_AUDIO_COMPASS,//Points north.
+    VA_STICK_WARNING,//beep when stick is about to burn out.
 
     VA_FINAL,
 

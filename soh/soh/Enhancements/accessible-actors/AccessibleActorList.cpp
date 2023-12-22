@@ -315,7 +315,7 @@ void accessible_area_change(AccessibleActor* actor) {
         }
     }
         //kakariko village attenuation
-        if (actor->play->sceneNum == 82) {
+        else if (actor->play->sceneNum == 82) {
             if (actor->sceneIndex == 83 || actor->sceneIndex == 81 || actor->sceneIndex == 96) {
                 actor->policy.runsAlways == true;
                 actor->policy.ydist = 5000;
@@ -348,7 +348,7 @@ void accessible_area_change(AccessibleActor* actor) {
             }
             
         
-        if (actor->play->sceneNum == 91 || actor->play->sceneNum == 69 || actor->play->sceneNum == 70) {
+        else if (actor->play->sceneNum == 91 || actor->play->sceneNum == 69 || actor->play->sceneNum == 70) {
             actor->policy.distance = 1000;
             if (actor->xzDistToPlayer > 1000) {
                 return;
@@ -356,9 +356,11 @@ void accessible_area_change(AccessibleActor* actor) {
         }
    /* if (actor->play->sceneNum <= 11) {
         actor->policy.distance = 500;
-    }*/
-        if (actor->xzDistToPlayer > 1500) {
-            return;
+         }*/
+        else {
+            if (actor->xzDistToPlayer > 1500) {
+                return;
+            }
         }
     if (actor->sceneIndex == 85 || actor->sceneIndex == 91) {
         if (actor->play->sceneNum == 91 && gSaveContext.entranceIndex != 1504 && gSaveContext.entranceIndex != 1246) {
@@ -441,6 +443,9 @@ void accessible_area_change(AccessibleActor* actor) {
     }
     else {
         actor->policy.distance = 500;
+        if (actor->play->sceneNum == 83) {
+            actor->policy.ydist = 0;
+        }
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_OC_DOOR_OPEN, false);
 
     }
@@ -468,8 +473,10 @@ void accessible_231_dekus(AccessibleActor* actor) {
 void accessible_hana(AccessibleActor* actor) {
     if (actor->actor->params == 1) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_OCTAROCK_ROCK, false);
+    } else if (actor->actor->params == 0) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_DIG_UP, false);
     }
-
+    
 }
 
 void accessible_climable(AccessibleActor* actor) {
@@ -581,6 +588,22 @@ void accessible_sticks(AccessibleActor* actor) {
     }
 
 }
+
+void accessible_graveyard_soil(AccessibleActor* actor) {
+    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_WOODSTICK_BROKEN, false);
+}
+
+void accessible_cucco(AccessibleActor* actor) {
+    if (actor->actor->params == 14) {
+        
+    } else if (actor->actor->params == 13) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_CHICKEN_CRY_N, false);
+        ActorAccessibility_SetSoundPitch(actor, 0, 1.5);
+    } else {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_CHICKEN_CRY_N, false);
+    }
+}
+
 bool accessible_general_helper_init(AccessibleActor* actor) {
     GeneralHelperData* data = (GeneralHelperData*)malloc(sizeof(GeneralHelperData));
     if (data == NULL)
@@ -669,6 +692,15 @@ void accessible_audio_compass(AccessibleActor* actor) {
 
 }
 
+void accessible_stick_warning(AccessibleActor* actor) {
+    Player* player = GET_PLAYER(actor->play);
+    actor->world.pos = player->actor.world.pos;
+    actor->world.pos.z -= 50;
+    if (fabs(player->unk_860 - 25) < 24.0 && player->heldItemId==0) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_SY_WARNING_COUNT_N, false);
+    }
+}
+
     void ActorAccessibility_InitActors() {
     const int Npc_Frames = 35;
     ActorAccessibilityPolicy policy;
@@ -696,7 +728,8 @@ void accessible_audio_compass(AccessibleActor* actor) {
     ActorAccessibility_AddSupportedActor(ACTOR_EN_FU, policy);
     policy.englishName = "Durania";
     ActorAccessibility_AddSupportedActor(ACTOR_EN_DU, policy);
-
+    policy.englishName = "Owl";
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_OWL, policy);
     ActorAccessibility_InitPolicy(&policy, "Catching Guards", accessible_en_guard, 0);
     policy.n = 10;
     policy.distance = 500;
@@ -729,6 +762,10 @@ void accessible_audio_compass(AccessibleActor* actor) {
     ActorAccessibility_AddSupportedActor(ACTOR_EN_GO2, policy);
     policy.englishName = "Saria";
     ActorAccessibility_AddSupportedActor(ACTOR_EN_SA, policy);
+    policy.englishName = "Graveyard Kid";
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_CS, policy);
+    policy.englishName = "Dampe (Alive)";
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_TK, policy);
     policy.englishName = "Happy Mask Shop Customer";
     ActorAccessibility_AddSupportedActor(ACTOR_EN_GUEST, policy);
     policy.englishName = "Market Npc";
@@ -763,7 +800,7 @@ void accessible_audio_compass(AccessibleActor* actor) {
     ActorAccessibility_InitPolicy(&policy, "Cows", NULL, NA_SE_EV_COW_CRY_LV);
     policy.n = 30;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_COW, policy);
-    ActorAccessibility_InitPolicy(&policy, "Cuccos", NULL, NA_SE_EV_CHICKEN_CRY_N);
+    ActorAccessibility_InitPolicy(&policy, "Cuccos", accessible_cucco, 0);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_NIW, policy);
     ActorAccessibility_InitPolicy(&policy, "Bush", NULL, NA_SE_PL_PULL_UP_PLANT);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_KUSA, policy);
@@ -797,6 +834,8 @@ void accessible_audio_compass(AccessibleActor* actor) {
     policy.distance = 2400;
     policy.pitch = 1.3;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_BEAN, policy);
+    ActorAccessibility_InitPolicy(&policy, "GraveYard Digging spots", accessible_graveyard_soil, 0);
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_IT, policy);
     ActorAccessibility_InitPolicy(&policy, "Collectible", accessible_en_pickups, 0);
     policy.n = 40;
     policy.pitch = 1.4;
@@ -837,6 +876,7 @@ void accessible_audio_compass(AccessibleActor* actor) {
     policy.n = 30;
     policy.distance = 800;
     policy.pitch = 1.1;
+    policy.ydist = 500;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_OKARINA_TAG, policy);
     ActorAccessibility_InitPolicy(&policy, "Pushable Block", accessible_test, 0);
     policy.n = 30;
@@ -876,6 +916,10 @@ void accessible_audio_compass(AccessibleActor* actor) {
     policy.distance = 1000;
     policy.ydist = 1000;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_GOMA, policy);
+    ActorAccessibility_InitPolicy(&policy, "redead", NULL, NA_SE_EN_REDEAD_CRY);
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_RD, policy);
+    ActorAccessibility_InitPolicy(&policy, "Beamos", NULL, NA_SE_EN_BIMOS_AIM);
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_VM, policy);
     ActorAccessibility_InitPolicy(&policy, "heart canister", accessible_en_pickups, 0);
     ActorAccessibility_AddSupportedActor(ACTOR_ITEM_B_HEART, policy);
     ActorAccessibility_InitPolicy(&policy, "Goma", accessible_goma, 0);
@@ -915,6 +959,10 @@ void accessible_audio_compass(AccessibleActor* actor) {
     policy.distance = 200;
     policy.pitch = 0.5;
     ActorAccessibility_AddSupportedActor(VA_SPIKE, policy);
+    ActorAccessibility_InitPolicy(&policy, "Stick Burnout Warning", accessible_stick_warning, 0);
+    policy.n = 1;
+    policy.runsAlways = true;
+    ActorAccessibility_AddSupportedActor(VA_STICK_WARNING, policy);
     ActorAccessibility_InitPolicy(&policy, "System general helper", accessible_va_general_helper, 0);
     policy.n = 1;
     policy.cleanupUserData = accessible_general_helper_cleanup;
@@ -941,7 +989,7 @@ void accessible_audio_compass(AccessibleActor* actor) {
     // Now place the actor.
     ActorAccessibility_AddVirtualActor(list, VA_GENERAL_HELPER, { { 0.0, 0.0, 0.0 }, { 0, 0, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_AUDIO_COMPASS, { { 0.0, 0.0, 0.0}, { 0, 0, 0 } });
-
+    ActorAccessibility_AddVirtualActor(list, VA_STICK_WARNING, { { 0.0, 0.0, 0.0 }, { 0, 0, 0 } });
     list = ActorAccessibility_GetVirtualActorList(85, 0); // Kokiri Forest
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -784.0, 120.0, 1046.00 }, { 0, 14702, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { 2146.5, 1.0, -142.8 } });

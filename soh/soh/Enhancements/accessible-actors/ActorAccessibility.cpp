@@ -395,7 +395,7 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
         if (!actor->policy.runsAlways && actor->xyzDistToPlayer > actor->policy.distance) {
             return;
         }
-        if (actor->isDrawn == 0)
+        if (actor->isDrawn == 0 && actor->actor->id != 406 && actor->actor->id != 302)
             return;
 
         if (actor->policy.callback != NULL)
