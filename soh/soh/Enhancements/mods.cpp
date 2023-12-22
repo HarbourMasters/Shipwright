@@ -1168,6 +1168,22 @@ void RegisterSnowballs() {
     });
 }
 
+void RegisterBonkDelete() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerBonk>([]() {
+        Player* player = GET_PLAYER(gPlayState);
+        if (gPlayState->sceneNum == SCENE_HYRULE_FIELD) {
+            Actor* actor = &GET_PLAYER(gPlayState)->actor;
+            Actor* nearbyActor = Actor_FindNearby(gPlayState, actor, ACTOR_EN_WOOD02, ACTORCAT_PROP, 30.0f);
+
+            if (nearbyActor != NULL) {
+                if (nearbyActor->id == ACTOR_EN_WOOD02) {
+                    Actor_Kill(nearbyActor);
+                }
+            }
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1199,4 +1215,5 @@ void InitMods() {
     RegisterRandomizedEnemySizes();
     RegisterSnowballs();
     NameTag_RegisterHooks();
+    RegisterBonkDelete();
 }
