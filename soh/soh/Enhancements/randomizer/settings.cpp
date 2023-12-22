@@ -103,6 +103,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_KOKIRI_SWORD] = Option::Bool("Shuffle Kokiri Sword", "gRandomizeShuffleKokiriSword", mOptionDescriptions[RSK_SHUFFLE_KOKIRI_SWORD]);
     mOptions[RSK_SHUFFLE_MASTER_SWORD] = Option::Bool("Shuffle Master Sword", "gRandomizeShuffleMasterSword", mOptionDescriptions[RSK_SHUFFLE_MASTER_SWORD]);
     mOptions[RSK_SHUFFLE_OCARINA] = Option::Bool("Shuffle Ocarinas", "gRandomizeShuffleOcarinas", mOptionDescriptions[RSK_SHUFFLE_OCARINA]);
+    mOptions[RSK_SHUFFLE_OCARINA_BUTTONS] = Option::Bool("Shuffle Ocarina Buttons", "gRandomizeShuffleOcarinaButtons", mOptionDescriptions[RSK_SHUFFLE_OCARINA_BUTTONS]);
     mOptions[RSK_SHUFFLE_WEIRD_EGG] = Option::Bool("Shuffle Weird Egg", "gRandomizeShuffleWeirdEgg", mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG]);
     mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = Option::Bool("Shuffle Gerudo Membership Card", "gRandomizeShuffleGerudoToken", mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);
     mOptions[RSK_SHUFFLE_MAGIC_BEANS] = Option::Bool("Shuffle Magic Beans", "gRandomizeShuffleBeans", mOptionDescriptions[RSK_SHUFFLE_MAGIC_BEANS]);
@@ -613,6 +614,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],
         &mOptions[RSK_SHUFFLE_MASTER_SWORD],
         &mOptions[RSK_SHUFFLE_OCARINA],
+        &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
         &mOptions[RSK_SHUFFLE_WEIRD_EGG],
         &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]
     }, false, WidgetContainerType::COLUMN);
@@ -812,6 +814,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_COWS],
         &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],
         &mOptions[RSK_SHUFFLE_OCARINA],
+        &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
         &mOptions[RSK_SHUFFLE_WEIRD_EGG],
         &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
         &mOptions[RSK_SHUFFLE_MAGIC_BEANS],
@@ -1017,6 +1020,7 @@ void Settings::CreateOptions() {
         { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
         { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
         { "Shuffle Settings:Shuffle Ocarinas", RSK_SHUFFLE_OCARINA },
+        { "Shuffle Settings:Shuffle Ocarina Buttons", RSK_SHUFFLE_OCARINA_BUTTONS },
         { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
         { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
         { "Shuffle Settings:Shuffle Kokiri Sword", RSK_SHUFFLE_KOKIRI_SWORD },
@@ -2096,6 +2100,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SHUFFLE_FROG_SONG_RUPEES:
                 case RSK_SHUFFLE_100_GS_REWARD:
                 case RSK_SHUFFLE_OCARINA:
+                case RSK_SHUFFLE_OCARINA_BUTTONS:
                 case RSK_STARTING_DEKU_SHIELD:
                 case RSK_STARTING_KOKIRI_SWORD:
                 case RSK_STARTING_ZELDAS_LULLABY:

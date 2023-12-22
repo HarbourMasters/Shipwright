@@ -24,12 +24,12 @@ void AreaTable_Init_GerudoValley() {
   areaTable[RR_GV_UPPER_STREAM] = Area("GV Upper Stream", "Gerudo Valley", RA_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&GossipStoneFairy, {[]{return GossipStoneFairy || CanSummonGossipFairy;}}),
-                  EventAccess(&BeanPlantFairy,   {[]{return BeanPlantFairy   || (CanPlantBean(RR_GV_UPPER_STREAM) && CanPlay(SongOfStorms));}}),
+                  EventAccess(&BeanPlantFairy,   {[]{return BeanPlantFairy   || (CanPlantBean(RR_GV_UPPER_STREAM) && CanUse(RG_SONG_OF_STORMS));}}),
                 }, {
                   //Locations
                   LocationAccess(RC_GV_WATERFALL_FREESTANDING_POH, {[]{return true;}}),
                   LocationAccess(RC_GV_GS_BEAN_PATCH,              {[]{return CanPlantBugs && CanChildAttack;}}),
-                  LocationAccess(RC_GV_COW,                        {[]{return IsChild && CanPlay(EponasSong);}}),
+                  LocationAccess(RC_GV_COW,                        {[]{return IsChild && CanUse(RG_EPONAS_SONG);}}),
                   LocationAccess(RC_GV_GOSSIP_STONE,               {[]{return true;}}),
                 }, {
                   //Exits
@@ -165,7 +165,7 @@ void AreaTable_Init_GerudoValley() {
 
   areaTable[RR_DESERT_COLOSSUS] = Area("Desert Colossus", "Desert Colossus", RA_DESERT_COLOSSUS, DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&FairyPond, {[]{return FairyPond || CanPlay(SongOfStorms);}}),
+                  EventAccess(&FairyPond, {[]{return FairyPond || CanUse(RG_SONG_OF_STORMS);}}),
                   EventAccess(&BugRock,   {[]{return true;}}),
                 }, {
                   //Locations
@@ -192,7 +192,7 @@ void AreaTable_Init_GerudoValley() {
 
   areaTable[RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN] = Area("Colossus Great Fairy Fountain", "Colossus Great Fairy Fountain", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_COLOSSUS_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby);}}),
+                  LocationAccess(RC_COLOSSUS_GREAT_FAIRY_REWARD, {[]{return CanUse(RG_ZELDAS_LULLABY);}}),
                 }, {
                   //Exits
                   Entrance(RR_DESERT_COLOSSUS, {[]{return true;}}),

@@ -723,6 +723,14 @@ void GenerateItemPool() {
       }
   }
 
+  if (ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS)) {
+    AddItemToMainPool(RG_OCARINA_A_BUTTON);
+    AddItemToMainPool(RG_OCARINA_C_LEFT_BUTTON);
+    AddItemToMainPool(RG_OCARINA_C_RIGHT_BUTTON);
+    AddItemToMainPool(RG_OCARINA_C_UP_BUTTON);
+    AddItemToMainPool(RG_OCARINA_C_DOWN_BUTTON);
+  }
+
   if (ctx->GetOption(RSK_SHUFFLE_COWS)) {
     //9 total cow locations
     for (uint8_t i = 0; i < 9; i++) {

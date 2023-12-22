@@ -826,6 +826,18 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_LIGHT_MEDALLION:
             return !CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
+        // Ocarina Buttons
+        case RG_OCARINA_A_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+        case RG_OCARINA_C_LEFT_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+        case RG_OCARINA_C_RIGHT_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+        case RG_OCARINA_C_UP_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+        case RG_OCARINA_C_DOWN_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+
         case RG_RECOVERY_HEART:
         case RG_GREEN_RUPEE:
         case RG_GREG_RUPEE:
@@ -1148,6 +1160,19 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
             return GI_HEART_PIECE_WIN;
         case RG_TREASURE_GAME_GREEN_RUPEE:
             return GI_RUPEE_GREEN_LOSE;
+        
+        //Ocarina Buttons
+        case RG_OCARINA_A_BUTTON:
+            return (GetItemID)RG_OCARINA_A_BUTTON;
+        case RG_OCARINA_C_LEFT_BUTTON:
+            return (GetItemID)RG_OCARINA_C_LEFT_BUTTON;
+        case RG_OCARINA_C_RIGHT_BUTTON:
+            return (GetItemID)RG_OCARINA_C_RIGHT_BUTTON;
+        case RG_OCARINA_C_UP_BUTTON:
+            return (GetItemID)RG_OCARINA_C_UP_BUTTON;
+        case RG_OCARINA_C_DOWN_BUTTON:
+            return (GetItemID)RG_OCARINA_C_DOWN_BUTTON;
+
         default:
             if (!IsItemVanilla(randoGet)) {
                 return (GetItemID)randoGet;
@@ -3042,7 +3067,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 66> getItemMessages = {{
+    const std::array<GetItemMessage, 71> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
@@ -3288,6 +3313,26 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE_UNTRANSLATED(RG_TWINROVA_SOUL, ITEM_BIG_POE, "You found the soul for %yTwinrova%w!"),
         GIMESSAGE_UNTRANSLATED(RG_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %cGanon%w!"),
 
+        GIMESSAGE(RG_OCARINA_A_BUTTON, ITEM_OCARINA_TIME,
+            "You got the %b\x9f%r button for the&Ocarina%w! You can now use it&while playing songs!",
+			"Der %b\x9f%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
+			"Vous trouvez la %rtouche %b\x9f%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
+        GIMESSAGE(RG_OCARINA_C_LEFT_BUTTON, ITEM_OCARINA_TIME,
+            "You got the %y\xa7%r button for the&Ocarina%w! You can now use it&while playing songs!",
+			"Der %y\xa7%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
+			"Vous trouvez la %rtouche %y\xa7%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
+        GIMESSAGE(RG_OCARINA_C_RIGHT_BUTTON, ITEM_OCARINA_TIME,
+            "You got the %y\xa8%r button for the&Ocarina%w! You can now use it&while playing songs!",
+			"Der %y\xa8%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
+			"Vous trouvez la %rtouche %y\xa8%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
+        GIMESSAGE(RG_OCARINA_C_UP_BUTTON, ITEM_OCARINA_TIME,
+            "You got the %y\xa5%r button for the&Ocarina%w! You can now use it&while playing songs!",
+			"Der %y\xa5%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
+			"Vous trouvez la %rtouche %y\xa5%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
+        GIMESSAGE(RG_OCARINA_C_DOWN_BUTTON, ITEM_OCARINA_TIME,
+            "You got the %y\xa6%r button for the&Ocarina%w! You can now use it&while playing songs!",
+			"Der %y\xa6%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
+			"Vous trouvez la %rtouche %y\xa6%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();

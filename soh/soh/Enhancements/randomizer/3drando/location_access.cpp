@@ -261,7 +261,7 @@ void AreaTable_Init() {
                   //Locations
                   LocationAccess(RC_LINKS_POCKET,       {[]{return true;}}),
                   LocationAccess(RC_TRIFORCE_COMPLETED, {[]{return CanCompleteTriforce;}}),
-                  LocationAccess(RC_SARIA_SONG_HINT,    {[]{return CanPlay(SariasSong);}}),
+                  LocationAccess(RC_SARIA_SONG_HINT,    {[]{return CanUse(RG_SARIAS_SONG);}}),
                 }, {
                   //Exits
                   Entrance(RR_ROOT_EXITS, {[]{return true;}})
@@ -271,12 +271,12 @@ void AreaTable_Init() {
                   //Exits
                   Entrance(RR_CHILD_SPAWN,             {[]{return IsChild;}}),
                   Entrance(RR_ADULT_SPAWN,             {[]{return IsAdult;}}),
-                  Entrance(RR_MINUET_OF_FOREST_WARP,   {[]{return CanPlay(MinuetOfForest);}}),
-                  Entrance(RR_BOLERO_OF_FIRE_WARP,     {[]{return CanPlay(BoleroOfFire)     && CanLeaveForest;}}),
-                  Entrance(RR_SERENADE_OF_WATER_WARP,  {[]{return CanPlay(SerenadeOfWater)  && CanLeaveForest;}}),
-                  Entrance(RR_NOCTURNE_OF_SHADOW_WARP, {[]{return CanPlay(NocturneOfShadow) && CanLeaveForest;}}),
-                  Entrance(RR_REQUIEM_OF_SPIRIT_WARP,  {[]{return CanPlay(RequiemOfSpirit)  && CanLeaveForest;}}),
-                  Entrance(RR_PRELUDE_OF_LIGHT_WARP,   {[]{return CanPlay(PreludeOfLight)   && CanLeaveForest;}}),
+                  Entrance(RR_MINUET_OF_FOREST_WARP,   {[]{return CanUse(RG_MINUET_OF_FOREST);}}),
+                  Entrance(RR_BOLERO_OF_FIRE_WARP,     {[]{return CanUse(RG_BOLERO_OF_FIRE)     && CanLeaveForest;}}),
+                  Entrance(RR_SERENADE_OF_WATER_WARP,  {[]{return CanUse(RG_SERENADE_OF_WATER)  && CanLeaveForest;}}),
+                  Entrance(RR_NOCTURNE_OF_SHADOW_WARP, {[]{return CanUse(RG_NOCTURNE_OF_SHADOW) && CanLeaveForest;}}),
+                  Entrance(RR_REQUIEM_OF_SPIRIT_WARP,  {[]{return CanUse(RG_REQUIEM_OF_SPIRIT)  && CanLeaveForest;}}),
+                  Entrance(RR_PRELUDE_OF_LIGHT_WARP,   {[]{return CanUse(RG_PRELUDE_OF_LIGHT)   && CanLeaveForest;}}),
   });
 
   areaTable[RR_CHILD_SPAWN] = Area("Child Spawn", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {

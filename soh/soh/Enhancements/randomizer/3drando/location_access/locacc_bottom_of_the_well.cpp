@@ -34,10 +34,10 @@ void AreaTable_Init_BottomOfTheWell() {
                   LocationAccess(RC_BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST,       {[]{return randoCtx->GetTrickOption(RT_LENS_BOTW) || CanUse(RG_LENS_OF_TRUTH);}}),
                   LocationAccess(RC_BOTTOM_OF_THE_WELL_BACK_LEFT_BOMBABLE_CHEST,     {[]{return (randoCtx->GetTrickOption(RT_LENS_BOTW) || CanUse(RG_LENS_OF_TRUTH)) && HasExplosives;}}),
                   LocationAccess(RC_BOTTOM_OF_THE_WELL_FREESTANDING_KEY,             {[]{return Sticks || CanUse(RG_DINS_FIRE);}}),
-                  LocationAccess(RC_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST,          {[]{return CanPlay(ZeldasLullaby) && (KokiriSword || (Sticks && randoCtx->GetTrickOption(RT_BOTW_CHILD_DEADHAND)));}}),
-                  LocationAccess(RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST,              {[]{return CanPlay(ZeldasLullaby) && (randoCtx->GetTrickOption(RT_LENS_BOTW) || CanUse(RG_LENS_OF_TRUTH));}}),
-                  LocationAccess(RC_BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST,       {[]{return CanPlay(ZeldasLullaby);}}),
-                  LocationAccess(RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST,        {[]{return CanPlay(ZeldasLullaby);}}),
+                  LocationAccess(RC_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST,          {[]{return CanUse(RG_ZELDAS_LULLABY) && (KokiriSword || (Sticks && randoCtx->GetTrickOption(RT_BOTW_CHILD_DEADHAND)));}}),
+                  LocationAccess(RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST,              {[]{return CanUse(RG_ZELDAS_LULLABY) && (randoCtx->GetTrickOption(RT_LENS_BOTW) || CanUse(RG_LENS_OF_TRUTH));}}),
+                  LocationAccess(RC_BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST,       {[]{return CanUse(RG_ZELDAS_LULLABY);}}),
+                  LocationAccess(RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST,        {[]{return CanUse(RG_ZELDAS_LULLABY);}}),
                   LocationAccess(RC_BOTTOM_OF_THE_WELL_MAP_CHEST,                    {[]{return HasExplosives || (((SmallKeys(RR_BOTTOM_OF_THE_WELL, 3) && (randoCtx->GetTrickOption(RT_LENS_BOTW) || CanUse(RG_LENS_OF_TRUTH))) || CanUse(RG_DINS_FIRE) || (Sticks && randoCtx->GetTrickOption(RT_BOTW_BASEMENT))) && GoronBracelet);}}),
                   LocationAccess(RC_BOTTOM_OF_THE_WELL_FIRE_KEESE_CHEST,             {[]{return SmallKeys(RR_BOTTOM_OF_THE_WELL, 3) && (randoCtx->GetTrickOption(RT_LENS_BOTW) || CanUse(RG_LENS_OF_TRUTH));}}),
                   LocationAccess(RC_BOTTOM_OF_THE_WELL_LIKE_LIKE_CHEST,              {[]{return SmallKeys(RR_BOTTOM_OF_THE_WELL, 3) && (randoCtx->GetTrickOption(RT_LENS_BOTW) || CanUse(RG_LENS_OF_TRUTH));}}),
@@ -67,8 +67,8 @@ void AreaTable_Init_BottomOfTheWell() {
   }, {
                   //Exits
                   Entrance(RR_BOTTOM_OF_THE_WELL_ENTRYWAY,  {[]{return true;}}),
-                  Entrance(RR_BOTTOM_OF_THE_WELL_MQ_MIDDLE, {[]{return CanPlay(ZeldasLullaby) || (randoCtx->GetTrickOption(RT_BOTW_MQ_PITS) && HasExplosives);}}),
-                    //Trick: CanPlay(ZeldasLullaby) || (LogicBotWMQPits && HasExplosives)
+                  Entrance(RR_BOTTOM_OF_THE_WELL_MQ_MIDDLE, {[]{return CanUse(RG_ZELDAS_LULLABY) || (randoCtx->GetTrickOption(RT_BOTW_MQ_PITS) && HasExplosives);}}),
+                    //Trick: CanUse(RG_ZELDAS_LULLABY) || (LogicBotWMQPits && HasExplosives)
   });
 
   areaTable[RR_BOTTOM_OF_THE_WELL_MQ_MIDDLE] = Area("Bottom of the Well MQ Middle", "Bottom of the Well", RA_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {}, {
