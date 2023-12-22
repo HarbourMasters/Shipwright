@@ -1659,7 +1659,10 @@ void GenerateRandomizerImgui(std::string seed = "") {
     CVarSetInteger("gRandoGenerating", 1);
     CVarSave();
     auto ctx = Rando::Context::GetInstance();
-    ctx->GetSettings()->SetAllFromCVar();
+    if (!ctx->IsSpoilerLoaded()) {
+        // We use the settings from the spoiler rather than CVars.
+        ctx->GetSettings()->SetAllFromCVar();
+    }
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
     std::stringstream excludedLocationStringStream(CVarGetString("gRandomizeExcludedLocations", ""));
