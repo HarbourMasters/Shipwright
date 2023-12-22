@@ -315,6 +315,14 @@ namespace Rando {
         // Must not be a fishsanity check
         return FSC_NONE;
     }
+
+    void Fishsanity::SetHeldFish(FishsanityMeta* meta) {
+        mHeldMetadata = meta == NULL ? defaultMeta : *meta;
+    }
+
+    FishsanityMeta Fishsanity::GetHeldFish() {
+        return mHeldMetadata;
+    }
 } // namespace Rando
 
 // C interface
@@ -329,5 +337,9 @@ extern "C" {
 
     bool Randomizer_IsAdultPond() {
         return FSi->IsAdultPond();
+    }
+
+    void Randomizer_SetHeldFish(FishsanityMeta* meta) {
+        return FSi->SetHeldFish(meta);
     }
 }

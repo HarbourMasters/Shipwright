@@ -24,6 +24,7 @@ typedef enum FishsanityCheckType {
 
 /**
  * @brief Fishsanity-related metadata for fishing pond fish
+ * TODO: THERE'S NO POINT!!!!!!!! I THINK WE CAN JUST USE FISHIDENTITY POGS POGS POGS
 */
 typedef struct FishsanityMeta {
     s16 params;
@@ -133,6 +134,17 @@ class Fishsanity {
     */
     FishsanityMeta AdvancePond();
 
+    /**
+     * @brief Set the currently held fish
+     * @param meta Pointer to FishsanityMeta to copy
+    */
+    void SetHeldFish(FishsanityMeta* meta);
+
+    /**
+     * @brief Get the currently held fish
+    */
+    FishsanityMeta GetHeldFish();
+
   private:
     /**
      * @brief Initialize helper statics if they have not been initialized yet
@@ -192,6 +204,8 @@ bool Randomizer_GetPondFishShuffled();
 bool Randomizer_GetGrottoFishShuffled();
 /// Returns true if the adult fishing pond should be used for fishsanity.
 bool Randomizer_IsAdultPond();
+/// Sets the currently-held fish
+void Randomizer_SetHeldFish(FishsanityMeta* meta);
 #ifdef __cplusplus
 }
 #endif

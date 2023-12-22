@@ -985,7 +985,9 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
                            ENKANBAN_FISHING);
         Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, 0.0f, 0.0f, 0.0f, 0, 0, 0, 200, true);
 
-        if ((KREG(1) == 1) || ((sFishGameNumber & 3) == 3)) {
+        // Loach(es) will spawn every fourth game, or if "Loaches Always Appear" is enabled
+        if (getShouldSpawnLoaches()) {
+            // Fishes 16 and 17 are loaches. Only 16 is spawned as adult; child also spawns 17.
             if (sLinkAge != LINK_AGE_CHILD) {
                 fishCount = 16;
             } else {
@@ -2948,6 +2950,11 @@ bool getShouldSpawnLoaches() {
 
 bool getShouldConfirmKeep() {
     return !CVarGetInteger("gCustomizeFishing", 0) || !CVarGetInteger("gSkipKeepConfirmation", 0);
+}
+
+bool getHasFishingPole() {
+    return !IS_RANDO || Randomizer_GetSettingValue(RSK_SHUFFLE_FISHING_POLE) == RO_GENERIC_OFF ||
+           Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
 }
 
 void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
