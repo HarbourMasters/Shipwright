@@ -160,4 +160,10 @@ extern "C" void OTRMessage_Init()
         CustomMessage("You look bored. Wanna go out for a&walk?\x1B&%gYes&No%w",
                       "Du siehst gelangweilt aus.&Willst du einen Spaziergang machen?\x1B&%gJa&Nein%w",
                       "Tu as l'air de t'ennuyer. Tu veux&aller faire un tour?\x1B&%gOui&Non%w"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_CARPET_SALESMAN_CUSTOM_FAIL_TO_BUY,
+        CustomMessage("I'm sorry I can't sell you&these fine specimens,&they need an %rexperienced owner%w.^"
+                      "Come back when you have&had %gBombchus%w of your own.",
+                      "",
+                      ""));
 }

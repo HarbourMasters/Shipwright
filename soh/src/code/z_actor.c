@@ -2079,9 +2079,8 @@ void GiveItemEntryFromActorWithFixedRange(Actor* actor, PlayState* play, GetItem
     GiveItemEntryFromActor(actor, play, getItemEntry, 50.0f, 10.0f);
 }
 
-// TODO: Rename to GiveItemIdFromActor or similar
 // If you're doing something for randomizer, you're probably looking for GiveItemEntryFromActor
-s32 func_8002F434(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32 yRange) {
+s32 Actor_OfferGetItem(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32 yRange) {
     Player* player = GET_PLAYER(play);
 
     if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
@@ -2108,7 +2107,7 @@ s32 func_8002F434(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32
 // TODO: Rename to GiveItemIdFromActorWithFixedRange or similar
 // If you're doing something for randomizer, you're probably looking for GiveItemEntryFromActorWithFixedRange
 void func_8002F554(Actor* actor, PlayState* play, s32 getItemId) {
-    func_8002F434(actor, play, getItemId, 50.0f, 10.0f);
+    Actor_OfferGetItem(actor, play, getItemId, 50.0f, 10.0f);
 }
 
 void func_8002F580(Actor* actor, PlayState* play) {

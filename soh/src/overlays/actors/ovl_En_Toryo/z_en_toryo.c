@@ -326,7 +326,7 @@ void func_80B20768(EnToryo* this, PlayState* play) {
                 Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_GV_TRADE_SAW);
             } else {
                 s32 itemId = GI_SWORD_BROKEN;
-                func_8002F434(&this->actor, play, itemId, 100.0f, 10.0f);
+                Actor_OfferGetItem(&this->actor, play, itemId, 100.0f, 10.0f);
             }
         }
         return;

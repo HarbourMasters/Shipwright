@@ -1040,7 +1040,7 @@ void EnSkj_SariaSongTalk(EnSkj* this, PlayState* play) {
         } else {
             func_80AFFE24(this);
             if (!IS_RANDO) {
-                func_8002F434(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
+                Actor_OfferGetItem(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
             } else {
                 GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_SKULL_KID, GI_HEART_PIECE);
                 GiveItemEntryFromActor(&this->actor, play, getItemEntry, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
@@ -1059,7 +1059,7 @@ void func_80AFFE44(EnSkj* this, PlayState* play) {
         EnSkj_SetupPostSariasSong(this);
     } else {
         if (!IS_RANDO) {
-            func_8002F434(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
+            Actor_OfferGetItem(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_SKULL_KID, GI_HEART_PIECE);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
@@ -1544,7 +1544,7 @@ void EnSkj_WaitToGiveReward(EnSkj* this, PlayState* play) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_OCARINA_MEMORY_GAME, GI_HEART_PIECE);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 26.0f, 26.0f);
         } else {
-            func_8002F434(&this->actor, play, sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum], 26.0f, 26.0f);
+            Actor_OfferGetItem(&this->actor, play, sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum], 26.0f, 26.0f);
         }
 
         this->actionFunc = EnSkj_GiveOcarinaGameReward;
@@ -1560,7 +1560,7 @@ void EnSkj_GiveOcarinaGameReward(EnSkj* this, PlayState* play) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_OCARINA_MEMORY_GAME, GI_HEART_PIECE);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 26.0f, 26.0f);
         } else {
-            func_8002F434(&this->actor, play, sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum], 26.0f, 26.0f);
+            Actor_OfferGetItem(&this->actor, play, sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum], 26.0f, 26.0f);
         }
     }
 }

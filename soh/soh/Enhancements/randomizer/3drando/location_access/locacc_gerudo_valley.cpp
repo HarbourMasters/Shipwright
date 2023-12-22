@@ -144,11 +144,12 @@ void AreaTable_Init_GerudoValley() {
                   //Events
                   EventAccess(&logic->FairyPot,        {[]{return true;}}),
                   EventAccess(&logic->NutPot,          {[]{return true;}}),
-                  EventAccess(&BombchuSalesman, {[]{return AdultsWallet && (CanJumpslash || CanUse(RG_HOVER_BOOTS));}}),
+                  EventAccess(&BombchuSalesman, {[]{return AdultsWallet && (CanJumpslash || CanUse(RG_HOVER_BOOTS)) && 
+                                                            ((randoCtx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && BombchuBag) || (!randoCtx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && BombBag));}}),
                 }, {
                   //Locations
                   LocationAccess(RC_WASTELAND_CHEST,            {[]{return logic->HasFireSource;}}),
-                  LocationAccess(RC_WASTELAND_BOMBCHU_SALESMAN, {[]{return BombchuSalesman;}}),
+                  LocationAccess(RC_WASTELAND_BOMBCHU_SALESMAN, {[]{return AdultsWallet && (CanJumpslash || CanUse(RG_HOVER_BOOTS));}}),
                   LocationAccess(RC_WASTELAND_GS,               {[]{return logic->HookshotOrBoomerang;}}),
                 }, {
                   //Exits

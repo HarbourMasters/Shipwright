@@ -329,7 +329,7 @@ void EnGirlA_SetupAction(EnGirlA* this, EnGirlAActionFunc func) {
 
 // #region SOH [Enhancement] [Randomizer]
 s32 EnGirlA_TryChangeShopItemShip(EnGirlA* this, PlayState* play) {
-    if (!CVarGetInteger("gBetterBombchuShopping", 0)){
+    if (!(IS_RANDO || CVarGetInteger("gBetterBombchuShopping", 0))){
         switch (this->actor.params) {
             case SI_BOMBCHU_10_2:
                 if (Flags_GetItemGetInf(ITEMGETINF_06)) {
@@ -1105,7 +1105,7 @@ void EnGirlA_BuyEvent_ObtainBombchuPack(PlayState* play, EnGirlA* this) {
 	// Normally, buying a bombchu pack sets a flag indicating the pack is now sold out
     // If they're in logic for rando, skip setting that flag so they can be purchased repeatedly
     // #region [Enhancment]
-    if (CVarGetInteger("gBetterBombchuShopping", 0)) {
+    if (IS_RANDO || CVarGetInteger("gBetterBombchuShopping", 0)) {
         return;
     }
     // #endregion
@@ -1348,7 +1348,7 @@ void EnGirlA_WaitForObject(EnGirlA* this, PlayState* play) {
             this->itemGiveFunc = itemEntry->itemGiveFunc;
             this->buyEventFunc = itemEntry->buyEventFunc;
             // If Better Bombchu Shopping is on, make the 10 pack affordable without a wallet upgrade
-            if (CVarGetInteger("gBetterBombchuShopping", 0) && this->getItemId == GI_BOMBCHUS_10) {
+            if (this->getItemId == GI_BOMBCHUS_10) {
                 this->basePrice = 99;
             } 
             else {

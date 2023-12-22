@@ -1127,7 +1127,7 @@ s32 EnZl4_CsMakePlan(EnZl4* this, PlayState* play) {
                 Camera_ChangeSetting(GET_ACTIVE_CAM(play), 1);
                 this->talkState = 7;
                 play->talkWithPlayer(play, &this->actor);
-                func_8002F434(&this->actor, play, GI_LETTER_ZELDA, fabsf(this->actor.xzDistToPlayer) + 1.0f,
+                Actor_OfferGetItem(&this->actor, play, GI_LETTER_ZELDA, fabsf(this->actor.xzDistToPlayer) + 1.0f,
                               fabsf(this->actor.yDistToPlayer) + 1.0f);
                 play->msgCtx.stateTimer = 4;
                 play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
@@ -1138,7 +1138,7 @@ s32 EnZl4_CsMakePlan(EnZl4* this, PlayState* play) {
                 Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
                 this->talkState++;
             } else {
-                func_8002F434(&this->actor, play, GI_LETTER_ZELDA, fabsf(this->actor.xzDistToPlayer) + 1.0f,
+                Actor_OfferGetItem(&this->actor, play, GI_LETTER_ZELDA, fabsf(this->actor.xzDistToPlayer) + 1.0f,
                               fabsf(this->actor.yDistToPlayer) + 1.0f);
             }
             // no break here is required for matching

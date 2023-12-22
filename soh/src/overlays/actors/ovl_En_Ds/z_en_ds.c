@@ -102,7 +102,7 @@ void EnDs_GiveOddPotion(EnDs* this, PlayState* play) {
             Randomizer_ConsumeAdultTradeItem(play, ITEM_ODD_MUSHROOM);
             return;
         }
-        func_8002F434(&this->actor, play, itemId, 10000.0f, 50.0f);
+        Actor_OfferGetItem(&this->actor, play, itemId, 10000.0f, 50.0f);
     }
 }
 
@@ -117,7 +117,7 @@ void EnDs_TalkAfterBrewOddPotion(EnDs* this, PlayState* play) {
             Randomizer_ConsumeAdultTradeItem(play, ITEM_ODD_MUSHROOM);
             return;
         }
-        func_8002F434(&this->actor, play, itemId, 10000.0f, 50.0f);
+        Actor_OfferGetItem(&this->actor, play, itemId, 10000.0f, 50.0f);
     }
 }
 
@@ -209,7 +209,7 @@ void EnDs_GiveBluePotion(EnDs* this, PlayState* play) {
             GetItemEntry entry = Randomizer_GetItemFromKnownCheck(RC_KAK_GRANNYS_SHOP, GI_POTION_BLUE);
             GiveItemEntryFromActor(&this->actor, play, entry, 10000.0f, 50.0f);
         } else {
-            func_8002F434(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
+            Actor_OfferGetItem(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
         }
     }
 }
@@ -236,7 +236,7 @@ void EnDs_OfferBluePotion(EnDs* this, PlayState* play) {
                             GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
                         } else {
                             itemEntry = ItemTable_Retrieve(GI_POTION_BLUE);
-                            func_8002F434(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
+                            Actor_OfferGetItem(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
                         }
 
                         gSaveContext.pendingSale = itemEntry.itemId;

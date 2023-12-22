@@ -732,7 +732,7 @@ void func_8001E5C8(EnItem00* this, PlayState* play) {
     if (this->getItemId != GI_NONE) {
         if (!Actor_HasParent(&this->actor, play)) {
             if (!IS_RANDO) {
-                func_8002F434(&this->actor, play, this->getItemId, 50.0f, 80.0f);
+                Actor_OfferGetItem(&this->actor, play, this->getItemId, 50.0f, 80.0f);
             } else {
                 GiveItemEntryFromActor(&this->actor, play, this->randoGiEntry, 50.0f, 80.0f);
             }
@@ -1485,6 +1485,7 @@ void EnItem00_DrawHeartPiece(EnItem00* this, PlayState* play) {
     }
 }
 
+// #region [Randomizer] [Enchancment]
 /**
  * Sometimes convert the given drop ID into a bombchu.
  * Returns the new drop type ID.
@@ -1514,6 +1515,7 @@ s16 EnItem00_ConvertBombDropToBombchu(s16 dropId) {
         }
     }
 }
+// #endregion
 
 /**
  * Converts a given drop type ID based on link's current age, health and owned items.
@@ -1532,11 +1534,14 @@ s16 func_8001F404(s16 dropId) {
         }
     }
 
+    // #region [Randomizer] [Enchancment]
     if ((CVarGetInteger("gBombchuDrops", 0) || 
         (IS_RANDO && Randomizer_GetSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1)) &&
-        (dropId == ITEM00_BOMBS_A || dropId == ITEM00_BOMBS_B || dropId == ITEM00_BOMBS_SPECIAL)) {
+        (dropId == ITEM00_BOMBS_A || dropId == ITEM00_BOMBS_B || dropId == ITEM00_BOMBS_SPECIAL) &&
+        (Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) || INV_CONTENT(ITEM_BOMB) == ITEM_NONE)) {
         dropId = EnItem00_ConvertBombDropToBombchu(dropId);
     }
+    // #endregion
 
     // This is convoluted but it seems like it must be a single condition to match
     // clang-format off

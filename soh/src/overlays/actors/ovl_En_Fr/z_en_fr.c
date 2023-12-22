@@ -1050,7 +1050,7 @@ void EnFr_Deactivate(EnFr* this, PlayState* play) {
     } else {
         this->actionFunc = EnFr_GiveReward;
         if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
-            func_8002F434(&this->actor, play, this->reward, 30.0f, 100.0f);
+            Actor_OfferGetItem(&this->actor, play, this->reward, 30.0f, 100.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 30.0f, 100.0f);
         }
@@ -1063,7 +1063,7 @@ void EnFr_GiveReward(EnFr* this, PlayState* play) {
         this->actionFunc = EnFr_SetIdle;
     } else {
         if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
-            func_8002F434(&this->actor, play, this->reward, 30.0f, 100.0f);
+            Actor_OfferGetItem(&this->actor, play, this->reward, 30.0f, 100.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 30.0f, 100.0f);
         }

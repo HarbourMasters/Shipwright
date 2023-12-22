@@ -486,7 +486,7 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
         yRange = fabsf(this->actor.yDistToPlayer) + 1.0f;
         xzRange = this->actor.xzDistToPlayer + 1.0f;
         if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
-            func_8002F434(&this->actor, play, getItemId, xzRange, yRange);
+            Actor_OfferGetItem(&this->actor, play, getItemId, xzRange, yRange);
         } else {
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, xzRange, yRange);
         }

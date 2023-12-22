@@ -5085,7 +5085,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
 
                 this->actor.parent = NULL;
                 if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
-                    func_8002F434(&this->actor, play, getItemId, 2000.0f, 1000.0f);
+                    Actor_OfferGetItem(&this->actor, play, getItemId, 2000.0f, 1000.0f);
                 } else {
                     GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
                 }
@@ -5140,7 +5140,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                 this->unk_15C = 24;
             } else {
                 if (!IS_RANDO) {
-                    func_8002F434(&this->actor, play, GI_SCALE_GOLD, 2000.0f, 1000.0f);
+                    Actor_OfferGetItem(&this->actor, play, GI_SCALE_GOLD, 2000.0f, 1000.0f);
                 } else {
                     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
                     GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);

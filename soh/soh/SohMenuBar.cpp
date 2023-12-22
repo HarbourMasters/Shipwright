@@ -645,15 +645,11 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Explosions are now a static size, like in Majora's Mask and OoT3D. Makes bombchu hovering much easier.");
                 UIWidgets::PaddedEnhancementCheckbox("Prevent Bombchus Forcing First-Person", "gDisableFirstPersonChus", true, false);
                 UIWidgets::Tooltip("Prevent bombchus from forcing the camera into first-person mode when released.");
-                bool forceEnableBetterBombchuShop = IS_RANDO &&
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BETTER_BOMBCHU_SHOPPING) == 1;
-                static const char* forceEnableBetterBombchuShopText =
-                    "This setting is forcefully enabled because a savefile\nwith \"BetterBombchuShop\" is loaded.";
                 UIWidgets::PaddedEnhancementCheckbox("Better Bombchu Shopping", "gBetterBombchuShopping", true, false,
-                                                        forceEnableBetterBombchuShop, forceEnableBetterBombchuShopText, UIWidgets::CheckboxGraphics::Checkmark);
+                                                        IS_RANDO, "This setting is forcefully enabled when you are playing a randomizer.", UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Bombchus do not sell out when bought, and a 10 pack of bombchus costs 99 rupees instead of 100."
                 "\n"
-                "Leaving the shop is required to make the shop actually change prices and restock any SOLD OUTs");
+                "Toggling while inside the shop will not change prices or restock any SOLD OUTs");
                 UIWidgets::PaddedEnhancementCheckbox("Aiming reticle for the bow/slingshot", "gBowReticle", true, false);
                 UIWidgets::Tooltip("Aiming with a bow or slingshot will display a reticle as with the hookshot when the projectile is ready to fire.");
                 if (UIWidgets::PaddedEnhancementCheckbox("Allow strength equipment to be toggled", "gToggleStrength", true, false)) {

@@ -152,7 +152,7 @@ namespace Rando {
 
             // Magic items
             default:
-                return MagicMeter && (IsMagicItem(itemName) || (IsMagicArrow(itemName) && CanUse(RG_FAIRY_BOW)));
+                return Magic && (IsMagicItem(itemName) || (IsMagicArrow(itemName) && CanUse(RG_FAIRY_BOW)));
         }
     }
 
@@ -238,14 +238,14 @@ namespace Rando {
                            (OcarinaCDownButton ? 1 : 0);
         NumBottles      = ((NoBottles) ? 0 : (Bottles + ((DeliverLetter) ? 1 : 0)));
         HasBottle       = NumBottles >= 1;
-        Slingshot       = (ProgressiveBulletBag >= 1) && (BuySeed || AmmoCanDrop);
+        BulletBag       = ProgressiveBulletBag  >= 1;
         Ocarina         = ProgressiveOcarina    >= 1;
         OcarinaOfTime   = ProgressiveOcarina    >= 2;
-        MagicMeter      = (ProgressiveMagic     >= 1) && (AmmoCanDrop || (HasBottle && BuyMagicPotion));
-        BombBag         = (ProgressiveBombBag   >= 1) && (BuyBomb || AmmoCanDrop);
+        MagicMeter      = ProgressiveMagic      >= 1;
+        BombBag         = ProgressiveBombBag    >= 1;
         Hookshot        = ProgressiveHookshot   >= 1;
         Longshot        = ProgressiveHookshot   >= 2;
-        Bow             = (ProgressiveBow       >= 1) && (BuyArrow || AmmoCanDrop);
+        Quiver          = ProgressiveBow        >= 1;
         GoronBracelet   = ProgressiveStrength   >= 1;
         SilverGauntlets = ProgressiveStrength   >= 2;
         GoldenGauntlets = ProgressiveStrength   >= 3;
@@ -254,27 +254,22 @@ namespace Rando {
         AdultsWallet    = ProgressiveWallet     >= 1;
         BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
-        //you need at least 2 buttons for scarecrow song
-        ScarecrowSong    = ScarecrowSong || (ctx->GetOption(RSK_SKIP_SCARECROWS_SONG) && Ocarina && OcarinaButtons >= 2) || (ChildScarecrow && AdultScarecrow);
-        Scarecrow        = Hookshot && ScarecrowSong;
-        DistantScarecrow = Longshot && ScarecrowSong;
+        BombchuRefill   = (AmmoCanDrop && ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON/*_PLUS_BOMBCHU*/)) || 
+                        CanPlayBowling || BombchuSalesman || BuyBombchus;
+        FairyAccess     = FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || BuyFairy;
 
-        //Drop Access
-        DekuStickDrop = StickPot || DekuBabaSticks;
-        DekuNutDrop   = (NutPot  || NutCrate         || DekuBabaNuts) && AmmoCanDrop;
-        BugsAccess    = BugShrub || WanderingBugs    || BugRock;
-        FishAccess    = LoneFish || FishGroup;
-        FairyAccess   = FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond;
-
-
-        //refills
-        Bombs        = BombBag;
-        Nuts         = DekuNutDrop || Nuts;
-        Sticks       = DekuStickDrop || Sticks;
-        Bugs         = HasBottle && BugsAccess;
-        BlueFire     = (HasBottle && BlueFireAccess) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
-        Fish         = HasBottle && FishAccess;
-        Fairy        = HasBottle && FairyAccess;
+        //Usage
+        Slingshot = (BuySeed || AmmoCanDrop) && BulletBag;
+        Magic     = (AmmoCanDrop || (HasBottle && (BuyMagicPotion))) && MagicMeter;
+        Bombs     = (BuyBomb || AmmoCanDrop) && BombBag;
+        Bombchus  = BombchuRefill && BombchuBag && (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) || BombBag);
+        Bow       = (BuyArrow || AmmoCanDrop) && Quiver;
+        Nuts      = ((NutPot  || NutCrate || DekuBabaNuts) && AmmoCanDrop) || Nuts; //RANDOTODO BuyNuts currently mixed in with Nuts, should be seperate as BuyNuts are also a Nuts source
+        Sticks    = (StickPot || DekuBabaSticks) || Sticks;
+        Bugs      = HasBottle && (BugShrub || WanderingBugs || BugRock || BuyBugs);
+        BlueFire  = (HasBottle && BlueFireAccess) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
+        Fish      = HasBottle && (LoneFish || FishGroup || BuyFish); //RANDOTODO is there any need to care about lone vs group?
+        Fairy     = HasBottle && FairyAccess;
 
         FoundBombchus   = (BombchuDrop || Bombchus || Bombchus5 || Bombchus10 || Bombchus20);
         CanPlayBowling  = (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && FoundBombchus) || (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && BombBag);
@@ -284,6 +279,11 @@ namespace Rando {
         HasExplosives =  Bombs || (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && HasBombchus);
 
         HasBoots = IronBoots || HoverBoots;
+
+        //you need at least 2 buttons for scarecrow song
+        ScarecrowSong    = ScarecrowSong || (ctx->GetOption(RSK_SKIP_SCARECROWS_SONG) && Ocarina && OcarinaButtons >= 2) || (ChildScarecrow && AdultScarecrow);
+        Scarecrow        = Hookshot && ScarecrowSong;
+        DistantScarecrow = Longshot && ScarecrowSong;
 
         //Unshuffled adult trade quest
         Eyedrops     = Eyedrops     || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && ClaimCheck);
@@ -648,19 +648,15 @@ namespace Rando {
         CanSummonGanon        = false;
 
         //Drops and Bottle Contents Access
-        DekuNutDrop      = false;
         NutPot           = false;
         NutCrate         = false;
         DekuBabaNuts     = false;
-        DekuStickDrop    = false;
         StickPot         = false;
         DekuBabaSticks   = false;
-        BugsAccess       = false;
         BugShrub         = false;
         WanderingBugs    = false;
         BugRock          = false;
         BlueFireAccess   = false;
-        FishAccess       = false;
         FishGroup        = false;
         LoneFish         = false;
         FairyAccess      = false;
@@ -676,8 +672,11 @@ namespace Rando {
         BuySeed          = false;
         BuyArrow         = false;
         BuyBomb          = false;
-        BuyMagicPotion        = false;
+        BuyMagicPotion   = false;
         MagicRefill      = false;
+        BuyFish          = false;
+        BuyBugs          = false;
+        BuyFairy         = false;
 
         PieceOfHeart     = 0;
         HeartContainer   = 0;
@@ -687,13 +686,14 @@ namespace Rando {
         /* These are used to simplify reading the logic, but need to be updated
         /  every time a base value is updated.                       */
 
-        Slingshot        = false;
+        BulletBag        = false;
         Ocarina          = false;
         OcarinaOfTime    = false;
         BombBag          = false;
-        MagicMeter       = false;
+        Magic            = false;
         Hookshot         = false;
         Longshot         = false;
+        Quiver           = false;
         Bow              = false;
         GoronBracelet    = false;
         SilverGauntlets  = false;

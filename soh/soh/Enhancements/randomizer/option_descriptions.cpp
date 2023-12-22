@@ -501,13 +501,10 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Bombchu Bowling is opened by obtaining Bombchus.";
     mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS] = "Once you obtain bombchus for the first time, refills can be found "
-                                                    "in bushes and other places where bomb drops can normally spawn.";
-    mOptionDescriptions[RSK_BETTER_BOMBCHU_SHOPPING] = "The Bombchus in shops (except shopsanity checks) no longer sell out, "
-                                                       "and a 10 pack of bombchus costs 99 rupees instead of 100."
-                                                       "\n"
-                                                       "If neither this option nor Bombchu Drops are enabled, then only "
-                                                       "Bombchu Bowling and the Carpet Merchant will be considered logical "
-                                                       "sources of bombchu refills.";
+                                                    "in bushes and other places where bomb drops can normally spawn."
+                                                    "\n"
+                                                    "If you do not have Bombchu Bag disabled, you will also need a"
+                                                    "Bomb bag for bombchus to drop";
     mOptionDescriptions[RSK_BLUE_FIRE_ARROWS] =
         "Ice Arrows act like Blue Fire, making them able to melt red ice. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";

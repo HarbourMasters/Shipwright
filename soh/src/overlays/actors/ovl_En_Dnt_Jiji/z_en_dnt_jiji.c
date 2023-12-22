@@ -259,7 +259,7 @@ void EnDntJiji_Talk(EnDntJiji* this, PlayState* play) {
         Message_CloseTextbox(play);
         func_8002DF54(play, NULL, 7);
         this->actor.parent = NULL;
-        func_8002F434(&this->actor, play, this->getItemId, 400.0f, 200.0f);
+        Actor_OfferGetItem(&this->actor, play, this->getItemId, 400.0f, 200.0f);
         this->actionFunc = EnDntJiji_SetupGivePrize;
     }
 }
@@ -269,7 +269,7 @@ void EnDntJiji_SetupGivePrize(EnDntJiji* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actionFunc = EnDntJiji_GivePrize;
     } else {
-        func_8002F434(&this->actor, play, this->getItemId, 400.0f, 200.0f);
+        Actor_OfferGetItem(&this->actor, play, this->getItemId, 400.0f, 200.0f);
     }
 }
 

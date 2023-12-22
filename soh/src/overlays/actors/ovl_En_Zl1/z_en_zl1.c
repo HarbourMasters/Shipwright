@@ -510,7 +510,7 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
             if ((Message_GetState(msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
                 this->actor.textId = 0xFFFF;
                 play->talkWithPlayer(play, &this->actor);
-                func_8002F434(&this->actor, play, GI_LETTER_ZELDA, 120.0f, 10.0f);
+                Actor_OfferGetItem(&this->actor, play, GI_LETTER_ZELDA, 120.0f, 10.0f);
                 play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
                 play->msgCtx.stateTimer = 4;
                 this->unk_1E2++;
@@ -525,7 +525,7 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
                 this->actor.parent = NULL;
                 this->unk_1E2++;
             } else {
-                func_8002F434(&this->actor, play, GI_LETTER_ZELDA, 120.0f, 10.0f);
+                Actor_OfferGetItem(&this->actor, play, GI_LETTER_ZELDA, 120.0f, 10.0f);
             }
             break;
         case 3:

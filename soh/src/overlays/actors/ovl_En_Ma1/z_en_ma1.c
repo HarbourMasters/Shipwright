@@ -370,7 +370,7 @@ void func_80AA0EA0(EnMa1* this, PlayState* play) {
         this->actionFunc = func_80AA0EFC;
     } else {
         if (!IS_RANDO) {
-            func_8002F434(&this->actor, play, GI_WEIRD_EGG, 120.0f, 10.0f);
+            Actor_OfferGetItem(&this->actor, play, GI_WEIRD_EGG, 120.0f, 10.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HC_MALON_EGG, GI_WEIRD_EGG);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 120.0f, 10.0f);

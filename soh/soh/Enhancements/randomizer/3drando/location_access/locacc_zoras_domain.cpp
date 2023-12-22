@@ -93,7 +93,7 @@ void AreaTable_Init_ZorasDomain() {
                   LocationAccess(RC_ZD_CHEST,               {[]{return logic->IsChild && logic->CanUse(RG_STICKS);}}),
                   LocationAccess(RC_ZD_KING_ZORA_THAWED,    {[]{return logic->KingZoraThawed;}}),
                   LocationAccess(RC_ZD_TRADE_PRESCRIPTION,  {[]{return logic->KingZoraThawed && logic->Prescription;}}),
-                  LocationAccess(RC_ZD_GS_FROZEN_WATERFALL, {[]{return logic->IsAdult && logic->AtNight && (logic->HookshotOrBoomerang || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->Bow || (logic->MagicMeter && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))) || (randoCtx->GetTrickOption(RT_ZD_GS) && logic->CanJumpslash)) && logic->CanGetNightTimeGS;}}),
+                  LocationAccess(RC_ZD_GS_FROZEN_WATERFALL, {[]{return logic->IsAdult && logic->AtNight && (logic->HookshotOrBoomerang || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->Bow || (logic->Magic && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))) || (randoCtx->GetTrickOption(RT_ZD_GS) && logic->CanJumpslash)) && logic->CanGetNightTimeGS;}}),
                   LocationAccess(RC_ZD_GOSSIP_STONE,        {[]{return true;}}),
                 }, {
                   //Exits

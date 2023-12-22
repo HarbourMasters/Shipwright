@@ -2613,6 +2613,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if (Randomizer_GetSettingValue(RSK_SARIA_HINT)) {
             if ((gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && textId == TEXT_SARIA_SFM) || (textId >= TEXT_SARIAS_SONG_FACE_TO_FACE && textId <= TEXT_SARIAS_SONG_CHANNELING_POWER)) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetSariaMessage(textId);
+        } else if (textId == TEXT_CARPET_SALESMAN_CUSTOM_FAIL_TO_BUY){
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
         }
         }
     }
@@ -2637,7 +2639,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
             messageEntry.Replace("{{gsCount}}", std::to_string(gsCount));
         } 
-    } else if (CVarGetInteger("gBetterBombchuShopping", 0) != 0 &&
+    } else if ((IS_RANDO || CVarGetInteger("gBetterBombchuShopping", 0)) &&
                 (textId == TEXT_BUY_BOMBCHUS_10_DESC || textId == TEXT_BUY_BOMBCHUS_10_PROMPT)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
     } else if (textId == TEXT_HEART_CONTAINER && CVarGetInteger("gInjectItemCounts", 0)) {
