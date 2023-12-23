@@ -98,6 +98,10 @@ std::vector<ItemTrackerItem> bossSoulItems = {
     ITEM_TRACKER_ITEM_CUSTOM(RG_GANON_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
 };
 
+std::vector<ItemTrackerItem> fishingPoleItems = {
+    ITEM_TRACKER_ITEM(ITEM_FISHING_POLE, 0, DrawItem)
+};
+
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsHorizontal = {
     { SCENE_DEKU_TREE, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
     { SCENE_DODONGOS_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
@@ -682,6 +686,11 @@ void DrawItem(ItemTrackerItem item) {
                 
             itemName = "Ganon's Soul";
             break;
+        case ITEM_FISHING_POLE:
+            actualItemId = item.id;
+            hasItem = IS_RANDO && Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
+            itemName = "Fishing Pole";
+            break;
     }
 
     if (GameInteractor::IsSaveLoaded() && (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
@@ -1001,25 +1010,22 @@ void UpdateVectors() {
     // and misc isn't on the main window,
     // and it doesn't already have greg, add him
     if (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MISC_WINDOW &&
-        CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) != SECTION_DISPLAY_MAIN_WINDOW &&
-        std::none_of(miscItems.begin(), miscItems.end(), [](ItemTrackerItem item){return item.id == ITEM_RUPEE_GREEN;})) {
-
-        miscItems.insert(miscItems.end(), gregItems.begin(), gregItems.end());
+        CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) != SECTION_DISPLAY_MAIN_WINDOW) {
+        if (std::none_of(miscItems.begin(), miscItems.end(), [](ItemTrackerItem item) { return item.id == ITEM_RUPEE_GREEN; }))
+            miscItems.insert(miscItems.end(), gregItems.begin(), gregItems.end());
     } else {
-        for (auto it = miscItems.begin(); it != miscItems.end();) {
-            if (it->id == ITEM_RUPEE_GREEN) {
-                miscItems.erase(it);
-            } else {
-                it++;
-            }
-        }
+        miscItems.erase(std::remove_if(miscItems.begin(), miscItems.end(), [](ItemTrackerItem i) { return i.id == ITEM_RUPEE_GREEN; }), miscItems.end());
     }
 
+    bool newRowAdded = false;
     // if we're adding greg to the main window
     if (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
-        // insert empty items until we're on a new row for greg
-        while (mainWindowItems.size() % 6) {
-            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+        if (!newRowAdded) {
+            // insert empty items until we're on a new row for greg
+            while (mainWindowItems.size() % 6) {
+                mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+            }
+            newRowAdded = true;
         }
 
         // add greg
@@ -1029,14 +1035,35 @@ void UpdateVectors() {
     // If we're adding triforce pieces to the main window
     if (CVarGetInteger("gItemTrackerTriforcePiecesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) {
         // If Greg isn't on the main window, add empty items to place the triforce pieces on a new row.
-        if (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) != SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
+        if (!newRowAdded) {
             while (mainWindowItems.size() % 6) {
                 mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
             }
+            newRowAdded = true;
         }
 
         // Add triforce pieces
         mainWindowItems.insert(mainWindowItems.end(), triforcePieces.begin(), triforcePieces.end());
+    }
+
+    // if misc is separate and fishing pole isn't added, add fishing pole to misc
+    if (CVarGetInteger("gItemTrackerFishingPoleDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MISC_WINDOW &&
+        CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) != SECTION_DISPLAY_MAIN_WINDOW) {
+        if (std::none_of(miscItems.begin(), miscItems.end(), [](ItemTrackerItem item) { return item.id == ITEM_FISHING_POLE; }))
+            miscItems.insert(miscItems.end(), fishingPoleItems.begin(), fishingPoleItems.end());
+    } else {
+        miscItems.erase(std::remove_if(miscItems.begin(), miscItems.end(), [](ItemTrackerItem i) { return i.id == ITEM_FISHING_POLE; }), miscItems.end());
+    }
+    // add fishing pole to main window
+    if (CVarGetInteger("gItemTrackerFishingPoleDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
+        if (!newRowAdded) {
+            while (mainWindowItems.size() % 6) {
+                mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+            }
+            newRowAdded = true;
+        }
+
+        mainWindowItems.insert(mainWindowItems.end(), fishingPoleItems.begin(), fishingPoleItems.end());
     }
 
     //If we're adding boss souls to the main window...
@@ -1074,6 +1101,7 @@ void ItemTrackerWindow::DrawElement() {
             (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) ||
             (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) ||
             (CVarGetInteger("gItemTrackerTriforcePiecesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) ||
+            (CVarGetInteger("gItemTrackerFishingPoleDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) ||
             (CVarGetInteger("gItemTrackerNotesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW)
         ) {
             BeginFloatingWindows("Item Tracker##main window");
@@ -1153,6 +1181,12 @@ void ItemTrackerWindow::DrawElement() {
         if (CVarGetInteger("gItemTrackerBossSoulsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Boss Soul Tracker");
             DrawItemsInRows(bossSoulItems);
+            EndFloatingWindows();
+        }
+
+        if (CVarGetInteger("gItemTrackerFishingPoleDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_SEPARATE) {
+            BeginFloatingWindows("Fishing Pole Tracker");
+            DrawItemsInRows(fishingPoleItems);
             EndFloatingWindows();
         }
 
@@ -1296,6 +1330,10 @@ void ItemTrackerSettingsWindow::DrawElement() {
     }
 
     if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Boss Souls", "gItemTrackerBossSoulsDisplayType", displayTypes, SECTION_DISPLAY_HIDDEN)) {
+        shouldUpdateVectors = true;
+    }
+
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Fishing Pole", "gItemTrackerFishingPoleDisplayType", extendedDisplayTypes, SECTION_DISPLAY_EXTENDED_HIDDEN)) {
         shouldUpdateVectors = true;
     }
 

@@ -1193,7 +1193,7 @@ void RegisterFishsanity() {
 
         // Award fish
         GetItemEntry gi = OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(pending.randomizerCheck, GI_NONE);
-        GameInteractor::RawAction::SetFlag(FLAG_RANDOMIZER_INF, pending.randomizerInf);
+        Flags_SetRandomizerInf(pending.randomizerInf);
         GiveItemEntryWithoutActor(gPlayState, gi);
         fs->SetPendingFish(NULL);
     });

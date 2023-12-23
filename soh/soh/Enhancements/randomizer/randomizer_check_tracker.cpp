@@ -122,6 +122,7 @@ RandomizerCheck lastLocationChecked = RC_UNKNOWN_CHECK;
 RandomizerCheckArea previousArea = RCAREA_INVALID;
 RandomizerCheckArea currentArea = RCAREA_INVALID;
 OSContPad* trackerButtonsPressed;
+std::unordered_map<RandomizerCheck, std::string> checkNameOverrides;
 
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheck, RandomizerCheck);
@@ -395,6 +396,7 @@ bool HasItemBeenCollected(RandomizerCheck rc) {
     case SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT:
     case SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM:
     case SpoilerCollectionCheckType::SPOILER_CHK_COW:
+    case SpoilerCollectionCheckType::SPOILER_CHK_FISH:
     case SpoilerCollectionCheckType::SPOILER_CHK_SCRUB:
     case SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF:
     case SpoilerCollectionCheckType::SPOILER_CHK_MASTER_SWORD:
@@ -449,6 +451,14 @@ void CheckTrackerLoadGame(int32_t fileNum) {
 
         if (areaChecksGotten[entry2->GetArea()] != 0 || RandomizerCheckObjects::AreaIsOverworld(entry2->GetArea())) {
             areasSpoiled |= (1 << entry2->GetArea());
+        }
+
+        // Create check name overrides for child pond fish if age split is disabled
+        if (fishsanityMode != RO_FISHSANITY_OFF && fishsanityMode != RO_FISHSANITY_GROTTOS && entry.GetRCType() == RCTYPE_FISH && entry.GetScene() == SCENE_FISHING_POND &&
+            entry.GetActorParams() != 116 && !fishsanityAgeSplit) {
+            if (entry.GetShortName().starts_with("Child")) {
+                checkNameOverrides[rc] = entry.GetShortName().substr(6);
+            }
         }
     }
     if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING && IS_RANDO) {
@@ -712,6 +722,7 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
               (scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_COW ||
+               scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_FISH ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_SCRUB ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_MASTER_SWORD ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF)) {
@@ -1338,7 +1349,11 @@ void DrawLocation(RandomizerCheck rc) {
     }
  
     //Main Text
-    txt = loc->GetShortName();
+    if (checkNameOverrides.contains(loc->GetRandomizerCheck()))
+        txt = checkNameOverrides[loc->GetRandomizerCheck()];
+    else
+        txt = loc->GetShortName();
+
     if (lastLocationChecked == loc->GetRandomizerCheck())
         txt = "* " + txt;
  
