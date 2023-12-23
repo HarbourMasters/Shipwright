@@ -739,6 +739,26 @@ void InitTrickNames() {
      Text{"Pure Evil", "", ""},
      Text{"Ganon's Ghost", "", ""},
      Text{"Pork", "", ""}};
+  trickNameTable[RG_OCARINA_A_BUTTON] = {
+     Text{"!!!", "", ""},
+     Text{"!!!", "", ""},
+     Text{"!!!", "", ""} };
+  trickNameTable[RG_OCARINA_C_UP_BUTTON] = {
+     Text{"!!!", "", ""},
+     Text{"!!!", "", ""},
+     Text{"!!!", "", ""} };
+  trickNameTable[RG_OCARINA_C_DOWN_BUTTON] = {
+     Text{"!!!", "", ""},
+     Text{"!!!", "", ""},
+     Text{"!!!", "", ""} };
+  trickNameTable[RG_OCARINA_C_LEFT_BUTTON] = {
+     Text{"!!!", "", ""},
+     Text{"!!!", "", ""},
+     Text{"!!!", "", ""} };
+  trickNameTable[RG_OCARINA_C_RIGHT_BUTTON] = {
+     Text{"!!!", "", ""},
+     Text{"!!!", "", ""},
+     Text{"!!!", "", ""} };
 
 /*
   //Names for individual upgrades, in case progressive names are replaced

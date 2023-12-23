@@ -725,10 +725,16 @@ void GenerateItemPool() {
 
   if (ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS)) {
     AddItemToMainPool(RG_OCARINA_A_BUTTON);
-    AddItemToMainPool(RG_OCARINA_C_LEFT_BUTTON);
-    AddItemToMainPool(RG_OCARINA_C_RIGHT_BUTTON);
     AddItemToMainPool(RG_OCARINA_C_UP_BUTTON);
     AddItemToMainPool(RG_OCARINA_C_DOWN_BUTTON);
+    AddItemToMainPool(RG_OCARINA_C_LEFT_BUTTON);
+    AddItemToMainPool(RG_OCARINA_C_RIGHT_BUTTON);
+
+    ctx->possibleIceTrapModels.push_back(RG_OCARINA_A_BUTTON);
+    ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_UP_BUTTON);
+    ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_DOWN_BUTTON);
+    ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_LEFT_BUTTON);
+    ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_RIGHT_BUTTON);
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_COWS)) {

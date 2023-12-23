@@ -592,7 +592,7 @@ namespace Logic {
     BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
     //you need at least 2 buttons for scarecrow song
-    ScarecrowSong    = ScarecrowSong || (RSK_SKIP_SCARECROWS_SONG && Ocarina && OcarinaButtons >= 2) || (ChildScarecrow && AdultScarecrow);
+    ScarecrowSong    = ScarecrowSong || (ctx->GetOption(RSK_SKIP_SCARECROWS_SONG) && Ocarina && OcarinaButtons >= 2) || (ChildScarecrow && AdultScarecrow);
     Scarecrow        = Hookshot && ScarecrowSong;
     DistantScarecrow = Longshot && ScarecrowSong;
 
