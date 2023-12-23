@@ -2621,7 +2621,7 @@ CustomMessage Randomizer::GetSariaMessage(u16 originalTextId) {
 CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
     CustomMessage hintMessageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_FISHING_POND_START);
     CustomMessage messageEntry = CustomMessage(
-      "Sorry, but the pond is closed. I've lost my good %rfishing pole%w... Can't go fishing without it!",
+      "Sorry, but the pond is closed.&I've lost my good %rfishing pole%w...&Can't go fishing without it!",
       "",
       ""
     );

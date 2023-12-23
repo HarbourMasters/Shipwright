@@ -24,7 +24,6 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play);
 void Fishing_UpdateOwner(Actor* thisx, PlayState* play);
 void Fishing_DrawFish(Actor* thisx, PlayState* play);
 void Fishing_DrawOwner(Actor* thisx, PlayState* play);
-void Fishing_AwardFishsanity(Fishing* this, PlayState* play);
 void Fishing_Reset(void);
 
 bool getShouldSpawnLoaches();
@@ -434,8 +433,7 @@ static f32 sFishGroupAngle2;
 static f32 sFishGroupAngle3;
 static FishingEffect sFishingEffects[FISHING_EFFECT_COUNT];
 static Vec3f sStreamSoundProjectedPos;
-static u8 sFishOnHandParams;
-static u8 sFishsanityPendingParams;
+static s16 sFishOnHandParams;
 
 void Fishing_SetColliderElement(s32 index, ColliderJntSph* collider, Vec3f* pos, f32 scale) {
     collider->elements[index].dim.worldSphere.center.x = pos->x;
@@ -2952,11 +2950,6 @@ bool getShouldConfirmKeep() {
     return !CVarGetInteger("gCustomizeFishing", 0) || !CVarGetInteger("gSkipKeepConfirmation", 0);
 }
 
-bool getHasFishingPole() {
-    return !IS_RANDO || Randomizer_GetSettingValue(RSK_SHUFFLE_FISHING_POLE) == RO_GENERIC_OFF ||
-           Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
-}
-
 void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
     s16 i;
     s16 rotXYScale = 10;
@@ -4001,8 +3994,11 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                         sFishOnHandLength = this->fishLength;
                                         sFishOnHandIsLoach = this->isLoach;
                                         sLureCaughtWith = sLureEquipped;
+                                        if (IS_FISHSANITY) {
+                                            sFishOnHandParams = this->fishsanityParams;
+                                        }
                                         Actor_Kill(&this->actor);
-                                    } else if ((this->isLoach == 0) && (sFishOnHandIsLoach == 0) &&
+                                    } else if (getShouldConfirmKeep() && (this->isLoach == 0) && (sFishOnHandIsLoach == 0) &&
                                                ((s16)this->fishLength < (s16)sFishOnHandLength)) {
                                         this->keepState = 1;
                                         this->timerArray[0] = 0x3C;
@@ -4015,6 +4011,11 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                         sLureCaughtWith = sLureEquipped;
                                         this->fishLength = lengthTemp;
                                         this->isLoach = loachTemp;
+                                        if (IS_FISHSANITY) {
+                                            s16 paramsTemp = sFishOnHandParams;
+                                            sFishOnHandParams = this->fishsanityParams;
+                                            this->fishsanityParams = paramsTemp;
+                                        }
                                     }
                                 }
                                 if (this->keepState == 0) {
@@ -4035,6 +4036,11 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                     sLureCaughtWith = sLureEquipped;
                                     this->fishLength = temp1;
                                     this->isLoach = temp2;
+                                    if (IS_FISHSANITY) {
+                                        s16 paramsTemp = sFishOnHandParams;
+                                        sFishOnHandParams = this->fishsanityParams;
+                                        this->fishsanityParams = paramsTemp;
+                                    }
                                 }
                                 sRodCastState = 0;
                             }
@@ -4879,6 +4885,10 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                         this->stateAndTimer = 3;
                         break;
                 }
+            // Fix for owner getting stuck when the pond is closed (Fishing Pole Shuffle)
+            } else if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
+                Message_CloseTextbox(play);
+                this->stateAndTimer = 0;
             }
             break;
 
