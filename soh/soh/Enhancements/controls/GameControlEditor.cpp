@@ -7,6 +7,9 @@
 #include <iterator>
 #include <variables.h>
 
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+#define IMGUI_DEFINE_MATH_OPERATORS
+#endif
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 #include <libultraship/bridge.h>
