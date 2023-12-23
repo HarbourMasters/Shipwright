@@ -41,7 +41,7 @@ void Settings::CreateOptions() {
     CreateOptionDescriptions();
     // clang-format off
     mOptions[RSK_FOREST] = Option::U8("Forest", {"Closed", "Closed Deku", "Open"}, OptionCategory::Setting, "gRandomizeForest", mOptionDescriptions[RSK_FOREST], WidgetType::Combobox, RO_FOREST_CLOSED);
-    mOptions[RSK_KAK_GATE] = Option::U8("Kakariko Gate", {"Close", "Open"}, OptionCategory::Setting, "gRandomizeKakarikoGate", mOptionDescriptions[RSK_KAK_GATE]);
+    mOptions[RSK_KAK_GATE] = Option::U8("Kakariko Gate", {"Closed", "Open"}, OptionCategory::Setting, "gRandomizeKakarikoGate", mOptionDescriptions[RSK_KAK_GATE]);
     mOptions[RSK_DOOR_OF_TIME] = Option::U8("Door of Time", {"Closed", "Song only", "Open"}, OptionCategory::Setting, "gRandomizeDoorOfTime", mOptionDescriptions[RSK_DOOR_OF_TIME], WidgetType::Combobox);
     mOptions[RSK_ZORAS_FOUNTAIN] = Option::U8("Zora's Fountain", {"Closed", "Closed as child", "Open"}, OptionCategory::Setting, "gRandomizeZorasFountain", mOptionDescriptions[RSK_ZORAS_FOUNTAIN]);
     mOptions[RSK_GERUDO_FORTRESS] = Option::U8("Gerudo Fortress", {"Normal", "Fast", "Open"}, OptionCategory::Setting, "gRandomizeGerudoFortress", mOptionDescriptions[RSK_GERUDO_FORTRESS]);
@@ -134,7 +134,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL] = Option::Bool("Bottom of the Well", "gRandomizeShuffleKeyRingsBottomOfTheWell", "", IMFLAG_NONE);
     mOptions[RSK_KEYRINGS_GTG] = Option::Bool("Gerudo Training Grounds", "gRandomizeShuffleKeyRingsGTG", "", IMFLAG_NONE);
     mOptions[RSK_KEYRINGS_GANONS_CASTLE] = Option::Bool("Ganon's Castle", "gRandomizeShuffleKeyRingsGanonsCastle");
-    mOptions[RSK_SKIP_CHILD_STEALTH] = Option::Bool("Skip Child Stealth", {"Don't Skip", "Skip"}, OptionCategory::Setting, "gRandomizeSkipChildZelda", mOptionDescriptions[RSK_SKIP_CHILD_STEALTH], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
+    mOptions[RSK_SKIP_CHILD_STEALTH] = Option::Bool("Skip Child Stealth", {"Don't Skip", "Skip"}, OptionCategory::Setting, "gRandomizeSkipChildStealth", mOptionDescriptions[RSK_SKIP_CHILD_STEALTH], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
     mOptions[RSK_SKIP_CHILD_ZELDA] = Option::Bool("Skip Child Zelda", {"Don't Skip", "Skip"}, OptionCategory::Setting, "gRandomizeSkipChildZelda", mOptionDescriptions[RSK_SKIP_CHILD_ZELDA], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
     mOptions[RSK_SKIP_TOWER_ESCAPE] = Option::Bool("Skip Tower Escape", {"Don't Skip", "Skip"}, OptionCategory::Setting, "gRandomizeSkipTowerEscape", mOptionDescriptions[RSK_SKIP_TOWER_ESCAPE], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
     mOptions[RSK_SKIP_EPONA_RACE] = Option::Bool("Skip Epona Race", {"Don't Skip", "Skip"}, OptionCategory::Setting, "gRandomizeSkipEponaRace", mOptionDescriptions[RSK_SKIP_EPONA_RACE], WidgetType::Checkbox, RO_GENERIC_DONT_SKIP);
@@ -173,7 +173,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_FULL_WALLETS] = Option::Bool("Full Wallets", {"No", "Yes"}, OptionCategory::Setting, "gRandomizeFullWallets", mOptionDescriptions[RSK_FULL_WALLETS], WidgetType::Checkbox, RO_GENERIC_OFF);
     mOptions[RSK_STARTING_ZELDAS_LULLABY] = Option::Bool("Start with Zelda's Lullaby", "gRandomizeStartingZeldasLullaby", "", IMFLAG_NONE);
     mOptions[RSK_STARTING_EPONAS_SONG] = Option::Bool("Start with Epona's Song", "gRandomizeStartingEponasSong", "", IMFLAG_NONE);
-    mOptions[RSK_STARTING_SARIAS_SONG] = Option::Bool("Start with Epona's Song", "gRandomizeStartingSariasSong", "", IMFLAG_NONE);
+    mOptions[RSK_STARTING_SARIAS_SONG] = Option::Bool("Start with Saria's Song", "gRandomizeStartingSariasSong", "", IMFLAG_NONE);
     mOptions[RSK_STARTING_SUNS_SONG] = Option::Bool("Start with Sun's Song", "gRandomizeStartingSunsSong", "", IMFLAG_NONE);
     mOptions[RSK_STARTING_SONG_OF_TIME] = Option::Bool("Start with Song of Time", "gRandomizeStartingSongOfTime", "", IMFLAG_NONE);
     mOptions[RSK_STARTING_SONG_OF_STORMS] = Option::Bool("Start with Song of Storms", "gRandomizeStartingSongOfStorms", "", IMFLAG_NONE);
@@ -624,6 +624,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_COWS],
         &mOptions[RSK_SHUFFLE_MAGIC_BEANS],
         &mOptions[RSK_SHUFFLE_MERCHANTS],
+        &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
         &mOptions[RSK_SHUFFLE_ADULT_TRADE],
         &mOptions[RSK_SHUFFLE_100_GS_REWARD],
         &mOptions[RSK_SHUFFLE_BOSS_SOULS],
@@ -1136,6 +1137,12 @@ Option& Settings::GetOption(const RandomizerSettingKey key) {
 
 Option& Settings::GetTrickOption(const RandomizerTrick key) {
     return mTrickOptions[key];
+}
+
+void Settings::ResetTrickOptions() {
+    for (int count = 0; count < RT_MAX; count++){
+        mTrickOptions[count].SetSelectedIndex(0); //RANDOTODO this can probably be done better
+    };
 }
 
 const std::array<Option, RSK_MAX>& Settings::GetAllOptions() const {
@@ -1682,6 +1689,7 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
             }
         }
         // Tricks
+        ResetTrickOptions();
         for (const auto randomizerTrick : enabledTricks) {
             mTrickOptions[randomizerTrick].SetSelectedIndex(1);
         }
