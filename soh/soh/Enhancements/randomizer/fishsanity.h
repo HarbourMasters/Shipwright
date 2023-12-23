@@ -19,7 +19,8 @@ typedef enum FishsanityOptionsSource {
 typedef enum FishsanityCheckType {
     FSC_NONE,
     FSC_POND,
-    FSC_GROTTO
+    FSC_GROTTO,
+    FSC_ZD,
 };
 
 #ifdef __cplusplus
@@ -103,7 +104,7 @@ class Fishsanity {
     /**
      * @brief Returns true if grotto fish are shuffled 
     */
-    bool GetGrottoFishShuffled();
+    bool GetOverworldFishShuffled();
 
     /**
      * @brief Returns true if the fishing pond is currently adult (i.e., age split is enabled and Link is adult)
@@ -188,7 +189,7 @@ extern "C" {
 /// Returns true if pond fish should be shuffled based on fishsanity settings.
 bool Randomizer_GetPondFishShuffled();
 /// Returns true if grotto fish should be shuffled based on fishsanity settings.
-bool Randomizer_GetGrottoFishShuffled();
+bool Randomizer_GetOverworldFishShuffled();
 /// Returns true if the adult fishing pond should be used for fishsanity.
 bool Randomizer_IsAdultPond();
 /// Sets the pending fish

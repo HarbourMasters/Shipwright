@@ -530,10 +530,11 @@ std::vector<RandomizerCheck> Rando::StaticData::pondFishLocations = {
     RC_LH_ADULT_FISH_14, RC_LH_ADULT_FISH_15, RC_LH_ADULT_LOACH
 };
 
-std::vector<RandomizerCheck> Rando::StaticData::grottoFishLocations = {
+std::vector<RandomizerCheck> Rando::StaticData::overworldFishLocations = {
     RC_DMC_UPPER_GROTTO_FISH,      RC_DMT_STORMS_GROTTO_FISH,        RC_HF_SOUTHEAST_GROTTO_FISH,
     RC_HF_NEAR_MARKET_GROTTO_FISH, RC_HF_OPEN_GROTTO_FISH,           RC_KAK_OPEN_GROTTO_FISH,
-    RC_KF_STORMS_GROTTO_FISH,      RC_LW_NEAR_SHORTCUTS_GROTTO_FISH, RC_ZR_OPEN_GROTTO_FISH
+    RC_KF_STORMS_GROTTO_FISH,      RC_LW_NEAR_SHORTCUTS_GROTTO_FISH, RC_ZR_OPEN_GROTTO_FISH,
+    RC_ZD_FISH_1,   RC_ZD_FISH_2,   RC_ZD_FISH_3,   RC_ZD_FISH_4,    RC_ZD_FISH_5
 };
 
 typedef enum {
@@ -1437,6 +1438,12 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_DMT_STORMS_GROTTO_FISH] =          Location::Base(RC_DMT_STORMS_GROTTO_FISH,           RCQUEST_BOTH, RCTYPE_FISH, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_EN_FISH,  SCENE_GROTTOS,  1,    0x00, "Storms Grotto Fish",           "DMT Storms Grotto Fish",           RHT_DMT_STORMS_GROTTO_FISH,         RG_FISH, { Category::cFish }, SpoilerCollectionCheck::Fish(0x57), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
     locationTable[RC_DMC_UPPER_GROTTO_FISH] =           Location::Base(RC_DMC_UPPER_GROTTO_FISH,            RCQUEST_BOTH, RCTYPE_FISH, RCAREA_DEATH_MOUNTAIN_CRATER,ACTOR_EN_FISH,  SCENE_GROTTOS,  1,    0x00, "Upper Grotto Fish",            "DMC Upper Grotto Fish",            RHT_DMC_UPPER_GROTTO_FISH,          RG_FISH, { Category::cFish }, SpoilerCollectionCheck::Fish(0x7A), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
     locationTable[RC_ZR_OPEN_GROTTO_FISH] =             Location::Base(RC_ZR_OPEN_GROTTO_FISH,              RCQUEST_BOTH, RCTYPE_FISH, RCAREA_ZORAS_RIVER,          ACTOR_EN_FISH,  SCENE_GROTTOS,  1,    0x00, "Open Grotto Fish",             "ZR Open Grotto Fish",              RHT_ZR_OPEN_GROTTO_FISH,            RG_FISH, { Category::cFish }, SpoilerCollectionCheck::Fish(0x29), SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    // Zora's Domain fish
+    locationTable[RC_ZD_FISH_1] =                       Location::Base(RC_ZD_FISH_1,                        RCQUEST_BOTH, RCTYPE_FISH, RCAREA_ZORAS_DOMAIN,         ACTOR_EN_FISH,  SCENE_ZORAS_DOMAIN,-1,0x00, "Fish 1",                       "ZD Fish 1",                        RHT_ZD_FISH_1,                      RG_FISH, { Category::cFish }, SpoilerCollectionCheck::Fish(0xFF), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZD_FISH_2] =                       Location::Base(RC_ZD_FISH_2,                        RCQUEST_BOTH, RCTYPE_FISH, RCAREA_ZORAS_DOMAIN,         ACTOR_EN_FISH,  SCENE_ZORAS_DOMAIN,-1,0x00, "Fish 2",                       "ZD Fish 2",                        RHT_ZD_FISH_2,                      RG_FISH, { Category::cFish }, SpoilerCollectionCheck::Fish(0xFF), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZD_FISH_3] =                       Location::Base(RC_ZD_FISH_3,                        RCQUEST_BOTH, RCTYPE_FISH, RCAREA_ZORAS_DOMAIN,         ACTOR_EN_FISH,  SCENE_ZORAS_DOMAIN,-1,0x00, "Fish 3",                       "ZD Fish 3",                        RHT_ZD_FISH_3,                      RG_FISH, { Category::cFish }, SpoilerCollectionCheck::Fish(0xFF), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZD_FISH_4] =                       Location::Base(RC_ZD_FISH_4,                        RCQUEST_BOTH, RCTYPE_FISH, RCAREA_ZORAS_DOMAIN,         ACTOR_EN_FISH,  SCENE_ZORAS_DOMAIN,-1,0x00, "Fish 4",                       "ZD Fish 4",                        RHT_ZD_FISH_4,                      RG_FISH, { Category::cFish }, SpoilerCollectionCheck::Fish(0xFF), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZD_FISH_5] =                       Location::Base(RC_ZD_FISH_5,                        RCQUEST_BOTH, RCTYPE_FISH, RCAREA_ZORAS_DOMAIN,         ACTOR_EN_FISH,  SCENE_ZORAS_DOMAIN,-1,0x00, "Fish 5",                       "ZD Fish 5",                        RHT_ZD_FISH_5,                      RG_FISH, { Category::cFish }, SpoilerCollectionCheck::Fish(0xFF), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
 
 
     // Gossip Stones

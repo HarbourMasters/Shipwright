@@ -454,7 +454,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
         }
 
         // Create check name overrides for child pond fish if age split is disabled
-        if (fishsanityMode != RO_FISHSANITY_OFF && fishsanityMode != RO_FISHSANITY_GROTTOS && entry.GetRCType() == RCTYPE_FISH && entry.GetScene() == SCENE_FISHING_POND &&
+        if (fishsanityMode != RO_FISHSANITY_OFF && fishsanityMode != RO_FISHSANITY_OVERWORLD && entry.GetRCType() == RCTYPE_FISH && entry.GetScene() == SCENE_FISHING_POND &&
             entry.GetActorParams() != 116 && !fishsanityAgeSplit) {
             if (entry.GetShortName().starts_with("Child")) {
                 checkNameOverrides[rc] = entry.GetShortName().substr(6);

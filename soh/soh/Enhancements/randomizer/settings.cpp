@@ -2243,7 +2243,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                     } else if (it.value() == "Shuffle Fishing Pond") {
                         mOptions[index].SetSelectedIndex(RO_FISHSANITY_POND);
                     } else if (it.value() == "Shuffle Grotto Fish") {
-                        mOptions[index].SetSelectedIndex(RO_FISHSANITY_GROTTOS);
+                        mOptions[index].SetSelectedIndex(RO_FISHSANITY_OVERWORLD);
                     } else if (it.value() == "Shuffle Both") {
                         mOptions[index].SetSelectedIndex(RO_FISHSANITY_BOTH);
                     }

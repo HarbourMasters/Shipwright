@@ -1589,9 +1589,10 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
             }
             break;
         case SCENE_ZORAS_DOMAIN:
-            // TODO: figure out ZD fish
-            if (actorId == ACTOR_EN_FISH && actorParams == -1) {
-
+            // Zora's Domain fish are identified by spawn order, shoved into actor params
+            if (actorId == ACTOR_EN_FISH && actorParams < 0) {
+                s16 fishNum = MIN(actorParams ^ 0xFFFF, 5);
+                specialRc = (RandomizerCheck)(RC_ZD_FISH_1 + fishNum);
             }
     }
 

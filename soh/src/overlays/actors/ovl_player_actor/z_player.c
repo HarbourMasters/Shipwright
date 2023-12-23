@@ -13711,7 +13711,7 @@ void func_8084ECA4(Player* this, PlayState* play) {
                             // TODO: this should probably be refactored a bit, maybe rehome some of this to rando instead
                             if (IS_RANDO) {
                                 // Check if fishsanity applies for this actor
-                                if (Randomizer_GetGrottoFishShuffled()) {
+                                if (Randomizer_GetOverworldFishShuffled()) {
                                     fish = Randomizer_IdentifyFish(play->sceneNum, this->interactRangeActor->params);
                                     if (fish.randomizerCheck != RC_UNKNOWN_CHECK && !Flags_GetRandomizerInf(fish.randomizerInf)) {
                                         gi = Randomizer_GetItemFromKnownCheck(fish.randomizerCheck, GI_FISH);

@@ -62,7 +62,7 @@ namespace Rando {
             return false;
         RandomizerCheck rc = loc->GetRandomizerCheck();
         // Are pond fish enabled, and is this a pond fish location?
-        if (mode != RO_FISHSANITY_GROTTOS && numFish > 0 && loc->GetScene() == SCENE_FISHING_POND &&
+        if (mode != RO_FISHSANITY_OVERWORLD && numFish > 0 && loc->GetScene() == SCENE_FISHING_POND &&
             loc->GetActorID() == ACTOR_FISHING) {
             // Is this a child fish location? If so, is it within the defined number of pond fish checks?
             if (rc >= RC_LH_CHILD_FISH_1 && rc <= RC_LH_CHILD_LOACH_2 && numFish > (loc->GetActorParams() - 100))
@@ -72,9 +72,9 @@ namespace Rando {
             if (ageSplit && rc >= RC_LH_ADULT_FISH_1 && rc <= RC_LH_ADULT_LOACH && numFish > (loc->GetActorParams() - 100))
                 return true;
         }
-        // Are grotto fish enabled, and is this a grotto fish location?
-        if (mode != RO_FISHSANITY_POND && loc->GetScene() == SCENE_GROTTOS && loc->GetActorID() == ACTOR_EN_FISH &&
-                loc->GetActorParams() < 100) {
+        // Are overworld fish enabled, and is this an overworld fish location?
+        if (mode != RO_FISHSANITY_POND && (loc->GetScene() == SCENE_GROTTOS || loc->GetScene() == SCENE_ZORAS_DOMAIN)
+            && loc->GetActorID() == ACTOR_EN_FISH && (loc->GetActorParams() == 1 || loc->GetActorParams() < 0)) {
             return true;
         }
         // Must not be an included fish location!
@@ -135,10 +135,10 @@ namespace Rando {
             remainingFish.insert(remainingFish.end(), pondLocations.second.begin(), pondLocations.second.end());
         }
 
-        // Add grotto fish
-        if (mode == RO_FISHSANITY_GROTTOS || mode == RO_FISHSANITY_BOTH) {
-            activeFish.insert(activeFish.end(), Rando::StaticData::grottoFishLocations.begin(),
-                              Rando::StaticData::grottoFishLocations.end());
+        // Add overworld fish
+        if (mode == RO_FISHSANITY_OVERWORLD || mode == RO_FISHSANITY_BOTH) {
+            activeFish.insert(activeFish.end(), Rando::StaticData::overworldFishLocations.begin(),
+                              Rando::StaticData::overworldFishLocations.end());
         }
 
         return std::make_pair(activeFish, remainingFish);
@@ -224,9 +224,9 @@ namespace Rando {
            (fsMode == RO_FISHSANITY_POND || fsMode == RO_FISHSANITY_BOTH);
     }
 
-    bool Fishsanity::GetGrottoFishShuffled() {
+    bool Fishsanity::GetOverworldFishShuffled() {
         u8 fsMode = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY);
-        return fsMode == RO_FISHSANITY_GROTTOS || fsMode == RO_FISHSANITY_BOTH;
+        return fsMode == RO_FISHSANITY_OVERWORLD || fsMode == RO_FISHSANITY_BOTH;
     }
 
     bool Fishsanity::IsAdultPond() {
@@ -293,9 +293,13 @@ namespace Rando {
         if (std::binary_search(Rando::StaticData::pondFishLocations.begin(), Rando::StaticData::pondFishLocations.end(), rc))
             return FSC_POND;
 
-        // Is this a grotto fish?
-        if (std::binary_search(Rando::StaticData::grottoFishLocations.begin(), Rando::StaticData::grottoFishLocations.end(), rc))
-            return FSC_GROTTO;
+        // Is this an overworld fish?
+        if (std::binary_search(Rando::StaticData::overworldFishLocations.begin(), Rando::StaticData::overworldFishLocations.end(), rc)) {
+            if (rc < RC_ZD_FISH_1)
+                return FSC_GROTTO;
+            else
+                return FSC_ZD;
+        }
         
         // Must not be a fishsanity check
         return FSC_NONE;
@@ -323,8 +327,8 @@ extern "C" {
         return FSi->GetPondFishShuffled();
     }
 
-    bool Randomizer_GetGrottoFishShuffled() {
-        return FSi->GetGrottoFishShuffled();
+    bool Randomizer_GetOverworldFishShuffled() {
+        return FSi->GetOverworldFishShuffled();
     }
 
     bool Randomizer_IsAdultPond() {

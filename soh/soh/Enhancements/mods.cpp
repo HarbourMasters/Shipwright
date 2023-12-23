@@ -1132,11 +1132,28 @@ void RegisterRandomizedEnemySizes() {
 }
 
 void RegisterFishsanity() {
+    static s16 fishGroupCounter = 0;
+
     // Initialize actors for fishsanity
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
         if (!IS_RANDO) return;
 
         Actor* actor = static_cast<Actor*>(refActor);
+        FishIdentity fish;
+
+        // Set fish ID for ZD fish
+        if (actor->id == ACTOR_EN_FISH && gPlayState->sceneNum == SCENE_ZORAS_DOMAIN) {
+            actor->params ^= fishGroupCounter;
+            fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+            // Kill fish that have already been caught (obj_mure SHOULD handle this and not use a null reference :Clueless:)
+            // TODO: add ZD clear check here
+            if (Flags_GetRandomizerInf(fish.randomizerInf)) {
+                Actor_Kill(actor);
+            }
+
+            return;
+        }
+
         if (actor->id != ACTOR_FISHING || gPlayState->sceneNum != SCENE_FISHING_POND || actor->params < 100 || actor->params > 117)
             return;
 
@@ -1148,7 +1165,7 @@ void RegisterFishsanity() {
         // Initialize fishsanity metadata on this actor
         Fishing* fishActor = static_cast<Fishing*>(refActor);
         fishActor->fishsanityParams = actor->params;
-        FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+        fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
 
         // With every pond fish shuffled, caught fish will not spawn unless all fish have been caught.
         if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT) > 16 &&
@@ -1216,6 +1233,18 @@ void RegisterFishsanity() {
                 fs->SetPendingFish(&pending);
             }
         }
+
+        // Reset fish group counter when culled
+        if (actor->id == ACTOR_OBJ_MURE && gPlayState->sceneNum == SCENE_ZORAS_DOMAIN && fishGroupCounter > 0 &&
+            !(actor->flags & ACTOR_FLAG_UPDATE_WHILE_CULLED) && fs->GetOverworldFishShuffled()) {
+            fishGroupCounter = 0;
+        }
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        if (!IS_RANDO || sceneNum != SCENE_ZORAS_DOMAIN)
+            return;
+        fishGroupCounter = 0;
     });
 }
 
