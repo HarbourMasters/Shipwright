@@ -988,6 +988,8 @@ void VanillaFill() {
     ctx->GetEntranceShuffler()->ShuffleAllEntrances();
     printf("\x1b[7;32HDone");
   }
+  // Populate the playthrough for entrances so they are placed in the spoiler log
+  GeneratePlaythrough();
   //Finish up
   ctx->CreateItemOverrides();
   ctx->GetEntranceShuffler()->CreateEntranceOverrides();

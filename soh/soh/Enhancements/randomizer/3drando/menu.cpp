@@ -21,41 +21,41 @@ std::vector<std::string> presetEntries;
 Rando::Option* currentSetting;
 } // namespace
 
-std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
-    std::string seedString) {
-    auto ctx = Rando::Context::GetInstance();
+bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
+    std::string seedInput) {
+    const auto ctx = Rando::Context::GetInstance();
 
     srand(time(NULL));
     // if a blank seed was entered, make a random one
-    if (seedString.empty()) {
-        seedString = std::to_string(rand() % 0xFFFFFFFF);
-    } else if (seedString.rfind("seed_testing_count", 0) == 0 && seedString.length() > 18) {
+    if (seedInput.empty()) {
+        seedInput = std::to_string(rand() % 0xFFFFFFFF);
+    } else if (seedInput.rfind("seed_testing_count", 0) == 0 && seedInput.length() > 18) {
         int count;
         try {
-            count = std::stoi(seedString.substr(18), nullptr);
+            count = std::stoi(seedInput.substr(18), nullptr);
         } catch (std::invalid_argument &e) {
             count = 1;
         } catch (std::out_of_range &e) {
             count = 1;
         }
-        Playthrough::Playthrough_Repeat(cvarSettings, excludedLocations, enabledTricks, count);
-        return "";
+        Playthrough::Playthrough_Repeat(excludedLocations, enabledTricks, count);
+        return false; // TODO: Not sure if this is correct but I don't think we support this functionality yet anyway.
     }
 
-    ctx->GetSettings()->SetSeedString(seedString);
+    ctx->GetSettings()->SetSeedString(seedInput);
     uint32_t seedHash = boost::hash_32<std::string>{}(ctx->GetSettings()->GetSeedString());
     ctx->GetSettings()->SetSeed(seedHash & 0xFFFFFFFF);
 
-    int ret = Playthrough::Playthrough_Init(ctx->GetSettings()->GetSeed(), cvarSettings, excludedLocations, enabledTricks);
+    int ret = Playthrough::Playthrough_Init(ctx->GetSettings()->GetSeed(), excludedLocations, enabledTricks);
     if (ret < 0) {
         if (ret == -1) { // Failed to generate after 5 tries
             printf("\n\nFailed to generate after 5 tries.\nPress B to go back to the menu.\nA different seed might be "
                    "successful.");
             SPDLOG_DEBUG("\nRANDOMIZATION FAILED COMPLETELY. PLZ FIX\n");//RANDOTODO print seed for reproduction purposes
-            return "";
+            return false;
         } else {
             printf("\n\nError %d with fill.\nPress Select to exit or B to go back to the menu.\n", ret);
-            return "";
+            return false;
         }
     }
 
@@ -66,16 +66,5 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
         }
         ctx->GetOption(RSK_KEYSANITY).RestoreDelayedOption();
     }
-    std::ostringstream fileNameStream;
-    for (int i = 0; i < ctx->hashIconIndexes.size(); i++) {
-        if (i) {
-            fileNameStream << '-';
-        }
-        if (ctx->hashIconIndexes[i] < 10) {
-            fileNameStream << '0';
-        }
-        fileNameStream << std::to_string(ctx->hashIconIndexes[i]);
-    }
-    std::string fileName = fileNameStream.str();
-    return "./Randomizer/" + fileName + ".json";
+    return true;
 }

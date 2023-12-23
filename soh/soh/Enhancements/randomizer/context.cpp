@@ -15,6 +15,7 @@
 
 namespace Rando {
 std::weak_ptr<Context> Context::mContext;
+
 Context::Context() {
     for (auto& location : StaticData::GetLocationTable()) {
         mSpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
@@ -129,6 +130,20 @@ ItemLocation* Context::GetItemLocation(size_t locKey) {
     return &itemLocationTable[static_cast<RandomizerCheck>(locKey)];
 }
 
+ItemOverride& Context::GetItemOverride(RandomizerCheck locKey) {
+    if (!overrides.contains(locKey)) {
+        overrides.emplace(locKey, ItemOverride());
+    }
+    return overrides.at(locKey);
+}
+
+ItemOverride& Context::GetItemOverride(size_t locKey) {
+    if (!overrides.contains(static_cast<RandomizerCheck>(locKey))) {
+        overrides.emplace(static_cast<RandomizerCheck>(locKey), ItemOverride());
+    }
+    return overrides.at(static_cast<RandomizerCheck>(locKey));
+}
+
 void Context::PlaceItemInLocation(const RandomizerCheck locKey, const RandomizerGet item, const bool applyEffectImmediately,
                                   const bool setHidden) {
     const auto loc = GetItemLocation(locKey);
@@ -138,7 +153,7 @@ void Context::PlaceItemInLocation(const RandomizerCheck locKey, const Randomizer
     SPDLOG_DEBUG(StaticData::GetLocation(locKey)->GetName());
     SPDLOG_DEBUG("\n\n");
 
-    if (applyEffectImmediately || mSettings->Setting(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS) || mSettings->Setting(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
+    if (applyEffectImmediately || mSettings->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS) || mSettings->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
         StaticData::RetrieveItem(item).ApplyEffect();
         logic->UpdateHelpers();
     }
@@ -179,7 +194,7 @@ void Context::AddLocations(const Container& locations, std::vector<RandomizerChe
 void Context::GenerateLocationPool() {
     allLocations.clear();
     AddLocation(RC_LINKS_POCKET);
-    if (mSettings->Setting(RSK_TRIFORCE_HUNT)) {
+    if (mSettings->GetOption(RSK_TRIFORCE_HUNT)) {
         AddLocation(RC_TRIFORCE_COMPLETED);
     }
     AddLocations(StaticData::overworldLocations);
@@ -596,7 +611,7 @@ Sprite* Context::GetSeedTexture(const uint8_t index) {
 }
 
 Option& Context::GetOption(const RandomizerSettingKey key) const {
-    return mSettings->Setting(key);
+    return mSettings->GetOption(key);
 }
 
 Option& Context::GetTrickOption(const RandomizerTrick key) const {

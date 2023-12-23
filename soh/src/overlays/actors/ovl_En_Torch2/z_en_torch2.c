@@ -602,8 +602,8 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
     // Handles Dark Link being damaged
 
     if ((this->actor.colChkInfo.health == 0) && sDeathFlag) {
-        this->csMode = 0x18;
-        this->unk_448 = &player->actor;
+        this->csAction = 0x18;
+        this->csActor = &player->actor;
         this->doorBgCamIndex = 1;
         sDeathFlag = false;
     }

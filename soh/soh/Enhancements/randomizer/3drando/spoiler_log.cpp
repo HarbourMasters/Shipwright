@@ -598,7 +598,7 @@ Rando::ItemLocation* GetItemLocation(RandomizerGet item) {
 }
 
 // Writes the hints to the spoiler log, if they are enabled.
-static void WriteHints(int language) {
+static void WriteHints() {
     auto ctx = Rando::Context::GetInstance();
     std::string unformattedGanonText;
     std::string unformattedGanonHintText;
@@ -607,7 +607,7 @@ static void WriteHints(int language) {
     std::string unformattedSheikText;
     std::string unformattedSariaText;
 
-    switch (language) {
+    switch (ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex()) {
         case 0:
         default:
             unformattedGanonText = GetGanonText().GetEnglish();
@@ -721,7 +721,7 @@ static void WriteHints(int language) {
         Rando::Hint* hint = ctx->GetHint((RandomizerHintKey)(key - RC_COLOSSUS_GOSSIP_STONE + 1));
         Rando::ItemLocation* hintedLocation = ctx->GetItemLocation(hint->GetHintedLocation());
         std::string hintTextString;
-        switch (language) {
+        switch (ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex()) {
             case 0:
             default:
                 hintTextString = hint->GetText().GetEnglish();
@@ -748,13 +748,13 @@ static void WriteHints(int language) {
     }
 }
 
-static void WriteAllLocations(int language) {
+static void WriteAllLocations() {
     auto ctx = Rando::Context::GetInstance();
     for (const RandomizerCheck key : ctx->allLocations) {
         Rando::ItemLocation* location = ctx->GetItemLocation(key);
         std::string placedItemName;
 
-        switch (language) {
+        switch (ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex()) {
           case 0:
           default:
             placedItemName = location->GetPlacedItemName().english;
@@ -785,7 +785,7 @@ static void WriteAllLocations(int language) {
         }
 
         if (location->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
-          switch (language) {
+          switch (ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex()) {
               case 0:
               default:
                   jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["model"] =
@@ -804,7 +804,7 @@ static void WriteAllLocations(int language) {
     }
 }
 
-const char* SpoilerLog_Write(int language) {
+const char* SpoilerLog_Write() {
     auto ctx = Rando::Context::GetInstance();
     auto spoilerLog = tinyxml2::XMLDocument(false);
     spoilerLog.InsertEndChild(spoilerLog.NewDeclaration());
@@ -839,9 +839,9 @@ const char* SpoilerLog_Write(int language) {
     ctx->playthroughLocations.clear();
     ctx->playthroughBeatable = false;
 
-    WriteHints(language);
+    WriteHints();
     WriteShuffledEntrances();
-    WriteAllLocations(language);
+    WriteAllLocations();
 
     if (!std::filesystem::exists(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"))) {
         std::filesystem::create_directory(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"));

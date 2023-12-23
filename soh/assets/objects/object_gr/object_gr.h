@@ -3,6 +3,39 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_grTex_005D78 "__OTR__objects/object_gr/object_grTex_005D78"
+static const ALIGN_ASSET(2) char object_grTex_005D78[] = dobject_grTex_005D78;
+
+#define dobject_grTex_005E78 "__OTR__objects/object_gr/object_grTex_005E78"
+static const ALIGN_ASSET(2) char object_grTex_005E78[] = dobject_grTex_005E78;
+
+#define dobject_grTex_005EB8 "__OTR__objects/object_gr/object_grTex_005EB8"
+static const ALIGN_ASSET(2) char object_grTex_005EB8[] = dobject_grTex_005EB8;
+
+#define dobject_grTex_005EF8 "__OTR__objects/object_gr/object_grTex_005EF8"
+static const ALIGN_ASSET(2) char object_grTex_005EF8[] = dobject_grTex_005EF8;
+
+#define dobject_grTex_0077F8 "__OTR__objects/object_gr/object_grTex_0077F8"
+static const ALIGN_ASSET(2) char object_grTex_0077F8[] = dobject_grTex_0077F8;
+
+#define dobject_grTex_007BF8 "__OTR__objects/object_gr/object_grTex_007BF8"
+static const ALIGN_ASSET(2) char object_grTex_007BF8[] = dobject_grTex_007BF8;
+
+#define dobject_grTex_007FF8 "__OTR__objects/object_gr/object_grTex_007FF8"
+static const ALIGN_ASSET(2) char object_grTex_007FF8[] = dobject_grTex_007FF8;
+
+#define dobject_grTex_0083F8 "__OTR__objects/object_gr/object_grTex_0083F8"
+static const ALIGN_ASSET(2) char object_grTex_0083F8[] = dobject_grTex_0083F8;
+
+#define dobject_grTex_0097F8 "__OTR__objects/object_gr/object_grTex_0097F8"
+static const ALIGN_ASSET(2) char object_grTex_0097F8[] = dobject_grTex_0097F8;
+
+#define dobject_grTex_009808 "__OTR__objects/object_gr/object_grTex_009808"
+static const ALIGN_ASSET(2) char object_grTex_009808[] = dobject_grTex_009808;
+
+#define dobject_grTLUT_003F78 "__OTR__objects/object_gr/object_grTLUT_003F78"
+static const ALIGN_ASSET(2) char object_grTLUT_003F78[] = dobject_grTLUT_003F78;
+
 #define dgNiwGirlSkel "__OTR__objects/object_gr/gNiwGirlSkel"
 static const ALIGN_ASSET(2) char gNiwGirlSkel[] = dgNiwGirlSkel;
 
@@ -84,37 +117,5 @@ static const ALIGN_ASSET(2) char gNiwGirlSkelLimbsLimb_0098F0DL_003D78[] = dgNiw
 #define dgNiwGirlSkelLimbsLimb_0098FCDL_003BA0 "__OTR__objects/object_gr/gNiwGirlSkelLimbsLimb_0098FCDL_003BA0"
 static const ALIGN_ASSET(2) char gNiwGirlSkelLimbsLimb_0098FCDL_003BA0[] = dgNiwGirlSkelLimbsLimb_0098FCDL_003BA0;
 
-#define dobject_grTLUT_003F78 "__OTR__objects/object_gr/object_grTLUT_003F78"
-static const ALIGN_ASSET(2) char object_grTLUT_003F78[] = dobject_grTLUT_003F78;
-
-#define dobject_grTex_005EB8 "__OTR__objects/object_gr/object_grTex_005EB8"
-static const ALIGN_ASSET(2) char object_grTex_005EB8[] = dobject_grTex_005EB8;
-
-#define dobject_grTex_005D78 "__OTR__objects/object_gr/object_grTex_005D78"
-static const ALIGN_ASSET(2) char object_grTex_005D78[] = dobject_grTex_005D78;
-
-#define dobject_grTex_005E78 "__OTR__objects/object_gr/object_grTex_005E78"
-static const ALIGN_ASSET(2) char object_grTex_005E78[] = dobject_grTex_005E78;
-
-#define dobject_grTex_0077F8 "__OTR__objects/object_gr/object_grTex_0077F8"
-static const ALIGN_ASSET(2) char object_grTex_0077F8[] = dobject_grTex_0077F8;
-
-#define dobject_grTex_007BF8 "__OTR__objects/object_gr/object_grTex_007BF8"
-static const ALIGN_ASSET(2) char object_grTex_007BF8[] = dobject_grTex_007BF8;
-
-#define dobject_grTex_007FF8 "__OTR__objects/object_gr/object_grTex_007FF8"
-static const ALIGN_ASSET(2) char object_grTex_007FF8[] = dobject_grTex_007FF8;
-
-#define dobject_grTex_0083F8 "__OTR__objects/object_gr/object_grTex_0083F8"
-static const ALIGN_ASSET(2) char object_grTex_0083F8[] = dobject_grTex_0083F8;
-
-#define dobject_grTex_005EF8 "__OTR__objects/object_gr/object_grTex_005EF8"
-static const ALIGN_ASSET(2) char object_grTex_005EF8[] = dobject_grTex_005EF8;
-
-#define dobject_grTex_0097F8 "__OTR__objects/object_gr/object_grTex_0097F8"
-static const ALIGN_ASSET(2) char object_grTex_0097F8[] = dobject_grTex_0097F8;
-
-#define dobject_grTex_009808 "__OTR__objects/object_gr/object_grTex_009808"
-static const ALIGN_ASSET(2) char object_grTex_009808[] = dobject_grTex_009808;
 
 #endif // OBJECTS_OBJECT_GR_H

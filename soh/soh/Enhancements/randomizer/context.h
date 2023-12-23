@@ -39,6 +39,8 @@ class Context {
                  RandomizerArea hintedArea = RA_NONE);
     ItemLocation* GetItemLocation(RandomizerCheck locKey);
     ItemLocation* GetItemLocation(size_t locKey);
+    ItemOverride& GetItemOverride(RandomizerCheck locKey);
+    ItemOverride& GetItemOverride(size_t locKey);
     void PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bool applyEffectImmediately = false,
                              bool setHidden = false);
     std::vector<RandomizerCheck> allLocations;

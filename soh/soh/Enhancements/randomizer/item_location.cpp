@@ -143,13 +143,13 @@ Option* ItemLocation::GetExcludedOption() {
 
 void ItemLocation::AddExcludeOption() {
     if (const std::string name = StaticData::GetLocation(rc)->GetName(); name.length() < 23) {
-        excludedOption = Option::Bool(name, {"Include", "Exclude"});
+        excludedOption = Option::Bool(name, {"Include", "Exclude"}, OptionCategory::Setting, "", "", WidgetType::Checkbox, RO_LOCATION_INCLUDE);
     } else {
         const size_t lastSpace = name.rfind(' ', 23);
         std::string settingText = name;
         settingText.replace(lastSpace, 1, "\n ");
 
-        excludedOption = Option::Bool(settingText, {"Include", "Exclude"});
+        excludedOption = Option::Bool(settingText, {"Include", "Exclude"}, OptionCategory::Setting, "", "", WidgetType::Checkbox, RO_LOCATION_INCLUDE);
     }
     // RANDOTODO: this without string compares and loops
     bool alreadyAdded = false;
