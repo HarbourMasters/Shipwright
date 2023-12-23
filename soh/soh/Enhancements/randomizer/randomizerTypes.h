@@ -3854,6 +3854,7 @@ typedef enum {
 typedef enum {
     RO_STARTING_OCARINA_OFF,
     RO_STARTING_OCARINA_FAIRY,
+    RO_STARTING_OCARINA_TIME,
 } RandoOptionStartingOcarina;
 
 //Item Pool Settings
