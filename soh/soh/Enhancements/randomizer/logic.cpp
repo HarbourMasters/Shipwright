@@ -185,12 +185,8 @@ namespace Rando {
         return false;
     }
 
-    Logic::Logic(SaveContext *saveContext) {
-        if (saveContext != nullptr) {
-            mSaveContext = saveContext;
-        } else {
-            mSaveContext = new SaveContext();
-        }
+    Logic::Logic() {
+        
     }
 
     // Updates all logic helpers. Should be called whenever a non-helper is changed

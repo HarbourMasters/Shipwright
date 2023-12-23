@@ -398,7 +398,7 @@ class Logic {
     bool TimeTravelPast = false;
 
     SaveContext* mSaveContext;
-    Logic(SaveContext *saveContext);
+    Logic();
     void UpdateHelpers();
     bool CanPlay(bool song);
     bool CanUse(RandomizerGet itemName);
