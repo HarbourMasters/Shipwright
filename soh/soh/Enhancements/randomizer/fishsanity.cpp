@@ -257,6 +257,14 @@ namespace Rando {
         return true;
     }
 
+    bool Fishsanity::GetDomainCleared() {
+        for (RandomizerInf i = RAND_INF_ZD_FISH_1; i <= RAND_INF_ZD_FISH_5; i = (RandomizerInf)(i + 1)) {
+            if (!Flags_GetRandomizerInf(i))
+                return false;
+        }
+        return true;
+    }
+
     void Fishsanity::InitializeHelpers() {
         if (fishsanityHelpersInit)
             return;

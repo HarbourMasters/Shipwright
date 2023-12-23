@@ -1417,4 +1417,11 @@ void HintTable_Init_Exclude_Overworld() {
             Text{"#fishing in maturity# bestows", /*french*/"#pêcher dans sa maturité# promet", /*spanish*/"#pescar en la madurez# conduce a"}
         });
     }
+
+    for (int i = RHT_ZD_FISH_1; i <= RHT_ZD_FISH_5; i++) {
+        hintTable[i] = HintText::Exclude({
+            //obscure text
+            Text{"a #fish by a waterfall# hoards", /*french*/"", /*spanish*/""}
+        });
+    }
 }

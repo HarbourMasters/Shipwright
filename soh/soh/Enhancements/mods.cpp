@@ -1139,41 +1139,38 @@ void RegisterFishsanity() {
         if (!IS_RANDO) return;
 
         Actor* actor = static_cast<Actor*>(refActor);
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
         FishIdentity fish;
 
         // Set fish ID for ZD fish
-        if (actor->id == ACTOR_EN_FISH && gPlayState->sceneNum == SCENE_ZORAS_DOMAIN) {
+        if (actor->id == ACTOR_EN_FISH && gPlayState->sceneNum == SCENE_ZORAS_DOMAIN && actor->params == -1 && fs->GetOverworldFishShuffled()) {
             actor->params ^= fishGroupCounter;
             fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
-            // Kill fish that have already been caught (obj_mure SHOULD handle this and not use a null reference :Clueless:)
-            // TODO: add ZD clear check here
-            if (Flags_GetRandomizerInf(fish.randomizerInf)) {
+            // Kill fish that have already been caught until checks are exhausted (obj_mure SHOULD handle this and not use a null reference :Clueless:)
+            if (!fs->GetDomainCleared() && Flags_GetRandomizerInf(fish.randomizerInf)) {
                 Actor_Kill(actor);
             }
-
+            fishGroupCounter++;
             return;
         }
 
-        if (actor->id != ACTOR_FISHING || gPlayState->sceneNum != SCENE_FISHING_POND || actor->params < 100 || actor->params > 117)
-            return;
+        if (actor->id == ACTOR_FISHING && gPlayState->sceneNum == SCENE_FISHING_POND && actor->params >= 100 &&
+            actor->params <= 117 && fs->GetPondFishShuffled()) {
+            // Initialize pond fish for fishsanity
+            // Initialize fishsanity metadata on this actor
+            Fishing* fishActor = static_cast<Fishing*>(refActor);
+            fishActor->fishsanityParams = actor->params;
+            fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
 
-        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
-        if (!fs->GetPondFishShuffled())
-            return;
-
-        // Initialize pond fish for fishsanity
-        // Initialize fishsanity metadata on this actor
-        Fishing* fishActor = static_cast<Fishing*>(refActor);
-        fishActor->fishsanityParams = actor->params;
-        fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
-
-        // With every pond fish shuffled, caught fish will not spawn unless all fish have been caught.
-        if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT) > 16 &&
-            !fs->GetPondCleared()) {
-            // Has this fish been caught? If so, remove it.
-            if (Flags_GetRandomizerInf(fish.randomizerInf))
-                Actor_Kill(actor);
+            // With every pond fish shuffled, caught fish will not spawn unless all fish have been caught.
+            if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT) > 16 &&
+                !fs->GetPondCleared()) {
+                // Has this fish been caught? If so, remove it.
+                if (Flags_GetRandomizerInf(fish.randomizerInf))
+                    Actor_Kill(actor);
+            }
         }
+
     });
 
     // Update fishsanity when a fish is caught

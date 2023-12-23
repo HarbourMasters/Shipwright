@@ -97,11 +97,11 @@ void AreaTable_Init_ZorasDomain() {
                   LocationAccess(RC_ZD_KING_ZORA_THAWED,    {[]{return KingZoraThawed;}}),
                   LocationAccess(RC_ZD_TRADE_PRESCRIPTION,  {[]{return KingZoraThawed && Prescription;}}),
                   LocationAccess(RC_ZD_GS_FROZEN_WATERFALL, {[]{return IsAdult && AtNight && (HookshotOrBoomerang || CanUse(RG_FAIRY_SLINGSHOT) || Bow || (MagicMeter && (CanUse(RG_MASTER_SWORD) || CanUse(RG_KOKIRI_SWORD) || CanUse(RG_BIGGORON_SWORD))) || (randoCtx->GetTrickOption(RT_ZD_GS) && CanJumpslash)) && CanGetNightTimeGS;}}),
-                  LocationAccess(RC_ZD_FISH_1,              {[]{return HasBottle;}}),
-                  LocationAccess(RC_ZD_FISH_2,              {[]{return HasBottle;}}),
-                  LocationAccess(RC_ZD_FISH_3,              {[]{return HasBottle;}}),
-                  LocationAccess(RC_ZD_FISH_4,              {[]{return HasBottle;}}),
-                  LocationAccess(RC_ZD_FISH_5,              {[]{return HasBottle;}}),
+                  LocationAccess(RC_ZD_FISH_1,              {[]{return IsChild && HasBottle;}}),
+                  LocationAccess(RC_ZD_FISH_2,              {[]{return IsChild && HasBottle;}}),
+                  LocationAccess(RC_ZD_FISH_3,              {[]{return IsChild && HasBottle;}}),
+                  LocationAccess(RC_ZD_FISH_4,              {[]{return IsChild && HasBottle;}}),
+                  LocationAccess(RC_ZD_FISH_5,              {[]{return IsChild && HasBottle;}}),
                   LocationAccess(RC_ZD_GOSSIP_STONE,        {[]{return true;}}),
                 }, {
                   //Exits

@@ -117,6 +117,11 @@ class Fishsanity {
     bool GetPondCleared();
 
     /**
+     * @brief Returns true if all available Zora's Domain fish checks have been collected
+    */
+    bool GetDomainCleared();
+
+    /**
      * @brief Advances current fishing pond check; no effect if every fish is shuffled
      * @return The new FishIdentity for the current pond, or default identity if every fish is shuffled
     */

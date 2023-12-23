@@ -574,7 +574,7 @@ static void PlaceVanillaCowMilk() {
   }
 }
 
-static void PlaceVanillaGrottoFish() {
+static void PlaceVanillaOverworldFish() {
   auto ctx = Rando::Context::GetInstance();
   for (auto rc : Rando::StaticData::overworldFishLocations) {
     ctx->PlaceItemInLocation(rc, RG_FISH, false, true);
@@ -761,15 +761,15 @@ void GenerateItemPool() {
         }
       }
     }
-    // 9 grotto fish
+    // 9 grotto fish, 5 zora's domain fish
     if (fsMode.Is(RO_FISHSANITY_OVERWORLD) || fsMode.Is(RO_FISHSANITY_BOTH)) {
-      for (uint8_t i = 0; i < 9; i++)
+      for (uint8_t i = 0; i < Rando::StaticData::overworldFishLocations.size(); i++)
         AddItemToMainPool(GetJunkItem());
     } else {
-      PlaceVanillaGrottoFish();
+      PlaceVanillaOverworldFish();
     }
   } else {
-    PlaceVanillaGrottoFish();
+    PlaceVanillaOverworldFish();
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_FISHING_POLE)) {

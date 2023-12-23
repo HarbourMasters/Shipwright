@@ -1478,6 +1478,11 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_HF_SOUTHEAST_GROTTO_FISH,                                    RAND_INF_GROTTO_FISH_HF_SOUTHEAST_GROTTO },
     { RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,                               RAND_INF_GROTTO_FISH_LW_NEAR_SHORTCUTS_GROTTO },
     { RC_KF_STORMS_GROTTO_FISH,                                       RAND_INF_GROTTO_FISH_KF_STORMS_GROTTO },
+    { RC_ZD_FISH_1,                                                   RAND_INF_ZD_FISH_1 },
+    { RC_ZD_FISH_2,                                                   RAND_INF_ZD_FISH_2 },
+    { RC_ZD_FISH_3,                                                   RAND_INF_ZD_FISH_3 },
+    { RC_ZD_FISH_4,                                                   RAND_INF_ZD_FISH_4 },
+    { RC_ZD_FISH_5,                                                   RAND_INF_ZD_FISH_5 },
 };
 
 Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
@@ -1588,12 +1593,6 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
                 }
             }
             break;
-        case SCENE_ZORAS_DOMAIN:
-            // Zora's Domain fish are identified by spawn order, shoved into actor params
-            if (actorId == ACTOR_EN_FISH && actorParams < 0) {
-                s16 fishNum = MIN(actorParams ^ 0xFFFF, 5);
-                specialRc = (RandomizerCheck)(RC_ZD_FISH_1 + fishNum);
-            }
     }
 
     if (specialRc != RC_UNKNOWN_CHECK) {
