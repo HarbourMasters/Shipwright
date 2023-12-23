@@ -1147,8 +1147,8 @@ void RegisterFishsanity() {
         // Initialize pond fish for fishsanity
         // Initialize fishsanity metadata on this actor
         Fishing* fishActor = static_cast<Fishing*>(refActor);
-        fishActor->fishsanity = fs->GetPondFishMetaFromParams(actor->params);
-        FishIdentity fish = fishActor->fishsanity.fish;
+        fishActor->fishsanityParams = actor->params;
+        FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
 
         // With every pond fish shuffled, caught fish will not spawn unless all fish have been caught.
         if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT) > 16 &&
@@ -1167,11 +1167,10 @@ void RegisterFishsanity() {
         FishsanityCheckType fsType = Rando::Fishsanity::GetCheckType(rc);
         if (fsType == FSC_NONE)
             return;
-        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
 
         // When a pond fish is caught, advance the pond.
         if (fsType == FSC_POND) {
-            fs->AdvancePond();
+            OTRGlobals::Instance->gRandoContext->GetFishsanity()->AdvancePond();
         }
     });
 
@@ -1188,15 +1187,35 @@ void RegisterFishsanity() {
         if (!fs->GetPondFishShuffled())
             return;
 
-        FishsanityMeta held = fs->GetHeldFish();
-        if (held.params == 0) // No fish currently held
+        FishIdentity pending = fs->GetPendingFish();
+        if (!Rando::Fishsanity::IsFish(&pending)) // No fish currently pending
             return;
 
         // Award fish
-        GetItemEntry gi = OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(held.fish.randomizerCheck, GI_NONE);
-        GameInteractor::RawAction::SetFlag(FLAG_RANDOMIZER_INF, held.fish.randomizerInf);
+        GetItemEntry gi = OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(pending.randomizerCheck, GI_NONE);
+        GameInteractor::RawAction::SetFlag(FLAG_RANDOMIZER_INF, pending.randomizerInf);
         GiveItemEntryWithoutActor(gPlayState, gi);
-        fs->SetHeldFish(NULL);
+        fs->SetPendingFish(NULL);
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+        if (!IS_RANDO)
+            return;
+
+        Actor* actor = static_cast<Actor*>(refActor);
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
+
+        // Detect fish catch
+        if (actor->id == ACTOR_FISHING && fs->GetPondFishShuffled()) {
+            Fishing* fish = static_cast<Fishing*>(refActor);
+
+            // State 6 -> Fish caught and hoisted
+            FishIdentity pending = fs->GetPendingFish();
+            if (fish->fishState == 6 && !Rando::Fishsanity::IsFish(&pending)) {
+                pending = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, fish->fishsanityParams);
+                fs->SetPendingFish(&pending);
+            }
+        }
     });
 }
 

@@ -22,16 +22,6 @@ typedef enum FishsanityCheckType {
     FSC_GROTTO
 };
 
-/**
- * @brief Fishsanity-related metadata for fishing pond fish
- * TODO: THERE'S NO POINT!!!!!!!! I THINK WE CAN JUST USE FISHIDENTITY POGS POGS POGS
-*/
-typedef struct FishsanityMeta {
-    s16 params;
-    bool killAfterCollect;
-    FishIdentity fish;
-} FishsanityMeta;
-
 #ifdef __cplusplus
 namespace Rando {
 
@@ -44,7 +34,6 @@ class Fishsanity {
     ~Fishsanity();
 
     static const FishIdentity defaultIdentity;
-    static const FishsanityMeta defaultMeta;
 
     /**
      * @brief Gets the type of a fishsanity check
@@ -52,6 +41,12 @@ class Fishsanity {
      * @return The check's fishsanity type, or FSC_NONE
      */
     static FishsanityCheckType GetCheckType(RandomizerCheck rc);
+
+    /**
+     * @brief Returns true if the given FishIdentity represents an actual fish
+     * @param fish The fish to check
+    */
+    static bool IsFish(FishIdentity* fish);
 
     /**
      * @brief Returns true if the given fish location is active
@@ -89,14 +84,6 @@ class Fishsanity {
      * @brief Get fishsanity fishing pond options from the requested source
     */
     FishsanityPondOptions GetOptions(FishsanityOptionsSource optionsSource = FSO_SOURCE_RANDO);
-
-    /**
-     * @brief Get metadata for a fish given its params
-     * 
-     * @param params Actor parameters for the pond fish
-     * @param current Current metadata associated with this fish, if any. 
-    */
-    FishsanityMeta GetPondFishMetaFromParams(s16 params);
     
     /**
      * @brief Updates current pond fish according to save data
@@ -130,20 +117,20 @@ class Fishsanity {
 
     /**
      * @brief Advances current fishing pond check; no effect if every fish is shuffled
-     * @return The new FishsanityMeta for the current pond, or default metadata if every fish is shuffled
+     * @return The new FishIdentity for the current pond, or default identity if every fish is shuffled
     */
-    FishsanityMeta AdvancePond();
+    FishIdentity AdvancePond();
 
     /**
      * @brief Set the currently held fish
-     * @param meta Pointer to FishsanityMeta to copy
+     * @param fish Pointer to FishIdentity to copy
     */
-    void SetHeldFish(FishsanityMeta* meta);
+    void SetPendingFish(FishIdentity* fish);
 
     /**
      * @brief Get the currently held fish
     */
-    FishsanityMeta GetHeldFish();
+    FishIdentity GetPendingFish();
 
   private:
     /**
@@ -163,12 +150,12 @@ class Fishsanity {
     /**
      * @brief Current pond fish when all pond fish are not randomized
     */
-    std::pair<FishsanityMeta, FishsanityMeta> mCurrPondFish;
+    std::pair<FishIdentity, FishIdentity> mCurrPondFish;
     
     /**
-     * @brief Metadata for the currently held fish in the fishing pond minigame
+     * @brief Identity of the last-caught fish in the fishing pond minigame awaiting reward
     */
-    FishsanityMeta mHeldMetadata;
+    FishIdentity mPendingFish;
     
     /**
      * @brief True if fishsanity helpers have been initialized
@@ -204,8 +191,8 @@ bool Randomizer_GetPondFishShuffled();
 bool Randomizer_GetGrottoFishShuffled();
 /// Returns true if the adult fishing pond should be used for fishsanity.
 bool Randomizer_IsAdultPond();
-/// Sets the currently-held fish
-void Randomizer_SetHeldFish(FishsanityMeta* meta);
+/// Sets the pending fish
+void Randomizer_SetPendingFish(FishIdentity* fish);
 #ifdef __cplusplus
 }
 #endif
