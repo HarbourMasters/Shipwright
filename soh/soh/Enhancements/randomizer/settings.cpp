@@ -1238,7 +1238,7 @@ void Settings::UpdateOptionProperties() {
         if (CVarGetInteger("gRandomizeForest", RO_FOREST_CLOSED) == RO_FOREST_CLOSED ||
             (CVarGetInteger("gRandomizeDoorOfTime", RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
             CVarGetInteger("gRandomizeShuffleOcarinas", RO_GENERIC_OFF) == RO_GENERIC_OFF)) /* closed door of time with ocarina shuffle off */ {
-            mOptions[RSK_STARTING_AGE].Disable("This option is disabled due to other optionos making the game unbeatable");
+            mOptions[RSK_STARTING_AGE].Disable("This option is disabled due to other options making the game unbeatable");
         } else {
             mOptions[RSK_STARTING_AGE].Enable();
         }
@@ -1271,7 +1271,7 @@ void Settings::UpdateOptionProperties() {
                 // Show Bridge Options and Medallion Count Slider
                 mOptions[RSK_RAINBOW_BRIDGE].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
                 mOptions[RSK_BRIDGE_OPTIONS].Unhide();
-                mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT].Unhide();
+                mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT].Unhide();
                 if (bridgeOpt == RO_BRIDGE_GREG_REWARD) {
                     if (mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT].GetOptionCount() == 7) {
                         mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT].ChangeOptions(NumOpts(0, 7));
@@ -1674,6 +1674,8 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
             || mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] || mOptions[RSK_SHUFFLE_OWL_DROPS]
             || mOptions[RSK_SHUFFLE_WARP_SONGS] || mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]) {
             mOptions[RSK_SHUFFLE_ENTRANCES].SetSelectedIndex(RO_GENERIC_ON);
+        } else {
+            mOptions[RSK_SHUFFLE_ENTRANCES].SetSelectedIndex(RO_GENERIC_OFF);
         }
 
         if (mOptions[RSK_SHUFFLE_DUNGEON_REWARDS].Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
