@@ -370,7 +370,7 @@ static bool GiveItemHandler(std::shared_ptr<LUS::Console> Console, const std::ve
     if (args[1].compare("vanilla") == 0) {
         getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, std::stoi(args[2]));
     } else if (args[1].compare("randomizer") == 0) {
-        getItemEntry = Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(std::stoi(args[2]))).GetGIEntry_Copy();
+        getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, std::stoi(args[2]));
     } else {
         ERROR_MESSAGE("[SOH] Invalid argument passed, must be 'vanilla' or 'randomizer'");
         return 1;
