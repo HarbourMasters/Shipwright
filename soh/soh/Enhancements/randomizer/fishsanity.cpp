@@ -189,11 +189,10 @@ namespace Rando {
         if ((mode == RO_FISHSANITY_BOTH || mode == RO_FISHSANITY_POND) && pondCount < 17) {
             // find the first inf that isn't set yet for each age
             // but don't go past the max number
-            pondCount -= 1;
             std::pair<RandomizerCheck, RandomizerCheck> tableEntry;
             for (s16 i = 0, params = 100; i < pondCount; i++, params++) {
                 tableEntry = Rando::StaticData::randomizerFishingPondFish[i];
-                if (!Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(tableEntry.first))) {
+                if (!Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(tableEntry.first)) || i == pondCount - 1) {
                     // Found first child check
                     if (!IsFish(&mCurrPondFish.first)) {
                         mCurrPondFish.first = GetPondFish(params, false);
@@ -207,7 +206,7 @@ namespace Rando {
                 }
 
                 if (ageSplit && !IsFish(&mCurrPondFish.second) && tableEntry.second != RC_UNKNOWN_CHECK &&
-                    !Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(tableEntry.second))) {
+                    (!Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(tableEntry.second)) || i == pondCount - 1)) {
                     mCurrPondFish.second = mCurrPondFish.second = GetPondFish(params, true);
                 }
             }

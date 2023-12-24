@@ -1134,6 +1134,13 @@ void RegisterRandomizedEnemySizes() {
 void RegisterFishsanity() {
     static s16 fishGroupCounter = 0;
 
+    // Initialization on load
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
+        if (!IS_RANDO)
+            return;
+        OTRGlobals::Instance->gRandoContext->GetFishsanity()->InitializeFromSave();
+    });
+
     // Initialize actors for fishsanity
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
         if (!IS_RANDO) return;
@@ -1227,7 +1234,8 @@ void RegisterFishsanity() {
             FishIdentity pending = fs->GetPendingFish();
             if (fish->fishState == 6 && !Rando::Fishsanity::IsFish(&pending)) {
                 pending = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, fish->fishsanityParams);
-                fs->SetPendingFish(&pending);
+                if (!Flags_GetRandomizerInf(pending.randomizerInf))
+                    fs->SetPendingFish(&pending);
             }
         }
 
