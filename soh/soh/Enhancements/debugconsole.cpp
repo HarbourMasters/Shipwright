@@ -17,6 +17,10 @@
 
 #include <Window.h>
 #include <Context.h>
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+#define IMGUI_DEFINE_MATH_OPERATORS
+#endif
+#include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 #undef PATH_HACK
 #undef Path
