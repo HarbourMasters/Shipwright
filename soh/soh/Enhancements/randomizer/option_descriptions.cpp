@@ -251,8 +251,8 @@ void Settings::CreateOptionDescriptions() {
         "Use this to enable wallet tier locking, but make shop items not as expensive as they could be.";
     mOptionDescriptions[RSK_FISHSANITY] = "Off - Fish will not be shuffled. No changes will be made to fishing behavior.\n\n"
         "Shuffle Fishing Pond - The fishing pond's fish will be shuffled. Catching a fish in the fishing pond will grant a reward.\n\n"
-        "Shuffle Grotto Fish - Fish in generic grottos will be shuffled. Catching a grotto fish in a bottle will give a reward.\n\n"
-        "Shuffle Both - Both grotto fish and fish in the fishing pond will be shuffled.";
+        "Shuffle Overworld Fish - Fish in generic grottos and Zora's Domain will be shuffled. Catching a fish in a bottle will give a reward.\n\n"
+        "Shuffle Both - Both overworld fish and fish in the fishing pond will be shuffled.";
     mOptionDescriptions[RSK_FISHSANITY_POND_COUNT] = "The number of fish to randomize in the fishing pool.\n"
         "If set to maximum, each fish will have a unique check, including a Hyrule Loach which appears only as child, and caught fish will disappear.\n"
         "All fish will reappear after each fish is caught to ensure the vanilla fishing prizes remain accessible.\n"

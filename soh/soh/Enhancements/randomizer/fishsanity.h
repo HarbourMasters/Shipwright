@@ -102,7 +102,7 @@ class Fishsanity {
     bool GetPondFishShuffled();
 
     /**
-     * @brief Returns true if grotto fish are shuffled 
+     * @brief Returns true if overworld fish are shuffled 
     */
     bool GetOverworldFishShuffled();
 
@@ -193,7 +193,7 @@ extern "C" {
 #endif
 /// Returns true if pond fish should be shuffled based on fishsanity settings.
 bool Randomizer_GetPondFishShuffled();
-/// Returns true if grotto fish should be shuffled based on fishsanity settings.
+/// Returns true if overworld fish should be shuffled based on fishsanity settings.
 bool Randomizer_GetOverworldFishShuffled();
 /// Returns true if the adult fishing pond should be used for fishsanity.
 bool Randomizer_IsAdultPond();

@@ -55,8 +55,8 @@ class SpoilerCollectionCheck {
         return SpoilerCollectionCheck(SPOILER_CHK_COW, scene, flag);
     }
 
-    static auto Fish(const uint8_t flag) {
-        return SpoilerCollectionCheck(SPOILER_CHK_FISH, flag != 0xFF ? SCENE_GROTTOS : SCENE_FISHING_POND, flag);
+    static auto Fish(const uint8_t flag, const uint8_t scene = SCENE_FISHING_POND) {
+        return SpoilerCollectionCheck(SPOILER_CHK_FISH, scene, flag);
     }
 
     static auto Fishing(const uint8_t bit) {

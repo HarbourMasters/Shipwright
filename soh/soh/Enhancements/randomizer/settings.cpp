@@ -113,7 +113,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_CHEST_MINIGAME] = Option::U8("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"});
     mOptions[RSK_SHUFFLE_100_GS_REWARD] = Option::Bool("Shuffle 100 GS Reward", "gRandomizeShuffle100GSReward", mOptionDescriptions[RSK_SHUFFLE_100_GS_REWARD], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
     mOptions[RSK_SHUFFLE_BOSS_SOULS] = Option::U8("Shuffle Boss Souls", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, "gRandomizeShuffleBossSouls", mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS], WidgetType::Combobox);
-    mOptions[RSK_FISHSANITY] = Option::U8("Fishsanity", {"Off", "Shuffle Fishing Pond", "Shuffle Grotto Fish", "Shuffle Both"}, OptionCategory::Setting, "gRandomizeFishsanity", mOptionDescriptions[RSK_FISHSANITY], WidgetType::Combobox, RO_FISHSANITY_OFF);
+    mOptions[RSK_FISHSANITY] = Option::U8("Fishsanity", {"Off", "Shuffle Fishing Pond", "Shuffle Overworld Fish", "Shuffle Both"}, OptionCategory::Setting, "gRandomizeFishsanity", mOptionDescriptions[RSK_FISHSANITY], WidgetType::Combobox, RO_FISHSANITY_OFF);
     mOptions[RSK_FISHSANITY_POND_COUNT] = Option::U8("Pond Fish Count", {NumOpts(0,17,1)}, OptionCategory::Setting, "gRandomizeFishsanityPondCount", mOptionDescriptions[RSK_FISHSANITY_POND_COUNT], WidgetType::Slider, 0, true, IMFLAG_NONE);
     mOptions[RSK_FISHSANITY_AGE_SPLIT] = Option::Bool("Pond Age Split", "gRandomizeFishsanityAgeSplit", mOptionDescriptions[RSK_FISHSANITY_AGE_SPLIT]);
     mOptions[RSK_SHUFFLE_MAPANDCOMPASS] = Option::U8("Maps/Compasses", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, "gRandomizeStartingMapsCompasses", mOptionDescriptions[RSK_SHUFFLE_MAPANDCOMPASS], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
@@ -2242,7 +2242,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                         mOptions[index].SetSelectedIndex(RO_FISHSANITY_OFF);
                     } else if (it.value() == "Shuffle Fishing Pond") {
                         mOptions[index].SetSelectedIndex(RO_FISHSANITY_POND);
-                    } else if (it.value() == "Shuffle Grotto Fish") {
+                    } else if (it.value() == "Shuffle Overworld Fish") {
                         mOptions[index].SetSelectedIndex(RO_FISHSANITY_OVERWORLD);
                     } else if (it.value() == "Shuffle Both") {
                         mOptions[index].SetSelectedIndex(RO_FISHSANITY_BOTH);
