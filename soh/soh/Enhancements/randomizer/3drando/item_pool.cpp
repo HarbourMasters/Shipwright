@@ -730,11 +730,12 @@ void GenerateItemPool() {
     AddItemToMainPool(RG_OCARINA_C_LEFT_BUTTON);
     AddItemToMainPool(RG_OCARINA_C_RIGHT_BUTTON);
 
-    ctx->possibleIceTrapModels.push_back(RG_OCARINA_A_BUTTON);
-    ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_UP_BUTTON);
-    ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_DOWN_BUTTON);
-    ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_LEFT_BUTTON);
-    ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_RIGHT_BUTTON);
+    //TODO: Re-add when custom models work with ice traps
+    //ctx->possibleIceTrapModels.push_back(RG_OCARINA_A_BUTTON);
+    //ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_UP_BUTTON);
+    //ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_DOWN_BUTTON);
+    //ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_LEFT_BUTTON);
+    //ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_RIGHT_BUTTON);
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_COWS)) {
