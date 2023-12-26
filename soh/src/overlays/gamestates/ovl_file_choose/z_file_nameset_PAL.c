@@ -457,7 +457,6 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                             this->prevConfigMode = CM_MAIN_MENU;
                             this->configMode = CM_NAME_ENTRY_TO_MAIN;
                             CVarSetInteger("gOnFileSelectNameEntry", 0);
-                            CVarSetInteger("gNewFileDropped", 0);
                             Randomizer_SetSeedGenerated(false);
                             this->nameBoxAlpha[this->buttonIndex] = this->nameAlpha[this->buttonIndex] = 200;
                             this->connectorAlpha[this->buttonIndex] = 255;

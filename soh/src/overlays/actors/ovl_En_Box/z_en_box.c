@@ -75,7 +75,6 @@ static InitChainEntry sInitChain[] = {
 };
 
 static UNK_TYPE sUnused;
-GetItemEntry sItem;
 
 Gfx gSkullTreasureChestChestSideAndLidDL[116] = {0};
 Gfx gGoldTreasureChestChestSideAndLidDL[116] = {0};
@@ -472,7 +471,7 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
         func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, play)) {
-            sItem = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
+            GetItemEntry sItem = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
             GetItemEntry blueRupee = ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
             
             // RANDOTODO treasure chest game rando
@@ -628,7 +627,7 @@ void EnBox_Update(Actor* thisx, PlayState* play) {
     }
 
     if (((!IS_RANDO && ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C)) ||
-        (IS_RANDO && ABS(sItem.getItemId) == RG_ICE_TRAP)) &&
+        (IS_RANDO && this->getItemEntry.getItemId == RG_ICE_TRAP)) &&
         this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100) {
         if (!CVarGetInteger("gAddTraps.enabled", 0)) {
             EnBox_SpawnIceSmoke(this, play);

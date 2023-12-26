@@ -1023,14 +1023,14 @@ void FileChoose_UpdateRandomizer() {
             CVarSetString("gSpoilerLog", "");
     }
 
-    if (CVarGetInteger("gNewFileDropped", 0) != 0 || !(Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) &&
+    if (CVarGetInteger("gRandomizerNewFileDropped", 0) != 0 || !(Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) &&
         SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && !fileSelectSpoilerFileLoaded) {
             const char* fileLoc = CVarGetString("gSpoilerLog", "");
-            if (CVarGetInteger("gNewFileDropped", 0) != 0) {
-                CVarSetString("gSpoilerLog", CVarGetString("gDroppedFile", ""));
+            if (CVarGetInteger("gRandomizerNewFileDropped", 0) != 0) {
+                CVarSetString("gSpoilerLog", CVarGetString("gRandomizerDroppedFile", ""));
             }
-            CVarSetInteger("gNewFileDropped", 0);
-            CVarSetString("gDroppedFile", "");
+            CVarSetInteger("gRandomizerNewFileDropped", 0);
+            CVarSetString("gRandomizerDroppedFile", "");
             Randomizer_ParseSpoiler(fileLoc);
             fileSelectSpoilerFileLoaded = true;
 
@@ -1057,7 +1057,6 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     Input* input = &this->state.input[0];
     bool dpad = CVarGetInteger("gDpadText", 0);
 
-    SoH_ProcessDroppedFiles();
     FileChoose_UpdateRandomizer();
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
@@ -1248,7 +1247,6 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     s8 i = 0;
     bool dpad = CVarGetInteger("gDpadText", 0);
 
-    SoH_ProcessDroppedFiles();
     FileChoose_UpdateRandomizer();
 
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
