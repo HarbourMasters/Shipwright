@@ -51,7 +51,7 @@ static void RemoveStartingItemsFromPool() {
 }
 
 //This function will propogate Time of Day access through the entrance
-static bool UpdateToDAccess(Entrance* entrance, SearchMode mode) {
+static bool UpdateToDAccess(Entrance* entrance, bool propogateTimeTravel) {
 
   bool ageTimePropogated = false;
 
@@ -77,7 +77,6 @@ static bool UpdateToDAccess(Entrance* entrance, SearchMode mode) {
   }
 
   //special check for temple of time
-  bool propogateTimeTravel = mode != SearchMode::TimePassAccess && mode != SearchMode::TempleOfTimeAccess;
   if (!AreaTable(RR_ROOT)->Adult() && AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Child() && propogateTimeTravel) {
     AreaTable(RR_ROOT)->adultDay   = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childDay;
     AreaTable(RR_ROOT)->adultNight = AreaTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childNight;
@@ -93,7 +92,10 @@ static bool UpdateToDAccess(Entrance* entrance, SearchMode mode) {
 static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, bool checkOtherEntranceAccess, std::vector<RandomizerRegion>& areaPool) {
   auto ctx = Rando::Context::GetInstance();
   // Condition for validating Temple of Time Access
-  if (mode == SearchMode::TempleOfTimeAccess && ((ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && AreaTable(RR_TEMPLE_OF_TIME)->Adult()) || (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT && AreaTable(RR_TEMPLE_OF_TIME)->Child()) || !checkOtherEntranceAccess)) {
+  if (mode == SearchMode::TempleOfTimeAccess && ((ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && 
+                                                  AreaTable(RR_TEMPLE_OF_TIME)->Adult()) || 
+                                                  (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_ADULT && AreaTable(RR_TEMPLE_OF_TIME)->Child()) ||
+                                                  !checkOtherEntranceAccess)) {
     mode = SearchMode::ValidStartingRegion;
   }
   // Condition for validating a valid starting region
@@ -221,15 +223,217 @@ bool IsBeatableWithout(RandomizerCheck excludedCheck, bool replaceItem, Randomiz
   return ctx->playthroughBeatable;
 }
 
+//RANDOTODO better name
+void ResetLogic(std::shared_ptr<Context> ctx, bool applyInventory = false){
+  Areas::AccessReset();
+  ctx->LocationReset();
+  if (applyInventory){
+    ApplyStartingInventory();
+  }
+} 
+//RANDOTODO better name
+struct GetAccessableLocationsStruct {
+  std::vector<RandomizerCheck> accessibleLocations;
+  std::vector<RandomizerRegion> areaPool = {RR_ROOT};
+  //Variables for playthrough
+  int gsCount;
+  int maxGsCount;
+  bool bombchusFound;
+  std::vector<std::variant<bool*, uint8_t*>> buyIgnores;
+
+  //Variables for search
+  std::vector<Rando::ItemLocation*> newItemLocations;
+  bool updatedEvents;
+  bool ageTimePropogated;
+  bool firstIteration;
+
+  //Variables for Time Pass access
+  bool timePassChildDay;
+  bool timePassChildNight;
+  bool timePassAdultDay;
+  bool timePassAdultNight;
+
+  std::vector<RandomizerCheck> itemSphere; //RANDOTODO clear these each loop
+  std::list<Entrance*> entranceSphere;
+
+  GetAccessableLocationsStruct(int _maxGsCount){
+    gsCount = 0;
+    maxGsCount = _maxGsCount;
+    bombchusFound = false;
+    updatedEvents = false;
+    ageTimePropogated = false;
+    firstIteration = true;
+    timePassChildDay = false;
+    timePassChildNight = false;
+    timePassAdultDay = false;
+    timePassAdultNight = false;
+
+  }
+
+  void InitLoop(){
+    firstIteration = false;
+    ageTimePropogated = false;
+    updatedEvents = false;
+    for (Rando::ItemLocation* location : newItemLocations) {
+      location->ApplyPlacedItemEffect();
+    }
+    newItemLocations.clear();
+  }
+};
+
+std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& allowedLocations, RandomizerGet ignore /* = RG_NONE*/,
+                                                 bool checkPoeCollectorAccess /*= false*/, bool checkOtherEntranceAccess /*= false*/) {
+  auto ctx = Rando::Context::GetInstance();
+  GetAccessableLocationsStruct gals(0);
+  ResetLogic(ctx, true);
+  while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
+    gals.InitLoop();
+    for (size_t i = 0; i < gals.areaPool.size(); i++) {
+      Area* area = AreaTable(gals.areaPool[i]);
+
+      if (area->UpdateEvents()){
+        gals.updatedEvents = true;
+      }
+      for (auto& exit : area->exits) {
+          if (UpdateToDAccess(&exit, false)) {
+            gals.ageTimePropogated = true;
+            ValidateWorldChecks(mode, checkPoeCollectorAccess, checkOtherEntranceAccess, areaPool);
+        }
+      }
+    }
+  }
+    
+}
+
+std::vector<RandomizerCheck> GeneratePlaythrough(const std::vector<RandomizerCheck>& allowedLocations, RandomizerGet ignore /* = RG_NONE*/,
+                                                 bool checkPoeCollectorAccess /*= false*/, bool checkOtherEntranceAccess /*= false*/) {
+  auto ctx = Rando::Context::GetInstance();
+  GetAccessableLocationsStruct gals(GetMaxGSCount());
+  ResetLogic(ctx, true);
+}
+
+std::vector<RandomizerCheck> CheckBeatable(const std::vector<RandomizerCheck>& allowedLocations, RandomizerGet ignore /* = RG_NONE*/,
+                                                 bool checkPoeCollectorAccess /*= false*/, bool checkOtherEntranceAccess /*= false*/) {
+  auto ctx = Rando::Context::GetInstance();
+  GetAccessableLocationsStruct gals(0);
+  ResetLogic(ctx, true);
+}
+
+std::vector<RandomizerCheck> AllLocationsReachable(const std::vector<RandomizerCheck>& allowedLocations, RandomizerGet ignore /* = RG_NONE*/,
+                                                 bool checkPoeCollectorAccess /*= false*/, bool checkOtherEntranceAccess /*= false*/) {
+  auto ctx = Rando::Context::GetInstance();
+  GetAccessableLocationsStruct gals(0);
+  ResetLogic(ctx, true);
+}
+
+std::vector<RandomizerCheck> ValidateWorld(const std::vector<RandomizerCheck>& allowedLocations, RandomizerGet ignore /* = RG_NONE*/,
+                                                 bool checkPoeCollectorAccess /*= false*/, bool checkOtherEntranceAccess /*= false*/,
+                                                 bool timePassOnly) {
+  auto ctx = Rando::Context::GetInstance();
+  GetAccessableLocationsStruct gals(0);
+  ResetLogic(ctx);
+  if (!timePassOnly){
+    AreaTable(RR_ROOT)->childNight = true;
+    AreaTable(RR_ROOT)->adultNight = true;
+    AreaTable(RR_ROOT)->childDay = true;
+    AreaTable(RR_ROOT)->adultDay = true;
+    ctx->allLocationsReachable = false;
+  }
+  while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
+    gals.InitLoop();
+    for (size_t i = 0; i < gals.areaPool.size(); i++) {
+      Area* area = AreaTable(gals.areaPool[i]);
+
+      area->UpdateTimePass();
+      if (area->UpdateEvents()){
+        gals.updatedEvents = true;
+      }
+      // If we're checking for TimePass access do that for each area as it's being updated.
+      // TimePass Access is satisfied when every AgeTime can reach an area with TimePass
+      // without the aid of TimePass. During this mode, TimePass won't update ToD access
+      // in any area.
+      if (area->timePass) {
+        if (area->childDay) {
+          gals.timePassChildDay = true;
+        }
+        if (area->childNight) {
+          gals.timePassChildNight = true;
+        }
+        if (area->adultDay) {
+          gals.timePassAdultDay = true;
+        }
+        if (area->adultNight) {
+          gals.timePassAdultNight = true;
+        }
+      }
+      // Condition for validating that all startring AgeTimes have timepass access
+      // Once satisifed, change the mode to begin checking for Temple of Time Access
+      if ((gals.timePassChildDay && gals.timePassChildNight && gals.timePassAdultDay && gals.timePassAdultNight) || !checkOtherEntranceAccess) {
+        mode = SearchMode::TempleOfTimeAccess;
+      }
+
+      //for each exit in this area
+      for (auto& exit : area->exits) {
+
+        //Update Time of Day Access for the exit
+      if (UpdateToDAccess(&exit, true)) {
+          gals.ageTimePropogated = true;
+          ValidateWorldChecks(mode, checkPoeCollectorAccess, checkOtherEntranceAccess, areaPool);
+        }
+
+        //If the exit is accessible and hasn't been added yet, add it to the pool
+        Area* exitArea = exit.GetConnectedRegion();
+        if (!exitArea->addedToPool && exit.ConditionsMet()) {
+          exitArea->addedToPool = true;
+          areaPool.push_back(exit.GetConnectedRegionKey());
+        }
+
+        // Add shuffled entrances to the entrance playthrough
+        if (mode == SearchMode::GeneratePlaythrough && exit.IsShuffled() && !exit.IsAddedToPool() && !ctx->GetEntranceShuffler()->HasNoRandomEntrances()) {
+          entranceSphere.push_back(&exit);
+          exit.AddToPool();
+          // Don't list a two-way coupled entrance from both directions
+          if (exit.GetReverse() != nullptr && exit.GetReplacement()->GetReverse() != nullptr && !exit.IsDecoupled()) {
+            exit.GetReplacement()->GetReverse()->AddToPool();
+          }
+        }
+      }
+
+    }
+  }
+}
+
+std::vector<RandomizerCheck> TempleOfTimeAccess(const std::vector<RandomizerCheck>& allowedLocations, RandomizerGet ignore /* = RG_NONE*/,
+                                                 bool checkPoeCollectorAccess /*= false*/, bool checkOtherEntranceAccess /*= false*/) {
+  auto ctx = Rando::Context::GetInstance();
+  GetAccessableLocationsStruct gals(0);
+  ResetLogic(ctx);
+}
+
+std::vector<RandomizerCheck> ValidStartingRegion(const std::vector<RandomizerCheck>& allowedLocations, RandomizerGet ignore /* = RG_NONE*/,
+                                                 bool checkPoeCollectorAccess /*= false*/, bool checkOtherEntranceAccess /*= false*/) {
+  auto ctx = Rando::Context::GetInstance();
+  GetAccessableLocationsStruct gals(0);
+  ResetLogic(ctx);
+}
+
+std::vector<RandomizerCheck> PoeCollectorAccess(const std::vector<RandomizerCheck>& allowedLocations, RandomizerGet ignore /* = RG_NONE*/,
+                                                 bool checkPoeCollectorAccess /*= false*/, bool checkOtherEntranceAccess /*= false*/) {
+  auto ctx = Rando::Context::GetInstance();
+  GetAccessableLocationsStruct gals(0);
+  ResetLogic(ctx);
+}
+
+
 //This function will return a vector of ItemLocations that are accessible with
 //where items have been placed so far within the world. The allowedLocations argument
 //specifies the pool of locations that we're trying to search for an accessible location in
 std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<RandomizerCheck>& allowedLocations, SearchMode mode /* = SearchMode::ReachabilitySearch*/, RandomizerGet ignore /* = RG_NONE*/, bool checkPoeCollectorAccess /*= false*/, bool checkOtherEntranceAccess /*= false*/) {
-    auto ctx = Rando::Context::GetInstance();
-    std::vector<RandomizerCheck> accessibleLocations;
-    // Reset all access to begin a new search
-    if (mode < SearchMode::ValidateWorld) {
-        ApplyStartingInventory();
+  auto ctx = Rando::Context::GetInstance();
+  std::vector<RandomizerCheck> accessibleLocations;
+  // Reset all access to begin a new search
+  if (mode < SearchMode::ValidateWorld) {
+      ApplyStartingInventory();
   }
   Areas::AccessReset();
   ctx->LocationReset();
@@ -279,7 +483,7 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
     for (size_t i = 0; i < areaPool.size(); i++) {
       Area* area = AreaTable(areaPool[i]);
 
-      if (area->UpdateEvents(mode)){
+      if (area->UpdateEvents()){
         updatedEvents = true;
       }
 

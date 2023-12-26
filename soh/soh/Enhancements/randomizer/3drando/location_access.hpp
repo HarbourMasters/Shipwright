@@ -149,7 +149,9 @@ public:
     bool adultNight = false;
     bool addedToPool = false;
 
-    bool UpdateEvents(SearchMode mode);
+    bool UpdateTimePass();
+
+    bool UpdateEvents();
 
     void AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition);
 
