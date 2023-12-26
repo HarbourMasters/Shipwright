@@ -21,6 +21,5 @@ void RandoMain::GenerateRando(std::set<RandomizerCheck> excludedLocations, std::
 
     CVarSave();
     CVarLoad();
-    Rando::Context::GetInstance()->SetSpoilerLoaded(false);
     Rando::Context::GetInstance()->SetPlandoLoaded(false);
 }

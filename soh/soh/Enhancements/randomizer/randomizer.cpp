@@ -1659,7 +1659,10 @@ void GenerateRandomizerImgui(std::string seed = "") {
     CVarSetInteger("gRandoGenerating", 1);
     CVarSave();
     auto ctx = Rando::Context::GetInstance();
-    ctx->GetSettings()->SetAllFromCVar();
+    if (!ctx->IsSpoilerLoaded()) {
+        // We use the settings from the spoiler rather than CVars.
+        ctx->GetSettings()->SetAllFromCVar();
+    }
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
     std::stringstream excludedLocationStringStream(CVarGetString("gRandomizeExcludedLocations", ""));
@@ -1755,8 +1758,10 @@ void RandomizerSettingsWindow::DrawElement() {
     UIWidgets::Spacer(0);
     ImGui::BeginDisabled(CVarGetInteger("gRandomizerDontGenerateSpoiler", 0) && gSaveContext.gameMode != GAMEMODE_FILE_SELECT);
     if (ImGui::Button("Generate Randomizer")) {
+        ctx->SetSpoilerLoaded(false);
         GenerateRandomizer(CVarGetInteger("gRandoManualSeedEntry", 0) ? seedString : "");
     }
+    UIWidgets::Tooltip("You can also press L on the Quest Select screen to generate a new seed");
     ImGui::EndDisabled();
 
     UIWidgets::Spacer(0);

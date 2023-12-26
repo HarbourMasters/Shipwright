@@ -370,7 +370,7 @@ void Context::ParseSpoiler(const char* spoilerFileName, const bool plandoMode) {
         mSpoilerLoaded = true;
         mSeedGenerated = false;
     } catch (...) {
-        throw;
+        LUSLOG_ERROR("Failed to load Spoiler File: %s", spoilerFileName);
     }
 }
 
