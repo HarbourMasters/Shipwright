@@ -37,6 +37,11 @@ class Settings {
     Option& GetTrickOption(RandomizerTrick key);
 
     /**
+     * @brief Reset all RandomizerTrick keys.
+     */
+    void ResetTrickOptions();
+
+    /**
      * @brief Returns a reference to the entire array of options.
      *
      * @return const std::array<Option, RSK_MAX>&
