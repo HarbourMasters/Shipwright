@@ -29,8 +29,8 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
                 if [[ -e "$romfile" ]]; then
                     ln -s "$romfile" "$ASSETDIR"/tmp/rom.z64
                 else
-                    TEMP=$(readlink "$romfile")
-                    ln -s "$TEMP" "$ASSETDIR"/tmp/rom.z64
+                    ORIG_ROM_PATH=$(readlink "$romfile")
+                    ln -s "$ORIG_ROM_PATH" "$ASSETDIR"/tmp/rom.z64
                 fi
                 cd "$ASSETDIR"
                 ROMHASH=$(sha1sum -b "$ASSETDIR"/tmp/rom.z64 | awk '{ print $1 }')
