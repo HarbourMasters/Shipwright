@@ -305,6 +305,7 @@ bool CanMaskSelect() {
 }
 
 void KaleidoScope_HandleItemCycles(PlayState* play) {
+    //handle the mask select
     KaleidoScope_HandleItemCycleExtras(
         play,
         SLOT_TRADE_CHILD,
@@ -318,6 +319,9 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
         true
     );
 
+    //the slot age requirement for the child trade slot has to be updated
+    //in case it currently holds the bunny hood
+    //to allow adult link to wear it if the setting is enabled
     gSlotAgeReqs[SLOT_TRADE_CHILD] =
         (
             ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger("gAdultBunnyHood", 0)) ||
@@ -327,12 +331,14 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
             ? AGE_REQ_NONE
             : AGE_REQ_CHILD;
     
+    //also update the age requirement for the bunny hood itself
     gItemAgeReqs[ITEM_MASK_BUNNY] =
         ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger("gAdultBunnyHood", 0)) ||
         CVarGetInteger("gTimelessEquipment", 0)
             ? AGE_REQ_NONE
             : AGE_REQ_CHILD;
 
+    //handle the adult trade select
     KaleidoScope_HandleItemCycleExtras(
         play,
         SLOT_TRADE_ADULT,
@@ -344,6 +350,7 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
 }
 
 void KaleidoScope_DrawItemCycles(PlayState* play) {
+    //draw the mask select
     KaleidoScope_DrawItemCycleExtras(
         play,
         SLOT_TRADE_CHILD,
@@ -356,6 +363,7 @@ void KaleidoScope_DrawItemCycles(PlayState* play) {
             INV_CONTENT(ITEM_TRADE_CHILD) + 1
     );
     
+    //draw the adult trade select
     KaleidoScope_DrawItemCycleExtras(
         play,
         SLOT_TRADE_ADULT,
@@ -369,7 +377,7 @@ bool IsItemCycling() {
     return gCurrentItemCyclingSlot != -1;
 }
 
-void KaleidoScope_ResetTradeSelect() {
+void KaleidoScope_ResetItemCycling() {
     gCurrentItemCyclingSlot = -1;
 }
 
@@ -770,7 +778,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
 void KaleidoScope_SetupItemEquip(PlayState* play, u16 item, u16 slot, s16 animX, s16 animY) {
     Input* input = &play->state.input[0];
     PauseContext* pauseCtx = &play->pauseCtx;
-    KaleidoScope_ResetTradeSelect();
+    KaleidoScope_ResetItemCycling();
 
     if (CHECK_BTN_ALL(input->press.button, BTN_CLEFT)) {
         pauseCtx->equipTargetCBtn = 0;

@@ -1008,7 +1008,7 @@ void KaleidoScope_SetDefaultCursor(PlayState* play) {
     PauseContext* pauseCtx = &play->pauseCtx;
     s16 s;
     s16 i;
-    KaleidoScope_ResetTradeSelect();
+    KaleidoScope_ResetItemCycling();
 
     switch (pauseCtx->pageIndex) {
         case PAUSE_ITEM:
@@ -1073,7 +1073,7 @@ void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
     gSaveContext.unk_13EA = 0;
     Interface_ChangeAlpha(50);
 
-    KaleidoScope_ResetTradeSelect();
+    KaleidoScope_ResetItemCycling();
 }
 
 void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
@@ -3735,7 +3735,7 @@ void KaleidoScope_Update(PlayState* play)
                 }
             }
 
-            KaleidoScope_ResetTradeSelect();
+            KaleidoScope_ResetItemCycling();
 
             pauseCtx->state = 4;
             break;

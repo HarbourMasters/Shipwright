@@ -45,6 +45,6 @@ void PauseMapMark_Draw(PlayState* play);
 
 void KaleidoScope_UpdateCursorSize(PauseContext* pauseCtx);
 
-void KaleidoScope_ResetTradeSelect();
+void KaleidoScope_ResetItemCycling();
 
 #endif
