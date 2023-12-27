@@ -615,6 +615,7 @@ void SaveManager::InitFileNormal() {
     gSaveContext.pendingSaleMod = MOD_NONE;
     gSaveContext.isBossRushPaused = 0;
     gSaveContext.pendingIceTrapCount = 0;
+    gSaveContext.maskMemory = PLAYER_MASK_NONE;
 
     // Init with normal quest unless only an MQ rom is provided
     gSaveContext.questId = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
