@@ -151,26 +151,14 @@ void EnPartner_SpawnSparkles(EnPartner* this, PlayState* play, s32 sparkleLife) 
     sparklePos.x = Rand_CenteredFloat(6.0f) + this->actor.world.pos.x;
     sparklePos.y = (Rand_ZeroOne() * 6.0f) + this->actor.world.pos.y + 5;
     sparklePos.z = Rand_CenteredFloat(6.0f) + this->actor.world.pos.z;
-    if (CVarGetInteger("gCosmetics.Ivan_IdlePrimary.Changed", 0)) {
-        Color_RGB8 ivanColor1 = CVarGetColor24("gCosmetics.Ivan_IdlePrimary.Value", (Color_RGB8){ 255, 255, 255 });
-        primColor.r = ivanColor1.r;
-        primColor.g = ivanColor1.g;
-        primColor.b = ivanColor1.b;
-    } else {
-        primColor.r = this->innerColor.r;
-        primColor.g = this->innerColor.g;
-        primColor.b = this->innerColor.b;
-    }
-    if (CVarGetInteger("gCosmetics.Ivan_IdleSecondary.Changed", 0)) {
-        Color_RGB8 ivanColor2 = CVarGetColor24("gCosmetics.Ivan_IdleSecondary.Value", (Color_RGB8){ 255, 255, 255 });
-        envColor.r = ivanColor2.r;
-        envColor.g = ivanColor2.g;
-        envColor.b = ivanColor2.b;
-    } else {
-        envColor.r = this->outerColor.r;
-        envColor.g = this->outerColor.g;
-        envColor.b = this->outerColor.b;
-    }
+
+    primColor.r = this->innerColor.r;
+    primColor.g = this->innerColor.g;
+    primColor.b = this->innerColor.b;
+ 
+    envColor.r = this->outerColor.r;
+    envColor.g = this->outerColor.g;
+    envColor.b = this->outerColor.b;
 
     EffectSsKiraKira_SpawnDispersed(play, &sparklePos, &sparkleVelocity, &sparkleAccel, &primColor, &envColor,
                                     1500, sparkleLife);
@@ -757,6 +745,28 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     }
 
+    if (CVarGetInteger("gCosmetics.Ivan_IdlePrimary.Changed", 0)) {
+        Color_RGB8 ivanColor1 = CVarGetColor24("gCosmetics.Ivan_IdlePrimary.Value", (Color_RGB8){ 255, 255, 255 });
+        this->innerColor.r = ivanColor1.r;
+        this->innerColor.g = ivanColor1.g;
+        this->innerColor.b = ivanColor1.b;
+    } else {
+        this->innerColor.r = 255;
+        this->innerColor.g = 255;
+        this->innerColor.b = 255;
+    }
+
+    if (CVarGetInteger("gCosmetics.Ivan_IdleSecondary.Changed", 0)) {
+        Color_RGB8 ivanColor2 = CVarGetColor24("gCosmetics.Ivan_IdleSecondary.Value", (Color_RGB8){ 0, 255, 0 });
+        this->innerColor.r = ivanColor2.r;
+        this->innerColor.g = ivanColor2.g;
+        this->innerColor.b = ivanColor2.b;
+    } else {
+        this->outerColor.r = 0;
+        this->outerColor.g = 255;
+        this->outerColor.b = 0;
+    }
+
     SkelAnime_Update(&this->skelAnime);
 
     EnPartner_UpdateLights(this, play);
@@ -862,27 +872,15 @@ void EnPartner_Draw(Actor* thisx, PlayState* play) {
 
     gSPSegment(POLY_XLU_DISP++, 0x08, dListHead);
     gDPPipeSync(dListHead++);
-    if (CVarGetInteger("gCosmetics.Ivan_IdlePrimary.Changed", 0)) {
-        Color_RGB8 ivanColor1 = CVarGetColor24("gCosmetics.Ivan_IdlePrimary.Value", (Color_RGB8){ 255, 255, 255 });
-        gDPSetPrimColor(dListHead++, 0, 0x01, (u8)ivanColor1.r, (u8)ivanColor1.g, (u8)ivanColor1.b,
+    gDPSetPrimColor(dListHead++, 0, 0x01, (u8)this->innerColor.r, (u8)this->innerColor.g, (u8)this->innerColor.b,
                         (u8)(this->innerColor.a * alphaScale));
-    } else {
-        gDPSetPrimColor(dListHead++, 0, 0x01, (u8)this->innerColor.r, (u8)this->innerColor.g, (u8)this->innerColor.b,
-                        (u8)(this->innerColor.a * alphaScale));
-    }
     
 
     gDPSetRenderMode(dListHead++, G_RM_PASS, G_RM_ZB_CLD_SURF2);
 
     gSPEndDisplayList(dListHead++);
-    if (CVarGetInteger("gCosmetics.Ivan_IdleSecondary.Changed", 0)) {
-        Color_RGB8 ivanColor2 = CVarGetColor24("gCosmetics.Ivan_IdleSecondary.Value", (Color_RGB8){ 0, 255, 0 });
-        gDPSetEnvColor(POLY_XLU_DISP++, (u8)ivanColor2.r, (u8)ivanColor2.g, (u8)ivanColor2.b,
-                       (u8)(envAlpha * alphaScale));
-    } else {
-        gDPSetEnvColor(POLY_XLU_DISP++, (u8)this->outerColor.r, (u8)this->outerColor.g, (u8)this->outerColor.b,
-                       (u8)(envAlpha * alphaScale));        
-    }
+    gDPSetEnvColor(POLY_XLU_DISP++, (u8)this->outerColor.r, (u8)this->outerColor.g, (u8)this->outerColor.b,
+                      (u8)(envAlpha * alphaScale));  
 
     POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                    EnPartner_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
