@@ -758,9 +758,9 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
 
     if (CVarGetInteger("gCosmetics.Ivan_IdleSecondary.Changed", 0)) {
         Color_RGB8 ivanColor2 = CVarGetColor24("gCosmetics.Ivan_IdleSecondary.Value", (Color_RGB8){ 0, 255, 0 });
-        this->innerColor.r = ivanColor2.r;
-        this->innerColor.g = ivanColor2.g;
-        this->innerColor.b = ivanColor2.b;
+        this->outerColor.r = ivanColor2.r;
+        this->outerColor.g = ivanColor2.g;
+        this->outerColor.b = ivanColor2.b;
     } else {
         this->outerColor.r = 0;
         this->outerColor.g = 255;
