@@ -660,6 +660,14 @@ void DrawEnhancementsMenu() {
 
             if (ImGui::BeginMenu("Difficulty Options"))
             {
+                UIWidgets::PaddedEnhancementCheckbox("Delete File On Death", "gDeleteFileOnDeath", true, false);
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+                UIWidgets::Tooltip("Dying will delete your file\n\n     " ICON_FA_EXCLAMATION_TRIANGLE " WARNING " ICON_FA_EXCLAMATION_TRIANGLE "\nTHIS IS NOT REVERSABLE\nUSE AT YOUR OWN RISK!");
+                ImGui::PopStyleColor();
+                if (UIWidgets::PaddedEnhancementCheckbox("Permanent heart loss", "gPermanentHeartLoss", true, false)) {
+                    UpdatePermanentHeartLossState();
+                }
+                UIWidgets::Tooltip("When you lose 4 quarters of a heart you will permanently lose that heart container.\n\nDisabling this after the fact will restore your heart containers.");
                 ImGui::Text("Damage Multiplier");
                 UIWidgets::EnhancementCombobox("gDamageMul", allPowers, 0);
                 UIWidgets::Tooltip(
@@ -725,6 +733,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Always win the heart piece/purple rupee on the first dig in Dampe's grave digging game, just like in rando\nIn a rando file, this is unconditionally enabled");
                 UIWidgets::PaddedEnhancementCheckbox("All Dogs are Richard", "gAllDogsRichard", true, false);
                 UIWidgets::Tooltip("All dogs can be traded in and will count as Richard.");
+                UIWidgets::PaddedEnhancementSliderInt("Cuccos Stay Put Multiplier: %dx", "##CuccoStayDurationMultiplier", "gCuccoStayDurationMultiplier", 1, 5, "", 1, true, true, false);
+                UIWidgets::Tooltip("Cuccos will stay in place longer after putting them down, by a multiple of the value of the slider.");
                 UIWidgets::Spacer(0);
 
                 if (ImGui::BeginMenu("Potion Values"))
@@ -986,6 +996,10 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Always shows dungeon entrance icons on the minimap");
             UIWidgets::PaddedEnhancementCheckbox("Show Gauntlets in First Person", "gFPSGauntlets", true, false);
             UIWidgets::Tooltip("Renders Gauntlets when using the Bow and Hookshot like in OOT3D");
+            if (UIWidgets::PaddedEnhancementCheckbox("Color Temple of Time's Medallions", "gToTMedallionsColors", true, false)) {
+                PatchToTMedallions();
+            }
+            UIWidgets::Tooltip("When medallions are collected, the medallion imprints around the Master Sword pedestal in the Temple of Time will become colored");
             UIWidgets::Spacer(0);
             if (ImGui::BeginMenu("Animated Link in Pause Menu")) {
                 ImGui::Text("Rotation");
@@ -1167,6 +1181,11 @@ void DrawEnhancementsMenu() {
 
             UIWidgets::PaddedEnhancementCheckbox("Randomized Enemy Sizes", "gRandomizedEnemySizes", true, false);
             UIWidgets::Tooltip("Enemies and Bosses spawn with random sizes.");
+
+            if (CVarGetInteger("gRandomizedEnemySizes", 0)) {
+                UIWidgets::EnhancementCheckbox("Scale Health with Size", "gEnemySizeScalesHealth");
+                UIWidgets::Tooltip("Scales normal enemies health with their randomized size. *This will NOT affect bosses*");
+            }
 
             UIWidgets::PaddedEnhancementCheckbox("Ivan the Fairy (Coop Mode)", "gIvanCoopModeEnabled", true, false);
             UIWidgets::Tooltip("Enables Ivan the Fairy upon the next map change. Player 2 can control Ivan and "
@@ -1475,6 +1494,26 @@ void DrawDeveloperToolsMenu() {
         UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
         UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", "gDebugWarpScreenTranslation", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
         UIWidgets::Tooltip("Translate the Debug Warp Screen based on the game language");
+        if (gPlayState != NULL) {
+            UIWidgets::PaddedSeparator();
+            ImGui::Checkbox("Frame Advance##frameAdvance", (bool*)&gPlayState->frameAdvCtx.enabled);
+            if (gPlayState->frameAdvCtx.enabled) {
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
+                ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0,0));
+                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+                if (ImGui::Button("Advance 1", ImVec2(ImGui::GetContentRegionAvail().x / 2.0f, 0.0f))) {
+                    CVarSetInteger("gFrameAdvance", 1);
+                }
+                ImGui::SameLine();
+                ImGui::Button("Advance (Hold)");
+                if (ImGui::IsItemActive()) {
+                    CVarSetInteger("gFrameAdvance", 1);
+                }
+                ImGui::PopStyleVar(3);
+                ImGui::PopStyleColor(1);
+            }
+        }
         UIWidgets::PaddedSeparator();
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0,0));
