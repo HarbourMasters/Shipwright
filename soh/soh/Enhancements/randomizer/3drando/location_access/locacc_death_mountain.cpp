@@ -105,9 +105,8 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(RR_DEATH_MOUNTAIN_TRAIL, {[]{return true;}}),
                   Entrance(RR_GC_WOODS_WARP,        {[]{return GCWoodsWarpOpen;}}),
                   Entrance(RR_GC_SHOP,              {[]{return (IsAdult && StopGCRollingGoronAsAdult) || (IsChild && (CanBlastOrSmash || GoronBracelet || GoronCityChildFire || CanUse(RG_FAIRY_BOW)));}}),
-                  Entrance(RR_GC_DARUNIAS_CHAMBER,  {[]{return (IsAdult && StopGCRollingGoronAsAdult) || GCDaruniasDoorOpenChild;}}),
+                  Entrance(RR_GC_DARUNIAS_CHAMBER,  {[]{return (IsAdult && StopGCRollingGoronAsAdult) || (IsChild && GCDaruniasDoorOpenChild);}}),
                   Entrance(RR_GC_GROTTO_PLATFORM,   {[]{return IsAdult && ((CanUse(RG_SONG_OF_TIME) && ((EffectiveHealth > 2) || CanUse(RG_GORON_TUNIC) || CanUse(RG_LONGSHOT) || CanUse(RG_NAYRUS_LOVE))) || (EffectiveHealth > 1 && CanUse(RG_GORON_TUNIC) && CanUse(RG_HOOKSHOT)) || (CanUse(RG_NAYRUS_LOVE) && CanUse(RG_HOOKSHOT)) || (EffectiveHealth > 2 && CanUse(RG_HOOKSHOT) && randoCtx->GetTrickOption(RT_GC_GROTTO)));}}),
-  });
 
   areaTable[RR_GC_WOODS_WARP] = Area("GC Woods Warp", "Goron City", RA_GORON_CITY, NO_DAY_NIGHT_CYCLE, {
                   //Events

@@ -82,6 +82,7 @@ bool doAreaScroll;
 bool previousShowHidden = false;
 bool hideShopRightChecks = true;
 bool hideTriforceCompleted = true;
+bool alwaysShowGS = false;
 
 std::map<uint32_t, RandomizerCheck> startingShopItem = { { SCENE_KOKIRI_SHOP, RC_KF_SHOP_ITEM_1 },
                                                          { SCENE_BAZAAR, RC_MARKET_BAZAAR_ITEM_1 },
@@ -435,7 +436,6 @@ void CheckTrackerLoadGame(int32_t fileNum) {
         } else {
             entry2 = Rando::StaticData::GetLocation(rc);
         }
-        if (!IsVisibleInCheckTracker(entry2->GetRandomizerCheck())) continue;
 
         checksByArea.find(entry2->GetArea())->second.push_back(entry2->GetRandomizerCheck());
         if (rcTrackerData.status == RCSHOW_SAVED || rcTrackerData.skipped) {
@@ -514,6 +514,10 @@ void CheckTrackerTransition(uint32_t sceneNum) {
 }
 
 void CheckTrackerFrame() {
+    if (IS_RANDO) {
+        hideShopRightChecks = CVarGetInteger("gCheckTrackerOptionHideRightShopChecks", 1);
+        alwaysShowGS = CVarGetInteger("gCheckTrackerOptionAlwaysShowGSLocs", 0);
+    }
     if (!GameInteractor::IsSaveLoaded()) {
         return;
     }
@@ -1085,7 +1089,6 @@ void LoadSettings() {
     showLinksPocket = IS_RANDO ? // don't show Link's Pocket if not randomizer, or if rando and pocket is disabled
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING
         :false;
-    hideShopRightChecks = IS_RANDO ? CVarGetInteger("gCheckTrackerOptionHideRightShopChecks", 1) : false;
     hideTriforceCompleted = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) != RO_GENERIC_ON : false;
 
@@ -1155,7 +1158,7 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
                 ) &&
             (loc->GetRCType() != RCTYPE_MERCHANT || showMerchants) &&
             (loc->GetRCType() != RCTYPE_OCARINA || showOcarinas) &&
-            (loc->GetRCType() != RCTYPE_SKULL_TOKEN ||
+            (loc->GetRCType() != RCTYPE_SKULL_TOKEN || alwaysShowGS ||
                 (showOverworldTokens && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
                 (showDungeonTokens && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))
                 ) &&
@@ -1541,7 +1544,9 @@ void CheckTrackerSettingsWindow::DrawElement() {
     UIWidgets::EnhancementCheckbox("Vanilla/MQ Dungeon Spoilers", "gCheckTrackerOptionMQSpoilers");
     UIWidgets::Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked.");
     UIWidgets::EnhancementCheckbox("Hide right-side shop item checks", "gCheckTrackerOptionHideRightShopChecks", false, "", UIWidgets::CheckboxGraphics::Cross, true);
-    UIWidgets::Tooltip("If enabled, will prevent the tracker from displaying slots 1-4 in all shops. Requires save reload.");
+    UIWidgets::Tooltip("If enabled, will prevent the tracker from displaying slots 1-4 in all shops.");
+    UIWidgets::EnhancementCheckbox("Always show gold skulltulas", "gCheckTrackerOptionAlwaysShowGSLocs", false, "");
+    UIWidgets::Tooltip("If enabled, will show GS locations in the tracker regardless of tokensanity settings.");
 
     ImGui::TableNextColumn();
 

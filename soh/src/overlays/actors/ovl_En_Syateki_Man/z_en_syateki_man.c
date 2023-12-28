@@ -3,6 +3,7 @@
 #include "overlays/actors/ovl_En_Syateki_Itm/z_en_syateki_itm.h"
 #include "objects/object_ossan/object_ossan.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
 
@@ -371,7 +372,8 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                             this->getItemId = GI_RUPEE_PURPLE;
                         }
                     } else {
-                        if(IS_RANDO && !Flags_GetTreasure(play, 0x1F)) {
+                        // Only give the adult rando reward when the player has a quiver
+                        if (IS_RANDO && !Flags_GetTreasure(play, 0x1F) && CUR_UPG_VALUE(UPG_QUIVER) > 0) {
                             this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_SHOOTING_GALLERY_REWARD, GI_QUIVER_50);
                             this->getItemId = this->getItemEntry.getItemId;
                             Flags_SetTreasure(play, 0x1F);
@@ -448,6 +450,9 @@ void EnSyatekiMan_FinishPrize(EnSyatekiMan* this, PlayState* play) {
             Flags_SetItemGetInf(ITEMGETINF_0D);
         } else if ((this->getItemId == GI_QUIVER_40) || (this->getItemId == GI_QUIVER_50)) {
             Flags_SetItemGetInf(ITEMGETINF_0E);
+        } else if (IS_RANDO && LINK_IS_ADULT && CUR_UPG_VALUE(UPG_QUIVER) == 0) {
+            // In Rando without a quiver, display a message reminding the player to come back with a bow
+            Message_StartTextbox(play, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW, NULL);
         }
         this->gameResult = SYATEKI_RESULT_NONE;
         this->actor.parent = this->tempGallery;

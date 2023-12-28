@@ -974,9 +974,9 @@ void DrawSeedHashSprites(FileChooseContext* this) {
     // Draw Seed Icons for spoiler log:
     // 1. On Name Entry if a rando seed has been generated
     // 2. On Quest Menu if a spoiler has been dropped and the Randomizer quest option is currently hovered.
-    if ((Randomizer_IsSeedGenerated() ||
-            (strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0 && Randomizer_IsSpoilerLoaded())) &&
+    if ((Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) &&
         ((this->configMode == CM_NAME_ENTRY && gSaveContext.questId == QUEST_RANDOMIZER) ||
+        (this->configMode == CM_GENERATE_SEED && Randomizer_IsSpoilerLoaded()) ||
         (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER))) {
         // Fade top seed icons based on main menu fade and if save supports rando
         u8 alpha =
@@ -999,6 +999,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 }
 
 u8 generating;
+bool fileSelectSpoilerFileLoaded = false;
 
 void FileChoose_UpdateRandomizer() {
     if (CVarGetInteger("gRandoGenerating", 0) != 0 && generating == 0) {
@@ -1006,7 +1007,7 @@ void FileChoose_UpdateRandomizer() {
             func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
             return;
     } else if (CVarGetInteger("gRandoGenerating", 0) == 0 && generating) {
-            if (SpoilerFileExists(CVarGetString("gSpoilerLog", "")) || Randomizer_IsSeedGenerated()) {
+            if (Randomizer_IsSeedGenerated()) {
                 Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
             } else {
                 func_80078884(NA_SE_SY_OCARINA_ERROR);
@@ -1022,13 +1023,16 @@ void FileChoose_UpdateRandomizer() {
             CVarSetString("gSpoilerLog", "");
     }
 
-    if ((CVarGetInteger("gNewFileDropped", 0) != 0)) {
-            CVarSetString("gSpoilerLog", CVarGetString("gDroppedFile", ""));
-            CVarSetInteger("gNewSeedGenerated", 0);
-            CVarSetInteger("gNewFileDropped", 0);
-            CVarSetString("gDroppedFile", "");
+    if (CVarGetInteger("gRandomizerNewFileDropped", 0) != 0 || !(Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) &&
+        SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && !fileSelectSpoilerFileLoaded) {
             const char* fileLoc = CVarGetString("gSpoilerLog", "");
+            if (CVarGetInteger("gRandomizerNewFileDropped", 0) != 0) {
+                CVarSetString("gSpoilerLog", CVarGetString("gRandomizerDroppedFile", ""));
+            }
+            CVarSetInteger("gRandomizerNewFileDropped", 0);
+            CVarSetString("gRandomizerDroppedFile", "");
             Randomizer_ParseSpoiler(fileLoc);
+            fileSelectSpoilerFileLoaded = true;
 
             if (SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
                 remove(fileLoc);
@@ -1053,7 +1057,6 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     Input* input = &this->state.input[0];
     bool dpad = CVarGetInteger("gDpadText", 0);
 
-    SoH_ProcessDroppedFiles();
     FileChoose_UpdateRandomizer();
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
@@ -1244,7 +1247,6 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     s8 i = 0;
     bool dpad = CVarGetInteger("gDpadText", 0);
 
-    SoH_ProcessDroppedFiles();
     FileChoose_UpdateRandomizer();
 
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
@@ -1272,6 +1274,14 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
 
         GameInteractor_ExecuteOnUpdateFileQuestSelection(this->questType[this->buttonIndex]);
+    }
+
+    if (CHECK_BTN_ALL(input->press.button, BTN_L)) {
+        if (this->questType[this->buttonIndex] == QUEST_RANDOMIZER) {
+            Randomizer_SetSpoilerLoaded(false);
+            this->prevConfigMode = this->configMode;
+            this->configMode = CM_GENERATE_SEED;
+        }
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
@@ -1318,6 +1328,10 @@ void FileChoose_GenerateRandoSeed(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     FileChoose_UpdateRandomizer();
     if (Randomizer_IsSeedGenerated() || Randomizer_IsPlandoLoaded()) {
+        Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+        func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
+        generating = 0;
+        Randomizer_SetSpoilerLoaded(true);
         static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
         static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
         this->prevConfigMode = this->configMode;
@@ -3190,25 +3204,25 @@ void FileChoose_DrawRandoSaveVersionWarning(GameState* thisx) {
 
 static const char* noRandoGeneratedText[] = {
     // English
-    "Open Randomizer Settings to change your settings,\nthen press A to generate a new seed"
+    "No Randomizer seed currently available.\nGenerate one in the Randomizer Settings"
 #if defined(__WIIU__) || defined(__SWITCH__)
     ".",
 #else
     ",\nor drop a spoiler log on the game window.",
 #endif
     // German
-    "Open Randomizer Settings to change your settings,\nthen press A to generate a new seed"
+    "No Randomizer seed currently available.\nGenerate one in the Randomizer Settings"
 #if defined(__WIIU__) || defined(__SWITCH__)
     ".",
 #else
     ",\nor drop a spoiler log on the game window.",
 #endif
     // French
-    "Ouvrez le menu \"Randomizer Settings\" pour modifier\nvos paramètres, appuyez sur A pour générer\nune nouvelle seed"
+    "Aucune Seed de Randomizer actuellement disponible.\nGénérez-en une dans les \"Randomizer Settings\""
 #if (defined(__WIIU__) || defined(__SWITCH__))
     "."
 #else
-    " ou glissez un spoilerlog sur la\nfenêtre du jeu."
+    "\nou glissez un spoilerlog sur la fenêtre du jeu."
 #endif
 };
 
@@ -3231,18 +3245,12 @@ void FileChoose_DrawNoRandoGeneratedWarning(GameState* thisx) {
         uint16_t textboxWidth = 256 * textboxScale;
         uint16_t textboxHeight = 64 * textboxScale;
         uint8_t leftOffset = 72;
-        uint8_t bottomOffset = 132;
+        uint8_t bottomOffset = 84;
         uint8_t textVerticalOffset;
 #if defined(__WIIU__) || defined(__SWITCH__)
-        textVerticalOffset = 80; // 2 lines
-        if (gSaveContext.language == LANGUAGE_FRA) {
-            textVerticalOffset = 75; // 3 lines
-        }
+        textVerticalOffset = 127; // 2 lines
 #else
-        textVerticalOffset = 75; // 3 lines
-        if (gSaveContext.language == LANGUAGE_FRA) {
-            textVerticalOffset = 70; // 4 lines
-        }
+        textVerticalOffset = 122; // 3 lines
 #endif
 
         Gfx_SetupDL_39Opa(this->state.gfxCtx);
