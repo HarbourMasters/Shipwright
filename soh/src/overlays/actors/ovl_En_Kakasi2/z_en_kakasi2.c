@@ -117,7 +117,16 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
 
     this->unk_194++;
     
-    bool skipScarecrow = play->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING &&
+    int ocarinaButtonCount = 0;
+    for (int i = RAND_INF_HAS_OCARINA_A; i <= RAND_INF_HAS_OCARINA_C_DOWN; i++) {
+        if (Flags_GetRandomizerInf(i)) {
+            ocarinaButtonCount++;
+        }
+    }
+
+    bool hasTwoOcarinaButtons = !IS_RANDO || ocarinaButtonCount >= 2;
+
+    bool skipScarecrow = hasTwoOcarinaButtons && play->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING &&
                             ((CVarGetInteger("gSkipScarecrow", 0) && gSaveContext.scarecrowSpawnSongSet) ||
                             (IS_RANDO && Randomizer_GetSettingValue(RSK_SKIP_SCARECROWS_SONG)));
 

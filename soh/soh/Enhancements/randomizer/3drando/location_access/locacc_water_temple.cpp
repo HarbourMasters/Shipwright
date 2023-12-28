@@ -41,7 +41,7 @@ void AreaTable_Init_WaterTemple() {
 
   areaTable[RR_WATER_TEMPLE_EAST_LOWER] = Area("Water Temple East Lower", "Water Temple", RA_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&WaterTempleLow, {[]{return WaterTempleLow || CanPlay(ZeldasLullaby);}}),
+                  EventAccess(&WaterTempleLow, {[]{return WaterTempleLow || CanUse(RG_ZELDAS_LULLABY);}}),
                 }, {}, {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_LOBBY,        {[]{return WaterTempleLow || ((randoCtx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS) || CanUse(RG_ZORA_TUNIC)) && CanUse(RG_IRON_BOOTS));}}),
@@ -152,7 +152,7 @@ void AreaTable_Init_WaterTemple() {
 
   areaTable[RR_WATER_TEMPLE_CENTRAL_PILLAR_UPPER] = Area("Water Temple Central Pillar Upper", "Water Temple", RA_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&WaterTempleMiddle, {[]{return WaterTempleMiddle || CanPlay(ZeldasLullaby);}}),
+                  EventAccess(&WaterTempleMiddle, {[]{return WaterTempleMiddle || CanUse(RG_ZELDAS_LULLABY);}}),
                 }, {
                   //Locations
                   LocationAccess(RC_WATER_TEMPLE_GS_CENTRAL_PILLAR, {[]{return CanUse(RG_LONGSHOT) || (((randoCtx->GetTrickOption(RT_WATER_FW_CENTRAL_GS) && CanUse(RG_FARORES_WIND) && (CanUse(RG_FAIRY_BOW) || CanUse(RG_DINS_FIRE) || SmallKeys(RR_WATER_TEMPLE, 5))) || (randoCtx->GetTrickOption(RT_WATER_IRONS_CENTRAL_GS) && CanUse(RG_IRON_BOOTS) && ((CanUse(RG_HOOKSHOT) && CanUse(RG_FAIRY_BOW)) || (CanUse(RG_DINS_FIRE))))) && WaterTempleHigh && HookshotOrBoomerang);}}),
@@ -186,7 +186,7 @@ void AreaTable_Init_WaterTemple() {
 
   areaTable[RR_WATER_TEMPLE_HIGH_WATER] = Area("Water Temple High Water", "Water Temple", RA_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&WaterTempleHigh, {[]{return WaterTempleHigh || CanPlay(ZeldasLullaby);}}),
+                  EventAccess(&WaterTempleHigh, {[]{return WaterTempleHigh || CanUse(RG_ZELDAS_LULLABY);}}),
                 }, {}, {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_LOBBY, {[]{return true;}}),
@@ -227,7 +227,7 @@ void AreaTable_Init_WaterTemple() {
                 }, {
                   //Exits
                   Entrance(RR_WATER_TEMPLE_DARK_LINK_ROOM, {[]{return true;}}),
-                  Entrance(RR_WATER_TEMPLE_RIVER,          {[]{return IsChild || CanPlay(SongOfTime);}}),
+                  Entrance(RR_WATER_TEMPLE_RIVER,          {[]{return IsChild || CanUse(RG_SONG_OF_TIME);}}),
   });
 
   areaTable[RR_WATER_TEMPLE_RIVER] = Area("Water Temple River", "Water Temple", RA_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -264,11 +264,11 @@ void AreaTable_Init_WaterTemple() {
   areaTable[RR_WATER_TEMPLE_MQ_DIVE] = Area("Water Temple MQ Dive", "Water Temple", RA_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_WATER_TEMPLE_MQ_MAP_CHEST,            {[]{return HasFireSource && IsAdult && CanUse(RG_HOOKSHOT);}}),
-                  LocationAccess(RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST, {[]{return IsAdult && CanUse(RG_ZORA_TUNIC) && CanUse(RG_HOOKSHOT) && ((randoCtx->GetTrickOption(RT_WATER_MQ_CENTRAL_PILLAR) && CanUse(RG_FIRE_ARROWS)) || (CanUse(RG_DINS_FIRE) && CanPlay(SongOfTime)));}}),
-                    //Trick: IsAdult && CanUse(RG_ZORA_TUNIC) && CanUse(RG_HOOKSHOT) && ((LogicWaterMQCentralPillar && CanUse(RG_FIRE_ARROWS)) || (CanUse(RG_DINS_FIRE) && CanPlay(SongOfTime)))
+                  LocationAccess(RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST, {[]{return IsAdult && CanUse(RG_ZORA_TUNIC) && CanUse(RG_HOOKSHOT) && ((randoCtx->GetTrickOption(RT_WATER_MQ_CENTRAL_PILLAR) && CanUse(RG_FIRE_ARROWS)) || (CanUse(RG_DINS_FIRE) && CanUse(RG_SONG_OF_TIME)));}}),
+                    //Trick: IsAdult && CanUse(RG_ZORA_TUNIC) && CanUse(RG_HOOKSHOT) && ((LogicWaterMQCentralPillar && CanUse(RG_FIRE_ARROWS)) || (CanUse(RG_DINS_FIRE) && CanUse(RG_SONG_OF_TIME)))
   }, {
                   //Exits
-                  Entrance(RR_WATER_TEMPLE_MQ_LOWERED_WATER_LEVELS, {[]{return CanPlay(ZeldasLullaby);}}),
+                  Entrance(RR_WATER_TEMPLE_MQ_LOWERED_WATER_LEVELS, {[]{return CanUse(RG_ZELDAS_LULLABY);}}),
   });
 
   areaTable[RR_WATER_TEMPLE_MQ_LOWERED_WATER_LEVELS] = Area("Water Temple MQ Lowered Water Levels", "Water Temple", RA_WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {

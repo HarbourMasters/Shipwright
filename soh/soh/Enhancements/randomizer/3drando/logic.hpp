@@ -200,6 +200,12 @@ extern uint8_t PieceOfHeart;
 extern uint8_t HeartContainer;
 extern bool DoubleDefense;
 
+extern bool OcarinaAButton;
+extern bool OcarinaCLeftButton;
+extern bool OcarinaCRightButton;
+extern bool OcarinaCUpButton;
+extern bool OcarinaCDownButton;
+
 /* --- HELPERS --- */
 /* These are used to simplify reading the logic, but need to be updated
 /  every time a base value is updated.                       */
@@ -266,6 +272,7 @@ extern bool HookshotOrBoomerang;
 extern bool CanGetNightTimeGS;
 extern bool BigPoeKill;
 
+extern uint8_t OcarinaButtons;
 extern uint8_t BaseHearts;
 extern uint8_t Hearts;
 extern uint8_t Multiplier;
@@ -376,7 +383,6 @@ enum class GlitchDifficulty {
 };
 
 void UpdateHelpers();
-bool CanPlay(bool song);
 bool CanUse(RandomizerGet itemName);
 bool HasProjectile(HasProjectileAge age);
 bool HasBossSoul(RandomizerGet itemName);

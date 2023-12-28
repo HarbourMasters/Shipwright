@@ -60,10 +60,10 @@ void AreaTable_Init_GerudoTrainingGrounds() {
 
   areaTable[RR_GERUDO_TRAINING_GROUNDS_LAVA_ROOM] = Area("Gerudo Training Grounds Lava Room", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST, {[]{return CanUse(RG_HOOKSHOT) && CanPlay(SongOfTime) && IronBoots && WaterTimer >= 24;}}),
+                  LocationAccess(RC_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST, {[]{return CanUse(RG_HOOKSHOT) && CanUse(RG_SONG_OF_TIME) && IronBoots && WaterTimer >= 24;}}),
                 }, {
                   //Exits
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE_RIGHT, {[]{return CanPlay(SongOfTime) || IsChild;}}),
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE_RIGHT, {[]{return CanUse(RG_SONG_OF_TIME) || IsChild;}}),
                   Entrance(RR_GERUDO_TRAINING_GROUNDS_HAMMER_ROOM,        {[]{return CanUse(RG_LONGSHOT)  || (CanUse(RG_HOVER_BOOTS) && CanUse(RG_HOOKSHOT));}}),
   });
 
@@ -164,8 +164,8 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   LocationAccess(RC_GERUDO_TRAINING_GROUND_MQ_HEAVY_BLOCK_CHEST,        {[]{return CanUse(RG_SILVER_GAUNTLETS) && (CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD));}}),
   }, {
                   //Exits
-                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_BACK_AREAS, {[]{return IsAdult && (CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (randoCtx->GetTrickOption(RT_LENS_GTG_MQ) || CanUse(RG_LENS_OF_TRUTH)) && BlueFire && (CanPlay(SongOfTime) || (randoCtx->GetTrickOption(RT_GTG_FAKE_WALL) && IsAdult && CanUse(RG_HOVER_BOOTS)));}}),
-                    //Trick: IsAdult && (LogicLensGtgMQ || CanUse(RG_LENS_OF_TRUTH)) && BlueFire && (CanPlay(SongOfTime) || (LogicGtgFakeWall && IsAdult && CanUse(RG_HOVER_BOOTS)))
+                  Entrance(RR_GERUDO_TRAINING_GROUNDS_MQ_BACK_AREAS, {[]{return IsAdult && (CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (randoCtx->GetTrickOption(RT_LENS_GTG_MQ) || CanUse(RG_LENS_OF_TRUTH)) && BlueFire && (CanUse(RG_SONG_OF_TIME) || (randoCtx->GetTrickOption(RT_GTG_FAKE_WALL) && IsAdult && CanUse(RG_HOVER_BOOTS)));}}),
+                    //Trick: IsAdult && (LogicLensGtgMQ || CanUse(RG_LENS_OF_TRUTH)) && BlueFire && (CanUse(RG_SONG_OF_TIME) || (LogicGtgFakeWall && IsAdult && CanUse(RG_HOVER_BOOTS)))
   });
 
   areaTable[RR_GERUDO_TRAINING_GROUNDS_MQ_BACK_AREAS] = Area("Gerudo Training Grounds MQ Back Areas", "Gerudo Training Grounds", RA_GERUDO_TRAINING_GROUND, NO_DAY_NIGHT_CYCLE, {}, {

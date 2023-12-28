@@ -1626,23 +1626,23 @@ void func_800ED458(s32 arg0) {
         }
 
         Audio_OcaUpdateBtnMap(customControls, dpad, rStick);
-        if (D_8016BA18 & sOcarinaD4BtnMap) {
+        if (D_8016BA18 & sOcarinaD4BtnMap && (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A))) {
             osSyncPrintf("Presss NA_KEY_D4 %08x\n", sOcarinaD4BtnMap);
             sCurOcarinaBtnVal = 2;
             sCurOcarinaBtnIdx = 0;
-        } else if (D_8016BA18 & sOcarinaF4BtnMap) {
+        } else if (D_8016BA18 & sOcarinaF4BtnMap && (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN))) {
             osSyncPrintf("Presss NA_KEY_F4 %08x\n", sOcarinaF4BtnMap);
             sCurOcarinaBtnVal = 5;
             sCurOcarinaBtnIdx = 1;
-        } else if (D_8016BA18 & sOcarinaA4BtnMap) {
+        } else if (D_8016BA18 & sOcarinaA4BtnMap && (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT))) {
             osSyncPrintf("Presss NA_KEY_A4 %08x\n", sOcarinaA4BtnMap);
             sCurOcarinaBtnVal = 9;
             sCurOcarinaBtnIdx = 2;
-        } else if (D_8016BA18 & sOcarinaB4BtnMap) {
+        } else if (D_8016BA18 & sOcarinaB4BtnMap && (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT))) {
             osSyncPrintf("Presss NA_KEY_B4 %08x\n", sOcarinaA4BtnMap);
             sCurOcarinaBtnVal = 0xB;
             sCurOcarinaBtnIdx = 3;
-        } else if (D_8016BA18 & sOcarinaD5BtnMap) {
+        } else if (D_8016BA18 & sOcarinaD5BtnMap && (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP))) {
             osSyncPrintf("Presss NA_KEY_D5 %08x\n", sOcarinaD5BtnMap);
             sCurOcarinaBtnVal = 0xE;
             sCurOcarinaBtnIdx = 4;

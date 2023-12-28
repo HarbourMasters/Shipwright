@@ -98,6 +98,16 @@ std::vector<ItemTrackerItem> bossSoulItems = {
     ITEM_TRACKER_ITEM_CUSTOM(RG_GANON_SOUL, ITEM_BIG_POE, ITEM_BOTTLE, 0, DrawItem ),
 };
 
+std::vector<ItemTrackerItem> ocarinaButtonItems = {
+    //Hack for right now, just gonna draw ocarina buttons as ocarinas.
+    //Will replace with other macro once we have a custom texture
+    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_A_BUTTON, ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem ),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_C_UP_BUTTON, ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem ),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_C_DOWN_BUTTON, ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem ),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_C_LEFT_BUTTON, ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem ),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_C_RIGHT_BUTTON, ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem ),
+};
+
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsHorizontal = {
     { SCENE_DEKU_TREE, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
     { SCENE_DODONGOS_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
@@ -178,6 +188,14 @@ std::map<uint16_t, std::string> itemTrackerBossShortNames = {
     { RG_BONGO_BONGO_SOUL, "BONGO"},
     { RG_TWINROVA_SOUL, "TWIN"},
     { RG_GANON_SOUL, "GANON"},
+};
+
+std::map<uint16_t, std::string> itemTrackerOcarinaButtonShortNames = {
+    { RG_OCARINA_A_BUTTON, "A" },
+    { RG_OCARINA_C_UP_BUTTON, "C-U" },
+    { RG_OCARINA_C_DOWN_BUTTON, "C-D" },
+    { RG_OCARINA_C_LEFT_BUTTON, "C-L"},
+    { RG_OCARINA_C_RIGHT_BUTTON, "C-R"},
 };
 
 std::vector<ItemTrackerItem> dungeonItems = {};
@@ -682,6 +700,32 @@ void DrawItem(ItemTrackerItem item) {
                 
             itemName = "Ganon's Soul";
             break;
+
+        case RG_OCARINA_A_BUTTON:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A);
+            itemName = "Ocarina A Button";
+            break;
+        case RG_OCARINA_C_UP_BUTTON:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP);
+            itemName = "Ocarina C Up Button";
+            break;
+        case RG_OCARINA_C_DOWN_BUTTON:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
+            itemName = "Ocarina C Down Button";
+            break;
+        case RG_OCARINA_C_LEFT_BUTTON:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT);
+            itemName = "Ocarina C Left Button";
+            break;
+        case RG_OCARINA_C_RIGHT_BUTTON:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT);
+            itemName = "Ocarina C Right Button";
+            break;
     }
 
     if (GameInteractor::IsSaveLoaded() && (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
@@ -701,6 +745,15 @@ void DrawItem(ItemTrackerItem item) {
         ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(bossName.c_str()).x / 2), p.y - (iconSize + 13)));
         ImGui::PushStyleColor(ImGuiCol_Text, IM_COL_WHITE);
         ImGui::Text("%s", bossName.c_str());
+        ImGui::PopStyleColor();
+    }
+
+    if (item.id >= RG_OCARINA_A_BUTTON && item.id <= RG_OCARINA_C_RIGHT_BUTTON) {
+        ImVec2 p = ImGui::GetCursorScreenPos();
+        std::string ocarinaButtonName = itemTrackerOcarinaButtonShortNames[item.id];
+        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(ocarinaButtonName.c_str()).x / 2), p.y - (iconSize + 13)));
+        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL_WHITE);
+        ImGui::Text("%s", ocarinaButtonName.c_str());
         ImGui::PopStyleColor();
     }
 
@@ -1050,6 +1103,17 @@ void UpdateVectors() {
         mainWindowItems.insert(mainWindowItems.end(), bossSoulItems.begin(), bossSoulItems.end());
     }
 
+    //If we're adding ocarina buttons to the main window...
+    if (CVarGetInteger("gItemTrackerOcarinaButtonsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) {
+        //...add empty items on the main window to get the buttons on their own row. (Too many to sit with Greg/Triforce pieces/boss souls)
+        while (mainWindowItems.size() % 6) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+        }
+
+        //Add ocarina buttons
+        mainWindowItems.insert(mainWindowItems.end(), ocarinaButtonItems.begin(), ocarinaButtonItems.end());
+    }
+
     shouldUpdateVectors = false;
 }
 
@@ -1153,6 +1217,12 @@ void ItemTrackerWindow::DrawElement() {
         if (CVarGetInteger("gItemTrackerBossSoulsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Boss Soul Tracker");
             DrawItemsInRows(bossSoulItems);
+            EndFloatingWindows();
+        }
+
+        if (CVarGetInteger("gItemTrackerOcarinaButtonsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
+            BeginFloatingWindows("Ocarina Button Tracker");
+            DrawItemsInRows(ocarinaButtonItems);
             EndFloatingWindows();
         }
 
@@ -1296,6 +1366,10 @@ void ItemTrackerSettingsWindow::DrawElement() {
     }
 
     if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Boss Souls", "gItemTrackerBossSoulsDisplayType", displayTypes, SECTION_DISPLAY_HIDDEN)) {
+        shouldUpdateVectors = true;
+    }
+
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Ocarina Buttons", "gItemTrackerOcarinaButtonsDisplayType", displayTypes, SECTION_DISPLAY_HIDDEN)) {
         shouldUpdateVectors = true;
     }
 

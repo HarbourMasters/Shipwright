@@ -73,7 +73,7 @@ void AreaTable_Init_ShadowTemple() {
                   LocationAccess(RC_SHADOW_TEMPLE_GS_NEAR_SHIP,            {[]{return CanUse(RG_LONGSHOT) && SmallKeys(RR_SHADOW_TEMPLE, 4, 5);}}),
                 }, {
                   //Exits
-                  Entrance(RR_SHADOW_TEMPLE_BEYOND_BOAT, {[]{return CanJumpslash && CanPlay(ZeldasLullaby) && SmallKeys(RR_SHADOW_TEMPLE, 4, 5);}}),
+                  Entrance(RR_SHADOW_TEMPLE_BEYOND_BOAT, {[]{return CanJumpslash && CanUse(RG_ZELDAS_LULLABY) && SmallKeys(RR_SHADOW_TEMPLE, 4, 5);}}),
   });
 
   areaTable[RR_SHADOW_TEMPLE_BEYOND_BOAT] = Area("Shadow Temple Beyond Boat", "Shadow Temple", RA_SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -103,7 +103,7 @@ void AreaTable_Init_ShadowTemple() {
   areaTable[RR_SHADOW_TEMPLE_MQ_DEAD_HAND_AREA] = Area("Shadow Temple MQ Dead Hand Area", "Shadow Temple", RA_SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_SHADOW_TEMPLE_MQ_COMPASS_CHEST,     {[]{return CanJumpslash;}}),
-                  LocationAccess(RC_SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST, {[]{return CanJumpslash && CanPlay(SongOfTime) && IsAdult && CanUse(RG_FAIRY_BOW);}}),
+                  LocationAccess(RC_SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST, {[]{return CanJumpslash && CanUse(RG_SONG_OF_TIME) && IsAdult && CanUse(RG_FAIRY_BOW);}}),
   }, {});
 
   areaTable[RR_SHADOW_TEMPLE_MQ_FIRST_BEAMOS] = Area("Shadow Temple MQ First Beamos", "Shadow Temple", RA_SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -118,10 +118,10 @@ void AreaTable_Init_ShadowTemple() {
 
   areaTable[RR_SHADOW_TEMPLE_MQ_UPPER_HUGE_PIT] = Area("Shadow Temple MQ Upper Huge Pit", "Shadow Temple", RA_SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_VISIBLE_CHEST,   {[]{return CanPlay(SongOfTime) || (randoCtx->GetTrickOption(RT_SHADOW_MQ_INVISIBLE_BLADES) && randoCtx->GetOption(RSK_DAMAGE_MULTIPLIER).IsNot(RO_DAMAGE_MULTIPLIER_OHKO));}}),
-                    //Trick: CanPlay(SongOfTime) || (LogicShadowMQInvisibleBlades && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO))
-                  LocationAccess(RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_INVISIBLE_CHEST, {[]{return CanPlay(SongOfTime) || (randoCtx->GetTrickOption(RT_SHADOW_MQ_INVISIBLE_BLADES) && randoCtx->GetOption(RSK_DAMAGE_MULTIPLIER).IsNot(RO_DAMAGE_MULTIPLIER_OHKO));}}),
-                    //Trick: CanPlay(SongOfTime) || (LogicShadowMQInvisibleBlades && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO))
+                  LocationAccess(RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_VISIBLE_CHEST,   {[]{return CanUse(RG_SONG_OF_TIME) || (randoCtx->GetTrickOption(RT_SHADOW_MQ_INVISIBLE_BLADES) && randoCtx->GetOption(RSK_DAMAGE_MULTIPLIER).IsNot(RO_DAMAGE_MULTIPLIER_OHKO));}}),
+                    //Trick: CanUse(RG_SONG_OF_TIME) || (LogicShadowMQInvisibleBlades && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO))
+                  LocationAccess(RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_INVISIBLE_CHEST, {[]{return CanUse(RG_SONG_OF_TIME) || (randoCtx->GetTrickOption(RT_SHADOW_MQ_INVISIBLE_BLADES) && randoCtx->GetOption(RSK_DAMAGE_MULTIPLIER).IsNot(RO_DAMAGE_MULTIPLIER_OHKO));}}),
+                    //Trick: CanUse(RG_SONG_OF_TIME) || (LogicShadowMQInvisibleBlades && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO))
   }, {
                   //Exits
                   Entrance(RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT, {[]{return HasFireSource || randoCtx->GetTrickOption(RT_SHADOW_MQ_HUGE_PIT);}}),
@@ -155,7 +155,7 @@ void AreaTable_Init_ShadowTemple() {
                   LocationAccess(RC_SHADOW_TEMPLE_MQ_GS_AFTER_WIND,           {[]{return true;}}),
   }, {
                   //Exits
-                  Entrance(RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT, {[]{return CanPlay(ZeldasLullaby) && SmallKeys(RR_SHADOW_TEMPLE, 5);}}),
+                  Entrance(RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT, {[]{return CanUse(RG_ZELDAS_LULLABY) && SmallKeys(RR_SHADOW_TEMPLE, 5);}}),
   });
 
   areaTable[RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT] = Area("Shadow Temple MQ Beyond Boat", "Shadow Temple", RA_SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -164,7 +164,7 @@ void AreaTable_Init_ShadowTemple() {
                   LocationAccess(RC_SHADOW_TEMPLE_MQ_GS_NEAR_BOSS,   {[]{return Bow || (randoCtx->GetTrickOption(RT_SHADOW_STATUE) && HasBombchus);}}),
   }, {
                   //Exits
-                  Entrance(RR_SHADOW_TEMPLE_MQ_INVISIBLE_MAZE, {[]{return Bow && CanPlay(SongOfTime) && IsAdult && CanUse(RG_LONGSHOT);}}),
+                  Entrance(RR_SHADOW_TEMPLE_MQ_INVISIBLE_MAZE, {[]{return Bow && CanUse(RG_SONG_OF_TIME) && IsAdult && CanUse(RG_LONGSHOT);}}),
                   Entrance(RR_SHADOW_TEMPLE_BOSS_ENTRYWAY,     {[]{return (CanUse(RG_FAIRY_BOW) || (randoCtx->GetTrickOption(RT_SHADOW_STATUE) && HasBombchus)) && CanUse(RG_HOVER_BOOTS) && BossKeyShadowTemple;}}),
   });
 

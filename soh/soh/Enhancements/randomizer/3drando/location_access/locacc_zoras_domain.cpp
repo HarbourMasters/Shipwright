@@ -18,19 +18,19 @@ void AreaTable_Init_ZorasDomain() {
   areaTable[RR_ZORAS_RIVER] = Area("Zora River", "Zora River", RA_ZORAS_RIVER, DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&GossipStoneFairy, {[]{return GossipStoneFairy || CanSummonGossipFairy;}}),
-                  EventAccess(&BeanPlantFairy,   {[]{return BeanPlantFairy   || (CanPlantBean(RR_ZORAS_RIVER) && CanPlay(SongOfStorms));}}),
+                  EventAccess(&BeanPlantFairy,   {[]{return BeanPlantFairy   || (CanPlantBean(RR_ZORAS_RIVER) && CanUse(RG_SONG_OF_STORMS));}}),
                   EventAccess(&ButterflyFairy,   {[]{return ButterflyFairy   || CanUse(RG_STICKS);}}),
                   EventAccess(&BugShrub,         {[]{return BugShrub         || CanCutShrubs;}}),
                 }, {
                   //Locations
                   LocationAccess(RC_ZR_MAGIC_BEAN_SALESMAN,               {[]{return IsChild;}}),
-                  LocationAccess(RC_ZR_FROGS_OCARINA_GAME,                {[]{return IsChild && CanPlay(ZeldasLullaby) && CanPlay(SariasSong) && CanPlay(SunsSong) && CanPlay(EponasSong) && CanPlay(SongOfTime) && CanPlay(SongOfStorms);}}),
-                  LocationAccess(RC_ZR_FROGS_IN_THE_RAIN,                 {[]{return IsChild && CanPlay(SongOfStorms);}}),
-                  LocationAccess(RC_ZR_FROGS_ZELDAS_LULLABY,              {[]{return IsChild && CanPlay(ZeldasLullaby);}}),
-                  LocationAccess(RC_ZR_FROGS_EPONAS_SONG,                 {[]{return IsChild && CanPlay(EponasSong);}}),
-                  LocationAccess(RC_ZR_FROGS_SARIAS_SONG,                 {[]{return IsChild && CanPlay(SariasSong);}}),
-                  LocationAccess(RC_ZR_FROGS_SUNS_SONG,                   {[]{return IsChild && CanPlay(SunsSong);}}),
-                  LocationAccess(RC_ZR_FROGS_SONG_OF_TIME,                {[]{return IsChild && CanPlay(SongOfTime);}}),
+                  LocationAccess(RC_ZR_FROGS_OCARINA_GAME,                {[]{return IsChild && CanUse(RG_ZELDAS_LULLABY) && CanUse(RG_SARIAS_SONG) && CanUse(RG_SUNS_SONG) && CanUse(RG_EPONAS_SONG) && CanUse(RG_SONG_OF_TIME) && CanUse(RG_SONG_OF_STORMS);}}),
+                  LocationAccess(RC_ZR_FROGS_IN_THE_RAIN,                 {[]{return IsChild && CanUse(RG_SONG_OF_STORMS);}}),
+                  LocationAccess(RC_ZR_FROGS_ZELDAS_LULLABY,              {[]{return IsChild && CanUse(RG_ZELDAS_LULLABY);}}),
+                  LocationAccess(RC_ZR_FROGS_EPONAS_SONG,                 {[]{return IsChild && CanUse(RG_EPONAS_SONG);}}),
+                  LocationAccess(RC_ZR_FROGS_SARIAS_SONG,                 {[]{return IsChild && CanUse(RG_SARIAS_SONG);}}),
+                  LocationAccess(RC_ZR_FROGS_SUNS_SONG,                   {[]{return IsChild && CanUse(RG_SUNS_SONG);}}),
+                  LocationAccess(RC_ZR_FROGS_SONG_OF_TIME,                {[]{return IsChild && CanUse(RG_SONG_OF_TIME);}}),
                   LocationAccess(RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH, {[]{return IsChild || CanUse(RG_HOVER_BOOTS) || (IsAdult && randoCtx->GetTrickOption(RT_ZR_LOWER));}}),
                   LocationAccess(RC_ZR_NEAR_DOMAIN_FREESTANDING_POH,      {[]{return IsChild || CanUse(RG_HOVER_BOOTS) || (IsAdult && randoCtx->GetTrickOption(RT_ZR_UPPER));}}),
                   LocationAccess(RC_ZR_GS_LADDER,                         {[]{return IsChild && AtNight && CanChildAttack && CanGetNightTimeGS;}}),
@@ -45,7 +45,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(RR_ZR_FAIRY_GROTTO,     {[]{return Here(RR_ZORAS_RIVER, []{return CanBlastOrSmash;});}}),
                   Entrance(RR_THE_LOST_WOODS,      {[]{return CanDive || CanUse(RG_IRON_BOOTS);}}),
                   Entrance(RR_ZR_STORMS_GROTTO,    {[]{return CanOpenStormGrotto;}}),
-                  Entrance(RR_ZR_BEHIND_WATERFALL, {[]{return CanPlay(ZeldasLullaby) || (IsChild && randoCtx->GetTrickOption(RT_ZR_CUCCO)) || (IsAdult && CanUse(RG_HOVER_BOOTS) && randoCtx->GetTrickOption(RT_ZR_HOVERS));}}),
+                  Entrance(RR_ZR_BEHIND_WATERFALL, {[]{return CanUse(RG_ZELDAS_LULLABY) || (IsChild && randoCtx->GetTrickOption(RT_ZR_CUCCO)) || (IsAdult && CanUse(RG_HOVER_BOOTS) && randoCtx->GetTrickOption(RT_ZR_HOVERS));}}),
   });
 
   areaTable[RR_ZR_BEHIND_WATERFALL] = Area("ZR Behind Waterfall", "Zora River", RA_ZORAS_RIVER, DAY_NIGHT_CYCLE, {}, {}, {
@@ -158,7 +158,7 @@ void AreaTable_Init_ZorasDomain() {
 
   areaTable[RR_ZF_GREAT_FAIRY_FOUNTAIN] = Area("ZF Great Fairy Fountain", "ZF Great Fairy Fountain", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_ZF_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby);}}),
+                  LocationAccess(RC_ZF_GREAT_FAIRY_REWARD, {[]{return CanUse(RG_ZELDAS_LULLABY);}}),
                 }, {
                   //Exits
                   Entrance(RR_ZORAS_FOUNTAIN, {[]{return true;}}),

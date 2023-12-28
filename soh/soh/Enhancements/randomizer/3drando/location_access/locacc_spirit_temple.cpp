@@ -56,11 +56,11 @@ void AreaTable_Init_SpiritTemple() {
 
   areaTable[RR_SPIRIT_TEMPLE_EARLY_ADULT] = Area("Early Adult Spirit Temple", "Spirit Temple", RA_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_SPIRIT_TEMPLE_COMPASS_CHEST,            {[]{return CanUse(RG_HOOKSHOT) && CanPlay(ZeldasLullaby);}}),
+                  LocationAccess(RC_SPIRIT_TEMPLE_COMPASS_CHEST,            {[]{return CanUse(RG_HOOKSHOT) && CanUse(RG_ZELDAS_LULLABY);}}),
                   LocationAccess(RC_SPIRIT_TEMPLE_EARLY_ADULT_RIGHT_CHEST,  {[]{return (CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG) || HasBombchus || (Bombs && IsAdult && randoCtx->GetTrickOption(RT_SPIRIT_LOWER_ADULT_SWITCH))) && (CanUse(RG_HOVER_BOOTS) || CanJumpslash);}}),
                   LocationAccess(RC_SPIRIT_TEMPLE_FIRST_MIRROR_LEFT_CHEST,  {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 3);}}),
                   LocationAccess(RC_SPIRIT_TEMPLE_FIRST_MIRROR_RIGHT_CHEST, {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 3);}}),
-                  LocationAccess(RC_SPIRIT_TEMPLE_GS_BOULDER_ROOM,          {[]{return CanPlay(SongOfTime) && (Bow || Hookshot || HasBombchus || (Bombs && randoCtx->GetTrickOption(RT_SPIRIT_LOWER_ADULT_SWITCH)));}}),
+                  LocationAccess(RC_SPIRIT_TEMPLE_GS_BOULDER_ROOM,          {[]{return CanUse(RG_SONG_OF_TIME) && (Bow || Hookshot || HasBombchus || (Bombs && randoCtx->GetTrickOption(RT_SPIRIT_LOWER_ADULT_SWITCH)));}}),
                 }, {
                   //Exits
                   Entrance(RR_SPIRIT_TEMPLE_CENTRAL_CHAMBER, {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 1);}}),
@@ -85,8 +85,8 @@ void AreaTable_Init_SpiritTemple() {
                                                                                             (SmallKeys(RR_SPIRIT_TEMPLE, 3) &&
                                                                                                 (CanUse(RG_FIRE_ARROWS) || (randoCtx->GetTrickOption(RT_SPIRIT_SUN_CHEST) && Bow)) &&
                                                                                                 CanUse(RG_SILVER_GAUNTLETS));}}),
-                  LocationAccess(RC_SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST,       {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 3) && CanUse(RG_SILVER_GAUNTLETS) && CanPlay(ZeldasLullaby);}}),
-                  LocationAccess(RC_SPIRIT_TEMPLE_STATUE_ROOM_NORTHEAST_CHEST,  {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 3) && CanUse(RG_SILVER_GAUNTLETS) && CanPlay(ZeldasLullaby) && (Hookshot || HoverBoots || randoCtx->GetTrickOption(RT_SPIRIT_LOBBY_JUMP));}}),
+                  LocationAccess(RC_SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST,       {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 3) && CanUse(RG_SILVER_GAUNTLETS) && CanUse(RG_ZELDAS_LULLABY);}}),
+                  LocationAccess(RC_SPIRIT_TEMPLE_STATUE_ROOM_NORTHEAST_CHEST,  {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 3) && CanUse(RG_SILVER_GAUNTLETS) && CanUse(RG_ZELDAS_LULLABY) && (Hookshot || HoverBoots || randoCtx->GetTrickOption(RT_SPIRIT_LOBBY_JUMP));}}),
                   LocationAccess(RC_SPIRIT_TEMPLE_GS_HALL_AFTER_SUN_BLOCK_ROOM, {[]{return (HasExplosives && Boomerang && Hookshot) ||
                                                                                             (CanUse(RG_BOOMERANG) && SmallKeys(RR_SPIRIT_TEMPLE, 5) && HasExplosives) ||
                                                                                             (Hookshot && CanUse(RG_SILVER_GAUNTLETS) &&
@@ -124,7 +124,7 @@ void AreaTable_Init_SpiritTemple() {
 
   areaTable[RR_SPIRIT_TEMPLE_BEYOND_FINAL_LOCKED_DOOR] = Area("Spirit Temple Beyond Final Locked Door", "Spirit Temple", RA_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_SPIRIT_TEMPLE_BOSS_KEY_CHEST, {[]{return CanPlay(ZeldasLullaby) && ((CanTakeDamage && randoCtx->GetTrickOption(RT_FLAMING_CHESTS)) || (Bow && Hookshot));}}),
+                  LocationAccess(RC_SPIRIT_TEMPLE_BOSS_KEY_CHEST, {[]{return CanUse(RG_ZELDAS_LULLABY) && ((CanTakeDamage && randoCtx->GetTrickOption(RT_FLAMING_CHESTS)) || (Bow && Hookshot));}}),
                   LocationAccess(RC_SPIRIT_TEMPLE_TOPMOST_CHEST,  {[]{return (MirrorShield && CanAdultAttack) || (randoCtx->GetOption(RSK_SUNLIGHT_ARROWS) && CanUse(RG_LIGHT_ARROWS));}}),
   }, {
                   //Exits
@@ -164,8 +164,8 @@ void AreaTable_Init_SpiritTemple() {
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST,  {[]{return Here(RR_SPIRIT_TEMPLE_MQ_ADULT, []{return SmallKeys(RR_SPIRIT_TEMPLE, 7) && Hammer;});}}),
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_MAP_ROOM_ENEMY_CHEST,       {[]{return KokiriSword && HasBombchus && Slingshot && CanUse(RG_DINS_FIRE);}}),
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_MAP_CHEST,                  {[]{return KokiriSword || Bombs;}}),
-                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_SILVER_BLOCK_HALLWAY_CHEST, {[]{return HasBombchus && SmallKeys(RR_SPIRIT_TEMPLE, 7) && Slingshot && (CanUse(RG_DINS_FIRE) || (Here(RR_SPIRIT_TEMPLE_MQ_ADULT, []{return IsAdult && (CanUse(RG_FIRE_ARROWS) || (randoCtx->GetTrickOption(RT_SPIRIT_MQ_FROZEN_EYE) && CanUse(RG_FAIRY_BOW) && CanPlay(SongOfTime)));})));}}),
-                    //Trick: HasBombchus && SmallKeys(RR_SPIRIT_TEMPLE, 7) && Slingshot && (CanUse(RG_DINS_FIRE) || (SPIRIT_TEMPLE_MQ_ADULT.Adult() && IsAdult && (CanUse(RG_FIRE_ARROWS) || (LogicSpiritMQFrozenEye && CanUse(RG_FAIRY_BOW) && CanPlay(SongOfTime)))))
+                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_SILVER_BLOCK_HALLWAY_CHEST, {[]{return HasBombchus && SmallKeys(RR_SPIRIT_TEMPLE, 7) && Slingshot && (CanUse(RG_DINS_FIRE) || (Here(RR_SPIRIT_TEMPLE_MQ_ADULT, []{return IsAdult && (CanUse(RG_FIRE_ARROWS) || (randoCtx->GetTrickOption(RT_SPIRIT_MQ_FROZEN_EYE) && CanUse(RG_FAIRY_BOW) && CanUse(RG_SONG_OF_TIME)));})));}}),
+                    //Trick: HasBombchus && SmallKeys(RR_SPIRIT_TEMPLE, 7) && Slingshot && (CanUse(RG_DINS_FIRE) || (SPIRIT_TEMPLE_MQ_ADULT.Adult() && IsAdult && (CanUse(RG_FIRE_ARROWS) || (LogicSpiritMQFrozenEye && CanUse(RG_FAIRY_BOW) && CanUse(RG_SONG_OF_TIME)))))
   }, {
                   //Exits
                   Entrance(RR_SPIRIT_TEMPLE_MQ_SHARED, {[]{return HasBombchus && SmallKeys(RR_SPIRIT_TEMPLE, 2);}}),
@@ -174,11 +174,11 @@ void AreaTable_Init_SpiritTemple() {
   areaTable[RR_SPIRIT_TEMPLE_MQ_ADULT] = Area("Spirit Temple MQ Adult", "Spirit Temple", RA_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_SOUTH_CHEST,     {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 7);}}),
-                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_STATUE_ROOM_LULLABY_CHEST,   {[]{return CanPlay(ZeldasLullaby) && (CanJumpslash || CanUse(RG_HOVER_BOOTS));}}),
+                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_STATUE_ROOM_LULLABY_CHEST,   {[]{return CanUse(RG_ZELDAS_LULLABY) && (CanJumpslash || CanUse(RG_HOVER_BOOTS));}}),
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_STATUE_ROOM_INVISIBLE_CHEST, {[]{return (randoCtx->GetTrickOption(RT_LENS_SPIRIT_MQ) || CanUse(RG_LENS_OF_TRUTH));}}),
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_BEAMOS_ROOM_CHEST,           {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 5);}}),
-                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_CHEST_SWITCH_CHEST,          {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 5) && CanPlay(SongOfTime);}}),
-                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_BOSS_KEY_CHEST,              {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 5) && CanPlay(SongOfTime) && (MirrorShield || (randoCtx->GetOption(RSK_SUNLIGHT_ARROWS) && CanUse(RG_LIGHT_ARROWS)));}}),
+                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_CHEST_SWITCH_CHEST,          {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 5) && CanUse(RG_SONG_OF_TIME);}}),
+                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_BOSS_KEY_CHEST,              {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 5) && CanUse(RG_SONG_OF_TIME) && (MirrorShield || (randoCtx->GetOption(RSK_SUNLIGHT_ARROWS) && CanUse(RG_LIGHT_ARROWS)));}}),
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_WEST,   {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 7);}}),
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_NORTH,  {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 7);}}),
   }, {
@@ -186,24 +186,24 @@ void AreaTable_Init_SpiritTemple() {
                   Entrance(RR_SPIRIT_TEMPLE_MQ_LOWER_ADULT,        {[]{return MirrorShield && IsAdult && (CanUse(RG_FIRE_ARROWS) || (randoCtx->GetTrickOption(RT_SPIRIT_MQ_LOWER_ADULT) && CanUse(RG_DINS_FIRE) && Bow));}}),
                     //Trick: MirrorShield && IsAdult && (CanUse(RG_FIRE_ARROWS) || (LogicSpiritMQLowerAdult && CanUse(RG_DINS_FIRE) && Bow))
                   Entrance(RR_SPIRIT_TEMPLE_MQ_SHARED,             {[]{return true;}}),
-                  Entrance(RR_SPIRIT_TEMPLE_MQ_BOSS_AREA,          {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 6) && CanPlay(ZeldasLullaby) && Hammer;}}),
-                  Entrance(RR_SPIRIT_TEMPLE_MQ_MIRROR_SHIELD_HAND, {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 5) && CanPlay(SongOfTime) && CanJumpslash && (randoCtx->GetTrickOption(RT_LENS_SPIRIT_MQ) || CanUse(RG_LENS_OF_TRUTH));}}),
+                  Entrance(RR_SPIRIT_TEMPLE_MQ_BOSS_AREA,          {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 6) && CanUse(RG_ZELDAS_LULLABY) && Hammer;}}),
+                  Entrance(RR_SPIRIT_TEMPLE_MQ_MIRROR_SHIELD_HAND, {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 5) && CanUse(RG_SONG_OF_TIME) && CanJumpslash && (randoCtx->GetTrickOption(RT_LENS_SPIRIT_MQ) || CanUse(RG_LENS_OF_TRUTH));}}),
   });
 
   areaTable[RR_SPIRIT_TEMPLE_MQ_SHARED] = Area("Spirit Temple MQ Shared", "Spirit Temple", RA_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_NORTH_CHEST, {[]{return SmallKeys(RR_SPIRIT_TEMPLE, 6);}}),
                   LocationAccess(RC_SPIRIT_TEMPLE_MQ_COMPASS_CHEST,           {[]{return (IsChild && CanUse(RG_FAIRY_SLINGSHOT) && SmallKeys(RR_SPIRIT_TEMPLE, 7)) || (IsAdult && CanUse(RG_FAIRY_BOW)) || (Bow && Slingshot);}}),
-                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM_CHEST,    {[]{return CanPlay(SongOfTime) || randoCtx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) || IsAdult;}}),
-                    //Trick: CanPlay(SongOfTime) || LogicSpiritMQSunBlockSoT || IsAdult
-                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM,       {[]{return (randoCtx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_GS) && Boomerang && (CanPlay(SongOfTime) || randoCtx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT))) || IsAdult;}}),
-                    //Trick: (LogicSpiritMQSunBlockGS && Boomerang && (CanPlay(SongOfTime) || LogicSpiritMQSunBlockSoT)) || IsAdult
+                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM_CHEST,    {[]{return CanUse(RG_SONG_OF_TIME) || randoCtx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) || IsAdult;}}),
+                    //Trick: CanUse(RG_SONG_OF_TIME) || LogicSpiritMQSunBlockSoT || IsAdult
+                  LocationAccess(RC_SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM,       {[]{return (randoCtx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_GS) && Boomerang && (CanUse(RG_SONG_OF_TIME) || randoCtx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT))) || IsAdult;}}),
+                    //Trick: (LogicSpiritMQSunBlockGS && Boomerang && (CanUse(RG_SONG_OF_TIME) || LogicSpiritMQSunBlockSoT)) || IsAdult
    }, {
                   //Exits
-                  Entrance(RR_SPIRIT_TEMPLE_MQ_SILVER_GAUNTLETS_HAND, {[]{return (SmallKeys(RR_SPIRIT_TEMPLE, 7) && (CanPlay(SongOfTime) || randoCtx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) || IsAdult)) || (SmallKeys(RR_SPIRIT_TEMPLE, 4) && CanPlay(SongOfTime) && CanJumpslash && (randoCtx->GetTrickOption(RT_LENS_SPIRIT_MQ) || CanUse(RG_LENS_OF_TRUTH)));}}),
-                    //Trick: (SmallKeys(RR_SPIRIT_TEMPLE, 7) && (CanPlay(SongOfTime) || LogicSpiritMQSunBlockSoT || IsAdult)) || (SmallKeys(RR_SPIRIT_TEMPLE, 4) && CanPlay(SongOfTime) && (LogicLensSpiritMQ || CanUse(RG_LENS_OF_TRUTH)))
-                  Entrance(RR_DESERT_COLOSSUS,                        {[]{return (SmallKeys(RR_SPIRIT_TEMPLE, 7) && (CanPlay(SongOfTime) || randoCtx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) || IsAdult)) || (SmallKeys(RR_SPIRIT_TEMPLE, 4) && CanPlay(SongOfTime) && CanJumpslash && (randoCtx->GetTrickOption(RT_LENS_SPIRIT_MQ) || CanUse(RG_LENS_OF_TRUTH)) && IsAdult);}}),
-                    //Trick: (SmallKeys(RR_SPIRIT_TEMPLE, 7) && (CanPlay(SongOfTime) || LogicSpiritMQSunBlockSoT || IsAdult)) || (SmallKeys(RR_SPIRIT_TEMPLE, 4) && CanPlay(SongOfTime) && (LogicLensSpiritMQ || CanUse(RG_LENS_OF_TRUTH)) && IsAdult)
+                  Entrance(RR_SPIRIT_TEMPLE_MQ_SILVER_GAUNTLETS_HAND, {[]{return (SmallKeys(RR_SPIRIT_TEMPLE, 7) && (CanUse(RG_SONG_OF_TIME) || randoCtx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) || IsAdult)) || (SmallKeys(RR_SPIRIT_TEMPLE, 4) && CanUse(RG_SONG_OF_TIME) && CanJumpslash && (randoCtx->GetTrickOption(RT_LENS_SPIRIT_MQ) || CanUse(RG_LENS_OF_TRUTH)));}}),
+                    //Trick: (SmallKeys(RR_SPIRIT_TEMPLE, 7) && (CanUse(RG_SONG_OF_TIME) || LogicSpiritMQSunBlockSoT || IsAdult)) || (SmallKeys(RR_SPIRIT_TEMPLE, 4) && CanUse(RG_SONG_OF_TIME) && (LogicLensSpiritMQ || CanUse(RG_LENS_OF_TRUTH)))
+                  Entrance(RR_DESERT_COLOSSUS,                        {[]{return (SmallKeys(RR_SPIRIT_TEMPLE, 7) && (CanUse(RG_SONG_OF_TIME) || randoCtx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) || IsAdult)) || (SmallKeys(RR_SPIRIT_TEMPLE, 4) && CanUse(RG_SONG_OF_TIME) && CanJumpslash && (randoCtx->GetTrickOption(RT_LENS_SPIRIT_MQ) || CanUse(RG_LENS_OF_TRUTH)) && IsAdult);}}),
+                    //Trick: (SmallKeys(RR_SPIRIT_TEMPLE, 7) && (CanUse(RG_SONG_OF_TIME) || LogicSpiritMQSunBlockSoT || IsAdult)) || (SmallKeys(RR_SPIRIT_TEMPLE, 4) && CanUse(RG_SONG_OF_TIME) && (LogicLensSpiritMQ || CanUse(RG_LENS_OF_TRUTH)) && IsAdult)
   });
 
   areaTable[RR_SPIRIT_TEMPLE_MQ_LOWER_ADULT] = Area("Spirit Temple MQ Lower Adult", "Spirit Temple", RA_SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
