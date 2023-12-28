@@ -1153,7 +1153,7 @@ void PatchToTMedallions() {
 
 void RegisterToTMedallionsFromItem() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry _unused) { 
-        if (!CVarGetInteger("gToTMedallionsColours", 0)) {
+        if (!CVarGetInteger("gToTMedallionsColours", 0) && gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
             return;
         }
         PatchToTMedallions();

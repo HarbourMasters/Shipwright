@@ -965,7 +965,7 @@ void DrawEnhancementsMenu() {
             if (UIWidgets::PaddedEnhancementCheckbox("Colour Temple of Time's Medallions", "gToTMedallionsColours", true, false)) {
                 PatchToTMedallions();
             }
-            UIWidgets::Tooltip("Colours (or not) the Temple of Time Medallions");
+            UIWidgets::Tooltip("When medallions are collected, the medallion imprints around the Master Sword pedestal in the Temple of Time will become colored");
             UIWidgets::Spacer(0);
             if (ImGui::BeginMenu("Animated Link in Pause Menu")) {
                 ImGui::Text("Rotation");
