@@ -817,6 +817,14 @@ void DrawEnhancementsMenu() {
 
                 UIWidgets::Spacer(0);
 
+                UIWidgets::PaddedEnhancementCheckbox("Delete File On Death", "gDeleteFileOnDeath", true, false);
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+                UIWidgets::Tooltip("Dying will delete your file\n\n     " ICON_FA_EXCLAMATION_TRIANGLE " WARNING " ICON_FA_EXCLAMATION_TRIANGLE "\nTHIS IS NOT REVERSABLE\nUSE AT YOUR OWN RISK!");
+                ImGui::PopStyleColor();
+                if (UIWidgets::PaddedEnhancementCheckbox("Permanent heart loss", "gPermanentHeartLoss", true, false)) {
+                    UpdatePermanentHeartLossState();
+                }
+                UIWidgets::Tooltip("When you lose 4 quarters of a heart you will permanently lose that heart container.\n\nDisabling this after the fact will restore your heart containers.");
                 ImGui::Text("Damage Multiplier");
                 UIWidgets::EnhancementCombobox("gDamageMul", allPowers, 0);
                 UIWidgets::Tooltip(
@@ -1512,6 +1520,26 @@ void DrawDeveloperToolsMenu() {
         UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
         UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", "gDebugWarpScreenTranslation", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
         UIWidgets::Tooltip("Translate the Debug Warp Screen based on the game language");
+        if (gPlayState != NULL) {
+            UIWidgets::PaddedSeparator();
+            ImGui::Checkbox("Frame Advance##frameAdvance", (bool*)&gPlayState->frameAdvCtx.enabled);
+            if (gPlayState->frameAdvCtx.enabled) {
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
+                ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0,0));
+                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+                if (ImGui::Button("Advance 1", ImVec2(ImGui::GetContentRegionAvail().x / 2.0f, 0.0f))) {
+                    CVarSetInteger("gFrameAdvance", 1);
+                }
+                ImGui::SameLine();
+                ImGui::Button("Advance (Hold)");
+                if (ImGui::IsItemActive()) {
+                    CVarSetInteger("gFrameAdvance", 1);
+                }
+                ImGui::PopStyleVar(3);
+                ImGui::PopStyleColor(1);
+            }
+        }
         UIWidgets::PaddedSeparator();
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0,0));
