@@ -1127,6 +1127,17 @@ void RegisterRandomizedEnemySizes() {
         }
 
         Actor_SetScale(actor, actor->scale.z * randomScale);
+
+        if (CVarGetInteger("gEnemySizeScalesHealth", 0) && (actor->category == ACTORCAT_ENEMY)) {
+            // Scale the health based on a smaller factor than randomScale
+            float healthScalingFactor = 0.8f; // Adjust this factor as needed
+            float scaledHealth = actor->colChkInfo.health * (randomScale * healthScalingFactor);
+
+            // Ensure the scaled health doesn't go below zero
+            actor->colChkInfo.health = fmax(scaledHealth, 1.0f);
+        } else {
+            return;
+        }
     });
 }
 
