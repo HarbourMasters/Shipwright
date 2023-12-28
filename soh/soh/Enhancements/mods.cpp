@@ -414,6 +414,52 @@ void RegisterShadowTag() {
     });
 }
 
+static bool hasAffectedHealth = false;
+void UpdatePermanentHeartLossState() {
+    if (!GameInteractor::IsSaveLoaded()) return;
+
+    if (!CVarGetInteger("gPermanentHeartLoss", 0) && hasAffectedHealth) {
+        uint8_t heartContainers = gSaveContext.sohStats.heartContainers; // each worth 16 health
+        uint8_t heartPieces = gSaveContext.sohStats.heartPieces; // each worth 4 health, but only in groups of 4
+        uint8_t startingHealth = 16 * 3;
+
+
+        uint8_t newCapacity = startingHealth + (heartContainers * 16) + ((heartPieces - (heartPieces % 4)) * 4);
+        gSaveContext.healthCapacity = MAX(newCapacity, gSaveContext.healthCapacity);
+        gSaveContext.health = MIN(gSaveContext.health, gSaveContext.healthCapacity);
+        hasAffectedHealth = false;
+    }
+}
+
+void RegisterPermanentHeartLoss() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int16_t fileNum) {
+        hasAffectedHealth = false;
+        UpdatePermanentHeartLossState();
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (!CVarGetInteger("gPermanentHeartLoss", 0) || !GameInteractor::IsSaveLoaded()) return;
+
+        if (gSaveContext.healthCapacity > 16 && gSaveContext.healthCapacity - gSaveContext.health >= 16) {
+            gSaveContext.healthCapacity -= 16;
+            gSaveContext.health = MIN(gSaveContext.health, gSaveContext.healthCapacity);
+            hasAffectedHealth = true;
+        }
+    });
+};
+
+void RegisterDeleteFileOnDeath() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!CVarGetInteger("gDeleteFileOnDeath", 0) || !GameInteractor::IsSaveLoaded() || &gPlayState->gameOverCtx == NULL || &gPlayState->pauseCtx == NULL) return;
+
+        if (gPlayState->gameOverCtx.state == GAMEOVER_DEATH_MENU && gPlayState->pauseCtx.state == 9) {
+            SaveManager::Instance->DeleteZeldaFile(gSaveContext.fileNum);
+            hasAffectedHealth = false;
+            std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
+        }
+    });
+}
+
 struct DayTimeGoldSkulltulas {
     uint16_t scene;
     uint16_t room;
@@ -1055,8 +1101,8 @@ void RegisterRandomizedEnemySizes() {
         uint8_t excludedEnemy = actor->id == ACTOR_EN_BROB || actor->id == ACTOR_EN_DHA || (actor->id == ACTOR_BOSS_SST && actor->params == -1);
 
         // Dodongo, Volvagia and Dead Hand are always smaller because they're impossible when bigger.
-        uint8_t smallOnlyEnemy =
-            actor->id == ACTOR_BOSS_DODONGO || actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || ACTOR_EN_DH;
+        uint8_t smallOnlyEnemy = actor->id == ACTOR_BOSS_DODONGO || actor->id == ACTOR_BOSS_FD ||
+                                 actor->id == ACTOR_BOSS_FD2 || actor->id == ACTOR_EN_DH;
 
         // Only apply to enemies and bosses.
         if (!CVarGetInteger("gRandomizedEnemySizes", 0) || (actor->category != ACTORCAT_ENEMY && actor->category != ACTORCAT_BOSS) || excludedEnemy) {
@@ -1187,6 +1233,8 @@ void InitMods() {
     RegisterDaytimeGoldSkultullas();
     RegisterRupeeDash();
     RegisterShadowTag();
+    RegisterPermanentHeartLoss();
+    RegisterDeleteFileOnDeath();
     RegisterHyperBosses();
     RegisterHyperEnemies();
     RegisterBonkDamage();
