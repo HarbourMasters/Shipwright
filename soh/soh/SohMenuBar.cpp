@@ -994,7 +994,7 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Always shows dungeon entrance icons on the minimap");
             UIWidgets::PaddedEnhancementCheckbox("Show Gauntlets in First Person", "gFPSGauntlets", true, false);
             UIWidgets::Tooltip("Renders Gauntlets when using the Bow and Hookshot like in OOT3D");
-            if (UIWidgets::PaddedEnhancementCheckbox("Colour Temple of Time's Medallions", "gToTMedallionsColours", true, false)) {
+            if (UIWidgets::PaddedEnhancementCheckbox("Color Temple of Time's Medallions", "gToTMedallionsColors", true, false)) {
                 PatchToTMedallions();
             }
             UIWidgets::Tooltip("When medallions are collected, the medallion imprints around the Master Sword pedestal in the Temple of Time will become colored");

@@ -44,7 +44,7 @@ uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 #define dgEndGrayscaleAndEndDlistDL "__OTR__helpers/cosmetics/gEndGrayscaleAndEndDlistDL"
 static const ALIGN_ASSET(2) char gEndGrayscaleAndEndDlistDL[] = dgEndGrayscaleAndEndDlistDL;
 
-// This is used for the Temple of Time Medalions' colour
+// This is used for the Temple of Time Medalions' color
 #define dtokinoma_room_0DL_007A70 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007A70"
 static const ALIGN_ASSET(2) char tokinoma_room_0DL_007A70[] = dtokinoma_room_0DL_007A70;
 #define dtokinoma_room_0DL_007FD0 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007FD0"
@@ -1133,7 +1133,7 @@ void RegisterRandomizedEnemySizes() {
 void PatchToTMedallions() {
     // TODO: Refactor the DemoEffect_UpdateJewelAdult and DemoEffect_UpdateJewelChild from z_demo_effect
     // effects to take effect in there
-    if (CVarGetInteger("gToTMedallionsColours", 0)) {
+    if (CVarGetInteger("gToTMedallionsColors", 0)) {
         ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_StartGrayscale", 7, gsSPGrayscale(true));
         ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_StartGrayscale", 7, gsSPGrayscale(true));
 
@@ -1199,7 +1199,7 @@ void PatchToTMedallions() {
 
 void RegisterToTMedallionsFromItem() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry _unused) { 
-        if (!CVarGetInteger("gToTMedallionsColours", 0) && gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
+        if (!CVarGetInteger("gToTMedallionsColors", 0) && gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
             return;
         }
         PatchToTMedallions();
@@ -1208,7 +1208,7 @@ void RegisterToTMedallionsFromItem() {
 
 void RegisterToTMedallionsFromScene() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) { 
-        if (!CVarGetInteger("gToTMedallionsColours", 0) && gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
+        if (!CVarGetInteger("gToTMedallionsColors", 0) && gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
             return;
         }
         PatchToTMedallions();
