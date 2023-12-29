@@ -211,6 +211,13 @@ void EnInsect_Init(Actor* thisx, PlayState* play2) {
 
         func_80A7D39C(this);
 
+        // For bugs that aren't linked to a soil patch, we remove the "short lived" flag to prevent them from despawning
+        // And exit early to not increment the "bugs dropped count"
+        if (CVarGetInteger("gNoBugsDespawn", 0) && this->soilActor == NULL) {
+            this->unk_314 &= ~4;
+            return;
+        }
+
         D_80A7DEB8++;
     } else {
         rand = Rand_ZeroOne();
@@ -394,9 +401,6 @@ void func_80A7CAD0(EnInsect* this, PlayState* play) {
 }
 
 void func_80A7CBC8(EnInsect* this) {
-    if (CVarGetInteger("gNoBugsDespawn", 0) != 0) {
-        return;
-    }
     this->unk_31A = 60;
     func_80A7BF58(this);
     this->skelAnime.playSpeed = 1.9f;
