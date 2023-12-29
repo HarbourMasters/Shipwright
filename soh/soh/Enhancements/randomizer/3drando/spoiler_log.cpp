@@ -437,7 +437,7 @@ static void WriteEnabledTricks(tinyxml2::XMLDocument& spoilerLog) {
     if (setting->GetSelectedOptionIndex() != RO_GENERIC_ON/* || !setting->IsCategory(OptionCategory::Setting)*/) {
       continue;
     }
-    jsonData["enabledTricks"].push_back(RemoveLineBreaks(RandomizerTricks::GetRTName((RandomizerTrick)std::stoi(setting->GetName()))).c_str());
+    jsonData["enabledTricks"].push_back(RemoveLineBreaks(setting->GetName()).c_str());
     //auto node = parentNode->InsertNewChildElement("trick");
     //node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
   }
