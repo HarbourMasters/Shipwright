@@ -162,7 +162,7 @@ extern uint8_t GoldSkulltulaTokens;
 // Bottle Count, with and without Ruto's Letter
 extern uint8_t Bottles;
 extern uint8_t NumBottles;
-extern bool NoBottles;
+extern bool TradeBigPoes;
 
 // item and bottle drops
 extern bool DekuNutDrop;

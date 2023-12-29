@@ -459,7 +459,7 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
     // Conditions will be checked during the search and any that fail will be figured out
     // afterwards
     Logic::LogicReset();
-    GetAccessibleLocations({}, SearchMode::ValidateWorld, RG_NONE, checkPoeCollectorAccess, checkOtherEntranceAccess);
+    ValidateEntrances();
 
     if (!ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
         // Unless entrances are decoupled, we don't want the player to end up through certain entrances as the wrong age
@@ -762,7 +762,7 @@ static std::array<std::vector<Entrance*>, 2> SplitEntrancesByRequirements(std::v
         Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
     }
     // run a search to see what's accessible
-    GetAccessibleLocations({});
+    ReachabilitySearch({});
 
     for (Entrance* entrance : entrancesToSplit) {
         // if an entrance is accessible at all times of day by both ages, it's a soft entrance with no restrictions

@@ -164,9 +164,10 @@ namespace Logic {
   uint8_t GoldSkulltulaTokens = 0;
 
   //Bottle Count
-  uint8_t   Bottles    = 0;
-  uint8_t   NumBottles = 0;
-  bool NoBottles  = false;
+  uint8_t Bottles      = 0;
+  uint8_t NumBottles   = 0;
+  //RANDOTODO find better way to handle big poe anti-softlock logic while preserving child use of bottles with closed DoT
+  bool TradeBigPoes    = true; 
 
   //Drops and Bottle Contents Access
   bool DekuNutDrop      = false;
@@ -573,7 +574,7 @@ namespace Logic {
                       (OcarinaCRightButton ? 1 : 0) +
                       (OcarinaCUpButton ? 1 : 0) +
                       (OcarinaCDownButton ? 1 : 0);
-    NumBottles      = ((NoBottles) ? 0 : (Bottles + ((DeliverLetter) ? 1 : 0)));
+    NumBottles      = ((TradeBigPoes) ? (Bottles + ((DeliverLetter) ? 1 : 0)) : 0);
     HasBottle       = NumBottles >= 1;
     Slingshot       = (ProgressiveBulletBag >= 1) && (BuySeed || AmmoCanDrop);
     Ocarina         = ProgressiveOcarina    >= 1;
@@ -968,9 +969,9 @@ namespace Logic {
      GoldSkulltulaTokens = 0;
 
      //Bottle Count
-     Bottles    = 0;
-     NumBottles = 0;
-     NoBottles  = false;
+     Bottles      = 0;
+     NumBottles   = 0;
+     TradeBigPoes = true;
 
      //Triforce Pieces
      TriforcePieces = 0;
