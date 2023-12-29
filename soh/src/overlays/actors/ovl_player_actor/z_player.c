@@ -2010,8 +2010,10 @@ s8 Player_ItemToItemAction(s32 item) {
         return PLAYER_IA_LAST_USED;
     } else if (item == ITEM_FISHING_POLE) {
         return PLAYER_IA_FISHING_POLE;
+    // #region SOH [Enhancement] Added to prevent crashes with assignable equipment
     } else if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
         return PLAYER_IA_NONE;
+    // #endregion
     } else {
         return sItemActions[item];
     }
