@@ -1025,10 +1025,10 @@ void FileChoose_UpdateRandomizer() {
 
     if (CVarGetInteger("gRandomizerNewFileDropped", 0) != 0 || !(Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) &&
         SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && !fileSelectSpoilerFileLoaded) {
-            const char* fileLoc = CVarGetString("gSpoilerLog", "");
             if (CVarGetInteger("gRandomizerNewFileDropped", 0) != 0) {
                 CVarSetString("gSpoilerLog", CVarGetString("gRandomizerDroppedFile", ""));
             }
+            const char* fileLoc = CVarGetString("gSpoilerLog", "");
             CVarSetInteger("gRandomizerNewFileDropped", 0);
             CVarSetString("gRandomizerDroppedFile", "");
             Randomizer_ParseSpoiler(fileLoc);
