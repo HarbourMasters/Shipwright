@@ -2721,6 +2721,8 @@ extern "C" void Save_SaveGlobal(void) {
 }
 
 extern "C" void Save_LoadFile(void) {
+    OTRGlobals::Instance->gRandoContext.reset();
+    OTRGlobals::Instance->gRandoContext = Rando::Context::CreateInstance();
     SaveManager::Instance->LoadFile(gSaveContext.fileNum);
 }
 
