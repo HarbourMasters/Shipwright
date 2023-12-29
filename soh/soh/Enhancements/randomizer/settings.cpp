@@ -99,6 +99,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE] = Option::Bool("Affordable Prices", "gRandomizeShopsanityPricesAffordable", mOptionDescriptions[RSK_SHOPSANITY_PRICES_AFFORDABLE]);
     mOptions[RSK_SHUFFLE_TOKENS] = Option::U8("Tokensanity", {"Off", "Dungeons", "Overworld", "All Tokens"}, OptionCategory::Setting, "gRandomizeShuffleTokens", mOptionDescriptions[RSK_SHUFFLE_TOKENS], WidgetType::Combobox, RO_TOKENSANITY_OFF);
     mOptions[RSK_SHUFFLE_SCRUBS] = Option::U8("Scrub Shuffle", {"Off", "Affordable", "Expensive", "Random Prices"}, OptionCategory::Setting, "gRandomizeShuffleScrubs", mOptionDescriptions[RSK_SHUFFLE_SCRUBS], WidgetType::Combobox, RO_SCRUBS_OFF);
+    mOptions[RSK_SHUFFLE_BEEHIVES] = Option::Bool("Shuffle Beehives", "gRandomizeShuffleBeehives", mOptionDescriptions[RSK_SHUFFLE_BEEHIVES]);
     mOptions[RSK_SHUFFLE_COWS] = Option::Bool("Shuffle Cows", "gRandomizeShuffleCows", mOptionDescriptions[RSK_SHUFFLE_COWS]);
     mOptions[RSK_SHUFFLE_KOKIRI_SWORD] = Option::Bool("Shuffle Kokiri Sword", "gRandomizeShuffleKokiriSword", mOptionDescriptions[RSK_SHUFFLE_KOKIRI_SWORD]);
     mOptions[RSK_SHUFFLE_MASTER_SWORD] = Option::Bool("Shuffle Master Sword", "gRandomizeShuffleMasterSword", mOptionDescriptions[RSK_SHUFFLE_MASTER_SWORD]);
@@ -205,6 +206,7 @@ void Settings::CreateOptions() {
     mTrickOptions[RT_BUNNY_HOOD_JUMPS] = Option::LogicTrick(std::to_string(RT_BUNNY_HOOD_JUMPS));
     mTrickOptions[RT_DAMAGE_BOOST_SIMPLE] = Option::LogicTrick(std::to_string(RT_DAMAGE_BOOST_SIMPLE));
     mTrickOptions[RT_HOVER_BOOST_SIMPLE] = Option::LogicTrick(std::to_string(RT_HOVER_BOOST_SIMPLE));
+    mTrickOptions[RT_BOMBCHU_BEEHIVES] = Option::LogicTrick(std::to_string(RT_BOMBCHU_BEEHIVES));
     mTrickOptions[RT_KF_ADULT_GS] = Option::LogicTrick(std::to_string(RT_KF_ADULT_GS));
     mTrickOptions[RT_LW_BRIDGE] = Option::LogicTrick(std::to_string(RT_LW_BRIDGE));
     mTrickOptions[RT_LW_MIDO_BACKFLIP] = Option::LogicTrick(std::to_string(RT_LW_MIDO_BACKFLIP));
@@ -623,6 +625,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHOPSANITY_PRICES],
         &mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE],
         &mOptions[RSK_SHUFFLE_SCRUBS],
+        &mOptions[RSK_SHUFFLE_BEEHIVES],
         &mOptions[RSK_SHUFFLE_COWS],
         &mOptions[RSK_SHUFFLE_MAGIC_BEANS],
         &mOptions[RSK_SHUFFLE_MERCHANTS],
@@ -812,6 +815,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE],
         &mOptions[RSK_SHUFFLE_TOKENS],
         &mOptions[RSK_SHUFFLE_SCRUBS],
+        &mOptions[RSK_SHUFFLE_BEEHIVES],
         &mOptions[RSK_SHUFFLE_COWS],
         &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],
         &mOptions[RSK_SHUFFLE_OCARINA],
@@ -981,6 +985,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHOPSANITY_PRICES],
         &mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE],
         &mOptions[RSK_SHUFFLE_SCRUBS],
+        &mOptions[RSK_SHUFFLE_BEEHIVES],
         &mOptions[RSK_SHUFFLE_COWS],
         &mOptions[RSK_SHUFFLE_MAGIC_BEANS],
         &mOptions[RSK_SHUFFLE_MERCHANTS],
@@ -1018,6 +1023,7 @@ void Settings::CreateOptions() {
         { "Shuffle Settings:Shopsanity Prices", RSK_SHOPSANITY_PRICES },
         { "Shuffle Settings:Affordable Prices", RSK_SHOPSANITY_PRICES_AFFORDABLE },
         { "Shuffle Settings:Scrub Shuffle", RSK_SHUFFLE_SCRUBS },
+        { "Shuffle Settings:Beehive Shuffle", RSK_SHUFFLE_BEEHIVES },
         { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
         { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
         { "Shuffle Settings:Shuffle Ocarinas", RSK_SHUFFLE_OCARINA },
@@ -2102,6 +2108,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                     }
                     break;
                 case RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD:
+                case RSK_SHUFFLE_BEEHIVES:
                 case RSK_SHUFFLE_COWS:
                 case RSK_SHUFFLE_ADULT_TRADE:
                 case RSK_SHUFFLE_MAGIC_BEANS:

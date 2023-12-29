@@ -58,6 +58,7 @@ bool showDungeonTokens;
 bool showBeans;
 bool showScrubs;
 bool showMerchants;
+bool showBeehives;
 bool showCows;
 bool showAdultTrade;
 bool showKokiriSword;
@@ -1044,6 +1045,9 @@ void LoadSettings() {
     showMerchants = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF
         : true;
+    showBeehives = IS_RANDO ?
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BEEHIVES) == RO_GENERIC_YES
+        : false;
     showCows = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_COWS) == RO_GENERIC_YES
         : false;
@@ -1157,6 +1161,7 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
                 rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT
                 ) &&
             (loc->GetRCType() != RCTYPE_MERCHANT || showMerchants) &&
+            (loc->GetRCType() != RCTYPE_BEEHIVE || showBeehives) &&
             (loc->GetRCType() != RCTYPE_OCARINA || showOcarinas) &&
             (loc->GetRCType() != RCTYPE_SKULL_TOKEN || alwaysShowGS ||
                 (showOverworldTokens && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||

@@ -271,6 +271,8 @@ extern bool CanOpenStormGrotto;
 extern bool HookshotOrBoomerang;
 extern bool CanGetNightTimeGS;
 extern bool BigPoeKill;
+extern bool CanBreakLowerBeehives;
+extern bool CanBreakUpperBeehives;
 
 extern uint8_t OcarinaButtons;
 extern uint8_t BaseHearts;

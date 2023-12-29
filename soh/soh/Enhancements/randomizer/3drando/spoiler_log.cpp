@@ -114,8 +114,12 @@ void WriteIngameSpoilerLog() {
         // if (loc->IsExcluded()) {
         //     continue;
         // }
+        // Beehives
+        if (!ctx->GetOption(RSK_SHUFFLE_BEEHIVES) && loc->IsCategory(Category::cBeehive)) {
+            continue;
+        }
         // Cows
-        if (!ctx->GetOption(RSK_SHUFFLE_COWS) && loc->IsCategory(Category::cCow)) {
+        else if (!ctx->GetOption(RSK_SHUFFLE_COWS) && loc->IsCategory(Category::cCow)) {
             continue;
         }
         // Merchants

@@ -278,6 +278,8 @@ namespace Logic {
   bool BigPoeKill          = false;
   bool HookshotOrBoomerang = false;
   bool CanGetNightTimeGS   = false;
+  bool CanBreakLowerBeehives = false;
+  bool CanBreakUpperBeehives = false;
 
   uint8_t   OcarinaButtons  = 0;
   uint8_t   BaseHearts      = 0;
@@ -662,6 +664,8 @@ namespace Logic {
     CanOpenStormGrotto  = CanUse(RG_SONG_OF_STORMS) && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
     HookshotOrBoomerang = CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
     CanGetNightTimeGS   = (CanUse(RG_SUNS_SONG) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG));
+    CanBreakUpperBeehives = HookshotOrBoomerang || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && HasBombchus);
+    CanBreakLowerBeehives = CanBreakUpperBeehives || Bombs;
 
     GuaranteeTradePath     = ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetTrickOption(RT_DMT_BOLERO_BIGGORON) || CanBlastOrSmash || StopGCRollingGoronAsAdult;
   //GuaranteeHint          = (hints == "Mask" && MaskofTruth) || (hints == "Agony") || (hints != "Mask" && hints != "Agony");
@@ -1082,6 +1086,8 @@ namespace Logic {
      CanOpenStormGrotto  = false;
      BigPoeKill          = false;
      HookshotOrBoomerang = false;
+     CanBreakLowerBeehives = false;
+     CanBreakUpperBeehives = false;
 
      BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).Value<uint8_t>() + 1;
      Hearts          = 0;

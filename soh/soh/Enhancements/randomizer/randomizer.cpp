@@ -1439,7 +1439,61 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_LH_ADULT_FISHING,                                            RAND_INF_ADULT_FISHING },
     { RC_MARKET_10_BIG_POES,                                          RAND_INF_10_BIG_POES },
     { RC_KAK_100_GOLD_SKULLTULA_REWARD,                               RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD },
+    { RC_KF_STORMS_GROTTO_BEEHIVE_LEFT,                               RAND_INF_BEEHIVE_KF_STORMS_GROTTO_LEFT },
+    { RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT,                              RAND_INF_BEEHIVE_KF_STORMS_GROTTO_RIGHT },
+    { RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT,                       RAND_INF_BEEHIVE_LW_NEAR_SHORTCUTS_GROTTO_LEFT },
+    { RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT,                      RAND_INF_BEEHIVE_LW_NEAR_SHORTCUTS_GROTTO_RIGHT },
+    { RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE,                                RAND_INF_BEEHIVE_LW_DEKU_SCRUB_GROTTO },
+    { RC_SFM_STORMS_GROTTO_BEEHIVE,                                   RAND_INF_BEEHIVE_SFM_STORMS_GROTTO },
+    { RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_LEFT,                          RAND_INF_BEEHIVE_HF_NEAR_MARKET_GROTTO_LEFT },
+    { RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_RIGHT,                         RAND_INF_BEEHIVE_HF_NEAR_MARKET_GROTTO_RIGHT },
+    { RC_HF_OPEN_GROTTO_BEEHIVE_LEFT,                                 RAND_INF_BEEHIVE_HF_OPEN_GROTTO_LEFT },
+    { RC_HF_OPEN_GROTTO_BEEHIVE_RIGHT,                                RAND_INF_BEEHIVE_HF_OPEN_GROTTO_RIGHT },
+    { RC_HF_SOUTHEAST_GROTTO_BEEHIVE_LEFT,                            RAND_INF_BEEHIVE_HF_SOUTHEAST_GROTTO_LEFT },
+    { RC_HF_SOUTHEAST_GROTTO_BEEHIVE_RIGHT,                           RAND_INF_BEEHIVE_HF_SOUTHEAST_GROTTO_RIGHT },
+    { RC_HF_INSIDE_FENCE_GROTTO_BEEHIVE,                              RAND_INF_BEEHIVE_HF_INSIDE_FENCE_GROTTO },
+    { RC_LLR_GROTTO_BEEHIVE,                                          RAND_INF_BEEHIVE_LLR_GROTTO },
+    { RC_KAK_OPEN_GROTTO_BEEHIVE_LEFT,                                RAND_INF_BEEHIVE_KAK_OPEN_GROTTO_LEFT },
+    { RC_KAK_OPEN_GROTTO_BEEHIVE_RIGHT,                               RAND_INF_BEEHIVE_KAK_OPEN_GROTTO_RIGHT },
+    { RC_DMT_COW_GROTTO_BEEHIVE,                                      RAND_INF_BEEHIVE_DMT_COW_GROTTO },
+    { RC_DMT_STORMS_GROTTO_BEEHIVE_LEFT,                              RAND_INF_BEEHIVE_DMT_STORMS_GROTTO_LEFT },
+    { RC_DMT_STORMS_GROTTO_BEEHIVE_RIGHT,                             RAND_INF_BEEHIVE_DMT_STORMS_GROTTO_RIGHT },
+    { RC_GC_GROTTO_BEEHIVE,                                           RAND_INF_BEEHIVE_GC_GROTTO },
+    { RC_DMC_UPPER_GROTTO_BEEHIVE_LEFT,                               RAND_INF_BEEHIVE_DMC_UPPER_GROTTO_LEFT },
+    { RC_DMC_UPPER_GROTTO_BEEHIVE_RIGHT,                              RAND_INF_BEEHIVE_DMC_UPPER_GROTTO_RIGHT },
+    { RC_DMC_HAMMER_GROTTO_BEEHIVE,                                   RAND_INF_BEEHIVE_DMC_HAMMER_GROTTO },
+    { RC_ZR_OPEN_GROTTO_BEEHIVE_LEFT,                                 RAND_INF_BEEHIVE_ZR_OPEN_GROTTO_LEFT },
+    { RC_ZR_OPEN_GROTTO_BEEHIVE_RIGHT,                                RAND_INF_BEEHIVE_ZR_OPEN_GROTTO_RIGHT },
+    { RC_ZR_STORMS_GROTTO_BEEHIVE,                                    RAND_INF_BEEHIVE_ZR_STORMS_GROTTO },
+    { RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_LEFT,                       RAND_INF_BEEHIVE_ZD_IN_FRONT_OF_KING_ZORA_LEFT },
+    { RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT,                      RAND_INF_BEEHIVE_ZD_IN_FRONT_OF_KING_ZORA_RIGHT },
+    { RC_ZD_BEHIND_KING_ZORA_BEEHIVE,                                 RAND_INF_BEEHIVE_ZD_BEHIND_KING_ZORA },
+    { RC_LH_GROTTO_BEEHIVE,                                           RAND_INF_BEEHIVE_LH_GROTTO },
+    { RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE,                                RAND_INF_BEEHIVE_GV_DEKU_SCRUB_GROTTO },
+    { RC_COLOSSUS_GROTTO_BEEHIVE,                                     RAND_INF_BEEHIVE_COLOSSUS_GROTTO },
 };
+
+BeehiveIdentity Randomizer::IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
+    struct BeehiveIdentity beehiveIdentity;
+
+    beehiveIdentity.randomizerInf = RAND_INF_MAX;
+    beehiveIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    if (sceneNum == SCENE_GROTTOS) {
+        respawnData = TWO_ACTOR_PARAMS(xPosition, respawnData);
+    } else {
+        respawnData = TWO_ACTOR_PARAMS(xPosition, 0);
+    }
+
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_OBJ_COMB, sceneNum, respawnData);
+
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        beehiveIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        beehiveIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return beehiveIdentity;
+}
 
 Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
     RandomizerCheck specialRc = RC_UNKNOWN_CHECK;

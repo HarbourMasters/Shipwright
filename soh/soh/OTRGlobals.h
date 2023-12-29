@@ -154,6 +154,7 @@ uint8_t GetSeedIconIndex(uint8_t index);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
 ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
+BeehiveIdentity Randomizer_IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData);
 ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex);
 CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
 void Randomizer_ParseSpoiler(const char* fileLoc);

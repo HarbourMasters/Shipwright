@@ -152,6 +152,7 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
               RandomizerCheckObjects::AreaIsOverworld(location.GetArea())) ||
              ((CVarGetInteger("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_DUNGEONS) &&
               RandomizerCheckObjects::AreaIsDungeon(location.GetArea()))) &&
+            (location.GetRCType() != RCTYPE_BEEHIVE || CVarGetInteger("gRandomizeShuffleBeehives", RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_COW || CVarGetInteger("gRandomizeShuffleCows", RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_ADULT_TRADE ||
              CVarGetInteger("gRandomizeShuffleAdultTrade", RO_GENERIC_NO)) &&
