@@ -548,6 +548,11 @@ void Settings::CreateOptions() {
         &mTrickOptions[RT_GANON_MQ_SHADOW_TRIAL],
         &mTrickOptions[RT_GANON_MQ_LIGHT_TRIAL],
     }, false);
+    int i = 0;
+    for (const auto trick : mOptionGroups[RSG_TRICKS].GetOptions()) {
+        mTrickNameToEnum[std::string(trick->GetName())] = static_cast<RandomizerTrick>(i);
+        i++;
+    }
     // TODO: Glitches
     mOptionGroups[RSG_AREA_ACCESS_IMGUI] = OptionGroup::SubGroup("Area Access", {
         &mOptions[RSK_FOREST],
@@ -1686,18 +1691,20 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
             mOptions[RSK_LINKS_POCKET].SetSelectedIndex(RO_LINKS_POCKET_DUNGEON_REWARD);
         }
 
-        ctx->AddExcludedOptions();
-        for (const auto locationKey : ctx->everyPossibleLocation) {
-            if (const auto location = ctx->GetItemLocation(locationKey); excludedLocations.contains(location->GetRandomizerCheck())) {
-                location->GetExcludedOption()->SetSelectedIndex(1);
-            } else {
-                location->GetExcludedOption()->SetSelectedIndex(0);
+        if (!ctx->IsSpoilerLoaded()) {
+            ctx->AddExcludedOptions();
+            for (const auto locationKey : ctx->everyPossibleLocation) {
+                if (const auto location = ctx->GetItemLocation(locationKey); excludedLocations.contains(location->GetRandomizerCheck())) {
+                    location->GetExcludedOption()->SetSelectedIndex(1);
+                } else {
+                    location->GetExcludedOption()->SetSelectedIndex(0);
+                }
             }
-        }
-        // Tricks
-        ResetTrickOptions();
-        for (const auto randomizerTrick : enabledTricks) {
-            mTrickOptions[randomizerTrick].SetSelectedIndex(1);
+            // Tricks
+            ResetTrickOptions();
+            for (const auto randomizerTrick : enabledTricks) {
+                mTrickOptions[randomizerTrick].SetSelectedIndex(1);
+            }
         }
         if (!mOptions[RSK_SHUFFLE_KOKIRI_SWORD]) {
             if (mOptions[RSK_STARTING_KOKIRI_SWORD]) {
@@ -2197,12 +2204,13 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                     }
                     break;
                 // Uses Ammo Drops option for now. "Off" not yet implemented
+                // TODO: Change to Ammo Drops
                 case RSK_ENABLE_BOMBCHU_DROPS:
-                    if (it.value() == "On") {
+                    if (it.value() == "Yes") {
                         mOptions[index].SetSelectedIndex(RO_AMMO_DROPS_ON);
-                    } else if (it.value() == "On + Bombchu") {
-                        mOptions[index].SetSelectedIndex(RO_AMMO_DROPS_ON_PLUS_BOMBCHU);
-                    } else if (it.value() == "Off") {
+                    // } else if (it.value() == "On + Bombchu") {
+                    //     mOptions[index].SetSelectedIndex(RO_AMMO_DROPS_ON_PLUS_BOMBCHU);
+                    } else if (it.value() == "No") {
                         mOptions[index].SetSelectedIndex(RO_AMMO_DROPS_OFF);
                     }
                     break;

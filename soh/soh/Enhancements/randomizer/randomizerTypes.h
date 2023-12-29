@@ -3641,9 +3641,9 @@ typedef enum {
 
 //Ammo drop settings (on, "on+bombchu", off)
 typedef enum {
-    RO_AMMO_DROPS_ON,
-    RO_AMMO_DROPS_ON_PLUS_BOMBCHU,
     RO_AMMO_DROPS_OFF,
+    //RO_AMMO_DROPS_ON_PLUS_BOMBCHU,
+    RO_AMMO_DROPS_ON,
 } RandoOptionAmmoDrops;
 
 typedef enum {
