@@ -72,30 +72,8 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
     
     // #region SOH [Enhancement]
     //the default is 90, lower values necessary to prevent camera swing as animation speeds up
-    //arrived at via testing camera movement when holding left/right during the animation
     s16 camCrawlTemp = CVarGetInteger("gCrawlSpeed", 1);
-    s16 camCrawlTimer = D_8012042C;
-
-    switch (camCrawlTemp) { 
-        case 1:
-            camCrawlTimer = D_8012042C;
-            break;
-        case 2:
-            camCrawlTimer = 50;
-            break;
-        case 3:
-            camCrawlTimer = 38;
-            break;
-        case 4:
-            camCrawlTimer = 31;
-            break;
-        case 5:
-            camCrawlTimer = 26;
-            break;
-        default:
-            camCrawlTimer = D_8012042C;
-            break;
-    }
+    s16 camCrawlTimer = D_8012042C / camCrawlTemp;
     // #endregion
     
     switch (csId) {
