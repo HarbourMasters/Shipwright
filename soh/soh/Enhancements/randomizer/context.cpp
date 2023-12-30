@@ -16,6 +16,8 @@ namespace Rando {
 std::weak_ptr<Context> Context::mContext;
 
 Context::Context() {
+    StaticData::InitItemTable();
+    StaticData::InitLocationTable();
     for (auto& location : StaticData::GetLocationTable()) {
         mSpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
     }
