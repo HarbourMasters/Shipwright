@@ -238,7 +238,8 @@ void RecalculateAreaTotals() {
                 continue;
             }
             areaCheckTotals[rcArea]++;
-            if (gSaveContext.checkTrackerData[rcObj.rc].skipped || gSaveContext.checkTrackerData[rcObj.rc].status >= RCSHOW_COLLECTED) {
+            if (gSaveContext.checkTrackerData[rcObj.rc].skipped || gSaveContext.checkTrackerData[rcObj.rc].status == RCSHOW_COLLECTED
+                || gSaveContext.checkTrackerData[rcObj.rc].status == RCSHOW_SAVED) {
                 areaChecksGotten[rcArea]++;
             }
         }
@@ -462,7 +463,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
         checksByArea.find(realRcObj.rcArea)->second.push_back(realRcObj);
         if (IsVisibleInCheckTracker(realRcObj)) {
             areaCheckTotals[realRcObj.rcArea]++;
-            if (rcTrackerData.status >= RCSHOW_COLLECTED || rcTrackerData.skipped) {
+            if (rcTrackerData.status == RCSHOW_COLLECTED || rcTrackerData.status == RCSHOW_SAVED || rcTrackerData.skipped) {
                 areaChecksGotten[realRcObj.rcArea]++;
             }
         }
@@ -541,7 +542,7 @@ void CheckTrackerTransition(uint32_t sceneNum) {
 }
 
 void CheckTrackerFrame() {
-    if (IS_RANDO) {
+    /*if (IS_RANDO) {
         bool hideShopRightChecks_ = CVarGetInteger("gCheckTrackerOptionHideRightShopChecks", 1);
         if (hideShopRightChecks != hideShopRightChecks_) {
             hideShopRightChecks = hideShopRightChecks_;
@@ -552,7 +553,7 @@ void CheckTrackerFrame() {
             alwaysShowGS = alwaysShowGS_;
             RecalculateAreaTotals();
         }
-    }
+    }*/
     if (!GameInteractor::IsSaveLoaded()) {
         return;
     }
@@ -822,9 +823,13 @@ void Teardown() {
 
 void UpdateCheck(uint32_t check, RandomizerCheckTrackerData data) {
     auto area = RandomizerCheckObjects::GetAllRCObjects().find(static_cast<RandomizerCheck>(check))->second.rcArea;
-    if ((!gSaveContext.checkTrackerData[check].skipped && data.skipped) || (gSaveContext.checkTrackerData[check].status >= RCSHOW_COLLECTED && data.status < RCSHOW_COLLECTED)) {
+    if ((!gSaveContext.checkTrackerData[check].skipped && data.skipped) || 
+        ((gSaveContext.checkTrackerData[check].status != RCSHOW_COLLECTED && gSaveContext.checkTrackerData[check].status != RCSHOW_SAVED) && 
+            (data.status == RCSHOW_COLLECTED || data.status == RCSHOW_SAVED))) {
         areaChecksGotten[area]++;
-    } else if ((gSaveContext.checkTrackerData[check].skipped && !data.skipped) || (gSaveContext.checkTrackerData[check].status < RCSHOW_COLLECTED && data.status >= RCSHOW_COLLECTED)) {
+    } else if ((gSaveContext.checkTrackerData[check].skipped && !data.skipped) || 
+        ((gSaveContext.checkTrackerData[check].status == RCSHOW_COLLECTED || gSaveContext.checkTrackerData[check].status == RCSHOW_SAVED) && 
+            (data.status != RCSHOW_COLLECTED && data.status != RCSHOW_SAVED))) {
         areaChecksGotten[area]--;
     }
     gSaveContext.checkTrackerData[check] = data;
@@ -1014,12 +1019,8 @@ void CheckTrackerWindow::DrawElement() {
                 doAreaScroll = false;
             }
             for (auto rco : objs) {
-                if (IsVisibleInCheckTracker(rco)) {
-                    if (doDraw && isThisAreaSpoiled) {
-                        DrawLocation(rco);
-                    }
-                } else {
-                    
+                if (IsVisibleInCheckTracker(rco) && doDraw && isThisAreaSpoiled) {
+                    DrawLocation(rco);
                 }
             }
             if (doDraw) {
@@ -1579,9 +1580,15 @@ void CheckTrackerSettingsWindow::DrawElement() {
     }
     UIWidgets::EnhancementCheckbox("Vanilla/MQ Dungeon Spoilers", "gCheckTrackerOptionMQSpoilers");
     UIWidgets::Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked.");
-    UIWidgets::EnhancementCheckbox("Hide right-side shop item checks", "gCheckTrackerOptionHideRightShopChecks", false, "", UIWidgets::CheckboxGraphics::Cross, true);
+    if (UIWidgets::EnhancementCheckbox("Hide right-side shop item checks", "gCheckTrackerOptionHideRightShopChecks", false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
+        hideShopRightChecks = !hideShopRightChecks;
+        RecalculateAreaTotals();
+    }
     UIWidgets::Tooltip("If enabled, will prevent the tracker from displaying slots 1-4 in all shops.");
-    UIWidgets::EnhancementCheckbox("Always show gold skulltulas", "gCheckTrackerOptionAlwaysShowGSLocs", false, "");
+    if (UIWidgets::EnhancementCheckbox("Always show gold skulltulas", "gCheckTrackerOptionAlwaysShowGSLocs", false, "")) {
+        alwaysShowGS = !alwaysShowGS;
+        RecalculateAreaTotals();
+    }
     UIWidgets::Tooltip("If enabled, will show GS locations in the tracker regardless of tokensanity settings.");
 
     ImGui::TableNextColumn();
@@ -1635,6 +1642,9 @@ void CheckTrackerWindow::InitElement() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnShopSlotChange>(CheckTrackerShopSlotChange);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneFlagSet>(CheckTrackerSceneFlagSet);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(CheckTrackerFlagSet);
+
+    hideShopRightChecks = CVarGetInteger("gCheckTrackerOptionHideRightShopChecks", 1);
+    alwaysShowGS = CVarGetInteger("gCheckTrackerOptionAlwaysShowGSLocs", 0);
 
     LocationTable_Init();
 }
