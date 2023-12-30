@@ -7016,7 +7016,7 @@ s32 Player_TryEnteringCrawlspace(Player* this, PlayState* play, u32 interactWall
                 if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
                     // increase animation speed when entering a tunnel
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
-                                         1.0f * ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f), 0.0f,
+                                         ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f), 0.0f,
                                          Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), ANIMMODE_ONCE,
                                          0.0f);
                     Player_AnimReplaceApplyFlags(play, this, 0x9D);
@@ -7109,7 +7109,7 @@ s32 Player_TryLeavingCrawlspace(Player* this, PlayState* play) {
                 if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
                     // animation when exiting a tunnel forward
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_end,
-                                         1.0f * ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f), 0.0f,
+                                         ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f), 0.0f,
                                          Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_end), ANIMMODE_ONCE,
                                          0.0f);
                     Player_AnimReplaceApplyFlags(play, this, 0x9D);
