@@ -815,6 +815,9 @@ typedef struct {
         /* 0x026C */ u8    dinsNayrus; // "m_magic"; din's fire and nayru's love
         /* 0x026D */ u8    all;        // "another"; enables all item restrictions
     }                   restrictions;
+    // #region SOH [General]
+    /*        */ u8 mapPalettesPulse[40][32]; // Used to have unique pointers per map pulse color for the shader backend. 40 for map pulse timer x2
+    // #endregion
 } InterfaceContext; // size = 0x270
 
 typedef struct {

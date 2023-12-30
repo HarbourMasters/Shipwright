@@ -2597,6 +2597,20 @@ extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* repla
     gfx_register_blended_texture(name, mask, replacement);
 }
 
+extern "C" void Gfx_TextureCacheDelete(const uint8_t* texAddr) {
+    char* imgName = (char*)texAddr;
+
+    if (texAddr == nullptr) {
+        return;
+    }
+
+    if (ResourceMgr_OTRSigCheck(imgName)) {
+        texAddr = (const uint8_t*)GetResourceDataByNameHandlingMQ(imgName);
+    }
+
+    gfx_texture_cache_delete(texAddr);
+}
+
 void SoH_ProcessDroppedFiles(std::string filePath) {
     try {
         std::ifstream configStream(filePath);

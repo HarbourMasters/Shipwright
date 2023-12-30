@@ -173,6 +173,7 @@ void Entrance_InitEntranceTrackingData(void);
 void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex);
 void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
 void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement);
+void Gfx_TextureCacheDelete(const uint8_t* addr);
 void SaveManager_ThreadPoolWait();
 void CheckTracker_OnMessageClose();
 
