@@ -198,4 +198,39 @@ extern "C" void OTRMessage_Init()
         CustomMessage("You've deposited your rupees.&Your new balance is:&%y{{playerBalance}}%w rupees.&See you later!",
                     "Du hast deine Rubine eingezahlt.&Dein neues Guthaben beträgt:&%y{{playerBalance}}%w Rubine.&Bis später!",
                     "Vous avez déposé vos rubis.&Votre nouveau solde est :&%y{{playerBalance}}%w rubis.&À plus tard !"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_INTRO,
+        CustomMessage("Ho ho! Your savings have&reached %y200%w rupees!&A fine achievement, young&spender!",
+                    "Ho ho! Deine Ersparnisse haben&%y200%w Rubine erreicht!&Eine feine Leistung, junger&Spender!",
+                    "Ho ho ! Tes économies ont&atteint %y200%w rubis !&Une belle réussite, jeune&dépensier !"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_ITEM,
+        CustomMessage("To reward your thriftiness,&I've got a special trinket for&you... The Pirate's Charm!",
+                    "Um deine Sparsamkeit zu&belohnen, habe ich ein&besonderes Schmuckstück für&dich... Den Piratenanhänger!",
+                    "Pour récompenser ton&économie, j'ai un objet spécial&pour toi... Le Charme du Pirate !"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_1,
+        CustomMessage("This charm, infused with pirate magic,&can warp your treasures directly&to the bank! No more heavy&wallets for you!",
+                    "Dieser Anhänger, durchtränkt mit&Piratenmagie, kann deine Schätze&direkt zur Bank warpen! Keine&schweren Geldbeutel mehr für dich!",
+                    "Ce charme, imprégné de magie&pirate, peut transférer tes trésors&directement à la banque ! Fini les&bourses lourdes pour toi !"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_2,
+        CustomMessage("And that's not all! It also lets me&whisper your new balance to you&through the winds, once a warp&transfer is complete.",
+                    "Und das ist noch nicht alles! Es&erlaubt mir auch, dir dein neues&Guthaben zuzuflüstern, sobald eine&Warpenübertragung abgeschlossen ist.",
+                    "Et ce n'est pas tout ! Il me permet&également de te chuchoter ton nouveau&solde à travers les vents, une fois le&transfert par warp terminé."));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_3,
+        CustomMessage("I've taken to calling it 'warp&transfer'. A fitting name, don't&you think? It's quite the&convenience!",
+                    "Ich habe es 'Warpenübertragung'&genannt. Ein passender Name,&findest du nicht? Sehr praktisch!",
+                    "Je l'ai baptisé 'transfert par warp'.&Un nom approprié, tu ne trouves&pas ? C'est très pratique !"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_REWARD_INTEREST,
+        CustomMessage("And look at that! Over %y1,000%w&rupees! Here's %y5%w more for&your dedication to saving!",
+                    "Und sieh dir das an! Über %y1.000%w&Rubine! Hier sind %y5%w mehr für&deine Sparbemühungen!",
+                    "Et regarde ça ! Plus de %y1 000%w&rubis ! Voici %y5%w de plus pour&ton dévouement à l'épargne !"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_REWARD_PIECE_OF_HEART,
+        CustomMessage("Astounding! A whopping %y5,000%w&rupees saved! For such a feat,&a Piece of Heart is yours!",
+                    "Erstaunlich! Ganze %y5.000%w Rubine&gespart! Für ein solches Kunststück&ist ein Herzteil dein!",
+                    "Stupéfiant ! La bagatelle de %y5 000%w&rubis épargnés ! Pour un tel exploit,&un Morceau de cœur est à toi !"));
 }

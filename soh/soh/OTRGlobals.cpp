@@ -2615,7 +2615,28 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     if (textId == TEXT_BANKER_DEPOSIT_CONFIRM && CVarGetInteger("gBanker", 0)) {
         s32 playerBalance = gSaveContext.playerBalance;
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_DEPOSIT_CONFIRM);
-    messageEntry.Replace("{{playerBalance}}", std::to_string(playerBalance));
+        messageEntry.Replace("{{playerBalance}}", std::to_string(playerBalance));
+    if (textId == TEXT_BANKER_REWARD_WARP_TRANSFER_INTRO && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_INTRO);
+    }
+    if (textId == TEXT_BANKER_REWARD_WARP_TRANSFER_ITEM && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_ITEM);
+    }
+    if (textId == TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_1 && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_1);
+    }
+    if (textId == TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_2 && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_2);
+    }
+    if (textId == TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_3 && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_3);
+    }
+    if (textId == TEXT_BANKER_REWARD_INTEREST && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_INTEREST);
+    }
+    if (textId == TEXT_BANKER_REWARD_PIECE_OF_HEART && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_PIECE_OF_HEART);
+    }
 }
     font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
     switch (gSaveContext.language) {

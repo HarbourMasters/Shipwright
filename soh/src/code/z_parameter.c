@@ -6543,6 +6543,8 @@ void Interface_Update(PlayState* play) {
                 if (gSaveContext.rupeeAccumulator > 0) {
                     gSaveContext.playerBalance += gSaveContext.rupeeAccumulator;
                     gSaveContext.rupeeAccumulator = 0;
+                    // Clamp the playerBalance between 0 and 5000
+                    gSaveContext.playerBalance = CLAMP(gSaveContext.playerBalance, 0, 5000);
                 }
             } else if (gSaveContext.rupees != 0) {
                 if (gSaveContext.rupeeAccumulator <= -50) {

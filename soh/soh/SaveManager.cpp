@@ -1300,6 +1300,9 @@ void SaveManager::LoadBaseVersion1() {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
     SaveManager::Instance->LoadData("playerBalance", gSaveContext.playerBalance);
+    SaveManager::Instance->LoadData("hasWarpTransfer", gSaveContext.hasWarpTransfer);
+    SaveManager::Instance->LoadData("hasInterest", gSaveContext.hasInterest);
+    SaveManager::Instance->LoadData("hasPieceOfHeart", gSaveContext.hasPieceOfHeart);
 }
 
 void SaveManager::LoadBaseVersion2() {
@@ -1516,6 +1519,9 @@ void SaveManager::LoadBaseVersion2() {
             });
         }
     SaveManager::Instance->LoadData("playerBalance", gSaveContext.playerBalance);
+    SaveManager::Instance->LoadData("hasWarpTransfer", gSaveContext.hasWarpTransfer);
+    SaveManager::Instance->LoadData("hasInterest", gSaveContext.hasInterest);
+    SaveManager::Instance->LoadData("hasPieceOfHeart", gSaveContext.hasPieceOfHeart);
     }
 }
 
@@ -1739,6 +1745,9 @@ void SaveManager::LoadBaseVersion3() {
     });
     SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
     SaveManager::Instance->LoadData("playerBalance", gSaveContext.playerBalance);
+    SaveManager::Instance->LoadData("hasWarpTransfer", gSaveContext.hasWarpTransfer);
+    SaveManager::Instance->LoadData("hasInterest", gSaveContext.hasInterest);
+    SaveManager::Instance->LoadData("hasPieceOfHeart", gSaveContext.hasPieceOfHeart);
 }
 
 void SaveManager::LoadBaseVersion4() {
@@ -1921,6 +1930,9 @@ void SaveManager::LoadBaseVersion4() {
     });
     SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
     SaveManager::Instance->LoadData("playerBalance", gSaveContext.playerBalance);
+    SaveManager::Instance->LoadData("hasWarpTransfer", gSaveContext.hasWarpTransfer);
+    SaveManager::Instance->LoadData("hasInterest", gSaveContext.hasInterest);
+    SaveManager::Instance->LoadData("hasPieceOfHeart", gSaveContext.hasPieceOfHeart);
 }
 
 void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -2091,6 +2103,9 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
     });
     SaveManager::Instance->SaveData("dogParams", saveContext->dogParams);
     SaveManager::Instance->SaveData("playerBalance", saveContext->playerBalance);
+    SaveManager::Instance->SaveData("hasWarpTransfer", saveContext->hasWarpTransfer);
+    SaveManager::Instance->SaveData("hasInterest", saveContext->hasInterest);
+    SaveManager::Instance->SaveData("hasPieceOfHeart", saveContext->hasPieceOfHeart);
 }
 
 // Load a string into a char array based on size and ensuring it is null terminated when overflowed

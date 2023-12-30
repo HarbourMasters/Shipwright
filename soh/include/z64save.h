@@ -325,6 +325,9 @@ typedef struct {
     /*        */ u16 adultTradeItems;
     /*        */ u8 triforcePiecesCollected;
     /*        */ s32 playerBalance;
+    /*        */ u8 hasWarpTransfer;
+    /*        */ u8 hasInterest;
+    /*        */ u8 hasPieceOfHeart;
     // #endregion
 } SaveContext; // size = 0x1428
 
