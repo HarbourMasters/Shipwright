@@ -29,7 +29,7 @@ using namespace Rando;
 //RANDOTODO better name
 struct GetAccessableLocationsStruct {
   std::vector<RandomizerCheck> accessibleLocations;
-  std::vector<RandomizerRegion> regionPool = {RR_ROOT};
+  std::vector<RandomizerRegion> regionPool;
   //Variables for playthrough
   int gsCount;
   int maxGsCount;
@@ -57,6 +57,7 @@ struct GetAccessableLocationsStruct {
   std::list<Entrance*> entranceSphere;
 
   GetAccessableLocationsStruct(int _maxGsCount){
+    regionPool = {RR_ROOT};
     gsCount = 0;
     maxGsCount = _maxGsCount;
     bombchusFound = false;
@@ -149,7 +150,7 @@ static bool UpdateToDAccess(Entrance* entrance, bool propogateTimeTravel) {
 }
 
 // Various checks that need to pass for the world to be validated as completable
-static void ValidateSphereZeroReqs(GetAccessableLocationsStruct gals, bool checkOtherEntranceAccess) {
+static void ValidateSphereZeroReqs(GetAccessableLocationsStruct& gals, bool checkOtherEntranceAccess) {
   auto ctx = Rando::Context::GetInstance();
   // Condition for validating Temple of Time Access
   if (!gals.foundTempleofTime && ((ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD && AreaTable(RR_TEMPLE_OF_TIME)->Adult()) || 
@@ -196,7 +197,7 @@ static void ValidateSphereZeroReqs(GetAccessableLocationsStruct gals, bool check
 }
 
 //This function handles each possible exit
-void ProcessExit(Entrance& exit, GetAccessableLocationsStruct gals, bool validateEntrancesChecks){
+void ProcessExit(Entrance& exit, GetAccessableLocationsStruct& gals, bool validateEntrancesChecks){
   //Update Time of Day Access for the exit
   if (UpdateToDAccess(&exit, (validateEntrancesChecks && !gals.foundTempleofTime))) {
     gals.ageTimePropogated = true;
@@ -299,11 +300,11 @@ bool IsBeatableWithout(RandomizerCheck excludedCheck, bool replaceItem, Randomiz
 
 //RANDOTODO better name
 void ResetLogic(std::shared_ptr<Context> ctx, bool applyInventory = false){
-  Areas::AccessReset();
-  ctx->LocationReset();
   if (applyInventory){
     ApplyStartingInventory();
   }
+  Areas::AccessReset();
+  ctx->LocationReset();
 } 
 
 //Generate the playthrough, so we want to add advancement items, unless we know to ignore them
