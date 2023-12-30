@@ -258,24 +258,28 @@ namespace GameControlEditor {
         window->EndGroupPanelPublic(0);
 
         UIWidgets::Spacer(0);
-        window->BeginGroupPanelPublic("Third-Person Camera", ImGui::GetContentRegionAvail());
+        window->BeginGroupPanelPublic("Free Look/Third-person Camera", ImGui::GetContentRegionAvail());
 
-        UIWidgets::PaddedEnhancementCheckbox("Free Camera", "gFreeCamera");
-        DrawHelpIcon("Enables free camera control\nNote: You must remap C buttons off of the right stick in the "
+        UIWidgets::PaddedEnhancementCheckbox("Enable Free Look", "gFreeCamera");
+        DrawHelpIcon("Enables free look camera control\nNote: You must remap C buttons off of the right stick in the "
                             "controller config menu, and map the camera stick to the right stick.");
-        UIWidgets::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
-        DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera");
-        UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
-        DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera");
+        UIWidgets::PaddedEnhancementCheckbox("Invert X Axis", "gInvertXAxis");
+        DrawHelpIcon("Inverts the Camera X Axis in:\n-Free Look");
+        UIWidgets::PaddedEnhancementCheckbox("Invert Y Axis", "gInvertYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+        DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free Look");
         UIWidgets::Spacer(0);
-        UIWidgets::PaddedEnhancementSliderFloat("Third-Person Horizontal Sensitivity: %d %%", "##ThirdPersonSensitivity Horizontal",
+        UIWidgets::PaddedEnhancementSliderFloat("Horizontal Sensitivity: %d %%", "##ThirdPersonSensitivity Horizontal",
                                                 "gThirdPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true, true, false, true);
-        UIWidgets::PaddedEnhancementSliderFloat("Third-Person Vertical Sensitivity: %d %%", "##ThirdPersonSensitivity Vertical",
+        DrawHelpIcon("Changes the sensitivity of the X axis control for Free Look");
+        UIWidgets::PaddedEnhancementSliderFloat("Vertical Sensitivity: %d %%", "##ThirdPersonSensitivity Vertical",
                                                 "gThirdPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true, true, false, true);
+        DrawHelpIcon("Changes the sensitivity of the Y axis control for Free Look");
         UIWidgets::PaddedEnhancementSliderInt("Camera Distance: %d", "##CamDist",
                                         "gFreeCameraDistMax", 100, 900, "", 185, true, false, true);
-        UIWidgets::PaddedEnhancementSliderInt("Camera Transition Speed: %d", "##CamTranSpeed",
+        DrawHelpIcon("How far the camera sits from Link while in Free Look mode");
+        UIWidgets::PaddedEnhancementSliderInt("Transition Speed: %d", "##CamTranSpeed",
                                         "gFreeCameraTransitionSpeed", 0, 900, "", 25, true, false, true);
+        DrawHelpIcon("How quickly the camera changes to the distance specified above");
         window->EndGroupPanelPublic(0);
     }
 
