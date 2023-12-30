@@ -955,10 +955,10 @@ void accessible_stick_warning(AccessibleActor* actor) {
     policy.distance = 1000;
     policy.pitch = 1.7;
     ActorAccessibility_AddSupportedActor(VA_MARKER, policy);
-    ActorAccessibility_InitPolicy(&policy, "Spike", NULL, NA_SE_IT_SWORD_PICKOUT);
-    policy.distance = 200;
-    policy.pitch = 0.5;
-    ActorAccessibility_AddSupportedActor(VA_SPIKE, policy);
+    //ActorAccessibility_InitPolicy(&policy, "Spike", NULL, NA_SE_EV_DIAMOND_SWITCH);
+    //policy.distance = 200;
+    //policy.pitch = 0.5;
+    //ActorAccessibility_AddSupportedActor(VA_SPIKE, policy);
     ActorAccessibility_InitPolicy(&policy, "Stick Burnout Warning", accessible_stick_warning, 0);
     policy.n = 1;
     policy.runsAlways = true;

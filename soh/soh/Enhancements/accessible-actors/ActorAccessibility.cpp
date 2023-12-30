@@ -519,7 +519,10 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
             }
             if (SurfaceType_GetSceneExitIndex(&play->colCtx, poly, BGCHECK_SCENE) != 0)
             ActorAccessibility_PolyToVirtualActor(play, poly, VA_AREA_CHANGE, list);
-
+            /*s8 floorparam = func_80041D4C(&play->colCtx, poly, BGCHECK_SCENE);
+            if (floorparam == 2) {
+            ActorAccessibility_PolyToVirtualActor(play, poly, VA_SPIKE, list);
+            }*/
        }
 
     }

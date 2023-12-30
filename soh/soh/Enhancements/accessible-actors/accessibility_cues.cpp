@@ -6,6 +6,8 @@ extern "C" {
 s32 func_80839768(PlayState* play, Player* p, Vec3f* arg2, CollisionPoly** arg3, s32* arg4, Vec3f* arg5);
 void func_8083E298(CollisionPoly* arg0, Vec3f* arg1, s16* arg2);
 void CollisionPoly_GetVertices(CollisionPoly* poly, Vec3s* vtxList, Vec3f* dest);
+f32 BgCheck_RaycastFloorImpl(PlayState* play, CollisionContext* colCtx, u16 xpFlags, CollisionPoly** outPoly,
+                             s32* outBgId, Vec3f* pos, Actor* actor, u32 arg7, f32 chkDist);
 #include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "soh/Enhancements/tts/tts.h"
 }
@@ -27,6 +29,7 @@ DISCOVERED_WALL,
 DISCOVERED_SPIKE,
 DISCOVERED_WATER,
 DISCOVERED_GROUND,
+DISCOVERED_LAVA,
 };
 //Abstract class for terrain cue sound handling. Implementations should not allocate memory. These are always in-place constructed in static memory owned by the TerrainCueDirection object.
 class TerrainCueSound {
@@ -341,6 +344,25 @@ class Ground : protected TerrainCueSound {
     }
 };
 
+class Lava : protected TerrainCueSound {
+  public:
+    Lava(AccessibleActor* actor, Vec3f pos) : TerrainCueSound(actor, pos) {
+        currentPitch = 1.0;
+        currentSFX = NA_SE_SY_WARNING_COUNT_N; //change?
+        play();
+    }
+    virtual ~Lava() {
+    }
+    void run() {
+        if (restFrames == 0) {
+            play();
+            restFrames = 10;
+            return;
+        }
+        restFrames--;
+    }
+};
+
     class TerrainCueDirection {
     AccessibleActor* actor;
     int startingBodyPart;//Decides where the probe starts from. Probes going out to the left or right of the player start from the shoulders.
@@ -376,6 +398,7 @@ class Ground : protected TerrainCueSound {
         Spike spike;
         Water water;
         Ground ground;
+        Lava lava;
     };
     Platform platform;
 
@@ -487,6 +510,15 @@ class Ground : protected TerrainCueSound {
         new (&ground) Ground(actor, pos, pitchModifier);
         currentSound = (TerrainCueSound*)&ground;
         terrainDiscovered = DISCOVERED_GROUND;
+    }
+
+    void discoverLava(Vec3f pos) {
+        if (terrainDiscovered == DISCOVERED_LAVA)
+            return;
+        destroyCurrentSound();
+        new (&lava) Lava(actor, pos);
+        currentSound = (TerrainCueSound*)&lava;
+        terrainDiscovered = DISCOVERED_LAVA;
     }
     // Find out how high a wall goes.
     f32 findWallHeight(Vec3f& pos, CollisionPoly* poly) {
@@ -781,11 +813,33 @@ class Ground : protected TerrainCueSound {
         float r = sqrt((zdist * zdist) + (xdist * xdist));
         return r;
     }
+
+    float checkForLava(Vec3f_ pos) {
+        CollisionPoly* floorpoly;
+        int32_t bgid = BGCHECK_SCENE;
+        CollisionContext* colCtx = &actor->play->colCtx;
+        pos.y += 20.0;
+
+        pos.y = BgCheck_RaycastFloorImpl(actor->play, colCtx, (1 << 1), &floorpoly, &bgid, &pos, NULL, 28, 1.0f);
+
+        if (floorpoly == NULL) {
+            return 0;
+        }
+        s8 floorparam = func_80041D4C(colCtx, floorpoly, BG_ACTOR_MAX);
+        if (floorparam == 2 || floorparam ==3) {
+            
+            return 1;
+        } else {
+
+            return 0;
+        }
+    }
     
     void scan() {
 
         Player* player = GET_PLAYER(actor->play);
-        
+        CollisionContext* colCtx = &actor->play->colCtx;
+
         if (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE) {
             destroyCurrentSound();
             return;
@@ -1096,8 +1150,23 @@ class Ground : protected TerrainCueSound {
                 break;
                 
             }
-            //link is on land
+            
+            else if (checkForLava(player->actor.world.pos)) {
+                if (!move()) {
+                    destroyCurrentSound();
+                    break; // Probe is out of bounds.
+                }
+                if (!checkForLava(pos)) {
+                    discoverGround(pos);
+                    break;
+                }
+                    
+            }
+
+
+            // link is on land
             else {
+                
                 if (!move()) {
                     destroyCurrentSound();
                     break; // Probe is out of bounds.
@@ -1119,6 +1188,18 @@ class Ground : protected TerrainCueSound {
                         (player->actor.yDistToWater < 0)) {
                         discoverWater(pos);
                     }
+                    if (rdist(pos) < 100.0) {
+                        s8 i = 5;
+                        while (i > 0) {
+                            move();
+                            if (checkForLava(pos)) {
+                                discoverLava(pos);
+                                break;
+                            }
+                            i += 1;
+                        }
+                        
+                    }
                     testForPlatform();
 
                     break;
@@ -1135,6 +1216,8 @@ class Ground : protected TerrainCueSound {
                     (fabs(pos.y - (player->actor.world.pos.y + player->actor.yDistToWater)) > 30.0)) {
                     discoverLedge(pos);
                 }
+
+                
                 if (pos.y > prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 1.2 &&
                     player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
                     // This is an incline.
@@ -1178,6 +1261,10 @@ class Ground : protected TerrainCueSound {
                             break; // Probe is out of bounds.
                         }
                     }
+                    if (checkForLava(pos)) {
+                        discoverLava(pos);
+                        break;
+                    }
                     f32 distToGo = Math_Vec3f_DistXYZ(&top, &pos);
                     if (distToGo > 500.0) {
                         distToGo = 500.0;
@@ -1188,13 +1275,19 @@ class Ground : protected TerrainCueSound {
                     discoverDecline(pos, pitchModifier);
                     break;
                 }
+
+                if (checkForLava(pos)) {
+                    discoverLava(pos);
+                    break;
+                }
+
                 Vec3f wallPos;
                 CollisionPoly* wallPoly = checkWall(pos, prevPos, wallPos);
                 if (wallPoly == NULL)
                     continue;
                 // Is this a spiked wall?
                 Vec3f polyVerts[3];
-                CollisionContext* colCtx = &actor->play->colCtx;
+                
                 CollisionPoly_GetVertices(wallPoly, colCtx->colHeader->vtxList, polyVerts);
                 if (SurfaceType_IsWallDamage(&actor->play->colCtx, wallPoly, BGCHECK_SCENE)) {
                     discoverSpike(pos);
@@ -1216,10 +1309,17 @@ class Ground : protected TerrainCueSound {
                 }
                 
                 
+
+                else {
+                    continue;
+                }
+
                 if (isHeadOnCollision(pos, velocity) && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
                     discoverWall(pos);
                     break;
                 }
+
+                
             }
         }
         if (trackingMode)
@@ -1334,6 +1434,7 @@ void accessible_va_terrain_cue(AccessibleActor * actor) {
                 SpeechSynthesizer::Instance->Speak("Stop", GetLanguageCode()); // possibly disable? not sure what it does
                 break;
             default:
+                SpeechSynthesizer::Instance->Speak(" ", GetLanguageCode());
                 break;
         }
 
