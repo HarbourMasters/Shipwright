@@ -542,18 +542,6 @@ void CheckTrackerTransition(uint32_t sceneNum) {
 }
 
 void CheckTrackerFrame() {
-    /*if (IS_RANDO) {
-        bool hideShopRightChecks_ = CVarGetInteger("gCheckTrackerOptionHideRightShopChecks", 1);
-        if (hideShopRightChecks != hideShopRightChecks_) {
-            hideShopRightChecks = hideShopRightChecks_;
-            RecalculateAreaTotals();
-        }
-        bool alwaysShowGS_ = CVarGetInteger("gCheckTrackerOptionAlwaysShowGSLocs", 0);
-        if (alwaysShowGS != alwaysShowGS_) {
-            alwaysShowGS = alwaysShowGS_;
-            RecalculateAreaTotals();
-        }
-    }*/
     if (!GameInteractor::IsSaveLoaded()) {
         return;
     }
