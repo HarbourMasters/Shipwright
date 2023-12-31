@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "z_kaleido_scope.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "textures/icon_item_nes_static/icon_item_nes_static.h"
@@ -811,5 +813,36 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
         gSPClearExtraGeometryMode(POLY_KAL_DISP++, G_EX_INVERT_CULLING);
     }
 
+    CLOSE_DISPS(gfxCtx);
+}
+
+/**
+ * \brief Draw the miscellaneous collectibles in place of the map screen
+ * \param play PlayState pointer
+ * \param gfxCtx GraphicsContext pointer
+ */
+void KaleidoScope_DrawMiscCollectibles(PlayState* play, GraphicsContext* gfxCtx) {
+    PauseContext* pauseCtx = &play->pauseCtx;
+    int32_t gregFound = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND) == 0 ? 0 : 1;
+    int16_t yOffset = 70;
+    char gregText[4];
+    snprintf(gregText, 4, "%s", gregFound ? "Yes" : "No");
+    OPEN_DISPS(gfxCtx);
+    gDPPipeSync(POLY_KAL_DISP++);
+    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 200, 200, 200, pauseCtx->alpha);
+    gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 0);
+    gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+    Interface_DrawTextLine_Kal(gfxCtx, "Greg Found: ", 60, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
+    Interface_DrawTextLine_Kal(gfxCtx, gregText, 140, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
+    yOffset += 10;
+    if (Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT) == RO_GENERIC_ON) {
+        uint8_t triforcePiecesRequired = Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1;
+        uint8_t triforcePiecesTotal = Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) + 1;
+        char triforceText[16];
+        snprintf(triforceText, 16, "%d / %d / %d", gSaveContext.triforcePiecesCollected, triforcePiecesRequired, triforcePiecesTotal);
+        Interface_DrawTextLine_Kal(gfxCtx, "Triforce Pieces: ", 60, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
+        Interface_DrawTextLine_Kal(gfxCtx, triforceText, 140, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
+        yOffset += 10;
+    }
     CLOSE_DISPS(gfxCtx);
 }

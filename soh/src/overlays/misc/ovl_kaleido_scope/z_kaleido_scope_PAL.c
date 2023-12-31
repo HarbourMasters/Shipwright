@@ -1485,7 +1485,9 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 POLY_KAL_DISP =
                     KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->mapPageVtx, sMapTexs[gSaveContext.language]);
 
-                if (sInDungeonScene) {
+                if (CHECK_BTN_ALL(input->cur.button, BTN_CUP)) {
+                    KaleidoScope_DrawMiscCollectibles(play, gfxCtx);
+                } else if (sInDungeonScene) {
                     KaleidoScope_DrawDungeonMap(play, gfxCtx);
                     Gfx_SetupDL_42Opa(gfxCtx);
 

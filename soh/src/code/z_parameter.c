@@ -7047,6 +7047,40 @@ void Interface_DrawTextCharacter(GraphicsContext* gfx, int16_t x, int16_t y, voi
     CLOSE_DISPS(gfx);
 }
 
+void Interface_DrawTextCharacter_Kal(GraphicsContext* gfx, int16_t x, int16_t y, void* texture, uint16_t colorR,
+                                    uint16_t colorG, uint16_t colorB, uint16_t colorA, float textScale, uint8_t textShadow) {
+
+    int32_t scale = R_TEXT_CHAR_SCALE * textScale;
+    int32_t sCharTexSize = (scale / 100.0f) * 16.0f;
+    int32_t sCharTexScale = 1024.0f / (scale / 100.0f);
+
+    OPEN_DISPS(gfx);
+
+    gDPPipeSync(POLY_KAL_DISP++);
+
+    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, texture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0,
+                           G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                           G_TX_NOLOD);
+
+    if (textShadow) {
+        // Draw drop shadow
+        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 0, 0, 0, colorA);
+        gSPTextureRectangle(POLY_KAL_DISP++, (x + R_TEXT_DROP_SHADOW_OFFSET) << 2, (y + R_TEXT_DROP_SHADOW_OFFSET) << 2,
+                            (x + R_TEXT_DROP_SHADOW_OFFSET + sCharTexSize) << 2,
+                            (y + R_TEXT_DROP_SHADOW_OFFSET + sCharTexSize) << 2, G_TX_RENDERTILE, 0, 0, sCharTexScale,
+                            sCharTexScale);
+    }
+
+    gDPPipeSync(POLY_KAL_DISP++);
+
+    // Draw normal text
+    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, colorR, colorG, colorB, colorA);
+    gSPTextureRectangle(POLY_KAL_DISP++, x << 2, y << 2, (x + sCharTexSize) << 2, (y + sCharTexSize) << 2,
+                        G_TX_RENDERTILE, 0, 0, sCharTexScale, sCharTexScale);
+
+    CLOSE_DISPS(gfx);
+}
+
 uint16_t Interface_DrawTextLine(GraphicsContext* gfx, char text[], int16_t x, int16_t y, uint16_t colorR,
                          uint16_t colorG, uint16_t colorB, uint16_t colorA, float textScale, uint8_t textShadow) {
 
@@ -7067,6 +7101,35 @@ uint16_t Interface_DrawTextLine(GraphicsContext* gfx, char text[], int16_t x, in
             if (textureIndex != 0) {
                 texture = Font_FetchCharTexture(textureIndex);
                 Interface_DrawTextCharacter(gfx, x + kerningOffset, y + lineOffset, texture, colorR, colorG, colorB,
+                                            colorA, textScale, textShadow);
+            }
+            kerningOffset += (uint16_t)(Message_GetCharacterWidth(textureIndex) * textScale);
+        }
+    }
+
+    return kerningOffset;
+}
+
+uint16_t Interface_DrawTextLine_Kal(GraphicsContext* gfx, char text[], int16_t x, int16_t y, uint16_t colorR,
+                         uint16_t colorG, uint16_t colorB, uint16_t colorA, float textScale, uint8_t textShadow) {
+
+    uint16_t textureIndex;
+    uint16_t kerningOffset = 0;
+    uint16_t lineOffset = 0;
+    void* texture;
+    const char* processedText = Interface_ReplaceSpecialCharacters(text);
+    uint8_t textLength = strlen(processedText);
+
+    for (uint16_t i = 0; i < textLength; i++) {
+        if (processedText[i] == '\n') {
+            lineOffset += 15 * textScale;
+            kerningOffset = 0;
+        } else {
+            textureIndex = processedText[i] - 32;
+
+            if (textureIndex != 0) {
+                texture = Font_FetchCharTexture(textureIndex);
+                Interface_DrawTextCharacter_Kal(gfx, x + kerningOffset, y + lineOffset, texture, colorR, colorG, colorB,
                                             colorA, textScale, textShadow);
             }
             kerningOffset += (uint16_t)(Message_GetCharacterWidth(textureIndex) * textScale);
