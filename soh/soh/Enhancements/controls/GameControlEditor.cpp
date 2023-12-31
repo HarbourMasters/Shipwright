@@ -7,12 +7,17 @@
 #include <iterator>
 #include <variables.h>
 
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+#define IMGUI_DEFINE_MATH_OPERATORS
+#endif
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 #include <libultraship/bridge.h>
 #include <libultraship/libultra/controller.h>
 #include <Utils/StringHelper.h>
 #include <libultraship/libultraship.h>
+
+#include "macros.h"
 
 #include "../../UIWidgets.hpp"
 
@@ -214,16 +219,6 @@ namespace GameControlEditor {
         ImGui::EndTable();
     }
 
-    // CurrentPort is indexed started at 1 here due to the Generic tab, instead of 0 like in InputEditorWindow
-    // Therefore CurrentPort - 1 must always be used inside this function instead of CurrentPort
-    void DrawCustomButtons() {
-        auto inputEditorWindow = std::reinterpret_pointer_cast<LUS::InputEditorWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Input Editor"));
-        inputEditorWindow->DrawControllerSelect(CurrentPort - 1);
-        
-        inputEditorWindow->DrawButton("Modifier 1", BTN_MODIFIER1, CurrentPort - 1, &BtnReading);
-        inputEditorWindow->DrawButton("Modifier 2", BTN_MODIFIER2, CurrentPort - 1, &BtnReading);
-    }
-
     void DrawCameraControlPanel(GameControlEditorWindow* window) {
         if (!ImGui::CollapsingHeader("Camera Controls")) {
             return;
@@ -233,6 +228,10 @@ namespace GameControlEditor {
         window->BeginGroupPanelPublic("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
         UIWidgets::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
         DrawHelpIcon("Allows for aiming with the right stick in:\n-First-Person/C-Up view\n-Weapon Aiming");
+        if (CVarGetInteger("gRightStickAiming", 0)) {
+            UIWidgets::PaddedEnhancementCheckbox("Allow moving while in first person mode", "gMoveWhileFirstPerson");
+            DrawHelpIcon("Changes the left stick to move the player while in first person mode");
+        }
         UIWidgets::PaddedEnhancementCheckbox("Invert Aiming X Axis", "gInvertAimingXAxis");
         DrawHelpIcon("Inverts the Camera X Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
         UIWidgets::PaddedEnhancementCheckbox("Invert Aiming Y Axis", "gInvertAimingYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
@@ -245,7 +244,8 @@ namespace GameControlEditor {
         DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
         if (UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", "gEnableFirstPersonSensitivity", true, false)) {
             if (!CVarGetInteger("gEnableFirstPersonSensitivity", 0)) {
-                CVarClear("gFirstPersonCameraSensitivity");
+                CVarClear("gFirstPersonCameraSensitivityX");
+                CVarClear("gFirstPersonCameraSensitivityY");
             }
         }
         if (CVarGetInteger("gEnableFirstPersonSensitivity", 0)) {
@@ -312,6 +312,7 @@ namespace GameControlEditor {
         DrawHelpIcon("Allows the cursor on the pause menu to be over any slot. Sometimes required in rando to select "
                      "certain items.");
         UIWidgets::Spacer(0);
+        ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
         UIWidgets::PaddedEnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify", true, false);
         DrawHelpIcon("Hold the assigned button to change the maximum walking speed\nTo change the assigned button, go into the Ports tabs above");
          if (CVarGetInteger("gEnableWalkModify", 0)) {
@@ -323,75 +324,21 @@ namespace GameControlEditor {
             UIWidgets::PaddedEnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
             window->EndGroupPanelPublic(0);
         }
+        ImGui::EndDisabled();
         UIWidgets::Spacer(0);
         UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
         DrawHelpIcon("Speak to Navi with L but enter first-person camera with C-Up");
         window->EndGroupPanelPublic(0);
     }
 
-    void DrawLEDControlPanel(GameControlEditorWindow* window) {
-        window->BeginGroupPanelPublic("LED Colors", ImGui::GetContentRegionAvail());
-        static const char* ledSources[4] = { "Original Tunic Colors", "Cosmetics Tunic Colors", "Health Colors", "Custom" };
-        UIWidgets::PaddedText("Source");
-        UIWidgets::EnhancementCombobox("gLedColorSource", ledSources, LED_SOURCE_TUNIC_ORIGINAL);
-        DrawHelpIcon("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when health < 40%. Green otherwise.\n\n" \
-                     "Tunics: colors will mirror currently equipped tunic, whether original or the current values in Cosmetics Editor.\n\n" \
-                     "Custom: single, solid color");
-        if (CVarGetInteger("gLedColorSource", 1) == 3) {
-            UIWidgets::Spacer(3);
-            auto port1Color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
-            ImVec4 colorVec = { port1Color.r / 255.0f, port1Color.g / 255.0f, port1Color.b / 255.0f, 1.0f };
-            if (ImGui::ColorEdit3("", (float*)&colorVec, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
-                Color_RGB8 color;
-                color.r = colorVec.x * 255.0;
-                color.g = colorVec.y * 255.0;
-                color.b = colorVec.z * 255.0;
-
-                CVarSetColor24("gLedPort1Color", color);
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            }
-            ImGui::SameLine();
-            ImGui::Text("Custom Color");
-        }
-        UIWidgets::PaddedEnhancementSliderFloat("Brightness: %d%%", "##LED_Brightness", "gLedBrightness",
-                                                0.0f, 1.0f, "", 1.0f, true, true);
-        DrawHelpIcon("Sets the brightness of controller LEDs. 0% brightness = LEDs off.");
-        UIWidgets::PaddedEnhancementCheckbox("Critical Health Override", "gLedCriticalOverride", true, true, 
-            CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH, "Override redundant for health source.",
-            UIWidgets::CheckboxGraphics::Cross, true);
-        DrawHelpIcon("Shows red color when health is critical, otherwise displays according to color source.");
-        window->EndGroupPanelPublic(0);
-    }
 
     void GameControlEditorWindow::DrawElement() {
         ImGui::SetNextWindowSize(ImVec2(465, 430), ImGuiCond_FirstUseEver);
         if (ImGui::Begin("Game Controls Configuration", &mIsVisible)) {
-            ImGui::BeginTabBar("##CustomControllers");
-            if (ImGui::BeginTabItem("Generic")) {
-                CurrentPort = 0;
-                ImGui::EndTabItem();
-            }
-
-            for (int i = 1; i <= 4; i++) {
-                if (ImGui::BeginTabItem(StringHelper::Sprintf("Port %d", i).c_str())) {
-                    CurrentPort = i;
-                    ImGui::EndTabItem();
-                }
-            }
-
-            ImGui::EndTabBar();
-
-            if (CurrentPort == 0) {
-                DrawOcarinaControlPanel(this);
-                DrawCameraControlPanel(this);
-                DrawDpadControlPanel(this);
-                DrawMiscControlPanel(this);
-            } else {
-                DrawCustomButtons();
-                if (CurrentPort == 1 && LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0)->CanSetLed()) {
-                    DrawLEDControlPanel(this);
-                }
-            }
+            DrawOcarinaControlPanel(this);
+            DrawCameraControlPanel(this);
+            DrawDpadControlPanel(this);
+            DrawMiscControlPanel(this);
         }
         ImGui::End();
     }

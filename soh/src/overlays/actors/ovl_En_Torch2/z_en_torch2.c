@@ -136,7 +136,7 @@ void EnTorch2_Init(Actor* thisx, PlayState* play2) {
     sInput.cur.stick_x = sInput.cur.stick_y = 0;
     this->currentShield = PLAYER_SHIELD_HYLIAN;
     this->heldItemAction = this->heldItemId = PLAYER_IA_SWORD_MASTER;
-    Player_SetModelGroup(this, 2);
+    Player_SetModelGroup(this, PLAYER_MODELGROUP_SWORD);
     play->playerInit(this, play, &gDarkLinkSkel);
     this->actor.naviEnemyId = 0x26;
     this->cylinder.base.acFlags = AC_ON | AC_TYPE_PLAYER;
@@ -568,7 +568,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
 
     // Causes Dark Link to shield in place when Link is using magic attacks other than the spin attack
 
-    if ((gSaveContext.magicState == 3) && (player->meleeWeaponState == 0 || (player->meleeWeaponAnimation < SPIN_ATTACK_1H) ||
+    if ((gSaveContext.magicState == MAGIC_STATE_METER_FLASH_1) && (player->meleeWeaponState == 0 || (player->meleeWeaponAnimation < SPIN_ATTACK_1H) ||
                                          (player->meleeWeaponAnimation > BIG_SPIN_2H))) {
         sStickTilt = 0.0f;
         input->cur.stick_x = 0;
@@ -602,8 +602,8 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
     // Handles Dark Link being damaged
 
     if ((this->actor.colChkInfo.health == 0) && sDeathFlag) {
-        this->csMode = 0x18;
-        this->unk_448 = &player->actor;
+        this->csAction = 0x18;
+        this->csActor = &player->actor;
         this->doorBgCamIndex = 1;
         sDeathFlag = false;
     }

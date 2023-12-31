@@ -55,7 +55,7 @@ void ArrowFire_Init(Actor* thisx, PlayState* play) {
 }
 
 void ArrowFire_Destroy(Actor* thisx, PlayState* play) {
-    func_800876C8(play);
+    Magic_Reset(play);
     LOG_STRING("消滅"); // "Disappearance"
 }
 
