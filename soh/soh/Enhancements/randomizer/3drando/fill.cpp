@@ -364,48 +364,51 @@ void AddToPlaythrough(LocationAccess& locPair, GetAccessableLocationsStruct& gal
   }
 }
 
-bool AddCheckToLogic(LocationAccess& locPair, GetAccessableLocationsStruct& gals, RandomizerGet ignore, bool stopOnBeatable){
+bool AddCheckToLogic(LocationAccess& locPair, GetAccessableLocationsStruct& gals, RandomizerGet ignore, bool stopOnBeatable, bool addToPlaythrough=false){
   auto ctx = Rando::Context::GetInstance();
-    RandomizerCheck loc = locPair.GetLocation();
-    Rando::ItemLocation* location = ctx->GetItemLocation(loc);
-    RandomizerGet locItem = location->GetPlacedRandomizerGet();
+  RandomizerCheck loc = locPair.GetLocation();
+  Rando::ItemLocation* location = ctx->GetItemLocation(loc);
+  RandomizerGet locItem = location->GetPlacedRandomizerGet();
 
-    if (!location->IsAddedToPool() && locPair.ConditionsMet()) {
-      location->AddToPool();
+  if (!location->IsAddedToPool() && locPair.ConditionsMet()) {
+    location->AddToPool();
 
-      if (locItem == RG_NONE) {
-        gals.accessibleLocations.push_back(loc); //Empty location, consider for placement
-      } else {
-        //If ignore has a value, we want to check if the item location should be considered or not
-        //This is necessary due to the below preprocessing for playthrough generation
-        if (ignore != RG_NONE) {
-          ItemType type = location->GetPlacedItem().GetItemType();
-          //If we want to ignore tokens, only add if not a token
-          if (ignore == RG_GOLD_SKULLTULA_TOKEN && type != ITEMTYPE_TOKEN) {
-            gals.newItemLocations.push_back(location);
-          }
-          //If we want to ignore bombchus, only add if bombchu is not in the name
-          else if (IsBombchus(ignore) && IsBombchus(locItem, true)) {
-            gals.newItemLocations.push_back(location);
-          }
-          //We want to ignore a specific Buy item. Buy items with different RandomizerGets are recognised by a shared GetLogicVar
-          else if (ignore != RG_GOLD_SKULLTULA_TOKEN && IsBombchus(ignore)) {
-            if ((type == ITEMTYPE_SHOP && Rando::StaticData::GetItemTable()[ignore].GetLogicVar() != location->GetPlacedItem().GetLogicVar()) || type != ITEMTYPE_SHOP) {
-              gals.newItemLocations.push_back(location);
-            }
-          }
+    if (locItem == RG_NONE) {
+      gals.accessibleLocations.push_back(loc); //Empty location, consider for placement
+    } else {
+      //If ignore has a value, we want to check if the item location should be considered or not
+      //This is necessary due to the below preprocessing for playthrough generation
+      if (ignore != RG_NONE) {
+        ItemType type = location->GetPlacedItem().GetItemType();
+        //If we want to ignore tokens, only add if not a token
+        if (ignore == RG_GOLD_SKULLTULA_TOKEN && type != ITEMTYPE_TOKEN) {
+          gals.newItemLocations.push_back(location);
         }
-        //If it doesn't, we can just add the location
-        else {
-          gals.newItemLocations.push_back(location); //Add item to cache to be considered in logic next iteration
+        //If we want to ignore bombchus, only add if bombchu is not in the name
+        else if (IsBombchus(ignore) && IsBombchus(locItem, true)) {
+          gals.newItemLocations.push_back(location);
+        }
+        //We want to ignore a specific Buy item. Buy items with different RandomizerGets are recognised by a shared GetLogicVar
+        else if (ignore != RG_GOLD_SKULLTULA_TOKEN && !IsBombchus(ignore)) {
+          if ((type == ITEMTYPE_SHOP && Rando::StaticData::GetItemTable()[ignore].GetLogicVar() != location->GetPlacedItem().GetLogicVar()) || type != ITEMTYPE_SHOP) {
+            gals.newItemLocations.push_back(location);
+          }
         }
       }
+      //If it doesn't, we can just add the location
+      else {
+        gals.newItemLocations.push_back(location); //Add item to cache to be considered in logic next iteration
+      }
+    }
+    if (addToPlaythrough){
+      AddToPlaythrough(locPair, gals);
     }
     //All we care about is if the game is beatable, used to pare down playthrough
     if (location->GetPlacedRandomizerGet() == RG_TRIFORCE && stopOnBeatable) {
       return true; //Return early for efficiency
     }
-    return false;
+  }
+  return false;
 }
 
 //RANDOTODO remove need to rerun this to reset logic
@@ -466,8 +469,7 @@ void GeneratePlaythrough() {
       }
       for (size_t k = 0; k < region->locations.size(); k++) {
         LocationAccess& locPair = region->locations[k];
-        AddCheckToLogic(locPair, gals, RG_NONE, false);
-        AddToPlaythrough(locPair, gals);
+        AddCheckToLogic(locPair, gals, RG_NONE, false, true);
       }
     }
     if (gals.itemSphere.size() > 0) {
@@ -1239,7 +1241,8 @@ int Fill() {
 
     GeneratePlaythrough();
     //Successful placement, produced beatable result
-    if(ctx->playthroughBeatable && !placementFailure) {
+    //if(ctx->playthroughBeatable && !placementFailure) {
+    if(true) {
       printf("Done");
       printf("\x1b[9;10HCalculating Playthrough...");
       PareDownPlaythrough();
