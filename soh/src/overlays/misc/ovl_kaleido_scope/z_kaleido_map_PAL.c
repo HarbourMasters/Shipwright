@@ -829,6 +829,9 @@ void KaleidoScope_DrawMiscCollectibles(PlayState* play, GraphicsContext* gfxCtx)
     snprintf(gregText, 4, "%s", gregFound ? "Yes" : "No");
     OPEN_DISPS(gfxCtx);
     gDPPipeSync(POLY_KAL_DISP++);
+    gDPSetCycleType(POLY_KAL_DISP++, G_CYC_FILL);
+    gDPSetFillColor(POLY_KAL_DISP++, GPACK_RGBA5551(0, 0, 0, 1) << 0x10 | GPACK_RGBA5551(0, 0, 0, 1));
+    gDPScisFillRectangle(POLY_KAL_DISP++, 50, 60, 270, 190);
     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 200, 200, 200, pauseCtx->alpha);
     gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 0);
     gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
