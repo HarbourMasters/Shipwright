@@ -844,5 +844,12 @@ void KaleidoScope_DrawMiscCollectibles(PlayState* play, GraphicsContext* gfxCtx)
         Interface_DrawTextLine_Kal(gfxCtx, triforceText, 140, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
         yOffset += 10;
     }
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS) == RO_GENERIC_ON) {
+        char ocarinaButtonsText[10];
+        Randomizer_BuildCollectedOcarinaButtonsString(ocarinaButtonsText, 10);
+        Interface_DrawTextLine_Kal(gfxCtx, "Ocarina Buttons: ", 60, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
+        Interface_DrawTextLine_Kal(gfxCtx, ocarinaButtonsText, 140, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
+        yOffset += 10;
+    }
     CLOSE_DISPS(gfxCtx);
 }
