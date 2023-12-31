@@ -3,6 +3,7 @@
 #include "savestates.h"
 #include "soh/ActorDB.h"
 
+#include <cstdio>
 #include <vector>
 #include <string>
 #include "soh/OTRGlobals.h"
@@ -77,6 +78,7 @@ static bool ActorSpawnHandler(std::shared_ptr<LUS::Console> Console, const std::
             if (args[8][0] != ',') {
                 spawnPoint.rot.z = std::stoi(args[8]);
             }
+            [[fallthrough]];
         case 6:
             if (args[3][0] != ',') {
                 spawnPoint.pos.x = std::stoi(args[3]);
@@ -168,7 +170,7 @@ static bool RupeeHandler(std::shared_ptr<LUS::Console> Console, const std::vecto
         return 1;
     }
 
-   gSaveContext.rupees = rupeeAmount;
+    gSaveContext.rupees = rupeeAmount;
 
     INFO_MESSAGE("Set rupee count to %u", rupeeAmount);
     return 0;
@@ -399,6 +401,8 @@ static bool EntranceHandler(std::shared_ptr<LUS::Console> Console, const std::ve
     gPlayState->sceneLoadFlag = 0x14;
     gPlayState->fadeTransition = 11;
     gSaveContext.nextTransitionType = 11;
+    
+    return 0;
 }
 
 static bool VoidHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
@@ -511,7 +515,12 @@ static bool SaveStateHandler(std::shared_ptr<LUS::Console> Console, const std::v
             INFO_MESSAGE("[SOH] Saved state to slot %u", slot);
             return 0;
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
-            ERROR_MESSAGE("[SOH] Can not save a state outside of \"GamePlay\"");
+            ERROR_MESSAGE("[SOH] Can not save a state outside of \"PlayState\"");
+            return 1;
+        case SaveStateReturn::FAIL_BAD_REQUEST:
+            ERROR_MESSAGE("[SOH] Invalid Save State Request");
+            return 1;
+        default:
             return 1;
     }
 }
@@ -531,10 +540,11 @@ static bool LoadStateHandler(std::shared_ptr<LUS::Console> Console, const std::v
             ERROR_MESSAGE("[SOH] State Slot (%u) is empty", slot);
             return 1;
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
-            ERROR_MESSAGE("[SOH] Can not load a state outside of \"GamePlay\"");
+            ERROR_MESSAGE("[SOH] Can not load a state outside of \"PlayState\"");
+            return 1;
+        default:
             return 1;
     }
-
 }
 
 static bool StateSlotSelectHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
@@ -542,7 +552,7 @@ static bool StateSlotSelectHandler(std::shared_ptr<LUS::Console> Console, const 
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
-    uint8_t slot;
+    int slot;
 
     try {
         slot = std::stoi(args[1], nullptr, 10);
@@ -552,12 +562,12 @@ static bool StateSlotSelectHandler(std::shared_ptr<LUS::Console> Console, const 
     }
 
     if (slot < 0) {
-        ERROR_MESSAGE("[SOH] Invalid slot passed. Slot must be between 0 and 2");
+        ERROR_MESSAGE("[SOH] Invalid slot passed. Slot must be between 0 and 5");
         return 1;
     }
 
     OTRGlobals::Instance->gSaveStateMgr->SetCurrentSlot(slot);
-    INFO_MESSAGE("[SOH] Slot %u selected",
+    INFO_MESSAGE("[SOH] Slot %d selected",
                                         OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot());
     return 0;
 }
@@ -1319,6 +1329,26 @@ static bool SfxHandler(std::shared_ptr<LUS::Console> Console, const std::vector<
 
     return 0;
 }
+static bool NeofetchHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
+#ifdef __linux__
+    FILE* pipe = popen("neofetch --stdout", "r");
+    char buff[BUFSIZ];
+    
+    if (pipe == NULL) {
+        ERROR_MESSAGE("[SOH] Failed to run neofetch. Error: %d %s", errno, strerror(errno));
+        return 1;
+    }
+    
+    while (fgets(buff, BUFSIZ, pipe) != NULL) {
+        INFO_MESSAGE("%s", buff);
+    }
+    pclose(pipe);
+    return 0;
+#else
+    ERROR_MESSAGE("[SOH] neofetch command is not currently supported on your system.");
+    return 1;
+#endif
+}
 
 void DebugConsole_Init(void) {
     // Console
@@ -1506,6 +1536,7 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("sfx", {SfxHandler, "Change SFX.", {
             {"reset|randomize", LUS::ArgumentType::TEXT},
     }});
+    CMD_REGISTER("neofetch", {NeofetchHandler, "Runs neofetch."});
 
     CVarSave();
     CVarLoad();
