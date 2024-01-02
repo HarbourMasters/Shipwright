@@ -12,6 +12,10 @@
 #include "3drando/rando_main.hpp"
 #include "3drando/random.hpp"
 #include "../../UIWidgets.hpp"
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+#define IMGUI_DEFINE_MATH_OPERATORS
+#endif
+#include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 #include "../custom-message/CustomMessageTypes.h"
 #include "../item-tables/ItemTableManager.h"
@@ -366,31 +370,16 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
 bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
-    try {
-        if (strcmp(spoilerFileName, "") != 0) {
-            std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
-            if (!spoilerFileStream) {
-                return false;
-            }
-
-            json spoilerFileJson;
-            spoilerFileStream >> spoilerFileJson;
-
-            if (!spoilerFileJson.contains("version") || !spoilerFileJson.contains("finalSeed")) {
-                return false;
-            }
-
+    if (strcmp(spoilerFileName, "") != 0) {
+        std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
+        if (!spoilerFileStream) {
+            return false;
+        } else {
             return true;
         }
-
-        return false;
-    } catch (std::exception& e) {
-        SPDLOG_ERROR("Error checking if spoiler file exists: {}", e.what());
-        return false;
-    } catch (...) {
-        SPDLOG_ERROR("Error checking if spoiler file exists");
-        return false;
     }
+
+    return false;
 }
 #pragma GCC pop_options
 #pragma optimize("", on)
@@ -496,6 +485,13 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         "Zu {{location}}?\x1B&%gOK&No%w\x02",
         "Se téléporter vers&{{location}}?\x1B&%gOK!&Non%w\x02"));
 
+    // Bow Shooting Gallery reminder
+    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW,
+        CustomMessage("Come back when you have your own&bow and you'll get a %rdifferent prize%w!",
+        "Komm wieder sobald du deinen eigenen&Bogen hast, um einen %rspeziellen Preis%w zu&erhalten!",
+        "J'aurai %rune autre récompense%w pour toi&lorsque tu auras ton propre arc."));
+
+    // Lake Hylia water level system
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN,
         CustomMessage("Water level control system.&Keep away!",
             "Wasserstand Kontrollsystem&Finger weg!",
