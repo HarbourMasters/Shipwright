@@ -1,5 +1,7 @@
 #include <soh_assets.h>
 #include <stdio.h>
+#include <textures/icon_item_static/icon_item_static.h>
+#include <textures/parameter_static/parameter_static.h>
 
 #include "z_kaleido_scope.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
@@ -833,27 +835,39 @@ void KaleidoScope_DrawMiscCollectibles(PlayState* play, GraphicsContext* gfxCtx)
     gDPSetCycleType(POLY_KAL_DISP++, G_CYC_FILL);
     gDPSetFillColor(POLY_KAL_DISP++, GPACK_RGBA5551(0, 0, 0, 1) << 0x10 | GPACK_RGBA5551(0, 0, 0, 1));
     gDPScisFillRectangle(POLY_KAL_DISP++, 50, 60, 270, 190);
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 200, 200, 200, pauseCtx->alpha);
     gDPSetEnvColor(POLY_KAL_DISP++, 0, 0, 0, 0);
     gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-    Interface_DrawTextLine_Kal(gfxCtx, "Greg Found: ", 60, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
-    Interface_DrawTextLine_Kal(gfxCtx, gregText, 140, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
-    yOffset += 10;
+    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 0xC8, 0xFF, 0x64, pauseCtx->alpha);
+    gDPLoadTextureBlock(POLY_KAL_DISP++, gRupeeCounterIconTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0,
+        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gSPWideTextureRectangle(POLY_KAL_DISP++, 60 << 2, yOffset << 2, 76 << 2, yOffset + 16 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 200, 200, 200, pauseCtx->alpha);
+    Interface_DrawTextLine_Kal(gfxCtx, "Greg Found: ", 78, yOffset + 3, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
+    Interface_DrawTextLine_Kal(gfxCtx, gregText, 158, yOffset + 3, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
+    yOffset += 16;
     if (Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT) == RO_GENERIC_ON) {
+        gDPLoadTextureBlock(POLY_KAL_DISP++, gTriforcePieceTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                            G_TX_NOLOD);
+        gSPWideTextureRectangle(POLY_KAL_DISP++, 60 << 2, yOffset << 2, 76 << 2, (yOffset + 16) << 2, G_TX_RENDERTILE, 0, 0, (1 << 10) * 2, (1 << 10) * 2);
         uint8_t triforcePiecesRequired = Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1;
         uint8_t triforcePiecesTotal = Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) + 1;
         char triforceText[16];
         snprintf(triforceText, 16, "%d / %d / %d", gSaveContext.triforcePiecesCollected, triforcePiecesRequired, triforcePiecesTotal);
-        Interface_DrawTextLine_Kal(gfxCtx, "Triforce Pieces: ", 60, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
-        Interface_DrawTextLine_Kal(gfxCtx, triforceText, 140, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
-        yOffset += 10;
+        Interface_DrawTextLine_Kal(gfxCtx, "Triforce Pieces: ", 78, yOffset + 3, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
+        Interface_DrawTextLine_Kal(gfxCtx, triforceText, 158, yOffset + 3, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
+        yOffset += 16;
     }
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS) == RO_GENERIC_ON) {
         char ocarinaButtonsText[10];
         Randomizer_BuildCollectedOcarinaButtonsString(ocarinaButtonsText, 10);
-        Interface_DrawTextLine_Kal(gfxCtx, "Ocarina Buttons: ", 60, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
-        Interface_DrawTextLine_Kal(gfxCtx, ocarinaButtonsText, 140, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
-        yOffset += 10;
+        gDPLoadTextureBlock(POLY_KAL_DISP++, gItemIconOcarinaOfTimeTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                            G_TX_NOLOD);
+        gSPWideTextureRectangle(POLY_KAL_DISP++, 60 << 2, yOffset << 2, 76 << 2, (yOffset + 16) << 2, G_TX_RENDERTILE, 0, 0, (1 << 10) * 2, (1 << 10) * 2);
+        Interface_DrawTextLine_Kal(gfxCtx, "Ocarina Buttons: ", 78, yOffset + 3, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
+        Interface_DrawTextLine_Kal(gfxCtx, ocarinaButtonsText, 158, yOffset + 3, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
+        yOffset += 16;
     }
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_SOULS) > RO_BOSS_SOULS_OFF) {
         Interface_DrawTextLine_Kal(gfxCtx, "Boss Souls: ", 60, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
