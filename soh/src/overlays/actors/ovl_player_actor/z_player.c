@@ -1074,15 +1074,6 @@ static s8 sItemActions[] = {
     PLAYER_IA_SWORD_KOKIRI,        // ITEM_SWORD_KOKIRI
     PLAYER_IA_SWORD_MASTER,        // ITEM_SWORD_MASTER
     PLAYER_IA_SWORD_BIGGORON,      // ITEM_SWORD_BIGGORON
-    PLAYER_IA_SHIELD_DEKU,         // ITEM_SHIELD_DEKU
-    PLAYER_IA_SHIELD_HYLIAN,       // ITEM_SHIELD_HYLIAN
-    PLAYER_IA_SHIELD_MIRROR,       // ITEM_SHIELD_MIRROR
-    PLAYER_IA_TUNIC_KOKIRI,        // ITEM_TUNIC_KOKIRI
-    PLAYER_IA_TUNIC_GORON,         // ITEM_TUNIC_GORON
-    PLAYER_IA_TUNIC_ZORA,          // ITEM_TUNIC_ZORA
-    PLAYER_IA_BOOTS_KOKIRI,        // ITEM_BOOTS_KOKIRI
-    PLAYER_IA_BOOTS_IRON,          // ITEM_BOOTS_IRON
-    PLAYER_IA_BOOTS_HOVER,         // ITEM_BOOTS_HOVER
 };
 
 static u8 sMaskMemory;
@@ -1157,15 +1148,6 @@ static s32 (*sItemActionUpdateFuncs[])(Player* this, PlayState* play) = {
     func_8083485C, // PLAYER_IA_MASK_GERUDO
     func_8083485C, // PLAYER_IA_MASK_TRUTH
     func_8083485C, // PLAYER_IA_LENS_OF_TRUTH
-    func_8083485C, // PLAYER_IA_SHIELD_DEKU
-    func_8083485C, // PLAYER_IA_SHIELD_HYLIAN
-    func_8083485C, // PLAYER_IA_SHIELD_MIRROR
-    func_8083485C, // PLAYER_IA_TUNIC_KOKIRI
-    func_8083485C, // PLAYER_IA_TUNIC_GORON
-    func_8083485C, // PLAYER_IA_TUNIC_ZORA
-    func_8083485C, // PLAYER_IA_BOOTS_KOKIRI
-    func_8083485C, // PLAYER_IA_BOOTS_IRON
-    func_8083485C, // PLAYER_IA_BOOTS_HOVER
 };
 
 static void (*sItemActionInitFuncs[])(PlayState* play, Player* this) = {
@@ -1236,15 +1218,6 @@ static void (*sItemActionInitFuncs[])(PlayState* play, Player* this) = {
     func_80833770, // PLAYER_IA_MASK_GERUDO
     func_80833770, // PLAYER_IA_MASK_TRUTH
     func_80833770, // PLAYER_IA_LENS_OF_TRUTH
-    func_80833770, // PLAYER_IA_SHIELD_DEKU
-    func_80833770, // PLAYER_IA_SHIELD_HYLIAN
-    func_80833770, // PLAYER_IA_SHIELD_MIRROR
-    func_80833770, // PLAYER_IA_TUNIC_KOKIRI
-    func_80833770, // PLAYER_IA_TUNIC_GORON
-    func_80833770, // PLAYER_IA_TUNIC_ZORA
-    func_80833770, // PLAYER_IA_BOOTS_KOKIRI
-    func_80833770, // PLAYER_IA_BOOTS_IRON
-    func_80833770, // PLAYER_IA_BOOTS_HOVER
 };
 
 typedef enum {
@@ -2037,6 +2010,10 @@ s8 Player_ItemToItemAction(s32 item) {
         return PLAYER_IA_LAST_USED;
     } else if (item == ITEM_FISHING_POLE) {
         return PLAYER_IA_FISHING_POLE;
+    // #region SOH [Enhancement] Added to prevent crashes with assignable equipment
+    } else if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+        return PLAYER_IA_NONE;
+    // #endregion
     } else {
         return sItemActions[item];
     }
@@ -3167,8 +3144,7 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
 
         if ((itemAction == PLAYER_IA_NONE) || !(this->stateFlags1 & PLAYER_STATE1_IN_WATER) ||
             ((this->actor.bgCheckFlags & 1) &&
-             ((itemAction == PLAYER_IA_HOOKSHOT) || (itemAction == PLAYER_IA_LONGSHOT))) ||
-            ((itemAction >= PLAYER_IA_SHIELD_DEKU) && (itemAction <= PLAYER_IA_BOOTS_HOVER))) {
+             ((itemAction == PLAYER_IA_HOOKSHOT) || (itemAction == PLAYER_IA_LONGSHOT)))) {
 
             if ((play->bombchuBowlingStatus == 0) &&
                 (((itemAction == PLAYER_IA_DEKU_STICK) && (AMMO(ITEM_STICK) == 0)) ||
@@ -3177,12 +3153,6 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
                   ((temp >= 0) && ((AMMO(sExplosiveInfos[temp].itemId) == 0) ||
                                    (play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].length >= 3 && !CVarGetInteger("gRemoveExplosiveLimit", 0))))))) {
                 func_80078884(NA_SE_SY_ERROR);
-                return;
-            }
-
-            if (itemAction >= PLAYER_IA_SHIELD_DEKU) {
-                // Changing shields through action commands is unimplemented
-                // Boots and tunics handled previously
                 return;
             }
 
@@ -11000,46 +10970,39 @@ static f32 D_8085482C[] = { 0.5f, 1.0f, 3.0f };
 
 void Player_UseTunicBoots(Player* this, PlayState* play) {
     // Boots and tunics equip despite state
-    s32 i;
-    s32 item;
-    s32 itemAction;
-    if (!(
-        this->stateFlags1 & PLAYER_STATE1_INPUT_DISABLED || 
-        this->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || 
-        this->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE || 
-        this->stateFlags1 & PLAYER_STATE1_TEXT_ON_SCREEN || 
-        this->stateFlags1 & PLAYER_STATE1_DEAD || 
+    if (
+        this->stateFlags1 & (PLAYER_STATE1_INPUT_DISABLED | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE | PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_DEAD) ||
         this->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING
-    )) {
-        for (i = 0; i < ARRAY_COUNT(sItemButtons); i++) {
-            if (CHECK_BTN_ALL(sControlInput->press.button, sItemButtons[i])) {
-                break;
-            }
+    ) {
+        return;
+    }
+
+    s32 i;
+    for (i = 0; i < ARRAY_COUNT(sItemButtons); i++) {
+        if (CHECK_BTN_ALL(sControlInput->press.button, sItemButtons[i])) {
+            break;
         }
-        item = Player_GetItemOnButton(play, i);
-        if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
-            this->heldItemButton = i;
-            itemAction = Player_ItemToItemAction(item);
-            if (itemAction >= PLAYER_IA_BOOTS_KOKIRI) {
-                u16 bootsValue = itemAction - PLAYER_IA_BOOTS_KOKIRI + 1;
-                if (CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == bootsValue) {
-                    Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_KOKIRI);
-                } else {
-                    Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, bootsValue);
-                }
-                Player_SetEquipmentData(play, this);
-                func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == EQUIP_VALUE_BOOTS_IRON ? NA_SE_PL_WALK_HEAVYBOOTS
-                                                                                            : NA_SE_PL_CHANGE_ARMS);
-            } else if (itemAction >= PLAYER_IA_TUNIC_KOKIRI) {
-                u16 tunicValue = itemAction - PLAYER_IA_TUNIC_KOKIRI + 1;
-                if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == tunicValue) {
-                    Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_KOKIRI);
-                } else {
-                    Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, tunicValue);
-                }
-                Player_SetEquipmentData(play, this);
-                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+    }
+    s32 item = Player_GetItemOnButton(play, i);
+    if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+        if (item >= ITEM_BOOTS_KOKIRI) {
+            u16 bootsValue = item - ITEM_BOOTS_KOKIRI + 1;
+            if (CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == bootsValue) {
+                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_KOKIRI);
+            } else {
+                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, bootsValue);
             }
+            Player_SetEquipmentData(play, this);
+            func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == EQUIP_VALUE_BOOTS_IRON ? NA_SE_PL_WALK_HEAVYBOOTS : NA_SE_PL_CHANGE_ARMS);
+        } else {
+            u16 tunicValue = item - ITEM_TUNIC_KOKIRI + 1;
+            if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == tunicValue) {
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_KOKIRI);
+            } else {
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, tunicValue);
+            }
+            Player_SetEquipmentData(play, this);
+            func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
         }
     }
 }
