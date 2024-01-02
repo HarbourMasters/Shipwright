@@ -857,16 +857,33 @@ void KaleidoScope_DrawMiscCollectibles(PlayState* play, GraphicsContext* gfxCtx)
     }
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_SOULS) > RO_BOSS_SOULS_OFF) {
         Interface_DrawTextLine_Kal(gfxCtx, "Boss Souls: ", 60, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
-        // Vtx bossSoulVtx = VTX(-48, 16, 0, 0 << 5, 0 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
-        // gSPVertex(POLY_KAL_DISP++, &bossSoulVtx, 4, 0);
-        // gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
-        // gSPGrayscale(POLY_KAL_DISP++, true);
-        gDPLoadTextureBlock(POLY_KAL_DISP++, gBossSoulIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 16, 0,
-                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
-                        G_TX_NOLOD);
-        gSP1Quadrangle(POLY_KAL_DISP++, 0, 0 + 2, 0 + 3, 0 + 1, 0);
-        // KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gBossSoulTex, 16, 16, 0);
-        // gSPGrayscale(POLY_KAL_DISP++, false);
+        const char* bossHeaders[] = {
+            "Gh",
+            "KD",
+            "Ba",
+            "PG",
+            "Vo",
+            "Mo",
+            "BB",
+            "TR",
+            "Ga"
+        };
+        int16_t soulYOffset = yOffset + 10;
+        for (int i = RAND_INF_GOHMA_SOUL; i <= RAND_INF_GANON_SOUL; i++) {
+            int j = i - RAND_INF_GOHMA_SOUL;
+            Interface_DrawTextLine_Kal(gfxCtx, bossHeaders[j], 120 + (j * 17), yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
+            bool soulCollected = Flags_GetRandomizerInf(i) > 0;
+            if (!soulCollected) {
+                gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
+                gSPGrayscale(POLY_KAL_DISP++, true);
+            }
+            gDPLoadTextureBlock(POLY_KAL_DISP++, gBossSoulIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 16, 0,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                            G_TX_NOLOD);
+            gSPWideTextureRectangle(POLY_KAL_DISP++, (118 + (j * 17)) << 2, soulYOffset << 2, (134 + (j * 17)) << 2, (soulYOffset + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+            gSPGrayscale(POLY_KAL_DISP++, false);
+        }
+        yOffset = soulYOffset + 16;
     }
     CLOSE_DISPS(gfxCtx);
 }
