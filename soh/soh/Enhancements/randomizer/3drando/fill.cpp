@@ -572,7 +572,7 @@ static void CalculateWotH() {
     for (size_t j = 0; j < ctx->playthroughLocations[i].size(); j++) {
       //If removing this item and no other item caused the game to become unbeatable, then it is strictly necessary, so add it
       if (ctx->GetItemLocation(ctx->playthroughLocations[i][j])->IsHintable() 
-          && IsBeatableWithout(ctx->playthroughLocations[i][j], true)) {
+          && !(IsBeatableWithout(ctx->playthroughLocations[i][j], true))) {
         ctx->GetItemLocation(ctx->playthroughLocations[i][j])->SetWothCandidate();
       }
     }
@@ -585,20 +585,21 @@ static void CalculateWotH() {
 //Calculate barren locations and assign Barren Candidacy to all locations inside those areas
 static void CalculateBarren() {
   auto ctx = Rando::Context::GetInstance();
-  std::array<bool, RA_MAX> IsBarren = {true};
+  std::array<bool, RA_MAX> NotBarren = {}; //I would invert this but the "initialise all as true" syntax wasn't working
 
   for (RandomizerCheck loc : ctx->allLocations) {
-  Rando::ItemLocation* itemLoc = ctx->GetItemLocation(loc);
-  RandomizerArea locArea = itemLoc->GetArea();
-  // If a location has a major item or is a way of the hero location, it is not barren
-  if (IsBarren[locArea] == true && locArea > RA_LINKS_POCKET && (itemLoc->GetPlacedItem().IsMajorItem() || itemLoc->IsWothCandidate())) {
-    IsBarren[locArea] = false;
-  } 
+    Rando::ItemLocation* itemLoc = ctx->GetItemLocation(loc);
+    RandomizerArea locArea = itemLoc->GetArea();
+    bool test = (itemLoc->GetPlacedItem().IsMajorItem() || itemLoc->IsWothCandidate());
+    // If a location has a major item or is a way of the hero location, it is not barren
+    if (NotBarren[locArea] == false && locArea > RA_LINKS_POCKET && (itemLoc->GetPlacedItem().IsMajorItem() || itemLoc->IsWothCandidate())) {
+      NotBarren[locArea] = true;
+    } 
   }
 
   for (RandomizerCheck loc : ctx->allLocations) {
     Rando::ItemLocation* itemLoc = ctx->GetItemLocation(loc);
-    if (IsBarren[itemLoc->GetArea()]){
+    if (!NotBarren[itemLoc->GetArea()]){
       itemLoc->SetBarrenCandidate();
     }
   }
