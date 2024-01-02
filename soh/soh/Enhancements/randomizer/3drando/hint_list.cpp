@@ -1060,7 +1060,7 @@ void HintTable_Init() {
 
     hintTable[RHT_OUTSIDE_GANONS_CASTLE] = HintText::Exclude({
         // obscure text
-        Text{ "outside Ganon's Castle", /*french*/ "les alentours du Château&de Ganon",
+        Text{ "outside Ganon's Castle", /*french*/ "les alentours du Château de Ganon",
               /*spanish*/ "el exterior del Castillo de Ganon" },
     });
 
