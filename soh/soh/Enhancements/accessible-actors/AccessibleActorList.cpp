@@ -79,52 +79,27 @@ void accessible_en_chest(AccessibleActor* actor) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_TBOX_UNLOCK, false);
     }
     //Only chests that are "waiting to be opened" should play a sound. Chests which have not yet appeared (because some enemy has not been killed, switch has not been hit, etc) will not be in this action mode.
-    f32 rightAngle = actor->actor->world.rot.y + 16384;
     f32 leftAngle = actor->actor->world.rot.y - 16384;
-    Vec3f_ rightPos = actor->actor->world.pos;
-    f32 velocityXRight = Math_SinS(rightAngle)*10.0;
-    f32 velocityZRight = Math_CosS(rightAngle) * 10.0;
-    rightPos.x += velocityXRight;
-    rightPos.z += velocityZRight;
-    f32 z = rightPos.z + Math_CosS(leftAngle) * (fabs(player->actor.world.pos.x-rightPos.x));
+    f32 velocityXRight = Math_SinS(leftAngle);
+    f32 velocityZRight = Math_CosS(leftAngle);
     
     f32 frontAngle = actor->actor->world.rot.y;
-    f32 backAngle = actor->actor->world.rot.y + (16384*2);
-    Vec3f_ frontPos = actor->actor->world.pos;
-    f32 velocityXFront = Math_SinS(frontAngle) * 10.0;
-    f32 velocityZFront = Math_CosS(frontAngle) * 10.0;
-    frontPos.x += velocityXFront;
-    frontPos.z += velocityZFront;
-    f32 x = frontPos.x + Math_SinS(backAngle) * (player->actor.world.pos.z - frontPos.z);
+    f32 velocityXFront = Math_SinS(frontAngle);
+    f32 velocityZFront = Math_CosS(frontAngle);
 
-    if (Math_CosS(actor->actor->world.rot.y + 16384) > 0) {
-        if (player->actor.world.pos.x < x-size) {
-            ActorAccessibility_SetSoundPitch(actor, 0, 1.5);
-            
-        } else if (player->actor.world.pos.x > x + size) {
-            ActorAccessibility_SetSoundPitch(actor, 0, 0.5);
-        } else if (Math_CosS(actor->actor->world.rot.y) > 0 && player->actor.world.pos.z > z &&
-                   (!(treasureFlag >= 20 && treasureFlag < 32))) {
-            ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_DIAMOND_SWITCH, false);
-        } else if ((Math_CosS(actor->actor->world.rot.y) < 0) && player->actor.world.pos.z < z &&
-                   (!(treasureFlag >= 20 && treasureFlag < 32))) {
-            ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_DIAMOND_SWITCH, false);    
-        }
-            
-    } else {
-        if (player->actor.world.pos.x > x + size) {
-            ActorAccessibility_SetSoundPitch(actor, 0, 1.5);
-            
-        } else if (player->actor.world.pos.x < x - size) {
-            ActorAccessibility_SetSoundPitch(actor, 0, 0.5);
-        } else if (Math_CosS(actor->actor->world.rot.y) > 0 && player->actor.world.pos.z > z &&
-                   (!(treasureFlag >= 20 && treasureFlag < 32))) {
-            ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_DIAMOND_SWITCH, false);
-        } else if ((Math_CosS(actor->actor->world.rot.y) < 0) && player->actor.world.pos.z < z &&
-                   (!(treasureFlag >= 20 && treasureFlag < 32))) {
-            ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_DIAMOND_SWITCH, false);
-        }
+    f32 xdist = (player->actor.world.pos.x - actor->actor->world.pos.x) * velocityXFront + 
+        (player->actor.world.pos.z-actor->actor->world.pos.z) * velocityZFront;
+    f32 zdist = fabs((player->actor.world.pos.x - actor->actor->world.pos.x) * velocityXRight + 
+        (player->actor.world.pos.z-actor->actor->world.pos.z) * velocityZRight);
+
+
+    if ((xdist - size / 2) < 0) {
+        ActorAccessibility_SetSoundPitch(actor, 0, 0.5);
+    } else if ((xdist + size / 2) > 0 && zdist < size / 2 && xdist < 150.0) {
+        ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_DIAMOND_SWITCH, false);
     }
+        
+
 }
 
 void accessible_en_gerudo(AccessibleActor* actor) {
@@ -150,11 +125,11 @@ void accessible_grotto(AccessibleActor* actor) {
 }
 
 void accessible_torches(AccessibleActor* actor) {
-    
+
     ObjSyokudai* torche = (ObjSyokudai*)actor->actor;
-    //temperary torches
+    // temperary torches
     if ((actor->actor->params) == 4230 || (actor->actor->params) == 4220 || (actor->actor->params) == 4227 ||
-        (actor->actor->params) == 4380) {
+        (actor->actor->params) == 4380 || actor->actor->params == 4321) {
         if (torche->litTimer != 0) {
             actor->policy.volume = 0.1;
             if (actor->frameCount % 30 != 0) {
@@ -928,7 +903,9 @@ void accessible_stick_warning(AccessibleActor* actor) {
     ActorAccessibility_AddSupportedActor(ACTOR_BOSS_GOMA, policy);
     ActorAccessibility_InitPolicy(&policy, "bombflowers", NULL, NA_SE_EV_BOMB_BOUND);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_BOMBF, policy);
-
+    ActorAccessibility_InitPolicy(&policy, "Amos Statue", NULL, NA_SE_EN_AMOS_WAVE);
+    policy.n = 30;
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_AM, policy);
     ActorAccessibility_InitPolicy(&policy, "door of time", accessible_door_of_time, 0);
     ActorAccessibility_AddSupportedActor(ACTOR_BG_MJIN, policy);
 
@@ -1061,8 +1038,9 @@ void accessible_stick_warning(AccessibleActor* actor) {
     list = ActorAccessibility_GetVirtualActorList(0, 9); // deku tree b2 lobby
     //ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -639, -1912.5, 188.0 } });
         //Install cues for walls, ledges etc.
-
-    list = ActorAccessibility_GetVirtualActorList(69, 0);
+    list = ActorAccessibility_GetVirtualActorList(1, 2);//dodongo bombflower stairs room
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { -1958, 20, -1297 } });
+    list = ActorAccessibility_GetVirtualActorList(69, 0);//hyrule courtyard
     ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { 1734.0, 0.0, 140.514 } });
     AccessibleActor* temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { 1734.0, 0.0, 140.514 } });
     temp->policy.pitch = 0.3;
