@@ -1,3 +1,4 @@
+#include <soh_assets.h>
 #include <stdio.h>
 
 #include "z_kaleido_scope.h"
@@ -853,6 +854,19 @@ void KaleidoScope_DrawMiscCollectibles(PlayState* play, GraphicsContext* gfxCtx)
         Interface_DrawTextLine_Kal(gfxCtx, "Ocarina Buttons: ", 60, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
         Interface_DrawTextLine_Kal(gfxCtx, ocarinaButtonsText, 140, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
         yOffset += 10;
+    }
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_SOULS) > RO_BOSS_SOULS_OFF) {
+        Interface_DrawTextLine_Kal(gfxCtx, "Boss Souls: ", 60, yOffset, 255, 255, 255, pauseCtx->alpha, 0.8f, true);
+        // Vtx bossSoulVtx = VTX(-48, 16, 0, 0 << 5, 0 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+        // gSPVertex(POLY_KAL_DISP++, &bossSoulVtx, 4, 0);
+        // gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
+        // gSPGrayscale(POLY_KAL_DISP++, true);
+        gDPLoadTextureBlock(POLY_KAL_DISP++, gBossSoulIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 16, 0,
+                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                        G_TX_NOLOD);
+        gSP1Quadrangle(POLY_KAL_DISP++, 0, 0 + 2, 0 + 3, 0 + 1, 0);
+        // KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gBossSoulTex, 16, 16, 0);
+        // gSPGrayscale(POLY_KAL_DISP++, false);
     }
     CLOSE_DISPS(gfxCtx);
 }
