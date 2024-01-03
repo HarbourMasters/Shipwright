@@ -62,6 +62,7 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     }
 
     GenerateHash();
+    WriteIngameSpoilerLog();
 
     if (true) {
         //TODO: Handle different types of file output (i.e. Spoiler Log, Plando Template, Patch Files, Race Files, etc.)
