@@ -168,8 +168,6 @@ void BgSpot00Hanebasi_DrawbridgeWait(BgSpot00Hanebasi* this, PlayState* play) {
                 child->destAngle = 0;
                 return;
             }
-
-            if (this) {} // required to match
         }
         if (CVarGetInteger("gBridgeOpenAtNight", 0)) {
             // do nothing
