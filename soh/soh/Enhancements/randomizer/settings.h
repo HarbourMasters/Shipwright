@@ -183,7 +183,7 @@ class Settings {
     std::array<Option, RSK_MAX> mOptions = {};
     std::array<std::string, RSK_MAX> mOptionDescriptions = {};
     std::array<OptionGroup, RSG_MAX> mOptionGroups = {};
-    std::array<Option, RT_MAX> mTrickOptions = {};
+    std::array<TrickOption, RT_MAX> mTrickOptions = {};
     std::vector<std::vector<Option*>> mExcludeLocationsOptionsGroups = {};
     std::unordered_map<std::string, RandomizerSettingKey> mSpoilerfileSettingNameToEnum;
     RandoOptionStartingAge mResolvedStartingAge =  RO_AGE_CHILD;

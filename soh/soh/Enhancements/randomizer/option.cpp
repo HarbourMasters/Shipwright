@@ -297,6 +297,31 @@ bool Option::RenderSlider() const {
     return changed;
 }
 
+TrickOption::TrickOption(const RandomizerCheckQuest quest_, const RandomizerArea area_, std::set<RandomizerTrickTag> tags_, const bool glitch_, const std::string& name_, std::string description_) :
+    Option(false, name_, {"Disabled", "Enabled"}, OptionCategory::Setting, "",
+        std::move(description_), WidgetType::Checkbox, 0, false, IMFLAG_NONE),
+    mQuest(quest_), mArea(area_), mTags(std::move(tags_)), mGlitch(glitch_) {}
+
+TrickOption TrickOption::LogicTrick(RandomizerCheckQuest quest_, RandomizerArea area_, std::set<RandomizerTrickTag> tags_, bool glitch_, const std::string& name_, std::string description_) {
+    return {quest_, area_, std::move(tags_), glitch_, name_, std::move(description_)};
+}
+
+RandomizerCheckQuest TrickOption::GetQuest() const {
+    return mQuest;
+}
+
+RandomizerArea TrickOption::GetArea() const {
+    return mArea;
+}
+
+bool TrickOption::IsGlitch() const {
+    return mGlitch;
+}
+
+bool TrickOption::HasTag(const RandomizerTrickTag tag) const {
+    return mTags.contains(tag);
+}
+
 OptionGroup::OptionGroup(std::string name, std::vector<Option*> options, const OptionGroupType groupType,
                          const bool printInSpoiler, const WidgetContainerType containerType, std::string description)
     : mName(std::move(name)), mOptions(std::move(options)), mGroupType(groupType), mPrintInSpoiler(printInSpoiler),
