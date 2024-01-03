@@ -98,12 +98,12 @@ void AreaTable_Init_GerudoValley() {
                   //Events
                   EventAccess(&CarpenterRescue, {[]{return CanFinishGerudoFortress;}}),
                   EventAccess(&GF_GateOpen,     {[]{return IsAdult && GerudoToken;}}),
-                  EventAccess(&GtG_GateOpen,    {[]{return GtG_GateOpen || (IsAdult && GerudoToken);}}),
+                  EventAccess(&GtG_GateOpen,    {[]{return GtG_GateOpen || (IsAdult && GerudoToken && ChildWallet);}}),
                 }, {
                   //Locations
                   LocationAccess(RC_GF_CHEST,              {[]{return CanUse(RG_HOVER_BOOTS) || (IsAdult && CanUse(RG_SCARECROW)) || CanUse(RG_LONGSHOT);}}),
-                  LocationAccess(RC_GF_HBA_1000_POINTS,    {[]{return GerudoToken && CanRideEpona && Bow && AtDay;}}),
-                  LocationAccess(RC_GF_HBA_1500_POINTS,    {[]{return GerudoToken && CanRideEpona && Bow && AtDay;}}),
+                  LocationAccess(RC_GF_HBA_1000_POINTS,    {[]{return ChildWallet && GerudoToken && CanRideEpona && Bow && AtDay;}}),
+                  LocationAccess(RC_GF_HBA_1500_POINTS,    {[]{return ChildWallet && GerudoToken && CanRideEpona && Bow && AtDay;}}),
                   LocationAccess(RC_GF_NORTH_F1_CARPENTER, {[]{return  CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);}}),
                   LocationAccess(RC_GF_NORTH_F2_CARPENTER, {[]{return (CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD)) && (GerudoToken || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) || CanUse(RG_HOVER_BOOTS) || randoCtx->GetTrickOption(RT_GF_KITCHEN));}}),
                   LocationAccess(RC_GF_SOUTH_F1_CARPENTER, {[]{return  CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);}}),

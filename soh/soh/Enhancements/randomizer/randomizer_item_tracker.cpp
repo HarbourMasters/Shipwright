@@ -382,7 +382,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             break;
         case ITEM_WALLET_ADULT:
         case ITEM_WALLET_GIANT:
-            result.currentCapacity = CUR_CAPACITY(UPG_WALLET);
+            result.currentCapacity = IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) ? 0 : CUR_CAPACITY(UPG_WALLET);
             result.maxCapacity = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 999 : 500;
             result.currentAmmo = gSaveContext.rupees;
             break;
@@ -631,7 +631,7 @@ void DrawItem(ItemTrackerItem item) {
         case ITEM_WALLET_ADULT:
         case ITEM_WALLET_GIANT:
             actualItemId = CUR_UPG_VALUE(UPG_WALLET) == 2 ? ITEM_WALLET_GIANT : ITEM_WALLET_ADULT;
-            hasItem = true;
+            hasItem = !IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET);
             break;
         case ITEM_BRACELET:
         case ITEM_GAUNTLETS_SILVER:

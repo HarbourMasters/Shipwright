@@ -143,7 +143,7 @@ void AreaTable_Init_Kakariko() {
 
   areaTable[RR_KAK_SHOOTING_GALLERY] = Area("Kak Shooting Gallery", "Kak Shooting Gallery", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_KAK_SHOOTING_GALLERY_REWARD, {[]{return IsAdult && Bow;}}),
+                  LocationAccess(RC_KAK_SHOOTING_GALLERY_REWARD, {[]{return ChildWallet && IsAdult && Bow;}}),
                 }, {
                   //Exits
                   Entrance(RR_KAKARIKO_VILLAGE, {[]{return true;}}),
@@ -213,7 +213,7 @@ void AreaTable_Init_Kakariko() {
                 }, {
                   //Locations
                   LocationAccess(RC_GRAVEYARD_FREESTANDING_POH,        {[]{return (IsAdult && CanPlantBean(RR_THE_GRAVEYARD)) || CanUse(RG_LONGSHOT) || (randoCtx->GetTrickOption(RT_GY_POH) && CanUse(RG_BOOMERANG));}}),
-                  LocationAccess(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, {[]{return IsChild && AtNight;}}), //TODO: This needs to change
+                  LocationAccess(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, {[]{return ChildWallet && IsChild && AtNight;}}), //TODO: This needs to change
                   LocationAccess(RC_GRAVEYARD_GS_WALL,                 {[]{return IsChild && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(RC_GRAVEYARD_GS_BEAN_PATCH,           {[]{return CanPlantBugs && CanChildAttack;}}),
                 }, {

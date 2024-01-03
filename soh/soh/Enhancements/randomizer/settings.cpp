@@ -102,6 +102,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_COWS] = Option::Bool("Shuffle Cows", "gRandomizeShuffleCows", mOptionDescriptions[RSK_SHUFFLE_COWS]);
     mOptions[RSK_SHUFFLE_KOKIRI_SWORD] = Option::Bool("Shuffle Kokiri Sword", "gRandomizeShuffleKokiriSword", mOptionDescriptions[RSK_SHUFFLE_KOKIRI_SWORD]);
     mOptions[RSK_SHUFFLE_MASTER_SWORD] = Option::Bool("Shuffle Master Sword", "gRandomizeShuffleMasterSword", mOptionDescriptions[RSK_SHUFFLE_MASTER_SWORD]);
+    mOptions[RSK_SHUFFLE_CHILD_WALLET] = Option::Bool("Shuffle Child's Wallet", "gRandomizeShuffleChildWallet", mOptionDescriptions[RSK_SHUFFLE_CHILD_WALLET]);
     mOptions[RSK_SHUFFLE_OCARINA] = Option::Bool("Shuffle Ocarinas", "gRandomizeShuffleOcarinas", mOptionDescriptions[RSK_SHUFFLE_OCARINA]);
     mOptions[RSK_SHUFFLE_OCARINA_BUTTONS] = Option::Bool("Shuffle Ocarina Buttons", "gRandomizeShuffleOcarinaButtons", mOptionDescriptions[RSK_SHUFFLE_OCARINA_BUTTONS]);
     mOptions[RSK_SHUFFLE_WEIRD_EGG] = Option::Bool("Shuffle Weird Egg", "gRandomizeShuffleWeirdEgg", mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG]);
@@ -618,6 +619,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SKULLS_SUNS_SONG],
         &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],
         &mOptions[RSK_SHUFFLE_MASTER_SWORD],
+        &mOptions[RSK_SHUFFLE_CHILD_WALLET],
         &mOptions[RSK_SHUFFLE_OCARINA],
         &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
         &mOptions[RSK_SHUFFLE_WEIRD_EGG],
@@ -1031,6 +1033,7 @@ void Settings::CreateOptions() {
         { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
         { "Shuffle Settings:Shuffle Kokiri Sword", RSK_SHUFFLE_KOKIRI_SWORD },
         { "Shuffle Settings:Shuffle Master Sword", RSK_SHUFFLE_MASTER_SWORD },
+        { "Shuffle Settings:Shuffle Child's Wallet", RSK_SHUFFLE_CHILD_WALLET },
         { "Shuffle Settings:Shuffle Weird Egg", RSK_SHUFFLE_WEIRD_EGG },
         { "Shuffle Settings:Shuffle Frog Song Rupees", RSK_SHUFFLE_FROG_SONG_RUPEES },
         { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
@@ -2118,6 +2121,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SHUFFLE_100_GS_REWARD:
                 case RSK_SHUFFLE_OCARINA:
                 case RSK_SHUFFLE_OCARINA_BUTTONS:
+                case RSK_SHUFFLE_CHILD_WALLET:
                 case RSK_STARTING_DEKU_SHIELD:
                 case RSK_STARTING_KOKIRI_SWORD:
                 case RSK_STARTING_ZELDAS_LULLABY:

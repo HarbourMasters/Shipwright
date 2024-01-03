@@ -177,6 +177,8 @@ typedef enum {
     RAND_INF_HAS_OCARINA_C_LEFT,
     RAND_INF_HAS_OCARINA_C_RIGHT,
 
+    RAND_INF_HAS_WALLET,
+
     // If you add anything to this list, you need to update the size of randomizerInf in z64save.h to be ceil(RAND_INF_MAX / 16)
 
     RAND_INF_MAX,

@@ -158,8 +158,8 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_LH_FISHING_HOLE] = Area("LH Fishing Hole", "LH Fishing Hole", RA_NONE, DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_LH_CHILD_FISHING, {[]{return IsChild;}}),
-                  LocationAccess(RC_LH_ADULT_FISHING, {[]{return IsAdult;}}),
+                  LocationAccess(RC_LH_CHILD_FISHING, {[]{return ChildWallet && IsChild;}}),
+                  LocationAccess(RC_LH_ADULT_FISHING, {[]{return ChildWallet && IsAdult;}}),
                 }, {
                   //Exits
                   Entrance(RR_LH_FISHING_ISLAND, {[]{return true;}}),
@@ -177,8 +177,8 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_LON_LON_RANCH] = Area("Lon Lon Ranch", "Lon Lon Ranch", RA_LON_LON_RANCH, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&Epona,    {[]{return Epona    || (CanUse(RG_EPONAS_SONG) && IsAdult && AtDay);}}),
-                  EventAccess(&LinksCow, {[]{return LinksCow || (CanUse(RG_EPONAS_SONG) && IsAdult && AtDay);}}),
+                  EventAccess(&Epona,    {[]{return Epona    || (ChildWallet && CanUse(RG_EPONAS_SONG) && IsAdult && AtDay);}}),
+                  EventAccess(&LinksCow, {[]{return LinksCow || (ChildWallet && CanUse(RG_EPONAS_SONG) && IsAdult && AtDay);}}),
                 }, {
                   //Locations
                   LocationAccess(RC_SONG_FROM_MALON,     {[]{return IsChild && ZeldasLetter && Ocarina && AtDay;}}),
@@ -197,7 +197,7 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_LLR_TALONS_HOUSE] = Area("LLR Talons House", "LLR Talons House", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_LLR_TALONS_CHICKENS, {[]{return IsChild && AtDay && ZeldasLetter;}}),
+                  LocationAccess(RC_LLR_TALONS_CHICKENS, {[]{return ChildWallet && IsChild && AtDay && ZeldasLetter;}}),
                 }, {
                   //Exits
                   Entrance(RR_LON_LON_RANCH, {[]{return true;}}),
