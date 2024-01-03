@@ -71,12 +71,18 @@ void BgSpot00Hanebasi_Init(Actor* thisx, PlayState* play) {
             return;
         }
 
-        if ((gSaveContext.sceneSetupIndex != 6) &&
-            ((gSaveContext.sceneSetupIndex == 4) || (gSaveContext.sceneSetupIndex == 5) ||
-             (!LINK_IS_ADULT && !IS_DAY))) {
-            this->dyna.actor.shape.rot.x = -0x4000;
-        } else {
+        // #region SOH [Enhancement]
+        if (CVarGetInteger("gBridgeOpenAtNight", 0) && !(Play_InCsMode(play))) {
             this->dyna.actor.shape.rot.x = 0;
+        // #endregion
+        } else {
+             if ((gSaveContext.sceneSetupIndex != 6) &&
+                 ((gSaveContext.sceneSetupIndex == 4) || (gSaveContext.sceneSetupIndex == 5) ||
+                  (!LINK_IS_ADULT && !IS_DAY))) {
+                 this->dyna.actor.shape.rot.x = -0x4000;
+             } else {
+            this->dyna.actor.shape.rot.x = 0;
+            }
         }
 
         if (gSaveContext.sceneSetupIndex != 6) {
@@ -154,10 +160,17 @@ void BgSpot00Hanebasi_DrawbridgeWait(BgSpot00Hanebasi* this, PlayState* play) {
 
             if (this) {} // required to match
         }
-        if ((this->dyna.actor.shape.rot.x == 0) && (gSaveContext.sceneSetupIndex < 4) && !LINK_IS_ADULT && !IS_DAY) {
-            this->actionFunc = BgSpot00Hanebasi_DrawbridgeRiseAndFall;
-            this->destAngle = -0x4000;
-            child->destAngle = -0xFE0;
+        // #region SOH [Enhancement]
+        if (CVarGetInteger("gBridgeOpenAtNight", 0)) {
+            // do nothing
+        // #endregion
+        } else {
+            if ((this->dyna.actor.shape.rot.x == 0) && (gSaveContext.sceneSetupIndex < 4) && !LINK_IS_ADULT &&
+                !IS_DAY) {
+                this->actionFunc = BgSpot00Hanebasi_DrawbridgeRiseAndFall;
+                this->destAngle = -0x4000;
+                child->destAngle = -0xFE0;
+            }
         }
     }
 }
@@ -266,10 +279,24 @@ void BgSpot00Hanebasi_DrawTorches(Actor* thisx, PlayState* play2) {
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-    if (gSaveContext.sceneSetupIndex >= 4) {
-        sTorchFlameScale = 0.008f;
+    // #region SOH [Enhancement]
+    if (CVarGetInteger("gBridgeOpenAtNight", 0)) {
+        if (gSaveContext.sceneSetupIndex >= 4) {
+            sTorchFlameScale = 0.008f;
+        } else {
+            if (gSaveContext.dayTime > 17760 && gSaveContext.dayTime < 18440) {
+                sTorchFlameScale = (18440 - gSaveContext.dayTime) * (1.0f / 85000.0f);
+            } else if (gSaveContext.dayTime > 50523 && gSaveContext.dayTime < 51883) {
+                sTorchFlameScale = (gSaveContext.dayTime - 50523) * (1.0f / 170000.0f);
+            }
+        }
+    // #endregion
     } else {
-        sTorchFlameScale = ((thisx->shape.rot.x * -1) - 0x2000) * (1.0f / 1024000.0f);
+        if (gSaveContext.sceneSetupIndex >= 4) {
+            sTorchFlameScale = 0.008f;
+        } else {
+            sTorchFlameScale = ((thisx->shape.rot.x * -1) - 0x2000) * (1.0f / 1024000.0f);
+        }
     }
 
     angle = (s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x8000) * (M_PI / 32768.0f);
@@ -323,10 +350,21 @@ void BgSpot00Hanebasi_Draw(Actor* thisx, PlayState* play) {
         thisx->child->child->world.pos.z = newPos.z;
 
         if (gSaveContext.sceneSetupIndex != 12) {
-            if ((gSaveContext.sceneSetupIndex >= 4) || (!LINK_IS_ADULT && (thisx->shape.rot.x < -0x2000))) {
-                BgSpot00Hanebasi_DrawTorches(thisx, play);
+            // #region SOH [Enhancement]
+            if (CVarGetInteger("gBridgeOpenAtNight", 0)) {
+                if ((gSaveContext.sceneSetupIndex >= 4) ||
+                    (!LINK_IS_ADULT && (gSaveContext.dayTime < 18440 || gSaveContext.dayTime > 50523))) {
+                    BgSpot00Hanebasi_DrawTorches(thisx, play);
+                } else {
+                    sTorchFlameScale = 0.0f;
+                }
+            // #endregion
             } else {
-                sTorchFlameScale = 0.0f;
+                if ((gSaveContext.sceneSetupIndex >= 4) || (!LINK_IS_ADULT && (thisx->shape.rot.x < -0x2000))) {
+                    BgSpot00Hanebasi_DrawTorches(thisx, play);
+                } else {
+                    sTorchFlameScale = 0.0f;
+                }
             }
         }
     } else {
