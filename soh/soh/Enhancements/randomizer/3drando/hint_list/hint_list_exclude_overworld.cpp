@@ -1357,6 +1357,71 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"a #cow in a luxurious hole# offers", /*french*/"la #vache dans une grotte luxueuse# donne", /*spanish*/"una #vaca de un lujoso hoyo# brinda"},
   });
 
+    hintTable[RHT_POT_KOKIRI_FOREST] = HintText::Exclude({
+                       // obscure text
+                       Text{ "a #pot in Kokiri Forest# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+    });
+
+    hintTable[RHT_POT_GERUDO_FORTRESS] = HintText::Exclude({
+                       // obscure text
+                       Text{ "a #pot in Gerudo Fortress# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+    });
+
+    hintTable[RHT_POT_WASTELAND] = HintText::Exclude({
+                       // obscure text
+                       Text{ "a #pot in Haunted Wasteland# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+    });
+
+    hintTable[RHT_POT_MARKET] = HintText::Exclude({
+                       // obscure text
+                       Text{ "a #pot in Market# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+    });
+
+    hintTable[RHT_POT_KAKARIKO] = HintText::Exclude({
+                       // obscure text
+                       Text{ "a #pot in Kakariko Village# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+    });
+
+    hintTable[RHT_POT_GRAVEYARD] = HintText::Exclude({
+                       // obscure text
+                       Text{ "a #pot in Graveyard# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+    });
+
+    hintTable[RHT_POT_GORON_CITY] = HintText::Exclude({
+                       // obscure text
+                       Text{ "a #pot in Goron City# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+    });
+
+    hintTable[RHT_POT_DEATH_MOUNTAIN_CRATER] = HintText::Exclude({
+                       // obscure text
+                       Text{ "a #pot in Death Mountain Crater# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+    });
+
+    hintTable[RHT_POT_ZORAS_DOMAIN] = HintText::Exclude({
+                       // obscure text
+                       Text{ "a #pot in Zora's Domain# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+    });
+
+    hintTable[RHT_POT_ZORAS_FOUNTAIN] = HintText::Exclude({
+                       // obscure text
+                       Text{ "a #pot in Zora's Fountain# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+    });
+
+    hintTable[RHT_POT_LON_LON_RANCH] = HintText::Exclude({
+                       // obscure text
+                       Text{ "a #pot in Lon Lon Ranch# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+    });
+
+    hintTable[RHT_POT_HYRULE_FIELD] = HintText::Exclude({
+                       // obscure text
+                       Text{ "a #pot in Hyrule Field# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+    });
+
+    hintTable[RHT_POT_HYRULE_CASTLE] = HintText::Exclude({
+                       // obscure text
+                       Text{ "a #pot in Hyrule Castle# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+    });
+
     for (uint32_t i = RHT_KF_LINKS_HOUSE_POT; i <= RHT_HC_STORMS_GROTTO_POT_4; i++) {
         hintTable[i] = HintText::Exclude({
             // obscure text

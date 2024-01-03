@@ -1962,6 +1962,56 @@ void HintTable_Init_Exclude_Dungeon() {
                        Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le Château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
   });
 
+    hintTable[RHT_POT_DODONGOS_CAVERN] = HintText::Exclude({
+                       //obscure text
+                       Text{ "a #pot in Dodongo's Cavern# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+  });
+
+    hintTable[RHT_POT_JABU_JABUS_BELLY] = HintText::Exclude({
+                       //obscure text
+                       Text{ "a #pot in Jabu Jabu's Belly# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+  });
+
+    hintTable[RHT_POT_FOREST_TEMPLE] = HintText::Exclude({
+                       //obscure text
+                       Text{ "a #pot in Forest Temple# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+  });
+
+    hintTable[RHT_POT_FIRE_TEMPLE] = HintText::Exclude({
+                       //obscure text
+                       Text{ "a #pot in Fire Temple# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+  });
+
+    hintTable[RHT_POT_WATER_TEMPLE] = HintText::Exclude({
+                       //obscure text
+                       Text{ "a #pot in Water Temple# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+  });
+
+    hintTable[RHT_POT_SHADOW_TEMPLE] = HintText::Exclude({
+                       //obscure text
+                       Text{ "a #pot in Shadow Temple# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+  });
+
+    hintTable[RHT_POT_SPIRIT_TEMPLE] = HintText::Exclude({
+                       //obscure text
+                       Text{ "a #pot in Spirit Temple# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+  });
+
+    hintTable[RHT_POT_GANONS_CASTLE] = HintText::Exclude({
+                       //obscure text
+                       Text{ "a #pot in Ganon's Castle# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+  });
+
+    hintTable[RHT_POT_BOTTOM_OF_THE_WELL] = HintText::Exclude({
+                       //obscure text
+                       Text{ "a #pot in Bottom of the Well# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+  });
+
+    hintTable[RHT_POT_ICE_CAVERN] = HintText::Exclude({
+                       //obscure text
+                       Text{ "a #pot in Ice Cavern# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
+  });
+
     for (uint32_t i = RHT_DODONGOS_CAVERN_LIZALFOS_POT_1; i <= RHT_ICE_CAVERN_FROZEN_POT_1; i++) {
         hintTable[i] = HintText::Exclude({
             // obscure text
