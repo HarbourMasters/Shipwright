@@ -596,6 +596,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Nighttime Skulltulas will spawn during both day and night.");
                 UIWidgets::PaddedEnhancementCheckbox("Dampe Appears All Night", "gDampeAllNight", true, false);
                 UIWidgets::Tooltip("Makes Dampe appear anytime during the night, not just his usual working hours.");
+                UIWidgets::PaddedEnhancementCheckbox("Shops and Games Always Open", "gOpenAllHours", true, false);
+                UIWidgets::Tooltip("Shops and minigames are open both day and night.");
                 UIWidgets::PaddedText("Time Travel with the Song of Time", true, false);
                 UIWidgets::EnhancementCombobox("gTimeTravel", timeTravelOptions, 0);
                 UIWidgets::Tooltip("Allows Link to freely change age by playing the Song of Time.\n"

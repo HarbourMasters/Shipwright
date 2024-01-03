@@ -31,6 +31,7 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 #include "functions.h"
+#include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 
@@ -1141,6 +1142,61 @@ void RegisterRandomizedEnemySizes() {
     });
 }
 
+void RegisterOpenAllHours() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        if (CVarGetInteger("gOpenAllHours", 0) && (actor->id == ACTOR_EN_DOOR)) {
+            bool changed = false;
+            switch (actor->params) {
+                case 4753:                // Night Market Bazaar
+                    actor->params = 4543; // Day Market Bazaar
+                    changed = true;
+                    break;
+                case 1678:                // Night Potion Shop
+                    actor->params = 1471; // Day Potion Shop
+                    changed = true;
+                    break;
+                case 2689:                // Day Bombchu Shop
+                    actor->params = 2495; // Night Bombchu Shop
+                    changed = true;
+                    break;
+                case 2703:                // Night Slingshot Game
+                    actor->params = 2495; // Day Slingshot Game
+                    changed = true;
+                    break;
+                case 653:                // Day Chest Game
+                    actor->params = 447; // Night Chest Game
+                    changed = true;
+                    break;
+                case 6801:                // Night Kak Bazaar
+                    actor->params = 6591; // Day Kak Bazaar
+                    changed = true;
+                    break;
+                case 7822:                // Night Kak Potion Shop
+                    actor->params = 7615; // Day Kak Potion Shop
+                    changed = true;
+                    break;
+                case 4751:                // Night Kak Archery Game
+                    actor->params = 4543; // Day Kak Archery Game
+                    changed = true;
+                    break;
+                case 3728:				  // Night Mask Shop
+					actor->params = 3519; // Day Mask Shop
+					changed = true;
+					break;
+
+                default:
+                    break;
+            }
+            if (changed) {
+                EnDoor* enDoor = static_cast<EnDoor*>(refActor);
+                EnDoor_SetupType(enDoor, gPlayState);
+            }
+        }
+    });
+}
+
 void PatchToTMedallions() {
     // TODO: Refactor the DemoEffect_UpdateJewelAdult and DemoEffect_UpdateJewelChild from z_demo_effect
     // effects to take effect in there
@@ -1254,6 +1310,7 @@ void InitMods() {
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
     RegisterRandomizedEnemySizes();
+    RegisterOpenAllHours();
     RegisterToTMedallions();
     NameTag_RegisterHooks();
 }
