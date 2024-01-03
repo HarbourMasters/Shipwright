@@ -161,6 +161,16 @@ void BgSpot00Hanebasi_DrawbridgeWait(BgSpot00Hanebasi* this, PlayState* play) {
             if (this) {} // required to match
         }
         // #region SOH [Enhancement]
+        if (this->dyna.actor.shape.rot.x != 0) {
+            if (Flags_GetEnv(play, 0) || ((gSaveContext.sceneSetupIndex < 4) && (IS_DAY || CVarGetInteger("gBridgeOpenAtNight", 0)))) {
+                this->actionFunc = BgSpot00Hanebasi_DrawbridgeRiseAndFall;
+                this->destAngle = 0;
+                child->destAngle = 0;
+                return;
+            }
+
+            if (this) {} // required to match
+        }
         if (CVarGetInteger("gBridgeOpenAtNight", 0)) {
             // do nothing
         // #endregion
