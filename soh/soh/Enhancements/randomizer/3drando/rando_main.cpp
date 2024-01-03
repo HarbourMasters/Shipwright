@@ -17,11 +17,9 @@ void RandoMain::GenerateRando(std::set<RandomizerCheck> excludedLocations, std::
     // std::string settingsFileName = "./randomizer/latest_settings.json";
     // CVarSetString("gLoadedPreset", settingsFileName.c_str());
 
-    std::string fileName = LUS::Context::GetPathRelativeToAppDirectory(GenerateRandomizer(excludedLocations, enabledTricks, seedString).c_str());
+    Rando::Context::GetInstance()->SetSeedGenerated(GenerateRandomizer(excludedLocations, enabledTricks, seedString));
 
     CVarSave();
     CVarLoad();
-    Rando::Context::GetInstance()->SetSeedGenerated();
-    Rando::Context::GetInstance()->SetSpoilerLoaded(false);
     Rando::Context::GetInstance()->SetPlandoLoaded(false);
 }

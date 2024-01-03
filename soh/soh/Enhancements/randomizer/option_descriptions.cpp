@@ -215,6 +215,10 @@ void Settings::CreateOptionDescriptions() {
         "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time into the item pool.\n"
         "\n"
         "This will require finding an Ocarina before being able to play songs.";
+    mOptionDescriptions[RSK_SHUFFLE_OCARINA_BUTTONS] =
+        "Enabling this shuffles the Ocarina buttons into the item pool.\n"
+        "\n"
+        "This will require finding the buttons before being able to use them in songs.";
     mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG] = "Shuffles the Weird Egg from Malon in to the item pool. Enabling "
                                                  "\"Skip Child Zelda\" disables this feature.\n"
                                                  "\n"
@@ -413,7 +417,8 @@ void Settings::CreateOptionDescriptions() {
         "Once the happy mask shop is opened, all masks will be available to be borrowed.";
     mOptionDescriptions[RSK_SKIP_SCARECROWS_SONG] =
         "Start with the ability to summon Pierre the scarecrow. Pulling out an ocarina in the usual locations will "
-        "automatically summon him.";
+        "automatically summon him.\n"
+        "With \"Shuffle Ocarina Buttons\" enabled, you'll need at least two ocarina buttons to summon him.";
     mOptionDescriptions[RSK_ITEM_POOL] = "Sets how many major items appear in the item pool.\n"
                                          "\n"
                                          "Plentiful - Extra major items are added to the pool.\n"
@@ -510,7 +515,9 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         //"Glitched - Glitches may be required to beat the game. You can disable and enable glitches below.\n"
         //"\n"
-        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.";
+        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.\n"
+        "\n"
+        "Vanilla - Places all items and dungeon rewards in their vanilla locations.";
     mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE] = "When this options is enabled, the randomizer will "
                                                        "guarantee that every item is obtainable and every "
                                                        "location is reachable. When disabled, only "

@@ -441,7 +441,7 @@ static void WriteEnabledTricks(tinyxml2::XMLDocument& spoilerLog) {
     if (setting->GetSelectedOptionIndex() != RO_GENERIC_ON/* || !setting->IsCategory(OptionCategory::Setting)*/) {
       continue;
     }
-    jsonData["enabledTricks"].push_back(RemoveLineBreaks(RandomizerTricks::GetRTName((RandomizerTrick)std::stoi(setting->GetName()))).c_str());
+    jsonData["enabledTricks"].push_back(RemoveLineBreaks(setting->GetName()).c_str());
     //auto node = parentNode->InsertNewChildElement("trick");
     //node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
   }
@@ -867,6 +867,8 @@ const char* SpoilerLog_Write() {
         (std::string("Randomizer/") + fileName + std::string(".json")).c_str()));
     jsonFile << std::setw(4) << jsonString << std::endl;
     jsonFile.close();
+
+    CVarSetString("gSpoilerLog", (std::string("./Randomizer/") + fileName + std::string(".json")).c_str());
 
     // Note: probably shouldn't return this without making sure this string is stored somewhere, but
     // this return value is currently only used in playthrough.cpp as a true/false. Even if the pointer

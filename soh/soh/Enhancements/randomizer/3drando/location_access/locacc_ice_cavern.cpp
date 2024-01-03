@@ -13,7 +13,7 @@ void AreaTable_Init_IceCavern() {
   areaTable[RR_ICE_CAVERN_ENTRYWAY] = Area("Ice Cavern Entryway", "Ice Cavern", RA_ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_ICE_CAVERN_BEGINNING,    {[]{return randoCtx->GetDungeon(ICE_CAVERN)->IsVanilla();}}),
-                  Entrance(RR_ICE_CAVERN_MQ_BEGINNING, {[]{return randoCtx->GetDungeon(ICE_CAVERN)->IsMQ() && CanUseProjectile;}}),
+                  Entrance(RR_ICE_CAVERN_MQ_BEGINNING, {[]{return randoCtx->GetDungeon(ICE_CAVERN)->IsMQ();}}),
                   Entrance(RR_ZORAS_FOUNTAIN,          {[]{return true;}}),
   });
 
@@ -79,8 +79,8 @@ void AreaTable_Init_IceCavern() {
                   //Locations
                   LocationAccess(RC_ICE_CAVERN_MQ_COMPASS_CHEST,    {[]{return true;}}),
                   LocationAccess(RC_ICE_CAVERN_MQ_FREESTANDING_POH, {[]{return HasExplosives;}}),
-                  LocationAccess(RC_ICE_CAVERN_MQ_GS_RED_ICE,       {[]{return CanPlay(SongOfTime) || randoCtx->GetTrickOption(RT_ICE_MQ_RED_ICE_GS);}}),
-                    //Trick: CanPlay(SongOfTime) || LogicIceMQRedIceGS
+                  LocationAccess(RC_ICE_CAVERN_MQ_GS_RED_ICE,       {[]{return CanUse(RG_SONG_OF_TIME) || randoCtx->GetTrickOption(RT_ICE_MQ_RED_ICE_GS);}}),
+                    //Trick: CanUse(RG_SONG_OF_TIME) || LogicIceMQRedIceGS
   }, {});
   }
 }

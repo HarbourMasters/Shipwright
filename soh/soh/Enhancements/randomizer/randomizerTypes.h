@@ -9,7 +9,14 @@
 // This should probably go in a less rando-specific location
 // but the best location will probably be in the modding engine
 // which doesn't exist yet.
-typedef enum { MOD_NONE, MOD_RANDOMIZER } ModIndex;
+typedef enum {
+    MOD_NONE,
+    MOD_RANDOMIZER
+} ModIndex;
+typedef enum {
+    TABLE_VANILLA = MOD_NONE,
+    TABLE_RANDOMIZER = MOD_RANDOMIZER
+} TableIndex;
 
 typedef struct {
     char tex[512];
@@ -601,6 +608,7 @@ typedef enum {
     RR_GERUDO_TRAINING_GROUNDS_MQ_CENTRAL_MAZE_RIGHT,
 
     RR_GANONS_CASTLE_LOBBY,
+    RR_GANONS_CASTLE_MAIN,
     RR_GANONS_CASTLE_DEKU_SCRUBS,
     RR_GANONS_CASTLE_FOREST_TRIAL,
     RR_GANONS_CASTLE_FIRE_TRIAL,
@@ -611,6 +619,7 @@ typedef enum {
     RR_GANONS_CASTLE_TOWER,
 
     RR_GANONS_CASTLE_MQ_LOBBY,
+    RR_GANONS_CASTLE_MQ_MAIN,
     RR_GANONS_CASTLE_MQ_DEKU_SCRUBS,
     RR_GANONS_CASTLE_MQ_FOREST_TRIAL,
     RR_GANONS_CASTLE_MQ_FIRE_TRIAL,
@@ -2416,6 +2425,11 @@ typedef enum {
     RG_BONGO_BONGO_SOUL,
     RG_TWINROVA_SOUL,
     RG_GANON_SOUL,
+    RG_OCARINA_A_BUTTON,
+    RG_OCARINA_C_UP_BUTTON,
+    RG_OCARINA_C_DOWN_BUTTON,
+    RG_OCARINA_C_LEFT_BUTTON,
+    RG_OCARINA_C_RIGHT_BUTTON,
     RG_HINT,
     RG_TYCOON_WALLET,
     RG_FAIRY_OCARINA,
@@ -3629,6 +3643,11 @@ typedef enum {
     RHT_BONGO_BONGO_SOUL,
     RHT_TWINROVA_SOUL,
     RHT_GANON_SOUL,
+    RHT_OCARINA_A_BUTTON,
+    RHT_OCARINA_C_UP_BUTTON,
+    RHT_OCARINA_C_DOWN_BUTTON,
+    RHT_OCARINA_C_LEFT_BUTTON,
+    RHT_OCARINA_C_RIGHT_BUTTON,
     RHT_EPONA,
     // Entrances
     RHT_DESERT_COLOSSUS_TO_COLOSSUS_GROTTO,
@@ -4491,10 +4510,11 @@ typedef enum {
     RSK_TRIAL_COUNT,
     RSK_STARTING_OCARINA,
     RSK_SHUFFLE_OCARINA,
+    RSK_SHUFFLE_OCARINA_BUTTONS,
     RSK_STARTING_DEKU_SHIELD,
     RSK_STARTING_KOKIRI_SWORD,
     RSK_STARTING_MASTER_SWORD,
-    RSK_STARTING_ZELDAS_LULLABY, 
+    RSK_STARTING_ZELDAS_LULLABY,
     RSK_STARTING_EPONAS_SONG, 
     RSK_STARTING_SARIAS_SONG, 
     RSK_STARTING_SUNS_SONG,
@@ -4740,9 +4760,9 @@ typedef enum {
 
 //Ammo drop settings (on, "on+bombchu", off)
 typedef enum {
-    RO_AMMO_DROPS_ON,
-    RO_AMMO_DROPS_ON_PLUS_BOMBCHU,
     RO_AMMO_DROPS_OFF,
+    //RO_AMMO_DROPS_ON_PLUS_BOMBCHU,
+    RO_AMMO_DROPS_ON,
 } RandoOptionAmmoDrops;
 
 typedef enum {
@@ -4859,6 +4879,7 @@ typedef enum {
 typedef enum {
     RO_STARTING_OCARINA_OFF,
     RO_STARTING_OCARINA_FAIRY,
+    RO_STARTING_OCARINA_TIME,
 } RandoOptionStartingOcarina;
 
 //Item Pool Settings
@@ -4932,7 +4953,7 @@ typedef enum {
     RO_LOGIC_GLITCHLESS,
     RO_LOGIC_GLITCHED,
     RO_LOGIC_NO_LOGIC,
-    RO_LOGIC_VANILLA
+    RO_LOGIC_VANILLA,
 } RandoOptionLogic;
 
 // Damage Multiplier

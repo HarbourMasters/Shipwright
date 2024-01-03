@@ -8,13 +8,13 @@ using namespace Rando;
 void AreaTable_Init_LostWoods() {
   areaTable[RR_KOKIRI_FOREST] = Area("Kokiri Forest", "Kokiri Forest", RA_KOKIRI_FOREST, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&BeanPlantFairy,           {[]{return BeanPlantFairy   || (CanPlantBean(RR_KOKIRI_FOREST) && CanPlay(SongOfStorms));}}),
+                  EventAccess(&BeanPlantFairy,           {[]{return BeanPlantFairy   || (CanPlantBean(RR_KOKIRI_FOREST) && CanUse(RG_SONG_OF_STORMS));}}),
                   EventAccess(&GossipStoneFairy,         {[]{return GossipStoneFairy || CanSummonGossipFairyWithoutSuns;}}),
                   EventAccess(&ShowedMidoSwordAndShield, {[]{return ShowedMidoSwordAndShield || (IsChild && KokiriSword && DekuShield);}}),
                 }, {
                   //Locations
                   LocationAccess(RC_KF_KOKIRI_SWORD_CHEST,   {[]{return IsChild;}}),
-                  LocationAccess(RC_KF_GS_KNOW_IT_ALL_HOUSE, {[]{return IsChild && CanChildAttack && AtNight && (/*TODO: HasNightStart ||*/ CanLeaveForest || CanPlay(SunsSong)) && CanGetNightTimeGS;}}),
+                  LocationAccess(RC_KF_GS_KNOW_IT_ALL_HOUSE, {[]{return IsChild && CanChildAttack && AtNight && (/*TODO: HasNightStart ||*/ CanLeaveForest || CanUse(RG_SUNS_SONG)) && CanGetNightTimeGS;}}),
                   LocationAccess(RC_KF_GS_BEAN_PATCH,        {[]{return CanPlantBugs && CanChildAttack;}}),
                   LocationAccess(RC_KF_GS_HOUSE_OF_TWINS,    {[]{return IsAdult && AtNight && (HookshotOrBoomerang || (randoCtx->GetTrickOption(RT_KF_ADULT_GS) && CanUse(RG_HOVER_BOOTS))) && CanGetNightTimeGS;}}),
                   LocationAccess(RC_KF_GOSSIP_STONE,         {[]{return true;}}),
@@ -49,7 +49,7 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_KF_LINKS_HOUSE] = Area("KF Link's House", "KF Link's House", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_KF_LINKS_HOUSE_COW, {[]{return IsAdult && CanPlay(EponasSong) && LinksCow;}}),
+                  LocationAccess(RC_KF_LINKS_HOUSE_COW, {[]{return IsAdult && CanUse(RG_EPONAS_SONG) && LinksCow;}}),
                   LocationAccess(RC_KF_LINKS_HOUSE_POT, {[]{return true;}}),
                 }, {
                   //Exits
@@ -124,14 +124,22 @@ void AreaTable_Init_LostWoods() {
                   EventAccess(&OddMushroomAccess, {[]{return OddMushroomAccess || (IsAdult && (CojiroAccess || Cojiro));}}),
                   EventAccess(&PoachersSawAccess, {[]{return PoachersSawAccess || (IsAdult && OddPoulticeAccess);}}),
                   EventAccess(&GossipStoneFairy,  {[]{return GossipStoneFairy  || CanSummonGossipFairyWithoutSuns;}}),
-                  EventAccess(&BeanPlantFairy,    {[]{return BeanPlantFairy    || CanPlay(SongOfStorms);}}),
+                  EventAccess(&BeanPlantFairy,    {[]{return BeanPlantFairy    || CanUse(RG_SONG_OF_STORMS);}}),
                   EventAccess(&BugShrub,          {[]{return IsChild && CanCutShrubs;}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_LW_SKULL_KID,                 {[]{return IsChild && CanPlay(SariasSong);}}),
+                  LocationAccess(RC_LW_SKULL_KID,                 {[]{return IsChild && CanUse(RG_SARIAS_SONG);}}),
                   LocationAccess(RC_LW_TRADE_COJIRO,              {[]{return IsAdult && Cojiro;}}),
                   LocationAccess(RC_LW_TRADE_ODD_POTION,        {[]{return IsAdult && OddPoultice && Cojiro;}}),
-                  LocationAccess(RC_LW_OCARINA_MEMORY_GAME,       {[]{return IsChild && Ocarina;}}),
+                                                                                                //all 5 buttons are logically required for memory game
+                                                                                                //because the chances of being able to beat it
+                                                                                                //every time you attempt it are as follows:
+                                                                                                //0 or 1 button(s) => 0%
+                                                                                                //2 buttons        => 0.15625%
+                                                                                                //3 buttons        => 3.75%
+                                                                                                //4 buttons        => 25.3125%
+                                                                                                //5 buttons        => 100%
+                  LocationAccess(RC_LW_OCARINA_MEMORY_GAME,       {[]{return IsChild && Ocarina && OcarinaButtons >= 5;}}),
                   LocationAccess(RC_LW_TARGET_IN_WOODS,           {[]{return IsChild && CanUse(RG_FAIRY_SLINGSHOT);}}),
                   LocationAccess(RC_LW_DEKU_SCRUB_NEAR_BRIDGE,    {[]{return IsChild && CanStunDeku;}}),
                   LocationAccess(RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE, {[]{return CanPlantBugs && CanChildAttack;}}),
@@ -142,7 +150,7 @@ void AreaTable_Init_LostWoods() {
                   Entrance(RR_GC_WOODS_WARP,            {[]{return true;}}),
                   Entrance(RR_LW_BRIDGE,                {[]{return CanLeaveForest && ((IsAdult && (CanPlantBean(RR_THE_LOST_WOODS) || randoCtx->GetTrickOption(RT_LW_BRIDGE))) || CanUse(RG_HOVER_BOOTS) || CanUse(RG_LONGSHOT));}}),
                   Entrance(RR_ZORAS_RIVER,              {[]{return CanLeaveForest && (CanDive || CanUse(RG_IRON_BOOTS));}}),
-                  Entrance(RR_LW_BEYOND_MIDO,           {[]{return IsChild || CanPlay(SariasSong) || randoCtx->GetTrickOption(RT_LW_MIDO_BACKFLIP);}}),
+                  Entrance(RR_LW_BEYOND_MIDO,           {[]{return IsChild || CanUse(RG_SARIAS_SONG) || randoCtx->GetTrickOption(RT_LW_MIDO_BACKFLIP);}}),
                   Entrance(RR_LW_NEAR_SHORTCUTS_GROTTO, {[]{return Here(RR_THE_LOST_WOODS, []{return CanBlastOrSmash;});}}),
   });
 
@@ -158,7 +166,7 @@ void AreaTable_Init_LostWoods() {
                 }, {
                   //Exits
                   Entrance(RR_LW_FOREST_EXIT,   {[]{return true;}}),
-                  Entrance(RR_THE_LOST_WOODS,   {[]{return IsChild || CanPlay(SariasSong);}}),
+                  Entrance(RR_THE_LOST_WOODS,   {[]{return IsChild || CanUse(RG_SARIAS_SONG);}}),
                   Entrance(RR_SFM_ENTRYWAY,     {[]{return true;}}),
                   Entrance(RR_DEKU_THEATER,     {[]{return true;}}),
                   Entrance(RR_LW_SCRUBS_GROTTO, {[]{return Here(RR_LW_BEYOND_MIDO, []{return CanBlastOrSmash;});}}),

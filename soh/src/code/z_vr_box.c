@@ -417,7 +417,12 @@ void func_800AEFC8(SkyboxContext* skyboxCtx, s16 skyboxId) {
     s32 j;
     s32 phi_s3 = 0;
 
-    if (skyboxId == SKYBOX_BAZAAR || (skyboxId > SKYBOX_HOUSE_KAKARIKO && skyboxId <= SKYBOX_BOMBCHU_SHOP)) {
+    //! @bug All shops only provide 2 faces for their sky box. Mask shop is missing from the condition
+    // meaning that the Mask shop will calculate 4 faces
+    // This effect is not noticed as the faces are behind the camera, but will cause a crash in SoH.
+    // SOH General: We have added the Mask shop to this check so only the 2 expected faces are calculated.
+    if (skyboxId == SKYBOX_BAZAAR || skyboxId == SKYBOX_HAPPY_MASK_SHOP ||
+        (skyboxId >= SKYBOX_KOKIRI_SHOP && skyboxId <= SKYBOX_BOMBCHU_SHOP)) {
         for (j = 0, i = 0; i < 2; i++, j += 2) {
             phi_s3 = func_800ADBB0(skyboxCtx, skyboxCtx->roomVtx, phi_s3, D_8012AEBC[i].unk_0, D_8012AEBC[i].unk_4,
                                    D_8012AEBC[i].unk_8, D_8012AEBC[i].unk_C, D_8012AEBC[i].unk_10, i, j);

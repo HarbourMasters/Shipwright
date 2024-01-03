@@ -3,6 +3,33 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_horse_link_childTex_001F28 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_001F28"
+static const ALIGN_ASSET(2) char object_horse_link_childTex_001F28[] = dobject_horse_link_childTex_001F28;
+
+#define dobject_horse_link_childTex_001F68 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_001F68"
+static const ALIGN_ASSET(2) char object_horse_link_childTex_001F68[] = dobject_horse_link_childTex_001F68;
+
+#define dobject_horse_link_childTex_002168 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_002168"
+static const ALIGN_ASSET(2) char object_horse_link_childTex_002168[] = dobject_horse_link_childTex_002168;
+
+#define dobject_horse_link_childTex_002368 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_002368"
+static const ALIGN_ASSET(2) char object_horse_link_childTex_002368[] = dobject_horse_link_childTex_002368;
+
+#define dobject_horse_link_childTex_002568 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_002568"
+static const ALIGN_ASSET(2) char object_horse_link_childTex_002568[] = dobject_horse_link_childTex_002568;
+
+#define dobject_horse_link_childTex_002588 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_002588"
+static const ALIGN_ASSET(2) char object_horse_link_childTex_002588[] = dobject_horse_link_childTex_002588;
+
+#define dobject_horse_link_childTex_002788 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_002788"
+static const ALIGN_ASSET(2) char object_horse_link_childTex_002788[] = dobject_horse_link_childTex_002788;
+
+#define dobject_horse_link_childTex_008120 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_008120"
+static const ALIGN_ASSET(2) char object_horse_link_childTex_008120[] = dobject_horse_link_childTex_008120;
+
+#define dobject_horse_link_childTex_008320 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_008320"
+static const ALIGN_ASSET(2) char object_horse_link_childTex_008320[] = dobject_horse_link_childTex_008320;
+
 #define dgChildEponaSkel "__OTR__objects/object_horse_link_child/gChildEponaSkel"
 static const ALIGN_ASSET(2) char gChildEponaSkel[] = dgChildEponaSkel;
 
@@ -32,21 +59,6 @@ static const ALIGN_ASSET(2) char gChildEponaEyeHalfTex[] = dgChildEponaEyeHalfTe
 
 #define dgChildEponaEyeCloseTex "__OTR__objects/object_horse_link_child/gChildEponaEyeCloseTex"
 static const ALIGN_ASSET(2) char gChildEponaEyeCloseTex[] = dgChildEponaEyeCloseTex;
-
-#define dobject_horse_link_childTex_002568 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_002568"
-static const ALIGN_ASSET(2) char object_horse_link_childTex_002568[] = dobject_horse_link_childTex_002568;
-
-#define dobject_horse_link_childTex_008320 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_008320"
-static const ALIGN_ASSET(2) char object_horse_link_childTex_008320[] = dobject_horse_link_childTex_008320;
-
-#define dobject_horse_link_childTex_002168 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_002168"
-static const ALIGN_ASSET(2) char object_horse_link_childTex_002168[] = dobject_horse_link_childTex_002168;
-
-#define dobject_horse_link_childTex_008120 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_008120"
-static const ALIGN_ASSET(2) char object_horse_link_childTex_008120[] = dobject_horse_link_childTex_008120;
-
-#define dobject_horse_link_childTex_001F68 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_001F68"
-static const ALIGN_ASSET(2) char object_horse_link_childTex_001F68[] = dobject_horse_link_childTex_001F68;
 
 #define dgChildEponaSkelLimbsLimb_0077D8SkinLimbDL_007B30 "__OTR__objects/object_horse_link_child/gChildEponaSkelLimbsLimb_0077D8SkinLimbDL_007B30"
 static const ALIGN_ASSET(2) char gChildEponaSkelLimbsLimb_0077D8SkinLimbDL_007B30[] = dgChildEponaSkelLimbsLimb_0077D8SkinLimbDL_007B30;
@@ -79,17 +91,5 @@ static const ALIGN_ASSET(2) char gChildEponaSkelLimbsLimb_007A48DL_001568[] = dg
 static const ALIGN_ASSET(2) char gChildEponaSkelLimbsLimb_007A58DL_001678[] = dgChildEponaSkelLimbsLimb_007A58DL_001678;
 
 #define dgChildEponaSkelLimbsLimb_0077D8SkinLimbDL_007B30 "__OTR__objects/object_horse_link_child/gChildEponaSkelLimbsLimb_0077D8SkinLimbDL_007B30"
-
-#define dobject_horse_link_childTex_002788 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_002788"
-static const ALIGN_ASSET(2) char object_horse_link_childTex_002788[] = dobject_horse_link_childTex_002788;
-
-#define dobject_horse_link_childTex_002588 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_002588"
-static const ALIGN_ASSET(2) char object_horse_link_childTex_002588[] = dobject_horse_link_childTex_002588;
-
-#define dobject_horse_link_childTex_002368 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_002368"
-static const ALIGN_ASSET(2) char object_horse_link_childTex_002368[] = dobject_horse_link_childTex_002368;
-
-#define dobject_horse_link_childTex_001F28 "__OTR__objects/object_horse_link_child/object_horse_link_childTex_001F28"
-static const ALIGN_ASSET(2) char object_horse_link_childTex_001F28[] = dobject_horse_link_childTex_001F28;
 
 #endif // OBJECTS_OBJECT_HORSE_LINK_CHILD_H

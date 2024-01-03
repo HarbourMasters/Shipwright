@@ -221,7 +221,6 @@ bool Option::RenderCombobox() const {
     if (!description.empty()) {
         UIWidgets::InsertHelpHoverText(description.c_str());
     }
-    ImGui::BeginGroup();
     const std::string comboName = std::string("##") + std::string(cvarName);
     if (ImGui::BeginCombo(comboName.c_str(), options[selected].c_str())) {
         for (size_t i = 0; i < options.size(); i++) {
@@ -236,7 +235,6 @@ bool Option::RenderCombobox() const {
         }
         ImGui::EndCombo();
     }
-    ImGui::EndGroup();
     if (disabled) {
         UIWidgets::ReEnableComponent(disabledText.c_str());
     }
@@ -355,9 +353,18 @@ const std::string& OptionGroup::GetDescription() const {
     return mDescription;
 }
 
+void OptionGroup::Enable() {
+    mDisabled = false;
+}
+
+void OptionGroup::Disable() {
+    mDisabled = true;
+}
+
 bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     bool changed = false;
+    ImGui::BeginDisabled(mDisabled);
     if (mContainerType == WidgetContainerType::TABLE) {
         if (ImGui::BeginTable(mName.c_str(), static_cast<int>(mSubGroups.size()), ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             for (const auto column : mSubGroups) {
@@ -424,6 +431,7 @@ bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
     if (mContainerType == WidgetContainerType::TABLE) {
         ImGui::EndTable();
     }
+    ImGui::EndDisabled();
     return changed;
 }
 } // namespace Rando

@@ -240,10 +240,9 @@ void PatchMirroredSoldOutGI() {
 // Patches the Sun Song Etching in the Royal Grave to be mirrored in mirror mode
 // This is achieved by mirroring the texture at the boundary and overriding the vertex texture coordinates
 void PatchMirroredSunSongEtching() {
-    static const char gMqRoyalGraveBackRoomDL[] = "__OTR__scenes/mq/hakaana_ouke_scene/hakaana_ouke_room_2DL_005040";
-    static const char gNonMqRoyalGraveBackRoomDL[] = "__OTR__scenes/nonmq/hakaana_ouke_scene/hakaana_ouke_room_2DL_005040";
-    static const char gMqRoyalGraveBackRoomSongVtx[] = "__OTR__scenes/mq/hakaana_ouke_scene/hakaana_ouke_room_2Vtx_004F80";
-    static const char gNonMqRoyalGraveBackRoomSongVtx[] = "__OTR__scenes/nonmq/hakaana_ouke_scene/hakaana_ouke_room_2Vtx_004F80";
+    // Only using these strings for graphics patching lookup, we don't need aligned assets here
+    static const char gRoyalGraveBackRoomDL[] = "__OTR__scenes/shared/hakaana_ouke_scene/hakaana_ouke_room_2DL_005040";
+    static const char gRoyalGraveBackRoomSongVtx[] = "__OTR__scenes/shared/hakaana_ouke_scene/hakaana_ouke_room_2Vtx_004F80";
 
     static Vtx* mirroredSunSongVtx;
 
@@ -254,23 +253,11 @@ void PatchMirroredSunSongEtching() {
                              G_TX_NOMIRROR | G_TX_CLAMP, 7, 5, G_TX_NOLOD, G_TX_NOLOD)
     };
 
-    const char* royalGraveBackRoomDL;
-    const char* royalGraveBackRoomSongVtx;
-
-    // If we have the original game, then always prefer the nonmq paths as that is what will be used in game
-    if (ResourceMgr_GameHasOriginal()) {
-        royalGraveBackRoomDL = gNonMqRoyalGraveBackRoomDL;
-        royalGraveBackRoomSongVtx = gNonMqRoyalGraveBackRoomSongVtx;
-    } else {
-        royalGraveBackRoomDL = gMqRoyalGraveBackRoomDL;
-        royalGraveBackRoomSongVtx = gMqRoyalGraveBackRoomSongVtx;
-    }
-
     if (CVarGetInteger("gMirroredWorld", 0)) {
         if (mirroredSunSongVtx == nullptr) {
             // Copy the original vertices that we want to modify (4 at the beginning of the resource)
             mirroredSunSongVtx = (Vtx*)malloc(sizeof(Vtx) * 4);
-            Vtx* origVtx = (Vtx*)ResourceGetDataByName(royalGraveBackRoomSongVtx);
+            Vtx* origVtx = (Vtx*)ResourceGetDataByName(gRoyalGraveBackRoomSongVtx);
             memcpy(mirroredSunSongVtx, origVtx, sizeof(Vtx) * 4);
 
             // Offset the vertex U coordinate values by the width of the texture
@@ -279,21 +266,21 @@ void PatchMirroredSunSongEtching() {
             }
         }
 
-        ResourceMgr_PatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTexture_1", 13, mirroredSunSongTex[1]);
-        ResourceMgr_PatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTexture_2", 17, mirroredSunSongTex[5]);
-        ResourceMgr_PatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_1", 24, gsSPVertex(mirroredSunSongVtx, 4, 0));
+        ResourceMgr_PatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTexture_1", 13, mirroredSunSongTex[1]);
+        ResourceMgr_PatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTexture_2", 17, mirroredSunSongTex[5]);
+        ResourceMgr_PatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_1", 24, gsSPVertex(mirroredSunSongVtx, 4, 0));
         // noop as the original vertex command is 128 bit wide
-        ResourceMgr_PatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_2", 25, gsSPNoOp());
+        ResourceMgr_PatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_2", 25, gsSPNoOp());
     } else {
         if (mirroredSunSongVtx != nullptr) {
             free(mirroredSunSongVtx);
             mirroredSunSongVtx = nullptr;
         }
 
-        ResourceMgr_UnpatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTexture_1");
-        ResourceMgr_UnpatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTexture_2");
-        ResourceMgr_UnpatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_1");
-        ResourceMgr_UnpatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_2");
+        ResourceMgr_UnpatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTexture_1");
+        ResourceMgr_UnpatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTexture_2");
+        ResourceMgr_UnpatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_1");
+        ResourceMgr_UnpatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_2");
     }
 }
 

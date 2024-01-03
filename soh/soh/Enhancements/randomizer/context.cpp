@@ -16,6 +16,8 @@ namespace Rando {
 std::weak_ptr<Context> Context::mContext;
 
 Context::Context() {
+    StaticData::InitItemTable();
+    StaticData::InitLocationTable();
     for (auto& location : StaticData::GetLocationTable()) {
         mSpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
     }
@@ -125,6 +127,20 @@ ItemLocation* Context::GetItemLocation(const RandomizerCheck locKey) {
 
 ItemLocation* Context::GetItemLocation(size_t locKey) {
     return &itemLocationTable[static_cast<RandomizerCheck>(locKey)];
+}
+
+ItemOverride& Context::GetItemOverride(RandomizerCheck locKey) {
+    if (!overrides.contains(locKey)) {
+        overrides.emplace(locKey, ItemOverride());
+    }
+    return overrides.at(locKey);
+}
+
+ItemOverride& Context::GetItemOverride(size_t locKey) {
+    if (!overrides.contains(static_cast<RandomizerCheck>(locKey))) {
+        overrides.emplace(static_cast<RandomizerCheck>(locKey), ItemOverride());
+    }
+    return overrides.at(static_cast<RandomizerCheck>(locKey));
 }
 
 void Context::PlaceItemInLocation(const RandomizerCheck locKey, const RandomizerGet item, const bool applyEffectImmediately,
@@ -356,7 +372,7 @@ void Context::ParseSpoiler(const char* spoilerFileName, const bool plandoMode) {
         mSpoilerLoaded = true;
         mSeedGenerated = false;
     } catch (...) {
-        throw;
+        LUSLOG_ERROR("Failed to load Spoiler File: %s", spoilerFileName);
     }
 }
 

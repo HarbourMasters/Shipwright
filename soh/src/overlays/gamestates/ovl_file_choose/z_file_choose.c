@@ -1,6 +1,7 @@
 ﻿#include "file_choose.h"
 
 #include <string.h>
+#include <stdio.h>
 
 #include "textures/title_static/title_static.h"
 #include "textures/parameter_static/parameter_static.h"
@@ -973,9 +974,9 @@ void DrawSeedHashSprites(FileChooseContext* this) {
     // Draw Seed Icons for spoiler log:
     // 1. On Name Entry if a rando seed has been generated
     // 2. On Quest Menu if a spoiler has been dropped and the Randomizer quest option is currently hovered.
-    if ((Randomizer_IsSeedGenerated() ||
-            (strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0 && Randomizer_IsSpoilerLoaded())) &&
+    if ((Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) &&
         ((this->configMode == CM_NAME_ENTRY && gSaveContext.questId == QUEST_RANDOMIZER) ||
+        (this->configMode == CM_GENERATE_SEED && Randomizer_IsSpoilerLoaded()) ||
         (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == QUEST_RANDOMIZER))) {
         // Fade top seed icons based on main menu fade and if save supports rando
         u8 alpha =
@@ -998,6 +999,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 }
 
 u8 generating;
+bool fileSelectSpoilerFileLoaded = false;
 
 void FileChoose_UpdateRandomizer() {
     if (CVarGetInteger("gRandoGenerating", 0) != 0 && generating == 0) {
@@ -1005,7 +1007,7 @@ void FileChoose_UpdateRandomizer() {
             func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
             return;
     } else if (CVarGetInteger("gRandoGenerating", 0) == 0 && generating) {
-            if (SpoilerFileExists(CVarGetString("gSpoilerLog", "")) || Randomizer_IsSeedGenerated()) {
+            if (Randomizer_IsSeedGenerated()) {
                 Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
             } else {
                 func_80078884(NA_SE_SY_OCARINA_ERROR);
@@ -1017,17 +1019,24 @@ void FileChoose_UpdateRandomizer() {
             return;
     }
 
-    if (!SpoilerFileExists(CVarGetString("gSpoilerLog", ""))) {
+    if (!SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && !CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
             CVarSetString("gSpoilerLog", "");
     }
 
-    if ((CVarGetInteger("gNewFileDropped", 0) != 0)) {
-            CVarSetString("gSpoilerLog", CVarGetString("gDroppedFile", ""));
-            CVarSetInteger("gNewSeedGenerated", 0);
-            CVarSetInteger("gNewFileDropped", 0);
-            CVarSetString("gDroppedFile", "");
+    if (CVarGetInteger("gRandomizerNewFileDropped", 0) != 0 || !(Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) &&
+        SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && !fileSelectSpoilerFileLoaded) {
+            if (CVarGetInteger("gRandomizerNewFileDropped", 0) != 0) {
+                CVarSetString("gSpoilerLog", CVarGetString("gRandomizerDroppedFile", ""));
+            }
             const char* fileLoc = CVarGetString("gSpoilerLog", "");
+            CVarSetInteger("gRandomizerNewFileDropped", 0);
+            CVarSetString("gRandomizerDroppedFile", "");
             Randomizer_ParseSpoiler(fileLoc);
+            fileSelectSpoilerFileLoaded = true;
+
+            if (SpoilerFileExists(CVarGetString("gSpoilerLog", "")) && CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
+                remove(fileLoc);
+            }
     }
 }
 
@@ -1267,10 +1276,16 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         GameInteractor_ExecuteOnUpdateFileQuestSelection(this->questType[this->buttonIndex]);
     }
 
+    if (CHECK_BTN_ALL(input->press.button, BTN_L)) {
+        if (this->questType[this->buttonIndex] == QUEST_RANDOMIZER) {
+            Randomizer_SetSpoilerLoaded(false);
+            this->prevConfigMode = this->configMode;
+            this->configMode = CM_GENERATE_SEED;
+        }
+    }
+
     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
         gSaveContext.questId = this->questType[this->buttonIndex];
-
-        gSaveContext.isBossRushPaused = false;
 
         if (this->questType[this->buttonIndex] == QUEST_BOSSRUSH) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -1313,6 +1328,10 @@ void FileChoose_GenerateRandoSeed(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     FileChoose_UpdateRandomizer();
     if (Randomizer_IsSeedGenerated() || Randomizer_IsPlandoLoaded()) {
+        Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+        func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
+        generating = 0;
+        Randomizer_SetSpoilerLoaded(true);
         static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
         static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
         this->prevConfigMode = this->configMode;
@@ -1331,7 +1350,8 @@ void FileChoose_GenerateRandoSeed(GameState* thisx) {
         memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName,
                CVarGetInteger("gLinkDefaultName", 0) ? &linkName : &emptyName, 8);
         return;
-    } else {
+    }
+    if (!generating) {
         Randomizer_GenerateSeed();
     }
 }
@@ -2830,10 +2850,6 @@ void FileChoose_ConfirmFile(GameState* thisx) {
         if (this->confirmButtonIndex == FS_BTN_CONFIRM_YES) {
             func_800AA000(300.0f, 180, 20, 100);
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            // Reset Boss Rush because it's only ever saved in memory.
-            if (IS_BOSS_RUSH) {
-                gSaveContext.questId = QUEST_NORMAL;
-            }
             this->selectMode = SM_FADE_OUT;
             func_800F6964(0xF);
         } else {
@@ -2978,7 +2994,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     Randomizer_LoadHintMessages();
     Randomizer_LoadMerchantMessages();
 
-    gSaveContext.respawn[0].entranceIndex = -1;
+    gSaveContext.respawn[0].entranceIndex = ENTR_LOAD_OPENING;
     gSaveContext.respawnFlag = 0;
     gSaveContext.seqId = (u8)NA_BGM_DISABLED;
     gSaveContext.natureAmbienceId = 0xFF;
@@ -2999,7 +3015,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.prevMagicState = MAGIC_STATE_IDLE;
     gSaveContext.forcedSeqId = NA_BGM_GENERAL_SFX;
     gSaveContext.skyboxTime = 0;
-    gSaveContext.nextTransitionType = 0xFF;
+    gSaveContext.nextTransitionType = TRANS_NEXT_TYPE_DEFAULT;
     gSaveContext.nextCutsceneIndex = 0xFFEF;
     gSaveContext.cutsceneTrigger = 0;
     gSaveContext.chamberCutsceneNum = 0;
@@ -3047,7 +3063,7 @@ void FileChoose_LoadGame(GameState* thisx) {
         // the entrance index is -1 from shuffle overwarld spawn
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) && ((!CVarGetInteger("gRememberSaveLocation", 0) ||
             gSaveContext.savedSceneNum == SCENE_FAIRYS_FOUNTAIN || gSaveContext.savedSceneNum == SCENE_GROTTOS) ||
-            (CVarGetInteger("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == -1))) {
+            (CVarGetInteger("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == ENTR_LOAD_OPENING))) {
             Entrance_SetSavewarpEntrance();
         }
     }
@@ -3188,25 +3204,25 @@ void FileChoose_DrawRandoSaveVersionWarning(GameState* thisx) {
 
 static const char* noRandoGeneratedText[] = {
     // English
-    "Open Randomizer Settings to change your settings,\nthen press A to generate a new seed"
+    "No Randomizer seed currently available.\nGenerate one in the Randomizer Settings"
 #if defined(__WIIU__) || defined(__SWITCH__)
     ".",
 #else
     ",\nor drop a spoiler log on the game window.",
 #endif
     // German
-    "Open Randomizer Settings to change your settings,\nthen press A to generate a new seed"
+    "No Randomizer seed currently available.\nGenerate one in the Randomizer Settings"
 #if defined(__WIIU__) || defined(__SWITCH__)
     ".",
 #else
     ",\nor drop a spoiler log on the game window.",
 #endif
     // French
-    "Ouvrez le menu \"Randomizer Settings\" pour modifier\nvos paramètres, appuyez sur A pour générer\nune nouvelle seed"
+    "Aucune Seed de Randomizer actuellement disponible.\nGénérez-en une dans les \"Randomizer Settings\""
 #if (defined(__WIIU__) || defined(__SWITCH__))
     "."
 #else
-    " ou glissez un spoilerlog sur la\nfenêtre du jeu."
+    "\nou glissez un spoilerlog sur la fenêtre du jeu."
 #endif
 };
 
@@ -3229,18 +3245,12 @@ void FileChoose_DrawNoRandoGeneratedWarning(GameState* thisx) {
         uint16_t textboxWidth = 256 * textboxScale;
         uint16_t textboxHeight = 64 * textboxScale;
         uint8_t leftOffset = 72;
-        uint8_t bottomOffset = 132;
+        uint8_t bottomOffset = 84;
         uint8_t textVerticalOffset;
 #if defined(__WIIU__) || defined(__SWITCH__)
-        textVerticalOffset = 80; // 2 lines
-        if (gSaveContext.language == LANGUAGE_FRA) {
-            textVerticalOffset = 75; // 3 lines
-        }
+        textVerticalOffset = 127; // 2 lines
 #else
-        textVerticalOffset = 75; // 3 lines
-        if (gSaveContext.language == LANGUAGE_FRA) {
-            textVerticalOffset = 70; // 4 lines
-        }
+        textVerticalOffset = 122; // 3 lines
 #endif
 
         Gfx_SetupDL_39Opa(this->state.gfxCtx);
@@ -3703,4 +3713,7 @@ void FileChoose_Init(GameState* thisx) {
     Font_LoadOrderedFont(&this->font);
     Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
     func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
+
+    // Originally this was only set when transitioning from the title screen, but gSkipLogoTitle skips that process so we're ensuring it's set here
+    gSaveContext.gameMode = GAMEMODE_FILE_SELECT;
 }

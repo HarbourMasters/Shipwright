@@ -25,4 +25,4 @@
 // #define CYAN    "\x1b[36m"
 // #define WHITE   "\x1b[37m"
 
-std::string GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks, std::string seedInput);
+bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks, std::string seedInput);

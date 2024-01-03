@@ -11,6 +11,10 @@
 #include "3drando/rando_main.hpp"
 #include "3drando/random.hpp"
 #include "../../UIWidgets.hpp"
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+#define IMGUI_DEFINE_MATH_OPERATORS
+#endif
+#include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 #include "../custom-message/CustomMessageTypes.h"
 #include "../item-tables/ItemTableManager.h"
@@ -67,7 +71,7 @@ const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
 const std::string Randomizer::randoMiscHintsTableID = "RandomizerMiscHints";
 
-static const char* englishRupeeNames[170] = { 
+static const char* englishRupeeNames[171] = {
     "[P]",               "Bad RNG Rolls",    "Bananas",          "Beanbean Coins",   "Beans",
     "Beli",              "Bells",            "Berries",          "Bison Dollars",    "Bitcoin",
     "Blue Essence",      "Bolts",            "Bones",            "Boondollars",      "Bottle Caps",
@@ -80,28 +84,29 @@ static const char* englishRupeeNames[170] = {
     "Dollarydoos",       "Dosh",             "Doubloons",        "Dwarfbucks",       "Emeralds",
     "Energon",           "Eris",             "Ether",            "Euro",             "Experience",
     "Extinction Points", "Floopies",         "Flurbos",          "FPS",              "Friends",
-    "Frog Coins",        "Gald",             "Gekz",             "Gems",             "Gil",
-    "Glimmer",           "Glitches",         "Gold",             "Gold Dragons",     "Goober Dollars",
-    "Green Herbs",       "Greg Siblings",    "Gummybears",       "Hell",             "Hylian Loaches",
-    "Ice Traps",         "ISK",              "Jiggies",          "KF7 Ammo",         "Kinstones",
-    "Kremcoins",         "Kroner",           "Leaves ",          "Lemmings",         "Lien",
-    "Lira",              "Lumber",           "Lungmen Dollars",  "Macca",            "Mana",
-    "Mann Co. Keys",     "Meat",             "Meat Stacks",      "Medaparts",        "Meseta",
-    "Mesetas",           "Minerals",         "Monopoly Money",   "Moons",            "Mora",
-    "Mumbo Tokens",      "Munny",            "Mushrooms",        "Mysteries",        "Neopoints",
-    "Notes",             "Nuyen",            "Orbs",             "Pix",              "Pixels",
-    "Platinum",          "Pokédollars",      "Pokémon",          "Poko",             "Pokos",
-    "Potch",             "Pounds",           "Power Pellets",    "Primogems",        "Réals",
-    "Refined Metal",     "Remote Mines",     "Retweets",         "Rhinu",            "Rings",
-    "Riot Points",       "Robux",            "Rubies",           "Rubles",           "Runite Ore",
-    "Rupees",            "Saint Quartz",     "Septims",          "Shekels",          "Shillings",
-    "Silver",            "Simoleons",        "Smackaroos",       "Social Credit",    "Souls",
-    "Spent Casings",     "Spice",            "Spondulicks",      "Spoons",           "Star Bits",
-    "Star Chips",        "Stars",            "Stones of Jordan", "Store Credit",     "Strawbs",
-    "Studs",             "Super Sea Snails", "Talent",           "Teef",             "Telecrystals",
-    "Tiberium",          "TokKul",           "Toys",             "Turnips",          "Upvotes",
-    "V-Bucks",           "Vespene Gas",      "Watts",            "Widgets",          "Woolongs",
-    "World Dollars",     "Wumpa Fruit",      "Yen",              "Zenny",            "Zorkmids"
+    "Frog Coins",        "Gald",             "Gekz",             "Gems",             "Geo",
+    "Gil",               "Glimmer",          "Glitches",         "Gold",             "Gold Dragons",
+    "Goober Dollars",    "Green Herbs",      "Greg Siblings",    "Gummybears",       "Hell",
+    "Hylian Loaches",    "Ice Traps",        "ISK",              "Jiggies",          "KF7 Ammo",
+    "Kinstones",         "Kremcoins",        "Kroner",           "Leaves ",          "Lemmings",
+    "Lien",              "Lira",             "Lumber",           "Lungmen Dollars",  "Macca",
+    "Mana",              "Mann Co. Keys",    "Meat",             "Meat Stacks",      "Medaparts",
+    "Meseta",            "Mesetas",          "Minerals",         "Monopoly Money",   "Moons",
+    "Mora",              "Mumbo Tokens",     "Munny",            "Mushrooms",        "Mysteries",
+    "Neopoints",         "Notes",            "Nuyen",            "Orbs",             "Pix",
+    "Pixels",            "Platinum",         "Pokédollars",      "Pokémon",          "Poko",
+    "Pokos",             "Potch",            "Pounds",           "Power Pellets",    "Primogems",
+    "Réals",             "Refined Metal",    "Remote Mines",     "Retweets",         "Rhinu",
+    "Rings",             "Riot Points",      "Robux",            "Rubies",           "Rubles",
+    "Runite Ore",        "Rupees",           "Saint Quartz",     "Septims",          "Shekels",
+    "Shillings",         "Silver",           "Simoleons",        "Smackaroos",       "Social Credit",
+    "Souls",             "Spent Casings",    "Spice",            "Spondulicks",      "Spoons",
+    "Star Bits",         "Star Chips",       "Stars",            "Stones of Jordan", "Store Credit",
+    "Strawbs",           "Studs",            "Super Sea Snails", "Talent",           "Teef",
+    "Telecrystals",      "Tiberium",         "TokKul",           "Toys",             "Turnips",
+    "Upvotes",           "V-Bucks",          "Vespene Gas",      "Watts",            "Widgets",
+    "Woolongs",          "World Dollars",    "Wumpa Fruit",      "Yen",              "Zenny",
+    "Zorkmids"
 };
 
 static const char* germanRupeeNames[41] = {
@@ -156,7 +161,7 @@ Randomizer::Randomizer() {
     }
 }
 
-Randomizer::~Randomizer() { 
+Randomizer::~Randomizer() {
 }
 
 std::unordered_map<std::string, RandomizerInf> spoilerFileTrialToEnum = {
@@ -253,7 +258,7 @@ std::string sanitize(std::string stringValue) {
 #pragma GCC optimize ("O0")
 bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
-        std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+        std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
         if (!spoilerFileStream) {
             return false;
         } else {
@@ -349,6 +354,13 @@ void Randomizer::LoadHintMessages() {
         "Zu {{location}}?\x1B&%gOK&No%w\x02",
         "Se téléporter vers&{{location}}?\x1B&%gOK!&Non%w\x02"));
 
+    // Bow Shooting Gallery reminder
+    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW,
+        CustomMessage("Come back when you have your own&bow and you'll get a %rdifferent prize%w!",
+        "Komm wieder sobald du deinen eigenen&Bogen hast, um einen %rspeziellen Preis%w zu&erhalten!",
+        "J'aurai %rune autre récompense%w pour toi&lorsque tu auras ton propre arc."));
+
+    // Lake Hylia water level system
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN,
         CustomMessage("Water level control system.&Keep away!",
             "Wasserstand Kontrollsystem&Finger weg!",
@@ -481,7 +493,7 @@ void Randomizer::LoadMerchantMessages() {
 }
 
 bool Randomizer::IsTrialRequired(RandomizerInf trial) {
-    return Rando::Context::GetInstance()->GetTrial(trial - RAND_INF_TRIALS_DONE_LIGHT_TRIAL);
+    return Rando::Context::GetInstance()->GetTrial(trial - RAND_INF_TRIALS_DONE_LIGHT_TRIAL)->IsRequired();
 }
 
 GetItemEntry Randomizer::GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId,
@@ -810,6 +822,18 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_LIGHT_MEDALLION:
             return !CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
+        // Ocarina Buttons
+        case RG_OCARINA_A_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+        case RG_OCARINA_C_LEFT_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+        case RG_OCARINA_C_RIGHT_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+        case RG_OCARINA_C_UP_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+        case RG_OCARINA_C_DOWN_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+
         case RG_RECOVERY_HEART:
         case RG_GREEN_RUPEE:
         case RG_GREG_RUPEE:
@@ -1132,6 +1156,19 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
             return GI_HEART_PIECE_WIN;
         case RG_TREASURE_GAME_GREEN_RUPEE:
             return GI_RUPEE_GREEN_LOSE;
+        
+        //Ocarina Buttons
+        case RG_OCARINA_A_BUTTON:
+            return (GetItemID)RG_OCARINA_A_BUTTON;
+        case RG_OCARINA_C_LEFT_BUTTON:
+            return (GetItemID)RG_OCARINA_C_LEFT_BUTTON;
+        case RG_OCARINA_C_RIGHT_BUTTON:
+            return (GetItemID)RG_OCARINA_C_RIGHT_BUTTON;
+        case RG_OCARINA_C_UP_BUTTON:
+            return (GetItemID)RG_OCARINA_C_UP_BUTTON;
+        case RG_OCARINA_C_DOWN_BUTTON:
+            return (GetItemID)RG_OCARINA_C_DOWN_BUTTON;
+
         default:
             if (!IsItemVanilla(randoGet)) {
                 return (GetItemID)randoGet;
@@ -2125,9 +2162,9 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
     shopItemIdentity.itemPrice = -1;
     shopItemIdentity.enGirlAShopItem = 0x32;
 
-    Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_GIRLA, 
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_GIRLA,
         // Bazaar (SHOP1) scene is reused, so if entering from Kak use debug scene to identify
-        (sceneNum == SCENE_BAZAAR && gSaveContext.entranceIndex == 0xB7) ? SCENE_TEST01 : sceneNum, slotIndex);
+        (sceneNum == SCENE_BAZAAR && gSaveContext.entranceIndex == ENTR_BAZAAR_0) ? SCENE_TEST01 : sceneNum, slotIndex);
 
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
         shopItemIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
@@ -2220,7 +2257,10 @@ void GenerateRandomizerImgui(std::string seed = "") {
     CVarSetInteger("gRandoGenerating", 1);
     CVarSave();
     auto ctx = Rando::Context::GetInstance();
-    ctx->GetSettings()->SetAllFromCVar();
+    if (!ctx->IsSpoilerLoaded()) {
+        // We use the settings from the spoiler rather than CVars.
+        ctx->GetSettings()->SetAllFromCVar();
+    }
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
     std::stringstream excludedLocationStringStream(CVarGetString("gRandomizeExcludedLocations", ""));
@@ -2289,7 +2329,9 @@ void RandomizerSettingsWindow::DrawElement() {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
     }
 
+    ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
     DrawPresetSelector(PRESET_TYPE_RANDOMIZER);
+    ImGui::EndDisabled();
 
     UIWidgets::Spacer(0);
     UIWidgets::EnhancementCheckbox("Manual seed entry", "gRandoManualSeedEntry", false, "");
@@ -2312,19 +2354,27 @@ void RandomizerSettingsWindow::DrawElement() {
     }
 
     UIWidgets::Spacer(0);
+    ImGui::BeginDisabled(CVarGetInteger("gRandomizerDontGenerateSpoiler", 0) && gSaveContext.gameMode != GAMEMODE_FILE_SELECT);
     if (ImGui::Button("Generate Randomizer")) {
+        ctx->SetSpoilerLoaded(false);
         GenerateRandomizer(CVarGetInteger("gRandoManualSeedEntry", 0) ? seedString : "");
     }
+    UIWidgets::Tooltip("You can also press L on the Quest Select screen to generate a new seed");
+    ImGui::EndDisabled();
 
     UIWidgets::Spacer(0);
-    std::string spoilerfilepath = CVarGetString("gSpoilerLog", "");
-    ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
+    if (!CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
+        std::string spoilerfilepath = CVarGetString("gSpoilerLog", "");
+        ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
+    }
 
     // RANDOTODO settings presets
     // std::string presetfilepath = CVarGetString("gLoadedPreset", "");
     // ImGui::Text("Settings File: %s", presetfilepath.c_str());
 
     UIWidgets::PaddedSeparator();
+
+    ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
 
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     static ImVec2 cellPadding(8.0f, 8.0f);
@@ -2339,15 +2389,20 @@ void RandomizerSettingsWindow::DrawElement() {
             ImGui::EndTabItem();
         }
 
+        ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
         if (ImGui::BeginTabItem("Items")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+            ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
             if (mSettings->GetOptionGroup(RSG_ITEMS_IMGUI_TABLE).RenderImGui()) {
                 mNeedsUpdate = true;
             }
+            ImGui::EndDisabled();
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
+        ImGui::EndDisabled();
 
+        ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
         if (ImGui::BeginTabItem("Gameplay")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (mSettings->GetOptionGroup(RSG_GAMEPLAY_IMGUI_TABLE).RenderImGui()) {
@@ -2356,7 +2411,9 @@ void RandomizerSettingsWindow::DrawElement() {
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
+        ImGui::EndDisabled();
 
+        ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
         static bool locationsTabOpen = false;
         if (ImGui::BeginTabItem("Locations")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
@@ -2475,6 +2532,7 @@ void RandomizerSettingsWindow::DrawElement() {
         } else {
             locationsTabOpen = false;
         }
+        ImGui::EndDisabled();
 
         static bool tricksTabOpen = false;
         if (ImGui::BeginTabItem("Tricks/Glitches")) {
@@ -2505,11 +2563,16 @@ void RandomizerSettingsWindow::DrawElement() {
                 if (mSettings->GetOption(RSK_LOGIC_RULES).RenderImGui()) {
                     mNeedsUpdate = true;
                 }
-                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
+                // RANDOTODO: Implement Disalbling of Options for Vanilla Logic
+                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHLESS) {
                     ImGui::SameLine();
                     if (mSettings->GetOption(RSK_ALL_LOCATIONS_REACHABLE).RenderImGui()) {
                         mNeedsUpdate = true;
                     }
+                }
+                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA) {
+                    ImGui::SameLine();
+                    ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Heads up! This will disable all rando settings except for entrance shuffle and starter items");
                 }
 
                 UIWidgets::PaddedSeparator();
@@ -2521,6 +2584,8 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
+
+            ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
 
             // Tricks
             static std::unordered_map<RandomizerTrickArea, bool> areaTreeDisabled {
@@ -2894,6 +2959,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 }
                 ImGui::EndTable();
             }
+            ImGui::EndDisabled();
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         } else {
@@ -2911,7 +2977,9 @@ void RandomizerSettingsWindow::DrawElement() {
 
         ImGui::EndTabBar();
     }
-    
+
+    ImGui::EndDisabled();
+
     if (disableEditingRandoSettings) {
         UIWidgets::ReEnableComponent("");
     }
@@ -3048,7 +3116,7 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
 }
 
 CustomMessage Randomizer::GetSariaMessage(u16 originalTextId) {
-    if (originalTextId == TEXT_SARIA_SFM || originalTextId == TEXT_SARIAS_SONG_FOREST_SOUNDS || TEXT_SARIAS_SONG_FOREST_TEMPLE) {
+    if (originalTextId == TEXT_SARIA_SFM || (originalTextId == TEXT_SARIAS_SONG_FOREST_SOUNDS && originalTextId == TEXT_SARIAS_SONG_FOREST_TEMPLE)) {
         CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE);
         CustomMessage messageEntry2 = messageEntry;
         std::string code = originalTextId == TEXT_SARIA_SFM ? "" : "\x0B";
@@ -3256,9 +3324,9 @@ void CreateTriforcePieceMessages() {
 
 CustomMessage Randomizer::GetTriforcePieceMessage() {
     // Item is only given after the textbox, so reflect that inside the textbox.
-    uint16_t current = gSaveContext.triforcePiecesCollected + 1;
-    uint16_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
-    uint16_t remaining = required - current;
+    uint8_t current = gSaveContext.triforcePiecesCollected + 1;
+    uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1;
+    uint8_t remaining = required - current;
     float percentageCollected = (float)current / (float)required;
     uint8_t messageIndex;
 
@@ -3577,7 +3645,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 66> getItemMessages = {{
+    const std::array<GetItemMessage, 71> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
@@ -3823,6 +3891,26 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE_UNTRANSLATED(RG_TWINROVA_SOUL, ITEM_BIG_POE, "You found the soul for %yTwinrova%w!"),
         GIMESSAGE_UNTRANSLATED(RG_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %cGanon%w!"),
 
+        GIMESSAGE(RG_OCARINA_A_BUTTON, ITEM_OCARINA_TIME,
+            "You got the %b\x9f%r button for the&Ocarina%w! You can now use it&while playing songs!",
+			"Der %b\x9f%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
+			"Vous trouvez la %rtouche %b\x9f%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
+        GIMESSAGE(RG_OCARINA_C_LEFT_BUTTON, ITEM_OCARINA_TIME,
+            "You got the %y\xa7%r button for the&Ocarina%w! You can now use it&while playing songs!",
+			"Der %y\xa7%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
+			"Vous trouvez la %rtouche %y\xa7%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
+        GIMESSAGE(RG_OCARINA_C_RIGHT_BUTTON, ITEM_OCARINA_TIME,
+            "You got the %y\xa8%r button for the&Ocarina%w! You can now use it&while playing songs!",
+			"Der %y\xa8%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
+			"Vous trouvez la %rtouche %y\xa8%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
+        GIMESSAGE(RG_OCARINA_C_UP_BUTTON, ITEM_OCARINA_TIME,
+            "You got the %y\xa5%r button for the&Ocarina%w! You can now use it&while playing songs!",
+			"Der %y\xa5%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
+			"Vous trouvez la %rtouche %y\xa5%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
+        GIMESSAGE(RG_OCARINA_C_DOWN_BUTTON, ITEM_OCARINA_TIME,
+            "You got the %y\xa6%r button for the&Ocarina%w! You can now use it&while playing songs!",
+			"Der %y\xa6%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
+			"Vous trouvez la %rtouche %y\xa6%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();

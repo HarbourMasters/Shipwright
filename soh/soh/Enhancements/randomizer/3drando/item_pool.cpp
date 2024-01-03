@@ -1237,7 +1237,7 @@ void GenerateItemPool() {
 
   if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
     ctx->possibleIceTrapModels.push_back(RG_TRIFORCE_PIECE);
-    AddItemToMainPool(RG_TRIFORCE_PIECE, ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Value<uint8_t>());
+    AddItemToMainPool(RG_TRIFORCE_PIECE, (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Value<uint8_t>() + 1));
     ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_TRIFORCE); // Win condition
     ctx->PlaceItemInLocation(RC_GANON, GetJunkItem(), false, true);
   } else {
@@ -1252,14 +1252,18 @@ void GenerateItemPool() {
     AddItemToMainPool(RG_KOKIRI_SWORD);
     ctx->possibleIceTrapModels.push_back(RG_KOKIRI_SWORD);
   } else {
-    ctx->PlaceItemInLocation(RC_KF_KOKIRI_SWORD_CHEST, RG_KOKIRI_SWORD, false, true);
+      if (!ctx->GetOption(RSK_STARTING_KOKIRI_SWORD)) {
+          ctx->PlaceItemInLocation(RC_KF_KOKIRI_SWORD_CHEST, RG_KOKIRI_SWORD, false, true);
+      }
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {
     AddItemToMainPool(RG_MASTER_SWORD);
     ctx->possibleIceTrapModels.push_back(RG_MASTER_SWORD); //Master Sword without the GI enum
   } else {
-    ctx->PlaceItemInLocation(RC_TOT_MASTER_SWORD, RG_MASTER_SWORD, false, true);
+      if (!ctx->GetOption(RSK_STARTING_MASTER_SWORD)) {
+          ctx->PlaceItemInLocation(RC_TOT_MASTER_SWORD, RG_MASTER_SWORD, false, true);
+      }
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG)) {
@@ -1276,8 +1280,29 @@ void GenerateItemPool() {
     }
     ctx->possibleIceTrapModels.push_back(RG_PROGRESSIVE_OCARINA); //Progressive ocarina
   } else {
-    ctx->PlaceItemInLocation(RC_LW_GIFT_FROM_SARIA, RG_PROGRESSIVE_OCARINA, false, true);
-    ctx->PlaceItemInLocation(RC_HF_OCARINA_OF_TIME_ITEM, RG_PROGRESSIVE_OCARINA, false, true);
+      if (ctx->GetOption(RSK_STARTING_OCARINA).Is(RO_STARTING_OCARINA_OFF)) {
+          ctx->PlaceItemInLocation(RC_LW_GIFT_FROM_SARIA, RG_PROGRESSIVE_OCARINA, false, true);
+          ctx->PlaceItemInLocation(RC_HF_OCARINA_OF_TIME_ITEM, RG_PROGRESSIVE_OCARINA, false, true);
+      } else {
+          if (ctx->GetOption(RSK_STARTING_OCARINA).IsNot(RO_STARTING_OCARINA_TIME)) {
+              ctx->PlaceItemInLocation(RC_HF_OCARINA_OF_TIME_ITEM, RG_PROGRESSIVE_OCARINA, false, true);
+          }
+      }
+  }
+
+  if (ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS)) {
+    AddItemToMainPool(RG_OCARINA_A_BUTTON);
+    AddItemToMainPool(RG_OCARINA_C_UP_BUTTON);
+    AddItemToMainPool(RG_OCARINA_C_DOWN_BUTTON);
+    AddItemToMainPool(RG_OCARINA_C_LEFT_BUTTON);
+    AddItemToMainPool(RG_OCARINA_C_RIGHT_BUTTON);
+
+    //TODO: Re-add when custom models work with ice traps
+    ctx->possibleIceTrapModels.push_back(RG_OCARINA_A_BUTTON);
+    ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_UP_BUTTON);
+    ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_DOWN_BUTTON);
+    ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_LEFT_BUTTON);
+    ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_RIGHT_BUTTON);
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_COWS)) {
