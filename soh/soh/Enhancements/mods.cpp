@@ -1225,12 +1225,12 @@ void RegisterToTMedallions() {
 }
 
 void RegisterChildGateGuard() {
-GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
-	Actor* actor = static_cast<Actor*>(refActor);
-	if (actor->id == ACTOR_EN_GE1 && actor->params == 0 && gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS) {
-		EnGe1* guard = static_cast<EnGe1*>(refActor);
-        guard->actionFunc = EnGe1_WatchForPlayerFrontOnly;
-	}
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+	    Actor* actor = static_cast<Actor*>(refActor);
+	    if (actor->id == ACTOR_EN_GE1 && actor->params == 0 && gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (IS_RANDO)) {
+		    EnGe1* guard = static_cast<EnGe1*>(refActor);
+            guard->actionFunc = EnGe1_WatchForPlayerFrontOnly;
+	    }
     });
 }
 
