@@ -110,7 +110,26 @@ u8 sActionModelGroups[] = {
     PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_BOOTS_KOKIRI
     PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_BOOTS_IRON
     PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_BOOTS_HOVER
+    //CUSTOM
+    PLAYER_MODELGROUP_DEFAULT,        // PLAYER_IA_JUMP
+    PLAYER_MODELGROUP_EXPLOSIVES,     // PLAYER_IA_GLIDER
+    PLAYER_MODELGROUP_LANTERN,        // PLAYER_IA_LANTERN
+    PLAYER_MODELGROUP_BOW_SLINGSHOT,  // PLAYER_IA_ULTRAHAND
+    PLAYER_MODELGROUP_BOW_SLINGSHOT,  // PLAYER_IA_ARMCANNON
+    PLAYER_MODELGROUP_DEFAULT,        // PLAYER_IA_MASK_FOX
+
 };
+
+//CUSTOM
+u8 sActionModelGroupsCustom[] = {
+    PLAYER_MODELGROUP_DEFAULT,        // PLAYER_IA_JUMP
+    PLAYER_MODELGROUP_EXPLOSIVES,     // PLAYER_IA_GLIDER
+    PLAYER_MODELGROUP_LANTERN,        // PLAYER_IA_LANTERN
+    PLAYER_MODELGROUP_BOW_SLINGSHOT,  // PLAYER_IA_ULTRAHAND
+    PLAYER_MODELGROUP_BOW_SLINGSHOT,  // PLAYER_IA_ARMCANNON
+    PLAYER_MODELGROUP_DEFAULT,        // PLAYER_IA_MASK_FOX
+};
+
 
 TextTriggerEntry sTextTriggers[] = {
     { 1, 0x3040 },
@@ -237,6 +256,14 @@ u8 gPlayerModelTypes[PLAYER_MODELGROUP_MAX][PLAYER_MODELGROUPENTRY_MAX] = {
     {
         PLAYER_ANIMTYPE_0,
         PLAYER_MODELTYPE_LH_BOTTLE,
+        PLAYER_MODELTYPE_RH_OPEN,
+        PLAYER_MODELTYPE_SHEATH_18,
+        PLAYER_MODELTYPE_WAIST
+    },
+     /* PLAYER_MODELGROUP_LANTERN */
+    {
+        PLAYER_ANIMTYPE_0,
+        PLAYER_MODELTYPE_LH_LANTERN,
         PLAYER_MODELTYPE_RH_OPEN,
         PLAYER_MODELTYPE_SHEATH_18,
         PLAYER_MODELTYPE_WAIST
@@ -386,6 +413,14 @@ Gfx* sPlayerRightHandBowSlingshotDLs[] = {
     gLinkChildRightHandHoldingSlingshotFarDL,
 };
 
+//CUSTOM
+Gfx* sPlayerRightHandCustomProjectileDLs[] = {
+    gUltrahandDL,//ADULT ULTRAHAND
+    gUltrahandDL,//CHILD ULTRAHAND
+    gArmcannonAdultDL,//ADULT ARMCANNON
+    gArmcannonChildDL,//CHILD ARMCANNON
+};
+
 Gfx* sSwordAndSheathDLs[] = {
     gLinkAdultMasterSwordAndSheathNearDL,
     gLinkChildSwordAndSheathNearDL,
@@ -456,6 +491,13 @@ Gfx* sPlayerLeftHandBottleDLs[] = {
     gLinkChildLeftHandUpNearDL,
 };
 
+Gfx* sPlayerLeftHandLanternDLs[] = {
+    gLinkAdultLeftHandOutNearDL,
+    gLinkChildLeftHandUpNearDL,
+    gLinkAdultLeftHandOutNearDL,
+    gLinkChildLeftHandUpNearDL,
+};
+
 Gfx* sFirstPersonLeftForearmDLs[] = {
     gLinkAdultRightArmOutNearDL,
     NULL,
@@ -481,6 +523,7 @@ Gfx* sFirstPersonRightHandHoldingWeaponDLs[] = {
     gLinkChildRightArmStretchedSlingshotDL,
 };
 
+
 // Indexed by model types (left hand, right hand, sheath or waist)
 Gfx** sPlayerDListGroups[PLAYER_MODELTYPE_MAX] = {
     gPlayerLeftHandOpenDLs,           // PLAYER_MODELTYPE_LH_OPEN
@@ -491,6 +534,9 @@ Gfx** sPlayerDListGroups[PLAYER_MODELTYPE_MAX] = {
     sPlayerLeftHandHammerDLs,         // PLAYER_MODELTYPE_LH_HAMMER
     gPlayerLeftHandBoomerangDLs,      // PLAYER_MODELTYPE_LH_BOOMERANG
     sPlayerLeftHandBottleDLs,         // PLAYER_MODELTYPE_LH_BOTTLE
+
+    sPlayerLeftHandLanternDLs,         // PLAYER_MODELTYPE_LH_LANTERN
+
     sPlayerRightHandOpenDLs,          // PLAYER_MODELTYPE_RH_OPEN
     sPlayerRightHandClosedDLs,        // PLAYER_MODELTYPE_RH_CLOSED
     sPlayerRightHandShieldDLs,        // PLAYER_MODELTYPE_RH_SHIELD
@@ -499,6 +545,9 @@ Gfx** sPlayerDListGroups[PLAYER_MODELTYPE_MAX] = {
     sPlayerRightHandOcarinaDLs,       // PLAYER_MODELTYPE_RH_OCARINA
     sPlayerRightHandOotDLs,           // PLAYER_MODELTYPE_RH_OOT
     sPlayerRightHandHookshotDLs,      // PLAYER_MODELTYPE_RH_HOOKSHOT
+
+    sPlayerRightHandCustomProjectileDLs,  // PLAYER_MODELTYPE_RH_CUSTOMPROJECTILE
+
     sSwordAndSheathDLs,               // PLAYER_MODELTYPE_SHEATH_16
     sSheathDLs,                       // PLAYER_MODELTYPE_SHEATH_17
     sSheathWithSwordDLs,              // PLAYER_MODELTYPE_SHEATH_18
@@ -584,8 +633,8 @@ s32 Player_InCsMode(PlayState* play) {
     return Player_InBlockingCsMode(play, this) || (this->unk_6AD == 4);
 }
 
-s32 func_8008E9C4(Player* this) {
-    return (this->stateFlags1 & 0x10);
+s32 Is_PLAYER_STATE1_ENEMY_TARGET(Player* this) {
+    return (this->stateFlags1 & PLAYER_STATE1_ENEMY_TARGET);
 }
 
 s32 Player_IsChildWithHylianShield(Player* this) {
@@ -594,6 +643,11 @@ s32 Player_IsChildWithHylianShield(Player* this) {
 
 s32 Player_ActionToModelGroup(Player* this, s32 actionParam) {
     s32 modelGroup = sActionModelGroups[actionParam];
+    
+    //CUSTOM
+    if (actionParam >= PLAYER_IA_JUMP) {
+        modelGroup = sActionModelGroupsCustom[actionParam - PLAYER_IA_JUMP];
+    }
 
     if ((modelGroup == PLAYER_MODELGROUP_SWORD) && Player_IsChildWithHylianShield(this)) {
         // child, using kokiri sword with hylian shield equipped
@@ -609,7 +663,13 @@ void Player_SetModelsForHoldingShield(Player* this) {
         if ((CVarGetInteger("gShieldTwoHanded", 0) && (this->heldItemAction != PLAYER_IA_DEKU_STICK) ||
             !Player_HoldsTwoHandedWeapon(this)) && !Player_IsChildWithHylianShield(this)) {
             this->rightHandType = PLAYER_MODELTYPE_RH_SHIELD;
-            this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][gSaveContext.linkAge];
+            //CUSTOM
+            if (this->currentMask != PLAYER_MASK_FOX) {
+                this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][gSaveContext.linkAge];
+            }
+            else {
+                this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_OPEN][gSaveContext.linkAge];
+            }
             if (this->sheathType == PLAYER_MODELTYPE_SHEATH_18) {
                 this->sheathType = PLAYER_MODELTYPE_SHEATH_16;
             } else if (this->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
@@ -631,9 +691,11 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->rightHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_RIGHT_HAND];
     this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
 
-    if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && this->rightHandType == 11) { // If holding Bow/Slingshot
-        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
+    if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && this->rightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT) { // If holding Bow/Slingshot
+            this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)]; 
     }
+    //CUSTOM
+    //if (IsHoldingCustomProjectile(this)) this->rightHandDLists = sPlayerRightHandCustomProjectileDLs;
 
     // Sheath
     this->sheathType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_SHEATH];
@@ -690,7 +752,7 @@ void Player_UpdateBottleHeld(PlayState* play, Player* this, s32 item, s32 action
 }
 
 void func_8008EDF0(Player* this) {
-    this->unk_664 = NULL;
+    this->targetActorMaybe = NULL;
     this->stateFlags2 &= ~0x2000;
 }
 
@@ -709,7 +771,7 @@ void func_8008EEAC(PlayState* play, Actor* actor) {
     Player* this = GET_PLAYER(play);
 
     func_8008EE08(this);
-    this->unk_664 = actor;
+    this->targetActorMaybe = actor;
     this->unk_684 = actor;
     this->stateFlags1 |= 0x10000;
     Camera_SetParam(Play_GetCamera(play, 0), 8, actor);
@@ -1233,9 +1295,9 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
                     Matrix_Translate((LINK_IS_ADULT ? 3600.0f : 2900.0f) * ABS(scale - 1.0f), 0.0f, 0.0f, MTXMODE_APPLY);
                 }
             }
-            rot->x += this->unk_6BA;
-            rot->y -= this->unk_6B8;
-            rot->z += this->unk_6B6;
+            rot->x += this->runningHeadLeanRotation; //more like Z
+            rot->y -= this->focusHeadYRotation; //Head Y Rotation
+            rot->z += this->runningHeadForwardRotation; //more like X
         } else if (limbIndex == PLAYER_LIMB_L_HAND) {
             if (CVarGetInteger("gCosmetics.Link_SwordScale.Changed", 0)) {
                 f32 scale = CVarGetFloat("gCosmetics.Link_SwordScale.Value", 1.0f);
@@ -1250,11 +1312,11 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
             if (this->unk_6BE != 0) {
                 Matrix_RotateY(this->unk_6BE * (M_PI / 0x8000), MTXMODE_APPLY);
             }
-            if (this->unk_6BC != 0) {
-                Matrix_RotateX(this->unk_6BC * (M_PI / 0x8000), MTXMODE_APPLY);
+            if (this->runningTorsoForwardRotation != 0) {
+                Matrix_RotateX(this->runningTorsoForwardRotation * (M_PI / 0x8000), MTXMODE_APPLY);
             }
-            if (this->unk_6C0 != 0) {
-                Matrix_RotateZ(this->unk_6C0 * (M_PI / 0x8000), MTXMODE_APPLY);
+            if (this->readyToFireTorsoRotZ != 0) {
+                Matrix_RotateZ(this->readyToFireTorsoRotZ * (M_PI / 0x8000), MTXMODE_APPLY);
             }
         } else if (limbIndex == PLAYER_LIMB_L_THIGH) {
             func_8008F87C(play, this, &this->skelAnime, pos, rot, PLAYER_LIMB_L_THIGH, PLAYER_LIMB_L_SHIN,
@@ -1295,12 +1357,24 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
 
             if (sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) {
                 dLists += this->currentShield * 4;
+                *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
             } else if ((this->rightHandType == PLAYER_MODELTYPE_RH_OPEN) && (this->actor.speedXZ > 2.0f) && !(this->stateFlags1 & 0x8000000)) {
                 dLists = &sPlayerRightHandClosedDLs[gSaveContext.linkAge];
                 sRightHandType = PLAYER_MODELTYPE_RH_CLOSED;
+                *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
             }
-
-            *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+            //CUSTOM
+             else if (IsHoldingCustomProjectile(this)) {
+                int customProjectileIndex = gSaveContext.linkAge;
+                int weaponNum = 0;
+                if (this->heldItemAction == PLAYER_IA_ULTRAHAND) weaponNum = 0;
+                if (this->heldItemAction == PLAYER_IA_ARMCANNON) weaponNum = 1;
+                customProjectileIndex += (weaponNum * 2);
+                *dList = sPlayerRightHandCustomProjectileDLs[customProjectileIndex];
+            }
+            else {
+                *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+            }
         } else if (limbIndex == PLAYER_LIMB_SHEATH) {
             Gfx** dLists = this->sheathDLists;
 
@@ -1315,7 +1389,9 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                 dLists = &sSheathWithSwordDLs[PLAYER_SHIELD_MAX * 4];
             }
 
-            if (dLists[sDListsLodOffset] != NULL) {
+            //CUSTOM
+            if (this->currentMask == PLAYER_MASK_FOX) *dList = NULL;
+            else if (dLists[sDListsLodOffset] != NULL) {
                 *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
             } else {
                 *dList = NULL;
@@ -1367,8 +1443,17 @@ s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, G
                     firstPersonWeaponIndex = 1;
                 }
             }
-            *dList = Player_HoldsHookshot(this) ? gLinkAdultRightHandHoldingHookshotFarDL
-                                                : sFirstPersonRightHandHoldingWeaponDLs[firstPersonWeaponIndex];
+            if (IsHoldingCustomProjectile(this)) {
+                int weaponNum = 0;
+                if (this->heldItemAction == PLAYER_IA_ULTRAHAND) weaponNum = 0;
+                if (this->heldItemAction == PLAYER_IA_ARMCANNON) weaponNum = 1;
+                firstPersonWeaponIndex += (weaponNum * 2);
+                *dList = sPlayerRightHandCustomProjectileDLs[firstPersonWeaponIndex];
+            }
+            else {
+                *dList = Player_HoldsHookshot(this) ? gLinkAdultRightHandHoldingHookshotFarDL
+                    : sFirstPersonRightHandHoldingWeaponDLs[firstPersonWeaponIndex];
+            }
         } else {
             *dList = NULL;
         }
@@ -1433,8 +1518,15 @@ void Player_UpdateShieldCollider(PlayState* play, Player* this, ColliderQuad* co
         Matrix_MultVec3f(&quadSrc[3], &quadDest[3]);
         Collider_SetQuadVertices(collider, &quadDest[0], &quadDest[1], &quadDest[2], &quadDest[3]);
 
-        CollisionCheck_SetAC(play, &play->colChkCtx, &collider->base);
-        CollisionCheck_SetAT(play, &play->colChkCtx, &collider->base);
+        if (this->currentMask != PLAYER_MASK_FOX) {
+            CollisionCheck_SetAC(play, &play->colChkCtx, &collider->base);
+            CollisionCheck_SetAT(play, &play->colChkCtx, &collider->base);
+        }
+        else {
+            Collider_UpdateCylinder(&this->actor, &this->shieldCylinder);
+            CollisionCheck_SetAC(play, &play->colChkCtx, &this->shieldCylinder.base);
+            CollisionCheck_SetAT(play, &play->colChkCtx, &this->shieldCylinder.base);
+        }
     }
 }
 
@@ -1610,6 +1702,57 @@ void Player_DrawHookshotReticle(PlayState* play, Player* this, f32 hookshotRange
     }
 }
 
+void Player_DrawThirdPersonReticle(PlayState* play, Player* this, f32 hookshotRange) {
+    CollisionPoly* colPoly;
+    s32 bgId;
+    Vec3f firstHit;
+    Vec3f sp68;
+    f32 sp64;
+
+    Vec3f PlayerPos = this->actor.world.pos;
+    PlayerPos.y += 10.0f;
+    Vec3f AimPos = Play_GetCamera(play, 0)->eye;
+    AimPos.z += 10000.0f * Math_CosS(Play_GetCamera(play, 0)->camDir.y);
+    AimPos.x += 10000.0f * Math_SinS(Play_GetCamera(play, 0)->camDir.y);
+    AimPos.y += 10000.0f * Math_SinS(Play_GetCamera(play, 0)->camDir.x);
+
+    if (BgCheck_AnyLineTest3(&play->colCtx, &PlayerPos, &AimPos, &firstHit, &colPoly, 1, 1, 1, 1, &bgId)) {
+        OPEN_DISPS(play->state.gfxCtx);
+
+        WORLD_OVERLAY_DISP = Gfx_SetupDL(WORLD_OVERLAY_DISP, 0x07);
+
+        SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &firstHit, &sp68, &sp64);
+
+        const f32 sp60 = (sp64 < 200.0f) ? 0.08f : (sp64 / 200.0f) * 0.08f;
+
+        Matrix_Translate(firstHit.x, firstHit.y, firstHit.z, MTXMODE_NEW);
+        Matrix_Scale(sp60, sp60, sp60, MTXMODE_APPLY);
+
+        gSPMatrix(WORLD_OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(WORLD_OVERLAY_DISP++, SEG_ADDR(1, 0), G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPTexture(WORLD_OVERLAY_DISP++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
+        gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, gLinkAdultHookshotReticleTex, G_IM_FMT_I, G_IM_SIZ_8b, 64, 64, 0,
+            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
+        if (SurfaceType_IsHookshotSurface(&play->colCtx, colPoly, bgId) && CVarGetInteger("gHookshotableReticle", false)) {
+            const Color_RGBA8 defaultColor = { .r = 0, .g = 255, .b = 0, .a = 255 };
+            const Color_RGBA8 color = CVarGetColor("gCosmetics.HookshotReticle_Target.Value", defaultColor);
+            gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, color.r, color.g, color.b, color.a);
+        }
+        else {
+            const Color_RGBA8 defaultColor = { .r = 255, .g = 0, .b = 0, .a = 255 };
+            const Color_RGBA8 color = CVarGetColor("gCosmetics.HookshotReticle_NonTarget.Value", defaultColor);
+            gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, color.r, color.g, color.b, color.a);
+        }
+        gSPVertex(WORLD_OVERLAY_DISP++, (uintptr_t)gLinkAdultHookshotReticleVtx, 3, 0);
+        gSP1Triangle(WORLD_OVERLAY_DISP++, 0, 1, 2, 0);
+
+        CLOSE_DISPS(play->state.gfxCtx);
+    }
+}
+
+
+
+
 Vec3f D_801260D4 = { 1100.0f, -700.0f, 0.0f };
 
 f32 sMeleeWeaponLengths[] = {
@@ -1629,6 +1772,7 @@ Color_RGB8 sBottleColors[] = {
 };
 
 Vec3f sLeftHandArrowVec3 = { 398.0f, 1419.0f, 244.0f };
+Vec3f sLeftHandArmcannonVec3 = { -325.0f, -325.0f, 2750.0f };
 
 BowStringData sBowStringData[] = {
     { gLinkAdultBowStringDL, { 0.0f, -360.4f, 0.0f } },       // bow
@@ -1677,6 +1821,10 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         Actor* hookedActor;
 
         Math_Vec3f_Copy(&this->leftHandPos, D_80160000);
+
+        if (this->itemAction == PLAYER_IA_LANTERN) {
+            Gfx_DrawDListOpa(play, gLanternDL);
+        }
 
         if (this->itemAction == PLAYER_IA_DEKU_STICK) {
             Vec3f sp124[3];
@@ -1729,14 +1877,23 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         }
 
         if (this->actor.scale.y >= 0.0f) {
-            if (!Player_HoldsHookshot(this) && ((hookedActor = this->heldActor) != NULL)) {
-                if (this->stateFlags1 & 0x200) {
-                    Matrix_MultVec3f(&sLeftHandArrowVec3, &hookedActor->world.pos);
-                    Matrix_RotateZYX(0x69E8, -0x5708, 0x458E, MTXMODE_APPLY);
-                    Matrix_Get(&sp14C);
-                    Matrix_MtxFToYXZRotS(&sp14C, &hookedActor->world.rot, 0);
-                    hookedActor->shape.rot = hookedActor->world.rot;
-                } else if (this->stateFlags1 & 0x800) {
+            if (!Player_HoldsHookshot(this) && ((hookedActor = this->heldActor) != NULL)) { //not actually hookshot?
+                if (this->stateFlags1 & PLAYER_STATE1_READY_TO_FIRE) {
+                    if (IsHoldingCustomProjectile(this)) {
+                        Matrix_RotateZYX(0x69E8, -0x5708, 0x458E, MTXMODE_APPLY);
+                        Matrix_MultVec3f(&sLeftHandArmcannonVec3, &hookedActor->world.pos);
+                        Matrix_Get(&sp14C); //upper torso probably
+                        Matrix_MtxFToYXZRotS(&sp14C, &hookedActor->world.rot, 0);
+                        //billboard only?
+                    }
+                    else {
+                        Matrix_MultVec3f(&sLeftHandArrowVec3, &hookedActor->world.pos);
+                        Matrix_RotateZYX(0x69E8, -0x5708, 0x458E, MTXMODE_APPLY);
+                        Matrix_Get(&sp14C); //upper torso probably
+                        Matrix_MtxFToYXZRotS(&sp14C, &hookedActor->world.rot, 0);
+                        hookedActor->shape.rot = hookedActor->world.rot; //wont let billboard
+                    }
+                } else if (this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) {
                     Vec3s spB8;
 
                     Matrix_Get(&sp14C);
@@ -1763,48 +1920,53 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             if(CVarGetInteger("gBowSlingShotAmmoFix", 0)){
                 stringModelToUse = Player_HoldsSlingshot(this);
             }
-            BowStringData* stringData = &sBowStringData[stringModelToUse];
+            
+            if (!IsHoldingCustomProjectile(this)) {
+                BowStringData* stringData = &sBowStringData[stringModelToUse];
 
-            OPEN_DISPS(play->state.gfxCtx);
+                OPEN_DISPS(play->state.gfxCtx);
 
-            Matrix_Push();
-            Matrix_Translate(stringData->pos.x, stringData->pos.y, stringData->pos.z, MTXMODE_APPLY);
+                Matrix_Push();
+                Matrix_Translate(stringData->pos.x, stringData->pos.y, stringData->pos.z, MTXMODE_APPLY);
 
-            if ((this->stateFlags1 & 0x200) && (this->unk_860 >= 0) && (this->unk_834 <= 10)) {
-                Vec3f sp90;
-                f32 distXYZ;
+                if ((this->stateFlags1 & PLAYER_STATE1_READY_TO_FIRE) && (this->unk_860 >= 0) && (this->unk_834 <= 10)) {
+                    Vec3f sp90;
+                    f32 distXYZ;
 
-                Matrix_MultVec3f(&sZeroVec, &sp90);
-                distXYZ = Math_Vec3f_DistXYZ(D_80160000, &sp90);
+                    Matrix_MultVec3f(&sZeroVec, &sp90);
+                    distXYZ = Math_Vec3f_DistXYZ(D_80160000, &sp90);
 
-                this->unk_858 = distXYZ - 3.0f;
-                if (distXYZ < 3.0f) {
-                    this->unk_858 = 0.0f;
-                } else {
-                    this->unk_858 *= 1.6f;
-                    if (this->unk_858 > 1.0f) {
-                        this->unk_858 = 1.0f;
+                    this->unk_858 = distXYZ - 3.0f;
+                    if (distXYZ < 3.0f) {
+                        this->unk_858 = 0.0f;
                     }
+                    else {
+                        this->unk_858 *= 1.6f;
+                        if (this->unk_858 > 1.0f) {
+                            this->unk_858 = 1.0f;
+                        }
+                    }
+
+                    this->unk_85C = -0.5f;
                 }
 
-                this->unk_85C = -0.5f;
+                Matrix_Scale(1.0f, this->unk_858, 1.0f, MTXMODE_APPLY);
+
+                if (!LINK_IS_ADULT) {
+                    Matrix_RotateZ(this->unk_858 * -0.2f, MTXMODE_APPLY);
+                }
+
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                    G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPDisplayList(POLY_XLU_DISP++, stringData->dList);
+
+                Matrix_Pop();
+
+                CLOSE_DISPS(play->state.gfxCtx);
             }
-
-            Matrix_Scale(1.0f, this->unk_858, 1.0f, MTXMODE_APPLY);
-
-            if (!LINK_IS_ADULT) {
-                Matrix_RotateZ(this->unk_858 * -0.2f, MTXMODE_APPLY);
-            }
-
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, stringData->dList);
-
-            Matrix_Pop();
-
-            CLOSE_DISPS(play->state.gfxCtx);
         } else if ((this->actor.scale.y >= 0.0f) && (this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD)) {
             Matrix_Get(&this->shieldMf);
+            //blocking with shield on arm
             Player_UpdateShieldCollider(play, this, &this->shieldQuad, sRightHandLimbModelShieldQuadVertices);
         }
 
@@ -1814,6 +1976,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 Matrix_MultVec3f(&D_80126184, &this->unk_3C8);
 
                 if (heldActor != NULL) {
+ 
                     MtxF sp44;
                     s32 pad;
 
@@ -1829,12 +1992,14 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                             play, this, ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 77600.0f) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f));
                     }
                 }
-            } else if (CVarGetInteger("gBowReticle", 0) && (
+            }
+            else if (CVarGetInteger("gBowReticle", 0) && (
                         (this->heldItemAction == PLAYER_IA_BOW_FIRE) ||
                         (this->heldItemAction == PLAYER_IA_BOW_ICE) ||
                         (this->heldItemAction == PLAYER_IA_BOW_LIGHT) ||
                         (this->heldItemAction == PLAYER_IA_BOW) ||
-                        (this->heldItemAction == PLAYER_IA_SLINGSHOT))) {
+                        (this->heldItemAction == PLAYER_IA_SLINGSHOT) ||
+                        IsHoldingCustomProjectile(this))) { //CUSTOM
                 if (heldActor != NULL) {
                     MtxF sp44;
                     s32 pad;
@@ -1849,7 +2014,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 }
             }
 
-            if ((this->unk_862 != 0) || ((func_8002DD6C(this) == 0) && (heldActor != NULL))) {
+            if ((this->unk_862 != 0) || ((PlayerStateItemInHand(this) == 0) && (heldActor != NULL))) {
                 if (!(this->stateFlags1 & 0x400) && (this->unk_862 != 0) && (this->exchangeItemId != EXCH_ITEM_NONE)) {
                     Math_Vec3f_Copy(&sGetItemRefPos, &this->leftHandPos);
                 } else {
@@ -1864,9 +2029,18 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             }
         }
     } else if (this->actor.scale.y >= 0.0f) {
+        if (limbIndex == PLAYER_LIMB_WAIST) {
+            if (this->currentMask == PLAYER_MASK_FOX) {
+                OPEN_DISPS(play->state.gfxCtx);
+                gSPDisplayList(POLY_OPA_DISP++, gFoxTailDL);
+                CLOSE_DISPS(play->state.gfxCtx);
+            }
+        }
+        
         if (limbIndex == PLAYER_LIMB_SHEATH) {
-            if ((this->rightHandType != PLAYER_MODELTYPE_RH_SHIELD) && (this->rightHandType != PLAYER_MODELTYPE_RH_FF)) {
+             if ((this->rightHandType != PLAYER_MODELTYPE_RH_SHIELD) && (this->rightHandType != PLAYER_MODELTYPE_RH_FF)) {
                 if (Player_IsChildWithHylianShield(this)) {
+                    //blocking with shield on back
                     Player_UpdateShieldCollider(play, this, &this->shieldQuad, sSheathLimbModelShieldQuadVertices);
                 }
 
@@ -1875,6 +2049,12 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             }
         } else if (limbIndex == PLAYER_LIMB_HEAD) {
             Matrix_MultVec3f(&D_801260D4, &this->actor.focus.pos);
+            //CUSTOM MASKS HERE        
+            if (this->currentMask == PLAYER_MASK_FOX) {
+                OPEN_DISPS(play->state.gfxCtx);
+                gSPDisplayList(POLY_OPA_DISP++, gFoxMaskDL);
+                CLOSE_DISPS(play->state.gfxCtx);
+            }
         } else {
             Vec3f* vec = &sLeftRightFootLimbModelFootPos[(gSaveContext.linkAge)];
 

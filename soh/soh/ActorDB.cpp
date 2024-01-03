@@ -462,7 +462,12 @@ static std::unordered_map<u16, const char*> actorDescriptions = {
     { ACTOR_EN_ZL4, "Zelda (Child)" },
     { ACTOR_EN_MM2, "Running Man (Adult Era)" },
     { ACTOR_BG_JYA_BLOCK, "Silver Block (Child Era)" },
-    { ACTOR_OBJ_WARP2BLOCK, "Navi Infospot (Green, Time Block)" }
+    { ACTOR_OBJ_WARP2BLOCK, "Navi Infospot (Green, Time Block)" },
+        //CUSTOM
+    { ACTOR_EN_GLIDER, "Glider" },
+    { ACTOR_LANTERN_FIRE, "Lantern Fire" },
+    { ACTOR_WIND_ZONE, "Wind Zone" },
+    { ACTOR_CUSTOM_PROJECTILE, "Custom Projectile" },
 };
 
 ActorDB::ActorDB() {

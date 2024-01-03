@@ -416,7 +416,7 @@ void func_8002DBD0(Actor* actor, Vec3f* result, Vec3f* arg2);
 f32 Actor_HeightDiff(Actor* actorA, Actor* actorB);
 f32 Player_GetHeight(Player* player);
 f32 func_8002DCE4(Player* player);
-s32 func_8002DD6C(Player* player);
+s32 PlayerStateItemInHand(Player* player);
 s32 func_8002DD78(Player* player);
 s32 func_8002DDE4(PlayState* play);
 s32 func_8002DDF4(PlayState* play);
@@ -1107,7 +1107,7 @@ u8 PlayerGrounded(Player* player);
 void Player_SetBootData(PlayState* play, Player* player);
 s32 Player_InBlockingCsMode(PlayState* play, Player* player);
 s32 Player_InCsMode(PlayState* play);
-s32 func_8008E9C4(Player* player);
+s32 Is_PLAYER_STATE1_ENEMY_TARGET(Player* player);
 s32 Player_IsChildWithHylianShield(Player* player);
 s32 Player_ActionToModelGroup(Player* player, s32 actionParam);
 void Player_SetModelsForHoldingShield(Player* player);
@@ -2459,6 +2459,8 @@ void Message_DrawText(PlayState* play, Gfx** gfxP);
 void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
 void Interface_RandoRestoreSwordless(void);
 
+//Custom
+bool IsHoldingCustomProjectile(Player* player);
 // #endregion
 
 #ifdef __cplusplus

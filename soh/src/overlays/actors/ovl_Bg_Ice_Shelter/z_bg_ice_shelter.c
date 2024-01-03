@@ -1,4 +1,4 @@
-#include "z_bg_ice_shelter.h"
+    #include "z_bg_ice_shelter.h"
 #include "objects/object_ice_objects/object_ice_objects.h"
 
 #define FLAGS 0
@@ -16,6 +16,7 @@ void func_808911D4(BgIceShelter* this, PlayState* play);
 
 // For "Blue Fire Arrows" enhancement
 void MeltOnIceArrowHit(BgIceShelter* this, ColliderCylinder cylinder, s16 type, PlayState* play);
+void MeltOnLanternBlueFire(BgIceShelter* this, ColliderCylinder cylinder, s16 type, PlayState* play);
 
 const ActorInit Bg_Ice_Shelter_InitVars = {
     ACTOR_BG_ICE_SHELTER,
@@ -331,6 +332,10 @@ void func_8089107C(BgIceShelter* this, PlayState* play) {
         MeltOnIceArrowHit(this, this->cylinder1, type, play);
         MeltOnIceArrowHit(this, this->cylinder2, type, play);
     }
+    //Melt from Lantern Blue Fire
+    MeltOnLanternBlueFire(this, this->cylinder1, type, play);
+    MeltOnLanternBlueFire(this, this->cylinder2, type, play);
+
     // Default blue fire check
     if (this->cylinder1.base.acFlags & AC_HIT) {
         this->cylinder1.base.acFlags &= ~AC_HIT;
@@ -365,6 +370,23 @@ void MeltOnIceArrowHit(BgIceShelter* this, ColliderCylinder cylinder, s16 type, 
         cylinder.base.acFlags &= ~AC_HIT;
         if ((cylinder.base.ac != NULL) && (cylinder.base.ac->id == ACTOR_EN_ARROW)) {
             if (cylinder.base.ac->child != NULL && cylinder.base.ac->child->id == ACTOR_ARROW_ICE) {
+                if (type == 4) {
+                    if (this->dyna.actor.parent != NULL) {
+                        this->dyna.actor.parent->freezeTimer = 50;
+                    }
+                }
+                func_808911BC(this);
+                Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_ICE_MELT);
+            }
+        }
+    }
+}
+
+void MeltOnLanternBlueFire(BgIceShelter* this, ColliderCylinder cylinder, s16 type, PlayState* play) {
+    if (cylinder.base.acFlags & AC_HIT) {
+        cylinder.base.acFlags &= ~AC_HIT;
+        if ((cylinder.base.ac != NULL) && (cylinder.base.ac->id == ACTOR_LANTERN_FIRE)) {
+            if (cylinder.base.ac->params == 1) { // is Blue Fire
                 if (type == 4) {
                     if (this->dyna.actor.parent != NULL) {
                         this->dyna.actor.parent->freezeTimer = 50;

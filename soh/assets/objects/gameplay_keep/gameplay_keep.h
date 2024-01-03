@@ -2848,4 +2848,8 @@ static const ALIGN_ASSET(2) char gFishSkelLimbsLimb_018FB0DL_018950[] = dgFishSk
 static const ALIGN_ASSET(2) char gFishSkelLimbsLimb_018FBCDL_0188B0[] = dgFishSkelLimbsLimb_018FBCDL_0188B0;
 
 
+//CUSTOM
+#define dgReflectorDL "__OTR__objects/gameplay_keep/gReflectorDL"
+static const ALIGN_ASSET(2) char gReflectorsDL[] = dgReflectorDL;
+
 #endif // OBJECTS_GAMEPLAY_KEEP_H

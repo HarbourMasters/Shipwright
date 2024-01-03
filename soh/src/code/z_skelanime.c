@@ -135,7 +135,7 @@ void SkelAnime_DrawFlexLimbLod(PlayState* play, s32 limbIndex, void** skeleton, 
 
     limb = (LodLimb*)SEGMENTED_TO_VIRTUAL(skeleton[limbIndex]);
     limbIndex++;
-
+    
     rot = jointTable[limbIndex];
 
     pos.x = limb->jointPos.x;

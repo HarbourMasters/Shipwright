@@ -486,7 +486,7 @@ void func_8002C124(TargetContext* targetCtx, PlayState* play) {
 
         func_8002BE64(targetCtx, targetCtx->unk_4C, spBC.x, spBC.y, spBC.z);
 
-        if ((!(player->stateFlags1 & 0x40)) || (actor != player->unk_664)) {
+        if ((!(player->stateFlags1 & 0x40)) || (actor != player->targetActorMaybe)) {
             OVERLAY_DISP = Gfx_SetupDL(OVERLAY_DISP, 0x39);
 
             for (spB0 = 0, spAC = targetCtx->unk_4C; spB0 < spB8; spB0++, spAC = (spAC + 1) % 3) {
@@ -564,7 +564,7 @@ void func_8002C7BC(TargetContext* targetCtx, Player* player, Actor* actorArg, Pl
 
     unkActor = NULL;
 
-    if ((player->unk_664 != NULL) && (player->unk_84B[player->unk_846] == 2)) {
+    if ((player->targetActorMaybe != NULL) && (player->unk_84B[player->unk_846] == 2)) {
         targetCtx->unk_94 = NULL;
     } else {
         func_80032AF0(play, &play->actorCtx, &unkActor, player);
@@ -1376,12 +1376,13 @@ f32 func_8002DCE4(Player* player) {
     }
 }
 
-s32 func_8002DD6C(Player* player) {
-    return player->stateFlags1 & 0x8;
+s32 PlayerStateItemInHand(Player* player) {
+    if (player->stateFlags1 & PLAYER_STATE1_ITEM_IN_HAND) return 1;
+    else return 0;
 }
 
 s32 func_8002DD78(Player* player) {
-    return func_8002DD6C(player) && player->unk_834;
+    return PlayerStateItemInHand(player) && player->unk_834;
 }
 
 s32 func_8002DDA8(PlayState* play) {
@@ -1844,7 +1845,7 @@ f32 func_8002EFC0(Actor* actor, Player* player, s16 arg2) {
     s16 yawTemp = (s16)(actor->yawTowardsPlayer - 0x8000) - arg2;
     s16 yawTempAbs = ABS(yawTemp);
 
-    if (player->unk_664 != NULL) {
+    if (player->targetActorMaybe != NULL) {
         if ((yawTempAbs > 0x4000) || (actor->flags & ACTOR_FLAG_NO_LOCKON)) {
             return FLT_MAX;
         } else {
@@ -1890,7 +1891,7 @@ s32 func_8002F0C8(Actor* actor, Player* player, s32 flag) {
         s16 abs_var = ABS(var);
         f32 dist;
 
-        if ((player->unk_664 == NULL) && (abs_var > 0x2AAA)) {
+        if ((player->targetActorMaybe == NULL) && (abs_var > 0x2AAA)) {
             dist = FLT_MAX;
         } else {
             dist = actor->xyzDistToPlayerSq;
@@ -2576,13 +2577,13 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                 actor->flags &= ~ACTOR_FLAG_PLAY_HIT_SFX;
 
                 if ((DECR(actor->freezeTimer) == 0) && (actor->flags & (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_ACTIVE))) {
-                    if (actor == player->unk_664) {
+                    if (actor == player->targetActorMaybe) {
                         actor->isTargeted = true;
                     } else {
                         actor->isTargeted = false;
                     }
 
-                    if ((actor->targetPriority != 0) && (player->unk_664 == NULL)) {
+                    if ((actor->targetPriority != 0) && (player->targetActorMaybe == NULL)) {
                         actor->targetPriority = 0;
                     }
 
@@ -2606,7 +2607,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
         }
     }
 
-    actor = player->unk_664;
+    actor = player->targetActorMaybe;
 
     if ((actor != NULL) && (actor->update == NULL)) {
         actor = NULL;
@@ -2680,19 +2681,32 @@ void Actor_Draw(PlayState* play, Actor* actor) {
 
     if (actor->colorFilterTimer != 0) {
         Color_RGBA8 color = { 0, 0, 0, 255 };
-
-        if (actor->colorFilterParams & 0x8000) {
-            color.r = color.g = color.b = ((actor->colorFilterParams & 0x1F00) >> 5) | 7;
-        } else if (actor->colorFilterParams & 0x4000) {
-            color.r = ((actor->colorFilterParams & 0x1F00) >> 5) | 7;
-        } else {
-            color.b = ((actor->colorFilterParams & 0x1F00) >> 5) | 7;
+        Color_RGBA8 colorTeal = { 0, 255, 128, 255 };
+        Color_RGBA8 colorLightBlue = { 127, 191, 255, 255 };
+        if (actor->colorFilterParams == 0x0001) { //Custom Teal
+            func_80026400(play, &colorTeal, actor->colorFilterTimer, actor->colorFilterTimer & 0xFF);
         }
+        else if (actor->colorFilterParams == 0x0002) { //Custom colorLightBlue
+            func_80026400(play, &colorLightBlue, actor->colorFilterTimer, actor->colorFilterTimer & 0xFF);
+        }
+        else {
 
-        if (actor->colorFilterParams & 0x2000) {
-            func_80026860(play, &color, actor->colorFilterTimer, actor->colorFilterParams & 0xFF);
-        } else {
-            func_80026400(play, &color, actor->colorFilterTimer, actor->colorFilterParams & 0xFF);
+            if (actor->colorFilterParams & 0x8000) {
+                color.r = color.g = color.b = ((actor->colorFilterParams & 0x1F00) >> 5) | 7;
+            }
+            else if (actor->colorFilterParams & 0x4000) {
+                color.r = ((actor->colorFilterParams & 0x1F00) >> 5) | 7;
+            }
+            else {
+                color.b = ((actor->colorFilterParams & 0x1F00) >> 5) | 7;
+            }
+
+            if (actor->colorFilterParams & 0x2000) {
+                func_80026860(play, &color, actor->colorFilterTimer, actor->colorFilterParams & 0xFF);
+            }
+            else {
+                func_80026400(play, &color, actor->colorFilterTimer, actor->colorFilterParams & 0xFF);
+            }
         }
     }
 
@@ -3305,7 +3319,7 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
         osSyncPrintf("アクタークラス削除 [%s]\n", dbEntry->name); // "Actor class deleted [%s]"
     }
 
-    if ((player != NULL) && (actor == player->unk_664)) {
+    if ((player != NULL) && (actor == player->targetActorMaybe)) {
         func_8008EDF0(player);
         Camera_ChangeMode(Play_GetCamera(play, Play_GetActiveCamId(play)), 0);
     }
@@ -3360,7 +3374,7 @@ void func_800328D4(PlayState* play, ActorContext* actorCtx, Player* player, u32 
     Vec3f sp70;
 
     actor = actorCtx->actorLists[actorCategory].head;
-    sp84 = player->unk_664;
+    sp84 = player->targetActorMaybe;
 
     while (actor != NULL) {
         if ((actor->update != NULL) && ((Player*)actor != player) && CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_TARGETABLE)) {
@@ -3710,8 +3724,8 @@ Actor* Actor_GetProjectileActor(PlayState* play, Actor* refActor, f32 radius) {
     Vec3f sp84;
 
     actor = play->actorCtx.actorLists[ACTORCAT_ITEMACTION].head;
-    while (actor != NULL) {
-        if (((actor->id != ACTOR_ARMS_HOOK) && (actor->id != ACTOR_EN_ARROW)) || (actor == refActor)) {
+    while (actor != NULL) {//CUSTOM
+        if (((actor->id != ACTOR_ARMS_HOOK) && (actor->id != ACTOR_EN_ARROW) && (actor->id != ACTOR_CUSTOM_PROJECTILE)) || (actor == refActor)) {
             actor = actor->next;
         } else {
             //! @bug The projectile actor gets unsafely casted to a hookshot to check its timer, even though

@@ -9,6 +9,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "objects/object_kusa/object_kusa.h"
+#include "overlays/actors/ovl_Lantern_Fire/z_lantern_fire.h"
 #include "vt.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_ALWAYS_THROWN)
@@ -35,10 +36,14 @@ void EnKusa_DoNothing(EnKusa* this, PlayState* play);
 void EnKusa_UprootedWaitRegrow(EnKusa* this, PlayState* play);
 void EnKusa_Regrow(EnKusa* this, PlayState* play);
 
+bool BurnOnLanternFire(EnKusa* this, ColliderCylinder cylinder, PlayState* play);
+
 static s16 rotSpeedXtarget = 0;
 static s16 rotSpeedX = 0;
 static s16 rotSpeedYtarget = 0;
 static s16 rotSpeedY = 0;
+
+int burnTime = 200;
 
 const ActorInit En_Kusa_InitVars = {
     ACTOR_EN_KUSA,
@@ -67,7 +72,7 @@ static ColliderCylinderInit sCylinderInit = {
     {
         ELEMTYPE_UNK0,
         { 0x00000000, 0x00, 0x00 },
-        { 0x4FC00758, 0x00, 0x00 },
+        { 0x4FC00778, 0x00, 0x00 }, //0x4FC00758 default plus 0x00000020 for arrow damage
         TOUCH_NONE,
         BUMP_ON,
         OCELEM_ON,
@@ -114,7 +119,8 @@ s32 EnKusa_SnapToFloor(EnKusa* this, PlayState* play, f32 yOffset) {
         this->actor.world.pos.y = floorY + yOffset;
         Math_Vec3f_Copy(&this->actor.home.pos, &this->actor.world.pos);
         return true;
-    } else {
+    }
+    else {
         osSyncPrintf(VT_COL(YELLOW, BLACK));
         // "Failure attaching to ground"
         osSyncPrintf("地面に付着失敗(%s %d)\n", __FILE__, __LINE__);
@@ -127,27 +133,28 @@ void EnKusa_DropCollectible(EnKusa* this, PlayState* play) {
     s16 dropParams;
 
     switch (this->actor.params & 3) {
-        case ENKUSA_TYPE_0:
-        case ENKUSA_TYPE_2:
-            dropParams = (this->actor.params >> 8) & 0xF;
+    case ENKUSA_TYPE_0:
+    case ENKUSA_TYPE_2:
+        dropParams = (this->actor.params >> 8) & 0xF;
 
-            if (dropParams >= 0xD) {
-                dropParams = 0;
-            }
-            Item_DropCollectibleRandom(play, NULL, &this->actor.world.pos, dropParams << 4);
-            break;
-        case ENKUSA_TYPE_1:
-            if (CVarGetInteger("gNoRandomDrops", 0)) {
-            }
-            else if (CVarGetInteger("gNoHeartDrops", 0)) {
-                Item_DropCollectible(play, &this->actor.world.pos, ITEM00_SEEDS);
-            }
-            else if (Rand_ZeroOne() < 0.5f) {
-                Item_DropCollectible(play, &this->actor.world.pos, ITEM00_SEEDS);
-            } else {
-                Item_DropCollectible(play, &this->actor.world.pos, ITEM00_HEART);
-            }
-            break;
+        if (dropParams >= 0xD) {
+            dropParams = 0;
+        }
+        Item_DropCollectibleRandom(play, NULL, &this->actor.world.pos, dropParams << 4);
+        break;
+    case ENKUSA_TYPE_1:
+        if (CVarGetInteger("gNoRandomDrops", 0)) {
+        }
+        else if (CVarGetInteger("gNoHeartDrops", 0)) {
+            Item_DropCollectible(play, &this->actor.world.pos, ITEM00_SEEDS);
+        }
+        else if (Rand_ZeroOne() < 0.5f) {
+            Item_DropCollectible(play, &this->actor.world.pos, ITEM00_SEEDS);
+        }
+        else {
+            Item_DropCollectible(play, &this->actor.world.pos, ITEM00_HEART);
+        }
+        break;
     }
 }
 
@@ -194,7 +201,7 @@ void EnKusa_SpawnFragments(EnKusa* this, PlayState* play) {
         scaleIndex = (s32)(Rand_ZeroOne() * 111.1f) & 7;
 
         EffectSsKakera_Spawn(play, &pos, &velocity, &pos, -100, 64, 40, 3, 0, sFragmentScales[scaleIndex], 0, 0,
-                             80, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_KEEP, gCuttableShrubStalkDL);
+            80, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_KEEP, gCuttableShrubStalkDL);
 
         pos.x = this->actor.world.pos.x + (dir->x * this->actor.scale.x * 40.0f);
         pos.y = this->actor.world.pos.y + (dir->y * this->actor.scale.y * 40.0f) + 10.0f;
@@ -207,7 +214,7 @@ void EnKusa_SpawnFragments(EnKusa* this, PlayState* play) {
         scaleIndex = (s32)(Rand_ZeroOne() * 111.1f) % 7;
 
         EffectSsKakera_Spawn(play, &pos, &velocity, &pos, -100, 64, 40, 3, 0, sFragmentScales[scaleIndex], 0, 0,
-                             80, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_KEEP, gCuttableShrubTipDL);
+            80, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_KEEP, gCuttableShrubTipDL);
     }
 }
 
@@ -216,7 +223,7 @@ void EnKusa_SpawnBugs(EnKusa* this, PlayState* play) {
 
     for (i = 0; i < 3; i++) {
         Actor* bug = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_INSECT, this->actor.world.pos.x,
-                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, Rand_ZeroOne() * 0xFFFF, 0, 1, true);
+            this->actor.world.pos.y, this->actor.world.pos.z, 0, Rand_ZeroOne() * 0xFFFF, 0, 1, true);
 
         if (bug == NULL) {
             break;
@@ -289,7 +296,8 @@ void EnKusa_WaitObject(EnKusa* this, PlayState* play) {
     if (Object_IsLoaded(&play->objectCtx, this->objBankIndex)) {
         if (this->actor.flags & ACTOR_FLAG_ENKUSA_CUT) {
             EnKusa_SetupCut(this);
-        } else {
+        }
+        else {
             EnKusa_SetupMain(this);
         }
 
@@ -310,7 +318,11 @@ void EnKusa_Main(EnKusa* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         EnKusa_SetupLiftedUp(this);
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_PL_PULL_UP_PLANT);
-    } else if (this->collider.base.acFlags & AC_HIT && gPlayState->csCtx.state == 0) {
+    }
+    else if (BurnOnLanternFire(this, this->collider, play)) {
+
+    }
+    else if (this->collider.base.acFlags & AC_HIT && gPlayState->csCtx.state == 0) {
         this->collider.base.acFlags &= ~AC_HIT;
         EnKusa_SpawnFragments(this, play);
         EnKusa_DropCollectible(this, play);
@@ -328,7 +340,8 @@ void EnKusa_Main(EnKusa* this, PlayState* play) {
 
         EnKusa_SetupCut(this);
         this->actor.flags |= ACTOR_FLAG_ENKUSA_CUT;
-    } else {
+    }
+    else {
         if (!(this->collider.base.ocFlags1 & OC1_TYPE_PLAYER) && (this->actor.xzDistToPlayer > 12.0f)) {
             this->collider.base.ocFlags1 |= OC1_TYPE_PLAYER;
         }
@@ -389,14 +402,14 @@ void EnKusa_Fall(EnKusa* this, PlayState* play) {
         EnKusa_SpawnFragments(this, play);
         EnKusa_DropCollectible(this, play);
         switch (this->actor.params & 3) {
-            case ENKUSA_TYPE_0:
-            case ENKUSA_TYPE_2:
-                Actor_Kill(&this->actor);
-                break;
+        case ENKUSA_TYPE_0:
+        case ENKUSA_TYPE_2:
+            Actor_Kill(&this->actor);
+            break;
 
-            case ENKUSA_TYPE_1:
-                EnKusa_SetupUprootedWaitRegrow(this);
-                break;
+        case ENKUSA_TYPE_1:
+            EnKusa_SetupUprootedWaitRegrow(this);
+            break;
         }
         return;
     }
@@ -432,12 +445,12 @@ void EnKusa_Fall(EnKusa* this, PlayState* play) {
 
 void EnKusa_SetupCut(EnKusa* this) {
     switch (this->actor.params & 3) {
-        case ENKUSA_TYPE_2:
-            EnKusa_SetupAction(this, EnKusa_DoNothing);
-            break;
-        case ENKUSA_TYPE_1:
-            EnKusa_SetupAction(this, EnKusa_CutWaitRegrow);
-            break;
+    case ENKUSA_TYPE_2:
+        EnKusa_SetupAction(this, EnKusa_DoNothing);
+        break;
+    case ENKUSA_TYPE_1:
+        EnKusa_SetupAction(this, EnKusa_CutWaitRegrow);
+        break;
     }
 }
 
@@ -499,7 +512,8 @@ void EnKusa_Update(Actor* thisx, PlayState* play) {
 
     if (this->actor.flags & ACTOR_FLAG_ENKUSA_CUT) {
         this->actor.shape.yOffset = -6.25f;
-    } else {
+    }
+    else {
         this->actor.shape.yOffset = 0.0f;
     }
 }
@@ -510,7 +524,36 @@ void EnKusa_Draw(Actor* thisx, PlayState* play) {
 
     if (this->actor.flags & ACTOR_FLAG_ENKUSA_CUT) {
         Gfx_DrawDListOpa(play, object_kusa_DL_0002E0);
-    } else {
+    }
+    else {
         Gfx_DrawDListOpa(play, dLists[thisx->params & 3]);
     }
+}
+
+bool BurnOnLanternFire(EnKusa* this, ColliderCylinder cylinder, PlayState* play) {
+    if (cylinder.base.acFlags & AC_HIT) {
+        cylinder.base.acFlags &= ~AC_HIT;
+        if ((cylinder.base.ac != NULL) && (cylinder.base.ac->id == ACTOR_LANTERN_FIRE)) {
+            if (cylinder.base.ac->params >= 1) { // is Blue Fire
+                if (this->isBurning == false) {
+                    this->isBurning = true;
+                    this->fire = (LanternFire*)cylinder.base.ac;
+                    this->fire->deathTimer = burnTime;
+                    Audio_PlayActorSound2(&this->actor, NA_SE_EV_FLAME_IGNITION);
+                }
+                else {
+                    if (this->fire->deathTimer == 0) {
+                        return 0;
+                    }
+                    else {
+                        float scale = 0.1f + 0.3f * ((float)this->fire->deathTimer / (float)burnTime);
+                        Actor_SetScale(&this->actor, scale);
+                    }
+                }
+                return 1; //is hit by Blue Fire
+            }
+        }
+        return 0;
+    }
+    return 0;
 }

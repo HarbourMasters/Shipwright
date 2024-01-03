@@ -459,5 +459,14 @@ static const ALIGN_ASSET(2) char gLinkChildVtx_01F2B8[] = dgLinkChildVtx_01F2B8;
 #define dgLinkChildVtx_01FA28 "__OTR__objects/object_link_child/gLinkChildVtx_01FA28"
 static const ALIGN_ASSET(2) char gLinkChildVtx_01FA28[] = dgLinkChildVtx_01FA28;
 
+//CUSTOM MASK
+#define dgFoxMaskDL "__OTR__objects/gameplay_field_keep/gFoxMaskDL"
+static const ALIGN_ASSET(2) char gFoxMaskDL[] = dgFoxMaskDL;
+
+#define dgFoxTailDL "__OTR__objects/gameplay_field_keep/gFoxTailDL"
+static const ALIGN_ASSET(2) char gFoxTailDL[] = dgFoxTailDL;
+
+
+
 
 #endif // OBJECTS_OBJECT_LINK_CHILD_H

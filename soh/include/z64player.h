@@ -61,6 +61,9 @@ typedef enum {
     /* 0x06 */ PLAYER_MASK_ZORA,
     /* 0x07 */ PLAYER_MASK_GERUDO,
     /* 0x08 */ PLAYER_MASK_TRUTH,
+    //CUSTOM
+               PLAYER_MASK_FOX,
+
     /* 0x09 */ PLAYER_MASK_MAX
 } PlayerMask;
 
@@ -142,6 +145,14 @@ typedef enum {
     /* 0x49 */ PLAYER_IA_BOOTS_KOKIRI,
     /* 0x4A */ PLAYER_IA_BOOTS_IRON,
     /* 0x4B */ PLAYER_IA_BOOTS_HOVER,
+    //CUSTOM
+               PLAYER_IA_JUMP,
+               PLAYER_IA_GLIDER,
+               PLAYER_IA_LANTERN,
+               PLAYER_IA_ULTRAHAND,
+               PLAYER_IA_ARMCANNON,
+               PLAYER_IA_MASK_FOX,
+               PLAYER_IA_CUSTOM_MAX,
     /* 0x4C */ PLAYER_IA_MAX
 } PlayerItemAction;
 
@@ -249,6 +260,7 @@ typedef enum {
     /* 0x0C */ PLAYER_MODELGROUP_OCARINA, // ocarina
     /* 0x0D */ PLAYER_MODELGROUP_OOT, // ocarina of time
     /* 0x0E */ PLAYER_MODELGROUP_BOTTLE, // bottles (drawn separately)
+    /* 0x0E */ PLAYER_MODELGROUP_LANTERN, // bottles (drawn separately)
     /* 0x0F */ PLAYER_MODELGROUP_15, // "last used"
     /* 0x10 */ PLAYER_MODELGROUP_MAX
 } PlayerModelGroup;
@@ -272,6 +284,8 @@ typedef enum {
     /* 0x05 */ PLAYER_MODELTYPE_LH_HAMMER, // holding hammer (child: empty hand)
     /* 0x06 */ PLAYER_MODELTYPE_LH_BOOMERANG, // holding boomerang (adult: empty hand)
     /* 0x07 */ PLAYER_MODELTYPE_LH_BOTTLE, // holding bottle (bottle drawn separately)
+    //CUSTOM
+    /* 0x07 */ PLAYER_MODELTYPE_LH_LANTERN, // holding bottle (bottle drawn separately)
     // right hand
     /* 0x08 */ PLAYER_MODELTYPE_RH_OPEN, // empty open hand
     /* 0x09 */ PLAYER_MODELTYPE_RH_CLOSED, // empty closed hand
@@ -281,6 +295,8 @@ typedef enum {
     /* 0x0D */ PLAYER_MODELTYPE_RH_OCARINA, // holding ocarina (child: fairy ocarina, adult: OoT)
     /* 0x0E */ PLAYER_MODELTYPE_RH_OOT, // holding OoT
     /* 0x0F */ PLAYER_MODELTYPE_RH_HOOKSHOT, // holding hookshot (child: empty hand)
+    //CUSTOM
+    /* 0x07 */ PLAYER_MODELTYPE_RH_CUSTOMPROJECTILE, // holding bottle (bottle drawn separately)
     // sheath
     /* 0x10 */ PLAYER_MODELTYPE_SHEATH_16, // sheathed kokiri/master sword?
     /* 0x11 */ PLAYER_MODELTYPE_SHEATH_17, // empty sheath?
@@ -419,18 +435,18 @@ typedef struct {
 } PendingFlag; // size = 0x06
 // #endregion
 
-#define PLAYER_STATE1_LOADING (1 << 0) //Transitioning to a new scene
-#define PLAYER_STATE1_SWINGING_BOTTLE (1 << 1)
-#define PLAYER_STATE1_HOOKSHOT_FALLING (1 << 2)
-#define PLAYER_STATE1_ITEM_IN_HAND (1 << 3)
-#define PLAYER_STATE1_ENEMY_TARGET (1 << 4)
-#define PLAYER_STATE1_INPUT_DISABLED (1 << 5)
-#define PLAYER_STATE1_TEXT_ON_SCREEN (1 << 6)
-#define PLAYER_STATE1_DEAD (1 << 7) 
-#define PLAYER_STATE1_START_PUTAWAY (1 << 8)
-#define PLAYER_STATE1_READY_TO_FIRE (1 << 9)
-#define PLAYER_STATE1_GETTING_ITEM (1 << 10)
-#define PLAYER_STATE1_ITEM_OVER_HEAD (1 << 11)
+#define PLAYER_STATE1_LOADING (1 << 0) //Transitioning to a new scene //0x0001
+#define PLAYER_STATE1_SWINGING_BOTTLE (1 << 1) //0x0002
+#define PLAYER_STATE1_HOOKSHOT_FALLING (1 << 2)//0x0004
+#define PLAYER_STATE1_ITEM_IN_HAND (1 << 3) //0x0008
+#define PLAYER_STATE1_ENEMY_TARGET (1 << 4) //0x0010
+#define PLAYER_STATE1_INPUT_DISABLED (1 << 5) //0x0020
+#define PLAYER_STATE1_TEXT_ON_SCREEN (1 << 6) //0x0040
+#define PLAYER_STATE1_DEAD (1 << 7)           //0x0080 
+#define PLAYER_STATE1_START_PUTAWAY (1 << 8)  //0x0100
+#define PLAYER_STATE1_READY_TO_FIRE (1 << 9)  //0x0200
+#define PLAYER_STATE1_GETTING_ITEM (1 << 10)  //0x0400
+#define PLAYER_STATE1_ITEM_OVER_HEAD (1 << 11) //0x0800
 #define PLAYER_STATE1_CHARGING_SPIN_ATTACK (1 << 12)
 #define PLAYER_STATE1_HANGING_OFF_LEDGE (1 << 13)
 #define PLAYER_STATE1_CLIMBING_LEDGE (1 << 14) 
@@ -493,6 +509,16 @@ typedef struct {
 #define PLAYER_STATE3_FORCE_PULL_OCARINA (1 << 5) 
 #define PLAYER_STATE3_RESTORE_NAYRUS_LOVE (1 << 6) // Set by ocarina effects actors when destroyed to signal Nayru's Love may be restored (see `ACTOROVL_ALLOC_ABSOLUTE`)
 #define PLAYER_STATE3_HOOKSHOT_TRAVELLING (1 << 7) //Travelling to target
+
+#define PLAYER_STATE4_0 (1 << 0)
+#define PLAYER_STATE4_1FIRST_PERSON_AND_MORE (1 << 1)
+#define PLAYER_STATE4_2 (1 << 2)
+#define PLAYER_STATE4_3 (1 << 3)
+#define PLAYER_STATE4_4FOCUS_HEAD_ROTATION_Y (1 << 4)
+#define PLAYER_STATE4_5 (1 << 5) 
+#define PLAYER_STATE4_6 (1 << 6)
+#define PLAYER_STATE4_7 (1 << 7)
+#define PLAYER_STATE4_8READY_TO_FIRE (1 << 8)
 
 typedef void (*PlayerFunc674)(struct Player*, struct PlayState*);
 typedef s32 (*PlayerFunc82C)(struct Player*, struct PlayState*);
@@ -563,7 +589,7 @@ typedef struct Player {
     /* 0x0498 */ ColliderCylinder cylinder;
     /* 0x04E4 */ ColliderQuad meleeWeaponQuads[2];
     /* 0x05E4 */ ColliderQuad shieldQuad;
-    /* 0x0664 */ Actor*     unk_664;
+    /* 0x0664 */ Actor*     targetActorMaybe; //unk_664;;
     /* 0x0668 */ char       unk_668[0x004];
     /* 0x066C */ s32        unk_66C;
     /* 0x0670 */ s32        meleeWeaponEffectIndex;
@@ -584,16 +610,16 @@ typedef struct Player {
     /* 0x06A4 */ f32        unk_6A4;
     /* 0x06A8 */ Actor*     unk_6A8;
     /* 0x06AC */ s8         unk_6AC;
-    /* 0x06AD */ u8         unk_6AD;
-    /* 0x06AE */ u16        unk_6AE;
+    /* 0x06AD */ u8         unk_6AD; //camera position depending on item action 4 is ocarina and bottle dumping
+    /* 0x06AE */ u16        unk_6AE; //PLAYER_STATE4_FLAGS
     /* 0x06B0 */ s16        unk_6B0;
     /* 0x06B2 */ char       unk_6B4[0x004];
-    /* 0x06B6 */ s16        unk_6B6;
-    /* 0x06B8 */ s16        unk_6B8;
-    /* 0x06BA */ s16        unk_6BA;
-    /* 0x06BC */ s16        unk_6BC;
+    /* 0x06B6 */ s16        runningHeadForwardRotation;
+    /* 0x06B8 */ s16        focusHeadYRotation;
+    /* 0x06BA */ s16        runningHeadLeanRotation;
+    /* 0x06BC */ s16        runningTorsoForwardRotation;
     /* 0x06BE */ s16        unk_6BE;
-    /* 0x06C0 */ s16        unk_6C0;
+    /* 0x06C0 */ s16        readyToFireTorsoRotZ;
     /* 0x06C2 */ s16        unk_6C2;
     /* 0x06C4 */ f32        unk_6C4;
     /* 0x06C8 */ SkelAnime  skelAnime2;
@@ -601,9 +627,9 @@ typedef struct Player {
     /* 0x079C */ Vec3s      morphTable2[PLAYER_LIMB_BUF_COUNT];
     /* 0x082C */ PlayerFunc82C func_82C;
     /* 0x0830 */ f32        unk_830;
-    /* 0x0834 */ s16        unk_834;
-    /* 0x0836 */ s8         unk_836;
-    /* 0x0837 */ u8         unk_837;
+    /* 0x0834 */ s16        unk_834; //some timer for bow
+    /* 0x0836 */ s8         unk_836; // equipping bow timer?
+    /* 0x0837 */ u8         unk_837; //putaway timer?
     /* 0x0838 */ f32        linearVelocity;
     /* 0x083C */ s16        currentYaw;
     /* 0x083E */ s16        targetYaw;
@@ -637,7 +663,7 @@ typedef struct Player {
     /* 0x088D */ u8         unk_88D;
     /* 0x088E */ u8         unk_88E;
     /* 0x088F */ u8         unk_88F;
-    /* 0x0890 */ u8         unk_890;
+    /* 0x0890 */ u8         damageRunTimer;
     /* 0x0891 */ u8         shockTimer;
     /* 0x0892 */ u8         unk_892;
     /* 0x0893 */ u8         hoverBootsTimer;
@@ -684,6 +710,12 @@ typedef struct Player {
     // #endregion
     u8 ivanFloating;
     u8 ivanDamageMultiplier;
+
+    //CUSTOM
+    bool thirdPersonAiming;
+    Actor* customProjectile;
+    bool hasReflector;
+    ColliderCylinder shieldCylinder;
 } Player; // size = 0xA94
 
 #endif

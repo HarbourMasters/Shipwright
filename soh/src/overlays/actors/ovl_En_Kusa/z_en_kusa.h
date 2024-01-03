@@ -1,6 +1,7 @@
 #ifndef Z_EN_KUSA_H
 #define Z_EN_KUSA_H
 
+#include "overlays/actors/ovl_Lantern_Fire/z_lantern_fire.h"
 #include <libultraship/libultra.h>
 #include "global.h"
 
@@ -20,6 +21,8 @@ typedef struct EnKusa {
     /* 0x0150 */ ColliderCylinder collider;
     /* 0x019C */ s16 timer;
     /* 0x019E */ s8 objBankIndex;
+    bool isBurning;
+    LanternFire* fire;
 } EnKusa; // size = 0x01A0
 
 #endif

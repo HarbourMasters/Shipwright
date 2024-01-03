@@ -1156,7 +1156,7 @@ s16 OnePointCutscene_Init(PlayState* play, s16 csId, s16 timer, Actor* actor, s1
     s16 temp2;
     s16 csCamIdx;
     Camera* csCam;
-
+    GET_PLAYER(play)->stateFlags1 &= ~(PLAYER_STATE1_TARGETING);
     if (parentCamIdx == SUBCAM_ACTIVE) {
         parentCamIdx = play->activeCamera;
     }

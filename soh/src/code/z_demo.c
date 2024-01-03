@@ -137,6 +137,7 @@ void func_8006450C(PlayState* play, CutsceneContext* csCtx) {
 void func_80064520(PlayState* play, CutsceneContext* csCtx) {
     csCtx->state = CS_STATE_SKIPPABLE_INIT;
     csCtx->linkAction = NULL;
+    GET_PLAYER(play)->stateFlags1 &= ~(PLAYER_STATE1_TARGETING);
 }
 
 void func_80064534(PlayState* play, CutsceneContext* csCtx) {

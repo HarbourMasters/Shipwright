@@ -2209,9 +2209,37 @@ void KaleidoScope_UpdateNamePanel(PlayState* play) {
         (pauseCtx->pageIndex == PAUSE_ITEM && gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] == ITEM_NONE))) {
             pauseCtx->namedItem = PAUSE_ITEM_NONE;
         }
-
+        //CUSTOM
         if (pauseCtx->namedItem != PAUSE_ITEM_NONE) {
-            if ((pauseCtx->pageIndex == PAUSE_MAP) && !sInDungeonScene) {
+            if (pauseCtx->namedItem == ITEM_NONE) {
+                const char* textureName = gBlankItemNameENGTex;
+                memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
+            }
+            else if (pauseCtx->namedItem == ITEM_JUMP) {
+                const char* textureName = gSSBJumpItemNameENGTex;
+                memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
+            }
+            else if (pauseCtx->namedItem == ITEM_GLIDER) {
+                const char* textureName = gGliderItemNameENGTex;
+                memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
+            }
+            else if (pauseCtx->namedItem == ITEM_LANTERN) {
+                const char* textureName = gLanternItemNameENGTex;
+                memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
+            }
+            else if (pauseCtx->namedItem == ITEM_ULTRAHAND) {
+                const char* textureName = gUltrahandItemNameENGTex;
+                memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
+            }
+            else if (pauseCtx->namedItem == ITEM_ARMCANNON) {
+                const char* textureName = gArmcannonItemNameENGTex;
+                memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
+            }
+            else if (pauseCtx->namedItem == ITEM_ARMCANNON) {
+                const char* textureName = gMaskFoxItemNameENGTex;
+                memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
+            }
+            else if ((pauseCtx->pageIndex == PAUSE_MAP) && !sInDungeonScene) {
                 if (gSaveContext.language) {
                     sp2A += 12;
                 }

@@ -186,5 +186,30 @@ static const ALIGN_ASSET(2) char gFieldUnusedFishSkelLimbsLimb_0088CCDL_006458[]
 #define dgFieldUnusedFishSkelLimbsLimb_0088D8DL_0061F8 "__OTR__objects/gameplay_field_keep/gFieldUnusedFishSkelLimbsLimb_0088D8DL_0061F8"
 static const ALIGN_ASSET(2) char gFieldUnusedFishSkelLimbsLimb_0088D8DL_0061F8[] = dgFieldUnusedFishSkelLimbsLimb_0088D8DL_0061F8;
 
+//CUSTOM
+#define dgGliderDL "__OTR__objects/gameplay_field_keep/gGliderDL" 
+static const ALIGN_ASSET(2) char gGliderDL[] = dgGliderDL;
+
+#define dgLanternDL "__OTR__objects/gameplay_field_keep/gLanternDL"
+static const ALIGN_ASSET(2) char gLanternDL[] = dgLanternDL;
+
+#define dgUltrahandDL "__OTR__objects/gameplay_field_keep/gUltrahandDL" //the arm model
+static const ALIGN_ASSET(2) char gUltrahandDL[] = dgUltrahandDL;
+
+#define dgUltrahandProjectileDL "__OTR__objects/gameplay_field_keep/gUltrahandProjectileDL" //the ball that shoots out
+static const ALIGN_ASSET(2) char gUltrahandProjectileDL[] = dgUltrahandProjectileDL;
+
+#define dgArmcannonChildDL "__OTR__objects/gameplay_field_keep/gArmcannonChildDL"
+static const ALIGN_ASSET(2) char gArmcannonChildDL[] = dgArmcannonChildDL;
+
+#define dgArmcannonAdultDL "__OTR__objects/gameplay_field_keep/gArmcannonAdultDL"
+static const ALIGN_ASSET(2) char gArmcannonAdultDL[] = dgArmcannonAdultDL;
+
+#define dgArmcannonProjectileDL "__OTR__objects/gameplay_field_keep/gArmcannonProjectileDL"
+static const ALIGN_ASSET(2) char gArmcannonProjectileDL[] = dgArmcannonProjectileDL;
+
+#define dgArmcannonCrownDL "__OTR__objects/gameplay_field_keep/gArmcannonCrownDL"
+static const ALIGN_ASSET(2) char gArmcannonCrownDL[] = dgArmcannonCrownDL;
+
 
 #endif // OBJECTS_GAMEPLAY_FIELD_KEEP_H

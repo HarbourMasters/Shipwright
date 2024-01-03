@@ -135,7 +135,7 @@ static RestrictionFlags sRestrictionFlags[] = {
     { SCENE_SPIRIT_TEMPLE_BOSS, 0x00, 0x45, 0x50 },
     { SCENE_GANONS_TOWER, 0x00, 0x00, 0x00 },
     { SCENE_GANONDORF_BOSS, 0x00, 0x45, 0x50 },
-    { SCENE_ICE_CAVERN, 0x00, 0x00, 0xC0 },
+    { SCENE_ICE_CAVERN, 0x00, 0x00, 0x10 }, //this? { SCENE_ICE_CAVERN, 0x00, 0x00, 0xC0 }
     { SCENE_WINDMILL_AND_DAMPES_GRAVE, 0x00, 0x03, 0x14 },
     { SCENE_INSIDE_GANONS_CASTLE, 0x00, 0x03, 0x10 },
     { SCENE_GANON_BOSS, 0x00, 0x45, 0x50 },
@@ -3567,6 +3567,36 @@ void Interface_DrawLineupTick(PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+void Interface_DrawCrosshair(PlayState* play) {
+    InterfaceContext* interfaceCtx = &play->interfaceCtx;
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_39Overlay(play->state.gfxCtx);
+
+    gDPSetEnvColor(OVERLAY_DISP++, 255, 255, 255, 255);
+    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
+
+    s16 width = 32;
+    s16 height = 32;
+    int rotX = GET_PLAYER(play)->runningTorsoForwardRotation;
+    if (rotX <= 0) rotX = 0;
+    float offset = Math_SinF(rotX / 8000.0f);
+    s16 x = (SCREEN_WIDTH / 2) - 4 + offset * 40.0f;
+    s16 y = (SCREEN_HEIGHT / 2) - 4 + offset * 40.0f;
+    int itemAction = GET_PLAYER(play)->heldItemAction;
+    if ((itemAction >= PLAYER_IA_BOW) & (itemAction <= PLAYER_IA_BOW_0E)) {
+        y -= 4;
+    }
+
+
+    OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gCrosshairTex, width, height, x, y, width / 2, height / 2, 2 << 10, 2 << 10);
+
+    gDPPipeSync(OVERLAY_DISP++);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
 void Interface_DrawMagicBar(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     s16 magicDrop = R_MAGIC_BAR_LARGE_Y-R_MAGIC_BAR_SMALL_Y+2;
@@ -3807,7 +3837,7 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
         Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[12], -floorf(halfBarWidth) + endTexWidth, (-texHeight / 2) + 3,
                                         healthBarFill, 7, 0);
 
-        if (((!(player->stateFlags1 & 0x40)) || (actor != player->unk_664)) && targetCtx->unk_44 < 500.0f) {
+        if (((!(player->stateFlags1 & 0x40)) || (actor != player->targetActorMaybe)) && targetCtx->unk_44 < 500.0f) {
             f32 slideInOffsetY = 0;
 
             // Slide in the health bar from edge of the screen (mimic the Z-Target triangles fly in)
@@ -5319,6 +5349,7 @@ void Interface_Draw(PlayState* play) {
         if (CVarGetInteger("gDrawLineupTick", 0)) {
             Interface_DrawLineupTick(play);
         }
+        if (GET_PLAYER(play)->thirdPersonAiming) Interface_DrawCrosshair(play);
 
         if (fullUi || gSaveContext.magicState > MAGIC_STATE_IDLE) {
             Interface_DrawMagicBar(play);

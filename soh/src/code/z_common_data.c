@@ -16,4 +16,12 @@ void SaveContext_Init(void) {
     gSaveContext.dogIsLost = true;
     gSaveContext.nextTransitionType = 0xFF;
     gSaveContext.unk_13EE = 50;
+    //CUSTOM  - DONT AUTOMATE UNLESS USING ALL CUSTOM ITEMS IN CODE
+    gSaveContext.inventory.items2[0] = ITEM_JUMP;
+    gSaveContext.inventory.items2[1] = ITEM_GLIDER;
+    gSaveContext.inventory.items2[2] = ITEM_LANTERN;
+    gSaveContext.inventory.items2[3] = ITEM_ULTRAHAND;
+    gSaveContext.inventory.items2[4] = ITEM_ARMCANNON;
+    gSaveContext.inventory.items2[5] = ITEM_MASK_FOX;
+    for (int i = 6; i < 24; i++) gSaveContext.inventory.items2[i] = ITEM_NONE;
 }

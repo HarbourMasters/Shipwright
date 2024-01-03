@@ -146,6 +146,14 @@ typedef enum {
     /* 0x1B */ SLOT_BOOTS_KOKIRI,
     /* 0x1C */ SLOT_BOOTS_IRON,
     /* 0x1D */ SLOT_BOOTS_HOVER,
+    //CUSTOM
+    SLOT_JUMP = 0xA0, //160
+    SLOT_GLIDER = 0xA1, //161
+    SLOT_LANTERN = 0xA2, //162
+    SLOT_ULTRAHAND = 0xA3, //163
+    SLOT_ARMCANNON = 0xA4, //163
+    SLOT_MASK_FOX = 0xA5,
+    SLOT_CUSTOM_MAX,
     /* 0xFF */ SLOT_NONE = 0xFF
 } InventorySlot;
 
@@ -306,6 +314,14 @@ typedef enum {
     /* 0x99 */ ITEM_STICK_UPGRADE_30,
     /* 0x9A */ ITEM_NUT_UPGRADE_30,
     /* 0x9B */ ITEM_NUT_UPGRADE_40,
+        //CUSTOM
+               ITEM_JUMP = 0xA0, //160
+               ITEM_GLIDER = 0xA1, //161
+               ITEM_LANTERN = 0xA2, //161
+               ITEM_ULTRAHAND = 0xA3,
+               ITEM_ARMCANNON = 0xA4,
+               ITEM_MASK_FOX = 0xA5,
+               ITEM_CUSTOM_MAX,
     /* 0xFC */ ITEM_LAST_USED = 0xFC,
     /* 0xFE */ ITEM_NONE_FE = 0xFE,
     /* 0xFF */ ITEM_NONE = 0xFF
@@ -442,6 +458,14 @@ typedef enum {
     /* 0x7B */ GI_BULLET_BAG_50,
     /* 0x7C */ GI_ICE_TRAP, // freezes link when opened from a chest
     /* 0x7D */ GI_TEXT_0,   // no model appears over Link, shows text id 0 (pocket egg)
+        //CUSTOM
+               GI_JUMP = 0xA0, //160
+               GI_GLIDER = 0xA1, //161
+               GI_LANTERN = 0xA2, //162
+               GI_ULTRAHAND = 0xA3, //163
+               GI_ARMCANNON = 0xA4, //164
+               GI_MASK_FOX = 0xA5,
+               GI_CUSTOM_MAX, 
     /* 0x84 */ GI_MAX
 } GetItemID;
 

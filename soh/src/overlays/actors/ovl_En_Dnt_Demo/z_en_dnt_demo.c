@@ -206,6 +206,8 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
                 case PLAYER_MASK_GORON:
                 case PLAYER_MASK_ZORA:
                 case PLAYER_MASK_GERUDO:
+                    //CUSTOM
+                case PLAYER_MASK_FOX:
                     rand9 = Rand_ZeroFloat(8.99f);
                     maskIdx = Player_GetMask(play);
                     maskIdx--;

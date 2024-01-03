@@ -1110,4 +1110,30 @@ static const ALIGN_ASSET(2) char gUnusedBossKeyItemName21JPNTex[] = dgUnusedBoss
 #define dgBiggoronsSwordItemNameFRATex "__OTR__textures/item_name_static/gBiggoronsSwordItemNameFRATex"
 static const ALIGN_ASSET(2) char gBiggoronsSwordItemNameFRATex[] = dgBiggoronsSwordItemNameFRATex;
 
+//CUSTOM
+#define dgBlankItemNameENGTex "__OTR__textures/item_name_static/gBlankItemNameENGTex"
+static const ALIGN_ASSET(2) char gBlankItemNameENGTex[] = dgBlankItemNameENGTex;
+
+#define dgSSBJumpItemNameENGTex "__OTR__textures/item_name_static/gSSBJumpItemNameENGTex"
+static const ALIGN_ASSET(2) char gSSBJumpItemNameENGTex[] = dgSSBJumpItemNameENGTex;
+
+#define dgGliderItemNameENGTex "__OTR__textures/item_name_static/gGliderItemNameENGTex"
+static const ALIGN_ASSET(2) char gGliderItemNameENGTex[] = dgGliderItemNameENGTex;
+
+#define dgLanternItemNameENGTex "__OTR__textures/item_name_static/gLanternItemNameENGTex"
+static const ALIGN_ASSET(2) char gLanternItemNameENGTex[] = dgLanternItemNameENGTex;
+
+#define dgStasisItemNameENGTex "__OTR__textures/item_name_static/gStasisItemNameENGTex"
+static const ALIGN_ASSET(2) char gStasisItemNameENGTex[] = dgStasisItemNameENGTex;
+
+#define dgUltrahandItemNameENGTex "__OTR__textures/item_name_static/gUltrahandItemNameENGTex"
+static const ALIGN_ASSET(2) char gUltrahandItemNameENGTex[] = dgUltrahandItemNameENGTex;
+
+#define dgArmcannonItemNameENGTex "__OTR__textures/item_name_static/gArmcannonItemNameENGTex"
+static const ALIGN_ASSET(2) char gArmcannonItemNameENGTex[] = dgArmcannonItemNameENGTex;
+
+#define dgMaskFoxItemNameENGTex "__OTR__textures/item_name_static/gArmcannonItemNameENGTex"
+static const ALIGN_ASSET(2) char gMaskFoxItemNameENGTex[] = dgMaskFoxItemNameENGTex;
+
+
 #endif // TEXTURES_ITEM_NAME_STATIC_H

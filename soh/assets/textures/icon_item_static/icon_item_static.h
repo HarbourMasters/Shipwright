@@ -561,4 +561,27 @@ static const ALIGN_ASSET(2) char gPromptCursorLeftDL[] = dgPromptCursorLeftDL;
 #define dgPromptCursorRightDL "__OTR__textures/icon_item_static/gPromptCursorRightDL"
 static const ALIGN_ASSET(2) char gPromptCursorRightDL[] = dgPromptCursorRightDL;
 
+//CUSTOM
+#define dgJumpIconTex "__OTR__textures/icon_item_static/gJumpIconTex"
+static const ALIGN_ASSET(2) char gJumpIconTex[] = dgJumpIconTex;
+
+#define dgGliderIconTex "__OTR__textures/icon_item_static/gGliderIconTex"
+static const ALIGN_ASSET(2) char gGliderIconTex[] = dgGliderIconTex;
+
+#define dgLanternIconTex "__OTR__textures/icon_item_static/gLanternIconTex"
+static const ALIGN_ASSET(2) char gLanternIconTex[] = dgLanternIconTex;
+
+#define dgStasisIconTex "__OTR__textures/icon_item_static/gStasisIconTex"
+static const ALIGN_ASSET(2) char gStasisIconTex[] = dgStasisIconTex;
+
+#define dgUltrahandIconTex "__OTR__textures/icon_item_static/gUltrahandIconTex"
+static const ALIGN_ASSET(2) char gUltrahandIconTex[] = dgUltrahandIconTex;
+
+#define dgArmcannonIconTex "__OTR__textures/icon_item_static/gArmcannonIconTex"
+static const ALIGN_ASSET(2) char gArmcannonIconTex[] = dgArmcannonIconTex;
+
+#define dgMaskFoxIconTex "__OTR__textures/icon_item_static/gFoxMaskIconTex"
+static const ALIGN_ASSET(2) char gMaskFoxIconTex[] = dgMaskFoxIconTex;
+
+
 #endif // TEXTURES_ICON_ITEM_STATIC_H

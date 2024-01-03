@@ -409,3 +409,8 @@
 /* 0x018F */ DEFINE_OBJECT(object_ouke_haka, OBJECT_OUKE_HAKA)
 /* 0x0190 */ DEFINE_OBJECT(object_timeblock, OBJECT_TIMEBLOCK)
 /* 0x0191 */ DEFINE_OBJECT(object_zl4, OBJECT_ZL4)
+
+//CUSTOM
+/* 0x0013 */ DEFINE_OBJECT(object_glider, OBJECT_GLIDER)
+/* 0x0013 */ DEFINE_OBJECT(object_lantern, OBJECT_LANTERN)
+/* 0x0134 */ DEFINE_OBJECT(object_gi_fox_mask, OBJECT_GI_FOX_MASK)

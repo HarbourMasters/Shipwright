@@ -124,7 +124,6 @@ void ObjBombiwa_Break(ObjBombiwa* this, PlayState* play) {
 void ObjBombiwa_Update(Actor* thisx, PlayState* play) {
     ObjBombiwa* this = (ObjBombiwa*)thisx;
     s32 pad;
-
     if ((func_80033684(play, &this->actor) != NULL) ||
         ((this->collider.base.acFlags & AC_HIT) && (this->collider.info.acHitInfo->toucher.dmgFlags & 0x40000040))) {
         ObjBombiwa_Break(this, play);
@@ -141,6 +140,7 @@ void ObjBombiwa_Update(Actor* thisx, PlayState* play) {
             CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
         }
     }
+    Collider_UpdateCylinder(&this->actor, &this->collider); //ADDED THIS TO MAKE COLLIDER MOVE WITH WORLD POSITION
 }
 
 void ObjBombiwa_Draw(Actor* thisx, PlayState* play) {

@@ -175,6 +175,7 @@ void EnTorch2_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyQuad(play, &this->meleeWeaponQuads[0]);
     Collider_DestroyQuad(play, &this->meleeWeaponQuads[1]);
     Collider_DestroyQuad(play, &this->shieldQuad);
+    Collider_DestroyCylinder(play, &this->shieldCylinder);
 }
 
 Actor* EnTorch2_GetAttackItem(PlayState* play, Player* this) {
