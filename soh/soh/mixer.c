@@ -1,8 +1,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
+#include <assert.h>
+#include <stdio.h>
 
 #include "mixer.h"
+#include "sse2neon.h"
 
 #ifndef __clang__
 #pragma GCC optimize ("unroll-loops")
@@ -277,29 +280,64 @@ void aEnvMixerImpl(uint16_t in_addr, uint16_t n_samples, bool swap_reverb,
     int16_t negs[4] = {neg_left ? -1 : 0, neg_right ? -1 : 0, neg_3 ? -4 : 0, neg_2 ? -2 : 0};
     int swapped[2] = {swap_reverb ? 1 : 0, swap_reverb ? 0 : 1};
     int n = ROUND_UP_16(n_samples);
+    const int n_aligned = n - (n % 8);
 
     uint16_t vols[2] = {rspa.vol[0], rspa.vol[1]};
     uint16_t rates[2] = {rspa.rate[0], rspa.rate[1]};
     uint16_t vol_wet = rspa.vol_wet;
     uint16_t rate_wet = rspa.rate_wet;
 
-    do {
+    // Aligned loop
+    for (int N = 0; N < n_aligned; N+=8) {
+        __m128i in_channels = _mm_load_si128((__m128i*) &in[N]);
+        __m128i dry_left = _mm_load_si128((__m128i*) &dry[0][N]);
+        __m128i dry_right = _mm_load_si128((__m128i*) &dry[1][N]);
+        __m128i wet_left = _mm_load_si128((__m128i*) &wet[0][N]);
+        __m128i wet_right = _mm_load_si128((__m128i*) &wet[1][N]);
+        __m128i sample_left = _mm_xor_si128(_mm_mulhi_epi16(in_channels, _mm_set1_epi16(vols[0])), _mm_set1_epi16(negs[0]));
+        __m128i sample_right = _mm_xor_si128(_mm_mulhi_epi16(in_channels, _mm_set1_epi16(vols[1])), _mm_set1_epi16(negs[1]));
+        __m128i res_dry_left = _mm_add_epi16(sample_left, dry_left);
+        __m128i res_dry_right = _mm_add_epi16(sample_right, dry_right);
+
+        __m128i sample_left_swapped0 = _mm_mullo_epi16(sample_left, _mm_set1_epi16(swapped[0]));
+        __m128i sample_right_swapped0 = _mm_mullo_epi16(sample_right, _mm_set1_epi16(swapped[0]==1 ? 0 : 1));
+        __m128i sample_swapped0 = _mm_add_epi32(sample_left_swapped0, sample_right_swapped0);
+        __m128i sample_swapped_left = _mm_xor_si128(_mm_mulhi_epi16(sample_swapped0, _mm_set1_epi16(vol_wet)), _mm_set1_epi16(negs[2]));
+        __m128i res_wet_left = _mm_add_epi16(sample_swapped_left, wet_left);
+
+        __m128i sample_left_swapped1 = _mm_mullo_epi16(sample_left, _mm_set1_epi16(swapped[1]));
+        __m128i sample_right_swapped1 = _mm_mullo_epi16(sample_right, _mm_set1_epi16(swapped[1]==1 ? 0 : 1));
+        __m128i sample_swapped1 = _mm_add_epi32(sample_left_swapped1, sample_right_swapped1);
+        __m128i sample_swapped_right = _mm_xor_si128(_mm_mulhi_epi16(sample_swapped1, _mm_set1_epi16(vol_wet)), _mm_set1_epi16(negs[3]));
+        __m128i res_wet_right = _mm_add_epi16(sample_swapped_right, wet_right);
+
+        // Store
+        _mm_store_si128((__m128i*) &dry[0][N], res_dry_left);
+        _mm_store_si128((__m128i*) &dry[1][N], res_dry_right);
+        _mm_store_si128((__m128i*) &wet[0][N], res_wet_left);
+        _mm_store_si128((__m128i*) &wet[1][N], res_wet_right);
+
+        vols[0] += rates[0];
+        vols[1] += rates[1];
+        vol_wet += rate_wet;
+    }
+
+    // Handle last bits
+    for (int i = n_aligned; i < n; ++i) {
         for (int i = 0; i < 8; i++) {
             int16_t samples[2] = {*in, *in}; in++;
             for (int j = 0; j < 2; j++) {
                 samples[j] = (samples[j] * vols[j] >> 16) ^ negs[j];
             }
         	for (int j = 0; j < 2; j++) {
-                *dry[j] = clamp16(*dry[j] + samples[j]); dry[j]++;
-                *wet[j] = clamp16(*wet[j] + ((samples[swapped[j]] * vol_wet >> 16) ^ negs[2 + j])); wet[j]++;
+                *dry[j] += samples[j]; dry[j]++;
+                *wet[j] += (samples[swapped[j]] * vol_wet >> 16) ^ negs[2 + j]; wet[j]++;
             }
         }
         vols[0] += rates[0];
         vols[1] += rates[1];
         vol_wet += rate_wet;
-
-        n -= 8;
-    } while (n > 0);
+    }
 }
 
 void aMixImpl(uint16_t count, int16_t gain, uint16_t in_addr, uint16_t out_addr) {
