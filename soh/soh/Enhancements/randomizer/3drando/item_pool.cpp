@@ -777,12 +777,8 @@ void GenerateItemPool() {
 
   if (ctx->GetOption(RSK_SHUFFLE_BEEHIVES)) {
     //32 total beehive locations
-    for (uint8_t i = 0; i < 23; i++) {
-      AddItemToMainPool(RG_RED_RUPEE);
-    }
-    for (uint8_t i = 0; i < 9; i++) {
-      AddItemToMainPool(RG_BLUE_RUPEE);
-    }
+    AddItemToMainPool(RG_RED_RUPEE, 23);
+    AddItemToMainPool(RG_BLUE_RUPEE, 9);
   } else {
     PlaceVanillaBeehiveRupees();
   }

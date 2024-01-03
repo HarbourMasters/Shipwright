@@ -1357,163 +1357,38 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"a #cow in a luxurious hole# offers", /*french*/"la #vache dans une grotte luxueuse# donne", /*spanish*/"una #vaca de un lujoso hoyo# brinda"},
   });
 
-    hintTable[RHT_KF_STORMS_GROTTO_BEEHIVE_LEFT] = HintText::Exclude({
+    hintTable[RHT_BEEHIVE_CHEST_GROTTO] = HintText::Exclude({
                        //obscure text
                        Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
   });
 
-    hintTable[RHT_KF_STORMS_GROTTO_BEEHIVE_RIGHT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_LW_SCRUBS_GROTTO_BEEHIVE] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a pair of scrubs# hides", /*french*/"", /*spanish*/"una #colmena sobre un par de dekus# esconde"},
-  });
-
-    hintTable[RHT_SFM_STORMS_GROTTO_BEEHIVE] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a pair of scrubs# hides", /*french*/"", /*spanish*/"una #colmena sobre un par de dekus# esconde"},
-  });
-
-    hintTable[RHT_HF_NEAR_MARKET_GROTTO_BEEHIVE_LEFT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_HF_NEAR_MARKET_GROTTO_BEEHIVE_RIGHT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_HF_OPEN_GROTTO_BEEHIVE_LEFT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_HF_OPEN_GROTTO_BEEHIVE_RIGHT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_HF_SOUTHEAST_GROTTO_BEEHIVE_LEFT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_HF_SOUTHEAST_GROTTO_BEEHIVE_RIGHT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_HF_INSIDE_FENCE_GROTTO_BEEHIVE] = HintText::Exclude({
+    hintTable[RHT_BEEHIVE_LONELY_SCRUB_GROTTO] = HintText::Exclude({
                        //obscure text
                        Text{"a #beehive above a lonely scrub# hides", /*french*/"", /*spanish*/"una #colmena sobre un deku solitario# esconde"},
   });
 
-    hintTable[RHT_LLR_GROTTO_BEEHIVE] = HintText::Exclude({
+    hintTable[RHT_BEEHIVE_SCRUB_PAIR_GROTTO] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive above a pair of scrubs# hides", /*french*/"", /*spanish*/"una #colmena sobre un par de dekus# esconde"},
+  });
+
+    hintTable[RHT_BEEHIVE_SCRUB_TRIO_GROTTO] = HintText::Exclude({
                        //obscure text
                        Text{"a #beehive above a trio of scrubs# hides", /*french*/"", /*spanish*/"una #colmena sobre un trío de dekus# esconde"},
   });
 
-    hintTable[RHT_KAK_OPEN_GROTTO_BEEHIVE_LEFT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_KAK_OPEN_GROTTO_BEEHIVE_RIGHT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_DMT_COW_GROTTO_BEEHIVE] = HintText::Exclude({
+    hintTable[RHT_BEEHIVE_COW_GROTTO] = HintText::Exclude({
                        //obscure text
                        Text{"a #beehive above a cow# hides", /*french*/"", /*spanish*/"una #colmena sobre una vaca# esconde"},
   });
 
-    hintTable[RHT_DMT_STORMS_GROTTO_BEEHIVE_LEFT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_DMT_STORMS_GROTTO_BEEHIVE_RIGHT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_GC_GROTTO_BEEHIVE] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a trio of scrubs# hides", /*french*/"", /*spanish*/"una #colmena sobre un trío de dekus# esconde"},
-  });
-
-    hintTable[RHT_DMC_UPPER_GROTTO_BEEHIVE_LEFT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_DMC_UPPER_GROTTO_BEEHIVE_RIGHT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_DMC_HAMMER_GROTTO_BEEHIVE] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a trio of scrubs# hides", /*french*/"", /*spanish*/"una #colmena sobre un trío de dekus# esconde"},
-  });
-
-    hintTable[RHT_ZR_OPEN_GROTTO_BEEHIVE_LEFT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_ZR_OPEN_GROTTO_BEEHIVE_RIGHT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
-  });
-
-    hintTable[RHT_ZR_STORMS_GROTTO_BEEHIVE] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a pair of scrubs# hides", /*french*/"", /*spanish*/"una #colmena sobre un par de dekus# esconde"},
-  });
-
-    hintTable[RHT_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_LEFT] = HintText::Exclude({
+    hintTable[RHT_BEEHIVE_IN_FRONT_OF_KING_ZORA] = HintText::Exclude({
                        //obscure text
                        Text{"a #beehive in front of the king of the zoras# hides", /*french*/"", /*spanish*/"una #colmena delante del rey de los zoras# esconde"},
   });
 
-    hintTable[RHT_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive in front of the king of the zoras# hides", /*french*/"", /*spanish*/"una #colmena delante del rey de los zoras# esconde"},
-  });
-
-    hintTable[RHT_ZD_BEHIND_KING_ZORA_BEEHIVE] = HintText::Exclude({
+    hintTable[RHT_BEEHIVE_BEHIND_KING_ZORA] = HintText::Exclude({
                        //obscure text
                        Text{"a #beehive behind the king of the zoras# hides", /*french*/"", /*spanish*/"una #colmena detrás del rey de los zoras# esconde"},
-  });
-
-    hintTable[RHT_LH_GROTTO_BEEHIVE] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a trio of scrubs# hides", /*french*/"", /*spanish*/"una #colmena sobre un trío de dekus# esconde"},
-  });
-
-    hintTable[RHT_GV_DEKU_SCRUB_GROTTO_BEEHIVE] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a pair of scrubs# hides", /*french*/"", /*spanish*/"una #colmena sobre un par de dekus# esconde"},
-  });
-
-    hintTable[RHT_COLOSSUS_GROTTO_BEEHIVE] = HintText::Exclude({
-                       //obscure text
-                       Text{"a #beehive above a pair of scrubs# hides", /*french*/"", /*spanish*/"una #colmena sobre un par de dekus# esconde"},
   });
 }
