@@ -891,10 +891,10 @@ void KaleidoScope_DrawMiscCollectibles(PlayState* play, GraphicsContext* gfxCtx)
                 gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                 gSPGrayscale(POLY_KAL_DISP++, true);
             }
-            gDPLoadTextureBlock(POLY_KAL_DISP++, gBossSoulIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 16, 0,
+            gDPLoadTextureBlock(POLY_KAL_DISP++, gBossSoulTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
-            gSPWideTextureRectangle(POLY_KAL_DISP++, (118 + (j * 17)) << 2, soulYOffset << 2, (134 + (j * 17)) << 2, (soulYOffset + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+            gSPWideTextureRectangle(POLY_KAL_DISP++, (118 + (j * 17)) << 2, soulYOffset << 2, (134 + (j * 17)) << 2, (soulYOffset + 16) << 2, G_TX_RENDERTILE, 0, 0, (1 << 10) * 2, (1 << 10) * 2);
             gSPGrayscale(POLY_KAL_DISP++, false);
         }
         yOffset = soulYOffset + 16;

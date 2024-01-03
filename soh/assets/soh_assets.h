@@ -100,10 +100,6 @@ static const ALIGN_ASSET(2) char gTriforcePieceTex[] = dgTriforcePiece;
 #define dgBossSoul "__OTR__textures/parameter_static/gBossSoul"
 static const ALIGN_ASSET(2) char gBossSoulTex[] = dgBossSoul;
 
-#define dgBossSoulIcon "__OTR__textures/parameter_static/gBossSoulIcon"
-static const ALIGN_ASSET(2) char gBossSoulIconTex[] = dgBossSoulIcon;
-
-
 #define dgFileSelMQButtonTex "__OTR__textures/title_static/gFileSelMQButtonTex"
 static const ALIGN_ASSET(2) char gFileSelMQButtonTex[] = dgFileSelMQButtonTex;
 
