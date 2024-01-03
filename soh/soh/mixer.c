@@ -290,29 +290,38 @@ void aEnvMixerImpl(uint16_t in_addr, uint16_t n_samples, bool swap_reverb,
     // Aligned loop
     for (int N = 0; N < n_aligned; N+=8) {
 
+        // Init vectors
         __m128i in_channels = _mm_load_si128((__m128i*) &in[N]);
         __m128i dry_left = _mm_load_si128((__m128i*) &dry[0][N]);
         __m128i dry_right = _mm_load_si128((__m128i*) &dry[1][N]);
         __m128i wet_left = _mm_load_si128((__m128i*) &wet[0][N]);
         __m128i wet_right = _mm_load_si128((__m128i*) &wet[1][N]);
+
+        // Compute base samples
         __m128i sample_left = _mm_xor_si128(_mm_mulhi_epi16(in_channels, _mm_set1_epi16(vols[0])), _mm_set1_epi16(negs[0]));
         __m128i sample_right = _mm_xor_si128(_mm_mulhi_epi16(in_channels, _mm_set1_epi16(vols[1])), _mm_set1_epi16(negs[1]));
+
+        // Add sample to dry channel
         __m128i res_dry_left = _mm_add_epi16(sample_left, dry_left);
         __m128i res_dry_right = _mm_add_epi16(sample_right, dry_right);
 
-        __m128i sample_left_swapped0 = _mm_mullo_epi16(sample_left, _mm_set1_epi16(swapped[0]));
-        __m128i sample_right_swapped0 = _mm_mullo_epi16(sample_right, _mm_set1_epi16(swapped[0] ? 0 : 1));
+        // Compute left swapped samples
+        __m128i sample_left_swapped0 = _mm_mullo_epi16(sample_left, _mm_set1_epi16(swap_reverb));
+        __m128i sample_right_swapped0 = _mm_mullo_epi16(sample_right, _mm_set1_epi16(!swap_reverb));
         __m128i sample_swapped0 = _mm_add_epi32(sample_left_swapped0, sample_right_swapped0);
         __m128i sample_swapped_left = _mm_xor_si128(_mm_mulhi_epi16(sample_swapped0, _mm_set1_epi16(vol_wet)), _mm_set1_epi16(negs[2]));
-        __m128i res_wet_left = _mm_add_epi16(sample_swapped_left, wet_left);
 
-        __m128i sample_left_swapped1 = _mm_mullo_epi16(sample_left, _mm_set1_epi16(swapped[1]));
-        __m128i sample_right_swapped1 = _mm_mullo_epi16(sample_right, _mm_set1_epi16(swapped[1] ? 0 : 1));
+        // Compute right swapped samples
+        __m128i sample_left_swapped1 = _mm_mullo_epi16(sample_left, _mm_set1_epi16(!swap_reverb));
+        __m128i sample_right_swapped1 = _mm_mullo_epi16(sample_right, _mm_set1_epi16(swap_reverb));
         __m128i sample_swapped1 = _mm_add_epi32(sample_left_swapped1, sample_right_swapped1);
         __m128i sample_swapped_right = _mm_xor_si128(_mm_mulhi_epi16(sample_swapped1, _mm_set1_epi16(vol_wet)), _mm_set1_epi16(negs[3]));
+
+        // Add swapped sample to wet channel
+        __m128i res_wet_left = _mm_add_epi16(sample_swapped_left, wet_left);
         __m128i res_wet_right = _mm_add_epi16(sample_swapped_right, wet_right);
 
-        // Store
+        // Store values to buffers
         _mm_store_si128((__m128i*) &dry[0][N], res_dry_left);
         _mm_store_si128((__m128i*) &dry[1][N], res_dry_right);
         _mm_store_si128((__m128i*) &wet[0][N], res_wet_left);
