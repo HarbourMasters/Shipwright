@@ -31,6 +31,7 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 #include "functions.h"
+#include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 
@@ -1223,6 +1224,16 @@ void RegisterToTMedallions() {
     });
 }
 
+void RegisterChildGateGuard() {
+GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+	Actor* actor = static_cast<Actor*>(refActor);
+	if (actor->id == ACTOR_EN_GE1 && actor->params == 0 && gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS) {
+		EnGe1* guard = static_cast<EnGe1*>(refActor);
+        guard->actionFunc = EnGe1_WatchForPlayerFrontOnly;
+	}
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1256,4 +1267,5 @@ void InitMods() {
     RegisterRandomizedEnemySizes();
     RegisterToTMedallions();
     NameTag_RegisterHooks();
+    RegisterChildGateGuard();
 }
