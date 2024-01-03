@@ -355,10 +355,8 @@ void EnDoor_Draw(Actor* thisx, PlayState* play) {
             Actor_DrawDoorLock(play, this->lockTimer, DOORLOCK_NORMAL);
             if (CVarGetInteger("gShowDoorLocksOnBothSides", 0)) {
                 Matrix_Pop();
-                Matrix_Push();
                 Matrix_RotateZYX(0, 0x8000, 0, MTXMODE_APPLY);
                 Actor_DrawDoorLock(play, this->lockTimer, DOORLOCK_NORMAL);
-                Matrix_Pop();
             }
         }
 
