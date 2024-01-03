@@ -8,6 +8,11 @@
 #include <z64.h>
 
 typedef enum {
+    GI_SCHEME_SAIL,
+    GI_SCHEME_CROWD_CONTROL,
+} GIScheme;
+
+typedef enum {
     /* 0x00 */ GI_LINK_SIZE_NORMAL,
     /* 0x01 */ GI_LINK_SIZE_GIANT,
     /* 0x02 */ GI_LINK_SIZE_MINISH,
@@ -92,9 +97,15 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 
 
 #ifdef __cplusplus
-
+#include <thread>
 #include <vector>
 #include <functional>
+#include <string>
+
+#ifdef ENABLE_REMOTE_CONTROL
+#include <SDL2/SDL_net.h>
+#include <nlohmann/json.hpp>
+#endif
 
 #define DEFINE_HOOK(name, type)         \
     struct name {                       \
@@ -132,10 +143,24 @@ public:
         static void SetPacifistMode(bool active);
     };
 
+    #ifdef ENABLE_REMOTE_CONTROL
+    bool isRemoteInteractorEnabled;
+    bool isRemoteInteractorConnected;
+
+    void EnableRemoteInteractor();
+    void DisableRemoteInteractor();
+    void RegisterRemoteDataHandler(std::function<void(char payload[512])> method);
+    void RegisterRemoteJsonHandler(std::function<void(nlohmann::json)> method);
+    void RegisterRemoteConnectedHandler(std::function<void()> method);
+    void RegisterRemoteDisconnectedHandler(std::function<void()> method);
+    void TransmitDataToRemote(const char* payload);
+    void TransmitJsonToRemote(nlohmann::json packet);
+    #endif
+
     // Effects
     static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase* effect);
     static GameInteractionEffectQueryResult ApplyEffect(GameInteractionEffectBase* effect);
-    static GameInteractionEffectQueryResult RemoveEffect(GameInteractionEffectBase* effect);
+    static GameInteractionEffectQueryResult RemoveEffect(RemovableGameInteractionEffect* effect);
 
     // Game Hooks
     template <typename H> struct RegisteredGameHooks { inline static std::vector<typename H::fn> functions; };
@@ -194,6 +219,9 @@ public:
     
     DEFINE_HOOK(OnSetGameLanguage, void());
 
+    DEFINE_HOOK(OnFileDropped, void(std::string filePath));
+    DEFINE_HOOK(OnAssetAltChange, void());
+
     // Helpers
     static bool IsSaveLoaded();
     static bool IsGameplayPaused();
@@ -236,6 +264,21 @@ public:
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
         static GameInteractionEffectQueryResult SpawnActor(uint32_t actorId, int32_t actorParams);
     };
+
+    private:
+    #ifdef ENABLE_REMOTE_CONTROL
+        IPaddress remoteIP;
+        TCPsocket remoteSocket;
+        std::thread remoteThreadReceive;
+        std::function<void(char payload[512])> remoteDataHandler;
+        std::function<void(nlohmann::json)> remoteJsonHandler;
+        std::function<void()> remoteConnectedHandler;
+        std::function<void()> remoteDisconnectedHandler;
+
+        void ReceiveFromServer();
+        void HandleRemoteData(char payload[512]);
+        void HandleRemoteJson(std::string payload);
+    #endif
 };
 
 #endif /* __cplusplus */

@@ -189,6 +189,11 @@ typedef enum {
 } ShuffleMerchantsSetting;
 
 typedef enum {
+    SHUFFLEFROGSONGRUPEES_OFF,
+    SHUFFLEFROGSONGRUPEES_ON,
+} ShuffleFrogSongRupeesSetting;
+
+typedef enum {
     SHUFFLEADULTTRADEQUEST_OFF,
     SHUFFLEADULTTRADEQUEST_ON,
 } ShuffleAdultTradeQuestSetting;
@@ -1173,5 +1178,5 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
 
   extern std::vector<Menu *> mainMenu;
 
-  extern std::vector<Option *> vanillaLogicDefaults;
+  extern std::vector<std::pair<Option*, uint8_t>> vanillaLogicOverrides;
 }

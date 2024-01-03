@@ -2171,7 +2171,7 @@ void func_800FA18C(u8, u8);
 void Audio_SetVolScale(u8 playerIdx, u8 scaleIdx, u8 targetVol, u8 volFadeTimer);
 void func_800FA3DC(void);
 u8 func_800FAD34(void);
-void func_800FADF8(void);
+void Audio_ResetActiveSequences(void);
 void func_800FAEB4(void);
 void GfxPrint_SetColor(GfxPrint* this, u32 r, u32 g, u32 b, u32 a);
 void GfxPrint_SetPosPx(GfxPrint* this, s32 x, s32 y);
