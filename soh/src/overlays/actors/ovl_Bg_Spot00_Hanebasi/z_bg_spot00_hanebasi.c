@@ -72,7 +72,7 @@ void BgSpot00Hanebasi_Init(Actor* thisx, PlayState* play) {
         }
 
         // #region SOH [Enhancement]
-        if (CVarGetInteger("gBridgeOpenAtNight", 0) && !(Play_InCsMode(play))) {
+        if (CVarGetInteger("gBridgeOpenAtNight", 0) && gSaveContext.cutsceneIndex != 0xFFF1) {
             this->dyna.actor.shape.rot.x = 0;
         // #endregion
         } else {
