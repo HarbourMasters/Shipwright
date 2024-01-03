@@ -1030,18 +1030,18 @@ void FileChoose_UpdateRandomizer() {
             fileSelectSpoilerFileLoaded = false;
     }
 
-    if ((CVarGetInteger("gNewFileDropped", 0) != 0) || (CVarGetInteger("gNewSeedGenerated", 0) != 0) ||
+    if ((CVarGetInteger("gRandomizerNewFileDropped", 0) != 0) || (CVarGetInteger("gNewSeedGenerated", 0) != 0) ||
         (!fileSelectSpoilerFileLoaded && SpoilerFileExists(CVarGetString("gSpoilerLog", "")))) {
-            if (CVarGetInteger("gNewFileDropped", 0) != 0) {
-            CVarSetString("gSpoilerLog", CVarGetString("gDroppedFile", "None"));
+            if (CVarGetInteger("gRandomizerNewFileDropped", 0) != 0) {
+            CVarSetString("gSpoilerLog", CVarGetString("gRandomizerDroppedFile", "None"));
             }
             bool silent = true;
-            if ((CVarGetInteger("gNewFileDropped", 0) != 0) || (CVarGetInteger("gNewSeedGenerated", 0) != 0)) {
+            if ((CVarGetInteger("gRandomizerNewFileDropped", 0) != 0) || (CVarGetInteger("gNewSeedGenerated", 0) != 0)) {
             silent = false;
             }
             CVarSetInteger("gNewSeedGenerated", 0);
-            CVarSetInteger("gNewFileDropped", 0);
-            CVarSetString("gDroppedFile", "");
+            CVarSetInteger("gRandomizerNewFileDropped", 0);
+            CVarSetString("gRandomizerDroppedFile", "");
             fileSelectSpoilerFileLoaded = false;
             const char* fileLoc = CVarGetString("gSpoilerLog", "");
             Randomizer_LoadSettings(fileLoc);
@@ -1076,7 +1076,6 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     Input* input = &this->state.input[0];
     bool dpad = CVarGetInteger("gDpadText", 0);
 
-    SoH_ProcessDroppedFiles();
     FileChoose_UpdateRandomizer();
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
@@ -1267,7 +1266,6 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     s8 i = 0;
     bool dpad = CVarGetInteger("gDpadText", 0);
 
-    SoH_ProcessDroppedFiles();
     FileChoose_UpdateRandomizer();
 
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
@@ -2973,7 +2971,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     Randomizer_LoadMasterQuestDungeons("");
     Randomizer_LoadEntranceOverrides("", true);
 
-    gSaveContext.respawn[0].entranceIndex = -1;
+    gSaveContext.respawn[0].entranceIndex = ENTR_LOAD_OPENING;
     gSaveContext.respawnFlag = 0;
     gSaveContext.seqId = (u8)NA_BGM_DISABLED;
     gSaveContext.natureAmbienceId = 0xFF;
@@ -2994,7 +2992,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.prevMagicState = MAGIC_STATE_IDLE;
     gSaveContext.forcedSeqId = NA_BGM_GENERAL_SFX;
     gSaveContext.skyboxTime = 0;
-    gSaveContext.nextTransitionType = 0xFF;
+    gSaveContext.nextTransitionType = TRANS_NEXT_TYPE_DEFAULT;
     gSaveContext.nextCutsceneIndex = 0xFFEF;
     gSaveContext.cutsceneTrigger = 0;
     gSaveContext.chamberCutsceneNum = 0;
@@ -3042,7 +3040,7 @@ void FileChoose_LoadGame(GameState* thisx) {
         // the entrance index is -1 from shuffle overwarld spawn
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) && ((!CVarGetInteger("gRememberSaveLocation", 0) ||
             gSaveContext.savedSceneNum == SCENE_FAIRYS_FOUNTAIN || gSaveContext.savedSceneNum == SCENE_GROTTOS) ||
-            (CVarGetInteger("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == -1))) {
+            (CVarGetInteger("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == ENTR_LOAD_OPENING))) {
             Entrance_SetSavewarpEntrance();
         }
     }

@@ -30,6 +30,7 @@
 #include <AudioPlayer.h>
 #include "Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "Enhancements/controls/GameControlEditor.h"
+#include "Enhancements/controls/SohInputEditorWindow.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/audio/AudioCollection.h"
 #include "Enhancements/audio/AudioEditor.h"
@@ -80,9 +81,11 @@
 #include "SohGui.hpp"
 #include "ActorDB.h"
 
-#ifdef ENABLE_CROWD_CONTROL
+#ifdef ENABLE_REMOTE_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
+#include "Enhancements/game-interactor/GameInteractor_Sail.h"
 CrowdControl* CrowdControl::Instance;
+GameInteractorSail* GameInteractorSail::Instance;
 #endif
 
 #include "Enhancements/mods.h"
@@ -117,6 +120,8 @@ CrowdControl* CrowdControl::Instance;
 #include "soh/resource/importer/BackgroundFactory.h"
 
 #include "soh/config/ConfigUpdaters.h"
+
+void SoH_ProcessDroppedFiles(std::string filePath);
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
@@ -293,9 +298,26 @@ OTRGlobals::OTRGlobals() {
         OOT_PAL_GC_DBG1,
         OOT_PAL_GC_DBG2
     };
-    // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
-    context = LUS::Context::CreateInstance("Ship of Harkinian", appShortName, "shipofharkinian.json", OTRFiles, {}, 3);
 
+    context = LUS::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
+
+    context->InitLogging();
+    context->InitConfiguration();
+    context->InitConsoleVariables();
+
+    // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
+    context->InitResourceManager(OTRFiles, {}, 3);
+    
+    context->InitControlDeck({BTN_MODIFIER1, BTN_MODIFIER2});
+    context->GetControlDeck()->SetSinglePlayerMappingMode(true);
+
+    context->InitCrashHandler();
+    context->InitConsole();
+
+    auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>("gControllerConfigurationEnabled", "Input Editor");
+    context->InitWindow(sohInputEditorWindow);
+    context->InitAudio();
+    
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Animation, "Animation", std::make_shared<LUS::AnimationFactory>());
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_PlayerAnimation, "PlayerAnimation", std::make_shared<LUS::PlayerAnimationFactory>());
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Room, "Room", std::make_shared<LUS::SceneFactory>()); // Is room scene? maybe?
@@ -647,7 +669,7 @@ extern "C" void VanillaItemTable_Init() {
     }
 }
 
-std::unordered_map<uint32_t, uint32_t> ItemIDtoGetItemID{
+std::unordered_map<ItemID, GetItemID> ItemIDtoGetItemIDMap {
     { ITEM_ARROWS_LARGE, GI_ARROWS_LARGE },
     { ITEM_ARROWS_MEDIUM, GI_ARROWS_MEDIUM },
     { ITEM_ARROWS_SMALL, GI_ARROWS_SMALL },
@@ -677,7 +699,8 @@ std::unordered_map<uint32_t, uint32_t> ItemIDtoGetItemID{
     { ITEM_BUG, GI_BUGS },
     { ITEM_BULLET_BAG_30, GI_BULLET_BAG_30 },
     { ITEM_BULLET_BAG_40, GI_BULLET_BAG_40 },
-    { ITEM_BULLET_BAG_50, GI_BULLET_BAG_50 }, { ITEM_CHICKEN, GI_CHICKEN },
+    { ITEM_BULLET_BAG_50, GI_BULLET_BAG_50 }, 
+    { ITEM_CHICKEN, GI_CHICKEN },
     { ITEM_CLAIM_CHECK, GI_CLAIM_CHECK },
     { ITEM_COJIRO, GI_COJIRO },
     { ITEM_COMPASS, GI_COMPASS },
@@ -773,11 +796,42 @@ std::unordered_map<uint32_t, uint32_t> ItemIDtoGetItemID{
     { ITEM_WEIRD_EGG, GI_WEIRD_EGG }
 };
 
-extern "C" int32_t GetGIID(uint32_t itemID) {
-    if (ItemIDtoGetItemID.contains(itemID)) {
-        return ItemIDtoGetItemID.at(itemID);
+extern "C" GetItemID RetrieveGetItemIDFromItemID(ItemID itemID) {
+    if (ItemIDtoGetItemIDMap.contains(itemID)) {
+        return ItemIDtoGetItemIDMap.at(itemID);
     }
-    return -1;
+    return GI_MAX;
+}
+
+std::unordered_map<ItemID, RandomizerGet> ItemIDtoRandomizerGetMap {
+    { ITEM_SONG_MINUET, RG_MINUET_OF_FOREST },
+    { ITEM_SONG_BOLERO, RG_BOLERO_OF_FIRE },
+    { ITEM_SONG_SERENADE, RG_SERENADE_OF_WATER },
+    { ITEM_SONG_REQUIEM, RG_REQUIEM_OF_SPIRIT },
+    { ITEM_SONG_NOCTURNE, RG_NOCTURNE_OF_SHADOW },
+    { ITEM_SONG_PRELUDE, RG_PRELUDE_OF_LIGHT },
+    { ITEM_SONG_LULLABY, RG_ZELDAS_LULLABY },
+    { ITEM_SONG_EPONA, RG_EPONAS_SONG },
+    { ITEM_SONG_SARIA, RG_SARIAS_SONG },
+    { ITEM_SONG_SUN, RG_SUNS_SONG },
+    { ITEM_SONG_TIME, RG_SONG_OF_TIME },
+    { ITEM_SONG_STORMS, RG_SONG_OF_STORMS },
+    { ITEM_MEDALLION_FOREST, RG_FOREST_MEDALLION },
+    { ITEM_MEDALLION_FIRE, RG_FIRE_MEDALLION },
+    { ITEM_MEDALLION_WATER, RG_WATER_MEDALLION },
+    { ITEM_MEDALLION_SPIRIT, RG_SPIRIT_MEDALLION },
+    { ITEM_MEDALLION_SHADOW, RG_SHADOW_MEDALLION },
+    { ITEM_MEDALLION_LIGHT, RG_LIGHT_MEDALLION },
+    { ITEM_KOKIRI_EMERALD, RG_KOKIRI_EMERALD },
+    { ITEM_GORON_RUBY, RG_GORON_RUBY },
+    { ITEM_ZORA_SAPPHIRE, RG_ZORA_SAPPHIRE },
+};
+
+extern "C" RandomizerGet RetrieveRandomizerGetFromItemID(ItemID itemID) {
+    if (ItemIDtoRandomizerGetMap.contains(itemID)) {
+        return ItemIDtoRandomizerGetMap.at(itemID);
+    }
+    return RG_MAX;
 }
 
 extern "C" void OTRExtScanner() {
@@ -1035,9 +1089,9 @@ extern "C" void InitOTR() {
     OTRGlobals::Instance = new OTRGlobals();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
+    GameInteractor::Instance = new GameInteractor();
     SaveManager::Instance = new SaveManager();
     SohGui::SetupGuiElements();
-    GameInteractor::Instance = new GameInteractor();
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
 #ifdef __APPLE__
@@ -1047,7 +1101,12 @@ extern "C" void InitOTR() {
     SpeechSynthesizer::Instance = new SAPISpeechSynthesizer();
     SpeechSynthesizer::Instance->Init();
 #endif
-    
+
+#ifdef ENABLE_REMOTE_CONTROL
+    CrowdControl::Instance = new CrowdControl();
+    GameInteractorSail::Instance = new GameInteractorSail();
+#endif
+
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
@@ -1057,6 +1116,11 @@ extern "C" void InitOTR() {
 
     InitMods();
     ActorDB::AddBuiltInCustomActors();
+    // #region SOH [Randomizer] TODO: Remove these and refactor spoiler file handling for randomizer
+    CVarClear("gRandomizerNewFileDropped");
+    CVarClear("gRandomizerDroppedFile");
+    // #endregion
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFileDropped>(SoH_ProcessDroppedFiles);
 
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
@@ -1067,13 +1131,17 @@ extern "C" void InitOTR() {
     }
 
     srand(now);
-#ifdef ENABLE_CROWD_CONTROL
-    CrowdControl::Instance = new CrowdControl();
-    CrowdControl::Instance->Init();
-    if (CVarGetInteger("gCrowdControl", 0)) {
-        CrowdControl::Instance->Enable();
-    } else {
-        CrowdControl::Instance->Disable();
+#ifdef ENABLE_REMOTE_CONTROL
+    SDLNet_Init();
+    if (CVarGetInteger("gRemote.Enabled", 0)) {
+        switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+            case GI_SCHEME_SAIL:
+                GameInteractorSail::Instance->Enable();
+                break;
+            case GI_SCHEME_CROWD_CONTROL:
+                CrowdControl::Instance->Enable();
+                break;
+        }
     }
 #endif
 
@@ -1090,9 +1158,18 @@ extern "C" void SaveManager_ThreadPoolWait() {
 extern "C" void DeinitOTR() {
     SaveManager_ThreadPoolWait();
     OTRAudio_Exit();
-#ifdef ENABLE_CROWD_CONTROL
-    CrowdControl::Instance->Disable();
-    CrowdControl::Instance->Shutdown();
+#ifdef ENABLE_REMOTE_CONTROL
+    if (CVarGetInteger("gRemote.Enabled", 0)) {
+        switch (CVarGetInteger("gRemote.Scheme", GI_SCHEME_SAIL)) {
+            case GI_SCHEME_SAIL:
+                GameInteractorSail::Instance->Disable();
+                break;
+            case GI_SCHEME_CROWD_CONTROL:
+                CrowdControl::Instance->Disable();
+                break;
+        }
+    }
+    SDLNet_Quit();
 #endif
 
     // Destroying gui here because we have shared ptrs to LUS objects which output to SPDLOG which is destroyed before these shared ptrs.
@@ -1233,6 +1310,16 @@ extern "C" void Graph_StartFrame() {
         }
     }
 #endif
+
+    if (CVarGetInteger("gNewFileDropped", 0)) {
+        std::string filePath = SohUtils::Sanitize(CVarGetString("gDroppedFile", ""));
+        if (!filePath.empty()) {
+            GameInteractor::Instance->ExecuteHooks<GameInteractor::OnFileDropped>(filePath);
+        }
+        CVarClear("gNewFileDropped");
+        CVarClear("gDroppedFile");
+    }
+
     OTRGlobals::Instance->context->GetWindow()->StartFrame();
 }
 
@@ -2100,10 +2187,10 @@ Color_RGB8 GetColorForControllerLED() {
         if (source == LED_SOURCE_CUSTOM) {
             color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
         }
-        if (criticalOverride || source == LED_SOURCE_HEALTH) {
+        if (gPlayState && (criticalOverride || source == LED_SOURCE_HEALTH)) {
             if (HealthMeter_IsCritical()) {
                 color = { 0xFF, 0, 0 };
-            } else if (source == LED_SOURCE_HEALTH) {
+            } else if (gSaveContext.healthCapacity != 0 && source == LED_SOURCE_HEALTH) {
                 if (gSaveContext.health / gSaveContext.healthCapacity <= 0.4f) {
                     color = { 0xFF, 0xFF, 0 };
                 } else {
@@ -2120,15 +2207,22 @@ Color_RGB8 GetColorForControllerLED() {
 }
 
 extern "C" void OTRControllerCallback(uint8_t rumble) {
-    auto physicalDevice = LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0);
+    // We call this every tick, SDL accounts for this use and prevents driver spam
+    // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
+    LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetLED()->SetLEDColor(GetColorForControllerLED());
 
-    if (physicalDevice->CanSetLed()) {
-        // We call this every tick, SDL accounts for this use and prevents driver spam
-        // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
-        physicalDevice->SetLedColor(0, GetColorForControllerLED());
+    static std::shared_ptr<SohInputEditorWindow> controllerConfigWindow = nullptr;
+    if (controllerConfigWindow == nullptr) {
+        controllerConfigWindow = std::dynamic_pointer_cast<SohInputEditorWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Input Editor"));
+    } else if (controllerConfigWindow->TestingRumble()) {
+        return;
     }
 
-    physicalDevice->SetRumble(0, rumble);
+    if (rumble) {
+        LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetRumble()->StartRumble();
+    } else {
+        LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetRumble()->StopRumble();
+    }
 }
 
 extern "C" float OTRGetAspectRatio() {
@@ -2167,12 +2261,12 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 }
 
 extern "C" int Controller_ShouldRumble(size_t slot) {
-    auto controlDeck = LUS::Context::GetInstance()->GetControlDeck();
-    
-    if (slot < controlDeck->GetNumConnectedPorts()) {
-        auto physicalDevice = controlDeck->GetDeviceFromPortIndex(slot);
-        
-        if (physicalDevice->GetProfile(slot)->UseRumble && physicalDevice->CanRumble()) {
+    for (auto [id, mapping] : LUS::Context::GetInstance()
+                                  ->GetControlDeck()
+                                  ->GetControllerByPort(static_cast<uint8_t>(slot))
+                                  ->GetRumble()
+                                  ->GetAllRumbleMappings()) {
+        if (mapping->PhysicalDeviceIsConnected()) {
             return 1;
         }
     }
@@ -2397,7 +2491,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             actorParams = stone->params;
 
             // if we're in a generic grotto
-            if (play->sceneNum == 62 && actorParams == 14360) {
+            if (play->sceneNum == SCENE_GROTTOS && actorParams == 14360) {
                 // look for the chest in the actorlist to determine
                 // which grotto we're in
                 int numOfActorLists =
@@ -2489,6 +2583,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetWarpSongMessage(textId, Randomizer_GetSettingValue(RSK_WARP_SONG_HINTS) == RO_GENERIC_OFF);
         } else if (textId == TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI || textId == TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, textId);
+        } else if (textId == TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW);
         } else if (textId == 0x3052 || (textId >= 0x3069 && textId <= 0x3070)) { //Fire Temple gorons
             u16 choice = Random(0, NUM_GORON_MESSAGES);
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
@@ -2578,70 +2674,74 @@ extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* repla
     gfx_register_blended_texture(name, mask, replacement);
 }
 
-// #region SOH [TODO] Ideally this should move to being event based, it's currently run every frame on the file select screen
-extern "C" void SoH_ProcessDroppedFiles() {
-    const char* droppedFile = CVarGetString("gDroppedFile", "");
-    if (CVarGetInteger("gNewFileDropped", 0) && strcmp(droppedFile, "") != 0) {
-        try {
-            std::ifstream configStream(SohUtils::Sanitize(droppedFile));
-            if (!configStream) {
-                return;
-            }
-
-            nlohmann::json configJson;
-            configStream >> configJson;
-
-            if (!configJson.contains("CVars")) {
-                return;
-            }
-
-            clearCvars(enhancementsCvars);
-            clearCvars(cheatCvars);
-            clearCvars(randomizerCvars);
-
-            // Flatten everything under CVars into a single array
-            auto cvars = configJson["CVars"].flatten();
-
-            for (auto& [key, value] : cvars.items()) {
-                // Replace slashes with dots in key, and remove leading dot
-                std::string path = key;
-                std::replace(path.begin(), path.end(), '/', '.');
-                if (path[0] == '.') {
-                    path.erase(0, 1);
-                }
-                if (value.is_string()) {
-                    CVarSetString(path.c_str(), value.get<std::string>().c_str());
-                } else if (value.is_number_integer()) {
-                    CVarSetInteger(path.c_str(), value.get<int>());
-                } else if (value.is_number_float()) {
-                    CVarSetFloat(path.c_str(), value.get<float>());
-                }
-            }
-
-            auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
-            gui->GetGuiWindow("Console")->Hide();
-            gui->GetGuiWindow("Actor Viewer")->Hide();
-            gui->GetGuiWindow("Collision Viewer")->Hide();
-            gui->GetGuiWindow("Save Editor")->Hide();
-            gui->GetGuiWindow("Display List Viewer")->Hide();
-            gui->GetGuiWindow("Stats")->Hide();
-            std::dynamic_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->ClearBindings();
-
-            gui->SaveConsoleVariablesOnNextTick();
-
-            uint32_t finalHash = boost::hash_32<std::string>{}(configJson.dump());
-            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Configuration Loaded. Hash: %d", finalHash);
-        } catch (std::exception& e) {
-            SPDLOG_ERROR("Failed to load config file: {}", e.what());
-            auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
-            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
-            return;
-        } catch (...) {
-            SPDLOG_ERROR("Failed to load config file");
-            auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
-            gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
+void SoH_ProcessDroppedFiles(std::string filePath) {
+    try {
+        std::ifstream configStream(filePath);
+        if (!configStream) {
             return;
         }
+
+        nlohmann::json configJson;
+        configStream >> configJson;
+
+        // #region SOH [Randomizer] TODO: Refactor spoiler file handling for randomizer 
+        if (configJson.contains("version") && configJson.contains("finalSeed")) {
+            CVarSetString("gRandomizerDroppedFile", filePath.c_str());
+            CVarSetInteger("gRandomizerNewFileDropped", 1);
+            return;
+        }
+        // #endregion
+
+        if (!configJson.contains("CVars")) {
+            return;
+        }
+
+        clearCvars(enhancementsCvars);
+        clearCvars(cheatCvars);
+        clearCvars(randomizerCvars);
+
+        // Flatten everything under CVars into a single array
+        auto cvars = configJson["CVars"].flatten();
+
+        for (auto& [key, value] : cvars.items()) {
+            // Replace slashes with dots in key, and remove leading dot
+            std::string path = key;
+            std::replace(path.begin(), path.end(), '/', '.');
+            if (path[0] == '.') {
+                path.erase(0, 1);
+            }
+            if (value.is_string()) {
+                CVarSetString(path.c_str(), value.get<std::string>().c_str());
+            } else if (value.is_number_integer()) {
+                CVarSetInteger(path.c_str(), value.get<int>());
+            } else if (value.is_number_float()) {
+                CVarSetFloat(path.c_str(), value.get<float>());
+            }
+        }
+
+        auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
+        gui->GetGuiWindow("Console")->Hide();
+        gui->GetGuiWindow("Actor Viewer")->Hide();
+        gui->GetGuiWindow("Collision Viewer")->Hide();
+        gui->GetGuiWindow("Save Editor")->Hide();
+        gui->GetGuiWindow("Display List Viewer")->Hide();
+        gui->GetGuiWindow("Stats")->Hide();
+        std::dynamic_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->ClearBindings();
+
+        gui->SaveConsoleVariablesOnNextTick();
+
+        uint32_t finalHash = boost::hash_32<std::string>{}(configJson.dump());
+        gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Configuration Loaded. Hash: %d", finalHash);
+    } catch (std::exception& e) {
+        SPDLOG_ERROR("Failed to load config file: {}", e.what());
+        auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
+        gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
+        return;
+    } catch (...) {
+        SPDLOG_ERROR("Failed to load config file");
+        auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
+        gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
+        return;
     }
 }
 // #endregion

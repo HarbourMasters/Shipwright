@@ -12,6 +12,9 @@
 #define GAME_PLATFORM_N64 0
 #define GAME_PLATFORM_GC 1
 
+#define BTN_MODIFIER1 0x00040
+#define BTN_MODIFIER2 0x00080
+
 #ifdef __cplusplus
 #include <Context.h>
 #include "Enhancements/savestates.h"
@@ -175,9 +178,9 @@ void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
 void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement);
 void SaveManager_ThreadPoolWait();
 void CheckTracker_OnMessageClose();
-void SoH_ProcessDroppedFiles();
 
-int32_t GetGIID(uint32_t itemID);
+GetItemID RetrieveGetItemIDFromItemID(ItemID itemID);
+RandomizerGet RetrieveRandomizerGetFromItemID(ItemID itemID);
 #endif
 
 #ifdef __cplusplus
