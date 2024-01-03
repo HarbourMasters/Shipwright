@@ -191,5 +191,6 @@ class Settings {
     std::string mHash;
     std::string mSeedString;
     uint32_t mFinalSeed = 0;
+    std::unordered_map<std::string, RandomizerTrick> mTrickNameToEnum;
 };
 } // namespace Rando

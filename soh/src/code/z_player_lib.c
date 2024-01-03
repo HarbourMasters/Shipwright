@@ -101,15 +101,6 @@ u8 sActionModelGroups[] = {
     PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_MASK_GERUDO
     PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_MASK_TRUTH
     PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_LENS_OF_TRUTH
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_SHIELD_DEKU
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_SHIELD_HYLIAN
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_SHIELD_MIRROR
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_TUNIC_KOKIRI
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_TUNIC_GORON
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_TUNIC_ZORA
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_BOOTS_KOKIRI
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_BOOTS_IRON
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_BOOTS_HOVER
 };
 
 TextTriggerEntry sTextTriggers[] = {
@@ -1508,7 +1499,11 @@ void Player_DrawGetItemIceTrap(PlayState* play, Player* this, Vec3f* refPos, s32
         Matrix_RotateZYX(0, play->gameplayFrames * 1000, 0, MTXMODE_APPLY);
         Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
         // Draw fake item model.
-        GetItem_Draw(play, drawIdPlusOne - 1);
+        if (this->getItemEntry.drawFunc != NULL) {
+            this->getItemEntry.drawFunc(play, &this->getItemEntry);
+        } else {
+            GetItem_Draw(play, drawIdPlusOne - 1);
+        }
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

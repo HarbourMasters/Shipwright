@@ -1267,18 +1267,15 @@ void PatchToTMedallions() {
     }
 }
 
-void RegisterToTMedallionsFromItem() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry _unused) { 
-        if (!CVarGetInteger("gToTMedallionsColors", 0) && gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
+void RegisterToTMedallions() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry _unused) {
+        if (!CVarGetInteger("gToTMedallionsColors", 0) || !gPlayState || gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
             return;
         }
         PatchToTMedallions();
     });
-}
-
-void RegisterToTMedallionsFromScene() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) { 
-        if (!CVarGetInteger("gToTMedallionsColors", 0) && gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        if (!CVarGetInteger("gToTMedallionsColors", 0) || sceneNum != SCENE_TEMPLE_OF_TIME) {
             return;
         }
         PatchToTMedallions();
@@ -1317,7 +1314,6 @@ void InitMods() {
     RegisterRandomizerSheikSpawn();
     RegisterBossSouls();
     RegisterRandomizedEnemySizes();
-    RegisterToTMedallionsFromItem();
-    RegisterToTMedallionsFromScene();
+    RegisterToTMedallions();
     NameTag_RegisterHooks();
 }

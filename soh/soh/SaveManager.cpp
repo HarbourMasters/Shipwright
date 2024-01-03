@@ -2721,6 +2721,13 @@ extern "C" void Save_SaveGlobal(void) {
 }
 
 extern "C" void Save_LoadFile(void) {
+    if (gSaveContext.questId == QUEST_RANDOMIZER) {
+        // Reset rando context for rando saves.
+        OTRGlobals::Instance->gRandoContext.reset();
+        OTRGlobals::Instance->gRandoContext = Rando::Context::CreateInstance();
+        OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
+        OTRGlobals::Instance->gRandoContext->GetSettings()->CreateOptions();
+    }
     SaveManager::Instance->LoadFile(gSaveContext.fileNum);
 }
 
