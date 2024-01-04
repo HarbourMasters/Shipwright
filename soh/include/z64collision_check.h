@@ -139,6 +139,7 @@ typedef struct {
     /* 0x00 */ Collider base;
     /* 0x18 */ ColliderInfo info;
     /* 0x40 */ Cylinder16 dim;
+    int32_t hideColliderInCollisionViewer;
 } ColliderCylinder; // size = 0x4C
 
 typedef struct {

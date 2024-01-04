@@ -520,20 +520,22 @@ void DrawColCheckList(std::vector<Gfx>& dl, Collider** objects, int32_t count) {
             case COLSHAPE_CYLINDER: {
                 ColliderCylinder* cyl = (ColliderCylinder*)col;
 
-                Mtx m;
-                MtxF mt;
-                SkinMatrix_SetTranslate(&mt, cyl->dim.pos.x, cyl->dim.pos.y + cyl->dim.yShift, cyl->dim.pos.z);
-                MtxF ms;
-                int32_t radius = cyl->dim.radius == 0 ? 1 : cyl->dim.radius;
-                SkinMatrix_SetScale(&ms, radius / 128.0f, cyl->dim.height / 128.0f, radius / 128.0f);
-                MtxF dest;
-                SkinMatrix_MtxFMtxFMult(&mt, &ms, &dest);
-                guMtxF2L(&dest, &m);
-                mtxDl.push_back(m);
+                if (!cyl->hideColliderInCollisionViewer) {
+                    Mtx m;
+                    MtxF mt;
+                    SkinMatrix_SetTranslate(&mt, cyl->dim.pos.x, cyl->dim.pos.y + cyl->dim.yShift, cyl->dim.pos.z);
+                    MtxF ms;
+                    int32_t radius = cyl->dim.radius == 0 ? 1 : cyl->dim.radius;
+                    SkinMatrix_SetScale(&ms, radius / 128.0f, cyl->dim.height / 128.0f, radius / 128.0f);
+                    MtxF dest;
+                    SkinMatrix_MtxFMtxFMult(&mt, &ms, &dest);
+                    guMtxF2L(&dest, &m);
+                    mtxDl.push_back(m);
 
-                dl.push_back(gsSPMatrix(&mtxDl.back(), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH));
-                dl.push_back(gsSPDisplayList(cylinderGfx.data()));
-                dl.push_back(gsSPPopMatrix(G_MTX_MODELVIEW));
+                    dl.push_back(gsSPMatrix(&mtxDl.back(), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH));
+                    dl.push_back(gsSPDisplayList(cylinderGfx.data()));
+                    dl.push_back(gsSPPopMatrix(G_MTX_MODELVIEW));
+                }
             } break;
             case COLSHAPE_TRIS: {
                 ColliderTris* tris = (ColliderTris*)col;

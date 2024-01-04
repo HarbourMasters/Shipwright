@@ -1610,19 +1610,56 @@ void Play_Draw(PlayState* play) {
                             (play->skyboxId == SKYBOX_CUTSCENE_MAP)) {
                             Environment_UpdateSkybox(play, play->skyboxId, &play->envCtx, &play->skyboxCtx);
 
-                            SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId,
-                                            play->envCtx.skyboxBlend, play->view.eye.x, play->view.eye.y,
-                                            play->view.eye.z);
+                            if (!CVarGetInteger("gCollisionGoggles", 0)) {
+                                SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId, play->envCtx.skyboxBlend,
+                                                play->view.eye.x, play->view.eye.y, play->view.eye.z);
+                            } else {
+                                Gfx* workDl = WORK_DISP;
+                                Gfx* opaDl = POLY_OPA_DISP;
+                                Gfx* xluDl = POLY_XLU_DISP;
+                                Gfx* ovlDl = OVERLAY_DISP;
+                                SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId, play->envCtx.skyboxBlend,
+                                                play->view.eye.x, play->view.eye.y, play->view.eye.z);
+                                WORK_DISP = workDl;
+                                POLY_OPA_DISP = opaDl;
+                                POLY_XLU_DISP = xluDl;
+                                OVERLAY_DISP = ovlDl;
+                            }
                         } else if (play->skyboxCtx.unk_140 == 0) {
-                            SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId, 0,
-                                            play->view.eye.x, play->view.eye.y, play->view.eye.z);
+                            if (!CVarGetInteger("gCollisionGoggles", 0)) {
+                                SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId, 0, play->view.eye.x,
+                                                play->view.eye.y, play->view.eye.z);
+                            } else {
+                                Gfx* workDl = WORK_DISP;
+                                Gfx* opaDl = POLY_OPA_DISP;
+                                Gfx* xluDl = POLY_XLU_DISP;
+                                Gfx* ovlDl = OVERLAY_DISP;
+                                SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId, 0, play->view.eye.x,
+                                                play->view.eye.y, play->view.eye.z);
+                                WORK_DISP = workDl;
+                                POLY_OPA_DISP = opaDl;
+                                POLY_XLU_DISP = xluDl;
+                                OVERLAY_DISP = ovlDl;
+                            }
                         }
                     }
                 }
 
                 if ((HREG(80) != 10) || (HREG(90) & 2)) {
                     if (!play->envCtx.sunMoonDisabled) {
-                        Environment_DrawSunAndMoon(play);
+                        if (!CVarGetInteger("gCollisionGoggles", 0)) {
+                            Environment_DrawSunAndMoon(play);
+                        } else {
+                            Gfx* workDl = WORK_DISP;
+                            Gfx* opaDl = POLY_OPA_DISP;
+                            Gfx* xluDl = POLY_XLU_DISP;
+                            Gfx* ovlDl = OVERLAY_DISP;
+                            Environment_DrawSunAndMoon(play);
+                            WORK_DISP = workDl;
+                            POLY_OPA_DISP = opaDl;
+                            POLY_XLU_DISP = xluDl;
+                            OVERLAY_DISP = ovlDl;
+                        }
                     }
                 }
 
@@ -1632,7 +1669,19 @@ void Play_Draw(PlayState* play) {
 
                 if ((HREG(80) != 10) || (HREG(90) & 4)) {
                     Environment_UpdateLightningStrike(play);
-                    Environment_DrawLightning(play, 0);
+                    if (!CVarGetInteger("gCollisionGoggles", 0)) {
+                        Environment_DrawLightning(play, 0);
+                    } else {
+                        Gfx* workDl = WORK_DISP;
+                        Gfx* opaDl = POLY_OPA_DISP;
+                        Gfx* xluDl = POLY_XLU_DISP;
+                        Gfx* ovlDl = OVERLAY_DISP;
+                        Environment_DrawLightning(play, 0);
+                        WORK_DISP = workDl;
+                        POLY_OPA_DISP = opaDl;
+                        POLY_XLU_DISP = xluDl;
+                        OVERLAY_DISP = ovlDl;
+                    }
                 }
 
                 if ((HREG(80) != 10) || (HREG(90) & 8)) {
@@ -1648,10 +1697,23 @@ void Play_Draw(PlayState* play) {
                         } else {
                             sp80 = HREG(84);
                         }
+
                         if (!CVarGetInteger("gCollisionGoggles", 0)) {
                             Scene_Draw(play);
                             Room_Draw(play, &play->roomCtx.curRoom, sp80 & 3);
                             Room_Draw(play, &play->roomCtx.prevRoom, sp80 & 3);
+                        } else {
+                            Gfx* workDl = WORK_DISP;
+                            Gfx* opaDl = POLY_OPA_DISP;
+                            Gfx* xluDl = POLY_XLU_DISP;
+                            Gfx* ovlDl = OVERLAY_DISP;
+                            Scene_Draw(play);
+                            Room_Draw(play, &play->roomCtx.curRoom, sp80 & 3);
+                            Room_Draw(play, &play->roomCtx.prevRoom, sp80 & 3);
+                            WORK_DISP = workDl;
+                            POLY_OPA_DISP = opaDl;
+                            POLY_XLU_DISP = xluDl;
+                            OVERLAY_DISP = ovlDl;
                         }
                     }
                 }
@@ -1662,14 +1724,38 @@ void Play_Draw(PlayState* play) {
                         Vec3f sp74;
 
                         Camera_GetSkyboxOffset(&sp74, GET_ACTIVE_CAM(play));
-                        SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId, 0,
-                                        play->view.eye.x + sp74.x, play->view.eye.y + sp74.y,
-                                        play->view.eye.z + sp74.z);
+                        if (!CVarGetInteger("gCollisionGoggles", 0)) {
+                            SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId, 0, play->view.eye.x + sp74.x,
+                                            play->view.eye.y + sp74.y, play->view.eye.z + sp74.z);
+                        } else {
+                            Gfx* workDl = WORK_DISP;
+                            Gfx* opaDl = POLY_OPA_DISP;
+                            Gfx* xluDl = POLY_XLU_DISP;
+                            Gfx* ovlDl = OVERLAY_DISP;
+                            SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId, 0, play->view.eye.x + sp74.x,
+                                            play->view.eye.y + sp74.y, play->view.eye.z + sp74.z);
+                            WORK_DISP = workDl;
+                            POLY_OPA_DISP = opaDl;
+                            POLY_XLU_DISP = xluDl;
+                            OVERLAY_DISP = ovlDl;
+                        }
                     }
                 }
 
                 if (play->envCtx.unk_EE[1] != 0) {
-                    Environment_DrawRain(play, &play->view, gfxCtx);
+                    if (!CVarGetInteger("gCollisionGoggles", 0)) {
+                        Environment_DrawRain(play, &play->view, gfxCtx);
+                    } else {
+                        Gfx* workDl = WORK_DISP;
+                        Gfx* opaDl = POLY_OPA_DISP;
+                        Gfx* xluDl = POLY_XLU_DISP;
+                        Gfx* ovlDl = OVERLAY_DISP;
+                        Environment_DrawRain(play, &play->view, gfxCtx);
+                        WORK_DISP = workDl;
+                        POLY_OPA_DISP = opaDl;
+                        POLY_XLU_DISP = xluDl;
+                        OVERLAY_DISP = ovlDl;
+                    }
                 }
 
                 if ((HREG(80) != 10) || (HREG(84) != 0)) {
@@ -1689,23 +1775,75 @@ void Play_Draw(PlayState* play) {
                         sp21C.x = play->view.eye.x + play->envCtx.sunPos.x;
                         sp21C.y = play->view.eye.y + play->envCtx.sunPos.y;
                         sp21C.z = play->view.eye.z + play->envCtx.sunPos.z;
-                        Environment_DrawSunLensFlare(play, &play->envCtx, &play->view, gfxCtx, sp21C, 0);
+                        if (!CVarGetInteger("gCollisionGoggles", 0)) {
+                            Environment_DrawSunLensFlare(play, &play->envCtx, &play->view, gfxCtx, sp21C, 0);
+                        } else {
+                            Gfx* workDl = WORK_DISP;
+                            Gfx* opaDl = POLY_OPA_DISP;
+                            Gfx* xluDl = POLY_XLU_DISP;
+                            Gfx* ovlDl = OVERLAY_DISP;
+                            Environment_DrawSunLensFlare(play, &play->envCtx, &play->view, gfxCtx, sp21C, 0);
+                            WORK_DISP = workDl;
+                            POLY_OPA_DISP = opaDl;
+                            POLY_XLU_DISP = xluDl;
+                            OVERLAY_DISP = ovlDl;
+                        }
                     }
-                    Environment_DrawCustomLensFlare(play);
+                    if (!CVarGetInteger("gCollisionGoggles", 0)) {
+                        Environment_DrawCustomLensFlare(play);
+                    } else {
+                        Gfx* workDl = WORK_DISP;
+                        Gfx* opaDl = POLY_OPA_DISP;
+                        Gfx* xluDl = POLY_XLU_DISP;
+                        Gfx* ovlDl = OVERLAY_DISP;
+                        Environment_DrawCustomLensFlare(play);
+                        WORK_DISP = workDl;
+                        POLY_OPA_DISP = opaDl;
+                        POLY_XLU_DISP = xluDl;
+                        OVERLAY_DISP = ovlDl;
+                    }
                 }
 
                 if ((HREG(80) != 10) || (HREG(87) != 0)) {
                     if (MREG(64) != 0) {
-                        Environment_FillScreen(gfxCtx, MREG(65), MREG(66), MREG(67), MREG(68),
-                                               FILL_SCREEN_OPA | FILL_SCREEN_XLU);
+                        if (!CVarGetInteger("gCollisionGoggles", 0)) {
+                            Environment_FillScreen(gfxCtx, MREG(65), MREG(66), MREG(67), MREG(68),
+                                                   FILL_SCREEN_OPA | FILL_SCREEN_XLU);
+                        } else {
+                            Gfx* workDl = WORK_DISP;
+                            Gfx* opaDl = POLY_OPA_DISP;
+                            Gfx* xluDl = POLY_XLU_DISP;
+                            Gfx* ovlDl = OVERLAY_DISP;
+                            Environment_FillScreen(gfxCtx, MREG(65), MREG(66), MREG(67), MREG(68),
+                                                   FILL_SCREEN_OPA | FILL_SCREEN_XLU);
+                            WORK_DISP = workDl;
+                            POLY_OPA_DISP = opaDl;
+                            POLY_XLU_DISP = xluDl;
+                            OVERLAY_DISP = ovlDl;
+                        }
                     }
 
                     switch (play->envCtx.fillScreen) {
                         case 1:
-                            Environment_FillScreen(
-                                gfxCtx, play->envCtx.screenFillColor[0], play->envCtx.screenFillColor[1],
-                                play->envCtx.screenFillColor[2], play->envCtx.screenFillColor[3],
-                                FILL_SCREEN_OPA | FILL_SCREEN_XLU);
+                            if (!CVarGetInteger("gCollisionGoggles", 0)) {
+                                Environment_FillScreen(gfxCtx, play->envCtx.screenFillColor[0],
+                                                       play->envCtx.screenFillColor[1], play->envCtx.screenFillColor[2],
+                                                       play->envCtx.screenFillColor[3],
+                                                       FILL_SCREEN_OPA | FILL_SCREEN_XLU);
+                            } else {
+                                Gfx* workDl = WORK_DISP;
+                                Gfx* opaDl = POLY_OPA_DISP;
+                                Gfx* xluDl = POLY_XLU_DISP;
+                                Gfx* ovlDl = OVERLAY_DISP;
+                                Environment_FillScreen(gfxCtx, play->envCtx.screenFillColor[0],
+                                                       play->envCtx.screenFillColor[1], play->envCtx.screenFillColor[2],
+                                                       play->envCtx.screenFillColor[3],
+                                                       FILL_SCREEN_OPA | FILL_SCREEN_XLU);
+                                WORK_DISP = workDl;
+                                POLY_OPA_DISP = opaDl;
+                                POLY_XLU_DISP = xluDl;
+                                OVERLAY_DISP = ovlDl;
+                            }
                             break;
                         default:
                             break;
@@ -1714,7 +1852,19 @@ void Play_Draw(PlayState* play) {
 
                 if ((HREG(80) != 10) || (HREG(88) != 0)) {
                     if (play->envCtx.sandstormState != SANDSTORM_OFF) {
-                        Environment_DrawSandstorm(play, play->envCtx.sandstormState);
+                        if (!CVarGetInteger("gCollisionGoggles", 0)) {
+                            Environment_DrawSandstorm(play, play->envCtx.sandstormState);
+                        } else {
+                            Gfx* workDl = WORK_DISP;
+                            Gfx* opaDl = POLY_OPA_DISP;
+                            Gfx* xluDl = POLY_XLU_DISP;
+                            Gfx* ovlDl = OVERLAY_DISP;
+                            Environment_DrawSandstorm(play, play->envCtx.sandstormState);
+                            WORK_DISP = workDl;
+                            POLY_OPA_DISP = opaDl;
+                            POLY_XLU_DISP = xluDl;
+                            OVERLAY_DISP = ovlDl;
+                        }
                     }
                 }
 
