@@ -184,6 +184,7 @@ class Option {
      * @return const std::string&
      */
     const std::string& GetName() const;
+    const std::string& GetDescription() const;
 
     /**
      * @brief Get the value name corresponding to the selected index.
@@ -305,13 +306,15 @@ class Option {
     void SetFlag(int imFlag_);
     void RemoveFlag(int imFlag_);
 
-  private:
+protected:
     Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
            std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
            bool defaultHidden_, int imFlags_);
     Option(bool var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
            std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
            bool defaultHidden_, int imFlags_);
+
+  private:
     bool RenderCheckbox() const;
     bool RenderCombobox() const;
     bool RenderSlider() const;
@@ -333,7 +336,7 @@ class Option {
     std::string disabledText;
 };
 
-enum class RandomizerTrickTag {
+enum class TrickTag {
     NOVICE,
     INTERMEDIATE,
     ADVANCED,
@@ -346,6 +349,7 @@ enum class RandomizerTrickTag {
 
 class TrickOption : public Option {
 public:
+    TrickOption() = default;
     /**
      * @brief A convenience function for constructing the Option for a trick.
      *
@@ -357,7 +361,7 @@ public:
      * @param description_ A brief description of the trick.
      * @return Option
      */
-    static TrickOption LogicTrick(RandomizerCheckQuest quest_, RandomizerArea area_, std::set<RandomizerTrickTag> tags_, bool glitch_, const std::string& name_, std::string description_);
+    static TrickOption LogicTrick(RandomizerCheckQuest quest_, RandomizerArea area_, std::set<TrickTag> tags_, bool glitch_, const std::string& name_, std::string description_);
 
     /**
      * @brief Retrieve the quest type this trick is relevant for.
@@ -386,13 +390,15 @@ public:
      * @param tag the RandomizerTrickTag to check for
      * @return true or false
      */
-    bool HasTag(RandomizerTrickTag tag) const;
+    bool HasTag(TrickTag tag) const;
+
+    const std::set<TrickTag>& GetTags() const;
 
 private:
-    TrickOption(RandomizerCheckQuest quest_, RandomizerArea area_, std::set<RandomizerTrickTag> tags_, bool glitch_, const std::string& name_, std::string description_);
+    TrickOption(RandomizerCheckQuest quest_, RandomizerArea area_, std::set<TrickTag> tags_, bool glitch_, const std::string& name_, std::string description_);
     RandomizerCheckQuest mQuest;
     RandomizerArea mArea;
-    std::set<RandomizerTrickTag> mTags;
+    std::set<TrickTag> mTags;
     bool mGlitch;
 };
 

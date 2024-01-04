@@ -604,7 +604,7 @@ Option& Context::GetOption(const RandomizerSettingKey key) const {
     return mSettings->GetOption(key);
 }
 
-Option& Context::GetTrickOption(const RandomizerTrick key) const {
+TrickOption& Context::GetTrickOption(const RandomizerTrick key) const {
     return mSettings->GetTrickOption(key);
 }
 } // namespace Rando

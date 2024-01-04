@@ -34,7 +34,7 @@ class Settings {
      * @param key
      * @return Option&
      */
-    Option& GetTrickOption(RandomizerTrick key);
+    TrickOption& GetTrickOption(RandomizerTrick key);
 
     /**
      * @brief Reset all RandomizerTrick keys.
@@ -174,6 +174,7 @@ class Settings {
      */
     void ParseJson(nlohmann::json spoilerFileJson);
     std::vector<Option*> VanillaLogicDefaults = {};
+    std::map<RandomizerArea, std::vector<RandomizerTrick>> mTricksByArea = {};
 
   private:
     /**
