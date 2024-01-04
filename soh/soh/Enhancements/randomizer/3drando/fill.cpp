@@ -299,7 +299,7 @@ bool IsBeatableWithout(RandomizerCheck excludedCheck, bool replaceItem, Randomiz
 }
 
 //RANDOTODO better name
-void ResetLogic(std::shared_ptr<Context> ctx, bool applyInventory = false){
+void ResetLogic(std::shared_ptr<Context>& ctx, bool applyInventory = false){
   if (applyInventory){
     ApplyStartingInventory();
   }
