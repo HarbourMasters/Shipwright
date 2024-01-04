@@ -9,6 +9,8 @@
 
 #include <utility>
 
+#include "consolevariablebridge.h"
+
 namespace Rando {
 std::vector<std::string> NumOpts(const int min, const int max, const int step = 1, const std::string& textBefore = {}, const std::string& textAfter = {}) {
     std::vector<std::string> options;

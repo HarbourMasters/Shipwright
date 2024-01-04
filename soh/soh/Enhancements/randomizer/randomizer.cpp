@@ -22,7 +22,6 @@
 #include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include <stdexcept>
 #include "randomizer_check_objects.h"
-#include "randomizer_tricks.h"
 #include "randomizer_check_tracker.h"
 #include <sstream>
 #include <tuple>

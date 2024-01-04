@@ -12,6 +12,8 @@
 #include <fstream>
 #include <spdlog/spdlog.h>
 
+#include "luslog.h"
+
 namespace Rando {
 std::weak_ptr<Context> Context::mContext;
 
