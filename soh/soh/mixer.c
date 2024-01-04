@@ -289,29 +289,35 @@ void aEnvMixerImpl(uint16_t in_addr, uint16_t n_samples, bool swap_reverb,
 
         // Init vectors
         __m128i in_channels = _mm_load_si128((__m128i*) &in[N]);
-        __m128i dl = _mm_load_si128((__m128i*) &dry[0][N]);
-        __m128i dr = _mm_load_si128((__m128i*) &dry[1][N]);
-        __m128i wl = _mm_load_si128((__m128i*) &wet[0][N]);
-        __m128i wr = _mm_load_si128((__m128i*) &wet[1][N]);
+        __m128i d[2] = {
+            _mm_load_si128((__m128i*) &dry[0][N]),
+            _mm_load_si128((__m128i*) &dry[1][N])
+        };
+        __m128i w[2] = {
+            _mm_load_si128((__m128i*) &wet[0][N]),
+            _mm_load_si128((__m128i*) &wet[1][N])
+        };
 
         // Compute base samples
         // sample = ((in * vols) >> 16) ^ negs
-        __m128i sl = _mm_xor_si128(_mm_mulhi_epi16(in_channels, _mm_set1_epi16(vols[0])), _mm_set1_epi16(negs[0]));
-        __m128i sr = _mm_xor_si128(_mm_mulhi_epi16(in_channels, _mm_set1_epi16(vols[1])), _mm_set1_epi16(negs[1]));
+        __m128i s[2] = {
+            _mm_xor_si128(_mm_mulhi_epi16(in_channels, _mm_set1_epi16(vols[0])), _mm_set1_epi16(negs[0])),
+            _mm_xor_si128(_mm_mulhi_epi16(in_channels, _mm_set1_epi16(vols[1])), _mm_set1_epi16(negs[1]))
+        };
 
         // Compute left swapped samples
         // (sample * vol_wet) >> 16) ^ negs
-        __m128i ssl = _mm_xor_si128(_mm_mulhi_epi16(swap_reverb ? sr : sl, _mm_set1_epi16(vol_wet)), _mm_set1_epi16(negs[2]));
-        __m128i ssr = _mm_xor_si128(_mm_mulhi_epi16(swap_reverb ? sl : sr, _mm_set1_epi16(vol_wet)), _mm_set1_epi16(negs[3]));
+        __m128i ss[2] = {
+            _mm_xor_si128(_mm_mulhi_epi16(s[swap_reverb], _mm_set1_epi16(vol_wet)), _mm_set1_epi16(negs[2])),
+            _mm_xor_si128(_mm_mulhi_epi16(s[!swap_reverb], _mm_set1_epi16(vol_wet)), _mm_set1_epi16(negs[3]))
+        };
 
         // Store values to buffers
-        _mm_store_si128((__m128i*) &dry[0][N], _mm_add_epi16(sl, dl));
-        _mm_store_si128((__m128i*) &dry[1][N], _mm_add_epi16(sr, dr));
-        _mm_store_si128((__m128i*) &wet[0][N], _mm_add_epi16(ssl, wl));
-        _mm_store_si128((__m128i*) &wet[1][N], _mm_add_epi16(ssr, wr));
-
-        vols[0] += rates[0];
-        vols[1] += rates[1];
+        for (int j = 0; j < 2; j++) {
+            _mm_store_si128((__m128i*) &dry[j][N], _mm_add_epi16(s[j], d[j]));
+            _mm_store_si128((__m128i*) &wet[j][N], _mm_add_epi16(ss[j], w[j]));
+            vols[j] += rates[j];
+        }
         vol_wet += rate_wet;
     }
 }
