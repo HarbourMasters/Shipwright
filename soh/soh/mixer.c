@@ -3,7 +3,16 @@
 #include <string.h>
 
 #include "mixer.h"
-#include "sse2neon.h"
+
+#ifdef __SSE2__
+  #include <emmintrin.h>
+#else
+  #ifdef __aarch64__
+    #include "sse2neon.h"
+  #else
+    #warning SSE2 support is not available. Code will not compile
+  #endif
+#endif
 
 #ifndef __clang__
 #pragma GCC optimize ("unroll-loops")
