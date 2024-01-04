@@ -4935,12 +4935,8 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                                     this->actor.textId = 0x408B;
                                     this->unk_15C = 20;
                                 }
-                            } else if (!IS_RANDO) {
+                            } else {
                                 this->actor.textId = 0x409B;
-                                this->unk_15C = 11;
-                            }
-                            else {
-                                this->actor.textId = 0x4086;
                                 this->unk_15C = 11;
                             }
                             Message_ContinueTextbox(play, this->actor.textId);
