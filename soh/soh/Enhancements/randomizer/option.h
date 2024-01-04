@@ -10,6 +10,7 @@
 #include <type_traits>
 
 #include "randomizerTypes.h"
+#include "tricks.h"
 
 namespace Rando {
 enum ImGuiMenuFlags {
@@ -336,17 +337,6 @@ protected:
     std::string disabledText;
 };
 
-enum class TrickTag {
-    NOVICE,
-    INTERMEDIATE,
-    ADVANCED,
-    EXPERT,
-    EXTREME,
-    /*LENS,
-     *BKSKIP,
-     *EXPERIMENTAL*/
-};
-
 class TrickOption : public Option {
 public:
     TrickOption() = default;
@@ -361,7 +351,7 @@ public:
      * @param description_ A brief description of the trick.
      * @return Option
      */
-    static TrickOption LogicTrick(RandomizerCheckQuest quest_, RandomizerArea area_, std::set<TrickTag> tags_, bool glitch_, const std::string& name_, std::string description_);
+    static TrickOption LogicTrick(RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_, bool glitch_, const std::string& name_, std::string description_);
 
     /**
      * @brief Retrieve the quest type this trick is relevant for.
@@ -390,15 +380,15 @@ public:
      * @param tag the RandomizerTrickTag to check for
      * @return true or false
      */
-    bool HasTag(TrickTag tag) const;
+    bool HasTag(Tricks::Tag tag) const;
 
-    const std::set<TrickTag>& GetTags() const;
+    const std::set<Tricks::Tag>& GetTags() const;
 
 private:
-    TrickOption(RandomizerCheckQuest quest_, RandomizerArea area_, std::set<TrickTag> tags_, bool glitch_, const std::string& name_, std::string description_);
+    TrickOption(RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_, bool glitch_, const std::string& name_, std::string description_);
     RandomizerCheckQuest mQuest;
     RandomizerArea mArea;
-    std::set<TrickTag> mTags;
+    std::set<Tricks::Tag> mTags;
     bool mGlitch;
 };
 

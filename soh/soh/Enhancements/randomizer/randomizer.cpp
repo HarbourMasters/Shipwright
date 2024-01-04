@@ -1723,106 +1723,6 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
     return false;
 }
 
-static std::unordered_map<RandomizerArea, std::string> rtAreaNames = {
-    { RA_NONE, "General Tricks"},
-    //{ RTAREA_BK_SKIPS, "Boss Key Skips"},
-    { RA_KOKIRI_FOREST, "Kokiri Forest"},
-    { RA_THE_LOST_WOODS, "Lost Woods"},
-    { RA_SACRED_FOREST_MEADOW, "Sacred Forest Meadow"},
-    { RA_HYRULE_FIELD, "Hyrule Field"},
-    { RA_LAKE_HYLIA, "Lake Hylia"},
-    { RA_GERUDO_VALLEY, "Gerudo Valley"},
-    { RA_GERUDO_FORTRESS, "Gerudo Fortress"},
-    { RA_HAUNTED_WASTELAND, "Haunted Wasteland"},
-    { RA_DESERT_COLOSSUS, "Desert Colossus"},
-    { RA_THE_MARKET, "Hyrule Market"},
-    { RA_HYRULE_CASTLE, "Hyrule Castle"},
-    { RA_KAKARIKO_VILLAGE, "Kakariko Village"},
-    { RA_THE_GRAVEYARD, "Graveyard"},
-    { RA_DEATH_MOUNTAIN_TRAIL, "Death Mountain Trail"},
-    { RA_GORON_CITY, "Goron City"},
-    { RA_DEATH_MOUNTAIN_CRATER, "Death Mountain Crater"},
-    { RA_ZORAS_RIVER, "Zora's River"},
-    { RA_ZORAS_DOMAIN, "Zora's Domain"},
-    { RA_ZORAS_FOUNTAIN, "Zora's Fountain"},
-    { RA_LON_LON_RANCH, "Lon Lon Ranch"},
-    { RA_DEKU_TREE, "Deku Tree"},
-    { RA_DODONGOS_CAVERN, "Dodongo's Cavern"},
-    { RA_JABU_JABUS_BELLY, "Jabu Jabu's Belly"},
-    { RA_FOREST_TEMPLE, "Forest Temple"},
-    { RA_FIRE_TEMPLE, "Fire Temple"},
-    { RA_WATER_TEMPLE, "Water Temple"},
-    { RA_SPIRIT_TEMPLE, "Spirit Temple"},
-    { RA_SHADOW_TEMPLE, "Shadow Temple"},
-    { RA_BOTTOM_OF_THE_WELL, "Bottom of the Well"},
-    { RA_ICE_CAVERN, "Ice Cavern"},
-    { RA_GERUDO_TRAINING_GROUND, "Gerudo Training Grounds"},
-    { RA_GANONS_CASTLE, "Ganon's Castle"},
-    { RA_MAX, "Invalid"},
-};
-
-std::string GetRTAreaName(RandomizerArea area) {
-    return rtAreaNames[area];
-}
-
-static std::unordered_map<Rando::TrickTag, std::string> rtTagNames = {
-    {Rando::TrickTag::NOVICE, "Novice"},
-    {Rando::TrickTag::INTERMEDIATE, "Intermediate"},
-    {Rando::TrickTag::ADVANCED, "Advanced"},
-    {Rando::TrickTag::EXPERT, "Expert"},
-    {Rando::TrickTag::EXTREME, "Extreme"},
-    /*{Rando::TrickTag::LENS, "Lens"},
-    {Rando::TrickTag::BKSKIP, "Boss Key Skip"},
-    {Rando::TrickTag::EXPERIMENTAL, "Experimental"}*/
-};
-
-bool CheckRTTags(std::unordered_map<Rando::TrickTag, bool> &showTag, const std::set<Rando::TrickTag> &rtTags) {
-    for (auto rtTag : rtTags) {
-        if (showTag[rtTag]) {
-            return true;
-        }
-    }
-    return false;
-}
-
-std::string GetRTTagName(const Rando::TrickTag tag) {
-    return rtTagNames[tag];
-}
-
-ImVec4 GetRTTagColor(const Rando::TrickTag tag) {
-    switch(tag) {
-        case Rando::TrickTag::NOVICE:
-            return ImVec4(0.09f,0.55f,0.37f,1.0f);
-        case Rando::TrickTag::INTERMEDIATE:
-            return ImVec4(0.95f,0.52f,0.0f,1.0f);
-        case Rando::TrickTag::ADVANCED:
-            return ImVec4(0.0f,0.29f,0.71f,1.0f);
-        case Rando::TrickTag::EXPERT:
-            return ImVec4(0.53f,0.05f,0.14f,1.0f);
-        case Rando::TrickTag::EXTREME:
-            return ImVec4(0.27f,0.0f,0.27f,1.0f);
-        default:
-            return ImVec4(0.5f,0.5f,0.5f,1.0f);
-        /*case RTTAG_LENS:
-            return ImVec4(.f,.f,.f,1.0f);
-        case RTTAG_BKSKIP:
-            return ImVec4(.f,.f,.f,1.0f);
-        case RTTAG_EXPERIMENTAL:
-            return ImVec4(.f,.f,.f,1.0f);*/
-    }
-}
-
-void DrawTagChips(const std::set<Rando::TrickTag> &rtTags) {
-    for (auto rtTag : rtTags) {
-        ImGui::SameLine();
-        ImGui::BeginDisabled();
-        ImGui::PushStyleColor(ImGuiCol_Button, GetRTTagColor(rtTag));
-        ImGui::SmallButton(GetRTTagName(rtTag).c_str());
-        ImGui::PopStyleColor();
-        ImGui::EndDisabled();
-    }
-}
-
 void RandomizerSettingsWindow::DrawElement() {
     auto ctx = Rando::Context::GetInstance();
     if (generated) {
@@ -2171,12 +2071,12 @@ void RandomizerSettingsWindow::DrawElement() {
                 {RA_GANONS_CASTLE, true}
             };
 
-            static std::unordered_map<Rando::TrickTag, bool> showTag {
-                {Rando::TrickTag::NOVICE,true},
-                {Rando::TrickTag::INTERMEDIATE,true},
-                {Rando::TrickTag::ADVANCED,true},
-                {Rando::TrickTag::EXPERT,true},
-                {Rando::TrickTag::EXTREME,true}
+            static std::unordered_map<Rando::Tricks::Tag, bool> showTag {
+                {Rando::Tricks::Tag::NOVICE,true},
+                {Rando::Tricks::Tag::INTERMEDIATE,true},
+                {Rando::Tricks::Tag::ADVANCED,true},
+                {Rando::Tricks::Tag::EXPERT,true},
+                {Rando::Tricks::Tag::EXTREME,true}
             };
             static ImGuiTextFilter trickSearch;
             trickSearch.Draw("Filter (inc,-exc)", 490.0f);
@@ -2290,15 +2190,15 @@ void RandomizerSettingsWindow::DrawElement() {
                             }
                         }
                         if (hasTricks) {
-                            ImGui::TreeNodeSetOpen(ImGui::GetID(GetRTAreaName(area).c_str()), areaTreeDisabled[area]);
+                            ImGui::TreeNodeSetOpen(ImGui::GetID(Rando::Tricks::GetRTAreaName(area).c_str()), areaTreeDisabled[area]);
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode(GetRTAreaName(area).c_str())) {
+                            if (ImGui::TreeNode(Rando::Tricks::GetRTAreaName(area).c_str())) {
                                 for (auto rt : trickIds) {
                                     auto option = mSettings->GetTrickOption(rt);
                                     if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
                                         !enabledTricks.count(rt) && CheckRTTags(showTag, option.GetTags()) &&
                                         !option.IsGlitch()) {
-                                        ImGui::TreeNodeSetOpen(ImGui::GetID(GetRTAreaName(option.GetArea()).c_str()), areaTreeDisabled[option.GetArea()]);
+                                        ImGui::TreeNodeSetOpen(ImGui::GetID(Rando::Tricks::GetRTAreaName(option.GetArea()).c_str()), areaTreeDisabled[option.GetArea()]);
                                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                                         if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Right)) {
                                             enabledTricks.insert(rt);
@@ -2384,15 +2284,15 @@ void RandomizerSettingsWindow::DrawElement() {
                             }
                         }
                         if (hasTricks) {
-                            ImGui::TreeNodeSetOpen(ImGui::GetID(GetRTAreaName(area).c_str()), areaTreeDisabled[area]);
+                            ImGui::TreeNodeSetOpen(ImGui::GetID(Rando::Tricks::GetRTAreaName(area).c_str()), areaTreeDisabled[area]);
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode(GetRTAreaName(area).c_str())) {
+                            if (ImGui::TreeNode(Rando::Tricks::GetRTAreaName(area).c_str())) {
                                 for (auto rt : trickIds) {
                                     auto option = mSettings->GetTrickOption(rt);
                                     if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
                                         enabledTricks.count(rt) && CheckRTTags(showTag, option.GetTags()) &&
                                         !option.IsGlitch()) {
-                                        ImGui::TreeNodeSetOpen(ImGui::GetID(GetRTAreaName(option.GetArea()).c_str()), areaTreeDisabled[option.GetArea()]);
+                                        ImGui::TreeNodeSetOpen(ImGui::GetID(Rando::Tricks::GetRTAreaName(option.GetArea()).c_str()), areaTreeDisabled[option.GetArea()]);
                                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                                         if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Left)) {
                                             enabledTricks.insert(rt);
