@@ -296,6 +296,8 @@ void BgSpot00Hanebasi_DrawTorches(Actor* thisx, PlayState* play2) {
                 sTorchFlameScale = (18440 - gSaveContext.dayTime) * (1.0f / 85000.0f);
             } else if (gSaveContext.dayTime > 50523 && gSaveContext.dayTime < 51883) {
                 sTorchFlameScale = (gSaveContext.dayTime - 50523) * (1.0f / 170000.0f);
+            } else if (gSaveContext.dayTime < 17760 || gSaveContext.dayTime > 51883) {
+                sTorchFlameScale = 0.008f;
             }
         }
     // #endregion
