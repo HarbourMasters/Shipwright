@@ -4,14 +4,16 @@
 
 #include "mixer.h"
 
-#ifdef __SSE2__
-  #include <emmintrin.h>
+#if defined(__SSE2__) || defined(__aarch64__)
+  #define SSE2_AVAILABLE
 #else
-  #ifdef __aarch64__
-    #include "sse2neon.h"
-  #else
-    #warning SSE2 support is not available. Code will not compile
-  #endif
+  #pragma message("Warning: SSE2 support is not available. Code will not compile")
+#endif
+
+#if defined(__SSE2__)
+  #include <emmintrin.h>
+#elif defined(__aarch64__)
+  #include "sse2neon.h"
 #endif
 
 #ifndef __clang__
