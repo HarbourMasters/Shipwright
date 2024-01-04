@@ -337,7 +337,7 @@ void func_80A56B40(EnHeishi4* this, PlayState* play) {
             Player* player = GET_PLAYER(play);
             // Only allow sneaking when not wearing a mask as that triggers different dialogue. MM Bunny hood disables
             // these interactions, so bunny hood is fine in that case.
-            if (CVarGetInteger("gMarketSneak", 0) &&
+            if ((CVarGetInteger("gMarketSneak", 0) || CVarGetInteger("gBridgeOpenAtNight", 0)) &&
                 (player->currentMask == PLAYER_MASK_NONE ||
                  (player->currentMask == PLAYER_MASK_BUNNY && CVarGetInteger("gMMBunnyHood", 0)))) {
                 this->actionFunc = EnHeishi4_MarketSneak;

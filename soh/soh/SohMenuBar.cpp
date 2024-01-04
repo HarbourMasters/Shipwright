@@ -587,7 +587,10 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Skip Magic Arrow Equip Animation", "gSkipArrowAnimation", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Skip save confirmation", "gSkipSaveConfirmation", true, false);
                 UIWidgets::Tooltip("Skip the \"Game saved.\" confirmation screen");
-                UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", "gMarketSneak", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Bridge Open At Night", "gBridgeOpenAtNight", true, false);
+                UIWidgets::Tooltip("Makes the bridge to Hyrule Market stay open at night.");
+                const bool bBridgeOpenAtNightEnabled = CVarGetInteger("gBridgeOpenAtNight", 0);
+                UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", "gMarketSneak", true, false, bBridgeOpenAtNightEnabled, "Forced enabled when Bridge Open At Night is enabled");
                 UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking "
                 "to the guard next to the gate.");
                 UIWidgets::PaddedEnhancementCheckbox("Faster Farore's Wind", "gFastFarores", true, false);
@@ -608,8 +611,6 @@ void DrawEnhancementsMenu() {
                     "- Not within range of Ocarina playing spots");
                 UIWidgets::PaddedEnhancementCheckbox("Skip water take breath animation", "gSkipSwimDeepEndAnim", true, false);
                 UIWidgets::Tooltip("Skips Link's taking breath animation after coming up from water. This setting does not interfere with getting items from underwater.");
-                UIWidgets::PaddedEnhancementCheckbox("Bridge Open At Night", "gBridgeOpenAtNight", true, false);
-                UIWidgets::Tooltip("Makes the bridge to Hyrule Castle stay open at night.");
                 ImGui::EndMenu();
             }
 
