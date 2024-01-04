@@ -2634,7 +2634,7 @@ extern "C" void SoH_ProcessDroppedFiles() {
             gui->GetGuiWindow("Save Editor")->Hide();
             gui->GetGuiWindow("Display List Viewer")->Hide();
             gui->GetGuiWindow("Stats")->Hide();
-            std::dynamic_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->ClearBindings();
+            //std::dynamic_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->ClearBindings();
 
             gui->SaveConsoleVariablesOnNextTick();
 

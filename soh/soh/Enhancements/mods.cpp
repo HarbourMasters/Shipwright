@@ -1095,7 +1095,7 @@ void RegisterSnowballs() {
 
         int actorsSpawned = 0;
 
-        while (actorsSpawned < 30) {
+        while (actorsSpawned < 40) {
             snowballPos.x = (float)(Random(
                 (gPlayState->sceneNum == SCENE_HYRULE_FIELD ? -10000 : -2700) + 10000,
                 (gPlayState->sceneNum == SCENE_HYRULE_FIELD ? 5000 : 2000) + 10000
@@ -1168,8 +1168,18 @@ void RegisterSnowballs() {
     });
 }
 
+int treeTotal = 0;
+
 void RegisterBonkDelete() {
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
+        if (gPlayState->sceneNum == SCENE_HYRULE_FIELD) {
+            treeTotal = 0;
+        }
+    });
+
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerBonk>([]() {
+        
         Player* player = GET_PLAYER(gPlayState);
         if (gPlayState->sceneNum == SCENE_HYRULE_FIELD) {
             Actor* actor = &GET_PLAYER(gPlayState)->actor;
@@ -1178,6 +1188,14 @@ void RegisterBonkDelete() {
             if (nearbyActor != NULL) {
                 if (nearbyActor->id == ACTOR_EN_WOOD02) {
                     Actor_Kill(nearbyActor);
+                    if (treeTotal == 43) 
+                    {
+                        GameInteractor::RawAction::TeleportPlayer(GERUDO_TRAINING_GROUNDS_ENTRANCE);
+                    } 
+                    else 
+                    {
+                        treeTotal++;
+                    }
                 }
             }
         }
