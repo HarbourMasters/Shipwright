@@ -1,4 +1,5 @@
 #include "presets.h"
+#include <format>
 #include <variant>
 #include <string>
 #include <cstdint>
@@ -12,6 +13,14 @@ void clearCvars(std::vector<const char*> cvarsToClear) {
     }
 }
 
+std::string FormatLocations(std::vector<RandomizerCheck> locs) {
+    std::string locString = "";
+    for (auto loc: locs) {
+        locString += std::format("{},", (uint32_t)loc);
+    }
+    return locString;
+}
+
 void applyPreset(std::vector<PresetEntry> entries) {
     for(auto& [cvar, type, value] : entries) {
         switch (type) {
@@ -23,6 +32,9 @@ void applyPreset(std::vector<PresetEntry> entries) {
                 break;
             case PRESET_ENTRY_TYPE_STRING:
                 CVarSetString(cvar, std::get<const char*>(value));
+                break;
+            case PRESET_ENTRY_TYPE_CPP_STRING:
+                CVarSetString(cvar, std::get<std::string>(value).c_str());
                 break;
         }
     }
