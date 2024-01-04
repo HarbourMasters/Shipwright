@@ -968,7 +968,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
                            ENKANBAN_FISHING);
         Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, 0.0f, 0.0f, 0.0f, 0, 0, 0, 200, true);
 
-        if ((KREG(1) == 1) || ((D_80B7E07D & 3) == 3)) {
+        if ((KREG(1) == 1) || ((D_80B7E07D & 3) == 3 || (CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gAlwaysHyruleLoaches", 0)))) {
             if (sLinkAge != 1) {
                 fishCount = 16;
             } else {
@@ -983,7 +983,8 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
                         sFishInits[i].pos.z, 0, Rand_ZeroFloat(0x10000), 0, 100 + i, true);
         }
     } else {
-        if ((thisx->params < 115) || (thisx->params == 200)) {
+        u8 allHyruleLoaches = CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gAllHyruleLoaches", 0);
+        if ((thisx->params < 115 && !allHyruleLoaches) || (thisx->params == 200)) {
             SkelAnime_InitFlex(play, &this->skelAnime, &gFishingFishSkel, &gFishingFishAnim, NULL, NULL, 0);
             Animation_MorphToLoop(&this->skelAnime, &gFishingFishAnim, 0.0f);
         } else {
@@ -1003,7 +1004,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
             this->unk_158 = 10;
             this->unk_15A = 10;
 
-            this->unk_150 = sFishInits[thisx->params - 100].unk_00;
+            this->unk_150 = allHyruleLoaches ? 1 : sFishInits[thisx->params - 100].unk_00;
             this->unk_1A8 = sFishInits[thisx->params - 100].unk_0C;
             this->unk_1AC = sFishInits[thisx->params - 100].unk_08;
 
@@ -5079,7 +5080,13 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                         }
                     }
                 } else {
-                    getItemId = GI_RUPEE_PURPLE;
+                    if (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_CAUGHT_LOACH)) {
+                        Flags_SetRandomizerInf(RAND_INF_CAUGHT_LOACH);
+                        getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_HYRULE_LOACH, GI_RUPEE_PURPLE);
+                        getItemId = getItemEntry.getItemId;
+                    } else {
+                        getItemId = GI_RUPEE_PURPLE;
+                    }
                     D_80B7A670 = 0.0f;
                 }
 

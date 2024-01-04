@@ -738,6 +738,12 @@ void GenerateItemPool() {
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_RIGHT_BUTTON);
   }
 
+  if (ctx->GetOption(RSK_SHUFFLE_HYRULE_LOACH_REWARD)) {
+    AddItemToMainPool(RG_PURPLE_RUPEE);
+  } else {
+    ctx->PlaceItemInLocation(RC_LH_HYRULE_LOACH, RG_PURPLE_RUPEE, false, true);
+  }
+
   if (ctx->GetOption(RSK_SHUFFLE_COWS)) {
     //9 total cow locations
     for (uint8_t i = 0; i < 9; i++) {

@@ -157,6 +157,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              CVarGetInteger("gRandomizeShuffleAdultTrade", RO_GENERIC_NO)) &&
             (location.GetRandomizerCheck() != RC_KF_KOKIRI_SWORD_CHEST ||
              CVarGetInteger("gRandomizeShuffleKokiriSword", RO_GENERIC_NO)) &&
+            (location.GetRandomizerCheck() != RC_LH_HYRULE_LOACH ||
+             CVarGetInteger("gRandomizeShuffleHyruleLoachReward", RO_GENERIC_NO)) &&
             (location.GetRandomizerCheck() != RC_ZR_MAGIC_BEAN_SALESMAN ||
              CVarGetInteger("gRandomizeShuffleBeans", RO_GENERIC_NO)) &&
             (location.GetRandomizerCheck() != RC_HC_MALON_EGG ||

@@ -87,7 +87,7 @@ static const char* englishRupeeNames[171] = {
     "Frog Coins",        "Gald",             "Gekz",             "Gems",             "Geo",
     "Gil",               "Glimmer",          "Glitches",         "Gold",             "Gold Dragons",
     "Goober Dollars",    "Green Herbs",      "Greg Siblings",    "Gummybears",       "Hell",
-    "Hylian Loaches",    "Ice Traps",        "ISK",              "Jiggies",          "KF7 Ammo",
+    "Hyrule Loaches",    "Ice Traps",        "ISK",              "Jiggies",          "KF7 Ammo",
     "Kinstones",         "Kremcoins",        "Kroner",           "Leaves ",          "Lemmings",
     "Lien",              "Lira",             "Lumber",           "Lungmen Dollars",  "Macca",
     "Mana",              "Mann Co. Keys",    "Meat",             "Meat Stacks",      "Medaparts",
@@ -343,6 +343,15 @@ void Randomizer::LoadHintMessages() {
             CustomMessage("Some frogs holding&%g{{item}}%w&are looking at you from underwater...",
             "Unter Wasser gibt es Frösche,&die %g{{item}}%w&bei sich haben und Dich neugierig&beobachten...",
             "Des grenouilles se trouvant&sous l'eau vous fixent attentivement,&tenant fermement&%g{{item}}%w.", TEXTBOX_TYPE_BLUE)
+        );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID,
+            TEXT_FISHING_TALK_ABOUT_SOMETHING,
+            CustomMessage(
+                "What?^You wanna know about the&%rHyrule Loach%w?^It's a big fish, but it's so rare that&I'll give my %g{{item}}%w&to anyone who catches it. Seriously!",
+                "%g{{item}}%w",//TODO: Translations
+                "%g{{item}}%w"
+            )
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_SARIAS_SONG_FACE_TO_FACE,
@@ -2483,6 +2492,25 @@ CustomMessage Randomizer::GetFrogsMessage(u16 originalTextId) {
             frogItemName = EnumToSpoilerfileGetName[frogsGet];
         }
         messageEntry.Replace("{{item}}", std::move(frogItemName[0]), std::move(frogItemName[1]), std::move(frogItemName[2]));
+        return messageEntry;
+}
+
+CustomMessage Randomizer::GetLoachMessage() {
+    auto ctx = Rando::Context::GetInstance();
+        CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_FISHING_TALK_ABOUT_SOMETHING);
+        RandomizerGet loachGet = ctx->GetItemLocation(RC_LH_HYRULE_LOACH)->GetPlacedRandomizerGet();
+        std::array<std::string, LANGUAGE_MAX> loachItemName;
+        if (loachGet == RG_ICE_TRAP) {
+            loachGet = ctx->overrides[RC_LH_HYRULE_LOACH].LooksLike();
+            loachItemName = {
+                ctx->overrides[RC_LH_HYRULE_LOACH].GetTrickName().english,
+                ctx->overrides[RC_LH_HYRULE_LOACH].GetTrickName().french,
+                ctx->overrides[RC_LH_HYRULE_LOACH].GetTrickName().english
+            };
+        } else {
+            loachItemName = EnumToSpoilerfileGetName[loachGet];
+        }
+        messageEntry.Replace("{{item}}", std::move(loachItemName[0]), std::move(loachItemName[1]), std::move(loachItemName[2]));
         return messageEntry;
 }
 

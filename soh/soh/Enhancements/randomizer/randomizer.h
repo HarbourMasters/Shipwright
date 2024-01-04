@@ -62,6 +62,7 @@ class Randomizer {
     CustomMessage GetWarpSongMessage(u16 textId, bool mysterious = false);
     CustomMessage GetSheikMessage(s16 scene, u16 originalTextId);
     CustomMessage GetFrogsMessage(u16 originalTextId);
+    CustomMessage GetLoachMessage();
     CustomMessage GetSariaMessage(u16 originalTextId);
     CustomMessage GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
     CustomMessage GetCursedSkullMessage(s16 params);

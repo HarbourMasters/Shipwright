@@ -109,6 +109,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_MAGIC_BEANS] = Option::Bool("Shuffle Magic Beans", "gRandomizeShuffleBeans", mOptionDescriptions[RSK_SHUFFLE_MAGIC_BEANS]);
     mOptions[RSK_SHUFFLE_MERCHANTS] = Option::U8("Shuffle Merchants", {"Off", "On (No Hints)", "On (With Hints)"}, OptionCategory::Setting, "gRandomizeShuffleMerchants", mOptionDescriptions[RSK_SHUFFLE_MERCHANTS], WidgetType::Combobox, RO_SHUFFLE_MERCHANTS_OFF);
     mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES] = Option::Bool("Shuffle Frog Song Rupees", "gRandomizeShuffleFrogSongRupees", mOptionDescriptions[RSK_SHUFFLE_FROG_SONG_RUPEES]);
+    mOptions[RSK_SHUFFLE_HYRULE_LOACH_REWARD] = Option::Bool("Shuffle Hyrule Loach Reward", "gRandomizeShuffleHyruleLoachReward", mOptionDescriptions[RSK_SHUFFLE_HYRULE_LOACH_REWARD]);
     mOptions[RSK_SHUFFLE_ADULT_TRADE] = Option::Bool("Shuffle Adult Trade", "gRandomizeShuffleAdultTrade", mOptionDescriptions[RSK_SHUFFLE_ADULT_TRADE]);
     mOptions[RSK_SHUFFLE_CHEST_MINIGAME] = Option::U8("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"});
     mOptions[RSK_SHUFFLE_100_GS_REWARD] = Option::Bool("Shuffle 100 GS Reward", "gRandomizeShuffle100GSReward", mOptionDescriptions[RSK_SHUFFLE_100_GS_REWARD], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
@@ -151,6 +152,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_LIGHT_ARROWS_HINT] = Option::Bool("Light Arrow Hint", {"Off", "On"}, OptionCategory::Setting, "gRandomizeLAHint", mOptionDescriptions[RSK_LIGHT_ARROWS_HINT], WidgetType::Checkbox, RO_GENERIC_ON, false, IMFLAG_NONE);
     mOptions[RSK_DAMPES_DIARY_HINT] = Option::Bool("Dampe's Diary Hint", "gRandomizeDampeHint", mOptionDescriptions[RSK_DAMPES_DIARY_HINT], IMFLAG_NONE);
     mOptions[RSK_GREG_HINT] = Option::Bool("Greg the Green Rupee Hint", "gRandomizeGregHint", mOptionDescriptions[RSK_GREG_HINT], IMFLAG_NONE);
+    mOptions[RSK_LOACH_HINT] = Option::Bool("Hyrule Loach Hint", "gRandomizeLoachHint", mOptionDescriptions[RSK_LOACH_HINT], IMFLAG_NONE);
     mOptions[RSK_SARIA_HINT] = Option::Bool("Saria's Hint", "gRandomizeSariaHint", mOptionDescriptions[RSK_SARIA_HINT], IMFLAG_NONE);
     mOptions[RSK_FROGS_HINT] = Option::Bool("Frog Ocarina Game Hint", "gRandomizeFrogsHint", mOptionDescriptions[RSK_FROGS_HINT], IMFLAG_NONE);
     mOptions[RSK_WARP_SONG_HINTS] = Option::Bool("Warp Song Hints", "gRandomizeWarpSongText", mOptionDescriptions[RSK_WARP_SONG_HINTS], IMFLAG_NONE, WidgetType::Checkbox, RO_GENERIC_ON);
@@ -632,6 +634,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_MAGIC_BEANS],
         &mOptions[RSK_SHUFFLE_MERCHANTS],
         &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
+        &mOptions[RSK_SHUFFLE_HYRULE_LOACH_REWARD],
         &mOptions[RSK_SHUFFLE_ADULT_TRADE],
         &mOptions[RSK_SHUFFLE_100_GS_REWARD],
         &mOptions[RSK_SHUFFLE_BOSS_SOULS],
@@ -688,6 +691,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_LIGHT_ARROWS_HINT],
         &mOptions[RSK_DAMPES_DIARY_HINT],
         &mOptions[RSK_GREG_HINT],
+        &mOptions[RSK_LOACH_HINT],
         &mOptions[RSK_SARIA_HINT],
         &mOptions[RSK_FROGS_HINT],
         &mOptions[RSK_WARP_SONG_HINTS],
@@ -826,6 +830,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_MAGIC_BEANS],
         &mOptions[RSK_SHUFFLE_MERCHANTS],
         &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
+        &mOptions[RSK_SHUFFLE_HYRULE_LOACH_REWARD],
         &mOptions[RSK_SHUFFLE_ADULT_TRADE],
         &mOptions[RSK_SHUFFLE_CHEST_MINIGAME],
         &mOptions[RSK_SHUFFLE_100_GS_REWARD],
@@ -903,6 +908,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_LIGHT_ARROWS_HINT],
         &mOptions[RSK_DAMPES_DIARY_HINT],
         &mOptions[RSK_GREG_HINT],
+        &mOptions[RSK_LOACH_HINT],
         &mOptions[RSK_SARIA_HINT],
         &mOptions[RSK_FROGS_HINT],
         &mOptions[RSK_WARP_SONG_HINTS],
@@ -1033,6 +1039,7 @@ void Settings::CreateOptions() {
         { "Shuffle Settings:Shuffle Master Sword", RSK_SHUFFLE_MASTER_SWORD },
         { "Shuffle Settings:Shuffle Weird Egg", RSK_SHUFFLE_WEIRD_EGG },
         { "Shuffle Settings:Shuffle Frog Song Rupees", RSK_SHUFFLE_FROG_SONG_RUPEES },
+        { "Shuffle Settings:Shuffle Hyrule Loach Reward", RSK_SHUFFLE_HYRULE_LOACH_REWARD },
         { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
         { "Shuffle Settings:Shuffle 100 GS Reward", RSK_SHUFFLE_100_GS_REWARD },
         { "Shuffle Settings:Shuffle Boss Souls", RSK_SHUFFLE_BOSS_SOULS },
@@ -1101,6 +1108,7 @@ void Settings::CreateOptions() {
         { "Miscellaneous Settings:Light Arrow Hint", RSK_LIGHT_ARROWS_HINT },
         { "Miscellaneous Settings:Dampe's Diary Hint", RSK_DAMPES_DIARY_HINT },
         { "Miscellaneous Settings:Greg the Rupee Hint", RSK_GREG_HINT },
+        { "Miscellaneous Settings:Hyrule Loach Hint", RSK_LOACH_HINT },
         { "Miscellaneous Settings:Saria's Hint", RSK_SARIA_HINT },
         { "Miscellaneous Settings:Frog Ocarina Game Hint", RSK_FROGS_HINT },
         { "Miscellaneous Settings:10 GS Hint", RSK_KAK_10_SKULLS_HINT },
@@ -2118,6 +2126,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SHUFFLE_100_GS_REWARD:
                 case RSK_SHUFFLE_OCARINA:
                 case RSK_SHUFFLE_OCARINA_BUTTONS:
+                case RSK_SHUFFLE_HYRULE_LOACH_REWARD:
                 case RSK_STARTING_DEKU_SHIELD:
                 case RSK_STARTING_KOKIRI_SWORD:
                 case RSK_STARTING_ZELDAS_LULLABY:
@@ -2143,6 +2152,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_LIGHT_ARROWS_HINT:
                 case RSK_DAMPES_DIARY_HINT:
                 case RSK_GREG_HINT:
+                case RSK_LOACH_HINT:
                 case RSK_SARIA_HINT:
                 case RSK_FROGS_HINT:
                 case RSK_KAK_10_SKULLS_HINT:

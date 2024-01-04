@@ -2618,6 +2618,17 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if (textId == 0x3052 || (textId >= 0x3069 && textId <= 0x3070)) { //Fire Temple gorons
             u16 choice = Random(0, NUM_GORON_MESSAGES);
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
+        } else if (Randomizer_GetSettingValue(RSK_LOACH_HINT) &&
+                    (
+                        textId == TEXT_FISHING_CLOUDY ||
+                        textId == TEXT_FISHING_TRY_ANOTHER_LURE ||
+                        textId == TEXT_FISHING_SECRETS ||
+                        textId == TEXT_FISHING_GOOD_FISHERMAN ||
+                        textId == TEXT_FISHING_DIFFERENT_POND ||
+                        textId == TEXT_FISHING_SCRATCHING ||
+                        textId == TEXT_FISHING_TRY_ANOTHER_LURE_WITH_SINKING_LURE
+                    )) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetLoachMessage();
         } else if (Randomizer_GetSettingValue(RSK_FROGS_HINT) && textId == TEXT_FROGS_UNDERWATER) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetFrogsMessage(textId);
         } else if (Randomizer_GetSettingValue(RSK_SARIA_HINT)) {

@@ -62,6 +62,7 @@ bool showCows;
 bool showAdultTrade;
 bool showKokiriSword;
 bool showMasterSword;
+bool showHyruleLoach;
 bool showWeirdEgg;
 bool showGerudoCard;
 bool showFrogSongRupees;
@@ -1087,6 +1088,9 @@ void LoadSettings() {
     showMasterSword = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MASTER_SWORD) == RO_GENERIC_YES
         : true;
+    showHyruleLoach = IS_RANDO ?
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_HYRULE_LOACH_REWARD) == RO_GENERIC_YES
+        : false;
     showWeirdEgg = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_WEIRD_EGG) == RO_GENERIC_YES
         : true;
@@ -1201,6 +1205,7 @@ bool IsVisibleInCheckTracker(RandomizerCheck rc) {
                 ) &&
             (rc != RC_KF_KOKIRI_SWORD_CHEST || showKokiriSword) &&
             (rc != RC_TOT_MASTER_SWORD || showMasterSword) &&
+            (rc != RC_LH_HYRULE_LOACH || showHyruleLoach) &&
             (rc != RC_ZR_MAGIC_BEAN_SALESMAN || showBeans) &&
             (rc != RC_HC_MALON_EGG || showWeirdEgg) &&
             (loc->GetRCType() != RCTYPE_FROG_SONG || showFrogSongRupees) &&

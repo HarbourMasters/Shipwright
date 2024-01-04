@@ -280,6 +280,8 @@ void Settings::CreateOptionDescriptions() {
                                                         "\n"
                                                         "This setting does not effect the item earned from playing\n"
                                                         "the Song of Storms and the frog song minigame.";
+    mOptionDescriptions[RSK_SHUFFLE_HYRULE_LOACH_REWARD] = "Shuffles a Purple Rupee into to the item pool, and allows"
+                                                           "you to earn an item by catching the hyrule loach at the fishing pond.";
     mOptionDescriptions[RSK_SHUFFLE_ADULT_TRADE] =
         "Adds all of the adult trade quest items into the pool, each of which "
         "can be traded for a unique reward.\n"
@@ -483,6 +485,8 @@ void Settings::CreateOptionDescriptions() {
         "Reading the diary of Dampé the gravekeeper as adult will tell you the location of one of the Hookshots.";
     mOptionDescriptions[RSK_GREG_HINT] =
         "Talking to the chest game owner after buying a key will tell you the location of Greg the Green Rupee.";
+    mOptionDescriptions[RSK_LOACH_HINT] =
+        "Talking to the fishing pond owner and asking to talk about something will tell you what's the reward for the Hyrule Loach.";
     mOptionDescriptions[RSK_SARIA_HINT] = "Talking to Saria either in person or through Saria's Song will tell you the "
                                           "location of a progressive magic meter.";
     mOptionDescriptions[RSK_FROGS_HINT] = "Standing near the pedestal for the frogs in Zora's River will tell you the "
