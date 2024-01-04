@@ -1,25 +1,25 @@
 #include "tricks.h"
 
 
-namespace Rando::Tricks {
-    const std::string& GetRTAreaName(const RandomizerArea area) {
+namespace Rando {
+    const std::string& Tricks::GetRTAreaName(const RandomizerArea area) {
         return rtAreaNames.at(area);
     }
 
-    bool CheckRTTags(std::unordered_map<Tag, bool> &showTag, const std::set<Tag> &rtTags) {
+    bool Tricks::CheckRTTags(const std::unordered_map<Tag, bool> &showTag, const std::set<Tag> &rtTags) {
         for (auto rtTag : rtTags) {
-            if (showTag[rtTag]) {
+            if (showTag.at(rtTag)) {
                 return true;
             }
         }
         return false;
     }
 
-    std::string GetRTTagName(const Tag tag) {
+    std::string Tricks::GetRTTagName(const Tag tag) {
         return rtTagNames.at(tag);
     }
 
-    ImVec4 GetRTTagColor(Tag tag) {
+    ImVec4 Tricks::GetRTTagColor(const Tag tag) {
         switch(tag) {
             case Tag::NOVICE:
                 return {0.09f,0.55f,0.37f,1.0f};
@@ -42,7 +42,7 @@ namespace Rando::Tricks {
         }
     }
 
-    void DrawTagChips(const std::set<Tag> &rtTags) {
+    void Tricks::DrawTagChips(const std::set<Tag> &rtTags) {
         for (const auto rtTag : rtTags) {
             ImGui::SameLine();
             ImGui::BeginDisabled();
