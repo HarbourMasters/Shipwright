@@ -278,6 +278,45 @@ void aEnvSetup2Impl(uint16_t initial_vol_left, uint16_t initial_vol_right) {
     rspa.vol[1] = initial_vol_right;
 }
 
+#ifndef SSE2_AVAILABLE
+// Base implementation for non SSE2 compatible CPUs
+void aEnvMixerImpl(uint16_t in_addr, uint16_t n_samples, bool swap_reverb,
+				   bool neg_3, bool neg_2,
+                   bool neg_left, bool neg_right,
+                   int32_t wet_dry_addr, u32 unk)
+{
+    int16_t *in = BUF_S16(in_addr);
+    int16_t *dry[2] = {BUF_S16(((wet_dry_addr >> 24) & 0xFF) << 4), BUF_S16(((wet_dry_addr >> 16) & 0xFF) << 4)};
+    int16_t *wet[2] = {BUF_S16(((wet_dry_addr >> 8) & 0xFF) << 4), BUF_S16(((wet_dry_addr) & 0xFF) << 4)};
+    int16_t negs[4] = {neg_left ? -1 : 0, neg_right ? -1 : 0, neg_3 ? -4 : 0, neg_2 ? -2 : 0};
+    int swapped[2] = {swap_reverb ? 1 : 0, swap_reverb ? 0 : 1};
+    int n = ROUND_UP_16(n_samples);
+
+    uint16_t vols[2] = {rspa.vol[0], rspa.vol[1]};
+    uint16_t rates[2] = {rspa.rate[0], rspa.rate[1]};
+    uint16_t vol_wet = rspa.vol_wet;
+    uint16_t rate_wet = rspa.rate_wet;
+
+    do {
+        for (int i = 0; i < 8; i++) {
+            int16_t samples[2] = {*in, *in}; in++;
+            for (int j = 0; j < 2; j++) {
+                samples[j] = (samples[j] * vols[j] >> 16) ^ negs[j];
+            }
+            for (int j = 0; j < 2; j++) {
+                *dry[j] = clamp16(*dry[j] + samples[j]); dry[j]++;
+                *wet[j] = clamp16(*wet[j] + ((samples[swapped[j]] * vol_wet >> 16) ^ negs[2 + j])); wet[j]++;
+            }
+        }
+        vols[0] += rates[0];
+        vols[1] += rates[1];
+        vol_wet += rate_wet;
+
+        n -= 8;
+    } while (n > 0);
+}
+#else
+// SSE2 optimized version of algorithm
 void aEnvMixerImpl(uint16_t in_addr, uint16_t n_samples, bool swap_reverb,
 				   bool neg_3, bool neg_2,
                    bool neg_left, bool neg_right,
@@ -332,6 +371,7 @@ void aEnvMixerImpl(uint16_t in_addr, uint16_t n_samples, bool swap_reverb,
         vol_wet += rate_wet;
     }
 }
+#endif
 
 void aMixImpl(uint16_t count, int16_t gain, uint16_t in_addr, uint16_t out_addr) {
     int nbytes = ROUND_UP_32(ROUND_DOWN_16(count << 4));
