@@ -104,6 +104,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_MASTER_SWORD] = Option::Bool("Shuffle Master Sword", "gRandomizeShuffleMasterSword", mOptionDescriptions[RSK_SHUFFLE_MASTER_SWORD]);
     mOptions[RSK_SHUFFLE_OCARINA] = Option::Bool("Shuffle Ocarinas", "gRandomizeShuffleOcarinas", mOptionDescriptions[RSK_SHUFFLE_OCARINA]);
     mOptions[RSK_SHUFFLE_OCARINA_BUTTONS] = Option::Bool("Shuffle Ocarina Buttons", "gRandomizeShuffleOcarinaButtons", mOptionDescriptions[RSK_SHUFFLE_OCARINA_BUTTONS]);
+    mOptions[RSK_SHUFFLE_SWIM] = Option::Bool("Shuffle Swim", "gRandomizeShuffleSwim", mOptionDescriptions[RSK_SHUFFLE_SWIM]);
     mOptions[RSK_SHUFFLE_WEIRD_EGG] = Option::Bool("Shuffle Weird Egg", "gRandomizeShuffleWeirdEgg", mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG]);
     mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = Option::Bool("Shuffle Gerudo Membership Card", "gRandomizeShuffleGerudoToken", mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);
     mOptions[RSK_SHUFFLE_MAGIC_BEANS] = Option::Bool("Shuffle Magic Beans", "gRandomizeShuffleBeans", mOptionDescriptions[RSK_SHUFFLE_MAGIC_BEANS]);
@@ -257,6 +258,7 @@ void Settings::CreateOptions() {
     mTrickOptions[RT_DEKU_BASEMENT_GS] = Option::LogicTrick("Deku Tree Basement Vines GS with Jump Slash");
     mTrickOptions[RT_DEKU_B1_SKIP] = Option::LogicTrick("Deku Tree Basement without Slingshot");
     mTrickOptions[RT_DEKU_B1_BOW_WEBS] = Option::LogicTrick("Deku Tree Basement Web to Gohma with Bow");
+    mTrickOptions[RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG] = Option::LogicTrick("Deku Tree Basement Backflip over Spiked Log");
     mTrickOptions[RT_DEKU_MQ_COMPASS_GS] = Option::LogicTrick("Deku Tree MQ Compass Room GS Boulders with Just Hammer");
     mTrickOptions[RT_DEKU_MQ_LOG] = Option::LogicTrick("Deku Tree MQ Roll Under the Spiked Log");
     mTrickOptions[RT_DC_SCARECROW_GS] = Option::LogicTrick("Dodongo\'s Cavern Scarecrow GS with Armos Statue");
@@ -436,6 +438,7 @@ void Settings::CreateOptions() {
         &mTrickOptions[RT_DEKU_BASEMENT_GS],
         &mTrickOptions[RT_DEKU_B1_SKIP],
         &mTrickOptions[RT_DEKU_B1_BOW_WEBS],
+        &mTrickOptions[RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG],
         &mTrickOptions[RT_DEKU_MQ_COMPASS_GS],
         &mTrickOptions[RT_DEKU_MQ_LOG],
         &mTrickOptions[RT_DC_SCARECROW_GS],
@@ -620,6 +623,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_MASTER_SWORD],
         &mOptions[RSK_SHUFFLE_OCARINA],
         &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
+        &mOptions[RSK_SHUFFLE_SWIM],
         &mOptions[RSK_SHUFFLE_WEIRD_EGG],
         &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]
     }, false, WidgetContainerType::COLUMN);
@@ -821,6 +825,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],
         &mOptions[RSK_SHUFFLE_OCARINA],
         &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
+        &mOptions[RSK_SHUFFLE_SWIM],
         &mOptions[RSK_SHUFFLE_WEIRD_EGG],
         &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
         &mOptions[RSK_SHUFFLE_MAGIC_BEANS],
@@ -1027,6 +1032,7 @@ void Settings::CreateOptions() {
         { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
         { "Shuffle Settings:Shuffle Ocarinas", RSK_SHUFFLE_OCARINA },
         { "Shuffle Settings:Shuffle Ocarina Buttons", RSK_SHUFFLE_OCARINA_BUTTONS },
+        { "Shuffle Settings:Shuffle Swim", RSK_SHUFFLE_SWIM },
         { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
         { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
         { "Shuffle Settings:Shuffle Kokiri Sword", RSK_SHUFFLE_KOKIRI_SWORD },
@@ -2118,6 +2124,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SHUFFLE_100_GS_REWARD:
                 case RSK_SHUFFLE_OCARINA:
                 case RSK_SHUFFLE_OCARINA_BUTTONS:
+                case RSK_SHUFFLE_SWIM:
                 case RSK_STARTING_DEKU_SHIELD:
                 case RSK_STARTING_KOKIRI_SWORD:
                 case RSK_STARTING_ZELDAS_LULLABY:

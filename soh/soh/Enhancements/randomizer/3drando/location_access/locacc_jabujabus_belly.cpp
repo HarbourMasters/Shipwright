@@ -62,8 +62,8 @@ void AreaTable_Init_JabuJabusBelly() {
                   LocationAccess(RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM, {[]{return true;}}),
                 }, {
                   //Exits
-                  Entrance(RR_JABU_JABUS_BELLY_MAIN_LOWER, {[]{return true;}}),
-                  Entrance(RR_JABU_JABUS_BELLY_LIFT_LOWER, {[]{return CanUseProjectile;}}),
+                  Entrance(RR_JABU_JABUS_BELLY_MAIN_LOWER, {[]{return Swim;}}),
+                  Entrance(RR_JABU_JABUS_BELLY_LIFT_LOWER, {[]{return Swim && CanUseProjectile;}}),
   });
 
   areaTable[RR_JABU_JABUS_BELLY_LOWER_SIDE_ROOM] = Area("Jabu Jabus Belly Lower Side Room", "Jabu Jabus Belly", RA_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {
@@ -76,7 +76,7 @@ void AreaTable_Init_JabuJabusBelly() {
 
   areaTable[RR_JABU_JABUS_BELLY_LIFT_LOWER] = Area("Jabu Jabus Belly Lift Lower", "Jabu Jabus Belly", RA_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_JABU_JABUS_BELLY_DEKU_SCRUB, {[]{return (IsChild || CanDive || randoCtx->GetTrickOption(RT_JABU_ALCOVE_JUMP_DIVE) || CanUse(RG_IRON_BOOTS)) && CanStunDeku;}}),
+                  LocationAccess(RC_JABU_JABUS_BELLY_DEKU_SCRUB, {[]{return Swim && (IsChild || CanDive || randoCtx->GetTrickOption(RT_JABU_ALCOVE_JUMP_DIVE) || CanUse(RG_IRON_BOOTS)) && CanStunDeku;}}),
                 }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_SHABOMB_CORRIDOR, {[]{return true;}}),
@@ -195,7 +195,7 @@ void AreaTable_Init_JabuJabusBelly() {
   areaTable[RR_JABU_JABUS_BELLY_MQ_DEPTHS] = Area("Jabu Jabus Belly MQ Depths", "Jabu Jabus Belly", RA_JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_ROOM_CHEST, {[]{return true;}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM,          {[]{return Sticks || CanUse(RG_DINS_FIRE);}}),
+                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM,          {[]{return Swim && (Sticks || CanUse(RG_DINS_FIRE));}}),
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_GS_INVISIBLE_ENEMIES_ROOM,    {[]{return (randoCtx->GetTrickOption(RT_LENS_JABU_MQ) || CanUse(RG_LENS_OF_TRUTH)) || Here(RR_JABU_JABUS_BELLY_MQ_MAIN, []{return IsAdult && CanUse(RG_HOVER_BOOTS) && CanUse(RG_HOOKSHOT);});}}),
   }, {
                   //Exits

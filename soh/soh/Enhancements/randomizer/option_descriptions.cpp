@@ -219,6 +219,13 @@ void Settings::CreateOptionDescriptions() {
         "Enabling this shuffles the Ocarina buttons into the item pool.\n"
         "\n"
         "This will require finding the buttons before being able to use them in songs.";
+
+    mOptionDescriptions[RSK_SHUFFLE_SWIM] =
+        "Shuffles the ability to Swim into the item pool.\n"
+        "The ability to swim has to be found as an item (you can still be underwater if you use iron boots).\n"
+        "\n"
+        "If you enter a water entrance without swim you will be respawned on land to prevent infinite death loops.\n"
+        "If you void out in Water Temple you will immediately be kicked out to prevent a softlock.";
     mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG] = "Shuffles the Weird Egg from Malon in to the item pool. Enabling "
                                                  "\"Skip Child Zelda\" disables this feature.\n"
                                                  "\n"

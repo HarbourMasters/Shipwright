@@ -738,6 +738,10 @@ void GenerateItemPool() {
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_RIGHT_BUTTON);
   }
 
+  if (ctx->GetOption(RSK_SHUFFLE_SWIM)) {
+    AddItemToMainPool(RG_PROGRESSIVE_SCALE);
+  }
+
   if (ctx->GetOption(RSK_SHUFFLE_COWS)) {
     //9 total cow locations
     for (uint8_t i = 0; i < 9; i++) {

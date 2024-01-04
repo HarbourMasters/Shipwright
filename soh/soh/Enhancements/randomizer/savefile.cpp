@@ -301,6 +301,10 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
     }
 
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_SWIM) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_SWIM);
+    }
+
     // Give Link's pocket item
     GiveLinksPocketItem();
 

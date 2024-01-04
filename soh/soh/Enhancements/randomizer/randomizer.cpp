@@ -1107,6 +1107,9 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return numWallets == 3 ? (GetItemID)RG_TYCOON_WALLET : GI_WALLET_GIANT;
             }
         case RG_PROGRESSIVE_SCALE:
+            if (!Flags_GetRandomizerInf(RAND_INF_CAN_SWIM)) {
+                return (GetItemID)RG_BRONZE_SCALE;
+            }
             switch (CUR_UPG_VALUE(UPG_SCALE)) {
                 case 0:
                     return GI_SCALE_SILVER;
@@ -1221,7 +1224,6 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_PROGRESSIVE_BOMB_BAG:
         case RG_PROGRESSIVE_BOW:
         case RG_PROGRESSIVE_SLINGSHOT:
-        case RG_PROGRESSIVE_SCALE:
         case RG_PROGRESSIVE_NUT_UPGRADE:
         case RG_PROGRESSIVE_STICK_UPGRADE:
         case RG_PROGRESSIVE_OCARINA:
@@ -1286,6 +1288,11 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BUY_BOMBS_535:
         case RG_BUY_RED_POTION_40:
         case RG_BUY_RED_POTION_50:
+            return true;
+        case RG_PROGRESSIVE_SCALE:
+            if (!Flags_GetRandomizerInf(RAND_INF_CAN_SWIM)) {
+                return false;
+            }
             return true;
         case RG_PROGRESSIVE_WALLET:
             if (CUR_UPG_VALUE(UPG_WALLET) < 2) {
@@ -3068,7 +3075,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 71> getItemMessages = {{
+    const std::array<GetItemMessage, 72> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
@@ -3334,6 +3341,7 @@ void Randomizer::CreateCustomMessages() {
             "You got the %y\xa6%r button for the&Ocarina%w! You can now use it&while playing songs!",
 			"Der %y\xa6%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
 			"Vous trouvez la %rtouche %y\xa6%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
+        GIMESSAGE_UNTRANSLATED(RG_BRONZE_SCALE, ITEM_SCALE_SILVER, "You got the %rBronze Scale%w!&The power of buoyancy is yours!"),
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();

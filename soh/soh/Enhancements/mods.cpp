@@ -1282,6 +1282,79 @@ void RegisterToTMedallions() {
     });
 }
 
+//from z_player.c
+typedef struct {
+    /* 0x00 */ Vec3f pos;
+    /* 0x0C */ s16 yaw;
+} SpecialRespawnInfo; // size = 0x10
+
+//special respawns used when voided out without swim to prevent infinite loops
+std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
+    {
+        0x1D9,//hf to zr in water
+        { { -1455.443, -20, 1384.826 }, 28761 }
+    },
+    {
+        0x311,//zr to hf in water
+        { { 5830.209, -92.16, 3925.911 }, -20025 }
+    },
+    {
+        0x4DA,//zr to lw
+        { { 1978.718, -36.908, -855 }, -16384 }
+    },
+    {
+        0x1DD,//lw to zr
+        { { 4082.366, 860.442, -1018.949 }, -32768 }
+    },
+    {
+        0x219,//gv to lh
+        { { -3276.416, -1033, 2908.421 }, 11228 }
+    },
+    {
+        0x10,//lh to water temple
+        { { -182, 780, 759.5 }, -32768 }
+    },
+    {
+        0x21D,//water temple to lh
+        { { -955.028, -1306.9, 6768.954 }, -32768 }
+    },
+    {
+        0x328,//lh to zd
+        { { -109.86, 11.396, -9.933 }, -29131 }
+    },
+    {
+        0x560,//zd to lh
+        { { -912, -1326.967, 3391 }, 0 }
+    }
+};
+
+void RegisterNoSwim() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (
+            IS_RANDO &&
+            (GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_IN_WATER) &&
+            !Flags_GetRandomizerInf(RAND_INF_CAN_SWIM) &&
+            CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) != EQUIP_VALUE_BOOTS_IRON
+        ) {
+            //if you void out in water temple without swim you get instantly kicked out to prevent softlocks
+            if (gPlayState->sceneNum == SCENE_WATER_TEMPLE) {
+                GameInteractor::RawAction::TeleportPlayer(Entrance_OverrideNextIndex(ENTR_LAKE_HYLIA_2));//lake hylia from water temple
+                return;
+            }
+
+            if (swimSpecialRespawnInfo.find(gSaveContext.entranceIndex) != swimSpecialRespawnInfo.end()) {
+                SpecialRespawnInfo* respawnInfo = &swimSpecialRespawnInfo.at(gSaveContext.entranceIndex);
+
+                Play_SetupRespawnPoint(gPlayState, RESPAWN_MODE_DOWN, 0xDFF);
+                gSaveContext.respawn[RESPAWN_MODE_DOWN].pos = respawnInfo->pos;
+                gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = respawnInfo->yaw;
+            }
+
+            Play_TriggerVoidOut(gPlayState);
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1315,5 +1388,6 @@ void InitMods() {
     RegisterBossSouls();
     RegisterRandomizedEnemySizes();
     RegisterToTMedallions();
+    RegisterNoSwim();
     NameTag_RegisterHooks();
 }

@@ -522,6 +522,8 @@ const std::vector<FlagTable> flagTables = {
         { RAND_INF_HAS_OCARINA_C_DOWN, "RAND_INF_HAS_OCARINA_C_DOWN" },
         { RAND_INF_HAS_OCARINA_C_LEFT, "RAND_INF_HAS_OCARINA_C_LEFT"},
         { RAND_INF_HAS_OCARINA_C_RIGHT, "RAND_INF_HAS_OCARINA_C_RIGHT"},
+
+        { RAND_INF_CAN_SWIM, "RAND_INF_CAN_SWIM" },
     } },
 };
 
