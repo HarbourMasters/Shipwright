@@ -101,8 +101,8 @@ Area::Area(std::string regionName_, std::string scene_, RandomizerArea area,
 
 Area::~Area() = default;
 
-bool Area::UpdateTimePass() {
-  if (timePass) {
+bool Area::UpdateEvents(bool haveTimeAccess) {
+  if (timePass && haveTimeAccess) {
     if (Child()) {
       childDay = true;
       childNight = true;
@@ -116,9 +116,7 @@ bool Area::UpdateTimePass() {
       AreaTable(RR_ROOT)->adultNight = true;
     }
   }
-}
 
-bool Area::UpdateEvents() {
   bool eventsUpdated =  false;
 
   for (EventAccess& event : events) {

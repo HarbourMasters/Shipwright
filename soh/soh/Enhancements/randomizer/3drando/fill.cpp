@@ -174,7 +174,7 @@ static void ValidateSphereZeroReqs(GetAccessableLocationsStruct& gals, bool chec
     }
   }
   // Condition for verifying everything required for sphere 0, expanding search to all locations
-  if (Logic::TradeBigPoes && gals.validatedStartingRegion && gals.foundTempleofTime) {
+  if (Logic::TradeBigPoes && gals.validatedStartingRegion && gals.foundTempleofTime && gals.haveTimeAccess) {
     // Apply all items that are necessary for checking all location access
       std::vector<RandomizerGet> itemsToPlace =
           FilterFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
@@ -199,7 +199,7 @@ static void ValidateSphereZeroReqs(GetAccessableLocationsStruct& gals, bool chec
 //This function handles each possible exit
 void ProcessExit(Entrance& exit, GetAccessableLocationsStruct& gals, bool validateEntrancesChecks){
   //Update Time of Day Access for the exit
-  if (UpdateToDAccess(&exit, (validateEntrancesChecks && !gals.foundTempleofTime))) {
+  if (UpdateToDAccess(&exit, (!validateEntrancesChecks || !gals.foundTempleofTime))) {
     gals.ageTimePropogated = true;
     if (validateEntrancesChecks){
       ValidateSphereZeroReqs(gals, true);
@@ -527,8 +527,7 @@ void ValidateEntrances() {
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
       Area* region = AreaTable(gals.regionPool[i]);
 
-      region->UpdateTimePass();
-      if (region->UpdateEvents()){
+      if (region->UpdateEvents(gals.haveTimeAccess)){
         gals.updatedEvents = true;
       }
       // If we're checking for TimePass access do that for each region as it's being updated.
@@ -561,7 +560,7 @@ void ValidateEntrances() {
       for (auto& exit : region->exits) {
         ProcessExit(exit, gals, true);
       } 
-      if (gals.foundTempleofTime && gals.validatedStartingRegion && Logic::TradeBigPoes) {
+      if (gals.haveTimeAccess && gals.foundTempleofTime && gals.validatedStartingRegion && Logic::TradeBigPoes) {
         for (size_t k = 0; k < region->locations.size(); k++) {
           LocationAccess& locPair = region->locations[k];
           AddCheckToLogic(locPair, gals, RG_NONE, false);
@@ -569,7 +568,7 @@ void ValidateEntrances() {
       }
     }
   }
-  if (gals.foundTempleofTime && gals.validatedStartingRegion && Logic::TradeBigPoes) {
+  if (gals.haveTimeAccess && gals.foundTempleofTime && gals.validatedStartingRegion && Logic::TradeBigPoes) {
     ctx->allLocationsReachable = true;
     for (const RandomizerCheck loc : ctx->allLocations) {
       if (!ctx->GetItemLocation(loc)->IsAddedToPool()) {
