@@ -1853,19 +1853,19 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
             ctx->GetDungeon(GANONS_CASTLE)->SetKeyRing();
         }
     }
+
     auto trials = ctx->GetTrials()->GetTrialList();
     Shuffle(trials);
     for (const auto trial : trials) {
         trial->SetAsSkipped();
     }
-    if (!mOptions[RSK_GANONS_TRIALS].Is(RO_GANONS_TRIALS_SKIP)){
-        if (mOptions[RSK_GANONS_TRIALS].Is(RO_GANONS_TRIALS_RANDOM_NUMBER)) {
-            mOptions[RSK_TRIAL_COUNT].SetSelectedIndex(Random(0, static_cast<int>(mOptions[RSK_TRIAL_COUNT].GetOptionCount())));
-        } 
-
-        for (uint8_t i = 0; i < mOptions[RSK_TRIAL_COUNT].Value<uint8_t>(); i++) {
-            trials[i]->SetAsRequired();
-        }
+    if(mOptions[RSK_GANONS_TRIALS].Is(RO_GANONS_TRIALS_SKIP)){
+        mOptions[RSK_TRIAL_COUNT].SetSelectedIndex(0);
+    } else if(mOptions[RSK_GANONS_TRIALS].Is(RO_GANONS_TRIALS_RANDOM_NUMBER)) {
+        mOptions[RSK_TRIAL_COUNT].SetSelectedIndex(Random(0, static_cast<int>(mOptions[RSK_TRIAL_COUNT].GetOptionCount())));
+    }
+    for (uint8_t i = 0; i < mOptions[RSK_TRIAL_COUNT].Value<uint8_t>(); i++) {
+        trials[i]->SetAsRequired();
     }
 
     if (mOptions[RSK_FOREST].Is(RO_FOREST_CLOSED) &&
