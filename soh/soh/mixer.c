@@ -334,19 +334,17 @@ void aEnvMixerImpl(uint16_t in_addr, uint16_t n_samples, bool swap_reverb,
     uint16_t vol_wet = rspa.vol_wet;
     uint16_t rate_wet = rspa.rate_wet;
 
+    const __m128i* in_ptr = (__m128i*)in;
+    const __m128i* d_ptr[2] = { (__m128i*) dry[0], (__m128i*) dry[1] };
+    const __m128i* w_ptr[2] = { (__m128i*) wet[0], (__m128i*) wet[1] };
+
     // Aligned loop
     for (int N = 0; N < n_aligned; N+=8) {
 
         // Init vectors
-        __m128i in_channels = _mm_load_si128((__m128i*) &in[N]);
-        __m128i d[2] = {
-            _mm_load_si128((__m128i*) &dry[0][N]),
-            _mm_load_si128((__m128i*) &dry[1][N])
-        };
-        __m128i w[2] = {
-            _mm_load_si128((__m128i*) &wet[0][N]),
-            _mm_load_si128((__m128i*) &wet[1][N])
-        };
+        const __m128i in_channels = _mm_load_si128(in_ptr++);
+        __m128i d[2] = { _mm_load_si128(d_ptr[0]), _mm_load_si128(d_ptr[1]) };
+        __m128i w[2] = { _mm_load_si128(w_ptr[0]), _mm_load_si128(w_ptr[1]) };
 
         // Compute base samples
         // sample = ((in * vols) >> 16) ^ negs
@@ -364,8 +362,8 @@ void aEnvMixerImpl(uint16_t in_addr, uint16_t n_samples, bool swap_reverb,
 
         // Store values to buffers
         for (int j = 0; j < 2; j++) {
-            _mm_store_si128((__m128i*) &dry[j][N], _mm_add_epi16(s[j], d[j]));
-            _mm_store_si128((__m128i*) &wet[j][N], _mm_add_epi16(ss[j], w[j]));
+            _mm_store_si128(d_ptr[j]++, _mm_add_epi16(s[j], d[j]));
+            _mm_store_si128(w_ptr[j]++, _mm_add_epi16(ss[j], w[j]));
             vols[j] += rates[j];
         }
         vol_wet += rate_wet;
