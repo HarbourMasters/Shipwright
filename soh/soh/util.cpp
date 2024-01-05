@@ -303,6 +303,41 @@ std::vector<std::string> questItemNames = {
         "Gold Skulltula Token",
 };
 
+std::vector<std::string> rcareaPrefixes = {
+    "KF",
+    "LW",
+    "SFM",
+    "HF",
+    "LH",
+    "GV",
+    "GF",
+    "Wasteland",
+    "Colossus",
+    "MK",
+    "HC",
+    "Kak",
+    "Graveyard",
+    "DMT",
+    "GC",
+    "DMC",
+    "ZR",
+    "ZD",
+    "ZF",
+    "LLR",
+    "Deku Tree",
+    "Dodongos Cavern",
+    "Jabu Jabus Belly",
+    "Forest Temple",
+    "Fire Temple",
+    "Water Temple",
+    "Spirit Temple",
+    "Shadow Temple",
+    "Bottom of the Well",
+    "Ice Cavern",
+    "Gerudo Training Grounds",
+    "Ganon's Castle",
+};
+
 const std::string& SohUtils::GetSceneName(int32_t scene) {
     return sceneNames[scene];
 }
@@ -313,6 +348,10 @@ const std::string& SohUtils::GetItemName(int32_t item) {
 
 const std::string& SohUtils::GetQuestItemName(int32_t item) {
     return questItemNames[item];
+}
+
+const std::string& SohUtils::GetRandomizerCheckAreaPrefix(int32_t rcarea) {
+    return rcareaPrefixes[rcarea];
 }
 
 void SohUtils::CopyStringToCharArray(char* destination, std::string source, size_t size) {
