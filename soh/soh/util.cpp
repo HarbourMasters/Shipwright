@@ -313,7 +313,7 @@ std::vector<std::string> rcareaPrefixes = {
     "GF",
     "Wasteland",
     "Colossus",
-    "MK",
+    "Market",
     "HC",
     "Kak",
     "Graveyard",
