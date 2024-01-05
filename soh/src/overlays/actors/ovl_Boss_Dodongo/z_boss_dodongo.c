@@ -119,7 +119,9 @@ void BossDodongo_RegisterBlendedLavaTextureUpdate() {
                     sMaskTexLava[i] = maskVal;
                 }
             }
+
             Gfx_RegisterBlendedTexture(gDodongosCavernBossLavaFloorTex, sMaskTexLava, NULL);
+            Gfx_TextureCacheDelete(sMaskTexLava);
             return;
         }
 
@@ -373,6 +375,13 @@ void BossDodongo_Init(Actor* thisx, PlayState* play) {
     Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_015F90, sMaskTex16x32, NULL);
     Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_016990, sMaskTex32x16, NULL);
     Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_016E10, sMaskTex32x16, NULL);
+
+    // Clear cache for masks
+    Gfx_TextureCacheDelete(sMaskTex8x16);
+    Gfx_TextureCacheDelete(sMaskTex8x32);
+    Gfx_TextureCacheDelete(sMaskTex16x16);
+    Gfx_TextureCacheDelete(sMaskTex16x32);
+    Gfx_TextureCacheDelete(sMaskTex32x16);
 
     BossDodongo_RegisterBlendedLavaTextureUpdate();
 
