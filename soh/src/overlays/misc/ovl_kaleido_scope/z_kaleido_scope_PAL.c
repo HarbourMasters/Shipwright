@@ -3352,23 +3352,16 @@ void KaleidoScope_LoadDungeonMap(PlayState* play) {
         size_t size = (width * height) / 2; // account for CI4 size
 
         // Resource size being larger than the calculated CI size means it is most likely not a CI4 texture
-        // Abort early end undo the blended effect by clearing the mask to avoid crashing
+        // Abort early and unregister the blended effect to avoid crashing
         if (size < ResourceGetTexSizeByName(interfaceCtx->mapSegmentName[0])) {
-            if (mapBlendMask[0] != 0) {
-                for (size_t i = 0; i < ARRAY_COUNT(mapBlendMask); i++) {
-                    mapBlendMask[i] = 0;
-                }
-            }
-
             interfaceCtx->mapSegment[0] = NULL;
             interfaceCtx->mapSegment[1] = NULL;
 
-            Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapBlendMask, NULL);
-            Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapBlendMask, NULL);
+            Gfx_UnregisterBlendedTexture(interfaceCtx->mapSegmentName[0]);
+            Gfx_UnregisterBlendedTexture(interfaceCtx->mapSegmentName[1]);
 
             Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[0]);
             Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[1]);
-            Gfx_TextureCacheDelete(mapBlendMask);
             return;
         }
 
@@ -3408,7 +3401,6 @@ void KaleidoScope_LoadDungeonMap(PlayState* play) {
     Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[1]);
     Gfx_TextureCacheDelete(interfaceCtx->mapSegment[0]);
     Gfx_TextureCacheDelete(interfaceCtx->mapSegment[1]);
-    Gfx_TextureCacheDelete(mapBlendMask);
 }
 
 static uint8_t registeredDungeonMapTextureHook = false;

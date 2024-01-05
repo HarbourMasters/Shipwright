@@ -2597,6 +2597,10 @@ extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* repla
     gfx_register_blended_texture(name, mask, replacement);
 }
 
+extern "C" void Gfx_UnregisterBlendedTexture(const char* name) {
+    gfx_unregister_blended_texture(name);
+}
+
 extern "C" void Gfx_TextureCacheDelete(const uint8_t* texAddr) {
     char* imgName = (char*)texAddr;
 
