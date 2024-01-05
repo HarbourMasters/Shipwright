@@ -1,5 +1,4 @@
 #include "presets.h"
-#include <format>
 #include <variant>
 #include <string>
 #include <cstdint>
