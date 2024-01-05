@@ -16,7 +16,7 @@ void clearCvars(std::vector<const char*> cvarsToClear) {
 std::string FormatLocations(std::vector<RandomizerCheck> locs) {
     std::string locString = "";
     for (auto loc: locs) {
-        locString += std::format("{},", (uint32_t)loc);
+        locString += std::to_string(loc) + ",";
     }
     return locString;
 }
