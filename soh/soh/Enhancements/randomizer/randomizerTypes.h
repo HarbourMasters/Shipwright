@@ -4968,6 +4968,14 @@ typedef enum {
     RO_TOKENSANITY_ALL,
 } RandoOptionTokensanity;
 
+// Shuffle Pots settings (off, dungeons, overworld, all)
+typedef enum {
+    RO_SHUFFLE_POTS_OFF,
+    RO_SHUFFLE_POTS_DUNGEONS,
+    RO_SHUFFLE_POTS_OVERWORLD,
+    RO_SHUFFLE_POTS_ALL,
+} RandoOptionShufflePots;
+
 //Link's Pocket Settings (dungeon reward, advancement, anything, nothing)
 typedef enum {
     RO_LINKS_POCKET_DUNGEON_REWARD,

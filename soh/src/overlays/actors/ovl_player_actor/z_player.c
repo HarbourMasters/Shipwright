@@ -6666,7 +6666,7 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
                 // this specifically for items coming from bushes/rocks/enemies when the player has already picked that item up.
                 uint8_t skipItemCutsceneRando = IS_RANDO && Item_CheckObtainability(giEntry.itemId) != ITEM_NONE && isDropToSkip;
 
-                // Automatically skip the pickup messages for very frequent items coming from pots with "Shuffle Pot Contents" on.
+                // Automatically skip the pickup messages for very frequent items coming from pots with "Shuffle Pots" on.
                 uint8_t isPotItemToSkip = interactedActor->id == ACTOR_EN_ITEM00 &&
                                           interactedActor->params == ITEM00_SMALL_KEY &&
                                           (giEntry.itemId == ITEM_RUPEE_GREEN || giEntry.itemId == ITEM_RUPEE_BLUE ||
