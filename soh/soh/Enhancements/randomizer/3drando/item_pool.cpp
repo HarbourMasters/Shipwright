@@ -754,27 +754,27 @@ void GenerateItemPool() {
   // Shuffle Pots
   if (ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OFF)) {
     for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, Category::cPot)) {
-      ctx->PlaceItemInLocation(loc, RG_GREEN_RUPEE, false, true);
+      ctx->PlaceItemInLocation(loc, Rando::StaticData::GetLocation(loc)->GetVanillaItem(), false, true);
     }
   } else if (ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_DUNGEONS)) {
     for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, Category::cPot)) {
       if (Rando::StaticData::GetLocation(loc)->IsOverworld()) {
-        ctx->PlaceItemInLocation(loc, RG_GREEN_RUPEE, false, true);
+        ctx->PlaceItemInLocation(loc, Rando::StaticData::GetLocation(loc)->GetVanillaItem(), false, true);
       } else {
-        AddItemToMainPool(RG_GREEN_RUPEE);
+        AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
       }
     }
   } else if (ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OVERWORLD)) {
     for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, Category::cPot)) {
       if (Rando::StaticData::GetLocation(loc)->IsDungeon()) {
-        ctx->PlaceItemInLocation(loc, RG_GREEN_RUPEE, false, true);
+        ctx->PlaceItemInLocation(loc, Rando::StaticData::GetLocation(loc)->GetVanillaItem(), false, true);
       } else {
-        AddItemToMainPool(RG_GREEN_RUPEE);
+        AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
       }
     }
   } else {
     for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, Category::cPot)) {
-      AddItemToMainPool(RG_GREEN_RUPEE);
+      AddItemToMainPool(Rando::StaticData::GetLocation(loc)->GetVanillaItem());
     }
   }
 
