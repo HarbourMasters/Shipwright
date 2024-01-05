@@ -75,7 +75,7 @@ typedef enum {
 } SpoilerItemRevealType;
 
 #define SPOILER_SPHERES_MAX 50
-#define SPOILER_ITEMS_MAX 512
+#define SPOILER_ITEMS_MAX 1024
 #define SPOILER_STRING_DATA_SIZE 16384
 
 typedef struct {

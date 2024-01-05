@@ -119,7 +119,7 @@ void WriteIngameSpoilerLog() {
             continue;
         }
         // Shuffle Pots
-        else if (!ctx->GetOption(RSK_SHUFFLE_POTS) && loc->IsCategory(Category::cPot)) {
+        else if (ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OFF) && loc->IsCategory(Category::cPot)) {
             continue;
         }
         // Merchants

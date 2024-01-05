@@ -759,7 +759,7 @@ void GenerateItemPool() {
   } else if (ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_DUNGEONS)) {
     for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, Category::cPot)) {
       if (Rando::StaticData::GetLocation(loc)->IsOverworld()) {
-        ctx->PlaceItemInLocation((RandomizerCheck)loc, RG_GREEN_RUPEE, false, true);
+        ctx->PlaceItemInLocation(loc, RG_GREEN_RUPEE, false, true);
       } else {
         AddItemToMainPool(RG_GREEN_RUPEE);
       }
@@ -767,7 +767,7 @@ void GenerateItemPool() {
   } else if (ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OVERWORLD)) {
     for (RandomizerCheck loc : ctx->GetLocations(ctx->allLocations, Category::cPot)) {
       if (Rando::StaticData::GetLocation(loc)->IsDungeon()) {
-        ctx->PlaceItemInLocation((RandomizerCheck)loc, RG_GREEN_RUPEE, false, true);
+        ctx->PlaceItemInLocation(loc, RG_GREEN_RUPEE, false, true);
       } else {
         AddItemToMainPool(RG_GREEN_RUPEE);
       }
