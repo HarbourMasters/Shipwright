@@ -67,7 +67,7 @@ class Context {
     TrialInfo* GetTrial(size_t key) const;
     static Sprite* GetSeedTexture(uint8_t index);
     Option& GetOption(RandomizerSettingKey key) const;
-    Option& GetTrickOption(RandomizerTrick key) const;
+    TrickOption& GetTrickOption(RandomizerTrick key) const;
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);
     void ParseSpoiler(const char* spoilerFileName, bool plandoMode);
     void ParseHashIconIndexesJson(nlohmann::json spoilerFileJson);

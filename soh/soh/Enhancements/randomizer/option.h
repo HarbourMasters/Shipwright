@@ -3,10 +3,14 @@
 #include "soh/UIWidgets.hpp"
 
 #include <cstdint>
+#include <set>
 #include <string>
 #include <vector>
 #include <variant>
 #include <type_traits>
+
+#include "randomizerTypes.h"
+#include "tricks.h"
 
 namespace Rando {
 enum ImGuiMenuFlags {
@@ -181,6 +185,7 @@ class Option {
      * @return const std::string&
      */
     const std::string& GetName() const;
+    const std::string& GetDescription() const;
 
     /**
      * @brief Get the value name corresponding to the selected index.
@@ -302,13 +307,15 @@ class Option {
     void SetFlag(int imFlag_);
     void RemoveFlag(int imFlag_);
 
-  private:
+protected:
     Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
            std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
            bool defaultHidden_, int imFlags_);
     Option(bool var_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
            std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
            bool defaultHidden_, int imFlags_);
+
+  private:
     bool RenderCheckbox() const;
     bool RenderCombobox() const;
     bool RenderSlider() const;
@@ -328,6 +335,61 @@ class Option {
     bool disabled = false;
     UIWidgets::CheckboxGraphics disabledGraphic = UIWidgets::CheckboxGraphics::Cross;
     std::string disabledText;
+};
+
+class TrickOption : public Option {
+public:
+    TrickOption() = default;
+    /**
+     * @brief A convenience function for constructing the Option for a trick.
+     *
+     * @param quest_ MQ, Vanilla, or Both.
+     * @param area_ The area the trick is relevant for.
+     * @param tags_ The set of RandomizerTrickTags for this trick.
+     * @param glitch_ Whether or not this trick is a glitch.
+     * @param name_ The name of the trick. Appears in the spoiler/patch file.
+     * @param description_ A brief description of the trick.
+     * @return Option
+     */
+    static TrickOption LogicTrick(RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_, bool glitch_, const std::string& name_, std::string description_);
+
+    /**
+     * @brief Retrieve the quest type this trick is relevant for.
+     *
+     * @return RandomizerCheckQuest
+     */
+    RandomizerCheckQuest GetQuest() const;
+
+    /**
+     * @brief Get the Area this trick is used in
+     *
+     * @return RandomizerArea
+     */
+    RandomizerArea GetArea() const;
+
+    /**
+     * @brief Get whether or not this Trick is considered a glitch.
+     *
+     * @return true or false
+     */
+    bool IsGlitch() const;
+
+    /**
+     * @brief Check if this Trick has the given tag
+     *
+     * @param tag the RandomizerTrickTag to check for
+     * @return true or false
+     */
+    bool HasTag(Tricks::Tag tag) const;
+
+    const std::set<Tricks::Tag>& GetTags() const;
+
+private:
+    TrickOption(RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_, bool glitch_, const std::string& name_, std::string description_);
+    RandomizerCheckQuest mQuest;
+    RandomizerArea mArea;
+    std::set<Tricks::Tag> mTags;
+    bool mGlitch;
 };
 
 enum class OptionGroupType {

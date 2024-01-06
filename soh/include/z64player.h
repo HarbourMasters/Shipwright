@@ -132,16 +132,6 @@ typedef enum {
     /* 0x40 */ PLAYER_IA_MASK_GERUDO,
     /* 0x41 */ PLAYER_IA_MASK_TRUTH,
     /* 0x42 */ PLAYER_IA_LENS_OF_TRUTH,
-    // Upstream TODO: Document why these entries were added
-    /* 0x43 */ PLAYER_IA_SHIELD_DEKU,
-    /* 0x44 */ PLAYER_IA_SHIELD_HYLIAN,
-    /* 0x45 */ PLAYER_IA_SHIELD_MIRROR,
-    /* 0x46 */ PLAYER_IA_TUNIC_KOKIRI,
-    /* 0x47 */ PLAYER_IA_TUNIC_GORON,
-    /* 0x48 */ PLAYER_IA_TUNIC_ZORA,
-    /* 0x49 */ PLAYER_IA_BOOTS_KOKIRI,
-    /* 0x4A */ PLAYER_IA_BOOTS_IRON,
-    /* 0x4B */ PLAYER_IA_BOOTS_HOVER,
     /* 0x4C */ PLAYER_IA_MAX
 } PlayerItemAction;
 

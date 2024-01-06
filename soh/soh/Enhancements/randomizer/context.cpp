@@ -12,6 +12,8 @@
 #include <fstream>
 #include <spdlog/spdlog.h>
 
+#include "luslog.h"
+
 namespace Rando {
 std::weak_ptr<Context> Context::mContext;
 
@@ -247,7 +249,9 @@ void Context::LocationReset() {
         GetItemLocation(il)->RemoveFromPool();
     }
 
-    GetItemLocation(RC_GANONDORF_HINT)->RemoveFromPool();
+    for (const RandomizerCheck il : StaticData::otherHintLocations) {
+        GetItemLocation(il)->RemoveFromPool();
+    }
 }
 
 void Context::HintReset() {
@@ -604,7 +608,7 @@ Option& Context::GetOption(const RandomizerSettingKey key) const {
     return mSettings->GetOption(key);
 }
 
-Option& Context::GetTrickOption(const RandomizerTrick key) const {
+TrickOption& Context::GetTrickOption(const RandomizerTrick key) const {
     return mSettings->GetTrickOption(key);
 }
 } // namespace Rando
