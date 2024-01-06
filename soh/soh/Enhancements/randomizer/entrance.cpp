@@ -760,7 +760,6 @@ static std::array<std::vector<Entrance*>, 2> SplitEntrancesByRequirements(std::v
         ItemPool, [](const RandomizerGet i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
     for (RandomizerGet unplacedItem : items) {
         Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
-        logic->UpdateHelpers();
     }
     // run a search to see what's accessible
     GetAccessibleLocations({});

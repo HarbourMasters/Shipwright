@@ -109,7 +109,6 @@ class Context {
     std::shared_ptr<EntranceShuffler> mEntranceShuffler;
     std::shared_ptr<Dungeons> mDungeons;
     std::shared_ptr<Logic> mLogic;
-    std::shared_ptr<SaveContext> mSaveContext;
     std::shared_ptr<Trials> mTrials;
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;

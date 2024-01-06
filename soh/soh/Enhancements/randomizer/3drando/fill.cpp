@@ -117,7 +117,6 @@ static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, 
           FilterFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
     for (RandomizerGet unplacedItem : itemsToPlace) {
        Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
-       logic->UpdateHelpers();
     }
     // Reset access as the non-starting age
     if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
@@ -528,9 +527,6 @@ static void PareDownPlaythrough() {
     for (int j = sphere.size() - 1; j >= 0; j--) {
       RandomizerCheck loc = sphere.at(j);
       RandomizerGet locGet = ctx->GetItemLocation(loc)->GetPlacedRandomizerGet(); //Copy out item
-      ctx->GetItemLocation(loc)->SetPlacedItem(RG_NONE); //Write in empty item
-      ctx->playthroughBeatable = false;
-      logic->Reset();
 
       RandomizerGet ignore = RG_NONE;
       if (locGet == RG_GOLD_SKULLTULA_TOKEN || IsBombchus(locGet, true)
@@ -686,11 +682,9 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
             logic->Reset();
             for (RandomizerGet unplacedItem : itemsToPlace) {
                 Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
-                logic->UpdateHelpers();
             }
             for (RandomizerGet unplacedItem : itemsToNotPlace) {
                 Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
-                logic->UpdateHelpers();
             }
 
             // get all accessible locations that are allowed

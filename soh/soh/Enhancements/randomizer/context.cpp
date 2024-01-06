@@ -86,7 +86,6 @@ Context::Context() {
     }
     mEntranceShuffler = std::make_shared<EntranceShuffler>();
     mDungeons = std::make_shared<Dungeons>();
-    mSaveContext = std::make_shared<SaveContext>();
     mLogic = std::make_shared<Logic>();
     mTrials = std::make_shared<Trials>();
     mSettings = std::make_shared<Settings>();
@@ -160,7 +159,6 @@ void Context::PlaceItemInLocation(const RandomizerCheck locKey, const Randomizer
 
     if (applyEffectImmediately || mSettings->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS) || mSettings->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
         StaticData::RetrieveItem(item).ApplyEffect();
-        logic->UpdateHelpers();
     }
 
     // TODO? Show Progress
@@ -603,7 +601,7 @@ std::shared_ptr<Logic> Context::GetLogic() {
 }
 
 void Context::ResetLogic() {
-    mLogic = std::make_shared<Logic>();
+    mLogic->Reset();
 }
 
 std::shared_ptr<Trials> Context::GetTrials() {

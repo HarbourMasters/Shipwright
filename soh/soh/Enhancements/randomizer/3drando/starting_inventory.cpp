@@ -192,6 +192,5 @@ void ApplyStartingInventory() {
       continue;
 
     Rando::StaticData::RetrieveItem(item).ApplyEffect();
-    Rando::Context::GetInstance()->GetLogic()->UpdateHelpers();
   }
 }
