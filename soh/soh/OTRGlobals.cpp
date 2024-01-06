@@ -336,7 +336,7 @@ OTRGlobals::OTRGlobals() {
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandoContext = Rando::Context::CreateInstance();
-    Rando::Context::GetInstance()->InitStaticData();
+    gRandoContext->InitStaticData();
     gRandoContext->AddExcludedOptions();
     gRandoContext->GetSettings()->CreateOptions();
     gRandomizer = std::make_shared<Randomizer>();
