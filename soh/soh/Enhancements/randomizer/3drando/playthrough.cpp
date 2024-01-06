@@ -37,7 +37,9 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
 
         for (Rando::Option* option : optionGroup.GetOptions()) {
             if (option->IsCategory(Rando::OptionCategory::Setting)) {
-                settingsStr += option->GetSelectedOptionText();
+                if (option->GetOptionCount() > 0) {
+                    settingsStr += option->GetSelectedOptionText();
+                }
             }
         }
     }
