@@ -26,6 +26,33 @@ enum class GlitchDifficulty {
     HERO,
 };
 
+template<class T>
+class LogicVar {
+  public:
+    LogicVar(){};
+    T Get(){};
+    void Set(T val){};
+};
+
+class LogicVarEquip : public LogicVar<bool> {
+  private:
+    uint32_t bit;
+  public:
+    LogicVarEquip(uint32_t bit_) {
+        bit = bit_;
+    }
+    bool Get(SaveContext* saveContext) {
+        return saveContext->inventory.equipment & (1 << bit);
+    }
+    void Set(SaveContext* saveContext, bool collect) {
+        if (collect) {
+            saveContext->inventory.equipment |= (1 << bit);
+        } else {
+            saveContext->inventory.equipment &= ~(1 << bit);
+        }
+    }
+};
+
 class Logic {
   public:
     bool noVariable = false;
