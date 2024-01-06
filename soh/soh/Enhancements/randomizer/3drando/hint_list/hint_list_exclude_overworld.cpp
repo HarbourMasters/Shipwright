@@ -1421,12 +1421,4 @@ void HintTable_Init_Exclude_Overworld() {
                        // obscure text
                        Text{ "a #pot in Hyrule Castle# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
     });
-
-    for (uint32_t i = RHT_KF_LINKS_HOUSE_POT; i <= RHT_HC_STORMS_GROTTO_POT_4; i++) {
-        hintTable[i] = HintText::Exclude({
-            // obscure text
-            Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds",
-                  /*spanish*/ "a #pot in a room# holds" },
-        });
-    }
 }

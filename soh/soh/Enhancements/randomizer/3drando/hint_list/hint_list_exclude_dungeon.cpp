@@ -2011,12 +2011,4 @@ void HintTable_Init_Exclude_Dungeon() {
                        //obscure text
                        Text{ "a #pot in Ice Cavern# contains", /*french*/ "TRANSLATION NEEDED", /*spanish*/ "" },
   });
-
-    for (uint32_t i = RHT_DODONGOS_CAVERN_LIZALFOS_POT_1; i <= RHT_ICE_CAVERN_FROZEN_POT_1; i++) {
-        hintTable[i] = HintText::Exclude({
-            // obscure text
-            Text{ "a #pot in a room# holds", /*french*/ "a #pot in a room# holds",
-                  /*spanish*/ "a #pot in a room# holds" },
-        });
-    }
 }
