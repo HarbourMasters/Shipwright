@@ -12,6 +12,8 @@
 #include <fstream>
 #include <spdlog/spdlog.h>
 
+#include "luslog.h"
+
 namespace Rando {
 std::weak_ptr<Context> Context::mContext;
 
@@ -604,7 +606,7 @@ Option& Context::GetOption(const RandomizerSettingKey key) const {
     return mSettings->GetOption(key);
 }
 
-Option& Context::GetTrickOption(const RandomizerTrick key) const {
+TrickOption& Context::GetTrickOption(const RandomizerTrick key) const {
     return mSettings->GetTrickOption(key);
 }
 } // namespace Rando
