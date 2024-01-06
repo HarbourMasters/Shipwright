@@ -46,8 +46,8 @@ public:
 
     bool CheckConditionAtAgeTime(bool& age, bool& time) {
 
-      logic->CanBeChild = false;
-      logic->CanBeAdult = false;
+      logic->IsChild = false;
+      logic->IsAdult = false;
       logic->AtDay   = false;
       logic->AtNight = false;
 
@@ -194,20 +194,20 @@ public:
     bool HereCheck(ConditionFn condition) {
 
       //store current age variables
-      bool pastAdult = logic->CanBeAdult;
-      bool pastChild = logic->CanBeChild;
+      bool pastAdult = logic->IsAdult;
+      bool pastChild = logic->IsChild;
 
       //set age access as this areas ages
-      logic->CanBeChild = Child();
-      logic->CanBeAdult = Adult();
+      logic->IsChild = Child();
+      logic->IsAdult = Adult();
 
       //update helpers and check condition as well as having at least child or adult access
       logic->UpdateHelpers();
-      bool hereVal = condition() && (logic->CanBeAdult || logic->CanBeChild);
+      bool hereVal = condition() && (logic->IsAdult || logic->IsChild);
 
       //set back age variables
-      logic->CanBeChild = pastChild;
-      logic->CanBeAdult = pastAdult;
+      logic->IsChild = pastChild;
+      logic->IsAdult = pastAdult;
       logic->UpdateHelpers();
 
       return hereVal;

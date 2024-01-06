@@ -10,8 +10,8 @@ void AreaTable_Init_BottomOfTheWell() {
   ---------------------------*/
   areaTable[RR_BOTTOM_OF_THE_WELL_ENTRYWAY] = Area("Bottom of the Well Entryway", "Bottom of the Well", RA_BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_BOTTOM_OF_THE_WELL_MAIN_AREA,    {[]{return randoCtx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla() && logic->CanBeChild && (logic->CanChildAttack || logic->Nuts);}}),
-                  Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, {[]{return randoCtx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()      && logic->CanBeChild;}}),
+                  Entrance(RR_BOTTOM_OF_THE_WELL_MAIN_AREA,    {[]{return randoCtx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla() && logic->IsChild && (logic->CanChildAttack || logic->Nuts);}}),
+                  Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, {[]{return randoCtx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()      && logic->IsChild;}}),
                   Entrance(RR_KAKARIKO_VILLAGE,                {[]{return true;}}),
   });
 

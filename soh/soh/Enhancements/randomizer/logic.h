@@ -269,8 +269,8 @@ class Logic {
     bool HasBombchus = false;
     bool HasExplosives = false;
     bool HasBoots = false;
-    bool CanBeChild = false;
-    bool CanBeAdult = false;
+    bool IsChild = false;
+    bool IsAdult = false;
     bool IsGlitched = false;
     bool CanBlastOrSmash = false;
     bool CanChildAttack = false;

@@ -16,8 +16,8 @@ std::vector<EventAccess> grottoEvents;
 //set the logic to be a specific age and time of day and see if the condition still holds
 bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
 
-  logic->CanBeChild = false;
-  logic->CanBeAdult = false;
+  logic->IsChild = false;
+  logic->IsAdult = false;
   logic->AtDay   = false;
   logic->AtNight = false;
 
@@ -33,10 +33,10 @@ bool LocationAccess::ConditionsMet() const {
   Area* parentRegion = AreaTable(Rando::Context::GetInstance()->GetItemLocation(location)->GetParentRegionKey());
   bool conditionsMet = false;
 
-  if ((parentRegion->childDay   && CheckConditionAtAgeTime(logic->CanBeChild, logic->AtDay))   ||
-      (parentRegion->childNight && CheckConditionAtAgeTime(logic->CanBeChild, logic->AtNight)) ||
-      (parentRegion->adultDay   && CheckConditionAtAgeTime(logic->CanBeAdult, logic->AtDay))   ||
-      (parentRegion->adultNight && CheckConditionAtAgeTime(logic->CanBeAdult, logic->AtNight))) {
+  if ((parentRegion->childDay   && CheckConditionAtAgeTime(logic->IsChild, logic->AtDay))   ||
+      (parentRegion->childNight && CheckConditionAtAgeTime(logic->IsChild, logic->AtNight)) ||
+      (parentRegion->adultDay   && CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay))   ||
+      (parentRegion->adultNight && CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight))) {
         conditionsMet = true;
   }
 
@@ -117,10 +117,10 @@ bool Area::UpdateEvents(SearchMode mode) {
       continue;
     }
 
-    if ((childDay   && event.CheckConditionAtAgeTime(logic->CanBeChild, logic->AtDay))    ||
-        (childNight && event.CheckConditionAtAgeTime(logic->CanBeChild, logic->AtNight))  ||
-        (adultDay   && event.CheckConditionAtAgeTime(logic->CanBeAdult, logic->AtDay))    ||
-        (adultNight && event.CheckConditionAtAgeTime(logic->CanBeAdult, logic->AtNight))) {
+    if ((childDay   && event.CheckConditionAtAgeTime(logic->IsChild, logic->AtDay))    ||
+        (childNight && event.CheckConditionAtAgeTime(logic->IsChild, logic->AtNight))  ||
+        (adultDay   && event.CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay))    ||
+        (adultNight && event.CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight))) {
           event.EventOccurred();
           eventsUpdated = true;
     }
@@ -192,10 +192,10 @@ bool Area::CheckAllAccess(const RandomizerRegion exitKey) {
 
   for (Rando::Entrance& exit : exits) {
     if (exit.GetConnectedRegionKey() == exitKey) {
-      return exit.CheckConditionAtAgeTime(logic->CanBeChild, logic->AtDay)   &&
-             exit.CheckConditionAtAgeTime(logic->CanBeChild, logic->AtNight) &&
-             exit.CheckConditionAtAgeTime(logic->CanBeAdult, logic->AtDay)   &&
-             exit.CheckConditionAtAgeTime(logic->CanBeAdult, logic->AtNight);
+      return exit.CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)   &&
+             exit.CheckConditionAtAgeTime(logic->IsChild, logic->AtNight) &&
+             exit.CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay)   &&
+             exit.CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight);
     }
   }
   return false;
@@ -268,8 +268,8 @@ void AreaTable_Init() {
 
   areaTable[RR_ROOT_EXITS] = Area("Root Exits", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_CHILD_SPAWN,             {[]{return logic->CanBeChild;}}),
-                  Entrance(RR_ADULT_SPAWN,             {[]{return logic->CanBeAdult;}}),
+                  Entrance(RR_CHILD_SPAWN,             {[]{return logic->IsChild;}}),
+                  Entrance(RR_ADULT_SPAWN,             {[]{return logic->IsAdult;}}),
                   Entrance(RR_MINUET_OF_FOREST_WARP,   {[]{return logic->CanUse(RG_MINUET_OF_FOREST);}}),
                   Entrance(RR_BOLERO_OF_FIRE_WARP,     {[]{return logic->CanUse(RG_BOLERO_OF_FIRE)     && logic->CanLeaveForest;}}),
                   Entrance(RR_SERENADE_OF_WATER_WARP,  {[]{return logic->CanUse(RG_SERENADE_OF_WATER)  && logic->CanLeaveForest;}}),
