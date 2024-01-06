@@ -7,12 +7,15 @@ namespace Rando {
     }
 
     bool Tricks::CheckRTTags(const std::unordered_map<Tag, bool> &showTag, const std::set<Tag> &rtTags) {
+        if (rtTags.empty()) {
+            return false;
+        }
         for (auto rtTag : rtTags) {
-            if (showTag.at(rtTag)) {
-                return true;
+            if (!showTag.at(rtTag)) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     std::string Tricks::GetRTTagName(const Tag tag) {
