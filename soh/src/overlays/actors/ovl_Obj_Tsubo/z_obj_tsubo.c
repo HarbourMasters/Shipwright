@@ -85,9 +85,20 @@ static InitChainEntry sInitChain[] = {
 };
 
 s8 ObjTsubo_HoldsRandomizedItem(ObjTsubo* this, PlayState* play) {
-    return Randomizer_GetSettingValue(RSK_SHUFFLE_POTS) &&
-           !Flags_GetRandomizerInf(this->potIdentity.randomizerInf) &&
-           this->potIdentity.randomizerCheck != RC_UNKNOWN_CHECK;
+    uint8_t isDungeon = play->sceneNum < SCENE_GANONS_TOWER_COLLAPSE_INTERIOR ||
+             (play->sceneNum > SCENE_TREASURE_BOX_SHOP && play->sceneNum < SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR);
+    uint8_t potSetting = Randomizer_GetSettingValue(RSK_SHUFFLE_POTS);
+
+    // Don't pull randomized item if pot isn't randomized or is already checked
+    if (!IS_RANDO || !potSetting || 
+        (potSetting == RO_SHUFFLE_POTS_OVERWORLD && isDungeon) ||
+        (potSetting == RO_SHUFFLE_POTS_DUNGEONS && !isDungeon) ||
+        Flags_GetRandomizerInf(this->potIdentity.randomizerInf) ||
+        this->potIdentity.randomizerCheck == RC_UNKNOWN_CHECK) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 void ObjTsubo_SpawnCollectible(ObjTsubo* this, PlayState* play) {
