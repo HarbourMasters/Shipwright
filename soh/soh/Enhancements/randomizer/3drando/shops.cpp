@@ -740,6 +740,29 @@ void InitTrickNames() {
      Text{"Ganon's Ghost", "", ""},
      Text{"Pork", "", ""}};
 
+  trickNameTable[RG_OCARINA_A_BUTTON] = {
+     Text{"Ocarina J Button", "", ""},
+     Text{"Ocarina Ayy Button", "", ""},
+     Text{"Ocarina A Trigger", "", ""} };
+  trickNameTable[RG_OCARINA_C_UP_BUTTON] = {
+     Text{"Ocarina C North Button", "", ""},
+     Text{"Ocarina C App Button", "", ""},
+     Text{"Ocarina Sup Button", "", ""} };
+  trickNameTable[RG_OCARINA_C_DOWN_BUTTON] = {
+     Text{"Ocarina C South Button", "", ""},
+     Text{"Ocarina Z Down Button", "", ""},
+     Text{"Ocarina See Down Button", "", ""},
+     Text{"Ocarina C Dawn Button", "", ""} };
+  trickNameTable[RG_OCARINA_C_LEFT_BUTTON] = {
+     Text{"Ocarina C West Button", "", ""},
+     Text{"Ocarina Sea Left Button", "", ""},
+     Text{"Ocarina C Lift Button", "", ""},
+     Text{"Ocarina Rewind Button", "", ""} };
+  trickNameTable[RG_OCARINA_C_RIGHT_BUTTON] = {
+     Text{"Ocarina C East Button", "", ""},
+     Text{"Ocarina C Wright Button", "", ""},
+     Text{"Overworld C Right Button", "", ""} };
+
 /*
   //Names for individual upgrades, in case progressive names are replaced
   trickNameTable[GI_HOOKSHOT] = {

@@ -492,8 +492,8 @@ static std::vector<RandomizerCheck> FilterHintability(std::vector<RandomizerChec
                                                       std::function<bool(RandomizerCheck)> extraFilter = NoFilter){
   auto ctx = Rando::Context::GetInstance();
   return FilterFromPool(locations, [extraFilter, ctx](const RandomizerCheck loc) {
-    return ctx->GetItemLocation(loc)->IsHintable() && !(ctx->GetItemLocation(loc)->IsHintedAt()
-    && extraFilter(loc));
+    return ctx->GetItemLocation(loc)->IsHintable() && !(ctx->GetItemLocation(loc)->IsHintedAt())
+    && extraFilter(loc);
   });
 }
 
@@ -1031,7 +1031,8 @@ void CreateStoneHints() {
                   // If we have Rainbow Bridge set to Greg, add a hint for where Greg is
                   (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_GREG) &&
                    ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_GREG_RUPEE)) &&
-                 ctx->GetItemLocation(loc)->IsHintable() && !(ctx->GetItemLocation(loc)->IsHintedAt());
+                  ctx->GetItemLocation(loc)->IsHintable() &&
+                  !(ctx->GetOption(RSK_GREG_HINT) && (IsReachableWithout({RC_GREG_HINT}, loc, true)));
       });
 
       for (auto& hint : conditionalAlwaysHints) {

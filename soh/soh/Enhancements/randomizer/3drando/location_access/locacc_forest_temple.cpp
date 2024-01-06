@@ -45,7 +45,7 @@ void AreaTable_Init_ForestTemple() {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_SOUTH_CORRIDOR,    {[]{return true;}}),
                   Entrance(RR_FOREST_TEMPLE_NORTH_CORRIDOR,    {[]{return true;}}),
-                  Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_LOWER, {[]{return logic->CanPlay(logic->SongOfTime) || logic->CanBeChild;}}),
+                  Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_LOWER, {[]{return logic->CanUse(RG_SONG_OF_TIME) || logic->CanBeChild;}}),
                   Entrance(RR_FOREST_TEMPLE_NE_OUTDOORS_LOWER, {[]{return logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT);}}),
                   Entrance(RR_FOREST_TEMPLE_WEST_CORRIDOR,     {[]{return logic->SmallKeys(RR_FOREST_TEMPLE, 1, 5);}}),
                   Entrance(RR_FOREST_TEMPLE_EAST_CORRIDOR,     {[]{return false;}}),
@@ -79,7 +79,7 @@ void AreaTable_Init_ForestTemple() {
                   LocationAccess(RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD, {[]{return logic->CanUse(RG_LONGSHOT) || Here(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER, []{return logic->HookshotOrBoomerang;});}}),
                 }, {
                   //Exits
-                  Entrance(RR_FOREST_TEMPLE_LOBBY,             {[]{return logic->CanPlay(logic->SongOfTime);}}),
+                  Entrance(RR_FOREST_TEMPLE_LOBBY,             {[]{return logic->CanUse(RG_SONG_OF_TIME);}}),
                   Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER, {[]{return false;}}),
                   Entrance(RR_FOREST_TEMPLE_MAP_ROOM,          {[]{return true;}}),
                   Entrance(RR_FOREST_TEMPLE_SEWER,             {[]{return logic->GoldScale || logic->CanUse(RG_IRON_BOOTS) || HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER);}}),
@@ -293,7 +293,7 @@ void AreaTable_Init_ForestTemple() {
                   EventAccess(&logic->FairyPot, {[]{return true;}}),
   }, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_WOLFOS_CHEST,       {[]{return (logic->CanPlay(logic->SongOfTime) || logic->CanBeChild) && (logic->CanJumpslash || logic->CanUse(RG_DINS_FIRE) || logic->CanUse(RG_STICKS) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->KokiriSword);}}),
+                  LocationAccess(RC_FOREST_TEMPLE_MQ_WOLFOS_CHEST,       {[]{return (logic->CanUse(RG_SONG_OF_TIME) || logic->CanBeChild) && (logic->CanJumpslash || logic->CanUse(RG_DINS_FIRE) || logic->CanUse(RG_STICKS) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->KokiriSword);}}),
                   LocationAccess(RC_FOREST_TEMPLE_MQ_GS_BLOCK_PUSH_ROOM, {[]{return logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MEGATON_HAMMER);}}),
   }, {
                   //Exits
@@ -342,11 +342,11 @@ void AreaTable_Init_ForestTemple() {
   }, {
                   //Locations
                   LocationAccess(RC_FOREST_TEMPLE_MQ_WELL_CHEST,                 {[]{return (logic->CanBeAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->CanBeChild && logic->CanUse(RG_FAIRY_SLINGSHOT));}}),
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD, {[]{return logic->HookshotOrBoomerang || (logic->CanBeAdult && logic->CanUse(RG_FIRE_ARROWS) && (logic->CanPlay(logic->SongOfTime) || (logic->CanUse(RG_HOVER_BOOTS) && randoCtx->GetTrickOption(RT_FOREST_DOORFRAME))));}}),
+                  LocationAccess(RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD, {[]{return logic->HookshotOrBoomerang || (logic->CanBeAdult && logic->CanUse(RG_FIRE_ARROWS) && (logic->CanUse(RG_SONG_OF_TIME) || (logic->CanUse(RG_HOVER_BOOTS) && randoCtx->GetTrickOption(RT_FOREST_DOORFRAME))));}}),
                   LocationAccess(RC_FOREST_TEMPLE_MQ_GS_WELL,                    {[]{return (logic->CanBeAdult && ((logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT)) || logic->CanUse(RG_FAIRY_BOW))) || (logic->CanBeChild && logic->CanUse(RG_FAIRY_SLINGSHOT));}}),
   }, {
                   //Exits
-                  Entrance(RR_FOREST_TEMPLE_MQ_OUTDOORS_TOP_LEDGES, {[]{return logic->CanBeAdult && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanPlay(logic->SongOfTime));}}),
+                  Entrance(RR_FOREST_TEMPLE_MQ_OUTDOORS_TOP_LEDGES, {[]{return logic->CanBeAdult && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME));}}),
                   Entrance(RR_FOREST_TEMPLE_MQ_NE_OUTDOORS_LEDGE,   {[]{return logic->CanBeAdult && logic->CanUse(RG_LONGSHOT);}}),
   });
 
@@ -366,7 +366,7 @@ void AreaTable_Init_ForestTemple() {
   }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_MQ_NE_OUTDOORS,  {[]{return true;}}),
-                  Entrance(RR_FOREST_TEMPLE_MQ_FALLING_ROOM, {[]{return logic->CanPlay(logic->SongOfTime);}}),
+                  Entrance(RR_FOREST_TEMPLE_MQ_FALLING_ROOM, {[]{return logic->CanUse(RG_SONG_OF_TIME);}}),
   });
 
   areaTable[RR_FOREST_TEMPLE_MQ_BOW_REGION] = Area("Forest Temple MQ Bow Region", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {

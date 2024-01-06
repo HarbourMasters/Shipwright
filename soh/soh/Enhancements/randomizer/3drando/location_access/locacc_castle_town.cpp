@@ -56,7 +56,7 @@ void AreaTable_Init_CastleTown() {
                 }, {
                   //Exits
                   Entrance(RR_TOT_ENTRANCE,            {[]{return true;}}),
-                  Entrance(RR_TOT_BEYOND_DOOR_OF_TIME, {[]{return randoCtx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_OPEN) || (logic->CanPlay(logic->SongOfTime) && (randoCtx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_SONGONLY) || (logic->HasAllStones && logic->OcarinaOfTime)));}}),
+                  Entrance(RR_TOT_BEYOND_DOOR_OF_TIME, {[]{return randoCtx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_OPEN) || (logic->CanUse(RG_SONG_OF_TIME) && (randoCtx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_SONGONLY) || (logic->HasAllStones && logic->OcarinaOfTime)));}}),
   });
 
   areaTable[RR_TOT_BEYOND_DOOR_OF_TIME] = Area("Beyond Door of Time", "Beyond Door of Time", RA_TEMPLE_OF_TIME, NO_DAY_NIGHT_CYCLE, {
@@ -110,7 +110,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_HC_GREAT_FAIRY_FOUNTAIN] = Area("HC Great Fairy Fountain", "HC Great Fairy Fountain", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_HC_GREAT_FAIRY_REWARD, {[]{return logic->CanPlay(logic->ZeldasLullaby);}}),
+                  LocationAccess(RC_HC_GREAT_FAIRY_REWARD, {[]{return logic->CanUse(RG_ZELDAS_LULLABY);}}),
                 }, {
                   //Exits
                   Entrance(RR_CASTLE_GROUNDS, {[]{return true;}}),
@@ -145,7 +145,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_OGC_GREAT_FAIRY_FOUNTAIN] = Area("OGC Great Fairy Fountain", "OGC Great Fairy Fountain", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_OGC_GREAT_FAIRY_REWARD, {[]{return logic->CanPlay(logic->ZeldasLullaby);}}),
+                  LocationAccess(RC_OGC_GREAT_FAIRY_REWARD, {[]{return logic->CanUse(RG_ZELDAS_LULLABY);}}),
                 }, {
                   //Exits
                   Entrance(RR_CASTLE_GROUNDS, {[]{return true;}}),
@@ -191,7 +191,7 @@ void AreaTable_Init_CastleTown() {
   areaTable[RR_MARKET_MASK_SHOP] = Area("Market Mask Shop", "Market Mask Shop", RA_NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->SkullMask,   {[]{return logic->SkullMask   || (logic->ZeldasLetter && (randoCtx->GetOption(RSK_COMPLETE_MASK_QUEST) ||  ChildCanAccess(RR_KAKARIKO_VILLAGE)));}}),
-                  EventAccess(&logic->MaskOfTruth, {[]{return logic->MaskOfTruth || (logic->SkullMask && (randoCtx->GetOption(RSK_COMPLETE_MASK_QUEST) || (ChildCanAccess(RR_THE_LOST_WOODS) && logic->CanPlay(logic->SariasSong) && AreaTable(RR_THE_GRAVEYARD)->childDay && ChildCanAccess(RR_HYRULE_FIELD) && logic->HasAllStones)));}}),
+                  EventAccess(&logic->MaskOfTruth, {[]{return logic->MaskOfTruth || (logic->SkullMask && (randoCtx->GetOption(RSK_COMPLETE_MASK_QUEST) || (ChildCanAccess(RR_THE_LOST_WOODS) && logic->CanUse(RG_SARIAS_SONG) && AreaTable(RR_THE_GRAVEYARD)->childDay && ChildCanAccess(RR_HYRULE_FIELD) && logic->HasAllStones)));}}),
                 }, {}, {
                   //Exits
                   Entrance(RR_THE_MARKET, {[]{return true;}}),

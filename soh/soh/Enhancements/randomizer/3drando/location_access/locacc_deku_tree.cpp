@@ -175,8 +175,8 @@ void AreaTable_Init_DekuTree() {
                   LocationAccess(RC_DEKU_TREE_MQ_COMPASS_CHEST,   {[]{return true;}}),
                   LocationAccess(RC_DEKU_TREE_MQ_GS_COMPASS_ROOM, {[]{return logic->HookshotOrBoomerang &&
                                                                                Here(RR_DEKU_TREE_MQ_COMPASS_ROOM, []{return logic->HasBombchus ||
-                                                                               (logic->Bombs && (logic->CanPlay(logic->SongOfTime) || logic->CanBeAdult)) ||
-                                                                               (logic->CanBeAdult && logic->CanUse(RG_MEGATON_HAMMER) && (logic->CanPlay(logic->SongOfTime) || randoCtx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS)));});}}),
+                                                                               (logic->Bombs && (logic->CanUse(RG_SONG_OF_TIME) || logic->CanBeAdult)) ||
+                                                                               (logic->CanBeAdult && logic->CanUse(RG_MEGATON_HAMMER) && (logic->CanUse(RG_SONG_OF_TIME) || randoCtx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS)));});}}),
   }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_MQ_LOBBY, {[]{return true;}}),
@@ -194,7 +194,7 @@ void AreaTable_Init_DekuTree() {
 
   areaTable[RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK] = Area("Deku Tree MQ Basement Water Room Front", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_DEKU_TREE_MQ_AFTER_SPINNING_LOG_CHEST, {[]{return logic->CanPlay(logic->SongOfTime);}}),
+                  LocationAccess(RC_DEKU_TREE_MQ_AFTER_SPINNING_LOG_CHEST, {[]{return logic->CanUse(RG_SONG_OF_TIME);}}),
   }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_MQ_BASEMENT_BACK_ROOM,        {[]{return Here(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, []{return (logic->CanBeChild && logic->CanUse(RG_STICKS)) || logic->CanUse(RG_DINS_FIRE) ||
@@ -206,7 +206,7 @@ void AreaTable_Init_DekuTree() {
 
   areaTable[RR_DEKU_TREE_MQ_BASEMENT_BACK_ROOM] = Area("Deku Tree MQ Basement Back Room", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM, {[]{return (logic->CanBeAdult && logic->CanUse(RG_LONGSHOT)) || (logic->CanPlay(logic->SongOfTime) && logic->HookshotOrBoomerang);}}),
+                  LocationAccess(RC_DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM, {[]{return (logic->CanBeAdult && logic->CanUse(RG_LONGSHOT)) || (logic->CanUse(RG_SONG_OF_TIME) && logic->HookshotOrBoomerang);}}),
                   LocationAccess(RC_DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM,   {[]{return logic->HasFireSourceWithTorch && logic->HookshotOrBoomerang;}}),
   }, {
                   //Exits

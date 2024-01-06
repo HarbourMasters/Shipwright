@@ -81,7 +81,7 @@ void AreaTable_Init_GanonsCastle() {
                   EventAccess(&logic->ShadowTrialClear, {[]{return logic->CanUse(RG_LIGHT_ARROWS) && logic->CanUse(RG_MEGATON_HAMMER) && ((logic->FireArrows && (randoCtx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH))) || (logic->CanUse(RG_LONGSHOT) && (logic->CanUse(RG_HOVER_BOOTS) || (logic->DinsFire && (randoCtx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH))))));}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_GANONS_CASTLE_SHADOW_TRIAL_FRONT_CHEST,            {[]{return logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanPlay(logic->SongOfTime) || logic->CanBeChild;}}),
+                  LocationAccess(RC_GANONS_CASTLE_SHADOW_TRIAL_FRONT_CHEST,            {[]{return logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME) || logic->CanBeChild;}}),
                   LocationAccess(RC_GANONS_CASTLE_SHADOW_TRIAL_GOLDEN_GAUNTLETS_CHEST, {[]{return logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_LONGSHOT) && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_DINS_FIRE)));}}),
   }, {});
 
@@ -107,7 +107,7 @@ void AreaTable_Init_GanonsCastle() {
                   LocationAccess(RC_GANONS_CASTLE_LIGHT_TRIAL_SECOND_RIGHT_CHEST,      {[]{return true;}}),
                   LocationAccess(RC_GANONS_CASTLE_LIGHT_TRIAL_THIRD_RIGHT_CHEST,       {[]{return true;}}),
                   LocationAccess(RC_GANONS_CASTLE_LIGHT_TRIAL_INVISIBLE_ENEMIES_CHEST, {[]{return randoCtx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH);}}),
-                  LocationAccess(RC_GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST,           {[]{return logic->CanPlay(logic->ZeldasLullaby) && logic->SmallKeys(RR_GANONS_CASTLE, 1);}}),
+                  LocationAccess(RC_GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST,           {[]{return logic->CanUse(RG_ZELDAS_LULLABY) && logic->SmallKeys(RR_GANONS_CASTLE, 1);}}),
   }, {});
   }
 
@@ -157,7 +157,7 @@ void AreaTable_Init_GanonsCastle() {
 
   areaTable[RR_GANONS_CASTLE_MQ_FOREST_TRIAL] = Area("Ganon's Castle MQ Forest Trial", "Ganons Castle", RA_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->ForestTrialClear, {[]{return logic->CanBeAdult && logic->CanUse(RG_LIGHT_ARROWS) && (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)) && logic->CanPlay(logic->SongOfTime);}}),
+                  EventAccess(&logic->ForestTrialClear, {[]{return logic->CanBeAdult && logic->CanUse(RG_LIGHT_ARROWS) && (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)) && logic->CanUse(RG_SONG_OF_TIME);}}),
   }, {
                   //Locations
                   LocationAccess(RC_GANONS_CASTLE_MQ_FOREST_TRIAL_EYE_SWITCH_CHEST,        {[]{return (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT));}}),
@@ -211,7 +211,7 @@ void AreaTable_Init_GanonsCastle() {
                     //Trick: logic->CanBeAdult && logic->CanUse(RG_LIGHT_ARROWS) && logic->SmallKeys(RR_GANONS_CASTLE, 3) && (LogicLensCastleMQ || logic->CanUse(RG_LENS_OF_TRUTH)) && (logic->Hookshot || LogicLightTrialMQ)
   }, {
                   //Locations
-                  LocationAccess(RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_LULLABY_CHEST, {[]{return (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)) && logic->CanPlay(logic->ZeldasLullaby);}}),
+                  LocationAccess(RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_LULLABY_CHEST, {[]{return (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)) && logic->CanUse(RG_ZELDAS_LULLABY);}}),
   }, {});
   }
 }

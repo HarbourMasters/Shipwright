@@ -182,8 +182,8 @@ void AreaTable_Init_JabuJabusBelly() {
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST, {[]{return true;}}),
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST,   {[]{return true;}}),
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST,              {[]{return true;}}),
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,      {[]{return logic->CanPlay(logic->SongOfTime) || (randoCtx->GetTrickOption(RT_JABU_MQ_SOT_GS) && logic->CanBeChild && logic->CanUse(RG_BOOMERANG));}}),
-                    //Trick: logic->CanPlay(logic->SongOfTime) || (LogicJabuMQSoTGS && logic->CanBeChild && logic->CanUse(RG_BOOMERANG))
+                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,      {[]{return logic->CanUse(RG_SONG_OF_TIME) || (randoCtx->GetTrickOption(RT_JABU_MQ_SOT_GS) && logic->CanBeChild && logic->CanUse(RG_BOOMERANG));}}),
+                    //Trick: logic->CanUse(RG_SONG_OF_TIME) || (LogicJabuMQSoTGS && logic->CanBeChild && logic->CanUse(RG_BOOMERANG))
   }, {
                   //Exits
                   Entrance(RR_JABU_JABUS_BELLY_MQ_BEGINNING, {[]{return true;}}),
@@ -206,7 +206,7 @@ void AreaTable_Init_JabuJabusBelly() {
                   EventAccess(&logic->FairyPot, {[]{return true;}}),
   }, {
                   //Locations
-                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_COW,             {[]{return logic->CanPlay(logic->EponasSong);}}),
+                  LocationAccess(RC_JABU_JABUS_BELLY_MQ_COW,             {[]{return logic->CanUse(RG_EPONAS_SONG);}}),
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST, {[]{return true;}}),
                   LocationAccess(RC_JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS,    {[]{return true;}}),
   }, {

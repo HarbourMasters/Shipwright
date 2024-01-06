@@ -226,7 +226,7 @@ void AreaTable_Init_DodongosCavern() {
                   LocationAccess(RC_DODONGOS_CAVERN_MQ_COMPASS_CHEST,              {[]{return logic->CanAdultAttack || logic->CanChildAttack || logic->Nuts;}}),
                   LocationAccess(RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CHEST,          {[]{return (logic->CanBeChild && logic->CanUse(RG_STICKS)) || logic->HasFireSource;}}),
                   LocationAccess(RC_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_ROOM_CHEST,    {[]{return logic->CanBlastOrSmash || (logic->CanBeChild && logic->CanUse(RG_STICKS)) || logic->CanUse(RG_DINS_FIRE) || (logic->CanBeAdult && (randoCtx->GetTrickOption(RT_DC_JUMP) || logic->HoverBoots || logic->Hookshot));}}),
-                  LocationAccess(RC_DODONGOS_CAVERN_MQ_GS_SONG_OF_TIME_BLOCK_ROOM, {[]{return logic->CanPlay(logic->SongOfTime) && (logic->CanChildAttack || logic->CanAdultAttack);}}),
+                  LocationAccess(RC_DODONGOS_CAVERN_MQ_GS_SONG_OF_TIME_BLOCK_ROOM, {[]{return logic->CanUse(RG_SONG_OF_TIME) && (logic->CanChildAttack || logic->CanAdultAttack);}}),
                   LocationAccess(RC_DODONGOS_CAVERN_MQ_GS_LARVAE_ROOM,             {[]{return (logic->CanBeChild && logic->CanUse(RG_STICKS)) || logic->HasFireSource;}}),
                   LocationAccess(RC_DODONGOS_CAVERN_MQ_GS_LIZALFOS_ROOM,           {[]{return logic->CanBlastOrSmash;}}),
                   LocationAccess(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR,      {[]{return logic->CanStunDeku;}}),

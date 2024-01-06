@@ -10,10 +10,6 @@
 #include "context.h"
 
 namespace Rando {
-    bool Logic::CanPlay(bool song) {
-        return Ocarina && song;
-    }
-
     bool Logic::IsMagicItem(RandomizerGet item) {
         return item == RG_DINS_FIRE    ||
                 item == RG_FARORES_WIND ||
@@ -28,34 +24,51 @@ namespace Rando {
     }
 
     bool Logic::HasItem(RandomizerGet itemName) {
-        return (itemName == RG_DINS_FIRE         && DinsFire)        ||
-               (itemName == RG_FARORES_WIND      && FaroresWind)     ||
-               (itemName == RG_NAYRUS_LOVE       && NayrusLove)      ||
-               (itemName == RG_LENS_OF_TRUTH     && LensOfTruth)     ||
-               (itemName == RG_FAIRY_BOW         && Bow)             ||
-               (itemName == RG_MEGATON_HAMMER    && Hammer)          ||
-               (itemName == RG_IRON_BOOTS        && IronBoots)       ||
-               (itemName == RG_HOVER_BOOTS       && HoverBoots)      ||
-               (itemName == RG_HOOKSHOT          && Hookshot)        ||
-               (itemName == RG_LONGSHOT          && Longshot)        ||
-               (itemName == RG_SILVER_GAUNTLETS  && SilverGauntlets) ||
-               (itemName == RG_GOLDEN_GAUNTLETS  && GoldenGauntlets) ||
-               (itemName == RG_GORON_TUNIC       && GoronTunic)      ||
-               (itemName == RG_ZORA_TUNIC        && ZoraTunic)       ||
-               (itemName == RG_SCARECROW         && Scarecrow)       ||
-               (itemName == RG_DISTANT_SCARECROW && DistantScarecrow)||
-               (itemName == RG_HYLIAN_SHIELD     && HylianShield)    ||
-               (itemName == RG_MIRROR_SHIELD     && MirrorShield)    ||
-               (itemName == RG_MASTER_SWORD      && MasterSword)     ||
-               (itemName == RG_BIGGORON_SWORD    && BiggoronSword)   ||
-               (itemName == RG_FAIRY_SLINGSHOT   && Slingshot)       ||
-               (itemName == RG_BOOMERANG         && Boomerang)       ||
-               (itemName == RG_KOKIRI_SWORD      && KokiriSword)     ||
-               (itemName == RG_STICKS            && Sticks)          ||
-               (itemName == RG_DEKU_SHIELD       && DekuShield)      ||
-               (itemName == RG_FIRE_ARROWS       && FireArrows)      ||
-               (itemName == RG_ICE_ARROWS        && IceArrows)       ||
-               (itemName == RG_LIGHT_ARROWS      && LightArrows);
+        return  (itemName == RG_DINS_FIRE              && DinsFire)            ||
+                (itemName == RG_FARORES_WIND           && FaroresWind)         ||
+                (itemName == RG_NAYRUS_LOVE            && NayrusLove)          ||
+                (itemName == RG_LENS_OF_TRUTH          && LensOfTruth)         ||
+                (itemName == RG_FAIRY_BOW              && Bow)                 ||
+                (itemName == RG_MEGATON_HAMMER         && Hammer)              ||
+                (itemName == RG_IRON_BOOTS             && IronBoots)           ||
+                (itemName == RG_HOVER_BOOTS            && HoverBoots)          ||
+                (itemName == RG_HOOKSHOT               && Hookshot)            ||
+                (itemName == RG_LONGSHOT               && Longshot)            ||
+                (itemName == RG_SILVER_GAUNTLETS       && SilverGauntlets)     ||
+                (itemName == RG_GOLDEN_GAUNTLETS       && GoldenGauntlets)     ||
+                (itemName == RG_GORON_TUNIC            && GoronTunic)          ||
+                (itemName == RG_ZORA_TUNIC             && ZoraTunic)           ||
+                (itemName == RG_SCARECROW              && Scarecrow)           ||
+                (itemName == RG_DISTANT_SCARECROW      && DistantScarecrow)    ||
+                (itemName == RG_HYLIAN_SHIELD          && HylianShield)        ||
+                (itemName == RG_MIRROR_SHIELD          && MirrorShield)        ||
+                (itemName == RG_MASTER_SWORD           && MasterSword)         ||
+                (itemName == RG_BIGGORON_SWORD         && BiggoronSword)       ||
+                (itemName == RG_FAIRY_SLINGSHOT        && Slingshot)           ||
+                (itemName == RG_BOOMERANG              && Boomerang)           ||
+                (itemName == RG_KOKIRI_SWORD           && KokiriSword)         ||
+                (itemName == RG_STICKS                 && Sticks)              ||
+                (itemName == RG_DEKU_SHIELD            && DekuShield)          ||
+                (itemName == RG_FIRE_ARROWS            && FireArrows)          ||
+                (itemName == RG_ICE_ARROWS             && IceArrows)           ||
+                (itemName == RG_LIGHT_ARROWS           && LightArrows)         ||
+                (itemName == RG_OCARINA_A_BUTTON       && OcarinaAButton)      ||
+                (itemName == RG_OCARINA_C_LEFT_BUTTON  && OcarinaCLeftButton)  ||
+                (itemName == RG_OCARINA_C_RIGHT_BUTTON && OcarinaCRightButton) ||
+                (itemName == RG_OCARINA_C_DOWN_BUTTON  && OcarinaCDownButton)  ||
+                (itemName == RG_OCARINA_C_UP_BUTTON    && OcarinaCUpButton)    ||
+                (itemName == RG_ZELDAS_LULLABY         && ZeldasLullaby)       ||
+                (itemName == RG_EPONAS_SONG            && EponasSong)          ||
+                (itemName == RG_SARIAS_SONG            && SariasSong)          ||
+                (itemName == RG_SUNS_SONG              && SunsSong)            ||
+                (itemName == RG_SONG_OF_TIME           && SongOfTime)          ||
+                (itemName == RG_SONG_OF_STORMS         && SongOfStorms)        ||
+                (itemName == RG_MINUET_OF_FOREST       && MinuetOfForest)      ||
+                (itemName == RG_BOLERO_OF_FIRE         && BoleroOfFire)        ||
+                (itemName == RG_SERENADE_OF_WATER      && SerenadeOfWater)     ||
+                (itemName == RG_REQUIEM_OF_SPIRIT      && RequiemOfSpirit)     ||
+                (itemName == RG_NOCTURNE_OF_SHADOW     && NocturneOfShadow)    ||
+                (itemName == RG_PRELUDE_OF_LIGHT       && PreludeOfLight);
     }
 
     //Can the passed in item be used?
@@ -110,6 +123,32 @@ namespace Rando {
                 return CanBeChild;// || StickAsAdult;
             case RG_DEKU_SHIELD:
                 return CanBeChild;// || DekuShieldAsAdult;
+
+            // Songs
+            case RG_ZELDAS_LULLABY:
+                return Ocarina && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCUpButton;
+            case RG_EPONAS_SONG:
+                return Ocarina && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCUpButton;
+            case RG_SARIAS_SONG:
+                return Ocarina && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCDownButton;
+            case RG_SUNS_SONG:
+                return Ocarina && OcarinaCRightButton && OcarinaCUpButton && OcarinaCDownButton;
+            case RG_SONG_OF_TIME:
+                return Ocarina && OcarinaAButton && OcarinaCRightButton && OcarinaCDownButton;
+            case RG_SONG_OF_STORMS:
+                return Ocarina && OcarinaAButton && OcarinaCUpButton && OcarinaCDownButton;
+            case RG_MINUET_OF_FOREST:
+                return Ocarina && OcarinaAButton && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCUpButton;
+            case RG_BOLERO_OF_FIRE:
+                return Ocarina && OcarinaAButton && OcarinaCRightButton && OcarinaCDownButton;
+            case RG_SERENADE_OF_WATER:
+                return Ocarina && OcarinaAButton && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCDownButton;
+            case RG_REQUIEM_OF_SPIRIT:
+                return Ocarina && OcarinaAButton && OcarinaCRightButton && OcarinaCDownButton;
+            case RG_NOCTURNE_OF_SHADOW:
+                return Ocarina && OcarinaAButton && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCDownButton;
+            case RG_PRELUDE_OF_LIGHT:
+                return Ocarina && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCUpButton;
 
             // Magic items
             default:
@@ -192,6 +231,11 @@ namespace Rando {
     // Updates all logic helpers. Should be called whenever a non-helper is changed
     void Logic::UpdateHelpers() {
         auto ctx = Rando::Context::GetInstance();
+        OcarinaButtons  =  (OcarinaAButton ? 1 : 0) +
+                           (OcarinaCLeftButton ? 1 : 0) +
+                           (OcarinaCRightButton ? 1 : 0) +
+                           (OcarinaCUpButton ? 1 : 0) +
+                           (OcarinaCDownButton ? 1 : 0);
         NumBottles      = ((NoBottles) ? 0 : (Bottles + ((DeliverLetter) ? 1 : 0)));
         HasBottle       = NumBottles >= 1;
         Slingshot       = (ProgressiveBulletBag >= 1) && (BuySeed || AmmoCanDrop);
@@ -210,9 +254,10 @@ namespace Rando {
         AdultsWallet    = ProgressiveWallet     >= 1;
         BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
-        ScarecrowSong    = ScarecrowSong || ctx->GetOption(RSK_SKIP_SCARECROWS_SONG) || (ChildScarecrow && AdultScarecrow);
-        Scarecrow        = Hookshot && CanPlay(ScarecrowSong);
-        DistantScarecrow = Longshot && CanPlay(ScarecrowSong);
+        //you need at least 2 buttons for scarecrow song
+        ScarecrowSong    = ScarecrowSong || (ctx->GetOption(RSK_SKIP_SCARECROWS_SONG) && Ocarina && OcarinaButtons >= 2) || (ChildScarecrow && AdultScarecrow);
+        Scarecrow        = Hookshot && ScarecrowSong;
+        DistantScarecrow = Longshot && ScarecrowSong;
 
         //Drop Access
         DekuStickDrop = StickPot || DekuBabaSticks;
@@ -234,7 +279,7 @@ namespace Rando {
         FoundBombchus   = (BombchuDrop || Bombchus || Bombchus5 || Bombchus10 || Bombchus20);
         CanPlayBowling  = (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && FoundBombchus) || (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && BombBag);
         // TODO: Implement Ammo Drop Setting in place of bombchu drops
-        HasBombchus     = (BuyBombchus || (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON_PLUS_BOMBCHU) && FoundBombchus));
+        HasBombchus = (BuyBombchus || (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON/*_PLUS_BOMBCHU*/) && FoundBombchus));
 
         HasExplosives =  Bombs || (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && HasBombchus);
 
@@ -264,9 +309,9 @@ namespace Rando {
         CanDive         = ProgressiveScale >= 1;
         CanLeaveForest  = ctx->GetOption(RSK_FOREST).IsNot(RO_FOREST_CLOSED) || CanBeAdult || DekuTreeClear || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES);
         CanPlantBugs    = CanBeChild && Bugs;
-        CanRideEpona    = CanBeAdult && Epona && CanPlay(EponasSong);
-        CanSummonGossipFairy            = Ocarina && (ZeldasLullaby || EponasSong || SongOfTime || SunsSong);
-        CanSummonGossipFairyWithoutSuns = Ocarina && (ZeldasLullaby || EponasSong || SongOfTime);
+        CanRideEpona    = CanBeAdult && Epona && CanUse(RG_EPONAS_SONG);
+        CanSummonGossipFairyWithoutSuns = CanUse(RG_ZELDAS_LULLABY) || CanUse(RG_EPONAS_SONG) || CanUse(RG_SONG_OF_TIME);
+        CanSummonGossipFairy            = CanSummonGossipFairyWithoutSuns || CanUse(RG_SUNS_SONG);
         Hearts          = BaseHearts + HeartContainer + (PieceOfHeart >> 2);
         EffectiveHealth = ((Hearts << (2 + DoubleDefense)) >> Multiplier) + ((Hearts << (2 + DoubleDefense)) % (1 << Multiplier) > 0); //Number of half heart hits to die, ranges from 1 to 160
         FireTimer       = CanUse(RG_GORON_TUNIC) ? 255 : (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS)) ? (Hearts * 8) : 0;
@@ -277,9 +322,9 @@ namespace Rando {
         CanTakeDamageTwice  = (Fairy && NumBottles >= 2) || ((EffectiveHealth == 2) && (CanUse(RG_NAYRUS_LOVE) || Fairy)) || (EffectiveHealth > 2);
         //CanPlantBean        = CanBeChild && (MagicBean || MagicBeanPack);
         CanOpenBombGrotto   = CanBlastOrSmash       && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
-        CanOpenStormGrotto  = CanPlay(SongOfStorms) && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
+        CanOpenStormGrotto  = CanUse(RG_SONG_OF_STORMS) && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
         HookshotOrBoomerang = CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
-        CanGetNightTimeGS   = (CanPlay(SunsSong) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG));
+        CanGetNightTimeGS   = (CanUse(RG_SUNS_SONG) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG));
 
         GuaranteeTradePath     = ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetTrickOption(RT_DMT_BOLERO_BIGGORON) || CanBlastOrSmash || StopGCRollingGoronAsAdult;
         //GuaranteeHint          = (hints == "Mask" && MaskofTruth) || (hints == "Agony") || (hints != "Mask" && hints != "Agony");
@@ -539,6 +584,13 @@ namespace Rando {
         Greg = false;
         GregInBridgeLogic = false;
         GregInLacsLogic = false;
+
+        //Ocarina C Buttons
+        OcarinaAButton = ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS).Is(true) ? 0 : 1;
+        OcarinaCLeftButton = ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS).Is(true) ? 0 : 1;
+        OcarinaCRightButton = ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS).Is(true) ? 0 : 1;
+        OcarinaCUpButton = ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS).Is(true) ? 0 : 1;
+        OcarinaCDownButton = ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS).Is(true) ? 0 : 1;
 
         //Progressive Items
         ProgressiveBulletBag  = 0;

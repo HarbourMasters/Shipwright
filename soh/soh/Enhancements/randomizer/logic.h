@@ -26,33 +26,6 @@ enum class GlitchDifficulty {
     HERO,
 };
 
-template<class T>
-class LogicVar {
-  public:
-    LogicVar(){};
-    T Get(){};
-    void Set(T val){};
-};
-
-class LogicVarEquip : public LogicVar<bool> {
-  private:
-    uint32_t bit;
-  public:
-    LogicVarEquip(uint32_t bit_) {
-        bit = bit_;
-    }
-    bool Get(SaveContext* saveContext) {
-        return saveContext->inventory.equipment & (1 << bit);
-    }
-    void Set(SaveContext* saveContext, bool collect) {
-        if (collect) {
-            saveContext->inventory.equipment |= (1 << bit);
-        } else {
-            saveContext->inventory.equipment &= ~(1 << bit);
-        }
-    }
-};
-
 class Logic {
   public:
     bool noVariable = false;
@@ -285,6 +258,12 @@ class Logic {
     bool Fairy = false;
     bool BottleWithBigPoe = false;
 
+    bool OcarinaAButton      = false;
+    bool OcarinaCLeftButton  = false;
+    bool OcarinaCRightButton = false;
+    bool OcarinaCUpButton    = false;
+    bool OcarinaCDownButton  = false;
+
     bool FoundBombchus = false;
     bool CanPlayBowling = false;
     bool HasBombchus = false;
@@ -317,6 +296,7 @@ class Logic {
     bool HookshotOrBoomerang = false;
     bool CanGetNightTimeGS = false;
 
+    uint8_t OcarinaButtons = 0;
     uint8_t BaseHearts = 0;
     uint8_t Hearts = 0;
     uint8_t Multiplier = 0;
@@ -427,7 +407,6 @@ class Logic {
     SaveContext* mSaveContext;
     Logic();
     void UpdateHelpers();
-    bool CanPlay(bool song);
     bool CanUse(RandomizerGet itemName);
     bool HasProjectile(HasProjectileAge age);
     bool HasBossSoul(RandomizerGet itemName);

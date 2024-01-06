@@ -37,6 +37,11 @@ class Settings {
     Option& GetTrickOption(RandomizerTrick key);
 
     /**
+     * @brief Reset all RandomizerTrick keys.
+     */
+    void ResetTrickOptions();
+
+    /**
      * @brief Returns a reference to the entire array of options.
      *
      * @return const std::array<Option, RSK_MAX>&
@@ -186,5 +191,6 @@ class Settings {
     std::string mHash;
     std::string mSeedString;
     uint32_t mFinalSeed = 0;
+    std::unordered_map<std::string, RandomizerTrick> mTrickNameToEnum;
 };
 } // namespace Rando

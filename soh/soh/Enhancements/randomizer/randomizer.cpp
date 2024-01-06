@@ -11,6 +11,10 @@
 #include "3drando/rando_main.hpp"
 #include "3drando/random.hpp"
 #include "../../UIWidgets.hpp"
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+#define IMGUI_DEFINE_MATH_OPERATORS
+#endif
+#include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 #include "../custom-message/CustomMessageTypes.h"
 #include "../item-tables/ItemTableManager.h"
@@ -253,31 +257,16 @@ std::string sanitize(std::string stringValue) {
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
 bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
-    try {
-        if (strcmp(spoilerFileName, "") != 0) {
-            std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
-            if (!spoilerFileStream) {
-                return false;
-            }
-
-            json spoilerFileJson;
-            spoilerFileStream >> spoilerFileJson;
-
-            if (!spoilerFileJson.contains("version") || !spoilerFileJson.contains("finalSeed")) {
-                return false;
-            }
-
+    if (strcmp(spoilerFileName, "") != 0) {
+        std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
+        if (!spoilerFileStream) {
+            return false;
+        } else {
             return true;
         }
-
-        return false;
-    } catch (std::exception& e) {
-        SPDLOG_ERROR("Error checking if spoiler file exists: {}", e.what());
-        return false;
-    } catch (...) {
-        SPDLOG_ERROR("Error checking if spoiler file exists");
-        return false;
     }
+
+    return false;
 }
 #pragma GCC pop_options
 #pragma optimize("", on)
@@ -365,6 +354,13 @@ void Randomizer::LoadHintMessages() {
         "Zu {{location}}?\x1B&%gOK&No%w\x02",
         "Se téléporter vers&{{location}}?\x1B&%gOK!&Non%w\x02"));
 
+    // Bow Shooting Gallery reminder
+    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW,
+        CustomMessage("Come back when you have your own&bow and you'll get a %rdifferent prize%w!",
+        "Komm wieder sobald du deinen eigenen&Bogen hast, um einen %rspeziellen Preis%w zu&erhalten!",
+        "J'aurai %rune autre récompense%w pour toi&lorsque tu auras ton propre arc."));
+
+    // Lake Hylia water level system
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN,
         CustomMessage("Water level control system.&Keep away!",
             "Wasserstand Kontrollsystem&Finger weg!",
@@ -497,7 +493,7 @@ void Randomizer::LoadMerchantMessages() {
 }
 
 bool Randomizer::IsTrialRequired(RandomizerInf trial) {
-    return Rando::Context::GetInstance()->GetTrial(trial - RAND_INF_TRIALS_DONE_LIGHT_TRIAL);
+    return Rando::Context::GetInstance()->GetTrial(trial - RAND_INF_TRIALS_DONE_LIGHT_TRIAL)->IsRequired();
 }
 
 GetItemEntry Randomizer::GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId,
@@ -826,6 +822,18 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_LIGHT_MEDALLION:
             return !CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
+        // Ocarina Buttons
+        case RG_OCARINA_A_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+        case RG_OCARINA_C_LEFT_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+        case RG_OCARINA_C_RIGHT_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+        case RG_OCARINA_C_UP_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+        case RG_OCARINA_C_DOWN_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+
         case RG_RECOVERY_HEART:
         case RG_GREEN_RUPEE:
         case RG_GREG_RUPEE:
@@ -1148,6 +1156,19 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
             return GI_HEART_PIECE_WIN;
         case RG_TREASURE_GAME_GREEN_RUPEE:
             return GI_RUPEE_GREEN_LOSE;
+        
+        //Ocarina Buttons
+        case RG_OCARINA_A_BUTTON:
+            return (GetItemID)RG_OCARINA_A_BUTTON;
+        case RG_OCARINA_C_LEFT_BUTTON:
+            return (GetItemID)RG_OCARINA_C_LEFT_BUTTON;
+        case RG_OCARINA_C_RIGHT_BUTTON:
+            return (GetItemID)RG_OCARINA_C_RIGHT_BUTTON;
+        case RG_OCARINA_C_UP_BUTTON:
+            return (GetItemID)RG_OCARINA_C_UP_BUTTON;
+        case RG_OCARINA_C_DOWN_BUTTON:
+            return (GetItemID)RG_OCARINA_C_DOWN_BUTTON;
+
         default:
             if (!IsItemVanilla(randoGet)) {
                 return (GetItemID)randoGet;
@@ -1659,7 +1680,10 @@ void GenerateRandomizerImgui(std::string seed = "") {
     CVarSetInteger("gRandoGenerating", 1);
     CVarSave();
     auto ctx = Rando::Context::GetInstance();
-    ctx->GetSettings()->SetAllFromCVar();
+    if (!ctx->IsSpoilerLoaded()) {
+        // We use the settings from the spoiler rather than CVars.
+        ctx->GetSettings()->SetAllFromCVar();
+    }
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
     std::stringstream excludedLocationStringStream(CVarGetString("gRandomizeExcludedLocations", ""));
@@ -1755,8 +1779,10 @@ void RandomizerSettingsWindow::DrawElement() {
     UIWidgets::Spacer(0);
     ImGui::BeginDisabled(CVarGetInteger("gRandomizerDontGenerateSpoiler", 0) && gSaveContext.gameMode != GAMEMODE_FILE_SELECT);
     if (ImGui::Button("Generate Randomizer")) {
+        ctx->SetSpoilerLoaded(false);
         GenerateRandomizer(CVarGetInteger("gRandoManualSeedEntry", 0) ? seedString : "");
     }
+    UIWidgets::Tooltip("You can also press L on the Quest Select screen to generate a new seed");
     ImGui::EndDisabled();
 
     UIWidgets::Spacer(0);
@@ -3042,7 +3068,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 66> getItemMessages = {{
+    const std::array<GetItemMessage, 71> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
@@ -3288,6 +3314,26 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE_UNTRANSLATED(RG_TWINROVA_SOUL, ITEM_BIG_POE, "You found the soul for %yTwinrova%w!"),
         GIMESSAGE_UNTRANSLATED(RG_GANON_SOUL, ITEM_BIG_POE, "You found the soul for %cGanon%w!"),
 
+        GIMESSAGE(RG_OCARINA_A_BUTTON, ITEM_OCARINA_TIME,
+            "You got the %b\x9f%r button for the&Ocarina%w! You can now use it&while playing songs!",
+			"Der %b\x9f%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
+			"Vous trouvez la %rtouche %b\x9f%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
+        GIMESSAGE(RG_OCARINA_C_LEFT_BUTTON, ITEM_OCARINA_TIME,
+            "You got the %y\xa7%r button for the&Ocarina%w! You can now use it&while playing songs!",
+			"Der %y\xa7%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
+			"Vous trouvez la %rtouche %y\xa7%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
+        GIMESSAGE(RG_OCARINA_C_RIGHT_BUTTON, ITEM_OCARINA_TIME,
+            "You got the %y\xa8%r button for the&Ocarina%w! You can now use it&while playing songs!",
+			"Der %y\xa8%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
+			"Vous trouvez la %rtouche %y\xa8%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
+        GIMESSAGE(RG_OCARINA_C_UP_BUTTON, ITEM_OCARINA_TIME,
+            "You got the %y\xa5%r button for the&Ocarina%w! You can now use it&while playing songs!",
+			"Der %y\xa5%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
+			"Vous trouvez la %rtouche %y\xa5%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
+        GIMESSAGE(RG_OCARINA_C_DOWN_BUTTON, ITEM_OCARINA_TIME,
+            "You got the %y\xa6%r button for the&Ocarina%w! You can now use it&while playing songs!",
+			"Der %y\xa6%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
+			"Vous trouvez la %rtouche %y\xa6%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();

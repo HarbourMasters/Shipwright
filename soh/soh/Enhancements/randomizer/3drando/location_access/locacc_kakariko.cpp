@@ -108,12 +108,12 @@ void AreaTable_Init_Kakariko() {
 
   areaTable[RR_KAK_IMPAS_HOUSE_NEAR_COW] = Area("Kak Impas House Near Cow", "Kak Impas House", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_KAK_IMPAS_HOUSE_COW, {[]{return logic->CanPlay(logic->EponasSong);}}),
+                  LocationAccess(RC_KAK_IMPAS_HOUSE_COW, {[]{return logic->CanUse(RG_EPONAS_SONG);}}),
   }, {});
 
   areaTable[RR_KAK_WINDMILL] = Area("Kak Windmill", "Windmill and Dampes Grave", RA_NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->DrainWell, {[]{return logic->DrainWell || (logic->CanBeChild && logic->CanPlay(logic->SongOfStorms));}}),
+                  EventAccess(&logic->DrainWell, {[]{return logic->DrainWell || (logic->CanBeChild && logic->CanUse(RG_SONG_OF_STORMS));}}),
                 }, {
                   //Locations
                   LocationAccess(RC_KAK_WINDMILL_FREESTANDING_POH, {[]{return logic->CanUse(RG_BOOMERANG) || logic->DampesWindmillAccess || (logic->CanBeAdult && randoCtx->GetTrickOption(RT_KAK_ADULT_WINDMILL_POH)) || (logic->CanBeChild && logic->CanJumpslash && randoCtx->GetTrickOption(RT_KAK_CHILD_WINDMILL_POH));}}),
@@ -206,7 +206,7 @@ void AreaTable_Init_Kakariko() {
   areaTable[RR_THE_GRAVEYARD] = Area("The Graveyard", "The Graveyard", RA_THE_GRAVEYARD, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->ButterflyFairy, {[]{return logic->ButterflyFairy || (logic->CanUse(RG_STICKS) && logic->AtDay);}}),
-                  EventAccess(&logic->BeanPlantFairy, {[]{return logic->BeanPlantFairy || (CanPlantBean(RR_THE_GRAVEYARD) && logic->CanPlay(logic->SongOfStorms));}}),
+                  EventAccess(&logic->BeanPlantFairy, {[]{return logic->BeanPlantFairy || (CanPlantBean(RR_THE_GRAVEYARD) && logic->CanUse(RG_SONG_OF_STORMS));}}),
                   EventAccess(&logic->BugRock,        {[]{return true;}}),
                 }, {
                   //Locations
@@ -217,7 +217,7 @@ void AreaTable_Init_Kakariko() {
                 }, {
                   //Exits
                   Entrance(RR_GRAVEYARD_SHIELD_GRAVE,       {[]{return logic->CanBeAdult || logic->AtNight;}}),
-                  Entrance(RR_GRAVEYARD_COMPOSERS_GRAVE,    {[]{return logic->CanPlay(logic->ZeldasLullaby);}}),
+                  Entrance(RR_GRAVEYARD_COMPOSERS_GRAVE,    {[]{return logic->CanUse(RG_ZELDAS_LULLABY);}}),
                   Entrance(RR_GRAVEYARD_HEART_PIECE_GRAVE,  {[]{return logic->CanBeAdult || logic->AtNight;}}),
                   Entrance(RR_GRAVEYARD_DAMPES_GRAVE,       {[]{return logic->CanBeAdult;}}),
                   Entrance(RR_GRAVEYARD_DAMPES_HOUSE,       {[]{return logic->CanBeAdult || logic->AtDampeTime;}}), //TODO: This needs to be handled
@@ -236,7 +236,7 @@ void AreaTable_Init_Kakariko() {
 
   areaTable[RR_GRAVEYARD_HEART_PIECE_GRAVE] = Area("Graveyard Heart Piece Grave", "Graveyard Heart Piece Grave", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST, {[]{return logic->CanPlay(logic->SunsSong);}}),
+                  LocationAccess(RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST, {[]{return logic->CanUse(RG_SUNS_SONG);}}),
                 }, {
                   //Exits
                   Entrance(RR_THE_GRAVEYARD, {[]{return true;}}),
@@ -254,7 +254,7 @@ void AreaTable_Init_Kakariko() {
   areaTable[RR_GRAVEYARD_DAMPES_GRAVE] = Area("Graveyard Dampes Grave", "Windmill and Dampes Grave", RA_NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->NutPot,               {[]{return true;}}),
-                  EventAccess(&logic->DampesWindmillAccess, {[]{return logic->DampesWindmillAccess || (logic->CanBeAdult && logic->CanPlay(logic->SongOfTime));}}),
+                  EventAccess(&logic->DampesWindmillAccess, {[]{return logic->DampesWindmillAccess || (logic->CanBeAdult && logic->CanUse(RG_SONG_OF_TIME));}}),
                 }, {
                   //Locations
                   LocationAccess(RC_GRAVEYARD_HOOKSHOT_CHEST,              {[]{return true;}}),
@@ -262,7 +262,7 @@ void AreaTable_Init_Kakariko() {
                 }, {
                   //Exits
                   Entrance(RR_THE_GRAVEYARD, {[]{return true;}}),
-                  Entrance(RR_KAK_WINDMILL,  {[]{return logic->CanBeAdult && logic->CanPlay(logic->SongOfTime);}}),
+                  Entrance(RR_KAK_WINDMILL,  {[]{return logic->CanBeAdult && logic->CanUse(RG_SONG_OF_TIME);}}),
   });
 
   areaTable[RR_GRAVEYARD_DAMPES_HOUSE] = Area("Graveyard Dampes House", "Graveyard Dampes House", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {

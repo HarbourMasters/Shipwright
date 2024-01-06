@@ -22,12 +22,12 @@ void AreaTable_Init_GerudoValley() {
   areaTable[RR_GV_UPPER_STREAM] = Area("GV Upper Stream", "Gerudo Valley", RA_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&logic->GossipStoneFairy, {[]{return logic->GossipStoneFairy || logic->CanSummonGossipFairy;}}),
-                  EventAccess(&logic->BeanPlantFairy,   {[]{return logic->BeanPlantFairy   || (CanPlantBean(RR_GV_UPPER_STREAM) && logic->CanPlay(logic->SongOfStorms));}}),
+                  EventAccess(&logic->BeanPlantFairy,   {[]{return logic->BeanPlantFairy   || (CanPlantBean(RR_GV_UPPER_STREAM) && logic->CanUse(RG_SONG_OF_STORMS));}}),
                 }, {
                   //Locations
                   LocationAccess(RC_GV_WATERFALL_FREESTANDING_POH, {[]{return true;}}),
                   LocationAccess(RC_GV_GS_BEAN_PATCH,              {[]{return logic->CanPlantBugs && logic->CanChildAttack;}}),
-                  LocationAccess(RC_GV_COW,                        {[]{return logic->CanBeChild && logic->CanPlay(logic->EponasSong);}}),
+                  LocationAccess(RC_GV_COW,                        {[]{return logic->CanBeChild && logic->CanUse(RG_EPONAS_SONG);}}),
                   LocationAccess(RC_GV_GOSSIP_STONE,               {[]{return true;}}),
                 }, {
                   //Exits
@@ -163,7 +163,7 @@ void AreaTable_Init_GerudoValley() {
 
   areaTable[RR_DESERT_COLOSSUS] = Area("Desert Colossus", "Desert Colossus", RA_DESERT_COLOSSUS, DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->FairyPond, {[]{return logic->FairyPond || logic->CanPlay(logic->SongOfStorms);}}),
+                  EventAccess(&logic->FairyPond, {[]{return logic->FairyPond || logic->CanUse(RG_SONG_OF_STORMS);}}),
                   EventAccess(&logic->BugRock,   {[]{return true;}}),
                 }, {
                   //Locations
@@ -190,7 +190,7 @@ void AreaTable_Init_GerudoValley() {
 
   areaTable[RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN] = Area("Colossus Great Fairy Fountain", "Colossus Great Fairy Fountain", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_COLOSSUS_GREAT_FAIRY_REWARD, {[]{return logic->CanPlay(logic->ZeldasLullaby);}}),
+                  LocationAccess(RC_COLOSSUS_GREAT_FAIRY_REWARD, {[]{return logic->CanUse(RG_ZELDAS_LULLABY);}}),
                 }, {
                   //Exits
                   Entrance(RR_DESERT_COLOSSUS, {[]{return true;}}),

@@ -17,9 +17,6 @@ namespace Rando {
 std::weak_ptr<Context> Context::mContext;
 
 Context::Context() {
-    for (auto& location : StaticData::GetLocationTable()) {
-        mSpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
-    }
     mSpoilerfileCheckNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
     mSpoilerfileCheckNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
 
@@ -93,10 +90,18 @@ Context::Context() {
     mLogic = std::make_shared<Logic>();
     mTrials = std::make_shared<Trials>();
     mSettings = std::make_shared<Settings>();
+    for (auto& location : StaticData::GetLocationTable()) {
+        mSpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
+    }
 }
 
 RandomizerArea Context::GetAreaFromString(std::string str) {
     return mSpoilerfileAreaNameToEnum[str];
+}
+
+void Context::InitStaticData() {
+    StaticData::InitItemTable();
+    StaticData::InitLocationTable();
 }
 
 std::shared_ptr<Context> Context::CreateInstance() {
@@ -374,7 +379,7 @@ void Context::ParseSpoiler(const char* spoilerFileName, const bool plandoMode) {
         mSpoilerLoaded = true;
         mSeedGenerated = false;
     } catch (...) {
-        throw;
+        LUSLOG_ERROR("Failed to load Spoiler File: %s", spoilerFileName);
     }
 }
 
@@ -591,6 +596,9 @@ DungeonInfo* Context::GetDungeon(size_t key) const {
 }
 
 std::shared_ptr<Logic> Context::GetLogic() {
+    if (mLogic.get() == nullptr) {
+        mLogic = std::make_shared<Logic>();
+    }
     return mLogic;
 }
 
