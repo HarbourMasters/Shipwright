@@ -247,7 +247,9 @@ void Context::LocationReset() {
         GetItemLocation(il)->RemoveFromPool();
     }
 
-    GetItemLocation(RC_GANONDORF_HINT)->RemoveFromPool();
+    for (const RandomizerCheck il : StaticData::otherHintLocations) {
+        GetItemLocation(il)->RemoveFromPool();
+    }
 }
 
 void Context::HintReset() {
