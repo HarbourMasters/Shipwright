@@ -10,7 +10,6 @@
 #include "utils.hpp"
 #include "shops.hpp"
 #include "hints.hpp"
-#include "../randomizer_tricks.h"
 #include "pool_functions.hpp"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include <nlohmann/json.hpp>
@@ -30,6 +29,8 @@
 #include <variables.h>
 
 #include <Context.h>
+
+#include "consolevariablebridge.h"
 
 using json = nlohmann::ordered_json;
 using namespace Rando;
