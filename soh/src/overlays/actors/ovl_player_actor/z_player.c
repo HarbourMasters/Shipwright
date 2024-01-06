@@ -13027,9 +13027,9 @@ void func_8084D3E4(Player* this, PlayState* play) {
         Camera_ChangeSetting(Play_GetCamera(play, 0), CAM_SET_NORMAL0);
 
         if (this->mountSide < 0) {
-            D_808549C4[0].field = 0x2828;
+            D_808549C4[0].data = ANIMSFX_DATA(ANIMSFX_TYPE_5, 40);
         } else {
-            D_808549C4[0].field = 0x281D;
+            D_808549C4[0].data = ANIMSFX_DATA(ANIMSFX_TYPE_5, 29);
         }
         Player_ProcessAnimSfxList(this, D_808549C4);
     }
