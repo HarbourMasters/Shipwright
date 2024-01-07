@@ -384,8 +384,8 @@ void BossSst_HeadSetupIntro(BossSst* this, PlayState* play) {
     player->actor.world.pos.z = sRoomCenter.z;
     player->linearVelocity = player->actor.velocity.y = 0.0f;
     player->actor.shape.rot.y = -0x8000;
-    player->targetYaw = -0x8000;
-    player->currentYaw = -0x8000;
+    player->zTargetYaw = -0x8000;
+    player->yaw = -0x8000;
     player->fallStartHeight = 0;
     player->stateFlags1 |= 0x20;
 
@@ -443,8 +443,8 @@ void BossSst_HeadIntro(BossSst* this, PlayState* play) {
             player->actor.world.pos.z = sRoomCenter.z;
             player->linearVelocity = 0;
             player->actor.shape.rot.y = -0x8000;
-            player->targetYaw = -0x8000;
-            player->currentYaw = -0x8000;
+            player->zTargetYaw = -0x8000;
+            player->yaw = -0x8000;
         }
 
         Math_Vec3f_Copy(&sCameraAt, &player->actor.world.pos);
@@ -1757,7 +1757,7 @@ void BossSst_HandClap(BossSst* this, PlayState* play) {
     }
 
     if (player->actor.parent == &this->actor) {
-        player->unk_850 = 0;
+        player->av2.actionVar2 = 0;
         player->actor.world.pos = this->actor.world.pos;
     }
 }
@@ -1852,7 +1852,7 @@ void BossSst_HandGrab(BossSst* this, PlayState* play) {
     this->actor.world.pos.x += this->actor.speedXZ * Math_SinS(this->actor.world.rot.y);
     this->actor.world.pos.z += this->actor.speedXZ * Math_CosS(this->actor.world.rot.y);
     if (player->stateFlags2 & 0x80) {
-        player->unk_850 = 0;
+        player->av2.actionVar2 = 0;
         player->actor.world.pos = this->actor.world.pos;
         player->actor.shape.rot.y = this->actor.shape.rot.y;
     }
@@ -1946,7 +1946,7 @@ void BossSst_HandSwing(BossSst* this, PlayState* play) {
     }
 
     if (player->stateFlags2 & 0x80) {
-        player->unk_850 = 0;
+        player->av2.actionVar2 = 0;
         Math_Vec3f_Copy(&player->actor.world.pos, &this->actor.world.pos);
         player->actor.shape.rot.x = this->actor.shape.rot.x;
         player->actor.shape.rot.z = (this->vParity * -0x4000) + this->actor.shape.rot.z;
@@ -2429,7 +2429,7 @@ void BossSst_HandReleasePlayer(BossSst* this, PlayState* play, s32 dropPlayer) {
 
     if (player->actor.parent == &this->actor) {
         player->actor.parent = NULL;
-        player->unk_850 = 100;
+        player->av2.actionVar2 = 100;
         this->colliderJntSph.base.ocFlags1 |= OC1_ON;
         OTHER_HAND(this)->colliderJntSph.base.ocFlags1 |= OC1_ON;
         if (dropPlayer) {
