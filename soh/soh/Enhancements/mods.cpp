@@ -687,6 +687,14 @@ void RegisterMirrorModeHandler() {
     });
 }
 
+void RegisterResetNaviTimer() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
+		if (CVarGetInteger("gResetNaviTimer", 0) == 1) {
+			gSaveContext.naviTimer = 0;
+		}
+	});
+}
+
 f32 triforcePieceScale;
 
 void RegisterTriforceHunt() {
@@ -1248,6 +1256,7 @@ void InitMods() {
     RegisterBonkDamage();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
+    RegisterResetNaviTimer();
     RegisterTriforceHunt();
     RegisterGrantGanonsBossKey();
     RegisterEnemyDefeatCounts();
