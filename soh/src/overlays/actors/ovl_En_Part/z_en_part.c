@@ -8,6 +8,8 @@
 #include "objects/object_tite/object_tite.h"
 #include "objects/object_ik/object_ik.h"
 
+#include <string.h> // strcmp
+
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnPart_Init(Actor* thisx, PlayState* play);
