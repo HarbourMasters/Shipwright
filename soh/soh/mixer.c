@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "mixer.h"
 
@@ -362,8 +363,8 @@ void aEnvMixerImpl(uint16_t in_addr, uint16_t n_samples, bool swap_reverb,
 
         // Store values to buffers
         for (int j = 0; j < 2; j++) {
-            _mm_store_si128(d_ptr[j]++, _mm_add_epi16(s[j], d[j]));
-            _mm_store_si128(w_ptr[j]++, _mm_add_epi16(ss[j], w[j]));
+            _mm_store_si128(d_ptr[j]++, _mm_adds_epi16(s[j], d[j]));
+            _mm_store_si128(w_ptr[j]++, _mm_adds_epi16(ss[j], w[j]));
             vols[j] += rates[j];
         }
         vol_wet += rate_wet;
