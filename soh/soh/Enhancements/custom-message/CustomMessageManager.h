@@ -30,6 +30,13 @@ class CustomMessage {
     CustomMessage(std::string english_, std::string german_, std::string french_,
                   TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
 
+    static std::string MESSAGE_END() ;
+    static std::string ITEM_OBTAINED(uint8_t x) ;
+    static std::string NEWLINE() ;
+    static std::string COLOR(uint8_t x) ;
+    static std::string WAIT_FOR_INPUT() ;
+    static std::string PLAYER_NAME() ;
+
     const std::string& GetEnglish() const;
     const std::string& GetFrench() const;
     const std::string& GetGerman() const;
@@ -81,6 +88,11 @@ class CustomMessage {
     void ReplaceColors();
 
     /**
+     * @brief Replaces `$<char>` variable strings with OoT control codes.
+     */
+    void ReplaceAltarIcons();
+
+    /**
      * @brief Replaces various symbols with the control codes necessary to
      * display them in OoT's textboxes. i.e. special characters, colors, newlines,
      * wait for input, etc. Also adds the item icon to each page of the textbox.
@@ -97,13 +109,6 @@ class CustomMessage {
     void Format();
 
   private:
-    const std::string MESSAGE_END() const;
-    const std::string ITEM_OBTAINED(uint8_t x) const;
-    const std::string NEWLINE() const;
-    const std::string COLOR(uint8_t x) const;
-    const std::string WAIT_FOR_INPUT() const;
-    const std::string PLAYER_NAME() const;
-
     std::string english = "";
     std::string french = "";
     std::string german = "";

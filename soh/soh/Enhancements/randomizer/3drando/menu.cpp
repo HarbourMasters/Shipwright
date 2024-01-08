@@ -46,6 +46,7 @@ bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<Ra
     uint32_t seedHash = boost::hash_32<std::string>{}(ctx->GetSettings()->GetSeedString());
     ctx->GetSettings()->SetSeed(seedHash & 0xFFFFFFFF);
 
+    ctx->ClearItemLocations();
     int ret = Playthrough::Playthrough_Init(ctx->GetSettings()->GetSeed(), excludedLocations, enabledTricks);
     if (ret < 0) {
         if (ret == -1) { // Failed to generate after 5 tries

@@ -5,7 +5,6 @@
 #include "../context.h"
 #include "item_pool.hpp"
 #include "location_access.hpp"
-#include "logic.hpp"
 #include "random.hpp"
 #include "spoiler_log.hpp"
 #include "starting_inventory.hpp"
@@ -22,7 +21,6 @@
 #include <spdlog/spdlog.h>
 
 using namespace CustomMessages;
-using namespace Logic;
 using namespace Rando;
 
 static bool placementFailure = false;
@@ -59,19 +57,19 @@ static bool UpdateToDAccess(Entrance* entrance, SearchMode mode) {
   Area* parent = entrance->GetParentRegion();
   Area* connection = entrance->GetConnectedRegion();
 
-  if (!connection->childDay && parent->childDay && entrance->CheckConditionAtAgeTime(Logic::IsChild, AtDay)) {
+  if (!connection->childDay && parent->childDay && entrance->CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) {
     connection->childDay = true;
     ageTimePropogated = true;
   }
-  if (!connection->childNight && parent->childNight && entrance->CheckConditionAtAgeTime(Logic::IsChild, AtNight)) {
+  if (!connection->childNight && parent->childNight && entrance->CheckConditionAtAgeTime(logic->IsChild, logic->AtNight)) {
     connection->childNight = true;
     ageTimePropogated = true;
   }
-  if (!connection->adultDay && parent->adultDay && entrance->CheckConditionAtAgeTime(IsAdult, AtDay)) {
+  if (!connection->adultDay && parent->adultDay && entrance->CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay)) {
     connection->adultDay = true;
     ageTimePropogated = true;
   }
-  if (!connection->adultNight && parent->adultNight && entrance->CheckConditionAtAgeTime(IsAdult, AtNight)) {
+  if (!connection->adultNight && parent->adultNight && entrance->CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight)) {
     connection->adultNight = true;
     ageTimePropogated = true;
   }
@@ -109,7 +107,7 @@ static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, 
         !checkOtherEntranceAccess) {
        mode = SearchMode::PoeCollectorAccess;
        ApplyStartingInventory();
-       Logic::NoBottles = true;
+       logic->NoBottles = true;
     }
   }
   // Condition for validating Poe Collector Access
@@ -118,7 +116,7 @@ static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, 
       std::vector<RandomizerGet> itemsToPlace =
           FilterFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
     for (RandomizerGet unplacedItem : itemsToPlace) {
-      Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
+       Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
     }
     // Reset access as the non-starting age
     if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
@@ -134,7 +132,7 @@ static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, 
     }
     mode = SearchMode::AllLocationsReachable;
   } else {
-    Logic::NoBottles = false;
+    logic->NoBottles = false;
   }
 }
 
@@ -213,7 +211,7 @@ bool IsBeatableWithout(RandomizerCheck excludedCheck, bool replaceItem, Randomiz
   RandomizerGet copy = ctx->GetItemLocation(excludedCheck)->GetPlacedRandomizerGet(); //Copy out item
   ctx->GetItemLocation(excludedCheck)->SetPlacedItem(RG_NONE); //Write in empty item
   ctx->playthroughBeatable = false;
-  LogicReset();
+  logic->Reset();
   GetAccessibleLocations(ctx->allLocations, SearchMode::CheckBeatable, ignore); //Check if game is still beatable
   if (replaceItem){
     ctx->GetItemLocation(excludedCheck)->SetPlacedItem(copy); //Immediately put item back
@@ -479,7 +477,7 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
 static void GeneratePlaythrough() {
     auto ctx = Rando::Context::GetInstance();
     ctx->playthroughBeatable = false;
-    LogicReset();
+    logic->Reset();
     GetAccessibleLocations(ctx->allLocations, SearchMode::GeneratePlaythrough);
 }
 
@@ -528,7 +526,7 @@ static void PareDownPlaythrough() {
     std::vector<RandomizerCheck> sphere = ctx->playthroughLocations.at(i);
     for (int j = sphere.size() - 1; j >= 0; j--) {
       RandomizerCheck loc = sphere.at(j);
-      RandomizerGet locGet = ctx->GetItemLocation(loc)->GetPlacedRandomizerGet();
+      RandomizerGet locGet = ctx->GetItemLocation(loc)->GetPlacedRandomizerGet(); //Copy out item
 
       RandomizerGet ignore = RG_NONE;
       if (locGet == RG_GOLD_SKULLTULA_TOKEN || IsBombchus(locGet, true)
@@ -578,7 +576,7 @@ static void CalculateWotH() {
     }
   }
   ctx->playthroughBeatable = true;
-  LogicReset();
+  logic->Reset();
   GetAccessibleLocations(ctx->allLocations);
 }
 
@@ -681,7 +679,7 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
             itemsToPlace.pop_back();
 
             // assume we have all unplaced items
-            LogicReset();
+            logic->Reset();
             for (RandomizerGet unplacedItem : itemsToPlace) {
                 Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
             }
@@ -731,7 +729,7 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
             // If the game is beatable, then we can stop placing items with logic.
             if (!ctx->GetOption(RSK_ALL_LOCATIONS_REACHABLE)) {
                 ctx->playthroughBeatable = false;
-                LogicReset();
+                logic->Reset();
                 GetAccessibleLocations(ctx->allLocations, SearchMode::CheckBeatable);
                 if (ctx->playthroughBeatable) {
                     SPDLOG_DEBUG("Game beatable, now placing items randomly. " + std::to_string(itemsToPlace.size()) +
@@ -1161,7 +1159,7 @@ int Fill() {
     if(retries < 4) {
       SPDLOG_DEBUG("\nGOT STUCK. RETRYING...\n");
       Areas::ResetAllLocations();
-      LogicReset();
+      logic->Reset();
       ClearProgress();
     }
     retries++;
