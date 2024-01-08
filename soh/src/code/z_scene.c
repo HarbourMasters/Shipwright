@@ -83,23 +83,26 @@ void Object_UpdateBank(ObjectContext* objectCtx) {
     RomFile* objectFile;
     size_t size;
 
-    /*
+
     for (i = 0; i < objectCtx->num; i++) {
         if (status->id < 0) {
+            /*
             if (status->dmaRequest.vromAddr == 0) {
                 osCreateMesgQueue(&status->loadQueue, &status->loadMsg, 1);
                 objectFile = &gObjectTable[-status->id];
                 size = objectFile->vromEnd - objectFile->vromStart;
                 osSyncPrintf("OBJECT EXCHANGE BANK-%2d SIZE %8.3fK SEG=%08x\n", i, size / 1024.0f, status->segment);
                 DmaMgr_SendRequest2(&status->dmaRequest, status->segment, objectFile->vromStart, size, 0,
-                                    &status->loadQueue, NULL, __FILE__, __LINE__);
+                                    &status->loadQueue, OS_MESG_PTR(NULL), __FILE__, __LINE__);
             } else if (!osRecvMesg(&status->loadQueue, NULL, OS_MESG_NOBLOCK)) {
                 status->id = -status->id;
             }
+            */
+           status->id = -status->id;
         }
         status++;
     }
-    */
+
 }
 
 s32 Object_GetIndex(ObjectContext* objectCtx, s16 objectId) {
