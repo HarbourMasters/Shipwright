@@ -240,6 +240,8 @@ namespace GameControlEditor {
         DrawHelpIcon("Inverts the Shield Aiming Y Axis");
         UIWidgets::PaddedEnhancementCheckbox("Invert Shield Aiming X Axis", "gInvertShieldAimingXAxis");
         DrawHelpIcon("Inverts the Shield Aiming X Axis");
+        UIWidgets::PaddedEnhancementCheckbox("Invert Z-Weapon Aiming Y Axis", "gInvertZAimingYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+        DrawHelpIcon("Inverts the Camera Y Axis in:\n-Z-Weapon Aiming");
         UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First-Person View", "gDisableAutoCenterViewFirstPerson");
         DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
         if (UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", "gEnableFirstPersonSensitivity", true, false)) {
