@@ -1,6 +1,7 @@
 #include "global.h"
 #include "vt.h"
 #include "overlays/actors/ovl_En_Sw/z_en_sw.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 static s16 sDisableAttention = false;
 static s16 sUnused = -1;
@@ -810,12 +811,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             break;
         case 4100:
             csInfo->keyFrames = D_801225D4;
-            // RANDO: Waterfall opening cutscene skips to the end of the cutscene data earlier by doing this
-            if (!(IS_RANDO)) {
-                csInfo->keyFrameCnt = 5;
-            } else {
-                csInfo->keyFrameCnt = 2;
-            }
+            csInfo->keyFrameCnt = ARRAY_COUNT(D_801225D4);
 
             player->actor.shape.rot.y = player->actor.world.rot.y = player->currentYaw = 0x3FFC;
             func_800C0808(play, camIdx, player, CAM_SET_CS_C);
@@ -1175,6 +1171,16 @@ s16 OnePointCutscene_Init(PlayState* play, s16 csId, s16 timer, Actor* actor, s1
     s16 temp2;
     s16 csCamIdx;
     Camera* csCam;
+
+    if (actor != NULL && actor->id != ACTOR_PLAYER) {
+        if (!GameInteractor_Should(GI_VB_PLAY_ONEPOINT_ACTOR_CS, true, actor)) {
+            return;
+        }
+    } else {
+        if (!GameInteractor_Should(GI_VB_PLAY_ONEPOINT_CS, true, &csId)) {
+            return;
+        }
+    }
 
     if (parentCamIdx == SUBCAM_ACTIVE) {
         parentCamIdx = play->activeCamera;

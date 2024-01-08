@@ -564,8 +564,8 @@ uint8_t Player_IsCustomLinkModel() {
 }
 
 s32 Player_InBlockingCsMode(PlayState* play, Player* this) {
-    return (this->stateFlags1 & 0x20000080) || (this->csAction != 0) || (play->transitionTrigger == TRANS_TRIGGER_START) ||
-           (this->stateFlags1 & 1) || (this->stateFlags3 & 0x80) ||
+    return (this->stateFlags1 & (PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_CUTSCENE)) || (this->csAction != 0) || (play->transitionTrigger == TRANS_TRIGGER_START) ||
+            (this->stateFlags1 & PLAYER_STATE1_LOADING) || (this->stateFlags3 & PLAYER_STATE3_HOOKSHOT_TRAVELLING) ||
            ((gSaveContext.magicState != MAGIC_STATE_IDLE) && (Player_ActionToMagicSpell(this, this->itemAction) >= 0));
 }
 

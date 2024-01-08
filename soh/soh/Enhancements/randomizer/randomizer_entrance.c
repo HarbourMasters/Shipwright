@@ -461,34 +461,31 @@ void Entrance_SetWarpSongEntrance(void) {
 }
 
 void Entrance_OverrideBlueWarp(void) {
-    // Set nextEntranceIndex as a flag so that Grotto_CheckSpecialEntrance
-    // won't return index 0x7FFF, which can't work to override blue warps.
-    gPlayState->nextEntranceIndex = 0;
+    // Handles first time entering bluewarp (with item give)
+    switch (gSaveContext.entranceIndex) {
+        case ENTR_KOKIRI_FOREST_11: // Gohma blue warp
+        case ENTR_DEATH_MOUNTAIN_TRAIL_5: // KD blue warp
+        case ENTR_ZORAS_FOUNTAIN_0: // Barinade blue warp
+        case ENTR_SACRED_FOREST_MEADOW_3: // Phantom Ganon blue warp
+        case ENTR_DEATH_MOUNTAIN_CRATER_5: // Volvagia blue warp
+        case ENTR_LAKE_HYLIA_9: // Morpha blue warp
+        case ENTR_DESERT_COLOSSUS_8: // Bongo-Bongo blue warp
+        case ENTR_GRAVEYARD_8: // Twinrova blue warp
+            gSaveContext.entranceIndex = Entrance_OverrideNextIndex(gSaveContext.entranceIndex);
+            return;
+    }
 
-    switch (gPlayState->sceneNum) {
-        case SCENE_DEKU_TREE_BOSS: // Ghoma boss room
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_KOKIRI_FOREST_11);
-            return;
-        case SCENE_DODONGOS_CAVERN_BOSS: // King Dodongo boss room
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_DEATH_MOUNTAIN_TRAIL_5);
-            return;
-        case SCENE_JABU_JABU_BOSS: // Barinade boss room
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_ZORAS_FOUNTAIN_0);
-            return;
-        case SCENE_FOREST_TEMPLE_BOSS: // Phantom Ganon boss room
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_SACRED_FOREST_MEADOW_3);
-            return;
-        case SCENE_FIRE_TEMPLE_BOSS: // Volvagia boss room
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_DEATH_MOUNTAIN_CRATER_5);
-            return;
-        case SCENE_WATER_TEMPLE_BOSS: // Morpha boss room
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_LAKE_HYLIA_9);
-            return;
-        case SCENE_SPIRIT_TEMPLE_BOSS: // Twinrova boss room
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_DESERT_COLOSSUS_8);
-            return;
-        case SCENE_SHADOW_TEMPLE_BOSS: // Bongo-Bongo boss room
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_GRAVEYARD_8);
+    // Handles second+ times entering bluewarp
+    switch (gPlayState->nextEntranceIndex) {
+        case ENTR_KOKIRI_FOREST_11: // Gohma blue warp
+        case ENTR_DEATH_MOUNTAIN_TRAIL_5: // KD blue warp
+        case ENTR_ZORAS_FOUNTAIN_0: // Barinade blue warp
+        case ENTR_SACRED_FOREST_MEADOW_3: // Phantom Ganon blue warp
+        case ENTR_DEATH_MOUNTAIN_CRATER_5: // Volvagia blue warp
+        case ENTR_LAKE_HYLIA_9: // Morpha blue warp
+        case ENTR_DESERT_COLOSSUS_8: // Bongo-Bongo blue warp
+        case ENTR_GRAVEYARD_8: // Twinrova blue warp
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(gPlayState->nextEntranceIndex);
             return;
     }
 }

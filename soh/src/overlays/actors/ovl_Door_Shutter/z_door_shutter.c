@@ -23,6 +23,7 @@
 #include "objects/object_menkuri_objects/object_menkuri_objects.h"
 #include "objects/object_demo_kekkai/object_demo_kekkai.h"
 #include "objects/object_ouke_haka/object_ouke_haka.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -354,9 +355,11 @@ void func_80996A54(DoorShutter* this, PlayState* play) {
     if (Flags_GetClear(play, this->dyna.actor.room) || Flags_GetTempClear(play, this->dyna.actor.room)) {
         Flags_SetClear(play, this->dyna.actor.room);
         DoorShutter_SetupAction(this, func_80997150);
-        OnePointCutscene_Attention(play, &this->dyna.actor);
-        OnePointCutscene_Attention(play, &GET_PLAYER(play)->actor);
-        this->unk_16F = -100;
+        if (GameInteractor_Should(GI_VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
+            OnePointCutscene_Attention(play, &this->dyna.actor);
+            OnePointCutscene_Attention(play, &GET_PLAYER(play)->actor);
+            this->unk_16F = -100;
+        }
     } else if (func_809968D4(this, play) != 0) {
         Player* player = GET_PLAYER(play);
 
@@ -470,8 +473,10 @@ void func_80996EE8(DoorShutter* this, PlayState* play) {
     if (func_80996E08(this, play, 1.0f)) {
         if (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)) {
             DoorShutter_SetupAction(this, func_80997150);
-            OnePointCutscene_Attention(play, &this->dyna.actor);
-            this->unk_16F = -100;
+            if (GameInteractor_Should(GI_VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
+                OnePointCutscene_Attention(play, &this->dyna.actor);
+                this->unk_16F = -100;
+            }
         } else if (func_809968D4(this, play)) {
             Player* player = GET_PLAYER(play);
             // Jabu navi text for switch doors is different

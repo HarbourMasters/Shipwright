@@ -18,4 +18,7 @@ typedef struct EnMs {
     /* 0x024C */ s16 activeTimer;
 } EnMs; // size = 0x0250
 
+void EnMs_TalkAfterPurchase(EnMs* enMs, PlayState* play);
+void EnMs_Wait(EnMs* enMs, PlayState* play);
+
 #endif

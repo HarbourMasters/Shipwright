@@ -1122,7 +1122,19 @@ int Fill() {
     std::vector<RandomizerGet> remainingPool = FilterAndEraseFromPool(ItemPool, [](const auto i) { return true; });
     FastFill(remainingPool, GetAllEmptyLocations(), false);
 
-    //Add prices for scrubsanity, this is unique to SoH because we write/read scrub prices to/from the spoilerfile.
+    //Add default prices to scrubs
+    for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
+      if (Rando::StaticData::scrubLocations[i] == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || Rando::StaticData::scrubLocations[i] == RC_LW_DEKU_SCRUB_GROTTO_FRONT) {
+        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(40);
+      } else if (Rando::StaticData::scrubLocations[i] == RC_HF_DEKU_SCRUB_GROTTO) {
+        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(10);
+      } else {
+        auto loc = Rando::StaticData::GetLocation(Rando::StaticData::scrubLocations[i]);
+        auto item = Rando::StaticData::RetrieveItem(loc->GetVanillaItem());
+        ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(item.GetPrice());
+      }
+    }
+
     if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_AFFORDABLE)) {
       for (size_t i = 0; i < Rando::StaticData::scrubLocations.size(); i++) {
         ctx->GetItemLocation(Rando::StaticData::scrubLocations[i])->SetCustomPrice(10);

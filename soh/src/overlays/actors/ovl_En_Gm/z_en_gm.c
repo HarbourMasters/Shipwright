@@ -8,6 +8,7 @@
 #include "objects/object_oF1d_map/object_oF1d_map.h"
 #include "objects/object_gm/object_gm.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <assert.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
@@ -96,10 +97,9 @@ void EnGm_Destroy(Actor* thisx, PlayState* play) {
 s32 func_80A3D7C8(void) {
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         return 0;
-    } else if ((IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF) &&
-               !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
-        return 1;
-    } else if (!CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON)) { // Don't have giant's knife
+    } else if (GameInteractor_Should(GI_VB_BE_ELIGIBLE_FOR_GIANTS_KNIFE_PURCHASE, (
+        !CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON) // Don't have giant's knife
+    ), NULL)) {
         return 1;
     } else if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE)) { // Have broken giant's knife
         return 2;
@@ -215,11 +215,6 @@ void func_80A3DC44(EnGm* this, PlayState* play) {
                 return;
             case 1:
                 Flags_SetInfTable(INFTABLE_B1);
-                if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
-                    !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
-                        //Resets "Talked to Medigoron" flag in infTable to restore initial conversation state
-                        Flags_UnsetInfTable(INFTABLE_B1);
-                    }
             case 2:
                 this->actionFunc = EnGm_ProcessChoiceIndex;
             default:
@@ -254,20 +249,10 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
                     Message_ContinueTextbox(play, 0xC8);
                     this->actionFunc = func_80A3DD7C;
                 } else {
-                    GetItemEntry itemEntry;
-
-                    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
-                        !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
-                        itemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE);
-                        GiveItemEntryFromActor(&this->actor, play, itemEntry, 415.0f, 10.0f);
-                        Flags_SetInfTable(INFTABLE_B1);
-                    } else {
-                        itemEntry = ItemTable_Retrieve(GI_SWORD_KNIFE);
+                    if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_MEDIGORON, true, this)) {
                         func_8002F434(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);
                     }
 
-                    gSaveContext.pendingSale = itemEntry.itemId;
-                    gSaveContext.pendingSaleMod = itemEntry.modIndex;
                     this->actionFunc = func_80A3DF00;
                 }
                 break;
@@ -280,24 +265,12 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
 }
 
 void func_80A3DF00(EnGm* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play)) {
-        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
-            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
-            Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
-        }
-
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_MEDIGORON, true, this)) {
+        Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
         this->actor.parent = NULL;
         this->actionFunc = func_80A3DF60;
     } else {
-        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
-            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
-            GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE);
-            GiveItemEntryFromActor(&this->actor, play, itemEntry, 415.0f, 10.0f);
-            Flags_SetInfTable(INFTABLE_B1);
-        }
-        else {
-            func_8002F434(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);
-        }
+        func_8002F434(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);
     }
 }
 

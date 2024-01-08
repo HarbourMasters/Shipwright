@@ -1,6 +1,7 @@
 #include "z_en_du.h"
 #include "objects/object_du/object_du.h"
 #include "scenes/overworld/spot18/spot18_scene.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
@@ -376,7 +377,7 @@ void func_809FE4A4(EnDu* this, PlayState* play) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_00;
         EnDu_SetupAction(this, func_809FE3C0);
     } else if (play->msgCtx.ocarinaMode >= OCARINA_MODE_06) {
-        if (!IS_RANDO) {
+        if (GameInteractor_Should(GI_VB_PLAY_DARUNIAS_JOY_CS, true, NULL)) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaWrongCs);
             gSaveContext.cutsceneTrigger = 1;
         }
@@ -385,7 +386,7 @@ void func_809FE4A4(EnDu* this, PlayState* play) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        if (!IS_RANDO) {
+        if (GameInteractor_Should(GI_VB_PLAY_DARUNIAS_JOY_CS, true, NULL)) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaCorrectCs);
             gSaveContext.cutsceneTrigger = 1;
         }
@@ -474,10 +475,7 @@ void func_809FE890(EnDu* this, PlayState* play) {
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     CsCmdActorAction* csAction;
 
-    if (play->csCtx.state == CS_STATE_IDLE || IS_RANDO) {
-        if (IS_RANDO) {
-            play->csCtx.state = CS_STATE_IDLE;
-        }
+    if (play->csCtx.state == CS_STATE_IDLE) {
         func_8002DF54(play, &this->actor, 1);
         EnDu_SetupAction(this, func_809FEB08);
         return;
@@ -556,11 +554,8 @@ void func_809FEB08(EnDu* this, PlayState* play) {
         EnDu_SetupAction(this, func_809FE3C0);
         return;
     }
-    if ((!IS_RANDO && CUR_UPG_VALUE(UPG_STRENGTH) <= 0) ||
-         (IS_RANDO && !Flags_GetTreasure(play, 0x1E))) {
-        if (IS_RANDO) {
-            Flags_SetTreasure(play, 0x1E);
-        }
+    if (GameInteractor_Should(GI_VB_BE_ELIGIBLE_FOR_DARUNIAS_JOY_REWARD, CUR_UPG_VALUE(UPG_STRENGTH) <= 0, NULL)) {
+        Flags_SetRandomizerInf(RAND_INF_DARUNIAS_JOY);
         this->actor.textId = 0x301C;
         EnDu_SetupAction(this, func_809FEC14);
     } else {
@@ -581,17 +576,13 @@ void func_809FEC14(EnDu* this, PlayState* play) {
 }
 
 void func_809FEC70(EnDu* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_STRENGTH_1, true, NULL)) {
         this->actor.parent = NULL;
         EnDu_SetupAction(this, func_809FECE4);
     } else {
         f32 xzRange = this->actor.xzDistToPlayer + 1.0f;
-        if (!IS_RANDO) {
-            func_8002F434(&this->actor, play, GI_BRACELET, xzRange, fabsf(this->actor.yDistToPlayer) + 1.0f);
-        } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_DARUNIAS_JOY, GI_BRACELET);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, xzRange, fabsf(this->actor.yDistToPlayer) + 1.0f);
-        }
+
+        func_8002F434(&this->actor, play, GI_BRACELET, xzRange, fabsf(this->actor.yDistToPlayer) + 1.0f);
     }
 }
 

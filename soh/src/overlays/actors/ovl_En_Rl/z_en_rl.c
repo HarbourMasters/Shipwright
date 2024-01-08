@@ -7,6 +7,7 @@
 #include "z_en_rl.h"
 #include "vt.h"
 #include "objects/object_rl/object_rl.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -126,7 +127,9 @@ void func_80AE7590(EnRl* this, PlayState* play) {
         pos.y = player->actor.world.pos.y + 80.0f;
         pos.z = player->actor.world.pos.z;
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, pos.x, pos.y, pos.z, 0, 0, 0, 0xE, true);
-        Item_Give(play, ITEM_MEDALLION_LIGHT);
+        if (GameInteractor_Should(GI_VB_GIVE_ITEM_LIGHT_MEDALLION, true, NULL)) {
+            Item_Give(play, ITEM_MEDALLION_LIGHT);
+        }
         this->lightMedallionGiven = 1;
     }
 }

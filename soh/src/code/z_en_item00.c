@@ -3,6 +3,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "overlays/effects/ovl_Effect_Ss_Dead_Sound/z_eff_ss_dead_sound.h"
 #include "textures/icon_item_static/icon_item_static.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -349,6 +350,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
     s32 getItemId = GI_NONE;
     this->randoGiEntry = (GetItemEntry)GET_ITEM_NONE;
     this->randoCheck = (RandomizerCheck)RC_UNKNOWN_CHECK;
+    this->itemEntry = (GetItemEntry)GET_ITEM_NONE;
     s16 spawnParam8000 = this->actor.params & 0x8000;
     s32 pad1;
 
@@ -358,7 +360,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
 
     this->actor.params &= 0xFF;
 
-    if (Flags_GetCollectible(play, this->collectibleFlag)) {
+    if (GameInteractor_Should(GI_VB_ITEM00_DESPAWN, Flags_GetCollectible(play, this->collectibleFlag), this)) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -381,12 +383,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             this->unk_158 = 0;
             Actor_SetScale(&this->actor, 0.03f);
             this->scale = 0.03f;
-            // Offset keys in randomizer slightly higher for their GID replacement
-            if (!IS_RANDO) {
-                yOffset = 350.0f;
-            } else {
-                yOffset = 430.0f;
-            }
+            yOffset = 350.0f;
             break;
         case ITEM00_HEART_PIECE:
             this->unk_158 = 0;
@@ -479,6 +476,14 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             Actor_SetScale(&this->actor, 0.03f);
             this->scale = 0.03f;
             break;
+        case ITEM00_SOH_GIVE_ITEM_ENTRY:
+        case ITEM00_SOH_GIVE_ITEM_ENTRY_GI:
+        case ITEM00_SOH_DUMMY:
+            this->unk_158 = 0;
+            Actor_SetScale(&this->actor, 0.03f);
+            this->scale = 0.03f;
+            yOffset = 430.0f;
+            break;
     }
 
     this->unk_156 = 0;
@@ -506,6 +511,10 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
     this->actor.speedXZ = 0.0f;
     this->actor.velocity.y = 0.0f;
     this->actor.gravity = 0.0f;
+
+    if (!GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_ITEM_00, true, this)) {
+        return;
+    }
 
     switch (this->actor.params) {
         case ITEM00_RUPEE_GREEN:
@@ -576,16 +585,8 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             break;
     }
 
-    if (!Actor_HasParent(&this->actor, play)) {
-        if (getItemId != GI_NONE) {
-            if (!IS_RANDO || this->randoGiEntry.getItemId == GI_NONE) {
-                func_8002F554(&this->actor, play, getItemId);
-            } else {
-                if (GiveItemEntryFromActorWithFixedRange(&this->actor, play, this->randoGiEntry) && this->randoInf != RAND_INF_MAX) {
-                    Flags_SetRandomizerInf(this->randoInf);
-                }
-            }
-        }
+    if ((getItemId != GI_NONE) && !Actor_HasParent(&this->actor, play)) {
+        func_8002F554(&this->actor, play, getItemId);
     }
 
     EnItem00_SetupAction(this, func_8001E5C8);
@@ -603,8 +604,7 @@ void func_8001DFC8(EnItem00* this, PlayState* play) {
         (this->actor.params == ITEM00_HEART_PIECE)) {
         this->actor.shape.rot.y += 960;
     } else {
-        if ((this->actor.params >= ITEM00_SHIELD_DEKU) && (this->actor.params != ITEM00_BOMBS_SPECIAL) &&
-            (this->actor.params != ITEM00_BOMBCHU)) {
+        if ((this->actor.params >= ITEM00_SHIELD_DEKU) && (this->actor.params < ITEM00_BOMBS_SPECIAL)) {
             if (this->unk_15A == -1) {
                 if (Math_SmoothStepToS(&this->actor.shape.rot.x, this->actor.world.rot.x - 0x4000, 2, 3000, 1500) ==
                     0) {
@@ -697,8 +697,7 @@ void func_8001E304(EnItem00* this, PlayState* play) {
 
     if (this->actor.params <= ITEM00_RUPEE_RED) {
         this->actor.shape.rot.y += 960;
-    } else if ((this->actor.params >= ITEM00_SHIELD_DEKU) && (this->actor.params != ITEM00_BOMBS_SPECIAL) &&
-               (this->actor.params != ITEM00_BOMBCHU)) {
+    } else if ((this->actor.params >= ITEM00_SHIELD_DEKU) && (this->actor.params < ITEM00_BOMBS_SPECIAL)) {
         this->actor.world.rot.x -= 700;
         this->actor.shape.rot.y += 400;
         this->actor.shape.rot.x = this->actor.world.rot.x - 0x4000;
@@ -733,13 +732,7 @@ void func_8001E5C8(EnItem00* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     if (this->getItemId != GI_NONE) {
         if (!Actor_HasParent(&this->actor, play)) {
-            if (!IS_RANDO) {
-                func_8002F434(&this->actor, play, this->getItemId, 50.0f, 80.0f);
-            } else {
-                if (GiveItemEntryFromActor(&this->actor, play, this->randoGiEntry, 50.0f, 80.0f) && this->randoInf != RAND_INF_MAX) {
-                    Flags_SetRandomizerInf(this->randoInf);
-                }
-            }
+            func_8002F434(&this->actor, play, this->getItemId, 50.0f, 80.0f);
             this->unk_15A++;
         } else {
             this->getItemId = GI_NONE;
@@ -781,13 +774,15 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
     s32 pad;
 
     // Rotate some drops when 3D drops are on, otherwise reset rotation back to 0 for billboard effect
-    if ((this->actor.params == ITEM00_HEART && this->unk_15A >= 0) ||
+    if (
+        (this->actor.params == ITEM00_HEART && this->unk_15A >= 0) ||
         (this->actor.params >= ITEM00_ARROWS_SMALL && this->actor.params <= ITEM00_SMALL_KEY) ||
-        this->actor.params == ITEM00_BOMBS_A || this->actor.params == ITEM00_ARROWS_SINGLE ||
-        this->actor.params == ITEM00_BOMBS_SPECIAL || this->actor.params == ITEM00_BOMBCHU) {
-        if (CVarGetInteger("gNewDrops", 0) ||
-            // Keys in randomizer need to always rotate for their GID replacement
-            (IS_RANDO && this->actor.params == ITEM00_SMALL_KEY)) {
+        this->actor.params == ITEM00_BOMBS_A ||
+        this->actor.params == ITEM00_ARROWS_SINGLE ||
+        this->actor.params == ITEM00_BOMBS_SPECIAL ||
+        (this->actor.params >= ITEM00_BOMBCHU && this->actor.params <= ITEM00_SOH_GIVE_ITEM_ENTRY_GI)
+    ) {
+        if (CVarGetInteger("gNewDrops", 0) || (this->actor.params >= ITEM00_SOH_DUMMY && this->actor.params <= ITEM00_SOH_GIVE_ITEM_ENTRY_GI)) {
             this->actor.shape.rot.y += 960;
         } else {
             this->actor.shape.rot.y = 0;
@@ -868,6 +863,10 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
     }
 
     if (play->gameOverCtx.state != GAMEOVER_INACTIVE) {
+        return;
+    }
+
+    if (!GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_ITEM_00, true, this)) {
         return;
     }
 
@@ -955,14 +954,7 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
     params = &this->actor.params;
 
     if ((getItemId != GI_NONE) && !Actor_HasParent(&this->actor, play)) {
-        if (!IS_RANDO || this->randoGiEntry.getItemId == GI_NONE) {
-            func_8002F554(&this->actor, play, getItemId);
-        } else {
-            getItemId = this->randoGiEntry.getItemId;
-            if (GiveItemEntryFromActorWithFixedRange(&this->actor, play, this->randoGiEntry) && this->randoInf != RAND_INF_MAX) {
-                Flags_SetRandomizerInf(this->randoInf);
-            }
-        }
+        func_8002F554(&this->actor, play, getItemId);
     }
 
     switch (*params) {
@@ -1052,7 +1044,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                 }
                 break;
             case ITEM00_HEART_PIECE:
-                if (CVarGetInteger("gNewDrops", 0) && !IS_RANDO) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     mtxScale = 21.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
                     GetItem_Draw(play, GID_HEART_PIECE);
@@ -1162,7 +1154,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }
             case ITEM00_SMALL_KEY:
-                if (CVarGetInteger("gNewDrops", 0) && !IS_RANDO) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     mtxScale = 8.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
                     GetItem_Draw(play, GID_KEY_SMALL);
@@ -1368,17 +1360,7 @@ static const Vtx customDropVtx[] = {
  * Draw Function used for most collectible types of En_Item00 (ammo, bombs, sticks, nuts, magic...).
  */
 void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
-    if (IS_RANDO && (this->getItemId != GI_NONE || this->actor.params == ITEM00_SMALL_KEY)) {
-        if (this->randoCheck != RC_UNKNOWN_CHECK) {
-            this->randoGiEntry = Randomizer_GetItemFromKnownCheck(this->randoCheck, GI_NONE);
-            this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
-        }
-
-        f32 mtxScale = 10.67f;
-        Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-        EnItem00_CustomItemsParticles(&this->actor, play, this->randoGiEntry);
-        GetItemEntry_Draw(play, this->randoGiEntry);
-    } else if (this->actor.params == ITEM00_BOMBCHU) {
+    if (this->actor.params == ITEM00_BOMBCHU) {
         OPEN_DISPS(play->state.gfxCtx);
 
         Matrix_ReplaceRotation(&play->billboardMtxF);
@@ -1458,29 +1440,17 @@ void EnItem00_DrawHeartContainer(EnItem00* this, PlayState* play) {
  * Draw Function used for the Piece of Heart type of En_Item00.
  */
 void EnItem00_DrawHeartPiece(EnItem00* this, PlayState* play) {
-    if (IS_RANDO) {
-        if (this->randoCheck != RC_UNKNOWN_CHECK) {
-            this->randoGiEntry = Randomizer_GetItemFromKnownCheck(this->randoCheck, GI_NONE);
-            this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
-        }
+    s32 pad;
 
-        f32 mtxScale = 16.0f;
-        Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-        EnItem00_CustomItemsParticles(&this->actor, play, this->randoGiEntry);
-        GetItemEntry_Draw(play, this->randoGiEntry);
-    } else {
-        s32 pad;
+    OPEN_DISPS(play->state.gfxCtx);
 
-        OPEN_DISPS(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+    func_8002ED80(&this->actor, play, 0);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+            G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_XLU_DISP++, gHeartPieceInteriorDL);
 
-        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-        func_8002ED80(&this->actor, play, 0);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                G_MTX_MODELVIEW | G_MTX_LOAD);
-        gSPDisplayList(POLY_XLU_DISP++, gHeartPieceInteriorDL);
-
-        CLOSE_DISPS(play->state.gfxCtx);
-    }
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
 /**

@@ -31,6 +31,7 @@
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/Enhancements/randomizer/fishsanity.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -6658,7 +6659,14 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
                 uint8_t showItemCutscene = play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY || Item_CheckObtainability(giEntry.itemId) == ITEM_NONE || IS_RANDO;
 
                 // Only skip cutscenes for drops when they're items/consumables from bushes/rocks/enemies.
-                uint8_t isDropToSkip = (interactedActor->id == ACTOR_EN_ITEM00 && interactedActor->params != 6 && interactedActor->params != 17) || 
+                uint8_t isDropToSkip = 
+                                        (
+                                            interactedActor->id == ACTOR_EN_ITEM00 &&
+                                            interactedActor->params != ITEM00_HEART_PIECE &&
+                                            interactedActor->params != ITEM00_SMALL_KEY &&
+                                            interactedActor->params != ITEM00_SOH_GIVE_ITEM_ENTRY &&
+                                            interactedActor->params != ITEM00_SOH_GIVE_ITEM_ENTRY_GI
+                                        ) ||
                                         interactedActor->id == ACTOR_EN_KAREBABA || 
                                         interactedActor->id == ACTOR_EN_DEKUBABA;
 
@@ -6716,8 +6724,10 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
                 }
 
                 func_80836898(play, this, func_8083A434);
+                if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_CHEST, true, &giEntry)) {
                 this->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD | PLAYER_STATE1_IN_CUTSCENE;
                 func_8083AE40(this, giEntry.objectId);
+                }
                 this->actor.world.pos.x =
                     chest->dyna.actor.world.pos.x - (Math_SinS(chest->dyna.actor.shape.rot.y) * 29.4343f);
                 this->actor.world.pos.z =
@@ -10087,7 +10097,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
 
     if ((sp50 == 0) || (sp50 < -1)) {
         titleFileSize = scene->titleFile.vromEnd - scene->titleFile.vromStart;
-        if (gSaveContext.showTitleCard) {
+        if (GameInteractor_Should(GI_VB_SHOW_TITLE_CARD, gSaveContext.showTitleCard, NULL)) {
             if ((gSaveContext.sceneSetupIndex < 4) &&
                 (gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].field &
                  ENTRANCE_INFO_DISPLAY_TITLE_CARD_FLAG) &&
@@ -13393,7 +13403,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         play->msgCtx.msgMode = MSGMODE_TEXT_DONE;
     } else {
         if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
-            if (this->getItemId == GI_GAUNTLETS_SILVER && !IS_RANDO) {
+            if (GameInteractor_Should(GI_VB_PLAY_NABOORU_CAPTURED_CS, this->getItemId == GI_GAUNTLETS_SILVER, NULL)) {
                 play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;
@@ -13409,11 +13419,13 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
                 this->unk_862 = 0;
             }
 
+            // #region SOH [Randomizer] TODO Better Ice trap handling?
             if (this->getItemEntry.itemId == RG_ICE_TRAP && this->getItemEntry.modIndex == MOD_RANDOMIZER) {
                 this->unk_862 = 0;
                 gSaveContext.pendingIceTrapCount++;
                 Player_SetPendingFlag(this, play);
             }
+            // #endregion
 
             this->getItemId = GI_NONE;
             this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
@@ -15675,6 +15687,7 @@ void func_8085283C(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         func_80852944(play, this, arg2);
     } else if (this->unk_850 == 0) {
+        // This is when link picks up the sword in the Ganon fight
         Item_Give(play, ITEM_SWORD_MASTER);
         func_80846720(play, this, 0);
     } else {
