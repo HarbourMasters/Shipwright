@@ -1056,6 +1056,8 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Space between text characters (useful for HD font textures)");
             UIWidgets::PaddedEnhancementCheckbox("More info in file select", "gFileSelectMoreInfo", true, false);
             UIWidgets::Tooltip("Shows what items you have collected in the file select screen, like in N64 randomizer");
+            UIWidgets::PaddedEnhancementCheckbox("Show Age-Dependent Equipment", "gEquipmentAlwaysVisible", true, false);
+            UIWidgets::Tooltip("Makes all equipment visible, regardless of Age. Will still show hand of original age's model.");
             ImGui::EndMenu();
         }
 

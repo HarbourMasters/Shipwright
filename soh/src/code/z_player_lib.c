@@ -617,10 +617,23 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     // Left hand
     this->leftHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_LEFT_HAND];
     this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
+
+    if (LINK_IS_CHILD && (CVarGetInteger("gEquipmentAlwaysVisible", 0)) && (this->leftHandType == PLAYER_MODELTYPE_LH_HAMMER)) {
+		this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][0];
+	}
+    if (LINK_IS_ADULT && (CVarGetInteger("gEquipmentAlwaysVisible", 0)) &&
+        (this->leftHandType == PLAYER_MODELTYPE_LH_BOOMERANG)) {
+        this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][1];
+    }
     
     // Right hand
     this->rightHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_RIGHT_HAND];
     this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
+
+    if (LINK_IS_CHILD && (CVarGetInteger("gEquipmentAlwaysVisible", 0)) &&
+        (this->rightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT)) {
+		this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][0];
+	}
 
     if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && this->rightHandType == 11) { // If holding Bow/Slingshot
         this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
