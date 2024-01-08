@@ -477,14 +477,6 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
         AddHint(RH_SARIA, Text(sariaText), sariaHintLoc, HINT_TYPE_STATIC, "Static", mSpoilerfileAreaNameToEnum[sariaRegion]);
     }
 
-    if (spoilerFileJson.contains("biggoronText")) {
-        // Biggoron Claim Check Hint RANDOTODO region > area
-        std::string biggoronText = spoilerFileJson["biggoronText"].get<std::string>();
-        std::string biggoronRegion = spoilerFileJson["biggoronRegion"].get<std::string>();
-        RandomizerCheck biggoronHintLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["biggoronHintLoc"].get<std::string>()];
-        AddHint(RH_BIGGORON_HINT, Text(biggoronText), biggoronHintLoc, HINT_TYPE_STATIC, "Static", mSpoilerfileAreaNameToEnum[biggoronRegion]);
-    }
-
     // Warp Songs
     if (spoilerFileJson.contains("warpMinuetText")) {
         std::string warpMinuetText = spoilerFileJson["warpMinuetText"].get<std::string>(); //RANDOTODO fall back for if location is used
