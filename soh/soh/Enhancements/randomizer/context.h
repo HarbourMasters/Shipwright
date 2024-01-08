@@ -50,6 +50,7 @@ class Context {
                                               Category categoryInclude, Category categoryExclude = Category::cNull);
     void AddExcludedOptions();
     void LocationReset();
+    void ClearItemLocations();
     void ItemReset();
     void HintReset();
     void CreateItemOverrides();
