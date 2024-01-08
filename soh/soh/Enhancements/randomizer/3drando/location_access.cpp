@@ -4,36 +4,27 @@
 #include "../static_data.h"
 #include "../context.h"
 #include "item_pool.hpp"
-#include "logic.hpp"
 #include "spoiler_log.hpp"
 #include "../trial.h"
 #include "../entrance.h"
 
 #include <fstream>
-#include <iostream>
-
-using namespace Logic;
 
 //generic grotto event list
-std::vector<EventAccess> grottoEvents = {
-  EventAccess(&GossipStoneFairy, {[]{return GossipStoneFairy || CanSummonGossipFairy;}}),
-  EventAccess(&ButterflyFairy,   {[]{return ButterflyFairy   || (CanUse(RG_STICKS));}}),
-  EventAccess(&BugShrub,         {[]{return CanCutShrubs;}}),
-  EventAccess(&LoneFish,         {[]{return true;}}),
-};
+std::vector<EventAccess> grottoEvents;
 
 //set the logic to be a specific age and time of day and see if the condition still holds
 bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
 
-  IsChild = false;
-  IsAdult = false;
-  AtDay   = false;
-  AtNight = false;
+  logic->IsChild = false;
+  logic->IsAdult = false;
+  logic->AtDay   = false;
+  logic->AtNight = false;
 
   time = true;
   age = true;
 
-  UpdateHelpers();
+  logic->UpdateHelpers();
   return GetConditionsMet();
 }
 
@@ -42,10 +33,10 @@ bool LocationAccess::ConditionsMet() const {
   Area* parentRegion = AreaTable(Rando::Context::GetInstance()->GetItemLocation(location)->GetParentRegionKey());
   bool conditionsMet = false;
 
-  if ((parentRegion->childDay   && CheckConditionAtAgeTime(IsChild, AtDay))   ||
-      (parentRegion->childNight && CheckConditionAtAgeTime(IsChild, AtNight)) ||
-      (parentRegion->adultDay   && CheckConditionAtAgeTime(IsAdult, AtDay))   ||
-      (parentRegion->adultNight && CheckConditionAtAgeTime(IsAdult, AtNight))) {
+  if ((parentRegion->childDay   && CheckConditionAtAgeTime(logic->IsChild, logic->AtDay))   ||
+      (parentRegion->childNight && CheckConditionAtAgeTime(logic->IsChild, logic->AtNight)) ||
+      (parentRegion->adultDay   && CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay))   ||
+      (parentRegion->adultNight && CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight))) {
         conditionsMet = true;
   }
 
@@ -62,11 +53,11 @@ bool LocationAccess::CanBuy() const {
   //Check if wallet is large enough to buy item
   bool SufficientWallet = true;
   if (ctx->GetItemLocation(location)->GetPrice() > 500) {
-    SufficientWallet = ProgressiveWallet >= 3;
+    SufficientWallet = logic->ProgressiveWallet >= 3;
   } else if (ctx->GetItemLocation(location)->GetPrice() > 200) {
-    SufficientWallet = ProgressiveWallet >= 2;
+    SufficientWallet = logic->ProgressiveWallet >= 2;
   } else if (ctx->GetItemLocation(location)->GetPrice() > 99) {
-    SufficientWallet = ProgressiveWallet >= 1;
+    SufficientWallet = logic->ProgressiveWallet >= 1;
   }
 
   bool OtherCondition = true;
@@ -74,12 +65,12 @@ bool LocationAccess::CanBuy() const {
   //Need bottle to buy bottle items, only logically relevant bottle items included here
   if (placed == RG_BUY_BLUE_FIRE || placed == RG_BUY_BOTTLE_BUG || placed == RG_BUY_FISH ||
       placed == RG_BUY_FAIRYS_SPIRIT) {
-      OtherCondition = HasBottle;
+      OtherCondition = logic->HasBottle;
   }
   // If bombchus in logic, need to have found chus to buy; if not just need bomb bag
   else if (placed == RG_BUY_BOMBCHU_10 || placed == RG_BUY_BOMBCHU_20) {
       OtherCondition =
-          (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && Bombs) || (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && FoundBombchus);
+          (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->Bombs) || (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && logic->FoundBombchus);
   }
 
   return SufficientWallet && OtherCondition;
@@ -126,10 +117,10 @@ bool Area::UpdateEvents(SearchMode mode) {
       continue;
     }
 
-    if ((childDay   && event.CheckConditionAtAgeTime(IsChild, AtDay))    ||
-        (childNight && event.CheckConditionAtAgeTime(IsChild, AtNight))  ||
-        (adultDay   && event.CheckConditionAtAgeTime(IsAdult, AtDay))    ||
-        (adultNight && event.CheckConditionAtAgeTime(IsAdult, AtNight))) {
+    if ((childDay   && event.CheckConditionAtAgeTime(logic->IsChild, logic->AtDay))    ||
+        (childNight && event.CheckConditionAtAgeTime(logic->IsChild, logic->AtNight))  ||
+        (adultDay   && event.CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay))    ||
+        (adultNight && event.CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight))) {
           event.EventOccurred();
           eventsUpdated = true;
     }
@@ -169,7 +160,7 @@ Rando::Entrance* Area::GetExit(RandomizerRegion exitToReturn) {
 }
 
 bool Area::CanPlantBeanCheck() const {
-  return (Logic::MagicBean || Logic::MagicBeanPack) && BothAgesCheck();
+  return (logic->MagicBean || logic->MagicBeanPack) && BothAgesCheck();
 }
 
 bool Area::AllAccountedFor() const {
@@ -201,10 +192,10 @@ bool Area::CheckAllAccess(const RandomizerRegion exitKey) {
 
   for (Rando::Entrance& exit : exits) {
     if (exit.GetConnectedRegionKey() == exitKey) {
-      return exit.CheckConditionAtAgeTime(Logic::IsChild, Logic::AtDay)   &&
-             exit.CheckConditionAtAgeTime(Logic::IsChild, Logic::AtNight) &&
-             exit.CheckConditionAtAgeTime(Logic::IsAdult, Logic::AtDay)   &&
-             exit.CheckConditionAtAgeTime(Logic::IsAdult, Logic::AtNight);
+      return exit.CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)   &&
+             exit.CheckConditionAtAgeTime(logic->IsChild, logic->AtNight) &&
+             exit.CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay)   &&
+             exit.CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight);
     }
   }
   return false;
@@ -248,10 +239,18 @@ bool HasAccessTo(const RandomizerRegion area) {
 }
 
 std::shared_ptr<Rando::Context> randoCtx;
+std::shared_ptr<Rando::Logic> logic;
 
 void AreaTable_Init() {
   using namespace Rando;
   randoCtx = Context::GetInstance();
+  logic = randoCtx->GetLogic();
+  grottoEvents = {
+      EventAccess(&logic->GossipStoneFairy, { [] { return logic->GossipStoneFairy || logic->CanSummonGossipFairy; } }),
+      EventAccess(&logic->ButterflyFairy, { [] { return logic->ButterflyFairy || (logic->CanUse(RG_STICKS)); } }),
+      EventAccess(&logic->BugShrub, { [] { return logic->CanCutShrubs; } }),
+      EventAccess(&logic->LoneFish, { [] { return true; } }),
+  };
   //Clear the array from any previous playthrough attempts. This is important so that
   //locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
   areaTable.fill(Area("Invalid Area", "Invalid Area", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {}));
@@ -260,8 +259,8 @@ void AreaTable_Init() {
   areaTable[RR_ROOT] = Area("Root", "", RA_LINKS_POCKET, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_LINKS_POCKET,       {[]{return true;}}),
-                  LocationAccess(RC_TRIFORCE_COMPLETED, {[]{return CanCompleteTriforce;}}),
-                  LocationAccess(RC_SARIA_SONG_HINT,    {[]{return CanUse(RG_SARIAS_SONG);}}),
+                  LocationAccess(RC_TRIFORCE_COMPLETED, {[]{return logic->CanCompleteTriforce;}}),
+                  LocationAccess(RC_SARIA_SONG_HINT,    {[]{return logic->CanUse(RG_SARIAS_SONG);}}),
                 }, {
                   //Exits
                   Entrance(RR_ROOT_EXITS, {[]{return true;}})
@@ -269,14 +268,14 @@ void AreaTable_Init() {
 
   areaTable[RR_ROOT_EXITS] = Area("Root Exits", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_CHILD_SPAWN,             {[]{return IsChild;}}),
-                  Entrance(RR_ADULT_SPAWN,             {[]{return IsAdult;}}),
-                  Entrance(RR_MINUET_OF_FOREST_WARP,   {[]{return CanUse(RG_MINUET_OF_FOREST);}}),
-                  Entrance(RR_BOLERO_OF_FIRE_WARP,     {[]{return CanUse(RG_BOLERO_OF_FIRE)     && CanLeaveForest;}}),
-                  Entrance(RR_SERENADE_OF_WATER_WARP,  {[]{return CanUse(RG_SERENADE_OF_WATER)  && CanLeaveForest;}}),
-                  Entrance(RR_NOCTURNE_OF_SHADOW_WARP, {[]{return CanUse(RG_NOCTURNE_OF_SHADOW) && CanLeaveForest;}}),
-                  Entrance(RR_REQUIEM_OF_SPIRIT_WARP,  {[]{return CanUse(RG_REQUIEM_OF_SPIRIT)  && CanLeaveForest;}}),
-                  Entrance(RR_PRELUDE_OF_LIGHT_WARP,   {[]{return CanUse(RG_PRELUDE_OF_LIGHT)   && CanLeaveForest;}}),
+                  Entrance(RR_CHILD_SPAWN,             {[]{return logic->IsChild;}}),
+                  Entrance(RR_ADULT_SPAWN,             {[]{return logic->IsAdult;}}),
+                  Entrance(RR_MINUET_OF_FOREST_WARP,   {[]{return logic->CanUse(RG_MINUET_OF_FOREST);}}),
+                  Entrance(RR_BOLERO_OF_FIRE_WARP,     {[]{return logic->CanUse(RG_BOLERO_OF_FIRE)     && logic->CanLeaveForest;}}),
+                  Entrance(RR_SERENADE_OF_WATER_WARP,  {[]{return logic->CanUse(RG_SERENADE_OF_WATER)  && logic->CanLeaveForest;}}),
+                  Entrance(RR_NOCTURNE_OF_SHADOW_WARP, {[]{return logic->CanUse(RG_NOCTURNE_OF_SHADOW) && logic->CanLeaveForest;}}),
+                  Entrance(RR_REQUIEM_OF_SPIRIT_WARP,  {[]{return logic->CanUse(RG_REQUIEM_OF_SPIRIT)  && logic->CanLeaveForest;}}),
+                  Entrance(RR_PRELUDE_OF_LIGHT_WARP,   {[]{return logic->CanUse(RG_PRELUDE_OF_LIGHT)   && logic->CanLeaveForest;}}),
   });
 
   areaTable[RR_CHILD_SPAWN] = Area("Child Spawn", "", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {

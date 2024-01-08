@@ -283,7 +283,7 @@ constexpr std::array DungeonColors = {
     std::string SKULLTULAS_DESTROYED() { return  "\x7F\x15"s; }
     std::string CURRENT_TIME()         { return  "\x7F\x17"s; }
     std::string UNSKIPPABLE()          { return  "\x7F\x19"s; }
-    std::string TWO_WAY_CHOICE()       { return  "\x7F\x1A\xFF\xFF\xFF\xFF"s; }
+    std::string TWO_WAY_CHOICE()       { return  "\x1B"s; }
     std::string NEWLINE()              { return  "\x7F\x1C"s; }
     std::string COLOR(uint8_t x)       { return  "\x7F\x1D"s + char(x); }
     std::string CENTER_TEXT()          { return  "\x7F\x1E"s; }
