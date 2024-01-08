@@ -2127,7 +2127,7 @@ void func_80833DF8(Player* this, PlayState* play) {
             if ((item < ITEM_NONE_FE) && (Player_ItemToItemAction(item) == this->heldItemAction)) {
                 D_80853618 = true;
             }
-        } else if (item != ITEM_NAYRUS_LOVE || !CVar_GetS32("gRocsFeather", 0)) {
+        } else if (item != ITEM_NAYRUS_LOVE || !CVarGetInteger("gRocsFeather", 0)) {
             this->heldItemButton = i;
             func_80835F44(play, this, item);
         } else if (this->rocUseCount == 0) {
@@ -2147,9 +2147,9 @@ void func_80833DF8(Player* this, PlayState* play) {
             EffectSsGRipple_Spawn(play, &effectsPos, 200 * effectsScale, 300 * effectsScale, 1);
             EffectSsGSplash_Spawn(play, &effectsPos, NULL, NULL, 0, 150 * effectsScale);
 
-            this->stateFlags2 &= ~(PLAYER_STATE2_19);
+            this->stateFlags2 &= ~(PLAYER_STATE2_HOPPING);
 
-            func_8002F7DC(&this->actor, NA_SE_PL_SKIP);
+            Player_PlaySfx(&this->actor, NA_SE_PL_SKIP);
         }
     }
 }
