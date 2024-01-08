@@ -237,6 +237,7 @@ class Logic {
     bool GoronBracelet = false;
     bool SilverGauntlets = false;
     bool GoldenGauntlets = false;
+    bool Swim = false;
     bool SilverScale = false;
     bool GoldScale = false;
     bool AdultsWallet = false;
