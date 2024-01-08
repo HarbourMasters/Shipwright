@@ -152,7 +152,6 @@ extern "C" void* func_800982FC(ObjectContext* objectCtx, s32 bankIndex, s16 obje
 bool OTRfunc_800982FC(ObjectContext* objectCtx, s32 bankIndex, s16 objectId) {
 
     objectCtx->status[bankIndex].id = -objectId;
-    objectCtx->status[bankIndex].dmaRequest.vromAddr = 0;
 
     return false;
 }
