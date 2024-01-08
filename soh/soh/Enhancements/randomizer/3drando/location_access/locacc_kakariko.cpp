@@ -198,8 +198,8 @@ void AreaTable_Init_Kakariko() {
                   //Locations
                   LocationAccess(RC_KAK_OPEN_GROTTO_CHEST,         {[]{return true;}}),
                   LocationAccess(RC_KAK_OPEN_GROTTO_GOSSIP_STONE,  {[]{return true;}}),
-                  LocationAccess(RC_KAK_OPEN_GROTTO_BEEHIVE_LEFT,  {[]{return CanBreakLowerBeehives;}}),
-                  LocationAccess(RC_KAK_OPEN_GROTTO_BEEHIVE_RIGHT, {[]{return CanBreakLowerBeehives;}}),
+                  LocationAccess(RC_KAK_OPEN_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
+                  LocationAccess(RC_KAK_OPEN_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_KAK_BACKYARD, {[]{return true;}}),

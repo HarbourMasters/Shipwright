@@ -295,6 +295,8 @@ class Logic {
     bool BigPoeKill = false;
     bool HookshotOrBoomerang = false;
     bool CanGetNightTimeGS = false;
+    bool CanBreakLowerBeehives = false;
+    bool CanBreakUpperBeehives = false;
 
     uint8_t OcarinaButtons = 0;
     uint8_t BaseHearts = 0;
