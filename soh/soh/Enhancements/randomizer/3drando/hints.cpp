@@ -440,16 +440,16 @@ static bool CreateHint(RandomizerCheck hintedLocation, uint8_t copies, HintType 
     if (type == HINT_TYPE_ITEM_LOCATION){
       Text locationText = Rando::StaticData::GetLocation(hintedLocation)->GetHint()->GetText();
       finalHint = prefix + locationText + " #"+itemText+"#.";
-      colours = {QM_GREEN, QM_RED};
+      colours = {QM_RED, QM_GREEN};
     }
     else if (type == HINT_TYPE_ITEM_AREA){
       Text areaText = ::Hint(ctx->GetItemLocation(hintedLocation)->GetArea()).GetText();
       if (Rando::StaticData::GetLocation(hintedLocation)->IsDungeon()) {
         finalHint = prefix+"#"+areaText+"# "+::Hint(RHT_HOARDS).GetText()+" #"+itemText+"#.";
-        colours = {QM_GREEN, QM_RED};
+        colours = {QM_RED, QM_GREEN};
       } else {
         finalHint = prefix+"#"+itemText+"# "+::Hint(RHT_CAN_BE_FOUND_AT).GetText()+" #"+areaText+"#.";
-        colours = {QM_RED, QM_GREEN};
+        colours = {QM_GREEN, QM_RED};
       }
     }
     else{
