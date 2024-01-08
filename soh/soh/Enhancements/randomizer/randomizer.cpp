@@ -22,7 +22,6 @@
 #include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include <stdexcept>
 #include "randomizer_check_objects.h"
-#include "randomizer_tricks.h"
 #include "randomizer_check_tracker.h"
 #include <sstream>
 #include <tuple>
@@ -36,6 +35,7 @@
 #include "entrance.h"
 #include "dungeon.h"
 #include "trial.h"
+#include "settings.h"
 #include "soh/util.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
@@ -271,17 +271,6 @@ bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
 #pragma GCC pop_options
 #pragma optimize("", on)
 
-void DrawTagChips(const std::vector<RandomizerTrickTag> &rtTags) {
-    for (auto rtTag : rtTags) {
-        ImGui::SameLine();
-        ImGui::BeginDisabled();
-        ImGui::PushStyleColor(ImGuiCol_Button, RandomizerTricks::GetRTTagColor(rtTag));
-        ImGui::SmallButton(RandomizerTricks::GetRTTagName(rtTag).c_str());
-        ImGui::PopStyleColor();
-        ImGui::EndDisabled();
-    }
-}
-
 void Randomizer::LoadHintMessages() {
     auto ctx = Rando::Context::GetInstance();
 
@@ -308,7 +297,7 @@ void Randomizer::LoadHintMessages() {
         CustomMessage("{{message}}", "{{message}}", "{{message}}"));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE,
-        CustomMessage(ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE));
+        CustomMessage(ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetGerman(), ctx->GetHint(RH_SARIA)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE));
 
     for (int i : Rando::StaticData::gossipStoneLocations) {
         RandomizerHintKey rhk = RandomizerHintKey(i - RC_COLOSSUS_GOSSIP_STONE + 1);
@@ -340,19 +329,34 @@ void Randomizer::LoadHintMessages() {
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_FROGS_UNDERWATER,
-            CustomMessage("Some frogs holding&%g{{item}}%w&are looking at you from underwater...",
-            "Unter Wasser gibt es Frösche,&die %g{{item}}%w&bei sich haben und Dich neugierig&beobachten...",
-            "Des grenouilles se trouvant&sous l'eau vous fixent attentivement,&tenant fermement&%g{{item}}%w.", TEXTBOX_TYPE_BLUE)
+            CustomMessage(ctx->GetHint(RH_FROGS)->GetText().GetEnglish(),
+                ctx->GetHint(RH_FROGS)->GetText().GetGerman(),
+                ctx->GetHint(RH_FROGS)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE)
         );
-        CustomMessageManager::Instance->CreateMessage(
-            Randomizer::randoMiscHintsTableID, TEXT_SARIAS_SONG_FACE_TO_FACE,
-            CustomMessage("{{message}}", "{{message}}", "{{message}}", TEXTBOX_TYPE_BLUE)
-        );
-
-    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT,
-        CustomMessage("Warp to&{{location}}?\x1B&%gOK&No%w\x02",
-        "Zu {{location}}?\x1B&%gOK&No%w\x02",
-        "Se téléporter vers&{{location}}?\x1B&%gOK!&Non%w\x02"));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_MINUET_OF_FOREST,
+        CustomMessage(ctx->GetHint(RH_MINUET_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_MINUET_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_MINUET_WARP_LOC)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_BOLERO_OF_FIRE,
+        CustomMessage(ctx->GetHint(RH_BOLERO_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_BOLERO_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_BOLERO_WARP_LOC)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_SERENADE_OF_WATER,
+        CustomMessage(ctx->GetHint(RH_SERENADE_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_SERENADE_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_SERENADE_WARP_LOC)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_REQUIEM_OF_SPIRIT,
+        CustomMessage(ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_NOCTURNE_OF_SHADOW,
+        CustomMessage(ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_PRELUDE_OF_LIGHT,
+        CustomMessage(ctx->GetHint(RH_PRELUDE_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_PRELUDE_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_PRELUDE_WARP_LOC)->GetText().GetFrench()));
 
     // Bow Shooting Gallery reminder
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW,
@@ -405,6 +409,7 @@ std::unordered_map<RandomizerGet, EnGirlAShopItem> randomizerGetToEnGirlShopItem
 };
 
 void Randomizer::LoadMerchantMessages() {
+    auto ctx = Rando::Context::GetInstance();
     CustomMessageManager::Instance->ClearMessageTable(Randomizer::merchantMessageTableID);
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::merchantMessageTableID);
 
@@ -419,12 +424,9 @@ void Randomizer::LoadMerchantMessages() {
             "\x12\x38\x82" "J'abandonne! Tu veux bien m'acheter&un %g{{item}}%w?&Ça fera %r{{price}} Rubis%w!\x07\x10\xA3"));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_10,
-        CustomMessage("I tried to be a %rmagic bean%w salesman,&but it turns out my marketing skills&weren't worth "
-            "beans!^Anyway, want to buy my&%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
-            "Möchten Sie einen geheimnisvollen&Gegenstand für 60 Rubine?\x1B&%gJa&Nein%w",
-            "J'ai essayé d'être un vendeur de&%rharicots magiques%w, mais j'étais&mauvais au niveau du marketing et&ça "
-            "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter un&"
-            "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w"));
+        CustomMessage(ctx->GetHint(RH_BEAN_SALESMAN)->GetText().GetEnglish(),
+            ctx->GetHint(RH_BEAN_SALESMAN)->GetText().GetGerman(),
+            ctx->GetHint(RH_BEAN_SALESMAN)->GetText().GetFrench()));
 
 
     //Setup for merchant text boxes
@@ -432,51 +434,30 @@ void Randomizer::LoadMerchantMessages() {
     //RANDOTODO: Implement obscure/ambiguous hints
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_MEDIGORON,
-        CustomMessage("How about buying %g&{{item}}%w for %y200 rupees%w?\x1B&%gYes&No%w",
-            "Wie wäre es mit %g&{{item}}%w für %y200 Rubine?%w\x1B&%gJa!&Nein!%w",
-            "Veux-tu acheter %g&{{item}}%w pour %y200 rubis?%w\x1B&%gOui&Non&w"));
+        CustomMessage(ctx->GetHint(RH_MEDIGORON)->GetText().GetEnglish(),
+            ctx->GetHint(RH_MEDIGORON)->GetText().GetGerman(),
+            ctx->GetHint(RH_MEDIGORON)->GetText().GetFrench()));
 
     //Granny Shopy
     //RANDOTODO: Implement obscure/ambiguous hints
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_GRANNYS_SHOP,
-        CustomMessage("%g{{item}}%w!&How about %y100 rupees%w?\x1B&%gYes&No%w",
-            "%g{{item}}%w!&Wie wäre es mit %y100 Rubine?%w\x1B&%gJa!&Nein!%w",
-            "%g{{item}}%w!&Que dis-tu de %y100 rubis?%w\x1B&%gOui&Non&w"));
+        CustomMessage(ctx->GetHint(RH_GRANNYS_SHOP)->GetText().GetEnglish(),
+            ctx->GetHint(RH_GRANNYS_SHOP)->GetText().GetGerman(),
+            ctx->GetHint(RH_GRANNYS_SHOP)->GetText().GetFrench()));
 
     //Carpet Salesman
     //RANDOTODO: Implement obscure/ambiguous hints
-    std::vector<std::string> cgBoxTwoText;
-    if (Randomizer::GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ON_HINT) {
-        cgBoxTwoText = {
-            "!%w&It's real, I promise!&A lonely man such as myself&wouldn't %rlie%w to you, hmm?^",
-            "!%w&Ich kann versichern es ist ein&aufrichtiges Angebot!^Ein einsamer Mann wie ich würde dich&doch nicht %ranlügen%w, oder?^",
-            "!%w&C'est vrai! J'te jure!&Un gars comme moi ne te %rmentirai%w pas&tu ne crois pas?^"
-        };
-    } else {
-        cgBoxTwoText = {
-            "!%w&I won't tell you what it is until I see&the money...^",
-            "!%w&Erst kommt das Geld, dann die Ware...^",
-            "!%w&Je ne te dirai pas ce que c'est avant&d'être payé rubis sur l'ongle...^"
-            };
-        }
-        CustomMessageManager::Instance->CreateMessage(
-            Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_1,
-            CustomMessage("Welcome!^I am selling stuff, strange and rare, &from all over the world to "
-                          "everybody.&Today's special is...^%g{{item}}" +
-                              cgBoxTwoText[0] + "How about %y200 Rupees?%w\x1B&&%gYes&No%w",
-                          "Sei gegrüßt!^Ich verkaufe allerlei Kuriorisäten.&Stets sonderliche und seltene Ware&aus "
-                          "aller Welt für jedermann.&Das heutige Angebot bleibt...^%g{{item}}" +
-                              cgBoxTwoText[1] + "Wie wäre es mit %y200 Rubinen?%w\x1B&&%gJa!&Nein!%w",
-                          "Bienvenue!^Je vends des trucs étranges et rares,&de partout dans le monde et à tout "
-                          "le&monde! L'objet du jour est...^%g{{item}}" +
-                              cgBoxTwoText[2] + "Alors, marché conclu pour %y200 rubis?%w\x1B&&%gOui&Non%w"));
-
-        CustomMessageManager::Instance->CreateMessage(
-            Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_2,
-            CustomMessage("Finally! Now I can go back to being &an %rarms dealer%w!",
-              "Endlich! Schon bald kann ich wieder &%rKrabbelminen-Händler%w sein!",
-              "Squalala! Je vais enfin pouvoir &%rprendre des vacances%w!"));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_1,
+        CustomMessage(ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN)->GetText().GetEnglish(),
+            ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN)->GetText().GetGerman(),
+            ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_2,
+        CustomMessage(ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN_POST)->GetText().GetEnglish(),
+            ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN_POST)->GetText().GetGerman(),
+            ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN_POST)->GetText().GetFrench()));
 
         // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
         // prompted buy/don't buy
@@ -1159,7 +1140,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
             return GI_HEART_PIECE_WIN;
         case RG_TREASURE_GAME_GREEN_RUPEE:
             return GI_RUPEE_GREEN_LOSE;
-        
+
         //Ocarina Buttons
         case RG_OCARINA_A_BUTTON:
             return (GetItemID)RG_OCARINA_A_BUTTON;
@@ -2017,95 +1998,93 @@ void RandomizerSettingsWindow::DrawElement() {
             ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
 
             // Tricks
-            static std::unordered_map<RandomizerTrickArea, bool> areaTreeDisabled {
-                {RTAREA_GENERAL, true},
-                {RTAREA_KOKIRI_FOREST, true},
-                {RTAREA_LOST_WOODS, true},
-                {RTAREA_SACRED_FOREST_MEADOW, true},
-                {RTAREA_HYRULE_FIELD, true},
-                {RTAREA_LAKE_HYLIA, true},
-                {RTAREA_GERUDO_VALLEY, true},
-                {RTAREA_GERUDO_FORTRESS, true},
-                {RTAREA_WASTELAND, true},
-                {RTAREA_DESERT_COLOSSUS, true},
-                {RTAREA_MARKET, true},
-                {RTAREA_HYRULE_CASTLE, true},
-                {RTAREA_KAKARIKO_VILLAGE, true},
-                {RTAREA_GRAVEYARD, true},
-                {RTAREA_DEATH_MOUNTAIN_TRAIL, true},
-                {RTAREA_GORON_CITY, true},
-                {RTAREA_DEATH_MOUNTAIN_CRATER, true},
-                {RTAREA_ZORAS_RIVER, true},
-                {RTAREA_ZORAS_DOMAIN, true},
-                {RTAREA_ZORAS_FOUNTAIN, true},
-                {RTAREA_LON_LON_RANCH, true},
-                {RTAREA_DEKU_TREE, true},
-                {RTAREA_DODONGOS_CAVERN, true},
-                {RTAREA_JABU_JABUS_BELLY, true},
-                {RTAREA_FOREST_TEMPLE, true},
-                {RTAREA_FIRE_TEMPLE, true},
-                {RTAREA_WATER_TEMPLE, true},
-                {RTAREA_SPIRIT_TEMPLE, true},
-                {RTAREA_SHADOW_TEMPLE, true},
-                {RTAREA_BOTTOM_OF_THE_WELL, true},
-                {RTAREA_ICE_CAVERN, true},
-                {RTAREA_GERUDO_TRAINING_GROUND, true},
-                {RTAREA_GANONS_CASTLE, true}
+            static std::unordered_map<RandomizerArea, bool> areaTreeDisabled {
+                {RA_NONE, true},
+                {RA_KOKIRI_FOREST, true},
+                {RA_THE_LOST_WOODS, true},
+                {RA_SACRED_FOREST_MEADOW, true},
+                {RA_HYRULE_FIELD, true},
+                {RA_LAKE_HYLIA, true},
+                {RA_GERUDO_VALLEY, true},
+                {RA_GERUDO_FORTRESS, true},
+                {RA_HAUNTED_WASTELAND, true},
+                {RA_DESERT_COLOSSUS, true},
+                {RA_THE_MARKET, true},
+                {RA_HYRULE_CASTLE, true},
+                {RA_KAKARIKO_VILLAGE, true},
+                {RA_THE_GRAVEYARD, true},
+                {RA_DEATH_MOUNTAIN_TRAIL, true},
+                {RA_GORON_CITY, true},
+                {RA_DEATH_MOUNTAIN_CRATER, true},
+                {RA_ZORAS_RIVER, true},
+                {RA_ZORAS_DOMAIN, true},
+                {RA_ZORAS_FOUNTAIN, true},
+                {RA_LON_LON_RANCH, true},
+                {RA_DEKU_TREE, true},
+                {RA_DODONGOS_CAVERN, true},
+                {RA_JABU_JABUS_BELLY, true},
+                {RA_FOREST_TEMPLE, true},
+                {RA_FIRE_TEMPLE, true},
+                {RA_WATER_TEMPLE, true},
+                {RA_SPIRIT_TEMPLE, true},
+                {RA_SHADOW_TEMPLE, true},
+                {RA_BOTTOM_OF_THE_WELL, true},
+                {RA_ICE_CAVERN, true},
+                {RA_GERUDO_TRAINING_GROUND, true},
+                {RA_GANONS_CASTLE, true}
             };
-            static std::unordered_map<RandomizerTrickArea, bool> areaTreeEnabled {
-                {RTAREA_GENERAL, true},
-                {RTAREA_KOKIRI_FOREST, true},
-                {RTAREA_LOST_WOODS, true},
-                {RTAREA_SACRED_FOREST_MEADOW, true},
-                {RTAREA_HYRULE_FIELD, true},
-                {RTAREA_LAKE_HYLIA, true},
-                {RTAREA_GERUDO_VALLEY, true},
-                {RTAREA_GERUDO_FORTRESS, true},
-                {RTAREA_WASTELAND, true},
-                {RTAREA_DESERT_COLOSSUS, true},
-                {RTAREA_MARKET, true},
-                {RTAREA_HYRULE_CASTLE, true},
-                {RTAREA_KAKARIKO_VILLAGE, true},
-                {RTAREA_GRAVEYARD, true},
-                {RTAREA_DEATH_MOUNTAIN_TRAIL, true},
-                {RTAREA_GORON_CITY, true},
-                {RTAREA_DEATH_MOUNTAIN_CRATER, true},
-                {RTAREA_ZORAS_RIVER, true},
-                {RTAREA_ZORAS_DOMAIN, true},
-                {RTAREA_ZORAS_FOUNTAIN, true},
-                {RTAREA_LON_LON_RANCH, true},
-                {RTAREA_DEKU_TREE, true},
-                {RTAREA_DODONGOS_CAVERN, true},
-                {RTAREA_JABU_JABUS_BELLY, true},
-                {RTAREA_FOREST_TEMPLE, true},
-                {RTAREA_FIRE_TEMPLE, true},
-                {RTAREA_WATER_TEMPLE, true},
-                {RTAREA_SPIRIT_TEMPLE, true},
-                {RTAREA_SHADOW_TEMPLE, true},
-                {RTAREA_BOTTOM_OF_THE_WELL, true},
-                {RTAREA_ICE_CAVERN, true},
-                {RTAREA_GERUDO_TRAINING_GROUND, true},
-                {RTAREA_GANONS_CASTLE, true}
+            static std::unordered_map<RandomizerArea, bool> areaTreeEnabled {
+                {RA_NONE, true},
+                {RA_KOKIRI_FOREST, true},
+                {RA_THE_LOST_WOODS, true},
+                {RA_SACRED_FOREST_MEADOW, true},
+                {RA_HYRULE_FIELD, true},
+                {RA_LAKE_HYLIA, true},
+                {RA_GERUDO_VALLEY, true},
+                {RA_GERUDO_FORTRESS, true},
+                {RA_HAUNTED_WASTELAND, true},
+                {RA_DESERT_COLOSSUS, true},
+                {RA_THE_MARKET, true},
+                {RA_HYRULE_CASTLE, true},
+                {RA_KAKARIKO_VILLAGE, true},
+                {RA_THE_GRAVEYARD, true},
+                {RA_DEATH_MOUNTAIN_TRAIL, true},
+                {RA_GORON_CITY, true},
+                {RA_DEATH_MOUNTAIN_CRATER, true},
+                {RA_ZORAS_RIVER, true},
+                {RA_ZORAS_DOMAIN, true},
+                {RA_ZORAS_FOUNTAIN, true},
+                {RA_LON_LON_RANCH, true},
+                {RA_DEKU_TREE, true},
+                {RA_DODONGOS_CAVERN, true},
+                {RA_JABU_JABUS_BELLY, true},
+                {RA_FOREST_TEMPLE, true},
+                {RA_FIRE_TEMPLE, true},
+                {RA_WATER_TEMPLE, true},
+                {RA_SPIRIT_TEMPLE, true},
+                {RA_SHADOW_TEMPLE, true},
+                {RA_BOTTOM_OF_THE_WELL, true},
+                {RA_ICE_CAVERN, true},
+                {RA_GERUDO_TRAINING_GROUND, true},
+                {RA_GANONS_CASTLE, true}
             };
 
-            static std::unordered_map<RandomizerTrickTag, bool> showTag {
-                {RTTAG_NOVICE,true},
-                {RTTAG_INTERMEDIATE,true},
-                {RTTAG_ADVANCED,true},
-                {RTTAG_EXPERT,true},
-                {RTTAG_EXTREME,true}
+            static std::unordered_map<Rando::Tricks::Tag, bool> showTag {
+                {Rando::Tricks::Tag::NOVICE,true},
+                {Rando::Tricks::Tag::INTERMEDIATE,true},
+                {Rando::Tricks::Tag::ADVANCED,true},
+                {Rando::Tricks::Tag::EXPERT,true},
+                {Rando::Tricks::Tag::EXTREME,true}
             };
             static ImGuiTextFilter trickSearch;
             trickSearch.Draw("Filter (inc,-exc)", 490.0f);
             if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
                 ImGui::SameLine();
                 if (ImGui::Button("Disable All")) {
-                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                        for (auto [randomizerTrick, rtObject] : rtObjects) {
-                            auto etfound = enabledTricks.find(randomizerTrick);
-                            if (!rtObject.rtGlitch && etfound != enabledTricks.end()) {
-                                enabledTricks.erase(etfound);
-                            }
+                    for (int i = 0; i < RT_MAX; i++) {
+                        auto etfound = enabledTricks.find(static_cast<RandomizerTrick>(i));
+                        if (!ctx->GetTrickOption(static_cast<RandomizerTrick>(i)).IsGlitch() && etfound != enabledTricks.end()) {
+                            enabledTricks.erase(etfound);
                         }
                     }
                     std::string enabledTrickString = "";
@@ -2118,11 +2097,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 }
                 ImGui::SameLine();
                 if (ImGui::Button("Enable All")) {
-                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                        for (auto [randomizerTrick, rtObject] : rtObjects) {
-                            if (!rtObject.rtGlitch && !enabledTricks.count(rtObject.rt)) {
-                                enabledTricks.insert(randomizerTrick);
-                            }
+                    for (int i = 0; i < RT_MAX; i++) {
+                        if (!ctx->GetTrickOption(static_cast<RandomizerTrick>(i)).IsGlitch() && !enabledTricks.count(static_cast<RandomizerTrick>(i))) {
+                            enabledTricks.insert(static_cast<RandomizerTrick>(i));
                         }
                     }
                     std::string enabledTrickString = "";
@@ -2137,8 +2114,8 @@ void RandomizerSettingsWindow::DrawElement() {
             if (ImGui::BeginTable("trickTags", showTag.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)) {  
                 for (auto [rtTag, isShown] : showTag) {
                     ImGui::TableNextColumn();
-                    ImGui::PushStyleColor(ImGuiCol_Header, RandomizerTricks::GetRTTagColor(rtTag));
-                    ImGui::Selectable(RandomizerTricks::GetRTTagName(rtTag).c_str(), &showTag[rtTag]);
+                    ImGui::PushStyleColor(ImGuiCol_Header, Rando::Tricks::GetRTTagColor(rtTag));
+                    ImGui::Selectable(Rando::Tricks::GetRTTagName(rtTag).c_str(), &showTag[rtTag]);
                     ImGui::PopStyleColor(1);
                 }
                 ImGui::EndTable();
@@ -2159,47 +2136,33 @@ void RandomizerSettingsWindow::DrawElement() {
                     window->DC.CurrLineTextBaseOffset = 0.0f;
                     
                     if (ImGui::Button("Collapse All##disabled")) {
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            bool hasTricks = false;
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                if (rtObject.visibleInImgui &&
-                                    !enabledTricks.count(rtObject.rt) &&
-                                    !rtObject.rtGlitch) {
-
-                                    hasTricks = true;
-                                    break;
-                                }
-                            }
-                            if (hasTricks) {
-                                areaTreeDisabled[rtArea] = false;
+                        for (int i = 0; i < RT_MAX; i++) {
+                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
+                            if (!option.IsHidden() && !enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                                !option.IsGlitch()) {
+                                areaTreeDisabled[option.GetArea()] = false;
                             }
                         }
                     }
                     ImGui::SameLine();
                     if (ImGui::Button("Open All##disabled")) {
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            bool hasTricks = false;
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                if (rtObject.visibleInImgui &&
-                                    !enabledTricks.count(rtObject.rt) &&
-                                    !rtObject.rtGlitch) {
-
-                                    hasTricks = true;
-                                    break;
-                                }
-                            }
-                            if (hasTricks) {
-                                areaTreeDisabled[rtArea] = true;
+                        for (int i = 0; i < RT_MAX; i++) {
+                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
+                            if (option.IsHidden() && !enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                                !option.IsGlitch()) {
+                                areaTreeDisabled[option.GetArea()] = false;
                             }
                         }
                     }
                     ImGui::SameLine();
                     if (ImGui::Button("Enable Visible")) {
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                if (!rtObject.rtGlitch && !enabledTricks.count(rtObject.rt) && trickSearch.PassFilter(rtObject.rtShortName.c_str()) && areaTreeDisabled[rtArea] && RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags)) {
-                                    enabledTricks.insert(randomizerTrick);
-                                }
+                        for (int i = 0; i < RT_MAX; i++) {
+                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
+                            if (!option.IsGlitch() && !enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                                trickSearch.PassFilter(option.GetName().c_str()) &&
+                                areaTreeDisabled[option.GetArea()] &&
+                                Rando::Tricks::CheckRTTags(showTag, option.GetTags())) {
+                                enabledTricks.insert(static_cast<RandomizerTrick>(i));
                             }
                         }
                         std::string enabledTrickString = "";
@@ -2213,31 +2176,30 @@ void RandomizerSettingsWindow::DrawElement() {
                     
                     ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
 
-                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                    for (auto [area, trickIds] : mSettings->mTricksByArea) {
                         bool hasTricks = false;
-                        for (auto [randomizerTrick, rtObject] : rtObjects) {
-                            if (rtObject.visibleInImgui &&
-                                trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
-                                !enabledTricks.count(rtObject.rt) &&
-                                RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
-                                !rtObject.rtGlitch) {
-
+                        for (auto rt : trickIds) {
+                            auto option = mSettings->GetTrickOption(rt);
+                            if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
+                                !enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
+                                !option.IsGlitch()) {
                                 hasTricks = true;
                                 break;
                             }
                         }
                         if (hasTricks) {
-                            ImGui::TreeNodeSetOpen(ImGui::GetID(RandomizerTricks::GetRTAreaName(rtArea).c_str()), areaTreeDisabled[rtArea]);
+                            ImGui::TreeNodeSetOpen(ImGui::GetID(Rando::Tricks::GetRTAreaName(area).c_str()), areaTreeDisabled[area]);
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode(RandomizerTricks::GetRTAreaName(rtArea).c_str())) {
-                                for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                    if (rtObject.visibleInImgui &&
-                                        trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
-                                        !enabledTricks.count(rtObject.rt) &&
-                                        RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
-                                        !rtObject.rtGlitch) {
-                                        if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Right)) {
-                                            enabledTricks.insert(rtObject.rt);
+                            if (ImGui::TreeNode(Rando::Tricks::GetRTAreaName(area).c_str())) {
+                                for (auto rt : trickIds) {
+                                    auto option = mSettings->GetTrickOption(rt);
+                                    if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
+                                        !enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
+                                        !option.IsGlitch()) {
+                                        ImGui::TreeNodeSetOpen(ImGui::GetID(Rando::Tricks::GetRTAreaName(option.GetArea()).c_str()), areaTreeDisabled[option.GetArea()]);
+                                        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                                        if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Right)) {
+                                            enabledTricks.insert(rt);
                                             std::string enabledTrickString = "";
                                             for (auto enabledTrickIt : enabledTricks) {
                                                 enabledTrickString += std::to_string(enabledTrickIt);
@@ -2246,16 +2208,16 @@ void RandomizerSettingsWindow::DrawElement() {
                                             CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
                                             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                         }
-                                        DrawTagChips(*rtObject.rtTags);
+                                        Rando::Tricks::DrawTagChips(option.GetTags());
                                         ImGui::SameLine();
-                                        ImGui::Text("%s", rtObject.rtShortName.c_str());
-                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                        ImGui::Text("%s", option.GetName().c_str());
+                                        UIWidgets::InsertHelpHoverText(option.GetDescription().c_str());
                                     }
                                 }
-                                areaTreeDisabled[rtArea] = true;
+                                areaTreeDisabled[area] = true;
                                 ImGui::TreePop();
                             } else {
-                                areaTreeDisabled[rtArea] = false;
+                                areaTreeDisabled[area] = false;
                             }
                         }
                     }
@@ -2268,48 +2230,33 @@ void RandomizerSettingsWindow::DrawElement() {
                     window->DC.CurrLineTextBaseOffset = 0.0f;
 
                     if (ImGui::Button("Collapse All##enabled")) {
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            bool hasTricks = false;
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                if (rtObject.visibleInImgui && 
-                                    enabledTricks.count(rtObject.rt) && 
-                                    !rtObject.rtGlitch) {
-
-                                    hasTricks = true;
-                                    break;
-                                }
-                            }
-                            if (hasTricks) {
-                                areaTreeEnabled[rtArea] = false;
+                        for (int i = 0; i < RT_MAX; i++) {
+                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
+                            if (!option.IsHidden() && enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                                !option.IsGlitch()) {
+                                areaTreeDisabled[option.GetArea()] = false;
                             }
                         }
                     }
                     ImGui::SameLine();
                     if (ImGui::Button("Open All##enabled")) {
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            bool hasTricks = false;
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                if (rtObject.visibleInImgui && 
-                                    enabledTricks.count(rtObject.rt) && 
-                                    !rtObject.rtGlitch) {
-
-                                    hasTricks = true;
-                                    break;
-                                }
-                            }
-                            if (hasTricks) {
-                                areaTreeEnabled[rtArea] = true;
+                        for (int i = 0; i < RT_MAX; i++) {
+                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
+                            if (option.IsHidden() && enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                                !option.IsGlitch()) {
+                                areaTreeDisabled[option.GetArea()] = false;
                             }
                         }
                     }
                     ImGui::SameLine();
                     if (ImGui::Button("Disable Visible")) {
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                auto etfound = enabledTricks.find(randomizerTrick);
-                                if (!rtObject.rtGlitch && etfound != enabledTricks.end() && trickSearch.PassFilter(rtObject.rtShortName.c_str()) && areaTreeEnabled[rtArea] && RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags)) {
-                                    enabledTricks.erase(etfound);
-                                }
+                        for (int i = 0; i < RT_MAX; i++) {
+                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
+                            if (!option.IsGlitch() && enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                                trickSearch.PassFilter(option.GetName().c_str()) &&
+                                areaTreeEnabled[option.GetArea()] &&
+                                Rando::Tricks::CheckRTTags(showTag, option.GetTags())) {
+                                enabledTricks.insert(static_cast<RandomizerTrick>(i));
                             }
                         }
                         std::string enabledTrickString = "";
@@ -2323,54 +2270,52 @@ void RandomizerSettingsWindow::DrawElement() {
                     
                     ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
 
-                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                    for (auto [area, trickIds] : mSettings->mTricksByArea) {
                         bool hasTricks = false;
-                        for (auto [randomizerTrick, rtObject] : rtObjects) {
-                            if (rtObject.visibleInImgui &&
-                                trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
-                                enabledTricks.count(rtObject.rt) &&
-                                RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
-                                !rtObject.rtGlitch) {
-
+                        for (auto rt : trickIds) {
+                            auto option = mSettings->GetTrickOption(rt);
+                            if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
+                                enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
+                                !option.IsGlitch()) {
                                 hasTricks = true;
                                 break;
                             }
                         }
                         if (hasTricks) {
-                            ImGui::TreeNodeSetOpen(ImGui::GetID(RandomizerTricks::GetRTAreaName(rtArea).c_str()), areaTreeEnabled[rtArea]);
+                            ImGui::TreeNodeSetOpen(ImGui::GetID(Rando::Tricks::GetRTAreaName(area).c_str()), areaTreeDisabled[area]);
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode(RandomizerTricks::GetRTAreaName(rtArea).c_str())) {
-                                for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                    auto etfound = enabledTricks.find(rtObject.rt);
-                                    if (rtObject.visibleInImgui &&
-                                        trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
-                                        etfound != enabledTricks.end() &&
-                                        RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
-                                        !rtObject.rtGlitch) {
-                                        
-                                        if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Left)) {
-                                            enabledTricks.erase(etfound);
+                            if (ImGui::TreeNode(Rando::Tricks::GetRTAreaName(area).c_str())) {
+                                for (auto rt : trickIds) {
+                                    auto option = mSettings->GetTrickOption(rt);
+                                    if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
+                                        enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
+                                        !option.IsGlitch()) {
+                                        ImGui::TreeNodeSetOpen(ImGui::GetID(Rando::Tricks::GetRTAreaName(option.GetArea()).c_str()), areaTreeDisabled[option.GetArea()]);
+                                        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                                        if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Left)) {
+                                            enabledTricks.insert(rt);
                                             std::string enabledTrickString = "";
                                             for (auto enabledTrickIt : enabledTricks) {
                                                 enabledTrickString += std::to_string(enabledTrickIt);
                                                 enabledTrickString += ",";
-                                            }
-                                            CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                                            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                         }
-                                        DrawTagChips(*rtObject.rtTags);
-                                        ImGui::SameLine();
-                                        ImGui::Text("%s", rtObject.rtShortName.c_str());
-                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                        CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                                    }
+                                    Rando::Tricks::DrawTagChips(option.GetTags());
+                                    ImGui::SameLine();
+                                    ImGui::Text("%s", option.GetName().c_str());
+                                    UIWidgets::InsertHelpHoverText(option.GetDescription().c_str());
                                     }
                                 }
-                                areaTreeEnabled[rtArea] = true;
+                                areaTreeEnabled[area] = true;
                                 ImGui::TreePop();
                             } else {
-                                areaTreeEnabled[rtArea] = false;
+                                areaTreeEnabled[area] = false;
                             }
                         }
                     }
+
                     ImGui::EndChild();
                 } else {
                     ImGui::TableNextColumn();
@@ -2419,77 +2364,6 @@ void RandomizerSettingsWindow::UpdateElement() {
     if (mNeedsUpdate) {
         mSettings->UpdateOptionProperties();
     }
-}
-
-CustomMessage Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
-    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(
-        Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT);
-    if (mysterious) {
-        std::array<const char*, LANGUAGE_MAX> locationName ={
-            "a mysterious place",
-            "ein mysteriöser Ort",
-            "un endroit mystérieux",
-        };
-
-        messageEntry.Replace("{{location}}", locationName[0],
-            locationName[1], locationName[2]);
-        return messageEntry;
-    }
-
-    auto ctx = Rando::Context::GetInstance();
-    RandomizerHintKey locHintKey = RH_NONE;
-    switch (textId) {
-        case TEXT_WARP_MINUET_OF_FOREST:
-            locHintKey = RH_MINUET_WARP_LOC;
-            break;
-        case TEXT_WARP_BOLERO_OF_FIRE:
-            locHintKey = RH_BOLERO_WARP_LOC;
-            break;
-        case TEXT_WARP_SERENADE_OF_WATER:
-            locHintKey = RH_SERENADE_WARP_LOC;
-            break;
-        case TEXT_WARP_REQUIEM_OF_SPIRIT:
-            locHintKey = RH_REQUIEM_WARP_LOC;
-            break;
-        case TEXT_WARP_NOCTURNE_OF_SHADOW:
-            locHintKey = RH_NOCTURNE_WARP_LOC;
-            break;
-        case TEXT_WARP_PRELUDE_OF_LIGHT:
-            locHintKey = RH_PRELUDE_WARP_LOC;
-            break;
-    }
-    std::string locationName = "";
-    switch (gSaveContext.language) {
-        case LANGUAGE_FRA:
-            locationName = ctx->GetHint(locHintKey)->GetText().GetFrench();
-            break;
-        case LANGUAGE_ENG:
-        default:
-            locationName = ctx->GetHint(locHintKey)->GetText().GetEnglish();
-            break;
-    }
-
-    messageEntry.Replace("{{location}}", std::move(locationName));
-    return messageEntry;
-}
-
-CustomMessage Randomizer::GetFrogsMessage(u16 originalTextId) {
-    auto ctx = Rando::Context::GetInstance();
-    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, originalTextId);
-        RandomizerGet frogsGet = ctx->GetItemLocation(RC_ZR_FROGS_OCARINA_GAME)->GetPlacedRandomizerGet();
-        std::array<std::string, LANGUAGE_MAX> frogItemName;
-        if (frogsGet == RG_ICE_TRAP) {
-            frogsGet = ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].LooksLike();
-            frogItemName = {
-                ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].GetTrickName().english,
-                ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].GetTrickName().french,
-                ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].GetTrickName().english
-            };
-        } else {
-            frogItemName = EnumToSpoilerfileGetName[frogsGet];
-        }
-        messageEntry.Replace("{{item}}", std::move(frogItemName[0]), std::move(frogItemName[1]), std::move(frogItemName[2]));
-        return messageEntry;
 }
 
 CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
