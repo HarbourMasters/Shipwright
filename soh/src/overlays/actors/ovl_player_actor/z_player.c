@@ -11931,7 +11931,7 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
 // #region SOH [Enhancement]
 //Diving uses function func_8084AEEC to calculate changes both xz and y velocity (via func_8084DBC4)
 //Provide original calculation for y velocity when swim speed mod is active
-void SurfaceWithSwimMod(Player* this, f32* arg1, f32 arg2, s16 arg3) {
+void SurfaceWithoutSwimMod(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     f32 temp1;
     f32 temp2;
 
@@ -13107,9 +13107,10 @@ void func_8084DBC4(PlayState* play, Player* this, f32 arg2) {
 
     Player_GetMovementSpeedAndYaw(this, &sp2C, &sp2A, 0.0f, play);
     func_8084AEEC(this, &this->linearVelocity, sp2C * 0.5f, sp2A);
+    // Original implementation of func_8084AEEC (SurfaceWithoutSwimMod) to prevent velocity increases via swim mod which push Link into the air
     // #region SOH [Enhancement]
     if (CVarGetInteger("gEnableWalkModify", 0)) {
-        SurfaceWithSwimMod(this, &this->actor.velocity.y, arg2, this->currentYaw);
+        SurfaceWithoutSwimMod(this, &this->actor.velocity.y, arg2, this->currentYaw);
     // #endregion
     } else {
         func_8084AEEC(this, &this->actor.velocity.y, arg2, this->currentYaw);
