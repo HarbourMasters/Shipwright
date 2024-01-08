@@ -2,7 +2,6 @@
 
 #include "custom_messages.hpp"
 #include "item_pool.hpp"
-#include "logic.hpp"
 #include "random.hpp"
 #include "spoiler_log.hpp"
 #include "fill.hpp"
@@ -16,7 +15,6 @@
 #include "pool_functions.hpp"
 
 using namespace CustomMessages;
-using namespace Logic;
 using namespace Rando;
 
 const Text& HintText::GetText() const {
@@ -315,7 +313,7 @@ static std::vector<RandomizerCheck> GetAccessibleGossipStones(const RandomizerCh
   RandomizerGet originalItem = ctx->GetItemLocation(hintedLocation)->GetPlacedRandomizerGet();
   ctx->GetItemLocation(hintedLocation)->SetPlacedItem(RG_NONE);
 
-  LogicReset();
+  ctx->GetLogic()->Reset();
   auto accessibleGossipStones = GetAccessibleLocations(Rando::StaticData::gossipStoneLocations);
   //Give the item back to the location
   ctx->GetItemLocation(hintedLocation)->SetPlacedItem(originalItem);
@@ -329,12 +327,12 @@ bool IsReachableWithout(std::vector<RandomizerCheck> locsToCheck, RandomizerChec
   auto ctx = Rando::Context::GetInstance();
   RandomizerGet originalItem = ctx->GetItemLocation(excludedCheck)->GetPlacedRandomizerGet();
   ctx->GetItemLocation(excludedCheck)->SetPlacedItem(RG_NONE);
-  LogicReset();
+  ctx->GetLogic()->Reset();
   const auto rechableWithout = GetAccessibleLocations(locsToCheck);
   ctx->GetItemLocation(excludedCheck)->SetPlacedItem(originalItem);
   if (resetAfter){
     //if resetAfter is on, reset logic we are done
-    LogicReset();
+    ctx->GetLogic()->Reset();
   }
   if (rechableWithout.empty()) {
     return false;

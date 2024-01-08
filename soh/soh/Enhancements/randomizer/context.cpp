@@ -4,6 +4,7 @@
 #include "soh/Enhancements/item-tables/ItemTableManager.h"
 #include "3drando/shops.hpp"
 #include "dungeon.h"
+#include "logic.h"
 #include "trial.h"
 #include "entrance.h"
 #include "settings.h"
@@ -18,11 +19,6 @@ namespace Rando {
 std::weak_ptr<Context> Context::mContext;
 
 Context::Context() {
-    StaticData::InitItemTable();
-    StaticData::InitLocationTable();
-    for (auto& location : StaticData::GetLocationTable()) {
-        mSpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
-    }
     mSpoilerfileCheckNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
     mSpoilerfileCheckNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
 
@@ -92,12 +88,21 @@ Context::Context() {
     }
     mEntranceShuffler = std::make_shared<EntranceShuffler>();
     mDungeons = std::make_shared<Dungeons>();
+    mLogic = std::make_shared<Logic>();
     mTrials = std::make_shared<Trials>();
     mSettings = std::make_shared<Settings>();
+    for (auto& location : StaticData::GetLocationTable()) {
+        mSpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
+    }
 }
 
 RandomizerArea Context::GetAreaFromString(std::string str) {
     return mSpoilerfileAreaNameToEnum[str];
+}
+
+void Context::InitStaticData() {
+    StaticData::InitItemTable();
+    StaticData::InitLocationTable();
 }
 
 std::shared_ptr<Context> Context::CreateInstance() {
@@ -616,6 +621,17 @@ std::shared_ptr<Dungeons> Context::GetDungeons() {
 
 DungeonInfo* Context::GetDungeon(size_t key) const {
     return mDungeons->GetDungeon(static_cast<DungeonKey>(key));
+}
+
+std::shared_ptr<Logic> Context::GetLogic() {
+    if (mLogic.get() == nullptr) {
+        mLogic = std::make_shared<Logic>();
+    }
+    return mLogic;
+}
+
+void Context::ResetLogic() {
+    mLogic->Reset();
 }
 
 std::shared_ptr<Trials> Context::GetTrials() {
