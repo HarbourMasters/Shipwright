@@ -226,6 +226,12 @@ std::vector<RandomizerCheck> Context::GetLocations(const std::vector<RandomizerC
     return locationsInCategory;
 }
 
+void Context::ClearItemLocations() {
+    for (int i = 0; i < itemLocationTable.size(); i++) {
+        GetItemLocation(static_cast<RandomizerCheck>(i))->ResetVariables();
+    }
+}
+
 void Context::ItemReset() {
     for (const RandomizerCheck il : allLocations) {
         GetItemLocation(il)->ResetVariables();
