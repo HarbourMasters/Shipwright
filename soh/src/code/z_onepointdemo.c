@@ -334,19 +334,14 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             Play_SetCameraRoll(play, camIdx, childCam->roll);
             break;
         case 9601:
-            // #region SOH [Enhancement]
+            Play_CameraChangeSetting(play, camIdx, CAM_SET_CS_3);
+            Play_CameraChangeSetting(play, MAIN_CAM, mainCam->prevSetting);
             if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
-                Play_CameraChangeSetting(play, camIdx, CAM_SET_CS_3);
-                Play_CameraChangeSetting(play, MAIN_CAM, mainCam->prevSetting);
                 OnePointCutscene_SetCsCamPoints(csCam, D_80120430 | 0x1000, camCrawlTimer, D_80120308, D_80120398);
-                break;
-            // #endregion
             } else {
-                Play_CameraChangeSetting(play, camIdx, CAM_SET_CS_3);
-                Play_CameraChangeSetting(play, MAIN_CAM, mainCam->prevSetting);
                 OnePointCutscene_SetCsCamPoints(csCam, D_80120430 | 0x1000, D_8012042C, D_80120308, D_80120398);
-                break;
             }
+            break;
         case 9602:
             // #region SOH [Enhancement]
             if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
