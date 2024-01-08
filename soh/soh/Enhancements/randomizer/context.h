@@ -1,6 +1,7 @@
 #pragma once
 
 #include "randomizerTypes.h"
+#include "z64save.h"
 #include "item_location.h"
 #include "item_override.h"
 #include "3drando/text.hpp"
@@ -21,6 +22,7 @@
  */
 namespace Rando {
 class EntranceShuffler;
+class Logic;
 class Settings;
 class Dungeons;
 class DungeonInfo;
@@ -32,6 +34,7 @@ class Context {
     Context();
     static std::shared_ptr<Context> CreateInstance();
     static std::shared_ptr<Context> GetInstance();
+    void InitStaticData();
     Hint* GetHint(RandomizerHintKey hintKey);
     void AddHint(RandomizerHintKey hintId, const Text& text, RandomizerCheck hintedLocation, HintType hintType, std::string distributionName,
                  RandomizerArea hintedArea = RA_NONE);
@@ -50,6 +53,7 @@ class Context {
                                               Category categoryInclude, Category categoryExclude = Category::cNull);
     void AddExcludedOptions();
     void LocationReset();
+    void ClearItemLocations();
     void ItemReset();
     void HintReset();
     void CreateItemOverrides();
@@ -63,11 +67,13 @@ class Context {
     std::shared_ptr<EntranceShuffler> GetEntranceShuffler();
     std::shared_ptr<Dungeons> GetDungeons();
     DungeonInfo* GetDungeon(size_t key) const;
+    std::shared_ptr<Logic> GetLogic();
+    void ResetLogic();
     std::shared_ptr<Trials> GetTrials();
     TrialInfo* GetTrial(size_t key) const;
     static Sprite* GetSeedTexture(uint8_t index);
     Option& GetOption(RandomizerSettingKey key) const;
-    Option& GetTrickOption(RandomizerTrick key) const;
+    TrickOption& GetTrickOption(RandomizerTrick key) const;
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);
     void ParseSpoiler(const char* spoilerFileName, bool plandoMode);
     void ParseHashIconIndexesJson(nlohmann::json spoilerFileJson);
@@ -103,6 +109,7 @@ class Context {
     std::shared_ptr<Settings> mSettings;
     std::shared_ptr<EntranceShuffler> mEntranceShuffler;
     std::shared_ptr<Dungeons> mDungeons;
+    std::shared_ptr<Logic> mLogic;
     std::shared_ptr<Trials> mTrials;
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;
