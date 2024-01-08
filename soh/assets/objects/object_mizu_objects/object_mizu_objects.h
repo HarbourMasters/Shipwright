@@ -3,6 +3,48 @@
 
 #include "align_asset_macro.h"
 
+#define dobject_mizu_objectsTex_004C00 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_004C00"
+static const ALIGN_ASSET(2) char object_mizu_objectsTex_004C00[] = dobject_mizu_objectsTex_004C00;
+
+#define dobject_mizu_objectsTex_005E70 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_005E70"
+static const ALIGN_ASSET(2) char object_mizu_objectsTex_005E70[] = dobject_mizu_objectsTex_005E70;
+
+#define dobject_mizu_objectsTex_007520 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_007520"
+static const ALIGN_ASSET(2) char object_mizu_objectsTex_007520[] = dobject_mizu_objectsTex_007520;
+
+#define dobject_mizu_objectsTex_007D20 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_007D20"
+static const ALIGN_ASSET(2) char object_mizu_objectsTex_007D20[] = dobject_mizu_objectsTex_007D20;
+
+#define dobject_mizu_objectsTex_008520 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_008520"
+static const ALIGN_ASSET(2) char object_mizu_objectsTex_008520[] = dobject_mizu_objectsTex_008520;
+
+#define dobject_mizu_objectsTex_008D20 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_008D20"
+static const ALIGN_ASSET(2) char object_mizu_objectsTex_008D20[] = dobject_mizu_objectsTex_008D20;
+
+#define dobject_mizu_objectsTex_009520 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_009520"
+static const ALIGN_ASSET(2) char object_mizu_objectsTex_009520[] = dobject_mizu_objectsTex_009520;
+
+#define dobject_mizu_objectsTex_009720 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_009720"
+static const ALIGN_ASSET(2) char object_mizu_objectsTex_009720[] = dobject_mizu_objectsTex_009720;
+
+#define dobject_mizu_objectsTex_009920 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_009920"
+static const ALIGN_ASSET(2) char object_mizu_objectsTex_009920[] = dobject_mizu_objectsTex_009920;
+
+#define dobject_mizu_objectsTex_009B20 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_009B20"
+static const ALIGN_ASSET(2) char object_mizu_objectsTex_009B20[] = dobject_mizu_objectsTex_009B20;
+
+#define dobject_mizu_objectsTex_009D20 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_009D20"
+static const ALIGN_ASSET(2) char object_mizu_objectsTex_009D20[] = dobject_mizu_objectsTex_009D20;
+
+#define dobject_mizu_objectsTex_009F20 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_009F20"
+static const ALIGN_ASSET(2) char object_mizu_objectsTex_009F20[] = dobject_mizu_objectsTex_009F20;
+
+#define dobject_mizu_objectsTex_00A720 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_00A720"
+static const ALIGN_ASSET(2) char object_mizu_objectsTex_00A720[] = dobject_mizu_objectsTex_00A720;
+
+#define dobject_mizu_objectsTex_00AB20 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_00AB20"
+static const ALIGN_ASSET(2) char object_mizu_objectsTex_00AB20[] = dobject_mizu_objectsTex_00AB20;
+
 #define dgObjectMizuObjectsMovebgDL_000190 "__OTR__objects/object_mizu_objects/gObjectMizuObjectsMovebgDL_000190"
 static const ALIGN_ASSET(2) char gObjectMizuObjectsMovebgDL_000190[] = dgObjectMizuObjectsMovebgDL_000190;
 
@@ -92,47 +134,5 @@ static const ALIGN_ASSET(2) char gObjectMizuObjectsShutterCol_0073F0[] = dgObjec
 
 #define dgObjectMizuObjectsUzuCol_0074EC "__OTR__objects/object_mizu_objects/gObjectMizuObjectsUzuCol_0074EC"
 static const ALIGN_ASSET(2) char gObjectMizuObjectsUzuCol_0074EC[] = dgObjectMizuObjectsUzuCol_0074EC;
-
-#define dobject_mizu_objectsTex_007D20 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_007D20"
-static const ALIGN_ASSET(2) char object_mizu_objectsTex_007D20[] = dobject_mizu_objectsTex_007D20;
-
-#define dobject_mizu_objectsTex_008520 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_008520"
-static const ALIGN_ASSET(2) char object_mizu_objectsTex_008520[] = dobject_mizu_objectsTex_008520;
-
-#define dobject_mizu_objectsTex_008D20 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_008D20"
-static const ALIGN_ASSET(2) char object_mizu_objectsTex_008D20[] = dobject_mizu_objectsTex_008D20;
-
-#define dobject_mizu_objectsTex_00AB20 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_00AB20"
-static const ALIGN_ASSET(2) char object_mizu_objectsTex_00AB20[] = dobject_mizu_objectsTex_00AB20;
-
-#define dobject_mizu_objectsTex_009B20 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_009B20"
-static const ALIGN_ASSET(2) char object_mizu_objectsTex_009B20[] = dobject_mizu_objectsTex_009B20;
-
-#define dobject_mizu_objectsTex_009D20 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_009D20"
-static const ALIGN_ASSET(2) char object_mizu_objectsTex_009D20[] = dobject_mizu_objectsTex_009D20;
-
-#define dobject_mizu_objectsTex_009920 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_009920"
-static const ALIGN_ASSET(2) char object_mizu_objectsTex_009920[] = dobject_mizu_objectsTex_009920;
-
-#define dobject_mizu_objectsTex_009720 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_009720"
-static const ALIGN_ASSET(2) char object_mizu_objectsTex_009720[] = dobject_mizu_objectsTex_009720;
-
-#define dobject_mizu_objectsTex_009520 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_009520"
-static const ALIGN_ASSET(2) char object_mizu_objectsTex_009520[] = dobject_mizu_objectsTex_009520;
-
-#define dobject_mizu_objectsTex_009F20 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_009F20"
-static const ALIGN_ASSET(2) char object_mizu_objectsTex_009F20[] = dobject_mizu_objectsTex_009F20;
-
-#define dobject_mizu_objectsTex_007520 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_007520"
-static const ALIGN_ASSET(2) char object_mizu_objectsTex_007520[] = dobject_mizu_objectsTex_007520;
-
-#define dobject_mizu_objectsTex_004C00 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_004C00"
-static const ALIGN_ASSET(2) char object_mizu_objectsTex_004C00[] = dobject_mizu_objectsTex_004C00;
-
-#define dobject_mizu_objectsTex_005E70 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_005E70"
-static const ALIGN_ASSET(2) char object_mizu_objectsTex_005E70[] = dobject_mizu_objectsTex_005E70;
-
-#define dobject_mizu_objectsTex_00A720 "__OTR__objects/object_mizu_objects/object_mizu_objectsTex_00A720"
-static const ALIGN_ASSET(2) char object_mizu_objectsTex_00A720[] = dobject_mizu_objectsTex_00A720;
 
 #endif // OBJECTS_OBJECT_MIZU_OBJECTS_H

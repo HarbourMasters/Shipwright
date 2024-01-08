@@ -490,10 +490,10 @@ void func_80AA1150(EnMa1* this, PlayState* play) {
 
     if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         if (!IS_RANDO) {
-            play->nextEntranceIndex = 0x157;
+            play->nextEntranceIndex = ENTR_LON_LON_RANCH_0;
             gSaveContext.nextCutsceneIndex = 0xFFF1;
-            play->fadeTransition = 42;
-            play->sceneLoadFlag = 0x14;
+            play->transitionType = TRANS_TYPE_CIRCLE(TCA_WAVE, TCC_WHITE, TCS_FAST);
+            play->transitionTrigger = TRANS_TRIGGER_START;
             this->actionFunc = EnMa1_DoNothing;
         } else {
             // When rando'ed, skip the cutscene, play the chime, reset some flags,

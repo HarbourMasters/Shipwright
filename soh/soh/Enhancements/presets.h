@@ -136,6 +136,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gInjectItemCounts",
     "gDayGravePull",
     "gDampeAllNight",
+    "gSkipSwimDeepEndAnim",
     "gSkipScarecrow",
     "gBlueFireArrows",
     "gSunlightArrows",
@@ -217,6 +218,32 @@ const std::vector<const char*> enhancementsCvars = {
     "gFixTexturesOOB",
     "gIvanCoopModeEnabled",
     "gEnemySpawnsOverWaterboxes",
+    "gTreeStickDrops",
+    "gShadowTag",
+    "gRandomizedEnemySizes",
+    "gRandomizedEnemies",
+    "gMirroredWorldMode",
+    "gMirroredWorld",
+    "gHyperEnemies",
+    "gHookshotableReticle",
+    "gHideBunnyHood",
+    "gFixVineFall",
+    "gFileSelectMoreInfo",
+    "gEnemyHealthBar",
+    "gBushDropFix",
+    "gAllDogsRichard",
+    "gAddTraps.enabled",
+    "gAddTraps.Ammo",
+    "gAddTraps.Bomb",
+    "gAddTraps.Burn",
+    "gAddTraps.Ice",
+    "gAddTraps.Kill",
+    "gAddTraps.Knock",
+    "gAddTraps.Shock",
+    "gAddTraps.Speed",
+    "gAddTraps.Tele",
+    "gAddTraps.Void",
+    "gToTMedallionsColors", 
 };
 
 const std::vector<const char*> cheatCvars = {
@@ -269,7 +296,23 @@ const std::vector<const char*> cheatCvars = {
     "gNoRedeadFreeze",
     "gBombTimerMultiplier",
     "gNoFishDespawn",
-    "gNoBugsDespawn"
+    "gNoBugsDespawn",
+    "gWalkModifierDoesntChangeJump",
+    "gStatsEnabled",
+    "gSaveStatesEnabled",
+    "gSaveStatePromise",
+    "gRegEditEnabled",
+    "gPreset0",
+    "gPreset1",
+    "gDekuStickCheat",
+    "gDebugWarpScreenTranslation",
+    "gDebugSaveFileMode",
+    "gCosmetics.Link_BodyScale.Changed",
+    "gCosmetics.Link_BodyScale.Value",
+    "gCosmetics.Link_HeadScale.Changed",
+    "gCosmetics.Link_HeadScale.Value",
+    "gCosmetics.Link_SwordScale.Changed",
+    "gCosmetics.Link_SwordScale.Value",
 };
 
 const std::vector<const char*> randomizerCvars = {
@@ -399,6 +442,15 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeGregHint",
     "gRandoManualSeedEntry",
     "gRandomizerSettingsEnabled",
+    "gRandomizeTriforceHuntTotalPieces",
+    "gRandomizeTriforceHuntRequiredPieces",
+    "gRandomizeTriforceHunt",
+    "gRandomizeShuffleMasterSword",
+    "gRandomizeSariaHint",
+    "gRandomizeRupeeNames",
+    "gRandomizeFrogsHint",
+    "gRandoRelevantNavi",
+    "gRandoQuestItemFanfares",
 };
 
 const std::vector<PresetEntry> vanillaPlusPresetEntries = {
@@ -740,6 +792,9 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Chest size & texture matches contents
     PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", CSMC_BOTH),
 
+    // Color Temple of Time's Medallions
+    PRESET_ENTRY_S32("gToTMedallionsColors", 1),
+
     // Pause link animation (0 to 16)
     PRESET_ENTRY_S32("gPauseLiveLink", 16),
     // Frames to wait
@@ -816,7 +871,7 @@ const std::vector<PresetEntry> spockRacePresetEntries = {
     PRESET_ENTRY_S32("gRandomizeDampeHint", 1),
     PRESET_ENTRY_S32("gRandomizeDoorOfTime", RO_DOOROFTIME_OPEN),
     PRESET_ENTRY_S32("gRandomizeEnableBombchuDrops", 1),
-    PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "78,142,143,228,"),
+    PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "78,143,144,229,"),
     PRESET_ENTRY_S32("gRandomizeForest", RO_FOREST_OPEN),
     PRESET_ENTRY_S32("gRandomizeFullWallets", 1),
     PRESET_ENTRY_S32("gRandomizeGanonTrial", RO_GANONS_TRIALS_SKIP),
@@ -908,7 +963,7 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32("gRandomizeDampeHint", 1),
     PRESET_ENTRY_S32("gRandomizeDoorOfTime", RO_DOOROFTIME_OPEN),
     PRESET_ENTRY_S32("gRandomizeEnableBombchuDrops", 1),
-    PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "78,142,143,228,"),
+    PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "78,143,144,229,"),
     PRESET_ENTRY_S32("gRandomizeForest", RO_FOREST_OPEN),
     PRESET_ENTRY_S32("gRandomizeFullWallets", 1),
     PRESET_ENTRY_S32("gRandomizeGanonTrial", RO_GANONS_TRIALS_SKIP),
@@ -1023,6 +1078,7 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32("gRandomizeShuffleGerudoToken", 1),
     PRESET_ENTRY_S32("gRandomizeShuffleKeyRings", RO_KEYRINGS_RANDOM),
     PRESET_ENTRY_S32("gRandomizeShuffleKokiriSword", 1),
+    PRESET_ENTRY_S32("gRandomizeShuffleMasterSword", 1),
     PRESET_ENTRY_S32("gRandomizeShuffleOcarinas", 1),
     PRESET_ENTRY_S32("gRandomizeShuffleScrubs", RO_SCRUBS_RANDOM),
     PRESET_ENTRY_S32("gRandomizeShuffleSongs", RO_SONG_SHUFFLE_ANYWHERE),

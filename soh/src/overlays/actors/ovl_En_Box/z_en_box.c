@@ -75,7 +75,6 @@ static InitChainEntry sInitChain[] = {
 };
 
 static UNK_TYPE sUnused;
-GetItemEntry sItem;
 
 Gfx gSkullTreasureChestChestSideAndLidDL[116] = {0};
 Gfx gGoldTreasureChestChestSideAndLidDL[116] = {0};
@@ -88,6 +87,7 @@ Gfx gKeyTreasureChestChestFrontDL[128] = {0};
 Gfx gChristmasRedTreasureChestChestFrontDL[128] = {0};
 Gfx gChristmasGreenTreasureChestChestFrontDL[128] = {0};
 u8 hasCreatedRandoChestTextures = 0;
+u8 hasCustomChestDLs = 0;
 u8 hasChristmasChestTexturesAvailable = 0;
 
 void EnBox_SetupAction(EnBox* this, EnBoxActionFunc actionFunc) {
@@ -448,7 +448,7 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
 
         // treasure chest game rando
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
-            if (IS_RANDO && play->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
+            if (IS_RANDO && play->sceneNum == SCENE_TREASURE_BOX_SHOP && (this->dyna.actor.params & 0x60) != 0x20) {
                 if((this->dyna.actor.params & 0xF) < 2) {
                     Flags_SetCollectible(play, 0x1B);
                 }
@@ -471,12 +471,12 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
         func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, play)) {
-            sItem = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
+            GetItemEntry sItem = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
             GetItemEntry blueRupee = ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
             
             // RANDOTODO treasure chest game rando
             if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
-                if (IS_RANDO && play->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
+                if (IS_RANDO && play->sceneNum == SCENE_TREASURE_BOX_SHOP && (this->dyna.actor.params & 0x60) != 0x20) {
                     if((this->dyna.actor.params & 0xF) < 2) {
                         if(Flags_GetCollectible(play, 0x1B)) {
                             sItem = blueRupee;
@@ -627,7 +627,7 @@ void EnBox_Update(Actor* thisx, PlayState* play) {
     }
 
     if (((!IS_RANDO && ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C)) ||
-        (IS_RANDO && ABS(sItem.getItemId) == RG_ICE_TRAP)) &&
+        (IS_RANDO && this->getItemEntry.getItemId == RG_ICE_TRAP)) &&
         this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100) {
         if (!CVarGetInteger("gAddTraps.enabled", 0)) {
             EnBox_SpawnIceSmoke(this, play);
@@ -690,7 +690,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     }
 
     // Change texture
-    if (!isVanilla && (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE)) {
+    if (!isVanilla && hasCreatedRandoChestTextures && !hasCustomChestDLs && (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_MAJOR:
                 this->boxBodyDL = gGoldTreasureChestChestFrontDL;
@@ -725,7 +725,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
         }
     }
 
-    if (CVarGetInteger("gLetItSnow", 0) && hasChristmasChestTexturesAvailable) {
+    if (CVarGetInteger("gLetItSnow", 0) && hasChristmasChestTexturesAvailable && hasCreatedRandoChestTextures && !hasCustomChestDLs) {
         if (this->dyna.actor.scale.x == 0.01f) {
             this->boxBodyDL = gChristmasRedTreasureChestChestFrontDL;
             this->boxLidDL = gChristmasRedTreasureChestChestSideAndLidDL;
@@ -767,7 +767,18 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
 }
 
 void EnBox_CreateExtraChestTextures() {
+    // Don't patch textures for custom chest models, as they do not import textures the exact same way as vanilla chests
+    // OTRTODO: Make it so model packs can provide a unique DL per chest type, instead of us copying the brown chest and attempting to patch
+    if (ResourceMgr_FileIsCustomByName(gTreasureChestChestFrontDL) ||
+        ResourceMgr_FileIsCustomByName(gTreasureChestChestSideAndLidDL)) {
+        hasCustomChestDLs = 1;
+        return;
+    }
+
+    hasCustomChestDLs = 0;
+
     if (hasCreatedRandoChestTextures) return;
+
     Gfx gTreasureChestChestTextures[] = {
         gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gSkullTreasureChestFrontTex),
         gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gSkullTreasureChestSideAndTopTex),
