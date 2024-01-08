@@ -428,12 +428,12 @@ static bool CreateHint(RandomizerCheck hintedLocation, uint8_t copies, HintType 
   if (type == HINT_TYPE_WOTH){
     Text areaText = ::Hint(ctx->GetItemLocation(hintedLocation)->GetArea()).GetText();
     finalHint = prefix + "#" + areaText + "#" + ::Hint(RHT_WAY_OF_THE_HERO).GetText();
-    colours = {QM_GREEN};
+    colours = {QM_RED, QM_LBLUE};
   }
   else if(type == HINT_TYPE_BARREN){
     Text areaText = ::Hint(ctx->GetItemLocation(hintedLocation)->GetArea()).GetText();
     finalHint = prefix + ::Hint(RHT_PLUNDERING).GetText() + "#" + areaText + "#" + ::Hint(RHT_FOOLISH).GetText();
-    colours = {QM_GREEN};
+    colours = {QM_RED, QM_PINK};
   }
   else {
     Text itemText = ctx->GetItemLocation(hintedLocation)->GetPlacedItem().GetHint().GetText();
