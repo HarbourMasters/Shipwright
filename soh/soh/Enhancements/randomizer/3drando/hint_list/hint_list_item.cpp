@@ -1939,6 +1939,169 @@ void HintTable_Init_Item() {
                        Text{"a Piece of the Triforce", /*french*/"un fragment de la Triforce", /*spanish*/"un fragmento de la Trifuerza"}
     );
 
+    hintTable[RHT_GOHMA_SOUL] = HintText::Item({
+                      //obscure text
+                      Text{"an invasive soul", "", ""},
+                      Text{"some spider essence", "", ""},
+                    }, {
+                      //ambiguous text
+                      Text{"something webbed", "", ""}
+                    }, {
+                      //clear text
+                      Text{"the soul of Gohma", "", ""}}
+    );
+
+    hintTable[RHT_KING_DODONGO_SOUL] = HintText::Item({
+                      //obscure text
+                      Text{"a royal soul", "", ""},
+                      Text{"some reptile essence", "", ""},
+                    }, {
+                      //ambiguous text
+                      Text{"something explosive", "", ""}
+                    }, {
+                      //clear text
+                      Text{"the soul of King Dodongo", "", ""}}
+      );
+
+    hintTable[RHT_BARINADE_SOUL] = HintText::Item({
+                      //obscure text
+                      Text{"an infectuous soul", "", ""},
+                      Text{"some parasitic essence", "", ""},
+                    }, {
+                      //ambiguous text
+                      Text{"something fishy", "", ""}
+                    }, {
+                      //clear text
+                      Text("the soul of Barinade", "", "")}
+      );
+
+    hintTable[RHT_PHANTOM_GANON_SOUL] = HintText::Item({
+                      //obscure text
+                      Text{"a duplicate soul", "", ""},
+                      Text{"some illusionary essence", "", ""},
+                    }, {
+                      //ambiguous text
+                      Text{"something spectral", "", ""}
+                    }, {
+                      //clear text
+                      Text{"the soul of Phantom Ganon", "", ""}}
+      );
+
+    hintTable[RHT_VOLVAGIA_SOUL] = HintText::Item({
+                      //obscure text
+                      Text{"a draconic soul", "", ""},
+                      Text{"some magmatic essence", "", ""},
+                    }, {
+                      //ambiguous text
+                      Text{"something hot", "", ""}
+                    }, {
+                      //clear text
+                      Text{"the soul of Volvagia", "", ""}}
+     );
+
+    hintTable[RHT_MORPHA_SOUL] = HintText::Item({
+                      //obscure text
+                      Text{"an aquatic soul", "", ""},
+                      Text{"some liquid essence", "", ""},
+                    }, {
+                      //ambiguous text
+                      Text{"something wet", "", ""}
+                    }, {
+                      //clear text
+                      Text{"the soul of Barinade", "", ""}}
+     );
+
+    hintTable[RHT_BONGO_BONGO_SOUL] = HintText::Item({
+                      //obscure text
+                      Text{"a shadowy soul", "", ""},
+                      Text{"some handy essence", "", ""},
+                    }, {
+                      //ambiguous text
+                      Text{"something dark", "", ""}
+                    }, {
+                      //clear text
+                      Text{"the soul of Bongo Bongo", "", ""}}
+     );
+
+    hintTable[RHT_TWINROVA_SOUL] = HintText::Item({
+                      //obscure text
+                      Text{"old souls", "", ""},
+                      Text{"twin essences", "", ""},
+                    }, {
+                      //ambiguous text
+                      Text{"something spiritual", "", ""}
+                    }, {
+                      //clear text
+                      Text{"the soul of Twinrova", "", ""}}
+     );
+
+    hintTable[RHT_GANON_SOUL] = HintText::Item({
+                      //obscure text
+                      Text{"an evil soul", "", ""},
+                      Text{"some powerful essence", "", ""},
+                    }, {
+                      //ambiguous text
+                      Text{"something strong", "", ""}
+                    }, {
+                      //clear text
+                      Text{"the soul of Ganon", "", ""}}
+     );
+
+    hintTable[RHT_OCARINA_A_BUTTON] = HintText::Item({
+                      //obscure text
+                      Text{"a musical letter", /*french*/"une lettre musicale", /*spanish*/"una letra musical"},
+                    }, {
+                      //ambiguous text
+                      Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"}
+                    }, {
+                      //clear text
+                      Text{"an Ocarina A Button", /*french*/"la Touche A de l'Ocarina", /*spanish*/"un botón A de Ocarina"}}
+     );
+
+    hintTable[RHT_OCARINA_C_UP_BUTTON] = HintText::Item({
+                      //obscure text
+                      Text{"a high tone", /*french*/"une tonalité élevée", /*spanish*/"un tono alto"},
+                    }, {
+                      //ambiguous text
+                      Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"}
+                    }, {
+                      //clear text
+                      Text{"an Ocarina C Up Button", /*french*/"la Touche C-Haut de l'Ocarina", /*spanish*/"un botón C superior de Ocarina"}}
+     );
+
+    hintTable[RHT_OCARINA_C_DOWN_BUTTON] = HintText::Item({
+                      //obscure text
+                      Text{"a low tone", /*french*/"une tonalité basse", /*spanish*/"un tono bajo"},
+                    }, {
+                      //ambiguous text
+                      Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"}
+                    }, {
+                      //clear text
+                      Text{"an Ocarina C Down Button", /*french*/"la Touche C-Bas de l'Ocarina", /*spanish*/"un botón C inferior de Ocarina"}}
+     );
+
+    hintTable[RHT_OCARINA_C_LEFT_BUTTON] = HintText::Item({
+                      //obscure text
+                      Text{"a leftward tone", /*french*/"une tonalité vers la gauche", /*spanish*/"un tono hacia la izquierda"},
+                    }, {
+                      //ambiguous text
+                      Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"}
+                    }, {
+                      //clear text
+                      Text{"an Ocarina C Left Button", /*french*/"la Touche C-Gauche de l'Ocarina", /*spanish*/"un botón C izquierdo de Ocarina"}}
+     );
+
+    hintTable[RHT_OCARINA_C_RIGHT_BUTTON] = HintText::Item({
+                      //obscure text
+                      Text{"a rightward tone", /*french*/"une tonalité vers la droite", /*spanish*/"un tono hacia la derecha"},
+                    }, {
+                      //ambiguous text
+                      Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"}
+                    }, {
+                      //clear text
+                      Text{"an Ocarina C Right Button", /*french*/"la Touche C-Droit de l'Ocarina", /*spanish*/"un botón C derecho de Ocarina"}}
+     );
+
     hintTable[RHT_EPONA] = HintText::Item({
                        //obscure text
                        Text{"a horse",              /*french*/"un fidèle destrier", /*spanish*/"una yegua"},

@@ -1,8 +1,8 @@
 #include "item.h"
 #include "item_location.h"
 
-#include "3drando/logic.hpp"
-#include "3drando/random.hpp"
+#include "context.h"
+#include "logic.h"
 #include "3drando/item_pool.hpp"
 #include "z64item.h"
 #include "variables.h"
@@ -10,53 +10,53 @@
 #include "../../OTRGlobals.h"
 
 namespace Rando {
-Item::Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
-                     bool* logicVar_, RandomizerHintTextKey hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
-                     uint16_t textId_, uint16_t field_, int16_t chestAnimation_, GetItemCategory category_,
-                     uint16_t modIndex_, bool progressive_, uint16_t price_)
+Item::Item() : randomizerGet(RG_NONE), type(ITEMTYPE_ITEM), getItemId(GI_NONE), advancement(false), hintKey(RHT_NONE),
+               progressive(false), price(0) {}
+Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
+           const bool advancement_, bool* logicVar_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
+           const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_, const uint16_t field_,
+           const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_,
+           const bool progressive_, const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
       advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
-        giEntry = std::shared_ptr<GetItemEntry>(
-            new GetItemEntry(GET_ITEM(itemId_, objectId_, gid_, textId_, field_, chestAnimation_, category_, modIndex_,
-                                      (int16_t)randomizerGet_)));
+        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_RANDOMIZER, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC, category_, static_cast<uint16_t>(randomizerGet_), MOD_RANDOMIZER, NULL});
     } else {
-        giEntry = std::shared_ptr<GetItemEntry>(new GetItemEntry(
-            GET_ITEM(itemId_, objectId_, gid_, textId_, field_, chestAnimation_, category_, modIndex_, getItemId_)));
+        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_VANILLA, getItemId_, gid_, true, ITEM_FROM_NPC, category_, itemId_, modIndex_, NULL});
     }
 }
 
-Item::Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
-                     uint8_t* logicVar_, RandomizerHintTextKey hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
-                     uint16_t textId_, uint16_t field_, int16_t chestAnimation_, GetItemCategory category_,
-                     uint16_t modIndex_, bool progressive_, uint16_t price_)
+Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
+           const bool advancement_, uint8_t* logicVar_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
+           const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_, const uint16_t field_,
+           const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_,
+           const bool progressive_, const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
       advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
-        giEntry = std::shared_ptr<GetItemEntry>(
-            new GetItemEntry(GET_ITEM(itemId_, objectId_, gid_, textId_, field_, chestAnimation_, category_, modIndex_,
-                                      (int16_t)randomizerGet_)));
+        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_RANDOMIZER, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC, category_, static_cast<uint16_t>(randomizerGet_), modIndex_, NULL});
     } else {
-        giEntry = std::shared_ptr<GetItemEntry>(new GetItemEntry(
-            GET_ITEM(itemId_, objectId_, gid_, textId_, field_, chestAnimation_, category_, modIndex_, getItemId_)));
+        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_VANILLA, getItemId_, gid_, true, ITEM_FROM_NPC, category_, itemId_, modIndex_, NULL});
     }
 }
 
-Item::Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
-                     bool* logicVar_, RandomizerHintTextKey hintKey_, bool progressive_, uint16_t price_)
+Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
+           const bool advancement_, bool* logicVar_, const RandomizerHintTextKey hintKey_, const bool progressive_,
+           const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
       advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
 }
 
-Item::Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
-                     uint8_t* logicVar_, RandomizerHintTextKey hintKey_, bool progressive_, uint16_t price_)
+Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
+           const bool advancement_, uint8_t* logicVar_, const RandomizerHintTextKey hintKey_, const bool progressive_,
+           const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
       advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
 }
 
     Item::~Item() = default;
 
-void Item::ApplyEffect() {
+void Item::ApplyEffect() const {
     // If this is a key ring, logically add as many keys as we could need
     if (RHT_FOREST_TEMPLE_KEY_RING <= hintKey && hintKey <= RHT_GANONS_CASTLE_KEY_RING) {
         *std::get<uint8_t*>(logicVar) += 10;
@@ -67,10 +67,10 @@ void Item::ApplyEffect() {
             *std::get<uint8_t*>(logicVar) += 1;
         }
     }
-    Logic::UpdateHelpers();
+    Rando::Context::GetInstance()->GetLogic()->UpdateHelpers();
 }
 
-void Item::UndoEffect() {
+void Item::UndoEffect() const {
     if (RHT_FOREST_TEMPLE_KEY_RING <= hintKey && hintKey <= RHT_GANONS_CASTLE_KEY_RING) {
         *std::get<uint8_t*>(logicVar) -= 10;
     } else {
@@ -80,7 +80,7 @@ void Item::UndoEffect() {
             *std::get<uint8_t*>(logicVar) -= 1;
         }
     }
-    Logic::UpdateHelpers();
+    Rando::Context::GetInstance()->GetLogic()->UpdateHelpers();
 }
 
 const Text& Item::GetName() const {
@@ -99,7 +99,11 @@ ItemType Item::GetItemType() const {
     return type;
 }
 
-RandomizerGet Item::GetRandomizerGet() {
+std::variant<bool*, uint8_t*> Item::GetLogicVar() const {
+    return logicVar;
+}
+
+RandomizerGet Item::GetRandomizerGet() const {
     return randomizerGet;
 }
 
@@ -107,12 +111,12 @@ uint16_t Item::GetPrice() const {
     return price;
 }
 
-std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
+std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursion)
     if (giEntry != nullptr) {
         return giEntry;
     }
     RandomizerGet actual = RG_NONE;
-    u8 numWallets =
+    const u8 numWallets =
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 3 : 2;
     switch (randomizerGet) {
         case RG_PROGRESSIVE_STICK_UPGRADE:
@@ -125,6 +129,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
                 case 3:
                     actual = RG_DEKU_STICK_CAPACITY_30;
                     break;
+                default:
+                    break;
             }
             break;
         case RG_PROGRESSIVE_NUT_UPGRADE:
@@ -136,6 +142,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
                 case 2:
                 case 3:
                     actual = RG_DEKU_NUT_CAPACITY_40;
+                    break;
+                default:
                     break;
             }
             break;
@@ -151,6 +159,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
                 case 3:
                     actual = RG_BIGGEST_BOMB_BAG;
                     break;
+                default:
+                    break;
             }
             break;
         case RG_PROGRESSIVE_BOW:
@@ -164,6 +174,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
                 case 2:
                 case 3:
                     actual = RG_BIGGEST_QUIVER;
+                    break;
+                default:
                     break;
             }
             break;
@@ -179,6 +191,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
                 case 3:
                     actual = RG_BIGGEST_BULLET_BAG;
                     break;
+                default:
+                    break;
             }
             break;
         case RG_PROGRESSIVE_OCARINA:
@@ -190,6 +204,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
                 case ITEM_OCARINA_TIME:
                     actual = RG_OCARINA_OF_TIME;
                     break;
+                default:
+                    break;
             }
             break;
         case RG_PROGRESSIVE_HOOKSHOT:
@@ -200,6 +216,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
                 case ITEM_HOOKSHOT:
                 case ITEM_LONGSHOT:
                     actual = RG_LONGSHOT;
+                    break;
+                default:
                     break;
             }
             break;
@@ -215,6 +233,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
                 case 3:
                     actual = RG_GOLDEN_GAUNTLETS;
                     break;
+                default:
+                    break;
             }
             break;
         case RG_PROGRESSIVE_WALLET:
@@ -229,6 +249,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
                 case 3:
                     actual = numWallets == 3 ? RG_TYCOON_WALLET : RG_GIANT_WALLET;
                     break;
+                default:
+                    break;
             }
             break;
         case RG_PROGRESSIVE_SCALE:
@@ -239,6 +261,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
                 case 1:
                 case 2:
                     actual = RG_GOLDEN_SCALE;
+                    break;
+                default:
                     break;
             }
             break;
@@ -251,6 +275,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
                 case 2:
                     actual = RG_MAGIC_DOUBLE;
                     break;
+                default:
+                    break;
             }
             break;
         case RG_PROGRESSIVE_GORONSWORD: // todo progressive?
@@ -260,14 +286,14 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const {
             actual = RG_NONE;
             break;
     }
-    return Rando::StaticData::RetrieveItem(actual).GetGIEntry();
+    return StaticData::RetrieveItem(actual).GetGIEntry();
 }
 
 GetItemEntry Item::GetGIEntry_Copy() const {
     return *GetGIEntry();
 }
 
-void Item::SetPrice(uint16_t price_) {
+void Item::SetPrice(const uint16_t price_) {
     price = price_;
 }
 
@@ -275,7 +301,7 @@ void Item::SetAsPlaythrough() {
     playthrough = true;
 }
 
-void Item::SetCustomDrawFunc(CustomDrawFunc drawFunc) {
+void Item::SetCustomDrawFunc(const CustomDrawFunc drawFunc) const {
     giEntry->drawFunc = drawFunc;
 }
 
@@ -290,7 +316,7 @@ bool Item::IsBottleItem() const {
 }
 
 bool Item::IsMajorItem() const {
-    auto ctx = Rando::Context::GetInstance();
+    const auto ctx = Context::GetInstance();
     if (type == ITEMTYPE_TOKEN) {
         return ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS) || ctx->GetSettings()->LACSCondition() == RO_LACS_TOKENS;
     }
@@ -300,7 +326,7 @@ bool Item::IsMajorItem() const {
         return false;
     }
 
-    if (type == ITEMTYPE_DUNGEONREWARD && (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON))) {
+    if (type == ITEMTYPE_DUNGEONREWARD && ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
         return false;
     }
 
@@ -322,7 +348,7 @@ bool Item::IsMajorItem() const {
         return false;
     }
 
-    if ((type == ITEMTYPE_BOSSKEY && getItemId != 0xAD) &&
+    if (type == ITEMTYPE_BOSSKEY && getItemId != 0xAD &&
         (ctx->GetOption(RSK_BOSS_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_VANILLA) || ctx->GetOption(RSK_BOSS_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON))) {
         return false;
     }

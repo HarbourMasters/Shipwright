@@ -5,17 +5,18 @@
 #include "context.h"
 
 namespace Rando {
-DungeonInfo::DungeonInfo(std::string name_, RandomizerHintTextKey hintKey_, RandomizerGet map_, RandomizerGet compass_,
-                         RandomizerGet smallKey_, RandomizerGet keyRing_, RandomizerGet bossKey_,
-                         uint8_t vanillaKeyCount_, uint8_t mqKeyCount_, std::vector<RandomizerCheck> vanillaLocations_,
-                         std::vector<RandomizerCheck> mqLocations_, std::vector<RandomizerCheck> sharedLocations_,
-                         std::vector<RandomizerCheck> bossRoomLocations_)
+DungeonInfo::DungeonInfo(std::string name_, const RandomizerHintTextKey hintKey_, const RandomizerGet map_,
+    const RandomizerGet compass_, const RandomizerGet smallKey_, const RandomizerGet keyRing_,
+    const RandomizerGet bossKey_, RandomizerArea area_, const uint8_t vanillaKeyCount_, const uint8_t mqKeyCount_,
+    std::vector<RandomizerCheck> vanillaLocations_, std::vector<RandomizerCheck> mqLocations_,
+    std::vector<RandomizerCheck> sharedLocations_, std::vector<RandomizerCheck> bossRoomLocations_)
     : name(std::move(name_)), hintKey(hintKey_), map(map_), compass(compass_), smallKey(smallKey_), keyRing(keyRing_),
-      bossKey(bossKey_), vanillaKeyCount(vanillaKeyCount_), mqKeyCount(mqKeyCount_),
+      bossKey(bossKey_), area(area_), vanillaKeyCount(vanillaKeyCount_), mqKeyCount(mqKeyCount_),
       vanillaLocations(std::move(vanillaLocations_)), mqLocations(std::move(mqLocations_)),
       sharedLocations(std::move(sharedLocations_)), bossRoomLocations(std::move(bossRoomLocations_)) {
 }
-DungeonInfo::DungeonInfo() = default;
+DungeonInfo::DungeonInfo() : hintKey(RHT_NONE), map(RG_NONE), compass(RG_NONE), smallKey(RG_NONE), keyRing(RG_NONE),
+    bossKey(RG_NONE) {}
 DungeonInfo::~DungeonInfo() = default;
 
 const std::string& DungeonInfo::GetName() const {
@@ -51,11 +52,15 @@ bool DungeonInfo::IsVanilla() const {
 }
 
 uint8_t DungeonInfo::GetSmallKeyCount() const {
-    return (masterQuest) ? mqKeyCount : vanillaKeyCount;
+    return masterQuest ? mqKeyCount : vanillaKeyCount;
 }
 
 RandomizerHintTextKey DungeonInfo::GetHintKey() const {
     return hintKey;
+}
+
+RandomizerArea DungeonInfo::GetArea() const {
+    return area;
 }
 
 RandomizerGet DungeonInfo::GetSmallKey() const {
@@ -78,52 +83,52 @@ RandomizerGet DungeonInfo::GetBossKey() const {
     return bossKey;
 }
 
-void DungeonInfo::PlaceVanillaMap() {
+void DungeonInfo::PlaceVanillaMap() const {
     if (map == RG_NONE) {
         return;
     }
 
     auto dungeonLocations = GetDungeonLocations();
-    auto mapLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
+    const auto mapLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
         return StaticData::GetLocation(loc)->IsCategory(Category::cVanillaMap);
     })[0];
     Context::GetInstance()->PlaceItemInLocation(mapLocation, map);
 }
 
-void DungeonInfo::PlaceVanillaCompass() {
+void DungeonInfo::PlaceVanillaCompass() const {
     if (compass == RG_NONE) {
         return;
     }
 
     auto dungeonLocations = GetDungeonLocations();
-    auto compassLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
+    const auto compassLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
         return StaticData::GetLocation(loc)->IsCategory(Category::cVanillaCompass);
     })[0];
     Context::GetInstance()->PlaceItemInLocation(compassLocation, compass);
 }
 
-void DungeonInfo::PlaceVanillaBossKey() {
+void DungeonInfo::PlaceVanillaBossKey() const {
     if (bossKey == RG_NONE || bossKey == RG_GANONS_CASTLE_BOSS_KEY) {
         return;
     }
 
     auto dungeonLocations = GetDungeonLocations();
-    auto bossKeyLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
+    const auto bossKeyLocation = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
         return StaticData::GetLocation(loc)->IsCategory(Category::cVanillaBossKey);
     })[0];
     Context::GetInstance()->PlaceItemInLocation(bossKeyLocation, bossKey);
 }
 
-void DungeonInfo::PlaceVanillaSmallKeys() {
+void DungeonInfo::PlaceVanillaSmallKeys() const {
     if (smallKey == RG_NONE) {
         return;
     }
 
     auto dungeonLocations = GetDungeonLocations();
-    auto smallKeyLocations = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
+    const auto smallKeyLocations = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
         return StaticData::GetLocation(loc)->IsCategory(Category::cVanillaSmallKey);
     });
-    for (auto location : smallKeyLocations) {
+    for (const auto location : smallKeyLocations) {
         Context::GetInstance()->PlaceItemInLocation(location, smallKey);
     }
 }
@@ -147,7 +152,7 @@ std::vector<RandomizerCheck> DungeonInfo::GetEveryLocation() const {
 
 Dungeons::Dungeons() {
     dungeonList[DEKU_TREE] =
-        DungeonInfo("Deku Tree", RHT_DEKU_TREE, RG_DEKU_TREE_MAP, RG_DEKU_TREE_COMPASS, RG_NONE, RG_NONE, RG_NONE, 0, 0,
+        DungeonInfo("Deku Tree", RHT_DEKU_TREE, RG_DEKU_TREE_MAP, RG_DEKU_TREE_COMPASS, RG_NONE, RG_NONE, RG_NONE, RA_DEKU_TREE, 0, 0,
                     {
                         // Vanilla Locations
                         RC_DEKU_TREE_MAP_CHEST,
@@ -183,7 +188,7 @@ Dungeons::Dungeons() {
                         RC_QUEEN_GOHMA,
                     });
     dungeonList[DODONGOS_CAVERN] = DungeonInfo("Dodongo's Cavern", RHT_DODONGOS_CAVERN, RG_DODONGOS_CAVERN_MAP,
-                                               RG_DODONGOS_CAVERN_COMPASS, RG_NONE, RG_NONE, RG_NONE, 0, 0,
+                                               RG_DODONGOS_CAVERN_COMPASS, RG_NONE, RG_NONE, RG_NONE, RA_DODONGOS_CAVERN, 0, 0,
                                                {
                                                    // Vanilla Locations
                                                    RC_DODONGOS_CAVERN_MAP_CHEST,
@@ -227,7 +232,7 @@ Dungeons::Dungeons() {
                                                    RC_KING_DODONGO,
                                                });
     dungeonList[JABU_JABUS_BELLY] = DungeonInfo("Jabu Jabu's Belly", RHT_JABU_JABUS_BELLY, RG_JABU_JABUS_BELLY_MAP,
-                                                RG_JABU_JABUS_BELLY_COMPASS, RG_NONE, RG_NONE, RG_NONE, 0, 0,
+                                                RG_JABU_JABUS_BELLY_COMPASS, RG_NONE, RG_NONE, RG_NONE, RA_JABU_JABUS_BELLY, 0, 0,
                                                 {
                                                     // Vanilla Locations
                                                     RC_JABU_JABUS_BELLY_MAP_CHEST,
@@ -266,7 +271,7 @@ Dungeons::Dungeons() {
                                                 });
     dungeonList[FOREST_TEMPLE] =
         DungeonInfo("Forest Temple", RHT_FOREST_TEMPLE, RG_FOREST_TEMPLE_MAP, RG_FOREST_TEMPLE_COMPASS,
-                    RG_FOREST_TEMPLE_SMALL_KEY, RG_FOREST_TEMPLE_KEY_RING, RG_FOREST_TEMPLE_BOSS_KEY, 5, 6,
+                    RG_FOREST_TEMPLE_SMALL_KEY, RG_FOREST_TEMPLE_KEY_RING, RG_FOREST_TEMPLE_BOSS_KEY, RA_FOREST_TEMPLE, 5, 6,
                     {
                         // Vanilla Locations
                         RC_FOREST_TEMPLE_FIRST_ROOM_CHEST,
@@ -316,7 +321,7 @@ Dungeons::Dungeons() {
                     });
     dungeonList[FIRE_TEMPLE] =
         DungeonInfo("Fire Temple", RHT_FIRE_TEMPLE, RG_FIRE_TEMPLE_MAP, RG_FIRE_TEMPLE_COMPASS,
-                    RG_FIRE_TEMPLE_SMALL_KEY, RG_FIRE_TEMPLE_KEY_RING, RG_FIRE_TEMPLE_BOSS_KEY, 8, 5,
+                    RG_FIRE_TEMPLE_SMALL_KEY, RG_FIRE_TEMPLE_KEY_RING, RG_FIRE_TEMPLE_BOSS_KEY, RA_FIRE_TEMPLE, 8, 5,
                     {
                         // Vanilla Locations
                         RC_FIRE_TEMPLE_NEAR_BOSS_CHEST,
@@ -367,7 +372,7 @@ Dungeons::Dungeons() {
                     });
     dungeonList[WATER_TEMPLE] =
         DungeonInfo("Water Temple", RHT_WATER_TEMPLE, RG_WATER_TEMPLE_MAP, RG_WATER_TEMPLE_COMPASS,
-                    RG_WATER_TEMPLE_SMALL_KEY, RG_WATER_TEMPLE_KEY_RING, RG_WATER_TEMPLE_BOSS_KEY, 6, 2,
+                    RG_WATER_TEMPLE_SMALL_KEY, RG_WATER_TEMPLE_KEY_RING, RG_WATER_TEMPLE_BOSS_KEY, RA_WATER_TEMPLE, 6, 2,
                     {
                         // Vanilla Locations
                         RC_WATER_TEMPLE_MAP_CHEST,
@@ -408,7 +413,7 @@ Dungeons::Dungeons() {
                     });
     dungeonList[SPIRIT_TEMPLE] =
         DungeonInfo("Spirit Temple", RHT_SPIRIT_TEMPLE, RG_SPIRIT_TEMPLE_MAP, RG_SPIRIT_TEMPLE_COMPASS,
-                    RG_SPIRIT_TEMPLE_SMALL_KEY, RG_SPIRIT_TEMPLE_KEY_RING, RG_SPIRIT_TEMPLE_BOSS_KEY, 5, 7,
+                    RG_SPIRIT_TEMPLE_SMALL_KEY, RG_SPIRIT_TEMPLE_KEY_RING, RG_SPIRIT_TEMPLE_BOSS_KEY, RA_SPIRIT_TEMPLE, 5, 7,
                     {
                         // Vanilla Locations
                         RC_SPIRIT_TEMPLE_CHILD_BRIDGE_CHEST,
@@ -474,7 +479,7 @@ Dungeons::Dungeons() {
                     });
     dungeonList[SHADOW_TEMPLE] =
         DungeonInfo("Shadow Temple", RHT_SHADOW_TEMPLE, RG_SHADOW_TEMPLE_MAP, RG_SHADOW_TEMPLE_COMPASS,
-                    RG_SHADOW_TEMPLE_SMALL_KEY, RG_SHADOW_TEMPLE_KEY_RING, RG_SHADOW_TEMPLE_BOSS_KEY, 5, 6,
+                    RG_SHADOW_TEMPLE_SMALL_KEY, RG_SHADOW_TEMPLE_KEY_RING, RG_SHADOW_TEMPLE_BOSS_KEY, RA_SHADOW_TEMPLE, 5, 6,
                     {
                         // Vanilla Locations
                         RC_SHADOW_TEMPLE_MAP_CHEST,
@@ -536,7 +541,7 @@ Dungeons::Dungeons() {
                     });
     dungeonList[BOTTOM_OF_THE_WELL] = DungeonInfo(
         "Bottom of the Well", RHT_BOTTOM_OF_THE_WELL, RG_BOTTOM_OF_THE_WELL_MAP, RG_BOTTOM_OF_THE_WELL_COMPASS,
-        RG_BOTTOM_OF_THE_WELL_SMALL_KEY, RG_BOTTOM_OF_THE_WELL_KEY_RING, RG_NONE, 3, 2,
+        RG_BOTTOM_OF_THE_WELL_SMALL_KEY, RG_BOTTOM_OF_THE_WELL_KEY_RING, RG_NONE, RA_BOTTOM_OF_THE_WELL, 3, 2,
         {
             // Vanilla Locations
             RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST,
@@ -570,7 +575,7 @@ Dungeons::Dungeons() {
         },
         {}, {});
     dungeonList[ICE_CAVERN] = DungeonInfo("Ice Cavern", RHT_ICE_CAVERN, RG_ICE_CAVERN_MAP, RG_ICE_CAVERN_COMPASS,
-                                          RG_NONE, RG_NONE, RG_NONE, 0, 0,
+                                          RG_NONE, RG_NONE, RG_NONE, RA_ICE_CAVERN, 0, 0,
                                           {
                                               // Vanilla Locations
                                               RC_ICE_CAVERN_MAP_CHEST,
@@ -598,7 +603,7 @@ Dungeons::Dungeons() {
                                           {});
     dungeonList[GERUDO_TRAINING_GROUNDS] =
         DungeonInfo("Gerudo Training Grounds", RHT_GERUDO_TRAINING_GROUND, RG_NONE, RG_NONE,
-                    RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, RG_GERUDO_TRAINING_GROUNDS_KEY_RING, RG_NONE, 9, 3,
+                    RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, RG_GERUDO_TRAINING_GROUNDS_KEY_RING, RG_NONE, RA_GERUDO_TRAINING_GROUND, 9, 3,
                     {
                         // Vanilla Locations
                         RC_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST,
@@ -647,7 +652,7 @@ Dungeons::Dungeons() {
                     {}, {});
     dungeonList[GANONS_CASTLE] =
         DungeonInfo("Ganon's Castle", RHT_GANONS_CASTLE, RG_NONE, RG_NONE, RG_GANONS_CASTLE_SMALL_KEY,
-                    RG_GANONS_CASTLE_KEY_RING, RG_GANONS_CASTLE_BOSS_KEY, 2, 3,
+                    RG_GANONS_CASTLE_KEY_RING, RG_GANONS_CASTLE_BOSS_KEY, RA_GANONS_CASTLE, 2, 3,
                     {
                         // Vanilla Locations
                         RC_GANONS_CASTLE_FOREST_TRIAL_CHEST,
@@ -701,11 +706,11 @@ Dungeons::Dungeons() {
 
 Dungeons::~Dungeons() = default;
 
-DungeonInfo* Dungeons::GetDungeon(DungeonKey key) {
+DungeonInfo* Dungeons::GetDungeon(const DungeonKey key) {
     return &dungeonList[key];
 }
 
-DungeonInfo* Dungeons::GetDungeonFromScene(uint16_t scene) {
+DungeonInfo* Dungeons::GetDungeonFromScene(const uint16_t scene) {
     switch (scene) {
         case SCENE_DEKU_TREE:
             return &dungeonList[DEKU_TREE];
@@ -753,31 +758,27 @@ void Dungeons::ClearAllMQ() {
 }
 
 std::array<DungeonInfo*, 12> Dungeons::GetDungeonList() {
-    std::array<DungeonInfo*, 12> dungeonList_;
+    std::array<DungeonInfo*, 12> dungeonList_{};
     for (size_t i = 0; i < dungeonList.size(); i++) {
         dungeonList_[i] = &dungeonList[i];
     }
     return dungeonList_;
 }
 
-size_t Dungeons::GetDungeonListSize() {
+size_t Dungeons::GetDungeonListSize() const {
     return dungeonList.size();
 }
 void Dungeons::ParseJson(nlohmann::json spoilerFileJson) {
-    try {
-        nlohmann::json mqDungeonsJson = spoilerFileJson["masterQuestDungeons"];
-        for (auto it = mqDungeonsJson.begin(); it != mqDungeonsJson.end(); it++) {
-            std::string dungeonName = it.value().template get<std::string>();
-            for (auto& dungeon : dungeonList) {
-                if (dungeon.GetName() == dungeonName) {
-                    dungeon.SetMQ();
-                } else {
-                    dungeon.ClearMQ();
-                }
+    nlohmann::json mqDungeonsJson = spoilerFileJson["masterQuestDungeons"];
+    for (auto it = mqDungeonsJson.begin(); it != mqDungeonsJson.end(); ++it) {
+        std::string dungeonName = it.value().get<std::string>();
+        for (auto& dungeon : dungeonList) {
+            if (dungeon.GetName() == dungeonName) {
+                dungeon.SetMQ();
+            } else {
+                dungeon.ClearMQ();
             }
         }
-    } catch (const std::exception& e) {
-        throw e;
     }
 }
 } // namespace Rando

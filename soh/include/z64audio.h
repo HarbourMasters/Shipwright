@@ -970,43 +970,43 @@ typedef struct {
 } AudioContextInitSizes; // size = 0xC
 
 typedef struct {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ f32 unk_04;
-    /* 0x08 */ f32 unk_08;
-    /* 0x0C */ u16 unk_0C;
-    /* 0x10 */ f32 unk_10;
-    /* 0x14 */ f32 unk_14;
-    /* 0x18 */ f32 unk_18;
-    /* 0x1C */ u16 unk_1C;
-} unk_50_s; // size = 0x20
+    /* 0x00 */ f32 volCur;
+    /* 0x04 */ f32 volTarget;
+    /* 0x08 */ f32 volStep;
+    /* 0x0C */ u16 volTimer;
+    /* 0x10 */ f32 freqScaleCur;
+    /* 0x14 */ f32 freqScaleTarget;
+    /* 0x18 */ f32 freqScaleStep;
+    /* 0x1C */ u16 freqScaleTimer;
+} ActiveSequenceChannelData; // size = 0x20
 
 typedef struct {
     /* 0x000 */ f32 volCur;
     /* 0x004 */ f32 volTarget;
-    /* 0x008 */ f32 unk_08;
-    /* 0x00C */ u16 unk_0C;
-    /* 0x00E */ u8 volScales[0x4];
+    /* 0x008 */ f32 volStep;
+    /* 0x00C */ u16 volTimer;
+    /* 0x00E */ u8 volScales[4];
     /* 0x012 */ u8 volFadeTimer;
     /* 0x013 */ u8 fadeVolUpdate;
-    /* 0x014 */ u32 unk_14;
-    /* 0x018 */ u16 unk_18;
-    /* 0x01C */ f32 unk_1C;
-    /* 0x020 */ f32 unk_20;
-    /* 0x024 */ f32 unk_24;
-    /* 0x028 */ u16 unk_28;
-    /* 0x02C */ u32 unk_2C[8];
-    /* 0x04C */ u8 unk_4C;
-    /* 0x04D */ u8 unk_4D;
-    /* 0x04E */ u8 unk_4E;
-    /* 0x050 */ unk_50_s unk_50[0x10];
-    /* 0x250 */ u16 unk_250;
-    /* 0x252 */ u16 unk_252;
-    /* 0x254 */ u16 unk_254;
-    /* 0x256 */ u16 unk_256;
-    /* 0x258 */ u16 unk_258;
-    /* 0x25C */ u32 unk_25C;
-    /* 0x260 */ u8 unk_260;
-} unk_D_8016E750; // size = 0x264
+    /* 0x014 */ u32 tempoCmd;
+    /* 0x018 */ u16 tempoOriginal; // stores the original tempo before modifying it (to reset back to)
+    /* 0x01C */ f32 tempoCur;
+    /* 0x020 */ f32 tempoTarget;
+    /* 0x024 */ f32 tempoStep;
+    /* 0x028 */ u16 tempoTimer;
+    /* 0x02C */ u32 setupCmd[8]; // a queue of cmds to execute once the player is disabled
+    /* 0x04C */ u8 setupCmdTimer; // only execute setup commands when the timer is at 0.
+    /* 0x04D */ u8 setupCmdNum; // number of setup commands requested once the player is disabled
+    /* 0x04E */ u8 setupFadeTimer;
+    /* 0x050 */ ActiveSequenceChannelData channelData[16];
+    /* 0x250 */ u16 freqScaleChannelFlags;
+    /* 0x252 */ u16 volChannelFlags;
+    /* 0x254 */ u16 seqId; // active seqId currently playing. Resets when sequence stops
+    /* 0x256 */ u16 prevSeqId; // last seqId played on a player. Does not reset when sequence stops
+    /* 0x258 */ u16 channelPortMask;
+    /* 0x25C */ u32 startSeqCmd; // This name comes from MM
+    /* 0x260 */ u8 isWaitingForFonts; // This name comes from MM
+} ActiveSequence; // size = 0x264
 
 typedef enum {
     /* 0 */ BANK_PLAYER,

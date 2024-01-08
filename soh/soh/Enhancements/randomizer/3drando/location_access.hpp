@@ -4,15 +4,17 @@
 #include <vector>
 #include <list>
 
-#include "logic.hpp"
 #include "hint_list.hpp"
 #include "fill.hpp"
+#include "../randomizerTypes.h"
 #include "../context.h"
+#include "../logic.h"
 
 typedef bool (*ConditionFn)();
 
 // I hate this but every alternative I can think of right now is worse
 extern std::shared_ptr<Rando::Context> randoCtx;
+extern std::shared_ptr<Rando::Logic> logic;
 
 class EventAccess {
 public:
@@ -44,15 +46,15 @@ public:
 
     bool CheckConditionAtAgeTime(bool& age, bool& time) {
 
-      Logic::IsChild = false;
-      Logic::IsAdult = false;
-      Logic::AtDay   = false;
-      Logic::AtNight = false;
+      logic->IsChild = false;
+      logic->IsAdult = false;
+      logic->AtDay   = false;
+      logic->AtNight = false;
 
       time = true;
       age = true;
 
-      Logic::UpdateHelpers();
+      logic->UpdateHelpers();
       return ConditionsMet();
     }
 
@@ -121,7 +123,7 @@ namespace Rando {
 class Area {
 public:
     Area();
-    Area(std::string regionName_, std::string scene_, RandomizerHintTextKey hintKey_,
+    Area(std::string regionName_, std::string scene_, RandomizerArea area,
          bool timePass_,
          std::vector<EventAccess> events_,
          std::vector<LocationAccess> locations_,
@@ -130,8 +132,8 @@ public:
 
     std::string regionName;
     std::string scene;
-    RandomizerHintTextKey     hintKey;
-    bool        timePass;
+    RandomizerArea area;
+    bool timePass;
     std::vector<EventAccess> events;
     std::vector<LocationAccess> locations;
     std::list<Rando::Entrance> exits;
@@ -181,8 +183,8 @@ public:
     //Check to see if an exit can be access as both ages at both times of day
     bool CheckAllAccess(RandomizerRegion exitKey);
 
-    const HintText& GetHint() const {
-      return Hint(hintKey);
+    RandomizerArea GetArea() const{
+        return area;
     }
 
     //Here checks conditional access based on whether or not both ages have
@@ -192,21 +194,21 @@ public:
     bool HereCheck(ConditionFn condition) {
 
       //store current age variables
-      bool pastAdult = Logic::IsAdult;
-      bool pastChild = Logic::IsChild;
+      bool pastAdult = logic->IsAdult;
+      bool pastChild = logic->IsChild;
 
       //set age access as this areas ages
-      Logic::IsChild = Child();
-      Logic::IsAdult = Adult();
+      logic->IsChild = Child();
+      logic->IsAdult = Adult();
 
       //update helpers and check condition as well as having at least child or adult access
-      Logic::UpdateHelpers();
-      bool hereVal = condition() && (Logic::IsAdult || Logic::IsChild);
+      logic->UpdateHelpers();
+      bool hereVal = condition() && (logic->IsAdult || logic->IsChild);
 
       //set back age variables
-      Logic::IsChild = pastChild;
-      Logic::IsAdult = pastAdult;
-      Logic::UpdateHelpers();
+      logic->IsChild = pastChild;
+      logic->IsAdult = pastAdult;
+      logic->UpdateHelpers();
 
       return hereVal;
     }

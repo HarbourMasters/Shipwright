@@ -74,7 +74,7 @@ static std::unordered_map<u16, const char*> actorDescriptions = {
     { ACTOR_EN_BUBBLE, "Shabom" },
     { ACTOR_DOOR_SHUTTER, "Shutter Door" },
     { ACTOR_EN_DODOJR, "Baby Dodongo" },
-    { ACTOR_EN_BDFIRE, "Empty" },
+    { ACTOR_EN_BDFIRE, "King Dodongo's Fire Breath" },
     { ACTOR_EN_BOOM, "Boomerang" },
     { ACTOR_EN_TORCH2, "Dark Link" },
     { ACTOR_EN_BILI, "Biri" },
@@ -132,7 +132,7 @@ static std::unordered_map<u16, const char*> actorDescriptions = {
     { ACTOR_BG_TOKI_HIKARI, "Windows (Temple of Time)" },
     { ACTOR_EN_YUKABYUN, "Flying Floor Tile" },
     { ACTOR_BG_TOKI_SWD, "Master Sword" },
-    { ACTOR_EN_FHG_FIRE, "Empty" },
+    { ACTOR_EN_FHG_FIRE, "Phantom Ganon's Lighting Attack" },
     { ACTOR_BG_MJIN, "Warp Song Pad" },
     { ACTOR_BG_HIDAN_KOUSI, "Sliding Metal Gate" },
     { ACTOR_DOOR_TOKI, "Door of Time Collision" },
@@ -439,7 +439,7 @@ static std::unordered_map<u16, const char*> actorDescriptions = {
     { ACTOR_EN_DAIKU_KAKARIKO, "Carpenters (Kakariko)" },
     { ACTOR_BG_BOWL_WALL, "Bombchu Bowling Alley Wall" },
     { ACTOR_EN_WALL_TUBO, "Bombchu Bowling Alley Bullseyes" },
-    { ACTOR_EN_PO_DESERT, "Poe Guide (Desert Wasteland)" },
+    { ACTOR_EN_PO_DESERT, "Poe Guide (Haunted Wasteland)" },
     { ACTOR_EN_CROW, "Guay" },
     { ACTOR_DOOR_KILLER, "Fake Door" },
     { ACTOR_BG_SPOT11_OASIS, "Oasis (Desert Colossus)" },
@@ -546,6 +546,10 @@ int ActorDB::RetrieveId(const std::string& name) {
     }
 
     return entry->second;
+}
+
+int ActorDB::GetEntryCount() {
+    return db.size();
 }
 
 ActorDB::Entry::Entry() {

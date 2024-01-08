@@ -51,6 +51,11 @@ std::filesystem::path SaveManager::GetFileName(int fileNum) {
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
 }
 
+std::filesystem::path SaveManager::GetFileTempName(int fileNum) {
+    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
+    return sSavePath / ("file" + std::to_string(fileNum + 1) + ".temp");
+}
+
 SaveManager::SaveManager() {
     coreSectionIDsByName["base"] = SECTION_ID_BASE;
     coreSectionIDsByName["randomizer"] = SECTION_ID_RANDOMIZER;
@@ -69,6 +74,10 @@ SaveManager::SaveManager() {
     AddSaveFunction("randomizer", 3, SaveRandomizer, true, SECTION_PARENT_NONE);
 
     AddInitFunction(InitFileImpl);
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([this](uint32_t fileNum) { ThreadPoolWait(); });
+
+    smThreadPool = std::make_shared<BS::thread_pool>(1);
 
     for (SaveFileMetaInfo& info : fileMetaInfo) {
         info.valid = false;
@@ -112,7 +121,7 @@ void SaveManager::LoadRandomizerVersion1() {
         });
     }
 
-    for (int i = 0; i < randoContext->hashIconIndexes.size(); i++) {
+    for (uint32_t i = 0; i < randoContext->hashIconIndexes.size(); i++) {
         SaveManager::Instance->LoadData("seed" + std::to_string(i), randoContext->hashIconIndexes[i]);
     }
 
@@ -130,32 +139,32 @@ void SaveManager::LoadRandomizerVersion1() {
         for (int j = 0; j < ARRAY_COUNT(hintText); j++) {
             SaveManager::Instance->LoadData("ht" + std::to_string(i) + "-" + std::to_string(j), hintText[j]);
         }
-        randoContext->AddHint(RandomizerHintKey(check - RC_COLOSSUS_GOSSIP_STONE + 1), Text(hintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+        randoContext->AddHint(RandomizerHintKey(check - RC_COLOSSUS_GOSSIP_STONE + 1), Text(hintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     }
 
     char childAltarText[250];
     for (int i = 0; i < ARRAY_COUNT(childAltarText); i++) {
         SaveManager::Instance->LoadData("cat" + std::to_string(i), childAltarText[i]);
     }
-    randoContext->AddHint(RH_ALTAR_CHILD, Text(childAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_ALTAR_CHILD, Text(childAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
 
     char adultAltarText[750];
     for (int i = 0; i < ARRAY_COUNT(adultAltarText); i++) {
         SaveManager::Instance->LoadData("aat" + std::to_string(i), adultAltarText[i]);
     }
-    randoContext->AddHint(RH_ALTAR_ADULT, Text(adultAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_ALTAR_ADULT, Text(adultAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
 
     char ganonHintText[150];
     for (int i = 0; i < ARRAY_COUNT(ganonHintText); i++) {
         SaveManager::Instance->LoadData("ght" + std::to_string(i), ganonHintText[i]);
     }
-    randoContext->AddHint(RH_GANONDORF_HINT, Text(ganonHintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_GANONDORF_HINT, Text(ganonHintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
 
     char ganonText[250];
     for (int i = 0; i < ARRAY_COUNT(ganonText); i++) {
         SaveManager::Instance->LoadData("gt" + std::to_string(i), ganonText[i]);
     }
-    randoContext->AddHint(RH_GANONDORF_NOHINT, Text(ganonText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_GANONDORF_NOHINT, Text(ganonText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
 
@@ -231,54 +240,56 @@ void SaveManager::LoadRandomizerVersion2() {
         SaveManager::Instance->LoadStruct("", [&]() {
             RandomizerCheck rc = RC_UNKNOWN_CHECK;
             SaveManager::Instance->LoadData("check", rc);
-            std::string hintText;
-            SaveManager::Instance->LoadData("hintText", hintText);
-            randoContext->AddHint(RandomizerHintKey(rc - RC_COLOSSUS_GOSSIP_STONE + 1), Text(hintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+            if (rc != RC_UNKNOWN_CHECK) {
+                std::string hintText;
+                SaveManager::Instance->LoadData("hintText", hintText);
+                randoContext->AddHint(RandomizerHintKey(rc - RC_COLOSSUS_GOSSIP_STONE + 1), Text(hintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+            }
         });
     });
 
     std::string childAltarText;
     SaveManager::Instance->LoadData("childAltarText", childAltarText);
-    randoContext->AddHint(RH_ALTAR_CHILD, Text(childAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_ALTAR_CHILD, Text(childAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string adultAltarText;
     SaveManager::Instance->LoadData("adultAltarText", adultAltarText);
-    randoContext->AddHint(RH_ALTAR_ADULT, Text(adultAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_ALTAR_ADULT, Text(adultAltarText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string ganonHintText;
     SaveManager::Instance->LoadData("ganonHintText", ganonHintText);
-    randoContext->AddHint(RH_GANONDORF_HINT, Text(ganonHintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_GANONDORF_HINT, Text(ganonHintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string ganonText;
     SaveManager::Instance->LoadData("ganonText", ganonText);
-    randoContext->AddHint(RH_GANONDORF_NOHINT, Text(ganonText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_GANONDORF_NOHINT, Text(ganonText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string dampeText;
     SaveManager::Instance->LoadData("dampeText", dampeText);
-    randoContext->AddHint(RH_DAMPES_DIARY, Text(dampeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_DAMPES_DIARY, Text(dampeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string gregHintText;
     SaveManager::Instance->LoadData("gregHintText", gregHintText);
-    randoContext->AddHint(RH_GREG_RUPEE, Text(gregHintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_GREG_RUPEE, Text(gregHintText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string sheikText;
     SaveManager::Instance->LoadData("sheikText", sheikText);
-    randoContext->AddHint(RH_SHEIK_LIGHT_ARROWS, Text(sheikText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_SHEIK_LIGHT_ARROWS, Text(sheikText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string sariaText;
     SaveManager::Instance->LoadData("sariaText", sariaText);
-    randoContext->AddHint(RH_SARIA, Text(sariaText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text());
+    randoContext->AddHint(RH_SARIA, Text(sariaText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string warpMinuetText;
     SaveManager::Instance->LoadData("warpMinuetText", warpMinuetText);
-    randoContext->AddHint(RH_MINUET_WARP_LOC, Text(warpMinuetText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpMinuetText));
+    randoContext->AddHint(RH_MINUET_WARP_LOC, Text(warpMinuetText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpMinuetText));
     std::string warpBoleroText;
     SaveManager::Instance->LoadData("warpBoleroText", warpBoleroText);
-    randoContext->AddHint(RH_BOLERO_WARP_LOC, Text(warpBoleroText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpBoleroText));
+    randoContext->AddHint(RH_BOLERO_WARP_LOC, Text(warpBoleroText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpBoleroText));
     std::string warpSerenadeText;
     SaveManager::Instance->LoadData("warpSerenadeText", warpSerenadeText);
-    randoContext->AddHint(RH_SERENADE_WARP_LOC, Text(warpSerenadeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpSerenadeText));
+    randoContext->AddHint(RH_SERENADE_WARP_LOC, Text(warpSerenadeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpSerenadeText));
     std::string warpRequiemText;
     SaveManager::Instance->LoadData("warpRequiemText", warpRequiemText);
-    randoContext->AddHint(RH_REQUIEM_WARP_LOC, Text(warpRequiemText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpRequiemText));
+    randoContext->AddHint(RH_REQUIEM_WARP_LOC, Text(warpRequiemText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpRequiemText));
     std::string warpNocturneText;
     SaveManager::Instance->LoadData("warpNocturneText", warpNocturneText);
-    randoContext->AddHint(RH_NOCTURNE_WARP_LOC, Text(warpNocturneText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpNocturneText));
+    randoContext->AddHint(RH_NOCTURNE_WARP_LOC, Text(warpNocturneText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpNocturneText));
     std::string warpPreludeText;
     SaveManager::Instance->LoadData("warpPreludeText", warpPreludeText);
-    randoContext->AddHint(RH_PRELUDE_WARP_LOC, Text(warpPreludeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, Text(warpPreludeText));
+    randoContext->AddHint(RH_PRELUDE_WARP_LOC, Text(warpPreludeText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpPreludeText));
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
 
@@ -320,13 +331,12 @@ void SaveManager::LoadRandomizerVersion3() {
             RandomizerGet rg = RG_NONE;
             SaveManager::Instance->LoadData("fakeRgID", rg, RG_NONE);
             if (rg != RG_NONE) {
-                randoContext->overrides[static_cast<RandomizerCheck>(i)] =
-                    Rando::ItemOverride(static_cast<RandomizerCheck>(i), rg);
+                randoContext->overrides.emplace(static_cast<RandomizerCheck>(i), Rando::ItemOverride(static_cast<RandomizerCheck>(i), rg));
                 SaveManager::Instance->LoadStruct("trickName", [&]() {
                     SaveManager::Instance->LoadData(
-                        "english", randoContext->overrides[static_cast<RandomizerCheck>(i)].GetTrickName().english);
+                        "english", randoContext->GetItemOverride(i).GetTrickName().english);
                     SaveManager::Instance->LoadData(
-                        "french", randoContext->overrides[static_cast<RandomizerCheck>(i)].GetTrickName().french);
+                        "french", randoContext->GetItemOverride(i).GetTrickName().french);
                 });
             }
             uint16_t price = 0;
@@ -385,13 +395,9 @@ void SaveManager::LoadRandomizerVersion3() {
             SaveManager::Instance->LoadData("hintedCheck", rc);
             HintType ht = HINT_TYPE_STATIC;
             SaveManager::Instance->LoadData("hintType", ht);
-            std::string englishRegion, frenchRegion, germanRegion;
-            SaveManager::Instance->LoadStruct("hintedRegion", [&]() {
-                SaveManager::Instance->LoadData("english", englishRegion);
-                SaveManager::Instance->LoadData("french", frenchRegion);
-                SaveManager::Instance->LoadData("german", germanRegion);
-            });
-            randoContext->AddHint(rhk, Text(english, french, /*spanish*/"", german), rc, ht, Text(englishRegion, frenchRegion, /*spanish*/"", germanRegion));
+            RandomizerArea savedArea;
+            SaveManager::Instance->LoadData("hintedArea", savedArea);
+            randoContext->AddHint(rhk, Text(english, french, /*spanish*/"", german), rc, ht, "Unknown", savedArea);//RANDOTODO, maybe store and load distrabution, but it's a string...
         });
     });
 
@@ -430,10 +436,10 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
         SaveManager::Instance->SaveStruct("", [&]() {
             SaveManager::Instance->SaveData("rgID", randoContext->GetItemLocation(i)->GetPlacedRandomizerGet());
             if (randoContext->GetItemLocation(i)->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
-                SaveManager::Instance->SaveData("fakeRgID", randoContext->overrides[static_cast<RandomizerCheck>(i)].LooksLike());
+                SaveManager::Instance->SaveData("fakeRgID", randoContext->GetItemOverride(i).LooksLike());
                 SaveManager::Instance->SaveStruct("trickName", [&]() {
-                    SaveManager::Instance->SaveData("english", randoContext->overrides[static_cast<RandomizerCheck>(i)].GetTrickName().GetEnglish());
-                    SaveManager::Instance->SaveData("french", randoContext->overrides[static_cast<RandomizerCheck>(i)].GetTrickName().GetFrench());
+                    SaveManager::Instance->SaveData("english", randoContext->GetItemOverride(i).GetTrickName().GetEnglish());
+                    SaveManager::Instance->SaveData("french", randoContext->GetItemOverride(i).GetTrickName().GetFrench());
                     // TODO: German (trick names don't have german translations yet)
                 });
             }
@@ -477,11 +483,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
             });
             SaveManager::Instance->SaveData("hintedCheck", hint->GetHintedLocation());
             SaveManager::Instance->SaveData("hintType", hint->GetHintType());
-            SaveManager::Instance->SaveStruct("hintedRegion", [&]() {
-                SaveManager::Instance->SaveData("english", hint->GetHintedRegionText().GetEnglish());
-                SaveManager::Instance->SaveData("french", hint->GetHintedRegionText().GetFrench());
-                SaveManager::Instance->SaveData("german", hint->GetHintedRegionText().GetGerman());
-            });
+            SaveManager::Instance->SaveData("hintedArea", hint->GetHintedArea());
         });
     });
 
@@ -508,12 +510,14 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
     });
 }
 
+// Init() here is an extension of InitSram, and thus not truly an initializer for SaveManager itself. don't put any class initialization stuff here
 void SaveManager::Init() {
+    // Wait on saves that snuck through the Wait in OnExitGame
+    ThreadPoolWait();
     const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
     auto sOldSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav");
     auto sOldBackupSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.bak");
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([this](uint32_t fileNum) { ThreadPoolWait(); });
 
     // If the save directory does not exist, create it
     if (!std::filesystem::exists(sSavePath)) {
@@ -554,7 +558,6 @@ void SaveManager::Init() {
     } else {
         CreateDefaultGlobal();
     }
-    smThreadPool = std::make_shared<BS::thread_pool>(1);
 
     // Load files to initialize metadata
     for (int fileNum = 0; fileNum < MaxFiles; fileNum++) {
@@ -755,13 +758,11 @@ void SaveManager::InitFileNormal() {
     gSaveContext.backupFW = gSaveContext.fw;
     gSaveContext.pendingSale = ITEM_NONE;
     gSaveContext.pendingSaleMod = MOD_NONE;
+    gSaveContext.isBossRushPaused = 0;
+    gSaveContext.pendingIceTrapCount = 0;
 
-    // Boss Rush is set ahead of time in z_file_choose, otherwise init the save with the normal quest
-    if (IS_BOSS_RUSH) {
-        BossRush_InitSave();
-    } else {
-        gSaveContext.questId = QUEST_NORMAL;
-    }
+    // Init with normal quest unless only an MQ rom is provided
+    gSaveContext.questId = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
 
     //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
@@ -876,7 +877,7 @@ void SaveManager::InitFileDebug() {
         }
     }
 
-    gSaveContext.entranceIndex = 0xCD;
+    gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_0;
     gSaveContext.magicLevel = 0;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
 }
@@ -1019,9 +1020,35 @@ void SaveManager::InitFileMaxed() {
         }
     }
 
-    gSaveContext.entranceIndex = 0xCD;
+    gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_0;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
 }
+
+#if defined(__WIIU__) || defined(__SWITCH__)
+// std::filesystem::copy_file doesn't work properly with the Wii U's toolchain atm
+int copy_file(const char* src, const char* dst) {
+    alignas(0x40) uint8_t buf[4096];
+    FILE* r = fopen(src, "r");
+    if (!r) {
+        return -1;
+    }
+    FILE* w = fopen(dst, "w");
+    if (!w) {
+        return -2;
+    }
+
+    size_t res;
+    while ((res = fread(buf, 1, sizeof(buf), r)) > 0) {
+        if (fwrite(buf, 1, res, w) != res) {
+            break;
+        }
+    }
+
+    fclose(r);
+    fclose(w);
+    return res >= 0 ? 0 : res;
+}
+#endif
 
 // Threaded SaveFile takes copy of gSaveContext for local unmodified storage
 
@@ -1064,19 +1091,42 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
         svi.func(saveContext, sectionID, false);
     }
 
+    std::filesystem::path fileName = GetFileName(fileNum);
+    std::filesystem::path tempFile = GetFileTempName(fileNum);
+
+    if (std::filesystem::exists(tempFile)) {
+        std::filesystem::remove(tempFile);
+    }
+
 #if defined(__SWITCH__) || defined(__WIIU__)
-    FILE* w = fopen(GetFileName(fileNum).c_str(), "w");
+    FILE* w = fopen(tempFile.c_str(), "w");
     std::string json_string = saveBlock.dump(4);
     fwrite(json_string.c_str(), sizeof(char), json_string.length(), w);
     fclose(w);
 #else
-    std::ofstream output(GetFileName(fileNum));
+    std::ofstream output(tempFile);
     output << std::setw(4) << saveBlock << std::endl;
+    output.close();
 #endif
+
+    if (std::filesystem::exists(fileName)) {
+        std::filesystem::remove(fileName);
+    }
+
+#if defined(__SWITCH__) || defined(__WIIU__)
+    copy_file(tempFile.c_str(), fileName.c_str());
+#else
+    std::filesystem::copy_file(tempFile, fileName);
+#endif
+
+    if (std::filesystem::exists(tempFile)) {
+        std::filesystem::remove(tempFile);
+    }
 
     delete saveContext;
     InitMeta(fileNum);
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum);
+    SPDLOG_INFO("Save File Finish - fileNum: {}", fileNum);
 }
 
 // SaveSection creates a copy of gSaveContext to prevent mid-save data modification, and passes its reference to SaveFileThreaded
@@ -2259,32 +2309,6 @@ void SaveManager::LoadStruct(const std::string& name, LoadStructFunc func) {
     }
 }
 
-#if defined(__WIIU__) || defined(__SWITCH__)
-// std::filesystem::copy_file doesn't work properly with the Wii U's toolchain atm
-int copy_file(const char* src, const char* dst) {
-    alignas(0x40) uint8_t buf[4096];
-    FILE* r = fopen(src, "r");
-    if (!r) {
-        return -1;
-    }
-    FILE* w = fopen(dst, "w");
-    if (!w) {
-        return -2;
-    }
-
-    size_t res;
-    while ((res = fread(buf, 1, sizeof(buf), r)) > 0) {
-        if (fwrite(buf, 1, res, w) != res) {
-            break;
-        }
-    }
-
-    fclose(r);
-    fclose(w);
-    return res >= 0 ? 0 : res;
-}
-#endif
-
 void SaveManager::CopyZeldaFile(int from, int to) {
     assert(std::filesystem::exists(GetFileName(from)));
     DeleteZeldaFile(to);
@@ -2696,6 +2720,13 @@ extern "C" void Save_SaveGlobal(void) {
 }
 
 extern "C" void Save_LoadFile(void) {
+    if (gSaveContext.questId == QUEST_RANDOMIZER) {
+        // Reset rando context for rando saves.
+          OTRGlobals::Instance->gRandoContext.reset();
+        OTRGlobals::Instance->gRandoContext = Rando::Context::CreateInstance();
+        OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
+        OTRGlobals::Instance->gRandoContext->GetSettings()->CreateOptions();
+    }
     SaveManager::Instance->LoadFile(gSaveContext.fileNum);
 }
 

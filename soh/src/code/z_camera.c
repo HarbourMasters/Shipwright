@@ -4521,7 +4521,7 @@ s32 Camera_Subj4(Camera* camera) {
     if ((anim->unk_28 < temp_f16) && !anim->unk_2E) {
         player = camera->player;
         anim->unk_2E = true;
-        func_800F4010(&player->actor.projectedPos, player->unk_89E + 0x8B0, 4.0f);
+        func_800F4010(&player->actor.projectedPos, player->floorSfxOffset + 0x8B0, 4.0f);
     } else if (anim->unk_28 > temp_f16) {
         anim->unk_2E = false;
     }
@@ -7594,7 +7594,7 @@ Vec3s Camera_Update(Camera* camera) {
             D_8011D3F0--;
             sCameraInterfaceFlags = 0x3200;
             Camera_UpdateInterface(sCameraInterfaceFlags);
-        } else if (camera->play->transitionMode != 0) {
+        } else if (camera->play->transitionMode != TRANS_MODE_OFF) {
             sCameraInterfaceFlags = 0xF200;
             Camera_UpdateInterface(sCameraInterfaceFlags);
         } else if (camera->play->csCtx.state != CS_STATE_IDLE) {
@@ -7732,7 +7732,7 @@ void Camera_Finish(Camera* camera) {
             player->actor.freezeTimer = 0;
             player->stateFlags1 &= ~0x20000000;
 
-            if (player->csMode != 0) {
+            if (player->csAction != 0) {
                 func_8002DF54(camera->play, &player->actor, 7);
                 osSyncPrintf("camera: player demo end!!\n");
             }

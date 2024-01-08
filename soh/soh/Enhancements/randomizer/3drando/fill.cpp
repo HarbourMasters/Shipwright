@@ -5,7 +5,6 @@
 #include "../context.h"
 #include "item_pool.hpp"
 #include "location_access.hpp"
-#include "logic.hpp"
 #include "random.hpp"
 #include "spoiler_log.hpp"
 #include "starting_inventory.hpp"
@@ -22,7 +21,6 @@
 #include <spdlog/spdlog.h>
 
 using namespace CustomMessages;
-using namespace Logic;
 using namespace Rando;
 
 static bool placementFailure = false;
@@ -59,19 +57,19 @@ static bool UpdateToDAccess(Entrance* entrance, SearchMode mode) {
   Area* parent = entrance->GetParentRegion();
   Area* connection = entrance->GetConnectedRegion();
 
-  if (!connection->childDay && parent->childDay && entrance->CheckConditionAtAgeTime(Logic::IsChild, AtDay)) {
+  if (!connection->childDay && parent->childDay && entrance->CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) {
     connection->childDay = true;
     ageTimePropogated = true;
   }
-  if (!connection->childNight && parent->childNight && entrance->CheckConditionAtAgeTime(Logic::IsChild, AtNight)) {
+  if (!connection->childNight && parent->childNight && entrance->CheckConditionAtAgeTime(logic->IsChild, logic->AtNight)) {
     connection->childNight = true;
     ageTimePropogated = true;
   }
-  if (!connection->adultDay && parent->adultDay && entrance->CheckConditionAtAgeTime(IsAdult, AtDay)) {
+  if (!connection->adultDay && parent->adultDay && entrance->CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay)) {
     connection->adultDay = true;
     ageTimePropogated = true;
   }
-  if (!connection->adultNight && parent->adultNight && entrance->CheckConditionAtAgeTime(IsAdult, AtNight)) {
+  if (!connection->adultNight && parent->adultNight && entrance->CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight)) {
     connection->adultNight = true;
     ageTimePropogated = true;
   }
@@ -109,7 +107,7 @@ static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, 
         !checkOtherEntranceAccess) {
        mode = SearchMode::PoeCollectorAccess;
        ApplyStartingInventory();
-       Logic::NoBottles = true;
+       logic->NoBottles = true;
     }
   }
   // Condition for validating Poe Collector Access
@@ -118,7 +116,7 @@ static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, 
       std::vector<RandomizerGet> itemsToPlace =
           FilterFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
     for (RandomizerGet unplacedItem : itemsToPlace) {
-      Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
+       Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
     }
     // Reset access as the non-starting age
     if (ctx->GetSettings()->ResolvedStartingAge() == RO_AGE_CHILD) {
@@ -134,7 +132,7 @@ static void ValidateWorldChecks(SearchMode& mode, bool checkPoeCollectorAccess, 
     }
     mode = SearchMode::AllLocationsReachable;
   } else {
-    Logic::NoBottles = false;
+    logic->NoBottles = false;
   }
 }
 
@@ -203,10 +201,28 @@ std::vector<RandomizerCheck> GetAllEmptyLocations() {
     });
 }
 
+bool IsBombchus(RandomizerGet item, bool includeShops = false){
+  return (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) || item == RG_PROGRESSIVE_BOMBCHUS || 
+    (includeShops && (item == RG_BUY_BOMBCHU_10 || item == RG_BUY_BOMBCHU_20));
+}
+
+bool IsBeatableWithout(RandomizerCheck excludedCheck, bool replaceItem, RandomizerGet ignore = RG_NONE){ //RANDOTODO make excludCheck an ItemLocation
+  auto ctx = Rando::Context::GetInstance();
+  RandomizerGet copy = ctx->GetItemLocation(excludedCheck)->GetPlacedRandomizerGet(); //Copy out item
+  ctx->GetItemLocation(excludedCheck)->SetPlacedItem(RG_NONE); //Write in empty item
+  ctx->playthroughBeatable = false;
+  logic->Reset();
+  GetAccessibleLocations(ctx->allLocations, SearchMode::CheckBeatable, ignore); //Check if game is still beatable
+  if (replaceItem){
+    ctx->GetItemLocation(excludedCheck)->SetPlacedItem(copy); //Immediately put item back
+  }
+  return ctx->playthroughBeatable;
+}
+
 //This function will return a vector of ItemLocations that are accessible with
 //where items have been placed so far within the world. The allowedLocations argument
 //specifies the pool of locations that we're trying to search for an accessible location in
-std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<RandomizerCheck>& allowedLocations, SearchMode mode /* = SearchMode::ReachabilitySearch*/, std::string ignore /*= ""*/, bool checkPoeCollectorAccess /*= false*/, bool checkOtherEntranceAccess /*= false*/) {
+std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<RandomizerCheck>& allowedLocations, SearchMode mode /* = SearchMode::ReachabilitySearch*/, RandomizerGet ignore /* = RG_NONE*/, bool checkPoeCollectorAccess /*= false*/, bool checkOtherEntranceAccess /*= false*/) {
     auto ctx = Rando::Context::GetInstance();
     std::vector<RandomizerCheck> accessibleLocations;
     // Reset all access to begin a new search
@@ -230,7 +246,7 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
   int gsCount = 0;
   const int maxGsCount = mode == SearchMode::GeneratePlaythrough ? GetMaxGSCount() : 0; //If generating playthrough want the max that's possibly useful, else doesn't matter
   bool bombchusFound = false;
-  std::vector<std::string> buyIgnores;
+  std::vector<std::variant<bool*, uint8_t*>> buyIgnores;
 
   //Variables for search
   std::vector<Rando::ItemLocation*> newItemLocations;
@@ -324,30 +340,30 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
           LocationAccess& locPair = area->locations[k];
           RandomizerCheck loc = locPair.GetLocation();
           Rando::ItemLocation* location = ctx->GetItemLocation(loc);
+          RandomizerGet locItem = location->GetPlacedRandomizerGet();
 
           if (!location->IsAddedToPool() && locPair.ConditionsMet()) {
 
             location->AddToPool();
 
-            if (location->GetPlacedRandomizerGet() == RG_NONE) {
+            if (locItem == RG_NONE) {
               accessibleLocations.push_back(loc); //Empty location, consider for placement
             } else {
               //If ignore has a value, we want to check if the item location should be considered or not
               //This is necessary due to the below preprocessing for playthrough generation
-              if (ignore != "") {
+              if (ignore != RG_NONE) {
                 ItemType type = location->GetPlacedItem().GetItemType();
-                std::string itemName(location->GetPlacedItemName().GetEnglish());
                 //If we want to ignore tokens, only add if not a token
-                if (ignore == "Tokens" && type != ITEMTYPE_TOKEN) {
+                if (ignore == RG_GOLD_SKULLTULA_TOKEN && type != ITEMTYPE_TOKEN) {
                   newItemLocations.push_back(location);
                 }
                 //If we want to ignore bombchus, only add if bombchu is not in the name
-                else if (ignore == "Bombchus" && itemName.find("Bombchu") == std::string::npos) {
+                else if (IsBombchus(ignore) && IsBombchus(locItem, true)) {
                   newItemLocations.push_back(location);
                 }
-                //We want to ignore a specific Buy item name
-                else if (ignore != "Tokens" && ignore != "Bombchus") {
-                  if ((type == ITEMTYPE_SHOP && ignore != GetShopItemBaseName(itemName)) || type != ITEMTYPE_SHOP) {
+                //We want to ignore a specific Buy item. Buy items with different RandomizerGets are recognised by a shared GetLogicVar
+                else if (ignore != RG_GOLD_SKULLTULA_TOKEN && IsBombchus(ignore)) {
+                  if ((type == ITEMTYPE_SHOP && Rando::StaticData::GetItemTable()[ignore].GetLogicVar() != location->GetPlacedItem().GetLogicVar()) || type != ITEMTYPE_SHOP) {
                     newItemLocations.push_back(location);
                   }
                 }
@@ -364,8 +380,7 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
               //Item is an advancement item, figure out if it should be added to this sphere
               if (!ctx->playthroughBeatable && location->GetPlacedItem().IsAdvancement()) {
                 ItemType type = location->GetPlacedItem().GetItemType();
-                std::string itemName(location->GetPlacedItemName().GetEnglish());
-                bool bombchus = itemName.find("Bombchu") != std::string::npos; //Is a bombchu location
+                bool bombchus = IsBombchus(locItem, true); //Is a bombchu location
 
                 //Decide whether to exclude this location
                 //This preprocessing is done to reduce the amount of searches performed in PareDownPlaythrough
@@ -389,7 +404,7 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
                 // TODO: Reimplement Ammo Drops setting
                 else if (/*AmmoDrops.IsNot(AMMODROPS_NONE) &&*/ !(bombchus && bombchusFound) && type == ITEMTYPE_SHOP) {
                   //Only check each buy item once
-                  std::string buyItem = GetShopItemBaseName(itemName);
+                  auto buyItem = location->GetPlacedItem().GetLogicVar();
                   //Buy item not in list to ignore, add it to list and write to playthrough
                   if (std::find(buyIgnores.begin(), buyIgnores.end(), buyItem) == buyIgnores.end()) {
                     exclude = false;
@@ -462,8 +477,41 @@ std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<Randomizer
 static void GeneratePlaythrough() {
     auto ctx = Rando::Context::GetInstance();
     ctx->playthroughBeatable = false;
-    LogicReset();
+    logic->Reset();
     GetAccessibleLocations(ctx->allLocations, SearchMode::GeneratePlaythrough);
+}
+
+RandomizerArea LookForExternalArea(Area* curRegion, std::vector<RandomizerRegion> alreadyChecked){//RANDOTODO curREGION
+  for (auto& entrance : curRegion->entrances) {
+    RandomizerArea otherArea = entrance->GetParentRegion()->GetArea();
+    if(otherArea != RA_NONE){
+      return otherArea;
+      //if the area hasn't already been checked, check it
+    } else if (std::find(alreadyChecked.begin(), alreadyChecked.end(), entrance->GetParentRegionKey()) == alreadyChecked.end()) {
+      alreadyChecked.push_back(entrance->GetParentRegionKey());
+      RandomizerArea passdown = LookForExternalArea(entrance->GetParentRegion(), alreadyChecked);
+      if(passdown != RA_NONE){
+        return passdown;
+      }
+    }
+  }
+  return RA_NONE;
+}
+
+void SetAreas(){
+  auto ctx = Rando::Context::GetInstance();
+//RANDOTODO give entrances an enum like RandomizerCheck, the give them all areas here, the use those areas to not need to recursivly find ItemLocation areas
+  for (int c = 0; c < RR_MARKER_AREAS_END; c++) {
+    Area region = areaTable[c];
+    RandomizerArea area = region.GetArea();
+    if (area == RA_NONE) {
+      std::vector<RandomizerRegion> alreadyChecked = {(RandomizerRegion)c};
+      area = LookForExternalArea(&region, alreadyChecked);
+    }
+    for (auto& loc : region.locations){
+      ctx->GetItemLocation(loc.GetLocation())->SetArea(area);
+    }
+  }
 }
 
 //Remove unnecessary items from playthrough by removing their location, and checking if game is still beatable
@@ -478,37 +526,22 @@ static void PareDownPlaythrough() {
     std::vector<RandomizerCheck> sphere = ctx->playthroughLocations.at(i);
     for (int j = sphere.size() - 1; j >= 0; j--) {
       RandomizerCheck loc = sphere.at(j);
-      RandomizerGet copy = ctx->GetItemLocation(loc)->GetPlacedRandomizerGet(); //Copy out item
-      ctx->GetItemLocation(loc)->SetPlacedItem(RG_NONE); //Write in empty item
-      ctx->playthroughBeatable = false;
-      LogicReset();
+      RandomizerGet locGet = ctx->GetItemLocation(loc)->GetPlacedRandomizerGet(); //Copy out item
 
-      std::string ignore = "";
-      if (Rando::StaticData::RetrieveItem(copy).GetItemType() == ITEMTYPE_TOKEN) {
-        ignore = "Tokens";
+      RandomizerGet ignore = RG_NONE;
+      if (locGet == RG_GOLD_SKULLTULA_TOKEN || IsBombchus(locGet, true)
+        || Rando::StaticData::RetrieveItem(locGet).GetItemType() == ITEMTYPE_SHOP) {
+        ignore = locGet;
       }
-      else if (Rando::StaticData::RetrieveItem(copy).GetName().GetEnglish().find("Bombchu") != std::string::npos) {
-        ignore = "Bombchus";
-      }
-      else if (Rando::StaticData::RetrieveItem(copy).GetItemType() == ITEMTYPE_SHOP) {
-        ignore = GetShopItemBaseName(Rando::StaticData::RetrieveItem(copy).GetName().GetEnglish());
-      }
-
-      GetAccessibleLocations(ctx->allLocations, SearchMode::CheckBeatable, ignore); //Check if game is still beatable
 
       //Playthrough is still beatable without this item, therefore it can be removed from playthrough section.
-      if (ctx->playthroughBeatable) {
-        // Uncomment to print playthrough deletion log in citra
-        //  std::string itemname(Rando::StaticData::RetrieveItem(copy).GetName().GetEnglish());
-        //  std::string locationname(GetLocation(loc)->GetName());
-        //  std::string removallog = itemname + " at " + locationname + " removed from playthrough";
-        //  CitraPrint(removallog);
+      if (IsBeatableWithout(loc, false, ignore)) {
         ctx->playthroughLocations[i].erase(ctx->playthroughLocations[i].begin() + j);
-        ctx->GetItemLocation(loc)->SetDelayedItem(copy); //Game is still beatable, don't add back until later
+        ctx->GetItemLocation(loc)->SetDelayedItem(locGet); //Game is still beatable, don't add back until later
         toAddBackItem.push_back(loc);
       }
       else {
-        ctx->GetItemLocation(loc)->SetPlacedItem(copy); //Immediately put item back so game is beatable again
+        ctx->GetItemLocation(loc)->SetPlacedItem(locGet); //Immediately put item back so game is beatable again
       }
     }
   }
@@ -526,41 +559,49 @@ static void PareDownPlaythrough() {
   }
 }
 
-//Very similar to PareDownPlaythrough except it creates the list of Way of the Hero items
+//Very similar to PareDownPlaythrough except it sets WotH candidacy of Way of the Hero items
 //Way of the Hero items are more specific than playthrough items in that they are items which *must*
 // be obtained to logically be able to complete the seed, rather than playthrough items which
 // are just possible items you *can* collect to complete the seed.
 static void CalculateWotH() {
   auto ctx = Rando::Context::GetInstance();
-  //First copy locations from the 2-dimensional playthroughLocations into the 1-dimensional wothLocations
   //size - 1 so Triforce is not counted
   for (size_t i = 0; i < ctx->playthroughLocations.size() - 1; i++) {
     for (size_t j = 0; j < ctx->playthroughLocations[i].size(); j++) {
-      if (ctx->GetItemLocation(ctx->playthroughLocations[i][j])->IsHintable()) {
-        ctx->wothLocations.push_back(ctx->playthroughLocations[i][j]);
+      //If removing this item and no other item caused the game to become unbeatable, then it is strictly necessary, so add it
+      if (ctx->GetItemLocation(ctx->playthroughLocations[i][j])->IsHintable() 
+          && !(IsBeatableWithout(ctx->playthroughLocations[i][j], true))) {
+        ctx->GetItemLocation(ctx->playthroughLocations[i][j])->SetWothCandidate();
       }
     }
   }
+  ctx->playthroughBeatable = true;
+  logic->Reset();
+  GetAccessibleLocations(ctx->allLocations);
+}
 
-  //Now go through and check each location, seeing if it is strictly necessary for game completion
-  for (int i = ctx->wothLocations.size() - 1; i >= 0; i--) {
-    RandomizerCheck loc = ctx->wothLocations[i];
-    RandomizerGet copy = ctx->GetItemLocation(loc)->GetPlacedRandomizerGet(); //Copy out item
-    ctx->GetItemLocation(loc)->SetPlacedItem(RG_NONE); //Write in empty item
-    ctx->playthroughBeatable = false;
-    LogicReset();
-    GetAccessibleLocations(ctx->allLocations, SearchMode::CheckBeatable); //Check if game is still beatable
-    ctx->GetItemLocation(loc)->SetPlacedItem(copy); //Immediately put item back
-    //If removing this item and no other item caused the game to become unbeatable, then it is strictly necessary, so keep it
-    //Else, delete from wothLocations
-    if (ctx->playthroughBeatable) {
-      ctx->wothLocations.erase(ctx->wothLocations.begin() + i);
+//Calculate barren locations and assign Barren Candidacy to all locations inside those areas
+static void CalculateBarren() {
+  auto ctx = Rando::Context::GetInstance();
+  std::array<bool, RA_MAX> NotBarren = {}; //I would invert this but the "initialise all as true" syntax wasn't working
+
+  for (RandomizerCheck loc : ctx->allLocations) {
+    Rando::ItemLocation* itemLoc = ctx->GetItemLocation(loc);
+    RandomizerArea locArea = itemLoc->GetArea();
+    bool test = (itemLoc->GetPlacedItem().IsMajorItem() || itemLoc->IsWothCandidate());
+    // If a location has a major item or is a way of the hero location, it is not barren
+    if (NotBarren[locArea] == false && locArea > RA_LINKS_POCKET && (itemLoc->GetPlacedItem().IsMajorItem() || itemLoc->IsWothCandidate())) {
+      NotBarren[locArea] = true;
+    } 
+  }
+
+  for (RandomizerCheck loc : ctx->allLocations) {
+    Rando::ItemLocation* itemLoc = ctx->GetItemLocation(loc);
+    if (!NotBarren[itemLoc->GetArea()]){
+      itemLoc->SetBarrenCandidate();
     }
   }
 
-  ctx->playthroughBeatable = true;
-  LogicReset();
-  GetAccessibleLocations(ctx->allLocations);
 }
 
 //Will place things completely randomly, no logic checks are performed
@@ -638,7 +679,7 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
             itemsToPlace.pop_back();
 
             // assume we have all unplaced items
-            LogicReset();
+            logic->Reset();
             for (RandomizerGet unplacedItem : itemsToPlace) {
                 Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
             }
@@ -688,7 +729,7 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
             // If the game is beatable, then we can stop placing items with logic.
             if (!ctx->GetOption(RSK_ALL_LOCATIONS_REACHABLE)) {
                 ctx->playthroughBeatable = false;
-                LogicReset();
+                logic->Reset();
                 GetAccessibleLocations(ctx->allLocations, SearchMode::CheckBeatable);
                 if (ctx->playthroughBeatable) {
                     SPDLOG_DEBUG("Game beatable, now placing items randomly. " + std::to_string(itemsToPlace.size()) +
@@ -791,7 +832,7 @@ static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
   // This accounts for boss room shuffle so that own dungeon items can be placed
   // in the shuffled boss room
   std::vector<RandomizerCheck> dungeonLocations = FilterFromPool(ctx->allLocations, [dungeon, ctx](const auto loc) {
-    return GetHintRegionHintKey(ctx->GetItemLocation(loc)->GetParentRegionKey()) == dungeon->GetHintKey();
+    return ctx->GetItemLocation(loc)->GetArea() == dungeon->GetArea();
   });
 
   //filter out locations that may be required to have songs placed at them
@@ -942,6 +983,8 @@ void VanillaFill() {
     ctx->GetEntranceShuffler()->ShuffleAllEntrances();
     printf("\x1b[7;32HDone");
   }
+  // Populate the playthrough for entrances so they are placed in the spoiler log
+  GeneratePlaythrough();
   //Finish up
   ctx->CreateItemOverrides();
   ctx->GetEntranceShuffler()->CreateEntranceOverrides();
@@ -964,7 +1007,6 @@ int Fill() {
     //showItemProgress = false;
     ctx->playthroughLocations.clear();
     ctx->GetEntranceShuffler()->playthroughEntrances.clear();
-    ctx->wothLocations.clear();
     AreaTable_Init(); //Reset the world graph to intialize the proper locations
     ctx->ItemReset(); //Reset shops incase of shopsanity random
     ctx->GenerateLocationPool();
@@ -985,6 +1027,7 @@ int Fill() {
       }
       printf("\x1b[7;32HDone");
     }
+    SetAreas();
     //erase temporary shop items
     FilterAndEraseFromPool(ItemPool, [](const auto item) { return Rando::StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_SHOP; });
 
@@ -1098,6 +1141,7 @@ int Fill() {
       printf("\x1b[9;10HCalculating Playthrough...");
       PareDownPlaythrough();
       CalculateWotH();
+      CalculateBarren(); 
       printf("Done");
       ctx->CreateItemOverrides();
       ctx->GetEntranceShuffler()->CreateEntranceOverrides();
@@ -1115,7 +1159,7 @@ int Fill() {
     if(retries < 4) {
       SPDLOG_DEBUG("\nGOT STUCK. RETRYING...\n");
       Areas::ResetAllLocations();
-      LogicReset();
+      logic->Reset();
       ClearProgress();
     }
     retries++;
