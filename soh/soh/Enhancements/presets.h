@@ -790,6 +790,13 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Adult Minimum Weight (8 to 13)
     PRESET_ENTRY_S32("gAdultMinimumWeightFish", 6),
 
+    // Customize Lost Woods Ocarina Game Behavior
+    PRESET_ENTRY_S32("gCustomizeOcarinaGame", 1),
+    // Start With Five Notes
+    PRESET_ENTRY_S32("gOcarinaGameStartingNotes", 5),
+    // Round One Notes
+    PRESET_ENTRY_S32("gOcarinaGameRoundOneNotes", 5),
+
     // Visual Stone of Agony
     PRESET_ENTRY_S32("gVisualAgony", 1),
     // Pull grave during the day
