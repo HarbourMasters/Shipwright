@@ -55,7 +55,7 @@ public:
             case LANGUAGE_GER:
                 return german;
             default:
-                return english; // TODO: German
+                return english;
         }
     }
 
