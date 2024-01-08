@@ -7266,7 +7266,7 @@ s32 func_8083FD78(Player* this, f32* arg1, s16* arg2, PlayState* play) {
         }
 
         // #region SOH [Enhancement]
-        if (CVarGetInteger("gRightStickAiming", 0) != 0 || CVarGetInteger("gInvertZAimingYAxis", 1) == 0) {
+        if (CVarGetInteger("gRightStickAiming", 0) || !CVarGetInteger("gInvertZAimingYAxis", 1)) {
             
             if (this->unk_664 != NULL) {
                 func_8083DB98(this, 1);
@@ -7274,7 +7274,7 @@ s32 func_8083FD78(Player* this, f32* arg1, s16* arg2, PlayState* play) {
                 int8_t relStickY;
 
                 // preserves simultaneous left/right-stick aiming
-                if (CVarGetInteger("gRightStickAiming", 0) != 0) {
+                if (CVarGetInteger("gRightStickAiming", 0)) {
                     if ((sControlInput->rel.stick_y + sControlInput->rel.right_stick_y) >= 0) {
                         relStickY = (((sControlInput->rel.stick_y) > (sControlInput->rel.right_stick_y))
                                          ? (sControlInput->rel.stick_y)
