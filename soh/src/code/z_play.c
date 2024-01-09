@@ -478,9 +478,10 @@ void Play_Init(GameState* thisx) {
     //play->state.gfxCtx = NULL;
     uintptr_t zAlloc;
     uintptr_t stairsAlloc;
-    uintptr_t stairsAllocAligned;
     uintptr_t zAllocAligned;
+    uintptr_t stairsAllocAligned;
     size_t zAllocSize;
+    size_t stairsAllocSize;
     Player* player;
     s32 playerStartCamId;
     s32 i;
@@ -671,10 +672,11 @@ void Play_Init(GameState* thisx) {
     D_801614B0.a = 0;
     Flags_UnsetAllEnv(play);
 
-    // Stairs Heap                 
-    stairsAlloc = GAMESTATE_ALLOC_MC(&play->state, STAIRS_ALLOC_SIZE);
+    // Stairs Heap
+    stairsAllocSize = Stairs_GetSize();
+    stairsAlloc = GAMESTATE_ALLOC_MC(&play->state, stairsAllocSize);
     stairsAllocAligned = (stairsAlloc + 8) & ~0xF;
-    StairsArena_Init(stairsAllocAligned, STAIRS_ALLOC_SIZE - stairsAllocAligned + stairsAlloc);
+    StairsArena_Init(stairsAllocAligned, stairsAllocSize - stairsAllocAligned + stairsAlloc);
     osSyncPrintf("ZELDA ALLOC SIZE=%x\n", THA_GetSize(&play->state.tha));
     zAllocSize = THA_GetSize(&play->state.tha);
     zAlloc = GAMESTATE_ALLOC_MC(&play->state, zAllocSize);
@@ -792,6 +794,11 @@ void Play_Update(PlayState* play) {
     if ((SREG(1) < 0) || (DREG(0) != 0)) {
         SREG(1) = 0;
         ZeldaArena_Display();
+    }
+
+    if (CVarGetInteger("gStairs", 1) && CVarGetInteger("gStairsDisplay", 0)) {
+        // todo: implement drawing
+        StairsArena_Display();
     }
 
     if ((HREG(80) == 18) && (HREG(81) < 0)) {

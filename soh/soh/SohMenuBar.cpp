@@ -1467,7 +1467,8 @@ extern std::shared_ptr<ValueViewerWindow> mValueViewerWindow;
 void DrawDeveloperToolsMenu() {
     if (ImGui::BeginMenu("Developer Tools")) {
         ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
-
+        UIWidgets::EnhancementCheckbox("Stairs heap display", "gStairsDisplay");
+        UIWidgets::Tooltip("Visualises the stair heap");
         UIWidgets::EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
         UIWidgets::Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right, and open the debug menu with L on the pause screen");
         if (CVarGetInteger("gDebugEnabled", 0)) {

@@ -5,6 +5,7 @@
 #include "global.h"
 #include "vt.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/stairs.h"
 #include <string.h>
 #include <assert.h>
 
@@ -564,6 +565,7 @@ u32 func_80096FE8(PlayState* play, RoomContext* roomCtx) {
     // "Room buffer size=%08x(%5.1fK)"
     osSyncPrintf("部屋バッファサイズ=%08x(%5.1fK)\n", maxRoomSize, maxRoomSize / 1024.0f);
     roomCtx->bufPtrs[0] = GAMESTATE_ALLOC_MC(&play->state, maxRoomSize);
+    Stairs_DecreaseSize(maxRoomSize);
     // "Room buffer initial pointer=%08x"
     osSyncPrintf("部屋バッファ開始ポインタ=%08x\n", roomCtx->bufPtrs[0]);
     roomCtx->bufPtrs[1] = (void*)((intptr_t)roomCtx->bufPtrs[0] + maxRoomSize);

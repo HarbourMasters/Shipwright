@@ -2,6 +2,8 @@
 #include <textures/do_action_static/do_action_static.h>
 #include <assert.h>
 
+#include "soh/Enhancements/stairs.h"
+
 void func_80110990(PlayState* play) {
     Map_Destroy(play);
 }
@@ -35,6 +37,7 @@ void func_801109B0(PlayState* play) {
     osSyncPrintf("常駐ＰＡＲＡＭＥＴＥＲセグメント=%x\n", parameterSize);
 
     interfaceCtx->parameterSegment = GAMESTATE_ALLOC_MC(&play->state, parameterSize);
+    Stairs_DecreaseSize(parameterSize);
 
     osSyncPrintf("parameter->parameterSegment=%x\n", interfaceCtx->parameterSegment);
 

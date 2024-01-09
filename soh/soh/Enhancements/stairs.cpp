@@ -18,6 +18,9 @@ static const std::vector<ActorIdAllocTypePair> stairActorTable = {
 #undef DEFINE_ACTOR_UNSET
 #undef DEFINE_ACTOR
 
+size_t stairsAllocSize = 0x1D4790 - 0x26960 - 0x2200 - (0x55 * 0x60) - (3 * (48 * 16) / 2) - (4 * (32 * 32 * 4)) - 0x1000 - (20 * sizeof(MtxF));
+Arena sStairsArena;
+
 // using sizes from the debug rom
 std::unordered_map<u16, size_t> actorOverlaySizes = {
     { ACTOR_PLAYER,                0x0},
@@ -507,6 +510,17 @@ size_t Stairs_GetOverlaySize(u16 id) {
     return actorOverlaySizes[id];
 }
 
+size_t Stairs_GetSize() {
+    return stairsAllocSize;
+}
+
+s32 Stairs_DecreaseSize(size_t size) {
+    if (size > stairsAllocSize) {
+        return false;
+    }
+    stairsAllocSize -= size;
+    return true;
+}
 
 void* StairsArena_Malloc(size_t size) {
     void* ptr = __osMalloc(&sStairsArena, size);
@@ -647,6 +661,7 @@ void StairsArena_Cleanup() {
     mallocRPtrMap.clear();
     absolutePtr = nullptr;
     absoluteSpaceFlag = 0;
+    stairsAllocSize = 0x1D4790 - 0x26960 - 0x2200 - (0x55 * 0x60) - (3 * (48 * 16) / 2) - (4 * (32 * 32 * 4)) - 0x1000 - (20 * sizeof(MtxF));
 }
 
 u8 StairsArena_IsInitalized() {

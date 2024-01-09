@@ -71,6 +71,8 @@
 #include "assets/textures/skyboxes/vr_holy1_static.h"
 #include "assets/textures/skyboxes/vr_holy1_pal_static.h"
 
+#include "soh/Enhancements/stairs.h"
+
 
 u32 D_8012AC90[4] = {
     0x00000000,
@@ -605,6 +607,13 @@ void Skybox_Setup(PlayState* play, SkyboxContext* skyboxCtx, s16 skyboxId) {
     u8 sp40; // imageIdx2
     uintptr_t start;
     s32 phi_v1;
+    
+    // todo: figure out correct 'size' rather than 0x10000 (which is far too large)
+    if (skyboxId == SKYBOX_NORMAL_SKY || skyboxId == SKYBOX_OVERCAST_SUNSET || skyboxId == SKYBOX_CUTSCENE_MAP) {
+        // Stairs_DecreaseSize(0x10000 * 4);
+    } else {
+        // Stairs_DecreaseSize(0x10000 * 2);
+    }
 
     switch (skyboxId)
     {
@@ -968,23 +977,28 @@ void Skybox_Init(GameState* state, SkyboxContext* skyboxCtx, s16 skyboxId) {
         if (skyboxCtx->unk_140 != 0) {
             skyboxCtx->dListBuf = GAMESTATE_ALLOC_MC(state, 8 * 150 * sizeof(Gfx));
             assert(skyboxCtx->dListBuf != NULL);
+            Stairs_DecreaseSize(8 * 150 * sizeof(Gfx));
 
             skyboxCtx->roomVtx = GAMESTATE_ALLOC_MC(state, 256 * sizeof(Vtx));
             assert(skyboxCtx->roomVtx != NULL);
+            Stairs_DecreaseSize(256 * sizeof(Vtx));
 
             func_800AEFC8(skyboxCtx, skyboxId);
         } else {
             skyboxCtx->dListBuf = GAMESTATE_ALLOC_MC(state, 12 * 150 * sizeof(Gfx));
             assert(skyboxCtx->dListBuf != NULL);
+            Stairs_DecreaseSize(12 * 150 * sizeof(Gfx));
 
             if (skyboxId == SKYBOX_CUTSCENE_MAP) {
                 skyboxCtx->roomVtx = GAMESTATE_ALLOC_MC(state, 192 * sizeof(Vtx));
                 assert(skyboxCtx->roomVtx != NULL);
+                Stairs_DecreaseSize(192 * sizeof(Gfx));
 
                 func_800AF178(skyboxCtx, 6);
             } else {
                 skyboxCtx->roomVtx = GAMESTATE_ALLOC_MC(state, 160 * sizeof(Vtx));
                 assert(skyboxCtx->roomVtx != NULL);
+                Stairs_DecreaseSize(160 * sizeof(Vtx));
 
                 func_800AF178(skyboxCtx, 5);
             }

@@ -3,14 +3,14 @@
 
 #include "global.h"
 
-// This value is based on the ZeldaArena size created on play init with default GameAlloc size
-#define STAIRS_ALLOC_SIZE 560064
 
 #define STAIRS_ACTOROVL_ABSOLUTE_SPACE_SIZE 0x27A0
 #define STAIRS_ACTOROVL_ALLOC_ABSOLUTE (1 << 0)
 #define STAIRS_ACTOROVL_ALLOC_PERSISTENT (1 << 1)
 
-Arena sStairsArena;
+// This value is based on the ZeldaArena size created on play init with default GameAlloc size
+// #define STAIRS_ALLOC_SIZE 560064
+// #define STAIRS_ALLOC_SIZE 0x88BC0
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,6 +23,9 @@ s32 Stairs_RegisterAbsoluteSpace();
 s32 Stairs_GetAbsoluteSpace();
 s32 Stairs_UnregisterAbsoluteSpace();
 size_t Stairs_GetOverlaySize(u16 id);
+
+size_t Stairs_GetSize();
+s32 Stairs_DecreaseSize(size_t size);
 
 void* StairsArena_Malloc(size_t size);
 void* StairsArena_MallocR(size_t size);
