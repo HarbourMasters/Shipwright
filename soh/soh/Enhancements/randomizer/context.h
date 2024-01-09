@@ -28,6 +28,7 @@ class Dungeons;
 class DungeonInfo;
 class TrialInfo;
 class Trials;
+class Kaleido;
 
 class Context {
   public:
@@ -70,6 +71,7 @@ class Context {
     std::shared_ptr<Logic> GetLogic();
     void ResetLogic();
     std::shared_ptr<Trials> GetTrials();
+    std::shared_ptr<Kaleido> GetKaleido();
     TrialInfo* GetTrial(size_t key) const;
     static Sprite* GetSeedTexture(uint8_t index);
     Option& GetOption(RandomizerSettingKey key) const;
@@ -111,6 +113,7 @@ class Context {
     std::shared_ptr<Dungeons> mDungeons;
     std::shared_ptr<Logic> mLogic;
     std::shared_ptr<Trials> mTrials;
+    std::shared_ptr<Kaleido> mKaleido;
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;
     bool mPlandoLoaded = false;
