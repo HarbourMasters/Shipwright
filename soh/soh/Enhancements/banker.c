@@ -1,9 +1,11 @@
+#include <stdlib.h>
 #include "z64.h"
 #include "macros.h"
 #include "libultraship/libultra/gbi.h"
 #include "../soh/assets/textures/parameter_static/parameter_static.h"
 #include "variables.h"
 #include "custom-message/CustomMessageTypes.h"
+#include "functions.h"
 
 #include "luslog.h"
 
@@ -119,7 +121,7 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
                             Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                         }
                     } else {
-                        if (gBankerValue <= gSaveContext.rupees) {
+                        if (gBankerValue <= gSaveContext.rupees && (gSaveContext.playerBalance + gBankerValue) <= 5000) {
                             Rupees_ChangeBy(-gBankerValue);
                             gSaveContext.playerBalance += gBankerValue;
                             Message_ContinueTextbox(play, TEXT_BANKER_DEPOSIT_CONFIRM);
