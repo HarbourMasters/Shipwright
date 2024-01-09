@@ -2834,8 +2834,10 @@ void KaleidoScope_InitVertices(PlayState* play, GraphicsContext* gfxCtx) {
         }
     }
 
-    for (phi_t3 = 0; phi_t3 < (CVarGetInteger("gBetterAmmoRendering", 0) ? ARRAY_COUNT(D_8082B11C_all) : ARRAY_COUNT(D_8082B11C)); phi_t3++) {
-        phi_t4 = CVarGetInteger("gBetterAmmoRendering", 0) ? D_8082B11C_all[phi_t3] : D_8082B11C[phi_t3];
+    u8 gBetterAmmoRendering = CVarGetInteger("gBetterAmmoRendering", 0);
+
+    for (phi_t3 = 0; phi_t3 < (gBetterAmmoRendering ? ARRAY_COUNT(D_8082B11C_all) : ARRAY_COUNT(D_8082B11C)); phi_t3++) {
+        phi_t4 = gBetterAmmoRendering ? D_8082B11C_all[phi_t3] : D_8082B11C[phi_t3];
 
         pauseCtx->itemVtx[phi_t2 + 0].v.ob[0] = pauseCtx->itemVtx[phi_t2 + 2].v.ob[0] =
             pauseCtx->itemVtx[phi_t4].v.ob[0];
