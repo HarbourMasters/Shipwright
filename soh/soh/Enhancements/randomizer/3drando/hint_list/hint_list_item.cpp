@@ -2047,6 +2047,61 @@ void HintTable_Init_Item() {
                       Text{"the soul of Ganon", "", ""}}
      );
 
+    hintTable[RHT_OCARINA_A_BUTTON] = HintText::Item({
+                      //obscure text
+                      Text{"a musical letter", /*french*/"une lettre musicale", /*spanish*/"una letra musical"},
+                    }, {
+                      //ambiguous text
+                      Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"}
+                    }, {
+                      //clear text
+                      Text{"an Ocarina A Button", /*french*/"la Touche A de l'Ocarina", /*spanish*/"un botón A de Ocarina"}}
+     );
+
+    hintTable[RHT_OCARINA_C_UP_BUTTON] = HintText::Item({
+                      //obscure text
+                      Text{"a high tone", /*french*/"une tonalité élevée", /*spanish*/"un tono alto"},
+                    }, {
+                      //ambiguous text
+                      Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"}
+                    }, {
+                      //clear text
+                      Text{"an Ocarina C Up Button", /*french*/"la Touche C-Haut de l'Ocarina", /*spanish*/"un botón C superior de Ocarina"}}
+     );
+
+    hintTable[RHT_OCARINA_C_DOWN_BUTTON] = HintText::Item({
+                      //obscure text
+                      Text{"a low tone", /*french*/"une tonalité basse", /*spanish*/"un tono bajo"},
+                    }, {
+                      //ambiguous text
+                      Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"}
+                    }, {
+                      //clear text
+                      Text{"an Ocarina C Down Button", /*french*/"la Touche C-Bas de l'Ocarina", /*spanish*/"un botón C inferior de Ocarina"}}
+     );
+
+    hintTable[RHT_OCARINA_C_LEFT_BUTTON] = HintText::Item({
+                      //obscure text
+                      Text{"a leftward tone", /*french*/"une tonalité vers la gauche", /*spanish*/"un tono hacia la izquierda"},
+                    }, {
+                      //ambiguous text
+                      Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"}
+                    }, {
+                      //clear text
+                      Text{"an Ocarina C Left Button", /*french*/"la Touche C-Gauche de l'Ocarina", /*spanish*/"un botón C izquierdo de Ocarina"}}
+     );
+
+    hintTable[RHT_OCARINA_C_RIGHT_BUTTON] = HintText::Item({
+                      //obscure text
+                      Text{"a rightward tone", /*french*/"une tonalité vers la droite", /*spanish*/"un tono hacia la derecha"},
+                    }, {
+                      //ambiguous text
+                      Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"}
+                    }, {
+                      //clear text
+                      Text{"an Ocarina C Right Button", /*french*/"la Touche C-Droit de l'Ocarina", /*spanish*/"un botón C derecho de Ocarina"}}
+     );
+
     hintTable[RHT_FISHING_POLE] = HintText::Item({
                        //obscure text
                        Text{"a fish-puller", /*french*/"(canne à pêche)", /*spanish*/"(caña de pescar)"},
@@ -2071,6 +2126,10 @@ void HintTable_Init_Item() {
                        //clear text
                        Text{"Epona", /*french*/"Epona", /*spanish*/"a Epona"}
     );
+    hintTable[RHT_HINT_MYSTERIOUS] = HintText::Item({
+      Text{"something mysterious", /*french*/"un sacré mystère",  /*spanish*/"algo misterioso", /*german*/"etwas Unvorhergesehenes"},
+      Text{"an unknown treasure",  /*french*/"un trésor inconnu", /*spanish*/"un desconocido tesoro", /*german*/"ein unbekannter Schatz"},
+    });
 
     // [RHT_HINT_ERROR] = HintText::Item({
     //                      //obscure text

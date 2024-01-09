@@ -10,7 +10,6 @@
 #include "context.h"
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
-#include "soh/Enhancements/randomizer/randomizer_tricks.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/Enhancements/randomizer/fishsanity.h"
@@ -61,9 +60,7 @@ class Randomizer {
     GetItemID GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
-    CustomMessage GetWarpSongMessage(u16 textId, bool mysterious = false);
     CustomMessage GetSheikMessage(s16 scene, u16 originalTextId);
-    CustomMessage GetFrogsMessage(u16 originalTextId);
     CustomMessage GetSariaMessage(u16 originalTextId);
     CustomMessage GetFishingPondOwnerMessage(u16 originalTextId);
     CustomMessage GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);

@@ -34,7 +34,12 @@ class Settings {
      * @param key
      * @return Option&
      */
-    Option& GetTrickOption(RandomizerTrick key);
+    TrickOption& GetTrickOption(RandomizerTrick key);
+
+    /**
+     * @brief Reset all RandomizerTrick keys.
+     */
+    void ResetTrickOptions();
 
     /**
      * @brief Returns a reference to the entire array of options.
@@ -169,6 +174,7 @@ class Settings {
      */
     void ParseJson(nlohmann::json spoilerFileJson);
     std::vector<Option*> VanillaLogicDefaults = {};
+    std::map<RandomizerArea, std::vector<RandomizerTrick>> mTricksByArea = {};
 
   private:
     /**
@@ -178,7 +184,7 @@ class Settings {
     std::array<Option, RSK_MAX> mOptions = {};
     std::array<std::string, RSK_MAX> mOptionDescriptions = {};
     std::array<OptionGroup, RSG_MAX> mOptionGroups = {};
-    std::array<Option, RT_MAX> mTrickOptions = {};
+    std::array<TrickOption, RT_MAX> mTrickOptions = {};
     std::vector<std::vector<Option*>> mExcludeLocationsOptionsGroups = {};
     std::unordered_map<std::string, RandomizerSettingKey> mSpoilerfileSettingNameToEnum;
     RandoOptionStartingAge mResolvedStartingAge =  RO_AGE_CHILD;
@@ -186,5 +192,6 @@ class Settings {
     std::string mHash;
     std::string mSeedString;
     uint32_t mFinalSeed = 0;
+    std::unordered_map<std::string, RandomizerTrick> mTrickNameToEnum;
 };
 } // namespace Rando

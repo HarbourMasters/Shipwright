@@ -342,7 +342,7 @@ void SaveManager::LoadRandomizerVersion3() {
                         "french", randoContext->GetItemOverride(i).GetTrickName().french);
                 });
             }
-            uint16_t price = 0; 
+            uint16_t price = 0;
             SaveManager::Instance->LoadData("price", price, (uint16_t)0);
             if (price > 0) {
                 // Technically an item with a custom price (scrub/shopsanity) could have
@@ -388,11 +388,11 @@ void SaveManager::LoadRandomizerVersion3() {
         SaveManager::Instance->LoadStruct("", [&]() {
             RandomizerHintKey rhk = RH_NONE;
             SaveManager::Instance->LoadData("hintKey", rhk);
-            std::string english, french;
+            std::string english, french, german;
             SaveManager::Instance->LoadStruct("hintText", [&]() {
                 SaveManager::Instance->LoadData("english", english);
                 SaveManager::Instance->LoadData("french", french);
-                // TODO: German Hint Translations
+                SaveManager::Instance->LoadData("german", german);
             });
             RandomizerCheck rc = RC_UNKNOWN_CHECK;
             SaveManager::Instance->LoadData("hintedCheck", rc);
@@ -400,7 +400,7 @@ void SaveManager::LoadRandomizerVersion3() {
             SaveManager::Instance->LoadData("hintType", ht);
             RandomizerArea savedArea;
             SaveManager::Instance->LoadData("hintedArea", savedArea);
-            randoContext->AddHint(rhk, Text(english, french, english), rc, ht, "Unknown", savedArea);//RANDOTODO, maybe store and load distrabution, but it's a string...
+            randoContext->AddHint(rhk, Text(english, french, /*spanish*/"", german), rc, ht, "Unknown", savedArea);//RANDOTODO, maybe store and load distrabution, but it's a string...
         });
     });
 
@@ -482,8 +482,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
             SaveManager::Instance->SaveStruct("hintText", [&]() {
                 SaveManager::Instance->SaveData("english", hint->GetText().GetEnglish());
                 SaveManager::Instance->SaveData("french", hint->GetText().GetFrench());
-                SaveManager::Instance->SaveData("german", hint->GetText().GetEnglish());
-                // TODO: German Translation of hints
+                SaveManager::Instance->SaveData("german", hint->GetText().GetGerman());
             });
             SaveManager::Instance->SaveData("hintedCheck", hint->GetHintedLocation());
             SaveManager::Instance->SaveData("hintType", hint->GetHintType());
@@ -1116,13 +1115,13 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
     if (std::filesystem::exists(fileName)) {
         std::filesystem::remove(fileName);
     }
-    
+
 #if defined(__SWITCH__) || defined(__WIIU__)
     copy_file(tempFile.c_str(), fileName.c_str());
 #else
     std::filesystem::copy_file(tempFile, fileName);
 #endif
-    
+
     if (std::filesystem::exists(tempFile)) {
         std::filesystem::remove(tempFile);
     }
@@ -2724,6 +2723,13 @@ extern "C" void Save_SaveGlobal(void) {
 }
 
 extern "C" void Save_LoadFile(void) {
+    if (gSaveContext.questId == QUEST_RANDOMIZER) {
+        // Reset rando context for rando saves.
+          OTRGlobals::Instance->gRandoContext.reset();
+        OTRGlobals::Instance->gRandoContext = Rando::Context::CreateInstance();
+        OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
+        OTRGlobals::Instance->gRandoContext->GetSettings()->CreateOptions();
+    }
     SaveManager::Instance->LoadFile(gSaveContext.fileNum);
 }
 

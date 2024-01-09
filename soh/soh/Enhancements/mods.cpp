@@ -28,15 +28,29 @@
 
 extern "C" {
 #include <z64.h>
+#include "align_asset_macro.h"
 #include "macros.h"
 #include "functions.h"
 #include "variables.h"
 #include "functions.h"
+void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
+void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
+
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
 uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 }
+
+// GreyScaleEndDlist
+#define dgEndGrayscaleAndEndDlistDL "__OTR__helpers/cosmetics/gEndGrayscaleAndEndDlistDL"
+static const ALIGN_ASSET(2) char gEndGrayscaleAndEndDlistDL[] = dgEndGrayscaleAndEndDlistDL;
+
+// This is used for the Temple of Time Medalions' color
+#define dtokinoma_room_0DL_007A70 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007A70"
+static const ALIGN_ASSET(2) char tokinoma_room_0DL_007A70[] = dtokinoma_room_0DL_007A70;
+#define dtokinoma_room_0DL_007FD0 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007FD0"
+static const ALIGN_ASSET(2) char tokinoma_room_0DL_007FD0[] = dtokinoma_room_0DL_007FD0;
 
 // TODO: When there's more uses of something like this, create a new GI::RawAction?
 void ReloadSceneTogglingLinkAge() {
@@ -399,6 +413,52 @@ void RegisterShadowTag() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
         shouldSpawn = true;
         delayTimer = 60;
+    });
+}
+
+static bool hasAffectedHealth = false;
+void UpdatePermanentHeartLossState() {
+    if (!GameInteractor::IsSaveLoaded()) return;
+
+    if (!CVarGetInteger("gPermanentHeartLoss", 0) && hasAffectedHealth) {
+        uint8_t heartContainers = gSaveContext.sohStats.heartContainers; // each worth 16 health
+        uint8_t heartPieces = gSaveContext.sohStats.heartPieces; // each worth 4 health, but only in groups of 4
+        uint8_t startingHealth = 16 * 3;
+
+
+        uint8_t newCapacity = startingHealth + (heartContainers * 16) + ((heartPieces - (heartPieces % 4)) * 4);
+        gSaveContext.healthCapacity = MAX(newCapacity, gSaveContext.healthCapacity);
+        gSaveContext.health = MIN(gSaveContext.health, gSaveContext.healthCapacity);
+        hasAffectedHealth = false;
+    }
+}
+
+void RegisterPermanentHeartLoss() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int16_t fileNum) {
+        hasAffectedHealth = false;
+        UpdatePermanentHeartLossState();
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (!CVarGetInteger("gPermanentHeartLoss", 0) || !GameInteractor::IsSaveLoaded()) return;
+
+        if (gSaveContext.healthCapacity > 16 && gSaveContext.healthCapacity - gSaveContext.health >= 16) {
+            gSaveContext.healthCapacity -= 16;
+            gSaveContext.health = MIN(gSaveContext.health, gSaveContext.healthCapacity);
+            hasAffectedHealth = true;
+        }
+    });
+};
+
+void RegisterDeleteFileOnDeath() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!CVarGetInteger("gDeleteFileOnDeath", 0) || !GameInteractor::IsSaveLoaded() || &gPlayState->gameOverCtx == NULL || &gPlayState->pauseCtx == NULL) return;
+
+        if (gPlayState->gameOverCtx.state == GAMEOVER_DEATH_MENU && gPlayState->pauseCtx.state == 9) {
+            SaveManager::Instance->DeleteZeldaFile(gSaveContext.fileNum);
+            hasAffectedHealth = false;
+            std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
+        }
     });
 }
 
@@ -1102,8 +1162,8 @@ void RegisterRandomizedEnemySizes() {
         uint8_t excludedEnemy = actor->id == ACTOR_EN_BROB || actor->id == ACTOR_EN_DHA || (actor->id == ACTOR_BOSS_SST && actor->params == -1);
 
         // Dodongo, Volvagia and Dead Hand are always smaller because they're impossible when bigger.
-        uint8_t smallOnlyEnemy =
-            actor->id == ACTOR_BOSS_DODONGO || actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || ACTOR_EN_DH;
+        uint8_t smallOnlyEnemy = actor->id == ACTOR_BOSS_DODONGO || actor->id == ACTOR_BOSS_FD ||
+                                 actor->id == ACTOR_BOSS_FD2 || actor->id == ACTOR_EN_DH;
 
         // Only apply to enemies and bosses.
         if (!CVarGetInteger("gRandomizedEnemySizes", 0) || (actor->category != ACTORCAT_ENEMY && actor->category != ACTORCAT_BOSS) || excludedEnemy) {
@@ -1128,6 +1188,221 @@ void RegisterRandomizedEnemySizes() {
         }
 
         Actor_SetScale(actor, actor->scale.z * randomScale);
+
+        if (CVarGetInteger("gEnemySizeScalesHealth", 0) && (actor->category == ACTORCAT_ENEMY)) {
+            // Scale the health based on a smaller factor than randomScale
+            float healthScalingFactor = 0.8f; // Adjust this factor as needed
+            float scaledHealth = actor->colChkInfo.health * (randomScale * healthScalingFactor);
+
+            // Ensure the scaled health doesn't go below zero
+            actor->colChkInfo.health = fmax(scaledHealth, 1.0f);
+        } else {
+            return;
+        }
+    });
+}
+
+void PatchToTMedallions() {
+    // TODO: Refactor the DemoEffect_UpdateJewelAdult and DemoEffect_UpdateJewelChild from z_demo_effect
+    // effects to take effect in there
+    if (CVarGetInteger("gToTMedallionsColors", 0)) {
+        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_StartGrayscale", 7, gsSPGrayscale(true));
+        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_StartGrayscale", 7, gsSPGrayscale(true));
+
+        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) {
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue", 16, gsDPSetGrayscaleColor(0, 161, 255, 255));
+        } else {
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue", 16, gsDPSetGrayscaleColor(255, 255, 255, 255));
+        }
+
+        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange", 45, gsDPSetGrayscaleColor(255, 135, 0, 255));
+        } else {
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange", 45, gsDPSetGrayscaleColor(255, 255, 255, 255));
+        }
+
+        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT)) {
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow", 69, gsDPSetGrayscaleColor(255, 255, 0, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow", 16, gsDPSetGrayscaleColor(255, 255, 0, 255));
+        } else {
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow", 69, gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow", 16, gsDPSetGrayscaleColor(255, 255, 255, 255));
+        }
+
+        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeGreen", 94, gsDPSetGrayscaleColor(0, 255, 0, 255));
+        } else {
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeGreen", 94, gsDPSetGrayscaleColor(255, 255, 255, 255));
+        }
+
+        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed", 118, gsDPSetGrayscaleColor(255, 0, 0, 255));
+        } else {
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed", 118, gsDPSetGrayscaleColor(255, 255, 255, 255));
+        }
+
+        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple", 142, gsDPSetGrayscaleColor(212, 0, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27, gsDPSetGrayscaleColor(212, 0, 255, 255));
+        } else {
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple", 142, gsDPSetGrayscaleColor(255, 255, 255, 255));
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27, gsDPSetGrayscaleColor(255, 255, 255, 255));
+        }
+
+        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_EndGrayscaleAndEndDlist", 160, gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
+        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_EndGrayscaleAndEndDlist", 51, gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
+    } else {
+        // Unpatch everything
+        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_StartGrayscale");
+        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_StartGrayscale");
+
+        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue");
+        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange");
+        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow");
+        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow");
+        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed");
+        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple");
+        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple");
+
+        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_EndGrayscaleAndEndDlist");
+        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_EndGrayscaleAndEndDlist");
+    }
+}
+
+void RegisterToTMedallions() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry _unused) {
+        if (!CVarGetInteger("gToTMedallionsColors", 0) || !gPlayState || gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
+            return;
+        }
+        PatchToTMedallions();
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        if (!CVarGetInteger("gToTMedallionsColors", 0) || sceneNum != SCENE_TEMPLE_OF_TIME) {
+            return;
+        }
+        PatchToTMedallions();
+    });
+}
+
+void RegisterFishsanity() {
+    static s16 fishGroupCounter = 0;
+
+    // Initialization on load
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
+        if (!IS_RANDO)
+            return;
+        OTRGlobals::Instance->gRandoContext->GetFishsanity()->InitializeFromSave();
+    });
+
+    // Initialize actors for fishsanity
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+        if (!IS_RANDO) return;
+
+        Actor* actor = static_cast<Actor*>(refActor);
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
+        FishIdentity fish;
+
+        // Set fish ID for ZD fish
+        if (actor->id == ACTOR_EN_FISH && gPlayState->sceneNum == SCENE_ZORAS_DOMAIN && actor->params == -1 && fs->GetOverworldFishShuffled()) {
+            actor->params ^= fishGroupCounter;
+            fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+            // Kill fish that have already been caught until checks are exhausted (obj_mure SHOULD handle this and not use a null reference :Clueless:)
+            if (!fs->GetDomainCleared() && Flags_GetRandomizerInf(fish.randomizerInf)) {
+                Actor_Kill(actor);
+            }
+            fishGroupCounter++;
+            return;
+        }
+
+        if (actor->id == ACTOR_FISHING && gPlayState->sceneNum == SCENE_FISHING_POND && actor->params >= 100 &&
+            actor->params <= 117 && fs->GetPondFishShuffled()) {
+            // Initialize pond fish for fishsanity
+            // Initialize fishsanity metadata on this actor
+            Fishing* fishActor = static_cast<Fishing*>(refActor);
+            fishActor->fishsanityParams = actor->params;
+            fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+
+            // With every pond fish shuffled, caught fish will not spawn unless all fish have been caught.
+            if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT) > 16 &&
+                !fs->GetPondCleared()) {
+                // Has this fish been caught? If so, remove it.
+                if (Flags_GetRandomizerInf(fish.randomizerInf))
+                    Actor_Kill(actor);
+            }
+        }
+
+    });
+
+    // Update fishsanity when a fish is caught
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>([](int16_t flagType, int16_t flag) {
+        if (!IS_RANDO || flagType != FLAG_RANDOMIZER_INF)
+            return;
+        RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)flag);
+        FishsanityCheckType fsType = Rando::Fishsanity::GetCheckType(rc);
+        if (fsType == FSC_NONE)
+            return;
+
+        // When a pond fish is caught, advance the pond.
+        if (fsType == FSC_POND) {
+            OTRGlobals::Instance->gRandoContext->GetFishsanity()->AdvancePond();
+        }
+    });
+
+    // Award fishing pond checks
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (!IS_RANDO || GameInteractor::IsGameplayPaused() || !gPlayState)
+            return;
+
+        Player* player = GET_PLAYER(gPlayState);
+        if (Player_InBlockingCsMode(gPlayState, player))
+            return;
+
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
+        if (!fs->GetPondFishShuffled())
+            return;
+
+        FishIdentity pending = fs->GetPendingFish();
+        if (!Rando::Fishsanity::IsFish(&pending)) // No fish currently pending
+            return;
+
+        // Award fish
+        GetItemEntry gi = OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(pending.randomizerCheck, GI_NONE);
+        Flags_SetRandomizerInf(pending.randomizerInf);
+        GiveItemEntryWithoutActor(gPlayState, gi);
+        fs->SetPendingFish(NULL);
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+        if (!IS_RANDO)
+            return;
+
+        Actor* actor = static_cast<Actor*>(refActor);
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
+
+        // Detect fish catch
+        if (actor->id == ACTOR_FISHING && fs->GetPondFishShuffled()) {
+            Fishing* fish = static_cast<Fishing*>(refActor);
+
+            // State 6 -> Fish caught and hoisted
+            FishIdentity pending = fs->GetPendingFish();
+            if (fish->fishState == 6 && !Rando::Fishsanity::IsFish(&pending)) {
+                pending = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, fish->fishsanityParams);
+                if (!Flags_GetRandomizerInf(pending.randomizerInf))
+                    fs->SetPendingFish(&pending);
+            }
+        }
+
+        // Reset fish group counter when the group gets culled
+        if (actor->id == ACTOR_OBJ_MURE && gPlayState->sceneNum == SCENE_ZORAS_DOMAIN && fishGroupCounter > 0 &&
+            !(actor->flags & ACTOR_FLAG_UPDATE_WHILE_CULLED) && fs->GetOverworldFishShuffled()) {
+            fishGroupCounter = 0;
+        }
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        if (!IS_RANDO || sceneNum != SCENE_ZORAS_DOMAIN)
+            return;
+        fishGroupCounter = 0;
     });
 }
 
@@ -1271,6 +1546,8 @@ void InitMods() {
     RegisterDaytimeGoldSkultullas();
     RegisterRupeeDash();
     RegisterShadowTag();
+    RegisterPermanentHeartLoss();
+    RegisterDeleteFileOnDeath();
     RegisterHyperBosses();
     RegisterHyperEnemies();
     RegisterBonkDamage();
@@ -1283,6 +1560,7 @@ void InitMods() {
     RegisterRandomizerSheikSpawn();
     RegisterBossSouls();
     RegisterRandomizedEnemySizes();
+    RegisterToTMedallions();
     RegisterFishsanity();
     NameTag_RegisterHooks();
 }
