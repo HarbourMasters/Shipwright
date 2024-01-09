@@ -933,6 +933,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_GREG_HINT],
         &mOptions[RSK_SARIA_HINT],
         &mOptions[RSK_FROGS_HINT],
+        &mOptions[RSK_WARP_SONG_HINTS],
         &mOptions[RSK_BIGGORON_HINT],
         &mOptions[RSK_BIG_POES_HINT],
         &mOptions[RSK_CHICKENS_HINT],

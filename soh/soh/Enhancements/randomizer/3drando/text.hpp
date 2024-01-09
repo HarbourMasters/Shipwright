@@ -53,9 +53,9 @@ public:
             case LANGUAGE_FRA:
                 return GetFrench();
             case LANGUAGE_GER:
-                return german;
+                return GetGerman();
             default:
-                return english;
+                return GetEnglish();
         }
     }
 
