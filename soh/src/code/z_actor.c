@@ -3208,17 +3208,21 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     if (CVarGetInteger("gStairs", 1)) {
         u16 allocType = Stairs_GetAllocType(dbEntry->id);
         size_t overlaySize = Stairs_GetOverlaySize(dbEntry->id);
+        void* loadedRamAddr = NULL;
         if (Stairs_RegisterOverlay(actorId)) {
             if (allocType == 0xFFFF) {
 
             } else if (allocType & STAIRS_ACTOROVL_ALLOC_ABSOLUTE) {
                 if (Stairs_RegisterAbsoluteSpace()) {
-                    StairsArena_MallocRAbsolute(STAIRS_ACTOROVL_ABSOLUTE_SPACE_SIZE);
+                    loadedRamAddr = StairsArena_MallocRAbsolute(STAIRS_ACTOROVL_ABSOLUTE_SPACE_SIZE);
                 }
             } else if (allocType & STAIRS_ACTOROVL_ALLOC_PERSISTENT) {
-                StairsArena_MallocROverlay(overlaySize, dbEntry->id);
+                loadedRamAddr = StairsArena_MallocROverlay(overlaySize, dbEntry->id);
             } else {
-                StairsArena_MallocOverlay(overlaySize, dbEntry->id);
+                loadedRamAddr = StairsArena_MallocOverlay(overlaySize, dbEntry->id);
+            }
+            if (loadedRamAddr == NULL) {
+                return NULL;
             }
         }
     }
@@ -3250,8 +3254,8 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
 
     if ((CVarGetInteger("gStairs", 1))) {
         if (StairsArena_MallocGeneral(dbEntry->instanceSize, (uintptr_t)actor) == NULL) {
-            // Actor_FreeOverlay(dbEntry);
-            // actor = NULL;
+            Actor_FreeOverlay(dbEntry);
+            actor = NULL;
             return NULL;
         }
     }
