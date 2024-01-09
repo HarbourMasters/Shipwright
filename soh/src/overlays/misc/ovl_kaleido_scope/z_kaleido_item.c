@@ -779,8 +779,10 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
     gDPSetCombineLERP(POLY_KAL_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
                       ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
 
-    for (i = 0; i < (CVarGetInteger("gBetterAmmoRendering", 0) ? 24 : 15); i++) {
-        if ((CVarGetInteger("gBetterAmmoRendering", 0) ? ItemInSlotUsesAmmo(i) : gAmmoItems[i] != ITEM_NONE) && (gSaveContext.inventory.items[i] != ITEM_NONE)) {
+    u8 gBetterAmmoRendering = CVarGetInteger("gBetterAmmoRendering", 0);
+
+    for (i = 0; i < (gBetterAmmoRendering ? 24 : 15); i++) {
+        if ((gBetterAmmoRendering ? ItemInSlotUsesAmmo(i) : gAmmoItems[i] != ITEM_NONE) && (gSaveContext.inventory.items[i] != ITEM_NONE)) {
             KaleidoScope_DrawAmmoCount(pauseCtx, play->state.gfxCtx, gSaveContext.inventory.items[i], i);
         }
     }
