@@ -12,11 +12,13 @@
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/stairs.h"
 
 #include <libultraship/libultraship.h>
 
 #include <time.h>
 #include <assert.h>
+// #include <stdlib.h>
 
 void* D_8012D1F0 = NULL;
 //UNK_TYPE D_8012D1F4 = 0; // unused
@@ -221,6 +223,9 @@ void Play_Destroy(GameState* thisx) {
     KaleidoScopeCall_Destroy(play);
     KaleidoManager_Destroy();
     ZeldaArena_Cleanup();
+    // if (CVarGetInteger("gStairs", 1)) {
+    StairsArena_Cleanup();
+    // }
     Fault_RemoveClient(&D_801614B8);
     disableBetaQuest();
     gPlayState = NULL;
@@ -472,6 +477,8 @@ void Play_Init(GameState* thisx) {
     gPlayState = play;
     //play->state.gfxCtx = NULL;
     uintptr_t zAlloc;
+    uintptr_t stairsAlloc;
+    uintptr_t stairsAllocAligned;
     uintptr_t zAllocAligned;
     size_t zAllocSize;
     Player* player;
@@ -664,6 +671,10 @@ void Play_Init(GameState* thisx) {
     D_801614B0.a = 0;
     Flags_UnsetAllEnv(play);
 
+    // Stairs Heap                 
+    stairsAlloc = GAMESTATE_ALLOC_MC(&play->state, STAIRS_ALLOC_SIZE);
+    stairsAllocAligned = (stairsAlloc + 8) & ~0xF;
+    StairsArena_Init(stairsAllocAligned, STAIRS_ALLOC_SIZE - stairsAllocAligned + stairsAlloc);
     osSyncPrintf("ZELDA ALLOC SIZE=%x\n", THA_GetSize(&play->state.tha));
     zAllocSize = THA_GetSize(&play->state.tha);
     zAlloc = GAMESTATE_ALLOC_MC(&play->state, zAllocSize);

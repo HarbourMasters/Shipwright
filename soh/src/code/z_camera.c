@@ -7,6 +7,7 @@
 #include "overlays/actors/ovl_En_Horse/z_en_horse.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/stairs.h"
 
 s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags);
 s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags);
@@ -6924,6 +6925,9 @@ s32 Camera_Special9(Camera* camera) {
 
 Camera* Camera_Create(View* view, CollisionContext* colCtx, PlayState* play) {
     Camera* newCamera = ZELDA_ARENA_MALLOC_DEBUG(sizeof(*newCamera));
+    if ((CVarGetInteger("gStairs", 1))) {
+        StairsArena_MallocGeneral(sizeof(Camera), (uintptr_t)newCamera);
+    }
 
     if (newCamera != NULL) {
         osSyncPrintf(VT_FGCOL(BLUE) "camera: create --- allocate %d byte" VT_RST "\n", sizeof(*newCamera) * 4);
@@ -6937,6 +6941,9 @@ Camera* Camera_Create(View* view, CollisionContext* colCtx, PlayState* play) {
 void Camera_Destroy(Camera* camera) {
     if (camera != NULL) {
         osSyncPrintf(VT_FGCOL(BLUE) "camera: destroy ---" VT_RST "\n");
+        if (CVarGetInteger("gStairs", 1)) {
+            StairsArena_FreeGeneral((uintptr_t)camera);
+        }
         ZELDA_ARENA_FREE_DEBUG(camera);
     } else {
         osSyncPrintf(VT_COL(YELLOW, BLACK) "camera: destroy: already cleared\n" VT_RST);
