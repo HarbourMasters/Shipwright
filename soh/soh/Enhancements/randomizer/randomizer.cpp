@@ -393,8 +393,8 @@ std::unordered_map<RandomizerGet, EnGirlAShopItem> randomizerGetToEnGirlShopItem
     { RG_BUY_GORON_TUNIC,   SI_GORON_TUNIC },
     { RG_BUY_ZORA_TUNIC,    SI_ZORA_TUNIC },
     { RG_BUY_HEART,         SI_RECOVERY_HEART },
-    { RG_BUY_BOMBCHUS_10,    SI_BOMBCHU_10_1 },
-    { RG_BUY_BOMBCHUS_20,    SI_BOMBCHU_20_1 },
+    { RG_BUY_BOMBCHUS_10,   SI_BOMBCHU_10_1 },
+    { RG_BUY_BOMBCHUS_20,   SI_BOMBCHU_20_1 },
     { RG_BUY_DEKU_SEEDS_30, SI_DEKU_SEEDS_30 },
     { RG_BUY_BLUE_FIRE,     SI_BLUE_FIRE },
     { RG_BUY_BOTTLE_BUG,    SI_BUGS },
@@ -570,10 +570,10 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BOMBCHU_5:
         case RG_BOMBCHU_10:
         case RG_BOMBCHU_20:
-        case RG_PROGRESSIVE_BOMBCHUS:
-            return CAN_OBTAIN;
         case RG_BUY_BOMBCHUS_10:
         case RG_BUY_BOMBCHUS_20:
+        case RG_PROGRESSIVE_BOMBCHUS: //RANDOTODO make sure this is correct, I think there was some merge wierdness here
+            return CAN_OBTAIN;
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {
                 case ITEM_NONE:

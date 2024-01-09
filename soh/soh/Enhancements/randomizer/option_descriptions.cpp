@@ -503,7 +503,7 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS] = "Once you obtain bombchus for the first time, refills can be found "
                                                     "in bushes and other places where bomb drops can normally spawn."
                                                     "\n"
-                                                    "If you do not have Bombchu Bag disabled, you will also need a"
+                                                    "If you do not have Bombchus in Logic enabled, you will also need a"
                                                     "Bomb bag for bombchus to drop";
     mOptionDescriptions[RSK_BLUE_FIRE_ARROWS] =
         "Ice Arrows act like Blue Fire, making them able to melt red ice. "

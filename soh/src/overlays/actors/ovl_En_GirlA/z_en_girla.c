@@ -474,7 +474,7 @@ void EnGirlA_InitItem(EnGirlA* this, PlayState* play) {
         osSyncPrintf("引数がおかしいよ(arg_data=%d)！！\n", this->actor.params);
         osSyncPrintf(VT_RST);
         assert((params >= SI_MAX) && (params < 0));
-        //ASSERT(0, "0", "../z_en_girlA.c", 1421); zret assert, currently errors. I assume a macro?
+        //ASSERT(0, "0", "../z_en_girlA.c", 1421); zret assert, currently errors due to missing macro
         return;
     }
 
@@ -506,7 +506,7 @@ void EnGirlA_InitItem(EnGirlA* this, PlayState* play) {
         osSyncPrintf(VT_COL(RED, WHITE));
         osSyncPrintf("バンクが無いよ！！(%s)\n", sShopItemDescriptions[params]);
         osSyncPrintf(VT_RST);
-        //ASSERT(0, "0", "../z_en_girlA.c", 1434); zret assert, currently errors. I assume a macro?
+        //ASSERT(0, "0", "../z_en_girlA.c", 1434); zret assert, currently errors due to missing macro
         return;
     }
 

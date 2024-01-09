@@ -1817,7 +1817,6 @@ void HintTable_Init_Item() {
                        Text{"Bombchus (20 pieces)", /*french*/"une vingtaine de Missiles", /*spanish*/"unos (20) bombchus"}
     );
 
-  //RHT_BOMBCHUS_DROP
 
     hintTable[RHT_ARROWS_5] = HintText::Item({
                        //obscure text
