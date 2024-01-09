@@ -1,5 +1,5 @@
 <DisplayList Version="0">
-	<LoadVertices Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_vtx_0" VertexBufferIndex="0" VertexOffset="0" Count="32"/>
+	<LoadVertices Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_vtx_7" VertexBufferIndex="0" VertexOffset="0" Count="32"/>
 	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="3" V12="1" Flag1="0"/>
 	<Triangles2 V00="4" V01="3" V02="0" Flag0="0" V10="4" V11="5" V12="3" Flag1="0"/>
 	<Triangles2 V00="6" V01="5" V02="4" Flag0="0" V10="6" V11="7" V12="5" Flag1="0"/>
@@ -15,7 +15,7 @@
 	<Triangles2 V00="22" V01="24" V02="26" Flag0="0" V10="22" V11="26" V12="27" Flag1="0"/>
 	<Triangles2 V00="28" V01="27" V02="26" Flag0="0" V10="28" V11="29" V12="27" Flag1="0"/>
 	<Triangles2 V00="29" V01="28" V02="30" Flag0="0" V10="29" V11="30" V12="31" Flag1="0"/>
-	<LoadVertices Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_vtx_0" VertexBufferIndex="0" VertexOffset="32" Count="32"/>
+	<LoadVertices Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_vtx_7" VertexBufferIndex="0" VertexOffset="32" Count="32"/>
 	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="3" V12="1" Flag1="0"/>
 	<Triangles2 V00="3" V01="0" V02="4" Flag0="0" V10="5" V11="4" V12="0" Flag1="0"/>
 	<Triangles2 V00="5" V01="6" V02="4" Flag0="0" V10="7" V11="6" V12="5" Flag1="0"/>
@@ -32,7 +32,7 @@
 	<Triangles2 V00="23" V01="26" V02="24" Flag0="0" V10="27" V11="26" V12="23" Flag1="0"/>
 	<Triangles2 V00="27" V01="28" V02="26" Flag0="0" V10="29" V11="28" V12="27" Flag1="0"/>
 	<Triangles2 V00="29" V01="27" V02="30" Flag0="0" V10="30" V11="27" V12="31" Flag1="0"/>
-	<LoadVertices Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_vtx_0" VertexBufferIndex="0" VertexOffset="64" Count="32"/>
+	<LoadVertices Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_vtx_7" VertexBufferIndex="0" VertexOffset="64" Count="32"/>
 	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
 	<Triangles2 V00="4" V01="0" V02="5" Flag0="0" V10="4" V11="5" V12="6" Flag1="0"/>
 	<Triangles2 V00="4" V01="6" V02="7" Flag0="0" V10="8" V11="7" V12="6" Flag1="0"/>
@@ -48,7 +48,7 @@
 	<Triangles2 V00="26" V01="27" V02="25" Flag0="0" V10="27" V11="26" V12="28" Flag1="0"/>
 	<Triangles2 V00="27" V01="28" V02="29" Flag0="0" V10="30" V11="29" V12="28" Flag1="0"/>
 	<Triangle1 V00="30" V01="31" V02="29"/>
-	<LoadVertices Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_vtx_0" VertexBufferIndex="0" VertexOffset="96" Count="32"/>
+	<LoadVertices Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_vtx_7" VertexBufferIndex="0" VertexOffset="96" Count="32"/>
 	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="3" V12="1" Flag1="0"/>
 	<Triangles2 V00="3" V01="4" V02="1" Flag0="0" V10="3" V11="5" V12="4" Flag1="0"/>
 	<Triangles2 V00="6" V01="1" V02="4" Flag0="0" V10="6" V11="7" V12="1" Flag1="0"/>
@@ -67,7 +67,7 @@
 	<Triangles2 V00="11" V01="12" V02="23" Flag0="0" V10="23" V11="12" V12="15" Flag1="0"/>
 	<Triangles2 V00="23" V01="15" V02="18" Flag0="0" V10="27" V11="28" V12="29" Flag1="0"/>
 	<Triangles2 V00="29" V01="30" V02="27" Flag0="0" V10="29" V11="31" V12="30" Flag1="0"/>
-	<LoadVertices Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_vtx_0" VertexBufferIndex="0" VertexOffset="128" Count="17"/>
+	<LoadVertices Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_vtx_7" VertexBufferIndex="0" VertexOffset="128" Count="17"/>
 	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="3" V11="4" V12="5" Flag1="0"/>
 	<Triangles2 V00="3" V01="6" V02="4" Flag0="0" V10="7" V11="6" V12="3" Flag1="0"/>
 	<Triangles2 V00="7" V01="8" V02="6" Flag0="0" V10="9" V11="8" V12="7" Flag1="0"/>

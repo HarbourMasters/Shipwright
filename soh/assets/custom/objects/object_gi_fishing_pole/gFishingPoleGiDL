@@ -2,19 +2,19 @@
 	<ClearGeometryMode G_LIGHTING="1" />
 	<LoadVertices Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_vtx_cull" VertexBufferIndex="0" VertexOffset="0" Count="8"/>
 	<CullDisplayList Start="0" End="7"/>
-	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gFishingPoleGiDL_line"/>
+	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gFishingPoleGiDL_reel_handle_metal"/>
 	<CallDisplayList Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_tri_0"/>
 	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gFishingPoleGiDL_wood"/>
 	<CallDisplayList Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_tri_1"/>
 	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gFishingPoleGiDL_black"/>
 	<CallDisplayList Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_tri_2"/>
-	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gFishingPoleGiDL_reel_metal_001"/>
+	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gFishingPoleGiDL_line"/>
 	<CallDisplayList Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_tri_3"/>
-	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gFishingPoleGiDL_reel_accent_001"/>
+	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gFishingPoleGiDL_reel_metal_001"/>
 	<CallDisplayList Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_tri_4"/>
-	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gFishingPoleGiDL_reel_white"/>
+	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gFishingPoleGiDL_reel_accent_001"/>
 	<CallDisplayList Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_tri_5"/>
-	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gFishingPoleGiDL_reel_handle_metal"/>
+	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gFishingPoleGiDL_reel_white"/>
 	<CallDisplayList Path="objects/object_gi_fishing_pole/gFishingPoleGiDL_tri_6"/>
 	<PipeSync/>
 	<SetGeometryMode G_LIGHTING="1" />
