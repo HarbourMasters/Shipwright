@@ -157,6 +157,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(RR_LAKE_HYLIA, {[]{return true;}}),
   });
 
+  // TODO: should some of these helpers be done via events instead?
   areaTable[RR_LH_FISHING_HOLE] = Area("LH Fishing Hole", "LH Fishing Hole", RA_NONE, DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_LH_CHILD_FISHING, {[]{return logic->CanFish && logic->IsChild;}}),
