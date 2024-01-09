@@ -2620,6 +2620,8 @@ s16 func_80823A0C(PlayState* play, Vtx* vtx, s16 arg2, s16 arg3) {
 
 static s16 D_8082B11C[] = { 0, 4, 8, 12, 24, 32, 56 };
 
+static s16 D_8082B11C_all[] = { 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 96 };
+
 static s16 D_8082B12C[] = { -114, 12, 44, 76 };
 
 static u8 D_8082B134[] = { 1, 5, 9, 13 };
@@ -2742,7 +2744,7 @@ void KaleidoScope_InitVertices(PlayState* play, GraphicsContext* gfxCtx) {
         pauseCtx->cursorVtx[19].v.tc[1] = 0x400;
 
     // 24 items, 7 "item selected" backgrounds, 14 ammo digits (2 each for 7 items) -- then 4 vertices for each
-    pauseCtx->itemVtx = Graph_Alloc(gfxCtx, (24 + 7 + 14) * 4 * sizeof(Vtx));
+    pauseCtx->itemVtx = Graph_Alloc(gfxCtx, (24 + 7 + 2 * (CVarGetInteger("gBetterAmmoRendering", 0) ? ARRAY_COUNT(D_8082B11C_all) : ARRAY_COUNT(D_8082B11C))) * 4 * sizeof(Vtx));
 
     for (phi_t4 = 0, phi_t2 = 0, phi_t5 = 58; phi_t4 < 4; phi_t4++, phi_t5 -= 32) {
         for (phi_t1 = -96, phi_t3 = 0; phi_t3 < 6; phi_t3++, phi_t2 += 4, phi_t1 += 32) {
@@ -2832,8 +2834,8 @@ void KaleidoScope_InitVertices(PlayState* play, GraphicsContext* gfxCtx) {
         }
     }
 
-    for (phi_t3 = 0; phi_t3 < 7; phi_t3++) {
-        phi_t4 = D_8082B11C[phi_t3];
+    for (phi_t3 = 0; phi_t3 < (CVarGetInteger("gBetterAmmoRendering", 0) ? ARRAY_COUNT(D_8082B11C_all) : ARRAY_COUNT(D_8082B11C)); phi_t3++) {
+        phi_t4 = CVarGetInteger("gBetterAmmoRendering", 0) ? D_8082B11C_all[phi_t3] : D_8082B11C[phi_t3];
 
         pauseCtx->itemVtx[phi_t2 + 0].v.ob[0] = pauseCtx->itemVtx[phi_t2 + 2].v.ob[0] =
             pauseCtx->itemVtx[phi_t4].v.ob[0];
