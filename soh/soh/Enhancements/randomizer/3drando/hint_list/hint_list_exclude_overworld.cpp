@@ -271,8 +271,17 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"#fishing in youth# bestows", /*french*/"#pêcher dans sa jeunesse# promet", /*spanish*/"#pescar en la juventud# conduce a"},
   });
 
+    // TODO: needs french + spanish translation
+    hintTable[RHT_LH_POND_FISH] = HintText::Exclude({
+                       //obscure text
+                       Text{"#hitting the pond# reveals", /*french*/ "", /*spanish*/ ""},
+                       {},
+                       //clear text
+                       Text{"#the fishing pond's bounty# includes", /*french*/ "", /*spanish*/ ""}
+    });
+
     // TODO: needs french translation
-    hintTable[RHT_LH_CHILD_LOACH] = HintText::Exclude(
+    hintTable[RHT_LH_HYRULE_LOACH] = HintText::Exclude(
         {
             // obscure text
             Text{ "#fishing the legend# bestows", /*french*/ "!!!", /*spanish*/ "#pescar a la leyenda# conduce a" },
@@ -287,17 +296,6 @@ void HintTable_Init_Exclude_Overworld() {
                        //obscure text
                        Text{"#fishing in maturity# bestows", /*french*/"#pêcher dans sa maturité# promet", /*spanish*/"#pescar en la madurez# conduce a"},
   });
-
-    // TODO: needs french translation + double check for spanish
-    hintTable[RHT_LH_ADULT_LOACH] = HintText::Exclude(
-        {
-            // obscure text
-            Text{ "#fishing the legend in maturity# bestows", /*french*/ "!!!", /*spanish*/ "#pescar a la leyenda en la madurez# conduce a" },
-        },
-        {},
-        // clear text
-        Text{ "#fishing the hyrule loach in maturity# will give you", /*french*/ "!!!",
-              /*spanish*/ "si #pescas a la Locha de Hyrule en la madurez# encontrarás" });
 
     hintTable[RHT_LH_LAB_DIVE] = HintText::Exclude({
                        //obscure text
