@@ -2460,14 +2460,6 @@ void RandomizerSettingsWindow::UpdateElement() {
     }
 }
 
-
-CustomMessage Randomizer::GetCursedSkullMessage(s16 params, RandomizerCheck hintedCheck) {
-    auto ctx = Rando::Context::GetInstance();
-    CustomMessage messageEntry = GetMiscHintMessage(TEXT_SKULLTULA_PEOPLE_IM_CURSED, hintedCheck);
-    messageEntry.Replace("{{params}}", std::to_string(params*10));
-    return messageEntry;
-}
-
 CustomMessage Randomizer::ReplaceWithItemName(CustomMessage message, std::string&& toReplace, RandomizerCheck hintedCheck){
     auto ctx = Rando::Context::GetInstance();
     RandomizerGet targetRG = ctx->GetItemLocation(hintedCheck)->GetPlacedRandomizerGet();
@@ -2493,6 +2485,13 @@ CustomMessage Randomizer::GetMiscHintMessage(TextIDs textToGet, RandomizerCheck 
     if (otherCheck != RC_UNKNOWN_CHECK){
         messageEntry = ReplaceWithItemName(messageEntry, "{{item2}}", otherCheck);
     }
+    return messageEntry;
+}
+
+CustomMessage Randomizer::GetCursedSkullMessage(s16 params, RandomizerCheck hintedCheck) {
+    auto ctx = Rando::Context::GetInstance();
+    CustomMessage messageEntry = GetMiscHintMessage(TEXT_SKULLTULA_PEOPLE_IM_CURSED, hintedCheck);
+    messageEntry.Replace("{{params}}", std::to_string(params*10));
     return messageEntry;
 }
 

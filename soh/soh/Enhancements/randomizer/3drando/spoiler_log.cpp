@@ -552,10 +552,6 @@ Rando::ItemLocation* GetItemLocation(RandomizerGet item) {
 static void WriteHints() {
     auto ctx = Rando::Context::GetInstance();
 
-    StaticHintData dampeHintData = GetDampeHintData();
-    StaticHintData sariaHintData = GetSariaHintData();
-    StaticHintData gregHintData = GetGregHintData();
-
     uint8_t language = ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex();
 
     if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
@@ -613,17 +609,17 @@ static void WriteHints() {
     }
     if (ctx->GetOption(RSK_DAMPES_DIARY_HINT)){
       jsonData["dampeText"] = ctx->GetHint(RH_DAMPES_DIARY)->GetText().GetForLanguage(language);
-      jsonData["dampeHintLoc"] = Rando::StaticData::GetLocation(dampeHintData.hintLoc)->GetHint()->GetText().GetForLanguage(language);
+      jsonData["dampeHintLoc"] = Rando::StaticData::GetLocation(ctx->GetHint(RH_DAMPES_DIARY)->GetHintedLocation())->GetName();
       jsonData["dampeRegion"] = ::Hint(ctx->GetHint(RH_DAMPES_DIARY)->GetHintedArea()).GetText().GetEnglish();
     }
     if (ctx->GetOption(RSK_GREG_HINT)){
       jsonData["gregText"] = ctx->GetHint(RH_GREG_RUPEE)->GetText().GetForLanguage(language);
-      jsonData["gregLoc"] = Rando::StaticData::GetLocation(gregHintData.hintLoc)->GetHint()->GetText().GetForLanguage(language);
+      jsonData["gregLoc"] = Rando::StaticData::GetLocation(ctx->GetHint(RH_GREG_RUPEE)->GetHintedLocation())->GetName();
       jsonData["gregRegion"] = ::Hint(ctx->GetHint(RH_GREG_RUPEE)->GetHintedArea()).GetText().GetEnglish();
     }
     if (ctx->GetOption(RSK_SARIA_HINT)){
       jsonData["sariaText"] = ctx->GetHint(RH_SARIA)->GetText().GetForLanguage(language);
-      jsonData["sariaHintLoc"] = Rando::StaticData::GetLocation(sariaHintData.hintLoc)->GetHint()->GetText().GetForLanguage(language);
+      jsonData["sariaHintLoc"] = Rando::StaticData::GetLocation(ctx->GetHint(RH_SARIA)->GetHintedLocation())->GetName();
       jsonData["sariaRegion"] = ::Hint(ctx->GetHint(RH_SARIA)->GetHintedArea()).GetText().GetEnglish();
     }
 

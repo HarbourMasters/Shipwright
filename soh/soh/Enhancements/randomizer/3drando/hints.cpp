@@ -306,25 +306,11 @@ Text warpPreludeText;
 
 std::string masterSwordHintLoc;
 std::string lightArrowHintLoc;
-StaticHintData dampeHintData;
-StaticHintData gregHintData;
-StaticHintData sariaHintData;
 
 void SetGanonText(Text text){
   ganonText = text;
 }
 
-const StaticHintData& GetDampeHintData() {
-  return dampeHintData;
-}
-
-const StaticHintData& GetGregHintData() {
-  return gregHintData;
-}
-
-const StaticHintData& GetSariaHintData() {
-  return sariaHintData;
-}
 
 std::string GetMasterSwordHintLoc() {
     return masterSwordHintLoc;
@@ -899,7 +885,7 @@ void CreateMerchantsHints() {
 }
 
 //RANDOTODO add Better Links Pocket and starting item handling once more starting items are added
-void CreateSpecialItemHint(uint32_t item, RandomizerHintKey hintKey, std::vector<RandomizerCheck> hints, RandomizerHintTextKey text1, RandomizerHintTextKey text2, StaticHintData& hintData, bool condition, bool yourpocket = false) {
+void CreateSpecialItemHint(uint32_t item, RandomizerHintKey hintKey, std::vector<RandomizerCheck> hints, RandomizerHintTextKey text1, RandomizerHintTextKey text2, bool condition, bool yourpocket = false) {
   auto ctx = Rando::Context::GetInstance();
   if(condition){
       RandomizerCheck location = FilterFromPool(ctx->allLocations, [item, ctx](const RandomizerCheck loc) {
@@ -909,11 +895,10 @@ void CreateSpecialItemHint(uint32_t item, RandomizerHintKey hintKey, std::vector
     if (IsReachableWithout(hints,location,true)){
       ctx->GetItemLocation(location)->SetAsHinted();
     }
-    
-    hintData.hintArea = ctx->GetItemLocation(location)->GetArea();
-    hintData.hintText = ::Hint(text1).GetText() + ::Hint(hintData.hintArea).GetText() + ::Hint(text2).GetText();
-    hintData.hintLoc = location;
-    ctx->AddHint(hintKey, AutoFormatHintText(hintData.hintText), location, HINT_TYPE_STATIC, "Static", hintData.hintArea);
+
+    RandomizerArea area = ctx->GetItemLocation(location)->GetArea();
+    ctx->AddHint(hintKey, AutoFormatHintText(::Hint(text1).GetText() + ::Hint(area).GetText() + ::Hint(text2).GetText()),
+                 location, HINT_TYPE_STATIC, "Static", area);
   } 
 }
 
@@ -1117,9 +1102,9 @@ void CreateAllHints(){
   auto ctx = Rando::Context::GetInstance();
   CreateGanonAndSheikText();
   CreateAltarText();
-  CreateSpecialItemHint(RG_PROGRESSIVE_HOOKSHOT, RH_DAMPES_DIARY, {RC_DAMPE_HINT}, RHT_DAMPE_DIARY01, RHT_DAMPE_DIARY02, dampeHintData, (bool)ctx->GetOption(RSK_DAMPES_DIARY_HINT));
-  CreateSpecialItemHint(RG_GREG_RUPEE, RH_GREG_RUPEE, {RC_GREG_HINT}, RHT_GREG_HINT01, RHT_GREG_HINT02, gregHintData, (bool)ctx->GetOption(RSK_GREG_HINT));
-  CreateSpecialItemHint(RG_PROGRESSIVE_MAGIC_METER, RH_SARIA, {RC_SARIA_SONG_HINT, RC_SONG_FROM_SARIA}, RHT_SARIA_TEXT01, RHT_SARIA_TEXT02, sariaHintData, (bool)ctx->GetOption(RSK_SARIA_HINT));
+  CreateSpecialItemHint(RG_PROGRESSIVE_HOOKSHOT, RH_DAMPES_DIARY, {RC_DAMPE_HINT}, RHT_DAMPE_DIARY01, RHT_DAMPE_DIARY02, (bool)ctx->GetOption(RSK_DAMPES_DIARY_HINT));
+  CreateSpecialItemHint(RG_GREG_RUPEE, RH_GREG_RUPEE, {RC_GREG_HINT}, RHT_GREG_HINT01, RHT_GREG_HINT02, (bool)ctx->GetOption(RSK_GREG_HINT));
+  CreateSpecialItemHint(RG_PROGRESSIVE_MAGIC_METER, RH_SARIA, {RC_SARIA_SONG_HINT, RC_SONG_FROM_SARIA}, RHT_SARIA_TEXT01, RHT_SARIA_TEXT02, (bool)ctx->GetOption(RSK_SARIA_HINT));
 
   if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ON_HINT)) {
     CreateMerchantsHints();

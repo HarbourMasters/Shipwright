@@ -62,12 +62,6 @@ enum class HintCategory {
   MerchantsDialogs,
 };
 
-struct StaticHintData {
-  Text hintText = Text();
-  RandomizerCheck hintLoc = RC_UNKNOWN_CHECK;
-  RandomizerArea hintArea = RA_NONE;
-};
-
 class HintText {
 public:
     HintText() = default;
@@ -224,10 +218,6 @@ extern void CreateAllHints();
 extern void CreateWarpSongTexts();
 
 void SetGanonText(Text text);
-
-const StaticHintData& GetDampeHintData();
-const StaticHintData& GetGregHintData();
-const StaticHintData& GetSariaHintData();
 
 std::string GetMasterSwordHintLoc();
 std::string GetLightArrowHintLoc();
