@@ -982,6 +982,10 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance", true, false);
                 UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this will remove their draw distance");
             }
+            if (UIWidgets::PaddedEnhancementCheckbox("Show Age-Dependent Equipment", "gEquipmentAlwaysVisible", true, false)) {
+                UpdatePatchHand(); 
+            }
+            UIWidgets::Tooltip("Makes all equipment visible, regardless of Age.");
             UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gLowResMode", true, false);
             UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
             UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", "gDrawLineupTick", true, false);
@@ -1056,8 +1060,6 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Space between text characters (useful for HD font textures)");
             UIWidgets::PaddedEnhancementCheckbox("More info in file select", "gFileSelectMoreInfo", true, false);
             UIWidgets::Tooltip("Shows what items you have collected in the file select screen, like in N64 randomizer");
-            UIWidgets::PaddedEnhancementCheckbox("Show Age-Dependent Equipment", "gEquipmentAlwaysVisible", true, false);
-            UIWidgets::Tooltip("Makes all equipment visible, regardless of Age. Will still show hand of original age's model.");
             ImGui::EndMenu();
         }
 

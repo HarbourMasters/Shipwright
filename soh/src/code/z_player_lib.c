@@ -600,7 +600,13 @@ void Player_SetModelsForHoldingShield(Player* this) {
         if ((CVarGetInteger("gShieldTwoHanded", 0) && (this->heldItemAction != PLAYER_IA_DEKU_STICK) ||
             !Player_HoldsTwoHandedWeapon(this)) && !Player_IsChildWithHylianShield(this)) {
             this->rightHandType = PLAYER_MODELTYPE_RH_SHIELD;
-            this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][gSaveContext.linkAge];
+            if (LINK_IS_CHILD && (CVarGetInteger("gEquipmentAlwaysVisible", 0)) && (this->currentShield == PLAYER_SHIELD_MIRROR)) {
+                this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][0];
+                } else if (LINK_IS_ADULT && (CVarGetInteger("gEquipmentAlwaysVisible", 0)) && (this->currentShield == PLAYER_SHIELD_DEKU)) {
+                    this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][1];
+                } else {
+                    this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][gSaveContext.linkAge];
+            }
             if (this->sheathType == PLAYER_MODELTYPE_SHEATH_18) {
                 this->sheathType = PLAYER_MODELTYPE_SHEATH_16;
             } else if (this->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
@@ -618,30 +624,61 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->leftHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_LEFT_HAND];
     this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
 
-    if (LINK_IS_CHILD && (CVarGetInteger("gEquipmentAlwaysVisible", 0)) && (this->leftHandType == PLAYER_MODELTYPE_LH_HAMMER)) {
+    if (LINK_IS_CHILD && CVarGetInteger("gEquipmentAlwaysVisible", 0) && (this->leftHandType == PLAYER_MODELTYPE_LH_HAMMER)) {
 		this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][0];
 	}
-    if (LINK_IS_ADULT && (CVarGetInteger("gEquipmentAlwaysVisible", 0)) &&
+    if (LINK_IS_CHILD && CVarGetInteger("gEquipmentAlwaysVisible", 0) &&
+        ((this->leftHandType == PLAYER_MODELTYPE_LH_SWORD) || (this->leftHandType == PLAYER_MODELTYPE_LH_BGS)) && 
+        ((gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI))) {
+        this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][0];
+    }
+    if (LINK_IS_ADULT && CVarGetInteger("gEquipmentAlwaysVisible", 0) &&
         (this->leftHandType == PLAYER_MODELTYPE_LH_BOOMERANG)) {
         this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][1];
     }
-    
+    if (LINK_IS_ADULT && CVarGetInteger("gEquipmentAlwaysVisible", 0) &&
+        (this->leftHandType == PLAYER_MODELTYPE_LH_SWORD) &&
+        (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI)) {
+        this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][1];
+    }
+
     // Right hand
     this->rightHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_RIGHT_HAND];
     this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
 
-    if (LINK_IS_CHILD && (CVarGetInteger("gEquipmentAlwaysVisible", 0)) &&
-        (this->rightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT)) {
+    if (LINK_IS_CHILD && CVarGetInteger("gEquipmentAlwaysVisible", 0) && this->rightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT) {
 		this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][0];
 	}
+    if (LINK_IS_CHILD && CVarGetInteger("gEquipmentAlwaysVisible", 0) && this->rightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT) {
+        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][0];
+	}
+    if (LINK_IS_CHILD && CVarGetInteger("gEquipmentAlwaysVisible", 0) && 
+        this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD && this->currentShield == PLAYER_SHIELD_MIRROR) {
+        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][0];
+    }
+    if (LINK_IS_ADULT && CVarGetInteger("gEquipmentAlwaysVisible", 0) &&
+        this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD && this->currentShield == PLAYER_SHIELD_DEKU) {
+        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][1];
+    }
+    if (LINK_IS_ADULT && CVarGetInteger("gEquipmentAlwaysVisible", 0) && this->rightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT) {
+		this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][1];
+    }
 
     if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && this->rightHandType == 11) { // If holding Bow/Slingshot
         this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
     }
 
     // Sheath
-    this->sheathType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_SHEATH];
-    this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
+    if (LINK_IS_CHILD && CVarGetInteger("gEquipmentAlwaysVisible", 0) && this->currentShield == PLAYER_SHIELD_MIRROR) {
+        this->sheathType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_SHEATH];
+        this->sheathDLists = &sPlayerDListGroups[this->sheathType][0];
+        } else if (LINK_IS_ADULT && CVarGetInteger("gEquipmentAlwaysVisible", 0) && this->currentShield == PLAYER_SHIELD_DEKU) {
+			this->sheathType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_SHEATH];
+			this->sheathDLists = &sPlayerDListGroups[this->sheathType][1];
+        } else {
+            this->sheathType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_SHEATH];
+            this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
+    }
 
     // Waist
     this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
