@@ -3146,17 +3146,19 @@ void Actor_FreeOverlay(ActorDBEntry* dbEntry) {
             dbEntry->reset();
         }
 
-        if (!Stairs_RegisterOverlay(dbEntry->id)) {
-            u16 allocType = Stairs_GetAllocType(dbEntry->id);
+        if (CVarGetInteger("gStairs", 1)) {
+            if (!Stairs_RegisterOverlay(dbEntry->id)) {
+                u16 allocType = Stairs_GetAllocType(dbEntry->id);
 
-            if (allocType & STAIRS_ACTOROVL_ALLOC_PERSISTENT) {
-                // Persistent, do not de-allocate
-            } else if (allocType & STAIRS_ACTOROVL_ALLOC_ABSOLUTE) {
-                // Unregister but do not de-allocate
-                Stairs_UnregisterOverlay(dbEntry->id);
-            } else {
-                StairsArena_FreeOverlay(dbEntry->id);
-                Stairs_UnregisterOverlay(dbEntry->id);
+                if (allocType & STAIRS_ACTOROVL_ALLOC_PERSISTENT) {
+                    // Persistent, do not de-allocate
+                } else if (allocType & STAIRS_ACTOROVL_ALLOC_ABSOLUTE) {
+                    // Unregister but do not de-allocate
+                    Stairs_UnregisterOverlay(dbEntry->id);
+                } else {
+                    StairsArena_FreeOverlay(dbEntry->id);
+                    Stairs_UnregisterOverlay(dbEntry->id);
+                }
             }
         }
 
