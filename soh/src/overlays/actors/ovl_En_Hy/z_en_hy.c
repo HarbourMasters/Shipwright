@@ -32,6 +32,8 @@ void func_80A7127C(EnHy* this, PlayState* play);
 void EnHy_DoNothing(EnHy* this, PlayState* play);
 void func_80A714C4(EnHy* this, PlayState* play);
 
+extern void BankerMain(PlayState* play, GraphicsContext* gfxCtx);
+
 const ActorInit En_Hy_InitVars = {
     ACTOR_EN_HY,
     ACTORCAT_NPC,
