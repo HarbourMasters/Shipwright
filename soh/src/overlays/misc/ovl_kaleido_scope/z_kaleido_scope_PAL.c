@@ -20,6 +20,7 @@
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/kaleido.h"
 
 
 static void* sEquipmentFRATexs[] = {
@@ -1441,18 +1442,19 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
             POLY_KAL_DISP =
                 KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->mapPageVtx, sMapTexs[gSaveContext.language]);
 
-            if (sInDungeonScene) {
-                KaleidoScope_DrawDungeonMap(play, gfxCtx);
-                Gfx_SetupDL_42Opa(gfxCtx);
-
-                gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-
-                if (CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, gSaveContext.mapIndex)) {
-                    PauseMapMark_Draw(play);
-                }
-            } else {
-                KaleidoScope_DrawWorldMap(play, gfxCtx);
-            }
+            RandoKaleido_DrawMiscCollectibles(play);
+//            if (sInDungeonScene) {
+//                KaleidoScope_DrawDungeonMap(play, gfxCtx);
+//                Gfx_SetupDL_42Opa(gfxCtx);
+//
+//                gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+//
+//                if (CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, gSaveContext.mapIndex)) {
+//                    PauseMapMark_Draw(play);
+//                }
+//            } else {
+//                KaleidoScope_DrawWorldMap(play, gfxCtx);
+//            }
         }
 
         gDPPipeSync(POLY_KAL_DISP++);
@@ -1485,24 +1487,23 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 POLY_KAL_DISP =
                     KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->mapPageVtx, sMapTexs[gSaveContext.language]);
 
-                if (CHECK_BTN_ALL(input->cur.button, BTN_CUP)) {
-                    KaleidoScope_DrawMiscCollectibles(play, gfxCtx);
-                } else if (sInDungeonScene) {
-                    KaleidoScope_DrawDungeonMap(play, gfxCtx);
-                    Gfx_SetupDL_42Opa(gfxCtx);
-
-                    gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-
-                    if (pauseCtx->cursorSpecialPos == 0) {
-                        KaleidoScope_DrawCursor(play, PAUSE_MAP);
-                    }
-
-                    if (CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, gSaveContext.mapIndex)) {
-                        PauseMapMark_Draw(play);
-                    }
-                } else {
-                    KaleidoScope_DrawWorldMap(play, gfxCtx);
-                }
+                RandoKaleido_DrawMiscCollectibles(play);
+//                if (sInDungeonScene) {
+//                    KaleidoScope_DrawDungeonMap(play, gfxCtx);
+//                    Gfx_SetupDL_42Opa(gfxCtx);
+//
+//                    gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+//
+//                    if (pauseCtx->cursorSpecialPos == 0) {
+//                        KaleidoScope_DrawCursor(play, PAUSE_MAP);
+//                    }
+//
+//                    if (CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, gSaveContext.mapIndex)) {
+//                        PauseMapMark_Draw(play);
+//                    }
+//                } else {
+//                    KaleidoScope_DrawWorldMap(play, gfxCtx);
+//                }
                 break;
 
             case PAUSE_QUEST:

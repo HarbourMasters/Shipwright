@@ -30,6 +30,7 @@ class Dungeons;
 class DungeonInfo;
 class TrialInfo;
 class Trials;
+class Kaleido;
 
 class Context {
   public:
@@ -70,6 +71,7 @@ class Context {
     DungeonInfo* GetDungeon(size_t key) const;
     std::shared_ptr<Logic> GetLogic();
     std::shared_ptr<Trials> GetTrials();
+    std::shared_ptr<Kaleido> GetKaleido();
     TrialInfo* GetTrial(size_t key) const;
     TrialInfo* GetTrial(TrialKey key) const;
     static Sprite* GetSeedTexture(uint8_t index);
@@ -101,6 +103,7 @@ class Context {
     std::shared_ptr<Logic> mLogic;
     std::shared_ptr<Trials> mTrials;
     std::shared_ptr<Fishsanity> mFishsanity;
+    std::shared_ptr<Kaleido> mKaleido;
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;
     bool mPlandoLoaded = false;
