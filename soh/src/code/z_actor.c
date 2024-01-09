@@ -3147,7 +3147,7 @@ void Actor_FreeOverlay(ActorDBEntry* dbEntry) {
         }
 
         if (CVarGetInteger("gStairs", 1)) {
-            if (!Stairs_RegisterOverlay(dbEntry->id)) {
+            if (Stairs_GetOverlayRegistered(dbEntry->id)) {
                 u16 allocType = Stairs_GetAllocType(dbEntry->id);
 
                 if (allocType & STAIRS_ACTOROVL_ALLOC_PERSISTENT) {
@@ -3213,10 +3213,10 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
 
             } else if (allocType & STAIRS_ACTOROVL_ALLOC_ABSOLUTE) {
                 if (Stairs_RegisterAbsoluteSpace()) {
-                    StairsArena_MallocRAbsolute(overlaySize);
+                    StairsArena_MallocRAbsolute(STAIRS_ACTOROVL_ABSOLUTE_SPACE_SIZE);
                 }
             } else if (allocType & STAIRS_ACTOROVL_ALLOC_PERSISTENT) {
-                StairsArena_MallocRGeneral(overlaySize, dbEntry->id);
+                StairsArena_MallocROverlay(overlaySize, dbEntry->id);
             } else {
                 StairsArena_MallocOverlay(overlaySize, dbEntry->id);
             }
@@ -3249,10 +3249,9 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     }
 
     if ((CVarGetInteger("gStairs", 1))) {
-        Actor* ptr = StairsArena_MallocGeneral(dbEntry->instanceSize, (uintptr_t)actor);
-        if (ptr == NULL) {
-            Actor_FreeOverlay(dbEntry);
-            actor = NULL;
+        if (StairsArena_MallocGeneral(dbEntry->instanceSize, (uintptr_t)actor) == NULL) {
+            // Actor_FreeOverlay(dbEntry);
+            // actor = NULL;
             return NULL;
         }
     }
@@ -3399,7 +3398,7 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
     newHead = Actor_RemoveFromCategory(play, actorCtx, actor);
 
     if (CVarGetInteger("gStairs", 1)) {
-        StairsArena_FreeActor((uintptr_t)actor);
+        StairsArena_FreeGeneral((uintptr_t)actor);
     }
 
     ZELDA_ARENA_FREE_DEBUG(actor);

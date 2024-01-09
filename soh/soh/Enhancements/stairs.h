@@ -18,6 +18,7 @@ extern "C" {
 
 u16 Stairs_GetAllocType(u16 id);
 s32 Stairs_RegisterOverlay(u16 id);
+s32 Stairs_GetOverlayRegistered(u16 id);
 s32 Stairs_UnregisterOverlay(u16 id);
 s32 Stairs_RegisterAbsoluteSpace();
 s32 Stairs_GetAbsoluteSpace();
@@ -40,12 +41,12 @@ void StairsArena_Cleanup();
 u8 StairsArena_IsInitalized();
 
 void* StairsArena_MallocGeneral(size_t size, uintptr_t id);
-void* StairsArena_MallocActor(size_t size, u16 id);
+void* StairsArena_MallocROverlay(size_t size, u16 id);
 void* StairsArena_MallocOverlay(size_t size, u16 id);
-void* StairsArena_MallocRGeneral(size_t size, u16 id);
+void* StairsArena_MallocRGeneral(size_t size, uintptr_t id);
 void* StairsArena_MallocRAbsolute(size_t size);
 void StairsArena_FreeGeneral(uintptr_t id);
-void StairsArena_FreeActor(u16 id);
+void StairsArena_FreeMallocROverlay(u16 id);
 void StairsArena_FreeOverlay(u16 id);
 void StairsArena_FreeMallocR(u16 id);
 void StairsArena_FreeAbsolute();

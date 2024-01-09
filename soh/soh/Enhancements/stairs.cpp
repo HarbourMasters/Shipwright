@@ -457,7 +457,7 @@ std::unordered_map<u16, size_t> actorOverlaySizes = {
 std::unordered_set<u16> registeredStairOverlays;
 
 std::unordered_map<uintptr_t, void*> generalPtrMap;
-std::unordered_map<u16, void*> actorPtrMap;
+std::unordered_map<u16, void*> overlayRPtrMap;
 std::unordered_map<u16, void*> overlayPtrMap;
 std::unordered_map<u16, void*> mallocRPtrMap;
 
@@ -480,6 +480,10 @@ s32 Stairs_RegisterOverlay(u16 id) {
     }
     registeredStairOverlays.insert(id);
     return true;
+}
+
+s32 Stairs_GetOverlayRegistered(u16 id) {
+    return registeredStairOverlays.contains(id);
 }
 
 s32 Stairs_UnregisterOverlay(u16 id) {
@@ -537,9 +541,9 @@ void* StairsArena_MallocGeneral(size_t size, uintptr_t id) {
     return ptr;
 }
 
-void* StairsArena_MallocActor(size_t size, u16 id) {
-    void* ptr = __osMalloc(&sStairsArena, size);
-    actorPtrMap[id] = ptr;
+void* StairsArena_MallocROverlay(size_t size, u16 id) {
+    void* ptr = __osMallocR(&sStairsArena, size);
+    overlayRPtrMap[id] = ptr;
 
     // StairsArena_CheckPointer(ptr, size, "stairs_malloc", "確保"); // "Secure"
     return ptr;
@@ -560,7 +564,7 @@ void* StairsArena_MallocR(size_t size) {
     return ptr;
 }
 
-void* StairsArena_MallocRGeneral(size_t size, u16 id) {
+void* StairsArena_MallocRGeneral(size_t size, uintptr_t id) {
     void* ptr = __osMallocR(&sStairsArena, size);
     mallocRPtrMap[id] = ptr;
 
@@ -593,12 +597,12 @@ void StairsArena_FreeGeneral(uintptr_t id) {
     generalPtrMap[id] = nullptr;
 }
 
-void StairsArena_FreeActor(u16 id) {
-    void* ptr = actorPtrMap[id];
+void StairsArena_FreeMallocROverlay(u16 id) {
+    void* ptr = overlayRPtrMap[id];
     if (ptr) {
         __osFree(&sStairsArena, ptr);
     }
-    actorPtrMap[id] = nullptr;
+    overlayRPtrMap[id] = nullptr;
 }
 
 void StairsArena_FreeOverlay(u16 id) {
@@ -656,7 +660,7 @@ void StairsArena_Cleanup() {
     __osMallocCleanup(&sStairsArena);
     registeredStairOverlays.clear();
     generalPtrMap.clear();
-    actorPtrMap.clear();
+    overlayRPtrMap.clear();
     overlayPtrMap.clear();
     mallocRPtrMap.clear();
     absolutePtr = nullptr;
