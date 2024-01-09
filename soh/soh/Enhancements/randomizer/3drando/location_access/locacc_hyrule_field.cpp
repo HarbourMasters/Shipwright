@@ -33,7 +33,7 @@ void AreaTable_Init_HyruleField() {
   areaTable[RR_HF_SOUTHEAST_GROTTO] = Area("HF Southeast Grotto", "HF Southeast Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(RC_HF_SOUTHEAST_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(RC_HF_SOUTHEAST_GROTTO_FISH,         {[]{return HasBottle;}}),
+                  LocationAccess(RC_HF_SOUTHEAST_GROTTO_FISH,         {[]{return logic->HasBottle;}}),
                   LocationAccess(RC_HF_SOUTHEAST_GOSSIP_STONE, {[]{return true;}}),
                 }, {
                   //Exits
@@ -43,7 +43,7 @@ void AreaTable_Init_HyruleField() {
   areaTable[RR_HF_OPEN_GROTTO] = Area("HF Open Grotto", "HF Open Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(RC_HF_OPEN_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(RC_HF_OPEN_GROTTO_FISH,         {[]{return HasBottle;}}),
+                  LocationAccess(RC_HF_OPEN_GROTTO_FISH,         {[]{return logic->HasBottle;}}),
                   LocationAccess(RC_HF_OPEN_GROTTO_GOSSIP_STONE, {[]{return true;}}),
                 }, {
                   //Exits
@@ -71,7 +71,7 @@ void AreaTable_Init_HyruleField() {
   areaTable[RR_HF_NEAR_MARKET_GROTTO] = Area("HF Near Market Grotto", "HF Near Market Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(RC_HF_NEAR_MARKET_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(RC_HF_NEAR_MARKET_GROTTO_FISH,         {[]{return HasBottle;}}),
+                  LocationAccess(RC_HF_NEAR_MARKET_GROTTO_FISH,         {[]{return logic->HasBottle;}}),
                   LocationAccess(RC_HF_NEAR_MARKET_GOSSIP_STONE, {[]{return true;}}),
                 }, {
                   //Exits

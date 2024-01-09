@@ -4,6 +4,7 @@
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+#include <consolevariablebridge.h>
 
 #define FSi OTRGlobals::Instance->gRandoContext->GetFishsanity()
 
@@ -164,6 +165,7 @@ namespace Rando {
     FishsanityPondOptions Fishsanity::GetOptions(FishsanityOptionsSource optionsSource) {
         FishsanityPondOptions options{};
         switch (optionsSource) {
+            // Used in check tracker
             case FSO_SOURCE_CVARS:
                 options.mode = CVarGetInteger("gRandomizeFishsanity", RO_FISHSANITY_OFF);
                 options.numFish = CVarGetInteger("gRandomizeFishsanityPondCount", 0);

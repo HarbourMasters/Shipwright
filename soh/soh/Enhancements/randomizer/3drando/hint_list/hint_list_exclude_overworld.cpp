@@ -271,15 +271,44 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"#fishing in youth# bestows", /*french*/"#pêcher dans sa jeunesse# promet", /*spanish*/"#pescar en la juventud# conduce a"},
   });
 
+    // TODO: needs french translation
+    hintTable[RHT_LH_CHILD_LOACH] = HintText::Exclude(
+        {
+            // obscure text
+            Text{ "#fishing the legend# bestows", /*french*/ "!!!", /*spanish*/ "#pescar a la leyenda# conduce a" },
+        },
+        {},
+        // clear text
+        Text{ "#fishing the hyrule loach# will give you", /*french*/ "!!!",
+              /*spanish*/ "si #pescas a la Locha de Hyrule# encontrarás" });
+
+
     hintTable[RHT_LH_ADULT_FISHING] = HintText::Exclude({
                        //obscure text
                        Text{"#fishing in maturity# bestows", /*french*/"#pêcher dans sa maturité# promet", /*spanish*/"#pescar en la madurez# conduce a"},
   });
 
+    // TODO: needs french translation + double check for spanish
+    hintTable[RHT_LH_ADULT_LOACH] = HintText::Exclude(
+        {
+            // obscure text
+            Text{ "#fishing the legend in maturity# bestows", /*french*/ "!!!", /*spanish*/ "#pescar a la leyenda en la madurez# conduce a" },
+        },
+        {},
+        // clear text
+        Text{ "#fishing the hyrule loach in maturity# will give you", /*french*/ "!!!",
+              /*spanish*/ "si #pescas a la Locha de Hyrule en la madurez# encontrarás" });
+
     hintTable[RHT_LH_LAB_DIVE] = HintText::Exclude({
                        //obscure text
                        Text{"a #diving experiment# is rewarded with", /*french*/"l'#expérience de plongée# donne", /*spanish*/"#bucear para un experimento# se premia con"},
   });
+
+    // TODO: needs translation
+    hintTable[RHT_ZD_FISH] = HintText::Exclude({
+        // obscure text
+        Text{"a #fish by a waterfall# hoards", /*french*/"", /*spanish*/""}
+    });
 
     hintTable[RHT_GC_ROLLING_GORON_AS_ADULT] = HintText::Exclude({
                        //obscure text
@@ -1402,26 +1431,4 @@ void HintTable_Init_Exclude_Overworld() {
                        //obscure text
                        Text{"a #cow in a luxurious hole# offers", /*french*/"la #vache dans une grotte luxueuse# donne", /*spanish*/"una #vaca de un lujoso hoyo# brinda"},
   });
-
-    // Fishing pond fish hints
-    // TODO: probably some better text to put here than the text for child/adult fishing
-    for (int i = RHT_LH_CHILD_FISH_1; i <= RHT_LH_CHILD_LOACH_2; i++) {
-        hintTable[i] = HintText::Exclude({
-            //obscure text
-            Text{"#fishing in youth# bestows", /*french*/"#pêcher dans sa jeunesse# promet", /*spanish*/"#pescar en la juventud# conduce a"}
-        });
-    }
-    for (int i = RHT_LH_ADULT_FISH_1; i <= RHT_LH_ADULT_LOACH; i++) {
-        hintTable[i] = HintText::Exclude({
-            //obscure text
-            Text{"#fishing in maturity# bestows", /*french*/"#pêcher dans sa maturité# promet", /*spanish*/"#pescar en la madurez# conduce a"}
-        });
-    }
-
-    for (int i = RHT_ZD_FISH_1; i <= RHT_ZD_FISH_5; i++) {
-        hintTable[i] = HintText::Exclude({
-            //obscure text
-            Text{"a #fish by a waterfall# hoards", /*french*/"", /*spanish*/""}
-        });
-    }
 }

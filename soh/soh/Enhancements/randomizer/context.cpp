@@ -485,7 +485,7 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
 
     // Fishing Pole Hint
     if(spoilerFileJson.contains("fishingPoleText")) {
-        std::string fishingPoleText = FormatJsonHintText(spoilerFileJson["fishingPoleText"].get<std::string>());
+        std::string fishingPoleText = spoilerFileJson["fishingPoleText"].get<std::string>();
         std::string fishingPoleRegion = spoilerFileJson["fishingPoleRegion"].get<std::string>();
         RandomizerCheck fishingPoleHintLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["fishingPoleHintLoc"].get<std::string>()];
         AddHint(RH_FISHING_POLE, Text(fishingPoleText), fishingPoleHintLoc, HINT_TYPE_STATIC, "Static", mSpoilerfileAreaNameToEnum[fishingPoleRegion]);

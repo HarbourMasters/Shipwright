@@ -55,7 +55,7 @@ void AreaTable_Init_ZorasDomain() {
   areaTable[RR_ZR_OPEN_GROTTO] = Area("ZR Open Grotto", "ZR Open Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(RC_ZR_OPEN_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(RC_ZR_OPEN_GROTTO_FISH,         {[]{return HasBottle;}}),
+                  LocationAccess(RC_ZR_OPEN_GROTTO_FISH,         {[]{return logic->HasBottle;}}),
                   LocationAccess(RC_ZR_OPEN_GROTTO_GOSSIP_STONE, {[]{return true;}}),
                 }, {
                   //Exits

@@ -13667,6 +13667,7 @@ void func_8084ECA4(Player* this, PlayState* play) {
 
     func_8083721C(this);
 
+    // TODO: Rework the bottle rando code in vanilla behavior overhaul
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         if (this->unk_84F != 0) {
             if (IS_RANDO && this->unk_84F < 0) {
