@@ -624,7 +624,7 @@ static void WriteHints() {
     }
     if (ctx->GetOption(RSK_FISHING_POLE_HINT)) {
       jsonData["fishingPoleText"] = ctx->GetHint(RH_FISHING_POLE)->GetText().GetForLanguage(language);
-      jsonData["fishingPoleHintLoc"] = GetFishingPoleHintLoc();
+      jsonData["fishingPoleHintLoc"] = Rando::StaticData::GetLocation(ctx->GetHint(RH_FISHING_POLE)->GetHintedLocation())->GetName();
       jsonData["fishingPoleRegion"] = ::Hint(ctx->GetHint(RH_FISHING_POLE)->GetHintedArea()).GetText().GetEnglish();
     }
 
