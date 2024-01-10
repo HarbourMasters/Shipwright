@@ -6,6 +6,7 @@
 
 #include "../../../include/z64item.h"
 #include "../../../include/message_data_textbox_types.h"
+#include "../randomizer/3drando/text.hpp"
 
 #undef MESSAGE_END
 
@@ -29,6 +30,7 @@ class CustomMessage {
     CustomMessage() = default;
     CustomMessage(std::string english_, std::string german_, std::string french_,
                   TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
+    CustomMessage(Text text, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
 
     static std::string MESSAGE_END() ;
     static std::string ITEM_OBTAINED(uint8_t x) ;

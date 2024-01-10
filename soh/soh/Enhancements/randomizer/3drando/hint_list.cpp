@@ -45,11 +45,12 @@ void HintTable_Init() {
     HintTable_Init_Exclude_Overworld();
     HintTable_Init_Exclude_Dungeon();
 
+
     /*--------------------------
-    |     ALWAYS HINT TEXT     |
+    |    SOMETIMES HINT TEXT   |
     ---------------------------*/
 
-    hintTable[RHT_KF_LINKS_HOUSE_COW] = HintText::Always(
+    hintTable[RHT_KF_LINKS_HOUSE_COW] = HintText::Sometimes(
         {
             // obscure text
             Text{ "the #bovine bounty of a horseback hustle# gifts",
@@ -61,7 +62,7 @@ void HintTable_Init() {
         Text{ "#Malon's obstacle course# leads to", /*french*/ "la #course à obstacle de Malon# amène à",
               /*spanish*/ "la #carrera de obstáculos de Malon# brinda" });
 
-    hintTable[RHT_KAK_100_GOLD_SKULLTULA_REWARD] = HintText::Always(
+    hintTable[RHT_KAK_100_GOLD_SKULLTULA_REWARD] = HintText::Sometimes(
         {
             // obscure text
             Text{ "#100 bug badges# rewards",
@@ -80,9 +81,6 @@ void HintTable_Init() {
               /*french*/ "détruire #100 Skulltulas d'or# donne",
               /*spanish*/ "exterminar #100 skulltulas doradas# revela" });
 
-    /*--------------------------
-    |    SOMETIMES HINT TEXT   |
-    ---------------------------*/
     hintTable[RHT_SONG_FROM_OCARINA_OF_TIME] = HintText::Sometimes({
         // obscure text
         Text{ "the #Ocarina of Time# teaches", /*french*/ "l'#Ocarina du Temps# est accompagné par",
@@ -3452,11 +3450,11 @@ std::array<RandomizerHintTextKey, RA_MAX> AreaHintTextKeys = {
     RHT_GANONS_CASTLE
 };
 
-std::array<ConditionalAlwaysHint, 10> conditionalAlwaysHints = {
+std::array<ConditionalAlwaysHint, 12> conditionalAlwaysHints = {
     std::make_pair(RC_MARKET_10_BIG_POES,
                    []() {
                        auto ctx = Rando::Context::GetInstance();
-                       return ctx->GetOption(RSK_BIG_POE_COUNT).Value<uint8_t>() >= 3;
+                       return ctx->GetOption(RSK_BIG_POE_COUNT).Value<uint8_t>() >= 3 && !ctx->GetOption(RSK_BIG_POES_HINT);
                    }), // Remember, the option's value being 3 means 4 are required
     std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH,
                    []() {
@@ -3466,7 +3464,11 @@ std::array<ConditionalAlwaysHint, 10> conditionalAlwaysHints = {
     std::make_pair(RC_SONG_FROM_OCARINA_OF_TIME, []() { return StonesRequiredBySettings() < 2; }),
     std::make_pair(RC_HF_OCARINA_OF_TIME_ITEM, []() { return StonesRequiredBySettings() < 2; }),
     std::make_pair(RC_SHEIK_IN_KAKARIKO, []() { return MedallionsRequiredBySettings() < 5; }),
-    std::make_pair(RC_DMT_TRADE_CLAIM_CHECK, []() { return false; }),
+    std::make_pair(RC_DMT_TRADE_CLAIM_CHECK,
+                   []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return !ctx->GetOption(RSK_BIGGORON_HINT);
+                   }),
     std::make_pair(RC_KAK_30_GOLD_SKULLTULA_REWARD,
                    []() {
                        auto ctx = Rando::Context::GetInstance();
@@ -3486,6 +3488,16 @@ std::array<ConditionalAlwaysHint, 10> conditionalAlwaysHints = {
                    []() {
                        auto ctx = Rando::Context::GetInstance();
                        return !ctx->GetOption(RSK_FROGS_HINT);
+                   }),
+    std::make_pair(RC_KF_LINKS_HOUSE_COW,
+                   []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return !ctx->GetOption(RSK_MALON_HINT);
+                   }),
+    std::make_pair(RC_KAK_100_GOLD_SKULLTULA_REWARD,
+                   []() {
+                       auto ctx = Rando::Context::GetInstance();
+                       return !ctx->GetOption(RSK_KAK_100_SKULLS_HINT);
                    }),
 };
 
