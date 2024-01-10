@@ -50,12 +50,8 @@ namespace Rando {
         Color_RGBA8 textboxColor = {0, 0, 0, 255};
         Color_RGBA8 textColor = {255, 255, 255, 255};
 
-        Matrix_Translate(mX, mY, 0.0f, MTXMODE_NEW);
-        Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
-//        Matrix_RotateZ(-(play->pauseCtx.unk_1FC) / 100.0f, MTXMODE_APPLY);
-        Matrix_RotateY(-1.57f, MTXMODE_APPLY);
-        Matrix_RotateX(-3.14f, MTXMODE_APPLY);
-//        Matrix_ToMtx(mtx, (char*)__FILE__, __LINE__);
+        Matrix_Translate(mX, mY, 0.0f, MTXMODE_APPLY);
+        Matrix_Scale(0.75f, 0.75f, 0.75f, MTXMODE_APPLY);
 
         mEntryDl->push_back(gsSPMatrix(Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW));
 
@@ -98,6 +94,7 @@ namespace Rando {
 
     Kaleido::Kaleido() {
         mEntries.emplace_back(gRupeeCounterIconTex, "Greg Found: ", "No", 0, 0);
+        mEntries.emplace_back(gRupeeCounterIconTex, "Greg Found: ", "No", 0, 12);
     }
 
     extern "C" {
@@ -114,8 +111,15 @@ namespace Rando {
         mEntryDl.push_back(gsDPPipeSync());
         Gfx_SetupDL_42Opa(play->state.gfxCtx);
         mEntryDl.push_back(gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM));
+
+        // Move the matrix origin to the top-left corner of the kaleido page
+        Matrix_Translate(-108.f, 58.f, 0.0f, MTXMODE_APPLY);
+        // Invert the matrix to render vertices with positive going down
+        Matrix_Scale(1.0f, -1.0f, 1.0f, MTXMODE_APPLY);
         for (auto& entry : mEntries) {
+            Matrix_Push();
             entry.Draw(play, &mEntryDl);
+            Matrix_Pop();
         }
 
         mEntryDl.push_back(gsSPEndDisplayList());
