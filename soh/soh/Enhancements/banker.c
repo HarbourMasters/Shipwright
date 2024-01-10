@@ -186,6 +186,9 @@ void DrawBankerOverlay(PlayState* play, Gfx** gfx) {
 }
 
 void BankerMain(PlayState* play, GraphicsContext* gfxCtx) {
+    if (play->msgCtx.msgMode == MSGMODE_NONE) {
+        return;
+    }
     ProcessInput(play, &gBankerValue, &gBankerSelectedDigit);
     gBlinkTimer = (gBlinkTimer + 1) % (BLINK_DURATION * 2);
     if (play->msgCtx.textId == TEXT_BANKER_WITHDRAWAL_AMOUNT || play->msgCtx.textId == TEXT_BANKER_DEPOSIT_AMOUNT) {
