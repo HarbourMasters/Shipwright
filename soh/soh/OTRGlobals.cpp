@@ -2655,6 +2655,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         s32 playerBalance = gSaveContext.playerBalance;
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_DEPOSIT_CONFIRM);
         messageEntry.Replace("{{playerBalance}}", std::to_string(playerBalance));
+    }
     if (textId == TEXT_BANKER_REWARD_WARP_TRANSFER_INTRO && CVarGetInteger("gBanker", 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_INTRO);
     }
@@ -2676,7 +2677,6 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     if (textId == TEXT_BANKER_REWARD_PIECE_OF_HEART && CVarGetInteger("gBanker", 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_PIECE_OF_HEART);
     }
-}
     font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
     switch (gSaveContext.language) {
         case LANGUAGE_FRA:
