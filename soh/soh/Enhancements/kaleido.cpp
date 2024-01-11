@@ -99,14 +99,20 @@ namespace Rando {
 
     Kaleido::Kaleido() {
         const auto ctx = Rando::Context::GetInstance();
+        int yOffset = 2;
         mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(gRupeeCounterIconTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16,
                               Color_RGBA8(0xC8, 0xFF, 0x64, 255), FlagType::FLAG_RANDOMIZER_INF,
-                              static_cast<int>(RAND_INF_GREG_FOUND), 0, 0, "Greg"));
-        mEntries.push_back(std::make_shared<KaleidoEntryIconCountRequired>(gTriforcePieceTex, G_IM_FMT_RGBA,
-                               G_IM_SIZ_32b, 32, 32, Color_RGBA8(255,255,255,255), 0, 16,
-                               reinterpret_cast<int*>(&gSaveContext.triforcePiecesCollected),
-                               ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).GetSelectedOptionIndex() + 1,
-                               ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).GetSelectedOptionIndex() + 1));
+                              static_cast<int>(RAND_INF_GREG_FOUND), 0, yOffset, "Greg"));
+        yOffset += 18;
+        if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
+            mEntries.push_back(
+                    std::make_shared<KaleidoEntryIconCountRequired>(
+                            gTriforcePieceTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8(255,255,255,255), 0,
+                            yOffset, reinterpret_cast<int*>(&gSaveContext.triforcePiecesCollected),
+                            ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).GetSelectedOptionIndex() + 1,
+                            ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).GetSelectedOptionIndex() + 1));
+            yOffset += 18;
+        }
     }
 
     extern "C" {
