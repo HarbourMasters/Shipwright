@@ -402,6 +402,11 @@ void DrawInfoTab() {
     ImGui::InputScalar("Rupees", ImGuiDataType_S16, &gSaveContext.rupees);
     UIWidgets::InsertHelpHoverText("Current rupees");
 
+    if (CVarGetInteger("gBanker", 0)) {
+        ImGui::InputScalar("Bank Balance", ImGuiDataType_S32, &gSaveContext.playerBalance);
+        UIWidgets::InsertHelpHoverText("Current bank balance");
+    }
+
     const uint16_t dayTimeMin = 0;
     const uint16_t dayTimeMax = 0xFFFF;
     ImGui::SetNextItemWidth(ImGui::GetFontSize() * 15);
