@@ -34,13 +34,16 @@ namespace Rando {
         }
     }
 
-    KaleidoEntry::KaleidoEntry(int16_t x, int16_t y, std::string text) : mX(x), mY(y), mText(std::move(text)) {}
+    KaleidoEntry::KaleidoEntry(int16_t x, int16_t y, std::string text) : mX(x), mY(y), mText(std::move(text)) {
+        mHeight = 0;
+        mWidth = 0;
+        vtx = nullptr;
+    }
 
     void KaleidoEntryIcon::Draw(PlayState* play, std::vector<Gfx>* mEntryDl) {
         if (vtx == nullptr) {
             return;
         }
-        float scale = 75.0f / 100.0f;
         size_t numChar = mText.length();
         if (numChar == 0) {
             return;
@@ -82,8 +85,8 @@ namespace Rando {
             }
 
             if (texIndex != 0) {
-                uintptr_t texture = reinterpret_cast<uintptr_t>(Font_FetchCharTexture(texIndex));
-                int16_t vertexStart = 4 * (i % 16);
+                auto texture = reinterpret_cast<uintptr_t>(Font_FetchCharTexture(texIndex));
+                auto vertexStart = static_cast<int16_t>(4 * (i % 16));
 
                 Gfx charTexture[] = {gsDPLoadTextureBlock_4b(texture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH,
                                                              FONT_CHAR_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_CLAMP,
@@ -146,7 +149,7 @@ namespace Rando {
     }
 
     void Kaleido::Update(PlayState *play) {
-        for(auto entry : mEntries) {
+        for(const auto& entry : mEntries) {
             entry->Update(play);
         }
     }
@@ -168,7 +171,7 @@ namespace Rando {
     }
 
     void KaleidoEntryIconFlag::Update(PlayState* play) {
-        mAchieved = GameInteractor::RawAction::CheckFlag(mFlagType, mFlag);
+        mAchieved = GameInteractor::RawAction::CheckFlag(mFlagType, static_cast<int16_t>(mFlag));
     }
 
     KaleidoEntryIconCountRequired::KaleidoEntryIconCountRequired(const char *iconResourceName, int iconFormat,
@@ -193,25 +196,25 @@ namespace Rando {
     }
 
     void KaleidoEntryIcon::BuildVertices() {
-        int16_t offsetY = 0;
-        int16_t offsetX = 0;
+        int offsetY = 0;
+        int offsetX = 0;
         // 4 vertices per character, plus one for the preceding icon.
         Vtx* vertices = (Vtx*)calloc(sizeof(Vtx[4]), mText.length() + 1);
         // Vertex for the preceding icon.
         Interface_CreateQuadVertexGroup(vertices, offsetX, offsetY, mIconWidth, mIconHeight, 0);
         offsetX += 18;
         for (size_t i = 0; i < mText.length(); i++) {
-            int16_t charIndex = mText[i] - 32;
-            int16_t charWidth = 0;
+            auto charIndex = static_cast<int16_t>(mText[i] - 32);
+            int charWidth = 0;
             if (charIndex >= 0) {
-                charWidth = (int16_t)(Message_GetCharacterWidth(charIndex) * (100.0f / R_TEXT_CHAR_SCALE));
+                charWidth = static_cast<int>(Message_GetCharacterWidth(charIndex) * (100.0f / R_TEXT_CHAR_SCALE));
             }
             Interface_CreateQuadVertexGroup(&(vertices)[(i + 1) * 4], offsetX, offsetY, charWidth, 16, 0);
             offsetX += charWidth;
         }
         offsetY += FONT_CHAR_TEX_HEIGHT;
-        mWidth = offsetX;
-        mHeight = offsetY;
+        mWidth = static_cast<int16_t>(offsetX);
+        mHeight = static_cast<int16_t>(offsetY);
 
         vertices[1].v.ob[0] = 16;
         vertices[2].v.ob[1] = 16;
@@ -220,9 +223,9 @@ namespace Rando {
         vtx = vertices;
     }
 
-    KaleidoEntryIcon::KaleidoEntryIcon(const char *iconResourcename, int iconFormat, int iconSize, int iconWidth,
+    KaleidoEntryIcon::KaleidoEntryIcon(const char *iconResourceName, int iconFormat, int iconSize, int iconWidth,
                                        int iconHeight, Color_RGBA8 iconColor, int16_t x, int16_t y, std::string text)
-                                       : mIconResourceName(iconResourcename), mIconFormat(iconFormat), mIconSize(iconSize),
+                                       : mIconResourceName(iconResourceName), mIconFormat(iconFormat), mIconSize(iconSize),
                                        mIconWidth(iconWidth), mIconHeight(iconHeight), mIconColor(iconColor),
                                        KaleidoEntry(x, y, std::move(text)) {}
 
