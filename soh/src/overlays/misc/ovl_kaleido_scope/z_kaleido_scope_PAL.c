@@ -4630,5 +4630,8 @@ void KaleidoScope_Update(PlayState* play)
             break;
     }
 
+    if (pauseCtx->randoQuestMode) {
+        RandoKaleido_UpdateMiscCollectibles(play);
+    }
     GameInteractor_ExecuteOnKaleidoscopeUpdate(sInDungeonScene);
 }
