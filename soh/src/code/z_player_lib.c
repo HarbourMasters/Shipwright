@@ -580,7 +580,11 @@ s32 func_8008E9C4(Player* this) {
 }
 
 s32 Player_IsChildWithHylianShield(Player* this) {
-    return gSaveContext.linkAge != 0 && (this->currentShield == PLAYER_SHIELD_HYLIAN);
+    if (CVarGetInteger("gChildHoldsHylianShield", 0)) {
+		return 0;
+	} else {
+        return gSaveContext.linkAge != 0 && (this->currentShield == PLAYER_SHIELD_HYLIAN);
+    }
 }
 
 s32 Player_ActionToModelGroup(Player* this, s32 actionParam) {
@@ -604,6 +608,8 @@ void Player_SetModelsForHoldingShield(Player* this) {
                 this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][0];
                 } else if (LINK_IS_ADULT && (CVarGetInteger("gEquipmentAlwaysVisible", 0)) && (this->currentShield == PLAYER_SHIELD_DEKU)) {
                     this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][1];
+                } else if (LINK_IS_CHILD && (CVarGetInteger("gChildHoldsHylianShield", 0)) && (this->currentShield == PLAYER_SHIELD_HYLIAN)) {
+                    this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][0];
                 } else {
                     this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][gSaveContext.linkAge];
             }
@@ -662,6 +668,10 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     }
     if (LINK_IS_ADULT && CVarGetInteger("gEquipmentAlwaysVisible", 0) && this->rightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT) {
 		this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][1];
+    }
+     if (LINK_IS_CHILD && CVarGetInteger("gChildHoldsHylianShield", 0) && 
+        this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD && this->currentShield == PLAYER_SHIELD_HYLIAN) {
+        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][0];
     }
 
     if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && this->rightHandType == 11) { // If holding Bow/Slingshot

@@ -1349,6 +1349,8 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("Prevents the Deku Shield from burning on contact with fire");
         UIWidgets::PaddedEnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded", true, false);
         UIWidgets::Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
+        UIWidgets::PaddedEnhancementCheckbox("Hold Hylian Shield as Child Link", "gChildHoldsHylianShield", true, false);
+        UIWidgets::Tooltip("Allows Child Link to hold the Hylian Shield the same way as the rest of the shields.");
         UIWidgets::PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
         UIWidgets::Tooltip("This syncs the ingame time with the real world time");
         ImGui::Text("Deku Sticks:");
