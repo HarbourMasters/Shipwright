@@ -104,6 +104,7 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
         "OHKO"
     };
     static const char* timeTravelOptions[3] = { "Disabled", "Ocarina of Time", "Any Ocarina" };
+    static const char* capeTypes[3] = { "None", "Cape", "Scarf" };
 
 extern "C" SaveContext gSaveContext;
 
@@ -967,7 +968,17 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Turns Bunny Hood invisible while still maintaining its effects.");
                 UIWidgets::PaddedEnhancementCheckbox("Disable HUD Heart animations", "gNoHUDHeartAnimation", true, false);
                 UIWidgets::Tooltip("Disables the beating animation of the hearts on the HUD.");
-
+                UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
+				UIWidgets::PaddedText("Link's Cape", true, false);
+				UIWidgets::EnhancementCombobox("gLinkCape", capeTypes, 0);
+				UIWidgets::Tooltip("Gives Link Ganondorf's cape\nTime to get some drip");
+            
+            if (CVarGetInteger("gLinkCape", 0) != 0) {
+                UIWidgets::PaddedEnhancementSliderFloat("Cape Length: %d", "##Cape_Length", "gLinkCapeLength", 0.5f, 9.5f, "", 3.5f, true, true, false, true);
+                UIWidgets::PaddedEnhancementSliderFloat("Cape Shoulders Width: %d", "##Cape_Width", "gLinkCapeWidth", 1.0f, 20.0f, "", 10.0f, true, true, false, true);
+                UIWidgets::PaddedEnhancementSliderFloat("Cape Side Sway Magnitude: %d", "##Cape_sideSwayMagnitude", "gLinkCapesideSwayMagnitude", -20.0f, 0.0f, "", 0.0f, true, true, false, true);
+                UIWidgets::PaddedEnhancementSliderFloat("Cape Gravity: %d", "##Cape_Gravity", "gLinkCapeGravity", -15.0f, -0.5f, "", -2.5f, true, true, false, true);
+            }
                 ImGui::EndMenu();
             }
             UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD", true, false);
