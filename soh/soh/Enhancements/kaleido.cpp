@@ -13,6 +13,9 @@ extern "C" {
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh_assets.h"
+#include "textures/icon_item_static/icon_item_static.h"
+#include "consolevariablebridge.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
 namespace Rando {
 
@@ -114,6 +117,10 @@ namespace Rando {
                             yOffset, reinterpret_cast<int*>(&gSaveContext.triforcePiecesCollected),
                             ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).GetSelectedOptionIndex() + 1,
                             ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).GetSelectedOptionIndex() + 1));
+            yOffset += 18;
+        }
+        if (ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS)) {
+            mEntries.push_back(std::make_shared<KaleidoEntryOcarinaButtons>(0, yOffset));
             yOffset += 18;
         }
     }
@@ -243,5 +250,109 @@ namespace Rando {
             mAchieved = mCount >= mRequired;
         }
 
+    }
+
+    KaleidoEntryOcarinaButtons::KaleidoEntryOcarinaButtons(int16_t x, int16_t y) :
+            KaleidoEntryIcon(gItemIconOcarinaOfTimeTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32,
+                             Color_RGBA8(255, 255, 255, 255), x, y, "\x9F\xA5\xA6\xA7\xA8") {
+        CalculateColors();
+        BuildVertices();
+    }
+
+    void KaleidoEntryOcarinaButtons::CalculateColors() {
+        int aButtonAlpha = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_A) > 0 ? 255 : 100;
+        int cUpAlpha = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_UP) > 0 ? 255 : 100;
+        int cDownAlpha = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_DOWN) > 0 ? 255 : 100;
+        int cLeftAlpha = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_LEFT) > 0 ? 255 : 100;
+        int cRightAlpha = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_RIGHT) > 0 ? 255 : 100;
+        Color_RGB8 aButtonColor = { 80, 150, 255 };
+        if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
+            aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
+        } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+            aButtonColor = { 80, 255, 150};
+        }
+        mButtonColors[0] = { aButtonColor.r, aButtonColor.g, aButtonColor.b, aButtonAlpha };
+        Color_RGB8 cButtonsColor = { 255, 255, 50 };
+        Color_RGB8 cUpButtonColor = cButtonsColor;
+        Color_RGB8 cDownButtonColor = cButtonsColor;
+        Color_RGB8 cLeftButtonColor = cButtonsColor;
+        Color_RGB8 cRightButtonColor = cButtonsColor;
+        if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
+            cUpButtonColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
+            cDownButtonColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
+            cLeftButtonColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
+            cRightButtonColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
+        }
+        if (CVarGetInteger("gCosmetics.Hud_CUpButton.Changed", 0)) {
+            cUpButtonColor = CVarGetColor24("gCosmetics.Hud_CUpButton.Value", cUpButtonColor);
+        }
+        if (CVarGetInteger("gCosmetics.Hud_CDownButton.Changed", 0)) {
+            cDownButtonColor = CVarGetColor24("gCosmetics.Hud_CDownButton.Value", cDownButtonColor);
+        }
+        if (CVarGetInteger("gCosmetics.Hud_CLeftButton.Changed", 0)) {
+            cLeftButtonColor = CVarGetColor24("gCosmetics.Hud_CLeftButton.Value", cLeftButtonColor);
+        }
+        if (CVarGetInteger("gCosmetics.Hud_CRightButton.Changed", 0)) {
+            cRightButtonColor = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
+        }
+        mButtonColors[1] = { cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, cUpAlpha };
+        mButtonColors[2] = { cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, cDownAlpha };
+        mButtonColors[3] = { cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, cLeftAlpha };
+        mButtonColors[4] = { cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, cRightAlpha };
+    }
+
+    void KaleidoEntryOcarinaButtons::Update(PlayState *play) {
+        CalculateColors();
+    }
+
+    void KaleidoEntryOcarinaButtons::Draw(PlayState *play, std::vector<Gfx>* mEntryDl) {
+        if (vtx == nullptr) {
+            return;
+        }
+        size_t numChar = mText.length();
+        if (numChar == 0) {
+            return;
+        }
+
+        Matrix_Translate(mX, mY, 0.0f, MTXMODE_APPLY);
+        Matrix_Scale(0.75f, 0.75f, 0.75f, MTXMODE_APPLY);
+
+        mEntryDl->push_back(gsSPMatrix(Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW));
+
+        // icon
+
+        mEntryDl->push_back(gsDPSetPrimColor(0, 0, mIconColor.r, mIconColor.g, mIconColor.b, mIconColor.a));
+        mEntryDl->push_back(gsSPVertex(vtx, 4, 0));
+        LoadIconTex(mEntryDl);
+        mEntryDl->push_back(gsSP1Quadrangle(0, 2, 3, 1, 0));
+
+        // text
+        for (size_t i = 0, vtxGroup = 0; i < numChar; i++) {
+            mEntryDl->push_back(gsDPSetPrimColor(0, 0, mButtonColors[i].r, mButtonColors[i].g, mButtonColors[i].b, mButtonColors[i].a));
+            uint16_t texIndex = mText[i] - 32;
+
+            // A maximum of 64 Vtx can be loaded at once by gSPVertex, or basically 16 characters
+            // handle loading groups of 16 chars at a time until there are no more left to load.
+            // By this point 4 vertices have already been loaded for the preceding icon.
+            if (i % 16 == 0) {
+                size_t numVtxToLoad = std::min<size_t>(numChar - i, 16) * 4;
+                mEntryDl->push_back(gsSPVertex(&vtx[4 + (vtxGroup * 16 * 4)], numVtxToLoad, 0));
+                vtxGroup++;
+            }
+
+            if (texIndex != 0) {
+                auto texture = reinterpret_cast<uintptr_t>(Font_FetchCharTexture(texIndex));
+                auto vertexStart = static_cast<int16_t>(4 * (i % 16));
+
+                Gfx charTexture[] = {gsDPLoadTextureBlock_4b(texture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH,
+                                                             FONT_CHAR_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                                                             G_TX_NOMIRROR | G_TX_CLAMP,
+                                                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD)};
+                mEntryDl->insert(mEntryDl->end(), std::begin(charTexture), std::end(charTexture));
+                mEntryDl->push_back(
+                        gsSP1Quadrangle(vertexStart, vertexStart + 2, vertexStart + 3, vertexStart + 1, 0));
+            }
+        }
+        mEntryDl->push_back(gsSPPopMatrix(G_MTX_MODELVIEW));
     }
 } // Rando
