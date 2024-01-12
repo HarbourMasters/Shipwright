@@ -6,6 +6,8 @@
 #ifdef __cplusplus
 #include <vector>
 #include <string>
+#include <array>
+
 namespace Rando {
 
 /**
@@ -132,6 +134,17 @@ private:
     int mCount;
 
     void BuildText();
+};
+
+class KaleidoEntryOcarinaButtons : public KaleidoEntryIcon {
+public:
+    KaleidoEntryOcarinaButtons(int16_t x, int16_t y);
+    void Update(PlayState* play) override;
+    void Draw(PlayState* play, std::vector<Gfx>* mEntryDl) override;
+private:
+    void CalculateColors();
+
+    std::array<Color_RGBA8, 5> mButtonColors = {};
 };
 
 class Kaleido {
