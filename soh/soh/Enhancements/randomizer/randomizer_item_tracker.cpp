@@ -417,6 +417,16 @@ void DrawItemCount(ItemTrackerItem item) {
     int32_t trackerNumberDisplayMode = CVarGetInteger("gItemTrackerCapacityTrack", ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY);
     int32_t trackerKeyNumberDisplayMode = CVarGetInteger("gItemTrackerKeyTrack", KEYS_COLLECTED_MAX);
 
+    if (item.id == ITEM_HOOKSHOT) {
+        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize("H").x / 2) + 9, p.y - 22));
+        ImGui::Text("H");
+        return;
+    }
+    if (item.id == ITEM_LONGSHOT) {
+        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize("L").x / 2) + 9, p.y - 22));
+        ImGui::Text("L");
+        return;
+    }
     if (item.id == ITEM_KEY_SMALL && IsValidSaveFile()) {
         std::string currentString = "";
         std::string maxString = std::to_string(currentAndMax.maxCapacity);
