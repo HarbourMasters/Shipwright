@@ -49,13 +49,13 @@ public:
     const std::string& GetForLanguage(uint8_t language) const {
         switch (language) {
             case LANGUAGE_ENG:
-                return english;
+                return GetEnglish();
             case LANGUAGE_FRA:
-                return french;
+                return GetFrench();
             case LANGUAGE_GER:
-                return german;
+                return GetGerman();
             default:
-                return english;
+                return GetEnglish();
         }
     }
 

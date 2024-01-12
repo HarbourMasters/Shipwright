@@ -42,6 +42,11 @@ CustomMessage::CustomMessage(std::string english_, std::string german_, std::str
       position(position_) {
 }
 
+CustomMessage::CustomMessage(Text text, TextBoxType type_,TextBoxPosition position_)
+    : english(text.GetEnglish()), german(text.GetGerman()), french(text.GetFrench()), type(type_),
+      position(position_) {
+}
+
 const std::string& CustomMessage::GetEnglish() const {
     return english;
 }

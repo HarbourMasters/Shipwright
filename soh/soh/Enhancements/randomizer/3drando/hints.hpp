@@ -212,7 +212,7 @@ typedef enum {
 //10 dungeons as GTG and GC are excluded
 extern std::array<DungeonHintInfo, 10> dungeonInfoData;
 
-extern std::array<ConditionalAlwaysHint, 10> conditionalAlwaysHints;
+extern std::array<ConditionalAlwaysHint, 12> conditionalAlwaysHints;
 
 extern void CreateAllHints();
 extern void CreateWarpSongTexts();
@@ -221,6 +221,4 @@ void SetGanonText(Text text);
 
 std::string GetMasterSwordHintLoc();
 std::string GetLightArrowHintLoc();
-std::string GetDampeHintLoc();
-std::string GetGregHintLoc();
-std::string GetSariaHintLoc();
+
