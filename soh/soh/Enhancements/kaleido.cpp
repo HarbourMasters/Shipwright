@@ -56,9 +56,9 @@ namespace Rando {
             return;
         }
 
-        Color_RGBA8 textColor = {255, 255, 255, 255};
+        Color_RGBA8 textColor = { 255, 255, 255, 255 };
         if (mAchieved) {
-            textColor = {0x98, 0xFF, 0x44, 255};
+            textColor = { 0x98, 0xFF, 0x44, 255 };
         }
 
         Matrix_Translate(mX, mY, 0.0f, MTXMODE_APPLY);
@@ -111,13 +111,13 @@ namespace Rando {
         const auto ctx = Rando::Context::GetInstance();
         int yOffset = 2;
         mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(gRupeeCounterIconTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16,
-                              Color_RGBA8(0xC8, 0xFF, 0x64, 255), FlagType::FLAG_RANDOMIZER_INF,
+                              Color_RGBA8{ 0xC8, 0xFF, 0x64, 255 }, FlagType::FLAG_RANDOMIZER_INF,
                               static_cast<int>(RAND_INF_GREG_FOUND), 0, yOffset, "Greg"));
         yOffset += 18;
         if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
             mEntries.push_back(
                     std::make_shared<KaleidoEntryIconCountRequired>(
-                            gTriforcePieceTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8(255,255,255,255), 0,
+                            gTriforcePieceTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255,255,255,255 }, 0,
                             yOffset, reinterpret_cast<int*>(&gSaveContext.triforcePiecesCollected),
                             ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).GetSelectedOptionIndex() + 1,
                             ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).GetSelectedOptionIndex() + 1));
@@ -141,7 +141,7 @@ namespace Rando {
             for (int i = RAND_INF_GOHMA_SOUL; i < RAND_INF_GANON_SOUL; i++) {
                 mEntries.push_back(
                     std::make_shared<KaleidoEntryIconFlag>(
-                        gBossSoulTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8(255, 255, 255, 255),
+                        gBossSoulTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
                         FlagType::FLAG_RANDOMIZER_INF, i, 0, yOffset, bossSoulNames[i - RAND_INF_GOHMA_SOUL]
                     )
                 );
@@ -151,7 +151,7 @@ namespace Rando {
         if (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON)) {
             mEntries.push_back(
                     std::make_shared<KaleidoEntryIconFlag>(
-                            gBossSoulTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8(255, 255, 255, 255),
+                            gBossSoulTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
                             FlagType::FLAG_RANDOMIZER_INF, RAND_INF_GANON_SOUL, 0, yOffset, "Ganon's Soul"
                     )
             );
@@ -313,7 +313,7 @@ namespace Rando {
 
     KaleidoEntryOcarinaButtons::KaleidoEntryOcarinaButtons(int16_t x, int16_t y) :
             KaleidoEntryIcon(gItemIconOcarinaOfTimeTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32,
-                             Color_RGBA8(255, 255, 255, 255), x, y, "\x9F\xA5\xA6\xA7\xA8") {
+                             Color_RGBA8{ 255, 255, 255, 255 }, x, y, "\x9F\xA5\xA6\xA7\xA8") {
         CalculateColors();
         BuildVertices();
     }
@@ -369,7 +369,7 @@ namespace Rando {
         mAchieved = false;
         for (int i = 0; i < mButtonCollected.size(); i++) {
             if (!mButtonCollected[i]) {
-                mButtonColors[i] = Color_RGBA8(109, 109, 109, 255);
+                mButtonColors[i] = Color_RGBA8{ 109, 109, 109, 255 };
             } else {
                 mAchieved = true;
             }
