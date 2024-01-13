@@ -168,6 +168,8 @@ namespace Rando {
         if (play == nullptr || mEntries.empty()) {
             return;
         }
+        PauseContext* pauseCtx = &play->pauseCtx;
+        Input* input = &play->state.input[0];
         mEntryDl.clear();
         OPEN_DISPS(play->state.gfxCtx);
         mEntryDl.push_back(gsDPPipeSync());
@@ -178,8 +180,29 @@ namespace Rando {
         Matrix_Translate(-108.f, 58.f, 0.0f, MTXMODE_APPLY);
         // Invert the matrix to render vertices with positive going down
         Matrix_Scale(1.0f, -1.0f, 1.0f, MTXMODE_APPLY);
+        // The scrolling logic is in here because the built in kaleido input throttling happens
+        // in its Draw functions, which get called after their update functions. I hate it but fixing
+        // it would be a much larger Kaleido change.
+        bool shouldScroll = false;
+        if ((pauseCtx->stickRelY > 30) || CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
+            if (mTopIndex > 0) {
+                mTopIndex--;
+                shouldScroll = true;
+            }
+        } else if ((pauseCtx->stickRelY < -30) || CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
+            if (mTopIndex + mNumVisible < mEntries.size()) {
+                mTopIndex++;
+                shouldScroll = true;
+            }
+        }
+        int yOffset = 2;
         for (int i = mTopIndex; i < (mTopIndex + mNumVisible) && i < mEntries.size(); i++) {
             auto& entry = mEntries[i];
+            if (shouldScroll) {
+                entry->SetYOffset(yOffset);
+                yOffset += 18;
+                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            }
             Matrix_Push();
             entry->Draw(play, &mEntryDl);
             Matrix_Pop();
@@ -191,28 +214,8 @@ namespace Rando {
     }
 
     void Kaleido::Update(PlayState *play) {
-        PauseContext* pauseCtx = &play->pauseCtx;
-        Input* input = &play->state.input[0];
-        bool shouldScroll = false;
-        if((pauseCtx->stickRelY > 30) || CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
-            if (mTopIndex > 0) {
-                mTopIndex--;
-                shouldScroll = true;
-            }
-        } else if((pauseCtx->stickRelY < -30) || CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
-            if (mTopIndex + mNumVisible < mEntries.size()) {
-                mTopIndex++;
-                shouldScroll = true;
-            }
-        }
-        int yOffset = 2;
         for(int i = mTopIndex; i < (mTopIndex + mNumVisible) && i < mEntries.size(); i++) {
             const auto& entry = mEntries[i];
-            if (shouldScroll) {
-                entry->SetYOffset(yOffset);
-                yOffset += 18;
-                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            }
             entry->Update(play);
         }
     }
