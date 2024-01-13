@@ -58,7 +58,7 @@ namespace Rando {
         }
 
         Matrix_Translate(mX, mY, 0.0f, MTXMODE_APPLY);
-        Matrix_Scale(0.75f, 0.75f, 0.75f, MTXMODE_APPLY);
+//        Matrix_Scale(0.75f, 0.75f, 0.75f, MTXMODE_APPLY);
 
         mEntryDl->push_back(gsSPMatrix(Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW));
 
@@ -211,7 +211,7 @@ namespace Rando {
         Interface_CreateQuadVertexGroup(vertices, offsetX, offsetY, mIconWidth, mIconHeight, 0);
         offsetX += 18;
         for (size_t i = 0; i < mText.length(); i++) {
-            auto charIndex = static_cast<int16_t>(mText[i] - 32);
+            auto charIndex = static_cast<uint16_t>(mText[i] - 32);
             int charWidth = 0;
             if (charIndex >= 0) {
                 charWidth = static_cast<int>(Message_GetCharacterWidth(charIndex) * (100.0f / R_TEXT_CHAR_SCALE));
@@ -260,18 +260,13 @@ namespace Rando {
     }
 
     void KaleidoEntryOcarinaButtons::CalculateColors() {
-        int aButtonAlpha = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_A) > 0 ? 255 : 100;
-        int cUpAlpha = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_UP) > 0 ? 255 : 100;
-        int cDownAlpha = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_DOWN) > 0 ? 255 : 100;
-        int cLeftAlpha = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_LEFT) > 0 ? 255 : 100;
-        int cRightAlpha = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_RIGHT) > 0 ? 255 : 100;
         Color_RGB8 aButtonColor = { 80, 150, 255 };
         if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
             aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
         } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
             aButtonColor = { 80, 255, 150};
         }
-        mButtonColors[0] = { aButtonColor.r, aButtonColor.g, aButtonColor.b, aButtonAlpha };
+        mButtonColors[0] = { aButtonColor.r, aButtonColor.g, aButtonColor.b, 255 };
         Color_RGB8 cButtonsColor = { 255, 255, 50 };
         Color_RGB8 cUpButtonColor = cButtonsColor;
         Color_RGB8 cDownButtonColor = cButtonsColor;
@@ -295,13 +290,18 @@ namespace Rando {
         if (CVarGetInteger("gCosmetics.Hud_CRightButton.Changed", 0)) {
             cRightButtonColor = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
         }
-        mButtonColors[1] = { cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, cUpAlpha };
-        mButtonColors[2] = { cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, cDownAlpha };
-        mButtonColors[3] = { cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, cLeftAlpha };
-        mButtonColors[4] = { cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, cRightAlpha };
+        mButtonColors[1] = { cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, 255 };
+        mButtonColors[2] = { cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, 255 };
+        mButtonColors[3] = { cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, 255 };
+        mButtonColors[4] = { cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, 255 };
     }
 
     void KaleidoEntryOcarinaButtons::Update(PlayState *play) {
+        mButtonCollected[0] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_A) > 0;
+        mButtonCollected[1] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_UP) > 0;
+        mButtonCollected[2] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_DOWN) > 0;
+        mButtonCollected[3] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_LEFT) > 0;
+        mButtonCollected[4] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_RIGHT) > 0;
         CalculateColors();
     }
 
@@ -315,12 +315,11 @@ namespace Rando {
         }
 
         Matrix_Translate(mX, mY, 0.0f, MTXMODE_APPLY);
-        Matrix_Scale(0.75f, 0.75f, 0.75f, MTXMODE_APPLY);
+//        Matrix_Scale(0.75f, 0.75f, 0.75f, MTXMODE_APPLY);
 
         mEntryDl->push_back(gsSPMatrix(Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW));
 
         // icon
-
         mEntryDl->push_back(gsDPSetPrimColor(0, 0, mIconColor.r, mIconColor.g, mIconColor.b, mIconColor.a));
         mEntryDl->push_back(gsSPVertex(vtx, 4, 0));
         LoadIconTex(mEntryDl);
@@ -328,6 +327,10 @@ namespace Rando {
 
         // text
         for (size_t i = 0, vtxGroup = 0; i < numChar; i++) {
+            if (!mButtonCollected[i]) {
+                mEntryDl->push_back(gsDPSetGrayscaleColor(109, 109, 109, 255));
+                mEntryDl->push_back(gsSPGrayscale(true));
+            }
             mEntryDl->push_back(gsDPSetPrimColor(0, 0, mButtonColors[i].r, mButtonColors[i].g, mButtonColors[i].b, mButtonColors[i].a));
             uint16_t texIndex = mText[i] - 32;
 
@@ -352,6 +355,7 @@ namespace Rando {
                 mEntryDl->push_back(
                         gsSP1Quadrangle(vertexStart, vertexStart + 2, vertexStart + 3, vertexStart + 1, 0));
             }
+            mEntryDl->push_back(gsSPGrayscale(false));
         }
         mEntryDl->push_back(gsSPPopMatrix(G_MTX_MODELVIEW));
     }

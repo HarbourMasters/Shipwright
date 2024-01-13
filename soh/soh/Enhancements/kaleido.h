@@ -145,6 +145,7 @@ private:
     void CalculateColors();
 
     std::array<Color_RGBA8, 5> mButtonColors = {};
+    std::array<bool, 5> mButtonCollected = {};
 };
 
 class Kaleido {
