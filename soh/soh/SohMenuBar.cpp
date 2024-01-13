@@ -1122,7 +1122,7 @@ void DrawEnhancementsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Fix Darunia dancing too fast", "gEnhancements.FixDaruniaDanceSpeed",
                                                  true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
             UIWidgets::Tooltip("Fixes Darunia's dancing speed so he dances to the beat of Saria's Song, like in vanilla.");
-            UIWidgets::PaddedEnhancementCheckbox("Fix raised Floor Switches", "gFixFloorSwitches", true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Fix raised Floor Switches", "gEnhancements.FixFloorSwitches", true, false);
             UIWidgets::Tooltip("Fixes the two raised floor switches, the one in Forest Temple Basement and the one at the top of Fire Temple. \n"
                 "This will lower them, making activating them easier");
 
