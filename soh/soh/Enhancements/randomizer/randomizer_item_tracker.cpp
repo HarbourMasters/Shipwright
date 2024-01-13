@@ -423,14 +423,12 @@ void DrawItemCount(ItemTrackerItem item) {
     if (CVarGetInteger("gHookshotIdentifier", 0)) {
         if ((actualItemId == ITEM_HOOKSHOT || actualItemId == ITEM_LONGSHOT) && hasItem) {
 
-            // Calculate the scaled position for the text centered on the icon, moved slightly more to the left
+            // Calculate the scaled position for the text
             ImVec2 textPos = ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(item.id == ITEM_HOOKSHOT ? "H" : "L").x * 
             textScalingFactor / 2) + 8 * textScalingFactor, p.y - 22 * textScalingFactor);
 
-            // Set the cursor position for the text
             ImGui::SetCursorScreenPos(textPos);
 
-            // Draw the scaled text
             ImGui::SetWindowFontScale(textScalingFactor);
 
             ImGui::Text(item.id == ITEM_HOOKSHOT ? "H" : "L");
