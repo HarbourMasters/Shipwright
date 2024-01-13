@@ -30,6 +30,7 @@ public:
     KaleidoEntry(int16_t x, int16_t y, std::string text = "");
     virtual void Draw(PlayState* play, std::vector<Gfx>* mEntryDl) = 0;
     virtual void Update(PlayState* play) = 0;
+    void SetYOffset(int yOffset);
 protected:
     int16_t mX;
     int16_t mY;
@@ -38,6 +39,7 @@ protected:
     Vtx* vtx;
     std::string mText;
     bool mAchieved = false;
+
 };
 
 /**
@@ -156,6 +158,8 @@ public:
 private:
     std::vector<std::shared_ptr<KaleidoEntry>> mEntries;
     std::vector<Gfx> mEntryDl;
+    int mTopIndex = 0;
+    int mNumVisible = 7;
 };
 } // Rando
 

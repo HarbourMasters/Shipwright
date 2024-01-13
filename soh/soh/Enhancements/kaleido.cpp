@@ -43,6 +43,10 @@ namespace Rando {
         vtx = nullptr;
     }
 
+    void KaleidoEntry::SetYOffset(int yOffset) {
+        mY = yOffset;
+    }
+
     void KaleidoEntryIcon::Draw(PlayState* play, std::vector<Gfx>* mEntryDl) {
         if (vtx == nullptr) {
             return;
@@ -174,7 +178,8 @@ namespace Rando {
         Matrix_Translate(-108.f, 58.f, 0.0f, MTXMODE_APPLY);
         // Invert the matrix to render vertices with positive going down
         Matrix_Scale(1.0f, -1.0f, 1.0f, MTXMODE_APPLY);
-        for (auto& entry : mEntries) {
+        for (int i = mTopIndex; i < (mTopIndex + mNumVisible) && i < mEntries.size(); i++) {
+            auto& entry = mEntries[i];
             Matrix_Push();
             entry->Draw(play, &mEntryDl);
             Matrix_Pop();
@@ -186,7 +191,28 @@ namespace Rando {
     }
 
     void Kaleido::Update(PlayState *play) {
-        for(const auto& entry : mEntries) {
+        PauseContext* pauseCtx = &play->pauseCtx;
+        Input* input = &play->state.input[0];
+        bool shouldScroll = false;
+        if((pauseCtx->stickRelY > 30) || CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
+            if (mTopIndex > 0) {
+                mTopIndex--;
+                shouldScroll = true;
+            }
+        } else if((pauseCtx->stickRelY < -30) || CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
+            if (mTopIndex + mNumVisible < mEntries.size()) {
+                mTopIndex++;
+                shouldScroll = true;
+            }
+        }
+        int yOffset = 2;
+        for(int i = mTopIndex; i < (mTopIndex + mNumVisible) && i < mEntries.size(); i++) {
+            const auto& entry = mEntries[i];
+            if (shouldScroll) {
+                entry->SetYOffset(yOffset);
+                yOffset += 18;
+                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            }
             entry->Update(play);
         }
     }
