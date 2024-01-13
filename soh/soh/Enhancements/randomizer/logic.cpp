@@ -254,6 +254,7 @@ namespace Rando {
         AdultsWallet    = ProgressiveWallet     >= 1;
         BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
+        // TODO: Implement Ammo Drop Setting in place of bombchu drops
         BombchuRefill   = (AmmoCanDrop && ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON/*_PLUS_BOMBCHU*/)) || 
                         CanPlayBowling || BombchuSalesman || BuyBombchus;
         FairyAccess     = FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || BuyFairy;
@@ -271,13 +272,8 @@ namespace Rando {
         Fish      = HasBottle && (LoneFish || FishGroup || BuyFish); //RANDOTODO is there any need to care about lone vs group?
         Fairy     = HasBottle && FairyAccess;
 
-        FoundBombchus   = (BombchuDrop || Bombchus || Bombchus5 || Bombchus10 || Bombchus20);
-        CanPlayBowling  = (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && FoundBombchus) || (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && BombBag);
         // TODO: Implement Ammo Drop Setting in place of bombchu drops
-        HasBombchus = (BuyBombchus || (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON/*_PLUS_BOMBCHU*/) && FoundBombchus));
-
-        HasExplosives =  Bombs || (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && HasBombchus);
-
+        HasExplosives = Bombs || Bombchus;
         HasBoots = IronBoots || HoverBoots;
 
         //you need at least 2 buttons for scarecrow song
@@ -482,9 +478,6 @@ namespace Rando {
         WeirdEgg      = false;
         HasBottle     = false;
         Bombchus      = false;
-        Bombchus5     = false;
-        Bombchus10    = false;
-        Bombchus20    = false;
         MagicBean     = false;
         MagicBeanPack = false;
         RutosLetter   = false;
@@ -666,14 +659,13 @@ namespace Rando {
         FairyPot         = false;
         FreeFairies      = false;
         FairyPond        = false;
-        BombchuDrop      = false;
+        BombchuRefill    = false;
 
         BuyBombchus      = false;
         BuySeed          = false;
         BuyArrow         = false;
         BuyBomb          = false;
         BuyMagicPotion   = false;
-        MagicRefill      = false;
         BuyFish          = false;
         BuyBugs          = false;
         BuyFairy         = false;
@@ -690,6 +682,7 @@ namespace Rando {
         Ocarina          = false;
         OcarinaOfTime    = false;
         BombBag          = false;
+        BombchuBag       = false;
         Magic            = false;
         Hookshot         = false;
         Longshot         = false;
@@ -719,9 +712,7 @@ namespace Rando {
         Fairy            = false;
         BottleWithBigPoe = false;
 
-        FoundBombchus    = false;
         CanPlayBowling   = false;
-        HasBombchus      = false;
         HasExplosives    = false;
         HasBoots         = false;
         IsChild          = false;

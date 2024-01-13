@@ -32,13 +32,11 @@ class Logic {
 
     // Child item logic
     bool KokiriSword = false;
+    bool BulletBag = false;
     bool ZeldasLetter = false;
     bool WeirdEgg = false;
     bool HasBottle = false;
     bool Bombchus = false;
-    bool Bombchus5 = false;
-    bool Bombchus10 = false;
-    bool Bombchus20 = false;
     bool MagicBean = false;
     bool MagicBeanPack = false;
     bool RutosLetter = false;
@@ -186,19 +184,15 @@ class Logic {
     bool NoBottles = false;
 
     // Drops and Bottle Contents Access
-    bool DekuNutDrop = false;
     bool NutPot = false;
     bool NutCrate = false;
     bool DekuBabaNuts = false;
-    bool DekuStickDrop = false;
     bool StickPot = false;
     bool DekuBabaSticks = false;
-    bool BugsAccess = false;
     bool BugShrub = false;
     bool WanderingBugs = false;
     bool BugRock = false;
     bool BlueFireAccess = false;
-    bool FishAccess = false;
     bool FishGroup = false;
     bool LoneFish = false;
     bool FairyAccess = false;
@@ -208,15 +202,17 @@ class Logic {
     bool FairyPot = false;
     bool FreeFairies = false;
     bool FairyPond = false;
-    bool BombchuDrop = false;
     bool AmmoCanDrop = false;
+    bool BombchuRefill = false;
 
     bool BuyBombchus = false;
     bool BuySeed = false;
     bool BuyArrow = false;
     bool BuyBomb = false;
     bool BuyMagicPotion = false;
-    bool MagicRefill = false;
+    bool BuyFish = false;
+    bool BuyBugs = false;
+    bool BuyFairy = false;
 
     uint8_t PieceOfHeart = 0;
     uint8_t HeartContainer = 0;
@@ -226,14 +222,14 @@ class Logic {
     /* These are used to simplify reading the logic, but need to be updated
     /  every time a base value is updated.                       */
 
-    bool Slingshot = false;
     bool Ocarina = false;
     bool OcarinaOfTime = false;
     bool BombBag = false;
+    bool BombchuBag = false;
     bool MagicMeter = false;
     bool Hookshot = false;
     bool Longshot = false;
-    bool Bow = false;
+    bool Quiver = false;
     bool GoronBracelet = false;
     bool SilverGauntlets = false;
     bool GoldenGauntlets = false;
@@ -247,7 +243,10 @@ class Logic {
     bool Scarecrow = false;
     bool DistantScarecrow = false;
 
+    bool Slingshot = false;
     bool Bombs = false;
+    bool Magic = false;
+    bool Bow = false;
     bool DekuShield = false;
     bool HylianShield = false;
     bool Nuts = false;
@@ -264,9 +263,8 @@ class Logic {
     bool OcarinaCUpButton    = false;
     bool OcarinaCDownButton  = false;
 
-    bool FoundBombchus = false;
+    bool BombchuSalesman = false;
     bool CanPlayBowling = false;
-    bool HasBombchus = false;
     bool HasExplosives = false;
     bool HasBoots = false;
     bool IsChild = false;
