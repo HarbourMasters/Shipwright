@@ -294,6 +294,11 @@ namespace Rando {
         mButtonColors[2] = { cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, 255 };
         mButtonColors[3] = { cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, 255 };
         mButtonColors[4] = { cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, 255 };
+        for (int i = 0; i < mButtonCollected.size(); i++) {
+            if (!mButtonCollected[i]) {
+                mButtonColors[i] = Color_RGBA8(109, 109, 109, 255);
+            }
+        }
     }
 
     void KaleidoEntryOcarinaButtons::Update(PlayState *play) {
@@ -327,10 +332,6 @@ namespace Rando {
 
         // text
         for (size_t i = 0, vtxGroup = 0; i < numChar; i++) {
-            if (!mButtonCollected[i]) {
-                mEntryDl->push_back(gsDPSetGrayscaleColor(109, 109, 109, 255));
-                mEntryDl->push_back(gsSPGrayscale(true));
-            }
             mEntryDl->push_back(gsDPSetPrimColor(0, 0, mButtonColors[i].r, mButtonColors[i].g, mButtonColors[i].b, mButtonColors[i].a));
             uint16_t texIndex = mText[i] - 32;
 
@@ -355,7 +356,6 @@ namespace Rando {
                 mEntryDl->push_back(
                         gsSP1Quadrangle(vertexStart, vertexStart + 2, vertexStart + 3, vertexStart + 1, 0));
             }
-            mEntryDl->push_back(gsSPGrayscale(false));
         }
         mEntryDl->push_back(gsSPPopMatrix(G_MTX_MODELVIEW));
     }
