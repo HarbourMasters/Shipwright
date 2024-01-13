@@ -9,6 +9,7 @@ extern "C" {
 #include "variables.h"
 #include <textures/message_static/message_static.h>
 #include <textures/parameter_static/parameter_static.h>
+extern PlayState* gPlayState;
 }
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -224,8 +225,11 @@ namespace Rando {
         OTRGlobals::Instance->gRandoContext->GetKaleido()->Draw(play);
     }
 
-    extern "C" void RandoKaleido_UpdateMiscCollectibles(PlayState* play) {
-        OTRGlobals::Instance->gRandoContext->GetKaleido()->Update(play);
+    extern "C" void RandoKaleido_UpdateMiscCollectibles(int16_t inDungeonScene) {
+        PauseContext* pauseCtx = &gPlayState->pauseCtx;
+        if (pauseCtx->randoQuestMode && pauseCtx->pageIndex == PAUSE_QUEST) {
+            OTRGlobals::Instance->gRandoContext->GetKaleido()->Update(gPlayState);
+        }
     }
 
     KaleidoEntryIconFlag::KaleidoEntryIconFlag(const char *iconResourceName, int iconFormat, int iconSize, int iconWidth,
@@ -431,3 +435,7 @@ namespace Rando {
         mEntryDl->push_back(gsSPPopMatrix(G_MTX_MODELVIEW));
     }
 } // Rando
+
+void RandoKaleido_RegisterHooks() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(RandoKaleido_UpdateMiscCollectibles);
+}

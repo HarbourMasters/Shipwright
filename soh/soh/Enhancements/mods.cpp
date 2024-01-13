@@ -23,6 +23,7 @@
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
+#include "kaleido.h"
 
 extern "C" {
 #include <z64.h>
@@ -1316,4 +1317,5 @@ void InitMods() {
     RegisterRandomizedEnemySizes();
     RegisterToTMedallions();
     NameTag_RegisterHooks();
+    RandoKaleido_RegisterHooks();
 }
