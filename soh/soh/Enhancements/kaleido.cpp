@@ -294,11 +294,6 @@ namespace Rando {
         mButtonColors[2] = { cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, 255 };
         mButtonColors[3] = { cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, 255 };
         mButtonColors[4] = { cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, 255 };
-        for (int i = 0; i < mButtonCollected.size(); i++) {
-            if (!mButtonCollected[i]) {
-                mButtonColors[i] = Color_RGBA8(109, 109, 109, 255);
-            }
-        }
     }
 
     void KaleidoEntryOcarinaButtons::Update(PlayState *play) {
@@ -308,6 +303,14 @@ namespace Rando {
         mButtonCollected[3] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_LEFT) > 0;
         mButtonCollected[4] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_RIGHT) > 0;
         CalculateColors();
+        mAchieved = false;
+        for (int i = 0; i < mButtonCollected.size(); i++) {
+            if (!mButtonCollected[i]) {
+                mButtonColors[i] = Color_RGBA8(109, 109, 109, 255);
+            } else {
+                mAchieved = true;
+            }
+        }
     }
 
     void KaleidoEntryOcarinaButtons::Draw(PlayState *play, std::vector<Gfx>* mEntryDl) {
@@ -325,10 +328,15 @@ namespace Rando {
         mEntryDl->push_back(gsSPMatrix(Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW));
 
         // icon
+        if (!mAchieved) {
+            mEntryDl->push_back(gsDPSetGrayscaleColor(109, 109, 109, 255));
+            mEntryDl->push_back(gsSPGrayscale(true));
+        }
         mEntryDl->push_back(gsDPSetPrimColor(0, 0, mIconColor.r, mIconColor.g, mIconColor.b, mIconColor.a));
         mEntryDl->push_back(gsSPVertex(vtx, 4, 0));
         LoadIconTex(mEntryDl);
         mEntryDl->push_back(gsSP1Quadrangle(0, 2, 3, 1, 0));
+        mEntryDl->push_back(gsSPGrayscale(false));
 
         // text
         for (size_t i = 0, vtxGroup = 0; i < numChar; i++) {
