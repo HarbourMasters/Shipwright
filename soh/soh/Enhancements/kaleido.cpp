@@ -123,6 +123,36 @@ namespace Rando {
             mEntries.push_back(std::make_shared<KaleidoEntryOcarinaButtons>(0, yOffset));
             yOffset += 18;
         }
+        if (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF)) {
+            static const char* bossSoulNames[] = {
+                    "Ghoma's Soul",
+                    "King Dodongo's Soul",
+                    "Barinade's Soul",
+                    "Phantom Ganon's Soul",
+                    "Volvagia's Soul",
+                    "Morpha's Soul",
+                    "Bongo Bongo's Soul",
+                    "Twinrova's Soul",
+            };
+            for (int i = RAND_INF_GOHMA_SOUL; i < RAND_INF_GANON_SOUL; i++) {
+                mEntries.push_back(
+                    std::make_shared<KaleidoEntryIconFlag>(
+                        gBossSoulTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8(255, 255, 255, 255),
+                        FlagType::FLAG_RANDOMIZER_INF, i, 0, yOffset, bossSoulNames[i - RAND_INF_GOHMA_SOUL]
+                    )
+                );
+                yOffset += 18;
+            }
+        }
+        if (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON)) {
+            mEntries.push_back(
+                    std::make_shared<KaleidoEntryIconFlag>(
+                            gBossSoulTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8(255, 255, 255, 255),
+                            FlagType::FLAG_RANDOMIZER_INF, RAND_INF_GANON_SOUL, 0, yOffset, "Ganon's Soul"
+                    )
+            );
+            yOffset += 18;
+        }
     }
 
     extern "C" {
