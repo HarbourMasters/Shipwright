@@ -18,6 +18,8 @@ extern PlayState* gPlayState;
 #include "consolevariablebridge.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
+#include <sstream>
+
 namespace Rando {
 
     void KaleidoEntryIcon::LoadIconTex(std::vector<Gfx>* mEntryDl) {
