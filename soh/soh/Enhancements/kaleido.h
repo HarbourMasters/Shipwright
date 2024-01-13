@@ -166,9 +166,11 @@ private:
 extern "C" {
 #endif
 void RandoKaleido_DrawMiscCollectibles(PlayState* play);
-void RandoKaleido_UpdateMiscCollectibles(PlayState* play);
+void RandoKaleido_UpdateMiscCollectibles(int16_t inDungeonScene);
 #ifdef __cplusplus
 }
 #endif
+void RandoKaleido_RegisterHooks();
+
 
 #endif //KALEIDO_H
