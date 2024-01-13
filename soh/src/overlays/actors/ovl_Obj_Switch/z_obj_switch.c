@@ -295,6 +295,14 @@ void ObjSwitch_Init(Actor* thisx, PlayState* play) {
 
     if (type == OBJSWITCH_TYPE_FLOOR || type == OBJSWITCH_TYPE_FLOOR_RUSTY) {
         this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y + 1.0f;
+        if (CVarGetInteger("gFixFloorSwitches", 0)) {
+            if (this->dyna.actor.params == 4608) {
+                this->dyna.actor.world.pos.y = -0x30B;
+            }
+            if (this->dyna.actor.params == 14848) {
+                this->dyna.actor.world.pos.y = 0x1194;
+            }
+        }
     }
 
     Actor_SetFocus(&this->dyna.actor, sHeights[type]);
