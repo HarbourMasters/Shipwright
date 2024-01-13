@@ -199,6 +199,10 @@ bool Randomizer_GetOverworldFishShuffled();
 bool Randomizer_IsAdultPond();
 /// Sets the pending fish
 void Randomizer_SetPendingFish(FishIdentity* fish);
+/// Custom shadow draw function to add effect to uncollected fish
+void Fishsanity_DrawEffShadow(Actor* actor, Lights* lights, PlayState* play);
+void Fishsanity_OpenGreyscaleColor(PlayState* play, Color_RGBA16* color, int16_t frameOffset);
+void Fishsanity_CloseGreyscaleColor(PlayState* play);
 #ifdef __cplusplus
 }
 #endif

@@ -434,6 +434,7 @@ static f32 sFishGroupAngle3;
 static FishingEffect sFishingEffects[FISHING_EFFECT_COUNT];
 static Vec3f sStreamSoundProjectedPos;
 static s16 sFishOnHandParams;
+static Color_RGBA16 fsPulseColor = { 30, 240, 200 };
 
 void Fishing_SetColliderElement(s32 index, ColliderJntSph* collider, Vec3f* pos, f32 scale) {
     collider->elements[index].dim.worldSphere.center.x = pos->x;
@@ -4304,7 +4305,14 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
 
 s32 Fishing_FishOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                                  void* thisx) {
-    Fishing* this = (Fishing*)thisx;
+    Fishing* this = (Fishing*)thisx; 
+
+    // #region SOH [Randomizer]
+    // A fish having a shadowDraw implies that it is being given uncollected FX
+    if (IS_FISHSANITY && this->actor.shape.shadowDraw != NULL) {
+        Fishsanity_OpenGreyscaleColor(play, &fsPulseColor, (this->actor.params - 100) * 20);
+    }
+    // #endregion
 
     if (limbIndex == 0xD) {
         rot->z -= this->fishLimbDRotZDelta - 11000;
@@ -4328,6 +4336,13 @@ s32 Fishing_FishOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 void Fishing_FishPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Fishing* this = (Fishing*)thisx;
 
+    // #region SOH [Randomizer]
+    // A fish having a shadowDraw implies that it is being given uncollected FX
+    if (IS_FISHSANITY && this->actor.shape.shadowDraw != NULL) {
+        Fishsanity_CloseGreyscaleColor(play);
+    }
+    // #endregion
+
     if (limbIndex == 0xD) {
         Matrix_MultVec3f(&sFishMouthOffset, &this->fishMouthPos);
     }
@@ -4336,6 +4351,13 @@ void Fishing_FishPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
 s32 Fishing_LoachOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                                   void* thisx) {
     Fishing* this = (Fishing*)thisx;
+
+    // #region SOH [Randomizer]
+    // A fish having a shadowDraw implies that it is being given uncollected FX
+    if (IS_FISHSANITY && this->actor.shape.shadowDraw != NULL) {
+        Fishsanity_OpenGreyscaleColor(play, &fsPulseColor, (this->actor.params - 100) * 20);
+    }
+    // #endregion
 
     if (limbIndex == 3) {
         rot->y += this->loachRotYDelta[0];
@@ -4351,6 +4373,13 @@ s32 Fishing_LoachOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, V
 void Fishing_LoachPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     static Vec3f sLoachMouthOffset = { 500.0f, 500.0f, 0.0f };
     Fishing* this = (Fishing*)thisx;
+
+    // #region SOH [Randomizer]
+    // A fish having a shadowDraw implies that it is being given uncollected FX
+    if (IS_FISHSANITY && this->actor.shape.shadowDraw != NULL) {
+        Fishsanity_CloseGreyscaleColor(play);
+    }
+    // #endregion
 
     if (limbIndex == 0xB) {
         Matrix_MultVec3f(&sLoachMouthOffset, &this->fishMouthPos);

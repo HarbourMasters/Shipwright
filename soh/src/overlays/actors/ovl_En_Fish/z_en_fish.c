@@ -7,6 +7,7 @@
 #include "z_en_fish.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "vt.h"
+#include "soh/Enhancements/randomizer/fishsanity.h"
 
 #define FLAGS 0
 
@@ -36,6 +37,7 @@ void EnFish_Unique_SwimIdle(EnFish* this, PlayState* play);
 static Actor* D_80A17010 = NULL;
 static f32 D_80A17014 = 0.0f;
 static f32 D_80A17018 = 0.0f;
+static Color_RGBA16 fsPulseColor = { 30, 240, 200 };
 
 static ColliderJntSphElementInit sJntSphElementsInit[1] = {
     {
@@ -760,10 +762,31 @@ void EnFish_Update(Actor* thisx, PlayState* play) {
     }
 }
 
+// #region SOH [Randomizer]
+s32 EnFish_FishsanityOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
+                                      void* thisx) {
+    EnFish* this = (EnFish*)thisx;
+    Fishsanity_OpenGreyscaleColor(play, &fsPulseColor, ABS(this->actor.params) * 20);
+    return 0;
+}
+
+void EnFish_FishPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+    Fishsanity_CloseGreyscaleColor(play);
+}
+// #endregion
+
 void EnFish_Draw(Actor* thisx, PlayState* play) {
     EnFish* this = (EnFish*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    // #region SOH [Randomizer]
+    // Modify drawing for uncollected fish, having a shadowDraw implies this is being given uncollected FX
+    if (IS_RANDO && Randomizer_GetOverworldFishShuffled() && this->actor.shape.shadowDraw != NULL) {
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnFish_FishsanityOverrideLimbDraw, EnFish_FishPostLimbDraw, this);
+        Collider_UpdateSpheres(0, &this->collider);
+        return;
+    }
+    // #endregion
     SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, NULL);
     Collider_UpdateSpheres(0, &this->collider);
 }

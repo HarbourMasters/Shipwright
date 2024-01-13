@@ -257,12 +257,12 @@ void Settings::CreateOptionDescriptions() {
         "Shuffle Fishing Pond - The fishing pond's fish will be shuffled. Catching a fish in the fishing pond will grant a reward.\n\n"
         "Shuffle Overworld Fish - Fish in generic grottos and Zora's Domain will be shuffled. Catching a fish in a bottle will give a reward.\n\n"
         "Shuffle Both - Both overworld fish and fish in the fishing pond will be shuffled.";
-    mOptionDescriptions[RSK_FISHSANITY_POND_COUNT] = "The number of fish to randomize in the fishing pool.\n"
-        "If set to maximum, each fish will have a unique check, including a Hyrule Loach which appears only as child, and caught fish will disappear.\n"
-        "All fish will reappear after each fish is caught to ensure the vanilla fishing prizes remain accessible.\n"
+    mOptionDescriptions[RSK_FISHSANITY_POND_COUNT] = "The number of fish to randomize in the fishing pool.\n\n"
+        "If set to maximum, each fish will have a unique check, including a Hyrule Loach which appears only as child, and "
+        "uncaught fish will be given a visual indicator to distinguish from already-caught fish.\n\n"
         "Otherwise, any fish caught in the pond will give a reward, until all rewards have been given.";
-    mOptionDescriptions[RSK_FISHSANITY_AGE_SPLIT] = "Enabling this will split the fishing pond fish by age, making fishing pond fish grant different rewards as child and adult.\n"
-        "If disabled, then the child pond will be shuffled and shared between both ages.\n"
+    mOptionDescriptions[RSK_FISHSANITY_AGE_SPLIT] = "Enabling this will split the fishing pond fish by age, making fishing pond fish grant different rewards as child and adult.\n\n"
+        "If disabled, then the child pond will be shuffled and shared between both ages.\n\n"
         "Note that, as child, there is a second loach available in the pond!";
     mOptionDescriptions[RSK_SHUFFLE_SCRUBS] =
         "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the vanilla game "

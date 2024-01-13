@@ -347,4 +347,66 @@ extern "C" {
     void Randomizer_SetPendingFish(FishIdentity* fish) {
         return FSi->SetPendingFish(fish);
     }
+
+    void Fishsanity_DrawEffShadow(Actor* actor, Lights* lights, PlayState* play) {
+        Vec3f pos, ripplePos;
+        static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
+        static Vec3f accel = { 0.0f, 0.0f, 0.0f };
+        Color_RGBA8 primColor;
+        Color_RGBA8 envColor;
+
+        // Color of the circle for the particles
+        static Color_RGBA8 mainColors[5][4] = {
+            { 240, 154, 137, 200 },
+            { 240, 190, 137, 200 },
+            { 240, 171, 137, 200 },
+            { 240, 141, 146, 200 },
+            { 240, 204, 137, 200 }
+        };
+
+        // Color of the faded flares stretching off the particles
+        static Color_RGBA8 flareColors[5][3] = {
+            { 128, 85, 82, 200 },
+            { 128, 101, 82, 200 },
+            { 128, 93, 82, 200 },
+            { 128, 82, 98, 200 },
+            { 128, 108, 82, 200 }
+        };
+
+        Color_RGBA8_Copy(&primColor, mainColors[ABS(actor->params) % 5]);
+        Color_RGBA8_Copy(&envColor, flareColors[ABS(actor->params) % 5]);
+
+        // Spawn sparkles
+        pos.x = Rand_CenteredFloat(23.0f) + actor->world.pos.x;
+        pos.y = (Rand_Centered() * 12.0f) + actor->world.pos.y;
+        pos.z = Rand_CenteredFloat(23.0f) + actor->world.pos.z;
+        velocity.y = 0.05f;
+        accel.y = 0.025f;
+        Math_Vec3f_Copy(&ripplePos, &pos);
+        ripplePos.y += actor->yDistToWater;
+
+        if (Rand_ZeroOne() < 0.3f) {
+            EffectSsKiraKira_SpawnDispersed(play, &pos, &velocity, &accel, &primColor, &envColor, 1800, 10);
+        }
+
+        if (actor->bgCheckFlags & 0x20 && Rand_ZeroOne() < 0.15f) {
+            EffectSsGRipple_Spawn(play, &ripplePos, 100, 200, 2);
+        }
+    }
+
+    void Fishsanity_OpenGreyscaleColor(PlayState* play, Color_RGBA16* color, int16_t frameOffset) {
+        OPEN_DISPS(play->state.gfxCtx);
+        gDPSetGrayscaleColor(
+            POLY_OPA_DISP++, color->r, color->g, color->b,
+            // Make color pulse, offset a bit by the actor params
+            ABS(255.0f * Math_CosS((play->gameplayFrames + frameOffset) * 1000)));
+        gSPGrayscale(POLY_OPA_DISP++, true);
+        CLOSE_DISPS(play->state.gfxCtx);
+    }
+
+    void Fishsanity_CloseGreyscaleColor(PlayState* play) {
+        OPEN_DISPS(play->state.gfxCtx);
+        gSPGrayscale(POLY_OPA_DISP++, false);
+        CLOSE_DISPS(play->state.gfxCtx);
+    }
 }
