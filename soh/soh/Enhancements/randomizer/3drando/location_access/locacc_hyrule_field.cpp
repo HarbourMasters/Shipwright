@@ -221,8 +221,8 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_LON_LON_RANCH] = Area("Lon Lon Ranch", "Lon Lon Ranch", RA_LON_LON_RANCH, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->Epona,    {[]{return logic->Epona    || (logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay);}}),
-                  EventAccess(&logic->LinksCow, {[]{return logic->LinksCow || (logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay);}}),
+                  EventAccess(&logic->Epona,    {[]{return logic->Epona    || ((logic->ChildsWallet || randoCtx->GetOption(RSK_SKIP_EPONA_RACE)) && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay);}}),
+                  EventAccess(&logic->LinksCow, {[]{return logic->LinksCow || (logic->ChildsWallet && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay);}}),
                 }, {
                   //Locations
                   LocationAccess(RC_SONG_FROM_MALON,     {[]{return logic->IsChild && logic->ZeldasLetter && logic->Ocarina && logic->AtDay;}}),
@@ -241,7 +241,7 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_LLR_TALONS_HOUSE] = Area("LLR Talons House", "LLR Talons House", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_LLR_TALONS_CHICKENS, {[]{return logic->IsChild && logic->AtDay && logic->ZeldasLetter;}}),
+                  LocationAccess(RC_LLR_TALONS_CHICKENS, {[]{return logic->ChildsWallet && logic->IsChild && logic->AtDay && logic->ZeldasLetter;}}),
                 }, {
                   //Exits
                   Entrance(RR_LON_LON_RANCH, {[]{return true;}}),

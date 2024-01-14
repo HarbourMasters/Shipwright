@@ -608,7 +608,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
     // Shopsanity with at least one item shuffled allows for a third wallet upgrade.
     // This is needed since Plentiful item pool also adds a third progressive wallet
     // but we should *not* get Tycoon's Wallet in that mode.
-    u8 numWallets = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 3 : 2;
+    bool tycoonWallet = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS;
     switch (randoGet) {
         case RG_NONE:
         case RG_TRIFORCE:
@@ -791,7 +791,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_PROGRESSIVE_STRENGTH:
             return CUR_UPG_VALUE(UPG_STRENGTH) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_PROGRESSIVE_WALLET:
-            return CUR_UPG_VALUE(UPG_WALLET) < numWallets ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return CUR_UPG_VALUE(UPG_WALLET) < (tycoonWallet ? 3 : 2) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_PROGRESSIVE_SCALE:
             return CUR_UPG_VALUE(UPG_SCALE) < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_PROGRESSIVE_MAGIC_METER:
@@ -962,7 +962,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
     // Shopsanity with at least one item shuffled allows for a third wallet upgrade.
     // This is needed since Plentiful item pool also adds a third progressive wallet
     // but we should *not* get Tycoon's Wallet in that mode.
-    u8 numWallets = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 3 : 2;
+    bool tycoonWallet = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS;
     switch (randoGet) {
         case RG_NONE:
             return ogItemId;
@@ -1197,6 +1197,9 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_GAUNTLETS_GOLD;
             }
         case RG_PROGRESSIVE_WALLET:
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+                return (GetItemID)RG_CHILD_WALLET;
+            }
             switch (CUR_UPG_VALUE(UPG_WALLET)) {
                 case 0:
                     return GI_WALLET_ADULT;
@@ -1204,7 +1207,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_WALLET_GIANT;
                 case 2:
                 case 3:
-                    return numWallets == 3 ? (GetItemID)RG_TYCOON_WALLET : GI_WALLET_GIANT;
+                    return tycoonWallet ? (GetItemID)RG_TYCOON_WALLET : GI_WALLET_GIANT;
             }
         case RG_PROGRESSIVE_SCALE:
             switch (CUR_UPG_VALUE(UPG_SCALE)) {
@@ -1389,6 +1392,9 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BUY_RED_POTION_50:
             return true;
         case RG_PROGRESSIVE_WALLET:
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+                return false;
+            }
             if (CUR_UPG_VALUE(UPG_WALLET) < 2) {
                 return true;
             } else {
@@ -3233,7 +3239,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 72> getItemMessages = {{
+    const std::array<GetItemMessage, 73> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
@@ -3468,6 +3474,10 @@ void Randomizer::CreateCustomMessages() {
 			"You got a %rTycoon's Wallet%w!&It's gigantic! Now you can carry&up to %y999 rupees%w!",
 			"Du erhältst die %rGoldene&Geldbörse%w! Die größte aller&Geldbörsen! Jetzt kannst Du bis&zu %y999 Rubine%w mit dir führen!",
 			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!"),
+        GIMESSAGE(RG_CHILD_WALLET, ITEM_WALLET_ADULT,
+			"You got a %rChild's Wallet%w!&Now you can carry&up to %y99 rupees%w!",
+			"Du erhältst die %rGoldene&Geldbörse%w! Jetzt kannst Du bis&zu %y99 Rubine%w mit dir führen!",//FIXME: still says tycoon
+			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y99 rubis%w!"),//FIXME: still says tycoon
 
         GIMESSAGE_UNTRANSLATED(RG_GOHMA_SOUL, ITEM_BIG_POE, "You found the soul for %gGohma%w!"),
         GIMESSAGE_UNTRANSLATED(RG_KING_DODONGO_SOUL, ITEM_BIG_POE, "You found the soul for %rKing&Dodongo%w!"),

@@ -964,6 +964,11 @@ void GenerateItemPool() {
     }
   }
 
+  if (ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET)) {
+    AddItemToMainPool(RG_PROGRESSIVE_WALLET);
+  }
+
+
   if (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC)) {
     AddItemToMainPool(RG_PROGRESSIVE_BOMBCHUS, 5);
   } else {

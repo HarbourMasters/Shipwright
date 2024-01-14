@@ -64,7 +64,7 @@ void ReloadSceneTogglingLinkAge() {
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded()) return;
-        if (CVarGetInteger("gInfiniteMoney", 0) != 0) {
+        if (CVarGetInteger("gInfiniteMoney", 0) != 0 && (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET))) {
             if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
                 gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
             }
@@ -1284,6 +1284,14 @@ void RegisterToTMedallions() {
     });
 }
 
+void RegisterNoWallet() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+            gSaveContext.rupees = 0;
+        }
+    });
+}
+
 void RegisterFishsanity() {
     static s16 fishGroupCounter = 0;
 
@@ -1467,6 +1475,7 @@ void InitMods() {
     RegisterBossSouls();
     RegisterRandomizedEnemySizes();
     RegisterToTMedallions();
+    RegisterNoWallet();
     RegisterFishsanity();
     NameTag_RegisterHooks();
 }

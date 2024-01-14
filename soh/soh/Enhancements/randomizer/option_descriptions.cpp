@@ -211,6 +211,10 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Adult Link will start with a second free item instead of the Master Sword.\n"
         "If you haven't found the Master Sword before facing Ganon, you won't receive it during the fight.";
+    mOptionDescriptions[RSK_SHUFFLE_CHILD_WALLET] =
+        "Enabling this shuffles the Child's Wallet into the item pool.\n"
+        "\n"
+        "You will not be able to carry any rupees until you find a wallet.";
     mOptionDescriptions[RSK_SHUFFLE_OCARINA] =
         "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time into the item pool.\n"
         "\n"

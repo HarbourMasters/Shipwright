@@ -257,7 +257,8 @@ namespace Rando {
         GoldenGauntlets = ProgressiveStrength   >= 3;
         SilverScale     = ProgressiveScale      >= 1;
         GoldScale       = ProgressiveScale      >= 2;
-        AdultsWallet    = ProgressiveWallet     >= 1;
+        ChildsWallet    = ProgressiveWallet     >= 1;
+        AdultsWallet    = ProgressiveWallet     >= 2;
         BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
         //you need at least 2 buttons for scarecrow song
@@ -283,7 +284,7 @@ namespace Rando {
         Fairy        = HasBottle && FairyAccess;
 
         FoundBombchus   = (BombchuDrop || Bombchus || Bombchus5 || Bombchus10 || Bombchus20);
-        CanPlayBowling  = (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && FoundBombchus) || (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && BombBag);
+        CanPlayBowling  = ChildsWallet && ((ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && FoundBombchus) || (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && BombBag));
         // TODO: Implement Ammo Drop Setting in place of bombchu drops
         HasBombchus = (BuyBombchus || (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON/*_PLUS_BOMBCHU*/) && FoundBombchus));
 
@@ -333,7 +334,7 @@ namespace Rando {
         CanGetNightTimeGS   = (CanUse(RG_SUNS_SONG) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG));
         CanBreakUpperBeehives = HookshotOrBoomerang || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && HasBombchus);
         CanBreakLowerBeehives = CanBreakUpperBeehives || Bombs;
-        CanFish = CanUse(RG_FISHING_POLE) || !ctx->GetOption(RSK_SHUFFLE_FISHING_POLE);
+        CanFish = ChildsWallet && (CanUse(RG_FISHING_POLE) || !ctx->GetOption(RSK_SHUFFLE_FISHING_POLE));
         CanGetChildFish = CanFish && (IsChild || (IsAdult && !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)));
         CanGetAdultFish = CanFish && IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT);
 
@@ -610,7 +611,8 @@ namespace Rando {
         ProgressiveScale      = 0;
         ProgressiveHookshot   = 0;
         ProgressiveBow        = 0;
-        ProgressiveWallet     = 0;
+        //If we're not shuffling child's wallet, we start with it (wallet 1)
+        ProgressiveWallet     = ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET).Is(true) ? 0 : 1;
         ProgressiveStrength   = 0;
         ProgressiveOcarina    = 0;
         ProgressiveGiantKnife = 0;
@@ -711,6 +713,7 @@ namespace Rando {
         GoldenGauntlets  = false;
         SilverScale      = false;
         GoldScale        = false;
+        ChildsWallet     = false;
         AdultsWallet     = false;
 
         ChildScarecrow   = false;

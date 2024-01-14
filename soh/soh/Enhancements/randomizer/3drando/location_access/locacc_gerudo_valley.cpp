@@ -97,12 +97,12 @@ void AreaTable_Init_GerudoValley() {
                   //Events
                   EventAccess(&logic->CarpenterRescue, {[]{return logic->CanFinishGerudoFortress;}}),
                   EventAccess(&logic->GF_GateOpen,     {[]{return logic->IsAdult && logic->GerudoToken;}}),
-                  EventAccess(&logic->GtG_GateOpen,    {[]{return logic->GtG_GateOpen || (logic->IsAdult && logic->GerudoToken);}}),
+                  EventAccess(&logic->GtG_GateOpen,    {[]{return logic->GtG_GateOpen || (logic->IsAdult && logic->GerudoToken && logic->ChildsWallet);}}),
                 }, {
                   //Locations
                   LocationAccess(RC_GF_CHEST,              {[]{return logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->CanUse(RG_SCARECROW)) || logic->CanUse(RG_LONGSHOT);}}),
-                  LocationAccess(RC_GF_HBA_1000_POINTS,    {[]{return logic->GerudoToken && logic->CanRideEpona && logic->Bow && logic->AtDay;}}),
-                  LocationAccess(RC_GF_HBA_1500_POINTS,    {[]{return logic->GerudoToken && logic->CanRideEpona && logic->Bow && logic->AtDay;}}),
+                  LocationAccess(RC_GF_HBA_1000_POINTS,    {[]{return logic->ChildsWallet && logic->GerudoToken && logic->CanRideEpona && logic->Bow && logic->AtDay;}}),
+                  LocationAccess(RC_GF_HBA_1500_POINTS,    {[]{return logic->ChildsWallet && logic->GerudoToken && logic->CanRideEpona && logic->Bow && logic->AtDay;}}),
                   LocationAccess(RC_GF_NORTH_F1_CARPENTER, {[]{return  logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD);}}),
                   LocationAccess(RC_GF_NORTH_F2_CARPENTER, {[]{return (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)) && (logic->GerudoToken || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || randoCtx->GetTrickOption(RT_GF_KITCHEN));}}),
                   LocationAccess(RC_GF_SOUTH_F1_CARPENTER, {[]{return  logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD);}}),

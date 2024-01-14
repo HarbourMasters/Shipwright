@@ -239,6 +239,7 @@ class Logic {
     bool GoldenGauntlets = false;
     bool SilverScale = false;
     bool GoldScale = false;
+    bool ChildsWallet = false;
     bool AdultsWallet = false;
 
     bool ChildScarecrow = false;
