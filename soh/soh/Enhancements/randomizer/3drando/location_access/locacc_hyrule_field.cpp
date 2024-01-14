@@ -33,6 +33,7 @@ void AreaTable_Init_HyruleField() {
   areaTable[RR_HF_SOUTHEAST_GROTTO] = Area("HF Southeast Grotto", "HF Southeast Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(RC_HF_SOUTHEAST_GROTTO_CHEST,        {[]{return true;}}),
+                  LocationAccess(RC_HF_SOUTHEAST_GROTTO_FISH,         {[]{return logic->HasBottle;}}),
                   LocationAccess(RC_HF_SOUTHEAST_GOSSIP_STONE, {[]{return true;}}),
                 }, {
                   //Exits
@@ -42,6 +43,7 @@ void AreaTable_Init_HyruleField() {
   areaTable[RR_HF_OPEN_GROTTO] = Area("HF Open Grotto", "HF Open Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(RC_HF_OPEN_GROTTO_CHEST,        {[]{return true;}}),
+                  LocationAccess(RC_HF_OPEN_GROTTO_FISH,         {[]{return logic->HasBottle;}}),
                   LocationAccess(RC_HF_OPEN_GROTTO_GOSSIP_STONE, {[]{return true;}}),
                 }, {
                   //Exits
@@ -69,6 +71,7 @@ void AreaTable_Init_HyruleField() {
   areaTable[RR_HF_NEAR_MARKET_GROTTO] = Area("HF Near Market Grotto", "HF Near Market Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(RC_HF_NEAR_MARKET_GROTTO_CHEST,        {[]{return true;}}),
+                  LocationAccess(RC_HF_NEAR_MARKET_GROTTO_FISH,         {[]{return logic->HasBottle;}}),
                   LocationAccess(RC_HF_NEAR_MARKET_GOSSIP_STONE, {[]{return true;}}),
                 }, {
                   //Exits
@@ -154,10 +157,45 @@ void AreaTable_Init_HyruleField() {
                   Entrance(RR_LAKE_HYLIA, {[]{return true;}}),
   });
 
+  // TODO: should some of these helpers be done via events instead?
   areaTable[RR_LH_FISHING_HOLE] = Area("LH Fishing Hole", "LH Fishing Hole", RA_NONE, DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_LH_CHILD_FISHING, {[]{return logic->IsChild;}}),
-                  LocationAccess(RC_LH_ADULT_FISHING, {[]{return logic->IsAdult;}}),
+                  LocationAccess(RC_LH_CHILD_FISHING, {[]{return logic->CanFish && logic->IsChild;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_1,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_2,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_3,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_4,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_5,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_6,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_7,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_8,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_9,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_10, {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_11, {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_12, {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_13, {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_14, {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_15, {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_LOACH_1, {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_LOACH_2, {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISHING, {[]{return logic->CanFish && logic->IsAdult;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_1,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_2,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_3,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_4,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_5,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_6,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_7,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_8,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_9,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_10, {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_11, {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_12, {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_13, {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_14, {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_15, {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_LOACH,   {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_FISHING_POLE_HINT,{[]{return true;}}),
                 }, {
                   //Exits
                   Entrance(RR_LH_FISHING_ISLAND, {[]{return true;}}),

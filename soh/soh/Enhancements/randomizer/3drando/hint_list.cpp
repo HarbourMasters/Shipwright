@@ -3127,6 +3127,24 @@ void HintTable_Init() {
         "# bei sich haben und Dich neugierig beobachten..."
     }});
 
+    hintTable[RHT_FISHING_POLE_HINT01] = HintText::OtherHint({
+        // obscure text
+        Text{"^If I remember correctly, I lost it somewhere in %r",
+        /*french*/
+        "",
+        /*spanish*/
+        "" }
+    });
+
+    hintTable[RHT_FISHING_POLE_HINT02] = HintText::OtherHint({
+        // obscure text
+        Text{"%w...&Let me know if you find it!",
+        /*french*/
+        "",
+        /*spanish*/
+        "" }
+    });
+
     /*--------------------------
     |      GANON LINE TEXT     |
     ---------------------------*/

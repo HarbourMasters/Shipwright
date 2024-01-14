@@ -156,6 +156,7 @@ RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 acto
 ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
 ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex);
 CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
+FishIdentity Randomizer_IdentifyFish(s32 sceneNum, s32 actorParams);
 void Randomizer_ParseSpoiler(const char* fileLoc);
 void Randomizer_LoadHintMessages();
 void Randomizer_LoadMerchantMessages();
@@ -164,6 +165,7 @@ GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorPar
 GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
+RandomizerInf Randomizer_GetRandomizerInfFromCheck(RandomizerCheck randomizerCheck);
 ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
 void Randomizer_GenerateSeed();
 uint8_t Randomizer_IsSeedGenerated();

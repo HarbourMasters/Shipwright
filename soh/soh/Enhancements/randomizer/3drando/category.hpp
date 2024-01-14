@@ -9,6 +9,7 @@ enum class Category {
     cSong,
     cSongDungeonReward,
     cCow,
+    cFish,
     cShop,
     cMerchant,
     cVanillaSmallKey,

@@ -11,6 +11,7 @@
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
 #include "objects/object_gi_fire/object_gi_fire.h"
+#include "objects/object_fish/object_fish.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "soh_assets.h"
@@ -388,6 +389,55 @@ extern "C" void Randomizer_DrawOcarinaButton(PlayState* play, GetItemEntry* getI
     gSPDisplayList(POLY_XLU_DISP++, dLists[slot]);
 
     gSPGrayscale(POLY_XLU_DISP++, false);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getItemEntry) {
+    Vec3f pos;
+    OPEN_DISPS(play->state.gfxCtx);
+
+    // Draw rod
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Scale(0.2, 0.2, 0.2, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingPoleGiDL);
+
+    // Draw lure
+    Matrix_Push();
+    Matrix_Scale(5.0f, 5.0f, 5.0f, MTXMODE_APPLY);
+    pos = { 0.0f, -25.5f, -4.0f };
+    Matrix_Translate(pos.x, pos.y, pos.z, MTXMODE_APPLY);
+    Matrix_RotateZ(-M_PI_2, MTXMODE_APPLY);
+    Matrix_RotateY(-M_PI_2 - 0.2f, MTXMODE_APPLY);
+    Matrix_Scale(0.006f, 0.006f, 0.006f, MTXMODE_APPLY);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureFloatDL);
+
+    // Draw hooks
+    Matrix_RotateY(0.2f, MTXMODE_APPLY);
+    Matrix_Translate(0.0f, 0.0f, -300.0f, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
+    Matrix_RotateZ(M_PI_2, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
+
+    Matrix_Translate(0.0f, -2200.0f, 700.0f, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
+    Matrix_RotateZ(M_PI / 2, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
+
+    Matrix_Pop();
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

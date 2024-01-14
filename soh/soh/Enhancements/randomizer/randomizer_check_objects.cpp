@@ -5,6 +5,7 @@
 #include <string>
 #include <libultraship/bridge.h>
 #include "z64.h"
+#include "fishsanity.h"
 
 std::map<RandomizerCheckArea, std::string> rcAreaNames = {
     { RCAREA_KOKIRI_FOREST, "Kokiri Forest" },
@@ -153,6 +154,7 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              ((CVarGetInteger("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_DUNGEONS) &&
               RandomizerCheckObjects::AreaIsDungeon(location.GetArea()))) &&
             (location.GetRCType() != RCTYPE_COW || CVarGetInteger("gRandomizeShuffleCows", RO_GENERIC_NO)) &&
+            (location.GetRCType() != RCTYPE_FISH || ctx->GetFishsanity()->GetFishLocationIncluded(&location, FSO_SOURCE_CVARS)) &&
             (location.GetRCType() != RCTYPE_ADULT_TRADE ||
              CVarGetInteger("gRandomizeShuffleAdultTrade", RO_GENERIC_NO)) &&
             (location.GetRandomizerCheck() != RC_KF_KOKIRI_SWORD_CHEST ||

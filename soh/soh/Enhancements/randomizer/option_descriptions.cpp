@@ -233,6 +233,9 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "The Gerudo Card is required to enter the Gerudo Training Grounds, opening "
         "the gate to Haunted Wasteland and the Horseback Archery minigame.";
+    mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
+        "\n"
+        "The fishing pole is required to play the fishing pond minigame.";
     mOptionDescriptions[RSK_SHOPSANITY] = "Off - All shop items will be the same as vanilla.\n"
                                           "\n"
                                           "0 Items - Vanilla shop items will be shuffled among different shops.\n"
@@ -250,6 +253,17 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SHOPSANITY_PRICES_AFFORDABLE] =
         "Affordable prices per tier: starter = 10, adult = 105, giant = 205, tycoon = 505\n\n"
         "Use this to enable wallet tier locking, but make shop items not as expensive as they could be.";
+    mOptionDescriptions[RSK_FISHSANITY] = "Off - Fish will not be shuffled. No changes will be made to fishing behavior.\n\n"
+        "Shuffle Fishing Pond - The fishing pond's fish will be shuffled. Catching a fish in the fishing pond will grant a reward.\n\n"
+        "Shuffle Overworld Fish - Fish in generic grottos and Zora's Domain will be shuffled. Catching a fish in a bottle will give a reward.\n\n"
+        "Shuffle Both - Both overworld fish and fish in the fishing pond will be shuffled.";
+    mOptionDescriptions[RSK_FISHSANITY_POND_COUNT] = "The number of fish to randomize in the fishing pool.\n\n"
+        "If set to maximum, each fish will have a unique check, including a Hyrule Loach which appears only as child, and "
+        "uncaught fish will be given a visual indicator to distinguish from already-caught fish.\n\n"
+        "Otherwise, any fish caught in the pond will give a reward, until all rewards have been given.";
+    mOptionDescriptions[RSK_FISHSANITY_AGE_SPLIT] = "Enabling this will split the fishing pond fish by age, making fishing pond fish grant different rewards as child and adult.\n\n"
+        "If disabled, then the child pond will be shuffled and shared between both ages.\n\n"
+        "Note that, as child, there is a second loach available in the pond!";
     mOptionDescriptions[RSK_SHUFFLE_SCRUBS] =
         "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the vanilla game "
         "(PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.\n"
@@ -485,6 +499,7 @@ void Settings::CreateOptionDescriptions() {
         "Talking to the chest game owner after buying a key will tell you the location of Greg the Green Rupee.";
     mOptionDescriptions[RSK_SARIA_HINT] = "Talking to Saria either in person or through Saria's Song will tell you the "
                                           "location of a progressive magic meter.";
+    mOptionDescriptions[RSK_FISHING_POLE_HINT] = "Talking to the fishing pond owner without the fishing pole will tell you its location.";
     mOptionDescriptions[RSK_FROGS_HINT] = "Standing near the pedestal for the frogs in Zora's River will tell you the "
                                           "reward for the frogs' ocarina game.";
     mOptionDescriptions[RSK_BIGGORON_HINT] = "Talking to Biggoron will tell you the item he will give you in exchange for the Claim Check.";

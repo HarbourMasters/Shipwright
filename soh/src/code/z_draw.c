@@ -76,6 +76,7 @@
 #include "objects/object_gi_dekupouch/object_gi_dekupouch.h"
 #include "objects/object_gi_rupy/object_gi_rupy.h"
 #include "objects/object_gi_sword_1/object_gi_sword_1.h"
+#include "objects/object_fish/object_fish.h"
 #include "objects/object_st/object_st.h"
 
 #include "soh_assets.h"
@@ -113,6 +114,7 @@ void GetItem_DrawJewelGoron(PlayState* play, s16 drawId);
 void GetItem_DrawJewelZora(PlayState* play, s16 drawId);
 void GetItem_DrawGenericMusicNote(PlayState* play, s16 drawId);
 void GetItem_DrawTriforcePiece(PlayState* play, s16 drawId);
+void GetItem_DrawFishingPole(PlayState* play, s16 drawId);
 
 typedef struct {
     /* 0x00 */ void (*drawFunc)(PlayState*, s16);
@@ -388,7 +390,8 @@ DrawItemTableEntry sDrawItemTable[] = {
     { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Sun's song
     { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Song of time
     { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Song of storms
-    { GetItem_DrawTriforcePiece, { gTriforcePiece0DL } } // Triforce Piece
+    { GetItem_DrawTriforcePiece, { gTriforcePiece0DL } }, // Triforce Piece
+    { GetItem_DrawFishingPole, { gFishingPoleGiDL } }, // Fishing Pole
 };
 
 /**
@@ -1062,6 +1065,57 @@ void GetItem_DrawTriforcePiece(PlayState* play, s16 drawId) {
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
     gSPDisplayList(POLY_OPA_DISP++, triforcePieceDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+void GetItem_DrawFishingPole(PlayState* play, s16 drawId) {
+    Vec3f pos;
+    OPEN_DISPS(play->state.gfxCtx);
+
+    // Draw rod
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Scale(0.2, 0.2, 0.2, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingPoleGiDL);
+
+    // Draw lure
+    Matrix_Push();
+    Matrix_Scale(5.0f, 5.0f, 5.0f, MTXMODE_APPLY);
+    pos.x = 0.0f;
+    pos.y = -25.5f;
+    pos.z = -4.0f;
+    Matrix_Translate(pos.x, pos.y, pos.z, MTXMODE_APPLY);
+    Matrix_RotateZ(M_PI / -2, MTXMODE_APPLY);
+    Matrix_RotateY((M_PI / -2) - 0.2f, MTXMODE_APPLY);
+    Matrix_Scale(0.006f, 0.006f, 0.006f, MTXMODE_APPLY);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureFloatDL);
+
+    // Draw hooks
+    Matrix_RotateY(0.2f, MTXMODE_APPLY);
+    Matrix_Translate(0.0f, 0.0f, -300.0f, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
+    Matrix_RotateZ(M_PI / 2, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
+
+    Matrix_Translate(0.0f, -2200.0f, 700.0f, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
+    Matrix_RotateZ(M_PI / 2, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
+
+    Matrix_Pop();
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
