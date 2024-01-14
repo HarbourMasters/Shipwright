@@ -557,6 +557,43 @@ static void PlaceVanillaBossKeys() {
 // TODO: This feels like it could be moved to Dungeons class and probably shorten
 // a few function call chains. Needs investigation.
 
+static void PlaceVanillaBeehiveRupees() {
+  auto ctx = Rando::Context::GetInstance();
+  ctx->PlaceItemInLocation(RC_KF_STORMS_GROTTO_BEEHIVE_LEFT,         RG_BLUE_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT, RG_BLUE_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_LEFT,    RG_BLUE_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_HF_OPEN_GROTTO_BEEHIVE_LEFT,           RG_BLUE_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_LEFT,      RG_BLUE_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_KAK_OPEN_GROTTO_BEEHIVE_LEFT,          RG_BLUE_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_DMT_STORMS_GROTTO_BEEHIVE_LEFT,        RG_BLUE_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_DMC_UPPER_GROTTO_BEEHIVE_LEFT,         RG_BLUE_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_ZR_OPEN_GROTTO_BEEHIVE_LEFT,           RG_BLUE_RUPEE, false, true);
+
+  ctx->PlaceItemInLocation(RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT,         RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT, RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE,           RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_SFM_STORMS_GROTTO_BEEHIVE,              RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_RIGHT,    RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_HF_OPEN_GROTTO_BEEHIVE_RIGHT,           RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_RIGHT,      RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_HF_INSIDE_FENCE_GROTTO_BEEHIVE,         RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_LLR_GROTTO_BEEHIVE,                     RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_KAK_OPEN_GROTTO_BEEHIVE_RIGHT,          RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_DMT_COW_GROTTO_BEEHIVE,                 RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_DMT_STORMS_GROTTO_BEEHIVE_RIGHT,        RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_GC_GROTTO_BEEHIVE,                      RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_DMC_UPPER_GROTTO_BEEHIVE_RIGHT,         RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_DMC_HAMMER_GROTTO_BEEHIVE,              RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_ZR_OPEN_GROTTO_BEEHIVE_RIGHT,           RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_ZR_STORMS_GROTTO_BEEHIVE,               RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_LEFT,  RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT, RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_ZD_BEHIND_KING_ZORA_BEEHIVE,            RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_LH_GROTTO_BEEHIVE,                      RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE,           RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_COLOSSUS_GROTTO_BEEHIVE,                RG_RED_RUPEE, false, true);
+}
+
 static void PlaceVanillaCowMilk() {
   auto ctx = Rando::Context::GetInstance();
   ctx->PlaceItemInLocation(RC_KF_LINKS_HOUSE_COW,    RG_MILK, false, true);
@@ -743,6 +780,14 @@ void GenerateItemPool() {
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_DOWN_BUTTON);
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_LEFT_BUTTON);
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_RIGHT_BUTTON);
+  }
+
+  if (ctx->GetOption(RSK_SHUFFLE_BEEHIVES)) {
+    //32 total beehive locations
+    AddItemToMainPool(RG_RED_RUPEE, 23);
+    AddItemToMainPool(RG_BLUE_RUPEE, 9);
+  } else {
+    PlaceVanillaBeehiveRupees();
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_COWS)) {

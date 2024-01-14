@@ -32,9 +32,11 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_HF_SOUTHEAST_GROTTO] = Area("HF Southeast Grotto", "HF Southeast Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(RC_HF_SOUTHEAST_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(RC_HF_SOUTHEAST_GROTTO_FISH,         {[]{return logic->HasBottle;}}),
-                  LocationAccess(RC_HF_SOUTHEAST_GOSSIP_STONE, {[]{return true;}}),
+                  LocationAccess(RC_HF_SOUTHEAST_GROTTO_CHEST,         {[]{return true;}}),
+                  LocationAccess(RC_HF_SOUTHEAST_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
+                  LocationAccess(RC_HF_SOUTHEAST_GOSSIP_STONE,         {[]{return true;}}),
+                  LocationAccess(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
+                  LocationAccess(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
@@ -42,9 +44,11 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_HF_OPEN_GROTTO] = Area("HF Open Grotto", "HF Open Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(RC_HF_OPEN_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(RC_HF_OPEN_GROTTO_FISH,         {[]{return logic->HasBottle;}}),
-                  LocationAccess(RC_HF_OPEN_GROTTO_GOSSIP_STONE, {[]{return true;}}),
+                  LocationAccess(RC_HF_OPEN_GROTTO_CHEST,         {[]{return true;}}),
+                  LocationAccess(RC_HF_OPEN_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
+                  LocationAccess(RC_HF_OPEN_GROTTO_GOSSIP_STONE,  {[]{return true;}}),
+                  LocationAccess(RC_HF_OPEN_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
+                  LocationAccess(RC_HF_OPEN_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
@@ -52,7 +56,8 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_HF_INSIDE_FENCE_GROTTO] = Area("HF Inside Fence Grotto", "HF Inside Fence Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_HF_DEKU_SCRUB_GROTTO, {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_HF_DEKU_SCRUB_GROTTO,           {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_HF_INSIDE_FENCE_GROTTO_BEEHIVE, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
@@ -70,9 +75,11 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_HF_NEAR_MARKET_GROTTO] = Area("HF Near Market Grotto", "HF Near Market Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(RC_HF_NEAR_MARKET_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(RC_HF_NEAR_MARKET_GROTTO_FISH,         {[]{return logic->HasBottle;}}),
-                  LocationAccess(RC_HF_NEAR_MARKET_GOSSIP_STONE, {[]{return true;}}),
+                  LocationAccess(RC_HF_NEAR_MARKET_GROTTO_CHEST,         {[]{return true;}}),
+                  LocationAccess(RC_HF_NEAR_MARKET_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
+                  LocationAccess(RC_HF_NEAR_MARKET_GOSSIP_STONE,         {[]{return true;}}),
+                  LocationAccess(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
+                  LocationAccess(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
@@ -206,6 +213,7 @@ void AreaTable_Init_HyruleField() {
                   LocationAccess(RC_LH_DEKU_SCRUB_GROTTO_LEFT,   {[]{return logic->CanStunDeku;}}),
                   LocationAccess(RC_LH_DEKU_SCRUB_GROTTO_RIGHT,  {[]{return logic->CanStunDeku;}}),
                   LocationAccess(RC_LH_DEKU_SCRUB_GROTTO_CENTER, {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_LH_GROTTO_BEEHIVE,           {[]{return logic->CanBreakUpperBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_LAKE_HYLIA, {[]{return true;}}),
@@ -263,6 +271,7 @@ void AreaTable_Init_HyruleField() {
                   LocationAccess(RC_LLR_DEKU_SCRUB_GROTTO_LEFT,   {[]{return logic->CanStunDeku;}}),
                   LocationAccess(RC_LLR_DEKU_SCRUB_GROTTO_RIGHT,  {[]{return logic->CanStunDeku;}}),
                   LocationAccess(RC_LLR_DEKU_SCRUB_GROTTO_CENTER, {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_LLR_GROTTO_BEEHIVE,           {[]{return logic->CanBreakUpperBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_LON_LON_RANCH, {[]{return true;}}),

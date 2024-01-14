@@ -273,6 +273,8 @@ void Settings::CreateOptionDescriptions() {
         "Expensive - Scrubs will be shuffled and their item will cost the vanilla price.\n"
         "\n"
         "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n";
+    mOptionDescriptions[RSK_SHUFFLE_BEEHIVES] =
+        "Beehives give a randomized item from the pool when broken.";
     mOptionDescriptions[RSK_SHUFFLE_COWS] =
         "Cows give a randomized item from the pool upon performing Epona's Song in front of them.";
     mOptionDescriptions[RSK_SHUFFLE_MAGIC_BEANS] =
