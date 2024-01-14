@@ -1876,7 +1876,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                     if (Player_AimsBoomerang(this) != 0) {
                         Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
-                        Player_DrawHookshotReticle(play, this, 38600.0f);
+                        Player_DrawHookshotReticle(play, this, 37000.0f);
                     }
                 }
             // #endregion
