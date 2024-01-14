@@ -55,6 +55,7 @@ void AreaTable_Init_ZorasDomain() {
   areaTable[RR_ZR_OPEN_GROTTO] = Area("ZR Open Grotto", "ZR Open Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(RC_ZR_OPEN_GROTTO_CHEST,        {[]{return true;}}),
+                  LocationAccess(RC_ZR_OPEN_GROTTO_FISH,         {[]{return logic->HasBottle;}}),
                   LocationAccess(RC_ZR_OPEN_GROTTO_GOSSIP_STONE, {[]{return true;}}),
                 }, {
                   //Exits
@@ -94,6 +95,11 @@ void AreaTable_Init_ZorasDomain() {
                   LocationAccess(RC_ZD_KING_ZORA_THAWED,    {[]{return logic->KingZoraThawed;}}),
                   LocationAccess(RC_ZD_TRADE_PRESCRIPTION,  {[]{return logic->KingZoraThawed && logic->Prescription;}}),
                   LocationAccess(RC_ZD_GS_FROZEN_WATERFALL, {[]{return logic->IsAdult && logic->AtNight && (logic->HookshotOrBoomerang || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->Bow || (logic->MagicMeter && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))) || (randoCtx->GetTrickOption(RT_ZD_GS) && logic->CanJumpslash)) && logic->CanGetNightTimeGS;}}),
+                  LocationAccess(RC_ZD_FISH_1,              {[]{return logic->IsChild && logic->HasBottle;}}),
+                  LocationAccess(RC_ZD_FISH_2,              {[]{return logic->IsChild && logic->HasBottle;}}),
+                  LocationAccess(RC_ZD_FISH_3,              {[]{return logic->IsChild && logic->HasBottle;}}),
+                  LocationAccess(RC_ZD_FISH_4,              {[]{return logic->IsChild && logic->HasBottle;}}),
+                  LocationAccess(RC_ZD_FISH_5,              {[]{return logic->IsChild && logic->HasBottle;}}),
                   LocationAccess(RC_ZD_GOSSIP_STONE,        {[]{return true;}}),
                 }, {
                   //Exits

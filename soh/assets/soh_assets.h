@@ -74,6 +74,9 @@ static const ALIGN_ASSET(2) char gTriforcePieceCompletedDL[] = dgTriforcePieceCo
 #define dgBossSoulSkullDL "__OTR__objects/object_boss_soul/gGIBossSoulSkullDL"
 static const ALIGN_ASSET(2) char gBossSoulSkullDL[] = dgBossSoulSkullDL;
 
+#define dgFishingPoleGiDL "__OTR__objects/object_gi_fishing_pole/gFishingPoleGiDL"
+static const ALIGN_ASSET(2) char gFishingPoleGiDL[] = dgFishingPoleGiDL;
+
 // overlays
 #define dgOptionsDividerChangeLangVtx "__OTR__overlays/ovl_file_choose/gOptionsDividerChangeLangVtx"
 static const ALIGN_ASSET(2) char gOptionsDividerChangeLangVtx[] = dgOptionsDividerChangeLangVtx;
