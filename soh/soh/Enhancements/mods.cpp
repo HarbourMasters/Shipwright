@@ -1273,4 +1273,5 @@ void InitMods() {
     RegisterRandomizedEnemySizes();
     RegisterToTMedallions();
     NameTag_RegisterHooks();
+    RegisterFloorSwitchesHook();
 }
