@@ -1227,15 +1227,15 @@ void RegisterToTMedallions() {
 void RegisterFloorSwitchesHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
-        if (actor->id == ACTOR_OBJ_SWITCH) {
-            ObjSwitch* switchActor = reinterpret_cast<ObjSwitch*>(actor);
-            s32 type = (switchActor->dyna.actor.params & 7);
+        if (actor->id != ACTOR_OBJ_SWITCH || !CVarGetInteger("gEnhancements.FixFloorSwitches", 0)) {
+            return;
+        }
 
-            if (CVarGetInteger("gEnhancements.FixFloorSwitches", 0)) {
-                if (switchActor->dyna.actor.params == 4608 || switchActor->dyna.actor.params == 14848) {
-                    switchActor->dyna.actor.world.pos.y -= 1;
-                }
-            }
+        ObjSwitch* switchActor = reinterpret_cast<ObjSwitch*>(actor);
+        s32 type = (switchActor->dyna.actor.params & 7);
+
+        if (switchActor->dyna.actor.params == 4608 || switchActor->dyna.actor.params == 14848) {
+            switchActor->dyna.actor.world.pos.y -= 1;
         }
     });
 }
