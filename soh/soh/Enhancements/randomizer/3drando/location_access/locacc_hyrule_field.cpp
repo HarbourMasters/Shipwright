@@ -221,7 +221,7 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_LON_LON_RANCH] = Area("Lon Lon Ranch", "Lon Lon Ranch", RA_LON_LON_RANCH, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->Epona,    {[]{return logic->Epona    || (logic->ChildsWallet && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay);}}),
+                  EventAccess(&logic->Epona,    {[]{return logic->Epona    || ((logic->ChildsWallet || randoCtx->GetOption(RSK_SKIP_EPONA_RACE)) && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay);}}),
                   EventAccess(&logic->LinksCow, {[]{return logic->LinksCow || (logic->ChildsWallet && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay);}}),
                 }, {
                   //Locations
