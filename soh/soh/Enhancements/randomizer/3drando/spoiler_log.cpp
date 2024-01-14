@@ -555,7 +555,9 @@ Rando::ItemLocation* GetItemLocation(RandomizerGet item) {
 // Writes the hints to the spoiler log, if they are enabled.
 static void WriteHints() {
     auto ctx = Rando::Context::GetInstance();
-    int language = ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex();
+
+    uint8_t language = ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex();
+
     if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
         jsonData["warpMinuetText"] = ctx->GetHint(RH_MINUET_WARP_LOC)->GetText().GetForLanguage(language);
         jsonData["warpBoleroText"] = ctx->GetHint(RH_BOLERO_WARP_LOC)->GetText().GetForLanguage(language);
@@ -611,18 +613,23 @@ static void WriteHints() {
     }
     if (ctx->GetOption(RSK_DAMPES_DIARY_HINT)){
       jsonData["dampeText"] = ctx->GetHint(RH_DAMPES_DIARY)->GetText().GetForLanguage(language);
-      jsonData["dampeHintLoc"] = GetDampeHintLoc();
+      jsonData["dampeHintLoc"] = Rando::StaticData::GetLocation(ctx->GetHint(RH_DAMPES_DIARY)->GetHintedLocation())->GetName();
       jsonData["dampeRegion"] = ::Hint(ctx->GetHint(RH_DAMPES_DIARY)->GetHintedArea()).GetText().GetEnglish();
     }
     if (ctx->GetOption(RSK_GREG_HINT)){
       jsonData["gregText"] = ctx->GetHint(RH_GREG_RUPEE)->GetText().GetForLanguage(language);
-      jsonData["gregLoc"] = GetGregHintLoc();
+      jsonData["gregLoc"] = Rando::StaticData::GetLocation(ctx->GetHint(RH_GREG_RUPEE)->GetHintedLocation())->GetName();
       jsonData["gregRegion"] = ::Hint(ctx->GetHint(RH_GREG_RUPEE)->GetHintedArea()).GetText().GetEnglish();
     }
     if (ctx->GetOption(RSK_SARIA_HINT)){
       jsonData["sariaText"] = ctx->GetHint(RH_SARIA)->GetText().GetForLanguage(language);
-      jsonData["sariaHintLoc"] = GetSariaHintLoc();
+      jsonData["sariaHintLoc"] = Rando::StaticData::GetLocation(ctx->GetHint(RH_SARIA)->GetHintedLocation())->GetName();
       jsonData["sariaRegion"] = ::Hint(ctx->GetHint(RH_SARIA)->GetHintedArea()).GetText().GetEnglish();
+    }
+    if (ctx->GetOption(RSK_FISHING_POLE_HINT)) {
+      jsonData["fishingPoleText"] = ctx->GetHint(RH_FISHING_POLE)->GetText().GetForLanguage(language);
+      jsonData["fishingPoleHintLoc"] = Rando::StaticData::GetLocation(ctx->GetHint(RH_FISHING_POLE)->GetHintedLocation())->GetName();
+      jsonData["fishingPoleRegion"] = ::Hint(ctx->GetHint(RH_FISHING_POLE)->GetHintedArea()).GetText().GetEnglish();
     }
 
     if (ctx->GetOption(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NONE)) {
@@ -634,7 +641,7 @@ static void WriteHints() {
         std::string hintTextString = hint->GetText().GetForLanguage(language);
         HintType hintType = hint->GetHintType();
 
-         std::string textStr = hintTextString;
+        std::string textStr = hintTextString;
         std::string name = Rando::StaticData::GetLocation(key)->GetName();
         jsonData["hints"][name]["hint"] = textStr;
         jsonData["hints"][name]["distribution"] = hint->GetDistribution();

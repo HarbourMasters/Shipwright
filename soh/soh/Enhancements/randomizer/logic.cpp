@@ -57,6 +57,7 @@ namespace Rando {
                 (itemName == RG_OCARINA_C_RIGHT_BUTTON && OcarinaCRightButton) ||
                 (itemName == RG_OCARINA_C_DOWN_BUTTON  && OcarinaCDownButton)  ||
                 (itemName == RG_OCARINA_C_UP_BUTTON    && OcarinaCUpButton)    ||
+                (itemName == RG_FISHING_POLE           && FishingPole)         ||
                 (itemName == RG_ZELDAS_LULLABY         && ZeldasLullaby)       ||
                 (itemName == RG_EPONAS_SONG            && EponasSong)          ||
                 (itemName == RG_SARIAS_SONG            && SariasSong)          ||
@@ -149,6 +150,11 @@ namespace Rando {
                 return Ocarina && OcarinaAButton && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCDownButton;
             case RG_PRELUDE_OF_LIGHT:
                 return Ocarina && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCUpButton;
+
+            // Misc. Items
+            // TODO: Once child wallet shuffle is added, this will need to be updated to account for the fishing pond entry fee.
+            case RG_FISHING_POLE:
+                return true; // as long as you have enough rubies
 
             // Magic items
             default:
@@ -327,6 +333,9 @@ namespace Rando {
         CanGetNightTimeGS   = (CanUse(RG_SUNS_SONG) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG));
         CanBreakUpperBeehives = HookshotOrBoomerang || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && HasBombchus);
         CanBreakLowerBeehives = CanBreakUpperBeehives || Bombs;
+        CanFish = CanUse(RG_FISHING_POLE) || !ctx->GetOption(RSK_SHUFFLE_FISHING_POLE);
+        CanGetChildFish = CanFish && (IsChild || (IsAdult && !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)));
+        CanGetAdultFish = CanFish && IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT);
 
         GuaranteeTradePath     = ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetTrickOption(RT_DMT_BOLERO_BIGGORON) || CanBlastOrSmash || StopGCRollingGoronAsAdult;
         //GuaranteeHint          = (hints == "Mask" && MaskofTruth) || (hints == "Agony") || (hints != "Mask" && hints != "Agony");
@@ -741,12 +750,16 @@ namespace Rando {
         CanSummonGossipFairy = false;
         CanSummonGossipFairyWithoutSuns = false;
         //CanPlantBean        = false;
-        CanOpenBombGrotto   = false;
-        CanOpenStormGrotto  = false;
-        BigPoeKill          = false;
-        HookshotOrBoomerang = false;
+        CanOpenBombGrotto     = false;
+        CanOpenStormGrotto    = false;
+        BigPoeKill            = false;
+        HookshotOrBoomerang   = false;
         CanBreakUpperBeehives = false;
         CanBreakLowerBeehives = false;
+        CanGetChildFish       = false;
+        CanGetAdultFish       = false;
+        FishingPole           = false;
+        CanFish               = false;
 
         BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).Value<uint8_t>() + 1;
         Hearts          = 0;

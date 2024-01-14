@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <unordered_map>
 #include "randomizerTypes.h"
 #include "item.h"
 #include "location.h"
@@ -32,6 +33,10 @@ class StaticData {
       static std::vector<RandomizerCheck> scrubLocations;
       static std::vector<RandomizerCheck> gossipStoneLocations;
       static std::vector<RandomizerCheck> otherHintLocations;
+      static std::vector<RandomizerCheck> pondFishLocations;
+      static std::vector<RandomizerCheck> overworldFishLocations;
+      static std::array<std::pair<RandomizerCheck, RandomizerCheck>, 17> randomizerFishingPondFish;
+      static std::unordered_map<int8_t, RandomizerCheck> randomizerGrottoFishMap;
       StaticData();
       ~StaticData();
 };
