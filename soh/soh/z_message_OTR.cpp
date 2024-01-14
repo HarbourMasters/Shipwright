@@ -224,13 +224,51 @@ extern "C" void OTRMessage_Init()
                     "Ich habe es 'Warpenübertragung'&genannt. Ein passender Name,&findest du nicht? Sehr praktisch!",
                     "Je l'ai baptisé 'transfert par warp'.&Un nom approprié, tu ne trouves&pas ? C'est très pratique !"));
     CustomMessageManager::Instance->CreateMessage(
-        customMessageTableID, TEXT_BANKER_REWARD_INTEREST,
-        CustomMessage("And look at that! Over %y1,000%w&rupees! Here's %y5%w more for&your dedication to saving!",
-                    "Und sieh dir das an! Über %y1.000%w&Rubine! Hier sind %y5%w mehr für&deine Sparbemühungen!",
-                    "Et regarde ça ! Plus de %y1 000%w&rubis ! Voici %y5%w de plus pour&ton dévouement à l'épargne !"));
+        customMessageTableID, TEXT_BANKER_REWARD_FEE,
+        CustomMessage("Wow, over %y1,000%w rupees saved!&To thank you, I'm dropping all&withdrawal and deposit fees!",
+                    "Wow, über %y1.000%w Rubine gespart!&Zur Belohnung entfallen die&Gebühren für Abhebungen und&Einzahlungen!",
+                    "Waouh, plus de %y1 000%w rubis !&Pour te remercier, j'annule tous&les frais de retrait et dépôt !"));
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_BANKER_REWARD_PIECE_OF_HEART,
         CustomMessage("Astounding! A whopping %y5,000%w&rupees saved! For such a feat,&a Piece of Heart is yours!",
                     "Erstaunlich! Ganze %y5.000%w Rubine&gespart! Für ein solches Kunststück&ist ein Herzteil dein!",
                     "Stupéfiant ! La bagatelle de %y5 000%w&rubis épargnés ! Pour un tel exploit,&un Morceau de cœur est à toi !"));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_ERROR_ZERO_AMOUNT,
+        CustomMessage(
+            "Eh, @? You can't deposit the air&in your pockets! Come back&when you've got some real&Rupees.",
+            "Eh, @? Du kannst die Luft in&deinen Taschen nicht&hinterlegen! Komm wieder,&wenn du echte Rubine hast.",
+            "Eh, @ ? Tu ne peux pas déposer&le vide de tes poches ! Reviens&quand tu auras de vrais Rubis."
+        ));
+
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_ERROR_INSUFFICIENT_BALANCE,
+        CustomMessage(
+            "Oh, @! It seems your balance is&running low. You need more&Rupees in the bank to make&this withdrawal.",
+            "Oh, @! Es scheint, als wäre dein&Kontostand zu niedrig. Du&brauchst mehr Rubine auf der&Bank, um das abzuheben.",
+            "Oh, @ ! On dirait que ton solde&est insuffisant. Tu dois avoir&plus de Rubis en banque pour&réaliser ce retrait."
+        ));
+
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_ERROR_WALLET_FULL,
+        CustomMessage(
+            "Whoa there, @! That amount's&too hefty for your wallet.&Trim it down a bit, eh?",
+            "Halt, @! Diese Menge ist&zu prall für deinen Geldbeutel.&Nimm etwas weniger, ja?",
+            "Doucement, @ ! Cette somme est&trop volumineuse pour ton porte-monnaie.&Allège-la un peu, d'accord ?"
+        ));
+
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_ERROR_MAX_BALANCE,
+        CustomMessage(
+            "Woah, @! The bank's max capacity&is 5000 Rupees. I don't have&enough room for that amount!",
+            "Woah, @! Die Bank kann nur&5000 Rubine aufnehmen. Ich&habe nicht genug Platz für&diesen Betrag!",
+            "Woah, @ ! La capacité max de la&banque est de 5000 Rubis. Je n'ai&pas assez de place pour cette&somme !"
+        ));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_ERROR_DEPOSIT_NOT_WORTHWHILE,
+        CustomMessage(
+            "Hold up, @! There's a 5 Rupee&handling fee. With that, you'd&actually lose Rupees, not gain!&Deposit more to make it worthwhile.",
+            "Stopp, @! Es gibt eine&Gebühr von 5 Rubinen. Damit&verlierst du eher Rubine, statt&zu gewinnen! Zahle mehr ein,&damit es sich lohnt!",
+            "Attends, @ ! Il y a des frais de&gestion de 5 Rubis. Avec ça,&tu perdrais des Rubis au lieu&d'en gagner ! Dépose plus pour&que ça vaille le coup."
+        ));
 }

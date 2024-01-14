@@ -2671,11 +2671,26 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     if (textId == TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_3 && CVarGetInteger("gBanker", 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_3);
     }
-    if (textId == TEXT_BANKER_REWARD_INTEREST && CVarGetInteger("gBanker", 0)) {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_INTEREST);
+    if (textId == TEXT_BANKER_REWARD_FEE && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_FEE);
     }
     if (textId == TEXT_BANKER_REWARD_PIECE_OF_HEART && CVarGetInteger("gBanker", 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_REWARD_PIECE_OF_HEART);
+    }
+    if (textId == TEXT_BANKER_ERROR_ZERO_AMOUNT && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_ERROR_ZERO_AMOUNT);
+    }
+    if (textId == TEXT_BANKER_ERROR_INSUFFICIENT_BALANCE && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_ERROR_INSUFFICIENT_BALANCE);
+    }
+    if (textId == TEXT_BANKER_ERROR_WALLET_FULL && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_ERROR_WALLET_FULL);
+    }
+    if (textId == TEXT_BANKER_ERROR_MAX_BALANCE && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_ERROR_MAX_BALANCE);
+    }
+    if (textId == TEXT_BANKER_ERROR_DEPOSIT_NOT_WORTHWHILE && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_ERROR_DEPOSIT_NOT_WORTHWHILE);
     }
     font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
     switch (gSaveContext.language) {
