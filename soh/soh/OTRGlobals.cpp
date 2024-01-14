@@ -2495,15 +2495,6 @@ extern "C" void Randomizer_SetPlandoLoaded(bool plandoLoaded) {
     OTRGlobals::Instance->gRandoContext->SetPlandoLoaded(plandoLoaded);
 }
 
-extern "C" void Randomizer_BuildCollectedOcarinaButtonsString(char* buffer, const int bufferSize) {
-    const char aBtn = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) > 0 ? 0x9F : ' ';
-    const char cUpBtn = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP) > 0 ? 0xA5 : ' ';
-    const char cDownBtn = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN) > 0 ? 0xA6 : ' ';
-    const char cLeftBtn = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) > 0 ? 0xA7 : ' ';
-    const char cRightBtn = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) > 0 ? 0xA8 : ' ';
-    snprintf(buffer, bufferSize, "%c %c %c %c %c", aBtn, cUpBtn, cDownBtn, cLeftBtn, cRightBtn);
-}
-
 CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
     s16 giid;
     if (player->getItemEntry.objectId != OBJECT_INVALID) {
