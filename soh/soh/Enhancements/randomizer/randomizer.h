@@ -52,6 +52,7 @@ class Randomizer {
     RandomizerInf GetRandomizerInfFromCheck(RandomizerCheck rc);
     Rando::Location* GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams);
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
+    BeehiveIdentity IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData);
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
     CowIdentity IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
     FishIdentity IdentifyFish(s32 sceneNum, s32 actorParams);

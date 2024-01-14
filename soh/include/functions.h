@@ -457,7 +457,7 @@ u32 Actor_HasParent(Actor* actor, PlayState* play);
 // TODO: Rename the follwing 3 functions using whatever scheme we use when we rename func_8002F434 and func_8002F554.
 s32 GiveItemEntryWithoutActor(PlayState* play, GetItemEntry getItemEntry);
 s32 GiveItemEntryFromActor(Actor* actor, PlayState* play, GetItemEntry getItemEntry, f32 xzRange, f32 yRange);
-void GiveItemEntryFromActorWithFixedRange(Actor* actor, PlayState* play, GetItemEntry getItemEntry);
+s32 GiveItemEntryFromActorWithFixedRange(Actor* actor, PlayState* play, GetItemEntry getItemEntry);
 s32 func_8002F434(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32 yRange);
 void func_8002F554(Actor* actor, PlayState* play, s32 getItemId);
 void func_8002F580(Actor* actor, PlayState* play);

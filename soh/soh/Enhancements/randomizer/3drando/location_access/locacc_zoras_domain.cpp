@@ -54,9 +54,11 @@ void AreaTable_Init_ZorasDomain() {
 
   areaTable[RR_ZR_OPEN_GROTTO] = Area("ZR Open Grotto", "ZR Open Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(RC_ZR_OPEN_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(RC_ZR_OPEN_GROTTO_FISH,         {[]{return logic->HasBottle;}}),
-                  LocationAccess(RC_ZR_OPEN_GROTTO_GOSSIP_STONE, {[]{return true;}}),
+                  LocationAccess(RC_ZR_OPEN_GROTTO_CHEST,         {[]{return true;}}),
+                  LocationAccess(RC_ZR_OPEN_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
+                  LocationAccess(RC_ZR_OPEN_GROTTO_GOSSIP_STONE,  {[]{return true;}}),
+                  LocationAccess(RC_ZR_OPEN_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
+                  LocationAccess(RC_ZR_OPEN_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_ZORAS_RIVER, {[]{return true;}}),
@@ -74,6 +76,7 @@ void AreaTable_Init_ZorasDomain() {
                   //Locations
                   LocationAccess(RC_ZR_DEKU_SCRUB_GROTTO_REAR,  {[]{return logic->CanStunDeku;}}),
                   LocationAccess(RC_ZR_DEKU_SCRUB_GROTTO_FRONT, {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_ZR_STORMS_GROTTO_BEEHIVE,   {[]{return logic->CanBreakUpperBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_ZORAS_RIVER, {[]{return true;}}),
@@ -90,17 +93,19 @@ void AreaTable_Init_ZorasDomain() {
                   EventAccess(&logic->DeliverLetter,     {[]{return logic->DeliverLetter     || (logic->RutosLetter && logic->IsChild && randoCtx->GetOption(RSK_ZORAS_FOUNTAIN).IsNot(RO_ZF_OPEN));}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_ZD_DIVING_MINIGAME,     {[]{return logic->ChildsWallet && logic->IsChild;}}),
-                  LocationAccess(RC_ZD_CHEST,               {[]{return logic->IsChild && logic->CanUse(RG_STICKS);}}),
-                  LocationAccess(RC_ZD_KING_ZORA_THAWED,    {[]{return logic->KingZoraThawed;}}),
-                  LocationAccess(RC_ZD_TRADE_PRESCRIPTION,  {[]{return logic->KingZoraThawed && logic->Prescription;}}),
-                  LocationAccess(RC_ZD_GS_FROZEN_WATERFALL, {[]{return logic->IsAdult && logic->AtNight && (logic->HookshotOrBoomerang || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->Bow || (logic->MagicMeter && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))) || (randoCtx->GetTrickOption(RT_ZD_GS) && logic->CanJumpslash)) && logic->CanGetNightTimeGS;}}),
-                  LocationAccess(RC_ZD_FISH_1,              {[]{return logic->IsChild && logic->HasBottle;}}),
-                  LocationAccess(RC_ZD_FISH_2,              {[]{return logic->IsChild && logic->HasBottle;}}),
-                  LocationAccess(RC_ZD_FISH_3,              {[]{return logic->IsChild && logic->HasBottle;}}),
-                  LocationAccess(RC_ZD_FISH_4,              {[]{return logic->IsChild && logic->HasBottle;}}),
-                  LocationAccess(RC_ZD_FISH_5,              {[]{return logic->IsChild && logic->HasBottle;}}),
-                  LocationAccess(RC_ZD_GOSSIP_STONE,        {[]{return true;}}),
+                  LocationAccess(RC_ZD_DIVING_MINIGAME,                     {[]{return logic->ChildsWallet && logic->IsChild;}}),
+                  LocationAccess(RC_ZD_CHEST,                               {[]{return logic->IsChild && logic->CanUse(RG_STICKS);}}),
+                  LocationAccess(RC_ZD_KING_ZORA_THAWED,                    {[]{return logic->KingZoraThawed;}}),
+                  LocationAccess(RC_ZD_TRADE_PRESCRIPTION,                  {[]{return logic->KingZoraThawed && logic->Prescription;}}),
+                  LocationAccess(RC_ZD_GS_FROZEN_WATERFALL,                 {[]{return logic->IsAdult && logic->AtNight && (logic->HookshotOrBoomerang || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->Bow || (logic->MagicMeter && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))) || (randoCtx->GetTrickOption(RT_ZD_GS) && logic->CanJumpslash)) && logic->CanGetNightTimeGS;}}),
+                  LocationAccess(RC_ZD_FISH_1,                              {[]{return logic->IsChild && logic->HasBottle;}}),
+                  LocationAccess(RC_ZD_FISH_2,                              {[]{return logic->IsChild && logic->HasBottle;}}),
+                  LocationAccess(RC_ZD_FISH_3,                              {[]{return logic->IsChild && logic->HasBottle;}}),
+                  LocationAccess(RC_ZD_FISH_4,                              {[]{return logic->IsChild && logic->HasBottle;}}),
+                  LocationAccess(RC_ZD_FISH_5,                              {[]{return logic->IsChild && logic->HasBottle;}}),
+                  LocationAccess(RC_ZD_GOSSIP_STONE,                        {[]{return true;}}),
+                  LocationAccess(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_LEFT,  {[]{return logic->CanBreakUpperBeehives;}}),
+                  LocationAccess(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT, {[]{return logic->CanBreakUpperBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_ZR_BEHIND_WATERFALL, {[]{return true;}}),
@@ -110,7 +115,10 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(RR_ZD_STORMS_GROTTO,    {[]{return logic->CanOpenStormGrotto;}}),
   });
 
-  areaTable[RR_ZD_BEHIND_KING_ZORA] = Area("ZD Behind King Zora", "Zoras Domain", RA_ZORAS_DOMAIN, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_ZD_BEHIND_KING_ZORA] = Area("ZD Behind King Zora", "Zoras Domain", RA_ZORAS_DOMAIN, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LocationAccess(RC_ZD_BEHIND_KING_ZORA_BEEHIVE, {[]{return logic->CanBreakUpperBeehives;}}),
+                }, {
                   //Exits
                   Entrance(RR_ZORAS_DOMAIN,   {[]{return logic->DeliverLetter || randoCtx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_OPEN) || (randoCtx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_CLOSED_CHILD) && logic->IsAdult);}}),
                   Entrance(RR_ZORAS_FOUNTAIN, {[]{return true;}}),

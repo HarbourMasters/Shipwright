@@ -85,8 +85,9 @@ void AreaTable_Init_GerudoValley() {
 
   areaTable[RR_GV_STORMS_GROTTO] = Area("GV Storms Grotto", "GV Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_GV_DEKU_SCRUB_GROTTO_REAR,  {[]{return logic->CanStunDeku;}}),
-                  LocationAccess(RC_GV_DEKU_SCRUB_GROTTO_FRONT, {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_GV_DEKU_SCRUB_GROTTO_REAR,    {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_GV_DEKU_SCRUB_GROTTO_FRONT,   {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE, {[]{return logic->CanBreakUpperBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_GV_FORTRESS_SIDE, {[]{return true;}}),
@@ -200,6 +201,7 @@ void AreaTable_Init_GerudoValley() {
                   //Locations
                   LocationAccess(RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR,  {[]{return logic->CanStunDeku;}}),
                   LocationAccess(RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT, {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_COLOSSUS_GROTTO_BEEHIVE,          {[]{return logic->CanBreakUpperBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_DESERT_COLOSSUS, {[]{return true;}}),

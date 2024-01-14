@@ -332,6 +332,8 @@ namespace Rando {
         CanOpenStormGrotto  = CanUse(RG_SONG_OF_STORMS) && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
         HookshotOrBoomerang = CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
         CanGetNightTimeGS   = (CanUse(RG_SUNS_SONG) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG));
+        CanBreakUpperBeehives = HookshotOrBoomerang || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && HasBombchus);
+        CanBreakLowerBeehives = CanBreakUpperBeehives || Bombs;
         CanFish = ChildsWallet && (CanUse(RG_FISHING_POLE) || !ctx->GetOption(RSK_SHUFFLE_FISHING_POLE));
         CanGetChildFish = CanFish && (IsChild || (IsAdult && !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)));
         CanGetAdultFish = CanFish && IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT);
@@ -751,14 +753,16 @@ namespace Rando {
         CanSummonGossipFairy = false;
         CanSummonGossipFairyWithoutSuns = false;
         //CanPlantBean        = false;
-        CanOpenBombGrotto   = false;
-        CanOpenStormGrotto  = false;
-        BigPoeKill          = false;
-        HookshotOrBoomerang = false;
-        CanGetChildFish     = false;
-        CanGetAdultFish     = false;
-        FishingPole         = false;
-        CanFish             = false;
+        CanOpenBombGrotto     = false;
+        CanOpenStormGrotto    = false;
+        BigPoeKill            = false;
+        HookshotOrBoomerang   = false;
+        CanBreakUpperBeehives = false;
+        CanBreakLowerBeehives = false;
+        CanGetChildFish       = false;
+        CanGetAdultFish       = false;
+        FishingPole           = false;
+        CanFish               = false;
 
         BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).Value<uint8_t>() + 1;
         Hearts          = 0;

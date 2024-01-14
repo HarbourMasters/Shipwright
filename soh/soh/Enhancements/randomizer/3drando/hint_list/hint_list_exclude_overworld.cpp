@@ -1429,4 +1429,39 @@ void HintTable_Init_Exclude_Overworld() {
                        //obscure text
                        Text{"a #cow in a luxurious hole# offers", /*french*/"la #vache dans une grotte luxueuse# donne", /*spanish*/"una #vaca de un lujoso hoyo# brinda"},
   });
+
+    hintTable[RHT_BEEHIVE_CHEST_GROTTO] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive above a chest# hides", /*french*/"", /*spanish*/"una #colmena sobre un cofre# esconde"},
+  });
+
+    hintTable[RHT_BEEHIVE_LONELY_SCRUB_GROTTO] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive above a lonely scrub# hides", /*french*/"", /*spanish*/"una #colmena sobre un deku solitario# esconde"},
+  });
+
+    hintTable[RHT_BEEHIVE_SCRUB_PAIR_GROTTO] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive above a pair of scrubs# hides", /*french*/"", /*spanish*/"una #colmena sobre un par de dekus# esconde"},
+  });
+
+    hintTable[RHT_BEEHIVE_SCRUB_TRIO_GROTTO] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive above a trio of scrubs# hides", /*french*/"", /*spanish*/"una #colmena sobre un trío de dekus# esconde"},
+  });
+
+    hintTable[RHT_BEEHIVE_COW_GROTTO] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive above a cow# hides", /*french*/"", /*spanish*/"una #colmena sobre una vaca# esconde"},
+  });
+
+    hintTable[RHT_BEEHIVE_IN_FRONT_OF_KING_ZORA] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive in front of the king of the zoras# hides", /*french*/"", /*spanish*/"una #colmena delante del rey de los zoras# esconde"},
+  });
+
+    hintTable[RHT_BEEHIVE_BEHIND_KING_ZORA] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive behind the king of the zoras# hides", /*french*/"", /*spanish*/"una #colmena detrás del rey de los zoras# esconde"},
+  });
 }

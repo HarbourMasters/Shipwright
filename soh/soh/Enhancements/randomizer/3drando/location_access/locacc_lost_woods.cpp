@@ -96,9 +96,11 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_KF_STORMS_GROTTO] = Area("KF Storms Grotto", "KF Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(RC_KF_STORMS_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(RC_KF_STORMS_GROTTO_FISH,         {[]{return logic->HasBottle;}}),
-                  LocationAccess(RC_KF_STORMS_GOSSIP_STONE, {[]{return true;}}),
+                  LocationAccess(RC_KF_STORMS_GROTTO_CHEST,         {[]{return true;}}),
+                  LocationAccess(RC_KF_STORMS_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
+                  LocationAccess(RC_KF_STORMS_GOSSIP_STONE,         {[]{return true;}}),
+                  LocationAccess(RC_KF_STORMS_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
+                  LocationAccess(RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_KOKIRI_FOREST, {[]{return true;}})
@@ -164,9 +166,11 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_LW_NEAR_SHORTCUTS_GROTTO] = Area("LW Near Shortcuts Grotto", "LW Near Shortcuts Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,         {[]{return logic->HasBottle;}}),
-                  LocationAccess(RC_LW_NEAR_SHORTCUTS_GOSSIP_STONE, {[]{return true;}}),
+                  LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST,         {[]{return true;}}),
+                  LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
+                  LocationAccess(RC_LW_NEAR_SHORTCUTS_GOSSIP_STONE,         {[]{return true;}}),
+                  LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
+                  LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_THE_LOST_WOODS, {[]{return true;}}),
@@ -183,8 +187,9 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_LW_SCRUBS_GROTTO] = Area("LW Scrubs Grotto", "LW Scrubs Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_LW_DEKU_SCRUB_GROTTO_REAR,  {[]{return logic->CanStunDeku;}}),
-                  LocationAccess(RC_LW_DEKU_SCRUB_GROTTO_FRONT, {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_LW_DEKU_SCRUB_GROTTO_REAR,    {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_LW_DEKU_SCRUB_GROTTO_FRONT,   {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE, {[]{return logic->CanBreakUpperBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_LW_BEYOND_MIDO, {[]{return true;}}),
@@ -236,6 +241,7 @@ void AreaTable_Init_LostWoods() {
                   //Locations
                   LocationAccess(RC_SFM_DEKU_SCRUB_GROTTO_REAR,  {[]{return logic->CanStunDeku;}}),
                   LocationAccess(RC_SFM_DEKU_SCRUB_GROTTO_FRONT, {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_SFM_STORMS_GROTTO_BEEHIVE,   {[]{return logic->CanBreakUpperBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_SACRED_FOREST_MEADOW, {[]{return true;}}),
