@@ -9,6 +9,7 @@
 #include "entrance.h"
 #include "settings.h"
 #include "rando_hash.h"
+#include "fishsanity.h"
 
 #include <fstream>
 #include <spdlog/spdlog.h>
@@ -91,6 +92,7 @@ Context::Context() {
     mLogic = std::make_shared<Logic>();
     mTrials = std::make_shared<Trials>();
     mSettings = std::make_shared<Settings>();
+    mFishsanity = std::make_shared<Fishsanity>();
     for (auto& location : StaticData::GetLocationTable()) {
         mSpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
     }
@@ -203,6 +205,10 @@ void Context::GenerateLocationPool() {
         AddLocation(RC_TRIFORCE_COMPLETED);
     }
     AddLocations(StaticData::overworldLocations);
+
+    if (mSettings->GetOption(RSK_FISHSANITY).IsNot(RO_FISHSANITY_OFF)) {
+        AddLocations(mFishsanity->GetFishsanityLocations().first);
+    }
 
     for (const auto dungeon : mDungeons->GetDungeonList()) {
         AddLocations(dungeon->GetDungeonLocations());
@@ -477,6 +483,14 @@ void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
         AddHint(RH_SARIA, Text(sariaText), sariaHintLoc, HINT_TYPE_STATIC, "Static", mSpoilerfileAreaNameToEnum[sariaRegion]);
     }
 
+    // Fishing Pole Hint
+    if(spoilerFileJson.contains("fishingPoleText")) {
+        std::string fishingPoleText = spoilerFileJson["fishingPoleText"].get<std::string>();
+        std::string fishingPoleRegion = spoilerFileJson["fishingPoleRegion"].get<std::string>();
+        RandomizerCheck fishingPoleHintLoc = mSpoilerfileCheckNameToEnum[spoilerFileJson["fishingPoleHintLoc"].get<std::string>()];
+        AddHint(RH_FISHING_POLE, Text(fishingPoleText), fishingPoleHintLoc, HINT_TYPE_STATIC, "Static", mSpoilerfileAreaNameToEnum[fishingPoleRegion]);
+    }
+
     // Warp Songs
     if (spoilerFileJson.contains("warpMinuetText")) {
         std::string warpMinuetText = spoilerFileJson["warpMinuetText"].get<std::string>(); //RANDOTODO fall back for if location is used
@@ -527,6 +541,10 @@ std::shared_ptr<EntranceShuffler> Context::GetEntranceShuffler() {
 
 std::shared_ptr<Dungeons> Context::GetDungeons() {
     return mDungeons;
+}
+
+std::shared_ptr<Fishsanity> Context::GetFishsanity() {
+    return mFishsanity;
 }
 
 DungeonInfo* Context::GetDungeon(size_t key) const {

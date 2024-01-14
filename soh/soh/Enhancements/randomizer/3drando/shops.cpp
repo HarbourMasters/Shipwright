@@ -10,7 +10,7 @@
 
 std::vector<ItemAndPrice> NonShopItems = {};
 
-static std::array<std::vector<Text>, 0xF0> trickNameTable; // Table of trick names for ice traps
+static std::array<std::vector<Text>, 0xF1> trickNameTable; // Table of trick names for ice traps
 bool initTrickNames = false; //Indicates if trick ice trap names have been initialized yet
 
 //Set vanilla shop item locations before potentially shuffling
@@ -739,6 +739,10 @@ void InitTrickNames() {
      Text{"Pure Evil", "", ""},
      Text{"Ganon's Ghost", "", ""},
      Text{"Pork", "", ""}};
+  trickNameTable[RG_FISHING_POLE] = {
+     Text{"Fish Tickler", "Fish Tickler", "Fish Tickler"},
+     Text{"Floating Lure", "Floating Lure", "Floating Lure"},
+     Text{"Fishing Reel", "Fishing Reel", "Fishing Reel"}};
 
   trickNameTable[RG_OCARINA_A_BUTTON] = {
      Text{"Ocarina J Button", "", ""},

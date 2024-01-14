@@ -272,6 +272,9 @@ void SaveManager::LoadRandomizerVersion2() {
     std::string sariaText;
     SaveManager::Instance->LoadData("sariaText", sariaText);
     randoContext->AddHint(RH_SARIA, Text(sariaText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
+    std::string fishingPoleText;
+    SaveManager::Instance->LoadData("fishingPoleText", fishingPoleText);
+    randoContext->AddHint(RH_FISHING_POLE, Text(fishingPoleText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static");
     std::string warpMinuetText;
     SaveManager::Instance->LoadData("warpMinuetText", warpMinuetText);
     randoContext->AddHint(RH_MINUET_WARP_LOC, Text(warpMinuetText), RC_UNKNOWN_CHECK, HINT_TYPE_STATIC, "Static", randoContext->GetAreaFromString(warpMinuetText));
@@ -588,6 +591,7 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].gsTokens = gSaveContext.inventory.gsTokens;
     fileMetaInfo[fileNum].isDoubleDefenseAcquired = gSaveContext.isDoubleDefenseAcquired;
     fileMetaInfo[fileNum].gregFound = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
+    fileMetaInfo[fileNum].hasWallet = Flags_GetRandomizerInf(RAND_INF_HAS_WALLET);
     fileMetaInfo[fileNum].defense = gSaveContext.inventory.defenseHearts;
     fileMetaInfo[fileNum].health = gSaveContext.health;
     auto randoContext = Rando::Context::GetInstance();
