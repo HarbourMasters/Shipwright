@@ -16,7 +16,6 @@
 #endif
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
-#include "../custom-message/CustomMessageTypes.h"
 #include "../item-tables/ItemTableManager.h"
 #include "../presets.h"
 #include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
@@ -37,6 +36,7 @@
 #include "trial.h"
 #include "settings.h"
 #include "soh/util.h"
+#include "fishsanity.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -279,16 +279,16 @@ void Randomizer::LoadHintMessages() {
 
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD,
-        CustomMessage(ctx->GetHint(RH_ALTAR_CHILD)->GetText().GetEnglish(), ctx->GetHint(RH_ALTAR_CHILD)->GetText().GetEnglish(), ctx->GetHint(RH_ALTAR_CHILD)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE));
+        CustomMessage(ctx->GetHint(RH_ALTAR_CHILD)->GetText(), TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT,
-        CustomMessage(ctx->GetHint(RH_ALTAR_ADULT)->GetText().GetEnglish(), ctx->GetHint(RH_ALTAR_ADULT)->GetText().GetEnglish(), ctx->GetHint(RH_ALTAR_ADULT)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE));
+        CustomMessage(ctx->GetHint(RH_ALTAR_ADULT)->GetText(), TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_GANONDORF,
-        CustomMessage(ctx->GetHint(RH_GANONDORF_HINT)->GetText().GetEnglish(), ctx->GetHint(RH_GANONDORF_HINT)->GetText().GetEnglish(), ctx->GetHint(RH_GANONDORF_HINT)->GetText().GetFrench()));
+        CustomMessage(ctx->GetHint(RH_GANONDORF_HINT)->GetText()));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT,
-        CustomMessage(ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetFrench()));
+        CustomMessage(ctx->GetHint(RH_SARIA)->GetText()));//RANDOTODO: Change to RH_BLANK or remove {{message}} replacment
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_SHEIK_NEED_HOOK,
         CustomMessage("{{message}}", "{{message}}", "{{message}}"));
@@ -297,12 +297,12 @@ void Randomizer::LoadHintMessages() {
         CustomMessage("{{message}}", "{{message}}", "{{message}}"));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE,
-        CustomMessage(ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetGerman(), ctx->GetHint(RH_SARIA)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE));
+        CustomMessage(ctx->GetHint(RH_SARIA)->GetText(), TEXTBOX_TYPE_BLUE));
 
     for (int i : Rando::StaticData::gossipStoneLocations) {
         RandomizerHintKey rhk = RandomizerHintKey(i - RC_COLOSSUS_GOSSIP_STONE + 1);
         CustomMessageManager::Instance->CreateMessage(
-            Randomizer::hintMessageTableID, i, CustomMessage(ctx->GetHint(rhk)->GetText().GetEnglish(), ctx->GetHint(rhk)->GetText().GetEnglish(), ctx->GetHint(rhk)->GetText().GetFrench()));
+            Randomizer::hintMessageTableID, i, CustomMessage(ctx->GetHint(rhk)->GetText()));
     }
 
     //Extra Hints
@@ -310,24 +310,20 @@ void Randomizer::LoadHintMessages() {
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::randoMiscHintsTableID);
 
     CustomMessageManager::Instance->CreateMessage(
-            Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE,
-            CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you my&%g{{check}}%w!",
-                "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du %r{{params}} Skulltulas&%wzerstörst und ich werde dir dafür&%g{{check}} %wgeben!",
-                "Yeaaarrgh! Je suis maudit!^Détruit encore %r{{params}} Araignées de&la Malédiction%w et j'aurai quelque&chose à te donner!&%g({{check}})")
+            Randomizer::randoMiscHintsTableID, TEXT_SKULLTULA_PEOPLE_IM_CURSED,
+            CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you my&%g{{item1}}%w!",
+                "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du %r{{params}} Skulltulas&%wzerstörst und ich werde dir dafür&%g{{item1}} %wgeben!",
+                "Yeaaarrgh! Je suis maudit!^Détruit encore %r{{params}} Araignées de&la Malédiction%w et j'aurai quelque&chose à te donner!&%g({{item1}})")
         );
-        CustomMessageManager::Instance->CreateMessage(
+    CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY,
-            CustomMessage(ctx->GetHint(RH_DAMPES_DIARY)->GetText().GetEnglish(),
-                ctx->GetHint(RH_DAMPES_DIARY)->GetText().GetEnglish(),
-                ctx->GetHint(RH_DAMPES_DIARY)->GetText().GetFrench())
+            CustomMessage(ctx->GetHint(RH_DAMPES_DIARY)->GetText())
         );
-        CustomMessageManager::Instance->CreateMessage(
+    CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_CHEST_GAME_PROCEED,
-            CustomMessage(ctx->GetHint(RH_GREG_RUPEE)->GetText().GetEnglish(),
-                ctx->GetHint(RH_GREG_RUPEE)->GetText().GetEnglish(),
-                ctx->GetHint(RH_GREG_RUPEE)->GetText().GetFrench())
+            CustomMessage(ctx->GetHint(RH_GREG_RUPEE)->GetText())
         );
-        CustomMessageManager::Instance->CreateMessage(
+    CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_FROGS_UNDERWATER,
             CustomMessage(ctx->GetHint(RH_FROGS)->GetText().GetEnglish(),
                 ctx->GetHint(RH_FROGS)->GetText().GetGerman(),
@@ -349,6 +345,111 @@ void Randomizer::LoadHintMessages() {
         CustomMessage(ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetText().GetEnglish(),
             ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetText().GetGerman(),
             ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetText().GetFrench()));
+
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::randoMiscHintsTableID, TEXT_SARIAS_SONG_FOREST_SOUNDS,
+            CustomMessage("{{message}}", "{{message}}", "{{message}}", TEXTBOX_TYPE_BLUE)
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_BIGGORON_BETTER_AT_SMITHING,
+            CustomMessage("Arrrrrre you here to claim my finest&%g{{item1}}%w?&Shoooooow me your %rClaim Check.%w",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_GHOST_SHOP_CARD_HAS_POINTS,
+            CustomMessage("You have %g\x1E\x01%r Poe Points%w!&Reach 1000 and you'll get a&%g{{item1}}%w!",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_ANJU_PLEASE_BRING_MY_CUCCOS_BACK,
+            CustomMessage("You! Please!&Bring my Cucco's back to my pen!&I'll give you my %g{{item1}}%w!",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_MALON_OBSTICLE_COURSE,
+            CustomMessage("How about trying the %rObsticle Course?%w&If you beat my time I'll let you keep&my favourite cow Elsie and&her toy %g{{item1}}%w!^"
+            "Challenge the %rObsticle Course?&\x1B&%gLet's go&No thanks%w",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_MALON_HOW_IS_EPONA_DOING,
+            CustomMessage("@! You should come back &with Epona and try to beat my time&on the %rObsticle Course%w!^If you beat my time, I'll give you&my favourite %rcow%w Elsie and&her toy %g{{item1}}%w!",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_MALON_EVERYONE_TURNING_EVIL,
+            CustomMessage("@? Is that you? ^If I ran the ranch, I'd build an &%rObsticle Course%w, and whoever gets&the best time would win a %rcow%w!^Elsie loves sharing her %g{{item1}}%w&with new people, It'll be fun!^...But Ingo won't let me...",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED,
+            CustomMessage("@! You should come back in&the morning and try to beat my time&on the %rObsticle Course%w!^If you beat my time, I'll give you&my favourite %rcow%w Elsie and&her toy %g{{item1}}%w!",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_HBA_NOT_ON_HORSE,
+            CustomMessage("Hey, rookie!&Come back on your %rhorse%w&and take on the&%rHorseback Archery%w challenge!^Impress me with a high score of 1000&to win a %g{{item1}}%w&or score 1500 for my&%g{{item2}}%w!",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_HBA_INITIAL_EXPLAINATION,
+            CustomMessage("Hey, rookie!&Want to take on the&%rHorseback Archery%w challenge?^Impress me with a high score of 1000&to win a %g{{item1}}%w&or score 1500 for my&%g{{item2}}%w!\x0B",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_HBA_ALREADY_HAVE_1000,
+            CustomMessage("Hey, newcomer!&Want to take on the&%rHorseback Archery%w challenge?^Prove yourself to be a horsemaster&by scoring 1500 points to win &my %g{{item1}}%w!\x0B",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_GF_HBA_SIGN,
+            CustomMessage("%rHorseback Archery%w Range Prizes:&1000: %g{{item1}}%w&1500: %g{{item2}}%w^@'s Record: %g\x1E\x00%w",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_MALON_OBSTICLE_COURSE,
+            CustomMessage("How about trying your skill on the %rObsticle Course?%w& If you beat my time I'll let you keep my favourite cow Elsie and& her toy %g{{item1}}%w!&x1B&%gLet's go&No thanks%w",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_MALON_EVERYONE_TURNING_EVIL,
+            CustomMessage("@? Is that you? &If I ran the ranch, I'd build an %rObsticle Course%w, and whoever gets the best time would win a cow!& Elsie loves sharing her %g{{item1}}%w&with new people, It'll be fun!&...But Ingo won't let me...",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED,
+            CustomMessage("@! You should come back in the morning and try to beat my time on the %rObsticle Course%w!&If you beat my time, I'll let you keep Elsie and& her toy %g{{item1}}%w!",
+            "",
+            "")
+        );
+
     CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_NOCTURNE_OF_SHADOW,
         CustomMessage(ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetText().GetEnglish(),
             ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetText().GetGerman(),
@@ -363,6 +464,20 @@ void Randomizer::LoadHintMessages() {
         CustomMessage("Come back when you have your own&bow and you'll get a %rdifferent prize%w!",
         "Komm wieder sobald du deinen eigenen&Bogen hast, um einen %rspeziellen Preis%w zu&erhalten!",
         "J'aurai %rune autre récompense%w pour toi&lorsque tu auras ton propre arc."));
+
+    // Fishing pond pole hint
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_FISHING_POND_START,
+            CustomMessage(ctx->GetHint(RH_FISHING_POLE)->GetText().GetEnglish(),
+                ctx->GetHint(RH_FISHING_POLE)->GetText().GetEnglish(),
+                ctx->GetHint(RH_FISHING_POLE)->GetText().GetFrench())
+        );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_FISHING_POND_START_MET,
+            CustomMessage(ctx->GetHint(RH_FISHING_POLE)->GetText().GetEnglish(),
+                ctx->GetHint(RH_FISHING_POLE)->GetText().GetEnglish(),
+                ctx->GetHint(RH_FISHING_POLE)->GetText().GetFrench())
+        );
 
     // Lake Hylia water level system
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN,
@@ -631,6 +746,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
 
         // Bottle Refills
         case RG_MILK:
+        case RG_FISH:
         case RG_RED_POTION_REFILL:
         case RG_GREEN_POTION_REFILL:
         case RG_BLUE_POTION_REFILL:
@@ -682,6 +798,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_MAGIC_SINGLE:
         case RG_MAGIC_DOUBLE:
             return gSaveContext.magicLevel < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_FISHING_POLE:
+            return !Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
         // Songs
         case RG_ZELDAS_LULLABY:
@@ -1023,6 +1141,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_BLUE_POTION_REFILL:
         case RG_BUY_BLUE_POTION:
             return GI_POTION_BLUE;
+        case RG_FISH:
         case RG_BUY_FISH:
             return GI_FISH;
         case RG_BUY_BLUE_FIRE:
@@ -1221,6 +1340,7 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_PIECE_OF_HEART:
         case RG_HEART_CONTAINER:
         case RG_MILK:
+        case RG_FISH:
         case RG_BOMBS_5:
         case RG_BOMBS_10:
         case RG_BOMBS_20:
@@ -1426,9 +1546,57 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_LH_ADULT_FISHING,                                            RAND_INF_ADULT_FISHING },
     { RC_MARKET_10_BIG_POES,                                          RAND_INF_10_BIG_POES },
     { RC_KAK_100_GOLD_SKULLTULA_REWARD,                               RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD },
+    { RC_LH_CHILD_FISH_1,                                             RAND_INF_CHILD_FISH_1 },
+    { RC_LH_CHILD_FISH_2,                                             RAND_INF_CHILD_FISH_2 },
+    { RC_LH_CHILD_FISH_3,                                             RAND_INF_CHILD_FISH_3 },
+    { RC_LH_CHILD_FISH_4,                                             RAND_INF_CHILD_FISH_4 },
+    { RC_LH_CHILD_FISH_5,                                             RAND_INF_CHILD_FISH_5 },
+    { RC_LH_CHILD_FISH_6,                                             RAND_INF_CHILD_FISH_6 },
+    { RC_LH_CHILD_FISH_7,                                             RAND_INF_CHILD_FISH_7 },
+    { RC_LH_CHILD_FISH_8,                                             RAND_INF_CHILD_FISH_8 },
+    { RC_LH_CHILD_FISH_9,                                             RAND_INF_CHILD_FISH_9 },
+    { RC_LH_CHILD_FISH_10,                                            RAND_INF_CHILD_FISH_10 },
+    { RC_LH_CHILD_FISH_11,                                            RAND_INF_CHILD_FISH_11 },
+    { RC_LH_CHILD_FISH_12,                                            RAND_INF_CHILD_FISH_12 },
+    { RC_LH_CHILD_FISH_13,                                            RAND_INF_CHILD_FISH_13 },
+    { RC_LH_CHILD_FISH_14,                                            RAND_INF_CHILD_FISH_14 },
+    { RC_LH_CHILD_FISH_15,                                            RAND_INF_CHILD_FISH_15 },
+    { RC_LH_CHILD_LOACH_1,                                            RAND_INF_CHILD_LOACH_1 },
+    { RC_LH_CHILD_LOACH_2,                                            RAND_INF_CHILD_LOACH_2 },
+    { RC_LH_ADULT_FISH_1,                                             RAND_INF_ADULT_FISH_1 },
+    { RC_LH_ADULT_FISH_2,                                             RAND_INF_ADULT_FISH_2 },
+    { RC_LH_ADULT_FISH_3,                                             RAND_INF_ADULT_FISH_3 },
+    { RC_LH_ADULT_FISH_4,                                             RAND_INF_ADULT_FISH_4 },
+    { RC_LH_ADULT_FISH_5,                                             RAND_INF_ADULT_FISH_5 },
+    { RC_LH_ADULT_FISH_6,                                             RAND_INF_ADULT_FISH_6 },
+    { RC_LH_ADULT_FISH_7,                                             RAND_INF_ADULT_FISH_7 },
+    { RC_LH_ADULT_FISH_8,                                             RAND_INF_ADULT_FISH_8 },
+    { RC_LH_ADULT_FISH_9,                                             RAND_INF_ADULT_FISH_9 },
+    { RC_LH_ADULT_FISH_10,                                            RAND_INF_ADULT_FISH_10 },
+    { RC_LH_ADULT_FISH_11,                                            RAND_INF_ADULT_FISH_11 },
+    { RC_LH_ADULT_FISH_12,                                            RAND_INF_ADULT_FISH_12 },
+    { RC_LH_ADULT_FISH_13,                                            RAND_INF_ADULT_FISH_13 },
+    { RC_LH_ADULT_FISH_14,                                            RAND_INF_ADULT_FISH_14 },
+    { RC_LH_ADULT_FISH_15,                                            RAND_INF_ADULT_FISH_15 },
+    { RC_LH_ADULT_LOACH,                                              RAND_INF_ADULT_LOACH },
+    { RC_ZR_OPEN_GROTTO_FISH,                                         RAND_INF_GROTTO_FISH_ZR_OPEN_GROTTO },
+    { RC_DMC_UPPER_GROTTO_FISH,                                       RAND_INF_GROTTO_FISH_DMC_UPPER_GROTTO },
+    { RC_DMT_STORMS_GROTTO_FISH,                                      RAND_INF_GROTTO_FISH_DMT_STORMS_GROTTO },
+    { RC_KAK_OPEN_GROTTO_FISH,                                        RAND_INF_GROTTO_FISH_KAK_OPEN_GROTTO },
+    { RC_HF_NEAR_MARKET_GROTTO_FISH,                                  RAND_INF_GROTTO_FISH_HF_NEAR_MARKET_GROTTO },
+    { RC_HF_OPEN_GROTTO_FISH,                                         RAND_INF_GROTTO_FISH_HF_OPEN_GROTTO },
+    { RC_HF_SOUTHEAST_GROTTO_FISH,                                    RAND_INF_GROTTO_FISH_HF_SOUTHEAST_GROTTO },
+    { RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,                               RAND_INF_GROTTO_FISH_LW_NEAR_SHORTCUTS_GROTTO },
+    { RC_KF_STORMS_GROTTO_FISH,                                       RAND_INF_GROTTO_FISH_KF_STORMS_GROTTO },
+    { RC_ZD_FISH_1,                                                   RAND_INF_ZD_FISH_1 },
+    { RC_ZD_FISH_2,                                                   RAND_INF_ZD_FISH_2 },
+    { RC_ZD_FISH_3,                                                   RAND_INF_ZD_FISH_3 },
+    { RC_ZD_FISH_4,                                                   RAND_INF_ZD_FISH_4 },
+    { RC_ZD_FISH_5,                                                   RAND_INF_ZD_FISH_5 },
 };
 
 Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
+    auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
     RandomizerCheck specialRc = RC_UNKNOWN_CHECK;
     // TODO: Migrate these special cases into table, or at least document why they are special
     switch(sceneNum) {
@@ -1524,6 +1692,15 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
             // special case for MQ DC Gossip Stone
             if (actorId == ACTOR_EN_GS && actorParams == 15892 && ResourceMgr_IsGameMasterQuest()) {
                 specialRc = RC_DODONGOS_CAVERN_GOSSIP_STONE;
+            }
+            break;
+        case SCENE_GROTTOS:
+            // Grotto fish are identified by respawn data
+            if (actorId == ACTOR_EN_FISH && actorParams == 1) {
+                int8_t data = gSaveContext.respawn[RESPAWN_MODE_RETURN].data;
+                if (Rando::StaticData::randomizerGrottoFishMap.contains(data)) {
+                    specialRc = Rando::StaticData::randomizerGrottoFishMap[data];
+                }
             }
             break;
     }
@@ -1631,6 +1808,27 @@ CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
     }
 
     return cowIdentity;
+}
+
+FishIdentity Randomizer::IdentifyFish(s32 sceneNum, s32 actorParams) {
+    struct FishIdentity fishIdentity;
+
+    fishIdentity.randomizerInf = RAND_INF_MAX;
+    fishIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    // Fishsanity will determine what the identity of the fish should be
+    if (sceneNum == SCENE_FISHING_POND) {
+        return OTRGlobals::Instance->gRandoContext->GetFishsanity()->IdentifyPondFish(actorParams);
+    }
+
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_FISH, sceneNum, actorParams);
+
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        fishIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        fishIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return fishIdentity;
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
@@ -2366,6 +2564,41 @@ void RandomizerSettingsWindow::UpdateElement() {
     }
 }
 
+CustomMessage Randomizer::ReplaceWithItemName(CustomMessage message, std::string&& toReplace, RandomizerCheck hintedCheck){
+    auto ctx = Rando::Context::GetInstance();
+    RandomizerGet targetRG = ctx->GetItemLocation(hintedCheck)->GetPlacedRandomizerGet();
+    std::array<std::string, LANGUAGE_MAX> itemName;
+        if (targetRG == RG_ICE_TRAP) {
+            targetRG = ctx->overrides[hintedCheck].LooksLike();
+            itemName = {
+                ctx->overrides[hintedCheck].GetTrickName().english,
+                ctx->overrides[hintedCheck].GetTrickName().french,
+                ctx->overrides[hintedCheck].GetTrickName().english
+            };
+        } else {
+            itemName = EnumToSpoilerfileGetName[targetRG];
+        }
+    message.Replace(std::move(toReplace), std::move(itemName[0]), std::move(itemName[1]), std::move(itemName[2]));
+    return message;
+}
+
+
+CustomMessage Randomizer::GetMiscHintMessage(TextIDs textToGet, RandomizerCheck hintedCheck, RandomizerCheck otherCheck) {
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, textToGet);
+    messageEntry = ReplaceWithItemName(messageEntry, "{{item1}}", hintedCheck);
+    if (otherCheck != RC_UNKNOWN_CHECK){
+        messageEntry = ReplaceWithItemName(messageEntry, "{{item2}}", otherCheck);
+    }
+    return messageEntry;
+}
+
+CustomMessage Randomizer::GetCursedSkullMessage(s16 params, RandomizerCheck hintedCheck) {
+    auto ctx = Rando::Context::GetInstance();
+    CustomMessage messageEntry = GetMiscHintMessage(TEXT_SKULLTULA_PEOPLE_IM_CURSED, hintedCheck);
+    messageEntry.Replace("{{params}}", std::to_string(params*10));
+    return messageEntry;
+}
+
 CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
     auto ctx = Rando::Context::GetInstance();
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, originalTextId);
@@ -2428,6 +2661,32 @@ CustomMessage Randomizer::GetSariaMessage(u16 originalTextId) {
     }
 }
 
+CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
+    CustomMessage hintMessageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_FISHING_POND_START);
+    CustomMessage messageEntry = CustomMessage(
+      "Sorry, but the pond is closed.&I've lost my good %rfishing pole%w...&Can't go fishing without it!",
+      "",
+      ""
+    );
+
+    if (Rando::Context::GetInstance()->GetOption(RSK_FISHING_POLE_HINT)) {
+        messageEntry = messageEntry + hintMessageEntry;
+    }
+
+    // if the fishing pond guy doesnt remember me i will cry :(
+    if (originalTextId == TEXT_FISHING_POND_START_MET) {
+        messageEntry = CustomMessage(
+            "Hey, mister! I remember you!&It's been a long time!^",
+            "",
+            ""
+        ) + messageEntry;
+    }
+
+    messageEntry.Format();
+
+    return messageEntry;
+}
+
 CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious) {
     auto ctx = Rando::Context::GetInstance();
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
@@ -2464,28 +2723,6 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
 
     messageEntry.Replace("{{item}}", std::move(shopItemName[0]), std::move(shopItemName[1]), std::move(shopItemName[2]));
     messageEntry.Replace("{{price}}", std::to_string(shopItemPrice));
-    return messageEntry;
-}
-
-CustomMessage Randomizer::GetCursedSkullMessage(s16 params) {
-    auto ctx = Rando::Context::GetInstance();
-    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE);
-    RandomizerCheck rc = GetCheckFromActor(ACTOR_EN_SSH, SCENE_HOUSE_OF_SKULLTULA, params);
-    RandomizerGet itemGet = ctx->GetItemLocation(rc)->GetPlacedRandomizerGet();
-    std::array<std::string, LANGUAGE_MAX> itemName;
-    if (itemGet == RG_ICE_TRAP) {
-        itemGet = ctx->overrides[rc].LooksLike();
-        itemName = {
-            std::string(ctx->overrides[rc].GetTrickName().english),
-            std::string(ctx->overrides[rc].GetTrickName().french),
-            std::string(ctx->overrides[rc].GetTrickName().english)
-        };
-    } else {
-        itemName = EnumToSpoilerfileGetName[itemGet];
-    }
-
-    messageEntry.Replace("{{params}}", std::to_string(params*10));
-    messageEntry.Replace("{{check}}", std::move(itemName[0]), std::move(itemName[1]), std::move(itemName[2]));
     return messageEntry;
 }
 
@@ -3218,6 +3455,7 @@ void Randomizer::CreateCustomMessages() {
             "You got the %y\xa6%r button for the&Ocarina%w! You can now use it&while playing songs!",
 			"Der %y\xa6%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
 			"Vous trouvez la %rtouche %y\xa6%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
+        GIMESSAGE_UNTRANSLATED(RG_FISHING_POLE, ITEM_FISHING_POLE, "You found a lost %rFishing Pole%w!&Time to hit the pond!"),
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();
