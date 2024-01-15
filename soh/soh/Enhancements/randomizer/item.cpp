@@ -259,6 +259,10 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_SCALE:
+            if (!Flags_GetRandomizerInf(RAND_INF_CAN_SWIM)) {
+                actual = RG_BRONZE_SCALE;
+                break;
+            }
             switch (CUR_UPG_VALUE(UPG_SCALE)) {
                 case 0:
                     actual = RG_SILVER_SCALE;

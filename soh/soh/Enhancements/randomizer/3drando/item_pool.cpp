@@ -782,6 +782,10 @@ void GenerateItemPool() {
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_RIGHT_BUTTON);
   }
 
+  if (ctx->GetOption(RSK_SHUFFLE_SWIM)) {
+    AddItemToMainPool(RG_PROGRESSIVE_SCALE);
+  }
+
   if (ctx->GetOption(RSK_SHUFFLE_BEEHIVES)) {
     //32 total beehive locations
     AddItemToMainPool(RG_RED_RUPEE, 23);

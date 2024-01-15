@@ -108,6 +108,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_CHILD_WALLET] = Option::Bool("Shuffle Child's Wallet", "gRandomizeShuffleChildWallet", mOptionDescriptions[RSK_SHUFFLE_CHILD_WALLET]);
     mOptions[RSK_SHUFFLE_OCARINA] = Option::Bool("Shuffle Ocarinas", "gRandomizeShuffleOcarinas", mOptionDescriptions[RSK_SHUFFLE_OCARINA]);
     mOptions[RSK_SHUFFLE_OCARINA_BUTTONS] = Option::Bool("Shuffle Ocarina Buttons", "gRandomizeShuffleOcarinaButtons", mOptionDescriptions[RSK_SHUFFLE_OCARINA_BUTTONS]);
+    mOptions[RSK_SHUFFLE_SWIM] = Option::Bool("Shuffle Swim", "gRandomizeShuffleSwim", mOptionDescriptions[RSK_SHUFFLE_SWIM]);
     mOptions[RSK_SHUFFLE_WEIRD_EGG] = Option::Bool("Shuffle Weird Egg", "gRandomizeShuffleWeirdEgg", mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG]);
     mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = Option::Bool("Shuffle Gerudo Membership Card", "gRandomizeShuffleGerudoToken", mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);
     mOptions[RSK_SHUFFLE_FISHING_POLE] = Option::Bool("Shuffle Fishing Pole", "gRandomizeShuffleFishingPole", mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE]);
@@ -287,6 +288,7 @@ void Settings::CreateOptions() {
     mTrickOptions[RT_DEKU_BASEMENT_GS] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_DEKU_TREE, {Tricks::Tag::NOVICE}, false, "Deku Tree Basement Vines GS with Jump Slash", "Can be defeated by doing a precise jump slash.");
     mTrickOptions[RT_DEKU_B1_SKIP] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_DEKU_TREE, {Tricks::Tag::INTERMEDIATE}, false, "Deku Tree Basement without Slingshot", "A precise jump can be used to skip needing to use the Slingshot to go around B1 of the Deku Tree. If used with the \"Closed Forest\" setting, a Slingshot will not be guaranteed to exist somewhere inside the Forest. This trick applies to both Vanilla and Master Quest.");
     mTrickOptions[RT_DEKU_B1_BOW_WEBS] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_DEKU_TREE, {Tricks::Tag::NOVICE}, false, "Deku Tree Basement Web to Gohma with Bow", "All spider web walls in the Deku Tree basement can be burnt as adult with just a bow by shooting through torches. This trick only applies to the circular web leading to Gohma; the two vertical webs are always in logic. Backflip onto the chest near the torch at the bottom of the vine wall. With precise positioning you can shoot through the torch to the right edge of the circular web. This allows completion of adult Deku Tree with no fire source.");
+    mTrickOptions[RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_DEKU_TREE, {Tricks::Tag::NOVICE}, false, "Deku Tree Basement Backflip over Spiked Log", "Allows backflipping over the spiked log in the deku tree basement in vanilla. Only relevant if \"Shuffle Swim\" is enabled.");
     mTrickOptions[RT_DEKU_MQ_COMPASS_GS] = TrickOption::LogicTrick(RCQUEST_MQ, RA_DEKU_TREE, {Tricks::Tag::NOVICE}, false, "Deku Tree MQ Compass Room GS Boulders with Just Hammer", "Climb to the top of the vines, then let go and jump slash immediately to destroy the boulders using the Hammer, without needing to spawn a Song of Time block.");
     mTrickOptions[RT_DEKU_MQ_LOG] = TrickOption::LogicTrick(RCQUEST_MQ, RA_DEKU_TREE, {Tricks::Tag::NOVICE}, false, "Deku Tree MQ Roll Under the Spiked Log", "You can get past the spiked log by rolling to briefly shrink your hitbox. As adult, the timing is a bit more precise.");
     mTrickOptions[RT_DC_SCARECROW_GS] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_DODONGOS_CAVERN, {Tricks::Tag::NOVICE}, false, "Dodongo\'s Cavern Scarecrow GS with Armos Statue", "You can jump off an Armos Statue to reach the alcove with the Gold Skulltula. It takes quite a long time to pull the statue the entire way. The jump to the alcove can be a bit picky when done as child.");
@@ -466,6 +468,7 @@ void Settings::CreateOptions() {
         &mTrickOptions[RT_DEKU_BASEMENT_GS],
         &mTrickOptions[RT_DEKU_B1_SKIP],
         &mTrickOptions[RT_DEKU_B1_BOW_WEBS],
+        &mTrickOptions[RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG],
         &mTrickOptions[RT_DEKU_MQ_COMPASS_GS],
         &mTrickOptions[RT_DEKU_MQ_LOG],
         &mTrickOptions[RT_DC_SCARECROW_GS],
@@ -653,6 +656,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_CHILD_WALLET],
         &mOptions[RSK_SHUFFLE_OCARINA],
         &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
+        &mOptions[RSK_SHUFFLE_SWIM],
         &mOptions[RSK_SHUFFLE_WEIRD_EGG],
         &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
         &mOptions[RSK_SHUFFLE_FISHING_POLE],
@@ -869,6 +873,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],
         &mOptions[RSK_SHUFFLE_OCARINA],
         &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
+        &mOptions[RSK_SHUFFLE_SWIM],
         &mOptions[RSK_SHUFFLE_WEIRD_EGG],
         &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
         &mOptions[RSK_SHUFFLE_MAGIC_BEANS],
@@ -1091,6 +1096,7 @@ void Settings::CreateOptions() {
         { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
         { "Shuffle Settings:Shuffle Ocarinas", RSK_SHUFFLE_OCARINA },
         { "Shuffle Settings:Shuffle Ocarina Buttons", RSK_SHUFFLE_OCARINA_BUTTONS },
+        { "Shuffle Settings:Shuffle Swim", RSK_SHUFFLE_SWIM },
         { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
         { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
         { "Shuffle Settings:Shuffle Kokiri Sword", RSK_SHUFFLE_KOKIRI_SWORD },
@@ -2244,6 +2250,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SHUFFLE_100_GS_REWARD:
                 case RSK_SHUFFLE_OCARINA:
                 case RSK_SHUFFLE_OCARINA_BUTTONS:
+                case RSK_SHUFFLE_SWIM:
                 case RSK_SHUFFLE_CHILD_WALLET:
                 case RSK_STARTING_DEKU_SHIELD:
                 case RSK_STARTING_KOKIRI_SWORD:

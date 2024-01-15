@@ -93,7 +93,7 @@ void AreaTable_Init_ZorasDomain() {
                   EventAccess(&logic->DeliverLetter,     {[]{return logic->DeliverLetter     || (logic->RutosLetter && logic->IsChild && randoCtx->GetOption(RSK_ZORAS_FOUNTAIN).IsNot(RO_ZF_OPEN));}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_ZD_DIVING_MINIGAME,                     {[]{return logic->ChildsWallet && logic->IsChild;}}),
+                  LocationAccess(RC_ZD_DIVING_MINIGAME,                     {[]{return logic->Swim && logic->ChildsWallet && logic->IsChild;}}),
                   LocationAccess(RC_ZD_CHEST,                               {[]{return logic->IsChild && logic->CanUse(RG_STICKS);}}),
                   LocationAccess(RC_ZD_KING_ZORA_THAWED,                    {[]{return logic->KingZoraThawed;}}),
                   LocationAccess(RC_ZD_TRADE_PRESCRIPTION,                  {[]{return logic->KingZoraThawed && logic->Prescription;}}),

@@ -275,6 +275,9 @@ void Rando::StaticData::InitItemTable() {
     itemTable[RG_OCARINA_C_RIGHT_BUTTON] =              Item(RG_OCARINA_C_RIGHT_BUTTON,          Text{ "Ocarina C Right Button", "Touche C-Droit de l'Ocarina", "Botón C derecho de Ocarina" },                     ITEMTYPE_ITEM,              GI_MAP,             true,  &logic->OcarinaCRightButton, RHT_OCARINA_C_RIGHT_BUTTON, RG_OCARINA_C_RIGHT_BUTTON,      OBJECT_GI_MAP,          GID_STONE_OF_AGONY, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_RANDOMIZER);
     itemTable[RG_OCARINA_C_RIGHT_BUTTON].SetCustomDrawFunc(Randomizer_DrawOcarinaButton);
 
+    itemTable[RG_BRONZE_SCALE] = Item(RG_BRONZE_SCALE, Text{ "Bronze Scale", "!!!", "!!!" }, ITEMTYPE_ITEM, GI_SCALE_SILVER, true, &logic->ProgressiveWallet, RHT_BRONZE_SCALE, RG_BRONZE_SCALE, OBJECT_GI_SCALE, GID_SCALE_SILVER, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
+    itemTable[RG_BRONZE_SCALE].SetCustomDrawFunc(Randomizer_DrawBronzeScale);
+
     itemTable[RG_TRIFORCE] =                            Item(RG_TRIFORCE,                         Text{ "Triforce", "Triforce", "Triforce" },                                                                       ITEMTYPE_EVENT,             RG_TRIFORCE,        false, &logic->noVariable,          RHT_NONE);
     itemTable[RG_HINT] =                                Item(RG_HINT,                             Text{ "Hint", "Indice", "Hinweis" },                                                                              ITEMTYPE_EVENT,             RG_HINT,            false, &logic->noVariable,          RHT_NONE);
     // Individual stages of progressive items (only here for GetItemEntry purposes, not for use in seed gen)
