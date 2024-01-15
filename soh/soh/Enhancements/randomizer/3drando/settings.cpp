@@ -2060,21 +2060,65 @@ namespace Settings {
   }
 
   //Options that should be saved, set to default, then restored after finishing when vanilla logic is enabled
-  std::vector<Option *> vanillaLogicDefaults = {
-    &LinksPocketItem,
-    &ShuffleRewards,
-    &ShuffleSongs,
-    &Shopsanity,
-    &ShopsanityPrices,
-    &ShopsanityPricesAffordable,
-    &Scrubsanity,
-    &ShuffleCows,
-    &ShuffleMagicBeans,
-    &ShuffleMerchants,
-    &ShuffleFrogSongRupees,
-    &ShuffleAdultTradeQuest,
-    &Shuffle100GSReward,
-    &GossipStoneHints,
+  std::vector<std::pair<Option*, uint8_t>> vanillaLogicOverrides = {
+    { &OpenForest, OPENFOREST_CLOSED },
+    { &OpenKakariko, OPENKAKARIKO_CLOSED },
+    { &OpenDoorOfTime, OPENDOOROFTIME_CLOSED },
+    { &ZorasFountain, ZORASFOUNTAIN_NORMAL },
+    { &GerudoFortress, GERUDOFORTRESS_NORMAL },
+    { &Bridge, RAINBOWBRIDGE_VANILLA },
+    { &RandomGanonsTrials, OFF },
+    { &GanonsTrialsCount, 6 },
+
+    { &StartingAge, AGE_CHILD },
+    { &TriforceHunt, TRIFORCE_HUNT_OFF },
+
+    { &ShuffleRewards, REWARDSHUFFLE_END_OF_DUNGEON },
+    { &LinksPocketItem, LINKSPOCKETITEM_DUNGEON_REWARD },
+    { &ShuffleSongs, SONGSHUFFLE_SONG_LOCATIONS },
+    { &Shopsanity, SHOPSANITY_OFF },
+    { &Tokensanity, TOKENSANITY_OFF },
+    { &Scrubsanity, SCRUBSANITY_OFF },
+    { &ShuffleCows, OFF },
+    { &ShuffleKokiriSword, OFF },
+    { &ShuffleMasterSword, OFF },
+    { &ShuffleOcarinas, OFF },
+    { &ShuffleWeirdEgg, OFF },
+    { &ShuffleGerudoToken, OFF },
+    { &ShuffleMagicBeans, OFF },
+    { &ShuffleMerchants, SHUFFLEMERCHANTS_OFF },
+    { &ShuffleFrogSongRupees, SHUFFLEFROGSONGRUPEES_OFF },
+    { &ShuffleAdultTradeQuest, SHUFFLEADULTTRADEQUEST_OFF },
+    { &ShuffleChestMinigame, SHUFFLECHESTMINIGAME_OFF },
+    { &Shuffle100GSReward, OFF },
+    
+    { &MapsAndCompasses, MAPSANDCOMPASSES_VANILLA },
+    { &Keysanity, KEYSANITY_ANY_DUNGEON }, // Set small keys to any dungeon so FiT basement door will be locked
+    { &GerudoKeys, GERUDOKEYS_VANILLA },
+    { &BossKeysanity, BOSSKEYSANITY_VANILLA },
+    { &GanonsBossKey, GANONSBOSSKEY_VANILLA },
+    { &KeyRings, KEYRINGS_OFF },
+
+    { &StartingOcarina, OFF },
+
+    { &SkipChildStealth, DONT_SKIP },
+    { &SkipTowerEscape, DONT_SKIP },
+    { &SkipEponaRace, DONT_SKIP },
+
+    { &GossipStoneHints, HINTS_NO_HINTS },
+    { &AltarHintText, HINTS_NO_HINTS },
+    { &LightArrowHintText, HINTS_NO_HINTS },
+    { &DampeHintText, HINTS_NO_HINTS },
+    { &GregHintText, HINTS_NO_HINTS },
+    { &SariaHintText, HINTS_NO_HINTS },
+    { &FrogsHintText, HINTS_NO_HINTS },
+    { &WarpSongHints, HINTS_NO_HINTS },
+    { &Kak10GSHintText, HINTS_NO_HINTS },
+    { &Kak20GSHintText, HINTS_NO_HINTS },
+    { &Kak30GSHintText, HINTS_NO_HINTS },
+    { &Kak40GSHintText, HINTS_NO_HINTS },
+    { &Kak50GSHintText, HINTS_NO_HINTS },
+    { &ScrubHintText, HINTS_NO_HINTS },
   };
 
   // Randomizes all settings in a category if chosen
@@ -2206,6 +2250,9 @@ namespace Settings {
         break;
       case RO_LOGIC_NO_LOGIC:
         Logic.SetSelectedIndex(2);
+        break;
+      case RO_LOGIC_VANILLA:
+        Logic.SetSelectedIndex(3);
         break;
     }
 
@@ -2428,6 +2475,15 @@ namespace Settings {
     // RANDOTODO implement chest shuffle with keysanity
     // ShuffleChestMinigame.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);
 
+    if (Logic.Is(LOGIC_VANILLA)) {
+      LACSCondition = LACSCONDITION_VANILLA;
+      skipChildZelda = false;
+      for (auto overridePair : vanillaLogicOverrides) {
+        overridePair.first->SetDelayedOption();
+        overridePair.first->SetSelectedIndex(overridePair.second);
+      }
+    }
+
     RandomizeAllSettings(true); //now select any random options instead of just hiding them
 
     //shuffle the dungeons and then set MQ for as many as necessary
@@ -2593,16 +2649,6 @@ namespace Settings {
       LACSCondition = LACSCONDITION_TOKENS;
     } else {
       LACSCondition = LACSCONDITION_VANILLA;
-    }
-
-    //If vanilla logic, we want to set all settings which unnecessarily modify vanilla behavior to off
-    if (Logic.Is(LOGIC_VANILLA)) {
-      for (Option* setting : vanillaLogicDefaults) {
-        setting->SetDelayedOption();
-        setting->SetSelectedIndex(0);
-      }
-      Keysanity.SetDelayedOption();
-      Keysanity.SetSelectedIndex(3); //Set small keys to any dungeon so FiT basement door will be locked
     }
   }
 

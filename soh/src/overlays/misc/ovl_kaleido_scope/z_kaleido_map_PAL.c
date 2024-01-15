@@ -343,7 +343,7 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     // Offset the U value of each vertex to be in the mirror boundary for the map textures
     if (mirroredWorld) {
         for (size_t i = 0; i < 8; i++) {
-            pauseCtx->mapPageVtx[60 + i].v.tc[0] += 48 << 5;
+            pauseCtx->mapPageVtx[60 + i].v.tc[0] += MAP_48x85_TEX_WIDTH << 5;
         }
     }
 
@@ -353,8 +353,9 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     gSPInvalidateTexCache(POLY_KAL_DISP++, interfaceCtx->mapSegment[0]);
     gSPInvalidateTexCache(POLY_KAL_DISP++, interfaceCtx->mapSegment[1]);
 
-    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegmentName[0], G_IM_FMT_CI, 48, 85, 0, G_TX_WRAP | mirrorMode,
-                           G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegmentName[0], G_IM_FMT_CI, MAP_48x85_TEX_WIDTH,
+                           MAP_48x85_TEX_HEIGHT, 0, G_TX_WRAP | mirrorMode, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK,
+                           G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     // Swap vertices to render left half on the right and vice-versa
     if (mirroredWorld) {
@@ -363,9 +364,9 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
         gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
     }
 
-    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegmentName[1], G_IM_FMT_CI, 48, 85, 0,
-                           G_TX_WRAP | mirrorMode, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
-                           G_TX_NOLOD);
+    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegmentName[1], G_IM_FMT_CI, MAP_48x85_TEX_WIDTH,
+                           MAP_48x85_TEX_HEIGHT, 0, G_TX_WRAP | mirrorMode, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK,
+                           G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     if (mirroredWorld) {
         gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
