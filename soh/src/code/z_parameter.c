@@ -6545,7 +6545,7 @@ void Interface_Update(PlayState* play) {
         (play->transitionMode == TRANS_MODE_OFF) && !Play_InCsMode(play)) {}
 
     if (gSaveContext.rupeeAccumulator != 0) {
-        if (CVarGetInteger("gBanker", 0) != 0) {
+        if (CVarGetInteger("gBanker", 0) != 0 && gSaveContext.hasWarpTransfer) {
             // Begin custom code for gBanker
             if (gSaveContext.rupeeAccumulator > 0) {
                 while (gSaveContext.rupeeAccumulator > 0 && gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {

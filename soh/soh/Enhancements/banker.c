@@ -165,7 +165,7 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
                 if (gBankerValue <= gSaveContext.rupees) {
                     if ((gSaveContext.playerBalance + gBankerValue) > 5000) {
                         Message_ContinueTextbox(play, TEXT_BANKER_ERROR_MAX_BALANCE);
-                    } else if (gSaveContext.hasInterest == 0 && (gSaveContext.playerBalance + gBankerValue - FEE_AMOUNT) < 0) {
+                    } else if (gSaveContext.hasInterest == 0 && (gSaveContext.playerBalance + gBankerValue - FEE_AMOUNT) < 1) {
                         Message_ContinueTextbox(play, TEXT_BANKER_ERROR_DEPOSIT_NOT_WORTHWHILE);
                     } else {
                         if (gSaveContext.hasInterest == 0) {
