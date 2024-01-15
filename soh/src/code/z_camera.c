@@ -7933,7 +7933,8 @@ s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags) {
         return -5;
     }
 
-    if (setting == CAM_SET_NONE || setting >= CAM_SET_MAX) {
+    //modified from "==" to "<=" to not crash when "setting" is a negative value
+    if (setting <= CAM_SET_NONE || setting >= CAM_SET_MAX) {
         osSyncPrintf(VT_COL(RED, WHITE) "camera: error: illegal camera set (%d) !!!!\n" VT_RST, setting);
         return -99;
     }
