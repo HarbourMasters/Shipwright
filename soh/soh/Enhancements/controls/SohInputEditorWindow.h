@@ -11,6 +11,14 @@
 #include <vector>
 #include <set>
 
+typedef uint32_t N64ButtonMask;
+
+typedef struct {
+    const char* label;
+    const char* cVarName;
+    N64ButtonMask defaultBtn;
+} CustomButtonMap;
+
 class SohInputEditorWindow : public LUS::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
@@ -51,6 +59,17 @@ class SohInputEditorWindow : public LUS::GuiWindow {
     void DrawRemoveGyroMappingButton(uint8_t port, std::string id);
     void DrawAddGyroMappingButton(uint8_t port);
 
+    // Used together for an incomplete linked hash map implementation in order to
+    // map button masks to their names and original mapping on N64
+    std::list<std::pair<N64ButtonMask, const char*>> buttons;
+    std::unordered_map<N64ButtonMask, decltype(buttons)::iterator> buttonNames;
+    void addButtonName(N64ButtonMask mask, const char* name);
+    void DrawMapping(CustomButtonMap& mapping, float labelWidth, N64ButtonMask excludedButtons);
+    void DrawOcarinaControlPanel();
+    void DrawCameraControlPanel();
+    void DrawDpadControlPanel();
+    void DrawMiscControlPanel();
+
     int32_t mGameInputBlockTimer;
     int32_t mMappingInputBlockTimer;
     int32_t mRumbleTimer;
@@ -84,6 +103,4 @@ class SohInputEditorWindow : public LUS::GuiWindow {
     bool mInputEditorPopupOpen;
     void DrawSetDefaultsButton(uint8_t portIndex);
     void DrawClearAllButton(uint8_t portIndex);
-
-    void DrawHelpIcon(const std::string& helptext);
 };

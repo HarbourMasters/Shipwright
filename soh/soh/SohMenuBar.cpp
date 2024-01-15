@@ -21,7 +21,6 @@
 
 
 #include "Enhancements/audio/AudioEditor.h"
-#include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugger/actorViewer.h"
 #include "Enhancements/debugger/colViewer.h"
@@ -180,7 +179,6 @@ void DrawShipMenu() {
 }
 
 extern std::shared_ptr<LUS::GuiWindow> mInputEditorWindow;
-extern std::shared_ptr<GameControlEditor::GameControlEditorWindow> mGameControlEditorWindow;
 extern std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
 
 void DrawSettingsMenu() {
@@ -239,11 +237,6 @@ void DrawSettingsMenu() {
             if (mInputEditorWindow) {
                 if (ImGui::Button(GetWindowButtonText("Controller Mapping", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
                     mInputEditorWindow->ToggleVisibility();
-                }
-            }
-            if (mGameControlEditorWindow) {
-                if (ImGui::Button(GetWindowButtonText("Additional Controller Options", CVarGetInteger("gGameControlEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                    mGameControlEditorWindow->ToggleVisibility();
                 }
             }
             UIWidgets::PaddedSeparator();
