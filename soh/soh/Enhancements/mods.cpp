@@ -6,6 +6,7 @@
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include "soh/Enhancements/randomizer/fishsanity.h"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/nametag.h"
@@ -23,6 +24,7 @@
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
+#include "src/overlays//actors/ovl_Fishing/z_fishing.h"
 
 extern "C" {
 #include <z64.h>
@@ -62,7 +64,7 @@ void ReloadSceneTogglingLinkAge() {
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (!GameInteractor::IsSaveLoaded()) return;
-        if (CVarGetInteger("gInfiniteMoney", 0) != 0) {
+        if (CVarGetInteger("gInfiniteMoney", 0) != 0 && (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET))) {
             if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
                 gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
             }
@@ -1282,6 +1284,237 @@ void RegisterToTMedallions() {
     });
 }
 
+//from z_player.c
+typedef struct {
+    /* 0x00 */ Vec3f pos;
+    /* 0x0C */ s16 yaw;
+} SpecialRespawnInfo; // size = 0x10
+
+//special respawns used when voided out without swim to prevent infinite loops
+std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
+    {
+        0x1D9,//hf to zr in water
+        { { -1455.443, -20, 1384.826 }, 28761 }
+    },
+    {
+        0x311,//zr to hf in water
+        { { 5830.209, -92.16, 3925.911 }, -20025 }
+    },
+    {
+        0x4DA,//zr to lw
+        { { 1978.718, -36.908, -855 }, -16384 }
+    },
+    {
+        0x1DD,//lw to zr
+        { { 4082.366, 860.442, -1018.949 }, -32768 }
+    },
+    {
+        0x219,//gv to lh
+        { { -3276.416, -1033, 2908.421 }, 11228 }
+    },
+    {
+        0x10,//lh to water temple
+        { { -182, 780, 759.5 }, -32768 }
+    },
+    {
+        0x21D,//water temple to lh
+        { { -955.028, -1306.9, 6768.954 }, -32768 }
+    },
+    {
+        0x328,//lh to zd
+        { { -109.86, 11.396, -9.933 }, -29131 }
+    },
+    {
+        0x560,//zd to lh
+        { { -912, -1326.967, 3391 }, 0 }
+    }
+};
+
+void RegisterNoSwim() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (
+            IS_RANDO &&
+            (GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_IN_WATER) &&
+            !Flags_GetRandomizerInf(RAND_INF_CAN_SWIM) &&
+            CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) != EQUIP_VALUE_BOOTS_IRON
+        ) {
+            //if you void out in water temple without swim you get instantly kicked out to prevent softlocks
+            if (gPlayState->sceneNum == SCENE_WATER_TEMPLE) {
+                GameInteractor::RawAction::TeleportPlayer(Entrance_OverrideNextIndex(ENTR_LAKE_HYLIA_2));//lake hylia from water temple
+                return;
+            }
+
+            if (swimSpecialRespawnInfo.find(gSaveContext.entranceIndex) != swimSpecialRespawnInfo.end()) {
+                SpecialRespawnInfo* respawnInfo = &swimSpecialRespawnInfo.at(gSaveContext.entranceIndex);
+
+                Play_SetupRespawnPoint(gPlayState, RESPAWN_MODE_DOWN, 0xDFF);
+                gSaveContext.respawn[RESPAWN_MODE_DOWN].pos = respawnInfo->pos;
+                gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = respawnInfo->yaw;
+            }
+
+            Play_TriggerVoidOut(gPlayState);
+        }
+    });
+}
+
+void RegisterNoWallet() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+            gSaveContext.rupees = 0;
+        }
+    });
+}
+
+void RegisterFishsanity() {
+    static s16 fishGroupCounter = 0;
+
+    // Initialization on load
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
+        if (!IS_RANDO) {
+            return;
+        }
+        OTRGlobals::Instance->gRandoContext->GetFishsanity()->InitializeFromSave();
+    });
+
+    // Initialize actors for fishsanity
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+        if (!IS_RANDO) {
+            return;
+        }
+
+        Actor* actor = static_cast<Actor*>(refActor);
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
+        FishIdentity fish;
+
+        if (actor->id == ACTOR_EN_FISH && fs->GetOverworldFishShuffled()) {
+            // Set fish ID for ZD fish
+            if (gPlayState->sceneNum == SCENE_ZORAS_DOMAIN && actor->params == -1) {
+                actor->params ^= fishGroupCounter++;
+            }
+
+            fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+            // Create effect for uncaught fish
+            if (Rando::Fishsanity::IsFish(&fish) && !Flags_GetRandomizerInf(fish.randomizerInf)) {
+                actor->shape.shadowDraw = Fishsanity_DrawEffShadow;
+            }
+            return;
+        }
+
+        if (actor->id == ACTOR_FISHING && gPlayState->sceneNum == SCENE_FISHING_POND && actor->params >= 100 &&
+            actor->params <= 117 && fs->GetPondFishShuffled()) {
+            // Initialize pond fish for fishsanity
+            // Initialize fishsanity metadata on this actor
+            Fishing* fishActor = static_cast<Fishing*>(refActor);
+            fishActor->fishsanityParams = actor->params;
+            fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+
+            // With every pond fish shuffled, caught fish will not spawn unless all fish have been caught.
+            if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY_POND_COUNT) > 16 &&
+                !fs->GetPondCleared()) {
+                // Create effect for uncaught fish
+                if (!Flags_GetRandomizerInf(fish.randomizerInf)) {
+                    actor->shape.shadowDraw = Fishsanity_DrawEffShadow;
+                }
+            }
+        }
+
+    });
+
+    // Update fishsanity when a fish is caught
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>([](int16_t flagType, int16_t flag) {
+        if (!IS_RANDO || flagType != FLAG_RANDOMIZER_INF) {
+            return;
+        }
+        RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)flag);
+        FishsanityCheckType fsType = Rando::Fishsanity::GetCheckType(rc);
+        if (fsType == FSC_NONE) {
+            return;
+        }
+
+        // When a pond fish is caught, advance the pond.
+        if (fsType == FSC_POND) {
+            OTRGlobals::Instance->gRandoContext->GetFishsanity()->AdvancePond();
+        }
+    });
+
+    // Award fishing pond checks
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (!IS_RANDO || GameInteractor::IsGameplayPaused() || !gPlayState) {
+            return;
+        }
+
+        Player* player = GET_PLAYER(gPlayState);
+        if (Player_InBlockingCsMode(gPlayState, player)) {
+            return;
+        }
+
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
+        if (!fs->GetPondFishShuffled()) {
+            return;
+        }
+
+        FishIdentity pending = fs->GetPendingFish();
+        if (!Rando::Fishsanity::IsFish(&pending)) { // No fish currently pending
+            return;
+        }
+
+        // Award fish
+        GetItemEntry gi = OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(pending.randomizerCheck, GI_NONE);
+        Flags_SetRandomizerInf(pending.randomizerInf);
+        GiveItemEntryWithoutActor(gPlayState, gi);
+        fs->SetPendingFish(NULL);
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+        if (!IS_RANDO || (gPlayState->sceneNum != SCENE_GROTTOS && gPlayState->sceneNum != SCENE_ZORAS_DOMAIN && gPlayState->sceneNum != SCENE_FISHING_POND)) {
+            return;
+        }
+
+        Actor* actor = static_cast<Actor*>(refActor);
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
+
+        // Detect fish catch
+        if (actor->id == ACTOR_FISHING && fs->GetPondFishShuffled()) {
+            Fishing* fish = static_cast<Fishing*>(refActor);
+
+            // State 6 -> Fish caught and hoisted
+            FishIdentity pending = fs->GetPendingFish();
+            if (fish->fishState == 6 && !Rando::Fishsanity::IsFish(&pending)) {
+                pending = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, fish->fishsanityParams);
+                if (!Flags_GetRandomizerInf(pending.randomizerInf)) {
+                    fs->SetPendingFish(&pending);
+                    // Remove uncaught effect
+                    if (actor->shape.shadowDraw != NULL) {
+                        actor->shape.shadowDraw = NULL;
+                    }
+                }
+            }
+        }
+
+        if (actor->id == ACTOR_EN_FISH && fs->GetOverworldFishShuffled()) {
+            FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+            if (Rando::Fishsanity::IsFish(&fish) && Flags_GetRandomizerInf(fish.randomizerInf)) {
+                // Remove uncaught effect
+                if (actor->shape.shadowDraw != NULL) {
+                    actor->shape.shadowDraw = NULL;
+                }
+            }
+        }
+
+        // Reset fish group counter when the group gets culled
+        if (actor->id == ACTOR_OBJ_MURE && gPlayState->sceneNum == SCENE_ZORAS_DOMAIN && fishGroupCounter > 0 &&
+            !(actor->flags & ACTOR_FLAG_UPDATE_WHILE_CULLED) && fs->GetOverworldFishShuffled()) {
+            fishGroupCounter = 0;
+        }
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        if (!IS_RANDO || sceneNum != SCENE_ZORAS_DOMAIN)
+            return;
+        fishGroupCounter = 0;
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1315,5 +1548,8 @@ void InitMods() {
     RegisterBossSouls();
     RegisterRandomizedEnemySizes();
     RegisterToTMedallions();
+    RegisterNoSwim();
+    RegisterNoWallet();
+    RegisterFishsanity();
     NameTag_RegisterHooks();
 }

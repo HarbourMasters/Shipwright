@@ -32,8 +32,11 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_HF_SOUTHEAST_GROTTO] = Area("HF Southeast Grotto", "HF Southeast Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(RC_HF_SOUTHEAST_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(RC_HF_SOUTHEAST_GOSSIP_STONE, {[]{return true;}}),
+                  LocationAccess(RC_HF_SOUTHEAST_GROTTO_CHEST,         {[]{return true;}}),
+                  LocationAccess(RC_HF_SOUTHEAST_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
+                  LocationAccess(RC_HF_SOUTHEAST_GOSSIP_STONE,         {[]{return true;}}),
+                  LocationAccess(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
+                  LocationAccess(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
@@ -41,8 +44,11 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_HF_OPEN_GROTTO] = Area("HF Open Grotto", "HF Open Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(RC_HF_OPEN_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(RC_HF_OPEN_GROTTO_GOSSIP_STONE, {[]{return true;}}),
+                  LocationAccess(RC_HF_OPEN_GROTTO_CHEST,         {[]{return true;}}),
+                  LocationAccess(RC_HF_OPEN_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
+                  LocationAccess(RC_HF_OPEN_GROTTO_GOSSIP_STONE,  {[]{return true;}}),
+                  LocationAccess(RC_HF_OPEN_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
+                  LocationAccess(RC_HF_OPEN_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
@@ -50,7 +56,8 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_HF_INSIDE_FENCE_GROTTO] = Area("HF Inside Fence Grotto", "HF Inside Fence Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_HF_DEKU_SCRUB_GROTTO, {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_HF_DEKU_SCRUB_GROTTO,           {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_HF_INSIDE_FENCE_GROTTO_BEEHIVE, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
@@ -68,8 +75,11 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_HF_NEAR_MARKET_GROTTO] = Area("HF Near Market Grotto", "HF Near Market Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(RC_HF_NEAR_MARKET_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(RC_HF_NEAR_MARKET_GOSSIP_STONE, {[]{return true;}}),
+                  LocationAccess(RC_HF_NEAR_MARKET_GROTTO_CHEST,         {[]{return true;}}),
+                  LocationAccess(RC_HF_NEAR_MARKET_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
+                  LocationAccess(RC_HF_NEAR_MARKET_GOSSIP_STONE,         {[]{return true;}}),
+                  LocationAccess(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
+                  LocationAccess(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_HYRULE_FIELD, {[]{return true;}}),
@@ -154,10 +164,45 @@ void AreaTable_Init_HyruleField() {
                   Entrance(RR_LAKE_HYLIA, {[]{return true;}}),
   });
 
+  // TODO: should some of these helpers be done via events instead?
   areaTable[RR_LH_FISHING_HOLE] = Area("LH Fishing Hole", "LH Fishing Hole", RA_NONE, DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_LH_CHILD_FISHING, {[]{return logic->IsChild;}}),
-                  LocationAccess(RC_LH_ADULT_FISHING, {[]{return logic->IsAdult;}}),
+                  LocationAccess(RC_LH_CHILD_FISHING, {[]{return logic->CanFish && logic->IsChild;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_1,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_2,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_3,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_4,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_5,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_6,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_7,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_8,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_9,  {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_10, {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_11, {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_12, {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_13, {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_14, {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_FISH_15, {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_LOACH_1, {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_CHILD_LOACH_2, {[]{return logic->CanGetChildFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISHING, {[]{return logic->CanFish && logic->IsAdult;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_1,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_2,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_3,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_4,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_5,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_6,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_7,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_8,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_9,  {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_10, {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_11, {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_12, {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_13, {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_14, {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_FISH_15, {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_ADULT_LOACH,   {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_FISHING_POLE_HINT,{[]{return true;}}),
                 }, {
                   //Exits
                   Entrance(RR_LH_FISHING_ISLAND, {[]{return true;}}),
@@ -168,6 +213,7 @@ void AreaTable_Init_HyruleField() {
                   LocationAccess(RC_LH_DEKU_SCRUB_GROTTO_LEFT,   {[]{return logic->CanStunDeku;}}),
                   LocationAccess(RC_LH_DEKU_SCRUB_GROTTO_RIGHT,  {[]{return logic->CanStunDeku;}}),
                   LocationAccess(RC_LH_DEKU_SCRUB_GROTTO_CENTER, {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_LH_GROTTO_BEEHIVE,           {[]{return logic->CanBreakUpperBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_LAKE_HYLIA, {[]{return true;}}),
@@ -175,8 +221,8 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_LON_LON_RANCH] = Area("Lon Lon Ranch", "Lon Lon Ranch", RA_LON_LON_RANCH, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->Epona,    {[]{return logic->Epona    || (logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay);}}),
-                  EventAccess(&logic->LinksCow, {[]{return logic->LinksCow || (logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay);}}),
+                  EventAccess(&logic->Epona,    {[]{return logic->Epona    || ((logic->ChildsWallet || randoCtx->GetOption(RSK_SKIP_EPONA_RACE)) && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay);}}),
+                  EventAccess(&logic->LinksCow, {[]{return logic->LinksCow || (logic->ChildsWallet && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay);}}),
                 }, {
                   //Locations
                   LocationAccess(RC_SONG_FROM_MALON,     {[]{return logic->IsChild && logic->ZeldasLetter && logic->Ocarina && logic->AtDay;}}),
@@ -195,7 +241,7 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[RR_LLR_TALONS_HOUSE] = Area("LLR Talons House", "LLR Talons House", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_LLR_TALONS_CHICKENS, {[]{return logic->IsChild && logic->AtDay && logic->ZeldasLetter;}}),
+                  LocationAccess(RC_LLR_TALONS_CHICKENS, {[]{return logic->ChildsWallet && logic->IsChild && logic->AtDay && logic->ZeldasLetter;}}),
                 }, {
                   //Exits
                   Entrance(RR_LON_LON_RANCH, {[]{return true;}}),
@@ -225,6 +271,7 @@ void AreaTable_Init_HyruleField() {
                   LocationAccess(RC_LLR_DEKU_SCRUB_GROTTO_LEFT,   {[]{return logic->CanStunDeku;}}),
                   LocationAccess(RC_LLR_DEKU_SCRUB_GROTTO_RIGHT,  {[]{return logic->CanStunDeku;}}),
                   LocationAccess(RC_LLR_DEKU_SCRUB_GROTTO_CENTER, {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_LLR_GROTTO_BEEHIVE,           {[]{return logic->CanBreakUpperBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_LON_LON_RANCH, {[]{return true;}}),

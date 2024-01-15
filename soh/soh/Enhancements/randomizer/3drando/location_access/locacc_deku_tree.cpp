@@ -86,14 +86,20 @@ void AreaTable_Init_DekuTree() {
 
   areaTable[RR_DEKU_TREE_BASEMENT_SCRUB_ROOM] = Area("Deku Tree Basement Scrub Room", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_DEKU_TREE_BASEMENT_LOWER,      {[]{return true;}}),
-                  Entrance(RR_DEKU_TREE_BASEMENT_WATER_ROOM, {[]{return Here(RR_DEKU_TREE_BASEMENT_SCRUB_ROOM, []{return logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW);});}}),
+                  Entrance(RR_DEKU_TREE_BASEMENT_LOWER,            {[]{return true;}}),
+                  Entrance(RR_DEKU_TREE_BASEMENT_WATER_ROOM_FRONT, {[]{return Here(RR_DEKU_TREE_BASEMENT_SCRUB_ROOM, []{return logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW);});}}),
   });
 
-  areaTable[RR_DEKU_TREE_BASEMENT_WATER_ROOM] = Area("Deku Tree Basement Water Room", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_DEKU_TREE_BASEMENT_WATER_ROOM_FRONT] = Area("Deku Tree Basement Water Room Front", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_DEKU_TREE_BASEMENT_SCRUB_ROOM, {[]{return true;}}),
-                  Entrance(RR_DEKU_TREE_BASEMENT_TORCH_ROOM, {[]{return true;}}),
+                  Entrance(RR_DEKU_TREE_BASEMENT_SCRUB_ROOM,      {[]{return true;}}),
+                  Entrance(RR_DEKU_TREE_BASEMENT_WATER_ROOM_BACK, {[]{return logic->Swim || randoCtx->GetTrickOption(RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG);}}),
+  });
+
+  areaTable[RR_DEKU_TREE_BASEMENT_WATER_ROOM_BACK] = Area("Deku Tree Basement Water Room Back", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+                  //Exits
+                  Entrance(RR_DEKU_TREE_BASEMENT_WATER_ROOM_FRONT, {[]{return logic->Swim || randoCtx->GetTrickOption(RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG);}}),
+                  Entrance(RR_DEKU_TREE_BASEMENT_TORCH_ROOM,       {[]{return true;}}),
   });
 
   areaTable[RR_DEKU_TREE_BASEMENT_TORCH_ROOM] = Area("Deku Tree Basement Torch Room", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {
@@ -102,8 +108,8 @@ void AreaTable_Init_DekuTree() {
                   EventAccess(&logic->DekuBabaNuts,   {[]{return logic->DekuBabaNuts   || (logic->CanJumpslash || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_MEGATON_HAMMER) || logic->HasExplosives || logic->CanUse(RG_DINS_FIRE));}}),
                 }, {}, {
                   //Exits
-                  Entrance(RR_DEKU_TREE_BASEMENT_WATER_ROOM, {[]{return true;}}),
-                  Entrance(RR_DEKU_TREE_BASEMENT_BACK_LOBBY, {[]{return Here(RR_DEKU_TREE_BASEMENT_TORCH_ROOM, []{return logic->HasFireSourceWithTorch || logic->CanUse(RG_FAIRY_BOW);});}}),
+                  Entrance(RR_DEKU_TREE_BASEMENT_WATER_ROOM_BACK, {[]{return true;}}),
+                  Entrance(RR_DEKU_TREE_BASEMENT_BACK_LOBBY,      {[]{return Here(RR_DEKU_TREE_BASEMENT_TORCH_ROOM, []{return logic->HasFireSourceWithTorch || logic->CanUse(RG_FAIRY_BOW);});}}),
   });
 
   areaTable[RR_DEKU_TREE_BASEMENT_BACK_LOBBY] = Area("Deku Tree Basement Back Lobby", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {
@@ -141,7 +147,7 @@ void AreaTable_Init_DekuTree() {
   areaTable[RR_DEKU_TREE_OUTSIDE_BOSS_ROOM] = Area("Deku Tree Outside Boss Room", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(RR_DEKU_TREE_BASEMENT_UPPER, {[]{return true;}}),
-                  Entrance(RR_DEKU_TREE_BOSS_ENTRYWAY,  {[]{return Here(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM, []{return logic->HasShield;});}}),
+                  Entrance(RR_DEKU_TREE_BOSS_ENTRYWAY,  {[]{return (logic->Swim || Here(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM, []{return logic->CanUse(RG_IRON_BOOTS);})) && Here(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM, []{return logic->HasShield;});}}),
   });
   }
 
@@ -192,7 +198,7 @@ void AreaTable_Init_DekuTree() {
                   Entrance(RR_DEKU_TREE_MQ_LOBBY,                    {[]{return true;}}),
   });
 
-  areaTable[RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK] = Area("Deku Tree MQ Basement Water Room Front", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK] = Area("Deku Tree MQ Basement Water Room Back", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_DEKU_TREE_MQ_AFTER_SPINNING_LOG_CHEST, {[]{return logic->CanUse(RG_SONG_OF_TIME);}}),
   }, {
@@ -229,9 +235,8 @@ void AreaTable_Init_DekuTree() {
             Area("Deku Tree MQ Outside Boss Room", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {},
                  {
                      // Exits
-                     Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, { [] { return true; } }),
-                     Entrance(RR_DEKU_TREE_BOSS_ENTRYWAY,
-                              { [] { return Here(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, [] { return logic->HasShield; }); } }),
+                     Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, {[]{ return true; }}),
+                     Entrance(RR_DEKU_TREE_BOSS_ENTRYWAY,     {[]{return (logic->Swim || Here(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, []{return logic->CanUse(RG_IRON_BOOTS);})) && Here(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, [] { return logic->HasShield; }); } }),
                  });
   }
 

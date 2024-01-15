@@ -57,6 +57,7 @@ namespace Rando {
                 (itemName == RG_OCARINA_C_RIGHT_BUTTON && OcarinaCRightButton) ||
                 (itemName == RG_OCARINA_C_DOWN_BUTTON  && OcarinaCDownButton)  ||
                 (itemName == RG_OCARINA_C_UP_BUTTON    && OcarinaCUpButton)    ||
+                (itemName == RG_FISHING_POLE           && FishingPole)         ||
                 (itemName == RG_ZELDAS_LULLABY         && ZeldasLullaby)       ||
                 (itemName == RG_EPONAS_SONG            && EponasSong)          ||
                 (itemName == RG_SARIAS_SONG            && SariasSong)          ||
@@ -149,6 +150,11 @@ namespace Rando {
                 return Ocarina && OcarinaAButton && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCDownButton;
             case RG_PRELUDE_OF_LIGHT:
                 return Ocarina && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCUpButton;
+
+            // Misc. Items
+            // TODO: Once child wallet shuffle is added, this will need to be updated to account for the fishing pond entry fee.
+            case RG_FISHING_POLE:
+                return true; // as long as you have enough rubies
 
             // Magic items
             default:
@@ -249,9 +255,11 @@ namespace Rando {
         GoronBracelet   = ProgressiveStrength   >= 1;
         SilverGauntlets = ProgressiveStrength   >= 2;
         GoldenGauntlets = ProgressiveStrength   >= 3;
-        SilverScale     = ProgressiveScale      >= 1;
-        GoldScale       = ProgressiveScale      >= 2;
-        AdultsWallet    = ProgressiveWallet     >= 1;
+        Swim            = ProgressiveScale      >= 1;
+        SilverScale     = ProgressiveScale      >= 2;
+        GoldScale       = ProgressiveScale      >= 3;
+        ChildsWallet    = ProgressiveWallet     >= 1;
+        AdultsWallet    = ProgressiveWallet     >= 2;
         BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
         // TODO: Implement Ammo Drop Setting in place of bombchu drops
@@ -302,7 +310,7 @@ namespace Rando {
         CanAdultDamage  = IsAdult && (CanUse(RG_FAIRY_BOW) || CanUse(RG_STICKS)          || CanUse(RG_KOKIRI_SWORD) || HasExplosives || CanUse(RG_DINS_FIRE) || MasterSword || Hammer || BiggoronSword);
         CanStunDeku     = CanAdultAttack || CanChildAttack || Nuts || HasShield;
         CanCutShrubs    = CanUse(RG_KOKIRI_SWORD) || CanUse(RG_BOOMERANG) || HasExplosives || CanUse(RG_MASTER_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD);
-        CanDive         = ProgressiveScale >= 1;
+        CanDive         = ProgressiveScale >= 2;
         CanLeaveForest  = ctx->GetOption(RSK_FOREST).IsNot(RO_FOREST_CLOSED) || IsAdult || DekuTreeClear || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES);
         CanPlantBugs    = IsChild && Bugs;
         CanRideEpona    = IsAdult && Epona && CanUse(RG_EPONAS_SONG);
@@ -321,6 +329,11 @@ namespace Rando {
         CanOpenStormGrotto  = CanUse(RG_SONG_OF_STORMS) && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
         HookshotOrBoomerang = CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
         CanGetNightTimeGS   = (CanUse(RG_SUNS_SONG) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG));
+        CanBreakUpperBeehives = HookshotOrBoomerang || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && HasBombchus);
+        CanBreakLowerBeehives = CanBreakUpperBeehives || Bombs;
+        CanFish = ChildsWallet && (CanUse(RG_FISHING_POLE) || !ctx->GetOption(RSK_SHUFFLE_FISHING_POLE));
+        CanGetChildFish = CanFish && (IsChild || (IsAdult && !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)));
+        CanGetAdultFish = CanFish && IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT);
 
         GuaranteeTradePath     = ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetTrickOption(RT_DMT_BOLERO_BIGGORON) || CanBlastOrSmash || StopGCRollingGoronAsAdult;
         //GuaranteeHint          = (hints == "Mask" && MaskofTruth) || (hints == "Agony") || (hints != "Mask" && hints != "Agony");
@@ -589,10 +602,12 @@ namespace Rando {
         ProgressiveBulletBag  = 0;
         ProgressiveBombBag    = 0;
         ProgressiveMagic      = 0;
-        ProgressiveScale      = 0;
+        //If we're not shuffling swim, we start with it (scale 1)
+        ProgressiveScale      = ctx->GetOption(RSK_SHUFFLE_SWIM).Is(true) ? 0 : 1;
         ProgressiveHookshot   = 0;
         ProgressiveBow        = 0;
-        ProgressiveWallet     = 0;
+        //If we're not shuffling child's wallet, we start with it (wallet 1)
+        ProgressiveWallet     = ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET).Is(true) ? 0 : 1;
         ProgressiveStrength   = 0;
         ProgressiveOcarina    = 0;
         ProgressiveGiantKnife = 0;
@@ -691,8 +706,10 @@ namespace Rando {
         GoronBracelet    = false;
         SilverGauntlets  = false;
         GoldenGauntlets  = false;
+        Swim             = false;
         SilverScale      = false;
         GoldScale        = false;
+        ChildsWallet     = false;
         AdultsWallet     = false;
 
         ChildScarecrow   = false;
@@ -730,10 +747,16 @@ namespace Rando {
         CanSummonGossipFairy = false;
         CanSummonGossipFairyWithoutSuns = false;
         //CanPlantBean        = false;
-        CanOpenBombGrotto   = false;
-        CanOpenStormGrotto  = false;
-        BigPoeKill          = false;
-        HookshotOrBoomerang = false;
+        CanOpenBombGrotto     = false;
+        CanOpenStormGrotto    = false;
+        BigPoeKill            = false;
+        HookshotOrBoomerang   = false;
+        CanBreakUpperBeehives = false;
+        CanBreakLowerBeehives = false;
+        CanGetChildFish       = false;
+        CanGetAdultFish       = false;
+        FishingPole           = false;
+        CanFish               = false;
 
         BaseHearts      = ctx->GetOption(RSK_STARTING_HEARTS).Value<uint8_t>() + 1;
         Hearts          = 0;

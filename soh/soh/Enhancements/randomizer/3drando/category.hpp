@@ -9,6 +9,7 @@ enum class Category {
     cSong,
     cSongDungeonReward,
     cCow,
+    cFish,
     cShop,
     cMerchant,
     cVanillaSmallKey,
@@ -17,6 +18,7 @@ enum class Category {
     cVanillaMap,
     cVanillaCompass,
     cAdultTrade,
+    cBeehive,
 };
 
 enum class OptionCategory {

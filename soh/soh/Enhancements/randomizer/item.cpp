@@ -7,6 +7,7 @@
 #include "z64item.h"
 #include "variables.h"
 #include "macros.h"
+#include "functions.h"
 #include "../../OTRGlobals.h"
 
 namespace Rando {
@@ -116,8 +117,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         return giEntry;
     }
     RandomizerGet actual = RG_NONE;
-    const u8 numWallets =
-        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 3 : 2;
+    const bool tycoonWallet =
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS;
     switch (randomizerGet) {
         case RG_PROGRESSIVE_STICK_UPGRADE:
             switch (CUR_UPG_VALUE(UPG_STICKS)) {
@@ -238,6 +239,10 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_WALLET:
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+                actual = RG_CHILD_WALLET;
+                break;
+            }
             switch (CUR_UPG_VALUE(UPG_WALLET)) {
                 case 0:
                     actual = RG_ADULT_WALLET;
@@ -247,13 +252,17 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                     break;
                 case 2:
                 case 3:
-                    actual = numWallets == 3 ? RG_TYCOON_WALLET : RG_GIANT_WALLET;
+                    actual = tycoonWallet ? RG_TYCOON_WALLET : RG_GIANT_WALLET;
                     break;
                 default:
                     break;
             }
             break;
         case RG_PROGRESSIVE_SCALE:
+            if (!Flags_GetRandomizerInf(RAND_INF_CAN_SWIM)) {
+                actual = RG_BRONZE_SCALE;
+                break;
+            }
             switch (CUR_UPG_VALUE(UPG_SCALE)) {
                 case 0:
                     actual = RG_SILVER_SCALE;

@@ -25,7 +25,7 @@ void AreaTable_Init_GerudoValley() {
                   EventAccess(&logic->BeanPlantFairy,   {[]{return logic->BeanPlantFairy   || (CanPlantBean(RR_GV_UPPER_STREAM) && logic->CanUse(RG_SONG_OF_STORMS));}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_GV_WATERFALL_FREESTANDING_POH, {[]{return true;}}),
+                  LocationAccess(RC_GV_WATERFALL_FREESTANDING_POH, {[]{return logic->IsChild || logic->Swim;}}),//can use cucco as child
                   LocationAccess(RC_GV_GS_BEAN_PATCH,              {[]{return logic->CanPlantBugs && logic->CanChildAttack;}}),
                   LocationAccess(RC_GV_COW,                        {[]{return logic->IsChild && logic->CanUse(RG_EPONAS_SONG);}}),
                   LocationAccess(RC_GV_GOSSIP_STONE,               {[]{return true;}}),
@@ -36,7 +36,7 @@ void AreaTable_Init_GerudoValley() {
 
   areaTable[RR_GV_LOWER_STREAM] = Area("GV Lower Stream", "Gerudo Valley", RA_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(RR_LAKE_HYLIA, {[]{return true;}}),
+                  Entrance(RR_LAKE_HYLIA, {[]{return logic->IsChild || logic->Swim;}}),//can use cucco as child
   });
 
   areaTable[RR_GV_GROTTO_LEDGE] = Area("GV Grotto Ledge", "Gerudo Valley", RA_GERUDO_VALLEY, DAY_NIGHT_CYCLE, {}, {}, {
@@ -85,8 +85,9 @@ void AreaTable_Init_GerudoValley() {
 
   areaTable[RR_GV_STORMS_GROTTO] = Area("GV Storms Grotto", "GV Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_GV_DEKU_SCRUB_GROTTO_REAR,  {[]{return logic->CanStunDeku;}}),
-                  LocationAccess(RC_GV_DEKU_SCRUB_GROTTO_FRONT, {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_GV_DEKU_SCRUB_GROTTO_REAR,    {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_GV_DEKU_SCRUB_GROTTO_FRONT,   {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE, {[]{return logic->CanBreakUpperBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_GV_FORTRESS_SIDE, {[]{return true;}}),
@@ -96,12 +97,12 @@ void AreaTable_Init_GerudoValley() {
                   //Events
                   EventAccess(&logic->CarpenterRescue, {[]{return logic->CanFinishGerudoFortress;}}),
                   EventAccess(&logic->GF_GateOpen,     {[]{return logic->IsAdult && logic->GerudoToken;}}),
-                  EventAccess(&logic->GtG_GateOpen,    {[]{return logic->GtG_GateOpen || (logic->IsAdult && logic->GerudoToken);}}),
+                  EventAccess(&logic->GtG_GateOpen,    {[]{return logic->GtG_GateOpen || (logic->IsAdult && logic->GerudoToken && logic->ChildsWallet);}}),
                 }, {
                   //Locations
                   LocationAccess(RC_GF_CHEST,              {[]{return logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->CanUse(RG_SCARECROW)) || logic->CanUse(RG_LONGSHOT);}}),
-                  LocationAccess(RC_GF_HBA_1000_POINTS,    {[]{return logic->GerudoToken && logic->CanRideEpona && logic->Bow && logic->AtDay;}}),
-                  LocationAccess(RC_GF_HBA_1500_POINTS,    {[]{return logic->GerudoToken && logic->CanRideEpona && logic->Bow && logic->AtDay;}}),
+                  LocationAccess(RC_GF_HBA_1000_POINTS,    {[]{return logic->ChildsWallet && logic->GerudoToken && logic->CanRideEpona && logic->Bow && logic->AtDay;}}),
+                  LocationAccess(RC_GF_HBA_1500_POINTS,    {[]{return logic->ChildsWallet && logic->GerudoToken && logic->CanRideEpona && logic->Bow && logic->AtDay;}}),
                   LocationAccess(RC_GF_NORTH_F1_CARPENTER, {[]{return  logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD);}}),
                   LocationAccess(RC_GF_NORTH_F2_CARPENTER, {[]{return (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)) && (logic->GerudoToken || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || randoCtx->GetTrickOption(RT_GF_KITCHEN));}}),
                   LocationAccess(RC_GF_SOUTH_F1_CARPENTER, {[]{return  logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD);}}),
@@ -202,6 +203,7 @@ void AreaTable_Init_GerudoValley() {
                   //Locations
                   LocationAccess(RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR,  {[]{return logic->CanStunDeku;}}),
                   LocationAccess(RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT, {[]{return logic->CanStunDeku;}}),
+                  LocationAccess(RC_COLOSSUS_GROTTO_BEEHIVE,          {[]{return logic->CanBreakUpperBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_DESERT_COLOSSUS, {[]{return true;}}),
