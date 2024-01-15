@@ -83,9 +83,10 @@ void Object_UpdateBank(ObjectContext* objectCtx) {
     RomFile* objectFile;
     size_t size;
 
-    /*
+
     for (i = 0; i < objectCtx->num; i++) {
         if (status->id < 0) {
+            /*
             if (status->dmaRequest.vromAddr == 0) {
                 osCreateMesgQueue(&status->loadQueue, &status->loadMsg, 1);
                 objectFile = &gObjectTable[-status->id];
@@ -96,10 +97,12 @@ void Object_UpdateBank(ObjectContext* objectCtx) {
             } else if (!osRecvMesg(&status->loadQueue, NULL, OS_MESG_NOBLOCK)) {
                 status->id = -status->id;
             }
+            */
+           status->id = -status->id;
         }
         status++;
     }
-    */
+
 }
 
 s32 Object_GetIndex(ObjectContext* objectCtx, s16 objectId) {

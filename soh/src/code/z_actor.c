@@ -1219,8 +1219,7 @@ void Actor_Init(Actor* actor, PlayState* play) {
     CollisionCheck_InitInfo(&actor->colChkInfo);
     actor->floorBgId = BGCHECK_SCENE;
     ActorShape_Init(&actor->shape, 0.0f, NULL, 0.0f);
-    //if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex))
-    {
+    if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
         //Actor_SetObjectDependency(play, actor);
         actor->init(actor, play);
         actor->init = NULL;
@@ -3129,6 +3128,9 @@ void Actor_FreeOverlay(ActorDBEntry* dbEntry) {
     osSyncPrintf(VT_RST);
 }
 
+// SoH: Flag to check if actors are being spawned from the actor entry list
+//      This flag is checked against to allow actors which dont have an objectBankIndex in the objectCtx slot/status array to spawn
+//      An example of what this fixes, is that it allows hookshot to be used as child
 int gMapLoading = 0;
 
 Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ,
