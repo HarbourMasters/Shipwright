@@ -56,6 +56,26 @@ static ColliderCylinderInit sCylinderInit = {
     { 50, 10, 0, { 0 } },
 };
 
+static ColliderCylinderInit sUselessCylinderInit = {
+    {
+        COLTYPE_NONE,
+        AT_NONE,
+        AC_ON,
+        OC1_NONE,
+        OC2_NONE,
+        COLSHAPE_CYLINDER,
+    },
+    {
+        ELEMTYPE_UNK2,
+        { 0x00000000, 0x00, 0x00 },
+        { 0x00000048, 0x00, 0x00 },
+        TOUCH_NONE,
+        BUMP_NONE,
+        OCELEM_NONE,
+    },
+    { 25, 10, 0, { 0 } },
+};
+
 // array of entrance table entries to grotto destinations
 static s16 sGrottoEntrances[] = {
     ENTR_FAIRYS_FOUNTAIN_0, ENTR_GROTTOS_0,  ENTR_GROTTOS_1,  ENTR_GROTTOS_2,  ENTR_GROTTOS_3,
@@ -86,6 +106,17 @@ void DoorAna_Init(Actor* thisx, PlayState* play) {
     } else {
         DoorAna_SetupAction(this, DoorAna_WaitOpen);
     }
+
+    if (CVarGetInteger("gCollisionGoggles", 0)) {
+        this->useUselessCylinder = 1;
+    } else {
+        this->useUselessCylinder = 0;
+    }
+    if (this->useUselessCylinder) {
+        Collider_InitCylinder(play, &this->uselessCollider);
+        Collider_SetCylinder(play, &this->uselessCollider, &this->actor, &sUselessCylinderInit);
+    }
+
     this->actor.targetMode = 0;
 }
 
@@ -95,6 +126,10 @@ void DoorAna_Destroy(Actor* thisx, PlayState* play) {
     // free collider if it has one
     if ((this->actor.params & 0x200) != 0) {
         Collider_DestroyCylinder(play, &this->collider);
+    }
+
+    if (this->useUselessCylinder) {
+        Collider_DestroyCylinder(play, &this->uselessCollider);
     }
 }
 
@@ -184,6 +219,10 @@ void DoorAna_Update(Actor* thisx, PlayState* play) {
     // Changes the grottos facing angle based on camera angle
     if (!CVarGetInteger("gDisableGrottoRotation", 0)) {
         this->actor.shape.rot.y = Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x8000;
+    }
+    if (this->useUselessCylinder) {
+        Collider_UpdateCylinder(&this->actor, &this->uselessCollider);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->uselessCollider.base);
     }
 }
 
