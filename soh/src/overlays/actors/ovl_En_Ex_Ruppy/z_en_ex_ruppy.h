@@ -19,6 +19,8 @@ typedef struct EnExRuppy {
     /* 0x015A */ s16 unk_15A; 
     /* 0x015C */ s16 galleryFlag;
     /* 0x0160 */ f32 unk_160;
+    s32 useUselessCylinder;
+    ColliderCylinder uselessCollider;
 } EnExRuppy; // size = 0x0164
 
 #endif
