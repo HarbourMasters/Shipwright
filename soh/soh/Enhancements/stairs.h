@@ -22,7 +22,7 @@ s32 Stairs_GetOverlayRegistered(u16 id);
 s32 Stairs_UnregisterOverlay(u16 id);
 s32 Stairs_RegisterAbsoluteSpace();
 s32 Stairs_GetAbsoluteSpace();
-s32 Stairs_UnregisterAbsoluteSpace();
+void Stairs_UnregisterAbsoluteSpace();
 size_t Stairs_GetOverlaySize(u16 id);
 
 size_t Stairs_GetSize();
