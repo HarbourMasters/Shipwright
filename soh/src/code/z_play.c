@@ -20,6 +20,7 @@
 
 //For Banker enhancement
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+void DrawBankerOverlay(PlayState* play, Gfx** gfx);
 
 void* D_8012D1F0 = NULL;
 //UNK_TYPE D_8012D1F4 = 0; // unused
