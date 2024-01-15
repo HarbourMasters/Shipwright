@@ -532,6 +532,11 @@ void DrawColCheckList(std::vector<Gfx>& dl, Collider** objects, int32_t count) {
                     guMtxF2L(&dest, &m);
                     mtxDl.push_back(m);
 
+                    if (cyl->useColliderColor) {
+                        dl.push_back(gsDPSetPrimColor(0, 0, cyl->color.r, cyl->color.g,
+                                                      cyl->color.b, 255));
+                    }
+
                     dl.push_back(gsSPMatrix(&mtxDl.back(), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH));
                     dl.push_back(gsSPDisplayList(cylinderGfx.data()));
                     dl.push_back(gsSPPopMatrix(G_MTX_MODELVIEW));

@@ -135,11 +135,14 @@ typedef struct {
     /* 0x0C */ ColliderJntSphElementInit* elements;
 } ColliderJntSphInitToActor; // size = 0x10
 
+#include "libultraship/color.h"
 typedef struct {
     /* 0x00 */ Collider base;
     /* 0x18 */ ColliderInfo info;
     /* 0x40 */ Cylinder16 dim;
     int32_t hideColliderInCollisionViewer;
+    int32_t useColliderColor;
+    Color_RGBA8 color;
 } ColliderCylinder; // size = 0x4C
 
 typedef struct {
