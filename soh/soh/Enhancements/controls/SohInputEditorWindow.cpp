@@ -636,6 +636,45 @@ void SohInputEditorWindow::DrawStickSection(uint8_t port, uint8_t stick, int32_t
     ImGui::EndGroup();
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::TreeNode(StringHelper::Sprintf("Analog Stick Options##%d", id).c_str())) {
+        ImGui::Text("Sensitivity:");
+
+        int32_t sensitivityPercentage = controllerStick->GetSensitivityPercentage();
+        if (sensitivityPercentage == 0) {
+            ImGui::BeginDisabled();
+        }
+        ImGui::PushButtonRepeat(true);
+        if (ImGui::Button(StringHelper::Sprintf("-##Sensitivity%d", id).c_str())) {
+            controllerStick->SetSensitivity(sensitivityPercentage - 1);
+        }
+        ImGui::PopButtonRepeat();
+        if (sensitivityPercentage == 0) {
+            ImGui::EndDisabled();
+        }
+        ImGui::SameLine(0.0f, 0.0f);
+        ImGui::SetNextItemWidth(SCALE_IMGUI_SIZE(160.0f));
+        if (ImGui::SliderInt(StringHelper::Sprintf("##Sensitivity%d", id).c_str(), &sensitivityPercentage, 0, 200, "%d%%",
+                             ImGuiSliderFlags_AlwaysClamp)) {
+            controllerStick->SetSensitivity(sensitivityPercentage);
+        }
+        ImGui::SameLine(0.0f, 0.0f);
+        if (sensitivityPercentage == 200) {
+            ImGui::BeginDisabled();
+        }
+        ImGui::PushButtonRepeat(true);
+        if (ImGui::Button(StringHelper::Sprintf("+##Sensitivity%d", id).c_str())) {
+            controllerStick->SetSensitivity(sensitivityPercentage + 1);
+        }
+        ImGui::PopButtonRepeat();
+        if (sensitivityPercentage == 200) {
+            ImGui::EndDisabled();
+        }
+        if (!controllerStick->SensitivityIsDefault()) {
+            ImGui::SameLine();
+            if (ImGui::Button(StringHelper::Sprintf("Reset to Default###resetStickSensitivity%d", id).c_str())) {
+                controllerStick->ResetSensitivityToDefault();
+            }
+        }
+
         ImGui::Text("Deadzone:");
 
         int32_t deadzonePercentage = controllerStick->GetDeadzonePercentage();
@@ -1046,7 +1085,7 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
                     ImGui::SameLine();
                     ImGui::Text("Custom Color");
                 }
-                UIWidgets::PaddedEnhancementSliderFloat("Brightness: %d%%", "##LED_Brightness", "gLedBrightness", 0.0f,
+                UIWidgets::PaddedEnhancementSliderFloat("Brightness: %.1f %%", "##LED_Brightness", "gLedBrightness", 0.0f,
                                                         1.0f, "", 1.0f, true, true);
                 DrawHelpIcon("Sets the brightness of controller LEDs. 0% brightness = LEDs off.");
                 UIWidgets::PaddedEnhancementCheckbox(
