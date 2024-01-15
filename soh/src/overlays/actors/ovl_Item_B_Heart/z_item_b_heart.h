@@ -13,6 +13,8 @@ typedef struct ItemBHeart {
     /* 0x015C */ char unk_15C[0x8];
     /* 0x0164 */ s16 unk_164;
     /* 0x0166 */ char unk_166[0x6];
+    s32 useUselessCylinder;
+    ColliderCylinder uselessCollider;
 } ItemBHeart; // size = 0x016C
 
 #endif
