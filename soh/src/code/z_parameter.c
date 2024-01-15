@@ -3583,7 +3583,7 @@ void Interface_DrawLineupTick(PlayState* play) {
     s16 width = 32;
     s16 height = 32;
     s16 x = -8 + (SCREEN_WIDTH / 2);
-    s16 y = CVarGetInteger("gOpenMenuBar", 0) ? -4 : -6;
+    s16 y = -6;
 
     OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gEmptyCDownArrowTex, width, height, x, y, width, height, 2 << 10, 2 << 10);
 
