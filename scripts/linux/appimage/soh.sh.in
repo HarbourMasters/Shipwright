@@ -21,12 +21,17 @@ fi
 while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
         for romfile in "$SHIP_HOME"/*.*64
         do
-            if [[ -e $romfile ]]; then
+            if [[ -e "$romfile" ]] || [[ -L "$romfile" ]]; then
                 export ASSETDIR="$(mktemp -d /tmp/assets-XXXXX)"
-                ln -s "$HERE"/usr/bin/{assets,soh.elf,ZAPD} "$ASSETDIR"
+                ln -s "$SHIP_BIN_DIR"/{assets,soh.elf,ZAPD} "$ASSETDIR"
                 export OLDPWD="$PWD"
                 mkdir -p "$ASSETDIR"/tmp
-                ln -s "$romfile" "$ASSETDIR"/tmp/rom.z64
+                if [[ -e "$romfile" ]]; then
+                    ln -s "$romfile" "$ASSETDIR"/tmp/rom.z64
+                else
+                    ORIG_ROM_PATH=$(readlink "$romfile")
+                    ln -s "$ORIG_ROM_PATH" "$ASSETDIR"/tmp/rom.z64
+                fi
                 cd "$ASSETDIR"
                 ROMHASH=$(sha1sum -b "$ASSETDIR"/tmp/rom.z64 | awk '{ print $1 }')
 
