@@ -55,8 +55,6 @@ typedef struct EnGSwitch {
     /* 0x016C */ Vec3f targetPos;
     /* 0x0178 */ s8 objIndex;
     /* 0x017C */ ColliderCylinder collider;
-                 s32 useUselessCollider;
-                 ColliderCylinder uselessCollider;
     /* 0x01C8 */ EnGSwitchEffect effects[100];
 } EnGSwitch; // size = 0x12F8
 
