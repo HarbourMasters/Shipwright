@@ -6925,7 +6925,7 @@ s32 Camera_Special9(Camera* camera) {
 
 Camera* Camera_Create(View* view, CollisionContext* colCtx, PlayState* play) {
     Camera* newCamera = ZELDA_ARENA_MALLOC_DEBUG(sizeof(*newCamera));
-    if ((CVarGetInteger("gStairs", 1))) {
+    if ((CVarGetInteger("gStairs", 0))) {
         StairsArena_MallocGeneral(sizeof(Camera), (uintptr_t)newCamera);
     }
 
@@ -6941,7 +6941,7 @@ Camera* Camera_Create(View* view, CollisionContext* colCtx, PlayState* play) {
 void Camera_Destroy(Camera* camera) {
     if (camera != NULL) {
         osSyncPrintf(VT_FGCOL(BLUE) "camera: destroy ---" VT_RST "\n");
-        if (CVarGetInteger("gStairs", 1)) {
+        if (CVarGetInteger("gStairs", 0)) {
             StairsArena_FreeGeneral((uintptr_t)camera);
         }
         ZELDA_ARENA_FREE_DEBUG(camera);

@@ -340,7 +340,7 @@ s32 Collider_FreeJntSph(PlayState* play, ColliderJntSph* collider) {
     collider->count = 0;
     if (collider->elements != NULL) {
         ZELDA_ARENA_FREE_DEBUG(collider->elements);
-        if (CVarGetInteger("gStairs", 1)) {
+        if (CVarGetInteger("gStairs", 0)) {
             StairsArena_FreeGeneral((uintptr_t)collider->elements);
         }
     }
@@ -374,7 +374,7 @@ s32 Collider_SetJntSphToActor(PlayState* play, ColliderJntSph* dest, ColliderJnt
     Collider_SetBaseToActor(play, &dest->base, &src->base);
     dest->count = src->count;
     dest->elements = ZELDA_ARENA_MALLOC_DEBUG(src->count * sizeof(ColliderJntSphElement));
-    if ((CVarGetInteger("gStairs", 1))) {
+    if ((CVarGetInteger("gStairs", 0))) {
         StairsArena_MallocGeneral(src->count * sizeof(ColliderJntSphElement), (uintptr_t)dest->elements);
     }
 
@@ -406,7 +406,7 @@ s32 Collider_SetJntSphAllocType1(PlayState* play, ColliderJntSph* dest, Actor* a
     Collider_SetBaseType1(play, &dest->base, actor, &src->base);
     dest->count = src->count;
     dest->elements = ZELDA_ARENA_MALLOC_DEBUG(src->count * sizeof(ColliderJntSphElement));
-    if ((CVarGetInteger("gStairs", 1))) {
+    if ((CVarGetInteger("gStairs", 0))) {
         StairsArena_MallocGeneral(src->count * sizeof(ColliderJntSphElement),(uintptr_t)dest->elements);
     }
 
@@ -437,7 +437,7 @@ s32 Collider_SetJntSphAlloc(PlayState* play, ColliderJntSph* dest, Actor* actor,
     Collider_SetBase(play, &dest->base, actor, &src->base);
     dest->count = src->count;
     dest->elements = ZELDA_ARENA_MALLOC_DEBUG(src->count * sizeof(ColliderJntSphElement));
-    if ((CVarGetInteger("gStairs", 1))) {
+    if ((CVarGetInteger("gStairs", 0))) {
         StairsArena_MallocGeneral(src->count * sizeof(ColliderJntSphElement),(uintptr_t)dest->elements);
     }
 
@@ -717,7 +717,7 @@ s32 Collider_FreeTris(PlayState* play, ColliderTris* tris) {
 
     tris->count = 0;
     if (tris->elements != NULL) {
-        if (CVarGetInteger("gStairs", 1)) {
+        if (CVarGetInteger("gStairs", 0)) {
             StairsArena_FreeGeneral((uintptr_t)tris->elements);
         }
         ZELDA_ARENA_FREE_DEBUG(tris->elements);
@@ -753,7 +753,7 @@ s32 Collider_SetTrisAllocType1(PlayState* play, ColliderTris* dest, Actor* actor
     Collider_SetBaseType1(play, &dest->base, actor, &src->base);
     dest->count = src->count;
     dest->elements = ZELDA_ARENA_MALLOC_DEBUG(dest->count * sizeof(ColliderTrisElement));
-    if ((CVarGetInteger("gStairs", 1))) {
+    if ((CVarGetInteger("gStairs", 0))) {
         StairsArena_MallocGeneral(dest->count * sizeof(ColliderTrisElement),(uintptr_t)dest->elements);
     }
 
@@ -783,7 +783,7 @@ s32 Collider_SetTrisAlloc(PlayState* play, ColliderTris* dest, Actor* actor, Col
     Collider_SetBase(play, &dest->base, actor, &src->base);
     dest->count = src->count;
     dest->elements = ZELDA_ARENA_MALLOC_DEBUG(dest->count * sizeof(ColliderTrisElement));
-    if ((CVarGetInteger("gStairs", 1))) {
+    if ((CVarGetInteger("gStairs", 0))) {
         StairsArena_MallocGeneral(dest->count * sizeof(ColliderTrisElement),(uintptr_t)dest->elements);
     }
 

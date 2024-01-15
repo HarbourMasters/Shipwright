@@ -18,6 +18,7 @@ static const std::vector<ActorIdAllocTypePair> stairActorTable = {
 #undef DEFINE_ACTOR_UNSET
 #undef DEFINE_ACTOR
 
+// Original size subtracted by various constant allocations which are always made on init, so those allocations don't need to be made there
 size_t stairsAllocSize = 0x1D4790 - 0x26960 - 0x2200 - (0x55 * 0x60) - (3 * (48 * 16) / 2) - (4 * (32 * 32 * 4)) - 0x1000 - (20 * sizeof(MtxF));
 Arena sStairsArena;
 
@@ -456,10 +457,10 @@ std::unordered_map<u16, size_t> actorOverlaySizes = {
 
 std::unordered_set<u16> registeredStairOverlays;
 
-std::unordered_map<uintptr_t, void*> generalPtrMap;
-std::unordered_map<u16, void*> overlayRPtrMap;
-std::unordered_map<u16, void*> overlayPtrMap;
-std::unordered_map<u16, void*> mallocRPtrMap;
+std::unordered_map<uintptr_t, uintptr_t> generalPtrMap;
+std::unordered_map<u16, uintptr_t> overlayRPtrMap;
+std::unordered_map<u16, uintptr_t> overlayPtrMap;
+std::unordered_map<u16, uintptr_t> mallocRPtrMap;
 
 void* absolutePtr = nullptr;
 
@@ -535,7 +536,7 @@ void* StairsArena_Malloc(size_t size) {
 
 void* StairsArena_MallocGeneral(size_t size, uintptr_t id) {
     void* ptr = __osMalloc(&sStairsArena, size);
-    generalPtrMap[id] = ptr;
+    generalPtrMap[id] = (uintptr_t)ptr;
 
     // StairsArena_CheckPointer(ptr, size, "stairs_malloc", "確保"); // "Secure"
     return ptr;
@@ -543,7 +544,7 @@ void* StairsArena_MallocGeneral(size_t size, uintptr_t id) {
 
 void* StairsArena_MallocROverlay(size_t size, u16 id) {
     void* ptr = __osMallocR(&sStairsArena, size);
-    overlayRPtrMap[id] = ptr;
+    overlayRPtrMap[id] = (uintptr_t)ptr;
 
     // StairsArena_CheckPointer(ptr, size, "stairs_malloc", "確保"); // "Secure"
     return ptr;
@@ -551,7 +552,7 @@ void* StairsArena_MallocROverlay(size_t size, u16 id) {
 
 void* StairsArena_MallocOverlay(size_t size, u16 id) {
     void* ptr = __osMalloc(&sStairsArena, size);
-    overlayPtrMap[id] = ptr;
+    overlayPtrMap[id] = (uintptr_t)ptr;
 
     // StairsArena_CheckPointer(ptr, size, "stairs_malloc", "確保"); // "Secure"
     return ptr;
@@ -566,7 +567,7 @@ void* StairsArena_MallocR(size_t size) {
 
 void* StairsArena_MallocRGeneral(size_t size, uintptr_t id) {
     void* ptr = __osMallocR(&sStairsArena, size);
-    mallocRPtrMap[id] = ptr;
+    mallocRPtrMap[id] = (uintptr_t)ptr;
 
     // StairsArena_CheckPointer(ptr, size, "stairs_malloc_r", "確保"); // "Secure"
     return ptr;
@@ -590,35 +591,35 @@ void StairsArena_Free(void* ptr) {
 }
 
 void StairsArena_FreeGeneral(uintptr_t id) {
-    void* ptr = generalPtrMap[id];
+    void* ptr = (void*)generalPtrMap[id];
     if (ptr) {
         __osFree(&sStairsArena, ptr);
     }
-    generalPtrMap[id] = nullptr;
+    generalPtrMap[id] = 0;
 }
 
 void StairsArena_FreeMallocROverlay(u16 id) {
-    void* ptr = overlayRPtrMap[id];
+    void* ptr = (void*)overlayRPtrMap[id];
     if (ptr) {
         __osFree(&sStairsArena, ptr);
     }
-    overlayRPtrMap[id] = nullptr;
+    overlayRPtrMap[id] = 0;
 }
 
 void StairsArena_FreeOverlay(u16 id) {
-    void* ptr = overlayPtrMap[id];
+    void* ptr = (void*)overlayPtrMap[id];
     if (ptr) {
         __osFree(&sStairsArena, ptr);
     }
-    overlayPtrMap[id] = nullptr;
+    overlayPtrMap[id] = 0;
 }
 
 void StairsArena_FreeMallocR(u16 id) {
-    void* ptr = mallocRPtrMap[id];
+    void* ptr = (void*)mallocRPtrMap[id];
     if (ptr) {
         __osFree(&sStairsArena, ptr);
     }
-    mallocRPtrMap[id] = nullptr;
+    mallocRPtrMap[id] = 0;
 }
 
 void StairsArena_FreeAbsolute() {
@@ -665,6 +666,7 @@ void StairsArena_Cleanup() {
     mallocRPtrMap.clear();
     absolutePtr = nullptr;
     absoluteSpaceFlag = 0;
+    // Original size subtracted by various constant allocations which are always made on init, so those allocations don't need to be made there
     stairsAllocSize = 0x1D4790 - 0x26960 - 0x2200 - (0x55 * 0x60) - (3 * (48 * 16) / 2) - (4 * (32 * 32 * 4)) - 0x1000 - (20 * sizeof(MtxF));
 }
 

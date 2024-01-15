@@ -27,7 +27,7 @@ s32 SkelCurve_Init(PlayState* play, SkelAnimeCurve* skelCurve, SkelCurveLimbList
     skelCurve->limbList = SEGMENTED_TO_VIRTUAL(limbList->limbs);
 
     skelCurve->transforms = ZELDA_ARENA_MALLOC_DEBUG(sizeof(*skelCurve->transforms) * skelCurve->limbCount);
-    if ((CVarGetInteger("gStairs", 1))) {
+    if ((CVarGetInteger("gStairs", 0))) {
         StairsArena_MallocGeneral(sizeof(*skelCurve->transforms) * skelCurve->limbCount, (uintptr_t)skelCurve->transforms);
     }
     assert(skelCurve->transforms != NULL);
@@ -37,7 +37,7 @@ s32 SkelCurve_Init(PlayState* play, SkelAnimeCurve* skelCurve, SkelCurveLimbList
 
 void SkelCurve_Destroy(PlayState* play, SkelAnimeCurve* skelCurve) {
     if (skelCurve->transforms != NULL) {
-        if (CVarGetInteger("gStairs", 1)) {
+        if (CVarGetInteger("gStairs", 0)) {
             StairsArena_FreeGeneral((uintptr_t)skelCurve->transforms);
         }
         ZELDA_ARENA_FREE_DEBUG(skelCurve->transforms);

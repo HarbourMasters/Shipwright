@@ -3072,7 +3072,7 @@ void func_80031C3C(ActorContext* actorCtx, PlayState* play) {
         actorCtx->absoluteSpace = NULL;
     }
 
-    if (CVarGetInteger("gStairs", 1)) {
+    if (CVarGetInteger("gStairs", 0)) {
         if (Stairs_GetAbsoluteSpace()) {
             StairsArena_FreeAbsolute();
             Stairs_UnregisterAbsoluteSpace();
@@ -3146,7 +3146,7 @@ void Actor_FreeOverlay(ActorDBEntry* dbEntry) {
             dbEntry->reset();
         }
 
-        if (CVarGetInteger("gStairs", 1)) {
+        if (CVarGetInteger("gStairs", 0)) {
             if (Stairs_GetOverlayRegistered(dbEntry->id)) {
                 u16 allocType = Stairs_GetAllocType(dbEntry->id);
 
@@ -3205,7 +3205,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         return NULL;
     }
 
-    if (CVarGetInteger("gStairs", 1)) {
+    if (CVarGetInteger("gStairs", 0)) {
         u16 allocType = Stairs_GetAllocType(dbEntry->id);
         size_t overlaySize = Stairs_GetOverlaySize(dbEntry->id);
         void* loadedRamAddr = NULL;
@@ -3252,7 +3252,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         return NULL;
     }
 
-    if ((CVarGetInteger("gStairs", 1))) {
+    if ((CVarGetInteger("gStairs", 0))) {
         if (StairsArena_MallocGeneral(dbEntry->instanceSize, (uintptr_t)actor) == NULL) {
             Actor_FreeOverlay(dbEntry);
             actor = NULL;
@@ -3401,7 +3401,7 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
 
     newHead = Actor_RemoveFromCategory(play, actorCtx, actor);
 
-    if (CVarGetInteger("gStairs", 1)) {
+    if (CVarGetInteger("gStairs", 0)) {
         StairsArena_FreeGeneral((uintptr_t)actor);
     }
 
@@ -3576,21 +3576,21 @@ void BodyBreak_Alloc(BodyBreak* bodyBreak, s32 count, PlayState* play) {
 
     matricesSize = (count + 1) * sizeof(*bodyBreak->matrices);
     bodyBreak->matrices = ZELDA_ARENA_MALLOC_DEBUG(matricesSize);
-    if ((CVarGetInteger("gStairs", 1))) {
+    if ((CVarGetInteger("gStairs", 0))) {
         StairsArena_MallocGeneral(matricesSize, (uintptr_t)bodyBreak->matrices);
     }
 
     if (bodyBreak->matrices != NULL) {
         dListsSize = (count + 1) * sizeof(*bodyBreak->dLists);
         bodyBreak->dLists = ZELDA_ARENA_MALLOC_DEBUG(dListsSize);
-        if ((CVarGetInteger("gStairs", 1))) {
+        if ((CVarGetInteger("gStairs", 0))) {
             StairsArena_MallocGeneral(dListsSize, (uintptr_t)bodyBreak->dLists);
         }
 
         if (bodyBreak->dLists != NULL) {
             objectIdsSize = (count + 1) * sizeof(*bodyBreak->objectIds);
             bodyBreak->objectIds = ZELDA_ARENA_MALLOC_DEBUG(objectIdsSize);
-            if ((CVarGetInteger("gStairs", 1))) {
+            if ((CVarGetInteger("gStairs", 0))) {
                 StairsArena_MallocGeneral(objectIdsSize, (uintptr_t)bodyBreak->objectIds);
             }
 
@@ -3605,21 +3605,21 @@ void BodyBreak_Alloc(BodyBreak* bodyBreak, s32 count, PlayState* play) {
     }
 
     if (bodyBreak->matrices != NULL) {
-        if (CVarGetInteger("gStairs", 1)) {
+        if (CVarGetInteger("gStairs", 0)) {
             StairsArena_FreeGeneral((uintptr_t)bodyBreak->matrices);
         }
         ZELDA_ARENA_FREE_DEBUG(bodyBreak->matrices);
     }
 
     if (bodyBreak->dLists != NULL) {
-        if (CVarGetInteger("gStairs", 1)) {
+        if (CVarGetInteger("gStairs", 0)) {
             StairsArena_FreeGeneral((uintptr_t)bodyBreak->dLists);
         }
         ZELDA_ARENA_FREE_DEBUG(bodyBreak->dLists);
     }
 
     if (bodyBreak->objectIds != NULL) {
-        if (CVarGetInteger("gStairs", 1)) {
+        if (CVarGetInteger("gStairs", 0)) {
             StairsArena_FreeGeneral((uintptr_t)bodyBreak->objectIds);
         }
         ZELDA_ARENA_FREE_DEBUG(bodyBreak->objectIds);
@@ -3689,7 +3689,7 @@ s32 BodyBreak_SpawnParts(Actor* actor, BodyBreak* bodyBreak, PlayState* play, s1
 
     bodyBreak->val = BODYBREAK_STATUS_FINISHED;
 
-    if (CVarGetInteger("gStairs", 1)) {
+    if (CVarGetInteger("gStairs", 0)) {
         StairsArena_FreeGeneral((uintptr_t)bodyBreak->matrices);
         StairsArena_FreeGeneral((uintptr_t)bodyBreak->dLists);
         StairsArena_FreeGeneral((uintptr_t)bodyBreak->objectIds);

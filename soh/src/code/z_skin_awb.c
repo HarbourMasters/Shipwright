@@ -55,7 +55,7 @@ void Skin_Init(PlayState* play, Skin* skin, SkeletonHeader* skeletonHeader, Anim
     limbCount = skin->skeletonHeader->limbCount;
 
     skin->vtxTable = ZELDA_ARENA_MALLOC_DEBUG(limbCount * sizeof(SkinLimbVtx));
-    if ((CVarGetInteger("gStairs", 1))) {
+    if ((CVarGetInteger("gStairs", 0))) {
         StairsArena_MallocGeneral(limbCount * sizeof(SkinLimbVtx), (uintptr_t)skin->vtxTable);
     }
 
@@ -77,7 +77,7 @@ void Skin_Init(PlayState* play, Skin* skin, SkeletonHeader* skeletonHeader, Anim
 
             vtxEntry->buf[0] =
                 ZELDA_ARENA_MALLOC_DEBUG(animatedLimbData->totalVtxCount * sizeof(Vtx));
-            if ((CVarGetInteger("gStairs", 1))) {
+            if ((CVarGetInteger("gStairs", 0))) {
                 StairsArena_MallocGeneral(animatedLimbData->totalVtxCount * sizeof(Vtx), (uintptr_t)vtxEntry->buf[0]);
             }
             assert(vtxEntry->buf[0] != NULL);
@@ -85,7 +85,7 @@ void Skin_Init(PlayState* play, Skin* skin, SkeletonHeader* skeletonHeader, Anim
             vtxEntry->buf[1] =
                 ZELDA_ARENA_MALLOC_DEBUG(animatedLimbData->totalVtxCount * sizeof(Vtx));
             assert(vtxEntry->buf[1] != NULL);
-            if ((CVarGetInteger("gStairs", 1))) {
+            if ((CVarGetInteger("gStairs", 0))) {
                 StairsArena_MallocGeneral(animatedLimbData->totalVtxCount * sizeof(Vtx), (uintptr_t)vtxEntry->buf[1]);
             }
 
@@ -105,14 +105,14 @@ void Skin_Free(PlayState* play, Skin* skin) {
 
         for (i = 0; i < skin->limbCount; i++) {
             if (skin->vtxTable[i].buf[0] != NULL) {
-                if (CVarGetInteger("gStairs", 1)) {
+                if (CVarGetInteger("gStairs", 0)) {
                     StairsArena_FreeGeneral((uintptr_t)skin->vtxTable[i].buf[0]);
                 }
                 ZELDA_ARENA_FREE_DEBUG(skin->vtxTable[i].buf[0]);
                 skin->vtxTable[i].buf[0] = NULL;
             }
             if (skin->vtxTable[i].buf[1] != NULL) {
-                if (CVarGetInteger("gStairs", 1)) {
+                if (CVarGetInteger("gStairs", 0)) {
                     StairsArena_FreeGeneral((uintptr_t)skin->vtxTable[i].buf[1]);
                 }
                 ZELDA_ARENA_FREE_DEBUG(skin->vtxTable[i].buf[1]);
@@ -121,7 +121,7 @@ void Skin_Free(PlayState* play, Skin* skin) {
         }
 
         if (skin->vtxTable != NULL) {
-            if (CVarGetInteger("gStairs", 1)) {
+            if (CVarGetInteger("gStairs", 0)) {
                 StairsArena_FreeGeneral((uintptr_t)skin->vtxTable);
             }
             ZELDA_ARENA_FREE_DEBUG(skin->vtxTable);

@@ -1147,6 +1147,8 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Restore a bug from NTSC 1.0 that allows bypassing Bongo Bongo's intro cutscene to quickly kill him");
             UIWidgets::PaddedEnhancementCheckbox("Original RBA Values", "gRestoreRBAValues", true, false);
             UIWidgets::Tooltip("Restores the original outcomes when performing Reverse Bottle Adventure.");
+            UIWidgets::PaddedEnhancementCheckbox("Simulate N64 Heap", "gSimulateHeap", true, false);
+            UIWidgets::Tooltip("This restores heap fragmentation glitches, such as causing the Royal Tomb to not load when reloading its graveyard room.");
 
             ImGui::EndMenu();
         }

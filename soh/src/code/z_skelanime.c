@@ -1126,7 +1126,7 @@ void SkelAnime_InitLink(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeade
     if (jointTable == NULL) {
         skelAnime->jointTable = ZELDA_ARENA_MALLOC_DEBUG(allocSize);
         skelAnime->morphTable = ZELDA_ARENA_MALLOC_DEBUG(allocSize);
-        if ((CVarGetInteger("gStairs", 1))) {
+        if ((CVarGetInteger("gStairs", 0))) {
             StairsArena_MallocGeneral(allocSize, (uintptr_t)skelAnime->jointTable);
             StairsArena_MallocGeneral(allocSize, (uintptr_t)skelAnime->morphTable);
         }
@@ -1464,7 +1464,7 @@ s32 SkelAnime_Init(PlayState* play, SkelAnime* skelAnime, SkeletonHeader* skelet
             ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->jointTable));
         skelAnime->morphTable =
             ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->morphTable));
-        if ((CVarGetInteger("gStairs", 1))) {
+        if ((CVarGetInteger("gStairs", 0))) {
             StairsArena_MallocGeneral(skelAnime->limbCount * sizeof(*skelAnime->jointTable), (uintptr_t)skelAnime->jointTable);
             StairsArena_MallocGeneral(skelAnime->limbCount * sizeof(*skelAnime->morphTable), (uintptr_t)skelAnime->morphTable);
         }
@@ -1505,7 +1505,7 @@ s32 SkelAnime_InitFlex(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeader
 
         skelAnime->morphTable =
             ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->morphTable));
-        if ((CVarGetInteger("gStairs", 1))) {
+        if ((CVarGetInteger("gStairs", 0))) {
             StairsArena_MallocGeneral(skelAnime->limbCount * sizeof(*skelAnime->jointTable), (uintptr_t)skelAnime->jointTable);
             StairsArena_MallocGeneral(skelAnime->limbCount * sizeof(*skelAnime->morphTable), (uintptr_t)skelAnime->morphTable);
         }
@@ -1543,7 +1543,7 @@ s32 SkelAnime_InitSkin(PlayState* play, SkelAnime* skelAnime, SkeletonHeader* sk
         ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->jointTable));
     skelAnime->morphTable =
         ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->morphTable));
-    if ((CVarGetInteger("gStairs", 1))) {
+    if ((CVarGetInteger("gStairs", 0))) {
         StairsArena_MallocGeneral(skelAnime->limbCount * sizeof(*skelAnime->jointTable), (uintptr_t)skelAnime->jointTable);
         StairsArena_MallocGeneral(skelAnime->limbCount * sizeof(*skelAnime->morphTable), (uintptr_t)skelAnime->morphTable);
     }
@@ -1949,7 +1949,7 @@ s32 Animation_OnFrame(SkelAnime* skelAnime, f32 frame) {
  */
 void SkelAnime_Free(SkelAnime* skelAnime, PlayState* play) {
     if (skelAnime->jointTable != NULL) {
-        if (CVarGetInteger("gStairs", 1)) {
+        if (CVarGetInteger("gStairs", 0)) {
             StairsArena_FreeGeneral((uintptr_t)skelAnime->jointTable);
         }
         ZELDA_ARENA_FREE_DEBUG(skelAnime->jointTable);
@@ -1958,7 +1958,7 @@ void SkelAnime_Free(SkelAnime* skelAnime, PlayState* play) {
     }
 
     if (skelAnime->morphTable != NULL) {
-        if (CVarGetInteger("gStairs", 1)) {
+        if (CVarGetInteger("gStairs", 0)) {
             StairsArena_FreeGeneral((uintptr_t)skelAnime->morphTable);
         }
         ZELDA_ARENA_FREE_DEBUG(skelAnime->morphTable);

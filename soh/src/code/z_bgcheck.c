@@ -2455,7 +2455,10 @@ void SSNodeList_Alloc(PlayState* play, SSNodeList* this, s32 tblMax, s32 numPoly
     assert(this->tbl != NULL);
 
     this->polyCheckTbl = GAMESTATE_ALLOC_MC(&play->state, numPolys);
-    Stairs_DecreaseSize(numPolys);
+
+    if (CVarGetInteger("gStairs", 0)) {
+        Stairs_DecreaseSize(numPolys);
+    }
 
     assert(this->polyCheckTbl != NULL);
 }

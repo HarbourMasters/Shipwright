@@ -37,7 +37,10 @@ void func_801109B0(PlayState* play) {
     osSyncPrintf("常駐ＰＡＲＡＭＥＴＥＲセグメント=%x\n", parameterSize);
 
     interfaceCtx->parameterSegment = GAMESTATE_ALLOC_MC(&play->state, parameterSize);
-    Stairs_DecreaseSize(parameterSize);
+
+    if (CVarGetInteger("gStairs", 0)) {
+        Stairs_DecreaseSize(parameterSize);
+    }
 
     osSyncPrintf("parameter->parameterSegment=%x\n", interfaceCtx->parameterSegment);
 

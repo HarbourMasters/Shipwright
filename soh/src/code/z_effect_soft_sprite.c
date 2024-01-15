@@ -56,7 +56,7 @@ void EffectSs_ClearAll(PlayState* play) {
         addr = overlay->loadedRamAddr;
 
         if (addr != NULL) {
-            if (CVarGetInteger("gStairs", 1)) {
+            if (CVarGetInteger("gStairs", 0)) {
                 StairsArena_FreeGeneral((uintptr_t)addr);
             }
             ZELDA_ARENA_FREE_DEBUG(addr);
@@ -197,7 +197,7 @@ void EffectSs_Spawn(PlayState* play, s32 type, s32 priority, void* initParams) {
     } else {
         if (overlayEntry->loadedRamAddr == NULL) {
             overlayEntry->loadedRamAddr = ZELDA_ARENA_MALLOC_RDEBUG(overlaySize);
-            if ((CVarGetInteger("gStairs", 1))) {
+            if ((CVarGetInteger("gStairs", 0))) {
                 StairsArena_MallocRGeneral(overlaySize, (uintptr_t)overlayEntry->loadedRamAddr);
             }
 
