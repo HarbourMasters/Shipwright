@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <list>
 
 typedef uint32_t N64ButtonMask;
 
