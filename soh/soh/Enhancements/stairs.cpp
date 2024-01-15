@@ -507,7 +507,7 @@ s32 Stairs_GetAbsoluteSpace() {
     return absoluteSpaceFlag;
 }
 
-s32 Stairs_UnregisterAbsoluteSpace() {
+void Stairs_UnregisterAbsoluteSpace() {
     absoluteSpaceFlag = false;
 }
 
