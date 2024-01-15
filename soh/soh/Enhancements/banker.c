@@ -136,6 +136,11 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
 
         case TEXT_BANKER_WITHDRAWAL_AMOUNT:
         case TEXT_BANKER_DEPOSIT_AMOUNT:
+            if (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B)) {
+                Message_CloseTextbox(play);
+                gBankerValue = 0;
+                return;
+            }
             if (gBankerValue == 0) {
                 Message_ContinueTextbox(play, TEXT_BANKER_ERROR_ZERO_AMOUNT);
             } else if (currentTextId == TEXT_BANKER_WITHDRAWAL_AMOUNT) {
@@ -242,6 +247,8 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
         case TEXT_BANKER_REWARD_PIECE_OF_HEART:
             Message_ContinueTextbox(play, TEXT_HEART_PIECE);
             Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            Item_Give(play, ITEM_HEART_PIECE);
+            gSaveContext.healthAccumulator = gSaveContext.healthCapacity - gSaveContext.health;
             break;
 
         case TEXT_HEART_PIECE:
