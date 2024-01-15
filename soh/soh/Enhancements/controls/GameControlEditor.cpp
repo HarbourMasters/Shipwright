@@ -323,7 +323,6 @@ namespace GameControlEditor {
             UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding", "gWalkSpeedToggle", true, false);
             window->BeginGroupPanelPublic("Walk Modifier", ImGui::GetContentRegionAvail());
             UIWidgets::PaddedEnhancementCheckbox("Don't affect jump distance/velocity", "gWalkModifierDoesntChangeJump", true, false);
-//<<<<<<< HEAD
             UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 1: %.0f %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
             UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 2: %.0f %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
             window->EndGroupPanelPublic(0);
@@ -331,10 +330,6 @@ namespace GameControlEditor {
             UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 1: %.0f %%", "##SwimMod1", "gSwimModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
             UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 2: %.0f %%", "##SwimMod2", "gSwimModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
             window->EndGroupPanelPublic(0);
-//=======
-//            UIWidgets::PaddedEnhancementSliderFloat("Modifier 1: %.0f %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
-//            UIWidgets::PaddedEnhancementSliderFloat("Modifier 2: %.0f %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
-//>>>>>>> db2ccd95b76031ef8842b515b805ad8232ddf1bd
             window->EndGroupPanelPublic(0);
         }
         ImGui::EndDisabled();
