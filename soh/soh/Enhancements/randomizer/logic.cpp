@@ -329,7 +329,7 @@ namespace Rando {
         CanOpenStormGrotto  = CanUse(RG_SONG_OF_STORMS) && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
         HookshotOrBoomerang = CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
         CanGetNightTimeGS   = (CanUse(RG_SUNS_SONG) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG));
-        CanBreakUpperBeehives = HookshotOrBoomerang || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && HasBombchus);
+        CanBreakUpperBeehives = HookshotOrBoomerang || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && Bombchus);
         CanBreakLowerBeehives = CanBreakUpperBeehives || Bombs;
         CanFish = ChildsWallet && (CanUse(RG_FISHING_POLE) || !ctx->GetOption(RSK_SHUFFLE_FISHING_POLE));
         CanGetChildFish = CanFish && (IsChild || (IsAdult && !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)));

@@ -207,7 +207,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_MARKET_BOMBCHU_BOWLING] = Area("Market Bombchu Bowling", "Market Bombchu Bowling", RA_NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&logic->CanPlayBowling, {[]{return (randoCtx->GetOption(RSK_BOMBCHUS_IN_LOGIC) ? logic->BombchuBag : logic->BombBag);}}),
+                  EventAccess(&logic->CanPlayBowling, {[]{return (logic->ChildsWallet && randoCtx->GetOption(RSK_BOMBCHUS_IN_LOGIC) ? logic->BombchuBag : logic->BombBag);}}),
                 }, {
                   //Locations
                   LocationAccess(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE,  {[]{return logic->CanPlayBowling;}}),
