@@ -243,6 +243,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gAddTraps.Speed",
     "gAddTraps.Tele",
     "gAddTraps.Void",
+    "gToTMedallionsColors", 
 };
 
 const std::vector<const char*> cheatCvars = {
@@ -792,6 +793,9 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gSkipScarecrow", 1),
     // Chest size & texture matches contents
     PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", CSMC_BOTH),
+
+    // Color Temple of Time's Medallions
+    PRESET_ENTRY_S32("gToTMedallionsColors", 1),
 
     // Pause link animation (0 to 16)
     PRESET_ENTRY_S32("gPauseLiveLink", 16),

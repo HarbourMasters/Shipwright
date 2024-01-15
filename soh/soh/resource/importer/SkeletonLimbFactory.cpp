@@ -132,15 +132,15 @@ void LUS::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
         skeletonLimb->limbData.lodLimb.sibling = skeletonLimb->siblingIndex;
 
         if (skeletonLimb->dListPtr != "") {
-            auto dList = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->dListPtr.c_str());
-            skeletonLimb->limbData.lodLimb.dLists[0] = (Gfx*)(dList ? dList->GetRawPointer() : nullptr);
+            skeletonLimb->dListPtr = "__OTR__" + skeletonLimb->dListPtr;
+            skeletonLimb->limbData.lodLimb.dLists[0] = (Gfx*)skeletonLimb->dListPtr.c_str();
         } else {
             skeletonLimb->limbData.lodLimb.dLists[0] = nullptr;
         }
 
         if (skeletonLimb->dList2Ptr != "") {
-            auto dList = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->dList2Ptr.c_str());
-            skeletonLimb->limbData.lodLimb.dLists[1] = (Gfx*)(dList ? dList->GetRawPointer() : nullptr);
+            skeletonLimb->dList2Ptr = "__OTR__" + skeletonLimb->dList2Ptr;
+            skeletonLimb->limbData.lodLimb.dLists[1] = (Gfx*)skeletonLimb->dList2Ptr.c_str();
         } else {
             skeletonLimb->limbData.lodLimb.dLists[1] = nullptr;
         }
@@ -153,8 +153,8 @@ void LUS::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
         skeletonLimb->limbData.standardLimb.dList = nullptr;
 
         if (!skeletonLimb->dListPtr.empty()) {
-            const auto dList = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->dListPtr.c_str());
-            skeletonLimb->limbData.standardLimb.dList = (Gfx*)(dList ? dList->GetRawPointer() : nullptr);
+            skeletonLimb->dListPtr = "__OTR__" + skeletonLimb->dListPtr;
+            skeletonLimb->limbData.standardLimb.dList = (Gfx*)skeletonLimb->dListPtr.c_str();
         }
     } else if (skeletonLimb->limbType == LUS::LimbType::Curve) {
         skeletonLimb->limbData.skelCurveLimb.firstChildIdx = skeletonLimb->childIndex;
@@ -163,13 +163,13 @@ void LUS::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
         skeletonLimb->limbData.skelCurveLimb.dList[1] = nullptr;
 
         if (!skeletonLimb->dListPtr.empty()) {
-            const auto dList = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->dListPtr.c_str());
-            skeletonLimb->limbData.skelCurveLimb.dList[0] = (Gfx*)(dList ? dList->GetRawPointer() : nullptr);
+            skeletonLimb->dListPtr = "__OTR__" + skeletonLimb->dListPtr;
+            skeletonLimb->limbData.skelCurveLimb.dList[0] = (Gfx*)skeletonLimb->dListPtr.c_str();
         }
 
         if (!skeletonLimb->dList2Ptr.empty()) {
-            const auto dList = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->dList2Ptr.c_str());
-            skeletonLimb->limbData.skelCurveLimb.dList[1] = (Gfx*)(dList ? dList->GetRawPointer() : nullptr);
+            skeletonLimb->dList2Ptr = "__OTR__" + skeletonLimb->dList2Ptr;
+            skeletonLimb->limbData.skelCurveLimb.dList[1] = (Gfx*)skeletonLimb->dList2Ptr.c_str();
         }
     } else if (skeletonLimb->limbType == LUS::LimbType::Skin) {
         skeletonLimb->limbData.skinLimb.jointPos.x = skeletonLimb->transX;
@@ -189,14 +189,23 @@ void LUS::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
         }
 
         if (skeletonLimb->skinSegmentType == LUS::ZLimbSkinType::SkinType_DList) {
-            auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->skinDList.c_str());
-            skeletonLimb->limbData.skinLimb.segment = res ? res->GetRawPointer() : nullptr;
+            if (skeletonLimb->skinDList != "") {
+                skeletonLimb->skinDList = "__OTR__" + skeletonLimb->skinDList;
+                skeletonLimb->limbData.skinLimb.segment = (Gfx*)skeletonLimb->skinDList.c_str();
+            } else {
+                skeletonLimb->limbData.skinLimb.segment = nullptr;
+            }
         } else if (skeletonLimb->skinSegmentType == LUS::ZLimbSkinType::SkinType_4) {
             skeletonLimb->skinAnimLimbData.totalVtxCount = skeletonLimb->skinVtxCnt;
             skeletonLimb->skinAnimLimbData.limbModifCount = skeletonLimb->skinLimbModifCount;
             skeletonLimb->skinAnimLimbData.limbModifications = skeletonLimb->skinLimbModifArray.data();
-            auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->skinDList2.c_str());
-            skeletonLimb->skinAnimLimbData.dlist = (Gfx*)(res ? res->GetRawPointer() : nullptr);
+
+            if (skeletonLimb->skinDList2 != "") {
+                skeletonLimb->skinDList2 = "__OTR__" + skeletonLimb->skinDList2;
+                skeletonLimb->skinAnimLimbData.dlist = (Gfx*)skeletonLimb->skinDList2.c_str();
+            } else {
+                skeletonLimb->skinAnimLimbData.dlist = nullptr;
+            }
 
             for (size_t i = 0; i < skeletonLimb->skinLimbModifArray.size(); i++) {
                 skeletonLimb->skinAnimLimbData.limbModifications[i].vtxCount = skeletonLimb->skinLimbModifVertexArrays[i].size();
@@ -254,8 +263,8 @@ void SkeletonLimbFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shar
     limbData.lodLimb.jointPos.z = skelLimb->transZ;
 
     if (skelLimb->dListPtr != "") {
-        auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess((const char*)skelLimb->dListPtr.c_str());
-        limbData.lodLimb.dLists[0] = (Gfx*)(res ? res->GetRawPointer() : nullptr);
+        skelLimb->dListPtr = "__OTR__" + skelLimb->dListPtr;
+        limbData.lodLimb.dLists[0] = (Gfx*)skelLimb->dListPtr.c_str();
     } else {
         limbData.lodLimb.dLists[0] = nullptr;
     }

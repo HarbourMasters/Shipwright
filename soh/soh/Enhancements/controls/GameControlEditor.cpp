@@ -7,6 +7,9 @@
 #include <iterator>
 #include <variables.h>
 
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+#define IMGUI_DEFINE_MATH_OPERATORS
+#endif
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 #include <libultraship/bridge.h>
@@ -225,6 +228,10 @@ namespace GameControlEditor {
         window->BeginGroupPanelPublic("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
         UIWidgets::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
         DrawHelpIcon("Allows for aiming with the right stick in:\n-First-Person/C-Up view\n-Weapon Aiming");
+        if (CVarGetInteger("gRightStickAiming", 0)) {
+            UIWidgets::PaddedEnhancementCheckbox("Allow moving while in first person mode", "gMoveWhileFirstPerson");
+            DrawHelpIcon("Changes the left stick to move the player while in first person mode");
+        }
         UIWidgets::PaddedEnhancementCheckbox("Invert Aiming X Axis", "gInvertAimingXAxis");
         DrawHelpIcon("Inverts the Camera X Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
         UIWidgets::PaddedEnhancementCheckbox("Invert Aiming Y Axis", "gInvertAimingYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
@@ -233,17 +240,20 @@ namespace GameControlEditor {
         DrawHelpIcon("Inverts the Shield Aiming Y Axis");
         UIWidgets::PaddedEnhancementCheckbox("Invert Shield Aiming X Axis", "gInvertShieldAimingXAxis");
         DrawHelpIcon("Inverts the Shield Aiming X Axis");
+        UIWidgets::PaddedEnhancementCheckbox("Invert Z-Weapon Aiming Y Axis", "gInvertZAimingYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+        DrawHelpIcon("Inverts the Camera Y Axis in:\n-Z-Weapon Aiming");
         UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First-Person View", "gDisableAutoCenterViewFirstPerson");
         DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
         if (UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", "gEnableFirstPersonSensitivity", true, false)) {
             if (!CVarGetInteger("gEnableFirstPersonSensitivity", 0)) {
-                CVarClear("gFirstPersonCameraSensitivity");
+                CVarClear("gFirstPersonCameraSensitivityX");
+                CVarClear("gFirstPersonCameraSensitivityY");
             }
         }
         if (CVarGetInteger("gEnableFirstPersonSensitivity", 0)) {
-            UIWidgets::EnhancementSliderFloat("Aiming/First-Person Horizontal Sensitivity: %d %%", "##FirstPersonSensitivity Horizontal",
+            UIWidgets::EnhancementSliderFloat("Aiming/First-Person Horizontal Sensitivity: %.0f %%", "##FirstPersonSensitivity Horizontal",
                                                 "gFirstPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true);
-            UIWidgets::EnhancementSliderFloat("Aiming/First-Person Vertical Sensitivity: %d %%", "##FirstPersonSensitivity Vertical",
+            UIWidgets::EnhancementSliderFloat("Aiming/First-Person Vertical Sensitivity: %.0f %%", "##FirstPersonSensitivity Vertical",
                                               "gFirstPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true);
         }
         UIWidgets::Spacer(0);
@@ -260,9 +270,9 @@ namespace GameControlEditor {
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
         DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera");
         UIWidgets::Spacer(0);
-        UIWidgets::PaddedEnhancementSliderFloat("Third-Person Horizontal Sensitivity: %d %%", "##ThirdPersonSensitivity Horizontal",
+        UIWidgets::PaddedEnhancementSliderFloat("Third-Person Horizontal Sensitivity: %.0f %%", "##ThirdPersonSensitivity Horizontal",
                                                 "gThirdPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true, true, false, true);
-        UIWidgets::PaddedEnhancementSliderFloat("Third-Person Vertical Sensitivity: %d %%", "##ThirdPersonSensitivity Vertical",
+        UIWidgets::PaddedEnhancementSliderFloat("Third-Person Vertical Sensitivity: %.0f %%", "##ThirdPersonSensitivity Vertical",
                                                 "gThirdPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true, true, false, true);
         UIWidgets::PaddedEnhancementSliderInt("Camera Distance: %d", "##CamDist",
                                         "gFreeCameraDistMax", 100, 900, "", 185, true, false, true);
@@ -313,13 +323,18 @@ namespace GameControlEditor {
             UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding", "gWalkSpeedToggle", true, false);
             window->BeginGroupPanelPublic("Walk Modifier", ImGui::GetContentRegionAvail());
             UIWidgets::PaddedEnhancementCheckbox("Don't affect jump distance/velocity", "gWalkModifierDoesntChangeJump", true, false);
-            UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
-            UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+//<<<<<<< HEAD
+            UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 1: %.0f %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+            UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 2: %.0f %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
             window->EndGroupPanelPublic(0);
             window->BeginGroupPanelPublic("Swim Modifier", ImGui::GetContentRegionAvail());
-            UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 1: %d %%", "##SwimMod1", "gSwimModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
-            UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 2: %d %%", "##SwimMod2", "gSwimModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+            UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 1: %.0f %%", "##SwimMod1", "gSwimModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+            UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 2: %.0f %%", "##SwimMod2", "gSwimModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
             window->EndGroupPanelPublic(0);
+//=======
+//            UIWidgets::PaddedEnhancementSliderFloat("Modifier 1: %.0f %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+//            UIWidgets::PaddedEnhancementSliderFloat("Modifier 2: %.0f %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+//>>>>>>> db2ccd95b76031ef8842b515b805ad8232ddf1bd
             window->EndGroupPanelPublic(0);
         }
         ImGui::EndDisabled();
