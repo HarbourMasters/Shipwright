@@ -237,8 +237,10 @@ class Logic {
     bool GoronBracelet = false;
     bool SilverGauntlets = false;
     bool GoldenGauntlets = false;
+    bool Swim = false;
     bool SilverScale = false;
     bool GoldScale = false;
+    bool ChildsWallet = false;
     bool AdultsWallet = false;
 
     bool ChildScarecrow = false;
@@ -295,6 +297,12 @@ class Logic {
     bool BigPoeKill = false;
     bool HookshotOrBoomerang = false;
     bool CanGetNightTimeGS = false;
+    bool CanBreakLowerBeehives = false;
+    bool CanBreakUpperBeehives = false;
+    bool FishingPole = false;
+    bool CanGetChildFish = false;
+    bool CanGetAdultFish = false;
+    bool CanFish = false;
 
     uint8_t OcarinaButtons = 0;
     uint8_t BaseHearts = 0;

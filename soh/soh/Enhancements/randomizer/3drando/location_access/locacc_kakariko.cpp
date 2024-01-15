@@ -141,7 +141,7 @@ void AreaTable_Init_Kakariko() {
 
   areaTable[RR_KAK_SHOOTING_GALLERY] = Area("Kak Shooting Gallery", "Kak Shooting Gallery", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_KAK_SHOOTING_GALLERY_REWARD, {[]{return logic->IsAdult && logic->Bow;}}),
+                  LocationAccess(RC_KAK_SHOOTING_GALLERY_REWARD, {[]{return logic->ChildsWallet && logic->IsAdult && logic->Bow;}}),
                 }, {
                   //Exits
                   Entrance(RR_KAKARIKO_VILLAGE, {[]{return true;}}),
@@ -196,8 +196,11 @@ void AreaTable_Init_Kakariko() {
 
   areaTable[RR_KAK_OPEN_GROTTO] = Area("Kak Open Grotto", "Kak Open Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(RC_KAK_OPEN_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(RC_KAK_OPEN_GROTTO_GOSSIP_STONE, {[]{return true;}}),
+                  LocationAccess(RC_KAK_OPEN_GROTTO_CHEST,         {[]{return true;}}),
+                  LocationAccess(RC_KAK_OPEN_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
+                  LocationAccess(RC_KAK_OPEN_GROTTO_GOSSIP_STONE,  {[]{return true;}}),
+                  LocationAccess(RC_KAK_OPEN_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
+                  LocationAccess(RC_KAK_OPEN_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
                 }, {
                   //Exits
                   Entrance(RR_KAK_BACKYARD, {[]{return true;}}),
@@ -211,7 +214,7 @@ void AreaTable_Init_Kakariko() {
                 }, {
                   //Locations
                   LocationAccess(RC_GRAVEYARD_FREESTANDING_POH,        {[]{return (logic->IsAdult && CanPlantBean(RR_THE_GRAVEYARD)) || logic->CanUse(RG_LONGSHOT) || (randoCtx->GetTrickOption(RT_GY_POH) && logic->CanUse(RG_BOOMERANG));}}),
-                  LocationAccess(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, {[]{return logic->IsChild && logic->AtNight;}}), //TODO: This needs to change
+                  LocationAccess(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, {[]{return logic->ChildsWallet && logic->IsChild && logic->AtNight;}}), //TODO: This needs to change
                   LocationAccess(RC_GRAVEYARD_GS_WALL,                 {[]{return logic->IsChild && logic->HookshotOrBoomerang && logic->AtNight && logic->CanGetNightTimeGS;}}),
                   LocationAccess(RC_GRAVEYARD_GS_BEAN_PATCH,           {[]{return logic->CanPlantBugs && logic->CanChildAttack;}}),
                 }, {

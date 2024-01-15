@@ -45,18 +45,20 @@ bool LocationAccess::ConditionsMet() const {
 
 bool LocationAccess::CanBuy() const {
   auto ctx = Rando::Context::GetInstance();
-  //Not a shop location, don't need to check if buyable
-  if (!(Rando::StaticData::GetLocation(location)->IsCategory(Category::cShop))) {
+  //Not a shop or scrub location, don't need to check if buyable
+  if (!(Rando::StaticData::GetLocation(location)->IsCategory(Category::cShop)) && !(Rando::StaticData::GetLocation(location)->IsCategory(Category::cDekuScrub))) {
     return true;
   }
 
   //Check if wallet is large enough to buy item
   bool SufficientWallet = true;
   if (ctx->GetItemLocation(location)->GetPrice() > 500) {
-    SufficientWallet = logic->ProgressiveWallet >= 3;
+    SufficientWallet = logic->ProgressiveWallet >= 4;
   } else if (ctx->GetItemLocation(location)->GetPrice() > 200) {
-    SufficientWallet = logic->ProgressiveWallet >= 2;
+    SufficientWallet = logic->ProgressiveWallet >= 3;
   } else if (ctx->GetItemLocation(location)->GetPrice() > 99) {
+    SufficientWallet = logic->ProgressiveWallet >= 2;
+  } else if (ctx->GetItemLocation(location)->GetPrice() > 0) {
     SufficientWallet = logic->ProgressiveWallet >= 1;
   }
 

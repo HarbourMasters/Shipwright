@@ -2075,8 +2075,8 @@ s32 GiveItemEntryFromActor(Actor* actor, PlayState* play, GetItemEntry getItemEn
  * \param play the Global Context
  * \param getItemEntry the GetItemEntry for the item you want the player to receive.
  */
-void GiveItemEntryFromActorWithFixedRange(Actor* actor, PlayState* play, GetItemEntry getItemEntry) {
-    GiveItemEntryFromActor(actor, play, getItemEntry, 50.0f, 10.0f);
+s32 GiveItemEntryFromActorWithFixedRange(Actor* actor, PlayState* play, GetItemEntry getItemEntry) {
+    return GiveItemEntryFromActor(actor, play, getItemEntry, 50.0f, 10.0f);
 }
 
 // TODO: Rename to GiveItemIdFromActor or similar

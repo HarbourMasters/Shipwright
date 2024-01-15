@@ -193,7 +193,7 @@ void ObjMure_SpawnActors1(ObjMure* this, PlayState* play) {
         this->children[i] = Actor_Spawn(ac, play, sSpawnActorIds[this->type], spawnPos.x, spawnPos.y, spawnPos.z,
                                         actor->world.rot.x, actor->world.rot.y, actor->world.rot.z,
                                         (this->type == 4 && i == 0) ? 1 : sSpawnParams[this->type], true);
-        if (this->children[i] != NULL) {
+        if (this->children[i] != NULL && this->children[i]->update != NULL) {
             this->childrenStates[i] = OBJMURE_CHILD_STATE_0;
             this->children[i]->room = actor->room;
         } else {

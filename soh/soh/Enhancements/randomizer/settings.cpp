@@ -101,13 +101,17 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE] = Option::Bool("Affordable Prices", "gRandomizeShopsanityPricesAffordable", mOptionDescriptions[RSK_SHOPSANITY_PRICES_AFFORDABLE]);
     mOptions[RSK_SHUFFLE_TOKENS] = Option::U8("Tokensanity", {"Off", "Dungeons", "Overworld", "All Tokens"}, OptionCategory::Setting, "gRandomizeShuffleTokens", mOptionDescriptions[RSK_SHUFFLE_TOKENS], WidgetType::Combobox, RO_TOKENSANITY_OFF);
     mOptions[RSK_SHUFFLE_SCRUBS] = Option::U8("Scrub Shuffle", {"Off", "Affordable", "Expensive", "Random Prices"}, OptionCategory::Setting, "gRandomizeShuffleScrubs", mOptionDescriptions[RSK_SHUFFLE_SCRUBS], WidgetType::Combobox, RO_SCRUBS_OFF);
+    mOptions[RSK_SHUFFLE_BEEHIVES] = Option::Bool("Shuffle Beehives", "gRandomizeShuffleBeehives", mOptionDescriptions[RSK_SHUFFLE_BEEHIVES]);
     mOptions[RSK_SHUFFLE_COWS] = Option::Bool("Shuffle Cows", "gRandomizeShuffleCows", mOptionDescriptions[RSK_SHUFFLE_COWS]);
     mOptions[RSK_SHUFFLE_KOKIRI_SWORD] = Option::Bool("Shuffle Kokiri Sword", "gRandomizeShuffleKokiriSword", mOptionDescriptions[RSK_SHUFFLE_KOKIRI_SWORD]);
     mOptions[RSK_SHUFFLE_MASTER_SWORD] = Option::Bool("Shuffle Master Sword", "gRandomizeShuffleMasterSword", mOptionDescriptions[RSK_SHUFFLE_MASTER_SWORD]);
+    mOptions[RSK_SHUFFLE_CHILD_WALLET] = Option::Bool("Shuffle Child's Wallet", "gRandomizeShuffleChildWallet", mOptionDescriptions[RSK_SHUFFLE_CHILD_WALLET]);
     mOptions[RSK_SHUFFLE_OCARINA] = Option::Bool("Shuffle Ocarinas", "gRandomizeShuffleOcarinas", mOptionDescriptions[RSK_SHUFFLE_OCARINA]);
     mOptions[RSK_SHUFFLE_OCARINA_BUTTONS] = Option::Bool("Shuffle Ocarina Buttons", "gRandomizeShuffleOcarinaButtons", mOptionDescriptions[RSK_SHUFFLE_OCARINA_BUTTONS]);
+    mOptions[RSK_SHUFFLE_SWIM] = Option::Bool("Shuffle Swim", "gRandomizeShuffleSwim", mOptionDescriptions[RSK_SHUFFLE_SWIM]);
     mOptions[RSK_SHUFFLE_WEIRD_EGG] = Option::Bool("Shuffle Weird Egg", "gRandomizeShuffleWeirdEgg", mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG]);
     mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = Option::Bool("Shuffle Gerudo Membership Card", "gRandomizeShuffleGerudoToken", mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);
+    mOptions[RSK_SHUFFLE_FISHING_POLE] = Option::Bool("Shuffle Fishing Pole", "gRandomizeShuffleFishingPole", mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE]);
     mOptions[RSK_SHUFFLE_MAGIC_BEANS] = Option::Bool("Shuffle Magic Beans", "gRandomizeShuffleBeans", mOptionDescriptions[RSK_SHUFFLE_MAGIC_BEANS]);
     mOptions[RSK_SHUFFLE_MERCHANTS] = Option::U8("Shuffle Merchants", {"Off", "On (No Hints)", "On (With Hints)"}, OptionCategory::Setting, "gRandomizeShuffleMerchants", mOptionDescriptions[RSK_SHUFFLE_MERCHANTS], WidgetType::Combobox, RO_SHUFFLE_MERCHANTS_OFF);
     mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES] = Option::Bool("Shuffle Frog Song Rupees", "gRandomizeShuffleFrogSongRupees", mOptionDescriptions[RSK_SHUFFLE_FROG_SONG_RUPEES]);
@@ -116,6 +120,9 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_CHEST_MINIGAME] = Option::U8("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"});
     mOptions[RSK_SHUFFLE_100_GS_REWARD] = Option::Bool("Shuffle 100 GS Reward", "gRandomizeShuffle100GSReward", mOptionDescriptions[RSK_SHUFFLE_100_GS_REWARD], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
     mOptions[RSK_SHUFFLE_BOSS_SOULS] = Option::U8("Shuffle Boss Souls", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, "gRandomizeShuffleBossSouls", mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS], WidgetType::Combobox);
+    mOptions[RSK_FISHSANITY] = Option::U8("Fishsanity", {"Off", "Shuffle Fishing Pond", "Shuffle Overworld Fish", "Shuffle Both"}, OptionCategory::Setting, "gRandomizeFishsanity", mOptionDescriptions[RSK_FISHSANITY], WidgetType::Combobox, RO_FISHSANITY_OFF);
+    mOptions[RSK_FISHSANITY_POND_COUNT] = Option::U8("Pond Fish Count", {NumOpts(0,17,1)}, OptionCategory::Setting, "gRandomizeFishsanityPondCount", mOptionDescriptions[RSK_FISHSANITY_POND_COUNT], WidgetType::Slider, 0, true, IMFLAG_NONE);
+    mOptions[RSK_FISHSANITY_AGE_SPLIT] = Option::Bool("Pond Age Split", "gRandomizeFishsanityAgeSplit", mOptionDescriptions[RSK_FISHSANITY_AGE_SPLIT]);
     mOptions[RSK_SHUFFLE_MAPANDCOMPASS] = Option::U8("Maps/Compasses", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, "gRandomizeStartingMapsCompasses", mOptionDescriptions[RSK_SHUFFLE_MAPANDCOMPASS], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     mOptions[RSK_KEYSANITY] = Option::U8("Small Keys", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, "gRandomizeKeysanity", mOptionDescriptions[RSK_KEYSANITY], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     mOptions[RSK_GERUDO_KEYS] = Option::U8("Gerudo Fortress Keys", {"Vanilla", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, "gRandomizeGerudoKeys", mOptionDescriptions[RSK_GERUDO_KEYS], WidgetType::Combobox, RO_GERUDO_KEYS_VANILLA);
@@ -156,14 +163,21 @@ void Settings::CreateOptions() {
     mOptions[RSK_GREG_HINT] = Option::Bool("Greg the Green Rupee Hint", "gRandomizeGregHint", mOptionDescriptions[RSK_GREG_HINT], IMFLAG_NONE);
     mOptions[RSK_LOACH_HINT] = Option::Bool("Hyrule Loach Hint", "gRandomizeLoachHint", mOptionDescriptions[RSK_LOACH_HINT], IMFLAG_NONE);
     mOptions[RSK_SARIA_HINT] = Option::Bool("Saria's Hint", "gRandomizeSariaHint", mOptionDescriptions[RSK_SARIA_HINT], IMFLAG_NONE);
+    mOptions[RSK_FISHING_POLE_HINT] = Option::Bool("Fishing Pole Hint", "gRandomizeFishingPoleHint", mOptionDescriptions[RSK_FISHING_POLE_HINT], IMFLAG_NONE);
     mOptions[RSK_FROGS_HINT] = Option::Bool("Frog Ocarina Game Hint", "gRandomizeFrogsHint", mOptionDescriptions[RSK_FROGS_HINT], IMFLAG_NONE);
+    mOptions[RSK_BIGGORON_HINT] = Option::Bool("Biggoron's Hint", "gRandomizeBiggoronHint", mOptionDescriptions[RSK_BIGGORON_HINT], IMFLAG_NONE);
+    mOptions[RSK_BIG_POES_HINT] = Option::Bool("Big Poes Hint", "gRandomizeBigPoesHint", mOptionDescriptions[RSK_BIG_POES_HINT], IMFLAG_NONE);
+    mOptions[RSK_CHICKENS_HINT] = Option::Bool("Chickens Hint", "gRandomizeChickensHint", mOptionDescriptions[RSK_CHICKENS_HINT], IMFLAG_NONE);
+    mOptions[RSK_MALON_HINT] = Option::Bool("Malon Hint", "gRandomizeMalonHint", mOptionDescriptions[RSK_MALON_HINT], IMFLAG_NONE);
+    mOptions[RSK_HBA_HINT] = Option::Bool("Horseback Archery Hint", "gRandomizeHBAHint", mOptionDescriptions[RSK_HBA_HINT], IMFLAG_NONE);
     mOptions[RSK_WARP_SONG_HINTS] = Option::Bool("Warp Song Hints", "gRandomizeWarpSongText", mOptionDescriptions[RSK_WARP_SONG_HINTS], IMFLAG_NONE, WidgetType::Checkbox, RO_GENERIC_ON);
-    mOptions[RSK_KAK_10_SKULLS_HINT] = Option::Bool("10 GS Hint", "gRandomize10GSHint", "", IMFLAG_NONE);
-    mOptions[RSK_KAK_20_SKULLS_HINT] = Option::Bool("20 GS Hint", "gRandomize20GSHint", "", IMFLAG_NONE);
-    mOptions[RSK_KAK_30_SKULLS_HINT] = Option::Bool("30 GS Hint", "gRandomize30GSHint", "", IMFLAG_NONE);
-    mOptions[RSK_KAK_40_SKULLS_HINT] = Option::Bool("40 GS Hint", "gRandomize40GSHint", "", IMFLAG_NONE);
-    mOptions[RSK_KAK_50_SKULLS_HINT] = Option::Bool("50 GS Hint", "gRandomize50GSHint");
     mOptions[RSK_SCRUB_TEXT_HINT] = Option::Bool("Scrub Hint Text", "gRandomizeScrubText", mOptionDescriptions[RSK_SCRUB_TEXT_HINT], IMFLAG_NONE);
+    mOptions[RSK_KAK_10_SKULLS_HINT] = Option::Bool("10 GS Hint", "gRandomize10GSHint", mOptionDescriptions[RSK_KAK_10_SKULLS_HINT], IMFLAG_NONE);
+    mOptions[RSK_KAK_20_SKULLS_HINT] = Option::Bool("20 GS Hint", "gRandomize20GSHint", mOptionDescriptions[RSK_KAK_20_SKULLS_HINT], IMFLAG_NONE);
+    mOptions[RSK_KAK_30_SKULLS_HINT] = Option::Bool("30 GS Hint", "gRandomize30GSHint", mOptionDescriptions[RSK_KAK_30_SKULLS_HINT], IMFLAG_NONE);
+    mOptions[RSK_KAK_40_SKULLS_HINT] = Option::Bool("40 GS Hint", "gRandomize40GSHint", mOptionDescriptions[RSK_KAK_40_SKULLS_HINT], IMFLAG_NONE);
+    mOptions[RSK_KAK_50_SKULLS_HINT] = Option::Bool("50 GS Hint", "gRandomize50GSHint", mOptionDescriptions[RSK_KAK_50_SKULLS_HINT], IMFLAG_NONE);
+    mOptions[RSK_KAK_100_SKULLS_HINT] = Option::Bool("100 GS Hint", "gRandomize100GSHint", mOptionDescriptions[RSK_KAK_100_SKULLS_HINT]);
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     mOptions[RSK_BLUE_FIRE_ARROWS] = Option::Bool("Blue Fire Arrows", "gRandomizeBlueFireArrows", mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
     mOptions[RSK_SUNLIGHT_ARROWS] = Option::Bool("Sunlight Arrows", "gRandomizeSunlightArrows", mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
@@ -223,6 +237,7 @@ void Settings::CreateOptions() {
     // mTrickOptions[RT_BUNNY_HOOD_JUMPS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED}, false, "Bunny Hood Jumps", "Allows reaching locations using Bunny Hood's extended jumps.");
     // mTrickOptions[RT_DAMAGE_BOOST_SIMPLE] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED}, false, "Simple damage boosts", "Allows damage boosts to reach Hyrule Castle guards, the bomb bag area in DC and the Gerudo Valley crate Piece of Heart. Can be combined with \"Simple hover boosts\" for reaching far distances.");
     // mTrickOptions[RT_HOVER_BOOST_SIMPLE] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED}, false, "Simple hover boosts", "Allows equipping of hover boots when link is moving at high speeds to extend distance covered. Can be combined with \"Simple damage boosts\" for greater uses.");
+    mTrickOptions[RT_BOMBCHU_BEEHIVES] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_NONE, {Tricks::Tag::NOVICE}, false, "Bombchu Beehives", "Allows exploding beehives with bombchus"),
     mTrickOptions[RT_KF_ADULT_GS] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_KOKIRI_FOREST, {Tricks::Tag::NOVICE}, false, "Adult Kokiri Forest GS with Hover Boots", "Can be obtained without Hookshot by using the Hover Boots off of one of the roots.");
     mTrickOptions[RT_LW_BRIDGE] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_THE_LOST_WOODS, {Tricks::Tag::EXPERT}, false, "Jump onto the Lost Woods Bridge as Adult with Nothing", "With very precise movement it's possible for adult to jump onto the bridge without needing Longshot, Hover Boots, or Bean.");
     mTrickOptions[RT_LW_MIDO_BACKFLIP] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_THE_LOST_WOODS, {Tricks::Tag::NOVICE}, false, "Backflip over Mido as Adult", "With a specific position and angle, you can backflip over Mido.");
@@ -275,6 +290,7 @@ void Settings::CreateOptions() {
     mTrickOptions[RT_DEKU_BASEMENT_GS] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_DEKU_TREE, {Tricks::Tag::NOVICE}, false, "Deku Tree Basement Vines GS with Jump Slash", "Can be defeated by doing a precise jump slash.");
     mTrickOptions[RT_DEKU_B1_SKIP] = TrickOption::LogicTrick(RCQUEST_BOTH, RA_DEKU_TREE, {Tricks::Tag::INTERMEDIATE}, false, "Deku Tree Basement without Slingshot", "A precise jump can be used to skip needing to use the Slingshot to go around B1 of the Deku Tree. If used with the \"Closed Forest\" setting, a Slingshot will not be guaranteed to exist somewhere inside the Forest. This trick applies to both Vanilla and Master Quest.");
     mTrickOptions[RT_DEKU_B1_BOW_WEBS] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_DEKU_TREE, {Tricks::Tag::NOVICE}, false, "Deku Tree Basement Web to Gohma with Bow", "All spider web walls in the Deku Tree basement can be burnt as adult with just a bow by shooting through torches. This trick only applies to the circular web leading to Gohma; the two vertical webs are always in logic. Backflip onto the chest near the torch at the bottom of the vine wall. With precise positioning you can shoot through the torch to the right edge of the circular web. This allows completion of adult Deku Tree with no fire source.");
+    mTrickOptions[RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_DEKU_TREE, {Tricks::Tag::NOVICE}, false, "Deku Tree Basement Backflip over Spiked Log", "Allows backflipping over the spiked log in the deku tree basement in vanilla. Only relevant if \"Shuffle Swim\" is enabled.");
     mTrickOptions[RT_DEKU_MQ_COMPASS_GS] = TrickOption::LogicTrick(RCQUEST_MQ, RA_DEKU_TREE, {Tricks::Tag::NOVICE}, false, "Deku Tree MQ Compass Room GS Boulders with Just Hammer", "Climb to the top of the vines, then let go and jump slash immediately to destroy the boulders using the Hammer, without needing to spawn a Song of Time block.");
     mTrickOptions[RT_DEKU_MQ_LOG] = TrickOption::LogicTrick(RCQUEST_MQ, RA_DEKU_TREE, {Tricks::Tag::NOVICE}, false, "Deku Tree MQ Roll Under the Spiked Log", "You can get past the spiked log by rolling to briefly shrink your hitbox. As adult, the timing is a bit more precise.");
     mTrickOptions[RT_DC_SCARECROW_GS] = TrickOption::LogicTrick(RCQUEST_VANILLA, RA_DODONGOS_CAVERN, {Tricks::Tag::NOVICE}, false, "Dodongo\'s Cavern Scarecrow GS with Armos Statue", "You can jump off an Armos Statue to reach the alcove with the Gold Skulltula. It takes quite a long time to pull the statue the entire way. The jump to the alcove can be a bit picky when done as child.");
@@ -454,6 +470,7 @@ void Settings::CreateOptions() {
         &mTrickOptions[RT_DEKU_BASEMENT_GS],
         &mTrickOptions[RT_DEKU_B1_SKIP],
         &mTrickOptions[RT_DEKU_B1_BOW_WEBS],
+        &mTrickOptions[RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG],
         &mTrickOptions[RT_DEKU_MQ_COMPASS_GS],
         &mTrickOptions[RT_DEKU_MQ_LOG],
         &mTrickOptions[RT_DC_SCARECROW_GS],
@@ -638,16 +655,23 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SKULLS_SUNS_SONG],
         &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],
         &mOptions[RSK_SHUFFLE_MASTER_SWORD],
+        &mOptions[RSK_SHUFFLE_CHILD_WALLET],
         &mOptions[RSK_SHUFFLE_OCARINA],
         &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
+        &mOptions[RSK_SHUFFLE_SWIM],
         &mOptions[RSK_SHUFFLE_WEIRD_EGG],
-        &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]
+        &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
+        &mOptions[RSK_SHUFFLE_FISHING_POLE],
     }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_SHUFFLE_NPCS_IMGUI] = OptionGroup::SubGroup("Shuffle NPCs & Merchants", {
         &mOptions[RSK_SHOPSANITY],
         &mOptions[RSK_SHOPSANITY_PRICES],
         &mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE],
+        &mOptions[RSK_FISHSANITY],
+        &mOptions[RSK_FISHSANITY_POND_COUNT],
+        &mOptions[RSK_FISHSANITY_AGE_SPLIT],
         &mOptions[RSK_SHUFFLE_SCRUBS],
+        &mOptions[RSK_SHUFFLE_BEEHIVES],
         &mOptions[RSK_SHUFFLE_COWS],
         &mOptions[RSK_SHUFFLE_MAGIC_BEANS],
         &mOptions[RSK_SHUFFLE_MERCHANTS],
@@ -712,16 +736,21 @@ void Settings::CreateOptions() {
         &mOptions[RSK_LOACH_HINT],
         &mOptions[RSK_SARIA_HINT],
         &mOptions[RSK_FROGS_HINT],
+        &mOptions[RSK_BIGGORON_HINT],
+        &mOptions[RSK_BIG_POES_HINT],
+        &mOptions[RSK_CHICKENS_HINT],
+        &mOptions[RSK_MALON_HINT],
+        &mOptions[RSK_HBA_HINT],
+        &mOptions[RSK_FISHING_POLE_HINT],
         &mOptions[RSK_WARP_SONG_HINTS],
         &mOptions[RSK_SCRUB_TEXT_HINT],
         &mOptions[RSK_KAK_10_SKULLS_HINT],
         &mOptions[RSK_KAK_20_SKULLS_HINT],
         &mOptions[RSK_KAK_30_SKULLS_HINT],
         &mOptions[RSK_KAK_40_SKULLS_HINT],
-        &mOptions[RSK_KAK_50_SKULLS_HINT]
-    }, false, WidgetContainerType::SECTION, "This setting adds some hints at locations other than Gossip Stones.\n\n"
-                    "House of Skulltula: # - Talking to a cursed House of Skulltula resident will tell you the reward"
-                    "they will give you for obtaining that many tokens.");
+        &mOptions[RSK_KAK_50_SKULLS_HINT],
+        &mOptions[RSK_KAK_100_SKULLS_HINT]
+    }, false, WidgetContainerType::SECTION, "This setting adds some hints at locations other than Gossip Stones.");
     mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI_COLUMN] = OptionGroup::SubGroup("Item Pool & Hints", std::initializer_list<OptionGroup*>{
         &mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI],
         &mOptionGroups[RSG_EXTRA_HINTS_IMGUI],
@@ -837,12 +866,18 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHOPSANITY],
         &mOptions[RSK_SHOPSANITY_PRICES],
         &mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE],
+        &mOptions[RSK_FISHSANITY],
+        &mOptions[RSK_FISHSANITY_POND_COUNT],
+        &mOptions[RSK_FISHSANITY_AGE_SPLIT],
+        &mOptions[RSK_SHUFFLE_FISHING_POLE],
         &mOptions[RSK_SHUFFLE_TOKENS],
         &mOptions[RSK_SHUFFLE_SCRUBS],
+        &mOptions[RSK_SHUFFLE_BEEHIVES],
         &mOptions[RSK_SHUFFLE_COWS],
         &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],
         &mOptions[RSK_SHUFFLE_OCARINA],
         &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
+        &mOptions[RSK_SHUFFLE_SWIM],
         &mOptions[RSK_SHUFFLE_WEIRD_EGG],
         &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
         &mOptions[RSK_SHUFFLE_MAGIC_BEANS],
@@ -930,12 +965,19 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SARIA_HINT],
         &mOptions[RSK_FROGS_HINT],
         &mOptions[RSK_WARP_SONG_HINTS],
+        &mOptions[RSK_BIGGORON_HINT],
+        &mOptions[RSK_BIG_POES_HINT],
+        &mOptions[RSK_CHICKENS_HINT],
+        &mOptions[RSK_MALON_HINT],
+        &mOptions[RSK_HBA_HINT],
         &mOptions[RSK_KAK_10_SKULLS_HINT],
         &mOptions[RSK_KAK_20_SKULLS_HINT],
         &mOptions[RSK_KAK_30_SKULLS_HINT],
         &mOptions[RSK_KAK_40_SKULLS_HINT],
         &mOptions[RSK_KAK_50_SKULLS_HINT],
+        &mOptions[RSK_KAK_100_SKULLS_HINT],
         &mOptions[RSK_SCRUB_TEXT_HINT],
+        &mOptions[RSK_FISHING_POLE_HINT],
         // TODO: Compasses show Reward/WOTH, Maps show Dungeon Mode, Starting Time
         &mOptions[RSK_DAMAGE_MULTIPLIER],
         &mOptions[RSK_BLUE_FIRE_ARROWS],
@@ -1009,7 +1051,11 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHOPSANITY],
         &mOptions[RSK_SHOPSANITY_PRICES],
         &mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE],
+        &mOptions[RSK_FISHSANITY],
+        &mOptions[RSK_FISHSANITY_POND_COUNT],
+        &mOptions[RSK_FISHSANITY_AGE_SPLIT],
         &mOptions[RSK_SHUFFLE_SCRUBS],
+        &mOptions[RSK_SHUFFLE_BEEHIVES],
         &mOptions[RSK_SHUFFLE_COWS],
         &mOptions[RSK_SHUFFLE_MAGIC_BEANS],
         &mOptions[RSK_SHUFFLE_MERCHANTS],
@@ -1046,15 +1092,22 @@ void Settings::CreateOptions() {
         { "Shuffle Settings:Shopsanity", RSK_SHOPSANITY },
         { "Shuffle Settings:Shopsanity Prices", RSK_SHOPSANITY_PRICES },
         { "Shuffle Settings:Affordable Prices", RSK_SHOPSANITY_PRICES_AFFORDABLE },
+        { "Shuffle Settings:Fishsanity", RSK_FISHSANITY },
+        { "Shuffle Settings:Pond Fish Count", RSK_FISHSANITY_POND_COUNT },
+        { "Shuffle Settings:Split Pond Fish", RSK_FISHSANITY_AGE_SPLIT },
+        { "Shuffle Settings:Shuffle Fishing Pole", RSK_SHUFFLE_FISHING_POLE },
         { "Shuffle Settings:Scrub Shuffle", RSK_SHUFFLE_SCRUBS },
+        { "Shuffle Settings:Beehive Shuffle", RSK_SHUFFLE_BEEHIVES },
         { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
         { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
         { "Shuffle Settings:Shuffle Ocarinas", RSK_SHUFFLE_OCARINA },
         { "Shuffle Settings:Shuffle Ocarina Buttons", RSK_SHUFFLE_OCARINA_BUTTONS },
+        { "Shuffle Settings:Shuffle Swim", RSK_SHUFFLE_SWIM },
         { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
         { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
         { "Shuffle Settings:Shuffle Kokiri Sword", RSK_SHUFFLE_KOKIRI_SWORD },
         { "Shuffle Settings:Shuffle Master Sword", RSK_SHUFFLE_MASTER_SWORD },
+        { "Shuffle Settings:Shuffle Child's Wallet", RSK_SHUFFLE_CHILD_WALLET },
         { "Shuffle Settings:Shuffle Weird Egg", RSK_SHUFFLE_WEIRD_EGG },
         { "Shuffle Settings:Shuffle Frog Song Rupees", RSK_SHUFFLE_FROG_SONG_RUPEES },
         { "Shuffle Settings:Shuffle Hyrule Loach Reward", RSK_SHUFFLE_HYRULE_LOACH_REWARD },
@@ -1134,8 +1187,12 @@ void Settings::CreateOptions() {
         { "Miscellaneous Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
         { "Miscellaneous Settings:40 GS Hint", RSK_KAK_40_SKULLS_HINT },
         { "Miscellaneous Settings:50 GS Hint", RSK_KAK_50_SKULLS_HINT },
+        { "Miscellaneous Settings:50 GS Hint", RSK_KAK_100_SKULLS_HINT },
+        { "Miscellaneous Settings:Biggoron's Hint", RSK_BIGGORON_HINT },
+        { "Miscellaneous Settings:Big Poes Hint", RSK_BIG_POES_HINT },
         { "Miscellaneous Settings:Warp Song Hints", RSK_WARP_SONG_HINTS },
         { "Miscellaneous Settings:Scrub Hint Text", RSK_SCRUB_TEXT_HINT },
+        { "Miscellaneous Settings:Fishing Pole Hint", RSK_FISHING_POLE_HINT },
         { "Miscellaneous Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
         { "Miscellaneous Settings:Blue Fire Arrows", RSK_BLUE_FIRE_ARROWS },
         { "Miscellaneous Settings:Sunlight Arrows", RSK_SUNLIGHT_ARROWS },
@@ -1515,6 +1572,25 @@ void Settings::UpdateOptionProperties() {
             mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE].Unhide();
             break;
     }
+    // Hide fishing pond settings if we aren't shuffling the fishing pond
+    switch (CVarGetInteger("gRandomizeFishsanity", RO_FISHSANITY_OFF)) {
+        case RO_FISHSANITY_POND:
+        case RO_FISHSANITY_BOTH:
+            mOptions[RSK_FISHSANITY].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_FISHSANITY_POND_COUNT].Unhide();
+            mOptions[RSK_FISHSANITY_AGE_SPLIT].Unhide();
+            break;
+        default:
+            mOptions[RSK_FISHSANITY].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_FISHSANITY_POND_COUNT].Hide();
+            mOptions[RSK_FISHSANITY_AGE_SPLIT].Hide();
+    }
+    // Disable fishing pole hint if the fishing pole is not shuffled
+    if (CVarGetInteger("gRandomizeShuffleFishingPole", RO_GENERIC_OFF)) {
+        mOptions[RSK_FISHING_POLE_HINT].Enable();
+    } else {
+        mOptions[RSK_FISHING_POLE_HINT].Disable("This option is disabled since the fishing pole is not shuffled.");
+    }
     // Shuffle 100 GS Reward - Force-Enabled if Ganon's Boss Key is on the 100 GS Reward
     if (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) == RO_GANON_BOSS_KEY_KAK_TOKENS) {
         mOptions[RSK_SHUFFLE_100_GS_REWARD].Disable("This option is force-enabled because \"Ganon's Boss Key\" is set to \"100 GS Reward.\"", UIWidgets::CheckboxGraphics::Checkmark);
@@ -1653,6 +1729,24 @@ void Settings::UpdateOptionProperties() {
     } else {
         mOptions[RSK_HINT_CLARITY].Unhide();
         mOptions[RSK_HINT_DISTRIBUTION].Unhide();
+    }
+
+    if (CVarGetInteger("gRandomizeShuffleCows", RO_GENERIC_OFF)) {
+        mOptions[RSK_MALON_HINT].Enable();
+        } else {
+        mOptions[RSK_MALON_HINT].Disable("Malon's hint points to a cow, so requires cows to be shuffled.");
+    }
+
+    if (CVarGetInteger("gRandomizeShuffle100GSReward", RO_GENERIC_OFF)) {
+        mOptions[RSK_KAK_100_SKULLS_HINT].Enable();
+        } else {
+        mOptions[RSK_KAK_100_SKULLS_HINT].Disable("There is no point to hinting 100 skulls if it is not shuffled");
+    }
+
+    if (CVarGetInteger("gRandomizeCuccosToReturn", 7) == 0) {
+        mOptions[RSK_CHICKENS_HINT].Disable("Anju will just give you the item instead with 0 chickens");
+    } else {
+        mOptions[RSK_CHICKENS_HINT].Enable();
     }
 }
 
@@ -1935,6 +2029,18 @@ void Settings::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocatio
         mOptions[RSK_KEYSANITY].SetDelayedOption();
         mOptions[RSK_KEYSANITY].SetSelectedIndex(3);
     }
+
+    if (!mOptions[RSK_SHUFFLE_COWS]) {
+        mOptions[RSK_MALON_HINT].SetSelectedIndex(RO_GENERIC_OFF);
+    }
+
+    if (!mOptions[RSK_SHUFFLE_100_GS_REWARD]) {
+        mOptions[RSK_KAK_100_SKULLS_HINT].SetSelectedIndex(RO_GENERIC_OFF);
+    }
+
+    if (mOptions[RSK_CUCCO_COUNT].Is(0)) {
+        mOptions[RSK_CHICKENS_HINT].SetSelectedIndex(RO_GENERIC_OFF);
+    }
 }
 void Settings::ParseJson(nlohmann::json spoilerFileJson) {
     mSeedString = spoilerFileJson["seed"].get<std::string>();
@@ -2075,6 +2181,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_LACS_TOKEN_COUNT:
                 case RSK_KEYRINGS_RANDOM_COUNT:
                 case RSK_CUCCO_COUNT:
+                case RSK_FISHSANITY_POND_COUNT:
                 case RSK_STARTING_SKULLTULA_TOKEN:
                     numericValueString = it.value();
                     mOptions[index].SetSelectedIndex(std::stoi(numericValueString));
@@ -2137,7 +2244,11 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                         mOptions[index].SetSelectedIndex(RO_SCRUBS_RANDOM);
                     }
                     break;
+                case RSK_SHUFFLE_FISHING_POLE:
+                case RSK_FISHSANITY_AGE_SPLIT:
+                case RSK_FISHING_POLE_HINT:
                 case RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD:
+                case RSK_SHUFFLE_BEEHIVES:
                 case RSK_SHUFFLE_COWS:
                 case RSK_SHUFFLE_ADULT_TRADE:
                 case RSK_SHUFFLE_MAGIC_BEANS:
@@ -2148,6 +2259,8 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SHUFFLE_OCARINA:
                 case RSK_SHUFFLE_OCARINA_BUTTONS:
                 case RSK_SHUFFLE_HYRULE_LOACH_REWARD:
+                case RSK_SHUFFLE_SWIM:
+                case RSK_SHUFFLE_CHILD_WALLET:
                 case RSK_STARTING_DEKU_SHIELD:
                 case RSK_STARTING_KOKIRI_SWORD:
                 case RSK_STARTING_ZELDAS_LULLABY:
@@ -2181,6 +2294,12 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_KAK_30_SKULLS_HINT:
                 case RSK_KAK_40_SKULLS_HINT:
                 case RSK_KAK_50_SKULLS_HINT:
+                case RSK_KAK_100_SKULLS_HINT:
+                case RSK_BIGGORON_HINT:
+                case RSK_BIG_POES_HINT:
+                case RSK_CHICKENS_HINT:
+                case RSK_MALON_HINT:
+                case RSK_HBA_HINT:
                 case RSK_WARP_SONG_HINTS:
                 case RSK_SCRUB_TEXT_HINT:
                 case RSK_KEYRINGS_GERUDO_FORTRESS:
@@ -2243,6 +2362,17 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                     //     mOptions[index].SetSelectedIndex(RO_AMMO_DROPS_ON_PLUS_BOMBCHU);
                     } else if (it.value() == "No") {
                         mOptions[index].SetSelectedIndex(RO_AMMO_DROPS_OFF);
+                    }
+                    break;
+                case RSK_FISHSANITY:
+                    if (it.value() == "Off") {
+                        mOptions[index].SetSelectedIndex(RO_FISHSANITY_OFF);
+                    } else if (it.value() == "Shuffle Fishing Pond") {
+                        mOptions[index].SetSelectedIndex(RO_FISHSANITY_POND);
+                    } else if (it.value() == "Shuffle Overworld Fish") {
+                        mOptions[index].SetSelectedIndex(RO_FISHSANITY_OVERWORLD);
+                    } else if (it.value() == "Shuffle Both") {
+                        mOptions[index].SetSelectedIndex(RO_FISHSANITY_BOTH);
                     }
                     break;
                 case RSK_SHUFFLE_BOSS_SOULS:
