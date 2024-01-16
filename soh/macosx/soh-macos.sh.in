@@ -248,11 +248,6 @@ fi
 
 cd "$SNAME"
 
-arch_name="$(uname -m)"
-launch_arch="arm64"
-if [ "${arch_name}" = "x86_64" ] && [ "$(sysctl -in sysctl.proc_translated)" != "1" ]; then
-	launch_arch="x86_64"
-fi
+"$RESPATH"/soh-macos
 
-arch -${launch_arch} "$RESPATH"/soh-macos
 exit
