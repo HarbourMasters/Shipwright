@@ -23,16 +23,6 @@ Context::Context() {
     mSpoilerfileCheckNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
     mSpoilerfileCheckNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
 
-    for (auto& item : StaticData::GetItemTable()) {
-        // Easiest way to filter out all the empty values from the array, since we still technically want the 0/RG_NONE
-        // entry
-        if (item.GetName().english.empty()) {
-            continue;
-        }
-        mSpoilerfileGetNameToEnum[item.GetName().english] = item.GetRandomizerGet();
-        mSpoilerfileGetNameToEnum[item.GetName().french] = item.GetRandomizerGet();
-    }
-
     mSpoilerfileHintTypeNameToEnum = {
         { "Static", HINT_TYPE_STATIC },
         { "Trial", HINT_TYPE_TRIAL },
@@ -93,9 +83,6 @@ Context::Context() {
     mTrials = std::make_shared<Trials>();
     mSettings = std::make_shared<Settings>();
     mFishsanity = std::make_shared<Fishsanity>();
-    for (auto& location : StaticData::GetLocationTable()) {
-        mSpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
-    }
 }
 
 RandomizerArea Context::GetAreaFromString(std::string str) {
@@ -105,6 +92,20 @@ RandomizerArea Context::GetAreaFromString(std::string str) {
 void Context::InitStaticData() {
     StaticData::InitItemTable();
     StaticData::InitLocationTable();
+
+    for (auto& item : StaticData::GetItemTable()) {
+        // Easiest way to filter out all the empty values from the array, since we still technically want the 0/RG_NONE
+        // entry
+        if (item.GetName().english.empty()) {
+            continue;
+        }
+        mSpoilerfileGetNameToEnum[item.GetName().english] = item.GetRandomizerGet();
+        mSpoilerfileGetNameToEnum[item.GetName().french] = item.GetRandomizerGet();
+    }
+
+    for (auto& location : StaticData::GetLocationTable()) {
+        mSpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
+    }
 }
 
 std::shared_ptr<Context> Context::CreateInstance() {
