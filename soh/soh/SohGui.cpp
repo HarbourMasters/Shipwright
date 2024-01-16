@@ -136,6 +136,13 @@ namespace SohGui {
     void SetupGuiElements() {
         auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
 
+        // Because we've manually added padding everywhere, adding global padding doesn't look great.
+        // Eventually we should get rid of all the manual padding and just use this.
+        // auto& style = ImGui::GetStyle();
+        // style.FramePadding = ImVec2(4.0f, 6.0f);
+        // style.ItemSpacing = ImVec2(8.0f, 6.0f);
+        // style.Colors[ImGuiCol_MenuBarBg] = UIWidgets::Colors::DarkGray;
+
         mSohMenuBar = std::make_shared<SohMenuBar>("gOpenMenuBar", CVarGetInteger("gOpenMenuBar", 0));
         gui->SetMenuBar(std::reinterpret_pointer_cast<LUS::GuiMenuBar>(mSohMenuBar));
 
