@@ -766,6 +766,53 @@ namespace UIWidgets {
         return StateButtonEx(str_id, label, ImVec2(sz, sz), ImGuiButtonFlags_None);
     }
 
+    // UIWidgets V2
+
+    void PushStyleMenu(const ImVec4& color) {
+        ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(color.x, color.y, color.z, 0.5f));
+        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(color.x, color.y, color.z, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_PopupBg, UIWidgets::Colors::DarkGray);
+        ImGui::PushStyleColor(ImGuiCol_Border, UIWidgets::Colors::DarkGray);
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 15.0f));
+        ImGui::PushStyleVar(ImGuiStyleVar_PopupBorderSize, 3.0f);
+    }
+
+    void PopStyleMenu() {
+        ImGui::PopStyleVar(2);
+        ImGui::PopStyleColor(4);
+    }
+
+    bool BeginMenu(const char* label, const ImVec4& color) {
+        bool dirty = false;
+        PushStyleMenu(color);
+        ImGui::SetNextWindowSizeConstraints(ImVec2(200.0f, 0.0f), ImVec2(FLT_MAX, FLT_MAX));
+        if (ImGui::BeginMenu(label)) {
+            dirty = true;
+        }
+        PopStyleMenu();
+        return dirty;
+    }
+
+    void PushStyleMenuItem(const ImVec4& color) {
+        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(color.x, color.y, color.z, 1.0f));
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(20.0f, 15.0f));
+    }
+
+    void PopStyleMenuItem() {
+        ImGui::PopStyleVar(1);
+        ImGui::PopStyleColor(1);
+    }
+
+    bool MenuItem(const char* label, const char* shortcut, const ImVec4& color) {
+        bool dirty = false;
+        PushStyleMenuItem(color);
+        if (ImGui::MenuItem(label, shortcut)) {
+            dirty = true;
+        }
+        PopStyleMenuItem();
+        return dirty;
+    }
+
     void PushStyleButton(const ImVec4& color) {
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(color.x, color.y, color.z, 1.0f));
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(color.x, color.y, color.z, 0.8f));
@@ -832,7 +879,8 @@ namespace UIWidgets {
         ImGui::PushID(label);
         bool dirty = false;
         float startX = ImGui::GetCursorPosX();
-        const char* invisibleLabel = ""; //("##" + std::string(label)).c_str();
+        std::string invisibleLabelStr = "##" + std::string(label);
+        const char* invisibleLabel = invisibleLabelStr.c_str();
         ImGui::BeginDisabled(options.disabled);
         PushStyleCheckbox(options.color);
         if (options.alignment == ComponentAlignment::Right) {
@@ -849,7 +897,7 @@ namespace UIWidgets {
                 ImGui::Text(label);
             }
         }
-        dirty = CustomCheckbox(invisibleLabel, value, options.disabled);
+        dirty = ImGui::Checkbox(invisibleLabel, value);
         if (options.alignment == ComponentAlignment::Right) {
             if (options.labelPosition == LabelPosition::Near) {
                 ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x - ImGui::GetStyle().FramePadding.x * 2 - ImGui::GetStyle().ItemSpacing.x * 2);
@@ -911,130 +959,6 @@ namespace UIWidgets {
         ImGui::PopStyleColor(9);
     }
 
-    bool Combobox(const char* label, uint8_t* value, std::span<const char*, std::dynamic_extent> comboArray, const ComboboxOptions& options) {
-        bool dirty = false;
-        float startX = ImGui::GetCursorPosX();
-        const char* invisibleLabel = ""; //("##" + std::string(label)).c_str();
-        ImGui::PushID(label);
-        ImGui::BeginGroup();
-        ImGui::BeginDisabled(options.disabled);
-        PushStyleCombobox(options.color);
-        if (options.alignment == ComponentAlignment::Left) {
-            if (options.labelPosition == LabelPosition::Above) {
-                ImGui::Text(label);
-                ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-            } else if (options.labelPosition == LabelPosition::Near) {
-                ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x - ImGui::GetStyle().ItemSpacing.x * 2);
-            } else if (options.labelPosition == LabelPosition::Far || options.labelPosition == LabelPosition::None) {
-                ImGui::SetNextItemWidth(ImGui::CalcTextSize(comboArray[*value]).x + ImGui::GetStyle().FramePadding.x * 4 + ImGui::GetStyle().ItemSpacing.x);
-            }
-        } else if (options.alignment == ComponentAlignment::Right) {
-            if (options.labelPosition == LabelPosition::Above) {
-                ImGui::NewLine();
-                ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x);
-                ImGui::Text(label);
-                ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-            } else if (options.labelPosition == LabelPosition::Near) {
-                ImGui::SameLine(ImGui::CalcTextSize(label).x + ImGui::GetStyle().ItemSpacing.x * 2);
-                ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-            } else if (options.labelPosition == LabelPosition::Far || options.labelPosition == LabelPosition::None) {
-                float width = ImGui::CalcTextSize(comboArray[*value]).x + ImGui::GetStyle().FramePadding.x * 4;
-                ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
-                ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-            }
-        }
-        if (ImGui::BeginCombo(invisibleLabel, comboArray[*value], options.flags)) {
-            ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10.0f, 10.0f));
-            for (uint8_t i = 0; i < comboArray.size(); i++) {
-                if (strlen(comboArray[i]) > 1) {
-                    if (ImGui::Selectable(comboArray[i], i == *value)) {
-                        *value = i;
-                        dirty = true;
-                    }
-                }
-            }
-            ImGui::PopStyleVar();
-            ImGui::EndCombo();
-        }
-        if (options.alignment == ComponentAlignment::Left) {
-            if (options.labelPosition == LabelPosition::Near) {
-                ImGui::SameLine();
-                ImGui::Text(label);
-            } else if (options.labelPosition == LabelPosition::Far) {
-                ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x);
-                ImGui::Text(label);
-            }
-        } else if (options.alignment == ComponentAlignment::Right) {
-            if (options.labelPosition == LabelPosition::Near || options.labelPosition == LabelPosition::Far) {
-                ImGui::SameLine(startX);
-                ImGui::Text(label);
-            }
-        }
-        PopStyleCombobox();
-        ImGui::EndDisabled();
-        ImGui::EndGroup();
-        if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(options.disabledTooltip, "") != 0) {
-            ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip));
-        } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(options.tooltip, "") != 0) {
-            ImGui::SetTooltip("%s", WrappedText(options.tooltip));
-        }
-        ImGui::PopID();
-        return dirty;
-    }
-
-    bool CVarCombobox(const char* label, const char* cvarName, std::span<const char*, std::dynamic_extent> comboArray, const ComboboxOptions& options) {
-        bool dirty = false;
-        uint8_t value = (uint8_t)CVarGetInteger(cvarName, options.defaultIndex);
-        if (Combobox(label, &value, comboArray, options)) {
-            CVarSetInteger(cvarName, value);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            dirty = true;
-        }
-        return dirty;
-    }
-
-    void PushStyleMenu(const ImVec4& color) {
-        ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(color.x, color.y, color.z, 0.5f));
-        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(color.x, color.y, color.z, 0.6f));
-        ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(color.x, color.y, color.z, 0.6f));
-        ImGui::PushStyleVar(ImGuiStyleVar_PopupRounding, 3.0f);
-        ImGui::PushStyleVar(ImGuiStyleVar_PopupBorderSize, 0.0f);
-        ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0.0f);
-        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(10.0f, 10.0f));
-    }
-
-    void PopStyleMenu() {
-        ImGui::PopStyleVar(4);
-        ImGui::PopStyleColor(3);
-    }
-
-    bool BeginMenu(const char* label, bool enabled) {
-        bool dirty = false;
-
-        PushStyleMenu();
-
-        if (ImGui::BeginMenu(label, enabled)) {
-            PopStyleMenu();
-            dirty = true;
-        } else {
-            PopStyleMenu();
-        }
-
-        return dirty;
-    }
-
-    // Old component usage
-    // UIWidgets::PaddedEnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
-    //                                 "gRandomizeGanonTrialCount", 1, 6, "", 6, true, true, false);
-    // UIWidgets::InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower.");
-    // New and improved component usage
-    // UIWidgets::CVarSliderInt("Ganon's Trial Count: %d", "gRandomizeGanonTrialCount", 1, 6, 6, {
-    //   .tooltip = "Set the number of trials required to enter Ganon's Tower."
-    //   .disabled = false,
-    //   .disabledTooltip = "",
-    //   .showButtons = true,
-    //   .color = UIWidgets::Color::Indigo,
-    // });
     void PushStyleSlider(const ImVec4& color) {
         ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 1.0f));
         ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(color.x, color.y, color.z, 1.0f));
@@ -1053,29 +977,29 @@ namespace UIWidgets {
         ImGui::PopStyleColor(6);
     }
 
-    bool CVarSliderInt(const char* label, const char* cvarName, int32_t min, int32_t max, const int32_t defaultValue, const SliderOptions& options){
+    bool SliderInt(const char* label, int32_t* value, int32_t min, int32_t max, const IntSliderOptions& options) {
         bool dirty = false;
-        const char* invisibleLabel = "";//("##" + std::string(label)).c_str();
-        int32_t value = CVarGetInteger(cvarName, defaultValue);
+        std::string invisibleLabelStr = "##" + std::string(label);
+        const char* invisibleLabel = invisibleLabelStr.c_str();
         ImGui::PushID(label);
         ImGui::BeginGroup();
         ImGui::BeginDisabled(options.disabled);
         PushStyleSlider(options.color);
         if (options.alignment == ComponentAlignment::Left) {
             if (options.labelPosition == LabelPosition::Above) {
-                ImGui::Text(label, value);
+                ImGui::Text(label, *value);
             }
         } else if (options.alignment == ComponentAlignment::Right) {
             if (options.labelPosition == LabelPosition::Above) {
                 ImGui::NewLine();
                 ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x);
-                ImGui::Text(label, value);
+                ImGui::Text(label, *value);
             }
         }
         if (options.showButtons) {
-            if (Button("-", { .color = options.color, .size = Sizes::Inline }) && value > min) {
-                value--;
-                CVarSetInteger(cvarName, value);
+            if (Button("-", { .color = options.color, .size = Sizes::Inline }) && *value > min) {
+                *value -= options.step;
+                if (*value < min) *value = min;
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 dirty = true;
             }
@@ -1084,17 +1008,16 @@ namespace UIWidgets {
         } else {
             ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
         }
-        if (ImGui::SliderScalar(invisibleLabel, ImGuiDataType_S32, &value, &min, &max, options.format, options.flags)) {
-            CVarSetInteger(cvarName, value);
+        if (ImGui::SliderScalar(invisibleLabel, ImGuiDataType_S32, value, &min, &max, options.format, options.flags)) {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             dirty = true;
         }
         if (options.showButtons) {
             ImGui::SameLine(0, 3.0f);
             ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-            if (Button("+", { .color = options.color, .size = Sizes::Inline }) && value < max) {
-                value++;
-                CVarSetInteger(cvarName, value);
+            if (Button("+", { .color = options.color, .size = Sizes::Inline }) && *value < max) {
+                *value += options.step;
+                if (*value > max) *value = max;
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 dirty = true;
             }
@@ -1108,6 +1031,89 @@ namespace UIWidgets {
             ImGui::SetTooltip("%s", WrappedText(options.tooltip));
         }
         ImGui::PopID();
+        return dirty;
+    }
+
+    bool CVarSliderInt(const char* label, const char* cvarName, int32_t min, int32_t max, const int32_t defaultValue, const IntSliderOptions& options) {
+        bool dirty = false;
+        int32_t value = CVarGetInteger(cvarName, defaultValue);
+        if (SliderInt(label, &value, min, max, options)) {
+            CVarSetInteger(cvarName, value);
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            dirty = true;
+        }
+        return dirty;
+    }
+
+    bool SliderFloat(const char* label, float* value, float min, float max, const FloatSliderOptions& options) {
+        bool dirty = false;
+        std::string invisibleLabelStr = "##" + std::string(label);
+        const char* invisibleLabel = invisibleLabelStr.c_str();
+        float valueToDisplay = options.isPercentage ? *value * 100.0f : *value;
+        float maxToDisplay = options.isPercentage ? max * 100.0f : max;
+        float minToDisplay = options.isPercentage ? min * 100.0f : min;
+        ImGui::PushID(label);
+        ImGui::BeginGroup();
+        ImGui::BeginDisabled(options.disabled);
+        PushStyleSlider(options.color);
+        if (options.alignment == ComponentAlignment::Left) {
+            if (options.labelPosition == LabelPosition::Above) {
+                ImGui::Text(label, valueToDisplay);
+            }
+        } else if (options.alignment == ComponentAlignment::Right) {
+            if (options.labelPosition == LabelPosition::Above) {
+                ImGui::NewLine();
+                ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x);
+                ImGui::Text(label, valueToDisplay);
+            }
+        }
+        if (options.showButtons) {
+            if (Button("-", { .color = options.color, .size = Sizes::Inline }) && *value > min) {
+                *value -= options.step;
+                if (*value < min) *value = min;
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                dirty = true;
+            }
+            ImGui::SameLine(0, 3.0f);
+            ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize("+").x + 20.0f + 3.0f));
+        } else {
+            ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+        }
+        if (ImGui::SliderScalar(invisibleLabel, ImGuiDataType_Float, &valueToDisplay, &minToDisplay, &maxToDisplay, options.format, options.flags)) {
+            *value = options.isPercentage ? valueToDisplay / 100.0f : valueToDisplay;
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            dirty = true;
+        }
+        if (options.showButtons) {
+            ImGui::SameLine(0, 3.0f);
+            ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+            if (Button("+", { .color = options.color, .size = Sizes::Inline }) && *value < max) {
+                *value += options.step;
+                if (*value > max) *value = max;
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                dirty = true;
+            }
+        }
+        PopStyleSlider();
+        ImGui::EndDisabled();
+        ImGui::EndGroup();
+        if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(options.disabledTooltip, "") != 0) {
+            ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip));
+        } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(options.tooltip, "") != 0) {
+            ImGui::SetTooltip("%s", WrappedText(options.tooltip));
+        }
+        ImGui::PopID();
+        return dirty;
+    }
+
+    bool CVarSliderFloat(const char* label, const char* cvarName, float min, float max, const float defaultValue, const FloatSliderOptions& options) {
+        bool dirty = false;
+        float value = CVarGetFloat(cvarName, defaultValue);
+        if (SliderFloat(label, &value, min, max, options)) {
+            CVarSetFloat(cvarName, value);
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            dirty = true;
+        }
         return dirty;
     }
 }
