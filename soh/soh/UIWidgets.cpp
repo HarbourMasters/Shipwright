@@ -832,7 +832,7 @@ namespace UIWidgets {
         ImGui::PushID(label);
         bool dirty = false;
         float startX = ImGui::GetCursorPosX();
-        const char* invisibleLabel = ("##" + std::string(label)).c_str();
+        const char* invisibleLabel = ""; //("##" + std::string(label)).c_str();
         ImGui::BeginDisabled(options.disabled);
         PushStyleCheckbox(options.color);
         if (options.alignment == ComponentAlignment::Right) {
@@ -914,7 +914,7 @@ namespace UIWidgets {
     bool Combobox(const char* label, uint8_t* value, std::span<const char*, std::dynamic_extent> comboArray, const ComboboxOptions& options) {
         bool dirty = false;
         float startX = ImGui::GetCursorPosX();
-        const char* invisibleLabel = ("##" + std::string(label)).c_str();
+        const char* invisibleLabel = ""; //("##" + std::string(label)).c_str();
         ImGui::PushID(label);
         ImGui::BeginGroup();
         ImGui::BeginDisabled(options.disabled);
@@ -1055,7 +1055,7 @@ namespace UIWidgets {
 
     bool CVarSliderInt(const char* label, const char* cvarName, int32_t min, int32_t max, const int32_t defaultValue, const SliderOptions& options){
         bool dirty = false;
-        const char* invisibleLabel = ("##" + std::string(label)).c_str();
+        const char* invisibleLabel = "";//("##" + std::string(label)).c_str();
         int32_t value = CVarGetInteger(cvarName, defaultValue);
         ImGui::PushID(label);
         ImGui::BeginGroup();
@@ -1073,7 +1073,7 @@ namespace UIWidgets {
             }
         }
         if (options.showButtons) {
-            if (Button("-", { .size = Sizes::Inline, .color = options.color }) && value > min) {
+            if (Button("-", { .color = options.color, .size = Sizes::Inline }) && value > min) {
                 value--;
                 CVarSetInteger(cvarName, value);
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -1092,7 +1092,7 @@ namespace UIWidgets {
         if (options.showButtons) {
             ImGui::SameLine(0, 3.0f);
             ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-            if (Button("+", { .size = Sizes::Inline, .color = options.color }) && value < max) {
+            if (Button("+", { .color = options.color, .size = Sizes::Inline }) && value < max) {
                 value++;
                 CVarSetInteger(cvarName, value);
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();

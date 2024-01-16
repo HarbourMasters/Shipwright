@@ -70,6 +70,7 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
     };
 
     static const char* chestStyleMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
+    static const char* uiMenuColors[9] = { "White", "Gray", "Indigo", "Red", "Dark Red", "Light Green", "Green", "Dark Green", "Yellow" };
     static const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run" };
     static const char* mirroredWorldModes[9] = {
         "Disabled",           "Always",        "Random",          "Random (Seeded)",          "Dungeons",
@@ -104,6 +105,7 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
         "OHKO"
     };
     static const char* timeTravelOptions[3] = { "Disabled", "Ocarina of Time", "Any Ocarina" };
+    static ImVec4 colorChoice;
 
 extern "C" SaveContext gSaveContext;
 
@@ -266,6 +268,41 @@ void DrawSettingsMenu() {
         UIWidgets::Spacer(0);
 
         if (ImGui::BeginMenu("Graphics")) {
+            // New
+            UIWidgets::CVarCombobox("Menu Theme", "gMenuTheme", uiMenuColors, {
+                .color = colorChoice,
+                .tooltip = "Change the Color Theme of the Menu Bar."
+            });
+            switch (CVarGetInteger("gMenuTheme", 0)) {
+                case 1:
+                    colorChoice = ImVec4(0.4f, 0.4f, 0.4f, 0.4f);
+                    break;
+                case 2:
+                    colorChoice = ImVec4(0.24f, 0.31f, 0.71f, 1.0f);
+                    break;
+                case 3:
+                    colorChoice = ImVec4(0.5f, 0.0f, 0.0f, 1.0f);
+                    break;
+                case 4:
+                    colorChoice = ImVec4(0.3f, 0.0f, 0.0f, 1.0f);
+                    break;
+                case 5:
+                    colorChoice = ImVec4(0.0f, 0.7f, 0.0f, 1.0f);
+                    break;
+                case 6:
+                    colorChoice = ImVec4(0.0f, 0.5f, 0.0f, 1.0f);
+                    break;
+                case 7:
+                    colorChoice = ImVec4(0.0f, 0.3f, 0.0f, 1.0f);
+                    break;
+                case 8:
+                    colorChoice = ImVec4(1.0f, 0.627f, 0.0f, 1.0f);
+                    break;
+                default:
+                    colorChoice = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+                    break;
+            }
+        // Old
         #ifndef __APPLE__
             const bool disabled_resolutionSlider = CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0) &&
                                                    CVarGetInteger("gAdvancedResolution.Enabled", 0);
@@ -536,65 +573,38 @@ void DrawEnhancementsMenu() {
                 ImGui::Text("Speed-ups:");
                 UIWidgets::PaddedSeparator();
 
-                // new
                 UIWidgets::CVarSliderInt("Text Speed", "gTextSpeed", 1, 5, 1, {
+                    .color = colorChoice,
                     .format = "%dx",
                 });
                 UIWidgets::CVarCheckbox("Skip Text", "gSkipText", {
+                    .color = colorChoice,
                     .tooltip = "Holding down B skips text",
                 });
                 UIWidgets::CVarSliderInt("King Zora Speed", "gMweepSpeed", 1, 5, 1, {
+                    .color = colorChoice,
                     .format = "%dx",
                 });
-                UIWidgets::CVarSliderInt("Biggoron Forge Time", "gForgeTime", 0, 3, 3, {
-                    .tooltip = "Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword",
-                    .format = "%d days"
-                });
                 UIWidgets::CVarSliderInt("Vine/Ladder Climb speed", "gClimbSpeed", 0, 12, 0, {
+                    .color = colorChoice,
                     .format = "%dx",
                 });
                 UIWidgets::CVarSliderInt("Block pushing speed", "gFasterBlockPush", 0, 5, 0, {
+                    .color = colorChoice,
                     .format = "%dx",
                 });
                 UIWidgets::CVarCheckbox("Faster Heavy Block Lift", "gFasterHeavyBlockLift", {
+                    .color = colorChoice,
                     .tooltip = "Speeds up lifting silver rocks and obelisks",
                 });
-                UIWidgets::CVarCheckbox("Link as default file name", "gLinkDefaultName", {
-                    .tooltip = "Allows you to have \"Link\" as a premade file name",
+                UIWidgets::CVarCheckbox("Skip Pickup Messages", "gFastDrops", {
+                    .color = colorChoice,
+                    .tooltip = "Only change the size/texture of chests if you have the Stone of Agony.",
                 });
-                UIWidgets::CVarCheckbox("No Forced Navi", "gNoForcedNavi", {
-                    .tooltip = "Prevent forced Navi conversations",
+                UIWidgets::CVarCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback", {
+                    .color = colorChoice,
+                    .tooltip = "Skip the part where the Ocarina playback is called when you play a song",
                 });
-                UIWidgets::CVarCheckbox("No Skulltula Freeze", "gSkulltulaFreeze", {
-                    .tooltip = "Stops the game from freezing the player when picking up Gold Skulltulas",
-                });
-                UIWidgets::CVarCheckbox("Fast Chests", "gFastChests", {
-                    .tooltip = "Kick open every chest",
-                });
-                UIWidgets::CVarCombobox("Chest size & texture matches contents", "gChestSizeAndTextureMatchesContents", chestStyleMatchesContentsOptions, {
-                    .defaultIndex = CSMC_DISABLED,
-                    .tooltip =
-                        "Chest sizes and textures are changed to help identify the item inside.\n"
-                        " - Major items: Large gold chests\n"
-                        " - Lesser items: Large brown chests\n"
-                        " - Junk items: Small brown chests\n"
-                        " - Small keys: Small silver chest\n"
-                        " - Boss keys: Vanilla size and texture\n"
-                        " - Skulltula Tokens: Small skulltula chest\n",
-                });
-                // old
-                UIWidgets::PaddedEnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "", 1, true, false, true);
-                UIWidgets::PaddedEnhancementCheckbox("Skip Text", "gSkipText", false, true);
-                UIWidgets::Tooltip("Holding down B skips text");
-                UIWidgets::PaddedEnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", "gMweepSpeed", 1, 5, "", 1, true, false, true);
-                UIWidgets::PaddedEnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "", 0, true, false, true);
-                UIWidgets::PaddedEnhancementSliderInt("Block pushing speed +%d", "##BLOCKSPEED", "gFasterBlockPush", 0, 5, "", 0, true, false, true);
-                UIWidgets::PaddedEnhancementCheckbox("Faster Heavy Block Lift", "gFasterHeavyBlockLift", false, false);
-                UIWidgets::Tooltip("Speeds up lifting silver rocks and obelisks");
-                UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", "gFastDrops", true, false);
-                UIWidgets::Tooltip("Skip pickup messages for new consumable items and bottle swipes");
-                UIWidgets::PaddedEnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback", true, false);
-                UIWidgets::Tooltip("Skip the part where the Ocarina playback is called when you play a song");
                 bool forceSkipScarecrow = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_SCARECROWS_SONG);
                 static const char* forceSkipScarecrowText = "This setting is forcefully enabled because a savefile\nwith \"Skip Scarecrow Song\" is loaded";
                 UIWidgets::PaddedEnhancementCheckbox("Skip Scarecrow Song", "gSkipScarecrow", true, false,
@@ -612,51 +622,63 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Spacer(0);
                 ImGui::Text("Changes:");
                 UIWidgets::PaddedSeparator();
-                
-                UIWidgets::PaddedEnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "", 3, true, false, true);
-                UIWidgets::Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
+
+                UIWidgets::CVarSliderInt("Biggoron Forge Time", "gForgeTime", 0, 3, 3, {
+                    .color = colorChoice,
+                    .tooltip = "Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword",
+                    .format = "%d days"
+                });
                 UIWidgets::PaddedEnhancementCheckbox("Remember Save Location", "gRememberSaveLocation", false, false);
                 UIWidgets::Tooltip("When loading a save, places Link at the last entrance he went through.\n"
                         "This doesn't work if the save was made in a grotto.");
-                UIWidgets::PaddedEnhancementCheckbox("No Forced Navi", "gNoForcedNavi", true, false);
-                UIWidgets::Tooltip("Prevent forced Navi conversations");
-                UIWidgets::PaddedEnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze", true, false);
-                UIWidgets::Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
+                UIWidgets::CVarCheckbox("No Forced Navi", "gNoForcedNavi", {
+                    .color = colorChoice,
+                    .tooltip = "Prevent forced Navi conversations",
+                });
+                UIWidgets::CVarCheckbox("No Skulltula Freeze", "gSkulltulaFreeze", {
+                    .color = colorChoice,
+                    .tooltip = "Stops the game from freezing the player when picking up Gold Skulltulas",
+                });
                 UIWidgets::PaddedEnhancementCheckbox("Nighttime GS Always Spawn", "gNightGSAlwaysSpawn", true, false);
                 UIWidgets::Tooltip("Nighttime Skulltulas will spawn during both day and night.");
                 UIWidgets::PaddedEnhancementCheckbox("Dampe Appears All Night", "gDampeAllNight", true, false);
                 UIWidgets::Tooltip("Makes Dampe appear anytime during the night, not just his usual working hours.");
-                UIWidgets::PaddedEnhancementCheckbox("Fast Chests", "gFastChests", true, false);
-                UIWidgets::Tooltip("Kick open every chest");
-                UIWidgets::PaddedText("Chest size & texture matches contents", true, false);
-                if (UIWidgets::EnhancementCombobox("gChestSizeAndTextureMatchesContents", chestStyleMatchesContentsOptions, CSMC_DISABLED)) {
-                    if (CVarGetInteger("gChestSizeAndTextureMatchesContents", CSMC_DISABLED) == CSMC_DISABLED) {
-                        CVarSetInteger("gChestSizeDependsStoneOfAgony", 0);
-                    }
-                }
-                UIWidgets::Tooltip(
-                    "Chest sizes and textures are changed to help identify the item inside.\n"
-                    " - Major items: Large gold chests\n"
-                    " - Lesser items: Large brown chests\n"
-                    " - Junk items: Small brown chests\n"
-                    " - Small keys: Small silver chest\n"
-                    " - Boss keys: Vanilla size and texture\n"
-                    " - Skulltula Tokens: Small skulltula chest\n"
-                    "\n"
-                    "NOTE: Textures will not apply if you are using a mod pack with a custom chest model."
-                );
+                UIWidgets::CVarCheckbox("Fast Chests", "gFastChests", {
+                    .color = colorChoice,
+                    .tooltip = "Kick open every chest",
+                });
+                UIWidgets::CVarCombobox("Chest size & texture matches contents", "gChestSizeAndTextureMatchesContents", chestStyleMatchesContentsOptions, {
+                    .color = colorChoice,
+                    .tooltip =
+                        "Chest sizes and textures are changed to help identify the item inside.\n"
+                        " - Major items: Large gold chests\n"
+                        " - Lesser items: Large brown chests\n"
+                        " - Junk items: Small brown chests\n"
+                        " - Small keys: Small silver chest\n"
+                        " - Boss keys: Vanilla size and texture\n"
+                        " - Skulltula Tokens: Small skulltula chest\n",
+                    .defaultIndex = CSMC_DISABLED,
+                });
                 if (CVarGetInteger("gChestSizeAndTextureMatchesContents", CSMC_DISABLED) != CSMC_DISABLED) {
-                    UIWidgets::PaddedEnhancementCheckbox("Chests of Agony", "gChestSizeDependsStoneOfAgony", true, false);
-                    UIWidgets::Tooltip("Only change the size/texture of chests if you have the Stone of Agony.");
+                    UIWidgets::CVarCheckbox("Chests of Agony", "gChestSizeDependsStoneOfAgony", {
+                        .color = colorChoice,
+                        .tooltip = "Only change the size/texture of chests if you have the Stone of Agony.",
+                    });
                 }
-                UIWidgets::PaddedEnhancementCheckbox("Ask to Equip New Items", "gAskToEquip", true, false);
-                UIWidgets::Tooltip("Adds a prompt to equip newly-obtained swords, shields and tunics");
-                UIWidgets::PaddedEnhancementCheckbox("Better Owl", "gBetterOwl", true, false);
-                UIWidgets::Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
+                UIWidgets::CVarCheckbox("Ask to Equip New Items", "gAskToEquip", {
+                    .color = colorChoice,
+                    .tooltip = "Adds a prompt to equip newly-obtained swords, shields and tunics",
+                });
+                UIWidgets::CVarCheckbox("Better Owl", "gBetterOwl", {
+                    .color = colorChoice,
+                    .tooltip = "The default response to Kaepora Gaebora is always that you understood what he said",
+                });
                 UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", "gMarketSneak", true, false);
                 UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking to the guard next to the gate.");
-                UIWidgets::PaddedEnhancementCheckbox("Link as default file name", "gLinkDefaultName", true, false);
-                UIWidgets::Tooltip("Allows you to have \"Link\" as a premade file name");
+                UIWidgets::CVarCheckbox("Link as default file name", "gLinkDefaultName", {
+                    .color = colorChoice,
+                    .tooltip = "Allows you to have \"Link\" as a premade file name",
+                });
                 UIWidgets::PaddedText("Time Travel with the Song of Time", true, false);
                 UIWidgets::EnhancementCombobox("gTimeTravel", timeTravelOptions, 0);
                 UIWidgets::Tooltip("Allows Link to freely change age by playing the Song of Time.\n"
