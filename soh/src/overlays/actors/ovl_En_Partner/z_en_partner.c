@@ -21,7 +21,7 @@ void EnPartner_Draw(Actor* thisx, PlayState* play);
 void EnPartner_SpawnSparkles(EnPartner* this, PlayState* play, s32 sparkleLife);
 
 void func_808328EC(Player* this, u16 sfxId);
-void func_808429B4(PlayState* play, s32 speed, s32 y, s32 countdown);
+void Player_RequestQuake(PlayState* play, s32 speed, s32 y, s32 countdown);
 s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play);
 
 static InitChainEntry sInitChain[] = {
@@ -278,7 +278,7 @@ void UseHammer(Actor* thisx, PlayState* play, u8 started) {
             static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
             Vec3f shockwavePos = this->actor.world.pos;
 
-            func_808429B4(play, 27767, 7, 20);
+            Player_RequestQuake(play, 27767, 7, 20);
             Player_PlaySfx(&this->actor, NA_SE_IT_HAMMER_HIT);
 
             EffectSsBlast_SpawnWhiteShockwave(play, &shockwavePos, &zeroVec, &zeroVec);

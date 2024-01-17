@@ -92,3 +92,60 @@ void PadUtils_UpdateRelXY(Input* input) {
 
     PadUtils_SetRelXY(input, relX, relY);
 }
+
+// #region SOH [Enhancement]
+s8 PadUtils_GetCurRX(Input* input) {
+    return input->cur.right_stick_x;
+}
+
+s8 PadUtils_GetCurRY(Input* input) {
+    return input->cur.right_stick_y;
+}
+
+void PadUtils_SetRelRXY(Input* input, s32 x, s32 y) {
+    input->rel.right_stick_x = x;
+    input->rel.right_stick_y = y;
+}
+
+s8 PadUtils_GetRelRXImpl(Input* input) {
+    return input->rel.right_stick_x;
+}
+
+s8 PadUtils_GetRelRYImpl(Input* input) {
+    return input->rel.right_stick_y;
+}
+
+s8 PadUtils_GetRelRX(Input* input) {
+    return PadUtils_GetRelRXImpl(input);
+}
+
+s8 PadUtils_GetRelRY(Input* input) {
+    return PadUtils_GetRelRYImpl(input);
+}
+
+void PadUtils_UpdateRelRXY(Input* input) {
+    s32 curX = PadUtils_GetCurRX(input);
+    s32 curY = PadUtils_GetCurRY(input);
+    s32 relX;
+    s32 relY;
+
+    if (curX > 7) {
+        relX = (curX < 0x43) ? curX - 7 : 0x43 - 7;
+    } else if (curX < -7) {
+        relX = (curX > -0x43) ? curX + 7 : -0x43 + 7;
+    } else {
+        relX = 0;
+    }
+
+    if (curY > 7) {
+        relY = (curY < 0x43) ? curY - 7 : 0x43 - 7;
+
+    } else if (curY < -7) {
+        relY = (curY > -0x43) ? curY + 7 : -0x43 + 7;
+    } else {
+        relY = 0;
+    }
+
+    PadUtils_SetRelRXY(input, relX, relY);
+}
+// #endregion

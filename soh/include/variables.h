@@ -107,7 +107,7 @@ extern "C"
 	extern s16 gLinkObjectIds[2];
 	extern u32 gObjectTableSize;
 	extern RomFile gObjectTable[OBJECT_ID_MAX];
-	extern EntranceInfo gEntranceTable[1556];
+	extern EntranceInfo gEntranceTable[ENTR_MAX];
 	extern SceneTableEntry gSceneTable[SCENE_ID_MAX];
 	extern u16 gSramSlotOffsets[];
 	// 4 16-colors palettes
@@ -224,7 +224,7 @@ extern "C"
 	extern u16 gAudioSfxSwapSource[10];
 	extern u16 gAudioSfxSwapTarget[10];
 	extern u8 gAudioSfxSwapMode[10];
-	extern unk_D_8016E750 D_8016E750[4];
+	extern ActiveSequence gActiveSeqs[4];
 	extern AudioContext gAudioContext;
 	extern void(*D_801755D0)(void);
 

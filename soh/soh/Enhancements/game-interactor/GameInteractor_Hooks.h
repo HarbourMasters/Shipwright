@@ -58,7 +58,14 @@ void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode);
 
 // MARK: - Game
 void GameInteractor_ExecuteOnSetGameLanguage();
+
 void GameInteractor_ExecuteOnGameStillFrozen();
+
+
+// MARK: - System
+void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void));
+
+
 #ifdef __cplusplus
 }
 #endif

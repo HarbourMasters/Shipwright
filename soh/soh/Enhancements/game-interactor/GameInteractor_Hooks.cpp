@@ -183,7 +183,16 @@ void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode) {
 void GameInteractor_ExecuteOnSetGameLanguage() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
 }
+
 void GameInteractor_ExecuteOnGameStillFrozen()
 {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGameStillFrozen>();
 }
+
+
+// MARK: - System
+
+void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void)) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAssetAltChange>(fn);
+}
+

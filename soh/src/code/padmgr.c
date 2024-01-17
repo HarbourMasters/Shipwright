@@ -297,6 +297,11 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
         PadUtils_UpdateRelXY(input);
         input->press.stick_x += (s8)(input->cur.stick_x - input->prev.stick_x);
         input->press.stick_y += (s8)(input->cur.stick_y - input->prev.stick_y);
+        // #region SOH [Enhancement]
+        PadUtils_UpdateRelRXY(input); 
+        input->press.right_stick_x += (s8)(input->cur.right_stick_x - input->prev.right_stick_x);
+        input->press.right_stick_y += (s8)(input->cur.right_stick_y - input->prev.right_stick_y);
+        // #endregion
     }
 
     uint8_t rumble = (padMgr->rumbleEnable[0] > 0);
@@ -389,6 +394,11 @@ void PadMgr_RequestPadData(PadMgr* padMgr, Input* inputs, s32 mode) {
             PadUtils_UpdateRelXY(newInput);
             newInput->press.stick_x += (s8)(newInput->cur.stick_x - newInput->prev.stick_x);
             newInput->press.stick_y += (s8)(newInput->cur.stick_y - newInput->prev.stick_y);
+            // #region SOH [Enhancement]
+            PadUtils_UpdateRelRXY(newInput);
+            newInput->press.right_stick_x += (s8)(newInput->cur.right_stick_x - newInput->prev.right_stick_x);
+            newInput->press.right_stick_y += (s8)(newInput->cur.right_stick_y - newInput->prev.right_stick_y);
+            // #endregion
         }
         ogInput++;
         newInput++;
