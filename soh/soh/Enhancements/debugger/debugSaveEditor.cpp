@@ -1123,6 +1123,36 @@ void DrawFlagsTab() {
                     }
                 });
             }
+
+            // make some buttons to help with fishsanity debugging
+            uint8_t fsMode = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY);
+            if (flagTable.flagTableType == RANDOMIZER_INF &&
+                fsMode != RO_FISHSANITY_OFF && fsMode != RO_FISHSANITY_OVERWORLD) {
+                if (ImGui::Button("Catch All (Child)")) {
+                    for (int k = RAND_INF_CHILD_FISH_1; k <= RAND_INF_CHILD_LOACH_2; k++) {
+                        Flags_SetRandomizerInf((RandomizerInf)k);
+                    }
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Uncatch All (Child)")) {
+                    for (int k = RAND_INF_CHILD_FISH_1; k <= RAND_INF_CHILD_LOACH_2; k++) {
+                        Flags_UnsetRandomizerInf((RandomizerInf)k);
+                    }
+                }
+
+                if (ImGui::Button("Catch All (Adult)")) {
+                    for (int k = RAND_INF_ADULT_FISH_1; k <= RAND_INF_ADULT_LOACH; k++) {
+                        Flags_SetRandomizerInf((RandomizerInf)k);
+                    }
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Uncatch All (Adult)")) {
+                    for (int k = RAND_INF_ADULT_FISH_1; k <= RAND_INF_ADULT_LOACH; k++) {
+                        Flags_UnsetRandomizerInf((RandomizerInf)k);
+                    }
+                }
+            }
+
             ImGui::TreePop();
         }
     }

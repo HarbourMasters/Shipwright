@@ -348,6 +348,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
     f32 shadowScale = 6.0f;
     s32 getItemId = GI_NONE;
     this->randoGiEntry = (GetItemEntry)GET_ITEM_NONE;
+    this->randoCheck = (RandomizerCheck)RC_UNKNOWN_CHECK;
     s16 spawnParam8000 = this->actor.params & 0x8000;
     s32 pad1;
 
@@ -485,12 +486,11 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
     this->actor.shape.shadowAlpha = 180;
     this->actor.focus.pos = this->actor.world.pos;
     this->getItemId = GI_NONE;
-    RandomizerCheck randoCheck =
-        Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->ogParams);
+    this->randoCheck = Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->ogParams);
+    this->randoInf = RAND_INF_MAX;
 
-    if (IS_RANDO && randoCheck != RC_UNKNOWN_CHECK) {
-        this->randoGiEntry =
-            Randomizer_GetItemFromKnownCheck(randoCheck, getItemId);
+    if (IS_RANDO && this->randoCheck != RC_UNKNOWN_CHECK) {
+        this->randoGiEntry = Randomizer_GetItemFromKnownCheck(this->randoCheck, getItemId);
         this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
     }
 
@@ -581,7 +581,9 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             if (!IS_RANDO || this->randoGiEntry.getItemId == GI_NONE) {
                 func_8002F554(&this->actor, play, getItemId);
             } else {
-                GiveItemEntryFromActorWithFixedRange(&this->actor, play, this->randoGiEntry);
+                if (GiveItemEntryFromActorWithFixedRange(&this->actor, play, this->randoGiEntry) && this->randoInf != RAND_INF_MAX) {
+                    Flags_SetRandomizerInf(this->randoInf);
+                }
             }
         }
     }
@@ -734,7 +736,9 @@ void func_8001E5C8(EnItem00* this, PlayState* play) {
             if (!IS_RANDO) {
                 func_8002F434(&this->actor, play, this->getItemId, 50.0f, 80.0f);
             } else {
-                GiveItemEntryFromActor(&this->actor, play, this->randoGiEntry, 50.0f, 80.0f);
+                if (GiveItemEntryFromActor(&this->actor, play, this->randoGiEntry, 50.0f, 80.0f) && this->randoInf != RAND_INF_MAX) {
+                    Flags_SetRandomizerInf(this->randoInf);
+                }
             }
             this->unk_15A++;
         } else {
@@ -955,7 +959,9 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
             func_8002F554(&this->actor, play, getItemId);
         } else {
             getItemId = this->randoGiEntry.getItemId;
-            GiveItemEntryFromActorWithFixedRange(&this->actor, play, this->randoGiEntry);
+            if (GiveItemEntryFromActorWithFixedRange(&this->actor, play, this->randoGiEntry) && this->randoInf != RAND_INF_MAX) {
+                Flags_SetRandomizerInf(this->randoInf);
+            }
         }
     }
 
@@ -1363,15 +1369,11 @@ static const Vtx customDropVtx[] = {
  */
 void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
     if (IS_RANDO && (this->getItemId != GI_NONE || this->actor.params == ITEM00_SMALL_KEY)) {
-        RandomizerCheck randoCheck =
-            Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->ogParams);
-
-        if (randoCheck != RC_UNKNOWN_CHECK) {
-            this->randoGiEntry =
-                Randomizer_GetItemFromKnownCheck(randoCheck, GI_NONE);
+        if (this->randoCheck != RC_UNKNOWN_CHECK) {
+            this->randoGiEntry = Randomizer_GetItemFromKnownCheck(this->randoCheck, GI_NONE);
             this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
         }
-        
+
         f32 mtxScale = 10.67f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
         EnItem00_CustomItemsParticles(&this->actor, play, this->randoGiEntry);
@@ -1457,12 +1459,8 @@ void EnItem00_DrawHeartContainer(EnItem00* this, PlayState* play) {
  */
 void EnItem00_DrawHeartPiece(EnItem00* this, PlayState* play) {
     if (IS_RANDO) {
-        RandomizerCheck randoCheck =
-            Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->ogParams);
-
-        if (randoCheck != RC_UNKNOWN_CHECK) {
-            this->randoGiEntry =
-                Randomizer_GetItemFromKnownCheck(randoCheck, GI_NONE);
+        if (this->randoCheck != RC_UNKNOWN_CHECK) {
+            this->randoGiEntry = Randomizer_GetItemFromKnownCheck(this->randoCheck, GI_NONE);
             this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
         }
 

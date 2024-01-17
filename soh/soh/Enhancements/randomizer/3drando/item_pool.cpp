@@ -557,6 +557,43 @@ static void PlaceVanillaBossKeys() {
 // TODO: This feels like it could be moved to Dungeons class and probably shorten
 // a few function call chains. Needs investigation.
 
+static void PlaceVanillaBeehiveRupees() {
+  auto ctx = Rando::Context::GetInstance();
+  ctx->PlaceItemInLocation(RC_KF_STORMS_GROTTO_BEEHIVE_LEFT,         RG_BLUE_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT, RG_BLUE_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_LEFT,    RG_BLUE_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_HF_OPEN_GROTTO_BEEHIVE_LEFT,           RG_BLUE_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_LEFT,      RG_BLUE_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_KAK_OPEN_GROTTO_BEEHIVE_LEFT,          RG_BLUE_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_DMT_STORMS_GROTTO_BEEHIVE_LEFT,        RG_BLUE_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_DMC_UPPER_GROTTO_BEEHIVE_LEFT,         RG_BLUE_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_ZR_OPEN_GROTTO_BEEHIVE_LEFT,           RG_BLUE_RUPEE, false, true);
+
+  ctx->PlaceItemInLocation(RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT,         RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT, RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE,           RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_SFM_STORMS_GROTTO_BEEHIVE,              RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_RIGHT,    RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_HF_OPEN_GROTTO_BEEHIVE_RIGHT,           RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_RIGHT,      RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_HF_INSIDE_FENCE_GROTTO_BEEHIVE,         RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_LLR_GROTTO_BEEHIVE,                     RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_KAK_OPEN_GROTTO_BEEHIVE_RIGHT,          RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_DMT_COW_GROTTO_BEEHIVE,                 RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_DMT_STORMS_GROTTO_BEEHIVE_RIGHT,        RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_GC_GROTTO_BEEHIVE,                      RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_DMC_UPPER_GROTTO_BEEHIVE_RIGHT,         RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_DMC_HAMMER_GROTTO_BEEHIVE,              RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_ZR_OPEN_GROTTO_BEEHIVE_RIGHT,           RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_ZR_STORMS_GROTTO_BEEHIVE,               RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_LEFT,  RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT, RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_ZD_BEHIND_KING_ZORA_BEEHIVE,            RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_LH_GROTTO_BEEHIVE,                      RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE,           RG_RED_RUPEE, false, true);
+  ctx->PlaceItemInLocation(RC_COLOSSUS_GROTTO_BEEHIVE,                RG_RED_RUPEE, false, true);
+}
+
 static void PlaceVanillaCowMilk() {
   auto ctx = Rando::Context::GetInstance();
   ctx->PlaceItemInLocation(RC_KF_LINKS_HOUSE_COW,    RG_MILK, false, true);
@@ -571,6 +608,13 @@ static void PlaceVanillaCowMilk() {
 
   if (ctx->GetDungeon(Rando::JABU_JABUS_BELLY)->IsMQ()) {
     ctx->PlaceItemInLocation(RC_JABU_JABUS_BELLY_MQ_COW, RG_MILK, false, true);
+  }
+}
+
+static void PlaceVanillaOverworldFish() {
+  auto ctx = Rando::Context::GetInstance();
+  for (auto rc : Rando::StaticData::overworldFishLocations) {
+    ctx->PlaceItemInLocation(rc, RG_FISH, false, true);
   }
 }
 
@@ -738,6 +782,18 @@ void GenerateItemPool() {
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_RIGHT_BUTTON);
   }
 
+  if (ctx->GetOption(RSK_SHUFFLE_SWIM)) {
+    AddItemToMainPool(RG_PROGRESSIVE_SCALE);
+  }
+
+  if (ctx->GetOption(RSK_SHUFFLE_BEEHIVES)) {
+    //32 total beehive locations
+    AddItemToMainPool(RG_RED_RUPEE, 23);
+    AddItemToMainPool(RG_BLUE_RUPEE, 9);
+  } else {
+    PlaceVanillaBeehiveRupees();
+  }
+
   if (ctx->GetOption(RSK_SHUFFLE_COWS)) {
     //9 total cow locations
     for (uint8_t i = 0; i < 9; i++) {
@@ -749,6 +805,40 @@ void GenerateItemPool() {
     }
   } else {
     PlaceVanillaCowMilk();
+  }
+
+  auto fsMode = ctx->GetOption(RSK_FISHSANITY);
+  if (fsMode.IsNot(RO_FISHSANITY_OFF)) {
+    if (fsMode.Is(RO_FISHSANITY_POND) || fsMode.Is(RO_FISHSANITY_BOTH)) {
+      // 17 max child pond fish
+      uint8_t pondCt = ctx->GetOption(RSK_FISHSANITY_POND_COUNT).GetSelectedOptionIndex();
+      for (uint8_t i = 0; i < pondCt; i++) {
+        AddItemToMainPool(GetJunkItem());
+      }
+
+      if (ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)) {
+        // 16 max adult pond fish, have to reduce to 16 if every fish is enabled
+        if (pondCt > 16)
+            pondCt = 16;
+        for (uint8_t i = 0; i < pondCt; i++) {
+            AddItemToMainPool(GetJunkItem());
+        }
+      }
+    }
+    // 9 grotto fish, 5 zora's domain fish
+    if (fsMode.Is(RO_FISHSANITY_OVERWORLD) || fsMode.Is(RO_FISHSANITY_BOTH)) {
+      for (uint8_t i = 0; i < Rando::StaticData::overworldFishLocations.size(); i++)
+        AddItemToMainPool(GetJunkItem());
+    } else {
+      PlaceVanillaOverworldFish();
+    }
+  } else {
+    PlaceVanillaOverworldFish();
+  }
+
+  if (ctx->GetOption(RSK_SHUFFLE_FISHING_POLE)) {
+    AddItemToMainPool(RG_FISHING_POLE);
+    ctx->possibleIceTrapModels.push_back(RG_FISHING_POLE);
   }
 
   if (ctx->GetOption(RSK_SHUFFLE_MAGIC_BEANS)) {
@@ -878,6 +968,11 @@ void GenerateItemPool() {
     }
   }
 
+  if (ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET)) {
+    AddItemToMainPool(RG_PROGRESSIVE_WALLET);
+  }
+
+
   if (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC)) {
     AddItemToMainPool(RG_PROGRESSIVE_BOMBCHUS, 5);
   } else {
@@ -969,6 +1064,10 @@ void GenerateItemPool() {
   if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
     if (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
       AddItemToPool(PendingJunkPool, RG_GERUDO_MEMBERSHIP_CARD);
+    }
+
+    if (ctx->GetOption(RSK_SHUFFLE_FISHING_POLE)) {
+      AddItemToPool(PendingJunkPool, RG_FISHING_POLE);
     }
 
     //Plentiful small keys

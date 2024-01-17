@@ -16,13 +16,11 @@
 #endif
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
-#include "../custom-message/CustomMessageTypes.h"
 #include "../item-tables/ItemTableManager.h"
 #include "../presets.h"
 #include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include <stdexcept>
 #include "randomizer_check_objects.h"
-#include "randomizer_tricks.h"
 #include "randomizer_check_tracker.h"
 #include <sstream>
 #include <tuple>
@@ -36,7 +34,9 @@
 #include "entrance.h"
 #include "dungeon.h"
 #include "trial.h"
+#include "settings.h"
 #include "soh/util.h"
+#include "fishsanity.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -271,17 +271,6 @@ bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
 #pragma GCC pop_options
 #pragma optimize("", on)
 
-void DrawTagChips(const std::vector<RandomizerTrickTag> &rtTags) {
-    for (auto rtTag : rtTags) {
-        ImGui::SameLine();
-        ImGui::BeginDisabled();
-        ImGui::PushStyleColor(ImGuiCol_Button, RandomizerTricks::GetRTTagColor(rtTag));
-        ImGui::SmallButton(RandomizerTricks::GetRTTagName(rtTag).c_str());
-        ImGui::PopStyleColor();
-        ImGui::EndDisabled();
-    }
-}
-
 void Randomizer::LoadHintMessages() {
     auto ctx = Rando::Context::GetInstance();
 
@@ -290,16 +279,16 @@ void Randomizer::LoadHintMessages() {
 
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD,
-        CustomMessage(ctx->GetHint(RH_ALTAR_CHILD)->GetText().GetEnglish(), ctx->GetHint(RH_ALTAR_CHILD)->GetText().GetEnglish(), ctx->GetHint(RH_ALTAR_CHILD)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE));
+        CustomMessage(ctx->GetHint(RH_ALTAR_CHILD)->GetText(), TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT,
-        CustomMessage(ctx->GetHint(RH_ALTAR_ADULT)->GetText().GetEnglish(), ctx->GetHint(RH_ALTAR_ADULT)->GetText().GetEnglish(), ctx->GetHint(RH_ALTAR_ADULT)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE));
+        CustomMessage(ctx->GetHint(RH_ALTAR_ADULT)->GetText(), TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_GANONDORF,
-        CustomMessage(ctx->GetHint(RH_GANONDORF_HINT)->GetText().GetEnglish(), ctx->GetHint(RH_GANONDORF_HINT)->GetText().GetEnglish(), ctx->GetHint(RH_GANONDORF_HINT)->GetText().GetFrench()));
+        CustomMessage(ctx->GetHint(RH_GANONDORF_HINT)->GetText()));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT,
-        CustomMessage(ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetFrench()));
+        CustomMessage(ctx->GetHint(RH_SARIA)->GetText()));//RANDOTODO: Change to RH_BLANK or remove {{message}} replacment
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_SHEIK_NEED_HOOK,
         CustomMessage("{{message}}", "{{message}}", "{{message}}"));
@@ -308,12 +297,12 @@ void Randomizer::LoadHintMessages() {
         CustomMessage("{{message}}", "{{message}}", "{{message}}"));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE,
-        CustomMessage(ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetEnglish(), ctx->GetHint(RH_SARIA)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE));
+        CustomMessage(ctx->GetHint(RH_SARIA)->GetText(), TEXTBOX_TYPE_BLUE));
 
     for (int i : Rando::StaticData::gossipStoneLocations) {
         RandomizerHintKey rhk = RandomizerHintKey(i - RC_COLOSSUS_GOSSIP_STONE + 1);
         CustomMessageManager::Instance->CreateMessage(
-            Randomizer::hintMessageTableID, i, CustomMessage(ctx->GetHint(rhk)->GetText().GetEnglish(), ctx->GetHint(rhk)->GetText().GetEnglish(), ctx->GetHint(rhk)->GetText().GetFrench()));
+            Randomizer::hintMessageTableID, i, CustomMessage(ctx->GetHint(rhk)->GetText()));
     }
 
     //Extra Hints
@@ -321,44 +310,174 @@ void Randomizer::LoadHintMessages() {
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::randoMiscHintsTableID);
 
     CustomMessageManager::Instance->CreateMessage(
-            Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE,
-            CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you my&%g{{check}}%w!",
-                "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du %r{{params}} Skulltulas&%wzerstörst und ich werde dir dafür&%g{{check}} %wgeben!",
-                "Yeaaarrgh! Je suis maudit!^Détruit encore %r{{params}} Araignées de&la Malédiction%w et j'aurai quelque&chose à te donner!&%g({{check}})")
+            Randomizer::randoMiscHintsTableID, TEXT_SKULLTULA_PEOPLE_IM_CURSED,
+            CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you my&%g{{item1}}%w!",
+                "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du %r{{params}} Skulltulas&%wzerstörst und ich werde dir dafür&%g{{item1}} %wgeben!",
+                "Yeaaarrgh! Je suis maudit!^Détruit encore %r{{params}} Araignées de&la Malédiction%w et j'aurai quelque&chose à te donner!&%g({{item1}})")
         );
-        CustomMessageManager::Instance->CreateMessage(
+    CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY,
-            CustomMessage(ctx->GetHint(RH_DAMPES_DIARY)->GetText().GetEnglish(),
-                ctx->GetHint(RH_DAMPES_DIARY)->GetText().GetEnglish(),
-                ctx->GetHint(RH_DAMPES_DIARY)->GetText().GetFrench())
+            CustomMessage(ctx->GetHint(RH_DAMPES_DIARY)->GetText())
         );
-        CustomMessageManager::Instance->CreateMessage(
+    CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_CHEST_GAME_PROCEED,
-            CustomMessage(ctx->GetHint(RH_GREG_RUPEE)->GetText().GetEnglish(),
-                ctx->GetHint(RH_GREG_RUPEE)->GetText().GetEnglish(),
-                ctx->GetHint(RH_GREG_RUPEE)->GetText().GetFrench())
+            CustomMessage(ctx->GetHint(RH_GREG_RUPEE)->GetText())
         );
-        CustomMessageManager::Instance->CreateMessage(
+    CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_FROGS_UNDERWATER,
-            CustomMessage("Some frogs holding&%g{{item}}%w&are looking at you from underwater...",
-            "Unter Wasser gibt es Frösche,&die %g{{item}}%w&bei sich haben und Dich neugierig&beobachten...",
-            "Des grenouilles se trouvant&sous l'eau vous fixent attentivement,&tenant fermement&%g{{item}}%w.", TEXTBOX_TYPE_BLUE)
+            CustomMessage(ctx->GetHint(RH_FROGS)->GetText().GetEnglish(),
+                ctx->GetHint(RH_FROGS)->GetText().GetGerman(),
+                ctx->GetHint(RH_FROGS)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE)
         );
-        CustomMessageManager::Instance->CreateMessage(
-            Randomizer::randoMiscHintsTableID, TEXT_SARIAS_SONG_FACE_TO_FACE,
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_MINUET_OF_FOREST,
+        CustomMessage(ctx->GetHint(RH_MINUET_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_MINUET_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_MINUET_WARP_LOC)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_BOLERO_OF_FIRE,
+        CustomMessage(ctx->GetHint(RH_BOLERO_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_BOLERO_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_BOLERO_WARP_LOC)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_SERENADE_OF_WATER,
+        CustomMessage(ctx->GetHint(RH_SERENADE_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_SERENADE_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_SERENADE_WARP_LOC)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_REQUIEM_OF_SPIRIT,
+        CustomMessage(ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetText().GetFrench()));
+
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::randoMiscHintsTableID, TEXT_SARIAS_SONG_FOREST_SOUNDS,
             CustomMessage("{{message}}", "{{message}}", "{{message}}", TEXTBOX_TYPE_BLUE)
         );
 
-    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT,
-        CustomMessage("Warp to&{{location}}?\x1B&%gOK&No%w\x02",
-        "Zu {{location}}?\x1B&%gOK&No%w\x02",
-        "Se téléporter vers&{{location}}?\x1B&%gOK!&Non%w\x02"));
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_BIGGORON_BETTER_AT_SMITHING,
+            CustomMessage("Arrrrrre you here to claim my finest&%g{{item1}}%w?&Shoooooow me your %rClaim Check.%w",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_GHOST_SHOP_CARD_HAS_POINTS,
+            CustomMessage("You have %g\x1E\x01%r Poe Points%w!&Reach 1000 and you'll get a&%g{{item1}}%w!",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_ANJU_PLEASE_BRING_MY_CUCCOS_BACK,
+            CustomMessage("You! Please!&Bring my Cucco's back to my pen!&I'll give you my %g{{item1}}%w!",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_MALON_OBSTICLE_COURSE,
+            CustomMessage("How about trying the %rObsticle Course?%w&If you beat my time I'll let you keep&my favourite cow Elsie and&her toy %g{{item1}}%w!^"
+            "Challenge the %rObsticle Course?&\x1B&%gLet's go&No thanks%w",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_MALON_HOW_IS_EPONA_DOING,
+            CustomMessage("@! You should come back &with Epona and try to beat my time&on the %rObsticle Course%w!^If you beat my time, I'll give you&my favourite %rcow%w Elsie and&her toy %g{{item1}}%w!",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_MALON_EVERYONE_TURNING_EVIL,
+            CustomMessage("@? Is that you? ^If I ran the ranch, I'd build an &%rObsticle Course%w, and whoever gets&the best time would win a %rcow%w!^Elsie loves sharing her %g{{item1}}%w&with new people, It'll be fun!^...But Ingo won't let me...",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED,
+            CustomMessage("@! You should come back in&the morning and try to beat my time&on the %rObsticle Course%w!^If you beat my time, I'll give you&my favourite %rcow%w Elsie and&her toy %g{{item1}}%w!",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_HBA_NOT_ON_HORSE,
+            CustomMessage("Hey, rookie!&Come back on your %rhorse%w&and take on the&%rHorseback Archery%w challenge!^Impress me with a high score of 1000&to win a %g{{item1}}%w&or score 1500 for my&%g{{item2}}%w!",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_HBA_INITIAL_EXPLAINATION,
+            CustomMessage("Hey, rookie!&Want to take on the&%rHorseback Archery%w challenge?^Impress me with a high score of 1000&to win a %g{{item1}}%w&or score 1500 for my&%g{{item2}}%w!\x0B",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_HBA_ALREADY_HAVE_1000,
+            CustomMessage("Hey, newcomer!&Want to take on the&%rHorseback Archery%w challenge?^Prove yourself to be a horsemaster&by scoring 1500 points to win &my %g{{item1}}%w!\x0B",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_GF_HBA_SIGN,
+            CustomMessage("%rHorseback Archery%w Range Prizes:&1000: %g{{item1}}%w&1500: %g{{item2}}%w^@'s Record: %g\x1E\x00%w",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_MALON_OBSTICLE_COURSE,
+            CustomMessage("How about trying your skill on the %rObsticle Course?%w& If you beat my time I'll let you keep my favourite cow Elsie and& her toy %g{{item1}}%w!&x1B&%gLet's go&No thanks%w",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_MALON_EVERYONE_TURNING_EVIL,
+            CustomMessage("@? Is that you? &If I ran the ranch, I'd build an %rObsticle Course%w, and whoever gets the best time would win a cow!& Elsie loves sharing her %g{{item1}}%w&with new people, It'll be fun!&...But Ingo won't let me...",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED,
+            CustomMessage("@! You should come back in the morning and try to beat my time on the %rObsticle Course%w!&If you beat my time, I'll let you keep Elsie and& her toy %g{{item1}}%w!",
+            "",
+            "")
+        );
+
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_NOCTURNE_OF_SHADOW,
+        CustomMessage(ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_PRELUDE_OF_LIGHT,
+        CustomMessage(ctx->GetHint(RH_PRELUDE_WARP_LOC)->GetText().GetEnglish(),
+            ctx->GetHint(RH_PRELUDE_WARP_LOC)->GetText().GetGerman(),
+            ctx->GetHint(RH_PRELUDE_WARP_LOC)->GetText().GetFrench()));
 
     // Bow Shooting Gallery reminder
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW,
         CustomMessage("Come back when you have your own&bow and you'll get a %rdifferent prize%w!",
         "Komm wieder sobald du deinen eigenen&Bogen hast, um einen %rspeziellen Preis%w zu&erhalten!",
         "J'aurai %rune autre récompense%w pour toi&lorsque tu auras ton propre arc."));
+
+    // Fishing pond pole hint
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_FISHING_POND_START,
+            CustomMessage(ctx->GetHint(RH_FISHING_POLE)->GetText().GetEnglish(),
+                ctx->GetHint(RH_FISHING_POLE)->GetText().GetEnglish(),
+                ctx->GetHint(RH_FISHING_POLE)->GetText().GetFrench())
+        );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_FISHING_POND_START_MET,
+            CustomMessage(ctx->GetHint(RH_FISHING_POLE)->GetText().GetEnglish(),
+                ctx->GetHint(RH_FISHING_POLE)->GetText().GetEnglish(),
+                ctx->GetHint(RH_FISHING_POLE)->GetText().GetFrench())
+        );
 
     // Lake Hylia water level system
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN,
@@ -405,6 +524,7 @@ std::unordered_map<RandomizerGet, EnGirlAShopItem> randomizerGetToEnGirlShopItem
 };
 
 void Randomizer::LoadMerchantMessages() {
+    auto ctx = Rando::Context::GetInstance();
     CustomMessageManager::Instance->ClearMessageTable(Randomizer::merchantMessageTableID);
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::merchantMessageTableID);
 
@@ -419,12 +539,9 @@ void Randomizer::LoadMerchantMessages() {
             "\x12\x38\x82" "J'abandonne! Tu veux bien m'acheter&un %g{{item}}%w?&Ça fera %r{{price}} Rubis%w!\x07\x10\xA3"));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_10,
-        CustomMessage("I tried to be a %rmagic bean%w salesman,&but it turns out my marketing skills&weren't worth "
-            "beans!^Anyway, want to buy my&%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
-            "Möchten Sie einen geheimnisvollen&Gegenstand für 60 Rubine?\x1B&%gJa&Nein%w",
-            "J'ai essayé d'être un vendeur de&%rharicots magiques%w, mais j'étais&mauvais au niveau du marketing et&ça "
-            "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter un&"
-            "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w"));
+        CustomMessage(ctx->GetHint(RH_BEAN_SALESMAN)->GetText().GetEnglish(),
+            ctx->GetHint(RH_BEAN_SALESMAN)->GetText().GetGerman(),
+            ctx->GetHint(RH_BEAN_SALESMAN)->GetText().GetFrench()));
 
 
     //Setup for merchant text boxes
@@ -432,51 +549,30 @@ void Randomizer::LoadMerchantMessages() {
     //RANDOTODO: Implement obscure/ambiguous hints
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_MEDIGORON,
-        CustomMessage("How about buying %g&{{item}}%w for %y200 rupees%w?\x1B&%gYes&No%w",
-            "Wie wäre es mit %g&{{item}}%w für %y200 Rubine?%w\x1B&%gJa!&Nein!%w",
-            "Veux-tu acheter %g&{{item}}%w pour %y200 rubis?%w\x1B&%gOui&Non&w"));
+        CustomMessage(ctx->GetHint(RH_MEDIGORON)->GetText().GetEnglish(),
+            ctx->GetHint(RH_MEDIGORON)->GetText().GetGerman(),
+            ctx->GetHint(RH_MEDIGORON)->GetText().GetFrench()));
 
     //Granny Shopy
     //RANDOTODO: Implement obscure/ambiguous hints
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_GRANNYS_SHOP,
-        CustomMessage("%g{{item}}%w!&How about %y100 rupees%w?\x1B&%gYes&No%w",
-            "%g{{item}}%w!&Wie wäre es mit %y100 Rubine?%w\x1B&%gJa!&Nein!%w",
-            "%g{{item}}%w!&Que dis-tu de %y100 rubis?%w\x1B&%gOui&Non&w"));
+        CustomMessage(ctx->GetHint(RH_GRANNYS_SHOP)->GetText().GetEnglish(),
+            ctx->GetHint(RH_GRANNYS_SHOP)->GetText().GetGerman(),
+            ctx->GetHint(RH_GRANNYS_SHOP)->GetText().GetFrench()));
 
     //Carpet Salesman
     //RANDOTODO: Implement obscure/ambiguous hints
-    std::vector<std::string> cgBoxTwoText;
-    if (Randomizer::GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ON_HINT) {
-        cgBoxTwoText = {
-            "!%w&It's real, I promise!&A lonely man such as myself&wouldn't %rlie%w to you, hmm?^",
-            "!%w&Ich kann versichern es ist ein&aufrichtiges Angebot!^Ein einsamer Mann wie ich würde dich&doch nicht %ranlügen%w, oder?^",
-            "!%w&C'est vrai! J'te jure!&Un gars comme moi ne te %rmentirai%w pas&tu ne crois pas?^"
-        };
-    } else {
-        cgBoxTwoText = {
-            "!%w&I won't tell you what it is until I see&the money...^",
-            "!%w&Erst kommt das Geld, dann die Ware...^",
-            "!%w&Je ne te dirai pas ce que c'est avant&d'être payé rubis sur l'ongle...^"
-            };
-        }
-        CustomMessageManager::Instance->CreateMessage(
-            Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_1,
-            CustomMessage("Welcome!^I am selling stuff, strange and rare, &from all over the world to "
-                          "everybody.&Today's special is...^%g{{item}}" +
-                              cgBoxTwoText[0] + "How about %y200 Rupees?%w\x1B&&%gYes&No%w",
-                          "Sei gegrüßt!^Ich verkaufe allerlei Kuriorisäten.&Stets sonderliche und seltene Ware&aus "
-                          "aller Welt für jedermann.&Das heutige Angebot bleibt...^%g{{item}}" +
-                              cgBoxTwoText[1] + "Wie wäre es mit %y200 Rubinen?%w\x1B&&%gJa!&Nein!%w",
-                          "Bienvenue!^Je vends des trucs étranges et rares,&de partout dans le monde et à tout "
-                          "le&monde! L'objet du jour est...^%g{{item}}" +
-                              cgBoxTwoText[2] + "Alors, marché conclu pour %y200 rubis?%w\x1B&&%gOui&Non%w"));
-
-        CustomMessageManager::Instance->CreateMessage(
-            Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_2,
-            CustomMessage("Finally! Now I can go back to being &an %rarms dealer%w!",
-              "Endlich! Schon bald kann ich wieder &%rKrabbelminen-Händler%w sein!",
-              "Squalala! Je vais enfin pouvoir &%rprendre des vacances%w!"));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_1,
+        CustomMessage(ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN)->GetText().GetEnglish(),
+            ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN)->GetText().GetGerman(),
+            ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_2,
+        CustomMessage(ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN_POST)->GetText().GetEnglish(),
+            ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN_POST)->GetText().GetGerman(),
+            ctx->GetHint(RH_WASTELAND_BOMBCHU_SALESMAN_POST)->GetText().GetFrench()));
 
         // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
         // prompted buy/don't buy
@@ -512,7 +608,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
     // Shopsanity with at least one item shuffled allows for a third wallet upgrade.
     // This is needed since Plentiful item pool also adds a third progressive wallet
     // but we should *not* get Tycoon's Wallet in that mode.
-    u8 numWallets = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 3 : 2;
+    bool tycoonWallet = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS;
     switch (randoGet) {
         case RG_NONE:
         case RG_TRIFORCE:
@@ -650,6 +746,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
 
         // Bottle Refills
         case RG_MILK:
+        case RG_FISH:
         case RG_RED_POTION_REFILL:
         case RG_GREEN_POTION_REFILL:
         case RG_BLUE_POTION_REFILL:
@@ -694,13 +791,15 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_PROGRESSIVE_STRENGTH:
             return CUR_UPG_VALUE(UPG_STRENGTH) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_PROGRESSIVE_WALLET:
-            return CUR_UPG_VALUE(UPG_WALLET) < numWallets ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return CUR_UPG_VALUE(UPG_WALLET) < (tycoonWallet ? 3 : 2) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_PROGRESSIVE_SCALE:
             return CUR_UPG_VALUE(UPG_SCALE) < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_PROGRESSIVE_MAGIC_METER:
         case RG_MAGIC_SINGLE:
         case RG_MAGIC_DOUBLE:
             return gSaveContext.magicLevel < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_FISHING_POLE:
+            return !Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
         // Songs
         case RG_ZELDAS_LULLABY:
@@ -863,7 +962,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
     // Shopsanity with at least one item shuffled allows for a third wallet upgrade.
     // This is needed since Plentiful item pool also adds a third progressive wallet
     // but we should *not* get Tycoon's Wallet in that mode.
-    u8 numWallets = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 3 : 2;
+    bool tycoonWallet = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS;
     switch (randoGet) {
         case RG_NONE:
             return ogItemId;
@@ -1042,6 +1141,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_BLUE_POTION_REFILL:
         case RG_BUY_BLUE_POTION:
             return GI_POTION_BLUE;
+        case RG_FISH:
         case RG_BUY_FISH:
             return GI_FISH;
         case RG_BUY_BLUE_FIRE:
@@ -1097,6 +1197,9 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_GAUNTLETS_GOLD;
             }
         case RG_PROGRESSIVE_WALLET:
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+                return (GetItemID)RG_CHILD_WALLET;
+            }
             switch (CUR_UPG_VALUE(UPG_WALLET)) {
                 case 0:
                     return GI_WALLET_ADULT;
@@ -1104,9 +1207,12 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_WALLET_GIANT;
                 case 2:
                 case 3:
-                    return numWallets == 3 ? (GetItemID)RG_TYCOON_WALLET : GI_WALLET_GIANT;
+                    return tycoonWallet ? (GetItemID)RG_TYCOON_WALLET : GI_WALLET_GIANT;
             }
         case RG_PROGRESSIVE_SCALE:
+            if (!Flags_GetRandomizerInf(RAND_INF_CAN_SWIM)) {
+                return (GetItemID)RG_BRONZE_SCALE;
+            }
             switch (CUR_UPG_VALUE(UPG_SCALE)) {
                 case 0:
                     return GI_SCALE_SILVER;
@@ -1156,7 +1262,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
             return GI_HEART_PIECE_WIN;
         case RG_TREASURE_GAME_GREEN_RUPEE:
             return GI_RUPEE_GREEN_LOSE;
-        
+
         //Ocarina Buttons
         case RG_OCARINA_A_BUTTON:
             return (GetItemID)RG_OCARINA_A_BUTTON;
@@ -1221,7 +1327,6 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_PROGRESSIVE_BOMB_BAG:
         case RG_PROGRESSIVE_BOW:
         case RG_PROGRESSIVE_SLINGSHOT:
-        case RG_PROGRESSIVE_SCALE:
         case RG_PROGRESSIVE_NUT_UPGRADE:
         case RG_PROGRESSIVE_STICK_UPGRADE:
         case RG_PROGRESSIVE_OCARINA:
@@ -1237,6 +1342,7 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_PIECE_OF_HEART:
         case RG_HEART_CONTAINER:
         case RG_MILK:
+        case RG_FISH:
         case RG_BOMBS_5:
         case RG_BOMBS_10:
         case RG_BOMBS_20:
@@ -1287,7 +1393,15 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BUY_RED_POTION_40:
         case RG_BUY_RED_POTION_50:
             return true;
+        case RG_PROGRESSIVE_SCALE:
+            if (!Flags_GetRandomizerInf(RAND_INF_CAN_SWIM)) {
+                return false;
+            }
+            return true;
         case RG_PROGRESSIVE_WALLET:
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+                return false;
+            }
             if (CUR_UPG_VALUE(UPG_WALLET) < 2) {
                 return true;
             } else {
@@ -1439,9 +1553,111 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_LH_ADULT_FISHING,                                            RAND_INF_ADULT_FISHING },
     { RC_MARKET_10_BIG_POES,                                          RAND_INF_10_BIG_POES },
     { RC_KAK_100_GOLD_SKULLTULA_REWARD,                               RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD },
+    { RC_KF_STORMS_GROTTO_BEEHIVE_LEFT,                               RAND_INF_BEEHIVE_KF_STORMS_GROTTO_LEFT },
+    { RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT,                              RAND_INF_BEEHIVE_KF_STORMS_GROTTO_RIGHT },
+    { RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT,                       RAND_INF_BEEHIVE_LW_NEAR_SHORTCUTS_GROTTO_LEFT },
+    { RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT,                      RAND_INF_BEEHIVE_LW_NEAR_SHORTCUTS_GROTTO_RIGHT },
+    { RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE,                                RAND_INF_BEEHIVE_LW_DEKU_SCRUB_GROTTO },
+    { RC_SFM_STORMS_GROTTO_BEEHIVE,                                   RAND_INF_BEEHIVE_SFM_STORMS_GROTTO },
+    { RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_LEFT,                          RAND_INF_BEEHIVE_HF_NEAR_MARKET_GROTTO_LEFT },
+    { RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_RIGHT,                         RAND_INF_BEEHIVE_HF_NEAR_MARKET_GROTTO_RIGHT },
+    { RC_HF_OPEN_GROTTO_BEEHIVE_LEFT,                                 RAND_INF_BEEHIVE_HF_OPEN_GROTTO_LEFT },
+    { RC_HF_OPEN_GROTTO_BEEHIVE_RIGHT,                                RAND_INF_BEEHIVE_HF_OPEN_GROTTO_RIGHT },
+    { RC_HF_SOUTHEAST_GROTTO_BEEHIVE_LEFT,                            RAND_INF_BEEHIVE_HF_SOUTHEAST_GROTTO_LEFT },
+    { RC_HF_SOUTHEAST_GROTTO_BEEHIVE_RIGHT,                           RAND_INF_BEEHIVE_HF_SOUTHEAST_GROTTO_RIGHT },
+    { RC_HF_INSIDE_FENCE_GROTTO_BEEHIVE,                              RAND_INF_BEEHIVE_HF_INSIDE_FENCE_GROTTO },
+    { RC_LLR_GROTTO_BEEHIVE,                                          RAND_INF_BEEHIVE_LLR_GROTTO },
+    { RC_KAK_OPEN_GROTTO_BEEHIVE_LEFT,                                RAND_INF_BEEHIVE_KAK_OPEN_GROTTO_LEFT },
+    { RC_KAK_OPEN_GROTTO_BEEHIVE_RIGHT,                               RAND_INF_BEEHIVE_KAK_OPEN_GROTTO_RIGHT },
+    { RC_DMT_COW_GROTTO_BEEHIVE,                                      RAND_INF_BEEHIVE_DMT_COW_GROTTO },
+    { RC_DMT_STORMS_GROTTO_BEEHIVE_LEFT,                              RAND_INF_BEEHIVE_DMT_STORMS_GROTTO_LEFT },
+    { RC_DMT_STORMS_GROTTO_BEEHIVE_RIGHT,                             RAND_INF_BEEHIVE_DMT_STORMS_GROTTO_RIGHT },
+    { RC_GC_GROTTO_BEEHIVE,                                           RAND_INF_BEEHIVE_GC_GROTTO },
+    { RC_DMC_UPPER_GROTTO_BEEHIVE_LEFT,                               RAND_INF_BEEHIVE_DMC_UPPER_GROTTO_LEFT },
+    { RC_DMC_UPPER_GROTTO_BEEHIVE_RIGHT,                              RAND_INF_BEEHIVE_DMC_UPPER_GROTTO_RIGHT },
+    { RC_DMC_HAMMER_GROTTO_BEEHIVE,                                   RAND_INF_BEEHIVE_DMC_HAMMER_GROTTO },
+    { RC_ZR_OPEN_GROTTO_BEEHIVE_LEFT,                                 RAND_INF_BEEHIVE_ZR_OPEN_GROTTO_LEFT },
+    { RC_ZR_OPEN_GROTTO_BEEHIVE_RIGHT,                                RAND_INF_BEEHIVE_ZR_OPEN_GROTTO_RIGHT },
+    { RC_ZR_STORMS_GROTTO_BEEHIVE,                                    RAND_INF_BEEHIVE_ZR_STORMS_GROTTO },
+    { RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_LEFT,                       RAND_INF_BEEHIVE_ZD_IN_FRONT_OF_KING_ZORA_LEFT },
+    { RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT,                      RAND_INF_BEEHIVE_ZD_IN_FRONT_OF_KING_ZORA_RIGHT },
+    { RC_ZD_BEHIND_KING_ZORA_BEEHIVE,                                 RAND_INF_BEEHIVE_ZD_BEHIND_KING_ZORA },
+    { RC_LH_GROTTO_BEEHIVE,                                           RAND_INF_BEEHIVE_LH_GROTTO },
+    { RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE,                                RAND_INF_BEEHIVE_GV_DEKU_SCRUB_GROTTO },
+    { RC_COLOSSUS_GROTTO_BEEHIVE,                                     RAND_INF_BEEHIVE_COLOSSUS_GROTTO },
+    { RC_LH_CHILD_FISH_1,                                             RAND_INF_CHILD_FISH_1 },
+    { RC_LH_CHILD_FISH_2,                                             RAND_INF_CHILD_FISH_2 },
+    { RC_LH_CHILD_FISH_3,                                             RAND_INF_CHILD_FISH_3 },
+    { RC_LH_CHILD_FISH_4,                                             RAND_INF_CHILD_FISH_4 },
+    { RC_LH_CHILD_FISH_5,                                             RAND_INF_CHILD_FISH_5 },
+    { RC_LH_CHILD_FISH_6,                                             RAND_INF_CHILD_FISH_6 },
+    { RC_LH_CHILD_FISH_7,                                             RAND_INF_CHILD_FISH_7 },
+    { RC_LH_CHILD_FISH_8,                                             RAND_INF_CHILD_FISH_8 },
+    { RC_LH_CHILD_FISH_9,                                             RAND_INF_CHILD_FISH_9 },
+    { RC_LH_CHILD_FISH_10,                                            RAND_INF_CHILD_FISH_10 },
+    { RC_LH_CHILD_FISH_11,                                            RAND_INF_CHILD_FISH_11 },
+    { RC_LH_CHILD_FISH_12,                                            RAND_INF_CHILD_FISH_12 },
+    { RC_LH_CHILD_FISH_13,                                            RAND_INF_CHILD_FISH_13 },
+    { RC_LH_CHILD_FISH_14,                                            RAND_INF_CHILD_FISH_14 },
+    { RC_LH_CHILD_FISH_15,                                            RAND_INF_CHILD_FISH_15 },
+    { RC_LH_CHILD_LOACH_1,                                            RAND_INF_CHILD_LOACH_1 },
+    { RC_LH_CHILD_LOACH_2,                                            RAND_INF_CHILD_LOACH_2 },
+    { RC_LH_ADULT_FISH_1,                                             RAND_INF_ADULT_FISH_1 },
+    { RC_LH_ADULT_FISH_2,                                             RAND_INF_ADULT_FISH_2 },
+    { RC_LH_ADULT_FISH_3,                                             RAND_INF_ADULT_FISH_3 },
+    { RC_LH_ADULT_FISH_4,                                             RAND_INF_ADULT_FISH_4 },
+    { RC_LH_ADULT_FISH_5,                                             RAND_INF_ADULT_FISH_5 },
+    { RC_LH_ADULT_FISH_6,                                             RAND_INF_ADULT_FISH_6 },
+    { RC_LH_ADULT_FISH_7,                                             RAND_INF_ADULT_FISH_7 },
+    { RC_LH_ADULT_FISH_8,                                             RAND_INF_ADULT_FISH_8 },
+    { RC_LH_ADULT_FISH_9,                                             RAND_INF_ADULT_FISH_9 },
+    { RC_LH_ADULT_FISH_10,                                            RAND_INF_ADULT_FISH_10 },
+    { RC_LH_ADULT_FISH_11,                                            RAND_INF_ADULT_FISH_11 },
+    { RC_LH_ADULT_FISH_12,                                            RAND_INF_ADULT_FISH_12 },
+    { RC_LH_ADULT_FISH_13,                                            RAND_INF_ADULT_FISH_13 },
+    { RC_LH_ADULT_FISH_14,                                            RAND_INF_ADULT_FISH_14 },
+    { RC_LH_ADULT_FISH_15,                                            RAND_INF_ADULT_FISH_15 },
+    { RC_LH_ADULT_LOACH,                                              RAND_INF_ADULT_LOACH },
+    { RC_ZR_OPEN_GROTTO_FISH,                                         RAND_INF_GROTTO_FISH_ZR_OPEN_GROTTO },
+    { RC_DMC_UPPER_GROTTO_FISH,                                       RAND_INF_GROTTO_FISH_DMC_UPPER_GROTTO },
+    { RC_DMT_STORMS_GROTTO_FISH,                                      RAND_INF_GROTTO_FISH_DMT_STORMS_GROTTO },
+    { RC_KAK_OPEN_GROTTO_FISH,                                        RAND_INF_GROTTO_FISH_KAK_OPEN_GROTTO },
+    { RC_HF_NEAR_MARKET_GROTTO_FISH,                                  RAND_INF_GROTTO_FISH_HF_NEAR_MARKET_GROTTO },
+    { RC_HF_OPEN_GROTTO_FISH,                                         RAND_INF_GROTTO_FISH_HF_OPEN_GROTTO },
+    { RC_HF_SOUTHEAST_GROTTO_FISH,                                    RAND_INF_GROTTO_FISH_HF_SOUTHEAST_GROTTO },
+    { RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,                               RAND_INF_GROTTO_FISH_LW_NEAR_SHORTCUTS_GROTTO },
+    { RC_KF_STORMS_GROTTO_FISH,                                       RAND_INF_GROTTO_FISH_KF_STORMS_GROTTO },
+    { RC_ZD_FISH_1,                                                   RAND_INF_ZD_FISH_1 },
+    { RC_ZD_FISH_2,                                                   RAND_INF_ZD_FISH_2 },
+    { RC_ZD_FISH_3,                                                   RAND_INF_ZD_FISH_3 },
+    { RC_ZD_FISH_4,                                                   RAND_INF_ZD_FISH_4 },
+    { RC_ZD_FISH_5,                                                   RAND_INF_ZD_FISH_5 },
 };
 
+BeehiveIdentity Randomizer::IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
+    struct BeehiveIdentity beehiveIdentity;
+
+    beehiveIdentity.randomizerInf = RAND_INF_MAX;
+    beehiveIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    if (sceneNum == SCENE_GROTTOS) {
+        respawnData = TWO_ACTOR_PARAMS(xPosition, respawnData);
+    } else {
+        respawnData = TWO_ACTOR_PARAMS(xPosition, 0);
+    }
+
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_OBJ_COMB, sceneNum, respawnData);
+
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        beehiveIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        beehiveIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return beehiveIdentity;
+}
+
 Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
+    auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
     RandomizerCheck specialRc = RC_UNKNOWN_CHECK;
     // TODO: Migrate these special cases into table, or at least document why they are special
     switch(sceneNum) {
@@ -1537,6 +1753,15 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
             // special case for MQ DC Gossip Stone
             if (actorId == ACTOR_EN_GS && actorParams == 15892 && ResourceMgr_IsGameMasterQuest()) {
                 specialRc = RC_DODONGOS_CAVERN_GOSSIP_STONE;
+            }
+            break;
+        case SCENE_GROTTOS:
+            // Grotto fish are identified by respawn data
+            if (actorId == ACTOR_EN_FISH && actorParams == 1) {
+                int8_t data = gSaveContext.respawn[RESPAWN_MODE_RETURN].data;
+                if (Rando::StaticData::randomizerGrottoFishMap.contains(data)) {
+                    specialRc = Rando::StaticData::randomizerGrottoFishMap[data];
+                }
             }
             break;
     }
@@ -1644,6 +1869,27 @@ CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
     }
 
     return cowIdentity;
+}
+
+FishIdentity Randomizer::IdentifyFish(s32 sceneNum, s32 actorParams) {
+    struct FishIdentity fishIdentity;
+
+    fishIdentity.randomizerInf = RAND_INF_MAX;
+    fishIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    // Fishsanity will determine what the identity of the fish should be
+    if (sceneNum == SCENE_FISHING_POND) {
+        return OTRGlobals::Instance->gRandoContext->GetFishsanity()->IdentifyPondFish(actorParams);
+    }
+
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_FISH, sceneNum, actorParams);
+
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        fishIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        fishIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return fishIdentity;
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
@@ -2011,95 +2257,93 @@ void RandomizerSettingsWindow::DrawElement() {
             ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
 
             // Tricks
-            static std::unordered_map<RandomizerTrickArea, bool> areaTreeDisabled {
-                {RTAREA_GENERAL, true},
-                {RTAREA_KOKIRI_FOREST, true},
-                {RTAREA_LOST_WOODS, true},
-                {RTAREA_SACRED_FOREST_MEADOW, true},
-                {RTAREA_HYRULE_FIELD, true},
-                {RTAREA_LAKE_HYLIA, true},
-                {RTAREA_GERUDO_VALLEY, true},
-                {RTAREA_GERUDO_FORTRESS, true},
-                {RTAREA_WASTELAND, true},
-                {RTAREA_DESERT_COLOSSUS, true},
-                {RTAREA_MARKET, true},
-                {RTAREA_HYRULE_CASTLE, true},
-                {RTAREA_KAKARIKO_VILLAGE, true},
-                {RTAREA_GRAVEYARD, true},
-                {RTAREA_DEATH_MOUNTAIN_TRAIL, true},
-                {RTAREA_GORON_CITY, true},
-                {RTAREA_DEATH_MOUNTAIN_CRATER, true},
-                {RTAREA_ZORAS_RIVER, true},
-                {RTAREA_ZORAS_DOMAIN, true},
-                {RTAREA_ZORAS_FOUNTAIN, true},
-                {RTAREA_LON_LON_RANCH, true},
-                {RTAREA_DEKU_TREE, true},
-                {RTAREA_DODONGOS_CAVERN, true},
-                {RTAREA_JABU_JABUS_BELLY, true},
-                {RTAREA_FOREST_TEMPLE, true},
-                {RTAREA_FIRE_TEMPLE, true},
-                {RTAREA_WATER_TEMPLE, true},
-                {RTAREA_SPIRIT_TEMPLE, true},
-                {RTAREA_SHADOW_TEMPLE, true},
-                {RTAREA_BOTTOM_OF_THE_WELL, true},
-                {RTAREA_ICE_CAVERN, true},
-                {RTAREA_GERUDO_TRAINING_GROUND, true},
-                {RTAREA_GANONS_CASTLE, true}
+            static std::unordered_map<RandomizerArea, bool> areaTreeDisabled {
+                {RA_NONE, true},
+                {RA_KOKIRI_FOREST, true},
+                {RA_THE_LOST_WOODS, true},
+                {RA_SACRED_FOREST_MEADOW, true},
+                {RA_HYRULE_FIELD, true},
+                {RA_LAKE_HYLIA, true},
+                {RA_GERUDO_VALLEY, true},
+                {RA_GERUDO_FORTRESS, true},
+                {RA_HAUNTED_WASTELAND, true},
+                {RA_DESERT_COLOSSUS, true},
+                {RA_THE_MARKET, true},
+                {RA_HYRULE_CASTLE, true},
+                {RA_KAKARIKO_VILLAGE, true},
+                {RA_THE_GRAVEYARD, true},
+                {RA_DEATH_MOUNTAIN_TRAIL, true},
+                {RA_GORON_CITY, true},
+                {RA_DEATH_MOUNTAIN_CRATER, true},
+                {RA_ZORAS_RIVER, true},
+                {RA_ZORAS_DOMAIN, true},
+                {RA_ZORAS_FOUNTAIN, true},
+                {RA_LON_LON_RANCH, true},
+                {RA_DEKU_TREE, true},
+                {RA_DODONGOS_CAVERN, true},
+                {RA_JABU_JABUS_BELLY, true},
+                {RA_FOREST_TEMPLE, true},
+                {RA_FIRE_TEMPLE, true},
+                {RA_WATER_TEMPLE, true},
+                {RA_SPIRIT_TEMPLE, true},
+                {RA_SHADOW_TEMPLE, true},
+                {RA_BOTTOM_OF_THE_WELL, true},
+                {RA_ICE_CAVERN, true},
+                {RA_GERUDO_TRAINING_GROUND, true},
+                {RA_GANONS_CASTLE, true}
             };
-            static std::unordered_map<RandomizerTrickArea, bool> areaTreeEnabled {
-                {RTAREA_GENERAL, true},
-                {RTAREA_KOKIRI_FOREST, true},
-                {RTAREA_LOST_WOODS, true},
-                {RTAREA_SACRED_FOREST_MEADOW, true},
-                {RTAREA_HYRULE_FIELD, true},
-                {RTAREA_LAKE_HYLIA, true},
-                {RTAREA_GERUDO_VALLEY, true},
-                {RTAREA_GERUDO_FORTRESS, true},
-                {RTAREA_WASTELAND, true},
-                {RTAREA_DESERT_COLOSSUS, true},
-                {RTAREA_MARKET, true},
-                {RTAREA_HYRULE_CASTLE, true},
-                {RTAREA_KAKARIKO_VILLAGE, true},
-                {RTAREA_GRAVEYARD, true},
-                {RTAREA_DEATH_MOUNTAIN_TRAIL, true},
-                {RTAREA_GORON_CITY, true},
-                {RTAREA_DEATH_MOUNTAIN_CRATER, true},
-                {RTAREA_ZORAS_RIVER, true},
-                {RTAREA_ZORAS_DOMAIN, true},
-                {RTAREA_ZORAS_FOUNTAIN, true},
-                {RTAREA_LON_LON_RANCH, true},
-                {RTAREA_DEKU_TREE, true},
-                {RTAREA_DODONGOS_CAVERN, true},
-                {RTAREA_JABU_JABUS_BELLY, true},
-                {RTAREA_FOREST_TEMPLE, true},
-                {RTAREA_FIRE_TEMPLE, true},
-                {RTAREA_WATER_TEMPLE, true},
-                {RTAREA_SPIRIT_TEMPLE, true},
-                {RTAREA_SHADOW_TEMPLE, true},
-                {RTAREA_BOTTOM_OF_THE_WELL, true},
-                {RTAREA_ICE_CAVERN, true},
-                {RTAREA_GERUDO_TRAINING_GROUND, true},
-                {RTAREA_GANONS_CASTLE, true}
+            static std::unordered_map<RandomizerArea, bool> areaTreeEnabled {
+                {RA_NONE, true},
+                {RA_KOKIRI_FOREST, true},
+                {RA_THE_LOST_WOODS, true},
+                {RA_SACRED_FOREST_MEADOW, true},
+                {RA_HYRULE_FIELD, true},
+                {RA_LAKE_HYLIA, true},
+                {RA_GERUDO_VALLEY, true},
+                {RA_GERUDO_FORTRESS, true},
+                {RA_HAUNTED_WASTELAND, true},
+                {RA_DESERT_COLOSSUS, true},
+                {RA_THE_MARKET, true},
+                {RA_HYRULE_CASTLE, true},
+                {RA_KAKARIKO_VILLAGE, true},
+                {RA_THE_GRAVEYARD, true},
+                {RA_DEATH_MOUNTAIN_TRAIL, true},
+                {RA_GORON_CITY, true},
+                {RA_DEATH_MOUNTAIN_CRATER, true},
+                {RA_ZORAS_RIVER, true},
+                {RA_ZORAS_DOMAIN, true},
+                {RA_ZORAS_FOUNTAIN, true},
+                {RA_LON_LON_RANCH, true},
+                {RA_DEKU_TREE, true},
+                {RA_DODONGOS_CAVERN, true},
+                {RA_JABU_JABUS_BELLY, true},
+                {RA_FOREST_TEMPLE, true},
+                {RA_FIRE_TEMPLE, true},
+                {RA_WATER_TEMPLE, true},
+                {RA_SPIRIT_TEMPLE, true},
+                {RA_SHADOW_TEMPLE, true},
+                {RA_BOTTOM_OF_THE_WELL, true},
+                {RA_ICE_CAVERN, true},
+                {RA_GERUDO_TRAINING_GROUND, true},
+                {RA_GANONS_CASTLE, true}
             };
 
-            static std::unordered_map<RandomizerTrickTag, bool> showTag {
-                {RTTAG_NOVICE,true},
-                {RTTAG_INTERMEDIATE,true},
-                {RTTAG_ADVANCED,true},
-                {RTTAG_EXPERT,true},
-                {RTTAG_EXTREME,true}
+            static std::unordered_map<Rando::Tricks::Tag, bool> showTag {
+                {Rando::Tricks::Tag::NOVICE,true},
+                {Rando::Tricks::Tag::INTERMEDIATE,true},
+                {Rando::Tricks::Tag::ADVANCED,true},
+                {Rando::Tricks::Tag::EXPERT,true},
+                {Rando::Tricks::Tag::EXTREME,true}
             };
             static ImGuiTextFilter trickSearch;
             trickSearch.Draw("Filter (inc,-exc)", 490.0f);
             if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
                 ImGui::SameLine();
                 if (ImGui::Button("Disable All")) {
-                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                        for (auto [randomizerTrick, rtObject] : rtObjects) {
-                            auto etfound = enabledTricks.find(randomizerTrick);
-                            if (!rtObject.rtGlitch && etfound != enabledTricks.end()) {
-                                enabledTricks.erase(etfound);
-                            }
+                    for (int i = 0; i < RT_MAX; i++) {
+                        auto etfound = enabledTricks.find(static_cast<RandomizerTrick>(i));
+                        if (!ctx->GetTrickOption(static_cast<RandomizerTrick>(i)).IsGlitch() && etfound != enabledTricks.end()) {
+                            enabledTricks.erase(etfound);
                         }
                     }
                     std::string enabledTrickString = "";
@@ -2112,11 +2356,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 }
                 ImGui::SameLine();
                 if (ImGui::Button("Enable All")) {
-                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                        for (auto [randomizerTrick, rtObject] : rtObjects) {
-                            if (!rtObject.rtGlitch && !enabledTricks.count(rtObject.rt)) {
-                                enabledTricks.insert(randomizerTrick);
-                            }
+                    for (int i = 0; i < RT_MAX; i++) {
+                        if (!ctx->GetTrickOption(static_cast<RandomizerTrick>(i)).IsGlitch() && !enabledTricks.count(static_cast<RandomizerTrick>(i))) {
+                            enabledTricks.insert(static_cast<RandomizerTrick>(i));
                         }
                     }
                     std::string enabledTrickString = "";
@@ -2131,8 +2373,8 @@ void RandomizerSettingsWindow::DrawElement() {
             if (ImGui::BeginTable("trickTags", showTag.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)) {  
                 for (auto [rtTag, isShown] : showTag) {
                     ImGui::TableNextColumn();
-                    ImGui::PushStyleColor(ImGuiCol_Header, RandomizerTricks::GetRTTagColor(rtTag));
-                    ImGui::Selectable(RandomizerTricks::GetRTTagName(rtTag).c_str(), &showTag[rtTag]);
+                    ImGui::PushStyleColor(ImGuiCol_Header, Rando::Tricks::GetRTTagColor(rtTag));
+                    ImGui::Selectable(Rando::Tricks::GetRTTagName(rtTag).c_str(), &showTag[rtTag]);
                     ImGui::PopStyleColor(1);
                 }
                 ImGui::EndTable();
@@ -2153,47 +2395,33 @@ void RandomizerSettingsWindow::DrawElement() {
                     window->DC.CurrLineTextBaseOffset = 0.0f;
                     
                     if (ImGui::Button("Collapse All##disabled")) {
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            bool hasTricks = false;
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                if (rtObject.visibleInImgui &&
-                                    !enabledTricks.count(rtObject.rt) &&
-                                    !rtObject.rtGlitch) {
-
-                                    hasTricks = true;
-                                    break;
-                                }
-                            }
-                            if (hasTricks) {
-                                areaTreeDisabled[rtArea] = false;
+                        for (int i = 0; i < RT_MAX; i++) {
+                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
+                            if (!option.IsHidden() && !enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                                !option.IsGlitch()) {
+                                areaTreeDisabled[option.GetArea()] = false;
                             }
                         }
                     }
                     ImGui::SameLine();
                     if (ImGui::Button("Open All##disabled")) {
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            bool hasTricks = false;
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                if (rtObject.visibleInImgui &&
-                                    !enabledTricks.count(rtObject.rt) &&
-                                    !rtObject.rtGlitch) {
-
-                                    hasTricks = true;
-                                    break;
-                                }
-                            }
-                            if (hasTricks) {
-                                areaTreeDisabled[rtArea] = true;
+                        for (int i = 0; i < RT_MAX; i++) {
+                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
+                            if (option.IsHidden() && !enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                                !option.IsGlitch()) {
+                                areaTreeDisabled[option.GetArea()] = false;
                             }
                         }
                     }
                     ImGui::SameLine();
                     if (ImGui::Button("Enable Visible")) {
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                if (!rtObject.rtGlitch && !enabledTricks.count(rtObject.rt) && trickSearch.PassFilter(rtObject.rtShortName.c_str()) && areaTreeDisabled[rtArea] && RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags)) {
-                                    enabledTricks.insert(randomizerTrick);
-                                }
+                        for (int i = 0; i < RT_MAX; i++) {
+                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
+                            if (!option.IsGlitch() && !enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                                trickSearch.PassFilter(option.GetName().c_str()) &&
+                                areaTreeDisabled[option.GetArea()] &&
+                                Rando::Tricks::CheckRTTags(showTag, option.GetTags())) {
+                                enabledTricks.insert(static_cast<RandomizerTrick>(i));
                             }
                         }
                         std::string enabledTrickString = "";
@@ -2207,31 +2435,30 @@ void RandomizerSettingsWindow::DrawElement() {
                     
                     ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
 
-                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                    for (auto [area, trickIds] : mSettings->mTricksByArea) {
                         bool hasTricks = false;
-                        for (auto [randomizerTrick, rtObject] : rtObjects) {
-                            if (rtObject.visibleInImgui &&
-                                trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
-                                !enabledTricks.count(rtObject.rt) &&
-                                RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
-                                !rtObject.rtGlitch) {
-
+                        for (auto rt : trickIds) {
+                            auto option = mSettings->GetTrickOption(rt);
+                            if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
+                                !enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
+                                !option.IsGlitch()) {
                                 hasTricks = true;
                                 break;
                             }
                         }
                         if (hasTricks) {
-                            ImGui::TreeNodeSetOpen(ImGui::GetID(RandomizerTricks::GetRTAreaName(rtArea).c_str()), areaTreeDisabled[rtArea]);
+                            ImGui::TreeNodeSetOpen(ImGui::GetID(Rando::Tricks::GetRTAreaName(area).c_str()), areaTreeDisabled[area]);
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode(RandomizerTricks::GetRTAreaName(rtArea).c_str())) {
-                                for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                    if (rtObject.visibleInImgui &&
-                                        trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
-                                        !enabledTricks.count(rtObject.rt) &&
-                                        RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
-                                        !rtObject.rtGlitch) {
-                                        if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Right)) {
-                                            enabledTricks.insert(rtObject.rt);
+                            if (ImGui::TreeNode(Rando::Tricks::GetRTAreaName(area).c_str())) {
+                                for (auto rt : trickIds) {
+                                    auto option = mSettings->GetTrickOption(rt);
+                                    if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
+                                        !enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
+                                        !option.IsGlitch()) {
+                                        ImGui::TreeNodeSetOpen(ImGui::GetID(Rando::Tricks::GetRTAreaName(option.GetArea()).c_str()), areaTreeDisabled[option.GetArea()]);
+                                        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                                        if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Right)) {
+                                            enabledTricks.insert(rt);
                                             std::string enabledTrickString = "";
                                             for (auto enabledTrickIt : enabledTricks) {
                                                 enabledTrickString += std::to_string(enabledTrickIt);
@@ -2240,16 +2467,16 @@ void RandomizerSettingsWindow::DrawElement() {
                                             CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
                                             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                         }
-                                        DrawTagChips(*rtObject.rtTags);
+                                        Rando::Tricks::DrawTagChips(option.GetTags());
                                         ImGui::SameLine();
-                                        ImGui::Text("%s", rtObject.rtShortName.c_str());
-                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                        ImGui::Text("%s", option.GetName().c_str());
+                                        UIWidgets::InsertHelpHoverText(option.GetDescription().c_str());
                                     }
                                 }
-                                areaTreeDisabled[rtArea] = true;
+                                areaTreeDisabled[area] = true;
                                 ImGui::TreePop();
                             } else {
-                                areaTreeDisabled[rtArea] = false;
+                                areaTreeDisabled[area] = false;
                             }
                         }
                     }
@@ -2262,48 +2489,33 @@ void RandomizerSettingsWindow::DrawElement() {
                     window->DC.CurrLineTextBaseOffset = 0.0f;
 
                     if (ImGui::Button("Collapse All##enabled")) {
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            bool hasTricks = false;
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                if (rtObject.visibleInImgui && 
-                                    enabledTricks.count(rtObject.rt) && 
-                                    !rtObject.rtGlitch) {
-
-                                    hasTricks = true;
-                                    break;
-                                }
-                            }
-                            if (hasTricks) {
-                                areaTreeEnabled[rtArea] = false;
+                        for (int i = 0; i < RT_MAX; i++) {
+                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
+                            if (!option.IsHidden() && enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                                !option.IsGlitch()) {
+                                areaTreeDisabled[option.GetArea()] = false;
                             }
                         }
                     }
                     ImGui::SameLine();
                     if (ImGui::Button("Open All##enabled")) {
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            bool hasTricks = false;
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                if (rtObject.visibleInImgui && 
-                                    enabledTricks.count(rtObject.rt) && 
-                                    !rtObject.rtGlitch) {
-
-                                    hasTricks = true;
-                                    break;
-                                }
-                            }
-                            if (hasTricks) {
-                                areaTreeEnabled[rtArea] = true;
+                        for (int i = 0; i < RT_MAX; i++) {
+                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
+                            if (option.IsHidden() && enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                                !option.IsGlitch()) {
+                                areaTreeDisabled[option.GetArea()] = false;
                             }
                         }
                     }
                     ImGui::SameLine();
                     if (ImGui::Button("Disable Visible")) {
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                auto etfound = enabledTricks.find(randomizerTrick);
-                                if (!rtObject.rtGlitch && etfound != enabledTricks.end() && trickSearch.PassFilter(rtObject.rtShortName.c_str()) && areaTreeEnabled[rtArea] && RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags)) {
-                                    enabledTricks.erase(etfound);
-                                }
+                        for (int i = 0; i < RT_MAX; i++) {
+                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
+                            if (!option.IsGlitch() && enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
+                                trickSearch.PassFilter(option.GetName().c_str()) &&
+                                areaTreeEnabled[option.GetArea()] &&
+                                Rando::Tricks::CheckRTTags(showTag, option.GetTags())) {
+                                enabledTricks.insert(static_cast<RandomizerTrick>(i));
                             }
                         }
                         std::string enabledTrickString = "";
@@ -2317,54 +2529,52 @@ void RandomizerSettingsWindow::DrawElement() {
                     
                     ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
 
-                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                    for (auto [area, trickIds] : mSettings->mTricksByArea) {
                         bool hasTricks = false;
-                        for (auto [randomizerTrick, rtObject] : rtObjects) {
-                            if (rtObject.visibleInImgui &&
-                                trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
-                                enabledTricks.count(rtObject.rt) &&
-                                RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
-                                !rtObject.rtGlitch) {
-
+                        for (auto rt : trickIds) {
+                            auto option = mSettings->GetTrickOption(rt);
+                            if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
+                                enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
+                                !option.IsGlitch()) {
                                 hasTricks = true;
                                 break;
                             }
                         }
                         if (hasTricks) {
-                            ImGui::TreeNodeSetOpen(ImGui::GetID(RandomizerTricks::GetRTAreaName(rtArea).c_str()), areaTreeEnabled[rtArea]);
+                            ImGui::TreeNodeSetOpen(ImGui::GetID(Rando::Tricks::GetRTAreaName(area).c_str()), areaTreeDisabled[area]);
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode(RandomizerTricks::GetRTAreaName(rtArea).c_str())) {
-                                for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                    auto etfound = enabledTricks.find(rtObject.rt);
-                                    if (rtObject.visibleInImgui &&
-                                        trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
-                                        etfound != enabledTricks.end() &&
-                                        RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
-                                        !rtObject.rtGlitch) {
-                                        
-                                        if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Left)) {
-                                            enabledTricks.erase(etfound);
+                            if (ImGui::TreeNode(Rando::Tricks::GetRTAreaName(area).c_str())) {
+                                for (auto rt : trickIds) {
+                                    auto option = mSettings->GetTrickOption(rt);
+                                    if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
+                                        enabledTricks.count(rt) && Rando::Tricks::CheckRTTags(showTag, option.GetTags()) &&
+                                        !option.IsGlitch()) {
+                                        ImGui::TreeNodeSetOpen(ImGui::GetID(Rando::Tricks::GetRTAreaName(option.GetArea()).c_str()), areaTreeDisabled[option.GetArea()]);
+                                        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                                        if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Left)) {
+                                            enabledTricks.insert(rt);
                                             std::string enabledTrickString = "";
                                             for (auto enabledTrickIt : enabledTricks) {
                                                 enabledTrickString += std::to_string(enabledTrickIt);
                                                 enabledTrickString += ",";
-                                            }
-                                            CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                                            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                         }
-                                        DrawTagChips(*rtObject.rtTags);
-                                        ImGui::SameLine();
-                                        ImGui::Text("%s", rtObject.rtShortName.c_str());
-                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                        CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                                    }
+                                    Rando::Tricks::DrawTagChips(option.GetTags());
+                                    ImGui::SameLine();
+                                    ImGui::Text("%s", option.GetName().c_str());
+                                    UIWidgets::InsertHelpHoverText(option.GetDescription().c_str());
                                     }
                                 }
-                                areaTreeEnabled[rtArea] = true;
+                                areaTreeEnabled[area] = true;
                                 ImGui::TreePop();
                             } else {
-                                areaTreeEnabled[rtArea] = false;
+                                areaTreeEnabled[area] = false;
                             }
                         }
                     }
+
                     ImGui::EndChild();
                 } else {
                     ImGui::TableNextColumn();
@@ -2415,75 +2625,39 @@ void RandomizerSettingsWindow::UpdateElement() {
     }
 }
 
-CustomMessage Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
-    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(
-        Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT);
-    if (mysterious) {
-        std::array<const char*, LANGUAGE_MAX> locationName ={
-            "a mysterious place",
-            "ein mysteriöser Ort",
-            "un endroit mystérieux",
-        };
-
-        messageEntry.Replace("{{location}}", locationName[0],
-            locationName[1], locationName[2]);
-        return messageEntry;
-    }
-
+CustomMessage Randomizer::ReplaceWithItemName(CustomMessage message, std::string&& toReplace, RandomizerCheck hintedCheck){
     auto ctx = Rando::Context::GetInstance();
-    RandomizerHintKey locHintKey = RH_NONE;
-    switch (textId) {
-        case TEXT_WARP_MINUET_OF_FOREST:
-            locHintKey = RH_MINUET_WARP_LOC;
-            break;
-        case TEXT_WARP_BOLERO_OF_FIRE:
-            locHintKey = RH_BOLERO_WARP_LOC;
-            break;
-        case TEXT_WARP_SERENADE_OF_WATER:
-            locHintKey = RH_SERENADE_WARP_LOC;
-            break;
-        case TEXT_WARP_REQUIEM_OF_SPIRIT:
-            locHintKey = RH_REQUIEM_WARP_LOC;
-            break;
-        case TEXT_WARP_NOCTURNE_OF_SHADOW:
-            locHintKey = RH_NOCTURNE_WARP_LOC;
-            break;
-        case TEXT_WARP_PRELUDE_OF_LIGHT:
-            locHintKey = RH_PRELUDE_WARP_LOC;
-            break;
-    }
-    std::string locationName = "";
-    switch (gSaveContext.language) {
-        case LANGUAGE_FRA:
-            locationName = ctx->GetHint(locHintKey)->GetText().GetFrench();
-            break;
-        case LANGUAGE_ENG:
-        default:
-            locationName = ctx->GetHint(locHintKey)->GetText().GetEnglish();
-            break;
-    }
+    RandomizerGet targetRG = ctx->GetItemLocation(hintedCheck)->GetPlacedRandomizerGet();
+    std::array<std::string, LANGUAGE_MAX> itemName;
+        if (targetRG == RG_ICE_TRAP) {
+            targetRG = ctx->overrides[hintedCheck].LooksLike();
+            itemName = {
+                ctx->overrides[hintedCheck].GetTrickName().english,
+                ctx->overrides[hintedCheck].GetTrickName().french,
+                ctx->overrides[hintedCheck].GetTrickName().english
+            };
+        } else {
+            itemName = EnumToSpoilerfileGetName[targetRG];
+        }
+    message.Replace(std::move(toReplace), std::move(itemName[0]), std::move(itemName[1]), std::move(itemName[2]));
+    return message;
+}
 
-    messageEntry.Replace("{{location}}", std::move(locationName));
+
+CustomMessage Randomizer::GetMiscHintMessage(TextIDs textToGet, RandomizerCheck hintedCheck, RandomizerCheck otherCheck) {
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, textToGet);
+    messageEntry = ReplaceWithItemName(messageEntry, "{{item1}}", hintedCheck);
+    if (otherCheck != RC_UNKNOWN_CHECK){
+        messageEntry = ReplaceWithItemName(messageEntry, "{{item2}}", otherCheck);
+    }
     return messageEntry;
 }
 
-CustomMessage Randomizer::GetFrogsMessage(u16 originalTextId) {
+CustomMessage Randomizer::GetCursedSkullMessage(s16 params, RandomizerCheck hintedCheck) {
     auto ctx = Rando::Context::GetInstance();
-    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, originalTextId);
-        RandomizerGet frogsGet = ctx->GetItemLocation(RC_ZR_FROGS_OCARINA_GAME)->GetPlacedRandomizerGet();
-        std::array<std::string, LANGUAGE_MAX> frogItemName;
-        if (frogsGet == RG_ICE_TRAP) {
-            frogsGet = ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].LooksLike();
-            frogItemName = {
-                ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].GetTrickName().english,
-                ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].GetTrickName().french,
-                ctx->overrides[RC_ZR_FROGS_OCARINA_GAME].GetTrickName().english
-            };
-        } else {
-            frogItemName = EnumToSpoilerfileGetName[frogsGet];
-        }
-        messageEntry.Replace("{{item}}", std::move(frogItemName[0]), std::move(frogItemName[1]), std::move(frogItemName[2]));
-        return messageEntry;
+    CustomMessage messageEntry = GetMiscHintMessage(TEXT_SKULLTULA_PEOPLE_IM_CURSED, hintedCheck);
+    messageEntry.Replace("{{params}}", std::to_string(params*10));
+    return messageEntry;
 }
 
 CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
@@ -2548,6 +2722,32 @@ CustomMessage Randomizer::GetSariaMessage(u16 originalTextId) {
     }
 }
 
+CustomMessage Randomizer::GetFishingPondOwnerMessage(u16 originalTextId) {
+    CustomMessage hintMessageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_FISHING_POND_START);
+    CustomMessage messageEntry = CustomMessage(
+      "Sorry, but the pond is closed.&I've lost my good %rfishing pole%w...&Can't go fishing without it!",
+      "",
+      ""
+    );
+
+    if (Rando::Context::GetInstance()->GetOption(RSK_FISHING_POLE_HINT)) {
+        messageEntry = messageEntry + hintMessageEntry;
+    }
+
+    // if the fishing pond guy doesnt remember me i will cry :(
+    if (originalTextId == TEXT_FISHING_POND_START_MET) {
+        messageEntry = CustomMessage(
+            "Hey, mister! I remember you!&It's been a long time!^",
+            "",
+            ""
+        ) + messageEntry;
+    }
+
+    messageEntry.Format();
+
+    return messageEntry;
+}
+
 CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious) {
     auto ctx = Rando::Context::GetInstance();
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
@@ -2584,28 +2784,6 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
 
     messageEntry.Replace("{{item}}", std::move(shopItemName[0]), std::move(shopItemName[1]), std::move(shopItemName[2]));
     messageEntry.Replace("{{price}}", std::to_string(shopItemPrice));
-    return messageEntry;
-}
-
-CustomMessage Randomizer::GetCursedSkullMessage(s16 params) {
-    auto ctx = Rando::Context::GetInstance();
-    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE);
-    RandomizerCheck rc = GetCheckFromActor(ACTOR_EN_SSH, SCENE_HOUSE_OF_SKULLTULA, params);
-    RandomizerGet itemGet = ctx->GetItemLocation(rc)->GetPlacedRandomizerGet();
-    std::array<std::string, LANGUAGE_MAX> itemName;
-    if (itemGet == RG_ICE_TRAP) {
-        itemGet = ctx->overrides[rc].LooksLike();
-        itemName = {
-            std::string(ctx->overrides[rc].GetTrickName().english),
-            std::string(ctx->overrides[rc].GetTrickName().french),
-            std::string(ctx->overrides[rc].GetTrickName().english)
-        };
-    } else {
-        itemName = EnumToSpoilerfileGetName[itemGet];
-    }
-
-    messageEntry.Replace("{{params}}", std::to_string(params*10));
-    messageEntry.Replace("{{check}}", std::move(itemName[0]), std::move(itemName[1]), std::move(itemName[2]));
     return messageEntry;
 }
 
@@ -3068,7 +3246,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 71> getItemMessages = {{
+    const std::array<GetItemMessage, 74> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
@@ -3303,6 +3481,10 @@ void Randomizer::CreateCustomMessages() {
 			"You got a %rTycoon's Wallet%w!&It's gigantic! Now you can carry&up to %y999 rupees%w!",
 			"Du erhältst die %rGoldene&Geldbörse%w! Die größte aller&Geldbörsen! Jetzt kannst Du bis&zu %y999 Rubine%w mit dir führen!",
 			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!"),
+        GIMESSAGE(RG_CHILD_WALLET, ITEM_WALLET_ADULT,
+			"You got a %rChild's Wallet%w!&Now you can carry&up to %y99 rupees%w!",
+			"Du erhältst die %rGoldene&Geldbörse%w! Jetzt kannst Du bis&zu %y99 Rubine%w mit dir führen!",//FIXME: still says tycoon
+			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y99 rubis%w!"),//FIXME: still says tycoon
 
         GIMESSAGE_UNTRANSLATED(RG_GOHMA_SOUL, ITEM_BIG_POE, "You found the soul for %gGohma%w!"),
         GIMESSAGE_UNTRANSLATED(RG_KING_DODONGO_SOUL, ITEM_BIG_POE, "You found the soul for %rKing&Dodongo%w!"),
@@ -3334,6 +3516,8 @@ void Randomizer::CreateCustomMessages() {
             "You got the %y\xa6%r button for the&Ocarina%w! You can now use it&while playing songs!",
 			"Der %y\xa6%r Knopf%w!&Du kannst ihn nun zum Spielen&von Liedern auf der %rOkarina%w&verwenden!",
 			"Vous trouvez la %rtouche %y\xa6%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
+        GIMESSAGE_UNTRANSLATED(RG_BRONZE_SCALE, ITEM_SCALE_SILVER, "You got the %rBronze Scale%w!&The power of buoyancy is yours!"),
+        GIMESSAGE_UNTRANSLATED(RG_FISHING_POLE, ITEM_FISHING_POLE, "You found a lost %rFishing Pole%w!&Time to hit the pond!"),
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();

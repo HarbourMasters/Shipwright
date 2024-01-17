@@ -2102,6 +2102,17 @@ void HintTable_Init_Item() {
                       Text{"an Ocarina C Right Button", /*french*/"la Touche C-Droit de l'Ocarina", /*spanish*/"un botón C derecho de Ocarina"}}
      );
 
+    hintTable[RHT_FISHING_POLE] = HintText::Item({
+                       //obscure text
+                       Text{"a fish-puller", /*french*/"(canne à pêche)", /*spanish*/"(caña de pescar)"},
+                     }, {
+                       //ambiguous text
+                       Text{"the pond owner's property", /*french*/"(canne à pêche)", /*spanish*/"(caña de pescar)"},
+                     },
+                       //clear text
+                       Text{"a fishing pole", /*french*/"canne à pêche", /*spanish*/"caña de pescar"}
+    );
+
     hintTable[RHT_EPONA] = HintText::Item({
                        //obscure text
                        Text{"a horse",              /*french*/"un fidèle destrier", /*spanish*/"una yegua"},
@@ -2115,6 +2126,10 @@ void HintTable_Init_Item() {
                        //clear text
                        Text{"Epona", /*french*/"Epona", /*spanish*/"a Epona"}
     );
+    hintTable[RHT_HINT_MYSTERIOUS] = HintText::Item({
+      Text{"something mysterious", /*french*/"un sacré mystère",  /*spanish*/"algo misterioso", /*german*/"etwas Unvorhergesehenes"},
+      Text{"an unknown treasure",  /*french*/"un trésor inconnu", /*spanish*/"un desconocido tesoro", /*german*/"ein unbekannter Schatz"},
+    });
 
     // [RHT_HINT_ERROR] = HintText::Item({
     //                      //obscure text

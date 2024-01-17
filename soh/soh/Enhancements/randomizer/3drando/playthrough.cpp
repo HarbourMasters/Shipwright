@@ -5,7 +5,6 @@
 #include "custom_messages.hpp"
 #include "fill.hpp"
 #include "location_access.hpp"
-#include "logic.hpp"
 #include "random.hpp"
 #include "spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
@@ -24,6 +23,7 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     CustomMessages::ClearMessages();
     ctx->ItemReset();
     ctx->HintReset();
+    ctx->GetLogic()->Reset();
     Areas::AccessReset();
 
     ctx->GetSettings()->FinalizeSettings(excludedLocations, enabledTricks);
@@ -37,7 +37,9 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
 
         for (Rando::Option* option : optionGroup.GetOptions()) {
             if (option->IsCategory(Rando::OptionCategory::Setting)) {
-                settingsStr += option->GetSelectedOptionText();
+                if (option->GetOptionCount() > 0) {
+                    settingsStr += option->GetSelectedOptionText();
+                }
             }
         }
     }
@@ -50,7 +52,7 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     Random_Init(finalHash);
     ctx->GetSettings()->SetHash(std::to_string(finalHash));
 
-    Logic::UpdateHelpers();
+    ctx->GetLogic()->UpdateHelpers();
 
     if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
         VanillaFill(); // Just place items in their vanilla locations
