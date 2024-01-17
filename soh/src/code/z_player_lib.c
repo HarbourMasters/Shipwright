@@ -1364,9 +1364,9 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
             return false;
         } else {
             return false;
-             
         }
     }
+
     return false;
 }
 

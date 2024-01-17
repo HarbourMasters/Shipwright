@@ -986,6 +986,8 @@ void DrawEnhancementsMenu() {
                 ImGui::EndMenu();
             }
 
+            UIWidgets::Spacer(0);
+
             if (ImGui::BeginMenu("Animated Link in Pause Menu")) {
                 ImGui::Text("Rotation");
                 UIWidgets::EnhancementRadioButton("Disabled", "gPauseLiveLinkRotation", 0);
@@ -1376,7 +1378,7 @@ void DrawCheatsMenu() {
 
             ImGui::EndMenu();
         }
-        
+
         UIWidgets::Spacer(0);
 
         if (ImGui::BeginMenu("Save States")) {
