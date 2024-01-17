@@ -3,8 +3,9 @@
 #include "macros.h"
 #include "functions.h"
 extern "C" {
-s32 func_80839768(PlayState* play, Player* p, Vec3f* arg2, CollisionPoly** arg3, s32* arg4, Vec3f* arg5);
-void func_8083E298(CollisionPoly* arg0, Vec3f* arg1, s16* arg2);
+s32 Player_PosVsWallLineTest(PlayState* play, Player* p, Vec3f* offset, CollisionPoly** wallPoly, s32* bgId,
+                             Vec3f* posResult);
+void Player_GetSlopeDirection(CollisionPoly* floorPoly, Vec3f* slopeNormal, s16* downwardSlopeYaw);
 void CollisionPoly_GetVertices(CollisionPoly* poly, Vec3s* vtxList, Vec3f* dest);
 f32 BgCheck_RaycastFloorImpl(PlayState* play, CollisionContext* colCtx, u16 xpFlags, CollisionPoly** outPoly,
                              s32* outBgId, Vec3f* pos, Actor* actor, u32 arg7, f32 chkDist);
@@ -562,7 +563,7 @@ class Lava : protected TerrainCueSound {
             // relevant functions to eliminate dependency on the player object, or risking weird side effects from
             // passing in the real player with a temporarily modified pos vector, I'm using this fake player instance
             // instead. These functions only need the player's position and shape rotation vectors set.
-            if (func_80839768(actor->play, &fakePlayer, &D_80854798, &testPoly, &bgId, &collisionResult) &&
+            if (Player_PosVsWallLineTest(actor->play, &fakePlayer, &D_80854798, &testPoly, &bgId, &collisionResult) &&
                 abs(wallYaw - Math_Atan2S(testPoly->normal.z, testPoly->normal.x)) < 0x4000 &&
                 !func_80041E18(&actor->play->colCtx, testPoly, bgId)) {
                 wallHeight = 399.96002f;
@@ -593,7 +594,7 @@ class Lava : protected TerrainCueSound {
 
         if (SurfaceType_GetSlope(&play->colCtx, floorPoly, floorBgId) == 1) {
             sp4A = Math_Atan2S(velocity.z, velocity.x);
-            func_8083E298(floorPoly, &sp3C, &sp3A);
+            Player_GetSlopeDirection(floorPoly, &sp3C, &sp3A);
             temp3 = sp3A - sp4A;
 
             if (ABS(temp3) > 16000) {
