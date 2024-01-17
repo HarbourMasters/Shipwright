@@ -211,6 +211,295 @@ void ValueViewerWindow::DrawElement() {
         }
         ImGui::EndGroup();
     }
+    // return ImGui::End();
+    // Comment out the line above to enable the value playground, which is just
+    // an editor for a bunch of dummy CVars that can be used to aid development
+
+    ImGui::BeginGroup();
+    ImGui::Text("Value Playground:");
+
+    ImGui::PushItemWidth(60.0f);
+    int playgroundIntMin = CVarGetInteger("gPlayground.IntMin", 0);
+    if (ImGui::InputScalar("Min##gPlayground.IntMin", ImGuiDataType_S32, &playgroundIntMin)) {
+        CVarSetInteger("gPlayground.IntMin", playgroundIntMin);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    int playgroundIntMax = CVarGetInteger("gPlayground.IntMax", 0);
+    if (ImGui::InputScalar("Max##gPlayground.IntMax", ImGuiDataType_S32, &playgroundIntMax)) {
+        CVarSetInteger("gPlayground.IntMax", playgroundIntMax);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("S16##gPlayground.Int")) {
+        CVarSetInteger("gPlayground.IntMin", SHRT_MIN / 2);
+        CVarSetInteger("gPlayground.IntMax", SHRT_MAX / 2);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("U16##gPlayground.Int")) {
+        CVarSetInteger("gPlayground.IntMin", 0);
+        CVarSetInteger("gPlayground.IntMax", USHRT_MAX / 2);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("S8##gPlayground.Int")) {
+        CVarSetInteger("gPlayground.IntMin", CHAR_MIN / 2);
+        CVarSetInteger("gPlayground.IntMax", CHAR_MAX / 2);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("U8##gPlayground.Int")) {
+        CVarSetInteger("gPlayground.IntMin", 0);
+        CVarSetInteger("gPlayground.IntMax", UCHAR_MAX / 2);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    ImGui::PopItemWidth();
+
+    int playgroundInt1X = CVarGetInteger("gPlayground.Int1X", 0);
+    if (ImGui::SliderInt("##gPlayground.Int1X", &playgroundInt1X, playgroundIntMin, playgroundIntMax,
+                         "gPlayground.Int1X:%d")) {
+        CVarSetInteger("gPlayground.Int1X", playgroundInt1X);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Int1X")) {
+        CVarClear("gPlayground.Int1X");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    int playgroundInt1Y = CVarGetInteger("gPlayground.Int1Y", 0);
+    if (ImGui::SliderInt("##gPlayground.Int1Y", &playgroundInt1Y, playgroundIntMin, playgroundIntMax,
+                         "gPlayground.Int1Y:%d")) {
+        CVarSetInteger("gPlayground.Int1Y", playgroundInt1Y);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Int1Y")) {
+        CVarClear("gPlayground.Int1Y");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    int playgroundInt1Z = CVarGetInteger("gPlayground.Int1Z", 0);
+    if (ImGui::SliderInt("##gPlayground.Int1Z", &playgroundInt1Z, playgroundIntMin, playgroundIntMax,
+                         "gPlayground.Int1Z:%d")) {
+        CVarSetInteger("gPlayground.Int1Z", playgroundInt1Z);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Int1Z")) {
+        CVarClear("gPlayground.Int1Z");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    int playgroundInt2X = CVarGetInteger("gPlayground.Int2X", 0);
+    if (ImGui::SliderInt("##gPlayground.Int2X", &playgroundInt2X, playgroundIntMin, playgroundIntMax,
+                         "gPlayground.Int2X:%d")) {
+        CVarSetInteger("gPlayground.Int2X", playgroundInt2X);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Int2X")) {
+        CVarClear("gPlayground.Int2X");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    int playgroundInt2Y = CVarGetInteger("gPlayground.Int2Y", 0);
+    if (ImGui::SliderInt("##gPlayground.Int2Y", &playgroundInt2Y, playgroundIntMin, playgroundIntMax,
+                         "gPlayground.Int2Y:%d")) {
+        CVarSetInteger("gPlayground.Int2Y", playgroundInt2Y);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Int2Y")) {
+        CVarClear("gPlayground.Int2Y");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    int playgroundInt2Z = CVarGetInteger("gPlayground.Int2Z", 0);
+    if (ImGui::SliderInt("##gPlayground.Int2Z", &playgroundInt2Z, playgroundIntMin, playgroundIntMax,
+                         "gPlayground.Int2Z:%d")) {
+        CVarSetInteger("gPlayground.Int2Z", playgroundInt2Z);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Int2Z")) {
+        CVarClear("gPlayground.Int2Z");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    ImGui::PushItemWidth(60.0f);
+    float playgroundFloatMin = CVarGetFloat("gPlayground.FloatMin", 0.0f);
+    if (ImGui::InputScalar("Min##gPlayground.FloatMin", ImGuiDataType_Float, &playgroundFloatMin)) {
+        CVarSetFloat("gPlayground.FloatMin", playgroundFloatMin);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    float playgroundFloatMax = CVarGetFloat("gPlayground.FloatMax", 0.0f);
+    if (ImGui::InputScalar("Max##gPlayground.FloatMax", ImGuiDataType_Float, &playgroundFloatMax)) {
+        CVarSetFloat("gPlayground.FloatMax", playgroundFloatMax);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("5000##gPlayground.Float")) {
+        CVarSetFloat("gPlayground.FloatMin", -5000.0f);
+        CVarSetFloat("gPlayground.FloatMax", 5000.0f);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("1##gPlayground.Float")) {
+        CVarSetFloat("gPlayground.FloatMin", -1.0f);
+        CVarSetFloat("gPlayground.FloatMax", 1.0f);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::PopItemWidth();
+
+    float playgroundFloat1X = CVarGetFloat("gPlayground.Float1X", 0.0f);
+    if (ImGui::SliderFloat("##gPlayground.Float1X", &playgroundFloat1X, playgroundFloatMin, playgroundFloatMax,
+                           "gPlayground.Float1X:%f")) {
+        CVarSetFloat("gPlayground.Float1X", playgroundFloat1X);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Float1X")) {
+        CVarClear("gPlayground.Float1X");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    float playgroundFloat1Y = CVarGetFloat("gPlayground.Float1Y", 0.0f);
+    if (ImGui::SliderFloat("##gPlayground.Float1Y", &playgroundFloat1Y, playgroundFloatMin, playgroundFloatMax,
+                           "gPlayground.Float1Y:%f")) {
+        CVarSetFloat("gPlayground.Float1Y", playgroundFloat1Y);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Float1Y")) {
+        CVarClear("gPlayground.Float1Y");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    float playgroundFloat1Z = CVarGetFloat("gPlayground.Float1Z", 0.0f);
+    if (ImGui::SliderFloat("##gPlayground.Float1Z", &playgroundFloat1Z, playgroundFloatMin, playgroundFloatMax,
+                           "gPlayground.Float1Z:%f")) {
+        CVarSetFloat("gPlayground.Float1Z", playgroundFloat1Z);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Float1Z")) {
+        CVarClear("gPlayground.Float1Z");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    float playgroundFloat2X = CVarGetFloat("gPlayground.Float2X", 0.0f);
+    if (ImGui::SliderFloat("##gPlayground.Float2X", &playgroundFloat2X, playgroundFloatMin, playgroundFloatMax,
+                           "gPlayground.Float2X:%f")) {
+        CVarSetFloat("gPlayground.Float2X", playgroundFloat2X);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Float2X")) {
+        CVarClear("gPlayground.Float2X");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    float playgroundFloat2Y = CVarGetFloat("gPlayground.Float2Y", 0.0f);
+    if (ImGui::SliderFloat("##gPlayground.Float2Y", &playgroundFloat2Y, playgroundFloatMin, playgroundFloatMax,
+                           "gPlayground.Float2Y:%f")) {
+        CVarSetFloat("gPlayground.Float2Y", playgroundFloat2Y);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Float2Y")) {
+        CVarClear("gPlayground.Float2Y");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    float playgroundFloat2Z = CVarGetFloat("gPlayground.Float2Z", 0.0f);
+    if (ImGui::SliderFloat("##gPlayground.Float2Z", &playgroundFloat2Z, playgroundFloatMin, playgroundFloatMax,
+                           "gPlayground.Float2Z:%f")) {
+        CVarSetFloat("gPlayground.Float2Z", playgroundFloat2Z);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Float2Z")) {
+        CVarClear("gPlayground.Float2Z");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    float playgroundFloat3X = CVarGetFloat("gPlayground.Float3X", 0.0f);
+    if (ImGui::SliderFloat("##gPlayground.Float3X", &playgroundFloat3X, playgroundFloatMin, playgroundFloatMax,
+                           "gPlayground.Float3X:%f")) {
+        CVarSetFloat("gPlayground.Float3X", playgroundFloat3X);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Float3X")) {
+        CVarClear("gPlayground.Float3X");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    float playgroundFloat3Y = CVarGetFloat("gPlayground.Float3Y", 0.0f);
+    if (ImGui::SliderFloat("##gPlayground.Float3Y", &playgroundFloat3Y, playgroundFloatMin, playgroundFloatMax,
+                           "gPlayground.Float3Y:%f")) {
+        CVarSetFloat("gPlayground.Float3Y", playgroundFloat3Y);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Float3Y")) {
+        CVarClear("gPlayground.Float3Y");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    float playgroundFloat3Z = CVarGetFloat("gPlayground.Float3Z", 0.0f);
+    if (ImGui::SliderFloat("##gPlayground.Float3Z", &playgroundFloat3Z, playgroundFloatMin, playgroundFloatMax,
+                           "gPlayground.Float3Z:%f")) {
+        CVarSetFloat("gPlayground.Float3Z", playgroundFloat3Z);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Float3Z")) {
+        CVarClear("gPlayground.Float3Z");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    float playgroundFloat4X = CVarGetFloat("gPlayground.Float4X", 0.0f);
+    if (ImGui::SliderFloat("##gPlayground.Float4X", &playgroundFloat4X, playgroundFloatMin, playgroundFloatMax,
+                           "gPlayground.Float4X:%f")) {
+        CVarSetFloat("gPlayground.Float4X", playgroundFloat4X);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Float4X")) {
+        CVarClear("gPlayground.Float4X");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    float playgroundFloat4Y = CVarGetFloat("gPlayground.Float4Y", 0.0f);
+    if (ImGui::SliderFloat("##gPlayground.Float4Y", &playgroundFloat4Y, playgroundFloatMin, playgroundFloatMax,
+                           "gPlayground.Float4Y:%f")) {
+        CVarSetFloat("gPlayground.Float4Y", playgroundFloat4Y);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Float4Y")) {
+        CVarClear("gPlayground.Float4Y");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    float playgroundFloat4Z = CVarGetFloat("gPlayground.Float4Z", 0.0f);
+    if (ImGui::SliderFloat("##gPlayground.Float4Z", &playgroundFloat4Z, playgroundFloatMin, playgroundFloatMax,
+                           "gPlayground.Float4Z:%f")) {
+        CVarSetFloat("gPlayground.Float4Z", playgroundFloat4Z);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##gPlayground.Float4Z")) {
+        CVarClear("gPlayground.Float4Z");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    ImGui::EndGroup();
 
     ImGui::End();
 }

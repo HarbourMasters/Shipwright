@@ -1320,9 +1320,30 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
             return false;
         } else {
             return false;
+             
         }
     }
-
+    if (CVarGetInteger("gEquipmentAlwaysVisible", 0)) {
+        if (limbIndex == PLAYER_LIMB_L_HAND) {
+            if (LINK_IS_CHILD) {
+                if ((B_BTN_ITEM != ITEM_SWORD_KOKIRI && sLeftHandType == PLAYER_MODELTYPE_LH_SWORD) ||
+                    (sLeftHandType == PLAYER_MODELTYPE_LH_BGS) || (sLeftHandType == PLAYER_MODELTYPE_LH_HAMMER)) {
+                    Matrix_Scale(CVarGetFloat("gPlayground.Float2X", 1.0f), CVarGetFloat("gPlayground.Float2Y", 1.0f),
+                                 CVarGetFloat("gPlayground.Float2Z", 1.0f), MTXMODE_APPLY);
+                }
+            }
+        }
+        if (limbIndex == PLAYER_LIMB_R_HAND) {
+            if (LINK_IS_CHILD) {
+                if ((this->currentShield != PLAYER_SHIELD_DEKU && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) ||
+                    (sRightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT) ||
+                    (sRightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT)) {
+                    Matrix_Scale(CVarGetFloat("gPlayground.Float2X", 1.0f), CVarGetFloat("gPlayground.Float2Y", 1.0f),
+                                 CVarGetFloat("gPlayground.Float2Z", 1.0f), MTXMODE_APPLY);
+                }
+            }
+        }
+    }
     return false;
 }
 
@@ -1391,6 +1412,7 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
         this->actor.shape.shadowDraw = NULL;
         *dList = NULL;
     }
+    
 
     return false;
 }
