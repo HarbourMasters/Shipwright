@@ -1041,17 +1041,21 @@ void DrawEnhancementsMenu() {
                     CVarSetInteger("gDisableKokiriDrawDistance", 0);
                 }
             }
-            if (UIWidgets::PaddedEnhancementCheckbox("Show Age-Dependent Equipment", "gEquipmentAlwaysVisible", true,
-                                                     false)) {
-                UpdatePatchHand();
-            }
-            UIWidgets::Tooltip("Makes all equipment visible, regardless of Age.");
             UIWidgets::Spacer(0);
             UIWidgets::Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
             if (CVarGetInteger("gDisableDrawDistance", 0) == 1) {
                 UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance", true, false);
                 UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this will remove their draw distance");
             }
+            if (UIWidgets::PaddedEnhancementCheckbox("Show Age-Dependent Equipment", "gEquipmentAlwaysVisible", true,
+                                                     false)) {
+                UpdatePatchHand();
+            }
+            UIWidgets::Tooltip("Makes all equipment visible, regardless of Age.");
+            if (CVarGetInteger("gEquipmentAlwaysVisible", 0) == 1) {
+				UIWidgets::PaddedEnhancementCheckbox("Scale Adult Equipment as Child", "gScaleAdultEquimentAsChild", true, false);
+				UIWidgets::Tooltip("Scales all of the Adult Equipment, as well and moving some a bit, to fit on Child Link Better. May not fit right with some mods.");
+			}
             UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gLowResMode", true, false);
             UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
             UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", "gDrawLineupTick", true, false);
@@ -1345,6 +1349,10 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
         UIWidgets::PaddedEnhancementCheckbox("Hold Hylian Shield as Child Link", "gChildHoldsHylianShield", true, false);
         UIWidgets::Tooltip("Allows Child Link to hold the Hylian Shield the same way as the rest of the shields.");
+        if (CVarGetInteger("gChildHoldsHylianShield", 0) == 1) {
+			UIWidgets::PaddedEnhancementCheckbox("Rotate and Scale Child Hylian Shield", "gRotateScaleChildHylianShield", true, false);
+			UIWidgets::Tooltip("Rotates and scales the hylian shield for Child Link, so that it is the same orientation as the other shields.");
+		}
         UIWidgets::Spacer(2.0f);
         ImGui::Text("Deku Sticks:");
         UIWidgets::EnhancementCombobox("gDekuStickCheat", DekuStickCheat, DEKU_STICK_NORMAL);

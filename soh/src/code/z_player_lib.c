@@ -1252,42 +1252,40 @@ void func_8008F87C(PlayState* play, Player* this, SkelAnime* skelAnime, Vec3f* p
 s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
     
-    if (CVarGetInteger("gEquipmentAlwaysVisible", 0)) {
+    if (CVarGetInteger("gEquipmentAlwaysVisible", 0) && CVarGetInteger("gScaleAdultEquimentAsChild", 0) && LINK_IS_CHILD) {
         if (limbIndex == PLAYER_LIMB_L_HAND) {
-            if (LINK_IS_CHILD) {
-                if ((B_BTN_ITEM != ITEM_SWORD_KOKIRI && sLeftHandType == PLAYER_MODELTYPE_LH_SWORD) ||
-                    (sLeftHandType == PLAYER_MODELTYPE_LH_BGS) || (sLeftHandType == PLAYER_MODELTYPE_LH_HAMMER)) {
-                    Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
-                }
+            if ((B_BTN_ITEM != ITEM_SWORD_KOKIRI && sLeftHandType == PLAYER_MODELTYPE_LH_SWORD) ||
+                (sLeftHandType == PLAYER_MODELTYPE_LH_BGS) || (sLeftHandType == PLAYER_MODELTYPE_LH_HAMMER)) {
+                Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
             }
         }
         if (limbIndex == PLAYER_LIMB_R_HAND) {
-            if (LINK_IS_CHILD) {
-                if ((this->currentShield != PLAYER_SHIELD_DEKU && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) ||
-                    (sRightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT) ||
-                    (sRightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT && Player_HoldsBow(this))) {
-                    Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
-                }
+            if ((this->currentShield != PLAYER_SHIELD_DEKU && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) ||
+                (sRightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT) ||
+                (sRightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT && Player_HoldsBow(this))) {
+                Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
             }
         }
         if (limbIndex == PLAYER_LIMB_SHEATH) {
-            if (LINK_IS_CHILD) {
-                if ((this->currentShield == PLAYER_SHIELD_MIRROR ||
-                     (this->currentShield == PLAYER_SHIELD_HYLIAN && B_BTN_ITEM != ITEM_SWORD_KOKIRI)) &&
-                    ((this->sheathType == PLAYER_MODELTYPE_SHEATH_16) ||
-                     (this->sheathType == PLAYER_MODELTYPE_SHEATH_18) ||
-                     (this->sheathType == PLAYER_MODELTYPE_SHEATH_19))) {
-                    Matrix_Translate(218, 0, 62, MTXMODE_APPLY);
-                    Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
-                }
-                if (CVarGetInteger("gChildHoldsHylianShield", 0) &&
-                    (this->currentShield == PLAYER_SHIELD_HYLIAN && B_BTN_ITEM == ITEM_SWORD_KOKIRI) &&
-                    ((this->sheathType == PLAYER_MODELTYPE_SHEATH_18) ||
-                     (this->sheathType == PLAYER_MODELTYPE_SHEATH_19))) {
-                    Matrix_Translate(-93, 0, -124, MTXMODE_APPLY);
-                    Matrix_RotateZYX(0, -4680, 0, MTXMODE_APPLY);
-                    Matrix_Scale(0.9, 0.9, 0.9, MTXMODE_APPLY);
-                }
+            if ((this->currentShield == PLAYER_SHIELD_MIRROR ||
+                (this->currentShield == PLAYER_SHIELD_HYLIAN && B_BTN_ITEM != ITEM_SWORD_KOKIRI)) &&
+                ((this->sheathType == PLAYER_MODELTYPE_SHEATH_16) ||
+                (this->sheathType == PLAYER_MODELTYPE_SHEATH_18) ||
+                (this->sheathType == PLAYER_MODELTYPE_SHEATH_19))) {
+                Matrix_Translate(218, 0, 62, MTXMODE_APPLY);
+                Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
+            }
+        }
+    }
+    if (CVarGetInteger("gChildHoldsHylianShield", 0) && CVarGetInteger("gRotateScaleChildHylianShield", 0) &&
+        LINK_IS_CHILD) {
+        if (limbIndex == PLAYER_LIMB_SHEATH) {
+            if ((this->currentShield == PLAYER_SHIELD_HYLIAN && B_BTN_ITEM == ITEM_SWORD_KOKIRI) &&
+                ((this->sheathType == PLAYER_MODELTYPE_SHEATH_18) ||
+                (this->sheathType == PLAYER_MODELTYPE_SHEATH_19))) {
+                Matrix_Translate(-93, 0, -124, MTXMODE_APPLY);
+                Matrix_RotateZYX(0, -4680, 0, MTXMODE_APPLY);
+                Matrix_Scale(0.9, 0.9, 0.9, MTXMODE_APPLY);
             }
         }
     }
