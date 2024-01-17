@@ -985,42 +985,6 @@ void DrawEnhancementsMenu() {
 
                 ImGui::EndMenu();
             }
-            UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD", true, false);
-            UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
-            if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance", true, false)) {
-                if (CVarGetInteger("gDisableDrawDistance", 0) == 0) {
-                    CVarSetInteger("gDisableKokiriDrawDistance", 0);
-                }
-            }
-            UIWidgets::Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
-            if (CVarGetInteger("gDisableDrawDistance", 0) == 1) {
-                UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance", true, false);
-                UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this will remove their draw distance");
-            }
-            if (UIWidgets::PaddedEnhancementCheckbox("Show Age-Dependent Equipment", "gEquipmentAlwaysVisible", true, false)) {
-                UpdatePatchHand(); 
-            }
-            UIWidgets::Tooltip("Makes all equipment visible, regardless of Age.");
-            UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gLowResMode", true, false);
-            UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
-            UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", "gDrawLineupTick", true, false);
-            UIWidgets::Tooltip("Displays a tick in the top center of the screen to help with glitch line-ups in SoH, as traditional UI based line-ups do not work outside of 4:3");
-            UIWidgets::PaddedEnhancementCheckbox("Enable 3D Dropped items/projectiles", "gNewDrops", true, false);
-            UIWidgets::Tooltip("Change most 2D items and projectiles on the overworld to their 3D versions");
-            UIWidgets::PaddedEnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars", true, false);
-            UIWidgets::Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that were covered up by the black bars\nPlease disable this setting before reporting a bug");
-            UIWidgets::PaddedEnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon", true, false);
-            UIWidgets::Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
-            UIWidgets::PaddedEnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon", true, false);
-            UIWidgets::Tooltip("Always shows dungeon entrance icons on the minimap");
-            UIWidgets::PaddedEnhancementCheckbox("Show Gauntlets in First Person", "gFPSGauntlets", true, false);
-            UIWidgets::Tooltip("Renders Gauntlets when using the Bow and Hookshot like in OOT3D");
-            if (UIWidgets::PaddedEnhancementCheckbox("Color Temple of Time's Medallions", "gToTMedallionsColors", true, false)) {
-                PatchToTMedallions();
-            }
-            UIWidgets::Tooltip("When medallions are collected, the medallion imprints around the Master Sword pedestal in the Temple of Time will become colored");
-
-            UIWidgets::Spacer(0);
 
             if (ImGui::BeginMenu("Animated Link in Pause Menu")) {
                 ImGui::Text("Rotation");
@@ -1075,6 +1039,12 @@ void DrawEnhancementsMenu() {
                     CVarSetInteger("gDisableKokiriDrawDistance", 0);
                 }
             }
+            if (UIWidgets::PaddedEnhancementCheckbox("Show Age-Dependent Equipment", "gEquipmentAlwaysVisible", true,
+                                                     false)) {
+                UpdatePatchHand();
+            }
+            UIWidgets::Tooltip("Makes all equipment visible, regardless of Age.");
+            UIWidgets::Spacer(0);
             UIWidgets::Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
             if (CVarGetInteger("gDisableDrawDistance", 0) == 1) {
                 UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance", true, false);
@@ -1371,6 +1341,8 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("Prevents the Deku Shield from burning on contact with fire");
         UIWidgets::PaddedEnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded", true, false);
         UIWidgets::Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
+        UIWidgets::PaddedEnhancementCheckbox("Hold Hylian Shield as Child Link", "gChildHoldsHylianShield", true, false);
+        UIWidgets::Tooltip("Allows Child Link to hold the Hylian Shield the same way as the rest of the shields.");
         UIWidgets::Spacer(2.0f);
         ImGui::Text("Deku Sticks:");
         UIWidgets::EnhancementCombobox("gDekuStickCheat", DekuStickCheat, DEKU_STICK_NORMAL);
@@ -1404,54 +1376,7 @@ void DrawCheatsMenu() {
 
             ImGui::EndMenu();
         }
-
-        UIWidgets::PaddedEnhancementCheckbox("No Clip", "gNoClip", true, false);
-        UIWidgets::Tooltip("Allows you to walk through walls");
-        UIWidgets::PaddedEnhancementCheckbox("Climb Everything", "gClimbEverything", true, false);
-        UIWidgets::Tooltip("Makes every surface in the game climbable");
-        UIWidgets::PaddedEnhancementCheckbox("Hookshot Everything", "gHookshotEverything", true, false);
-        UIWidgets::Tooltip("Makes every surface in the game hookshot-able");
-        UIWidgets::Spacer(2.0f);
-        UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.1fx", "##gCheatHookshotReachMultiplier", "gCheatHookshotReachMultiplier", 1.0f, 5.0f, "", 1.0f, false);
-        UIWidgets::EnhancementSliderFloat("Bomb Timer Multiplier: %.1fx", "##gBombTimerMultiplier", "gBombTimerMultiplier", 0.1f, 5.0f, "", 1.0f, false);
-        UIWidgets::PaddedEnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL", true, false);
-        UIWidgets::Tooltip("Holding L makes you float into the air");
-        UIWidgets::PaddedEnhancementCheckbox("Super Tunic", "gSuperTunic", true, false);
-        UIWidgets::Tooltip("Makes every tunic have the effects of every other tunic");
-        UIWidgets::PaddedEnhancementCheckbox("Easy ISG", "gEzISG", true, false);
-        UIWidgets::Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
-        UIWidgets::PaddedEnhancementCheckbox("Easy QPA", "gEzQPA", true, false);
-        UIWidgets::Tooltip("Gives you the glitched damage value of the quick put away glitch.");
-        UIWidgets::PaddedEnhancementCheckbox("Timeless Equipment", "gTimelessEquipment", true, false);
-        UIWidgets::Tooltip("Allows any item to be equipped, regardless of age\nAlso allows Child to use Adult strength upgrades");
-        UIWidgets::PaddedEnhancementCheckbox("Easy Frame Advancing", "gCheatEasyPauseBufferEnabled", true, false);
-        UIWidgets::Tooltip("Continue holding START button when unpausing to only advance a single frame and then re-pause");
-        const bool bEasyFrameAdvanceEnabled = CVarGetInteger("gCheatEasyPauseBufferEnabled", 0);
-        UIWidgets::PaddedEnhancementCheckbox("Easy Input Buffering", "gCheatEasyInputBufferingEnabled", true, false, bEasyFrameAdvanceEnabled, "Forced enabled when Easy Frame Advancing is enabled");
-        UIWidgets::Tooltip("Inputs that are held down while the Subscreen is closing will be pressed when the game is resumed");
-        UIWidgets::PaddedEnhancementCheckbox("Unrestricted Items", "gNoRestrictItems", true, false);
-        UIWidgets::Tooltip("Allows you to use any item at any location");
-        UIWidgets::PaddedEnhancementCheckbox("Freeze Time", "gFreezeTime", true, false);
-        UIWidgets::Tooltip("Freezes the time of day");
-        UIWidgets::PaddedEnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie", true, false);
-        UIWidgets::Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
-        UIWidgets::PaddedEnhancementCheckbox("Fish Don't despawn", "gNoFishDespawn", true, false);
-        UIWidgets::Tooltip("Prevents fish from automatically despawning after a while when dropped");
-        UIWidgets::PaddedEnhancementCheckbox("Bugs Don't despawn", "gNoBugsDespawn", true, false);
-        UIWidgets::Tooltip("Prevents bugs from automatically despawning after a while when dropped");
-        UIWidgets::PaddedEnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield", true, false);
-        UIWidgets::Tooltip("Prevents the Deku Shield from burning on contact with fire");
-        UIWidgets::PaddedEnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded", true, false);
-        UIWidgets::Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
-        UIWidgets::PaddedEnhancementCheckbox("Hold Hylian Shield as Child Link", "gChildHoldsHylianShield", true, false);
-        UIWidgets::Tooltip("Allows Child Link to hold the Hylian Shield the same way as the rest of the shields.");
-        UIWidgets::PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
-        UIWidgets::Tooltip("This syncs the ingame time with the real world time");
-        ImGui::Text("Deku Sticks:");
-        UIWidgets::EnhancementCombobox("gDekuStickCheat", DekuStickCheat, DEKU_STICK_NORMAL);
-        UIWidgets::PaddedEnhancementCheckbox("No ReDead/Gibdo Freeze", "gNoRedeadFreeze", true, false);
-        UIWidgets::Tooltip("Prevents ReDeads and Gibdos from being able to freeze you with their scream");
-        UIWidgets::Spacer(2.0f);
+        
         UIWidgets::Spacer(0);
 
         if (ImGui::BeginMenu("Save States")) {
