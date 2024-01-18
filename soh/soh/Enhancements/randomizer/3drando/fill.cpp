@@ -172,7 +172,7 @@ static void ValidateSphereZeroReqs(GetAccessableLocationsStruct& gals, bool chec
     }
   }
   // Condition for verifying everything required for sphere 0, expanding search to all locations
-  if (Logic::TradeBigPoes && gals.validatedStartingRegion && gals.foundTempleofTime && gals.haveTimeAccess) {
+  if (logic->CanEmptyBigPoes && gals.validatedStartingRegion && gals.foundTempleofTime && gals.haveTimeAccess) {
     // Apply all items that are necessary for checking all location access
       std::vector<RandomizerGet> itemsToPlace =
           FilterFromPool(ItemPool, [](const auto i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
@@ -444,6 +444,8 @@ std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerChec
 
 void GeneratePlaythrough() {
   auto ctx = Rando::Context::GetInstance();
+  ctx->playthroughBeatable = false;
+  logic->Reset();
   GetAccessableLocationsStruct gals(GetMaxGSCount());
   ResetLogic(ctx, true);
   while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
@@ -519,7 +521,7 @@ void ValidateEntrances() {
   AreaTable(RR_ROOT)->adultDay = true;
 
   ctx->allLocationsReachable = false;
-  Logic::TradeBigPoes = false;
+  logic->CanEmptyBigPoes = false;
   while (gals.newItemLocations.size() > 0 || gals.updatedEvents || gals.ageTimePropogated || gals.firstIteration) {
     gals.InitLoop();
     for (size_t i = 0; i < gals.regionPool.size(); i++) {
@@ -558,7 +560,7 @@ void ValidateEntrances() {
       for (auto& exit : region->exits) {
         ProcessExit(exit, gals, true);
       } 
-      if (gals.haveTimeAccess && gals.foundTempleofTime && gals.validatedStartingRegion && Logic::TradeBigPoes) {
+      if (gals.haveTimeAccess && gals.foundTempleofTime && gals.validatedStartingRegion && logic->CanEmptyBigPoes) {
         for (size_t k = 0; k < region->locations.size(); k++) {
           LocationAccess& locPair = region->locations[k];
           AddCheckToLogic(locPair, gals, RG_NONE, false);
@@ -566,7 +568,7 @@ void ValidateEntrances() {
       }
     }
   }
-  if (gals.haveTimeAccess && gals.foundTempleofTime && gals.validatedStartingRegion && Logic::TradeBigPoes) {
+  if (gals.haveTimeAccess && gals.foundTempleofTime && gals.validatedStartingRegion && logic->CanEmptyBigPoes) {
     ctx->allLocationsReachable = true;
     for (const RandomizerCheck loc : ctx->allLocations) {
       if (!ctx->GetItemLocation(loc)->IsAddedToPool()) {
@@ -583,7 +585,7 @@ void ValidateEntrances() {
   }
 }
 
-RandomizerArea LookForExternalArea(Area* curRegion, std::vector<RandomizerRegion> alreadyChecked){//RANDOTODO curREGION
+RandomizerArea LookForExternalArea(Area* curRegion, std::vector<RandomizerRegion> alreadyChecked){
   for (auto& entrance : curRegion->entrances) {
     RandomizerArea otherArea = entrance->GetParentRegion()->GetArea();
     if(otherArea != RA_NONE){
@@ -1238,8 +1240,8 @@ int Fill() {
 
     GeneratePlaythrough();
     //Successful placement, produced beatable result
-    //if(ctx->playthroughBeatable && !placementFailure) {
-    if(true) {
+    if(ctx->playthroughBeatable && !placementFailure) {
+    //if(true) {
       printf("Done");
       printf("\x1b[9;10HCalculating Playthrough...");
       PareDownPlaythrough();

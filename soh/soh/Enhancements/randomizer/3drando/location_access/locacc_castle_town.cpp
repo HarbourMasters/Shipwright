@@ -166,7 +166,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[RR_MARKET_GUARD_HOUSE] = Area("Market Guard House", "Market Guard House", RA_NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&TradeBigPoes,   {[]{return IsAdult;}}),
+                  EventAccess(&logic->CanEmptyBigPoes,   {[]{return logic->IsAdult;}}),
                 }, {
                   //Locations
                   LocationAccess(RC_MARKET_10_BIG_POES,    {[]{return logic->IsAdult && logic->BigPoeKill;}}),

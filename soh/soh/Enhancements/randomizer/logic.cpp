@@ -242,7 +242,7 @@ namespace Rando {
                            (OcarinaCRightButton ? 1 : 0) +
                            (OcarinaCUpButton ? 1 : 0) +
                            (OcarinaCDownButton ? 1 : 0);
-        NumBottles      = ((NoBottles) ? 0 : (Bottles + ((DeliverLetter) ? 1 : 0)));
+        NumBottles      = ((CanEmptyBigPoes) ? (Bottles + ((DeliverLetter) ? 1 : 0)) : 0);
         HasBottle       = NumBottles >= 1;
         Slingshot       = (ProgressiveBulletBag >= 1) && (BuySeed || AmmoCanDrop);
         Ocarina         = ProgressiveOcarina    >= 1;
@@ -646,7 +646,7 @@ namespace Rando {
         //Bottle Count
         Bottles    = 0;
         NumBottles = 0;
-        NoBottles  = false;
+        CanEmptyBigPoes = true;
 
         //Triforce Pieces
         TriforcePieces = 0;
