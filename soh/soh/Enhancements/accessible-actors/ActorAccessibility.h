@@ -35,7 +35,13 @@ typedef struct {
     bool runsAlways; // If set, then the distance policy is ignored.
     ActorAccessibilityUserDataInit initUserData;
     ActorAccessibilityUserDataCleanup cleanupUserData;
-    //u8 param;
+//Aim assist settings.
+    struct {
+        bool isProvider;//determines whether or not this actor supports aim assist.
+        s16 sfx;       // The sound to play when this actor provides aim assist. Uses sound slot 9.
+        f32 tolerance; // How close to the center of the actor does Link have to aim for aim assist to consider
+                                // it lined up.
+    }aimAssist;
 
 } ActorAccessibilityPolicy;
 
@@ -65,12 +71,15 @@ struct AccessibleActor {
     f32 basePitch;
 
     f32 currentPitch;
-    s8 currentReverb;
     s16 sceneIndex;//If this actor represents a scene transition, then this will contain the destination scene index. Zero otherwise.
-
-    s16 variety;
-
     bool managedSoundSlots[NUM_MANAGED_SOUND_SLOTS];//These have their attenuation and panning parameters updated every frame automatically.
+    struct {
+        s16 framesSinceAimAssist; // Allows rate-based vertical aim assist. Incremented every frame for aim assist
+                                  // actors. Manually reset by aim assist provider.
+        f32 pitch;                // Used to report whether Link is aiming higher or lower than the actor.
+        u8 frequency; // How often the sound will be played. Lower frequencies indicate that Link's vertical aim is
+                      // closer to the actor.   } aimAssist;
+    } aimAssist;
 
     // Add more state as needed.
     ActorAccessibilityPolicy policy; // A copy, so it can be customized on a per-actor basis if needed.
@@ -80,7 +89,6 @@ struct AccessibleActor {
 void ActorAccessibility_Init();
 void ActorAccessibility_InitActors();
 void ActorAccessibility_Shutdown();
-
 void ActorAccessibility_InitPolicy(ActorAccessibilityPolicy* policy, const char* englishName,
                                    ActorAccessibilityCallback callback, s16 sfx);
 
@@ -90,7 +98,6 @@ void ActorAccessibility_AddSupportedActor(s16 type, ActorAccessibilityPolicy pol
 
 void ActorAccessibility_RunAccessibilityForActor(PlayState* play, AccessibleActor* actor);
 void ActorAccessibility_RunAccessibilityForAllActors(PlayState* play);
-void ActorAccessibility_PlaySpecialSound(AccessibleActor* actor, s16 sfxId);
 /*
 *Play sounds (usually from the game) using the external sound engine. This is probably not the function you want to call most of the time (see below).
 * handle: pointer to an arbitrary object. This object can be anything as it's only used as a classifier, but it's recommended that you use an AccessibleActor* as your handle whenever possible. Using AccessibleActor* as the handle gives you automatic cleanup when the actor is killed.
@@ -153,21 +160,6 @@ typedef enum {
 
 } VIRTUAL_ACTOR_TABLE;
 
-typedef enum {
-    AREA_KOKIRI = 2000,
-    AREA_HYRULE_FIELD,
-    AREA_HYRULE_CASTLE,
-    AREA_ToT,
-    AREA_ZORA,
-    AREA_VILLAGE,
-    AREA_GORON,
-    AREA_DM,
-    AREA_GRAVEYARD,
-    AREA_LAKE,
-    AREA_GERUDO,
-    AREA_OASIS,
-
-} AREA_MARKER_TABLE;
 
 #define EVERYWHERE -32768 // Denotes a virtual actor that is global/ omnipresent.
 
@@ -180,7 +172,8 @@ void ActorAccessibility_InterpretCurrentScene(PlayState* play);
 void ActorAccessibility_PolyToVirtualActor(PlayState* play, CollisionPoly* poly, VIRTUAL_ACTOR_TABLE va, VirtualActorList* destination);
 //Report which room of a dungeon the player is in.
  void ActorAccessibility_AnnounceRoomNumber(PlayState* play);
-// 
+ //Aim cue support.
+  void ActorAccessibility_ProvideAimAssistForActor(AccessibleActor* actor);
     // External audio engine stuff.
 //  Initialize the accessible audio engine.
 bool ActorAccessibility_InitAudio();

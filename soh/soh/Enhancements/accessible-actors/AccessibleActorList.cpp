@@ -846,6 +846,8 @@ void accessible_stick_warning(AccessibleActor* actor) {
     policy.n = 1;
     policy.ydist = 200;
     policy.pitch = 1.1;
+    policy.aimAssist.isProvider = true;
+
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SWITCH, policy);
     ActorAccessibility_InitPolicy(&policy, "Ocarina Spots", NULL, NA_SE_EV_DIAMOND_SWITCH);
     policy.n = 30;

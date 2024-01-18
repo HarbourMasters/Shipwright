@@ -143,8 +143,11 @@ void ActorAccessibility_Shutdown() {
     policy->initUserData = NULL;
     policy->cleanupUserData = NULL;
     policy->pitchModifier = 0.1;
+    policy->aimAssist.isProvider = false;
+    policy->aimAssist.sfx = NA_SE_SY_HITPOINT_ALARM;
+    policy->aimAssist.tolerance = 0.0;
 
-}
+    }
 
     void ActorAccessibility_AddSupportedActor(s16 type, ActorAccessibilityPolicy policy) {
     aa->supportedActors[type] = policy;
@@ -181,10 +184,13 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
         accessibleActor.currentPitch = accessibleActor.policy.pitch;
         accessibleActor.baseVolume = accessibleActor.policy.volume;
         accessibleActor.currentVolume = accessibleActor.policy.volume;
-        accessibleActor.currentReverb = 0;
         accessibleActor.sceneIndex = 0;
         for (int i = 0; i < NUM_MANAGED_SOUND_SLOTS; i++)
             accessibleActor.managedSoundSlots[i] = false;
+        accessibleActor.aimAssist.framesSinceAimAssist = 0;
+        accessibleActor.aimAssist.frequency = 10;
+        accessibleActor.aimAssist.pitch = 1.0;
+
         aa->trackedActors[actor] = accessibleActor.instanceID;
         aa->accessibleActorList[accessibleActor.instanceID] = accessibleActor;
         AccessibleActor& savedActor = aa->accessibleActorList[accessibleActor.instanceID];
@@ -223,10 +229,6 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
 
         return ActorAccessibility_DBToLinear(db);
 
-    }
-
-    void ActorAccessibility_PlaySpecialSound(AccessibleActor* actor, s16 sfxId) {
-        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &actor->currentPitch, &actor->currentVolume, &actor->currentReverb);
     }
     const char* ActorAccessibility_MapSfxToExternalAudio(s16 sfxId);
     void ActorAccessibility_PlaySound(void* handle, int slot, s16 sfxId, bool looping)
@@ -397,6 +399,18 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
         }
         if (actor->isDrawn == 0 && actor->actor->id != 406 && actor->actor->id != 302)
             return;
+        if (actor->policy.aimAssist.isProvider && player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON && (player->stateFlags1 & PLAYER_STATE1_BOOMERANG_IN_HAND || player->stateFlags1 & PLAYER_STATE1_ITEM_IN_HAND))
+        {
+            ActorAccessibility_SetSoundPitch(actor, 9, actor->aimAssist.pitch);
+            actor->aimAssist.framesSinceAimAssist++;
+            ActorAccessibility_ProvideAimAssistForActor(actor);
+//The above will have taken care of setting the appropriate frequency and pitch, so we'll take care of the audio here based on those results.
+            if (actor->aimAssist.framesSinceAimAssist >= actor->aimAssist.frequency) {
+
+            actor->aimAssist.framesSinceAimAssist = 0;
+            ActorAccessibility_PlaySoundForActor(actor, 9, actor->policy.aimAssist.sfx, false);
+            }
+        }
 
         if (actor->policy.callback != NULL)
             actor->policy.callback(actor);
@@ -473,18 +487,19 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
         actor.basePitch = 1.0;
         actor.baseVolume = 1.0;
         actor.currentPitch = 1.0;
-        actor.currentReverb = 1.0;
         actor.currentVolume = 1.0;
         actor.frameCount = 0;
         actor.id = (s16)type;
         actor.instanceID = ActorAccessibility_GetNextID();
         actor.isDrawn = 1;
-      //  actor.variety = variety;
         actor.play = NULL;
         actor.world = where;
         actor.sceneIndex = 0;
         for (int i = 0; i < NUM_MANAGED_SOUND_SLOTS; i++)
             actor.managedSoundSlots[i] = 0;
+        actor.aimAssist.framesSinceAimAssist = 0;
+        actor.aimAssist.frequency = 10;
+        actor.aimAssist.pitch = 1.0;
 
         actor.policy = *policy;
         VAList_t* l = (VAList_t*)list;
@@ -560,6 +575,12 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
        SpeechSynthesizer::Instance->Speak(ss.str().c_str(), GetLanguageCode());
 
     }
+    //Aim cue support.
+    void ActorAccessibility_ProvideAimAssistForActor(AccessibleActor* actor)
+    {
+
+    }
+
         //External audio engine stuff.
     bool ActorAccessibility_InitAudio() {
         try {
