@@ -1041,7 +1041,6 @@ void DrawEnhancementsMenu() {
                     CVarSetInteger("gDisableKokiriDrawDistance", 0);
                 }
             }
-            UIWidgets::Spacer(0);
             UIWidgets::Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
             if (CVarGetInteger("gDisableDrawDistance", 0) == 1) {
                 UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance", true, false);
