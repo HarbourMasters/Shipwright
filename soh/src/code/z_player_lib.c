@@ -1280,7 +1280,7 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
     if (CVarGetInteger("gChildHoldsHylianShield", 0) && CVarGetInteger("gRotateScaleChildHylianShield", 0) &&
         LINK_IS_CHILD) {
         if (limbIndex == PLAYER_LIMB_SHEATH) {
-            if ((this->currentShield == PLAYER_SHIELD_HYLIAN && B_BTN_ITEM == ITEM_SWORD_KOKIRI) &&
+            if ((this->currentShield == PLAYER_SHIELD_HYLIAN && (B_BTN_ITEM == ITEM_SWORD_KOKIRI || B_BTN_ITEM == ITEM_NONE)) &&
                 ((this->sheathType == PLAYER_MODELTYPE_SHEATH_18) ||
                 (this->sheathType == PLAYER_MODELTYPE_SHEATH_19))) {
                 Matrix_Translate(-93, 0, -124, MTXMODE_APPLY);
