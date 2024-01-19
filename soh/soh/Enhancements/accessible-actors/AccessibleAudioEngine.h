@@ -5,6 +5,7 @@
 #include <thread>
 #include <mutex>
 #include <deque>
+#include <condition_variable>
 #include <string>
 #include <unordered_map>
 #include <array>

@@ -2,6 +2,7 @@
 #include "z64.h"
 #include "macros.h"
 #include "functions.h"
+#include <cmath>
 extern "C" {
 s32 Player_PosVsWallLineTest(PlayState* play, Player* p, Vec3f* offset, CollisionPoly** wallPoly, s32* bgId,
                              Vec3f* posResult);

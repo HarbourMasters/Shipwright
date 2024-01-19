@@ -120,12 +120,10 @@ GameInteractorSail* GameInteractorSail::Instance;
 #include "soh/resource/importer/BackgroundFactory.h"
 
 #include "soh/config/ConfigUpdaters.h"
-#include "soh/Enhancements/accessible-actors/ActorAccessibility.h"
-#include "Enhancements//accessible-actors/ActorAccessibility.h"
-
-
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+#include "Enhancements/accessible-actors/ActorAccessibility.h"
+#endif
 void SoH_ProcessDroppedFiles(std::string filePath);
-
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
@@ -506,10 +504,11 @@ void OTRAudio_Thread() {
         for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
             AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
                                            num_audio_samples);
+#if !defined(__SWITCH__) && !defined(__WIIU__)
             // Give accessibility a chance to merge its own audio in.
             ActorAccessibility_MixAccessibleAudioWithGameAudio(
                 audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
-
+#endif
         }
         AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
 
@@ -1113,6 +1112,9 @@ extern "C" void InitOTR() {
 #elif defined(_WIN32)
     SpeechSynthesizer::Instance = new SAPISpeechSynthesizer();
     SpeechSynthesizer::Instance->Init();
+#else
+    SpeechSynthesizer::Instance = new SpeechLogger();
+    SpeechSynthesizer::Instance->Init();
 #endif
 
 #ifdef ENABLE_REMOTE_CONTROL
@@ -1122,7 +1124,9 @@ extern "C" void InitOTR() {
 
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
+    #if !defined(__SWITCH__) && !defined(__WIIU__)
     ActorAccessibility_Init();
+    #endif
     OTRAudio_Init();
     OTRExtScanner();
     VanillaItemTable_Init();
@@ -1185,7 +1189,9 @@ extern "C" void DeinitOTR() {
     }
     SDLNet_Quit();
 #endif
+#if !defined(__SWITCH__) && !defined(__WIIU__)
     ActorAccessibility_Shutdown();
+#endif
     // Destroying gui here because we have shared ptrs to LUS objects which output to SPDLOG which is destroyed before these shared ptrs.
     SohGui::Destroy();
 
@@ -2701,7 +2707,9 @@ void OTRAudio_SfxCaptureThread() {
             }
         }
         std::unique_lock<std::mutex> Lock(audio.mutex);
+#if !defined(__SWITCH__) && !defined(__WIIU__)
         ActorAccessibility_DoSoundExtractionStep();
+#endif
         audio.processing = false;
         audio.cv_from_thread.notify_one();
     }
