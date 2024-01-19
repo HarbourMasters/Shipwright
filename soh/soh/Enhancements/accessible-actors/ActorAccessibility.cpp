@@ -578,7 +578,23 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
     //Aim cue support.
     void ActorAccessibility_ProvideAimAssistForActor(AccessibleActor* actor)
     {
-
+       Player* player = GET_PLAYER(actor->play);
+      // 16384
+       s32 angle = player->actor.focus.rot.x;
+       angle = angle / -14000.0 * 16384;
+       s32 yIntercept = ((Math_SinS(angle) / Math_CosS(angle)) * actor->xzDistToPlayer)+player->actor.focus.pos.y;
+       s32 yHight = actor->actor->world.pos.y + 30;
+       if ((yIntercept) > yHight + 30) {
+            actor->aimAssist.pitch = 1.5;
+       } else if ((yIntercept) < yHight - 30) {
+            actor->aimAssist.pitch = 0.5;
+       }
+       s32 yDiff = fabs(yIntercept-yHight);
+       if (yDiff > 300) {
+            actor->aimAssist.frequency = 30;
+       } else {
+            actor->aimAssist.frequency = 1 + (uint8_t)(yDiff / 5);
+       }
     }
 
         //External audio engine stuff.
