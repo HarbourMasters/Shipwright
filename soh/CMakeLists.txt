@@ -167,6 +167,11 @@ else()
     list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/(Darwin|SAPI).*")
 endif()
 
+# handle accessible audio engine removals
+if (CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
+    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/accessible-actors/*")
+endif()
+
 source_group("soh\\Enhancements" REGULAR_EXPRESSION "soh/Enhancements/*")
 source_group("soh\\Enhancements\\audio" REGULAR_EXPRESSION "soh/Enhancements/audio/*")
 source_group("soh\\Enhancements\\controls" REGULAR_EXPRESSION "soh/Enhancements/controls/*")

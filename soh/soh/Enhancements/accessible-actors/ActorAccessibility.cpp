@@ -187,7 +187,7 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
         accessibleActor.sceneIndex = 0;
         for (int i = 0; i < NUM_MANAGED_SOUND_SLOTS; i++)
             accessibleActor.managedSoundSlots[i] = false;
-        accessibleActor.aimAssist.framesSinceAimAssist = 0;
+        accessibleActor.aimAssist.framesSinceAimAssist = 32768;
         accessibleActor.aimAssist.frequency = 10;
         accessibleActor.aimAssist.pitch = 1.0;
 
@@ -399,17 +399,23 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
         }
         if (actor->isDrawn == 0 && actor->actor->id != 406 && actor->actor->id != 302)
             return;
-        if (actor->policy.aimAssist.isProvider && player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON && (player->stateFlags1 & PLAYER_STATE1_BOOMERANG_IN_HAND || player->stateFlags1 & PLAYER_STATE1_ITEM_IN_HAND))
-        {
+        if (actor->policy.aimAssist.isProvider) {
+            if (player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON &&
+                (player->stateFlags1 & PLAYER_STATE1_BOOMERANG_IN_HAND ||
+                 player->stateFlags1 & PLAYER_STATE1_ITEM_IN_HAND)) {
             ActorAccessibility_SetSoundPitch(actor, 9, actor->aimAssist.pitch);
             actor->aimAssist.framesSinceAimAssist++;
             ActorAccessibility_ProvideAimAssistForActor(actor);
-//The above will have taken care of setting the appropriate frequency and pitch, so we'll take care of the audio here based on those results.
+            // The above will have taken care of setting the appropriate frequency and pitch, so we'll take care of the
+            // audio here based on those results.
             if (actor->aimAssist.framesSinceAimAssist >= actor->aimAssist.frequency) {
 
-            actor->aimAssist.framesSinceAimAssist = 0;
-            ActorAccessibility_PlaySoundForActor(actor, 9, actor->policy.aimAssist.sfx, false);
+                actor->aimAssist.framesSinceAimAssist = 0;
+                ActorAccessibility_PlaySoundForActor(actor, 9, actor->policy.aimAssist.sfx, false);
             }
+            } else
+            actor->aimAssist.framesSinceAimAssist = 32768;//Make sure there's no delay the next time you draw your bow or whatever.
+
         }
 
         if (actor->policy.callback != NULL)
