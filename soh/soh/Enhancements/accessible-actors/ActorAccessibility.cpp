@@ -582,14 +582,25 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
       // 16384
        s32 angle = player->actor.focus.rot.x;
        angle = angle / -14000.0 * 16384;
-       s32 yIntercept = ((Math_SinS(angle) / Math_CosS(angle)) * actor->xzDistToPlayer)+player->actor.focus.pos.y;
-       s32 yHight = actor->actor->world.pos.y + 30;
-       if ((yIntercept) > yHight + 30) {
+       f32 slope = Math_SinS(angle) / Math_CosS(angle)*1.0;
+       s32 yIntercept = (slope * (actor->xzDistToPlayer)) + player->actor.focus.pos.y;
+       s32 yHight = actor->actor->world.pos.y+25;
+       if (slope < 1) {
+       slope = 1;
+       }
+       s32 correction = (1 - 1 / slope)*100;
+       if ((yIntercept) > yHight + 25) {
             actor->aimAssist.pitch = 1.5;
-       } else if ((yIntercept) < yHight - 30) {
+       } else if ((yIntercept) < yHight - 25) {
             actor->aimAssist.pitch = 0.5;
        }
        s32 yDiff = fabs(yIntercept-yHight);
+       if (yIntercept - yHight > 0) {
+            yDiff -= correction;
+            if (yDiff < 0) {
+            yDiff = 0;
+            }
+       }
        if (yDiff > 300) {
             actor->aimAssist.frequency = 30;
        } else {

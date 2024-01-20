@@ -223,7 +223,7 @@ void accessible_switch_cleanup(AccessibleActor* actor)
     else if ((actor->actor->params & 7) == 2) {
         if (sw->eyeTexIndex == 0) { //(!(Flags_GetSwitch(actor->play, (actor->params >> 8 & 0x3F))))
                                     // make it only play for open eye
-
+            actor->policy.aimAssist.isProvider = true;
             ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_FOOT_SWITCH, false);
         }
     }
@@ -353,7 +353,7 @@ void accessible_area_change(AccessibleActor* actor) {
     } else if (actor->sceneIndex == 81) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_HORSE_RUN_LEVEL, false);
         //hyrule field
-    } else if (actor->sceneIndex == 0 && actor->play->sceneNum != 85) {
+    } else if (actor->sceneIndex == 10 && actor->play->sceneNum != 85) {//temp
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_OC_DOOR_OPEN, false);
     } else if (actor->sceneIndex <= 11) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_FANTOM_WARP_L, false);
@@ -846,7 +846,7 @@ void accessible_stick_warning(AccessibleActor* actor) {
     policy.n = 1;
     policy.ydist = 200;
     policy.pitch = 1.1;
-    policy.aimAssist.isProvider = true;
+    
 
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SWITCH, policy);
     ActorAccessibility_InitPolicy(&policy, "Ocarina Spots", NULL, NA_SE_EV_DIAMOND_SWITCH);
@@ -889,6 +889,12 @@ void accessible_stick_warning(AccessibleActor* actor) {
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_HANA, policy);
     ActorAccessibility_InitPolicy(&policy, "gold skulltula token", accessible_en_pickups, 0);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_SI, policy);
+    ActorAccessibility_InitPolicy(&policy, "Gold and Wall skulltulas", NULL, 0);
+    policy.aimAssist.isProvider = true;
+    policy.n = 1;
+    policy.ydist = 500;
+    policy.distance = 750;
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_SW, policy);
     ActorAccessibility_InitPolicy(&policy, "goma larva egg", accessible_larva, 0);
     policy.distance = 1000;
     policy.ydist = 1000;
@@ -910,7 +916,11 @@ void accessible_stick_warning(AccessibleActor* actor) {
     ActorAccessibility_AddSupportedActor(ACTOR_EN_AM, policy);
     ActorAccessibility_InitPolicy(&policy, "door of time", accessible_door_of_time, 0);
     ActorAccessibility_AddSupportedActor(ACTOR_BG_MJIN, policy);
-
+    ActorAccessibility_InitPolicy(&policy, "shooting gallery rupees", NULL, 0);
+    policy.aimAssist.isProvider = true;
+    policy.distance = 1000;
+    policy.n = 1;
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_G_SWITCH, policy);
     ActorAccessibility_InitPolicy(&policy, "crawlspace", NULL, NA_SE_EN_MUSI_SINK);
     policy.volume = 1.5;
     policy.distance = 2000;
@@ -925,6 +935,7 @@ void accessible_stick_warning(AccessibleActor* actor) {
     policy.pitch = 1.1;
     policy.distance = 1000;
     ActorAccessibility_AddSupportedActor(VA_DOOR, policy);
+    
     ActorAccessibility_InitPolicy(&policy, "Area Change", accessible_area_change, 0);
     policy.n = 60;
     policy.distance = 100000;
