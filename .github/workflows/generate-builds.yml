@@ -25,10 +25,10 @@ jobs:
       if: ${{ !vars.LINUX_RUNNER }}
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        wget https://www.libsdl.org/release/SDL2-2.26.1.tar.gz
-        tar -xzf SDL2-2.26.1.tar.gz
-        cd SDL2-2.26.1
-        ./configure
+        wget https://www.libsdl.org/release/SDL2-2.28.5.tar.gz
+        tar -xzf SDL2-2.28.5.tar.gz
+        cd SDL2-2.28.5
+        ./configure --enable-hidapi-libusb
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
@@ -135,10 +135,10 @@ jobs:
       if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        wget https://www.libsdl.org/release/SDL2-2.26.1.tar.gz
-        tar -xzf SDL2-2.26.1.tar.gz
-        cd SDL2-2.26.1
-        ./configure
+        wget https://www.libsdl.org/release/SDL2-2.28.5.tar.gz
+        tar -xzf SDL2-2.28.5.tar.gz
+        cd SDL2-2.28.5
+        ./configure --enable-hidapi-libusb
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
