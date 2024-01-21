@@ -17,4 +17,4 @@ void GeneratePlaythrough();
 
 bool CheckBeatable(RandomizerGet ignore=RG_NONE);
 
-void ValidateEntrances();
+void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAccess);
