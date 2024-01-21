@@ -24,7 +24,7 @@ using namespace CustomMessages;
 using namespace Rando;
 
 
-//RANDOTODO better name
+//RANDOTODO merge into Logic once Logic is a class passed to logic funtions 
 struct GetAccessableLocationsStruct {
   std::vector<RandomizerCheck> accessibleLocations;
   std::vector<RandomizerRegion> regionPool;
@@ -39,12 +39,6 @@ struct GetAccessableLocationsStruct {
   bool updatedEvents;
   bool ageTimePropogated;
   bool firstIteration;
-
-  //Variables for Time Pass access
-  bool timePassChildDay;
-  bool timePassChildNight;
-  bool timePassAdultDay;
-  bool timePassAdultNight;
 
   //Variables For Validating Entrences
   bool haveTimeAccess;
@@ -63,10 +57,6 @@ struct GetAccessableLocationsStruct {
     updatedEvents = false;
     ageTimePropogated = false;
     firstIteration = true;
-    timePassChildDay = false;
-    timePassChildNight = false;
-    timePassAdultDay = false;
-    timePassAdultNight = false;
     haveTimeAccess = false;
     foundTempleofTime = false;
     validatedStartingRegion = false;
@@ -149,7 +139,7 @@ static bool UpdateToDAccess(Entrance* entrance, bool propogateTimeTravel) {
   return ageTimePropogated;
 }
 
-// Various checks that need to pass for the world to be validated as completable
+// Check if key locations in the overworld are accessable
 static void ValidateOtherEntrance(GetAccessableLocationsStruct& gals) {
   auto ctx = Rando::Context::GetInstance();
   // Condition for validating Temple of Time Access
@@ -173,6 +163,8 @@ static void ValidateOtherEntrance(GetAccessableLocationsStruct& gals) {
   }
 }
 
+// Check if everything in an entrence rando seed that needs to be avalible without items, is,
+// and if so allow obtaining items in logic
 static void ValidateSphereZero(GetAccessableLocationsStruct& gals){
   auto ctx = Rando::Context::GetInstance();
   // Condition for verifying everything required for sphere 0, expanding search to all locations
@@ -272,9 +264,9 @@ std::string GetShopItemBaseName(std::string itemName) {
   return baseName;
 }
 
-std::vector<RandomizerCheck> GetEmptyLocations(std::vector<RandomizerCheck> allowedLocations) {
+std::vector<RandomizerCheck> GetEmptyLocations(std::vector<RandomizerCheck> targetLocations) {
     auto ctx = Rando::Context::GetInstance();
-    return FilterFromPool(allowedLocations, [ctx](const auto loc) {
+    return FilterFromPool(targetLocations, [ctx](const auto loc) {
         return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_NONE;
     });
 }
@@ -304,7 +296,7 @@ bool IsBeatableWithout(RandomizerCheck excludedCheck, bool replaceItem, Randomiz
   return ctx->playthroughBeatable;
 }
 
-//RANDOTODO better name
+// Reset non-Logic-class logic, and optionally apply the initial inventory
 void ResetLogic(std::shared_ptr<Context>& ctx, bool applyInventory = false){
   if (applyInventory){
     ApplyStartingInventory();
@@ -370,6 +362,7 @@ void AddToPlaythrough(LocationAccess& locPair, GetAccessableLocationsStruct& gal
   }
 }
 
+// Adds the contents of a location to the current progression and optionally playthrough
 bool AddCheckToLogic(LocationAccess& locPair, GetAccessableLocationsStruct& gals, RandomizerGet ignore, bool stopOnBeatable, bool addToPlaythrough=false){
   auto ctx = Rando::Context::GetInstance();
   RandomizerCheck loc = locPair.GetLocation();
@@ -417,8 +410,8 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessableLocationsStruct& gals
   return false;
 }
 
-//RANDOTODO remove need to rerun this to reset logic
-std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& allowedLocations, RandomizerGet ignore /* = RG_NONE*/) {
+// Return any of the targetLocations that are accessible in logic
+std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& targetLocations, RandomizerGet ignore /* = RG_NONE*/) {
   auto ctx = Rando::Context::GetInstance();
   GetAccessableLocationsStruct gals(0);
   ResetLogic(ctx, true);
@@ -439,8 +432,8 @@ std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerChec
       }
     }
   }
-  erase_if(gals.accessibleLocations, [&allowedLocations, ctx](RandomizerCheck loc){
-    for (RandomizerCheck allowedLocation : allowedLocations) {
+  erase_if(gals.accessibleLocations, [&targetLocations, ctx](RandomizerCheck loc){
+    for (RandomizerCheck allowedLocation : targetLocations) {
       if (loc == allowedLocation || ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() != RG_NONE) {
         return false;
       }
@@ -450,6 +443,7 @@ std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerChec
   return gals.accessibleLocations;
 }
 
+// Create the playthrough for the seed
 void GeneratePlaythrough() {
   auto ctx = Rando::Context::GetInstance();
   ctx->playthroughBeatable = false;
@@ -489,6 +483,7 @@ void GeneratePlaythrough() {
   }
 }
 
+// return if the seed is currently beatable or not
 bool CheckBeatable(RandomizerGet ignore /* = RG_NONE*/) {
   auto ctx = Rando::Context::GetInstance();
   GetAccessableLocationsStruct gals(0);
@@ -516,9 +511,7 @@ bool CheckBeatable(RandomizerGet ignore /* = RG_NONE*/) {
   return false;
 }
 
-//This function will return a vector of ItemLocations that are accessible with
-//where items have been placed so far within the world. The allowedLocations argument
-//specifies the pool of locations that we're trying to search for an accessible location in
+// Check if the currently randomised set of entrences is a valid game map.
 void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAccess) {
   auto ctx = Rando::Context::GetInstance();
   GetAccessableLocationsStruct gals(0);
@@ -527,6 +520,12 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
   AreaTable(RR_ROOT)->adultNight = true;
   AreaTable(RR_ROOT)->childDay = true;
   AreaTable(RR_ROOT)->adultDay = true;
+
+  //Variables for Time Pass access
+  bool timePassChildDay = false;
+  bool timePassChildNight = false;
+  bool timePassAdultDay = false;
+  bool timePassAdultNight = false;
 
   ctx->allLocationsReachable = false;
   if (checkPoeCollectorAccess){
@@ -554,21 +553,21 @@ void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAcce
       if (!gals.haveTimeAccess) {
         if (region->timePass) {
           if (region->childDay) {
-            gals.timePassChildDay = true;
+            timePassChildDay = true;
           }
           if (region->childNight) {
-            gals.timePassChildNight = true;
+            timePassChildNight = true;
           }
           if (region->adultDay) {
-            gals.timePassAdultDay = true;
+            timePassAdultDay = true;
           }
           if (region->adultNight) {
-            gals.timePassAdultNight = true;
+            timePassAdultNight = true;
           }
         }
         // Condition for validating that all startring AgeTimes have timepass access
         // Once satisifed, change the mode to begin checking for Temple of Time Access
-        if (gals.timePassChildDay && gals.timePassChildNight && gals.timePassAdultDay && gals.timePassAdultNight) {
+        if (timePassChildDay && timePassChildNight && timePassAdultDay && timePassAdultNight) {
           gals.haveTimeAccess = true;
         }
       }
