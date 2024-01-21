@@ -69,7 +69,7 @@ static u8 sMaskTex16x32[16 * 32] = { { 0 } };
 static u8 sMaskTex32x16[32 * 16] = { { 0 } };
 static u8 sMaskTex8x8[8 * 8] = { { 0 } };
 static u8 sMaskTex8x32[8 * 32] = { { 0 } };
-static u8 sMaskTexLava[32 * 64] = { { 0 } };
+static u8 sMaskTexLava[LAVA_TEX_WIDTH * LAVA_TEX_HEIGHT] = { { 0 } };
 
 static u32* sLavaFloorModifiedTexRaw = NULL;
 static u32* sLavaWavyTexRaw = NULL;
@@ -112,6 +112,20 @@ void BossDodongo_RegisterBlendedLavaTextureUpdate() {
         u32* lavaTex = ResourceGetDataByName(sLavaFloorLavaTex);
         size_t lavaSize = ResourceGetSizeByName(sLavaFloorLavaTex);
         size_t floorSize = ResourceGetSizeByName(gDodongosCavernBossLavaFloorTex);
+        size_t rockSize = ResourceGetSizeByName(sLavaFloorRockTex);
+
+        // If the sizes don't match, then don't bother with the blended effect to avoid crashing
+        if (floorSize != lavaSize || floorSize != rockSize) {
+            uint8_t maskVal = !!Flags_GetClear(gPlayState, gPlayState->roomCtx.curRoom.num);
+
+            if (sMaskTexLava[0] != maskVal) {
+                for (int i = 0; i < ARRAY_COUNT(sMaskTexLava); i++) {
+                    sMaskTexLava[i] = maskVal;
+                }
+            }
+            Gfx_RegisterBlendedTexture(gDodongosCavernBossLavaFloorTex, sMaskTexLava, NULL);
+            return;
+        }
 
         sLavaFloorModifiedTexRaw = malloc(lavaSize);
         sLavaWavyTexRaw = malloc(floorSize);
@@ -121,7 +135,6 @@ void BossDodongo_RegisterBlendedLavaTextureUpdate() {
         // When KD is dead, just immediately copy the rock texture
         if (Flags_GetClear(gPlayState, gPlayState->roomCtx.curRoom.num)) {
             u32* rockTex = ResourceGetDataByName(sLavaFloorRockTex);
-            size_t rockSize = ResourceGetSizeByName(sLavaFloorRockTex);
             memcpy(sLavaFloorModifiedTexRaw, rockTex, rockSize);
         }
 
@@ -143,6 +156,13 @@ void BossDodongo_RegisterBlendedLavaTextureUpdate() {
         memcpy(sLavaWavyTex, sLavaFloorModifiedTex, sizeof(sLavaWavyTex));
 
         Gfx_RegisterBlendedTexture(gDodongosCavernBossLavaFloorTex, sMaskTexLava, sLavaWavyTex);
+    }
+
+    // Set all true for the lava as it will always replace the scene texture
+    if (sMaskTexLava[0] == 0) {
+        for (int i = 0; i < ARRAY_COUNT(sMaskTexLava); i++) {
+            sMaskTexLava[i] = 1;
+        }
     }
 
     gfx_texture_cache_clear();
@@ -170,6 +190,11 @@ void func_808C12C4(u8* arg1, s16 arg2) {
 
 // Same as func_808C1554 but works with u32 values for RGBA32 raw textures
 void func_808C1554_Raw(void* arg0, void* floorTex, s32 arg2, f32 arg3) {
+    // Raw lava not registered, so abort the wave modification
+    if (sLavaWavyTexRaw == NULL || sLavaFloorModifiedTexRaw == NULL) {
+        return;
+    }
+
     u16 width = ResourceGetTexWidthByName(arg0);
     s32 size = ResourceGetTexHeightByName(arg0) * width;
 
@@ -203,9 +228,6 @@ void func_808C1554_Raw(void* arg0, void* floorTex, s32 arg2, f32 arg3) {
     }
 
     free(sp54);
-
-    // Need to clear the cache after updating sLavaWavyTexRaw
-    gfx_texture_cache_clear();
 }
 
 // Modified to support CPU modified texture with the resource system
@@ -233,9 +255,6 @@ void func_808C1554(void* arg0, void* floorTex, s32 arg2, f32 arg3) {
             temp_s3[i + temp2] = sp54[i + i2];
         }
     }
-
-    // Need to clear the cache after updating sLavaWavyTex
-    gfx_texture_cache_clear();
 }
 
 void func_808C17C8(PlayState* play, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, s16 arg5) {
@@ -325,7 +344,7 @@ void BossDodongo_Init(Actor* thisx, PlayState* play) {
     this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
 
     // #region SOH [General]
-    // Init mask values for all blended textures
+    // Init mask values for all KD blended textures
     for (int i = 0; i < ARRAY_COUNT(sMaskTex8x16); i++) {
         sMaskTex8x16[i] = 0;
     }
@@ -340,10 +359,6 @@ void BossDodongo_Init(Actor* thisx, PlayState* play) {
     }
     for (int i = 0; i < ARRAY_COUNT(sMaskTex32x16); i++) {
         sMaskTex32x16[i] = 0;
-    }
-    // Set all true for the lava as it will always replace the scene texture
-    for (int i = 0; i < ARRAY_COUNT(sMaskTexLava); i++) {
-        sMaskTexLava[i] = 1;
     }
 
     // Register all blended textures
@@ -1174,15 +1189,23 @@ void BossDodongo_Update(Actor* thisx, PlayState* play2) {
 
             for (i2 = 0; i2 < 20; i2++) {
                 s16 new_var = this->unk_1C2 & (LAVA_TEX_SIZE - 1);
-                // Compute the index to a scaled position (scaling pseudo x,y as a 1D value)
-                s32 indexStart = ((new_var % LAVA_TEX_WIDTH) * widthScale) + ((new_var / LAVA_TEX_WIDTH) * width * heightScale);
 
-                // From the starting index, apply extra pixels right/down based on the scale
-                for (size_t j = 0; j < heightScale; j++) {
-                    for (size_t i3 = 0; i3 < widthScale; i3++) {
-                        s32 scaledIndex = (indexStart + i3 + (j * width)) & (size - 1);
-                        ptr1[scaledIndex] = ptr2[scaledIndex];
+                // Raw lava must be registered, otherwise skip the effect for incompatible texture pack
+                // and instead set the mask to simulate the lava disappearing by turning black
+                if (sLavaFloorModifiedTexRaw != NULL) {
+                    // Compute the index to a scaled position (scaling pseudo x,y as a 1D value)
+                    s32 indexStart =
+                        ((new_var % LAVA_TEX_WIDTH) * widthScale) + ((new_var / LAVA_TEX_WIDTH) * width * heightScale);
+
+                    // From the starting index, apply extra pixels right/down based on the scale
+                    for (size_t j = 0; j < heightScale; j++) {
+                        for (size_t i3 = 0; i3 < widthScale; i3++) {
+                            s32 scaledIndex = (indexStart + i3 + (j * width)) & (size - 1);
+                            ptr1[scaledIndex] = ptr2[scaledIndex];
+                        }
                     }
+                } else {
+                    sMaskTexLava[new_var] = 1;
                 }
 
                 this->unk_1C2 += 37;
@@ -1322,8 +1345,16 @@ void BossDodongo_Draw(Actor* thisx, PlayState* play) {
         gSPInvalidateTexCache(POLY_OPA_DISP++, sMaskTex32x16);
     }
 
-    if (this->unk_1C6 != 0) {
-        gSPInvalidateTexCache(POLY_OPA_DISP++, sMaskTexLava);
+    gSPInvalidateTexCache(POLY_OPA_DISP++, sMaskTexLava);
+
+    // Using WORK_DISP to invalidate these textures as they are used in drawing the scene textures which happens
+    // before actors are drawn. WORK_DISP comes before POLAY_OPA_DISP. It is probably not meant for this, but it
+    // at least works for now.
+    // Alternatively, having a way to invalidate just these pointers from the Update func should be sufficient.
+    if (sLavaFloorModifiedTexRaw != NULL) {
+        gSPInvalidateTexCache(WORK_DISP++, sLavaWavyTexRaw);
+    } else {
+        gSPInvalidateTexCache(WORK_DISP++, sLavaWavyTex);
     }
 
     if ((this->unk_1C0 >= 2) && (this->unk_1C0 & 1)) {
