@@ -260,7 +260,11 @@ void DoorShutter_Init(Actor* thisx, PlayState* play2) {
     DoorShutter_SetupAction(this, DoorShutter_SetupType);
     this->unk_16B = phi_a3;
     if (this->doorType == SHUTTER_KEY_LOCKED || this->doorType == SHUTTER_BOSS) {
-        if (!Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)) {
+        // Unlock early Ganon's Boss Key doors to allow access to the pots there when "Shuffle Pots" is on.
+        uint8_t unlockForShufflePots = play->sceneNum == SCENE_GANONS_TOWER &&
+                                       Randomizer_GetSettingValue(RSK_SHUFFLE_POTS) &&
+                                       this->dyna.actor.world.pos.y == 800;
+        if (!Flags_GetSwitch(play, this->dyna.actor.params & 0x3F) && !unlockForShufflePots) {
             this->unk_16E = 10;
         }
         Actor_SetFocus(&this->dyna.actor, 60.0f);
