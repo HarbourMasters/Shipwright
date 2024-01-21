@@ -2432,13 +2432,20 @@ CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
 
 PotIdentity Randomizer::IdentifyPot(s32 sceneNum, s32 posX, s32 posZ) {
     struct PotIdentity potIdentity;
+    uint32_t potSceneNum;
+
+    if (sceneNum == SCENE_GANONDORF_BOSS) {
+        potSceneNum = SCENE_GANONS_TOWER;
+    } else {
+        potSceneNum = sceneNum;
+    }
 
     potIdentity.randomizerInf = RAND_INF_MAX;
     potIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
 
     s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
 
-    Rando::Location* location = GetCheckObjectFromActor(ACTOR_OBJ_TSUBO, sceneNum, actorParams);
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_OBJ_TSUBO, potSceneNum, actorParams);
 
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
         potIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
