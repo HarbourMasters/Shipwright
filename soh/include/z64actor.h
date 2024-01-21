@@ -9,6 +9,7 @@
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "z64actor_enum.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 #define ACTOR_NUMBER_MAX 2000
 #define INVISIBLE_ACTOR_MAX 20

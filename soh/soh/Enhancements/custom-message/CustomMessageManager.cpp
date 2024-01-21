@@ -17,10 +17,33 @@ static const std::unordered_map<std::string, char> textBoxSpecialCharacters = {
 static const std::unordered_map<std::string, char> colors = { { "w", QM_WHITE },  { "r", QM_RED },   { "g", QM_GREEN },
                                                               { "b", QM_BLUE },   { "c", QM_LBLUE }, { "p", QM_PINK },
                                                               { "y", QM_YELLOW }, { "B", QM_BLACK } };
+static const std::unordered_map<std::string, ItemID> altarIcons = {
+    { "0", ITEM_KOKIRI_EMERALD },
+    { "1", ITEM_GORON_RUBY },
+    { "2", ITEM_ZORA_SAPPHIRE },
+    { "8", ITEM_MEDALLION_LIGHT },
+    { "3", ITEM_MEDALLION_FOREST },
+    { "4", ITEM_MEDALLION_FIRE },
+    { "5", ITEM_MEDALLION_WATER },
+    { "6", ITEM_MEDALLION_SPIRIT },
+    { "7", ITEM_MEDALLION_SHADOW },
+    { "l", ITEM_ARROW_LIGHT },
+    { "b", ITEM_KEY_BOSS },
+    { "o", ITEM_SWORD_MASTER },
+    { "c", ITEM_OCARINA_FAIRY },
+    { "i", ITEM_OCARINA_TIME },
+    { "L", ITEM_BOW_ARROW_LIGHT },
+    { "k", ITEM_TUNIC_KOKIRI }
+};
 
 CustomMessage::CustomMessage(std::string english_, std::string german_, std::string french_, TextBoxType type_,
                              TextBoxPosition position_)
     : english(std::move(english_)), german(std::move(german_)), french(std::move(french_)), type(type_),
+      position(position_) {
+}
+
+CustomMessage::CustomMessage(Text text, TextBoxType type_,TextBoxPosition position_)
+    : english(text.GetEnglish()), german(text.GetGerman()), french(text.GetFrench()), type(type_),
       position(position_) {
 }
 
@@ -116,6 +139,7 @@ void CustomMessage::Format(ItemID iid) {
     }
     ReplaceSpecialCharacters();
     ReplaceColors();
+    ReplaceAltarIcons();
     *this += MESSAGE_END();
 }
 
@@ -127,6 +151,7 @@ void CustomMessage::Format() {
     }
     ReplaceSpecialCharacters();
     ReplaceColors();
+    ReplaceAltarIcons();
     *this += MESSAGE_END();
 }
 
@@ -171,7 +196,7 @@ const char* Interface_ReplaceSpecialCharacters(char text[]) {
 
 void CustomMessage::ReplaceColors() {
     for (std::string* str : { &english, &french, &german }) {
-        for (auto colorPair : colors) {
+        for (const auto& colorPair : colors) {
             std::string textToReplace = "%";
             textToReplace += colorPair.first;
             size_t start_pos = 0;
@@ -183,27 +208,41 @@ void CustomMessage::ReplaceColors() {
     }
 }
 
-const std::string CustomMessage::MESSAGE_END() const {
+void CustomMessage::ReplaceAltarIcons() {
+    for (std::string* str : { &english, &french, &german }) {
+        for (const auto& iconPair : altarIcons) {
+            std::string textToReplace = "$";
+            textToReplace += iconPair.first;
+            size_t start_pos = 0;
+            while ((start_pos = str->find(textToReplace, start_pos)) != std::string::npos) {
+                str->replace(start_pos, textToReplace.length(), ITEM_OBTAINED(iconPair.second));
+                start_pos += textToReplace.length();
+            }
+        }
+    }
+}
+
+std::string CustomMessage::MESSAGE_END() {
     return "\x02"s;
 }
 
-const std::string CustomMessage::ITEM_OBTAINED(uint8_t x) const {
+std::string CustomMessage::ITEM_OBTAINED(uint8_t x) {
     return "\x13"s + char(x);
 }
 
-const std::string CustomMessage::NEWLINE() const {
+std::string CustomMessage::NEWLINE() {
     return "\x01"s;
 }
 
-const std::string CustomMessage::COLOR(uint8_t x) const {
+std::string CustomMessage::COLOR(uint8_t x) {
     return "\x05"s + char(x);
 }
 
-const std::string CustomMessage::WAIT_FOR_INPUT() const {
+std::string CustomMessage::WAIT_FOR_INPUT() {
     return "\x04"s;
 }
 
-const std::string CustomMessage::PLAYER_NAME() const {
+std::string CustomMessage::PLAYER_NAME() {
     return "\x0F"s;
 }
 

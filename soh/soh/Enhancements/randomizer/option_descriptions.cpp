@@ -211,6 +211,10 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Adult Link will start with a second free item instead of the Master Sword.\n"
         "If you haven't found the Master Sword before facing Ganon, you won't receive it during the fight.";
+    mOptionDescriptions[RSK_SHUFFLE_CHILD_WALLET] =
+        "Enabling this shuffles the Child's Wallet into the item pool.\n"
+        "\n"
+        "You will not be able to carry any rupees until you find a wallet.";
     mOptionDescriptions[RSK_SHUFFLE_OCARINA] =
         "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time into the item pool.\n"
         "\n"
@@ -219,6 +223,13 @@ void Settings::CreateOptionDescriptions() {
         "Enabling this shuffles the Ocarina buttons into the item pool.\n"
         "\n"
         "This will require finding the buttons before being able to use them in songs.";
+
+    mOptionDescriptions[RSK_SHUFFLE_SWIM] =
+        "Shuffles the ability to Swim into the item pool.\n"
+        "The ability to swim has to be found as an item (you can still be underwater if you use iron boots).\n"
+        "\n"
+        "If you enter a water entrance without swim you will be respawned on land to prevent infinite death loops.\n"
+        "If you void out in Water Temple you will immediately be kicked out to prevent a softlock.";
     mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG] = "Shuffles the Weird Egg from Malon in to the item pool. Enabling "
                                                  "\"Skip Child Zelda\" disables this feature.\n"
                                                  "\n"
@@ -243,6 +254,9 @@ void Settings::CreateOptionDescriptions() {
                                               "Overworld - Only shuffle pots that are outside of dungeons.\n"
                                               "\n"
                                               "All pots - Shuffle all pots.";
+    mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
+        "\n"
+        "The fishing pole is required to play the fishing pond minigame.";
     mOptionDescriptions[RSK_SHOPSANITY] = "Off - All shop items will be the same as vanilla.\n"
                                           "\n"
                                           "0 Items - Vanilla shop items will be shuffled among different shops.\n"
@@ -260,6 +274,17 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SHOPSANITY_PRICES_AFFORDABLE] =
         "Affordable prices per tier: starter = 10, adult = 105, giant = 205, tycoon = 505\n\n"
         "Use this to enable wallet tier locking, but make shop items not as expensive as they could be.";
+    mOptionDescriptions[RSK_FISHSANITY] = "Off - Fish will not be shuffled. No changes will be made to fishing behavior.\n\n"
+        "Shuffle Fishing Pond - The fishing pond's fish will be shuffled. Catching a fish in the fishing pond will grant a reward.\n\n"
+        "Shuffle Overworld Fish - Fish in generic grottos and Zora's Domain will be shuffled. Catching a fish in a bottle will give a reward.\n\n"
+        "Shuffle Both - Both overworld fish and fish in the fishing pond will be shuffled.";
+    mOptionDescriptions[RSK_FISHSANITY_POND_COUNT] = "The number of fish to randomize in the fishing pool.\n\n"
+        "If set to maximum, each fish will have a unique check, including a Hyrule Loach which appears only as child, and "
+        "uncaught fish will be given a visual indicator to distinguish from already-caught fish.\n\n"
+        "Otherwise, any fish caught in the pond will give a reward, until all rewards have been given.";
+    mOptionDescriptions[RSK_FISHSANITY_AGE_SPLIT] = "Enabling this will split the fishing pond fish by age, making fishing pond fish grant different rewards as child and adult.\n\n"
+        "If disabled, then the child pond will be shuffled and shared between both ages.\n\n"
+        "Note that, as child, there is a second loach available in the pond!";
     mOptionDescriptions[RSK_SHUFFLE_SCRUBS] =
         "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the vanilla game "
         "(PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.\n"
@@ -269,6 +294,8 @@ void Settings::CreateOptionDescriptions() {
         "Expensive - Scrubs will be shuffled and their item will cost the vanilla price.\n"
         "\n"
         "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n";
+    mOptionDescriptions[RSK_SHUFFLE_BEEHIVES] =
+        "Beehives give a randomized item from the pool when broken.";
     mOptionDescriptions[RSK_SHUFFLE_COWS] =
         "Cows give a randomized item from the pool upon performing Epona's Song in front of them.";
     mOptionDescriptions[RSK_SHUFFLE_MAGIC_BEANS] =
@@ -495,11 +522,24 @@ void Settings::CreateOptionDescriptions() {
         "Talking to the chest game owner after buying a key will tell you the location of Greg the Green Rupee.";
     mOptionDescriptions[RSK_SARIA_HINT] = "Talking to Saria either in person or through Saria's Song will tell you the "
                                           "location of a progressive magic meter.";
+    mOptionDescriptions[RSK_FISHING_POLE_HINT] = "Talking to the fishing pond owner without the fishing pole will tell you its location.";
     mOptionDescriptions[RSK_FROGS_HINT] = "Standing near the pedestal for the frogs in Zora's River will tell you the "
                                           "reward for the frogs' ocarina game.";
+    mOptionDescriptions[RSK_BIGGORON_HINT] = "Talking to Biggoron will tell you the item he will give you in exchange for the Claim Check.";
+    mOptionDescriptions[RSK_BIG_POES_HINT] = "Talking to the Poe Collector in the Market Guardhouse while adult will tell you what you recieve for handing in Big Poes.";
+    mOptionDescriptions[RSK_CHICKENS_HINT] = "Talking to Anju as a child will tell you the item she will give you for delivering her Cuccos to the pen";
+    mOptionDescriptions[RSK_MALON_HINT] = "Talking to Malon as adult will tell you the item on \"Link's cow\", the cow you win from beating her time on the Lon Lon Obsticle Course.";
+    mOptionDescriptions[RSK_HBA_HINT] = "Talking to the Horseback Archery gerudo in Gerudo Fortress, or the nearby sign, will tell you what you win for scoring 1000 and 1500 points on Horseback Archery.";
     mOptionDescriptions[RSK_WARP_SONG_HINTS] = "Standing near the pedestal for the frogs in Zora's River will tell you "
-                                               "the reward for the frogs' ocarina game.";
+                                               "the reward for the frogs' ocarina game."; //RANDOTODO fix this, I can't find the original right now because github search sucks
     mOptionDescriptions[RSK_SCRUB_TEXT_HINT] = "Business scrubs will reveal the identity of what they're selling.";
+    mOptionDescriptions[RSK_KAK_10_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 10 tokens will tell you the reward";
+    mOptionDescriptions[RSK_KAK_20_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 20 tokens will tell you the reward";
+    mOptionDescriptions[RSK_KAK_30_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 30 tokens will tell you the reward";
+    mOptionDescriptions[RSK_KAK_40_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 40 tokens will tell you the reward";
+    mOptionDescriptions[RSK_KAK_50_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 50 tokens will tell you the reward";
+    mOptionDescriptions[RSK_KAK_100_SKULLS_HINT] = "Talking to the Cursed Resident in the Skultulla House who is saved after 100 tokens will tell you the reward";
+    
     mOptionDescriptions[RSK_FULL_WALLETS] = "Start with a full wallet. All wallet upgrades come filled with rupees.";
     mOptionDescriptions[RSK_BOMBCHUS_IN_LOGIC] =
         "Bombchus are properly considered in logic.\n"

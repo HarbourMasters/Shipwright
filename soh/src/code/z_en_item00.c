@@ -581,8 +581,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             if (!IS_RANDO || this->randoGiEntry.getItemId == GI_NONE) {
                 func_8002F554(&this->actor, play, getItemId);
             } else {
-                if (GiveItemEntryFromActorWithFixedRange(&this->actor, play, this->randoGiEntry) &&
-                    this->randoInf != RAND_INF_MAX) {
+                if (GiveItemEntryFromActorWithFixedRange(&this->actor, play, this->randoGiEntry) && this->randoInf != RAND_INF_MAX) {
                     Flags_SetRandomizerInf(this->randoInf);
                 }
             }
@@ -737,8 +736,7 @@ void func_8001E5C8(EnItem00* this, PlayState* play) {
             if (!IS_RANDO) {
                 func_8002F434(&this->actor, play, this->getItemId, 50.0f, 80.0f);
             } else {
-                if (GiveItemEntryFromActor(&this->actor, play, this->randoGiEntry, 50.0f, 80.0f) &&
-                    this->randoInf != RAND_INF_MAX) {
+                if (GiveItemEntryFromActor(&this->actor, play, this->randoGiEntry, 50.0f, 80.0f) && this->randoInf != RAND_INF_MAX) {
                     Flags_SetRandomizerInf(this->randoInf);
                 }
             }
@@ -961,8 +959,7 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
             func_8002F554(&this->actor, play, getItemId);
         } else {
             getItemId = this->randoGiEntry.getItemId;
-            if (GiveItemEntryFromActorWithFixedRange(&this->actor, play, this->randoGiEntry) &&
-                this->randoInf != RAND_INF_MAX) {
+            if (GiveItemEntryFromActorWithFixedRange(&this->actor, play, this->randoGiEntry) && this->randoInf != RAND_INF_MAX) {
                 Flags_SetRandomizerInf(this->randoInf);
             }
         }
@@ -1376,7 +1373,7 @@ void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
             this->randoGiEntry = Randomizer_GetItemFromKnownCheck(this->randoCheck, GI_NONE);
             this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
         }
-        
+
         f32 mtxScale = 10.67f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
         EnItem00_CustomItemsParticles(&this->actor, play, this->randoGiEntry);

@@ -12,6 +12,8 @@
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
+#include "../custom-message/CustomMessageTypes.h"
+#include "soh/Enhancements/randomizer/fishsanity.h"
 
 #define MAX_SEED_STRING_SIZE 1024
 #define NUM_TRIFORCE_PIECE_MESSAGES 6
@@ -46,25 +48,28 @@ class Randomizer {
     void LoadHintMessages();
     bool IsTrialRequired(RandomizerInf trial);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
-    RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     RandomizerCheck GetCheckFromRandomizerInf(RandomizerInf randomizerInf);
     RandomizerInf GetRandomizerInfFromCheck(RandomizerCheck rc);
     Rando::Location* GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams);
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
+    BeehiveIdentity IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData);
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
     CowIdentity IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
     PotIdentity IdentifyPot(s32 sceneNum, s32 posX, s32 posZ);
+    FishIdentity IdentifyFish(s32 sceneNum, s32 actorParams);
     GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability = true);
     GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId, bool checkObtainability = true);
     GetItemID GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
-    CustomMessage GetWarpSongMessage(u16 textId, bool mysterious = false);
     CustomMessage GetSheikMessage(s16 scene, u16 originalTextId);
-    CustomMessage GetFrogsMessage(u16 originalTextId);
+    CustomMessage ReplaceWithItemName(CustomMessage message, std::string&& toReplace, RandomizerCheck hintedCheck);
+    CustomMessage GetMiscHintMessage(TextIDs textToGet, RandomizerCheck hintedCheck, RandomizerCheck otherCheck = RC_UNKNOWN_CHECK);
     CustomMessage GetSariaMessage(u16 originalTextId);
+    CustomMessage GetFishingPondOwnerMessage(u16 originalTextId);
     CustomMessage GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
-    CustomMessage GetCursedSkullMessage(s16 params);
+    RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
+    CustomMessage GetCursedSkullMessage(s16 params, RandomizerCheck hintedCheck);
     CustomMessage GetGoronMessage(u16 index);
     CustomMessage GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
     static void CreateCustomMessages();

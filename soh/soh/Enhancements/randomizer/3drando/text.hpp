@@ -12,8 +12,14 @@ public:
     Text(std::string english_, std::string french_, std::string spanish_)
       : english(std::move(english_)),
         french(std::move(french_)),
-        spanish(std::move(spanish_)) {}
-    Text(std::string english_) : english(std::move(english_)), french(std::move("")), spanish(std::move("")) {}
+        spanish(std::move(spanish_)),
+        german(std::move("")) {}
+    Text(std::string english_, std::string french_, std::string spanish_, std::string german_)
+      : english(std::move(english_)),
+        french(std::move(french_)),
+        spanish(std::move(spanish_)),
+        german(std::move(german_)) {}
+    Text(std::string english_) : english(std::move(english_)), french(std::move("")), spanish(std::move("")), german(std::move("")) {}
 
     const std::string& GetEnglish() const {
         return english;
@@ -33,24 +39,33 @@ public:
         return english;
     }
 
+    const std::string& GetGerman() const {
+        if (german.length() > 0) {
+            return german;
+        }
+        return english;
+    }
+
     const std::string& GetForLanguage(uint8_t language) const {
         switch (language) {
             case LANGUAGE_ENG:
-                return english;
+                return GetEnglish();
             case LANGUAGE_FRA:
-                return french;
+                return GetFrench();
             case LANGUAGE_GER:
+                return GetGerman();
             default:
-                return english; // TODO: German
+                return GetEnglish();
         }
     }
 
     Text operator+ (const Text& right) const {
-        return Text{english + right.GetEnglish(), french + right.GetFrench(), spanish + right.GetSpanish()};
+        return Text{english + right.GetEnglish(), french + right.GetFrench(), spanish + right.GetSpanish(),
+            german + right.GetGerman()};
     }
 
     Text operator+ (const std::string& right) const {
-        return Text{english + right, french + right, spanish + right};
+        return Text{english + right, french + right, spanish + right, german + right};
     }
 
     bool operator==(const Text& right) const {
@@ -58,7 +73,7 @@ public:
     }
 
     bool operator==(const std::string& right) const {
-        return english == right || french == right || spanish == right;
+        return english == right || french == right || spanish == right || german == right;
     }
 
     bool operator!=(const Text& right) const {
@@ -67,7 +82,7 @@ public:
 
     void Replace(std::string oldStr, std::string newStr) {
 
-        for (std::string* str : {&english, &french, &spanish}) {
+        for (std::string* str : {&english, &french, &spanish, &german}) {
             size_t position = str->find(oldStr);
             while (position != std::string::npos) {
               str->replace(position, oldStr.length(), newStr);
@@ -79,7 +94,7 @@ public:
     // Convert first char to upper case
     Text Capitalize(void) const {
         Text cap = *this + "";
-        for (std::string* str : {&cap.english, &cap.french, &cap.spanish}) {
+        for (std::string* str : {&cap.english, &cap.french, &cap.spanish, &cap.german}) {
             (*str)[0] = std::toupper((*str)[0]);
         }
         return cap;
@@ -87,7 +102,7 @@ public:
 
     //find the appropriate bars that separate singular from plural
     void SetForm(int form) {
-        for (std::string* str : {&english, &french, &spanish}) {
+        for (std::string* str : {&english, &french, &spanish, &german}) {
 
             size_t firstBar = str->find('|');
             if (firstBar != std::string::npos) {
@@ -114,4 +129,5 @@ public:
     std::string english = "";
     std::string french = "";
     std::string spanish = "";
+    std::string german = "";
 };
