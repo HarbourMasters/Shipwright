@@ -48,7 +48,7 @@ void AreaTable_Init_LostWoods() {
   areaTable[RR_KF_LINKS_HOUSE] = Area("KF Link's House", "KF Link's House", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(RC_KF_LINKS_HOUSE_COW, {[]{return logic->IsAdult && logic->CanUse(RG_EPONAS_SONG) && logic->LinksCow;}}),
-                  LocationAccess(RC_KF_LINKS_HOUSE_POT, {[]{return true;}}),
+                  LocationAccess(RC_KF_LINKS_HOUSE_POT, {[]{return logic->CanBreakPots;}}),
                 }, {
                   //Exits
                   Entrance(RR_KOKIRI_FOREST, {[]{return true;}})

@@ -756,6 +756,7 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_COW ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_FISH ||
+               scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_POT ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_SCRUB ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_MASTER_SWORD ||
                scCheckType == SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF)) {
