@@ -303,6 +303,7 @@ class Logic {
     bool CanGetChildFish = false;
     bool CanGetAdultFish = false;
     bool CanFish = false;
+    bool CanBreakPots = false;
 
     uint8_t OcarinaButtons = 0;
     uint8_t BaseHearts = 0;

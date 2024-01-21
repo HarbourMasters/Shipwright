@@ -2110,7 +2110,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_WATER_TEMPLE_MQ_LOWEST_GS_POT_2,                               RAND_INF_WATER_TEMPLE_MQ_LOWEST_GS_POT_2 },
     { RC_WATER_TEMPLE_MQ_LOWEST_GS_POT_3,                               RAND_INF_WATER_TEMPLE_MQ_LOWEST_GS_POT_3 },
     { RC_WATER_TEMPLE_MQ_LOWEST_GS_POT_4,                               RAND_INF_WATER_TEMPLE_MQ_LOWEST_GS_POT_4 },
-    { RC_WATER_TEMPLE_MQ_BOSS_KEY_POT,                                  RAND_INF_WATER_TEMPLE_MQ_BOSS_KEY_POT }
+    { RC_WATER_TEMPLE_MQ_BOSS_KEY_POT,                                  RAND_INF_WATER_TEMPLE_MQ_BOSS_KEY_POT },
 
     { RC_KF_STORMS_GROTTO_BEEHIVE_LEFT,                               RAND_INF_BEEHIVE_KF_STORMS_GROTTO_LEFT },
     { RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT,                              RAND_INF_BEEHIVE_KF_STORMS_GROTTO_RIGHT },
