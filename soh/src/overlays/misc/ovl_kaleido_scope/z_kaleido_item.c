@@ -280,7 +280,7 @@ void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle,
             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             if (replaceCButtons) {
                 for (int i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                    if (gSaveContext.equips.buttonItems[i] == gSaveContext.inventory.items[slot] && gSaveContext.equips.buttonModIds[i] == gSaveContext.inventory.modIds[slot]) {
+                    if (gSaveContext.equips.buttonItems[i] == gSaveContext.inventory.items[slot] && gSaveContext.equips.buttonModIds[i] == gSaveContext.inventory.itemModIds[slot]) {
                         if (CHECK_AGE_REQ_ITEM(rightItem)) {
                             gSaveContext.equips.buttonItems[i] = rightItem;
                             gSaveContext.equips.buttonModIds[i] = rightModId;
@@ -294,13 +294,13 @@ void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle,
                 }
             }
             gSaveContext.inventory.items[slot] = rightItem;
-            gSaveContext.inventory.modIds[slot] = rightModId;
+            gSaveContext.inventory.itemModIds[slot] = rightModId;
         } else if ((pauseCtx->stickRelX < -30 || pauseCtx->stickRelY < -30) ||
             dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DDOWN)) {
             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             if (replaceCButtons) {
                 for (int i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                    if (gSaveContext.equips.buttonItems[i] == gSaveContext.inventory.items[slot] && gSaveContext.equips.buttonModIds[i] == gSaveContext.inventory.modIds[slot]) {
+                    if (gSaveContext.equips.buttonItems[i] == gSaveContext.inventory.items[slot] && gSaveContext.equips.buttonModIds[i] == gSaveContext.inventory.itemModIds[slot]) {
                         if (CHECK_AGE_REQ_ITEM(leftItem)) {
                             gSaveContext.equips.buttonItems[i] = leftItem;
                             gSaveContext.equips.buttonModIds[i] = leftModId;
@@ -314,7 +314,7 @@ void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle,
                 }
             }
             gSaveContext.inventory.items[slot] = leftItem;
-            gSaveContext.inventory.modIds[slot] = leftModId;
+            gSaveContext.inventory.itemModIds[slot] = leftModId;
         }
         gCurrentItemCyclingSlot = pauseCtx->cursorSlot[PAUSE_ITEM] == slot ? slot : -1;
     }
@@ -338,10 +338,10 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
         play,
         SLOT_TRADE_CHILD,
         CanMaskSelect(),
-        gSaveContext.inventory.modIds[ITEM_TRADE_CHILD] != 0 || INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_KEATON || INV_CONTENT(ITEM_TRADE_CHILD) > ITEM_MASK_TRUTH ?
+        gSaveContext.inventory.itemModIds[ITEM_TRADE_CHILD] != 0 || INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_KEATON || INV_CONTENT(ITEM_TRADE_CHILD) > ITEM_MASK_TRUTH ?
             0, ITEM_MASK_TRUTH :
             0, INV_CONTENT(ITEM_TRADE_CHILD) - 1,
-        gSaveContext.inventory.modIds[ITEM_TRADE_CHILD] != 0 || INV_CONTENT(ITEM_TRADE_CHILD) >= ITEM_MASK_TRUTH || INV_CONTENT(ITEM_TRADE_CHILD) < ITEM_MASK_KEATON ?
+        gSaveContext.inventory.itemModIds[ITEM_TRADE_CHILD] != 0 || INV_CONTENT(ITEM_TRADE_CHILD) >= ITEM_MASK_TRUTH || INV_CONTENT(ITEM_TRADE_CHILD) < ITEM_MASK_KEATON ?
             0, ITEM_MASK_KEATON :
             0, INV_CONTENT(ITEM_TRADE_CHILD) + 1,
         true
@@ -355,7 +355,7 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
             ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger("gAdultBunnyHood", 0)) ||
             CVarGetInteger("gTimelessEquipment", 0)
         ) &&
-        INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY && gSaveContext.inventory.modIds[ITEM_TRADE_CHILD] == 0
+        INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY && gSaveContext.inventory.itemModIds[ITEM_TRADE_CHILD] == 0
             ? AGE_REQ_NONE
             : AGE_REQ_CHILD;
     
