@@ -5,19 +5,13 @@ set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 
-project(Ship VERSION 8.0.2 LANGUAGES C CXX)
-set(PROJECT_BUILD_NAME "MacReady Charlie" CACHE STRING "")
+project(Ship VERSION 8.0.4 LANGUAGES C CXX)
+set(PROJECT_BUILD_NAME "MacReady Echo" CACHE STRING "")
 set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "")
 
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/utf-8>)
-
-if (CMAKE_SYSTEM_NAME MATCHES "Windows|Linux")
-    if(NOT DEFINED BUILD_CROWD_CONTROL)
-        set(BUILD_CROWD_CONTROL ON)
-    endif()
-endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 include(CMake/automate-vcpkg.cmake)
