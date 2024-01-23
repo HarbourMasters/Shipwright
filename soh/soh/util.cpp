@@ -3,6 +3,8 @@
 #include <string.h>
 #include <vector>
 #include <algorithm>
+#include <array>
+#include "Enhancements/randomizer/randomizerTypes.h"
 
 std::vector<std::string> sceneNames = {
     "Inside the Deku Tree",
@@ -303,7 +305,7 @@ std::vector<std::string> questItemNames = {
         "Gold Skulltula Token",
 };
 
-std::vector<std::string> rcareaPrefixes = {
+std::array<std::string, RA_MAX> rcareaPrefixes = {
     "KF",
     "LW",
     "SFM",
