@@ -148,18 +148,11 @@ void FindMessage(PlayState* play, const uint16_t textId, const uint8_t language)
             nextSeg = messageTableEntry->segment;
             font->msgOffset = reinterpret_cast<uintptr_t>(messageTableEntry->segment);
             font->msgLength = messageTableEntry->msgSize;
-
-            // "Message found!!!"
-            osSyncPrintf(" メッセージが,見つかった！！！ = %x  "
-                         "(data=%x) (data0=%x) (data1=%x) (data2=%x) (data3=%x)\n",
-                         bufferId, font->msgOffset, font->msgLength, foundSeg, seg, nextSeg);
             return;
         }
         messageTableEntry++;
     }
 
-    // "Message not found!!!"
-    osSyncPrintf(" メッセージが,見つからなかった！！！ = %x\n", bufferId);
     font = &play->msgCtx.font;
     messageTableEntry = sNesMessageEntryTablePtr;
 
