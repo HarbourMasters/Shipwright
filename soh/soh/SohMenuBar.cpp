@@ -22,6 +22,7 @@
 
 #include "Enhancements/audio/AudioEditor.h"
 #include "Enhancements/controls/GameControlEditor.h"
+#include "Enhancements/controls/InputViewer.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugger/actorViewer.h"
 #include "Enhancements/debugger/colViewer.h"
@@ -181,6 +182,7 @@ void DrawShipMenu() {
 
 extern std::shared_ptr<LUS::GuiWindow> mInputEditorWindow;
 extern std::shared_ptr<GameControlEditor::GameControlEditorWindow> mGameControlEditorWindow;
+extern std::shared_ptr<InputViewer> mInputViewer;
 extern std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
 
 void DrawSettingsMenu() {
@@ -253,7 +255,12 @@ void DrawSettingsMenu() {
             UIWidgets::EnhancementCheckbox("Menubar Controller Navigation", "gControlNav");
             UIWidgets::Tooltip("Allows controller navigation of the SOH menu bar (Settings, Enhancements,...)\nCAUTION: This will disable game inputs while the menubar is visible.\n\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
         #endif
-            UIWidgets::PaddedEnhancementCheckbox("Show Inputs", "gInputEnabled", true, false);
+            if (mInputViewer) {
+                if (UIWidgets::PaddedEnhancementCheckbox("Show Inputs", "gInputEnabled", true, false)) {
+                    mInputViewer->ToggleVisibility();
+                }
+            }
+
             UIWidgets::Tooltip("Shows currently pressed inputs on the bottom right of the screen");
             UIWidgets::PaddedEnhancementSliderFloat("Input Scale: %.2f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false, true, true, false);
             UIWidgets::Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
