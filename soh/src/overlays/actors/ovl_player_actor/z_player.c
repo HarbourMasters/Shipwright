@@ -6669,7 +6669,7 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
 
                 // Automatically skip the pickup messages for very frequent items coming from pots with "Shuffle Pots" on.
                 uint8_t isPotItemToSkip = interactedActor->id == ACTOR_EN_ITEM00 &&
-                                          interactedActor->params == ITEM00_SMALL_KEY &&
+                                          interactedActor->params == ITEM00_SMALL_KEY && giEntry.modIndex == MOD_NONE &&
                                           ((giEntry.itemId >= ITEM_RUPEE_GREEN && giEntry.itemId <= ITEM_RUPEE_RED) ||
                                            giEntry.itemId == ITEM_HEART ||
                                            (giEntry.itemId >= ITEM_NUTS_5 && giEntry.itemId <= ITEM_SEEDS_30) ||
