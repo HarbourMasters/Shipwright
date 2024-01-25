@@ -170,18 +170,36 @@ class Decline : protected TerrainCueSound {
         
     };
 class Ledge :protected TerrainCueSound {
-        bool climbable;//Distinguishes between a ledge link can fall from and one he can climb up.
+        s8 savedType;//Distinguishes between a ledge link can fall from and one he can climb up.
         Vec3s probeRot;
 
       public:
-    Ledge(AccessibleActor* actor, Vec3f pos, Vec3s probeRot, bool above = false) : TerrainCueSound(actor, pos) {
-            if (above)
+    Ledge(AccessibleActor* actor, Vec3f pos, Vec3s probeRot, s8 type = 0) : TerrainCueSound(actor, pos) {
+            if (type == 1)
                 currentPitch = 2.0;
-            climbable = above;
-            currentSFX = climbable ? NA_SE_EV_WOOD_BOUND : NA_SE_EV_WIND_TRAP;
-        shouldLoop = !climbable;
+            savedType = type;
+            switch (type) { 
+                case 0: 
+                    currentSFX =  NA_SE_EV_WIND_TRAP;
+                    shouldLoop = 1;
+                    break;
+                    
+                case 1:
+                    currentSFX = NA_SE_EV_WOOD_BOUND;
+                    shouldLoop = 0;
+                    break;
+                case 2:
+                    currentSFX = NA_SE_PL_LAND_WATER0;
+                    shouldLoop = 0;
+                    break;
+                case 3:
+                    currentSFX = NA_SE_SY_WARNING_COUNT_N;
+                    shouldLoop = 0;
+                    break;
+            }
+            
             this->probeRot = probeRot;
-        if (!above) {
+        if (type == 0) {
                 if (probeRot.y == 0)
                     currentPitch = 0.4;
                 else if (probeRot.y < 0)
@@ -196,12 +214,12 @@ class Ledge :protected TerrainCueSound {
     virtual ~Ledge() {
     
     }
-    bool isClimbable() {
-        return climbable;
+    s8 type() {
+        return savedType;
 
     }
     void run() {
-        if (!climbable)
+        if (savedType==0)
                 return;//Downward ledges play a looping sound and do not need ongoing maintenance.
         if (restFrames == 0)
         {
@@ -453,13 +471,13 @@ class Lava : protected TerrainCueSound {
     }
     // Play a sound from the position of a previously discovered ledge.
 
-    void discoverLedge(Vec3f pos, bool upper = false) {
-        if (terrainDiscovered == DISCOVERED_LEDGE && ledge.isClimbable() == upper)
+    void discoverLedge(Vec3f pos, s8 type = 0) {
+        if (terrainDiscovered == DISCOVERED_LEDGE && ledge.type() == type)
             return;
 
         destroyCurrentSound();
 
-        new (&ledge) Ledge(actor, pos, relRot, upper);
+        new (&ledge) Ledge(actor, pos, relRot, type);
         currentSound = (TerrainCueSound*)&ledge;
         terrainDiscovered = DISCOVERED_LEDGE;
     }
@@ -1185,23 +1203,30 @@ class Lava : protected TerrainCueSound {
                     player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
                     // This is a fall.
 
-                    discoverLedge(pos);
+                    bool foundLiquid = false;
                     if (((pos.y - player->actor.prevPos.y) < player->actor.yDistToWater-30) &&
                         (player->actor.yDistToWater < 0)) {
-                        discoverWater(pos);
+                        discoverLedge(pos, 2);
+                        foundLiquid = true;
                     }
-                    if (rdist(pos) < 100.0) {
-                        s8 i = 5;
+                    else if (rdist(pos) < 100.0) {
+                        s8 i = 50;
+                        Vec3f_ oldPos = pos;
                         while (i > 0) {
                             move();
                             if (checkForLava(pos)) {
-                                discoverLava(pos);
+                                discoverLedge(pos, 3);
+                                foundLiquid = true;
                                 break;
                             }
-                            i += 1;
+                            i -= 1;
                         }
-                        
+                        pos = oldPos;
                     }
+                    if (!foundLiquid) {
+                        discoverLedge(pos);
+                    }
+                        
                     testForPlatform();
 
                     break;

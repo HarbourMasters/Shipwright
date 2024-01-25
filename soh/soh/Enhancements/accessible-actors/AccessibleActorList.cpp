@@ -863,6 +863,7 @@ void accessible_stick_warning(AccessibleActor* actor) {
     ActorAccessibility_InitPolicy(&policy, "Torch", accessible_torches, 0);
     policy.n = 1;
     policy.pitch = 1.1;
+    policy.distance = 800;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SYOKUDAI, policy);
     ActorAccessibility_InitPolicy(&policy, "Deku Tree Moving Platform", accessible_hasi, 0);
     //policy.volume = 1.3;
