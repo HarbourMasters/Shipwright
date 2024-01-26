@@ -687,6 +687,23 @@ void RegisterMirrorModeHandler() {
     });
 }
 
+void UpdatePatchDlist() {
+    if (CVarGetInteger("gRandomizeShuffleMasterSword", 0) && B_BTN_ITEM == ITEM_NONE) {
+		ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "adultHylianShield", 75, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "adultMasterSword", 2, gsSPEndDisplayList());
+    }
+    else {
+		ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "adultHylianShield");
+		ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "adultMasterSword");
+	}
+}
+
+void RegisterPatchDlistHandler() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) { 
+        UpdatePatchDlist(); 
+    });
+}
+
 f32 triforcePieceScale;
 
 void RegisterTriforceHunt() {
@@ -1256,4 +1273,5 @@ void InitMods() {
     RegisterRandomizedEnemySizes();
     RegisterToTMedallions();
     NameTag_RegisterHooks();
+    RegisterPatchDlistHandler();
 }
