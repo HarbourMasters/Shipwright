@@ -25,7 +25,6 @@
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
-#include <format>
 
 extern "C" {
 #include <z64.h>
@@ -693,17 +692,16 @@ void RegisterMirrorModeHandler() {
 void RegisterPatchNoMSHandler() {
         GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() { 
         if (CVarGetInteger("gRandomizeShuffleMasterSword", 0) && (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
-            std::string patchString = "adultNoMS.{}.{}";
             for (int i = 43; i <= 46; i++) {
-                std::string patchName = fmt::format(patchString, 1, i);
+                std::string patchName = "adultNoMS." + std::to_string(1) + "." + std::to_string(i);
                 ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, patchName.c_str(), i, gsDPNoOp());
             }
             for (int i = 62; i <= 150; i++) {
-                std::string patchName = fmt::format(patchString, 2, i);
+                std::string patchName = "adultNoMS." + std::to_string(2) + "." + std::to_string(i);
                 ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, patchName.c_str(), i, gsDPNoOp());
             }
             for (int i = 61; i <= 118; i++) {
-                std::string patchName = fmt::format(patchString, 3, i);
+                std::string patchName = "adultNoMS." + std::to_string(3) + "." + std::to_string(i);
                 ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,  patchName.c_str(), i, gsDPNoOp());
             }
             ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "adultNoMSHylianShield1", 75, gsSPEndDisplayList());
@@ -712,17 +710,16 @@ void RegisterPatchNoMSHandler() {
             ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathFarDL, "adultNoMasterSword2", 2, gsSPEndDisplayList());
         }
         else {
-            std::string patchString = "adultNoMS.{}.{}";
             for (int i = 43; i <= 46; i++) {
-                std::string patchName = fmt::format(patchString, 1, i);
+                std::string patchName = "adultNoMS." + std::to_string(1) + "." + std::to_string(i);
                 ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, patchName.c_str());
             }
             for (int i = 62; i <= 150; i++) {
-                std::string patchName = fmt::format(patchString, 2, i);
+                std::string patchName = "adultNoMS." + std::to_string(2) + "." + std::to_string(i);
                 ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, patchName.c_str());
             }
             for (int i = 61; i <= 118; i++) {
-                std::string patchName = fmt::format(patchString, 3, i);
+                std::string patchName = "adultNoMS." + std::to_string(3) + "." + std::to_string(i);
                 ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,  patchName.c_str());
             }
             ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "adultNoMSHylianShield1");
@@ -730,7 +727,7 @@ void RegisterPatchNoMSHandler() {
             ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "adultNoMasterSword1");
             ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathFarDL, "adultNoMasterSword2");
         }
-	});
+    });
 }
 
 f32 triforcePieceScale;
