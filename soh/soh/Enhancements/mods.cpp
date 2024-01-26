@@ -23,6 +23,8 @@
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
+#include "objects/object_link_boy/object_link_boy.h"
+#include "objects/object_link_child/object_link_child.h"
 
 extern "C" {
 #include <z64.h>
@@ -687,21 +689,47 @@ void RegisterMirrorModeHandler() {
     });
 }
 
-void UpdatePatchDlist() {
-    if (CVarGetInteger("gRandomizeShuffleMasterSword", 0) && B_BTN_ITEM == ITEM_NONE) {
-		ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "adultHylianShield", 75, gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "adultMasterSword", 2, gsSPEndDisplayList());
-    }
-    else {
-		ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "adultHylianShield");
-		ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "adultMasterSword");
-	}
-}
-
-void RegisterPatchDlistHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) { 
-        UpdatePatchDlist(); 
-    });
+void RegisterPatchNoMSHandler() {
+        GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() { 
+        if (CVarGetInteger("gRandomizeShuffleMasterSword", 0) && (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
+            std::string patchString = "adultNoMS.{}.{}";
+            for (int i = 43; i <= 46; i++) {
+                std::string patchName = fmt::format(patchString, 1, i);
+                ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, patchName.c_str(), i, gsDPNoOp());
+            }
+            for (int i = 62; i <= 150; i++) {
+                std::string patchName = fmt::format(patchString, 2, i);
+                ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, patchName.c_str(), i, gsDPNoOp());
+            }
+            for (int i = 61; i <= 118; i++) {
+                std::string patchName = fmt::format(patchString, 3, i);
+                ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,  patchName.c_str(), i, gsDPNoOp());
+            }
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "adultNoMSHylianShield1", 75, gsSPEndDisplayList());
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, "adultNoMSHylianShield2", 71, gsSPEndDisplayList());
+            ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "adultNoMasterSword1", 2, gsSPEndDisplayList());
+            ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathFarDL, "adultNoMasterSword2", 2, gsSPEndDisplayList());
+        }
+        else {
+            std::string patchString = "adultNoMS.{}.{}";
+            for (int i = 43; i <= 46; i++) {
+                std::string patchName = fmt::format(patchString, 1, i);
+                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, patchName.c_str());
+            }
+            for (int i = 62; i <= 150; i++) {
+                std::string patchName = fmt::format(patchString, 2, i);
+                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, patchName.c_str());
+            }
+            for (int i = 61; i <= 118; i++) {
+                std::string patchName = fmt::format(patchString, 3, i);
+                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL,  patchName.c_str());
+            }
+            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "adultNoMSHylianShield1");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, "adultNoMSHylianShield2");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "adultNoMasterSword1");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathFarDL, "adultNoMasterSword2");
+        }
+	});
 }
 
 f32 triforcePieceScale;
@@ -1273,5 +1301,5 @@ void InitMods() {
     RegisterRandomizedEnemySizes();
     RegisterToTMedallions();
     NameTag_RegisterHooks();
-    RegisterPatchDlistHandler();
+    RegisterPatchNoMSHandler();
 }
