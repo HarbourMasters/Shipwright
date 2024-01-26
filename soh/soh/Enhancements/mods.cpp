@@ -25,6 +25,7 @@
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
+#include <format>
 
 extern "C" {
 #include <z64.h>
