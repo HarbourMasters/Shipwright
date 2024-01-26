@@ -2912,10 +2912,10 @@ s32 func_808356E8(Player* this, PlayState* play) {
 
 void func_808357E8(Player* this, Gfx** dLists) {
     if (LINK_IS_ADULT && (CVarGetInteger("gEquipmentAlwaysVisible", 0))) {
-		this->leftHandDLists = &dLists[1];
-	} else {
-		this->leftHandDLists = &dLists[gSaveContext.linkAge];
-	}
+        this->leftHandDLists = &dLists[1];
+    } else {
+        this->leftHandDLists = &dLists[gSaveContext.linkAge];
+    }
 }
 
 s32 func_80835800(Player* this, PlayState* play) {
