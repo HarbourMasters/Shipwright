@@ -246,6 +246,8 @@ void Settings::CreateOptionDescriptions() {
         "the gate to Haunted Wasteland and the Horseback Archery minigame.";
     mOptionDescriptions[RSK_SHUFFLE_POTS] = "Freestanding pots will drop a randomized item the first time they're broken and collected."
                                               " Pots will have a different appearance when they hold a randomized item.\n"
+                                              "With this option enabled, Ganon's boss key door is moved further up the stairs to\n"
+                                              "allow access to the pots before obtaining Ganon's Boss Key.\n"
                                               "\n"
                                               "Off - Pots will not be shuffled.\n"
                                               "\n"

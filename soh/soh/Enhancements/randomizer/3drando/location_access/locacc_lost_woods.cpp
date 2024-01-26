@@ -72,8 +72,8 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_KF_HOUSE_OF_TWINS] = Area("KF House of Twins", "KF House of Twins", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_KF_TWINS_HOUSE_POT_1, {[]{return true;}}),
-                  LocationAccess(RC_KF_TWINS_HOUSE_POT_2, {[]{return true;}}),
+                  LocationAccess(RC_KF_TWINS_HOUSE_POT_1, {[]{return logic->CanBreakPots;}}),
+                  LocationAccess(RC_KF_TWINS_HOUSE_POT_2, {[]{return logic->CanBreakPots;}}),
                 }, {
                   //Exits
                   Entrance(RR_KOKIRI_FOREST, {[]{return true;}}),
@@ -81,8 +81,8 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_KF_KNOW_IT_ALL_HOUSE] = Area("KF Know It All House", "KF Know It All House", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                  // Locations
-                 LocationAccess(RC_KF_BROTHERS_HOUSE_POT_1, {[]{return true;}}),
-                 LocationAccess(RC_KF_BROTHERS_HOUSE_POT_2, {[]{return true;}}),
+                 LocationAccess(RC_KF_BROTHERS_HOUSE_POT_1, {[]{return logic->CanBreakPots;}}),
+                 LocationAccess(RC_KF_BROTHERS_HOUSE_POT_2, {[]{return logic->CanBreakPots;}}),
                 }, {
                   //Exits
                   Entrance(RR_KOKIRI_FOREST, {[]{return true;}}),
