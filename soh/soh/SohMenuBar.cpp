@@ -273,10 +273,9 @@ void DrawSettingsMenu() {
                                                   2.0f, "", 1.0f, true, true, disabled_resolutionSlider)) {
                 LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
             }
-            //UIWidgets::Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
             UIWidgets::Tooltip("Resolution scale. Multiplies output resolution by this value, on each axis relative to window size.\n"
                                "Lower values may improve performance.\n"
-                               "Values above 100% can be used for super-sampling, as an intensive but highly effective form of anti-aliasing.\n"
+                               "Values above 100% can be used for super-sampling, as an intensive but highly effective form of anti-aliasing.\n\n"
                                "Default: 100%");
         #endif
             
@@ -298,10 +297,9 @@ void DrawSettingsMenu() {
                     (CVarGetInteger("gMSAAValue", 1) == 1) ? "Anti-Aliasing (MSAA): Off" : "Anti-Aliasing (MSAA): %d",
                     "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true, false)) {
                 LUS::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger("gMSAAValue", 1));
-            };
-            //UIWidgets::Tooltip("Activates multi-sample anti-aliasing when above 1x up to 8x for 8 samples for every pixel");
+            }
             UIWidgets::Tooltip("Activates MSAA (multi-sample anti-aliasing) from 2x up to 8x, to smooth the edges of rendered geometry.\n"
-                               "Higher sample count will result in smoother edges on models, but may reduce performance.\n"
+                               "Higher sample count will result in smoother edges on models, but may reduce performance.\n\n"
                                "Recommended: 2x or 4x");
         #endif
 
@@ -412,16 +410,17 @@ void DrawSettingsMenu() {
             UIWidgets::Tooltip("Matches interpolation value to the game window's current refresh rate.");
 
             if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
-                UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger("gExtraLatencyThreshold", 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
+                UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger("gExtraLatencyThreshold", 80) == 0 ? "Jitter fix threshold: Off" : "Jitter fix: >= %d FPS",
                     "##ExtraLatencyThreshold", "gExtraLatencyThreshold", 0, 360, "", 80, true, true, false);
                 UIWidgets::Tooltip(
-                    "(For DX11 backend only)\n"
+                    "(For DirectX backend only)\n\n"
                     "When Interpolation FPS setting is at least this threshold, add one frame of delay (e.g. 16.6 ms for 60 FPS) in order to avoid jitter."
                     "This setting allows the CPU to work on one frame while GPU works on the previous frame.\n"
                     "This setting should be used when your computer is too slow to do CPU + GPU work in time.");
             }
 
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
+
             ImGui::Text("ImGui Menu Scale");
             ImGui::SameLine();
             ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, "(Experimental)");
@@ -484,11 +483,15 @@ void DrawSettingsMenu() {
 
             // If more filters are added to LUS, make sure to add them to the filters list here
             ImGui::Text("Texture Filtering (Needs reload)");
-
             UIWidgets::EnhancementCombobox("gTextureFilter", filters, FILTER_THREE_POINT);
+            UIWidgets::Tooltip("Texture filtering, aka texture smoothing. Requires a reload to take effect.\n\n"
+                               "Three-Point: Replicates real N64 texture filtering.\n"
+                               "Bilinear: If Three-Point causes performance issues, try this.\n"
+                               "Nearest: Disables texture smoothing. (Not recommended)");
 
-            UIWidgets::Spacer(0);
+            UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
+            // Draw LUS settings menu (such as Overlays Text Font)
             LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->DrawSettings();
 
             ImGui::EndMenu();
