@@ -1837,6 +1837,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_GANONS_CASTLE_FIRE_TRIAL_POT_2,                                RAND_INF_GANONS_CASTLE_FIRE_TRIAL_POT_2 },
     { RC_GANONS_CASTLE_WATER_TRIAL_POT_1,                               RAND_INF_GANONS_CASTLE_WATER_TRIAL_POT_1 },
     { RC_GANONS_CASTLE_WATER_TRIAL_POT_2,                               RAND_INF_GANONS_CASTLE_WATER_TRIAL_POT_2 },
+    { RC_GANONS_CASTLE_WATER_TRIAL_POT_3,                               RAND_INF_GANONS_CASTLE_WATER_TRIAL_POT_3 },
     { RC_GANONS_CASTLE_SHADOW_TRIAL_POT_1,                              RAND_INF_GANONS_CASTLE_SHADOW_TRIAL_POT_1 },
     { RC_GANONS_CASTLE_SHADOW_TRIAL_POT_2,                              RAND_INF_GANONS_CASTLE_SHADOW_TRIAL_POT_2 },
     { RC_GANONS_CASTLE_SHADOW_TRIAL_POT_3,                              RAND_INF_GANONS_CASTLE_SHADOW_TRIAL_POT_3 },
