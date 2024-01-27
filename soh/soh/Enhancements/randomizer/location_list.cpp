@@ -1,6 +1,6 @@
 #include "static_data.h"
 
-#define TWO_ACTOR_PARAMS(a, b) (abs(a) << 16) | abs(b)
+#define TWO_ACTOR_PARAMS(a, b) ((((a)&0xFFFF) << 16) | ((b)&0xFFFF))
 
 std::array<Rando::Location, RC_MAX> Rando::StaticData::locationTable;
 
