@@ -6,6 +6,8 @@
 
 #define MAX_TRICK_NAME_SIZE 50
 
+#define TWO_ACTOR_PARAMS(a, b) ((((a)&0xFFFF) << 16) | ((b)&0xFFFF))
+
 // This should probably go in a less rando-specific location
 // but the best location will probably be in the modding engine
 // which doesn't exist yet.

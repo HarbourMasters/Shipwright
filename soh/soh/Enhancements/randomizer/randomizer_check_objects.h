@@ -6,8 +6,6 @@
 #include <vector>
 #include <map>
 
-#define TWO_ACTOR_PARAMS(a, b) ((((a)&0xFFFF) << 16) | ((b)&0xFFFF))
-
 namespace RandomizerCheckObjects {
     bool AreaIsDungeon(RandomizerCheckArea area);
     bool AreaIsOverworld(RandomizerCheckArea area);
