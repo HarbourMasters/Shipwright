@@ -277,7 +277,6 @@ void DrawSettingsMenu() {
                                "Lower values may improve performance.\n"
                                "Values above 100% can be used for super-sampling, as an intensive but highly effective form of anti-aliasing.\n\n"
                                "Default: 100%");
-        #endif
             
             if (mAdvancedResolutionSettingsWindow) {
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
@@ -291,6 +290,15 @@ void DrawSettingsMenu() {
                 ImGui::PopStyleColor(1);
                 ImGui::PopStyleVar(3);
             }
+        #else
+            // macOS: Internal resolution is currently disabled in libultraship.
+            ImGui::BeginGroup();
+            ImGui::Text("Internal Resolution: 100.0%%");
+            UIWidgets::Spacer(0);
+            ImGui::Text(" " ICON_FA_INFO_CIRCLE " Not available on this system.");
+            UIWidgets::Spacer(0);
+            ImGui::EndGroup();
+        #endif
 
         #ifndef __WIIU__
             if (UIWidgets::PaddedEnhancementSliderInt(
