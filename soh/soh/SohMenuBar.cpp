@@ -273,7 +273,11 @@ void DrawSettingsMenu() {
                                                   2.0f, "", 1.0f, true, true, disabled_resolutionSlider)) {
                 LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
             }
-            UIWidgets::Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
+            //UIWidgets::Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
+            UIWidgets::Tooltip("Resolution scale. Multiplies output resolution by this value, on each axis relative to window size.\n"
+                               "Lower values may improve performance.\n"
+                               "Values above 100% can be used for super-sampling, as an intensive but highly effective form of anti-aliasing.\n"
+                               "Default: 100%");
         #endif
             
             if (mAdvancedResolutionSettingsWindow) {
@@ -290,10 +294,13 @@ void DrawSettingsMenu() {
             }
 
         #ifndef __WIIU__
-            if (UIWidgets::PaddedEnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true, false)) {
+            if (UIWidgets::PaddedEnhancementSliderInt("Anti-Aliasing (MSAA): %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true, false)) {
                 LUS::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger("gMSAAValue", 1));
             };
-            UIWidgets::Tooltip("Activates multi-sample anti-aliasing when above 1x up to 8x for 8 samples for every pixel");
+            //UIWidgets::Tooltip("Activates multi-sample anti-aliasing when above 1x up to 8x for 8 samples for every pixel");
+            UIWidgets::Tooltip("Activates MSAA (multi-sample anti-aliasing) from 2x up to 8x, to smooth the edges of rendered geometry.\n"
+                               "Higher sample count will result in smoother edges on models, but may reduce performance.\n"
+                               "Recommended: 2x or 4x");
         #endif
 
             { // FPS Slider
@@ -455,6 +462,7 @@ void DrawSettingsMenu() {
 
             if (LUS::Context::GetInstance()->GetWindow()->CanDisableVerticalSync()) {
                 UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", "gVsyncEnabled", true, false);
+                UIWidgets::Tooltip("Activate vertical sync, to prevent screen tearing.");
             }
 
             if (LUS::Context::GetInstance()->GetWindow()->SupportsWindowedFullscreen()) {
@@ -462,12 +470,12 @@ void DrawSettingsMenu() {
             }
 
             if (LUS::Context::GetInstance()->GetWindow()->GetGui()->SupportsViewports()) {
-                UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+                UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows (Needs reload)", "gEnableMultiViewports", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
             }
 
             // If more filters are added to LUS, make sure to add them to the filters list here
-            ImGui::Text("Texture Filter (Needs reload)");
+            ImGui::Text("Texture Filtering (Needs reload)");
 
             UIWidgets::EnhancementCombobox("gTextureFilter", filters, FILTER_THREE_POINT);
 
