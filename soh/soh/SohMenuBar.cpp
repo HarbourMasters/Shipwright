@@ -294,7 +294,9 @@ void DrawSettingsMenu() {
             }
 
         #ifndef __WIIU__
-            if (UIWidgets::PaddedEnhancementSliderInt("Anti-Aliasing (MSAA): %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true, false)) {
+            if (UIWidgets::PaddedEnhancementSliderInt(
+                    (CVarGetInteger("gMSAAValue", 1) == 1) ? "Anti-Aliasing (MSAA): Off" : "Anti-Aliasing (MSAA): %d",
+                    "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true, false)) {
                 LUS::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger("gMSAAValue", 1));
             };
             //UIWidgets::Tooltip("Activates multi-sample anti-aliasing when above 1x up to 8x for 8 samples for every pixel");
