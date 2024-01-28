@@ -619,6 +619,10 @@ void Player_SetModelsForHoldingShield(Player* this) {
                 this->sheathType = PLAYER_MODELTYPE_SHEATH_17;
             }
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
+            if ((CVarGetInteger("gEquipmentAlwaysVisible", 0)) && LINK_IS_CHILD &&
+                gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) {
+                this->sheathDLists = &sPlayerDListGroups[this->sheathType][0]; 
+            }
             this->modelAnimType = PLAYER_ANIMTYPE_2;
             this->itemAction = -1;
         }
@@ -675,13 +679,25 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
 
     if (CVarGetInteger("gEquipmentAlwaysVisible", 0)) {
-        if (LINK_IS_CHILD && this->currentShield == PLAYER_SHIELD_MIRROR) {
+        if (LINK_IS_CHILD &&
+            (this->currentShield == PLAYER_SHIELD_HYLIAN || this->currentShield == PLAYER_SHIELD_MIRROR) &&
+            ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) ||
+             (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS))) {
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][0];
-        } else if (LINK_IS_CHILD && this->currentShield == PLAYER_SHIELD_HYLIAN && 
-            ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) || (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS))) {
+        } else if (LINK_IS_CHILD && this->currentShield == PLAYER_SHIELD_MIRROR && gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI &&
+            this->sheathType == PLAYER_MODELTYPE_SHEATH_18) {
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][0];
         } else if (LINK_IS_ADULT && this->currentShield == PLAYER_SHIELD_DEKU) {
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][1];
+        } else if (LINK_IS_CHILD && this->sheathType == PLAYER_MODELTYPE_SHEATH_17 && 
+			((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) || (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS))) {
+			this->sheathDLists = &sPlayerDListGroups[this->sheathType][0];
+		}
+    }
+    if (CVarGetInteger("gRotateScaleChildHylianShield", 0)) {
+        if (LINK_IS_CHILD && this->sheathType == PLAYER_MODELTYPE_SHEATH_18 && this->currentShield == PLAYER_SHIELD_HYLIAN &&
+            ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI || gSaveContext.equips.buttonItems[0] == ITEM_NONE || gSaveContext.equips.buttonItems[0] == ITEM_STICK))) {
+            this->sheathDLists = &sPlayerDListGroups[this->sheathType][0];
         }
     }
 
@@ -1251,19 +1267,28 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
             }
         }
         if (limbIndex == PLAYER_LIMB_R_HAND) {
-            if ((this->currentShield == PLAYER_SHIELD_MIRROR && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) ||
-                (sRightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT) ||
+            if ((this->currentShield == PLAYER_SHIELD_MIRROR && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) || 
+                (this->currentShield == PLAYER_SHIELD_HYLIAN && gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER || 
+                gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS) || (sRightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT) ||
                 (sRightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT && Player_HoldsBow(this))) {
                 Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
             }
         }
         if (limbIndex == PLAYER_LIMB_SHEATH) {
             if ((this->currentShield == PLAYER_SHIELD_MIRROR ||
-                (this->currentShield == PLAYER_SHIELD_HYLIAN && gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) &&
-                ((this->sheathType == PLAYER_MODELTYPE_SHEATH_16) ||
-                (this->sheathType == PLAYER_MODELTYPE_SHEATH_18) ||
-                (this->sheathType == PLAYER_MODELTYPE_SHEATH_19))) {
-                Matrix_Translate(218, 0, 62, MTXMODE_APPLY);
+                 (this->currentShield == PLAYER_SHIELD_HYLIAN &&
+                  (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER ||
+                   gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS))) &&
+                ((this->sheathType == PLAYER_MODELTYPE_SHEATH_16) || (this->sheathType == PLAYER_MODELTYPE_SHEATH_17) ||
+                 (this->sheathType == PLAYER_MODELTYPE_SHEATH_18) ||
+                 (this->sheathType == PLAYER_MODELTYPE_SHEATH_19))) {
+                Matrix_Translate(218, -100, 62, MTXMODE_APPLY);
+                Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
+            }
+            if ((this->currentShield == PLAYER_SHIELD_DEKU &&
+                gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI && 
+                this->sheathType != PLAYER_MODELTYPE_SHEATH_18)) {
+                Matrix_Translate(218, -100, 62, MTXMODE_APPLY);
                 Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
             }
         }
@@ -1273,16 +1298,17 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
         if (limbIndex == PLAYER_LIMB_SHEATH) {
             if ((this->currentShield == PLAYER_SHIELD_HYLIAN &&
                  (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI ||
-                  gSaveContext.equips.buttonItems[0] == ITEM_NONE)) &&
+                  gSaveContext.equips.buttonItems[0] == ITEM_NONE ||
+                  gSaveContext.equips.buttonItems[0] == ITEM_STICK)) &&
                 ((this->sheathType == PLAYER_MODELTYPE_SHEATH_18) ||
                 (this->sheathType == PLAYER_MODELTYPE_SHEATH_19))) {
-                Matrix_Translate(-93, 0, -124, MTXMODE_APPLY);
-                Matrix_RotateZYX(0, -4680, 0, MTXMODE_APPLY);
-                Matrix_Scale(0.9, 0.9, 0.9, MTXMODE_APPLY);
+                Matrix_Translate(218, 0, 62, MTXMODE_APPLY);
+                Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
             }
         }
         if (limbIndex == PLAYER_LIMB_R_HAND) {
-            if (this->currentShield == PLAYER_SHIELD_HYLIAN && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) {
+            if (this->currentShield == PLAYER_SHIELD_HYLIAN && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD && 
+                gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI) {
                 Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
             }
         }
@@ -1405,9 +1431,11 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                     (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
                     dLists += PLAYER_SHIELD_MAX * 4;
                 }
-            } else if (!LINK_IS_ADULT && ((this->sheathType == PLAYER_MODELTYPE_SHEATH_16) || (this->sheathType == PLAYER_MODELTYPE_SHEATH_17)) &&
-                       (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
-                dLists = &sSheathWithSwordDLs[PLAYER_SHIELD_MAX * 4];
+            } else if (!CVarGetInteger("gEquipmentAlwaysVisible", 0)) {
+                if (!LINK_IS_ADULT && ((this->sheathType == PLAYER_MODELTYPE_SHEATH_16) || (this->sheathType == PLAYER_MODELTYPE_SHEATH_17)) &&
+                    (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
+                    dLists = &sSheathWithSwordDLs[PLAYER_SHIELD_MAX * 4];
+                }
             }
 
             if (dLists[sDListsLodOffset] != NULL) {
