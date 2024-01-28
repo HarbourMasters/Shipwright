@@ -265,6 +265,7 @@ void Settings::CreateOptionDescriptions() {
         "Affordable prices per tier: starter = 10, adult = 105, giant = 205, tycoon = 505\n\n"
         "Use this to enable wallet tier locking, but make shop items not as expensive as they could be.";
     mOptionDescriptions[RSK_FISHSANITY] = "Off - Fish will not be shuffled. No changes will be made to fishing behavior.\n\n"
+        "Shuffle only Hyrule Loach - Allows you to earn an item by catching the hyrule loach at the fishing pond and giving it to the owner.\n\n"
         "Shuffle Fishing Pond - The fishing pond's fish will be shuffled. Catching a fish in the fishing pond will grant a reward.\n\n"
         "Shuffle Overworld Fish - Fish in generic grottos and Zora's Domain will be shuffled. Catching a fish in a bottle will give a reward.\n\n"
         "Shuffle Both - Both overworld fish and fish in the fishing pond will be shuffled.";
@@ -307,8 +308,6 @@ void Settings::CreateOptionDescriptions() {
                                                         "\n"
                                                         "This setting does not effect the item earned from playing\n"
                                                         "the Song of Storms and the frog song minigame.";
-    mOptionDescriptions[RSK_SHUFFLE_HYRULE_LOACH_REWARD] = "Shuffles a Purple Rupee into to the item pool, and allows"
-                                                           "you to earn an item by catching the hyrule loach at the fishing pond.";
     mOptionDescriptions[RSK_SHUFFLE_ADULT_TRADE] =
         "Adds all of the adult trade quest items into the pool, each of which "
         "can be traded for a unique reward.\n"

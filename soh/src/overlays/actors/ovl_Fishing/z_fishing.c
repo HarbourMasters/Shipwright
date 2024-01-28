@@ -17,6 +17,7 @@
 #define WATER_SURFACE_Y(play) play->colCtx.colHeader->waterBoxes->ySurface
 #define IS_FISHSANITY (IS_RANDO && Randomizer_GetPondFishShuffled())
 #define FISHID(params) (Randomizer_IdentifyFish(play->sceneNum, params))
+bool getShouldSpawnLoaches();
 
 void Fishing_Init(Actor* thisx, PlayState* play);
 void Fishing_Destroy(Actor* thisx, PlayState* play);

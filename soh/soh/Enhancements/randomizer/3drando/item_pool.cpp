@@ -782,12 +782,6 @@ void GenerateItemPool() {
     ctx->possibleIceTrapModels.push_back(RG_OCARINA_C_RIGHT_BUTTON);
   }
 
-  if (ctx->GetOption(RSK_SHUFFLE_HYRULE_LOACH_REWARD)) {
-    AddItemToMainPool(RG_PURPLE_RUPEE);
-  } else {
-    ctx->PlaceItemInLocation(RC_LH_HYRULE_LOACH, RG_PURPLE_RUPEE, false, true);
-  }
-
   if (ctx->GetOption(RSK_SHUFFLE_SWIM)) {
     AddItemToMainPool(RG_PROGRESSIVE_SCALE);
   }
@@ -837,6 +831,12 @@ void GenerateItemPool() {
         AddItemToMainPool(GetJunkItem());
     } else {
       PlaceVanillaOverworldFish();
+    }
+
+    if (fsMode.Is(RO_FISHSANITY_HYRULE_LOACH)) {
+      AddItemToMainPool(RG_PURPLE_RUPEE);
+    } else {
+      ctx->PlaceItemInLocation(RC_LH_HYRULE_LOACH, RG_PURPLE_RUPEE, false, true);
     }
   } else {
     PlaceVanillaOverworldFish();

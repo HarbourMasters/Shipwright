@@ -3550,7 +3550,6 @@ typedef enum {
     RSK_SHUFFLE_WEIRD_EGG,
     RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD,
     RSK_SHUFFLE_FROG_SONG_RUPEES,
-    RSK_SHUFFLE_HYRULE_LOACH_REWARD,
     RSK_ITEM_POOL,
     RSK_ICE_TRAPS,
     RSK_GOSSIP_STONE_HINTS,
@@ -3794,9 +3793,10 @@ typedef enum {
     RO_BOSS_SOULS_ON_PLUS_GANON,
 } RandoOptionBossSouls;
 
-//Fishsanity settings (off, pond only, grottos only, both)
+//Fishsanity settings (off, loach only, pond only, grottos only, both)
 typedef enum {
     RO_FISHSANITY_OFF,
+    RO_FISHSANITY_HYRULE_LOACH,
     RO_FISHSANITY_POND,
     RO_FISHSANITY_OVERWORLD,
     RO_FISHSANITY_BOTH
