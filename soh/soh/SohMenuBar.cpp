@@ -10,6 +10,7 @@
 #include "include/z64audio.h"
 #include "OTRGlobals.h"
 #include "z64.h"
+#include "macros.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/presets.h"
 #include "soh/Enhancements/mods.h"
@@ -1711,6 +1712,7 @@ extern std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
 extern std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
 extern std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
 extern std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
+extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 void DrawRandomizerMenu() {
     if (ImGui::BeginMenu("Randomizer")) {
@@ -1801,7 +1803,7 @@ void DrawRandomizerMenu() {
                 disableKeyColors = false;
             }
 
-            static const char* disableKeyColorsText = 
+            static const char* disableKeyColorsText =
                 "This setting is disabled because a savefile is loaded without any key\n"
                 "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
 
@@ -1810,7 +1812,23 @@ void DrawRandomizerMenu() {
             UIWidgets::Tooltip(
                 "Matches the color of small keys and boss keys to the dungeon they belong to. "
                 "This helps identify keys from afar and adds a little bit of flair.\n\nThis only "
-                "applies to seeds with keys and boss keys shuffled to Any Dungeon, Overworld, or Anywhere.");
+                "applies to seeds with keys and boss keys shuffled to \"Any Dungeon\", \"Overworld\", or \"Anywhere\".");
+
+            bool disableCompassColors = !DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
+
+            static const char* disableCompassColorsText =
+                "This setting is disabled because a savefile is loaded without the compass\n"
+                "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
+
+            if (UIWidgets::PaddedEnhancementCheckbox("Compass Colors Match Dungeon", "gRandoMatchCompassColors", true, false,
+                                                  disableCompassColors, disableCompassColorsText, UIWidgets::CheckboxGraphics::Cross, true)) {
+                PatchCompasses();
+            }
+            UIWidgets::Tooltip(
+                "Matches the color of compasses to the dungeon they belong to. "
+                "This helps identify compasses from afar and adds a little bit of flair.\n\nThis only "
+                "applies to seeds with compasses shuffled to \"Any Dungeon\", \"Overworld\", or \"Anywhere\".");
+
             UIWidgets::PaddedEnhancementCheckbox("Quest Item Fanfares", "gRandoQuestItemFanfares", true, false);
             UIWidgets::Tooltip(
                 "Play unique fanfares when obtaining quest items "

@@ -10,6 +10,7 @@ extern "C" {
 void UpdateDirtPathFixState(int32_t sceneNum);
 void UpdateMirrorModeState(int32_t sceneNum);
 void PatchToTMedallions();
+void PatchCompasses();
 void UpdatePermanentHeartLossState();
 void InitMods();
 
