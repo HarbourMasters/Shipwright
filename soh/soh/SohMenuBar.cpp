@@ -1053,7 +1053,7 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Makes all equipment visible, regardless of Age.");
             if (CVarGetInteger("gEquipmentAlwaysVisible", 0) == 1) {
 				UIWidgets::PaddedEnhancementCheckbox("Scale Adult Equipment as Child", "gScaleAdultEquimentAsChild", true, false);
-				UIWidgets::Tooltip("Scales all of the Adult Equipment, as well and moving some a bit, to fit on Child Link Better. May not fit right with some mods.");
+				UIWidgets::Tooltip("Scales all of the Adult Equipment, as well and moving some a bit, to fit on Child Link Better. May not work properly with some mods.");
 			}
             UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gLowResMode", true, false);
             UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
@@ -1350,7 +1350,7 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("Allows Child Link to hold the Hylian Shield the same way as the rest of the shields.");
         if (CVarGetInteger("gChildHoldsHylianShield", 0) == 1) {
 			UIWidgets::PaddedEnhancementCheckbox("Rotate and Scale Child Hylian Shield", "gRotateScaleChildHylianShield", true, false);
-			UIWidgets::Tooltip("Rotates and scales the hylian shield for Child Link, so that it is the same orientation as the other shields.");
+			UIWidgets::Tooltip("Rotates and scales the hylian shield for Child Link, so that it is the same orientation as the other shields. May not work properly with some mods.");
 		}
         UIWidgets::Spacer(2.0f);
         ImGui::Text("Deku Sticks:");
