@@ -21,6 +21,7 @@
 
 
 #include "Enhancements/audio/AudioEditor.h"
+#include "Enhancements/controls/InputViewer.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugger/actorViewer.h"
 #include "Enhancements/debugger/colViewer.h"
@@ -179,6 +180,8 @@ void DrawShipMenu() {
 }
 
 extern std::shared_ptr<LUS::GuiWindow> mInputEditorWindow;
+extern std::shared_ptr<InputViewer> mInputViewer;
+extern std::shared_ptr<InputViewerSettingsWindow> mInputViewerSettings;
 extern std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
 
 void DrawSettingsMenu() {
@@ -244,11 +247,36 @@ void DrawSettingsMenu() {
         #ifndef __SWITCH__
             UIWidgets::EnhancementCheckbox("Menubar Controller Navigation", "gControlNav");
             UIWidgets::Tooltip("Allows controller navigation of the SOH menu bar (Settings, Enhancements,...)\nCAUTION: This will disable game inputs while the menubar is visible.\n\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
+            UIWidgets::PaddedSeparator();
         #endif
-            UIWidgets::PaddedEnhancementCheckbox("Show Inputs", "gInputEnabled", true, false);
-            UIWidgets::Tooltip("Shows currently pressed inputs on the bottom right of the screen");
-            UIWidgets::PaddedEnhancementSliderFloat("Input Scale: %.2f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false, true, true, false);
-            UIWidgets::Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2 (12.0f, 6.0f));
+                ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
+                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+            if (mInputViewer) {
+                if (ImGui::Button(GetWindowButtonText("Input Viewer", CVarGetInteger("gInputEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
+                    mInputViewer->ToggleVisibility();
+                }
+                // UIWidgets::PaddedEnhancementCheckbox("Show Analog Stick Angles", "gAnalogAngles", true, false);
+                // UIWidgets::Tooltip("Displays analog stick angle values in the input viewer");
+                // if (CVarGetInteger("gAnalogAngles", 0)) {
+                //     UIWidgets::PaddedEnhancementSliderFloat("Angle Text Scale: %.2f%%", "##AnalogAngleScale", "gAnalogAnglesScale", 0.1f, 5.0f, "", 1.0f, true, true, true, false);
+                // }
+                // UIWidgets::PaddedEnhancementCheckbox("Show Button Outlines", "gShowButtonOutlines", true, false);
+                // UIWidgets::Tooltip("Keeps button outlines shown when the buttons are not currently being pressed");
+                // UIWidgets::PaddedEnhancementSliderInt("Analog Stick Movement: %dpx", "##AnalogMovement", "gAnalogStickMovement", 0, 200, "", 16, true, true, false);
+                // UIWidgets::Tooltip("Sets the distance to move the analog stick in the input viewer. Useful for custom input viewers.");
+                // UIWidgets::PaddedEnhancementSliderInt("Right Stick Movement: %dpx", "##RightMovement", "gRightStickMovement", 0, 200, "", 16, true, true, false);
+                // UIWidgets::Tooltip("Sets the distance to move the right stick in the input viewer. Useful for custom input viewers.");
+            }
+            if (mInputViewerSettings) {
+                if (ImGui::Button(GetWindowButtonText("Input Viewer Settings", CVarGetInteger("gInputViewerSettingsEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
+                    mInputViewerSettings->ToggleVisibility();
+                }
+            }
+            ImGui::PopStyleColor(1);
+            ImGui::PopStyleVar(3);
+
             UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", "gSimulatedInputLag", 0, 6, "", 0, true, true, false);
             UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
 
