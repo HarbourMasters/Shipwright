@@ -104,6 +104,7 @@ static const char* imguiScaleOptions[4] = { "Small", "Normal", "Large", "X-Large
         "OHKO"
     };
     static const char* timeTravelOptions[3] = { "Disabled", "Ocarina of Time", "Any Ocarina" };
+    static const char* swordToggleModes[3] = { "Disabled", "Child Toggle", "Both Ages (May lead to unintended behaviour)"};
 
 extern "C" SaveContext gSaveContext;
 
@@ -920,6 +921,17 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Allows equipping the tunic and boots to c-buttons");
             UIWidgets::PaddedEnhancementCheckbox("Equipment Toggle", "gEquipmentCanBeRemoved", true, false);
             UIWidgets::Tooltip("Allows equipment to be removed by toggling it off on\nthe equipment subscreen.");
+            if (CVarGetInteger("gEquipmentCanBeRemoved", 0)) {
+                UIWidgets::PaddedText("Sword Toggle Options", true, false);
+                UIWidgets::EnhancementCombobox("gSwordToggle", swordToggleModes, SWORD_TOGGLE_NONE);
+                UIWidgets::Tooltip(
+                    "Introduces Options for unequipping Link's sword\n\n"
+                    "None: Only Biggoron's Sword/Giant's Knife can be toggled. Doing so will equip the Master Sword.\n\n"
+                    "Child Toggle: This will allow for completely unequipping any sword as child link.\n\n"
+                    "Both Ages: Any sword can be unequipped as either age. This may lead to swordless glitches as Adult.\n"
+                );
+            }
+
             UIWidgets::PaddedEnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime", true, false);
             UIWidgets::Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
             UIWidgets::PaddedEnhancementCheckbox("Enable visible guard vision", "gGuardVision", true, false);
