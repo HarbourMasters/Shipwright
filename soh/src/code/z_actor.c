@@ -2863,7 +2863,7 @@ s32 func_800314D4(PlayState* play, Actor* actor, Vec3f* arg2, f32 arg3) {
         // #Region SoH
         // Doors will cull quite noticeably on wider screens. For these actors the zone is increased
         f32 limit = 1.0f;
-        if (((actor->id == ACTOR_EN_DOOR) || (actor->id == ACTOR_DOOR_SHUTTER)) && CVarGetInteger("gIncreaseDoorCullZones", 1)) {
+        if (((actor->id == ACTOR_EN_DOOR) || (actor->id == ACTOR_DOOR_SHUTTER)) && CVarGetInteger("gIncreaseDoorUncullZones", 1)) {
             limit = 2.0f;
         }
 
