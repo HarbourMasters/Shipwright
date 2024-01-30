@@ -302,7 +302,7 @@ void DrawSettingsMenu() {
 
         #ifndef __WIIU__
             if (UIWidgets::PaddedEnhancementSliderInt(
-                    (CVarGetInteger("gMSAAValue", 1) == 1) ? "Anti-Aliasing (MSAA): Off" : "Anti-Aliasing (MSAA): %d",
+                    (CVarGetInteger("gMSAAValue", 1) == 1) ? "Anti-aliasing (MSAA): Off" : "Anti-aliasing (MSAA): %d",
                     "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true, false)) {
                 LUS::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger("gMSAAValue", 1));
             }
@@ -418,7 +418,7 @@ void DrawSettingsMenu() {
             UIWidgets::Tooltip("Matches interpolation value to the game window's current refresh rate.");
 
             if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
-                UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger("gExtraLatencyThreshold", 80) == 0 ? "Jitter fix threshold: Off" : "Jitter fix: >= %d FPS",
+                UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger("gExtraLatencyThreshold", 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
                     "##ExtraLatencyThreshold", "gExtraLatencyThreshold", 0, 360, "", 80, true, true, false);
                 UIWidgets::Tooltip(
                     "(For DirectX backend only)\n\n"
@@ -494,7 +494,7 @@ void DrawSettingsMenu() {
             UIWidgets::EnhancementCombobox("gTextureFilter", filters, FILTER_THREE_POINT);
             UIWidgets::Tooltip("Texture filtering, aka texture smoothing. Requires a reload to take effect.\n\n"
                                "Three-Point: Replicates real N64 texture filtering.\n"
-                               "Bilinear: If Three-Point causes performance issues, try this.\n"
+                               "Bilinear: If Three-Point causes poor performance, try this.\n"
                                "Nearest: Disables texture smoothing. (Not recommended)");
 
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
