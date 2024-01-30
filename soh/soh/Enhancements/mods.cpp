@@ -689,29 +689,29 @@ void RegisterMirrorModeHandler() {
     });
 }
 
-void RegisterPatchChildHylianSHieldHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if ((CVarGetInteger("gRotateScaleChildHylianShield", 0) && LINK_IS_CHILD) &&
-            (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI)) {
-            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield1", 82,
-                                       gsSPDisplayListOTRFilePath(gLinkChildSwordAndSheathNearDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield2", 83,
-                                       gsSPEndDisplayList());
-        } else {
-            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield1");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield2");
-        }
-        if ((CVarGetInteger("gRotateScaleChildHylianShield", 0) && LINK_IS_CHILD) &&
-            (gSaveContext.equips.buttonItems[0] == ITEM_NONE || gSaveContext.equips.buttonItems[0] == ITEM_STICK)) {
-            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield3", 82,
-                                       gsSPEndDisplayList());
-        } else {
-            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield3");
-        }
-    });
+void UpdatePatchChildHylianShield() {
+    if ((CVarGetInteger("gRotateScaleChildHylianShield", 0) && LINK_IS_CHILD) &&
+        (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI)) {
+        ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield1", 82, gsSPDisplayListOTRFilePath(gLinkChildSwordAndSheathNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield2", 83, gsSPEndDisplayList());
+    } else {
+        ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield2");
+    }
+    if ((CVarGetInteger("gRotateScaleChildHylianShield", 0) && LINK_IS_CHILD) &&
+        (gSaveContext.equips.buttonItems[0] == ITEM_NONE || gSaveContext.equips.buttonItems[0] == ITEM_STICK)) {
+        ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield3", 82, gsSPEndDisplayList());
+    } else {
+        ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield3");
+    }
 }
 
-f32 triforcePieceScale;
+void RegisterPatchChildHylianShieldHandler() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
+        UpdatePatchChildHylianShield();
+    });
+}
+        f32 triforcePieceScale;
 
 void RegisterTriforceHunt() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
@@ -1280,4 +1280,5 @@ void InitMods() {
     RegisterRandomizedEnemySizes();
     RegisterToTMedallions();
     NameTag_RegisterHooks();
+    RegisterPatchChildHylianShieldHandler();
 }

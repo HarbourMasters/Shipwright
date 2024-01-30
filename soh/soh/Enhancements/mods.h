@@ -12,6 +12,7 @@ void UpdateMirrorModeState(int32_t sceneNum);
 void PatchToTMedallions();
 void UpdatePermanentHeartLossState();
 void InitMods();
+void UpdatePatchChildHylianShield();
 
 #ifdef __cplusplus
 }
