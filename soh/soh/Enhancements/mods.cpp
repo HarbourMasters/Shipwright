@@ -23,6 +23,8 @@
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
+#include "objects/object_link_boy/object_link_boy.h"
+#include "objects/object_link_child/object_link_child.h"
 
 extern "C" {
 #include <z64.h>
@@ -684,6 +686,28 @@ void UpdateMirrorModeState(int32_t sceneNum) {
 void RegisterMirrorModeHandler() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
         UpdateMirrorModeState(sceneNum);
+    });
+}
+
+void RegisterPatchChildHylianSHieldHandler() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if ((CVarGetInteger("gRotateScaleChildHylianShield", 0) && LINK_IS_CHILD) &&
+            (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI)) {
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield1", 82,
+                                       gsSPDisplayListOTRFilePath(gLinkChildSwordAndSheathNearDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield2", 83,
+                                       gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield1");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield2");
+        }
+        if ((CVarGetInteger("gRotateScaleChildHylianShield", 0) && LINK_IS_CHILD) &&
+            (gSaveContext.equips.buttonItems[0] == ITEM_NONE || gSaveContext.equips.buttonItems[0] == ITEM_STICK)) {
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield3", 82,
+                                       gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield3");
+        }
     });
 }
 
