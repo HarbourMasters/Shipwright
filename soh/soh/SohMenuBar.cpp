@@ -405,7 +405,7 @@ void DrawSettingsMenu() {
 
             if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
                 UIWidgets::Spacer(0);
-                if (ImGui::Button("Match FPS to Refresh Rate")) {
+                if (ImGui::Button("Match Framerate to Refresh Rate")) {
                     int hz = LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                     if (hz >= 20 && hz <= 360) {
                         CVarSetInteger("gInterpolationFPS", hz);
