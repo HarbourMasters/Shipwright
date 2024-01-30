@@ -581,7 +581,7 @@ s32 func_8008E9C4(Player* this) {
 
 s32 Player_IsChildWithHylianShield(Player* this) {
     if (CVarGetInteger("gChildHoldsHylianShield", 0)) {
-        return 0;
+        return false;      // Skip vanilla check for making child Link have the Hylian Shield on his back, allowing for it to be used in hand
     } else {
         return gSaveContext.linkAge != 0 && (this->currentShield == PLAYER_SHIELD_HYLIAN);
     }
@@ -605,7 +605,7 @@ void Player_SetModelsForHoldingShield(Player* this) {
             !Player_HoldsTwoHandedWeapon(this)) && !Player_IsChildWithHylianShield(this)) {
             this->rightHandType = PLAYER_MODELTYPE_RH_SHIELD;
             if (LINK_IS_CHILD && (CVarGetInteger("gChildHoldsHylianShield", 0)) && (this->currentShield == PLAYER_SHIELD_HYLIAN)) {
-                    this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][0];
+                    this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][LINK_AGE_ADULT];
                 } else {
                     this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][gSaveContext.linkAge];
             }
@@ -632,7 +632,7 @@ void Player_SetModels(Player* this, s32 modelGroup) {
 
     if (LINK_IS_CHILD && CVarGetInteger("gChildHoldsHylianShield", 0) &&
         this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD && this->currentShield == PLAYER_SHIELD_HYLIAN) {
-        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][0];
+        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][LINK_AGE_ADULT];
     }
     if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && this->rightHandType == 11) { // If holding Bow/Slingshot
         this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
@@ -645,7 +645,7 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     if (CVarGetInteger("gRotateScaleChildHylianShield", 0)) {
         if (LINK_IS_CHILD && this->sheathType == PLAYER_MODELTYPE_SHEATH_18 && this->currentShield == PLAYER_SHIELD_HYLIAN &&
             ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI || gSaveContext.equips.buttonItems[0] == ITEM_NONE || gSaveContext.equips.buttonItems[0] == ITEM_STICK))) {
-            this->sheathDLists = &sPlayerDListGroups[this->sheathType][0];
+            this->sheathDLists = &sPlayerDListGroups[this->sheathType][LINK_AGE_ADULT];
         }
     }
 

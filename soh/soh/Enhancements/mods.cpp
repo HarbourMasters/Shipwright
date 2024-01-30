@@ -711,7 +711,19 @@ void RegisterPatchChildHylianShieldHandler() {
         UpdatePatchChildHylianShield();
     });
 }
-        f32 triforcePieceScale;
+
+void UpdateChildHylianShieldState() {
+    auto player = GET_PLAYER(gPlayState);
+    Player_SetModels(player, Player_ActionToModelGroup(player, player->heldItemAction));
+}
+
+void RegisterChildHylianShielStatedHandler() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) { 
+        UpdateChildHylianShieldState();
+	});
+}
+
+f32 triforcePieceScale;
 
 void RegisterTriforceHunt() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {

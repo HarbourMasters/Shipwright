@@ -13,6 +13,7 @@ void PatchToTMedallions();
 void UpdatePermanentHeartLossState();
 void InitMods();
 void UpdatePatchChildHylianShield();
+void UpdateChildHylianShieldState();
 
 #ifdef __cplusplus
 }

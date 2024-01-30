@@ -34,8 +34,6 @@
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
 #include "Enhancements/randomizer/randomizer_settings_window.h"
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
-#include "functions.h"
-#include "macros.h"
 
 extern bool ToggleAltAssetsAtEndOfFrame;
 extern bool isBetaQuestEnabled;
@@ -669,6 +667,20 @@ void DrawEnhancementsMenu() {
                     }
                 }
                 UIWidgets::Tooltip("Allows strength to be toggled on and off by pressing A on the strength upgrade in the equipment subscreen of the pause menu (This allows performing some glitches that require the player to not have strength).");
+                if (UIWidgets::PaddedEnhancementCheckbox("Hold Hylian Shield as Child Link", "gChildHoldsHylianShield", true, false)) {
+                    if (CVarGetInteger("gChildHoldsHylianShield", 0) == 0) {
+                        CVarSetInteger("gRotateScaleChildHylianShield", 0);
+                    }
+                    UpdateChildHylianShieldState();
+                }
+                UIWidgets::Tooltip("Allows Child Link to hold the Hylian Shield the same way as the rest of the shields.");
+                if (CVarGetInteger("gChildHoldsHylianShield", 0) == 1) {
+                    if (UIWidgets::PaddedEnhancementCheckbox("Rotate and Scale Child Hylian Shield", "gRotateScaleChildHylianShield", true, false)) {
+                        UpdateChildHylianShieldState();
+                        UpdatePatchChildHylianShield();
+                    }
+                }
+                UIWidgets::Tooltip("Rotates and scales the hylian shield for Child Link, so that it is the same orientation as the other shields. May not work properly with some mods.");
                 ImGui::EndMenu();
             }
 
@@ -1339,22 +1351,6 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("Prevents the Deku Shield from burning on contact with fire");
         UIWidgets::PaddedEnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded", true, false);
         UIWidgets::Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
-        if (UIWidgets::PaddedEnhancementCheckbox("Hold Hylian Shield as Child Link", "gChildHoldsHylianShield", true, false)) {
-            if (CVarGetInteger("gChildHoldsHylianShield", 0) == 0) {
-            	CVarSetInteger("gRotateScaleChildHylianShield", 0);
-            }
-            auto player = GET_PLAYER(gPlayState);
-            Player_SetModels(player, Player_ActionToModelGroup(player, player->heldItemAction));
-        }
-        UIWidgets::Tooltip("Allows Child Link to hold the Hylian Shield the same way as the rest of the shields.");
-        if (CVarGetInteger("gChildHoldsHylianShield", 0) == 1) {
-			if (UIWidgets::PaddedEnhancementCheckbox("Rotate and Scale Child Hylian Shield", "gRotateScaleChildHylianShield", true, false)) {
-                auto player = GET_PLAYER(gPlayState);
-                Player_SetModels(player, Player_ActionToModelGroup(player, player->heldItemAction));
-                UpdatePatchChildHylianShield();
-            }
-		}
-        UIWidgets::Tooltip("Rotates and scales the hylian shield for Child Link, so that it is the same orientation as the other shields. May not work properly with some mods.");
         UIWidgets::Spacer(2.0f);
         ImGui::Text("Deku Sticks:");
         UIWidgets::EnhancementCombobox("gDekuStickCheat", DekuStickCheat, DEKU_STICK_NORMAL);
