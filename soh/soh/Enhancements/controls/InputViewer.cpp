@@ -128,7 +128,7 @@ void InputViewer::DrawElement() {
         const float scale = CVarGetFloat("gInputScale", 1.0f);
 #endif
         const int showAnalogAngles = CVarGetInteger("gAnalogAngles", 0);
-        const int buttonOutlineMode = CVarGetInteger("gButtonOutlineMode", BUTTON_OUTLINE_ALWAYS_SHOWN);
+        const int buttonOutlineMode = CVarGetInteger("gButtonOutlineMode", BUTTON_OUTLINE_NOT_PRESSED);
 
         ImVec2 bgSize = LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureSize("Input-Viewer-Background");
         ImVec2 scaledBGSize = ImVec2(bgSize.x * scale, bgSize.y * scale);
@@ -364,7 +364,7 @@ void InputViewerSettingsWindow::DrawElement() {
 
         // gButtonOutlineMode
         UIWidgets::PaddedText("Button Outlines/Backgrounds", true, false);
-        UIWidgets::EnhancementCombobox("gButtonOutlineMode", buttonOutlineOptions, BUTTON_OUTLINE_ALWAYS_SHOWN);
+        UIWidgets::EnhancementCombobox("gButtonOutlineMode", buttonOutlineOptions, BUTTON_OUTLINE_NOT_PRESSED);
         UIWidgets::Tooltip("Sets the desired visibility behavior for the button outline/background layers");
 
         // gInputViewerABtn
