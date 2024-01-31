@@ -14,7 +14,7 @@
 
 // Text colors
 static ImVec4 textColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-static ImVec4 range1Color = ImVec4(1.0f, 1.0f, 0, 1.0f);
+static ImVec4 range1Color = ImVec4(1.0f, 0.7f, 0, 1.0f);
 static ImVec4 range2Color = ImVec4(0, 1.0f, 0, 1.0f);
 
 static const char* buttonOutlineOptions[4] = { "Always Shown", "Shown Only While Not Pressed",
@@ -57,7 +57,7 @@ void InputViewer::RenderButton(std::string btnTexture, std::string btnOutlineTex
 }
 
 void InputViewer::DrawElement() {
-    if (CVarGetInteger("gInputEnabled", 0)) {
+    if (CVarGetInteger("gOpenWindows.InputViewer", 0)) {
         static bool sButtonTexturesLoaded = false;
         if (!sButtonTexturesLoaded) {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture(
@@ -123,22 +123,23 @@ void InputViewer::DrawElement() {
         ImVec2 size = ImGui::GetContentRegionAvail();
 
 #ifdef __WIIU__
-        const float scale = CVarGetFloat("gInputScale", 1.0f) * 2.0f;
+        const float scale = CVarGetFloat("gInputViewer.Scale", 1.0f) * 2.0f;
 #else
-        const float scale = CVarGetFloat("gInputScale", 1.0f);
+        const float scale = CVarGetFloat("gInputViewer.Scale", 1.0f);
 #endif
-        const int showAnalogAngles = CVarGetInteger("gAnalogAngles", 0);
-        const int buttonOutlineMode = CVarGetInteger("gButtonOutlineMode", BUTTON_OUTLINE_NOT_PRESSED);
+        const int showAnalogAngles = CVarGetInteger("gInputViewer.AnalogAngles.Enabled", 0);
+        const int buttonOutlineMode = CVarGetInteger("gInputViewer.ButtonOutlineMode", BUTTON_OUTLINE_NOT_PRESSED);
 
         ImVec2 bgSize = LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureSize("Input-Viewer-Background");
         ImVec2 scaledBGSize = ImVec2(bgSize.x * scale, bgSize.y * scale);
 
         ImGui::SetNextWindowSize(ImVec2(
             bgSize.x * scale + 20,
-            scaledBGSize.y + (showAnalogAngles ? 15 : 0) * scale * CVarGetFloat("gAnalogAnglesScale", 1.0f) + 20));
+            scaledBGSize.y +
+                (showAnalogAngles ? 15 : 0) * scale * CVarGetFloat("gInputViewer.AnalogAngles.Scale", 1.0f) + 20));
         ImGui::SetNextWindowContentSize(
-            ImVec2(bgSize.x * scale,
-                   scaledBGSize.y + (showAnalogAngles ? 15 : 0) * scale * CVarGetFloat("gAnalogAnglesScale", 1.0f)));
+            ImVec2(bgSize.x * scale, scaledBGSize.y + (showAnalogAngles ? 15 : 0) * scale *
+                                                          CVarGetFloat("gInputViewer.AnalogAngles.Scale", 1.0f)));
         ImGui::SetNextWindowPos(
             ImVec2(mainPos.x + size.x - scaledBGSize.x - 30, mainPos.y + size.y - scaledBGSize.y - 30),
             ImGuiCond_FirstUseEver);
@@ -152,7 +153,7 @@ void InputViewer::DrawElement() {
                                        ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground |
                                        ImGuiWindowFlags_NoFocusOnAppearing;
 
-        if (!CVarGetInteger("gInputViewerDragging", 1)) {
+        if (!CVarGetInteger("gInputViewer.EnableDragging", 1)) {
             windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
         }
 
@@ -160,7 +161,7 @@ void InputViewer::DrawElement() {
             ImGui::SetCursorPos(ImVec2(10, 10));
             const ImVec2 aPos = ImGui::GetCursorPos();
 
-            if (CVarGetInteger("gInputViewerBackground", 0)) {
+            if (CVarGetInteger("gInputViewer.ShowBackground", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 // Background
                 ImGui::Image(
@@ -169,13 +170,13 @@ void InputViewer::DrawElement() {
             }
 
             // Buttons
-            if (CVarGetInteger("gInputViewerLBtn", 1)) {
+            if (CVarGetInteger("gInputViewer.LBtn", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("L-Btn", "L-Btn Outline", pads[0].button & BTN_L, scaledBGSize, buttonOutlineMode);
             }
 
-            if (CVarGetInteger("gInputViewerCBtns", 1)) {
+            if (CVarGetInteger("gInputViewer.CBtns", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("C-Up", "C-Up Outline", pads[0].button & BTN_CUP, scaledBGSize, buttonOutlineMode);
@@ -191,38 +192,38 @@ void InputViewer::DrawElement() {
                 RenderButton("C-Down", "C-Down Outline", pads[0].button & BTN_CDOWN, scaledBGSize, buttonOutlineMode);
             }
 
-            if (CVarGetInteger("gInputViewerZBtn", 1)) {
+            if (CVarGetInteger("gInputViewer.ZBtn", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Z-Btn", "Z-Btn Outline", pads[0].button & BTN_Z, scaledBGSize, buttonOutlineMode);
             }
 
-            if (CVarGetInteger("gInputViewerStartBtn", 1)) {
+            if (CVarGetInteger("gInputViewer.StartBtn", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Start-Btn", "Start-Btn Outline", pads[0].button & BTN_START, scaledBGSize,
                              buttonOutlineMode);
             }
 
-            if (CVarGetInteger("gInputViewerRBtn", 1)) {
+            if (CVarGetInteger("gInputViewer.RBtn", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("R-Btn", "R-Btn Outline", pads[0].button & BTN_R, scaledBGSize, buttonOutlineMode);
             }
 
-            if (CVarGetInteger("gInputViewerBBtn", 1)) {
+            if (CVarGetInteger("gInputViewer.BBtn", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("B-Btn", "B-Btn Outline", pads[0].button & BTN_B, scaledBGSize, buttonOutlineMode);
             }
 
-            if (CVarGetInteger("gInputViewerABtn", 1)) {
+            if (CVarGetInteger("gInputViewer.ABtn", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("A-Btn", "A-Btn Outline", pads[0].button & BTN_A, scaledBGSize, buttonOutlineMode);
             }
 
-            if (CVarGetInteger("gInputViewerDpad", 0)) {
+            if (CVarGetInteger("gInputViewer.Dpad", 0)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Dpad-Left", "Dpad-Left Outline", pads[0].button & BTN_DLEFT, scaledBGSize,
@@ -244,19 +245,21 @@ void InputViewer::DrawElement() {
             const bool rightStickIsInDeadzone = !pads[0].right_stick_x && !pads[0].right_stick_y;
 
             // Analog Stick
-            const int gAnalogOutlineMode = CVarGetInteger("gAnalogOutlineMode", STICK_MODE_ALWAYS_SHOWN);
-            const float maxStickDistance = CVarGetInteger("gAnalogStickMovement", 12);
-            if (gAnalogOutlineMode == STICK_MODE_ALWAYS_SHOWN ||
-                (gAnalogOutlineMode == STICK_MODE_HIDDEN_IN_DEADZONE && !analogStickIsInDeadzone)) {
+            const int analogOutlineMode =
+                CVarGetInteger("gInputViewer.AnalogStick.OutlineMode", STICK_MODE_ALWAYS_SHOWN);
+            const float maxStickDistance = CVarGetInteger("gInputViewer.AnalogStick.Movement", 12);
+            if (analogOutlineMode == STICK_MODE_ALWAYS_SHOWN ||
+                (analogOutlineMode == STICK_MODE_HIDDEN_IN_DEADZONE && !analogStickIsInDeadzone)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 ImGui::Image(
                     LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Analog-Stick Outline"),
                     scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
             }
-            const int gAnalogStickMode = CVarGetInteger("gAnalogStickMode", STICK_MODE_ALWAYS_SHOWN);
-            if (gAnalogStickMode == STICK_MODE_ALWAYS_SHOWN ||
-                (gAnalogStickMode == STICK_MODE_HIDDEN_IN_DEADZONE && !analogStickIsInDeadzone)) {
+            const int analogStickMode =
+                CVarGetInteger("gInputViewer.AnalogStick.VisibilityMode", STICK_MODE_ALWAYS_SHOWN);
+            if (analogStickMode == STICK_MODE_ALWAYS_SHOWN ||
+                (analogStickMode == STICK_MODE_HIDDEN_IN_DEADZONE && !analogStickIsInDeadzone)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(
                     ImVec2(aPos.x + maxStickDistance * ((float)(pads[0].stick_x) / MAX_AXIS_RANGE) * scale,
@@ -266,19 +269,21 @@ void InputViewer::DrawElement() {
             }
 
             // Right Stick
-            const float maxRightStickDistance = CVarGetInteger("gRightStickMovement", 7);
-            const int gRightOutlineMode = CVarGetInteger("gRightOutlineMode", STICK_MODE_ALWAYS_HIDDEN);
-            if (gRightOutlineMode == STICK_MODE_ALWAYS_SHOWN ||
-                (gRightOutlineMode == STICK_MODE_HIDDEN_IN_DEADZONE && !rightStickIsInDeadzone)) {
+            const float maxRightStickDistance = CVarGetInteger("gInputViewer.RightStick.Movement", 7);
+            const int rightOutlineMode =
+                CVarGetInteger("gInputViewer.RightStick.OutlineMode", STICK_MODE_ALWAYS_HIDDEN);
+            if (rightOutlineMode == STICK_MODE_ALWAYS_SHOWN ||
+                (rightOutlineMode == STICK_MODE_HIDDEN_IN_DEADZONE && !rightStickIsInDeadzone)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 ImGui::Image(
                     LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Right-Stick Outline"),
                     scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
             }
-            const int gRightStickMode = CVarGetInteger("gRightStickMode", STICK_MODE_ALWAYS_HIDDEN);
-            if (gRightStickMode == STICK_MODE_ALWAYS_SHOWN ||
-                (gRightStickMode == STICK_MODE_HIDDEN_IN_DEADZONE && !rightStickIsInDeadzone)) {
+            const int rightStickMode =
+                CVarGetInteger("gInputViewer.RightStick.VisibilityMode", STICK_MODE_ALWAYS_HIDDEN);
+            if (rightStickMode == STICK_MODE_ALWAYS_SHOWN ||
+                (rightStickMode == STICK_MODE_HIDDEN_IN_DEADZONE && !rightStickIsInDeadzone)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(
                     ImVec2(aPos.x + maxRightStickDistance * ((float)(pads[0].right_stick_x) / MAX_AXIS_RANGE) * scale,
@@ -288,35 +293,37 @@ void InputViewer::DrawElement() {
             }
 
             if (showAnalogAngles) {
-                ImGui::SetCursorPos(ImVec2(aPos.x + 10 + CVarGetInteger("gAnalogAngleOffset", 0) * scale,
+                ImGui::SetCursorPos(ImVec2(aPos.x + 10 + CVarGetInteger("gInputViewer.AnalogAngles.Offset", 0) * scale,
                                            scaledBGSize.y + aPos.y + 10));
                 // Scale font with input viewer scale
                 float oldFontScale = ImGui::GetFont()->Scale;
-                ImGui::GetFont()->Scale *= scale * CVarGetFloat("gAnalogAnglesScale", 1.0f);
+                ImGui::GetFont()->Scale *= scale * CVarGetFloat("gInputViewer.AnalogAngles.Scale", 1.0f);
                 ImGui::PushFont(ImGui::GetFont());
 
                 // Calculate polar R coordinate from X and Y angles, squared to avoid sqrt
                 const float rSquared = pads[0].stick_x * pads[0].stick_x + pads[0].stick_y * pads[0].stick_y;
 
                 // ESS range
-                const int range1Min = CVarGetInteger("gAnalogAnglesRange1Min", 8);
-                const int range1Max = CVarGetInteger("gAnalogAnglesRange1Max", 27);
+                const int range1Min = CVarGetInteger("gInputViewer.AnalogAngles.Range1.Min", 8);
+                const int range1Max = CVarGetInteger("gInputViewer.AnalogAngles.Range1.Max", 27);
                 // Walking speed range
                 const int range2Min = CVarGetInteger("gAnalogAnglesRange2Min", 27);
-                const int range2Max = CVarGetInteger("gAnalogAnglesRange2Max", 62);
+                const int range2Max = CVarGetInteger("gInputViewer.AnalogAngles.Range2.Max", 62);
 
                 // Push color based on angle ranges
-                if (CVarGetInteger("gAnalogAnglesRange1", 0) && (rSquared >= (range1Min * range1Min)) &&
-                    (rSquared < (range1Max * range1Max))) {
-                    ImGui::PushStyleColor(ImGuiCol_Text,
-                                          color2Vec(CVarGetColor("gAnalogAnglesRange1Color", vec2Color(range1Color))));
-                } else if (CVarGetInteger("gAnalogAnglesRange2", 0) && (rSquared >= (range2Min * range2Min)) &&
-                           (rSquared < (range2Max * range2Max))) {
-                    ImGui::PushStyleColor(ImGuiCol_Text,
-                                          color2Vec(CVarGetColor("gAnalogAnglesRange2Color", vec2Color(range2Color))));
+                if (CVarGetInteger("gInputViewer.AnalogAngles.Range1.Enabled", 0) &&
+                    (rSquared >= (range1Min * range1Min)) && (rSquared < (range1Max * range1Max))) {
+                    ImGui::PushStyleColor(
+                        ImGuiCol_Text,
+                        color2Vec(CVarGetColor("gInputViewer.AnalogAngles.Range1.Color", vec2Color(range1Color))));
+                } else if (CVarGetInteger("gInputViewer.AnalogAngles.Range2.Enabled", 0) &&
+                           (rSquared >= (range2Min * range2Min)) && (rSquared < (range2Max * range2Max))) {
+                    ImGui::PushStyleColor(
+                        ImGuiCol_Text,
+                        color2Vec(CVarGetColor("gInputViewer.AnalogAngles.Range2.Color", vec2Color(range2Color))));
                 } else {
-                    ImGui::PushStyleColor(ImGuiCol_Text,
-                                          color2Vec(CVarGetColor("gAnalogAnglesTextColor", vec2Color(textColor))));
+                    ImGui::PushStyleColor(ImGuiCol_Text, color2Vec(CVarGetColor("gInputViewer.AnalogAngles.TextColor",
+                                                                                vec2Color(textColor))));
                 }
 
                 // Render text
@@ -345,92 +352,98 @@ void InputViewerSettingsWindow::DrawElement() {
 
     if (ImGui::Begin("Input Viewer Settings", &mIsVisible)) {
 
-        // gInputScale
-        UIWidgets::EnhancementSliderFloat("Input Viewer Scale: %.2f", "##Input", "gInputScale", 0.1f, 5.0f, "", 1.0f,
-                                          false, true);
+        // gInputViewer.Scale
+        UIWidgets::EnhancementSliderFloat("Input Viewer Scale: %.2f", "##Input", "gInputViewer.Scale", 0.1f, 5.0f, "",
+                                          1.0f, false, true);
         UIWidgets::Tooltip("Sets the on screen size of the input viewer");
 
-        // gInputViewerDragging
-        UIWidgets::EnhancementCheckbox("Enable Dragging", "gInputViewerDragging", false, "",
+        // gInputViewer.EnableDragging
+        UIWidgets::EnhancementCheckbox("Enable Dragging", "gInputViewer.EnableDragging", false, "",
                                        UIWidgets::CheckboxGraphics::Checkmark, true);
 
         UIWidgets::PaddedSeparator(true, true);
 
-        // gInputViewerBackground
-        UIWidgets::EnhancementCheckbox("Show Background Layer", "gInputViewerBackground", false, "",
+        // gInputViewer.ShowBackground
+        UIWidgets::EnhancementCheckbox("Show Background Layer", "gInputViewer.ShowBackground", false, "",
                                        UIWidgets::CheckboxGraphics::Checkmark, true);
 
         UIWidgets::PaddedSeparator(true, true);
 
-        // gButtonOutlineMode
-        UIWidgets::PaddedText("Button Outlines/Backgrounds", true, false);
-        UIWidgets::EnhancementCombobox("gButtonOutlineMode", buttonOutlineOptions, BUTTON_OUTLINE_NOT_PRESSED);
-        UIWidgets::Tooltip("Sets the desired visibility behavior for the button outline/background layers");
-
-        // gInputViewerABtn
-        UIWidgets::EnhancementCheckbox("Show A-Button Layers", "gInputViewerABtn", false, "",
+        // gInputViewer.ABtn
+        UIWidgets::EnhancementCheckbox("Show A-Button Layers", "gInputViewer.ABtn", false, "",
                                        UIWidgets::CheckboxGraphics::Checkmark, true);
-        // gInputViewerBBtn
-        UIWidgets::EnhancementCheckbox("Show B-Button Layers", "gInputViewerBBtn", false, "",
+        // gInputViewer.BBtn
+        UIWidgets::EnhancementCheckbox("Show B-Button Layers", "gInputViewer.BBtn", false, "",
                                        UIWidgets::CheckboxGraphics::Checkmark, true);
-        // gInputViewerCBtns
-        UIWidgets::EnhancementCheckbox("Show C-Button Layers", "gInputViewerCBtns", false, "",
+        // gInputViewer.CBtns
+        UIWidgets::EnhancementCheckbox("Show C-Button Layers", "gInputViewer.CBtns", false, "",
                                        UIWidgets::CheckboxGraphics::Checkmark, true);
-        // gInputViewerDpad
-        UIWidgets::EnhancementCheckbox("Show D-Pad Layers", "gInputViewerDpad", false, "",
+        // gInputViewer.Dpad
+        UIWidgets::EnhancementCheckbox("Show D-Pad Layers", "gInputViewer.Dpad", false, "",
                                        UIWidgets::CheckboxGraphics::Checkmark, false);
-        // gInputViewerLBtn
-        UIWidgets::EnhancementCheckbox("Show L-Button Layers", "gInputViewerLBtn", false, "",
+        // gInputViewer.LBtn
+        UIWidgets::EnhancementCheckbox("Show L-Button Layers", "gInputViewer.LBtn", false, "",
                                        UIWidgets::CheckboxGraphics::Checkmark, true);
-        // gInputViewerRBtn
-        UIWidgets::EnhancementCheckbox("Show R-Button Layers", "gInputViewerRBtn", false, "",
+        // gInputViewer.RBtn
+        UIWidgets::EnhancementCheckbox("Show R-Button Layers", "gInputViewer.RBtn", false, "",
                                        UIWidgets::CheckboxGraphics::Checkmark, true);
-        // gInputViewerZBtn
-        UIWidgets::EnhancementCheckbox("Show Z-Button Layers", "gInputViewerZBtn", false, "",
+        // gInputViewer.ZBtn
+        UIWidgets::EnhancementCheckbox("Show Z-Button Layers", "gInputViewer.ZBtn", false, "",
                                        UIWidgets::CheckboxGraphics::Checkmark, true);
-        // gInputViewerStartBtn
-        UIWidgets::EnhancementCheckbox("Show Start Button Layers", "gInputViewerStartBtn", false, "",
+        // gInputViewer.StartBtn
+        UIWidgets::EnhancementCheckbox("Show Start Button Layers", "gInputViewer.StartBtn", false, "",
                                        UIWidgets::CheckboxGraphics::Checkmark, true);
+
+        // gInputViewer.ButtonOutlineMode
+        UIWidgets::PaddedText("Button Outlines/Backgrounds", true, false);
+        UIWidgets::EnhancementCombobox("gInputViewer.ButtonOutlineMode", buttonOutlineOptions,
+                                       BUTTON_OUTLINE_NOT_PRESSED);
+        UIWidgets::Tooltip("Sets the desired visibility behavior for the button outline/background layers. Useful for "
+                           "custom input viewers.");
 
         UIWidgets::PaddedSeparator(true, true);
 
         if (ImGui::CollapsingHeader("Analog Stick")) {
-            // gAnalogStickMode
+            // gInputViewer.AnalogStick.VisibilityMode
             UIWidgets::PaddedText("Analog Stick Visibility", true, false);
-            UIWidgets::EnhancementCombobox("gAnalogStickMode", stickModeOptions, STICK_MODE_ALWAYS_SHOWN);
+            UIWidgets::EnhancementCombobox("gInputViewer.AnalogStick.VisibilityMode", stickModeOptions,
+                                           STICK_MODE_ALWAYS_SHOWN);
             UIWidgets::Tooltip(
                 "Determines the conditions under which the moving layer of the analog stick texture is visible.");
 
-            // gAnalogOutlineMode
+            // gInputViewer.AnalogStick.OutlineMode
             UIWidgets::PaddedText("Analog Stick Outline/Background Visibility", true, false);
-            UIWidgets::EnhancementCombobox("gAnalogOutlineMode", stickModeOptions, STICK_MODE_ALWAYS_SHOWN);
+            UIWidgets::EnhancementCombobox("gInputViewer.AnalogStick.OutlineMode", stickModeOptions,
+                                           STICK_MODE_ALWAYS_SHOWN);
             UIWidgets::Tooltip(
                 "Determines the conditions under which the analog stick outline/background texture is visible.");
 
-            // gAnalogStickMovement
-            UIWidgets::EnhancementSliderInt("Analog Stick Movement: %dpx", "##AnalogMovement", "gAnalogStickMovement",
-                                            0, 200, "", 12, true);
+            // gInputViewer.AnalogStick.Movement
+            UIWidgets::EnhancementSliderInt("Analog Stick Movement: %dpx", "##AnalogMovement",
+                                            "gInputViewer.AnalogStick.Movement", 0, 200, "", 12, true);
             UIWidgets::Tooltip(
                 "Sets the distance to move the analog stick in the input viewer. Useful for custom input viewers.");
             UIWidgets::PaddedSeparator(true, true);
         }
 
         if (ImGui::CollapsingHeader("Additional (\"Right\") Stick")) {
-            // gRightStickMode
+            // gInputViewer.RightStick.VisibilityMode
             UIWidgets::PaddedText("Right Stick Visibility", true, false);
-            UIWidgets::EnhancementCombobox("gRightStickMode", stickModeOptions, STICK_MODE_ALWAYS_SHOWN);
+            UIWidgets::EnhancementCombobox("gInputViewer.RightStick.VisibilityMode", stickModeOptions,
+                                           STICK_MODE_ALWAYS_HIDDEN);
             UIWidgets::Tooltip(
                 "Determines the conditions under which the moving layer of the right stick texture is visible.");
 
-            // gRightOutlineMode
+            // gInputViewer.RightStick.OutlineMode
             UIWidgets::PaddedText("Right Stick Outline/Background Visibility", true, false);
-            UIWidgets::EnhancementCombobox("gRightOutlineMode", stickModeOptions, STICK_MODE_ALWAYS_SHOWN);
+            UIWidgets::EnhancementCombobox("gInputViewer.RightStick.OutlineMode", stickModeOptions,
+                                           STICK_MODE_ALWAYS_HIDDEN);
             UIWidgets::Tooltip(
                 "Determines the conditions under which the right stick outline/background texture is visible.");
 
-            // gRightStickMovement
-            UIWidgets::EnhancementSliderInt("Right Stick Movement: %dpx", "##RightMovement", "gRightStickMovement", 0,
-                                            200, "", 7, true);
+            // gInputViewer.RightStick.Movement
+            UIWidgets::EnhancementSliderInt("Right Stick Movement: %dpx", "##RightMovement",
+                                            "gInputViewer.RightStick.Movement", 0, 200, "", 7, true);
             UIWidgets::Tooltip(
                 "Sets the distance to move the right stick in the input viewer. Useful for custom input viewers.");
             UIWidgets::PaddedSeparator(true, true);
@@ -438,36 +451,42 @@ void InputViewerSettingsWindow::DrawElement() {
 
         if (ImGui::CollapsingHeader("Analog Angle Values")) {
             // gAnalogAngles
-            UIWidgets::EnhancementCheckbox("Show Analog Stick Angle Values", "gAnalogAngles");
+            UIWidgets::EnhancementCheckbox("Show Analog Stick Angle Values", "gInputViewer.AnalogAngles.Enabled");
             UIWidgets::Tooltip("Displays analog stick angle values in the input viewer");
-            if (CVarGetInteger("gAnalogAngles", 0)) {
+            if (CVarGetInteger("gInputViewer.AnalogAngles.Enabled", 0)) {
+                // gInputViewer.AnalogAngles.TextColor
+                if (ImGui::ColorEdit4("Text Color", (float*)&textColor)) {
+                    CVarSetColor("gInputViewer.AnalogAngles.TextColor", vec2Color(textColor));
+                }
                 // gAnalogAngleScale
                 UIWidgets::EnhancementSliderFloat("Angle Text Scale: %.2f%%", "##AnalogAngleScale",
-                                                  "gAnalogAnglesScale", 0.1f, 5.0f, "", 1.0f, true, true);
-                // gAnalogAngleOffset
-                UIWidgets::EnhancementSliderInt("Angle Text Offset: %dpx", "##AnalogAngleOffset", "gAnalogAngleOffset",
-                                                0, 400, "", 0, true);
+                                                  "gInputViewer.AnalogAngles.Scale", 0.1f, 5.0f, "", 1.0f, true, true);
+                // gInputViewer.AnalogAngles.Offset
+                UIWidgets::EnhancementSliderInt("Angle Text Offset: %dpx", "##AnalogAngleOffset",
+                                                "gInputViewer.AnalogAngles.Offset", 0, 400, "", 0, true);
                 UIWidgets::PaddedSeparator(true, true);
-                // gAnalogAnglesRange1
-                if (UIWidgets::EnhancementCheckbox("Highlight ESS Position", "gAnalogAnglesRange1")) {
-                    UIWidgets::Tooltip(
-                        "Highlights the angle value text when the analog stick is in ESS position (on flat ground)");
-                    // gAnalogAnglesRange1Color
+                // gInputViewer.AnalogAngles.Range1.Enabled
+                UIWidgets::EnhancementCheckbox("Highlight ESS Position", "gInputViewer.AnalogAngles.Range1.Enabled");
+                UIWidgets::Tooltip(
+                    "Highlights the angle value text when the analog stick is in ESS position (on flat ground)");
+                if (CVarGetInteger("gInputViewer.AnalogAngles.Range1.Enabled", 0)) {
+                    // gInputViewer.AnalogAngles.Range1.Color
                     if (ImGui::ColorEdit4("ESS Color", (float*)&range1Color)) {
-                        CVarSetColor("gAnalogAnglesRange1Color", vec2Color(range1Color));
+                        CVarSetColor("gInputViewer.AnalogAngles.Range1.Color", vec2Color(range1Color));
                     }
                 }
 
                 UIWidgets::PaddedSeparator(true, true);
-                // gAnalogAnglesRange2
-                if (UIWidgets::EnhancementCheckbox("Highlight Walking Speed Angles", "gAnalogAnglesRange2")) {
-                    UIWidgets::Tooltip(
-                        "Highlights the angle value text when the analog stick is at an angle that would "
-                        "produce a walking speed (on flat ground)\n\n"
-                        "Useful for 1.0 Empty Jumpslash Quick Put Away");
-                    // gAnalogAnglesRange2Color
+                // gInputViewer.AnalogAngles.Range2.Enabled
+                UIWidgets::EnhancementCheckbox("Highlight Walking Speed Angles",
+                                               "gInputViewer.AnalogAngles.Range2.Enabled");
+                UIWidgets::Tooltip("Highlights the angle value text when the analog stick is at an angle that would "
+                                   "produce a walking speed (on flat ground)\n\n"
+                                   "Useful for 1.0 Empty Jumpslash Quick Put Away");
+                if (CVarGetInteger("gInputViewer.AnalogAngles.Range2.Enabled", 0)) {
+                    // gInputViewer.AnalogAngles.Range2.Color
                     if (ImGui::ColorEdit4("Walking Speed Color", (float*)&range2Color)) {
-                        CVarSetColor("gAnalogAnglesRange2Color", vec2Color(range2Color));
+                        CVarSetColor("gInputViewer.AnalogAngles.Range2.Color", vec2Color(range2Color));
                     }
                 }
             }

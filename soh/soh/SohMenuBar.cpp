@@ -254,7 +254,7 @@ void DrawSettingsMenu() {
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
             if (mInputViewer) {
-                if (ImGui::Button(GetWindowButtonText("Input Viewer", CVarGetInteger("gInputEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
+                if (ImGui::Button(GetWindowButtonText("Input Viewer", CVarGetInteger("gOpenWindows.InputViewer", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
                     mInputViewer->ToggleVisibility();
                 }
             }
