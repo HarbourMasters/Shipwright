@@ -109,8 +109,8 @@ u32 areasSpoiled = 0;
 bool showVOrMQ;
 s8 areaChecksGotten[RCAREA_INVALID]; //|     "Kokiri Forest (4/9)"
 s8 areaCheckTotals[RCAREA_INVALID];
-s32 totalChecks;
-s32 totalChecksGotten;
+uint16_t totalChecks = 0;
+uint16_t totalChecksGotten = 0;
 bool optCollapseAll; // A bool that will collapse all checks once
 bool optExpandAll;       // A bool that will expand all checks once
 RandomizerCheck lastLocationChecked = RC_UNKNOWN_CHECK;
@@ -236,6 +236,14 @@ void CalculateTotals() {
         totalChecks += areaCheckTotals[i];
         totalChecksGotten += areaChecksGotten[i];
     }
+}
+
+uint16_t GetTotalChecks() {
+    return totalChecks;
+}
+
+uint16_t GetTotalChecksGotten() {
+    return totalChecksGotten;
 }
 
 void RecalculateAreaTotals() {
