@@ -109,6 +109,8 @@ u32 areasSpoiled = 0;
 bool showVOrMQ;
 s8 areaChecksGotten[RCAREA_INVALID]; //|     "Kokiri Forest (4/9)"
 s8 areaCheckTotals[RCAREA_INVALID];
+s32 totalChecks;
+s32 totalChecksGotten;
 bool optCollapseAll; // A bool that will collapse all checks once
 bool optExpandAll;       // A bool that will expand all checks once
 RandomizerCheck lastLocationChecked = RC_UNKNOWN_CHECK;
@@ -226,6 +228,16 @@ void TrySetAreas() {
     }
 }
 
+void CalculateTotals() {
+    totalChecks = 0;
+    totalChecksGotten = 0;
+
+    for (uint8_t i = 0; i < RCAREA_INVALID; i++) {
+        totalChecks += areaCheckTotals[i];
+        totalChecksGotten += areaChecksGotten[i];
+    }
+}
+
 void RecalculateAreaTotals() {
     for (auto [rcArea, rcObjects] : checksByArea) {
         if (rcArea == RCAREA_INVALID) {
@@ -244,6 +256,8 @@ void RecalculateAreaTotals() {
             }
         }
     }
+
+    CalculateTotals();
 }
 
 void SetCheckCollected(RandomizerCheck rc) {
@@ -266,6 +280,7 @@ void SetCheckCollected(RandomizerCheck rc) {
     doAreaScroll = true;
     UpdateOrdering(rcObj.rcArea);
     UpdateInventoryChecks();
+    CalculateTotals();
 }
 
 bool IsAreaScene(SceneID sceneNum) {
@@ -371,6 +386,8 @@ void ClearAreaChecksAndTotals() {
         areaChecksGotten[rcArea] = 0;
         areaCheckTotals[rcArea] = 0;
     }
+    totalChecks = 0;
+    totalChecksGotten = 0;
 }
 
 void SetShopSeen(uint32_t sceneNum, bool prices) {
@@ -502,6 +519,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
     initialized = true;
     UpdateAllOrdering();
     UpdateInventoryChecks();
+    CalculateTotals();
 }
 
 void CheckTrackerShopSlotChange(uint8_t cursorSlot, int16_t basePrice) {
@@ -822,6 +840,7 @@ void UpdateCheck(uint32_t check, RandomizerCheckTrackerData data) {
     }
     gSaveContext.checkTrackerData[check] = data;
     UpdateOrdering(area);
+    CalculateTotals();
 }
 
 void CheckTrackerWindow::DrawElement() {
@@ -893,6 +912,10 @@ void CheckTrackerWindow::DrawElement() {
         optExpandAll = false;
         optCollapseAll = true;
     }
+    UIWidgets::PaddedSeparator();
+
+    ImGui::Text("Total Checks: %d / %d", totalChecksGotten, totalChecks);
+
     UIWidgets::PaddedSeparator();
 
     //Checks Section Lead-in
