@@ -689,7 +689,7 @@ void RegisterMirrorModeHandler() {
 
 void RegisterResetNaviTimer() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
-		if (CVarGetInteger("gResetNaviTimer", 0) == 1) {
+		if (CVarGetInteger("gEnhancements.ResetNaviTimer", 0)) {
 			gSaveContext.naviTimer = 0;
 		}
 	});
