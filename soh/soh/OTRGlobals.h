@@ -47,8 +47,8 @@ private:
 uint32_t IsGameMasterQuest();
 #endif
 
-#define RANDOMIZER_CVAR(var) "gRandomizerEnhancement." var
-#define RANDOMIZER_SEED_CVAR(var) "gRandomizerSettings." var
+#define RANDOMIZER_CVAR(var) "gRandoEnhancements." var
+#define RANDOMIZER_SEED_CVAR(var) "gRandoSettings." var
 #define COSMETIC_CVAR(var) "gCosmetics." var
 #define AUDIO_CVAR(var) "gAudioEditor." var
 #define REPL_SEQ_CVAR(var) AUDIO_CVAR("ReplacedSequences." var)
