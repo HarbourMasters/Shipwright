@@ -155,7 +155,7 @@ void EnReeba_Destroy(Actor* thisx, PlayState* play) {
         if (spawner->actor.update != NULL) {
             if (spawner->curNumSpawn > 0) {
                 spawner->curNumSpawn--;
-                spawner->timer = 1 * (CVarGetInteger("gLeeverSpawnRate", 1) * 10);
+                spawner->timer = 1 * (CVarGetInteger("gEnhancements.LeeverSpawnRate", 1) * 10);
             }
             if (this->isBig) {
                 spawner->bigLeever = NULL;
