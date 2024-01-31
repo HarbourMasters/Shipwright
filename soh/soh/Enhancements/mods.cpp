@@ -1234,7 +1234,7 @@ void RegisterFloorSwitchesHook() {
         ObjSwitch* switchActor = reinterpret_cast<ObjSwitch*>(actor);
         s32 type = (switchActor->dyna.actor.params & 7);
 
-        if (switchActor->dyna.actor.params == 4608 || switchActor->dyna.actor.params == 14848) {
+        if (switchActor->dyna.actor.params == 0x1200 || switchActor->dyna.actor.params == 0x3A00) {
             switchActor->dyna.actor.world.pos.y -= 1;
         }
     });
