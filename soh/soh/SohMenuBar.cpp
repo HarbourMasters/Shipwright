@@ -923,7 +923,7 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Allows equipment to be removed by toggling it off on\nthe equipment subscreen.");
             if (CVarGetInteger("gEquipmentCanBeRemoved", 0)) {
                 UIWidgets::PaddedText("Sword Toggle Options", true, false);
-                UIWidgets::EnhancementCombobox("gSwordToggle", swordToggleModes, SWORD_TOGGLE_NONE);
+                UIWidgets::EnhancementCombobox("gEnhancements.SwordToggle", swordToggleModes, SWORD_TOGGLE_NONE);
                 UIWidgets::Tooltip(
                     "Introduces Options for unequipping Link's sword\n\n"
                     "None: Only Biggoron's Sword/Giant's Knife can be toggled. Doing so will equip the Master Sword.\n\n"

@@ -571,8 +571,8 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                     // If we have the feature toggled on
                     if (CVarGetInteger("gEquipmentCanBeRemoved", 0)) {
 
-                        if (CVarGetInteger("gSwordToggle", SWORD_TOGGLE_NONE) == SWORD_TOGGLE_BOTH_AGES ||
-                            (CVarGetInteger("gSwordToggle", SWORD_TOGGLE_NONE) == SWORD_TOGGLE_CHILD) && LINK_IS_CHILD) {
+                        if (CVarGetInteger("gEnhancements.SwordToggle", SWORD_TOGGLE_NONE) == SWORD_TOGGLE_BOTH_AGES ||
+                            (CVarGetInteger("gEnhancements.SwordToggle", SWORD_TOGGLE_NONE) == SWORD_TOGGLE_CHILD) && LINK_IS_CHILD) {
                             // If we're on the "swords" section of the equipment screen AND we're on a currently-equipped sword  
                             if (pauseCtx->cursorY[PAUSE_EQUIP] == 0 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD)) {
                                 Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_NONE);
