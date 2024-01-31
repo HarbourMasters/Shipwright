@@ -1204,8 +1204,6 @@ Gfx* KaleidoScope_DrawPageSections(Gfx* gfx, Vtx* vertices, void** textures) {
     return gfx;
 }
 
-static uint8_t mapBlendMask[MAP_48x85_TEX_WIDTH * MAP_48x85_TEX_HEIGHT];
-
 void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
     static Color_RGB8 D_8082ACF4[12] = {
         { 0, 0, 0 }, { 0, 0, 0 },     { 0, 0, 0 },    { 0, 0, 0 }, { 255, 255, 0 }, { 0, 0, 0 },
@@ -1373,10 +1371,6 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 D_8082AD50 = 0;
             }
         }
-
-        // Need to invalidate the blend mask every frame. Ideally this would be done in KaleidoScope_DrawDungeonMap
-        // but the reference is not shared between files
-        gSPInvalidateTexCache(POLY_KAL_DISP++, mapBlendMask);
 
         if (pauseCtx->pageIndex) { // pageIndex != PAUSE_ITEM
             gDPPipeSync(OVERLAY_DISP++);
@@ -3325,6 +3319,7 @@ static uint8_t mapLeftTexModified[MAP_48x85_TEX_SIZE];
 static uint8_t mapRightTexModified[MAP_48x85_TEX_SIZE];
 static uint8_t* mapLeftTexModifiedRaw = NULL;
 static uint8_t* mapRightTexModifiedRaw = NULL;
+static uint8_t mapBlendMask[MAP_48x85_TEX_WIDTH * MAP_48x85_TEX_HEIGHT];
 
 // Load dungeon maps into the interface context
 // SoH [General] - Modified to account for our resource system and HD textures
@@ -3356,19 +3351,16 @@ void KaleidoScope_LoadDungeonMap(PlayState* play) {
         size_t size = (width * height) / 2; // account for CI4 size
 
         // Resource size being larger than the calculated CI size means it is most likely not a CI4 texture
-        // Abort early end undo the blended effect by clearing the mask to avoid crashing
+        // Abort early and unregister the blended effect to avoid crashing
         if (size < ResourceGetTexSizeByName(interfaceCtx->mapSegmentName[0])) {
-            if (mapBlendMask[0] != 0) {
-                for (size_t i = 0; i < ARRAY_COUNT(mapBlendMask); i++) {
-                    mapBlendMask[i] = 0;
-                }
-            }
-
             interfaceCtx->mapSegment[0] = NULL;
             interfaceCtx->mapSegment[1] = NULL;
 
-            Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapBlendMask, NULL);
-            Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapBlendMask, NULL);
+            Gfx_UnregisterBlendedTexture(interfaceCtx->mapSegmentName[0]);
+            Gfx_UnregisterBlendedTexture(interfaceCtx->mapSegmentName[1]);
+
+            Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[0]);
+            Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[1]);
             return;
         }
 
@@ -3403,6 +3395,11 @@ void KaleidoScope_LoadDungeonMap(PlayState* play) {
 
     Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapBlendMask, interfaceCtx->mapSegment[0]);
     Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapBlendMask, interfaceCtx->mapSegment[1]);
+
+    Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[0]);
+    Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[1]);
+    Gfx_TextureCacheDelete(interfaceCtx->mapSegment[0]);
+    Gfx_TextureCacheDelete(interfaceCtx->mapSegment[1]);
 }
 
 static uint8_t registeredDungeonMapTextureHook = false;
@@ -3442,6 +3439,11 @@ void KaleidoScope_UpdateDungeonMap(PlayState* play) {
 
     KaleidoScope_LoadDungeonMap(play);
     Map_SetFloorPalettesData(play, pauseCtx->dungeonMapSlot - 3);
+
+    // Copy the map palette values to all pulse palettes
+    for (uint8_t i = 0; i < ARRAY_COUNT(interfaceCtx->mapPalettesPulse); i++) {
+        memcpy(interfaceCtx->mapPalettesPulse[i], interfaceCtx->mapPalette, sizeof(interfaceCtx->mapPalette));
+    }
 
     s32 size = MAP_48x85_TEX_SIZE;
 
