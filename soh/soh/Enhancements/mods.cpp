@@ -1146,7 +1146,7 @@ void RegisterOpenAllHours() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
 
-        if (CVarGetInteger("gOpenAllHours", 0) && (actor->id == ACTOR_EN_DOOR)) {
+        if (CVarGetInteger("gEnhancements.OpenAllHours", 0) && (actor->id == ACTOR_EN_DOOR)) {
             bool changed = false;
             switch (actor->params) {
                 case 4753:                // Night Market Bazaar
