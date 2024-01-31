@@ -201,6 +201,9 @@ void accessible_switch_cleanup(AccessibleActor* actor)
     ObjSwitch* sw = (ObjSwitch*)actor->actor;
     Vec3f& scale = actor->actor->scale;
     if ((actor->actor->params & 7) == 0) {
+        if (actor->xyzDistToPlayer > 800) {
+            return;
+        }
         if (scale.y >= 33.0f / 200.0f) {
             if (actor->play->sceneNum == 0 && actor->play->roomCtx.curRoom.num == 5 && actor->xzDistToPlayer < 20) {
                 ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_DIAMOND_SWITCH, false);//Should result in same behaviour.
@@ -215,6 +218,9 @@ void accessible_switch_cleanup(AccessibleActor* actor)
         return;
     }
     else if ((actor->actor->params & 7) == 1) {
+        if (actor->xyzDistToPlayer > 800) {
+            return;
+        }
         if (scale.y >= 33.0f / 200.0f) { //(!(Flags_GetSwitch(actor->play, (actor->params >> 8 & 0x3F)))) {
             ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_HAMMER_HIT, false);
         }
@@ -228,6 +234,9 @@ void accessible_switch_cleanup(AccessibleActor* actor)
     }
 
     else {
+        if (actor->xyzDistToPlayer > 800) {
+            return;
+        }
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_DIAMOND_SWITCH, false);
 
     }
@@ -840,6 +849,7 @@ void accessible_stick_warning(AccessibleActor* actor) {
     ActorAccessibility_AddSupportedActor(ACTOR_DOOR_SHUTTER, policy);
     ActorAccessibility_AddSupportedActor(ACTOR_BG_SPOT18_SHUTTER, policy);
     ActorAccessibility_InitPolicy(&policy, "Switch", accessible_switch, 0);
+    policy.distance = 2000;
     policy.cleanupUserData = accessible_switch_cleanup;
     policy.initUserData = accessible_switch_init;
     policy.n = 1;
@@ -885,6 +895,8 @@ void accessible_stick_warning(AccessibleActor* actor) {
     policy.distance = 2000;
     policy.n = 50;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_HINTNUTS, policy);
+    ActorAccessibility_InitPolicy(&policy, "Flame Circle", NULL, NA_SE_EV_FIRE_PILLAR);
+    ActorAccessibility_AddSupportedActor(ACTOR_BG_HIDAN_CURTAIN, policy);
     ActorAccessibility_InitPolicy(&policy, "uninteractable rocks in kokiri forest", accessible_hana, 0);
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_HANA, policy);
     ActorAccessibility_InitPolicy(&policy, "gold skulltula token", accessible_en_pickups, 0);
