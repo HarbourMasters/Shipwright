@@ -264,8 +264,6 @@ void RecalculateAreaTotals() {
             }
         }
     }
-
-    CalculateTotals();
 }
 
 void SetCheckCollected(RandomizerCheck rc) {
@@ -288,7 +286,6 @@ void SetCheckCollected(RandomizerCheck rc) {
     doAreaScroll = true;
     UpdateOrdering(rcObj.rcArea);
     UpdateInventoryChecks();
-    CalculateTotals();
 }
 
 bool IsAreaScene(SceneID sceneNum) {
@@ -527,7 +524,6 @@ void CheckTrackerLoadGame(int32_t fileNum) {
     initialized = true;
     UpdateAllOrdering();
     UpdateInventoryChecks();
-    CalculateTotals();
 }
 
 void CheckTrackerShopSlotChange(uint8_t cursorSlot, int16_t basePrice) {
@@ -848,7 +844,6 @@ void UpdateCheck(uint32_t check, RandomizerCheckTrackerData data) {
     }
     gSaveContext.checkTrackerData[check] = data;
     UpdateOrdering(area);
-    CalculateTotals();
 }
 
 void CheckTrackerWindow::DrawElement() {
@@ -1280,6 +1275,8 @@ void UpdateOrdering(RandomizerCheckArea rcArea) {
     if(checksByArea.contains(rcArea)) {
         std::sort(checksByArea.find(rcArea)->second.begin(), checksByArea.find(rcArea)->second.end(), CompareChecks);
     }
+
+    CalculateTotals();
 }
 
 bool IsEoDCheck(RandomizerCheckType type) {

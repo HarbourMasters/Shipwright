@@ -750,7 +750,7 @@ void DrawTotalChecks() {
     uint16_t totalChecksGotten = CheckTracker::GetTotalChecksGotten();
 
     ImGui::BeginGroup();
-    ImGui::SetWindowFontScale(2.0);
+    ImGui::SetWindowFontScale(2.5);
     ImGui::Text("Checks: %d/%d", totalChecksGotten, totalChecks);
     ImGui::EndGroup();
 }
@@ -1079,7 +1079,7 @@ void ItemTrackerWindow::DrawElement() {
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerTotalChecksDisplayType", SECTION_DISPLAY_MINIMAL_HIDDEN) ==
+        if (CVarGetInteger("gTrackers.ItemTracker.TotalChecks.DisplayType", SECTION_DISPLAY_MINIMAL_HIDDEN) ==
             SECTION_DISPLAY_MINIMAL_SEPARATE) {
             ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_FirstUseEver);
             BeginFloatingWindows("Total Checks");
@@ -1226,7 +1226,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
         }
     }
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Total Checks", "gItemTrackerTotalChecksDisplayType", minimalDisplayTypes, SECTION_DISPLAY_MINIMAL_HIDDEN)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Total Checks", "gTrackers.ItemTracker.TotalChecks.DisplayType", minimalDisplayTypes, SECTION_DISPLAY_MINIMAL_HIDDEN)) {
         shouldUpdateVectors = true;
     }
 
