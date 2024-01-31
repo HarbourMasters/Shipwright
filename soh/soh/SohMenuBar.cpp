@@ -385,27 +385,27 @@ void DrawSettingsMenu() {
                 bool matchingRefreshRate =
                     CVarGetInteger("gMatchRefreshRate", 0) && LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() != LUS::WindowBackend::DX11;
                 UIWidgets::PaddedEnhancementSliderInt(
-                    (currentFps == 20) ? "Framerate: Original (20 fps)" : "Framerate: %d fps",
+                    (currentFps == 20) ? "Frame Rate: Original (20 fps)" : "Frame Rate: %d fps",
                     "##FPSInterpolation", "gInterpolationFPS", minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
             #endif
                 if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
                     UIWidgets::Tooltip(
                         "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics.\n"
                         "This is purely visual and does not impact game logic, execution of glitches etc.\n"
-                        "Higher FPS settings may impact CPU performance."
+                        "Higher frame rate settings may impact CPU performance."
                         "\n\n " ICON_FA_INFO_CIRCLE 
                         " There is no need to set this above your monitor's refresh rate. Doing so will waste resources and may give a worse result.");
                 } else {
                     UIWidgets::Tooltip(
                         "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics.\n"
                         "This is purely visual and does not impact game logic, execution of glitches etc.\n"
-                        "Higher FPS settings may impact CPU performance.");
+                        "Higher frame rate settings may impact CPU performance.");
                 }
             } // END FPS Slider
 
             if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
                 UIWidgets::Spacer(0);
-                if (ImGui::Button("Match Framerate to Refresh Rate")) {
+                if (ImGui::Button("Match Frame Rate to Refresh Rate")) {
                     int hz = LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                     if (hz >= 20 && hz <= 360) {
                         CVarSetInteger("gInterpolationFPS", hz);
@@ -413,7 +413,7 @@ void DrawSettingsMenu() {
                     }
                 }
             } else {
-                UIWidgets::PaddedEnhancementCheckbox("Match FPS to Refresh Rate", "gMatchRefreshRate", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Match Frame Rate to Refresh Rate", "gMatchRefreshRate", true, false);
             }
             UIWidgets::Tooltip("Matches interpolation value to the game window's current refresh rate.");
 
@@ -422,7 +422,7 @@ void DrawSettingsMenu() {
                     "##ExtraLatencyThreshold", "gExtraLatencyThreshold", 0, 360, "", 80, true, true, false);
                 UIWidgets::Tooltip(
                     "(For DirectX backend only)\n\n"
-                    "When Interpolation FPS setting is at least this threshold, add one frame of delay (e.g. 16.6 ms for 60 FPS) in order to avoid jitter."
+                    "When Interpolation FPS (Frame Rate) setting is at least this threshold, add one frame of delay (e.g. 16.6 ms for 60 FPS) in order to avoid jitter."
                     "This setting allows the CPU to work on one frame while GPU works on the previous frame.\n"
                     "This setting should be used when your computer is too slow to do CPU + GPU work in time.");
             }
