@@ -667,15 +667,15 @@ void DrawEnhancementsMenu() {
                     }
                 }
                 UIWidgets::Tooltip("Allows strength to be toggled on and off by pressing A on the strength upgrade in the equipment subscreen of the pause menu (This allows performing some glitches that require the player to not have strength).");
-                if (UIWidgets::PaddedEnhancementCheckbox("Hold Hylian Shield as Child Link", "gChildHoldsHylianShield", true, false)) {
-                    if (CVarGetInteger("gChildHoldsHylianShield", 0) == 0) {
-                        CVarSetInteger("gRotateScaleChildHylianShield", 0);
+                if (UIWidgets::PaddedEnhancementCheckbox("Hold Hylian Shield as Child Link", "gEnhancements.ChildHoldsHylianShield", true, false)) {
+                    if (CVarGetInteger("gEnhancements.ChildHoldsHylianShield", 0) == 0) {
+                        CVarSetInteger("gEnhancements.RotateScaleChildHylianShield", 0);
                     }
                     UpdateChildHylianShieldState();
                 }
                 UIWidgets::Tooltip("Allows Child Link to hold the Hylian Shield the same way as the rest of the shields.");
-                if (CVarGetInteger("gChildHoldsHylianShield", 0) == 1) {
-                    if (UIWidgets::PaddedEnhancementCheckbox("Rotate and Scale Child Hylian Shield", "gRotateScaleChildHylianShield", true, false)) {
+                if (CVarGetInteger("gEnhancements.ChildHoldsHylianShield", 0) == 1) {
+                    if (UIWidgets::PaddedEnhancementCheckbox("Rotate and Scale Child Hylian Shield", "gEnhancements.RotateScaleChildHylianShield", true, false)) {
                         UpdateChildHylianShieldState();
                         UpdatePatchChildHylianShield();
                     }
