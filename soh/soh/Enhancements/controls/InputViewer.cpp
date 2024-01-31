@@ -394,7 +394,7 @@ void InputViewerSettingsWindow::DrawElement() {
 
         UIWidgets::PaddedSeparator(true, true);
 
-        if (ImGui::CollapsingHeader("Analog Stick", NULL)) {
+        if (ImGui::CollapsingHeader("Analog Stick")) {
             // gAnalogStickMode
             UIWidgets::PaddedText("Analog Stick Visibility", true, false);
             UIWidgets::EnhancementCombobox("gAnalogStickMode", stickModeOptions, STICK_MODE_ALWAYS_SHOWN);
@@ -415,7 +415,7 @@ void InputViewerSettingsWindow::DrawElement() {
             UIWidgets::PaddedSeparator(true, true);
         }
 
-        if (ImGui::CollapsingHeader("Additional (\"Right\") Stick", NULL)) {
+        if (ImGui::CollapsingHeader("Additional (\"Right\") Stick")) {
             // gRightStickMode
             UIWidgets::PaddedText("Right Stick Visibility", true, false);
             UIWidgets::EnhancementCombobox("gRightStickMode", stickModeOptions, STICK_MODE_ALWAYS_SHOWN);
@@ -436,7 +436,7 @@ void InputViewerSettingsWindow::DrawElement() {
             UIWidgets::PaddedSeparator(true, true);
         }
 
-        if (ImGui::CollapsingHeader("Analog Angle Values", NULL)) {
+        if (ImGui::CollapsingHeader("Analog Angle Values")) {
             // gAnalogAngles
             UIWidgets::EnhancementCheckbox("Show Analog Stick Angle Values", "gAnalogAngles");
             UIWidgets::Tooltip("Displays analog stick angle values in the input viewer");
