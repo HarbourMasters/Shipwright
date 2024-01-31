@@ -36,3 +36,5 @@ class SpeechSynthesizer {
 #elif defined(__APPLE__)
 #include "DarwinSpeechSynthesizer.h"
 #endif
+
+#include "SpeechLogger.h"

@@ -179,6 +179,8 @@ void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement);
 void SaveManager_ThreadPoolWait();
 void CheckTracker_OnMessageClose();
 
+
+int32_t GetGIID(uint32_t itemID);
 GetItemID RetrieveGetItemIDFromItemID(ItemID itemID);
 RandomizerGet RetrieveRandomizerGetFromItemID(ItemID itemID);
 #endif
@@ -187,8 +189,12 @@ RandomizerGet RetrieveRandomizerGetFromItemID(ItemID itemID);
 extern "C" {
 #endif
 uint64_t GetUnixTimestamp();
+void OTRAudio_InstallSfxCaptureThread();
+void OTRAudio_UninstallSfxCaptureThread();
 #ifdef __cplusplus
 };
+std::unique_lock<std::mutex> OTRAudio_Lock();
+
 #endif
 
 #endif

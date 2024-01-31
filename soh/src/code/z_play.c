@@ -17,7 +17,7 @@
 
 #include <time.h>
 #include <assert.h>
-
+bool freezeGame = false;//Used for SFX ripper.
 void* D_8012D1F0 = NULL;
 //UNK_TYPE D_8012D1F4 = 0; // unused
 Input* D_8012D1F8 = NULL;
@@ -775,6 +775,11 @@ void Play_Update(PlayState* play) {
     Input* input;
     u32 i;
     s32 pad2;
+    if (freezeGame) {
+        GameInteractor_ExecuteOnGameStillFrozen();
+        return;
+    }
+
 
     input = play->state.input;
 
