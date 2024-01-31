@@ -307,7 +307,7 @@ void InputViewer::DrawElement() {
                 const int range1Min = CVarGetInteger("gInputViewer.AnalogAngles.Range1.Min", 8);
                 const int range1Max = CVarGetInteger("gInputViewer.AnalogAngles.Range1.Max", 27);
                 // Walking speed range
-                const int range2Min = CVarGetInteger("gAnalogAnglesRange2Min", 27);
+                const int range2Min = CVarGetInteger("gInputViewer.AnalogAngles.Range2.Min", 27);
                 const int range2Max = CVarGetInteger("gInputViewer.AnalogAngles.Range2.Max", 62);
 
                 // Push color based on angle ranges

@@ -259,7 +259,7 @@ void DrawSettingsMenu() {
                 }
             }
             if (mInputViewerSettings) {
-                if (ImGui::Button(GetWindowButtonText("Input Viewer Settings", CVarGetInteger("gInputViewerSettingsEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
+                if (ImGui::Button(GetWindowButtonText("Input Viewer Settings", CVarGetInteger("gOpenWindows.InputViewerSettings", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
                     mInputViewerSettings->ToggleVisibility();
                 }
             }
