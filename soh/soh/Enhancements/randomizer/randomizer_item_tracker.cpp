@@ -420,7 +420,7 @@ void DrawItemCount(ItemTrackerItem item) {
     uint32_t actualItemId = INV_CONTENT(item.id);
     bool hasItem = actualItemId != ITEM_NONE;
 
-    if (CVarGetInteger("gHookshotIdentifier", 0)) {
+    if (CVarGetInteger("gTrackers.ItemTracker.HookshotIdentifier", 0)) {
         if ((actualItemId == ITEM_HOOKSHOT || actualItemId == ITEM_LONGSHOT) && hasItem) {
 
             // Calculate the scaled position for the text
@@ -1218,7 +1218,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
             shouldUpdateVectors = true;
         }
     }
-    UIWidgets::EnhancementCheckbox("Show Hookshot Identifiers", "gHookshotIdentifier");
+    UIWidgets::EnhancementCheckbox("Show Hookshot Identifiers", "gTrackers.ItemTracker.HookshotIdentifier");
     UIWidgets::InsertHelpHoverText("Shows an 'H' or an 'L' to more easiely distinguish between Hookshot and Longshot.");
 
     UIWidgets::Spacer(0);
