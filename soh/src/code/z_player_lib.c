@@ -1252,8 +1252,8 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
         }
         if (limbIndex == PLAYER_LIMB_R_HAND) {
             if ((this->currentShield == PLAYER_SHIELD_MIRROR && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) || 
-                (this->currentShield == PLAYER_SHIELD_HYLIAN && gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER || 
-                gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS) || (sRightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT) ||
+                (this->currentShield == PLAYER_SHIELD_HYLIAN && (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER || 
+                gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS)) || (sRightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT) ||
                 (sRightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT && Player_HoldsBow(this))) {
                 Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
             }
