@@ -1000,7 +1000,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
                         sFishInits[i].pos.z, 0, Rand_ZeroFloat(0x10000), 0, 100 + i, true);
         }
     } else {
-        u8 allHyruleLoaches = CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gAllHyruleLoaches", 0);
+        u8 allHyruleLoaches = CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gEnhancements.AllHyruleLoaches", 0);
         if ((thisx->params < (EN_FISH_PARAM + 15) && !allHyruleLoaches) || (thisx->params == EN_FISH_AQUARIUM)) {
             SkelAnime_InitFlex(play, &this->skelAnime, &gFishingFishSkel, &gFishingFishAnim, NULL, NULL, 0);
             Animation_MorphToLoop(&this->skelAnime, &gFishingFishAnim, 0.0f);
