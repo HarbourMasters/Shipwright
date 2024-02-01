@@ -2068,7 +2068,7 @@ void func_80833DF8(Player* this, PlayState* play) {
 
             if (gSaveContext.equips.buttonItems[0] != maskItem && gSaveContext.equips.buttonItems[1] != maskItem &&
                 gSaveContext.equips.buttonItems[2] != maskItem && gSaveContext.equips.buttonItems[3] != maskItem &&
-                !hasOnDpad && !CVarGetInteger("gKeepMasks", 0)) {
+                !hasOnDpad && !CVarGetInteger("gEnhancements.KeepMasks", 0)) {
                 this->currentMask = gSaveContext.maskMemory = PLAYER_MASK_NONE;
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
             }
@@ -4647,7 +4647,7 @@ void func_8083A0F4(PlayState* play, Player* this) {
             this->interactRangeActor->parent = &this->actor;
             func_80835C58(play, this, func_8084F608, 0);
             this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
-            if (!CVarGetInteger("gKeepBunnyHoodThroughTime", 0) || !CVarGetInteger("gAdultBunnyHood", 0) || gSaveContext.maskMemory != PLAYER_MASK_BUNNY) {
+            if (!CVarGetInteger("gEnhancements.KeepBunnyHoodThroughTime", 0) || !CVarGetInteger("gAdultBunnyHood", 0) || gSaveContext.maskMemory != PLAYER_MASK_BUNNY) {
                 gSaveContext.maskMemory = PLAYER_MASK_NONE;
             }
         } else {
@@ -8409,7 +8409,7 @@ void func_80843AE8(PlayState* play, Player* this) {
         OnePointCutscene_Init(play, 9908, 125, &this->actor, MAIN_CAM);
     } else if (play->gameOverCtx.state == GAMEOVER_DEATH_WAIT_GROUND) {
         play->gameOverCtx.state = GAMEOVER_DEATH_DELAY_MENU;
-        if (!CVarGetInteger("gKeepMasksOnDeath", 0)) {
+        if (!CVarGetInteger("gEnhancements.KeepMasksOnDeath", 0)) {
             gSaveContext.maskMemory = PLAYER_MASK_NONE;
         }
     }

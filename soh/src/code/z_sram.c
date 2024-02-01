@@ -120,7 +120,7 @@ void Sram_OpenSave() {
         }
     }
 
-    if (!CVarGetInteger("gSaveMasksToFile", 0)) {
+    if (!CVarGetInteger("gEnhancements.SaveMasksToFile", 0)) {
         gSaveContext.maskMemory = PLAYER_MASK_NONE;
     }
 
