@@ -1240,36 +1240,6 @@ void DrawEnhancementsMenu() {
 
             ImGui::Dummy(ImVec2(0,0));
 
-            if (ImGui::Button("Toggle Collision Goggles")) {
-                if (!CVarGetInteger("gCollisionGoggles", 0)) {
-                    CVarSetInteger("gCollisionGoggles", 1);
-                    CVarSetInteger("gColViewerEnabled", 1);
-                    CVarSetInteger("gColViewerDecal", 0);
-                    CVarSetInteger("gColViewerShaded", 1);
-                    CVarSetInteger("gColViewerScene", COLVIEW_SOLID);
-                    CVarSetInteger("gColViewerBgActors", COLVIEW_SOLID);
-                    CVarSetInteger("gColViewerColCheck", COLVIEW_SOLID);
-                    CVarSetInteger("gColViewerWaterbox", COLVIEW_TRANSPARENT);
-                    CVarSetInteger("gColViewerColorACR", 5);
-                    CVarSetInteger("gColViewerColorACG", 130);
-                    CVarSetInteger("gColViewerColorACB", 100);
-                } else {
-                    CVarSetInteger("gCollisionGoggles", 0);
-                    CVarSetInteger("gColViewerEnabled", 0);
-                    CVarSetInteger("gColViewerDecal", 0);
-                    CVarSetInteger("gColViewerShaded", 0);
-                    CVarSetInteger("gColViewerScene", COLVIEW_DISABLED);
-                    CVarSetInteger("gColViewerBgActors", COLVIEW_DISABLED);
-                    CVarSetInteger("gColViewerColCheck", COLVIEW_DISABLED);
-                    CVarSetInteger("gColViewerWaterbox", COLVIEW_DISABLED);
-                    CVarSetInteger("gColViewerColorACR", 0);
-                    CVarSetInteger("gColViewerColorACG", 0);
-                    CVarSetInteger("gColViewerColorACB", 255);
-                }
-            }
-            UIWidgets::Tooltip(
-                "Disables rendering of the scene and actors, and instead only shows the collision of everything.");
-
             ImGui::EndMenu();
         }
 

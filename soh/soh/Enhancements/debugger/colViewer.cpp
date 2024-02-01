@@ -57,42 +57,73 @@ void ColViewerWindow::DrawElement() {
         ImGui::End();
         return;
     }
-    UIWidgets::EnhancementCheckbox("Enabled", "gColViewerEnabled");
 
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Scene", "gColViewerScene", ColRenderSettingNames, COLVIEW_DISABLED);
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Bg Actors", "gColViewerBgActors", ColRenderSettingNames, COLVIEW_DISABLED);
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Col Check", "gColViewerColCheck", ColRenderSettingNames, COLVIEW_DISABLED);
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Waterbox", "gColViewerWaterbox", ColRenderSettingNames, COLVIEW_DISABLED);
+    if (UIWidgets::EnhancementCheckbox("Collision Goggles", "gCollisionGoggles")) {
+        if (CVarGetInteger("gCollisionGoggles", 0)) {
+            CVarSetInteger("gColViewerEnabled", 1);
+            CVarSetInteger("gColViewerDecal", 0);
+            CVarSetInteger("gColViewerShaded", 1);
+            CVarSetInteger("gColViewerScene", COLVIEW_SOLID);
+            CVarSetInteger("gColViewerBgActors", COLVIEW_SOLID);
+            CVarSetInteger("gColViewerColCheck", COLVIEW_SOLID);
+            CVarSetInteger("gColViewerWaterbox", COLVIEW_TRANSPARENT);
+            CVarSetInteger("gColViewerColorACR", 5);
+            CVarSetInteger("gColViewerColorACG", 130);
+            CVarSetInteger("gColViewerColorACB", 100);
+        } else {
+            CVarSetInteger("gColViewerEnabled", 0);
+            CVarSetInteger("gColViewerDecal", 1);
+        }
+    }
+    UIWidgets::Tooltip(
+        "Disables rendering of the scene and actors, and instead only shows the collision of everything.");
 
-    UIWidgets::EnhancementCheckbox("Apply as decal", "gColViewerDecal");
-    UIWidgets::InsertHelpHoverText("Applies the collision as a decal display. This can be useful if there is z-fighting occuring "
-                        "with the scene geometry, but can cause other artifacts.");
-    UIWidgets::EnhancementCheckbox("Shaded", "gColViewerShaded");
-    UIWidgets::InsertHelpHoverText("Applies the scene's shading to the collision display.");
+    if (!CVarGetInteger("gCollisionGoggles", 0)) {
+        UIWidgets::EnhancementCheckbox("Enabled", "gColViewerEnabled");
 
-    // This has to be duplicated in both code paths due to the nature of ImGui::IsItemHovered()
-    const std::string colorHelpText = "View and change the colors used for collision display.";
-    if (ImGui::TreeNode("Colors")) {
-        UIWidgets::InsertHelpHoverText(colorHelpText);
+        UIWidgets::LabeledRightAlignedEnhancementCombobox("Scene", "gColViewerScene", ColRenderSettingNames,
+                                                          COLVIEW_DISABLED);
+        UIWidgets::LabeledRightAlignedEnhancementCombobox("Bg Actors", "gColViewerBgActors", ColRenderSettingNames,
+                                                          COLVIEW_DISABLED);
+        UIWidgets::LabeledRightAlignedEnhancementCombobox("Col Check", "gColViewerColCheck", ColRenderSettingNames,
+                                                          COLVIEW_DISABLED);
+        UIWidgets::LabeledRightAlignedEnhancementCombobox("Waterbox", "gColViewerWaterbox", ColRenderSettingNames,
+                                                          COLVIEW_DISABLED);
 
-        UIWidgets::EnhancementColor("Normal", "gColViewerColorNormal", scene_col, ImVec4(255, 255, 255, 255), false);
-        UIWidgets::EnhancementColor("Hookshot", "gColViewerColorHookshot", hookshot_col, ImVec4(128, 128, 255, 255),
-                                   false);
-        UIWidgets::EnhancementColor("Entrance", "gColViewerColorEntrance", entrance_col, ImVec4(0, 255, 0, 255), false);
-        UIWidgets::EnhancementColor("Special Surface (Grass/Sand/Etc)", "gColViewerColorSpecialSurface",
-                                   specialSurface_col, ImVec4(192, 255, 192, 255), false);
-        UIWidgets::EnhancementColor("Interactable (Vines/Crawlspace/Etc)", "gColViewerColorInteractable",
-                                   interactable_col, ImVec4(192, 0, 192, 255), false);
-        UIWidgets::EnhancementColor("Slope", "gColViewerColorSlope", slope_col, ImVec4(255, 255, 128, 255), false);
-        UIWidgets::EnhancementColor("Void", "gColViewerColorVoid", void_col, ImVec4(255, 0, 0, 255), false);
-        UIWidgets::EnhancementColor("OC", "gColViewerColorOC", oc_col, ImVec4(255, 255, 255, 255), false);
-        UIWidgets::EnhancementColor("AC", "gColViewerColorAC", ac_col, ImVec4(0, 0, 255, 255), false);
-        UIWidgets::EnhancementColor("AT", "gColViewerColorAT", at_col, ImVec4(255, 0, 0, 255), false);
-        UIWidgets::EnhancementColor("Waterbox", "gColViewerColorWaterbox", waterbox_col, ImVec4(0, 0, 255, 255), false);
+        UIWidgets::EnhancementCheckbox("Apply as decal", "gColViewerDecal");
+        UIWidgets::InsertHelpHoverText(
+            "Applies the collision as a decal display. This can be useful if there is z-fighting occuring "
+            "with the scene geometry, but can cause other artifacts.");
+        UIWidgets::EnhancementCheckbox("Shaded", "gColViewerShaded");
+        UIWidgets::InsertHelpHoverText("Applies the scene's shading to the collision display.");
 
-        ImGui::TreePop();
-    } else {
-        UIWidgets::InsertHelpHoverText(colorHelpText);
+        // This has to be duplicated in both code paths due to the nature of ImGui::IsItemHovered()
+        const std::string colorHelpText = "View and change the colors used for collision display.";
+        if (ImGui::TreeNode("Colors")) {
+            UIWidgets::InsertHelpHoverText(colorHelpText);
+
+            UIWidgets::EnhancementColor("Normal", "gColViewerColorNormal", scene_col, ImVec4(255, 255, 255, 255),
+                                        false);
+            UIWidgets::EnhancementColor("Hookshot", "gColViewerColorHookshot", hookshot_col, ImVec4(128, 128, 255, 255),
+                                        false);
+            UIWidgets::EnhancementColor("Entrance", "gColViewerColorEntrance", entrance_col, ImVec4(0, 255, 0, 255),
+                                        false);
+            UIWidgets::EnhancementColor("Special Surface (Grass/Sand/Etc)", "gColViewerColorSpecialSurface",
+                                        specialSurface_col, ImVec4(192, 255, 192, 255), false);
+            UIWidgets::EnhancementColor("Interactable (Vines/Crawlspace/Etc)", "gColViewerColorInteractable",
+                                        interactable_col, ImVec4(192, 0, 192, 255), false);
+            UIWidgets::EnhancementColor("Slope", "gColViewerColorSlope", slope_col, ImVec4(255, 255, 128, 255), false);
+            UIWidgets::EnhancementColor("Void", "gColViewerColorVoid", void_col, ImVec4(255, 0, 0, 255), false);
+            UIWidgets::EnhancementColor("OC", "gColViewerColorOC", oc_col, ImVec4(255, 255, 255, 255), false);
+            UIWidgets::EnhancementColor("AC", "gColViewerColorAC", ac_col, ImVec4(0, 0, 255, 255), false);
+            UIWidgets::EnhancementColor("AT", "gColViewerColorAT", at_col, ImVec4(255, 0, 0, 255), false);
+            UIWidgets::EnhancementColor("Waterbox", "gColViewerColorWaterbox", waterbox_col, ImVec4(0, 0, 255, 255),
+                                        false);
+
+            ImGui::TreePop();
+        } else {
+            UIWidgets::InsertHelpHoverText(colorHelpText);
+        }
     }
 
     ImGui::End();
@@ -308,7 +339,7 @@ void InitGfx(std::vector<Gfx>& gfx, ColRenderSetting setting) {
         alpha = 0xFF;
     }
 
-    if (CVarGetInteger("gColViewerDecal", 0) != 0) {
+    if (CVarGetInteger("gColViewerDecal", 1) != 0) {
         rm |= ZMODE_DEC;
     } else if (setting == ColRenderSetting::Transparent) {
         rm |= ZMODE_XLU;
@@ -589,8 +620,8 @@ void DrawColCheckCollision() {
     dl.push_back(gsDPSetPrimColor(0, 0, CVarGetInteger("gColViewerColorOCR", 255), CVarGetInteger("gColViewerColorOCG", 255),
                                   CVarGetInteger("gColViewerColorOCB", 255), 255));
     DrawColCheckList(dl, col.colOC, col.colOCCount);
-    dl.push_back(gsDPSetPrimColor(0, 0, CVarGetInteger("gColViewerColorACR", 0), CVarGetInteger("gColViewerColorACG", 0),
-                                  CVarGetInteger("gColViewerColorACB", 255), 255));
+    dl.push_back(gsDPSetPrimColor(0, 0, CVarGetInteger("gColViewerColorACR", 5), CVarGetInteger("gColViewerColorACG", 130),
+                                  CVarGetInteger("gColViewerColorACB", 100), 255));
     DrawColCheckList(dl, col.colAC, col.colACCount);
     dl.push_back(gsDPSetPrimColor(0, 0, CVarGetInteger("gColViewerColorATR", 255), CVarGetInteger("gColViewerColorATG", 0),
                                   CVarGetInteger("gColViewerColorATB", 0), 255));
