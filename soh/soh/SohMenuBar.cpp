@@ -1056,7 +1056,7 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Space between text characters (useful for HD font textures)");
             UIWidgets::PaddedEnhancementCheckbox("More info in file select", "gFileSelectMoreInfo", true, false);
             UIWidgets::Tooltip("Shows what items you have collected in the file select screen, like in N64 randomizer");
-            UIWidgets::PaddedEnhancementCheckbox("Better ammo rendering in pause menu", "gBetterAmmoRendering", true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Better ammo rendering in pause menu", "gEnhancements.BetterAmmoRendering", true, false);
             UIWidgets::Tooltip("Ammo counts in the pause menu will work correctly regardless of the position of items in the inventory");
             ImGui::EndMenu();
         }
