@@ -1820,7 +1820,7 @@ void DrawRandomizerMenu() {
                 "This setting is disabled because a savefile is loaded without the compass\n"
                 "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
 
-            if (UIWidgets::PaddedEnhancementCheckbox("Compass Colors Match Dungeon", "gRandoMatchCompassColors", true, false,
+            if (UIWidgets::PaddedEnhancementCheckbox("Compass Colors Match Dungeon", "gRandoEnhancement.MatchCompassColors", true, false,
                                                   disableCompassColors, disableCompassColorsText, UIWidgets::CheckboxGraphics::Cross, true)) {
                 PatchCompasses();
             }
