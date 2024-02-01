@@ -170,28 +170,49 @@ void InputViewer::DrawElement() {
             }
 
             // Buttons
-            if (CVarGetInteger("gInputViewer.LBtn", 1)) {
+            if (CVarGetInteger("gInputViewer.BBtn", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("L-Btn", "L-Btn Outline", pads[0].button & BTN_L, scaledBGSize, buttonOutlineMode);
+                RenderButton("B-Btn", "B-Btn Outline", pads[0].button & BTN_B, scaledBGSize, buttonOutlineMode);
+            }
+            if (CVarGetInteger("gInputViewer.ABtn", 1)) {
+                ImGui::SetNextItemAllowOverlap();
+                ImGui::SetCursorPos(aPos);
+                RenderButton("A-Btn", "A-Btn Outline", pads[0].button & BTN_A, scaledBGSize, buttonOutlineMode);
             }
 
-            if (CVarGetInteger("gInputViewer.CBtns", 1)) {
+            if (CVarGetInteger("gInputViewer.CUp", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("C-Up", "C-Up Outline", pads[0].button & BTN_CUP, scaledBGSize, buttonOutlineMode);
+            }
+            if (CVarGetInteger("gInputViewer.CLeft", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("C-Left", "C-Left Outline", pads[0].button & BTN_CLEFT, scaledBGSize, buttonOutlineMode);
+            }
+            if (CVarGetInteger("gInputViewer.CRight", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("C-Right", "C-Right Outline", pads[0].button & BTN_CRIGHT, scaledBGSize,
                              buttonOutlineMode);
+            }
+            if (CVarGetInteger("gInputViewer.CDown", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("C-Down", "C-Down Outline", pads[0].button & BTN_CDOWN, scaledBGSize, buttonOutlineMode);
             }
 
+            if (CVarGetInteger("gInputViewer.LBtn", 1)) {
+                ImGui::SetNextItemAllowOverlap();
+                ImGui::SetCursorPos(aPos);
+                RenderButton("L-Btn", "L-Btn Outline", pads[0].button & BTN_L, scaledBGSize, buttonOutlineMode);
+            }
+            if (CVarGetInteger("gInputViewer.RBtn", 1)) {
+                ImGui::SetNextItemAllowOverlap();
+                ImGui::SetCursorPos(aPos);
+                RenderButton("R-Btn", "R-Btn Outline", pads[0].button & BTN_R, scaledBGSize, buttonOutlineMode);
+            }
             if (CVarGetInteger("gInputViewer.ZBtn", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
@@ -203,24 +224,6 @@ void InputViewer::DrawElement() {
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Start-Btn", "Start-Btn Outline", pads[0].button & BTN_START, scaledBGSize,
                              buttonOutlineMode);
-            }
-
-            if (CVarGetInteger("gInputViewer.RBtn", 1)) {
-                ImGui::SetNextItemAllowOverlap();
-                ImGui::SetCursorPos(aPos);
-                RenderButton("R-Btn", "R-Btn Outline", pads[0].button & BTN_R, scaledBGSize, buttonOutlineMode);
-            }
-
-            if (CVarGetInteger("gInputViewer.BBtn", 1)) {
-                ImGui::SetNextItemAllowOverlap();
-                ImGui::SetCursorPos(aPos);
-                RenderButton("B-Btn", "B-Btn Outline", pads[0].button & BTN_B, scaledBGSize, buttonOutlineMode);
-            }
-
-            if (CVarGetInteger("gInputViewer.ABtn", 1)) {
-                ImGui::SetNextItemAllowOverlap();
-                ImGui::SetCursorPos(aPos);
-                RenderButton("A-Btn", "A-Btn Outline", pads[0].button & BTN_A, scaledBGSize, buttonOutlineMode);
             }
 
             if (CVarGetInteger("gInputViewer.Dpad", 0)) {
@@ -369,39 +372,51 @@ void InputViewerSettingsWindow::DrawElement() {
 
         UIWidgets::PaddedSeparator(true, true);
 
-        // gInputViewer.ABtn
-        UIWidgets::EnhancementCheckbox("Show A-Button Layers", "gInputViewer.ABtn", false, "",
-                                       UIWidgets::CheckboxGraphics::Checkmark, true);
-        // gInputViewer.BBtn
-        UIWidgets::EnhancementCheckbox("Show B-Button Layers", "gInputViewer.BBtn", false, "",
-                                       UIWidgets::CheckboxGraphics::Checkmark, true);
-        // gInputViewer.CBtns
-        UIWidgets::EnhancementCheckbox("Show C-Button Layers", "gInputViewer.CBtns", false, "",
-                                       UIWidgets::CheckboxGraphics::Checkmark, true);
-        // gInputViewer.Dpad
-        UIWidgets::EnhancementCheckbox("Show D-Pad Layers", "gInputViewer.Dpad", false, "",
-                                       UIWidgets::CheckboxGraphics::Checkmark, false);
-        // gInputViewer.LBtn
-        UIWidgets::EnhancementCheckbox("Show L-Button Layers", "gInputViewer.LBtn", false, "",
-                                       UIWidgets::CheckboxGraphics::Checkmark, true);
-        // gInputViewer.RBtn
-        UIWidgets::EnhancementCheckbox("Show R-Button Layers", "gInputViewer.RBtn", false, "",
-                                       UIWidgets::CheckboxGraphics::Checkmark, true);
-        // gInputViewer.ZBtn
-        UIWidgets::EnhancementCheckbox("Show Z-Button Layers", "gInputViewer.ZBtn", false, "",
-                                       UIWidgets::CheckboxGraphics::Checkmark, true);
-        // gInputViewer.StartBtn
-        UIWidgets::EnhancementCheckbox("Show Start Button Layers", "gInputViewer.StartBtn", false, "",
-                                       UIWidgets::CheckboxGraphics::Checkmark, true);
+        if (ImGui::CollapsingHeader("Buttons")) {
+            // gInputViewer.ABtn
+            UIWidgets::EnhancementCheckbox("Show A-Button Layers", "gInputViewer.ABtn", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            // gInputViewer.BBtn
+            UIWidgets::EnhancementCheckbox("Show B-Button Layers", "gInputViewer.BBtn", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            // gInputViewer.CUp
+            UIWidgets::EnhancementCheckbox("Show C-Up Layers", "gInputViewer.CUp", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            // gInputViewer.CRight
+            UIWidgets::EnhancementCheckbox("Show C-Right Layers", "gInputViewer.CRight", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            // gInputViewer.CDown
+            UIWidgets::EnhancementCheckbox("Show C-Down Layers", "gInputViewer.CDown", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            // gInputViewer.CLeft
+            UIWidgets::EnhancementCheckbox("Show C-Left Layers", "gInputViewer.CLeft", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            // gInputViewer.LBtn
+            UIWidgets::EnhancementCheckbox("Show L-Button Layers", "gInputViewer.LBtn", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            // gInputViewer.RBtn
+            UIWidgets::EnhancementCheckbox("Show R-Button Layers", "gInputViewer.RBtn", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            // gInputViewer.ZBtn
+            UIWidgets::EnhancementCheckbox("Show Z-Button Layers", "gInputViewer.ZBtn", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            // gInputViewer.StartBtn
+            UIWidgets::EnhancementCheckbox("Show Start Button Layers", "gInputViewer.StartBtn", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            // gInputViewer.Dpad
+            UIWidgets::EnhancementCheckbox("Show D-Pad Layers", "gInputViewer.Dpad", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, false);
 
-        // gInputViewer.ButtonOutlineMode
-        UIWidgets::PaddedText("Button Outlines/Backgrounds", true, false);
-        UIWidgets::EnhancementCombobox("gInputViewer.ButtonOutlineMode", buttonOutlineOptions,
-                                       BUTTON_OUTLINE_NOT_PRESSED);
-        UIWidgets::Tooltip("Sets the desired visibility behavior for the button outline/background layers. Useful for "
-                           "custom input viewers.");
+            // gInputViewer.ButtonOutlineMode
+            UIWidgets::PaddedText("Button Outlines/Backgrounds", true, false);
+            UIWidgets::EnhancementCombobox("gInputViewer.ButtonOutlineMode", buttonOutlineOptions,
+                                           BUTTON_OUTLINE_NOT_PRESSED);
+            UIWidgets::Tooltip(
+                "Sets the desired visibility behavior for the button outline/background layers. Useful for "
+                "custom input viewers.");
 
-        UIWidgets::PaddedSeparator(true, true);
+            UIWidgets::PaddedSeparator(true, true);
+        }
 
         if (ImGui::CollapsingHeader("Analog Stick")) {
             // gInputViewer.AnalogStick.VisibilityMode
