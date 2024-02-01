@@ -90,11 +90,13 @@ void ColViewerWindow::DrawElement() {
         UIWidgets::LabeledRightAlignedEnhancementCombobox("Waterbox", "gColViewerWaterbox", ColRenderSettingNames,
                                                           COLVIEW_DISABLED);
 
-        UIWidgets::EnhancementCheckbox("Apply as decal", "gColViewerDecal");
+        UIWidgets::EnhancementCheckbox("Apply as decal", "gColViewerDecal", false,
+                                       "", UIWidgets::CheckboxGraphics::Cross, true);
         UIWidgets::InsertHelpHoverText(
             "Applies the collision as a decal display. This can be useful if there is z-fighting occuring "
             "with the scene geometry, but can cause other artifacts.");
-        UIWidgets::EnhancementCheckbox("Shaded", "gColViewerShaded");
+        UIWidgets::EnhancementCheckbox("Shaded", "gColViewerShaded", false, "", UIWidgets::CheckboxGraphics::Cross,
+                                       true);
         UIWidgets::InsertHelpHoverText("Applies the scene's shading to the collision display.");
 
         // This has to be duplicated in both code paths due to the nature of ImGui::IsItemHovered()
@@ -115,7 +117,7 @@ void ColViewerWindow::DrawElement() {
             UIWidgets::EnhancementColor("Slope", "gColViewerColorSlope", slope_col, ImVec4(255, 255, 128, 255), false);
             UIWidgets::EnhancementColor("Void", "gColViewerColorVoid", void_col, ImVec4(255, 0, 0, 255), false);
             UIWidgets::EnhancementColor("OC", "gColViewerColorOC", oc_col, ImVec4(255, 255, 255, 255), false);
-            UIWidgets::EnhancementColor("AC", "gColViewerColorAC", ac_col, ImVec4(0, 0, 255, 255), false);
+            UIWidgets::EnhancementColor("AC", "gColViewerColorAC", ac_col, ImVec4(5, 130, 100, 255), false);
             UIWidgets::EnhancementColor("AT", "gColViewerColorAT", at_col, ImVec4(255, 0, 0, 255), false);
             UIWidgets::EnhancementColor("Waterbox", "gColViewerColorWaterbox", waterbox_col, ImVec4(0, 0, 255, 255),
                                         false);
