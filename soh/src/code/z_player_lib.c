@@ -1210,14 +1210,19 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
         LINK_IS_CHILD) {
         if (limbIndex == PLAYER_LIMB_SHEATH) {
             if (this->currentShield == PLAYER_SHIELD_HYLIAN &&
-                (this->sheathType == PLAYER_MODELTYPE_SHEATH_18 ||
-                 this->sheathType == PLAYER_MODELTYPE_SHEATH_19)) {
+                (this->sheathType == PLAYER_MODELTYPE_SHEATH_18 || this->sheathType == PLAYER_MODELTYPE_SHEATH_19) &&
+                (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI ||
+                 gSaveContext.equips.buttonItems[0] == ITEM_NONE ||
+                 gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE)) {
                 Matrix_Translate(218, 0, 62, MTXMODE_APPLY);
                 Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
             }
         }
         if (limbIndex == PLAYER_LIMB_R_HAND) {
-            if (this->currentShield == PLAYER_SHIELD_HYLIAN && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) {
+            if ((this->currentShield == PLAYER_SHIELD_HYLIAN && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) &&
+                (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI ||
+                 gSaveContext.equips.buttonItems[0] == ITEM_NONE ||
+                 gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE)) {
                 Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
             }
         }
