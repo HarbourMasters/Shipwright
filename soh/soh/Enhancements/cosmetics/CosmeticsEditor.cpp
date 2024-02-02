@@ -1828,14 +1828,11 @@ void CosmeticsEditorWindow::DrawElement() {
     }
     UIWidgets::EnhancementCheckbox("Sync Rainbow colors", "gCosmetics.RainbowSync");
     UIWidgets::EnhancementSliderFloat("Rainbow Speed: %.3f", "##rainbowSpeed", "gCosmetics.RainbowSpeed", 0.03f, 1.0f, "", 0.6f, false, true);
+    UIWidgets::EnhancementCheckbox("Randomize All on New Scene", "gCosmetics.RandomizeAllOnNewScene");
+    UIWidgets::Tooltip("Enables randomizing all unlocked cosmetics when you enter a new scene.");
+
     if (ImGui::Button("Randomize All", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
-        for (auto& [id, cosmeticOption] : cosmeticOptions) {
-            if (!CVarGetInteger(cosmeticOption.lockedCvar, 0) && (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0))) {
-                RandomizeColor(cosmeticOption);
-            }
-        }
-        ApplyOrResetCustomGfxPatches();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        CosmeticsEditor_RandomizeAll();
     }
     ImGui::SameLine();
     if (ImGui::Button("Reset All", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
@@ -1934,6 +1931,14 @@ void RegisterOnGameFrameUpdateHook() {
     });
 }
 
+void Cosmetics_RegisterOnSceneInitHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        if (CVarGetInteger("gCosmetics.RandomizeAllOnNewScene", 0)) {
+            CosmeticsEditor_RandomizeAll();
+        }
+    });
+}
+
 void CosmeticsEditorWindow::InitElement() {
     // Convert the `current color` into the format that the ImGui color picker expects
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
@@ -1951,6 +1956,7 @@ void CosmeticsEditorWindow::InitElement() {
 
     RegisterOnLoadGameHook();
     RegisterOnGameFrameUpdateHook();
+    Cosmetics_RegisterOnSceneInitHook();
 }
 
 void CosmeticsEditor_RandomizeAll() {
