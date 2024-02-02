@@ -1681,15 +1681,21 @@ void SohInputEditorWindow::DrawMiscControlPanel() {
                  "certain items.");
     UIWidgets::Spacer(0);
     ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
-    UIWidgets::PaddedEnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify", true, false);
-    UIWidgets::Tooltip("Hold the assigned button to change the maximum walking speed\nTo change the assigned button, go into the Ports tabs above");
+    UIWidgets::PaddedEnhancementCheckbox("Enable speed modifiers", "gEnableWalkModify", true, false);
+    UIWidgets::Tooltip("Hold the assigned button to change the maximum walking or swimming speed");
      if (CVarGetInteger("gEnableWalkModify", 0)) {
         UIWidgets::Spacer(5);
-        LUS::GuiWindow::BeginGroupPanel("Walk Modifier", ImGui::GetContentRegionAvail());
+        LUS::GuiWindow::BeginGroupPanel("Speed Modifier", ImGui::GetContentRegionAvail());
         UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding", "gWalkSpeedToggle", true, false);
+        LUS::GuiWindow::BeginGroupPanel("Walk Modifier", ImGui::GetContentRegionAvail());
         UIWidgets::PaddedEnhancementCheckbox("Don't affect jump distance/velocity", "gWalkModifierDoesntChangeJump", true, false);
-        UIWidgets::PaddedEnhancementSliderFloat("Modifier 1: %.0f %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
-        UIWidgets::PaddedEnhancementSliderFloat("Modifier 2: %.0f %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+        UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 1: %.0f %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+        UIWidgets::PaddedEnhancementSliderFloat("Walk Modifier 2: %.0f %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+        LUS::GuiWindow::EndGroupPanel(0);
+        LUS::GuiWindow::BeginGroupPanel("Swim Modifier", ImGui::GetContentRegionAvail());
+        UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 1: %.0f %%", "##SwimMod1", "gSwimModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+        UIWidgets::PaddedEnhancementSliderFloat("Swim Modifier 2: %.0f %%", "##SwimMod2", "gSwimModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+        LUS::GuiWindow::EndGroupPanel(0);
         LUS::GuiWindow::EndGroupPanel(0);
     }
     ImGui::EndDisabled();
