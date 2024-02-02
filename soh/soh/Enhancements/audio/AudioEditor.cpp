@@ -411,7 +411,7 @@ void DrawTypeChip(SeqType type) {
 
 void AudioEditorRegisterOnSceneInitHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-        if (CVarGetInteger("gAudioRandomizeAllOnNewScene", 0)) {
+        if (CVarGetInteger("gAudioEditor.RandomizeAllOnNewScene", 0)) {
             AudioEditor_RandomizeAll();
         }
     });
