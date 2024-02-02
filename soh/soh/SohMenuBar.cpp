@@ -574,6 +574,8 @@ void DrawEnhancementsMenu() {
                         "This doesn't work if the save was made in a grotto.");
                 UIWidgets::PaddedEnhancementCheckbox("No Forced Navi", "gNoForcedNavi", true, false);
                 UIWidgets::Tooltip("Prevent forced Navi conversations");
+                UIWidgets::PaddedEnhancementCheckbox("Navi Timer Resets", "gEnhancements.ResetNaviTimer", true, false);
+                UIWidgets::Tooltip("Resets the Navi timer on scene change. If you have already talked to her, she will try and talk to you again, instead of needing a save warp or death. ");
                 UIWidgets::PaddedEnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze", true, false);
                 UIWidgets::Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
                 UIWidgets::PaddedEnhancementCheckbox("Nighttime GS Always Spawn", "gNightGSAlwaysSpawn", true, false);
