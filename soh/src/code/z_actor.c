@@ -2872,6 +2872,7 @@ s32 func_800314D4(PlayState* play, Actor* actor, Vec3f* arg2, f32 arg3) {
             (((arg2->y - actor->uncullZoneScale) * var) < limit)) {
             return true;
         }
+        // #endregion
     }
 
     return false;
