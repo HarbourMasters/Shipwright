@@ -149,6 +149,13 @@ bool Scene_CommandMeshHeader(PlayState* play, LUS::ISceneCommand* cmd) {
 
 extern "C" void* func_800982FC(ObjectContext* objectCtx, s32 bankIndex, s16 objectId);
 
+bool OTRfunc_800982FC(ObjectContext* objectCtx, s32 bankIndex, s16 objectId) {
+
+    objectCtx->status[bankIndex].id = -objectId;
+
+    return false;
+}
+
 bool Scene_CommandObjectList(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetObjectList* cmdObj = static_pointer_cast<LUS::SetObjectList>(cmd);
     LUS::SetObjectList* cmdObj = (LUS::SetObjectList*)cmd;
@@ -164,49 +171,30 @@ bool Scene_CommandObjectList(PlayState* play, LUS::ISceneCommand* cmd) {
     void* nextPtr;
 
     k = 0;
-    // i = play->objectCtx.unk_09;
-    i = 0;
+    i = play->objectCtx.unk_09;
     firstStatus = &play->objectCtx.status[0];
     status = &play->objectCtx.status[i];
 
-    for (int i = 0; i < cmdObj->objects.size(); i++) {
-        bool alreadyIncluded = false;
-
-        for (int j = 0; j < play->objectCtx.num; j++) {
-            if (play->objectCtx.status[j].id == cmdObj->objects[i]) {
-                alreadyIncluded = true;
-                break;
+    // Loop until a mismatch in the object lists
+    // Then clear all object ids past that in the context object list and kill actors for those objects
+    for (i = play->objectCtx.unk_09, k = 0; i < play->objectCtx.num; i++, k++) {
+        if (play->objectCtx.status[i].id != cmdObj->objects[k]) {
+            for (j = i; j < play->objectCtx.num; j++) {
+                play->objectCtx.status[j].id = OBJECT_INVALID;
             }
-        }
-
-        if (!alreadyIncluded) {
-            play->objectCtx.status[play->objectCtx.num++].id = cmdObj->objects[i];
             func_80031A28(play, &play->actorCtx);
+            break;
         }
     }
 
-    /*
-    while (i < play->objectCtx.num) {
-        if (status->id != *objectEntry) {
-            status2 = &play->objectCtx.status[i];
-            for (j = i; j < play->objectCtx.num; j++) {
-                status2->id = OBJECT_INVALID;
-                status2++;
-            }
-            play->objectCtx.num = i;
-            func_80031A28(play, &play->actorCtx);
-
-            continue;
+    // Continuing from the last index, add the remaining object ids from the command object list
+    for (; k < cmdObj->objects.size(); k++, i++) {
+        if (i < OBJECT_EXCHANGE_BANK_MAX - 1) {
+            OTRfunc_800982FC(&play->objectCtx, i, cmdObj->objects[k]);
         }
-
-        i++;
-        k++;
-        objectEntry++;
-        status++;
     }
 
     play->objectCtx.num = i;
-    */
 
     return false;
 }
