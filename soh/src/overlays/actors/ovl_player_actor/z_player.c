@@ -1074,15 +1074,6 @@ static s8 sItemActions[] = {
     PLAYER_IA_SWORD_KOKIRI,        // ITEM_SWORD_KOKIRI
     PLAYER_IA_SWORD_MASTER,        // ITEM_SWORD_MASTER
     PLAYER_IA_SWORD_BIGGORON,      // ITEM_SWORD_BIGGORON
-    PLAYER_IA_SHIELD_DEKU,         // ITEM_SHIELD_DEKU
-    PLAYER_IA_SHIELD_HYLIAN,       // ITEM_SHIELD_HYLIAN
-    PLAYER_IA_SHIELD_MIRROR,       // ITEM_SHIELD_MIRROR
-    PLAYER_IA_TUNIC_KOKIRI,        // ITEM_TUNIC_KOKIRI
-    PLAYER_IA_TUNIC_GORON,         // ITEM_TUNIC_GORON
-    PLAYER_IA_TUNIC_ZORA,          // ITEM_TUNIC_ZORA
-    PLAYER_IA_BOOTS_KOKIRI,        // ITEM_BOOTS_KOKIRI
-    PLAYER_IA_BOOTS_IRON,          // ITEM_BOOTS_IRON
-    PLAYER_IA_BOOTS_HOVER,         // ITEM_BOOTS_HOVER
 };
 
 static u8 sMaskMemory;
@@ -1157,15 +1148,6 @@ static s32 (*sItemActionUpdateFuncs[])(Player* this, PlayState* play) = {
     func_8083485C, // PLAYER_IA_MASK_GERUDO
     func_8083485C, // PLAYER_IA_MASK_TRUTH
     func_8083485C, // PLAYER_IA_LENS_OF_TRUTH
-    func_8083485C, // PLAYER_IA_SHIELD_DEKU
-    func_8083485C, // PLAYER_IA_SHIELD_HYLIAN
-    func_8083485C, // PLAYER_IA_SHIELD_MIRROR
-    func_8083485C, // PLAYER_IA_TUNIC_KOKIRI
-    func_8083485C, // PLAYER_IA_TUNIC_GORON
-    func_8083485C, // PLAYER_IA_TUNIC_ZORA
-    func_8083485C, // PLAYER_IA_BOOTS_KOKIRI
-    func_8083485C, // PLAYER_IA_BOOTS_IRON
-    func_8083485C, // PLAYER_IA_BOOTS_HOVER
 };
 
 static void (*sItemActionInitFuncs[])(PlayState* play, Player* this) = {
@@ -1236,15 +1218,6 @@ static void (*sItemActionInitFuncs[])(PlayState* play, Player* this) = {
     func_80833770, // PLAYER_IA_MASK_GERUDO
     func_80833770, // PLAYER_IA_MASK_TRUTH
     func_80833770, // PLAYER_IA_LENS_OF_TRUTH
-    func_80833770, // PLAYER_IA_SHIELD_DEKU
-    func_80833770, // PLAYER_IA_SHIELD_HYLIAN
-    func_80833770, // PLAYER_IA_SHIELD_MIRROR
-    func_80833770, // PLAYER_IA_TUNIC_KOKIRI
-    func_80833770, // PLAYER_IA_TUNIC_GORON
-    func_80833770, // PLAYER_IA_TUNIC_ZORA
-    func_80833770, // PLAYER_IA_BOOTS_KOKIRI
-    func_80833770, // PLAYER_IA_BOOTS_IRON
-    func_80833770, // PLAYER_IA_BOOTS_HOVER
 };
 
 typedef enum {
@@ -2037,6 +2010,10 @@ s8 Player_ItemToItemAction(s32 item) {
         return PLAYER_IA_LAST_USED;
     } else if (item == ITEM_FISHING_POLE) {
         return PLAYER_IA_FISHING_POLE;
+    // #region SOH [Enhancement] Added to prevent crashes with assignable equipment
+    } else if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+        return PLAYER_IA_NONE;
+    // #endregion
     } else {
         return sItemActions[item];
     }
@@ -3167,8 +3144,7 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
 
         if ((itemAction == PLAYER_IA_NONE) || !(this->stateFlags1 & PLAYER_STATE1_IN_WATER) ||
             ((this->actor.bgCheckFlags & 1) &&
-             ((itemAction == PLAYER_IA_HOOKSHOT) || (itemAction == PLAYER_IA_LONGSHOT))) ||
-            ((itemAction >= PLAYER_IA_SHIELD_DEKU) && (itemAction <= PLAYER_IA_BOOTS_HOVER))) {
+             ((itemAction == PLAYER_IA_HOOKSHOT) || (itemAction == PLAYER_IA_LONGSHOT)))) {
 
             if ((play->bombchuBowlingStatus == 0) &&
                 (((itemAction == PLAYER_IA_DEKU_STICK) && (AMMO(ITEM_STICK) == 0)) ||
@@ -3177,12 +3153,6 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
                   ((temp >= 0) && ((AMMO(sExplosiveInfos[temp].itemId) == 0) ||
                                    (play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].length >= 3 && !CVarGetInteger("gRemoveExplosiveLimit", 0))))))) {
                 func_80078884(NA_SE_SY_ERROR);
-                return;
-            }
-
-            if (itemAction >= PLAYER_IA_SHIELD_DEKU) {
-                // Changing shields through action commands is unimplemented
-                // Boots and tunics handled previously
                 return;
             }
 
@@ -7265,11 +7235,41 @@ s32 func_8083FD78(Player* this, f32* arg1, s16* arg2, PlayState* play) {
             *arg2 = this->actor.shape.rot.y;
         }
 
-        if (this->unk_664 != NULL) {
-            func_8083DB98(this, 1);
+        // #region SOH [Enhancement]
+        if (CVarGetInteger("gRightStickAiming", 0) || !CVarGetInteger("gInvertZAimingYAxis", 1)) {
+            
+            if (this->unk_664 != NULL) {
+                func_8083DB98(this, 1);
+            } else {
+                int8_t relStickY;
+
+                // preserves simultaneous left/right-stick aiming
+                if (CVarGetInteger("gRightStickAiming", 0)) {
+                    if ((sControlInput->rel.stick_y + sControlInput->rel.right_stick_y) >= 0) {
+                        relStickY = (((sControlInput->rel.stick_y) > (sControlInput->rel.right_stick_y))
+                                         ? (sControlInput->rel.stick_y)
+                                         : (sControlInput->rel.right_stick_y));
+                    } else {
+                        relStickY = (((sControlInput->rel.stick_y) < (sControlInput->rel.right_stick_y))
+                                         ? (sControlInput->rel.stick_y)
+                                         : (sControlInput->rel.right_stick_y));
+                    }
+                } else {
+                    relStickY = sControlInput->rel.stick_y;
+                }
+
+                Math_SmoothStepToS(&this->actor.focus.rot.x,
+                                   relStickY * (CVarGetInteger("gInvertZAimingYAxis", 1) ? 1 : -1) * 240.0f, 14, 4000, 30);
+                func_80836AB8(this, 1);
+            }
+        // #endregion
         } else {
-            Math_SmoothStepToS(&this->actor.focus.rot.x, sControlInput->rel.stick_y * 240.0f, 14, 4000, 30);
-            func_80836AB8(this, 1);
+            if (this->unk_664 != NULL) {
+                func_8083DB98(this, 1);
+            } else {
+                Math_SmoothStepToS(&this->actor.focus.rot.x, sControlInput->rel.stick_y * 240.0f, 14, 4000, 30);
+                func_80836AB8(this, 1);
+            }
         }
     } else {
         if (this->unk_664 != NULL) {
@@ -11000,46 +11000,39 @@ static f32 D_8085482C[] = { 0.5f, 1.0f, 3.0f };
 
 void Player_UseTunicBoots(Player* this, PlayState* play) {
     // Boots and tunics equip despite state
-    s32 i;
-    s32 item;
-    s32 itemAction;
-    if (!(
-        this->stateFlags1 & PLAYER_STATE1_INPUT_DISABLED || 
-        this->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || 
-        this->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE || 
-        this->stateFlags1 & PLAYER_STATE1_TEXT_ON_SCREEN || 
-        this->stateFlags1 & PLAYER_STATE1_DEAD || 
+    if (
+        this->stateFlags1 & (PLAYER_STATE1_INPUT_DISABLED | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE | PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_DEAD) ||
         this->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING
-    )) {
-        for (i = 0; i < ARRAY_COUNT(sItemButtons); i++) {
-            if (CHECK_BTN_ALL(sControlInput->press.button, sItemButtons[i])) {
-                break;
-            }
+    ) {
+        return;
+    }
+
+    s32 i;
+    for (i = 0; i < ARRAY_COUNT(sItemButtons); i++) {
+        if (CHECK_BTN_ALL(sControlInput->press.button, sItemButtons[i])) {
+            break;
         }
-        item = Player_GetItemOnButton(play, i);
-        if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
-            this->heldItemButton = i;
-            itemAction = Player_ItemToItemAction(item);
-            if (itemAction >= PLAYER_IA_BOOTS_KOKIRI) {
-                u16 bootsValue = itemAction - PLAYER_IA_BOOTS_KOKIRI + 1;
-                if (CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == bootsValue) {
-                    Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_KOKIRI);
-                } else {
-                    Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, bootsValue);
-                }
-                Player_SetEquipmentData(play, this);
-                func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == EQUIP_VALUE_BOOTS_IRON ? NA_SE_PL_WALK_HEAVYBOOTS
-                                                                                            : NA_SE_PL_CHANGE_ARMS);
-            } else if (itemAction >= PLAYER_IA_TUNIC_KOKIRI) {
-                u16 tunicValue = itemAction - PLAYER_IA_TUNIC_KOKIRI + 1;
-                if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == tunicValue) {
-                    Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_KOKIRI);
-                } else {
-                    Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, tunicValue);
-                }
-                Player_SetEquipmentData(play, this);
-                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+    }
+    s32 item = Player_GetItemOnButton(play, i);
+    if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+        if (item >= ITEM_BOOTS_KOKIRI) {
+            u16 bootsValue = item - ITEM_BOOTS_KOKIRI + 1;
+            if (CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == bootsValue) {
+                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_KOKIRI);
+            } else {
+                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, bootsValue);
             }
+            Player_SetEquipmentData(play, this);
+            func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == EQUIP_VALUE_BOOTS_IRON ? NA_SE_PL_WALK_HEAVYBOOTS : NA_SE_PL_CHANGE_ARMS);
+        } else {
+            u16 tunicValue = item - ITEM_TUNIC_KOKIRI + 1;
+            if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == tunicValue) {
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_KOKIRI);
+            } else {
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, tunicValue);
+            }
+            Player_SetEquipmentData(play, this);
+            func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
         }
     }
 }
@@ -11933,6 +11926,68 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
 void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     f32 temp1;
     f32 temp2;
+    
+    // #region SOH [Enhancement]
+    f32 swimMod = 1.0f;
+
+    if (CVarGetInteger("gEnableWalkModify", 0) == 1) {
+        if (CVarGetInteger("gWalkSpeedToggle", 0) == 1) {
+            if (gWalkSpeedToggle1) {
+                swimMod *= CVarGetFloat("gSwimModifierOne", 1.0f);
+            } else if (gWalkSpeedToggle2) {
+                swimMod *= CVarGetFloat("gSwimModifierTwo", 1.0f);
+            }
+        } else {
+            if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
+                swimMod *= CVarGetFloat("gSwimModifierOne", 1.0f);
+            } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
+                swimMod *= CVarGetFloat("gSwimModifierTwo", 1.0f);
+            }
+        }
+        temp1 = this->skelAnime.curFrame - 10.0f;
+
+        temp2 = (R_RUN_SPEED_LIMIT / 100.0f) * 0.8f * swimMod;
+        if (*arg1 > temp2) {
+            *arg1 = temp2;
+        }
+    
+        if ((0.0f < temp1) && (temp1 < 10.0f)) {
+            temp1 *= 6.0f;
+        } else {
+            temp1 = 0.0f;
+            arg2 = 0.0f;
+        }
+
+        Math_AsymStepToF(arg1, arg2 * 0.8f * swimMod, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
+        Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
+    // #endregion
+    } else {
+
+        temp1 = this->skelAnime.curFrame - 10.0f;
+
+        temp2 = (R_RUN_SPEED_LIMIT / 100.0f) * 0.8f;
+        if (*arg1 > temp2) {
+            *arg1 = temp2;
+        }
+
+        if ((0.0f < temp1) && (temp1 < 10.0f)) {
+            temp1 *= 6.0f;
+        } else {
+            temp1 = 0.0f;
+            arg2 = 0.0f;
+        }
+
+        Math_AsymStepToF(arg1, arg2 * 0.8f, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
+        Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
+    }
+}
+
+// #region SOH [Enhancement]
+//Diving uses function func_8084AEEC to calculate changes both xz and y velocity (via func_8084DBC4)
+//Provide original calculation for y velocity when swim speed mod is active
+void SurfaceWithoutSwimMod(Player* this, f32* arg1, f32 arg2, s16 arg3) {
+    f32 temp1;
+    f32 temp2;
 
     temp1 = this->skelAnime.curFrame - 10.0f;
 
@@ -11951,6 +12006,7 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     Math_AsymStepToF(arg1, arg2 * 0.8f, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
     Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
 }
+// #endregion
 
 void func_8084B000(Player* this) {
     f32 phi_f18;
@@ -13105,7 +13161,14 @@ void func_8084DBC4(PlayState* play, Player* this, f32 arg2) {
 
     Player_GetMovementSpeedAndYaw(this, &sp2C, &sp2A, 0.0f, play);
     func_8084AEEC(this, &this->linearVelocity, sp2C * 0.5f, sp2A);
-    func_8084AEEC(this, &this->actor.velocity.y, arg2, this->currentYaw);
+    // Original implementation of func_8084AEEC (SurfaceWithoutSwimMod) to prevent velocity increases via swim mod which push Link into the air
+    // #region SOH [Enhancement]
+    if (CVarGetInteger("gEnableWalkModify", 0)) {
+        SurfaceWithoutSwimMod(this, &this->actor.velocity.y, arg2, this->currentYaw);
+    // #endregion
+    } else {
+        func_8084AEEC(this, &this->actor.velocity.y, arg2, this->currentYaw);
+    }
 }
 
 void func_8084DC48(Player* this, PlayState* play) {

@@ -1085,7 +1085,7 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
                     ImGui::SameLine();
                     ImGui::Text("Custom Color");
                 }
-                UIWidgets::PaddedEnhancementSliderFloat("Brightness: %d%%", "##LED_Brightness", "gLedBrightness", 0.0f,
+                UIWidgets::PaddedEnhancementSliderFloat("Brightness: %.1f %%", "##LED_Brightness", "gLedBrightness", 0.0f,
                                                         1.0f, "", 1.0f, true, true);
                 DrawHelpIcon("Sets the brightness of controller LEDs. 0% brightness = LEDs off.");
                 UIWidgets::PaddedEnhancementCheckbox(
