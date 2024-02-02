@@ -879,7 +879,7 @@ void EnPartner_Draw(Actor* thisx, PlayState* play) {
 
     gSPEndDisplayList(dListHead++);
     gDPSetEnvColor(POLY_XLU_DISP++, (u8)this->outerColor.r, (u8)this->outerColor.g, (u8)this->outerColor.b,
-                  (u8)(envAlpha * alphaScale));
+                   (u8)(envAlpha * alphaScale));
     POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                    EnPartner_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
 
