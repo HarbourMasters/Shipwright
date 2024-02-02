@@ -800,7 +800,7 @@ void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
         float angle = (float)i / items.size() * 2.0f * M_PI;
         float x = (radius / 2.0f) * cos(angle) + max.x / 2.0f;
         float y = (radius / 2.0f) * sin(angle) + max.y / 2.0f;
-        ImGui::SetCursorPos(ImVec2(x - 14, y + 4));
+        ImGui::SetCursorPos(ImVec2(x - (CVarGetInteger("gItemTrackerIconSize", 36) - 8) / 2.0f, y + 4));
         items[i].drawFunc(items[i]);
     }
 }
@@ -1167,7 +1167,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
         shouldUpdateVectors = true;
     }
     if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_SEPARATE) {
-        if (UIWidgets::PaddedEnhancementCheckbox("Circle display", "gItemTrackerDungeonRewardsCircle", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
+        if (UIWidgets::PaddedEnhancementCheckbox("Circle display", "gItemTrackerDungeonRewardsCircle", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, false)) {
             shouldUpdateVectors = true;
         }
     }
