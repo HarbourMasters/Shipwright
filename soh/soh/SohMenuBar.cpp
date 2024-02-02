@@ -542,6 +542,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", "gMweepSpeed", 1, 5, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "", 0, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Block pushing speed +%d", "##BLOCKSPEED", "gFasterBlockPush", 0, 5, "", 0, true, false, true);
+                UIWidgets::PaddedEnhancementSliderInt("Crawl speed %dx", "##CRAWLSPEED", "gCrawlSpeed", 1, 5, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementCheckbox("Faster Heavy Block Lift", "gFasterHeavyBlockLift", false, false);
                 UIWidgets::Tooltip("Speeds up lifting silver rocks and obelisks");
                 UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", "gFastDrops", true, false);
@@ -610,6 +611,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking to the guard next to the gate.");
                 UIWidgets::PaddedEnhancementCheckbox("Link as default file name", "gLinkDefaultName", true, false);
                 UIWidgets::Tooltip("Allows you to have \"Link\" as a premade file name");
+				UIWidgets::PaddedEnhancementCheckbox("Quit Fishing At Door", "gQuitFishingAtDoor", true, false);
+                UIWidgets::Tooltip("Fisherman asks if you want to quit at the door when you still have the rod");
                 UIWidgets::PaddedText("Time Travel with the Song of Time", true, false);
                 UIWidgets::EnhancementCombobox("gTimeTravel", timeTravelOptions, 0);
                 UIWidgets::Tooltip("Allows Link to freely change age by playing the Song of Time.\n"
@@ -1416,7 +1419,7 @@ void DrawCheatsMenu() {
         UIWidgets::PaddedEnhancementCheckbox("Easy Frame Advancing", "gCheatEasyPauseBufferEnabled", true, false);
         UIWidgets::Tooltip("Continue holding START button when unpausing to only advance a single frame and then re-pause");
         const bool bEasyFrameAdvanceEnabled = CVarGetInteger("gCheatEasyPauseBufferEnabled", 0);
-        UIWidgets::PaddedEnhancementCheckbox("Easy Input Buffering", "gCheatEasyInputBufferingEnabled", true, false, bEasyFrameAdvanceEnabled, "Forced enabled when Easy Frame Advancing is enabled");
+        UIWidgets::PaddedEnhancementCheckbox("Easy Input Buffering", "gCheatEasyInputBufferingEnabled", true, false, bEasyFrameAdvanceEnabled, "Forced enabled when Easy Frame Advancing is enabled", UIWidgets::CheckboxGraphics::Checkmark);
         UIWidgets::Tooltip("Inputs that are held down while the Subscreen is closing will be pressed when the game is resumed");
         UIWidgets::PaddedEnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie", true, false);
         UIWidgets::Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
