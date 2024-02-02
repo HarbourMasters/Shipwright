@@ -8,7 +8,7 @@ if(MSVC)
 
     set_target_properties("${PROPS_TARGET}" PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
     set_config_specific_property("DEFAULT_CXX_EXCEPTION_HANDLING" "/EHsc")
-    if (CMAKE_C_COMPILER_LAUNCHER STREQUAL "sccache")
+    if (CMAKE_C_COMPILER_LAUNCHER MATCHES "ccache|sccache")
         set_config_specific_property("DEFAULT_CXX_DEBUG_INFORMATION_FORMAT" "/Z7")
     else()
         set_config_specific_property("DEFAULT_CXX_DEBUG_INFORMATION_FORMAT" "/Zi")

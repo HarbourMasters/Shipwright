@@ -28,7 +28,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     vcpkg_bootstrap()
     vcpkg_install_packages(zlib bzip2 libpng sdl2 sdl2-net glew glfw3)
 
-    if (CMAKE_C_COMPILER_LAUNCHER STREQUAL "sccache")
+    if (CMAKE_C_COMPILER_LAUNCHER MATCHES "ccache|sccache")
         set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT Embedded)
     endif()
 endif()
