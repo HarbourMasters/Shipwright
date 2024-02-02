@@ -136,7 +136,7 @@ void InputViewer::DrawElement() {
         ImGui::SetNextWindowSize(ImVec2(
             bgSize.x * scale + 20,
             scaledBGSize.y +
-                (showAnalogAngles ? 15 : 0) * scale * CVarGetFloat("gInputViewer.AnalogAngles.Scale", 1.0f) + 20));
+                (showAnalogAngles ? ImGui::CalcTextSize("X").y : 0) * scale * CVarGetFloat("gInputViewer.AnalogAngles.Scale", 1.0f) + 20));
         ImGui::SetNextWindowContentSize(
             ImVec2(bgSize.x * scale, scaledBGSize.y + (showAnalogAngles ? 15 : 0) * scale *
                                                           CVarGetFloat("gInputViewer.AnalogAngles.Scale", 1.0f)));
