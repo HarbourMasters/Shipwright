@@ -416,7 +416,25 @@ void DrawItemCount(ItemTrackerItem item) {
     ImVec2 p = ImGui::GetCursorScreenPos();
     int32_t trackerNumberDisplayMode = CVarGetInteger("gItemTrackerCapacityTrack", ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY);
     int32_t trackerKeyNumberDisplayMode = CVarGetInteger("gItemTrackerKeyTrack", KEYS_COLLECTED_MAX);
+    float textScalingFactor = static_cast<float>(iconSize) / 36.0f;
+    uint32_t actualItemId = INV_CONTENT(item.id);
+    bool hasItem = actualItemId != ITEM_NONE;
 
+    if (CVarGetInteger("gTrackers.ItemTracker.HookshotIdentifier", 0)) {
+        if ((actualItemId == ITEM_HOOKSHOT || actualItemId == ITEM_LONGSHOT) && hasItem) {
+
+            // Calculate the scaled position for the text
+            ImVec2 textPos = ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(item.id == ITEM_HOOKSHOT ? "H" : "L").x * 
+            textScalingFactor / 2) + 8 * textScalingFactor, p.y - 22 * textScalingFactor);
+
+            ImGui::SetCursorScreenPos(textPos);
+
+            ImGui::SetWindowFontScale(textScalingFactor);
+
+            ImGui::Text(item.id == ITEM_HOOKSHOT ? "H" : "L");
+            ImGui::SetWindowFontScale(1.0f); // Reset font scale to the original state
+        }
+    }
     if (item.id == ITEM_KEY_SMALL && IsValidSaveFile()) {
         std::string currentString = "";
         std::string maxString = std::to_string(currentAndMax.maxCapacity);
@@ -1200,6 +1218,10 @@ void ItemTrackerSettingsWindow::DrawElement() {
             shouldUpdateVectors = true;
         }
     }
+    UIWidgets::EnhancementCheckbox("Show Hookshot Identifiers", "gTrackers.ItemTracker.HookshotIdentifier");
+    UIWidgets::InsertHelpHoverText("Shows an 'H' or an 'L' to more easiely distinguish between Hookshot and Longshot.");
+
+    UIWidgets::Spacer(0);
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
