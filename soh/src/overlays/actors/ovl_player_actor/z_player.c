@@ -6982,9 +6982,19 @@ s32 Player_TryEnteringCrawlspace(Player* this, PlayState* play, u32 interactWall
                 this->actor.world.pos.z = zVertex1 + (distToInteractWall * wallPolyNormZ);
                 func_80832224(this);
                 this->actor.prevPos = this->actor.world.pos;
-                Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_start);
-                Player_AnimReplaceApplyFlags(play, this, 0x9D);
-
+                // #region SOH [Enhancement]
+                if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
+                    // increase animation speed when entering a tunnel
+                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
+                                         ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f), 0.0f,
+                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), ANIMMODE_ONCE,
+                                         0.0f);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                // #endregion
+                } else {
+                    Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_start);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                }
                 return true;
             }
         }
@@ -7065,16 +7075,39 @@ s32 Player_TryLeavingCrawlspace(Player* this, PlayState* play) {
 
             if (this->linearVelocity > 0.0f) {
                 this->actor.shape.rot.y = this->actor.wallYaw + 0x8000;
-                Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_end);
-                Player_AnimReplaceApplyFlags(play, this, 0x9D);
-                OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
+                // #region SOH [Enhancement]
+                if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
+                    // animation when exiting a tunnel forward
+                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_end,
+                                         ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f), 0.0f,
+                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_end), ANIMMODE_ONCE,
+                                         0.0f);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                    OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
+                // #endregion
+                } else {
+                    Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_end);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                    OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
+                }
             } else {
                 this->actor.shape.rot.y = this->actor.wallYaw;
-                LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start, -1.0f,
-                                     Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f, ANIMMODE_ONCE,
-                                     0.0f);
-                Player_AnimReplaceApplyFlags(play, this, 0x9D);
-                OnePointCutscene_Init(play, 9602, 999, NULL, MAIN_CAM);
+                // #region SOH [Enhancement]
+                // animation when exiting a tunnel backward 
+                if (CVarGetInteger("gCrawlSpeed",1) > 1) {
+                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
+                                         -1.0f * ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f),
+                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f, ANIMMODE_ONCE, 0.0f);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                    OnePointCutscene_Init(play, 9602, 999, NULL, MAIN_CAM);
+                // #endregion
+                }
+                else {
+                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start, -1.0f,
+                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f, ANIMMODE_ONCE, 0.0f);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                    OnePointCutscene_Init(play, 9602, 999, NULL, MAIN_CAM);
+                }
             }
 
             this->currentYaw = this->actor.shape.rot.y;
@@ -12625,8 +12658,15 @@ void func_8084C760(Player* this, PlayState* play) {
                 return;
             }
 
+            // player speed in a tunnel
             if (!Player_TryLeavingCrawlspace(this, play)) {
-                this->linearVelocity = sControlInput->rel.stick_y * 0.03f;
+                // #region SOH [Enhancement]
+                if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
+                    this->linearVelocity = sControlInput->rel.stick_y * 0.03f * CVarGetInteger("gCrawlSpeed", 1);
+                // #endregion
+                } else {
+                    this->linearVelocity = sControlInput->rel.stick_y * 0.03f;
+                }
             }
         }
         return;
