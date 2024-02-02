@@ -1628,7 +1628,7 @@ void RandomizeColor(CosmeticOption& cosmeticOption) {
     } else if (cosmeticOption.label == "Enemy Primary") {
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_EnemySecondary"), 0.5f);
     } else if (cosmeticOption.label == "NPC Primary") {
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_NPCSecondary"), 1.0f);
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_NPCSecondary"), 1.0f);
     } else if (cosmeticOption.label == "Props Primary") {
             CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_PropsSecondary"), 1.0f);
     } else if (cosmeticOption.label == "Ivan Idle Primary") {
