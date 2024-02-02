@@ -29,7 +29,6 @@
 #include <dr_libs/wav.h>
 #include <AudioPlayer.h>
 #include "Enhancements/speechsynthesizer/SpeechSynthesizer.h"
-#include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/controls/SohInputEditorWindow.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/audio/AudioCollection.h"
