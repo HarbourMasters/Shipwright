@@ -12130,7 +12130,7 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
         }
 
         Math_AsymStepToF(arg1, arg2 * 0.8f * swimMod, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
-        Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
+        Math_ScaledStepToS(&this->yaw, arg3, 1600);
     // #endregion
     } else {
 
@@ -12149,7 +12149,7 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
         }
 
         Math_AsymStepToF(arg1, arg2 * 0.8f, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
-        Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
+        Math_ScaledStepToS(&this->yaw, arg3, 1600);
     }
 }
 
