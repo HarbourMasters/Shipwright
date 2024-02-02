@@ -1624,7 +1624,7 @@ void RandomizeColor(CosmeticOption& cosmeticOption) {
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Equipment_BowHandle"), 1.0f);
         CopyMultipliedColor(cosmeticOption, cosmeticOption, 4.0f);
     } else if (cosmeticOption.label == "Idle Primary") {
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_IdleSecondary"), 0.5f);
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_IdleSecondary"), 0.5f);
     } else if (cosmeticOption.label == "Enemy Primary") {
             CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_EnemySecondary"), 0.5f);
     } else if (cosmeticOption.label == "NPC Primary") {
