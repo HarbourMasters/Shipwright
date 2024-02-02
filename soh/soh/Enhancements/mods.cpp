@@ -24,6 +24,8 @@
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 
+#include "custom-message/CustomMessageTypes.h"
+
 extern "C" {
 #include <z64.h>
 #include "align_asset_macro.h"
@@ -38,6 +40,8 @@ extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
 uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
+
+extern bool gBankBalanceUpdated;
 }
 
 // GreyScaleEndDlist
@@ -1223,6 +1227,20 @@ void RegisterToTMedallions() {
     });
 }
 
+void RegisterBankUpdate() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDialogMessage>([]() {
+        uint16_t messageIndex = gPlayState->msgCtx.textId; 
+        if (gBankBalanceUpdated && CVarGetInteger("gBanker", 0) && 
+            (messageIndex == TEXT_BLUE_RUPEE || messageIndex == TEXT_RED_RUPEE || 
+             messageIndex == TEXT_PURPLE_RUPEE || messageIndex == TEXT_HUGE_RUPEE)) {
+            if (Message_ShouldAdvance(gPlayState)) {
+                Message_ContinueTextbox(gPlayState, TEXT_BANKER_EXCESS);
+                gBankBalanceUpdated = false; 
+            }
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1256,4 +1274,5 @@ void InitMods() {
     RegisterRandomizedEnemySizes();
     RegisterToTMedallions();
     NameTag_RegisterHooks();
+    RegisterBankUpdate();
 }

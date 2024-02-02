@@ -92,6 +92,7 @@ void ProcessInput(PlayState* play, s16* value, s16* selectedDigit) {
 
 static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
     static bool canContinueToAmount = false;
+    static s16 OptionChoice = -1;
     uint16_t currentTextId = msgCtx->textId;
 
     if (msgCtx->msgMode != MSGMODE_TEXT_DONE && msgCtx->msgMode != MSGMODE_TEXT_CLOSING) {
@@ -112,7 +113,12 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
 
         case TEXT_BANKER_OPTIONS:
             if (msgCtx->choiceIndex == 0 || msgCtx->choiceIndex == 1) {
-                Message_ContinueTextbox(play, TEXT_BANKER_BALANCE);
+                OptionChoice = msgCtx->choiceIndex;
+                if (gSaveContext.hasInterest == 0) {
+                    Message_ContinueTextbox(play, TEXT_BANKER_TRANSACTION_FEE);
+                } else {
+                    Message_ContinueTextbox(play, TEXT_BANKER_BALANCE);
+                }
             } else if (msgCtx->choiceIndex == 2) {
                 Message_CloseTextbox(play);
             }
@@ -129,7 +135,7 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
                 gSaveContext.hasPieceOfHeart = 1;
                 Message_ContinueTextbox(play, TEXT_BANKER_REWARD_PIECE_OF_HEART);
             } else {
-                nextTextId = (msgCtx->choiceIndex == 0) ? TEXT_BANKER_DEPOSIT_AMOUNT : TEXT_BANKER_WITHDRAWAL_AMOUNT;
+                nextTextId = (OptionChoice == 0) ? TEXT_BANKER_DEPOSIT_AMOUNT : TEXT_BANKER_WITHDRAWAL_AMOUNT;
                 Message_ContinueTextbox(play, nextTextId);
             }
             break;
@@ -227,7 +233,7 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
             } else if (canContinueToAmount) {
                 canContinueToAmount = false;
             } else {
-                nextTextId = (msgCtx->choiceIndex == 0) ? TEXT_BANKER_DEPOSIT_AMOUNT : TEXT_BANKER_WITHDRAWAL_AMOUNT;
+                nextTextId = (OptionChoice == 0) ? TEXT_BANKER_DEPOSIT_AMOUNT : TEXT_BANKER_WITHDRAWAL_AMOUNT;
                 Message_ContinueTextbox(play, nextTextId);
             }
             break;
@@ -239,7 +245,7 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
             } else if (canContinueToAmount) {
                 canContinueToAmount = false;
             } else {
-                nextTextId = (msgCtx->choiceIndex == 0) ? TEXT_BANKER_DEPOSIT_AMOUNT : TEXT_BANKER_WITHDRAWAL_AMOUNT;
+                nextTextId = (OptionChoice == 0) ? TEXT_BANKER_DEPOSIT_AMOUNT : TEXT_BANKER_WITHDRAWAL_AMOUNT;
                 Message_ContinueTextbox(play, nextTextId);
             }
             break;
@@ -255,7 +261,7 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
             if (canContinueToAmount) {
                 canContinueToAmount = false;
             } else {
-                nextTextId = (msgCtx->choiceIndex == 0) ? TEXT_BANKER_DEPOSIT_AMOUNT : TEXT_BANKER_WITHDRAWAL_AMOUNT;
+                nextTextId = (OptionChoice == 0) ? TEXT_BANKER_DEPOSIT_AMOUNT : TEXT_BANKER_WITHDRAWAL_AMOUNT;
                 Message_ContinueTextbox(play, nextTextId);
             }
             break;
@@ -280,6 +286,14 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
             Message_ContinueTextbox(play, TEXT_BANKER_DEPOSIT_AMOUNT);
             break;
 
+        case TEXT_BANKER_TRANSACTION_FEE:
+            if (msgCtx->choiceIndex == 0) { // Player chooses 'Yes', proceed with transaction
+                Message_ContinueTextbox(play, TEXT_BANKER_BALANCE);
+            } else if (msgCtx->choiceIndex == 1) { // Player chooses 'No', does not want to proceed due to fee
+                Message_CloseTextbox(play);
+            }
+            break;
+            
         default:
             break;
     }

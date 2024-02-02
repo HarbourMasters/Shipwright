@@ -22,6 +22,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+
 #define DO_ACTION_TEX_WIDTH() 48
 #define DO_ACTION_TEX_HEIGHT() 16
 #define DO_ACTION_TEX_SIZE() ((DO_ACTION_TEX_WIDTH() * DO_ACTION_TEX_HEIGHT()) / 2)
@@ -29,6 +31,8 @@
 // The button statuses include the A button when most things are only the equip item buttons
 // So, when indexing into it with a item button index, we need to adjust
 #define BUTTON_STATUS_INDEX(button) ((button) >= 4) ? ((button) + 1) : (button)
+
+int gBankBalanceUpdated = 0;
 
 s16 Top_HUD_Margin = 0;
 s16 Left_HUD_Margin = 0;
@@ -6368,6 +6372,8 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
     }
 }
 
+extern int gBankBalanceUpdated;
+
 void Interface_Update(PlayState* play) {
     static u8 D_80125B60 = 0;
     static s16 sPrevTimeIncrement = 0;
@@ -6555,10 +6561,12 @@ void Interface_Update(PlayState* play) {
                 }
                 // If the wallet is full and there are still rupees in the accumulator, add them to the player's balance
                 if (gSaveContext.rupeeAccumulator > 0) {
+                    gSaveContext.excessRupees = gSaveContext.rupeeAccumulator;
                     gSaveContext.playerBalance += gSaveContext.rupeeAccumulator;
                     gSaveContext.rupeeAccumulator = 0;
                     // Clamp the playerBalance between 0 and 5000
                     gSaveContext.playerBalance = CLAMP(gSaveContext.playerBalance, 0, 5000);
+                    gBankBalanceUpdated = 1;
                 }
             } else if (gSaveContext.rupees != 0) {
                 if (gSaveContext.rupeeAccumulator <= -50) {

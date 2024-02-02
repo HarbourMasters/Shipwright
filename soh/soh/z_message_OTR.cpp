@@ -298,4 +298,19 @@ extern "C" void OTRMessage_Init()
             "Stopp, @! Es gibt eine&Gebühr von 5 Rubinen. Damit&verlierst du eher Rubine, statt&zu gewinnen! Zahle mehr ein,&damit es sich lohnt!",
             "Attends, @ ! Il y a des frais de&gestion de 5 Rubis. Avec ça,&tu perdrais des Rubis au lieu&d'en gagner ! Dépose plus pour&que ça vaille le coup."
         ));
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_TRANSACTION_FEE,
+        CustomMessage(
+            "Ah, @! There's a %y5%w Rupee&fee. Is that fine with you?\x1B&%gProceed&%gNevermind%w",
+            "Ah, @! Es gibt eine %y5%w&Rubine Gebühr. Ist das in&Ordnung für dich?\x1B&%gWeiter&%gNichts tun%w",
+            "Ah, @ ! Il y a des frais de&%y5%w Rubis. Ça te va ?\x1B&%gContinuer&%gLaisser tomber%w"
+        ));
+CustomMessageManager::Instance->CreateMessage(
+    customMessageTableID, TEXT_BANKER_EXCESS,
+    CustomMessage(
+        "Hey @! It's your banker here!&Looks like your wallet is to full. I've&warp transferred %y{{excessRupees}}%w rupees over.&Your new balance is %y{{playerBalance}}%w rupees.",
+        "Hey @! Hier spricht dein Banker!&Sieht aus, als wäre dein Geldbeutel zu voll. Ich habe&warp übertragen %y{{excessRupees}}%w Rubine.&Dein neues Guthaben ist %y{{playerBalance}}%w Rubine.",
+        "Hé @ ! C'est ton banquier !&On dirait que ton porte-monnaie est trop plein. J'ai&transféré par warp %y{{excessRupees}}%w rubis.&Ton nouveau solde est de %y{{playerBalance}}%w rubis.",
+        TEXTBOX_TYPE_BLUE
+    ));
 }

@@ -2697,6 +2697,16 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     if (textId == TEXT_BANKER_ERROR_DEPOSIT_NOT_WORTHWHILE && CVarGetInteger("gBanker", 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_ERROR_DEPOSIT_NOT_WORTHWHILE);
     }
+    if (textId == TEXT_BANKER_TRANSACTION_FEE && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_TRANSACTION_FEE);
+    }
+    if (textId == TEXT_BANKER_EXCESS && CVarGetInteger("gBanker", 0)) {
+        s32 playerBalance = gSaveContext.playerBalance;
+        s32 excessRupees = gSaveContext.excessRupees;
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_EXCESS);
+        messageEntry.Replace("{{playerBalance}}", std::to_string(playerBalance));
+        messageEntry.Replace("{{excessRupees}}", std::to_string(excessRupees));
+    }
     font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
     switch (gSaveContext.language) {
         case LANGUAGE_FRA:

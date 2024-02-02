@@ -616,6 +616,7 @@ void SaveManager::InitFileNormal() {
     gSaveContext.isBossRushPaused = 0;
     gSaveContext.pendingIceTrapCount = 0;
     gSaveContext.playerBalance = 0;
+    gSaveContext.excessRupees = 0;
 
     // Init with normal quest unless only an MQ rom is provided
     gSaveContext.questId = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
@@ -737,6 +738,7 @@ void SaveManager::InitFileDebug() {
     gSaveContext.magicLevel = 0;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
     gSaveContext.playerBalance = 999;
+    gSaveContext.excessRupees = 0;
 }
 
 void SaveManager::InitFileMaxed() {
@@ -1522,6 +1524,7 @@ void SaveManager::LoadBaseVersion2() {
     SaveManager::Instance->LoadData("hasWarpTransfer", gSaveContext.hasWarpTransfer);
     SaveManager::Instance->LoadData("hasInterest", gSaveContext.hasInterest);
     SaveManager::Instance->LoadData("hasPieceOfHeart", gSaveContext.hasPieceOfHeart);
+    SaveManager::Instance->LoadData("excessRupees", gSaveContext.excessRupees);
     }
 }
 
@@ -1748,6 +1751,7 @@ void SaveManager::LoadBaseVersion3() {
     SaveManager::Instance->LoadData("hasWarpTransfer", gSaveContext.hasWarpTransfer);
     SaveManager::Instance->LoadData("hasInterest", gSaveContext.hasInterest);
     SaveManager::Instance->LoadData("hasPieceOfHeart", gSaveContext.hasPieceOfHeart);
+    SaveManager::Instance->LoadData("excessRupees", gSaveContext.excessRupees);
 }
 
 void SaveManager::LoadBaseVersion4() {
@@ -1933,6 +1937,7 @@ void SaveManager::LoadBaseVersion4() {
     SaveManager::Instance->LoadData("hasWarpTransfer", gSaveContext.hasWarpTransfer);
     SaveManager::Instance->LoadData("hasInterest", gSaveContext.hasInterest);
     SaveManager::Instance->LoadData("hasPieceOfHeart", gSaveContext.hasPieceOfHeart);
+    SaveManager::Instance->LoadData("excessRupees", gSaveContext.excessRupees);
 }
 
 void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -2106,6 +2111,7 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
     SaveManager::Instance->SaveData("hasWarpTransfer", saveContext->hasWarpTransfer);
     SaveManager::Instance->SaveData("hasInterest", saveContext->hasInterest);
     SaveManager::Instance->SaveData("hasPieceOfHeart", saveContext->hasPieceOfHeart);
+    SaveManager::Instance->SaveData("excessRupees", saveContext->excessRupees);
 }
 
 // Load a string into a char array based on size and ensuring it is null terminated when overflowed
