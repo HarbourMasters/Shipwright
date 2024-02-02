@@ -10,6 +10,8 @@ extern "C" {
 void UpdateDirtPathFixState(int32_t sceneNum);
 void UpdateMirrorModeState(int32_t sceneNum);
 void UpdateHurtContainerModeState(bool newState);
+void PatchToTMedallions();
+void UpdatePermanentHeartLossState();
 void InitMods();
 
 #ifdef __cplusplus

@@ -15,7 +15,34 @@ extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
 extern "C" MessageTableEntry* sStaffMessageEntryTablePtr;
 //extern "C" MessageTableEntry* _message_0xFFFC_nes;	
 
-MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
+static void SetMessageEntry(MessageTableEntry& entry, const LUS::MessageEntry& msgEntry) {
+    entry.textId = msgEntry.id;
+    entry.typePos = (msgEntry.textboxType << 4) | msgEntry.textboxYPos;
+    entry.segment = msgEntry.msg.c_str();
+    entry.msgSize = msgEntry.msg.size();
+}
+
+static void OTRMessage_LoadCustom(const std::string& folderPath, MessageTableEntry*& table, size_t tableSize) {
+    auto lst = *LUS::Context::GetInstance()->GetResourceManager()->GetArchive()->ListFiles(folderPath).get();
+
+    for (auto& tPath : lst) {
+        auto file = std::static_pointer_cast<LUS::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(tPath));
+
+        for (size_t j = 0; j < file->messages.size(); ++j) {
+            // Check if same text ID exists already
+            auto existingEntry = std::find_if(table, table + tableSize, [id = file->messages[j].id](const auto& entry) {
+                return entry.textId == id;
+            });
+
+            if (existingEntry != table + tableSize) {
+                // Replace existing message
+                SetMessageEntry(*existingEntry, file->messages[j]);
+            }
+        }
+    }
+}
+
+MessageTableEntry* OTRMessage_LoadTable(const std::string& filePath, bool isNES) {
     auto file = std::static_pointer_cast<LUS::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(filePath));
 
     if (file == nullptr)
@@ -63,14 +90,15 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
             table[file->messages.size()].msgSize = kaeporaMsgSize;
         }
 
-        table[i].textId = file->messages[i].id;
-        table[i].typePos = (file->messages[i].textboxType << 4) | file->messages[i].textboxYPos;
-        table[i].segment = file->messages[i].msg.c_str();
-        table[i].msgSize = file->messages[i].msg.size();
+        SetMessageEntry(table[i], file->messages[i]);
 
         if (isNES && file->messages[i].id == 0xFFFC)
             _message_0xFFFC_nes = (char*)file->messages[i].msg.c_str();
     }
+    OTRMessage_LoadCustom("override/" + filePath.substr(0, filePath.find_last_of('/')) + "/*", table, file->messages.size() + 1);
+
+    // Assert that the first message starts at the first text ID
+    assert(table[0].textId == 0x0001);
 
     return table;
 }
@@ -98,12 +126,12 @@ extern "C" void OTRMessage_Init()
         sStaffMessageEntryTablePtr = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * file2->messages.size());
 
         for (size_t i = 0; i < file2->messages.size(); i++) {
-            sStaffMessageEntryTablePtr[i].textId = file2->messages[i].id;
-            sStaffMessageEntryTablePtr[i].typePos =
-                (file2->messages[i].textboxType << 4) | file2->messages[i].textboxYPos;
-            sStaffMessageEntryTablePtr[i].segment = file2->messages[i].msg.c_str();
-            sStaffMessageEntryTablePtr[i].msgSize = file2->messages[i].msg.size();
+            SetMessageEntry(sStaffMessageEntryTablePtr[i], file2->messages[i]);
         }
+        OTRMessage_LoadCustom("override/text/staff_message_data_static/*", sStaffMessageEntryTablePtr, file2->messages.size());
+
+        // Assert staff credits start at the first credits ID
+        assert(sStaffMessageEntryTablePtr[0].textId == 0x0500);
     }
 
     CustomMessageManager::Instance->AddCustomMessageTable(customMessageTableID);

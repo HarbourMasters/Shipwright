@@ -1008,7 +1008,7 @@ void KaleidoScope_SetDefaultCursor(PlayState* play) {
     PauseContext* pauseCtx = &play->pauseCtx;
     s16 s;
     s16 i;
-    gSelectingMask = false;
+    KaleidoScope_ResetItemCycling();
 
     switch (pauseCtx->pageIndex) {
         case PAUSE_ITEM:
@@ -1042,7 +1042,6 @@ void KaleidoScope_SetDefaultCursor(PlayState* play) {
 void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
     pauseCtx->unk_1E4 = 1;
     pauseCtx->unk_1EA = 0;
-    gSelectingMask = false;
 
     if (!pt) {
         pauseCtx->mode = pauseCtx->pageIndex * 2 + 1;
@@ -1074,7 +1073,7 @@ void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
     gSaveContext.unk_13EA = 0;
     Interface_ChangeAlpha(50);
 
-    KaleidoScope_ResetTradeSelect();
+    KaleidoScope_ResetItemCycling();
 }
 
 void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
@@ -3315,13 +3314,121 @@ void KaleidoScope_UpdateCursorSize(PauseContext* pauseCtx) {
     pauseCtx->cursorVtx[14].v.ob[1] = pauseCtx->cursorVtx[15].v.ob[1] = pauseCtx->cursorVtx[12].v.ob[1] - 16;
 }
 
+// Modifed map texture buffers for registered blend effects and the room indicator color
+static uint8_t mapLeftTexModified[MAP_48x85_TEX_SIZE];
+static uint8_t mapRightTexModified[MAP_48x85_TEX_SIZE];
+static uint8_t* mapLeftTexModifiedRaw = NULL;
+static uint8_t* mapRightTexModifiedRaw = NULL;
+static uint8_t mapBlendMask[MAP_48x85_TEX_WIDTH * MAP_48x85_TEX_HEIGHT];
+
+// Load dungeon maps into the interface context
+// SoH [General] - Modified to account for our resource system and HD textures
 void KaleidoScope_LoadDungeonMap(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
 
+    // Free old textures
+    if (mapLeftTexModifiedRaw != NULL) {
+        free(mapLeftTexModifiedRaw);
+        mapLeftTexModifiedRaw = NULL;
+    }
+    if (mapRightTexModifiedRaw != NULL) {
+        free(mapRightTexModifiedRaw);
+        mapRightTexModifiedRaw = NULL;
+    }
+
+    // Unload original textures to bypass cache result for lookups
+    ResourceMgr_UnloadOriginalWhenAltExists(sDungeonMapTexs[R_MAP_TEX_INDEX]);
+    ResourceMgr_UnloadOriginalWhenAltExists(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]);
+
     interfaceCtx->mapSegmentName[0] = sDungeonMapTexs[R_MAP_TEX_INDEX];
     interfaceCtx->mapSegmentName[1] = sDungeonMapTexs[R_MAP_TEX_INDEX + 1];
-    interfaceCtx->mapSegment[0] = ResourceGetDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX]);
-    interfaceCtx->mapSegment[1] = ResourceGetDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]);
+
+    // When the texture is HD (raw) we need to copy a dynamic amount of data
+    // Otherwise the original asset has a static size
+    if (ResourceMgr_TexIsRaw(interfaceCtx->mapSegmentName[0])) {
+        u32 width = ResourceGetTexWidthByName(interfaceCtx->mapSegmentName[0]);
+        u32 height = ResourceGetTexHeightByName(interfaceCtx->mapSegmentName[0]);
+        size_t size = (width * height) / 2; // account for CI4 size
+
+        // Resource size being larger than the calculated CI size means it is most likely not a CI4 texture
+        // Abort early and unregister the blended effect to avoid crashing
+        if (size < ResourceGetTexSizeByName(interfaceCtx->mapSegmentName[0])) {
+            interfaceCtx->mapSegment[0] = NULL;
+            interfaceCtx->mapSegment[1] = NULL;
+
+            Gfx_UnregisterBlendedTexture(interfaceCtx->mapSegmentName[0]);
+            Gfx_UnregisterBlendedTexture(interfaceCtx->mapSegmentName[1]);
+
+            Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[0]);
+            Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[1]);
+            return;
+        }
+
+        u8* map1TexRaw = ResourceGetDataByName(interfaceCtx->mapSegmentName[0]);
+        u8* map2TexRaw = ResourceGetDataByName(interfaceCtx->mapSegmentName[1]);
+
+        mapLeftTexModifiedRaw = malloc(size);
+        mapRightTexModifiedRaw = malloc(size);
+
+        memcpy(mapLeftTexModifiedRaw, map1TexRaw, size);
+        memcpy(mapRightTexModifiedRaw, map2TexRaw, size);
+
+        interfaceCtx->mapSegment[0] = mapLeftTexModifiedRaw;
+        interfaceCtx->mapSegment[1] = mapRightTexModifiedRaw;
+    } else {
+        u8* map1Tex = ResourceGetDataByName(interfaceCtx->mapSegmentName[0]);
+        u8* map2Tex = ResourceGetDataByName(interfaceCtx->mapSegmentName[1]);
+
+        memcpy(mapLeftTexModified, map1Tex, MAP_48x85_TEX_SIZE);
+        memcpy(mapRightTexModified, map2Tex, MAP_48x85_TEX_SIZE);
+
+        interfaceCtx->mapSegment[0] = mapLeftTexModified;
+        interfaceCtx->mapSegment[1] = mapRightTexModified;
+    }
+
+    // Mark and register the blend mask for the copied textures
+    if (mapBlendMask[0] != 1) {
+        for (size_t i = 0; i < ARRAY_COUNT(mapBlendMask); i++) {
+            mapBlendMask[i] = 1;
+        }
+    }
+
+    Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapBlendMask, interfaceCtx->mapSegment[0]);
+    Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapBlendMask, interfaceCtx->mapSegment[1]);
+
+    Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[0]);
+    Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[1]);
+    Gfx_TextureCacheDelete(interfaceCtx->mapSegment[0]);
+    Gfx_TextureCacheDelete(interfaceCtx->mapSegment[1]);
+}
+
+static uint8_t registeredDungeonMapTextureHook = false;
+
+void KaleidoScope_RegisterUpdatedDungeonMapTexture() {
+    if (gPlayState == NULL) {
+        return;
+    }
+
+    PauseContext* pauseCtx = &gPlayState->pauseCtx;
+
+    // Kaleido is not open in a dungeon so there is nothing to do
+    if (R_PAUSE_MENU_MODE < 3 || pauseCtx->state < 4 || pauseCtx->state > 7 || !sInDungeonScene) {
+        return;
+    }
+
+    KaleidoScope_UpdateDungeonMap(gPlayState);
+
+    // KaleidoScope_UpdateDungeonMap will update the palette index for the current floor if the cursor is on the floor
+    // If the player toggles alt assets while the cursor is not in the floor level, then we handle the palette index here
+    if (gPlayState->sceneNum >= SCENE_DEKU_TREE && gPlayState->sceneNum <= SCENE_TREASURE_BOX_SHOP &&
+        (VREG(30) + 3) == pauseCtx->dungeonMapSlot && (VREG(30) + 3) != pauseCtx->cursorPoint[PAUSE_MAP]) {
+
+        InterfaceContext* interfaceCtx = &gPlayState->interfaceCtx;
+        int32_t size = ResourceGetTexSizeByName(interfaceCtx->mapSegmentName[0]);
+
+        KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[0], size, interfaceCtx->mapPaletteIndex, 14);
+        KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[1], size, interfaceCtx->mapPaletteIndex, 14);
+    }
 }
 
 void KaleidoScope_UpdateDungeonMap(PlayState* play) {
@@ -3333,18 +3440,33 @@ void KaleidoScope_UpdateDungeonMap(PlayState* play) {
     KaleidoScope_LoadDungeonMap(play);
     Map_SetFloorPalettesData(play, pauseCtx->dungeonMapSlot - 3);
 
+    // Copy the map palette values to all pulse palettes
+    for (uint8_t i = 0; i < ARRAY_COUNT(interfaceCtx->mapPalettesPulse); i++) {
+        memcpy(interfaceCtx->mapPalettesPulse[i], interfaceCtx->mapPalette, sizeof(interfaceCtx->mapPalette));
+    }
+
+    s32 size = MAP_48x85_TEX_SIZE;
+
+    if (ResourceMgr_TexIsRaw(interfaceCtx->mapSegmentName[0])) {
+        size = ResourceGetTexSizeByName(interfaceCtx->mapSegmentName[0]);
+    }
+
     if ((play->sceneNum >= SCENE_DEKU_TREE) && (play->sceneNum <= SCENE_TREASURE_BOX_SHOP)) {
         if ((VREG(30) + 3) == pauseCtx->cursorPoint[PAUSE_MAP]) {
-            // HDTODO: Handle Runtime Modified Textures (HD)
-            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[0], 2040, interfaceCtx->mapPaletteIndex, 14);
+            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[0], size, interfaceCtx->mapPaletteIndex, 14);
         }
     }
 
     if ((play->sceneNum >= SCENE_DEKU_TREE) && (play->sceneNum <= SCENE_TREASURE_BOX_SHOP)) {
         if ((VREG(30) + 3) == pauseCtx->cursorPoint[PAUSE_MAP]) {
-            // HDTODO: Handle Runtime Modified Textures (HD)
-            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[1], 2040, interfaceCtx->mapPaletteIndex, 14);
+            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[1], size, interfaceCtx->mapPaletteIndex, 14);
         }
+    }
+
+    // Register alt listener to update the blended dungeon map textures on alt toggle
+    if (!registeredDungeonMapTextureHook) {
+        registeredDungeonMapTextureHook = true;
+        GameInteractor_RegisterOnAssetAltChange(KaleidoScope_RegisterUpdatedDungeonMapTexture);
     }
 }
 
@@ -3736,7 +3858,7 @@ void KaleidoScope_Update(PlayState* play)
                 }
             }
 
-            KaleidoScope_ResetTradeSelect();
+            KaleidoScope_ResetItemCycling();
 
             pauseCtx->state = 4;
             break;
@@ -4216,48 +4338,48 @@ void KaleidoScope_Update(PlayState* play)
                     Play_SaveSceneFlags(play);
 
                     switch (gSaveContext.entranceIndex) {
-                        case 0x0000:
-                        case 0x0004:
-                        case 0x0028:
-                        case 0x0169:
-                        case 0x0165:
-                        case 0x0010:
-                        case 0x0082:
-                        case 0x0037:
-                        case 0x041B:
-                        case 0x0008:
-                        case 0x0088:
-                        case 0x0486:
-                        case 0x0098:
-                        case 0x0467:
-                        case 0x0179:
+                        case ENTR_DEKU_TREE_0:
+                        case ENTR_DODONGOS_CAVERN_0:
+                        case ENTR_JABU_JABU_0:
+                        case ENTR_FOREST_TEMPLE_0:
+                        case ENTR_FIRE_TEMPLE_0:
+                        case ENTR_WATER_TEMPLE_0:
+                        case ENTR_SPIRIT_TEMPLE_0:
+                        case ENTR_SHADOW_TEMPLE_0:
+                        case ENTR_GANONS_TOWER_0:
+                        case ENTR_GERUDO_TRAINING_GROUND_0:
+                        case ENTR_ICE_CAVERN_0:
+                        case ENTR_THIEVES_HIDEOUT_0:
+                        case ENTR_BOTTOM_OF_THE_WELL_0:
+                        case ENTR_INSIDE_GANONS_CASTLE_0:
+                        case ENTR_GANONS_TOWER_COLLAPSE_INTERIOR_0:
                             break;
-                        case 0x040F:
-                            gSaveContext.entranceIndex = 0x0000;
+                        case ENTR_DEKU_TREE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_DEKU_TREE_0;
                             break;
-                        case 0x040B:
-                            gSaveContext.entranceIndex = 0x0004;
+                        case ENTR_DODONGOS_CAVERN_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_0;
                             break;
-                        case 0x0301:
-                            gSaveContext.entranceIndex = 0x0028;
+                        case ENTR_JABU_JABU_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_JABU_JABU_0;
                             break;
-                        case 0x000C:
-                            gSaveContext.entranceIndex = 0x0169;
+                        case ENTR_FOREST_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_0;
                             break;
-                        case 0x0305:
-                            gSaveContext.entranceIndex = 0x0165;
+                        case ENTR_FIRE_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_0;
                             break;
-                        case 0x0417:
-                            gSaveContext.entranceIndex = 0x0010;
+                        case ENTR_WATER_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_0;
                             break;
-                        case 0x008D:
-                            gSaveContext.entranceIndex = 0x0082;
+                        case ENTR_SPIRIT_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_0;
                             break;
-                        case 0x0413:
-                            gSaveContext.entranceIndex = 0x0037;
+                        case ENTR_SHADOW_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_0;
                             break;
-                        case 0x041F:
-                            gSaveContext.entranceIndex = 0x041B;
+                        case ENTR_GANONDORF_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0;
                             break;
                     }
 
@@ -4292,7 +4414,7 @@ void KaleidoScope_Update(PlayState* play)
                         }
                         // Reset frame counter to prevent autosave on respawn
                         play->gameplayFrames = 0;
-                        gSaveContext.nextTransitionType = 2;
+                        gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
                         gSaveContext.health = CVarGetInteger("gFullHealthSpawn", 0) ? gSaveContext.healthCapacity : 0x30;
                         Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
                         gSaveContext.healthAccumulator = 0;
