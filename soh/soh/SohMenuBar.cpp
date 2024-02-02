@@ -817,6 +817,40 @@ void DrawEnhancementsMenu() {
                     UIWidgets::Tooltip("The minimum weight for the unique fishing reward as an adult");
                     ImGui::EndMenu();
                 }
+                UIWidgets::Spacer(0);
+
+                if (ImGui::BeginMenu("Lost Woods Ocarina Game")) {
+                    UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeOcarinaGame");
+                    UIWidgets::Tooltip("Turn on/off changes to the lost woods ocarina game behavior");
+                    bool disabled = !CVarGetInteger("gCustomizeOcarinaGame", 0);
+                    static const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
+                    UIWidgets::PaddedEnhancementCheckbox("Instant Win", "gInstantOcarinaGameWin", true, false, disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Skips the lost woods ocarina game");
+                    UIWidgets::PaddedEnhancementSliderInt("Note Play Speed: %dx", "##OcarinaGameNoteSpeed", "gOcarinaGameNoteSpeed", 1, 5, "", 1, true, true, false, disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Adjust the speed that the skull kids play notes");
+                    UIWidgets::PaddedEnhancementCheckbox("Unlimited Playback Time", "gOcarinaUnlimitedFailTime", true, false, disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Removes the timer to play back the song");
+                    UIWidgets::PaddedEnhancementSliderInt("Number of Starting Notes: %d", "##OcarinaGameStartingNotes", "gOcarinaGameStartingNotes", 1, 8, "", 3, true, true, false,
+                                                          disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Adjust the number of notes the skull kids play to start the first round");
+                    int roundMin = CVarGetInteger("gOcarinaGameStartingNotes", 3);
+                    UIWidgets::PaddedEnhancementSliderInt("Round One Notes: %d", "##OcarinaGameRoundOne",
+                                                          "gOcarinaGameRoundOneNotes", roundMin, 8, "", 5, true, true,
+                                                          false,
+                                                          disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Adjust the number of notes you need to play to end the first round");
+                    UIWidgets::PaddedEnhancementSliderInt("Round Two Notes: %d", "##OcarinaGameRoundTwoNotes",
+                                                          "gOcarinaGameRoundTwoNotes", roundMin, 8, "", 6, true, true,
+                                                          false,
+                                                          disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Adjust the number of notes you need to play to end the second round");
+                    UIWidgets::PaddedEnhancementSliderInt("Round Three Notes: %d", "##OcarinaGameRoundThreeNotes",
+                                                          "gOcarinaGameRoundThreeNotes", roundMin, 8, "", 8, true, true,
+                                                          false,
+                                                          disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Adjust the number of notes you need to play to end the third round");
+                    ImGui::EndMenu();
+                }
 
                 UIWidgets::Spacer(0);
 
