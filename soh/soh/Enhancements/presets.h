@@ -70,6 +70,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gForgeTime",
     "gClimbSpeed",
     "gFasterBlockPush",
+    "gCrawlSpeed",
     "gFasterHeavyBlockLift",
     "gNoForcedNavi",
     "gSkulltulaFreeze",
@@ -136,6 +137,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gInjectItemCounts",
     "gDayGravePull",
     "gDampeAllNight",
+    "gQuitFishingAtDoor",
     "gSkipSwimDeepEndAnim",
     "gSkipScarecrow",
     "gBlueFireArrows",
@@ -184,6 +186,14 @@ const std::vector<const char*> enhancementsCvars = {
     "gBombchuBowlingNoSmallCucco",
     "gBombchuBowlingNoBigCucco",
     "gBombchuBowlingAmmunition",
+    "gCustomizeOcarinaGame",
+    "gInstantOcarinaGameWin",
+    "gOcarinaGameNoteSpeed",
+    "gOcarinaUnlimitedFailTime",
+    "gOcarinaGameStartingNotes",
+    "gOcarinaGameRoundOneNotes",
+    "gOcarinaGameRoundTwoNotes",
+    "gOcarinaGameRoundThreeNotes",
     "gCreditsFix",
     "gSilverRupeeJingleExtend",
     "gStaticExplosionRadius",
@@ -256,6 +266,8 @@ const std::vector<const char*> cheatCvars = {
     "gWalkSpeedToggle",
     "gWalkModifierOne",
     "gWalkModifierTwo",
+    "gSwimModifierOne",
+    "gSwimModifierTwo",
     "gGoronPot",
     "gDampeWin",
     "gCustomizeShootingGallery",
@@ -782,6 +794,13 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gChildMinimumWeightFish", 3),
     // Adult Minimum Weight (8 to 13)
     PRESET_ENTRY_S32("gAdultMinimumWeightFish", 6),
+
+    // Customize Lost Woods Ocarina Game Behavior
+    PRESET_ENTRY_S32("gCustomizeOcarinaGame", 1),
+    // Start With Five Notes
+    PRESET_ENTRY_S32("gOcarinaGameStartingNotes", 5),
+    // Round One Notes
+    PRESET_ENTRY_S32("gOcarinaGameRoundOneNotes", 5),
 
     // Visual Stone of Agony
     PRESET_ENTRY_S32("gVisualAgony", 1),

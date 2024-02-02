@@ -416,7 +416,25 @@ void DrawItemCount(ItemTrackerItem item) {
     ImVec2 p = ImGui::GetCursorScreenPos();
     int32_t trackerNumberDisplayMode = CVarGetInteger("gItemTrackerCapacityTrack", ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY);
     int32_t trackerKeyNumberDisplayMode = CVarGetInteger("gItemTrackerKeyTrack", KEYS_COLLECTED_MAX);
+    float textScalingFactor = static_cast<float>(iconSize) / 36.0f;
+    uint32_t actualItemId = INV_CONTENT(item.id);
+    bool hasItem = actualItemId != ITEM_NONE;
 
+    if (CVarGetInteger("gTrackers.ItemTracker.HookshotIdentifier", 0)) {
+        if ((actualItemId == ITEM_HOOKSHOT || actualItemId == ITEM_LONGSHOT) && hasItem) {
+
+            // Calculate the scaled position for the text
+            ImVec2 textPos = ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(item.id == ITEM_HOOKSHOT ? "H" : "L").x * 
+            textScalingFactor / 2) + 8 * textScalingFactor, p.y - 22 * textScalingFactor);
+
+            ImGui::SetCursorScreenPos(textPos);
+
+            ImGui::SetWindowFontScale(textScalingFactor);
+
+            ImGui::Text(item.id == ITEM_HOOKSHOT ? "H" : "L");
+            ImGui::SetWindowFontScale(1.0f); // Reset font scale to the original state
+        }
+    }
     if (item.id == ITEM_KEY_SMALL && IsValidSaveFile()) {
         std::string currentString = "";
         std::string maxString = std::to_string(currentAndMax.maxCapacity);
@@ -800,7 +818,7 @@ void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
         float angle = (float)i / items.size() * 2.0f * M_PI;
         float x = (radius / 2.0f) * cos(angle) + max.x / 2.0f;
         float y = (radius / 2.0f) * sin(angle) + max.y / 2.0f;
-        ImGui::SetCursorPos(ImVec2(x - 14, y + 4));
+        ImGui::SetCursorPos(ImVec2(x - (CVarGetInteger("gItemTrackerIconSize", 36) - 8) / 2.0f, y + 4));
         items[i].drawFunc(items[i]);
     }
 }
@@ -1167,7 +1185,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
         shouldUpdateVectors = true;
     }
     if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_SEPARATE) {
-        if (UIWidgets::PaddedEnhancementCheckbox("Circle display", "gItemTrackerDungeonRewardsCircle", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
+        if (UIWidgets::PaddedEnhancementCheckbox("Circle display", "gItemTrackerDungeonRewardsCircle", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, false)) {
             shouldUpdateVectors = true;
         }
     }
@@ -1200,6 +1218,10 @@ void ItemTrackerSettingsWindow::DrawElement() {
             shouldUpdateVectors = true;
         }
     }
+    UIWidgets::EnhancementCheckbox("Show Hookshot Identifiers", "gTrackers.ItemTracker.HookshotIdentifier");
+    UIWidgets::InsertHelpHoverText("Shows an 'H' or an 'L' to more easiely distinguish between Hookshot and Longshot.");
+
+    UIWidgets::Spacer(0);
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();

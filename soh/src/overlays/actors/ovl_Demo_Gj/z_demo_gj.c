@@ -192,11 +192,11 @@ void DemoGj_Explode(DemoGj* this, PlayState* play, Vec3f* initialPos, Vec3f* dir
             phi_s0 = 0x21;
         }
 
-        Gfx* gfx = ResourceMgr_LoadGfxByName(gGanonRubbleDL);
-
+        // SoH [Port] Changed from &gGanonsCastleRubbleAroundArenaDL[28] to gGanonRubbleDL as it seems this was an error in the original rom/decomp
+        // Other calls to EffectSsKakera_Spawn with OBJECT_GEFF use gGanonRubbleDL, so this change is to match that
         EffectSsKakera_Spawn(play, &explosionPos, &velocity, initialPos, -200, phi_s0, 10, 10, 0,
                              Rand_ZeroOne() * 20.0f + 20.0f, 20, 300, (s32)(Rand_ZeroOne() * 30.0f) + 30, -1,
-                             OBJECT_GEFF, gfx);
+                             OBJECT_GEFF, gGanonRubbleDL);
 
         theta += 0x2AAA;
     }
