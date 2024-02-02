@@ -1103,6 +1103,7 @@ void DrawEnhancementsMenu() {
                 PatchToTMedallions();
             }
             UIWidgets::Tooltip("When medallions are collected, the medallion imprints around the Master Sword pedestal in the Temple of Time will become colored");
+            UIWidgets::PaddedEnhancementCheckbox("Show locked door chains on both sides of locked doors", "gShowDoorLocksOnBothSides", true, false);
             UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
             if (UIWidgets::EnhancementCombobox("gSceneSpecificDirtPathFix", zFightingOptions, ZFIGHT_FIX_DISABLED) && gPlayState != NULL) {
                 UpdateDirtPathFixState(gPlayState->sceneNum);
