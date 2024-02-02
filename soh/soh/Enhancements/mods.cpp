@@ -1090,6 +1090,29 @@ void RegisterRandomizerSheikSpawn() {
     });
 }
 
+void UpdateHurtContainerModeState(bool newState) {
+        static bool hurtEnabled = false;
+        if (hurtEnabled == newState) {
+            return;
+        }
+
+        hurtEnabled = newState;
+        uint16_t getHeartPieces = gSaveContext.sohStats.heartPieces / 4;
+        uint16_t getHeartContainers = gSaveContext.sohStats.heartContainers;
+        
+        if (hurtEnabled) {        
+            gSaveContext.healthCapacity = 320 - ((getHeartPieces + getHeartContainers) * 16);
+        } else {
+            gSaveContext.healthCapacity = 48 + ((getHeartPieces + getHeartContainers) * 16);
+        }
+}
+
+void RegisterHurtContainerModeHandler() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
+        UpdateHurtContainerModeState(CVarGetInteger("gHurtContainer", 0));
+    });
+}
+
 void RegisterRandomizedEnemySizes() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
         // Randomized Enemy Sizes
@@ -1256,4 +1279,5 @@ void InitMods() {
     RegisterRandomizedEnemySizes();
     RegisterToTMedallions();
     NameTag_RegisterHooks();
+    RegisterHurtContainerModeHandler();
 }

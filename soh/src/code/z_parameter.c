@@ -2278,8 +2278,13 @@ u8 Item_Give(PlayState* play, u8 item) {
         gSaveContext.sohStats.heartPieces++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART_CONTAINER) {
-        gSaveContext.healthCapacity += 0x10;
-        gSaveContext.health += 0x10;
+        if (!CVarGetInteger("gHurtContainer", 0)) {
+            gSaveContext.healthCapacity += 0x10;
+            gSaveContext.health += 0x10;
+        } else {
+            gSaveContext.healthCapacity -= 0x10;
+            gSaveContext.health -= 0x10;
+        }
         gSaveContext.sohStats.heartContainers++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART) {
