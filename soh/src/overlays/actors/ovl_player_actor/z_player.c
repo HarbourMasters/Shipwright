@@ -11926,6 +11926,68 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
 void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     f32 temp1;
     f32 temp2;
+    
+    // #region SOH [Enhancement]
+    f32 swimMod = 1.0f;
+
+    if (CVarGetInteger("gEnableWalkModify", 0) == 1) {
+        if (CVarGetInteger("gWalkSpeedToggle", 0) == 1) {
+            if (gWalkSpeedToggle1) {
+                swimMod *= CVarGetFloat("gSwimModifierOne", 1.0f);
+            } else if (gWalkSpeedToggle2) {
+                swimMod *= CVarGetFloat("gSwimModifierTwo", 1.0f);
+            }
+        } else {
+            if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
+                swimMod *= CVarGetFloat("gSwimModifierOne", 1.0f);
+            } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
+                swimMod *= CVarGetFloat("gSwimModifierTwo", 1.0f);
+            }
+        }
+        temp1 = this->skelAnime.curFrame - 10.0f;
+
+        temp2 = (R_RUN_SPEED_LIMIT / 100.0f) * 0.8f * swimMod;
+        if (*arg1 > temp2) {
+            *arg1 = temp2;
+        }
+    
+        if ((0.0f < temp1) && (temp1 < 10.0f)) {
+            temp1 *= 6.0f;
+        } else {
+            temp1 = 0.0f;
+            arg2 = 0.0f;
+        }
+
+        Math_AsymStepToF(arg1, arg2 * 0.8f * swimMod, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
+        Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
+    // #endregion
+    } else {
+
+        temp1 = this->skelAnime.curFrame - 10.0f;
+
+        temp2 = (R_RUN_SPEED_LIMIT / 100.0f) * 0.8f;
+        if (*arg1 > temp2) {
+            *arg1 = temp2;
+        }
+
+        if ((0.0f < temp1) && (temp1 < 10.0f)) {
+            temp1 *= 6.0f;
+        } else {
+            temp1 = 0.0f;
+            arg2 = 0.0f;
+        }
+
+        Math_AsymStepToF(arg1, arg2 * 0.8f, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
+        Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
+    }
+}
+
+// #region SOH [Enhancement]
+//Diving uses function func_8084AEEC to calculate changes both xz and y velocity (via func_8084DBC4)
+//Provide original calculation for y velocity when swim speed mod is active
+void SurfaceWithoutSwimMod(Player* this, f32* arg1, f32 arg2, s16 arg3) {
+    f32 temp1;
+    f32 temp2;
 
     temp1 = this->skelAnime.curFrame - 10.0f;
 
@@ -11944,6 +12006,7 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     Math_AsymStepToF(arg1, arg2 * 0.8f, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
     Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
 }
+// #endregion
 
 void func_8084B000(Player* this) {
     f32 phi_f18;
@@ -13098,7 +13161,14 @@ void func_8084DBC4(PlayState* play, Player* this, f32 arg2) {
 
     Player_GetMovementSpeedAndYaw(this, &sp2C, &sp2A, 0.0f, play);
     func_8084AEEC(this, &this->linearVelocity, sp2C * 0.5f, sp2A);
-    func_8084AEEC(this, &this->actor.velocity.y, arg2, this->currentYaw);
+    // Original implementation of func_8084AEEC (SurfaceWithoutSwimMod) to prevent velocity increases via swim mod which push Link into the air
+    // #region SOH [Enhancement]
+    if (CVarGetInteger("gEnableWalkModify", 0)) {
+        SurfaceWithoutSwimMod(this, &this->actor.velocity.y, arg2, this->currentYaw);
+    // #endregion
+    } else {
+        func_8084AEEC(this, &this->actor.velocity.y, arg2, this->currentYaw);
+    }
 }
 
 void func_8084DC48(Player* this, PlayState* play) {
