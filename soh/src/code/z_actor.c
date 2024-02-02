@@ -2860,11 +2860,19 @@ s32 func_800314D4(PlayState* play, Actor* actor, Vec3f* arg2, f32 arg3) {
     if ((arg2->z > -actor->uncullZoneScale) && (arg2->z < (actor->uncullZoneForward + actor->uncullZoneScale))) {
         var = (arg3 < 1.0f) ? 1.0f : 1.0f / arg3;
 
-        if ((((fabsf(arg2->x) - actor->uncullZoneScale) * var) < 1.0f) &&
-            (((arg2->y + actor->uncullZoneDownward) * var) > -1.0f) &&
-            (((arg2->y - actor->uncullZoneScale) * var) < 1.0f)) {
+        // #region SoH [Widescreen support]
+        // Doors will cull quite noticeably on wider screens. For these actors the zone is increased
+        f32 limit = 1.0f;
+        if (((actor->id == ACTOR_EN_DOOR) || (actor->id == ACTOR_DOOR_SHUTTER)) && CVarGetInteger("gIncreaseDoorUncullZones", 1)) {
+            limit = 2.0f;
+        }
+
+        if ((((fabsf(arg2->x) - actor->uncullZoneScale) * var) < limit) &&
+            (((arg2->y + actor->uncullZoneDownward) * var) > -limit) &&
+            (((arg2->y - actor->uncullZoneScale) * var) < limit)) {
             return true;
         }
+        // #endregion
     }
 
     return false;
