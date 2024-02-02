@@ -812,7 +812,6 @@ void DrawOrb(Actor* thisx, PlayState* play, u8 color) {
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 255, 255);
-     
     switch (color) {
         case 1:
             gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 255);
