@@ -328,6 +328,7 @@ typedef struct {
     /*        */ u8 hasWarpTransfer;
     /*        */ u8 hasInterest;
     /*        */ u8 hasPieceOfHeart;
+    /*        */ u8 excessRupees;
     // #endregion
 } SaveContext; // size = 0x1428
 
