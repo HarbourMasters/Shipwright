@@ -1632,7 +1632,7 @@ void RandomizeColor(CosmeticOption& cosmeticOption) {
     } else if (cosmeticOption.label == "Props Primary") {
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_PropsSecondary"), 1.0f);
     } else if (cosmeticOption.label == "Ivan Idle Primary") {
-            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Ivan_IdleSecondary"), 0.5f);
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Ivan_IdleSecondary"), 0.5f);
     } else if (cosmeticOption.label == "Level 1 Secondary") {
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("SpinAttack_Level1Primary"), 2.0f);
     } else if (cosmeticOption.label == "Level 2 Secondary") {
