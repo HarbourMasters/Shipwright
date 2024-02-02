@@ -542,6 +542,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", "gMweepSpeed", 1, 5, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "", 0, true, false, true);
                 UIWidgets::PaddedEnhancementSliderInt("Block pushing speed +%d", "##BLOCKSPEED", "gFasterBlockPush", 0, 5, "", 0, true, false, true);
+                UIWidgets::PaddedEnhancementSliderInt("Crawl speed %dx", "##CRAWLSPEED", "gCrawlSpeed", 1, 5, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementCheckbox("Faster Heavy Block Lift", "gFasterHeavyBlockLift", false, false);
                 UIWidgets::Tooltip("Speeds up lifting silver rocks and obelisks");
                 UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", "gFastDrops", true, false);
@@ -573,6 +574,8 @@ void DrawEnhancementsMenu() {
                         "This doesn't work if the save was made in a grotto.");
                 UIWidgets::PaddedEnhancementCheckbox("No Forced Navi", "gNoForcedNavi", true, false);
                 UIWidgets::Tooltip("Prevent forced Navi conversations");
+                UIWidgets::PaddedEnhancementCheckbox("Navi Timer Resets", "gEnhancements.ResetNaviTimer", true, false);
+                UIWidgets::Tooltip("Resets the Navi timer on scene change. If you have already talked to her, she will try and talk to you again, instead of needing a save warp or death. ");
                 UIWidgets::PaddedEnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze", true, false);
                 UIWidgets::Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
                 UIWidgets::PaddedEnhancementCheckbox("Nighttime GS Always Spawn", "gNightGSAlwaysSpawn", true, false);
@@ -610,6 +613,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking to the guard next to the gate.");
                 UIWidgets::PaddedEnhancementCheckbox("Link as default file name", "gLinkDefaultName", true, false);
                 UIWidgets::Tooltip("Allows you to have \"Link\" as a premade file name");
+				UIWidgets::PaddedEnhancementCheckbox("Quit Fishing At Door", "gQuitFishingAtDoor", true, false);
+                UIWidgets::Tooltip("Fisherman asks if you want to quit at the door when you still have the rod");
                 UIWidgets::PaddedText("Time Travel with the Song of Time", true, false);
                 UIWidgets::EnhancementCombobox("gTimeTravel", timeTravelOptions, 0);
                 UIWidgets::Tooltip("Allows Link to freely change age by playing the Song of Time.\n"
@@ -812,6 +817,40 @@ void DrawEnhancementsMenu() {
                     UIWidgets::Tooltip("The minimum weight for the unique fishing reward as a child");
                     UIWidgets::PaddedEnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 6, 13, "", 13, true, true, false, disabled, disabledTooltip);
                     UIWidgets::Tooltip("The minimum weight for the unique fishing reward as an adult");
+                    ImGui::EndMenu();
+                }
+                UIWidgets::Spacer(0);
+
+                if (ImGui::BeginMenu("Lost Woods Ocarina Game")) {
+                    UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeOcarinaGame");
+                    UIWidgets::Tooltip("Turn on/off changes to the lost woods ocarina game behavior");
+                    bool disabled = !CVarGetInteger("gCustomizeOcarinaGame", 0);
+                    static const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
+                    UIWidgets::PaddedEnhancementCheckbox("Instant Win", "gInstantOcarinaGameWin", true, false, disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Skips the lost woods ocarina game");
+                    UIWidgets::PaddedEnhancementSliderInt("Note Play Speed: %dx", "##OcarinaGameNoteSpeed", "gOcarinaGameNoteSpeed", 1, 5, "", 1, true, true, false, disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Adjust the speed that the skull kids play notes");
+                    UIWidgets::PaddedEnhancementCheckbox("Unlimited Playback Time", "gOcarinaUnlimitedFailTime", true, false, disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Removes the timer to play back the song");
+                    UIWidgets::PaddedEnhancementSliderInt("Number of Starting Notes: %d", "##OcarinaGameStartingNotes", "gOcarinaGameStartingNotes", 1, 8, "", 3, true, true, false,
+                                                          disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Adjust the number of notes the skull kids play to start the first round");
+                    int roundMin = CVarGetInteger("gOcarinaGameStartingNotes", 3);
+                    UIWidgets::PaddedEnhancementSliderInt("Round One Notes: %d", "##OcarinaGameRoundOne",
+                                                          "gOcarinaGameRoundOneNotes", roundMin, 8, "", 5, true, true,
+                                                          false,
+                                                          disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Adjust the number of notes you need to play to end the first round");
+                    UIWidgets::PaddedEnhancementSliderInt("Round Two Notes: %d", "##OcarinaGameRoundTwoNotes",
+                                                          "gOcarinaGameRoundTwoNotes", roundMin, 8, "", 6, true, true,
+                                                          false,
+                                                          disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Adjust the number of notes you need to play to end the second round");
+                    UIWidgets::PaddedEnhancementSliderInt("Round Three Notes: %d", "##OcarinaGameRoundThreeNotes",
+                                                          "gOcarinaGameRoundThreeNotes", roundMin, 8, "", 8, true, true,
+                                                          false,
+                                                          disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Adjust the number of notes you need to play to end the third round");
                     ImGui::EndMenu();
                 }
 
@@ -1265,6 +1304,14 @@ void DrawEnhancementsMenu() {
                     ImGui::EndMenu();
                 }
             }
+
+            UIWidgets::Spacer(0);
+            if (UIWidgets::PaddedEnhancementCheckbox("Hurt Container Mode", "gHurtContainer", true, false)) {
+                UpdateHurtContainerModeState(CVarGetInteger("gHurtContainer", 0));
+            }
+            UIWidgets::Tooltip("Changes Heart Piece and Heart Container functionality.\n\n"
+                "- Each Heart Container or full Heart Piece reduces Links hearts by 1.\n"
+                "- Can be enabled retroactively after a File has already started.");
 
             ImGui::EndMenu();
         }
