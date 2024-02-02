@@ -1238,8 +1238,6 @@ void DrawEnhancementsMenu() {
                 }
             }
 
-            ImGui::Dummy(ImVec2(0,0));
-
             ImGui::EndMenu();
         }
 
