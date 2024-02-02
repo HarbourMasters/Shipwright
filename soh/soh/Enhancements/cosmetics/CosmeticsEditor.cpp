@@ -67,6 +67,7 @@ typedef enum {
     GROUP_EQUIPMENT,
     GROUP_CONSUMABLE,
     GROUP_HUD,
+    GROUP_KALEIDO,
     GROUP_TITLE,
     GROUP_NPC,
     GROUP_WORLD,
@@ -85,6 +86,7 @@ std::map<CosmeticGroup, const char*> groupLabels = {
     { GROUP_EQUIPMENT, "Equipment" },
     { GROUP_CONSUMABLE, "Consumables" },
     { GROUP_HUD, "HUD" },
+    { GROUP_KALEIDO, "Pause Menu" },
     { GROUP_TITLE, "Title Screen" },
     { GROUP_NPC, "NPCs" },
     { GROUP_WORLD, "World" },
@@ -264,6 +266,38 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Hud_EnemyHealthBorder",         "Enemy Health Border",  GROUP_HUD,          ImVec4(255, 255, 255, 255), true, false, true),
     COSMETIC_OPTION("Hud_NameTagActorText",          "Nametag Text",         GROUP_HUD,          ImVec4(255, 255, 255, 255), true, true, false),
     COSMETIC_OPTION("Hud_NameTagActorBackground",    "Nametag Background",   GROUP_HUD,          ImVec4(0,     0,   0,  80), true, false, true),
+
+    COSMETIC_OPTION("Kal_ItemSelA",                  "Item Select Color A",  GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, false),
+    COSMETIC_OPTION("Kal_ItemSelB",                  "Item Select Color B",  GROUP_KALEIDO,      ImVec4(70,  100, 130, 255), false, true, false),
+    COSMETIC_OPTION("Kal_ItemSelC",                  "Item Select Color C",  GROUP_KALEIDO,      ImVec4(70,  100, 130, 255), false, true, false),
+    COSMETIC_OPTION("Kal_ItemSelD",                  "Item Select Color D",  GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, false),
+
+    COSMETIC_OPTION("Kal_EquipSelA",                 "Equip Select Color A", GROUP_KALEIDO,      ImVec4(10,   50,  40, 255), false, true, false),
+    COSMETIC_OPTION("Kal_EquipSelB",                 "Equip Select Color B", GROUP_KALEIDO,      ImVec4(90,  100,  60, 255), false, true, false),
+    COSMETIC_OPTION("Kal_EquipSelC",                 "Equip Select Color C", GROUP_KALEIDO,      ImVec4(90,  100,  60, 255), false, true, false),
+    COSMETIC_OPTION("Kal_EquipSelD",                 "Equip Select Color D", GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, false),
+
+    COSMETIC_OPTION("Kal_MapSelDunA",                "Map Dungeon Color A",  GROUP_KALEIDO,      ImVec4(80,   40,  30, 255), false, true, false),
+    COSMETIC_OPTION("Kal_MapSelDunB",                "Map Dungeon Color B",  GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, false),
+    COSMETIC_OPTION("Kal_MapSelDunC",                "Map Dungeon Color C",  GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, false),
+    COSMETIC_OPTION("Kal_MapSelDunD",                "Map Dungeon Color D",  GROUP_KALEIDO,      ImVec4(80,   40,  30, 255), false, true, false),
+
+    COSMETIC_OPTION("Kal_QuestStatusA",              "Quest StatusColor A",  GROUP_KALEIDO,      ImVec4(80, 80, 50, 255),    false, true, false),
+    COSMETIC_OPTION("Kal_QuestStatusB",              "Quest StatusColor B",  GROUP_KALEIDO,      ImVec4(120, 120, 70, 255),  false, true, false),
+    COSMETIC_OPTION("Kal_QuestStatusC",              "Quest StatusColor C",  GROUP_KALEIDO,      ImVec4(120, 120, 70, 255),  false, true, false),
+    COSMETIC_OPTION("Kal_QuestStatusD",              "Quest StatusColor D",  GROUP_KALEIDO,      ImVec4(80, 80, 50, 255),    false, true, false),
+
+    COSMETIC_OPTION("Kal_MapSelectA",                "Map Color A",          GROUP_KALEIDO,      ImVec4(80, 40, 30, 255),    false, true, false),
+    COSMETIC_OPTION("Kal_MapSelectB",                "Map Color B",          GROUP_KALEIDO,      ImVec4(140, 60, 60, 255),   false, true, false),
+    COSMETIC_OPTION("Kal_MapSelectC",                "Map Color C",          GROUP_KALEIDO,      ImVec4(140, 60, 60, 255),   false, true, false),
+    COSMETIC_OPTION("Kal_MapSelectD",                "Map Color D",          GROUP_KALEIDO,      ImVec4(80, 40, 30, 255),    false, true, false),
+
+    COSMETIC_OPTION("Kal_SaveA",                     "Save A",               GROUP_KALEIDO,      ImVec4(50, 50, 50, 255),    false, true, false),
+    COSMETIC_OPTION("Kal_SaveB",                     "Save B",               GROUP_KALEIDO,      ImVec4(110, 110, 110, 255), false, true, false),
+    COSMETIC_OPTION("Kal_SaveC",                     "Save C",               GROUP_KALEIDO,      ImVec4(110, 110, 110, 255), false, true, false),
+    COSMETIC_OPTION("Kal_SaveD",                     "Save D",               GROUP_KALEIDO,      ImVec4(50, 50, 50, 255),    false, true, false),
+
+    COSMETIC_OPTION("Kal_NamePanel",                 "Name Panel",           GROUP_KALEIDO,      ImVec4(90,100,130,255),     true, true, false),
 
     COSMETIC_OPTION("Title_FileChoose",              "File Choose",          GROUP_TITLE,        ImVec4(100, 150, 255, 255), false, true, false),
     COSMETIC_OPTION("Title_NintendoLogo",            "Nintendo Logo",        GROUP_TITLE,        ImVec4(  0,   0, 255, 255), false, true, true),
@@ -1873,8 +1907,14 @@ void CosmeticsEditorWindow::DrawElement() {
             DrawCosmeticGroup(GROUP_TITLE);
             ImGui::EndTabItem();
         }
+
         if (ImGui::BeginTabItem("HUD Placement")) {
             Draw_Placements();
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("Pause Menu")) {
+            DrawCosmeticGroup(GROUP_KALEIDO);
             ImGui::EndTabItem();
         }
         ImGui::EndTabBar();
