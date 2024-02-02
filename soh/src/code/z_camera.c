@@ -7887,7 +7887,7 @@ s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags) {
             }
         }
 
-        // Clear free camera if an action is performed that would move the camera (targeting, first person, talking)
+        // Clear free look if an action is performed that would move the camera (targeting, first person, talking)
         if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1 &&
             ((mode >= CAM_MODE_TARGET && mode <= CAM_MODE_BATTLE) ||
              (mode >= CAM_MODE_FIRSTPERSON && mode <= CAM_MODE_CLIMBZ) || mode == CAM_MODE_HANGZ ||
