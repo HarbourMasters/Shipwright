@@ -873,8 +873,7 @@ void EnPartner_Draw(Actor* thisx, PlayState* play) {
     gSPSegment(POLY_XLU_DISP++, 0x08, dListHead);
     gDPPipeSync(dListHead++);
     gDPSetPrimColor(dListHead++, 0, 0x01, (u8)this->innerColor.r, (u8)this->innerColor.g, (u8)this->innerColor.b,
-                        (u8)(this->innerColor.a * alphaScale));
-    
+                    (u8)(this->innerColor.a * alphaScale));
 
     gDPSetRenderMode(dListHead++, G_RM_PASS, G_RM_ZB_CLD_SURF2);
 
