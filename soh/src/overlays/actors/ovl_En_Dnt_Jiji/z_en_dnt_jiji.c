@@ -101,7 +101,7 @@ void EnDntJiji_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void EnDntJiji_SetFlower(EnDntJiji* this, PlayState* play) {
-    // SOH: Due to removed object dependencies, parent was still NULL when Init was called. In order to proper set
+    // SOH: Due to removed object dependencies, parent was still NULL when Init was called. In order to properly set
     // stage, redo it here now that we are a frame later.
     this->stage = (EnDntDemo*)this->actor.parent;
     if (this->actor.bgCheckFlags & 1) {
