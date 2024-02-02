@@ -4521,7 +4521,7 @@ s32 Camera_Subj4(Camera* camera) {
     if ((anim->unk_28 < temp_f16) && !anim->unk_2E) {
         player = camera->player;
         anim->unk_2E = true;
-        func_800F4010(&player->actor.projectedPos, player->unk_89E + 0x8B0, 4.0f);
+        func_800F4010(&player->actor.projectedPos, player->floorSfxOffset + 0x8B0, 4.0f);
     } else if (anim->unk_28 > temp_f16) {
         anim->unk_2E = false;
     }
@@ -7732,7 +7732,7 @@ void Camera_Finish(Camera* camera) {
             player->actor.freezeTimer = 0;
             player->stateFlags1 &= ~0x20000000;
 
-            if (player->csMode != 0) {
+            if (player->csAction != 0) {
                 func_8002DF54(camera->play, &player->actor, 7);
                 osSyncPrintf("camera: player demo end!!\n");
             }
@@ -7933,7 +7933,8 @@ s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags) {
         return -5;
     }
 
-    if (setting == CAM_SET_NONE || setting >= CAM_SET_MAX) {
+    //modified from "==" to "<=" to not crash when "setting" is a negative value
+    if (setting <= CAM_SET_NONE || setting >= CAM_SET_MAX) {
         osSyncPrintf(VT_COL(RED, WHITE) "camera: error: illegal camera set (%d) !!!!\n" VT_RST, setting);
         return -99;
     }

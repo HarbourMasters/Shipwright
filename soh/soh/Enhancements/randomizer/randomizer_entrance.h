@@ -109,7 +109,7 @@ void Entrance_OverrideSpawnScene(int32_t sceneNum, int32_t spawn);
 int32_t Entrance_OverrideSpawnSceneRoom(int32_t sceneNum, int32_t spawn, int32_t room);
 void Entrance_EnableFW(void);
 uint8_t Entrance_GetIsEntranceDiscovered(uint16_t entranceIndex);
-void Entrance_SetEntranceDiscovered(uint16_t entranceIndex);
+void Entrance_SetEntranceDiscovered(uint16_t entranceIndex, uint8_t isReversedEntrance);
 #ifdef __cplusplus
 }
 #endif

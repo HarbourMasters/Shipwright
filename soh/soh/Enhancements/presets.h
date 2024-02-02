@@ -70,6 +70,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gForgeTime",
     "gClimbSpeed",
     "gFasterBlockPush",
+    "gCrawlSpeed",
     "gFasterHeavyBlockLift",
     "gNoForcedNavi",
     "gSkulltulaFreeze",
@@ -136,6 +137,8 @@ const std::vector<const char*> enhancementsCvars = {
     "gInjectItemCounts",
     "gDayGravePull",
     "gDampeAllNight",
+    "gQuitFishingAtDoor",
+    "gSkipSwimDeepEndAnim",
     "gSkipScarecrow",
     "gBlueFireArrows",
     "gSunlightArrows",
@@ -183,6 +186,14 @@ const std::vector<const char*> enhancementsCvars = {
     "gBombchuBowlingNoSmallCucco",
     "gBombchuBowlingNoBigCucco",
     "gBombchuBowlingAmmunition",
+    "gCustomizeOcarinaGame",
+    "gInstantOcarinaGameWin",
+    "gOcarinaGameNoteSpeed",
+    "gOcarinaUnlimitedFailTime",
+    "gOcarinaGameStartingNotes",
+    "gOcarinaGameRoundOneNotes",
+    "gOcarinaGameRoundTwoNotes",
+    "gOcarinaGameRoundThreeNotes",
     "gCreditsFix",
     "gSilverRupeeJingleExtend",
     "gStaticExplosionRadius",
@@ -217,6 +228,32 @@ const std::vector<const char*> enhancementsCvars = {
     "gFixTexturesOOB",
     "gIvanCoopModeEnabled",
     "gEnemySpawnsOverWaterboxes",
+    "gTreeStickDrops",
+    "gShadowTag",
+    "gRandomizedEnemySizes",
+    "gRandomizedEnemies",
+    "gMirroredWorldMode",
+    "gMirroredWorld",
+    "gHyperEnemies",
+    "gHookshotableReticle",
+    "gHideBunnyHood",
+    "gFixVineFall",
+    "gFileSelectMoreInfo",
+    "gEnemyHealthBar",
+    "gBushDropFix",
+    "gAllDogsRichard",
+    "gAddTraps.enabled",
+    "gAddTraps.Ammo",
+    "gAddTraps.Bomb",
+    "gAddTraps.Burn",
+    "gAddTraps.Ice",
+    "gAddTraps.Kill",
+    "gAddTraps.Knock",
+    "gAddTraps.Shock",
+    "gAddTraps.Speed",
+    "gAddTraps.Tele",
+    "gAddTraps.Void",
+    "gToTMedallionsColors", 
 };
 
 const std::vector<const char*> cheatCvars = {
@@ -229,6 +266,8 @@ const std::vector<const char*> cheatCvars = {
     "gWalkSpeedToggle",
     "gWalkModifierOne",
     "gWalkModifierTwo",
+    "gSwimModifierOne",
+    "gSwimModifierTwo",
     "gGoronPot",
     "gDampeWin",
     "gCustomizeShootingGallery",
@@ -269,7 +308,23 @@ const std::vector<const char*> cheatCvars = {
     "gNoRedeadFreeze",
     "gBombTimerMultiplier",
     "gNoFishDespawn",
-    "gNoBugsDespawn"
+    "gNoBugsDespawn",
+    "gWalkModifierDoesntChangeJump",
+    "gStatsEnabled",
+    "gSaveStatesEnabled",
+    "gSaveStatePromise",
+    "gRegEditEnabled",
+    "gPreset0",
+    "gPreset1",
+    "gDekuStickCheat",
+    "gDebugWarpScreenTranslation",
+    "gDebugSaveFileMode",
+    "gCosmetics.Link_BodyScale.Changed",
+    "gCosmetics.Link_BodyScale.Value",
+    "gCosmetics.Link_HeadScale.Changed",
+    "gCosmetics.Link_HeadScale.Value",
+    "gCosmetics.Link_SwordScale.Changed",
+    "gCosmetics.Link_SwordScale.Value",
 };
 
 const std::vector<const char*> randomizerCvars = {
@@ -399,6 +454,15 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeGregHint",
     "gRandoManualSeedEntry",
     "gRandomizerSettingsEnabled",
+    "gRandomizeTriforceHuntTotalPieces",
+    "gRandomizeTriforceHuntRequiredPieces",
+    "gRandomizeTriforceHunt",
+    "gRandomizeShuffleMasterSword",
+    "gRandomizeSariaHint",
+    "gRandomizeRupeeNames",
+    "gRandomizeFrogsHint",
+    "gRandoRelevantNavi",
+    "gRandoQuestItemFanfares",
 };
 
 const std::vector<PresetEntry> vanillaPlusPresetEntries = {
@@ -731,6 +795,13 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Adult Minimum Weight (8 to 13)
     PRESET_ENTRY_S32("gAdultMinimumWeightFish", 6),
 
+    // Customize Lost Woods Ocarina Game Behavior
+    PRESET_ENTRY_S32("gCustomizeOcarinaGame", 1),
+    // Start With Five Notes
+    PRESET_ENTRY_S32("gOcarinaGameStartingNotes", 5),
+    // Round One Notes
+    PRESET_ENTRY_S32("gOcarinaGameRoundOneNotes", 5),
+
     // Visual Stone of Agony
     PRESET_ENTRY_S32("gVisualAgony", 1),
     // Pull grave during the day
@@ -739,6 +810,9 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gSkipScarecrow", 1),
     // Chest size & texture matches contents
     PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", CSMC_BOTH),
+
+    // Color Temple of Time's Medallions
+    PRESET_ENTRY_S32("gToTMedallionsColors", 1),
 
     // Pause link animation (0 to 16)
     PRESET_ENTRY_S32("gPauseLiveLink", 16),

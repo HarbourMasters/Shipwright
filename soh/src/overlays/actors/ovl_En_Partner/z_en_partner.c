@@ -21,7 +21,7 @@ void EnPartner_Draw(Actor* thisx, PlayState* play);
 void EnPartner_SpawnSparkles(EnPartner* this, PlayState* play, s32 sparkleLife);
 
 void func_808328EC(Player* this, u16 sfxId);
-void func_808429B4(PlayState* play, s32 speed, s32 y, s32 countdown);
+void Player_RequestQuake(PlayState* play, s32 speed, s32 y, s32 countdown);
 s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play);
 
 static InitChainEntry sInitChain[] = {
@@ -278,7 +278,7 @@ void UseHammer(Actor* thisx, PlayState* play, u8 started) {
             static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
             Vec3f shockwavePos = this->actor.world.pos;
 
-            func_808429B4(play, 27767, 7, 20);
+            Player_RequestQuake(play, 27767, 7, 20);
             Player_PlaySfx(&this->actor, NA_SE_IT_HAMMER_HIT);
 
             EffectSsBlast_SpawnWhiteShockwave(play, &shockwavePos, &zeroVec, &zeroVec);
@@ -743,6 +743,28 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
         Collider_UpdateCylinder(&this->actor, &this->collider);
         CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
+    }
+
+    if (CVarGetInteger("gCosmetics.Ivan_IdlePrimary.Changed", 0)) {
+        Color_RGB8 ivanColor1 = CVarGetColor24("gCosmetics.Ivan_IdlePrimary.Value", (Color_RGB8){ 255, 255, 255 });
+        this->innerColor.r = ivanColor1.r;
+        this->innerColor.g = ivanColor1.g;
+        this->innerColor.b = ivanColor1.b;
+    } else {
+        this->innerColor.r = 255;
+        this->innerColor.g = 255;
+        this->innerColor.b = 255;
+    }
+
+    if (CVarGetInteger("gCosmetics.Ivan_IdleSecondary.Changed", 0)) {
+        Color_RGB8 ivanColor2 = CVarGetColor24("gCosmetics.Ivan_IdleSecondary.Value", (Color_RGB8){ 0, 255, 0 });
+        this->outerColor.r = ivanColor2.r;
+        this->outerColor.g = ivanColor2.g;
+        this->outerColor.b = ivanColor2.b;
+    } else {
+        this->outerColor.r = 0;
+        this->outerColor.g = 255;
+        this->outerColor.b = 0;
     }
 
     SkelAnime_Update(&this->skelAnime);
