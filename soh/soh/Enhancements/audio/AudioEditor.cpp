@@ -422,8 +422,8 @@ void AudioEditor::DrawElement() {
                 ImGui::PopItemWidth();
                 ImGui::NewLine();
                 ImGui::PopItemWidth();
-                UIWidgets::EnhancementSliderFloat("Link's voice pitch multiplier: %f", "##linkVoiceFreqMultiplier",
-                        "gLinkVoiceFreqMultiplier", 0.4, 2.5, "", 1.0, false, false);
+                UIWidgets::EnhancementSliderFloat("Link's voice pitch multiplier: %.1f %%", "##linkVoiceFreqMultiplier",
+                        "gLinkVoiceFreqMultiplier", 0.4, 2.5, "", 1.0, true, true);
                 ImGui::SameLine();
                 const std::string resetButton = "Reset##linkVoiceFreqMultiplier";
                 if (ImGui::Button(resetButton.c_str())) {
