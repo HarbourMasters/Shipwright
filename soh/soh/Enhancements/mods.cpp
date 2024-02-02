@@ -24,6 +24,7 @@
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
+#include "kaleido.h"
 #include "src/overlays//actors/ovl_Fishing/z_fishing.h"
 
 extern "C" {
@@ -1552,4 +1553,5 @@ void InitMods() {
     RegisterNoWallet();
     RegisterFishsanity();
     NameTag_RegisterHooks();
+    RandoKaleido_RegisterHooks();
 }

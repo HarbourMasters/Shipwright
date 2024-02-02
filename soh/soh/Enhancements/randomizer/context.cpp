@@ -9,6 +9,7 @@
 #include "entrance.h"
 #include "settings.h"
 #include "rando_hash.h"
+#include "../kaleido.h"
 #include "fishsanity.h"
 
 #include <fstream>
@@ -580,5 +581,12 @@ Option& Context::GetOption(const RandomizerSettingKey key) const {
 
 TrickOption& Context::GetTrickOption(const RandomizerTrick key) const {
     return mSettings->GetTrickOption(key);
+}
+
+std::shared_ptr<Kaleido> Context::GetKaleido() {
+    if (mKaleido == nullptr) {
+        mKaleido = std::make_shared<Kaleido>();
+    }
+    return mKaleido;
 }
 } // namespace Rando

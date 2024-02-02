@@ -20,6 +20,7 @@
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/kaleido.h"
 
 
 static void* sEquipmentFRATexs[] = {
@@ -1426,10 +1427,15 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
             gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-            POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->questPageVtx,
-                                                          sQuestStatusTexs[gSaveContext.language]);
-
-            KaleidoScope_DrawQuestStatus(play, gfxCtx);
+            if (pauseCtx->randoQuestMode) {
+                POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->saveVtx,
+                                                              sSaveTexs[gSaveContext.language]);
+                RandoKaleido_DrawMiscCollectibles(play);
+            } else {
+                POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->questPageVtx,
+                                                              sQuestStatusTexs[gSaveContext.language]);
+                KaleidoScope_DrawQuestStatus(play, gfxCtx);
+            }
         }
 
         if (pauseCtx->pageIndex != PAUSE_MAP) {
@@ -1521,10 +1527,15 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-                POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->questPageVtx,
-                                                              sQuestStatusTexs[gSaveContext.language]);
-
-                KaleidoScope_DrawQuestStatus(play, gfxCtx);
+                if (pauseCtx->randoQuestMode) {
+                    POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->saveVtx,
+                                                                  sSaveTexs[gSaveContext.language]);
+                    RandoKaleido_DrawMiscCollectibles(play);
+                } else {
+                    POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->questPageVtx,
+                                                                  sQuestStatusTexs[gSaveContext.language]);
+                    KaleidoScope_DrawQuestStatus(play, gfxCtx);
+                }
 
                 if (pauseCtx->cursorSpecialPos == 0) {
                     KaleidoScope_DrawCursor(play, PAUSE_QUEST);
@@ -1602,11 +1613,13 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
 
         if (((pauseCtx->state == 7) && (pauseCtx->unk_1EC < 4)) || (pauseCtx->state == 0xE)) {
             POLY_KAL_DISP =
-                KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sSavePromptTexs[gSaveContext.language], 152, 16, 0);
+                    KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sSavePromptTexs[gSaveContext.language], 152, 16, 0);
 
-            gDPSetCombineLERP(POLY_KAL_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0, TEXEL0,
+            gDPSetCombineLERP(POLY_KAL_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0,
+                              TEXEL0,
                               0, PRIMITIVE, 0);
-            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, VREG(61)); //Save prompt cursor colour
+            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b,
+                            VREG(61)); //Save prompt cursor colour
 
             if (pauseCtx->promptChoice == 0) {
                 gSPDisplayList(POLY_KAL_DISP++, gPromptCursorLeftDL);
@@ -1619,22 +1632,27 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
             gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
             POLY_KAL_DISP =
-                KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][0], 48, 16, 12);
+                    KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][0], 48, 16,
+                                                12);
 
             POLY_KAL_DISP =
-                KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48, 16, 16);
+                    KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48, 16,
+                                                16);
         } else if (((pauseCtx->state == 7 && pauseCtx->unk_1EC >= 4) || pauseCtx->state == 0xF) &&
                    !CVarGetInteger("gSkipSaveConfirmation", 0)) {
             POLY_KAL_DISP =
-                KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sSaveConfirmationTexs[gSaveContext.language], 152, 16, 0);
-        } else if ((pauseCtx->state != 7) || (pauseCtx->unk_1EC < 4)) {
+                    KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sSaveConfirmationTexs[gSaveContext.language], 152,
+                                                16, 0);
+        } else if ((pauseCtx->state != 7 || pauseCtx->unk_1EC < 4)) {
             if ((pauseCtx->state != 0xF) && ((pauseCtx->state == 0x10) || (pauseCtx->state == 0x11))) {
                 POLY_KAL_DISP =
-                    KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sContinuePromptTexs[gSaveContext.language], 152, 16, 0);
+                        KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sContinuePromptTexs[gSaveContext.language], 152,
+                                                    16, 0);
 
                 gDPSetCombineLERP(POLY_KAL_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0,
                                   TEXEL0, 0, PRIMITIVE, 0);
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, VREG(61)); //Continue prompt cursor colour
+                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b,
+                                VREG(61)); //Continue prompt cursor colour
 
                 if (pauseCtx->promptChoice == 0) {
                     gSPDisplayList(POLY_KAL_DISP++, gPromptCursorLeftDL);
@@ -1648,15 +1666,16 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
 
                 if (!IS_BOSS_RUSH) {
                     POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(
-                        POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][0], 48, 16, 12);
+                            POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][0], 48, 16, 12);
                 } else {
                     // Show "No" twice in Boss Rush because the player can't save within it.
                     POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(
-                        POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48, 16, 12);
+                            POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48, 16, 12);
                 }
 
                 POLY_KAL_DISP =
-                    KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48, 16, 16);
+                        KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48,
+                                                    16, 16);
             }
         }
 
@@ -3920,6 +3939,11 @@ void KaleidoScope_Update(PlayState* play)
                         Interface_ChangeAlpha(50);
                         pauseCtx->unk_1EC = 0;
                         pauseCtx->state = 7;
+                    } else if (CHECK_BTN_ALL(input->press.button, BTN_CUP) && pauseCtx->pageIndex == PAUSE_QUEST) {
+                        Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                        // this starts at 0, subtracting one and taking absolute value makes it 1, then subtracting
+                        // one again puts it back at 0. So this acts as a toggle.
+                        pauseCtx->randoQuestMode = ABS(pauseCtx->randoQuestMode - 1);
                     }
                     break;
 
