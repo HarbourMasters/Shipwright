@@ -155,7 +155,6 @@ void EnPartner_SpawnSparkles(EnPartner* this, PlayState* play, s32 sparkleLife) 
     primColor.r = this->innerColor.r;
     primColor.g = this->innerColor.g;
     primColor.b = this->innerColor.b;
- 
     envColor.r = this->outerColor.r;
     envColor.g = this->outerColor.g;
     envColor.b = this->outerColor.b;
