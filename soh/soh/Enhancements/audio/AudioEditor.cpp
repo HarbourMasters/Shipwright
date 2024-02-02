@@ -525,7 +525,7 @@ void AudioEditor::DrawElement() {
                 }
 
                 ImGui::NewLine();
-                UIWidgets::EnhancementCheckbox("Randomize All Music and Sound Effects on New Scene", "gAudioRandomizeAllOnNewScene");
+                UIWidgets::EnhancementCheckbox("Randomize All Music and Sound Effects on New Scene", "gAudioEditor.RandomizeAllOnNewScene");
                 UIWidgets::Tooltip("Enables randomizing all unlocked music and sound effects when you enter a new scene.");
 
                 ImGui::NewLine();
