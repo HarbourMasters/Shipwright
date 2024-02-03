@@ -699,86 +699,6 @@ void DrawEnhancementsMenu() {
 
             if (ImGui::BeginMenu("Difficulty Options"))
             {
-                UIWidgets::PaddedEnhancementCheckbox("Delete File On Death", "gDeleteFileOnDeath", true, false);
-                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-                UIWidgets::Tooltip("Dying will delete your file\n\n     " ICON_FA_EXCLAMATION_TRIANGLE " WARNING " ICON_FA_EXCLAMATION_TRIANGLE "\nTHIS IS NOT REVERSABLE\nUSE AT YOUR OWN RISK!");
-                ImGui::PopStyleColor();
-                if (UIWidgets::PaddedEnhancementCheckbox("Permanent heart loss", "gPermanentHeartLoss", true, false)) {
-                    UpdatePermanentHeartLossState();
-                }
-                UIWidgets::Tooltip("When you lose 4 quarters of a heart you will permanently lose that heart container.\n\nDisabling this after the fact will restore your heart containers.");
-                ImGui::Text("Damage Multiplier");
-                UIWidgets::EnhancementCombobox("gDamageMul", allPowers, 0);
-                UIWidgets::Tooltip(
-                    "Modifies all sources of damage not affected by other sliders\n"
-                    "2x: Can survive all common attacks from the start of the game\n"
-                    "4x: Dies in 1 hit to any substantial attack from the start of the game\n"
-                    "8x: Can only survive trivial damage from the start of the game\n"
-                    "16x: Can survive all common attacks with max health without double defense\n"
-                    "32x: Can survive all common attacks with max health and double defense\n"
-                    "64x: Can survive trivial damage with max health without double defense\n"
-                    "128x: Can survive trivial damage with max health and double defense\n"
-                    "256x: Cannot survive damage"
-                );
-                UIWidgets::PaddedText("Fall Damage Multiplier", true, false);
-                UIWidgets::EnhancementCombobox("gFallDamageMul", subPowers, 0);
-                UIWidgets::Tooltip(
-                    "Modifies all fall damage\n"
-                    "2x: Can survive all fall damage from the start of the game\n"
-                    "4x: Can only survive short fall damage from the start of the game\n"
-                    "8x: Cannot survive any fall damage from the start of the game\n"
-                    "16x: Can survive all fall damage with max health without double defense\n"
-                    "32x: Can survive all fall damage with max health and double defense\n"
-                    "64x: Can survive short fall damage with double defense\n"
-                    "128x: Cannot survive fall damage"
-                );
-                UIWidgets::PaddedText("Void Damage Multiplier", true, false);
-                UIWidgets::EnhancementCombobox("gVoidDamageMul", subSubPowers, 0);
-                UIWidgets::Tooltip(
-                    "Modifies damage taken after falling into a void\n"
-                    "2x: Can survive void damage from the start of the game\n"
-                    "4x: Cannot survive void damage from the start of the game\n"
-                    "8x: Can survive void damage twice with max health without double defense\n"
-                    "16x: Can survive void damage with max health without double defense\n"
-                    "32x: Can survive void damage with max health and double defense\n"
-                    "64x: Cannot survive void damage"
-                );
-                UIWidgets::PaddedText("Bonk Damage Multiplier", true, false);
-                UIWidgets::EnhancementCombobox("gBonkDamageMul", bonkDamageValues, BONK_DAMAGE_NONE);
-                UIWidgets::Tooltip("Modifies damage taken after bonking.");
-                UIWidgets::PaddedEnhancementCheckbox("Spawn with full health", "gFullHealthSpawn", true, false);
-                UIWidgets::Tooltip("Respawn with full health instead of 3 Hearts");
-                UIWidgets::PaddedEnhancementCheckbox("No Random Drops", "gNoRandomDrops", true, false);
-                UIWidgets::Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
-                bool forceEnableBombchuDrops = IS_RANDO &&
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1;
-                static const char* forceEnableBombchuDropsText =
-                    "This setting is forcefully enabled because a savefile\nwith \"Enable Bombchu Drops\" is loaded.";
-                UIWidgets::PaddedEnhancementCheckbox("Enable Bombchu Drops", "gBombchuDrops", true, false,
-                                                        forceEnableBombchuDrops, forceEnableBombchuDropsText, UIWidgets::CheckboxGraphics::Checkmark);
-                UIWidgets::Tooltip("Bombchus will sometimes drop in place of bombs");
-                UIWidgets::PaddedEnhancementCheckbox("Trees Drop Sticks", "gTreeStickDrops", true, false);
-                UIWidgets::Tooltip("Bonking into trees will have a chance to drop up to 3 sticks. Must already have obtained sticks.");
-                UIWidgets::PaddedEnhancementCheckbox("No Heart Drops", "gNoHeartDrops", true, false);
-                UIWidgets::Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
-                UIWidgets::PaddedEnhancementCheckbox("Hyper Bosses", "gHyperBosses", true, false);
-                UIWidgets::Tooltip("All major bosses move and act twice as fast.");
-                UIWidgets::PaddedEnhancementCheckbox("Hyper Enemies", "gHyperEnemies", true, false);
-                UIWidgets::Tooltip("All regular enemies and mini-bosses move and act twice as fast.");
-                UIWidgets::PaddedEnhancementCheckbox("Always Win Goron Pot", "gGoronPot", true, false);
-                UIWidgets::Tooltip("Always get the heart piece/purple rupee from the spinning Goron pot");
-                UIWidgets::PaddedEnhancementCheckbox("Always Win Dampe Digging Game", "gDampeWin", true, false, SaveManager::Instance->IsRandoFile(),
-                                                        "This setting is always enabled in randomizer files", UIWidgets::CheckboxGraphics::Checkmark);
-                UIWidgets::Tooltip("Always win the heart piece/purple rupee on the first dig in Dampe's grave digging game, just like in rando\nIn a rando file, this is unconditionally enabled");
-                UIWidgets::PaddedEnhancementCheckbox("All Dogs are Richard", "gAllDogsRichard", true, false);
-                UIWidgets::Tooltip("All dogs can be traded in and will count as Richard.");
-                UIWidgets::PaddedEnhancementSliderInt("Leever Spawn Rate: %dx slower", "##LeeverSpawnRate", "gEnhancements.LeeverSpawnRate",
-                                                      1, 10, "", 1, true, true, false);
-                UIWidgets::Tooltip("The time inbetween spawning a new group of leevers will increase based on the slider.");
-                UIWidgets::PaddedEnhancementSliderInt("Cuccos Stay Put Multiplier: %dx", "##CuccoStayDurationMultiplier", "gCuccoStayDurationMultiplier", 1, 5, "", 1, true, true, false);
-                UIWidgets::Tooltip("Cuccos will stay in place longer after putting them down, by a multiple of the value of the slider.");
-                UIWidgets::Spacer(0);
-
                 if (ImGui::BeginMenu("Potion Values"))
                 {
                     UIWidgets::EnhancementCheckbox("Change Red Potion Effect", "gRedPotionEffect");
@@ -1031,6 +951,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("All dogs can be traded in and will count as Richard.");
                 UIWidgets::PaddedEnhancementSliderInt("Cuccos Stay Put Multiplier: %dx", "##CuccoStayDurationMultiplier", "gCuccoStayDurationMultiplier", 1, 5, "", 1, true, true, false);
                 UIWidgets::Tooltip("Cuccos will stay in place longer after putting them down, by a multiple of the value of the slider.");
+                UIWidgets::Tooltip("The time inbetween spawning a new group of leevers will increase based on the slider.");
+                UIWidgets::PaddedEnhancementSliderInt("Cuccos Stay Put Multiplier: %dx", "##CuccoStayDurationMultiplier", "gCuccoStayDurationMultiplier", 1, 5, "", 1, true, true, false);
 
                 ImGui::EndMenu();
             }
