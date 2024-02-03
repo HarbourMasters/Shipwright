@@ -177,7 +177,7 @@ bool Scene_CommandObjectList(PlayState* play, LUS::ISceneCommand* cmd) {
 
     // Loop until a mismatch in the object lists
     // Then clear all object ids past that in the context object list and kill actors for those objects
-    for (i = play->objectCtx.unk_09, k = 0; i < play->objectCtx.num; i++, k++) {
+    for (i = play->objectCtx.unk_09, k = 0; i < play->objectCtx.num, k < cmdObj->objects.size(); i++, k++) {
         if (play->objectCtx.status[i].id != cmdObj->objects[k]) {
             for (j = i; j < play->objectCtx.num; j++) {
                 play->objectCtx.status[j].id = OBJECT_INVALID;
