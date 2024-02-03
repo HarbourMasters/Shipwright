@@ -1228,51 +1228,24 @@ void RegisterOpenAllHours() {
         Actor* actor = static_cast<Actor*>(refActor);
 
         if (CVarGetInteger("gEnhancements.OpenAllHours", 0) && (actor->id == ACTOR_EN_DOOR)) {
-            bool changed = false;
             switch (actor->params) {
-                case 4753:                // Night Market Bazaar
-                    actor->params = 4543; // Day Market Bazaar
-                    changed = true;
+                case 4753: // Night Market Bazaar
+                case 1678: // Night Potion Shop
+                case 2689: // Day Bombchu Shop
+                case 2703: // Night Slingshot Game
+                case 653:  // Day Chest Game
+                case 6801: // Night Kak Bazaar
+                case 7822: // Night Kak Potion Shop
+                case 4751: // Night Kak Archery Game
+                case 3728: // Night Mask Shop
+                {
+                    actor->params = (actor->params & 0xFC00) | (DOOR_SCENEEXIT << 7) | 0x3F;
+                    EnDoor* enDoor = static_cast<EnDoor*>(refActor);
+                    EnDoor_SetupType(enDoor, gPlayState);
                     break;
-                case 1678:                // Night Potion Shop
-                    actor->params = 1471; // Day Potion Shop
-                    changed = true;
-                    break;
-                case 2689:                // Day Bombchu Shop
-                    actor->params = 2495; // Night Bombchu Shop
-                    changed = true;
-                    break;
-                case 2703:                // Night Slingshot Game
-                    actor->params = 2495; // Day Slingshot Game
-                    changed = true;
-                    break;
-                case 653:                // Day Chest Game
-                    actor->params = 447; // Night Chest Game
-                    changed = true;
-                    break;
-                case 6801:                // Night Kak Bazaar
-                    actor->params = 6591; // Day Kak Bazaar
-                    changed = true;
-                    break;
-                case 7822:                // Night Kak Potion Shop
-                    actor->params = 7615; // Day Kak Potion Shop
-                    changed = true;
-                    break;
-                case 4751:                // Night Kak Archery Game
-                    actor->params = 4543; // Day Kak Archery Game
-                    changed = true;
-                    break;
-                case 3728:                // Night Mask Shop
-                    actor->params = 3519; // Day Mask Shop
-                    changed = true;
-                    break;
-
+                }
                 default:
                     break;
-            }
-            if (changed) {
-                EnDoor* enDoor = static_cast<EnDoor*>(refActor);
-                EnDoor_SetupType(enDoor, gPlayState);
             }
         }
     });
