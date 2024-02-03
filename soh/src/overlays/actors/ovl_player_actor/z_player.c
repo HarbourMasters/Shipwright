@@ -2911,7 +2911,11 @@ s32 func_808356E8(Player* this, PlayState* play) {
 }
 
 void func_808357E8(Player* this, Gfx** dLists) {
-    this->leftHandDLists = &dLists[gSaveContext.linkAge];
+    if (LINK_IS_ADULT && (CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0))) {
+        this->leftHandDLists = &dLists[1];
+    } else {
+        this->leftHandDLists = &dLists[gSaveContext.linkAge];
+    }
 }
 
 s32 func_80835800(Player* this, PlayState* play) {
@@ -6982,9 +6986,19 @@ s32 Player_TryEnteringCrawlspace(Player* this, PlayState* play, u32 interactWall
                 this->actor.world.pos.z = zVertex1 + (distToInteractWall * wallPolyNormZ);
                 func_80832224(this);
                 this->actor.prevPos = this->actor.world.pos;
-                Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_start);
-                Player_AnimReplaceApplyFlags(play, this, 0x9D);
-
+                // #region SOH [Enhancement]
+                if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
+                    // increase animation speed when entering a tunnel
+                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
+                                         ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f), 0.0f,
+                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), ANIMMODE_ONCE,
+                                         0.0f);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                // #endregion
+                } else {
+                    Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_start);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                }
                 return true;
             }
         }
@@ -7065,16 +7079,39 @@ s32 Player_TryLeavingCrawlspace(Player* this, PlayState* play) {
 
             if (this->linearVelocity > 0.0f) {
                 this->actor.shape.rot.y = this->actor.wallYaw + 0x8000;
-                Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_end);
-                Player_AnimReplaceApplyFlags(play, this, 0x9D);
-                OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
+                // #region SOH [Enhancement]
+                if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
+                    // animation when exiting a tunnel forward
+                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_end,
+                                         ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f), 0.0f,
+                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_end), ANIMMODE_ONCE,
+                                         0.0f);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                    OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
+                // #endregion
+                } else {
+                    Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_end);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                    OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
+                }
             } else {
                 this->actor.shape.rot.y = this->actor.wallYaw;
-                LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start, -1.0f,
-                                     Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f, ANIMMODE_ONCE,
-                                     0.0f);
-                Player_AnimReplaceApplyFlags(play, this, 0x9D);
-                OnePointCutscene_Init(play, 9602, 999, NULL, MAIN_CAM);
+                // #region SOH [Enhancement]
+                // animation when exiting a tunnel backward 
+                if (CVarGetInteger("gCrawlSpeed",1) > 1) {
+                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
+                                         -1.0f * ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f),
+                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f, ANIMMODE_ONCE, 0.0f);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                    OnePointCutscene_Init(play, 9602, 999, NULL, MAIN_CAM);
+                // #endregion
+                }
+                else {
+                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start, -1.0f,
+                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f, ANIMMODE_ONCE, 0.0f);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                    OnePointCutscene_Init(play, 9602, 999, NULL, MAIN_CAM);
+                }
             }
 
             this->currentYaw = this->actor.shape.rot.y;
@@ -7235,11 +7272,41 @@ s32 func_8083FD78(Player* this, f32* arg1, s16* arg2, PlayState* play) {
             *arg2 = this->actor.shape.rot.y;
         }
 
-        if (this->unk_664 != NULL) {
-            func_8083DB98(this, 1);
+        // #region SOH [Enhancement]
+        if (CVarGetInteger("gRightStickAiming", 0) || !CVarGetInteger("gInvertZAimingYAxis", 1)) {
+            
+            if (this->unk_664 != NULL) {
+                func_8083DB98(this, 1);
+            } else {
+                int8_t relStickY;
+
+                // preserves simultaneous left/right-stick aiming
+                if (CVarGetInteger("gRightStickAiming", 0)) {
+                    if ((sControlInput->rel.stick_y + sControlInput->rel.right_stick_y) >= 0) {
+                        relStickY = (((sControlInput->rel.stick_y) > (sControlInput->rel.right_stick_y))
+                                         ? (sControlInput->rel.stick_y)
+                                         : (sControlInput->rel.right_stick_y));
+                    } else {
+                        relStickY = (((sControlInput->rel.stick_y) < (sControlInput->rel.right_stick_y))
+                                         ? (sControlInput->rel.stick_y)
+                                         : (sControlInput->rel.right_stick_y));
+                    }
+                } else {
+                    relStickY = sControlInput->rel.stick_y;
+                }
+
+                Math_SmoothStepToS(&this->actor.focus.rot.x,
+                                   relStickY * (CVarGetInteger("gInvertZAimingYAxis", 1) ? 1 : -1) * 240.0f, 14, 4000, 30);
+                func_80836AB8(this, 1);
+            }
+        // #endregion
         } else {
-            Math_SmoothStepToS(&this->actor.focus.rot.x, sControlInput->rel.stick_y * 240.0f, 14, 4000, 30);
-            func_80836AB8(this, 1);
+            if (this->unk_664 != NULL) {
+                func_8083DB98(this, 1);
+            } else {
+                Math_SmoothStepToS(&this->actor.focus.rot.x, sControlInput->rel.stick_y * 240.0f, 14, 4000, 30);
+                func_80836AB8(this, 1);
+            }
         }
     } else {
         if (this->unk_664 != NULL) {
@@ -11896,6 +11963,68 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
 void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     f32 temp1;
     f32 temp2;
+    
+    // #region SOH [Enhancement]
+    f32 swimMod = 1.0f;
+
+    if (CVarGetInteger("gEnableWalkModify", 0) == 1) {
+        if (CVarGetInteger("gWalkSpeedToggle", 0) == 1) {
+            if (gWalkSpeedToggle1) {
+                swimMod *= CVarGetFloat("gSwimModifierOne", 1.0f);
+            } else if (gWalkSpeedToggle2) {
+                swimMod *= CVarGetFloat("gSwimModifierTwo", 1.0f);
+            }
+        } else {
+            if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
+                swimMod *= CVarGetFloat("gSwimModifierOne", 1.0f);
+            } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
+                swimMod *= CVarGetFloat("gSwimModifierTwo", 1.0f);
+            }
+        }
+        temp1 = this->skelAnime.curFrame - 10.0f;
+
+        temp2 = (R_RUN_SPEED_LIMIT / 100.0f) * 0.8f * swimMod;
+        if (*arg1 > temp2) {
+            *arg1 = temp2;
+        }
+    
+        if ((0.0f < temp1) && (temp1 < 10.0f)) {
+            temp1 *= 6.0f;
+        } else {
+            temp1 = 0.0f;
+            arg2 = 0.0f;
+        }
+
+        Math_AsymStepToF(arg1, arg2 * 0.8f * swimMod, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
+        Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
+    // #endregion
+    } else {
+
+        temp1 = this->skelAnime.curFrame - 10.0f;
+
+        temp2 = (R_RUN_SPEED_LIMIT / 100.0f) * 0.8f;
+        if (*arg1 > temp2) {
+            *arg1 = temp2;
+        }
+
+        if ((0.0f < temp1) && (temp1 < 10.0f)) {
+            temp1 *= 6.0f;
+        } else {
+            temp1 = 0.0f;
+            arg2 = 0.0f;
+        }
+
+        Math_AsymStepToF(arg1, arg2 * 0.8f, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
+        Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
+    }
+}
+
+// #region SOH [Enhancement]
+//Diving uses function func_8084AEEC to calculate changes both xz and y velocity (via func_8084DBC4)
+//Provide original calculation for y velocity when swim speed mod is active
+void SurfaceWithoutSwimMod(Player* this, f32* arg1, f32 arg2, s16 arg3) {
+    f32 temp1;
+    f32 temp2;
 
     temp1 = this->skelAnime.curFrame - 10.0f;
 
@@ -11914,6 +12043,7 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     Math_AsymStepToF(arg1, arg2 * 0.8f, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
     Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
 }
+// #endregion
 
 void func_8084B000(Player* this) {
     f32 phi_f18;
@@ -12532,8 +12662,15 @@ void func_8084C760(Player* this, PlayState* play) {
                 return;
             }
 
+            // player speed in a tunnel
             if (!Player_TryLeavingCrawlspace(this, play)) {
-                this->linearVelocity = sControlInput->rel.stick_y * 0.03f;
+                // #region SOH [Enhancement]
+                if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
+                    this->linearVelocity = sControlInput->rel.stick_y * 0.03f * CVarGetInteger("gCrawlSpeed", 1);
+                // #endregion
+                } else {
+                    this->linearVelocity = sControlInput->rel.stick_y * 0.03f;
+                }
             }
         }
         return;
@@ -13068,7 +13205,14 @@ void func_8084DBC4(PlayState* play, Player* this, f32 arg2) {
 
     Player_GetMovementSpeedAndYaw(this, &sp2C, &sp2A, 0.0f, play);
     func_8084AEEC(this, &this->linearVelocity, sp2C * 0.5f, sp2A);
-    func_8084AEEC(this, &this->actor.velocity.y, arg2, this->currentYaw);
+    // Original implementation of func_8084AEEC (SurfaceWithoutSwimMod) to prevent velocity increases via swim mod which push Link into the air
+    // #region SOH [Enhancement]
+    if (CVarGetInteger("gEnableWalkModify", 0)) {
+        SurfaceWithoutSwimMod(this, &this->actor.velocity.y, arg2, this->currentYaw);
+    // #endregion
+    } else {
+        func_8084AEEC(this, &this->actor.velocity.y, arg2, this->currentYaw);
+    }
 }
 
 void func_8084DC48(Player* this, PlayState* play) {
