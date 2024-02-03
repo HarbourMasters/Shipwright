@@ -630,17 +630,9 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Better Owl", "gBetterOwl", true, false);
                 UIWidgets::Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                 UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", "gMarketSneak", true, false);
-                UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking "
-                "to the guard next to the gate.");
-                UIWidgets::PaddedEnhancementCheckbox("Faster Farore's Wind", "gFastFarores", true, false);
-                UIWidgets::Tooltip("Greatly decreases cast time of Farore's Wind magic spell.");
-                UIWidgets::PaddedEnhancementCheckbox("Nighttime GS Always Spawn", "gNightGSAlwaysSpawn", true, false);
-                UIWidgets::Tooltip("Nighttime Skulltulas will spawn during both day and night.");
-                UIWidgets::PaddedEnhancementCheckbox("Dampe Appears All Night", "gDampeAllNight", true, false);
-                UIWidgets::Tooltip("Makes Dampe appear anytime during the night, not just his usual working hours.");
+                UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking to the guard next to the gate.");
                 UIWidgets::PaddedEnhancementCheckbox("Shops and Games Always Open", "gEnhancements.OpenAllHours", true, false);
                 UIWidgets::Tooltip("Shops and minigames are open both day and night. Requires scene reload to take effect.");
-                UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking to the guard next to the gate.");
                 UIWidgets::PaddedEnhancementCheckbox("Link as default file name", "gLinkDefaultName", true, false);
                 UIWidgets::Tooltip("Allows you to have \"Link\" as a premade file name");
 				UIWidgets::PaddedEnhancementCheckbox("Quit Fishing At Door", "gQuitFishingAtDoor", true, false);
