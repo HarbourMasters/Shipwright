@@ -1181,10 +1181,10 @@ void RegisterOpenAllHours() {
                     actor->params = 4543; // Day Kak Archery Game
                     changed = true;
                     break;
-                case 3728:				  // Night Mask Shop
-					actor->params = 3519; // Day Mask Shop
-					changed = true;
-					break;
+                case 3728:                // Night Mask Shop
+                    actor->params = 3519; // Day Mask Shop
+                    changed = true;
+                    break;
 
                 default:
                     break;
