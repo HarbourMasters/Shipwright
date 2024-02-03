@@ -2278,8 +2278,13 @@ u8 Item_Give(PlayState* play, u8 item) {
         gSaveContext.sohStats.heartPieces++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART_CONTAINER) {
-        gSaveContext.healthCapacity += 0x10;
-        gSaveContext.health += 0x10;
+        if (!CVarGetInteger("gHurtContainer", 0)) {
+            gSaveContext.healthCapacity += 0x10;
+            gSaveContext.health += 0x10;
+        } else {
+            gSaveContext.healthCapacity -= 0x10;
+            gSaveContext.health -= 0x10;
+        }
         gSaveContext.sohStats.heartContainers++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART) {
@@ -3583,7 +3588,7 @@ void Interface_DrawLineupTick(PlayState* play) {
     s16 width = 32;
     s16 height = 32;
     s16 x = -8 + (SCREEN_WIDTH / 2);
-    s16 y = CVarGetInteger("gOpenMenuBar", 0) ? -4 : -6;
+    s16 y = -6;
 
     OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gEmptyCDownArrowTex, width, height, x, y, width, height, 2 << 10, 2 << 10);
 

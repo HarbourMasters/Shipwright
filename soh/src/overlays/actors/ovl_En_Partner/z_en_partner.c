@@ -745,6 +745,28 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     }
 
+    if (CVarGetInteger("gCosmetics.Ivan_IdlePrimary.Changed", 0)) {
+        Color_RGB8 ivanColor1 = CVarGetColor24("gCosmetics.Ivan_IdlePrimary.Value", (Color_RGB8){ 255, 255, 255 });
+        this->innerColor.r = ivanColor1.r;
+        this->innerColor.g = ivanColor1.g;
+        this->innerColor.b = ivanColor1.b;
+    } else {
+        this->innerColor.r = 255;
+        this->innerColor.g = 255;
+        this->innerColor.b = 255;
+    }
+
+    if (CVarGetInteger("gCosmetics.Ivan_IdleSecondary.Changed", 0)) {
+        Color_RGB8 ivanColor2 = CVarGetColor24("gCosmetics.Ivan_IdleSecondary.Value", (Color_RGB8){ 0, 255, 0 });
+        this->outerColor.r = ivanColor2.r;
+        this->outerColor.g = ivanColor2.g;
+        this->outerColor.b = ivanColor2.b;
+    } else {
+        this->outerColor.r = 0;
+        this->outerColor.g = 255;
+        this->outerColor.b = 0;
+    }
+
     SkelAnime_Update(&this->skelAnime);
 
     EnPartner_UpdateLights(this, play);
