@@ -3361,8 +3361,13 @@ void Message_Update(PlayState* play) {
             }
             if ((s32)(gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000) {
                 gSaveContext.inventory.questItems ^= 0x40000000;
-                gSaveContext.healthCapacity += 0x10;
-                gSaveContext.health += 0x10;
+                if (!CVarGetInteger("gHurtContainer", 0)) {
+                    gSaveContext.healthCapacity += 0x10;
+                    gSaveContext.health += 0x10;
+                } else {
+                    gSaveContext.healthCapacity -= 0x10;
+                    gSaveContext.health -= 0x10;
+                }
             }
             if (msgCtx->ocarinaAction != OCARINA_ACTION_CHECK_NOWARP_DONE) {
                 if (sLastPlayedSong == OCARINA_SONG_SARIAS) {
