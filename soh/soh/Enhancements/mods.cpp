@@ -713,12 +713,15 @@ void RegisterPatchChildHylianShieldHandler() {
 }
 
 void UpdateChildHylianShieldState() {
-    auto player = GET_PLAYER(gPlayState);
+    if (gPlayState == nullptr) {
+        return;
+    }
+    Player* player = GET_PLAYER(gPlayState);
     Player_SetModels(player, Player_ActionToModelGroup(player, player->heldItemAction));
 }
 
 void RegisterChildHylianShielStatedHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         UpdateChildHylianShieldState();
     });
 }

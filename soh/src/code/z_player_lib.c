@@ -605,8 +605,8 @@ void Player_SetModelsForHoldingShield(Player* this) {
             !Player_HoldsTwoHandedWeapon(this)) && !Player_IsChildWithHylianShield(this)) {
             this->rightHandType = PLAYER_MODELTYPE_RH_SHIELD;
 
-            if (LINK_IS_CHILD && (CVarGetInteger("gEnhancements.ChildHoldsHylianShield", 0)) &&
-                (this->currentShield == PLAYER_SHIELD_HYLIAN)) {
+            if (LINK_IS_CHILD && CVarGetInteger("gEnhancements.ChildHoldsHylianShield", 0) &&
+                this->currentShield == PLAYER_SHIELD_HYLIAN) {
                 this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][LINK_AGE_ADULT];
             } else if (LINK_IS_CHILD && (CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && (this->currentShield == PLAYER_SHIELD_MIRROR)) {
                 this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][0];
@@ -658,9 +658,6 @@ void Player_SetModels(Player* this, s32 modelGroup) {
         this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD && this->currentShield == PLAYER_SHIELD_HYLIAN) {
         this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][LINK_AGE_ADULT];
     }
-
-    this->rightHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_RIGHT_HAND];
-    this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
 
     if (CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) {
         if (LINK_IS_CHILD &&
