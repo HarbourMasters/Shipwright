@@ -2704,6 +2704,9 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         messageEntry.Replace("{{playerBalance}}", std::to_string(playerBalance));
         messageEntry.Replace("{{excessRupees}}", std::to_string(excessRupees));
     }
+    if (textId == TEXT_BANKER_EXCESS_FULL && CVarGetInteger("gBanker", 0)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_BANKER_EXCESS_FULL);
+    }
     font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
     switch (gSaveContext.language) {
         case LANGUAGE_FRA:

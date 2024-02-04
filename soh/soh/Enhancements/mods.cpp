@@ -1314,9 +1314,16 @@ void RegisterBankUpdate() {
         if (gBankBalanceUpdated && CVarGetInteger("gBanker", 0) && 
             (messageIndex == TEXT_BLUE_RUPEE || messageIndex == TEXT_RED_RUPEE || 
              messageIndex == TEXT_PURPLE_RUPEE || messageIndex == TEXT_HUGE_RUPEE)) {
-            if (Message_ShouldAdvance(gPlayState)) {
-                Message_ContinueTextbox(gPlayState, TEXT_BANKER_EXCESS);
-                gBankBalanceUpdated = false; 
+            if (gSaveContext.playerBalance == 5000) {
+                if (Message_ShouldAdvance(gPlayState)) {
+                    Message_ContinueTextbox(gPlayState, TEXT_BANKER_EXCESS_FULL);
+                    gBankBalanceUpdated = false;
+                }
+            } else {
+                if (Message_ShouldAdvance(gPlayState)) {
+                    Message_ContinueTextbox(gPlayState, TEXT_BANKER_EXCESS);
+                    gBankBalanceUpdated = false; 
+                }
             }
         }
     });
