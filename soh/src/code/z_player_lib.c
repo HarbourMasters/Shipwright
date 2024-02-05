@@ -669,10 +669,8 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
 
     if (CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) {
-        if (LINK_IS_CHILD &&
-            (this->currentShield == PLAYER_SHIELD_HYLIAN || this->currentShield == PLAYER_SHIELD_MIRROR) &&
-            ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) ||
-             (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS))) {
+        if (LINK_IS_CHILD && (this->currentShield == PLAYER_SHIELD_HYLIAN && ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) || 
+            (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS)) || (this->currentShield == PLAYER_SHIELD_MIRROR) && (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI))) {
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][0];
         } else if (LINK_IS_CHILD && this->currentShield == PLAYER_SHIELD_MIRROR && gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI &&
             this->sheathType == PLAYER_MODELTYPE_SHEATH_18) {
@@ -1396,7 +1394,8 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                     (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
                     dLists += PLAYER_SHIELD_MAX * 4;
                 }
-            } else if (!CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) {
+            } else if (!CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0) || (CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0) && 
+                (gSaveContext.equips.buttonItems[0] == ITEM_NONE && this->currentShield == PLAYER_SHIELD_DEKU))) {
                 if (!LINK_IS_ADULT && ((this->sheathType == PLAYER_MODELTYPE_SHEATH_16) || (this->sheathType == PLAYER_MODELTYPE_SHEATH_17)) &&
                     (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
                     dLists = &sSheathWithSwordDLs[PLAYER_SHIELD_MAX * 4];
