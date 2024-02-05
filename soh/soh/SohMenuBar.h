@@ -14,3 +14,5 @@ class SohMenuBar : public LUS::GuiMenuBar {
     void UpdateElement() override {};
 };
 } // namespace SohGui
+
+extern ImVec4 colorChoice;

@@ -115,6 +115,8 @@ namespace UIWidgets {
         const ImVec4 Green = ImVec4(0.0f, 0.5f, 0.0f, 1.0f);
         const ImVec4 DarkGreen = ImVec4(0.0f, 0.3f, 0.0f, 1.0f);
         const ImVec4 Yellow = ImVec4(1.0f, 0.627f, 0.0f, 1.0f);
+        const ImVec4 Blue = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
+        const ImVec4 Purple = ImVec4(0.5f, 0.0f, 1.0f, 1.0f);
     };
 
     namespace Sizes {
