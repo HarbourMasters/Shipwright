@@ -2016,9 +2016,9 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
     };
     if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
         Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_AButton.Value", (Color_RGB8){ 100, 200, 255 });
-        sOcarinaNoteAPrimColors[0].r = (color.r / 255) * 95;
-        sOcarinaNoteAPrimColors[0].g = (color.g / 255) * 95;
-        sOcarinaNoteAPrimColors[0].b = (color.b / 255) * 95;
+        sOcarinaNoteAPrimColors[0].r = (color.r / 255.0f) * 95;
+        sOcarinaNoteAPrimColors[0].g = (color.g / 255.0f) * 95;
+        sOcarinaNoteAPrimColors[0].b = (color.b / 255.0f) * 95;
         sOcarinaNoteAPrimColors[1] = color;
         sOcarinaNoteAEnvColors[1] = color;
     } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
@@ -2039,9 +2039,9 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_CButtons.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCPrimColors[0] = color;
         sOcarinaNoteCPrimColors[1] = color;
-        sOcarinaNoteCEnvColors[1].r = (color.r / 255) * 95;
-        sOcarinaNoteCEnvColors[1].g = (color.g / 255) * 95;
-        sOcarinaNoteCEnvColors[1].b = (color.b / 255) * 95;
+        sOcarinaNoteCEnvColors[1].r = (color.r / 255.0f) * 95;
+        sOcarinaNoteCEnvColors[1].g = (color.g / 255.0f) * 95;
+        sOcarinaNoteCEnvColors[1].b = (color.b / 255.0f) * 95;
     }
 
     /* static */ Color_RGB8 sOcarinaNoteCUpPrimColors[2] = {
@@ -2056,9 +2056,9 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_CUpButton.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCUpPrimColors[0] = color;
         sOcarinaNoteCUpPrimColors[1] = color;
-        sOcarinaNoteCUpEnvColors[1].r = (color.r / 255) * 95;
-        sOcarinaNoteCUpEnvColors[1].g = (color.g / 255) * 95;
-        sOcarinaNoteCUpEnvColors[1].b = (color.b / 255) * 95;
+        sOcarinaNoteCUpEnvColors[1].r = (color.r / 255.0f) * 95;
+        sOcarinaNoteCUpEnvColors[1].g = (color.g / 255.0f) * 95;
+        sOcarinaNoteCUpEnvColors[1].b = (color.b / 255.0f) * 95;
     }
 
     /* static */ Color_RGB8 sOcarinaNoteCDownPrimColors[2] = {
@@ -2073,9 +2073,9 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_CDownButton.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCDownPrimColors[0] = color;
         sOcarinaNoteCDownPrimColors[1] = color;
-        sOcarinaNoteCDownEnvColors[1].r = (color.r / 255) * 95;
-        sOcarinaNoteCDownEnvColors[1].g = (color.g / 255) * 95;
-        sOcarinaNoteCDownEnvColors[1].b = (color.b / 255) * 95;
+        sOcarinaNoteCDownEnvColors[1].r = (color.r / 255.0f) * 95;
+        sOcarinaNoteCDownEnvColors[1].g = (color.g / 255.0f) * 95;
+        sOcarinaNoteCDownEnvColors[1].b = (color.b / 255.0f) * 95;
     }
 
     /* static */ Color_RGB8 sOcarinaNoteCLeftPrimColors[2] = {
@@ -2090,9 +2090,9 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_CLeftButton.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCLeftPrimColors[0] = color;
         sOcarinaNoteCLeftPrimColors[1] = color;
-        sOcarinaNoteCLeftEnvColors[1].r = (color.r / 255) * 95;
-        sOcarinaNoteCLeftEnvColors[1].g = (color.g / 255) * 95;
-        sOcarinaNoteCLeftEnvColors[1].b = (color.b / 255) * 95;
+        sOcarinaNoteCLeftEnvColors[1].r = (color.r / 255.0f) * 95;
+        sOcarinaNoteCLeftEnvColors[1].g = (color.g / 255.0f) * 95;
+        sOcarinaNoteCLeftEnvColors[1].b = (color.b / 255.0f) * 95;
     }
 
     /* static */ Color_RGB8 sOcarinaNoteCRightPrimColors[2] = {
@@ -2107,9 +2107,9 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCRightPrimColors[0] = color;
         sOcarinaNoteCRightPrimColors[1] = color;
-        sOcarinaNoteCRightEnvColors[1].r = (color.r / 255) * 95;
-        sOcarinaNoteCRightEnvColors[1].g = (color.g / 255) * 95;
-        sOcarinaNoteCRightEnvColors[1].b = (color.b / 255) * 95;
+        sOcarinaNoteCRightEnvColors[1].r = (color.r / 255.0f) * 95;
+        sOcarinaNoteCRightEnvColors[1].g = (color.g / 255.0f) * 95;
+        sOcarinaNoteCRightEnvColors[1].b = (color.b / 255.0f) * 95;
     }
 
     static s16 sOcarinaNoteFlashTimer = 12;
