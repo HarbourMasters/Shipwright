@@ -204,7 +204,7 @@ s32 EffectBlure_Update(void* thisx) {
     s32 i;
     Color_RGBA8 color;
     static u8 changed = 0;
-    static u8 reset = 0;
+    u8 reset = 0;
 
     switch (this->trailType) { //there HAS to be a better way to do this.
         case 2:
@@ -299,7 +299,6 @@ s32 EffectBlure_Update(void* thisx) {
     }
     if (reset) {
         changed = 0;
-        reset = 0;
     }
 
     // Don't override boomerang and bombchu trail durations
