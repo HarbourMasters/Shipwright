@@ -6,6 +6,7 @@
 #include "variables.h"
 #include "custom-message/CustomMessageTypes.h"
 #include "functions.h"
+#include "soh/OTRGlobals.h"
 
 
 #include "luslog.h"
@@ -22,8 +23,14 @@
 static s16 gBankerValue = 0;
 static s16 gBankerSelectedDigit = 0;
 static s16 gBlinkTimer = 0;
+static bool isGivingItem = false;
+static bool canContinueToAmount = false;
+static bool lastClosedTextboxWasHeartPiece = false;
+static Actor* bankerActor = NULL;
+static s16 OptionChoice = -1;
 
 extern const char* digitTextures[];
+
 Color_RGBA8 highlightColor = { 255, 255, 0, 255 };
 
 void UpdateBankerOverlay(PlayState* play, Gfx** gfx, s16 value, s16 selectedDigit) {
@@ -68,10 +75,6 @@ void ProcessInput(PlayState* play, s16* value, s16* selectedDigit) {
     if (play->msgCtx.textId != TEXT_BANKER_WITHDRAWAL_AMOUNT && play->msgCtx.textId != TEXT_BANKER_DEPOSIT_AMOUNT) {
         return;
     }
-    if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
-        Message_CloseTextbox(play);
-        return;
-    }
     if (inputCooldownTimer > 0) {
         inputCooldownTimer--;
         return;
@@ -91,8 +94,6 @@ void ProcessInput(PlayState* play, s16* value, s16* selectedDigit) {
 }
 
 static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
-    static bool canContinueToAmount = false;
-    static s16 OptionChoice = -1;
     uint16_t currentTextId = msgCtx->textId;
 
     if (msgCtx->msgMode != MSGMODE_TEXT_DONE && msgCtx->msgMode != MSGMODE_TEXT_CLOSING) {
@@ -108,6 +109,11 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
     switch (currentTextId) {
         case TEXT_BEGGAR_VANILLA:
             canContinueToAmount = false;
+            Actor* playerActor = &GET_PLAYER(play)->actor;
+            Actor* foundActor = Actor_FindNearby(play, playerActor, ACTOR_EN_HY, ACTORCAT_NPC, 80.0f);
+            if (foundActor != NULL) {
+                bankerActor = foundActor;
+            }
             Message_ContinueTextbox(play, TEXT_BANKER_OPTIONS);
             break;
 
@@ -142,25 +148,20 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
 
         case TEXT_BANKER_WITHDRAWAL_AMOUNT:
         case TEXT_BANKER_DEPOSIT_AMOUNT:
-            if (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B)) {
-                Message_CloseTextbox(play);
-                gBankerValue = 0;
-                return;
-            }
             if (gBankerValue == 0) {
                 Message_ContinueTextbox(play, TEXT_BANKER_ERROR_ZERO_AMOUNT);
             } else if (currentTextId == TEXT_BANKER_WITHDRAWAL_AMOUNT) {
-                if (gBankerValue + FEE_AMOUNT <= gSaveContext.playerBalance && 
-                    gBankerValue + gSaveContext.rupees <= CUR_CAPACITY(UPG_WALLET)) { 
+                if (gBankerValue + FEE_AMOUNT <= gSaveContext.playerBalance &&
+                    gBankerValue + gSaveContext.rupees <= CUR_CAPACITY(UPG_WALLET)) {
                     if (gSaveContext.hasInterest == 0) {
                         if (gBankerValue + FEE_AMOUNT > gSaveContext.playerBalance) {
                             Message_ContinueTextbox(play, TEXT_BANKER_ERROR_INSUFFICIENT_BALANCE);
                         } else {
                             Rupees_ChangeBy(gBankerValue);
-                            gSaveContext.playerBalance -= (gBankerValue + FEE_AMOUNT); 
+                            gSaveContext.playerBalance -= (gBankerValue + FEE_AMOUNT);
                             Message_ContinueTextbox(play, TEXT_BANKER_WITHDRAWAL_CONFIRM);
                         }
-                    } else { // hasInterest == 1
+                    } else {
                         Rupees_ChangeBy(gBankerValue);
                         gSaveContext.playerBalance -= gBankerValue;
                         Message_ContinueTextbox(play, TEXT_BANKER_WITHDRAWAL_CONFIRM);
@@ -181,8 +182,8 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
                     } else {
                         if (gSaveContext.hasInterest == 0) {
                             Rupees_ChangeBy(-gBankerValue);
-                            gSaveContext.playerBalance += (gBankerValue - FEE_AMOUNT); 
-                        } else { // hasInterest == 1
+                            gSaveContext.playerBalance += (gBankerValue - FEE_AMOUNT);
+                        } else { 
                             Rupees_ChangeBy(-gBankerValue);
                             gSaveContext.playerBalance += gBankerValue;
                         }
@@ -251,49 +252,31 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
             break;
 
         case TEXT_BANKER_REWARD_PIECE_OF_HEART:
-            Message_ContinueTextbox(play, TEXT_HEART_PIECE);
-            Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            Item_Give(play, ITEM_HEART_PIECE);
-            gSaveContext.healthAccumulator = gSaveContext.healthCapacity - gSaveContext.health;
+            Message_CloseTextbox(play);
+            isGivingItem = true;
             break;
 
         case TEXT_HEART_PIECE:
-            if (canContinueToAmount) {
-                canContinueToAmount = false;
-            } else {
-                nextTextId = (OptionChoice == 0) ? TEXT_BANKER_DEPOSIT_AMOUNT : TEXT_BANKER_WITHDRAWAL_AMOUNT;
-                Message_ContinueTextbox(play, nextTextId);
-            }
+            Message_CloseTextbox(play);
+            lastClosedTextboxWasHeartPiece = true;
             break;
 
         case TEXT_BANKER_ERROR_ZERO_AMOUNT:
-            Message_CloseTextbox(play);
-            break;
-
         case TEXT_BANKER_ERROR_INSUFFICIENT_BALANCE:
-            Message_ContinueTextbox(play, (currentTextId == TEXT_BANKER_WITHDRAWAL_AMOUNT) ? TEXT_BANKER_WITHDRAWAL_AMOUNT : TEXT_BANKER_DEPOSIT_AMOUNT);
-            break;
-
         case TEXT_BANKER_ERROR_WALLET_FULL:
-            Message_ContinueTextbox(play, TEXT_BANKER_WITHDRAWAL_AMOUNT);
-            break;
-
         case TEXT_BANKER_ERROR_MAX_BALANCE:
-            Message_ContinueTextbox(play, TEXT_BANKER_DEPOSIT_AMOUNT);
-            break;
-
         case TEXT_BANKER_ERROR_DEPOSIT_NOT_WORTHWHILE:
-            Message_ContinueTextbox(play, TEXT_BANKER_DEPOSIT_AMOUNT);
+            Message_ContinueTextbox(play, TEXT_BANKER_OPTIONS);
             break;
 
         case TEXT_BANKER_TRANSACTION_FEE:
-            if (msgCtx->choiceIndex == 0) { // Player chooses 'Yes', proceed with transaction
+            if (msgCtx->choiceIndex == 0) {
                 Message_ContinueTextbox(play, TEXT_BANKER_BALANCE);
-            } else if (msgCtx->choiceIndex == 1) { // Player chooses 'No', does not want to proceed due to fee
+            } else if (msgCtx->choiceIndex == 1) {
                 Message_CloseTextbox(play);
             }
             break;
-            
+
         default:
             break;
     }
@@ -304,14 +287,36 @@ void DrawBankerOverlay(PlayState* play, Gfx** gfx) {
 }
 
 void BankerMain(PlayState* play, GraphicsContext* gfxCtx) {
-    if (play->msgCtx.msgMode == MSGMODE_NONE) {
+    static s16 prevMsgMode = MSGMODE_NONE;
+    if (play->msgCtx.msgMode == MSGMODE_NONE && prevMsgMode == MSGMODE_NONE) {
         return;
     }
-    ProcessInput(play, &gBankerValue, &gBankerSelectedDigit);
-    gBlinkTimer = (gBlinkTimer + 1) % (BLINK_DURATION * 2);
-    if (play->msgCtx.textId == TEXT_BANKER_WITHDRAWAL_AMOUNT || play->msgCtx.textId == TEXT_BANKER_DEPOSIT_AMOUNT) {
-        Gfx** gfx = &gfxCtx->overlay.p;
-        UpdateBankerOverlay(play, gfx, gBankerValue, gBankerSelectedDigit);
+    if (play->msgCtx.msgMode != MSGMODE_NONE) {
+        ProcessInput(play, &gBankerValue, &gBankerSelectedDigit);
+        gBlinkTimer = (gBlinkTimer + 1) % (BLINK_DURATION * 2);
+        if (play->msgCtx.textId == TEXT_BANKER_WITHDRAWAL_AMOUNT || play->msgCtx.textId == TEXT_BANKER_DEPOSIT_AMOUNT) {
+            Gfx** gfx = &gfxCtx->overlay.p;
+            UpdateBankerOverlay(play, gfx, gBankerValue, gBankerSelectedDigit);
+        }
     }
-    HandleBankerInteraction(play, &play->msgCtx);
+    if (prevMsgMode != MSGMODE_NONE && play->msgCtx.msgMode == MSGMODE_NONE) {
+        if (isGivingItem) {
+            if (!GiveItemEntryWithoutActor(play, ItemTable_Retrieve(GI_HEART_PIECE))) {
+                isGivingItem = true;
+            } else {
+                isGivingItem = false;
+            }
+        } else if (!canContinueToAmount && lastClosedTextboxWasHeartPiece) {
+            s16 nextTextId = (OptionChoice == 0) ? TEXT_BANKER_DEPOSIT_AMOUNT : TEXT_BANKER_WITHDRAWAL_AMOUNT;
+            bankerActor->textId = nextTextId;
+            func_80853148(play, bankerActor);
+            Message_StartTextbox(play, nextTextId, bankerActor);
+            lastClosedTextboxWasHeartPiece = false;
+            canContinueToAmount = true; 
+        }
+    }
+    prevMsgMode = play->msgCtx.msgMode;
+    if (play->msgCtx.msgMode != MSGMODE_NONE) {
+        HandleBankerInteraction(play, &play->msgCtx);
+    }
 }
