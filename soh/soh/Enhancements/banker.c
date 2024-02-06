@@ -257,6 +257,7 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
             break;
 
         case TEXT_HEART_PIECE:
+            Item_Give(play, ITEM_HEART_PIECE);
             Message_CloseTextbox(play);
             lastClosedTextboxWasHeartPiece = true;
             break;
@@ -309,7 +310,7 @@ void BankerMain(PlayState* play, GraphicsContext* gfxCtx) {
         } else if (!canContinueToAmount && lastClosedTextboxWasHeartPiece) {
             s16 nextTextId = (OptionChoice == 0) ? TEXT_BANKER_DEPOSIT_AMOUNT : TEXT_BANKER_WITHDRAWAL_AMOUNT;
             bankerActor->textId = nextTextId;
-            func_80853148(play, bankerActor);
+            Player_StartTalking(play, bankerActor);
             Message_StartTextbox(play, nextTextId, bankerActor);
             lastClosedTextboxWasHeartPiece = false;
             canContinueToAmount = true; 
