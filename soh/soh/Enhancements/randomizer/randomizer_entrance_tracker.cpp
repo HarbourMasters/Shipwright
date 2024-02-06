@@ -672,7 +672,7 @@ void EntranceTrackerWindow::DrawElement() {
                 UIWidgets::Tooltip("Highlight the previous entrance that Link came from");
                 UIWidgets::PaddedEnhancementCheckbox("Highlight available", "gEntranceTrackerHighlightAvailable", true, false);
                 UIWidgets::Tooltip("Highlight available entrances in the current scene");
-                UIWidgets::PaddedEnhancementCheckbox("Highlight destinations", "gEntranceTrackerHighlightDestinations", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Highlight destinations", "gTrackers.EntranceTracker.HighlightDestinations", true, false);
                 UIWidgets::Tooltip("Highlight destinations with a separate color");
                 UIWidgets::PaddedEnhancementCheckbox("Hide undiscovered", "gEntranceTrackerCollapseUndiscovered", true, false);
                 UIWidgets::Tooltip("Collapse undiscovered entrances towards the bottom of each group");
@@ -681,13 +681,13 @@ void EntranceTrackerWindow::DrawElement() {
                 UIWidgets::PaddedEnhancementCheckbox("Hide reverse", "gEntranceTrackerHideReverseEntrances", true, false,
                                               disableHideReverseEntrances, disableHideReverseEntrancesText, UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::Tooltip("Hide reverse entrance transitions when Decouple Entrances is off");
-                UIWidgets::PaddedEnhancementCheckbox("Hide \"to\" context", "gEntranceTrackerSimplifyTo", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Hide \"to\" context", "gTrackers.EntranceTracker.SimplifyTo", true, false);
                 UIWidgets::Tooltip("Simplify entrance list by removing the context from the beginning of entrance names (ex: \"KF to Mido's House\" becomes \"Mido's House\")\n\n"
                                    "If the \"Sort By\" setting is set to \"From\", the example would instead be: \"KF to Mido's House\" becomes \"KF\"");
-                UIWidgets::PaddedEnhancementCheckbox("Hide \"from\" context", "gEntranceTrackerSimplifyFrom", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Hide \"from\" context", "gTrackers.EntranceTracker.SimplifyFrom", true, false);
                 UIWidgets::Tooltip("Simplify entrance list by removing the context from the end of entrance names (ex: \"Market Entrance from Hyrule Field\" becomes \"Market Entrance\")\n\n"
                                    "If the \"Sort By\" setting is set to \"From\", the example would instead be: \"Market Entrance from Hyrule Field\" becomes \"from Hyrule Field\"");
-                UIWidgets::PaddedEnhancementCheckbox("One line", "gEntranceTrackerOneLine", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("One line", "gTrackers.EntranceTracker.OneLine", true, false);
                 UIWidgets::Tooltip("Keep entrances and destinations on one line");
                 UIWidgets::Spacer(0);
 
@@ -806,7 +806,7 @@ void EntranceTrackerWindow::DrawElement() {
             if ((original->type == ENTRANCE_TYPE_DUNGEON || original->type == ENTRANCE_TYPE_GROTTO || original->type == ENTRANCE_TYPE_INTERIOR) &&
                 (original->oneExit != 1 && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF) &&
                 CVarGetInteger("gEntranceTrackerHideReverseEntrances", 1) == 1) {
-                    continue;
+                    continue;`
             }
 
             bool isDiscovered = IsEntranceDiscovered(entrance.index);
@@ -865,7 +865,7 @@ void EntranceTrackerWindow::DrawElement() {
 
                     bool showOriginal = (!destToggle ? CVarGetInteger("gEntranceTrackerShowTo", 0) : CVarGetInteger("gEntranceTrackerShowFrom", 0)) || isDiscovered;
                     bool showOverride = (!destToggle ? CVarGetInteger("gEntranceTrackerShowFrom", 0) : CVarGetInteger("gEntranceTrackerShowTo", 0)) || isDiscovered;
-                    bool highlightDestinations = CVarGetInteger("gEntranceTrackerHighlightDestinations", 0);
+                    bool highlightDestinations = CVarGetInteger("gTrackers.EntranceTracker.HighlightDestinations", 0);
 
                     const char* unknown = "???";
 
@@ -902,15 +902,15 @@ void EntranceTrackerWindow::DrawElement() {
                     auto nbsp = u8"\u00A0";
                     if (original->srcGroup != ENTRANCE_GROUP_ONE_WAY) {
                         if (!destToggle) ImGui::PushStyleColor(ImGuiCol_Text, COLOR_GRAY);  
-                        if (locationSearch.IsActive() || destToggle || !CVarGetInteger("gEntranceTrackerSimplifyTo", 0)) {
+                        if (locationSearch.IsActive() || destToggle || !CVarGetInteger("gTrackers.EntranceTracker.SimplifyTo", 0)) {
                             ImGui::Text("%s", origSrcName);
                             ImGui::SameLine();
                         }
                         if (!destToggle) ImGui::PopStyleColor();
                         
                         if (destToggle) ImGui::PushStyleColor(ImGuiCol_Text, COLOR_GRAY);
-                        if (locationSearch.IsActive() || !destToggle || !CVarGetInteger("gEntranceTrackerSimplifyTo", 0))
-                            ImGui::Text("%s%s%s->", CVarGetInteger("gEntranceTrackerSimplifyTo", 0) && !locationSearch.IsActive() ? "" : "to ", origDstName, nbsp);
+                        if (locationSearch.IsActive() || !destToggle || !CVarGetInteger("gTrackers.EntranceTracker.SimplifyTo", 0))
+                            ImGui::Text("%s%s%s->", CVarGetInteger("gTrackers.EntranceTracker.SimplifyTo", 0) && !locationSearch.IsActive() ? "" : "to ", origDstName, nbsp);
                         else
                             ImGui::Text("->");
                         if (destToggle) ImGui::PopStyleColor();
@@ -918,7 +918,7 @@ void EntranceTrackerWindow::DrawElement() {
                         ImGui::Text("%s%s->", origSrcName, nbsp);
                     }
 
-                    if (CVarGetInteger("gEntranceTrackerOneLine", 0)) {
+                    if (CVarGetInteger("gTrackers.EntranceTracker.OneLine", 0)) {
                         ImGui::SameLine();
                     } else {
                         // Indent the destination
@@ -928,15 +928,15 @@ void EntranceTrackerWindow::DrawElement() {
                         if (destToggle || !isDiscovered) ImGui::PushStyleColor(ImGuiCol_Text,  COLOR_GRAY);
                         else if (highlightDestinations) ImGui::PushStyleColor(ImGuiCol_Text, COLOR_PINK);
                         
-                        if (!destToggle || !CVarGetInteger("gEntranceTrackerSimplifyFrom", 0))
+                        if (!destToggle || !CVarGetInteger("gTrackers.EntranceTracker.SimplifyFrom", 0))
                             ImGui::Text("%s", rplcDstName);
                         if (destToggle || !isDiscovered || highlightDestinations) ImGui::PopStyleColor();
 
                         if (destToggle && highlightDestinations && isDiscovered) ImGui::PushStyleColor(ImGuiCol_Text, COLOR_PINK);
                         else ImGui::PushStyleColor(ImGuiCol_Text, COLOR_GRAY);
 
-                        if (locationSearch.IsActive() || destToggle || !CVarGetInteger("gEntranceTrackerSimplifyFrom", 0)) {
-                            if (!destToggle || !CVarGetInteger("gEntranceTrackerSimplifyFrom", 0))
+                        if (locationSearch.IsActive() || destToggle || !CVarGetInteger("gTrackers.EntranceTracker.SimplifyFrom", 0)) {
+                            if (!destToggle || !CVarGetInteger("gTrackers.EntranceTracker.SimplifyFrom", 0))
                                  ImGui::SameLine();
                             ImGui::Text("%s %s", "from", rplcSrcName);
                         }
