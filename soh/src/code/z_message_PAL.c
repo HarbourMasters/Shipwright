@@ -463,9 +463,9 @@ void Message_DrawTextboxIcon(PlayState* play, Gfx** p, s16 x, s16 y) {
     };
     if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
         Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_AButton.Value", (Color_RGB8){ 50, 130, 255 });
-        sIconPrimColors[0].r = (color.r / 255) * 95;
-        sIconPrimColors[0].g = (color.g / 255) * 95;
-        sIconPrimColors[0].b = (color.b / 255) * 95;
+        sIconPrimColors[0].r = (color.r / 255.0f) * 200;
+        sIconPrimColors[0].g = (color.g / 255.0f) * 200;
+        sIconPrimColors[0].b = (color.b / 255.0f) * 200;
         sIconPrimColors[1] = color;
         sIconEnvColors[1] = color;
     } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
