@@ -21,9 +21,9 @@ extern PlayState* gPlayState;
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define COLOR_ORANGE IM_COL32(230, 159, 0, 255)
-#define COLOR_GREEN IM_COL32(0, 158, 115, 255)
+#define COLOR_GREEN IM_COL32(0, 190, 105, 255)
 #define COLOR_GRAY IM_COL32(155, 155, 155, 255)
-#define COLOR_PINK IM_COL32(232, 0, 125, 255)
+#define COLOR_PINK IM_COL32(219, 143, 255, 255)
 
 EntranceOverride srcListSortedByArea[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
 EntranceOverride destListSortedByArea[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
