@@ -910,7 +910,7 @@ void EntranceTrackerWindow::DrawElement() {
                         
                         if (destToggle) ImGui::PushStyleColor(ImGuiCol_Text, COLOR_GRAY);
                         if (locationSearch.IsActive() || !destToggle || !CVarGetInteger("gEntranceTrackerSimplifyTo", 0))
-                            ImGui::Text("%s%s%s->", CVarGetInteger("gEntranceTrackerSimplifyTo", 0) ? "" : "to ", origDstName, nbsp);
+                            ImGui::Text("%s%s%s->", CVarGetInteger("gEntranceTrackerSimplifyTo", 0) && !locationSearch.IsActive() ? "" : "to ", origDstName, nbsp);
                         else
                             ImGui::Text("->");
                         if (destToggle) ImGui::PopStyleColor();
