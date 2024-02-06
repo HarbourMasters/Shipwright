@@ -257,7 +257,6 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
             break;
 
         case TEXT_HEART_PIECE:
-            Item_Give(play, ITEM_HEART_PIECE);
             Message_CloseTextbox(play);
             lastClosedTextboxWasHeartPiece = true;
             break;
