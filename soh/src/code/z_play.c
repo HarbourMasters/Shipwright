@@ -1475,9 +1475,16 @@ void Play_DrawOverlayElements(PlayState* play) {
     Message_Draw(play);
 
     //Banker code start
+    static s16 delayTimer = 15;
     if (play->msgCtx.textId == TEXT_BANKER_WITHDRAWAL_AMOUNT || play->msgCtx.textId == TEXT_BANKER_DEPOSIT_AMOUNT) {
         Gfx** gfx = &play->state.gfxCtx->overlay.p;
+        if (delayTimer > 0) {
+            delayTimer--;
+            return;
+        }
         DrawBankerOverlay(play, gfx);
+    } else {
+        delayTimer = 15;
     }
     //Banker code end
 

@@ -19,6 +19,7 @@
 #define BLINK_DURATION 10
 #define INPUT_COOLDOWN_FRAMES 3
 #define FEE_AMOUNT 5
+#define FADE_DURATION 5
 
 static s16 gBankerValue = 0;
 static s16 gBankerSelectedDigit = 0;
@@ -28,6 +29,7 @@ static bool canContinueToAmount = false;
 static bool lastClosedTextboxWasHeartPiece = false;
 static Actor* bankerActor = NULL;
 static s16 OptionChoice = -1;
+static s16 fadeTimer = 0;
 
 extern const char* digitTextures[];
 
@@ -38,6 +40,12 @@ void UpdateBankerOverlay(PlayState* play, Gfx** gfx, s16 value, s16 selectedDigi
     s16 posY = 180 - 20;
     s16 digits[3] = {value / 100, (value % 100) / 10, value % 10};
     s16 offsets[3] = {HUNDREDS_POSITION_OFFSET, TENS_POSITION_OFFSET, ONES_POSITION_OFFSET};
+
+    // Increment fade timer but do not exceed FADE_DURATION (for a 1-second fade at 60 FPS)
+    if (fadeTimer < FADE_DURATION) {
+        fadeTimer++;
+    }
+
     for (int i = 0; i < 3; i++) {
         posX += offsets[i];
         s16 digit = digits[i];
@@ -46,13 +54,22 @@ void UpdateBankerOverlay(PlayState* play, Gfx** gfx, s16 value, s16 selectedDigi
         gDPLoadTextureBlock((*gfx)++, ((u8*)digitTextures[digit]), G_IM_FMT_I, G_IM_SIZ_8b, DIGIT_WIDTH, DIGIT_HEIGHT, 0,
                             G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
-        Color_RGBA8 primColor = isSelected && gBlinkTimer < BLINK_DURATION ? highlightColor : (Color_RGBA8){255, 255, 255, 255};
+
+        // Calculate fade-in alpha based on fadeTimer
+        u8 fadeAlpha = fadeTimer < FADE_DURATION ? (255 * fadeTimer) / FADE_DURATION : 255;
+
+        // Adjust highlightColor's alpha for fade-in effect
+        Color_RGBA8 primColor = isSelected && gBlinkTimer < BLINK_DURATION ? 
+                                (Color_RGBA8){highlightColor.r, highlightColor.g, highlightColor.b, fadeAlpha} : 
+                                (Color_RGBA8){255, 255, 255, fadeAlpha};
+
         gDPSetPrimColor((*gfx)++, 0, 0, primColor.r, primColor.g, primColor.b, primColor.a);
         gDPSetCombineMode((*gfx)++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
         gDPSetRenderMode((*gfx)++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
         gSPTextureRectangle((*gfx)++, posX << 2, posY << 2, (posX + DIGIT_WIDTH) << 2, (posY + DIGIT_HEIGHT) << 2,
                             G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-    }}
+    }
+}
 
 s16 CalculateSelectedValue(s16 value, s16 selectedDigit, bool increase, s16 min, s16 max) {
     s16 digitValues[3];
@@ -128,6 +145,7 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
             } else if (msgCtx->choiceIndex == 2) {
                 Message_CloseTextbox(play);
             }
+            fadeTimer = 0;
             break;
 
         case TEXT_BANKER_BALANCE:
@@ -142,7 +160,7 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
                 Message_ContinueTextbox(play, TEXT_BANKER_REWARD_PIECE_OF_HEART);
             } else {
                 nextTextId = (OptionChoice == 0) ? TEXT_BANKER_DEPOSIT_AMOUNT : TEXT_BANKER_WITHDRAWAL_AMOUNT;
-                Message_ContinueTextbox(play, nextTextId);
+                Message_StartTextbox(play, nextTextId, bankerActor);
             }
             break;
 
@@ -235,7 +253,7 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
                 canContinueToAmount = false;
             } else {
                 nextTextId = (OptionChoice == 0) ? TEXT_BANKER_DEPOSIT_AMOUNT : TEXT_BANKER_WITHDRAWAL_AMOUNT;
-                Message_ContinueTextbox(play, nextTextId);
+                Message_StartTextbox(play, nextTextId, bankerActor);
             }
             break;
 
@@ -247,7 +265,7 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
                 canContinueToAmount = false;
             } else {
                 nextTextId = (OptionChoice == 0) ? TEXT_BANKER_DEPOSIT_AMOUNT : TEXT_BANKER_WITHDRAWAL_AMOUNT;
-                Message_ContinueTextbox(play, nextTextId);
+                Message_StartTextbox(play, nextTextId, bankerActor);
             }
             break;
 
@@ -296,7 +314,6 @@ void BankerMain(PlayState* play, GraphicsContext* gfxCtx) {
         gBlinkTimer = (gBlinkTimer + 1) % (BLINK_DURATION * 2);
         if (play->msgCtx.textId == TEXT_BANKER_WITHDRAWAL_AMOUNT || play->msgCtx.textId == TEXT_BANKER_DEPOSIT_AMOUNT) {
             Gfx** gfx = &gfxCtx->overlay.p;
-            UpdateBankerOverlay(play, gfx, gBankerValue, gBankerSelectedDigit);
         }
     }
     if (prevMsgMode != MSGMODE_NONE && play->msgCtx.msgMode == MSGMODE_NONE) {
