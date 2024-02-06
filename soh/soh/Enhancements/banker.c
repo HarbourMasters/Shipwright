@@ -165,51 +165,32 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
             break;
 
         case TEXT_BANKER_WITHDRAWAL_AMOUNT:
+            if (gBankerValue == 0) {
+                Message_ContinueTextbox(play, TEXT_BANKER_ERROR_ZERO_AMOUNT);
+            } else if (gBankerValue + (gSaveContext.hasInterest ? 0 : FEE_AMOUNT) > gSaveContext.playerBalance) {
+                Message_ContinueTextbox(play, TEXT_BANKER_ERROR_INSUFFICIENT_BALANCE);
+            } else if (gBankerValue + gSaveContext.rupees > CUR_CAPACITY(UPG_WALLET)) {
+                Message_ContinueTextbox(play, TEXT_BANKER_ERROR_WALLET_FULL);
+            } else {
+                Rupees_ChangeBy(gBankerValue);
+                gSaveContext.playerBalance -= gBankerValue + (gSaveContext.hasInterest ? 0 : FEE_AMOUNT);
+                Message_ContinueTextbox(play, TEXT_BANKER_WITHDRAWAL_CONFIRM);
+            }
+            break;
+
         case TEXT_BANKER_DEPOSIT_AMOUNT:
             if (gBankerValue == 0) {
                 Message_ContinueTextbox(play, TEXT_BANKER_ERROR_ZERO_AMOUNT);
-            } else if (currentTextId == TEXT_BANKER_WITHDRAWAL_AMOUNT) {
-                if (gBankerValue + FEE_AMOUNT <= gSaveContext.playerBalance &&
-                    gBankerValue + gSaveContext.rupees <= CUR_CAPACITY(UPG_WALLET)) {
-                    if (gSaveContext.hasInterest == 0) {
-                        if (gBankerValue + FEE_AMOUNT > gSaveContext.playerBalance) {
-                            Message_ContinueTextbox(play, TEXT_BANKER_ERROR_INSUFFICIENT_BALANCE);
-                        } else {
-                            Rupees_ChangeBy(gBankerValue);
-                            gSaveContext.playerBalance -= (gBankerValue + FEE_AMOUNT);
-                            Message_ContinueTextbox(play, TEXT_BANKER_WITHDRAWAL_CONFIRM);
-                        }
-                    } else {
-                        Rupees_ChangeBy(gBankerValue);
-                        gSaveContext.playerBalance -= gBankerValue;
-                        Message_ContinueTextbox(play, TEXT_BANKER_WITHDRAWAL_CONFIRM);
-                    }
-                } else {
-                    if (gBankerValue + gSaveContext.rupees > CUR_CAPACITY(UPG_WALLET)) {
-                        Message_ContinueTextbox(play, TEXT_BANKER_ERROR_WALLET_FULL);
-                    } else {
-                        Message_ContinueTextbox(play, TEXT_BANKER_ERROR_INSUFFICIENT_BALANCE);
-                    }
-                }
-            } else if (currentTextId == TEXT_BANKER_DEPOSIT_AMOUNT) {
-                if (gBankerValue <= gSaveContext.rupees) {
-                    if ((gSaveContext.playerBalance + gBankerValue) > 5000) {
-                        Message_ContinueTextbox(play, TEXT_BANKER_ERROR_MAX_BALANCE);
-                    } else if (gSaveContext.hasInterest == 0 && (gSaveContext.playerBalance + gBankerValue - FEE_AMOUNT) < 1) {
-                        Message_ContinueTextbox(play, TEXT_BANKER_ERROR_DEPOSIT_NOT_WORTHWHILE);
-                    } else {
-                        if (gSaveContext.hasInterest == 0) {
-                            Rupees_ChangeBy(-gBankerValue);
-                            gSaveContext.playerBalance += (gBankerValue - FEE_AMOUNT);
-                        } else { 
-                            Rupees_ChangeBy(-gBankerValue);
-                            gSaveContext.playerBalance += gBankerValue;
-                        }
-                        Message_ContinueTextbox(play, TEXT_BANKER_DEPOSIT_CONFIRM);
-                    }
-                } else {
-                    Message_ContinueTextbox(play, TEXT_BANKER_ERROR_INSUFFICIENT_BALANCE);
-                }
+            } else if ((gSaveContext.playerBalance + gBankerValue) > 5000) {
+                Message_ContinueTextbox(play, TEXT_BANKER_ERROR_MAX_BALANCE);
+            } else if (gBankerValue > gSaveContext.rupees) {
+                Message_ContinueTextbox(play, TEXT_BANKER_ERROR_INSUFFICIENT_BALANCE);
+            } else if (gSaveContext.hasInterest == 0 && (gSaveContext.playerBalance + gBankerValue - FEE_AMOUNT) < 1) {
+                Message_ContinueTextbox(play, TEXT_BANKER_ERROR_DEPOSIT_NOT_WORTHWHILE);
+            } else {
+                Rupees_ChangeBy(-gBankerValue);
+                gSaveContext.playerBalance += gBankerValue - (gSaveContext.hasInterest ? 0 : FEE_AMOUNT);
+                Message_ContinueTextbox(play, TEXT_BANKER_DEPOSIT_CONFIRM);
             }
             break;
 
