@@ -806,7 +806,7 @@ void EntranceTrackerWindow::DrawElement() {
             if ((original->type == ENTRANCE_TYPE_DUNGEON || original->type == ENTRANCE_TYPE_GROTTO || original->type == ENTRANCE_TYPE_INTERIOR) &&
                 (original->oneExit != 1 && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF) &&
                 CVarGetInteger("gEntranceTrackerHideReverseEntrances", 1) == 1) {
-                    continue;`
+                    continue;
             }
 
             bool isDiscovered = IsEntranceDiscovered(entrance.index);
