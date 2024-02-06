@@ -453,11 +453,12 @@ void Message_SetTextColor(MessageContext* msgCtx, u16 colorParameter) {
 }
 
 void Message_DrawTextboxIcon(PlayState* play, Gfx** p, s16 x, s16 y) {
-    /* static */ Color_RGB8 sIconPrimColors[2] = {
+    // SoH [Cosmetics] The following Color_RGB8 were originally static
+    Color_RGB8 sIconPrimColors[2] = {
         { 0, 80, 200 },
         { 50, 130, 255 },
     };
-    /* static */ Color_RGB8 sIconEnvColors[2] = {
+    Color_RGB8 sIconEnvColors[2] = {
         { 0, 0, 0 },
         { 0, 130, 255 },
     };
@@ -2006,11 +2007,13 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
     static void* sOcarinaNoteTextures[] = {
         gOcarinaBtnIconATex, gOcarinaBtnIconCDownTex, gOcarinaBtnIconCRightTex, gOcarinaBtnIconCLeftTex, gOcarinaBtnIconCUpTex,
     };
-    /* static */ Color_RGB8 sOcarinaNoteAPrimColors[2] = {
+
+    // SoH [Cosmetics] The following Color_RGB8 were originally static
+    Color_RGB8 sOcarinaNoteAPrimColors[2] = {
         { 80, 150, 255 },
         { 100, 200, 255 },
     };
-    /* static */ Color_RGB8 sOcarinaNoteAEnvColors[2] = {
+    Color_RGB8 sOcarinaNoteAEnvColors[2] = {
         { 10, 10, 10 },
         { 50, 50, 255 },
     };
@@ -2027,11 +2030,11 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         sOcarinaNoteAEnvColors[1] = (Color_RGB8){ 50, 255, 50 };
     }
 
-    /* static */ Color_RGB8 sOcarinaNoteCPrimColors[2] = {
+    Color_RGB8 sOcarinaNoteCPrimColors[2] = {
         { 255, 255, 50 },
         { 255, 255, 180 },
     };
-    /* static */ Color_RGB8 sOcarinaNoteCEnvColors[2] = {
+    Color_RGB8 sOcarinaNoteCEnvColors[2] = {
         { 10, 10, 10 },
         { 110, 110, 50 },
     };
@@ -2044,11 +2047,11 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         sOcarinaNoteCEnvColors[1].b = (color.b / 255.0f) * 95;
     }
 
-    /* static */ Color_RGB8 sOcarinaNoteCUpPrimColors[2] = {
+    Color_RGB8 sOcarinaNoteCUpPrimColors[2] = {
         { 255, 255, 50 },
         { 255, 255, 180 },
     };
-    /* static */ Color_RGB8 sOcarinaNoteCUpEnvColors[2] = {
+    Color_RGB8 sOcarinaNoteCUpEnvColors[2] = {
         { 10, 10, 10 },
         { 110, 110, 50 },
     };
@@ -2061,11 +2064,11 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         sOcarinaNoteCUpEnvColors[1].b = (color.b / 255.0f) * 95;
     }
 
-    /* static */ Color_RGB8 sOcarinaNoteCDownPrimColors[2] = {
+    Color_RGB8 sOcarinaNoteCDownPrimColors[2] = {
         { 255, 255, 50 },
         { 255, 255, 180 },
     };
-    /* static */ Color_RGB8 sOcarinaNoteCDownEnvColors[2] = {
+    Color_RGB8 sOcarinaNoteCDownEnvColors[2] = {
         { 10, 10, 10 },
         { 110, 110, 50 },
     };
@@ -2078,11 +2081,11 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         sOcarinaNoteCDownEnvColors[1].b = (color.b / 255.0f) * 95;
     }
 
-    /* static */ Color_RGB8 sOcarinaNoteCLeftPrimColors[2] = {
+    Color_RGB8 sOcarinaNoteCLeftPrimColors[2] = {
         { 255, 255, 50 },
         { 255, 255, 180 },
     };
-    /* static */ Color_RGB8 sOcarinaNoteCLeftEnvColors[2] = {
+    Color_RGB8 sOcarinaNoteCLeftEnvColors[2] = {
         { 10, 10, 10 },
         { 110, 110, 50 },
     };
@@ -2095,11 +2098,11 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         sOcarinaNoteCLeftEnvColors[1].b = (color.b / 255.0f) * 95;
     }
 
-    /* static */ Color_RGB8 sOcarinaNoteCRightPrimColors[2] = {
+    Color_RGB8 sOcarinaNoteCRightPrimColors[2] = {
         { 255, 255, 50 },
         { 255, 255, 180 },
     };
-    /* static */ Color_RGB8 sOcarinaNoteCRightEnvColors[2] = {
+    Color_RGB8 sOcarinaNoteCRightEnvColors[2] = {
         { 10, 10, 10 },
         { 110, 110, 50 },
     };
