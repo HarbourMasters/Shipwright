@@ -231,6 +231,20 @@ s32 EffectBlure_Update(void* thisx) {
                 this->p2StartColor.b = color.b * 0.8f;
                 this->p1EndColor.b = color.b * 0.6f;
                 this->p2EndColor.b = color.b * 0.4f;
+            } else if (changed) {
+                color = (Color_RGBA8){ 250, 0, 0, 255 };
+                this->p1StartColor.r = color.r;
+                this->p2StartColor.r = color.r * 0.8f;
+                this->p1EndColor.r = color.r * 0.6f;
+                this->p2EndColor.r = color.r * 0.4f;
+                this->p1StartColor.g = color.g;
+                this->p2StartColor.g = color.g * 0.8f;
+                this->p1EndColor.g = color.g * 0.6f;
+                this->p2EndColor.g = color.g * 0.4f;
+                this->p1StartColor.b = color.b;
+                this->p2StartColor.b = color.b * 0.8f;
+                this->p1EndColor.b = color.b * 0.6f;
+                this->p2EndColor.b = color.b * 0.4f;
             }
             break;
         case 4:
