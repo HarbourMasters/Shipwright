@@ -871,9 +871,9 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
             version.minor = reader->ReadUInt16();
             version.patch = reader->ReadUInt16();
         }
+        archive.UnloadRaw();
     }
 
-    archive.UnloadRaw();
     return version;
 }
 
