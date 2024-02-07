@@ -856,27 +856,25 @@ typedef struct {
 
 // Read the port version from an OTR file
 OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
-    return {8, 0, 4};
-    // OTRVersion version = {};
+    OTRVersion version = {};
 
-    // // Use a temporary archive instance to load the otr and read the version file
-    // auto archive = std::make_shared<LUS::Archive>(otrPath, "", std::unordered_set<uint32_t>(), false);
-    // if (archive->IsMainMPQValid()) {
-    //     auto t = archive->LoadFile("portVersion", false);
-    //     if (t != nullptr && t->IsLoaded) {
-    //         auto stream = std::make_shared<LUS::MemoryStream>(t->Buffer.data(), t->Buffer.size());
-    //         auto reader = std::make_shared<LUS::BinaryReader>(stream);
-    //         LUS::Endianness endianness = (LUS::Endianness)reader->ReadUByte();
-    //         reader->SetEndianness(endianness);
-    //         version.major = reader->ReadUInt16();
-    //         version.minor = reader->ReadUInt16();
-    //         version.patch = reader->ReadUInt16();
-    //     }
-    // }
+    // Use a temporary archive instance to load the otr and read the version file
+    auto archive = LUS::OtrArchive(otrPath);
+    if (archive.LoadRaw()) {
+        auto t = archive.LoadFileRaw("portVersion");
+        if (t != nullptr && t->IsLoaded) {
+            auto stream = std::make_shared<LUS::MemoryStream>(t->Buffer->data(), t->Buffer->size());
+            auto reader = std::make_shared<LUS::BinaryReader>(stream);
+            LUS::Endianness endianness = (LUS::Endianness)reader->ReadUByte();
+            reader->SetEndianness(endianness);
+            version.major = reader->ReadUInt16();
+            version.minor = reader->ReadUInt16();
+            version.patch = reader->ReadUInt16();
+        }
+    }
 
-    // archive = nullptr;
-
-    // return version;
+    archive.UnloadRaw();
+    return version;
 }
 
 // Check that a soh.otr exists and matches the version of soh running
