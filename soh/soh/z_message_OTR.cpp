@@ -232,11 +232,13 @@ extern "C" void OTRMessage_Init()
         CustomMessage("To reward your thriftiness, I've got&a special trinket for you...The&%rPirate's Charm%w!",
                     "Um deine Sparsamkeit zu belohnen,&habe ich ein besonderes&Schmuckstück für dich... den&%rPiratenzauber%w!",
                     "Pour récompenser votre économie,&j'ai un bijou spécial pour vous... Le&%rCharme du Pirate%w!"));
-    CustomMessageManager::Instance->CreateMessage(
-        customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_1,
+    CustomMessageManager::Instance->CreateGetItemMessage(
+        //ITEM_RUPEE_BLUE is a placeholder for ITEM_PIRATE_CHARM which has not been implemented yet.
+        customMessageTableID, (GetItemID)TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_1, ITEM_RUPEE_BLUE,
         CustomMessage("This charm, infused with pirate&magic, can warp your treasures&directly to the bank! No more&heavy wallets for you!",
                     "Dieser mit Piratenmagie&durchdrungene Zauber kann Ihre&Schätze direkt an die Bank bringen!&Keine schweren Geldbörsen mehr!",
-                    "Ce charme, imprégné de magie&pirate, peut transférer vos trésors&directement à la banque! Fini les&portefeuilles lourds pour vous!"));
+                    "Ce charme, imprégné de magie&pirate, peut transférer vos trésors&directement à la banque! Fini les&portefeuilles lourds pour vous!",
+                    TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_2,
         CustomMessage("And that's not all! It also lets me&whisper your new balance to you&through the winds, once a %bwarp&transfer%w is complete.",
