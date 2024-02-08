@@ -361,7 +361,7 @@ void EnZo_SpawnSplashes(EnZo* this) {
     }
 }
 
-u16 func_80B61024(PlayState* play, Actor* thisx) {
+u16 EnZo_GetTextId(PlayState* play, Actor* thisx) {
     u16 textId;
 
     textId = Text_GetFaceReaction(play, 29);
@@ -427,7 +427,8 @@ u16 func_80B61024(PlayState* play, Actor* thisx) {
                 return 0x402D;
             }
 
-            if (Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
+            if (CVarGetInteger("gFixZoraHintDialogue", 0) && !Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED) ||
+                !CVarGetInteger("gFixZoraHintDialogue", 0) && Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
                 return 0x4010;
             }
             if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA)) {
@@ -520,7 +521,7 @@ void EnZo_Dialog(EnZo* this, PlayState* play) {
     }
     Npc_TrackPoint(&this->actor, &this->interactInfo, 11, this->trackingMode);
     if (this->canSpeak == true) {
-        Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->dialogRadius, func_80B61024,
+        Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->dialogRadius, EnZo_GetTextId,
                           func_80B61298);
     }
 }
