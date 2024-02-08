@@ -78,6 +78,7 @@ typedef enum {
     TEXT_BANKER_TRANSACTION_FEE = 0x9405,
     TEXT_BANKER_EXCESS = 0x9406,
     TEXT_BANKER_EXCESS_FULL = 0x9407,
+    TEXT_BANKER_EXCESS_FEE = 0x9408,
 } TextIDs;
 
 #ifdef __cplusplus

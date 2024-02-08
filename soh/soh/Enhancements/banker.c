@@ -18,17 +18,16 @@
 #define ONES_OFFSET 8
 #define BLINK_DURATION 10
 #define COOLDOWN_FRAMES 3
-#define FEE_AMOUNT 5
 #define FADE_DURATION 5
 
 static s16 bankerValue = 0;
 static s16 selectedDigit = 0;
 static s16 blinkTimer = 0;
 static bool isGivingHeart = false;
-static bool isGivingCharm = false;
+static bool isGivingCharm = false; 
 static bool canContinue = false;
 static bool prevTextboxHeart = false;
-static bool prevTextboxCharm = false;
+/*static*/ bool prevTextboxCharm = false; //Temporarily global until GI_PIRATE_CHARM is implemented
 static Actor* bankerActor = NULL;
 static s16 OptionChoice = -1;
 static s16 fadeTimer = 0;
@@ -42,12 +41,9 @@ void UpdateBankerOverlay(PlayState* play, Gfx** gfx, s16 value, s16 selectedDigi
     s16 posY = 180 - 20;
     s16 digits[3] = {value / 100, (value % 100) / 10, value % 10};
     s16 offsets[3] = {HUNDREDS_OFFSET, TENS_OFFSET, ONES_OFFSET};
-
-    // Increment fade timer but do not exceed FADE_DURATION (for a 1-second fade at 60 FPS)
     if (fadeTimer < FADE_DURATION) {
         fadeTimer++;
     }
-
     for (int i = 0; i < 3; i++) {
         posX += offsets[i];
         s16 digit = digits[i];
@@ -56,15 +52,10 @@ void UpdateBankerOverlay(PlayState* play, Gfx** gfx, s16 value, s16 selectedDigi
         gDPLoadTextureBlock((*gfx)++, ((u8*)digitTextures[digit]), G_IM_FMT_I, G_IM_SIZ_8b, DIGIT_WIDTH, DIGIT_HEIGHT, 0,
                             G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
-
-        // Calculate fade-in alpha based on fadeTimer
         u8 fadeAlpha = fadeTimer < FADE_DURATION ? (255 * fadeTimer) / FADE_DURATION : 255;
-
-        // Adjust highlightColor's alpha for fade-in effect
         Color_RGBA8 primColor = isSelected && blinkTimer < BLINK_DURATION ? 
                                 (Color_RGBA8){highlightColor.r, highlightColor.g, highlightColor.b, fadeAlpha} : 
                                 (Color_RGBA8){255, 255, 255, fadeAlpha};
-
         gDPSetPrimColor((*gfx)++, 0, 0, primColor.r, primColor.g, primColor.b, primColor.a);
         gDPSetCombineMode((*gfx)++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
         gDPSetRenderMode((*gfx)++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
@@ -139,7 +130,7 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
         case TEXT_BANKER_OPTIONS:
             if (msgCtx->choiceIndex == 0 || msgCtx->choiceIndex == 1) {
                 OptionChoice = msgCtx->choiceIndex;
-                if (gSaveContext.hasInterest == 0) {
+                if (gSaveContext.hasFee == 0) {
                     Message_ContinueTextbox(play, TEXT_BANKER_TRANSACTION_FEE);
                 } else {
                     Message_ContinueTextbox(play, TEXT_BANKER_BALANCE);
@@ -154,8 +145,8 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
             if (gSaveContext.playerBalance >= 200 && !gSaveContext.hasWarpTransfer) {
                 gSaveContext.hasWarpTransfer = 1;
                 Message_ContinueTextbox(play, TEXT_BANKER_REWARD_WARP_TRANSFER_INTRO);
-            } else if (gSaveContext.playerBalance >= 1000 && !gSaveContext.hasInterest) {
-                gSaveContext.hasInterest = 1;
+            } else if (gSaveContext.playerBalance >= 1000 && !gSaveContext.hasFee) {
+                gSaveContext.hasFee = 1;
                 Message_ContinueTextbox(play, TEXT_BANKER_REWARD_FEE);
             } else if (gSaveContext.playerBalance >= 5000 && !gSaveContext.hasPieceOfHeart) {
                 gSaveContext.hasPieceOfHeart = 1;
@@ -169,13 +160,13 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
         case TEXT_BANKER_WITHDRAWAL_AMOUNT:
             if (bankerValue == 0) {
                 Message_ContinueTextbox(play, TEXT_BANKER_ERROR_ZERO_AMOUNT);
-            } else if (bankerValue + (gSaveContext.hasInterest ? 0 : FEE_AMOUNT) > gSaveContext.playerBalance) {
+            } else if (bankerValue + (gSaveContext.hasFee ? 0 : gSaveContext.rupeesFee) > gSaveContext.playerBalance) {
                 Message_ContinueTextbox(play, TEXT_BANKER_ERROR_INSUFFICIENT_BALANCE);
             } else if (bankerValue + gSaveContext.rupees > CUR_CAPACITY(UPG_WALLET)) {
                 Message_ContinueTextbox(play, TEXT_BANKER_ERROR_WALLET_FULL);
             } else {
                 Rupees_ChangeBy(bankerValue);
-                gSaveContext.playerBalance -= bankerValue + (gSaveContext.hasInterest ? 0 : FEE_AMOUNT);
+                gSaveContext.playerBalance -= bankerValue + (gSaveContext.hasFee ? 0 : gSaveContext.rupeesFee);
                 Message_ContinueTextbox(play, TEXT_BANKER_WITHDRAWAL_CONFIRM);
             }
             break;
@@ -187,11 +178,11 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
                 Message_ContinueTextbox(play, TEXT_BANKER_ERROR_MAX_BALANCE);
             } else if (bankerValue > gSaveContext.rupees) {
                 Message_ContinueTextbox(play, TEXT_BANKER_ERROR_INSUFFICIENT_BALANCE);
-            } else if (gSaveContext.hasInterest == 0 && (gSaveContext.playerBalance + bankerValue - FEE_AMOUNT) < 1) {
+            } else if (gSaveContext.hasFee == 0 && (gSaveContext.playerBalance + bankerValue - gSaveContext.rupeesFee) < 1) {
                 Message_ContinueTextbox(play, TEXT_BANKER_ERROR_DEPOSIT_NOT_WORTHWHILE);
             } else {
                 Rupees_ChangeBy(-bankerValue);
-                gSaveContext.playerBalance += bankerValue - (gSaveContext.hasInterest ? 0 : FEE_AMOUNT);
+                gSaveContext.playerBalance += bankerValue - (gSaveContext.hasFee ? 0 : gSaveContext.rupeesFee);
                 Message_ContinueTextbox(play, TEXT_BANKER_DEPOSIT_CONFIRM);
             }
             break;
@@ -203,8 +194,8 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
             if (gSaveContext.playerBalance >= 200 && !gSaveContext.hasWarpTransfer) {
                 gSaveContext.hasWarpTransfer = 1;
                 Message_ContinueTextbox(play, TEXT_BANKER_REWARD_WARP_TRANSFER_INTRO);
-            } else if (gSaveContext.playerBalance >= 1000 && !gSaveContext.hasInterest) {
-                gSaveContext.hasInterest = 1;
+            } else if (gSaveContext.playerBalance >= 1000 && !gSaveContext.hasFee) {
+                gSaveContext.hasFee = 1;
                 Message_ContinueTextbox(play, TEXT_BANKER_REWARD_FEE);
             } else if (gSaveContext.playerBalance >= 5000 && !gSaveContext.hasPieceOfHeart) {
                 gSaveContext.hasPieceOfHeart = 1;
@@ -231,8 +222,8 @@ static void HandleBankerInteraction(PlayState* play, MessageContext* msgCtx) {
             break;
 
         case TEXT_BANKER_REWARD_WARP_TRANSFER_LORE_3:
-            if (gSaveContext.playerBalance >= 1000 && !gSaveContext.hasInterest) {
-                gSaveContext.hasInterest = 1;
+            if (gSaveContext.playerBalance >= 1000 && !gSaveContext.hasFee) {
+                gSaveContext.hasFee = 1;
                 Message_ContinueTextbox(play, TEXT_BANKER_REWARD_FEE);
             } else if (canContinue) {
                 canContinue = false;

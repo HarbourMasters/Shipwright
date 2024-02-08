@@ -326,9 +326,10 @@ typedef struct {
     /*        */ u8 triforcePiecesCollected;
     /*        */ s32 playerBalance;
     /*        */ u8 hasWarpTransfer;
-    /*        */ u8 hasInterest;
+    /*        */ u8 hasFee;
     /*        */ u8 hasPieceOfHeart;
     /*        */ u8 excessRupees;
+    /*        */ u8 rupeesFee;
     // #endregion
 } SaveContext; // size = 0x1428
 

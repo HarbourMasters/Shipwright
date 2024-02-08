@@ -290,16 +290,16 @@ extern "C" void OTRMessage_Init()
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_BANKER_ERROR_DEPOSIT_NOT_WORTHWHILE,
         CustomMessage(
-            "Hold up, @! There's a %y5%w&Rupee handling fee. You'd lose&Rupees, not gain! Deposit more to&make it worthwhile.",
-            "Warte, @! Es fällt eine&Bearbeitungsgebühr von %y5%w Rupien&an. Du würdest Rubine verlieren!&Zahlen Sie bitte mehr ein.",
-            "Tenir bon, @! Il y a des&frais de traitement de %y5%w roupies.&Vous perdriez des rubis! Déposez&davantage s'il vous plaît."
+            "Hold up, @! There's a %y{{rupeesFee}}%w&Rupee handling fee. You'd lose&Rupees, not gain! Deposit more to&make it worthwhile.",
+            "Warte, @! Es fällt eine&Bearbeitungsgebühr von %y{{rupeesFee}}%w Rupien&an. Du würdest Rubine verlieren!&Zahlen Sie bitte mehr ein.",
+            "Tenir bon, @! Il y a des&frais de traitement de %y{{rupeesFee}}%w roupies.&Vous perdriez des rubis! Déposez&davantage s'il vous plaît."
         ));
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_BANKER_TRANSACTION_FEE,
         CustomMessage(
-            "Ah, @! There's a %y5%w&Rupee fee. Is that okay?\x1B&%gProceed&%gNevermind%w",
-            "Ach, @! Es fällt eine&Gebühr von 5 Rupien an. Okay?\x1B&%gWeiter&%gNichts tun%w",
-            "Ah, @! Il y a des&frais de 5 roupies. Est-ce OK?\x1B&%gProcéder&%gPas grave%w"
+            "Ah, @! There's a %y{{rupeesFee}}%w&Rupee fee. Is that okay?\x1B&%gProceed&%gNevermind%w",
+            "Ach, @! Es fällt eine&Gebühr von %y{{rupeesFee}}%w Rupien an. Okay?\x1B&%gWeiter&%gNichts tun%w",
+            "Ah, @! Il y a des&frais de %y{{rupeesFee}}%w roupies. Est-ce OK?\x1B&%gProcéder&%gPas grave%w"
         ));
     CustomMessageManager::Instance->CreateMessage(
         customMessageTableID, TEXT_BANKER_EXCESS,
@@ -315,6 +315,14 @@ extern "C" void OTRMessage_Init()
             "Hey @! Banker here!&I can't do a warp transfer when&your account is maxed out. Come&make a withdrawal!",
             "Hey @! Banker hier!&Ich kann keine Warp-Überweisung&durchführen, wenn Ihr Konto voll&ist. Machen Sie eine Auszahlung!",
             "Hé @! Banquier ici! Je&ne peux pas effectuer de transfert&Warp lorsque votre compte est au&maximum. Venez faire un retrait!",
+            TEXTBOX_TYPE_BLUE
+        )); 
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_BANKER_EXCESS_FEE,
+        CustomMessage(
+            "Hey @! Banker here!&There's a %y{{rupeesFee}}%w Rupee fee for warp&transfers. Your account doesn't&have enough to cover it.",
+            "Hey @! Banker hier! Es&gibt eine Gebühr von %y{{rupeesFee}}%w Rupien für&Warp-Überweisungen. Ihr Konto hat&nicht genug, um sie zu decken.",
+            "Hé @! Banquier ici! Il y&a des frais de %y{{rupeesFee}}%w roupies pour les&transferts Warp. Votre compte n'a&pas assez pour les couvrir.",
             TEXTBOX_TYPE_BLUE
         )); 
 }

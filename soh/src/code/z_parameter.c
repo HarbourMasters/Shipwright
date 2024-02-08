@@ -22,8 +22,6 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 
-#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
-
 #define DO_ACTION_TEX_WIDTH() 48
 #define DO_ACTION_TEX_HEIGHT() 16
 #define DO_ACTION_TEX_SIZE() ((DO_ACTION_TEX_WIDTH() * DO_ACTION_TEX_HEIGHT()) / 2)
@@ -32,7 +30,9 @@
 // So, when indexing into it with a item button index, we need to adjust
 #define BUTTON_STATUS_INDEX(button) ((button) >= 4) ? ((button) + 1) : (button)
 
-int gBankBalanceUpdated = 0;
+int balanceUpdated = 0;
+int balanceMaxed = 0;
+int balanceWasMaxed = 0;
 
 s16 Top_HUD_Margin = 0;
 s16 Left_HUD_Margin = 0;
@@ -6377,8 +6377,6 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
     }
 }
 
-extern int gBankBalanceUpdated;
-
 void Interface_Update(PlayState* play) {
     static u8 D_80125B60 = 0;
     static s16 sPrevTimeIncrement = 0;
@@ -6556,55 +6554,32 @@ void Interface_Update(PlayState* play) {
         (play->transitionMode == TRANS_MODE_OFF) && !Play_InCsMode(play)) {}
 
     if (gSaveContext.rupeeAccumulator != 0) {
-        if (CVarGetInteger("gBanker", 0) != 0 && gSaveContext.hasWarpTransfer) {
-            // Begin custom code for gBanker
             if (gSaveContext.rupeeAccumulator > 0) {
-                while (gSaveContext.rupeeAccumulator > 0 && gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
+            if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
                     gSaveContext.rupeeAccumulator--;
                     gSaveContext.rupees++;
-                    Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                }
-                // If the wallet is full and there are still rupees in the accumulator, add them to the player's balance
-                if (gSaveContext.rupeeAccumulator > 0) {
-                    gSaveContext.excessRupees = gSaveContext.rupeeAccumulator;
-                    gSaveContext.playerBalance += gSaveContext.rupeeAccumulator;
-                    gSaveContext.rupeeAccumulator = 0;
-                    // Clamp the playerBalance between 0 and 5000
-                    gSaveContext.playerBalance = CLAMP(gSaveContext.playerBalance, 0, 5000);
-                    gBankBalanceUpdated = 1;
-                }
-            } else if (gSaveContext.rupees != 0) {
-                if (gSaveContext.rupeeAccumulator <= -50) {
-                    gSaveContext.rupeeAccumulator += 10;
-                    gSaveContext.rupees -= 10;
-
-                    if (gSaveContext.rupees < 0) {
-                        gSaveContext.rupees = 0;
-                    }
-
                     Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                 } else {
-                    gSaveContext.rupeeAccumulator++;
-                    gSaveContext.rupees--;
-                    Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                }
-            } else {
+                balanceWasMaxed = (gSaveContext.playerBalance == 5000) ? 1 : 0;
+                if (CVarGetInteger("gBanker", 0) && gSaveContext.hasWarpTransfer) {
+                    int rupeesToAdd = gSaveContext.rupeeAccumulator;
+                    if (gSaveContext.playerBalance + rupeesToAdd > 5000) {
+                        rupeesToAdd = 5000 - gSaveContext.playerBalance;
+                        balanceMaxed = 1;
+                    }
+                    gSaveContext.playerBalance += rupeesToAdd;
+                    osSyncPrintf("Added %d rupees to bank balance. New balance = %d\n", rupeesToAdd,
+                                gSaveContext.playerBalance);
+                    gSaveContext.excessRupees = rupeesToAdd;
                 gSaveContext.rupeeAccumulator = 0;
-            }
-            // End custom code for gBanker
-        } else {
-            // Begin original code
-            if (gSaveContext.rupeeAccumulator > 0) {
-                if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
-                    gSaveContext.rupeeAccumulator--;
-                    gSaveContext.rupees++;
-                    Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    balanceUpdated = 1;
                 } else {
                     // "Rupee Amount MAX = %d"
                     osSyncPrintf("ルピー数ＭＡＸ = %d\n", CUR_CAPACITY(UPG_WALLET));
                     gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
                     gSaveContext.rupeeAccumulator = 0;
                 }
+                }
             } else if (gSaveContext.rupees != 0) {
                 if (gSaveContext.rupeeAccumulator <= -50) {
                     gSaveContext.rupeeAccumulator += 10;
@@ -6622,8 +6597,6 @@ void Interface_Update(PlayState* play) {
                 }
             } else {
                 gSaveContext.rupeeAccumulator = 0;
-            }
-            // End original code
         }
         if (gSaveContext.rupeeAccumulator == 0 && gSaveContext.pendingSale != ITEM_NONE) {
             u16 tempSaleItem = gSaveContext.pendingSale;

@@ -405,6 +405,30 @@ void DrawInfoTab() {
     if (CVarGetInteger("gBanker", 0)) {
         ImGui::InputScalar("Bank Balance", ImGuiDataType_S32, &gSaveContext.playerBalance);
         UIWidgets::InsertHelpHoverText("Current bank balance");
+        if (gSaveContext.playerBalance > 5000) {
+            gSaveContext.playerBalance = 5000; 
+        }
+        bool rewardsStatus[] = {
+            gSaveContext.hasWarpTransfer,
+            gSaveContext.hasFee,
+            gSaveContext.hasPieceOfHeart
+        };
+        const char* labels[] = {"Warp Transfer", "Transaction Fee", "Bank Heart Piece Reward"};
+        const char* helpTexts[] = {
+            "If checked, will have ability to warp transfer.",
+            "If checked, will not be charged a fee.",
+            "If checked, won't received Heart Piece reward."
+        };
+        for (int i = 0; i < sizeof(rewardsStatus)/sizeof(rewardsStatus[0]); ++i) {
+            if (ImGui::Checkbox(labels[i], &rewardsStatus[i])) {
+                switch (i) {
+                    case 0: gSaveContext.hasWarpTransfer = rewardsStatus[i] ? 1 : 0; break;
+                    case 1: gSaveContext.hasFee = rewardsStatus[i] ? 1 : 0; break;
+                    case 2: gSaveContext.hasPieceOfHeart = rewardsStatus[i] ? 1 : 0; break;
+                }
+            }
+            UIWidgets::InsertHelpHoverText(helpTexts[i]);
+        }
     }
 
     const uint16_t dayTimeMin = 0;
