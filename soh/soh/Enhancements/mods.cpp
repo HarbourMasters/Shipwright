@@ -1304,6 +1304,16 @@ void RegisterToTMedallions() {
     });
 }
 
+void RegisterPauseMenuHooks() {
+    if (!GameInteractor::IsSaveLoaded() || !CVarGetInteger("gPauseWarp", 0)) return;
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPauseMenu>([]() {
+        PauseWarp_Main();
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        PauseWarp_Text();
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1340,4 +1350,5 @@ void InitMods() {
     NameTag_RegisterHooks();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
+    RegisterPauseMenuHooks();
 }

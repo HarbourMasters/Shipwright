@@ -60,6 +60,9 @@ void GameInteractor_ExecuteOnSetGameLanguage();
 // MARK: - System
 void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void));
 
+//Mark: - Pause Menu
+void GameInteractor_ExecuteOnPauseMenu();
+
 #ifdef __cplusplus
 }
 #endif
