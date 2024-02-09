@@ -2,40 +2,26 @@
 #include "soh/resource/type/PlayerAnimation.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
-std::shared_ptr<IResource>
-PlayerAnimationFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<PlayerAnimation>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-	factory = std::make_shared<PlayerAnimationFactoryV0>();
-	break;
+std::shared_ptr<LUS::IResource> ResourceFactoryBinaryPlayerAnimationV0::ReadResource(std::shared_ptr<LUS::File> file) {
+    if (file->InitData->Format != RESOURCE_FORMAT_BINARY) {
+        SPDLOG_ERROR("resource file format does not match factory format.");
+        return nullptr;
     }
 
-    if (factory == nullptr)
-    {
-        SPDLOG_ERROR("Failed to load PlayerAnimation with version {}", resource->GetInitData()->ResourceVersion);
-	return nullptr;
+    if (file->Reader == nullptr) {
+        SPDLOG_ERROR("Failed to load resource: File has Reader ({} - {})", file->InitData->Type,
+                        file->InitData->Path);
+        return nullptr;
     }
 
-    factory->ParseFileBinary(reader, resource);
+    auto playerAnimation = std::make_shared<PlayerAnimation>(file->InitData);
 
-    return resource;
-}
-
-void LUS::PlayerAnimationFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                     std::shared_ptr<IResource> resource)
-{
-    std::shared_ptr<PlayerAnimation> playerAnimation = std::static_pointer_cast<PlayerAnimation>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, playerAnimation);
-
-    uint32_t numEntries = reader->ReadUInt32();
+    uint32_t numEntries = file->Reader->ReadUInt32();
     playerAnimation->limbRotData.reserve(numEntries);
 
     for (uint32_t i = 0; i < numEntries; i++) {
-        playerAnimation->limbRotData.push_back(reader->ReadInt16());
+        playerAnimation->limbRotData.push_back(file->Reader->ReadInt16());
     }
-}
-} // namespace LUS
+
+    return playerAnimation;
+};

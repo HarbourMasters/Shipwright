@@ -7,8 +7,6 @@
 #include "Vec3f.h"
 #include "Color3b.h"
 
-namespace LUS {
-
 class PlayerAnimation : public Resource<int16_t> {
   public:
     using Resource::Resource;
@@ -20,4 +18,3 @@ class PlayerAnimation : public Resource<int16_t> {
 
     std::vector<int16_t> limbRotData;
 };
-} // namespace LUS
