@@ -1,6 +1,5 @@
 #include "Animation.h"
 
-namespace LUS {
 AnimationData* Animation::GetPointer() {
     return &animationData;
 }
@@ -18,4 +17,3 @@ size_t Animation::GetPointerSize() {
             return 0;
     }
 }
-} // namespace LUS

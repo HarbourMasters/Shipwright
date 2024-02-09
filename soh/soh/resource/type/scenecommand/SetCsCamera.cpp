@@ -1,6 +1,5 @@
 #include "SetCsCamera.h"
 
-namespace LUS {
 CsCamera* SetCsCamera::GetPointer() {
     return &csCamera;
 }
@@ -8,4 +7,3 @@ CsCamera* SetCsCamera::GetPointer() {
 size_t SetCsCamera::GetPointerSize() {
 	return sizeof(CsCamera);
 }
-} // namespace LUS

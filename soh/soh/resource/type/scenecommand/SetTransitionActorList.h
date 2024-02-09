@@ -9,7 +9,6 @@
 // #include <libultraship/libultra/types.h>
 #include "z64math.h"
 
-namespace LUS {
 typedef struct {
     struct {
         s8 room;    // Room to switch to
@@ -31,4 +30,3 @@ class SetTransitionActorList : public SceneCommand<TransitionActorEntry> {
     uint32_t numTransitionActors;
     std::vector<TransitionActorEntry> transitionActorList;
 };
-}; // namespace LUS

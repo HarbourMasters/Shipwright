@@ -7,7 +7,6 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace LUS {
 typedef struct {
 
 } Marker;
@@ -21,4 +20,3 @@ class EndMarker : public SceneCommand<Marker> {
 
     Marker endMarker;
 };
-}; // namespace LUS

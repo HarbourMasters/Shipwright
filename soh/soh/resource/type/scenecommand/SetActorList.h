@@ -9,7 +9,6 @@
 // #include <libultraship/libultra/types.h>
 #include "z64math.h"
 
-namespace LUS {
 typedef struct {
     /* 0x00 */ s16   id;
     /* 0x02 */ Vec3s pos;
@@ -27,4 +26,3 @@ class SetActorList : public SceneCommand<ActorEntry> {
     uint32_t numActors;
     std::vector<ActorEntry> actorList;
 };
-}; // namespace LUS

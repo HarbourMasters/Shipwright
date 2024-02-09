@@ -5,8 +5,6 @@
 #include "SkeletonLimb.h"
 #include <z64animation.h>
 
-namespace LUS {
-
 enum class SkeletonType {
     Normal,
     Flex,
@@ -50,11 +48,11 @@ union SkeletonData {
     SkelCurveLimbList skelCurveLimbList;
 };
 
-class Skeleton : public Resource<SkeletonData> {
+class Skeleton : public LUS::Resource<SkeletonData> {
   public:
     using Resource::Resource;
 
-    Skeleton() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    Skeleton() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
 
     SkeletonData* GetPointer();
     size_t GetPointerSize();
@@ -89,6 +87,3 @@ class SkeletonPatcher {
 
     static std::vector<SkeletonPatchInfo> skeletons;
 };
-
-
-} // namespace LUS

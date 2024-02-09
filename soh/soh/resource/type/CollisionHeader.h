@@ -6,8 +6,6 @@
 #include <libultraship/libultra.h>
 #include "z64math.h"
 
-namespace LUS {
-
 typedef struct {
     /* 0x00 */ u16 type;
     union {
@@ -67,11 +65,11 @@ typedef struct {
     size_t cameraDataListLen; // OTRTODO: Added to allow for bounds checking the cameraDataList.
 } CollisionHeaderData; // original name: BGDataInfo
 
-class CollisionHeader : public Resource<CollisionHeaderData> {
+class CollisionHeader : public LUS::Resource<CollisionHeaderData> {
 public:
     using Resource::Resource;
 
-    CollisionHeader() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    CollisionHeader() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
 
     CollisionHeaderData* GetPointer();
     size_t GetPointerSize();
@@ -95,4 +93,3 @@ public:
 
     std::vector<WaterBox> waterBoxes;
 };
-}; // namespace LUS

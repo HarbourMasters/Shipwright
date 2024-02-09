@@ -1,6 +1,5 @@
 #include "SetMesh.h"
 
-namespace LUS {
 MeshHeader* SetMesh::GetPointer() {
     return &meshHeader;
 }
@@ -8,4 +7,3 @@ MeshHeader* SetMesh::GetPointer() {
 size_t SetMesh::GetPointerSize() {
 	return sizeof(MeshHeader);
 }
-} // namespace LUS

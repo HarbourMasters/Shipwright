@@ -1,6 +1,5 @@
 #include "SetCollisionHeader.h"
 
-namespace LUS {
 CollisionHeaderData* SetCollisionHeader::GetPointer() {
     if (collisionHeader == nullptr) {
         return nullptr;
@@ -14,4 +13,3 @@ size_t SetCollisionHeader::GetPointerSize() {
     }
 	return collisionHeader->GetPointerSize();
 }
-} // namespace LUS

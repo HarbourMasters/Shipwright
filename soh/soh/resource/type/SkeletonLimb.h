@@ -4,7 +4,6 @@
 #include "libultraship/libultra.h"
 #include "z64math.h"
 
-namespace LUS {
 enum class LimbType {
     Invalid,
     Standard,
@@ -97,11 +96,11 @@ union SkeletonLimbData {
   SkinLimb skinLimb;
 };
 
-class SkeletonLimb : public Resource<SkeletonLimbData> {
+class SkeletonLimb : public LUS::Resource<SkeletonLimbData> {
 public:
   using Resource::Resource;
 
-    SkeletonLimb() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    SkeletonLimb() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
 
     SkeletonLimbData* GetPointer();
     size_t GetPointerSize();
@@ -131,4 +130,3 @@ public:
     std::vector<std::vector<SkinVertex>> skinLimbModifVertexArrays;
     std::vector<std::vector<SkinTransformation>> skinLimbModifTransformationArrays;
 };
-} // namespace LUS
