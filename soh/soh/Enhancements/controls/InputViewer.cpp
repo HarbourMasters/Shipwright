@@ -43,11 +43,13 @@ void InputViewer::RenderButton(std::string btnTexture, std::string btnOutlineTex
                                int outlineMode) {
     const ImVec2 pos = ImGui::GetCursorPos();
     ImGui::SetNextItemAllowOverlap();
+    // Render Outline based on settings
     if (outlineMode == BUTTON_OUTLINE_ALWAYS_SHOWN || (outlineMode == BUTTON_OUTLINE_NOT_PRESSED && !state) ||
         (outlineMode == BUTTON_OUTLINE_PRESSED && state)) {
         ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(btnOutlineTexture), size,
                      ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
     }
+    // Render button if pressed
     if (state) {
         ImGui::SetCursorPos(pos);
         ImGui::SetNextItemAllowOverlap();
@@ -134,11 +136,11 @@ void InputViewer::DrawElement() {
         ImVec2 scaledBGSize = ImVec2(bgSize.x * scale, bgSize.y * scale);
 
         ImGui::SetNextWindowSize(ImVec2(
-            bgSize.x * scale + 20,
+            scaledBGSize.x + 20,
             scaledBGSize.y +
                 (showAnalogAngles ? ImGui::CalcTextSize("X").y : 0) * scale * CVarGetFloat("gInputViewer.AnalogAngles.Scale", 1.0f) + 20));
         ImGui::SetNextWindowContentSize(
-            ImVec2(bgSize.x * scale, scaledBGSize.y + (showAnalogAngles ? 15 : 0) * scale *
+            ImVec2(scaledBGSize.x, scaledBGSize.y + (showAnalogAngles ? 15 : 0) * scale *
                                                           CVarGetFloat("gInputViewer.AnalogAngles.Scale", 1.0f)));
         ImGui::SetNextWindowPos(
             ImVec2(mainPos.x + size.x - scaledBGSize.x - 30, mainPos.y + size.y - scaledBGSize.y - 30),
@@ -169,7 +171,7 @@ void InputViewer::DrawElement() {
                     scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
             }
 
-            // Buttons
+            // A/B
             if (CVarGetInteger("gInputViewer.BBtn", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
@@ -181,6 +183,7 @@ void InputViewer::DrawElement() {
                 RenderButton("A-Btn", "A-Btn Outline", pads[0].button & BTN_A, scaledBGSize, buttonOutlineMode);
             }
 
+            // C buttons
             if (CVarGetInteger("gInputViewer.CUp", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
@@ -203,6 +206,7 @@ void InputViewer::DrawElement() {
                 RenderButton("C-Down", "C-Down Outline", pads[0].button & BTN_CDOWN, scaledBGSize, buttonOutlineMode);
             }
 
+            // L/R/Z
             if (CVarGetInteger("gInputViewer.LBtn", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
@@ -219,6 +223,7 @@ void InputViewer::DrawElement() {
                 RenderButton("Z-Btn", "Z-Btn Outline", pads[0].button & BTN_Z, scaledBGSize, buttonOutlineMode);
             }
 
+            // Start
             if (CVarGetInteger("gInputViewer.StartBtn", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
@@ -226,6 +231,7 @@ void InputViewer::DrawElement() {
                              buttonOutlineMode);
             }
 
+            // Dpad
             if (CVarGetInteger("gInputViewer.Dpad", 0)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
@@ -295,6 +301,7 @@ void InputViewer::DrawElement() {
                              scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
             }
 
+            // Analog stick angle text
             if (showAnalogAngles) {
                 ImGui::SetCursorPos(ImVec2(aPos.x + 10 + CVarGetInteger("gInputViewer.AnalogAngles.Offset", 0) * scale,
                                            scaledBGSize.y + aPos.y + 10));
@@ -445,14 +452,14 @@ void InputViewerSettingsWindow::DrawElement() {
             // gInputViewer.RightStick.VisibilityMode
             UIWidgets::PaddedText("Right Stick Visibility", true, false);
             UIWidgets::EnhancementCombobox("gInputViewer.RightStick.VisibilityMode", stickModeOptions,
-                                           STICK_MODE_ALWAYS_HIDDEN);
+                                           STICK_MODE_HIDDEN_IN_DEADZONE);
             UIWidgets::Tooltip(
                 "Determines the conditions under which the moving layer of the right stick texture is visible.");
 
             // gInputViewer.RightStick.OutlineMode
             UIWidgets::PaddedText("Right Stick Outline/Background Visibility", true, false);
             UIWidgets::EnhancementCombobox("gInputViewer.RightStick.OutlineMode", stickModeOptions,
-                                           STICK_MODE_ALWAYS_HIDDEN);
+                                           STICK_MODE_HIDDEN_IN_DEADZONE);
             UIWidgets::Tooltip(
                 "Determines the conditions under which the right stick outline/background texture is visible.");
 
