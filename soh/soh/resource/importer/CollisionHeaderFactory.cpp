@@ -3,8 +3,8 @@
 #include "spdlog/spdlog.h"
 
 
-std::shared_ptr<IResource>
-CollisionHeaderFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<LUS::IResource>
+CollisionHeaderFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<CollisionHeader>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -24,8 +24,8 @@ CollisionHeaderFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
     return resource;
 }
 
-std::shared_ptr<IResource>
-CollisionHeaderFactory::ReadResourceXML(std::shared_ptr<ResourceInitData> initData, tinyxml2::XMLElement *reader) {
+std::shared_ptr<LUS::IResource>
+CollisionHeaderFactory::ReadResourceXML(std::shared_ptr<LUS::ResourceInitData> initData, tinyxml2::XMLElement *reader) {
     auto resource = std::make_shared<CollisionHeader>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -46,7 +46,7 @@ CollisionHeaderFactory::ReadResourceXML(std::shared_ptr<ResourceInitData> initDa
 }
 
 void LUS::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                     std::shared_ptr<IResource> resource)
+                                                     std::shared_ptr<LUS::IResource> resource)
 {
     std::shared_ptr<CollisionHeader> collisionHeader = std::static_pointer_cast<CollisionHeader>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, collisionHeader);
@@ -161,7 +161,7 @@ void LUS::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
     collisionHeader->collisionHeaderData.waterBoxes = collisionHeader->waterBoxes.data();
 }
 
-void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<IResource> resource) {
+void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<CollisionHeader> collisionHeader = std::static_pointer_cast<CollisionHeader>(resource);
 
     collisionHeader->collisionHeaderData.minBounds.x = reader->IntAttribute("MinBoundsX");

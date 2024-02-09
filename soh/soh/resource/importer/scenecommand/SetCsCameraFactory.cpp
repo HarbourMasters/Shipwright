@@ -3,8 +3,8 @@
 #include "spdlog/spdlog.h"
 
 
-std::shared_ptr<IResource>
-SetCsCameraFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<LUS::IResource>
+SetCsCameraFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetCsCamera>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -25,7 +25,7 @@ SetCsCameraFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std
 }
 
 void LUS::SetCsCameraFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<IResource> resource) {
+                                        std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<SetCsCamera> setCsCamera = std::static_pointer_cast<SetCsCamera>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setCsCamera);
 

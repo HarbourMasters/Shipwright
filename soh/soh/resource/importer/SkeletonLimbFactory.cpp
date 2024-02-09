@@ -4,8 +4,8 @@
 #include "libultraship/libultraship.h"
 
 
-std::shared_ptr<IResource>
-SkeletonLimbFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<LUS::IResource>
+SkeletonLimbFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SkeletonLimb>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -25,8 +25,8 @@ SkeletonLimbFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, st
     return resource;
 }
 
-std::shared_ptr<IResource>
-SkeletonLimbFactory::ReadResourceXML(std::shared_ptr<ResourceInitData> initData, tinyxml2::XMLElement *reader) {
+std::shared_ptr<LUS::IResource>
+SkeletonLimbFactory::ReadResourceXML(std::shared_ptr<LUS::ResourceInitData> initData, tinyxml2::XMLElement *reader) {
     auto resource = std::make_shared<SkeletonLimb>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -47,7 +47,7 @@ SkeletonLimbFactory::ReadResourceXML(std::shared_ptr<ResourceInitData> initData,
 }
 
 void LUS::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                  std::shared_ptr<IResource> resource)
+                                                  std::shared_ptr<LUS::IResource> resource)
 {
     std::shared_ptr<SkeletonLimb> skeletonLimb = std::static_pointer_cast<SkeletonLimb>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, skeletonLimb);
@@ -221,7 +221,7 @@ void LUS::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
         }
     }
 }
-void SkeletonLimbFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<IResource> resource)
+void SkeletonLimbFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<LUS::IResource> resource)
 {
     std::shared_ptr<SkeletonLimb> skelLimb = std::static_pointer_cast<SkeletonLimb>(resource);
 

@@ -3,7 +3,7 @@
 #include "spdlog/spdlog.h"
 
 
-std::shared_ptr<IResource> SetSpecialObjectsFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
+std::shared_ptr<LUS::IResource> SetSpecialObjectsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
                                                                  std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetSpecialObjects>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
@@ -25,7 +25,7 @@ std::shared_ptr<IResource> SetSpecialObjectsFactory::ReadResource(std::shared_pt
 }
 
 void LUS::SetSpecialObjectsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<IResource> resource) {
+                                        std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<SetSpecialObjects> setSpecialObjects = std::static_pointer_cast<SetSpecialObjects>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setSpecialObjects);
 

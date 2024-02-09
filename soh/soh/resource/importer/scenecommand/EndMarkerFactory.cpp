@@ -3,8 +3,8 @@
 #include "spdlog/spdlog.h"
 
 
-std::shared_ptr<IResource>
-EndMarkerFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<LUS::IResource>
+EndMarkerFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<EndMarker>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -25,7 +25,7 @@ EndMarkerFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::
 }
 
 void LUS::EndMarkerFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<IResource> resource)
+                                        std::shared_ptr<LUS::IResource> resource)
 {
     std::shared_ptr<EndMarker> endMarker = std::static_pointer_cast<EndMarker>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, endMarker);

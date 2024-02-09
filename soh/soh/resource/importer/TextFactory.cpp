@@ -3,8 +3,8 @@
 #include "spdlog/spdlog.h"
 
 
-std::shared_ptr<IResource>
-TextFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<LUS::IResource>
+TextFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<Text>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -27,8 +27,8 @@ TextFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::share
     return resource;
 }
 
-std::shared_ptr<IResource>
-TextFactory::ReadResourceXML(std::shared_ptr<ResourceInitData> initData, tinyxml2::XMLElement *reader) {
+std::shared_ptr<LUS::IResource>
+TextFactory::ReadResourceXML(std::shared_ptr<LUS::ResourceInitData> initData, tinyxml2::XMLElement *reader) {
     auto resource = std::make_shared<Text>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -49,7 +49,7 @@ TextFactory::ReadResourceXML(std::shared_ptr<ResourceInitData> initData, tinyxml
 }
 
 void LUS::TextFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<IResource> resource) {
+                                        std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<Text> text = std::static_pointer_cast<Text>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, text);
 
@@ -66,7 +66,7 @@ void LUS::TextFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
 	text->messages.push_back(entry);
     }
 }
-void TextFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<IResource> resource) {
+void TextFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<Text> txt = std::static_pointer_cast<Text>(resource);
 
     auto child = reader->FirstChildElement();

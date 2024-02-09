@@ -3,8 +3,8 @@
 #include "spdlog/spdlog.h"
 
 
-std::shared_ptr<IResource>
-AudioSequenceFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<LUS::IResource>
+AudioSequenceFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<AudioSequence>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -26,7 +26,7 @@ AudioSequenceFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, s
 }
 
 void LUS::AudioSequenceFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                   std::shared_ptr<IResource> resource) {
+                                                   std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<AudioSequence> audioSequence = std::static_pointer_cast<AudioSequence>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, audioSequence);
 

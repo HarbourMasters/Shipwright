@@ -4,8 +4,8 @@
 #include "libultraship/libultraship.h"
 
 
-std::shared_ptr<IResource>
-SetMeshFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<LUS::IResource>
+SetMeshFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetMesh>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -27,7 +27,7 @@ SetMeshFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::sh
 }
 
 void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<IResource> resource)
+                                        std::shared_ptr<LUS::IResource> resource)
 {
     std::shared_ptr<SetMesh> setMesh = std::static_pointer_cast<SetMesh>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setMesh);

@@ -3,8 +3,8 @@
 #include "spdlog/spdlog.h"
 
 
-std::shared_ptr<IResource>
-SetTimeSettingsFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<LUS::IResource>
+SetTimeSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetTimeSettings>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -25,7 +25,7 @@ SetTimeSettingsFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
 }
 
 void LUS::SetTimeSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<IResource> resource) {
+                                        std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<SetTimeSettings> setTimeSettings = std::static_pointer_cast<SetTimeSettings>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setTimeSettings);
 

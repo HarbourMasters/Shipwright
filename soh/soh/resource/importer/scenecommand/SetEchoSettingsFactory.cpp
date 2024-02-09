@@ -3,8 +3,8 @@
 #include "spdlog/spdlog.h"
 
 
-std::shared_ptr<IResource>
-SetEchoSettingsFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<LUS::IResource>
+SetEchoSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetEchoSettings>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -25,7 +25,7 @@ SetEchoSettingsFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
 }
 
 void LUS::SetEchoSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<IResource> resource)
+                                        std::shared_ptr<LUS::IResource> resource)
 {
     std::shared_ptr<SetEchoSettings> setEchoSettings = std::static_pointer_cast<SetEchoSettings>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setEchoSettings);

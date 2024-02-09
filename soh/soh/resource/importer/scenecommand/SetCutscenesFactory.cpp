@@ -4,8 +4,8 @@
 #include "spdlog/spdlog.h"
 
 
-std::shared_ptr<IResource>
-SetCutscenesFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<LUS::IResource>
+SetCutscenesFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetCutscenes>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -27,7 +27,7 @@ SetCutscenesFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, st
 }
 
 void LUS::SetCutscenesFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        		  std::shared_ptr<IResource> resource) {
+                                        		  std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<SetCutscenes> setCutscenes = std::static_pointer_cast<SetCutscenes>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setCutscenes);
 

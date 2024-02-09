@@ -28,8 +28,8 @@
 #include "soh/resource/importer/scenecommand/SetLightListFactory.h"
 #include "soh/resource/importer/scenecommand/SetMeshFactory.h"
 
-std::shared_ptr<IResource>
-SceneFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<LUS::IResource>
+SceneFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     if (SceneFactory::sceneCommandFactories.empty()) {
         SceneFactory::sceneCommandFactories[LUS::SceneCommandID::SetLightingSettings] = std::make_shared<SetLightingSettingsFactory>();
         SceneFactory::sceneCommandFactories[LUS::SceneCommandID::SetWind] = std::make_shared<SetWindSettingsFactory>();
@@ -78,7 +78,7 @@ SceneFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shar
 }
 
 void SceneFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<IResource> resource)
+                                        std::shared_ptr<LUS::IResource> resource)
 {
     std::shared_ptr<Scene> scene = std::static_pointer_cast<Scene>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, scene);

@@ -7,13 +7,13 @@
 class AudioSampleFactory : public ResourceFactory
 {
   public:
-    std::shared_ptr<IResource>
-    ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) override;
+    std::shared_ptr<LUS::IResource>
+    ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) override;
 };
 
 class AudioSampleFactoryV0 : public ResourceVersionFactory
 {
   public:
-    void ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<IResource> resource) override;
+    void ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<LUS::IResource> resource) override;
 };
 }; // namespace LUS

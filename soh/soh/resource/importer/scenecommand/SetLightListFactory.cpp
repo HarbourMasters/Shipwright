@@ -3,8 +3,8 @@
 #include "spdlog/spdlog.h"
 
 
-std::shared_ptr<IResource>
-SetLightListFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<LUS::IResource>
+SetLightListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetLightList>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -26,7 +26,7 @@ SetLightListFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, st
 }
 
 void LUS::SetLightListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        		  std::shared_ptr<IResource> resource)
+                                        		  std::shared_ptr<LUS::IResource> resource)
 {
     std::shared_ptr<SetLightList> setLightList = std::static_pointer_cast<SetLightList>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setLightList);

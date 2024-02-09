@@ -4,8 +4,8 @@
 #include <libultraship/libultraship.h>
 
 
-std::shared_ptr<IResource>
-SetPathwaysFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<LUS::IResource>
+SetPathwaysFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetPathways>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -26,7 +26,7 @@ SetPathwaysFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std
 }
 
 void LUS::SetPathwaysFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                 std::shared_ptr<IResource> resource) {
+                                                 std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<SetPathways> setPathways = std::static_pointer_cast<SetPathways>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setPathways);
 

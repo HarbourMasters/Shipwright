@@ -3,7 +3,7 @@
 #include "spdlog/spdlog.h"
 
 
-std::shared_ptr<IResource> SetSoundSettingsFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
+std::shared_ptr<LUS::IResource> SetSoundSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
                                                                 std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetSoundSettings>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
@@ -25,7 +25,7 @@ std::shared_ptr<IResource> SetSoundSettingsFactory::ReadResource(std::shared_ptr
 }
 
 void LUS::SetSoundSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<IResource> resource) {
+                                        std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<SetSoundSettings> setSoundSettings = std::static_pointer_cast<SetSoundSettings>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setSoundSettings);
 

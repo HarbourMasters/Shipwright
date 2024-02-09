@@ -4,8 +4,8 @@
 #include "libultraship/libultraship.h"
 
 
-std::shared_ptr<IResource>
-AudioSoundFontFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<LUS::IResource>
+AudioSoundFontFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<AudioSoundFont>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -27,7 +27,7 @@ AudioSoundFontFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, 
 }
 
 void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                    std::shared_ptr<IResource> resource) {
+                                                    std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<AudioSoundFont> audioSoundFont = std::static_pointer_cast<AudioSoundFont>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, audioSoundFont);
 
