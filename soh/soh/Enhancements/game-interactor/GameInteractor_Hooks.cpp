@@ -182,6 +182,12 @@ void GameInteractor_ExecuteOnSetGameLanguage() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
 }
 
+// MARK: - System
+
+void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void)) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAssetAltChange>(fn);
+}
+
 // MARK: - Pause Menu
 void GameInteractor_ExecuteOnPauseMenu() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPauseMenu>();

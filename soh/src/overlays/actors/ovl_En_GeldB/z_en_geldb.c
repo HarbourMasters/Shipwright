@@ -1568,19 +1568,19 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
             this->timer--;
             if (this->timer == 0) {
                 if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
-                    play->nextEntranceIndex = 0x1A5;
+                    play->nextEntranceIndex = ENTR_GERUDO_VALLEY_1;
                 } else if (Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO)) {
-                    play->nextEntranceIndex = 0x5F8;
+                    play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_18;
                 } else {
-                    play->nextEntranceIndex = 0x3B4;
+                    play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_17;
                 }
 
                 if (IS_RANDO) {
                     Entrance_OverrideGeurdoGuardCapture();
                 }
 
-                play->fadeTransition = 0x26;
-                play->sceneLoadFlag = 0x14;
+                play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
+                play->transitionTrigger = TRANS_TRIGGER_START;
             }
         }
     }
