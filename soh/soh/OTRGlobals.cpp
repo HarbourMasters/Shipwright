@@ -92,6 +92,7 @@ GameInteractorSail* GameInteractorSail::Instance;
 #include <libultraship/libultraship.h>
 
 // Resource Types/Factories
+#include "soh/resource/type/SohResourceType.h"
 #include "soh/resource/type/Animation.h"
 #include "soh/resource/type/AudioSample.h"
 #include "soh/resource/type/AudioSequence.h"
@@ -319,19 +320,21 @@ OTRGlobals::OTRGlobals() {
 
     SPDLOG_INFO("Starting Ship of Harkinian version {}", (char*)gBuildVersion);
 
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_Animation), std::make_shared<LUS::AnimationFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_PlayerAnimation), std::make_shared<LUS::PlayerAnimationFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_Room), std::make_shared<LUS::SceneFactory>()); // Is room scene? maybe?
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_CollisionHeader), std::make_shared<LUS::CollisionHeaderFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_Skeleton), std::make_shared<LUS::SkeletonFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_SkeletonLimb), std::make_shared<LUS::SkeletonLimbFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_Path), std::make_shared<LUS::PathFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_Cutscene), std::make_shared<LUS::CutsceneFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_Text), std::make_shared<LUS::TextFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_AudioSample), std::make_shared<LUS::AudioSampleFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_AudioSoundFont), std::make_shared<LUS::AudioSoundFontFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_AudioSequence), std::make_shared<LUS::AudioSequenceFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(static_cast<uint32_t>(LUS::ResourceType::SOH_Background), std::make_shared<LUS::BackgroundFactory>());
+    auto loader = context->GetResourceManager()->GetResourceLoader();
+    loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinaryAnimationV0>(), RESOURCE_FORMAT_BINARY, "SOH_Animation", static_cast<uint32_t>(SohResourceType::SOH_Animation), 0);
+
+    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_PlayerAnimation), std::make_shared<LUS::PlayerAnimationFactory>());
+    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_Room), std::make_shared<LUS::SceneFactory>()); // Is room scene? maybe?
+    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_CollisionHeader), std::make_shared<LUS::CollisionHeaderFactory>());
+    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_Skeleton), std::make_shared<LUS::SkeletonFactory>());
+    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_SkeletonLimb), std::make_shared<LUS::SkeletonLimbFactory>());
+    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_Path), std::make_shared<LUS::PathFactory>());
+    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_Cutscene), std::make_shared<LUS::CutsceneFactory>());
+    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_Text), std::make_shared<LUS::TextFactory>());
+    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_AudioSample), std::make_shared<LUS::AudioSampleFactory>());
+    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_AudioSoundFont), std::make_shared<LUS::AudioSoundFontFactory>());
+    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_AudioSequence), std::make_shared<LUS::AudioSequenceFactory>());
+    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_Background), std::make_shared<LUS::BackgroundFactory>());
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
