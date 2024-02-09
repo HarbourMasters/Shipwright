@@ -23,7 +23,7 @@ static void SetMessageEntry(MessageTableEntry& entry, const LUS::MessageEntry& m
 }
 
 static void OTRMessage_LoadCustom(const std::string& folderPath, MessageTableEntry*& table, size_t tableSize) {
-    auto lst = *LUS::Context::GetInstance()->GetResourceManager()->GetArchive()->ListFiles(folderPath).get();
+    auto lst = *LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(folderPath).get();
 
     for (auto& tPath : lst) {
         auto file = std::static_pointer_cast<LUS::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(tPath));
