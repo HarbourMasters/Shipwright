@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetRoomBehavior.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource>
 SetRoomBehaviorFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetRoomBehavior>(initData);
@@ -35,4 +35,4 @@ void LUS::SetRoomBehaviorFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
     setRoomBehavior->roomBehavior.gameplayFlags2 = reader->ReadInt32();
 }
 
-} // namespace LUS
+

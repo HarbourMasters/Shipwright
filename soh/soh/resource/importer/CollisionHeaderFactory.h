@@ -3,7 +3,7 @@
 #include "Resource.h"
 #include "ResourceFactory.h"
 
-namespace LUS {
+
 class CollisionHeaderFactory : public ResourceFactory {
   public:
     std::shared_ptr<IResource>

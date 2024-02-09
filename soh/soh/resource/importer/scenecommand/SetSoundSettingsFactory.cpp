@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetSoundSettings.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource> SetSoundSettingsFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
                                                                 std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetSoundSettings>(initData);
@@ -36,4 +36,4 @@ void LUS::SetSoundSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
     setSoundSettings->settings.seqId = reader->ReadInt8();
 }
 
-} // namespace LUS
+

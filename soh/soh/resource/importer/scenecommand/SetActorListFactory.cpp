@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetActorList.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource>
 SetActorListFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetActorList>(initData);
@@ -50,4 +50,4 @@ void LUS::SetActorListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
     }
 }
 
-} // namespace LUS
+

@@ -2,7 +2,7 @@
 #include "soh/resource/type/Path.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource>
 PathFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<Path>(initData);
@@ -53,4 +53,4 @@ void LUS::PathFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
         path->pathData.push_back(pathDataEntry);
     }
 }
-} // namespace LUS
+

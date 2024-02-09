@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetObjectList.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource>
 SetObjectListFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetObjectList>(initData);
@@ -39,4 +39,4 @@ void LUS::SetObjectListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
     }
 }
 
-} // namespace LUS
+

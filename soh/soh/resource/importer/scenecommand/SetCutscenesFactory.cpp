@@ -3,7 +3,7 @@
 #include <libultraship/libultraship.h>
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource>
 SetCutscenesFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetCutscenes>(initData);
@@ -37,4 +37,4 @@ void LUS::SetCutscenesFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
     setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCutscenes->fileName.c_str()));
 }
 
-} // namespace LUS
+

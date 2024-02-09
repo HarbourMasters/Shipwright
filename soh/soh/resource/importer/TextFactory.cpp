@@ -2,7 +2,7 @@
 #include "soh/resource/type/Text.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource>
 TextFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<Text>(initData);
@@ -90,4 +90,4 @@ void TextFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<I
     }
 }
 
-} // namespace LUS
+

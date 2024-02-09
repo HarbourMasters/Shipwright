@@ -5,7 +5,7 @@
 #include "ResourceFactory.h"
 #include "soh/resource/type/scenecommand/SceneCommand.h"
 
-namespace LUS {
+
 class SceneCommandFactory : public ResourceFactory {};
 
 class SceneCommandVersionFactory : public ResourceVersionFactory {

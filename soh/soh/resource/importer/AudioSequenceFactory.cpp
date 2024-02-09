@@ -2,7 +2,7 @@
 #include "soh/resource/type/AudioSequence.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource>
 AudioSequenceFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<AudioSequence>(initData);
@@ -49,4 +49,4 @@ void LUS::AudioSequenceFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
         audioSequence->sequence.fonts[i] = reader->ReadUByte();
     }
 }
-} // namespace LUS
+

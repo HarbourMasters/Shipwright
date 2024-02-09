@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetCsCamera.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource>
 SetCsCameraFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetCsCamera>(initData);
@@ -37,4 +37,4 @@ void LUS::SetCsCameraFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> re
     // OTRTODO: FINISH!
 }
 
-} // namespace LUS
+

@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetSpecialObjects.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource> SetSpecialObjectsFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
                                                                  std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetSpecialObjects>(initData);
@@ -35,4 +35,4 @@ void LUS::SetSpecialObjectsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRead
     setSpecialObjects->specialObjects.globalObject = reader->ReadInt16();
 }
 
-} // namespace LUS
+

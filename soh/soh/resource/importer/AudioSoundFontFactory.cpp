@@ -3,7 +3,7 @@
 #include "spdlog/spdlog.h"
 #include "libultraship/libultraship.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource>
 AudioSoundFontFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<AudioSoundFont>(initData);
@@ -187,4 +187,4 @@ void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
     }
     audioSoundFont->soundFont.soundEffects = audioSoundFont->soundEffects.data();
 }
-} // namespace LUS
+

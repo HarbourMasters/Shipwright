@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/EndMarker.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource>
 EndMarkerFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<EndMarker>(initData);
@@ -35,4 +35,4 @@ void LUS::EndMarkerFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> read
     // This has no data.
 }
 
-} // namespace LUS
+

@@ -3,7 +3,7 @@
 #include "Resource.h"
 #include "ResourceFactory.h"
 
-namespace LUS {
+
 class PathFactory : public ResourceFactory
 {
   public:

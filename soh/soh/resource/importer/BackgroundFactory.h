@@ -3,7 +3,7 @@
 #include "resource/Resource.h"
 #include "resource/ResourceFactory.h"
 
-namespace LUS {
+
 class BackgroundFactory : public ResourceFactory {
   public:
     std::shared_ptr<IResource>

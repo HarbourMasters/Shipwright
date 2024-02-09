@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetLightList.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource>
 SetLightListFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetLightList>(initData);
@@ -55,4 +55,4 @@ void LUS::SetLightListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
     }
 }
 
-} // namespace LUS
+

@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetSkyboxModifier.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource> SetSkyboxModifierFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
                                                                  std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetSkyboxModifier>(initData);
@@ -35,4 +35,4 @@ void LUS::SetSkyboxModifierFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRead
     setSkyboxModifier->modifier.sunMoonDisabled = reader->ReadInt8();
 }
 
-} // namespace LUS
+

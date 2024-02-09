@@ -2,7 +2,7 @@
 #include "soh/resource/type/AudioSample.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource>
 AudioSampleFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<AudioSample>(initData);
@@ -66,7 +66,7 @@ void LUS::AudioSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> re
     audioSample->book.book = audioSample->bookData.data();
     audioSample->sample.book = &audioSample->book;
 }
-} // namespace LUS
+
 
 
 /*

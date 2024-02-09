@@ -3,7 +3,7 @@
 #include "Resource.h"
 #include "ResourceFactory.h"
 
-namespace LUS {
+
 class AudioSequenceFactory : public ResourceFactory
 {
   public:

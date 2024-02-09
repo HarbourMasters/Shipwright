@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetCameraSettings.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource> SetCameraSettingsFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
                                                                  std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetCameraSettings>(initData);
@@ -36,4 +36,4 @@ void LUS::SetCameraSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRead
     setCameraSettings->settings.worldMapArea = reader->ReadInt32();
 }
 
-} // namespace LUS
+

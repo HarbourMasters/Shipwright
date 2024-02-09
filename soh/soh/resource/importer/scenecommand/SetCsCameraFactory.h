@@ -2,7 +2,7 @@
 
 #include "soh/resource/importer/scenecommand/SceneCommandFactory.h"
 
-namespace LUS {
+
 class SetCsCameraFactory : public SceneCommandFactory {
   public:
     std::shared_ptr<IResource>

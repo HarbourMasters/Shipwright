@@ -2,7 +2,7 @@
 #include "soh/resource/type/Cutscene.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource>
 CutsceneFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<Cutscene>(initData);
@@ -468,4 +468,4 @@ void LUS::CutsceneFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
         }
     }
 }
-} // namespace LUS
+

@@ -28,8 +28,6 @@
 #include "soh/resource/importer/scenecommand/SetLightListFactory.h"
 #include "soh/resource/importer/scenecommand/SetMeshFactory.h"
 
-namespace LUS {
-
 std::shared_ptr<IResource>
 SceneFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     if (SceneFactory::sceneCommandFactories.empty()) {
@@ -122,5 +120,3 @@ std::shared_ptr<ISceneCommand> SceneFactoryV0::ParseSceneCommand(std::shared_ptr
 
     return result;
 }
-
-} // namespace LUS

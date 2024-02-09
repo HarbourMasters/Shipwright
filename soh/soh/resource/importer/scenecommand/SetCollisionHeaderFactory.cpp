@@ -3,7 +3,7 @@
 #include "libultraship/libultraship.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource> SetCollisionHeaderFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
                                                                   std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetCollisionHeader>(initData);
@@ -36,4 +36,4 @@ void LUS::SetCollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRea
     setCollisionHeader->collisionHeader = std::static_pointer_cast<CollisionHeader>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCollisionHeader->fileName.c_str()));
 }
 
-} // namespace LUS
+

@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetEntranceList.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource>
 SetEntranceListFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetEntranceList>(initData);
@@ -43,4 +43,4 @@ void LUS::SetEntranceListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
     }
 }
 
-} // namespace LUS
+

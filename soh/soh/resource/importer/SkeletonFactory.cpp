@@ -3,7 +3,7 @@
 #include <spdlog/spdlog.h>
 #include <libultraship/libultraship.h>
 
-namespace LUS {
+
 std::shared_ptr<IResource>
 SkeletonFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<Skeleton>(initData);
@@ -159,4 +159,4 @@ void SkeletonFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_p
     skel->skeletonData.skeletonHeader.skeletonType = (uint8_t)skel->type;
 }
 
-} // namespace LUS
+

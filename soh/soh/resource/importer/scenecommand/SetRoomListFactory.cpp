@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetRoomList.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
+
 std::shared_ptr<IResource>
 SetRoomListFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetRoomList>(initData);
@@ -47,4 +47,4 @@ void LUS::SetRoomListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> re
     }
 }
 
-} // namespace LUS
+
