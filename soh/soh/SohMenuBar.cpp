@@ -201,8 +201,7 @@ void DrawSettingsMenu() {
 
             static std::unordered_map<LUS::AudioBackend, const char*> audioBackendNames = {
                 { LUS::AudioBackend::WASAPI, "Windows Audio Session API" },
-                { LUS::AudioBackend::PULSE, "PulseAudio" },
-                { LUS::AudioBackend::SDL, "SDL" },
+                { LUS::AudioBackend::SDL, "SDL" }
             };
 
             ImGui::Text("Audio API (Needs reload)");
