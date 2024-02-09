@@ -25,6 +25,7 @@
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
+#include "objects/object_custom/object_custom.h"
 
 extern "C" {
 #include <z64.h>
@@ -35,7 +36,9 @@ extern "C" {
 #include "functions.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
-
+uint8_t ResourceMgr_FileAltExists(const char* resName);
+uint8_t ResourceGetIsCustomByName(const char* name);
+uint8_t Player_IsCustomLinkModel();
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
@@ -690,7 +693,7 @@ void RegisterMirrorModeHandler() {
 }
 
 void UpdatePatchHand() {
-    if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_CHILD) {
+    /*if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_CHILD && (!Player_IsCustomLinkModel())) {
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer2", 93, gsSPEndDisplayList());
         ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot1", 84, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
@@ -728,13 +731,202 @@ void UpdatePatchHand() {
         ResourceMgr_UnpatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot");
         ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang");
         ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield");
-    }
+    }*/
 }
 
 void RegisterPatchHandHandler() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) { 
         UpdatePatchHand(); 
     });
+}
+
+void UpdatePatchCustomDlists() {
+    if (CVarGetInteger("gEnhancements.CustomDlists", 0)) {
+        if (ResourceGetIsCustomByName(gLinkMasterSwordDL)) {
+            ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist1", 0, gsSPDisplayListOTRFilePath(gLinkMasterSwordDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist2", 1, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist3", 2, gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist1");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist2");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist3");
+        }
+        if (ResourceGetIsCustomByName(gLinkHylianShieldDL)) {
+            ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist4", 0, gsSPDisplayListOTRFilePath(gLinkHylianShieldDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist5", 1, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist6", 2, gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist4");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist5");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist6");
+        }
+        if (ResourceGetIsCustomByName(gLinkMasterSwordSheathDL)) {
+            ResourceMgr_PatchGfxByName(gLinkAdultSheathNearDL, "customDlist7", 0, gsSPDisplayListOTRFilePath(gLinkMasterSwordSheathDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultSheathNearDL, "customDlist8", 1, gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkAdultSheathNearDL, "customDlist7");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultSheathNearDL, "customDlist8");
+        }
+        if (ResourceGetIsCustomByName(gLinkHylianShieldOnBackDL) && ResourceGetIsCustomByName(gLinkMasterSwordInSheathDL)) {
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist9", 0, gsSPDisplayListOTRFilePath(gLinkHylianShieldOnBackDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist10", 1, gsSPDisplayListOTRFilePath(gLinkMasterSwordInSheathDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist11", 2, gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist9");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist10");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist11");
+        }
+        if (ResourceGetIsCustomByName(gLinkMasterSwordInSheathDL)) {
+            ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist12", 0, gsSPDisplayListOTRFilePath(gLinkMasterSwordInSheathDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist13", 1, gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist12");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist13");
+        }
+        if (ResourceGetIsCustomByName(gLinkHylianShieldOnBackDL) && ResourceGetIsCustomByName(gLinkMasterSwordSheathDL)) {
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist14", 0, gsSPDisplayListOTRFilePath(gLinkMasterSwordSheathDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist15", 1, gsSPDisplayListOTRFilePath(gLinkHylianShieldOnBackDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist16", 2, gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist14");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist15");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist16");
+        }
+        if (ResourceGetIsCustomByName(gLinkMirrorShieldDL)) {
+            ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist20", 0, gsSPDisplayListOTRFilePath(gLinkMirrorShieldDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist21", 1, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist22", 2, gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist20");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist21");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist22");
+        }
+        if (ResourceGetIsCustomByName(gLinkMirrorShieldOnBackDL) && ResourceGetIsCustomByName(gLinkMasterSwordInSheathDL)) {
+            ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist23", 0, gsSPDisplayListOTRFilePath(gLinkMirrorShieldOnBackDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist24", 1, gsSPDisplayListOTRFilePath(gLinkMasterSwordInSheathDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist25", 2, gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist23");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist24");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist25");
+        }
+        if (ResourceGetIsCustomByName(gLinkLongswordDL)) {
+            ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist17", 0, gsSPDisplayListOTRFilePath(gLinkLongswordDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist18", 1, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
+            ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist19", 2, gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist17");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist18");
+            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist19");
+        }
+        if (ResourceGetIsCustomByName(gLinkKokiriSwordDL)) {
+            ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist41", 0, gsSPDisplayListOTRFilePath(gLinkKokiriSwordDL));
+            ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist42", 1, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+            ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist43", 2, gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist41");
+            ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist42");
+            ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist43");
+        }
+        if (ResourceGetIsCustomByName(gLinkDekuShieldDL)) {
+            ResourceMgr_PatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist44", 0, gsSPDisplayListOTRFilePath(gLinkDekuShieldDL));
+            ResourceMgr_PatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist45", 1, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
+            ResourceMgr_PatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist46", 2, gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist44");
+            ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist45");
+            ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist46");
+        }
+        if (ResourceGetIsCustomByName(gLinkKokiriSwordSheathDL)) {
+            ResourceMgr_PatchGfxByName(gLinkChildSheathNearDL, "customDlist47", 0, gsSPDisplayListOTRFilePath(gLinkKokiriSwordSheathDL));
+            ResourceMgr_PatchGfxByName(gLinkChildSheathNearDL, "customDlist48", 1, gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkChildSheathNearDL, "customDlist47");
+            ResourceMgr_UnpatchGfxByName(gLinkChildSheathNearDL, "customDlist48");
+        }
+        if (ResourceGetIsCustomByName(gLinkKokiriSwordInSheathDL)) {
+            ResourceMgr_PatchGfxByName(gLinkChildSwordAndSheathNearDL, "customDlist55", 0, gsSPDisplayListOTRFilePath(gLinkKokiriSwordInSheathDL));
+            ResourceMgr_PatchGfxByName(gLinkChildSwordAndSheathNearDL, "customDlist56", 1, gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkChildSwordAndSheathNearDL, "customDlist55");
+            ResourceMgr_UnpatchGfxByName(gLinkChildSwordAndSheathNearDL, "customDlist56");
+        }
+        if (ResourceGetIsCustomByName(gLinkKokiriSwordInSheathDL) && ResourceGetIsCustomByName(gLinkDekuShieldOnBackDL)) {
+            ResourceMgr_PatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist49", 0, gsSPDisplayListOTRFilePath(gLinkDekuShieldOnBackDL));
+            ResourceMgr_PatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist50", 1, gsSPDisplayListOTRFilePath(gLinkKokiriSwordInSheathDL));
+            ResourceMgr_PatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist51", 2, gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist49");
+            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist50");
+            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist51");
+        }
+        if (ResourceGetIsCustomByName(gLinkDekuShieldOnBackDL) && ResourceGetIsCustomByName(gLinkKokiriSwordSheathDL)) {
+            ResourceMgr_PatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist52", 0, gsSPDisplayListOTRFilePath(gLinkKokiriSwordSheathDL));
+            ResourceMgr_PatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist53", 1, gsSPDisplayListOTRFilePath(gLinkDekuShieldOnBackDL));
+            ResourceMgr_PatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist54", 2, gsSPEndDisplayList());
+        } else {
+            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist52");
+            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist53");
+            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist54");
+        }
+        if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS) {
+            if (ResourceGetIsCustomByName(gLinkLongswordSheathDL)) {
+                ResourceMgr_PatchGfxByName(gLinkAdultSheathNearDL, "customDlist7", 0, gsSPDisplayListOTRFilePath(gLinkLongswordSheathDL));
+                ResourceMgr_PatchGfxByName(gLinkAdultSheathNearDL, "customDlist8", 1, gsSPEndDisplayList());
+            } else {
+                ResourceMgr_UnpatchGfxByName(gLinkAdultSheathNearDL, "customDlist7");
+                ResourceMgr_UnpatchGfxByName(gLinkAdultSheathNearDL, "customDlist8");
+            }
+            if (ResourceGetIsCustomByName(gLinkLongswordInSheathDL) && ResourceGetIsCustomByName(gLinkHylianShieldOnBackDL)) {
+                ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist9", 0, gsSPDisplayListOTRFilePath(gLinkHylianShieldOnBackDL));
+                ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist10", 1, gsSPDisplayListOTRFilePath(gLinkLongswordInSheathDL));
+                ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist11", 2, gsSPEndDisplayList());
+            } else {
+                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist9");
+                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist10");
+                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist11");
+            }
+            if (ResourceGetIsCustomByName(gLinkLongswordInSheathDL)) {
+                ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist12", 0, gsSPDisplayListOTRFilePath(gLinkLongswordInSheathDL));
+                ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist13", 1, gsSPEndDisplayList());
+            } else {
+                ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist12");
+                ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist13");
+            }
+            if (ResourceGetIsCustomByName(gLinkLongswordSheathDL) && ResourceGetIsCustomByName(gLinkHylianShieldOnBackDL)) {
+                ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist14", 0, gsSPDisplayListOTRFilePath(gLinkLongswordSheathDL));
+                ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist15", 1, gsSPDisplayListOTRFilePath(gLinkHylianShieldOnBackDL));
+                ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist16", 2, gsSPEndDisplayList());
+            } else {
+                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist14");
+                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist15");
+                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist16");
+            }
+            if (ResourceGetIsCustomByName(gLinkLongswordInSheathDL) && ResourceGetIsCustomByName(gLinkMirrorShieldOnBackDL)) {
+                ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist33", 0, gsSPDisplayListOTRFilePath(gLinkMirrorShieldOnBackDL));
+                ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist34", 1, gsSPDisplayListOTRFilePath(gLinkLongswordInSheathDL));
+                ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist35", 2, gsSPEndDisplayList());
+            } else {
+                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist33");
+                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist34");
+                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist35");
+            }
+            if (ResourceGetIsCustomByName(gLinkLongswordSheathDL) && ResourceGetIsCustomByName(gLinkMirrorShieldOnBackDL)) {
+                ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist38", 0, gsSPDisplayListOTRFilePath(gLinkLongswordSheathDL));
+                ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist39", 1, gsSPDisplayListOTRFilePath(gLinkMirrorShieldOnBackDL));
+                ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist40", 2, gsSPEndDisplayList());
+            } else {
+                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist38");
+                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist39");
+                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist40");
+            }
+        }
+    }
+}
+
+void RegisterPatchCustomDlistsHandler() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() { 
+        UpdatePatchCustomDlists(); });
 }
 
 void RegisterResetNaviTimer() {
@@ -1340,4 +1532,5 @@ void InitMods() {
     NameTag_RegisterHooks();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
+    RegisterPatchCustomDlistsHandler();
 }

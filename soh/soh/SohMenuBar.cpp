@@ -1114,6 +1114,9 @@ void DrawEnhancementsMenu() {
 				UIWidgets::PaddedEnhancementCheckbox("Scale Adult Equipment as Child", "gEnhancements.ScaleAdultEquimentAsChild", true, false);
 				UIWidgets::Tooltip("Scales all of the Adult Equipment, as well and moving some a bit, to fit on Child Link Better. May not work properly with some mods.");
 			}
+            if (UIWidgets::PaddedEnhancementCheckbox("Show Custom Equipment", "gEnhancements.CustomDlists", true, false)) {
+                UpdatePatchCustomDlists();
+            }
             UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gLowResMode", true, false);
             UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
             UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", "gDrawLineupTick", true, false);
