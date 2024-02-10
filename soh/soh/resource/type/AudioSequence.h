@@ -5,7 +5,7 @@
 #include "Resource.h"
 #include <libultraship/libultra/types.h>
 
-namespace LUS {
+namespace SOH {
 
 typedef struct {
     char* seqData;
@@ -17,7 +17,7 @@ typedef struct {
     uint8_t fonts[16];
 } Sequence;
 
-class AudioSequence : public Resource<Sequence> {
+class AudioSequence : public LUS::Resource<Sequence> {
 public:
     using Resource::Resource;
 

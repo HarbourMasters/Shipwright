@@ -3,6 +3,7 @@
 #include "Resource.h"
 #include <libultraship/libultra/types.h>
 
+namespace SOH {
 enum class AnimationType {
     Normal = 0,
     Link = 1,
@@ -83,3 +84,4 @@ public:
     std::vector<TransformData> transformDataArr;
     std::vector<int16_t> copyValuesArr;
 };
+}; // namespace LUS

@@ -6,7 +6,7 @@
 #include "Resource.h"
 #include <libultraship/libultra/types.h>
 
-namespace LUS {
+namespace SOH {
 
 enum class SceneCommandID : uint8_t {
     SetStartPositionList = 0x00,

@@ -4,7 +4,7 @@
 #include "libultraship/libultra.h"
 #include "z64math.h"
 
-namespace LUS {
+namespace SOH {
 enum class LimbType {
     Invalid,
     Standard,
@@ -97,7 +97,7 @@ union SkeletonLimbData {
   SkinLimb skinLimb;
 };
 
-class SkeletonLimb : public Resource<SkeletonLimbData> {
+class SkeletonLimb : public LUS::Resource<SkeletonLimbData> {
 public:
   using Resource::Resource;
 
@@ -131,4 +131,4 @@ public:
     std::vector<std::vector<SkinVertex>> skinLimbModifVertexArrays;
     std::vector<std::vector<SkinTransformation>> skinLimbModifTransformationArrays;
 };
-} // namespace LUS
+} // namespace SOH

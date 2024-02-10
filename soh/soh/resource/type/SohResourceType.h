@@ -1,6 +1,7 @@
 #pragma once
 
-enum class SohResourceType {
+namespace SOH {
+enum class ResourceType {
     SOH_Animation = 0x4F414E4D,       // OANM
     SOH_PlayerAnimation = 0x4F50414D, // OPAM
     SOH_Room = 0x4F524F4D,            // OROM
@@ -17,3 +18,4 @@ enum class SohResourceType {
     SOH_Background = 0x4F424749,      // OBGI
     SOH_SceneCommand = 0x4F52434D,    // ORCM
 };
+} // namespace SOH

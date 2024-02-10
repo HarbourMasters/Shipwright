@@ -2,8 +2,8 @@
 
 #include "resource/Resource.h"
 
-namespace LUS {
-class Background : public Resource<uint8_t> {
+namespace SOH {
+class Background : public LUS::Resource<uint8_t> {
   public:
     using Resource::Resource;
 

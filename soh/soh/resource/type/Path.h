@@ -6,14 +6,14 @@
 #include <libultraship/libultra/types.h>
 #include "z64math.h"
 
-namespace LUS {
+namespace SOH {
 
 typedef struct {
     /* 0x00 */ u8 count; // number of points in the path
     /* 0x04 */ Vec3s* points; // Segment Address to the array of points
 } PathData; // size = 0x8
 
-class Path : public Resource<PathData> {
+class Path : public LUS::Resource<PathData> {
 public:
   using Resource::Resource;
 

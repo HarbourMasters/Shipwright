@@ -120,7 +120,7 @@ extern "C" void OTRMessage_Init()
 
     if (sStaffMessageEntryTablePtr == NULL) {
         auto file2 =
-            std::static_pointer_cast<LUS::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(
+            std::static_pointer_cast<SOH::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(
                 "text/staff_message_data_static/staff_message_data_static"));
         // OTRTODO: Should not be malloc'ing here. It's fine for now since we check that the message table is already null.
         sStaffMessageEntryTablePtr = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * file2->messages.size());

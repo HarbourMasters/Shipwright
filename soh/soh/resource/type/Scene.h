@@ -7,9 +7,9 @@
 #include "scenecommand/SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace LUS {
+namespace SOH {
 
-class Scene : public Resource<void> {
+class Scene : public LUS::Resource<void> {
 public:
   using Resource::Resource;
 

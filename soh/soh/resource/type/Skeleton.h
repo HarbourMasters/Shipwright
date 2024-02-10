@@ -5,7 +5,7 @@
 #include "SkeletonLimb.h"
 #include <z64animation.h>
 
-namespace LUS {
+namespace SOH {
 
 enum class SkeletonType {
     Normal,
@@ -50,7 +50,7 @@ union SkeletonData {
     SkelCurveLimbList skelCurveLimbList;
 };
 
-class Skeleton : public Resource<SkeletonData> {
+class Skeleton : public LUS::Resource<SkeletonData> {
   public:
     using Resource::Resource;
 
@@ -91,4 +91,4 @@ class SkeletonPatcher {
 };
 
 
-} // namespace LUS
+} // namespace SOH

@@ -5,7 +5,7 @@
 #include "Resource.h"
 #include <libultraship/libultra/types.h>
 
-namespace LUS {
+namespace SOH {
     typedef struct {
         /* 0x00 */ uintptr_t start;
         /* 0x04 */ uintptr_t end;
@@ -39,7 +39,7 @@ namespace LUS {
         s32 sampleRate;           // For wav samples only...
     } Sample; // size = 0x10
 
-    class AudioSample : public Resource<Sample> {
+    class AudioSample : public LUS::Resource<Sample> {
         public:
             using Resource::Resource;
 
