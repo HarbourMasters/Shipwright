@@ -324,8 +324,9 @@ OTRGlobals::OTRGlobals() {
     loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinaryAnimationV0>(), RESOURCE_FORMAT_BINARY, "SOH_Animation", static_cast<uint32_t>(SohResourceType::SOH_Animation), 0);
     loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinaryPlayerAnimationV0>(), RESOURCE_FORMAT_BINARY, "SOH_PlayerAnimation", static_cast<uint32_t>(SohResourceType::SOH_PlayerAnimation), 0);
     loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinarySceneV0>(), RESOURCE_FORMAT_BINARY, "SOH_Room", static_cast<uint32_t>(SohResourceType::SOH_Room), 0); // Is room scene? maybe?
+    loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinaryCollisionHeaderV0>(), RESOURCE_FORMAT_BINARY, "SOH_CollisionHeader", static_cast<uint32_t>(SohResourceType::SOH_CollisionHeader), 0);
+    loader->RegisterResourceFactory(std::make_shared<ResourceFactoryXMLCollisionHeaderV0>(), RESOURCE_FORMAT_XML, "SOH_CollisionHeader", static_cast<uint32_t>(SohResourceType::SOH_CollisionHeader), 0);
 
-    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_CollisionHeader), std::make_shared<LUS::CollisionHeaderFactory>());
     loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_Skeleton), std::make_shared<LUS::SkeletonFactory>());
     loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_SkeletonLimb), std::make_shared<LUS::SkeletonLimbFactory>());
     loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_Path), std::make_shared<LUS::PathFactory>());

@@ -3,7 +3,7 @@
 #include "spdlog/spdlog.h"
 
 std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAnimationV0::ReadResource(std::shared_ptr<LUS::File> file) {
-    if (!FileHasValidFormatAndReader()) {
+    if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
 
