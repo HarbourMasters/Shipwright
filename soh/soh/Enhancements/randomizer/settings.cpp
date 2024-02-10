@@ -126,6 +126,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_KEYSANITY] = Option::U8("Small Keys", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, "gRandomizeKeysanity", mOptionDescriptions[RSK_KEYSANITY], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     mOptions[RSK_GERUDO_KEYS] = Option::U8("Gerudo Fortress Keys", {"Vanilla", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, "gRandomizeGerudoKeys", mOptionDescriptions[RSK_GERUDO_KEYS], WidgetType::Combobox, RO_GERUDO_KEYS_VANILLA);
     mOptions[RSK_BOSS_KEYSANITY] = Option::U8("Boss Keys", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, "gRandomizeBossKeysanity", mOptionDescriptions[RSK_BOSS_KEYSANITY], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
+    mOptions[RSK_SHUFFLE_SILVER_RUPEES] = Option::U8("Silver Rupees", {"Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, "gRandomizeSilverRupeeShuffle", mOptionDescriptions[RSK_SHUFFLE_SILVER_RUPEES], WidgetType::Combobox, RO_SILVER_SHUFFLE_VANILLA);
     mOptions[RSK_GANONS_BOSS_KEY] = Option::U8("Ganon's Boss Key", {"Vanilla", "Own Dungeon", "Start With", "Any Dungeon", "Overworld", "Anywhere", "LACS-Vanilla", "LACS-Stones", "LACS-Medallions", "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens", "Triforce Hunt"}, OptionCategory::Setting, "gRandomizeShuffleGanonBossKey", mOptionDescriptions[RSK_GANONS_BOSS_KEY], WidgetType::Combobox, RO_GANON_BOSS_KEY_VANILLA);
     mOptions[RSK_LACS_STONE_COUNT] = Option::U8("Stone Count", {NumOpts(0, 4)}, OptionCategory::Setting, "gRandomizeLacsStoneCount", "", WidgetType::Slider, 3, true);
     mOptions[RSK_LACS_MEDALLION_COUNT] = Option::U8("Medallion Count", {NumOpts(0, 7)}, OptionCategory::Setting, "gRandomizeLacsMedallionCount", "", WidgetType::Slider, 6, true);
@@ -684,6 +685,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KEYSANITY],
         &mOptions[RSK_GERUDO_KEYS],
         &mOptions[RSK_BOSS_KEYSANITY],
+        &mOptions[RSK_SHUFFLE_SILVER_RUPEES],
         &mOptions[RSK_GANONS_BOSS_KEY],
         &mOptions[RSK_LACS_STONE_COUNT],
         &mOptions[RSK_LACS_MEDALLION_COUNT],
@@ -889,6 +891,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_KEYSANITY],
         &mOptions[RSK_GERUDO_KEYS],
         &mOptions[RSK_BOSS_KEYSANITY],
+        &mOptions[RSK_SHUFFLE_SILVER_RUPEES],
         &mOptions[RSK_GANONS_BOSS_KEY],
         &mOptions[RSK_LACS_STONE_COUNT],
         &mOptions[RSK_LACS_MEDALLION_COUNT],

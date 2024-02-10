@@ -393,6 +393,15 @@ void Settings::CreateOptionDescriptions() {
                                               "Overworld - Boss Keys can only appear outside of dungeons.\n"
                                               "\n"
                                               "Anywhere - Boss Keys can appear anywhere in the world.";
+    mOptionDescriptions[RSK_SHUFFLE_SILVER_RUPEES] = "Vanilla - Silver Rupees will appear in their vanilla locations.\n"
+                                                     "\n"
+                                                     "Own dungeon - Silver Rupees can only appear in their respective dungeon.\n"
+                                                     "\n"
+                                                     "Any dungeon - Silver Rupees can only appear inside of any dungeon.\n"
+                                                     "\n"
+                                                     "Overworld - Silver Rupees can only appear outside of dungeons.\n"
+                                                     "\n"
+                                                     "Anywhere - Silver Rupees can appear anywhere in the world.";
     mOptionDescriptions[RSK_GANONS_BOSS_KEY] =
         "Vanilla - Ganon's Boss Key will appear in the vanilla location.\n"
         "\n"

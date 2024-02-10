@@ -3661,6 +3661,7 @@ typedef enum {
     RSK_FISHSANITY_POND_COUNT,
     RSK_FISHSANITY_AGE_SPLIT,
     RSK_SHUFFLE_FISHING_POLE,
+    RSK_SHUFFLE_SILVER_RUPEES,
     RSK_MAX
 } RandomizerSettingKey;
 
@@ -3809,6 +3810,16 @@ typedef enum {
     RO_DUNGEON_ITEM_LOC_OVERWORLD,
     RO_DUNGEON_ITEM_LOC_ANYWHERE,
 } RandoOptionDungeonItemLocation;
+
+// Silver Rupees (vanilla, own dungeon, any dungeon, overworld,
+// anywhere
+typedef enum {
+    RO_SILVER_SHUFFLE_VANILLA,
+    RO_SILVER_SHUFFLE_OWN_DUNGEON,
+    RO_SILVER_SHUFFLE_ANY_DUNGEON,
+    RO_SILVER_SHUFFLE_OVERWORLD,
+    RO_SILVER_SHUFFLE_ANYWHERE,
+} RandoOptionSilverRupeeLocation;
 
 //Dungeon reward settings
 typedef enum {
