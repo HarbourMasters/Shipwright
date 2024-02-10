@@ -7887,7 +7887,7 @@ s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags) {
             }
         }
 
-        // Clear free camera if an action is performed that would move the camera (targeting, first person, talking)
+        // Clear free look if an action is performed that would move the camera (targeting, first person, talking)
         if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1 &&
             ((mode >= CAM_MODE_TARGET && mode <= CAM_MODE_BATTLE) ||
              (mode >= CAM_MODE_FIRSTPERSON && mode <= CAM_MODE_CLIMBZ) || mode == CAM_MODE_HANGZ ||
@@ -7933,7 +7933,8 @@ s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags) {
         return -5;
     }
 
-    if (setting == CAM_SET_NONE || setting >= CAM_SET_MAX) {
+    //modified from "==" to "<=" to not crash when "setting" is a negative value
+    if (setting <= CAM_SET_NONE || setting >= CAM_SET_MAX) {
         osSyncPrintf(VT_COL(RED, WHITE) "camera: error: illegal camera set (%d) !!!!\n" VT_RST, setting);
         return -99;
     }
