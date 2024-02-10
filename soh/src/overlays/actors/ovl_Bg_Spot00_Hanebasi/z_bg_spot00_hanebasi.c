@@ -268,7 +268,7 @@ void BgSpot00Hanebasi_DrawTorches(Actor* thisx, PlayState* play2) {
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     // #region SOH [Enhancement]
-    if (CVarGetInteger("gEnhancements.gBridgeOpenAtNight", 0)) {
+    if (CVarGetInteger("gEnhancements.BridgeOpenAtNight", 0)) {
         if (gSaveContext.sceneSetupIndex >= 4) {
             sTorchFlameScale = 0.008f;
         } else {
@@ -341,7 +341,7 @@ void BgSpot00Hanebasi_Draw(Actor* thisx, PlayState* play) {
 
         if (gSaveContext.sceneSetupIndex != 12) {
             // #region SOH [Enhancement]
-            if (CVarGetInteger("gEnhancements.gBridgeOpenAtNight", 0)) {
+            if (CVarGetInteger("gEnhancements.BridgeOpenAtNight", 0)) {
                 if ((gSaveContext.sceneSetupIndex >= 4) ||
                     (!LINK_IS_ADULT && (gSaveContext.dayTime < 18440 || gSaveContext.dayTime > 50523))) {
                     BgSpot00Hanebasi_DrawTorches(thisx, play);

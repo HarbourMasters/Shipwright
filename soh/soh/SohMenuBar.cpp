@@ -589,7 +589,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Skip the \"Game saved.\" confirmation screen");
                 UIWidgets::PaddedEnhancementCheckbox("Bridge Open At Night", "gEnhancements.BridgeOpenAtNight", true, false);
                 UIWidgets::Tooltip("Makes the bridge to Hyrule Market stay open at night.");
-                const bool bBridgeOpenAtNightEnabled = CVarGetInteger("gEnhancements.gBridgeOpenAtNight", 0);
+                const bool bBridgeOpenAtNightEnabled = CVarGetInteger("gEnhancements.BridgeOpenAtNight", 0);
                 UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", "gMarketSneak", true, false, bBridgeOpenAtNightEnabled, "Forced enabled when Bridge Open At Night is enabled");
                 UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking "
                 "to the guard next to the gate.");
