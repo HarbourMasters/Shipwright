@@ -6,6 +6,6 @@ namespace SOH {
 class SetActorListFactory : public SceneCommandFactoryBinaryV0 {
   public:
     std::shared_ptr<LUS::IResource>
-    ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader);
+    ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) override;
 };
 } // namespace SOH
