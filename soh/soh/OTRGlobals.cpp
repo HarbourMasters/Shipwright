@@ -337,8 +337,7 @@ OTRGlobals::OTRGlobals() {
     loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinaryAudioSampleV0>(), RESOURCE_FORMAT_BINARY, "SOH_AudioSample", static_cast<uint32_t>(SohResourceType::SOH_AudioSample), 0);
     loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinaryAudioSoundFontV0>(), RESOURCE_FORMAT_BINARY, "SOH_AudioSoundFont", static_cast<uint32_t>(SohResourceType::SOH_AudioSoundFont), 0);
     loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinaryAudioSequenceV0>(), RESOURCE_FORMAT_BINARY, "SOH_AudioSequence", static_cast<uint32_t>(SohResourceType::SOH_AudioSequence), 0);
-
-    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_Background), std::make_shared<LUS::BackgroundFactory>());
+    loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinaryBackgroundV0>(), RESOURCE_FORMAT_BINARY, "SOH_Background", static_cast<uint32_t>(SohResourceType::SOH_Background), 0);
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
