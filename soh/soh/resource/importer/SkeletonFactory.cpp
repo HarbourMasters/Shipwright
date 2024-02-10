@@ -3,80 +3,38 @@
 #include <spdlog/spdlog.h>
 #include <libultraship/libultraship.h>
 
-
-std::shared_ptr<LUS::IResource>
-SkeletonFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<Skeleton>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-	factory = std::make_shared<SkeletonFactoryV0>();
-	break;
-    }
-
-    if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Skeleton with version {}", resource->GetInitData()->ResourceVersion);
-	return nullptr;
-    }
-
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-std::shared_ptr<LUS::IResource>
-SkeletonFactory::ReadResourceXML(std::shared_ptr<LUS::ResourceInitData> initData, tinyxml2::XMLElement *reader) {
-    auto resource = std::make_shared<Skeleton>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-        case 0:
-            factory = std::make_shared<SkeletonFactoryV0>();
-            break;
-    }
-
-    if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Skeleton with version {}", resource->GetInitData()->ResourceVersion);
+std::shared_ptr<IResource> ResourceFactoryBinarySkeletonV0::ReadResource(std::shared_ptr<File> file) {
+    if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
 
-    factory->ParseFileXML(reader, resource);
+    auto skeleton = std::make_shared<Skeleton>(file->InitData);
 
-    return resource;
-}
-
-void SkeletonFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<LUS::IResource> resource)
-{
-    std::shared_ptr<Skeleton> skeleton = std::static_pointer_cast<Skeleton>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, skeleton);
-
-    skeleton->type = (SkeletonType)reader->ReadInt8();
-    skeleton->limbType = (LimbType)reader->ReadInt8();
-    skeleton->limbCount = reader->ReadUInt32();
-    skeleton->dListCount = reader->ReadUInt32();
-    skeleton->limbTableType = (LimbType)reader->ReadInt8();
-    skeleton->limbTableCount = reader->ReadUInt32();
+    skeleton->type = (SkeletonType)file->Reader->ReadInt8();
+    skeleton->limbType = (LimbType)file->Reader->ReadInt8();
+    skeleton->limbCount = file->Reader->ReadUInt32();
+    skeleton->dListCount = file->Reader->ReadUInt32();
+    skeleton->limbTableType = (LimbType)file->Reader->ReadInt8();
+    skeleton->limbTableCount = file->Reader->ReadUInt32();
 
     skeleton->limbTable.reserve(skeleton->limbTableCount);
     for (uint32_t i = 0; i < skeleton->limbTableCount; i++) {
-        std::string limbPath = reader->ReadString();
+        std::string limbPath = file->Reader->ReadString();
 
         skeleton->limbTable.push_back(limbPath);
     }
 
-    if (skeleton->type == LUS::SkeletonType::Curve) {
+    if (skeleton->type == SkeletonType::Curve) {
 	skeleton->skeletonData.skelCurveLimbList.limbCount = skeleton->limbCount;
 	skeleton->curveLimbArray.reserve(skeleton->skeletonData.skelCurveLimbList.limbCount);
-    } else if (skeleton->type == LUS::SkeletonType::Flex) {
+    } else if (skeleton->type == SkeletonType::Flex) {
 	skeleton->skeletonData.flexSkeletonHeader.dListCount = skeleton->dListCount;
     }
 
-    if (skeleton->type == LUS::SkeletonType::Normal) {
+    if (skeleton->type == SkeletonType::Normal) {
         skeleton->skeletonData.skeletonHeader.limbCount = skeleton->limbCount;
 	skeleton->standardLimbArray.reserve(skeleton->skeletonData.skeletonHeader.limbCount);
-    } else if (skeleton->type == LUS::SkeletonType::Flex) {
+    } else if (skeleton->type == SkeletonType::Flex) {
         skeleton->skeletonData.flexSkeletonHeader.sh.limbCount = skeleton->limbCount;
 	skeleton->standardLimbArray.reserve(skeleton->skeletonData.flexSkeletonHeader.sh.limbCount);
     }
@@ -87,21 +45,29 @@ void SkeletonFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
         skeleton->skeletonHeaderSegments.push_back(limb ? limb->GetRawPointer() : nullptr);
     }
 
-    if (skeleton->type == LUS::SkeletonType::Normal) {
+    if (skeleton->type == SkeletonType::Normal) {
         skeleton->skeletonData.skeletonHeader.segment = (void**)skeleton->skeletonHeaderSegments.data();
-    } else if (skeleton->type == LUS::SkeletonType::Flex) {
+    } else if (skeleton->type == SkeletonType::Flex) {
         skeleton->skeletonData.flexSkeletonHeader.sh.segment = (void**)skeleton->skeletonHeaderSegments.data();
-    } else if (skeleton->type == LUS::SkeletonType::Curve) {
+    } else if (skeleton->type == SkeletonType::Curve) {
         skeleton->skeletonData.skelCurveLimbList.limbs = (SkelCurveLimb**)skeleton->skeletonHeaderSegments.data();
     } else {
         SPDLOG_ERROR("unknown skeleton type {}", (uint32_t)skeleton->type);
     }
 
     skeleton->skeletonData.skeletonHeader.skeletonType = (uint8_t)skeleton->type;
+
+    return skeleton;
 }
-void SkeletonFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<LUS::IResource> resource)
-{
-    std::shared_ptr<Skeleton> skel = std::static_pointer_cast<Skeleton>(resource);
+
+std::shared_ptr<IResource> ResourceFactoryXMLSkeletonV0::ReadResource(std::shared_ptr<File> file) {
+    if (!FileHasValidFormatAndReader(file)) {
+        return nullptr;
+    }
+
+    auto skel = std::make_shared<Skeleton>(file->InitData);
+    auto reader = file->XmlDocument->FirstChildElement();
+    auto child = reader->FirstChildElement();
 
     skel->type = SkeletonType::Flex; // Default to Flex for legacy reasons
     if (reader->FindAttribute("Type")) {
@@ -157,6 +123,6 @@ void SkeletonFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_p
     skel->skeletonData.flexSkeletonHeader.sh.segment = (void**)skel->skeletonHeaderSegments.data();
     skel->skeletonData.flexSkeletonHeader.dListCount = skel->dListCount;
     skel->skeletonData.skeletonHeader.skeletonType = (uint8_t)skel->type;
+
+    return skel;
 }
-
-
