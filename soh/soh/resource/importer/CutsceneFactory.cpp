@@ -440,7 +440,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryCutsceneV0::ReadResource(st
             case 0xFFFFFFFF: // CS_END
             {
                 cutscene->commands.push_back(reader->ReadUInt32());
-                return;
+                return cutscene;
             }
             default:
                 SPDLOG_TRACE("CutsceneV0: Unknown command {}\n", commandId);
