@@ -23,6 +23,7 @@
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
+#include "src/overlays/actors/ovl_Bg_Spot00_Hanebasi/z_bg_spot00_hanebasi.h"
 #include "objects/object_spot00_objects/object_spot00_objects.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh/frame_interpolation.h"
@@ -37,7 +38,7 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 #include "functions.h"
-#include "src/overlays/actors/ovl_Bg_Spot00_Hanebasi/z_bg_spot00_hanebasi.h"
+
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 
@@ -1238,7 +1239,6 @@ void RegisterBridgeDownAllNight() {
             gSaveContext.cutsceneIndex != 0xFFF1) {
             BgSpot00Hanebasi* bgSpot00Hanebasi = static_cast<BgSpot00Hanebasi*>(refActor);
 
-            BgSpot00Hanebasi_DoNothing(bgSpot00Hanebasi, gPlayState);
             ((BgSpot00Hanebasi*)actor)->dyna.actor.shape.rot.x = 0;
             ((BgSpot00Hanebasi*)actor)->destAngle = 0;
         }
