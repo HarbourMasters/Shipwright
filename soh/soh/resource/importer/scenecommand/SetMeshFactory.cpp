@@ -119,10 +119,10 @@ SetMeshFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, st
             std::string meshOpa = reader->ReadString();
             std::string meshXlu = reader->ReadString();
 
-            auto opaRes = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
-            auto xluRes = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
-            dlist.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr) : 0;
-            dlist.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr) : 0;
+            auto opaRes = meshOpa != "" ? LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str()) : nullptr;
+            auto xluRes = meshXlu != "" ? LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str()) : nullptr;
+            dlist.opa = (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr);
+            dlist.xlu = (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr);
 
             setMesh->dlists2.push_back(dlist);
         } else {
