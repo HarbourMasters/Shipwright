@@ -2,6 +2,7 @@
 #include "soh/resource/type/scenecommand/SetTimeSettings.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource>
 SetTimeSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto setTimeSettings = std::make_shared<SetTimeSettings>(initData);
@@ -14,3 +15,4 @@ SetTimeSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
 
     return setTimeSettings;
 }
+} // namespace SOH

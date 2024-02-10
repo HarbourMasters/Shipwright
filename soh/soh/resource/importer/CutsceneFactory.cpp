@@ -57,6 +57,7 @@ static inline uint32_t read_CMD_HH(std::shared_ptr<LUS::BinaryReader> reader) {
     return v;
 }
 
+namespace SOH {
 std::shared_ptr<LUS::IResource> ResourceFactoryBinaryCutsceneV0::ReadResource(std::shared_ptr<LUS::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
@@ -450,3 +451,4 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryCutsceneV0::ReadResource(st
 
     return cutscene;
 }
+} // namespace SOH

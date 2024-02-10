@@ -3,6 +3,7 @@
 #include "spdlog/spdlog.h"
 #include "libultraship/libultraship.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSoundFontV0::ReadResource(std::shared_ptr<LUS::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
@@ -169,3 +170,4 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSoundFontV0::ReadResou
 
     return audioSoundFont;
 }
+} // namespace SOH

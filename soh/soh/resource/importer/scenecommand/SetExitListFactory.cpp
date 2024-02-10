@@ -2,6 +2,7 @@
 #include "soh/resource/type/scenecommand/SetExitList.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource>
 SetExitListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto setExitList = std::make_shared<SetExitList>( initData);
@@ -16,3 +17,4 @@ SetExitListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData
 
     return setExitList;
 }
+} // namespace SOH

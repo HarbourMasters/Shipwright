@@ -2,6 +2,7 @@
 #include "soh/resource/type/scenecommand/SetRoomBehavior.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource>
 SetRoomBehaviorFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto setRoomBehavior = std::make_shared<SetRoomBehavior>(initData);
@@ -13,3 +14,4 @@ SetRoomBehaviorFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
 
     return setRoomBehavior;
 }
+} // namespace SOH

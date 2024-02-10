@@ -2,6 +2,7 @@
 #include "soh/resource/type/Background.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource> ResourceFactoryBinaryBackgroundV0::ReadResource(std::shared_ptr<LUS::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
@@ -19,3 +20,4 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryBackgroundV0::ReadResource(
 
     return background;
 }
+} // namespace SOH

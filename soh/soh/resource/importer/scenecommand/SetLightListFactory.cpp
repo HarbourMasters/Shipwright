@@ -2,6 +2,7 @@
 #include "soh/resource/type/scenecommand/SetLightList.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource>
 SetLightListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto setLightList = std::make_shared<SetLightList>(initData);
@@ -31,3 +32,4 @@ SetLightListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initDat
 
     return setLightList;
 }
+} // namespace SOH

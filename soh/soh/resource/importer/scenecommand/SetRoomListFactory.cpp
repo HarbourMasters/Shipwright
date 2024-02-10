@@ -2,6 +2,7 @@
 #include "soh/resource/type/scenecommand/SetRoomList.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource>
 SetRoomListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto setRoomList = std::make_shared<SetRoomList>(initData);
@@ -24,3 +25,4 @@ SetRoomListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData
 
     return setRoomList;
 }
+} // namespace SOH

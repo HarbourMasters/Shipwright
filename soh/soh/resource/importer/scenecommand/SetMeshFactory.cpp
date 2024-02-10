@@ -3,6 +3,7 @@
 #include "spdlog/spdlog.h"
 #include "libultraship/libultraship.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource>
 SetMeshFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto setMesh = std::make_shared<SetMesh>(initData);
@@ -142,3 +143,4 @@ SetMeshFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, st
 
     return setMesh;
 }
+} // namespace SOH

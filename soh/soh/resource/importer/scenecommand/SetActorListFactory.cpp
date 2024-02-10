@@ -2,6 +2,7 @@
 #include "soh/resource/type/scenecommand/SetActorList.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource>
 SetActorListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto setActorList = std::make_shared<SetActorList>(initData);
@@ -27,3 +28,4 @@ SetActorListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initDat
 
     return setActorList;
 }
+} // namespace SOH

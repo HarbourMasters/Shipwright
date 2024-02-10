@@ -3,6 +3,7 @@
 #include "spdlog/spdlog.h"
 #include <libultraship/libultraship.h>
 
+namespace SOH {
 std::shared_ptr<LUS::IResource>
 SetPathwaysFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto setPathways = std::make_shared<SetPathways>(initData);
@@ -19,3 +20,4 @@ SetPathwaysFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData
 
     return setPathways;
 }
+} // namespace SOH

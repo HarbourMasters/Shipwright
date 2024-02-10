@@ -2,6 +2,7 @@
 #include "soh/resource/type/AudioSequence.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSequenceV0::ReadResource(std::shared_ptr<LUS::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
@@ -30,3 +31,4 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSequenceV0::ReadResour
 
     return audioSequence;
 }
+} // namespace SOH

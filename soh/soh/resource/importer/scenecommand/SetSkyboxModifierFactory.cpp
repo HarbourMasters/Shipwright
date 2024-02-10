@@ -2,6 +2,7 @@
 #include "soh/resource/type/scenecommand/SetSkyboxModifier.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource> SetSkyboxModifierFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
                                                                  std::shared_ptr<LUS::BinaryReader> reader) {
     auto setSkyboxModifier = std::make_shared<SetSkyboxModifier>(initData);
@@ -13,3 +14,4 @@ std::shared_ptr<LUS::IResource> SetSkyboxModifierFactory::ReadResource(std::shar
 
     return setSkyboxModifier;
 }
+} // namespace SOH

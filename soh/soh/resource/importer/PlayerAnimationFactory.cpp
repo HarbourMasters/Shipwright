@@ -2,6 +2,7 @@
 #include "soh/resource/type/PlayerAnimation.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource> ResourceFactoryBinaryPlayerAnimationV0::ReadResource(std::shared_ptr<LUS::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
@@ -18,3 +19,4 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryPlayerAnimationV0::ReadReso
 
     return playerAnimation;
 };
+} // namespace SOH

@@ -2,6 +2,7 @@
 #include "soh/resource/type/scenecommand/SetWindSettings.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource>
 SetWindSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto setWind = std::make_shared<SetWindSettings>(initData);
@@ -15,3 +16,4 @@ SetWindSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
 
     return setWind;
 }
+} // namespace SOH

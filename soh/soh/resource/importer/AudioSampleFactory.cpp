@@ -2,6 +2,7 @@
 #include "soh/resource/type/AudioSample.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSampleV0::ReadResource(std::shared_ptr<LUS::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
@@ -48,6 +49,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSampleV0::ReadResource
 
     return audioSample;
 }
+} // namespace SOH
 
 /*
 in ResourceMgr_LoadAudioSample we used to have

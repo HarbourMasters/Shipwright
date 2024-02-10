@@ -3,6 +3,7 @@
 #include "spdlog/spdlog.h"
 #include "libultraship/libultraship.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource> ResourceFactoryBinarySkeletonLimbV0::ReadResource(std::shared_ptr<LUS::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
@@ -244,3 +245,4 @@ std::shared_ptr<LUS::IResource> ResourceFactoryXMLSkeletonLimbV0::ReadResource(s
 
     return skelLimb;
 }
+} // namespace SOH

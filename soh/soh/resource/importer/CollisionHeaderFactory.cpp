@@ -2,6 +2,7 @@
 #include "soh/resource/type/CollisionHeader.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource> ResourceFactoryBinaryCollisionHeaderV0::ReadResource(std::shared_ptr<LUS::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
@@ -245,3 +246,4 @@ std::shared_ptr<LUS::IResource> ResourceFactoryXMLCollisionHeaderV0::ReadResourc
 
     return collisionHeader;
 }
+} // namespace SOH

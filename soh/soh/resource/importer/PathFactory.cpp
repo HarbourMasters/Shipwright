@@ -2,6 +2,7 @@
 #include "soh/resource/type/Path.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource> ResourceFactoryBinaryPathV0::ReadResource(std::shared_ptr<LUS::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
@@ -35,3 +36,4 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryPathV0::ReadResource(std::s
 
     return path;
 }
+} // namespace SOH

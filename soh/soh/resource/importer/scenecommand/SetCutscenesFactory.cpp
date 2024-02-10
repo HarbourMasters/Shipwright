@@ -3,6 +3,7 @@
 #include <libultraship/libultraship.h>
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource>
 SetCutscenesFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto setCutscenes = std::make_shared<SetCutscenes>(initData);
@@ -14,3 +15,4 @@ SetCutscenesFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initDat
 
     return setCutscenes;
 }
+} // namespace SOH

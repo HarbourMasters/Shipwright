@@ -3,6 +3,7 @@
 #include "libultraship/libultraship.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource> SetCollisionHeaderFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
                                                                   std::shared_ptr<LUS::BinaryReader> reader) {
     auto setCollisionHeader = std::make_shared<SetCollisionHeader>(initData);
@@ -14,3 +15,4 @@ std::shared_ptr<LUS::IResource> SetCollisionHeaderFactory::ReadResource(std::sha
 
     return setCollisionHeader;
 }
+} // namespace SOH

@@ -2,6 +2,7 @@
 #include "soh/resource/type/scenecommand/SetTransitionActorList.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource> SetTransitionActorListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
                                                                       std::shared_ptr<LUS::BinaryReader> reader) {
     auto setTransitionActorList = std::make_shared<SetTransitionActorList>(initData);
@@ -29,3 +30,4 @@ std::shared_ptr<LUS::IResource> SetTransitionActorListFactory::ReadResource(std:
 
     return setTransitionActorList;
 }
+} // namespace SOH

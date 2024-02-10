@@ -29,6 +29,7 @@
 #include "soh/resource/importer/scenecommand/SetLightListFactory.h"
 #include "soh/resource/importer/scenecommand/SetMeshFactory.h"
 
+namespace SOH {
 ResourceFactoryBinarySceneV0::ResourceFactoryBinarySceneV0() {
     sceneCommandFactories[SceneCommandID::SetLightingSettings] = std::make_shared<SetLightingSettingsFactory>();
     sceneCommandFactories[SceneCommandID::SetWind] = std::make_shared<SetWindSettingsFactory>();
@@ -103,3 +104,4 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinarySceneV0::ReadResource(std::
 
     return scene;
 };
+} // namespace SOH

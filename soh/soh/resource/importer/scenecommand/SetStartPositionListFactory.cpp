@@ -2,6 +2,7 @@
 #include "soh/resource/type/scenecommand/SetStartPositionList.h"
 #include "spdlog/spdlog.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource> SetStartPositionListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
                                                                     std::shared_ptr<LUS::BinaryReader> reader) {
     auto setStartPositionList = std::make_shared<SetStartPositionList>(initData);
@@ -27,3 +28,4 @@ std::shared_ptr<LUS::IResource> SetStartPositionListFactory::ReadResource(std::s
 
     return setStartPositionList;
 }
+} // namespace SOH

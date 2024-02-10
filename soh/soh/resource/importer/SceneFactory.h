@@ -6,6 +6,7 @@
 #include "Resource.h"
 #include "ResourceFactoryBinary.h"
 
+namespace SOH {
 class ResourceFactoryBinarySceneV0 : public LUS::ResourceFactoryBinary {
   public:
     ResourceFactoryBinarySceneV0();
@@ -21,3 +22,4 @@ class ResourceFactoryBinarySceneV0 : public LUS::ResourceFactoryBinary {
 protected:
     std::shared_ptr<ISceneCommand> ParseSceneCommand(std::shared_ptr<Scene> scene, std::shared_ptr<LUS::BinaryReader> reader, uint32_t index);
 };
+} // namespace SOH

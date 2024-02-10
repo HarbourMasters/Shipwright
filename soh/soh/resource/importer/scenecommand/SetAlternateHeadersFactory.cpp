@@ -3,6 +3,7 @@
 #include "spdlog/spdlog.h"
 #include "libultraship/libultraship.h"
 
+namespace SOH {
 std::shared_ptr<LUS::IResource> SetAlternateHeadersFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
                                                                    std::shared_ptr<LUS::BinaryReader> reader) {
     auto setAlternateHeaders = std::make_shared<SetAlternateHeaders>(initData);
@@ -22,3 +23,4 @@ std::shared_ptr<LUS::IResource> SetAlternateHeadersFactory::ReadResource(std::sh
 
     return setAlternateHeaders;
 }
+} // namespace SOH
