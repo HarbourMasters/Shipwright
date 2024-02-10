@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Resource.h"
-#include "ResourceFactory.h"
+#include "ResourceFactoryBinary.h"
+#include "ResourceFactoryXML.h"
 
 class ResourceFactoryBinarySkeletonV0 : public LUS::ResourceFactoryBinary {
   public:

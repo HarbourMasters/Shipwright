@@ -3,7 +3,7 @@
 #include <spdlog/spdlog.h>
 #include <libultraship/libultraship.h>
 
-std::shared_ptr<IResource> ResourceFactoryBinarySkeletonV0::ReadResource(std::shared_ptr<File> file) {
+std::shared_ptr<LUS::IResource> ResourceFactoryBinarySkeletonV0::ReadResource(std::shared_ptr<LUS::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
@@ -60,7 +60,7 @@ std::shared_ptr<IResource> ResourceFactoryBinarySkeletonV0::ReadResource(std::sh
     return skeleton;
 }
 
-std::shared_ptr<IResource> ResourceFactoryXMLSkeletonV0::ReadResource(std::shared_ptr<File> file) {
+std::shared_ptr<LUS::IResource> ResourceFactoryXMLSkeletonV0::ReadResource(std::shared_ptr<LUS::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
