@@ -4,7 +4,7 @@
 #include "ResourceFactoryBinary.h"
 
 namespace SOH {
-class ResourceFactoryBinaryAudioSequenceV0 : public LUS::ResourceFactoryBinary {
+class ResourceFactoryBinaryAudioSequenceV2 : public LUS::ResourceFactoryBinary {
   public:
     std::shared_ptr<LUS::IResource> ReadResource(std::shared_ptr<LUS::File> file) override;
 };

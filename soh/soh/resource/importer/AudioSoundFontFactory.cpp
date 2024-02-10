@@ -4,7 +4,7 @@
 #include "libultraship/libultraship.h"
 
 namespace SOH {
-std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSoundFontV0::ReadResource(std::shared_ptr<LUS::File> file) {
+std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSoundFontV2::ReadResource(std::shared_ptr<LUS::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
