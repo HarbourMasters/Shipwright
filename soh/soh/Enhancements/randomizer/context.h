@@ -7,6 +7,7 @@
 #include "3drando/text.hpp"
 #include "hint.h"
 #include "fishsanity.h"
+#include "silver_rupee.h"
 
 #include <memory>
 #include <array>
@@ -114,6 +115,7 @@ class Context {
     std::shared_ptr<Logic> mLogic;
     std::shared_ptr<Trials> mTrials;
     std::shared_ptr<Fishsanity> mFishsanity;
+    std::shared_ptr<SilverRupees> mSilverRupees;
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;
     bool mPlandoLoaded = false;
