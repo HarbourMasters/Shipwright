@@ -27,6 +27,7 @@
 #include "src/overlays//actors/ovl_Fishing/z_fishing.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
+#include "soh/Enhancements/randomizer/actors/z_en_g_switch_rando.h"
 
 extern "C" {
 #include <z64.h>
@@ -1151,6 +1152,26 @@ void RegisterRandomizerSheikSpawn() {
     });
 }
 
+//Changes silver rupee update and draw functions, if silver rupees shuffle is enabled
+void RegisterSilverRupeeShuffle() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+        if (!gPlayState) {
+            return;
+        }
+        if (!IS_RANDO || OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_SILVER_RUPEES).Is(RO_SILVER_SHUFFLE_VANILLA)) {
+            return;
+        }
+        auto* actor = static_cast<Actor*>(refActor);
+        if (actor->id == ACTOR_EN_G_SWITCH) {
+            auto* silverRupee = reinterpret_cast<EnGSwitch*>(actor);
+            if (silverRupee->type == ENGSWITCH_SILVER_RUPEE) {
+                silverRupee->actionFunc = EnGSwitch_Randomizer_SilverRupeeIdle;
+                silverRupee->actor.draw = EnGSwitch_Randomizer_Draw;
+            }
+        }
+    });
+}
+
 //Boss souls require an additional item (represented by a RAND_INF) to spawn a boss in a particular lair
 void RegisterBossSouls() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* actor) {
@@ -1627,6 +1648,7 @@ void InitMods() {
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
     RegisterBossSouls();
+    RegisterSilverRupeeShuffle();
     RegisterRandomizedEnemySizes();
     RegisterToTMedallions();
     RegisterNoSwim();
