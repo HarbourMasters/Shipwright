@@ -3,14 +3,7 @@
 #include "spdlog/spdlog.h"
 
 std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAnimationV0::ReadResource(std::shared_ptr<LUS::File> file) {
-    if (file->InitData->Format != RESOURCE_FORMAT_BINARY) {
-        SPDLOG_ERROR("resource file format does not match factory format.");
-        return nullptr;
-    }
-
-    if (file->Reader == nullptr) {
-        SPDLOG_ERROR("Failed to load resource: File has Reader ({} - {})", file->InitData->Type,
-                        file->InitData->Path);
+    if (!FileHasValidFormatAndReader()) {
         return nullptr;
     }
 

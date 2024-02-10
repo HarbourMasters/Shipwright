@@ -4,9 +4,9 @@
 #include "soh/resource/type/scenecommand/SceneCommand.h"
 #include "soh/resource/importer/scenecommand/SceneCommandFactory.h"
 #include "Resource.h"
-#include "ResourceFactory.h"
+#include "ResourceFactoryBinary.h"
 
-class ResourceFactoryBinarySceneV0 : public LUS::ResourceFactory {
+class ResourceFactoryBinarySceneV0 : public LUS::ResourceFactoryBinary {
   public:
     ResourceFactoryBinarySceneV0();
 

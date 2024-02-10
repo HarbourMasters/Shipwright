@@ -2,54 +2,13 @@
 #include "soh/resource/type/CollisionHeader.h"
 #include "spdlog/spdlog.h"
 
-
-std::shared_ptr<LUS::IResource>
-CollisionHeaderFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<CollisionHeader>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-        factory = std::make_shared<CollisionHeaderFactoryV0>();
-        break;
-    }
-
-    if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Collision Header with version {}", resource->GetInitData()->ResourceVersion);
+std::shared_ptr<LUS::IResource> ResourceFactoryBinaryCollisionHeaderV0::ReadResource(std::shared_ptr<LUS::File> file) {
+    if (!FileHasValidFormatAndReader()) {
         return nullptr;
     }
 
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-std::shared_ptr<LUS::IResource>
-CollisionHeaderFactory::ReadResourceXML(std::shared_ptr<LUS::ResourceInitData> initData, tinyxml2::XMLElement *reader) {
-    auto resource = std::make_shared<CollisionHeader>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-        case 0:
-            factory = std::make_shared<CollisionHeaderFactoryV0>();
-            break;
-    }
-
-    if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Collision Header with version {}", resource->GetInitData()->ResourceVersion);
-        return nullptr;
-    }
-
-    factory->ParseFileXML(reader, resource);
-
-    return resource;
-}
-
-void LUS::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                     std::shared_ptr<LUS::IResource> resource)
-{
-    std::shared_ptr<CollisionHeader> collisionHeader = std::static_pointer_cast<CollisionHeader>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, collisionHeader);
+    auto reader = file->Reader;
+    auto collisionHeader = std::make_shared<CollisionHeader>(file->InitData);
 
     collisionHeader->collisionHeaderData.minBounds.x = reader->ReadInt16();
     collisionHeader->collisionHeaderData.minBounds.y = reader->ReadInt16();
@@ -159,10 +118,19 @@ void LUS::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
         collisionHeader->waterBoxes.push_back(waterBox);
     }
     collisionHeader->collisionHeaderData.waterBoxes = collisionHeader->waterBoxes.data();
+
+    return collisionHeader;
 }
 
-void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<CollisionHeader> collisionHeader = std::static_pointer_cast<CollisionHeader>(resource);
+std::shared_ptr<LUS::IResource> ResourceFactoryXMLCollisionHeaderV0::ReadResource(std::shared_ptr<LUS::File> file) {
+    if (!FileHasValidFormatAndReader()) {
+        return nullptr;
+    }
+
+    auto collisionHeader = std::make_shared<CollisionHeader>(file->InitData);
+
+    auto reader = file->XmlDocument->FirstChildElement();
+    auto child = reader->FirstChildElement();
 
     collisionHeader->collisionHeaderData.minBounds.x = reader->IntAttribute("MinBoundsX");
     collisionHeader->collisionHeaderData.minBounds.y = reader->IntAttribute("MinBoundsY");
@@ -274,5 +242,6 @@ void LUS::CollisionHeaderFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, s
     collisionHeader->collisionHeaderData.cameraDataList = collisionHeader->camData.data();
     collisionHeader->collisionHeaderData.cameraDataListLen = collisionHeader->camDataCount;
     collisionHeader->collisionHeaderData.waterBoxes = collisionHeader->waterBoxes.data();
-}
+
+    return collisionHeader;
 }
