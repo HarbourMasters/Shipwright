@@ -71,19 +71,13 @@ void BgSpot00Hanebasi_Init(Actor* thisx, PlayState* play) {
             return;
         }
 
-        // #region SOH [Enhancement]
-        if (CVarGetInteger("gBridgeOpenAtNight", 0) && gSaveContext.cutsceneIndex != 0xFFF1) {
-            this->dyna.actor.shape.rot.x = 0;
-        // #endregion
-        } else {
-             if ((gSaveContext.sceneSetupIndex != 6) &&
-                 ((gSaveContext.sceneSetupIndex == 4) || (gSaveContext.sceneSetupIndex == 5) ||
+    if ((gSaveContext.sceneSetupIndex != 6) &&
+                ((gSaveContext.sceneSetupIndex == 4) || (gSaveContext.sceneSetupIndex == 5) ||
                   (!LINK_IS_ADULT && !IS_DAY))) {
                  this->dyna.actor.shape.rot.x = -0x4000;
              } else {
             this->dyna.actor.shape.rot.x = 0;
-            }
-        }
+             }
 
         if (gSaveContext.sceneSetupIndex != 6) {
             // Don't close the bridge in rando to accomodate hyrule castle exit
@@ -160,25 +154,11 @@ void BgSpot00Hanebasi_DrawbridgeWait(BgSpot00Hanebasi* this, PlayState* play) {
 
             if (this) {} // required to match
         }
-        // #region SOH [Enhancement]
-        if (this->dyna.actor.shape.rot.x != 0) {
-            if (Flags_GetEnv(play, 0) || ((gSaveContext.sceneSetupIndex < 4) && (IS_DAY || CVarGetInteger("gBridgeOpenAtNight", 0)))) {
-                this->actionFunc = BgSpot00Hanebasi_DrawbridgeRiseAndFall;
-                this->destAngle = 0;
-                child->destAngle = 0;
-                return;
-            }
-        }
-        if (CVarGetInteger("gBridgeOpenAtNight", 0)) {
-            // do nothing
-        // #endregion
-        } else {
-            if ((this->dyna.actor.shape.rot.x == 0) && (gSaveContext.sceneSetupIndex < 4) && !LINK_IS_ADULT &&
+        if ((this->dyna.actor.shape.rot.x == 0) && (gSaveContext.sceneSetupIndex < 4) && !LINK_IS_ADULT &&
                 !IS_DAY) {
                 this->actionFunc = BgSpot00Hanebasi_DrawbridgeRiseAndFall;
                 this->destAngle = -0x4000;
                 child->destAngle = -0xFE0;
-            }
         }
     }
 }
@@ -288,7 +268,7 @@ void BgSpot00Hanebasi_DrawTorches(Actor* thisx, PlayState* play2) {
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     // #region SOH [Enhancement]
-    if (CVarGetInteger("gBridgeOpenAtNight", 0)) {
+    if (CVarGetInteger("gEnhancements.gBridgeOpenAtNight", 0)) {
         if (gSaveContext.sceneSetupIndex >= 4) {
             sTorchFlameScale = 0.008f;
         } else {
@@ -361,7 +341,7 @@ void BgSpot00Hanebasi_Draw(Actor* thisx, PlayState* play) {
 
         if (gSaveContext.sceneSetupIndex != 12) {
             // #region SOH [Enhancement]
-            if (CVarGetInteger("gBridgeOpenAtNight", 0)) {
+            if (CVarGetInteger("gEnhancements.gBridgeOpenAtNight", 0)) {
                 if ((gSaveContext.sceneSetupIndex >= 4) ||
                     (!LINK_IS_ADULT && (gSaveContext.dayTime < 18440 || gSaveContext.dayTime > 50523))) {
                     BgSpot00Hanebasi_DrawTorches(thisx, play);

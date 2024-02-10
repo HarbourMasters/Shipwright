@@ -137,7 +137,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gDayGravePull",
     "gDampeAllNight",
     "gSkipSwimDeepEndAnim",
-    "gBridgeOpenAtNight",
+    "gEnhancements.gBridgeOpenAtNight",
     "gSkipScarecrow",
     "gBlueFireArrows",
     "gSunlightArrows",

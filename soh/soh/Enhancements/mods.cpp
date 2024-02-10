@@ -23,6 +23,12 @@
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
+#include "objects/object_spot00_objects/object_spot00_objects.h"
+#include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/frame_interpolation.h"
+#include <libultraship/libultra.h>
+#include "global.h"
+#include "macros.h"
 
 extern "C" {
 #include <z64.h>
@@ -31,6 +37,7 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 #include "functions.h"
+#include "src/overlays/actors/ovl_Bg_Spot00_Hanebasi/z_bg_spot00_hanebasi.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 
@@ -1223,6 +1230,21 @@ void RegisterToTMedallions() {
     });
 }
 
+void RegisterBridgeDownAllNight() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        if (CVarGetInteger("gEnhancements.gBridgeOpenAtNight", 0) && (actor->id == ACTOR_BG_SPOT00_HANEBASI) &&
+            gSaveContext.cutsceneIndex != 0xFFF1) {
+            BgSpot00Hanebasi* bgSpot00Hanebasi = static_cast<BgSpot00Hanebasi*>(refActor);
+
+            BgSpot00Hanebasi_DoNothing(bgSpot00Hanebasi, gPlayState);
+            ((BgSpot00Hanebasi*)actor)->dyna.actor.shape.rot.x = 0;
+            ((BgSpot00Hanebasi*)actor)->destAngle = 0;
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1255,5 +1277,6 @@ void InitMods() {
     RegisterRandomizerSheikSpawn();
     RegisterRandomizedEnemySizes();
     RegisterToTMedallions();
+    RegisterBridgeDownAllNight();
     NameTag_RegisterHooks();
 }

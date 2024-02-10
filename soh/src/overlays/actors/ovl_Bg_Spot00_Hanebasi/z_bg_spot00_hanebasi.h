@@ -16,4 +16,7 @@ typedef struct BgSpot00Hanebasi {
     /* 0x0170 */ LightInfo lightInfo;
 } BgSpot00Hanebasi; // size = 0x0180
 
+void BgSpot00Hanebasi_DoNothing(BgSpot00Hanebasi* bgSpot00Hanebasi, PlayState* play);
+void BgSpot00Hanebasi_DrawbridgeWait(BgSpot00Hanebasi* bgSpot00Hanebasi, PlayState* play);
+
 #endif
