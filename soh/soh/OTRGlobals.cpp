@@ -336,8 +336,8 @@ OTRGlobals::OTRGlobals() {
     loader->RegisterResourceFactory(std::make_shared<ResourceFactoryXMLTextV0>(), RESOURCE_FORMAT_XML, "SOH_Text", static_cast<uint32_t>(SohResourceType::SOH_Text), 0);
     loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinaryAudioSampleV0>(), RESOURCE_FORMAT_BINARY, "SOH_AudioSample", static_cast<uint32_t>(SohResourceType::SOH_AudioSample), 0);
     loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinaryAudioSoundFontV0>(), RESOURCE_FORMAT_BINARY, "SOH_AudioSoundFont", static_cast<uint32_t>(SohResourceType::SOH_AudioSoundFont), 0);
+    loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinaryAudioSequenceV0>(), RESOURCE_FORMAT_BINARY, "SOH_AudioSequence", static_cast<uint32_t>(SohResourceType::SOH_AudioSequence), 0);
 
-    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_AudioSequence), std::make_shared<LUS::AudioSequenceFactory>());
     loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_Background), std::make_shared<LUS::BackgroundFactory>());
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();

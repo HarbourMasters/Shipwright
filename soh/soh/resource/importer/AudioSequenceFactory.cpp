@@ -2,51 +2,31 @@
 #include "soh/resource/type/AudioSequence.h"
 #include "spdlog/spdlog.h"
 
-
-std::shared_ptr<LUS::IResource>
-AudioSequenceFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<AudioSequence>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 2:
-	    factory = std::make_shared<AudioSequenceFactoryV0>();
-	    break;
-    }
-
-    if (factory == nullptr)
-    {
-        SPDLOG_ERROR("Failed to load AudioSequence with version {}", resource->GetInitData()->ResourceVersion);
+std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSequenceV0::ReadResource(std::shared_ptr<LUS::File> file) {
+    if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
     }
 
-    factory->ParseFileBinary(reader, resource);
+    auto audioSequence = std::make_shared<AudioSequence>(file->InitData);
 
-    return resource;
-}
-
-void LUS::AudioSequenceFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                   std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<AudioSequence> audioSequence = std::static_pointer_cast<AudioSequence>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, audioSequence);
-
-    audioSequence->sequence.seqDataSize = reader->ReadInt32();
+    audioSequence->sequence.seqDataSize = file->Reader->ReadInt32();
     audioSequence->sequenceData.reserve(audioSequence->sequence.seqDataSize);
     for (uint32_t i = 0; i < audioSequence->sequence.seqDataSize; i++) {
-        audioSequence->sequenceData.push_back(reader->ReadChar());
+        audioSequence->sequenceData.push_back(file->Reader->ReadChar());
     }
     audioSequence->sequence.seqData = audioSequence->sequenceData.data();
     
-    audioSequence->sequence.seqNumber = reader->ReadUByte();
-    audioSequence->sequence.medium = reader->ReadUByte();
-    audioSequence->sequence.cachePolicy = reader->ReadUByte();
+    audioSequence->sequence.seqNumber = file->Reader->ReadUByte();
+    audioSequence->sequence.medium = file->Reader->ReadUByte();
+    audioSequence->sequence.cachePolicy = file->Reader->ReadUByte();
 
-    audioSequence->sequence.numFonts = reader->ReadUInt32();
+    audioSequence->sequence.numFonts = file->Reader->ReadUInt32();
     for (uint32_t i = 0; i < 16; i++) {
         audioSequence->sequence.fonts[i] = 0;
     }
     for (uint32_t i = 0; i < audioSequence->sequence.numFonts; i++) {
-        audioSequence->sequence.fonts[i] = reader->ReadUByte();
+        audioSequence->sequence.fonts[i] = file->Reader->ReadUByte();
     }
-}
 
+    return audioSequence;
+}
