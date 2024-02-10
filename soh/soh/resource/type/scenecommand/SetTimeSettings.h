@@ -7,6 +7,7 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
+namespace LUS {
 typedef struct {
   uint8_t hour;
   uint8_t minute;
@@ -22,3 +23,4 @@ class SetTimeSettings : public SceneCommand<TimeSettings> {
 
     TimeSettings settings;
 };
+}; // namespace LUS

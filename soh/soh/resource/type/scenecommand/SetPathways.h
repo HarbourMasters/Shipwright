@@ -8,6 +8,8 @@
 // #include <libultraship/libultra/types.h>
 #include "soh/resource/type/Path.h"
 
+namespace LUS {
+
 class SetPathways : public SceneCommand<PathData*> {
   public:
     using SceneCommand::SceneCommand;
@@ -18,3 +20,4 @@ class SetPathways : public SceneCommand<PathData*> {
     uint32_t numPaths;
     std::vector<PathData*> paths;
 };
+}; // namespace LUS

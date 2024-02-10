@@ -1,5 +1,7 @@
 #include "AudioSequence.h"
 
+namespace LUS {
+
 Sequence* AudioSequence::GetPointer() {
     return &sequence;
 }
@@ -7,3 +9,4 @@ Sequence* AudioSequence::GetPointer() {
 size_t AudioSequence::GetPointerSize() {
     return sizeof(Sequence);
 }
+} // namespace LUS

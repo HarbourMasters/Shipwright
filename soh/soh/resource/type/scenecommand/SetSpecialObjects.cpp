@@ -1,5 +1,6 @@
 #include "SetSpecialObjects.h"
 
+namespace LUS {
 SpecialObjects* SetSpecialObjects::GetPointer() {
     return &specialObjects;
 }
@@ -7,3 +8,4 @@ SpecialObjects* SetSpecialObjects::GetPointer() {
 size_t SetSpecialObjects::GetPointerSize() {
 	return sizeof(SpecialObjects);
 }
+} // namespace LUS

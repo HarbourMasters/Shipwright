@@ -7,6 +7,7 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
+namespace LUS {
 class SetExitList : public SceneCommand<uint16_t> {
   public:
     using SceneCommand::SceneCommand;
@@ -18,3 +19,4 @@ class SetExitList : public SceneCommand<uint16_t> {
 
     std::vector<uint16_t> exits;
 };
+}; // namespace LUS

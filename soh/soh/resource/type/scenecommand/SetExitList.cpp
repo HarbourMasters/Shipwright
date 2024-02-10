@@ -1,5 +1,6 @@
 #include "SetExitList.h"
 
+namespace LUS {
 uint16_t* SetExitList::GetPointer() {
     return exits.data();
 }
@@ -7,3 +8,4 @@ uint16_t* SetExitList::GetPointer() {
 size_t SetExitList::GetPointerSize() {
 	return exits.size() * sizeof(int16_t);
 }
+} // namespace LUS

@@ -1,5 +1,6 @@
 #include "SetLightingSettings.h"
 
+namespace LUS {
 EnvLightSettings* SetLightingSettings::GetPointer() {
     return settings.data();
 }
@@ -7,3 +8,4 @@ EnvLightSettings* SetLightingSettings::GetPointer() {
 size_t SetLightingSettings::GetPointerSize() {
 	return settings.size() * sizeof(EnvLightSettings);
 }
+} // namespace LUS

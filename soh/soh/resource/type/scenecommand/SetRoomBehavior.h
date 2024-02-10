@@ -7,6 +7,7 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
+namespace LUS {
 typedef struct {
   int8_t gameplayFlags;
   int32_t gameplayFlags2;
@@ -21,3 +22,4 @@ class SetRoomBehavior : public SceneCommand<RoomBehavior> {
 
     RoomBehavior roomBehavior;
 };
+}; // namespace LUS

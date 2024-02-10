@@ -7,6 +7,7 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
+namespace LUS {
 typedef struct {
   uint8_t seqId;
   uint8_t natureAmbienceId;
@@ -22,3 +23,4 @@ class SetSoundSettings : public SceneCommand<SoundSettings> {
 
     SoundSettings settings;
 };
+}; // namespace LUS

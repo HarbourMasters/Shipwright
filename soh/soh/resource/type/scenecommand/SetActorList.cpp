@@ -1,5 +1,6 @@
 #include "SetActorList.h"
 
+namespace LUS {
 ActorEntry* SetActorList::GetPointer() {
     return actorList.data();
 }
@@ -7,3 +8,4 @@ ActorEntry* SetActorList::GetPointer() {
 size_t SetActorList::GetPointerSize() {
 	return actorList.size() * sizeof(ActorEntry);
 }
+} // namespace LUS

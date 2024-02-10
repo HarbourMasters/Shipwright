@@ -7,6 +7,7 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
+namespace LUS {
 typedef struct {
   int8_t echo;
 } EchoSettings;
@@ -20,3 +21,4 @@ class SetEchoSettings : public SceneCommand<EchoSettings> {
 
     EchoSettings settings;
 };
+}; // namespace LUS

@@ -7,6 +7,7 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
+namespace LUS {
 typedef struct {
   int8_t elfMessage;
   int16_t globalObject;
@@ -21,3 +22,4 @@ class SetSpecialObjects : public SceneCommand<SpecialObjects> {
 
     SpecialObjects specialObjects;
 };
+}; // namespace LUS

@@ -7,6 +7,7 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
+namespace LUS {
 typedef struct {
 
 } CsCamera;
@@ -20,3 +21,4 @@ class SetCsCamera : public SceneCommand<CsCamera> {
 
     CsCamera csCamera;
 };
+}; // namespace LUS

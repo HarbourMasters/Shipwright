@@ -7,14 +7,17 @@
 #include "scenecommand/SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-class Scene : public LUS::Resource<void> {
+namespace LUS {
+
+class Scene : public Resource<void> {
 public:
   using Resource::Resource;
 
-    Scene() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
+    Scene() : Resource(std::shared_ptr<ResourceInitData>()) {}
 
     void* GetPointer();
   size_t GetPointerSize();
 
   std::vector<std::shared_ptr<ISceneCommand>> commands;
 };
+}; // namespace LUS
