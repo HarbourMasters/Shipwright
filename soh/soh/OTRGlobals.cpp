@@ -330,8 +330,8 @@ OTRGlobals::OTRGlobals() {
     loader->RegisterResourceFactory(std::make_shared<ResourceFactoryXMLSkeletonV0>(), RESOURCE_FORMAT_XML, "SOH_Skeleton", static_cast<uint32_t>(SohResourceType::SOH_Skeleton), 0);
     loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinarySkeletonLimbV0>(), RESOURCE_FORMAT_BINARY, "SOH_SkeletonLimb", static_cast<uint32_t>(SohResourceType::SOH_SkeletonLimb), 0);
     loader->RegisterResourceFactory(std::make_shared<ResourceFactoryXMLSkeletonLimbV0>(), RESOURCE_FORMAT_XML, "SOH_SkeletonLimb", static_cast<uint32_t>(SohResourceType::SOH_SkeletonLimb), 0);
+    loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinaryPathV0>(), RESOURCE_FORMAT_BINARY, "SOH_Path", static_cast<uint32_t>(SohResourceType::SOH_Path), 0);
 
-    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_Path), std::make_shared<LUS::PathFactory>());
     loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_Cutscene), std::make_shared<LUS::CutsceneFactory>());
     loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_Text), std::make_shared<LUS::TextFactory>());
     loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_AudioSample), std::make_shared<LUS::AudioSampleFactory>());
