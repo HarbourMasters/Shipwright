@@ -3,34 +3,9 @@
 #include "spdlog/spdlog.h"
 #include "libultraship/libultraship.h"
 
-
 std::shared_ptr<LUS::IResource>
 SetMeshFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
-    auto resource = std::make_shared<SetMesh>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-        factory = std::make_shared<SetMeshFactoryV0>();
-        break;
-    }
-
-    if (factory == nullptr)
-    {
-        SPDLOG_ERROR("Failed to load SetMesh with version {}", resource->GetInitData()->ResourceVersion);
-        return nullptr;
-    }
-
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
-                                        std::shared_ptr<LUS::IResource> resource)
-{
-    std::shared_ptr<SetMesh> setMesh = std::static_pointer_cast<SetMesh>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, setMesh);
+    auto setMesh = std::make_shared<SetMesh>(initData);
 
     ReadCommandId(setMesh, reader);
     
@@ -164,6 +139,6 @@ void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> r
     } else {
         SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
     }
+
+    return setMesh;
 }
-
-

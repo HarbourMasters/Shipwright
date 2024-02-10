@@ -2,15 +2,9 @@
 
 #include "soh/resource/importer/scenecommand/SceneCommandFactory.h"
 
-
 class SetActorListFactory : public SceneCommandFactoryBinaryV0 {
   public:
     std::shared_ptr<LUS::IResource>
-    ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) override;
+    ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader);
 };
 
-class SetActorListFactoryV0 : public SceneCommandVersionFactory {
-  public:
-    void ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader, std::shared_ptr<LUS::IResource> resource) override;
-};
-}; // namespace LUS

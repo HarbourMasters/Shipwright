@@ -2,33 +2,9 @@
 #include "soh/resource/type/scenecommand/SetLightingSettings.h"
 #include "spdlog/spdlog.h"
 
-
 std::shared_ptr<LUS::IResource> SetLightingSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
                                                                    std::shared_ptr<LUS::BinaryReader> reader) {
-    auto resource = std::make_shared<SetLightingSettings>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-	factory = std::make_shared<SetLightingSettingsFactoryV0>();
-	break;
-    }
-
-    if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load SetLightingSettings with version {}", resource->GetInitData()->ResourceVersion);
-	return nullptr;
-    }
-
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-void LUS::SetLightingSettingsFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
-                                        std::shared_ptr<LUS::IResource> resource)
-{
-    std::shared_ptr<SetLightingSettings> setLightingSettings = std::static_pointer_cast<SetLightingSettings>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, setLightingSettings);
+    auto setLightingSettings = std::make_shared<SetLightingSettings>(initData);
 
     ReadCommandId(setLightingSettings, reader);
 
@@ -65,6 +41,6 @@ void LUS::SetLightingSettingsFactoryV0::ParseFileBinary(std::shared_ptr<LUS::Bin
         lightSettings.fogFar = reader->ReadUInt16();
         setLightingSettings->settings.push_back(lightSettings);
     }
+
+    return setLightingSettings;
 }
-
-

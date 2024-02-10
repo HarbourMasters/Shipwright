@@ -3,32 +3,9 @@
 #include "spdlog/spdlog.h"
 #include <libultraship/libultraship.h>
 
-
 std::shared_ptr<LUS::IResource>
 SetPathwaysFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
-    auto resource = std::make_shared<SetPathways>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-	    factory = std::make_shared<SetPathwaysFactoryV0>();
-	    break;
-    }
-
-    if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load SetPathways with version {}", resource->GetInitData()->ResourceVersion);
-	return nullptr;
-    }
-
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-void LUS::SetPathwaysFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
-                                                 std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetPathways> setPathways = std::static_pointer_cast<SetPathways>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, setPathways);
+    auto setPathways = std::make_shared<SetPathways>(initData);
 
     ReadCommandId(setPathways, reader);
 	
@@ -39,6 +16,6 @@ void LUS::SetPathwaysFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReade
         auto path = std::static_pointer_cast<Path>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(pathFileName.c_str()));
         setPathways->paths.push_back(path->GetPointer());
     }
+
+    return setPathways;
 }
-
-

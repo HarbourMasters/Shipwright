@@ -2,33 +2,10 @@
 #include "soh/resource/type/scenecommand/SetTransitionActorList.h"
 #include "spdlog/spdlog.h"
 
-
 std::shared_ptr<LUS::IResource> SetTransitionActorListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
                                                                       std::shared_ptr<LUS::BinaryReader> reader) {
-    auto resource = std::make_shared<SetTransitionActorList>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-	    factory = std::make_shared<SetTransitionActorListFactoryV0>();
-	    break;
-    }
-
-    if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load SetTransitionActorList with version {}", resource->GetInitData()->ResourceVersion);
-	return nullptr;
-    }
-
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-void LUS::SetTransitionActorListFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
-                                        std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetTransitionActorList> setTransitionActorList = std::static_pointer_cast<SetTransitionActorList>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, setTransitionActorList);
-
+    auto setTransitionActorList = std::make_shared<SetTransitionActorList>(initData);
+    
     ReadCommandId(setTransitionActorList, reader);
 	
     setTransitionActorList->numTransitionActors = reader->ReadUInt32();
@@ -49,6 +26,6 @@ void LUS::SetTransitionActorListFactoryV0::ParseFileBinary(std::shared_ptr<LUS::
 
         setTransitionActorList->transitionActorList.push_back(entry);
     }
+
+    return setTransitionActorList;
 }
-
-

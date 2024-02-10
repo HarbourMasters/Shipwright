@@ -323,8 +323,8 @@ OTRGlobals::OTRGlobals() {
     auto loader = context->GetResourceManager()->GetResourceLoader();
     loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinaryAnimationV0>(), RESOURCE_FORMAT_BINARY, "SOH_Animation", static_cast<uint32_t>(SohResourceType::SOH_Animation), 0);
     loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinaryPlayerAnimationV0>(), RESOURCE_FORMAT_BINARY, "SOH_PlayerAnimation", static_cast<uint32_t>(SohResourceType::SOH_PlayerAnimation), 0);
+    loader->RegisterResourceFactory(std::make_shared<ResourceFactoryBinarySceneV0>(), RESOURCE_FORMAT_BINARY, "SOH_Room", static_cast<uint32_t>(SohResourceType::SOH_Room), 0); // Is room scene? maybe?
 
-    loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_Room), std::make_shared<LUS::SceneFactory>()); // Is room scene? maybe?
     loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_CollisionHeader), std::make_shared<LUS::CollisionHeaderFactory>());
     loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_Skeleton), std::make_shared<LUS::SkeletonFactory>());
     loader->RegisterResourceFactory(static_cast<uint32_t>(SohResourceType::SOH_SkeletonLimb), std::make_shared<LUS::SkeletonLimbFactory>());

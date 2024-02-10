@@ -3,37 +3,14 @@
 #include "libultraship/libultraship.h"
 #include "spdlog/spdlog.h"
 
-
 std::shared_ptr<LUS::IResource> SetCollisionHeaderFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
                                                                   std::shared_ptr<LUS::BinaryReader> reader) {
-    auto resource = std::make_shared<SetCollisionHeader>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-	factory = std::make_shared<SetCollisionHeaderFactoryV0>();
-	break;
-    }
-
-    if (factory == nullptr) {
-	SPDLOG_ERROR("Failed to load SetCollisionHeader with version {}", resource->GetInitData()->ResourceVersion);
-	return nullptr;
-    }
-
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-void LUS::SetCollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
-                                        std::shared_ptr<LUS::IResource> resource) {
-    std::shared_ptr<SetCollisionHeader> setCollisionHeader = std::static_pointer_cast<SetCollisionHeader>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, setCollisionHeader);
+    auto setCollisionHeader = std::make_shared<SetCollisionHeader>(initData);
 
     ReadCommandId(setCollisionHeader, reader);
     
     setCollisionHeader->fileName = reader->ReadString();
     setCollisionHeader->collisionHeader = std::static_pointer_cast<CollisionHeader>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCollisionHeader->fileName.c_str()));
+
+    return setCollisionHeader;
 }
-
-
