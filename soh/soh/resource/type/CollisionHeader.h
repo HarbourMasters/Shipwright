@@ -71,7 +71,7 @@ class CollisionHeader : public LUS::Resource<CollisionHeaderData> {
 public:
     using Resource::Resource;
 
-    CollisionHeader() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    CollisionHeader() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
 
     CollisionHeaderData* GetPointer();
     size_t GetPointerSize();

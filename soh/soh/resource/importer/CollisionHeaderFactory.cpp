@@ -147,8 +147,6 @@ std::shared_ptr<LUS::IResource> ResourceFactoryXMLCollisionHeaderV0::ReadResourc
     zero.z = 0;
     collisionHeader->camPosDataZero = zero;
 
-    auto child = reader->FirstChildElement();
-
     while (child != nullptr) {
         std::string childName = child->Name();
         if (childName == "Vertex") {

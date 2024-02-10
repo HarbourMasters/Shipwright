@@ -21,7 +21,7 @@ class AudioSequence : public LUS::Resource<Sequence> {
 public:
     using Resource::Resource;
 
-    AudioSequence() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    AudioSequence() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
 
     Sequence* GetPointer();
     size_t GetPointerSize();

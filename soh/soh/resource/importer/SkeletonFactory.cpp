@@ -104,8 +104,6 @@ std::shared_ptr<LUS::IResource> ResourceFactoryXMLSkeletonV0::ReadResource(std::
     skel->limbCount = reader->IntAttribute("LimbCount");
     skel->dListCount = reader->IntAttribute("DisplayListCount");
 
-    auto child = reader->FirstChildElement();
-
     while (child != nullptr) {
         std::string childName = child->Name();
 

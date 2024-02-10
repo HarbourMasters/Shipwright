@@ -56,7 +56,7 @@ class AudioSoundFont : public LUS::Resource<SoundFont> {
 public:
     using Resource::Resource;
 
-    AudioSoundFont() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    AudioSoundFont() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
 
     SoundFont* GetPointer();
     size_t GetPointerSize();

@@ -13,7 +13,7 @@ class Scene : public LUS::Resource<void> {
 public:
   using Resource::Resource;
 
-    Scene() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    Scene() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
 
     void* GetPointer();
   size_t GetPointerSize();

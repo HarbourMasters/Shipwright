@@ -101,7 +101,7 @@ class SkeletonLimb : public LUS::Resource<SkeletonLimbData> {
 public:
   using Resource::Resource;
 
-    SkeletonLimb() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    SkeletonLimb() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
 
     SkeletonLimbData* GetPointer();
     size_t GetPointerSize();

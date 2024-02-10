@@ -48,7 +48,7 @@ class Cutscene : public LUS::Resource<uint32_t> {
   public:
     using Resource::Resource;
 
-    Cutscene() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    Cutscene() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
 
     uint32_t* GetPointer();
     size_t GetPointerSize();

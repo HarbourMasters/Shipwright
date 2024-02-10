@@ -54,7 +54,7 @@ class Skeleton : public LUS::Resource<SkeletonData> {
   public:
     using Resource::Resource;
 
-    Skeleton() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    Skeleton() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
 
     SkeletonData* GetPointer();
     size_t GetPointerSize();

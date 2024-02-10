@@ -43,7 +43,7 @@ namespace SOH {
         public:
             using Resource::Resource;
 
-        AudioSample() : Resource(std::shared_ptr<ResourceInitData>()) {}
+        AudioSample() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
 
             Sample* GetPointer();
             size_t GetPointerSize();

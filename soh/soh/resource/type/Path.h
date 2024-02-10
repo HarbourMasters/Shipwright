@@ -17,7 +17,7 @@ class Path : public LUS::Resource<PathData> {
 public:
   using Resource::Resource;
 
-    Path() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    Path() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
 
     PathData* GetPointer();
     size_t GetPointerSize();

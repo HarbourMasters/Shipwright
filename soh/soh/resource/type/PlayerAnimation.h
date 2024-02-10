@@ -12,7 +12,7 @@ class PlayerAnimation : public LUS::Resource<int16_t> {
   public:
     using Resource::Resource;
 
-    PlayerAnimation() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    PlayerAnimation() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
 
     int16_t* GetPointer();
     size_t GetPointerSize();

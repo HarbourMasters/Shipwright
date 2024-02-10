@@ -20,7 +20,7 @@ class Text : public LUS::Resource<MessageEntry> {
 public:
   using Resource::Resource;
 
-    Text() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    Text() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
 
     MessageEntry* GetPointer();
     size_t GetPointerSize();

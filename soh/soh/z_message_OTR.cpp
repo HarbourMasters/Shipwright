@@ -15,7 +15,7 @@ extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
 extern "C" MessageTableEntry* sStaffMessageEntryTablePtr;
 //extern "C" MessageTableEntry* _message_0xFFFC_nes;	
 
-static void SetMessageEntry(MessageTableEntry& entry, const LUS::MessageEntry& msgEntry) {
+static void SetMessageEntry(MessageTableEntry& entry, const SOH::MessageEntry& msgEntry) {
     entry.textId = msgEntry.id;
     entry.typePos = (msgEntry.textboxType << 4) | msgEntry.textboxYPos;
     entry.segment = msgEntry.msg.c_str();
@@ -26,7 +26,7 @@ static void OTRMessage_LoadCustom(const std::string& folderPath, MessageTableEnt
     auto lst = *LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(folderPath).get();
 
     for (auto& tPath : lst) {
-        auto file = std::static_pointer_cast<LUS::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(tPath));
+        auto file = std::static_pointer_cast<SOH::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(tPath));
 
         for (size_t j = 0; j < file->messages.size(); ++j) {
             // Check if same text ID exists already
@@ -43,7 +43,7 @@ static void OTRMessage_LoadCustom(const std::string& folderPath, MessageTableEnt
 }
 
 MessageTableEntry* OTRMessage_LoadTable(const std::string& filePath, bool isNES) {
-    auto file = std::static_pointer_cast<LUS::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(filePath));
+    auto file = std::static_pointer_cast<SOH::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(filePath));
 
     if (file == nullptr)
         return nullptr;

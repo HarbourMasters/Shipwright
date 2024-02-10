@@ -1,5 +1,5 @@
 #include "spdlog/spdlog.h"
-#include "soh/resource/type/SOH::ResourceType.h"
+#include "soh/resource/type/SohResourceType.h"
 #include "soh/resource/importer/SceneFactory.h"
 #include "soh/resource/type/Scene.h"
 #include "soh/resource/type/scenecommand/SceneCommand.h"
@@ -98,7 +98,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinarySceneV0::ReadResource(std::
         return nullptr;
     }
 
-    auto scene = std::static_pointer_cast<Scene>(file->InitData);
+    auto scene = std::make_shared<Scene>(file->InitData);
 
     ParseSceneCommands(scene, file->Reader);
 
