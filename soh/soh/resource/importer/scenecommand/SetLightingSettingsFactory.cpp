@@ -4,7 +4,7 @@
 
 
 std::shared_ptr<LUS::IResource> SetLightingSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
-                                                                   std::shared_ptr<BinaryReader> reader) {
+                                                                   std::shared_ptr<LUS::BinaryReader> reader) {
     auto resource = std::make_shared<SetLightingSettings>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -24,7 +24,7 @@ std::shared_ptr<LUS::IResource> SetLightingSettingsFactory::ReadResource(std::sh
     return resource;
 }
 
-void LUS::SetLightingSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetLightingSettingsFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
                                         std::shared_ptr<LUS::IResource> resource)
 {
     std::shared_ptr<SetLightingSettings> setLightingSettings = std::static_pointer_cast<SetLightingSettings>(resource);

@@ -4,7 +4,7 @@
 
 
 std::shared_ptr<LUS::IResource>
-SetRoomBehaviorFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+SetRoomBehaviorFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto resource = std::make_shared<SetRoomBehavior>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -24,7 +24,7 @@ SetRoomBehaviorFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
     return resource;
 }
 
-void LUS::SetRoomBehaviorFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetRoomBehaviorFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
                                         std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<SetRoomBehavior> setRoomBehavior = std::static_pointer_cast<SetRoomBehavior>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setRoomBehavior);

@@ -4,7 +4,7 @@
 
 
 std::shared_ptr<LUS::IResource>
-SetCsCameraFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+SetCsCameraFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto resource = std::make_shared<SetCsCamera>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -24,7 +24,7 @@ SetCsCameraFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData
     return resource;
 }
 
-void LUS::SetCsCameraFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetCsCameraFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
                                         std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<SetCsCamera> setCsCamera = std::static_pointer_cast<SetCsCamera>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setCsCamera);

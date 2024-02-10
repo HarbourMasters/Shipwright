@@ -4,7 +4,7 @@
 
 
 std::shared_ptr<LUS::IResource> SetSkyboxModifierFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData,
-                                                                 std::shared_ptr<BinaryReader> reader) {
+                                                                 std::shared_ptr<LUS::BinaryReader> reader) {
     auto resource = std::make_shared<SetSkyboxModifier>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -24,7 +24,7 @@ std::shared_ptr<LUS::IResource> SetSkyboxModifierFactory::ReadResource(std::shar
     return resource;
 }
 
-void LUS::SetSkyboxModifierFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetSkyboxModifierFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
                                         std::shared_ptr<LUS::IResource> resource) {
 	std::shared_ptr<SetSkyboxModifier> setSkyboxModifier = std::static_pointer_cast<SetSkyboxModifier>(resource);
 	ResourceVersionFactory::ParseFileBinary(reader, setSkyboxModifier);

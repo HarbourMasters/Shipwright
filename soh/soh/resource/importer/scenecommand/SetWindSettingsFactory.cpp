@@ -4,7 +4,7 @@
 
 
 std::shared_ptr<LUS::IResource>
-SetWindSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+SetWindSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto resource = std::make_shared<SetWindSettings>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -24,7 +24,7 @@ SetWindSettingsFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
     return resource;
 }
 
-void LUS::SetWindSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetWindSettingsFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
                                         std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<SetWindSettings> setWind = std::static_pointer_cast<SetWindSettings>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setWind);

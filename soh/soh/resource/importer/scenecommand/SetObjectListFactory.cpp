@@ -4,7 +4,7 @@
 
 
 std::shared_ptr<LUS::IResource>
-SetObjectListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+SetObjectListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto resource = std::make_shared<SetObjectList>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -24,7 +24,7 @@ SetObjectListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initDa
     return resource;
 }
 
-void LUS::SetObjectListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetObjectListFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
                                         std::shared_ptr<LUS::IResource> resource)
 {
     std::shared_ptr<SetObjectList> setObjectList = std::static_pointer_cast<SetObjectList>(resource);

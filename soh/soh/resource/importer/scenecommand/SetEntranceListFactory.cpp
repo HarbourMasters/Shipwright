@@ -4,7 +4,7 @@
 
 
 std::shared_ptr<LUS::IResource>
-SetEntranceListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+SetEntranceListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto resource = std::make_shared<SetEntranceList>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -24,7 +24,7 @@ SetEntranceListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> init
     return resource;
 }
 
-void LUS::SetEntranceListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetEntranceListFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
                                         std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<SetEntranceList> setEntranceList = std::static_pointer_cast<SetEntranceList>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setEntranceList);

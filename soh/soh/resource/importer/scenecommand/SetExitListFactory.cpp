@@ -4,7 +4,7 @@
 
 
 std::shared_ptr<LUS::IResource>
-SetExitListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+SetExitListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto resource = std::make_shared<SetExitList>( initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -24,7 +24,7 @@ SetExitListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData
     return resource;
 }
 
-void LUS::SetExitListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetExitListFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
                                         std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<SetExitList> setExitList = std::static_pointer_cast<SetExitList>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setExitList);

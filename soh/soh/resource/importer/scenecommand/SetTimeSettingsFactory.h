@@ -3,14 +3,14 @@
 #include "soh/resource/importer/scenecommand/SceneCommandFactory.h"
 
 
-class SetTimeSettingsFactory : public SceneCommandFactory {
+class SetTimeSettingsFactory : public SceneCommandFactoryBinaryV0 {
   public:
     std::shared_ptr<LUS::IResource>
-    ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) override;
+    ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) override;
 };
 
 class SetTimeSettingsFactoryV0 : public SceneCommandVersionFactory {
   public:
-    void ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<LUS::IResource> resource) override;
+    void ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader, std::shared_ptr<LUS::IResource> resource) override;
 };
 }; // namespace LUS

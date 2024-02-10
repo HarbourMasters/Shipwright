@@ -5,7 +5,7 @@
 
 
 std::shared_ptr<LUS::IResource>
-SetCutscenesFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+SetCutscenesFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto resource = std::make_shared<SetCutscenes>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -26,7 +26,7 @@ SetCutscenesFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initDat
     return resource;
 }
 
-void LUS::SetCutscenesFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetCutscenesFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
                                         		  std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<SetCutscenes> setCutscenes = std::static_pointer_cast<SetCutscenes>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setCutscenes);

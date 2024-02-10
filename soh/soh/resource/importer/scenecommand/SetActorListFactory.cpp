@@ -4,7 +4,7 @@
 
 
 std::shared_ptr<LUS::IResource>
-SetActorListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+SetActorListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto resource = std::make_shared<SetActorList>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -25,7 +25,7 @@ SetActorListFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initDat
     return resource;
 }
 
-void LUS::SetActorListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetActorListFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
                                         std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<SetActorList> setActorList = std::static_pointer_cast<SetActorList>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setActorList);

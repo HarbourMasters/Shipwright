@@ -5,7 +5,7 @@
 
 
 std::shared_ptr<LUS::IResource>
-SetMeshFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+SetMeshFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto resource = std::make_shared<SetMesh>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -26,7 +26,7 @@ SetMeshFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, st
     return resource;
 }
 
-void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
                                         std::shared_ptr<LUS::IResource> resource)
 {
     std::shared_ptr<SetMesh> setMesh = std::static_pointer_cast<SetMesh>(resource);

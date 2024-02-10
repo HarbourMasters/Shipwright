@@ -5,7 +5,7 @@
 
 
 std::shared_ptr<LUS::IResource>
-SetPathwaysFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+SetPathwaysFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData, std::shared_ptr<LUS::BinaryReader> reader) {
     auto resource = std::make_shared<SetPathways>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
@@ -25,7 +25,7 @@ SetPathwaysFactory::ReadResource(std::shared_ptr<LUS::ResourceInitData> initData
     return resource;
 }
 
-void LUS::SetPathwaysFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetPathwaysFactoryV0::ParseFileBinary(std::shared_ptr<LUS::BinaryReader> reader,
                                                  std::shared_ptr<LUS::IResource> resource) {
     std::shared_ptr<SetPathways> setPathways = std::static_pointer_cast<SetPathways>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setPathways);
