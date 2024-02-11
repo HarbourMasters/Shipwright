@@ -738,7 +738,7 @@ void InitTrackerData(bool isDebug) {
         }
     }
     UpdateAllOrdering();
-} 
+}
 
 void SaveTrackerData(SaveContext* saveContext, int sectionID, bool gameSave) {
     SaveManager::Instance->SaveArray("checks", ARRAY_COUNT(saveContext->checkTrackerData), [&](size_t i) {
