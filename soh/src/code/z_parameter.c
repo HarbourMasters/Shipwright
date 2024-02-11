@@ -1521,6 +1521,13 @@ void Inventory_SwapAgeEquipment(void) {
                 }
             }
 
+            // In Rando, when switching to adult for the second+ time, if a sword was not previously
+            // equiped in MS shuffle, then we need to set the swordless flag again
+            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+                gSaveContext.equips.buttonItems[0] == ITEM_NONE) {
+                Flags_SetInfTable(INFTABLE_SWORDLESS);
+            }
+
             gSaveContext.equips.equipment = gSaveContext.adultEquips.equipment;
         }
     } else {
@@ -1587,6 +1594,13 @@ void Inventory_SwapAgeEquipment(void) {
                     gSaveContext.equips.buttonItems[i] =
                         gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
                 }
+            }
+
+            // In Rando, when switching to child from a swordless adult, and child Link previously had a
+            // sword equiped, then we need to unset the swordless flag to match
+            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+                gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
+                Flags_UnsetInfTable(INFTABLE_SWORDLESS);
             }
 
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
@@ -1801,15 +1815,25 @@ u8 Return_Item_Entry(GetItemEntry itemEntry, ItemID returnItem ) {
 u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
     // ITEM_SOLD_OUT doesn't have an ItemTable entry, so pass custom entry instead
     if (itemID == ITEM_SOLD_OUT) {
-        GetItemEntry gie = { ITEM_SOLD_OUT, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_LESSER, NULL };
+        GetItemEntry gie = { ITEM_SOLD_OUT, 0, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_LESSER, NULL };
         return Return_Item_Entry(gie, returnItem);
     }
-    int32_t get = GetGIID(itemID);
-    if (get == -1) {
-        modId = MOD_RANDOMIZER;
-        get = itemID;
+
+    GetItemID getItemID = RetrieveGetItemIDFromItemID(itemID);
+    if (getItemID != GI_MAX) {
+        // Vanilla ItemID with an associated GetItemID
+        return Return_Item_Entry(ItemTable_RetrieveEntry(modId, getItemID), returnItem);
     }
-    return Return_Item_Entry(ItemTable_RetrieveEntry(modId, get), returnItem);
+
+    RandomizerGet randomizerGet = RetrieveRandomizerGetFromItemID(itemID);
+    if (randomizerGet != RG_MAX) {
+        // Vanilla ItemID with an associated RandomizerGet (These are items in extendedVanillaGetItemTable)
+        return Return_Item_Entry(ItemTable_RetrieveEntry(MOD_RANDOMIZER, randomizerGet), returnItem);
+    }
+
+    // All randomizer items should go through Randomizer_Item_Give, so this should never be reached
+    // but leaving this here just in case, as it was in the original behavior
+    return Return_Item_Entry(ItemTable_RetrieveEntry(MOD_RANDOMIZER, itemID), returnItem);
 }
 
 /**
@@ -2254,8 +2278,13 @@ u8 Item_Give(PlayState* play, u8 item) {
         gSaveContext.sohStats.heartPieces++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART_CONTAINER) {
-        gSaveContext.healthCapacity += 0x10;
-        gSaveContext.health += 0x10;
+        if (!CVarGetInteger("gHurtContainer", 0)) {
+            gSaveContext.healthCapacity += 0x10;
+            gSaveContext.health += 0x10;
+        } else {
+            gSaveContext.healthCapacity -= 0x10;
+            gSaveContext.health -= 0x10;
+        }
         gSaveContext.sohStats.heartContainers++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART) {
@@ -3559,7 +3588,7 @@ void Interface_DrawLineupTick(PlayState* play) {
     s16 width = 32;
     s16 height = 32;
     s16 x = -8 + (SCREEN_WIDTH / 2);
-    s16 y = CVarGetInteger("gOpenMenuBar", 0) ? -4 : -6;
+    s16 y = -6;
 
     OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gEmptyCDownArrowTex, width, height, x, y, width, height, 2 << 10, 2 << 10);
 
@@ -6556,11 +6585,15 @@ void Interface_Update(PlayState* play) {
             gSaveContext.pendingSale = ITEM_NONE;
             gSaveContext.pendingSaleMod = MOD_NONE;
             if (tempSaleMod == MOD_NONE) {
-                s16 giid = GetGIID(tempSaleItem);
-                if (giid == -1) {
-                    tempSaleMod = MOD_RANDOMIZER;
+                GetItemID getItemID = RetrieveGetItemIDFromItemID(tempSaleItem);
+                RandomizerGet randomizerGet = RetrieveRandomizerGetFromItemID(tempSaleItem);
+                if (getItemID != GI_MAX) {
+                    tempSaleItem = getItemID;
                 } else {
-                    tempSaleItem = giid;
+                    if (randomizerGet != RG_MAX) {
+                        tempSaleItem = randomizerGet;
+                    }
+                    tempSaleMod = MOD_RANDOMIZER;
                 }
             }
             GameInteractor_ExecuteOnSaleEndHooks(ItemTable_RetrieveEntry(tempSaleMod, tempSaleItem));

@@ -662,26 +662,32 @@ s32 Flags_GetSwitch(PlayState* play, s32 flag) {
  * Sets current scene switch flag.
  */
 void Flags_SetSwitch(PlayState* play, s32 flag) {
-    lusprintf(__FILE__, __LINE__, 2, "Switch Flag Set - %#x", flag);
+    u8 previouslyOff = !Flags_GetSwitch(play, flag);
     if (flag < 0x20) {
         play->actorCtx.flags.swch |= (1 << flag);
     } else {
         play->actorCtx.flags.tempSwch |= (1 << (flag - 0x20));
     }
-    GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_SWITCH, flag);
+    if (previouslyOff) {
+        LUSLOG_INFO("Switch Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_SWITCH, flag);
+    }
 }
 
 /**
  * Unsets current scene switch flag.
  */
 void Flags_UnsetSwitch(PlayState* play, s32 flag) {
-    lusprintf(__FILE__, __LINE__, 2, "Switch Flag Unset - %#x", flag);
+    u8 previouslyOn = Flags_GetSwitch(play, flag);
     if (flag < 0x20) {
         play->actorCtx.flags.swch &= ~(1 << flag);
     } else {
         play->actorCtx.flags.tempSwch &= ~(1 << (flag - 0x20));
     }
-    GameInteractor_ExecuteOnSceneFlagUnset(play->sceneNum, FLAG_SCENE_SWITCH, flag);
+    if (previouslyOn) {
+        LUSLOG_INFO("Switch Flag Unset - %#x", flag);
+        GameInteractor_ExecuteOnSceneFlagUnset(play->sceneNum, FLAG_SCENE_SWITCH, flag);
+    }
 }
 
 /**
@@ -728,9 +734,12 @@ s32 Flags_GetTreasure(PlayState* play, s32 flag) {
  * Sets current scene chest flag.
  */
 void Flags_SetTreasure(PlayState* play, s32 flag) {
-    lusprintf(__FILE__, __LINE__, 2, "Treasure Flag Set - %#x", flag);
+    u8 previouslyOff = !Flags_GetTreasure(play, flag);
     play->actorCtx.flags.chest |= (1 << flag);
-    GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_TREASURE, flag);
+    if (previouslyOff) {
+        LUSLOG_INFO("Treasure Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_TREASURE, flag);
+    }
 }
 
 /**
@@ -744,16 +753,24 @@ s32 Flags_GetClear(PlayState* play, s32 flag) {
  * Sets current scene clear flag.
  */
 void Flags_SetClear(PlayState* play, s32 flag) {
+    u8 previouslyOff = !Flags_GetClear(play, flag);
     play->actorCtx.flags.clear |= (1 << flag);
-    GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_CLEAR, flag);
+    if (previouslyOff) {
+        LUSLOG_INFO("Clear Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_CLEAR, flag);
+    }
 }
 
 /**
  * Unsets current scene clear flag.
  */
 void Flags_UnsetClear(PlayState* play, s32 flag) {
+    u8 previouslyOn = Flags_GetClear(play, flag);
     play->actorCtx.flags.clear &= ~(1 << flag);
-    GameInteractor_ExecuteOnSceneFlagUnset(play->sceneNum, FLAG_SCENE_CLEAR, flag);
+    if (previouslyOn) {
+        LUSLOG_INFO("Clear Flag Unset - %#x", flag);
+        GameInteractor_ExecuteOnSceneFlagUnset(play->sceneNum, FLAG_SCENE_CLEAR, flag);
+    }
 }
 
 /**
@@ -792,7 +809,7 @@ s32 Flags_GetCollectible(PlayState* play, s32 flag) {
  * Sets current scene collectible flag.
  */
 void Flags_SetCollectible(PlayState* play, s32 flag) {
-    lusprintf(__FILE__, __LINE__, 2, "Collectible Flag Set - %#x", flag);
+    u8 previouslyOff = !Flags_GetCollectible(play, flag);
     if (flag != 0) {
         if (flag < 0x20) {
             play->actorCtx.flags.collect |= (1 << flag);
@@ -800,7 +817,10 @@ void Flags_SetCollectible(PlayState* play, s32 flag) {
             play->actorCtx.flags.tempCollect |= (1 << (flag - 0x20));
         }
     }
-    GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_COLLECTIBLE, flag);
+    if (previouslyOff) {
+        LUSLOG_INFO("Collectible Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_COLLECTIBLE, flag);
+    }
 }
 
 void func_8002CDE4(PlayState* play, TitleCardContext* titleCtx) {
@@ -1219,8 +1239,7 @@ void Actor_Init(Actor* actor, PlayState* play) {
     CollisionCheck_InitInfo(&actor->colChkInfo);
     actor->floorBgId = BGCHECK_SCENE;
     ActorShape_Init(&actor->shape, 0.0f, NULL, 0.0f);
-    //if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex))
-    {
+    if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
         //Actor_SetObjectDependency(play, actor);
         actor->init(actor, play);
         actor->init = NULL;
@@ -2861,11 +2880,19 @@ s32 func_800314D4(PlayState* play, Actor* actor, Vec3f* arg2, f32 arg3) {
     if ((arg2->z > -actor->uncullZoneScale) && (arg2->z < (actor->uncullZoneForward + actor->uncullZoneScale))) {
         var = (arg3 < 1.0f) ? 1.0f : 1.0f / arg3;
 
-        if ((((fabsf(arg2->x) - actor->uncullZoneScale) * var) < 2.0f) &&
-            (((arg2->y + actor->uncullZoneDownward) * var) > -2.0f) &&
-            (((arg2->y - actor->uncullZoneScale) * var) < 2.0f)) {
+        // #region SoH [Widescreen support]
+        // Doors will cull quite noticeably on wider screens. For these actors the zone is increased
+        f32 limit = 1.0f;
+        if (((actor->id == ACTOR_EN_DOOR) || (actor->id == ACTOR_DOOR_SHUTTER)) && CVarGetInteger("gIncreaseDoorUncullZones", 1)) {
+            limit = 2.0f;
+        }
+
+        if ((((fabsf(arg2->x) - actor->uncullZoneScale) * var) < limit) &&
+            (((arg2->y + actor->uncullZoneDownward) * var) > -limit) &&
+            (((arg2->y - actor->uncullZoneScale) * var) < limit)) {
             return true;
         }
+        // #endregion
     }
 
     return false;
@@ -3129,6 +3156,9 @@ void Actor_FreeOverlay(ActorDBEntry* dbEntry) {
     osSyncPrintf(VT_RST);
 }
 
+// SoH: Flag to check if actors are being spawned from the actor entry list
+//      This flag is checked against to allow actors which dont have an objectBankIndex in the objectCtx slot/status array to spawn
+//      An example of what this fixes, is that it allows hookshot to be used as child
 int gMapLoading = 0;
 
 Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ,
@@ -4723,16 +4753,24 @@ s32 Flags_GetEventChkInf(s32 flag) {
  * Sets "eventChkInf" flag.
  */
 void Flags_SetEventChkInf(s32 flag) {
+    u8 previouslyOff = !Flags_GetEventChkInf(flag);
     gSaveContext.eventChkInf[flag >> 4] |= (1 << (flag & 0xF));
-    GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, flag);
+    if (previouslyOff) {
+        LUSLOG_INFO("EventChkInf Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, flag);
+    }
 }
 
 /**
  * Unsets "eventChkInf" flag.
  */
 void Flags_UnsetEventChkInf(s32 flag) {
+    u8 previouslyOn = Flags_GetEventChkInf(flag);
     gSaveContext.eventChkInf[flag >> 4] &= ~(1 << (flag & 0xF));
-    GameInteractor_ExecuteOnFlagUnset(FLAG_EVENT_CHECK_INF, flag);
+    if (previouslyOn) {
+        LUSLOG_INFO("EventChkInf Flag Unset - %#x", flag);
+        GameInteractor_ExecuteOnFlagUnset(FLAG_EVENT_CHECK_INF, flag);
+    }
 }
 
 /**
@@ -4746,16 +4784,24 @@ s32 Flags_GetItemGetInf(s32 flag) {
  * Sets "itemGetInf" flag.
  */
 void Flags_SetItemGetInf(s32 flag) {
+    u8 previouslyOff = !Flags_GetItemGetInf(flag);
     gSaveContext.itemGetInf[flag >> 4] |= (1 << (flag & 0xF));
-    GameInteractor_ExecuteOnFlagSet(FLAG_ITEM_GET_INF, flag);
+    if (previouslyOff) {
+        LUSLOG_INFO("ItemGetInf Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnFlagSet(FLAG_ITEM_GET_INF, flag);
+    }
 }
 
 /**
  * Unsets "itemGetInf" flag.
  */
 void Flags_UnsetItemGetInf(s32 flag) {
+    u8 previouslyOn = Flags_GetItemGetInf(flag);
     gSaveContext.itemGetInf[flag >> 4] &= ~(1 << (flag & 0xF));
-    GameInteractor_ExecuteOnFlagUnset(FLAG_ITEM_GET_INF, flag);
+    if (previouslyOn) {
+        LUSLOG_INFO("ItemGetInf Flag Unset - %#x", flag);
+        GameInteractor_ExecuteOnFlagUnset(FLAG_ITEM_GET_INF, flag);
+    }
 }
 
 /**
@@ -4769,16 +4815,24 @@ s32 Flags_GetInfTable(s32 flag) {
  * Sets "infTable" flag.
  */
 void Flags_SetInfTable(s32 flag) {
+    u8 previouslyOff = !Flags_GetInfTable(flag);
     gSaveContext.infTable[flag >> 4] |= (1 << (flag & 0xF));
-    GameInteractor_ExecuteOnFlagSet(FLAG_INF_TABLE, flag);
+    if (previouslyOff) {
+        LUSLOG_INFO("InfTable Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnFlagSet(FLAG_INF_TABLE, flag);
+    }
 }
 
 /**
  * Unsets "infTable" flag.
  */
 void Flags_UnsetInfTable(s32 flag) {
+    u8 previouslyOn = Flags_GetInfTable(flag);
     gSaveContext.infTable[flag >> 4] &= ~(1 << (flag & 0xF));
-    GameInteractor_ExecuteOnFlagUnset(FLAG_INF_TABLE, flag);
+    if (previouslyOn) {
+        LUSLOG_INFO("InfTable Flag Unset - %#x", flag);
+        GameInteractor_ExecuteOnFlagUnset(FLAG_INF_TABLE, flag);
+    }
 }
 
 /**
@@ -4792,16 +4846,24 @@ s32 Flags_GetEventInf(s32 flag) {
  * Sets "eventInf" flag.
  */
 void Flags_SetEventInf(s32 flag) {
+    u8 previouslyOff = !Flags_GetEventInf(flag);
     gSaveContext.eventInf[flag >> 4] |= (1 << (flag & 0xF));
-    GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_INF, flag);
+    if (previouslyOff) {
+        LUSLOG_INFO("EventInf Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_INF, flag);
+    }
 }
 
 /**
  * Unsets "eventInf" flag.
  */
 void Flags_UnsetEventInf(s32 flag) {
+    u8 previouslyOn = Flags_GetEventInf(flag);
     gSaveContext.eventInf[flag >> 4] &= ~(1 << (flag & 0xF));
-    GameInteractor_ExecuteOnFlagUnset(FLAG_EVENT_INF, flag);
+    if (previouslyOn) {
+        LUSLOG_INFO("EventInf Flag Unset - %#x", flag);
+        GameInteractor_ExecuteOnFlagUnset(FLAG_EVENT_INF, flag);
+    }
 }
 
 /**
@@ -4815,16 +4877,24 @@ s32 Flags_GetRandomizerInf(RandomizerInf flag) {
  * Sets "randomizerInf" flag.
  */
 void Flags_SetRandomizerInf(RandomizerInf flag) {
+    u8 previouslyOff = !Flags_GetRandomizerInf(flag);
     gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
-    GameInteractor_ExecuteOnFlagSet(FLAG_RANDOMIZER_INF, flag);
+    if (previouslyOff) {
+        LUSLOG_INFO("RandomizerInf Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnFlagSet(FLAG_RANDOMIZER_INF, flag);
+    }
 }
 
 /**
  * Unsets "randomizerInf" flag.
  */
 void Flags_UnsetRandomizerInf(RandomizerInf flag) {
+    u8 previouslyOn = Flags_GetRandomizerInf(flag);
     gSaveContext.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
-    GameInteractor_ExecuteOnFlagUnset(FLAG_RANDOMIZER_INF, flag);
+    if (previouslyOn) {
+        LUSLOG_INFO("RandomizerInf Flag Unset - %#x", flag);
+        GameInteractor_ExecuteOnFlagUnset(FLAG_RANDOMIZER_INF, flag);
+    }
 }
 
 u32 func_80035BFC(PlayState* play, s16 arg1) {

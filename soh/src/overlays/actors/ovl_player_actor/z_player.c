@@ -1074,15 +1074,6 @@ static s8 sItemActions[] = {
     PLAYER_IA_SWORD_KOKIRI,        // ITEM_SWORD_KOKIRI
     PLAYER_IA_SWORD_MASTER,        // ITEM_SWORD_MASTER
     PLAYER_IA_SWORD_BIGGORON,      // ITEM_SWORD_BIGGORON
-    PLAYER_IA_SHIELD_DEKU,         // ITEM_SHIELD_DEKU
-    PLAYER_IA_SHIELD_HYLIAN,       // ITEM_SHIELD_HYLIAN
-    PLAYER_IA_SHIELD_MIRROR,       // ITEM_SHIELD_MIRROR
-    PLAYER_IA_TUNIC_KOKIRI,        // ITEM_TUNIC_KOKIRI
-    PLAYER_IA_TUNIC_GORON,         // ITEM_TUNIC_GORON
-    PLAYER_IA_TUNIC_ZORA,          // ITEM_TUNIC_ZORA
-    PLAYER_IA_BOOTS_KOKIRI,        // ITEM_BOOTS_KOKIRI
-    PLAYER_IA_BOOTS_IRON,          // ITEM_BOOTS_IRON
-    PLAYER_IA_BOOTS_HOVER,         // ITEM_BOOTS_HOVER
 };
 
 static u8 sMaskMemory;
@@ -1157,15 +1148,6 @@ static s32 (*sItemActionUpdateFuncs[])(Player* this, PlayState* play) = {
     func_8083485C, // PLAYER_IA_MASK_GERUDO
     func_8083485C, // PLAYER_IA_MASK_TRUTH
     func_8083485C, // PLAYER_IA_LENS_OF_TRUTH
-    func_8083485C, // PLAYER_IA_SHIELD_DEKU
-    func_8083485C, // PLAYER_IA_SHIELD_HYLIAN
-    func_8083485C, // PLAYER_IA_SHIELD_MIRROR
-    func_8083485C, // PLAYER_IA_TUNIC_KOKIRI
-    func_8083485C, // PLAYER_IA_TUNIC_GORON
-    func_8083485C, // PLAYER_IA_TUNIC_ZORA
-    func_8083485C, // PLAYER_IA_BOOTS_KOKIRI
-    func_8083485C, // PLAYER_IA_BOOTS_IRON
-    func_8083485C, // PLAYER_IA_BOOTS_HOVER
 };
 
 static void (*sItemActionInitFuncs[])(PlayState* play, Player* this) = {
@@ -1236,15 +1218,6 @@ static void (*sItemActionInitFuncs[])(PlayState* play, Player* this) = {
     func_80833770, // PLAYER_IA_MASK_GERUDO
     func_80833770, // PLAYER_IA_MASK_TRUTH
     func_80833770, // PLAYER_IA_LENS_OF_TRUTH
-    func_80833770, // PLAYER_IA_SHIELD_DEKU
-    func_80833770, // PLAYER_IA_SHIELD_HYLIAN
-    func_80833770, // PLAYER_IA_SHIELD_MIRROR
-    func_80833770, // PLAYER_IA_TUNIC_KOKIRI
-    func_80833770, // PLAYER_IA_TUNIC_GORON
-    func_80833770, // PLAYER_IA_TUNIC_ZORA
-    func_80833770, // PLAYER_IA_BOOTS_KOKIRI
-    func_80833770, // PLAYER_IA_BOOTS_IRON
-    func_80833770, // PLAYER_IA_BOOTS_HOVER
 };
 
 typedef enum {
@@ -2037,6 +2010,10 @@ s8 Player_ItemToItemAction(s32 item) {
         return PLAYER_IA_LAST_USED;
     } else if (item == ITEM_FISHING_POLE) {
         return PLAYER_IA_FISHING_POLE;
+    // #region SOH [Enhancement] Added to prevent crashes with assignable equipment
+    } else if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+        return PLAYER_IA_NONE;
+    // #endregion
     } else {
         return sItemActions[item];
     }
@@ -2934,7 +2911,11 @@ s32 func_808356E8(Player* this, PlayState* play) {
 }
 
 void func_808357E8(Player* this, Gfx** dLists) {
-    this->leftHandDLists = &dLists[gSaveContext.linkAge];
+    if (LINK_IS_ADULT && (CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0))) {
+        this->leftHandDLists = &dLists[1];
+    } else {
+        this->leftHandDLists = &dLists[gSaveContext.linkAge];
+    }
 }
 
 s32 func_80835800(Player* this, PlayState* play) {
@@ -3167,8 +3148,7 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
 
         if ((itemAction == PLAYER_IA_NONE) || !(this->stateFlags1 & PLAYER_STATE1_IN_WATER) ||
             ((this->actor.bgCheckFlags & 1) &&
-             ((itemAction == PLAYER_IA_HOOKSHOT) || (itemAction == PLAYER_IA_LONGSHOT))) ||
-            ((itemAction >= PLAYER_IA_SHIELD_DEKU) && (itemAction <= PLAYER_IA_BOOTS_HOVER))) {
+             ((itemAction == PLAYER_IA_HOOKSHOT) || (itemAction == PLAYER_IA_LONGSHOT)))) {
 
             if ((play->bombchuBowlingStatus == 0) &&
                 (((itemAction == PLAYER_IA_DEKU_STICK) && (AMMO(ITEM_STICK) == 0)) ||
@@ -3177,12 +3157,6 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
                   ((temp >= 0) && ((AMMO(sExplosiveInfos[temp].itemId) == 0) ||
                                    (play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].length >= 3 && !CVarGetInteger("gRemoveExplosiveLimit", 0))))))) {
                 func_80078884(NA_SE_SY_ERROR);
-                return;
-            }
-
-            if (itemAction >= PLAYER_IA_SHIELD_DEKU) {
-                // Changing shields through action commands is unimplemented
-                // Boots and tunics handled previously
                 return;
             }
 
@@ -7012,9 +6986,19 @@ s32 Player_TryEnteringCrawlspace(Player* this, PlayState* play, u32 interactWall
                 this->actor.world.pos.z = zVertex1 + (distToInteractWall * wallPolyNormZ);
                 func_80832224(this);
                 this->actor.prevPos = this->actor.world.pos;
-                Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_start);
-                Player_AnimReplaceApplyFlags(play, this, 0x9D);
-
+                // #region SOH [Enhancement]
+                if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
+                    // increase animation speed when entering a tunnel
+                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
+                                         ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f), 0.0f,
+                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), ANIMMODE_ONCE,
+                                         0.0f);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                // #endregion
+                } else {
+                    Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_start);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                }
                 return true;
             }
         }
@@ -7095,16 +7079,39 @@ s32 Player_TryLeavingCrawlspace(Player* this, PlayState* play) {
 
             if (this->linearVelocity > 0.0f) {
                 this->actor.shape.rot.y = this->actor.wallYaw + 0x8000;
-                Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_end);
-                Player_AnimReplaceApplyFlags(play, this, 0x9D);
-                OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
+                // #region SOH [Enhancement]
+                if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
+                    // animation when exiting a tunnel forward
+                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_end,
+                                         ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f), 0.0f,
+                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_end), ANIMMODE_ONCE,
+                                         0.0f);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                    OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
+                // #endregion
+                } else {
+                    Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_end);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                    OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
+                }
             } else {
                 this->actor.shape.rot.y = this->actor.wallYaw;
-                LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start, -1.0f,
-                                     Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f, ANIMMODE_ONCE,
-                                     0.0f);
-                Player_AnimReplaceApplyFlags(play, this, 0x9D);
-                OnePointCutscene_Init(play, 9602, 999, NULL, MAIN_CAM);
+                // #region SOH [Enhancement]
+                // animation when exiting a tunnel backward 
+                if (CVarGetInteger("gCrawlSpeed",1) > 1) {
+                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
+                                         -1.0f * ((CVarGetInteger("gCrawlSpeed", 1) + 1.0f) / 2.0f),
+                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f, ANIMMODE_ONCE, 0.0f);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                    OnePointCutscene_Init(play, 9602, 999, NULL, MAIN_CAM);
+                // #endregion
+                }
+                else {
+                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start, -1.0f,
+                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f, ANIMMODE_ONCE, 0.0f);
+                    Player_AnimReplaceApplyFlags(play, this, 0x9D);
+                    OnePointCutscene_Init(play, 9602, 999, NULL, MAIN_CAM);
+                }
             }
 
             this->currentYaw = this->actor.shape.rot.y;
@@ -7265,11 +7272,41 @@ s32 func_8083FD78(Player* this, f32* arg1, s16* arg2, PlayState* play) {
             *arg2 = this->actor.shape.rot.y;
         }
 
-        if (this->unk_664 != NULL) {
-            func_8083DB98(this, 1);
+        // #region SOH [Enhancement]
+        if (CVarGetInteger("gRightStickAiming", 0) || !CVarGetInteger("gInvertZAimingYAxis", 1)) {
+            
+            if (this->unk_664 != NULL) {
+                func_8083DB98(this, 1);
+            } else {
+                int8_t relStickY;
+
+                // preserves simultaneous left/right-stick aiming
+                if (CVarGetInteger("gRightStickAiming", 0)) {
+                    if ((sControlInput->rel.stick_y + sControlInput->rel.right_stick_y) >= 0) {
+                        relStickY = (((sControlInput->rel.stick_y) > (sControlInput->rel.right_stick_y))
+                                         ? (sControlInput->rel.stick_y)
+                                         : (sControlInput->rel.right_stick_y));
+                    } else {
+                        relStickY = (((sControlInput->rel.stick_y) < (sControlInput->rel.right_stick_y))
+                                         ? (sControlInput->rel.stick_y)
+                                         : (sControlInput->rel.right_stick_y));
+                    }
+                } else {
+                    relStickY = sControlInput->rel.stick_y;
+                }
+
+                Math_SmoothStepToS(&this->actor.focus.rot.x,
+                                   relStickY * (CVarGetInteger("gInvertZAimingYAxis", 1) ? 1 : -1) * 240.0f, 14, 4000, 30);
+                func_80836AB8(this, 1);
+            }
+        // #endregion
         } else {
-            Math_SmoothStepToS(&this->actor.focus.rot.x, sControlInput->rel.stick_y * 240.0f, 14, 4000, 30);
-            func_80836AB8(this, 1);
+            if (this->unk_664 != NULL) {
+                func_8083DB98(this, 1);
+            } else {
+                Math_SmoothStepToS(&this->actor.focus.rot.x, sControlInput->rel.stick_y * 240.0f, 14, 4000, 30);
+                func_80836AB8(this, 1);
+            }
         }
     } else {
         if (this->unk_664 != NULL) {
@@ -11000,39 +11037,39 @@ static f32 D_8085482C[] = { 0.5f, 1.0f, 3.0f };
 
 void Player_UseTunicBoots(Player* this, PlayState* play) {
     // Boots and tunics equip despite state
+    if (
+        this->stateFlags1 & (PLAYER_STATE1_INPUT_DISABLED | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE | PLAYER_STATE1_TEXT_ON_SCREEN | PLAYER_STATE1_DEAD) ||
+        this->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING
+    ) {
+        return;
+    }
+
     s32 i;
-    s32 item;
-    s32 itemAction;
-    if (!(this->stateFlags1 & PLAYER_STATE1_INPUT_DISABLED || this->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || this->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE || this->stateFlags1 & PLAYER_STATE1_TEXT_ON_SCREEN || this->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING)) {
-        for (i = 0; i < ARRAY_COUNT(sItemButtons); i++) {
-            if (CHECK_BTN_ALL(sControlInput->press.button, sItemButtons[i])) {
-                break;
-            }
+    for (i = 0; i < ARRAY_COUNT(sItemButtons); i++) {
+        if (CHECK_BTN_ALL(sControlInput->press.button, sItemButtons[i])) {
+            break;
         }
-        item = Player_GetItemOnButton(play, i);
-        if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
-            this->heldItemButton = i;
-            itemAction = Player_ItemToItemAction(item);
-            if (itemAction >= PLAYER_IA_BOOTS_KOKIRI) {
-                u16 bootsValue = itemAction - PLAYER_IA_BOOTS_KOKIRI + 1;
-                if (CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == bootsValue) {
-                    Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_KOKIRI);
-                } else {
-                    Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, bootsValue);
-                }
-                Player_SetEquipmentData(play, this);
-                func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == EQUIP_VALUE_BOOTS_IRON ? NA_SE_PL_WALK_HEAVYBOOTS
-                                                                                            : NA_SE_PL_CHANGE_ARMS);
-            } else if (itemAction >= PLAYER_IA_TUNIC_KOKIRI) {
-                u16 tunicValue = itemAction - PLAYER_IA_TUNIC_KOKIRI + 1;
-                if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == tunicValue) {
-                    Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_KOKIRI);
-                } else {
-                    Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, tunicValue);
-                }
-                Player_SetEquipmentData(play, this);
-                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+    }
+    s32 item = Player_GetItemOnButton(play, i);
+    if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+        if (item >= ITEM_BOOTS_KOKIRI) {
+            u16 bootsValue = item - ITEM_BOOTS_KOKIRI + 1;
+            if (CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == bootsValue) {
+                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_KOKIRI);
+            } else {
+                Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, bootsValue);
             }
+            Player_SetEquipmentData(play, this);
+            func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == EQUIP_VALUE_BOOTS_IRON ? NA_SE_PL_WALK_HEAVYBOOTS : NA_SE_PL_CHANGE_ARMS);
+        } else {
+            u16 tunicValue = item - ITEM_TUNIC_KOKIRI + 1;
+            if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == tunicValue) {
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_KOKIRI);
+            } else {
+                Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, tunicValue);
+            }
+            Player_SetEquipmentData(play, this);
+            func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
         }
     }
 }
@@ -11815,61 +11852,177 @@ void Player_Destroy(Actor* thisx, PlayState* play) {
 
 //first person manipulate player actor
 s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
-    s32 temp1;
-    s16 temp2;
-    s16 temp3;
-    bool gInvertAimingXAxis = (CVarGetInteger("gInvertAimingXAxis", 0) && !CVarGetInteger("gMirroredWorld", 0)) || (!CVarGetInteger("gInvertAimingXAxis", 0) && CVarGetInteger("gMirroredWorld", 0));
+    s32 temp1 = 0;
+    s16 temp2 = 0;
+    s16 temp3 = 0;
+    s8 invertXAxisMulti = ((CVarGetInteger("gInvertAimingXAxis", 0) && !CVarGetInteger("gMirroredWorld", 0)) || (!CVarGetInteger("gInvertAimingXAxis", 0) && CVarGetInteger("gMirroredWorld", 0))) ? -1 : 1;
+    s8 invertYAxisMulti = CVarGetInteger("gInvertAimingYAxis", 1) ? 1 : -1;
+    f32 xAxisMulti = CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f);
+    f32 yAxisMulti = CVarGetFloat("gFirstPersonCameraSensitivityY", 1.0f);
 
-    if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0) && !CVarGetInteger("gDisableAutoCenterViewFirstPerson", 0)) {
-        temp2 = sControlInput->rel.stick_y * 240.0f * (CVarGetInteger("gInvertAimingYAxis", 1) ? 1 : -1); // Sensitivity not applied here because higher than default sensitivies will allow the camera to escape the autocentering, and glitch out massively
-        Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
+    if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) { // First person without weapon
+        // Y Axis
+        if (!CVarGetInteger("gMoveWhileFirstPerson", 0)) {
+            temp2 += sControlInput->rel.stick_y * 240.0f * invertYAxisMulti * yAxisMulti;
+        }
+        if (CVarGetInteger("gRightStickAiming", 0) && fabsf(sControlInput->cur.right_stick_y) > 15.0f) {
+            temp2 += sControlInput->cur.right_stick_y * 240.0f * invertYAxisMulti * yAxisMulti;
+        }
+        if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
+            temp2 += (-sControlInput->cur.gyro_x) * 750.0f;
+        }
+        if (CVarGetInteger("gDisableAutoCenterViewFirstPerson", 0)) {
+            this->actor.focus.rot.x += temp2 * 0.1f;
+            this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -14000, 14000);
+        } else {
+            Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
+        }
 
-        temp2 = sControlInput->rel.stick_x * -16.0f * (gInvertAimingXAxis ? -1 : 1) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
+        // X Axis
+        temp2 = 0;
+        if (!CVarGetInteger("gMoveWhileFirstPerson", 0)) {
+            temp2 += sControlInput->rel.stick_x * -16.0f * invertXAxisMulti * xAxisMulti;
+        }
+        if (CVarGetInteger("gRightStickAiming", 0) && fabsf(sControlInput->cur.right_stick_x) > 15.0f) {
+            temp2 += sControlInput->cur.right_stick_x * -16.0f * invertXAxisMulti * xAxisMulti;
+        }
+        if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
+            temp2 += (sControlInput->cur.gyro_y) * 750.0f * invertXAxisMulti;
+        }
         temp2 = CLAMP(temp2, -3000, 3000);
         this->actor.focus.rot.y += temp2;
-    } else {
+    } else { // First person with weapon
+        // Y Axis
         temp1 = (this->stateFlags1 & PLAYER_STATE1_ON_HORSE) ? 3500 : 14000;
-        temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
-                (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f *
-                        (CVarGetInteger("gInvertAimingYAxis", 1) ? 1 : -1)) * (CVarGetFloat("gFirstPersonCameraSensitivityY", 1.0f));
-        this->actor.focus.rot.x += temp3;
-
+        
+        if (!CVarGetInteger("gMoveWhileFirstPerson", 0)) {
+            temp3 += ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
+                    (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f) * invertYAxisMulti * yAxisMulti;
+        }
+        if (CVarGetInteger("gRightStickAiming", 0) && fabsf(sControlInput->cur.right_stick_y) > 15.0f) {
+            temp3 += ((sControlInput->cur.right_stick_y >= 0) ? 1 : -1) *
+                    (s32)((1.0f - Math_CosS(sControlInput->cur.right_stick_y * 200)) * 1500.0f) * invertYAxisMulti * yAxisMulti;
+        }
         if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
-            this->actor.focus.rot.x -= (sControlInput->cur.gyro_x) * 750.0f;
+            temp3 += (-sControlInput->cur.gyro_x) * 750.0f;
         }
-
-        if (fabsf(sControlInput->cur.right_stick_y) > 15.0f && CVarGetInteger("gRightStickAiming", 0) != 0) {
-            this->actor.focus.rot.x -=
-                (sControlInput->cur.right_stick_y) * 10.0f * (CVarGetInteger("gInvertAimingYAxis", 1) ? -1 : 1) * (CVarGetFloat("gFirstPersonCameraSensitivityY", 1.0f));
-        }
-
+        this->actor.focus.rot.x += temp3;
         this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
 
+        // X Axis
         temp1 = 19114;
         temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
-        temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
-                (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f *
-                        (gInvertAimingXAxis ? -1 : 1)) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
-        temp2 += temp3;
-
-        this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
-
+        temp3 = 0;
+        if (!CVarGetInteger("gMoveWhileFirstPerson", 0)) {
+            temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
+                    (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f) * invertXAxisMulti * xAxisMulti;
+        }
+        if (CVarGetInteger("gRightStickAiming", 0) && fabsf(sControlInput->cur.right_stick_x) > 15.0f) {
+            temp3 += ((sControlInput->cur.right_stick_x >= 0) ? 1 : -1) *
+                    (s32)((1.0f - Math_CosS(sControlInput->cur.right_stick_x * 200)) * -1500.0f) * invertXAxisMulti * xAxisMulti;
+        }
         if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
-            this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
+            temp3 += (sControlInput->cur.gyro_y) * 750.0f * invertXAxisMulti;
+        }
+        temp2 += temp3;
+        this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
+    }
+
+    if (CVarGetInteger("gMoveWhileFirstPerson", 0)) {
+        f32 movementSpeed = LINK_IS_ADULT ? 9.0f : 8.25f;
+        if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && this->currentMask == PLAYER_MASK_BUNNY) {
+            movementSpeed *= 1.5f;
         }
 
-        if (fabsf(sControlInput->cur.right_stick_x) > 15.0f && CVarGetInteger("gRightStickAiming", 0) != 0) {
-            this->actor.focus.rot.y +=
-                (sControlInput->cur.right_stick_x) * 10.0f * (gInvertAimingXAxis ? 1 : -1) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
+        f32 relX = (sControlInput->rel.stick_x / 10 * -invertXAxisMulti);
+        f32 relY = (sControlInput->rel.stick_y / 10);
+
+        // Normalize so that diagonal movement isn't faster
+        f32 relMag = sqrtf((relX * relX) + (relY * relY));
+        if (relMag > 1.0f) {
+            relX /= relMag;
+            relY /= relMag;
         }
+
+        // Determine what left and right mean based on camera angle
+        f32 relX2 = relX * Math_CosS(this->actor.focus.rot.y) + relY * Math_SinS(this->actor.focus.rot.y);
+        f32 relY2 = relY * Math_CosS(this->actor.focus.rot.y) - relX * Math_SinS(this->actor.focus.rot.y);
+
+        // Calculate distance for footstep sound
+        f32 distance = sqrtf((relX2 * relX2) + (relY2 * relY2)) * movementSpeed;
+        func_8084029C(this, distance / 4.5f);
+
+        this->actor.world.pos.x += (relX2 * movementSpeed) + this->actor.colChkInfo.displacement.x;
+        this->actor.world.pos.z += (relY2 * movementSpeed) + this->actor.colChkInfo.displacement.z;
     }
 
     this->unk_6AE |= 2;
-    return func_80836AB8(this, (play->shootingGalleryStatus != 0) || func_8002DD78(this) || func_808334B4(this)) -
-           arg3;
+    return func_80836AB8(this, (play->shootingGalleryStatus != 0) || func_8002DD78(this) || func_808334B4(this)) - arg3;
 }
 
 void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
+    f32 temp1;
+    f32 temp2;
+    
+    // #region SOH [Enhancement]
+    f32 swimMod = 1.0f;
+
+    if (CVarGetInteger("gEnableWalkModify", 0) == 1) {
+        if (CVarGetInteger("gWalkSpeedToggle", 0) == 1) {
+            if (gWalkSpeedToggle1) {
+                swimMod *= CVarGetFloat("gSwimModifierOne", 1.0f);
+            } else if (gWalkSpeedToggle2) {
+                swimMod *= CVarGetFloat("gSwimModifierTwo", 1.0f);
+            }
+        } else {
+            if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
+                swimMod *= CVarGetFloat("gSwimModifierOne", 1.0f);
+            } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
+                swimMod *= CVarGetFloat("gSwimModifierTwo", 1.0f);
+            }
+        }
+        temp1 = this->skelAnime.curFrame - 10.0f;
+
+        temp2 = (R_RUN_SPEED_LIMIT / 100.0f) * 0.8f * swimMod;
+        if (*arg1 > temp2) {
+            *arg1 = temp2;
+        }
+    
+        if ((0.0f < temp1) && (temp1 < 10.0f)) {
+            temp1 *= 6.0f;
+        } else {
+            temp1 = 0.0f;
+            arg2 = 0.0f;
+        }
+
+        Math_AsymStepToF(arg1, arg2 * 0.8f * swimMod, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
+        Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
+    // #endregion
+    } else {
+
+        temp1 = this->skelAnime.curFrame - 10.0f;
+
+        temp2 = (R_RUN_SPEED_LIMIT / 100.0f) * 0.8f;
+        if (*arg1 > temp2) {
+            *arg1 = temp2;
+        }
+
+        if ((0.0f < temp1) && (temp1 < 10.0f)) {
+            temp1 *= 6.0f;
+        } else {
+            temp1 = 0.0f;
+            arg2 = 0.0f;
+        }
+
+        Math_AsymStepToF(arg1, arg2 * 0.8f, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
+        Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
+    }
+}
+
+// #region SOH [Enhancement]
+//Diving uses function func_8084AEEC to calculate changes both xz and y velocity (via func_8084DBC4)
+//Provide original calculation for y velocity when swim speed mod is active
+void SurfaceWithoutSwimMod(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     f32 temp1;
     f32 temp2;
 
@@ -11890,6 +12043,7 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     Math_AsymStepToF(arg1, arg2 * 0.8f, temp1, (fabsf(*arg1) * 0.02f) + 0.05f);
     Math_ScaledStepToS(&this->currentYaw, arg3, 1600);
 }
+// #endregion
 
 void func_8084B000(Player* this) {
     f32 phi_f18;
@@ -12508,8 +12662,15 @@ void func_8084C760(Player* this, PlayState* play) {
                 return;
             }
 
+            // player speed in a tunnel
             if (!Player_TryLeavingCrawlspace(this, play)) {
-                this->linearVelocity = sControlInput->rel.stick_y * 0.03f;
+                // #region SOH [Enhancement]
+                if (CVarGetInteger("gCrawlSpeed", 1) > 1) {
+                    this->linearVelocity = sControlInput->rel.stick_y * 0.03f * CVarGetInteger("gCrawlSpeed", 1);
+                // #endregion
+                } else {
+                    this->linearVelocity = sControlInput->rel.stick_y * 0.03f;
+                }
             }
         }
         return;
@@ -13044,7 +13205,14 @@ void func_8084DBC4(PlayState* play, Player* this, f32 arg2) {
 
     Player_GetMovementSpeedAndYaw(this, &sp2C, &sp2A, 0.0f, play);
     func_8084AEEC(this, &this->linearVelocity, sp2C * 0.5f, sp2A);
-    func_8084AEEC(this, &this->actor.velocity.y, arg2, this->currentYaw);
+    // Original implementation of func_8084AEEC (SurfaceWithoutSwimMod) to prevent velocity increases via swim mod which push Link into the air
+    // #region SOH [Enhancement]
+    if (CVarGetInteger("gEnableWalkModify", 0)) {
+        SurfaceWithoutSwimMod(this, &this->actor.velocity.y, arg2, this->currentYaw);
+    // #endregion
+    } else {
+        func_8084AEEC(this, &this->actor.velocity.y, arg2, this->currentYaw);
+    }
 }
 
 void func_8084DC48(Player* this, PlayState* play) {
