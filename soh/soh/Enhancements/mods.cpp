@@ -1305,12 +1305,21 @@ void RegisterToTMedallions() {
 }
 
 void RegisterPauseMenuHooks() {
-    if (!GameInteractor::IsSaveLoaded() || !CVarGetInteger("gPauseWarp", 0)) return;
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPauseMenu>([]() {
-        PauseWarp_Main();
-    });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        PauseWarp_Text();
+    static bool pauseWarpHooksRegistered = false;
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&]() {
+        if (!GameInteractor::IsSaveLoaded() || !CVarGetInteger("gPauseWarp", 0)) {
+            pauseWarpHooksRegistered = false;
+            return;
+        }
+        if (!pauseWarpHooksRegistered) {
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPauseMenu>([]() {PauseWarp_Main();});
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+                if (!GameInteractor::IsGameplayPaused()) {
+                    PauseWarp_Text();
+                }
+            });
+            pauseWarpHooksRegistered = true;
+        }
     });
 }
 
