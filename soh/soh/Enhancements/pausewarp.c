@@ -1,106 +1,92 @@
-#include <stdbool.h>
-#include <stdint.h>
-#include "soh/Enhancements/gameconsole.h"
+#include "custom-message/CustomMessageTypes.h"
 #include "global.h"
-#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "z64.h"
+#include "game-interactor/GameInteractor.h"
 
-typedef struct {
-    bool warpInitiated, textboxInitiated, inChoosingState, textboxIsOpen, isTextboxClosing;
-    int aButtonCooldown, textboxCheckCooldown, textboxOpenCooldown;
-} PauseWarpState;
+static const int songMessageMap[] = { 
+    TEXT_WARP_MINUET_OF_FOREST, 
+    TEXT_WARP_BOLERO_OF_FIRE, 
+    TEXT_WARP_SERENADE_OF_WATER, 
+    TEXT_WARP_REQUIEM_OF_SPIRIT, 
+    TEXT_WARP_NOCTURNE_OF_SHADOW, 
+    TEXT_WARP_PRELUDE_OF_LIGHT 
+};
 
-static const int songMessageMap[] = { TEXT_WARP_MINUET_OF_FOREST, TEXT_WARP_BOLERO_OF_FIRE, TEXT_WARP_SERENADE_OF_WATER, TEXT_WARP_REQUIEM_OF_SPIRIT, TEXT_WARP_NOCTURNE_OF_SHADOW, TEXT_WARP_PRELUDE_OF_LIGHT };
-static const int songAudioMap[] = { NA_BGM_OCA_MINUET, NA_BGM_OCA_BOLERO, NA_BGM_OCA_SERENADE, NA_BGM_OCA_REQUIEM, NA_BGM_OCA_NOCTURNE, NA_BGM_OCA_LIGHT };
+static const int ocarinaSongMap[] = {
+    OCARINA_SONG_MINUET, 
+    OCARINA_SONG_BOLERO, 
+    OCARINA_SONG_SERENADE, 
+    OCARINA_SONG_REQUIEM, 
+    OCARINA_SONG_NOCTURNE, 
+    OCARINA_SONG_PRELUDE
+};
 
-extern bool IsSaveLoadedWrapper();
+static const int entranceIndexMap[] = {
+    ENTR_SACRED_FOREST_MEADOW_2, // Minuet
+    ENTR_DEATH_MOUNTAIN_CRATER_4, // Bolero
+    ENTR_LAKE_HYLIA_8, // Serenade
+    ENTR_DESERT_COLOSSUS_5, // Requiem
+    ENTR_GRAVEYARD_7, // Nocturne
+    ENTR_TEMPLE_OF_TIME_7 // Prelude
+};
 
-static PauseWarpState state;
+static const int songAudioMap[] = { 
+    NA_BGM_OCA_MINUET, 
+    NA_BGM_OCA_BOLERO, 
+    NA_BGM_OCA_SERENADE, 
+    NA_BGM_OCA_REQUIEM, 
+    NA_BGM_OCA_NOCTURNE, 
+    NA_BGM_OCA_LIGHT 
+};
 
-static int lastPlayedSong = -1;
+static bool isWarpActive = false; 
 
-bool IsPauseWarpEnabled() {
-    return CVarGetInteger("gPauseWarpEnabled", 0) && IsSaveLoadedWrapper();
-}
-
-void ResetStateFlags(PauseWarpState* state) {
-    *state = (PauseWarpState){0};
-}
-
-void InitiateWarp(PlayState* play, Player* player, int song) {
-    int idx = song - QUEST_SONG_MINUET;
-    Audio_SetSoundBanksMute(0x20);
-    Audio_PlayFanfare(songAudioMap[idx]);
-    play->msgCtx.lastPlayedSong = idx;
-    play->pauseCtx.state = 0x12;
-    Message_StartTextbox(play, songMessageMap[idx], NULL);
-    player->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
-    state = (PauseWarpState){.warpInitiated = true, .textboxOpenCooldown = 10, .aButtonCooldown = 10, .textboxCheckCooldown = 5, .textboxIsOpen = true};
-    play->msgCtx.choiceIndex = 0;
-}
-
-void HandleWarpConfirmation(PlayState* play, Player* player) {
-    if (play->msgCtx.choiceIndex == 0) Entrance_SetWarpSongEntrance();
-    player->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
-    ResetStateFlags(&state);
-}
-
-void HandleCooldowns() {
-    if (state.aButtonCooldown > 0) state.aButtonCooldown--;
-    if (state.textboxCheckCooldown > 0) state.textboxCheckCooldown--;
-    if (state.textboxOpenCooldown > 0) state.textboxOpenCooldown--;
-    if (state.isTextboxClosing) ResetStateFlags(&state);
-}
-
-void PauseWarp_Main() {
-    if (!IsPauseWarpEnabled()) return;
-    
-    PlayState* play = gPlayState;
-    Player* player = GET_PLAYER(play);
-    int aButtonPressed = CHECK_BTN_ALL(play->state.input->press.button, BTN_A);
-
-    if (aButtonPressed && !state.aButtonCooldown && !(state.warpInitiated || state.textboxInitiated || state.inChoosingState)) {
-        int song = play->pauseCtx.cursorPoint[PAUSE_QUEST];
-        if (CHECK_QUEST_ITEM(song) && song >= QUEST_SONG_MINUET && song <= QUEST_SONG_PRELUDE) {
-            if (gSaveContext.inventory.items[SLOT_OCARINA] != ITEM_NONE) { // Added this line
-                InitiateWarp(play, player, song);
-            }
-        }
-    }
-}
-
-void PauseWarp_Idle() {
-    if (!IsPauseWarpEnabled()) return;
-    
-    PlayState* play = gPlayState;
-    Player* player = GET_PLAYER(play);
-
-    if (gSaveContext.inventory.items[SLOT_OCARINA] == ITEM_NONE) {
-        ResetStateFlags(&state);
+void PauseWarp_Execute() {
+    if (!isWarpActive || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
         return;
     }
-
-    int currentSong = play->pauseCtx.cursorPoint[PAUSE_QUEST];
-    
-    switch (play->msgCtx.msgMode) {
-        case 6: 
-            if (state.warpInitiated) state.textboxInitiated = true; 
-            break;
-        case 53: 
-            if (state.warpInitiated && state.textboxInitiated) state.inChoosingState = true; 
-            break;
-        case 54: 
-            if (state.warpInitiated && state.textboxInitiated && state.inChoosingState) {
-                HandleWarpConfirmation(play, player); 
-                lastPlayedSong = currentSong; // Update the last played song
-            }
-            break;
-        case 0: 
-            if (currentSong == lastPlayedSong) {
-                // Reset state flags if the same song is selected twice
-                ResetStateFlags(&state);
-            }
-            break;
+    isWarpActive = false; 
+    GET_PLAYER(gPlayState)->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
+    if (gPlayState->msgCtx.choiceIndex != 0) {
+        return;
     }
+    if (IS_RANDO) {
+        Entrance_SetWarpSongEntrance();
+        return;
+    }
+    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+    gPlayState->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
+    for (int i = 0; i < ARRAY_COUNT(ocarinaSongMap); i++) {
+        if (gPlayState->msgCtx.lastPlayedSong == ocarinaSongMap[i]) {
+            gPlayState->nextEntranceIndex = entranceIndexMap[i];
+            return;
+        }
+    }
+    gPlayState->transitionTrigger = TRANS_TRIGGER_OFF;
+}
 
-    HandleCooldowns();
+void ActivateWarp(PauseContext* pauseCtx, int song) {
+    Audio_OcaSetInstrument(0);
+    Interface_SetDoAction(gPlayState, DO_ACTION_NONE);
+    pauseCtx->state = 0x12;
+    WREG(2) = -6240;
+    func_800F64E0(0);
+    pauseCtx->unk_1E4 = 0;
+    int idx = song - QUEST_SONG_MINUET;
+    gPlayState->msgCtx.lastPlayedSong = ocarinaSongMap[idx];
+    Audio_SetSoundBanksMute(0x20);
+    Audio_PlayFanfare(songAudioMap[idx]);
+    Message_StartTextbox(gPlayState, songMessageMap[idx], NULL);
+    GET_PLAYER(gPlayState)->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
+    isWarpActive = true;
+}
+
+void PauseWarp_HandleSelection() {
+    if (gSaveContext.inventory.items[SLOT_OCARINA] != ITEM_NONE) {
+        int aButtonPressed = CHECK_BTN_ALL(gPlayState->state.input->press.button, BTN_A);
+        int song = gPlayState->pauseCtx.cursorPoint[PAUSE_QUEST];
+        if (aButtonPressed && CHECK_QUEST_ITEM(song) && song >= QUEST_SONG_MINUET && song <= QUEST_SONG_PRELUDE) {
+            ActivateWarp(&gPlayState->pauseCtx, song);
+        }
+    }
 }

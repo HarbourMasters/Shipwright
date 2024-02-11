@@ -40,8 +40,6 @@ extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
 uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
-void PauseWarp_Main();
-void PauseWarp_Idle();
 }
 
 // GreyScaleEndDlist
@@ -1306,13 +1304,20 @@ void RegisterToTMedallions() {
     });
 }
 
-void RegisterPauseWarp() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPauseMenu>([]() {
-        PauseWarp_Main();  
-    });
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        PauseWarp_Idle();
+void RegisterPauseMenuHooks() {
+    static bool pauseWarpHooksRegistered = false;
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&]() {
+        if (!GameInteractor::IsSaveLoaded() || !CVarGetInteger("gPauseWarp", 0)) {
+            pauseWarpHooksRegistered = false;
+            return;
+        }
+        if (!pauseWarpHooksRegistered) {
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPauseMenu>([]() {PauseWarp_HandleSelection();});
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+                    PauseWarp_Execute();
+            });
+            pauseWarpHooksRegistered = true;
+        }
     });
 }
 
@@ -1352,5 +1357,5 @@ void InitMods() {
     NameTag_RegisterHooks();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
-    RegisterPauseWarp();
+    RegisterPauseMenuHooks();
 }
