@@ -95,5 +95,13 @@ static const ALIGN_ASSET(2) char gLinkBottleDL[] = dgLinkBottleDL;
 #define dgLinkBottleContentsDL "__OTR__objects/object_link_eq/gLinkBottleContentsDL"
 static const ALIGN_ASSET(2) char gLinkBottleContentsDL[] = dgLinkBottleContentsDL;
 
+// New Equipment System FPS Hand Basemodels
+#define dgLinkAdultFPSHandDL "__OTR__objects/object_link_boy/gLinkAdultFPSHandDL"
+static const ALIGN_ASSET(2) char gLinkAdultFPSHandDL[] = dgLinkAdultFPSHandDL;
+
+#define dgLinkChildFPSHandDL "__OTR__objects/object_link_child/gLinkChildFPSHandDL"
+static const ALIGN_ASSET(2) char gLinkChildFPSHandDL[] = dgLinkChildFPSHandDL;
+
+
 
 #endif // OBJECTS_OBJECT_CUSTOM_H

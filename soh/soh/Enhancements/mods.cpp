@@ -35,6 +35,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
+void ResourceMgr_PatchCustomGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 uint8_t ResourceMgr_FileAltExists(const char* resName);
 uint8_t ResourceGetIsCustomByName(const char* name);
@@ -693,7 +694,7 @@ void RegisterMirrorModeHandler() {
 }
 
 void UpdatePatchHand() {
-    /*if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_CHILD && (!Player_IsCustomLinkModel())) {
+    if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_CHILD && (!Player_IsCustomLinkModel())) {
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer2", 93, gsSPEndDisplayList());
         ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot1", 84, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
@@ -731,7 +732,7 @@ void UpdatePatchHand() {
         ResourceMgr_UnpatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot");
         ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang");
         ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield");
-    }*/
+    }
 }
 
 void RegisterPatchHandHandler() {
@@ -740,193 +741,396 @@ void RegisterPatchHandHandler() {
     });
 }
 
-void UpdatePatchCustomDlists() {
-    if (CVarGetInteger("gEnhancements.CustomDlists", 0)) {
-        if (ResourceGetIsCustomByName(gLinkMasterSwordDL)) {
-            ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist1", 0, gsSPDisplayListOTRFilePath(gLinkMasterSwordDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist2", 1, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist3", 2, gsSPEndDisplayList());
+void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, const char* dlist2, const char* dlist3, const char* alternateDL) {
+    if (resource == NULL || gfx == NULL || dlist1 == NULL || dlist2 == NULL)
+        return;
+
+    if (ResourceGetIsCustomByName(gfx) && CVarGetInteger("gEnhancements.CustomDlists", 0)) {
+        ResourceMgr_PatchCustomGfxByName(resource, dlist1, 0, gsSPDisplayListOTRFilePath(gfx));
+        if (dlist3 == NULL) {
+            ResourceMgr_PatchCustomGfxByName(resource, dlist2, 1, gsSPEndDisplayList());
         } else {
-            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist1");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist2");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist3");
+            ResourceMgr_PatchCustomGfxByName(resource, dlist2, 1, gsSPDisplayListOTRFilePath(alternateDL));
         }
-        if (ResourceGetIsCustomByName(gLinkHylianShieldDL)) {
-            ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist4", 0, gsSPDisplayListOTRFilePath(gLinkHylianShieldDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist5", 1, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist6", 2, gsSPEndDisplayList());
-        } else {
-            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist4");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist5");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist6");
-        }
-        if (ResourceGetIsCustomByName(gLinkMasterSwordSheathDL)) {
-            ResourceMgr_PatchGfxByName(gLinkAdultSheathNearDL, "customDlist7", 0, gsSPDisplayListOTRFilePath(gLinkMasterSwordSheathDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultSheathNearDL, "customDlist8", 1, gsSPEndDisplayList());
-        } else {
-            ResourceMgr_UnpatchGfxByName(gLinkAdultSheathNearDL, "customDlist7");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultSheathNearDL, "customDlist8");
-        }
-        if (ResourceGetIsCustomByName(gLinkHylianShieldOnBackDL) && ResourceGetIsCustomByName(gLinkMasterSwordInSheathDL)) {
-            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist9", 0, gsSPDisplayListOTRFilePath(gLinkHylianShieldOnBackDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist10", 1, gsSPDisplayListOTRFilePath(gLinkMasterSwordInSheathDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist11", 2, gsSPEndDisplayList());
-        } else {
-            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist9");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist10");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist11");
-        }
-        if (ResourceGetIsCustomByName(gLinkMasterSwordInSheathDL)) {
-            ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist12", 0, gsSPDisplayListOTRFilePath(gLinkMasterSwordInSheathDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist13", 1, gsSPEndDisplayList());
-        } else {
-            ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist12");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist13");
-        }
-        if (ResourceGetIsCustomByName(gLinkHylianShieldOnBackDL) && ResourceGetIsCustomByName(gLinkMasterSwordSheathDL)) {
-            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist14", 0, gsSPDisplayListOTRFilePath(gLinkMasterSwordSheathDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist15", 1, gsSPDisplayListOTRFilePath(gLinkHylianShieldOnBackDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist16", 2, gsSPEndDisplayList());
-        } else {
-            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist14");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist15");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist16");
-        }
-        if (ResourceGetIsCustomByName(gLinkMirrorShieldDL)) {
-            ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist20", 0, gsSPDisplayListOTRFilePath(gLinkMirrorShieldDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist21", 1, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist22", 2, gsSPEndDisplayList());
-        } else {
-            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist20");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist21");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist22");
-        }
-        if (ResourceGetIsCustomByName(gLinkMirrorShieldOnBackDL) && ResourceGetIsCustomByName(gLinkMasterSwordInSheathDL)) {
-            ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist23", 0, gsSPDisplayListOTRFilePath(gLinkMirrorShieldOnBackDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist24", 1, gsSPDisplayListOTRFilePath(gLinkMasterSwordInSheathDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist25", 2, gsSPEndDisplayList());
-        } else {
-            ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist23");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist24");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist25");
-        }
-        if (ResourceGetIsCustomByName(gLinkLongswordDL)) {
-            ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist17", 0, gsSPDisplayListOTRFilePath(gLinkLongswordDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist18", 1, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
-            ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist19", 2, gsSPEndDisplayList());
-        } else {
-            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist17");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist18");
-            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist19");
-        }
-        if (ResourceGetIsCustomByName(gLinkKokiriSwordDL)) {
-            ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist41", 0, gsSPDisplayListOTRFilePath(gLinkKokiriSwordDL));
-            ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist42", 1, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
-            ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist43", 2, gsSPEndDisplayList());
-        } else {
-            ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist41");
-            ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist42");
-            ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist43");
-        }
-        if (ResourceGetIsCustomByName(gLinkDekuShieldDL)) {
-            ResourceMgr_PatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist44", 0, gsSPDisplayListOTRFilePath(gLinkDekuShieldDL));
-            ResourceMgr_PatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist45", 1, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
-            ResourceMgr_PatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist46", 2, gsSPEndDisplayList());
-        } else {
-            ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist44");
-            ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist45");
-            ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist46");
-        }
-        if (ResourceGetIsCustomByName(gLinkKokiriSwordSheathDL)) {
-            ResourceMgr_PatchGfxByName(gLinkChildSheathNearDL, "customDlist47", 0, gsSPDisplayListOTRFilePath(gLinkKokiriSwordSheathDL));
-            ResourceMgr_PatchGfxByName(gLinkChildSheathNearDL, "customDlist48", 1, gsSPEndDisplayList());
-        } else {
-            ResourceMgr_UnpatchGfxByName(gLinkChildSheathNearDL, "customDlist47");
-            ResourceMgr_UnpatchGfxByName(gLinkChildSheathNearDL, "customDlist48");
-        }
-        if (ResourceGetIsCustomByName(gLinkKokiriSwordInSheathDL)) {
-            ResourceMgr_PatchGfxByName(gLinkChildSwordAndSheathNearDL, "customDlist55", 0, gsSPDisplayListOTRFilePath(gLinkKokiriSwordInSheathDL));
-            ResourceMgr_PatchGfxByName(gLinkChildSwordAndSheathNearDL, "customDlist56", 1, gsSPEndDisplayList());
-        } else {
-            ResourceMgr_UnpatchGfxByName(gLinkChildSwordAndSheathNearDL, "customDlist55");
-            ResourceMgr_UnpatchGfxByName(gLinkChildSwordAndSheathNearDL, "customDlist56");
-        }
-        if (ResourceGetIsCustomByName(gLinkKokiriSwordInSheathDL) && ResourceGetIsCustomByName(gLinkDekuShieldOnBackDL)) {
-            ResourceMgr_PatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist49", 0, gsSPDisplayListOTRFilePath(gLinkDekuShieldOnBackDL));
-            ResourceMgr_PatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist50", 1, gsSPDisplayListOTRFilePath(gLinkKokiriSwordInSheathDL));
-            ResourceMgr_PatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist51", 2, gsSPEndDisplayList());
-        } else {
-            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist49");
-            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist50");
-            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist51");
-        }
-        if (ResourceGetIsCustomByName(gLinkDekuShieldOnBackDL) && ResourceGetIsCustomByName(gLinkKokiriSwordSheathDL)) {
-            ResourceMgr_PatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist52", 0, gsSPDisplayListOTRFilePath(gLinkKokiriSwordSheathDL));
-            ResourceMgr_PatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist53", 1, gsSPDisplayListOTRFilePath(gLinkDekuShieldOnBackDL));
-            ResourceMgr_PatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist54", 2, gsSPEndDisplayList());
-        } else {
-            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist52");
-            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist53");
-            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist54");
-        }
-        if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS) {
-            if (ResourceGetIsCustomByName(gLinkLongswordSheathDL)) {
-                ResourceMgr_PatchGfxByName(gLinkAdultSheathNearDL, "customDlist7", 0, gsSPDisplayListOTRFilePath(gLinkLongswordSheathDL));
-                ResourceMgr_PatchGfxByName(gLinkAdultSheathNearDL, "customDlist8", 1, gsSPEndDisplayList());
-            } else {
-                ResourceMgr_UnpatchGfxByName(gLinkAdultSheathNearDL, "customDlist7");
-                ResourceMgr_UnpatchGfxByName(gLinkAdultSheathNearDL, "customDlist8");
-            }
-            if (ResourceGetIsCustomByName(gLinkLongswordInSheathDL) && ResourceGetIsCustomByName(gLinkHylianShieldOnBackDL)) {
-                ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist9", 0, gsSPDisplayListOTRFilePath(gLinkHylianShieldOnBackDL));
-                ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist10", 1, gsSPDisplayListOTRFilePath(gLinkLongswordInSheathDL));
-                ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist11", 2, gsSPEndDisplayList());
-            } else {
-                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist9");
-                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist10");
-                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist11");
-            }
-            if (ResourceGetIsCustomByName(gLinkLongswordInSheathDL)) {
-                ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist12", 0, gsSPDisplayListOTRFilePath(gLinkLongswordInSheathDL));
-                ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist13", 1, gsSPEndDisplayList());
-            } else {
-                ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist12");
-                ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist13");
-            }
-            if (ResourceGetIsCustomByName(gLinkLongswordSheathDL) && ResourceGetIsCustomByName(gLinkHylianShieldOnBackDL)) {
-                ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist14", 0, gsSPDisplayListOTRFilePath(gLinkLongswordSheathDL));
-                ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist15", 1, gsSPDisplayListOTRFilePath(gLinkHylianShieldOnBackDL));
-                ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist16", 2, gsSPEndDisplayList());
-            } else {
-                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist14");
-                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist15");
-                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist16");
-            }
-            if (ResourceGetIsCustomByName(gLinkLongswordInSheathDL) && ResourceGetIsCustomByName(gLinkMirrorShieldOnBackDL)) {
-                ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist33", 0, gsSPDisplayListOTRFilePath(gLinkMirrorShieldOnBackDL));
-                ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist34", 1, gsSPDisplayListOTRFilePath(gLinkLongswordInSheathDL));
-                ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist35", 2, gsSPEndDisplayList());
-            } else {
-                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist33");
-                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist34");
-                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist35");
-            }
-            if (ResourceGetIsCustomByName(gLinkLongswordSheathDL) && ResourceGetIsCustomByName(gLinkMirrorShieldOnBackDL)) {
-                ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist38", 0, gsSPDisplayListOTRFilePath(gLinkLongswordSheathDL));
-                ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist39", 1, gsSPDisplayListOTRFilePath(gLinkMirrorShieldOnBackDL));
-                ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist40", 2, gsSPEndDisplayList());
-            } else {
-                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist38");
-                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist39");
-                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist40");
-            }
-        }
+        if (dlist3 != NULL)
+            ResourceMgr_PatchCustomGfxByName(resource, dlist3, 2, gsSPEndDisplayList());
+    } else {
+        ResourceMgr_UnpatchGfxByName(resource, dlist1);
+        ResourceMgr_UnpatchGfxByName(resource, dlist2);
+        if (dlist3 != NULL)
+            ResourceMgr_UnpatchGfxByName(resource, dlist3);
     }
 }
 
+void UpdatePatchCustomDlists() {
+
+    // Sword and shield graphics
+    PatchOrUnpatch(gLinkAdultLeftHandHoldingMasterSwordNearDL, gLinkMasterSwordDL, "customDlist1", "customDlist2", "customDlist3", gLinkAdultLeftHandClosedNearDL);
+    PatchOrUnpatch(gLinkAdultRightHandHoldingHylianShieldNearDL, gLinkHylianShieldDL, "customDlist4", "customDlist5", "customDlist6", gLinkAdultRightHandClosedNearDL);
+    PatchOrUnpatch(gLinkAdultSheathNearDL, gLinkMasterSwordSheathDL, "customDlist7", "customDlist8", NULL, NULL);
+    PatchOrUnpatch(gLinkAdultHylianShieldSwordAndSheathNearDL, gLinkHylianShieldOnBackDL, "customDlist9", "customDlist10", "customDlist11", gLinkMasterSwordInSheathDL);
+    PatchOrUnpatch(gLinkAdultMasterSwordAndSheathNearDL, gLinkMasterSwordInSheathDL, "customDlist12", "customDlist13", NULL, NULL);
+    PatchOrUnpatch(gLinkAdultHylianShieldAndSheathNearDL, gLinkMasterSwordSheathDL, "customDlist14", "customDlist15", "customDlist16", gLinkHylianShieldOnBackDL);
+    PatchOrUnpatch(gLinkAdultRightHandHoldingMirrorShieldNearDL, gLinkMirrorShieldDL, "customDlist20", "customDlist21", "customDlist22", gLinkAdultRightHandClosedNearDL);
+    PatchOrUnpatch(gLinkAdultMirrorShieldSwordAndSheathNearDL, gLinkMirrorShieldOnBackDL, "customDlist23", "customDlist24", "customDlist25", gLinkMasterSwordInSheathDL);
+    PatchOrUnpatch(gLinkAdultLeftHandHoldingBgsNearDL, gLinkLongswordDL, "customDlist17", "customDlist18", "customDlist19", gLinkAdultLeftHandClosedNearDL);
+    PatchOrUnpatch(gLinkChildLeftFistAndKokiriSwordNearDL, gLinkKokiriSwordDL, "customDlist41", "customDlist42", "customDlist43", gLinkChildLeftFistNearDL);
+    PatchOrUnpatch(gLinkChildRightFistAndDekuShieldNearDL, gLinkDekuShieldDL, "customDlist44", "customDlist45", "customDlist46", gLinkChildRightHandClosedNearDL);
+    PatchOrUnpatch(gLinkChildSheathNearDL, gLinkKokiriSwordSheathDL, "customDlist47", "customDlist48", NULL, NULL);
+    PatchOrUnpatch(gLinkChildSwordAndSheathNearDL, gLinkKokiriSwordInSheathDL, "customDlist55", "customDlist56", NULL, NULL);
+    PatchOrUnpatch(gLinkChildDekuShieldSwordAndSheathNearDL, gLinkKokiriSwordInSheathDL, "customDlist49", "customDlist50", "customDlist51", gLinkDekuShieldOnBackDL);
+    PatchOrUnpatch(gLinkChildDekuShieldAndSheathNearDL, gLinkKokiriSwordSheathDL, "customDlist52", "customDlist53", "customDlist54", gLinkDekuShieldOnBackDL);
+
+    // If BGS is equipped
+    if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS) {
+        PatchOrUnpatch(gLinkAdultSheathNearDL, gLinkLongswordSheathDL, "customDlist7", "customDlist8", NULL, NULL);
+        PatchOrUnpatch(gLinkAdultHylianShieldSwordAndSheathNearDL, gLinkHylianShieldOnBackDL, "customDlist9", "customDlist10", "customDlist11", gLinkLongswordInSheathDL);
+        PatchOrUnpatch(gLinkAdultMasterSwordAndSheathNearDL, gLinkLongswordInSheathDL, "customDlist12", "customDlist13", NULL, NULL);
+        PatchOrUnpatch(gLinkAdultHylianShieldAndSheathNearDL, gLinkLongswordSheathDL, "customDlist14", "customDlist15", "customDlist16", gLinkHylianShieldOnBackDL);
+        PatchOrUnpatch(gLinkAdultMirrorShieldSwordAndSheathNearDL, gLinkMirrorShieldOnBackDL, "customDlist33", "customDlist34", "customDlist35", gLinkLongswordInSheathDL);
+        PatchOrUnpatch(gLinkAdultMirrorShieldAndSheathNearDL, gLinkLongswordSheathDL, "customDlist38", "customDlist39", "customDlist40", gLinkMirrorShieldOnBackDL);
+    }
+
+    // Hookshot graphics
+    PatchOrUnpatch(gLinkAdultRightHandHoldingHookshotNearDL, gLinkHookshotDL, "customDlist57", "customDlist58", "customDlist59", gLinkAdultRightHandClosedNearDL);
+    PatchOrUnpatch(gLinkAdultRightHandHoldingHookshotFarDL, gLinkHookshotDL, "customDlist79", "customDlist80", "customDlist81", gLinkAdultFPSHandDL);
+
+    // Ocarina graphics
+    PatchOrUnpatch(gLinkAdultRightHandHoldingOotNearDL, (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME) ? gLinkOcarinaOfTimeDL : gLinkFairyOcarinaDL, "customDlist63", "customDlist64", "customDlist65", gLinkAdultRightHandNearDL);
+    PatchOrUnpatch(gLinkChildRightHandHoldingFairyOcarinaNearDL, gLinkFairyOcarinaDL, "customDlist82", "customDlist83", "customDlist84", gLinkChildRightHandNearDL);
+    PatchOrUnpatch(gLinkChildRightHandAndOotNearDL, gLinkOcarinaOfTimeDL, "customDlist85", "customDlist86", "customDlist87", gLinkChildRightHandNearDL);
+
+    // Bow graphics
+    PatchOrUnpatch(gLinkAdultRightHandHoldingBowNearDL, gLinkBowDL, "customDlist60", "customDlist61", "customDlist62", gLinkAdultRightHandClosedNearDL);
+    PatchOrUnpatch(gLinkAdultRightHandHoldingBowFirstPersonDL, gLinkBowDL, "customDlist69", "customDlist70", "customDlist71", gLinkAdultFPSHandDL);
+
+    // Hammer graphics
+    PatchOrUnpatch(gLinkAdultLeftHandHoldingHammerNearDL, gLinkHammerDL, "customDlist76", "customDlist77", "customDlist78", gLinkAdultLeftHandClosedNearDL);
+
+    // Boomerang graphics
+    PatchOrUnpatch(gLinkChildLeftFistAndBoomerangNearDL, gLinkBoomerangDL, "customDlist88", "customDlist89", "customDlist90", gLinkChildLeftFistNearDL);
+
+    // Slingshot graphics
+    PatchOrUnpatch(gLinkChildRightHandHoldingSlingshotNearDL, gLinkSlingshotDL, "customDlist91", "customDlist92", "customDlist93", gLinkChildRightHandClosedNearDL);
+    PatchOrUnpatch(gLinkChildRightArmStretchedSlingshotDL, gLinkSlingshotDL, "customDlist94", "customDlist95", "customDlist96", gLinkChildFPSHandDL);
+}
+
+//void UpdatePatchCustomDlists() {
+//    if (CVarGetInteger("gEnhancements.CustomDlists", 0)) {
+//        if (ResourceGetIsCustomByName(gLinkMasterSwordDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist1", 0, gsSPDisplayListOTRFilePath(gLinkMasterSwordDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist2", 1, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist3", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist1");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist2");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "customDlist3");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkHylianShieldDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist4", 0, gsSPDisplayListOTRFilePath(gLinkHylianShieldDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist5", 1, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist6", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist4");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist5");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHylianShieldNearDL, "customDlist6");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkMasterSwordSheathDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultSheathNearDL, "customDlist7", 0, gsSPDisplayListOTRFilePath(gLinkMasterSwordSheathDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultSheathNearDL, "customDlist8", 1, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultSheathNearDL, "customDlist7");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultSheathNearDL, "customDlist8");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkHylianShieldOnBackDL) && ResourceGetIsCustomByName(gLinkMasterSwordInSheathDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist9", 0, gsSPDisplayListOTRFilePath(gLinkHylianShieldOnBackDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist10", 1, gsSPDisplayListOTRFilePath(gLinkMasterSwordInSheathDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist11", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist9");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist10");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist11");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkMasterSwordInSheathDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist12", 0, gsSPDisplayListOTRFilePath(gLinkMasterSwordInSheathDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist13", 1, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist12");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist13");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkHylianShieldOnBackDL) && ResourceGetIsCustomByName(gLinkMasterSwordSheathDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist14", 0, gsSPDisplayListOTRFilePath(gLinkMasterSwordSheathDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist15", 1, gsSPDisplayListOTRFilePath(gLinkHylianShieldOnBackDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist16", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist14");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist15");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist16");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkMirrorShieldDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist20", 0, gsSPDisplayListOTRFilePath(gLinkMirrorShieldDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist21", 1, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist22", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist20");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist21");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingMirrorShieldNearDL, "customDlist22");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkMirrorShieldOnBackDL) && ResourceGetIsCustomByName(gLinkMasterSwordInSheathDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist23", 0, gsSPDisplayListOTRFilePath(gLinkMirrorShieldOnBackDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist24", 1, gsSPDisplayListOTRFilePath(gLinkMasterSwordInSheathDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist25", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist23");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist24");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist25");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkLongswordDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist17", 0, gsSPDisplayListOTRFilePath(gLinkLongswordDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist18", 1, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist19", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist17");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist18");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "customDlist19");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkKokiriSwordDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist41", 0, gsSPDisplayListOTRFilePath(gLinkKokiriSwordDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist42", 1, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist43", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist41");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist42");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "customDlist43");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkDekuShieldDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist44", 0, gsSPDisplayListOTRFilePath(gLinkDekuShieldDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist45", 1, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist46", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist44");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist45");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "customDlist46");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkKokiriSwordSheathDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildSheathNearDL, "customDlist47", 0, gsSPDisplayListOTRFilePath(gLinkKokiriSwordSheathDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildSheathNearDL, "customDlist48", 1, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkChildSheathNearDL, "customDlist47");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildSheathNearDL, "customDlist48");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkKokiriSwordInSheathDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildSwordAndSheathNearDL, "customDlist55", 0, gsSPDisplayListOTRFilePath(gLinkKokiriSwordInSheathDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildSwordAndSheathNearDL, "customDlist56", 1, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkChildSwordAndSheathNearDL, "customDlist55");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildSwordAndSheathNearDL, "customDlist56");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkKokiriSwordInSheathDL) && ResourceGetIsCustomByName(gLinkDekuShieldOnBackDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist49", 0, gsSPDisplayListOTRFilePath(gLinkDekuShieldOnBackDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist50", 1, gsSPDisplayListOTRFilePath(gLinkKokiriSwordInSheathDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist51", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist49");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist50");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDlist51");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkDekuShieldOnBackDL) && ResourceGetIsCustomByName(gLinkKokiriSwordSheathDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist52", 0, gsSPDisplayListOTRFilePath(gLinkKokiriSwordSheathDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist53", 1, gsSPDisplayListOTRFilePath(gLinkDekuShieldOnBackDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist54", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist52");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist53");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDlist54");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkDekuShieldOnBackDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildDekuShieldWithMatrixDL, "customDlist97", 0, gsSPDisplayListOTRFilePath(gLinkDekuShieldOnBackDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildDekuShieldWithMatrixDL, "customDlist98", 1, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldWithMatrixDL, "customDlist97");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldWithMatrixDL, "customDlist98");
+//        }
+//        if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS) {
+//            if (ResourceGetIsCustomByName(gLinkLongswordSheathDL)) {
+//                ResourceMgr_PatchCustomGfxByName(gLinkAdultSheathNearDL, "customDlist7", 0, gsSPDisplayListOTRFilePath(gLinkLongswordSheathDL));
+//                ResourceMgr_PatchCustomGfxByName(gLinkAdultSheathNearDL, "customDlist8", 1, gsSPEndDisplayList());
+//            } else {
+//                ResourceMgr_UnpatchGfxByName(gLinkAdultSheathNearDL, "customDlist7");
+//                ResourceMgr_UnpatchGfxByName(gLinkAdultSheathNearDL, "customDlist8");
+//            }
+//            if (ResourceGetIsCustomByName(gLinkLongswordInSheathDL) && ResourceGetIsCustomByName(gLinkHylianShieldOnBackDL)) {
+//                ResourceMgr_PatchCustomGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist9", 0, gsSPDisplayListOTRFilePath(gLinkHylianShieldOnBackDL));
+//                ResourceMgr_PatchCustomGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist10", 1, gsSPDisplayListOTRFilePath(gLinkLongswordInSheathDL));
+//                ResourceMgr_PatchCustomGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist11", 2, gsSPEndDisplayList());
+//            } else {
+//                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist9");
+//                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist10");
+//                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customDlist11");
+//            }
+//            if (ResourceGetIsCustomByName(gLinkLongswordInSheathDL)) {
+//                ResourceMgr_PatchCustomGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist12", 0, gsSPDisplayListOTRFilePath(gLinkLongswordInSheathDL));
+//                ResourceMgr_PatchCustomGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist13", 1, gsSPEndDisplayList());
+//            } else {
+//                ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist12");
+//                ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customDlist13");
+//            }
+//            if (ResourceGetIsCustomByName(gLinkLongswordSheathDL) && ResourceGetIsCustomByName(gLinkHylianShieldOnBackDL)) {
+//                ResourceMgr_PatchCustomGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist14", 0, gsSPDisplayListOTRFilePath(gLinkLongswordSheathDL));
+//                ResourceMgr_PatchCustomGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist15", 1, gsSPDisplayListOTRFilePath(gLinkHylianShieldOnBackDL));
+//                ResourceMgr_PatchCustomGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist16", 2, gsSPEndDisplayList());
+//            } else {
+//                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist14");
+//                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist15");
+//                ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customDlist16");
+//            }
+//            if (ResourceGetIsCustomByName(gLinkLongswordInSheathDL) && ResourceGetIsCustomByName(gLinkMirrorShieldOnBackDL)) {
+//                ResourceMgr_PatchCustomGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist33", 0, gsSPDisplayListOTRFilePath(gLinkMirrorShieldOnBackDL));
+//                ResourceMgr_PatchCustomGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist34", 1, gsSPDisplayListOTRFilePath(gLinkLongswordInSheathDL));
+//                ResourceMgr_PatchCustomGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist35", 2, gsSPEndDisplayList());
+//            } else {
+//                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist33");
+//                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist34");
+//                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customDlist35");
+//            }
+//            if (ResourceGetIsCustomByName(gLinkLongswordSheathDL) && ResourceGetIsCustomByName(gLinkMirrorShieldOnBackDL)) {
+//                ResourceMgr_PatchCustomGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist38", 0, gsSPDisplayListOTRFilePath(gLinkLongswordSheathDL));
+//                ResourceMgr_PatchCustomGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist39", 1, gsSPDisplayListOTRFilePath(gLinkMirrorShieldOnBackDL));
+//                ResourceMgr_PatchCustomGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist40", 2, gsSPEndDisplayList());
+//            } else {
+//                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist38");
+//                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist39");
+//                ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customDlist40");
+//            }
+//        }
+//        if (ResourceGetIsCustomByName(gLinkHookshotDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "customDlist57", 0, gsSPDisplayListOTRFilePath(gLinkHookshotDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "customDlist58", 1, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "customDlist59", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "customDlist57");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "customDlist58");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "customDlist59");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkHookshotDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingHookshotFarDL, "customDlist79", 0, gsSPDisplayListOTRFilePath(gLinkHookshotDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingHookshotFarDL, "customDlist80", 1, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingHookshotFarDL, "customDlist81", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHookshotFarDL, "customDlist79");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHookshotFarDL, "customDlist80");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHookshotFarDL, "customDlist81");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkHookshotTipDL) && ResourceGetIsCustomByName(gLinkHookshotChainDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultHookshotTipDL, "customDlist72", 0, gsSPDisplayListOTRFilePath(gLinkHookshotTipDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultHookshotChainDL, "customDlist73", 0, gsSPDisplayListOTRFilePath(gLinkHookshotChainDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultHookshotTipDL, "customDlist74", 1, gsSPEndDisplayList());
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultHookshotChainDL, "customDlist75", 1, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultHookshotTipDL, "customDlist72");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultHookshotChainDL, "customDlist73");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultHookshotTipDL, "customDlist74");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultHookshotChainDL, "customDlist75");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkBowDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingBowNearDL, "customDlist60", 0, gsSPDisplayListOTRFilePath(gLinkBowDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingBowNearDL, "customDlist61", 1, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingBowNearDL, "customDlist62", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "customDlist60");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "customDlist61");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "customDlist62");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkBowDL) && ResourceGetIsCustomByName(gLinkAdultFPSHandDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingBowFirstPersonDL, "customDlist69", 0, gsSPDisplayListOTRFilePath(gLinkBowDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingBowFirstPersonDL, "customDlist70", 1, gsSPDisplayListOTRFilePath(gLinkAdultFPSHandDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingBowFirstPersonDL, "customDlist71", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingBowFirstPersonDL, "customDlist69");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingBowFirstPersonDL, "customDlist70");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingBowFirstPersonDL, "customDlist71");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkOcarinaOfTimeDL) && INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingOotNearDL, "customDlist63", 0, gsSPDisplayListOTRFilePath(gLinkOcarinaOfTimeDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingOotNearDL, "customDlist64", 1, gsSPDisplayListOTRFilePath(gLinkAdultRightHandNearDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingOotNearDL, "customDlist65", 2, gsSPEndDisplayList());
+//        } else if (ResourceGetIsCustomByName(gLinkFairyOcarinaDL) && INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingOotNearDL, "customDlist63", 0, gsSPDisplayListOTRFilePath(gLinkFairyOcarinaDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingOotNearDL, "customDlist64", 1, gsSPDisplayListOTRFilePath(gLinkAdultRightHandNearDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandHoldingOotNearDL, "customDlist65", 2, gsSPEndDisplayList()); 
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingOotNearDL, "customDlist63");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingOotNearDL, "customDlist64");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingOotNearDL, "customDlist65");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkHammerDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "customDlist76", 0, gsSPDisplayListOTRFilePath(gLinkHammerDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "customDlist77", 1, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "customDlist78", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "customDlist76");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "customDlist77");
+//            ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "customDlist78");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkFairyOcarinaDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildRightHandHoldingFairyOcarinaNearDL, "customDlist82", 0, gsSPDisplayListOTRFilePath(gLinkFairyOcarinaDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildRightHandHoldingFairyOcarinaNearDL, "customDlist83", 1, gsSPDisplayListOTRFilePath(gLinkChildRightHandNearDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildRightHandHoldingFairyOcarinaNearDL, "customDlist84", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkChildRightHandHoldingFairyOcarinaNearDL, "customDlist82");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildRightHandHoldingFairyOcarinaNearDL, "customDlist83");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildRightHandHoldingFairyOcarinaNearDL, "customDlist84");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkOcarinaOfTimeDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildRightHandAndOotNearDL, "customDlist85", 0, gsSPDisplayListOTRFilePath(gLinkOcarinaOfTimeDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildRightHandAndOotNearDL, "customDlist86", 1, gsSPDisplayListOTRFilePath(gLinkChildRightHandNearDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildRightHandAndOotNearDL, "customDlist87", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkChildRightHandAndOotNearDL, "customDlist85");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildRightHandAndOotNearDL, "customDlist86");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildRightHandAndOotNearDL, "customDlist87");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkBoomerangDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "customDlist88", 0, gsSPDisplayListOTRFilePath(gLinkBoomerangDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "customDlist89", 1, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "customDlist90", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "customDlist88");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "customDlist89");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "customDlist90");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkSlingshotDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "customDlist91", 0, gsSPDisplayListOTRFilePath(gLinkSlingshotDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "customDlist92", 1, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "customDlist93", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "customDlist91");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "customDlist92");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "customDlist93");
+//        }
+//        if (ResourceGetIsCustomByName(gLinkSlingshotDL)) {
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildRightArmStretchedSlingshotDL, "customDlist94", 0, gsSPDisplayListOTRFilePath(gLinkSlingshotDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildRightArmStretchedSlingshotDL, "customDlist95", 1, gsSPDisplayListOTRFilePath(gLinkChildFPSHandDL));
+//            ResourceMgr_PatchCustomGfxByName(gLinkChildRightArmStretchedSlingshotDL, "customDlist96", 2, gsSPEndDisplayList());
+//        } else {
+//            ResourceMgr_UnpatchGfxByName(gLinkChildRightArmStretchedSlingshotDL, "customDlist94");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildRightArmStretchedSlingshotDL, "customDlist95");
+//            ResourceMgr_UnpatchGfxByName(gLinkChildRightArmStretchedSlingshotDL, "customDlist96");
+//        }
+//    }
+//}
+
 void RegisterPatchCustomDlistsHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() { 
-        UpdatePatchCustomDlists(); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() { 
+        static uint16_t lastItemOnB = gSaveContext.equips.buttonItems[0];
+        if (lastItemOnB != gSaveContext.equips.buttonItems[0]) {
+            UpdatePatchCustomDlists();
+            lastItemOnB = gSaveContext.equips.buttonItems[0];
+        }
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) { 
+        UpdatePatchCustomDlists();
+    });
 }
 
 void RegisterResetNaviTimer() {

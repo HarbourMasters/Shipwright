@@ -1764,6 +1764,19 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
     *gfx = instruction;
 }
 
+extern "C" void ResourceMgr_PatchCustomGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
+    auto res = std::static_pointer_cast<LUS::DisplayList>(
+        LUS::Context::GetInstance()->GetResourceManager()->LoadResource(path));
+
+    Gfx* gfx = (Gfx*)&res->Instructions[index];
+
+    if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
+        originalGfx[path][patchName] = { index, *gfx };
+    }
+
+    *gfx = instruction;
+}
+
 extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex, int sourceIndex) {
     auto res = std::static_pointer_cast<LUS::DisplayList>(
         LUS::Context::GetInstance()->GetResourceManager()->LoadResource(path));
