@@ -114,6 +114,7 @@ typedef enum {
     RCTYPE_OCARINA,                    // Ocarina locations
     RCTYPE_BEEHIVE,                    // Beehives
     RCTYPE_FISH,
+    RCTYPE_SILVER_RUPEE
 } RandomizerCheckType;
 
 typedef enum { RCQUEST_VANILLA, RCQUEST_MQ, RCQUEST_BOTH } RandomizerCheckQuest;

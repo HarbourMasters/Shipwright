@@ -1,6 +1,17 @@
+#include <unordered_map>
 #include "silver_rupee.h"
+#include "static_data.h"
 
 namespace Rando {
+
+    std::unordered_map<Position, RandomizerCheck> StaticData::silverRupeeMap = {
+            { { SCENE_ICE_CAVERN, {414.0f, 178.0f, -579.0f} }, RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_1 },
+            { { SCENE_ICE_CAVERN, {389.0f, 0.0f, -382.0f } }, RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_2 },
+            { { SCENE_ICE_CAVERN, {278.0f, 0.0f, -637.0f } }, RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_3 },
+            { { SCENE_ICE_CAVERN, { 198.0f, 0.0f, -388.0f } }, RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_4 },
+            { { SCENE_ICE_CAVERN, { 1.0f, 0.0f, -143.0f } }, RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_5 },
+    };
+
     SilverRupees::SilverRupees() {
         mSilverRupees = {
                 // Vanilla

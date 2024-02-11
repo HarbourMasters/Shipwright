@@ -19,6 +19,7 @@ enum class Category {
     cVanillaCompass,
     cAdultTrade,
     cBeehive,
+    cSilverRupee,
 };
 
 enum class OptionCategory {

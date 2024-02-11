@@ -1,6 +1,7 @@
 #include "static_data.h"
 
 #define TWO_ACTOR_PARAMS(a, b) (abs(a) << 16) | abs(b)
+#define THREE_ACTOR_PARAMS(a, b, c) (abs(a) << 32 | abs(b) << 16 | abs(c))
 
 std::array<Rando::Location, RC_MAX> Rando::StaticData::locationTable;
 
@@ -1512,6 +1513,12 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_ZD_FISH_4] =                       Location::Base(RC_ZD_FISH_4,                        RCQUEST_BOTH, RCTYPE_FISH, RCAREA_ZORAS_DOMAIN,         ACTOR_EN_FISH,  SCENE_ZORAS_DOMAIN, -1 ^ 3, 0x00, "Fish 4",                 "ZD Fish 4",                        RHT_ZD_FISH,                      RG_FISH, { Category::cFish }, SpoilerCollectionCheck::Fish(0xFF, SCENE_ZORAS_DOMAIN), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
     locationTable[RC_ZD_FISH_5] =                       Location::Base(RC_ZD_FISH_5,                        RCQUEST_BOTH, RCTYPE_FISH, RCAREA_ZORAS_DOMAIN,         ACTOR_EN_FISH,  SCENE_ZORAS_DOMAIN, -1 ^ 4, 0x00, "Fish 5",                 "ZD Fish 5",                        RHT_ZD_FISH,                      RG_FISH, { Category::cFish }, SpoilerCollectionCheck::Fish(0xFF, SCENE_ZORAS_DOMAIN), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
 
+    // Silver Rupees
+    locationTable[RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_1] = Location::Base(RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_1, RCQUEST_VANILLA, RCTYPE_SILVER_RUPEE, RCAREA_ICE_CAVERN, ACTOR_EN_G_SWITCH, SCENE_ICE_CAVERN,0, 0x0, "Spinning Blades Silver Rupee 1", "Ice Cavern Spinning Blades Silver Rupee 1", RHT_NONE, RG_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE, {Category::cSilverRupee}, SpoilerCollectionCheck::RandomizerInf(SCENE_ICE_CAVERN, RAND_INF_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_1));
+    locationTable[RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_2] = Location::Base(RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_2, RCQUEST_VANILLA, RCTYPE_SILVER_RUPEE, RCAREA_ICE_CAVERN, ACTOR_EN_G_SWITCH, SCENE_ICE_CAVERN,0, 0x0, "Spinning Blades Silver Rupee 2", "Ice Cavern Spinning Blades Silver Rupee 2", RHT_NONE, RG_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE, {Category::cSilverRupee}, SpoilerCollectionCheck::RandomizerInf(SCENE_ICE_CAVERN, RAND_INF_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_2));
+    locationTable[RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_3] = Location::Base(RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_3, RCQUEST_VANILLA, RCTYPE_SILVER_RUPEE, RCAREA_ICE_CAVERN, ACTOR_EN_G_SWITCH, SCENE_ICE_CAVERN,0, 0x0, "Spinning Blades Silver Rupee 3", "Ice Cavern Spinning Blades Silver Rupee 3", RHT_NONE, RG_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE, {Category::cSilverRupee}, SpoilerCollectionCheck::RandomizerInf(SCENE_ICE_CAVERN, RAND_INF_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_3));
+    locationTable[RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_4] = Location::Base(RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_4, RCQUEST_VANILLA, RCTYPE_SILVER_RUPEE, RCAREA_ICE_CAVERN, ACTOR_EN_G_SWITCH, SCENE_ICE_CAVERN,0, 0x0, "Spinning Blades Silver Rupee 4", "Ice Cavern Spinning Blades Silver Rupee 4", RHT_NONE, RG_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE, {Category::cSilverRupee}, SpoilerCollectionCheck::RandomizerInf(SCENE_ICE_CAVERN, RAND_INF_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_4));
+    locationTable[RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_5] = Location::Base(RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_5, RCQUEST_VANILLA, RCTYPE_SILVER_RUPEE, RCAREA_ICE_CAVERN, ACTOR_EN_G_SWITCH, SCENE_ICE_CAVERN,0, 0x0, "Spinning Blades Silver Rupee 5", "Ice Cavern Spinning Blades Silver Rupee 5", RHT_NONE, RG_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE, {Category::cSilverRupee}, SpoilerCollectionCheck::RandomizerInf(SCENE_ICE_CAVERN, RAND_INF_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_5));
 
     // Gossip Stones
     //            RandomizerCheck                                           Randomizer Check                    Quest            Area                          Scene                        Params  Flag  Short Name                       Spoiler name                       Categories

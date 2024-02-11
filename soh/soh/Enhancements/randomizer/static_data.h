@@ -7,6 +7,10 @@
 #include "location.h"
 
 namespace Rando {
+struct Position{
+    SceneID scene;
+    Vec3f pos;
+};
 /**
  * @brief Singleton for storing and accessing static Randomizer-related data
  * 
@@ -37,7 +41,24 @@ class StaticData {
       static std::vector<RandomizerCheck> overworldFishLocations;
       static std::array<std::pair<RandomizerCheck, RandomizerCheck>, 17> randomizerFishingPondFish;
       static std::unordered_map<int8_t, RandomizerCheck> randomizerGrottoFishMap;
+      static std::unordered_map<Position, RandomizerCheck> silverRupeeMap;
       StaticData();
       ~StaticData();
 };
+}
+
+namespace std {
+    template<>
+    struct hash<Rando::Position> {
+        inline size_t operator()(const Rando::Position& pos) const {
+            return hash<int>{}(pos.scene) ^ hash<float>{}(pos.pos.x) ^ hash<float>{}(pos.pos.y) ^ hash<float>{}(pos.pos.z);
+        }
+    };
+
+    template<>
+    struct equal_to<Rando::Position> {
+        inline bool operator()(const Rando::Position& a, const Rando::Position& b) const {
+            return a.scene == b.scene && a.pos.x == b.pos.x && a.pos.y == b.pos.y && a.pos.z == b.pos.z;
+        }
+    };
 }

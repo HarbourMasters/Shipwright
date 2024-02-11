@@ -1165,6 +1165,10 @@ void RegisterSilverRupeeShuffle() {
         if (actor->id == ACTOR_EN_G_SWITCH) {
             auto* silverRupee = reinterpret_cast<EnGSwitch*>(actor);
             if (silverRupee->type == ENGSWITCH_SILVER_RUPEE) {
+                Rando::Position randoPos = {static_cast<SceneID>(gPlayState->sceneNum), actor->world.pos};
+                silverRupee->rc = Rando::StaticData::silverRupeeMap.at(randoPos);
+                silverRupee->rg = OTRGlobals::Instance->gRandoContext->GetItemLocation(silverRupee->rc)->GetPlacedRandomizerGet();
+                silverRupee->giEntry = OTRGlobals::Instance->gRandoContext->GetItemLocation(silverRupee->rc)->GetPlacedItem().GetGIEntry().get();
                 silverRupee->actionFunc = EnGSwitch_Randomizer_SilverRupeeIdle;
                 silverRupee->actor.draw = EnGSwitch_Randomizer_Draw;
             }

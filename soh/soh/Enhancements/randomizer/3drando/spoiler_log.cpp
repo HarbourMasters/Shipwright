@@ -660,6 +660,9 @@ static void WriteAllLocations() {
     auto ctx = Rando::Context::GetInstance();
     for (const RandomizerCheck key : ctx->allLocations) {
         Rando::ItemLocation* location = ctx->GetItemLocation(key);
+        if (Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName().empty()) {
+            continue;
+        }
         std::string placedItemName;
 
         switch (ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex()) {
