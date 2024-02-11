@@ -616,6 +616,9 @@ void Player_SetModelsForHoldingShield(Player* this) {
             if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_CHILD &&
                 gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) {
                 this->sheathDLists = &sPlayerDListGroups[this->sheathType][0]; 
+            } else if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_ADULT &&
+                gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI) {
+                this->sheathDLists = &sPlayerDListGroups[this->sheathType][1]; 
             }
             this->modelAnimType = PLAYER_ANIMTYPE_2;
             this->itemAction = -1;
@@ -675,7 +678,8 @@ void Player_SetModels(Player* this, s32 modelGroup) {
         } else if (LINK_IS_CHILD && this->currentShield == PLAYER_SHIELD_MIRROR && gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI &&
             this->sheathType == PLAYER_MODELTYPE_SHEATH_18) {
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][0];
-        } else if (LINK_IS_ADULT && this->currentShield == PLAYER_SHIELD_DEKU) {
+        } else if (LINK_IS_ADULT && (this->currentShield == PLAYER_SHIELD_DEKU && gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER) ||
+        (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER && this->sheathType == PLAYER_MODELTYPE_SHEATH_18 && this->currentShield == PLAYER_SHIELD_DEKU)) {
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][1];
         } else if (LINK_IS_CHILD && this->sheathType == PLAYER_MODELTYPE_SHEATH_17 && 
 			((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) || (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS))) {
