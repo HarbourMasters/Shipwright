@@ -15,6 +15,8 @@ extern "C" {
 #include <libultraship/libultraship.h>
 #include "soh/Enhancements/enhancementTypes.h"
 
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+
 extern "C" {
 #include <z64.h>
 #include "variables.h"
@@ -242,6 +244,36 @@ const char* const countMappings[] = {
 
 char itemTimestampDisplayName[TIMESTAMP_MAX][21] = { "" };
 ImVec4 itemTimestampDisplayColor[TIMESTAMP_MAX];
+
+static const char* splitEntries[156] { 
+    "Deku Stick",           "Deku Nut",             "Bombs",                    "Fairy Bow",            "Fire Arrow",               "Din's Fire",
+    "Slingshot",            "Fairy Ocarina",        "Ocarina of Time",          "Bombchus",             "Hookshot",                 "Longshot",
+    "Ice Arrow",            "Farore's Wind",        "Boomerang",                "Lens of Truth",        "Magic Beans",              "Megaton Hammer",
+    "Light Arrow",          "Nayru's Love",         "Bottle",                   "Red Potion",           "Green Potion",             "Blue Potion",
+    "Fairy",                "Fish",                 "Milk (Full)",              "Ruto's Letter",        "Blue Fire",                "Bugs",
+    "Big Poe",              "Milk (Half)",          "Poe",                      "Weird Egg",            "Chicken",                  "Zelda's Letter",
+    "Keaton Mask",          "Skull Mask",           "Spooky Mask",              "Bunny Hood",           "Goron Mask",               "Zora Mask",
+    "Gerudo Mask",          "Mask of Truth",        "Sold Out",                 "Pocket Egg",           "Pocket Cucco",             "Cojiro",
+    "Odd Mushroom",         "Odd Potion",           "Poacher's Saw",            "Broken Goron Sword",   "Prescription",             "Eyeball Frog",
+    "Eye Drops",            "Claim Check",          "SPLIT_BOW_ARROW_FIRE",     "SPLIT_BOW_ARROW_ICE",  "SPLIT_BOW_ARROW_LIGHT",    "Kokiri Sword",
+    "Master Sword",         "Biggoron's Sword",     "Deku Shield",              "Hylian Shield",        "Mirror Shield",            "Kokiri Tunic",
+    "Goron Tunic",          "Zora Tunic",           "Kokiri Boots",             "Iron Boots",           "Hover Boots",              "Bullet Bag (30)",
+    "Bullet Bag (40)",      "Bullet Bag (50)",      "Quiver (30)",              "Quiver (40)",          "Quiver (50)",              "Bomb Bag (20)",
+    "Bomb Bag (30)",        "Bomb Bag (40)",        "Goron's Bracelet",         "Silver Gauntlets",     "Gold Gauntlets",           "Silver Scale",
+    "Golden Scale",         "Giant's Knife",        "Adult Wallet",             "Giant's Wallet",       "Seeds",                    "Fishing Pole",
+    "Minuet of Forest",     "Bolero of Fire",       "Serenade of Water",        "Requiem of Spirit",    "Nocturne of Shadow",       "Prelude of Light",
+    "Zelda's Lullaby",      "Epona's Song",         "Saria's Song",             "Sun's Song",           "Song of Time",             "Song of Storms",
+    "Forest Medallion",     "Fire Medallion",       "Water Medallion",          "Spirit Medallion",     "Shadow Medallion",         "Light Medallion",
+    "Kokiri's Emerald",     "Goron's Ruby",         "Zora's Sapphire",          "Stone of Agony",       "Gerudo Membership Card",   "Skulltula Token",
+    "Heart Container",      "Piece of Heart",       "Boss Key",                 "Compass",              "Map",                      "Small Key",
+    "Magic Refill (Small)", "Magic Refill (Large)", "Piece of Heart (2)",       "Magic Meter (Single)", "Magic Meter (Double)",     "Double Defense",
+    "Null 4",               "Null 5",               "Null 6",                   "Null 7",               "Milk",                     "Recovery Heart",
+    "Green Rupee",          "Blue Rupee",           "Red Rupee",                "Purple Rupee",         "Gold Rupee",               "Null 8",
+    "Deku Sticks (5)",      "Deku Sticks (10)",     "Deku Nuts (5)",            "Deku Nuts (10)",       "Bombs (5)",                "Bombs (10)",
+    "Bombs (20)",           "Bombs (30)",           "Arrows (Small)",           "Arrows (Medium)",      "Arrows (Large)",           "Seeds (30)",
+    "Bombchus (5)",         "Bombchus (10)",        "Deku Stick Upgrade (20)",  "Deku Stick Upgrade (30)",
+    "Deku Nut Upgrade (30)","Deku Nut Upgrade (40)",
+};
 
 typedef struct {
     char name[40];
@@ -617,6 +649,181 @@ void DrawGameplayStatsOptionsTab() {
     UIWidgets::PaddedEnhancementCheckbox("Show Debug Info", "gGameplayStats.ShowDebugInfo");
 }
 
+static std::string listItem;
+static std::vector<std::string> splitItem;
+static std::vector<std::string> splitTime;
+static std::vector<std::string> splitStatus;
+static uint32_t itemReference;
+std::string status = "";
+ImVec4 statusColor= COLOR_WHITE;
+
+void GameplayStatsSplitSave(const char* saveType, int itemSplit, std::string timeSplit, std::string statusSplit) {
+    if (saveType == "New Item") {
+        std::string splitItemSave(CVarGetString("gTimeSplitter.CurrentItems", ""));
+        std::string splitTimeSave(CVarGetString("gTimeSplitter.CurrentTimes", ""));
+        std::string splitStatusSave(CVarGetString("gTimeSplitter.CurrentStatus", ""));
+        if (splitItemSave == "NULL") {
+            splitItemSave = std::to_string(itemSplit);
+        } else {
+            splitItemSave += std::to_string(itemSplit);
+        }
+        splitItemSave += ",";
+        CVarSetString("gTimeSplitter.CurrentItems", splitItemSave.c_str());
+        if (splitTimeSave == "NULL") {
+            splitTimeSave = timeSplit;
+        } else {
+            splitTimeSave += timeSplit;
+        }
+        splitTimeSave += ",";
+        CVarSetString("gTimeSplitter.CurrentTimes", splitTimeSave.c_str());
+        if (splitStatusSave == "NULL") {
+            splitStatusSave = statusSplit;
+        } else {
+            splitStatusSave += statusSplit;
+        }
+        splitStatusSave += ",";
+        CVarSetString("gTimeSplitter.CurrentStatus", splitStatusSave.c_str());
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    if (saveType == "Collect") {
+        // Times
+        std::string inputTimes(CVarGetString("gTimeSplitter.CurrentTimes", ""));
+        std::stringstream timeStream(inputTimes);
+        std::vector<std::string> timeTokens;
+        std::string timeToken;
+
+        while (std::getline(timeStream, timeToken, ',')) {
+            timeTokens.push_back(timeToken);
+        }
+
+        timeTokens[itemSplit] = timeSplit;
+
+        inputTimes = "";
+        for (size_t i = 0; i < timeTokens.size(); i++) {
+            if (i > 0) {
+                inputTimes += ",";
+            }
+            inputTimes += timeTokens[i];
+        }
+        CVarSetString("gTimeSplitter.CurrentTimes", inputTimes.c_str());
+
+        // Status
+        std::string inputStatus(CVarGetString("gTimeSplitter.CurrentStatus", ""));
+        std::stringstream statusStream(inputStatus);
+        std::vector<std::string> statusTokens;
+        std::string statusToken;
+
+        while (std::getline(statusStream, statusToken, ',')) {
+            statusTokens.push_back(statusToken);
+        }
+
+        statusTokens[itemSplit] = statusSplit;
+
+        inputStatus = "";
+        for (size_t v = 0; v < statusTokens.size(); v++) {
+            if (v > 0) {
+                inputStatus += ",";
+            }
+            inputStatus += statusTokens[v];
+        }
+        CVarSetString("gTimeSplitter.CurrentStatus", inputStatus.c_str());
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+
+    if (saveType == "Reset") {
+        CVarSetString("gTimeSplitter.CurrentItems", "NULL");
+        CVarSetString("gTimeSplitter.CurrentTimes", "NULL");
+        CVarSetString("gTimeSplitter.CurrentStatus", "NULL");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+}
+
+void GameplayStatsSplitsHandler(GetItemEntry itemEntry) {
+    if (itemEntry.modIndex != 0) {
+        return;
+    }
+    uint32_t loopCounter = 0;
+    for (auto &str : splitItem) {
+        const char* itemRef = splitEntries[itemEntry.itemId];
+        if (itemRef == splitItem[loopCounter]) {
+            uint32_t num = GAMEPLAYSTAT_TOTAL_TIME;
+            std::string temp = formatTimestampGameplayStat(num);
+            const char* itemTime = temp.c_str();
+            splitTime[loopCounter] = itemTime;
+            splitStatus[loopCounter] = "1";
+            GameplayStatsSplitSave("Collect", loopCounter, itemTime, "1");
+        }
+        loopCounter++;
+    }
+}
+
+void DrawGameplayStatsSplitsTab() {
+    uint32_t loopCounter = 0;
+
+    ImGui::BeginTable("Splits", 2);
+
+    for (auto &str : splitItem) {
+        std::string itemEntry = splitItem[loopCounter];
+        uint32_t num = GAMEPLAYSTAT_TOTAL_TIME;
+        std::string temp = formatTimestampGameplayStat(num);
+        //std::string str = std::to_string(temp);
+        const char* itemTime = temp.c_str();
+
+        ImGui::TableNextColumn();
+        ImGui::TextColored(COLOR_WHITE, itemEntry.c_str());
+        ImGui::TableNextColumn();
+        if (splitStatus[loopCounter] == "0") {
+            ImGui::TextColored(COLOR_WHITE, itemTime);
+        } else {
+            ImGui::TextColored(COLOR_GREEN, splitTime[loopCounter].c_str());
+        }
+        
+        loopCounter++;
+    }
+    ImGui::EndTable();
+}
+
+void DrawGameplayStatsSplitsOptionsTab() {
+    itemReference = SplitItemList(CVarGetInteger("gSelectedSplitItem", 0));
+
+    if (UIWidgets::EnhancementCombobox("gSelectedSplitItem", splitEntries, 0)) {
+        itemReference = SplitItemList(CVarGetInteger("gSelectedSplitItem", 0));
+    }
+
+    if (ImGui::Button("Add Item")) {
+        splitItem.push_back(splitEntries[itemReference]);
+        splitTime.push_back("");
+        splitStatus.push_back("0");
+        status = (splitEntries[itemReference]) + std::string(" Added to List");
+        statusColor = COLOR_GREEN;
+        GameplayStatsSplitSave("New Item", itemReference, "", "0");
+    }
+    ImGui::SameLine(0);
+    if (ImGui::Button("Reset List")) {
+        splitItem.clear();
+        splitTime.clear();
+        status = "List Cleared";
+        statusColor = COLOR_RED;
+        GameplayStatsSplitSave("Reset", 0, "", "");
+    }
+    ImGui::TextColored(statusColor, status.c_str());
+}
+
+void DrawGameplayStatsTimeSplitterTab() {
+    if (ImGui::BeginTabBar("Time Splitter")) {
+        if (ImGui::BeginTabItem("Splits")) {
+            DrawGameplayStatsSplitsTab();
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Split Options")) {
+            DrawGameplayStatsSplitsOptionsTab();
+            ImGui::EndTabItem();
+        }
+    }
+    ImGui::EndTabBar();
+}
+
 void GameplayStatsWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(480, 550), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Gameplay Stats", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
@@ -641,6 +848,10 @@ void GameplayStatsWindow::DrawElement() {
         }
         if (ImGui::BeginTabItem("Options")) {
             DrawGameplayStatsOptionsTab();
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Time Splitter")) {
+            DrawGameplayStatsTimeSplitterTab();
             ImGui::EndTabItem();
         }
         ImGui::EndTabBar();
@@ -858,4 +1069,10 @@ void GameplayStatsWindow::InitElement() {
     SaveManager::Instance->AddSaveFunction("entrances", 1, SaveStats, false, SECTION_ID_STATS);
     SaveManager::Instance->AddSaveFunction("scenes", 1, SaveStats, false, SECTION_ID_STATS);
     SaveManager::Instance->AddInitFunction(InitStats);
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
+        // to do: call GameplayStatsSplitsHandler() here
+        GameplayStatsSplitsHandler(itemEntry);
+    });
+    
 }
