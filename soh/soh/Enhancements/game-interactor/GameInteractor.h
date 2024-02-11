@@ -223,8 +223,6 @@ public:
     DEFINE_HOOK(OnAssetAltChange, void());
     DEFINE_HOOK(OnPauseMenu, void());
 
-    DEFINE_HOOK(OnPauseMenu, void());
-
     // Helpers
     static bool IsSaveLoaded();
     static bool IsGameplayPaused();

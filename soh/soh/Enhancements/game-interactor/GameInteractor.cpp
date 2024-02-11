@@ -45,11 +45,6 @@ bool GameInteractor::IsSaveLoaded() {
     return (gPlayState == NULL || player == NULL || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2) ? false : true;
 }
 
-extern "C" bool IsSaveLoadedWrapper() {
-    GameInteractor* gameInteractor = GameInteractor::Instance;
-    return gameInteractor->IsSaveLoaded();
-}
-
 bool GameInteractor::IsGameplayPaused() {
     Player* player = GET_PLAYER(gPlayState);
     return (Player_InBlockingCsMode(gPlayState, player) || gPlayState->pauseCtx.state != 0 || gPlayState->msgCtx.msgMode != 0) ? true : false;
