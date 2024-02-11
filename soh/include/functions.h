@@ -2468,8 +2468,8 @@ void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 w
 void Interface_RandoRestoreSwordless(void);
 
 //Pause Warp
-void PauseWarp_Main();
-void PauseWarp_Text();
+void PauseWarp_HandleSelection();
+void PauseWarp_Execute();
 
 // #endregion
 

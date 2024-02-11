@@ -39,13 +39,14 @@ static const int songAudioMap[] = {
     NA_BGM_OCA_LIGHT 
 };
 
-static bool warpTextboxStatus = false; 
+static bool isWarpActive = false; 
 
-void PauseWarp_Text() {
-    if (!warpTextboxStatus || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
+void PauseWarp_Execute() {
+    if (!isWarpActive || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
         return;
     }
-    warpTextboxStatus = false;
+    isWarpActive = false; 
+    GET_PLAYER(gPlayState)->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
     if (gPlayState->msgCtx.choiceIndex != 0) {
         return;
     }
@@ -55,8 +56,7 @@ void PauseWarp_Text() {
     }
     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
     gPlayState->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
-    int songCount = sizeof(ocarinaSongMap) / sizeof(ocarinaSongMap[0]);
-    for (int i = 0; i < songCount; i++) {
+    for (int i = 0; i < ARRAY_COUNT(ocarinaSongMap); i++) {
         if (gPlayState->msgCtx.lastPlayedSong == ocarinaSongMap[i]) {
             gPlayState->nextEntranceIndex = entranceIndexMap[i];
             return;
@@ -65,7 +65,7 @@ void PauseWarp_Text() {
     gPlayState->transitionTrigger = TRANS_TRIGGER_OFF;
 }
 
-void ClosePauseMenu(PauseContext* pauseCtx, int song) {
+void ActivateWarp(PauseContext* pauseCtx, int song) {
     Audio_OcaSetInstrument(0);
     Interface_SetDoAction(gPlayState, DO_ACTION_NONE);
     pauseCtx->state = 0x12;
@@ -77,15 +77,16 @@ void ClosePauseMenu(PauseContext* pauseCtx, int song) {
     Audio_SetSoundBanksMute(0x20);
     Audio_PlayFanfare(songAudioMap[idx]);
     Message_StartTextbox(gPlayState, songMessageMap[idx], NULL);
-    warpTextboxStatus = true; 
+    GET_PLAYER(gPlayState)->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
+    isWarpActive = true;
 }
 
-void PauseWarp_Main() {
+void PauseWarp_HandleSelection() {
     if (gSaveContext.inventory.items[SLOT_OCARINA] != ITEM_NONE) {
         int aButtonPressed = CHECK_BTN_ALL(gPlayState->state.input->press.button, BTN_A);
         int song = gPlayState->pauseCtx.cursorPoint[PAUSE_QUEST];
         if (aButtonPressed && CHECK_QUEST_ITEM(song) && song >= QUEST_SONG_MINUET && song <= QUEST_SONG_PRELUDE) {
-            ClosePauseMenu(&gPlayState->pauseCtx, song);
+            ActivateWarp(&gPlayState->pauseCtx, song);
         }
     }
 }

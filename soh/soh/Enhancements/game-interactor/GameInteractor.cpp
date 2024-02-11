@@ -46,15 +46,7 @@ bool GameInteractor::IsSaveLoaded() {
 }
 
 bool GameInteractor::IsGameplayPaused() {
-    // Added null checks to prevent crash due to access violation (0xc0000005) when dereferencing null pointers.
-    //You can reproduce this by removing these checks, having Pause Warp enabled, and resetting (CTRL-R).
-    if (gPlayState == nullptr) {
-        return false; 
-    }
     Player* player = GET_PLAYER(gPlayState);
-    if (player == nullptr) {
-        return false; 
-    }
     return (Player_InBlockingCsMode(gPlayState, player) || gPlayState->pauseCtx.state != 0 || gPlayState->msgCtx.msgMode != 0) ? true : false;
 }
 

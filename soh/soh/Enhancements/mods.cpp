@@ -1312,11 +1312,9 @@ void RegisterPauseMenuHooks() {
             return;
         }
         if (!pauseWarpHooksRegistered) {
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPauseMenu>([]() {PauseWarp_Main();});
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPauseMenu>([]() {PauseWarp_HandleSelection();});
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-                if (!GameInteractor::IsGameplayPaused()) {
-                    PauseWarp_Text();
-                }
+                    PauseWarp_Execute();
             });
             pauseWarpHooksRegistered = true;
         }
