@@ -85,7 +85,7 @@ jobs:
       if: ${{ matrix.image == 'fedora:39' }}
       run: |
         dnf -y upgrade
-        dnf -y install ${{ matrix.cc }} git cmake ninja-build
+        dnf -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} git cmake ninja-build
     - name: Install dependencies (apt)
       if: ${{ matrix.image == 'ubuntu:mantic' || matrix.image == 'debian:bookworm' }}
       run: |
