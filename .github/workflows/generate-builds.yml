@@ -91,7 +91,7 @@ jobs:
       run: |
         apt-get update
         apt-get -y full-upgrade
-        apt-get -y install ${{ matrix.cc }} git cmake ninja-build
+        apt-get -y install ${{ matrix.cc }} ${{ matrix.cxx == 'g++' && 'g++' }} git cmake ninja-build
     - name: Install dependencies (zypper)
       if: ${{ matrix.image == 'opensuse/tumbleweed:latest' }}
       run: |
