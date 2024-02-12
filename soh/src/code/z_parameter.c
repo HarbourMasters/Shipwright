@@ -1440,17 +1440,16 @@ void Inventory_SwapAgeEquipment(void) {
     s16 i;
     u16 shieldEquipValue;
 
-    static u8 lastEquippedSwordChild = ITEM_NONE;
-    static u8 lastEquippedSwordAdult = ITEM_NONE;
-
-    //If TimlessEquipment is enable, preserve the last equipped sword for both Child and Adult Link across age transitions
+    // If TimlessEquipment is enabled, preserve the last equpped sword by age
     if (CVarGetInteger("gTimelessEquipment", 0)) {
         if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
-            lastEquippedSwordAdult = gSaveContext.equips.buttonItems[0];
-            gSaveContext.equips.buttonItems[0] = lastEquippedSwordChild != ITEM_NONE ? lastEquippedSwordChild : gSaveContext.equips.buttonItems[0];
+            // Save the currently equipped sword for Child Link
+            gSaveContext.childEquips.buttonItems[0] = gSaveContext.equips.buttonItems[0];
         } else {
-            lastEquippedSwordChild = gSaveContext.equips.buttonItems[0];
-            gSaveContext.equips.buttonItems[0] = lastEquippedSwordAdult != ITEM_NONE ? lastEquippedSwordAdult : gSaveContext.equips.buttonItems[0];
+            // When transitioning from Adult to Child, re-equip Child Link's last equipped sword, if any was previously equipped
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) ? 
+                                                gSaveContext.childEquips.buttonItems[0] : 
+                                                gSaveContext.equips.buttonItems[0];
         }
     } else {
         if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
