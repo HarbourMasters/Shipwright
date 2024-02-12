@@ -6,67 +6,68 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  generate-soh-otr:
-    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.11
-      with:
-        key: ${{ runner.os }}-otr-ccache-${{ github.ref }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-otr-ccache-${{ github.ref }}
-          ${{ runner.os }}-otr-ccache-
-    - name: Install dependencies
-      if: ${{ !vars.LINUX_RUNNER }}
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
-    - name: Cache build folders
-      uses: actions/cache@v4
-      with:
-        key: ${{ runner.os }}-otr-build-${{ github.ref }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-otr-build-${{ github.ref }}
-          ${{ runner.os }}-otr-build-
-        path: |
-          build-cmake
-          SDL2-2.28.5
-    - name: Install latest SDL
-      if: ${{ !vars.LINUX_RUNNER }}
-      run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "SDL2-2.28.5" ]; then
-          wget https://www.libsdl.org/release/SDL2-2.28.5.tar.gz
-          tar -xzf SDL2-2.28.5.tar.gz
-        fi
-        cd SDL2-2.28.5
-        ./configure --enable-hidapi-libusb
-        make -j 10
-        sudo make install
-        sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Generate soh.otr
-      run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
-        cmake --build build-cmake --config Release --target GenerateSohOtr
-    - uses: actions/upload-artifact@v4
-      with:
-        name: soh.otr
-        path: soh.otr
-        retention-days: 1
+  # generate-soh-otr:
+  #   runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #     with:
+  #       submodules: true
+  #   - name: ccache
+  #     uses: hendrikmuhs/ccache-action@v1.2.11
+  #     with:
+  #       key: ${{ runner.os }}-otr-ccache-${{ github.ref }}-${{ github.sha }}
+  #       restore-keys: |
+  #         ${{ runner.os }}-otr-ccache-${{ github.ref }}
+  #         ${{ runner.os }}-otr-ccache-
+  #   - name: Install dependencies
+  #     if: ${{ !vars.LINUX_RUNNER }}
+  #     run: |
+  #       sudo apt-get update
+  #       sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
+  #   - name: Cache build folders
+  #     uses: actions/cache@v4
+  #     with:
+  #       key: ${{ runner.os }}-otr-build-${{ github.ref }}-${{ github.sha }}
+  #       restore-keys: |
+  #         ${{ runner.os }}-otr-build-${{ github.ref }}
+  #         ${{ runner.os }}-otr-build-
+  #       path: |
+  #         build-cmake
+  #         SDL2-2.28.5
+  #   - name: Install latest SDL
+  #     if: ${{ !vars.LINUX_RUNNER }}
+  #     run: |
+  #       export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+  #       if [ ! -d "SDL2-2.28.5" ]; then
+  #         wget https://www.libsdl.org/release/SDL2-2.28.5.tar.gz
+  #         tar -xzf SDL2-2.28.5.tar.gz
+  #       fi
+  #       cd SDL2-2.28.5
+  #       ./configure --enable-hidapi-libusb
+  #       make -j 10
+  #       sudo make install
+  #       sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+  #   - name: Generate soh.otr
+  #     run: |
+  #       export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+  #       cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
+  #       cmake --build build-cmake --config Release --target GenerateSohOtr
+  #   - uses: actions/upload-artifact@v4
+  #     with:
+  #       name: soh.otr
+  #       path: soh.otr
+  #       retention-days: 1
   build:
-    needs: generate-soh-otr
+    # needs: generate-soh-otr
     strategy:
       matrix:
         image: ["archlinux:base", "opensuse/tumbleweed:latest", "ubuntu:jammy", "debian:bookworm", "fedora:39"]
+        cc: ["gcc", "clang"] 
         include:
-        - cc: gcc
-          cxx: g++
-        - cc: clang
-          cxx: clang++
+        - cxx: g++
+          cc: gcc
+        - cxx: clang++
+          cc: clang
     runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
     container:
       image: ${{ matrix.image }}
