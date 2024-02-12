@@ -96,7 +96,7 @@ jobs:
       if: ${{ matrix.image == 'opensuse/tumbleweed:latest' }}
       run: |
         zypper --non-interactive dup
-        zypper --non-interactive in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++ libstdc++-devel') || '' }} git cmake ninja SDL2-devel libpng16-devel
+        zypper --non-interactive in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || 'libstdc++-devel' }} git cmake ninja SDL2-devel libpng16-devel
     - uses: actions/checkout@v3
       with:
         submodules: true
