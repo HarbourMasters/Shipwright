@@ -93,7 +93,7 @@ jobs:
         path: |
           soh.appimage
           readme.txt
-  build-opensuse:
+  build-opensuse-tumbleweed:
     needs: generate-soh-otr
     runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
     container:
@@ -125,7 +125,114 @@ jobs:
     - name: Upload build
       uses: actions/upload-artifact@v4
       with:
-        name: soh-opensuse
+        name: soh-opensuse-tumbleweed
+        path: |
+          soh.appimage
+          readme.txt
+  build-ubuntu-jammy:
+    needs: generate-soh-otr
+    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
+    container:
+      image: ubuntu:jammy
+    steps:
+    - name: Install dependencies
+      run: |
+        apt-get update
+        apt-get full-upgrade -y
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: Download soh.otr
+      uses: actions/download-artifact@v4
+      with:
+        name: soh.otr
+    - name: Build SoH
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
+        cmake --build build-cmake --config Release -j3
+        (cd build-cmake && cpack -G External)
+
+        mv README.md readme.txt
+        mv build-cmake/*.appimage soh.appimage
+      env:
+        CC: gcc
+        CXX: g++
+    - name: Upload build
+      uses: actions/upload-artifact@v4
+      with:
+        name: soh-ubuntu-jammy
+        path: |
+          soh.appimage
+          readme.txt
+  build-debian-bookworm:
+    needs: generate-soh-otr
+    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
+    container:
+      image: debian:bookworm
+    steps:
+    - name: Install dependencies
+      run: |
+        apt-get update
+        apt-get full-upgrade -y
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: Download soh.otr
+      uses: actions/download-artifact@v4
+      with:
+        name: soh.otr
+    - name: Build SoH
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
+        cmake --build build-cmake --config Release -j3
+        (cd build-cmake && cpack -G External)
+
+        mv README.md readme.txt
+        mv build-cmake/*.appimage soh.appimage
+      env:
+        CC: gcc
+        CXX: g++
+    - name: Upload build
+      uses: actions/upload-artifact@v4
+      with:
+        name: soh-debian-bookworm
+        path: |
+          soh.appimage
+          readme.txt
+  build-fedora-39:
+    needs: generate-soh-otr
+    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
+    container:
+      image: fedora:39
+    steps:
+    - name: Install dependencies
+      run: |
+        dnf upgrade
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: Download soh.otr
+      uses: actions/download-artifact@v4
+      with:
+        name: soh.otr
+    - name: Build SoH
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
+        cmake --build build-cmake --config Release -j3
+        (cd build-cmake && cpack -G External)
+
+        mv README.md readme.txt
+        mv build-cmake/*.appimage soh.appimage
+      env:
+        CC: gcc
+        CXX: g++
+    - name: Upload build
+      uses: actions/upload-artifact@v4
+      with:
+        name: soh-debian-bookworm
         path: |
           soh.appimage
           readme.txt
