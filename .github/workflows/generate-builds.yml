@@ -66,7 +66,7 @@ jobs:
     - name: Install dependencies
       run: |
         pacman -Syu --noconfirm
-        pacman -S --noconfirm git cmake ninja gcc lsb-release
+        pacman -S --noconfirm git cmake ninja gcc lsb-release sdl2
     - uses: actions/checkout@v3
       with:
         submodules: true
