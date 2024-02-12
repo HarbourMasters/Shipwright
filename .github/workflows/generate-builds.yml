@@ -61,7 +61,7 @@ jobs:
     # needs: generate-soh-otr
     strategy:
       matrix:
-        image: ["archlinux:base", "opensuse/tumbleweed:latest", "ubuntu:jammy", "debian:bookworm", "fedora:39"]
+        image: ["archlinux:base", "opensuse/tumbleweed:latest", "ubuntu:mantic", "debian:bookworm", "fedora:39"]
         cc: ["gcc", "clang"] 
         include:
         - cxx: g++
@@ -87,7 +87,7 @@ jobs:
         dnf -y upgrade
         dnf -y install ${{ matrix.cc }} git cmake
     - name: Install dependencies (apt)
-      if: ${{ matrix.image == 'ubuntu:jammy' || matrix.image == 'debian:bookworm' }}
+      if: ${{ matrix.image == 'ubuntu:mantic' || matrix.image == 'debian:bookworm' }}
       run: |
         apt-get update
         apt-get -y full-upgrade
