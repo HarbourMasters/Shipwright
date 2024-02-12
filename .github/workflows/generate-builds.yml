@@ -76,23 +76,23 @@ jobs:
       if: ${{ matrix.image == 'archlinux:base' }}
       run: |
         pacman -Syu --noconfirm
-        pacman -S --noconfirm git cmake ninja ${{ matrix.cc }} lsb-release sdl2 libpng sdl2_net boost imagemagick
+        pacman -S --noconfirm ${{ matrix.cc }} git cmake ninja lsb-release sdl2 libpng sdl2_net boost imagemagick
     - name: Install dependencies (dnf)
       if: ${{ matrix.image == 'fedora:39' }}
       run: |
         dnf -y upgrade
-        dnf -y install git
+        dnf -y install ${{ matrix.cc }} git
     - name: Install dependencies (apt)
       if: ${{ matrix.image == 'ubuntu:jammy' || matrix.image == 'debian:bookworm' }}
       run: |
         apt-get update
         apt-get -y full-upgrade
-        apt-get -y install git cmake ninja-build
+        apt-get -y install ${{ matrix.cc }} git cmake ninja-build
     - name: Install dependencies (zypper)
       if: ${{ matrix.image == 'opensuse/tumbleweed:latest' }}
       run: |
         zypper --non-interactive dup
-        zypper --non-interactive in git cmake ninja
+        zypper --non-interactive in ${{ matrix.cc }} git cmake ninja
     - uses: actions/checkout@v3
       with:
         submodules: true
