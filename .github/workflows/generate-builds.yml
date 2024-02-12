@@ -58,6 +58,7 @@ jobs:
         path: soh.otr
         retention-days: 1
   build:
+    needs: generate-soh-otr
     strategy:
       matrix:
         image: ["archlinux:base", "opensuse/tumbleweed:latest", "ubuntu:jammy", "debian:bookworm", "fedora:39"]
