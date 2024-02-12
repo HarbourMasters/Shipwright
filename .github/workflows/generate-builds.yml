@@ -66,7 +66,7 @@ jobs:
     - name: Install dependencies
       run: |
         pacman -Syu --noconfirm
-        pacman -S --noconfirm git cmake ninja gcc lsb-release sdl2 libpng sdl2_net
+        pacman -S --noconfirm git cmake ninja gcc lsb-release sdl2 libpng sdl2_net boost
     - uses: actions/checkout@v3
       with:
         submodules: true
