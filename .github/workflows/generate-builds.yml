@@ -66,7 +66,7 @@ jobs:
     - name: Install dependencies
       run: |
         pacman -Syu --noconfirm
-        pacman -S --noconfirm git
+        pacman -S --noconfirm git cmake
     - uses: actions/checkout@v3
       with:
         submodules: true
