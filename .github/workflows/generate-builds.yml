@@ -91,12 +91,12 @@ jobs:
       run: |
         apt-get update
         apt-get -y full-upgrade
-        apt-get -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'g++') || '' }} git cmake ninja-build lsb-release libsdl2-dev libpng-dev
+        apt-get -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'g++') || '' }} git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev
     - name: Install dependencies (zypper)
       if: ${{ matrix.image == 'opensuse/tumbleweed:latest' }}
       run: |
         zypper --non-interactive dup
-        zypper --non-interactive in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} git cmake ninja SDL2
+        zypper --non-interactive in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} git cmake ninja libSDL2-2_0-0
     - uses: actions/checkout@v3
       with:
         submodules: true
