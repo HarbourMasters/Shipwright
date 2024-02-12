@@ -101,7 +101,7 @@ jobs:
     steps:
     - name: Install dependencies
       run: |
-        zypper dup
+        zypper --non-interactive dup
     - uses: actions/checkout@v3
       with:
         submodules: true
