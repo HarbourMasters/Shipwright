@@ -1957,8 +1957,10 @@ u8 Item_Give(PlayState* play, u8 item) {
             
         } else if (item == ITEM_SWORD_MASTER) {
             if (CVarGetInteger("gTimelessEquipment", 0)) {
-                // Do not equip the Master Sword if gTimelessEquipment is enabled
-                // This prevents child's last equipped sword from always being MS
+                // If gTimelessEquipment is enabled, only update the interface.
+                if (play != NULL) {
+                    Interface_LoadItemIcon1(play, 0);
+                }
             } else {
                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
                 gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
