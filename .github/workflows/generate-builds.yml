@@ -62,7 +62,6 @@ jobs:
     strategy:
       matrix:
         image: ["archlinux:base", "opensuse/tumbleweed:latest", "ubuntu:jammy", "debian:bookworm", "fedora:39"]
-        cc: ["gcc", "clang"] 
         include:
         - cc: gcc
           cxx: g++
