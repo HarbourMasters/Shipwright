@@ -23,6 +23,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Go2/z_en_go2.h"
 #include "src/overlays/actors/ovl_En_Ms/z_en_ms.h"
 #include "src/overlays/actors/ovl_En_Fr/z_en_fr.h"
+#include "src/overlays/actors/ovl_En_Syateki_Man/z_en_syateki_man.h"
 #include "adult_trade_shuffle.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
@@ -773,6 +774,26 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
         case GI_VB_NEED_BOTTLE_FOR_GRANNYS_ITEM: {
             // Allow buying the rando item regardless of having a bottle
             *should &= !EnDs_RandoCanGetGrannyItem();
+            break;
+        }
+        case GI_VB_GIVE_ITEM_FROM_SHOOTING_GALLERY: {
+            EnSyatekiMan* enSyatekiMan = static_cast<EnSyatekiMan*>(optionalArg);
+            enSyatekiMan->getItemId = GI_RUPEE_PURPLE;
+            if (LINK_IS_ADULT) {
+                // Give purple rupee if we've already obtained the reward OR we don't have a bow
+                *should = Flags_GetItemGetInf(ITEMGETINF_0E) || CUR_UPG_VALUE(UPG_QUIVER) == 0;
+            } else {
+                // Give purple rupee if we've already obtained the reward
+                *should = Flags_GetItemGetInf(ITEMGETINF_0D);
+            }
+            break;
+        }
+        case GI_VB_BE_ELIGIBLE_FOR_ADULT_SHOOTING_GAME_REWARD: {
+            *should = CUR_UPG_VALUE(UPG_QUIVER) > 0;
+            if (!*should) {
+                // In Rando without a quiver, display a message reminding the player to come back with a bow
+                Message_StartTextbox(gPlayState, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW, NULL);
+            }
             break;
         }
         case GI_VB_TRADE_CLAIM_CHECK:
