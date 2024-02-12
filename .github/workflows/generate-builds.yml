@@ -66,6 +66,7 @@ jobs:
     - name: Install dependencies
       run: |
         pacman -Syu --noconfirm
+        pacman -S git
     - uses: actions/checkout@v3
       with:
         submodules: true
