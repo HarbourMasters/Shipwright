@@ -102,6 +102,7 @@ jobs:
     - name: Install dependencies
       run: |
         zypper --non-interactive dup
+        zypper --non-interactive in git
     - uses: actions/checkout@v3
       with:
         submodules: true
