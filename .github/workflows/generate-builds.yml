@@ -6,100 +6,38 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  generate-soh-otr:
-    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.11
-      with:
-        key: ${{ runner.os }}-otr-ccache-${{ github.ref }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-otr-ccache-${{ github.ref }}
-          ${{ runner.os }}-otr-ccache-
-    - name: Install dependencies
-      if: ${{ !vars.LINUX_RUNNER }}
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
-    - name: Cache build folders
-      uses: actions/cache@v4
-      with:
-        key: ${{ runner.os }}-otr-build-${{ github.ref }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-otr-build-${{ github.ref }}
-          ${{ runner.os }}-otr-build-
-        path: |
-          build-cmake
-          SDL2-2.28.5
-    - name: Install latest SDL
-      if: ${{ !vars.LINUX_RUNNER }}
-      run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "SDL2-2.28.5" ]; then
-          wget https://www.libsdl.org/release/SDL2-2.28.5.tar.gz
-          tar -xzf SDL2-2.28.5.tar.gz
-        fi
-        cd SDL2-2.28.5
-        ./configure --enable-hidapi-libusb
-        make -j 10
-        sudo make install
-        sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Generate soh.otr
-      run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
-        cmake --build build-cmake --config Release --target GenerateSohOtr
-    - uses: actions/upload-artifact@v4
-      with:
-        name: soh.otr
-        path: soh.otr
-        retention-days: 1
-  build-arch:
-    needs: generate-soh-otr
+  build:
+    strategy:
+      matrix:
+        image: ["archlinux:base", "opensuse/tumbleweed:latest", "ubuntu:jammy", "debian:bookworm", "fedora:39"]
+        cc: ["gcc", "clang"] 
+        include:
+        - cc: gcc
+          cxx: g++
+        - cc: clang
+          cxx: clang++
     runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
     container:
-      image: archlinux:base
+      image: ${{ matrix.image }}
     steps:
-    - name: Install dependencies
+    - name: Install dependencies (pacman)
+      if: ${{ matrix.image == 'archlinux:base' }}
       run: |
         pacman -Syu --noconfirm
-        pacman -S --noconfirm git cmake ninja gcc lsb-release sdl2 libpng sdl2_net boost imagemagick
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - name: Download soh.otr
-      uses: actions/download-artifact@v4
-      with:
-        name: soh.otr
-    - name: Build SoH
+        pacman -S --noconfirm git cmake ninja ${{ matrix.cc }} lsb-release sdl2 libpng sdl2_net boost imagemagick
+    - name: Install dependencies (dnf)
+      if: ${{ matrix.image == 'fedora:39' }}
       run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
-        cmake --build build-cmake --config Release -j3
-        (cd build-cmake && cpack -G External)
-
-        mv README.md readme.txt
-        mv build-cmake/*.appimage soh.appimage
-      env:
-        CC: gcc
-        CXX: g++
-    - name: Upload build
-      uses: actions/upload-artifact@v4
-      with:
-        name: soh-arch
-        path: |
-          soh.appimage
-          readme.txt
-  build-opensuse-tumbleweed:
-    needs: generate-soh-otr
-    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
-    container:
-      image: opensuse/tumbleweed:latest
-    steps:
-    - name: Install dependencies
+        dnf -y upgrade
+        dnf -y install git
+    - name: Install dependencies (apt)
+      if: ${{ matrix.image == 'ubuntu:jammy' || matrix.image == 'debian:bookworm' }}
+      run: |
+        apt-get update
+        apt-get -y full-upgrade
+        apt-get -y install git cmake ninja-build
+    - name: Install dependencies (zypper)
+      if: ${{ matrix.image == 'opensuse/tumbleweed:latest' }}
       run: |
         zypper --non-interactive dup
         zypper --non-interactive in git cmake ninja
@@ -120,122 +58,5 @@ jobs:
         mv README.md readme.txt
         mv build-cmake/*.appimage soh.appimage
       env:
-        CC: gcc
-        CXX: g++
-    - name: Upload build
-      uses: actions/upload-artifact@v4
-      with:
-        name: soh-opensuse-tumbleweed
-        path: |
-          soh.appimage
-          readme.txt
-  build-ubuntu-jammy:
-    needs: generate-soh-otr
-    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
-    container:
-      image: ubuntu:jammy
-    steps:
-    - name: Install dependencies
-      run: |
-        apt-get update
-        apt-get -y full-upgrade
-        apt-get -y install git cmake ninja-build
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - name: Download soh.otr
-      uses: actions/download-artifact@v4
-      with:
-        name: soh.otr
-    - name: Build SoH
-      run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
-        cmake --build build-cmake --config Release -j3
-        (cd build-cmake && cpack -G External)
-
-        mv README.md readme.txt
-        mv build-cmake/*.appimage soh.appimage
-      env:
-        CC: gcc
-        CXX: g++
-    - name: Upload build
-      uses: actions/upload-artifact@v4
-      with:
-        name: soh-ubuntu-jammy
-        path: |
-          soh.appimage
-          readme.txt
-  build-debian-bookworm:
-    needs: generate-soh-otr
-    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
-    container:
-      image: debian:bookworm
-    steps:
-    - name: Install dependencies
-      run: |
-        apt-get update
-        apt-get -y full-upgrade
-        apt-get -y install git cmake ninja-build
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - name: Download soh.otr
-      uses: actions/download-artifact@v4
-      with:
-        name: soh.otr
-    - name: Build SoH
-      run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
-        cmake --build build-cmake --config Release -j3
-        (cd build-cmake && cpack -G External)
-
-        mv README.md readme.txt
-        mv build-cmake/*.appimage soh.appimage
-      env:
-        CC: gcc
-        CXX: g++
-    - name: Upload build
-      uses: actions/upload-artifact@v4
-      with:
-        name: soh-debian-bookworm
-        path: |
-          soh.appimage
-          readme.txt
-  build-fedora-39:
-    needs: generate-soh-otr
-    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
-    container:
-      image: fedora:39
-    steps:
-    - name: Install dependencies
-      run: |
-        dnf -y upgrade
-        dnf -y install git
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - name: Download soh.otr
-      uses: actions/download-artifact@v4
-      with:
-        name: soh.otr
-    - name: Build SoH
-      run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
-        cmake --build build-cmake --config Release -j3
-        (cd build-cmake && cpack -G External)
-
-        mv README.md readme.txt
-        mv build-cmake/*.appimage soh.appimage
-      env:
-        CC: gcc
-        CXX: g++
-    - name: Upload build
-      uses: actions/upload-artifact@v4
-      with:
-        name: soh-debian-bookworm
-        path: |
-          soh.appimage
-          readme.txt
+        CC: ${{ matrix.cc }}
+        CXX: ${{ matrix.cxx }}
