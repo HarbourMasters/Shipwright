@@ -38,7 +38,7 @@ void AreaTable_Init_FireTemple() {
                 }, {
                   //Exits
                   Entrance(RR_FIRE_TEMPLE_FIRST_ROOM, {[]{return true;}}),
-                  Entrance(RR_FIRE_TEMPLE_BOSS_ENTRYWAY, {[]{return logic->BossKeyFireTemple && ((logic->IsAdult && randoCtx->GetTrickOption(RT_FIRE_BOSS_DOOR_JUMP)) || logic->CanUse(RG_HOVER_BOOTS) || Here(RR_FIRE_TEMPLE_FIRE_MAZE_UPPER, []{return logic->CanUse(RG_MEGATON_HAMMER);}));}}),
+                  Entrance(RR_FIRE_TEMPLE_BOSS_ENTRYWAY, {[]{return logic->BossKeyFireTemple && ((logic->IsAdult && (randoCtx->GetTrickOption(RT_FIRE_BOSS_DOOR_JUMP) || Here(RR_FIRE_TEMPLE_FIRE_MAZE_UPPER, []{return logic->CanUse(RG_MEGATON_HAMMER);}))) || logic->CanUse(RG_HOVER_BOOTS));}}),
   });
 
   areaTable[RR_FIRE_TEMPLE_LOOP_ENEMIES] = Area("Fire Temple Loop Enemies", "Fire Temple", RA_FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
