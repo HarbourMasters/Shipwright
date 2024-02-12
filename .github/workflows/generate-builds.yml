@@ -96,7 +96,7 @@ jobs:
       if: ${{ matrix.image == 'opensuse/tumbleweed:latest' }}
       run: |
         zypper --non-interactive dup
-        zypper --non-interactive in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'g++') || '' }} git cmake ninja
+        zypper --non-interactive in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} git cmake ninja
     - uses: actions/checkout@v3
       with:
         submodules: true
