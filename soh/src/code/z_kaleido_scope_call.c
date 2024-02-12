@@ -57,7 +57,7 @@ void KaleidoScopeCall_Update(PlayState* play) {
     KaleidoMgrOverlay* kaleidoScopeOvl = &gKaleidoMgrOverlayTable[KALEIDO_OVL_KALEIDO_SCOPE];
     PauseContext* pauseCtx = &play->pauseCtx;
 
-    GameInteractor_ExecuteOnPauseMenu();
+    GameInteractor_ExecuteOnKaleidoUpdate();
 
     if (!gSaveContext.sohStats.gameComplete &&
         (!IS_BOSS_RUSH || !gSaveContext.isBossRushPaused)) {

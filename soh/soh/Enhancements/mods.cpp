@@ -1312,7 +1312,7 @@ void RegisterPauseMenuHooks() {
             return;
         }
         if (!pauseWarpHooksRegistered) {
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPauseMenu>([]() {PauseWarp_HandleSelection();});
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoUpdate>([]() {PauseWarp_HandleSelection();});
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
                     PauseWarp_Execute();
             });
