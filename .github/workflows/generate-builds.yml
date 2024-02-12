@@ -138,7 +138,8 @@ jobs:
     - name: Install dependencies
       run: |
         apt-get update
-        apt-get full-upgrade -y
+        apt-get -y full-upgrade
+        apt-get -y install git
     - uses: actions/checkout@v3
       with:
         submodules: true
@@ -174,7 +175,8 @@ jobs:
     - name: Install dependencies
       run: |
         apt-get update
-        apt-get full-upgrade -y
+        apt-get -y full-upgrade
+        apt-get -y install git
     - uses: actions/checkout@v3
       with:
         submodules: true
@@ -209,7 +211,7 @@ jobs:
     steps:
     - name: Install dependencies
       run: |
-        dnf upgrade
+        dnf -y upgrade
     - uses: actions/checkout@v3
       with:
         submodules: true
