@@ -1440,212 +1440,226 @@ void Inventory_SwapAgeEquipment(void) {
     s16 i;
     u16 shieldEquipValue;
 
-    if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
-        
+    static u8 lastEquippedSwordChild = ITEM_NONE;
+    static u8 lastEquippedSwordAdult = ITEM_NONE;
 
-        for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-            if (i != 0) {
-                gSaveContext.childEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
-            } else {
-                gSaveContext.childEquips.buttonItems[i] = ITEM_SWORD_KOKIRI;
-            }
-
-            if (i != 0) {
-                gSaveContext.childEquips.cButtonSlots[i - 1] = gSaveContext.equips.cButtonSlots[i - 1];
-            }
-        }
-
-        // When becoming adult, remove swordless flag since we'll get master sword
-        // (Unless Master Sword is shuffled)
-        // Only in rando to keep swordless link bugs in vanilla
-        if (IS_RANDO && !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
-            Flags_UnsetInfTable(INFTABLE_SWORDLESS);
-        }
-
-        gSaveContext.childEquips.equipment = gSaveContext.equips.equipment;
-
-        if (gSaveContext.adultEquips.buttonItems[0] == ITEM_NONE && !(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && gSaveContext.adultEquips.equipment)) {
-            if (!IS_RANDO || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
-                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-            } else {
-                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-                Flags_SetInfTable(INFTABLE_SWORDLESS);
-            }
-
-            if (gSaveContext.inventory.items[SLOT_NUT] != ITEM_NONE) {
-                gSaveContext.equips.buttonItems[1] = ITEM_NUT;
-                gSaveContext.equips.cButtonSlots[0] = SLOT_NUT;
-            } else {
-                gSaveContext.equips.buttonItems[1] = gSaveContext.equips.cButtonSlots[0] = ITEM_NONE;
-            }
-
-            gSaveContext.equips.buttonItems[2] = ITEM_BOMB;
-            gSaveContext.equips.buttonItems[3] = gSaveContext.inventory.items[SLOT_OCARINA];
-            gSaveContext.equips.cButtonSlots[1] = SLOT_BOMB;
-            gSaveContext.equips.cButtonSlots[2] = SLOT_OCARINA;
-            
-            gSaveContext.equips.equipment = (EQUIP_VALUE_SWORD_MASTER << (EQUIP_TYPE_SWORD * 4)) |
-                                            (EQUIP_VALUE_SHIELD_HYLIAN << (EQUIP_TYPE_SHIELD * 4)) |
-                                            (EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4)) |
-                                            (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4));
-
-            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && 
-                gSaveContext.equips.buttonItems[0] == ITEM_NONE) {
-                gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
-            }
-
-            // Set the dpad to nothing
-            gSaveContext.equips.buttonItems[4] = ITEM_NONE;
-            gSaveContext.equips.buttonItems[5] = ITEM_NONE;
-            gSaveContext.equips.buttonItems[6] = ITEM_NONE;
-            gSaveContext.equips.buttonItems[7] = ITEM_NONE;
-            gSaveContext.equips.cButtonSlots[3] = SLOT_NONE;
-            gSaveContext.equips.cButtonSlots[4] = SLOT_NONE;
-            gSaveContext.equips.cButtonSlots[5] = SLOT_NONE;
-            gSaveContext.equips.cButtonSlots[6] = SLOT_NONE;
+    //If TimlessEquipment is enable, preserve the last equipped sword for both Child and Adult Link across age transitions
+    if (CVarGetInteger("gTimelessEquipment", 0)) {
+        if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
+            lastEquippedSwordAdult = gSaveContext.equips.buttonItems[0];
+            gSaveContext.equips.buttonItems[0] = lastEquippedSwordChild != ITEM_NONE ? lastEquippedSwordChild : gSaveContext.equips.buttonItems[0];
         } else {
-            for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                gSaveContext.equips.buttonItems[i] = gSaveContext.adultEquips.buttonItems[i];
-
-                if (i != 0) {
-                    gSaveContext.equips.cButtonSlots[i - 1] = gSaveContext.adultEquips.cButtonSlots[i - 1];
-                }
-
-                if (((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
-                     (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) ||
-                    ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
-                     (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
-                    osSyncPrintf("Register_Item_Pt(%d)=%d\n", i, gSaveContext.equips.cButtonSlots[i - 1]);
-                    gSaveContext.equips.buttonItems[i] =
-                        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
-                }
-            }
-
-            // In Rando, when switching to adult for the second+ time, if a sword was not previously
-            // equiped in MS shuffle, then we need to set the swordless flag again
-            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
-                gSaveContext.equips.buttonItems[0] == ITEM_NONE) {
-                Flags_SetInfTable(INFTABLE_SWORDLESS);
-            }
-
-            gSaveContext.equips.equipment = gSaveContext.adultEquips.equipment;
+            lastEquippedSwordChild = gSaveContext.equips.buttonItems[0];
+            gSaveContext.equips.buttonItems[0] = lastEquippedSwordAdult != ITEM_NONE ? lastEquippedSwordAdult : gSaveContext.equips.buttonItems[0];
         }
     } else {
-        // When becoming child, set swordless flag if player doesn't have kokiri sword
-        // Only in rando to keep swordless link bugs in vanilla
-        if (IS_RANDO && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) {
-            Flags_SetInfTable(INFTABLE_SWORDLESS);
-        }
+        if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
+            
 
-        // When using enhancements, set swordless flag if player doesn't have kokiri sword or hasn't equipped a sword yet.
-        // Then set the child equips button items to item none to ensure kokiri sword is not equipped
-        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0 || Flags_GetInfTable(INFTABLE_SWORDLESS))) {
-            Flags_SetInfTable(INFTABLE_SWORDLESS);
-            gSaveContext.childEquips.buttonItems[0] = ITEM_NONE;
-        }
-
-        for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-            gSaveContext.adultEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
-
-            if (i != 0) {
-                gSaveContext.adultEquips.cButtonSlots[i - 1] = gSaveContext.equips.cButtonSlots[i - 1];
-            }
-        }
-
-        gSaveContext.adultEquips.equipment = gSaveContext.equips.equipment;
-        // Switching age using enhancements separated out to make vanilla flow clear
-        if (CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) {
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
+                if (i != 0) {
+                    gSaveContext.childEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
+                } else {
+                    gSaveContext.childEquips.buttonItems[i] = ITEM_SWORD_KOKIRI;
+                }
 
                 if (i != 0) {
-                    gSaveContext.equips.cButtonSlots[i - 1] = gSaveContext.childEquips.cButtonSlots[i - 1];
-                }
-
-                if (((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
-                     (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) ||
-                    ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
-                     (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
-                    osSyncPrintf("Register_Item_Pt(%d)=%d\n", i, gSaveContext.equips.cButtonSlots[i - 1]);
-                    gSaveContext.equips.buttonItems[i] =
-                        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
+                    gSaveContext.childEquips.cButtonSlots[i - 1] = gSaveContext.equips.cButtonSlots[i - 1];
                 }
             }
 
-            gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
-            gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
-            // Equips kokiri sword in the inventory screen only if kokiri sword exists in inventory and a sword has been equipped already
-            if (!(CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) && !Flags_GetInfTable(INFTABLE_SWORDLESS)) {
-                gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4);
-            }
-        } else if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
-            for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
-
-                if (i != 0) {
-                    gSaveContext.equips.cButtonSlots[i - 1] = gSaveContext.childEquips.cButtonSlots[i - 1];
-                }
-
-                if (((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
-                     (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) ||
-                    ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
-                     (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
-                    osSyncPrintf("Register_Item_Pt(%d)=%d\n", i, gSaveContext.equips.cButtonSlots[i - 1]);
-                    gSaveContext.equips.buttonItems[i] =
-                        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
-                }
-            }
-
-            // In Rando, when switching to child from a swordless adult, and child Link previously had a
-            // sword equiped, then we need to unset the swordless flag to match
-            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
-                gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
+            // When becoming adult, remove swordless flag since we'll get master sword
+            // (Unless Master Sword is shuffled)
+            // Only in rando to keep swordless link bugs in vanilla
+            if (IS_RANDO && !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
                 Flags_UnsetInfTable(INFTABLE_SWORDLESS);
             }
 
-            gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
-            gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
-            gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4);
-        } else if (IS_RANDO && Randomizer_GetSettingValue(RSK_STARTING_AGE) == RO_AGE_ADULT) {
-            /*If in rando and starting age is adult, childEquips is not initialized and buttonItems[0]
-            will be ITEM_NONE. When changing age from adult -> child, reset equips to "default"
-            (only kokiri tunic/boots equipped, no sword, no C-button items, no D-Pad items).
-            When becoming child, set swordless flag if player doesn't have kokiri sword
-            Only in rando to keep swordless link bugs in vanilla*/
-            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) {
+            gSaveContext.childEquips.equipment = gSaveContext.equips.equipment;
+
+            if (gSaveContext.adultEquips.buttonItems[0] == ITEM_NONE && !(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && gSaveContext.adultEquips.equipment)) {
+                if (!IS_RANDO || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
+                    gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+                } else {
+                    gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                    Flags_SetInfTable(INFTABLE_SWORDLESS);
+                }
+
+                if (gSaveContext.inventory.items[SLOT_NUT] != ITEM_NONE) {
+                    gSaveContext.equips.buttonItems[1] = ITEM_NUT;
+                    gSaveContext.equips.cButtonSlots[0] = SLOT_NUT;
+                } else {
+                    gSaveContext.equips.buttonItems[1] = gSaveContext.equips.cButtonSlots[0] = ITEM_NONE;
+                }
+
+                gSaveContext.equips.buttonItems[2] = ITEM_BOMB;
+                gSaveContext.equips.buttonItems[3] = gSaveContext.inventory.items[SLOT_OCARINA];
+                gSaveContext.equips.cButtonSlots[1] = SLOT_BOMB;
+                gSaveContext.equips.cButtonSlots[2] = SLOT_OCARINA;
+                
+                gSaveContext.equips.equipment = (EQUIP_VALUE_SWORD_MASTER << (EQUIP_TYPE_SWORD * 4)) |
+                                                (EQUIP_VALUE_SHIELD_HYLIAN << (EQUIP_TYPE_SHIELD * 4)) |
+                                                (EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4)) |
+                                                (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4));
+
+                if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && 
+                    gSaveContext.equips.buttonItems[0] == ITEM_NONE) {
+                    gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
+                }
+
+                // Set the dpad to nothing
+                gSaveContext.equips.buttonItems[4] = ITEM_NONE;
+                gSaveContext.equips.buttonItems[5] = ITEM_NONE;
+                gSaveContext.equips.buttonItems[6] = ITEM_NONE;
+                gSaveContext.equips.buttonItems[7] = ITEM_NONE;
+                gSaveContext.equips.cButtonSlots[3] = SLOT_NONE;
+                gSaveContext.equips.cButtonSlots[4] = SLOT_NONE;
+                gSaveContext.equips.cButtonSlots[5] = SLOT_NONE;
+                gSaveContext.equips.cButtonSlots[6] = SLOT_NONE;
+            } else {
+                for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                    gSaveContext.equips.buttonItems[i] = gSaveContext.adultEquips.buttonItems[i];
+
+                    if (i != 0) {
+                        gSaveContext.equips.cButtonSlots[i - 1] = gSaveContext.adultEquips.cButtonSlots[i - 1];
+                    }
+
+                    if (((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
+                        (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) ||
+                        ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
+                        (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
+                        osSyncPrintf("Register_Item_Pt(%d)=%d\n", i, gSaveContext.equips.cButtonSlots[i - 1]);
+                        gSaveContext.equips.buttonItems[i] =
+                            gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
+                    }
+                }
+
+                // In Rando, when switching to adult for the second+ time, if a sword was not previously
+                // equiped in MS shuffle, then we need to set the swordless flag again
+                if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+                    gSaveContext.equips.buttonItems[0] == ITEM_NONE) {
+                    Flags_SetInfTable(INFTABLE_SWORDLESS);
+                }
+
+                gSaveContext.equips.equipment = gSaveContext.adultEquips.equipment;
+            }
+        } else {
+            // When becoming child, set swordless flag if player doesn't have kokiri sword
+            // Only in rando to keep swordless link bugs in vanilla
+            if (IS_RANDO && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) {
                 Flags_SetInfTable(INFTABLE_SWORDLESS);
             }
 
-            //zero out items
+            // When using enhancements, set swordless flag if player doesn't have kokiri sword or hasn't equipped a sword yet.
+            // Then set the child equips button items to item none to ensure kokiri sword is not equipped
+            if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0 || Flags_GetInfTable(INFTABLE_SWORDLESS))) {
+                Flags_SetInfTable(INFTABLE_SWORDLESS);
+                gSaveContext.childEquips.buttonItems[0] = ITEM_NONE;
+            }
+
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                gSaveContext.equips.buttonItems[i] = ITEM_NONE;
+                gSaveContext.adultEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
+
                 if (i != 0) {
-                    gSaveContext.equips.cButtonSlots[i-1] = ITEM_NONE;
+                    gSaveContext.adultEquips.cButtonSlots[i - 1] = gSaveContext.equips.cButtonSlots[i - 1];
                 }
             }
-            gSaveContext.equips.equipment = (EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4)) |
-                                            (EQUIP_VALUE_SHIELD_DEKU << (EQUIP_TYPE_SHIELD * 4)) |
-                                            (EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4)) |
-                                            (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4));
-        }
 
-        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) &&
-            (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
-            Flags_SetInfTable(INFTABLE_SWORDLESS);
-            if (gSaveContext.childEquips.equipment == 0) {
-                // force equip kokiri tunic and boots in scenario gSaveContext.childEquips.equipment is uninitialized
+            gSaveContext.adultEquips.equipment = gSaveContext.equips.equipment;
+            // Switching age using enhancements separated out to make vanilla flow clear
+            if (CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) {
+                for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                    gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
+
+                    if (i != 0) {
+                        gSaveContext.equips.cButtonSlots[i - 1] = gSaveContext.childEquips.cButtonSlots[i - 1];
+                    }
+
+                    if (((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
+                        (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) ||
+                        ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
+                        (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
+                        osSyncPrintf("Register_Item_Pt(%d)=%d\n", i, gSaveContext.equips.cButtonSlots[i - 1]);
+                        gSaveContext.equips.buttonItems[i] =
+                            gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
+                    }
+                }
+
+                gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
                 gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
-                gSaveContext.equips.equipment |= (EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4)) |
-                                                 (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4));
+                // Equips kokiri sword in the inventory screen only if kokiri sword exists in inventory and a sword has been equipped already
+                if (!(CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) && !Flags_GetInfTable(INFTABLE_SWORDLESS)) {
+                    gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4);
+                }
+            } else if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
+                for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                    gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
+
+                    if (i != 0) {
+                        gSaveContext.equips.cButtonSlots[i - 1] = gSaveContext.childEquips.cButtonSlots[i - 1];
+                    }
+
+                    if (((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
+                        (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) ||
+                        ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
+                        (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
+                        osSyncPrintf("Register_Item_Pt(%d)=%d\n", i, gSaveContext.equips.cButtonSlots[i - 1]);
+                        gSaveContext.equips.buttonItems[i] =
+                            gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
+                    }
+                }
+
+                // In Rando, when switching to child from a swordless adult, and child Link previously had a
+                // sword equiped, then we need to unset the swordless flag to match
+                if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+                    gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
+                    Flags_UnsetInfTable(INFTABLE_SWORDLESS);
+                }
+
+                gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
+                gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
+                gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4);
+            } else if (IS_RANDO && Randomizer_GetSettingValue(RSK_STARTING_AGE) == RO_AGE_ADULT) {
+                /*If in rando and starting age is adult, childEquips is not initialized and buttonItems[0]
+                will be ITEM_NONE. When changing age from adult -> child, reset equips to "default"
+                (only kokiri tunic/boots equipped, no sword, no C-button items, no D-Pad items).
+                When becoming child, set swordless flag if player doesn't have kokiri sword
+                Only in rando to keep swordless link bugs in vanilla*/
+                if (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) {
+                    Flags_SetInfTable(INFTABLE_SWORDLESS);
+                }
+
+                //zero out items
+                for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                    gSaveContext.equips.buttonItems[i] = ITEM_NONE;
+                    if (i != 0) {
+                        gSaveContext.equips.cButtonSlots[i-1] = ITEM_NONE;
+                    }
+                }
+                gSaveContext.equips.equipment = (EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4)) |
+                                                (EQUIP_VALUE_SHIELD_DEKU << (EQUIP_TYPE_SHIELD * 4)) |
+                                                (EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4)) |
+                                                (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4));
+            }
+
+            if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) &&
+                (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
+                Flags_SetInfTable(INFTABLE_SWORDLESS);
+                if (gSaveContext.childEquips.equipment == 0) {
+                    // force equip kokiri tunic and boots in scenario gSaveContext.childEquips.equipment is uninitialized
+                    gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
+                    gSaveContext.equips.equipment |= (EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4)) |
+                                                    (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4));
+                }
             }
         }
-    }
-    CVarSetInteger("gSwitchTimeline", 0);
-    shieldEquipValue = gEquipMasks[EQUIP_TYPE_SHIELD] & gSaveContext.equips.equipment;
-    if (shieldEquipValue != 0) {
-        shieldEquipValue >>= gEquipShifts[EQUIP_TYPE_SHIELD];
-        if (!CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SHIELD, shieldEquipValue - 1)) {
-            gSaveContext.equips.equipment &= gEquipNegMasks[EQUIP_TYPE_SHIELD];
+        CVarSetInteger("gSwitchTimeline", 0);
+        shieldEquipValue = gEquipMasks[EQUIP_TYPE_SHIELD] & gSaveContext.equips.equipment;
+        if (shieldEquipValue != 0) {
+            shieldEquipValue >>= gEquipShifts[EQUIP_TYPE_SHIELD];
+            if (!CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SHIELD, shieldEquipValue - 1)) {
+                gSaveContext.equips.equipment &= gEquipNegMasks[EQUIP_TYPE_SHIELD];
+            }
         }
     }
 }
@@ -1943,11 +1957,16 @@ u8 Item_Give(PlayState* play, u8 item) {
             }
             
         } else if (item == ITEM_SWORD_MASTER) {
-            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-            gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
-            gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_MASTER << (EQUIP_TYPE_SWORD * 4);
-            if (play != NULL) {
-                Interface_LoadItemIcon1(play, 0);
+            if (CVarGetInteger("gTimelessEquipment", 0)) {
+                // Do not equip the Master Sword if gTimelessEquipment is enabled
+                // This prevents child's last equipped sword from always being MS
+            } else {
+                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+                gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
+                gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_MASTER << (EQUIP_TYPE_SWORD * 4);
+                if (play != NULL) {
+                    Interface_LoadItemIcon1(play, 0);
+                }
             }
         }
 
