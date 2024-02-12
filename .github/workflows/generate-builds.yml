@@ -66,7 +66,7 @@ jobs:
     - name: Install dependencies
       run: |
         pacman -Syu --noconfirm
-        pacman -S --noconfirm git cmake ninja gcc lsb-release sdl2 libpng sdl2_net boost
+        pacman -S --noconfirm git cmake ninja gcc lsb-release sdl2 libpng sdl2_net boost imagemagick
     - uses: actions/checkout@v3
       with:
         submodules: true
@@ -90,6 +90,41 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: soh-arch
+        path: |
+          soh.appimage
+          readme.txt
+  build-opensuse:
+    needs: generate-soh-otr
+    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
+    container:
+      image: opensuse/tumbleweed:latest
+    steps:
+    - name: Install dependencies
+      run: |
+        zypper dup
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: Download soh.otr
+      uses: actions/download-artifact@v4
+      with:
+        name: soh.otr
+    - name: Build SoH
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
+        cmake --build build-cmake --config Release -j3
+        (cd build-cmake && cpack -G External)
+
+        mv README.md readme.txt
+        mv build-cmake/*.appimage soh.appimage
+      env:
+        CC: gcc
+        CXX: g++
+    - name: Upload build
+      uses: actions/upload-artifact@v4
+      with:
+        name: soh-opensuse
         path: |
           soh.appimage
           readme.txt
