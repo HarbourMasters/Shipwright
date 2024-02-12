@@ -72,6 +72,10 @@ jobs:
     container:
       image: ${{ matrix.image }}
     steps:
+    - name: echo stuff
+      run: |
+        echo ${{ matrix.cc }}
+        echo ${{ matrix.cxx }}
     - name: Install dependencies (pacman)
       if: ${{ matrix.image == 'archlinux:base' }}
       run: |
