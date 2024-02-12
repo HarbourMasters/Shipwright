@@ -937,9 +937,13 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Bonking into trees will have a chance to drop up to 3 sticks. Must already have obtained sticks.");
                 UIWidgets::PaddedEnhancementCheckbox("No Heart Drops", "gNoHeartDrops", true, false);
                 UIWidgets::Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
-                UIWidgets::PaddedEnhancementCheckbox("Hyper Bosses", "gHyperBosses", true, false);
+                if (UIWidgets::PaddedEnhancementCheckbox("Hyper Bosses", "gHyperBosses", true, false)) {
+                    UpdateHyperBossesState();
+                }
                 UIWidgets::Tooltip("All major bosses move and act twice as fast.");
-                UIWidgets::PaddedEnhancementCheckbox("Hyper Enemies", "gHyperEnemies", true, false);
+                if (UIWidgets::PaddedEnhancementCheckbox("Hyper Enemies", "gHyperEnemies", true, false)) {
+                    UpdateHyperEnemiesState();
+                }
                 UIWidgets::Tooltip("All regular enemies and mini-bosses move and act twice as fast.");
                 UIWidgets::PaddedEnhancementCheckbox("Always Win Goron Pot", "gGoronPot", true, false);
                 UIWidgets::Tooltip("Always get the heart piece/purple rupee from the spinning Goron pot");
