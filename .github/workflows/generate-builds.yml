@@ -70,13 +70,6 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.11
-      with:
-        key: ${{ runner.os }}-arch-ccache-${{ github.ref }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-arch-ccache-${{ github.ref }}
-          ${{ runner.os }}-arch-ccache-
     - name: Download soh.otr
       uses: actions/download-artifact@v4
       with:
