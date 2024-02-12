@@ -612,10 +612,10 @@ u16 EnGo2_GetTextIdGoronDmtBiggoron(PlayState* play, EnGo2* this) {
         player->exchangeItemId = EXCH_ITEM_CLAIM_CHECK;
         return 0x305E;
     } else if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_PRESCRIPTION) {
-        player->exchangeItemId = EXCH_ITEM_EYEDROPS;
+        player->exchangeItemId = EXCH_ITEM_EYE_DROPS;
         return 0x3058;
     } else {
-        player->exchangeItemId = EXCH_ITEM_SWORD_BROKEN;
+        player->exchangeItemId = EXCH_ITEM_BROKEN_GORONS_SWORD;
         return 0x3053;
     }
 }
@@ -632,10 +632,10 @@ s16 EnGo2_UpdateTalkStateGoronDmtBiggoron(PlayState* play, EnGo2* this) {
                 }
                 
                 if(IS_RANDO) {
-                    EnGo2_GetItemEntry(this, play, Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS));
+                    EnGo2_GetItemEntry(this, play, Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BIGGORON));
                     Flags_SetTreasure(play, 0x1F);
                 } else {
-                    EnGo2_GetItem(this, play, GI_SWORD_BGS);
+                    EnGo2_GetItem(this, play, GI_SWORD_BIGGORON);
                 }
                 this->actionFunc = EnGo2_SetupGetItem;
                 return NPC_TALK_STATE_ACTION;
@@ -665,7 +665,7 @@ s16 EnGo2_UpdateTalkStateGoronDmtBiggoron(PlayState* play, EnGo2* this) {
                     if (play->msgCtx.choiceIndex == 0) {
                         if (IS_RANDO) {
                             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
-                            Randomizer_ConsumeAdultTradeItem(play, ITEM_SWORD_BROKEN);
+                            Randomizer_ConsumeAdultTradeItem(play, ITEM_BROKEN_GORONS_SWORD);
                             EnGo2_GetItemEntry(this, play, getItemEntry);
                             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD);
                         } else {
@@ -1102,7 +1102,7 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, PlayState* play, Player* player) {
 
         } else if ((INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_PRESCRIPTION) &&
                    (INV_CONTENT(ITEM_TRADE_ADULT) <= ITEM_CLAIM_CHECK)) {
-            if (func_8002F368(play) == EXCH_ITEM_EYEDROPS) {
+            if (func_8002F368(play) == EXCH_ITEM_EYE_DROPS) {
                 this->actor.textId = 0x3059;
             } else {
                 this->actor.textId = 0x3058;
@@ -1112,8 +1112,8 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, PlayState* play, Player* player) {
             }
             player->actor.textId = this->actor.textId;
 
-        } else if (INV_CONTENT(ITEM_TRADE_ADULT) <= ITEM_SWORD_BROKEN) {
-            if (func_8002F368(play) == EXCH_ITEM_SWORD_BROKEN) {
+        } else if (INV_CONTENT(ITEM_TRADE_ADULT) <= ITEM_BROKEN_GORONS_SWORD) {
+            if (func_8002F368(play) == EXCH_ITEM_BROKEN_GORONS_SWORD) {
                 if (Flags_GetInfTable(INFTABLE_B4)) {
                     textId = 0x3055;
                 } else {
@@ -1180,7 +1180,7 @@ void func_80A454CC(EnGo2* this) {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_9);
             break;
         case GORON_DMT_BIGGORON:
-            if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_SWORD_BROKEN && INV_CONTENT(ITEM_TRADE_ADULT) <= ITEM_EYEDROPS) {
+            if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_BROKEN_GORONS_SWORD && INV_CONTENT(ITEM_TRADE_ADULT) <= ITEM_EYE_DROPS) {
                 Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_4);
                 break;
             }
@@ -1568,7 +1568,7 @@ void EnGo2_GoronFireClearCamera(EnGo2* this, PlayState* play) {
 }
 
 void EnGo2_BiggoronAnimation(EnGo2* this) {
-    if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_SWORD_BROKEN && INV_CONTENT(ITEM_TRADE_ADULT) <= ITEM_EYEDROPS &&
+    if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_BROKEN_GORONS_SWORD && INV_CONTENT(ITEM_TRADE_ADULT) <= ITEM_EYE_DROPS &&
         (this->actor.params & 0x1F) == GORON_DMT_BIGGORON && this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
         if (DECR(this->animTimer) == 0) {
             this->animTimer = Rand_S16Offset(30, 30);
@@ -1670,8 +1670,8 @@ void EnGo2_Init(Actor* thisx, PlayState* play) {
         case GORON_DMT_BIGGORON:
             this->actor.shape.shadowDraw = NULL;
             this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
-            if ((INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_SWORD_BROKEN) &&
-                (INV_CONTENT(ITEM_TRADE_ADULT) <= ITEM_EYEDROPS)) {
+            if ((INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_BROKEN_GORONS_SWORD) &&
+                (INV_CONTENT(ITEM_TRADE_ADULT) <= ITEM_EYE_DROPS)) {
                 this->eyeMouthTexState = 1;
             }
             this->collider.base.acFlags = 0;
@@ -1905,7 +1905,7 @@ void EnGo2_SetGetItem(EnGo2* this, PlayState* play) {
                 Flags_SetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED);
                 EnGo2_GetItemAnimation(this, play);
                 return;
-            case GI_SWORD_BGS:
+            case GI_SWORD_BIGGORON:
                 gSaveContext.bgsFlag = true;
                 break;
             case GI_BOMB_BAG_30:
@@ -1961,7 +1961,7 @@ void EnGo2_BiggoronEyedrops(EnGo2* this, PlayState* play) {
                 this->skelAnime.curFrame = this->skelAnime.endFrame;
                 if (IS_RANDO) {
                     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
-                    Randomizer_ConsumeAdultTradeItem(play, ITEM_EYEDROPS);
+                    Randomizer_ConsumeAdultTradeItem(play, ITEM_EYE_DROPS);
                     EnGo2_GetItemEntry(this, play, getItemEntry);
                     Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS);
                 } else {

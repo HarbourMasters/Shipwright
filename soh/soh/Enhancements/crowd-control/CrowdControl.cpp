@@ -416,12 +416,12 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
         case kEffectRefillSticks:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
             dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_STICK;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_DEKU_STICK;
             break;
         case kEffectRefillNuts:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
             dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_NUT;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_DEKU_NUT;
             break;
         case kEffectRefillBombs:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
@@ -467,12 +467,12 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
         case kEffectTakeSticks:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
             dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_STICK;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_DEKU_STICK;
             break;
         case kEffectTakeNuts:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
             dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_NUT;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_DEKU_NUT;
             break;
         case kEffectTakeBombs:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();

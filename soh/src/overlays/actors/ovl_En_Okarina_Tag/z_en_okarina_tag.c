@@ -258,7 +258,7 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
             case 4:
                 if (IS_RANDO) {
                     if (Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) == RO_DOOROFTIME_CLOSED &&
-                        (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_OCARINA_TIME ||
+                        (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_OCARINA_OF_TIME ||
                          !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) || !CHECK_QUEST_ITEM(QUEST_GORON_RUBY) ||
                          !CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE))) {
                         func_80078884(NA_SE_SY_OCARINA_ERROR);
@@ -325,7 +325,7 @@ void func_80ABF708(EnOkarinaTag* this, PlayState* play) {
 
 void GivePlayerRandoRewardSunSong(EnOkarinaTag* song, PlayState* play, RandomizerCheck check) {
     Flags_SetTreasure(play, 0x1F);
-    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_LETTER_ZELDA);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_ZELDAS_LETTER);
     GiveItemEntryFromActor(&song->actor, play, getItemEntry, 10000.0f, 100.0f);
 }
 

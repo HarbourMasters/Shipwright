@@ -145,9 +145,9 @@ void EnGe3_WaitTillCardGiven(EnGe3* this, PlayState* play) {
         this->actionFunc = EnGe3_Wait;
     } else {
         if (!IS_RANDO) {
-            func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
+            func_8002F434(&this->actor, play, GI_GERUDOS_CARD, 10000.0f, 50.0f);
         } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDOS_CARD);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }
@@ -159,9 +159,9 @@ void EnGe3_GiveCard(EnGe3* this, PlayState* play) {
         this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         this->actionFunc = EnGe3_WaitTillCardGiven;
         if (!IS_RANDO) {
-            func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
+            func_8002F434(&this->actor, play, GI_GERUDOS_CARD, 10000.0f, 50.0f);
         } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDOS_CARD);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }

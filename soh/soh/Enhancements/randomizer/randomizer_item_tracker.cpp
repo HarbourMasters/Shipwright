@@ -35,27 +35,27 @@ bool shouldUpdateVectors = true;
 std::vector<ItemTrackerItem> mainWindowItems = {};
 
 std::vector<ItemTrackerItem> inventoryItems = {
-    ITEM_TRACKER_ITEM(ITEM_STICK, 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_NUT, 0, DrawItem),           ITEM_TRACKER_ITEM(ITEM_BOMB, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_BOW, 0, DrawItem),       ITEM_TRACKER_ITEM(ITEM_ARROW_FIRE, 0, DrawItem),    ITEM_TRACKER_ITEM(ITEM_DINS_FIRE, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_SLINGSHOT, 0, DrawItem), ITEM_TRACKER_ITEM(ITEM_OCARINA_FAIRY, 0, DrawItem), ITEM_TRACKER_ITEM(ITEM_BOMBCHU, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_HOOKSHOT, 0, DrawItem),  ITEM_TRACKER_ITEM(ITEM_ARROW_ICE, 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_FARORES_WIND, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_BOOMERANG, 0, DrawItem), ITEM_TRACKER_ITEM(ITEM_LENS, 0, DrawItem),          ITEM_TRACKER_ITEM(ITEM_BEAN, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_HAMMER, 0, DrawItem),    ITEM_TRACKER_ITEM(ITEM_ARROW_LIGHT, 0, DrawItem),   ITEM_TRACKER_ITEM(ITEM_NAYRUS_LOVE, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_BOTTLE, 0, DrawBottle),  ITEM_TRACKER_ITEM(ITEM_BOTTLE, 1, DrawBottle),      ITEM_TRACKER_ITEM(ITEM_BOTTLE, 2, DrawBottle),
-    ITEM_TRACKER_ITEM(ITEM_BOTTLE, 3, DrawBottle),  ITEM_TRACKER_ITEM(ITEM_POCKET_EGG, 0, DrawItem),    ITEM_TRACKER_ITEM(ITEM_MASK_KEATON, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_DEKU_STICK, 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_DEKU_NUT, 0, DrawItem),       ITEM_TRACKER_ITEM(ITEM_BOMB, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_BOW, 0, DrawItem),            ITEM_TRACKER_ITEM(ITEM_ARROW_FIRE, 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_DINS_FIRE, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_SLINGSHOT, 0, DrawItem),      ITEM_TRACKER_ITEM(ITEM_OCARINA_FAIRY, 0, DrawItem),  ITEM_TRACKER_ITEM(ITEM_BOMBCHU, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_HOOKSHOT, 0, DrawItem),       ITEM_TRACKER_ITEM(ITEM_ARROW_ICE, 0, DrawItem),      ITEM_TRACKER_ITEM(ITEM_FARORES_WIND, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_BOOMERANG, 0, DrawItem),      ITEM_TRACKER_ITEM(ITEM_LENS_OF_TRUTH, 0, DrawItem),  ITEM_TRACKER_ITEM(ITEM_MAGIC_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_HAMMER, 0, DrawItem),         ITEM_TRACKER_ITEM(ITEM_ARROW_LIGHT, 0, DrawItem),    ITEM_TRACKER_ITEM(ITEM_NAYRUS_LOVE, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_BOTTLE_EMPTY, 0, DrawBottle), ITEM_TRACKER_ITEM(ITEM_BOTTLE_EMPTY, 1, DrawBottle), ITEM_TRACKER_ITEM(ITEM_BOTTLE_EMPTY, 2, DrawBottle),
+    ITEM_TRACKER_ITEM(ITEM_BOTTLE_EMPTY, 3, DrawBottle), ITEM_TRACKER_ITEM(ITEM_POCKET_EGG, 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_MASK_KEATON, 0, DrawItem),
 };
 
 std::vector<ItemTrackerItem> equipmentItems = {
-    ITEM_TRACKER_ITEM(ITEM_SWORD_KOKIRI, 1 << 0, DrawEquip),  ITEM_TRACKER_ITEM(ITEM_SWORD_MASTER, 1 << 1, DrawEquip),  ITEM_TRACKER_ITEM(ITEM_SWORD_BGS, 1 << 2, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_SWORD_KOKIRI, 1 << 0, DrawEquip),  ITEM_TRACKER_ITEM(ITEM_SWORD_MASTER, 1 << 1, DrawEquip),  ITEM_TRACKER_ITEM(ITEM_SWORD_BIGGORON, 1 << 2, DrawEquip),
     ITEM_TRACKER_ITEM(ITEM_TUNIC_KOKIRI, 1 << 8, DrawEquip),  ITEM_TRACKER_ITEM(ITEM_TUNIC_GORON, 1 << 9, DrawEquip),   ITEM_TRACKER_ITEM(ITEM_TUNIC_ZORA, 1 << 10, DrawEquip),
     ITEM_TRACKER_ITEM(ITEM_SHIELD_DEKU, 1 << 4, DrawEquip),   ITEM_TRACKER_ITEM(ITEM_SHIELD_HYLIAN, 1 << 5, DrawEquip), ITEM_TRACKER_ITEM(ITEM_SHIELD_MIRROR, 1 << 6, DrawEquip),
     ITEM_TRACKER_ITEM(ITEM_BOOTS_KOKIRI, 1 << 12, DrawEquip), ITEM_TRACKER_ITEM(ITEM_BOOTS_IRON, 1 << 13, DrawEquip),   ITEM_TRACKER_ITEM(ITEM_BOOTS_HOVER, 1 << 14, DrawEquip),
 };
 
 std::vector<ItemTrackerItem> miscItems = {
-    ITEM_TRACKER_ITEM(ITEM_BRACELET, 0, DrawItem),            ITEM_TRACKER_ITEM(ITEM_SCALE_SILVER, 0, DrawItem),        ITEM_TRACKER_ITEM(ITEM_WALLET_ADULT, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_HEART_CONTAINER, 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_HEART_PIECE, 0, DrawItem),         ITEM_TRACKER_ITEM(ITEM_MAGIC_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM(QUEST_GERUDO_CARD, 1 << 22, DrawQuest), ITEM_TRACKER_ITEM(QUEST_SKULL_TOKEN, 1 << 23, DrawQuest), ITEM_TRACKER_ITEM(QUEST_STONE_OF_AGONY, 1 << 21, DrawQuest),
+    ITEM_TRACKER_ITEM(ITEM_STRENGTH_GORONS_BRACELET, 0, DrawItem), ITEM_TRACKER_ITEM(ITEM_SCALE_SILVER, 0, DrawItem),        ITEM_TRACKER_ITEM(ITEM_ADULTS_WALLET, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_HEART_CONTAINER, 0, DrawItem),          ITEM_TRACKER_ITEM(ITEM_HEART_PIECE, 0, DrawItem),         ITEM_TRACKER_ITEM(ITEM_MAGIC_JAR_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM(QUEST_GERUDOS_CARD, 1 << 22, DrawQuest),     ITEM_TRACKER_ITEM(QUEST_SKULL_TOKEN, 1 << 23, DrawQuest), ITEM_TRACKER_ITEM(QUEST_STONE_OF_AGONY, 1 << 21, DrawQuest),
 };
 
 std::vector<ItemTrackerItem> dungeonRewardStones = {
@@ -85,57 +85,57 @@ std::vector<ItemTrackerItem> triforcePieces = {
 };
 
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsHorizontal = {
-    { SCENE_DEKU_TREE, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_DODONGOS_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_JABU_JABU, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_FOREST_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_FIRE_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_WATER_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_SPIRIT_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_SHADOW_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_KEY_SMALL, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_ICE_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_KEY_SMALL } },
+    { SCENE_DEKU_TREE, { ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_DODONGOS_CAVERN, { ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_JABU_JABU, { ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_FOREST_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY, ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_FIRE_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY, ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_WATER_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY, ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_SPIRIT_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY, ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_SHADOW_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY, ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY } },
+    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_SMALL_KEY, ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_ICE_CAVERN, { ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_SMALL_KEY } },
 };
 
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsHorizontal = {
-    { SCENE_FOREST_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_FIRE_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_WATER_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_SPIRIT_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_SHADOW_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_KEY_SMALL } },
-    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_KEY_SMALL } },
+    { SCENE_FOREST_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY } },
+    { SCENE_FIRE_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY } },
+    { SCENE_WATER_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY } },
+    { SCENE_SPIRIT_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY } },
+    { SCENE_SHADOW_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY } },
+    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY } },
+    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_SMALL_KEY } },
+    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_SMALL_KEY } },
 };
 
 
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsCompact = {
-    { SCENE_FOREST_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_FIRE_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_WATER_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_SPIRIT_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_SHADOW_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_KEY_SMALL, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_DEKU_TREE, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_DODONGOS_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_JABU_JABU, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_ICE_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_KEY_SMALL } },
+    { SCENE_FOREST_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY, ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_FIRE_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY, ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_WATER_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY, ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_SPIRIT_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY, ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_SHADOW_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY, ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_SMALL_KEY, ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_DEKU_TREE, { ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_DODONGOS_CAVERN, { ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_JABU_JABU, { ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_ICE_CAVERN, { ITEM_DUNGEON_MAP, ITEM_DUNGEON_COMPASS } },
+    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY } },
+    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_SMALL_KEY } },
 };
 
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsCompact = {
-    { SCENE_FOREST_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_FIRE_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_WATER_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_SPIRIT_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_SHADOW_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_KEY_SMALL } },
-    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_KEY_SMALL } },
-    { SCENE_THIEVES_HIDEOUT, { ITEM_KEY_SMALL } },
+    { SCENE_FOREST_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY } },
+    { SCENE_FIRE_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY } },
+    { SCENE_WATER_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY } },
+    { SCENE_SPIRIT_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY } },
+    { SCENE_SHADOW_TEMPLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY } },
+    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_SMALL_KEY, ITEM_DUNGEON_BOSS_KEY } },
+    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_SMALL_KEY } },
+    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_SMALL_KEY } },
+    { SCENE_THIEVES_HIDEOUT, { ITEM_SMALL_KEY } },
 };
 
 std::map<uint16_t, std::string> itemTrackerDungeonShortNames = {
@@ -157,63 +157,63 @@ std::map<uint16_t, std::string> itemTrackerDungeonShortNames = {
 std::vector<ItemTrackerItem> dungeonItems = {};
 
 std::unordered_map<uint32_t, ItemTrackerItem> actualItemTrackerItemMap = {
-    { ITEM_BOTTLE,           ITEM_TRACKER_ITEM(ITEM_BOTTLE, 0, DrawItem) },
-    { ITEM_BIG_POE,          ITEM_TRACKER_ITEM(ITEM_BIG_POE, 0, DrawItem) },
-    { ITEM_BLUE_FIRE,        ITEM_TRACKER_ITEM(ITEM_BLUE_FIRE, 0, DrawItem) },
-    { ITEM_BUG,              ITEM_TRACKER_ITEM(ITEM_BUG, 0, DrawItem) },
-    { ITEM_FAIRY,            ITEM_TRACKER_ITEM(ITEM_FAIRY, 0, DrawItem) },
-    { ITEM_FISH,             ITEM_TRACKER_ITEM(ITEM_FISH, 0, DrawItem) },
-    { ITEM_POTION_GREEN,     ITEM_TRACKER_ITEM(ITEM_POTION_GREEN, 0, DrawItem) },
-    { ITEM_POE,              ITEM_TRACKER_ITEM(ITEM_POE, 0, DrawItem) },
-    { ITEM_POTION_RED,       ITEM_TRACKER_ITEM(ITEM_POTION_RED, 0, DrawItem) },
-    { ITEM_POTION_BLUE,      ITEM_TRACKER_ITEM(ITEM_POTION_BLUE, 0, DrawItem) },
-    { ITEM_MILK_BOTTLE,      ITEM_TRACKER_ITEM(ITEM_MILK_BOTTLE, 0, DrawItem) },
-    { ITEM_MILK_HALF,        ITEM_TRACKER_ITEM(ITEM_MILK_HALF, 0, DrawItem) },
-    { ITEM_LETTER_RUTO,      ITEM_TRACKER_ITEM(ITEM_LETTER_RUTO, 0, DrawItem) },
+    { ITEM_BOTTLE_EMPTY,              ITEM_TRACKER_ITEM(ITEM_BOTTLE_EMPTY, 0, DrawItem) },
+    { ITEM_BOTTLE_BIG_POE,            ITEM_TRACKER_ITEM(ITEM_BOTTLE_BIG_POE, 0, DrawItem) },
+    { ITEM_BOTTLE_BLUE_FIRE,          ITEM_TRACKER_ITEM(ITEM_BOTTLE_BLUE_FIRE, 0, DrawItem) },
+    { ITEM_BOTTLE_BUG,                ITEM_TRACKER_ITEM(ITEM_BOTTLE_BUG, 0, DrawItem) },
+    { ITEM_BOTTLE_FAIRY,              ITEM_TRACKER_ITEM(ITEM_BOTTLE_FAIRY, 0, DrawItem) },
+    { ITEM_BOTTLE_FISH,               ITEM_TRACKER_ITEM(ITEM_BOTTLE_FISH, 0, DrawItem) },
+    { ITEM_BOTTLE_POTION_GREEN,       ITEM_TRACKER_ITEM(ITEM_BOTTLE_POTION_GREEN, 0, DrawItem) },
+    { ITEM_BOTTLE_POE,                ITEM_TRACKER_ITEM(ITEM_BOTTLE_POE, 0, DrawItem) },
+    { ITEM_BOTTLE_POTION_RED,         ITEM_TRACKER_ITEM(ITEM_BOTTLE_POTION_RED, 0, DrawItem) },
+    { ITEM_BOTTLE_POTION_BLUE,        ITEM_TRACKER_ITEM(ITEM_BOTTLE_POTION_BLUE, 0, DrawItem) },
+    { ITEM_BOTTLE_MILK_FULL,          ITEM_TRACKER_ITEM(ITEM_BOTTLE_MILK_FULL, 0, DrawItem) },
+    { ITEM_BOTTLE_MILK_HALF,          ITEM_TRACKER_ITEM(ITEM_BOTTLE_MILK_HALF, 0, DrawItem) },
+    { ITEM_BOTTLE_RUTOS_LETTER,       ITEM_TRACKER_ITEM(ITEM_BOTTLE_RUTOS_LETTER, 0, DrawItem) },
 
-    { ITEM_HOOKSHOT,         ITEM_TRACKER_ITEM(ITEM_HOOKSHOT, 0, DrawItem) },
-    { ITEM_LONGSHOT,         ITEM_TRACKER_ITEM(ITEM_LONGSHOT, 0, DrawItem) },
+    { ITEM_HOOKSHOT,                  ITEM_TRACKER_ITEM(ITEM_HOOKSHOT, 0, DrawItem) },
+    { ITEM_LONGSHOT,                  ITEM_TRACKER_ITEM(ITEM_LONGSHOT, 0, DrawItem) },
 
-    { ITEM_OCARINA_FAIRY,    ITEM_TRACKER_ITEM(ITEM_OCARINA_FAIRY, 0, DrawItem) },
-    { ITEM_OCARINA_TIME,     ITEM_TRACKER_ITEM(ITEM_OCARINA_TIME, 0, DrawItem) },
+    { ITEM_OCARINA_FAIRY,             ITEM_TRACKER_ITEM(ITEM_OCARINA_FAIRY, 0, DrawItem) },
+    { ITEM_OCARINA_OF_TIME,           ITEM_TRACKER_ITEM(ITEM_OCARINA_OF_TIME, 0, DrawItem) },
 
-    { ITEM_MAGIC_SMALL,      ITEM_TRACKER_ITEM(ITEM_MAGIC_SMALL, 0, DrawItem) },
-    { ITEM_MAGIC_LARGE,      ITEM_TRACKER_ITEM(ITEM_MAGIC_LARGE, 0, DrawItem) },
+    { ITEM_MAGIC_JAR_SMALL,           ITEM_TRACKER_ITEM(ITEM_MAGIC_JAR_SMALL, 0, DrawItem) },
+    { ITEM_MAGIC_JAR_BIG,             ITEM_TRACKER_ITEM(ITEM_MAGIC_JAR_BIG, 0, DrawItem) },
 
-    { ITEM_WALLET_ADULT,     ITEM_TRACKER_ITEM(ITEM_WALLET_ADULT, 0, DrawItem) },
-    { ITEM_WALLET_GIANT,     ITEM_TRACKER_ITEM(ITEM_WALLET_GIANT, 0, DrawItem) },
+    { ITEM_ADULTS_WALLET,             ITEM_TRACKER_ITEM(ITEM_ADULTS_WALLET, 0, DrawItem) },
+    { ITEM_GIANTS_WALLET,             ITEM_TRACKER_ITEM(ITEM_GIANTS_WALLET, 0, DrawItem) },
 
-    { ITEM_BRACELET,         ITEM_TRACKER_ITEM(ITEM_BRACELET, 0, DrawItem) },
-    { ITEM_GAUNTLETS_SILVER, ITEM_TRACKER_ITEM(ITEM_GAUNTLETS_SILVER, 0, DrawItem) },
-    { ITEM_GAUNTLETS_GOLD,   ITEM_TRACKER_ITEM(ITEM_GAUNTLETS_GOLD, 0, DrawItem) },
+    { ITEM_STRENGTH_GORONS_BRACELET,  ITEM_TRACKER_ITEM(ITEM_STRENGTH_GORONS_BRACELET, 0, DrawItem) },
+    { ITEM_STRENGTH_SILVER_GAUNTLETS, ITEM_TRACKER_ITEM(ITEM_STRENGTH_SILVER_GAUNTLETS, 0, DrawItem) },
+    { ITEM_STRENGTH_GOLD_GAUNTLETS,   ITEM_TRACKER_ITEM(ITEM_STRENGTH_GOLD_GAUNTLETS, 0, DrawItem) },
 
-    { ITEM_SCALE_SILVER,     ITEM_TRACKER_ITEM(ITEM_SCALE_SILVER, 0, DrawItem) },
-    { ITEM_SCALE_GOLDEN,     ITEM_TRACKER_ITEM(ITEM_SCALE_GOLDEN, 0, DrawItem) },
+    { ITEM_SCALE_SILVER,              ITEM_TRACKER_ITEM(ITEM_SCALE_SILVER, 0, DrawItem) },
+    { ITEM_SCALE_GOLDEN,              ITEM_TRACKER_ITEM(ITEM_SCALE_GOLDEN, 0, DrawItem) },
 
-    { ITEM_WEIRD_EGG,        ITEM_TRACKER_ITEM(ITEM_WEIRD_EGG, 0, DrawItem) },
-    { ITEM_CHICKEN,          ITEM_TRACKER_ITEM(ITEM_CHICKEN, 0, DrawItem) },
-    { ITEM_LETTER_ZELDA,     ITEM_TRACKER_ITEM(ITEM_LETTER_ZELDA, 0, DrawItem) },
-    { ITEM_MASK_KEATON,      ITEM_TRACKER_ITEM(ITEM_MASK_KEATON, 0, DrawItem) },
-    { ITEM_MASK_SKULL,       ITEM_TRACKER_ITEM(ITEM_MASK_SKULL, 0, DrawItem) },
-    { ITEM_MASK_SPOOKY,      ITEM_TRACKER_ITEM(ITEM_MASK_SPOOKY, 0, DrawItem) },
-    { ITEM_MASK_BUNNY,       ITEM_TRACKER_ITEM(ITEM_MASK_BUNNY, 0, DrawItem) },
-    { ITEM_MASK_GORON,       ITEM_TRACKER_ITEM(ITEM_MASK_GORON, 0, DrawItem) },
-    { ITEM_MASK_ZORA,        ITEM_TRACKER_ITEM(ITEM_MASK_ZORA, 0, DrawItem) },
-    { ITEM_MASK_GERUDO,      ITEM_TRACKER_ITEM(ITEM_MASK_GERUDO, 0, DrawItem) },
-    { ITEM_MASK_TRUTH,       ITEM_TRACKER_ITEM(ITEM_MASK_TRUTH, 0, DrawItem) },
-    { ITEM_SOLD_OUT,         ITEM_TRACKER_ITEM(ITEM_SOLD_OUT, 0, DrawItem) },
+    { ITEM_WEIRD_EGG,                 ITEM_TRACKER_ITEM(ITEM_WEIRD_EGG, 0, DrawItem) },
+    { ITEM_CHICKEN,                   ITEM_TRACKER_ITEM(ITEM_CHICKEN, 0, DrawItem) },
+    { ITEM_ZELDAS_LETTER,             ITEM_TRACKER_ITEM(ITEM_ZELDAS_LETTER, 0, DrawItem) },
+    { ITEM_MASK_KEATON,               ITEM_TRACKER_ITEM(ITEM_MASK_KEATON, 0, DrawItem) },
+    { ITEM_MASK_SKULL,                ITEM_TRACKER_ITEM(ITEM_MASK_SKULL, 0, DrawItem) },
+    { ITEM_MASK_SPOOKY,               ITEM_TRACKER_ITEM(ITEM_MASK_SPOOKY, 0, DrawItem) },
+    { ITEM_MASK_BUNNY_HOOD,           ITEM_TRACKER_ITEM(ITEM_MASK_BUNNY_HOOD, 0, DrawItem) },
+    { ITEM_MASK_GORON,                ITEM_TRACKER_ITEM(ITEM_MASK_GORON, 0, DrawItem) },
+    { ITEM_MASK_ZORA,                 ITEM_TRACKER_ITEM(ITEM_MASK_ZORA, 0, DrawItem) },
+    { ITEM_MASK_GERUDO,               ITEM_TRACKER_ITEM(ITEM_MASK_GERUDO, 0, DrawItem) },
+    { ITEM_MASK_TRUTH,                ITEM_TRACKER_ITEM(ITEM_MASK_TRUTH, 0, DrawItem) },
+    { ITEM_SOLD_OUT,                  ITEM_TRACKER_ITEM(ITEM_SOLD_OUT, 0, DrawItem) },
 
-    { ITEM_POCKET_EGG,       ITEM_TRACKER_ITEM(ITEM_POCKET_EGG, 0, DrawItem) },
-    { ITEM_POCKET_CUCCO,     ITEM_TRACKER_ITEM(ITEM_POCKET_CUCCO, 0, DrawItem) },
-    { ITEM_COJIRO,           ITEM_TRACKER_ITEM(ITEM_COJIRO, 0, DrawItem) },
-    { ITEM_ODD_MUSHROOM,     ITEM_TRACKER_ITEM(ITEM_ODD_MUSHROOM, 0, DrawItem) },
-    { ITEM_ODD_POTION,       ITEM_TRACKER_ITEM(ITEM_ODD_POTION, 0, DrawItem) },
-    { ITEM_SAW,              ITEM_TRACKER_ITEM(ITEM_SAW, 0, DrawItem) },
-    { ITEM_SWORD_BROKEN,     ITEM_TRACKER_ITEM(ITEM_SWORD_BROKEN, 0, DrawItem) },
-    { ITEM_PRESCRIPTION,     ITEM_TRACKER_ITEM(ITEM_PRESCRIPTION, 0, DrawItem) },
-    { ITEM_FROG,             ITEM_TRACKER_ITEM(ITEM_FROG, 0, DrawItem) },
-    { ITEM_EYEDROPS,         ITEM_TRACKER_ITEM(ITEM_EYEDROPS, 0, DrawItem) },
-    { ITEM_CLAIM_CHECK,      ITEM_TRACKER_ITEM(ITEM_CLAIM_CHECK, 0, DrawItem) },
+    { ITEM_POCKET_EGG,                ITEM_TRACKER_ITEM(ITEM_POCKET_EGG, 0, DrawItem) },
+    { ITEM_POCKET_CUCCO,              ITEM_TRACKER_ITEM(ITEM_POCKET_CUCCO, 0, DrawItem) },
+    { ITEM_COJIRO,                    ITEM_TRACKER_ITEM(ITEM_COJIRO, 0, DrawItem) },
+    { ITEM_ODD_MUSHROOM,              ITEM_TRACKER_ITEM(ITEM_ODD_MUSHROOM, 0, DrawItem) },
+    { ITEM_ODD_POTION,                ITEM_TRACKER_ITEM(ITEM_ODD_POTION, 0, DrawItem) },
+    { ITEM_POACHERS_SAW,              ITEM_TRACKER_ITEM(ITEM_POACHERS_SAW, 0, DrawItem) },
+    { ITEM_BROKEN_GORONS_SWORD,       ITEM_TRACKER_ITEM(ITEM_BROKEN_GORONS_SWORD, 0, DrawItem) },
+    { ITEM_PRESCRIPTION,              ITEM_TRACKER_ITEM(ITEM_PRESCRIPTION, 0, DrawItem) },
+    { ITEM_EYEBALL_FROG,              ITEM_TRACKER_ITEM(ITEM_EYEBALL_FROG, 0, DrawItem) },
+    { ITEM_EYE_DROPS,                 ITEM_TRACKER_ITEM(ITEM_EYE_DROPS, 0, DrawItem) },
+    { ITEM_CLAIM_CHECK,               ITEM_TRACKER_ITEM(ITEM_CLAIM_CHECK, 0, DrawItem) },
 };
 
 std::vector<uint32_t> buttonMap = {
@@ -311,15 +311,15 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
     result.currentAmmo = 0;
 
     switch (item.id) {
-        case ITEM_STICK:
-            result.currentCapacity = CUR_CAPACITY(UPG_STICKS);
+        case ITEM_DEKU_STICK:
+            result.currentCapacity = CUR_CAPACITY(UPG_DEKU_STICKS);
             result.maxCapacity = 30;
-            result.currentAmmo = AMMO(ITEM_STICK);
+            result.currentAmmo = AMMO(ITEM_DEKU_STICK);
             break;
-        case ITEM_NUT:
-            result.currentCapacity = CUR_CAPACITY(UPG_NUTS);
+        case ITEM_DEKU_NUT:
+            result.currentCapacity = CUR_CAPACITY(UPG_DEKU_NUTS);
             result.maxCapacity = 40;
-            result.currentAmmo = AMMO(ITEM_NUT);
+            result.currentAmmo = AMMO(ITEM_DEKU_NUT);
             break;
         case ITEM_BOMB:
             result.currentCapacity = CUR_CAPACITY(UPG_BOMB_BAG);
@@ -336,8 +336,8 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             result.maxCapacity = 50;
             result.currentAmmo = AMMO(ITEM_SLINGSHOT);
             break;
-        case ITEM_WALLET_ADULT:
-        case ITEM_WALLET_GIANT:
+        case ITEM_ADULTS_WALLET:
+        case ITEM_GIANTS_WALLET:
             result.currentCapacity = CUR_CAPACITY(UPG_WALLET);
             result.maxCapacity = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 999 : 500;
             result.currentAmmo = gSaveContext.rupees;
@@ -347,10 +347,10 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             result.maxCapacity = 50;
             result.currentAmmo = AMMO(ITEM_BOMBCHU);
             break;
-        case ITEM_BEAN:
-            result.currentCapacity = INV_CONTENT(ITEM_BEAN) == ITEM_BEAN ? 10 : 0;
+        case ITEM_MAGIC_BEAN:
+            result.currentCapacity = INV_CONTENT(ITEM_MAGIC_BEAN) == ITEM_MAGIC_BEAN ? 10 : 0;
             result.maxCapacity = 10;
-            result.currentAmmo = AMMO(ITEM_BEAN);
+            result.currentAmmo = AMMO(ITEM_MAGIC_BEAN);
             break;
         case QUEST_SKULL_TOKEN:
             result.maxCapacity = result.currentCapacity = 100;
@@ -364,7 +364,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             result.maxCapacity = result.currentCapacity = 36;
             result.currentAmmo = gSaveContext.sohStats.heartPieces;
             break;
-        case ITEM_KEY_SMALL:
+        case ITEM_SMALL_KEY:
             // Though the ammo/capacity naming doesn't really make sense for keys, we are
             // hijacking the same system to display key counts as there are enough similarities
             result.currentAmmo = MAX(gSaveContext.inventory.dungeonKeys[item.data], 0);
@@ -438,7 +438,7 @@ void DrawItemCount(ItemTrackerItem item) {
 
     ImGui::SetWindowFontScale(textSize / 13.0f);
 
-    if (item.id == ITEM_KEY_SMALL && IsValidSaveFile()) {
+    if (item.id == ITEM_SMALL_KEY && IsValidSaveFile()) {
         std::string currentString = "";
         std::string maxString = std::to_string(currentAndMax.maxCapacity);
         ImU32 currentColor = IM_COL_WHITE;
@@ -475,7 +475,7 @@ void DrawItemCount(ItemTrackerItem item) {
             trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY ||
             // These items have a static capacity, so display ammo instead
             item.id == ITEM_BOMBCHU ||
-            item.id == ITEM_BEAN ||
+            item.id == ITEM_MAGIC_BEAN ||
             item.id == QUEST_SKULL_TOKEN ||
             item.id == ITEM_HEART_CONTAINER ||
             item.id == ITEM_HEART_PIECE;
@@ -600,20 +600,20 @@ void DrawItem(ItemTrackerItem item) {
             actualItemId = item.id;
             hasItem = gSaveContext.sohStats.heartPieces > 0;
             break;
-        case ITEM_MAGIC_SMALL:
-        case ITEM_MAGIC_LARGE:
-            actualItemId = gSaveContext.magicLevel == 2 ? ITEM_MAGIC_LARGE : ITEM_MAGIC_SMALL;
+        case ITEM_MAGIC_JAR_SMALL:
+        case ITEM_MAGIC_JAR_BIG:
+            actualItemId = gSaveContext.magicLevel == 2 ? ITEM_MAGIC_JAR_BIG : ITEM_MAGIC_JAR_SMALL;
             hasItem = gSaveContext.magicLevel > 0;
             break;
-        case ITEM_WALLET_ADULT:
-        case ITEM_WALLET_GIANT:
-            actualItemId = CUR_UPG_VALUE(UPG_WALLET) == 2 ? ITEM_WALLET_GIANT : ITEM_WALLET_ADULT;
+        case ITEM_ADULTS_WALLET:
+        case ITEM_GIANTS_WALLET:
+            actualItemId = CUR_UPG_VALUE(UPG_WALLET) == 2 ? ITEM_GIANTS_WALLET : ITEM_ADULTS_WALLET;
             hasItem = true;
             break;
-        case ITEM_BRACELET:
-        case ITEM_GAUNTLETS_SILVER:
-        case ITEM_GAUNTLETS_GOLD:
-            actualItemId = CUR_UPG_VALUE(UPG_STRENGTH) == 3 ? ITEM_GAUNTLETS_GOLD : CUR_UPG_VALUE(UPG_STRENGTH) == 2 ? ITEM_GAUNTLETS_SILVER : ITEM_BRACELET;
+        case ITEM_STRENGTH_GORONS_BRACELET:
+        case ITEM_STRENGTH_SILVER_GAUNTLETS:
+        case ITEM_STRENGTH_GOLD_GAUNTLETS:
+            actualItemId = CUR_UPG_VALUE(UPG_STRENGTH) == 3 ? ITEM_STRENGTH_GOLD_GAUNTLETS : CUR_UPG_VALUE(UPG_STRENGTH) == 2 ? ITEM_STRENGTH_SILVER_GAUNTLETS : ITEM_STRENGTH_GORONS_BRACELET;
             hasItem = CUR_UPG_VALUE(UPG_STRENGTH) > 0;
             break;
         case ITEM_SCALE_SILVER:
@@ -669,12 +669,12 @@ void DrawBottle(ItemTrackerItem item) {
 void DrawDungeonItem(ItemTrackerItem item) {
     uint32_t itemId = item.id;
     ImU32 dungeonColor = IM_COL_WHITE;
-    uint32_t bitMask = 1 << (item.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
+    uint32_t bitMask = 1 << (item.id - ITEM_DUNGEON_BOSS_KEY); // Bitset starts at ITEM_DUNGEON_BOSS_KEY == 0. the rest are sequential
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     bool hasItem = (bitMask & gSaveContext.inventory.dungeonItems[item.data]) != 0;
     bool hasSmallKey = (gSaveContext.inventory.dungeonKeys[item.data]) >= 0;
     ImGui::BeginGroup();
-    if (itemId == ITEM_KEY_SMALL) {
+    if (itemId == ITEM_SMALL_KEY) {
         ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
@@ -687,7 +687,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
         dungeonColor = IM_COL_PURPLE;
     }
 
-    if (itemId == ITEM_KEY_SMALL) {
+    if (itemId == ITEM_SMALL_KEY) {
         DrawItemCount(item);
 
         ImVec2 p = ImGui::GetCursorScreenPos();
@@ -845,22 +845,22 @@ std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeo
         for (int j = 0; j < MIN(dungeons.size(), columns); j++) {
             if (dungeons[j].items.size() > i) {
                 switch (dungeons[j].items[i]) {
-                    case ITEM_KEY_SMALL:
-                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, dungeons[j].id, DrawDungeonItem));
+                    case ITEM_SMALL_KEY:
+                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_SMALL_KEY, dungeons[j].id, DrawDungeonItem));
                         break;
-                    case ITEM_KEY_BOSS:
+                    case ITEM_DUNGEON_BOSS_KEY:
                         // Swap Ganon's Castle boss key to the right scene ID manually
                         if (dungeons[j].id == SCENE_INSIDE_GANONS_CASTLE) {
-                            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, SCENE_GANONS_TOWER, DrawDungeonItem));
+                            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_DUNGEON_BOSS_KEY, SCENE_GANONS_TOWER, DrawDungeonItem));
                         } else {
-                            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, dungeons[j].id, DrawDungeonItem));
+                            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_DUNGEON_BOSS_KEY, dungeons[j].id, DrawDungeonItem));
                         }
                         break;
                     case ITEM_DUNGEON_MAP:
                         dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_DUNGEON_MAP, dungeons[j].id, DrawDungeonItem));
                         break;
-                    case ITEM_COMPASS:
-                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_COMPASS, dungeons[j].id, DrawDungeonItem));
+                    case ITEM_DUNGEON_COMPASS:
+                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_DUNGEON_COMPASS, dungeons[j].id, DrawDungeonItem));
                         break;
                 }
             } else {
@@ -892,17 +892,17 @@ void UpdateVectors() {
         if (CVarGetInteger("gItemTrackerDisplayDungeonItemsMaps", 1)) {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsHorizontal, 12);
             // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
-            dungeonItems[23] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
+            dungeonItems[23] = ITEM_TRACKER_ITEM(ITEM_SMALL_KEY, SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
         } else {
             // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsHorizontal, 8);
-            dungeonItems[15] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
+            dungeonItems[15] = ITEM_TRACKER_ITEM(ITEM_SMALL_KEY, SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
         }
     } else {
         if (CVarGetInteger("gItemTrackerDisplayDungeonItemsMaps", 1)) {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsCompact);
             // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
-            dungeonItems[35] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
+            dungeonItems[35] = ITEM_TRACKER_ITEM(ITEM_SMALL_KEY, SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
         } else {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsCompact);
         }

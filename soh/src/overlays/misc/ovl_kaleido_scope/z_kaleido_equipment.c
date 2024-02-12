@@ -6,8 +6,8 @@
 static u8 sChildUpgrades[] = { UPG_BULLET_BAG, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
 static u8 sAdultUpgrades[] = { UPG_QUIVER, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
 
-static u8 sChildUpgradeItemBases[] = { ITEM_BULLET_BAG_30, ITEM_BOMB_BAG_20, ITEM_BRACELET, ITEM_SCALE_SILVER };
-static u8 sAdultUpgradeItemBases[] = { ITEM_QUIVER_30, ITEM_BOMB_BAG_20, ITEM_BRACELET, ITEM_SCALE_SILVER };
+static u8 sChildUpgradeItemBases[] = { ITEM_BULLET_BAG_30, ITEM_BOMB_BAG_20, ITEM_STRENGTH_GORONS_BRACELET, ITEM_SCALE_SILVER };
+static u8 sAdultUpgradeItemBases[] = { ITEM_QUIVER_30, ITEM_BOMB_BAG_20, ITEM_STRENGTH_GORONS_BRACELET, ITEM_SCALE_SILVER };
 
 static u8 sUpgradeItemOffsets[] = { 0x00, 0x03, 0x06, 0x09 };
 
@@ -501,7 +501,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             if (gSaveContext.bgsFlag != 0) {
                 cursorItem = ITEM_HEART_PIECE_2;
             } else if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE)) {
-                cursorItem = ITEM_SWORD_KNIFE;
+                cursorItem = ITEM_GIANTS_KNIFE;
             }
         }
 
@@ -516,7 +516,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             pauseCtx->nameColorSet = 1;
         }
 
-        if (pauseCtx->cursorItem[PAUSE_EQUIP] == ITEM_BRACELET) {
+        if (pauseCtx->cursorItem[PAUSE_EQUIP] == ITEM_STRENGTH_GORONS_BRACELET) {
             if (LINK_AGE_IN_YEARS == YEARS_CHILD || IS_RANDO) {
                 pauseCtx->nameColorSet = 0;
             } else {
@@ -609,15 +609,15 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                         gSaveContext.equips.buttonItems[0] = cursorItem;
 
                         if ((pauseCtx->cursorX[PAUSE_EQUIP] == 3) && (gSaveContext.bgsFlag != 0)) {
-                            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
+                            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BIGGORON;
                             gSaveContext.swordHealth = 8;
                         } else {
                             if (gSaveContext.equips.buttonItems[0] == ITEM_HEART_PIECE_2) {
-                                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
+                                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BIGGORON;
                             }
-                            if ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS) && (gSaveContext.bgsFlag == 0) &&
+                            if ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BIGGORON) && (gSaveContext.bgsFlag == 0) &&
                                 CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE)) {
-                                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KNIFE;
+                                gSaveContext.equips.buttonItems[0] = ITEM_GIANTS_KNIFE;
                             }
                         }
                         RESUME_EQUIPMENT_SWORD:
@@ -750,8 +750,8 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                 // Grey Out the Gauntlets as Child
                 // Grey Out Strength Upgrades when Disabled and the Toggle Strength Option is on
                 if ((drawGreyItems &&
-                    ((sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_SILVER || 
-                    (sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_GOLD)) ||
+                    ((sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_STRENGTH_SILVER_GAUNTLETS || 
+                    (sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_STRENGTH_GOLD_GAUNTLETS)) ||
                     (CVarGetInteger("gToggleStrength", 0) && CVarGetInteger("gStrengthDisabled", 0) && sChildUpgrades[i] == UPG_STRENGTH)) {
                     gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                     gSPGrayscale(POLY_KAL_DISP++, true);
@@ -771,7 +771,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                 // Grey Out the Goron Bracelet when Not Randomized and Toggle Strength Option is off
                 // Grey Out Strength Upgrades when Disabled and the Toggle Strength Option is on
                 if ((drawGreyItems &&
-                    (((sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1) == ITEM_BRACELET &&
+                    (((sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1) == ITEM_STRENGTH_GORONS_BRACELET &&
                         !(IS_RANDO) && !CVarGetInteger("gToggleStrength", 0)))) || 
                      (CVarGetInteger("gToggleStrength", 0) && CVarGetInteger("gStrengthDisabled", 0) && sAdultUpgrades[i] == UPG_STRENGTH)) {
                     gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);

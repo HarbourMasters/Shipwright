@@ -71,10 +71,10 @@ ItemOverride_Value Item::Value() const {
         val.looksLikeItemId = RandomElement(IceTrapModels);
     }
     if (getItemId >= 0x95 && getItemId <= 0x9A) { //Boss keys
-        val.looksLikeItemId = GI_KEY_BOSS;
+        val.looksLikeItemId = GI_BOSS_KEY;
     }
     if (getItemId >= 0xAF && getItemId <= 0xB7) { //Small keys
-        val.looksLikeItemId = GI_KEY_SMALL;
+        val.looksLikeItemId = GI_SMALL_KEY;
     }
     if (type == ITEMTYPE_SHOP) {
         // With the current shopsanity implementation, we need a way to detect

@@ -388,7 +388,7 @@ void func_80996B0C(DoorShutter* this, PlayState* play) {
 
             if (this->unk_16E != 0) {
                 if (this->doorType == SHUTTER_BOSS) {
-                    if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, gSaveContext.mapIndex)) {
+                    if (!CHECK_DUNGEON_ITEM(DUNGEON_BOSS_KEY, gSaveContext.mapIndex)) {
                         player->naviTextId = -0x204;
                         return;
                     }

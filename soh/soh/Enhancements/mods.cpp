@@ -88,13 +88,13 @@ void RegisterInfiniteAmmo() {
         if (!GameInteractor::IsSaveLoaded()) return;
         if (CVarGetInteger("gInfiniteAmmo", 0) != 0) {
             // Deku Sticks
-            if (AMMO(ITEM_STICK) < CUR_CAPACITY(UPG_STICKS)) {
-                AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
+            if (AMMO(ITEM_DEKU_STICK) < CUR_CAPACITY(UPG_DEKU_STICKS)) {
+                AMMO(ITEM_DEKU_STICK) = CUR_CAPACITY(UPG_DEKU_STICKS);
             }
 
             // Deku Nuts
-            if (AMMO(ITEM_NUT) < CUR_CAPACITY(UPG_NUTS)) {
-                AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
+            if (AMMO(ITEM_DEKU_NUT) < CUR_CAPACITY(UPG_DEKU_NUTS)) {
+                AMMO(ITEM_DEKU_NUT) = CUR_CAPACITY(UPG_DEKU_NUTS);
             }
 
             // Bombs
@@ -259,7 +259,7 @@ void RegisterOcarinaTimeTravel() {
         Actor* nearbyDoorOfTime = Actor_FindNearby(gPlayState, player, ACTOR_DOOR_TOKI, ACTORCAT_BG, 500.0f);
         Actor* nearbyFrogs = Actor_FindNearby(gPlayState, player, ACTOR_EN_FR, ACTORCAT_NPC, 300.0f);
         uint8_t hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
-        uint8_t hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
+        uint8_t hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_OF_TIME) == ITEM_OCARINA_OF_TIME);
         // If TimeTravel + Player have the Ocarina of Time + Have Master Sword + is in proper range
         // TODO: Once Swordless Adult is fixed: Remove the Master Sword check
         if (((CVarGetInteger("gTimeTravel", 0) == 1 && hasOcarinaOfTime) || CVarGetInteger("gTimeTravel", 0) == 2) && hasMasterSword &&
@@ -294,37 +294,37 @@ void AutoSave(GetItemEntry itemEntry) {
             // Autosave for major items
             if (itemEntry.modIndex == 0) {
                 switch (item) {
-                    case ITEM_STICK:
-                    case ITEM_NUT:
+                    case ITEM_DEKU_STICK:
+                    case ITEM_DEKU_NUT:
                     case ITEM_BOMB:
                     case ITEM_BOW:
-                    case ITEM_SEEDS:
+                    case ITEM_DEKU_SEEDS:
                     case ITEM_FISHING_POLE:
-                    case ITEM_MAGIC_SMALL:
-                    case ITEM_MAGIC_LARGE:
+                    case ITEM_MAGIC_JAR_SMALL:
+                    case ITEM_MAGIC_JAR_BIG:
                     case ITEM_INVALID_4:
                     case ITEM_INVALID_5:
                     case ITEM_INVALID_6:
                     case ITEM_INVALID_7:
-                    case ITEM_HEART:
+                    case ITEM_RECOVERY_HEART:
                     case ITEM_RUPEE_GREEN:
                     case ITEM_RUPEE_BLUE:
                     case ITEM_RUPEE_RED:
                     case ITEM_RUPEE_PURPLE:
                     case ITEM_RUPEE_GOLD:
                     case ITEM_INVALID_8:
-                    case ITEM_STICKS_5:
-                    case ITEM_STICKS_10:
-                    case ITEM_NUTS_5:
-                    case ITEM_NUTS_10:
+                    case ITEM_DEKU_STICKS_5:
+                    case ITEM_DEKU_STICKS_10:
+                    case ITEM_DEKU_NUTS_5:
+                    case ITEM_DEKU_NUTS_10:
                     case ITEM_BOMBS_5:
                     case ITEM_BOMBS_10:
                     case ITEM_BOMBS_20:
                     case ITEM_BOMBS_30:
-                    case ITEM_ARROWS_SMALL:
-                    case ITEM_ARROWS_MEDIUM:
-                    case ITEM_ARROWS_LARGE:
-                    case ITEM_SEEDS_30:
+                    case ITEM_ARROWS_5:
+                    case ITEM_ARROWS_10:
+                    case ITEM_ARROWS_30:
+                    case ITEM_DEKU_SEEDS_30:
                     case ITEM_NONE:
                         break;
                     case ITEM_BOMBCHU:
@@ -1083,8 +1083,8 @@ void RegisterAltTrapTypes() {
                     Play_TriggerRespawn(gPlayState);
                     break;
                 case ADD_AMMO_TRAP:
-                    AMMO(ITEM_STICK) = AMMO(ITEM_STICK) * 0.5;
-                    AMMO(ITEM_NUT) = AMMO(ITEM_NUT) * 0.5;
+                    AMMO(ITEM_DEKU_STICK) = AMMO(ITEM_DEKU_STICK) * 0.5;
+                    AMMO(ITEM_DEKU_NUT) = AMMO(ITEM_DEKU_NUT) * 0.5;
                     AMMO(ITEM_SLINGSHOT) = AMMO(ITEM_SLINGSHOT) * 0.5;
                     AMMO(ITEM_BOW) = AMMO(ITEM_BOW) * 0.5;
                     AMMO(ITEM_BOMB) = AMMO(ITEM_BOMB) * 0.5;

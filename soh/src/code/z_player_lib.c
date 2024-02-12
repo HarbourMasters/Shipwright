@@ -672,7 +672,7 @@ void Player_SetModels(Player* this, s32 modelGroup) {
         if (LINK_IS_CHILD &&
             (this->currentShield == PLAYER_SHIELD_HYLIAN || this->currentShield == PLAYER_SHIELD_MIRROR) &&
             ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) ||
-             (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS))) {
+             (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BIGGORON))) {
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][0];
         } else if (LINK_IS_CHILD && this->currentShield == PLAYER_SHIELD_MIRROR && gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI &&
             this->sheathType == PLAYER_MODELTYPE_SHEATH_18) {
@@ -680,7 +680,7 @@ void Player_SetModels(Player* this, s32 modelGroup) {
         } else if (LINK_IS_ADULT && this->currentShield == PLAYER_SHIELD_DEKU) {
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][1];
         } else if (LINK_IS_CHILD && this->sheathType == PLAYER_MODELTYPE_SHEATH_17 && 
-			((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) || (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS))) {
+			((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) || (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BIGGORON))) {
 			this->sheathDLists = &sPlayerDListGroups[this->sheathType][0];
 		}
     }
@@ -727,7 +727,7 @@ void Player_SetEquipmentData(PlayState* play, Player* this) {
 void Player_UpdateBottleHeld(PlayState* play, Player* this, s32 item, s32 actionParam) {
     Inventory_UpdateBottleItem(play, item, this->heldItemButton);
 
-    if (item != ITEM_BOTTLE) {
+    if (item != ITEM_BOTTLE_EMPTY) {
         this->heldItemId = item;
         this->heldItemAction = actionParam;
     }
@@ -1253,7 +1253,7 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
         if (limbIndex == PLAYER_LIMB_R_HAND) {
             if ((this->currentShield == PLAYER_SHIELD_MIRROR && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) || 
                 (this->currentShield == PLAYER_SHIELD_HYLIAN && (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER || 
-                gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS)) || (sRightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT) ||
+                gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BIGGORON)) || (sRightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT) ||
                 (sRightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT && Player_HoldsBow(this))) {
                 Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
             }
@@ -1262,7 +1262,7 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
             if ((this->currentShield == PLAYER_SHIELD_MIRROR ||
                  (this->currentShield == PLAYER_SHIELD_HYLIAN &&
                   (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER ||
-                   gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS))) &&
+                   gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BIGGORON))) &&
                 ((this->sheathType == PLAYER_MODELTYPE_SHEATH_16) || (this->sheathType == PLAYER_MODELTYPE_SHEATH_17) ||
                  (this->sheathType == PLAYER_MODELTYPE_SHEATH_18) ||
                  (this->sheathType == PLAYER_MODELTYPE_SHEATH_19))) {

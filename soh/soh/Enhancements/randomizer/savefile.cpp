@@ -15,7 +15,7 @@ GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, G
 
 void StartingItemGive(GetItemEntry getItemEntry) {
     if (getItemEntry.modIndex == MOD_NONE) {
-        if (getItemEntry.getItemId == GI_SWORD_BGS) {
+        if (getItemEntry.getItemId == GI_SWORD_BIGGORON) {
             gSaveContext.bgsFlag = true;
         }
         Item_Give(NULL, getItemEntry.itemId);
@@ -53,43 +53,43 @@ void GiveLinkRupees(int numOfRupees) {
 
 void GiveLinkDekuSticks(int howManySticks) {
     int maxStickCount;
-    if (CUR_UPG_VALUE(UPG_STICKS) == 0) {
-        INV_CONTENT(ITEM_STICK) = ITEM_STICK;
-        Inventory_ChangeUpgrade(UPG_STICKS, 1);
+    if (CUR_UPG_VALUE(UPG_DEKU_STICKS) == 0) {
+        INV_CONTENT(ITEM_DEKU_STICK) = ITEM_DEKU_STICK;
+        Inventory_ChangeUpgrade(UPG_DEKU_STICKS, 1);
         maxStickCount = 10;
-    } else if (CUR_UPG_VALUE(UPG_STICKS) == 1) {
+    } else if (CUR_UPG_VALUE(UPG_DEKU_STICKS) == 1) {
         maxStickCount = 10;
-    } else if (CUR_UPG_VALUE(UPG_STICKS) == 2) {
+    } else if (CUR_UPG_VALUE(UPG_DEKU_STICKS) == 2) {
         maxStickCount = 20;
-    } else if (CUR_UPG_VALUE(UPG_STICKS) == 3) {
+    } else if (CUR_UPG_VALUE(UPG_DEKU_STICKS) == 3) {
         maxStickCount = 30;
     }
 
-    if ((AMMO(ITEM_STICK) + howManySticks) > maxStickCount) {
-        AMMO(ITEM_STICK) = maxStickCount;
+    if ((AMMO(ITEM_DEKU_STICK) + howManySticks) > maxStickCount) {
+        AMMO(ITEM_DEKU_STICK) = maxStickCount;
     } else {
-        AMMO(ITEM_STICK) += howManySticks;
+        AMMO(ITEM_DEKU_STICK) += howManySticks;
     }
 }
 
 void GiveLinkDekuNuts(int howManyNuts) {
     int maxNutCount;
-    if (CUR_UPG_VALUE(UPG_NUTS) == 0) {
-        INV_CONTENT(ITEM_NUT) = ITEM_NUT;
-        Inventory_ChangeUpgrade(UPG_NUTS, 1);
+    if (CUR_UPG_VALUE(UPG_DEKU_NUTS) == 0) {
+        INV_CONTENT(ITEM_DEKU_NUT) = ITEM_DEKU_NUT;
+        Inventory_ChangeUpgrade(UPG_DEKU_NUTS, 1);
         maxNutCount = 20;
-    } else if (CUR_UPG_VALUE(UPG_NUTS) == 1) {
+    } else if (CUR_UPG_VALUE(UPG_DEKU_NUTS) == 1) {
         maxNutCount = 20;
-    } else if (CUR_UPG_VALUE(UPG_NUTS) == 2) {
+    } else if (CUR_UPG_VALUE(UPG_DEKU_NUTS) == 2) {
         maxNutCount = 30;
-    } else if (CUR_UPG_VALUE(UPG_NUTS) == 3) {
+    } else if (CUR_UPG_VALUE(UPG_DEKU_NUTS) == 3) {
         maxNutCount = 40;
     }
 
-    if ((AMMO(ITEM_NUT) + howManyNuts) > maxNutCount) {
-        AMMO(ITEM_NUT) = maxNutCount;
+    if ((AMMO(ITEM_DEKU_NUT) + howManyNuts) > maxNutCount) {
+        AMMO(ITEM_DEKU_NUT) = maxNutCount;
     } else {
-        AMMO(ITEM_NUT) += howManyNuts;
+        AMMO(ITEM_DEKU_NUT) += howManyNuts;
     }
 }
 
@@ -351,7 +351,7 @@ extern "C" void Randomizer_InitSaveFile() {
 
         // set this at the end to ensure we always start with the letter
         // this is for the off chance we got the weird egg from impa (which should never happen)
-        INV_CONTENT(ITEM_LETTER_ZELDA) = ITEM_LETTER_ZELDA;
+        INV_CONTENT(ITEM_ZELDAS_LETTER) = ITEM_ZELDAS_LETTER;
     }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && startingAge == RO_AGE_ADULT) {
@@ -430,7 +430,7 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].collect |= (1 << 0x0C); // picked up key
 
         if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
-            Item_Give(NULL, ITEM_GERUDO_CARD);
+            Item_Give(NULL, ITEM_GERUDOS_CARD);
         }
     }
 

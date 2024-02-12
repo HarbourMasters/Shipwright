@@ -7,8 +7,8 @@
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
 u8 gAmmoItems[] = {
-    ITEM_STICK,   ITEM_NUT,  ITEM_BOMB, ITEM_BOW,  ITEM_NONE, ITEM_NONE, ITEM_SLINGSHOT, ITEM_NONE,
-    ITEM_BOMBCHU, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_BEAN,      ITEM_NONE,
+    ITEM_DEKU_STICK,   ITEM_DEKU_NUT,  ITEM_BOMB, ITEM_BOW,  ITEM_NONE, ITEM_NONE, ITEM_SLINGSHOT, ITEM_NONE,
+    ITEM_BOMBCHU, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_MAGIC_BEAN,      ITEM_NONE,
 };
 
 static s16 sEquipState = 0;
@@ -41,9 +41,9 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
         } else if ((item == ITEM_BOMB && AMMO(item) == CUR_CAPACITY(UPG_BOMB_BAG)) ||
                    (item == ITEM_BOW && AMMO(item) == CUR_CAPACITY(UPG_QUIVER)) ||
                    (item == ITEM_SLINGSHOT && AMMO(item) == CUR_CAPACITY(UPG_BULLET_BAG)) ||
-                   (item == ITEM_STICK && AMMO(item) == CUR_CAPACITY(UPG_STICKS)) ||
-                   (item == ITEM_NUT && AMMO(item) == CUR_CAPACITY(UPG_NUTS)) || (item == ITEM_BOMBCHU && ammo == 50) ||
-                   (item == ITEM_BEAN && ammo == 15)) {
+                   (item == ITEM_DEKU_STICK && AMMO(item) == CUR_CAPACITY(UPG_DEKU_STICKS)) ||
+                   (item == ITEM_DEKU_NUT && AMMO(item) == CUR_CAPACITY(UPG_DEKU_NUTS)) || (item == ITEM_BOMBCHU && ammo == 50) ||
+                   (item == ITEM_MAGIC_BEAN && ammo == 15)) {
             gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 120, 255, 0, pauseCtx->alpha);
         }
     }
@@ -327,12 +327,12 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
             ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger("gAdultBunnyHood", 0)) ||
             CVarGetInteger("gTimelessEquipment", 0)
         ) &&
-        INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY
+        INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY_HOOD
             ? AGE_REQ_NONE
             : AGE_REQ_CHILD;
     
     //also update the age requirement for the bunny hood itself
-    gItemAgeReqs[ITEM_MASK_BUNNY] =
+    gItemAgeReqs[ITEM_MASK_BUNNY_HOOD] =
         ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) && CVarGetInteger("gAdultBunnyHood", 0)) ||
         CVarGetInteger("gTimelessEquipment", 0)
             ? AGE_REQ_NONE
@@ -1019,7 +1019,7 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
         D_8082A488--;
 
         if (D_8082A488 == 0) {
-            pauseCtx->equipTargetItem -= 0xBF - ITEM_BOW_ARROW_FIRE;
+            pauseCtx->equipTargetItem -= 0xBF - ITEM_BOW_FIRE;
             if (!CVarGetInteger("gSeparateArrows", 0)) {
                 pauseCtx->equipTargetSlot = SLOT_BOW;
             }
@@ -1097,13 +1097,13 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
                 pauseCtx->equipTargetItem == ITEM_ARROW_LIGHT) {
                 switch (pauseCtx->equipTargetItem) {
                     case ITEM_ARROW_FIRE:
-                        pauseCtx->equipTargetItem = ITEM_BOW_ARROW_FIRE;
+                        pauseCtx->equipTargetItem = ITEM_BOW_FIRE;
                         break;
                     case ITEM_ARROW_ICE:
-                        pauseCtx->equipTargetItem = ITEM_BOW_ARROW_ICE;
+                        pauseCtx->equipTargetItem = ITEM_BOW_ICE;
                         break;
                     case ITEM_ARROW_LIGHT:
-                        pauseCtx->equipTargetItem = ITEM_BOW_ARROW_LIGHT;
+                        pauseCtx->equipTargetItem = ITEM_BOW_LIGHT;
                         break;
                 }
                 if (!CVarGetInteger("gSeparateArrows", 0)) {
@@ -1137,8 +1137,8 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
 
                 //Fix for Equip Dupe
                 if (pauseCtx->equipTargetItem == ITEM_BOW) {
-                    if (gSaveContext.equips.buttonItems[otherButtonIndex] >= ITEM_BOW_ARROW_FIRE &&
-                        gSaveContext.equips.buttonItems[otherButtonIndex] <= ITEM_BOW_ARROW_LIGHT &&
+                    if (gSaveContext.equips.buttonItems[otherButtonIndex] >= ITEM_BOW_FIRE &&
+                        gSaveContext.equips.buttonItems[otherButtonIndex] <= ITEM_BOW_LIGHT &&
                         !CVarGetInteger("gSeparateArrows", 0)) {
                             gSaveContext.equips.buttonItems[otherButtonIndex] = gSaveContext.equips.buttonItems[targetButtonIndex];
                             gSaveContext.equips.cButtonSlots[otherSlotIndex] = gSaveContext.equips.cButtonSlots[pauseCtx->equipTargetCBtn];

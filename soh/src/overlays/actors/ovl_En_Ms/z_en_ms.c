@@ -136,9 +136,9 @@ void EnMs_Talk(EnMs* this, PlayState* play) {
                 }
                 if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) {
                     GiveItemEntryFromActor(&this->actor, play, 
-                        Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_BEAN), 90.0f, 10.0f);
+                        Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_MAGIC_BEAN), 90.0f, 10.0f);
                 } else {
-                    func_8002F434(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
+                    func_8002F434(&this->actor, play, GI_MAGIC_BEAN, 90.0f, 10.0f);
                 }
                 this->actionFunc = EnMs_Sell;
                 return;
@@ -158,16 +158,16 @@ void EnMs_Sell(EnMs* this, PlayState* play) {
             (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) ? EnMs_Wait : EnMs_TalkAfterPurchase;
     } else {
         if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) {
-            GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_BEAN);
+            GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_MAGIC_BEAN);
             gSaveContext.pendingSale = itemEntry.itemId;
             gSaveContext.pendingSaleMod = itemEntry.modIndex;
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 90.0f, 10.0f);
             BEANS_BOUGHT = 10;
         } else {
-            GetItemEntry entry = ItemTable_Retrieve(GI_BEAN);
+            GetItemEntry entry = ItemTable_Retrieve(GI_MAGIC_BEAN);
             gSaveContext.pendingSaleMod = entry.modIndex;
             gSaveContext.pendingSale = entry.itemId;
-            func_8002F434(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
+            func_8002F434(&this->actor, play, GI_MAGIC_BEAN, 90.0f, 10.0f);
         }
     }
 }

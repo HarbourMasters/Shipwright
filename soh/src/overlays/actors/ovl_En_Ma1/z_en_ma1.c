@@ -437,7 +437,7 @@ void func_80AA0F44(EnMa1* this, PlayState* play) {
         // If rando'ed, a textbox is closing, it's malon's 'my mom wrote this song' text, AND we do have an ocarina
         // in our inventory. This allows us to grant the check when talking to malon with the ocarina in our inventory.
         if (IS_RANDO && (Actor_TextboxIsClosing(&this->actor, play) && play->msgCtx.textId == 0x2049) &&
-            (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_NONE || INV_CONTENT(ITEM_OCARINA_TIME) != ITEM_NONE)) {
+            (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_NONE || INV_CONTENT(ITEM_OCARINA_OF_TIME) != ITEM_NONE)) {
             this->actionFunc = EnMa1_WaitForSongGive;
         }
     }

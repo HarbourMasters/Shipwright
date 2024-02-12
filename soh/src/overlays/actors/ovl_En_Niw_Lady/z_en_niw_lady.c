@@ -309,10 +309,10 @@ void func_80ABA654(EnNiwLady* this, PlayState* play) {
             this->actor.parent = NULL;
 
             if (!IS_RANDO) {
-                this->getItemId = GI_BOTTLE;
-                func_8002F434(&this->actor, play, GI_BOTTLE, 100.0f, 50.0f);
+                this->getItemId = GI_BOTTLE_EMPTY;
+                func_8002F434(&this->actor, play, GI_BOTTLE_EMPTY, 100.0f, 50.0f);
             } else {
-                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_CHILD, GI_BOTTLE);
+                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_CHILD, GI_BOTTLE_EMPTY);
                 GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 100.0f, 50.0f);
             }
 

@@ -219,10 +219,10 @@ static bool ResetHandler(std::shared_ptr<LUS::Console> Console, std::vector<std:
 }
 
 const static std::map<std::string, uint16_t> ammoItems{ 
-    { "sticks", ITEM_STICK }, { "nuts", ITEM_NUT },
-    { "bombs", ITEM_BOMB },   { "seeds", ITEM_SLINGSHOT },
-    { "arrows", ITEM_BOW },   { "bombchus", ITEM_BOMBCHU },
-    { "beans", ITEM_BEAN }
+    { "sticks", ITEM_DEKU_STICK }, { "nuts", ITEM_DEKU_NUT },
+    { "bombs", ITEM_BOMB },        { "seeds", ITEM_SLINGSHOT },
+    { "arrows", ITEM_BOW },        { "bombchus", ITEM_BOMBCHU },
+    { "beans", ITEM_MAGIC_BEAN }
 };
 
 static bool AddAmmoHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
@@ -305,10 +305,10 @@ static bool TakeAmmoHandler(std::shared_ptr<LUS::Console> Console, const std::ve
 }
 
 const static std::map<std::string, uint16_t> bottleItems{
-    { "green_potion", ITEM_POTION_GREEN }, { "red_potion", ITEM_POTION_RED }, { "blue_potion", ITEM_POTION_BLUE },
-    { "milk", ITEM_MILK },                 { "half_milk", ITEM_MILK_HALF },   { "fairy", ITEM_FAIRY },
-    { "bugs", ITEM_BUG },                  { "fish", ITEM_FISH },             { "poe", ITEM_POE },
-    { "big_poe", ITEM_BIG_POE },           { "blue_fire", ITEM_BLUE_FIRE },   { "rutos_letter", ITEM_LETTER_RUTO },
+    { "green_potion", ITEM_BOTTLE_POTION_GREEN }, { "red_potion", ITEM_BOTTLE_POTION_RED }, { "blue_potion", ITEM_BOTTLE_POTION_BLUE },
+    { "milk", ITEM_MILK },                        { "half_milk", ITEM_BOTTLE_MILK_HALF },   { "fairy", ITEM_BOTTLE_FAIRY },
+    { "bugs", ITEM_BOTTLE_BUG },                  { "fish", ITEM_BOTTLE_FISH },             { "poe", ITEM_BOTTLE_POE },
+    { "big_poe", ITEM_BOTTLE_BIG_POE },           { "blue_fire", ITEM_BOTTLE_BLUE_FIRE },   { "rutos_letter", ITEM_BOTTLE_RUTOS_LETTER },
 };
 
 static bool BottleHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {

@@ -524,7 +524,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             Item_Give(play, ITEM_RUPEE_GOLD);
             break;
         case ITEM00_HEART:
-            Item_Give(play, ITEM_HEART);
+            Item_Give(play, ITEM_RECOVERY_HEART);
             break;
         case ITEM00_FLEXIBLE:
             Health_ChangeBy(play, 0x70);
@@ -537,31 +537,31 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             Item_Give(play, ITEM_BOW);
             break;
         case ITEM00_ARROWS_SMALL:
-            Item_Give(play, ITEM_ARROWS_SMALL);
+            Item_Give(play, ITEM_ARROWS_5);
             break;
         case ITEM00_ARROWS_MEDIUM:
-            Item_Give(play, ITEM_ARROWS_MEDIUM);
+            Item_Give(play, ITEM_ARROWS_10);
             break;
         case ITEM00_ARROWS_LARGE:
-            Item_Give(play, ITEM_ARROWS_LARGE);
+            Item_Give(play, ITEM_ARROWS_30);
             break;
         case ITEM00_MAGIC_LARGE:
-            getItemId = GI_MAGIC_SMALL;
+            getItemId = GI_MAGIC_JAR_SMALL;
             break;
         case ITEM00_MAGIC_SMALL:
-            getItemId = GI_MAGIC_LARGE;
+            getItemId = GI_MAGIC_JAR_LARGE;
             break;
         case ITEM00_SMALL_KEY:
-            Item_Give(play, ITEM_KEY_SMALL);
+            Item_Give(play, ITEM_SMALL_KEY);
             break;
         case ITEM00_SEEDS:
-            getItemId = GI_SEEDS_5;
+            getItemId = GI_DEKU_SEEDS_5;
             break;
         case ITEM00_NUTS:
-            getItemId = GI_NUTS_5;
+            getItemId = GI_DEKU_NUTS_5;
             break;
         case ITEM00_STICK:
-            getItemId = GI_STICKS_1;
+            getItemId = GI_DEKU_STICKS_1;
             break;
         case ITEM00_HEART_PIECE:
         case ITEM00_HEART_CONTAINER:
@@ -884,13 +884,13 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
             Item_Give(play, ITEM_RUPEE_GOLD);
             break;
         case ITEM00_STICK:
-            getItemId = GI_STICKS_1;
+            getItemId = GI_DEKU_STICKS_1;
             break;
         case ITEM00_NUTS:
-            getItemId = GI_NUTS_5;
+            getItemId = GI_DEKU_NUTS_5;
             break;
         case ITEM00_HEART:
-            Item_Give(play, ITEM_HEART);
+            Item_Give(play, ITEM_RECOVERY_HEART);
             break;
         case ITEM00_FLEXIBLE:
             Health_ChangeBy(play, 0x70);
@@ -903,19 +903,19 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
             Item_Give(play, ITEM_BOW);
             break;
         case ITEM00_ARROWS_SMALL:
-            Item_Give(play, ITEM_ARROWS_SMALL);
+            Item_Give(play, ITEM_ARROWS_5);
             break;
         case ITEM00_ARROWS_MEDIUM:
-            Item_Give(play, ITEM_ARROWS_MEDIUM);
+            Item_Give(play, ITEM_ARROWS_10);
             break;
         case ITEM00_ARROWS_LARGE:
-            Item_Give(play, ITEM_ARROWS_LARGE);
+            Item_Give(play, ITEM_ARROWS_30);
             break;
         case ITEM00_SEEDS:
-            getItemId = GI_SEEDS_5;
+            getItemId = GI_DEKU_SEEDS_5;
             break;
         case ITEM00_SMALL_KEY:
-            getItemId = GI_KEY_SMALL;
+            getItemId = GI_SMALL_KEY;
             break;
         case ITEM00_HEART_PIECE:
             getItemId = GI_HEART_PIECE;
@@ -924,10 +924,10 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
             getItemId = GI_HEART_CONTAINER;
             break;
         case ITEM00_MAGIC_LARGE:
-            getItemId = GI_MAGIC_LARGE;
+            getItemId = GI_MAGIC_JAR_LARGE;
             break;
         case ITEM00_MAGIC_SMALL:
-            getItemId = GI_MAGIC_SMALL;
+            getItemId = GI_MAGIC_JAR_SMALL;
             break;
         case ITEM00_SHIELD_DEKU:
             getItemId = GI_SHIELD_DEKU;
@@ -1062,7 +1062,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                 if (CVarGetInteger("gNewDrops", 0) && this->unk_15A >= 0) {
                     mtxScale = 16.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-                    GetItem_Draw(play, GID_HEART);
+                    GetItem_Draw(play, GID_RECOVERY_HEART);
                     break;
                 } else {
                     // Overworld hearts that are always 3D
@@ -1077,7 +1077,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                         } else {
                             mtxScale = 16.0f;
                             Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-                            GetItem_Draw(play, GID_HEART);
+                            GetItem_Draw(play, GID_RECOVERY_HEART);
                         }
                         break;
                     }
@@ -1096,56 +1096,56 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                 if (CVarGetInteger("gNewDrops", 0)) {
                     mtxScale = 7.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-                    GetItem_Draw(play, GID_ARROWS_SMALL);
+                    GetItem_Draw(play, GID_ARROWS_5);
                     break;
                 }
             case ITEM00_ARROWS_MEDIUM:
                 if (CVarGetInteger("gNewDrops", 0)) {
                     mtxScale = 7.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-                    GetItem_Draw(play, GID_ARROWS_MEDIUM);
+                    GetItem_Draw(play, GID_ARROWS_10);
                     break;
                 }
             case ITEM00_ARROWS_LARGE:
                 if (CVarGetInteger("gNewDrops", 0)) {
                     mtxScale = 7.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-                    GetItem_Draw(play, GID_ARROWS_LARGE);
+                    GetItem_Draw(play, GID_ARROWS_30);
                     break;
                 }
             case ITEM00_NUTS:
                 if (CVarGetInteger("gNewDrops", 0)) {
                     mtxScale = 9.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-                    GetItem_Draw(play, GID_NUTS);
+                    GetItem_Draw(play, GID_DEKU_NUTS);
                     break;
                 }
             case ITEM00_STICK:
                 if (CVarGetInteger("gNewDrops", 0)) {
                     mtxScale = 7.5f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-                    GetItem_Draw(play, GID_STICK);
+                    GetItem_Draw(play, GID_DEKU_STICK);
                     break;
                 }
             case ITEM00_MAGIC_LARGE:
                 if (CVarGetInteger("gNewDrops", 0)) {
                     mtxScale = 8.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-                    GetItem_Draw(play, GID_MAGIC_LARGE);
+                    GetItem_Draw(play, GID_MAGIC_JAR_LARGE);
                     break;
                 }
             case ITEM00_MAGIC_SMALL:
                 if (CVarGetInteger("gNewDrops", 0)) {
                     mtxScale = 8.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-                    GetItem_Draw(play, GID_MAGIC_SMALL);
+                    GetItem_Draw(play, GID_MAGIC_JAR_SMALL);
                     break;
                 }
             case ITEM00_SEEDS:
                 if (CVarGetInteger("gNewDrops", 0)) {
                     mtxScale = 7.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-                    GetItem_Draw(play, GID_SEEDS);
+                    GetItem_Draw(play, GID_DEKU_SEEDS);
                     break;
                 }
             case ITEM00_BOMBCHU:
@@ -1159,7 +1159,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                 if (CVarGetInteger("gNewDrops", 0) && !IS_RANDO) {
                     mtxScale = 8.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-                    GetItem_Draw(play, GID_KEY_SMALL);
+                    GetItem_Draw(play, GID_SMALL_KEY);
                 } else {
                     // All collectibles fallthrough here when 3d drops are off
                     EnItem00_DrawCollectible(this, play);
@@ -1206,12 +1206,12 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
                 case ITEM_SONG_PRELUDE:
                     color_slot = 5;
                     break;
-                case ITEM_STICK_UPGRADE_20:
-                case ITEM_STICK_UPGRADE_30:
+                case ITEM_DEKU_STICK_UPGRADE_20:
+                case ITEM_DEKU_STICK_UPGRADE_30:
                     color_slot = 6;
                     break;
-                case ITEM_NUT_UPGRADE_30:
-                case ITEM_NUT_UPGRADE_40:
+                case ITEM_DEKU_NUT_UPGRADE_30:
+                case ITEM_DEKU_NUT_UPGRADE_40:
                     color_slot = 7;
                     break;
                 default:

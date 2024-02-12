@@ -29,9 +29,9 @@ static u8 sMaxUpgradeValues[] = {
 
 // Item ID corresponding to each slot, aside from bottles and trade items
 static s16 sSlotItems[] = {
-    ITEM_STICK,     ITEM_NUT,           ITEM_BOMB,    ITEM_BOW,      ITEM_ARROW_FIRE,  ITEM_DINS_FIRE,
+    ITEM_DEKU_STICK,     ITEM_DEKU_NUT,           ITEM_BOMB,    ITEM_BOW,      ITEM_ARROW_FIRE,  ITEM_DINS_FIRE,
     ITEM_SLINGSHOT, ITEM_OCARINA_FAIRY, ITEM_BOMBCHU, ITEM_HOOKSHOT, ITEM_ARROW_ICE,   ITEM_FARORES_WIND,
-    ITEM_BOOMERANG, ITEM_LENS,          ITEM_BEAN,    ITEM_HAMMER,   ITEM_ARROW_LIGHT, ITEM_NAYRUS_LOVE,
+    ITEM_BOOMERANG, ITEM_LENS_OF_TRUTH,          ITEM_MAGIC_BEAN,    ITEM_HAMMER,   ITEM_ARROW_LIGHT, ITEM_NAYRUS_LOVE,
 };
 
 void KaleidoScope_DrawDebugEditorText(Gfx** gfxp) {
@@ -194,7 +194,7 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
         for (j = 0, x = 78; j < 6; j++, slot++, x += 26) {
             spD8[2] = 0;
 
-            if ((slot <= SLOT_BOW) || (slot == SLOT_SLINGSHOT) || (slot == SLOT_BOMBCHU) || (slot == SLOT_BEAN)) {
+            if ((slot <= SLOT_BOW) || (slot == SLOT_SLINGSHOT) || (slot == SLOT_BOMBCHU) || (slot == SLOT_MAGIC_BEAN)) {
                 spD8[3] = AMMO(gAmmoItems[slot]);
             } else if (slot == SLOT_OCARINA) {
                 spD8[3] = gSaveContext.inventory.items[slot];
@@ -410,7 +410,7 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
         default:
             if (curSection < 0x1B) {
                 i = curSection - 3;
-                if ((i <= SLOT_BOW) || (i == SLOT_SLINGSHOT) || (i == SLOT_BOMBCHU) || (i == SLOT_BEAN)) {
+                if ((i <= SLOT_BOW) || (i == SLOT_SLINGSHOT) || (i == SLOT_BOMBCHU) || (i == SLOT_MAGIC_BEAN)) {
                     if (CHECK_BTN_ALL(input->press.button, BTN_CUP)) {
                         Inventory_DeleteItem(gAmmoItems[i], SLOT(gAmmoItems[i]));
                         AMMO(gAmmoItems[i]) = 0;
@@ -437,14 +437,14 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
                         if (gSaveContext.inventory.items[i] == ITEM_NONE) {
                             gSaveContext.inventory.items[i] = ITEM_OCARINA_FAIRY;
                         } else if ((gSaveContext.inventory.items[i] >= ITEM_OCARINA_FAIRY) &&
-                                   (gSaveContext.inventory.items[i] < ITEM_OCARINA_TIME)) {
+                                   (gSaveContext.inventory.items[i] < ITEM_OCARINA_OF_TIME)) {
                             gSaveContext.inventory.items[i]++;
                         }
                     } else if (CHECK_BTN_ALL(input->press.button, BTN_CRIGHT)) {
                         if (gSaveContext.inventory.items[i] == ITEM_NONE) {
-                            gSaveContext.inventory.items[i] = ITEM_OCARINA_TIME;
+                            gSaveContext.inventory.items[i] = ITEM_OCARINA_OF_TIME;
                         } else if ((gSaveContext.inventory.items[i] > ITEM_OCARINA_FAIRY) &&
-                                   (gSaveContext.inventory.items[i] <= ITEM_OCARINA_TIME)) {
+                                   (gSaveContext.inventory.items[i] <= ITEM_OCARINA_OF_TIME)) {
                             gSaveContext.inventory.items[i]--;
                         }
                     }
@@ -504,19 +504,19 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
                     }
                 } else if ((i >= SLOT_BOTTLE_1) && (i <= SLOT_BOTTLE_4)) {
                     if (CHECK_BTN_ALL(input->press.button, BTN_CUP)) {
-                        Inventory_DeleteItem(ITEM_BOTTLE + i - SLOT_BOTTLE_1, SLOT(ITEM_BOTTLE) + i - SLOT_BOTTLE_1);
+                        Inventory_DeleteItem(ITEM_BOTTLE_EMPTY + i - SLOT_BOTTLE_1, SLOT(ITEM_BOTTLE_EMPTY) + i - SLOT_BOTTLE_1);
                     } else if (CHECK_BTN_ALL(input->press.button, BTN_CLEFT)) {
                         if (gSaveContext.inventory.items[i] == ITEM_NONE) {
-                            gSaveContext.inventory.items[i] = ITEM_BOTTLE;
-                        } else if ((gSaveContext.inventory.items[i] >= ITEM_BOTTLE) &&
-                                   (gSaveContext.inventory.items[i] <= ITEM_MILK_HALF)) {
+                            gSaveContext.inventory.items[i] = ITEM_BOTTLE_EMPTY;
+                        } else if ((gSaveContext.inventory.items[i] >= ITEM_BOTTLE_EMPTY) &&
+                                   (gSaveContext.inventory.items[i] <= ITEM_BOTTLE_MILK_HALF)) {
                             gSaveContext.inventory.items[i]++;
                         }
                     } else if (CHECK_BTN_ALL(input->press.button, BTN_CRIGHT)) {
                         if (gSaveContext.inventory.items[i] == ITEM_NONE) {
-                            gSaveContext.inventory.items[i] = ITEM_POE;
-                        } else if ((gSaveContext.inventory.items[i] >= ITEM_POTION_RED) &&
-                                   (gSaveContext.inventory.items[i] <= ITEM_POE)) {
+                            gSaveContext.inventory.items[i] = ITEM_BOTTLE_POE;
+                        } else if ((gSaveContext.inventory.items[i] >= ITEM_BOTTLE_POTION_RED) &&
+                                   (gSaveContext.inventory.items[i] <= ITEM_BOTTLE_POE)) {
                             gSaveContext.inventory.items[i]--;
                         }
                     }
@@ -526,9 +526,9 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
                         CHECK_BTN_ALL(input->press.button, BTN_CRIGHT)) {
                         if (i == SLOT_TRADE_ADULT) {
                             if (gSaveContext.inventory.items[i] == ITEM_NONE) {
-                                gSaveContext.inventory.items[i] = ITEM_BEAN;
+                                gSaveContext.inventory.items[i] = ITEM_MAGIC_BEAN;
                             } else {
-                                Inventory_DeleteItem(ITEM_BEAN, SLOT(ITEM_BEAN));
+                                Inventory_DeleteItem(ITEM_MAGIC_BEAN, SLOT(ITEM_MAGIC_BEAN));
                             }
                         } else {
                             j = sSlotItems[i];

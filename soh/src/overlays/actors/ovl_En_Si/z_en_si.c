@@ -243,7 +243,7 @@ void Randomizer_GiveSkullReward(EnSi* this, PlayState* play) {
 
     if (getItem.modIndex == MOD_NONE) {
         // RANDOTOD: Move this into Item_Give() or some other more central location
-        if (getItem.getItemId == GI_SWORD_BGS) {
+        if (getItem.getItemId == GI_SWORD_BIGGORON) {
             gSaveContext.bgsFlag = true;
         }
         Item_Give(play, giveItemId);

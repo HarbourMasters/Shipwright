@@ -58,11 +58,11 @@ bool GameInteractor::CanAddOrTakeAmmo(int16_t amount, int16_t item) {
     int16_t upgradeToCheck = 0;
 
     switch (item) {
-        case ITEM_STICK:
-            upgradeToCheck = UPG_STICKS;
+        case ITEM_DEKU_STICK:
+            upgradeToCheck = UPG_DEKU_STICKS;
             break;
-        case ITEM_NUT:
-            upgradeToCheck = UPG_NUTS;
+        case ITEM_DEKU_NUT:
+            upgradeToCheck = UPG_DEKU_NUTS;
             break;
         case ITEM_BOW:
             upgradeToCheck = UPG_QUIVER;
@@ -81,7 +81,7 @@ bool GameInteractor::CanAddOrTakeAmmo(int16_t amount, int16_t item) {
         return false;
     }
 
-    if (item != ITEM_BOMBCHU && item != ITEM_BEAN) {
+    if (item != ITEM_BOMBCHU && item != ITEM_MAGIC_BEAN) {
         if ((CUR_CAPACITY(upgradeToCheck) == 0) || (amount > 0 && AMMO(item) == CUR_CAPACITY(upgradeToCheck))) {
             return false;
         }
@@ -89,7 +89,7 @@ bool GameInteractor::CanAddOrTakeAmmo(int16_t amount, int16_t item) {
     } else {
         // Separate checks for beans and bombchus because they don't have capacity upgrades
         if (INV_CONTENT(item) != item ||
-            (amount > 0 && ((item == ITEM_BOMBCHU && AMMO(item) == 50) || (item == ITEM_BEAN && AMMO(item) == 10)))) {
+            (amount > 0 && ((item == ITEM_BOMBCHU && AMMO(item) == 50) || (item == ITEM_MAGIC_BEAN && AMMO(item) == 10)))) {
             return false;
         }
         return true;

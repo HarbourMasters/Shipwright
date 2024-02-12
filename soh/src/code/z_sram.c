@@ -177,10 +177,10 @@ void Sram_OpenSave() {
         i = gSaveContext.eventChkInf[4] & ~1;
         gSaveContext.eventChkInf[4] = i;
 
-        INV_CONTENT(ITEM_LETTER_ZELDA) = ITEM_CHICKEN;
+        INV_CONTENT(ITEM_ZELDAS_LETTER) = ITEM_CHICKEN;
 
         for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
-            if (gSaveContext.equips.buttonItems[j] == ITEM_LETTER_ZELDA) {
+            if (gSaveContext.equips.buttonItems[j] == ITEM_ZELDAS_LETTER) {
                 gSaveContext.equips.buttonItems[j] = ITEM_CHICKEN;
             }
         }

@@ -686,10 +686,10 @@ void SaveManager::InitFileDebug() {
 
     // Inventory
     static std::array<u8, 24> sItems = {
-        ITEM_STICK,     ITEM_NUT,           ITEM_BOMB,         ITEM_BOW,         ITEM_ARROW_FIRE,  ITEM_DINS_FIRE,
-        ITEM_SLINGSHOT, ITEM_OCARINA_FAIRY, ITEM_BOMBCHU,      ITEM_HOOKSHOT,    ITEM_ARROW_ICE,   ITEM_FARORES_WIND,
-        ITEM_BOOMERANG, ITEM_LENS,          ITEM_BEAN,         ITEM_HAMMER,      ITEM_ARROW_LIGHT, ITEM_NAYRUS_LOVE,
-        ITEM_BOTTLE,    ITEM_POTION_RED,    ITEM_POTION_GREEN, ITEM_POTION_BLUE, ITEM_POCKET_EGG,  ITEM_WEIRD_EGG,
+        ITEM_DEKU_STICK,   ITEM_DEKU_NUT,          ITEM_BOMB,                ITEM_BOW,                ITEM_ARROW_FIRE,  ITEM_DINS_FIRE,
+        ITEM_SLINGSHOT,    ITEM_OCARINA_FAIRY,     ITEM_BOMBCHU,             ITEM_HOOKSHOT,           ITEM_ARROW_ICE,   ITEM_FARORES_WIND,
+        ITEM_BOOMERANG,    ITEM_LENS_OF_TRUTH,     ITEM_MAGIC_BEAN,          ITEM_HAMMER,             ITEM_ARROW_LIGHT, ITEM_NAYRUS_LOVE,
+        ITEM_BOTTLE_EMPTY, ITEM_BOTTLE_POTION_RED, ITEM_BOTTLE_POTION_GREEN, ITEM_BOTTLE_POTION_BLUE, ITEM_POCKET_EGG,  ITEM_WEIRD_EGG,
     };
     for (int item = 0; item < ARRAY_COUNT(gSaveContext.inventory.items); item++) {
         gSaveContext.inventory.items[item] = sItems[item];
@@ -777,7 +777,7 @@ void SaveManager::InitFileMaxed() {
     gSaveContext.savedSceneNum = 0x51;
 
     // Equipment
-    static std::array<u8, 8> sButtonItems = { ITEM_SWORD_MASTER, ITEM_BOW, ITEM_BOMB, ITEM_OCARINA_TIME, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE };
+    static std::array<u8, 8> sButtonItems = { ITEM_SWORD_MASTER, ITEM_BOW, ITEM_BOMB, ITEM_OCARINA_OF_TIME, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE };
     for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.buttonItems); button++) {
         gSaveContext.equips.buttonItems[button] = sButtonItems[button];
     }
@@ -789,10 +789,10 @@ void SaveManager::InitFileMaxed() {
 
     // Inventory
     static std::array<u8, 24> sItems = {
-        ITEM_STICK,     ITEM_NUT,          ITEM_BOMB,    ITEM_BOW,      ITEM_ARROW_FIRE,  ITEM_DINS_FIRE,
-        ITEM_SLINGSHOT, ITEM_OCARINA_TIME, ITEM_BOMBCHU, ITEM_LONGSHOT, ITEM_ARROW_ICE,   ITEM_FARORES_WIND,
-        ITEM_BOOMERANG, ITEM_LENS,         ITEM_BEAN,    ITEM_HAMMER,   ITEM_ARROW_LIGHT, ITEM_NAYRUS_LOVE,
-        ITEM_FAIRY,     ITEM_FAIRY,        ITEM_BUG,     ITEM_FISH,     ITEM_CLAIM_CHECK, ITEM_MASK_BUNNY,
+        ITEM_DEKU_STICK,   ITEM_DEKU_NUT,        ITEM_BOMB,       ITEM_BOW,         ITEM_ARROW_FIRE,  ITEM_DINS_FIRE,
+        ITEM_SLINGSHOT,    ITEM_OCARINA_OF_TIME, ITEM_BOMBCHU,    ITEM_LONGSHOT,    ITEM_ARROW_ICE,   ITEM_FARORES_WIND,
+        ITEM_BOOMERANG,    ITEM_LENS_OF_TRUTH,   ITEM_MAGIC_BEAN, ITEM_HAMMER,      ITEM_ARROW_LIGHT, ITEM_NAYRUS_LOVE,
+        ITEM_BOTTLE_FAIRY, ITEM_BOTTLE_FAIRY,    ITEM_BOTTLE_BUG, ITEM_BOTTLE_FISH, ITEM_CLAIM_CHECK, ITEM_MASK_BUNNY_HOOD,
     };
     for (int item = 0; item < ARRAY_COUNT(gSaveContext.inventory.items); item++) {
         gSaveContext.inventory.items[item] = sItems[item];
