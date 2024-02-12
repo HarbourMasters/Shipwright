@@ -102,7 +102,7 @@ jobs:
     - name: Install dependencies
       run: |
         zypper --non-interactive dup
-        zypper --non-interactive in git
+        zypper --non-interactive in git cmake
     - uses: actions/checkout@v3
       with:
         submodules: true
