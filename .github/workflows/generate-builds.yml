@@ -222,7 +222,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y ninja-build
         sudo apt-get remove -y cmake
-        wget https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.28.3-linux-aarch64.sh -O /tmp/cmake.sh
+        wget https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.28.3-linux-x86_64.sh -O /tmp/cmake.sh
         sudo sh /tmp/cmake.sh --prefix=/usr/local/ --exclude-subdir
     - name: Fix dubious ownership error
       if: ${{ vars.LINUX_RUNNER }}
@@ -268,7 +268,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y ninja-build
         sudo apt-get remove -y cmake
-        wget https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.28.3-linux-aarch64.sh -O /tmp/cmake.sh
+        wget https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.28.3-linux-x86_64.sh -O /tmp/cmake.sh
         sudo sh /tmp/cmake.sh --prefix=/usr/local/ --exclude-subdir
     - uses: actions/checkout@v3
       with:
