@@ -66,7 +66,7 @@ std::map<int, std::string> cmdMap = {
 };
 
 void PerformDisplayListSearch() {
-    auto result = LUS::Context::GetInstance()->GetResourceManager()->GetArchive()->ListFiles("*" + std::string(searchString) + "*DL*");
+    auto result = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles("*" + std::string(searchString) + "*DL*");
 
     std::regex dlSearch(".*((DL)|(DL_.*))$");
 
@@ -134,7 +134,7 @@ void DLViewerWindow::DrawElement() {
     try {
         auto res = std::static_pointer_cast<LUS::DisplayList>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
 
-        if (res->GetInitData()->Type != LUS::ResourceType::DisplayList) {
+        if (res->GetInitData()->Type != static_cast<uint32_t>(LUS::ResourceType::DisplayList)) {
             ImGui::Text("Resource type is not a Display List. Please choose another.");
             ImGui::End();
             return;
