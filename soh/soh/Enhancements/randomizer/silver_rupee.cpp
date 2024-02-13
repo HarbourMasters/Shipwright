@@ -82,6 +82,30 @@ namespace Rando {
             { { SCENE_INSIDE_GANONS_CASTLE, { -2649.0f, -240.0f, -545.0f } }, RC_LIGHT_TRIAL_SILVER_RUPEE_4 },
             { { SCENE_INSIDE_GANONS_CASTLE, { -2509.0f, -240.0f, -1091.0f } }, RC_LIGHT_TRIAL_SILVER_RUPEE_5 },
     };
+    std::unordered_map<RandomizerGet, Text> SilverRupees::mSilverRupeeRoomNames = {
+            // TODO: Translate
+            //                                              "English"                            "German"                             "French"
+            { RG_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE, { "Ice Cavern's Spinning Blades Room", "Ice Cavern's Spinning Blades Room", "Ice Cavern's Spinning Blades Room" } },
+            { RG_ICE_CAVERN_SLIDING_SILVER_RUPEE, { "Ice Cavern's Block Sliding Puzzle Room", "Ice Cavern's Block Sliding Puzzle Room", "Ice Cavern's Block Sliding Puzzle Room" } },
+            { RG_BOTTOM_OF_THE_WELL_SILVER_RUPEE, { "Bottom of the Well", "Bottom of the Well", "Bottom of the Well" } },
+            { RG_GERUDO_TRAINING_GROUNDS_BOULDER_SILVER_RUPEE, { "Boulder Maze in the Gerudo Training Grounds", "Boulder Maze in the Gerudo Training Grounds", "Boulder Maze in the Gerudo Training Grounds" } },
+            { RG_GERUDO_TRAINING_GROUNDS_LAVA_SILVER_RUPEE, { "Lava room in the Gerudo Training Grounds", "Lava room in the Gerudo Training Grounds", "Lava room in the Gerudo Training Grounds" } },
+            { RG_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE, { "Whirlpool room in the Gerudo Training Grounds", "Whirlpool room in the Gerudo Training Grounds", "Whirlpool room in the Gerudo Training Grounds" } },
+            { RG_SPIRIT_CHILD_BLOCK_PUSH_SILVER_RUPEE, { "Child-side Block Pushing room in the Spirit Temple", "Child-side Block Pushing room in the Spirit Temple", "Child-side Block Pushing room in the Spirit Temple" } },
+            { RG_SPIRIT_BOULDER_SILVER_RUPEE, { "Boulder room in the Spirit Temple", "Boulder room in the Spirit Temple", "Boulder room in the Spirit Temple" } },
+            { RG_SHADOW_SCYTHE_SILVER_RUPEE, { "Spinning Scythes room in the Shadow Temple", "Spinning Scythes room in the Shadow Temple", "Spinning Scythes room in the Shadow Temple" } },
+            { RG_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE, { "door to the Falling Spikes room in the Shadow Temple", "door to the Falling Spikes room in the Shadow Temple", "door to the Falling Spikes room in the Shadow Temple" } },
+            { RG_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE, { "room with Invisible Spikes in the Shadow Temple", "room with Invisible Spikes in the Shadow Temple", "room with Invisible Spikes in the Shadow Temple" } },
+            { RG_FOREST_TRIAL_SILVER_RUPEE, { "Forest Trial in Ganon's Castle", "Forest Trial in Ganon's Castle", "Forest Trial in Ganon's Castle" } },
+            { RG_FIRE_TRIAL_SILVER_RUPEE, { "Fire Trial in Ganon's Castle", "Fire Trial in Ganon's Castle", "Fire Trial in Ganon's Castle" } },
+            { RG_SPIRIT_TRIAL_SILVER_RUPEE, { "Spirit Trial in Ganon's Castle", "Spirit Trial in Ganon's Castle", "Spirit Trial in Ganon's Castle" } },
+            { RG_LIGHT_TRIAL_SILVER_RUPEE, { "Light Trial in Ganon's Castle", "Light Trial in Ganon's Castle", "Light Trial in Ganon's Castle" } },
+            { RG_DODONGOS_CAVERN_MQ_SILVER_RUPEE, { "Dodongo's Cavern Staircase Room", "Dodongo's Cavern Staircase Room", "Dodongo's Cavern Staircase Room" } },
+            { RG_SPIRIT_MQ_LOBBY_SILVER_RUPEE, { "Spirit Temple Lobby", "Spirit Temple Lobby", "Spirit Temple Lobby" } },
+            { RG_SHADOW_MQ_INVISIBLE_SCYTHE_SILVER_RUPEE, { "Invisible Scythes room in the Shadow Temple", "Invisible Scythes room in the Shadow Temple", "Invisible Scythes room in the Shadow Temple" } },
+            { RG_WATER_TRIAL_MQ_SILVER_RUPEE, { "Water Trial in Ganon's Castle", "Water Trial in Ganon's Castle", "Water Trial in Ganon's Castle" } },
+            { RG_SHADOW_TRIAL_MQ_SILVER_RUPEE, { "Shadow Trial in Ganon's Castle", "Shadow Trial in Ganon's Castle", "Shadow Trial in Ganon's Castle" } }
+    };
 
     SilverRupees::SilverRupees() {
         mSilverRupees = {
@@ -114,30 +138,6 @@ namespace Rando {
                 SilverRupeesInfo(5, RG_FIRE_TRIAL_SILVER_RUPEE),
                 SilverRupeesInfo(5, RG_WATER_TRIAL_MQ_SILVER_RUPEE),
                 SilverRupeesInfo(5, RG_SHADOW_TRIAL_MQ_SILVER_RUPEE),
-        };
-        mSilverRupeeRoomNames = {
-                // TODO: Translate
-                //                                              "English"                            "German"                             "French"
-                { RG_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE, { "Ice Cavern's Spinning Blades Room", "Ice Cavern's Spinning Blades Room", "Ice Cavern's Spinning Blades Room" } },
-                { RG_ICE_CAVERN_SLIDING_SILVER_RUPEE, { "Ice Cavern's Block Sliding Puzzle Room", "Ice Cavern's Block Sliding Puzzle Room", "Ice Cavern's Block Sliding Puzzle Room" } },
-                { RG_BOTTOM_OF_THE_WELL_SILVER_RUPEE, { "Bottom of the Well", "Bottom of the Well", "Bottom of the Well" } },
-                { RG_GERUDO_TRAINING_GROUNDS_BOULDER_SILVER_RUPEE, { "Boulder Maze in the Gerudo Training Grounds", "Boulder Maze in the Gerudo Training Grounds", "Boulder Maze in the Gerudo Training Grounds" } },
-                { RG_GERUDO_TRAINING_GROUNDS_LAVA_SILVER_RUPEE, { "Lava room in the Gerudo Training Grounds", "Lava room in the Gerudo Training Grounds", "Lava room in the Gerudo Training Grounds" } },
-                { RG_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE, { "Whirlpool room in the Gerudo Training Grounds", "Whirlpool room in the Gerudo Training Grounds", "Whirlpool room in the Gerudo Training Grounds" } },
-                { RG_SPIRIT_CHILD_BLOCK_PUSH_SILVER_RUPEE, { "Child-side Block Pushing room in the Spirit Temple", "Child-side Block Pushing room in the Spirit Temple", "Child-side Block Pushing room in the Spirit Temple" } },
-                { RG_SPIRIT_BOULDER_SILVER_RUPEE, { "Boulder room in the Spirit Temple", "Boulder room in the Spirit Temple", "Boulder room in the Spirit Temple" } },
-                { RG_SHADOW_SCYTHE_SILVER_RUPEE, { "Spinning Scythes room in the Shadow Temple", "Spinning Scythes room in the Shadow Temple", "Spinning Scythes room in the Shadow Temple" } },
-                { RG_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE, { "door to the Falling Spikes room in the Shadow Temple", "door to the Falling Spikes room in the Shadow Temple", "door to the Falling Spikes room in the Shadow Temple" } },
-                { RG_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE, { "room with Invisible Spikes in the Shadow Temple", "room with Invisible Spikes in the Shadow Temple", "room with Invisible Spikes in the Shadow Temple" } },
-                { RG_FOREST_TRIAL_SILVER_RUPEE, { "Forest Trial in Ganon's Castle", "Forest Trial in Ganon's Castle", "Forest Trial in Ganon's Castle" } },
-                { RG_FIRE_TRIAL_SILVER_RUPEE, { "Fire Trial in Ganon's Castle", "Fire Trial in Ganon's Castle", "Fire Trial in Ganon's Castle" } },
-                { RG_SPIRIT_TRIAL_SILVER_RUPEE, { "Spirit Trial in Ganon's Castle", "Spirit Trial in Ganon's Castle", "Spirit Trial in Ganon's Castle" } },
-                { RG_LIGHT_TRIAL_SILVER_RUPEE, { "Light Trial in Ganon's Castle", "Light Trial in Ganon's Castle", "Light Trial in Ganon's Castle" } },
-                { RG_DODONGOS_CAVERN_MQ_SILVER_RUPEE, { "Dodongo's Cavern Staircase Room", "Dodongo's Cavern Staircase Room", "Dodongo's Cavern Staircase Room" } },
-                { RG_SPIRIT_MQ_LOBBY_SILVER_RUPEE, { "Spirit Temple Lobby", "Spirit Temple Lobby", "Spirit Temple Lobby" } },
-                { RG_SHADOW_MQ_INVISIBLE_SCYTHE_SILVER_RUPEE, { "Invisible Scythes room in the Shadow Temple", "Invisible Scythes room in the Shadow Temple", "Invisible Scythes room in the Shadow Temple" } },
-                { RG_WATER_TRIAL_MQ_SILVER_RUPEE, { "Water Trial in Ganon's Castle", "Water Trial in Ganon's Castle", "Water Trial in Ganon's Castle" } },
-                { RG_SHADOW_TRIAL_MQ_SILVER_RUPEE, { "Shadow Trial in Ganon's Castle", "Shadow Trial in Ganon's Castle", "Shadow Trial in Ganon's Castle" } }
         };
     }
 
