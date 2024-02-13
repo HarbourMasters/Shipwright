@@ -112,10 +112,10 @@ dnf install clang git cmake ninja-build lsb_release SDL2-devel libpng-devel boos
 #### openSUSE
 ```sh
 # using gcc
-zypper in gcc gcc-c++ git cmake ninja SDL2-devel libpng16-devel boost-devel
+zypper in gcc gcc-c++ git cmake ninja SDL2-devel libpng16-devel boost
 
 # or using clang
-zypper in clang libstdc++-devel git cmake ninja SDL2-devel libpng16-devel boost-devel
+zypper in clang libstdc++-devel git cmake ninja SDL2-devel libpng16-devel boost
 ```
 
 ### Build
