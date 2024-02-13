@@ -88,34 +88,34 @@ cd "build/x64"
 #### Debian/Ubuntu
 ```sh
 # using gcc
-apt-get install gcc g++ git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libboost-dev imagemagick libopengl-dev
+apt-get install gcc g++ git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libboost-dev libopengl-dev
 
 # or using clang
-apt-get install clang git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libboost-dev imagemagick libopengl-dev
+apt-get install clang git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libboost-dev libopengl-dev
 ```
 #### Arch
 ```sh
 # using gcc
-pacman -S gcc git cmake ninja lsb-release sdl2 libpng sdl2_net boost imagemagick
+pacman -S gcc git cmake ninja lsb-release sdl2 libpng sdl2_net boost
 
 # or using clang
-pacman -S clang git cmake ninja lsb-release sdl2 libpng sdl2_net boost imagemagick
+pacman -S clang git cmake ninja lsb-release sdl2 libpng sdl2_net boost
 ```
 #### Fedora
 ```sh
 # using gcc
-dnf install gcc gcc-c++ git cmake ninja-build lsb_release SDL2-devel libpng-devel ImageMagick
+dnf install gcc gcc-c++ git cmake ninja-build lsb_release SDL2-devel libpng-devel boost-devel
 
 # or using clang
-dnf install clang git cmake ninja-build lsb_release SDL2-devel libpng-devel ImageMagick
+dnf install clang git cmake ninja-build lsb_release SDL2-devel libpng-devel boost-devel
 ```
 #### openSUSE
 ```sh
 # using gcc
-zypper in gcc gcc-c++ git cmake ninja SDL2-devel libpng16-devel ImageMagick
+zypper in gcc gcc-c++ git cmake ninja SDL2-devel libpng16-devel boost-devel
 
 # or using clang
-zypper in clang libstdc++-devel git cmake ninja SDL2-devel libpng16-devel ImageMagick
+zypper in clang libstdc++-devel git cmake ninja SDL2-devel libpng16-devel boost-devel
 ```
 
 ### Build
