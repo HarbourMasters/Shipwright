@@ -27,6 +27,7 @@ typedef enum GetItemCategory {
     /* 0x03 */ ITEM_CATEGORY_SMALL_KEY,
     /* 0x04 */ ITEM_CATEGORY_SKULLTULA_TOKEN,
     /* 0x05 */ ITEM_CATEGORY_MAJOR,
+    /* 0x06 */ ITEM_CATEGORY_SILVER_RUPEE,
 } GetItemCategory;
 
 #define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim, itemCategory, modIndex, getItemId) \

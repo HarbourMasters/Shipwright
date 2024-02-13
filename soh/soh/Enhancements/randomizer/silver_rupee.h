@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <array>
 #include "randomizerTypes.h"
+#include "soh/Enhancements/randomizer/3drando/text.hpp"
+#include "soh/Enhancements/custom-message/CustomMessageManager.h"
 
 namespace Rando {
 
@@ -27,8 +29,10 @@ namespace Rando {
         SilverRupees();
 
         SilverRupeesInfo& GetInfo(RandomizerGet rgid);
+        static CustomMessage GetSilverRupeeMessage(u16 rgid);
     private:
         std::array<SilverRupeesInfo, RG_SILVER_RUPEE_LAST - RG_SILVER_RUPEE_FIRST + 1> mSilverRupees;
+        static std::unordered_map<RandomizerGet, Text> mSilverRupeeRoomNames;
     };
 
 } // Rando

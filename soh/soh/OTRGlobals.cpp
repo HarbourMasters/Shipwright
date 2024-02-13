@@ -2492,6 +2492,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 }
             } else if (player->getItemEntry.getItemId == RG_TRIFORCE_PIECE) {
                 messageEntry = Randomizer::GetTriforcePieceMessage();
+            } else if (player->getItemEntry.getItemId >= RG_SILVER_RUPEE_FIRST && player->getItemEntry.getItemId <= RG_SILVER_RUPEE_LAST) {
+                messageEntry = OTRGlobals::Instance->gRandoContext->GetSilverRupees()->GetSilverRupeeMessage(player->getItemEntry.getItemId);
             } else {
                 messageEntry = Randomizer_GetCustomGetItemMessage(player);
             }

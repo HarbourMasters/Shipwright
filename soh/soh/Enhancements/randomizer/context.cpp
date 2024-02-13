@@ -581,4 +581,8 @@ Option& Context::GetOption(const RandomizerSettingKey key) const {
 TrickOption& Context::GetTrickOption(const RandomizerTrick key) const {
     return mSettings->GetTrickOption(key);
 }
+
+std::shared_ptr<SilverRupees> Context::GetSilverRupees() {
+    return mSilverRupees;
+}
 } // namespace Rando

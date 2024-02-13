@@ -69,6 +69,7 @@ class Context {
     std::shared_ptr<EntranceShuffler> GetEntranceShuffler();
     std::shared_ptr<Dungeons> GetDungeons();
     std::shared_ptr<Fishsanity> GetFishsanity();
+    std::shared_ptr<SilverRupees> GetSilverRupees();
     DungeonInfo* GetDungeon(size_t key) const;
     std::shared_ptr<Logic> GetLogic();
     void ResetLogic();

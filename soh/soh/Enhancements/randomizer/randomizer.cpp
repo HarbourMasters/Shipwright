@@ -2853,6 +2853,19 @@ void CreateGetItemMessages(const std::array<GetItemMessage, N>* messageEntries) 
             CustomMessage(messageEntry.english, messageEntry.german, messageEntry.french, TEXTBOX_TYPE_BLUE,
                           TEXTBOX_POS_BOTTOM));
     }
+    // Special Case for Silver Rupees
+    //TODO: AI Translated Text, get translation from native speaker.
+    customMessageManager->CreateMessage(Randomizer::getItemMessageTableID, RG_SILVER_RUPEE_FIRST,
+                                        CustomMessage("You got a %cSilver Rupee%w for the&%g{{location}}%w!",
+                                          "Du hast eine %cSilberne Rupie%w für die&%g{{location}}%w!",
+                                          "Vous avez reçu une %cRoupie d'Argent%w pour le&%g{{location}}%w!",
+                                          TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM));
+    // Special Case for Silver Rupee Pouches
+//    customMessageManager->CreateMessage(Randomizer::getItemMessageTableID, RG_SILVER_RUPEE_POUCH_FIRST,
+//                                        { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
+//                                          "You got a %cSilver Rupee Pouch%w for the&%g{{location}}%w!",
+//                                          "Du hast einen %cBeutel mit Silberrupien%g für die für die&%g{{location}}%w!",
+//                                          "Vous avez reçu une %cPochette en Roupie d'Argent%w pour le&%g{{location}}%w!" });
 }
 
 void CreateRupeeMessages() {
