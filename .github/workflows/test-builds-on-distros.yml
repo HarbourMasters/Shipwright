@@ -1,4 +1,4 @@
-name: generate-builds
+name: test-builds-on-distros
 on:
   push:
   pull_request:
