@@ -87,9 +87,9 @@ jobs:
       if: ${{ matrix.image == 'fedora:39' }}
       run: |
         echo fedora
-        echo dnf install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} git cmake ninja-build lsb_release SDL2-devel libpng-devel
+        echo dnf install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} git cmake ninja-build lsb_release SDL2-devel libpng-devel ImageMagick
         dnf -y upgrade
-        dnf -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} git cmake ninja-build lsb_release SDL2-devel libpng-devel
+        dnf -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} git cmake ninja-build lsb_release SDL2-devel libpng-devel ImageMagick
     - name: Install dependencies (apt)
       if: ${{ matrix.image == 'ubuntu:mantic' || matrix.image == 'debian:bookworm' }}
       run: |
@@ -102,9 +102,9 @@ jobs:
       if: ${{ matrix.image == 'opensuse/tumbleweed:latest' }}
       run: |
         echo openSUSE
-        echo zypper in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} ${{ matrix.cc == 'clang' && 'libstdc++-devel' || '' }} git cmake ninja SDL2-devel libpng16-devel
+        echo zypper in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} ${{ matrix.cc == 'clang' && 'libstdc++-devel' || '' }} git cmake ninja SDL2-devel libpng16-devel ImageMagick
         zypper --non-interactive dup
-        zypper --non-interactive in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} ${{ matrix.cc == 'clang' && 'libstdc++-devel' || '' }} git cmake ninja SDL2-devel libpng16-devel
+        zypper --non-interactive in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} ${{ matrix.cc == 'clang' && 'libstdc++-devel' || '' }} git cmake ninja SDL2-devel libpng16-devel ImageMagick
     - uses: actions/checkout@v3
       with:
         submodules: true
