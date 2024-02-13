@@ -17,6 +17,7 @@ void EnGSwitch_Randomizer_SilverRupeeIdle(EnGSwitch* self, PlayState* play) {
             } else if (self->giEntry->modIndex == MOD_RANDOMIZER) {
                 Randomizer_Item_Give(play, *self->giEntry);
             }
+            Flags_SetRandomizerInf(self->randInfFlag);
             self->killTimer = 0;
             self->actionFunc = EnGSwitch_Kill;
         }

@@ -60,6 +60,7 @@ typedef struct EnGSwitch {
     /*        */ RandomizerCheck rc;
     /*        */ RandomizerGet rg;
     /*        */ GetItemEntry* giEntry;
+    /*        */ RandomizerInf randInfFlag;
 } EnGSwitch; // size = 0x12F8
 
 #endif

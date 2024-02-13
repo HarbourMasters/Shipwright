@@ -2462,6 +2462,10 @@ extern "C" void Randomizer_SetPlandoLoaded(bool plandoLoaded) {
     OTRGlobals::Instance->gRandoContext->SetPlandoLoaded(plandoLoaded);
 }
 
+extern "C" void Randomizer_IncrementSilverRupeeCount(RandomizerGet rgid, uint8_t amount) {
+    OTRGlobals::Instance->gRandoContext->GetSilverRupees()->GetInfo(rgid).IncrementCollected(amount);
+}
+
 CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
     s16 giid;
     if (player->getItemEntry.objectId != OBJECT_INVALID) {
