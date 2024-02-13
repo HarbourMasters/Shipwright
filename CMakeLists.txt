@@ -5,9 +5,9 @@ set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 
-project(Ship VERSION 8.0.4 LANGUAGES C CXX)
-set(PROJECT_BUILD_NAME "MacReady Echo" CACHE STRING "")
-set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "")
+project(Ship VERSION 0.4.4 LANGUAGES C CXX)
+set(PROJECT_BUILD_NAME "Archipelago" CACHE STRING "")
+set(PROJECT_TEAM "github.com/harbourmasters & CharlesDev" CACHE STRING "")
 
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
