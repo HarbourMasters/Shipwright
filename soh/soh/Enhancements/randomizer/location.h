@@ -16,10 +16,10 @@ class SpoilerCollectionCheck {
   public:
     SpoilerCollectionCheckType type = SPOILER_CHK_NONE;
     uint8_t scene = 0;
-    uint8_t flag = 0;
+    uint16_t flag = 0;
 
     SpoilerCollectionCheck() = default;
-    SpoilerCollectionCheck(const SpoilerCollectionCheckType type_, const uint8_t scene_, const uint8_t flag_)
+    SpoilerCollectionCheck(const SpoilerCollectionCheckType type_, const uint8_t scene_, const uint16_t flag_)
         : type(type_), scene(scene_), flag(flag_) {
     }
 
@@ -95,7 +95,7 @@ class SpoilerCollectionCheck {
         return SpoilerCollectionCheck(SPOILER_CHK_MERCHANT, scene, flag);
     }
 
-    static auto RandomizerInf(const int8_t scene, const uint8_t flag) {
+    static auto RandomizerInf(const int8_t scene, const uint16_t flag) {
         return SpoilerCollectionCheck(SPOILER_CHK_RANDOMIZER_INF, scene, flag);
     }
 };
