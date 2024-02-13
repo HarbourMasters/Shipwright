@@ -86,39 +86,35 @@ cd "build/x64"
 ## Linux
 ### Install dependencies
 #### Debian/Ubuntu
-`gcc`:
 ```sh
+# using gcc
 apt-get install gcc g++ git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libboost-dev imagemagick libopengl-dev
-```
-`clang`:
-```sh
+
+# or using clang
 apt-get install clang git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libboost-dev imagemagick libopengl-dev
 ```
 #### Arch
-`gcc`:
 ```sh
+# using gcc
 pacman -S gcc git cmake ninja lsb-release sdl2 libpng sdl2_net boost imagemagick
-```
-`clang`:
-```sh
+
+# or using clang
 pacman -S clang git cmake ninja lsb-release sdl2 libpng sdl2_net boost imagemagick
 ```
 #### Fedora
-`gcc`:
 ```sh
+# using gcc
 dnf install gcc gcc-c++ git cmake ninja-build lsb_release SDL2-devel libpng-devel ImageMagick
-```
-`clang`:
-```sh
+
+# or using clang
 dnf install clang git cmake ninja-build lsb_release SDL2-devel libpng-devel ImageMagick
 ```
 #### openSUSE
-`gcc`:
 ```sh
+# using gcc
 zypper in gcc gcc-c++ git cmake ninja SDL2-devel libpng16-devel ImageMagick
-```
-`clang`:
-```sh
+
+# or using clang
 zypper in clang libstdc++-devel git cmake ninja SDL2-devel libpng16-devel ImageMagick
 ```
 
