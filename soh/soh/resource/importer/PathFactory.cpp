@@ -9,18 +9,19 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryPathV0::ReadResource(std::s
     }
 
     auto path = std::make_shared<Path>(file->InitData);
+    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
 
-    path->numPaths = file->Reader->ReadUInt32();
+    path->numPaths = reader->ReadUInt32();
     path->paths.reserve(path->numPaths);
     for (uint32_t k = 0; k < path->numPaths; k++) {
         std::vector<Vec3s> points;
-        uint32_t pointCount = file->Reader->ReadUInt32();
+        uint32_t pointCount = reader->ReadUInt32();
         points.reserve(pointCount);
         for (uint32_t i = 0; i < pointCount; i++) {
             Vec3s point;
-            point.x = file->Reader->ReadInt16();
-            point.y = file->Reader->ReadInt16();
-            point.z = file->Reader->ReadInt16();
+            point.x = reader->ReadInt16();
+            point.y = reader->ReadInt16();
+            point.z = reader->ReadInt16();
 
             points.push_back(point);
         }

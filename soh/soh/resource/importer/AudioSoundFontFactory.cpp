@@ -10,7 +10,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSoundFontV2::ReadResou
     }
 
     auto audioSoundFont = std::make_shared<AudioSoundFont>(file->InitData);
-    auto reader = file->Reader;
+    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
 
     audioSoundFont->soundFont.fntIndex = reader->ReadInt32();
     audioSoundFont->medium = reader->ReadInt8();

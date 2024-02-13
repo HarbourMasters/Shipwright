@@ -99,8 +99,9 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinarySceneV0::ReadResource(std::
     }
 
     auto scene = std::make_shared<Scene>(file->InitData);
+    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
 
-    ParseSceneCommands(scene, file->Reader);
+    ParseSceneCommands(scene, reader);
 
     return scene;
 };

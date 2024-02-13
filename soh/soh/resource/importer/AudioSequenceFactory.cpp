@@ -9,24 +9,25 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSequenceV2::ReadResour
     }
 
     auto audioSequence = std::make_shared<AudioSequence>(file->InitData);
+    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
 
-    audioSequence->sequence.seqDataSize = file->Reader->ReadInt32();
+    audioSequence->sequence.seqDataSize = reader->ReadInt32();
     audioSequence->sequenceData.reserve(audioSequence->sequence.seqDataSize);
     for (uint32_t i = 0; i < audioSequence->sequence.seqDataSize; i++) {
-        audioSequence->sequenceData.push_back(file->Reader->ReadChar());
+        audioSequence->sequenceData.push_back(reader->ReadChar());
     }
     audioSequence->sequence.seqData = audioSequence->sequenceData.data();
     
-    audioSequence->sequence.seqNumber = file->Reader->ReadUByte();
-    audioSequence->sequence.medium = file->Reader->ReadUByte();
-    audioSequence->sequence.cachePolicy = file->Reader->ReadUByte();
+    audioSequence->sequence.seqNumber = reader->ReadUByte();
+    audioSequence->sequence.medium = reader->ReadUByte();
+    audioSequence->sequence.cachePolicy = reader->ReadUByte();
 
-    audioSequence->sequence.numFonts = file->Reader->ReadUInt32();
+    audioSequence->sequence.numFonts = reader->ReadUInt32();
     for (uint32_t i = 0; i < 16; i++) {
         audioSequence->sequence.fonts[i] = 0;
     }
     for (uint32_t i = 0; i < audioSequence->sequence.numFonts; i++) {
-        audioSequence->sequence.fonts[i] = file->Reader->ReadUByte();
+        audioSequence->sequence.fonts[i] = reader->ReadUByte();
     }
 
     return audioSequence;

@@ -9,7 +9,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryAudioSampleV2::ReadResource
     }
 
     auto audioSample = std::make_shared<AudioSample>(file->InitData);
-    auto reader = file->Reader;
+    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
 
     audioSample->sample.codec = reader->ReadUByte();
     audioSample->sample.medium = reader->ReadUByte();

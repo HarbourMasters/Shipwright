@@ -10,17 +10,18 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinarySkeletonV0::ReadResource(st
     }
 
     auto skeleton = std::make_shared<Skeleton>(file->InitData);
+    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
 
-    skeleton->type = (SkeletonType)file->Reader->ReadInt8();
-    skeleton->limbType = (LimbType)file->Reader->ReadInt8();
-    skeleton->limbCount = file->Reader->ReadUInt32();
-    skeleton->dListCount = file->Reader->ReadUInt32();
-    skeleton->limbTableType = (LimbType)file->Reader->ReadInt8();
-    skeleton->limbTableCount = file->Reader->ReadUInt32();
+    skeleton->type = (SkeletonType)reader->ReadInt8();
+    skeleton->limbType = (LimbType)reader->ReadInt8();
+    skeleton->limbCount = reader->ReadUInt32();
+    skeleton->dListCount = reader->ReadUInt32();
+    skeleton->limbTableType = (LimbType)reader->ReadInt8();
+    skeleton->limbTableCount = reader->ReadUInt32();
 
     skeleton->limbTable.reserve(skeleton->limbTableCount);
     for (uint32_t i = 0; i < skeleton->limbTableCount; i++) {
-        std::string limbPath = file->Reader->ReadString();
+        std::string limbPath = reader->ReadString();
 
         skeleton->limbTable.push_back(limbPath);
     }
@@ -67,7 +68,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryXMLSkeletonV0::ReadResource(std::
     }
 
     auto skel = std::make_shared<Skeleton>(file->InitData);
-    auto reader = file->XmlDocument->FirstChildElement();
+    auto reader = std::get<std::shared_ptr<tinyxml2::XMLDocument>>(file->Reader)->FirstChildElement();
     auto child = reader->FirstChildElement();
 
     skel->type = SkeletonType::Flex; // Default to Flex for legacy reasons

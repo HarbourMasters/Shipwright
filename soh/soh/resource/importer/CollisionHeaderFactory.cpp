@@ -8,8 +8,8 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryCollisionHeaderV0::ReadReso
         return nullptr;
     }
 
-    auto reader = file->Reader;
     auto collisionHeader = std::make_shared<CollisionHeader>(file->InitData);
+    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
 
     collisionHeader->collisionHeaderData.minBounds.x = reader->ReadInt16();
     collisionHeader->collisionHeaderData.minBounds.y = reader->ReadInt16();
@@ -130,7 +130,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryXMLCollisionHeaderV0::ReadResourc
 
     auto collisionHeader = std::make_shared<CollisionHeader>(file->InitData);
 
-    auto reader = file->XmlDocument->FirstChildElement();
+    auto reader = std::get<std::shared_ptr<tinyxml2::XMLDocument>>(file->Reader)->FirstChildElement();
     auto child = reader->FirstChildElement();
 
     collisionHeader->collisionHeaderData.minBounds.x = reader->IntAttribute("MinBoundsX");

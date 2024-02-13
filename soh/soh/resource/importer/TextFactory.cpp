@@ -9,16 +9,17 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryTextV0::ReadResource(std::s
     }
 
     auto text = std::make_shared<Text>(file->InitData);
+    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
 
-    uint32_t msgCount = file->Reader->ReadUInt32();
+    uint32_t msgCount = reader->ReadUInt32();
     text->messages.reserve(msgCount);
 
     for (uint32_t i = 0; i < msgCount; i++) {
         MessageEntry entry;
-        entry.id = file->Reader->ReadUInt16();
-        entry.textboxType = file->Reader->ReadUByte();
-        entry.textboxYPos = file->Reader->ReadUByte();
-        entry.msg = file->Reader->ReadString();
+        entry.id = reader->ReadUInt16();
+        entry.textboxType = reader->ReadUByte();
+        entry.textboxYPos = reader->ReadUByte();
+        entry.msg = reader->ReadString();
 
         text->messages.push_back(entry);
     }
@@ -32,8 +33,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryXMLTextV0::ReadResource(std::shar
     }
 
     auto txt = std::make_shared<Text>(file->InitData);
-
-    auto child = file->XmlDocument->FirstChildElement()->FirstChildElement();
+    auto child = std::get<std::shared_ptr<tinyxml2::XMLDocument>>(file->Reader)->FirstChildElement()->FirstChildElement();
 
     while (child != nullptr) {
         std::string childName = child->Name();

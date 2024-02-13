@@ -9,12 +9,13 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryPlayerAnimationV0::ReadReso
     }
 
     auto playerAnimation = std::make_shared<PlayerAnimation>(file->InitData);
+    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
 
-    uint32_t numEntries = file->Reader->ReadUInt32();
+    uint32_t numEntries = reader->ReadUInt32();
     playerAnimation->limbRotData.reserve(numEntries);
 
     for (uint32_t i = 0; i < numEntries; i++) {
-        playerAnimation->limbRotData.push_back(file->Reader->ReadInt16());
+        playerAnimation->limbRotData.push_back(reader->ReadInt16());
     }
 
     return playerAnimation;

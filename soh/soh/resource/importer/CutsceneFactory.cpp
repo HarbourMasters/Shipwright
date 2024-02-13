@@ -64,7 +64,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinaryCutsceneV0::ReadResource(st
     }
 
     auto cutscene = std::make_shared<Cutscene>(file->InitData);
-    auto reader = file->Reader;
+    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
 
     uint32_t numEntries = reader->ReadUInt32();
     cutscene->commands.reserve(numEntries);

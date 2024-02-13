@@ -10,7 +10,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryBinarySkeletonLimbV0::ReadResourc
     }
 
     auto skeletonLimb = std::make_shared<SkeletonLimb>(file->InitData);
-    auto reader = file->Reader;
+    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
 
     skeletonLimb->limbType = (LimbType)reader->ReadInt8();
     skeletonLimb->skinSegmentType = (ZLimbSkinType)reader->ReadInt8();
@@ -190,7 +190,7 @@ std::shared_ptr<LUS::IResource> ResourceFactoryXMLSkeletonLimbV0::ReadResource(s
     }
 
     auto skelLimb = std::make_shared<SkeletonLimb>(file->InitData);
-    auto reader = file->XmlDocument->FirstChildElement();
+    auto reader = std::get<std::shared_ptr<tinyxml2::XMLDocument>>(file->Reader)->FirstChildElement();
 
     std::string limbType = reader->Attribute("Type");
 
