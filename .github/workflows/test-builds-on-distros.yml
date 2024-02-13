@@ -1,7 +1,6 @@
 name: test-builds-on-distros
 on:
-  push:
-  pull_request:
+  workflow_dispatch:    # by request
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
