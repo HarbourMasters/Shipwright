@@ -7,7 +7,6 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
-    needs: generate-soh-otr
     strategy:
       matrix:
         image: ["archlinux:base", "opensuse/tumbleweed:latest", "ubuntu:mantic", "debian:bookworm", "fedora:39"]
