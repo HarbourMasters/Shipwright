@@ -37,7 +37,6 @@ extern "C" {
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_PatchCustomGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
-uint8_t ResourceMgr_FileAltExists(const char* resName);
 uint8_t ResourceGetIsCustomByName(const char* name);
 uint8_t Player_IsCustomLinkModel();
 extern SaveContext gSaveContext;
@@ -695,17 +694,6 @@ void RegisterMirrorModeHandler() {
 
 void UpdatePatchHand() {
     if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_CHILD) {
-        if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_CHILD && Player_IsCustomLinkModel) {
-        ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand1", 0, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
-        ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand2", 1, gsSPEndDisplayList());
-        ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand3", 0, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
-        ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand4", 1, gsSPEndDisplayList());
-    } else {
-        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand1");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand2");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand3");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand4");
-    }
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer2", 93, gsSPEndDisplayList());
         ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot1", 84, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
@@ -718,7 +706,6 @@ void UpdatePatchHand() {
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword2", 80, gsSPEndDisplayList());
         ResourceMgr_PatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife1", 76, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
         ResourceMgr_PatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife2", 77, gsSPEndDisplayList());
-
     } else {
         ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1");
         ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer2");
@@ -755,7 +742,17 @@ void UpdatePatchHand() {
         ResourceMgr_UnpatchGfxByName(gLinkChildRightHandClosedNearDL, "customAdultHand3");
         ResourceMgr_UnpatchGfxByName(gLinkChildRightHandClosedNearDL, "customAdultHand4");
     }
-    
+    if ((CVarGetInteger("gEnhancements.CustomEquipDlists", 0)) && LINK_IS_CHILD && Player_IsCustomLinkModel) {
+        ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand1", 0, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand2", 1, gsSPEndDisplayList());
+        ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand3", 0, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
+        ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand4", 1, gsSPEndDisplayList());
+    } else {
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand2");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand3");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand4");
+    }
 }
 
 void RegisterPatchHandHandler() {
