@@ -14,7 +14,7 @@ void PatchToTMedallions();
 void UpdatePermanentHeartLossState();
 void InitMods();
 void UpdatePatchHand(); 
-void UpdatePatchCustomDlists();
+void UpdatePatchCustomEquipmentDlists();
 
 #ifdef __cplusplus
 }

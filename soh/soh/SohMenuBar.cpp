@@ -1115,7 +1115,7 @@ void DrawEnhancementsMenu() {
 				UIWidgets::Tooltip("Scales all of the Adult Equipment, as well and moving some a bit, to fit on Child Link Better. May not work properly with some mods.");
 			}
             if (UIWidgets::PaddedEnhancementCheckbox("Show Custom Equipment", "gEnhancements.CustomDlists", true, false)) {
-                UpdatePatchCustomDlists();
+                UpdatePatchCustomEquipmentDlists();
             }
             UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gLowResMode", true, false);
             UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
