@@ -25,7 +25,7 @@
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
-#include "objects/object_custom/object_custom.h"
+#include "objects/object_custom/object_custom_equip.h"
 
 extern "C" {
 #include <z64.h>
@@ -695,6 +695,17 @@ void RegisterMirrorModeHandler() {
 
 void UpdatePatchHand() {
     if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_CHILD) {
+        if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_CHILD && Player_IsCustomLinkModel) {
+        ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand1", 0, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand2", 1, gsSPEndDisplayList());
+        ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand3", 0, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
+        ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand4", 1, gsSPEndDisplayList());
+    } else {
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand2");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand3");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand4");
+    }
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer2", 93, gsSPEndDisplayList());
         ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot1", 84, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
@@ -744,17 +755,7 @@ void UpdatePatchHand() {
         ResourceMgr_UnpatchGfxByName(gLinkChildRightHandClosedNearDL, "customAdultHand3");
         ResourceMgr_UnpatchGfxByName(gLinkChildRightHandClosedNearDL, "customAdultHand4");
     }
-    if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_CHILD && Player_IsCustomLinkModel) {
-        ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand1", 0, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
-        ResourceMgr_PatchCustomGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand2", 1, gsSPEndDisplayList());
-        ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand3", 0, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
-        ResourceMgr_PatchCustomGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand4", 1, gsSPEndDisplayList());
-    } else {
-        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand1");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandClosedNearDL, "customChildHand2");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand3");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandClosedNearDL, "customChildHand4");
-    }
+    
 }
 
 void RegisterPatchHandHandler() {
@@ -767,7 +768,7 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
     if (resource == NULL || gfx == NULL || dlist1 == NULL || dlist2 == NULL)
         return;
 
-    if (ResourceGetIsCustomByName(gfx) && CVarGetInteger("gEnhancements.CustomDlists", 0)) {
+    if (ResourceGetIsCustomByName(gfx) && CVarGetInteger("gEnhancements.CustomEquipDlists", 0)) {
         if (alternateDL == NULL || ResourceGetIsCustomByName(alternateDL)) {
             ResourceMgr_PatchCustomGfxByName(resource, dlist1, 0, gsSPDisplayListOTRFilePath(gfx));
             if (dlist3 == NULL) {
@@ -789,81 +790,82 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
 void UpdatePatchCustomEquipmentDlists() {
 
     if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI) {
-        PatchOrUnpatch(gLinkChildSheathNearDL, gLinkKokiriSwordSheathDL, "customKokiriSheath1", "customKokiriSheath2", NULL, NULL);
-        PatchOrUnpatch(gLinkChildSwordAndSheathNearDL, gLinkKokiriSwordInSheathDL, "customKokiriSwordSheath1", "customKokiriSwordSheath2", NULL, NULL);
-        PatchOrUnpatch(gLinkChildDekuShieldSwordAndSheathNearDL, gLinkKokiriSwordInSheathDL, "customDekuShieldSword1", "customDekuShieldSword2", "customDekuShieldSword3", gLinkDekuShieldOnBackDL);
-        PatchOrUnpatch(gLinkChildDekuShieldAndSheathNearDL, gLinkKokiriSwordSheathDL, "customDekuShieldSheath1", "customDekuShieldSheath2", "customDekuShieldSheath3", gLinkDekuShieldOnBackDL);
-        PatchOrUnpatch(gLinkChildHylianShieldSwordAndSheathNearDL, gLinkKokiriSwordInSheathDL, "customChildHylianShieldSword1", "customChildHylianShieldSword2", "customChildHylianShieldSword3", gLinkHylianShieldOnChildBackDL);
-        PatchOrUnpatch(gLinkChildHylianShieldAndSheathNearDL, gLinkKokiriSwordSheathDL, "customChildHylianShieldSheath1", "customChildHylianShieldSheath2", "customChildHylianShieldSheath3", gLinkHylianShieldOnChildBackDL);
-        PatchOrUnpatch(gLinkAdultSheathNearDL, gLinkKokiriSwordSheathDL, "customSheath1", "customSheath2", NULL, NULL);
-        PatchOrUnpatch(gLinkAdultHylianShieldSwordAndSheathNearDL, gLinkHylianShieldOnBackDL, "customHylianShieldSword1", "customHylianShieldSword2", "customHylianShieldSword3", gLinkKokiriSwordInSheathDL);
-        PatchOrUnpatch(gLinkAdultMasterSwordAndSheathNearDL, gLinkKokiriSwordInSheathDL, "customMasterSwordSheath1", "customMasterSwordSheath2", NULL, NULL);
-        PatchOrUnpatch(gLinkAdultHylianShieldAndSheathNearDL, gLinkKokiriSwordSheathDL, "customHylianShieldSheath1", "customHylianShieldSheath2", "customHylianShieldSheath3", gLinkHylianShieldOnBackDL);
-        PatchOrUnpatch(gLinkAdultMirrorShieldSwordAndSheathNearDL, gLinkMirrorShieldOnBackDL, "customMirrorShieldSword1", "customMirrorShieldSword2", "customMirrorShieldSword3", gLinkKokiriSwordInSheathDL);
+        PatchOrUnpatch(gLinkChildSheathNearDL, gCustomKokiriSwordSheathDL, "customKokiriSheath1", "customKokiriSheath2", NULL, NULL);
+        PatchOrUnpatch(gLinkChildSwordAndSheathNearDL, gCustomKokiriSwordInSheathDL, "customKokiriSwordSheath1", "customKokiriSwordSheath2", NULL, NULL);
+        PatchOrUnpatch(gLinkChildDekuShieldSwordAndSheathNearDL, gCustomKokiriSwordInSheathDL, "customDekuShieldSword1", "customDekuShieldSword2", "customDekuShieldSword3", gCustomDekuShieldOnBackDL);
+        PatchOrUnpatch(gLinkChildDekuShieldAndSheathNearDL, gCustomKokiriSwordSheathDL, "customDekuShieldSheath1", "customDekuShieldSheath2", "customDekuShieldSheath3", gCustomDekuShieldOnBackDL);
+        PatchOrUnpatch(gLinkChildHylianShieldSwordAndSheathNearDL, gCustomKokiriSwordInSheathDL, "customChildHylianShieldSword1", "customChildHylianShieldSword2", "customChildHylianShieldSword3", gCustomHylianShieldOnChildBackDL);
+        PatchOrUnpatch(gLinkChildHylianShieldAndSheathNearDL, gCustomKokiriSwordSheathDL, "customChildHylianShieldSheath1", "customChildHylianShieldSheath2", "customChildHylianShieldSheath3", gCustomHylianShieldOnChildBackDL);
+        PatchOrUnpatch(gLinkAdultSheathNearDL, gCustomKokiriSwordSheathDL, "customSheath1", "customSheath2", NULL, NULL);
+        PatchOrUnpatch(gLinkAdultHylianShieldSwordAndSheathNearDL, gCustomHylianShieldOnBackDL, "customHylianShieldSword1", "customHylianShieldSword2", "customHylianShieldSword3", gCustomKokiriSwordInSheathDL);
+        PatchOrUnpatch(gLinkAdultMasterSwordAndSheathNearDL, gCustomKokiriSwordInSheathDL, "customMasterSwordSheath1", "customMasterSwordSheath2", NULL, NULL);
+        PatchOrUnpatch(gLinkAdultHylianShieldAndSheathNearDL, gCustomKokiriSwordSheathDL, "customHylianShieldSheath1", "customHylianShieldSheath2", "customHylianShieldSheath3", gCustomHylianShieldOnBackDL);
+        PatchOrUnpatch(gLinkAdultMirrorShieldSwordAndSheathNearDL, gCustomMirrorShieldOnBackDL, "customMirrorShieldSword1", "customMirrorShieldSword2", "customMirrorShieldSword3", gCustomKokiriSwordInSheathDL);
     }
     if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) {
-        PatchOrUnpatch(gLinkChildSheathNearDL, gLinkMasterSwordSheathDL, "customKokiriSheath1", "customKokiriSheath2", NULL, NULL);
-        PatchOrUnpatch(gLinkChildSwordAndSheathNearDL, gLinkMasterSwordInSheathDL, "customKokiriSwordSheath1", "customKokiriSwordSheath2", NULL, NULL);
-        PatchOrUnpatch(gLinkChildDekuShieldSwordAndSheathNearDL, gLinkMasterSwordInSheathDL, "customDekuShieldSword1", "customDekuShieldSword2", "customDekuShieldSword3", gLinkDekuShieldOnBackDL);
-        PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gLinkDekuShieldOnBackDL, "customDekuShieldBack1", "customDekuShieldBack2", "customDekuShieldBack2", gLinkMasterSwordInSheathDL);
-        PatchOrUnpatch(gLinkChildDekuShieldAndSheathNearDL, gLinkMasterSwordSheathDL, "customDekuShieldSheath1", "customDekuShieldSheath2", "customDekuShieldSheath3", gLinkDekuShieldOnBackDL);
-        PatchOrUnpatch(gLinkChildHylianShieldSwordAndSheathNearDL, gLinkMasterSwordInSheathDL, "customChildHylianShieldSword1", "customChildHylianShieldSword2", "customChildHylianShieldSword3", gLinkHylianShieldOnChildBackDL);
-        PatchOrUnpatch(gLinkChildHylianShieldAndSheathNearDL, gLinkMasterSwordSheathDL, "customChildHylianShieldSheath1", "customChildHylianShieldSheath2", "customChildHylianShieldSheath3", gLinkHylianShieldOnChildBackDL);
-        PatchOrUnpatch(gLinkAdultSheathNearDL, gLinkMasterSwordSheathDL, "customSheath1", "customSheath2", NULL, NULL);
-        PatchOrUnpatch(gLinkAdultHylianShieldSwordAndSheathNearDL, gLinkMasterSwordInSheathDL, "customHylianShieldSword1", "customHylianShieldSword2", "customHylianShieldSword3", gLinkHylianShieldOnBackDL);
-        PatchOrUnpatch(gLinkAdultMasterSwordAndSheathNearDL, gLinkMasterSwordInSheathDL, "customMasterSwordSheath1", "customMasterSwordSheath2", NULL, NULL);
-        PatchOrUnpatch(gLinkAdultHylianShieldAndSheathNearDL, gLinkMasterSwordSheathDL, "customHylianShieldSheath1", "customHylianShieldSheath2", "customHylianShieldSheath3", gLinkHylianShieldOnBackDL);
-        PatchOrUnpatch(gLinkAdultMirrorShieldSwordAndSheathNearDL, gLinkMirrorShieldOnBackDL, "customMirrorShieldSword1", "customMirrorShieldSword2", "customMirrorShieldSword3", gLinkMasterSwordInSheathDL);
+        PatchOrUnpatch(gLinkChildSheathNearDL, gCustomMasterSwordSheathDL, "customKokiriSheath1", "customKokiriSheath2", NULL, NULL);
+        PatchOrUnpatch(gLinkChildSwordAndSheathNearDL, gCustomMasterSwordInSheathDL, "customKokiriSwordSheath1", "customKokiriSwordSheath2", NULL, NULL);
+        PatchOrUnpatch(gLinkChildDekuShieldSwordAndSheathNearDL, gCustomMasterSwordInSheathDL, "customDekuShieldSword1", "customDekuShieldSword2", "customDekuShieldSword3", gCustomDekuShieldOnBackDL);
+        PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomDekuShieldOnBackDL, "customDekuShieldBack1", "customDekuShieldBack2", "customDekuShieldBack2", gCustomMasterSwordInSheathDL);
+        PatchOrUnpatch(gLinkChildDekuShieldAndSheathNearDL, gCustomMasterSwordSheathDL, "customDekuShieldSheath1", "customDekuShieldSheath2", "customDekuShieldSheath3", gCustomDekuShieldOnBackDL);
+        PatchOrUnpatch(gLinkChildHylianShieldSwordAndSheathNearDL, gCustomMasterSwordInSheathDL, "customChildHylianShieldSword1", "customChildHylianShieldSword2", "customChildHylianShieldSword3", gCustomHylianShieldOnChildBackDL);
+        PatchOrUnpatch(gLinkChildHylianShieldAndSheathNearDL, gCustomMasterSwordSheathDL, "customChildHylianShieldSheath1", "customChildHylianShieldSheath2", "customChildHylianShieldSheath3", gCustomHylianShieldOnChildBackDL);
+        PatchOrUnpatch(gLinkAdultSheathNearDL, gCustomMasterSwordSheathDL, "customSheath1", "customSheath2", NULL, NULL);
+        PatchOrUnpatch(gLinkAdultHylianShieldSwordAndSheathNearDL, gCustomMasterSwordInSheathDL, "customHylianShieldSword1", "customHylianShieldSword2", "customHylianShieldSword3", gCustomHylianShieldOnBackDL);
+        PatchOrUnpatch(gLinkAdultMasterSwordAndSheathNearDL, gCustomMasterSwordInSheathDL, "customMasterSwordSheath1", "customMasterSwordSheath2", NULL, NULL);
+        PatchOrUnpatch(gLinkAdultHylianShieldAndSheathNearDL, gCustomMasterSwordSheathDL, "customHylianShieldSheath1", "customHylianShieldSheath2", "customHylianShieldSheath3", gCustomHylianShieldOnBackDL);
+        PatchOrUnpatch(gLinkAdultMirrorShieldSwordAndSheathNearDL, gCustomMirrorShieldOnBackDL, "customMirrorShieldSword1", "customMirrorShieldSword2", "customMirrorShieldSword3", gCustomMasterSwordInSheathDL);
     }
     if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS) {
-        PatchOrUnpatch(gLinkChildSheathNearDL, gLinkLongswordSheathDL, "customKokiriSheath1", "customKokiriSheath2", NULL, NULL);
-        PatchOrUnpatch(gLinkChildSwordAndSheathNearDL, gLinkLongswordInSheathDL, "customKokiriSwordSheath1", "customKokiriSwordSheath2", NULL, NULL);
-        PatchOrUnpatch(gLinkChildDekuShieldSwordAndSheathNearDL, gLinkLongswordInSheathDL, "customDekuShieldSword1", "customDekuShieldSword2", "customDekuShieldSword3", gLinkDekuShieldOnBackDL);
+        PatchOrUnpatch(gLinkChildSheathNearDL, gCustomLongswordSheathDL, "customKokiriSheath1", "customKokiriSheath2", NULL, NULL);
+        PatchOrUnpatch(gLinkChildSwordAndSheathNearDL, gCustomLongswordInSheathDL, "customKokiriSwordSheath1", "customKokiriSwordSheath2", NULL, NULL);
+        PatchOrUnpatch(gLinkChildDekuShieldSwordAndSheathNearDL, gCustomLongswordInSheathDL, "customDekuShieldSword1", "customDekuShieldSword2", "customDekuShieldSword3", gCustomDekuShieldOnBackDL);
         
         if (gPlayState != nullptr && GET_PLAYER(gPlayState)->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
-            PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gLinkDekuShieldOnBackDL, "customDekuShieldBack1", "customDekuShieldBack2", "customDekuShieldBack2", gLinkLongswordSheathDL);
+            PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomDekuShieldOnBackDL, "customDekuShieldBack1", "customDekuShieldBack2", "customDekuShieldBack2", gCustomLongswordSheathDL);
         } else {
-            PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gLinkDekuShieldOnBackDL, "customDekuShieldBack1", "customDekuShieldBack2", "customDekuShieldBack2", gLinkLongswordInSheathDL);
+            PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomDekuShieldOnBackDL, "customDekuShieldBack1", "customDekuShieldBack2", "customDekuShieldBack2", gCustomLongswordInSheathDL);
         }
-        PatchOrUnpatch(gLinkChildDekuShieldAndSheathNearDL, gLinkLongswordSheathDL, "customDekuShieldSheath1", "customDekuShieldSheath2", "customDekuShieldSheath3", gLinkDekuShieldOnBackDL);
-        PatchOrUnpatch(gLinkChildHylianShieldSwordAndSheathNearDL, gLinkLongswordInSheathDL, "customChildHylianShieldSword1", "customChildHylianShieldSword2", "customChildHylianShieldSword3", gLinkHylianShieldOnChildBackDL);
-        PatchOrUnpatch(gLinkChildHylianShieldAndSheathNearDL, gLinkLongswordSheathDL, "customChildHylianShieldSheath1", "customChildHylianShieldSheath2", "customChildHylianShieldSheath3", gLinkHylianShieldOnChildBackDL);
-        PatchOrUnpatch(gLinkAdultSheathNearDL, gLinkLongswordSheathDL, "customSheath1", "customSheath2", NULL, NULL);
-        PatchOrUnpatch(gLinkAdultHylianShieldSwordAndSheathNearDL, gLinkHylianShieldOnBackDL, "customHylianShieldSword1", "customHylianShieldSword2", "customHylianShieldSword3", gLinkLongswordInSheathDL);
-        PatchOrUnpatch(gLinkAdultMasterSwordAndSheathNearDL, gLinkLongswordInSheathDL, "customMasterSwordSheath1", "customMasterSwordSheath2", NULL, NULL);
-        PatchOrUnpatch(gLinkAdultHylianShieldAndSheathNearDL, gLinkLongswordSheathDL, "customHylianShieldSheath1", "customHylianShieldSheath2", "customHylianShieldSheath3", gLinkHylianShieldOnBackDL);
-        PatchOrUnpatch(gLinkAdultMirrorShieldSwordAndSheathNearDL, gLinkMirrorShieldOnBackDL, "customMirrorShieldSword1", "customMirrorShieldSword2", "customMirrorShieldSword3", gLinkLongswordInSheathDL);
-        PatchOrUnpatch(gLinkAdultMirrorShieldAndSheathNearDL, gLinkLongswordSheathDL, "customMirrorShieldSheath1", "customMirrorShieldSheath2", "customMirrorShieldSheath3", gLinkMirrorShieldOnBackDL);
+        PatchOrUnpatch(gLinkChildDekuShieldAndSheathNearDL, gCustomLongswordSheathDL, "customDekuShieldSheath1", "customDekuShieldSheath2", "customDekuShieldSheath3", gCustomDekuShieldOnBackDL);
+        PatchOrUnpatch(gLinkChildHylianShieldSwordAndSheathNearDL, gCustomLongswordInSheathDL, "customChildHylianShieldSword1", "customChildHylianShieldSword2", "customChildHylianShieldSword3", gCustomHylianShieldOnChildBackDL);
+        PatchOrUnpatch(gLinkChildHylianShieldAndSheathNearDL, gCustomLongswordSheathDL, "customChildHylianShieldSheath1", "customChildHylianShieldSheath2", "customChildHylianShieldSheath3", gCustomHylianShieldOnChildBackDL);
+        PatchOrUnpatch(gLinkAdultSheathNearDL, gCustomLongswordSheathDL, "customSheath1", "customSheath2", NULL, NULL);
+        PatchOrUnpatch(gLinkAdultHylianShieldSwordAndSheathNearDL, gCustomHylianShieldOnBackDL, "customHylianShieldSword1", "customHylianShieldSword2", "customHylianShieldSword3", gCustomLongswordInSheathDL);
+        PatchOrUnpatch(gLinkAdultMasterSwordAndSheathNearDL, gCustomLongswordInSheathDL, "customMasterSwordSheath1", "customMasterSwordSheath2", NULL, NULL);
+        PatchOrUnpatch(gLinkAdultHylianShieldAndSheathNearDL, gCustomLongswordSheathDL, "customHylianShieldSheath1", "customHylianShieldSheath2", "customHylianShieldSheath3", gCustomHylianShieldOnBackDL);
+        PatchOrUnpatch(gLinkAdultMirrorShieldSwordAndSheathNearDL, gCustomMirrorShieldOnBackDL, "customMirrorShieldSword1", "customMirrorShieldSword2", "customMirrorShieldSword3", gCustomLongswordInSheathDL);
+        PatchOrUnpatch(gLinkAdultMirrorShieldAndSheathNearDL, gCustomLongswordSheathDL, "customMirrorShieldSheath1", "customMirrorShieldSheath2", "customMirrorShieldSheath3", gCustomMirrorShieldOnBackDL);
     }
-    PatchOrUnpatch(gLinkAdultLeftHandHoldingMasterSwordNearDL, gLinkMasterSwordDL, "customMasterSword1", "customMasterSword2", "customMasterSword3", gLinkAdultLeftHandClosedNearDL);
-    PatchOrUnpatch(gLinkAdultRightHandHoldingHylianShieldNearDL, gLinkHylianShieldDL, "customHylianShield1", "customHylianShield2", "customHylianShield3", gLinkAdultRightHandClosedNearDL);
-    PatchOrUnpatch(gLinkAdultRightHandHoldingMirrorShieldNearDL, gLinkMirrorShieldDL, "customMirrorShield1", "customMirrorShield2", "customMirrorShield3", gLinkAdultRightHandClosedNearDL);
-    PatchOrUnpatch(gLinkAdultLeftHandHoldingBgsNearDL, gLinkLongswordDL, "customBGS1", "customBGS2", "customBGS3", gLinkAdultLeftHandClosedNearDL);
-    PatchOrUnpatch(gLinkChildLeftFistAndKokiriSwordNearDL, gLinkKokiriSwordDL, "customKokiriSword1", "customKokiriSword2", "customKokiriSword3", gLinkChildLeftFistNearDL);
-    PatchOrUnpatch(gLinkChildRightFistAndDekuShieldNearDL, gLinkDekuShieldDL, "customDekuShield1", "customDekuShield2", "customDekuShield3", gLinkChildRightHandClosedNearDL);
-    PatchOrUnpatch(gLinkAdultRightHandHoldingHookshotNearDL, gLinkHookshotDL, "customHookshot1", "customHookshot2", "customHookshot3", gLinkAdultRightHandClosedNearDL);
-    PatchOrUnpatch(gLinkAdultRightHandHoldingHookshotFarDL, gLinkHookshotDL, "customHookshotFPS1", "customHookshotFPS2", "customHookshotFPS3", gLinkAdultFPSHandDL);// add chain and tip back
-    PatchOrUnpatch(gLinkAdultHookshotTipDL, gLinkHookshotTipDL, "customHookshotTip1", "customHookshotTip2", NULL, NULL);
-    PatchOrUnpatch(gLinkAdultHookshotChainDL, gLinkHookshotChainDL, "customHookshotChain1", "customHookshotChain2", NULL, NULL);
+    PatchOrUnpatch(gLinkAdultLeftHandHoldingMasterSwordNearDL, gCustomMasterSwordDL, "customMasterSword1", "customMasterSword2", "customMasterSword3", gLinkAdultLeftHandClosedNearDL);
+    PatchOrUnpatch(gLinkAdultRightHandHoldingHylianShieldNearDL, gCustomHylianShieldDL, "customHylianShield1", "customHylianShield2", "customHylianShield3", gLinkAdultRightHandClosedNearDL);
+    PatchOrUnpatch(gLinkAdultRightHandHoldingMirrorShieldNearDL, gCustomMirrorShieldDL, "customMirrorShield1", "customMirrorShield2", "customMirrorShield3", gLinkAdultRightHandClosedNearDL);
+    PatchOrUnpatch(gLinkAdultLeftHandHoldingBgsNearDL, gCustomLongswordDL, "customBGS1", "customBGS2", "customBGS3", gLinkAdultLeftHandClosedNearDL);
+    PatchOrUnpatch(gLinkAdultHandHoldingBrokenGiantsKnifeDL, gCustomBrokenLongswordDL, "customBrokenBGS1", "customBrokenBGS2", "customBrokenBGS3", gLinkAdultLeftHandClosedNearDL);
+    PatchOrUnpatch(gLinkChildLeftFistAndKokiriSwordNearDL, gCustomKokiriSwordDL, "customKokiriSword1", "customKokiriSword2", "customKokiriSword3", gLinkChildLeftFistNearDL);
+    PatchOrUnpatch(gLinkChildRightFistAndDekuShieldNearDL, gCustomDekuShieldDL, "customDekuShield1", "customDekuShield2", "customDekuShield3", gLinkChildRightHandClosedNearDL);
+    PatchOrUnpatch(gLinkAdultRightHandHoldingHookshotNearDL, gCustomHookshotDL, "customHookshot1", "customHookshot2", "customHookshot3", gLinkAdultRightHandClosedNearDL);
+    PatchOrUnpatch(gLinkAdultRightHandHoldingHookshotFarDL, gCustomHookshotDL, "customHookshotFPS1", "customHookshotFPS2", "customHookshotFPS3", gCustomAdultFPSHandDL);// add chain and tip back
+    PatchOrUnpatch(gLinkAdultHookshotTipDL, gCustomHookshotTipDL, "customHookshotTip1", "customHookshotTip2", NULL, NULL);
+    PatchOrUnpatch(gLinkAdultHookshotChainDL, gCustomHookshotChainDL, "customHookshotChain1", "customHookshotChain2", NULL, NULL);
     if (INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY) {
-        PatchOrUnpatch(gLinkAdultRightHandHoldingOotNearDL, gLinkFairyOcarinaDL, "customOcarina1", "customOcarina2", "customOcarina3", gLinkAdultRightHandNearDL);
+        PatchOrUnpatch(gLinkAdultRightHandHoldingOotNearDL, gCustomFairyOcarinaDL, "customOcarina1", "customOcarina2", "customOcarina3", gLinkAdultRightHandNearDL);
     }
     if (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME) {
-        PatchOrUnpatch(gLinkAdultRightHandHoldingOotNearDL, gLinkOcarinaOfTimeDL, "customOcarina1", "customOcarina2", "customOcarina3", gLinkAdultRightHandNearDL);
+        PatchOrUnpatch(gLinkAdultRightHandHoldingOotNearDL, gCustomOcarinaOfTimeDL, "customOcarina1", "customOcarina2", "customOcarina3", gLinkAdultRightHandNearDL);
     }
-    PatchOrUnpatch(gLinkChildRightHandHoldingFairyOcarinaNearDL, gLinkFairyOcarinaDL, "customFairyOcarina1", "customFairyOcarina2", "customFairyOcarina3", gLinkChildRightHandNearDL);
-    PatchOrUnpatch(gLinkChildRightHandAndOotNearDL, gLinkOcarinaOfTimeDL, "customChildOcarina1", "customChildOcarina2", "customChildOcarina3", gLinkChildRightHandNearDL);
-    PatchOrUnpatch(gLinkAdultRightHandHoldingBowNearDL, gLinkBowDL, "customBow1", "customBow2", "customBow3", gLinkAdultRightHandClosedNearDL);
-    PatchOrUnpatch(gLinkAdultRightHandHoldingBowFirstPersonDL, gLinkBowDL, "customBowFPS1", "customBowFPS2", "customBowFPS3", gLinkAdultFPSHandDL);
-    PatchOrUnpatch(gLinkAdultLeftHandHoldingHammerNearDL, gLinkHammerDL, "customHammer1", "customHammer2", "customHammer3", gLinkAdultLeftHandClosedNearDL);
-    PatchOrUnpatch(gLinkChildLeftFistAndBoomerangNearDL, gLinkBoomerangDL, "customBoomerang1", "customBoomerang2", "customBoomerang3", gLinkChildLeftFistNearDL);
-    PatchOrUnpatch(gLinkChildRightHandHoldingSlingshotNearDL, gLinkSlingshotDL, "customSlingshot1", "customSlingshot2", "customSlingshot3", gLinkChildRightHandClosedNearDL);
-    PatchOrUnpatch(gLinkChildRightArmStretchedSlingshotDL, gLinkSlingshotDL, "customSlingshotFPS1", "customSlingshotFPS2", "customSlingshotFPS3", gLinkChildFPSHandDL);
+    PatchOrUnpatch(gLinkChildRightHandHoldingFairyOcarinaNearDL, gCustomFairyOcarinaDL, "customFairyOcarina1", "customFairyOcarina2", "customFairyOcarina3", gLinkChildRightHandNearDL);
+    PatchOrUnpatch(gLinkChildRightHandAndOotNearDL, gCustomOcarinaOfTimeDL, "customChildOcarina1", "customChildOcarina2", "customChildOcarina3", gLinkChildRightHandNearDL);
+    PatchOrUnpatch(gLinkAdultRightHandHoldingBowNearDL, gCustomBowDL, "customBow1", "customBow2", "customBow3", gLinkAdultRightHandClosedNearDL);
+    PatchOrUnpatch(gLinkAdultRightHandHoldingBowFirstPersonDL, gCustomBowDL, "customBowFPS1", "customBowFPS2", "customBowFPS3", gCustomAdultFPSHandDL);
+    PatchOrUnpatch(gLinkAdultLeftHandHoldingHammerNearDL, gCustomHammerDL, "customHammer1", "customHammer2", "customHammer3", gLinkAdultLeftHandClosedNearDL);
+    PatchOrUnpatch(gLinkChildLeftFistAndBoomerangNearDL, gCustomBoomerangDL, "customBoomerang1", "customBoomerang2", "customBoomerang3", gLinkChildLeftFistNearDL);
+    PatchOrUnpatch(gLinkChildRightHandHoldingSlingshotNearDL, gCustomSlingshotDL, "customSlingshot1", "customSlingshot2", "customSlingshot3", gLinkChildRightHandClosedNearDL);
+    PatchOrUnpatch(gLinkChildRightArmStretchedSlingshotDL, gCustomSlingshotDL, "customSlingshotFPS1", "customSlingshotFPS2", "customSlingshotFPS3", gCustomChildFPSHandDL);
     if (LINK_IS_CHILD && CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) {
-        PatchOrUnpatch(gLinkAdultFPSHandDL, gLinkChildFPSHandDL, "patchChildFPSHand1", "patchChildFPSHand2", NULL, NULL);
+        PatchOrUnpatch(gCustomAdultFPSHandDL, gCustomChildFPSHandDL, "patchChildFPSHand1", "patchChildFPSHand2", NULL, NULL);
     }
     if (LINK_IS_ADULT && CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) {
-        PatchOrUnpatch(gLinkChildFPSHandDL, gLinkAdultFPSHandDL, "patchAdultFPSHand1", "patchAdultFPSHand2", NULL, NULL);
+        PatchOrUnpatch(gCustomChildFPSHandDL, gCustomAdultFPSHandDL, "patchAdultFPSHand1", "patchAdultFPSHand2", NULL, NULL);
     }
 }
 
