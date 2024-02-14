@@ -1279,6 +1279,16 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
         }
     }
 
+    if (CVarGetInteger("gEnhancements.CustomEquipDlists", 0) && CVarGetInteger("gEnhancements.ScaleAdultEquimentAsChild", 0) && LINK_IS_CHILD) {
+        if (limbIndex == PLAYER_LIMB_SHEATH) {
+            if ((this->currentShield == PLAYER_SHIELD_DEKU && gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI &&
+                 (this->sheathType == PLAYER_MODELTYPE_SHEATH_18 || this->sheathType == PLAYER_MODELTYPE_SHEATH_19))) {
+                // Matrix_Translate(218, -100, 62, MTXMODE_APPLY);
+                Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
+            }
+        }
+    }
+
     if (limbIndex == PLAYER_LIMB_ROOT) {
         sLeftHandType = this->leftHandType;
         sRightHandType = this->rightHandType;

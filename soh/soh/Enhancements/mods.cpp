@@ -39,6 +39,7 @@ void ResourceMgr_PatchCustomGfxByName(const char* path, const char* patchName, i
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 uint8_t ResourceGetIsCustomByName(const char* name);
 uint8_t Player_IsCustomLinkModel();
+uint8_t ResourceMgr_FileExists(const char* resName);
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
@@ -766,7 +767,7 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
         return;
 
     if (ResourceGetIsCustomByName(gfx) && CVarGetInteger("gEnhancements.CustomEquipDlists", 0)) {
-        if (alternateDL == NULL || ResourceGetIsCustomByName(alternateDL)) {
+        if (alternateDL == NULL || ResourceGetIsCustomByName(alternateDL) || ResourceMgr_FileExists(alternateDL)) {
             ResourceMgr_PatchCustomGfxByName(resource, dlist1, 0, gsSPDisplayListOTRFilePath(gfx));
             if (dlist3 == NULL) {
                 ResourceMgr_PatchCustomGfxByName(resource, dlist2, 1, gsSPEndDisplayList());
@@ -803,7 +804,7 @@ void UpdatePatchCustomEquipmentDlists() {
         PatchOrUnpatch(gLinkChildSheathNearDL, gCustomMasterSwordSheathDL, "customKokiriSheath1", "customKokiriSheath2", NULL, NULL);
         PatchOrUnpatch(gLinkChildSwordAndSheathNearDL, gCustomMasterSwordInSheathDL, "customKokiriSwordSheath1", "customKokiriSwordSheath2", NULL, NULL);
         PatchOrUnpatch(gLinkChildDekuShieldSwordAndSheathNearDL, gCustomMasterSwordInSheathDL, "customDekuShieldSword1", "customDekuShieldSword2", "customDekuShieldSword3", gCustomDekuShieldOnBackDL);
-        PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomDekuShieldOnBackDL, "customDekuShieldBack1", "customDekuShieldBack2", "customDekuShieldBack2", gCustomMasterSwordInSheathDL);
+        PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomDekuShieldOnBackScaledDL, "customDekuShieldBack1", "customDekuShieldBack2", "customDekuShieldBack2", gCustomMasterSwordInSheathDL);
         PatchOrUnpatch(gLinkChildDekuShieldAndSheathNearDL, gCustomMasterSwordSheathDL, "customDekuShieldSheath1", "customDekuShieldSheath2", "customDekuShieldSheath3", gCustomDekuShieldOnBackDL);
         PatchOrUnpatch(gLinkChildHylianShieldSwordAndSheathNearDL, gCustomMasterSwordInSheathDL, "customChildHylianShieldSword1", "customChildHylianShieldSword2", "customChildHylianShieldSword3", gCustomHylianShieldOnChildBackDL);
         PatchOrUnpatch(gLinkChildHylianShieldAndSheathNearDL, gCustomMasterSwordSheathDL, "customChildHylianShieldSheath1", "customChildHylianShieldSheath2", "customChildHylianShieldSheath3", gCustomHylianShieldOnChildBackDL);
@@ -819,9 +820,9 @@ void UpdatePatchCustomEquipmentDlists() {
         PatchOrUnpatch(gLinkChildDekuShieldSwordAndSheathNearDL, gCustomLongswordInSheathDL, "customDekuShieldSword1", "customDekuShieldSword2", "customDekuShieldSword3", gCustomDekuShieldOnBackDL);
         
         if (gPlayState != nullptr && GET_PLAYER(gPlayState)->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
-            PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomDekuShieldOnBackDL, "customDekuShieldBack1", "customDekuShieldBack2", "customDekuShieldBack2", gCustomLongswordSheathDL);
+            PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomDekuShieldOnBackScaledDL, "customDekuShieldBack1", "customDekuShieldBack2", "customDekuShieldBack2", gCustomLongswordSheathDL);
         } else {
-            PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomDekuShieldOnBackDL, "customDekuShieldBack1", "customDekuShieldBack2", "customDekuShieldBack2", gCustomLongswordInSheathDL);
+            PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomDekuShieldOnBackScaledDL, "customDekuShieldBack1", "customDekuShieldBack2", "customDekuShieldBack2", gCustomLongswordInSheathDL);
         }
         PatchOrUnpatch(gLinkChildDekuShieldAndSheathNearDL, gCustomLongswordSheathDL, "customDekuShieldSheath1", "customDekuShieldSheath2", "customDekuShieldSheath3", gCustomDekuShieldOnBackDL);
         PatchOrUnpatch(gLinkChildHylianShieldSwordAndSheathNearDL, gCustomLongswordInSheathDL, "customChildHylianShieldSword1", "customChildHylianShieldSword2", "customChildHylianShieldSword3", gCustomHylianShieldOnChildBackDL);
