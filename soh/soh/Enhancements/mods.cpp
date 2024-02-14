@@ -25,7 +25,7 @@
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
-#include "objects/object_custom/object_custom_equip.h"
+#include "objects/object_custom_equip/object_custom_equip.h"
 
 extern "C" {
 #include <z64.h>
@@ -840,8 +840,14 @@ void UpdatePatchCustomEquipmentDlists() {
     PatchOrUnpatch(gLinkAdultHandHoldingBrokenGiantsKnifeDL, gCustomBrokenLongswordDL, "customBrokenBGS1", "customBrokenBGS2", "customBrokenBGS3", gLinkAdultLeftHandClosedNearDL);
     PatchOrUnpatch(gLinkChildLeftFistAndKokiriSwordNearDL, gCustomKokiriSwordDL, "customKokiriSword1", "customKokiriSword2", "customKokiriSword3", gLinkChildLeftFistNearDL);
     PatchOrUnpatch(gLinkChildRightFistAndDekuShieldNearDL, gCustomDekuShieldDL, "customDekuShield1", "customDekuShield2", "customDekuShield3", gLinkChildRightHandClosedNearDL);
+    if (INV_CONTENT(ITEM_HOOKSHOT) == ITEM_HOOKSHOT) {
     PatchOrUnpatch(gLinkAdultRightHandHoldingHookshotNearDL, gCustomHookshotDL, "customHookshot1", "customHookshot2", "customHookshot3", gLinkAdultRightHandClosedNearDL);
-    PatchOrUnpatch(gLinkAdultRightHandHoldingHookshotFarDL, gCustomHookshotDL, "customHookshotFPS1", "customHookshotFPS2", "customHookshotFPS3", gCustomAdultFPSHandDL);// add chain and tip back
+    PatchOrUnpatch(gLinkAdultRightHandHoldingHookshotFarDL, gCustomHookshotDL, "customHookshotFPS1", "customHookshotFPS2", "customHookshotFPS3", gCustomAdultFPSHandDL);
+    }
+    if (INV_CONTENT(ITEM_LONGSHOT) == ITEM_LONGSHOT) {
+    PatchOrUnpatch(gLinkAdultRightHandHoldingHookshotNearDL, gCustomLongshotDL, "customHookshot1", "customHookshot2", "customHookshot3", gLinkAdultRightHandClosedNearDL);
+    PatchOrUnpatch(gLinkAdultRightHandHoldingHookshotFarDL, gCustomLongshotDL, "customHookshotFPS1", "customHookshotFPS2", "customHookshotFPS3", gCustomAdultFPSHandDL);
+    }
     PatchOrUnpatch(gLinkAdultHookshotTipDL, gCustomHookshotTipDL, "customHookshotTip1", "customHookshotTip2", NULL, NULL);
     PatchOrUnpatch(gLinkAdultHookshotChainDL, gCustomHookshotChainDL, "customHookshotChain1", "customHookshotChain2", NULL, NULL);
     if (INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY) {
@@ -870,11 +876,16 @@ void RegisterPatchCustomEquipmentDlistsHandler() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
         static uint16_t lastItemOnB = gSaveContext.equips.buttonItems[0];
         static uint16_t lastOcarinaContent = INV_CONTENT(ITEM_OCARINA_TIME);
+        static uint16_t lastHookshotContent = INV_CONTENT(ITEM_HOOKSHOT);
         static uint16_t lastSheathType = GET_PLAYER(gPlayState)->sheathType;
-        if (lastItemOnB != gSaveContext.equips.buttonItems[0] || lastOcarinaContent != INV_CONTENT(ITEM_OCARINA_TIME || GET_PLAYER(gPlayState)->sheathType != lastSheathType)) {
+        if (lastItemOnB != gSaveContext.equips.buttonItems[0] ||
+            lastOcarinaContent != INV_CONTENT(ITEM_OCARINA_TIME) ||
+            lastHookshotContent != INV_CONTENT(ITEM_HOOKSHOT) || 
+            GET_PLAYER(gPlayState)->sheathType != lastSheathType) {
             UpdatePatchCustomEquipmentDlists();
             lastItemOnB = gSaveContext.equips.buttonItems[0];
             lastOcarinaContent = INV_CONTENT(ITEM_OCARINA_TIME);
+            lastHookshotContent = INV_CONTENT(ITEM_HOOKSHOT);
             lastSheathType = GET_PLAYER(gPlayState)->sheathType;
         }
     });
