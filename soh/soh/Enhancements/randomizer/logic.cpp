@@ -230,6 +230,26 @@ namespace Rando {
         return false;
     }
 
+    bool Logic::CanKillEnemy(std::string enemy) {
+        //switch(enemy) {} RANDOTODO implement enemies enum
+        if (enemy == "Big Skulltulla"){
+            return CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) || CanJumpslash || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_HOOKSHOT) || CanUse(RG_DINS_FIRE) || HasExplosives;
+        }
+        //Shouldn't be reached
+        return false;
+    }
+
+    bool Logic::CanPassEnemy(std::string enemy) {
+        //switch(enemy) {} RANDOTODO implement enemies enum
+        if (CanKillEnemy(enemy)){
+            return true;
+        }
+        if (enemy == "Big Skulltulla"){
+            return Nuts || CanUse(RG_BOOMERANG);
+        }
+        return false;
+    }
+
     Logic::Logic() {
         
     }
