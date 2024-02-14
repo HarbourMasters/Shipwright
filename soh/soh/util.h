@@ -1,8 +1,11 @@
 #pragma once
 #include <string>
 #include <stdint.h>
+#include <vector>
 
 namespace SohUtils {
+    extern std::vector<std::string> itemNames;
+
     const std::string& GetSceneName(int32_t scene);
 
     const std::string& GetItemName(int32_t item);

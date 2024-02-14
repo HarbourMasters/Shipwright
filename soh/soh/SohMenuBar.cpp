@@ -34,6 +34,8 @@
 #include "Enhancements/randomizer/randomizer_settings_window.h"
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
 
+#include "Enhancements/timesplits/TimeSplits.h"
+
 extern bool ToggleAltAssetsAtEndOfFrame;
 extern bool isBetaQuestEnabled;
 
@@ -533,6 +535,7 @@ void DrawSettingsMenu() {
 extern std::shared_ptr<AudioEditor> mAudioEditorWindow;
 extern std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
 extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
+extern std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
 
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
@@ -1369,6 +1372,12 @@ void DrawEnhancementsMenu() {
         if (mGameplayStatsWindow) {
             if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mGameplayStatsWindow->ToggleVisibility();
+            }
+        }
+
+        if (mTimeSplitWindow) {
+            if (ImGui::Button(GetWindowButtonText("Time Splits", CVarGetInteger("gTimeSplitEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mTimeSplitWindow->ToggleVisibility();
             }
         }
         ImGui::PopStyleVar(3);

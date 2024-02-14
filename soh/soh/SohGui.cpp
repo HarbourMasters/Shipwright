@@ -108,7 +108,7 @@ namespace SohGui {
 
 
     // MARK: - Delegates
-
+    
     std::shared_ptr<SohMenuBar> mSohMenuBar;
 
     std::shared_ptr<LUS::GuiWindow> mConsoleWindow;
@@ -129,6 +129,8 @@ namespace SohGui {
     std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
     std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
     std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
+
+    std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
 
     std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
 
@@ -191,6 +193,9 @@ namespace SohGui {
         gui->AddGuiWindow(mRandomizerSettingsWindow);
         mAdvancedResolutionSettingsWindow = std::make_shared<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow>("gAdvancedResolutionEditorEnabled", "Advanced Resolution Settings");
         gui->AddGuiWindow(mAdvancedResolutionSettingsWindow);
+
+        mTimeSplitWindow = std::make_shared<TimeSplitWindow>("gTimeSplitEnabled", "Time Splits");
+        gui->AddGuiWindow(mTimeSplitWindow);
     }
 
     void Destroy() {
@@ -213,5 +218,6 @@ namespace SohGui {
         mStatsWindow = nullptr;
         mConsoleWindow = nullptr;
         mSohMenuBar = nullptr;
+        mTimeSplitWindow = nullptr;
     }
 }
