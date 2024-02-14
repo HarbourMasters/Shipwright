@@ -7,6 +7,3 @@
 [submodule "OTRExporter"]
 	path = OTRExporter
 	url = https://github.com/harbourmasters/OTRExporter
-[submodule "APCpp"]
-	path = APCpp
-	url = https://github.com/N00byKing/APCpp

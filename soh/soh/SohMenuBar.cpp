@@ -14,6 +14,7 @@
 #include "soh/Enhancements/presets.h"
 #include "soh/Enhancements/mods.h"
 #include "Enhancements/cosmetics/authenticGfxPatches.h"
+#include "Enhancements/archipelago/OoTAP.h"
 #ifdef ENABLE_REMOTE_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
 #include "Enhancements/game-interactor/GameInteractor_Sail.h"
@@ -1925,6 +1926,75 @@ void DrawRandomizerMenu() {
     }
 }
 
+void DrawArchipelagoMenu() {
+    if (ImGui::BeginMenu("Archipelago")) {
+        static std::string ip = CVarGetString("gArchipelago.IP", "archipelago.gg");
+        static std::string slotName = CVarGetString("gArchipelago.SlotName", "Username");
+        static std::string password = CVarGetString("gArchipelago.Password", "");
+        static uint16_t port = CVarGetInteger("gArchipelago.Port", 0);
+        bool isFormValid = !isStringEmpty(CVarGetString("gArchipelago.IP", "archipelago.gg")) && port > 1024 && port < 65535;
+
+        ImGui::Text("Remote IP & Port");
+        if (ImGui::InputText("##gArchipelago.IP", (char*)ip.c_str(), ip.capacity() + 1)) {
+            CVarSetString("gArchipelago.IP", ip.c_str());
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        }
+
+        ImGui::SameLine();
+        ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
+        if (ImGui::InputScalar("##gArchipelago.Port", ImGuiDataType_U16, &port)) {
+            CVarSetInteger("gArchipelago.Port", port);
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        }
+
+        ImGui::PopItemWidth();
+
+        ImGui::Spacing();
+
+        ImGui::Text("Password");
+        if (ImGui::InputText("##gArchipelago.SlotName", (char*)slotName.c_str(), slotName.capacity() + 1)) {
+            CVarSetString("gArchipelago.SlotName", slotName.c_str());
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        }
+
+        ImGui::Text("Slot Name");
+        if (ImGui::InputText("##gArchipelago.Password", (char*)password.c_str(), password.capacity() + 1)) {
+            CVarSetString("gArchipelago.Password", password.c_str());
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        }
+
+        ImGui::Spacing();
+
+        ImGui::BeginDisabled(!isFormValid);
+        const char* buttonLabel = "Connect";
+        const char* buttonLabel = Archipelago::Instance->isEnabled ? "Disconnect" : "Connect";
+        if (ImGui::Button(buttonLabel, ImVec2(-1.0f, 0.0f))) {
+            if (Archipelago::Instance->isEnabled) {
+                CVarSetInteger("gArchipelago.Enabled", 0);
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Archipelago::Instance->Disable();
+            } else {
+                CVarSetInteger("gArchipelago.Enabled", 1);
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                Archipelago::Instance->Enable(ip.c_str(), port, slotName.c_str(), password.c_str());
+            }
+        }
+        ImGui::EndDisabled();
+
+        if (Archipelago::Instance->isEnabled) {
+            ImGui::Spacing();
+            if (Archipelago::Instance->isConnected) {
+                ImGui::Text("Connected");
+            } else {
+                ImGui::Text("Connecting...");
+            }
+        }
+
+        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+        ImGui::EndMenu();
+    }
+}
+
 void SohMenuBar::DrawElement() {
     if (ImGui::BeginMenuBar()) {
         DrawMenuBarIcon();
@@ -1950,6 +2020,10 @@ void SohMenuBar::DrawElement() {
         ImGui::SetCursorPosY(0.0f);
 
         DrawDeveloperToolsMenu();
+
+        ImGui::SetCursorPosY(0.0f);
+
+        DrawArchipelagoMenu();
 
         ImGui::SetCursorPosY(0.0f);
 

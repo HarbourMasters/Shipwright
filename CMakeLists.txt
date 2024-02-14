@@ -9,6 +9,9 @@ project(Ship VERSION 0.4.4 LANGUAGES C CXX)
 set(PROJECT_BUILD_NAME "Archipelago" CACHE STRING "")
 set(PROJECT_TEAM "github.com/harbourmasters & CharlesDev" CACHE STRING "")
 
+set(ENABLE_TESTING OFF CACHE STRING "" FORCE)
+set(ENABLE_PROGRAMS OFF CACHE STRING "" FORCE)
+
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/utf-8>)
@@ -87,6 +90,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship)
 add_subdirectory(ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
+add_subdirectory(APCpp ${CMAKE_BINARY_DIR}/APCpp)
 add_subdirectory(OTRExporter)
 add_subdirectory(soh)
 
