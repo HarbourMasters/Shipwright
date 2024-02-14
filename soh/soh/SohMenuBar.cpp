@@ -1114,7 +1114,9 @@ void DrawEnhancementsMenu() {
             }
             UIWidgets::Tooltip("Makes all equipment visible, regardless of Age.");
             if (CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0) == 1) {
-				UIWidgets::PaddedEnhancementCheckbox("Scale Adult Equipment as Child", "gEnhancements.ScaleAdultEquimentAsChild", true, false);
+                if (UIWidgets::PaddedEnhancementCheckbox("Scale Adult Equipment as Child", "gEnhancements.ScaleAdultEquimentAsChild", true, false)) {
+                    UpdatePatchCustomEquipmentDlists();
+                }
 				UIWidgets::Tooltip("Scales all of the Adult Equipment, as well and moving some a bit, to fit on Child Link Better. May not work properly with some mods.");
 			}
             UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gLowResMode", true, false);

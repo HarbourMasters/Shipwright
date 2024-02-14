@@ -31,6 +31,12 @@ static const ALIGN_ASSET(2) char gCustomFairyOcarinaDL[] = dgCustomFairyOcarinaD
 #define dgCustomOcarinaOfTimeDL "__OTR__objects/object_custom_equip/gCustomOcarinaOfTimeDL"
 static const ALIGN_ASSET(2) char gCustomOcarinaOfTimeDL[] = dgCustomOcarinaOfTimeDL;
 
+#define dgCustomFairyOcarinaAdultDL "__OTR__objects/object_custom_equip/gCustomFairyOcarinaAdultDL"
+static const ALIGN_ASSET(2) char gCustomFairyOcarinaAdultDL[] = dgCustomFairyOcarinaAdultDL;
+
+#define dgCustomOcarinaOfTimeAdultDL "__OTR__objects/object_custom_equip/gCustomOcarinaOfTimeAdultDL"
+static const ALIGN_ASSET(2) char gCustomOcarinaOfTimeAdultDL[] = dgCustomOcarinaOfTimeAdultDL;
+
 #define dgCustomBoomerangDL "__OTR__objects/object_custom_equip/gCustomBoomerangDL"
 static const ALIGN_ASSET(2) char gCustomBoomerangDL[] = dgCustomBoomerangDL;
 
