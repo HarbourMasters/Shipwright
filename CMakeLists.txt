@@ -90,7 +90,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship)
 add_subdirectory(ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
-add_subdirectory(APCpp ${CMAKE_BINARY_DIR}/APCpp)
 add_subdirectory(OTRExporter)
 add_subdirectory(soh)
 
