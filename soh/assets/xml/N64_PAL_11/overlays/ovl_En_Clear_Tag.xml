@@ -1,5 +1,19 @@
 <Root>
     <File Name="ovl_En_Clear_Tag" BaseAddress="0x80A939A0" RangeStart="0x2600" RangeEnd="0x89F0">
+        <Texture Name="ovl_En_Clear_TagTex_003308" OutName="ovl_En_Clear_TagTex_003308" Format="rgba16" Width="8" Height="8" Offset="0x3218" AddedByScript="true"/>
+        <Texture Name="ovl_En_Clear_TagTex_003388" OutName="ovl_En_Clear_TagTex_003388" Format="rgba16" Width="32" Height="32" Offset="0x3298" AddedByScript="true"/>
+        <Texture Name="ovl_En_Clear_TagTex_003B88" OutName="ovl_En_Clear_TagTex_003B88" Format="rgba16" Width="64" Height="32" Offset="0x3A98" AddedByScript="true"/>
+        <Texture Name="ovl_En_Clear_TagTex_004B88" OutName="ovl_En_Clear_TagTex_004B88" Format="rgba16" Width="32" Height="32" Offset="0x4A98" AddedByScript="true"/>
+        <Texture Name="ovl_En_Clear_TagTex_005388" OutName="ovl_En_Clear_TagTex_005388" Format="rgba16" Width="32" Height="32" Offset="0x5298" AddedByScript="true"/>
+        <Texture Name="ovl_En_Clear_TagTex_005B88" OutName="ovl_En_Clear_TagTex_005B88" Format="rgba16" Width="32" Height="32" Offset="0x5A98" AddedByScript="true"/>
+        <Texture Name="ovl_En_Clear_TagTex_006458" OutName="ovl_En_Clear_TagTex_006458" Format="rgba16" Width="16" Height="16" Offset="0x6368" AddedByScript="true"/>
+        <Texture Name="ovl_En_Clear_TagTex_006708" OutName="ovl_En_Clear_TagTex_006708" Format="i8" Width="16" Height="16" Offset="0x6618" AddedByScript="true"/>
+        <Texture Name="ovl_En_Clear_TagTex_006808" OutName="ovl_En_Clear_TagTex_006808" Format="rgba16" Width="16" Height="16" Offset="0x6718" AddedByScript="true"/>
+        <Texture Name="ovl_En_Clear_TagTex_006AD0" OutName="ovl_En_Clear_TagTex_006AD0" Format="i4" Width="32" Height="64" Offset="0x69E0" AddedByScript="true"/>
+        <Texture Name="ovl_En_Clear_TagTex_006ED0" OutName="ovl_En_Clear_TagTex_006ED0" Format="i4" Width="32" Height="32" Offset="0x6DE0" AddedByScript="true"/>
+        <Texture Name="ovl_En_Clear_TagTex_0071C8" OutName="ovl_En_Clear_TagTex_0071C8" Format="i8" Width="64" Height="64" Offset="0x70D8" AddedByScript="true"/>
+        <Texture Name="ovl_En_Clear_TagTex_008288" OutName="ovl_En_Clear_TagTex_008288" Format="i4" Width="32" Height="32" Offset="0x8198" AddedByScript="true"/>
+        <Texture Name="ovl_En_Clear_TagTex_008540" OutName="ovl_En_Clear_TagTex_008540" Format="i8" Width="32" Height="32" Offset="0x8450" AddedByScript="true"/>
         <DList Name="gArwingDL" Offset="0x2600"/>
         <DList Name="gArwingLaserDL" Offset="0x6298"/>
         <DList Name="gArwingBackfireDL" Offset="0x6598"/>

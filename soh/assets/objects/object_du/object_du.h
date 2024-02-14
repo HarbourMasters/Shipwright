@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_DU_H
+#define OBJECTS_OBJECT_DU_H 1
 
 #include "align_asset_macro.h"
 
@@ -181,3 +182,6 @@ static const ALIGN_ASSET(2) char gDaruniaSkelLimbsLimb_011C4CDL_00D1D0[] = dgDar
 
 #define dgDaruniaSkelLimbsLimb_011C58DL_00D810 "__OTR__objects/object_du/gDaruniaSkelLimbsLimb_011C58DL_00D810"
 static const ALIGN_ASSET(2) char gDaruniaSkelLimbsLimb_011C58DL_00D810[] = dgDaruniaSkelLimbsLimb_011C58DL_00D810;
+
+
+#endif // OBJECTS_OBJECT_DU_H

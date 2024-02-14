@@ -7,6 +7,7 @@
 #include "z_en_dodojr.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/object_dodojr/object_dodojr.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
@@ -185,7 +186,7 @@ void func_809F6A20(EnDodojr* this) {
         this->unk_1FC = 3;
         this->actor.velocity.y = 10.0f;
     }
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DODONGO_BABY]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void func_809F6AC4(EnDodojr* this) {
@@ -647,7 +648,8 @@ void EnDodojr_Draw(Actor* thisx, PlayState* play) {
 
     if ((this->actionFunc != func_809F73AC) && (this->actionFunc != func_809F7BE4)) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, func_809F7D50, func_809F7DFC,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, func_809F7D50,
+                                  func_809F7DFC,
                           &this->actor);
     }
 }

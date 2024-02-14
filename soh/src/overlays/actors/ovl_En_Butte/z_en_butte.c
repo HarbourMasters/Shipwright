@@ -272,7 +272,7 @@ void EnButte_FlyAround(EnButte* this, PlayState* play) {
         EnButte_SelectFlightParams(this, &sFlyAroundParams[this->flightParamsIdx]);
     }
 
-    if (((this->actor.params & 1) == 1) && (player->heldItemAction == PLAYER_IA_STICK) &&
+    if (((this->actor.params & 1) == 1) && (player->heldItemAction == PLAYER_IA_DEKU_STICK) &&
         (this->swordDownTimer <= 0) &&
         ((Math3D_Dist2DSq(player->actor.world.pos.x, player->actor.world.pos.z, this->actor.home.pos.x,
                           this->actor.home.pos.z) < SQ(120.0f)) ||
@@ -338,7 +338,7 @@ void EnButte_FollowLink(EnButte* this, PlayState* play) {
 
     distSqFromHome = Math3D_Dist2DSq(this->actor.world.pos.x, this->actor.world.pos.z, this->actor.home.pos.x,
                                      this->actor.home.pos.z);
-    if (!((player->heldItemAction == PLAYER_IA_STICK) && (fabsf(player->actor.speedXZ) < 1.8f) &&
+    if (!((player->heldItemAction == PLAYER_IA_DEKU_STICK) && (fabsf(player->actor.speedXZ) < 1.8f) &&
           (this->swordDownTimer <= 0) && (distSqFromHome < SQ(320.0f)))) {
         EnButte_SetupFlyAround(this);
     } else if (distSqFromHome > SQ(240.0f)) {
@@ -401,7 +401,7 @@ void EnButte_Update(Actor* thisx, PlayState* play) {
     this->unk_260 += 0x600;
 
     if ((this->actor.params & 1) == 1) {
-        if (GET_PLAYER(play)->swordState == 0) {
+        if (GET_PLAYER(play)->meleeWeaponState == 0) {
             if (this->swordDownTimer > 0) {
                 this->swordDownTimer--;
             }
@@ -427,7 +427,7 @@ void EnButte_Draw(Actor* thisx, PlayState* play) {
 
     if (this->drawSkelAnime) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL, NULL);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, NULL);
         Collider_UpdateSpheres(0, &this->collider);
     }
 

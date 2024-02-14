@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GS_H
+#define OBJECTS_OBJECT_GS_H 1
 
 #include "align_asset_macro.h"
 
@@ -13,3 +14,5 @@ static const ALIGN_ASSET(2) char gGossipStoneDL[] = dgGossipStoneDL;
 
 #define dgGossipStoneSquishedDL "__OTR__objects/object_gs/gGossipStoneSquishedDL"
 static const ALIGN_ASSET(2) char gGossipStoneSquishedDL[] = dgGossipStoneSquishedDL;
+
+#endif // OBJECTS_OBJECT_GS_H

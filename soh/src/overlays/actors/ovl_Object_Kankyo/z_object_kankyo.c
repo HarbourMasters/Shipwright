@@ -136,7 +136,7 @@ void ObjectKankyo_Init(Actor* thisx, PlayState* play) {
                 this->effects[5].size = 0.0f;
             }
 
-            if (gSaveContext.n64ddFlag) {
+            if (IS_RANDO) {
                 if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_FOREST_TRIAL)) {
                     this->effects[0].size = 0.0f;
                 }
@@ -158,22 +158,22 @@ void ObjectKankyo_Init(Actor* thisx, PlayState* play) {
             }
 
             if (gSaveContext.cutsceneTrigger != 0) {
-                if (gSaveContext.entranceIndex == 0x0538) {
+                if (gSaveContext.entranceIndex == ENTR_INSIDE_GANONS_CASTLE_2) {
                     this->effects[0].size = 0.1f;
                 }
-                if (gSaveContext.entranceIndex == 0x053C) {
+                if (gSaveContext.entranceIndex == ENTR_INSIDE_GANONS_CASTLE_3) {
                     this->effects[1].size = 0.1f;
                 }
-                if (gSaveContext.entranceIndex == 0x0540) {
+                if (gSaveContext.entranceIndex == ENTR_INSIDE_GANONS_CASTLE_4) {
                     this->effects[2].size = 0.1f;
                 }
-                if (gSaveContext.entranceIndex == 0x0544) {
+                if (gSaveContext.entranceIndex == ENTR_INSIDE_GANONS_CASTLE_5) {
                     this->effects[3].size = 0.1f;
                 }
-                if (gSaveContext.entranceIndex == 0x0548) {
+                if (gSaveContext.entranceIndex == ENTR_INSIDE_GANONS_CASTLE_6) {
                     this->effects[4].size = 0.1f;
                 }
-                if (gSaveContext.entranceIndex == 0x054C) {
+                if (gSaveContext.entranceIndex == ENTR_INSIDE_GANONS_CASTLE_7) {
                     this->effects[5].size = 0.1f;
                 }
             }
@@ -214,7 +214,7 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, PlayState* play) {
 
     player = GET_PLAYER(play);
 
-    if (play->sceneNum == SCENE_SPOT04 && gSaveContext.sceneSetupIndex == 7) {
+    if (play->sceneNum == SCENE_KOKIRI_FOREST && gSaveContext.sceneSetupIndex == 7) {
         dist = Math3D_Vec3f_DistXYZ(&this->prevEyePos, &play->view.eye);
 
         this->prevEyePos.x = play->view.eye.x;
@@ -247,7 +247,7 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, PlayState* play) {
     }
 
     if (play->envCtx.unk_EE[3] < 64 &&
-        (gSaveContext.entranceIndex != 0x00EE || gSaveContext.sceneSetupIndex != 4 || play->envCtx.unk_EE[3])) {
+        (gSaveContext.entranceIndex != ENTR_KOKIRI_FOREST_0 || gSaveContext.sceneSetupIndex != 4 || play->envCtx.unk_EE[3])) {
         play->envCtx.unk_EE[3] += 16;
     }
 
@@ -523,8 +523,8 @@ void ObjectKankyo_DrawFairies(ObjectKankyo* this2, PlayState* play2) {
     if (!(play->cameraPtrs[0]->unk_14C & 0x100)) {
         OPEN_DISPS(play->state.gfxCtx);
         POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x14);
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gSunTex));
-        gSPDisplayList(POLY_XLU_DISP++, gKokiriDustMoteTextureLoadDL);
+        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gSun1Tex));
+        gSPDisplayList(POLY_XLU_DISP++, gKokiriDustMoteMaterialDL);
 
         for (i = 0; i < play->envCtx.unk_EE[3]; i++) {
             FrameInterpolation_RecordOpenChild(&this->effects[i], this->effects[i].epoch);
@@ -592,7 +592,7 @@ void ObjectKankyo_DrawFairies(ObjectKankyo* this2, PlayState* play2) {
             Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
             Matrix_RotateZ(DEG_TO_RAD(play->state.frames * 20.0f), MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD);
-            gSPDisplayList(POLY_XLU_DISP++, gKokiriDustMoteDL);
+            gSPDisplayList(POLY_XLU_DISP++, gKokiriDustMoteModelDL);
             FrameInterpolation_RecordCloseChild();
         }
         CLOSE_DISPS(play->state.gfxCtx);

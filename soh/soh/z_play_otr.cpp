@@ -29,11 +29,13 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
 
     //osSyncPrintf("\nSCENE SIZE %fK\n", (scene->sceneFile.vromEnd - scene->sceneFile.vromStart) / 1024.0f);
 
-    std::string sceneVersion;
-    if (IsGameMasterQuest()) {
-        sceneVersion = "mq";
-    } else {
-        sceneVersion = "nonmq";
+    // Scenes considered "dungeon" with a MQ variant
+    int16_t inNonSharedScene = (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_ICE_CAVERN) ||
+                               sceneNum == SCENE_GERUDO_TRAINING_GROUND || sceneNum == SCENE_INSIDE_GANONS_CASTLE;
+
+    std::string sceneVersion = "shared";
+    if (inNonSharedScene) {
+        sceneVersion = IsGameMasterQuest() ? "mq" : "nonmq";
     }
     std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName, scene->sceneFile.fileName);
 
@@ -76,7 +78,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     OTRScene_ExecuteCommands(play, (LUS::Scene*)play->sceneSegment);
     Play_InitEnvironment(play, play->skyboxId);
     // Unpause the timer for Boss Rush when the scene loaded isn't the Chamber of Sages.
-    if (gSaveContext.isBossRush && play->sceneNum != SCENE_KENJYANOMA) {
+    if (IS_BOSS_RUSH && play->sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
         gSaveContext.isBossRushPaused = 0;
     }
     /* auto data = static_cast<LUS::Vertex*>(LUS::Context::GetInstance()
@@ -87,6 +89,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     auto data2 = ResourceMgr_LoadVtxByCRC(0x68d4ea06044e228f);*/
     
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(play->sceneNum);
+    SPDLOG_INFO("Scene Init - sceneNum: {0:#x}, entranceIndex: {1:#x}", play->sceneNum, gSaveContext.entranceIndex);
 
     volatile int a = 0;
 }

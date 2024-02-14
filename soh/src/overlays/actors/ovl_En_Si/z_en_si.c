@@ -5,6 +5,10 @@
  */
 
 #include "z_en_si.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
+extern void func_8083C148(Player*, PlayState*);
+extern void func_80078884(uint16_t);
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOOKSHOT_DRAGS)
 
@@ -101,7 +105,7 @@ void func_80AFB768(EnSi* this, PlayState* play) {
             if (this->collider.base.ocFlags2 & OC2_HIT_PLAYER) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
 
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO) {
                     Randomizer_UpdateSkullReward(this, play);
                 } else {
                     Item_Give(play, giveItemId);
@@ -117,7 +121,7 @@ void func_80AFB768(EnSi* this, PlayState* play) {
 
                 Message_StartTextbox(play, textId, NULL);
 
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO) {
                     if (getItemId != RG_ICE_TRAP) {
                         Randomizer_GiveSkullReward(this, play);
                         Audio_PlayFanfare_Rando(getItem);
@@ -147,7 +151,7 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
     this->actor.shape.rot.y += 0x400;
 
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_HOOKSHOT_ATTACHED)) {
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             Randomizer_UpdateSkullReward(this, play);
         } else {
             Item_Give(play, giveItemId);
@@ -155,7 +159,7 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
 
         Message_StartTextbox(play, textId, NULL);
 
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             if (getItemId != RG_ICE_TRAP) {
                 Randomizer_GiveSkullReward(this, play);
                 Audio_PlayFanfare_Rando(getItem);
@@ -180,7 +184,14 @@ void func_80AFB950(EnSi* this, PlayState* play) {
         player->actor.freezeTimer = 10;
     } else {
         SET_GS_FLAGS((this->actor.params & 0x1F00) >> 8, this->actor.params & 0xFF);
+        GameInteractor_ExecuteOnFlagSet(FLAG_GS_TOKEN, this->actor.params);
         Actor_Kill(&this->actor);
+        if (gSaveContext.pendingIceTrapCount > 0 && player->heldItemId == 11) {
+            player->actor.freezeTimer = 0;
+            func_8083C148(GET_PLAYER(play), play);
+            func_80078884(NA_SE_SY_CAMERA_ZOOM_UP);
+            player->currentYaw = player->actor.shape.rot.y;
+        }
     }
 }
 
@@ -199,7 +210,7 @@ void EnSi_Draw(Actor* thisx, PlayState* play) {
     if (this->actionFunc != func_80AFB950) {
         func_8002ED80(&this->actor, play, 0);
         func_8002EBCC(&this->actor, play, 0);
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             GetItem_Draw(play, GID_SKULL_TOKEN_2);
         } else {
             getItem = Randomizer_GetItemFromActor(this->actor.id, play->sceneNum, this->actor.params, GI_SKULL_TOKEN);

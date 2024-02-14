@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SHOP_DUNGEN_H
+#define OBJECTS_OBJECT_SHOP_DUNGEN_H 1
 
 #include "align_asset_macro.h"
 
@@ -19,3 +20,5 @@ static const ALIGN_ASSET(2) char gShopDungenStoneShelvesDL[] = dgShopDungenStone
 
 #define dgShopDungenWoodPlankTex "__OTR__objects/object_shop_dungen/gShopDungenWoodPlankTex"
 static const ALIGN_ASSET(2) char gShopDungenWoodPlankTex[] = dgShopDungenWoodPlankTex;
+
+#endif // OBJECTS_OBJECT_SHOP_DUNGEN_H

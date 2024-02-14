@@ -1,6 +1,10 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_FW_H
+#define OBJECTS_OBJECT_FW_H 1
 
 #include "align_asset_macro.h"
+
+#define dobject_fwTex_007A90 "__OTR__objects/object_fw/object_fwTex_007A90"
+static const ALIGN_ASSET(2) char object_fwTex_007A90[] = dobject_fwTex_007A90;
 
 #define dgFlareDancerSkel "__OTR__objects/object_fw/gFlareDancerSkel"
 static const ALIGN_ASSET(2) char gFlareDancerSkel[] = dgFlareDancerSkel;
@@ -149,5 +153,5 @@ static const ALIGN_ASSET(2) char gFlareDancerCoreRunCycleAnim[] = dgFlareDancerC
 #define dgFlareDancerCoreEndRunCycleAnim "__OTR__objects/object_fw/gFlareDancerCoreEndRunCycleAnim"
 static const ALIGN_ASSET(2) char gFlareDancerCoreEndRunCycleAnim[] = dgFlareDancerCoreEndRunCycleAnim;
 
-#define dobject_fwTex_007A90 "__OTR__objects/object_fw/object_fwTex_007A90"
-static const ALIGN_ASSET(2) char object_fwTex_007A90[] = dobject_fwTex_007A90;
+
+#endif // OBJECTS_OBJECT_FW_H

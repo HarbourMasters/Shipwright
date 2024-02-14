@@ -1,6 +1,22 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_DNS_H
+#define OBJECTS_OBJECT_DNS_H 1
 
 #include "align_asset_macro.h"
+
+#define dobject_dnsTex_0024A0 "__OTR__objects/object_dns/object_dnsTex_0024A0"
+static const ALIGN_ASSET(2) char object_dnsTex_0024A0[] = dobject_dnsTex_0024A0;
+
+#define dobject_dnsTex_002CA0 "__OTR__objects/object_dns/object_dnsTex_002CA0"
+static const ALIGN_ASSET(2) char object_dnsTex_002CA0[] = dobject_dnsTex_002CA0;
+
+#define dobject_dnsTex_002F20 "__OTR__objects/object_dns/object_dnsTex_002F20"
+static const ALIGN_ASSET(2) char object_dnsTex_002F20[] = dobject_dnsTex_002F20;
+
+#define dobject_dnsTex_002FA0 "__OTR__objects/object_dns/object_dnsTex_002FA0"
+static const ALIGN_ASSET(2) char object_dnsTex_002FA0[] = dobject_dnsTex_002FA0;
+
+#define dobject_dnsTex_003120 "__OTR__objects/object_dns/object_dnsTex_003120"
+static const ALIGN_ASSET(2) char object_dnsTex_003120[] = dobject_dnsTex_003120;
 
 #define dgDntJijiSkel "__OTR__objects/object_dns/gDntJijiSkel"
 static const ALIGN_ASSET(2) char gDntJijiSkel[] = dgDntJijiSkel;
@@ -89,17 +105,5 @@ static const ALIGN_ASSET(2) char gDntJijiSkelLimbsLimb_003398DL_001A40[] = dgDnt
 #define dgDntJijiSkelLimbsLimb_0033A4DL_001990 "__OTR__objects/object_dns/gDntJijiSkelLimbsLimb_0033A4DL_001990"
 static const ALIGN_ASSET(2) char gDntJijiSkelLimbsLimb_0033A4DL_001990[] = dgDntJijiSkelLimbsLimb_0033A4DL_001990;
 
-#define dobject_dnsTex_0024A0 "__OTR__objects/object_dns/object_dnsTex_0024A0"
-static const ALIGN_ASSET(2) char object_dnsTex_0024A0[] = dobject_dnsTex_0024A0;
 
-#define dobject_dnsTex_003120 "__OTR__objects/object_dns/object_dnsTex_003120"
-static const ALIGN_ASSET(2) char object_dnsTex_003120[] = dobject_dnsTex_003120;
-
-#define dobject_dnsTex_002CA0 "__OTR__objects/object_dns/object_dnsTex_002CA0"
-static const ALIGN_ASSET(2) char object_dnsTex_002CA0[] = dobject_dnsTex_002CA0;
-
-#define dobject_dnsTex_002F20 "__OTR__objects/object_dns/object_dnsTex_002F20"
-static const ALIGN_ASSET(2) char object_dnsTex_002F20[] = dobject_dnsTex_002F20;
-
-#define dobject_dnsTex_002FA0 "__OTR__objects/object_dns/object_dnsTex_002FA0"
-static const ALIGN_ASSET(2) char object_dnsTex_002FA0[] = dobject_dnsTex_002FA0;
+#endif // OBJECTS_OBJECT_DNS_H

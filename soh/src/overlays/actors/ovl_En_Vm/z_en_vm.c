@@ -8,6 +8,7 @@
 #include "objects/object_vm/object_vm.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -368,7 +369,7 @@ void EnVm_SetupDie(EnVm* this) {
     this->actor.speedXZ = Rand_ZeroOne() + 1.0f;
     this->actor.world.rot.y = Rand_CenteredFloat(65535.0f);
     EnVm_SetupAction(this, EnVm_Die);
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BEAMOS]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnVm_Die(EnVm* this, PlayState* play) {
@@ -527,7 +528,7 @@ void EnVm_Draw(Actor* thisx, PlayState* play2) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnVm_OverrideLimbDraw,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnVm_OverrideLimbDraw,
                       EnVm_PostLimbDraw, this);
     actorPos = this->actor.world.pos;
     func_80033C30(&actorPos, &D_80B2EB7C, 255, play);

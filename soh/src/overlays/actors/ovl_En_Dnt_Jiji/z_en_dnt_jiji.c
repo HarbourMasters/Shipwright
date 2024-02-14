@@ -101,6 +101,9 @@ void EnDntJiji_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void EnDntJiji_SetFlower(EnDntJiji* this, PlayState* play) {
+    // SOH: Due to removed object dependencies, parent was still NULL when Init was called. In order to properly set
+    // stage, redo it here now that we are a frame later.
+    this->stage = (EnDntDemo*)this->actor.parent;
     if (this->actor.bgCheckFlags & 1) {
         this->flowerPos = this->actor.world.pos;
         this->actionFunc = EnDntJiji_SetupWait;
@@ -437,7 +440,7 @@ void EnDntJiji_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_Push();
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(blinkTex[this->eyeState]));
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, this);
     Matrix_Pop();
     Matrix_Translate(this->flowerPos.x, this->flowerPos.y, this->flowerPos.z, MTXMODE_NEW);
     Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);

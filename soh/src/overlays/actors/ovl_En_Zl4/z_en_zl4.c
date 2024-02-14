@@ -389,7 +389,7 @@ void EnZl4_Init(Actor* thisx, PlayState* play) {
     this->actor.textId = -1;
     this->eyeExpression = this->mouthExpression = ZL4_MOUTH_NEUTRAL;
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
         this->actionFunc = EnZl4_Idle;
         return;
@@ -402,7 +402,7 @@ void EnZl4_Init(Actor* thisx, PlayState* play) {
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
         this->actionFunc = EnZl4_Idle;
     } else {
-        if (gSaveContext.entranceIndex != 0x5F0) {
+        if (gSaveContext.entranceIndex != ENTR_CASTLE_COURTYARD_ZELDA_1) {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_21);
             this->csState = ZL4_CS_WAIT;
             this->talkState = 0;
@@ -798,10 +798,10 @@ s32 EnZl4_CsAskName(EnZl4* this, PlayState* play) {
             this->talkTimer2++;
             if (this->talkTimer2 == 130) {
                 play->msgCtx.msgMode = MSGMODE_PAUSED;
-                play->nextEntranceIndex = 0xA0;
+                play->nextEntranceIndex = ENTR_CUTSCENE_MAP_0;
                 gSaveContext.nextCutsceneIndex = 0xFFF7;
-                play->sceneLoadFlag = 0x14;
-                play->fadeTransition = 3;
+                play->transitionTrigger = TRANS_TRIGGER_START;
+                play->transitionType = TRANS_TYPE_FADE_WHITE;
             }
             break;
     }
@@ -1226,7 +1226,7 @@ void EnZl4_Idle(EnZl4* this, PlayState* play) {
                       EnZl4_GetText, func_80B5B9B0);
     func_80B5BB78(this, play);
     
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         GivePlayerRandoRewardZeldaChild(this, play, RC_HC_ZELDAS_LETTER);
         return;
     }
@@ -1327,7 +1327,6 @@ void EnZl4_Draw(Actor* thisx, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTex[this->leftEyeState]));
     gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(mouthTex[this->mouthState]));
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnZl4_OverrideLimbDraw, EnZl4_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnZl4_OverrideLimbDraw, EnZl4_PostLimbDraw, this);
     CLOSE_DISPS(play->state.gfxCtx);
 }

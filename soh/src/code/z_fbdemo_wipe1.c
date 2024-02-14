@@ -14,14 +14,14 @@ Gfx sWipeDList[] = {
     gsDPSetCombineLERP(TEXEL1, TEXEL0, PRIM_LOD_FRAC, TEXEL0, TEXEL1, TEXEL0, PRIM_LOD_FRAC, TEXEL0, COMBINED, 0,
                        PRIMITIVE, 0, COMBINED, 0, PRIMITIVE, 0),
     gsDPSetPrimDepth(0, 0),
-    gsDPLoadTextureBlock_4b(sWipe1Tex, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, 6, 6,
+    gsDPLoadTextureBlock_4b(sTransWipeTex, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_MIRROR | G_TX_WRAP, 6, 6,
                             11, G_TX_NOLOD),
-    gsDPLoadMultiBlock_4b(sWipe1Tex, 0x0100, 1, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gsDPLoadMultiBlock_4b(sTransWipeTex, 0x0100, 1, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
                           G_TX_MIRROR | G_TX_WRAP, 6, 6, 11, 1),
     gsDPSetTextureLUT(G_TT_NONE),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsSPDisplayList(SEG_ADDR(8, 0)),
-    gsSPVertex(sWipe1Vtx, 25, 0),
+    gsSPVertex(sTransWipeVtx, 25, 0),
     gsSP2Triangles(0, 1, 2, 0, 1, 3, 4, 0),
     gsSP2Triangles(5, 6, 7, 0, 6, 8, 9, 0),
     gsSP2Triangles(8, 10, 11, 0, 10, 12, 13, 0),
@@ -64,18 +64,18 @@ void TransitionWipe_Destroy(void* thisx) {
 
 void TransitionWipe_Update(void* thisx, s32 updateRate) {
     TransitionWipe* this = (TransitionWipe*)thisx;
-    u8 unk1419;
+    u8 speed;
 
     if (this->direction != 0) {
-        unk1419 = gSaveContext.transWipeSpeed;
-        this->texY += (unk1419 * 3) / updateRate;
+        speed = gSaveContext.transWipeSpeed;
+        this->texY += (speed * 3) / updateRate;
         if (this->texY >= 0x264) {
             this->texY = 0x264;
             this->isDone = 1;
         }
     } else {
-        unk1419 = gSaveContext.transWipeSpeed;
-        this->texY -= (unk1419 * 3) / updateRate;
+        speed = gSaveContext.transWipeSpeed;
+        this->texY -= (speed * 3) / updateRate;
         if (this->texY < 0x14E) {
             this->texY = 0x14D;
             this->isDone = 1;

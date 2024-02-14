@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GI_JEWEL_H
+#define OBJECTS_OBJECT_GI_JEWEL_H 1
 
 #include "align_asset_macro.h"
 
@@ -28,3 +29,5 @@ static const ALIGN_ASSET(2) char gGiZoraSapphireSettingDL[] = dgGiZoraSapphireSe
 
 #define dgGiZoraSapphireGemDL "__OTR__objects/object_gi_jewel/gGiZoraSapphireGemDL"
 static const ALIGN_ASSET(2) char gGiZoraSapphireGemDL[] = dgGiZoraSapphireGemDL;
+
+#endif // OBJECTS_OBJECT_GI_JEWEL_H

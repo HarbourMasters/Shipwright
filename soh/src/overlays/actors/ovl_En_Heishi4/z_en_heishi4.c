@@ -195,7 +195,7 @@ void func_80A56614(EnHeishi4* this, PlayState* play) {
         this->actionFunc = func_80A56B40;
         return;
     }
-    if (play->sceneNum == SCENE_MIHARIGOYA) {
+    if (play->sceneNum == SCENE_MARKET_GUARD_HOUSE) {
         if (IS_DAY) {
             this->actor.textId = 0x7004;
         } else {
@@ -334,7 +334,12 @@ void func_80A56B40(EnHeishi4* this, PlayState* play) {
             return;
         }
         if (this->type == HEISHI4_AT_MARKET_NIGHT) {
-            if (CVarGetInteger("gMarketSneak", 0)) {
+            Player* player = GET_PLAYER(play);
+            // Only allow sneaking when not wearing a mask as that triggers different dialogue. MM Bunny hood disables
+            // these interactions, so bunny hood is fine in that case.
+            if (CVarGetInteger("gMarketSneak", 0) &&
+                (player->currentMask == PLAYER_MASK_NONE ||
+                 (player->currentMask == PLAYER_MASK_BUNNY && CVarGetInteger("gMMBunnyHood", 0)))) {
                 this->actionFunc = EnHeishi4_MarketSneak;
             } else {
                 this->actionFunc = func_80A56614;
@@ -352,14 +357,14 @@ void EnHeishi4_MarketSneak(EnHeishi4* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         switch (play->msgCtx.choiceIndex) {
             case 0: //yes
-                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) != RO_GENERIC_OFF){
-                    play->nextEntranceIndex = Entrance_OverrideNextIndex(0x01FD); // Market Entrance -> HF
+                if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) != RO_GENERIC_OFF){
+                    play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_7); // Market Entrance -> HF
                 } else {
-                    play->nextEntranceIndex = 0x00CD; // HF Near bridge (OoT cutscene entrance) to not fall in the water
+                    play->nextEntranceIndex = ENTR_HYRULE_FIELD_0; // HF Near bridge (OoT cutscene entrance) to not fall in the water
                 } 
-                play->sceneLoadFlag = 0x14;
-                play->fadeTransition = 0x2E;
-                gSaveContext.nextTransitionType = 0x2E;
+                play->transitionTrigger = TRANS_TRIGGER_START;
+                play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
+                gSaveContext.nextTransitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
                 this->actionFunc = func_80A56614;
                 break;
             case 1: //no
@@ -413,6 +418,5 @@ void EnHeishi4_Draw(Actor* thisx, PlayState* play) {
     EnHeishi4* this = (EnHeishi4*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnHeishi_OverrideLimbDraw, NULL,
-                      this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnHeishi_OverrideLimbDraw, NULL, this);
 }

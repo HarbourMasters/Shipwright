@@ -1,6 +1,7 @@
 #include "z_en_skj.h"
 #include "overlays/actors/ovl_En_Skjneedle/z_en_skjneedle.h"
 #include "objects/object_skj/object_skj.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
@@ -735,7 +736,7 @@ void EnSkj_SariasSongKidIdle(EnSkj* this, PlayState* play) {
 void EnSkj_SetupDie(EnSkj* this) {
     EnSkj_ChangeAnim(this, SKJ_ANIM_DIE);
     EnSkj_SetupAction(this, SKJ_ACTION_WAIT_FOR_DEATH_ANIM);
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULL_KID]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnSkj_WaitForDeathAnim(EnSkj* this, PlayState* play) {
@@ -1038,7 +1039,7 @@ void EnSkj_SariaSongTalk(EnSkj* this, PlayState* play) {
             EnSkj_SetupWaitInRange(this);
         } else {
             func_80AFFE24(this);
-            if (!gSaveContext.n64ddFlag) {
+            if (!IS_RANDO) {
                 func_8002F434(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
             } else {
                 GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_SKULL_KID, GI_HEART_PIECE);
@@ -1057,7 +1058,7 @@ void func_80AFFE44(EnSkj* this, PlayState* play) {
         this->actor.parent = NULL;
         EnSkj_SetupPostSariasSong(this);
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_SKULL_KID, GI_HEART_PIECE);
@@ -1411,12 +1412,20 @@ void EnSkj_StartOcarinaMinigame(EnSkj* this, PlayState* play) {
     EnSkj_TurnPlayer(this, player);
 
     if (dialogState == TEXT_STATE_CLOSING) {
-        func_8010BD58(play, OCARINA_ACTION_MEMORY_GAME);
-        if (sOcarinaMinigameSkullKids[SKULL_KID_LEFT].skullkid != NULL) {
-            sOcarinaMinigameSkullKids[SKULL_KID_LEFT].skullkid->minigameState = SKULL_KID_OCARINA_PLAY_NOTES;
+        // #region SOH [Enhancement]
+        if (CVarGetInteger("gInstantOcarinaGameWin", 0) && CVarGetInteger("gCustomizeOcarinaGame", 0)) {
+            play->msgCtx.ocarinaMode = OCARINA_MODE_0F;
+            this->songFailTimer = 160;
+            this->actionFunc = EnSkj_WaitForPlayback;
+        // #endregion
+        } else {
+            func_8010BD58(play, OCARINA_ACTION_MEMORY_GAME);
+            if (sOcarinaMinigameSkullKids[SKULL_KID_LEFT].skullkid != NULL) {
+                sOcarinaMinigameSkullKids[SKULL_KID_LEFT].skullkid->minigameState = SKULL_KID_OCARINA_PLAY_NOTES;
+                this->songFailTimer = 160;
+                this->actionFunc = EnSkj_WaitForPlayback;
+            }
         }
-        this->songFailTimer = 160;
-        this->actionFunc = EnSkj_WaitForPlayback;
     }
 }
 
@@ -1465,7 +1474,14 @@ void EnSkj_WaitForPlayback(EnSkj* this, PlayState* play) {
                 break;
             case MSGMODE_MEMORY_GAME_PLAYER_PLAYING:
                 if (this->songFailTimer != 0) {
-                    this->songFailTimer--;
+                    // #region SOH [Enhancement]
+                    if (CVarGetInteger("gOcarinaUnlimitedFailTime", 0) == 1 &&
+                        CVarGetInteger("gCustomizeOcarinaGame", 0) == 1) { 
+                        // don't decrement timer
+                    // #endregion
+                    } else {                      
+                        this->songFailTimer--;
+                    }
                 } else { // took too long, game failed
                     func_80078884(NA_SE_SY_OCARINA_ERROR);
                     Message_CloseTextbox(play);
@@ -1539,7 +1555,7 @@ void EnSkj_WonOcarinaMiniGame(EnSkj* this, PlayState* play) {
 
 void EnSkj_WaitToGiveReward(EnSkj* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
-        if (gSaveContext.n64ddFlag && gSaveContext.ocarinaGameRoundNum != 3) {
+        if (IS_RANDO && gSaveContext.ocarinaGameRoundNum != 3) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_OCARINA_MEMORY_GAME, GI_HEART_PIECE);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 26.0f, 26.0f);
         } else {
@@ -1555,7 +1571,7 @@ void EnSkj_GiveOcarinaGameReward(EnSkj* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = EnSkj_FinishOcarinaGameRound;
     } else {
-        if (gSaveContext.n64ddFlag && gSaveContext.ocarinaGameRoundNum != 3) {
+        if (IS_RANDO && gSaveContext.ocarinaGameRoundNum != 3) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_OCARINA_MEMORY_GAME, GI_HEART_PIECE);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 26.0f, 26.0f);
         } else {
@@ -1572,11 +1588,11 @@ void EnSkj_FinishOcarinaGameRound(EnSkj* this, PlayState* play) {
             gSaveContext.ocarinaGameRoundNum++;
         }
 
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             gSaveContext.ocarinaGameRoundNum = 3;
         }
 
-        if (ocarinaGameRoundNum == 2 || gSaveContext.n64ddFlag) {
+        if (ocarinaGameRoundNum == 2 || IS_RANDO) {
             Flags_SetItemGetInf(ITEMGETINF_17);
             this->actionFunc = EnSkj_CleanupOcarinaGame;
         } else {
@@ -1682,8 +1698,7 @@ void EnSkj_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x0C, EnSkj_OpaqueDL(play->state.gfxCtx, this->alpha));
     }
 
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnSkj_OverrideLimbDraw, EnSkj_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnSkj_OverrideLimbDraw, EnSkj_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

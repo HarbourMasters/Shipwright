@@ -197,16 +197,16 @@ void DemoKankyo_Init(Actor* thisx, PlayState* play) {
         case DEMOKANKYO_BLUE_RAIN:
         case DEMOKANKYO_BLUE_RAIN_2:
             switch (play->sceneNum) {
-                case SCENE_HIRAL_DEMO:
+                case SCENE_CUTSCENE_MAP:
                     play->roomCtx.curRoom.segment = NULL;
                     D_8098CF80 = 10;
                     sRainScale = 8;
                     break;
-                case SCENE_TOKINOMA:
+                case SCENE_TEMPLE_OF_TIME:
                     D_8098CF80 = 14;
                     sRainScale = 8;
                     break;
-                case SCENE_SPOT00:
+                case SCENE_HYRULE_FIELD:
                     D_8098CF80 = 1;
                     sRainScale = 5;
                     break;
@@ -321,7 +321,7 @@ void DemoKankyo_SetupType(DemoKankyo* this, PlayState* play) {
                     this->warpTimer--;
                 }
                 if (this->warpTimer == 1) {
-                    if (play->sceneNum == SCENE_TOKINOMA) {
+                    if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
                         D_8098CF84 = 25;
                         if (!LINK_IS_ADULT) {
                             play->csCtx.segment = gChildWarpInToTCS;
@@ -343,7 +343,7 @@ void DemoKankyo_SetupType(DemoKankyo* this, PlayState* play) {
                 }
                 break;
             case DEMOKANKYO_WARP_IN:
-                if (play->sceneNum == SCENE_TOKINOMA) {
+                if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
                     if (!LINK_IS_ADULT) {
                         play->csCtx.segment = gChildWarpOutToTCS;
                     } else {
@@ -428,7 +428,7 @@ void DemoKankyo_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     // In ER, override the warp song locations. Also removes the warp song cutscene
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) &&
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) &&
         thisx->params == 0x000F) { // Warp Song particles
         Entrance_SetWarpSongEntrance();
     }
@@ -441,7 +441,7 @@ void DemoKankyo_Draw(Actor* thisx, PlayState* play) {
         switch (this->actor.params) {
             case DEMOKANKYO_BLUE_RAIN:
             case DEMOKANKYO_BLUE_RAIN_2:
-                if (play->sceneNum == SCENE_TOKINOMA) {
+                if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
                     if (!Flags_GetEnv(play, 1)) {
                         break;
                     } else if (!Actor_IsFacingAndNearPlayer(&this->actor, 300.0f, 0x7530)) {
@@ -495,12 +495,12 @@ void func_80989B54(Actor* thisx, PlayState* play, s16 i) {
     DemoKankyo* this = (DemoKankyo*)thisx;
 
     switch (play->sceneNum) {
-        case SCENE_HIRAL_DEMO:
+        case SCENE_CUTSCENE_MAP:
             this->unk_150[i].unk_0.x = (Rand_ZeroOne() - 0.5f) * 500.0f;
             this->unk_150[i].unk_0.y = 500.0f;
             this->unk_150[i].unk_0.z = (Rand_ZeroOne() - 0.5f) * 500.0f;
             break;
-        case SCENE_TOKINOMA:
+        case SCENE_TEMPLE_OF_TIME:
             this->unk_150[i].unk_C.x = 0.0f;
             this->unk_150[i].unk_C.y = 0.0f;
             this->unk_150[i].unk_C.z = 0.0f;
@@ -508,7 +508,7 @@ void func_80989B54(Actor* thisx, PlayState* play, s16 i) {
             this->unk_150[i].unk_0.y = 10.0f;
             this->unk_150[i].unk_0.z = (Rand_ZeroOne() - 0.5f) * 180.0f;
             break;
-        case SCENE_SPOT00:
+        case SCENE_HYRULE_FIELD:
             this->unk_150[i].unk_0.x = (Rand_ZeroOne() - 0.5f) * 600.0f;
             this->unk_150[i].unk_0.y = -500.0f;
             this->unk_150[i].unk_0.z = (Rand_ZeroOne() - 0.5f) * 600.0f;
@@ -540,7 +540,7 @@ void DemoKankyo_DrawRain(Actor* thisx, PlayState* play) {
         dz = play->view.lookAt.z - play->view.eye.z;
         norm = sqrtf(SQ(dx) + SQ(dy) + SQ(dz));
 
-        if (play->sceneNum != SCENE_TOKINOMA) {
+        if (play->sceneNum != SCENE_TEMPLE_OF_TIME) {
             this->unk_150[i].unk_C.x = play->view.eye.x + (dx / norm) * 350.0f;
             this->unk_150[i].unk_C.y = play->view.eye.y + (dy / norm) * 80.0f;
             this->unk_150[i].unk_C.z = play->view.eye.z + (dz / norm) * 350.0f;
@@ -549,7 +549,7 @@ void DemoKankyo_DrawRain(Actor* thisx, PlayState* play) {
         switch (this->unk_150[i].unk_22) {
             case 0:
                 func_80989B54(thisx, play, i);
-                if (gSaveContext.entranceIndex == 0x00A0) { // Cutscene Map
+                if (gSaveContext.entranceIndex == ENTR_CUTSCENE_MAP_0) { // Cutscene Map
                     this->unk_150[i].unk_0.y = Rand_ZeroOne() * 500.0f;
                 } else {
                     this->unk_150[i].unk_0.y = Rand_ZeroOne() * -500.0f;
@@ -558,16 +558,16 @@ void DemoKankyo_DrawRain(Actor* thisx, PlayState* play) {
                 break;
             case 1:
                 temp_f12_2 = play->view.eye.y + (dy / norm) * 150.0f;
-                if (gSaveContext.entranceIndex == 0x00A0) { // Cutscene Map
+                if (gSaveContext.entranceIndex == ENTR_CUTSCENE_MAP_0) { // Cutscene Map
                     this->unk_150[i].unk_0.y -= this->unk_150[i].unk_18;
                 } else {
                     this->unk_150[i].unk_0.y += this->unk_150[i].unk_18;
                 }
-                if (gSaveContext.entranceIndex == 0x00A0) { // Cutscene Map
+                if (gSaveContext.entranceIndex == ENTR_CUTSCENE_MAP_0) { // Cutscene Map
                     if (this->unk_150[i].unk_C.y + this->unk_150[i].unk_0.y < temp_f12_2 - 300.0f) {
                         this->unk_150[i].unk_22++;
                     }
-                } else if (gSaveContext.entranceIndex == 0x00CD) { // Hyrule Field
+                } else if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_0) { // Hyrule Field
                     if (temp_f12_2 + 300.0f < this->unk_150[i].unk_C.y + this->unk_150[i].unk_0.y) {
                         this->unk_150[i].unk_22++;
                     }
@@ -586,12 +586,12 @@ void DemoKankyo_DrawRain(Actor* thisx, PlayState* play) {
         Matrix_Translate(this->unk_150[i].unk_C.x + this->unk_150[i].unk_0.x,
                          this->unk_150[i].unk_C.y + this->unk_150[i].unk_0.y,
                          this->unk_150[i].unk_C.z + this->unk_150[i].unk_0.z, MTXMODE_NEW);
-        if (gSaveContext.entranceIndex != 0x00A0) { // Cutscene Map
+        if (gSaveContext.entranceIndex != ENTR_CUTSCENE_MAP_0) { // Cutscene Map
             Matrix_RotateX(M_PI, MTXMODE_APPLY);
         }
 
         gDPPipeSync(POLY_XLU_DISP++);
-        if (gSaveContext.entranceIndex == 0x00CD) { // Hyrule Field
+        if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_0) { // Hyrule Field
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
             gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 0, 255);
         } else {
@@ -606,7 +606,7 @@ void DemoKankyo_DrawRain(Actor* thisx, PlayState* play) {
 
             s32 pad1;
 
-            if (play->sceneNum != SCENE_TOKINOMA) {
+            if (play->sceneNum != SCENE_TEMPLE_OF_TIME) {
                 if (this->unk_150[i].unk_0.x >= 0.0f) {
                     translateX = -j * 1500.0f;
                 } else {
@@ -808,7 +808,7 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, PlayState* play) {
                 this->unk_150[i].unk_23 = 0;
 
                 // Skip the first part of warp song cutscenes in rando
-                if (gSaveContext.n64ddFlag && this->actor.params == DEMOKANKYO_WARP_OUT) {
+                if (IS_RANDO && this->actor.params == DEMOKANKYO_WARP_OUT) {
                     this->unk_150[i].unk_22 = 2;
                 } else {
                     this->unk_150[i].unk_22++;
@@ -820,7 +820,7 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, PlayState* play) {
                                       &this->unk_150[i].unk_1C) != 0) {
                         this->unk_150[i].unk_22++;
                     }
-                    if (play->sceneNum == SCENE_TOKINOMA && play->csCtx.frames == 25) {
+                    if (play->sceneNum == SCENE_TEMPLE_OF_TIME && play->csCtx.frames == 25) {
                         this->unk_150[i].unk_22++;
                     }
                 } else {

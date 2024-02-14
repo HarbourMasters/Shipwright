@@ -13,7 +13,6 @@
 #include "hint_list.hpp"
 #include "entrance.hpp"
 #include "shops.hpp"
-#include "debug.hpp"
 
 #include <vector>
 #include <list>
@@ -548,13 +547,13 @@ static void CalculateWotH() {
 static void FastFill(std::vector<uint32_t> items, std::vector<uint32_t> locations, bool endOnItemsEmpty = false) {
   //Loop until locations are empty, or also end if items are empty and the parameters specify to end then
   while (!locations.empty() && (!endOnItemsEmpty || !items.empty())) {
-    uint32_t loc = RandomElement(locations, true);
-    Location(loc)->SetAsHintable();
-    PlaceItemInLocation(loc, RandomElement(items, true));
-
     if (items.empty() && !endOnItemsEmpty) {
       items.push_back(GetJunkItem());
     }
+
+    uint32_t loc = RandomElement(locations, true);
+    Location(loc)->SetAsHintable();
+    PlaceItemInLocation(loc, RandomElement(items, true));
   }
 }
 
@@ -914,10 +913,11 @@ void VanillaFill() {
     ShuffleAllEntrances();
     printf("\x1b[7;32HDone");
   }
+  // Populate the playthrough for entrances so they are placed in the spoiler log
+  GeneratePlaythrough();
   //Finish up
   CreateItemOverrides();
   CreateEntranceOverrides();
-  CreateAlwaysIncludedMessages();
   CreateWarpSongTexts();
 }
 
@@ -1072,7 +1072,6 @@ int Fill() {
       printf("Done");
       CreateItemOverrides();
       CreateEntranceOverrides();
-      CreateAlwaysIncludedMessages();
       if (GossipStoneHints.IsNot(HINTS_NO_HINTS)) {
         printf("\x1b[10;10HCreating Hints...");
         CreateAllHints();
@@ -1081,11 +1080,13 @@ int Fill() {
       if (ShuffleMerchants.Is(SHUFFLEMERCHANTS_HINTS)) {
         CreateMerchantsHints();
       }
-      //Always execute ganon hint generation for the funny line  
+      //Always execute ganon hint generation for the funny line
       CreateGanonText();
       CreateAltarText();
       CreateDampesDiaryText();
       CreateGregRupeeHint();
+      CreateSheikText();
+      CreateSariaText();
       CreateWarpSongTexts();
       return 1;
     }

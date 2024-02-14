@@ -1,5 +1,33 @@
 <Root>
     <File Name="object_po_sisters" Segment="6">
+        <Texture Name="object_po_sistersTex_0048D8" OutName="object_po_sistersTex_0048D8" Format="rgba16" Width="16" Height="16" Offset="0x48D8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_004AD8" OutName="object_po_sistersTex_004AD8" Format="rgba16" Width="32" Height="32" Offset="0x4AD8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_0052D8" OutName="object_po_sistersTex_0052D8" Format="rgba16" Width="32" Height="16" Offset="0x52D8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_0056D8" OutName="object_po_sistersTex_0056D8" Format="rgba16" Width="16" Height="16" Offset="0x56D8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_0058D8" OutName="object_po_sistersTex_0058D8" Format="rgba16" Width="4" Height="4" Offset="0x58D8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_0058F8" OutName="object_po_sistersTex_0058F8" Format="rgba16" Width="16" Height="16" Offset="0x58F8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_005AF8" OutName="object_po_sistersTex_005AF8" Format="rgba16" Width="16" Height="16" Offset="0x5AF8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_005CF8" OutName="object_po_sistersTex_005CF8" Format="rgba16" Width="8" Height="8" Offset="0x5CF8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_005D78" OutName="object_po_sistersTex_005D78" Format="rgba16" Width="16" Height="16" Offset="0x5D78" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_005F78" OutName="object_po_sistersTex_005F78" Format="rgba16" Width="16" Height="8" Offset="0x5F78" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_006078" OutName="object_po_sistersTex_006078" Format="rgba16" Width="16" Height="16" Offset="0x6078" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_006278" OutName="object_po_sistersTex_006278" Format="rgba16" Width="8" Height="8" Offset="0x6278" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_0062F8" OutName="object_po_sistersTex_0062F8" Format="rgba16" Width="4" Height="4" Offset="0x62F8" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_006318" OutName="object_po_sistersTex_006318" Format="rgba16" Width="16" Height="16" Offset="0x6318" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_007AC0" OutName="object_po_sistersTex_007AC0" Format="rgba16" Width="32" Height="32" Offset="0x7AC0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_0082C0" OutName="object_po_sistersTex_0082C0" Format="rgba16" Width="8" Height="16" Offset="0x82C0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_0083C0" OutName="object_po_sistersTex_0083C0" Format="rgba16" Width="32" Height="32" Offset="0x83C0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_008BC0" OutName="object_po_sistersTex_008BC0" Format="rgba16" Width="32" Height="32" Offset="0x8BC0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_0093C0" OutName="object_po_sistersTex_0093C0" Format="rgba16" Width="32" Height="32" Offset="0x93C0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_009BC0" OutName="object_po_sistersTex_009BC0" Format="rgba16" Width="32" Height="32" Offset="0x9BC0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_00A3C0" OutName="object_po_sistersTex_00A3C0" Format="rgba16" Width="32" Height="32" Offset="0xA3C0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_00ABC0" OutName="object_po_sistersTex_00ABC0" Format="rgba16" Width="32" Height="32" Offset="0xABC0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_00B3C0" OutName="object_po_sistersTex_00B3C0" Format="rgba16" Width="32" Height="32" Offset="0xB3C0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_00BBC0" OutName="object_po_sistersTex_00BBC0" Format="rgba16" Width="32" Height="32" Offset="0xBBC0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_00C3C0" OutName="object_po_sistersTex_00C3C0" Format="rgba16" Width="32" Height="32" Offset="0xC3C0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_00CBC0" OutName="object_po_sistersTex_00CBC0" Format="rgba16" Width="32" Height="32" Offset="0xCBC0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_00D3C0" OutName="object_po_sistersTex_00D3C0" Format="rgba16" Width="32" Height="32" Offset="0xD3C0" AddedByScript="true"/>
+        <Texture Name="object_po_sistersTex_00DBC0" OutName="object_po_sistersTex_00DBC0" Format="rgba16" Width="32" Height="32" Offset="0xDBC0" AddedByScript="true"/>
         <Animation Name="gPoeSistersAttackAnim" Offset="0x0114"/>
         <Animation Name="gPoeSistersMegCryAnim" Offset="0x0680"/>
         <Animation Name="gPoeSistersDamagedAnim" Offset="0x08C0"/>

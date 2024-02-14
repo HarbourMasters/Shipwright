@@ -108,9 +108,10 @@ const std::array<uint32_t, 59> alwaysItems = {
   ARROWS_10,
   TREASURE_GAME_HEART,
 };
-const std::array<uint32_t, 43> easyItems = {
+const std::array<uint32_t, 44> easyItems = {
   BIGGORON_SWORD,
   KOKIRI_SWORD,
+  MASTER_SWORD,
   BOOMERANG,
   LENS_OF_TRUTH,
   MEGATON_HAMMER,
@@ -662,9 +663,17 @@ void GenerateItemPool() {
     IceTrapModels.push_back(0xD3);
   }
 
+  if (TriforceHunt.Is(TRIFORCE_HUNT_ON)) {
+    IceTrapModels.push_back(0xDF);
+    AddItemToMainPool(TRIFORCE_PIECE, Settings::TriforceHuntTotal.Value<uint8_t>());
+    PlaceItemInLocation(TRIFORCE_COMPLETED, TRIFORCE); // Win condition
+    PlaceItemInLocation(GANON, GetJunkItem(), false, true);
+  } else {
+    PlaceItemInLocation(GANON, TRIFORCE); // Win condition
+  }
+
   //Fixed item locations
   PlaceItemInLocation(HC_ZELDAS_LETTER, ZELDAS_LETTER);
-  PlaceItemInLocation(GANON, TRIFORCE); //The Triforce is only used to make sure Ganon is accessible
   PlaceItemInLocation(MARKET_BOMBCHU_BOWLING_BOMBCHUS, BOMBCHU_DROP);
 
   if (ShuffleKokiriSword) {
@@ -672,6 +681,13 @@ void GenerateItemPool() {
     IceTrapModels.push_back(GI_SWORD_KOKIRI);
   } else {
     PlaceItemInLocation(KF_KOKIRI_SWORD_CHEST, KOKIRI_SWORD, false, true);
+  }
+
+  if (ShuffleMasterSword) {
+    AddItemToMainPool(MASTER_SWORD);
+    IceTrapModels.push_back(0xE0); //Master Sword without the GI enum
+  } else {
+    PlaceItemInLocation(TOT_MASTER_SWORD, MASTER_SWORD, false, true);
   }
 
   if (ShuffleWeirdEgg) {
@@ -1135,7 +1151,7 @@ void GenerateItemPool() {
 
   if (GanonsBossKey.Is(GANONSBOSSKEY_FINAL_GS_REWARD)) {
     PlaceItemInLocation(KAK_100_GOLD_SKULLTULA_REWARD, GANONS_CASTLE_BOSS_KEY);
-  } else if (GanonsBossKey.Value<uint8_t>() >= GANONSBOSSKEY_LACS_VANILLA) {
+  } else if (GanonsBossKey.Value<uint8_t>() >= GANONSBOSSKEY_LACS_VANILLA && GanonsBossKey.IsNot(GANONSBOSSKEY_TRIFORCE_HUNT)) {
     PlaceItemInLocation(TOT_LIGHT_ARROWS_CUTSCENE, GANONS_CASTLE_BOSS_KEY);
   } else if (GanonsBossKey.Is(GANONSBOSSKEY_VANILLA)) {
     PlaceItemInLocation(GANONS_TOWER_BOSS_KEY_CHEST, GANONS_CASTLE_BOSS_KEY);
@@ -1151,6 +1167,10 @@ void GenerateItemPool() {
 
   if (!ShuffleKokiriSword) {
     ReplaceMaxItem(KOKIRI_SWORD, 0);
+  }
+
+  if (!ShuffleMasterSword) {
+    ReplaceMaxItem(MASTER_SWORD, 0);
   }
 
   if (ProgressiveGoronSword) {

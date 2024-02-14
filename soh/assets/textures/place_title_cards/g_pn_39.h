@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_G_PN_39_H
+#define TEXTURES_G_PN_39_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gDeathMountainTrailTitleCardGERTex[] = dgDeathM
 
 #define dgDeathMountainTrailTitleCardFRATex "__OTR__textures/g_pn_39/gDeathMountainTrailTitleCardFRATex"
 static const ALIGN_ASSET(2) char gDeathMountainTrailTitleCardFRATex[] = dgDeathMountainTrailTitleCardFRATex;
+
+#endif // TEXTURES_G_PN_39_H

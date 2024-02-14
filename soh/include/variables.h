@@ -46,9 +46,9 @@ extern "C"
 	extern OSViMode osViModeFpalLan1;
 	extern u32 __additional_scanline;
 	extern u8 gBuildVersion[];
-	extern s16 gBuildVersionMajor;
-	extern s16 gBuildVersionMinor;
-	extern s16 gBuildVersionPatch;
+	extern u16 gBuildVersionMajor;
+	extern u16 gBuildVersionMinor;
+	extern u16 gBuildVersionPatch;
     extern u8 gBuildTeam[];
 	extern u8 gBuildDate[];
 	extern u8 gBuildMakeOption[];
@@ -82,11 +82,11 @@ extern "C"
 	extern s16 gSpoilingItems[3];
 	extern s16 gSpoilingItemReverts[3];
 	extern FlexSkeletonHeader* gPlayerSkelHeaders[2];
-	extern u8 gPlayerModelTypes[][5];
-	extern Gfx* D_80125DE8[];
-	extern Gfx* D_80125E08[];
-	extern Gfx* D_80125E18[];
-	extern Gfx* D_80125EF8[];
+	extern u8 gPlayerModelTypes[PLAYER_MODELGROUP_MAX][PLAYER_MODELGROUPENTRY_MAX];
+	extern Gfx* gPlayerLeftHandBgsDLs[];
+	extern Gfx* gPlayerLeftHandOpenDLs[];
+	extern Gfx* gPlayerLeftHandClosedDLs[];
+	extern Gfx* gPlayerLeftHandBoomerangDLs[];
 	extern Gfx gCullBackDList[];
 	extern Gfx gCullFrontDList[];
 	extern Gfx gEmptyDL[];
@@ -107,7 +107,7 @@ extern "C"
 	extern s16 gLinkObjectIds[2];
 	extern u32 gObjectTableSize;
 	extern RomFile gObjectTable[OBJECT_ID_MAX];
-	extern EntranceInfo gEntranceTable[1556];
+	extern EntranceInfo gEntranceTable[ENTR_MAX];
 	extern SceneTableEntry gSceneTable[SCENE_ID_MAX];
 	extern u16 gSramSlotOffsets[];
 	// 4 16-colors palettes
@@ -171,6 +171,7 @@ extern "C"
 	extern u8 gWalkSpeedToggle1;
 	extern u8 gWalkSpeedToggle2;
 	extern f32 iceTrapScale;
+	extern f32 triforcePieceScale;
 
 	extern const s16 D_8014A6C0[];
 #define gTatumsPerBeat (D_8014A6C0[1])
@@ -223,7 +224,7 @@ extern "C"
 	extern u16 gAudioSfxSwapSource[10];
 	extern u16 gAudioSfxSwapTarget[10];
 	extern u8 gAudioSfxSwapMode[10];
-	extern unk_D_8016E750 D_8016E750[4];
+	extern ActiveSequence gActiveSeqs[4];
 	extern AudioContext gAudioContext;
 	extern void(*D_801755D0)(void);
 

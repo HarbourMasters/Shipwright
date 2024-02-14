@@ -1,0 +1,30 @@
+<Root>
+    <File Name="object_spot01_matoya" Segment="6">
+        <!-- Kakariko Shooting Gallery -->
+        <DList Name="gKakarikoShootingGalleryDL" Offset="0x1528"/>
+        <DList Name="gKakarikoShootingGallerySignDL" Offset="0x2780"/>
+        <Texture Name="gKakarikoShootingGalleryRoofEdgeTex" OutName="shooting_gallery_roof_edge" Format="ci8" Width="32" Height="32" Offset="0x208" TlutOffset="0x0"/>
+        <Texture Name="gKakarikoShootingGalleryRoofTex" OutName="shooting_gallery_roof" Format="ci8" Width="16" Height="32" Offset="0x608" TlutOffset="0x0"/>
+        <Texture Name="gKakarikoShootingGalleryDoorShadowTex" OutName="shooting_gallery_door_shadow" Format="ci8" Width="16" Height="32" Offset="0x808" TlutOffset="0x0"/>
+        <Texture Name="gKakarikoShootingGalleryWallTex" OutName="shooting_gallery_wall" Format="ci8" Width="32" Height="64" Offset="0xA08" TlutOffset="0x0"/>
+        <Texture Name="gKakarikoShootingGallerySignTex" OutName="shooting_gallery_sign" Format="rgba16" Width="32" Height="32" Offset="0x1F40"/>
+        <Collision Name="gKakarikoShootingGalleryCol" Offset="0x1A38"/>
+
+        <!-- Kakariko Potion Shop -->
+        <DList Name="gKakarikoPotionShopSignDL" Offset="0x1EB0"/>
+        <Texture Name="gKakarikoPotionShopSignTex" OutName="potion_shop_sign" Format="rgba16" Width="32" Height="16" Offset="0x1A70"/>
+
+        <!-- Kakariko Bazaar -->
+        <DList Name="gKakarikoBazaarSignDL" Offset="0x3078"/>
+        <Texture Name="gKakarikoBazaarSignTex" OutName="bazaar_sign" Format="ci4" Width="64" Height="64" Offset="0x2838" TlutOffset="0x2810"/>
+
+        <!-- BOTW Stone -->
+        <DList Name="gKakarikoBOTWStoneDL" Offset="0x3B20"/>
+        <Texture Name="gKakarikoBOTWStoneTex" OutName="botw_stone" Format="rgba16" Width="32" Height="32" Offset="0x3140"/>
+        <Collision Name="gKakarikoBOTWStoneCol" Offset="0x3C64"/>
+
+        <!-- Palettes -->
+        <Texture Name="gKakarikoShootingGalleryTLUT" OutName="shooting_gallery_tlut" Format="rgba16" Width="16" Height="16" Offset="0x0"/>
+        <Texture Name="gKakarikoBazaarSignTLUT" OutName="bazaar_sign_tlut" Format="rgba16" Width="4" Height="4" Offset="0x2810"/>
+    </File>
+</Root>

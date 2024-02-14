@@ -1,6 +1,26 @@
 <Root>
     <File Name="object_fhg" Segment="6">
 
+        <Texture Name="object_fhgTex_003320" OutName="object_fhgTex_003320" Format="rgba16" Width="16" Height="16" Offset="0x3320" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_003520" OutName="object_fhgTex_003520" Format="rgba16" Width="16" Height="16" Offset="0x3520" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_003720" OutName="object_fhgTex_003720" Format="rgba16" Width="16" Height="16" Offset="0x3720" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_003920" OutName="object_fhgTex_003920" Format="rgba16" Width="16" Height="16" Offset="0x3920" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_003B20" OutName="object_fhgTex_003B20" Format="rgba16" Width="8" Height="8" Offset="0x3B20" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_003BA0" OutName="object_fhgTex_003BA0" Format="rgba16" Width="16" Height="16" Offset="0x3BA0" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_003DA0" OutName="object_fhgTex_003DA0" Format="rgba16" Width="16" Height="16" Offset="0x3DA0" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_003FA0" OutName="object_fhgTex_003FA0" Format="rgba16" Width="16" Height="32" Offset="0x3FA0" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_0043A0" OutName="object_fhgTex_0043A0" Format="rgba16" Width="16" Height="8" Offset="0x43A0" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_0044A0" OutName="object_fhgTex_0044A0" Format="rgba16" Width="32" Height="32" Offset="0x44A0" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_004CA0" OutName="object_fhgTex_004CA0" Format="rgba16" Width="8" Height="16" Offset="0x4CA0" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_004DA0" OutName="object_fhgTex_004DA0" Format="rgba16" Width="8" Height="8" Offset="0x4DA0" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_00D040" OutName="object_fhgTex_00D040" Format="rgba16" Width="4" Height="4" Offset="0xD040" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_00D060" OutName="object_fhgTex_00D060" Format="rgba16" Width="16" Height="16" Offset="0xD060" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_00E8B0" OutName="object_fhgTex_00E8B0" Format="i4" Width="64" Height="64" Offset="0xE8B0" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_00F0B0" OutName="object_fhgTex_00F0B0" Format="i4" Width="64" Height="64" Offset="0xF0B0" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_00FD98" OutName="object_fhgTex_00FD98" Format="i8" Width="64" Height="32" Offset="0xFD98" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_010660" OutName="object_fhgTex_010660" Format="i4" Width="32" Height="96" Offset="0x10660" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_010D20" OutName="object_fhgTex_010D20" Format="i8" Width="32" Height="32" Offset="0x10D20" AddedByScript="true"/>
+        <Texture Name="object_fhgTex_011120" OutName="object_fhgTex_011120" Format="i8" Width="64" Height="64" Offset="0x11120" AddedByScript="true"/>
         <!-- Skeleton -->
         <Skeleton Name="gPhantomHorseSkel" Type="Normal" LimbType="Skin" Offset="0xB098"/>
 

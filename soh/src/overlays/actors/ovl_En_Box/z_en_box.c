@@ -75,7 +75,6 @@ static InitChainEntry sInitChain[] = {
 };
 
 static UNK_TYPE sUnused;
-GetItemEntry sItem;
 
 Gfx gSkullTreasureChestChestSideAndLidDL[116] = {0};
 Gfx gGoldTreasureChestChestSideAndLidDL[116] = {0};
@@ -88,6 +87,7 @@ Gfx gKeyTreasureChestChestFrontDL[128] = {0};
 Gfx gChristmasRedTreasureChestChestFrontDL[128] = {0};
 Gfx gChristmasGreenTreasureChestChestFrontDL[128] = {0};
 u8 hasCreatedRandoChestTextures = 0;
+u8 hasCustomChestDLs = 0;
 u8 hasChristmasChestTexturesAvailable = 0;
 
 void EnBox_SetupAction(EnBox* this, EnBoxActionFunc actionFunc) {
@@ -192,7 +192,7 @@ void EnBox_Init(Actor* thisx, PlayState* play2) {
     SkelAnime_Init(play, &this->skelanime, &gTreasureChestSkel, anim, this->jointTable, this->morphTable, 5);
     Animation_Change(&this->skelanime, anim, 1.5f, animFrameStart, endFrame, ANIMMODE_ONCE, 0.0f);
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         this->getItemEntry = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
     } else {
         this->getItemEntry = ItemTable_RetrieveEntry(MOD_NONE, this->dyna.actor.params >> 5 & 0x7F);
@@ -201,12 +201,12 @@ void EnBox_Init(Actor* thisx, PlayState* play2) {
     EnBox_UpdateSizeAndTexture(this, play);
     // For SOH we spawn a chest actor instead of rendering the object from scratch for forest boss
     // key chest, and it's up on the wall so disable gravity for it.
-    if (play->sceneNum == SCENE_BMORI1 && this->dyna.actor.params == 10222) {
+    if (play->sceneNum == SCENE_FOREST_TEMPLE && this->dyna.actor.params == 10222) {
         this->movementFlags = ENBOX_MOVE_IMMOBILE;
     }
 
     // Delete chests in Boss Rush. Mainly for the chest in King Dodongo's boss room.
-    if (gSaveContext.isBossRush) {
+    if (IS_BOSS_RUSH) {
         EnBox_SetupAction(this, EnBox_Destroy);
     }
 }
@@ -448,7 +448,7 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
 
         // treasure chest game rando
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
-            if (gSaveContext.n64ddFlag && play->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
+            if (IS_RANDO && play->sceneNum == SCENE_TREASURE_BOX_SHOP && (this->dyna.actor.params & 0x60) != 0x20) {
                 if((this->dyna.actor.params & 0xF) < 2) {
                     Flags_SetCollectible(play, 0x1B);
                 }
@@ -471,12 +471,12 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
         func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, play)) {
-            sItem = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
+            GetItemEntry sItem = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
             GetItemEntry blueRupee = ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
             
             // RANDOTODO treasure chest game rando
             if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
-                if (gSaveContext.n64ddFlag && play->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
+                if (IS_RANDO && play->sceneNum == SCENE_TREASURE_BOX_SHOP && (this->dyna.actor.params & 0x60) != 0x20) {
                     if((this->dyna.actor.params & 0xF) < 2) {
                         if(Flags_GetCollectible(play, 0x1B)) {
                             sItem = blueRupee;
@@ -506,7 +506,7 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
             }
             // Chests need to have a negative getItemId in order to not immediately give their item
             // when approaching.
-            if (gSaveContext.n64ddFlag) {
+            if (IS_RANDO) {
                 sItem.getItemId = 0 - sItem.getItemId;
                 sItem.getItemFrom = ITEM_FROM_CHEST;
                 GiveItemEntryFromActorWithFixedRange(&this->dyna.actor, play, sItem);
@@ -626,10 +626,13 @@ void EnBox_Update(Actor* thisx, PlayState* play) {
             Actor_SetFocus(&this->dyna.actor, 40.0f);
     }
 
-    if (((!gSaveContext.n64ddFlag && ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C)) ||
-         (gSaveContext.n64ddFlag && ABS(sItem.getItemId) == RG_ICE_TRAP)) && 
-        this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 &&
-        this->iceSmokeTimer < 100) EnBox_SpawnIceSmoke(this, play);
+    if (((!IS_RANDO && ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C)) ||
+        (IS_RANDO && this->getItemEntry.getItemId == RG_ICE_TRAP)) &&
+        this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100) {
+        if (!CVarGetInteger("gAddTraps.enabled", 0)) {
+            EnBox_SpawnIceSmoke(this, play);
+        }
+    }
 }
 
 void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
@@ -639,7 +642,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     GetItemCategory getItemCategory;
 
     int isVanilla = csmc == CSMC_DISABLED || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) ||
-        (play->sceneNum == SCENE_TAKARAYA && this->dyna.actor.room != 6); // Exclude treasure game chests except for the final room
+        (play->sceneNum == SCENE_TREASURE_BOX_SHOP && this->dyna.actor.room != 6); // Exclude treasure game chests except for the final room
 
     if (!isVanilla) {
         getItemCategory = this->getItemEntry.getItemCategory;
@@ -687,7 +690,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     }
 
     // Change texture
-    if (!isVanilla && (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE)) {
+    if (!isVanilla && hasCreatedRandoChestTextures && !hasCustomChestDLs && (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_MAJOR:
                 this->boxBodyDL = gGoldTreasureChestChestFrontDL;
@@ -722,7 +725,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
         }
     }
 
-    if (CVarGetInteger("gLetItSnow", 0) && hasChristmasChestTexturesAvailable) {
+    if (CVarGetInteger("gLetItSnow", 0) && hasChristmasChestTexturesAvailable && hasCreatedRandoChestTextures && !hasCustomChestDLs) {
         if (this->dyna.actor.scale.x == 0.01f) {
             this->boxBodyDL = gChristmasRedTreasureChestChestFrontDL;
             this->boxLidDL = gChristmasRedTreasureChestChestSideAndLidDL;
@@ -741,30 +744,41 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     s16 isLarge = this->dyna.actor.scale.x == 0.01f;
 
     // Make Ganon's Castle Zelda's Lullaby chest reachable when large.
-    if ((params & 0xF000) == 0x8000 && sceneNum == SCENE_GANONTIKA && room == 9) {
+    if ((params & 0xF000) == 0x8000 && sceneNum == SCENE_INSIDE_GANONS_CASTLE && room == 9) {
         this->dyna.actor.world.pos.z = isLarge ? -962.0f : -952.0f;
     }
 
     // Make MQ Deku Tree Song of Time chest reachable when large.
-    if (params == 0x5AA0 && sceneNum == SCENE_YDAN && room == 5) {
+    if (params == 0x5AA0 && sceneNum == SCENE_DEKU_TREE && room == 5) {
         this->dyna.actor.world.pos.x = isLarge ? -1380.0f : -1376.0f;
     }
 
     // Make Ganon's Castle Gold Gauntlets chest reachable with hookshot from the
     // switch platform when small.
-    if (params == 0x36C5 && sceneNum == SCENE_GANONTIKA && room == 12) {
+    if (params == 0x36C5 && sceneNum == SCENE_INSIDE_GANONS_CASTLE && room == 12) {
         this->dyna.actor.world.pos.x = isLarge ? 1757.0f : 1777.0f;
         this->dyna.actor.world.pos.z = isLarge ? -3595.0f : -3626.0f;
     }
 
     // Make Spirit Temple Compass Chest reachable with hookshot when small.
-    if (params == 0x3804 && sceneNum == SCENE_JYASINZOU && room == 14) {
+    if (params == 0x3804 && sceneNum == SCENE_SPIRIT_TEMPLE && room == 14) {
         this->dyna.actor.world.pos.x = isLarge ? 358.0f : 400.0f;
     }
 }
 
 void EnBox_CreateExtraChestTextures() {
+    // Don't patch textures for custom chest models, as they do not import textures the exact same way as vanilla chests
+    // OTRTODO: Make it so model packs can provide a unique DL per chest type, instead of us copying the brown chest and attempting to patch
+    if (ResourceMgr_FileIsCustomByName(gTreasureChestChestFrontDL) ||
+        ResourceMgr_FileIsCustomByName(gTreasureChestChestSideAndLidDL)) {
+        hasCustomChestDLs = 1;
+        return;
+    }
+
+    hasCustomChestDLs = 0;
+
     if (hasCreatedRandoChestTextures) return;
+
     Gfx gTreasureChestChestTextures[] = {
         gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gSkullTreasureChestFrontTex),
         gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gSkullTreasureChestSideAndTopTex),

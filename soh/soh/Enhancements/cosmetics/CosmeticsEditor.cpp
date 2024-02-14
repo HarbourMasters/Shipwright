@@ -46,6 +46,7 @@ extern PlayState* gPlayState;
 #include "overlays/ovl_Boss_Ganon2/ovl_Boss_Ganon2.h"
 #include "objects/object_gjyo_objects/object_gjyo_objects.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
+#include "objects/object_gi_rabit_mask/object_gi_rabit_mask.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex, int sourceIndex);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
@@ -66,6 +67,7 @@ typedef enum {
     GROUP_EQUIPMENT,
     GROUP_CONSUMABLE,
     GROUP_HUD,
+    GROUP_KALEIDO,
     GROUP_TITLE,
     GROUP_NPC,
     GROUP_WORLD,
@@ -74,6 +76,7 @@ typedef enum {
     GROUP_SPIN_ATTACK,
     GROUP_TRAILS,
     GROUP_NAVI,
+    GROUP_IVAN,
 } CosmeticGroup;
 
 std::map<CosmeticGroup, const char*> groupLabels = {
@@ -84,6 +87,7 @@ std::map<CosmeticGroup, const char*> groupLabels = {
     { GROUP_EQUIPMENT, "Equipment" },
     { GROUP_CONSUMABLE, "Consumables" },
     { GROUP_HUD, "HUD" },
+    { GROUP_KALEIDO, "Pause Menu" },
     { GROUP_TITLE, "Title Screen" },
     { GROUP_NPC, "NPCs" },
     { GROUP_WORLD, "World" },
@@ -92,6 +96,7 @@ std::map<CosmeticGroup, const char*> groupLabels = {
     { GROUP_SPIN_ATTACK, "Spin Attack" },
     { GROUP_TRAILS, "Trails" },
     { GROUP_NAVI, "Navi" },
+    { GROUP_IVAN, "Ivan" } 
 };
 
 typedef struct {
@@ -195,7 +200,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Link_Hair",                     "Hair",                 GROUP_LINK,         ImVec4(255, 173,  27, 255), false, true, true),
     COSMETIC_OPTION("Link_Linen",                    "Linen",                GROUP_LINK,         ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Link_Boots",                    "Boots",                GROUP_LINK,         ImVec4( 93,  44,  18, 255), false, true, true),
-
+    
     COSMETIC_OPTION("MirrorShield_Body",             "Body",                 GROUP_MIRRORSHIELD, ImVec4(215,   0,   0, 255), false, true, false),
     COSMETIC_OPTION("MirrorShield_Mirror",           "Mirror",               GROUP_MIRRORSHIELD, ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("MirrorShield_Emblem",           "Emblem",               GROUP_MIRRORSHIELD, ImVec4(205, 225, 255, 255), false, true, true),
@@ -219,14 +224,16 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Equipment_HammerHead",          "Hammer Head",          GROUP_EQUIPMENT,    ImVec4(155, 192, 201, 255), false, true, false),
     COSMETIC_OPTION("Equipment_HammerHandle",        "Hammer Handle",        GROUP_EQUIPMENT,    ImVec4(110,  60,   0, 255), false, true, true),
     // COSMETIC_OPTION("Equipment_HookshotChain",       "Hookshot Chain",       GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Implement
-    // COSMETIC_OPTION("Equipment_HookshotReticle",     "Hookshot Reticle",     GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Implement
     // COSMETIC_OPTION("Equipment_HookshotTip",         "Hookshot Tip",         GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Implement
+    COSMETIC_OPTION("HookshotReticle_Target",        "Hookshotable Reticle", GROUP_EQUIPMENT,         ImVec4(  0, 255,   0, 255), false, false, false),
+    COSMETIC_OPTION("HookshotReticle_NonTarget",     "Non-Hookshotable Reticle", GROUP_EQUIPMENT,     ImVec4(255,   0,   0, 255), false, false, false),
     COSMETIC_OPTION("Equipment_BowTips",             "Bow Tips",             GROUP_EQUIPMENT,    ImVec4(200,   0,   0, 255), false, true, true),
     COSMETIC_OPTION("Equipment_BowString",           "Bow String",           GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Equipment_BowBody",             "Bow Body",             GROUP_EQUIPMENT,    ImVec4(140,  90,  10, 255), false, true, false),
     COSMETIC_OPTION("Equipment_BowHandle",           "Bow Handle",           GROUP_EQUIPMENT,    ImVec4( 50, 150, 255, 255), false, true, true),
     COSMETIC_OPTION("Equipment_ChuFace",             "Bombchu Face",         GROUP_EQUIPMENT,    ImVec4(  0, 100, 150, 255), false, true, true),
     COSMETIC_OPTION("Equipment_ChuBody",             "Bombchu Body",         GROUP_EQUIPMENT,    ImVec4(180, 130,  50, 255), false, true, true), 
+    COSMETIC_OPTION("Equipment_BunnyHood",           "Bunny Hood",           GROUP_EQUIPMENT,    ImVec4(255, 235,  109, 255), false, true, true), 
 
     COSMETIC_OPTION("Consumable_Hearts",             "Hearts",               GROUP_CONSUMABLE,   ImVec4(255,  70,  50, 255), false, true, false),
     COSMETIC_OPTION("Consumable_HeartBorder",        "Heart Border",         GROUP_CONSUMABLE,   ImVec4( 50,  40,  60, 255), false, true, true),
@@ -259,6 +266,40 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Hud_MinimapEntrance",           "Minimap Entrance",     GROUP_HUD,          ImVec4(200,   0,   0, 255), false, true, true),
     COSMETIC_OPTION("Hud_EnemyHealthBar",            "Enemy Health Bar",     GROUP_HUD,          ImVec4(255,   0,   0, 255), true, true, false),
     COSMETIC_OPTION("Hud_EnemyHealthBorder",         "Enemy Health Border",  GROUP_HUD,          ImVec4(255, 255, 255, 255), true, false, true),
+    COSMETIC_OPTION("Hud_NameTagActorText",          "Nametag Text",         GROUP_HUD,          ImVec4(255, 255, 255, 255), true, true, false),
+    COSMETIC_OPTION("Hud_NameTagActorBackground",    "Nametag Background",   GROUP_HUD,          ImVec4(0,     0,   0,  80), true, false, true),
+
+    COSMETIC_OPTION("Kal_ItemSelA",                  "Item Select Color A",  GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, false),
+    COSMETIC_OPTION("Kal_ItemSelB",                  "Item Select Color B",  GROUP_KALEIDO,      ImVec4(70,  100, 130, 255), false, true, false),
+    COSMETIC_OPTION("Kal_ItemSelC",                  "Item Select Color C",  GROUP_KALEIDO,      ImVec4(70,  100, 130, 255), false, true, false),
+    COSMETIC_OPTION("Kal_ItemSelD",                  "Item Select Color D",  GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, false),
+
+    COSMETIC_OPTION("Kal_EquipSelA",                 "Equip Select Color A", GROUP_KALEIDO,      ImVec4(10,   50,  40, 255), false, true, false),
+    COSMETIC_OPTION("Kal_EquipSelB",                 "Equip Select Color B", GROUP_KALEIDO,      ImVec4(90,  100,  60, 255), false, true, false),
+    COSMETIC_OPTION("Kal_EquipSelC",                 "Equip Select Color C", GROUP_KALEIDO,      ImVec4(90,  100,  60, 255), false, true, false),
+    COSMETIC_OPTION("Kal_EquipSelD",                 "Equip Select Color D", GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, false),
+
+    COSMETIC_OPTION("Kal_MapSelDunA",                "Map Dungeon Color A",  GROUP_KALEIDO,      ImVec4(80,   40,  30, 255), false, true, false),
+    COSMETIC_OPTION("Kal_MapSelDunB",                "Map Dungeon Color B",  GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, false),
+    COSMETIC_OPTION("Kal_MapSelDunC",                "Map Dungeon Color C",  GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, false),
+    COSMETIC_OPTION("Kal_MapSelDunD",                "Map Dungeon Color D",  GROUP_KALEIDO,      ImVec4(80,   40,  30, 255), false, true, false),
+
+    COSMETIC_OPTION("Kal_QuestStatusA",              "Quest StatusColor A",  GROUP_KALEIDO,      ImVec4(80, 80, 50, 255),    false, true, false),
+    COSMETIC_OPTION("Kal_QuestStatusB",              "Quest StatusColor B",  GROUP_KALEIDO,      ImVec4(120, 120, 70, 255),  false, true, false),
+    COSMETIC_OPTION("Kal_QuestStatusC",              "Quest StatusColor C",  GROUP_KALEIDO,      ImVec4(120, 120, 70, 255),  false, true, false),
+    COSMETIC_OPTION("Kal_QuestStatusD",              "Quest StatusColor D",  GROUP_KALEIDO,      ImVec4(80, 80, 50, 255),    false, true, false),
+
+    COSMETIC_OPTION("Kal_MapSelectA",                "Map Color A",          GROUP_KALEIDO,      ImVec4(80, 40, 30, 255),    false, true, false),
+    COSMETIC_OPTION("Kal_MapSelectB",                "Map Color B",          GROUP_KALEIDO,      ImVec4(140, 60, 60, 255),   false, true, false),
+    COSMETIC_OPTION("Kal_MapSelectC",                "Map Color C",          GROUP_KALEIDO,      ImVec4(140, 60, 60, 255),   false, true, false),
+    COSMETIC_OPTION("Kal_MapSelectD",                "Map Color D",          GROUP_KALEIDO,      ImVec4(80, 40, 30, 255),    false, true, false),
+
+    COSMETIC_OPTION("Kal_SaveA",                     "Save A",               GROUP_KALEIDO,      ImVec4(50, 50, 50, 255),    false, true, false),
+    COSMETIC_OPTION("Kal_SaveB",                     "Save B",               GROUP_KALEIDO,      ImVec4(110, 110, 110, 255), false, true, false),
+    COSMETIC_OPTION("Kal_SaveC",                     "Save C",               GROUP_KALEIDO,      ImVec4(110, 110, 110, 255), false, true, false),
+    COSMETIC_OPTION("Kal_SaveD",                     "Save D",               GROUP_KALEIDO,      ImVec4(50, 50, 50, 255),    false, true, false),
+
+    COSMETIC_OPTION("Kal_NamePanel",                 "Name Panel",           GROUP_KALEIDO,      ImVec4(90,100,130,255),     true, true, false),
 
     COSMETIC_OPTION("Title_FileChoose",              "File Choose",          GROUP_TITLE,        ImVec4(100, 150, 255, 255), false, true, false),
     COSMETIC_OPTION("Title_NintendoLogo",            "Nintendo Logo",        GROUP_TITLE,        ImVec4(  0,   0, 255, 255), false, true, true),
@@ -311,6 +352,9 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Navi_EnemySecondary",           "Enemy Secondary",      GROUP_NAVI,         ImVec4(200, 155,   0,   0), false, true, true),
     COSMETIC_OPTION("Navi_PropsPrimary",             "Props Primary",        GROUP_NAVI,         ImVec4(  0, 255,   0, 255), false, true, false),
     COSMETIC_OPTION("Navi_PropsSecondary",           "Props Secondary",      GROUP_NAVI,         ImVec4(  0, 255,   0,   0), false, true, true),
+    
+    COSMETIC_OPTION("Ivan_IdlePrimary",              "Ivan Idle Primary",    GROUP_IVAN,         ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Ivan_IdleSecondary",            "Ivan Idle Secondary",  GROUP_IVAN,         ImVec4(  0, 255,   0, 255), false, true, true),
 
     COSMETIC_OPTION("NPC_FireKeesePrimary",          "Fire Keese Primary",   GROUP_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("NPC_FireKeeseSecondary",        "Fire Keese Secondary", GROUP_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
@@ -656,8 +700,8 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
         PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordNearDL,     "Swords_MasterBlade2",      swordsMasterBlade.changedCvar,       17, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterBlade3",      swordsMasterBlade.changedCvar,       13, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterBlade4",      swordsMasterBlade.changedCvar,       14, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(ovl_Boss_Ganon2_DL_0103A8,                      "Swords_MasterBlade5",      swordsMasterBlade.changedCvar,       13, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(ovl_Boss_Ganon2_DL_0103A8,                      "Swords_MasterBlade6",      swordsMasterBlade.changedCvar,       14, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGanonMasterSwordDL,                            "Swords_MasterBlade5",      swordsMasterBlade.changedCvar,       13, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGanonMasterSwordDL,                            "Swords_MasterBlade6",      swordsMasterBlade.changedCvar,       14, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
     }
     // static CosmeticOption& swordsMasterHilt = cosmeticOptions.at("Swords_MasterHilt");
     // if (manualChange || CVarGetInteger(swordsMasterHilt.rainbowCvar, 0)) {
@@ -672,7 +716,7 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     //     PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "Swords_MasterHilt7",       swordsMasterHilt.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
     //     PATCH_GFX(gLinkAdultHylianShieldSwordAndSheathNearDL,     "Swords_MasterHilt8",       swordsMasterHilt.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
     //     PATCH_GFX(gLinkAdultHylianShieldSwordAndSheathFarDL,      "Swords_MasterHilt9",       swordsMasterHilt.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
-    //     PATCH_GFX(ovl_Boss_Ganon2_DL_0103A8,                      "Swords_MasterHilt10",      swordsMasterHilt.changedCvar,        16, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+    //     PATCH_GFX(gGanonMasterSwordDL,                            "Swords_MasterHilt10",      swordsMasterHilt.changedCvar,        16, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
 
     //     if (manualChange) {
     //     PATCH_GFX(gLinkAdultMasterSwordAndSheathFarDL,            "Swords_MasterHilt11",      swordsMasterHilt.changedCvar,        38, gsSPGrayscale(true));
@@ -701,9 +745,9 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     //     PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterHilt34",      swordsMasterHilt.changedCvar,       112, gsSPGrayscale(true));
     //     PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterHilt35",      swordsMasterHilt.changedCvar,       278, gsSPGrayscale(false));
     //     PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterHilt36",      swordsMasterHilt.changedCvar,       280, gsSPEndDisplayList());
-    //     PATCH_GFX(ovl_Boss_Ganon2_DL_0103A8,                      "Swords_MasterHilt37",      swordsMasterHilt.changedCvar,       112, gsSPGrayscale(true));
-    //     PATCH_GFX(ovl_Boss_Ganon2_DL_0103A8,                      "Swords_MasterHilt38",      swordsMasterHilt.changedCvar,       278, gsSPGrayscale(false));
-    //     PATCH_GFX(ovl_Boss_Ganon2_DL_0103A8,                      "Swords_MasterHilt39",      swordsMasterHilt.changedCvar,       280, gsSPEndDisplayList());
+    //     PATCH_GFX(gGanonMasterSwordDL,                            "Swords_MasterHilt37",      swordsMasterHilt.changedCvar,       112, gsSPGrayscale(true));
+    //     PATCH_GFX(gGanonMasterSwordDL,                            "Swords_MasterHilt38",      swordsMasterHilt.changedCvar,       278, gsSPGrayscale(false));
+    //     PATCH_GFX(gGanonMasterSwordDL,                            "Swords_MasterHilt39",      swordsMasterHilt.changedCvar,       280, gsSPEndDisplayList());
     //     }
     // }
     static CosmeticOption& swordsBiggoronBlade = cosmeticOptions.at("Swords_BiggoronBlade");
@@ -911,6 +955,26 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
         PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuBody3",       equipmentChuBody.changedCvar,        60, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuBody4",       equipmentChuBody.changedCvar,        61, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
         PATCH_GFX(gBombchuDL,                                     "Equipment_ChuBody5",       equipmentChuBody.changedCvar,        46, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+    }
+
+    static CosmeticOption& equipmentBunnyHood = cosmeticOptions.at("Equipment_BunnyHood");
+    if (manualChange || CVarGetInteger(equipmentBunnyHood.rainbowCvar, 0)) {
+        static Color_RGBA8 defaultColor = {equipmentBunnyHood.defaultColor.x, equipmentBunnyHood.defaultColor.y, equipmentBunnyHood.defaultColor.z, equipmentBunnyHood.defaultColor.w};
+        Color_RGBA8 color = CVarGetColor(equipmentBunnyHood.cvar, defaultColor);
+        PATCH_GFX(gGiBunnyHoodDL,                                   "Equipment_BunnyHood1",       equipmentBunnyHood.changedCvar,        5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBunnyHoodDL,                                   "Equipment_BunnyHood2",       equipmentBunnyHood.changedCvar,        6, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gGiBunnyHoodDL,                                   "Equipment_BunnyHood3",       equipmentBunnyHood.changedCvar,        83, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBunnyHoodDL,                                   "Equipment_BunnyHood4",       equipmentBunnyHood.changedCvar,        84, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gLinkChildBunnyHoodDL,                            "Equipment_BunnyHood5",       equipmentBunnyHood.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+
+        if (manualChange) {
+        PATCH_GFX(gLinkChildBunnyHoodDL,                            "Equipment_BunnyHood6",       equipmentBunnyHood.changedCvar,        13, gsSPGrayscale(true));
+            if (CVarGetInteger(equipmentBunnyHood.changedCvar, 0)) {
+                ResourceMgr_PatchGfxByName(gLinkChildBunnyHoodDL,   "Equipment_BunnyHood7",                                             125, gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
+            } else {
+                ResourceMgr_UnpatchGfxByName(gLinkChildBunnyHoodDL, "Equipment_BunnyHood7");
+            }
+        }
     }
 
     static CosmeticOption& consumableGreenRupee = cosmeticOptions.at("Consumable_GreenRupee");
@@ -1302,12 +1366,13 @@ void Reset_Option_Double(char* Button_Title, char* name) {
     }
 }
 void DrawSillyTab() {
+    ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
     if (CVarGetInteger("gLetItSnow", 0)) {
         if (UIWidgets::EnhancementCheckbox("Let It Snow", "gLetItSnow")) {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
     }
-    if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %f", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, true)) {
+    if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %.3fx", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, true)) {
         CVarSetInteger("gCosmetics.Link_BodyScale.Changed", 1);
     }
     ImGui::SameLine();
@@ -1322,7 +1387,7 @@ void DrawSillyTab() {
             player->actor.scale.z = 0.01f;
         }
     }
-    if (UIWidgets::EnhancementSliderFloat("Link Head Scale: %f", "##Link_HeadScale", "gCosmetics.Link_HeadScale.Value", 0.4f, 4.0f, "", 1.0f, false)) {
+    if (UIWidgets::EnhancementSliderFloat("Link Head Scale: %.2fx", "##Link_HeadScale", "gCosmetics.Link_HeadScale.Value", 0.4f, 4.0f, "", 1.0f, false)) {
         CVarSetInteger("gCosmetics.Link_HeadScale.Changed", 1);
     }
     Reset_Option_Double("Reset##Link_HeadScale", "gCosmetics.Link_HeadScale");
@@ -1402,6 +1467,8 @@ void RandomizeColor(CosmeticOption& cosmeticOption) {
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_NPCSecondary"), 1.0f);
     } else if (cosmeticOption.label == "Props Primary") {
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_PropsSecondary"), 1.0f);
+    } else if (cosmeticOption.label == "Ivan Idle Primary") {
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Ivan_IdleSecondary"), 0.5f);
     } else if (cosmeticOption.label == "Level 1 Secondary") {
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("SpinAttack_Level1Primary"), 2.0f);
     } else if (cosmeticOption.label == "Level 2 Secondary") {
@@ -1466,7 +1533,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::SameLine();
-    ImGui::Text(cosmeticOption.label.c_str());
+    ImGui::Text("%s", cosmeticOption.label.c_str());
     ImGui::SameLine((ImGui::CalcTextSize("Mirror Shield Mirror").x * 1.0f) + 60.0f);
     if (ImGui::Button(("Random##" + cosmeticOption.label).c_str())) {
         RandomizeColor(cosmeticOption);
@@ -1501,7 +1568,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
 
 void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
     std::string label = groupLabels.at(cosmeticGroup);
-    ImGui::Text(label.c_str());
+    ImGui::Text("%s", label.c_str());
     ImGui::SameLine((ImGui::CalcTextSize("Mirror Shield Mirror").x * 1.0f) + 60.0f);
     if (ImGui::Button(("Random##" + label).c_str())) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
@@ -1545,6 +1612,10 @@ void CosmeticsEditorWindow::DrawElement() {
     ImGui::SameLine();
     UIWidgets::EnhancementCombobox("gCosmetics.DefaultColorScheme", colorSchemes, COLORSCHEME_N64);
     UIWidgets::EnhancementCheckbox("Advanced Mode", "gCosmetics.AdvancedMode");
+    UIWidgets::InsertHelpHoverText(
+        "Some cosmetic options may not apply if you have any mods that provide custom models for the cosmetic option.\n\n"
+        "For example, if you have custom Link model, then the Link's Hair color option will most likely not apply."
+    );
     if (CVarGetInteger("gCosmetics.AdvancedMode", 0)) {
         if (ImGui::Button("Lock All Advanced", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
             for (auto& [id, cosmeticOption] : cosmeticOptions) {
@@ -1565,15 +1636,12 @@ void CosmeticsEditorWindow::DrawElement() {
         }
     }
     UIWidgets::EnhancementCheckbox("Sync Rainbow colors", "gCosmetics.RainbowSync");
-    UIWidgets::EnhancementSliderFloat("Rainbow Speed: %f", "##rainbowSpeed", "gCosmetics.RainbowSpeed", 0.03f, 1.0f, "", 0.6f, false);
+    UIWidgets::EnhancementSliderFloat("Rainbow Speed: %.3f", "##rainbowSpeed", "gCosmetics.RainbowSpeed", 0.03f, 1.0f, "", 0.6f, false, true);
+    UIWidgets::EnhancementCheckbox("Randomize All on New Scene", "gCosmetics.RandomizeAllOnNewScene");
+    UIWidgets::Tooltip("Enables randomizing all unlocked cosmetics when you enter a new scene.");
+
     if (ImGui::Button("Randomize All", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
-        for (auto& [id, cosmeticOption] : cosmeticOptions) {
-            if (!CVarGetInteger(cosmeticOption.lockedCvar, 0) && (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0))) {
-                RandomizeColor(cosmeticOption);
-            }
-        }
-        ApplyOrResetCustomGfxPatches();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        CosmeticsEditor_RandomizeAll();
     }
     ImGui::SameLine();
     if (ImGui::Button("Reset All", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
@@ -1633,6 +1701,7 @@ void CosmeticsEditorWindow::DrawElement() {
         if (ImGui::BeginTabItem("World & NPCs")) {
             DrawCosmeticGroup(GROUP_WORLD);
             DrawCosmeticGroup(GROUP_NAVI);
+            DrawCosmeticGroup(GROUP_IVAN);
             DrawCosmeticGroup(GROUP_NPC);
             ImGui::EndTabItem();
         }
@@ -1645,8 +1714,14 @@ void CosmeticsEditorWindow::DrawElement() {
             DrawCosmeticGroup(GROUP_TITLE);
             ImGui::EndTabItem();
         }
+
         if (ImGui::BeginTabItem("HUD Placement")) {
             Draw_Placements();
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("Pause Menu")) {
+            DrawCosmeticGroup(GROUP_KALEIDO);
             ImGui::EndTabItem();
         }
         ImGui::EndTabBar();
@@ -1663,6 +1738,14 @@ void RegisterOnLoadGameHook() {
 void RegisterOnGameFrameUpdateHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         CosmeticsUpdateTick();
+    });
+}
+
+void Cosmetics_RegisterOnSceneInitHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        if (CVarGetInteger("gCosmetics.RandomizeAllOnNewScene", 0)) {
+            CosmeticsEditor_RandomizeAll();
+        }
     });
 }
 
@@ -1683,6 +1766,7 @@ void CosmeticsEditorWindow::InitElement() {
 
     RegisterOnLoadGameHook();
     RegisterOnGameFrameUpdateHook();
+    Cosmetics_RegisterOnSceneInitHook();
 }
 
 void CosmeticsEditor_RandomizeAll() {

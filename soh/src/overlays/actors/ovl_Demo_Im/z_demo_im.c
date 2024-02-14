@@ -868,13 +868,13 @@ void func_80986B2C(PlayState* play) {
         Player* player = GET_PLAYER(play);
 
         // In entrance rando have impa bring link back to the front of castle grounds
-        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-            play->nextEntranceIndex = 0x0138;
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
+            play->nextEntranceIndex = ENTR_HYRULE_CASTLE_0;
         } else {
-            play->nextEntranceIndex = 0xCD;
+            play->nextEntranceIndex = ENTR_HYRULE_FIELD_0;
         }
-        play->fadeTransition = 38;
-        play->sceneLoadFlag = 0x14;
+        play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
+        play->transitionTrigger = TRANS_TRIGGER_START;
         func_8002DF54(play, &player->actor, 8);
     }
 }
@@ -913,14 +913,14 @@ void GivePlayerRandoRewardImpa(Actor* impa, PlayState* play, RandomizerCheck che
         GiveItemEntryFromActor(impa, play, getItemEntry, 75.0f, 50.0f);
     } else if (!Player_InBlockingCsMode(play, GET_PLAYER(play))) {
         Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
-        play->sceneLoadFlag = 0x14;
-        play->fadeTransition = 3;
-        gSaveContext.nextTransitionType = 3;
+        play->transitionTrigger = TRANS_TRIGGER_START;
+        play->transitionType = TRANS_TYPE_FADE_WHITE;
+        gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
         // In entrance rando have impa bring link back to the front of castle grounds
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-            play->nextEntranceIndex = 0x0138;
+            play->nextEntranceIndex = ENTR_HYRULE_CASTLE_0;
         } else {
-            play->nextEntranceIndex = 0x0594;
+            play->nextEntranceIndex = ENTR_HYRULE_FIELD_17;
         }
         gSaveContext.nextCutsceneIndex = 0;
     }
@@ -928,7 +928,7 @@ void GivePlayerRandoRewardImpa(Actor* impa, PlayState* play, RandomizerCheck che
 
 void func_80986C30(DemoIm* this, PlayState* play) {
     if (func_80986A5C(this, play)) {
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             GivePlayerRandoRewardImpa(this, play, RC_SONG_FROM_IMPA);
         } else {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gZeldasCourtyardLullabyCs);
@@ -960,7 +960,7 @@ void func_80986D40(DemoIm* this, PlayState* play) {
     if (gSaveContext.sceneSetupIndex == 6) {
         this->action = 19;
         this->drawConfig = 1;
-    } else if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) && !gSaveContext.n64ddFlag) {
+    } else if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) && !IS_RANDO) {
         Actor_Kill(&this->actor);
     } else if (!Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY)) {
         this->action = 23;
@@ -1231,8 +1231,7 @@ void DemoIm_DrawSolid(DemoIm* this, PlayState* play) {
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
 
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                          DemoIm_OverrideLimbDraw, DemoIm_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, DemoIm_OverrideLimbDraw, DemoIm_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

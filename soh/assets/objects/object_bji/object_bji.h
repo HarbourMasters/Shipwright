@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_BJI_H
+#define OBJECTS_OBJECT_BJI_H 1
 
 #include "align_asset_macro.h"
 
@@ -94,3 +95,6 @@ static const ALIGN_ASSET(2) char object_bji_Tex_003A08[] = dobject_bji_Tex_003A0
 
 #define dobject_bji_DL_003F68 "__OTR__objects/object_bji/object_bji_DL_003F68"
 static const ALIGN_ASSET(2) char object_bji_DL_003F68[] = dobject_bji_DL_003F68;
+
+
+#endif // OBJECTS_OBJECT_BJI_H

@@ -157,7 +157,7 @@ void EnNiw_Init(Actor* thisx, PlayState* play) {
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 25.0f);
     SkelAnime_InitFlex(play, &this->skelAnime, &gCuccoSkel, &gCuccoAnim, this->jointTable, this->morphTable, 16);
 
-    if (play->sceneNum == SCENE_SPOT01) {
+    if (play->sceneNum == SCENE_KAKARIKO_VILLAGE) {
         for (i = 0; i < ARRAY_COUNT(sKakarikoPosList); i++) {
             if (fabsf(this->actor.world.pos.x - sKakarikoPosList[i].x) < 40.0f &&
                 fabsf(this->actor.world.pos.z - sKakarikoPosList[i].z) < 40.0f) {
@@ -228,7 +228,7 @@ void EnNiw_Init(Actor* thisx, PlayState* play) {
         case 0xD:
         case 0xE:
             Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit2);
-            if (play->sceneNum == SCENE_LINK_HOME && !Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE)) {
+            if (play->sceneNum == SCENE_LINKS_HOUSE && !Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE)) {
                 Actor_Kill(&this->actor);
             }
             break;
@@ -666,7 +666,7 @@ void func_80AB6D08(EnNiw* this, PlayState* play) {
         }
 
         this->path = 1;
-        this->timer5 = 80;
+        this->timer5 = 80 * CVarGetInteger("gCuccoStayDurationMultiplier", 1);
         this->actor.speedXZ = 0.0f;
         this->actor.velocity.y = 4.0f;
     } else {
@@ -975,10 +975,10 @@ void EnNiw_Update(Actor* thisx, PlayState* play) {
     Actor_SetFocus(&this->actor, this->unk_304);
     Actor_MoveForward(&this->actor);
 
-    if (this->actionFunc != func_80AB6EB4 && this->actionFunc != func_80AB6450 && play->sceneNum != SCENE_SPOT03) {
+    if (this->actionFunc != func_80AB6EB4 && this->actionFunc != func_80AB6450 && play->sceneNum != SCENE_ZORAS_RIVER) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 60.0f, 31);
     }
-    if (play->sceneNum == SCENE_SPOT03) {
+    if (play->sceneNum == SCENE_ZORAS_RIVER) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 60.0f, 29);
     }
     if (thisx->floorHeight <= BGCHECK_Y_MIN || thisx->floorHeight >= 32000.0f) {
@@ -1138,8 +1138,7 @@ void EnNiw_Draw(Actor* thisx, PlayState* play) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnNiw_OverrideLimbDraw, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnNiw_OverrideLimbDraw, NULL, this);
 
     if (this->actionFunc == func_80AB6450) {
         func_80033C30(&this->actor.world.pos, &scale, 255, play);

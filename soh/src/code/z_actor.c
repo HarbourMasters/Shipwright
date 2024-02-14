@@ -10,6 +10,7 @@
 #include "soh/Enhancements/enemyrandomizer.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/nametag.h"
 
 #include "soh/ActorDB.h"
 
@@ -661,10 +662,15 @@ s32 Flags_GetSwitch(PlayState* play, s32 flag) {
  * Sets current scene switch flag.
  */
 void Flags_SetSwitch(PlayState* play, s32 flag) {
+    u8 previouslyOff = !Flags_GetSwitch(play, flag);
     if (flag < 0x20) {
         play->actorCtx.flags.swch |= (1 << flag);
     } else {
         play->actorCtx.flags.tempSwch |= (1 << (flag - 0x20));
+    }
+    if (previouslyOff) {
+        LUSLOG_INFO("Switch Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_SWITCH, flag);
     }
 }
 
@@ -672,10 +678,15 @@ void Flags_SetSwitch(PlayState* play, s32 flag) {
  * Unsets current scene switch flag.
  */
 void Flags_UnsetSwitch(PlayState* play, s32 flag) {
+    u8 previouslyOn = Flags_GetSwitch(play, flag);
     if (flag < 0x20) {
         play->actorCtx.flags.swch &= ~(1 << flag);
     } else {
         play->actorCtx.flags.tempSwch &= ~(1 << (flag - 0x20));
+    }
+    if (previouslyOn) {
+        LUSLOG_INFO("Switch Flag Unset - %#x", flag);
+        GameInteractor_ExecuteOnSceneFlagUnset(play->sceneNum, FLAG_SCENE_SWITCH, flag);
     }
 }
 
@@ -723,7 +734,12 @@ s32 Flags_GetTreasure(PlayState* play, s32 flag) {
  * Sets current scene chest flag.
  */
 void Flags_SetTreasure(PlayState* play, s32 flag) {
+    u8 previouslyOff = !Flags_GetTreasure(play, flag);
     play->actorCtx.flags.chest |= (1 << flag);
+    if (previouslyOff) {
+        LUSLOG_INFO("Treasure Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_TREASURE, flag);
+    }
 }
 
 /**
@@ -737,14 +753,24 @@ s32 Flags_GetClear(PlayState* play, s32 flag) {
  * Sets current scene clear flag.
  */
 void Flags_SetClear(PlayState* play, s32 flag) {
+    u8 previouslyOff = !Flags_GetClear(play, flag);
     play->actorCtx.flags.clear |= (1 << flag);
+    if (previouslyOff) {
+        LUSLOG_INFO("Clear Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_CLEAR, flag);
+    }
 }
 
 /**
  * Unsets current scene clear flag.
  */
 void Flags_UnsetClear(PlayState* play, s32 flag) {
+    u8 previouslyOn = Flags_GetClear(play, flag);
     play->actorCtx.flags.clear &= ~(1 << flag);
+    if (previouslyOn) {
+        LUSLOG_INFO("Clear Flag Unset - %#x", flag);
+        GameInteractor_ExecuteOnSceneFlagUnset(play->sceneNum, FLAG_SCENE_CLEAR, flag);
+    }
 }
 
 /**
@@ -783,12 +809,17 @@ s32 Flags_GetCollectible(PlayState* play, s32 flag) {
  * Sets current scene collectible flag.
  */
 void Flags_SetCollectible(PlayState* play, s32 flag) {
+    u8 previouslyOff = !Flags_GetCollectible(play, flag);
     if (flag != 0) {
         if (flag < 0x20) {
             play->actorCtx.flags.collect |= (1 << flag);
         } else {
             play->actorCtx.flags.tempCollect |= (1 << (flag - 0x20));
         }
+    }
+    if (previouslyOff) {
+        LUSLOG_INFO("Collectible Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_COLLECTIBLE, flag);
     }
 }
 
@@ -833,53 +864,53 @@ void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* 
     SceneTableEntry* loadedScene = play->loadedScene;
   //  size_t size = loadedScene->titleFile.vromEnd - loadedScene->titleFile.vromStart;
     switch (play->sceneNum) {
-        case SCENE_YDAN:
+        case SCENE_DEKU_TREE:
             texture = gDekuTreeTitleCardENGTex;
             break;
-        case SCENE_DDAN:
+        case SCENE_DODONGOS_CAVERN:
             texture = gDodongosCavernTitleCardENGTex;
             break;
-        case SCENE_BDAN:
+        case SCENE_JABU_JABU:
             texture = gJabuJabuTitleCardENGTex;
             break;
-        case SCENE_BMORI1:
+        case SCENE_FOREST_TEMPLE:
             texture = gForestTempleTitleCardENGTex;
             break;
-        case SCENE_HIDAN:
+        case SCENE_FIRE_TEMPLE:
             texture = gFireTempleTitleCardENGTex;
             break;
-        case SCENE_MIZUSIN:
+        case SCENE_WATER_TEMPLE:
             texture = gWaterTempleTitleCardENGTex;
             break;
-        case SCENE_JYASINZOU:
+        case SCENE_SPIRIT_TEMPLE:
             texture = gSpiritTempleTitleCardENGTex;
             break;
-        case SCENE_HAKADAN:
+        case SCENE_SHADOW_TEMPLE:
             texture = gShadowTempleTitleCardENGTex;
             break;
-        case SCENE_HAKADANCH:
+        case SCENE_BOTTOM_OF_THE_WELL:
             texture = gBottomOfTheWellTitleCardENGTex;
             break;
-        case SCENE_ICE_DOUKUTO:
+        case SCENE_ICE_CAVERN:
             texture = gIceCavernTitleCardENGTex;
             break;
-        case SCENE_MEN:
+        case SCENE_GERUDO_TRAINING_GROUND:
             texture = gGERudoTrainingGroundTitleCardENGTex;
             break;
-        case SCENE_GERUDOWAY:
+        case SCENE_THIEVES_HIDEOUT:
             texture = gThievesHideoutTitleCardENGTex;
             break;
-        case SCENE_GANON_TOU:
+        case SCENE_OUTSIDE_GANONS_CASTLE:
             texture = gGanonsCastleTitleCardENGTex;
             break;
-        case SCENE_GANONTIKA:
+        case SCENE_INSIDE_GANONS_CASTLE:
             texture = gInsideGanonsCastleTitleCardENGTex;
             break;
-        case SCENE_TAKARAYA:
+        case SCENE_TREASURE_BOX_SHOP:
             texture = gTreasureBoxShopTitleCardENGTex;
             break;
-        case SCENE_MARKET_ALLEY:
-        case SCENE_MARKET_ALLEY_N:
+        case SCENE_BACK_ALLEY_DAY:
+        case SCENE_BACK_ALLEY_NIGHT:
             texture = gBackAlleyTitleCardENGTex;
             break;
         case SCENE_MARKET_DAY:
@@ -887,130 +918,130 @@ void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* 
         case SCENE_MARKET_RUINS:
             texture = gMarketTitleCardENGTex;
             break;
-        case SCENE_SHOP1:
+        case SCENE_BAZAAR:
             texture = gBazaarTitleCardENGTex;
             break;
         case SCENE_KOKIRI_SHOP:
             texture = gKokiriShopTitleCardENGTex;
             break;
-        case SCENE_GOLON:
+        case SCENE_GORON_SHOP:
             texture = gGoronShopTitleCardENGTex;
             break;
-        case SCENE_ZOORA:
+        case SCENE_ZORA_SHOP:
             texture = gZoraShopTitleCardENGTex;
             break;
-        case SCENE_NIGHT_SHOP:
+        case SCENE_BOMBCHU_SHOP:
             texture = gBombchuShopTitleCardENGTex;
             break;
-        case SCENE_DRAG:
-        case SCENE_MAHOUYA:
-        case SCENE_ALLEY_SHOP:
+        case SCENE_POTION_SHOP_KAKARIKO:
+        case SCENE_POTION_SHOP_GRANNY:
+        case SCENE_POTION_SHOP_MARKET:
             texture = gPotionShopTitleCardENGTex;
             break;
-        case SCENE_FACE_SHOP:
+        case SCENE_HAPPY_MASK_SHOP:
             texture = gHappyMaskShopTitleCardENGTex;
             break;
-        case SCENE_MALON_STABLE:
+        case SCENE_STABLE:
             texture = gStableTitleCardENGTex;
             break;
-        case SCENE_HYLIA_LABO:
+        case SCENE_LAKESIDE_LABORATORY:
             texture = gLakesideLaboratoryTitleCardENGTex;
             break;
-        case SCENE_HUT:
+        case SCENE_GRAVEKEEPERS_HUT:
             texture = gGravekeepersHutTitleCardENGTex;
             break;
-        case SCENE_DAIYOUSEI_IZUMI:
-        case SCENE_YOUSEI_IZUMI_YOKO:
+        case SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC:
+        case SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS:
             texture = gGreatFairysFountainTitleCardENGTex;
             break;
-        case SCENE_YOUSEI_IZUMI_TATE:
+        case SCENE_FAIRYS_FOUNTAIN:
             texture = gFairysFountainTitleCardENGTex;
             break;
-        case SCENE_HAKAANA_OUKE:
+        case SCENE_ROYAL_FAMILYS_TOMB:
             texture = gRoyalFamilysTombTitleCardENGTex;
             break;
-        case SCENE_SYATEKIJYOU:
+        case SCENE_SHOOTING_GALLERY:
             texture = gShootingGalleryTitleCardENGTex;
             break;
-        case SCENE_TOKINOMA:
+        case SCENE_TEMPLE_OF_TIME:
             texture = gTempleOfTimeTitleCardENGTex;
             break;
-        case SCENE_KENJYANOMA:
+        case SCENE_CHAMBER_OF_THE_SAGES:
             texture = gChamberOfTheSagesTitleCardENGTex;
             break;
-        case SCENE_HAIRAL_NIWA:
-        case SCENE_HAIRAL_NIWA_N:
-        case SCENE_NAKANIWA:
+        case SCENE_CASTLE_COURTYARD_GUARDS_DAY:
+        case SCENE_CASTLE_COURTYARD_GUARDS_NIGHT:
+        case SCENE_CASTLE_COURTYARD_ZELDA:
         case SCENE_HAIRAL_NIWA2:
             texture = gCastleCourtyardTitleCardENGTex;
             break;
-        case SCENE_HAKASITARELAY:
+        case SCENE_WINDMILL_AND_DAMPES_GRAVE:
             texture = gQuestionMarkTitleCardENGTex;
             break;
-        case SCENE_TURIBORI:
+        case SCENE_FISHING_POND:
             texture = gFishingPondTitleCardENGTex;
             break;
-        case SCENE_BOWLING:
+        case SCENE_BOMBCHU_BOWLING_ALLEY:
             texture = gBombchuBowlingAlleyCardENGTex;
             break;
-        case SCENE_KINSUTA:
+        case SCENE_HOUSE_OF_SKULLTULA:
             texture = gHouseOfSkulltulaTitleCardENGTex;
             break;
-        case SCENE_SPOT00:
+        case SCENE_HYRULE_FIELD:
             texture = gHyruleFieldTitleCardENGTex;
             break;
-        case SCENE_SPOT01:
+        case SCENE_KAKARIKO_VILLAGE:
             texture = gKakarikoVillageTitleCardENGTex;
             break;
-        case SCENE_SPOT02:
+        case SCENE_GRAVEYARD:
             texture = gGraveyardTitleCardENGTex;
             break;
-        case SCENE_SPOT03:
+        case SCENE_ZORAS_RIVER:
             texture = gZorasRiverTitleCardENGTex;
             break;
-        case SCENE_SPOT04:
+        case SCENE_KOKIRI_FOREST:
             texture = gKokiriForestTitleCardENGTex;
             break;
-        case SCENE_SPOT05:
+        case SCENE_SACRED_FOREST_MEADOW:
             texture = gSacredForestMeadowTitleCardENGTex;
             break;
-        case SCENE_SPOT06:
+        case SCENE_LAKE_HYLIA:
             texture = gLakeHyliaTitleCardENGTex;
             break;
-        case SCENE_SPOT07:
+        case SCENE_ZORAS_DOMAIN:
             texture = gZorasDomainTitleCardENGTex;
             break;
-        case SCENE_SPOT08:
+        case SCENE_ZORAS_FOUNTAIN:
             texture = gZorasFountainTitleCardENGTex;
             break;
-        case SCENE_SPOT09:
+        case SCENE_GERUDO_VALLEY:
             texture = gGERudoValleyTitleCardENGTex;
             break;
-        case SCENE_SPOT10:
+        case SCENE_LOST_WOODS:
             texture = gLostWoodsTitleCardENGTex;
             break;
-        case SCENE_SPOT11:
+        case SCENE_DESERT_COLOSSUS:
             texture = gDesertColossusTitleCardENGTex;
             break;
-        case SCENE_SPOT12:
+        case SCENE_GERUDOS_FORTRESS:
             texture = gGERudosFortressTitleCardENGTex;
             break;
-        case SCENE_SPOT13:
+        case SCENE_HAUNTED_WASTELAND:
             texture = gHauntedWastelandTitleCardENGTex;
             break;
-        case SCENE_SPOT15:
+        case SCENE_HYRULE_CASTLE:
             texture = gHyruleCastleTitleCardENGTex;
             break;
-        case SCENE_SPOT16:
+        case SCENE_DEATH_MOUNTAIN_TRAIL:
             texture = gDeathMountainTrailTitleCardENGTex;
             break;
-        case SCENE_SPOT17:
+        case SCENE_DEATH_MOUNTAIN_CRATER:
             texture = gDeathMountainCraterTitleCardENGTex;
             break;
-        case SCENE_SPOT18:
+        case SCENE_GORON_CITY:
             texture = gGoronCityTitleCardENGTex;
             break;
-        case SCENE_SPOT20:
+        case SCENE_LON_LON_RANCH:
             texture = gLonLonRanchTitleCardENGTex;
             break;
         default:
@@ -1146,6 +1177,7 @@ s32 func_8002D53C(PlayState* play, TitleCardContext* titleCtx) {
 }
 
 void Actor_Kill(Actor* actor) {
+    GameInteractor_ExecuteOnActorKill(actor);
     actor->draw = NULL;
     actor->update = NULL;
     actor->flags &= ~ACTOR_FLAG_TARGETABLE;
@@ -1199,7 +1231,7 @@ void Actor_Init(Actor* actor, PlayState* play) {
     if (CVarGetInteger("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
         && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
         && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
-        && (play->sceneNum != SCENE_DDAN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
+        && (play->sceneNum != SCENE_DODONGOS_CAVERN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
         actor->uncullZoneForward = 32767.0f;
         actor->uncullZoneScale = 32767.0f;
         actor->uncullZoneDownward = 32767.0f;
@@ -1207,11 +1239,12 @@ void Actor_Init(Actor* actor, PlayState* play) {
     CollisionCheck_InitInfo(&actor->colChkInfo);
     actor->floorBgId = BGCHECK_SCENE;
     ActorShape_Init(&actor->shape, 0.0f, NULL, 0.0f);
-    //if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex))
-    {
+    if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
         //Actor_SetObjectDependency(play, actor);
         actor->init(actor, play);
         actor->init = NULL;
+
+        GameInteractor_ExecuteOnActorInit(actor);
 
         // For enemy health bar we need to know the max health during init
         if (actor->category == ACTORCAT_ENEMY) {
@@ -1228,6 +1261,8 @@ void Actor_Destroy(Actor* actor, PlayState* play) {
         // "No Actor class destruct [%s]"
         osSyncPrintf("Ａｃｔｏｒクラス デストラクトがありません [%s]\n" VT_RST, ActorDB_Retrieve(actor->id)->name);
     }
+
+    NameTag_RemoveAllForActor(actor);
 }
 
 void func_8002D7EC(Actor* actor) {
@@ -1410,27 +1445,27 @@ void Actor_MountHorse(PlayState* play, Player* player, Actor* horse) {
 }
 
 s32 func_8002DEEC(Player* player) {
-    return (player->stateFlags1 & 0x20000080) || (player->csMode != 0);
+    return (player->stateFlags1 & 0x20000080) || (player->csAction != 0);
 }
 
 void func_8002DF18(PlayState* play, Player* player) {
     func_8006DC68(play, player);
 }
 
-s32 func_8002DF38(PlayState* play, Actor* actor, u8 csMode) {
+s32 func_8002DF38(PlayState* play, Actor* actor, u8 csAction) {
     Player* player = GET_PLAYER(play);
 
-    player->csMode = csMode;
-    player->unk_448 = actor;
+    player->csAction = csAction;
+    player->csActor = actor;
     player->doorBgCamIndex = 0;
 
     return true;
 }
 
-s32 func_8002DF54(PlayState* play, Actor* actor, u8 csMode) {
+s32 func_8002DF54(PlayState* play, Actor* actor, u8 csAction) {
     Player* player = GET_PLAYER(play);
 
-    func_8002DF38(play, actor, csMode);
+    func_8002DF38(play, actor, csAction);
     player->doorBgCamIndex = 1;
 
     return true;
@@ -1972,7 +2007,7 @@ s32 GiveItemEntryWithoutActor(PlayState* play, GetItemEntry getItemEntry) {
 
     if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
         if (((player->heldActor != NULL) && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX)) || 
-            (gSaveContext.n64ddFlag && (getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))) ||
+            (IS_RANDO && (getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))) ||
             (!(player->stateFlags1 & 0x20000800))) {
             if ((getItemEntry.getItemId != GI_NONE)) {
                 player->getItemEntry = getItemEntry;
@@ -2008,8 +2043,8 @@ s32 GiveItemEntryFromActor(Actor* actor, PlayState* play, GetItemEntry getItemEn
 
     if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
         if ((((player->heldActor != NULL) || (actor == player->targetActor)) && 
-            ((!gSaveContext.n64ddFlag && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX))) || 
-                (gSaveContext.n64ddFlag && ((getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))))) ||
+            ((!IS_RANDO && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX))) || 
+                (IS_RANDO && ((getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))))) ||
                     (!(player->stateFlags1 & 0x20000800))) {
             if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
                 s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
@@ -2050,7 +2085,7 @@ s32 func_8002F434(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange, f32
 
     if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
         if ((((player->heldActor != NULL) || (actor == player->targetActor)) && 
-            ((!gSaveContext.n64ddFlag && ((getItemId > GI_NONE) && (getItemId < GI_MAX))) || (gSaveContext.n64ddFlag && ((getItemId > RG_NONE) && (getItemId < RG_MAX))))) ||
+            ((!IS_RANDO && ((getItemId > GI_NONE) && (getItemId < GI_MAX))) || (IS_RANDO && ((getItemId > RG_NONE) && (getItemId < RG_MAX))))) ||
             (!(player->stateFlags1 & 0x20000800))) {
             if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
                 s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
@@ -2105,8 +2140,8 @@ void func_8002F5C4(Actor* actorA, Actor* actorB, PlayState* play) {
 void func_8002F5F0(Actor* actor, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (actor->xyzDistToPlayerSq < player->unk_6A4) {
-        player->unk_6A4 = actor->xyzDistToPlayerSq;
+    if (actor->xyzDistToPlayerSq < player->closestSecretDistSq) {
+        player->closestSecretDistSq = actor->xyzDistToPlayerSq;
     }
 }
 
@@ -2164,7 +2199,7 @@ void func_8002F7A0(PlayState* play, Actor* actor, f32 arg2, s16 arg3, f32 arg4) 
     func_8002F758(play, actor, arg2, arg3, arg4, 0);
 }
 
-void func_8002F7DC(Actor* actor, u16 sfxId) {
+void Player_PlaySfx(Actor* actor, u16 sfxId) {
     if (actor->id != ACTOR_PLAYER || sfxId < NA_SE_VO_LI_SWORD_N || sfxId > NA_SE_VO_LI_ELECTRIC_SHOCK_LV_KID) {
         Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &D_801333E0 , &D_801333E0, &D_801333E8);
     } else {
@@ -2435,7 +2470,7 @@ void func_80030488(PlayState* play) {
 void Actor_DisableLens(PlayState* play) {
     if (play->actorCtx.lensActive) {
         play->actorCtx.lensActive = false;
-        func_800876C8(play);
+        Magic_Reset(play);
     }
 }
 
@@ -2838,18 +2873,26 @@ s32 func_800314D4(PlayState* play, Actor* actor, Vec3f* arg2, f32 arg3) {
     if (CVarGetInteger("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
         && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
         && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
-        && (play->sceneNum != SCENE_DDAN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
+        && (play->sceneNum != SCENE_DODONGOS_CAVERN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
         return true;
     }
 
     if ((arg2->z > -actor->uncullZoneScale) && (arg2->z < (actor->uncullZoneForward + actor->uncullZoneScale))) {
         var = (arg3 < 1.0f) ? 1.0f : 1.0f / arg3;
 
-        if ((((fabsf(arg2->x) - actor->uncullZoneScale) * var) < 2.0f) &&
-            (((arg2->y + actor->uncullZoneDownward) * var) > -2.0f) &&
-            (((arg2->y - actor->uncullZoneScale) * var) < 2.0f)) {
+        // #region SoH [Widescreen support]
+        // Doors will cull quite noticeably on wider screens. For these actors the zone is increased
+        f32 limit = 1.0f;
+        if (((actor->id == ACTOR_EN_DOOR) || (actor->id == ACTOR_DOOR_SHUTTER)) && CVarGetInteger("gIncreaseDoorUncullZones", 1)) {
+            limit = 2.0f;
+        }
+
+        if ((((fabsf(arg2->x) - actor->uncullZoneScale) * var) < limit) &&
+            (((arg2->y + actor->uncullZoneDownward) * var) > -limit) &&
+            (((arg2->y - actor->uncullZoneScale) * var) < limit)) {
             return true;
         }
+        // #endregion
     }
 
     return false;
@@ -3113,6 +3156,9 @@ void Actor_FreeOverlay(ActorDBEntry* dbEntry) {
     osSyncPrintf(VT_RST);
 }
 
+// SoH: Flag to check if actors are being spawned from the actor entry list
+//      This flag is checked against to allow actors which dont have an objectBankIndex in the objectCtx slot/status array to spawn
+//      An example of what this fixes, is that it allows hookshot to be used as child
 int gMapLoading = 0;
 
 Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ,
@@ -3735,69 +3781,69 @@ void Actor_SetTextWithPrefix(PlayState* play, Actor* actor, s16 baseTextId) {
     s16 prefix;
 
     switch (play->sceneNum) {
-        case SCENE_YDAN:
-        case SCENE_YDAN_BOSS:
-        case SCENE_MORIBOSSROOM:
-        case SCENE_KOKIRI_HOME:
-        case SCENE_KOKIRI_HOME3:
-        case SCENE_KOKIRI_HOME4:
-        case SCENE_KOKIRI_HOME5:
+        case SCENE_DEKU_TREE:
+        case SCENE_DEKU_TREE_BOSS:
+        case SCENE_FOREST_TEMPLE_BOSS:
+        case SCENE_KNOW_IT_ALL_BROS_HOUSE:
+        case SCENE_TWINS_HOUSE:
+        case SCENE_MIDOS_HOUSE:
+        case SCENE_SARIAS_HOUSE:
         case SCENE_KOKIRI_SHOP:
-        case SCENE_LINK_HOME:
-        case SCENE_SPOT04:
-        case SCENE_SPOT05:
-        case SCENE_SPOT10:
+        case SCENE_LINKS_HOUSE:
+        case SCENE_KOKIRI_FOREST:
+        case SCENE_SACRED_FOREST_MEADOW:
+        case SCENE_LOST_WOODS:
         case 112:
             prefix = 0x1000;
             break;
-        case SCENE_MALON_STABLE:
-        case SCENE_SPOT00:
-        case SCENE_SPOT20:
+        case SCENE_STABLE:
+        case SCENE_HYRULE_FIELD:
+        case SCENE_LON_LON_RANCH:
             prefix = 0x2000;
             break;
-        case SCENE_HIDAN:
-        case SCENE_DDAN_BOSS:
-        case SCENE_FIRE_BS:
-        case SCENE_SPOT16:
-        case SCENE_SPOT17:
-        case SCENE_SPOT18:
+        case SCENE_FIRE_TEMPLE:
+        case SCENE_DODONGOS_CAVERN_BOSS:
+        case SCENE_FIRE_TEMPLE_BOSS:
+        case SCENE_DEATH_MOUNTAIN_TRAIL:
+        case SCENE_DEATH_MOUNTAIN_CRATER:
+        case SCENE_GORON_CITY:
             prefix = 0x3000;
             break;
-        case SCENE_BDAN:
-        case SCENE_BDAN_BOSS:
-        case SCENE_SPOT03:
-        case SCENE_SPOT07:
-        case SCENE_SPOT08:
+        case SCENE_JABU_JABU:
+        case SCENE_JABU_JABU_BOSS:
+        case SCENE_ZORAS_RIVER:
+        case SCENE_ZORAS_DOMAIN:
+        case SCENE_ZORAS_FOUNTAIN:
             prefix = 0x4000;
             break;
-        case SCENE_HAKADAN:
-        case SCENE_HAKADAN_BS:
-        case SCENE_KAKARIKO:
-        case SCENE_KAKARIKO3:
-        case SCENE_IMPA:
-        case SCENE_HUT:
-        case SCENE_HAKAANA:
-        case SCENE_HAKASITARELAY:
-        case SCENE_SPOT01:
-        case SCENE_SPOT02:
+        case SCENE_SHADOW_TEMPLE:
+        case SCENE_SHADOW_TEMPLE_BOSS:
+        case SCENE_KAKARIKO_CENTER_GUEST_HOUSE:
+        case SCENE_BACK_ALLEY_HOUSE:
+        case SCENE_DOG_LADY_HOUSE:
+        case SCENE_GRAVEKEEPERS_HUT:
+        case SCENE_REDEAD_GRAVE:
+        case SCENE_WINDMILL_AND_DAMPES_GRAVE:
+        case SCENE_KAKARIKO_VILLAGE:
+        case SCENE_GRAVEYARD:
             prefix = 0x5000;
             break;
-        case SCENE_JYASINZOU:
-        case SCENE_JYASINBOSS:
-        case SCENE_LABO:
-        case SCENE_TENT:
-        case SCENE_SPOT06:
-        case SCENE_SPOT09:
-        case SCENE_SPOT11:
+        case SCENE_SPIRIT_TEMPLE:
+        case SCENE_SPIRIT_TEMPLE_BOSS:
+        case SCENE_IMPAS_HOUSE:
+        case SCENE_CARPENTERS_TENT:
+        case SCENE_LAKE_HYLIA:
+        case SCENE_GERUDO_VALLEY:
+        case SCENE_DESERT_COLOSSUS:
             prefix = 0x6000;
             break;
-        case SCENE_ENTRA:
-        case SCENE_MARKET_ALLEY:
-        case SCENE_MARKET_ALLEY_N:
+        case SCENE_MARKET_ENTRANCE_DAY:
+        case SCENE_BACK_ALLEY_DAY:
+        case SCENE_BACK_ALLEY_NIGHT:
         case SCENE_MARKET_DAY:
         case SCENE_MARKET_NIGHT:
         case SCENE_MARKET_RUINS:
-        case SCENE_SPOT15:
+        case SCENE_HYRULE_CASTLE:
             prefix = 0x7000;
             break;
         default:
@@ -3960,9 +4006,9 @@ typedef struct {
 } DoorLockInfo; // size = 0x1C
 
 static DoorLockInfo sDoorLocksInfo[] = {
-    /* DOORLOCK_NORMAL */ { 0.54f, 6000.0f, 5000.0f, 1.0f, 0.0f, gDoorChainsDL, gDoorLockDL },
-    /* DOORLOCK_BOSS */ { 0.644f, 12000.0f, 8000.0f, 1.0f, 0.0f, object_bdoor_DL_001530, object_bdoor_DL_001400 },
-    /* DOORLOCK_NORMAL_SPIRIT */ { 0.64000005f, 8500.0f, 8000.0f, 1.75f, 0.1f, gDoorChainsDL, gDoorLockDL },
+    /* DOORLOCK_NORMAL */ { 0.54f, 6000.0f, 5000.0f, 1.0f, 0.0f, gDoorChainDL, gDoorLockDL },
+    /* DOORLOCK_BOSS */ { 0.644f, 12000.0f, 8000.0f, 1.0f, 0.0f, gBossDoorChainDL, gBossDoorLockDL },
+    /* DOORLOCK_NORMAL_SPIRIT */ { 0.64000005f, 8500.0f, 8000.0f, 1.75f, 0.1f, gDoorChainDL, gDoorLockDL },
 };
 
 /**
@@ -4504,7 +4550,7 @@ s32 func_800354B4(PlayState* play, Actor* actor, f32 range, s16 arg3, s16 arg4, 
     var1 = (s16)(actor->yawTowardsPlayer + 0x8000) - player->actor.shape.rot.y;
     var2 = actor->yawTowardsPlayer - arg5;
 
-    if ((actor->xzDistToPlayer <= range) && (player->swordState != 0) && (arg4 >= ABS(var1)) && (arg3 >= ABS(var2))) {
+    if ((actor->xzDistToPlayer <= range) && (player->meleeWeaponState != 0) && (arg4 >= ABS(var1)) && (arg3 >= ABS(var2))) {
         return true;
     } else {
         return false;
@@ -4544,7 +4590,7 @@ void func_800355B8(PlayState* play, Vec3f* pos) {
 u8 func_800355E4(PlayState* play, Collider* collider) {
     Player* player = GET_PLAYER(play);
 
-    if ((collider->acFlags & AC_TYPE_PLAYER) && (player->swordState != 0) && (player->meleeWeaponAnimation == 0x16)) {
+    if ((collider->acFlags & AC_TYPE_PLAYER) && (player->meleeWeaponState != 0) && (player->meleeWeaponAnimation == 0x16)) {
         return true;
     } else {
         return false;
@@ -4707,14 +4753,24 @@ s32 Flags_GetEventChkInf(s32 flag) {
  * Sets "eventChkInf" flag.
  */
 void Flags_SetEventChkInf(s32 flag) {
+    u8 previouslyOff = !Flags_GetEventChkInf(flag);
     gSaveContext.eventChkInf[flag >> 4] |= (1 << (flag & 0xF));
+    if (previouslyOff) {
+        LUSLOG_INFO("EventChkInf Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, flag);
+    }
 }
 
 /**
  * Unsets "eventChkInf" flag.
  */
 void Flags_UnsetEventChkInf(s32 flag) {
+    u8 previouslyOn = Flags_GetEventChkInf(flag);
     gSaveContext.eventChkInf[flag >> 4] &= ~(1 << (flag & 0xF));
+    if (previouslyOn) {
+        LUSLOG_INFO("EventChkInf Flag Unset - %#x", flag);
+        GameInteractor_ExecuteOnFlagUnset(FLAG_EVENT_CHECK_INF, flag);
+    }
 }
 
 /**
@@ -4728,14 +4784,24 @@ s32 Flags_GetItemGetInf(s32 flag) {
  * Sets "itemGetInf" flag.
  */
 void Flags_SetItemGetInf(s32 flag) {
+    u8 previouslyOff = !Flags_GetItemGetInf(flag);
     gSaveContext.itemGetInf[flag >> 4] |= (1 << (flag & 0xF));
+    if (previouslyOff) {
+        LUSLOG_INFO("ItemGetInf Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnFlagSet(FLAG_ITEM_GET_INF, flag);
+    }
 }
 
 /**
  * Unsets "itemGetInf" flag.
  */
 void Flags_UnsetItemGetInf(s32 flag) {
+    u8 previouslyOn = Flags_GetItemGetInf(flag);
     gSaveContext.itemGetInf[flag >> 4] &= ~(1 << (flag & 0xF));
+    if (previouslyOn) {
+        LUSLOG_INFO("ItemGetInf Flag Unset - %#x", flag);
+        GameInteractor_ExecuteOnFlagUnset(FLAG_ITEM_GET_INF, flag);
+    }
 }
 
 /**
@@ -4749,14 +4815,24 @@ s32 Flags_GetInfTable(s32 flag) {
  * Sets "infTable" flag.
  */
 void Flags_SetInfTable(s32 flag) {
+    u8 previouslyOff = !Flags_GetInfTable(flag);
     gSaveContext.infTable[flag >> 4] |= (1 << (flag & 0xF));
+    if (previouslyOff) {
+        LUSLOG_INFO("InfTable Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnFlagSet(FLAG_INF_TABLE, flag);
+    }
 }
 
 /**
  * Unsets "infTable" flag.
  */
 void Flags_UnsetInfTable(s32 flag) {
+    u8 previouslyOn = Flags_GetInfTable(flag);
     gSaveContext.infTable[flag >> 4] &= ~(1 << (flag & 0xF));
+    if (previouslyOn) {
+        LUSLOG_INFO("InfTable Flag Unset - %#x", flag);
+        GameInteractor_ExecuteOnFlagUnset(FLAG_INF_TABLE, flag);
+    }
 }
 
 /**
@@ -4770,14 +4846,24 @@ s32 Flags_GetEventInf(s32 flag) {
  * Sets "eventInf" flag.
  */
 void Flags_SetEventInf(s32 flag) {
+    u8 previouslyOff = !Flags_GetEventInf(flag);
     gSaveContext.eventInf[flag >> 4] |= (1 << (flag & 0xF));
+    if (previouslyOff) {
+        LUSLOG_INFO("EventInf Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_INF, flag);
+    }
 }
 
 /**
  * Unsets "eventInf" flag.
  */
 void Flags_UnsetEventInf(s32 flag) {
+    u8 previouslyOn = Flags_GetEventInf(flag);
     gSaveContext.eventInf[flag >> 4] &= ~(1 << (flag & 0xF));
+    if (previouslyOn) {
+        LUSLOG_INFO("EventInf Flag Unset - %#x", flag);
+        GameInteractor_ExecuteOnFlagUnset(FLAG_EVENT_INF, flag);
+    }
 }
 
 /**
@@ -4791,14 +4877,24 @@ s32 Flags_GetRandomizerInf(RandomizerInf flag) {
  * Sets "randomizerInf" flag.
  */
 void Flags_SetRandomizerInf(RandomizerInf flag) {
+    u8 previouslyOff = !Flags_GetRandomizerInf(flag);
     gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+    if (previouslyOff) {
+        LUSLOG_INFO("RandomizerInf Flag Set - %#x", flag);
+        GameInteractor_ExecuteOnFlagSet(FLAG_RANDOMIZER_INF, flag);
+    }
 }
 
 /**
  * Unsets "randomizerInf" flag.
  */
 void Flags_UnsetRandomizerInf(RandomizerInf flag) {
+    u8 previouslyOn = Flags_GetRandomizerInf(flag);
     gSaveContext.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
+    if (previouslyOn) {
+        LUSLOG_INFO("RandomizerInf Flag Unset - %#x", flag);
+        GameInteractor_ExecuteOnFlagUnset(FLAG_RANDOMIZER_INF, flag);
+    }
 }
 
 u32 func_80035BFC(PlayState* play, s16 arg1) {
@@ -5091,7 +5187,7 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             }
             break;
         case 16:
-            if (play->sceneNum == SCENE_SPOT15) {
+            if (play->sceneNum == SCENE_HYRULE_CASTLE) {
                 retTextId = 0x7002;
             } else if (Flags_GetInfTable(INFTABLE_6A)) {
                 retTextId = 0x7004;
@@ -6111,7 +6207,7 @@ s32 func_80038154(PlayState* play, Actor* actor, Vec3s* arg2, Vec3s* arg3, f32 a
     actor->focus.pos = actor->world.pos;
     actor->focus.pos.y += arg4;
 
-    if (!(((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) && (gSaveContext.entranceIndex == 0x00EE))) {
+    if (!(((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) && (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0))) {
         var = actor->yawTowardsPlayer - actor->shape.rot.y;
         abs_var = ABS(var);
         if (abs_var >= 0x4300) {
@@ -6120,7 +6216,7 @@ s32 func_80038154(PlayState* play, Actor* actor, Vec3s* arg2, Vec3s* arg3, f32 a
         }
     }
 
-    if (((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) && (gSaveContext.entranceIndex == 0x00EE)) {
+    if (((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) && (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0)) {
         sp2C = play->view.eye;
     } else {
         sp2C = player->actor.focus.pos;
@@ -6140,7 +6236,7 @@ s32 func_80038290(PlayState* play, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f
 
     actor->focus.pos = arg4;
 
-    if (!(((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) && (gSaveContext.entranceIndex == 0x00EE))) {
+    if (!(((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) && (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0))) {
         var = actor->yawTowardsPlayer - actor->shape.rot.y;
         abs_var = ABS(var);
         if (abs_var >= 0x4300) {
@@ -6149,7 +6245,7 @@ s32 func_80038290(PlayState* play, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f
         }
     }
 
-    if (((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) && (gSaveContext.entranceIndex == 0x00EE)) {
+    if (((play->csCtx.state != CS_STATE_IDLE) || (gDbgCamEnabled)) && (gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0)) {
         sp24 = play->view.eye;
     } else {
         sp24 = player->actor.focus.pos;

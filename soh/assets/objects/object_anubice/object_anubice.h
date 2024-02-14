@@ -1,6 +1,34 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_ANUBICE_H
+#define OBJECTS_OBJECT_ANUBICE_H 1
 
 #include "align_asset_macro.h"
+
+#define dobject_anubiceTex_000F90 "__OTR__objects/object_anubice/object_anubiceTex_000F90"
+static const ALIGN_ASSET(2) char object_anubiceTex_000F90[] = dobject_anubiceTex_000F90;
+
+#define dobject_anubiceTex_001090 "__OTR__objects/object_anubice/object_anubiceTex_001090"
+static const ALIGN_ASSET(2) char object_anubiceTex_001090[] = dobject_anubiceTex_001090;
+
+#define dobject_anubiceTex_001110 "__OTR__objects/object_anubice/object_anubiceTex_001110"
+static const ALIGN_ASSET(2) char object_anubiceTex_001110[] = dobject_anubiceTex_001110;
+
+#define dobject_anubiceTex_001510 "__OTR__objects/object_anubice/object_anubiceTex_001510"
+static const ALIGN_ASSET(2) char object_anubiceTex_001510[] = dobject_anubiceTex_001510;
+
+#define dobject_anubiceTex_001590 "__OTR__objects/object_anubice/object_anubiceTex_001590"
+static const ALIGN_ASSET(2) char object_anubiceTex_001590[] = dobject_anubiceTex_001590;
+
+#define dobject_anubiceTex_001610 "__OTR__objects/object_anubice/object_anubiceTex_001610"
+static const ALIGN_ASSET(2) char object_anubiceTex_001610[] = dobject_anubiceTex_001610;
+
+#define dobject_anubiceTex_001690 "__OTR__objects/object_anubice/object_anubiceTex_001690"
+static const ALIGN_ASSET(2) char object_anubiceTex_001690[] = dobject_anubiceTex_001690;
+
+#define dobject_anubiceTex_001A90 "__OTR__objects/object_anubice/object_anubiceTex_001A90"
+static const ALIGN_ASSET(2) char object_anubiceTex_001A90[] = dobject_anubiceTex_001A90;
+
+#define dobject_anubiceTex_0036A0 "__OTR__objects/object_anubice/object_anubiceTex_0036A0"
+static const ALIGN_ASSET(2) char object_anubiceTex_0036A0[] = dobject_anubiceTex_0036A0;
 
 #define dgAnubiceSkel "__OTR__objects/object_anubice/gAnubiceSkel"
 static const ALIGN_ASSET(2) char gAnubiceSkel[] = dgAnubiceSkel;
@@ -62,29 +90,5 @@ static const ALIGN_ASSET(2) char gAnubiceSkelLimbsLimb_003930DL_003288[] = dgAnu
 #define dgAnubiceSkelLimbsLimb_003948DL_0031A0 "__OTR__objects/object_anubice/gAnubiceSkelLimbsLimb_003948DL_0031A0"
 static const ALIGN_ASSET(2) char gAnubiceSkelLimbsLimb_003948DL_0031A0[] = dgAnubiceSkelLimbsLimb_003948DL_0031A0;
 
-#define dobject_anubiceTex_001690 "__OTR__objects/object_anubice/object_anubiceTex_001690"
-static const ALIGN_ASSET(2) char object_anubiceTex_001690[] = dobject_anubiceTex_001690;
 
-#define dobject_anubiceTex_0036A0 "__OTR__objects/object_anubice/object_anubiceTex_0036A0"
-static const ALIGN_ASSET(2) char object_anubiceTex_0036A0[] = dobject_anubiceTex_0036A0;
-
-#define dobject_anubiceTex_001090 "__OTR__objects/object_anubice/object_anubiceTex_001090"
-static const ALIGN_ASSET(2) char object_anubiceTex_001090[] = dobject_anubiceTex_001090;
-
-#define dobject_anubiceTex_000F90 "__OTR__objects/object_anubice/object_anubiceTex_000F90"
-static const ALIGN_ASSET(2) char object_anubiceTex_000F90[] = dobject_anubiceTex_000F90;
-
-#define dobject_anubiceTex_001110 "__OTR__objects/object_anubice/object_anubiceTex_001110"
-static const ALIGN_ASSET(2) char object_anubiceTex_001110[] = dobject_anubiceTex_001110;
-
-#define dobject_anubiceTex_001510 "__OTR__objects/object_anubice/object_anubiceTex_001510"
-static const ALIGN_ASSET(2) char object_anubiceTex_001510[] = dobject_anubiceTex_001510;
-
-#define dobject_anubiceTex_001590 "__OTR__objects/object_anubice/object_anubiceTex_001590"
-static const ALIGN_ASSET(2) char object_anubiceTex_001590[] = dobject_anubiceTex_001590;
-
-#define dobject_anubiceTex_001610 "__OTR__objects/object_anubice/object_anubiceTex_001610"
-static const ALIGN_ASSET(2) char object_anubiceTex_001610[] = dobject_anubiceTex_001610;
-
-#define dobject_anubiceTex_001A90 "__OTR__objects/object_anubice/object_anubiceTex_001A90"
-static const ALIGN_ASSET(2) char object_anubiceTex_001A90[] = dobject_anubiceTex_001A90;
+#endif // OBJECTS_OBJECT_ANUBICE_H

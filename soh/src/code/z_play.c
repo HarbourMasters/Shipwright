@@ -9,6 +9,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
+#include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -32,6 +33,7 @@ u64 D_801614D0[0xA00];
 #endif
 
 PlayState* gPlayState;
+s16 firstInit = 0;
 
 s16 gEnPartnerId;
 
@@ -70,13 +72,14 @@ void func_800BC590(PlayState* play) {
     }
 }
 
-void func_800BC5E0(PlayState* play, s32 transitionType) {
+void Gameplay_SetupTransition(PlayState* play, s32 transitionType) {
     TransitionContext* transitionCtx = &play->transitionCtx;
 
     memset(transitionCtx,0,  sizeof(TransitionContext));
 
     transitionCtx->transitionType = transitionType;
 
+    // Circle Transition Types
     if ((transitionCtx->transitionType >> 5) == 1) {
         transitionCtx->init = TransitionCircle_Init;
         transitionCtx->destroy = TransitionCircle_Destroy;
@@ -89,7 +92,7 @@ void func_800BC5E0(PlayState* play, s32 transitionType) {
         transitionCtx->setEnvColor = TransitionCircle_SetEnvColor;
     } else {
         switch (transitionCtx->transitionType) {
-            case 1:
+            case TRANS_TYPE_TRIFORCE:
                 transitionCtx->init = TransitionTriforce_Init;
                 transitionCtx->destroy = TransitionTriforce_Destroy;
                 transitionCtx->start = TransitionTriforce_Start;
@@ -100,8 +103,8 @@ void func_800BC5E0(PlayState* play, s32 transitionType) {
                 transitionCtx->setColor = TransitionTriforce_SetColor;
                 transitionCtx->setEnvColor = NULL;
                 break;
-            case 0:
-            case 8:
+            case TRANS_TYPE_WIPE:
+            case TRANS_TYPE_WIPE_FAST:
                 transitionCtx->init = TransitionWipe_Init;
                 transitionCtx->destroy = TransitionWipe_Destroy;
                 transitionCtx->start = TransitionWipe_Start;
@@ -112,16 +115,16 @@ void func_800BC5E0(PlayState* play, s32 transitionType) {
                 transitionCtx->setColor = TransitionWipe_SetColor;
                 transitionCtx->setEnvColor = NULL;
                 break;
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 13:
-            case 17:
-            case 18:
-            case 19:
+            case TRANS_TYPE_FADE_BLACK:
+            case TRANS_TYPE_FADE_WHITE:
+            case TRANS_TYPE_FADE_BLACK_FAST:
+            case TRANS_TYPE_FADE_WHITE_FAST:
+            case TRANS_TYPE_FADE_BLACK_SLOW:
+            case TRANS_TYPE_FADE_WHITE_SLOW:
+            case TRANS_TYPE_FADE_WHITE_CS_DELAYED:
+            case TRANS_TYPE_FADE_WHITE_INSTANT:
+            case TRANS_TYPE_FADE_GREEN:
+            case TRANS_TYPE_FADE_BLUE:
                 transitionCtx->init = TransitionFade_Init;
                 transitionCtx->destroy = TransitionFade_Destroy;
                 transitionCtx->start = TransitionFade_Start;
@@ -132,24 +135,24 @@ void func_800BC5E0(PlayState* play, s32 transitionType) {
                 transitionCtx->setColor = TransitionFade_SetColor;
                 transitionCtx->setEnvColor = NULL;
                 break;
-            case 9:
-            case 10:
-                play->transitionMode = 4;
+            case TRANS_TYPE_FILL_WHITE2:
+            case TRANS_TYPE_FILL_WHITE:
+                play->transitionMode = TRANS_MODE_FILL_WHITE_INIT;
                 break;
-            case 11:
-                play->transitionMode = 10;
+            case TRANS_TYPE_INSTANT:
+                play->transitionMode = TRANS_MODE_INSTANT;
                 break;
-            case 12:
-                play->transitionMode = 7;
+            case TRANS_TYPE_FILL_BROWN:
+                play->transitionMode = TRANS_MODE_FILL_BROWN_INIT;
                 break;
-            case 14:
-                play->transitionMode = 12;
+            case TRANS_TYPE_SANDSTORM_PERSIST:
+                play->transitionMode = TRANS_MODE_SANDSTORM_INIT;
                 break;
-            case 15:
-                play->transitionMode = 14;
+            case TRANS_TYPE_SANDSTORM_END:
+                play->transitionMode = TRANS_MODE_SANDSTORM_END_INIT;
                 break;
-            case 16:
-                play->transitionMode = 16;
+            case TRANS_TYPE_CS_BLACK_FILL:
+                play->transitionMode = TRANS_MODE_CS_BLACK_FILL_INIT;
                 break;
             default:
                 Fault_AddHungupAndCrash(__FILE__, __LINE__);
@@ -171,6 +174,7 @@ void Play_Destroy(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
     Player* player = GET_PLAYER(play);
 
+    GameInteractor_ExecuteOnPlayDestroy();
 
     // Only initialize the frame counter when exiting the title screen
     if (gSaveContext.fileNum == 0xFF) {
@@ -178,7 +182,7 @@ void Play_Destroy(GameState* thisx) {
     }
 
     // In ER, remove link from epona when entering somewhere that doesn't support epona
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
         Entrance_HandleEponaState();
     }
 
@@ -197,10 +201,10 @@ void Play_Destroy(GameState* thisx) {
         gTrnsnUnkState = 0;
     }
 
-    if (play->transitionMode == 3) {
+    if (play->transitionMode == TRANS_MODE_INSTANCE_RUNNING) {
         play->transitionCtx.destroy(&play->transitionCtx.data);
         func_800BC88C(play);
-        play->transitionMode = 0;
+        play->transitionMode = TRANS_MODE_OFF;
     }
 
     ShrinkWindow_Destroy();
@@ -225,8 +229,8 @@ void Play_Destroy(GameState* thisx) {
 void GivePlayerRandoRewardSongOfTime(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
 
-    if (gSaveContext.entranceIndex == 0x050F && player != NULL && !Player_InBlockingCsMode(play, player) &&
-        !Flags_GetTreasure(play, 0x1F) && gSaveContext.nextTransitionType == 0xFF && !gSaveContext.pendingIceTrapCount) {
+    if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_16 && player != NULL && !Player_InBlockingCsMode(play, player) &&
+        !Flags_GetTreasure(play, 0x1F) && gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT && !gSaveContext.pendingIceTrapCount) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
         GiveItemEntryWithoutActor(play, getItemEntry);
         player->pendingFlag.flagID = 0x1F;
@@ -237,9 +241,9 @@ void GivePlayerRandoRewardSongOfTime(PlayState* play, RandomizerCheck check) {
 void GivePlayerRandoRewardNocturne(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
 
-    if ((gSaveContext.entranceIndex == 0x00DB ||
-         gSaveContext.entranceIndex == 0x0191 ||
-         gSaveContext.entranceIndex == 0x0195) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
+    if ((gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_0 ||
+         gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_1 ||
+         gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_2) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
         CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && player != NULL &&
         !Player_InBlockingCsMode(play, player) && !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_NOCTURNE_OF_SHADOW);
@@ -253,13 +257,26 @@ void GivePlayerRandoRewardRequiem(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
 
     if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
-        if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT) && player != NULL &&
+        if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT) && player != NULL &&
             !Player_InBlockingCsMode(play, player)) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
             GiveItemEntryWithoutActor(play, getItemEntry);
             player->pendingFlag.flagID = 0xAC;
             player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
         }
+    }
+}
+
+void GivePlayerRandoRewardMasterSword(PlayState* play, RandomizerCheck check) {
+    Player* player = GET_PLAYER(play);
+
+    if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_2 && LINK_IS_ADULT && player != NULL &&
+        !Player_InBlockingCsMode(play, player) && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+        !Flags_GetRandomizerInf(RAND_INF_TOT_MASTER_SWORD)) {
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_MASTER_SWORD);
+        GiveItemEntryWithoutActor(play, getItemEntry);
+        player->pendingFlag.flagID = RAND_INF_TOT_MASTER_SWORD;
+        player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
     }
 }
 
@@ -424,9 +441,9 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(PlayState* play, RandomizerCheck 
     }
 
     if (meetsRequirements && LINK_IS_ADULT &&
-        (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA) &&
+        (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TEMPLE_OF_TIME) &&
         !Flags_GetTreasure(play, 0x1E) && player != NULL && !Player_InBlockingCsMode(play, player) &&
-        play->sceneLoadFlag == 0) {
+        play->transitionTrigger == TRANS_TRIGGER_OFF) {
         GetItemEntry getItem = Randomizer_GetItemFromKnownCheck(check, GI_ARROW_LIGHT);
         if (GiveItemEntryWithoutActor(play, getItem)) {
             player->pendingFlag.flagID = 0x1E;
@@ -437,7 +454,7 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(PlayState* play, RandomizerCheck 
 
 void GivePlayerRandoRewardSariaGift(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
-    if (gSaveContext.entranceIndex == 0x05E0) {
+    if (gSaveContext.entranceIndex == ENTR_LOST_WOODS_9) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_ZELDAS_LULLABY);
 
         if (!Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE) && player != NULL && !Player_InBlockingCsMode(play, player)) {
@@ -466,17 +483,23 @@ void Play_Init(GameState* thisx) {
     // Skip Child Stealth when option is enabled, Zelda's Letter isn't obtained and Impa's reward hasn't been received
     // eventChkInf[4] & 1 = Got Zelda's Letter
     // eventChkInf[5] & 0x200 = Got Impa's reward
-    // entranceIndex 0x7A, Castle Courtyard - Day from crawlspace
-    // entranceIndex 0x400, Zelda's Courtyard
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH) &&
+    // entranceIndex 0x7A, ENTR_CASTLE_COURTYARD_GUARDS_DAY_0, Castle Courtyard - Day from crawlspace
+    // entranceIndex 0x400, ENTR_CASTLE_COURTYARD_ZELDA_0, Zelda's Courtyard
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH) &&
         !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY)) {
-        if (gSaveContext.entranceIndex == 0x7A) {
-            gSaveContext.entranceIndex = 0x400;
+        if (gSaveContext.entranceIndex == ENTR_CASTLE_COURTYARD_GUARDS_DAY_0) {
+            gSaveContext.entranceIndex = ENTR_CASTLE_COURTYARD_ZELDA_0;
         }
     }
 
+    // Properly initialize the frame counter so it doesn't use garbage data
+    if (!firstInit) {
+        play->gameplayFrames = 0;
+        firstInit = 1;
+    }
+
     // Invalid entrance, so immediately exit the game to opening title
-    if (gSaveContext.entranceIndex == -1) {
+    if (gSaveContext.entranceIndex == ENTR_LOAD_OPENING) {
         gSaveContext.entranceIndex = 0;
         play->state.running = false;
         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
@@ -544,7 +567,7 @@ void Play_Init(GameState* thisx) {
 
     if (gSaveContext.gameMode != 0 || gSaveContext.cutsceneIndex >= 0xFFF0) {
         gSaveContext.nayrusLoveTimer = 0;
-        func_800876C8(play);
+        Magic_Reset(play);
         gSaveContext.sceneSetupIndex = (gSaveContext.cutsceneIndex & 0xF) + 4;
     } else if (!LINK_IS_ADULT && IS_DAY) {
         gSaveContext.sceneSetupIndex = 0;
@@ -557,7 +580,7 @@ void Play_Init(GameState* thisx) {
     }
 
     tempSetupIndex = gSaveContext.sceneSetupIndex;
-    if ((gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_SPOT00) && !LINK_IS_ADULT &&
+    if ((gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_HYRULE_FIELD) && !LINK_IS_ADULT &&
         gSaveContext.sceneSetupIndex < 4) {
         if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && CHECK_QUEST_ITEM(QUEST_GORON_RUBY) &&
             CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
@@ -565,7 +588,7 @@ void Play_Init(GameState* thisx) {
         } else {
             gSaveContext.sceneSetupIndex = 0;
         }
-    } else if ((gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_SPOT04) && LINK_IS_ADULT &&
+    } else if ((gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_KOKIRI_FOREST) && LINK_IS_ADULT &&
                gSaveContext.sceneSetupIndex < 4) {
         gSaveContext.sceneSetupIndex = (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) ? 3 : 2;
     }
@@ -602,12 +625,12 @@ void Play_Init(GameState* thisx) {
     PreRender_SetValuesSave(&play->pauseBgPreRender, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0);
     PreRender_SetValues(&play->pauseBgPreRender, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0);
     gTrnsnUnkState = 0;
-    play->transitionMode = 0;
+    play->transitionMode = TRANS_MODE_OFF;
 
     if (CVarGetInteger("gSceneTransitions", 255)!= 255){
         play->transitionMode = CVarGetInteger("gSceneTransitions", 0);
         gSaveContext.nextTransitionType = CVarGetInteger("gSceneTransitions", 0);
-        play->fadeTransition = CVarGetInteger("gSceneTransitions", 0);
+        play->transitionType = CVarGetInteger("gSceneTransitions", 0);
     }
 
     FrameAdvance_Init(&play->frameAdvCtx);
@@ -615,21 +638,21 @@ void Play_Init(GameState* thisx) {
     Matrix_Init(&play->state);
     play->state.main = Play_Main;
     play->state.destroy = Play_Destroy;
-    play->sceneLoadFlag = -0x14;
+    play->transitionTrigger = TRANS_TRIGGER_END;
     play->unk_11E16 = 0xFF;
     play->unk_11E18 = 0;
     play->unk_11DE9 = 0;
 
     if (gSaveContext.gameMode != 1) {
-        if (gSaveContext.nextTransitionType == 0xFF) {
-            play->fadeTransition =
-                (gEntranceTable[((void)0, gSaveContext.entranceIndex) + tempSetupIndex].field >> 7) & 0x7F; // Fade In
+        if (gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT) {
+            play->transitionType = ENTRANCE_INFO_END_TRANS_TYPE(
+                gEntranceTable[((void)0, gSaveContext.entranceIndex) + tempSetupIndex].field); // Fade In
         } else {
-            play->fadeTransition = gSaveContext.nextTransitionType;
-            gSaveContext.nextTransitionType = 0xFF;
+            play->transitionType = gSaveContext.nextTransitionType;
+            gSaveContext.nextTransitionType = TRANS_NEXT_TYPE_DEFAULT;
         }
     } else {
-        play->fadeTransition = 6;
+        play->transitionType = TRANS_TYPE_FADE_BLACK_SLOW;
     }
 
     ShrinkWindow_Init();
@@ -652,13 +675,13 @@ void Play_Init(GameState* thisx) {
 
     Fault_AddClient(&D_801614B8, ZeldaArena_Display, NULL, NULL);
     // In order to keep bunny hood equipped on first load, we need to pre-set the age reqs for the item and slot
-    if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA || CVarGetInteger("gTimelessEquipment", 0)) {
-        gItemAgeReqs[ITEM_MASK_BUNNY] = 9;
+    if ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && CVarGetInteger("gAdultBunnyHood", 0)) || CVarGetInteger("gTimelessEquipment", 0)) {
+        gItemAgeReqs[ITEM_MASK_BUNNY] = AGE_REQ_NONE;
         if(INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
-            gSlotAgeReqs[SLOT_TRADE_CHILD] = 9;
+            gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_NONE;
     }
     else {
-        gItemAgeReqs[ITEM_MASK_BUNNY] = gSlotAgeReqs[SLOT_TRADE_CHILD] = 1;
+        gItemAgeReqs[ITEM_MASK_BUNNY] = gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_CHILD;
     }
     func_800304DC(play, &play->actorCtx, play->linkActorEntry);
 
@@ -786,8 +809,8 @@ void Play_Update(PlayState* play) {
     gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
 
     if (FrameAdvance_Update(&play->frameAdvCtx, &input[1])) {
-        if ((play->transitionMode == 0) && (play->sceneLoadFlag != 0)) {
-            play->transitionMode = 1;
+        if ((play->transitionMode == TRANS_MODE_OFF) && (play->transitionTrigger != TRANS_TRIGGER_OFF)) {
+            play->transitionMode = TRANS_MODE_SETUP;
         }
 
         // Gameplay stats: Count button presses
@@ -836,8 +859,8 @@ void Play_Update(PlayState* play) {
 
         if (play->transitionMode) {
             switch (play->transitionMode) {
-                case 1:
-                    if (play->sceneLoadFlag != -0x14) {
+                case TRANS_MODE_SETUP:
+                    if (play->transitionTrigger != TRANS_TRIGGER_END) {
                         s16 sp6E = 0;
                         Interface_ChangeAlpha(1);
 
@@ -845,10 +868,10 @@ void Play_Update(PlayState* play) {
                             sp6E = (gSaveContext.cutsceneIndex & 0xF) + 4;
                         }
 
-                        if (!(gEntranceTable[play->nextEntranceIndex + sp6E].field & 0x8000)) { // Continue BGM Off
+                        if (!(gEntranceTable[play->nextEntranceIndex + sp6E].field & ENTRANCE_INFO_CONTINUE_BGM_FLAG)) { // Continue BGM Off
                             // "Sound initalized. 111"
                             osSyncPrintf("\n\n\nサウンドイニシャル来ました。111");
-                            if ((play->fadeTransition < 56) && !Environment_IsForcedSequenceDisabled()) {
+                            if ((play->transitionType < TRANS_TYPE_MAX) && !Environment_IsForcedSequenceDisabled()) {
                                 // "Sound initalized. 222"
                                 osSyncPrintf("\n\n\nサウンドイニシャル来ました。222");
                                 func_800F6964(0x14);
@@ -858,58 +881,59 @@ void Play_Update(PlayState* play) {
                         }
                     }
 
-                    if (CREG(11) == 0) {
-                        func_800BC5E0(play, play->fadeTransition);
+                    if (!R_TRANS_DBG_ENABLED) {
+                        Gameplay_SetupTransition(play, play->transitionType);
                     } else {
-                        func_800BC5E0(play, CREG(12));
+                        Gameplay_SetupTransition(play, R_TRANS_DBG_TYPE);
                     }
 
-                    if (play->transitionMode >= 4) {
+                    if (play->transitionMode >= TRANS_MODE_FILL_WHITE_INIT) {
                         break;
                     }
 
-                case 2:
+                case TRANS_MODE_INSTANCE_INIT:
                     play->transitionCtx.init(&play->transitionCtx.data);
 
+                    // Circle Transition Types
                     if ((play->transitionCtx.transitionType >> 5) == 1) {
                         play->transitionCtx.setType(&play->transitionCtx.data,
-                                                         play->transitionCtx.transitionType | 0x80);
+                                                         play->transitionCtx.transitionType | TC_SET_PARAMS);
                     }
 
                     gSaveContext.transWipeSpeed = 14;
-                    if ((play->transitionCtx.transitionType == 8) ||
-                        (play->transitionCtx.transitionType == 9)) {
+                    if ((play->transitionCtx.transitionType == TRANS_TYPE_WIPE_FAST) ||
+                        (play->transitionCtx.transitionType == TRANS_TYPE_FILL_WHITE2)) {
                         gSaveContext.transWipeSpeed = 28;
                     }
 
                     gSaveContext.transFadeDuration = 60;
-                    if ((play->transitionCtx.transitionType == 4) ||
-                        (play->transitionCtx.transitionType == 5)) {
+                    if ((play->transitionCtx.transitionType == TRANS_TYPE_FADE_BLACK_FAST) ||
+                        (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_FAST)) {
                         gSaveContext.transFadeDuration = 20;
-                    } else if ((play->transitionCtx.transitionType == 6) ||
-                               (play->transitionCtx.transitionType == 7)) {
+                    } else if ((play->transitionCtx.transitionType == TRANS_TYPE_FADE_BLACK_SLOW) ||
+                               (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_SLOW)) {
                         gSaveContext.transFadeDuration = 150;
-                    } else if (play->transitionCtx.transitionType == 17) {
+                    } else if (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_INSTANT) {
                         gSaveContext.transFadeDuration = 2;
                     }
 
-                    if ((play->transitionCtx.transitionType == 3) ||
-                        (play->transitionCtx.transitionType == 5) ||
-                        (play->transitionCtx.transitionType == 7) ||
-                        (play->transitionCtx.transitionType == 13) ||
-                        (play->transitionCtx.transitionType == 17)) {
+                    if ((play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE) ||
+                        (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_FAST) ||
+                        (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_SLOW) ||
+                        (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_CS_DELAYED) ||
+                        (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_INSTANT)) {
                         play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(160, 160, 160, 255));
                         if (play->transitionCtx.setEnvColor != NULL) {
                             play->transitionCtx.setEnvColor(&play->transitionCtx.data,
                                                                  RGBA8(160, 160, 160, 255));
                         }
-                    } else if (play->transitionCtx.transitionType == 18) {
+                    } else if (play->transitionCtx.transitionType == TRANS_TYPE_FADE_GREEN) {
                         play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(140, 140, 100, 255));
                         if (play->transitionCtx.setEnvColor != NULL) {
                             play->transitionCtx.setEnvColor(&play->transitionCtx.data,
                                                                  RGBA8(140, 140, 100, 255));
                         }
-                    } else if (play->transitionCtx.transitionType == 19) {
+                    } else if (play->transitionCtx.transitionType == TRANS_TYPE_FADE_BLUE) {
                         play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(70, 100, 110, 255));
                         if (play->transitionCtx.setEnvColor != NULL) {
                             play->transitionCtx.setEnvColor(&play->transitionCtx.data,
@@ -922,7 +946,7 @@ void Play_Update(PlayState* play) {
                         }
                     }
 
-                    if (play->sceneLoadFlag == -0x14) {
+                    if (play->transitionTrigger == TRANS_TRIGGER_END) {
                         play->transitionCtx.setType(&play->transitionCtx.data, 1);
                     } else {
                         play->transitionCtx.setType(&play->transitionCtx.data, 2);
@@ -930,22 +954,22 @@ void Play_Update(PlayState* play) {
 
                     play->transitionCtx.start(&play->transitionCtx);
 
-                    if (play->transitionCtx.transitionType == 13) {
-                        play->transitionMode = 11;
+                    if (play->transitionCtx.transitionType == TRANS_TYPE_FADE_WHITE_CS_DELAYED) {
+                        play->transitionMode = TRANS_MODE_INSTANCE_WAIT;
                     } else {
-                        play->transitionMode = 3;
+                        play->transitionMode = TRANS_MODE_INSTANCE_RUNNING;
                     }
                     break;
 
-                case 3:
+                case TRANS_MODE_INSTANCE_RUNNING:
                     if (play->transitionCtx.isDone(&play->transitionCtx) != 0) {
-                        if (play->transitionCtx.transitionType >= 56) {
-                            if (play->sceneLoadFlag == -0x14) {
+                        if (play->transitionCtx.transitionType >= TRANS_TYPE_MAX) {
+                            if (play->transitionTrigger == TRANS_TRIGGER_END) {
                                 play->transitionCtx.destroy(&play->transitionCtx);
                                 func_800BC88C(play);
-                                play->transitionMode = 0;
+                                play->transitionMode = TRANS_MODE_OFF;
                             }
-                        } else if (play->sceneLoadFlag != -0x14) {
+                        } else if (play->transitionTrigger != TRANS_TRIGGER_END) {
                             play->state.running = 0;
                             if (gSaveContext.gameMode != 2) {
                                 SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
@@ -959,16 +983,17 @@ void Play_Update(PlayState* play) {
                         } else {
                             play->transitionCtx.destroy(&play->transitionCtx);
                             func_800BC88C(play);
-                            play->transitionMode = 0;
+                            play->transitionMode = TRANS_MODE_OFF;
                             if (gTrnsnUnkState == 3) {
                                 TransitionUnk_Destroy(&sTrnsnUnk);
                                 gTrnsnUnkState = 0;
                                 R_UPDATE_RATE = 3;
                             }
                             
+                            // Transition end for standard transitions
                             GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
                         }
-                        play->sceneLoadFlag = 0;
+                        play->transitionTrigger = TRANS_TRIGGER_OFF;
                     } else {
                         play->transitionCtx.update(&play->transitionCtx.data, R_UPDATE_RATE);
                     }
@@ -976,160 +1001,166 @@ void Play_Update(PlayState* play) {
             }
 
             switch (play->transitionMode) {
-                case 4:
+                case TRANS_MODE_FILL_WHITE_INIT:
                     D_801614C8 = 0;
                     play->envCtx.fillScreen = true;
                     play->envCtx.screenFillColor[0] = 160;
                     play->envCtx.screenFillColor[1] = 160;
                     play->envCtx.screenFillColor[2] = 160;
-                    if (play->sceneLoadFlag != -0x14) {
+                    if (play->transitionTrigger != TRANS_TRIGGER_END) {
                         play->envCtx.screenFillColor[3] = 0;
-                        play->transitionMode = 5;
+                        play->transitionMode = TRANS_MODE_FILL_IN;
                     } else {
                         play->envCtx.screenFillColor[3] = 255;
-                        play->transitionMode = 6;
+                        play->transitionMode = TRANS_MODE_FILL_OUT;
                     }
                     break;
 
-                case 5:
+                case TRANS_MODE_FILL_IN:
                     play->envCtx.screenFillColor[3] = (D_801614C8 / 20.0f) * 255.0f;
                     if (D_801614C8 >= 20 && 1) {
                         play->state.running = 0;
                         SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
                         gSaveContext.entranceIndex = play->nextEntranceIndex;
-                        play->sceneLoadFlag = 0;
-                        play->transitionMode = 0;
+                        play->transitionTrigger = TRANS_TRIGGER_OFF;
+                        play->transitionMode = TRANS_MODE_OFF;
                     } else {
                         D_801614C8++;
                     }
                     break;
 
-                case 6:
+                case TRANS_MODE_FILL_OUT:
                     play->envCtx.screenFillColor[3] = (1 - D_801614C8 / 20.0f) * 255.0f;
                     if (D_801614C8 >= 20 && 1) {
                         gTrnsnUnkState = 0;
                         R_UPDATE_RATE = 3;
-                        play->sceneLoadFlag = 0;
-                        play->transitionMode = 0;
+                        play->transitionTrigger = TRANS_TRIGGER_OFF;
+                        play->transitionMode = TRANS_MODE_OFF;
                         play->envCtx.fillScreen = false;
                     } else {
                         D_801614C8++;
                     }
                     break;
 
-                case 7:
+                case TRANS_MODE_FILL_BROWN_INIT:
                     D_801614C8 = 0;
                     play->envCtx.fillScreen = true;
                     play->envCtx.screenFillColor[0] = 170;
                     play->envCtx.screenFillColor[1] = 160;
                     play->envCtx.screenFillColor[2] = 150;
-                    if (play->sceneLoadFlag != -0x14) {
+                    if (play->transitionTrigger != TRANS_TRIGGER_END) {
                         play->envCtx.screenFillColor[3] = 0;
-                        play->transitionMode = 5;
+                        play->transitionMode = TRANS_MODE_FILL_IN;
                     } else {
                         play->envCtx.screenFillColor[3] = 255;
-                        play->transitionMode = 6;
+                        play->transitionMode = TRANS_MODE_FILL_OUT;
                     }
                     break;
 
-                case 10:
-                    if (play->sceneLoadFlag != -0x14) {
+                case TRANS_MODE_INSTANT:
+                    if (play->transitionTrigger != TRANS_TRIGGER_END) {
                         play->state.running = 0;
                         SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
                         gSaveContext.entranceIndex = play->nextEntranceIndex;
-                        play->sceneLoadFlag = 0;
-                        play->transitionMode = 0;
+                        play->transitionTrigger = TRANS_TRIGGER_OFF;
+                        play->transitionMode = TRANS_MODE_OFF;
                     } else {
                         gTrnsnUnkState = 0;
                         R_UPDATE_RATE = 3;
-                        play->sceneLoadFlag = 0;
-                        play->transitionMode = 0;
+                        play->transitionTrigger = TRANS_TRIGGER_OFF;
+                        play->transitionMode = TRANS_MODE_OFF;
                     }
                     break;
 
-                case 11:
+                case TRANS_MODE_INSTANCE_WAIT:
                     if (gSaveContext.cutsceneTransitionControl != 0) {
-                        play->transitionMode = 3;
+                        play->transitionMode = TRANS_MODE_INSTANCE_RUNNING;
                     }
                     break;
 
-                case 12:
-                    if (play->sceneLoadFlag != -0x14) {
-                        play->envCtx.sandstormState = 1;
-                        play->transitionMode = 13;
+                case TRANS_MODE_SANDSTORM_INIT:
+                    if (play->transitionTrigger != TRANS_TRIGGER_END) {
+                        play->envCtx.sandstormState = SANDSTORM_FILL;
+                        play->transitionMode = TRANS_MODE_SANDSTORM;
                     } else {
-                        play->envCtx.sandstormState = 2;
+                        play->envCtx.sandstormState = SANDSTORM_UNFILL;
                         play->envCtx.sandstormPrimA = 255;
                         play->envCtx.sandstormEnvA = 255;
-                        play->transitionMode = 13;
+                        play->transitionMode = TRANS_MODE_SANDSTORM;
                     }
                     break;
 
-                case 13:
+                case TRANS_MODE_SANDSTORM:
                     Audio_PlaySoundGeneral(NA_SE_EV_SAND_STORM - SFX_FLAG, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
-                    if (play->sceneLoadFlag == -0x14) {
+                    if (play->transitionTrigger == TRANS_TRIGGER_END) {
                         if (play->envCtx.sandstormPrimA < 110) {
                             gTrnsnUnkState = 0;
                             R_UPDATE_RATE = 3;
-                            play->sceneLoadFlag = 0;
-                            play->transitionMode = 0;
+                            play->transitionTrigger = TRANS_TRIGGER_OFF;
+                            play->transitionMode = TRANS_MODE_OFF;
+
+                            // Transition end for sandstorm effect (delayed until effect is finished)
+                            GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
                         }
                     } else {
                         if (play->envCtx.sandstormEnvA == 255) {
                             play->state.running = 0;
                             SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
                             gSaveContext.entranceIndex = play->nextEntranceIndex;
-                            play->sceneLoadFlag = 0;
-                            play->transitionMode = 0;
+                            play->transitionTrigger = TRANS_TRIGGER_OFF;
+                            play->transitionMode = TRANS_MODE_OFF;
                         }
                     }
                     break;
 
-                case 14:
-                    if (play->sceneLoadFlag == -0x14) {
-                        play->envCtx.sandstormState = 4;
+                case TRANS_MODE_SANDSTORM_END_INIT:
+                    if (play->transitionTrigger == TRANS_TRIGGER_END) {
+                        play->envCtx.sandstormState = SANDSTORM_DISSIPATE;
                         play->envCtx.sandstormPrimA = 255;
                         play->envCtx.sandstormEnvA = 255;
                         // "It's here!!!!!!!!!"
                         LOG_STRING("来た!!!!!!!!!!!!!!!!!!!!!");
-                        play->transitionMode = 15;
+                        play->transitionMode = TRANS_MODE_SANDSTORM_END;
                     } else {
-                        play->transitionMode = 12;
+                        play->transitionMode = TRANS_MODE_SANDSTORM_INIT;
                     }
                     break;
 
-                case 15:
+                case TRANS_MODE_SANDSTORM_END:
                     Audio_PlaySoundGeneral(NA_SE_EV_SAND_STORM - SFX_FLAG, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
-                    if (play->sceneLoadFlag == -0x14) {
+                    if (play->transitionTrigger == TRANS_TRIGGER_END) {
                         if (play->envCtx.sandstormPrimA <= 0) {
                             gTrnsnUnkState = 0;
                             R_UPDATE_RATE = 3;
-                            play->sceneLoadFlag = 0;
-                            play->transitionMode = 0;
+                            play->transitionTrigger = TRANS_TRIGGER_OFF;
+                            play->transitionMode = TRANS_MODE_OFF;
+
+                            // Transition end for sandstorm effect (delayed until effect is finished)
+                            GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
                         }
                     }
                     break;
 
-                case 16:
+                case TRANS_MODE_CS_BLACK_FILL_INIT:
                     D_801614C8 = 0;
                     play->envCtx.fillScreen = true;
                     play->envCtx.screenFillColor[0] = 0;
                     play->envCtx.screenFillColor[1] = 0;
                     play->envCtx.screenFillColor[2] = 0;
                     play->envCtx.screenFillColor[3] = 255;
-                    play->transitionMode = 17;
+                    play->transitionMode = TRANS_MODE_CS_BLACK_FILL;
                     break;
 
-                case 17:
+                case TRANS_MODE_CS_BLACK_FILL:
                     if (gSaveContext.cutsceneTransitionControl != 0) {
                         play->envCtx.screenFillColor[3] = gSaveContext.cutsceneTransitionControl;
                         if (gSaveContext.cutsceneTransitionControl < 0x65) {
                             gTrnsnUnkState = 0;
                             R_UPDATE_RATE = 3;
-                            play->sceneLoadFlag = 0;
-                            play->transitionMode = 0;
+                            play->transitionTrigger = TRANS_TRIGGER_OFF;
+                            play->transitionMode = TRANS_MODE_OFF;
                         }
                     }
                     break;
@@ -1180,7 +1211,7 @@ void Play_Update(PlayState* play) {
                 play->gameplayFrames++;
                 // Gameplay stat tracking
                 if (!gSaveContext.sohStats.gameComplete &&
-                    (!gSaveContext.isBossRush || (gSaveContext.isBossRush && !gSaveContext.isBossRushPaused))) {
+                    (!IS_BOSS_RUSH || !gSaveContext.isBossRushPaused)) {
                       gSaveContext.sohStats.playTimer++;
                       gSaveContext.sohStats.sceneTimer++;
                       gSaveContext.sohStats.roomTimer++;
@@ -1418,12 +1449,13 @@ skip:
     Environment_Update(play, &play->envCtx, &play->lightCtx, &play->pauseCtx, &play->msgCtx,
                        &play->gameOverCtx, play->state.gfxCtx);
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         GivePlayerRandoRewardSariaGift(play, RC_LW_GIFT_FROM_SARIA);
         GivePlayerRandoRewardSongOfTime(play, RC_SONG_FROM_OCARINA_OF_TIME);
         GivePlayerRandoRewardZeldaLightArrowsGift(play, RC_TOT_LIGHT_ARROWS_CUTSCENE);
         GivePlayerRandoRewardNocturne(play, RC_SHEIK_IN_KAKARIKO);
         GivePlayerRandoRewardRequiem(play, RC_SHEIK_AT_COLOSSUS);
+        GivePlayerRandoRewardMasterSword(play, RC_TOT_MASTER_SWORD);
     }
 }
 
@@ -1516,8 +1548,8 @@ void Play_Draw(PlayState* play) {
             gSPDisplayList(OVERLAY_DISP++, gfxP);
             gSPGrayscale(gfxP++, false);
 
-            if ((play->transitionMode == 3) || (play->transitionMode == 11) ||
-                (play->transitionCtx.transitionType >= 56)) {
+            if ((play->transitionMode == TRANS_MODE_INSTANCE_RUNNING) || (play->transitionMode == TRANS_MODE_INSTANCE_WAIT) ||
+                (play->transitionCtx.transitionType >= TRANS_TYPE_MAX)) {
                 View view;
 
                 View_Init(&view, gfxCtx);
@@ -1679,7 +1711,7 @@ void Play_Draw(PlayState* play) {
                 }
 
                 if ((HREG(80) != 10) || (HREG(88) != 0)) {
-                    if (play->envCtx.sandstormState != 0) {
+                    if (play->envCtx.sandstormState != SANDSTORM_OFF) {
                         Environment_DrawSandstorm(play, play->envCtx.sandstormState);
                     }
                 }
@@ -1712,6 +1744,8 @@ void Play_Draw(PlayState* play) {
                 }
             }
         }
+
+        GameInteractor_ExecuteOnPlayDrawEnd();
 
         // Reset the inverted culling
         if (CVarGetInteger("gMirroredWorld", 0)) {
@@ -1761,12 +1795,11 @@ time_t Play_GetRealTime() {
 void Play_Main(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
 
-    if (CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0)) {
-        CVarSetInteger("gCheatEasyPauseBufferFrameAdvance", CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0) - 1);
+    // Decrease the easy pause buffer timer every frame
+    if (CVarGetInteger("gCheatEasyPauseBufferTimer", 0) > 0) {
+        CVarSetInteger("gCheatEasyPauseBufferTimer", CVarGetInteger("gCheatEasyPauseBufferTimer", 0) - 1);
     }
-    if (CVarGetInteger("gPauseBufferBlockInputFrame", 0)) {
-        CVarSetInteger("gPauseBufferBlockInputFrame", CVarGetInteger("gPauseBufferBlockInputFrame", 0) - 1);
-    }
+
     if (play->envCtx.unk_EE[2] == 0 && CVarGetInteger("gLetItSnow", 0)) {
         play->envCtx.unk_EE[3] = 64;
         Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_OBJECT_KANKYO, 0, 0, 0, 0, 0, 0, 3, 0);
@@ -1916,7 +1949,7 @@ void* Play_LoadFile(PlayState* play, RomFile* file) {
 
 void Play_InitEnvironment(PlayState* play, s16 skyboxId) {
     // For entrance rando, ensure the correct weather state and sky mode is applied
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         Entrance_OverrideWeatherState();
     }
     Skybox_Init(&play->state, &play->skyboxCtx, skyboxId);
@@ -1953,7 +1986,7 @@ void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
 
     OTRPlay_SpawnScene(play, sceneNum, spawn);
 
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         Entrance_OverrideSpawnScene(sceneNum, spawn);
     }
 }
@@ -2210,7 +2243,7 @@ void Play_SetupRespawnPoint(PlayState* play, s32 respawnMode, s32 playerParams) 
     s32 entranceIndex;
     s8 roomIndex;
 
-    if ((play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA)) {
+    if ((play->sceneNum != SCENE_FAIRYS_FOUNTAIN) && (play->sceneNum != SCENE_GROTTOS)) {
         roomIndex = play->roomCtx.curRoom.num;
         entranceIndex = gSaveContext.entranceIndex;
         Play_SetRespawnData(play, respawnMode, entranceIndex, roomIndex, playerParams,
@@ -2222,27 +2255,27 @@ void Play_TriggerVoidOut(PlayState* play) {
     gSaveContext.respawn[RESPAWN_MODE_DOWN].tempSwchFlags = play->actorCtx.flags.tempSwch;
     gSaveContext.respawn[RESPAWN_MODE_DOWN].tempCollectFlags = play->actorCtx.flags.tempCollect;
     gSaveContext.respawnFlag = 1;
-    play->sceneLoadFlag = 0x14;
+    play->transitionTrigger = TRANS_TRIGGER_START;
     play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
-    play->fadeTransition = 2;
+    play->transitionType = TRANS_TYPE_FADE_BLACK;
 }
 
 void Play_LoadToLastEntrance(PlayState* play) {
     gSaveContext.respawnFlag = -1;
-    play->sceneLoadFlag = 0x14;
+    play->transitionTrigger = TRANS_TRIGGER_START;
 
-    if ((play->sceneNum == SCENE_GANON_SONOGO) || (play->sceneNum == SCENE_GANON_FINAL) ||
-        (play->sceneNum == SCENE_GANONTIKA_SONOGO) || (play->sceneNum == SCENE_GANON_DEMO)) {
-        play->nextEntranceIndex = 0x043F;
+    if ((play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) || (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
+        (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE) || (play->sceneNum == SCENE_GANON_BOSS)) {
+        play->nextEntranceIndex = ENTR_GANONS_TOWER_COLLAPSE_EXTERIOR_0;
         Item_Give(play, ITEM_SWORD_MASTER);
-    } else if ((gSaveContext.entranceIndex == 0x028A) || (gSaveContext.entranceIndex == 0x028E) ||
-               (gSaveContext.entranceIndex == 0x0292) || (gSaveContext.entranceIndex == 0x0476)) {
-        play->nextEntranceIndex = 0x01F9;
+    } else if ((gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_11) || (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_12) ||
+               (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_13) || (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_15)) {
+        play->nextEntranceIndex = ENTR_HYRULE_FIELD_6;
     } else {
         play->nextEntranceIndex = gSaveContext.entranceIndex;
     }
 
-    play->fadeTransition = 2;
+    play->transitionType = TRANS_TYPE_FADE_BLACK;
 }
 
 void Play_TriggerRespawn(PlayState* play) {
@@ -2252,7 +2285,7 @@ void Play_TriggerRespawn(PlayState* play) {
 
 s32 func_800C0CB8(PlayState* play) {
     return (play->roomCtx.curRoom.meshHeader->base.type != 1) && (YREG(15) != 0x20) && (YREG(15) != 0x30) &&
-           (YREG(15) != 0x40) && (play->sceneNum != SCENE_HAIRAL_NIWA);
+           (YREG(15) != 0x40) && (play->sceneNum != SCENE_CASTLE_COURTYARD_GUARDS_DAY);
 }
 
 s32 FrameAdvance_IsEnabled(PlayState* play) {
@@ -2305,18 +2338,33 @@ void Play_PerformSave(PlayState* play) {
     if (play != NULL && gSaveContext.fileNum != 0xFF) {
         Play_SaveSceneFlags(play);
         gSaveContext.savedSceneNum = play->sceneNum;
-        if (gSaveContext.temporaryWeapon) {
-            gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-            GET_PLAYER(play)->currentSwordItemId = ITEM_NONE;
-            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
-            Save_SaveFile();
-            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-            GET_PLAYER(play)->currentSwordItemId = ITEM_SWORD_KOKIRI;
-            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
-        } else {
-            Save_SaveFile();
+
+        // Track values from temp B
+        uint8_t prevB = gSaveContext.equips.buttonItems[0];
+        uint8_t prevStatus = gSaveContext.buttonStatus[0];
+
+        // Replicate the B button restore from minigames/epona that kaleido does
+        if (gSaveContext.equips.buttonItems[0] == ITEM_SLINGSHOT ||
+            gSaveContext.equips.buttonItems[0] == ITEM_BOW ||
+            gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU ||
+            gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE ||
+            (gSaveContext.equips.buttonItems[0] == ITEM_NONE && !Flags_GetInfTable(INFTABLE_SWORDLESS))) {
+
+            gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+            Interface_RandoRestoreSwordless();
         }
-        if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF) {
+
+        Save_SaveFile();
+
+        // Restore temp B values back
+        gSaveContext.equips.buttonItems[0] = prevB;
+        gSaveContext.buttonStatus[0] = prevStatus;
+
+        uint8_t triforceHuntCompleted =
+            IS_RANDO &&
+            gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) &&
+            Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT);
+        if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF || triforceHuntCompleted) {
             Overlay_DisplayText(3.0f, "Game Saved");
         }
     }

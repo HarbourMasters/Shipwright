@@ -33,7 +33,7 @@ void GameOver_Update(PlayState* play) {
             gSaveContext.eventInf[1] &= ~1;
 
             // search inventory for spoiling items and revert if necessary
-            if (!(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
+            if (!(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
                 for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
                     if (INV_CONTENT(ITEM_POCKET_EGG) == gSpoilingItems[i]) {
                         INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
@@ -57,6 +57,7 @@ void GameOver_Update(PlayState* play) {
 
                 if (gSaveContext.buttonStatus[0] != BTN_ENABLED) {
                     gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
+                    Interface_RandoRestoreSwordless();
                 } else {
                     gSaveContext.equips.buttonItems[0] = ITEM_NONE;
                 }

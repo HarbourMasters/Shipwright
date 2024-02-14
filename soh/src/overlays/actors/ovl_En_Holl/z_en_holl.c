@@ -77,7 +77,7 @@ void EnHoll_SetupAction(EnHoll* this, EnHollActionFunc func) {
 }
 
 s32 EnHoll_IsKokiriSetup8() {
-    return gSaveContext.entranceIndex == 0x00EE && gSaveContext.sceneSetupIndex == 8;
+    return gSaveContext.entranceIndex == ENTR_KOKIRI_FOREST_0 && gSaveContext.sceneSetupIndex == 8;
 }
 
 void EnHoll_ChooseAction(EnHoll* this) {
@@ -120,7 +120,7 @@ void EnHoll_SwapRooms(PlayState* play) {
 // Horizontal Planes
 void func_80A58DD4(EnHoll* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 phi_t0 = ((play->sceneNum == SCENE_JYASINZOU) ? 1 : 0) & 0xFFFFFFFF;
+    s32 phi_t0 = ((play->sceneNum == SCENE_SPIRIT_TEMPLE) ? 1 : 0) & 0xFFFFFFFF;
     Vec3f vec;
     f32 absZ;
     s32 transitionActorIdx;

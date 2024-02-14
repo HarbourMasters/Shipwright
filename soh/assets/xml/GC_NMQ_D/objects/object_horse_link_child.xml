@@ -1,5 +1,14 @@
 <Root>
     <File Name="object_horse_link_child" Segment="6">
+        <Texture Name="object_horse_link_childTex_001F28" OutName="object_horse_link_childTex_001F28" Format="rgba16" Width="4" Height="8" Offset="0x1F28" AddedByScript="true"/>
+        <Texture Name="object_horse_link_childTex_001F68" OutName="object_horse_link_childTex_001F68" Format="rgba16" Width="16" Height="16" Offset="0x1F68" AddedByScript="true"/>
+        <Texture Name="object_horse_link_childTex_002168" OutName="object_horse_link_childTex_002168" Format="rgba16" Width="16" Height="16" Offset="0x2168" AddedByScript="true"/>
+        <Texture Name="object_horse_link_childTex_002368" OutName="object_horse_link_childTex_002368" Format="rgba16" Width="16" Height="16" Offset="0x2368" AddedByScript="true"/>
+        <Texture Name="object_horse_link_childTex_002568" OutName="object_horse_link_childTex_002568" Format="rgba16" Width="4" Height="4" Offset="0x2568" AddedByScript="true"/>
+        <Texture Name="object_horse_link_childTex_002588" OutName="object_horse_link_childTex_002588" Format="rgba16" Width="8" Height="32" Offset="0x2588" AddedByScript="true"/>
+        <Texture Name="object_horse_link_childTex_002788" OutName="object_horse_link_childTex_002788" Format="rgba16" Width="16" Height="16" Offset="0x2788" AddedByScript="true"/>
+        <Texture Name="object_horse_link_childTex_008120" OutName="object_horse_link_childTex_008120" Format="rgba16" Width="16" Height="16" Offset="0x8120" AddedByScript="true"/>
+        <Texture Name="object_horse_link_childTex_008320" OutName="object_horse_link_childTex_008320" Format="rgba16" Width="32" Height="32" Offset="0x8320" AddedByScript="true"/>
         <Skeleton Name="gChildEponaSkel" Type="Normal" LimbType="Skin" Offset="0x7B20"/>
 
         <!-- Idle animation. -->
@@ -14,8 +23,8 @@
         <Animation Name="gChildEponaGallopingAnim" Offset="0x2F98"/>
 
         <Texture Name="gChildEponaEyeTLUT" OutName="child_epona_eye_tlut" Format="rgba16" Width="16" Height="16" Offset="0x1728"/>
-        <Texture Name="gChildEponaEyeOpenTex" OutName="child_epona_eye_open" Format="ci8" Width="32" Height="16" Offset="0x1D28"  TlutOffset="0x1728"/>
-        <Texture Name="gChildEponaEyeHalfTex" OutName="child_epona_eye_half" Format="ci8" Width="32" Height="16" Offset="0x1928"  TlutOffset="0x1728"/>
-        <Texture Name="gChildEponaEyeCloseTex" OutName="child_epona_eye_close" Format="ci8" Width="32" Height="16" Offset="0x1B28"  TlutOffset="0x1728"/>
+        <Texture Name="gChildEponaEyeOpenTex" OutName="child_epona_eye_open" Format="ci8" Width="32" Height="16" Offset="0x1D28" TlutOffset="0x1728"/>
+        <Texture Name="gChildEponaEyeHalfTex" OutName="child_epona_eye_half" Format="ci8" Width="32" Height="16" Offset="0x1928" TlutOffset="0x1728"/>
+        <Texture Name="gChildEponaEyeCloseTex" OutName="child_epona_eye_close" Format="ci8" Width="32" Height="16" Offset="0x1B28" TlutOffset="0x1728"/>
     </File>
 </Root>

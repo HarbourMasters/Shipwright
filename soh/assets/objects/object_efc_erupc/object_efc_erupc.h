@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_EFC_ERUPC_H
+#define OBJECTS_OBJECT_EFC_ERUPC_H 1
 
 #include "align_asset_macro.h"
 
@@ -25,3 +26,5 @@ static const ALIGN_ASSET(2) char object_efc_erupc_DL_0027D8[] = dobject_efc_erup
 
 #define dobject_efc_erupc_Tex_0027F0 "__OTR__objects/object_efc_erupc/object_efc_erupc_Tex_0027F0"
 static const ALIGN_ASSET(2) char object_efc_erupc_Tex_0027F0[] = dobject_efc_erupc_Tex_0027F0;
+
+#endif // OBJECTS_OBJECT_EFC_ERUPC_H

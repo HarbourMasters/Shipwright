@@ -5,6 +5,12 @@
 
 #include "GameInteractionEffect.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
+#include <z64.h>
+
+typedef enum {
+    GI_SCHEME_SAIL,
+    GI_SCHEME_CROWD_CONTROL,
+} GIScheme;
 
 typedef enum {
     /* 0x00 */ GI_LINK_SIZE_NORMAL,
@@ -52,13 +58,13 @@ typedef enum {
 } GIColors;
 
 typedef enum {
-    /*      */ GI_TP_DEST_LINKSHOUSE = 187,
-    /*      */ GI_TP_DEST_MINUET = 1536,
-    /*      */ GI_TP_DEST_BOLERO = 1270,
-    /*      */ GI_TP_DEST_SERENADE = 1540,
-    /*      */ GI_TP_DEST_REQUIEM = 497,
-    /*      */ GI_TP_DEST_NOCTURNE = 1384,
-    /*      */ GI_TP_DEST_PRELUDE = 1524,
+    /*      */ GI_TP_DEST_LINKSHOUSE = ENTR_LINKS_HOUSE_0,
+    /*      */ GI_TP_DEST_MINUET = ENTR_SACRED_FOREST_MEADOW_2,
+    /*      */ GI_TP_DEST_BOLERO = ENTR_DEATH_MOUNTAIN_CRATER_4,
+    /*      */ GI_TP_DEST_SERENADE = ENTR_LAKE_HYLIA_8,
+    /*      */ GI_TP_DEST_REQUIEM = ENTR_DESERT_COLOSSUS_5,
+    /*      */ GI_TP_DEST_NOCTURNE = ENTR_GRAVEYARD_7,
+    /*      */ GI_TP_DEST_PRELUDE = ENTR_TEMPLE_OF_TIME_7,
 } GITeleportDestinations;
 
 #ifdef __cplusplus
@@ -83,15 +89,23 @@ uint8_t GameInteractor_GetRandomWindActive();
 uint8_t GameInteractor_GetRandomBonksActive();
 uint8_t GameInteractor_GetSlipperyFloorActive();
 uint8_t GameInteractor_SecondCollisionUpdate();
+void GameInteractor_SetTriforceHuntPieceGiven(uint8_t state);
+void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 #ifdef __cplusplus
 }
 #endif
 
 
 #ifdef __cplusplus
-
+#include <thread>
 #include <vector>
 #include <functional>
+#include <string>
+
+#ifdef ENABLE_REMOTE_CONTROL
+#include <SDL2/SDL_net.h>
+#include <nlohmann/json.hpp>
+#endif
 
 #define DEFINE_HOOK(name, type)         \
     struct name {                       \
@@ -123,14 +137,30 @@ public:
         static uint8_t RandomBonksActive;
         static uint8_t SlipperyFloorActive;
         static uint8_t SecondCollisionUpdate;
+        static uint8_t TriforceHuntPieceGiven;
+        static uint8_t TriforceHuntCreditsWarpActive;
 
         static void SetPacifistMode(bool active);
     };
 
+    #ifdef ENABLE_REMOTE_CONTROL
+    bool isRemoteInteractorEnabled;
+    bool isRemoteInteractorConnected;
+
+    void EnableRemoteInteractor();
+    void DisableRemoteInteractor();
+    void RegisterRemoteDataHandler(std::function<void(char payload[512])> method);
+    void RegisterRemoteJsonHandler(std::function<void(nlohmann::json)> method);
+    void RegisterRemoteConnectedHandler(std::function<void()> method);
+    void RegisterRemoteDisconnectedHandler(std::function<void()> method);
+    void TransmitDataToRemote(const char* payload);
+    void TransmitJsonToRemote(nlohmann::json packet);
+    #endif
+
     // Effects
     static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase* effect);
     static GameInteractionEffectQueryResult ApplyEffect(GameInteractionEffectBase* effect);
-    static GameInteractionEffectQueryResult RemoveEffect(GameInteractionEffectBase* effect);
+    static GameInteractionEffectQueryResult RemoveEffect(RemovableGameInteractionEffect* effect);
 
     // Game Hooks
     template <typename H> struct RegisteredGameHooks { inline static std::vector<typename H::fn> functions; };
@@ -148,12 +178,21 @@ public:
     DEFINE_HOOK(OnSaleEnd, void(GetItemEntry itemEntry));
     DEFINE_HOOK(OnTransitionEnd, void(int16_t sceneNum));
     DEFINE_HOOK(OnSceneInit, void(int16_t sceneNum));
+    DEFINE_HOOK(OnSceneFlagSet, void(int16_t sceneNum, int16_t flagType, int16_t flag));
+    DEFINE_HOOK(OnSceneFlagUnset, void(int16_t sceneNum, int16_t flagType, int16_t flag));
+    DEFINE_HOOK(OnFlagSet, void(int16_t flagType, int16_t flag));
+    DEFINE_HOOK(OnFlagUnset, void(int16_t flagType, int16_t flag));
     DEFINE_HOOK(OnSceneSpawnActors, void());
     DEFINE_HOOK(OnPlayerUpdate, void());
     DEFINE_HOOK(OnOcarinaSongAction, void());
-
+    DEFINE_HOOK(OnShopSlotChange, void(uint8_t cursorIndex, int16_t price));
+    DEFINE_HOOK(OnActorInit, void(void* actor));
     DEFINE_HOOK(OnActorUpdate, void(void* actor));
+    DEFINE_HOOK(OnActorKill, void(void* actor));
+    DEFINE_HOOK(OnEnemyDefeat, void(void* actor));
     DEFINE_HOOK(OnPlayerBonk, void());
+    DEFINE_HOOK(OnPlayDestroy, void());
+    DEFINE_HOOK(OnPlayDrawEnd, void());
 
     DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));
     DEFINE_HOOK(OnLoadFile, void(int32_t fileNum));
@@ -173,11 +212,15 @@ public:
     DEFINE_HOOK(OnUpdateFileEraseConfirmationSelection, void(uint16_t optionIndex));
     DEFINE_HOOK(OnUpdateFileAudioSelection, void(uint8_t optionIndex));
     DEFINE_HOOK(OnUpdateFileTargetSelection, void(uint8_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileLanguageSelection, void(uint8_t optionIndex));
     DEFINE_HOOK(OnUpdateFileQuestSelection, void(uint8_t questIndex));
     DEFINE_HOOK(OnUpdateFileBossRushOptionSelection, void(uint8_t optionIndex, uint8_t optionValue));
     DEFINE_HOOK(OnUpdateFileNameSelection, void(int16_t charCode));
     
     DEFINE_HOOK(OnSetGameLanguage, void());
+
+    DEFINE_HOOK(OnFileDropped, void(std::string filePath));
+    DEFINE_HOOK(OnAssetAltChange, void());
 
     // Helpers
     static bool IsSaveLoaded();
@@ -187,6 +230,10 @@ public:
 
     class RawAction {
     public:
+        static void SetSceneFlag(int16_t sceneNum, int16_t flagType, int16_t flag);
+        static void UnsetSceneFlag(int16_t sceneNum, int16_t flagType, int16_t flag);
+        static void SetFlag(int16_t flagType, int16_t chestNum);
+        static void UnsetFlag(int16_t flagType, int16_t chestNum);
         static void AddOrRemoveHealthContainers(int16_t amount);
         static void AddOrRemoveMagic(int8_t amount);
         static void HealOrDamagePlayer(int16_t hearts);
@@ -212,10 +259,26 @@ public:
         static void EmulateRandomButtonPress(uint32_t chancePercentage = 100);
         static void SetRandomWind(bool active);
         static void SetPlayerInvincibility(bool active);
+        static void ClearCutscenePointer();
 
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
         static GameInteractionEffectQueryResult SpawnActor(uint32_t actorId, int32_t actorParams);
     };
+
+    private:
+    #ifdef ENABLE_REMOTE_CONTROL
+        IPaddress remoteIP;
+        TCPsocket remoteSocket;
+        std::thread remoteThreadReceive;
+        std::function<void(char payload[512])> remoteDataHandler;
+        std::function<void(nlohmann::json)> remoteJsonHandler;
+        std::function<void()> remoteConnectedHandler;
+        std::function<void()> remoteDisconnectedHandler;
+
+        void ReceiveFromServer();
+        void HandleRemoteData(char payload[512]);
+        void HandleRemoteJson(std::string payload);
+    #endif
 };
 
 #endif /* __cplusplus */

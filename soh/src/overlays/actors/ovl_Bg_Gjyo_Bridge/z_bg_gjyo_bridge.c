@@ -51,7 +51,7 @@ void BgGjyoBridge_Init(Actor* thisx, PlayState* play) {
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
 
     int bridge = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE);
-    if (Flags_GetEventChkInf(EVENTCHKINF_RAINBOW_BRIDGE_BUILT) || (gSaveContext.n64ddFlag && bridge == RO_BRIDGE_ALWAYS_OPEN)) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_RAINBOW_BRIDGE_BUILT) || (IS_RANDO && bridge == RO_BRIDGE_ALWAYS_OPEN)) {
         this->actionFunc = func_808787A4;
     } else {
         this->dyna.actor.draw = NULL;
@@ -84,7 +84,7 @@ u8 CheckPlayerPosition(Player* player, PlayState* play) {
 void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (!gSaveContext.n64ddFlag) {
+    if (!IS_RANDO) {
         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
             (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) && CheckPlayerPosition(player, play)) {
             LaunchBridgeCutscene(this, play);
@@ -146,7 +146,7 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, PlayState* play) {
 }
 
 void BgGjyoBridge_SpawnBridge(BgGjyoBridge* this, PlayState* play) {
-    if (gSaveContext.n64ddFlag || (play->csCtx.state != CS_STATE_IDLE) && (play->csCtx.npcActions[2] != NULL) &&
+    if (IS_RANDO || (play->csCtx.state != CS_STATE_IDLE) && (play->csCtx.npcActions[2] != NULL) &&
         (play->csCtx.npcActions[2]->action == 2)) {
         this->dyna.actor.draw = BgGjyoBridge_Draw;
         func_8003EC50(play, &play->colCtx.dyna, this->dyna.bgId);

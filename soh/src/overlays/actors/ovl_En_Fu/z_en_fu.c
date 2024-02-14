@@ -172,7 +172,7 @@ void func_80A1DB60(EnFu* this, PlayState* play) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     }
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         this->actionFunc = func_WaitForSongGive;
     }
 }
@@ -186,7 +186,7 @@ void func_80A1DBA0(EnFu* this, PlayState* play) {
 void func_80A1DBD4(EnFu* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (gSaveContext.n64ddFlag && (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING)) {
+    if (IS_RANDO && (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING)) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_03;
     }
 
@@ -199,7 +199,7 @@ void func_80A1DBD4(EnFu* this, PlayState* play) {
         this->actionFunc = func_80A1DB60;
         this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
 
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gSongOfStormsCs);
             gSaveContext.cutsceneTrigger = 1;
             Item_Give(play, ITEM_SONG_STORMS);
@@ -249,7 +249,7 @@ void EnFu_WaitAdult(EnFu* this, PlayState* play) {
     } else if (player->stateFlags2 & 0x1000000) {
         this->actor.textId = 0x5035;
         Message_StartTextbox(play, this->actor.textId, NULL);
-        this->actionFunc = gSaveContext.n64ddFlag ? func_80A1DBD4 : EnFu_TeachSong;
+        this->actionFunc = IS_RANDO ? func_80A1DBD4 : EnFu_TeachSong;
         this->behaviorFlags |= FU_WAIT;
     } else if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = func_80A1DBA0;
@@ -332,8 +332,7 @@ void EnFu_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyesSegments[this->facialExpression]));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthSegments[this->facialExpression]));
-    SkelAnime_DrawFlexOpa(play, this->skelanime.skeleton, this->skelanime.jointTable, this->skelanime.dListCount,
-                          EnFu_OverrideLimbDraw, EnFu_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelanime, EnFu_OverrideLimbDraw, EnFu_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -97,13 +97,15 @@ void GameInteractor::RawAction::SetWeatherStorm(bool active) {
 
 void GameInteractor::RawAction::ForceEquipBoots(int8_t boots) {
     Player* player = GET_PLAYER(gPlayState);
-    player->currentBoots = boots;
-    Inventory_ChangeEquipment(EQUIP_BOOTS, boots + 1);
+    player->currentBoots = BOOTS_EQUIP_TO_PLAYER(boots);
+    Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, boots);
     Player_SetBootData(gPlayState, player);
 }
 
 void GameInteractor::RawAction::FreezePlayer() {
-    gSaveContext.pendingIceTrapCount++;
+    Player* player = GET_PLAYER(gPlayState);
+    player->actor.colChkInfo.damage = 0;
+    func_80837C0C(gPlayState, player, 3, 0, 0, 0, 0);
 }
 
 void GameInteractor::RawAction::BurnPlayer() {
@@ -124,6 +126,127 @@ void GameInteractor::RawAction::KnockbackPlayer(float strength) {
     Player* player = GET_PLAYER(gPlayState);
     func_8002F71C(gPlayState, &player->actor, strength * 5, player->actor.world.rot.y + 0x8000, strength * 5);
 }
+
+void GameInteractor::RawAction::SetSceneFlag(int16_t sceneNum, int16_t flagType, int16_t flag) {
+    switch (flagType) {
+        case FlagType::FLAG_SCENE_SWITCH:
+            if (sceneNum == gPlayState->sceneNum) {
+                if (flag < 0x20) {
+                    gPlayState->actorCtx.flags.swch |= (1 << flag);
+                } else {
+                    gPlayState->actorCtx.flags.tempSwch |= (1 << (flag - 0x20));
+                }
+            }
+            if (flag < 0x20) {
+                gSaveContext.sceneFlags[sceneNum].swch |= (1 << flag);
+            }
+            break;
+        case FlagType::FLAG_SCENE_CLEAR:
+            if (sceneNum == gPlayState->sceneNum) gPlayState->actorCtx.flags.clear |= (1 << flag);
+            gSaveContext.sceneFlags[sceneNum].clear |= (1 << flag);
+            break;
+        case FlagType::FLAG_SCENE_TREASURE:
+            if (sceneNum == gPlayState->sceneNum) gPlayState->actorCtx.flags.chest |= (1 << flag);
+            gSaveContext.sceneFlags[sceneNum].chest |= (1 << flag);
+            break;
+        case FlagType::FLAG_SCENE_COLLECTIBLE:
+            if (sceneNum == gPlayState->sceneNum) {
+                if (flag != 0) {
+                    if (flag < 0x20) {
+                        gPlayState->actorCtx.flags.collect |= (1 << flag);
+                    } else {
+                        gPlayState->actorCtx.flags.tempCollect |= (1 << (flag - 0x20));
+                    }
+                }
+            }
+            if (flag != 0 && flag < 0x20) {
+                gSaveContext.sceneFlags[sceneNum].collect |= (1 << flag);
+            }
+            break;
+    }
+};
+
+void GameInteractor::RawAction::UnsetSceneFlag(int16_t sceneNum, int16_t flagType, int16_t flag) {
+    switch (flagType) {
+        case FlagType::FLAG_SCENE_SWITCH:
+            if (sceneNum == gPlayState->sceneNum) {
+                if (flag < 0x20) {
+                    gPlayState->actorCtx.flags.swch &= ~(1 << flag);
+                } else {
+                    gPlayState->actorCtx.flags.tempSwch &= ~(1 << (flag - 0x20));
+                }
+            }
+            if (flag < 0x20) {
+                gSaveContext.sceneFlags[sceneNum].swch &= ~(1 << flag);
+            }
+            break;
+        case FlagType::FLAG_SCENE_CLEAR:
+            if (sceneNum == gPlayState->sceneNum) gPlayState->actorCtx.flags.clear &= ~(1 << flag);
+            gSaveContext.sceneFlags[sceneNum].clear &= ~(1 << flag);
+            break;
+        case FlagType::FLAG_SCENE_TREASURE:
+            if (sceneNum == gPlayState->sceneNum) gPlayState->actorCtx.flags.chest &= ~(1 << flag);
+            gSaveContext.sceneFlags[sceneNum].chest &= ~(1 << flag);
+            break;
+        case FlagType::FLAG_SCENE_COLLECTIBLE:
+            if (sceneNum == gPlayState->sceneNum) {
+                if (flag != 0) {
+                    if (flag < 0x20) {
+                        gPlayState->actorCtx.flags.collect &= ~(1 << flag);
+                    } else {
+                        gPlayState->actorCtx.flags.tempCollect &= ~(1 << (flag - 0x20));
+                    }
+                }
+            }
+            if (flag != 0 && flag < 0x20) {
+                gSaveContext.sceneFlags[sceneNum].collect &= ~(1 << flag);
+            }
+            break;
+    }
+};
+
+void GameInteractor::RawAction::SetFlag(int16_t flagType, int16_t flag) {
+    switch (flagType) {
+        case FlagType::FLAG_EVENT_CHECK_INF:
+            gSaveContext.eventChkInf[flag >> 4] |= (1 << (flag & 0xF));
+            break;
+        case FlagType::FLAG_ITEM_GET_INF:
+            gSaveContext.itemGetInf[flag >> 4] |= (1 << (flag & 0xF));
+            break;
+        case FlagType::FLAG_INF_TABLE:
+            gSaveContext.infTable[flag >> 4] |= (1 << (flag & 0xF));
+            break;
+        case FlagType::FLAG_EVENT_INF:
+            gSaveContext.eventInf[flag >> 4] |= (1 << (flag & 0xF));
+            break;
+        case FlagType::FLAG_RANDOMIZER_INF:
+            gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+            break;
+        case FlagType::FLAG_GS_TOKEN:
+            SET_GS_FLAGS((flag & 0x1F00) >> 8, flag & 0xFF);
+            break;
+    }
+};
+
+void GameInteractor::RawAction::UnsetFlag(int16_t flagType, int16_t flag) {
+    switch (flagType) {
+        case FlagType::FLAG_EVENT_CHECK_INF:
+            gSaveContext.eventChkInf[flag >> 4] &= ~(1 << (flag & 0xF));
+            break;
+        case FlagType::FLAG_ITEM_GET_INF:
+            gSaveContext.itemGetInf[flag >> 4] &= ~(1 << (flag & 0xF));
+            break;
+        case FlagType::FLAG_INF_TABLE:
+            gSaveContext.infTable[flag >> 4] &= ~(1 << (flag & 0xF));
+            break;
+        case FlagType::FLAG_EVENT_INF:
+            gSaveContext.eventInf[flag >> 4] &= ~(1 << (flag & 0xF));
+            break;
+        case FlagType::FLAG_RANDOMIZER_INF:
+            gSaveContext.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
+            break;
+    }
+};
 
 void GameInteractor::RawAction::GiveOrTakeShield(int32_t shield) {
     // When taking a shield, make sure it is unequipped as well.
@@ -151,24 +274,24 @@ void GameInteractor::RawAction::GiveOrTakeShield(int32_t shield) {
                 break;
         }
 
-        gSaveContext.inventory.equipment &= ~(gBitFlags[shield - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]);
+        gSaveContext.inventory.equipment &= ~(gBitFlags[shield - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_TYPE_SHIELD]);
 
         if (player->currentShield == shieldToCheck) {
             player->currentShield = PLAYER_SHIELD_NONE;
-            Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_NONE);
+            Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_NONE);
         }
     } else {
         Item_Give(gPlayState, shield);
         if (player->currentShield == PLAYER_SHIELD_NONE) {
             if (LINK_IS_CHILD && shield == ITEM_SHIELD_DEKU) {
                 player->currentShield = PLAYER_SHIELD_DEKU;
-                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_DEKU);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_DEKU);
             } else if (LINK_IS_ADULT && shield == ITEM_SHIELD_MIRROR) {
                 player->currentShield = PLAYER_SHIELD_MIRROR;
-                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_MIRROR);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_MIRROR);
             } else if (shield == ITEM_SHIELD_HYLIAN) {
                 player->currentShield = PLAYER_SHIELD_HYLIAN;
-                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_HYLIAN);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_HYLIAN);
             }
         }
     }
@@ -203,9 +326,9 @@ void GameInteractor::RawAction::UpdateActor(void* refActor) {
 void GameInteractor::RawAction::TeleportPlayer(int32_t nextEntrance) {
     Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
     gPlayState->nextEntranceIndex = nextEntrance;
-    gPlayState->sceneLoadFlag = 0x14;
-    gPlayState->fadeTransition = 2;
-    gSaveContext.nextTransitionType = 2;
+    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+    gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
+    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
 }
 
 void GameInteractor::RawAction::ClearAssignedButtons(uint8_t buttonSet) {
@@ -397,7 +520,7 @@ void GameInteractor::RawAction::SetRandomWind(bool active) {
     if (active) {
         GameInteractor::State::RandomWindActive = 1;
         if (GameInteractor::State::RandomWindSecondsSinceLastDirectionChange == 0) {
-            player->windDirection = (rand() % 49152) - 32767;
+            player->pushedYaw = (rand() % 49152) - 32767;
             GameInteractor::State::RandomWindSecondsSinceLastDirectionChange = 5;
         } else {
             GameInteractor::State::RandomWindSecondsSinceLastDirectionChange--;
@@ -405,8 +528,8 @@ void GameInteractor::RawAction::SetRandomWind(bool active) {
     } else {
         GameInteractor::State::RandomWindActive = 0;
         GameInteractor::State::RandomWindSecondsSinceLastDirectionChange = 0;
-        player->windSpeed = 0.0f;
-        player->windDirection = 0.0f;
+        player->pushedSpeed = 0.0f;
+        player->pushedYaw = 0.0f;
     }
 }
 
@@ -417,6 +540,13 @@ void GameInteractor::RawAction::SetPlayerInvincibility(bool active) {
     } else {
         player->invincibilityTimer = 0;
     }
+}
+
+/// Clears the cutscene pointer to a value safe for wrong warps.
+void GameInteractor::RawAction::ClearCutscenePointer() {
+    if (!gPlayState) return;
+    static uint32_t null_cs[] = {0, 0};
+    gPlayState->csCtx.segment = &null_cs;
 }
 
 GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
@@ -431,7 +561,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
 
     // Disallow enemy spawns in the painting Poe rooms in Forest Temple.
     // Killing a spawned enemy before the Poe can softlock the rooms entirely.
-    if (sceneNum == SCENE_BMORI1 && (roomNum == 12 || roomNum == 13 || roomNum == 16)) {
+    if (sceneNum == SCENE_FOREST_TEMPLE && (roomNum == 12 || roomNum == 13 || roomNum == 16)) {
         return GameInteractionEffectQueryResult::NotPossible;
     }
 
@@ -447,8 +577,8 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
         // Don't allow Arwings in certain areas because they cause issues.
         // Locations: King dodongo room, Morpha room, Twinrova room, Ganondorf room, Fishing pond, Ganon's room
         // TODO: Swap this to disabling the option in CC options menu instead.
-        if (sceneNum == SCENE_DDAN_BOSS || sceneNum == SCENE_MIZUSIN_BS || sceneNum == SCENE_JYASINBOSS ||
-            sceneNum == SCENE_GANON_BOSS || sceneNum == SCENE_TURIBORI || sceneNum == SCENE_GANON_DEMO) {
+        if (sceneNum == SCENE_DODONGOS_CAVERN_BOSS || sceneNum == SCENE_WATER_TEMPLE_BOSS || sceneNum == SCENE_SPIRIT_TEMPLE_BOSS ||
+            sceneNum == SCENE_GANONDORF_BOSS || sceneNum == SCENE_FISHING_POND || sceneNum == SCENE_GANON_BOSS) {
             return GameInteractionEffectQueryResult::NotPossible;
         }
     }

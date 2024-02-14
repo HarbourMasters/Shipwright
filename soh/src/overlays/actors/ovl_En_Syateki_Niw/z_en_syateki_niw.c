@@ -468,7 +468,7 @@ void func_80B12460(EnSyatekiNiw* this, PlayState* play) {
 
         case 6:
             if (this->unk_25E == 1) {
-                play->sceneLoadFlag = 0x14;
+                play->transitionTrigger = TRANS_TRIGGER_START;
                 play->nextEntranceIndex = gSaveContext.entranceIndex;
                 play->shootingGalleryStatus = 0;
                 player->actor.freezeTimer = 20;
@@ -703,8 +703,7 @@ void EnSyatekiNiw_Draw(Actor* thisx, PlayState* play) {
             func_80026230(play, &sp30, 0, 0x14);
         }
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, SyatekiNiw_OverrideLimbDraw, NULL, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, SyatekiNiw_OverrideLimbDraw, NULL, this);
         func_80026608(play);
         func_80B13464(this, play);
     }
