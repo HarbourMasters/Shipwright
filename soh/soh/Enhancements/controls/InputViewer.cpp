@@ -62,61 +62,61 @@ void InputViewer::DrawElement() {
     if (CVarGetInteger("gOpenWindows.InputViewer", 0)) {
         static bool sButtonTexturesLoaded = false;
         if (!sButtonTexturesLoaded) {
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture(
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
                 "Input-Viewer-Background", "textures/buttons/InputViewerBackground.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("A-Btn", "textures/buttons/ABtn.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("B-Btn", "textures/buttons/BBtn.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("L-Btn", "textures/buttons/LBtn.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("R-Btn", "textures/buttons/RBtn.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Z-Btn", "textures/buttons/ZBtn.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Start-Btn",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("A-Btn", "textures/buttons/ABtn.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("B-Btn", "textures/buttons/BBtn.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("L-Btn", "textures/buttons/LBtn.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("R-Btn", "textures/buttons/RBtn.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Z-Btn", "textures/buttons/ZBtn.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Start-Btn",
                                                                             "textures/buttons/StartBtn.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("C-Left", "textures/buttons/CLeft.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("C-Right", "textures/buttons/CRight.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("C-Up", "textures/buttons/CUp.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("C-Down", "textures/buttons/CDown.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Analog-Stick",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Left", "textures/buttons/CLeft.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Right", "textures/buttons/CRight.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Up", "textures/buttons/CUp.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Down", "textures/buttons/CDown.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Analog-Stick",
                                                                             "textures/buttons/AnalogStick.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Dpad-Left",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Left",
                                                                             "textures/buttons/DPadLeft.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Dpad-Right",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Right",
                                                                             "textures/buttons/DPadRight.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Dpad-Up", "textures/buttons/DPadUp.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Dpad-Down",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Up", "textures/buttons/DPadUp.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Down",
                                                                             "textures/buttons/DPadDown.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Right-Stick",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Right-Stick",
                                                                             "textures/buttons/RightStick.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("A-Btn Outline",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("A-Btn Outline",
                                                                             "textures/buttons/ABtnOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("B-Btn Outline",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("B-Btn Outline",
                                                                             "textures/buttons/BBtnOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("L-Btn Outline",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("L-Btn Outline",
                                                                             "textures/buttons/LBtnOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("R-Btn Outline",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("R-Btn Outline",
                                                                             "textures/buttons/RBtnOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Z-Btn Outline",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Z-Btn Outline",
                                                                             "textures/buttons/ZBtnOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Start-Btn Outline",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Start-Btn Outline",
                                                                             "textures/buttons/StartBtnOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("C-Left Outline",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Left Outline",
                                                                             "textures/buttons/CLeftOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("C-Right Outline",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Right Outline",
                                                                             "textures/buttons/CRightOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("C-Up Outline",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Up Outline",
                                                                             "textures/buttons/CUpOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("C-Down Outline",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Down Outline",
                                                                             "textures/buttons/CDownOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Analog-Stick Outline",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Analog-Stick Outline",
                                                                             "textures/buttons/AnalogStickOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Dpad-Left Outline",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Left Outline",
                                                                             "textures/buttons/DPadLeftOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Dpad-Right Outline",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Right Outline",
                                                                             "textures/buttons/DPadRightOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Dpad-Up Outline",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Up Outline",
                                                                             "textures/buttons/DPadUpOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Dpad-Down Outline",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Down Outline",
                                                                             "textures/buttons/DPadDownOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Right-Stick Outline",
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Right-Stick Outline",
                                                                             "textures/buttons/RightStickOutline.png");
             sButtonTexturesLoaded = true;
         }
