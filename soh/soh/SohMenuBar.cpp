@@ -14,7 +14,7 @@
 #include "soh/Enhancements/presets.h"
 #include "soh/Enhancements/mods.h"
 #include "Enhancements/cosmetics/authenticGfxPatches.h"
-#include "Enhancements/archipelago/OoTAP.h"
+#include "OoTAP.h"
 #ifdef ENABLE_REMOTE_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
 #include "Enhancements/game-interactor/GameInteractor_Sail.h"
@@ -1951,13 +1951,13 @@ void DrawArchipelagoMenu() {
 
         ImGui::Spacing();
 
-        ImGui::Text("Password");
+        ImGui::Text("Slot Name");
         if (ImGui::InputText("##gArchipelago.SlotName", (char*)slotName.c_str(), slotName.capacity() + 1)) {
             CVarSetString("gArchipelago.SlotName", slotName.c_str());
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
 
-        ImGui::Text("Slot Name");
+        ImGui::Text("Password");
         if (ImGui::InputText("##gArchipelago.Password", (char*)password.c_str(), password.capacity() + 1)) {
             CVarSetString("gArchipelago.Password", password.c_str());
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -1966,24 +1966,23 @@ void DrawArchipelagoMenu() {
         ImGui::Spacing();
 
         ImGui::BeginDisabled(!isFormValid);
-        const char* buttonLabel = "Connect";
-        const char* buttonLabel = Archipelago::Instance->isEnabled ? "Disconnect" : "Connect";
+        const char* buttonLabel = OoTAP_ENABLED ? "Disconnect" : "Connect";
         if (ImGui::Button(buttonLabel, ImVec2(-1.0f, 0.0f))) {
-            if (Archipelago::Instance->isEnabled) {
+            if (OoTAP_ENABLED) {
                 CVarSetInteger("gArchipelago.Enabled", 0);
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-                Archipelago::Instance->Disable();
+                OoTAP_Disable();
             } else {
                 CVarSetInteger("gArchipelago.Enabled", 1);
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-                Archipelago::Instance->Enable(ip.c_str(), port, slotName.c_str(), password.c_str());
+                OoTAP_Enable(ip.c_str(), port, slotName.c_str(), password.c_str());
             }
         }
         ImGui::EndDisabled();
 
-        if (Archipelago::Instance->isEnabled) {
+        if (OoTAP_ENABLED) {
             ImGui::Spacing();
-            if (Archipelago::Instance->isConnected) {
+            if (OoTAP_CONNECTED) {
                 ImGui::Text("Connected");
             } else {
                 ImGui::Text("Connecting...");

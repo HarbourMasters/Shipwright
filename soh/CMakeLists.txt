@@ -168,6 +168,7 @@ else()
 endif()
 
 source_group("soh\\Enhancements" REGULAR_EXPRESSION "soh/Enhancements/*")
+source_group("soh\\Enhancements\\archipelago" REGULAR_EXPRESSION "soh/Enhancements/archipelago/*")
 source_group("soh\\Enhancements\\audio" REGULAR_EXPRESSION "soh/Enhancements/audio/*")
 source_group("soh\\Enhancements\\controls" REGULAR_EXPRESSION "soh/Enhancements/controls/*")
 source_group("soh\\Enhancements\\cosmetics" REGULAR_EXPRESSION "soh/Enhancements/cosmetics/*")
@@ -259,6 +260,8 @@ set(ALL_FILES
     ${soh__Resource}
     ${src__}
 )
+
+link_directories(${CMAKE_SOURCE_DIR}/APCpp)
 
 ################################################################################
 # Target
@@ -390,6 +393,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/graphic
 	${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils
     ${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD/resource/type
+	${CMAKE_CURRENT_SOURCE_DIR}/../APCpp
 	${SDL2-INCLUDE}
     ${SDL2-NET-INCLUDE}
     ${BOOST-INCLUDE}
@@ -663,6 +667,7 @@ if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ActorList_OoTMqDbg.txt $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ObjectList_OoTMqDbg.txt $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
 	    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/SymbolMap_OoTMqDbg.txt $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
+	    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/APCpp/APCpp.dll $<TARGET_FILE_DIR:soh>/APCpp.dll
     )
 endif()
 ################################################################################
@@ -685,6 +690,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"libultraship;"
 			"ZAPDUtils;"
 			"ZAPDLib;"
+			"APCpp;"
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
@@ -700,6 +706,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"libultraship;"
 			"ZAPDUtils;"
 			"ZAPDLib;"
+			"APCpp;"
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
@@ -717,6 +724,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libultraship;"
         "ZAPDUtils;"
+        "APCpp;"
         SDL2::SDL2
         -lglad
         Threads::Threads
@@ -725,6 +733,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
     find_package(SDL2 REQUIRED)
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libultraship;"
+        "APCpp;"
         SDL2::SDL2-static
 
         "$<$<CONFIG:Debug>:-Wl,--wrap=abort>"
@@ -740,6 +749,7 @@ else()
         "libultraship;"
         "ZAPDUtils;"
 		"ZAPDLib;"
+		"APCpp;"
 		SDL2::SDL2
         "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net>"
 		${CMAKE_DL_LIBS}
