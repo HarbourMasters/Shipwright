@@ -241,6 +241,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Consumable_DDHeartBorder",      "DD Heart Border",      GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Consumable_Magic",              "Magic",                GROUP_CONSUMABLE,   ImVec4(  0, 200,   0, 255), false, true, false),
     COSMETIC_OPTION("Consumable_MagicActive",        "Magic Active",         GROUP_CONSUMABLE,   ImVec4(250, 250,   0, 255), false, true, true),
+    COSMETIC_OPTION("Consumable_MagicInfinite",      "Infinite Magic",       GROUP_CONSUMABLE,   ImVec4(  0,   0, 200, 255), false, true, true),
     COSMETIC_OPTION("Consumable_MagicBorder",        "Magic Border",         GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, false, true),
     COSMETIC_OPTION("Consumable_MagicBorderActive",  "Magic Border Active",  GROUP_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, false, true),
     COSMETIC_OPTION("Consumable_GreenRupee",         "Green Rupee",          GROUP_CONSUMABLE,   ImVec4( 50, 255,  50, 255), false, true, true),

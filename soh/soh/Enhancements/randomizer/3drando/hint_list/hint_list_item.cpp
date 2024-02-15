@@ -2113,6 +2113,94 @@ void HintTable_Init_Item() {
                        Text{"a fishing pole", /*french*/"canne à pêche", /*spanish*/"caña de pescar"}
     );
 
+    hintTable[RHT_QUIVER_INF] = HintText::Item({
+                       //obscure text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"},
+                     }, {
+                       //ambiguous text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"},
+                     },
+                       //clear text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"}
+    );
+
+    hintTable[RHT_BOMB_BAG_INF] = HintText::Item({
+                       //obscure text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"},
+                     }, {
+                       //ambiguous text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"},
+                     },
+                       //clear text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"}
+    );
+
+    hintTable[RHT_BULLET_BAG_INF] = HintText::Item({
+                       //obscure text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"},
+                     }, {
+                       //ambiguous text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"},
+                     },
+                       //clear text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"}
+    );
+
+    hintTable[RHT_STICK_UPGRADE_INF] = HintText::Item({
+                       //obscure text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"},
+                     }, {
+                       //ambiguous text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"},
+                     },
+                       //clear text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"}
+    );
+
+    hintTable[RHT_NUT_UPGRADE_INF] = HintText::Item({
+                       //obscure text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"},
+                     }, {
+                       //ambiguous text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"},
+                     },
+                       //clear text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"}
+    );
+
+    hintTable[RHT_MAGIC_INF] = HintText::Item({
+                       //obscure text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"},
+                     }, {
+                       //ambiguous text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"},
+                     },
+                       //clear text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"}
+    );
+
+    hintTable[RHT_BOMBCHU_INF] = HintText::Item({
+                       //obscure text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"},
+                     }, {
+                       //ambiguous text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"},
+                     },
+                       //clear text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"}
+    );
+
+    hintTable[RHT_WALLET_INF] = HintText::Item({
+                       //obscure text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"},
+                     }, {
+                       //ambiguous text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"},
+                     },
+                       //clear text
+                       Text{"", /*french*/"!!!", /*spanish*/"!!!"}
+    );
+
     hintTable[RHT_EPONA] = HintText::Item({
                        //obscure text
                        Text{"a horse",              /*french*/"un fidèle destrier", /*spanish*/"una yegua"},

@@ -841,6 +841,16 @@ void GenerateItemPool() {
     ctx->possibleIceTrapModels.push_back(RG_FISHING_POLE);
   }
 
+  if (ctx->GetOption(RSK_INFINITE_UPGRADES)) {
+    AddItemToMainPool(RG_PROGRESSIVE_BOMB_BAG);
+    AddItemToMainPool(RG_PROGRESSIVE_BOW);
+    AddItemToMainPool(RG_PROGRESSIVE_NUT_UPGRADE);
+    AddItemToMainPool(RG_PROGRESSIVE_SLINGSHOT);
+    AddItemToMainPool(RG_PROGRESSIVE_STICK_UPGRADE);
+    AddItemToMainPool(RG_PROGRESSIVE_MAGIC_METER);
+    AddItemToMainPool(RG_PROGRESSIVE_WALLET);
+  }
+
   if (ctx->GetOption(RSK_SHUFFLE_MAGIC_BEANS)) {
     AddItemToMainPool(RG_MAGIC_BEAN_PACK);
     if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {

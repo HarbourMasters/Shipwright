@@ -179,6 +179,7 @@ void Settings::CreateOptions() {
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     mOptions[RSK_BLUE_FIRE_ARROWS] = Option::Bool("Blue Fire Arrows", "gRandomizeBlueFireArrows", mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
     mOptions[RSK_SUNLIGHT_ARROWS] = Option::Bool("Sunlight Arrows", "gRandomizeSunlightArrows", mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
+    mOptions[RSK_INFINITE_UPGRADES] = Option::Bool("Infinite Upgrades", "gRandomizeInfiniteUpgrades", mOptionDescriptions[RSK_INFINITE_UPGRADES]);
     mOptions[RSK_ITEM_POOL] = Option::U8("Item Pool", {"Plentiful", "Balanced", "Scarce", "Minimal"}, OptionCategory::Setting, "gRandomizeItemPool", mOptionDescriptions[RSK_ITEM_POOL], WidgetType::Combobox, RO_ITEM_POOL_BALANCED);
     mOptions[RSK_ICE_TRAPS] = Option::U8("Ice Traps", {"Off", "Normal", "Extra", "Mayhem", "Onslaught"}, OptionCategory::Setting, "gRandomizeIceTraps", mOptionDescriptions[RSK_ICE_TRAPS], WidgetType::Combobox, RO_ICE_TRAPS_NORMAL);
     // TODO: Remove Double Defense, Progressive Goron Sword
@@ -756,7 +757,8 @@ void Settings::CreateOptions() {
         &mOptions[RSK_BOMBCHUS_IN_LOGIC],
         &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
         &mOptions[RSK_BLUE_FIRE_ARROWS],
-        &mOptions[RSK_SUNLIGHT_ARROWS]
+        &mOptions[RSK_SUNLIGHT_ARROWS],
+        &mOptions[RSK_INFINITE_UPGRADES]
     }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_GAMEPLAY_IMGUI_TABLE] = OptionGroup::SubGroup("Gameplay", {
         &mOptionGroups[RSG_TIMESAVERS_IMGUI],
@@ -976,6 +978,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_DAMAGE_MULTIPLIER],
         &mOptions[RSK_BLUE_FIRE_ARROWS],
         &mOptions[RSK_SUNLIGHT_ARROWS],
+        &mOptions[RSK_INFINITE_UPGRADES],
     });
     mOptionGroups[RSG_ITEM_POOL] = OptionGroup("Item Pool Settings", std::initializer_list<Option*>({
         &mOptions[RSK_ITEM_POOL],
@@ -1188,6 +1191,7 @@ void Settings::CreateOptions() {
         { "Miscellaneous Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
         { "Miscellaneous Settings:Blue Fire Arrows", RSK_BLUE_FIRE_ARROWS },
         { "Miscellaneous Settings:Sunlight Arrows", RSK_SUNLIGHT_ARROWS },
+        { "Miscellaneous Settings:Infinite Upgrades", RSK_INFINITE_UPGRADES },
         { "Timesaver Settings:Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
         { "Start with Consumables", RSK_STARTING_CONSUMABLES },
         { "Full Wallets", RSK_FULL_WALLETS },
@@ -2272,6 +2276,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SKULLS_SUNS_SONG:
                 case RSK_BLUE_FIRE_ARROWS:
                 case RSK_SUNLIGHT_ARROWS:
+                case RSK_INFINITE_UPGRADES:
                 case RSK_BOMBCHUS_IN_LOGIC:
                 case RSK_TOT_ALTAR_HINT:
                 case RSK_LIGHT_ARROWS_HINT:
