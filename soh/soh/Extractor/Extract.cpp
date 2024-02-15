@@ -479,7 +479,8 @@ bool Extractor::Run(std::string searchPath, RomSearchMode searchMode) {
                     ShowCrcErrorBox();
                 } else {
                     ShowErrorBox("Rom CRC invalid",
-                                 "Rom CRC did not match the list of known good roms. Trying the next one...");
+                                 "Rom CRC did not match the list of known good roms. Trying the next one...\n\n"
+                                 "Check if your ROM is valid at https://ship.equipment/");
                 }
                 continue;
             }
