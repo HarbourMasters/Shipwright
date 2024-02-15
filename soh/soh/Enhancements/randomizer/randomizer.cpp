@@ -609,6 +609,13 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
     // This is needed since Plentiful item pool also adds a third progressive wallet
     // but we should *not* get Tycoon's Wallet in that mode.
     bool tycoonWallet = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS;
+
+    // Same thing with the infinite upgrades, if we're not shuffling them
+    // and we're using the Plentiful item pool, we should prevent the infinite
+    // upgrades from being gotten
+    bool infiniteUpgrades = GetRandoSettingValue(RSK_INFINITE_UPGRADES);
+
+    u8 numWallets = 2 + (u8)tycoonWallet + (u8)infiniteUpgrades;
     switch (randoGet) {
         case RG_NONE:
         case RG_TRIFORCE:
@@ -645,11 +652,17 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
 
         // Inventory Items
         case RG_PROGRESSIVE_STICK_UPGRADE:
-            return CUR_UPG_VALUE(UPG_STICKS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return infiniteUpgrades ?
+                (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
+                (CUR_UPG_VALUE(UPG_STICKS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_PROGRESSIVE_NUT_UPGRADE:
-            return CUR_UPG_VALUE(UPG_NUTS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return infiniteUpgrades ?
+                (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
+                (CUR_UPG_VALUE(UPG_NUTS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_PROGRESSIVE_BOMB_BAG:
-            return CUR_UPG_VALUE(UPG_BOMB_BAG) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return infiniteUpgrades ?
+                (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
+                (CUR_UPG_VALUE(UPG_BOMB_BAG) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_BOMBS_5:
         case RG_BOMBS_10:
         case RG_BOMBS_20:
@@ -660,7 +673,9 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BUY_BOMBS_30:
             return CUR_UPG_VALUE(UPG_BOMB_BAG) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_BOW:
-            return CUR_UPG_VALUE(UPG_QUIVER) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return infiniteUpgrades ?
+                (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
+                (CUR_UPG_VALUE(UPG_QUIVER) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_ARROWS_5:
         case RG_ARROWS_10:
         case RG_ARROWS_30:
@@ -669,7 +684,9 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BUY_ARROWS_50:
             return CUR_UPG_VALUE(UPG_QUIVER) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_SLINGSHOT:
-            return CUR_UPG_VALUE(UPG_BULLET_BAG) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return infiniteUpgrades ?
+                (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
+                (CUR_UPG_VALUE(UPG_BULLET_BAG) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_DEKU_SEEDS_30:
         case RG_BUY_DEKU_SEEDS_30:
             return CUR_UPG_VALUE(UPG_BULLET_BAG) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
@@ -791,13 +808,15 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_PROGRESSIVE_STRENGTH:
             return CUR_UPG_VALUE(UPG_STRENGTH) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_PROGRESSIVE_WALLET:
-            return CUR_UPG_VALUE(UPG_WALLET) < (tycoonWallet ? 3 : 2) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return CUR_UPG_VALUE(UPG_WALLET) < numWallets ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_PROGRESSIVE_SCALE:
             return CUR_UPG_VALUE(UPG_SCALE) < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_PROGRESSIVE_MAGIC_METER:
         case RG_MAGIC_SINGLE:
         case RG_MAGIC_DOUBLE:
-            return gSaveContext.magicLevel < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return infiniteUpgrades ?
+                (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
+                (gSaveContext.magicLevel < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_FISHING_POLE:
             return !Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
@@ -963,6 +982,11 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
     // This is needed since Plentiful item pool also adds a third progressive wallet
     // but we should *not* get Tycoon's Wallet in that mode.
     bool tycoonWallet = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS;
+
+    // Same thing with the infinite upgrades, if we're not shuffling them
+    //and we're using the Plentiful item pool, we should prevent the infinite
+    //upgrades from being gotten
+    bool infiniteUpgrades = GetRandoSettingValue(RSK_INFINITE_UPGRADES);
     switch (randoGet) {
         case RG_NONE:
             return ogItemId;
@@ -1007,8 +1031,10 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_STICK_UPGRADE_20;
                 case 2:
-                case 3:
                     return GI_STICK_UPGRADE_30;
+                case 3:
+                case 4:
+                    return infiniteUpgrades ? (GetItemID)RG_STICK_UPGRADE_INF : GI_STICK_UPGRADE_30;
             }
         case RG_PROGRESSIVE_NUT_UPGRADE:
             switch (CUR_UPG_VALUE(UPG_NUTS)) {
@@ -1016,8 +1042,10 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_NUT_UPGRADE_30;
                 case 2:
-                case 3:
                     return GI_NUT_UPGRADE_40;
+                case 3:
+                case 4:
+                    return infiniteUpgrades ? (GetItemID)RG_NUT_UPGRADE_INF : GI_NUT_UPGRADE_40;
             }
         case RG_PROGRESSIVE_BOMB_BAG:
             switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
@@ -1026,8 +1054,10 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_BOMB_BAG_30;
                 case 2:
-                case 3:
                     return GI_BOMB_BAG_40;
+                case 3:
+                case 4:
+                    return infiniteUpgrades ? (GetItemID)RG_BOMB_BAG_INF : GI_BOMB_BAG_40;
             }
         case RG_BOMBS_5:
         case RG_BUY_BOMBS_525:
@@ -1048,8 +1078,10 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_QUIVER_40;
                 case 2:
-                case 3:
                     return GI_QUIVER_50;
+                case 3:
+                case 4:
+                    return infiniteUpgrades ? (GetItemID)RG_QUIVER_INF : GI_QUIVER_50;
             }
         case RG_ARROWS_5:
         case RG_BUY_ARROWS_10:
@@ -1067,8 +1099,10 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_BULLET_BAG_40;
                 case 2:
-                case 3:
                     return GI_BULLET_BAG_50;
+                case 3:
+                case 4:
+                    return infiniteUpgrades ? (GetItemID)RG_BULLET_BAG_INF : GI_BULLET_BAG_50;
             }
         case RG_DEKU_SEEDS_30:
         case RG_BUY_DEKU_SEEDS_30:
@@ -1090,6 +1124,16 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_BOMBCHU_20:
         case RG_BUY_BOMBCHU_20:
             return GI_BOMBCHUS_20;
+        case RG_PROGRESSIVE_BOMBCHUS:
+            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
+                return (GetItemID)RG_PROGRESSIVE_BOMBCHUS;
+            } else if (infiniteUpgrades) {
+                return (GetItemID)RG_BOMBCHU_INF;
+            } else if (AMMO(ITEM_BOMBCHU) < 5) {
+                return GI_BOMBCHUS_10;
+            } else {
+                return GI_BOMBCHUS_5;
+            }
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {
                 case ITEM_NONE:
@@ -1206,8 +1250,10 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_WALLET_GIANT;
                 case 2:
+                    return tycoonWallet ? (GetItemID)RG_TYCOON_WALLET : infiniteUpgrades ? (GetItemID)RG_WALLET_INF : GI_WALLET_GIANT;
                 case 3:
-                    return tycoonWallet ? (GetItemID)RG_TYCOON_WALLET : GI_WALLET_GIANT;
+                case 4:
+                    return infiniteUpgrades ? (GetItemID)RG_WALLET_INF : tycoonWallet ? (GetItemID)RG_TYCOON_WALLET : GI_WALLET_GIANT;
             }
         case RG_PROGRESSIVE_SCALE:
             if (!Flags_GetRandomizerInf(RAND_INF_CAN_SWIM)) {
@@ -1225,8 +1271,10 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 0:
                     return (GetItemID)RG_MAGIC_SINGLE;
                 case 1:
-                case 2:
                     return (GetItemID)RG_MAGIC_DOUBLE;
+                case 2:
+                case 3:
+                    return infiniteUpgrades ? (GetItemID)RG_MAGIC_INF : (GetItemID)RG_MAGIC_DOUBLE;
             }
 
         case RG_RECOVERY_HEART:
@@ -1324,11 +1372,37 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_GOLD_SKULLTULA_TOKEN:
         case RG_PROGRESSIVE_HOOKSHOT:
         case RG_PROGRESSIVE_STRENGTH:
+            return true;
         case RG_PROGRESSIVE_BOMB_BAG:
+            if (CUR_UPG_VALUE(UPG_BOMB_BAG) < 3) {
+                return true;
+            } else {
+                return false;
+            }
         case RG_PROGRESSIVE_BOW:
+            if (CUR_UPG_VALUE(UPG_QUIVER) < 3) {
+                return true;
+            } else {
+                return false;
+            }
         case RG_PROGRESSIVE_SLINGSHOT:
+            if (CUR_UPG_VALUE(UPG_BULLET_BAG) < 3) {
+                return true;
+            } else {
+                return false;
+            }
         case RG_PROGRESSIVE_NUT_UPGRADE:
+            if (CUR_UPG_VALUE(UPG_NUTS) < 3) {
+                return true;
+            } else {
+                return false;
+            }
         case RG_PROGRESSIVE_STICK_UPGRADE:
+            if (CUR_UPG_VALUE(UPG_STICKS) < 3) {
+                return true;
+            } else {
+                return false;
+            }
         case RG_PROGRESSIVE_OCARINA:
         case RG_PROGRESSIVE_GORONSWORD:
         case RG_EMPTY_BOTTLE:
@@ -1350,6 +1424,9 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BOMBCHU_10:
         case RG_BOMBCHU_20:
         case RG_BOMBCHU_DROP:
+            return true;
+        case RG_PROGRESSIVE_BOMBCHUS:
+            return INV_CONTENT(ITEM_BOMBCHU) != ITEM_NONE && !GetRandoSettingValue(RSK_INFINITE_UPGRADES);
         case RG_ARROWS_5:
         case RG_ARROWS_10:
         case RG_ARROWS_30:
@@ -3246,7 +3323,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 74> getItemMessages = {{
+    const std::array<GetItemMessage, 82> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
@@ -3518,6 +3595,14 @@ void Randomizer::CreateCustomMessages() {
 			"Vous trouvez la %rtouche %y\xa6%r de&l'Ocarina%w! Vous pouvez&maintenant l'utiliser lorsque&vous en jouez!"),
         GIMESSAGE_UNTRANSLATED(RG_BRONZE_SCALE, ITEM_SCALE_SILVER, "You got the %rBronze Scale%w!&The power of buoyancy is yours!"),
         GIMESSAGE_UNTRANSLATED(RG_FISHING_POLE, ITEM_FISHING_POLE, "You found a lost %rFishing Pole%w!&Time to hit the pond!"),
+        GIMESSAGE_UNTRANSLATED(RG_BOMB_BAG_INF, ITEM_BOMB_BAG_40, "You got an %rInfinite Bomb Bag%w!&Now you have %yinfinite bombs%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_QUIVER_INF, ITEM_QUIVER_50, "You got an %rInfinite Quiver%w!&Now you have %yinfinite arrows%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_BULLET_BAG_INF, ITEM_BULLET_BAG_50, "You got an %rInfinite Bullet Bag%w!&Now you have %yinfinite&slingshot seeds%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_STICK_UPGRADE_INF, ITEM_STICK, "You now have %yinfinite%w %rDeku Sticks%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_NUT_UPGRADE_INF, ITEM_NUT, "You now have %yinfinite%w %rDeku Nuts%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_MAGIC_INF, ITEM_MAGIC_LARGE, "You now have %yinfinite%w %rMagic%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_BOMBCHU_INF, ITEM_BOMBCHU, "You now have %yinfinite%w %rBombchus%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_WALLET_INF, ITEM_WALLET_GIANT, "You now have %yinfinite%w %rmoney%w!"),
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();

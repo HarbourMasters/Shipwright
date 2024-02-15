@@ -308,6 +308,17 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetRandomizerInf(RAND_INF_CAN_SWIM);
     }
 
+    if (Randomizer_GetSettingValue(RSK_INFINITE_UPGRADES) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER);
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG);
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG);
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE);
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE);
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER);
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS);
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_MONEY);
+    }
+
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_WALLET) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);
     }
