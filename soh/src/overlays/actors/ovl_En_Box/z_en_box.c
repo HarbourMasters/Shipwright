@@ -646,9 +646,17 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
 
     if (!isVanilla) {
         getItemCategory = this->getItemEntry.getItemCategory;
-        // If they don't have bombchu's yet consider the bombchu item major
-        if (this->getItemEntry.gid == GID_BOMBCHU && INV_CONTENT(ITEM_BOMBCHU) != ITEM_BOMBCHU) {
-            getItemCategory = ITEM_CATEGORY_MAJOR;
+        // If they have bombchus, don't consider the bombchu item major
+        if (
+            INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
+            ((this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId == RG_PROGRESSIVE_BOMBCHUS) || 
+            (this->getItemEntry.modIndex == MOD_NONE && (
+                this->getItemEntry.getItemId == GI_BOMBCHUS_5 ||
+                this->getItemEntry.getItemId == GI_BOMBCHUS_10 ||
+                this->getItemEntry.getItemId == GI_BOMBCHUS_20
+            )))
+        ) {
+            getItemCategory = ITEM_CATEGORY_JUNK;
         // If it's a bottle and they already have one, consider the item lesser
         } else if (
             (this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId >= RG_BOTTLE_WITH_RED_POTION && this->getItemEntry.getItemId <= RG_BOTTLE_WITH_BIG_POE) ||
