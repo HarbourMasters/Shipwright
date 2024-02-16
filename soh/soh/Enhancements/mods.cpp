@@ -10,6 +10,7 @@
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/nametag.h"
+#include "objects/object_gi_compass/object_gi_compass.h"
 
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
 #include "src/overlays/actors/ovl_En_Dekubaba/z_en_dekubaba.h"
@@ -1595,6 +1596,26 @@ void RegisterFishsanity() {
     });
 }
 
+extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
+
+void PatchCompasses() {
+    s8 compassesCanBeOutsideDungeon = IS_RANDO && DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
+    s8 isColoredCompassesEnabled = compassesCanBeOutsideDungeon && CVarGetInteger("gRandoEnhancement.MatchCompassColors", 1);
+    if (isColoredCompassesEnabled) {
+        ResourceMgr_PatchGfxByName(gGiCompassDL, "Compass_PrimColor", 5, gsDPNoOp());
+        ResourceMgr_PatchGfxByName(gGiCompassDL, "Compass_EnvColor", 6, gsDPNoOp());
+    } else {
+        ResourceMgr_UnpatchGfxByName(gGiCompassDL, "Compass_PrimColor");
+        ResourceMgr_UnpatchGfxByName(gGiCompassDL, "Compass_EnvColor");
+    }
+}
+
+void RegisterRandomizerCompasses() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](int32_t _unused) {
+        PatchCompasses();
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1632,6 +1653,7 @@ void InitMods() {
     RegisterNoSwim();
     RegisterNoWallet();
     RegisterFishsanity();
+    RegisterRandomizerCompasses();
     NameTag_RegisterHooks();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
