@@ -333,7 +333,7 @@ static std::vector<RandomizerCheck> GetAccessibleGossipStones(const RandomizerCh
   ctx->GetItemLocation(hintedLocation)->SetPlacedItem(RG_NONE);
 
   ctx->GetLogic()->Reset();
-  auto accessibleGossipStones = GetAccessibleLocations(Rando::StaticData::gossipStoneLocations);
+  auto accessibleGossipStones = ReachabilitySearch(Rando::StaticData::gossipStoneLocations);
   //Give the item back to the location
   ctx->GetItemLocation(hintedLocation)->SetPlacedItem(originalItem);
 
@@ -347,7 +347,7 @@ bool IsReachableWithout(std::vector<RandomizerCheck> locsToCheck, RandomizerChec
   RandomizerGet originalItem = ctx->GetItemLocation(excludedCheck)->GetPlacedRandomizerGet();
   ctx->GetItemLocation(excludedCheck)->SetPlacedItem(RG_NONE);
   ctx->GetLogic()->Reset();
-  const auto rechableWithout = GetAccessibleLocations(locsToCheck);
+  const auto rechableWithout = ReachabilitySearch(locsToCheck);
   ctx->GetItemLocation(excludedCheck)->SetPlacedItem(originalItem);
   if (resetAfter){
     //if resetAfter is on, reset logic we are done
@@ -1082,7 +1082,7 @@ void CreateStoneHints() {
   //Getting gossip stone locations temporarily sets one location to not be reachable.
   //Call the function one last time to get rid of false positives on locations not
   //being reachable.
-  GetAccessibleLocations({});
+  ReachabilitySearch({});
 }
 
 void CreateFrogsHint() {

@@ -164,7 +164,10 @@ void AreaTable_Init_CastleTown() {
     Entrance(RR_GANONS_CASTLE_ENTRYWAY, {[]{return logic->IsAdult;}}),
   });
 
-  areaTable[RR_MARKET_GUARD_HOUSE] = Area("Market Guard House", "Market Guard House", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[RR_MARKET_GUARD_HOUSE] = Area("Market Guard House", "Market Guard House", RA_NONE, NO_DAY_NIGHT_CYCLE, {
+                  //Events
+                  EventAccess(&logic->CanEmptyBigPoes,   {[]{return logic->IsAdult;}}),
+                }, {
                   //Locations
                   LocationAccess(RC_MARKET_10_BIG_POES,    {[]{return logic->IsAdult && logic->BigPoeKill;}}),
                   LocationAccess(RC_MARKET_GS_GUARD_HOUSE, {[]{return logic->IsChild;}}),
