@@ -1181,7 +1181,7 @@ void DrawScaleSlider(const std::string CvarName,float DefaultValue){
     //Disabled for now. feature not done and several fixes needed to be merged.
     //UIWidgets::EnhancementSliderFloat("Scale : %dx", InvisibleLabel.c_str(), CvarLabel.c_str(), 0.1f, 3.0f,"",DefaultValue,true);
 }
-void Draw_Table_Dropdown(char* Header_Title, char* Table_ID, char* Column_Title, char* Slider_Title, char* Slider_ID, int MinY, int MaxY, int MinX, int MaxX, float Default_Value) {
+void Draw_Table_Dropdown(const char* Header_Title, const char* Table_ID, const char* Column_Title, const char* Slider_Title, const char* Slider_ID, int MinY, int MaxY, int MinX, int MaxX, float Default_Value) {
     if (ImGui::CollapsingHeader(Header_Title)) {
         if (ImGui::BeginTable(Table_ID, 1, FlagsTable)) {
             ImGui::TableSetupColumn(Column_Title, FlagsCell, TablesCellsWidth);
@@ -1195,7 +1195,7 @@ void Draw_Table_Dropdown(char* Header_Title, char* Table_ID, char* Column_Title,
         }
     }
 }
-void C_Button_Dropdown(char* Header_Title, char* Table_ID, char* Column_Title, char* Slider_Title, char* Slider_ID, char* Int_Type, float Slider_Scale_Value) {
+void C_Button_Dropdown(const char* Header_Title, const char* Table_ID, const char* Column_Title, const char* Slider_Title, const char* Slider_ID, const char* Int_Type, float Slider_Scale_Value) {
     if (ImGui::CollapsingHeader(Header_Title)) {
         if (ImGui::BeginTable(Table_ID, 1, FlagsTable)) {
             ImGui::TableSetupColumn(Column_Title, FlagsCell, TablesCellsWidth);
@@ -1346,14 +1346,14 @@ void Draw_Placements(){
         }
     }
 }
-void Reset_Option_Single(char* Button_Title, char* name) {
+void Reset_Option_Single(const char* Button_Title, const char* name) {
     ImGui::SameLine();
     if (ImGui::Button(Button_Title)) {
         CVarClear(name);
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
 }
-void Reset_Option_Double(char* Button_Title, char* name) {
+void Reset_Option_Double(const char* Button_Title, const char* name) {
     ImGui::SameLine();
     if (ImGui::Button(Button_Title)) {
         const size_t bufferSize = strlen(name) + 8;
