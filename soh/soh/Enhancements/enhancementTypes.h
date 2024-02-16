@@ -1,3 +1,6 @@
+#ifndef _ENHANCEMENT_TYPES_H_
+#define _ENHANCEMENT_TYPES_H_
+
 typedef enum {
     WARP_MODE_OVERRIDE_OFF,
     WARP_MODE_OVERRIDE_MQ_AS_VANILLA,
@@ -74,3 +77,11 @@ typedef enum {
     DEKU_STICK_UNBREAKABLE,
     DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE,
 } DekuStickType;
+
+typedef enum {
+    SWORD_TOGGLE_NONE,
+    SWORD_TOGGLE_CHILD,
+    SWORD_TOGGLE_BOTH_AGES,
+} SwordToggleMode;
+
+#endif

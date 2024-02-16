@@ -12,6 +12,10 @@
 #include "3drando/rando_main.hpp"
 #include "3drando/random.hpp"
 #include "../../UIWidgets.hpp"
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+#define IMGUI_DEFINE_MATH_OPERATORS
+#endif
+#include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 #include "../custom-message/CustomMessageTypes.h"
 #include "../item-tables/ItemTableManager.h"
@@ -64,7 +68,7 @@ const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
 const std::string Randomizer::randoMiscHintsTableID = "RandomizerMiscHints";
 
-static const char* englishRupeeNames[170] = { 
+static const char* englishRupeeNames[171] = { 
     "[P]",               "Bad RNG Rolls",    "Bananas",          "Beanbean Coins",   "Beans",
     "Beli",              "Bells",            "Berries",          "Bison Dollars",    "Bitcoin",
     "Blue Essence",      "Bolts",            "Bones",            "Boondollars",      "Bottle Caps",
@@ -77,28 +81,29 @@ static const char* englishRupeeNames[170] = {
     "Dollarydoos",       "Dosh",             "Doubloons",        "Dwarfbucks",       "Emeralds",
     "Energon",           "Eris",             "Ether",            "Euro",             "Experience",
     "Extinction Points", "Floopies",         "Flurbos",          "FPS",              "Friends",
-    "Frog Coins",        "Gald",             "Gekz",             "Gems",             "Gil",
-    "Glimmer",           "Glitches",         "Gold",             "Gold Dragons",     "Goober Dollars",
-    "Green Herbs",       "Greg Siblings",    "Gummybears",       "Hell",             "Hylian Loaches",
-    "Ice Traps",         "ISK",              "Jiggies",          "KF7 Ammo",         "Kinstones",
-    "Kremcoins",         "Kroner",           "Leaves ",          "Lemmings",         "Lien",
-    "Lira",              "Lumber",           "Lungmen Dollars",  "Macca",            "Mana",
-    "Mann Co. Keys",     "Meat",             "Meat Stacks",      "Medaparts",        "Meseta",
-    "Mesetas",           "Minerals",         "Monopoly Money",   "Moons",            "Mora",
-    "Mumbo Tokens",      "Munny",            "Mushrooms",        "Mysteries",        "Neopoints",
-    "Notes",             "Nuyen",            "Orbs",             "Pix",              "Pixels",
-    "Platinum",          "Pokédollars",      "Pokémon",          "Poko",             "Pokos",
-    "Potch",             "Pounds",           "Power Pellets",    "Primogems",        "Réals",
-    "Refined Metal",     "Remote Mines",     "Retweets",         "Rhinu",            "Rings",
-    "Riot Points",       "Robux",            "Rubies",           "Rubles",           "Runite Ore",
-    "Rupees",            "Saint Quartz",     "Septims",          "Shekels",          "Shillings",
-    "Silver",            "Simoleons",        "Smackaroos",       "Social Credit",    "Souls",
-    "Spent Casings",     "Spice",            "Spondulicks",      "Spoons",           "Star Bits",
-    "Star Chips",        "Stars",            "Stones of Jordan", "Store Credit",     "Strawbs",
-    "Studs",             "Super Sea Snails", "Talent",           "Teef",             "Telecrystals",
-    "Tiberium",          "TokKul",           "Toys",             "Turnips",          "Upvotes",
-    "V-Bucks",           "Vespene Gas",      "Watts",            "Widgets",          "Woolongs",
-    "World Dollars",     "Wumpa Fruit",      "Yen",              "Zenny",            "Zorkmids"
+    "Frog Coins",        "Gald",             "Gekz",             "Gems",             "Geo",
+    "Gil",               "Glimmer",          "Glitches",         "Gold",             "Gold Dragons",     
+    "Goober Dollars",    "Green Herbs",      "Greg Siblings",    "Gummybears",       "Hell",             
+    "Hylian Loaches",    "Ice Traps",        "ISK",              "Jiggies",          "KF7 Ammo",         
+    "Kinstones",         "Kremcoins",        "Kroner",           "Leaves ",          "Lemmings",         
+    "Lien",              "Lira",             "Lumber",           "Lungmen Dollars",  "Macca",            
+    "Mana",              "Mann Co. Keys",    "Meat",             "Meat Stacks",      "Medaparts",        
+    "Meseta",            "Mesetas",          "Minerals",         "Monopoly Money",   "Moons",            
+    "Mora",              "Mumbo Tokens",     "Munny",            "Mushrooms",        "Mysteries",        
+    "Neopoints",         "Notes",            "Nuyen",            "Orbs",             "Pix",              
+    "Pixels",            "Platinum",         "Pokédollars",      "Pokémon",          "Poko",             
+    "Pokos",             "Potch",            "Pounds",           "Power Pellets",    "Primogems",        
+    "Réals",             "Refined Metal",    "Remote Mines",     "Retweets",         "Rhinu",            
+    "Rings",             "Riot Points",      "Robux",            "Rubies",           "Rubles",           
+    "Runite Ore",        "Rupees",           "Saint Quartz",     "Septims",          "Shekels",          
+    "Shillings",         "Silver",           "Simoleons",        "Smackaroos",       "Social Credit",    
+    "Souls",             "Spent Casings",    "Spice",            "Spondulicks",      "Spoons",           
+    "Star Bits",         "Star Chips",       "Stars",            "Stones of Jordan", "Store Credit",     
+    "Strawbs",           "Studs",            "Super Sea Snails", "Talent",           "Teef",             
+    "Telecrystals",      "Tiberium",         "TokKul",           "Toys",             "Turnips",          
+    "Upvotes",           "V-Bucks",          "Vespene Gas",      "Watts",            "Widgets",          
+    "Woolongs",          "World Dollars",    "Wumpa Fruit",      "Yen",              "Zenny",            
+    "Zorkmids"      
 };
 
 static const char* germanRupeeNames[41] = {
@@ -222,9 +227,9 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
 };
 
 std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEnum = {
-    { "Detailed Logic Settings:Logic", RSK_LOGIC_RULES },
-    { "Detailed Logic Settings:Night GSs Expect Sun's", RSK_SKULLS_SUNS_SONG },
-    { "Detailed Logic Settings:All Locations Reachable", RSK_ALL_LOCATIONS_REACHABLE },
+    { "Logic Options:Logic", RSK_LOGIC_RULES },
+    { "Logic Options:Night GSs Expect Sun's", RSK_SKULLS_SUNS_SONG },
+    { "Logic Options:All Locations Reachable", RSK_ALL_LOCATIONS_REACHABLE },
     { "Item Pool Settings:Item Pool", RSK_ITEM_POOL },
     { "Item Pool Settings:Ice Traps", RSK_ICE_TRAPS },
     { "Open Settings:Forest", RSK_FOREST },
@@ -310,6 +315,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "World Settings:Overworld Spawns", RSK_SHUFFLE_OVERWORLD_SPAWNS },
     { "World Settings:Mixed Entrance Pools", RSK_MIXED_ENTRANCE_POOLS },
     { "World Settings:Mix Dungeons", RSK_MIX_DUNGEON_ENTRANCES },
+    { "World Settings:Mix Bosses", RSK_MIX_BOSS_ENTRANCES },
     { "World Settings:Mix Overworld", RSK_MIX_OVERWORLD_ENTRANCES },
     { "World Settings:Mix Interiors", RSK_MIX_INTERIOR_ENTRANCES },
     { "World Settings:Mix Grottos", RSK_MIX_GROTTO_ENTRANCES },
@@ -360,29 +366,12 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Quest:Ganon's Castle", RSK_MQ_GANONS_CASTLE },
 };
 
-std::string sanitize(std::string stringValue) {
-    // Add backslashes.
-    for (auto i = stringValue.begin();;) {
-        auto const pos = std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
-        if (pos == stringValue.end()) {
-            break;
-        }
-        i = std::next(stringValue.insert(pos, '\\'), 2);
-    }
-
-    // Removes others.
-    stringValue.erase(std::remove_if(stringValue.begin(), stringValue.end(), [](char const c) {
-        return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; }), stringValue.end());
-
-    return stringValue;
-}
-
 #pragma optimize("", off)
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
 bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
-        std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+        std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
         if (!spoilerFileStream) {
             return false;
         } else {
@@ -496,6 +485,13 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         "Zu {{location}}?\x1B&%gOK&No%w\x02",
         "Se téléporter vers&{{location}}?\x1B&%gOK!&Non%w\x02"));
 
+    // Bow Shooting Gallery reminder
+    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW,
+        CustomMessage("Come back when you have your own&bow and you'll get a %rdifferent prize%w!",
+        "Komm wieder sobald du deinen eigenen&Bogen hast, um einen %rspeziellen Preis%w zu&erhalten!",
+        "J'aurai %rune autre récompense%w pour toi&lorsque tu auras ton propre arc."));
+
+    // Lake Hylia water level system
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN,
         CustomMessage("Water level control system.&Keep away!",
             "Wasserstand Kontrollsystem&Finger weg!",
@@ -553,13 +549,18 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
             "\x12\x38\x82" "Aufgeben! Ich verkaufe dir einen&%g{{item}}%w&für %r{{price}} Rubine%w!\x07\x10\xA3",
             "\x12\x38\x82" "J'abandonne! Tu veux bien m'acheter&un %g{{item}}%w?&Ça fera %r{{price}} Rubis%w!\x07\x10\xA3"));
     CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN,
+        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_10,
         CustomMessage("I tried to be a %rmagic bean%w salesman,&but it turns out my marketing skills&weren't worth "
             "beans!^Anyway, want to buy my&%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
             "Möchten Sie einen geheimnisvollen&Gegenstand für 60 Rubine?\x1B&%gJa&Nein%w",
             "J'ai essayé d'être un vendeur de&%rharicots magiques%w, mais j'étais&mauvais au niveau du marketing et&ça "
             "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter un&"
             "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w"));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100,
+        CustomMessage("I never thought I'd say this, but I'm &selling the last %rMagic Bean%w. %r99%w Rupees...\x1B&%gYes&No%w",
+            "\x1B&%gJa&Nein%w",
+            "Je te vends mon dernier %rHaricot&magique%w pour %r99 Rubis%w.\x1B&%gAcheter&Ne pas acheter%w"));
 
 
     //Setup for merchant text boxes
@@ -571,7 +572,7 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
             "Wie wäre es mit %g&{{item}}%w für %y200 Rubine?%w\x1B&%gJa!&Nein!%w",
             "Veux-tu acheter %g&{{item}}%w pour %y200 rubis?%w\x1B&%gOui&Non&w"));
 
-    //Granny Shopy
+    //Granny Shop
     //RANDOTODO: Implement obscure/ambiguous hints
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_GRANNYS_SHOP,
@@ -659,7 +660,7 @@ void Randomizer::LoadMasterQuestDungeons(const char* spoilerFileName) {
 }
 
 void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
-    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
     if (!spoilerFileStream)
         return;
 
@@ -692,6 +693,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_LOGIC_GLITCHLESS;
                         } else if (it.value() == "No Logic") {
                             gSaveContext.randoSettings[index].value = RO_LOGIC_NO_LOGIC;
+                        } else if (it.value() == "Vanilla") {
+                            gSaveContext.randoSettings[index].value = RO_LOGIC_VANILLA;
                         }
                         break;
                     case RSK_FOREST:
@@ -902,6 +905,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_OVERWORLD_SPAWNS:
                     case RSK_MIXED_ENTRANCE_POOLS:
                     case RSK_MIX_DUNGEON_ENTRANCES:
+                    case RSK_MIX_BOSS_ENTRANCES:
                     case RSK_MIX_OVERWORLD_ENTRANCES:
                     case RSK_MIX_INTERIOR_ENTRANCES:
                     case RSK_MIX_GROTTO_ENTRANCES:
@@ -1293,7 +1297,7 @@ std::string FormatJsonHintText(std::string jsonHint) {
 }
 
 void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
-    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
     if (!spoilerFileStream)
         return;
 
@@ -1394,7 +1398,7 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
 }
 
 void Randomizer::ParseRequiredTrialsFile(const char* spoilerFileName) {
-    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
     if (!spoilerFileStream) {
         return;
     }
@@ -1415,7 +1419,7 @@ void Randomizer::ParseRequiredTrialsFile(const char* spoilerFileName) {
 }
 
 void Randomizer::ParseMasterQuestDungeonsFile(const char* spoilerFileName) {
-    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
     if (!spoilerFileStream) {
         return;
     }
@@ -1495,7 +1499,7 @@ int16_t Randomizer::GetVanillaMerchantPrice(RandomizerCheck check) {
 }
 
 void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent) {
-    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
     if (!spoilerFileStream)
         return;
 
@@ -1558,16 +1562,16 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
 }
 
 void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent) {
-    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
     if (!spoilerFileStream) {
         return;
     }
 
     // set all the entrances to be 0 to indicate an unshuffled entrance
     for (auto &entranceOveride : gSaveContext.entranceOverrides) {
+        entranceOveride.type = 0;
         entranceOveride.index = 0;
         entranceOveride.destination = 0;
-        entranceOveride.blueWarp = 0;
         entranceOveride.override = 0;
         entranceOveride.overrideDestination = 0;
     }
@@ -1582,12 +1586,12 @@ void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent)
             json entranceJson = *it;
 
             for (auto entranceIt = entranceJson.begin(); entranceIt != entranceJson.end(); ++entranceIt) {
-                if (entranceIt.key() == "index") {
+                if (entranceIt.key() == "type") {
+                    gSaveContext.entranceOverrides[i].type = entranceIt.value();
+                } else if (entranceIt.key() == "index") {
                     gSaveContext.entranceOverrides[i].index = entranceIt.value();
                 } else if (entranceIt.key() == "destination") {
                     gSaveContext.entranceOverrides[i].destination = entranceIt.value();
-                } else if (entranceIt.key() == "blueWarp") {
-                    gSaveContext.entranceOverrides[i].blueWarp = entranceIt.value();
                 } else if (entranceIt.key() == "override") {
                     gSaveContext.entranceOverrides[i].override = entranceIt.value();
                 } else if (entranceIt.key() == "overrideDestination") {
@@ -2547,6 +2551,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_LH_CHILD_FISHING,                                            RAND_INF_CHILD_FISHING },
     { RC_LH_ADULT_FISHING,                                            RAND_INF_ADULT_FISHING },
     { RC_MARKET_10_BIG_POES,                                          RAND_INF_10_BIG_POES },
+    { RC_KAK_100_GOLD_SKULLTULA_REWARD,                               RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD },
 };
 
 RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
@@ -2715,7 +2720,7 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
 
     RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_EN_GIRLA, 
         // Bazaar (SHOP1) scene is reused, so if entering from Kak use debug scene to identify
-        (sceneNum == SCENE_BAZAAR && gSaveContext.entranceIndex == 0xB7) ? SCENE_TEST01 : sceneNum, slotIndex);
+        (sceneNum == SCENE_BAZAAR && gSaveContext.entranceIndex == ENTR_BAZAAR_0) ? SCENE_TEST01 : sceneNum, slotIndex);
 
     if (rcObject.rc != RC_UNKNOWN_CHECK) {
         shopItemIdentity.randomizerInf = rcToRandomizerInf[rcObject.rc];
@@ -3010,6 +3015,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_SHUFFLE_OVERWORLD_SPAWNS] = CVarGetInteger("gRandomizeShuffleOverworldSpawns", RO_GENERIC_OFF);
     cvarSettings[RSK_MIXED_ENTRANCE_POOLS] = CVarGetInteger("gRandomizeMixedEntrances", RO_GENERIC_OFF);
     cvarSettings[RSK_MIX_DUNGEON_ENTRANCES] = CVarGetInteger("gRandomizeMixDungeons", RO_GENERIC_OFF);
+    cvarSettings[RSK_MIX_BOSS_ENTRANCES] = CVarGetInteger("gRandomizeMixBosses", RO_GENERIC_OFF);
     cvarSettings[RSK_MIX_OVERWORLD_ENTRANCES] = CVarGetInteger("gRandomizeMixOverworld", RO_GENERIC_OFF);
     cvarSettings[RSK_MIX_INTERIOR_ENTRANCES] = CVarGetInteger("gRandomizeMixInteriors", RO_GENERIC_OFF);
     cvarSettings[RSK_MIX_GROTTO_ENTRANCES] = CVarGetInteger("gRandomizeMixGrottos", RO_GENERIC_OFF);
@@ -3069,7 +3075,7 @@ void RandomizerSettingsWindow::DrawElement() {
 
     // Randomizer settings
     // Logic Settings
-    static const char* randoLogicRules[2] = { "Glitchless", "No logic" };
+    static const char* randoLogicRules[3] = { "Glitchless", "No logic", "Vanilla" };
 
     // Open Settings
     static const char* randoForest[3] = { "Closed", "Closed Deku", "Open" };
@@ -3143,7 +3149,9 @@ void RandomizerSettingsWindow::DrawElement() {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
     }
 
+    ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
     DrawPresetSelector(PRESET_TYPE_RANDOMIZER);
+    ImGui::EndDisabled();
 
     UIWidgets::Spacer(0);
     UIWidgets::EnhancementCheckbox("Manual seed entry", "gRandoManualSeedEntry", false, "");
@@ -3166,19 +3174,25 @@ void RandomizerSettingsWindow::DrawElement() {
     }
 
     UIWidgets::Spacer(0);
+    ImGui::BeginDisabled(CVarGetInteger("gRandomizerDontGenerateSpoiler", 0) && gSaveContext.gameMode != GAMEMODE_FILE_SELECT);
     if (ImGui::Button("Generate Randomizer")) {
         GenerateRandomizer(CVarGetInteger("gRandoManualSeedEntry", 0) ? seedString : "");
     }
+    ImGui::EndDisabled();
 
     UIWidgets::Spacer(0);
-    std::string spoilerfilepath = CVarGetString("gSpoilerLog", "");
-    ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
+    if (!CVarGetInteger("gRandomizerDontGenerateSpoiler", 0)) {
+        std::string spoilerfilepath = CVarGetString("gSpoilerLog", "");
+        ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
+    }
 
     // RANDOTODO settings presets
     // std::string presetfilepath = CVarGetString("gLoadedPreset", "");
     // ImGui::Text("Settings File: %s", presetfilepath.c_str());
 
     UIWidgets::PaddedSeparator();
+
+    ImGui::BeginDisabled(CVarGetInteger("gDisableChangingSettings", 0));
 
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     static ImVec2 cellPadding(8.0f, 8.0f);
@@ -3195,6 +3209,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PopItemFlag();
                 ImGui::TableNextRow();
 
+                ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
                 // COLUMN 1 - Area Access
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
@@ -3489,6 +3504,8 @@ void RandomizerSettingsWindow::DrawElement() {
 
                 UIWidgets::PaddedSeparator();
 
+                ImGui::EndDisabled();
+
                 // Master Quest Dungeons
                 if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
                     ImGui::PushItemWidth(-FLT_MIN);
@@ -3541,6 +3558,8 @@ void RandomizerSettingsWindow::DrawElement() {
                     UIWidgets::PaddedSeparator();
                 }
 
+                ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
+
                 // Triforce Hunt
                 UIWidgets::EnhancementCheckbox("Triforce Hunt", "gRandomizeTriforceHunt");
                 UIWidgets::InsertHelpHoverText(
@@ -3575,6 +3594,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 ImGui::EndChild();
+                ImGui::EndDisabled();
 
                 // COLUMN 3 - Shuffle Entrances
                 ImGui::TableNextColumn();
@@ -3694,7 +3714,8 @@ void RandomizerSettingsWindow::DrawElement() {
                 // Mixed Entrance Pools
                 UIWidgets::EnhancementCheckbox("Mixed Entrance Pools", "gRandomizeMixedEntrances");
                 UIWidgets::InsertHelpHoverText(
-                    "Shuffle entrances into a mixed pool instead of separate ones.\n"
+                    "Shuffle entrances into a mixed pool instead of separate ones. Has no affect on pools whose "
+                    "entrances aren't shuffled, and \"Shuffle Boss Entrances\" must be set to \"Full\" to include them.\n"
                     "\n"
                     "For example, enabling the settings to shuffle grotto, dungeon, and overworld entrances and "
                     "selecting grotto and dungeon entrances here will allow a dungeon to be inside a grotto or "
@@ -3707,6 +3728,13 @@ void RandomizerSettingsWindow::DrawElement() {
                         ImGui::SetCursorPosX(20);
                         UIWidgets::EnhancementCheckbox("Mix Dungeons", "gRandomizeMixDungeons");
                         UIWidgets::InsertHelpHoverText("Dungeon entrances will be part of the mixed pool");
+                    }
+                    if (CVarGetInteger("gRandomizeShuffleBossEntrances", RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ==
+                        RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL) {
+                        UIWidgets::Spacer(0);
+                        ImGui::SetCursorPosX(20);
+                        UIWidgets::EnhancementCheckbox("Mix Bosses", "gRandomizeMixBosses");
+                        UIWidgets::InsertHelpHoverText("Boss entrances will be part of the mixed pool");
                     }
                     if (CVarGetInteger("gRandomizeShuffleOverworldEntrances", RO_GENERIC_OFF)) {
                         UIWidgets::Spacer(0);
@@ -3736,6 +3764,7 @@ void RandomizerSettingsWindow::DrawElement() {
             ImGui::EndTabItem();
         }
 
+        ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
         if (ImGui::BeginTabItem("Items")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoStartingInventory", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
@@ -4208,7 +4237,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                 break;
                             case RO_LACS_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount", 
-                                                            "gRandomizeLacsStoneCount", 1, 4, "", 4, true, true, false);
+                                                            "gRandomizeLacsStoneCount", 1, 4, "", 3, true, true, false);
                                 break;
                             case RO_LACS_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount", 
@@ -4237,7 +4266,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                 break;
                             case RO_LACS_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
-                                                            "gRandomizeLacsMedallionCount", 1, 7, "", 7, true, true, false);
+                                                            "gRandomizeLacsMedallionCount", 1, 7, "", 6, true, true, false);
                                 break;
                             case RO_LACS_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
@@ -4266,7 +4295,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                 break;
                             case RO_LACS_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
-                                                            "gRandomizeLacsRewardCount", 1, 10, "", 10, true, true, false);
+                                                            "gRandomizeLacsRewardCount", 1, 10, "", 9, true, true, false);
                                 break;
                             case RO_LACS_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
@@ -4295,7 +4324,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                 break;
                             case RO_LACS_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
-                                                            "gRandomizeLacsDungeonCount", 1, 9, "", 9, true, true, false);
+                                                            "gRandomizeLacsDungeonCount", 1, 9, "", 8, true, true, false);
                                 break;
                             case RO_LACS_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
@@ -4321,7 +4350,9 @@ void RandomizerSettingsWindow::DrawElement() {
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
+        ImGui::EndDisabled();
 
+        ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
         if (ImGui::BeginTabItem("Gameplay")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoGameplay", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
@@ -4591,7 +4622,9 @@ void RandomizerSettingsWindow::DrawElement() {
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
+        ImGui::EndDisabled();
 
+        ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
         static bool locationsTabOpen = false;
         if (ImGui::BeginTabItem("Locations")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
@@ -4690,7 +4723,11 @@ void RandomizerSettingsWindow::DrawElement() {
                                             excludedLocationString += std::to_string(excludedLocationIt);
                                             excludedLocationString += ",";
                                         }
-                                        CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
+                                        if (excludedLocationString == "") {
+                                            CVarClear("gRandomizeExcludedLocations");
+                                        } else {
+                                            CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
+                                        }
                                         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
@@ -4710,6 +4747,7 @@ void RandomizerSettingsWindow::DrawElement() {
         } else {
             locationsTabOpen = false;
         }
+        ImGui::EndDisabled();
 
         static bool tricksTabOpen = false;
         if (ImGui::BeginTabItem("Tricks/Glitches")) {
@@ -4743,10 +4781,12 @@ void RandomizerSettingsWindow::DrawElement() {
                     "\n"
                     //"Glitched - Glitches may be required to beat the game. You can disable and enable glitches below.\n"
                     //"\n"
-                    "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
+                    "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.\n"
+                    "\n"
+                    "Vanilla - Places all items and dungeon rewards in their vanilla locations."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, RO_LOGIC_GLITCHLESS);
-                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
+                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHLESS) {
                     ImGui::SameLine();
                     UIWidgets::EnhancementCheckbox(Settings::LocationsReachable.GetName().c_str(), "gRandomizeAllLocationsReachable", false, "", UIWidgets::CheckboxGraphics::Cross, RO_GENERIC_ON);
                     UIWidgets::InsertHelpHoverText(
@@ -4756,6 +4796,10 @@ void RandomizerSettingsWindow::DrawElement() {
                         "required items and locations to beat the game "
                         "will be guaranteed reachable."
                     );
+                }
+                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA) {
+                    ImGui::SameLine();
+                    ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Heads up! This will disable all rando settings except for entrance shuffle and starter items");
                 }
 
                 UIWidgets::PaddedSeparator();
@@ -4769,6 +4813,8 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
+
+            ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
 
             // Tricks
             static std::unordered_map<RandomizerTrickArea, bool> areaTreeDisabled {
@@ -4867,7 +4913,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         enabledTrickString += std::to_string(enabledTrickIt);
                         enabledTrickString += ",";
                     }
-                    CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                    CVarClear("gRandomizeEnabledTricks");
                     LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
                 ImGui::SameLine();
@@ -5071,7 +5117,7 @@ void RandomizerSettingsWindow::DrawElement() {
                             enabledTrickString += std::to_string(enabledTrickIt);
                             enabledTrickString += ",";
                         }
-                        CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                        CVarClear("gRandomizeEnabledTricks");
                         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     }
                     
@@ -5109,7 +5155,11 @@ void RandomizerSettingsWindow::DrawElement() {
                                                 enabledTrickString += std::to_string(enabledTrickIt);
                                                 enabledTrickString += ",";
                                             }
-                                            CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                            if (enabledTrickString == "") {
+                                                CVarClear("gRandomizeEnabledTricks");
+                                            } else {
+                                                CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                            }
                                             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                         }
                                         DrawTagChips(*rtObject.rtTags);
@@ -5142,6 +5192,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 }
                 ImGui::EndTable();
             }
+            ImGui::EndDisabled();
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         } else {
@@ -5163,13 +5214,14 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildStartingEquipment", ImVec2(0, -8));
-                // Don't display this option if Dungeon Rewards are Shuffled to End of Dungeon.
-                // TODO: Show this but disabled when we have options for disabled Comboboxes.
-                if (CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) != RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
-                    ImGui::Text("%s", Settings::LinksPocketItem.GetName().c_str());
-                    UIWidgets::EnhancementCombobox("gRandomizeLinksPocket", randoLinksPocket, RO_LINKS_POCKET_DUNGEON_REWARD);
-                    UIWidgets::PaddedSeparator();
-                }
+                ImGui::BeginDisabled(
+                    CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) == RO_DUNGEON_REWARDS_END_OF_DUNGEON ||
+                    CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA
+                );
+                ImGui::Text("%s", Settings::LinksPocketItem.GetName().c_str());
+                UIWidgets::EnhancementCombobox("gRandomizeLinksPocket", randoLinksPocket, RO_LINKS_POCKET_DUNGEON_REWARD);
+                UIWidgets::PaddedSeparator();
+                ImGui::EndDisabled();
 
                 UIWidgets::EnhancementCheckbox(Settings::StartingKokiriSword.GetName().c_str(), "gRandomizeStartingKokiriSword");
                 UIWidgets::PaddedSeparator();
@@ -5184,8 +5236,10 @@ void RandomizerSettingsWindow::DrawElement() {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildStartingItems", ImVec2(0, -8));
 
+                ImGui::BeginDisabled(CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA);
                 UIWidgets::EnhancementCheckbox(Settings::StartingOcarina.GetName().c_str(), "gRandomizeStartingOcarina");
                 UIWidgets::PaddedSeparator();
+                ImGui::EndDisabled();
                 UIWidgets::EnhancementCheckbox(Settings::StartingConsumables.GetName().c_str(), "gRandomizeStartingConsumables");
                 UIWidgets::PaddedSeparator();
                 UIWidgets::EnhancementSliderInt("Gold Skulltula Tokens: %d", "##RandoStartingSkulltulaToken", "gRandomizeStartingSkulltulaToken", 0, 100, "", 0);
@@ -5224,6 +5278,8 @@ void RandomizerSettingsWindow::DrawElement() {
 
         ImGui::EndTabBar();
     }
+
+    ImGui::EndDisabled();
     
     if (disableEditingRandoSettings) {
         UIWidgets::ReEnableComponent("");
@@ -5342,7 +5398,7 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
 }
 
 CustomMessage Randomizer::GetSariaMessage(u16 originalTextId) {
-    if (originalTextId == TEXT_SARIA_SFM || (originalTextId >= TEXT_SARIAS_SONG_TEXT_START && originalTextId <= TEXT_SARIAS_SONG_TEXT_END)) {
+    if (originalTextId == TEXT_SARIA_SFM || (originalTextId >= TEXT_SARIAS_SONG_FACE_TO_FACE && originalTextId <= TEXT_SARIAS_SONG_CHANNELING_POWER)) {
         CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE);
         CustomMessage messageEntry2 = messageEntry;
         std::string code = originalTextId == TEXT_SARIA_SFM ? "" : "\x0B";
@@ -5548,9 +5604,9 @@ void CreateTriforcePieceMessages() {
 
 CustomMessage Randomizer::GetTriforcePieceMessage() {
     // Item is only given after the textbox, so reflect that inside the textbox.
-    uint16_t current = gSaveContext.triforcePiecesCollected + 1;
-    uint16_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
-    uint16_t remaining = required - current;
+    uint8_t current = gSaveContext.triforcePiecesCollected + 1;
+    uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+    uint8_t remaining = required - current;
     float percentageCollected = (float)current / (float)required;
     uint8_t messageIndex;
 
@@ -6128,30 +6184,30 @@ class ExtendedVanillaTableInvalidItemIdException: public std::exception {
 void InitRandoItemTable() {
     // These entries have ItemIDs from vanilla, but not GetItemIDs or entries in the old sGetItemTable
     static GetItemEntry extendedVanillaGetItemTable[] = {
-        GET_ITEM(ITEM_MEDALLION_LIGHT,                 OBJECT_GI_MEDAL,    GID_MEDALLION_LIGHT,  0x40,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_LIGHT_MEDALLION),
-        GET_ITEM(ITEM_MEDALLION_FOREST,                OBJECT_GI_MEDAL,    GID_MEDALLION_FOREST, 0x3E,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_FOREST_MEDALLION),
-        GET_ITEM(ITEM_MEDALLION_FIRE,                  OBJECT_GI_MEDAL,    GID_MEDALLION_FIRE,   0x3C,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_FIRE_MEDALLION),
-        GET_ITEM(ITEM_MEDALLION_WATER,                 OBJECT_GI_MEDAL,    GID_MEDALLION_WATER,  0x3D,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_WATER_MEDALLION),
-        GET_ITEM(ITEM_MEDALLION_SHADOW,                OBJECT_GI_MEDAL,    GID_MEDALLION_SHADOW, 0x41,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_SHADOW_MEDALLION),
-        GET_ITEM(ITEM_MEDALLION_SPIRIT,                OBJECT_GI_MEDAL,    GID_MEDALLION_SPIRIT, 0x3F,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_SPIRIT_MEDALLION),
+        GET_ITEM_CUSTOM_TABLE(ITEM_MEDALLION_LIGHT,    OBJECT_GI_MEDAL,    GID_MEDALLION_LIGHT,  0x40,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_LIGHT_MEDALLION),
+        GET_ITEM_CUSTOM_TABLE(ITEM_MEDALLION_FOREST,   OBJECT_GI_MEDAL,    GID_MEDALLION_FOREST, 0x3E,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_FOREST_MEDALLION),
+        GET_ITEM_CUSTOM_TABLE(ITEM_MEDALLION_FIRE,     OBJECT_GI_MEDAL,    GID_MEDALLION_FIRE,   0x3C,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_FIRE_MEDALLION),
+        GET_ITEM_CUSTOM_TABLE(ITEM_MEDALLION_WATER,    OBJECT_GI_MEDAL,    GID_MEDALLION_WATER,  0x3D,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_WATER_MEDALLION),
+        GET_ITEM_CUSTOM_TABLE(ITEM_MEDALLION_SHADOW,   OBJECT_GI_MEDAL,    GID_MEDALLION_SHADOW, 0x41,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_SHADOW_MEDALLION),
+        GET_ITEM_CUSTOM_TABLE(ITEM_MEDALLION_SPIRIT,   OBJECT_GI_MEDAL,    GID_MEDALLION_SPIRIT, 0x3F,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_SPIRIT_MEDALLION),
 
-        GET_ITEM(ITEM_KOKIRI_EMERALD,                  OBJECT_GI_JEWEL,    GID_KOKIRI_EMERALD,   0x80,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_KOKIRI_EMERALD),
-        GET_ITEM(ITEM_GORON_RUBY,                      OBJECT_GI_JEWEL,    GID_GORON_RUBY,       0x81,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_GORON_RUBY),
-        GET_ITEM(ITEM_ZORA_SAPPHIRE,                   OBJECT_GI_JEWEL,    GID_ZORA_SAPPHIRE,    0x82,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_ZORA_SAPPHIRE),
+        GET_ITEM_CUSTOM_TABLE(ITEM_KOKIRI_EMERALD,     OBJECT_GI_JEWEL,    GID_KOKIRI_EMERALD,   0x80,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_KOKIRI_EMERALD),
+        GET_ITEM_CUSTOM_TABLE(ITEM_GORON_RUBY,         OBJECT_GI_JEWEL,    GID_GORON_RUBY,       0x81,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_GORON_RUBY),
+        GET_ITEM_CUSTOM_TABLE(ITEM_ZORA_SAPPHIRE,      OBJECT_GI_JEWEL,    GID_ZORA_SAPPHIRE,    0x82,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_ZORA_SAPPHIRE),
 
-        GET_ITEM(ITEM_SONG_LULLABY,                    OBJECT_GI_MELODY,   GID_SONG_ZELDA,       0xD4,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_ZELDAS_LULLABY),
-        GET_ITEM(ITEM_SONG_SUN,                        OBJECT_GI_MELODY,   GID_SONG_SUN,         0xD3,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_SUNS_SONG),
-        GET_ITEM(ITEM_SONG_EPONA,                      OBJECT_GI_MELODY,   GID_SONG_EPONA,       0xD2,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_EPONAS_SONG),
-        GET_ITEM(ITEM_SONG_STORMS,                     OBJECT_GI_MELODY,   GID_SONG_STORM,       0xD6,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_SONG_OF_STORMS),
-        GET_ITEM(ITEM_SONG_TIME,                       OBJECT_GI_MELODY,   GID_SONG_TIME,        0xD5,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_SONG_OF_TIME),
-        GET_ITEM(ITEM_SONG_SARIA,                      OBJECT_GI_MELODY,   GID_SONG_SARIA,       0xD1,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_SARIAS_SONG),
+        GET_ITEM_CUSTOM_TABLE(ITEM_SONG_LULLABY,       OBJECT_GI_MELODY,   GID_SONG_ZELDA,       0xD4,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_ZELDAS_LULLABY),
+        GET_ITEM_CUSTOM_TABLE(ITEM_SONG_SUN,           OBJECT_GI_MELODY,   GID_SONG_SUN,         0xD3,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_SUNS_SONG),
+        GET_ITEM_CUSTOM_TABLE(ITEM_SONG_EPONA,         OBJECT_GI_MELODY,   GID_SONG_EPONA,       0xD2,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_EPONAS_SONG),
+        GET_ITEM_CUSTOM_TABLE(ITEM_SONG_STORMS,        OBJECT_GI_MELODY,   GID_SONG_STORM,       0xD6,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_SONG_OF_STORMS),
+        GET_ITEM_CUSTOM_TABLE(ITEM_SONG_TIME,          OBJECT_GI_MELODY,   GID_SONG_TIME,        0xD5,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_SONG_OF_TIME),
+        GET_ITEM_CUSTOM_TABLE(ITEM_SONG_SARIA,         OBJECT_GI_MELODY,   GID_SONG_SARIA,       0xD1,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_SARIAS_SONG),
 
-        GET_ITEM(ITEM_SONG_MINUET,                     OBJECT_GI_MELODY,   GID_SONG_MINUET,      0x73,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_MINUET_OF_FOREST),
-        GET_ITEM(ITEM_SONG_BOLERO,                     OBJECT_GI_MELODY,   GID_SONG_BOLERO,      0x74,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_BOLERO_OF_FIRE),
-        GET_ITEM(ITEM_SONG_SERENADE,                   OBJECT_GI_MELODY,   GID_SONG_SERENADE,    0x75,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_SERENADE_OF_WATER),
-        GET_ITEM(ITEM_SONG_NOCTURNE,                   OBJECT_GI_MELODY,   GID_SONG_NOCTURNE,    0x77,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_NOCTURNE_OF_SHADOW),
-        GET_ITEM(ITEM_SONG_REQUIEM,                    OBJECT_GI_MELODY,   GID_SONG_REQUIEM,     0x76,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_REQUIEM_OF_SPIRIT),
-        GET_ITEM(ITEM_SONG_PRELUDE,                    OBJECT_GI_MELODY,   GID_SONG_PRELUDE,     0x78,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_PRELUDE_OF_LIGHT),
+        GET_ITEM_CUSTOM_TABLE(ITEM_SONG_MINUET,        OBJECT_GI_MELODY,   GID_SONG_MINUET,      0x73,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_MINUET_OF_FOREST),
+        GET_ITEM_CUSTOM_TABLE(ITEM_SONG_BOLERO,        OBJECT_GI_MELODY,   GID_SONG_BOLERO,      0x74,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_BOLERO_OF_FIRE),
+        GET_ITEM_CUSTOM_TABLE(ITEM_SONG_SERENADE,      OBJECT_GI_MELODY,   GID_SONG_SERENADE,    0x75,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_SERENADE_OF_WATER),
+        GET_ITEM_CUSTOM_TABLE(ITEM_SONG_NOCTURNE,      OBJECT_GI_MELODY,   GID_SONG_NOCTURNE,    0x77,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_NOCTURNE_OF_SHADOW),
+        GET_ITEM_CUSTOM_TABLE(ITEM_SONG_REQUIEM,       OBJECT_GI_MELODY,   GID_SONG_REQUIEM,     0x76,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_REQUIEM_OF_SPIRIT),
+        GET_ITEM_CUSTOM_TABLE(ITEM_SONG_PRELUDE,       OBJECT_GI_MELODY,   GID_SONG_PRELUDE,     0x78,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_NONE, TABLE_RANDOMIZER, RG_PRELUDE_OF_LIGHT),
     };
 
     // These do not have ItemIDs or GetItemIDs from vanilla, so I'm using their

@@ -95,6 +95,26 @@ static AnimationInfo sAnimationInfo[] = {
     { &gDaruniaDancingEndAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_ONCE, -6.0f },
 };
 
+// #region SOH [Enhancement] Only animations too fast need to be slowed down, otherwise not touched
+static AnimationInfo sAnimationInfoFix[] = {
+    { NULL },
+    { NULL },
+    { NULL },
+    { NULL },
+    { NULL },
+    { NULL },
+    { NULL },
+    { &gDaruniaDancingLoop1Anim, 0.78f, 0.0f, -1.0f, ANIMMODE_ONCE, -10.0f }, //
+    { &gDaruniaDancingLoop1Anim, 0.77f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f }, // hop
+    { &gDaruniaDancingLoop2Anim, 0.78f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f }, // from hop to spin
+    { &gDaruniaDancingLoop3Anim, 0.77f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f }, // spin
+    { NULL },
+    { NULL },
+    { &gDaruniaDancingLoop4Anim, 0.78f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f }, // from spin to hop
+    { NULL },
+};
+// #endregion
+
 void EnDu_SetupAction(EnDu* this, EnDuActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
@@ -255,7 +275,13 @@ void func_809FE040(EnDu* this) {
         if (this->unk_1E6 >= 8) {
             this->unk_1E6 = 0;
         }
-        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, animationIndices[this->unk_1E6]);
+        // #region SOH[Enhancement]
+        if (CVarGetInteger("gEnhancements.FixDaruniaDanceSpeed", 1)) {
+            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfoFix, animationIndices[this->unk_1E6]);
+        // #endregion
+        } else {
+            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, animationIndices[this->unk_1E6]);
+        }
     }
 }
 
@@ -271,7 +297,13 @@ void func_809FE104(EnDu* this) {
         if (Animation_OnFrame(&this->skelAnime, this->skelAnime.endFrame)) {
             this->unk_1E6++;
             if (this->unk_1E6 < 4) {
-                Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, animationIndices[this->unk_1E6]);
+                // #region SOH[Enhancement]
+                if (CVarGetInteger("gEnhancements.FixDaruniaDanceSpeed", 1) && this->unk_1E6 <= 1) {
+                    Animation_ChangeByInfo(&this->skelAnime, sAnimationInfoFix, animationIndices[this->unk_1E6]);
+                // #endregion
+                } else {
+                    Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, animationIndices[this->unk_1E6]);
+                }
             }
         }
     }
@@ -299,7 +331,7 @@ void EnDu_Init(Actor* thisx, PlayState* play) {
         play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDarunia01Cs);
         gSaveContext.cutsceneTrigger = 1;
         EnDu_SetupAction(this, func_809FE890);
-    } else if (play->sceneNum == 4) {
+    } else if (play->sceneNum == SCENE_FIRE_TEMPLE) {
         EnDu_SetupAction(this, func_809FE638);
     } else if (!LINK_IS_ADULT) {
         EnDu_SetupAction(this, func_809FE3C0);
@@ -321,9 +353,9 @@ void func_809FE3B4(EnDu* this, PlayState* play) {
 void func_809FE3C0(EnDu* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (player->stateFlags2 & 0x1000000) {
+    if (player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) {
         func_8010BD88(play, OCARINA_ACTION_CHECK_SARIA);
-        player->stateFlags2 |= 0x2000000;
+        player->stateFlags2 |= PLAYER_STATE2_PLAY_FOR_ACTOR;
         player->unk_6A8 = &this->actor;
         EnDu_SetupAction(this, func_809FE4A4);
         return;
@@ -333,7 +365,7 @@ void func_809FE3C0(EnDu* this, PlayState* play) {
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
     }
     if (this->actor.xzDistToPlayer < 116.0f + this->collider.dim.radius) {
-        player->stateFlags2 |= 0x800000;
+        player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     }
 }
 
@@ -361,14 +393,14 @@ void func_809FE4A4(EnDu* this, PlayState* play) {
         EnDu_SetupAction(this, func_809FE890);
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else {
-        player->stateFlags2 |= 0x800000;
+        player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     }
 }
 
 void func_809FE638(EnDu* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (!(player->stateFlags1 & 0x20000000)) {
+    if (!(player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE)) {
         OnePointCutscene_Init(play, 3330, -99, &this->actor, MAIN_CAM);
         player->actor.shape.rot.y = player->actor.world.rot.y = this->actor.world.rot.y + 0x7FFF;
         Audio_PlayFanfare(NA_BGM_APPEAR);
@@ -465,7 +497,13 @@ void func_809FE890(EnDu* this, PlayState* play) {
             }
             if (csAction->action == 7 || csAction->action == 8) {
                 this->unk_1E6 = 0;
-                Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENDU_ANIM_7);
+                // #region SOH[Enhancement]
+                if (CVarGetInteger("gEnhancements.FixDaruniaDanceSpeed", 1)) {
+                    Animation_ChangeByInfo(&this->skelAnime, sAnimationInfoFix, ENDU_ANIM_7);
+                // #endregion
+                } else {
+                    Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENDU_ANIM_7);
+                }
             }
             this->unk_1EA = csAction->action;
             if (this->unk_1EA == 7) {

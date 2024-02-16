@@ -724,7 +724,7 @@ void EnHorse_ResetRace(EnHorse* this, PlayState* play) {
 s32 EnHorse_PlayerCanMove(EnHorse* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if ((player->stateFlags1 & 1) || func_8002DD78(GET_PLAYER(play)) == 1 || (player->stateFlags1 & 0x100000) ||
+    if ((player->stateFlags1 & PLAYER_STATE1_LOADING) || func_8002DD78(GET_PLAYER(play)) == 1 || (player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON) ||
         ((this->stateFlags & ENHORSE_FLAG_19) && !this->inRace) || this->action == ENHORSE_ACT_HBA ||
         player->actor.flags & ACTOR_FLAG_PLAYER_TALKED_TO || play->csCtx.state != 0) {
         return false;
@@ -2509,9 +2509,9 @@ void EnHorse_UpdateHorsebackArchery(EnHorse* this, PlayState* play) {
     if (this->hbaFlags & 1 || this->hbaTimer >= 46) {
         if (sp20 != 1 && gSaveContext.minigameState != 3) {
             gSaveContext.cutsceneIndex = 0;
-            play->nextEntranceIndex = 0x3B0;
-            play->sceneLoadFlag = 0x14;
-            play->fadeTransition = 0x20;
+            play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_16;
+            play->transitionTrigger = TRANS_TRIGGER_START;
+            play->transitionType = TRANS_TYPE_CIRCLE(TCA_NORMAL, TCC_BLACK, TCS_FAST);
         }
     }
 
@@ -3533,7 +3533,7 @@ void EnHorse_Update(Actor* thisx, PlayState* play2) {
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->cyl1.base);
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->cyl1.base);
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->cyl2.base);
-        if ((player->stateFlags1 & 1) && player->rideActor != NULL) {
+        if ((player->stateFlags1 & PLAYER_STATE1_LOADING) && player->rideActor != NULL) {
             if (play->sceneNum != SCENE_LON_LON_RANCH ||
                 (play->sceneNum == SCENE_LON_LON_RANCH && (thisx->world.pos.z < -2400.0f))) {
                 EnHorse_UpdateConveyors(this, play);
@@ -3581,7 +3581,7 @@ void EnHorse_Update(Actor* thisx, PlayState* play2) {
             this->cyl1.base.atFlags &= ~1;
         }
 
-        if (gSaveContext.entranceIndex != 343 || gSaveContext.sceneSetupIndex != 9) {
+        if (gSaveContext.entranceIndex != ENTR_LON_LON_RANCH_0 || gSaveContext.sceneSetupIndex != 9) {
             if (this->dustFlags & 1) {
                 this->dustFlags &= ~1;
                 func_800287AC(play, &this->frontRightHoof, &dustVel, &dustAcc, EnHorse_RandInt(100) + 200,

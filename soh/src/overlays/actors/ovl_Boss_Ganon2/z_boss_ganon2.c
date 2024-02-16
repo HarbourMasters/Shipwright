@@ -1856,10 +1856,10 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
                 break;
             }
         case 20:
-            play->nextEntranceIndex = 0x6B;
+            play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
             gSaveContext.nextCutsceneIndex = 0xFFF2;
-            play->sceneLoadFlag = 0x14;
-            play->fadeTransition = 3;
+            play->transitionTrigger = TRANS_TRIGGER_START;
+            play->transitionType = TRANS_TYPE_FADE_WHITE;
             play->linkAgeOnLoad = 1;
             break;
     }
@@ -1918,11 +1918,11 @@ void func_80902348(BossGanon2* this, PlayState* play) {
         temp_f12 = -200.0f - player->actor.world.pos.z;
 
         if (sqrtf(SQ(temp_f2) + SQ(temp_f12)) > 784.0f) {
-            for (j = 0; j < ARRAY_COUNT(player->flameTimers); j++) {
-                player->flameTimers[j] = Rand_S16Offset(0, 200);
+            for (j = 0; j < ARRAY_COUNT(player->bodyFlameTimers); j++) {
+                player->bodyFlameTimers[j] = Rand_S16Offset(0, 200);
             }
 
-            player->isBurning = true;
+            player->bodyIsBurning = true;
             func_8002F6D4(play, &this->actor, 10.0f, Math_Atan2S(temp_f12, temp_f2), 0.0f, 0x10);
             sBossGanon2Zelda->unk_3C8 = 8;
         }

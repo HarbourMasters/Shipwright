@@ -262,19 +262,19 @@ void EnGe1_KickPlayer(EnGe1* this, PlayState* play) {
         func_8006D074(play);
 
         if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
-            play->nextEntranceIndex = 0x1A5;
+            play->nextEntranceIndex = ENTR_GERUDO_VALLEY_1;
         } else if (Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO)) { // Caught previously
-            play->nextEntranceIndex = 0x5F8;
+            play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_18;
         } else {
-            play->nextEntranceIndex = 0x3B4;
+            play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_17;
         }
 
         if (IS_RANDO) {
             Entrance_OverrideGeurdoGuardCapture();
         }
 
-        play->fadeTransition = 0x26;
-        play->sceneLoadFlag = 0x14;
+        play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
+        play->transitionTrigger = TRANS_TRIGGER_START;
     }
 }
 
@@ -654,14 +654,14 @@ void EnGe1_BeginGame_Archery(EnGe1* this, PlayState* play) {
                     this->actionFunc = EnGe1_TalkTooPoor_Archery;
                 } else {
                     Rupees_ChangeBy(-20);
-                    play->nextEntranceIndex = 0x129;
+                    play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_0;
                     gSaveContext.nextCutsceneIndex = 0xFFF0;
-                    play->fadeTransition = 0x26;
-                    play->sceneLoadFlag = 0x14;
+                    play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
+                    play->transitionTrigger = TRANS_TRIGGER_START;
                     gSaveContext.eventInf[0] |= 0x100;
                     Flags_SetEventChkInf(EVENTCHKINF_PLAYED_HORSEBACK_ARCHERY);
 
-                    if (!(player->stateFlags1 & 0x800000)) {
+                    if (!(player->stateFlags1 & PLAYER_STATE1_ON_HORSE)) {
                         func_8002DF54(play, &this->actor, 1);
                     } else {
                         horse = Actor_FindNearby(play, &player->actor, ACTOR_EN_HORSE, ACTORCAT_BG, 1200.0f);
@@ -741,7 +741,7 @@ void EnGe1_Wait_Archery(EnGe1* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     u16 textId;
 
-    if (!(player->stateFlags1 & 0x800000)) {
+    if (!(player->stateFlags1 & PLAYER_STATE1_ON_HORSE)) {
         EnGe1_SetTalkAction(this, play, 0x603F, 100.0f, EnGe1_TalkNoHorse_Archery);
     } else {
         if (Flags_GetEventChkInf(EVENTCHKINF_PLAYED_HORSEBACK_ARCHERY)) {

@@ -2065,16 +2065,40 @@ void func_800EE404(void) {
 
 void Audio_OcaMemoryGameStart(u8 minigameRound) {
     u8 i;
+    
+    // #region SOH [Enhancement]
+    if (CVarGetInteger("gCustomizeOcarinaGame", 0)) {
+        u8 startingNotes = 3;
+        u8 roundOneCount = CVarGetInteger("gOcarinaGameRoundOneNotes", 5);
+        u8 roundTwoCount = CVarGetInteger("gOcarinaGameRoundTwoNotes", 6);
+        u8 roundThreeCount = CVarGetInteger("gOcarinaGameRoundThreeNotes", 8);
+        u8 modMinigameNoteCnts[] = { roundOneCount, roundTwoCount, roundThreeCount };
 
-    if (minigameRound > 2) {
-        minigameRound = 2;
-    }
 
-    sOcaMinigameAppendPos = 0;
-    sOcaMinigameEndPos = sOcaMinigameNoteCnts[minigameRound];
+        startingNotes = CVarGetInteger("gOcarinaGameStartingNotes", 3);
 
-    for (i = 0; i < 3; i++) {
-        Audio_OcaMemoryGameGenNote();
+        if (minigameRound > 2) {
+            minigameRound = 2;
+        }
+
+        sOcaMinigameAppendPos = 0;
+        sOcaMinigameEndPos = modMinigameNoteCnts[minigameRound];
+
+        for (i = 0; i < startingNotes; i++) {
+            Audio_OcaMemoryGameGenNote();
+        }
+    // #endregion
+    } else {
+        if (minigameRound > 2) {
+            minigameRound = 2;
+        }
+
+        sOcaMinigameAppendPos = 0;
+        sOcaMinigameEndPos = sOcaMinigameNoteCnts[minigameRound];
+
+        for (i = 0; i < 3; i++) {
+            Audio_OcaMemoryGameGenNote();
+        }
     }
 }
 
@@ -2093,11 +2117,24 @@ s32 Audio_OcaMemoryGameGenNote(void) {
         rndNote = sOcarinaNoteValues[(rnd + 1) % 5];
     }
 
-    sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].noteIdx = rndNote;
-    sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].unk_02 = 0x2D;
-    sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].volume = 0x50;
-    sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].vibrato = 0;
-    sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].tone = 0;
+    // #region SOH [Enhancement]
+    if (CVarGetInteger("gCustomizeOcarinaGame", 0)) {
+        int noteSpeed = 0x2D;
+        noteSpeed = noteSpeed / CVarGetInteger("gOcarinaGameNoteSpeed", 1);
+
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].noteIdx = rndNote;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].unk_02 = noteSpeed;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].volume = 0x50;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].vibrato = 0;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].tone = 0;
+    // #endregion
+    } else {
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].noteIdx = rndNote;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].unk_02 = 0x2D;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].volume = 0x50;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].vibrato = 0;
+        sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].tone = 0;
+    }
 
     sOcaMinigameAppendPos++;
 
@@ -4735,7 +4772,7 @@ void Audio_SetSequenceMode(u8 seqMode) {
             seqMode = SEQ_MODE_IGNORE;
         }
 
-        seqId = D_8016E750[SEQ_PLAYER_BGM_MAIN].unk_254;
+        seqId = gActiveSeqs[SEQ_PLAYER_BGM_MAIN].seqId;
 
         if (seqId == NA_BGM_FIELD_LOGIC && func_800FA0B4(SEQ_PLAYER_BGM_SUB) == (NA_BGM_ENEMY | 0x800)) {
             seqMode = SEQ_MODE_IGNORE;
@@ -4746,10 +4783,10 @@ void Audio_SetSequenceMode(u8 seqMode) {
             if (seqMode != (sPrevSeqMode & 0x7F)) {
                 if (seqMode == SEQ_MODE_ENEMY) {
                     // Start playing enemy bgm
-                    if (D_8016E750[SEQ_PLAYER_BGM_SUB].volScales[1] - sAudioEnemyVol < 0) {
-                        volumeFadeInTimer = -(D_8016E750[SEQ_PLAYER_BGM_SUB].volScales[1] - sAudioEnemyVol);
+                    if (gActiveSeqs[SEQ_PLAYER_BGM_SUB].volScales[1] - sAudioEnemyVol < 0) {
+                        volumeFadeInTimer = -(gActiveSeqs[SEQ_PLAYER_BGM_SUB].volScales[1] - sAudioEnemyVol);
                     } else {
-                        volumeFadeInTimer = D_8016E750[SEQ_PLAYER_BGM_SUB].volScales[1] - sAudioEnemyVol;
+                        volumeFadeInTimer = gActiveSeqs[SEQ_PLAYER_BGM_SUB].volScales[1] - sAudioEnemyVol;
                     }
 
                     Audio_SetVolScale(SEQ_PLAYER_BGM_SUB, 3, sAudioEnemyVol, volumeFadeInTimer);
@@ -4812,11 +4849,11 @@ void Audio_SetBgmEnemyVolume(f32 dist) {
 
             sAudioEnemyVol = ((350.0f - adjDist) * 127.0f) / 350.0f;
             Audio_SetVolScale(SEQ_PLAYER_BGM_SUB, 3, sAudioEnemyVol, 10);
-            if (D_8016E750[SEQ_PLAYER_BGM_MAIN].unk_254 != NA_BGM_NATURE_AMBIENCE) {
+            if (gActiveSeqs[SEQ_PLAYER_BGM_MAIN].seqId != NA_BGM_NATURE_AMBIENCE) {
                 Audio_SetVolScale(SEQ_PLAYER_BGM_MAIN, 3, (0x7F - sAudioEnemyVol), 10);
             }
         }
-        if (D_8016E750[SEQ_PLAYER_BGM_MAIN].unk_254 != NA_BGM_NATURE_AMBIENCE) {
+        if (gActiveSeqs[SEQ_PLAYER_BGM_MAIN].seqId != NA_BGM_NATURE_AMBIENCE) {
             Audio_SplitBgmChannels(sAudioEnemyVol);
         }
     }
@@ -4973,7 +5010,7 @@ void Audio_SetExtraFilter(u8 filter) {
 
     sAudioExtraFilter2 = filter;
     sAudioExtraFilter = filter;
-    if (D_8016E750[SEQ_PLAYER_BGM_MAIN].unk_254 == NA_BGM_NATURE_AMBIENCE) {
+    if (gActiveSeqs[SEQ_PLAYER_BGM_MAIN].seqId == NA_BGM_NATURE_AMBIENCE) {
         for (i = 0; i < 16; i++) {
             t = i;
             // CHAN_UPD_SCRIPT_IO (seq player 0, all channels, slot 6)
@@ -5097,7 +5134,7 @@ void Audio_SetNatureAmbienceChannelIO(u8 channelIdxRange, u8 port, u8 val) {
     u8 lastChannelIdx;
     u8 channelIdx;
 
-    if ((D_8016E750[SEQ_PLAYER_BGM_MAIN].unk_254 != NA_BGM_NATURE_AMBIENCE) && func_800FA11C(1, 0xF00000FF)) {
+    if ((gActiveSeqs[SEQ_PLAYER_BGM_MAIN].seqId != NA_BGM_NATURE_AMBIENCE) && func_800FA11C(1, 0xF00000FF)) {
         sAudioNatureFailed = true;
         return;
     }
@@ -5159,8 +5196,8 @@ void Audio_PlayNatureAmbienceSequence(u8 natureAmbienceId) {
     u8 port;
     u8 val;
 
-    if ((D_8016E750[SEQ_PLAYER_BGM_MAIN].unk_254 == NA_BGM_DISABLED) ||
-        !(sSeqFlags[((u8)D_8016E750[SEQ_PLAYER_BGM_MAIN].unk_254) & 0xFF] & 0x80)) {
+    if ((gActiveSeqs[SEQ_PLAYER_BGM_MAIN].seqId == NA_BGM_DISABLED) ||
+        !(sSeqFlags[((u8)gActiveSeqs[SEQ_PLAYER_BGM_MAIN].seqId) & 0xFF] & 0x80)) {
 
         Audio_StartNatureAmbienceSequence(sNatureAmbienceDataIO[natureAmbienceId].playerIO,
                                           sNatureAmbienceDataIO[natureAmbienceId].channelMask);
@@ -5202,12 +5239,12 @@ void func_800F71BC(s32 arg0) {
     func_800F6C34();
     func_800EE930();
     Audio_ResetSfxChannelState();
-    func_800FADF8();
+    Audio_ResetActiveSequences();
     Audio_ResetSounds();
 }
 
 void func_800F7208(void) {
-    func_800FADF8();
+    Audio_ResetActiveSequences();
     Audio_QueueCmdS32(0xF2000000, 1);
     func_800F6C34();
     Audio_ResetSfxChannelState();

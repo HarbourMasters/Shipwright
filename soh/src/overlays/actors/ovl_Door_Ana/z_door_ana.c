@@ -57,9 +57,10 @@ static ColliderCylinderInit sCylinderInit = {
 };
 
 // array of entrance table entries to grotto destinations
-static s16 entrances[] = {
-    0x036D, 0x003F, 0x0598, 0x059C, 0x05A0, 0x05A4, 0x05A8, 0x05AC,
-    0x05B0, 0x05B4, 0x05B8, 0x05BC, 0x05C0, 0x05C4, 0x05FC,
+static s16 sGrottoEntrances[] = {
+    ENTR_FAIRYS_FOUNTAIN_0, ENTR_GROTTOS_0,  ENTR_GROTTOS_1,  ENTR_GROTTOS_2,  ENTR_GROTTOS_3,
+    ENTR_GROTTOS_4,         ENTR_GROTTOS_5,  ENTR_GROTTOS_6,  ENTR_GROTTOS_7,  ENTR_GROTTOS_8,
+    ENTR_GROTTOS_9,         ENTR_GROTTOS_10, ENTR_GROTTOS_11, ENTR_GROTTOS_12, ENTR_GROTTOS_13,
 };
 
 void DoorAna_SetupAction(DoorAna* this, DoorAnaActionFunc actionFunc) {
@@ -133,8 +134,8 @@ void DoorAna_WaitOpen(DoorAna* this, PlayState* play) {
 
     player = GET_PLAYER(play);
     if (Math_StepToF(&this->actor.scale.x, 0.01f, 0.001f)) {
-        if ((this->actor.targetMode != 0) && (play->sceneLoadFlag == 0) && (player->stateFlags1 & 0x80000000) &&
-            (player->unk_84F == 0)) {
+        if ((this->actor.targetMode != 0) && (play->transitionTrigger == TRANS_TRIGGER_OFF) && (player->stateFlags1 & PLAYER_STATE1_FLOOR_DISABLED) &&
+            (player->av1.actionVar1 == 0)) {
             destinationIdx = ((this->actor.params >> 0xC) & 7) - 1;
             Play_SetupRespawnPoint(play, RESPAWN_MODE_RETURN, 0x4FF);
             gSaveContext.respawn[RESPAWN_MODE_RETURN].pos.y = this->actor.world.pos.y;
@@ -143,7 +144,7 @@ void DoorAna_WaitOpen(DoorAna* this, PlayState* play) {
             if (destinationIdx < 0) {
                 destinationIdx = this->actor.home.rot.z + 1;
             }
-            play->nextEntranceIndex = entrances[destinationIdx];
+            play->nextEntranceIndex = sGrottoEntrances[destinationIdx];
 
             // In ER, load the correct entrance based on the grotto link is falling into
             if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
@@ -152,10 +153,10 @@ void DoorAna_WaitOpen(DoorAna* this, PlayState* play) {
 
             DoorAna_SetupAction(this, DoorAna_GrabPlayer);
         } else {
-            if (!Player_InCsMode(play) && !(player->stateFlags1 & 0x8800000) &&
+            if (!Player_InCsMode(play) && !(player->stateFlags1 & (PLAYER_STATE1_ON_HORSE | PLAYER_STATE1_IN_WATER)) &&
                 this->actor.xzDistToPlayer <= 15.0f && -50.0f <= this->actor.yDistToPlayer &&
                 this->actor.yDistToPlayer <= 15.0f) {
-                player->stateFlags1 |= 0x80000000;
+                player->stateFlags1 |= PLAYER_STATE1_FLOOR_DISABLED;
                 this->actor.targetMode = 1;
             } else {
                 this->actor.targetMode = 0;

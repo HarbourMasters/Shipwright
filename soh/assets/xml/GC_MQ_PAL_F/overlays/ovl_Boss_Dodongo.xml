@@ -1,6 +1,6 @@
 <Root>
-    <File Name="ovl_Boss_Dodongo" BaseAddress="0x808B7370" RangeStart="0x61E8" RangeEnd="0x9238">
-        <Texture Name="sLavaFloorLavaTex" OutName="lava_floor_lava" Format="rgba16" Width="64" Height="64" Offset="0x61E8"/>
+    <File Name="ovl_Boss_Dodongo" BaseAddress="0x808B7370" RangeStart="0x61E8" RangeEnd="0x91E8">
+        <Texture Name="sLavaFloorLavaTex" OutName="lava_floor_lava" Format="rgba16" Width="32" Height="64" Offset="0x61E8"/>
         <Texture Name="sLavaFloorRockTex" OutName="lava_floor_rock" Format="rgba16" Width="32" Height="64" Offset="0x81E8"/>
     </File>
 </Root>

@@ -7,7 +7,7 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace LUS {
+namespace SOH {
 typedef struct {
   uint8_t seqId;
   uint8_t natureAmbienceId;

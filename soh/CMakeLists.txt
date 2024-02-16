@@ -154,7 +154,7 @@ list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/gfx.*")
 # handle crowd control removals
 list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/crowd-control/soh.cs")
 list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/crowd-control/soh.ccpak")
-if (!BUILD_CROWD_CONTROL)
+if (!BUILD_REMOTE_CONTROL)
     list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/crowd-control/*")
 endif()
 
@@ -328,7 +328,7 @@ endif()
 include(FetchContent)
 FetchContent_Declare(
     Boost
-    URL      https://boostorg.jfrog.io/artifactory/main/release/1.81.0/source/boost_1_81_0.tar.gz
+    URL      https://archives.boost.io/release/1.81.0/source/boost_1_81_0.tar.gz
     URL_HASH SHA256=205666dea9f6a7cfed87c7a6dfbeb52a2c1b9de55712c9c1a87735d7181452b6
     SOURCE_SUBDIR "null" # Set to a nonexistent directory so boost is not built (we don't need to build it)
     DOWNLOAD_EXTRACT_TIMESTAMP false # supress timestamp warning, not needed since the url wont change
@@ -354,9 +354,15 @@ endif()
 find_package(SDL2)
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
-if (BUILD_CROWD_CONTROL)
+if (BUILD_REMOTE_CONTROL)
     find_package(SDL2_net)
-    set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+
+    if(NOT SDL2_net_FOUND)
+        message(STATUS "SDL2_net not found (it's possible the version installed is too old). Disabling BUILD_REMOTE_CONTROL.")
+        set(BUILD_REMOTE_CONTROL 0)
+    else()
+        set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+    endif()
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE assets
@@ -408,9 +414,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"$<$<CONFIG:Release>:"
 				"NDEBUG"
 			">"
-            "$<$<BOOL:${BUILD_CROWD_CONTROL}>:ENABLE_CROWD_CONTROL>"
+            "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:ENABLE_REMOTE_CONTROL>"
 			"INCLUDE_GAME_PRINTF;"
-            "ENABLE_CROWD_CONTROL;"
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
@@ -455,7 +460,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 		"$<$<CONFIG:Release>:"
 			"NDEBUG"
 		">"
-        "$<$<BOOL:${BUILD_CROWD_CONTROL}>:ENABLE_CROWD_CONTROL>"
+        "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:ENABLE_REMOTE_CONTROL>"
 		"SPDLOG_ACTIVE_LEVEL=0;"
 		"_CONSOLE;"
 		"_CRT_SECURE_NO_WARNINGS;"
@@ -624,6 +629,8 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             -Wno-parentheses
             -Wno-narrowing
             -Wno-missing-braces
+            -Wno-int-conversion
+            -Wno-implicit-int
             $<$<COMPILE_LANGUAGE:C>:
                 -Werror-implicit-function-declaration
                 -Wno-incompatible-pointer-types
@@ -689,7 +696,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
-            "$<$<BOOL:${BUILD_CROWD_CONTROL}>:SDL2_net::SDL2_net-static>"
+            "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net-static>"
 			"glfw;"
 			"winmm;"
 			"imm32;"
@@ -742,7 +749,7 @@ else()
         "ZAPDUtils;"
 		"ZAPDLib;"
 		SDL2::SDL2
-        "$<$<BOOL:${BUILD_CROWD_CONTROL}>:SDL2_net::SDL2_net>"
+        "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net>"
 		${CMAKE_DL_LIBS}
 		Threads::Threads
 	)
