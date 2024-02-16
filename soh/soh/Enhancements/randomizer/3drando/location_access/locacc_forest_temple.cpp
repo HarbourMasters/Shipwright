@@ -170,7 +170,7 @@ void AreaTable_Init_ForestTemple() {
                   Entrance(RR_FOREST_TEMPLE_WEST_CORRIDOR,            {[]{return true;}}),
                   Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER,        {[]{return logic->CanUse(RG_HOVER_BOOTS) || (randoCtx->GetTrickOption(RT_FOREST_OUTSIDE_BACKDOOR) && logic->CanJumpslash && logic->GoronBracelet);}}),
                   Entrance(RR_FOREST_TEMPLE_NW_CORRIDOR_TWISTED,      {[]{return logic->IsAdult && logic->GoronBracelet && logic->SmallKeys(RR_FOREST_TEMPLE, 2);}}),
-                  Entrance(RR_FOREST_TEMPLE_NW_CORRIDOR_STRAIGHTENED, {[]{return (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)) && logic->GoronBracelet && logic->SmallKeys(RR_FOREST_TEMPLE, 2);}}),
+                  Entrance(RR_FOREST_TEMPLE_NW_CORRIDOR_STRAIGHTENED, {[]{return logic->IsAdult && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)) && logic->GoronBracelet && logic->SmallKeys(RR_FOREST_TEMPLE, 2);}}),
   });
 
   areaTable[RR_FOREST_TEMPLE_NW_CORRIDOR_TWISTED] = Area("Forest Temple NW Corridor Twisted", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
