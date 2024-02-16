@@ -30,6 +30,8 @@ void DrawBottle(ItemTrackerItem item);
 void DrawQuest(ItemTrackerItem item);
 void DrawSong(ItemTrackerItem item);
 
+int itemTrackerSectionId;
+
 bool shouldUpdateVectors = true;
 
 std::vector<ItemTrackerItem> mainWindowItems = {};
@@ -280,11 +282,6 @@ void ItemTrackerOnFrame() {
     if (notesNeedSave && notesIdleFrames <= notesMaxIdleFrames) {
         notesIdleFrames++;
     }
-}
-
-void SaveNotes(uint32_t fileNum) {
-    CVarSetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
 }
 
 bool IsValidSaveFile() {
@@ -734,7 +731,7 @@ void DrawNotes(bool resizeable = false) {
     }
     if ((ImGui::IsItemDeactivatedAfterEdit() || (notesNeedSave && notesIdleFrames > notesMaxIdleFrames)) && IsValidSaveFile()) {
         notesNeedSave = false;
-        SaveNotes(gSaveContext.fileNum);
+        SaveManager::Instance->SaveSection(gSaveContext.fileNum, itemTrackerSectionId, true);
     }
     ImGui::EndGroup();
 }
@@ -957,6 +954,26 @@ void UpdateVectors() {
     }
 
     shouldUpdateVectors = false;
+}
+
+void ItemTrackerInitFile(bool isDebug) {
+    itemTrackerNotes.clear();
+    itemTrackerNotes.push_back(0);
+}
+
+void ItemTrackerSaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
+    SaveManager::Instance->SaveData("personalNotes", std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
+}
+
+void ItemTrackerLoadFile() {
+    std::string initialTrackerNotes = "";
+    SaveManager::Instance->LoadData("personalNotes", initialTrackerNotes);
+    itemTrackerNotes.resize(initialTrackerNotes.length() + 1);
+    if (initialTrackerNotes != "") {
+        SohUtils::CopyStringToCharArray(itemTrackerNotes.Data, initialTrackerNotes.c_str(), itemTrackerNotes.size());
+    } else {
+        itemTrackerNotes.push_back(0);
+    }
 }
 
 void ItemTrackerWindow::DrawElement() {
@@ -1223,14 +1240,9 @@ void ItemTrackerWindow::InitElement() {
         itemTrackerNotes.push_back(0);
     }
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](uint32_t fileNum) {
-        const char* initialTrackerNotes = CVarGetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
-        itemTrackerNotes.resize(strlen(initialTrackerNotes) + 1);
-        strcpy(itemTrackerNotes.Data, initialTrackerNotes);
-    });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteFile>([](uint32_t fileNum) {
-        CVarSetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-    });
+    SaveManager::Instance->AddInitFunction(ItemTrackerInitFile);
+    itemTrackerSectionId = SaveManager::Instance->AddSaveFunction("itemTrackerData", 1, ItemTrackerSaveFile, true, -1);
+    SaveManager::Instance->AddLoadFunction("itemTrackerData", 1, ItemTrackerLoadFile);
+
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(ItemTrackerOnFrame);
 }
