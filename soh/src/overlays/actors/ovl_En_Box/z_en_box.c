@@ -75,7 +75,6 @@ static InitChainEntry sInitChain[] = {
 };
 
 static UNK_TYPE sUnused;
-GetItemEntry sItem;
 
 Gfx gSkullTreasureChestChestSideAndLidDL[116] = {0};
 Gfx gGoldTreasureChestChestSideAndLidDL[116] = {0};
@@ -321,8 +320,8 @@ void func_809C9700(EnBox* this, PlayState* play) {
         this->unk_1FB = ENBOX_STATE_0;
     } else {
         if (this->unk_1FB == ENBOX_STATE_0) {
-            if (!(player->stateFlags2 & 0x1000000)) {
-                player->stateFlags2 |= 0x800000;
+            if (!(player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR)) {
+                player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
                 return;
             }
             this->unk_1FB = ENBOX_STATE_1;
@@ -472,7 +471,7 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
         func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, play)) {
-            sItem = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
+            GetItemEntry sItem = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
             GetItemEntry blueRupee = ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
             
             // RANDOTODO treasure chest game rando
@@ -628,7 +627,7 @@ void EnBox_Update(Actor* thisx, PlayState* play) {
     }
 
     if (((!IS_RANDO && ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C)) ||
-        (IS_RANDO && ABS(sItem.getItemId) == RG_ICE_TRAP)) &&
+        (IS_RANDO && this->getItemEntry.getItemId == RG_ICE_TRAP)) &&
         this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100) {
         if (!CVarGetInteger("gAddTraps.enabled", 0)) {
             EnBox_SpawnIceSmoke(this, play);
@@ -647,9 +646,17 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
 
     if (!isVanilla) {
         getItemCategory = this->getItemEntry.getItemCategory;
-        // If they don't have bombchu's yet consider the bombchu item major
-        if (this->getItemEntry.gid == GID_BOMBCHU && INV_CONTENT(ITEM_BOMBCHU) != ITEM_BOMBCHU) {
-            getItemCategory = ITEM_CATEGORY_MAJOR;
+        // If they have bombchus, don't consider the bombchu item major
+        if (
+            INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
+            ((this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId == RG_PROGRESSIVE_BOMBCHUS) || 
+            (this->getItemEntry.modIndex == MOD_NONE && (
+                this->getItemEntry.getItemId == GI_BOMBCHUS_5 ||
+                this->getItemEntry.getItemId == GI_BOMBCHUS_10 ||
+                this->getItemEntry.getItemId == GI_BOMBCHUS_20
+            )))
+        ) {
+            getItemCategory = ITEM_CATEGORY_JUNK;
         // If it's a bottle and they already have one, consider the item lesser
         } else if (
             (this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId >= RG_BOTTLE_WITH_RED_POTION && this->getItemEntry.getItemId <= RG_BOTTLE_WITH_BIG_POE) ||

@@ -8,6 +8,11 @@
 #include <z64.h>
 
 typedef enum {
+    GI_SCHEME_SAIL,
+    GI_SCHEME_CROWD_CONTROL,
+} GIScheme;
+
+typedef enum {
     /* 0x00 */ GI_LINK_SIZE_NORMAL,
     /* 0x01 */ GI_LINK_SIZE_GIANT,
     /* 0x02 */ GI_LINK_SIZE_MINISH,
@@ -92,9 +97,15 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 
 
 #ifdef __cplusplus
-
+#include <thread>
 #include <vector>
 #include <functional>
+#include <string>
+
+#ifdef ENABLE_REMOTE_CONTROL
+#include <SDL2/SDL_net.h>
+#include <nlohmann/json.hpp>
+#endif
 
 #define DEFINE_HOOK(name, type)         \
     struct name {                       \
@@ -132,17 +143,50 @@ public:
         static void SetPacifistMode(bool active);
     };
 
+    #ifdef ENABLE_REMOTE_CONTROL
+    bool isRemoteInteractorEnabled;
+    bool isRemoteInteractorConnected;
+
+    void EnableRemoteInteractor();
+    void DisableRemoteInteractor();
+    void RegisterRemoteDataHandler(std::function<void(char payload[512])> method);
+    void RegisterRemoteJsonHandler(std::function<void(nlohmann::json)> method);
+    void RegisterRemoteConnectedHandler(std::function<void()> method);
+    void RegisterRemoteDisconnectedHandler(std::function<void()> method);
+    void TransmitDataToRemote(const char* payload);
+    void TransmitJsonToRemote(nlohmann::json packet);
+    #endif
+
     // Effects
     static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase* effect);
     static GameInteractionEffectQueryResult ApplyEffect(GameInteractionEffectBase* effect);
-    static GameInteractionEffectQueryResult RemoveEffect(GameInteractionEffectBase* effect);
+    static GameInteractionEffectQueryResult RemoveEffect(RemovableGameInteractionEffect* effect);
 
     // Game Hooks
-    template <typename H> struct RegisteredGameHooks { inline static std::vector<typename H::fn> functions; };
-    template <typename H> void RegisterGameHook(typename H::fn h) { RegisteredGameHooks<H>::functions.push_back(h); }
+    uint32_t nextHookId = 1;
+    template <typename H> struct RegisteredGameHooks { inline static std::unordered_map<uint32_t, typename H::fn> functions; };
+    template <typename H> struct HooksToUnregister { inline static std::vector<uint32_t> hooks; };
+    template <typename H> uint32_t RegisterGameHook(typename H::fn h) {
+        // Ensure hook id is unique and not 0, which is reserved for invalid hooks
+        if (this->nextHookId == 0 || this->nextHookId >= UINT32_MAX) this->nextHookId = 1;
+        while (RegisteredGameHooks<H>::functions.find(this->nextHookId) != RegisteredGameHooks<H>::functions.end()) {
+            this->nextHookId++;
+        }
+
+        RegisteredGameHooks<H>::functions[this->nextHookId] = h;
+        return this->nextHookId++;
+    }
+    template <typename H> void UnregisterGameHook(uint32_t id) {
+        HooksToUnregister<H>::hooks.push_back(id);
+    }
+
     template <typename H, typename... Args> void ExecuteHooks(Args&&... args) {
-        for (auto& fn : RegisteredGameHooks<H>::functions) {
-            fn(std::forward<Args>(args)...);
+        for (auto& hookId : HooksToUnregister<H>::hooks) {
+            RegisteredGameHooks<H>::functions.erase(hookId);
+        }
+        HooksToUnregister<H>::hooks.clear();
+        for (auto& hook : RegisteredGameHooks<H>::functions) {
+            hook.second(std::forward<Args>(args)...);
         }
     }
 
@@ -194,7 +238,9 @@ public:
     
     DEFINE_HOOK(OnSetGameLanguage, void());
 
+    DEFINE_HOOK(OnFileDropped, void(std::string filePath));
     DEFINE_HOOK(OnAssetAltChange, void());
+    DEFINE_HOOK(OnKaleidoUpdate, void());
 
     // Helpers
     static bool IsSaveLoaded();
@@ -238,6 +284,21 @@ public:
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
         static GameInteractionEffectQueryResult SpawnActor(uint32_t actorId, int32_t actorParams);
     };
+
+    private:
+    #ifdef ENABLE_REMOTE_CONTROL
+        IPaddress remoteIP;
+        TCPsocket remoteSocket;
+        std::thread remoteThreadReceive;
+        std::function<void(char payload[512])> remoteDataHandler;
+        std::function<void(nlohmann::json)> remoteJsonHandler;
+        std::function<void()> remoteConnectedHandler;
+        std::function<void()> remoteDisconnectedHandler;
+
+        void ReceiveFromServer();
+        void HandleRemoteData(char payload[512]);
+        void HandleRemoteJson(std::string payload);
+    #endif
 };
 
 #endif /* __cplusplus */

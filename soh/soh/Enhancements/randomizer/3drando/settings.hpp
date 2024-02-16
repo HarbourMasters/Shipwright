@@ -189,6 +189,11 @@ typedef enum {
 } ShuffleMerchantsSetting;
 
 typedef enum {
+    SHUFFLEFROGSONGRUPEES_OFF,
+    SHUFFLEFROGSONGRUPEES_ON,
+} ShuffleFrogSongRupeesSetting;
+
+typedef enum {
     SHUFFLEADULTTRADEQUEST_OFF,
     SHUFFLEADULTTRADEQUEST_ON,
 } ShuffleAdultTradeQuestSetting;
@@ -392,6 +397,7 @@ typedef struct {
     uint8_t shuffleOverworldSpawns;
     uint8_t mixedEntrancePools;
     uint8_t mixDungeons;
+    uint8_t mixBosses;
     uint8_t mixOverworld;
     uint8_t mixInteriors;
     uint8_t mixGrottos;
@@ -779,6 +785,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option ShuffleOverworldSpawns;
   extern Option MixedEntrancePools;
   extern Option MixDungeons;
+  extern Option MixBosses;
   extern Option MixOverworld;
   extern Option MixInteriors;
   extern Option MixGrottos;
@@ -1173,5 +1180,5 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
 
   extern std::vector<Menu *> mainMenu;
 
-  extern std::vector<Option *> vanillaLogicDefaults;
+  extern std::vector<std::pair<Option*, uint8_t>> vanillaLogicOverrides;
 }

@@ -101,6 +101,9 @@ void EnDntJiji_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void EnDntJiji_SetFlower(EnDntJiji* this, PlayState* play) {
+    // SOH: Due to removed object dependencies, parent was still NULL when Init was called. In order to properly set
+    // stage, redo it here now that we are a frame later.
+    this->stage = (EnDntDemo*)this->actor.parent;
     if (this->actor.bgCheckFlags & 1) {
         this->flowerPos = this->actor.world.pos;
         this->actionFunc = EnDntJiji_SetupWait;
@@ -120,7 +123,7 @@ void EnDntJiji_Wait(EnDntJiji* this, PlayState* play) {
 
     SkelAnime_Update(&this->skelAnime);
     if ((this->timer == 1) && (this->actor.xzDistToPlayer < 150.0f) && !Play_InCsMode(play) &&
-        !(player->stateFlags1 & 0x800)) {
+        !(player->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD)) {
         OnePointCutscene_Init(play, 2230, -99, &this->actor, MAIN_CAM);
         this->timer = 0;
         func_8002DF54(play, NULL, 8);
