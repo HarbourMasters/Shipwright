@@ -777,12 +777,12 @@ s32 BossTw_BeamHitPlayerCheck(BossTw* this, PlayState* play) {
                 if (sFreezeState == 0) {
                     sFreezeState = 1;
                 }
-            } else if (!player->isBurning) {
-                for (i = 0; i < ARRAY_COUNT(player->flameTimers); i++) {
-                    player->flameTimers[i] = Rand_S16Offset(0, 200);
+            } else if (!player->bodyIsBurning) {
+                for (i = 0; i < ARRAY_COUNT(player->bodyFlameTimers); i++) {
+                    player->bodyFlameTimers[i] = Rand_S16Offset(0, 200);
                 }
 
-                player->isBurning = true;
+                player->bodyIsBurning = true;
                 Player_PlaySfx(&player->actor, player->ageProperties->unk_92 + NA_SE_VO_LI_DEMO_DAMAGE);
             }
         }
@@ -3154,7 +3154,7 @@ void BossTw_TwinrovaUpdate(Actor* thisx, PlayState* play2) {
         }
     }
 
-    if (player->isBurning && sShieldIceCharge != 0) {
+    if (player->bodyIsBurning && sShieldIceCharge != 0) {
         sShieldIceCharge = 4;
     }
 }
@@ -4039,15 +4039,15 @@ void BossTw_BlastFire(BossTw* this, PlayState* play) {
                 yDiff = sKoumePtr->groundBlastPos2.y - player->actor.world.pos.y;
                 zDiff = sKoumePtr->groundBlastPos2.z - player->actor.world.pos.z;
 
-                if (!player->isBurning && (player->actor.bgCheckFlags & 1) && (fabsf(yDiff) < 10.0f) &&
+                if (!player->bodyIsBurning && (player->actor.bgCheckFlags & 1) && (fabsf(yDiff) < 10.0f) &&
                     (sqrtf(SQ(xDiff) + SQ(zDiff)) < (sKoumePtr->workf[UNK_F13] * 4550.0f))) {
                     s16 j;
 
                     for (j = 0; j < 18; j++) {
-                        player->flameTimers[j] = Rand_S16Offset(0, 200);
+                        player->bodyFlameTimers[j] = Rand_S16Offset(0, 200);
                     }
 
-                    player->isBurning = 1;
+                    player->bodyIsBurning = 1;
 
                     if (this->work[BURN_TMR] == 0) {
                         Player_PlaySfx(&player->actor, player->ageProperties->unk_92 + NA_SE_VO_LI_DEMO_DAMAGE);
