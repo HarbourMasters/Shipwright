@@ -532,7 +532,8 @@ void Settings::CreateOptionDescriptions() {
     
     mOptionDescriptions[RSK_FULL_WALLETS] = "Start with a full wallet. All wallet upgrades come filled with rupees.";
     mOptionDescriptions[RSK_BOMBCHUS_IN_LOGIC] =
-        "Bombchus are properly considered in logic.\n"
+        "Bombchus are properly considered in logic. Without this setting, any Bombchu requirement"
+        " is filled by Bomb Bag + a renewable source of Bombchus\n"
         "\n"
         "The first Bombchu pack will always be 20, and subsequent packs will be "
         "5 or 10 based on how many you have.\n"
@@ -540,7 +541,10 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Bombchu Bowling is opened by obtaining Bombchus.";
     mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS] = "Once you obtain bombchus for the first time, refills can be found "
-                                                    "in bushes and other places where bomb drops can normally spawn.";
+                                                    "in bushes and other places where bomb drops can normally spawn."
+                                                    "\n"
+                                                    "If you do not have Bombchus in Logic enabled, you will also need a"
+                                                    "Bomb bag for bombchus to drop";
     mOptionDescriptions[RSK_BLUE_FIRE_ARROWS] =
         "Ice Arrows act like Blue Fire, making them able to melt red ice. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";

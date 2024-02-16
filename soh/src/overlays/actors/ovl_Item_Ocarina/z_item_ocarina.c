@@ -190,7 +190,7 @@ void ItemOcarina_WaitInWater(ItemOcarina* this, PlayState* play) {
         this->actor.draw = NULL;
     } else {
         if (!IS_RANDO) {
-            func_8002F434(&this->actor, play, GI_OCARINA_OOT, 30.0f, 50.0f);
+            Actor_OfferGetItem(&this->actor, play, GI_OCARINA_OOT, 30.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 30.0f, 50.0f);

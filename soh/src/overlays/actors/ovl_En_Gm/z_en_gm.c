@@ -263,7 +263,7 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
                         Flags_SetInfTable(INFTABLE_B1);
                     } else {
                         itemEntry = ItemTable_Retrieve(GI_SWORD_KNIFE);
-                        func_8002F434(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);
+                        Actor_OfferGetItem(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);
                     }
 
                     gSaveContext.pendingSale = itemEntry.itemId;
@@ -296,7 +296,7 @@ void func_80A3DF00(EnGm* this, PlayState* play) {
             Flags_SetInfTable(INFTABLE_B1);
         }
         else {
-            func_8002F434(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);
+            Actor_OfferGetItem(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);
         }
     }
 }

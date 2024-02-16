@@ -202,8 +202,8 @@ std::vector<RandomizerCheck> GetAllEmptyLocations() {
 }
 
 bool IsBombchus(RandomizerGet item, bool includeShops = false){
-  return (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) || item == RG_PROGRESSIVE_BOMBCHUS || 
-    (includeShops && (item == RG_BUY_BOMBCHU_10 || item == RG_BUY_BOMBCHU_20));
+  return (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS || 
+    (includeShops && (item == RG_BUY_BOMBCHUS_10 || item == RG_BUY_BOMBCHUS_20));
 }
 
 bool IsBeatableWithout(RandomizerCheck excludedCheck, bool replaceItem, RandomizerGet ignore = RG_NONE){ //RANDOTODO make excludCheck an ItemLocation

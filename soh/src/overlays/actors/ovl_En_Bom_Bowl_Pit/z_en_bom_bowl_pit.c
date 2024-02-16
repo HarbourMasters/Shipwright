@@ -193,17 +193,13 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, PlayState* play) {
                 this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
                 this->getItemId = this->getItemEntry.getItemId;
                 break;
-            case EXITEM_BOMBCHUS_BOWLING:
-                this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
-                this->getItemId = this->getItemEntry.getItemId;
-                break;
         }
     }
 
     player->stateFlags1 &= ~0x20000000;
     this->actor.parent = NULL;
     if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
-        func_8002F434(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
+        Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
     } else {
         GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 2000.0f, 1000.0f);
     }
@@ -216,7 +212,7 @@ void EnBomBowlPit_WaitTillPrizeGiven(EnBomBowlPit* this, PlayState* play) {
         this->actionFunc = EnBomBowlPit_Reset;
     } else {
          if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
-            func_8002F434(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
+            Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 2000.0f, 1000.0f);
         }

@@ -876,10 +876,10 @@ void func_80B15E80(EnTa* this, PlayState* play) {
         }
         this->unk_2E0 &= ~0x2;
     } else if (this->unk_2E0 & 2) {
-        func_8002F434(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
+        Actor_OfferGetItem(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
     } else {
         if (!IS_RANDO) {
-            func_8002F434(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
+            Actor_OfferGetItem(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_MILK_BOTTLE);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
@@ -894,7 +894,7 @@ void func_80B15F54(EnTa* this, PlayState* play) {
         this->unk_2E0 &= ~0x2;
         func_80B13AA0(this, func_80B15E80, func_80B16938);
         if (!IS_RANDO) {
-            func_8002F434(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
+            Actor_OfferGetItem(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_MILK_BOTTLE);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
@@ -922,7 +922,7 @@ void func_80B15FE8(EnTa* this, PlayState* play) {
                         GetItemEntry itemEntry = ItemTable_Retrieve(GI_MILK);
                         gSaveContext.pendingSale = itemEntry.itemId;
                         gSaveContext.pendingSaleMod = itemEntry.modIndex;
-                        func_8002F434(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
+                        Actor_OfferGetItem(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
                         break;
                 }
                 break;
@@ -1013,7 +1013,7 @@ void func_80B1642C(EnTa* this, PlayState* play) {
             Message_CloseTextbox(play);
             this->unk_2E0 |= 2;
             func_80B13AA0(this, func_80B15E80, func_80B16938);
-            func_8002F434(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
+            Actor_OfferGetItem(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
         } else {
             Message_ContinueTextbox(play, 0x208A);
             func_80B13AA0(this, func_80B15E28, func_80B16938);

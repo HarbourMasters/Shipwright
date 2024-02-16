@@ -158,7 +158,7 @@ namespace Rando {
 
             // Magic items
             default:
-                return MagicMeter && (IsMagicItem(itemName) || (IsMagicArrow(itemName) && CanUse(RG_FAIRY_BOW)));
+                return Magic && (IsMagicItem(itemName) || (IsMagicArrow(itemName) && CanUse(RG_FAIRY_BOW)));
         }
     }
 
@@ -264,14 +264,14 @@ namespace Rando {
                            (OcarinaCDownButton ? 1 : 0);
         NumBottles      = ((NoBottles) ? 0 : (Bottles + ((DeliverLetter) ? 1 : 0)));
         HasBottle       = NumBottles >= 1;
-        Slingshot       = (ProgressiveBulletBag >= 1) && (BuySeed || AmmoCanDrop);
+        BulletBag       = ProgressiveBulletBag  >= 1;
         Ocarina         = ProgressiveOcarina    >= 1;
         OcarinaOfTime   = ProgressiveOcarina    >= 2;
-        MagicMeter      = (ProgressiveMagic     >= 1) && (AmmoCanDrop || (HasBottle && BuyMagicPotion));
-        BombBag         = (ProgressiveBombBag   >= 1) && (BuyBomb || AmmoCanDrop);
+        MagicMeter      = ProgressiveMagic      >= 1;
+        BombBag         = ProgressiveBombBag    >= 1;
         Hookshot        = ProgressiveHookshot   >= 1;
         Longshot        = ProgressiveHookshot   >= 2;
-        Bow             = (ProgressiveBow       >= 1) && (BuyArrow || AmmoCanDrop);
+        Quiver          = ProgressiveBow        >= 1;
         GoronBracelet   = ProgressiveStrength   >= 1;
         SilverGauntlets = ProgressiveStrength   >= 2;
         GoldenGauntlets = ProgressiveStrength   >= 3;
@@ -282,36 +282,32 @@ namespace Rando {
         AdultsWallet    = ProgressiveWallet     >= 2;
         BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
+        // TODO: Implement Ammo Drop Setting in place of bombchu drops
+        BombchuRefill   = (AmmoCanDrop && ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON/*_PLUS_BOMBCHU*/)) || 
+                        CanPlayBowling || BombchuSalesman || BuyBombchus;
+        FairyAccess     = FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond || BuyFairy;
+
+        //Usage
+        Slingshot = (BuySeed || AmmoCanDrop) && BulletBag;
+        Magic     = (AmmoCanDrop || (HasBottle && (BuyMagicPotion))) && MagicMeter;
+        Bombs     = (BuyBomb || AmmoCanDrop) && BombBag;
+        Bombchus  = BombchuRefill && BombchuBag && (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) || BombBag);
+        Bow       = (BuyArrow || AmmoCanDrop) && Quiver;
+        Nuts      = ((NutPot  || NutCrate || DekuBabaNuts) && AmmoCanDrop) || Nuts; //RANDOTODO BuyNuts currently mixed in with Nuts, should be seperate as BuyNuts are also a Nuts source
+        Sticks    = (StickPot || DekuBabaSticks) || Sticks;
+        Bugs      = HasBottle && (BugShrub || WanderingBugs || BugRock || BuyBugs);
+        BlueFire  = (HasBottle && BlueFireAccess) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
+        Fish      = HasBottle && (LoneFish || FishGroup || BuyFish); //RANDOTODO is there any need to care about lone vs group?
+        Fairy     = HasBottle && FairyAccess;
+
+        // TODO: Implement Ammo Drop Setting in place of bombchu drops
+        HasExplosives = Bombs || Bombchus;
+        HasBoots = IronBoots || HoverBoots;
+
         //you need at least 2 buttons for scarecrow song
         ScarecrowSong    = ScarecrowSong || (ctx->GetOption(RSK_SKIP_SCARECROWS_SONG) && Ocarina && OcarinaButtons >= 2) || (ChildScarecrow && AdultScarecrow);
         Scarecrow        = Hookshot && ScarecrowSong;
         DistantScarecrow = Longshot && ScarecrowSong;
-
-        //Drop Access
-        DekuStickDrop = StickPot || DekuBabaSticks;
-        DekuNutDrop   = (NutPot  || NutCrate         || DekuBabaNuts) && AmmoCanDrop;
-        BugsAccess    = BugShrub || WanderingBugs    || BugRock;
-        FishAccess    = LoneFish || FishGroup;
-        FairyAccess   = FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond;
-
-
-        //refills
-        Bombs        = BombBag;
-        Nuts         = DekuNutDrop || Nuts;
-        Sticks       = DekuStickDrop || Sticks;
-        Bugs         = HasBottle && BugsAccess;
-        BlueFire     = (HasBottle && BlueFireAccess) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
-        Fish         = HasBottle && FishAccess;
-        Fairy        = HasBottle && FairyAccess;
-
-        FoundBombchus   = (BombchuDrop || Bombchus || Bombchus5 || Bombchus10 || Bombchus20) && (BombBag || ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC));
-        CanPlayBowling  = ChildsWallet && ((ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && FoundBombchus) || (!ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && BombBag));
-        // TODO: Implement Ammo Drop Setting in place of bombchu drops
-        HasBombchus = (BuyBombchus || (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON/*_PLUS_BOMBCHU*/) && FoundBombchus));
-
-        HasExplosives =  Bombs || (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC) && HasBombchus);
-
-        HasBoots = IronBoots || HoverBoots;
 
         //Unshuffled adult trade quest
         Eyedrops     = Eyedrops     || (!ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) && ClaimCheck);
@@ -353,7 +349,7 @@ namespace Rando {
         CanOpenStormGrotto  = CanUse(RG_SONG_OF_STORMS) && (ShardOfAgony || ctx->GetTrickOption(RT_GROTTOS_WITHOUT_AGONY));
         HookshotOrBoomerang = CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
         CanGetNightTimeGS   = (CanUse(RG_SUNS_SONG) || !ctx->GetOption(RSK_SKULLS_SUNS_SONG));
-        CanBreakUpperBeehives = HookshotOrBoomerang || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && HasBombchus);
+        CanBreakUpperBeehives = HookshotOrBoomerang || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && Bombchus);
         CanBreakLowerBeehives = CanBreakUpperBeehives || Bombs;
         CanFish = ChildsWallet && (CanUse(RG_FISHING_POLE) || !ctx->GetOption(RSK_SHUFFLE_FISHING_POLE));
         CanGetChildFish = CanFish && (IsChild || (IsAdult && !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)));
@@ -515,9 +511,6 @@ namespace Rando {
         WeirdEgg      = false;
         HasBottle     = false;
         Bombchus      = false;
-        Bombchus5     = false;
-        Bombchus10    = false;
-        Bombchus20    = false;
         MagicBean     = false;
         MagicBeanPack = false;
         RutosLetter   = false;
@@ -683,19 +676,15 @@ namespace Rando {
         CanSummonGanon        = false;
 
         //Drops and Bottle Contents Access
-        DekuNutDrop      = false;
         NutPot           = false;
         NutCrate         = false;
         DekuBabaNuts     = false;
-        DekuStickDrop    = false;
         StickPot         = false;
         DekuBabaSticks   = false;
-        BugsAccess       = false;
         BugShrub         = false;
         WanderingBugs    = false;
         BugRock          = false;
         BlueFireAccess   = false;
-        FishAccess       = false;
         FishGroup        = false;
         LoneFish         = false;
         FairyAccess      = false;
@@ -705,14 +694,16 @@ namespace Rando {
         FairyPot         = false;
         FreeFairies      = false;
         FairyPond        = false;
-        BombchuDrop      = false;
+        BombchuRefill    = false;
 
         BuyBombchus      = false;
         BuySeed          = false;
         BuyArrow         = false;
         BuyBomb          = false;
-        BuyMagicPotion        = false;
-        MagicRefill      = false;
+        BuyMagicPotion   = false;
+        BuyFish          = false;
+        BuyBugs          = false;
+        BuyFairy         = false;
 
         PieceOfHeart     = 0;
         HeartContainer   = 0;
@@ -722,13 +713,15 @@ namespace Rando {
         /* These are used to simplify reading the logic, but need to be updated
         /  every time a base value is updated.                       */
 
-        Slingshot        = false;
+        BulletBag        = false;
         Ocarina          = false;
         OcarinaOfTime    = false;
         BombBag          = false;
-        MagicMeter       = false;
+        BombchuBag       = false;
+        Magic            = false;
         Hookshot         = false;
         Longshot         = false;
+        Quiver           = false;
         Bow              = false;
         GoronBracelet    = false;
         SilverGauntlets  = false;
@@ -756,9 +749,7 @@ namespace Rando {
         Fairy            = false;
         BottleWithBigPoe = false;
 
-        FoundBombchus    = false;
         CanPlayBowling   = false;
-        HasBombchus      = false;
         HasExplosives    = false;
         HasBoots         = false;
         IsChild          = false;

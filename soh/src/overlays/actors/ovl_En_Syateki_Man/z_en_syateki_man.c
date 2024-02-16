@@ -397,7 +397,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                         }
                     }
                     if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
-                        func_8002F434(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
+                        Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
                     } else {
                         GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 2000.0f, 1000.0f);
                     }
@@ -434,7 +434,7 @@ void EnSyatekiMan_GivePrize(EnSyatekiMan* this, PlayState* play) {
         this->actionFunc = EnSyatekiMan_FinishPrize;
     } else {
         if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
-            func_8002F434(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
+            Actor_OfferGetItem(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 2000.0f, 1000.0f);
         }

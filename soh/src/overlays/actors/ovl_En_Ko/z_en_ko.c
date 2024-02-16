@@ -1240,7 +1240,7 @@ void func_80A99504(EnKo* this, PlayState* play) {
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 120.0f, 10.0f);
         } else {
             s32 itemId = GI_SAW;
-            func_8002F434(&this->actor, play, itemId, 120.0f, 10.0f);
+            Actor_OfferGetItem(&this->actor, play, itemId, 120.0f, 10.0f);
         }
     }
 }

@@ -186,7 +186,7 @@ void func_80A6E740(EnHs* this, PlayState* play) {
             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LW_TRADE_COJIRO);
         } else {
             s32 itemId = GI_ODD_MUSHROOM;
-            func_8002F434(&this->actor, play, itemId, 10000.0f, 50.0f);
+            Actor_OfferGetItem(&this->actor, play, itemId, 10000.0f, 50.0f);
         }
     }
 
@@ -205,7 +205,7 @@ void func_80A6E7BC(EnHs* this, PlayState* play) {
                     Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LW_TRADE_COJIRO);
                 } else {
                     s32 itemId = GI_ODD_MUSHROOM;
-                    func_8002F434(&this->actor, play, itemId, 10000.0f, 50.0f);
+                    Actor_OfferGetItem(&this->actor, play, itemId, 10000.0f, 50.0f);
                 }
                 break;
             case 1:

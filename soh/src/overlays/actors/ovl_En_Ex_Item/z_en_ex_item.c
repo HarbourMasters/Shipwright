@@ -172,11 +172,7 @@ void EnExItem_WaitForObject(EnExItem* this, PlayState* play) {
                 onCounter = true;
             case EXITEM_BOMBCHUS_BOWLING:
                 this->unk_17C = func_8002EBCC;
-                if (IS_RANDO) {
-                    this->giDrawId = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10).gid;
-                } else {
-                    this->giDrawId = GID_BOMBCHU;
-                }
+                this->giDrawId = GID_BOMBCHU;
                 this->timer = 65;
                 this->prizeRotateTimer = 35;
                 this->scale = 0.5f;
@@ -415,7 +411,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, PlayState* play) {
         }
 
         if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
-            func_8002F434(&this->actor, play, getItemId, 2000.0f, 1000.0f);
+            Actor_OfferGetItem(&this->actor, play, getItemId, 2000.0f, 1000.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
         }
@@ -429,7 +425,7 @@ void EnExItem_TargetPrizeGive(EnExItem* this, PlayState* play) {
     } else {
         if (!IS_RANDO) {
             s32 getItemId = (CUR_UPG_VALUE(UPG_BULLET_BAG) == 2) ? GI_BULLET_BAG_50 : GI_BULLET_BAG_40;
-            func_8002F434(&this->actor, play, getItemId, 2000.0f, 1000.0f);
+            Actor_OfferGetItem(&this->actor, play, getItemId, 2000.0f, 1000.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
@@ -519,8 +515,6 @@ void EnExItem_DrawItems(EnExItem* this, PlayState* play) {
                 break;
             case EXITEM_BOMBCHUS_BOWLING:
             case EXITEM_BOMBCHUS_COUNTER:
-                randoGetItem = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
-                break;
             case EXITEM_BULLET_BAG:
                 randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
                 break;
