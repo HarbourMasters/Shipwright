@@ -577,7 +577,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                             if (pauseCtx->cursorY[PAUSE_EQUIP] == 0 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD)) {
                                 Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_NONE);
                                 gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-                                gSaveContext.infTable[29] = 1;              // Set the swordless flag
+                                Flags_SetInfTable(INFTABLE_SWORDLESS);
                                 goto RESUME_EQUIPMENT_SWORD;               // Skip to here so we don't re-equip it
                             }
                         } else {
