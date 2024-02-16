@@ -1,6 +1,6 @@
 #include "SetRoomBehavior.h"
 
-namespace LUS {
+namespace SOH {
 RoomBehavior* SetRoomBehavior::GetPointer() {
     return &roomBehavior;
 }
@@ -8,4 +8,4 @@ RoomBehavior* SetRoomBehavior::GetPointer() {
 size_t SetRoomBehavior::GetPointerSize() {
 	return sizeof(RoomBehavior);
 }
-} // namespace LUS
+} // namespace SOH

@@ -37,12 +37,19 @@ GameInteractionEffectQueryResult GameInteractor::RemoveEffect(RemovableGameInter
 
 // MARK: - Helpers
 
-bool GameInteractor::IsSaveLoaded() {
+bool GameInteractor::IsSaveLoaded(bool allowDbgSave) {
     Player* player;
     if (gPlayState != NULL) {
         player = GET_PLAYER(gPlayState);
     }
-    return (gPlayState == NULL || player == NULL || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2) ? false : true;
+
+    // Checking for normal game mode prevents debug saves from reporting true on title screen
+    if (gPlayState == NULL || player == NULL || gSaveContext.gameMode != GAMEMODE_NORMAL) {
+        return false;
+    }
+
+    // Valid save file or debug save
+    return (gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2) || (allowDbgSave && gSaveContext.fileNum == 0xFF);
 }
 
 bool GameInteractor::IsGameplayPaused() {

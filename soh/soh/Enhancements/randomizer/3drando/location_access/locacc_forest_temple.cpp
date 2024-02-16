@@ -172,7 +172,7 @@ void AreaTable_Init_ForestTemple() {
                   Entrance(FOREST_TEMPLE_WEST_CORRIDOR,            {[]{return true;}}),
                   Entrance(FOREST_TEMPLE_NW_OUTDOORS_UPPER,        {[]{return CanUse(HOVER_BOOTS) || (LogicForestOutsideBackdoor && CanJumpslash && GoronBracelet);}}),
                   Entrance(FOREST_TEMPLE_NW_CORRIDOR_TWISTED,      {[]{return IsAdult && GoronBracelet && SmallKeys(FOREST_TEMPLE, 2);}}),
-                  Entrance(FOREST_TEMPLE_NW_CORRIDOR_STRAIGHTENED, {[]{return (CanUse(BOW) || CanUse(SLINGSHOT)) && GoronBracelet && SmallKeys(FOREST_TEMPLE, 2);}}),
+                  Entrance(FOREST_TEMPLE_NW_CORRIDOR_STRAIGHTENED, {[]{return IsAdult && (CanUse(BOW) || CanUse(SLINGSHOT)) && GoronBracelet && SmallKeys(FOREST_TEMPLE, 2);}}),
   });
 
   areaTable[FOREST_TEMPLE_NW_CORRIDOR_TWISTED] = Area("Forest Temple NW Corridor Twisted", "Forest Temple", FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -433,5 +433,6 @@ void AreaTable_Init_ForestTemple() {
         {
             // Exits
             Entrance(FOREST_TEMPLE_BOSS_ENTRYWAY, { [] { return false; } }),
+            Entrance(SACRED_FOREST_MEADOW, { [] { return ForestTempleClear; } }),
         });
 }
