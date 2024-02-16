@@ -84,17 +84,49 @@ cd "build/x64"
 ```
 
 ## Linux
-Requires `gcc >= 10, x11, curl, python3, sdl2 >= 2.0.22, libpng, glew >= 2.2, ninja, cmake, lld, pulseaudio-libs`
+### Install dependencies
+#### Debian/Ubuntu
+```sh
+# using gcc
+apt-get install gcc g++ git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libboost-dev libopengl-dev
 
-**Important: For maximum performance make sure you have ninja build tools installed!**
+# or using clang
+apt-get install clang git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libboost-dev libopengl-dev
+```
+#### Arch
+```sh
+# using gcc
+pacman -S gcc git cmake ninja lsb-release sdl2 libpng sdl2_net boost
 
-_Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
+# or using clang
+pacman -S clang git cmake ninja lsb-release sdl2 libpng sdl2_net boost
+```
+#### Fedora
+```sh
+# using gcc
+dnf install gcc gcc-c++ git cmake ninja-build lsb_release SDL2-devel libpng-devel boost-devel
+
+# or using clang
+dnf install clang git cmake ninja-build lsb_release SDL2-devel libpng-devel boost-devel
+```
+#### openSUSE
+```sh
+# using gcc
+zypper in gcc gcc-c++ git cmake ninja SDL2-devel libpng16-devel boost
+
+# or using clang
+zypper in clang libstdc++-devel git cmake ninja SDL2-devel libpng16-devel boost
+```
+
+### Build
+
+_Note: If you're using Visual Studio Code, the [CMake Tools plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
 
 ```bash
 # Clone the repo
 git clone https://github.com/HarbourMasters/Shipwright.git
 cd Shipwright
-# Clone the submodule libultraship
+# Clone the submodules
 git submodule update --init
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
