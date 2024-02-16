@@ -1356,12 +1356,8 @@ void Reset_Option_Single(const char* Button_Title, const char* name) {
 void Reset_Option_Double(const char* Button_Title, const char* name) {
     ImGui::SameLine();
     if (ImGui::Button(Button_Title)) {
-        const size_t bufferSize = strlen(name) + 8;
-        char combinedName[bufferSize];
-        snprintf(combinedName, bufferSize, "%s.Value", name);
-        CVarClear(combinedName);
-        snprintf(combinedName, bufferSize, "%s.Changed", name);
-        CVarClear(combinedName);
+        CVarClear((std::string(name) + ".Value").c_str());
+        CVarClear((std::string(name) + ".Changed").c_str());
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
 }
