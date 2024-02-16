@@ -970,7 +970,7 @@ void ItemTrackerLoadFile() {
     SaveManager::Instance->LoadData("personalNotes", initialTrackerNotes);
     itemTrackerNotes.resize(initialTrackerNotes.length() + 1);
     if (initialTrackerNotes != "") {
-        strcpy(itemTrackerNotes.Data, initialTrackerNotes.c_str());
+        SohUtils::CopyStringToCharArray(itemTrackerNotes.Data, initialTrackerNotes.c_str(), itemTrackerNotes.size());
     } else {
         itemTrackerNotes.push_back(0);
     }
