@@ -586,7 +586,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                                 && CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) == EQUIP_VALUE_SWORD_BIGGORON && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)){ // And we have the Master Sword
                                 Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER); // "Unequip" it by equipping Master Sword
                                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-                                gSaveContext.infTable[29] = 0;
+                                Flags_UnsetInfTable(INFTABLE_SWORDLESS);
                                 goto RESUME_EQUIPMENT_SWORD;               // Skip to here so we don't re-equip it
                             }
                         }
