@@ -1174,11 +1174,11 @@ s16 OnePointCutscene_Init(PlayState* play, s16 csId, s16 timer, Actor* actor, s1
 
     if (actor != NULL && actor->id != ACTOR_PLAYER) {
         if (!GameInteractor_Should(GI_VB_PLAY_ONEPOINT_ACTOR_CS, true, actor)) {
-            return;
+            return SUBCAM_NONE;
         }
     } else {
         if (!GameInteractor_Should(GI_VB_PLAY_ONEPOINT_CS, true, &csId)) {
-            return;
+            return SUBCAM_NONE;
         }
     }
 
