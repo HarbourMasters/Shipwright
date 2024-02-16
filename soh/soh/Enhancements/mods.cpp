@@ -1304,6 +1304,23 @@ void RegisterToTMedallions() {
     });
 }
 
+void RegisterPauseMenuHooks() {
+    static bool pauseWarpHooksRegistered = false;
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&]() {
+        if (!GameInteractor::IsSaveLoaded() || !CVarGetInteger("gPauseWarp", 0)) {
+            pauseWarpHooksRegistered = false;
+            return;
+        }
+        if (!pauseWarpHooksRegistered) {
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoUpdate>([]() {PauseWarp_HandleSelection();});
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+                    PauseWarp_Execute();
+            });
+            pauseWarpHooksRegistered = true;
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1340,4 +1357,5 @@ void InitMods() {
     NameTag_RegisterHooks();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
+    RegisterPauseMenuHooks();
 }

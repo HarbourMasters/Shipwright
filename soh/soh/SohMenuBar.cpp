@@ -644,6 +644,8 @@ void DrawEnhancementsMenu() {
                     "- Obtained the Master Sword\n"
                     "- Not within range of Time Block\n"
                     "- Not within range of Ocarina playing spots");
+                UIWidgets::PaddedEnhancementCheckbox("Pause Warp", "gPauseWarp", true, false);
+                UIWidgets::Tooltip("Selection of warp song in pause menu initiates warp. Disables song playback.");
                 
                 ImGui::EndTable();
                 ImGui::EndMenu();
