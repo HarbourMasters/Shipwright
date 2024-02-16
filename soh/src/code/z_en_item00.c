@@ -1367,15 +1367,14 @@ void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
             Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->ogParams);
 
         if (randoCheck != RC_UNKNOWN_CHECK) {
-            this->randoGiEntry =
-                Randomizer_GetItemFromKnownCheck(randoCheck, GI_NONE);
+            this->randoGiEntry = CVarGetInteger("gEnhancement.MysteriousShuffle", 0) ? GetItemMystery : Randomizer_GetItemFromKnownCheck(randoCheck, GI_NONE);
             this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
         }
         
         f32 mtxScale = 10.67f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
         EnItem00_CustomItemsParticles(&this->actor, play, this->randoGiEntry);
-        GetItemEntry_Draw(play, this->randoGiEntry, randoCheck);
+        GetItemEntry_Draw(play, this->randoGiEntry);
     } else if (this->actor.params == ITEM00_BOMBCHU) {
         OPEN_DISPS(play->state.gfxCtx);
 
@@ -1461,15 +1460,14 @@ void EnItem00_DrawHeartPiece(EnItem00* this, PlayState* play) {
             Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->ogParams);
 
         if (randoCheck != RC_UNKNOWN_CHECK) {
-            this->randoGiEntry =
-                Randomizer_GetItemFromKnownCheck(randoCheck, GI_NONE);
+            this->randoGiEntry = CVarGetInteger("gEnhancement.MysteriousShuffle", 0) ? GetItemMystery : Randomizer_GetItemFromKnownCheck(randoCheck, GI_NONE);
             this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
         }
 
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
         EnItem00_CustomItemsParticles(&this->actor, play, this->randoGiEntry);
-        GetItemEntry_Draw(play, this->randoGiEntry, randoCheck);
+        GetItemEntry_Draw(play, this->randoGiEntry);
     } else {
         s32 pad;
 

@@ -214,13 +214,13 @@ void EnSi_Draw(Actor* thisx, PlayState* play) {
             GetItem_Draw(play, GID_SKULL_TOKEN_2);
         } else {
             RandomizerCheck check = Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->actor.params);
-            getItem = Randomizer_GetItemFromKnownCheck(check, GI_SKULL_TOKEN);
+            getItem = CVarGetInteger("gEnhancement.MysteriousShuffle", 0) ? GetItemMystery : Randomizer_GetItemFromKnownCheck(check, GI_SKULL_TOKEN);
             EnItem00_CustomItemsParticles(&this->actor, play, getItem);
             if (getItem.itemId != ITEM_SKULL_TOKEN) {
                 f32 mtxScale = 1.5f;
                 Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
             }
-            GetItemEntry_Draw(play, getItem, check);
+            GetItemEntry_Draw(play, getItem);
         }
     }
 }

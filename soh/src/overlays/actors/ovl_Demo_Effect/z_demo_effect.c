@@ -2088,11 +2088,11 @@ void DemoEffect_DrawGetItem(Actor* thisx, PlayState* play) {
             return;
         }
         if (IS_RANDO && play->sceneNum == SCENE_JABU_JABU) {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_BARINADE, RG_ZORA_SAPPHIRE);
+            GetItemEntry getItemEntry = CVarGetInteger("gEnhancement.MysteriousShuffle", 0) ? GetItemMystery : Randomizer_GetItemFromKnownCheck(RC_BARINADE, RG_ZORA_SAPPHIRE);
             this->getItem.drawId = getItemEntry.gid;
             func_8002EBCC(thisx, play, 0);
             func_8002ED80(thisx, play, 0);
-            GetItemEntry_Draw(play, getItemEntry, RC_BARINADE);
+            GetItemEntry_Draw(play, getItemEntry);
             return;
         }
         func_8002EBCC(thisx, play, 0);

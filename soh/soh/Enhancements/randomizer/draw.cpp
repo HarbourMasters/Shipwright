@@ -279,7 +279,7 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-extern "C" void Randomizer_DrawMysteryItem(PlayState* play) {
+extern "C" void Randomizer_DrawMysteryItem(PlayState* play, GetItemEntry getItemEntry) {
     Color_RGB8 color = { 0, 60, 100 };
     if (CVarGetInteger("gCosmetics.World_MysteryItem.Changed", 0)) {
         color = CVarGetColor24("gCosmetics.World_MysteryItem.Value", color);
