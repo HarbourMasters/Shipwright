@@ -347,7 +347,7 @@ s32 Player_TryCsAction(PlayState* play, Actor* actor, s32 csAction);
 void func_80853080(Player* this, PlayState* play);
 s32 Player_InflictDamage(PlayState* play, s32 damage);
 s32 Player_InflictDamageModified(PlayState* play, s32 damage, u8 modified);
-void func_80853148(PlayState* play, Actor* actor);
+void Player_StartTalking(PlayState* play, Actor* actor);
 
 // .bss part 1
 static s32 D_80858AA0;
@@ -4708,7 +4708,7 @@ s32 func_80839800(Player* this, PlayState* play) {
 
             if (this->doorType <= PLAYER_DOORTYPE_AJAR) {
                 doorActor->textId = 0xD0;
-                func_80853148(play, doorActor);
+                Player_StartTalking(play, doorActor);
                 return 0;
             }
 
@@ -5533,7 +5533,7 @@ s32 func_8083B644(Player* this, PlayState* play) {
                     }
 
                     this->currentMask = D_80858AA4;
-                    func_80853148(play, sp34);
+                    Player_StartTalking(play, sp34);
                     return 1;
                 }
             }
@@ -10040,7 +10040,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     play->startPlayerCutscene = Player_TryCsAction;
     play->func_11D54 = func_80853080;
     play->damagePlayer = Player_InflictDamage;
-    play->talkWithPlayer = func_80853148;
+    play->talkWithPlayer = Player_StartTalking;
 
     thisx->room = -1;
     this->ageProperties = &sAgeProperties[gSaveContext.linkAge];
@@ -13496,11 +13496,11 @@ void func_8084E3C4(Player* this, PlayState* play) {
         func_8005B1A4(Play_GetCamera(play, 0));
 
         if ((this->targetActor != NULL) && (this->targetActor == this->unk_6A8)) {
-            func_80853148(play, this->targetActor);
+            Player_StartTalking(play, this->targetActor);
         } else if (this->naviTextId < 0) {
             this->targetActor = this->naviActor;
             this->naviActor->textId = -this->naviTextId;
-            func_80853148(play, this->targetActor);
+            Player_StartTalking(play, this->targetActor);
         } else if (!func_8083B040(this, play)) {
             func_8083A098(this, &gPlayerAnim_link_normal_okarina_end, play);
         }
@@ -13570,7 +13570,7 @@ void func_8084E6D4(Player* this, PlayState* play) {
                         this->exchangeItemId = EXCH_ITEM_NONE;
 
                         if (func_8084B4D4(play, this) == 0) {
-                            func_80853148(play, this->targetActor);
+                            Player_StartTalking(play, this->targetActor);
                         }
                     } else {
                         func_8084DFAC(play, this);
@@ -13952,7 +13952,7 @@ void func_8084F104(Player* this, PlayState* play) {
                 this->actor.flags |= ACTOR_FLAG_PLAYER_TALKED_TO;
             }
 
-            func_80853148(play, targetActor);
+            Player_StartTalking(play, targetActor);
         } else {
             GetItemEntry giEntry = ItemTable_Retrieve(D_80854528[this->exchangeItemId - 1]);
 
@@ -15832,7 +15832,7 @@ s32 Player_InflictDamageModified(PlayState* play, s32 damage, u8 modified) {
 }
 
 // Start talking with the given actor
-void func_80853148(PlayState* play, Actor* actor) {
+void Player_StartTalking(PlayState* play, Actor* actor) {
     Player* this = GET_PLAYER(play);
     s32 pad;
 

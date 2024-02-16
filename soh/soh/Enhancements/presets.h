@@ -332,6 +332,7 @@ const std::vector<const char*> cheatCvars = {
     "gCosmetics.Link_HeadScale.Value",
     "gCosmetics.Link_SwordScale.Changed",
     "gCosmetics.Link_SwordScale.Value",
+    "gEnhancements.RememberMapToggleState",
 };
 
 const std::vector<const char*> randomizerCvars = {
