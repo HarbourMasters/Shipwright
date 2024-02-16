@@ -1065,12 +1065,16 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     if (manualChange || CVarGetInteger(npcGoldenSkulltula.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {npcGoldenSkulltula.defaultColor.x, npcGoldenSkulltula.defaultColor.y, npcGoldenSkulltula.defaultColor.z, npcGoldenSkulltula.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(npcGoldenSkulltula.cvar, defaultColor);
-        PATCH_GFX(gGiSkulltulaTokenDL,                            "NPC_GoldenSkulltula1",     npcGoldenSkulltula.changedCvar,       5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiSkulltulaTokenDL,                            "NPC_GoldenSkulltula2",     npcGoldenSkulltula.changedCvar,       6, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula3",     npcGoldenSkulltula.changedCvar,      32, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula4",     npcGoldenSkulltula.changedCvar,      33, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula5",     npcGoldenSkulltula.changedCvar,     118, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula6",     npcGoldenSkulltula.changedCvar,     119, gsDPSetEnvColor(color.r / 4, color.g / 4, color.b / 4, 255));
+        PATCH_GFX(gSkulltulaTokenDL,                              "NPC_GoldenSkulltula1",     npcGoldenSkulltula.changedCvar,       5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gSkulltulaTokenDL,                              "NPC_GoldenSkulltula2",     npcGoldenSkulltula.changedCvar,       6, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gSkulltulaTokenFlameDL,                         "NPC_GoldenSkulltula3",     npcGoldenSkulltula.changedCvar,      32, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gSkulltulaTokenFlameDL,                         "NPC_GoldenSkulltula4",     npcGoldenSkulltula.changedCvar,      33, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGiSkulltulaTokenDL,                            "NPC_GoldenSkulltula5",     npcGoldenSkulltula.changedCvar,       5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiSkulltulaTokenDL,                            "NPC_GoldenSkulltula6",     npcGoldenSkulltula.changedCvar,       6, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula7",     npcGoldenSkulltula.changedCvar,      32, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula8",     npcGoldenSkulltula.changedCvar,      33, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula9",     npcGoldenSkulltula.changedCvar,     118, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula10",    npcGoldenSkulltula.changedCvar,     119, gsDPSetEnvColor(color.r / 4, color.g / 4, color.b / 4, 255));
     }
 
     static CosmeticOption& npcGerudo = cosmeticOptions.at("NPC_Gerudo");
