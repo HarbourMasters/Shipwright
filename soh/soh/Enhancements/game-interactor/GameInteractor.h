@@ -198,7 +198,7 @@ public:
     DEFINE_HOOK(OnAssetAltChange, void());
 
     // Helpers
-    static bool IsSaveLoaded();
+    static bool IsSaveLoaded(bool allowDbgSave = false);
     static bool IsGameplayPaused();
     static bool CanSpawnActor();
     static bool CanAddOrTakeAmmo(int16_t amount, int16_t item);
