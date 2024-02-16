@@ -13,22 +13,37 @@ jobs:
       with:
         submodules: true
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.11
       with:
-        key: ${{ runner.os }}-soh-otr-ccache
+        key: ${{ runner.os }}-otr-ccache-${{ github.ref }}-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-otr-ccache-${{ github.ref }}
+          ${{ runner.os }}-otr-ccache-
     - name: Install dependencies
       if: ${{ !vars.LINUX_RUNNER }}
       run: |
         sudo apt-get update
         sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
+    - name: Cache build folders
+      uses: actions/cache@v4
+      with:
+        key: ${{ runner.os }}-otr-build-${{ github.ref }}-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-otr-build-${{ github.ref }}
+          ${{ runner.os }}-otr-build-
+        path: |
+          build-cmake
+          SDL2-2.28.5
     - name: Install latest SDL
       if: ${{ !vars.LINUX_RUNNER }}
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        wget https://www.libsdl.org/release/SDL2-2.26.1.tar.gz
-        tar -xzf SDL2-2.26.1.tar.gz
-        cd SDL2-2.26.1
-        ./configure
+        if [ ! -d "SDL2-2.28.5" ]; then
+          wget https://www.libsdl.org/release/SDL2-2.28.5.tar.gz
+          tar -xzf SDL2-2.28.5.tar.gz
+        fi
+        cd SDL2-2.28.5
+        ./configure --enable-hidapi-libusb
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
@@ -37,7 +52,7 @@ jobs:
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --config Release --target GenerateSohOtr
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: soh.otr
         path: soh.otr
@@ -50,9 +65,12 @@ jobs:
       with:
         submodules: true
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.11
       with:
-        key: ${{ runner.os }}-ccache
+        key: ${{ runner.os }}-ccache-${{ github.ref }}-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-ccache-${{ github.ref }}
+          ${{ runner.os }}-ccache-
     - name: Install gtar wrapper
       if: ${{ !vars.MAC_RUNNER }}
       run: |
@@ -85,7 +103,7 @@ jobs:
         sudo port install $(cat .github/workflows/macports-deps.txt)
         brew install ninja
     - name: Download soh.otr
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: soh.otr
     - name: Build SoH
@@ -99,7 +117,7 @@ jobs:
         mv _packages/*.dmg SoH.dmg
         mv README.md readme.txt
     - name: Upload build
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: soh-mac
         path: |
@@ -128,17 +146,32 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.11
       with:
-        key: ${{ matrix.os }}-ccache
+        key: ${{ matrix.os }}-ccache-${{ github.ref }}-${{ github.sha }}
+        restore-keys: |
+          ${{ matrix.os }}-ccache-${{ github.ref }}
+          ${{ matrix.os }}-ccache-
+    - name: Cache build folders
+      uses: actions/cache@v4
+      with:
+        key: ${{ matrix.os }}-build-${{ github.ref }}-${{ github.sha }}
+        restore-keys: |
+          ${{ matrix.os }}-build-${{ github.ref }}
+          ${{ matrix.os }}-build-
+        path: |
+          SDL2-2.28.5
+          SDL2_net-2.2.0
     - name: Install latest SDL
       if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        wget https://www.libsdl.org/release/SDL2-2.26.1.tar.gz
-        tar -xzf SDL2-2.26.1.tar.gz
-        cd SDL2-2.26.1
-        ./configure
+        if [ ! -d "SDL2-2.28.5" ]; then
+          wget https://www.libsdl.org/release/SDL2-2.28.5.tar.gz
+          tar -xzf SDL2-2.28.5.tar.gz
+        fi
+        cd SDL2-2.28.5
+        ./configure --enable-hidapi-libusb
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
@@ -146,15 +179,17 @@ jobs:
       if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
-        tar -xzf SDL2_net-2.2.0.tar.gz
+        if [ ! -d "SDL2_net-2.2.0" ]; then
+          wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
+          tar -xzf SDL2_net-2.2.0.tar.gz
+        fi
         cd SDL2_net-2.2.0
         ./configure
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
     - name: Download soh.otr
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: soh.otr
     - name: Build SoH
@@ -170,7 +205,7 @@ jobs:
         CC: gcc-${{ matrix.gcc }}
         CXX: g++-${{ matrix.gcc }}
     - name: Upload build
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: soh-linux-${{ matrix.archive-suffix }}
         path: |
@@ -180,12 +215,15 @@ jobs:
     needs: generate-soh-otr
     runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
     container:
-      image: devkitpro/devkita64:latest
+      image: devkitpro/devkita64:20240120
     steps:
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y ninja-build
+        sudo apt-get remove -y cmake
+        wget https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.28.3-linux-x86_64.sh -O /tmp/cmake.sh
+        sudo sh /tmp/cmake.sh --prefix=/usr/local/ --exclude-subdir
     - name: Fix dubious ownership error
       if: ${{ vars.LINUX_RUNNER }}
       run: git config --global --add safe.directory '*'
@@ -193,9 +231,12 @@ jobs:
       with:
         submodules: true
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.11
       with:
-        key: ${{ runner.os }}-switch-ccache
+        key: ${{ runner.os }}-switch-ccache-${{ github.ref }}-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-switch-ccache-${{ github.ref }}
+          ${{ runner.os }}-switch-ccache-
     - name: Build SoH
       run: |
         cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache
@@ -204,11 +245,11 @@ jobs:
         mv build-switch/soh/*.nro soh.nro
         mv README.md readme.txt
     - name: Download soh.otr
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: soh.otr
     - name: Upload build
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: soh-switch
         path: |
@@ -226,13 +267,19 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y ninja-build
+        sudo apt-get remove -y cmake
+        wget https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.28.3-linux-x86_64.sh -O /tmp/cmake.sh
+        sudo sh /tmp/cmake.sh --prefix=/usr/local/ --exclude-subdir
     - uses: actions/checkout@v3
       with:
         submodules: true
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.11
       with:
-        key: ${{ runner.os }}-wiiu-ccache
+        key: ${{ runner.os }}-wiiu-ccache-${{ github.ref }}-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-wiiu-ccache-${{ github.ref }}
+          ${{ runner.os }}-wiiu-ccache-
     - name: Build SoH
       run: |
         cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache
@@ -245,11 +292,11 @@ jobs:
         DEVKITPRO: /opt/devkitpro
         DEVKITPPC: /opt/devkitpro/devkitPPC
     - name: Download soh.otr
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: soh.otr
     - name: Upload build
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: soh-wiiu
         path: |
@@ -270,15 +317,25 @@ jobs:
       with:
         submodules: true
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.11
       with:
-        key: ${{ runner.os }}-ccache
-    - name: vcpkg
-      uses: johnwason/vcpkg-action@v5
+        variant: sccache
+        max-size: "1G"
+        key: ${{ runner.os }}-ccache-${{ github.ref }}-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-ccache-${{ github.ref }}
+          ${{ runner.os }}-ccache-
+    - name: Cache build folder
+      uses: actions/cache@v4
       with:
-        pkgs: zlib bzip2 libpng sdl2 sdl2-net glew glfw3
-        token: ${{ github.token }}
-        triplet: 'x64-windows-static'
+        save-always: true
+        key: ${{ runner.os }}-build-${{ github.ref }}-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ github.ref }}
+          ${{ runner.os }}-build-
+        path: |
+          build-windows
+          vcpkg
     - name: Configure Developer Command Prompt
       uses: ilammy/msvc-dev-cmd@v1
     - name: Build SoH
@@ -286,7 +343,7 @@ jobs:
         VCPKG_ROOT: ${{github.workspace}}/vcpkg
       run: |
         set $env:PATH="$env:USERPROFILE/.cargo/bin;$env:PATH"
-        cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DBUILD_REMOTE_CONTROL=1
+        cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache -DBUILD_REMOTE_CONTROL=1
         cmake --build build-windows --config Release --parallel 10
 
         mkdir soh-windows
@@ -299,12 +356,12 @@ jobs:
         mv ./build-windows/gamecontrollerdb.txt ./soh-windows/gamecontrollerdb.txt
         mv ./x64/Release/assets ./soh-windows
     - name: Download soh.otr
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: soh.otr
         path: soh-windows
     - name: Upload build
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: soh-windows
         path: soh-windows

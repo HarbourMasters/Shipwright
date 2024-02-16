@@ -21,7 +21,6 @@
 
 
 #include "Enhancements/audio/AudioEditor.h"
-#include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugger/actorViewer.h"
 #include "Enhancements/debugger/colViewer.h"
@@ -29,6 +28,7 @@
 #include "Enhancements/debugger/dlViewer.h"
 #include "Enhancements/debugger/valueViewer.h"
 #include "Enhancements/gameplaystatswindow.h"
+#include "Enhancements/debugger/MessageViewer.h"
 #include "Enhancements/randomizer/randomizer_check_tracker.h"
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
@@ -112,11 +112,11 @@ namespace SohGui {
 void DrawMenuBarIcon() {
     static bool gameIconLoaded = false;
     if (!gameIconLoaded) {
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTexture("Game_Icon", "textures/icons/gIcon.png");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Game_Icon", "textures/icons/gIcon.png");
         gameIconLoaded = true;
     }
 
-    if (LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Game_Icon")) {
+    if (LUS::Context::GetInstance()->GetWindow()->GetGui()->HasTextureByName("Game_Icon")) {
 #ifdef __SWITCH__
         ImVec2 iconSize = ImVec2(20.0f, 20.0f);
         float posScale = 1.0f;
@@ -180,7 +180,6 @@ void DrawShipMenu() {
 }
 
 extern std::shared_ptr<LUS::GuiWindow> mInputEditorWindow;
-extern std::shared_ptr<GameControlEditor::GameControlEditorWindow> mGameControlEditorWindow;
 extern std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
 
 void DrawSettingsMenu() {
@@ -203,8 +202,7 @@ void DrawSettingsMenu() {
 
             static std::unordered_map<LUS::AudioBackend, const char*> audioBackendNames = {
                 { LUS::AudioBackend::WASAPI, "Windows Audio Session API" },
-                { LUS::AudioBackend::PULSE, "PulseAudio" },
-                { LUS::AudioBackend::SDL, "SDL" },
+                { LUS::AudioBackend::SDL, "SDL" }
             };
 
             ImGui::Text("Audio API (Needs reload)");
@@ -241,11 +239,6 @@ void DrawSettingsMenu() {
                     mInputEditorWindow->ToggleVisibility();
                 }
             }
-            if (mGameControlEditorWindow) {
-                if (ImGui::Button(GetWindowButtonText("Additional Controller Options", CVarGetInteger("gGameControlEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                    mGameControlEditorWindow->ToggleVisibility();
-                }
-            }
             UIWidgets::PaddedSeparator();
             ImGui::PopStyleColor(1);
             ImGui::PopStyleVar(3);
@@ -273,8 +266,10 @@ void DrawSettingsMenu() {
                                                   2.0f, "", 1.0f, true, true, disabled_resolutionSlider)) {
                 LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
             }
-            UIWidgets::Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
-        #endif
+            UIWidgets::Tooltip("Resolution scale. Multiplies output resolution by this value, on each axis relative to window size.\n"
+                               "Lower values may improve performance.\n"
+                               "Values above 100% can be used for super-sampling, as an intensive but highly effective form of anti-aliasing.\n\n"
+                               "Default: 100%");
             
             if (mAdvancedResolutionSettingsWindow) {
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
@@ -288,14 +283,28 @@ void DrawSettingsMenu() {
                 ImGui::PopStyleColor(1);
                 ImGui::PopStyleVar(3);
             }
-
-        #ifndef __WIIU__
-            if (UIWidgets::PaddedEnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true, false)) {
-                LUS::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger("gMSAAValue", 1));
-            };
-            UIWidgets::Tooltip("Activates multi-sample anti-aliasing when above 1x up to 8x for 8 samples for every pixel");
+        #else
+            // macOS: Internal resolution is currently disabled in libultraship.
+            ImGui::BeginGroup();
+            ImGui::Text("Internal Resolution: 100.0%%");
+            UIWidgets::Spacer(0);
+            ImGui::Text(" " ICON_FA_INFO_CIRCLE " Not available on this system.");
+            UIWidgets::Spacer(0);
+            ImGui::EndGroup();
         #endif
 
+        #ifndef __WIIU__
+            if (UIWidgets::PaddedEnhancementSliderInt(
+                    (CVarGetInteger("gMSAAValue", 1) == 1) ? "Anti-aliasing (MSAA): Off" : "Anti-aliasing (MSAA): %d",
+                    "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true, false)) {
+                LUS::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger("gMSAAValue", 1));
+            }
+            UIWidgets::Tooltip("Activates MSAA (multi-sample anti-aliasing) from 2x up to 8x, to smooth the edges of rendered geometry.\n"
+                               "Higher sample count will result in smoother edges on models, but may reduce performance.\n\n"
+                               "Recommended: 2x or 4x");
+        #endif
+
+            UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
             { // FPS Slider
                 const int minFps = 20;
                 static int maxFps;
@@ -369,26 +378,27 @@ void DrawSettingsMenu() {
                 bool matchingRefreshRate =
                     CVarGetInteger("gMatchRefreshRate", 0) && LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() != LUS::WindowBackend::DX11;
                 UIWidgets::PaddedEnhancementSliderInt(
-                    (currentFps == 20) ? "FPS: Original (20)" : "FPS: %d",
+                    (currentFps == 20) ? "Frame Rate: Original (20 fps)" : "Frame Rate: %d fps",
                     "##FPSInterpolation", "gInterpolationFPS", minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
             #endif
                 if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
                     UIWidgets::Tooltip(
-                        "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics. This is purely "
-                        "visual and does not impact game logic, execution of glitches etc.\n\n"
-                        "A higher target FPS than your monitor's refresh rate will waste resources, and might give a worse result."
-                    );
+                        "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics.\n"
+                        "This is purely visual and does not impact game logic, execution of glitches etc.\n"
+                        "Higher frame rate settings may impact CPU performance."
+                        "\n\n " ICON_FA_INFO_CIRCLE 
+                        " There is no need to set this above your monitor's refresh rate. Doing so will waste resources and may give a worse result.");
                 } else {
                     UIWidgets::Tooltip(
-                        "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics. This is purely "
-                        "visual and does not impact game logic, execution of glitches etc."
-                    );
+                        "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics.\n"
+                        "This is purely visual and does not impact game logic, execution of glitches etc.\n"
+                        "Higher frame rate settings may impact CPU performance.");
                 }
             } // END FPS Slider
 
             if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
                 UIWidgets::Spacer(0);
-                if (ImGui::Button("Match Refresh Rate")) {
+                if (ImGui::Button("Match Frame Rate to Refresh Rate")) {
                     int hz = LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                     if (hz >= 20 && hz <= 360) {
                         CVarSetInteger("gInterpolationFPS", hz);
@@ -396,17 +406,22 @@ void DrawSettingsMenu() {
                     }
                 }
             } else {
-                UIWidgets::PaddedEnhancementCheckbox("Match Refresh Rate", "gMatchRefreshRate", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Match Frame Rate to Refresh Rate", "gMatchRefreshRate", true, false);
             }
-            UIWidgets::Tooltip("Matches interpolation value to the current game's window refresh rate");
+            UIWidgets::Tooltip("Matches interpolation value to the game window's current refresh rate.");
 
             if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
                 UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger("gExtraLatencyThreshold", 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
                     "##ExtraLatencyThreshold", "gExtraLatencyThreshold", 0, 360, "", 80, true, true, false);
-                UIWidgets::Tooltip("When Interpolation FPS setting is at least this threshold, add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter. This setting allows the CPU to work on one frame while GPU works on the previous frame.\nThis setting should be used when your computer is too slow to do CPU + GPU work in time.");
+                UIWidgets::Tooltip(
+                    "(For DirectX backend only)\n\n"
+                    "When Interpolation FPS (Frame Rate) setting is at least this threshold, add one frame of delay (e.g. 16.6 ms for 60 FPS) in order to avoid jitter."
+                    "This setting allows the CPU to work on one frame while GPU works on the previous frame.\n"
+                    "This setting should be used when your computer is too slow to do CPU + GPU work in time.");
             }
 
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
+
             ImGui::Text("ImGui Menu Scale");
             ImGui::SameLine();
             ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, "(Experimental)");
@@ -455,6 +470,7 @@ void DrawSettingsMenu() {
 
             if (LUS::Context::GetInstance()->GetWindow()->CanDisableVerticalSync()) {
                 UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", "gVsyncEnabled", true, false);
+                UIWidgets::Tooltip("Activate vertical sync, to prevent screen tearing.");
             }
 
             if (LUS::Context::GetInstance()->GetWindow()->SupportsWindowedFullscreen()) {
@@ -462,17 +478,21 @@ void DrawSettingsMenu() {
             }
 
             if (LUS::Context::GetInstance()->GetWindow()->GetGui()->SupportsViewports()) {
-                UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+                UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows (Needs reload)", "gEnableMultiViewports", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
             }
 
             // If more filters are added to LUS, make sure to add them to the filters list here
-            ImGui::Text("Texture Filter (Needs reload)");
-
+            ImGui::Text("Texture Filtering (Needs reload)");
             UIWidgets::EnhancementCombobox("gTextureFilter", filters, FILTER_THREE_POINT);
+            UIWidgets::Tooltip("Texture filtering, aka texture smoothing. Requires a reload to take effect.\n\n"
+                               "Three-Point: Replicates real N64 texture filtering.\n"
+                               "Bilinear: If Three-Point causes poor performance, try this.\n"
+                               "Nearest: Disables texture smoothing. (Not recommended)");
 
-            UIWidgets::Spacer(0);
+            UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
+            // Draw LUS settings menu (such as Overlays Text Font)
             LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->DrawSettings();
 
             ImGui::EndMenu();
@@ -611,6 +631,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                 UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", "gMarketSneak", true, false);
                 UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking to the guard next to the gate.");
+                UIWidgets::PaddedEnhancementCheckbox("Shops and Games Always Open", "gEnhancements.OpenAllHours", true, false);
+                UIWidgets::Tooltip("Shops and minigames are open both day and night. Requires scene reload to take effect.");
                 UIWidgets::PaddedEnhancementCheckbox("Link as default file name", "gLinkDefaultName", true, false);
                 UIWidgets::Tooltip("Allows you to have \"Link\" as a premade file name");
 				UIWidgets::PaddedEnhancementCheckbox("Quit Fishing At Door", "gQuitFishingAtDoor", true, false);
@@ -625,6 +647,8 @@ void DrawEnhancementsMenu() {
                     "- Obtained the Master Sword\n"
                     "- Not within range of Time Block\n"
                     "- Not within range of Ocarina playing spots");
+                UIWidgets::PaddedEnhancementCheckbox("Pause Warp", "gPauseWarp", true, false);
+                UIWidgets::Tooltip("Selection of warp song in pause menu initiates warp. Disables song playback.");
                 
                 ImGui::EndTable();
                 ImGui::EndMenu();
@@ -1085,6 +1109,15 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance", true, false);
                 UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this will remove their draw distance");
             }
+            if (UIWidgets::PaddedEnhancementCheckbox("Show Age-Dependent Equipment", "gEnhancements.EquimentAlwaysVisible", true,
+                                                     false)) {
+                UpdatePatchHand();
+            }
+            UIWidgets::Tooltip("Makes all equipment visible, regardless of Age.");
+            if (CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0) == 1) {
+				UIWidgets::PaddedEnhancementCheckbox("Scale Adult Equipment as Child", "gEnhancements.ScaleAdultEquimentAsChild", true, false);
+				UIWidgets::Tooltip("Scales all of the Adult Equipment, as well and moving some a bit, to fit on Child Link Better. May not work properly with some mods.");
+			}
             UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gLowResMode", true, false);
             UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
             UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", "gDrawLineupTick", true, false);
@@ -1103,6 +1136,7 @@ void DrawEnhancementsMenu() {
                 PatchToTMedallions();
             }
             UIWidgets::Tooltip("When medallions are collected, the medallion imprints around the Master Sword pedestal in the Temple of Time will become colored");
+            UIWidgets::PaddedEnhancementCheckbox("Show locked door chains on both sides of locked doors", "gShowDoorLocksOnBothSides", true, false);
             UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
             if (UIWidgets::EnhancementCombobox("gSceneSpecificDirtPathFix", zFightingOptions, ZFIGHT_FIX_DISABLED) && gPlayState != NULL) {
                 UpdateDirtPathFixState(gPlayState->sceneNum);
@@ -1548,6 +1582,7 @@ extern std::shared_ptr<ColViewerWindow> mColViewerWindow;
 extern std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
 extern std::shared_ptr<DLViewerWindow> mDLViewerWindow;
 extern std::shared_ptr<ValueViewerWindow> mValueViewerWindow;
+extern std::shared_ptr<MessageViewer> mMessageViewerWindow;
 
 void DrawDeveloperToolsMenu() {
     if (ImGui::BeginMenu("Developer Tools")) {
@@ -1645,6 +1680,12 @@ void DrawDeveloperToolsMenu() {
         if (mValueViewerWindow) {
             if (ImGui::Button(GetWindowButtonText("Value Viewer", CVarGetInteger("gValueViewer.WindowOpen", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mValueViewerWindow->ToggleVisibility();
+            }
+        }
+        UIWidgets::Spacer(0);
+        if (mMessageViewerWindow) {
+            if (ImGui::Button(GetWindowButtonText("Message Viewer", CVarGetInteger("gMessageViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mMessageViewerWindow->ToggleVisibility();
             }
         }
 
@@ -1936,4 +1977,4 @@ void SohMenuBar::DrawElement() {
         ImGui::EndMenuBar();
     }
 }
-} // namespace SohGui 
+} // namespace SohGui

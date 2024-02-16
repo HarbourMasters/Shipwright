@@ -13,6 +13,7 @@ void UpdateHurtContainerModeState(bool newState);
 void PatchToTMedallions();
 void UpdatePermanentHeartLossState();
 void InitMods();
+void UpdatePatchHand(); 
 
 #ifdef __cplusplus
 }

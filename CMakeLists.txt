@@ -14,13 +14,17 @@ add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/utf-8>)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-include(CMake/automate-vcpkg.cmake)
+    include(CMake/automate-vcpkg.cmake)
 
-set(VCPKG_TRIPLET x64-windows-static)
-set(VCPKG_TARGET_TRIPLET x64-windows-static)
+    set(VCPKG_TRIPLET x64-windows-static)
+    set(VCPKG_TARGET_TRIPLET x64-windows-static)
 
-vcpkg_bootstrap()
-vcpkg_install_packages(zlib bzip2 libpng sdl2 sdl2-net glew glfw3)
+    vcpkg_bootstrap()
+    vcpkg_install_packages(zlib bzip2 libpng sdl2 sdl2-net glew glfw3)
+
+    if (CMAKE_C_COMPILER_LAUNCHER MATCHES "ccache|sccache")
+        set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT Embedded)
+    endif()
 endif()
 
 ################################################################################

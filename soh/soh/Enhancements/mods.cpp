@@ -23,6 +23,8 @@
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
+#include "objects/object_link_boy/object_link_boy.h"
+#include "objects/object_link_child/object_link_child.h"
 
 extern "C" {
 #include <z64.h>
@@ -31,6 +33,7 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 #include "functions.h"
+#include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 
@@ -687,6 +690,54 @@ void RegisterMirrorModeHandler() {
     });
 }
 
+void UpdatePatchHand() {
+    if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_CHILD) {
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer2", 93, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot1", 84, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot2", 85, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow1", 51, gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow2", 52, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword1", 104, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword2", 105, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword1", 79, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword2", 80, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife1", 76, gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
+        ResourceMgr_PatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife2", 77, gsSPEndDisplayList());
+
+    } else {
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer2");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot2");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow2");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword2");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword2");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife1");
+        ResourceMgr_UnpatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife2");
+	}
+    if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_ADULT) {
+        ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "adultKokiriSword", 13, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot", 13, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang", 50, gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
+        ResourceMgr_PatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield", 49, gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
+    } else {
+        ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "adultKokiriSword");
+        ResourceMgr_UnpatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot");
+        ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang");
+        ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield");
+    }
+}
+
+void RegisterPatchHandHandler() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) { 
+        UpdatePatchHand(); 
+    });
+}
+
 void RegisterResetNaviTimer() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
 		if (CVarGetInteger("gEnhancements.ResetNaviTimer", 0)) {
@@ -1172,6 +1223,34 @@ void RegisterRandomizedEnemySizes() {
     });
 }
 
+void RegisterOpenAllHours() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        if (CVarGetInteger("gEnhancements.OpenAllHours", 0) && (actor->id == ACTOR_EN_DOOR)) {
+            switch (actor->params) {
+                case 4753: // Night Market Bazaar
+                case 1678: // Night Potion Shop
+                case 2689: // Day Bombchu Shop
+                case 2703: // Night Slingshot Game
+                case 653:  // Day Chest Game
+                case 6801: // Night Kak Bazaar
+                case 7822: // Night Kak Potion Shop
+                case 4751: // Night Kak Archery Game
+                case 3728: // Night Mask Shop
+                {
+                    actor->params = (actor->params & 0xFC00) | (DOOR_SCENEEXIT << 7) | 0x3F;
+                    EnDoor* enDoor = static_cast<EnDoor*>(refActor);
+                    EnDoor_SetupType(enDoor, gPlayState);
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    });
+}
+
 void PatchToTMedallions() {
     // TODO: Refactor the DemoEffect_UpdateJewelAdult and DemoEffect_UpdateJewelChild from z_demo_effect
     // effects to take effect in there
@@ -1254,6 +1333,23 @@ void RegisterToTMedallions() {
     });
 }
 
+void RegisterPauseMenuHooks() {
+    static bool pauseWarpHooksRegistered = false;
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&]() {
+        if (!GameInteractor::IsSaveLoaded() || !CVarGetInteger("gPauseWarp", 0)) {
+            pauseWarpHooksRegistered = false;
+            return;
+        }
+        if (!pauseWarpHooksRegistered) {
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoUpdate>([]() {PauseWarp_HandleSelection();});
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+                    PauseWarp_Execute();
+            });
+            pauseWarpHooksRegistered = true;
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1286,7 +1382,10 @@ void InitMods() {
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
     RegisterRandomizedEnemySizes();
+    RegisterOpenAllHours();
     RegisterToTMedallions();
     NameTag_RegisterHooks();
+    RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
+    RegisterPauseMenuHooks();
 }
