@@ -2138,8 +2138,6 @@ s32 Camera_Parallel1(Camera* camera) {
     OLib_Vec3fDiffToVecSphGeo(&atToEyeDir, at, eye);
     OLib_Vec3fDiffToVecSphGeo(&atToEyeNextDir, at, eyeNext);
 
-    camera->play->manualCamera = false;
-
     switch (camera->animState) {
         case 0:
         case 0xA:
@@ -4523,7 +4521,7 @@ s32 Camera_Subj4(Camera* camera) {
     if ((anim->unk_28 < temp_f16) && !anim->unk_2E) {
         player = camera->player;
         anim->unk_2E = true;
-        func_800F4010(&player->actor.projectedPos, player->unk_89E + 0x8B0, 4.0f);
+        func_800F4010(&player->actor.projectedPos, player->floorSfxOffset + 0x8B0, 4.0f);
     } else if (anim->unk_28 > temp_f16) {
         anim->unk_2E = false;
     }
@@ -7596,7 +7594,7 @@ Vec3s Camera_Update(Camera* camera) {
             D_8011D3F0--;
             sCameraInterfaceFlags = 0x3200;
             Camera_UpdateInterface(sCameraInterfaceFlags);
-        } else if (camera->play->transitionMode != 0) {
+        } else if (camera->play->transitionMode != TRANS_MODE_OFF) {
             sCameraInterfaceFlags = 0xF200;
             Camera_UpdateInterface(sCameraInterfaceFlags);
         } else if (camera->play->csCtx.state != CS_STATE_IDLE) {
@@ -7734,7 +7732,7 @@ void Camera_Finish(Camera* camera) {
             player->actor.freezeTimer = 0;
             player->stateFlags1 &= ~0x20000000;
 
-            if (player->csMode != 0) {
+            if (player->csAction != 0) {
                 func_8002DF54(camera->play, &player->actor, 7);
                 osSyncPrintf("camera: player demo end!!\n");
             }
@@ -7888,6 +7886,15 @@ s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags) {
                     break;
             }
         }
+
+        // Clear free look if an action is performed that would move the camera (targeting, first person, talking)
+        if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1 &&
+            ((mode >= CAM_MODE_TARGET && mode <= CAM_MODE_BATTLE) ||
+             (mode >= CAM_MODE_FIRSTPERSON && mode <= CAM_MODE_CLIMBZ) || mode == CAM_MODE_HANGZ ||
+             mode == CAM_MODE_FOLLOWBOOMERANG)) {
+            camera->play->manualCamera = false;
+        }
+
         func_8005A02C(camera);
         camera->mode = mode;
         return 0x80000000 | mode;
@@ -7926,7 +7933,8 @@ s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags) {
         return -5;
     }
 
-    if (setting == CAM_SET_NONE || setting >= CAM_SET_MAX) {
+    //modified from "==" to "<=" to not crash when "setting" is a negative value
+    if (setting <= CAM_SET_NONE || setting >= CAM_SET_MAX) {
         osSyncPrintf(VT_COL(RED, WHITE) "camera: error: illegal camera set (%d) !!!!\n" VT_RST, setting);
         return -99;
     }

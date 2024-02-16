@@ -353,6 +353,9 @@ s32 EnSsh_IsCloseToLink(EnSsh* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     f32 yDist;
 
+    if (IS_RANDO) {
+        return true;
+    }
     if (this->stateFlags & SSH_STATE_GROUND_START) {
         return true;
     }

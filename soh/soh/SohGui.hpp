@@ -11,12 +11,12 @@
 #include <stdio.h>
 #include "SohMenuBar.h"
 #include "Enhancements/audio/AudioEditor.h"
-#include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugger/actorViewer.h"
 #include "Enhancements/debugger/colViewer.h"
 #include "Enhancements/debugger/debugSaveEditor.h"
 #include "Enhancements/debugger/dlViewer.h"
+#include "Enhancements/debugger/valueViewer.h"
 #include "Enhancements/gameplaystatswindow.h"
 #include "Enhancements/randomizer/randomizer_check_tracker.h"
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"

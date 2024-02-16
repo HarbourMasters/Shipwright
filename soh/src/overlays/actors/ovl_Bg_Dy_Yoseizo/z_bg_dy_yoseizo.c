@@ -741,7 +741,7 @@ void BgDyYoseizo_Give_Reward(BgDyYoseizo* this, PlayState* play) {
         switch (actionIndex) {
             case FAIRY_UPGRADE_MAGIC:
                 gSaveContext.isMagicAcquired = true;
-                gSaveContext.magicFillTarget = 0x30;
+                gSaveContext.magicFillTarget = MAGIC_NORMAL_METER;
                 Interface_ChangeAlpha(9);
                 break;
             case FAIRY_UPGRADE_DOUBLE_MAGIC:
@@ -749,7 +749,7 @@ void BgDyYoseizo_Give_Reward(BgDyYoseizo* this, PlayState* play) {
                     gSaveContext.isMagicAcquired = true;
                 }
                 gSaveContext.isDoubleMagicAcquired = true;
-                gSaveContext.magicFillTarget = 0x60;
+                gSaveContext.magicFillTarget = MAGIC_DOUBLE_METER;
                 gSaveContext.magicLevel = 0;
                 Interface_ChangeAlpha(9);
                 break;

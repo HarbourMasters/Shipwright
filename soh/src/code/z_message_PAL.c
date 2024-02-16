@@ -1617,7 +1617,7 @@ void Message_OpenText(PlayState* play, u16 textId) {
         // Increments text id based on piece of heart count, assumes the piece of heart text is all
         // in order and that you don't have more than the intended amount of heart pieces.
         textId += (gSaveContext.inventory.questItems & 0xF0000000 & 0xF0000000) >> 0x1C;
-    } else if (!IS_RANDO && (msgCtx->textId == 0xC && CHECK_OWNED_EQUIP(EQUIP_SWORD, 2))) {
+    } else if (!IS_RANDO && (msgCtx->textId == 0xC && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON))) {
         textId = 0xB; // Traded Giant's Knife for Biggoron Sword
     } else if (!IS_RANDO && (msgCtx->textId == 0xB4 && (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_CURSED_MAN_IN_SKULL_HOUSE)))) {
         textId = 0xB5; // Destroyed Gold Skulltula
@@ -3361,8 +3361,13 @@ void Message_Update(PlayState* play) {
             }
             if ((s32)(gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000) {
                 gSaveContext.inventory.questItems ^= 0x40000000;
-                gSaveContext.healthCapacity += 0x10;
-                gSaveContext.health += 0x10;
+                if (!CVarGetInteger("gHurtContainer", 0)) {
+                    gSaveContext.healthCapacity += 0x10;
+                    gSaveContext.health += 0x10;
+                } else {
+                    gSaveContext.healthCapacity -= 0x10;
+                    gSaveContext.health -= 0x10;
+                }
             }
             if (msgCtx->ocarinaAction != OCARINA_ACTION_CHECK_NOWARP_DONE) {
                 if (sLastPlayedSong == OCARINA_SONG_SARIAS) {
@@ -3384,7 +3389,7 @@ void Message_Update(PlayState* play) {
             }
             sLastPlayedSong = 0xFF;
             osSyncPrintf("OCARINA_MODE=%d   chk_ocarina_no=%d\n", play->msgCtx.ocarinaMode, msgCtx->unk_E3F2);
-            CheckTracker_OnMessageClose();
+            // TODO: OnMessageClose hook
             break;
         case MSGMODE_PAUSED:
             break;

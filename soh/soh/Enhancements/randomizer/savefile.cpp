@@ -207,6 +207,9 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.randomizerInf[i] = 0;
     }
 
+    // Reset triforce pieces collected
+    gSaveContext.triforcePiecesCollected = 0;
+
     gSaveContext.cutsceneIndex = 0; // no intro cutscene
     // Starts pending ice traps out at 0 before potentially incrementing them down the line.
     gSaveContext.pendingIceTrapCount = 0;
@@ -305,7 +308,7 @@ extern "C" void Randomizer_InitSaveFile() {
     switch (startingAge) {
         case RO_AGE_ADULT: // Adult
             gSaveContext.linkAge = LINK_AGE_ADULT;
-            gSaveContext.entranceIndex = 0x5F4;
+            gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_7;
             gSaveContext.savedSceneNum = SCENE_LON_LON_RANCH; // Set scene num manually to ToT
             break;
         case RO_AGE_CHILD: // Child
@@ -349,6 +352,12 @@ extern "C" void Randomizer_InitSaveFile() {
         // set this at the end to ensure we always start with the letter
         // this is for the off chance we got the weird egg from impa (which should never happen)
         INV_CONTENT(ITEM_LETTER_ZELDA) = ITEM_LETTER_ZELDA;
+    }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && startingAge == RO_AGE_ADULT) {
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_MASTER_SWORD, GI_NONE);
+        StartingItemGive(getItemEntry);
+        Flags_SetRandomizerInf(RAND_INF_TOT_MASTER_SWORD);
     }
 
     HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * Randomizer_GetSettingValue(RSK_BIG_POE_COUNT));
@@ -435,9 +444,6 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.itemGetInf[3] |= 0x800;  // bunny hood related
         gSaveContext.itemGetInf[3] |= 0x8000; // Obtained Mask of Truth
     }
-
-    // Reset triforce pieces collected
-    gSaveContext.triforcePiecesCollected = 0;
 
     SetStartingItems();
 }

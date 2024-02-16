@@ -95,7 +95,7 @@ u16 EnKz_GetTextNoMaskAdult(PlayState* play, EnKz* this) {
     if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_FROG) {
         if (!Flags_GetInfTable(INFTABLE_139)) {
             if (!IS_RANDO) {
-                return CHECK_OWNED_EQUIP(EQUIP_TUNIC, 2) ? 0x401F : 0x4012;
+                return CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA) ? 0x401F : 0x4012;
             } else {
                 return 0x4012;
             }
@@ -272,7 +272,7 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
                 player->actor.textId = this->actor.textId;
             } else {
                 if (!IS_RANDO) {
-                    this->actor.textId = CHECK_OWNED_EQUIP(EQUIP_TUNIC, 2) ? 0x401F : 0x4012;
+                    this->actor.textId = CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA) ? 0x401F : 0x4012;
                 } else {
                     this->actor.textId = 0x4012;
                 }

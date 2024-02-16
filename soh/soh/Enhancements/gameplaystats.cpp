@@ -7,6 +7,7 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "../UIWidgets.hpp"
+#include "soh/util.h"
 
 #include <vector>
 #include <string>
@@ -286,10 +287,8 @@ extern "C" char* GameplayStats_GetCurrentTime() {
 }
 
 void LoadStatsVersion1() {
-    std::string buildVersion;
-    SaveManager::Instance->LoadData("buildVersion", buildVersion);
-    strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(), ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
-    gSaveContext.sohStats.buildVersion[ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1] = 0;
+    SaveManager::Instance->LoadCharArray("buildVersion", gSaveContext.sohStats.buildVersion,
+                                         ARRAY_COUNT(gSaveContext.sohStats.buildVersion));
     SaveManager::Instance->LoadData("buildVersionMajor", gSaveContext.sohStats.buildVersionMajor);
     SaveManager::Instance->LoadData("buildVersionMinor", gSaveContext.sohStats.buildVersionMinor);
     SaveManager::Instance->LoadData("buildVersionPatch", gSaveContext.sohStats.buildVersionPatch);
@@ -619,7 +618,7 @@ void DrawGameplayStatsOptionsTab() {
 }
 
 void GameplayStatsWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(480, 550), ImGuiCond_Appearing);
+    ImGui::SetNextWindowSize(ImVec2(480, 550), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Gameplay Stats", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
@@ -683,8 +682,8 @@ void InitStats(bool isDebug) {
         gSaveContext.sohStats.entrancesDiscovered[entrancesIdx] = 0;
     }
 
-    strncpy(gSaveContext.sohStats.buildVersion, (const char*) gBuildVersion, sizeof(gSaveContext.sohStats.buildVersion) - 1);
-    gSaveContext.sohStats.buildVersion[sizeof(gSaveContext.sohStats.buildVersion) - 1] = 0;
+    SohUtils::CopyStringToCharArray(gSaveContext.sohStats.buildVersion, std::string((char*)gBuildVersion),
+                                    ARRAY_COUNT(gSaveContext.sohStats.buildVersion));
     gSaveContext.sohStats.buildVersionMajor = gBuildVersionMajor;
     gSaveContext.sohStats.buildVersionMinor = gBuildVersionMinor;
     gSaveContext.sohStats.buildVersionPatch = gBuildVersionPatch;

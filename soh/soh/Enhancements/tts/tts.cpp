@@ -228,6 +228,68 @@ void RegisterOnKaleidoscopeUpdateHook() {
             return;
         }
 
+        // Game over + prompts
+        if (pauseCtx->state >= 0xC && pauseCtx->state <= 0x10) {
+            // Reset prompt tracker after state change
+            if (prevState != pauseCtx->state) {
+                prevPromptChoice = -1;
+            }
+
+            switch (pauseCtx->state) {
+                // Game over in full alpha
+                case 0xC: {
+                    // Fire once on state change
+                    if (prevState != pauseCtx->state) {
+                        auto translation = GetParameritizedText("game_over", TEXT_BANK_KALEIDO, nullptr);
+                        SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                    }
+                    break;
+                }
+                // Prompt for save
+                case 0xE: {
+                    if (prevPromptChoice != pauseCtx->promptChoice) {
+                        auto prompt = GetParameritizedText(pauseCtx->promptChoice == 0 ? "yes" : "no", TEXT_BANK_MISC, nullptr);
+                        if (prevPromptChoice == -1) {
+                            auto translation = GetParameritizedText("save_prompt", TEXT_BANK_KALEIDO, nullptr);
+                            SpeechSynthesizer::Instance->Speak((translation + " - " + prompt).c_str(), GetLanguageCode());
+                        } else {
+                            SpeechSynthesizer::Instance->Speak(prompt.c_str(), GetLanguageCode());
+                        }
+
+                        prevPromptChoice = pauseCtx->promptChoice;
+                    }
+                    break;
+                }
+                // Game saved
+                case 0xF: {
+                    // Fire once on state change
+                    if (prevState != pauseCtx->state) {
+                        auto translation = GetParameritizedText("game_saved", TEXT_BANK_KALEIDO, nullptr);
+                        SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                    }
+                    break;
+                }
+                // Prompt to continue playing
+                case 0x10: {
+                    if (prevPromptChoice != pauseCtx->promptChoice) {
+                        auto prompt = GetParameritizedText(pauseCtx->promptChoice == 0 ? "yes" : "no", TEXT_BANK_MISC, nullptr);
+                        if (prevPromptChoice == -1) {
+                            auto translation = GetParameritizedText("continue_game", TEXT_BANK_KALEIDO, nullptr);
+                            SpeechSynthesizer::Instance->Speak((translation + " - " + prompt).c_str(), GetLanguageCode());
+                        } else {
+                            SpeechSynthesizer::Instance->Speak(prompt.c_str(), GetLanguageCode());
+                        }
+
+                        prevPromptChoice = pauseCtx->promptChoice;
+                    }
+                    break;
+                }
+            }
+
+            prevState = pauseCtx->state;
+            return;
+        }
+
         // Announce page when
         // Kaleido pages are rotating and page halfway rotated
         // Or Kaleido was just opened
@@ -975,24 +1037,24 @@ void InitTTSBank() {
             break;
     }
 
-    auto sceneFile = LUS::Context::GetInstance()->GetResourceManager()->LoadFile("accessibility/texts/scenes" + languageSuffix);
+    auto sceneFile = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFileRaw("accessibility/texts/scenes" + languageSuffix);
     if (sceneFile != nullptr) {
-        sceneMap = nlohmann::json::parse(sceneFile->Buffer, nullptr, true, true);
+        sceneMap = nlohmann::json::parse(*sceneFile->Buffer.get(), nullptr, true, true);
     }
     
-    auto miscFile = LUS::Context::GetInstance()->GetResourceManager()->LoadFile("accessibility/texts/misc" + languageSuffix);
+    auto miscFile = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFileRaw("accessibility/texts/misc" + languageSuffix);
     if (miscFile != nullptr) {
-        miscMap = nlohmann::json::parse(miscFile->Buffer, nullptr, true, true);
+        miscMap = nlohmann::json::parse(*miscFile->Buffer.get(), nullptr, true, true);
     }
     
-    auto kaleidoFile = LUS::Context::GetInstance()->GetResourceManager()->LoadFile("accessibility/texts/kaleidoscope" + languageSuffix);
+    auto kaleidoFile = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFileRaw("accessibility/texts/kaleidoscope" + languageSuffix);
     if (kaleidoFile != nullptr) {
-        kaleidoMap = nlohmann::json::parse(kaleidoFile->Buffer, nullptr, true, true);
+        kaleidoMap = nlohmann::json::parse(*kaleidoFile->Buffer.get(), nullptr, true, true);
     }
     
-    auto fileChooseFile = LUS::Context::GetInstance()->GetResourceManager()->LoadFile("accessibility/texts/filechoose" + languageSuffix);
+    auto fileChooseFile = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFileRaw("accessibility/texts/filechoose" + languageSuffix);
     if (fileChooseFile != nullptr) {
-        fileChooseMap = nlohmann::json::parse(fileChooseFile->Buffer, nullptr, true, true);
+        fileChooseMap = nlohmann::json::parse(*fileChooseFile->Buffer.get(), nullptr, true, true);
     }
 }
 

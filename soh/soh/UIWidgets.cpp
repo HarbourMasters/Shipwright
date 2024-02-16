@@ -7,7 +7,10 @@
 
 #include "UIWidgets.hpp"
 
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
+#endif
+#include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 #include <libultraship/libultraship.h>
 
@@ -294,6 +297,7 @@ namespace UIWidgets {
     bool EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool disabled, const char* disabledTooltipText) {
         bool changed = false;
         int val = CVarGetInteger(cvarName, defaultValue);
+        const int oldVal = val;
 
         if (disabled) {
             DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
@@ -345,9 +349,11 @@ namespace UIWidgets {
             changed = true;
         }
 
-        if (changed) {
+        if (changed && (oldVal != val)) {
             CVarSetInteger(cvarName, val);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        } else {
+            changed = false;
         }
 
         return changed;
@@ -356,15 +362,46 @@ namespace UIWidgets {
     bool EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton, bool disabled, const char* disabledTooltipText) {
         bool changed = false;
         float val = CVarGetFloat(cvarName, defaultValue);
-
+        const float oldVal = val;
         if (disabled) {
             DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
+        }
+
+        // Calculate how much precision to save based on the given range of the slider, limited to 6 decimal places
+        // Precision is also used when adding/subtracting using the +/- buttons
+        const float sliderWidth = std::min((ImGui::GetContentRegionAvail().x - 2.0f * (PlusMinusButton ? sliderButtonWidth : 0.0f)), maxSliderWidth);
+        const float diff = (max - min) / sliderWidth;
+        int ticks = 0;
+        float increment = 1.0f;
+        if (diff < 1.0f) {
+            ticks++;
+            increment = 0.1f;
+        }
+        if (diff < 0.1f) {
+            ticks++;
+            increment = 0.01f;
+        }
+        if (diff < 0.01f) {
+            ticks++;
+            increment = 0.001f;
+        }
+        if (diff < 0.001f) {
+            ticks++;
+            increment = 0.0001f;
+        }
+        if (diff < 0.0001f) {
+            ticks++;
+            increment = 0.00001f;
+        }
+        if (diff < 0.00001f) {
+            ticks++;
+            increment = 0.000001f;
         }
 
         if (!isPercentage) {
             ImGui::Text(text, val);
         } else {
-            ImGui::Text(text, static_cast<int>(100 * val));
+            ImGui::Text(text, val * 100.0f);
         }
         Spacer(0);
 
@@ -372,22 +409,15 @@ namespace UIWidgets {
         if (PlusMinusButton) {
             std::string MinusBTNName = " - ##" + std::string(cvarName);
             if (ImGui::Button(MinusBTNName.c_str())) {
-                if (isPercentage) {
-                    val -= 0.01f;
-                } else {
-                    val -= 0.1f;
-                }
+                val -= increment;
                 changed = true;
             }
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
         }
 
-        ImGui::PushItemWidth(std::min((ImGui::GetContentRegionAvail().x - (PlusMinusButton ? sliderButtonWidth : 0.0f)), maxSliderWidth));
+        ImGui::PushItemWidth(sliderWidth);
         if (ImGui::SliderFloat(id, &val, min, max, format, ImGuiSliderFlags_AlwaysClamp)) {
-            if (isPercentage) {
-                val = roundf(val * 100) / 100;
-            }
             changed = true;
         }
         ImGui::PopItemWidth();
@@ -397,11 +427,7 @@ namespace UIWidgets {
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
             if (ImGui::Button(PlusBTNName.c_str())) {
-                if (isPercentage) {
-                    val += 0.01f;
-                } else {
-                    val += 0.1f;
-                }
+                val += increment;
                 changed = true;
             }
         }
@@ -421,9 +447,14 @@ namespace UIWidgets {
             changed = true;
         }
 
-        if (changed) {
+        if (changed && !(abs(oldVal - val) < 0.000001f)) {
+            std::stringstream ss;
+            ss << std::setprecision(ticks + 1) << val;
+            val = std::stof(ss.str());
             CVarSetFloat(cvarName, val);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        } else {
+            changed = false;
         }
 
         return changed;

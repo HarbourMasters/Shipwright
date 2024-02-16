@@ -248,7 +248,7 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
         while ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || 
                 (CVarGetInteger("gRandomizedEnemies", 0) && enemyCount < 15)) {
             if (play->sceneNum == SCENE_HYRULE_FIELD) {
-                if ((player->unk_89E == 0) || (player->actor.floorBgId != BGCHECK_SCENE) ||
+                if ((player->floorSfxOffset == 0) || (player->actor.floorBgId != BGCHECK_SCENE) ||
                     !(player->actor.bgCheckFlags & 1) || (player->stateFlags1 & 0x08000000)) {
 
                     this->fieldSpawnTimer = 60;
@@ -278,7 +278,7 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
                     break;
                 }
                 if ((player->actor.yDistToWater != BGCHECK_Y_MIN) &&
-                    (floorY < (player->actor.world.pos.y - player->actor.yDistToWater))) {
+                    (floorY < (player->actor.world.pos.y + player->actor.yDistToWater*(CVarGetInteger("gEnemySpawnsOverWaterboxes", 0) ? 1 : -1)))) {
                     break;
                 }
                 spawnPos.y = floorY;

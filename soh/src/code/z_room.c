@@ -277,6 +277,11 @@ void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 h
     bg->b.imagePal = 0;
     bg->b.imageFlip = CVarGetInteger("gMirroredWorld", 0) ? G_BG_FLAG_FLIPS : 0;
 
+    // When an alt resource exists for the background, we need to unload the original asset
+    // to clear the cache so the alt asset will be loaded instead
+    // OTRTODO: If Alt loading over original cache is fixed, this line can most likely be removed
+    ResourceMgr_UnloadOriginalWhenAltExists((char*) source);
+
     if (ResourceMgr_ResourceIsBackground((char*) source)) {
         char* blob = (char*) ResourceGetDataByName((char *) source);
         swapAndConvertJPEG(blob);
@@ -570,6 +575,13 @@ u32 func_80096FE8(PlayState* play, RoomContext* roomCtx) {
 
     frontRoom = gSaveContext.respawnFlag > 0 ? ((void)0, gSaveContext.respawn[gSaveContext.respawnFlag - 1].roomIndex)
                                              : play->setupEntranceList[play->curSpawn].room;
+
+    // In ER, override roomNum to load based on scene and spawn during scene init
+    if (IS_RANDO && gSaveContext.respawnFlag <= 0 &&
+        Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+        frontRoom = Entrance_OverrideSpawnSceneRoom(play->sceneNum, play->curSpawn, frontRoom);
+    }
+
     func_8009728C(play, roomCtx, frontRoom);
 
     return maxRoomSize;
@@ -577,12 +589,6 @@ u32 func_80096FE8(PlayState* play, RoomContext* roomCtx) {
 
 s32 func_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomNum) {
     size_t size;
-
-    // In ER, override roomNum to load based on scene and spawn
-    if (IS_RANDO && gSaveContext.respawnFlag <= 0 &&
-        Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-        roomNum = Entrance_OverrideSpawnSceneRoom(play->sceneNum, play->curSpawn, roomNum);
-    }
 
     return OTRfunc_8009728C(play, roomCtx, roomNum);
 

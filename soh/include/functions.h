@@ -1090,8 +1090,8 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange);
 void Rupees_ChangeBy(s16 rupeeChange);
 void Inventory_ChangeAmmo(s16 item, s16 ammoChange);
 void Magic_Fill(PlayState* play);
-void func_800876C8(PlayState* play);
-s32 func_80087708(PlayState* play, s16 arg1, s16 arg2);
+void Magic_Reset(PlayState* play);
+s32 Magic_RequestChange(PlayState* play, s16 amount, s16 type);
 void func_80088AA0(s16 seconds);
 void func_80088AF0(PlayState* play);
 void func_80088B34(s16 arg0);
@@ -1250,7 +1250,7 @@ s32 Object_IsLoaded(ObjectContext* objectCtx, s32 bankIndex);
 void func_800981B8(ObjectContext* objectCtx);
 s32 Scene_ExecuteCommands(PlayState* play, SceneCmd* sceneCmd);
 void TransitionActor_InitContext(GameState* state, TransitionActorContext* transiActorCtx);
-void func_800994A0(PlayState* play);
+void Scene_SetTransitionForNextEntrance(PlayState* play);
 void Scene_Draw(PlayState* play);
 void SkelAnime_DrawLod(PlayState* play, void** skeleton, Vec3s* jointTable,
                        OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw, void* arg, s32 dListIndex);
@@ -1537,7 +1537,7 @@ void KaleidoScopeCall_Draw(PlayState* play);
 void func_800BC490(PlayState* play, s16 point);
 s32 func_800BC56C(PlayState* play, s16 arg1);
 void func_800BC590(PlayState* play);
-void func_800BC5E0(PlayState* play, s32 arg1);
+void Gameplay_SetupTransition(PlayState* play, s32 arg1);
 Gfx* Play_SetFog(PlayState* play, Gfx* gfx);
 void Play_Destroy(GameState* thisx);
 void Play_Init(GameState* thisx);
@@ -2171,7 +2171,7 @@ void func_800FA18C(u8, u8);
 void Audio_SetVolScale(u8 playerIdx, u8 scaleIdx, u8 targetVol, u8 volFadeTimer);
 void func_800FA3DC(void);
 u8 func_800FAD34(void);
-void func_800FADF8(void);
+void Audio_ResetActiveSequences(void);
 void func_800FAEB4(void);
 void GfxPrint_SetColor(GfxPrint* this, u32 r, u32 g, u32 b, u32 a);
 void GfxPrint_SetPosPx(GfxPrint* this, s32 x, s32 y);
@@ -2210,6 +2210,14 @@ s8 PadUtils_GetRelYImpl(Input* input);
 s8 PadUtils_GetRelX(Input* input);
 s8 PadUtils_GetRelY(Input* input);
 void PadUtils_UpdateRelXY(Input* input);
+s8 PadUtils_GetCurRX(Input* input);
+s8 PadUtils_GetCurRY(Input* input);
+void PadUtils_SetRelRXY(Input* input, s32 x, s32 y);
+s8 PadUtils_GetRelRXImpl(Input* input);
+s8 PadUtils_GetRelRYImpl(Input* input);
+s8 PadUtils_GetRelRX(Input* input);
+s8 PadUtils_GetRelRY(Input* input);
+void PadUtils_UpdateRelRXY(Input* input);
 s32 PadSetup_Init(OSMesgQueue* mq, u8* outMask, OSContStatus* status);
 f32 Math_FTanF(f32 x);
 f32 Math_FFloorF(f32 x);
@@ -2449,12 +2457,21 @@ void Heaps_Free(void);
 
 CollisionHeader* BgCheck_GetCollisionHeader(CollisionContext* colCtx, s32 bgId);
 
-void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
-
 // Exposing these methods to leverage them from the file select screen to render messages
 void Message_OpenText(PlayState* play, u16 textId);
 void Message_Decode(PlayState* play);
 void Message_DrawText(PlayState* play, Gfx** gfxP);
+
+// #region SOH [General]
+
+void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
+void Interface_RandoRestoreSwordless(void);
+
+//Pause Warp
+void PauseWarp_HandleSelection();
+void PauseWarp_Execute();
+
+// #endregion
 
 #ifdef __cplusplus
 #undef this

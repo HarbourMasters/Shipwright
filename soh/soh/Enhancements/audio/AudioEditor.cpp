@@ -12,6 +12,7 @@
 #include <Utils/StringHelper.h>
 #include "../../UIWidgets.hpp"
 #include "AudioCollection.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 Vec3f pos = { 0.0f, 0.0f, 0.0f };
 f32 freqScale = 1.0f;
@@ -27,7 +28,7 @@ s8 reverbAdd = 0;
 #define SEQ_COUNT_BGM_EVENT 17
 #define SEQ_COUNT_INSTRUMENT 6
 #define SEQ_COUNT_SFX 57
-#define SEQ_COUNT_VOICE 107
+#define SEQ_COUNT_VOICE 108
 
 size_t AuthenticCountBySequenceType(SeqType type) {
     switch (type) {
@@ -78,11 +79,16 @@ void UpdateCurrentBGM(u16 seqKey, SeqType seqType) {
 
 void RandomizeGroup(SeqType type) {
     std::vector<u16> values;
-    
+
+    // An empty IncludedSequences set means that the AudioEditor window has never been drawn
+    if (AudioCollection::Instance->GetIncludedSequences().empty()) {
+        AudioCollection::Instance->InitializeShufflePool();
+    }
+
     // use a while loop to add duplicates if we don't have enough included sequences
     while (values.size() < AuthenticCountBySequenceType(type)) {
         for (const auto& seqData : AudioCollection::Instance->GetIncludedSequences()) {
-            if (seqData->category & type) {
+            if (seqData->category & type && seqData->canBeUsedAsReplacement) {
                 values.push_back(seqData->sequenceId);
             }
         }
@@ -97,7 +103,7 @@ void RandomizeGroup(SeqType type) {
         // don't randomize locked entries
         if ((seqData.category & type) && CVarGetInteger(cvarLockKey.c_str(), 0) == 0) {
             // Only save authentic sequence CVars
-            if (((seqData.category & SEQ_BGM_CUSTOM) || seqData.category == SEQ_FANFARE) && seqData.sequenceId >= MAX_AUTHENTIC_SEQID) {
+            if ((((seqData.category & SEQ_BGM_CUSTOM) || seqData.category == SEQ_FANFARE) && seqData.sequenceId >= MAX_AUTHENTIC_SEQID) || seqData.canBeReplaced == false) {
                 continue;
             }
             const int randomValue = values.back();
@@ -119,6 +125,34 @@ void ResetGroup(const std::map<u16, SequenceInfo>& map, SeqType type) {
             if (CVarGetInteger(cvarLockKey.c_str(), 0) == 0) {
                 CVarClear(cvarKey.c_str());
             }
+        }
+    }
+}
+
+void LockGroup(const std::map<u16, SequenceInfo>& map, SeqType type) {
+    for (const auto& [defaultValue, seqData] : map) {
+        if (seqData.category == type) {
+            // Only save authentic sequence CVars
+            if (seqData.category == SEQ_FANFARE && defaultValue >= MAX_AUTHENTIC_SEQID) {
+                continue;
+            }
+            const std::string cvarKey = AudioCollection::Instance->GetCvarKey(seqData.sfxKey);
+            const std::string cvarLockKey = AudioCollection::Instance->GetCvarLockKey(seqData.sfxKey);
+            CVarSetInteger(cvarLockKey.c_str(), 1);
+        }
+    }
+}
+
+void UnlockGroup(const std::map<u16, SequenceInfo>& map, SeqType type) {
+    for (const auto& [defaultValue, seqData] : map) {
+        if (seqData.category == type) {
+            // Only save authentic sequence CVars
+            if (seqData.category == SEQ_FANFARE && defaultValue >= MAX_AUTHENTIC_SEQID) {
+                continue;
+            }
+            const std::string cvarKey = AudioCollection::Instance->GetCvarKey(seqData.sfxKey);
+            const std::string cvarLockKey = AudioCollection::Instance->GetCvarLockKey(seqData.sfxKey);
+            CVarSetInteger(cvarLockKey.c_str(), 0);
         }
     }
 }
@@ -163,6 +197,8 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
     const std::string hiddenTabId = "##" + tabId;
     const std::string resetAllButton = "Reset All" + hiddenTabId;
     const std::string randomizeAllButton = "Randomize All" + hiddenTabId;
+    const std::string lockAllButton = "Lock All" + hiddenTabId;
+    const std::string unlockAllButton = "Unlock All" + hiddenTabId;
     if (ImGui::Button(resetAllButton.c_str())) {
         auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
         auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
@@ -184,6 +220,28 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
             ReplayCurrentBGM();
         }
     }
+    ImGui::SameLine();
+    if (ImGui::Button(lockAllButton.c_str())) {
+        auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+        auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
+        LockGroup(map, type);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        auto curReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
+        if (type == SEQ_BGM_WORLD && prevReplacement != curReplacement) {
+            ReplayCurrentBGM();
+        }
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(unlockAllButton.c_str())) {
+        auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+        auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
+        UnlockGroup(map, type);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        auto curReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
+        if (type == SEQ_BGM_WORLD && prevReplacement != curReplacement) {
+            ReplayCurrentBGM();
+        }
+    }
 
     ImGui::BeginTable(tabId.c_str(), 3, ImGuiTableFlags_SizingFixedFit);
     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
@@ -194,10 +252,11 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
             continue;
         }
         // Do not display custom sequences in the list
-        if (((seqData.category & SEQ_BGM_CUSTOM) || seqData.category == SEQ_FANFARE) && defaultValue >= MAX_AUTHENTIC_SEQID) {
+        if ((((seqData.category & SEQ_BGM_CUSTOM) || seqData.category == SEQ_FANFARE) && defaultValue >= MAX_AUTHENTIC_SEQID) || seqData.canBeReplaced == false) {
             continue;
         }
 
+        const std::string initialSfxKey = seqData.sfxKey;
         const std::string cvarKey = AudioCollection::Instance->GetCvarKey(seqData.sfxKey);
         const std::string cvarLockKey = AudioCollection::Instance->GetCvarLockKey(seqData.sfxKey);
         const std::string hiddenKey = "##" + cvarKey;
@@ -215,7 +274,8 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
         const int initialValue = map.contains(currentValue) ? currentValue : defaultValue;
         if (ImGui::BeginCombo(hiddenKey.c_str(), map.at(initialValue).label.c_str())) {
             for (const auto& [value, seqData] : map) {
-                if (~(seqData.category) & type) {
+                // If excluded as a replacement sequence, don't show in other dropdowns except the effect's own dropdown.
+                if (~(seqData.category) & type || (!seqData.canBeUsedAsReplacement && initialSfxKey != seqData.sfxKey)) {
                     continue;
                 }
 
@@ -348,6 +408,19 @@ void DrawTypeChip(SeqType type) {
     ImGui::EndDisabled();
 }
 
+
+void AudioEditorRegisterOnSceneInitHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        if (CVarGetInteger("gAudioEditor.RandomizeAllOnNewScene", 0)) {
+            AudioEditor_RandomizeAll();
+        }
+    });
+}
+
+void AudioEditor::InitElement() {
+    AudioEditorRegisterOnSceneInitHook();
+}
+
 void AudioEditor::DrawElement() {
     AudioCollection::Instance->InitializeShufflePool();
 
@@ -356,6 +429,28 @@ void AudioEditor::DrawElement() {
         ImGui::End();
         return;
     }
+
+    float buttonSegments = ImGui::GetContentRegionAvail().x / 4;
+    if (ImGui::Button("Randomize All Groups", ImVec2(buttonSegments, 30.0f))) {
+        AudioEditor_RandomizeAll();
+    }
+    UIWidgets::Tooltip("Randomizes all unlocked music and sound effects across tab groups");
+    ImGui::SameLine();
+    if (ImGui::Button("Reset All Groups", ImVec2(buttonSegments, 30.0f))) {
+        AudioEditor_ResetAll();
+    }
+    UIWidgets::Tooltip("Resets all unlocked music and sound effects across tab groups");
+    ImGui::SameLine();
+    if (ImGui::Button("Lock All Groups", ImVec2(buttonSegments, 30.0f))) {
+        AudioEditor_LockAll();
+    }
+    UIWidgets::Tooltip("Locks all music and sound effects across tab groups");
+    ImGui::SameLine();
+    if (ImGui::Button("Unlock All Groups", ImVec2(buttonSegments, 30.0f))) {
+        AudioEditor_UnlockAll();
+    }
+    UIWidgets::Tooltip("Unlocks all music and sound effects across tab groups");
+
 
     if (ImGui::BeginTabBar("SfxContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Background Music")) {
@@ -420,14 +515,18 @@ void AudioEditor::DrawElement() {
                 ImGui::PopItemWidth();
                 ImGui::NewLine();
                 ImGui::PopItemWidth();
-                UIWidgets::EnhancementSliderFloat("Link's voice pitch multiplier: %f", "##linkVoiceFreqMultiplier",
-                        "gLinkVoiceFreqMultiplier", 0.4, 2.5, "", 1.0, false, false);
+                UIWidgets::EnhancementSliderFloat("Link's voice pitch multiplier: %.1f %%", "##linkVoiceFreqMultiplier",
+                        "gLinkVoiceFreqMultiplier", 0.4, 2.5, "", 1.0, true, true);
                 ImGui::SameLine();
                 const std::string resetButton = "Reset##linkVoiceFreqMultiplier";
                 if (ImGui::Button(resetButton.c_str())) {
                     CVarSetFloat("gLinkVoiceFreqMultiplier", 1.0f);
                     LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
+
+                ImGui::NewLine();
+                UIWidgets::EnhancementCheckbox("Randomize All Music and Sound Effects on New Scene", "gAudioEditor.RandomizeAllOnNewScene");
+                UIWidgets::Tooltip("Enables randomizing all unlocked music and sound effects when you enter a new scene.");
 
                 ImGui::NewLine();
                 ImGui::PushItemWidth(-FLT_MIN);
@@ -622,4 +721,20 @@ void AudioEditor_ResetAll() {
 
     LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ReplayCurrentBGM();
+}
+
+void AudioEditor_LockAll() {
+    for (auto type : allTypes) {
+        LockGroup(AudioCollection::Instance->GetAllSequences(), type);
+    }
+
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+}
+
+void AudioEditor_UnlockAll() {
+    for (auto type : allTypes) {
+        UnlockGroup(AudioCollection::Instance->GetAllSequences(), type);
+    }
+
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
 }

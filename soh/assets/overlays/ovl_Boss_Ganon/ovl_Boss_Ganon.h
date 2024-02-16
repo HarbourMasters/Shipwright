@@ -3,6 +3,54 @@
 
 #include "align_asset_macro.h"
 
+#define dovl_Boss_GanonTex_00E748 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_00E748"
+static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_00E748[] = dovl_Boss_GanonTex_00E748;
+
+#define dovl_Boss_GanonTex_00F848 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_00F848"
+static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_00F848[] = dovl_Boss_GanonTex_00F848;
+
+#define dovl_Boss_GanonTex_010538 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_010538"
+static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_010538[] = dovl_Boss_GanonTex_010538;
+
+#define dovl_Boss_GanonTex_01A7B0 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01A7B0"
+static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01A7B0[] = dovl_Boss_GanonTex_01A7B0;
+
+#define dovl_Boss_GanonTex_01AFB0 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01AFB0"
+static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01AFB0[] = dovl_Boss_GanonTex_01AFB0;
+
+#define dovl_Boss_GanonTex_01B7B0 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01B7B0"
+static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01B7B0[] = dovl_Boss_GanonTex_01B7B0;
+
+#define dovl_Boss_GanonTex_01C420 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01C420"
+static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01C420[] = dovl_Boss_GanonTex_01C420;
+
+#define dovl_Boss_GanonTex_01CEB8 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01CEB8"
+static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01CEB8[] = dovl_Boss_GanonTex_01CEB8;
+
+#define dovl_Boss_GanonTex_01D6B8 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01D6B8"
+static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01D6B8[] = dovl_Boss_GanonTex_01D6B8;
+
+#define dovl_Boss_GanonTex_01DE88 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01DE88"
+static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01DE88[] = dovl_Boss_GanonTex_01DE88;
+
+#define dovl_Boss_GanonTex_01E688 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01E688"
+static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01E688[] = dovl_Boss_GanonTex_01E688;
+
+#define dovl_Boss_GanonTex_01EF90 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01EF90"
+static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01EF90[] = dovl_Boss_GanonTex_01EF90;
+
+#define dovl_Boss_GanonTex_01FFF8 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01FFF8"
+static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01FFF8[] = dovl_Boss_GanonTex_01FFF8;
+
+#define dovl_Boss_GanonTex_020370 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_020370"
+static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_020370[] = dovl_Boss_GanonTex_020370;
+
+#define dovl_Boss_GanonTex_020770 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_020770"
+static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_020770[] = dovl_Boss_GanonTex_020770;
+
+#define dovl_Boss_GanonTLUT_00F808 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTLUT_00F808"
+static const ALIGN_ASSET(2) char ovl_Boss_GanonTLUT_00F808[] = dovl_Boss_GanonTLUT_00F808;
+
 #define dgGanondorfLightning1Tex "__OTR__overlays/ovl_Boss_Ganon/gGanondorfLightning1Tex"
 static const ALIGN_ASSET(2) char gGanondorfLightning1Tex[] = dgGanondorfLightning1Tex;
 
@@ -137,53 +185,5 @@ static const ALIGN_ASSET(2) char gGanondorfShockDL[] = dgGanondorfShockDL;
 
 #define dgGanondorfVortexDL "__OTR__overlays/ovl_Boss_Ganon/gGanondorfVortexDL"
 static const ALIGN_ASSET(2) char gGanondorfVortexDL[] = dgGanondorfVortexDL;
-
-#define dovl_Boss_GanonTex_01EF90 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01EF90"
-static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01EF90[] = dovl_Boss_GanonTex_01EF90;
-
-#define dovl_Boss_GanonTex_00E748 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_00E748"
-static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_00E748[] = dovl_Boss_GanonTex_00E748;
-
-#define dovl_Boss_GanonTex_00F848 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_00F848"
-static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_00F848[] = dovl_Boss_GanonTex_00F848;
-
-#define dovl_Boss_GanonTLUT_00F808 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTLUT_00F808"
-static const ALIGN_ASSET(2) char ovl_Boss_GanonTLUT_00F808[] = dovl_Boss_GanonTLUT_00F808;
-
-#define dovl_Boss_GanonTex_010538 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_010538"
-static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_010538[] = dovl_Boss_GanonTex_010538;
-
-#define dovl_Boss_GanonTex_01B7B0 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01B7B0"
-static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01B7B0[] = dovl_Boss_GanonTex_01B7B0;
-
-#define dovl_Boss_GanonTex_01A7B0 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01A7B0"
-static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01A7B0[] = dovl_Boss_GanonTex_01A7B0;
-
-#define dovl_Boss_GanonTex_01AFB0 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01AFB0"
-static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01AFB0[] = dovl_Boss_GanonTex_01AFB0;
-
-#define dovl_Boss_GanonTex_01C420 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01C420"
-static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01C420[] = dovl_Boss_GanonTex_01C420;
-
-#define dovl_Boss_GanonTex_01CEB8 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01CEB8"
-static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01CEB8[] = dovl_Boss_GanonTex_01CEB8;
-
-#define dovl_Boss_GanonTex_01D6B8 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01D6B8"
-static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01D6B8[] = dovl_Boss_GanonTex_01D6B8;
-
-#define dovl_Boss_GanonTex_01DE88 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01DE88"
-static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01DE88[] = dovl_Boss_GanonTex_01DE88;
-
-#define dovl_Boss_GanonTex_01E688 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01E688"
-static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01E688[] = dovl_Boss_GanonTex_01E688;
-
-#define dovl_Boss_GanonTex_01FFF8 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_01FFF8"
-static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_01FFF8[] = dovl_Boss_GanonTex_01FFF8;
-
-#define dovl_Boss_GanonTex_020370 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_020370"
-static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_020370[] = dovl_Boss_GanonTex_020370;
-
-#define dovl_Boss_GanonTex_020770 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_020770"
-static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_020770[] = dovl_Boss_GanonTex_020770;
 
 #endif // OVERLAYS_OVL_BOSS_GANON_H
