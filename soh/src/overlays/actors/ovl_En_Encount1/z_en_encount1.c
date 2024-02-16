@@ -156,10 +156,6 @@ void EnEncount1_SpawnLeevers(EnEncount1* this, PlayState* play) {
                         this->timer = 300;
                         this->bigLeever = leever;
                     }
-                    int32_t modifiedSpawnRate = CVarGetInteger("gEnhancements.LeeverSpawnRate", 0);
-                    if (modifiedSpawnRate) {
-                        this->timer = 20 * modifiedSpawnRate;
-                    }
                     if (!this->reduceLeevers) {
                         this->maxCurSpawns = (s16)Rand_ZeroFloat(3.99f) + 2;
                     } else {
@@ -172,6 +168,10 @@ void EnEncount1_SpawnLeevers(EnEncount1* this, PlayState* play) {
                     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 発生できません！ ☆☆☆☆☆\n" VT_RST);
                     break;
                 }
+            }
+            int32_t modifiedSpawnRate = CVarGetInteger("gEnhancements.LeeverSpawnRate", 0);
+            if (modifiedSpawnRate) {
+                this->timer = 20 * modifiedSpawnRate;
             }
         }
     }
