@@ -951,8 +951,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("All dogs can be traded in and will count as Richard.");
                 UIWidgets::PaddedEnhancementSliderInt("Cuccos Stay Put Multiplier: %dx", "##CuccoStayDurationMultiplier", "gCuccoStayDurationMultiplier", 1, 5, "", 1, true, true, false);
                 UIWidgets::Tooltip("Cuccos will stay in place longer after putting them down, by a multiple of the value of the slider.");
+                UIWidgets::PaddedEnhancementSliderInt("Leever Spawn Rate: %dx slower", "##LeeverSpawnRate", "gEnhancements.LeeverSpawnRate", 1, 10, "", 1, true, true, false);
                 UIWidgets::Tooltip("The time inbetween spawning a new group of leevers will increase based on the slider.");
-                UIWidgets::PaddedEnhancementSliderInt("Cuccos Stay Put Multiplier: %dx", "##CuccoStayDurationMultiplier", "gCuccoStayDurationMultiplier", 1, 5, "", 1, true, true, false);
 
                 ImGui::EndMenu();
             }
