@@ -20,18 +20,27 @@ namespace Rando {
 std::weak_ptr<Context> Context::mContext;
 
 Context::Context() {
+    for (int i = 0; i < RC_MAX; i++) {
+        itemLocationTable[i] = ItemLocation(static_cast<RandomizerCheck>(i));
+    }
+    mEntranceShuffler = std::make_shared<EntranceShuffler>();
+    mDungeons = std::make_shared<Dungeons>();
+    mLogic = std::make_shared<Logic>();
+    mTrials = std::make_shared<Trials>();
+    mSettings = std::make_shared<Settings>();
+    mFishsanity = std::make_shared<Fishsanity>();
+}
+
+RandomizerArea Context::GetAreaFromString(std::string str) {
+    return mSpoilerfileAreaNameToEnum[str];
+}
+
+void Context::InitStaticData() {
+    StaticData::InitItemTable();
+    StaticData::InitLocationTable();
+
     mSpoilerfileCheckNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
     mSpoilerfileCheckNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
-
-    for (auto& item : StaticData::GetItemTable()) {
-        // Easiest way to filter out all the empty values from the array, since we still technically want the 0/RG_NONE
-        // entry
-        if (item.GetName().english.empty()) {
-            continue;
-        }
-        mSpoilerfileGetNameToEnum[item.GetName().english] = item.GetRandomizerGet();
-        mSpoilerfileGetNameToEnum[item.GetName().french] = item.GetRandomizerGet();
-    }
 
     mSpoilerfileHintTypeNameToEnum = {
         { "Static", HINT_TYPE_STATIC },
@@ -45,66 +54,58 @@ Context::Context() {
     };
 
     mSpoilerfileAreaNameToEnum = {
-        {"No Hint", RA_NONE},
-        {"Link's Pocket", RA_LINKS_POCKET},
-        {"Kokiri Forest", RA_KOKIRI_FOREST},
-        {"The Lost Woods", RA_THE_LOST_WOODS},
-        {"Sacred Forest Meadow", RA_SACRED_FOREST_MEADOW},
-        {"Hyrule Field", RA_HYRULE_FIELD},
-        {"Lake Hylia", RA_LAKE_HYLIA},
-        {"Gerudo Valley", RA_GERUDO_VALLEY},
-        {"Gerudo Fortress", RA_GERUDO_FORTRESS},
-        {"Haunted Wasteland", RA_HAUNTED_WASTELAND},
-        {"Desert Colossus", RA_DESERT_COLOSSUS},
-        {"The Market", RA_THE_MARKET},
-        {"Temple of Time", RA_TEMPLE_OF_TIME},
-        {"Hyrule Castle", RA_HYRULE_CASTLE},
-        {"Outside Ganon's Castle", RA_OUTSIDE_GANONS_CASTLE},
-        {"Castle Grounds", RA_CASTLE_GROUNDS},
-        {"Kakariko Village", RA_KAKARIKO_VILLAGE},
-        {"the Graveyard", RA_THE_GRAVEYARD},
-        {"Death Mountain Trail", RA_DEATH_MOUNTAIN_TRAIL},
-        {"Goron City", RA_GORON_CITY},
-        {"Death Mountain Crater", RA_DEATH_MOUNTAIN_CRATER},
-        {"Zora's River", RA_ZORAS_RIVER},
-        {"Zora's Domain", RA_ZORAS_DOMAIN},
-        {"Zora's Fountain", RA_ZORAS_FOUNTAIN},
-        {"Lon Lon Ranch", RA_LON_LON_RANCH},
-        {"Deku Tree", RA_DEKU_TREE},
-        {"Dodongo's Cavern", RA_DODONGOS_CAVERN},
-        {"Jabu-Jabu's Belly", RA_JABU_JABUS_BELLY},
-        {"Forest Temple", RA_FOREST_TEMPLE},
-        {"Fire Temple", RA_FIRE_TEMPLE},
-        {"Water Temple", RA_WATER_TEMPLE},
-        {"Spirit Temple", RA_SPIRIT_TEMPLE},
-        {"Shadow Temple", RA_SHADOW_TEMPLE},
-        {"Bottom of the Well", RA_BOTTOM_OF_THE_WELL},
-        {"Ice Cavern", RA_ICE_CAVERN},
-        {"Gerudo training Grounds", RA_GERUDO_TRAINING_GROUND},
-        {"Inside Ganon's Castle", RA_GANONS_CASTLE},
+        { "No Hint", RA_NONE },
+        { "Link's Pocket", RA_LINKS_POCKET },
+        { "Kokiri Forest", RA_KOKIRI_FOREST },
+        { "The Lost Woods", RA_THE_LOST_WOODS },
+        { "Sacred Forest Meadow", RA_SACRED_FOREST_MEADOW },
+        { "Hyrule Field", RA_HYRULE_FIELD },
+        { "Lake Hylia", RA_LAKE_HYLIA },
+        { "Gerudo Valley", RA_GERUDO_VALLEY },
+        { "Gerudo Fortress", RA_GERUDO_FORTRESS },
+        { "Haunted Wasteland", RA_HAUNTED_WASTELAND },
+        { "Desert Colossus", RA_DESERT_COLOSSUS },
+        { "The Market", RA_THE_MARKET },
+        { "Temple of Time", RA_TEMPLE_OF_TIME },
+        { "Hyrule Castle", RA_HYRULE_CASTLE },
+        { "Outside Ganon's Castle", RA_OUTSIDE_GANONS_CASTLE },
+        { "Castle Grounds", RA_CASTLE_GROUNDS },
+        { "Kakariko Village", RA_KAKARIKO_VILLAGE },
+        { "the Graveyard", RA_THE_GRAVEYARD },
+        { "Death Mountain Trail", RA_DEATH_MOUNTAIN_TRAIL },
+        { "Goron City", RA_GORON_CITY },
+        { "Death Mountain Crater", RA_DEATH_MOUNTAIN_CRATER },
+        { "Zora's River", RA_ZORAS_RIVER },
+        { "Zora's Domain", RA_ZORAS_DOMAIN },
+        { "Zora's Fountain", RA_ZORAS_FOUNTAIN },
+        { "Lon Lon Ranch", RA_LON_LON_RANCH },
+        { "Deku Tree", RA_DEKU_TREE },
+        { "Dodongo's Cavern", RA_DODONGOS_CAVERN },
+        { "Jabu-Jabu's Belly", RA_JABU_JABUS_BELLY },
+        { "Forest Temple", RA_FOREST_TEMPLE },
+        { "Fire Temple", RA_FIRE_TEMPLE },
+        { "Water Temple", RA_WATER_TEMPLE },
+        { "Spirit Temple", RA_SPIRIT_TEMPLE },
+        { "Shadow Temple", RA_SHADOW_TEMPLE },
+        { "Bottom of the Well", RA_BOTTOM_OF_THE_WELL },
+        { "Ice Cavern", RA_ICE_CAVERN },
+        { "Gerudo training Grounds", RA_GERUDO_TRAINING_GROUND },
+        { "Inside Ganon's Castle", RA_GANONS_CASTLE },
     };
 
-    for (int i = 0; i < RC_MAX; i++) {
-        itemLocationTable[i] = ItemLocation(static_cast<RandomizerCheck>(i));
+    for (auto& item : StaticData::GetItemTable()) {
+        // Easiest way to filter out all the empty values from the array, since we still technically want the 0/RG_NONE
+        // entry
+        if (item.GetName().english.empty()) {
+            continue;
+        }
+        mSpoilerfileGetNameToEnum[item.GetName().english] = item.GetRandomizerGet();
+        mSpoilerfileGetNameToEnum[item.GetName().french] = item.GetRandomizerGet();
     }
-    mEntranceShuffler = std::make_shared<EntranceShuffler>();
-    mDungeons = std::make_shared<Dungeons>();
-    mLogic = std::make_shared<Logic>();
-    mTrials = std::make_shared<Trials>();
-    mSettings = std::make_shared<Settings>();
-    mFishsanity = std::make_shared<Fishsanity>();
+
     for (auto& location : StaticData::GetLocationTable()) {
         mSpoilerfileCheckNameToEnum[location.GetName()] = location.GetRandomizerCheck();
     }
-}
-
-RandomizerArea Context::GetAreaFromString(std::string str) {
-    return mSpoilerfileAreaNameToEnum[str];
-}
-
-void Context::InitStaticData() {
-    StaticData::InitItemTable();
-    StaticData::InitLocationTable();
 }
 
 std::shared_ptr<Context> Context::CreateInstance() {
