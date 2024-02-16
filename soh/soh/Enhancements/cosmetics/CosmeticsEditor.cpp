@@ -1412,6 +1412,7 @@ void DrawSillyTab() {
         CVarSetInteger("gCosmetics.Kak_Windmill_Speed.Changed", 1);
     }
     Reset_Option_Double("Reset##Kak_Windmill_Speed", "gCosmetics.Kak_Windmill_Speed");
+    ImGui::EndDisabled();
 }
 
 // Copies the RGB values from one cosmetic option to another, multiplied by the passed in amount, this
