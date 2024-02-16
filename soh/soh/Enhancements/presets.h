@@ -270,6 +270,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gEnhancements.ResetNaviTimer",
     "gEnhancements.ScaleAdultEquimentAsChild",
     "gEnhancements.SwordToggle",
+    "gEnhancements.FixFloorSwitches", 
     "gFixZoraHintDialogue",
     "gHurtContainer",
     "gPauseWarp",
@@ -543,6 +544,8 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     PRESET_ENTRY_S32("gNaviTextFix", 1),
     // Extend Silver Rupee Jingle
     PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
+    // Fix some Floor Switches
+    PRESET_ENTRY_S32("gEnhancements.FixFloorSwitches", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -614,6 +617,8 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
     // Fix enemies not spawning on ground over water
     PRESET_ENTRY_S32("gEnemySpawnsOverWaterboxes", 1),
+    // Fix some Floor Switches
+    PRESET_ENTRY_S32("gEnhancements.FixFloorSwitches", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -736,6 +741,8 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gNaviTextFix", 1),
     // Extend Silver Rupee Jingle
     PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
+    // Fix some Floor Switches
+    PRESET_ENTRY_S32("gEnhancements.FixFloorSwitches", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
