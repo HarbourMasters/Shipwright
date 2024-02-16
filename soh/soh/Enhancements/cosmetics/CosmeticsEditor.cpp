@@ -269,35 +269,35 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Hud_NameTagActorText",          "Nametag Text",         GROUP_HUD,          ImVec4(255, 255, 255, 255), true, true, false),
     COSMETIC_OPTION("Hud_NameTagActorBackground",    "Nametag Background",   GROUP_HUD,          ImVec4(0,     0,   0,  80), true, false, true),
 
-    COSMETIC_OPTION("Kal_ItemSelA",                  "Item Select Color A",  GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, false),
-    COSMETIC_OPTION("Kal_ItemSelB",                  "Item Select Color B",  GROUP_KALEIDO,      ImVec4(70,  100, 130, 255), false, true, false),
-    COSMETIC_OPTION("Kal_ItemSelC",                  "Item Select Color C",  GROUP_KALEIDO,      ImVec4(70,  100, 130, 255), false, true, false),
-    COSMETIC_OPTION("Kal_ItemSelD",                  "Item Select Color D",  GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, false),
+    COSMETIC_OPTION("Kal_ItemSelA",                  "Item Select Color",    GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, false),
+    COSMETIC_OPTION("Kal_ItemSelB",                  "Item Select Color B",  GROUP_KALEIDO,      ImVec4(70,  100, 130, 255), false, true, true),
+    COSMETIC_OPTION("Kal_ItemSelC",                  "Item Select Color C",  GROUP_KALEIDO,      ImVec4(70,  100, 130, 255), false, true, true),
+    COSMETIC_OPTION("Kal_ItemSelD",                  "Item Select Color D",  GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, true),
 
-    COSMETIC_OPTION("Kal_EquipSelA",                 "Equip Select Color A", GROUP_KALEIDO,      ImVec4(10,   50,  40, 255), false, true, false),
-    COSMETIC_OPTION("Kal_EquipSelB",                 "Equip Select Color B", GROUP_KALEIDO,      ImVec4(90,  100,  60, 255), false, true, false),
-    COSMETIC_OPTION("Kal_EquipSelC",                 "Equip Select Color C", GROUP_KALEIDO,      ImVec4(90,  100,  60, 255), false, true, false),
-    COSMETIC_OPTION("Kal_EquipSelD",                 "Equip Select Color D", GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, false),
+    COSMETIC_OPTION("Kal_EquipSelA",                 "Equip Select Color",   GROUP_KALEIDO,      ImVec4(10,   50,  40, 255), false, true, false),
+    COSMETIC_OPTION("Kal_EquipSelB",                 "Equip Select Color B", GROUP_KALEIDO,      ImVec4(90,  100,  60, 255), false, true, true),
+    COSMETIC_OPTION("Kal_EquipSelC",                 "Equip Select Color C", GROUP_KALEIDO,      ImVec4(90,  100,  60, 255), false, true, true),
+    COSMETIC_OPTION("Kal_EquipSelD",                 "Equip Select Color D", GROUP_KALEIDO,      ImVec4(10,   50,  80, 255), false, true, true),
 
-    COSMETIC_OPTION("Kal_MapSelDunA",                "Map Dungeon Color A",  GROUP_KALEIDO,      ImVec4(80,   40,  30, 255), false, true, false),
-    COSMETIC_OPTION("Kal_MapSelDunB",                "Map Dungeon Color B",  GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, false),
-    COSMETIC_OPTION("Kal_MapSelDunC",                "Map Dungeon Color C",  GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, false),
-    COSMETIC_OPTION("Kal_MapSelDunD",                "Map Dungeon Color D",  GROUP_KALEIDO,      ImVec4(80,   40,  30, 255), false, true, false),
+    COSMETIC_OPTION("Kal_MapSelDunA",                "Map Dungeon Color",    GROUP_KALEIDO,      ImVec4(80,   40,  30, 255), false, true, true),
+    COSMETIC_OPTION("Kal_MapSelDunB",                "Map Dungeon Color B",  GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, true),
+    COSMETIC_OPTION("Kal_MapSelDunC",                "Map Dungeon Color C",  GROUP_KALEIDO,      ImVec4(140,  60,  60, 255), false, true, true),
+    COSMETIC_OPTION("Kal_MapSelDunD",                "Map Dungeon Color D",  GROUP_KALEIDO,      ImVec4(80,   40,  30, 255), false, true, true),
 
-    COSMETIC_OPTION("Kal_QuestStatusA",              "Quest StatusColor A",  GROUP_KALEIDO,      ImVec4(80, 80, 50, 255),    false, true, false),
-    COSMETIC_OPTION("Kal_QuestStatusB",              "Quest StatusColor B",  GROUP_KALEIDO,      ImVec4(120, 120, 70, 255),  false, true, false),
-    COSMETIC_OPTION("Kal_QuestStatusC",              "Quest StatusColor C",  GROUP_KALEIDO,      ImVec4(120, 120, 70, 255),  false, true, false),
-    COSMETIC_OPTION("Kal_QuestStatusD",              "Quest StatusColor D",  GROUP_KALEIDO,      ImVec4(80, 80, 50, 255),    false, true, false),
+    COSMETIC_OPTION("Kal_QuestStatusA",              "Quest Status Color",   GROUP_KALEIDO,      ImVec4(80, 80, 50, 255),    false, true, false),
+    COSMETIC_OPTION("Kal_QuestStatusB",              "Quest Status Color B", GROUP_KALEIDO,      ImVec4(120, 120, 70, 255),  false, true, true),
+    COSMETIC_OPTION("Kal_QuestStatusC",              "Quest Status Color C", GROUP_KALEIDO,      ImVec4(120, 120, 70, 255),  false, true, true),
+    COSMETIC_OPTION("Kal_QuestStatusD",              "Quest Status Color D", GROUP_KALEIDO,      ImVec4(80, 80, 50, 255),    false, true, true),
 
-    COSMETIC_OPTION("Kal_MapSelectA",                "Map Color A",          GROUP_KALEIDO,      ImVec4(80, 40, 30, 255),    false, true, false),
-    COSMETIC_OPTION("Kal_MapSelectB",                "Map Color B",          GROUP_KALEIDO,      ImVec4(140, 60, 60, 255),   false, true, false),
-    COSMETIC_OPTION("Kal_MapSelectC",                "Map Color C",          GROUP_KALEIDO,      ImVec4(140, 60, 60, 255),   false, true, false),
-    COSMETIC_OPTION("Kal_MapSelectD",                "Map Color D",          GROUP_KALEIDO,      ImVec4(80, 40, 30, 255),    false, true, false),
+    COSMETIC_OPTION("Kal_MapSelectA",                "Map Color",            GROUP_KALEIDO,      ImVec4(80, 40, 30, 255),    false, true, false),
+    COSMETIC_OPTION("Kal_MapSelectB",                "Map Color B",          GROUP_KALEIDO,      ImVec4(140, 60, 60, 255),   false, true, true),
+    COSMETIC_OPTION("Kal_MapSelectC",                "Map Color C",          GROUP_KALEIDO,      ImVec4(140, 60, 60, 255),   false, true, true),
+    COSMETIC_OPTION("Kal_MapSelectD",                "Map Color D",          GROUP_KALEIDO,      ImVec4(80, 40, 30, 255),    false, true, true),
 
-    COSMETIC_OPTION("Kal_SaveA",                     "Save A",               GROUP_KALEIDO,      ImVec4(50, 50, 50, 255),    false, true, false),
-    COSMETIC_OPTION("Kal_SaveB",                     "Save B",               GROUP_KALEIDO,      ImVec4(110, 110, 110, 255), false, true, false),
-    COSMETIC_OPTION("Kal_SaveC",                     "Save C",               GROUP_KALEIDO,      ImVec4(110, 110, 110, 255), false, true, false),
-    COSMETIC_OPTION("Kal_SaveD",                     "Save D",               GROUP_KALEIDO,      ImVec4(50, 50, 50, 255),    false, true, false),
+    COSMETIC_OPTION("Kal_SaveA",                     "Save Color",           GROUP_KALEIDO,      ImVec4(50, 50, 50, 255),    false, true, false),
+    COSMETIC_OPTION("Kal_SaveB",                     "Save Color B",         GROUP_KALEIDO,      ImVec4(110, 110, 110, 255), false, true, true),
+    COSMETIC_OPTION("Kal_SaveC",                     "Save Color C",         GROUP_KALEIDO,      ImVec4(110, 110, 110, 255), false, true, true),
+    COSMETIC_OPTION("Kal_SaveD",                     "Save Color D",         GROUP_KALEIDO,      ImVec4(50, 50, 50, 255),    false, true, true),
 
     COSMETIC_OPTION("Kal_NamePanel",                 "Name Panel",           GROUP_KALEIDO,      ImVec4(90,100,130,255),     true, true, false),
 
@@ -1065,12 +1065,16 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     if (manualChange || CVarGetInteger(npcGoldenSkulltula.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {npcGoldenSkulltula.defaultColor.x, npcGoldenSkulltula.defaultColor.y, npcGoldenSkulltula.defaultColor.z, npcGoldenSkulltula.defaultColor.w};
         Color_RGBA8 color = CVarGetColor(npcGoldenSkulltula.cvar, defaultColor);
-        PATCH_GFX(gGiSkulltulaTokenDL,                            "NPC_GoldenSkulltula1",     npcGoldenSkulltula.changedCvar,       5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiSkulltulaTokenDL,                            "NPC_GoldenSkulltula2",     npcGoldenSkulltula.changedCvar,       6, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula3",     npcGoldenSkulltula.changedCvar,      32, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula4",     npcGoldenSkulltula.changedCvar,      33, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula5",     npcGoldenSkulltula.changedCvar,     118, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula6",     npcGoldenSkulltula.changedCvar,     119, gsDPSetEnvColor(color.r / 4, color.g / 4, color.b / 4, 255));
+        PATCH_GFX(gSkulltulaTokenDL,                              "NPC_GoldenSkulltula1",     npcGoldenSkulltula.changedCvar,       5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gSkulltulaTokenDL,                              "NPC_GoldenSkulltula2",     npcGoldenSkulltula.changedCvar,       6, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gSkulltulaTokenFlameDL,                         "NPC_GoldenSkulltula3",     npcGoldenSkulltula.changedCvar,      32, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gSkulltulaTokenFlameDL,                         "NPC_GoldenSkulltula4",     npcGoldenSkulltula.changedCvar,      33, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGiSkulltulaTokenDL,                            "NPC_GoldenSkulltula5",     npcGoldenSkulltula.changedCvar,       5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiSkulltulaTokenDL,                            "NPC_GoldenSkulltula6",     npcGoldenSkulltula.changedCvar,       6, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula7",     npcGoldenSkulltula.changedCvar,      32, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula8",     npcGoldenSkulltula.changedCvar,      33, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula9",     npcGoldenSkulltula.changedCvar,     118, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula10",    npcGoldenSkulltula.changedCvar,     119, gsDPSetEnvColor(color.r / 4, color.g / 4, color.b / 4, 255));
     }
 
     static CosmeticOption& npcGerudo = cosmeticOptions.at("NPC_Gerudo");
@@ -1631,25 +1635,20 @@ void CopyMultipliedColor(CosmeticOption& cosmeticOptionSrc, CosmeticOption& cosm
     CVarSetInteger((cosmeticOptionTarget.changedCvar), 1);
 }
 
-void RandomizeColor(CosmeticOption& cosmeticOption) {
-    Color_RGBA8 newColor;
-    newColor.r = Random(0, 255);
-    newColor.g = Random(0, 255);
-    newColor.b = Random(0, 255);
-    newColor.a = 255;
-    // For alpha supported options, retain the last set alpha instead of overwriting
-    if (cosmeticOption.supportsAlpha) {
-        newColor.a = cosmeticOption.currentColor.w * 255;
+void ToggleRainbow(CosmeticOption& cosmeticOption, bool state) {
+    if (state) {
+        CVarSetInteger(cosmeticOption.rainbowCvar, 1);
+        CVarSetInteger(cosmeticOption.changedCvar, 1);
+    } else {
+        CVarClear(cosmeticOption.rainbowCvar);
+        CVarClear(cosmeticOption.changedCvar);
     }
+}
 
-    cosmeticOption.currentColor.x = newColor.r / 255.0;
-    cosmeticOption.currentColor.y = newColor.g / 255.0;
-    cosmeticOption.currentColor.z = newColor.b / 255.0;
-    cosmeticOption.currentColor.w = newColor.a / 255.0;
-
-    CVarSetColor(cosmeticOption.cvar, newColor);
-    CVarSetInteger((cosmeticOption.rainbowCvar), 0);
-    CVarSetInteger((cosmeticOption.changedCvar), 1);
+void ApplySideEffects(CosmeticOption& cosmeticOption) {
+    if (CVarGetInteger("gCosmetics.AdvancedMode", 0)) {
+        return;
+    }
 
     // This bit is kind of experimental, not sure how I feel about it yet, but it allows for
     // advanced cosmetic options to be changed based on a non-advanced option.
@@ -1671,7 +1670,89 @@ void RandomizeColor(CosmeticOption& cosmeticOption) {
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("SpinAttack_Level1Primary"), 2.0f);
     } else if (cosmeticOption.label == "Level 2 Secondary") {
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("SpinAttack_Level2Primary"), 2.0f);
+    } else if (cosmeticOption.label == "Item Select Color") {
+        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
+            ToggleRainbow(cosmeticOptions.at("Kal_ItemSelB"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_ItemSelC"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_ItemSelD"), true);
+        } else {
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_ItemSelB"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_ItemSelC"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_ItemSelD"), 1.0f);
+        }
+    } else if (cosmeticOption.label == "Equip Select Color") {
+        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
+            ToggleRainbow(cosmeticOptions.at("Kal_EquipSelB"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_EquipSelC"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_EquipSelD"), true);
+        } else {
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_EquipSelB"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_EquipSelC"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_EquipSelD"), 1.0f);
+        }
+    } else if (cosmeticOption.label == "Map Dungeon Color") {
+        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
+            ToggleRainbow(cosmeticOptions.at("Kal_MapSelDunB"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_MapSelDunC"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_MapSelDunD"), true);
+        } else {
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_MapSelDunB"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_MapSelDunC"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_MapSelDunD"), 1.0f);
+        }
+    } else if (cosmeticOption.label == "Quest Status Color") {
+        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
+            ToggleRainbow(cosmeticOptions.at("Kal_QuestStatusB"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_QuestStatusC"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_QuestStatusD"), true);
+        } else {
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_QuestStatusB"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_QuestStatusC"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_QuestStatusD"), 1.0f);
+        }
+    } else if (cosmeticOption.label == "Map Color") {
+        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
+            ToggleRainbow(cosmeticOptions.at("Kal_MapSelectB"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_MapSelectC"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_MapSelectD"), true);
+        } else {
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_MapSelectB"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_MapSelectC"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_MapSelectD"), 1.0f);
+        }
+    } else if (cosmeticOption.label == "Save Color") {
+        if (CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
+            ToggleRainbow(cosmeticOptions.at("Kal_SaveB"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_SaveC"), true);
+            ToggleRainbow(cosmeticOptions.at("Kal_SaveD"), true);
+        } else {
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_SaveB"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_SaveC"), 2.0f);
+            CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Kal_SaveD"), 1.0f);
+        }
     }
+}
+
+void RandomizeColor(CosmeticOption& cosmeticOption) {
+    Color_RGBA8 newColor;
+    newColor.r = Random(0, 255);
+    newColor.g = Random(0, 255);
+    newColor.b = Random(0, 255);
+    newColor.a = 255;
+    // For alpha supported options, retain the last set alpha instead of overwriting
+    if (cosmeticOption.supportsAlpha) {
+        newColor.a = cosmeticOption.currentColor.w * 255;
+    }
+
+    cosmeticOption.currentColor.x = newColor.r / 255.0;
+    cosmeticOption.currentColor.y = newColor.g / 255.0;
+    cosmeticOption.currentColor.z = newColor.b / 255.0;
+    cosmeticOption.currentColor.w = newColor.a / 255.0;
+
+    CVarSetColor(cosmeticOption.cvar, newColor);
+    CVarSetInteger((cosmeticOption.rainbowCvar), 0);
+    CVarSetInteger((cosmeticOption.changedCvar), 1);
+    ApplySideEffects(cosmeticOption);
 }
 
 void ResetColor(CosmeticOption& cosmeticOption) {
@@ -1691,7 +1772,7 @@ void ResetColor(CosmeticOption& cosmeticOption) {
     CVarClear((std::string(cosmeticOption.cvar) + ".A").c_str());
     CVarClear((std::string(cosmeticOption.cvar) + ".Type").c_str());
 
-    // This portion should match 1:1 the multiplied colors in `RandomizeColor()`
+    // This portion should match 1:1 the multiplied colors in `ApplySideEffect()`
     if (cosmeticOption.label == "Bow Body") {
         ResetColor(cosmeticOptions.at("Equipment_BowTips"));
         ResetColor(cosmeticOptions.at("Equipment_BowHandle"));
@@ -1707,6 +1788,30 @@ void ResetColor(CosmeticOption& cosmeticOption) {
         ResetColor(cosmeticOptions.at("SpinAttack_Level1Primary"));
     } else if (cosmeticOption.label == "Level 2 Secondary") {
         ResetColor(cosmeticOptions.at("SpinAttack_Level2Primary"));
+    } else if (cosmeticOption.label == "Item Select Color") {
+        ResetColor(cosmeticOptions.at("Kal_ItemSelB"));
+        ResetColor(cosmeticOptions.at("Kal_ItemSelC"));
+        ResetColor(cosmeticOptions.at("Kal_ItemSelD"));
+    } else if (cosmeticOption.label == "Equip Select Color") {
+        ResetColor(cosmeticOptions.at("Kal_EquipSelB"));
+        ResetColor(cosmeticOptions.at("Kal_EquipSelC"));
+        ResetColor(cosmeticOptions.at("Kal_EquipSelD"));
+    } else if (cosmeticOption.label == "Map Dungeon Color") {
+        ResetColor(cosmeticOptions.at("Kal_MapSelDunB"));
+        ResetColor(cosmeticOptions.at("Kal_MapSelDunC"));
+        ResetColor(cosmeticOptions.at("Kal_MapSelDunD"));
+    } else if (cosmeticOption.label == "Quest Status Color") {
+        ResetColor(cosmeticOptions.at("Kal_QuestStatusB"));
+        ResetColor(cosmeticOptions.at("Kal_QuestStatusC"));
+        ResetColor(cosmeticOptions.at("Kal_QuestStatusD"));
+    } else if (cosmeticOption.label == "Map Color") {
+        ResetColor(cosmeticOptions.at("Kal_MapSelectB"));
+        ResetColor(cosmeticOptions.at("Kal_MapSelectC"));
+        ResetColor(cosmeticOptions.at("Kal_MapSelectD"));
+    } else if (cosmeticOption.label == "Save Color") {
+        ResetColor(cosmeticOptions.at("Kal_SaveB"));
+        ResetColor(cosmeticOptions.at("Kal_SaveC"));
+        ResetColor(cosmeticOptions.at("Kal_SaveD"));
     }
 }
 
@@ -1727,6 +1832,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
         CVarSetColor(cosmeticOption.cvar, color);
         CVarSetInteger((cosmeticOption.rainbowCvar), 0);
         CVarSetInteger((cosmeticOption.changedCvar), 1);
+        ApplySideEffects(cosmeticOption);
         ApplyOrResetCustomGfxPatches();
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
@@ -1744,6 +1850,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
         if (ImGui::Checkbox(("Rainbow##" + cosmeticOption.label).c_str(), &isRainbow)) {
             CVarSetInteger((cosmeticOption.rainbowCvar), isRainbow);
             CVarSetInteger((cosmeticOption.changedCvar), 1);
+            ApplySideEffects(cosmeticOption);
             ApplyOrResetCustomGfxPatches();
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
@@ -1800,7 +1907,7 @@ static const char* colorSchemes[2] = {
 };
 
 void CosmeticsEditorWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(480, 520), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(550, 520), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Cosmetics Editor", &mIsVisible)) {
         ImGui::End();
         return;

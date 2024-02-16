@@ -153,7 +153,7 @@ void BgHakaGate_StatueInactive(BgHakaGate* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (this->dyna.unk_150 != 0.0f) {
-        player->stateFlags2 &= ~0x10;
+        player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
         this->dyna.unk_150 = 0.0f;
     }
 }
@@ -172,7 +172,7 @@ void BgHakaGate_StatueIdle(BgHakaGate* this, PlayState* play) {
             this->vTurnDirection = linkDirection * forceDirection;
             this->actionFunc = BgHakaGate_StatueTurn;
         } else {
-            player->stateFlags2 &= ~0x10;
+            player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
             this->dyna.unk_150 = 0.0f;
             if (this->vTimer != 0) {
                 this->vTimer--;
@@ -197,7 +197,7 @@ void BgHakaGate_StatueTurn(BgHakaGate* this, PlayState* play) {
     turnFinished = Math_StepToS(&this->vTurnAngleDeg10, 600, this->vTurnRateDeg10);
     turnAngle = this->vTurnAngleDeg10 * this->vTurnDirection;
     this->dyna.actor.shape.rot.y = (this->vRotYDeg10 + turnAngle) * 0.1f * (0x10000 / 360.0f);
-    if ((player->stateFlags2 & 0x10) && (sStatueDistToPlayer > 0.0f)) {
+    if ((player->stateFlags2 & PLAYER_STATE2_MOVING_DYNAPOLY) && (sStatueDistToPlayer > 0.0f)) {
         player->actor.world.pos.x =
             this->dyna.actor.home.pos.x +
             (Math_SinS(this->dyna.actor.shape.rot.y - this->vInitTurnAngle) * sStatueDistToPlayer);
@@ -209,7 +209,7 @@ void BgHakaGate_StatueTurn(BgHakaGate* this, PlayState* play) {
     }
     sStatueRotY = this->dyna.actor.shape.rot.y;
     if (turnFinished) {
-        player->stateFlags2 &= ~0x10;
+        player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
         this->vRotYDeg10 = (this->vRotYDeg10 + turnAngle) % 3600;
         this->vTurnRateDeg10 = CVarGetInteger("gFasterBlockPush", 0) * 2;
         this->vTurnAngleDeg10 = 0;

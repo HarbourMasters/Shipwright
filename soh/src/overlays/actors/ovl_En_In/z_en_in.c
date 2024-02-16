@@ -145,7 +145,7 @@ u16 func_80A79010(PlayState* play) {
     }
     switch (gSaveContext.eventInf[0] & 0xF) {
         case 1:
-            if (!(player->stateFlags1 & 0x800000)) {
+            if (!(player->stateFlags1 & PLAYER_STATE1_ON_HORSE)) {
                 return 0x2036;
             } else if (Flags_GetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO)) {
                 if (Flags_GetInfTable(INFTABLE_A2)) {
@@ -657,7 +657,7 @@ void func_80A7A568(EnIn* this, PlayState* play) {
     s32 phi_a2;
     s32 transitionType;
 
-    if (!Flags_GetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO) && (player->stateFlags1 & 0x800000)) {
+    if (!Flags_GetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO) && (player->stateFlags1 & PLAYER_STATE1_ON_HORSE)) {
         Flags_SetInfTable(INFTABLE_AB);
     }
     if (gSaveContext.timer1State == 10) {

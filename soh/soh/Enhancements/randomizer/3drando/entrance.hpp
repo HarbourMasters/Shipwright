@@ -18,12 +18,16 @@ enum class EntranceType {
     OwlDrop,
     Spawn,
     WarpSong,
+    BlueWarp,
     Dungeon,
     GanonDungeon,
     DungeonReverse,
     Boss,
+    BossReverse,
     ChildBoss,
+    ChildBossReverse,
     AdultBoss,
+    AdultBossReverse,
     Interior,
     InteriorReverse,
     SpecialInterior,
@@ -40,6 +44,7 @@ public:
 
     Entrance(uint32_t connectedRegion_, std::vector<ConditionFn> conditions_met_)
         : connectedRegion(connectedRegion_) {
+        originalConnectedRegion = connectedRegion_;
         conditions_met.resize(2);
         for (size_t i = 0; i < conditions_met_.size(); i++) {
             conditions_met[i] = conditions_met_[i];
@@ -134,6 +139,10 @@ public:
         return connectedRegion;
     }
 
+    uint32_t GetOriginalConnectedRegionKey() const {
+        return originalConnectedRegion;
+    }
+
     Area* GetConnectedRegion() const {
         return AreaTable(connectedRegion);
     }
@@ -198,14 +207,6 @@ public:
         index = newIndex;
     }
 
-    int16_t GetBlueWarp() const {
-        return blueWarp;
-    }
-
-    void SetBlueWarp(int16_t newBlueWarp) {
-        blueWarp = newBlueWarp;
-    }
-
     Entrance* GetAssumed() const {
         return assumed;
     }
@@ -251,7 +252,7 @@ public:
         AreaTable(ROOT)->AddExit(ROOT, connectedRegion, []{return true;});
         Entrance* targetEntrance = AreaTable(ROOT)->GetExit(connectedRegion);
         targetEntrance->SetReplacement(this);
-        targetEntrance->SetName(GetParentRegion()->regionName + " -> " + GetConnectedRegion()->regionName);
+        targetEntrance->SetName(AreaTable(ROOT)->regionName + " -> " + GetConnectedRegion()->regionName);
         return targetEntrance;
     }
 
@@ -266,6 +267,7 @@ public:
 private:
     uint32_t parentRegion;
     uint32_t connectedRegion;
+    uint32_t originalConnectedRegion;
     std::vector<ConditionFn> conditions_met;
 
     //Entrance Randomizer stuff
@@ -275,7 +277,6 @@ private:
     Entrance* assumed = nullptr;
     Entrance* replacement = nullptr;
     int16_t index = 0xFFFF;
-    int16_t blueWarp = 0;
     bool shuffled = false;
     bool primary = false;
     bool addedToPool = false;
@@ -285,6 +286,7 @@ private:
 
 int  ShuffleAllEntrances();
 void CreateEntranceOverrides();
+std::string EntranceNameByRegions(uint32_t parentRegion, uint32_t connectedRegion);
 
 extern std::vector<std::list<Entrance*>> playthroughEntrances;
 extern bool noRandomEntrances;

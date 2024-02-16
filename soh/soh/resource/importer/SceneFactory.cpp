@@ -109,7 +109,7 @@ std::shared_ptr<ISceneCommand> SceneFactoryV0::ParseSceneCommand(std::shared_ptr
     if (commandFactory != nullptr) {
         auto initData = std::make_shared<ResourceInitData>();
         initData->Id = scene->GetInitData()->Id;
-        initData->Type = ResourceType::SOH_SceneCommand;
+        initData->Type = static_cast<uint32_t>(ResourceType::SOH_SceneCommand);
         initData->Path = scene->GetInitData()->Path + "/SceneCommand" + std::to_string(index);
         initData->ResourceVersion = scene->GetInitData()->ResourceVersion;
         result = std::static_pointer_cast<ISceneCommand>(commandFactory->ReadResource(initData, reader));
