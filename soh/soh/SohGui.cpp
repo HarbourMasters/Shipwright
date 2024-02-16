@@ -41,6 +41,7 @@
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "Enhancements/cosmetics/authenticGfxPatches.h"
 #include "Enhancements/resolution-editor/ResolutionEditor.h"
+#include "Enhancements/debugger/MessageViewer.h"
 
 bool ToggleAltAssetsAtEndOfFrame = false;
 bool isBetaQuestEnabled = false;
@@ -122,6 +123,7 @@ namespace SohGui {
     std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
     std::shared_ptr<DLViewerWindow> mDLViewerWindow;
     std::shared_ptr<ValueViewerWindow> mValueViewerWindow;
+    std::shared_ptr<MessageViewer> mMessageViewerWindow;
     std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
     std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
     std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
@@ -175,6 +177,8 @@ namespace SohGui {
         gui->AddGuiWindow(mDLViewerWindow);
         mValueViewerWindow = std::make_shared<ValueViewerWindow>("gValueViewer.WindowOpen", "Value Viewer");
         gui->AddGuiWindow(mValueViewerWindow);
+        mMessageViewerWindow = std::make_shared<MessageViewer>("gMessageViewerEnabled", "Message Viewer");
+        gui->AddGuiWindow(mMessageViewerWindow);
         mGameplayStatsWindow = std::make_shared<GameplayStatsWindow>("gGameplayStatsEnabled", "Gameplay Stats");
         gui->AddGuiWindow(mGameplayStatsWindow);
         mCheckTrackerWindow = std::make_shared<CheckTracker::CheckTrackerWindow>("gCheckTrackerEnabled", "Check Tracker");
@@ -204,6 +208,7 @@ namespace SohGui {
         mGameplayStatsWindow = nullptr;
         mDLViewerWindow = nullptr;
         mValueViewerWindow = nullptr;
+        mMessageViewerWindow = nullptr;
         mSaveEditorWindow = nullptr;
         mColViewerWindow = nullptr;
         mActorViewerWindow = nullptr;
