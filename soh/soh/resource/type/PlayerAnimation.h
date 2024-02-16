@@ -7,17 +7,16 @@
 #include "Vec3f.h"
 #include "Color3b.h"
 
-namespace LUS {
-
-class PlayerAnimation : public Resource<int16_t> {
+namespace SOH {
+class PlayerAnimation : public LUS::Resource<int16_t> {
   public:
     using Resource::Resource;
 
-    PlayerAnimation() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    PlayerAnimation() : Resource(std::shared_ptr<LUS::ResourceInitData>()) {}
 
     int16_t* GetPointer();
     size_t GetPointerSize();
 
     std::vector<int16_t> limbRotData;
 };
-} // namespace LUS
+} // namespace SOH

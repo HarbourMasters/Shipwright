@@ -260,7 +260,23 @@ const std::vector<const char*> enhancementsCvars = {
     "gAddTraps.Tele",
     "gAddTraps.Void",
     "gToTMedallionsColors", 
+    "gCuccoStayDurationMultiplier",
+    "gDeleteFileOnDeath",
+    "gEnemySizeScalesHealth",
+    "gEnhancements.BetterAmmoRendering",
+    "gEnhancements.EquimentAlwaysVisible",
+    "gEnhancements.FixDaruniaDanceSpeed",
+    "gEnhancements.OpenAllHours",
+    "gEnhancements.ResetNaviTimer",
+    "gEnhancements.ScaleAdultEquimentAsChild",
+    "gEnhancements.SwordToggle",
     "gEnhancements.FixFloorSwitches", 
+    "gFixZoraHintDialogue",
+    "gHurtContainer",
+    "gPauseWarp",
+    "gPermanentHeartLoss",
+    "gRemoveExplosiveLimit",
+    "gToggleStrength",
 };
 
 const std::vector<const char*> cheatCvars = {
