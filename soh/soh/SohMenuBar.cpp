@@ -21,6 +21,7 @@
 
 
 #include "Enhancements/audio/AudioEditor.h"
+#include "Enhancements/controls/InputViewer.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugger/actorViewer.h"
 #include "Enhancements/debugger/colViewer.h"
@@ -180,6 +181,8 @@ void DrawShipMenu() {
 }
 
 extern std::shared_ptr<LUS::GuiWindow> mInputEditorWindow;
+extern std::shared_ptr<InputViewer> mInputViewer;
+extern std::shared_ptr<InputViewerSettingsWindow> mInputViewerSettings;
 extern std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
 
 void DrawSettingsMenu() {
@@ -245,11 +248,25 @@ void DrawSettingsMenu() {
         #ifndef __SWITCH__
             UIWidgets::EnhancementCheckbox("Menubar Controller Navigation", "gControlNav");
             UIWidgets::Tooltip("Allows controller navigation of the SOH menu bar (Settings, Enhancements,...)\nCAUTION: This will disable game inputs while the menubar is visible.\n\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
+            UIWidgets::PaddedSeparator();
         #endif
-            UIWidgets::PaddedEnhancementCheckbox("Show Inputs", "gInputEnabled", true, false);
-            UIWidgets::Tooltip("Shows currently pressed inputs on the bottom right of the screen");
-            UIWidgets::PaddedEnhancementSliderFloat("Input Scale: %.2f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false, true, true, false);
-            UIWidgets::Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2 (12.0f, 6.0f));
+            ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
+            ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+            ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+            if (mInputViewer) {
+                if (ImGui::Button(GetWindowButtonText("Input Viewer", CVarGetInteger("gOpenWindows.InputViewer", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
+                    mInputViewer->ToggleVisibility();
+                }
+            }
+            if (mInputViewerSettings) {
+                if (ImGui::Button(GetWindowButtonText("Input Viewer Settings", CVarGetInteger("gOpenWindows.InputViewerSettings", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
+                    mInputViewerSettings->ToggleVisibility();
+                }
+            }
+            ImGui::PopStyleColor(1);
+            ImGui::PopStyleVar(3);
+
             UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", "gSimulatedInputLag", 0, 6, "", 0, true, true, false);
             UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
 
@@ -971,6 +988,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Disables the voice audio when Navi calls you");
                 UIWidgets::PaddedEnhancementCheckbox("Disable Hot/Underwater Warning Text", "gDisableTunicWarningText", true, false);
                 UIWidgets::Tooltip("Disables warning text when you don't have on the Goron/Zora Tunic in Hot/Underwater conditions.");
+                UIWidgets::PaddedEnhancementCheckbox("Remember Minimap State Between Areas", "gEnhancements.RememberMapToggleState");
+                UIWidgets::Tooltip("Preserves the minimap visibility state when going between areas rather than defaulting it to \"on\" when going through loading zones.");
 
                 ImGui::EndMenu();
             }
@@ -1149,6 +1168,8 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Space between text characters (useful for HD font textures)");
             UIWidgets::PaddedEnhancementCheckbox("More info in file select", "gFileSelectMoreInfo", true, false);
             UIWidgets::Tooltip("Shows what items you have collected in the file select screen, like in N64 randomizer");
+            UIWidgets::PaddedEnhancementCheckbox("Better ammo rendering in pause menu", "gEnhancements.BetterAmmoRendering", true, false);
+            UIWidgets::Tooltip("Ammo counts in the pause menu will work correctly regardless of the position of items in the inventory");
             ImGui::EndMenu();
         }
 
@@ -1215,6 +1236,8 @@ void DrawEnhancementsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Fix Darunia dancing too fast", "gEnhancements.FixDaruniaDanceSpeed",
                                                  true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
             UIWidgets::Tooltip("Fixes Darunia's dancing speed so he dances to the beat of Saria's Song, like in vanilla.");
+            UIWidgets::PaddedEnhancementCheckbox("Fix Zora hint dialogue", "gFixZoraHintDialogue", true, false);
+            UIWidgets::Tooltip("Fixes one Zora's dialogue giving a hint about bringing Ruto's Letter to King Zora to properly occur before moving King Zora rather than after");
 
             ImGui::EndMenu();
         }
