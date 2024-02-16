@@ -2588,10 +2588,11 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
         } else if (Randomizer_GetSettingValue(RSK_FROGS_HINT) && textId == TEXT_FROGS_UNDERWATER) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetFrogsMessage(textId);
-        } else if (Randomizer_GetSettingValue(RSK_SARIA_HINT)) {
-            if ((gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && textId == TEXT_SARIA_SFM) || (textId >= TEXT_SARIAS_SONG_TEXT_START && textId <= TEXT_SARIAS_SONG_TEXT_END)) {
-                messageEntry = OTRGlobals::Instance->gRandomizer->GetSariaMessage(textId);
-            }
+        } else if (Randomizer_GetSettingValue(RSK_SARIA_HINT) && 
+        (gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && textId == TEXT_SARIA_SFM) || (textId >= TEXT_SARIAS_SONG_FACE_TO_FACE && textId <= TEXT_SARIAS_SONG_CHANNELING_POWER)) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetSariaMessage(textId);
+        } else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_100) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100);
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
