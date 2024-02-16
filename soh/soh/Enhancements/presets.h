@@ -269,6 +269,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gEnhancements.OpenAllHours",
     "gEnhancements.ResetNaviTimer",
     "gEnhancements.ScaleAdultEquimentAsChild",
+    "gEnhancements.LeeverSpawnRate",
     "gEnhancements.SwordToggle",
     "gEnhancements.FixFloorSwitches", 
     "gFixZoraHintDialogue",

@@ -169,6 +169,10 @@ void EnEncount1_SpawnLeevers(EnEncount1* this, PlayState* play) {
                     break;
                 }
             }
+            int32_t modifiedSpawnRate = CVarGetInteger("gEnhancements.LeeverSpawnRate", 0);
+            if (modifiedSpawnRate) {
+                this->timer = 20 * modifiedSpawnRate;
+            }
         }
     }
 }
