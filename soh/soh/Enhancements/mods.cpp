@@ -519,70 +519,93 @@ void RegisterDaytimeGoldSkultullas() {
     });
 }
 
-void RegisterHyperBosses() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
-        // Run the update function a second time to make bosses move and act twice as fast.
+bool IsHyperBossesActive() {
+    return CVarGetInteger("gHyperBosses", 0) ||
+           (IS_BOSS_RUSH && gSaveContext.bossRushOptions[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
+}
 
-        Player* player = GET_PLAYER(gPlayState);
-        Actor* actor = static_cast<Actor*>(refActor);
+void UpdateHyperBossesState() {
+    static uint32_t actorUpdateHookId = 0;
+    if (actorUpdateHookId != 0) {
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(actorUpdateHookId);
+        actorUpdateHookId = 0;
+    }
 
-        uint8_t isBossActor =
-            actor->id == ACTOR_BOSS_GOMA ||                              // Gohma
-            actor->id == ACTOR_BOSS_DODONGO ||                           // King Dodongo
-            actor->id == ACTOR_EN_BDFIRE ||                              // King Dodongo Fire Breath
-            actor->id == ACTOR_BOSS_VA ||                                // Barinade
-            actor->id == ACTOR_BOSS_GANONDROF ||                         // Phantom Ganon
-            actor->id == ACTOR_EN_FHG_FIRE ||                            // Phantom Ganon/Ganondorf Energy Ball/Thunder
-            actor->id == ACTOR_EN_FHG ||                                 // Phantom Ganon's Horse
-            actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || // Volvagia (grounded/flying)
-            actor->id == ACTOR_EN_VB_BALL ||                             // Volvagia Rocks
-            actor->id == ACTOR_BOSS_MO ||                                // Morpha
-            actor->id == ACTOR_BOSS_SST ||                               // Bongo Bongo
-            actor->id == ACTOR_BOSS_TW ||                                // Twinrova
-            actor->id == ACTOR_BOSS_GANON ||                             // Ganondorf
-            actor->id == ACTOR_BOSS_GANON2;                              // Ganon
+    if (IsHyperBossesActive()) {
+        actorUpdateHookId = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+            // Run the update function a second time to make bosses move and act twice as fast.
 
-        uint8_t hyperBossesActive =
-            CVarGetInteger("gHyperBosses", 0) ||
-            (IS_BOSS_RUSH &&
-             gSaveContext.bossRushOptions[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
+            Player* player = GET_PLAYER(gPlayState);
+            Actor* actor = static_cast<Actor*>(refActor);
 
-        // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
-        if (hyperBossesActive && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
-            // Barinade needs to be updated in sequence to avoid unintended behaviour.
-            if (actor->id == ACTOR_BOSS_VA) {
-                // params -1 is BOSSVA_BODY
-                if (actor->params == -1) {
-                    Actor* actorList = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS].head;
-                    while (actorList != NULL) {
-                        GameInteractor::RawAction::UpdateActor(actorList);
-                        actorList = actorList->next;
+            uint8_t isBossActor =
+                actor->id == ACTOR_BOSS_GOMA ||                              // Gohma
+                actor->id == ACTOR_BOSS_DODONGO ||                           // King Dodongo
+                actor->id == ACTOR_EN_BDFIRE ||                              // King Dodongo Fire Breath
+                actor->id == ACTOR_BOSS_VA ||                                // Barinade
+                actor->id == ACTOR_BOSS_GANONDROF ||                         // Phantom Ganon
+                actor->id == ACTOR_EN_FHG_FIRE ||                            // Phantom Ganon/Ganondorf Energy Ball/Thunder
+                actor->id == ACTOR_EN_FHG ||                                 // Phantom Ganon's Horse
+                actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || // Volvagia (grounded/flying)
+                actor->id == ACTOR_EN_VB_BALL ||                             // Volvagia Rocks
+                actor->id == ACTOR_BOSS_MO ||                                // Morpha
+                actor->id == ACTOR_BOSS_SST ||                               // Bongo Bongo
+                actor->id == ACTOR_BOSS_TW ||                                // Twinrova
+                actor->id == ACTOR_BOSS_GANON ||                             // Ganondorf
+                actor->id == ACTOR_BOSS_GANON2;                              // Ganon
+
+            // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
+            if (IsHyperBossesActive() && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
+                // Barinade needs to be updated in sequence to avoid unintended behaviour.
+                if (actor->id == ACTOR_BOSS_VA) {
+                    // params -1 is BOSSVA_BODY
+                    if (actor->params == -1) {
+                        Actor* actorList = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS].head;
+                        while (actorList != NULL) {
+                            GameInteractor::RawAction::UpdateActor(actorList);
+                            actorList = actorList->next;
+                        }
                     }
+                } else {
+                    GameInteractor::RawAction::UpdateActor(actor);
                 }
-            } else {
-                GameInteractor::RawAction::UpdateActor(actor);
             }
-        }
+        });
+    }
+}
+
+void RegisterHyperBosses() {
+    UpdateHyperBossesState();
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int16_t fileNum) {
+        UpdateHyperBossesState();
     });
 }
 
-void RegisterHyperEnemies() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
-        // Run the update function a second time to make enemies and minibosses move and act twice as fast.
+void UpdateHyperEnemiesState() {
+    static uint32_t actorUpdateHookId = 0;
+    if (actorUpdateHookId != 0) {
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(actorUpdateHookId);
+        actorUpdateHookId = 0;
+    }
 
-        Player* player = GET_PLAYER(gPlayState);
-        Actor* actor = static_cast<Actor*>(refActor);
+    if (CVarGetInteger("gHyperEnemies", 0)) {
+        actorUpdateHookId = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+            // Run the update function a second time to make enemies and minibosses move and act twice as fast.
 
-        // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
-        bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;
-        bool isExcludedEnemy = actor->id == ACTOR_EN_FIRE_ROCK || actor->id == ACTOR_EN_ENCOUNT2;
+            Player* player = GET_PLAYER(gPlayState);
+            Actor* actor = static_cast<Actor*>(refActor);
 
-        // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
-        if (CVarGetInteger("gHyperEnemies", 0) && isEnemy && !isExcludedEnemy &&
-            !Player_InBlockingCsMode(gPlayState, player)) {
-            GameInteractor::RawAction::UpdateActor(actor);
-        }
-    });
+            // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
+            bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;
+            bool isExcludedEnemy = actor->id == ACTOR_EN_FIRE_ROCK || actor->id == ACTOR_EN_ENCOUNT2;
+
+            // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
+            if (CVarGetInteger("gHyperEnemies", 0) && isEnemy && !isExcludedEnemy &&
+                !Player_InBlockingCsMode(gPlayState, player)) {
+                GameInteractor::RawAction::UpdateActor(actor);
+            }
+        });
+    }
 }
 
 void RegisterBonkDamage() {
@@ -1371,7 +1394,7 @@ void InitMods() {
     RegisterPermanentHeartLoss();
     RegisterDeleteFileOnDeath();
     RegisterHyperBosses();
-    RegisterHyperEnemies();
+    UpdateHyperEnemiesState();
     RegisterBonkDamage();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
