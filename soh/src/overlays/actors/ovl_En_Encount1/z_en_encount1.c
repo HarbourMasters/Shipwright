@@ -174,8 +174,6 @@ void EnEncount1_SpawnLeevers(EnEncount1* this, PlayState* play) {
                 }
             }
         }
-    } else {
-        int blarg = 3;
     }
 }
 
