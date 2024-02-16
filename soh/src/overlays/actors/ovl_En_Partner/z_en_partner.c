@@ -319,7 +319,7 @@ void UseDekuStick(Actor* thisx, PlayState* play, u8 started) {
 
     if (this->itemTimer <= 0) {
         if (started == 1) {
-            if (AMMO(ITEM_STICK) > 0) {
+            if (AMMO(ITEM_DEKU_STICK) > 0) {
                 func_808328EC(this, NA_SE_EV_FLAME_IGNITION);
             } else {
                 func_80078884(NA_SE_SY_ERROR);
@@ -327,7 +327,7 @@ void UseDekuStick(Actor* thisx, PlayState* play, u8 started) {
         }
 
         if (started == 2) {
-            if (AMMO(ITEM_STICK) > 0) {
+            if (AMMO(ITEM_DEKU_STICK) > 0) {
                 this->stickWeaponInfo.tip = this->actor.world.pos;
                 this->stickWeaponInfo.tip.y += 7.0f;
 
@@ -337,7 +337,7 @@ void UseDekuStick(Actor* thisx, PlayState* play, u8 started) {
                 CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
 
                 if (this->damageTimer <= 0) {
-                    Inventory_ChangeAmmo(ITEM_STICK, -1);
+                    Inventory_ChangeAmmo(ITEM_DEKU_STICK, -1);
                     this->damageTimer = 20;
                 } else {
                     this->damageTimer--;
@@ -352,11 +352,11 @@ void UseNuts(Actor* thisx, PlayState* play, u8 started) {
 
     if (this->itemTimer <= 0) {
         if (started == 1) {
-            if (AMMO(ITEM_NUT) > 0) {
+            if (AMMO(ITEM_DEKU_NUT) > 0) {
                 this->itemTimer = 10;
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, this->actor.world.pos.x, this->actor.world.pos.y + 7,
                             this->actor.world.pos.z, 0x1000, this->actor.world.rot.y, 0, ARROW_NUT, false);
-                Inventory_ChangeAmmo(ITEM_NUT, -1);
+                Inventory_ChangeAmmo(ITEM_DEKU_NUT, -1);
             } else {
                 func_80078884(NA_SE_SY_ERROR);
             }
@@ -431,7 +431,7 @@ void UseBeans(Actor* thisx, PlayState* play, u8 started) {
 
     if (this->itemTimer <= 0) {
         if (started == 1) {
-            this->entry = ItemTable_Retrieve(GI_BEAN);
+            this->entry = ItemTable_Retrieve(GI_MAGIC_BEAN);
             if (play->actorCtx.titleCtx.alpha <= 0) {
                 if (gSaveContext.rupees >= 100 && GiveItemEntryWithoutActor(play, this->entry)) {
                     Rupees_ChangeBy(-100);
@@ -510,7 +510,7 @@ void UseItem(uint8_t usedItem, u8 started, Actor* thisx, PlayState* play) {
 
     if (this->usedItem != 0xFF && this->itemTimer <= 0) {
         switch (usedItem) {
-            case ITEM_STICK:
+            case ITEM_DEKU_STICK:
                 UseDekuStick(this, play, started);
                 break;
             case ITEM_BOMB:
@@ -519,7 +519,7 @@ void UseItem(uint8_t usedItem, u8 started, Actor* thisx, PlayState* play) {
             case ITEM_BOMBCHU:
                 UseBombchus(this, play, started);
                 break;
-            case ITEM_NUT:
+            case ITEM_DEKU_NUT:
                 UseNuts(this, play, started);
                 break;
             case ITEM_BOW:
@@ -538,7 +538,7 @@ void UseItem(uint8_t usedItem, u8 started, Actor* thisx, PlayState* play) {
                 UseSlingshot(this, play, started);
                 break;
             case ITEM_OCARINA_FAIRY:
-            case ITEM_OCARINA_TIME:
+            case ITEM_OCARINA_OF_TIME:
                 UseOcarina(this, play, started);
                 break;
             case ITEM_HOOKSHOT:
@@ -560,10 +560,10 @@ void UseItem(uint8_t usedItem, u8 started, Actor* thisx, PlayState* play) {
             case ITEM_BOOMERANG:
                 UseBoomerang(this, play, started);
                 break;
-            case ITEM_LENS:
+            case ITEM_LENS_OF_TRUTH:
                 UseLens(this, play, started);
                 break;
-            case ITEM_BEAN:
+            case ITEM_MAGIC_BEAN:
                 UseBeans(this, play, started);
                 break;
         }

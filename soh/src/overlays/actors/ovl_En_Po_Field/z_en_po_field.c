@@ -710,11 +710,11 @@ void EnPoField_SoulInteract(EnPoField* this, PlayState* play) {
                 if (Inventory_HasEmptyBottle()) {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_BIG_GET);
                     if (this->actor.params == 0) {
-                        Item_Give(play, ITEM_POE);
+                        Item_Give(play, ITEM_BOTTLE_POE);
                         this->actor.textId = 0x5008;
                     } else {
                         this->actor.textId = 0x508F;
-                        Item_Give(play, ITEM_BIG_POE);
+                        Item_Give(play, ITEM_BOTTLE_BIG_POE);
                         Flags_SetSwitch(play, sEnPoFieldSpawnSwitchFlags[this->spawnFlagIndex]);
                     }
                 } else {

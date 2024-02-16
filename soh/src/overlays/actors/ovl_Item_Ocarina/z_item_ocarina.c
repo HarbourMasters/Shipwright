@@ -190,9 +190,9 @@ void ItemOcarina_WaitInWater(ItemOcarina* this, PlayState* play) {
         this->actor.draw = NULL;
     } else {
         if (!IS_RANDO) {
-            func_8002F434(&this->actor, play, GI_OCARINA_OOT, 30.0f, 50.0f);
+            func_8002F434(&this->actor, play, GI_OCARINA_OF_TIME, 30.0f, 50.0f);
         } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OF_TIME);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 30.0f, 50.0f);
         }
 
@@ -215,11 +215,11 @@ void ItemOcarina_Draw(Actor* thisx, PlayState* play) {
     func_8002ED80(thisx, play, 0);
 
     if (IS_RANDO) {
-        GetItemEntry randoGetItem = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
+        GetItemEntry randoGetItem = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OF_TIME);
         EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
         GetItemEntry_Draw(play, randoGetItem);
         return;
     }
 
-    GetItem_Draw(play, GID_OCARINA_TIME);
+    GetItem_Draw(play, GID_OCARINA_OF_TIME);
 }

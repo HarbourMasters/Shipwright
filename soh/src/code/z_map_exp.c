@@ -404,7 +404,7 @@ void Map_InitData(PlayState* play, s16 room) {
                 }
             } else if (play->sceneNum == SCENE_GERUDOS_FORTRESS) {
                 if ((!IS_RANDO && GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) ||
-                    (IS_RANDO && CHECK_QUEST_ITEM(QUEST_GERUDO_CARD))) {
+                    (IS_RANDO && CHECK_QUEST_ITEM(QUEST_GERUDOS_CARD))) {
                     extendedMapIndex = 0x17;
                 }
             }

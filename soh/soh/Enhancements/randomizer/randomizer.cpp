@@ -190,39 +190,39 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
     { GI_DINS_FIRE, ITEM_DINS_FIRE },
     { GI_SLINGSHOT, ITEM_SLINGSHOT },
     { GI_OCARINA_FAIRY, ITEM_OCARINA_FAIRY },
-    { GI_OCARINA_OOT, ITEM_OCARINA_TIME },
+    { GI_OCARINA_OF_TIME, ITEM_OCARINA_OF_TIME },
     { GI_HOOKSHOT, ITEM_HOOKSHOT },
     { GI_LONGSHOT, ITEM_LONGSHOT },
     { GI_ARROW_ICE, ITEM_ARROW_ICE },
     { GI_FARORES_WIND, ITEM_FARORES_WIND },
     { GI_BOOMERANG, ITEM_BOOMERANG },
-    { GI_LENS, ITEM_LENS },
+    { GI_LENS_OF_TRUTH, ITEM_LENS_OF_TRUTH },
     { GI_HAMMER, ITEM_HAMMER },
     { GI_ARROW_LIGHT, ITEM_ARROW_LIGHT },
     { GI_NAYRUS_LOVE, ITEM_NAYRUS_LOVE },
-    { GI_BOTTLE, ITEM_BOTTLE },
-    { GI_POTION_RED, ITEM_POTION_RED },
-    { GI_POTION_GREEN, ITEM_POTION_GREEN },
-    { GI_POTION_BLUE, ITEM_POTION_BLUE },
-    { GI_FAIRY, ITEM_FAIRY },
-    { GI_FISH, ITEM_FISH },
-    { GI_MILK_BOTTLE, ITEM_MILK_BOTTLE },
-    { GI_LETTER_RUTO, ITEM_LETTER_RUTO },
-    { GI_BLUE_FIRE, ITEM_BLUE_FIRE },
-    { GI_BUGS, ITEM_BUG },
-    { GI_BIG_POE, ITEM_BIG_POE },
-    { GI_POE, ITEM_POE },
+    { GI_BOTTLE_EMPTY, ITEM_BOTTLE_EMPTY },
+    { GI_BOTTLE_POTION_RED, ITEM_BOTTLE_POTION_RED },
+    { GI_BOTTLE_POTION_GREEN, ITEM_BOTTLE_POTION_GREEN },
+    { GI_BOTTLE_POTION_BLUE, ITEM_BOTTLE_POTION_BLUE },
+    { GI_BOTTLE_FAIRY, ITEM_BOTTLE_FAIRY },
+    { GI_BOTTLE_FISH, ITEM_BOTTLE_FISH },
+    { GI_BOTTLE_MILK_FULL, ITEM_BOTTLE_MILK_FULL },
+    { GI_BOTTLE_RUTOS_LETTER, ITEM_BOTTLE_RUTOS_LETTER },
+    { GI_BOTTLE_BLUE_FIRE, ITEM_BOTTLE_BLUE_FIRE },
+    { GI_BOTTLE_BUGS, ITEM_BOTTLE_BUG },
+    { GI_BOTTLE_BIG_POE, ITEM_BOTTLE_BIG_POE },
+    { GI_BOTTLE_POE, ITEM_BOTTLE_POE },
     { GI_WEIRD_EGG, ITEM_WEIRD_EGG },
-    { GI_LETTER_ZELDA, ITEM_LETTER_ZELDA },
+    { GI_ZELDAS_LETTER, ITEM_ZELDAS_LETTER },
     { GI_POCKET_EGG, ITEM_POCKET_EGG },
     { GI_COJIRO, ITEM_COJIRO },
     { GI_ODD_MUSHROOM, ITEM_ODD_MUSHROOM },
     { GI_ODD_POTION, ITEM_ODD_POTION },
-    { GI_SAW, ITEM_SAW },
-    { GI_SWORD_BROKEN, ITEM_SWORD_BROKEN },
+    { GI_POACHERS_SAW, ITEM_POACHERS_SAW },
+    { GI_BROKEN_GORONS_SWORD, ITEM_BROKEN_GORONS_SWORD },
     { GI_PRESCRIPTION, ITEM_PRESCRIPTION },
-    { GI_FROG, ITEM_FROG },
-    { GI_EYEDROPS, ITEM_EYEDROPS },
+    { GI_EYEBALL_FROG, ITEM_EYEBALL_FROG },
+    { GI_EYE_DROPS, ITEM_EYE_DROPS },
     { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK } 
 };
 
@@ -1662,9 +1662,9 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
 
         // Inventory Items
         case RG_PROGRESSIVE_STICK_UPGRADE:
-            return CUR_UPG_VALUE(UPG_STICKS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return CUR_UPG_VALUE(UPG_DEKU_STICKS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_PROGRESSIVE_NUT_UPGRADE:
-            return CUR_UPG_VALUE(UPG_NUTS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return CUR_UPG_VALUE(UPG_DEKU_NUTS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_PROGRESSIVE_BOMB_BAG:
             return CUR_UPG_VALUE(UPG_BOMB_BAG) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_BOMBS_5:
@@ -1695,7 +1695,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
                 case ITEM_NONE:
                 case ITEM_OCARINA_FAIRY:
                     return CAN_OBTAIN;
-                case ITEM_OCARINA_TIME:
+                case ITEM_OCARINA_OF_TIME:
                 default:
                     return CANT_OBTAIN_ALREADY_HAVE;
             }
@@ -1727,10 +1727,10 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BOOMERANG:
             return INV_CONTENT(ITEM_BOOMERANG) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_LENS_OF_TRUTH:
-            return INV_CONTENT(ITEM_LENS) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return INV_CONTENT(ITEM_LENS_OF_TRUTH) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_MAGIC_BEAN:
         case RG_MAGIC_BEAN_PACK:
-            return AMMO(ITEM_BEAN) < 10 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return AMMO(ITEM_MAGIC_BEAN) < 10 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_MEGATON_HAMMER:
             return INV_CONTENT(ITEM_HAMMER) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FIRE_ARROWS:
@@ -1799,7 +1799,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_STONE_OF_AGONY:
             return !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GERUDO_MEMBERSHIP_CARD:
-            return !CHECK_QUEST_ITEM(QUEST_GERUDO_CARD) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_QUEST_ITEM(QUEST_GERUDOS_CARD) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_DOUBLE_DEFENSE:
             return !gSaveContext.isDoubleDefenseAcquired ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GOLD_SKULLTULA_TOKEN:
@@ -1883,17 +1883,17 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_ICE_CAVERN_COMPASS:
             return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_ICE_CAVERN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FOREST_TEMPLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_FOREST_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_BOSS_KEY, SCENE_FOREST_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FIRE_TEMPLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_FIRE_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_BOSS_KEY, SCENE_FIRE_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_WATER_TEMPLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_WATER_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_BOSS_KEY, SCENE_WATER_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SPIRIT_TEMPLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_SPIRIT_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_BOSS_KEY, SCENE_SPIRIT_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_SHADOW_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_BOSS_KEY, SCENE_SHADOW_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GANONS_CASTLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_BOSS_KEY, SCENE_GANONS_TOWER) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FOREST_TEMPLE_SMALL_KEY:
             return gSaveContext.inventory.dungeonKeys[SCENE_FOREST_TEMPLE] < FOREST_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FIRE_TEMPLE_SMALL_KEY:
@@ -1978,11 +1978,11 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_KOKIRI_SWORD:
             return GI_SWORD_KOKIRI;
         case RG_PROGRESSIVE_GORONSWORD: //todo progressive?
-            return GI_SWORD_BGS;
+            return GI_SWORD_BIGGORON;
         case RG_GIANTS_KNIFE:
             return GI_SWORD_KNIFE;
         case RG_BIGGORON_SWORD:
-            return GI_SWORD_BGS;
+            return GI_SWORD_BIGGORON;
         case RG_DEKU_SHIELD:
         case RG_BUY_DEKU_SHIELD:
             return GI_SHIELD_DEKU;
@@ -2004,22 +2004,22 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
 
         // Inventory Items
         case RG_PROGRESSIVE_STICK_UPGRADE:
-            switch (CUR_UPG_VALUE(UPG_STICKS)) {
+            switch (CUR_UPG_VALUE(UPG_DEKU_STICKS)) {
                 case 0:
                 case 1:
-                    return GI_STICK_UPGRADE_20;
+                    return GI_DEKU_STICK_UPGRADE_20;
                 case 2:
                 case 3:
-                    return GI_STICK_UPGRADE_30;
+                    return GI_DEKU_STICK_UPGRADE_30;
             }
         case RG_PROGRESSIVE_NUT_UPGRADE:
-            switch (CUR_UPG_VALUE(UPG_NUTS)) {
+            switch (CUR_UPG_VALUE(UPG_DEKU_NUTS)) {
                 case 0:
                 case 1:
-                    return GI_NUT_UPGRADE_30;
+                    return GI_DEKU_NUT_UPGRADE_30;
                 case 2:
                 case 3:
-                    return GI_NUT_UPGRADE_40;
+                    return GI_DEKU_NUT_UPGRADE_40;
             }
         case RG_PROGRESSIVE_BOMB_BAG:
             switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
@@ -2055,13 +2055,13 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
             }
         case RG_ARROWS_5:
         case RG_BUY_ARROWS_10:
-            return GI_ARROWS_SMALL;
+            return GI_ARROWS_5;
         case RG_ARROWS_10:
         case RG_BUY_ARROWS_30:
-            return GI_ARROWS_MEDIUM;
+            return GI_ARROWS_10;
         case RG_ARROWS_30:
         case RG_BUY_ARROWS_50:
-            return GI_ARROWS_LARGE;
+            return GI_ARROWS_30;
         case RG_PROGRESSIVE_SLINGSHOT:
             switch (CUR_UPG_VALUE(UPG_BULLET_BAG)) {
                 case 0:
@@ -2074,14 +2074,14 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
             }
         case RG_DEKU_SEEDS_30:
         case RG_BUY_DEKU_SEEDS_30:
-            return GI_SEEDS_30;
+            return GI_DEKU_SEEDS_30;
         case RG_PROGRESSIVE_OCARINA:
             switch (INV_CONTENT(ITEM_OCARINA_FAIRY)) {
                 case ITEM_NONE:
                     return GI_OCARINA_FAIRY;
                 case ITEM_OCARINA_FAIRY:
-                case ITEM_OCARINA_TIME:
-                    return GI_OCARINA_OOT;
+                case ITEM_OCARINA_OF_TIME:
+                    return GI_OCARINA_OF_TIME;
             }
         case RG_BOMBCHU_5:
         case RG_BOMBCHU_DROP:
@@ -2103,9 +2103,9 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_BOOMERANG:
             return GI_BOOMERANG;
         case RG_LENS_OF_TRUTH:
-            return GI_LENS;
+            return GI_LENS_OF_TRUTH;
         case RG_MAGIC_BEAN:
-            return GI_BEAN;
+            return GI_MAGIC_BEAN;
         case RG_MEGATON_HAMMER:
             return GI_HAMMER;
         case RG_FIRE_ARROWS:
@@ -2123,11 +2123,11 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
 
         // Bottles
         case RG_EMPTY_BOTTLE:
-            return GI_BOTTLE;
+            return GI_BOTTLE_EMPTY;
         case RG_BOTTLE_WITH_MILK:
-            return GI_MILK_BOTTLE;
+            return GI_BOTTLE_MILK_FULL;
         case RG_RUTOS_LETTER:
-            return GI_LETTER_RUTO;
+            return GI_BOTTLE_RUTOS_LETTER;
 
         // Bottle Refills
         case RG_MILK:
@@ -2136,29 +2136,29 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_BUY_RED_POTION_30:
         case RG_BUY_RED_POTION_40:
         case RG_BUY_RED_POTION_50:
-            return GI_POTION_RED;
+            return GI_BOTTLE_POTION_RED;
         case RG_GREEN_POTION_REFILL:
         case RG_BUY_GREEN_POTION:
-            return GI_POTION_GREEN;
+            return GI_BOTTLE_POTION_GREEN;
         case RG_BLUE_POTION_REFILL:
         case RG_BUY_BLUE_POTION:
-            return GI_POTION_BLUE;
+            return GI_BOTTLE_POTION_BLUE;
         case RG_BUY_FISH:
-            return GI_FISH;
+            return GI_BOTTLE_FISH;
         case RG_BUY_BLUE_FIRE:
-            return GI_BLUE_FIRE;
+            return GI_BOTTLE_BLUE_FIRE;
         case RG_BUY_BOTTLE_BUG:
-            return GI_BUGS;
+            return GI_BOTTLE_BUGS;
         case RG_BUY_POE:
-            return GI_POE;
+            return GI_BOTTLE_POE;
         case RG_BUY_FAIRYS_SPIRIT:
-            return GI_FAIRY;
+            return GI_BOTTLE_FAIRY;
 
         // Trade Items
         case RG_WEIRD_EGG:
             return GI_WEIRD_EGG;
         case RG_ZELDAS_LETTER:
-            return GI_LETTER_ZELDA;
+            return GI_ZELDAS_LETTER;
         case RG_POCKET_EGG:
             return GI_POCKET_EGG;
         case RG_COJIRO:
@@ -2168,15 +2168,15 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_ODD_POTION:
             return GI_ODD_POTION;
         case RG_POACHERS_SAW:
-            return GI_SAW;
+            return GI_POACHERS_SAW;
         case RG_BROKEN_SWORD:
-            return GI_SWORD_BROKEN;
+            return GI_BROKEN_GORONS_SWORD;
         case RG_PRESCRIPTION:
             return GI_PRESCRIPTION;
         case RG_EYEBALL_FROG:
-            return GI_FROG;
+            return GI_EYEBALL_FROG;
         case RG_EYEDROPS:
-            return GI_EYEDROPS;
+            return GI_EYE_DROPS;
         case RG_CLAIM_CHECK:
             return GI_CLAIM_CHECK;
 
@@ -2184,18 +2184,18 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_STONE_OF_AGONY:
             return GI_STONE_OF_AGONY;
         case RG_GERUDO_MEMBERSHIP_CARD:
-            return GI_GERUDO_CARD;
+            return GI_GERUDOS_CARD;
         case RG_GOLD_SKULLTULA_TOKEN:
             return GI_SKULL_TOKEN;
         case RG_PROGRESSIVE_STRENGTH:
             switch (CUR_UPG_VALUE(UPG_STRENGTH)) {
                 case 0:
-                    return GI_BRACELET;
+                    return GI_GORONS_BRACELET;
                 case 1:
-                    return GI_GAUNTLETS_SILVER;
+                    return GI_SILVER_GAUNTLETS;
                 case 2:
                 case 3:
-                    return GI_GAUNTLETS_GOLD;
+                    return GI_GOLD_GAUNTLETS;
             }
         case RG_PROGRESSIVE_WALLET:
             switch (CUR_UPG_VALUE(UPG_WALLET)) {
@@ -2213,7 +2213,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_SCALE_SILVER;
                 case 1:
                 case 2:
-                    return GI_SCALE_GOLD;
+                    return GI_SCALE_GOLDEN;
             }
         case RG_PROGRESSIVE_MAGIC_METER:
             switch (gSaveContext.magicLevel) {
@@ -2226,7 +2226,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
 
         case RG_RECOVERY_HEART:
         case RG_BUY_HEART:
-            return GI_HEART;
+            return GI_RECOVERY_HEART;
         case RG_GREEN_RUPEE:
             return GI_RUPEE_GREEN;
         case RG_BLUE_RUPEE:
@@ -2244,13 +2244,13 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         
         case RG_DEKU_NUTS_5:
         case RG_BUY_DEKU_NUT_5:
-            return GI_NUTS_5;
+            return GI_DEKU_NUTS_5;
         case RG_DEKU_NUTS_10:
         case RG_BUY_DEKU_NUT_10:
-            return GI_NUTS_10;
+            return GI_DEKU_NUTS_10;
         case RG_DEKU_STICK_1:
         case RG_BUY_DEKU_STICK_1:
-            return GI_STICKS_1;
+            return GI_DEKU_STICKS_1;
         case RG_TREASURE_GAME_SMALL_KEY:
             return GI_DOOR_KEY;
         case RG_TREASURE_GAME_HEART:
@@ -5921,138 +5921,138 @@ void Randomizer::CreateCustomMessages() {
             "You found the %gMaster Sword%w!",
             "Du erhältst dem %gMaster-Schwert%w!",
             "Vous obtenez %gl'Épée de Légende%w!"),
-        GIMESSAGE(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, 
+        GIMESSAGE(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BOTTLE_BLUE_FIRE, 
 			"You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
 			"Du erhältst eine %rFlasche mit&blauem Feuer%w! Nutze es um&%rRotes Eis%w zu schmelzen!",
             "Vous obtenez une %rBouteille avec&une Flamme Bleue%w! Utilisez-la&pour faire fondre la %rGlace&Rouge%w!"),
-        GIMESSAGE(RG_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
+        GIMESSAGE(RG_BOTTLE_WITH_BIG_POE, ITEM_BOTTLE_BIG_POE,
 			"You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!",
 			"Du hast einen %rNachtschwärmer%w&in einer Flasche gefangen!&Gehe zum %rGespenstermarkt%w&und verkaufe ihn!",
 			"Vous obtenez une %rBouteille avec&une Âme%w! Vendez-la au Marchand&d'Âme"),
-        GIMESSAGE(RG_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
+        GIMESSAGE(RG_BOTTLE_WITH_BLUE_POTION, ITEM_BOTTLE_POTION_BLUE,
 			"You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!",
 			"Du erhältst ein %rBlaues Elexier%w!&Nutze es, um deine %rMagie- und&Energieleiste%w komplett&aufzufüllen!",
 			"Vous obtenez une %rBouteille avec&une Potion Bleue%w! Buvez-la pour&restaurer votre %rénergie vitale%w&ainsi que votre %gmagie%w!"),
-        GIMESSAGE(RG_BOTTLE_WITH_FISH, ITEM_FISH,
+        GIMESSAGE(RG_BOTTLE_WITH_FISH, ITEM_BOTTLE_FISH,
             "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!",
 			"Du hast jetzt einen %rFisch in&einer Flasche%w! Er sieht richtig&frisch aus! Man sagt,&Lord Jabu-Jabu liebt Fische!",
             "Vous obtenez une %rBouteille avec&un Poisson%w! Il a l'air délicieux!&Il paraîtrait que %bJabu-Jabu %wen&serait friand!"),
-        GIMESSAGE(RG_BOTTLE_WITH_BUGS, ITEM_BUG,
+        GIMESSAGE(RG_BOTTLE_WITH_BUGS, ITEM_BOTTLE_BUG,
 			"You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!",
 			"Du hast jetzt %rKäfer in einer&Flasche&%w!&Sie graben gerne&in Erdlöchern.",
             "Vous obtenez une %rBouteille avec&des Insectes%w! Ils adorent creuser&dans la terre meuble!"),
-        GIMESSAGE(RG_BOTTLE_WITH_FAIRY, ITEM_FAIRY,
+        GIMESSAGE(RG_BOTTLE_WITH_FAIRY, ITEM_BOTTLE_FAIRY,
 			"You got a %rFairy in a Bottle%w!&Use it wisely!",
 			"Du hast jetzt eine %rFee in einer&Flasche%w! Nutze sie weise!",
 			"Vous obtenez une %rBouteille avec&une Fée%w! Faites-en bon usage!"),
-        GIMESSAGE(RG_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
+        GIMESSAGE(RG_BOTTLE_WITH_RED_POTION, ITEM_BOTTLE_POTION_RED,
             "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!",
 			"Du erhältst ein %rRotes Elexier%w!&Nutze es, um deine %rEnergieleiste&%weinmalig komplett aufzufüllen!",
             "Vous obtenez une %rBouteille avec&une Potion Rouge%w! Buvez-la pour&restaurer votre %rénergie vitale%w!"),
-        GIMESSAGE(RG_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
+        GIMESSAGE(RG_BOTTLE_WITH_GREEN_POTION, ITEM_BOTTLE_POTION_GREEN,
             "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!",
 			"Du erhältst ein %rGrünes Elexier%w!&Nutze es, um deine %bMagieleiste&%weinmalig komplett aufzufüllen!",
             "Vous obtenez une %rBouteille avec&une Potion Verte%w! Buvez-la pour&restaurer votre %gmagie%w!"),
-        GIMESSAGE(RG_BOTTLE_WITH_POE, ITEM_POE,
+        GIMESSAGE(RG_BOTTLE_WITH_POE, ITEM_BOTTLE_POE,
             "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...",
 			"Du hast jetzt ein %rIrrlicht in einer&Flasche%w! Der %rGespenstermarkt%w&interessiert sich für vielleicht&dafür...",
             "Vous obtenez une %rBouteille avec&un Esprit%w! Ça intéresserait&peut-être le vendeur d'Âme "),
 
-        GIMESSAGE(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_SMALL_KEY,
 			"You found a %yThieves Hideout &%wSmall Key!",
 			"Du erhältst einen %rKleinen&Schlüssel%w für das %yDiebesversteck%w!",
 			"Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
-        GIMESSAGE(RG_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_FOREST_TEMPLE_SMALL_KEY, ITEM_SMALL_KEY,
 			"You found a %gForest Temple &%wSmall Key!",
 			"Du erhältst einen %rKleinen&Schlüssel%w für den %gWaldtempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %gTemple de la Forêt%w!"),
-        GIMESSAGE(RG_FIRE_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_FIRE_TEMPLE_SMALL_KEY, ITEM_SMALL_KEY,
 			"You found a %rFire Temple &%wSmall Key!",
 			"Du erhältst einen %rKleinen&Schlüssel%w für den %rFeuertempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %rTemple du Feu%w!"),
-        GIMESSAGE(RG_WATER_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_WATER_TEMPLE_SMALL_KEY, ITEM_SMALL_KEY,
 			"You found a %bWater Temple &%wSmall Key!",
 			"Du erhältst einen %rKleinen&Schlüssel%w für den %bWassertempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %bTemple de l'Eau%w!"),
-        GIMESSAGE(RG_SPIRIT_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_SPIRIT_TEMPLE_SMALL_KEY, ITEM_SMALL_KEY,
 			"You found a %ySpirit Temple &%wSmall Key!",
 			"Du erhältst einen %rKleinen&Schlüssel%w für den %yGeistertempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %yTemple de l'Esprit%w!"),
-        GIMESSAGE(RG_SHADOW_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_SHADOW_TEMPLE_SMALL_KEY, ITEM_SMALL_KEY,
 			"You found a %pShadow Temple &%wSmall Key!",
 			"Du erhältst einen %rKleinen&Schlüssel%w für den %pSchattentempel%w!",
 			"Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
-        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_SMALL_KEY,
 			"You found a %pBottom of the &Well %wSmall Key!",
 			"Du erhältst einen %rKleinen&Schlüssel%w für den %pGrund des Brunnens%w!",
 			"Vous obtenez une %rPetite Clé %w&du %pPuits%w!"),
-        GIMESSAGE(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, ITEM_SMALL_KEY,
 			"You found a %yGerudo Training &Grounds %wSmall Key!",
 			"Du erhältst einen %rKleinen&Schlüssel%w für die %yGerudo&Trainingsarena%w!",
 			"Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
-        GIMESSAGE(RG_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_GANONS_CASTLE_SMALL_KEY, ITEM_SMALL_KEY,
 			"You found a %rGanon's Castle &%wSmall Key!",
 			"Du erhältst einen %rKleinen&Schlüssel%w für die %rGanons Schloß%w!",
 			"Vous obtenez une %rPetite Clé %w&du %rChâteau de Ganon%w!"),
 
-        GIMESSAGE(RG_GERUDO_FORTRESS_KEY_RING, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_GERUDO_FORTRESS_KEY_RING, ITEM_SMALL_KEY,
 			"You found a %yThieves Hideout &%wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für das %yDiebesversteck%w!",
 			"Vous obtenez un trousseau de&clés du %yRepaire des Voleurs%w!"),
-        GIMESSAGE(RG_FOREST_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_FOREST_TEMPLE_KEY_RING, ITEM_SMALL_KEY,
 			"You found a %gForest Temple &%wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für den %gWaldtempel%w!",
 			"Vous obtenez un trousseau de&clés du %gTemple de la Forêt%w!"),
-        GIMESSAGE(RG_FIRE_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_FIRE_TEMPLE_KEY_RING, ITEM_SMALL_KEY,
 			"You found a %rFire Temple &%wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für den %rFeuertempel%w!",
 			"Vous obtenez un trousseau de&clés du %rTemple du Feu%w!"),
-        GIMESSAGE(RG_WATER_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_WATER_TEMPLE_KEY_RING, ITEM_SMALL_KEY,
 			"You found a %bWater Temple &%wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für den %bWassertempel%w!",
 			"Vous obtenez un trousseau de&clés du %bTemple de l'Eau%w!"),
-        GIMESSAGE(RG_SPIRIT_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_SPIRIT_TEMPLE_KEY_RING, ITEM_SMALL_KEY,
 			"You found a %ySpirit Temple &%wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für den %yGeistertempel%w!",
 			"Vous obtenez un trousseau de&clés du %yTemple de l'Esprit%w!"),
-        GIMESSAGE(RG_SHADOW_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_SHADOW_TEMPLE_KEY_RING, ITEM_SMALL_KEY,
 			"You found a %pShadow Temple &%wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für den %pSchattentempel%w!",
 			"Vous obtenez un trousseau de&clés du %pTemple de l'Ombre%w!"),
-        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_KEY_RING, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_KEY_RING, ITEM_SMALL_KEY,
 			"You found a %pBottom of the &Well %wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für den %pGrund des Brunnens%w!",
 			"Vous obtenez un trousseau de&clés du %pPuits%w!"),
-        GIMESSAGE(RG_GERUDO_TRAINING_GROUNDS_KEY_RING, ITEM_KEY_SMALL,
+        GIMESSAGE(RG_GERUDO_TRAINING_GROUNDS_KEY_RING, ITEM_SMALL_KEY,
 			"You found a %yGerudo Training &Grounds %wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für die %yGerudo Trainingsarena%w!",
 			"Vous obtenez un trousseau de&clés du %yGymnase Gerudo%w!"),
-        GIMESSAGE(RG_GANONS_CASTLE_KEY_RING, ITEM_KEY_SMALL, 
+        GIMESSAGE(RG_GANONS_CASTLE_KEY_RING, ITEM_SMALL_KEY, 
 			"You found a %rGanon's Castle &%wKeyring!",
 			"Du erhältst ein %rSchlüsselbund%w&für %rGanons Schloß%w!",
 			"Vous obtenez un trousseau de&clés du %rChâteau de Ganon%w!"),
 
-        GIMESSAGE(RG_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
+        GIMESSAGE(RG_FOREST_TEMPLE_BOSS_KEY, ITEM_DUNGEON_BOSS_KEY,
 			"You found the %gForest Temple &%wBoss Key!",
 			"Du erhältst den %rMaster-Schlüssel%w&für den %gWaldtempel%w!",
 			"Vous obtenez la %rClé d'or %wdu&%gTemple de la Forêt%w!"),
-        GIMESSAGE(RG_FIRE_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
+        GIMESSAGE(RG_FIRE_TEMPLE_BOSS_KEY, ITEM_DUNGEON_BOSS_KEY,
 			"You found the %rFire Temple &%wBoss Key!",
 			"Du erhältst den %rMaster-Schlüssel%w&für den %rFeuertempel%w!",
 			"Vous obtenez la %rClé d'or %wdu&%rTemple du Feu%w!"),
-        GIMESSAGE(RG_WATER_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
+        GIMESSAGE(RG_WATER_TEMPLE_BOSS_KEY, ITEM_DUNGEON_BOSS_KEY,
 			"You found the %bWater Temple &%wBoss Key!",
 			"Du erhältst den %rMaster-Schlüssel%w&für den %bWassertempel%w!",
 			"Vous obtenez la %rClé d'or %wdu&%bTemple de l'Eau%w!"),
-        GIMESSAGE(RG_SPIRIT_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
+        GIMESSAGE(RG_SPIRIT_TEMPLE_BOSS_KEY, ITEM_DUNGEON_BOSS_KEY,
 			"You found the %ySpirit Temple &%wBoss Key!",
 			"Du erhältst den %rMaster-Schlüssel%w&für den %yGeistertempel%w!",
 			"Vous obtenez la %rClé d'or %wdu&%yTemple de l'Esprit%w!"),
-        GIMESSAGE(RG_SHADOW_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
+        GIMESSAGE(RG_SHADOW_TEMPLE_BOSS_KEY, ITEM_DUNGEON_BOSS_KEY,
 			"You found the %pShadow Temple &%wBoss Key!",
 			"Du erhältst den %rMaster-Schlüssel%w&für den %pSchattentempel%w!",
 			"Vous obtenez la %rClé d'or %wdu&%pTemple de l'Ombre%w!"),
-        GIMESSAGE(RG_GANONS_CASTLE_BOSS_KEY, ITEM_KEY_BOSS,
+        GIMESSAGE(RG_GANONS_CASTLE_BOSS_KEY, ITEM_DUNGEON_BOSS_KEY,
 			"You found the %rGanon's Castle &%wBoss Key!",
 			"Du erhältst den %rMaster-Schlüssel%w&für %rGanons Schloß%w!",
 			"Vous obtenez la %rClé d'or %wdu&%rChâteau de Ganon%w!"),
@@ -6098,52 +6098,52 @@ void Randomizer::CreateCustomMessages() {
 			"Du erhältst die %rKarte%w für die&%cEishöhle%w!{{typeHint}}",
 			"Vous obtenez la %rCarte %wde &la %cCaverne Polaire%w!{{typeHint}}"),
 
-        GIMESSAGE(RG_DEKU_TREE_COMPASS, ITEM_COMPASS,
+        GIMESSAGE(RG_DEKU_TREE_COMPASS, ITEM_DUNGEON_COMPASS,
 			"You found the %gDeku Tree &%wCompass!",
 			"Du erhältst den %rKompaß%w für den&%gDeku-Baum%w!",
 			"Vous obtenez la %rBoussole %wde&l'%gArbre Mojo%w!"),
-        GIMESSAGE(RG_DODONGOS_CAVERN_COMPASS, ITEM_COMPASS,
+        GIMESSAGE(RG_DODONGOS_CAVERN_COMPASS, ITEM_DUNGEON_COMPASS,
 			"You found the %rDodongo's Cavern &%wCompass!",
 			"Du erhältst den %rKompaß%w für&%rDodongos Höhle%w!",
 			"Vous obtenez la %rBoussole %wde la&%rCaverne Dodongo%w!"),
-        GIMESSAGE(RG_JABU_JABUS_BELLY_COMPASS, ITEM_COMPASS,
+        GIMESSAGE(RG_JABU_JABUS_BELLY_COMPASS, ITEM_DUNGEON_COMPASS,
 			"You found the %bJabu Jabu's Belly &%wCompass!",
 			"Du erhältst den %rKompaß%w für den&%bJabu-Jabus Bauch%w!",
 			"Vous obtenez la %rBoussole %wdu &%bVentre de Jabu-Jabu%w!"),
-        GIMESSAGE(RG_FOREST_TEMPLE_COMPASS, ITEM_COMPASS,
+        GIMESSAGE(RG_FOREST_TEMPLE_COMPASS, ITEM_DUNGEON_COMPASS,
 			"You found the %gForest Temple &%wCompass!",
 			"Du erhältst den %rKompaß%w für den&%gWaldtempel%w!",
 			"Vous obtenez la %rBoussole %wdu &%gTemple de la Forêt%w!"),
-        GIMESSAGE(RG_FIRE_TEMPLE_COMPASS, ITEM_COMPASS,
+        GIMESSAGE(RG_FIRE_TEMPLE_COMPASS, ITEM_DUNGEON_COMPASS,
 			"You found the %rFire Temple &%wCompass!",
 			"Du erhältst den %rKompaß%w für den&%rFeuertempel%w!",
 			"Vous obtenez la %rBoussole %wdu &%rTemple du Feu%w!"),
-        GIMESSAGE(RG_WATER_TEMPLE_COMPASS, ITEM_COMPASS,
+        GIMESSAGE(RG_WATER_TEMPLE_COMPASS, ITEM_DUNGEON_COMPASS,
 			"You found the %bWater Temple &%wCompass!",
 			"Du erhältst den %rKompaß%w für den&%bWassertempel%w!",
 			"Vous obtenez la %rBoussole %wdu &%bTemple de l'Eau%w!"),
-        GIMESSAGE(RG_SPIRIT_TEMPLE_COMPASS, ITEM_COMPASS,
+        GIMESSAGE(RG_SPIRIT_TEMPLE_COMPASS, ITEM_DUNGEON_COMPASS,
 			"You found the %ySpirit Temple &%wCompass!",
 			"Du erhältst den %rKompaß%w für den&%yGeistertempel%w!",
 			"Vous obtenez la %rBoussole %wdu &%yTemple de l'Esprit%w!"),
-        GIMESSAGE(RG_SHADOW_TEMPLE_COMPASS, ITEM_COMPASS,
+        GIMESSAGE(RG_SHADOW_TEMPLE_COMPASS, ITEM_DUNGEON_COMPASS,
 			"You found the %pShadow Temple &%wCompass!",
 			"Du erhältst den %rKompaß%w für den&%pSchattentempel%w!",
 			"Vous obtenez la %rBoussole %wdu &%pTemple de l'Ombre%w!"),
-        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_COMPASS, ITEM_COMPASS,
+        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_COMPASS, ITEM_DUNGEON_COMPASS,
 			"You found the %pBottom of the &Well %wCompass!",
 			"Du erhältst den %rKompaß%w für den&%pGrund des Brunnens%w!",
 			"Vous obtenez la %rBoussole %wdu &%pPuits%w!"),
-        GIMESSAGE(RG_ICE_CAVERN_COMPASS, ITEM_COMPASS,
+        GIMESSAGE(RG_ICE_CAVERN_COMPASS, ITEM_DUNGEON_COMPASS,
 			"You found the %cIce Cavern &%wCompass!",
 			"Du erhältst den %rKompaß%w für die&%cEishöhle%w!",
 			"Vous obtenez la %rBoussole %wde &la %cCaverne Polaire%w!"),
 
-        GIMESSAGE(RG_MAGIC_BEAN_PACK, ITEM_BEAN,
+        GIMESSAGE(RG_MAGIC_BEAN_PACK, ITEM_MAGIC_BEAN,
 			"You got a %rPack of Magic Beans%w!&Find a suitable spot for a garden&and plant them. Then, wait for&something fun to happen!",
 			"Du erhältst eine %rPackung&Wundererbsen%w! Suche nach einer&Stelle um sie einzupflanzen.&Warte ab, was passiert!",
 			"Vous obtenez un %rPaquet de&Haricots Magiques%w! Trouvez&un endroit approprié pour un&jardin et plantez-les.^Attendez ensuite que quelque&chose d'amusant se produise!"),
-        GIMESSAGE(RG_TYCOON_WALLET, ITEM_WALLET_GIANT,
+        GIMESSAGE(RG_TYCOON_WALLET, ITEM_GIANTS_WALLET,
 			"You got a %rTycoon's Wallet%w!&It's gigantic! Now you can carry&up to %y999 rupees%w!",
 			"Du erhältst die %rGoldene&Geldbörse%w! Die größte aller&Geldbörsen! Jetzt kannst Du bis&zu %y999 Rubine%w mit dir führen!",
 			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!")
@@ -6201,44 +6201,44 @@ void InitRandoItemTable() {
     // RandomizerGet enum values for both.
     static GetItemEntry randoGetItemTable[] = {
         GET_ITEM(RG_ICE_TRAP,                          OBJECT_GI_RUPY,     GID_RUPEE_GOLD,       TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_ICE_TRAP),
-        GET_ITEM(RG_MAGIC_SINGLE,                      OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL,      0xE4,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MAGIC_SINGLE),
-        GET_ITEM(RG_MAGIC_DOUBLE,                      OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE,      0xE8,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_MAGIC_DOUBLE),
+        GET_ITEM(RG_MAGIC_SINGLE,                      OBJECT_GI_MAGICPOT, GID_MAGIC_JAR_SMALL,      0xE4,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MAGIC_SINGLE),
+        GET_ITEM(RG_MAGIC_DOUBLE,                      OBJECT_GI_MAGICPOT, GID_MAGIC_JAR_LARGE,      0xE8,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_MAGIC_DOUBLE),
         GET_ITEM(RG_DOUBLE_DEFENSE,                    OBJECT_GI_HEARTS,   GID_HEART_CONTAINER,  0xE9,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DOUBLE_DEFENSE),
         GET_ITEM(RG_GREG_RUPEE,                        OBJECT_GI_RUPY,     GID_RUPEE_GREEN,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_GREG_RUPEE),
-        GET_ITEM(RG_MASTER_SWORD,                      OBJECT_TOKI_OBJECTS,GID_SWORD_BGS,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MASTER_SWORD),
-        GET_ITEM(RG_BOTTLE_WITH_RED_POTION,            OBJECT_GI_LIQUID,   GID_POTION_RED,       TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_RED_POTION),
-        GET_ITEM(RG_BOTTLE_WITH_GREEN_POTION,          OBJECT_GI_LIQUID,   GID_POTION_GREEN,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_GREEN_POTION),
-        GET_ITEM(RG_BOTTLE_WITH_BLUE_POTION,           OBJECT_GI_LIQUID,   GID_POTION_BLUE,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_BLUE_POTION),
-        GET_ITEM(RG_BOTTLE_WITH_FAIRY,                 OBJECT_GI_BOTTLE,   GID_BOTTLE,           TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_FAIRY),
+        GET_ITEM(RG_MASTER_SWORD,                      OBJECT_TOKI_OBJECTS,GID_SWORD_BIGGORON,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MASTER_SWORD),
+        GET_ITEM(RG_BOTTLE_WITH_RED_POTION,            OBJECT_GI_LIQUID,   GID_BOTTLE_POTION_RED,       TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_RED_POTION),
+        GET_ITEM(RG_BOTTLE_WITH_GREEN_POTION,          OBJECT_GI_LIQUID,   GID_BOTTLE_POTION_GREEN,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_GREEN_POTION),
+        GET_ITEM(RG_BOTTLE_WITH_BLUE_POTION,           OBJECT_GI_LIQUID,   GID_BOTTLE_POTION_BLUE,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_BLUE_POTION),
+        GET_ITEM(RG_BOTTLE_WITH_FAIRY,                 OBJECT_GI_BOTTLE,   GID_BOTTLE_EMPTY,           TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_FAIRY),
         GET_ITEM(RG_BOTTLE_WITH_FISH,                  OBJECT_GI_FISH,     GID_FISH,             TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_FISH),
         GET_ITEM(RG_BOTTLE_WITH_BLUE_FIRE,             OBJECT_GI_FIRE,     GID_BLUE_FIRE,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_BLUE_FIRE),
         GET_ITEM(RG_BOTTLE_WITH_BUGS,                  OBJECT_GI_INSECT,   GID_BUG,              TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_BUGS),
         GET_ITEM(RG_BOTTLE_WITH_POE,                   OBJECT_GI_GHOST,    GID_POE,              TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_POE),
         GET_ITEM(RG_BOTTLE_WITH_BIG_POE,               OBJECT_GI_GHOST,    GID_BIG_POE,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_BIG_POE),
-        GET_ITEM(RG_GERUDO_FORTRESS_SMALL_KEY,         OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_FORTRESS_SMALL_KEY),
-        GET_ITEM(RG_FOREST_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FOREST_TEMPLE_SMALL_KEY),
-        GET_ITEM(RG_FIRE_TEMPLE_SMALL_KEY,             OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FIRE_TEMPLE_SMALL_KEY),
-        GET_ITEM(RG_WATER_TEMPLE_SMALL_KEY,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_WATER_TEMPLE_SMALL_KEY),
-        GET_ITEM(RG_SPIRIT_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_SMALL_KEY),
-        GET_ITEM(RG_SHADOW_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SHADOW_TEMPLE_SMALL_KEY),
-        GET_ITEM(RG_BOTTOM_OF_THE_WELL_SMALL_KEY,      OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_SMALL_KEY),
-        GET_ITEM(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY),
-        GET_ITEM(RG_GANONS_CASTLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GANONS_CASTLE_SMALL_KEY),
-        GET_ITEM(RG_GERUDO_FORTRESS_KEY_RING,          OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_FORTRESS_KEY_RING),
-        GET_ITEM(RG_FOREST_TEMPLE_KEY_RING,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FOREST_TEMPLE_KEY_RING),
-        GET_ITEM(RG_FIRE_TEMPLE_KEY_RING,              OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FIRE_TEMPLE_KEY_RING),
-        GET_ITEM(RG_WATER_TEMPLE_KEY_RING,             OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_WATER_TEMPLE_KEY_RING),
-        GET_ITEM(RG_SPIRIT_TEMPLE_KEY_RING,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_KEY_RING),
-        GET_ITEM(RG_SHADOW_TEMPLE_KEY_RING,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SHADOW_TEMPLE_KEY_RING),
-        GET_ITEM(RG_BOTTOM_OF_THE_WELL_KEY_RING,       OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_KEY_RING),
-        GET_ITEM(RG_GERUDO_TRAINING_GROUNDS_KEY_RING,  OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_TRAINING_GROUNDS_KEY_RING),
-        GET_ITEM(RG_GANONS_CASTLE_KEY_RING,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GANONS_CASTLE_KEY_RING),
-        GET_ITEM(RG_FOREST_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_FOREST_TEMPLE_BOSS_KEY),
-        GET_ITEM(RG_FIRE_TEMPLE_BOSS_KEY,              OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_FIRE_TEMPLE_BOSS_KEY),
-        GET_ITEM(RG_WATER_TEMPLE_BOSS_KEY,             OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_WATER_TEMPLE_BOSS_KEY),
-        GET_ITEM(RG_SPIRIT_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_BOSS_KEY),
-        GET_ITEM(RG_SHADOW_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_SHADOW_TEMPLE_BOSS_KEY),
-        GET_ITEM(RG_GANONS_CASTLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY),
+        GET_ITEM(RG_GERUDO_FORTRESS_SMALL_KEY,         OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_FORTRESS_SMALL_KEY),
+        GET_ITEM(RG_FOREST_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FOREST_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_FIRE_TEMPLE_SMALL_KEY,             OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FIRE_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_WATER_TEMPLE_SMALL_KEY,            OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_WATER_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_SPIRIT_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_SHADOW_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SHADOW_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_BOTTOM_OF_THE_WELL_SMALL_KEY,      OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_SMALL_KEY),
+        GET_ITEM(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY),
+        GET_ITEM(RG_GANONS_CASTLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GANONS_CASTLE_SMALL_KEY),
+        GET_ITEM(RG_GERUDO_FORTRESS_KEY_RING,          OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_FORTRESS_KEY_RING),
+        GET_ITEM(RG_FOREST_TEMPLE_KEY_RING,            OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FOREST_TEMPLE_KEY_RING),
+        GET_ITEM(RG_FIRE_TEMPLE_KEY_RING,              OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FIRE_TEMPLE_KEY_RING),
+        GET_ITEM(RG_WATER_TEMPLE_KEY_RING,             OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_WATER_TEMPLE_KEY_RING),
+        GET_ITEM(RG_SPIRIT_TEMPLE_KEY_RING,            OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_KEY_RING),
+        GET_ITEM(RG_SHADOW_TEMPLE_KEY_RING,            OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SHADOW_TEMPLE_KEY_RING),
+        GET_ITEM(RG_BOTTOM_OF_THE_WELL_KEY_RING,       OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_KEY_RING),
+        GET_ITEM(RG_GERUDO_TRAINING_GROUNDS_KEY_RING,  OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_TRAINING_GROUNDS_KEY_RING),
+        GET_ITEM(RG_GANONS_CASTLE_KEY_RING,            OBJECT_GI_KEY,      GID_SMALL_KEY,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GANONS_CASTLE_KEY_RING),
+        GET_ITEM(RG_FOREST_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_BOSS_KEY,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_FOREST_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_FIRE_TEMPLE_BOSS_KEY,              OBJECT_GI_BOSSKEY,  GID_BOSS_KEY,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_FIRE_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_WATER_TEMPLE_BOSS_KEY,             OBJECT_GI_BOSSKEY,  GID_BOSS_KEY,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_WATER_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_SPIRIT_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_BOSS_KEY,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_SHADOW_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_BOSS_KEY,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_SHADOW_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_GANONS_CASTLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_BOSS_KEY,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY),
         GET_ITEM(RG_DEKU_TREE_MAP,                     OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DEKU_TREE_MAP),
         GET_ITEM(RG_DODONGOS_CAVERN_MAP,               OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DODONGOS_CAVERN_MAP),
         GET_ITEM(RG_JABU_JABUS_BELLY_MAP,              OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_JABU_JABUS_BELLY_MAP),
@@ -6259,7 +6259,7 @@ void InitRandoItemTable() {
         GET_ITEM(RG_SHADOW_TEMPLE_COMPASS,             OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SHADOW_TEMPLE_COMPASS),
         GET_ITEM(RG_BOTTOM_OF_THE_WELL_COMPASS,        OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_COMPASS),
         GET_ITEM(RG_ICE_CAVERN_COMPASS,                OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_ICE_CAVERN_COMPASS),
-        GET_ITEM(RG_MAGIC_BEAN_PACK,                   OBJECT_GI_BEAN,     GID_BEAN,             TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MAGIC_BEAN_PACK),
+        GET_ITEM(RG_MAGIC_BEAN_PACK,                   OBJECT_GI_BEAN,     GID_MAGIC_BEAN,             TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MAGIC_BEAN_PACK),
         GET_ITEM(RG_TYCOON_WALLET,                     OBJECT_GI_PURSE,    GID_WALLET_GIANT,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_TYCOON_WALLET),
         GET_ITEM(RG_PROGRESSIVE_BOMBCHUS,              OBJECT_GI_BOMB_2,   GID_BOMBCHU,          0x33,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_PROGRESSIVE_BOMBCHUS),
         GET_ITEM(RG_TRIFORCE_PIECE,                    OBJECT_GI_BOMB_2,   GID_TRIFORCE_PIECE,   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_TRIFORCE_PIECE),

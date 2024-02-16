@@ -41,46 +41,46 @@ typedef struct {
 
 // Maps items ids to info for use in ImGui
 std::map<uint32_t, ItemMapEntry> itemMapping = {
-    ITEM_MAP_ENTRY(ITEM_STICK),
-    ITEM_MAP_ENTRY(ITEM_NUT),
+    ITEM_MAP_ENTRY(ITEM_DEKU_STICK),
+    ITEM_MAP_ENTRY(ITEM_DEKU_NUT),
     ITEM_MAP_ENTRY(ITEM_BOMB),
     ITEM_MAP_ENTRY(ITEM_BOW),
     ITEM_MAP_ENTRY(ITEM_ARROW_FIRE),
     ITEM_MAP_ENTRY(ITEM_DINS_FIRE),
     ITEM_MAP_ENTRY(ITEM_SLINGSHOT),
     ITEM_MAP_ENTRY(ITEM_OCARINA_FAIRY),
-    ITEM_MAP_ENTRY(ITEM_OCARINA_TIME),
+    ITEM_MAP_ENTRY(ITEM_OCARINA_OF_TIME),
     ITEM_MAP_ENTRY(ITEM_BOMBCHU),
     ITEM_MAP_ENTRY(ITEM_HOOKSHOT),
     ITEM_MAP_ENTRY(ITEM_LONGSHOT),
     ITEM_MAP_ENTRY(ITEM_ARROW_ICE),
     ITEM_MAP_ENTRY(ITEM_FARORES_WIND),
     ITEM_MAP_ENTRY(ITEM_BOOMERANG),
-    ITEM_MAP_ENTRY(ITEM_LENS),
-    ITEM_MAP_ENTRY(ITEM_BEAN),
+    ITEM_MAP_ENTRY(ITEM_LENS_OF_TRUTH),
+    ITEM_MAP_ENTRY(ITEM_MAGIC_BEAN),
     ITEM_MAP_ENTRY(ITEM_HAMMER),
     ITEM_MAP_ENTRY(ITEM_ARROW_LIGHT),
     ITEM_MAP_ENTRY(ITEM_NAYRUS_LOVE),
-    ITEM_MAP_ENTRY(ITEM_BOTTLE),
-    ITEM_MAP_ENTRY(ITEM_POTION_RED),
-    ITEM_MAP_ENTRY(ITEM_POTION_GREEN),
-    ITEM_MAP_ENTRY(ITEM_POTION_BLUE),
-    ITEM_MAP_ENTRY(ITEM_FAIRY),
-    ITEM_MAP_ENTRY(ITEM_FISH),
-    ITEM_MAP_ENTRY(ITEM_MILK_BOTTLE),
-    ITEM_MAP_ENTRY(ITEM_LETTER_RUTO),
-    ITEM_MAP_ENTRY(ITEM_BLUE_FIRE),
-    ITEM_MAP_ENTRY(ITEM_BUG),
-    ITEM_MAP_ENTRY(ITEM_BIG_POE),
-    ITEM_MAP_ENTRY(ITEM_MILK_HALF),
-    ITEM_MAP_ENTRY(ITEM_POE),
+    ITEM_MAP_ENTRY(ITEM_BOTTLE_EMPTY),
+    ITEM_MAP_ENTRY(ITEM_BOTTLE_POTION_RED),
+    ITEM_MAP_ENTRY(ITEM_BOTTLE_POTION_GREEN),
+    ITEM_MAP_ENTRY(ITEM_BOTTLE_POTION_BLUE),
+    ITEM_MAP_ENTRY(ITEM_BOTTLE_FAIRY),
+    ITEM_MAP_ENTRY(ITEM_BOTTLE_FISH),
+    ITEM_MAP_ENTRY(ITEM_BOTTLE_MILK_FULL),
+    ITEM_MAP_ENTRY(ITEM_BOTTLE_RUTOS_LETTER),
+    ITEM_MAP_ENTRY(ITEM_BOTTLE_BLUE_FIRE),
+    ITEM_MAP_ENTRY(ITEM_BOTTLE_BUG),
+    ITEM_MAP_ENTRY(ITEM_BOTTLE_BIG_POE),
+    ITEM_MAP_ENTRY(ITEM_BOTTLE_MILK_HALF),
+    ITEM_MAP_ENTRY(ITEM_BOTTLE_POE),
     ITEM_MAP_ENTRY(ITEM_WEIRD_EGG),
     ITEM_MAP_ENTRY(ITEM_CHICKEN),
-    ITEM_MAP_ENTRY(ITEM_LETTER_ZELDA),
+    ITEM_MAP_ENTRY(ITEM_ZELDAS_LETTER),
     ITEM_MAP_ENTRY(ITEM_MASK_KEATON),
     ITEM_MAP_ENTRY(ITEM_MASK_SKULL),
     ITEM_MAP_ENTRY(ITEM_MASK_SPOOKY),
-    ITEM_MAP_ENTRY(ITEM_MASK_BUNNY),
+    ITEM_MAP_ENTRY(ITEM_MASK_BUNNY_HOOD),
     ITEM_MAP_ENTRY(ITEM_MASK_GORON),
     ITEM_MAP_ENTRY(ITEM_MASK_ZORA),
     ITEM_MAP_ENTRY(ITEM_MASK_GERUDO),
@@ -91,18 +91,18 @@ std::map<uint32_t, ItemMapEntry> itemMapping = {
     ITEM_MAP_ENTRY(ITEM_COJIRO),
     ITEM_MAP_ENTRY(ITEM_ODD_MUSHROOM),
     ITEM_MAP_ENTRY(ITEM_ODD_POTION),
-    ITEM_MAP_ENTRY(ITEM_SAW),
-    ITEM_MAP_ENTRY(ITEM_SWORD_BROKEN),
+    ITEM_MAP_ENTRY(ITEM_POACHERS_SAW),
+    ITEM_MAP_ENTRY(ITEM_BROKEN_GORONS_SWORD),
     ITEM_MAP_ENTRY(ITEM_PRESCRIPTION),
-    ITEM_MAP_ENTRY(ITEM_FROG),
-    ITEM_MAP_ENTRY(ITEM_EYEDROPS),
+    ITEM_MAP_ENTRY(ITEM_EYEBALL_FROG),
+    ITEM_MAP_ENTRY(ITEM_EYE_DROPS),
     ITEM_MAP_ENTRY(ITEM_CLAIM_CHECK),
-    ITEM_MAP_ENTRY(ITEM_BOW_ARROW_FIRE),
-    ITEM_MAP_ENTRY(ITEM_BOW_ARROW_ICE),
-    ITEM_MAP_ENTRY(ITEM_BOW_ARROW_LIGHT),
+    ITEM_MAP_ENTRY(ITEM_BOW_FIRE),
+    ITEM_MAP_ENTRY(ITEM_BOW_ICE),
+    ITEM_MAP_ENTRY(ITEM_BOW_LIGHT),
     ITEM_MAP_ENTRY(ITEM_SWORD_KOKIRI),
     ITEM_MAP_ENTRY(ITEM_SWORD_MASTER),
-    ITEM_MAP_ENTRY(ITEM_SWORD_BGS),
+    ITEM_MAP_ENTRY(ITEM_SWORD_BIGGORON),
     ITEM_MAP_ENTRY(ITEM_SHIELD_DEKU),
     ITEM_MAP_ENTRY(ITEM_SHIELD_HYLIAN),
     ITEM_MAP_ENTRY(ITEM_SHIELD_MIRROR),
@@ -121,24 +121,24 @@ std::map<uint32_t, ItemMapEntry> itemMapping = {
     ITEM_MAP_ENTRY(ITEM_BOMB_BAG_20),
     ITEM_MAP_ENTRY(ITEM_BOMB_BAG_30),
     ITEM_MAP_ENTRY(ITEM_BOMB_BAG_40),
-    ITEM_MAP_ENTRY(ITEM_BRACELET),
-    ITEM_MAP_ENTRY(ITEM_GAUNTLETS_SILVER),
-    ITEM_MAP_ENTRY(ITEM_GAUNTLETS_GOLD),
+    ITEM_MAP_ENTRY(ITEM_STRENGTH_GORONS_BRACELET),
+    ITEM_MAP_ENTRY(ITEM_STRENGTH_SILVER_GAUNTLETS),
+    ITEM_MAP_ENTRY(ITEM_STRENGTH_GOLD_GAUNTLETS),
     ITEM_MAP_ENTRY(ITEM_SCALE_SILVER),
     ITEM_MAP_ENTRY(ITEM_SCALE_GOLDEN),
-    ITEM_MAP_ENTRY(ITEM_SWORD_KNIFE),
-    ITEM_MAP_ENTRY(ITEM_WALLET_ADULT),
-    ITEM_MAP_ENTRY(ITEM_WALLET_GIANT),
-    ITEM_MAP_ENTRY(ITEM_SEEDS),
+    ITEM_MAP_ENTRY(ITEM_GIANTS_KNIFE),
+    ITEM_MAP_ENTRY(ITEM_ADULTS_WALLET),
+    ITEM_MAP_ENTRY(ITEM_GIANTS_WALLET),
+    ITEM_MAP_ENTRY(ITEM_DEKU_SEEDS),
     ITEM_MAP_ENTRY(ITEM_FISHING_POLE),
-    ITEM_MAP_ENTRY(ITEM_KEY_BOSS),
-    ITEM_MAP_ENTRY(ITEM_COMPASS),
+    ITEM_MAP_ENTRY(ITEM_DUNGEON_BOSS_KEY),
+    ITEM_MAP_ENTRY(ITEM_DUNGEON_COMPASS),
     ITEM_MAP_ENTRY(ITEM_DUNGEON_MAP),
-    ITEM_MAP_ENTRY(ITEM_KEY_SMALL),
+    ITEM_MAP_ENTRY(ITEM_SMALL_KEY),
     ITEM_MAP_ENTRY(ITEM_HEART_CONTAINER),
     ITEM_MAP_ENTRY(ITEM_HEART_PIECE),
-    ITEM_MAP_ENTRY(ITEM_MAGIC_SMALL),
-    ITEM_MAP_ENTRY(ITEM_MAGIC_LARGE)
+    ITEM_MAP_ENTRY(ITEM_MAGIC_JAR_SMALL),
+    ITEM_MAP_ENTRY(ITEM_MAGIC_JAR_BIG)
 };
 
 std::map<uint32_t, ItemMapEntry> gregMapping = {
@@ -181,9 +181,9 @@ extern "C" u8 gAmmoItems[];
 
 // Modification of gAmmoItems that replaces ITEM_NONE with the item in inventory slot it represents
 u8 gAllAmmoItems[] = {
-    ITEM_STICK,     ITEM_NUT,          ITEM_BOMB,    ITEM_BOW,      ITEM_ARROW_FIRE, ITEM_DINS_FIRE,
-    ITEM_SLINGSHOT, ITEM_OCARINA_TIME, ITEM_BOMBCHU, ITEM_LONGSHOT, ITEM_ARROW_ICE,  ITEM_FARORES_WIND,
-    ITEM_BOOMERANG, ITEM_LENS,         ITEM_BEAN,    ITEM_HAMMER,
+    ITEM_DEKU_STICK, ITEM_DEKU_NUT,        ITEM_BOMB,       ITEM_BOW,      ITEM_ARROW_FIRE, ITEM_DINS_FIRE,
+    ITEM_SLINGSHOT,  ITEM_OCARINA_OF_TIME, ITEM_BOMBCHU,    ITEM_LONGSHOT, ITEM_ARROW_ICE,  ITEM_FARORES_WIND,
+    ITEM_BOOMERANG,  ITEM_LENS_OF_TRUTH,   ITEM_MAGIC_BEAN, ITEM_HAMMER,
 };
 
 typedef struct {
@@ -212,7 +212,7 @@ std::map<uint32_t, QuestMapEntry> questMapping = {
     QUEST_MAP_ENTRY(QUEST_GORON_RUBY, dgQuestIconGoronRubyTex),
     QUEST_MAP_ENTRY(QUEST_ZORA_SAPPHIRE, dgQuestIconZoraSapphireTex),
     QUEST_MAP_ENTRY(QUEST_STONE_OF_AGONY, dgQuestIconStoneOfAgonyTex),
-    QUEST_MAP_ENTRY(QUEST_GERUDO_CARD, dgQuestIconGerudosCardTex),
+    QUEST_MAP_ENTRY(QUEST_GERUDOS_CARD, dgQuestIconGerudosCardTex),
     QUEST_MAP_ENTRY(QUEST_SKULL_TOKEN, dgQuestIconGoldSkulltulaTex),
 };
 
@@ -1203,10 +1203,10 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
 
 void DrawEquipmentTab() {
     const std::vector<uint8_t> equipmentValues = {
-        ITEM_SWORD_KOKIRI, ITEM_SWORD_MASTER,  ITEM_SWORD_BGS,     ITEM_SWORD_BROKEN,
-        ITEM_SHIELD_DEKU,  ITEM_SHIELD_HYLIAN, ITEM_SHIELD_MIRROR, ITEM_NONE,
-        ITEM_TUNIC_KOKIRI, ITEM_TUNIC_GORON,   ITEM_TUNIC_ZORA,    ITEM_NONE,
-        ITEM_BOOTS_KOKIRI, ITEM_BOOTS_IRON,    ITEM_BOOTS_HOVER,   ITEM_NONE,
+        ITEM_SWORD_KOKIRI, ITEM_SWORD_MASTER,  ITEM_SWORD_BIGGORON, ITEM_BROKEN_GORONS_SWORD,
+        ITEM_SHIELD_DEKU,  ITEM_SHIELD_HYLIAN, ITEM_SHIELD_MIRROR,  ITEM_NONE,
+        ITEM_TUNIC_KOKIRI, ITEM_TUNIC_GORON,   ITEM_TUNIC_ZORA,     ITEM_NONE,
+        ITEM_BOOTS_KOKIRI, ITEM_BOOTS_IRON,    ITEM_BOOTS_HOVER,    ITEM_NONE,
     };
     for (int32_t i = 0; i < equipmentValues.size(); i++) {
         // Skip over unused 4th slots for shields, boots, and tunics
@@ -1276,9 +1276,9 @@ void DrawEquipmentTab() {
 
     const std::vector<uint8_t> strengthValues = {
         ITEM_NONE,
-        ITEM_BRACELET,
-        ITEM_GAUNTLETS_SILVER,
-        ITEM_GAUNTLETS_GOLD,
+        ITEM_STRENGTH_GORONS_BRACELET,
+        ITEM_STRENGTH_SILVER_GAUNTLETS,
+        ITEM_STRENGTH_GOLD_GAUNTLETS,
     };
     DrawUpgradeIcon("Strength", UPG_STRENGTH, strengthValues);
 
@@ -1304,7 +1304,7 @@ void DrawEquipmentTab() {
         "20",
         "30",
     };
-    DrawUpgrade("Sticks", UPG_STICKS, stickNames);
+    DrawUpgrade("Sticks", UPG_DEKU_STICKS, stickNames);
 
     const std::vector<std::string> nutNames = {
         "None",
@@ -1312,7 +1312,7 @@ void DrawEquipmentTab() {
         "30",
         "40",
     };
-    DrawUpgrade("Deku Nuts", UPG_NUTS, nutNames);
+    DrawUpgrade("Deku Nuts", UPG_DEKU_NUTS, nutNames);
 }
 
 // Draws a toggleable icon for a quest item that is faded when disabled
@@ -1336,7 +1336,7 @@ void DrawQuestItemButton(uint32_t item) {
 // Draws a toggleable icon for a dungeon item that is faded when disabled
 void DrawDungeonItemButton(uint32_t item, uint32_t scene) {
     const ItemMapEntry& entry = itemMapping[item];
-    uint32_t bitMask = 1 << (entry.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
+    uint32_t bitMask = 1 << (entry.id - ITEM_DUNGEON_BOSS_KEY); // Bitset starts at ITEM_DUNGEON_BOSS_KEY == 0. the rest are sequential
     bool hasItem = (bitMask & gSaveContext.inventory.dungeonItems[scene]) != 0;
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
     if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem ? entry.name : entry.nameFaded),
@@ -1376,7 +1376,7 @@ void DrawQuestStatusTab() {
     DrawQuestItemButton(QUEST_STONE_OF_AGONY);
 
     ImGui::SameLine();
-    DrawQuestItemButton(QUEST_GERUDO_CARD);
+    DrawQuestItemButton(QUEST_GERUDOS_CARD);
 
     for (const SongMapEntry& entry : songMapping) {
         if ((entry.id != QUEST_SONG_MINUET) && (entry.id != QUEST_SONG_LULLABY)) {
@@ -1441,15 +1441,15 @@ void DrawQuestStatusTab() {
         }
         ImGui::PopItemWidth();
 
-        DrawDungeonItemButton(ITEM_KEY_BOSS, dungeonItemsScene);
+        DrawDungeonItemButton(ITEM_DUNGEON_BOSS_KEY, dungeonItemsScene);
         ImGui::SameLine();
-        DrawDungeonItemButton(ITEM_COMPASS, dungeonItemsScene);
+        DrawDungeonItemButton(ITEM_DUNGEON_COMPASS, dungeonItemsScene);
         ImGui::SameLine();
         DrawDungeonItemButton(ITEM_DUNGEON_MAP, dungeonItemsScene);
 
         if (dungeonItemsScene != SCENE_JABU_JABU_BOSS) {
             float lineHeight = ImGui::GetTextLineHeightWithSpacing();
-            ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[ITEM_KEY_SMALL].name), ImVec2(lineHeight, lineHeight));
+            ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[ITEM_SMALL_KEY].name), ImVec2(lineHeight, lineHeight));
             ImGui::SameLine();
             if (ImGui::InputScalar("##Keys", ImGuiDataType_S8, gSaveContext.inventory.dungeonKeys + dungeonItemsScene)) {
                 gSaveContext.sohStats.dungeonKeys[dungeonItemsScene] = gSaveContext.inventory.dungeonKeys[dungeonItemsScene];
@@ -1478,7 +1478,7 @@ void DrawPlayerTab() {
             case ITEM_SWORD_MASTER:
                 curSword = "Master Sword";
                 break;
-            case ITEM_SWORD_BGS:
+            case ITEM_SWORD_BIGGORON:
                 curSword = "Biggoron's Sword";
                 break;
             case ITEM_FISHING_POLE:
@@ -1619,14 +1619,14 @@ void DrawPlayerTab() {
                     if (gSaveContext.swordHealth < 8) {
                         gSaveContext.swordHealth = 8;
                     }
-                    player->currentSwordItemId = ITEM_SWORD_BGS;
-                    gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
+                    player->currentSwordItemId = ITEM_SWORD_BIGGORON;
+                    gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BIGGORON;
                 } else {
                     if (gSaveContext.swordHealth < 8) {
                         gSaveContext.swordHealth = 8;
                     }
-                    player->currentSwordItemId = ITEM_SWORD_BGS;
-                    gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KNIFE;
+                    player->currentSwordItemId = ITEM_SWORD_BIGGORON;
+                    gSaveContext.equips.buttonItems[0] = ITEM_GIANTS_KNIFE;
                 }
                 
                 Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_BIGGORON);

@@ -879,9 +879,9 @@ void func_80B15E80(EnTa* this, PlayState* play) {
         func_8002F434(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
     } else {
         if (!IS_RANDO) {
-            func_8002F434(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
+            func_8002F434(&this->actor, play, GI_BOTTLE_MILK_FULL, 10000.0f, 50.0f);
         } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_MILK_BOTTLE);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_BOTTLE_MILK_FULL);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }
@@ -894,9 +894,9 @@ void func_80B15F54(EnTa* this, PlayState* play) {
         this->unk_2E0 &= ~0x2;
         func_80B13AA0(this, func_80B15E80, func_80B16938);
         if (!IS_RANDO) {
-            func_8002F434(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
+            func_8002F434(&this->actor, play, GI_BOTTLE_MILK_FULL, 10000.0f, 50.0f);
         } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_MILK_BOTTLE);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_BOTTLE_MILK_FULL);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }

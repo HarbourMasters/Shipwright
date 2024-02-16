@@ -612,7 +612,7 @@ void GenerateItemPool() {
   IceTrapModels = {
     GI_SHIELD_MIRROR,
     GI_BOOMERANG,
-    GI_LENS,
+    GI_LENS_OF_TRUTH,
     GI_HAMMER,
     GI_BOOTS_IRON,
     GI_BOOTS_HOVER,
@@ -889,7 +889,7 @@ void GenerateItemPool() {
   //Gerudo Membership Card
   if (ShuffleGerudoToken && GerudoFortress.IsNot(GERUDOFORTRESS_OPEN)) {
     AddItemToMainPool(GERUDO_MEMBERSHIP_CARD);
-    IceTrapModels.push_back(GI_GERUDO_CARD);
+    IceTrapModels.push_back(GI_GERUDOS_CARD);
   } else if (ShuffleGerudoToken) {
     AddItemToPool(PendingJunkPool, GERUDO_MEMBERSHIP_CARD);
     PlaceItemInLocation(GF_GERUDO_MEMBERSHIP_CARD, ICE_TRAP, false, true);
@@ -1178,7 +1178,7 @@ void GenerateItemPool() {
     AddItemToMainPool(PROGRESSIVE_GORONSWORD, 2);
     IceTrapModels.push_back(0xD4); // Progressive Goron Sword
   } else {
-    IceTrapModels.push_back(GI_SWORD_BGS);
+    IceTrapModels.push_back(GI_SWORD_BIGGORON);
   }
 
   //Replace ice traps with junk from the pending junk pool if necessary

@@ -2241,7 +2241,7 @@ void EnXc_SetupDialogueAction(EnXc* this, PlayState* play) {
     } else {
          this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
         if (IS_RANDO && gPlayState->sceneNum == SCENE_TEMPLE_OF_TIME) {
-            if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER)) {
+            if (!CHECK_DUNGEON_ITEM(DUNGEON_BOSS_KEY, SCENE_GANONS_TOWER)) {
                 this->actor.textId = TEXT_SHEIK_NEED_HOOK;
             } else {
                 this->actor.textId = TEXT_SHEIK_HAVE_HOOK;

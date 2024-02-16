@@ -352,7 +352,7 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
             dropsSpawnPt = this->actor.world.pos;
             dropsSpawnPt.y += 200.0f;
 
-            if ((this->unk_14C >= 0) && (this->unk_14C < 0x64) && (CVarGetInteger("gTreeStickDrops", 0)) && !(INV_CONTENT(ITEM_STICK) == ITEM_NONE)) {
+            if ((this->unk_14C >= 0) && (this->unk_14C < 0x64) && (CVarGetInteger("gTreeStickDrops", 0)) && !(INV_CONTENT(ITEM_DEKU_STICK) == ITEM_NONE)) {
                 (numDrops = (Rand_ZeroOne() * 4));
                 for (i = 0; i < numDrops; ++i) {
                     Item_DropCollectible(play, &dropsSpawnPt, ITEM00_STICK);

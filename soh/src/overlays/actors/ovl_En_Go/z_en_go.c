@@ -103,13 +103,13 @@ u16 EnGo_GetTextID(PlayState* play, Actor* thisx) {
                 } else {
                     return 0x305D;
                 }
-            } else if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_EYEDROPS) {
-                player->exchangeItemId = EXCH_ITEM_EYEDROPS;
+            } else if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_EYE_DROPS) {
+                player->exchangeItemId = EXCH_ITEM_EYE_DROPS;
                 return 0x3059;
             } else if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_PRESCRIPTION) {
                 return 0x3058;
             } else {
-                player->exchangeItemId = EXCH_ITEM_SWORD_BROKEN;
+                player->exchangeItemId = EXCH_ITEM_BROKEN_GORONS_SWORD;
                 return 0x3053;
             }
         case 0x00:
@@ -596,8 +596,8 @@ void func_80A3F908(EnGo* this, PlayState* play) {
         }
 
         if (((this->actor.params & 0xF0) == 0x90) && (isUnkCondition == true)) {
-            if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_SWORD_BROKEN) {
-                if (func_8002F368(play) == EXCH_ITEM_SWORD_BROKEN) {
+            if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_BROKEN_GORONS_SWORD) {
+                if (func_8002F368(play) == EXCH_ITEM_BROKEN_GORONS_SWORD) {
                     if (Flags_GetInfTable(INFTABLE_B4)) {
                         this->actor.textId = 0x3055;
                     } else {
@@ -609,8 +609,8 @@ void func_80A3F908(EnGo* this, PlayState* play) {
                 player->actor.textId = this->actor.textId;
             }
 
-            if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
-                if (func_8002F368(play) == EXCH_ITEM_EYEDROPS) {
+            if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYE_DROPS) {
+                if (func_8002F368(play) == EXCH_ITEM_EYE_DROPS) {
                     this->actor.textId = 0x3059;
                 } else {
                     this->actor.textId = 0x3058;
@@ -862,7 +862,7 @@ void EnGo_BiggoronActionFunc(EnGo* this, PlayState* play) {
         if (!IS_RANDO && gSaveContext.bgsFlag) {
             this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         } else {
-            if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
+            if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYE_DROPS) {
                 EnGo_ChangeAnim(this, ENGO_ANIM_2);
                 this->unk_21E = 100;
                 this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
@@ -959,26 +959,26 @@ void EnGo_GetItem(EnGo* this, PlayState* play) {
         if ((this->actor.params & 0xF0) == 0x90) {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK) {
                 if (!IS_RANDO) {
-                    getItemId = GI_SWORD_BGS;
+                    getItemId = GI_SWORD_BIGGORON;
                 } else {
-                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS);
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BIGGORON);
                     getItemId = getItemEntry.getItemId;
                 }
                 this->unk_20C = 1;
             }
-            if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
+            if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYE_DROPS) {
                 if (IS_RANDO) {
                     getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
                     getItemId = getItemEntry.getItemId;
-                    Randomizer_ConsumeAdultTradeItem(play, ITEM_EYEDROPS);
+                    Randomizer_ConsumeAdultTradeItem(play, ITEM_EYE_DROPS);
                 } else {
                     getItemId = GI_CLAIM_CHECK;
                 }
             }
-            if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_SWORD_BROKEN) {
+            if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_BROKEN_GORONS_SWORD) {
                 if (IS_RANDO) {
                     getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
-                    Randomizer_ConsumeAdultTradeItem(play, ITEM_SWORD_BROKEN);
+                    Randomizer_ConsumeAdultTradeItem(play, ITEM_BROKEN_GORONS_SWORD);
                     getItemId = getItemEntry.getItemId;
                 } else {
                     getItemId = GI_PRESCRIPTION;

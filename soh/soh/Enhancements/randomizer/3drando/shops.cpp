@@ -233,7 +233,7 @@ void InitTrickNames() {
      Text{"Medigoron's Sword", "l'Épée de Medigoron", "La espada de Medigoron"},
      Text{"Razor Sword", "Lame Rasoir", "Espada de esmeril"},
      Text{"Royal Claymore", "Claymore Royale", "Royal Claymore"}};
-  trickNameTable[GI_SWORD_BGS] = {
+  trickNameTable[GI_SWORD_BIGGORON] = {
      Text{"Power Sword", "Épée de Puissance", "Espada de poder"},
      Text{"Fierce Deity Sword", "Épée du dieu démon", "Espada de la Fiera Deidad"},
      Text{"Tempered Sword", "Épée de Légende Nv.2", "Espada Maestra mejorada"},
@@ -274,7 +274,7 @@ void InitTrickNames() {
      Text{"Poached Egg", "Oeuf à la coque", "Huevo pasado"},
      Text{"Lon Lon Egg", "Oeuf Lon Lon", "Huevo Lon Lon"},
      Text{"Zora Egg", "Oeuf Zora", "Huevo Zora"}};
-  trickNameTable[GI_LETTER_ZELDA] = {
+  trickNameTable[GI_ZELDAS_LETTER] = {
       Text{"Ruto's Letter", "Lettre de Ruto", "Carta de Ruto"},
      Text{"Royal Letter", "Lettre Eoyale", "Carta para Kafei"},
      Text{"Zelda's Business Card", "Carte d'affaires de Zelda", "Carta"},
@@ -286,7 +286,7 @@ void InitTrickNames() {
      Text{"Prank Fetch Toy", "Inséparable Bâtonnet", "Bumerang"},
      Text{"Gale Boomerang", "Boomerang Tornade", "Bumerán tornado"},
      Text{"Magic Boomerang", "Boomerang Magique", "Bumerán mágico"}};
-  trickNameTable[GI_LENS] = {
+  trickNameTable[GI_LENS_OF_TRUTH] = {
      Text{"Sheikah-leidoscope", "Sheikah-léidoscope", "Monóculo de la Verdad"},
      Text{"Sheikah Sensor", "Sonar Sheikah", "Sensor Sheikah"},
      Text{"Crystal of Vision", "Cristal de Vision", "Cristal de Visión"},
@@ -331,7 +331,7 @@ void InitTrickNames() {
      Text{"Wand of Gamelon", "Baguette de Gamelon", "Varita de Gamelón"},
      Text{"Shock Arrow", "Flèches Électriques", "Flecha eléctrica"},
      Text{"Silver Arrow", "Flèches d'Argent", "Flecha de plata"}};
-  trickNameTable[GI_GERUDO_CARD] = {
+  trickNameTable[GI_GERUDOS_CARD] = {
      Text{"Desert Title Deed", "Abonnement Gerudo", "Escritura del desierto"},
      Text{"Sickle Moon Flag", "Drapeau du croissant de lune", "Bandera de la Luna Creciente"},
      Text{"Complimentary ID", "Bon de félicitation", "Cupón especial"},
@@ -373,13 +373,13 @@ void InitTrickNames() {
      Text{"Secret Medicine", "Médicament", "Pócima secreta"},
      Text{"Mushroom Spores", "Spores de Champignons", "Esporas de hongos"},
      Text{"Hanyu Spore", "Hanyu Spore", "Espora Hanyu"}};
-  trickNameTable[GI_SAW] = {
+  trickNameTable[GI_POACHERS_SAW] = {
      Text{"Carpenter's Saw", "Scie du charpentier", "Sierra del carpintero"},
      Text{"Poacher's Sword", "Hache du chasseur", "Espada del capataz"},
      Text{"Ancient Bladesaw", "Longue Épée Archéonique", "Mandoble ancestral"},
      Text{"Woodcutter's Axe", "Hache du Bûcheron", "Hacha de leñador"},
      Text{"Grog's Saw", "Scie de Grog", "Sierra del Cazador Furtivo"}};
-  trickNameTable[GI_SWORD_BROKEN] = {
+  trickNameTable[GI_BROKEN_GORONS_SWORD] = {
      Text{"Broken Biggoron's Sword", "Épée brisée de Grogoron", "Espada de Biggoron rota"},
      Text{"Broken Giant's Knife", "Lame des Géants brisée", "Daga gigante rota"},
      Text{"Broken Noble Sword", "Épée noble brisée", "Espada noble rota"},
@@ -392,12 +392,12 @@ void InitTrickNames() {
      Text{"Swordsman's Scroll", "Précis d'escrime", "Esgrimidorium"},
      Text{"Portrait of Oren", "Portrait d'Orlène", "Retrato de Oren"},
      Text{"Letter to King Zora", "Lettre au roi Zora", "Carta al Rey Zora"}};
-  trickNameTable[GI_FROG] = {
+  trickNameTable[GI_EYEBALL_FROG] = {
      Text{"Don Gero", "Don Gero", "Don Gero"},
      Text{"Hot-Footed Frog", "Grenouille à pieds chauds", "Rana de patas calientes"},
      Text{"Lost Swordsmith", "Forgeron perdu", "Espadachín perdido"},
      Text{"Eyedrop Frog", "Grenouille-qui-louche", "Globo Ocular de Rana"}};
-  trickNameTable[GI_EYEDROPS] = {
+  trickNameTable[GI_EYE_DROPS] = {
      Text{"Biggoron's Eyedrops", "Gouttes de Grogoron", "Gotas de Biggoron"},
      Text{"Hyrule's Finest Eyedrops", "Eau du Lac Hylia", "Gotas oculares"},
      Text{"Moon's Tear", "Larme de Lune", "Lágrima de Luna"},
@@ -655,7 +655,7 @@ void InitTrickNames() {
      Text{"Sign of Destiny", "Glyphe du destin", "Glifo del destino"},
      Text{"Medallion of Light", "Médaillon du temple de lumière", "Medalla de la Luz"}};
 
-  trickNameTable[GI_HEART] = {
+  trickNameTable[GI_RECOVERY_HEART] = {
      Text{"Love", "Bisou", "Te amo"},
      Text{"Life", "Vie", "vida"},
      Text{"HP", "VP", "VP"}};
@@ -829,7 +829,7 @@ void InitTrickNames() {
 	 Text{"Skrik Mask", "Masque Skrik", "Máscara Escalofriante"},
      Text{"ReDead Mask", "Masque de Remort", "Máscara de ReDead"},
      Text{"Gibdo Mask", "Masque de Gibdo", "Careta de Gibdo"}};
-  trickNameTable[GI_MASK_BUNNY] = {
+  trickNameTable[GI_MASK_BUNNY_HOOD] = {
 	 Text{"Peppy Mask", "Masque de Peppy", "Capucha de Pascua"},
      Text{"Bunny Ears", "Oreilles de lapin", "Orejas de conejo"},
      Text{"Postman's Hat", "Casquette du facteur", "Gorra de cartero"}};

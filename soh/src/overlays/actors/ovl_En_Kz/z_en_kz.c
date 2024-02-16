@@ -77,13 +77,13 @@ u16 EnKz_GetTextNoMaskChild(PlayState* play, EnKz* this) {
         (!IS_RANDO && CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE))) {
         // Allow turning in Ruto's letter even if you have already rescued her
         if (IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
-            player->exchangeItemId = EXCH_ITEM_LETTER_RUTO;
+            player->exchangeItemId = EXCH_ITEM_BOTTLE_RUTOS_LETTER;
         }
         return 0x402B;
     } else if (Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
         return 0x401C;
     } else {
-        player->exchangeItemId = EXCH_ITEM_LETTER_RUTO;
+        player->exchangeItemId = EXCH_ITEM_BOTTLE_RUTOS_LETTER;
         return 0x401A;
     }
 }
@@ -91,8 +91,8 @@ u16 EnKz_GetTextNoMaskChild(PlayState* play, EnKz* this) {
 u16 EnKz_GetTextNoMaskAdult(PlayState* play, EnKz* this) {
     Player* player = GET_PLAYER(play);
 
-    // this works because both ITEM_NONE and later trade items are > ITEM_FROG
-    if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_FROG) {
+    // this works because both ITEM_NONE and later trade items are > ITEM_EYEBALL_FROG
+    if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_EYEBALL_FROG) {
         if (!Flags_GetInfTable(INFTABLE_139)) {
             if (!IS_RANDO) {
                 return CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA) ? 0x401F : 0x4012;
@@ -244,7 +244,7 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
 
     if (func_80A9C95C(play, this, &this->interactInfo.talkState, 340.0f, EnKz_GetText, func_80A9C6C0)) {
         if (((IS_RANDO && LINK_IS_CHILD) || this->actor.textId == 0x401A) && !Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
-            if (func_8002F368(play) == EXCH_ITEM_LETTER_RUTO) {
+            if (func_8002F368(play) == EXCH_ITEM_BOTTLE_RUTOS_LETTER) {
                 this->actor.textId = 0x401B;
                 this->sfxPlayed = false;
             } else {
@@ -432,7 +432,7 @@ void EnKz_Mweep(EnKz* this, PlayState* play) {
     Play_CameraSetAtEye(play, this->cutsceneCamera, &pos, &initPos);
     if ((EnKz_FollowPath(this, play) == 1) && (this->waypoint == 0)) {
         Animation_ChangeByInfo(&this->skelanime, sAnimationInfo, ENKZ_ANIM_1);
-        Inventory_ReplaceItem(play, ITEM_LETTER_RUTO, ITEM_BOTTLE);
+        Inventory_ReplaceItem(play, ITEM_BOTTLE_RUTOS_LETTER, ITEM_BOTTLE_EMPTY);
         EnKz_SetMovedPos(this, play);
         Flags_SetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED);
         this->actor.speedXZ = 0.0;
@@ -472,7 +472,7 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
     } else {
         if (IS_RANDO) {
             if (this->isTrading) {
-                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZD_TRADE_PRESCRIPTION, GI_FROG);
+                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZD_TRADE_PRESCRIPTION, GI_EYEBALL_FROG);
                 getItemId = getItemEntry.getItemId;
                 Randomizer_ConsumeAdultTradeItem(play, ITEM_PRESCRIPTION);
                 Flags_SetTreasure(play, 0x1F);
@@ -481,7 +481,7 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
                 getItemId = getItemEntry.getItemId;
             }
         } else {
-            getItemId = this->isTrading ? GI_FROG : GI_TUNIC_ZORA;
+            getItemId = this->isTrading ? GI_EYEBALL_FROG : GI_TUNIC_ZORA;
         }
         yRange = fabsf(this->actor.yDistToPlayer) + 1.0f;
         xzRange = this->actor.xzDistToPlayer + 1.0f;
@@ -495,7 +495,7 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
 
 void EnKz_StartTimer(EnKz* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
-        if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_FROG && !IS_RANDO) {
+        if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEBALL_FROG && !IS_RANDO) {
             func_80088AA0(180); // start timer2 with 3 minutes
             gSaveContext.eventInf[1] &= ~1;
         }

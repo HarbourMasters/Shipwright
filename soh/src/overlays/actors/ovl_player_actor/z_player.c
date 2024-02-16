@@ -3151,8 +3151,8 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
              ((itemAction == PLAYER_IA_HOOKSHOT) || (itemAction == PLAYER_IA_LONGSHOT)))) {
 
             if ((play->bombchuBowlingStatus == 0) &&
-                (((itemAction == PLAYER_IA_DEKU_STICK) && (AMMO(ITEM_STICK) == 0)) ||
-                 ((itemAction == PLAYER_IA_MAGIC_BEAN) && (AMMO(ITEM_BEAN) == 0)) ||
+                (((itemAction == PLAYER_IA_DEKU_STICK) && (AMMO(ITEM_DEKU_STICK) == 0)) ||
+                 ((itemAction == PLAYER_IA_MAGIC_BEAN) && (AMMO(ITEM_MAGIC_BEAN) == 0)) ||
                  (temp = Player_ActionToExplosive(this, itemAction),
                   ((temp >= 0) && ((AMMO(sExplosiveInfos[temp].itemId) == 0) ||
                                    (play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].length >= 3 && !CVarGetInteger("gRemoveExplosiveLimit", 0))))))) {
@@ -3175,7 +3175,7 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
             }
 
             if (itemAction == PLAYER_IA_DEKU_NUT) {
-                if (AMMO(ITEM_NUT) != 0) {
+                if (AMMO(ITEM_DEKU_NUT) != 0) {
                     func_8083C61C(play, this);
                 } else {
                     func_80078884(NA_SE_SY_ERROR);
@@ -5306,11 +5306,11 @@ void func_8083B010(Player* this) {
 }
 
 static u8 D_80854528[] = {
-    GI_LETTER_ZELDA, GI_WEIRD_EGG,    GI_CHICKEN,     GI_BEAN,        GI_POCKET_EGG,   GI_POCKET_CUCCO,
-    GI_COJIRO,       GI_ODD_MUSHROOM, GI_ODD_POTION,  GI_SAW,         GI_SWORD_BROKEN, GI_PRESCRIPTION,
-    GI_FROG,         GI_EYEDROPS,     GI_CLAIM_CHECK, GI_MASK_SKULL,  GI_MASK_SPOOKY,  GI_MASK_KEATON,
-    GI_MASK_BUNNY,   GI_MASK_TRUTH,   GI_MASK_GORON,  GI_MASK_ZORA,   GI_MASK_GERUDO,  GI_LETTER_RUTO,
-    GI_LETTER_RUTO,  GI_LETTER_RUTO,  GI_LETTER_RUTO, GI_LETTER_RUTO, GI_LETTER_RUTO,
+    GI_ZELDAS_LETTER, GI_WEIRD_EGG,    GI_CHICKEN,     GI_MAGIC_BEAN,        GI_POCKET_EGG,   GI_POCKET_CUCCO,
+    GI_COJIRO,       GI_ODD_MUSHROOM, GI_ODD_POTION,  GI_POACHERS_SAW,         GI_BROKEN_GORONS_SWORD, GI_PRESCRIPTION,
+    GI_EYEBALL_FROG,         GI_EYE_DROPS,     GI_CLAIM_CHECK, GI_MASK_SKULL,  GI_MASK_SPOOKY,  GI_MASK_KEATON,
+    GI_MASK_BUNNY_HOOD,   GI_MASK_TRUTH,   GI_MASK_GORON,  GI_MASK_ZORA,   GI_MASK_GERUDO,  GI_BOTTLE_RUTOS_LETTER,
+    GI_BOTTLE_RUTOS_LETTER,  GI_BOTTLE_RUTOS_LETTER,  GI_BOTTLE_RUTOS_LETTER, GI_BOTTLE_RUTOS_LETTER, GI_BOTTLE_RUTOS_LETTER,
 };
 
 static LinkAnimationHeader* D_80854548[] = {
@@ -5351,8 +5351,8 @@ s32 func_8083B040(Player* this, PlayState* play) {
                      ((sp28 >= 0) && (sp28 < 6) &&
                       ((this->itemAction > PLAYER_IA_BOTTLE_POE) ||
                        ((this->targetActor != NULL) &&
-                        (((this->itemAction == PLAYER_IA_BOTTLE_POE) && (this->exchangeItemId == EXCH_ITEM_POE)) ||
-                         (this->exchangeItemId == EXCH_ITEM_BLUE_FIRE))))))) {
+                        (((this->itemAction == PLAYER_IA_BOTTLE_POE) && (this->exchangeItemId == EXCH_ITEM_BOTTLE_POE)) ||
+                         (this->exchangeItemId == EXCH_ITEM_BOTTLE_BLUE_FIRE))))))) {
 
                     if ((play->actorCtx.titleCtx.delayTimer == 0) && (play->actorCtx.titleCtx.alpha == 0)) {
                         func_80835DE4(play, this, func_8084F104, 0);
@@ -5377,14 +5377,14 @@ s32 func_8083B040(Player* this, PlayState* play) {
                         targetActor = this->targetActor;
 
                         if ((targetActor != NULL) &&
-                            ((this->exchangeItemId == sp2C) || (this->exchangeItemId == EXCH_ITEM_BLUE_FIRE) ||
-                             ((this->exchangeItemId == EXCH_ITEM_POE) &&
+                            ((this->exchangeItemId == sp2C) || (this->exchangeItemId == EXCH_ITEM_BOTTLE_BLUE_FIRE) ||
+                             ((this->exchangeItemId == EXCH_ITEM_BOTTLE_POE) &&
                               (this->itemAction == PLAYER_IA_BOTTLE_BIG_POE)) ||
-                             ((this->exchangeItemId == EXCH_ITEM_BEAN) &&
+                             ((this->exchangeItemId == EXCH_ITEM_MAGIC_BEAN) &&
                               (this->itemAction == PLAYER_IA_BOTTLE_BUG))) &&
-                            ((this->exchangeItemId != EXCH_ITEM_BEAN) || (this->itemAction == PLAYER_IA_MAGIC_BEAN))) {
-                            if (this->exchangeItemId == EXCH_ITEM_BEAN) {
-                                Inventory_ChangeAmmo(ITEM_BEAN, -1);
+                            ((this->exchangeItemId != EXCH_ITEM_MAGIC_BEAN) || (this->itemAction == PLAYER_IA_MAGIC_BEAN))) {
+                            if (this->exchangeItemId == EXCH_ITEM_MAGIC_BEAN) {
+                                Inventory_ChangeAmmo(ITEM_MAGIC_BEAN, -1);
                                 func_80835DE4(play, this, func_8084279C, 0);
                                 this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
                                 this->unk_850 = 0x50;
@@ -5392,7 +5392,7 @@ s32 func_8083B040(Player* this, PlayState* play) {
                             }
                             targetActor->flags |= ACTOR_FLAG_PLAYER_TALKED_TO;
                             this->unk_664 = this->targetActor;
-                        } else if (sp2C == EXCH_ITEM_LETTER_RUTO) {
+                        } else if (sp2C == EXCH_ITEM_BOTTLE_RUTOS_LETTER) {
                             this->unk_84F = 1;
                             this->actor.textId = 0x4005;
                             func_80835EA4(play, 1);
@@ -5843,7 +5843,7 @@ s32 func_8083C544(Player* this, PlayState* play) {
 
 s32 func_8083C61C(PlayState* play, Player* this) {
     if ((play->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_2) && (this->actor.bgCheckFlags & 1) &&
-        (AMMO(ITEM_NUT) != 0)) {
+        (AMMO(ITEM_DEKU_NUT) != 0)) {
         Player_SetupAction(play, this, func_8084E604, 0);
         Player_AnimPlayOnce(play, this, &gPlayerAnim_link_normal_light_bom);
         this->unk_6AD = 0;
@@ -8365,14 +8365,14 @@ void func_80842A28(PlayState* play, Player* this) {
 
 void func_80842A88(PlayState* play, Player* this) {
     if (CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
-        Inventory_ChangeAmmo(ITEM_STICK, -1);
+        Inventory_ChangeAmmo(ITEM_DEKU_STICK, -1);
         Player_UseItem(play, this, ITEM_NONE);
     }
 }
 
 s32 func_80842AC4(PlayState* play, Player* this) {
     if ((this->heldItemAction == PLAYER_IA_DEKU_STICK) && (this->unk_85C > 0.5f)) {
-        if (AMMO(ITEM_STICK) != 0 && CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
+        if (AMMO(ITEM_DEKU_STICK) != 0 && CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
             EffectSsStick_Spawn(play, &this->bodyPartsPos[PLAYER_BODYPART_R_HAND],
                                 this->actor.shape.rot.y + 0x8000);
             this->unk_85C = 0.5f;
@@ -10809,7 +10809,7 @@ void func_80848A04(PlayState* play, Player* this) {
 
     temp = 1.0f;
     if (DECR(this->unk_860) == 0 && CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
-        Inventory_ChangeAmmo(ITEM_STICK, -1);
+        Inventory_ChangeAmmo(ITEM_DEKU_STICK, -1);
         this->unk_860 = 1;
         temp = 0.0f;
         this->unk_85C = temp;
@@ -13324,7 +13324,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         if (!(giEntry.modIndex == MOD_RANDOMIZER && giEntry.itemId == RG_ICE_TRAP)) {
             if (giEntry.modIndex == MOD_NONE) {
                 // RANDOTOD: Move this into Item_Give() or some other more central location
-                if (giEntry.getItemId == GI_SWORD_BGS) {
+                if (giEntry.getItemId == GI_SWORD_BIGGORON) {
                     gSaveContext.bgsFlag = true;
                     gSaveContext.swordHealth = 8;
                 }
@@ -13341,7 +13341,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
                 Audio_PlayFanfare_Rando(giEntry);
             } else if (((giEntry.itemId >= ITEM_RUPEE_GREEN) && (giEntry.itemId <= ITEM_RUPEE_RED)) ||
                         ((giEntry.itemId >= ITEM_RUPEE_PURPLE) && (giEntry.itemId <= ITEM_RUPEE_GOLD)) ||
-                        (giEntry.itemId == ITEM_HEART)) {
+                        (giEntry.itemId == ITEM_RECOVERY_HEART)) {
                 Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             } else {
                 if ((giEntry.itemId == ITEM_HEART_CONTAINER) ||
@@ -13373,7 +13373,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
              Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) {
         if (play->msgCtx.choiceIndex == 0) { // Equip now? Yes
 
-            if (equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_SWORD_BGS) {
+            if (equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_SWORD_BIGGORON) {
                 gSaveContext.equips.buttonItems[0] = equipItem;
                 Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, equipItem - ITEM_SWORD_KOKIRI + 1);
                 func_808328EC(this, NA_SE_IT_SWORD_PUTAWAY);
@@ -13394,7 +13394,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         play->msgCtx.msgMode = MSGMODE_TEXT_DONE;
     } else {
         if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
-            if (this->getItemId == GI_GAUNTLETS_SILVER && !IS_RANDO) {
+            if (this->getItemId == GI_SILVER_GAUNTLETS && !IS_RANDO) {
                 play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_0;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;
@@ -13534,7 +13534,7 @@ void func_8084E604(Player* this, PlayState* play) {
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         func_8083A098(this, &gPlayerAnim_link_normal_light_bom_end, play);
     } else if (LinkAnimation_OnFrame(&this->skelAnime, 3.0f)) {
-        Inventory_ChangeAmmo(ITEM_NUT, -1);
+        Inventory_ChangeAmmo(ITEM_DEKU_NUT, -1);
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, this->bodyPartsPos[PLAYER_BODYPART_R_HAND].x,
                     this->bodyPartsPos[PLAYER_BODYPART_R_HAND].y, this->bodyPartsPos[PLAYER_BODYPART_R_HAND].z, 4000,
                     this->actor.shape.rot.y, 0, ARROW_NUT, true);
@@ -13785,7 +13785,7 @@ void func_8084EAC0(Player* this, PlayState* play) {
         if ((gSaveContext.healthAccumulator == 0) && (gSaveContext.magicState != MAGIC_STATE_FILL)) {
             Player_AnimChangeOnceMorphAdjusted(play, this, &gPlayerAnim_link_bottle_drink_demo_end);
             this->unk_850 = 2;
-            Player_UpdateBottleHeld(play, this, ITEM_BOTTLE, PLAYER_IA_BOTTLE);
+            Player_UpdateBottleHeld(play, this, ITEM_BOTTLE_EMPTY, PLAYER_IA_BOTTLE);
         }
         func_80832698(this, NA_SE_VO_LI_DRINK - SFX_FLAG);
     } else if ((this->unk_850 == 2) && LinkAnimation_OnFrame(&this->skelAnime, 29.0f)) {
@@ -13794,10 +13794,10 @@ void func_8084EAC0(Player* this, PlayState* play) {
 }
 
 static BottleCatchInfo D_80854A04[] = {
-    { ACTOR_EN_ELF, ITEM_FAIRY, 0x2A, 0x46 },
-    { ACTOR_EN_FISH, ITEM_FISH, 0x1F, 0x47 },
-    { ACTOR_EN_ICE_HONO, ITEM_BLUE_FIRE, 0x20, 0x5D },
-    { ACTOR_EN_INSECT, ITEM_BUG, 0x21, 0x7A },
+    { ACTOR_EN_ELF, ITEM_BOTTLE_FAIRY, 0x2A, 0x46 },
+    { ACTOR_EN_FISH, ITEM_BOTTLE_FISH, 0x1F, 0x47 },
+    { ACTOR_EN_ICE_HONO, ITEM_BOTTLE_BLUE_FIRE, 0x20, 0x5D },
+    { ACTOR_EN_INSECT, ITEM_BOTTLE_BUG, 0x21, 0x7A },
 };
 
 void func_8084ECA4(Player* this, PlayState* play) {
@@ -13882,7 +13882,7 @@ void func_8084EED8(Player* this, PlayState* play) {
 
     if (LinkAnimation_OnFrame(&this->skelAnime, 37.0f)) {
         Player_SpawnFairy(play, this, &this->leftHandPos, &D_80854A1C, FAIRY_REVIVE_BOTTLE);
-        Player_UpdateBottleHeld(play, this, ITEM_BOTTLE, PLAYER_IA_BOTTLE);
+        Player_UpdateBottleHeld(play, this, ITEM_BOTTLE_EMPTY, PLAYER_IA_BOTTLE);
         Player_PlaySfx(&this->actor, NA_SE_EV_BOTTLE_CAP_OPEN);
         Player_PlaySfx(&this->actor, NA_SE_EV_FIATY_HEAL - SFX_FLAG);
     } else if (LinkAnimation_OnFrame(&this->skelAnime, 47.0f)) {
@@ -13927,7 +13927,7 @@ void func_8084EFC0(Player* this, PlayState* play) {
                     (Math_CosS(this->actor.shape.rot.y) * 5.0f) + this->leftHandPos.z, 0x4000, this->actor.shape.rot.y,
                     0, dropInfo->actorParams, true);
 
-        Player_UpdateBottleHeld(play, this, ITEM_BOTTLE, PLAYER_IA_BOTTLE);
+        Player_UpdateBottleHeld(play, this, ITEM_BOTTLE_EMPTY, PLAYER_IA_BOTTLE);
         return;
     }
 

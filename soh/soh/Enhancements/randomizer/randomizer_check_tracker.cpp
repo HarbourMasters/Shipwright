@@ -597,10 +597,10 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         } else if (giEntry.itemId == ITEM_SONG_SARIA) {
             SetCheckCollected(RC_SONG_FROM_SARIA);
             return;
-        } else if (giEntry.itemId == ITEM_BEAN) {
+        } else if (giEntry.itemId == ITEM_MAGIC_BEAN) {
             SetCheckCollected(RC_ZR_MAGIC_BEAN_SALESMAN);
             return;
-        } else if (giEntry.itemId == ITEM_BRACELET) {
+        } else if (giEntry.itemId == ITEM_STRENGTH_GORONS_BRACELET) {
             SetCheckCollected(RC_GC_DARUNIAS_JOY);
             return;
         }/* else if (giEntry.itemId == ITEM_SONG_SUN) {

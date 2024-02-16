@@ -4009,7 +4009,7 @@ void Audio_PlayFanfare_Rando(GetItemEntry getItem) {
     s16 itemId = getItem.itemId;
 
     if (getItem.modIndex == MOD_NONE) {
-        if (((itemId >= ITEM_RUPEE_GREEN) && (itemId <= ITEM_RUPEE_GOLD)) || (itemId == ITEM_HEART)) {
+        if (((itemId >= ITEM_RUPEE_GREEN) && (itemId <= ITEM_RUPEE_GOLD)) || (itemId == ITEM_RECOVERY_HEART)) {
             Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         } else {
             if (itemId == ITEM_HEART_CONTAINER ||

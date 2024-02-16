@@ -397,13 +397,13 @@ void RegisterOnKaleidoscopeUpdateHook() {
             {
                 char arg[8]; // at least big enough where no s8 string will overflow
                 switch (pauseCtx->cursorItem[PAUSE_ITEM]) {
-                    case ITEM_STICK:
-                    case ITEM_NUT:
+                    case ITEM_DEKU_STICK:
+                    case ITEM_DEKU_NUT:
                     case ITEM_BOMB:
                     case ITEM_BOMBCHU:
                     case ITEM_SLINGSHOT:
                     case ITEM_BOW:
-                    case ITEM_BEAN:
+                    case ITEM_MAGIC_BEAN:
                         snprintf(arg, sizeof(arg), "%d", AMMO(pauseCtx->cursorItem[PAUSE_ITEM]));
                         break;
                     default:
@@ -507,8 +507,8 @@ void RegisterOnKaleidoscopeUpdateHook() {
 
                 // BGS from kaleido reports as ITEM_HEART_PIECE_2 (122)
                 // remap BGS and broken knife to be the BGS item for the current equip check
-                if (checkEquipItem == ITEM_HEART_PIECE_2 || checkEquipItem == ITEM_SWORD_KNIFE) {
-                    checkEquipItem = ITEM_SWORD_BGS;
+                if (checkEquipItem == ITEM_HEART_PIECE_2 || checkEquipItem == ITEM_GIANTS_KNIFE) {
+                    checkEquipItem = ITEM_SWORD_BIGGORON;
                 }
 
                 // Check if equipment item is currently equipped or assigned to a button

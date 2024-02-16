@@ -102,12 +102,12 @@ void func_80AACA94(EnMk* this, PlayState* play) {
         }
     } else {
         if (IS_RANDO) {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
-            Randomizer_ConsumeAdultTradeItem(play, ITEM_FROG);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYE_DROPS);
+            Randomizer_ConsumeAdultTradeItem(play, ITEM_EYEBALL_FROG);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
         } else {
-            s32 getItemID = GI_EYEDROPS;
+            s32 getItemID = GI_EYE_DROPS;
             func_8002F434(&this->actor, play, getItemID, 10000.0f, 50.0f);
         }
     }
@@ -117,12 +117,12 @@ void func_80AACB14(EnMk* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->actionFunc = func_80AACA94;
         if (IS_RANDO) {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
-            Randomizer_ConsumeAdultTradeItem(play, ITEM_FROG);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYE_DROPS);
+            Randomizer_ConsumeAdultTradeItem(play, ITEM_EYEBALL_FROG);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
         } else {
-            s32 getItemID = GI_EYEDROPS;
+            s32 getItemID = GI_EYE_DROPS;
             func_8002F434(&this->actor, play, getItemID, 10000.0f, 50.0f);
         }
     }
@@ -256,7 +256,7 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
             this->actionFunc = func_80AACA40;
         } else {
             // Skip eye drop text on rando if Link went in the water, so you can still receive the dive check
-            if (INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYEDROPS &&
+            if (INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYE_DROPS &&
                 (!IS_RANDO || this->swimFlag == 0)) {
                 player->actor.textId = 0x4032;
                 this->actionFunc = func_80AACA40;
@@ -282,7 +282,7 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
                             }
                         }
                         break;
-                    case EXCH_ITEM_FROG:
+                    case EXCH_ITEM_EYEBALL_FROG:
                         player->actor.textId = 0x4019;
                         this->actionFunc = func_80AACEE8;
                         Animation_Change(&this->skelAnime, &object_mk_Anim_000368, 1.0f, 0.0f,
@@ -308,7 +308,7 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
         angle = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
 
         if ((ABS(angle) < 0x2151) && (this->actor.xzDistToPlayer < 100.0f)) {
-            func_8002F298(&this->actor, play, 100.0f, EXCH_ITEM_FROG);
+            func_8002F298(&this->actor, play, 100.0f, EXCH_ITEM_EYEBALL_FROG);
             this->flags |= 1;
         }
     }

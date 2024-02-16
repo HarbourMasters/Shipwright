@@ -44,13 +44,13 @@ static s16 sObjectIds[] = {
 
 // Indexes passed to the item table in z_draw.c
 static s16 sDrawItemIndexes[] = {
-    GID_BOTTLE,       GID_LETTER_RUTO,  GID_SHIELD_HYLIAN, GID_QUIVER_40,   GID_SCALE_SILVER,
-    GID_SCALE_GOLDEN, GID_KEY_SMALL,    GID_ARROW_FIRE,    GID_RUPEE_GREEN, GID_RUPEE_BLUE,
-    GID_RUPEE_RED,    GID_RUPEE_PURPLE, GID_HEART_PIECE,   GID_KEY_SMALL,
+    GID_BOTTLE_EMPTY,       GID_BOTTLE_RUTOS_LETTER,  GID_SHIELD_HYLIAN, GID_QUIVER_40,   GID_SCALE_SILVER,
+    GID_SCALE_GOLDEN, GID_SMALL_KEY,    GID_ARROW_FIRE,    GID_RUPEE_GREEN, GID_RUPEE_BLUE,
+    GID_RUPEE_RED,    GID_RUPEE_PURPLE, GID_HEART_PIECE,   GID_SMALL_KEY,
 };
 
 static s16 sGetItemIds[] = {
-    GI_BOTTLE,     GI_LETTER_RUTO, GI_SHIELD_HYLIAN, GI_QUIVER_40, GI_SCALE_SILVER, GI_SCALE_GOLD, GI_KEY_SMALL,
+    GI_BOTTLE_EMPTY,     GI_BOTTLE_RUTOS_LETTER, GI_SHIELD_HYLIAN, GI_QUIVER_40, GI_SCALE_SILVER, GI_SCALE_GOLDEN, GI_SMALL_KEY,
     GI_ARROW_FIRE, GI_NONE,        GI_NONE,          GI_NONE,      GI_NONE,         GI_NONE,       GI_NONE,
 };
 
@@ -159,7 +159,7 @@ void func_80B858B4(ItemEtcetera* this, PlayState* play) {
         if (!IS_RANDO) {
             func_8002F434(&this->actor, play, this->getItemId, 30.0f, 50.0f);
         } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_BOTTLE_RUTOS_LETTER);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 30.0f, 50.0f);
         }
 
@@ -251,7 +251,7 @@ void ItemEtcetera_Draw(Actor* thisx, PlayState* play) {
         if (type == ITEM_ETC_ARROW_FIRE) {
             randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
         } else if (type == ITEM_ETC_LETTER) {
-            randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
+            randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_BOTTLE_RUTOS_LETTER);
         }
 
         EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);

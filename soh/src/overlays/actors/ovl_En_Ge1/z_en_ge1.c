@@ -236,7 +236,7 @@ void EnGe1_SetAnimationIdle(EnGe1* this) {
 
 s32 EnGe1_CheckCarpentersFreed(void) {
     if (IS_RANDO) {
-        if (CHECK_QUEST_ITEM(QUEST_GERUDO_CARD)) {
+        if (CHECK_QUEST_ITEM(QUEST_GERUDOS_CARD)) {
             return 1;
         } else {
             return 0;
@@ -427,7 +427,7 @@ void EnGe1_RefuseOpenNoCard_GTGGuard(EnGe1* this, PlayState* play) {
 }
 
 void EnGe1_CheckForCard_GTGGuard(EnGe1* this, PlayState* play) {
-    if (CHECK_QUEST_ITEM(QUEST_GERUDO_CARD)) {
+    if (CHECK_QUEST_ITEM(QUEST_GERUDOS_CARD)) {
         EnGe1_SetTalkAction(this, play, 0x6014, 100.0f, EnGe1_OfferOpen_GTGGuard);
     } else {
         //! @bug This outcome is inaccessible in normal gameplay since this function it is unreachable without

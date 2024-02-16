@@ -5070,9 +5070,9 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                                 Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
                                 if (!IS_RANDO) {
-                                    getItemId = GI_SCALE_GOLD;
+                                    getItemId = GI_SCALE_GOLDEN;
                                 } else {
-                                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
+                                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLDEN);
                                     getItemId = getItemEntry.getItemId;
                                 }
                             }
@@ -5140,9 +5140,9 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                 this->unk_15C = 24;
             } else {
                 if (!IS_RANDO) {
-                    func_8002F434(&this->actor, play, GI_SCALE_GOLD, 2000.0f, 1000.0f);
+                    func_8002F434(&this->actor, play, GI_SCALE_GOLDEN, 2000.0f, 1000.0f);
                 } else {
-                    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
+                    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLDEN);
                     GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
                 }
             }

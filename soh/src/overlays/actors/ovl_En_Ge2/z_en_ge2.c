@@ -228,7 +228,7 @@ s32 Ge2_DetectPlayerInUpdate(PlayState* play, EnGe2* this, Vec3f* pos, s16 yRot,
 
 s32 EnGe2_CheckCarpentersFreed(void) {
     if (IS_RANDO) {
-        if (CHECK_QUEST_ITEM(QUEST_GERUDO_CARD)) {
+        if (CHECK_QUEST_ITEM(QUEST_GERUDOS_CARD)) {
             return 1;
         } else {
             return 0;
@@ -472,9 +472,9 @@ void EnGe2_WaitTillCardGiven(EnGe2* this, PlayState* play) {
         this->actionFunc = EnGe2_SetActionAfterTalk;
     } else {
         if (!IS_RANDO) {
-            func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
+            func_8002F434(&this->actor, play, GI_GERUDOS_CARD, 10000.0f, 50.0f);
         } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDOS_CARD);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }
@@ -486,9 +486,9 @@ void EnGe2_GiveCard(EnGe2* this, PlayState* play) {
         this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         this->actionFunc = EnGe2_WaitTillCardGiven;
          if (!IS_RANDO) {
-            func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
+            func_8002F434(&this->actor, play, GI_GERUDOS_CARD, 10000.0f, 50.0f);
         } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDOS_CARD);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
         }
     }
