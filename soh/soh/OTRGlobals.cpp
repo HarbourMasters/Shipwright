@@ -89,7 +89,7 @@ GameInteractorSail* GameInteractorSail::Instance;
 
 #include "Enhancements/mods.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
-#include "Enhancements//randomizer/draw.h"
+#include "Enhancements/randomizer/draw.h"
 #include <libultraship/libultraship.h>
 
 // Resource Types/Factories
@@ -2420,10 +2420,6 @@ extern "C" GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityChec
 
 extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
     return OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck);
-}
-
-extern "C" bool Randomizer_IsVisibleInCheckTracker(RandomizerCheck check) {
-    return CheckTracker::IsVisibleInCheckTracker(RandomizerCheckObjects::GetAllRCObjects().find(check)->second);
 }
 
 extern "C" bool Randomizer_IsCheckShuffled(RandomizerCheck randomizerCheck) {
