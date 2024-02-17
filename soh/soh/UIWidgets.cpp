@@ -449,7 +449,7 @@ namespace UIWidgets {
 
         if (changed && !(abs(oldVal - val) < 0.000001f)) {
             std::stringstream ss;
-            ss << std::setprecision(ticks + 1) << val;
+            ss << std::setprecision(ticks + 1) << std::setiosflags(std::ios_base::fixed) << val;
             val = std::stof(ss.str());
             CVarSetFloat(cvarName, val);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();

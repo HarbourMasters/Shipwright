@@ -215,9 +215,9 @@ void ItemOcarina_Draw(Actor* thisx, PlayState* play) {
     func_8002ED80(thisx, play, 0);
 
     if (IS_RANDO) {
-        GetItemEntry randoGetItem = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
+        GetItemEntry randoGetItem = CVarGetInteger("gEnhancement.MysteriousShuffle", 0) ? GetItemMystery : Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
         EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
-        GetItemEntry_Draw(play, randoGetItem, RC_HF_OCARINA_OF_TIME_ITEM);
+        GetItemEntry_Draw(play, randoGetItem);
         return;
     }
 

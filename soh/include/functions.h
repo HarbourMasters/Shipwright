@@ -572,7 +572,7 @@ void Flags_UnsetRandomizerInf(RandomizerInf flag);
 u16 func_80037C30(PlayState* play, s16 arg1);
 s32 func_80037D98(PlayState* play, Actor* actor, s16 arg2, s32* arg3);
 s32 func_80038290(PlayState* play, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f arg4);
-GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play, RandomizerCheck* check);
+GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play);
 s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, PlayState* play);
 
 // ? func_80038600(?);
@@ -870,7 +870,7 @@ void Cutscene_HandleEntranceTriggers(PlayState* play);
 void Cutscene_HandleConditionalTriggers(PlayState* play);
 void Cutscene_SetSegment(PlayState* play, void* segment);
 void GetItem_Draw(PlayState* play, s16 drawId);
-void GetItemEntry_Draw(PlayState* play, GetItemEntry getItemEntry, RandomizerCheck check);
+void GetItemEntry_Draw(PlayState* play, GetItemEntry getItemEntry);
 void SoundSource_InitAll(PlayState* play);
 void SoundSource_UpdateAll(PlayState* play);
 void SoundSource_PlaySfxAtFixedWorldPos(PlayState* play, Vec3f* pos, s32 duration, u16 sfxId);
@@ -2466,6 +2466,10 @@ void Message_DrawText(PlayState* play, Gfx** gfxP);
 
 void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
 void Interface_RandoRestoreSwordless(void);
+
+//Pause Warp
+void PauseWarp_HandleSelection();
+void PauseWarp_Execute();
 
 // #endregion
 

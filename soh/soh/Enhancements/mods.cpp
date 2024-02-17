@@ -33,6 +33,7 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 #include "functions.h"
+#include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 
@@ -518,70 +519,93 @@ void RegisterDaytimeGoldSkultullas() {
     });
 }
 
-void RegisterHyperBosses() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
-        // Run the update function a second time to make bosses move and act twice as fast.
+bool IsHyperBossesActive() {
+    return CVarGetInteger("gHyperBosses", 0) ||
+           (IS_BOSS_RUSH && gSaveContext.bossRushOptions[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
+}
 
-        Player* player = GET_PLAYER(gPlayState);
-        Actor* actor = static_cast<Actor*>(refActor);
+void UpdateHyperBossesState() {
+    static uint32_t actorUpdateHookId = 0;
+    if (actorUpdateHookId != 0) {
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(actorUpdateHookId);
+        actorUpdateHookId = 0;
+    }
 
-        uint8_t isBossActor =
-            actor->id == ACTOR_BOSS_GOMA ||                              // Gohma
-            actor->id == ACTOR_BOSS_DODONGO ||                           // King Dodongo
-            actor->id == ACTOR_EN_BDFIRE ||                              // King Dodongo Fire Breath
-            actor->id == ACTOR_BOSS_VA ||                                // Barinade
-            actor->id == ACTOR_BOSS_GANONDROF ||                         // Phantom Ganon
-            actor->id == ACTOR_EN_FHG_FIRE ||                            // Phantom Ganon/Ganondorf Energy Ball/Thunder
-            actor->id == ACTOR_EN_FHG ||                                 // Phantom Ganon's Horse
-            actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || // Volvagia (grounded/flying)
-            actor->id == ACTOR_EN_VB_BALL ||                             // Volvagia Rocks
-            actor->id == ACTOR_BOSS_MO ||                                // Morpha
-            actor->id == ACTOR_BOSS_SST ||                               // Bongo Bongo
-            actor->id == ACTOR_BOSS_TW ||                                // Twinrova
-            actor->id == ACTOR_BOSS_GANON ||                             // Ganondorf
-            actor->id == ACTOR_BOSS_GANON2;                              // Ganon
+    if (IsHyperBossesActive()) {
+        actorUpdateHookId = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+            // Run the update function a second time to make bosses move and act twice as fast.
 
-        uint8_t hyperBossesActive =
-            CVarGetInteger("gHyperBosses", 0) ||
-            (IS_BOSS_RUSH &&
-             gSaveContext.bossRushOptions[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
+            Player* player = GET_PLAYER(gPlayState);
+            Actor* actor = static_cast<Actor*>(refActor);
 
-        // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
-        if (hyperBossesActive && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
-            // Barinade needs to be updated in sequence to avoid unintended behaviour.
-            if (actor->id == ACTOR_BOSS_VA) {
-                // params -1 is BOSSVA_BODY
-                if (actor->params == -1) {
-                    Actor* actorList = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS].head;
-                    while (actorList != NULL) {
-                        GameInteractor::RawAction::UpdateActor(actorList);
-                        actorList = actorList->next;
+            uint8_t isBossActor =
+                actor->id == ACTOR_BOSS_GOMA ||                              // Gohma
+                actor->id == ACTOR_BOSS_DODONGO ||                           // King Dodongo
+                actor->id == ACTOR_EN_BDFIRE ||                              // King Dodongo Fire Breath
+                actor->id == ACTOR_BOSS_VA ||                                // Barinade
+                actor->id == ACTOR_BOSS_GANONDROF ||                         // Phantom Ganon
+                actor->id == ACTOR_EN_FHG_FIRE ||                            // Phantom Ganon/Ganondorf Energy Ball/Thunder
+                actor->id == ACTOR_EN_FHG ||                                 // Phantom Ganon's Horse
+                actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || // Volvagia (grounded/flying)
+                actor->id == ACTOR_EN_VB_BALL ||                             // Volvagia Rocks
+                actor->id == ACTOR_BOSS_MO ||                                // Morpha
+                actor->id == ACTOR_BOSS_SST ||                               // Bongo Bongo
+                actor->id == ACTOR_BOSS_TW ||                                // Twinrova
+                actor->id == ACTOR_BOSS_GANON ||                             // Ganondorf
+                actor->id == ACTOR_BOSS_GANON2;                              // Ganon
+
+            // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
+            if (IsHyperBossesActive() && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
+                // Barinade needs to be updated in sequence to avoid unintended behaviour.
+                if (actor->id == ACTOR_BOSS_VA) {
+                    // params -1 is BOSSVA_BODY
+                    if (actor->params == -1) {
+                        Actor* actorList = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS].head;
+                        while (actorList != NULL) {
+                            GameInteractor::RawAction::UpdateActor(actorList);
+                            actorList = actorList->next;
+                        }
                     }
+                } else {
+                    GameInteractor::RawAction::UpdateActor(actor);
                 }
-            } else {
-                GameInteractor::RawAction::UpdateActor(actor);
             }
-        }
+        });
+    }
+}
+
+void RegisterHyperBosses() {
+    UpdateHyperBossesState();
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int16_t fileNum) {
+        UpdateHyperBossesState();
     });
 }
 
-void RegisterHyperEnemies() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
-        // Run the update function a second time to make enemies and minibosses move and act twice as fast.
+void UpdateHyperEnemiesState() {
+    static uint32_t actorUpdateHookId = 0;
+    if (actorUpdateHookId != 0) {
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(actorUpdateHookId);
+        actorUpdateHookId = 0;
+    }
 
-        Player* player = GET_PLAYER(gPlayState);
-        Actor* actor = static_cast<Actor*>(refActor);
+    if (CVarGetInteger("gHyperEnemies", 0)) {
+        actorUpdateHookId = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+            // Run the update function a second time to make enemies and minibosses move and act twice as fast.
 
-        // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
-        bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;
-        bool isExcludedEnemy = actor->id == ACTOR_EN_FIRE_ROCK || actor->id == ACTOR_EN_ENCOUNT2;
+            Player* player = GET_PLAYER(gPlayState);
+            Actor* actor = static_cast<Actor*>(refActor);
 
-        // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
-        if (CVarGetInteger("gHyperEnemies", 0) && isEnemy && !isExcludedEnemy &&
-            !Player_InBlockingCsMode(gPlayState, player)) {
-            GameInteractor::RawAction::UpdateActor(actor);
-        }
-    });
+            // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
+            bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;
+            bool isExcludedEnemy = actor->id == ACTOR_EN_FIRE_ROCK || actor->id == ACTOR_EN_ENCOUNT2;
+
+            // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
+            if (CVarGetInteger("gHyperEnemies", 0) && isEnemy && !isExcludedEnemy &&
+                !Player_InBlockingCsMode(gPlayState, player)) {
+                GameInteractor::RawAction::UpdateActor(actor);
+            }
+        });
+    }
 }
 
 void RegisterBonkDamage() {
@@ -1222,6 +1246,34 @@ void RegisterRandomizedEnemySizes() {
     });
 }
 
+void RegisterOpenAllHours() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        if (CVarGetInteger("gEnhancements.OpenAllHours", 0) && (actor->id == ACTOR_EN_DOOR)) {
+            switch (actor->params) {
+                case 4753: // Night Market Bazaar
+                case 1678: // Night Potion Shop
+                case 2689: // Day Bombchu Shop
+                case 2703: // Night Slingshot Game
+                case 653:  // Day Chest Game
+                case 6801: // Night Kak Bazaar
+                case 7822: // Night Kak Potion Shop
+                case 4751: // Night Kak Archery Game
+                case 3728: // Night Mask Shop
+                {
+                    actor->params = (actor->params & 0xFC00) | (DOOR_SCENEEXIT << 7) | 0x3F;
+                    EnDoor* enDoor = static_cast<EnDoor*>(refActor);
+                    EnDoor_SetupType(enDoor, gPlayState);
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    });
+}
+
 void PatchToTMedallions() {
     // TODO: Refactor the DemoEffect_UpdateJewelAdult and DemoEffect_UpdateJewelChild from z_demo_effect
     // effects to take effect in there
@@ -1304,6 +1356,23 @@ void RegisterToTMedallions() {
     });
 }
 
+void RegisterPauseMenuHooks() {
+    static bool pauseWarpHooksRegistered = false;
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&]() {
+        if (!GameInteractor::IsSaveLoaded() || !CVarGetInteger("gPauseWarp", 0)) {
+            pauseWarpHooksRegistered = false;
+            return;
+        }
+        if (!pauseWarpHooksRegistered) {
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoUpdate>([]() {PauseWarp_HandleSelection();});
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+                    PauseWarp_Execute();
+            });
+            pauseWarpHooksRegistered = true;
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1325,7 +1394,7 @@ void InitMods() {
     RegisterPermanentHeartLoss();
     RegisterDeleteFileOnDeath();
     RegisterHyperBosses();
-    RegisterHyperEnemies();
+    UpdateHyperEnemiesState();
     RegisterBonkDamage();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
@@ -1336,8 +1405,10 @@ void InitMods() {
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
     RegisterRandomizedEnemySizes();
+    RegisterOpenAllHours();
     RegisterToTMedallions();
     NameTag_RegisterHooks();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
+    RegisterPauseMenuHooks();
 }

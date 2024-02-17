@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include "SohMenuBar.h"
 #include "Enhancements/audio/AudioEditor.h"
+#include "Enhancements/controls/InputViewer.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugger/actorViewer.h"
 #include "Enhancements/debugger/colViewer.h"

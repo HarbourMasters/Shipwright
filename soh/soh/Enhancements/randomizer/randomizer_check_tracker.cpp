@@ -762,7 +762,6 @@ void InitTrackerData(bool isDebug) {
         }
     }
     UpdateAllOrdering();
-    UpdateInventoryChecks();
 }
 
 void SaveTrackerData(SaveContext* saveContext, int sectionID, bool gameSave) {

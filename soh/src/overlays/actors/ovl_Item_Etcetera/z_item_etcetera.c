@@ -231,10 +231,10 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, PlayState* play) {
 
         if(IS_RANDO && play->sceneNum == SCENE_TREASURE_BOX_SHOP) {
             RandomizerCheck check = RC_MAX;
-            GetItemEntry randoGetItem = GetChestGameRandoGetItem(this->actor.room, this->giDrawId, play, &check);
+            GetItemEntry randoGetItem = CVarGetInteger("gEnhancement.MysteriousShuffle", 0) ? GetItemMystery : GetChestGameRandoGetItem(this->actor.room, this->giDrawId, play);
             EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
             if (randoGetItem.itemId != ITEM_NONE) {
-                GetItemEntry_Draw(play, randoGetItem, check);
+                GetItemEntry_Draw(play, randoGetItem);
                 return;
             }
         }
@@ -252,10 +252,10 @@ void ItemEtcetera_Draw(Actor* thisx, PlayState* play) {
         RandomizerCheck check = RC_MAX;
         if (type == ITEM_ETC_ARROW_FIRE) {
             check = RC_LH_SUN;
-            randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
+            randoGetItem = CVarGetInteger("gEnhancement.MysteriousShuffle", 0) ? GetItemMystery : Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
         } else if (type == ITEM_ETC_LETTER) {
             check = RC_LH_UNDERWATER_ITEM;
-            randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
+            randoGetItem = CVarGetInteger("gEnhancement.MysteriousShuffle", 0) ? GetItemMystery : Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
         }
 
         EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
@@ -263,7 +263,7 @@ void ItemEtcetera_Draw(Actor* thisx, PlayState* play) {
         if (randoGetItem.itemId != ITEM_NONE) {
             func_8002EBCC(&this->actor, play, 0);
             func_8002ED80(&this->actor, play, 0);
-            GetItemEntry_Draw(play, randoGetItem, check);
+            GetItemEntry_Draw(play, randoGetItem);
             return;
         }
     }

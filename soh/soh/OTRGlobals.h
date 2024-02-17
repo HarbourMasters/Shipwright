@@ -65,6 +65,8 @@ private:
 uint32_t IsGameMasterQuest();
 #endif
 
+static GetItemEntry GetItemMystery;
+
 #ifndef __cplusplus
     void InitOTR(void);
 void DeinitOTR(void);
