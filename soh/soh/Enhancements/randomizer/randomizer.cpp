@@ -5404,7 +5404,7 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
     RandomizerCheck rc = GetCheckFromRandomizerInf(randomizerInf);
     RandomizerGet shopItemGet = this->itemLocations[rc].rgID;
     std::array<std::string, LANGUAGE_MAX> shopItemName;
-    if (mysterious || CVarGetInteger("gMysteriousShuffle", 0)) {
+    if (mysterious || CVarGetInteger("gRandoEnhancements.MysteriousShuffle", 0)) {
         if (randomizerInf >= RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1 && randomizerInf <= RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8) {
             shopItemName = {
                 "Mysterious Item",

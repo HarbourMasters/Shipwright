@@ -1367,7 +1367,8 @@ void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
             Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->ogParams);
 
         if (randoCheck != RC_UNKNOWN_CHECK) {
-            this->randoGiEntry = CVarGetInteger("gEnhancement.MysteriousShuffle", 0) ? GetItemMystery : Randomizer_GetItemFromKnownCheck(randoCheck, GI_NONE);
+            this->randoGiEntry = CVarGetInteger("gRandoEnhancements.MysteriousShuffle", 0) && Randomizer_IsCheckShuffled(randoCheck)
+                                     ? GetItemMystery : Randomizer_GetItemFromKnownCheck(randoCheck, GI_NONE);
             this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
         }
         
@@ -1460,7 +1461,8 @@ void EnItem00_DrawHeartPiece(EnItem00* this, PlayState* play) {
             Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->ogParams);
 
         if (randoCheck != RC_UNKNOWN_CHECK) {
-            this->randoGiEntry = CVarGetInteger("gEnhancement.MysteriousShuffle", 0) ? GetItemMystery : Randomizer_GetItemFromKnownCheck(randoCheck, GI_NONE);
+            this->randoGiEntry = (CVarGetInteger("gRandoEnhancements.MysteriousShuffle", 0) && Randomizer_IsCheckShuffled(randoCheck))
+                                    ? GetItemMystery : Randomizer_GetItemFromKnownCheck(randoCheck, GI_NONE);
             this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
         }
 

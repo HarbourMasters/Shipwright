@@ -49,6 +49,7 @@ void DefaultCheckData(RandomizerCheck rc);
 void Teardown();
 void UpdateAllOrdering();
 bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj);
+bool IsCheckShuffled(RandomizerCheckObject check);
 void InitTrackerData(bool isDebug);
 RandomizerCheckArea GetCheckArea();
 void UpdateCheck(uint32_t, RandomizerCheckTrackerData);

@@ -65,9 +65,8 @@ private:
 uint32_t IsGameMasterQuest();
 #endif
 
-static GetItemEntry GetItemMystery;
-
 #ifndef __cplusplus
+GetItemEntry GetItemMystery;
     void InitOTR(void);
 void DeinitOTR(void);
 void VanillaItemTable_Init();
@@ -168,6 +167,7 @@ GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 bool Randomizer_IsVisibleInCheckTracker(RandomizerCheck check);
+bool Randomizer_IsCheckShuffled(RandomizerCheck check);
 ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
 int CustomMessage_RetrieveIfExists(PlayState* play);
 void Overlay_DisplayText(float duration, const char* text);
