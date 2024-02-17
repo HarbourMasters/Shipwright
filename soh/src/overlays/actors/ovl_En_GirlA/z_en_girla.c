@@ -1332,7 +1332,7 @@ void EnGirlA_Draw(Actor* thisx, PlayState* play) {
 
     if (this->actor.params == SI_RANDOMIZED_ITEM) {
         ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
-        GetItemEntry getItemEntry = (CVarGetInteger("gRandoEnhancements.MysteriousShuffle", 0) && this->actor.params == SI_RANDOMIZED_ITEM) ? GetItemMystery : 
+        GetItemEntry getItemEntry = (CVarGetInteger("gRandoEnhancements.MysteriousShuffle", 0) && this->actor.params == SI_RANDOMIZED_ITEM) ? GetItemMystery() : 
                                     Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
         EnItem00_CustomItemsParticles(&this->actor, play, getItemEntry);

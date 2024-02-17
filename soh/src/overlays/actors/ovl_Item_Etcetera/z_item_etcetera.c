@@ -250,9 +250,9 @@ void ItemEtcetera_Draw(Actor* thisx, PlayState* play) {
     if (IS_RANDO) {
         GetItemEntry randoGetItem = (GetItemEntry)GET_ITEM_NONE;
         if (type == ITEM_ETC_ARROW_FIRE) {
-            randoGetItem = (CVarGetInteger("gRandoEnhancements.MysteriousShuffle", 0) && Randomizer_IsCheckShuffled(RC_LH_SUN)) ? GetItemMystery : Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
+            randoGetItem = (CVarGetInteger("gRandoEnhancements.MysteriousShuffle", 0) && Randomizer_IsCheckShuffled(RC_LH_SUN)) ? GetItemMystery() : Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
         } else if (type == ITEM_ETC_LETTER) {
-            randoGetItem = (CVarGetInteger("gRandoEnhancements.MysteriousShuffle", 0) && Randomizer_IsCheckShuffled(RC_LH_UNDERWATER_ITEM)) ? GetItemMystery : Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
+            randoGetItem = (CVarGetInteger("gRandoEnhancements.MysteriousShuffle", 0) && Randomizer_IsCheckShuffled(RC_LH_UNDERWATER_ITEM)) ? GetItemMystery() : Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
         }
 
         EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);

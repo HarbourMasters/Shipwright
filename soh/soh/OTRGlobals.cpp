@@ -138,8 +138,6 @@ Color_RGB8 kokiriColor = { 0x1E, 0x69, 0x1B };
 Color_RGB8 goronColor = { 0x64, 0x14, 0x00 };
 Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
 
-extern "C" GetItemEntry GetItemMystery = { ITEM_NONE_FE, 0, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL, MOD_RANDOMIZER, (CustomDrawFunc)Randomizer_DrawMysteryItem };
-
 float previousImGuiScale;
 
 // Same as NaviColor type from OoT src (z_actor.c), but modified to be sans alpha channel for Controller LED.
@@ -2424,6 +2422,10 @@ extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(
 
 extern "C" bool Randomizer_IsCheckShuffled(RandomizerCheck randomizerCheck) {
     return CheckTracker::IsCheckShuffled(RandomizerCheckObjects::GetAllRCObjects().find(randomizerCheck)->second);
+}
+
+extern "C" GetItemEntry GetItemMystery() {
+    return { ITEM_NONE_FE, 0, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL, MOD_RANDOMIZER, (CustomDrawFunc)Randomizer_DrawMysteryItem };
 }
 
 CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
