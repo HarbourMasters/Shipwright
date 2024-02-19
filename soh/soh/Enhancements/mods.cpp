@@ -1390,6 +1390,9 @@ void RegisterPauseMenuHooks() {
                     PauseWarp_Execute();
             });
             pauseWarpHooksRegistered = true;
+        }
+    });
+}
 			
 void RegisterBridgeDownAllNight() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
