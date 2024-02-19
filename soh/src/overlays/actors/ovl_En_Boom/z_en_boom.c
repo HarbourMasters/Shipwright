@@ -243,7 +243,7 @@ void EnBoom_Update(Actor* thisx, PlayState* play) {
     EnBoom* this = (EnBoom*)thisx;
     Player* player = GET_PLAYER(play);
 
-    if (!(player->stateFlags1 & 0x20000000)) {
+    if (!(player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE)) {
         this->actionFunc(this, play);
         Actor_SetFocus(&this->actor, 0.0f);
         this->activeTimer = this->activeTimer + 1;

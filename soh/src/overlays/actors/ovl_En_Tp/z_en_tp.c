@@ -657,7 +657,7 @@ void EnTp_Update(Actor* thisx, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s16 yawToWall;
 
-    if (player->stateFlags1 & 0x4000000) { // Shielding
+    if (player->stateFlags1 & PLAYER_STATE1_SHIELDING) { // Shielding
         this->damageEffect = TAILPASARAN_DMGEFF_NONE;
     }
 
