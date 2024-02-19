@@ -1848,6 +1848,26 @@ u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
  * @return u8 
  */
 u8 Item_Give(PlayState* play, u8 item) {
+    //prevents getting sticks without the bag in case something got missed
+    if (
+        IS_RANDO &&
+        (item == ITEM_STICK || item == ITEM_STICKS_5 || item == ITEM_STICKS_10) &&
+        Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG) &&
+        CUR_UPG_VALUE(UPG_STICKS) == 0
+    ) {
+        return;
+    }
+
+    // prevents getting nuts without the bag in case something got missed
+    if (
+        IS_RANDO &&
+        (item == ITEM_NUT || item == ITEM_NUTS_5 || item == ITEM_NUTS_10) &&
+        Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG) &&
+        CUR_UPG_VALUE(UPG_NUTS) == 0
+    ) {
+        return;
+    }
+
     lusprintf(__FILE__, __LINE__, 2, "Item Give - item: %#x", item);
     static s16 sAmmoRefillCounts[] = { 5, 10, 20, 30, 5, 10, 30, 0, 5, 20, 1, 5, 20, 50, 200, 10 };
     s16 i;
@@ -2691,6 +2711,20 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
 
     if (item == RG_BRONZE_SCALE) {
         Flags_SetRandomizerInf(RAND_INF_CAN_SWIM);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_DEKU_STICK_BAG) {
+        Inventory_ChangeUpgrade(UPG_STICKS, 1);
+        INV_CONTENT(ITEM_STICK) = ITEM_STICK;
+        AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_DEKU_NUT_BAG) {
+        Inventory_ChangeUpgrade(UPG_NUTS, 1);
+        INV_CONTENT(ITEM_NUT) = ITEM_NUT;
+        AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 

@@ -297,8 +297,8 @@ namespace Rando {
 
         //refills
         Bombs        = BombBag;
-        Nuts         = DekuNutDrop || Nuts;
-        Sticks       = DekuStickDrop || Sticks;
+        Nuts         = (ProgressiveNutBag != 0 && DekuNutDrop) || Nuts;
+        Sticks       = (ProgressiveStickBag != 0 && DekuStickDrop) || Sticks;
         Bugs         = HasBottle && BugsAccess;
         BlueFire     = (HasBottle && BlueFireAccess) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
         Fish         = HasBottle && FishAccess;
@@ -626,6 +626,8 @@ namespace Rando {
         OcarinaCDownButton = ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS).Is(true) ? 0 : 1;
 
         //Progressive Items
+        ProgressiveStickBag   = ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).Is(true) ? 0 : 1;
+        ProgressiveNutBag     = ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG).Is(true) ? 0 : 1;
         ProgressiveBulletBag  = 0;
         ProgressiveBombBag    = 0;
         ProgressiveMagic      = 0;

@@ -119,6 +119,8 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_CHEST_MINIGAME] = Option::U8("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"});
     mOptions[RSK_SHUFFLE_100_GS_REWARD] = Option::Bool("Shuffle 100 GS Reward", "gRandomizeShuffle100GSReward", mOptionDescriptions[RSK_SHUFFLE_100_GS_REWARD], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
     mOptions[RSK_SHUFFLE_BOSS_SOULS] = Option::U8("Shuffle Boss Souls", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, "gRandomizeShuffleBossSouls", mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS], WidgetType::Combobox);
+    mOptions[RSK_SHUFFLE_DEKU_STICK_BAG] = Option::Bool("Shuffle Deku Stick Bag", "gRandomizeShuffleDekuStickBag", mOptionDescriptions[RSK_SHUFFLE_DEKU_STICK_BAG], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
+    mOptions[RSK_SHUFFLE_DEKU_NUT_BAG] = Option::Bool("Shuffle Deku Nut Bag", "gRandomizeShuffleDekuNutBag", mOptionDescriptions[RSK_SHUFFLE_DEKU_NUT_BAG], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
     mOptions[RSK_FISHSANITY] = Option::U8("Fishsanity", {"Off", "Shuffle Fishing Pond", "Shuffle Overworld Fish", "Shuffle Both"}, OptionCategory::Setting, "gRandomizeFishsanity", mOptionDescriptions[RSK_FISHSANITY], WidgetType::Combobox, RO_FISHSANITY_OFF);
     mOptions[RSK_FISHSANITY_POND_COUNT] = Option::U8("Pond Fish Count", {NumOpts(0,17,1)}, OptionCategory::Setting, "gRandomizeFishsanityPondCount", mOptionDescriptions[RSK_FISHSANITY_POND_COUNT], WidgetType::Slider, 0, true, IMFLAG_NONE);
     mOptions[RSK_FISHSANITY_AGE_SPLIT] = Option::Bool("Pond Age Split", "gRandomizeFishsanityAgeSplit", mOptionDescriptions[RSK_FISHSANITY_AGE_SPLIT]);
@@ -660,6 +662,8 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_WEIRD_EGG],
         &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
         &mOptions[RSK_SHUFFLE_FISHING_POLE],
+        &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
+        &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],
     }, false, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_SHUFFLE_NPCS_IMGUI] = OptionGroup::SubGroup("Shuffle NPCs & Merchants", {
         &mOptions[RSK_SHOPSANITY],
@@ -883,6 +887,8 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_CHEST_MINIGAME],
         &mOptions[RSK_SHUFFLE_100_GS_REWARD],
         &mOptions[RSK_SHUFFLE_BOSS_SOULS],
+        &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
+        &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],
     });
     mOptionGroups[RSG_SHUFFLE_DUNGEON_ITEMS] = OptionGroup("Shuffle Dungeon Items", {
         &mOptions[RSK_SHUFFLE_MAPANDCOMPASS],
@@ -1107,6 +1113,8 @@ void Settings::CreateOptions() {
         { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
         { "Shuffle Settings:Shuffle 100 GS Reward", RSK_SHUFFLE_100_GS_REWARD },
         { "Shuffle Settings:Shuffle Boss Souls", RSK_SHUFFLE_BOSS_SOULS },
+        { "Shuffle Settings:Shuffle Deku Stick Bag", RSK_SHUFFLE_DEKU_STICK_BAG },
+        { "Shuffle Settings:Shuffle Deku Nut Bag", RSK_SHUFFLE_DEKU_NUT_BAG },
         { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
         { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
         { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },

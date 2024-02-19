@@ -972,6 +972,13 @@ void GenerateItemPool() {
     AddItemToMainPool(RG_PROGRESSIVE_WALLET);
   }
 
+  if (ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG)) {
+    AddItemToMainPool(RG_PROGRESSIVE_STICK_UPGRADE);
+  }
+
+  if (ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG)) {
+    AddItemToMainPool(RG_PROGRESSIVE_NUT_UPGRADE);
+  }
 
   if (ctx->GetOption(RSK_BOMBCHUS_IN_LOGIC)) {
     AddItemToMainPool(RG_PROGRESSIVE_BOMBCHUS, 5);

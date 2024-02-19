@@ -247,6 +247,12 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
         "\n"
         "The fishing pole is required to play the fishing pond minigame.";
+    mOptionDescriptions[RSK_SHUFFLE_DEKU_STICK_BAG] = "Shuffles the deku stick bag into the item pool.\n"
+        "\n"
+        "The deku stick bag is required to hold deku sticks.";
+    mOptionDescriptions[RSK_SHUFFLE_DEKU_NUT_BAG] = "Shuffles the deku nut bag into the item pool.\n"
+        "\n"
+        "The deku nut bag is required to hold deku nuts.";
     mOptionDescriptions[RSK_SHOPSANITY] = "Off - All shop items will be the same as vanilla.\n"
                                           "\n"
                                           "0 Items - Vanilla shop items will be shuffled among different shops.\n"
