@@ -99,9 +99,9 @@ jobs:
     - name: Install dependencies
       if: ${{ !vars.MAC_RUNNER }}
       run: |
-        brew uninstall --ignore-dependencies libpng cmake
+        brew uninstall --ignore-dependencies libpng
         sudo port install $(cat .github/workflows/macports-deps.txt)
-        brew install ninja
+        brew install ninja libzip
     - name: Download soh.otr
       uses: actions/download-artifact@v4
       with:
