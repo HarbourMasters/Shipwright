@@ -869,7 +869,7 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
 
     // Use a temporary archive instance to load the otr and read the version file
     auto archive = LUS::OtrArchive(otrPath);
-    if (archive.LoadRaw()) {
+    if (archive.Open()) {
         auto t = archive.LoadFileRaw("portVersion");
         if (t != nullptr && t->IsLoaded) {
             auto stream = std::make_shared<LUS::MemoryStream>(t->Buffer->data(), t->Buffer->size());
@@ -880,7 +880,7 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
             version.minor = reader->ReadUInt16();
             version.patch = reader->ReadUInt16();
         }
-        archive.UnloadRaw();
+        archive.Close();
     }
 
     return version;
