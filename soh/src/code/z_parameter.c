@@ -1858,7 +1858,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         return;
     }
 
-    // prevents getting nuts without the bag in case something got missed
+    //prevents getting nuts without the bag in case something got missed
     if (
         IS_RANDO &&
         (item == ITEM_NUT || item == ITEM_NUTS_5 || item == ITEM_NUTS_10) &&
