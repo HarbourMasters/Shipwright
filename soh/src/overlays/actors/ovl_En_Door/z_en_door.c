@@ -198,7 +198,7 @@ void EnDoor_Idle(EnDoor* this, PlayState* play) {
     if (this->playerIsOpening != 0) {
         this->actionFunc = EnDoor_Open;
         Animation_PlayOnceSetSpeed(&this->skelAnime, D_809FCECC[this->animStyle],
-                                   (player->stateFlags1 & 0x8000000) ? 0.75f : 1.5f);
+                                   (player->stateFlags1 & PLAYER_STATE1_IN_WATER) ? 0.75f : 1.5f);
         if (this->lockTimer != 0) {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]--;
             Flags_SetSwitch(play, this->actor.params & 0x3F);

@@ -1,6 +1,6 @@
 #include "SetCutscenes.h"
 
-namespace LUS {
+namespace SOH {
 uint32_t* SetCutscenes::GetPointer() {
     if (cutscene == nullptr) {
         return nullptr;
@@ -14,4 +14,4 @@ size_t SetCutscenes::GetPointerSize() {
     }
 	return cutscene->GetPointerSize();
 }
-} // namespace LUS
+} // namespace SOH
