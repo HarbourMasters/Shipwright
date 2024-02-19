@@ -179,7 +179,7 @@ jobs:
     - name: Install latest libzip
       if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) }}
       run: |
-        apt-get remove libzip-dev zipcmp zipmerge ziptool
+        sudo apt-get remove libzip-dev zipcmp zipmerge ziptool
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         if [ ! -d "libzip-1.10.1" ]; then
           wget https://libzip.org/download/libzip-1.10.1.tar.gz
