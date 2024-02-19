@@ -97,6 +97,10 @@ jobs:
         fi
         echo "/opt/local/bin:/opt/local/sbin" >> $GITHUB_PATH
         sudo port selfupdate
+    - name: Update MacPorts
+      if: ${{ !vars.MAC_RUNNER }}
+      run: |
+        sudo port selfupdate
     - name: Install dependencies
       if: ${{ !vars.MAC_RUNNER }}
       run: |
