@@ -99,7 +99,7 @@ jobs:
     - name: Install dependencies
       if: ${{ !vars.MAC_RUNNER }}
       run: |
-        brew uninstall --ignore-dependencies libpng
+        brew uninstall --ignore-dependencies libpng cmake
         sudo port install $(cat .github/workflows/macports-deps.txt)
         brew install ninja
     - name: Download soh.otr
@@ -272,7 +272,7 @@ jobs:
         cd libzip-1.10.1
         mkdir build
         cd build
-        cmake -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache ..
+        cmake -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake
         make
         make test
         make install
