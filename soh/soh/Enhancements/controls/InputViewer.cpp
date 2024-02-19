@@ -35,6 +35,11 @@ static ImVec4 color2Vec(Color_RGBA8 color) {
     return ImVec4(color.r / 255.0, color.g / 255.0, color.b / 255.0, color.a / 255.0);
 }
 
+InputViewer::~InputViewer() {
+    // 
+    // SPDLOG_TRACE("destruct input viewer");
+}
+
 void InputViewer::RenderButton(std::string btnTexture, std::string btnOutlineTexture, int state, ImVec2 size,
                                int outlineMode) {
     const ImVec2 pos = ImGui::GetCursorPos();
@@ -347,6 +352,11 @@ void InputViewer::DrawElement() {
         ImGui::PopStyleVar();
         ImGui::PopStyleColor();
     }
+}
+
+InputViewerSettingsWindow::~InputViewerSettingsWindow() {
+    // 
+    // SPDLOG_TRACE("destruct input viewer settings window");
 }
 
 void InputViewerSettingsWindow::DrawElement() {
