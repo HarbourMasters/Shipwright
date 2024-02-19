@@ -101,7 +101,8 @@ jobs:
       run: |
         brew uninstall --ignore-dependencies libpng
         sudo port install $(cat .github/workflows/macports-deps.txt)
-        brew install ninja libzip
+        brew install ninja
+        brew reinstall libzip
     - name: Download soh.otr
       uses: actions/download-artifact@v4
       with:
@@ -129,6 +130,9 @@ jobs:
       fail-fast: true
       matrix:
         include:
+        - os: ubuntu-20.04
+          gcc: 10
+          archive-suffix: compatibility
         - os: ubuntu-22.04
           gcc: 12
           archive-suffix: performance
@@ -172,6 +176,21 @@ jobs:
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+    - name: Install latest libzip
+      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) }}
+      run: |
+        apt-get remove libzip-dev zipcmp zipmerge ziptool
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        if [ ! -d "libzip-1.10.1" ]; then
+          wget https://libzip.org/download/libzip-1.10.1.tar.gz
+          tar -xzvf libzip-1.10.1.tar.gz
+        fi
+        cd libzip-1.10.1
+        mkdir build
+        cd build
+        cmake ..
+        make
+        make install
     - name: Install latest SDL_net
       if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
