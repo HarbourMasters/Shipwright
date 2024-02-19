@@ -190,7 +190,7 @@ jobs:
         cd build
         cmake ..
         make
-        make install
+        sudo make install
     - name: Install latest SDL_net
       if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
