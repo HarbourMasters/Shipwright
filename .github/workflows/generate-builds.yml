@@ -101,7 +101,7 @@ jobs:
       run: |
         brew uninstall --ignore-dependencies libpng
         sudo port install $(cat .github/workflows/macports-deps.txt)
-        brew install ninja
+        brew install libzip ninja
     - name: Download soh.otr
       uses: actions/download-artifact@v4
       with:
