@@ -256,7 +256,7 @@ OTRGlobals::OTRGlobals() {
     if (std::filesystem::exists(ootPath)) {
         OTRFiles.push_back(ootPath);
     }
-    std::string sohOtrPath = LUS::Context::GetPathRelativeToAppBundle("soh.otr");
+    std::string sohOtrPath = LUS::Context::GetPathRelativeToAppBundle("soh.zip");
     if (std::filesystem::exists(sohOtrPath)) {
         OTRFiles.push_back(sohOtrPath);
     }
@@ -265,7 +265,10 @@ OTRGlobals::OTRGlobals() {
     if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
         if (std::filesystem::is_directory(patchesPath)) {
             for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath, std::filesystem::directory_options::follow_directory_symlink)) {
-                if (StringHelper::IEquals(p.path().extension().string(), ".otr")) {
+                if (StringHelper::IEquals(p.path().extension().string(), ".otr") ||
+                    StringHelper::IEquals(p.path().extension().string(), ".mpq") ||
+                    StringHelper::IEquals(p.path().extension().string(), ".o2r") ||
+                    StringHelper::IEquals(p.path().extension().string(), ".zip")) {
                     patchOTRs.push_back(p.path().generic_string());
                 }
             }
@@ -1044,7 +1047,7 @@ extern "C" void InitOTR() {
     }
 #endif
 
-    CheckSoHOTRVersion(LUS::Context::GetPathRelativeToAppBundle("soh.otr"));
+    // CheckSoHOTRVersion(LUS::Context::GetPathRelativeToAppBundle("soh.otr"));
 
     if (!std::filesystem::exists(LUS::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName)) &&
         !std::filesystem::exists(LUS::Context::LocateFileAcrossAppDirs("oot.otr", appShortName))){
