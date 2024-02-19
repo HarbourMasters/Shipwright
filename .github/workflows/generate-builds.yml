@@ -129,9 +129,6 @@ jobs:
       fail-fast: true
       matrix:
         include:
-        - os: ubuntu-20.04
-          gcc: 10
-          archive-suffix: compatibility
         - os: ubuntu-22.04
           gcc: 12
           archive-suffix: performance
