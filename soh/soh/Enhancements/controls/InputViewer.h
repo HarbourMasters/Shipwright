@@ -24,7 +24,6 @@ public:
     void UpdateElement() override {};
 
     InputViewer();
-    ~InputViewer();
  
     void Draw();
 
@@ -41,7 +40,6 @@ public:
     void UpdateElement() override {};
 
     InputViewerSettingsWindow();
-    ~InputViewerSettingsWindow();
 
     void Draw();
 };
