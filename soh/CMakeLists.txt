@@ -354,8 +354,6 @@ endif()
 find_package(SDL2)
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
-find_package(libzip REQUIRED)
-
 if (BUILD_REMOTE_CONTROL)
     find_package(SDL2_net)
 
