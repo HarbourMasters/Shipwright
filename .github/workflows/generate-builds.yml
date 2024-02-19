@@ -272,7 +272,7 @@ jobs:
         cd libzip-1.10.1
         mkdir build
         cd build
-        cmake -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake
+        cmake -H.. -B. -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake
         make
         make test
         make install
