@@ -245,36 +245,6 @@ const char* const countMappings[] = {
 char itemTimestampDisplayName[TIMESTAMP_MAX][21] = { "" };
 ImVec4 itemTimestampDisplayColor[TIMESTAMP_MAX];
 
-static const char* splitEntries[156] { 
-    "Deku Stick",           "Deku Nut",             "Bombs",                    "Fairy Bow",            "Fire Arrow",               "Din's Fire",
-    "Slingshot",            "Fairy Ocarina",        "Ocarina of Time",          "Bombchus",             "Hookshot",                 "Longshot",
-    "Ice Arrow",            "Farore's Wind",        "Boomerang",                "Lens of Truth",        "Magic Beans",              "Megaton Hammer",
-    "Light Arrow",          "Nayru's Love",         "Bottle",                   "Red Potion",           "Green Potion",             "Blue Potion",
-    "Fairy",                "Fish",                 "Milk (Full)",              "Ruto's Letter",        "Blue Fire",                "Bugs",
-    "Big Poe",              "Milk (Half)",          "Poe",                      "Weird Egg",            "Chicken",                  "Zelda's Letter",
-    "Keaton Mask",          "Skull Mask",           "Spooky Mask",              "Bunny Hood",           "Goron Mask",               "Zora Mask",
-    "Gerudo Mask",          "Mask of Truth",        "Sold Out",                 "Pocket Egg",           "Pocket Cucco",             "Cojiro",
-    "Odd Mushroom",         "Odd Potion",           "Poacher's Saw",            "Broken Goron Sword",   "Prescription",             "Eyeball Frog",
-    "Eye Drops",            "Claim Check",          "SPLIT_BOW_ARROW_FIRE",     "SPLIT_BOW_ARROW_ICE",  "SPLIT_BOW_ARROW_LIGHT",    "Kokiri Sword",
-    "Master Sword",         "Biggoron's Sword",     "Deku Shield",              "Hylian Shield",        "Mirror Shield",            "Kokiri Tunic",
-    "Goron Tunic",          "Zora Tunic",           "Kokiri Boots",             "Iron Boots",           "Hover Boots",              "Bullet Bag (30)",
-    "Bullet Bag (40)",      "Bullet Bag (50)",      "Quiver (30)",              "Quiver (40)",          "Quiver (50)",              "Bomb Bag (20)",
-    "Bomb Bag (30)",        "Bomb Bag (40)",        "Goron's Bracelet",         "Silver Gauntlets",     "Gold Gauntlets",           "Silver Scale",
-    "Golden Scale",         "Giant's Knife",        "Adult Wallet",             "Giant's Wallet",       "Seeds",                    "Fishing Pole",
-    "Minuet of Forest",     "Bolero of Fire",       "Serenade of Water",        "Requiem of Spirit",    "Nocturne of Shadow",       "Prelude of Light",
-    "Zelda's Lullaby",      "Epona's Song",         "Saria's Song",             "Sun's Song",           "Song of Time",             "Song of Storms",
-    "Forest Medallion",     "Fire Medallion",       "Water Medallion",          "Spirit Medallion",     "Shadow Medallion",         "Light Medallion",
-    "Kokiri's Emerald",     "Goron's Ruby",         "Zora's Sapphire",          "Stone of Agony",       "Gerudo Membership Card",   "Skulltula Token",
-    "Heart Container",      "Piece of Heart",       "Boss Key",                 "Compass",              "Map",                      "Small Key",
-    "Magic Refill (Small)", "Magic Refill (Large)", "Piece of Heart (2)",       "Magic Meter (Single)", "Magic Meter (Double)",     "Double Defense",
-    "Null 4",               "Null 5",               "Null 6",                   "Null 7",               "Milk",                     "Recovery Heart",
-    "Green Rupee",          "Blue Rupee",           "Red Rupee",                "Purple Rupee",         "Gold Rupee",               "Null 8",
-    "Deku Sticks (5)",      "Deku Sticks (10)",     "Deku Nuts (5)",            "Deku Nuts (10)",       "Bombs (5)",                "Bombs (10)",
-    "Bombs (20)",           "Bombs (30)",           "Arrows (Small)",           "Arrows (Medium)",      "Arrows (Large)",           "Seeds (30)",
-    "Bombchus (5)",         "Bombchus (10)",        "Deku Stick Upgrade (20)",  "Deku Stick Upgrade (30)",
-    "Deku Nut Upgrade (30)","Deku Nut Upgrade (40)",
-};
-
 typedef struct {
     char name[40];
     u32 time;
