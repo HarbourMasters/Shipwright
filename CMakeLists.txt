@@ -20,7 +20,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(VCPKG_TARGET_TRIPLET x64-windows-static)
 
     vcpkg_bootstrap()
-    vcpkg_install_packages(zlib bzip2 libpng sdl2 sdl2-net glew glfw3)
+    vcpkg_install_packages(zlib bzip2 libzip libpng sdl2 sdl2-net glew glfw3)
 
     if (CMAKE_C_COMPILER_LAUNCHER MATCHES "ccache|sccache")
         set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT Embedded)
