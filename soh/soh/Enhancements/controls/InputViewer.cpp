@@ -36,7 +36,8 @@ static ImVec4 color2Vec(Color_RGBA8 color) {
 }
 
 InputViewer::~InputViewer() {
-    SPDLOG_TRACE("destruct input viewer");
+    // 
+    // SPDLOG_TRACE("destruct input viewer");
 }
 
 void InputViewer::RenderButton(std::string btnTexture, std::string btnOutlineTexture, int state, ImVec2 size,
@@ -354,7 +355,8 @@ void InputViewer::DrawElement() {
 }
 
 InputViewerSettingsWindow::~InputViewerSettingsWindow() {
-    SPDLOG_TRACE("destruct input viewer settings window");
+    // 
+    // SPDLOG_TRACE("destruct input viewer settings window");
 }
 
 void InputViewerSettingsWindow::DrawElement() {
