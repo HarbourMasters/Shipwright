@@ -28,7 +28,7 @@
 #include "objects/object_link_child/object_link_child.h"
 #include "src/overlays/actors/ovl_Bg_Spot00_Hanebasi/z_bg_spot00_hanebasi.h"
 
-extern "C" {===
+extern "C" {
 #include <z64.h>
 #include "align_asset_macro.h"
 #include "macros.h"

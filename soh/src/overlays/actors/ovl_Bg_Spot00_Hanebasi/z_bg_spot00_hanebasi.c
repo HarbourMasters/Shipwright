@@ -71,13 +71,13 @@ void BgSpot00Hanebasi_Init(Actor* thisx, PlayState* play) {
             return;
         }
 
-    if ((gSaveContext.sceneSetupIndex != 6) &&
-                ((gSaveContext.sceneSetupIndex == 4) || (gSaveContext.sceneSetupIndex == 5) ||
-                  (!LINK_IS_ADULT && !IS_DAY))) {
-                 this->dyna.actor.shape.rot.x = -0x4000;
-             } else {
+        if ((gSaveContext.sceneSetupIndex != 6) &&
+            ((gSaveContext.sceneSetupIndex == 4) || (gSaveContext.sceneSetupIndex == 5) ||
+             (!LINK_IS_ADULT && !IS_DAY))) {
+            this->dyna.actor.shape.rot.x = -0x4000;
+        } else {
             this->dyna.actor.shape.rot.x = 0;
-             }
+        }
 
         if (gSaveContext.sceneSetupIndex != 6) {
             // Don't close the bridge in rando to accomodate hyrule castle exit
