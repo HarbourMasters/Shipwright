@@ -236,23 +236,6 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
     { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK } 
 };
 
-std::string sanitize(std::string stringValue) {
-    // Add backslashes.
-    for (auto i = stringValue.begin();;) {
-        auto const pos = std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
-        if (pos == stringValue.end()) {
-            break;
-        }
-        i = std::next(stringValue.insert(pos, '\\'), 2);
-    }
-
-    // Removes others.
-    stringValue.erase(std::remove_if(stringValue.begin(), stringValue.end(), [](char const c) {
-        return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; }), stringValue.end());
-
-    return stringValue;
-}
-
 #pragma optimize("", off)
 #pragma GCC push_options
 #pragma GCC optimize ("O0")

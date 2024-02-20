@@ -502,7 +502,7 @@ Area* AreaTable(const RandomizerRegion areaKey) {
 std::vector<Rando::Entrance*> GetShuffleableEntrances(Rando::EntranceType type, bool onlyPrimary /*= true*/) {
   std::vector<Rando::Entrance*> entrancesToShuffle = {};
   for (RandomizerRegion area : Areas::GetAllAreas()) {
-    for (auto& exit: AreaTable(area)->exits) {
+    for (auto& exit : AreaTable(area)->exits) {
       if ((exit.GetType() == type || type == Rando::EntranceType::All) && (exit.IsPrimary() || !onlyPrimary) && exit.GetType() != Rando::EntranceType::None) {
         entrancesToShuffle.push_back(&exit);
       }

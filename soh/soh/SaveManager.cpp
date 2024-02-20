@@ -357,9 +357,9 @@ void SaveManager::LoadRandomizerVersion3() {
     auto entranceCtx = randoContext->GetEntranceShuffler();
     SaveManager::Instance->LoadArray("entrances", ARRAY_COUNT(entranceCtx->entranceOverrides), [&](size_t i) {
         SaveManager::Instance->LoadStruct("", [&]() {
+            SaveManager::Instance->LoadData("type", entranceCtx->entranceOverrides[i].type);
             SaveManager::Instance->LoadData("index", entranceCtx->entranceOverrides[i].index);
             SaveManager::Instance->LoadData("destination", entranceCtx->entranceOverrides[i].destination);
-            SaveManager::Instance->LoadData("blueWarp", entranceCtx->entranceOverrides[i].blueWarp);
             SaveManager::Instance->LoadData("override", entranceCtx->entranceOverrides[i].override);
             SaveManager::Instance->LoadData("overrideDestination",
                                             entranceCtx->entranceOverrides[i].overrideDestination);
