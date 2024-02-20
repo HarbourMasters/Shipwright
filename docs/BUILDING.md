@@ -88,34 +88,34 @@ cd "build/x64"
 #### Debian/Ubuntu
 ```sh
 # using gcc
-apt-get install gcc g++ git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libboost-dev libopengl-dev
+apt-get install gcc g++ git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libzip-dev zipcmp zipmerge ziptool libboost-dev libopengl-dev
 
 # or using clang
-apt-get install clang git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libboost-dev libopengl-dev
+apt-get install clang git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libzip-dev zipcmp zipmerge ziptool libboost-dev libopengl-dev
 ```
 #### Arch
 ```sh
 # using gcc
-pacman -S gcc git cmake ninja lsb-release sdl2 libpng sdl2_net boost
+pacman -S gcc git cmake ninja lsb-release sdl2 libpng libzip sdl2_net boost
 
 # or using clang
-pacman -S clang git cmake ninja lsb-release sdl2 libpng sdl2_net boost
+pacman -S clang git cmake ninja lsb-release sdl2 libpng libzip sdl2_net boost
 ```
 #### Fedora
 ```sh
 # using gcc
-dnf install gcc gcc-c++ git cmake ninja-build lsb_release SDL2-devel libpng-devel boost-devel
+dnf install gcc gcc-c++ git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools boost-devel
 
 # or using clang
-dnf install clang git cmake ninja-build lsb_release SDL2-devel libpng-devel boost-devel
+dnf install clang git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools boost-devel
 ```
 #### openSUSE
 ```sh
 # using gcc
-zypper in gcc gcc-c++ git cmake ninja SDL2-devel libpng16-devel boost
+zypper in gcc gcc-c++ git cmake ninja SDL2-devel libpng16-devel libzip-devel libzip-tools
 
 # or using clang
-zypper in clang libstdc++-devel git cmake ninja SDL2-devel libpng16-devel boost
+zypper in clang libstdc++-devel git cmake ninja SDL2-devel libpng16-devel libzip-devel libzip-tools
 ```
 
 ### Build
