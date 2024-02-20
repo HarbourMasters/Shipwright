@@ -221,6 +221,7 @@ public:
 
     DEFINE_HOOK(OnFileDropped, void(std::string filePath));
     DEFINE_HOOK(OnAssetAltChange, void());
+    DEFINE_HOOK(OnKaleidoUpdate, void());
 
     // Helpers
     static bool IsSaveLoaded();
