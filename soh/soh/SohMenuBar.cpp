@@ -19,7 +19,6 @@
 #include "Enhancements/game-interactor/GameInteractor_Sail.h"
 #endif
 
-
 #include "Enhancements/audio/AudioEditor.h"
 #include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
