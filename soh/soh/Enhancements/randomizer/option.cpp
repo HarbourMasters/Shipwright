@@ -140,6 +140,9 @@ bool Option::RenderImGui() const {
         case WidgetType::Checkbox:
             changed = RenderCheckbox();
             break;
+        case WidgetType::TristateCheckbox:
+            changed = RenderTristateCheckbox();
+            break;
         case WidgetType::Combobox:
             changed = RenderCombobox();
             break;
@@ -196,6 +199,26 @@ bool Option::RenderCheckbox() const {
     }
     bool val = static_cast<bool>(CVarGetInteger(cvarName.c_str(), defaultOption));
     if (CustomCheckbox(name.c_str(), &val, disabled, disabledGraphic)) {
+        CVarSetInteger(cvarName.c_str(), val);
+        changed = true;
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    }
+    if (!description.empty()) {
+        UIWidgets::InsertHelpHoverText(description.c_str());
+    }
+    if (disabled) {
+        UIWidgets::ReEnableComponent(disabledText.c_str());
+    }
+    return changed;
+}
+
+bool Option::RenderTristateCheckbox() const {
+    bool changed = false;
+    if (disabled) {
+        UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
+    }
+    int val = CVarGetInteger(cvarName.c_str(), defaultOption);
+    if (CustomCheckboxTristate(name.c_str(), &val, disabled, disabledGraphic)) {
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();

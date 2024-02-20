@@ -69,7 +69,7 @@ namespace UIWidgets {
 
     void RenderCross(ImDrawList* draw_list, ImVec2 pos, ImU32 col, float sz);
     bool CustomCheckbox(const char* label, bool* v, bool disabled, CheckboxGraphics disabledGraphic, bool renderCrossWhenOff = false);
-    bool CustomCheckboxTristate(const char* label, bool* v, bool disabled, CheckboxGraphics disabledGraphic);
+    bool CustomCheckboxTristate(const char* label, int* v, bool disabled, CheckboxGraphics disabledGraphic);
 
     void ReEnableComponent(const char* disabledTooltipText);
     void DisableComponent(const float alpha);
