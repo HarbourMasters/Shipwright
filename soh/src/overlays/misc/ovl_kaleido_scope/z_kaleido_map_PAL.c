@@ -312,6 +312,9 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
         KaleidoScope_DrawQuadTextureRGBA32(gfxCtx, gQuestIconGoldSkulltulaTex, 24, 24, 8);
     }
 
+    // Unique index for both pulse phases
+    uint8_t palettePulseIdx = (mapBgPulseStage ? 40 : 20) - mapBgPulseTimer;
+
     if ((play->sceneNum >= SCENE_DEKU_TREE) && (play->sceneNum <= SCENE_TREASURE_BOX_SHOP)) {
         stepR = (mapBgPulseR - mapBgPulseColors[mapBgPulseStage][0]) / mapBgPulseTimer;
         stepG = (mapBgPulseG - mapBgPulseColors[mapBgPulseStage][1]) / mapBgPulseTimer;
@@ -324,6 +327,9 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
         interfaceCtx->mapPalette[28] = (rgba16 & 0xFF00) >> 8;
         interfaceCtx->mapPalette[29] = rgba16 & 0xFF;
 
+        interfaceCtx->mapPalettesPulse[palettePulseIdx][28] = (rgba16 & 0xFF00) >> 8;
+        interfaceCtx->mapPalettesPulse[palettePulseIdx][29] = rgba16 & 0xFF;
+
         mapBgPulseTimer--;
         if (mapBgPulseTimer == 0) {
             mapBgPulseStage ^= 1;
@@ -335,7 +341,8 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     gDPSetTextureFilter(POLY_KAL_DISP++, G_TF_POINT);
     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
-    gDPLoadTLUT_pal16(POLY_KAL_DISP++, 0, interfaceCtx->mapPalette);
+    // Use a unique palette address per frame so the renderer/shader can cache all variations
+    gDPLoadTLUT_pal16(POLY_KAL_DISP++, 0, interfaceCtx->mapPalettesPulse[palettePulseIdx]);
     gDPSetTextureLUT(POLY_KAL_DISP++, G_TT_RGBA16);
 
     u8 mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
@@ -343,18 +350,15 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     // Offset the U value of each vertex to be in the mirror boundary for the map textures
     if (mirroredWorld) {
         for (size_t i = 0; i < 8; i++) {
-            pauseCtx->mapPageVtx[60 + i].v.tc[0] += 48 << 5;
+            pauseCtx->mapPageVtx[60 + i].v.tc[0] += MAP_48x85_TEX_WIDTH << 5;
         }
     }
 
     gSPVertex(POLY_KAL_DISP++, &pauseCtx->mapPageVtx[60], 8, 0);
 
-    // The dungeon map textures are recreated each frame, so always invalidate them
-    gSPInvalidateTexCache(POLY_KAL_DISP++, interfaceCtx->mapSegment[0]);
-    gSPInvalidateTexCache(POLY_KAL_DISP++, interfaceCtx->mapSegment[1]);
-
-    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegmentName[0], G_IM_FMT_CI, 48, 85, 0, G_TX_WRAP | mirrorMode,
-                           G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegmentName[0], G_IM_FMT_CI, MAP_48x85_TEX_WIDTH,
+                           MAP_48x85_TEX_HEIGHT, 0, G_TX_WRAP | mirrorMode, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK,
+                           G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     // Swap vertices to render left half on the right and vice-versa
     if (mirroredWorld) {
@@ -363,9 +367,9 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
         gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
     }
 
-    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegmentName[1], G_IM_FMT_CI, 48, 85, 0,
-                           G_TX_WRAP | mirrorMode, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
-                           G_TX_NOLOD);
+    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegmentName[1], G_IM_FMT_CI, MAP_48x85_TEX_WIDTH,
+                           MAP_48x85_TEX_HEIGHT, 0, G_TX_WRAP | mirrorMode, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK,
+                           G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     if (mirroredWorld) {
         gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);

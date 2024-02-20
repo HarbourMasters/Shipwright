@@ -101,15 +101,6 @@ u8 sActionModelGroups[] = {
     PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_MASK_GERUDO
     PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_MASK_TRUTH
     PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_LENS_OF_TRUTH
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_SHIELD_DEKU
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_SHIELD_HYLIAN
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_SHIELD_MIRROR
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_TUNIC_KOKIRI
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_TUNIC_GORON
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_TUNIC_ZORA
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_BOOTS_KOKIRI
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_BOOTS_IRON
-    PLAYER_MODELGROUP_DEFAULT,       // PLAYER_IA_BOOTS_HOVER
 };
 
 TextTriggerEntry sTextTriggers[] = {
@@ -573,7 +564,7 @@ uint8_t Player_IsCustomLinkModel() {
 }
 
 s32 Player_InBlockingCsMode(PlayState* play, Player* this) {
-    return (this->stateFlags1 & 0x20000080) || (this->csMode != 0) || (play->sceneLoadFlag == 0x14) ||
+    return (this->stateFlags1 & 0x20000080) || (this->csAction != 0) || (play->transitionTrigger == TRANS_TRIGGER_START) ||
            (this->stateFlags1 & 1) || (this->stateFlags3 & 0x80) ||
            ((gSaveContext.magicState != MAGIC_STATE_IDLE) && (Player_ActionToMagicSpell(this, this->itemAction) >= 0));
 }
@@ -609,13 +600,23 @@ void Player_SetModelsForHoldingShield(Player* this) {
         if ((CVarGetInteger("gShieldTwoHanded", 0) && (this->heldItemAction != PLAYER_IA_DEKU_STICK) ||
             !Player_HoldsTwoHandedWeapon(this)) && !Player_IsChildWithHylianShield(this)) {
             this->rightHandType = PLAYER_MODELTYPE_RH_SHIELD;
-            this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][gSaveContext.linkAge];
+            if (LINK_IS_CHILD && (CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && (this->currentShield == PLAYER_SHIELD_MIRROR)) {
+                this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][0];
+                } else if (LINK_IS_ADULT && (CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && (this->currentShield == PLAYER_SHIELD_DEKU)) {
+                    this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][1];
+                } else {
+                    this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][gSaveContext.linkAge];
+            }
             if (this->sheathType == PLAYER_MODELTYPE_SHEATH_18) {
                 this->sheathType = PLAYER_MODELTYPE_SHEATH_16;
             } else if (this->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
                 this->sheathType = PLAYER_MODELTYPE_SHEATH_17;
             }
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
+            if ((CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_CHILD &&
+                gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) {
+                this->sheathDLists = &sPlayerDListGroups[this->sheathType][0]; 
+            }
             this->modelAnimType = PLAYER_ANIMTYPE_2;
             this->itemAction = -1;
         }
@@ -626,12 +627,40 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     // Left hand
     this->leftHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_LEFT_HAND];
     this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
-    
+
+    if (CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) {
+        if (LINK_IS_CHILD &&
+            (this->leftHandType == PLAYER_MODELTYPE_LH_HAMMER ||
+            ((this->leftHandType == PLAYER_MODELTYPE_LH_SWORD || this->leftHandType == PLAYER_MODELTYPE_LH_BGS) &&
+            (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)))) {
+            this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][0];
+        }
+
+        if (LINK_IS_ADULT && (this->leftHandType == PLAYER_MODELTYPE_LH_BOOMERANG ||
+            (this->leftHandType == PLAYER_MODELTYPE_LH_SWORD && gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI))) {
+            this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][1];
+        }
+    }
+
     // Right hand
     this->rightHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_RIGHT_HAND];
     this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
 
-    if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && this->rightHandType == 11) { // If holding Bow/Slingshot
+    this->rightHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_RIGHT_HAND];
+    this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
+
+    if (CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) {
+        if (LINK_IS_CHILD &&
+            (this->rightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT ||
+            (this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD && this->currentShield == PLAYER_SHIELD_MIRROR))) {
+            this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][0];
+        }
+        if (LINK_IS_ADULT &&
+            (this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD && this->currentShield == PLAYER_SHIELD_DEKU)) {
+            this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][1];
+        }
+    }
+    if ((CVarGetInteger("gBowSlingShotAmmoFix", 0) || CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && this->rightHandType == 11) { // If holding Bow/Slingshot
         this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
     }
 
@@ -639,6 +668,23 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->sheathType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_SHEATH];
     this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
 
+    if (CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) {
+        if (LINK_IS_CHILD &&
+            (this->currentShield == PLAYER_SHIELD_HYLIAN || this->currentShield == PLAYER_SHIELD_MIRROR) &&
+            ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) ||
+             (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS))) {
+            this->sheathDLists = &sPlayerDListGroups[this->sheathType][0];
+        } else if (LINK_IS_CHILD && this->currentShield == PLAYER_SHIELD_MIRROR && gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI &&
+            this->sheathType == PLAYER_MODELTYPE_SHEATH_18) {
+            this->sheathDLists = &sPlayerDListGroups[this->sheathType][0];
+        } else if (LINK_IS_ADULT && this->currentShield == PLAYER_SHIELD_DEKU) {
+            this->sheathDLists = &sPlayerDListGroups[this->sheathType][1];
+        } else if (LINK_IS_CHILD && this->sheathType == PLAYER_MODELTYPE_SHEATH_17 && 
+			((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) || (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS))) {
+			this->sheathDLists = &sPlayerDListGroups[this->sheathType][0];
+		}
+    }
+    
     // Waist
     this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
 
@@ -668,7 +714,7 @@ void func_8008EC70(Player* this) {
 }
 
 void Player_SetEquipmentData(PlayState* play, Player* this) {
-    if (this->csMode != 0x56) {
+    if (this->csAction != 0x56) {
         this->currentShield = SHIELD_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD));
         this->currentTunic = TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC));
         this->currentBoots = BOOTS_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS));
@@ -742,6 +788,10 @@ s32 Player_IsBurningStickInRange(PlayState* play, Vec3f* pos, f32 xzRange, f32 y
 
 s32 Player_GetStrength(void) {
     s32 strengthUpgrade = CUR_UPG_VALUE(UPG_STRENGTH);
+
+    if (CVarGetInteger("gToggleStrength", 0) && CVarGetInteger("gStrengthDisabled", 0)) {
+        return PLAYER_STR_NONE;
+    }
 
     if (CVarGetInteger("gTimelessEquipment", 0) || LINK_IS_ADULT) {
         return strengthUpgrade;
@@ -889,8 +939,8 @@ s32 Player_GetEnvironmentalHazard(PlayState* play) {
 
     if (play->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3) { // Room is hot
         var = 0;
-    } else if ((this->unk_840 > 80) &&
-               ((this->currentBoots == PLAYER_BOOTS_IRON) || (this->unk_840 >= 300))) { // Deep underwater
+    } else if ((this->underwaterTimer > 80) &&
+               ((this->currentBoots == PLAYER_BOOTS_IRON) || (this->underwaterTimer >= 300))) { // Deep underwater
         var = ((this->currentBoots == PLAYER_BOOTS_IRON) && (this->actor.bgCheckFlags & 1)) ? 1 : 3;
     } else if (this->stateFlags1 & 0x8000000) { // Swimming
         var = 2;
@@ -1192,6 +1242,42 @@ void func_8008F87C(PlayState* play, Player* this, SkelAnime* skelAnime, Vec3f* p
 
 s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
+    
+    if (CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0) && CVarGetInteger("gEnhancements.ScaleAdultEquimentAsChild", 0) && LINK_IS_CHILD) {
+        if (limbIndex == PLAYER_LIMB_L_HAND) {
+            if ((gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI && sLeftHandType == PLAYER_MODELTYPE_LH_SWORD) ||
+                (sLeftHandType == PLAYER_MODELTYPE_LH_BGS) || (sLeftHandType == PLAYER_MODELTYPE_LH_HAMMER)) {
+                Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
+            }
+        }
+        if (limbIndex == PLAYER_LIMB_R_HAND) {
+            if ((this->currentShield == PLAYER_SHIELD_MIRROR && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) || 
+                (this->currentShield == PLAYER_SHIELD_HYLIAN && (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER || 
+                gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS)) || (sRightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT) ||
+                (sRightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT && Player_HoldsBow(this))) {
+                Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
+            }
+        }
+        if (limbIndex == PLAYER_LIMB_SHEATH) {
+            if ((this->currentShield == PLAYER_SHIELD_MIRROR ||
+                 (this->currentShield == PLAYER_SHIELD_HYLIAN &&
+                  (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER ||
+                   gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS))) &&
+                ((this->sheathType == PLAYER_MODELTYPE_SHEATH_16) || (this->sheathType == PLAYER_MODELTYPE_SHEATH_17) ||
+                 (this->sheathType == PLAYER_MODELTYPE_SHEATH_18) ||
+                 (this->sheathType == PLAYER_MODELTYPE_SHEATH_19))) {
+                Matrix_Translate(218, -100, 62, MTXMODE_APPLY);
+                Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
+            }
+            if ((this->currentShield == PLAYER_SHIELD_DEKU &&
+                gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI && 
+                (this->sheathType == PLAYER_MODELTYPE_SHEATH_16 ||
+                 this->sheathType == PLAYER_MODELTYPE_SHEATH_17))) {
+                Matrix_Translate(218, -100, 62, MTXMODE_APPLY);
+                Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
+            }
+        }
+    }
 
     if (limbIndex == PLAYER_LIMB_ROOT) {
         sLeftHandType = this->leftHandType;
@@ -1310,9 +1396,11 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                     (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
                     dLists += PLAYER_SHIELD_MAX * 4;
                 }
-            } else if (!LINK_IS_ADULT && ((this->sheathType == PLAYER_MODELTYPE_SHEATH_16) || (this->sheathType == PLAYER_MODELTYPE_SHEATH_17)) &&
-                       (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
-                dLists = &sSheathWithSwordDLs[PLAYER_SHIELD_MAX * 4];
+            } else if (!CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) {
+                if (!LINK_IS_ADULT && ((this->sheathType == PLAYER_MODELTYPE_SHEATH_16) || (this->sheathType == PLAYER_MODELTYPE_SHEATH_17)) &&
+                    (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
+                    dLists = &sSheathWithSwordDLs[PLAYER_SHIELD_MAX * 4];
+                }
             }
 
             if (dLists[sDListsLodOffset] != NULL) {
@@ -1350,7 +1438,7 @@ s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, G
             *dList = sFirstPersonLeftForearmDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_L_HAND) {
             s32 handOutDlIndex = gSaveContext.linkAge;
-            if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && LINK_IS_ADULT && Player_HoldsSlingshot(this)) {
+            if ((CVarGetInteger("gBowSlingShotAmmoFix", 0) || CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) && LINK_IS_ADULT && Player_HoldsSlingshot(this)) {
                 handOutDlIndex = 1;
             }
             *dList = sFirstPersonLeftHandDLs[handOutDlIndex];
@@ -1360,7 +1448,7 @@ s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, G
             *dList = sFirstPersonForearmDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_R_HAND) {
             s32 firstPersonWeaponIndex = gSaveContext.linkAge;
-            if (CVarGetInteger("gBowSlingShotAmmoFix", 0)) {
+            if (CVarGetInteger("gBowSlingShotAmmoFix", 0) || CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) {
                 if (Player_HoldsBow(this)) {
                     firstPersonWeaponIndex = 0;
                 } else if (Player_HoldsSlingshot(this)) {
@@ -1504,7 +1592,11 @@ void Player_DrawGetItemIceTrap(PlayState* play, Player* this, Vec3f* refPos, s32
         Matrix_RotateZYX(0, play->gameplayFrames * 1000, 0, MTXMODE_APPLY);
         Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
         // Draw fake item model.
-        GetItem_Draw(play, drawIdPlusOne - 1);
+        if (this->getItemEntry.drawFunc != NULL) {
+            this->getItemEntry.drawFunc(play, &this->getItemEntry);
+        } else {
+            GetItem_Draw(play, drawIdPlusOne - 1);
+        }
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -1760,7 +1852,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             Matrix_Get(&this->shieldMf);
         } else if ((this->rightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT) || (this->rightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2)) {
             s32 stringModelToUse = gSaveContext.linkAge;
-            if(CVarGetInteger("gBowSlingShotAmmoFix", 0)){
+            if (CVarGetInteger("gBowSlingShotAmmoFix", 0) || CVarGetInteger("gEnhancements.EquimentAlwaysVisible", 0)) {
                 stringModelToUse = Player_HoldsSlingshot(this);
             }
             BowStringData* stringData = &sBowStringData[stringModelToUse];

@@ -10,7 +10,6 @@
 #include "utils.hpp"
 #include "shops.hpp"
 #include "hints.hpp"
-#include "../randomizer_tricks.h"
 #include "pool_functions.hpp"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include <nlohmann/json.hpp>
@@ -30,6 +29,8 @@
 #include <variables.h>
 
 #include <Context.h>
+
+#include "consolevariablebridge.h"
 
 using json = nlohmann::ordered_json;
 using namespace Rando;
@@ -114,8 +115,12 @@ void WriteIngameSpoilerLog() {
         // if (loc->IsExcluded()) {
         //     continue;
         // }
+        // Beehives
+        if (!ctx->GetOption(RSK_SHUFFLE_BEEHIVES) && loc->IsCategory(Category::cBeehive)) {
+            continue;
+        }
         // Cows
-        if (!ctx->GetOption(RSK_SHUFFLE_COWS) && loc->IsCategory(Category::cCow)) {
+        else if (!ctx->GetOption(RSK_SHUFFLE_COWS) && loc->IsCategory(Category::cCow)) {
             continue;
         }
         // Merchants
@@ -437,7 +442,7 @@ static void WriteEnabledTricks(tinyxml2::XMLDocument& spoilerLog) {
     if (setting->GetSelectedOptionIndex() != RO_GENERIC_ON/* || !setting->IsCategory(OptionCategory::Setting)*/) {
       continue;
     }
-    jsonData["enabledTricks"].push_back(RemoveLineBreaks(RandomizerTricks::GetRTName((RandomizerTrick)std::stoi(setting->GetName()))).c_str());
+    jsonData["enabledTricks"].push_back(RemoveLineBreaks(setting->GetName()).c_str());
     //auto node = parentNode->InsertNewChildElement("trick");
     //node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
   }
@@ -540,69 +545,6 @@ static void WriteShuffledEntrances() {
   }
 }
 
-// Writes the WOTH locations to the spoiler log, if there are any.
-static void WriteWayOfTheHeroLocation(tinyxml2::XMLDocument& spoilerLog) {
-    auto parentNode = spoilerLog.NewElement("way-of-the-hero-locations");
-
-    for (const RandomizerCheck key : Rando::Context::GetInstance()->wothLocations) {
-        // WriteLocation(parentNode, key, true);
-    }
-
-    if (!parentNode->NoChildren()) {
-        spoilerLog.RootElement()->InsertEndChild(parentNode);
-    }
-}
-
-std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
-  std::string textStr = unformattedHintTextString;
-
-  // RANDOTODO: don't just make manual exceptions
-  bool needsAutomaicNewlines = true;
-  if (textStr == "Erreur 0x69a504:&Traduction manquante^C'est de la faute à Purple Hato!&J'vous jure!" ||
-      textStr == "Mon très cher @:&Viens vite au château, je t'ai préparé&un délicieux gâteau...^À bientôt, Princesse Zelda" ||
-      textStr == "What about Zelda makes you think&she'd be a better ruler than I?^I saved Lon Lon Ranch,&fed the hungry,&and my castle floats." ||
-      textStr == "Many tricks are up my sleeve,&to save yourself&you'd better leave!" ||
-      textStr == "I've learned this spell,&it's really neat,&I'll keep it later&for your treat!" ||
-      textStr == "Sale petit garnement,&tu fais erreur!&C'est maintenant que marque&ta dernière heure!" ||
-      textStr == "Gamin, ton destin achève,&sous mon sort tu périras!&Cette partie ne fut pas brève,&et cette mort, tu subiras!" ||
-      textStr == "Oh! It's @.&I was expecting someone called Sheik.&Do you know what happened to them?" ||
-      textStr == "Ah, c'est @.&J'attendais un certain Sheik.&Tu sais ce qui lui est arrivé?" ||
-      textStr == "They say \"Forgive me, but-^Your script will not be used.&....After all...^The one writing the rest of the script...&will be me.\"") {
-    needsAutomaicNewlines = false;
-  }
-
-  if (needsAutomaicNewlines) {
-    //insert newlines either manually or when encountering a '&'
-    constexpr size_t lineLength = 34;
-    size_t lastNewline = 0;
-    while (lastNewline + lineLength < textStr.length()) {
-      size_t carrot     = textStr.find('^', lastNewline);
-      size_t ampersand  = textStr.find('&', lastNewline);
-      size_t lastSpace  = textStr.rfind(' ', lastNewline + lineLength);
-      size_t lastPeriod = textStr.rfind('.', lastNewline + lineLength);
-      //replace '&' first if it's within the newline range
-      if (ampersand < lastNewline + lineLength) {
-        lastNewline = ampersand + 1;
-      //or move the lastNewline cursor to the next line if a '^' is encountered
-      } else if (carrot < lastNewline + lineLength) {
-        lastNewline = carrot + 1;
-      //some lines need to be split but don't have spaces, look for periods instead
-      } else if (lastSpace == std::string::npos) {
-        textStr.replace(lastPeriod, 1, ".&");
-        lastNewline = lastPeriod + 2;
-      } else {
-        textStr.replace(lastSpace, 1, "&");
-        lastNewline = lastSpace + 1;
-      }
-    }
-  }
-
-  // todo add colors (see `AddColorsAndFormat` in `custom_messages.cpp`)
-  textStr.erase(std::remove(textStr.begin(), textStr.end(), '#'), textStr.end());
-
-  return textStr;
-}
-
 Rando::ItemLocation* GetItemLocation(RandomizerGet item) {
     auto ctx = Rando::Context::GetInstance();
     return ctx->GetItemLocation(FilterFromPool(ctx->allLocations, [item, ctx](const RandomizerCheck loc) {
@@ -611,56 +553,21 @@ Rando::ItemLocation* GetItemLocation(RandomizerGet item) {
 }
 
 // Writes the hints to the spoiler log, if they are enabled.
-static void WriteHints(int language) {
+static void WriteHints() {
     auto ctx = Rando::Context::GetInstance();
-    std::string unformattedGanonText;
-    std::string unformattedGanonHintText;
-    std::string unformattedDampesText;
-    std::string unformattedGregText;
-    std::string unformattedSheikText;
-    std::string unformattedSariaText;
 
-    switch (language) {
-        case 0:
-        default:
-            unformattedGanonText = GetGanonText().GetEnglish();
-            unformattedGanonHintText = GetGanonHintText().GetEnglish();
-            unformattedDampesText = GetDampeHintText().GetEnglish();
-            unformattedGregText = GetGregHintText().GetEnglish();
-            unformattedSheikText = GetSheikHintText().GetEnglish();
-            unformattedSariaText = GetSariaHintText().GetEnglish();
+    uint8_t language = ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex();
 
-            if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)){
-              jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
-              jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
-              jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
-              jsonData["warpRequiemText"] = GetWarpRequiemText().GetEnglish();
-              jsonData["warpNocturneText"] = GetWarpNocturneText().GetEnglish();
-              jsonData["warpPreludeText"] = GetWarpPreludeText().GetEnglish();
-            }
-            jsonData["childAltar"]["hintText"] = GetChildAltarText().GetEnglish();
-            jsonData["adultAltar"]["hintText"] = GetAdultAltarText().GetEnglish();
-            break;
-        case 2:
-            unformattedGanonText = GetGanonText().GetFrench();
-            unformattedGanonHintText = GetGanonHintText().GetFrench();
-            unformattedDampesText = GetDampeHintText().GetFrench();
-            unformattedGregText = GetGregHintText().GetFrench();
-            unformattedSheikText = GetSheikHintText().GetFrench();
-            unformattedSariaText = GetSariaHintText().GetFrench();
-
-            if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)){
-              jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
-              jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
-              jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
-              jsonData["warpRequiemText"] = GetWarpRequiemText().GetFrench();
-              jsonData["warpNocturneText"] = GetWarpNocturneText().GetFrench();
-              jsonData["warpPreludeText"] = GetWarpPreludeText().GetFrench();
-            }
-            jsonData["childAltar"]["hintText"] = GetChildAltarText().GetFrench();
-            jsonData["adultAltar"]["hintText"] = GetAdultAltarText().GetFrench();
-            break;
+    if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
+        jsonData["warpMinuetText"] = ctx->GetHint(RH_MINUET_WARP_LOC)->GetText().GetForLanguage(language);
+        jsonData["warpBoleroText"] = ctx->GetHint(RH_BOLERO_WARP_LOC)->GetText().GetForLanguage(language);
+        jsonData["warpSerenadeText"] = ctx->GetHint(RH_SERENADE_WARP_LOC)->GetText().GetForLanguage(language);
+        jsonData["warpRequiemText"] = ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetText().GetForLanguage(language);
+        jsonData["warpNocturneText"] = ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetText().GetForLanguage(language);
+        jsonData["warpPreludeText"] = ctx->GetHint(RH_PRELUDE_WARP_LOC)->GetText().GetForLanguage(language);
     }
+    jsonData["childAltar"]["hintText"] = ctx->GetHint(RH_ALTAR_CHILD)->GetText().GetForLanguage(language);
+    jsonData["adultAltar"]["hintText"] = ctx->GetHint(RH_ALTAR_ADULT)->GetText().GetForLanguage(language);
 
     Rando::ItemLocation* emeraldLoc = GetItemLocation(RG_KOKIRI_EMERALD);
     Rando::ItemLocation* rubyLoc = GetItemLocation(RG_GORON_RUBY);
@@ -694,81 +601,68 @@ static void WriteHints(int language) {
     jsonData["adultAltar"]["rewards"]["lightMedallionLoc"] =
         Rando::StaticData::GetLocation(lightMedallionLoc->GetRandomizerCheck())->GetName();
 
-    std::string ganonText = AutoFormatHintTextString(unformattedGanonText);
-    std::string ganonHintText = AutoFormatHintTextString(unformattedGanonHintText);
-    std::string dampesText = AutoFormatHintTextString(unformattedDampesText);
-    std::string gregText = AutoFormatHintTextString(unformattedGregText);
-    std::string sheikText = AutoFormatHintTextString(unformattedSheikText);
-    std::string sariaText = AutoFormatHintTextString(unformattedSariaText);
-
-    jsonData["ganonText"] = ganonText;
+    jsonData["ganonText"] = ctx->GetHint(RH_GANONDORF_NOHINT)->GetText().GetForLanguage(language);
     if (ctx->GetOption(RSK_LIGHT_ARROWS_HINT)){
-      jsonData["ganonHintText"] = ganonHintText;
+      jsonData["ganonHintText"] = ctx->GetHint(RH_GANONDORF_HINT)->GetText().GetForLanguage(language);
       jsonData["lightArrowHintLoc"] = GetLightArrowHintLoc();
-      jsonData["lightArrowRegion"] = ctx->GetHint(RH_GANONDORF_HINT)->GetHintedRegion();
+      jsonData["lightArrowArea"] = ::Hint(ctx->GetHint(RH_GANONDORF_HINT)->GetHintedArea()).GetText().GetEnglish();
       jsonData["masterSwordHintLoc"] = GetMasterSwordHintLoc();
       if (!ctx->GetOption(RSK_TRIAL_COUNT).Is(0)) {
-          jsonData["sheikText"] = sheikText;
+          jsonData["sheikText"] = ctx->GetHint(RH_SHEIK_LIGHT_ARROWS)->GetText().GetForLanguage(language);
       }
     }
     if (ctx->GetOption(RSK_DAMPES_DIARY_HINT)){
-      jsonData["dampeText"] = dampesText;
-      jsonData["dampeHintLoc"] = GetDampeHintLoc();
-      jsonData["dampeRegion"] = ctx->GetHint(RH_DAMPES_DIARY)->GetHintedRegion();
+      jsonData["dampeText"] = ctx->GetHint(RH_DAMPES_DIARY)->GetText().GetForLanguage(language);
+      jsonData["dampeHintLoc"] = Rando::StaticData::GetLocation(ctx->GetHint(RH_DAMPES_DIARY)->GetHintedLocation())->GetName();
+      jsonData["dampeRegion"] = ::Hint(ctx->GetHint(RH_DAMPES_DIARY)->GetHintedArea()).GetText().GetEnglish();
     }
     if (ctx->GetOption(RSK_GREG_HINT)){
-      jsonData["gregText"] = gregText;
-      jsonData["gregLoc"] = GetGregHintLoc();
-      jsonData["gregRegion"] = ctx->GetHint(RH_GREG_RUPEE)->GetHintedRegion();
+      jsonData["gregText"] = ctx->GetHint(RH_GREG_RUPEE)->GetText().GetForLanguage(language);
+      jsonData["gregLoc"] = Rando::StaticData::GetLocation(ctx->GetHint(RH_GREG_RUPEE)->GetHintedLocation())->GetName();
+      jsonData["gregRegion"] = ::Hint(ctx->GetHint(RH_GREG_RUPEE)->GetHintedArea()).GetText().GetEnglish();
     }
     if (ctx->GetOption(RSK_SARIA_HINT)){
-      jsonData["sariaText"] = sariaText;
-      jsonData["sariaHintLoc"] = GetSariaHintLoc();
-      jsonData["sariaRegion"] = ctx->GetHint(RH_SARIA)->GetHintedRegion();
+      jsonData["sariaText"] = ctx->GetHint(RH_SARIA)->GetText().GetForLanguage(language);
+      jsonData["sariaHintLoc"] = Rando::StaticData::GetLocation(ctx->GetHint(RH_SARIA)->GetHintedLocation())->GetName();
+      jsonData["sariaRegion"] = ::Hint(ctx->GetHint(RH_SARIA)->GetHintedArea()).GetText().GetEnglish();
+    }
+    if (ctx->GetOption(RSK_FISHING_POLE_HINT)) {
+      jsonData["fishingPoleText"] = ctx->GetHint(RH_FISHING_POLE)->GetText().GetForLanguage(language);
+      jsonData["fishingPoleHintLoc"] = Rando::StaticData::GetLocation(ctx->GetHint(RH_FISHING_POLE)->GetHintedLocation())->GetName();
+      jsonData["fishingPoleRegion"] = ::Hint(ctx->GetHint(RH_FISHING_POLE)->GetHintedArea()).GetText().GetEnglish();
     }
 
     if (ctx->GetOption(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NONE)) {
         return;
     }
-    for (const RandomizerCheck key : Rando::StaticData::gossipStoneLocations) {
+    for (const RandomizerCheck key : Rando::StaticData::gossipStoneLocations) { //RANDOTODO should be merged with static hints, iterate over hint keys
         Rando::Hint* hint = ctx->GetHint((RandomizerHintKey)(key - RC_COLOSSUS_GOSSIP_STONE + 1));
         Rando::ItemLocation* hintedLocation = ctx->GetItemLocation(hint->GetHintedLocation());
-        std::string hintTextString;
-        switch (language) {
-            case 0:
-            default:
-                hintTextString = hint->GetText().GetEnglish();
-                break;
-            case 2:
-                hintTextString = hint->GetText().GetFrench();
-                break;
-        }
-
+        std::string hintTextString = hint->GetText().GetForLanguage(language);
         HintType hintType = hint->GetHintType();
 
         std::string textStr = hintTextString;
-        jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["hint"] = textStr;
-        jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["type"] = hintTypeNames[(int)hintType];
-        if ((hintType >= HINT_TYPE_ALWAYS && hintType < HINT_TYPE_JUNK) || hintType == HINT_TYPE_WOTH) {
-            jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["item"] = hintedLocation->GetPlacedItemName().GetEnglish();
-            if (hintType != HINT_TYPE_NAMED_ITEM) {
-                jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["location"] =
-                    Rando::StaticData::GetLocation(hintedLocation->GetRandomizerCheck())->GetName();
-            }
+        std::string name = Rando::StaticData::GetLocation(key)->GetName();
+        jsonData["hints"][name]["hint"] = textStr;
+        jsonData["hints"][name]["distribution"] = hint->GetDistribution();
+        jsonData["hints"][name]["type"] = hintTypeNames[(int)hintType];
+        if (hintType == HINT_TYPE_ITEM_LOCATION || hintType == HINT_TYPE_ITEM_AREA || hintType == HINT_TYPE_WOTH) {
+            jsonData["hints"][name]["item"] = hintedLocation->GetPlacedItemName().GetEnglish();
+            jsonData["hints"][name]["location"] = Rando::StaticData::GetLocation(hintedLocation->GetRandomizerCheck())->GetName();
         }
         if (hintType != HINT_TYPE_TRIAL && hintType != HINT_TYPE_JUNK) {
-            jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["area"] = hint->GetHintedRegion(); //RANDOTODO find elegent way to capitalise this
+            jsonData["hints"][name]["area"] = ::Hint(hint->GetHintedArea()).GetText().Capitalize().GetEnglish();
         }
     }
 }
 
-static void WriteAllLocations(int language) {
+static void WriteAllLocations() {
     auto ctx = Rando::Context::GetInstance();
     for (const RandomizerCheck key : ctx->allLocations) {
         Rando::ItemLocation* location = ctx->GetItemLocation(key);
         std::string placedItemName;
 
-        switch (language) {
+        switch (ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex()) {
           case 0:
           default:
             placedItemName = location->GetPlacedItemName().english;
@@ -799,7 +693,7 @@ static void WriteAllLocations(int language) {
         }
 
         if (location->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
-          switch (language) {
+          switch (ctx->GetOption(RSK_LANGUAGE).GetSelectedOptionIndex()) {
               case 0:
               default:
                   jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["model"] =
@@ -818,7 +712,7 @@ static void WriteAllLocations(int language) {
     }
 }
 
-const char* SpoilerLog_Write(int language) {
+const char* SpoilerLog_Write() {
     auto ctx = Rando::Context::GetInstance();
     auto spoilerLog = tinyxml2::XMLDocument(false);
     spoilerLog.InsertEndChild(spoilerLog.NewDeclaration());
@@ -849,15 +743,13 @@ const char* SpoilerLog_Write(int language) {
     WriteMasterQuestDungeons(spoilerLog);
     WriteRequiredTrials();
     WritePlaythrough();
-    //WriteWayOfTheHeroLocation(spoilerLog);
 
     ctx->playthroughLocations.clear();
     ctx->playthroughBeatable = false;
-    ctx->wothLocations.clear();
 
-    WriteHints(language);
+    WriteHints();
     WriteShuffledEntrances();
-    WriteAllLocations(language);
+    WriteAllLocations();
 
     if (!std::filesystem::exists(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"))) {
         std::filesystem::create_directory(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"));
@@ -865,7 +757,7 @@ const char* SpoilerLog_Write(int language) {
 
     std::string jsonString = jsonData.dump(4);
     std::ostringstream fileNameStream;
-    for (int i = 0; i < ctx->hashIconIndexes.size(); i ++) {
+    for (uint8_t i = 0; i < ctx->hashIconIndexes.size(); i ++) {
         if (i) {
             fileNameStream << '-';
         }
@@ -879,6 +771,8 @@ const char* SpoilerLog_Write(int language) {
         (std::string("Randomizer/") + fileName + std::string(".json")).c_str()));
     jsonFile << std::setw(4) << jsonString << std::endl;
     jsonFile.close();
+
+    CVarSetString("gSpoilerLog", (std::string("./Randomizer/") + fileName + std::string(".json")).c_str());
 
     // Note: probably shouldn't return this without making sure this string is stored somewhere, but
     // this return value is currently only used in playthrough.cpp as a true/false. Even if the pointer

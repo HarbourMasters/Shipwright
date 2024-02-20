@@ -1008,7 +1008,7 @@ void KaleidoScope_SetDefaultCursor(PlayState* play) {
     PauseContext* pauseCtx = &play->pauseCtx;
     s16 s;
     s16 i;
-    gSelectingMask = false;
+    KaleidoScope_ResetItemCycling();
 
     switch (pauseCtx->pageIndex) {
         case PAUSE_ITEM:
@@ -1042,7 +1042,6 @@ void KaleidoScope_SetDefaultCursor(PlayState* play) {
 void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
     pauseCtx->unk_1E4 = 1;
     pauseCtx->unk_1EA = 0;
-    gSelectingMask = false;
 
     if (!pt) {
         pauseCtx->mode = pauseCtx->pageIndex * 2 + 1;
@@ -1074,7 +1073,7 @@ void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
     gSaveContext.unk_13EA = 0;
     Interface_ChangeAlpha(50);
 
-    KaleidoScope_ResetTradeSelect();
+    KaleidoScope_ResetItemCycling();
 }
 
 void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
@@ -1884,10 +1883,16 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
     gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 90, 100, 130, 255);
+    const Color_RGBA8 namePanelColor = CVarGetColor("gCosmetics.Kal_NamePanel.Value", (Color_RGBA8){90,100,130,255});
+    
+    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, namePanelColor.r, namePanelColor.g, namePanelColor.b, namePanelColor.a);
     gSPVertex(POLY_KAL_DISP++, &pauseCtx->infoPanelVtx[0], 16, 0);
 
     gSPDisplayList(POLY_KAL_DISP++, gItemNamePanelDL);
+
+    if (CVarGetInteger("gUniformLR", 0) == 0) { // Restore the misplace gDPSetPrimColor
+        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 90, 100, 130, 255);
+    }
 
     if ((pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) && (pauseCtx->unk_1E4 == 0)) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, D_808321A0, D_808321A2, D_808321A4, D_808321A6);
@@ -1896,6 +1901,7 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 255);
       }
     }
+    
 
     gSPDisplayList(POLY_KAL_DISP++, gLButtonIconDL);
 
@@ -2306,15 +2312,15 @@ void KaleidoScope_SetView(PauseContext* pauseCtx, f32 x, f32 y, f32 z) {
     func_800AAA50(&pauseCtx->view, 127);
 }
 
-static u8 D_8082AE48[][4] = {
+static u8 sPageVtxColorR[][4] = {
     { 10, 70, 70, 10 },   { 10, 90, 90, 10 },   { 80, 140, 140, 80 },
     { 80, 120, 120, 80 }, { 80, 140, 140, 80 }, { 50, 110, 110, 50 },
 };
-static u8 D_8082AE60[][4] = {
+static u8 sPageVtxColorG[][4] = {
     { 50, 100, 100, 50 }, { 50, 100, 100, 50 }, { 40, 60, 60, 40 },
     { 80, 120, 120, 80 }, { 40, 60, 60, 40 },   { 50, 110, 110, 50 },
 };
-static u8 D_8082AE78[][4] = {
+static u8 sPageVtxColorB[][4] = {
     { 80, 130, 130, 80 }, { 40, 60, 60, 40 }, { 30, 60, 60, 30 },
     { 50, 70, 70, 50 },   { 30, 60, 60, 30 }, { 50, 110, 110, 50 },
 };
@@ -2442,10 +2448,87 @@ static s16 D_8082B0E4[] = {
     0x0019, 0x000D, 0x0001, 0x0001, 0x000D, 0x0015, 0x000F, 0x000D, 0x000C, 0x0001, 0x0000,
 };
 
-s16 func_80823A0C(PlayState* play, Vtx* vtx, s16 arg2, s16 arg3) {
+static const char* gPageVtxColorCvars[][4] = {
+    {
+        "gCosmetics.Kal_ItemSelA.Value",
+        "gCosmetics.Kal_ItemSelB.Value",
+        "gCosmetics.Kal_ItemSelC.Value",
+        "gCosmetics.Kal_ItemSelD.Value",
+    },
+    {
+        "gCosmetics.Kal_EquipSelA.Value",
+        "gCosmetics.Kal_EquipSelB.Value",
+        "gCosmetics.Kal_EquipSelC.Value",
+        "gCosmetics.Kal_EquipSelD.Value",
+    },
+    {
+        "gCosmetics.Kal_MapSelDunA.Value",
+        "gCosmetics.Kal_MapSelDunB.Value",
+        "gCosmetics.Kal_MapSelDunC.Value",
+        "gCosmetics.Kal_MapSelDunD.Value",
+    },
+    {
+        "gCosmetics.Kal_QuestStatusA.Value",
+        "gCosmetics.Kal_QuestStatusB.Value",
+        "gCosmetics.Kal_QuestStatusC.Value",
+        "gCosmetics.Kal_QuestStatusD.Value",
+    },
+    {
+        "gCosmetics.Kal_MapSelectA.Value",
+        "gCosmetics.Kal_MapSelectB.Value",
+        "gCosmetics.Kal_MapSelectC.Value",
+        "gCosmetics.Kal_MapSelectD.Value",
+    },
+    {
+        "gCosmetics.Kal_SaveA.Value",
+        "gCosmetics.Kal_SaveB.Value",
+        "gCosmetics.Kal_SaveC.Value",
+        "gCosmetics.Kal_SaveD.Value",
+    },
+};
+
+s16 func_80823A0C(PlayState* play, Vtx* vtx, s16 pageIndex, s16 arg3) {
     static s16 D_8082B110 = 0;
     static s16 D_8082B114 = 1;
     static s16 D_8082B118 = 0;
+    static const Color_RGBA8 pageColors[][4] = {
+        {
+            { 10, 50, 80, 255 },
+            { 70, 100, 130, 255 },
+            { 70, 100, 130, 255 },
+            { 10, 50, 80, 255 },
+        },
+        {
+            { 10, 50, 40, 255 },
+            { 90, 100, 60, 255 },
+            { 90, 100, 60, 255 },
+            { 10, 50, 40, 255 },
+        },
+        {
+            { 80,40,30, 255},
+            { 140,60,60,255 },
+            { 140,60,60,255 },
+            { 80, 40, 30, 255 },
+        },
+        {
+            { 80,80,50,255 },
+            { 120,120,70,255 },
+            { 120,120,70,255 },
+            { 80, 80, 50, 255 },
+        },
+        {
+            { 80, 40, 30, 255 },
+            { 140,60,60,255 },
+            { 140,60,60,255 },
+            { 80, 40, 30, 255 },
+        },
+        {
+            { 50,50,50,255 },
+            { 110,110,110,255 },
+            { 110,110,110,255 },
+            { 50,50,50,255 },
+        },
+    };
     PauseContext* pauseCtx = &play->pauseCtx;
     s16* ptr1;
     s16* ptr2;
@@ -2455,109 +2538,114 @@ s16 func_80823A0C(PlayState* play, Vtx* vtx, s16 arg2, s16 arg3) {
     s16 phi_t0;
     s16 phi_a1;
     s16 phi_a2;
-    s16 phi_t3;
-    s16 phi_t1;
+    s16 colorIndex; // Also used for other things.
+    s16 vtxIndex;
 
     phi_t0 = -200;
 
-    for (phi_t1 = 0, phi_t3 = 0; phi_t3 < 3; phi_t3++) {
+    for (vtxIndex = 0, colorIndex = 0; colorIndex < 3; colorIndex++) {
         phi_t0 += 80;
 
-        for (phi_a1 = 80, phi_a2 = 0; phi_a2 < 5; phi_a2++, phi_t1 += 4, phi_a1 -= 32) {
-            vtx[phi_t1 + 0].v.ob[0] = vtx[phi_t1 + 2].v.ob[0] = phi_t0;
+        for (phi_a1 = 80, phi_a2 = 0; phi_a2 < 5; phi_a2++, vtxIndex += 4, phi_a1 -= 32) {
+            vtx[vtxIndex + 0].v.ob[0] = vtx[vtxIndex + 2].v.ob[0] = phi_t0;
 
-            vtx[phi_t1 + 1].v.ob[0] = vtx[phi_t1 + 3].v.ob[0] = vtx[phi_t1 + 0].v.ob[0] + 80;
+            vtx[vtxIndex + 1].v.ob[0] = vtx[vtxIndex + 3].v.ob[0] = vtx[vtxIndex + 0].v.ob[0] + 80;
 
-            vtx[phi_t1 + 0].v.ob[1] = vtx[phi_t1 + 1].v.ob[1] = phi_a1 + pauseCtx->offsetY;
+            vtx[vtxIndex + 0].v.ob[1] = vtx[vtxIndex + 1].v.ob[1] = phi_a1 + pauseCtx->offsetY;
 
-            vtx[phi_t1 + 2].v.ob[1] = vtx[phi_t1 + 3].v.ob[1] = vtx[phi_t1 + 0].v.ob[1] - 32;
+            vtx[vtxIndex + 2].v.ob[1] = vtx[vtxIndex + 3].v.ob[1] = vtx[vtxIndex + 0].v.ob[1] - 32;
 
-            vtx[phi_t1 + 0].v.ob[2] = vtx[phi_t1 + 1].v.ob[2] = vtx[phi_t1 + 2].v.ob[2] = vtx[phi_t1 + 3].v.ob[2] = 0;
+            vtx[vtxIndex + 0].v.ob[2] = vtx[vtxIndex + 1].v.ob[2] = vtx[vtxIndex + 2].v.ob[2] = vtx[vtxIndex + 3].v.ob[2] = 0;
 
-            vtx[phi_t1 + 0].v.flag = 0;
-            vtx[phi_t1 + 1].v.flag = 0;
-            vtx[phi_t1 + 2].v.flag = 0;
-            vtx[phi_t1 + 3].v.flag = 0;
+            vtx[vtxIndex + 0].v.flag = 0;
+            vtx[vtxIndex + 1].v.flag = 0;
+            vtx[vtxIndex + 2].v.flag = 0;
+            vtx[vtxIndex + 3].v.flag = 0;
 
-            vtx[phi_t1 + 0].v.tc[0] = vtx[phi_t1 + 0].v.tc[1] = vtx[phi_t1 + 1].v.tc[1] = vtx[phi_t1 + 2].v.tc[0] = 0;
+            vtx[vtxIndex + 0].v.tc[0] = vtx[vtxIndex + 0].v.tc[1] = vtx[vtxIndex + 1].v.tc[1] = vtx[vtxIndex + 2].v.tc[0] = 0;
 
-            vtx[phi_t1 + 1].v.tc[0] = vtx[phi_t1 + 3].v.tc[0] = 0xA00;
+            vtx[vtxIndex + 1].v.tc[0] = vtx[vtxIndex + 3].v.tc[0] = 0xA00;
 
-            vtx[phi_t1 + 2].v.tc[1] = vtx[phi_t1 + 3].v.tc[1] = 0x400;
+            vtx[vtxIndex + 2].v.tc[1] = vtx[vtxIndex + 3].v.tc[1] = 0x400;
 
-            vtx[phi_t1 + 0].v.cn[0] = vtx[phi_t1 + 2].v.cn[0] = D_8082AE48[arg2][phi_t3 + 0];
+            //Color in the pages. Pages are drawn in groups. Each group is faded to the next. There are 4 total colors, 1/4 and 2/3 are the same creating a mirrored color set.
+            // TODO, go from 0,1,2,3 to 0,1,1,0 to only use two colors instead of 4.
+            Color_RGBA8 color = CVarGetColor(gPageVtxColorCvars[pageIndex][colorIndex], pageColors[pageIndex][colorIndex]);
+            Color_RGBA8 colorb =
+                CVarGetColor(gPageVtxColorCvars[pageIndex][colorIndex + 1], pageColors[pageIndex][colorIndex+1]);
+            vtx[vtxIndex + 0].v.cn[0] = vtx[vtxIndex + 2].v.cn[0] = color.r; // sPageVtxColorR[pageIndex][colorIndex + 0];
 
-            vtx[phi_t1 + 0].v.cn[1] = vtx[phi_t1 + 2].v.cn[1] = D_8082AE60[arg2][phi_t3 + 0];
+            vtx[vtxIndex + 0].v.cn[1] = vtx[vtxIndex + 2].v.cn[1] = color.g;// sPageVtxColorG[pageIndex][colorIndex + 0];
 
-            vtx[phi_t1 + 0].v.cn[2] = vtx[phi_t1 + 2].v.cn[2] = D_8082AE78[arg2][phi_t3 + 0];
+            vtx[vtxIndex + 0].v.cn[2] = vtx[vtxIndex + 2].v.cn[2] = color.b; // sPageVtxColorB[pageIndex][colorIndex + 0];
 
-            vtx[phi_t1 + 1].v.cn[0] = vtx[phi_t1 + 3].v.cn[0] = D_8082AE48[arg2][phi_t3 + 1];
+            vtx[vtxIndex + 1].v.cn[0] = vtx[vtxIndex + 3].v.cn[0] = colorb.r;//sPageVtxColorR[pageIndex][colorIndex + 1];
 
-            vtx[phi_t1 + 1].v.cn[1] = vtx[phi_t1 + 3].v.cn[1] = D_8082AE60[arg2][phi_t3 + 1];
+            vtx[vtxIndex + 1].v.cn[1] = vtx[vtxIndex + 3].v.cn[1] = colorb.g; // sPageVtxColorG[pageIndex][colorIndex + 1];
 
-            vtx[phi_t1 + 1].v.cn[2] = vtx[phi_t1 + 3].v.cn[2] = D_8082AE78[arg2][phi_t3 + 1];
+            vtx[vtxIndex + 1].v.cn[2] = vtx[vtxIndex + 3].v.cn[2] = colorb.b; // sPageVtxColorB[pageIndex][colorIndex + 1];
 
-            vtx[phi_t1 + 0].v.cn[3] = vtx[phi_t1 + 2].v.cn[3] = vtx[phi_t1 + 1].v.cn[3] = vtx[phi_t1 + 3].v.cn[3] =
+            vtx[vtxIndex + 0].v.cn[3] = vtx[vtxIndex + 2].v.cn[3] = vtx[vtxIndex + 1].v.cn[3] = vtx[vtxIndex + 3].v.cn[3] =
                 pauseCtx->alpha;
         }
     }
 
-    phi_s2 = phi_t1;
+    phi_s2 = vtxIndex;
 
     if (arg3 != 0) {
-        ptr1 = D_8082B000[arg2];
-        ptr2 = D_8082B018[arg2];
-        ptr3 = D_8082B030[arg2];
-        ptr4 = D_8082B048[arg2];
+        ptr1 = D_8082B000[pageIndex];
+        ptr2 = D_8082B018[pageIndex];
+        ptr3 = D_8082B030[pageIndex];
+        ptr4 = D_8082B048[pageIndex];
 
-        for (phi_t3 = 0; phi_t3 < arg3; phi_t3++, phi_t1 += 4) {
-            vtx[phi_t1 + 2].v.ob[0] = vtx[phi_t1 + 0].v.ob[0] = ptr1[phi_t3];
+        for (colorIndex = 0; colorIndex < arg3; colorIndex++, vtxIndex += 4) {
+            vtx[vtxIndex + 2].v.ob[0] = vtx[vtxIndex + 0].v.ob[0] = ptr1[colorIndex];
 
-            vtx[phi_t1 + 1].v.ob[0] = vtx[phi_t1 + 3].v.ob[0] = vtx[phi_t1 + 0].v.ob[0] + ptr2[phi_t3];
+            vtx[vtxIndex + 1].v.ob[0] = vtx[vtxIndex + 3].v.ob[0] = vtx[vtxIndex + 0].v.ob[0] + ptr2[colorIndex];
 
             if (!((pauseCtx->state >= 8) && (pauseCtx->state <= 0x11))) {
-                vtx[phi_t1 + 0].v.ob[1] = vtx[phi_t1 + 1].v.ob[1] = ptr3[phi_t3] + pauseCtx->offsetY;
+                vtx[vtxIndex + 0].v.ob[1] = vtx[vtxIndex + 1].v.ob[1] = ptr3[colorIndex] + pauseCtx->offsetY;
             } else {
-                vtx[phi_t1 + 0].v.ob[1] = vtx[phi_t1 + 1].v.ob[1] = YREG(60 + phi_t3) + pauseCtx->offsetY;
+                vtx[vtxIndex + 0].v.ob[1] = vtx[vtxIndex + 1].v.ob[1] = YREG(60 + colorIndex) + pauseCtx->offsetY;
             }
 
-            vtx[phi_t1 + 2].v.ob[1] = vtx[phi_t1 + 3].v.ob[1] = vtx[phi_t1 + 0].v.ob[1] - ptr4[phi_t3];
+            vtx[vtxIndex + 2].v.ob[1] = vtx[vtxIndex + 3].v.ob[1] = vtx[vtxIndex + 0].v.ob[1] - ptr4[colorIndex];
 
-            vtx[phi_t1 + 0].v.ob[2] = vtx[phi_t1 + 1].v.ob[2] = vtx[phi_t1 + 2].v.ob[2] = vtx[phi_t1 + 3].v.ob[2] = 0;
+            vtx[vtxIndex + 0].v.ob[2] = vtx[vtxIndex + 1].v.ob[2] = vtx[vtxIndex + 2].v.ob[2] = vtx[vtxIndex + 3].v.ob[2] = 0;
 
-            vtx[phi_t1 + 0].v.flag = vtx[phi_t1 + 1].v.flag = vtx[phi_t1 + 2].v.flag = vtx[phi_t1 + 3].v.flag = 0;
+            vtx[vtxIndex + 0].v.flag = vtx[vtxIndex + 1].v.flag = vtx[vtxIndex + 2].v.flag = vtx[vtxIndex + 3].v.flag = 0;
 
-            vtx[phi_t1 + 0].v.tc[0] = vtx[phi_t1 + 0].v.tc[1] = vtx[phi_t1 + 1].v.tc[1] = vtx[phi_t1 + 2].v.tc[0] = 0;
+            vtx[vtxIndex + 0].v.tc[0] = vtx[vtxIndex + 0].v.tc[1] = vtx[vtxIndex + 1].v.tc[1] = vtx[vtxIndex + 2].v.tc[0] = 0;
 
-            vtx[phi_t1 + 1].v.tc[0] = vtx[phi_t1 + 3].v.tc[0] = ptr2[phi_t3] << 5;
+            vtx[vtxIndex + 1].v.tc[0] = vtx[vtxIndex + 3].v.tc[0] = ptr2[colorIndex] << 5;
 
-            vtx[phi_t1 + 2].v.tc[1] = vtx[phi_t1 + 3].v.tc[1] = ptr4[phi_t3] << 5;
+            vtx[vtxIndex + 2].v.tc[1] = vtx[vtxIndex + 3].v.tc[1] = ptr4[colorIndex] << 5;
 
-            vtx[phi_t1 + 0].v.cn[0] = vtx[phi_t1 + 2].v.cn[0] = vtx[phi_t1 + 0].v.cn[1] = vtx[phi_t1 + 2].v.cn[1] =
-                vtx[phi_t1 + 0].v.cn[2] = vtx[phi_t1 + 2].v.cn[2] = vtx[phi_t1 + 1].v.cn[0] = vtx[phi_t1 + 3].v.cn[0] =
-                    vtx[phi_t1 + 1].v.cn[1] = vtx[phi_t1 + 3].v.cn[1] = vtx[phi_t1 + 1].v.cn[2] =
-                        vtx[phi_t1 + 3].v.cn[2] = 255;
+            vtx[vtxIndex + 0].v.cn[0] = vtx[vtxIndex + 2].v.cn[0] = vtx[vtxIndex + 0].v.cn[1] = vtx[vtxIndex + 2].v.cn[1] =
+                vtx[vtxIndex + 0].v.cn[2] = vtx[vtxIndex + 2].v.cn[2] = vtx[vtxIndex + 1].v.cn[0] = vtx[vtxIndex + 3].v.cn[0] =
+                    vtx[vtxIndex + 1].v.cn[1] = vtx[vtxIndex + 3].v.cn[1] = vtx[vtxIndex + 1].v.cn[2] =
+                        vtx[vtxIndex + 3].v.cn[2] = 255;
 
-            vtx[phi_t1 + 0].v.cn[3] = vtx[phi_t1 + 2].v.cn[3] = vtx[phi_t1 + 1].v.cn[3] = vtx[phi_t1 + 3].v.cn[3] =
+            vtx[vtxIndex + 0].v.cn[3] = vtx[vtxIndex + 2].v.cn[3] = vtx[vtxIndex + 1].v.cn[3] = vtx[vtxIndex + 3].v.cn[3] =
                 pauseCtx->alpha;
         }
 
-        if (arg2 == 4) {
-            phi_t1 -= 12;
+        if (pageIndex == 4) {
+            vtxIndex -= 12;
 
-            phi_t3 = gSaveContext.worldMapArea;
+            colorIndex = gSaveContext.worldMapArea;
 
-            vtx[phi_t1 + 0].v.ob[0] = vtx[phi_t1 + 2].v.ob[0] = D_8082B060[phi_t3];
+            vtx[vtxIndex + 0].v.ob[0] = vtx[vtxIndex + 2].v.ob[0] = D_8082B060[colorIndex];
 
-            if (phi_t3) {}
+            if (colorIndex) {}
 
-            vtx[phi_t1 + 1].v.ob[0] = vtx[phi_t1 + 3].v.ob[0] = vtx[phi_t1 + 0].v.ob[0] + D_8082B08C[phi_t3];
+            vtx[vtxIndex + 1].v.ob[0] = vtx[vtxIndex + 3].v.ob[0] = vtx[vtxIndex + 0].v.ob[0] + D_8082B08C[colorIndex];
 
-            vtx[phi_t1 + 0].v.ob[1] = vtx[phi_t1 + 1].v.ob[1] = D_8082B0B8[phi_t3] + pauseCtx->offsetY;
+            vtx[vtxIndex + 0].v.ob[1] = vtx[vtxIndex + 1].v.ob[1] = D_8082B0B8[colorIndex] + pauseCtx->offsetY;
 
-            vtx[phi_t1 + 2].v.ob[1] = vtx[phi_t1 + 3].v.ob[1] = vtx[phi_t1 + 0].v.ob[1] - D_8082B0E4[phi_t3];
+            vtx[vtxIndex + 2].v.ob[1] = vtx[vtxIndex + 3].v.ob[1] = vtx[vtxIndex + 0].v.ob[1] - D_8082B0E4[colorIndex];
 
-            phi_t1 += 12;
+            vtxIndex += 12;
 
             if (pauseCtx->tradeQuestLocation != 0xFF) {
                 if (D_8082B114 == 0) {
@@ -2577,14 +2665,14 @@ s16 func_80823A0C(PlayState* play, Vtx* vtx, s16 arg2, s16 arg3) {
                     D_8082B114--;
                 }
 
-                phi_t3 = phi_s2 + (pauseCtx->tradeQuestLocation * 4) + 64;
+                colorIndex = phi_s2 + (pauseCtx->tradeQuestLocation * 4) + 64;
                 phi_a2 = phi_s2 + 116;
 
-                vtx[phi_a2 + 0].v.ob[0] = vtx[phi_a2 + 2].v.ob[0] = vtx[phi_t3 + 0].v.ob[0];
+                vtx[phi_a2 + 0].v.ob[0] = vtx[phi_a2 + 2].v.ob[0] = vtx[colorIndex + 0].v.ob[0];
 
                 vtx[phi_a2 + 1].v.ob[0] = vtx[phi_a2 + 3].v.ob[0] = vtx[phi_a2 + 0].v.ob[0] + 8;
 
-                vtx[phi_a2 + 0].v.ob[1] = vtx[phi_a2 + 1].v.ob[1] = vtx[phi_t3 + 0].v.ob[1] - D_8082B110 + 10;
+                vtx[phi_a2 + 0].v.ob[1] = vtx[phi_a2 + 1].v.ob[1] = vtx[colorIndex + 0].v.ob[1] - D_8082B110 + 10;
 
                 vtx[phi_a2 + 0].v.ob[2] = vtx[phi_a2 + 1].v.ob[2] = vtx[phi_a2 + 2].v.ob[2] = vtx[phi_a2 + 3].v.ob[2] =
                     0;
@@ -2593,7 +2681,7 @@ s16 func_80823A0C(PlayState* play, Vtx* vtx, s16 arg2, s16 arg3) {
 
                 vtx[phi_a2 + 0].v.flag = vtx[phi_a2 + 1].v.flag = vtx[phi_a2 + 2].v.flag = vtx[phi_a2 + 3].v.flag = 0;
 
-                vtx[phi_t1].v.tc[0] = vtx[phi_t1].v.tc[1] = vtx[phi_a2 + 1].v.tc[1] = vtx[phi_a2 + 2].v.tc[0] = 0;
+                vtx[vtxIndex].v.tc[0] = vtx[vtxIndex].v.tc[1] = vtx[phi_a2 + 1].v.tc[1] = vtx[phi_a2 + 2].v.tc[0] = 0;
 
                 vtx[phi_a2 + 1].v.tc[0] = vtx[phi_a2 + 3].v.tc[0] = 0x100;
 
@@ -2610,7 +2698,7 @@ s16 func_80823A0C(PlayState* play, Vtx* vtx, s16 arg2, s16 arg3) {
         }
     }
 
-    return phi_t1;
+    return vtxIndex;
 }
 
 static s16 D_8082B11C[] = { 0, 4, 8, 12, 24, 32, 56 };
@@ -3315,13 +3403,121 @@ void KaleidoScope_UpdateCursorSize(PauseContext* pauseCtx) {
     pauseCtx->cursorVtx[14].v.ob[1] = pauseCtx->cursorVtx[15].v.ob[1] = pauseCtx->cursorVtx[12].v.ob[1] - 16;
 }
 
+// Modifed map texture buffers for registered blend effects and the room indicator color
+static uint8_t mapLeftTexModified[MAP_48x85_TEX_SIZE];
+static uint8_t mapRightTexModified[MAP_48x85_TEX_SIZE];
+static uint8_t* mapLeftTexModifiedRaw = NULL;
+static uint8_t* mapRightTexModifiedRaw = NULL;
+static uint8_t mapBlendMask[MAP_48x85_TEX_WIDTH * MAP_48x85_TEX_HEIGHT];
+
+// Load dungeon maps into the interface context
+// SoH [General] - Modified to account for our resource system and HD textures
 void KaleidoScope_LoadDungeonMap(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
 
+    // Free old textures
+    if (mapLeftTexModifiedRaw != NULL) {
+        free(mapLeftTexModifiedRaw);
+        mapLeftTexModifiedRaw = NULL;
+    }
+    if (mapRightTexModifiedRaw != NULL) {
+        free(mapRightTexModifiedRaw);
+        mapRightTexModifiedRaw = NULL;
+    }
+
+    // Unload original textures to bypass cache result for lookups
+    ResourceMgr_UnloadOriginalWhenAltExists(sDungeonMapTexs[R_MAP_TEX_INDEX]);
+    ResourceMgr_UnloadOriginalWhenAltExists(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]);
+
     interfaceCtx->mapSegmentName[0] = sDungeonMapTexs[R_MAP_TEX_INDEX];
     interfaceCtx->mapSegmentName[1] = sDungeonMapTexs[R_MAP_TEX_INDEX + 1];
-    interfaceCtx->mapSegment[0] = ResourceGetDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX]);
-    interfaceCtx->mapSegment[1] = ResourceGetDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]);
+
+    // When the texture is HD (raw) we need to copy a dynamic amount of data
+    // Otherwise the original asset has a static size
+    if (ResourceMgr_TexIsRaw(interfaceCtx->mapSegmentName[0])) {
+        u32 width = ResourceGetTexWidthByName(interfaceCtx->mapSegmentName[0]);
+        u32 height = ResourceGetTexHeightByName(interfaceCtx->mapSegmentName[0]);
+        size_t size = (width * height) / 2; // account for CI4 size
+
+        // Resource size being larger than the calculated CI size means it is most likely not a CI4 texture
+        // Abort early and unregister the blended effect to avoid crashing
+        if (size < ResourceGetTexSizeByName(interfaceCtx->mapSegmentName[0])) {
+            interfaceCtx->mapSegment[0] = NULL;
+            interfaceCtx->mapSegment[1] = NULL;
+
+            Gfx_UnregisterBlendedTexture(interfaceCtx->mapSegmentName[0]);
+            Gfx_UnregisterBlendedTexture(interfaceCtx->mapSegmentName[1]);
+
+            Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[0]);
+            Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[1]);
+            return;
+        }
+
+        u8* map1TexRaw = ResourceGetDataByName(interfaceCtx->mapSegmentName[0]);
+        u8* map2TexRaw = ResourceGetDataByName(interfaceCtx->mapSegmentName[1]);
+
+        mapLeftTexModifiedRaw = malloc(size);
+        mapRightTexModifiedRaw = malloc(size);
+
+        memcpy(mapLeftTexModifiedRaw, map1TexRaw, size);
+        memcpy(mapRightTexModifiedRaw, map2TexRaw, size);
+
+        interfaceCtx->mapSegment[0] = mapLeftTexModifiedRaw;
+        interfaceCtx->mapSegment[1] = mapRightTexModifiedRaw;
+    } else {
+        u8* map1Tex = ResourceGetDataByName(interfaceCtx->mapSegmentName[0]);
+        u8* map2Tex = ResourceGetDataByName(interfaceCtx->mapSegmentName[1]);
+
+        memcpy(mapLeftTexModified, map1Tex, MAP_48x85_TEX_SIZE);
+        memcpy(mapRightTexModified, map2Tex, MAP_48x85_TEX_SIZE);
+
+        interfaceCtx->mapSegment[0] = mapLeftTexModified;
+        interfaceCtx->mapSegment[1] = mapRightTexModified;
+    }
+
+    // Mark and register the blend mask for the copied textures
+    if (mapBlendMask[0] != 1) {
+        for (size_t i = 0; i < ARRAY_COUNT(mapBlendMask); i++) {
+            mapBlendMask[i] = 1;
+        }
+    }
+
+    Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[0], mapBlendMask, interfaceCtx->mapSegment[0]);
+    Gfx_RegisterBlendedTexture(interfaceCtx->mapSegmentName[1], mapBlendMask, interfaceCtx->mapSegment[1]);
+
+    Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[0]);
+    Gfx_TextureCacheDelete(interfaceCtx->mapSegmentName[1]);
+    Gfx_TextureCacheDelete(interfaceCtx->mapSegment[0]);
+    Gfx_TextureCacheDelete(interfaceCtx->mapSegment[1]);
+}
+
+static uint8_t registeredDungeonMapTextureHook = false;
+
+void KaleidoScope_RegisterUpdatedDungeonMapTexture() {
+    if (gPlayState == NULL) {
+        return;
+    }
+
+    PauseContext* pauseCtx = &gPlayState->pauseCtx;
+
+    // Kaleido is not open in a dungeon so there is nothing to do
+    if (R_PAUSE_MENU_MODE < 3 || pauseCtx->state < 4 || pauseCtx->state > 7 || !sInDungeonScene) {
+        return;
+    }
+
+    KaleidoScope_UpdateDungeonMap(gPlayState);
+
+    // KaleidoScope_UpdateDungeonMap will update the palette index for the current floor if the cursor is on the floor
+    // If the player toggles alt assets while the cursor is not in the floor level, then we handle the palette index here
+    if (gPlayState->sceneNum >= SCENE_DEKU_TREE && gPlayState->sceneNum <= SCENE_TREASURE_BOX_SHOP &&
+        (VREG(30) + 3) == pauseCtx->dungeonMapSlot && (VREG(30) + 3) != pauseCtx->cursorPoint[PAUSE_MAP]) {
+
+        InterfaceContext* interfaceCtx = &gPlayState->interfaceCtx;
+        int32_t size = ResourceGetTexSizeByName(interfaceCtx->mapSegmentName[0]);
+
+        KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[0], size, interfaceCtx->mapPaletteIndex, 14);
+        KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[1], size, interfaceCtx->mapPaletteIndex, 14);
+    }
 }
 
 void KaleidoScope_UpdateDungeonMap(PlayState* play) {
@@ -3333,18 +3529,33 @@ void KaleidoScope_UpdateDungeonMap(PlayState* play) {
     KaleidoScope_LoadDungeonMap(play);
     Map_SetFloorPalettesData(play, pauseCtx->dungeonMapSlot - 3);
 
+    // Copy the map palette values to all pulse palettes
+    for (uint8_t i = 0; i < ARRAY_COUNT(interfaceCtx->mapPalettesPulse); i++) {
+        memcpy(interfaceCtx->mapPalettesPulse[i], interfaceCtx->mapPalette, sizeof(interfaceCtx->mapPalette));
+    }
+
+    s32 size = MAP_48x85_TEX_SIZE;
+
+    if (ResourceMgr_TexIsRaw(interfaceCtx->mapSegmentName[0])) {
+        size = ResourceGetTexSizeByName(interfaceCtx->mapSegmentName[0]);
+    }
+
     if ((play->sceneNum >= SCENE_DEKU_TREE) && (play->sceneNum <= SCENE_TREASURE_BOX_SHOP)) {
         if ((VREG(30) + 3) == pauseCtx->cursorPoint[PAUSE_MAP]) {
-            // HDTODO: Handle Runtime Modified Textures (HD)
-            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[0], 2040, interfaceCtx->mapPaletteIndex, 14);
+            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[0], size, interfaceCtx->mapPaletteIndex, 14);
         }
     }
 
     if ((play->sceneNum >= SCENE_DEKU_TREE) && (play->sceneNum <= SCENE_TREASURE_BOX_SHOP)) {
         if ((VREG(30) + 3) == pauseCtx->cursorPoint[PAUSE_MAP]) {
-            // HDTODO: Handle Runtime Modified Textures (HD)
-            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[1], 2040, interfaceCtx->mapPaletteIndex, 14);
+            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[1], size, interfaceCtx->mapPaletteIndex, 14);
         }
+    }
+
+    // Register alt listener to update the blended dungeon map textures on alt toggle
+    if (!registeredDungeonMapTextureHook) {
+        registeredDungeonMapTextureHook = true;
+        GameInteractor_RegisterOnAssetAltChange(KaleidoScope_RegisterUpdatedDungeonMapTexture);
     }
 }
 
@@ -3736,7 +3947,7 @@ void KaleidoScope_Update(PlayState* play)
                 }
             }
 
-            KaleidoScope_ResetTradeSelect();
+            KaleidoScope_ResetItemCycling();
 
             pauseCtx->state = 4;
             break;
@@ -4216,48 +4427,48 @@ void KaleidoScope_Update(PlayState* play)
                     Play_SaveSceneFlags(play);
 
                     switch (gSaveContext.entranceIndex) {
-                        case 0x0000:
-                        case 0x0004:
-                        case 0x0028:
-                        case 0x0169:
-                        case 0x0165:
-                        case 0x0010:
-                        case 0x0082:
-                        case 0x0037:
-                        case 0x041B:
-                        case 0x0008:
-                        case 0x0088:
-                        case 0x0486:
-                        case 0x0098:
-                        case 0x0467:
-                        case 0x0179:
+                        case ENTR_DEKU_TREE_0:
+                        case ENTR_DODONGOS_CAVERN_0:
+                        case ENTR_JABU_JABU_0:
+                        case ENTR_FOREST_TEMPLE_0:
+                        case ENTR_FIRE_TEMPLE_0:
+                        case ENTR_WATER_TEMPLE_0:
+                        case ENTR_SPIRIT_TEMPLE_0:
+                        case ENTR_SHADOW_TEMPLE_0:
+                        case ENTR_GANONS_TOWER_0:
+                        case ENTR_GERUDO_TRAINING_GROUND_0:
+                        case ENTR_ICE_CAVERN_0:
+                        case ENTR_THIEVES_HIDEOUT_0:
+                        case ENTR_BOTTOM_OF_THE_WELL_0:
+                        case ENTR_INSIDE_GANONS_CASTLE_0:
+                        case ENTR_GANONS_TOWER_COLLAPSE_INTERIOR_0:
                             break;
-                        case 0x040F:
-                            gSaveContext.entranceIndex = 0x0000;
+                        case ENTR_DEKU_TREE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_DEKU_TREE_0;
                             break;
-                        case 0x040B:
-                            gSaveContext.entranceIndex = 0x0004;
+                        case ENTR_DODONGOS_CAVERN_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_0;
                             break;
-                        case 0x0301:
-                            gSaveContext.entranceIndex = 0x0028;
+                        case ENTR_JABU_JABU_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_JABU_JABU_0;
                             break;
-                        case 0x000C:
-                            gSaveContext.entranceIndex = 0x0169;
+                        case ENTR_FOREST_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_0;
                             break;
-                        case 0x0305:
-                            gSaveContext.entranceIndex = 0x0165;
+                        case ENTR_FIRE_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_0;
                             break;
-                        case 0x0417:
-                            gSaveContext.entranceIndex = 0x0010;
+                        case ENTR_WATER_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_0;
                             break;
-                        case 0x008D:
-                            gSaveContext.entranceIndex = 0x0082;
+                        case ENTR_SPIRIT_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_0;
                             break;
-                        case 0x0413:
-                            gSaveContext.entranceIndex = 0x0037;
+                        case ENTR_SHADOW_TEMPLE_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_0;
                             break;
-                        case 0x041F:
-                            gSaveContext.entranceIndex = 0x041B;
+                        case ENTR_GANONDORF_BOSS_0:
+                            gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0;
                             break;
                     }
 
@@ -4290,7 +4501,9 @@ void KaleidoScope_Update(PlayState* play)
                         if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                             Grotto_ForceGrottoReturn();
                         }
-                        gSaveContext.nextTransitionType = 2;
+                        // Reset frame counter to prevent autosave on respawn
+                        play->gameplayFrames = 0;
+                        gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
                         gSaveContext.health = CVarGetInteger("gFullHealthSpawn", 0) ? gSaveContext.healthCapacity : 0x30;
                         Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
                         gSaveContext.healthAccumulator = 0;
@@ -4307,9 +4520,6 @@ void KaleidoScope_Update(PlayState* play)
                         osSyncPrintf(VT_RST);
                     } else {
                         play->state.running = 0;
-                        if (IS_BOSS_RUSH) {
-                            gSaveContext.questId = QUEST_NORMAL;
-                        }
                         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
                         GameInteractor_ExecuteOnExitGame(gSaveContext.fileNum);
                     }

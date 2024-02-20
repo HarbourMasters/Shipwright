@@ -10,18 +10,16 @@
 #include <Context.h>
 #include <libultraship/libultra/types.h>
 
-void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
+void RandoMain::GenerateRando(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
     std::string seedString) {
     HintTable_Init();
 
     // std::string settingsFileName = "./randomizer/latest_settings.json";
     // CVarSetString("gLoadedPreset", settingsFileName.c_str());
 
-    std::string fileName = LUS::Context::GetPathRelativeToAppDirectory(GenerateRandomizer(cvarSettings, excludedLocations, enabledTricks, seedString).c_str());
+    Rando::Context::GetInstance()->SetSeedGenerated(GenerateRandomizer(excludedLocations, enabledTricks, seedString));
 
     CVarSave();
     CVarLoad();
-    Rando::Context::GetInstance()->SetSeedGenerated();
-    Rando::Context::GetInstance()->SetSpoilerLoaded(false);
     Rando::Context::GetInstance()->SetPlandoLoaded(false);
 }

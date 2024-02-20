@@ -1,5 +1,6 @@
 #include "item_location.h"
 #include "context.h"
+#include "logic.h"
 
 namespace Rando {
 ItemLocation::ItemLocation() : rc(RC_UNKNOWN_CHECK) {}
@@ -59,12 +60,22 @@ RandomizerRegion ItemLocation::GetParentRegionKey() const {
     return parentRegion;
 }
 
+void ItemLocation::SetArea(RandomizerArea newArea) {
+    area = newArea;
+}
+
+RandomizerArea ItemLocation::GetArea() const {
+    return area;
+}
+
 void ItemLocation::PlaceVanillaItem() {
     placedItem = StaticData::GetLocation(rc)->GetVanillaItem();
 }
 
 void ItemLocation::ApplyPlacedItemEffect() const {
     StaticData::RetrieveItem(placedItem).ApplyEffect();
+    auto ctx = Context::GetInstance();
+    ctx->GetLogic()->UpdateHelpers();
 }
 
 uint16_t ItemLocation::GetPrice() const {
@@ -106,12 +117,12 @@ void ItemLocation::SetAsHinted() {
     hintedAt = true;
 }
 
-RandomizerHintKey ItemLocation::GetHintKey() const {
+const std::vector<RandomizerHintKey>& ItemLocation::GetHintedBy() const {
     return hintedBy;
 }
 
-void ItemLocation::SetHintKey(const RandomizerHintKey hintKey) {
-    hintedBy = hintKey;
+void ItemLocation::AddHintedBy(const RandomizerHintKey hintKey) {
+    hintedBy.push_back(hintKey);
 } 
 
 bool ItemLocation::IsHidden() const {
@@ -132,13 +143,13 @@ Option* ItemLocation::GetExcludedOption() {
 
 void ItemLocation::AddExcludeOption() {
     if (const std::string name = StaticData::GetLocation(rc)->GetName(); name.length() < 23) {
-        excludedOption = Option::Bool(name, {"Include", "Exclude"});
+        excludedOption = Option::Bool(name, {"Include", "Exclude"}, OptionCategory::Setting, "", "", WidgetType::Checkbox, RO_LOCATION_INCLUDE);
     } else {
         const size_t lastSpace = name.rfind(' ', 23);
         std::string settingText = name;
         settingText.replace(lastSpace, 1, "\n ");
 
-        excludedOption = Option::Bool(settingText, {"Include", "Exclude"});
+        excludedOption = Option::Bool(settingText, {"Include", "Exclude"}, OptionCategory::Setting, "", "", WidgetType::Checkbox, RO_LOCATION_INCLUDE);
     }
     // RANDOTODO: this without string compares and loops
     bool alreadyAdded = false;
@@ -161,15 +172,34 @@ void ItemLocation::SetVisible(const bool visibleInImGui_) {
 
 }
 
+bool ItemLocation::IsWothCandidate() const {
+    return wothCandidate;
+}
+
+void ItemLocation::SetWothCandidate() {
+    wothCandidate = true;
+}
+
+bool ItemLocation::IsBarrenCandidate() const {
+    return barrenCandidate;
+}
+
+void ItemLocation::SetBarrenCandidate() {
+    barrenCandidate = true;
+}
+
 void ItemLocation::ResetVariables() {
     addedToPool = false;
     placedItem = RG_NONE;
     delayedItem = RG_NONE;
     isHintable = false;
     hintedAt = false;
-    hintedBy = RH_NONE;
+    hintedBy = {};
     price = 0;
     hasCustomPrice = false;
     hidden = false;
+    wothCandidate = false;
+    barrenCandidate = false;
+    area = RA_NONE;
 }
 }

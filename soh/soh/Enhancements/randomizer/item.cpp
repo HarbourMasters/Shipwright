@@ -1,11 +1,13 @@
 #include "item.h"
 #include "item_location.h"
 
-#include "3drando/logic.hpp"
+#include "context.h"
+#include "logic.h"
 #include "3drando/item_pool.hpp"
 #include "z64item.h"
 #include "variables.h"
 #include "macros.h"
+#include "functions.h"
 #include "../../OTRGlobals.h"
 
 namespace Rando {
@@ -19,9 +21,9 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
       advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
-        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC, category_, NULL});
+        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_RANDOMIZER, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC, category_, static_cast<uint16_t>(randomizerGet_), MOD_RANDOMIZER, NULL});
     } else {
-        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, getItemId_, gid_, true, ITEM_FROM_NPC, category_, NULL});
+        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_VANILLA, getItemId_, gid_, true, ITEM_FROM_NPC, category_, itemId_, modIndex_, NULL});
     }
 }
 
@@ -33,9 +35,9 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
       advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
-        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC, category_, NULL});
+        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_RANDOMIZER, static_cast<int16_t>(randomizerGet_), gid_, true, ITEM_FROM_NPC, category_, static_cast<uint16_t>(randomizerGet_), modIndex_, NULL});
     } else {
-        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, getItemId_, gid_, true, ITEM_FROM_NPC, category_, NULL});
+        giEntry = std::make_shared<GetItemEntry>(GetItemEntry{itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_, objectId_, modIndex_, TABLE_VANILLA, getItemId_, gid_, true, ITEM_FROM_NPC, category_, itemId_, modIndex_, NULL});
     }
 }
 
@@ -66,7 +68,7 @@ void Item::ApplyEffect() const {
             *std::get<uint8_t*>(logicVar) += 1;
         }
     }
-    Logic::UpdateHelpers();
+    Rando::Context::GetInstance()->GetLogic()->UpdateHelpers();
 }
 
 void Item::UndoEffect() const {
@@ -79,7 +81,7 @@ void Item::UndoEffect() const {
             *std::get<uint8_t*>(logicVar) -= 1;
         }
     }
-    Logic::UpdateHelpers();
+    Rando::Context::GetInstance()->GetLogic()->UpdateHelpers();
 }
 
 const Text& Item::GetName() const {
@@ -98,6 +100,10 @@ ItemType Item::GetItemType() const {
     return type;
 }
 
+std::variant<bool*, uint8_t*> Item::GetLogicVar() const {
+    return logicVar;
+}
+
 RandomizerGet Item::GetRandomizerGet() const {
     return randomizerGet;
 }
@@ -111,8 +117,8 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         return giEntry;
     }
     RandomizerGet actual = RG_NONE;
-    const u8 numWallets =
-        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 3 : 2;
+    const bool tycoonWallet =
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS;
     switch (randomizerGet) {
         case RG_PROGRESSIVE_STICK_UPGRADE:
             switch (CUR_UPG_VALUE(UPG_STICKS)) {
@@ -233,6 +239,10 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_WALLET:
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+                actual = RG_CHILD_WALLET;
+                break;
+            }
             switch (CUR_UPG_VALUE(UPG_WALLET)) {
                 case 0:
                     actual = RG_ADULT_WALLET;
@@ -242,13 +252,17 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                     break;
                 case 2:
                 case 3:
-                    actual = numWallets == 3 ? RG_TYCOON_WALLET : RG_GIANT_WALLET;
+                    actual = tycoonWallet ? RG_TYCOON_WALLET : RG_GIANT_WALLET;
                     break;
                 default:
                     break;
             }
             break;
         case RG_PROGRESSIVE_SCALE:
+            if (!Flags_GetRandomizerInf(RAND_INF_CAN_SWIM)) {
+                actual = RG_BRONZE_SCALE;
+                break;
+            }
             switch (CUR_UPG_VALUE(UPG_SCALE)) {
                 case 0:
                     actual = RG_SILVER_SCALE;

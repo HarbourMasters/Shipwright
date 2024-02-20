@@ -10,7 +10,7 @@
 
 std::vector<ItemAndPrice> NonShopItems = {};
 
-static std::array<std::vector<Text>, 0xF0> trickNameTable; // Table of trick names for ice traps
+static std::array<std::vector<Text>, 0xF1> trickNameTable; // Table of trick names for ice traps
 bool initTrickNames = false; //Indicates if trick ice trap names have been initialized yet
 
 //Set vanilla shop item locations before potentially shuffling
@@ -35,9 +35,9 @@ std::vector<RandomizerGet> GetMinVanillaShopItems(int total_replaced) {
     RG_BUY_HYLIAN_SHIELD,
     RG_BUY_GORON_TUNIC,
     RG_BUY_ZORA_TUNIC,
-    RG_BUY_DEKU_NUT_5,
-    RG_BUY_DEKU_NUT_5,
-    RG_BUY_DEKU_NUT_10,
+    RG_BUY_DEKU_NUTS_5,
+    RG_BUY_DEKU_NUTS_5,
+    RG_BUY_DEKU_NUTS_10,
     RG_BUY_DEKU_STICK_1,
     RG_BUY_DEKU_STICK_1,
     RG_BUY_DEKU_SEEDS_30,
@@ -68,7 +68,7 @@ std::vector<RandomizerGet> GetMinVanillaShopItems(int total_replaced) {
     RG_BUY_BLUE_FIRE,
     RG_BUY_FISH,
     RG_BUY_BOMBCHU_10,
-    RG_BUY_DEKU_NUT_5,
+    RG_BUY_DEKU_NUTS_5,
     RG_BUY_ARROWS_10,
     RG_BUY_BOMBCHU_20,
     RG_BUY_BOMBS_535,
@@ -76,9 +76,9 @@ std::vector<RandomizerGet> GetMinVanillaShopItems(int total_replaced) {
     //^First 40 items: Exist on shopsanity 3 or less
     RG_BUY_BOMBS_30,
     RG_BUY_BOMBCHU_20,
-    RG_BUY_DEKU_NUT_5,
+    RG_BUY_DEKU_NUTS_5,
     RG_BUY_ARROWS_10,
-    RG_BUY_DEKU_NUT_5,
+    RG_BUY_DEKU_NUTS_5,
     RG_BUY_ARROWS_30,
     RG_BUY_RED_POTION_40,
     RG_BUY_FISH,
@@ -87,7 +87,7 @@ std::vector<RandomizerGet> GetMinVanillaShopItems(int total_replaced) {
     RG_BUY_ARROWS_30,
     RG_BUY_RED_POTION_50,
     RG_BUY_ARROWS_30,
-    RG_BUY_DEKU_NUT_5,
+    RG_BUY_DEKU_NUTS_5,
     RG_BUY_ARROWS_50,
     RG_BUY_ARROWS_50,
     RG_BUY_GREEN_POTION,
@@ -739,6 +739,33 @@ void InitTrickNames() {
      Text{"Pure Evil", "", ""},
      Text{"Ganon's Ghost", "", ""},
      Text{"Pork", "", ""}};
+  trickNameTable[RG_FISHING_POLE] = {
+     Text{"Fish Tickler", "Fish Tickler", "Fish Tickler"},
+     Text{"Floating Lure", "Floating Lure", "Floating Lure"},
+     Text{"Fishing Reel", "Fishing Reel", "Fishing Reel"}};
+
+  trickNameTable[RG_OCARINA_A_BUTTON] = {
+     Text{"Ocarina J Button", "", ""},
+     Text{"Ocarina Ayy Button", "", ""},
+     Text{"Ocarina A Trigger", "", ""} };
+  trickNameTable[RG_OCARINA_C_UP_BUTTON] = {
+     Text{"Ocarina C North Button", "", ""},
+     Text{"Ocarina C App Button", "", ""},
+     Text{"Ocarina Sup Button", "", ""} };
+  trickNameTable[RG_OCARINA_C_DOWN_BUTTON] = {
+     Text{"Ocarina C South Button", "", ""},
+     Text{"Ocarina Z Down Button", "", ""},
+     Text{"Ocarina See Down Button", "", ""},
+     Text{"Ocarina C Dawn Button", "", ""} };
+  trickNameTable[RG_OCARINA_C_LEFT_BUTTON] = {
+     Text{"Ocarina C West Button", "", ""},
+     Text{"Ocarina Sea Left Button", "", ""},
+     Text{"Ocarina C Lift Button", "", ""},
+     Text{"Ocarina Rewind Button", "", ""} };
+  trickNameTable[RG_OCARINA_C_RIGHT_BUTTON] = {
+     Text{"Ocarina C East Button", "", ""},
+     Text{"Ocarina C Wright Button", "", ""},
+     Text{"Overworld C Right Button", "", ""} };
 
 /*
   //Names for individual upgrades, in case progressive names are replaced

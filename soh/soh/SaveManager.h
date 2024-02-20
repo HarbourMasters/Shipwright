@@ -29,6 +29,7 @@ typedef struct {
     s16 gsTokens;
     u8 isDoubleDefenseAcquired;
     u8 gregFound;
+    u8 hasWallet;
 } SaveFileMetaInfo;
 
 #ifdef __cplusplus
@@ -142,6 +143,7 @@ class SaveManager {
 
   private:
     std::filesystem::path GetFileName(int fileNum);
+    std::filesystem::path GetFileTempName(int fileNum);
     nlohmann::json saveBlock;
 
     void ConvertFromUnversioned();

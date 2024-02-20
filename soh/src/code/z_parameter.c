@@ -893,7 +893,7 @@ void func_80083108(PlayState* play) {
                     Interface_ChangeAlpha(6);
                 }
 
-                if (play->transitionMode != 0) {
+                if (play->transitionMode != TRANS_MODE_OFF) {
                     Interface_ChangeAlpha(1);
                 } else if (gSaveContext.minigameState == 1) {
                     Interface_ChangeAlpha(8);
@@ -1344,7 +1344,7 @@ void func_80083108(PlayState* play) {
 
     if (sp28) {
         gSaveContext.unk_13EA = 0;
-        if ((play->sceneLoadFlag == 0) && (play->transitionMode == 0)) {
+        if ((play->transitionTrigger == TRANS_TRIGGER_OFF) && (play->transitionMode == TRANS_MODE_OFF)) {
             Interface_ChangeAlpha(50);
             osSyncPrintf("????????  alpha_change( 50 );  ?????\n");
         } else {
@@ -1469,6 +1469,7 @@ void Inventory_SwapAgeEquipment(void) {
                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
             } else {
                 gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                Flags_SetInfTable(INFTABLE_SWORDLESS);
             }
 
             if (gSaveContext.inventory.items[SLOT_NUT] != ITEM_NONE) {
@@ -1520,18 +1521,25 @@ void Inventory_SwapAgeEquipment(void) {
                 }
             }
 
+            // In Rando, when switching to adult for the second+ time, if a sword was not previously
+            // equiped in MS shuffle, then we need to set the swordless flag again
+            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+                gSaveContext.equips.buttonItems[0] == ITEM_NONE) {
+                Flags_SetInfTable(INFTABLE_SWORDLESS);
+            }
+
             gSaveContext.equips.equipment = gSaveContext.adultEquips.equipment;
         }
     } else {
         // When becoming child, set swordless flag if player doesn't have kokiri sword
         // Only in rando to keep swordless link bugs in vanilla
-        if (IS_RANDO && (EQUIP_INV_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4) & gSaveContext.inventory.equipment) == 0) {
+        if (IS_RANDO && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) {
             Flags_SetInfTable(INFTABLE_SWORDLESS);
         }
 
         // When using enhancements, set swordless flag if player doesn't have kokiri sword or hasn't equipped a sword yet.
         // Then set the child equips button items to item none to ensure kokiri sword is not equipped
-        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && ((EQUIP_INV_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4) & gSaveContext.inventory.equipment) == 0 || Flags_GetInfTable(INFTABLE_SWORDLESS))) {
+        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0 || Flags_GetInfTable(INFTABLE_SWORDLESS))) {
             Flags_SetInfTable(INFTABLE_SWORDLESS);
             gSaveContext.childEquips.buttonItems[0] = ITEM_NONE;
         }
@@ -1567,7 +1575,7 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
             gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
             // Equips kokiri sword in the inventory screen only if kokiri sword exists in inventory and a sword has been equipped already
-            if (!((EQUIP_INV_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4) & gSaveContext.inventory.equipment) == 0) && !Flags_GetInfTable(INFTABLE_SWORDLESS)) {
+            if (!(CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) && !Flags_GetInfTable(INFTABLE_SWORDLESS)) {
                 gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4);
             }
         } else if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
@@ -1588,6 +1596,13 @@ void Inventory_SwapAgeEquipment(void) {
                 }
             }
 
+            // In Rando, when switching to child from a swordless adult, and child Link previously had a
+            // sword equiped, then we need to unset the swordless flag to match
+            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+                gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
+                Flags_UnsetInfTable(INFTABLE_SWORDLESS);
+            }
+
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
             gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
             gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4);
@@ -1597,7 +1612,7 @@ void Inventory_SwapAgeEquipment(void) {
             (only kokiri tunic/boots equipped, no sword, no C-button items, no D-Pad items).
             When becoming child, set swordless flag if player doesn't have kokiri sword
             Only in rando to keep swordless link bugs in vanilla*/
-            if (EQUIP_INV_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4) & gSaveContext.inventory.equipment == 0) {
+            if (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) == 0) {
                 Flags_SetInfTable(INFTABLE_SWORDLESS);
             }
 
@@ -1723,7 +1738,7 @@ void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
     }
     // Use ITEM_KEY_BOSS only for Ganon's boss key - not any other boss keys
     if (play != NULL) {
-        if (item == ITEM_KEY_BOSS && play->sceneNum != 13 && play->sceneNum != 10) {
+        if (item == ITEM_KEY_BOSS && play->sceneNum != SCENE_INSIDE_GANONS_CASTLE && play->sceneNum != SCENE_GANONS_TOWER) {
             return;
         }
     }
@@ -1800,15 +1815,25 @@ u8 Return_Item_Entry(GetItemEntry itemEntry, ItemID returnItem ) {
 u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
     // ITEM_SOLD_OUT doesn't have an ItemTable entry, so pass custom entry instead
     if (itemID == ITEM_SOLD_OUT) {
-        GetItemEntry gie = { ITEM_SOLD_OUT, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_LESSER, NULL };
+        GetItemEntry gie = { ITEM_SOLD_OUT, 0, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_LESSER, NULL };
         return Return_Item_Entry(gie, returnItem);
     }
-    int32_t get = GetGIID(itemID);
-    if (get == -1) {
-        modId = MOD_RANDOMIZER;
-        get = itemID;
+
+    GetItemID getItemID = RetrieveGetItemIDFromItemID(itemID);
+    if (getItemID != GI_MAX) {
+        // Vanilla ItemID with an associated GetItemID
+        return Return_Item_Entry(ItemTable_RetrieveEntry(modId, getItemID), returnItem);
     }
-    return Return_Item_Entry(ItemTable_RetrieveEntry(modId, get), returnItem);
+
+    RandomizerGet randomizerGet = RetrieveRandomizerGetFromItemID(itemID);
+    if (randomizerGet != RG_MAX) {
+        // Vanilla ItemID with an associated RandomizerGet (These are items in extendedVanillaGetItemTable)
+        return Return_Item_Entry(ItemTable_RetrieveEntry(MOD_RANDOMIZER, randomizerGet), returnItem);
+    }
+
+    // All randomizer items should go through Randomizer_Item_Give, so this should never be reached
+    // but leaving this here just in case, as it was in the original behavior
+    return Return_Item_Entry(ItemTable_RetrieveEntry(MOD_RANDOMIZER, itemID), returnItem);
 }
 
 /**
@@ -2253,8 +2278,13 @@ u8 Item_Give(PlayState* play, u8 item) {
         gSaveContext.sohStats.heartPieces++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART_CONTAINER) {
-        gSaveContext.healthCapacity += 0x10;
-        gSaveContext.health += 0x10;
+        if (!CVarGetInteger("gHurtContainer", 0)) {
+            gSaveContext.healthCapacity += 0x10;
+            gSaveContext.health += 0x10;
+        } else {
+            gSaveContext.healthCapacity -= 0x10;
+            gSaveContext.health -= 0x10;
+        }
         gSaveContext.sohStats.heartContainers++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART) {
@@ -2589,6 +2619,14 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
+    if (item == RG_CHILD_WALLET) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
+            Rupees_ChangeBy(99);
+        }
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
     if (item == RG_GREG_RUPEE) {
         Rupees_ChangeBy(1);
         Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
@@ -2601,9 +2639,10 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         GameInteractor_SetTriforceHuntPieceGiven(true);
 
         // Teleport to credits when goal is reached.
-        if (gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED)) {
+        if (gSaveContext.triforcePiecesCollected == (Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1)) {
             gSaveContext.sohStats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
             gSaveContext.sohStats.gameComplete = 1;
+            Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
             Play_PerformSave(play);
             GameInteractor_SetTriforceHuntCreditsWarpActive(true);
         }
@@ -2615,6 +2654,11 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         u8 index = item - RG_GOHMA_SOUL;
         Flags_SetRandomizerInf(RAND_INF_GOHMA_SOUL + index);
 
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_FISHING_POLE) {
+        Flags_SetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
@@ -2635,6 +2679,18 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         if (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
             gSaveContext.inventory.equipment |= gBitFlags[1] << gEquipShifts[EQUIP_TYPE_SWORD];
         }
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item >= RG_OCARINA_A_BUTTON && item <= RG_OCARINA_C_RIGHT_BUTTON) {
+        u8 index = item - RG_OCARINA_A_BUTTON;
+        Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_A + index);
+
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_BRONZE_SCALE) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_SWIM);
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
@@ -3469,7 +3525,7 @@ void Interface_UpdateMagicBar(PlayState* play) {
         case MAGIC_STATE_CONSUME_LENS:
             if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
                 (msgCtx->msgMode == MSGMODE_NONE) && (play->gameOverCtx.state == GAMEOVER_INACTIVE) &&
-                (play->sceneLoadFlag == 0) && (play->transitionMode == 0) && !Play_InCsMode(play)) {
+                (play->transitionTrigger == TRANS_TRIGGER_OFF) && (play->transitionMode == TRANS_MODE_OFF) && !Play_InCsMode(play)) {
                 bool hasLens = false;
                 for (int buttonIndex = 1; buttonIndex < (CVarGetInteger("gDpadEquips", 0) != 0) ? ARRAY_COUNT(gSaveContext.equips.buttonItems) : 4; buttonIndex++) {
                     if (gSaveContext.equips.buttonItems[buttonIndex] == ITEM_LENS) {
@@ -3564,7 +3620,7 @@ void Interface_DrawLineupTick(PlayState* play) {
     s16 width = 32;
     s16 height = 32;
     s16 x = -8 + (SCREEN_WIDTH / 2);
-    s16 y = CVarGetInteger("gOpenMenuBar", 0) ? -4 : -6;
+    s16 y = -6;
 
     OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gEmptyCDownArrowTex, width, height, x, y, width, height, 2 << 10, 2 << 10);
 
@@ -5077,7 +5133,7 @@ void Interface_Draw(PlayState* play) {
         aButtonColor = (Color_RGB8){ 0, 200, 50 };
     }
 
-    static s16 spoilingItemEntrances[] = { 0x01AD, 0x0153, 0x0153 };
+    static s16 spoilingItemEntrances[] = { ENTR_LOST_WOODS_2, ENTR_ZORAS_DOMAIN_3, ENTR_ZORAS_DOMAIN_3 };
     static f32 D_80125B54[] = { -40.0f, -35.0f }; // unused
     static s16 D_80125B5C[] = { 91, 91 };         // unused
     static s16 D_8015FFE0;
@@ -5118,81 +5174,84 @@ void Interface_Draw(PlayState* play) {
         Gfx_SetupDL_39Overlay(play->state.gfxCtx);
 
         if (fullUi) {
-            // Rupee Icon
-            if (CVarGetInteger("gDynamicWalletIcon", 0)) {
-                switch (CUR_UPG_VALUE(UPG_WALLET)) {
-                    case 0:
-                        if (CVarGetInteger("gCosmetics.Consumable_GreenRupee.Changed", 0)) {
-                            rColor = CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", rupeeWalletColors[0]);
-                        } else {
-                            rColor = rupeeWalletColors[0];
-                        }
-                        break;
-                    case 1:
-                        if (CVarGetInteger("gCosmetics.Consumable_BlueRupee.Changed", 0)) {
-                            rColor = CVarGetColor24("gCosmetics.Consumable_BlueRupee.Value", rupeeWalletColors[1]);
-                        } else {
-                            rColor = rupeeWalletColors[1];
-                        }
-                        break;
-                    case 2:
-                        if (CVarGetInteger("gCosmetics.Consumable_RedRupee.Changed", 0)) {
-                            rColor = CVarGetColor24("gCosmetics.Consumable_RedRupee.Value", rupeeWalletColors[2]);
-                        } else {
-                            rColor = rupeeWalletColors[2];
-                        }
-                        break;
-                    case 3:
-                        if (CVarGetInteger("gCosmetics.Consumable_PurpleRupee.Changed", 0)) {
-                            rColor = CVarGetColor24("gCosmetics.Consumable_PurpleRupee.Value", rupeeWalletColors[3]);
-                        } else {
-                            rColor = rupeeWalletColors[3];
-                        }
-                        break;
-                }
-            } else {
-                if (CVarGetInteger("gCosmetics.Consumable_GreenRupee.Changed", rupeeWalletColors)) {
-                     rColor = CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", rupeeWalletColors[0]);
-                } else {
-                     rColor = rupeeWalletColors[0];
-                }
-            }
-
-            //Rupee icon & counter
-            s16 X_Margins_RC;
-            s16 Y_Margins_RC;
-            if (CVarGetInteger("gRCUseMargins", 0) != 0) {
-                if (CVarGetInteger("gRCPosType", 0) == 0) {X_Margins_RC = Left_HUD_Margin;};
-                Y_Margins_RC = Bottom_HUD_Margin;
-            } else {
-                X_Margins_RC = 0;
-                Y_Margins_RC = 0;
-            }
-            s16 PosX_RC_ori = OTRGetRectDimensionFromLeftEdge(26+X_Margins_RC);
-            s16 PosY_RC_ori = 206+Y_Margins_RC;
             s16 PosX_RC;
             s16 PosY_RC;
-            if (CVarGetInteger("gRCPosType", 0) != 0) {
-                PosY_RC = CVarGetInteger("gRCPosY", 0)+Y_Margins_RC;
-                if (CVarGetInteger("gRCPosType", 0) == 1) {//Anchor Left
-                    if (CVarGetInteger("gRCUseMargins", 0) != 0) {X_Margins_RC = Left_HUD_Margin;};
-                    PosX_RC = OTRGetDimensionFromLeftEdge(CVarGetInteger("gRCPosX", 0)+X_Margins_RC);
-                } else if (CVarGetInteger("gRCPosType", 0) == 2) {//Anchor Right
-                    if (CVarGetInteger("gRCUseMargins", 0) != 0) {X_Margins_RC = Right_HUD_Margin;};
-                    PosX_RC = OTRGetDimensionFromRightEdge(CVarGetInteger("gRCPosX", 0)+X_Margins_RC);
-                } else if (CVarGetInteger("gRCPosType", 0) == 3) {//Anchor None
-                    PosX_RC = CVarGetInteger("gRCPosX", 0);
-                } else if (CVarGetInteger("gRCPosType", 0) == 4) {//Hidden
-                PosX_RC = -9999;
+            //when not having a wallet in rando, don't calculate the ruppe icon
+            if (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+                // Rupee Icon
+                if (CVarGetInteger("gDynamicWalletIcon", 0)) {
+                    switch (CUR_UPG_VALUE(UPG_WALLET)) {
+                        case 0:
+                            if (CVarGetInteger("gCosmetics.Consumable_GreenRupee.Changed", 0)) {
+                                rColor = CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", rupeeWalletColors[0]);
+                            } else {
+                                rColor = rupeeWalletColors[0];
+                            }
+                            break;
+                        case 1:
+                            if (CVarGetInteger("gCosmetics.Consumable_BlueRupee.Changed", 0)) {
+                                rColor = CVarGetColor24("gCosmetics.Consumable_BlueRupee.Value", rupeeWalletColors[1]);
+                            } else {
+                                rColor = rupeeWalletColors[1];
+                            }
+                            break;
+                        case 2:
+                            if (CVarGetInteger("gCosmetics.Consumable_RedRupee.Changed", 0)) {
+                                rColor = CVarGetColor24("gCosmetics.Consumable_RedRupee.Value", rupeeWalletColors[2]);
+                            } else {
+                                rColor = rupeeWalletColors[2];
+                            }
+                            break;
+                        case 3:
+                            if (CVarGetInteger("gCosmetics.Consumable_PurpleRupee.Changed", 0)) {
+                                rColor = CVarGetColor24("gCosmetics.Consumable_PurpleRupee.Value", rupeeWalletColors[3]);
+                            } else {
+                                rColor = rupeeWalletColors[3];
+                            }
+                            break;
+                    }
+                } else {
+                    if (CVarGetInteger("gCosmetics.Consumable_GreenRupee.Changed", rupeeWalletColors)) {
+                         rColor = CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", rupeeWalletColors[0]);
+                    } else {
+                         rColor = rupeeWalletColors[0];
+                    }
                 }
-            } else {
-                PosY_RC = PosY_RC_ori;
-                PosX_RC = PosX_RC_ori;
-            }
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor.r, rColor.g, rColor.b, interfaceCtx->magicAlpha);
-            // Draw Rupee icon. Hide in Boss Rush.
-            if (!IS_BOSS_RUSH) {
-                OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
+
+                //Rupee icon & counter
+                s16 X_Margins_RC;
+                s16 Y_Margins_RC;
+                if (CVarGetInteger("gRCUseMargins", 0) != 0) {
+                    if (CVarGetInteger("gRCPosType", 0) == 0) {X_Margins_RC = Left_HUD_Margin;};
+                    Y_Margins_RC = Bottom_HUD_Margin;
+                } else {
+                    X_Margins_RC = 0;
+                    Y_Margins_RC = 0;
+                }
+                s16 PosX_RC_ori = OTRGetRectDimensionFromLeftEdge(26+X_Margins_RC);
+                s16 PosY_RC_ori = 206+Y_Margins_RC;
+                if (CVarGetInteger("gRCPosType", 0) != 0) {
+                    PosY_RC = CVarGetInteger("gRCPosY", 0)+Y_Margins_RC;
+                    if (CVarGetInteger("gRCPosType", 0) == 1) {//Anchor Left
+                        if (CVarGetInteger("gRCUseMargins", 0) != 0) {X_Margins_RC = Left_HUD_Margin;};
+                        PosX_RC = OTRGetDimensionFromLeftEdge(CVarGetInteger("gRCPosX", 0)+X_Margins_RC);
+                    } else if (CVarGetInteger("gRCPosType", 0) == 2) {//Anchor Right
+                        if (CVarGetInteger("gRCUseMargins", 0) != 0) {X_Margins_RC = Right_HUD_Margin;};
+                        PosX_RC = OTRGetDimensionFromRightEdge(CVarGetInteger("gRCPosX", 0)+X_Margins_RC);
+                    } else if (CVarGetInteger("gRCPosType", 0) == 3) {//Anchor None
+                        PosX_RC = CVarGetInteger("gRCPosX", 0);
+                    } else if (CVarGetInteger("gRCPosType", 0) == 4) {//Hidden
+                    PosX_RC = -9999;
+                    }
+                } else {
+                    PosY_RC = PosY_RC_ori;
+                    PosX_RC = PosX_RC_ori;
+                }
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor.r, rColor.g, rColor.b, interfaceCtx->magicAlpha);
+                // Draw Rupee icon. Hide in Boss Rush.
+                if (!IS_BOSS_RUSH) {
+                    OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
+                }
             }
 
             switch (play->sceneNum) {
@@ -5308,8 +5367,8 @@ void Interface_Draw(PlayState* play) {
             svar2 = rupeeDigitsFirst[CUR_UPG_VALUE(UPG_WALLET)];
             svar5 = rupeeDigitsCount[CUR_UPG_VALUE(UPG_WALLET)];
 
-            // Draw Rupee Counter. Hide in Boss Rush.
-            if (!IS_BOSS_RUSH) {
+            // Draw Rupee Counter. Hide in Boss Rush and when not having a wallet in rando.
+            if (!IS_BOSS_RUSH && (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET))) {
                 for (svar1 = 0, svar3 = 16; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
                     OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]),
                                                  8, 16, PosX_RC + svar3, PosY_RC, 8, 16, 1 << 10, 1 << 10);
@@ -5794,8 +5853,8 @@ void Interface_Draw(PlayState* play) {
             // Trade quest timer reached 0
             D_8015FFE6 = 40;
             gSaveContext.cutsceneIndex = 0;
-            play->sceneLoadFlag = 0x14;
-            play->fadeTransition = 3;
+            play->transitionTrigger = TRANS_TRIGGER_START;
+            play->transitionType = TRANS_TYPE_FADE_WHITE;
             gSaveContext.timer2State = 0;
 
             if ((gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) &&
@@ -5830,8 +5889,8 @@ void Interface_Draw(PlayState* play) {
 
         if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
             (play->gameOverCtx.state == GAMEOVER_INACTIVE) && (msgCtx->msgMode == MSGMODE_NONE) &&
-            !(player->stateFlags2 & 0x01000000) && (play->sceneLoadFlag == 0) &&
-            (play->transitionMode == 0) && !Play_InCsMode(play) && (gSaveContext.minigameState != 1) &&
+            !(player->stateFlags2 & 0x01000000) && (play->transitionTrigger == TRANS_TRIGGER_OFF) &&
+            (play->transitionMode == TRANS_MODE_OFF) && !Play_InCsMode(play) && (gSaveContext.minigameState != 1) &&
             (play->shootingGalleryStatus <= 1) &&
             !((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
             svar6 = 0;
@@ -6522,8 +6581,8 @@ void Interface_Update(PlayState* play) {
     HealthMeter_Update(play);
 
     if ((gSaveContext.timer1State >= 3) && (play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
-        (msgCtx->msgMode == MSGMODE_NONE) && !(player->stateFlags2 & 0x01000000) && (play->sceneLoadFlag == 0) &&
-        (play->transitionMode == 0) && !Play_InCsMode(play)) {}
+        (msgCtx->msgMode == MSGMODE_NONE) && !(player->stateFlags2 & 0x01000000) && (play->transitionTrigger == TRANS_TRIGGER_OFF) &&
+        (play->transitionMode == TRANS_MODE_OFF) && !Play_InCsMode(play)) {}
 
     if (gSaveContext.rupeeAccumulator != 0) {
         if (gSaveContext.rupeeAccumulator > 0) {
@@ -6561,11 +6620,15 @@ void Interface_Update(PlayState* play) {
             gSaveContext.pendingSale = ITEM_NONE;
             gSaveContext.pendingSaleMod = MOD_NONE;
             if (tempSaleMod == MOD_NONE) {
-                s16 giid = GetGIID(tempSaleItem);
-                if (giid == -1) {
-                    tempSaleMod = MOD_RANDOMIZER;
+                GetItemID getItemID = RetrieveGetItemIDFromItemID(tempSaleItem);
+                RandomizerGet randomizerGet = RetrieveRandomizerGetFromItemID(tempSaleItem);
+                if (getItemID != GI_MAX) {
+                    tempSaleItem = getItemID;
                 } else {
-                    tempSaleItem = giid;
+                    if (randomizerGet != RG_MAX) {
+                        tempSaleItem = randomizerGet;
+                    }
+                    tempSaleMod = MOD_RANDOMIZER;
                 }
             }
             GameInteractor_ExecuteOnSaleEndHooks(ItemTable_RetrieveEntry(tempSaleMod, tempSaleItem));
@@ -6618,8 +6681,8 @@ void Interface_Update(PlayState* play) {
     WREG(7) = interfaceCtx->unk_1F4;
 
     if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
-        (msgCtx->msgMode == MSGMODE_NONE) && (play->sceneLoadFlag == 0) &&
-        (play->gameOverCtx.state == GAMEOVER_INACTIVE) && (play->transitionMode == 0) &&
+        (msgCtx->msgMode == MSGMODE_NONE) && (play->transitionTrigger == TRANS_TRIGGER_OFF) &&
+        (play->gameOverCtx.state == GAMEOVER_INACTIVE) && (play->transitionMode == TRANS_MODE_OFF) &&
         ((play->csCtx.state == CS_STATE_IDLE) || !Player_InCsMode(play))) {
         if ((gSaveContext.isMagicAcquired != 0) && (gSaveContext.magicLevel == 0)) {
             gSaveContext.magicLevel = gSaveContext.isDoubleMagicAcquired + 1;
@@ -6716,19 +6779,19 @@ void Interface_Update(PlayState* play) {
                    (interfaceCtx->restrictions.sunsSong != 3)) {
             if ((gSaveContext.dayTime >= 0x4555) && (gSaveContext.dayTime < 0xC001)) {
                 gSaveContext.nextDayTime = 0;
-                play->fadeTransition = 4;
-                gSaveContext.nextTransitionType = 2;
+                play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
                 play->unk_11DE9 = 1;
             } else {
                 gSaveContext.nextDayTime = 0x8001;
-                play->fadeTransition = 5;
-                gSaveContext.nextTransitionType = 3;
+                play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
                 play->unk_11DE9 = 1;
             }
 
             if (play->sceneNum == SCENE_HAUNTED_WASTELAND) {
-                play->fadeTransition = 14;
-                gSaveContext.nextTransitionType = 14;
+                play->transitionType = TRANS_TYPE_SANDSTORM_PERSIST;
+                gSaveContext.nextTransitionType = TRANS_TYPE_SANDSTORM_PERSIST;
             }
 
             gSaveContext.respawnFlag = -2;
@@ -6739,7 +6802,7 @@ void Interface_Update(PlayState* play) {
                 Grotto_ForceGrottoReturn();
             }
 
-            play->sceneLoadFlag = 0x14;
+            play->transitionTrigger = TRANS_TRIGGER_START;
             gSaveContext.sunsSongState = SUNSSONG_INACTIVE;
             func_800F6964(30);
             gSaveContext.seqId = (u8)NA_BGM_DISABLED;
