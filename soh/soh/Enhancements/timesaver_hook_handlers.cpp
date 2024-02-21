@@ -18,6 +18,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Sa/z_en_sa.h"
 #include "src/overlays/actors/ovl_Bg_Ddan_Kd/z_bg_ddan_kd.h"
 #include "src/overlays/actors/ovl_En_Tk/z_en_tk.h"
+#include "src/overlays/actors/ovl_En_Fu/z_en_fu.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
@@ -47,6 +48,19 @@ void EnMa1_EndTeachSong(EnMa1* enMa1, PlayState* play) {
         enMa1->actionFunc = func_80AA0D88;
         enMa1->unk_1E0 = 1;
         enMa1->interactInfo.talkState = NPC_TALK_STATE_IDLE;
+        return;
+    }
+}
+
+void EnFu_EndTeachSong(EnFu* enFu, PlayState* play) {
+    if (Message_GetState(&gPlayState->msgCtx) == TEXT_STATE_CLOSING) {
+        func_80078884(NA_SE_SY_CORRECT_CHIME);
+        enFu->actionFunc = EnFu_WaitAdult;
+        enFu->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+
+        play->msgCtx.ocarinaMode = OCARINA_MODE_04;
+        Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL);
+        Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SONG_OF_STORMS);
         return;
     }
 }
@@ -518,6 +532,8 @@ static uint32_t itemOcarinaUpdateHook = 0;
 static uint32_t itemOcarinaframesSinceSpawn = 0;
 static uint32_t enMa1UpdateHook = 0;
 static uint32_t enMa1KillHook = 0;
+static uint32_t enFuUpdateHook = 0;
+static uint32_t enFuKillHook = 0;
 void TimeSaverOnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
@@ -582,6 +598,28 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
                     GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enMa1KillHook);
                     enMa1UpdateHook = 0;
                     enMa1KillHook = 0;
+                }
+            }
+        });
+        enMa1KillHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enMa1UpdateHook);
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enMa1KillHook);
+            enMa1UpdateHook = 0;
+            enMa1KillHook = 0;
+        });
+    }
+
+    if (actor->id == ACTOR_EN_FU) {
+        enMa1UpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
+            Actor* innerActor = static_cast<Actor*>(innerActorRef);
+            if (innerActor->id == ACTOR_EN_FU && (CVarGetInteger("gTimeSavers.SkipCutscene.LearnSong", 0) || IS_RANDO)) {
+                EnFu* enFu = static_cast<EnFu*>(innerActorRef);
+                if (enFu->actionFunc == EnFu_TeachSong) {
+                    enFu->actionFunc = EnFu_EndTeachSong;
+                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enFuUpdateHook);
+                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enFuKillHook);
+                    enFuUpdateHook = 0;
+                    enFuKillHook = 0;
                 }
             }
         });
@@ -739,6 +777,9 @@ void TimeSaverOnFlagSetHandler(int16_t flagType, int16_t flag) {
                     break;
                 case EVENTCHKINF_LEARNED_SONG_OF_TIME:
                     vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SONG_OF_TIME).GetGIEntry_Copy();
+                    break;
+                case EVENTCHKINF_LEARNED_SONG_OF_STORMS:
+                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SONG_OF_STORMS).GetGIEntry_Copy();
                     break;
             }
             break;
