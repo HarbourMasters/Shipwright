@@ -341,15 +341,15 @@ s16 getHealthMeterXOffset() {
     else
         X_Margins = 0;
 
-    if (CVarGetInteger("gHeartsCountPosType", 0) != 0) {
-        if (CVarGetInteger("gHeartsCountPosType", 0) == 1) {//Anchor Left
+    if (CVarGetInteger("gHeartsCountPosType", 0) != ANCHOR_NONE) {
+        if (CVarGetInteger("gHeartsCountPosType", 0) == ANCHOR_LEFT) {
             return OTRGetDimensionFromLeftEdge(CVarGetInteger("gHeartsCountPosX", 0)+X_Margins+70.0f);
-        } else if (CVarGetInteger("gHeartsCountPosType", 0) == 2) {//Anchor Right
+        } else if (CVarGetInteger("gHeartsCountPosType", 0) == ANCHOR_RIGHT) {
             X_Margins = Right_LM_Margin;
             return OTRGetDimensionFromRightEdge(CVarGetInteger("gHeartsCountPosX", 0)+X_Margins+70.0f);
-        } else if (CVarGetInteger("gHeartsCountPosType", 0) == 3) {//Anchor None
-            return CVarGetInteger("gHeartsCountPosX", 0)+70.0f;;
-        } else if (CVarGetInteger("gHeartsCountPosType", 0) == 4) {//Hidden
+        } else if (CVarGetInteger("gHeartsCountPosType", 0) == ANCHOR_NONE) {
+            return CVarGetInteger("gHeartsCountPosX", 0)+70.0f;
+        } else if (CVarGetInteger("gHeartsCountPosType", 0) == HIDDEN) {
             return -9999;
         }
     } else {
@@ -365,7 +365,7 @@ s16 getHealthMeterYOffset() {
         Y_Margins = 0;
 
     f32 HeartsScale = 0.7f; 
-    if (CVarGetInteger("gHeartsCountPosType", 0) != 0) {
+    if (CVarGetInteger("gHeartsCountPosType", 0) != ANCHOR_NONE) {
         HeartsScale = CVarGetFloat("gHeartsCountScale", 0.7f);
         return CVarGetInteger("gHeartsCountPosY", 0)+Y_Margins+(HeartsScale*15);
     } else {
@@ -397,7 +397,7 @@ void HealthMeter_Draw(PlayState* play) {
     u8* curBgImgLoaded = NULL;
     s32 ddHeartCountMinusOne = gSaveContext.isDoubleDefenseAcquired ? totalHeartCount - 1 : -1;
     f32 HeartsScale = 0.7f; 
-    if (CVarGetInteger("gHeartsCountPosType", 0) != 0) {
+    if (CVarGetInteger("gHeartsCountPosType", 0) != ANCHOR_NONE) {
         HeartsScale = CVarGetFloat("gHeartsCountScale", 0.7f);
     }
     static u32 epoch = 0;
@@ -422,16 +422,16 @@ void HealthMeter_Draw(PlayState* play) {
     }
     s16 PosX_original = OTRGetDimensionFromLeftEdge(0.0f)+X_Margins;
     s16 PosY_original = 0.0f+Y_Margins;
-    if (CVarGetInteger("gHeartsCountPosType", 0) != 0) {
+    if (CVarGetInteger("gHeartsCountPosType", 0) != ANCHOR_NONE) {
         offsetY = CVarGetInteger("gHeartsCountPosY", 0)+Y_Margins+(HeartsScale*15);
-        if (CVarGetInteger("gHeartsCountPosType", 0) == 1) {//Anchor Left
+        if (CVarGetInteger("gHeartsCountPosType", 0) == ANCHOR_LEFT) {
             offsetX = OTRGetDimensionFromLeftEdge(CVarGetInteger("gHeartsCountPosX", 0)+X_Margins+70.0f);
-        } else if (CVarGetInteger("gHeartsCountPosType", 0) == 2) {//Anchor Right
+        } else if (CVarGetInteger("gHeartsCountPosType", 0) == ANCHOR_RIGHT)
             X_Margins = Right_LM_Margin;
             offsetX = OTRGetDimensionFromRightEdge(CVarGetInteger("gHeartsCountPosX", 0)+X_Margins+70.0f);
-        } else if (CVarGetInteger("gHeartsCountPosType", 0) == 3) {//Anchor None
+        } else if (CVarGetInteger("gHeartsCountPosType", 0) == ANCHOR_NONE) {
             offsetX = CVarGetInteger("gHeartsCountPosX", 0)+70.0f;
-        } else if (CVarGetInteger("gHeartsCountPosType", 0) == 4) {//Hidden
+        } else if (CVarGetInteger("gHeartsCountPosType", 0) == HIDDEN) {
             offsetX = -9999;
         }
     } else {
