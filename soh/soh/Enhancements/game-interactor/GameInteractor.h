@@ -206,6 +206,9 @@ typedef enum {
     // Opt: *EnSyatekiMan
     // Vanilla condition: (this->getItemId == GI_QUIVER_40) || (this->getItemId == GI_QUIVER_50)
     GI_VB_BE_ELIGIBLE_FOR_ADULT_SHOOTING_GAME_REWARD,
+    // Opt: *EnOkarinaTag
+    // Vanilla condition: !Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME)
+    GI_VB_BE_ELIGIBLE_TO_OPEN_DOT,
 
     /*** Play Cutscenes ***/
 
@@ -235,6 +238,16 @@ typedef enum {
     GI_VB_PLAY_BOLERO_OF_FIRE_CS,
     GI_VB_PLAY_SERENADE_OF_WATER_CS,
     GI_VB_PLAY_EYEDROPS_CS,
+    // Opt: *EnOkarinaTag
+    GI_VB_PLAY_DRAIN_WELL_CS,
+    // Opt: *EnOkarinaTag
+    // Vanilla condition: !CHECK_QUEST_ITEM(QUEST_SONG_SUN)
+    GI_VB_PLAY_SUNS_SONG_CS,
+    // Opt: *EnOkarinaTag
+    GI_VB_PLAY_ROYAL_FAMILY_TOMB_CS,
+    GI_VB_PLAY_ROYAL_FAMILY_TOMB_EXPLODE,
+    // Opt: *EnOkarinaTag
+    GI_VB_PLAY_DOOR_OF_TIME_CS,
 
     /*** Give Items ***/
 

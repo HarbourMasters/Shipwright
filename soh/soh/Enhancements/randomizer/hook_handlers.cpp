@@ -796,6 +796,16 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             }
             break;
         }
+        case GI_VB_BE_ELIGIBLE_TO_OPEN_DOT: {
+            bool eligible = RAND_GET_OPTION(RSK_DOOR_OF_TIME) != RO_DOOROFTIME_CLOSED || (
+                INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_TIME &&
+                CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) &&
+                CHECK_QUEST_ITEM(QUEST_GORON_RUBY) &&
+                CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)
+            );
+            *should = eligible;
+            break;
+        }
         case GI_VB_TRADE_CLAIM_CHECK:
         case GI_VB_TRADE_TIMER_ODD_MUSHROOM:
         case GI_VB_TRADE_TIMER_EYEDROPS:

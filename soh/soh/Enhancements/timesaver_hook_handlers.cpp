@@ -19,6 +19,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Bg_Ddan_Kd/z_bg_ddan_kd.h"
 #include "src/overlays/actors/ovl_En_Tk/z_en_tk.h"
 #include "src/overlays/actors/ovl_En_Fu/z_en_fu.h"
+#include "src/overlays/actors/ovl_Bg_Spot02_Objects/z_bg_spot02_objects.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
@@ -471,6 +472,44 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
+        case GI_VB_PLAY_DRAIN_WELL_CS: {
+            if (CVarGetInteger("gTimeSavers.SkipCutscene.Story", 0)) {
+                *should = false;
+                Flags_SetSwitch(gPlayState, 0x2);
+                Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL);
+                Flags_SetEventChkInf(EVENTCHKINF_DRAINED_WELL_IN_KAKARIKO);
+            }
+            break;
+        }
+        case GI_VB_PLAY_SUNS_SONG_CS:
+            if (CVarGetInteger("gTimeSavers.SkipCutscene.LearnSong", 0) || IS_RANDO) {
+                *should = false;
+                Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SUNS_SONG);
+                // SoH [Randomizer] TODO: Increment time X amount (find out X)
+                // When time is 0, it's changed to 0x46A7
+                // When it's 0x8000, it's changed to 0xC090
+            }
+            break;
+        case GI_VB_PLAY_ROYAL_FAMILY_TOMB_CS: {
+            if (CVarGetInteger("gTimeSavers.SkipMiscInteractions", 0)) {
+                *should = false;
+            }
+            break;
+        }
+        case GI_VB_PLAY_ROYAL_FAMILY_TOMB_EXPLODE: {
+            if (CVarGetInteger("gTimeSavers.SkipMiscInteractions", 0)) {
+                *should = Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB);
+            }
+            break;
+        }
+        case GI_VB_PLAY_DOOR_OF_TIME_CS: {
+            if (CVarGetInteger("gTimeSavers.SkipMiscInteractions", 0)) {
+                *should = false;
+                Flags_SetEnv(gPlayState, 2);
+                func_80078884(NA_SE_SY_CORRECT_CHIME);
+            }
+            break;
+        }
         case GI_VB_GIVE_ITEM_MINUET_OF_FOREST:
         case GI_VB_GIVE_ITEM_BOLERO_OF_FIRE:
         case GI_VB_GIVE_ITEM_SERENADE_OF_WATER:
@@ -534,6 +573,8 @@ static uint32_t enMa1UpdateHook = 0;
 static uint32_t enMa1KillHook = 0;
 static uint32_t enFuUpdateHook = 0;
 static uint32_t enFuKillHook = 0;
+static uint32_t bgSpot02UpdateHook = 0;
+static uint32_t bgSpot02KillHook = 0;
 void TimeSaverOnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
@@ -610,7 +651,7 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     }
 
     if (actor->id == ACTOR_EN_FU) {
-        enMa1UpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
+        enFuUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
             Actor* innerActor = static_cast<Actor*>(innerActorRef);
             if (innerActor->id == ACTOR_EN_FU && (CVarGetInteger("gTimeSavers.SkipCutscene.LearnSong", 0) || IS_RANDO)) {
                 EnFu* enFu = static_cast<EnFu*>(innerActorRef);
@@ -623,11 +664,36 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
                 }
             }
         });
-        enMa1KillHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
-            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enMa1UpdateHook);
-            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enMa1KillHook);
-            enMa1UpdateHook = 0;
-            enMa1KillHook = 0;
+        enFuKillHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enFuUpdateHook);
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enFuKillHook);
+            enFuUpdateHook = 0;
+            enFuKillHook = 0;
+        });
+    }
+
+    if (actor->id == ACTOR_BG_SPOT02_OBJECTS && actor->params == 2) {
+        SPDLOG_INFO("Registering BG_SPOT02 hook");
+        bgSpot02UpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
+            Actor* innerActor = static_cast<Actor*>(innerActorRef);
+            if (innerActor->id == ACTOR_BG_SPOT02_OBJECTS && innerActor->params == 2 && (CVarGetInteger("gTimeSavers.SkipMiscInteractions", 0))) {
+                SPDLOG_INFO("on update BG_SPOT02 hook");
+                BgSpot02Objects* bgSpot02 = static_cast<BgSpot02Objects*>(innerActorRef);
+                if (bgSpot02->actionFunc == func_808ACC34) {
+                    SPDLOG_INFO("BGspot02 OVERRIDDEN");
+                    bgSpot02->actionFunc = func_808AC908;
+                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(bgSpot02UpdateHook);
+                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot02KillHook);
+                    bgSpot02UpdateHook = 0;
+                    bgSpot02KillHook = 0;
+                }
+            }
+        });
+        bgSpot02KillHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(bgSpot02UpdateHook);
+            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot02KillHook);
+            bgSpot02UpdateHook = 0;
+            bgSpot02KillHook = 0;
         });
     }
 
@@ -780,6 +846,9 @@ void TimeSaverOnFlagSetHandler(int16_t flagType, int16_t flag) {
                     break;
                 case EVENTCHKINF_LEARNED_SONG_OF_STORMS:
                     vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SONG_OF_STORMS).GetGIEntry_Copy();
+                    break;
+                case EVENTCHKINF_LEARNED_SUNS_SONG:
+                    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(RG_SUNS_SONG).GetGIEntry_Copy();
                     break;
             }
             break;
