@@ -832,6 +832,12 @@ void GenerateItemPool() {
     } else {
       PlaceVanillaOverworldFish();
     }
+
+    if (fsMode.Is(RO_FISHSANITY_HYRULE_LOACH)) {
+      AddItemToMainPool(RG_PURPLE_RUPEE);
+    } else {
+      ctx->PlaceItemInLocation(RC_LH_HYRULE_LOACH, RG_PURPLE_RUPEE, false, true);
+    }
   } else {
     PlaceVanillaOverworldFish();
   }

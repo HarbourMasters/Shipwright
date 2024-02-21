@@ -87,7 +87,7 @@ static const char* englishRupeeNames[171] = {
     "Frog Coins",        "Gald",             "Gekz",             "Gems",             "Geo",
     "Gil",               "Glimmer",          "Glitches",         "Gold",             "Gold Dragons",
     "Goober Dollars",    "Green Herbs",      "Greg Siblings",    "Gummybears",       "Hell",
-    "Hylian Loaches",    "Ice Traps",        "ISK",              "Jiggies",          "KF7 Ammo",
+    "Hyrule Loaches",    "Ice Traps",        "ISK",              "Jiggies",          "KF7 Ammo",
     "Kinstones",         "Kremcoins",        "Kroner",           "Leaves ",          "Lemmings",
     "Lien",              "Lira",             "Lumber",           "Lungmen Dollars",  "Macca",
     "Mana",              "Mann Co. Keys",    "Meat",             "Meat Stacks",      "Medaparts",
@@ -312,6 +312,15 @@ void Randomizer::LoadHintMessages() {
                 ctx->GetHint(RH_FROGS)->GetText().GetGerman(),
                 ctx->GetHint(RH_FROGS)->GetText().GetFrench(), TEXTBOX_TYPE_BLUE)
         );
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::randoMiscHintsTableID,
+        TEXT_FISHING_TALK_ABOUT_SOMETHING,
+        CustomMessage(
+            "What?^You wanna know about the&%rHyrule Loach%w?^It's a big fish, but it's so rare that&I'll give my %g{{item}}%w&to anyone who catches it. Seriously!",
+            "%g{{item}}%w",//TODO: Translations
+            "%g{{item}}%w"
+        )
+    );
     CustomMessageManager::Instance->CreateMessage(Randomizer::randoMiscHintsTableID, TEXT_WARP_MINUET_OF_FOREST,
         CustomMessage(ctx->GetHint(RH_MINUET_WARP_LOC)->GetText().GetEnglish(),
             ctx->GetHint(RH_MINUET_WARP_LOC)->GetText().GetGerman(),
@@ -2639,6 +2648,12 @@ CustomMessage Randomizer::ReplaceWithItemName(CustomMessage message, std::string
     return message;
 }
 
+CustomMessage Randomizer::GetLoachMessage() {
+    auto ctx = Rando::Context::GetInstance();
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_FISHING_TALK_ABOUT_SOMETHING);
+    messageEntry = ReplaceWithItemName(messageEntry, "{{item}}", RC_LH_HYRULE_LOACH);
+    return messageEntry;
+}
 
 CustomMessage Randomizer::GetMiscHintMessage(TextIDs textToGet, RandomizerCheck hintedCheck, RandomizerCheck otherCheck) {
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, textToGet);

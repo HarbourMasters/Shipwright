@@ -63,6 +63,7 @@ class Randomizer {
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
     CustomMessage GetSheikMessage(s16 scene, u16 originalTextId);
     CustomMessage ReplaceWithItemName(CustomMessage message, std::string&& toReplace, RandomizerCheck hintedCheck);
+    CustomMessage GetLoachMessage();
     CustomMessage GetMiscHintMessage(TextIDs textToGet, RandomizerCheck hintedCheck, RandomizerCheck otherCheck = RC_UNKNOWN_CHECK);
     CustomMessage GetSariaMessage(u16 originalTextId);
     CustomMessage GetFishingPondOwnerMessage(u16 originalTextId);

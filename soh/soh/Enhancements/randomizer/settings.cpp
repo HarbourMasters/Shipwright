@@ -120,7 +120,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_CHEST_MINIGAME] = Option::U8("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"});
     mOptions[RSK_SHUFFLE_100_GS_REWARD] = Option::Bool("Shuffle 100 GS Reward", "gRandomizeShuffle100GSReward", mOptionDescriptions[RSK_SHUFFLE_100_GS_REWARD], IMFLAG_SEPARATOR_BOTTOM, WidgetType::Checkbox, RO_GENERIC_OFF);
     mOptions[RSK_SHUFFLE_BOSS_SOULS] = Option::U8("Shuffle Boss Souls", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, "gRandomizeShuffleBossSouls", mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS], WidgetType::Combobox);
-    mOptions[RSK_FISHSANITY] = Option::U8("Fishsanity", {"Off", "Shuffle Fishing Pond", "Shuffle Overworld Fish", "Shuffle Both"}, OptionCategory::Setting, "gRandomizeFishsanity", mOptionDescriptions[RSK_FISHSANITY], WidgetType::Combobox, RO_FISHSANITY_OFF);
+    mOptions[RSK_FISHSANITY] = Option::U8("Fishsanity", {"Off", "Shuffle only Hyrule Loach", "Shuffle Fishing Pond", "Shuffle Overworld Fish", "Shuffle Both"}, OptionCategory::Setting, "gRandomizeFishsanity", mOptionDescriptions[RSK_FISHSANITY], WidgetType::Combobox, RO_FISHSANITY_OFF);
     mOptions[RSK_FISHSANITY_POND_COUNT] = Option::U8("Pond Fish Count", {NumOpts(0,17,1)}, OptionCategory::Setting, "gRandomizeFishsanityPondCount", mOptionDescriptions[RSK_FISHSANITY_POND_COUNT], WidgetType::Slider, 0, true, IMFLAG_NONE);
     mOptions[RSK_FISHSANITY_AGE_SPLIT] = Option::Bool("Pond Age Split", "gRandomizeFishsanityAgeSplit", mOptionDescriptions[RSK_FISHSANITY_AGE_SPLIT]);
     mOptions[RSK_SHUFFLE_MAPANDCOMPASS] = Option::U8("Maps/Compasses", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, "gRandomizeStartingMapsCompasses", mOptionDescriptions[RSK_SHUFFLE_MAPANDCOMPASS], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
@@ -161,6 +161,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_LIGHT_ARROWS_HINT] = Option::Bool("Light Arrow Hint", {"Off", "On"}, OptionCategory::Setting, "gRandomizeLAHint", mOptionDescriptions[RSK_LIGHT_ARROWS_HINT], WidgetType::Checkbox, RO_GENERIC_ON, false, IMFLAG_NONE);
     mOptions[RSK_DAMPES_DIARY_HINT] = Option::Bool("Dampe's Diary Hint", "gRandomizeDampeHint", mOptionDescriptions[RSK_DAMPES_DIARY_HINT], IMFLAG_NONE);
     mOptions[RSK_GREG_HINT] = Option::Bool("Greg the Green Rupee Hint", "gRandomizeGregHint", mOptionDescriptions[RSK_GREG_HINT], IMFLAG_NONE);
+    mOptions[RSK_LOACH_HINT] = Option::Bool("Hyrule Loach Hint", "gRandomizeLoachHint", mOptionDescriptions[RSK_LOACH_HINT], IMFLAG_NONE);
     mOptions[RSK_SARIA_HINT] = Option::Bool("Saria's Hint", "gRandomizeSariaHint", mOptionDescriptions[RSK_SARIA_HINT], IMFLAG_NONE);
     mOptions[RSK_FISHING_POLE_HINT] = Option::Bool("Fishing Pole Hint", "gRandomizeFishingPoleHint", mOptionDescriptions[RSK_FISHING_POLE_HINT], IMFLAG_NONE);
     mOptions[RSK_FROGS_HINT] = Option::Bool("Frog Ocarina Game Hint", "gRandomizeFrogsHint", mOptionDescriptions[RSK_FROGS_HINT], IMFLAG_NONE);
@@ -732,6 +733,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_LIGHT_ARROWS_HINT],
         &mOptions[RSK_DAMPES_DIARY_HINT],
         &mOptions[RSK_GREG_HINT],
+        &mOptions[RSK_LOACH_HINT],
         &mOptions[RSK_SARIA_HINT],
         &mOptions[RSK_FROGS_HINT],
         &mOptions[RSK_BIGGORON_HINT],
@@ -959,6 +961,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_LIGHT_ARROWS_HINT],
         &mOptions[RSK_DAMPES_DIARY_HINT],
         &mOptions[RSK_GREG_HINT],
+        &mOptions[RSK_LOACH_HINT],
         &mOptions[RSK_SARIA_HINT],
         &mOptions[RSK_FROGS_HINT],
         &mOptions[RSK_WARP_SONG_HINTS],
@@ -1176,6 +1179,7 @@ void Settings::CreateOptions() {
         { "Miscellaneous Settings:Light Arrow Hint", RSK_LIGHT_ARROWS_HINT },
         { "Miscellaneous Settings:Dampe's Diary Hint", RSK_DAMPES_DIARY_HINT },
         { "Miscellaneous Settings:Greg the Rupee Hint", RSK_GREG_HINT },
+        { "Miscellaneous Settings:Hyrule Loach Hint", RSK_LOACH_HINT },
         { "Miscellaneous Settings:Saria's Hint", RSK_SARIA_HINT },
         { "Miscellaneous Settings:Frog Ocarina Game Hint", RSK_FROGS_HINT },
         { "Miscellaneous Settings:10 GS Hint", RSK_KAK_10_SKULLS_HINT },
@@ -2283,6 +2287,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_LIGHT_ARROWS_HINT:
                 case RSK_DAMPES_DIARY_HINT:
                 case RSK_GREG_HINT:
+                case RSK_LOACH_HINT:
                 case RSK_SARIA_HINT:
                 case RSK_FROGS_HINT:
                 case RSK_KAK_10_SKULLS_HINT:

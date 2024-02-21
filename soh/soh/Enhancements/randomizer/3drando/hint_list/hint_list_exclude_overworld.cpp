@@ -281,15 +281,13 @@ void HintTable_Init_Exclude_Overworld() {
     });
 
     // TODO: needs french translation
-    hintTable[RHT_LH_HYRULE_LOACH] = HintText::Exclude(
-        {
-            // obscure text
-            Text{ "#fishing the legend# bestows", /*french*/ "!!!", /*spanish*/ "#pescar a la leyenda# conduce a" },
-        },
-        {},
-        // clear text
-        Text{ "#fishing the hyrule loach# will give you", /*french*/ "!!!",
-              /*spanish*/ "si #pescas a la Locha de Hyrule# encontrarás" });
+    hintTable[RHT_LH_HYRULE_LOACH] = HintText::Exclude({
+                       // obscure text
+                       Text{"#fishing the legend# bestows", /*french*/"!!!", /*spanish*/"#pescar a la leyenda# conduce a"},
+                       {},
+                       // clear text
+                       Text{"#fishing the hyrule loach# will give you", /*french*/"!!!", /*spanish*/"si #pescas a la Locha de Hyrule# encontrarás"}
+  });
 
 
     hintTable[RHT_LH_ADULT_FISHING] = HintText::Exclude({

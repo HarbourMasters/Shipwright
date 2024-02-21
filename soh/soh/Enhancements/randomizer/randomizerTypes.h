@@ -926,6 +926,7 @@ typedef enum {
     RC_LH_CHILD_LOACH_1,
     RC_LH_CHILD_LOACH_2,
     RC_LH_ADULT_FISHING,
+    RC_LH_HYRULE_LOACH,
     RC_LH_ADULT_FISH_1,
     RC_LH_ADULT_FISH_2,
     RC_LH_ADULT_FISH_3,
@@ -3556,6 +3557,7 @@ typedef enum {
     RSK_LIGHT_ARROWS_HINT,
     RSK_DAMPES_DIARY_HINT,
     RSK_GREG_HINT,
+    RSK_LOACH_HINT,
     RSK_SARIA_HINT,
     RSK_FROGS_HINT,
     RSK_KAK_10_SKULLS_HINT,
@@ -3792,9 +3794,10 @@ typedef enum {
     RO_BOSS_SOULS_ON_PLUS_GANON,
 } RandoOptionBossSouls;
 
-//Fishsanity settings (off, pond only, grottos only, both)
+//Fishsanity settings (off, loach only, pond only, grottos only, both)
 typedef enum {
     RO_FISHSANITY_OFF,
+    RO_FISHSANITY_HYRULE_LOACH,
     RO_FISHSANITY_POND,
     RO_FISHSANITY_OVERWORLD,
     RO_FISHSANITY_BOTH

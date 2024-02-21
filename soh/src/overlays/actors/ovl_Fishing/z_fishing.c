@@ -17,6 +17,7 @@
 #define WATER_SURFACE_Y(play) play->colCtx.colHeader->waterBoxes->ySurface
 #define IS_FISHSANITY (IS_RANDO && Randomizer_GetPondFishShuffled())
 #define FISHID(params) (Randomizer_IdentifyFish(play->sceneNum, params))
+bool getShouldSpawnLoaches();
 
 void Fishing_Init(Actor* thisx, PlayState* play);
 void Fishing_Destroy(Actor* thisx, PlayState* play);
@@ -25,8 +26,6 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play);
 void Fishing_DrawFish(Actor* thisx, PlayState* play);
 void Fishing_DrawOwner(Actor* thisx, PlayState* play);
 void Fishing_Reset(void);
-
-bool getShouldSpawnLoaches();
 
 typedef struct {
     /* 0x00 */ u8 isLoach;
@@ -1001,7 +1000,8 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
                         sFishInits[i].pos.z, 0, Rand_ZeroFloat(0x10000), 0, 100 + i, true);
         }
     } else {
-        if ((thisx->params < (EN_FISH_PARAM + 15)) || (thisx->params == EN_FISH_AQUARIUM)) {
+        u8 allHyruleLoaches = CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gEnhancements.AllHyruleLoaches", 0);
+        if ((thisx->params < (EN_FISH_PARAM + 15) && !allHyruleLoaches) || (thisx->params == EN_FISH_AQUARIUM)) {
             SkelAnime_InitFlex(play, &this->skelAnime, &gFishingFishSkel, &gFishingFishAnim, NULL, NULL, 0);
             Animation_MorphToLoop(&this->skelAnime, &gFishingFishAnim, 0.0f);
         } else {
@@ -1021,7 +1021,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
             this->fishState = 10;
             this->fishStateNext = 10;
 
-            this->isLoach = sFishInits[thisx->params - EN_FISH_PARAM].isLoach;
+            this->isLoach = allHyruleLoaches ? 1 : sFishInits[thisx->params - EN_FISH_PARAM].isLoach;
             this->perception = sFishInits[thisx->params - EN_FISH_PARAM].perception;
             this->fishLength = sFishInits[thisx->params - EN_FISH_PARAM].baseLength;
 
@@ -5011,12 +5011,8 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                                     this->actor.textId = 0x408B;
                                     this->stateAndTimer = 20;
                                 }
-                            } else if (!IS_RANDO) {
+                            } else {
                                 this->actor.textId = 0x409B;
-                                this->stateAndTimer = 11;
-                            }
-                            else {
-                                this->actor.textId = 0x4086;
                                 this->stateAndTimer = 11;
                             }
                             Message_ContinueTextbox(play, this->actor.textId);
@@ -5154,7 +5150,13 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                         }
                     }
                 } else {
-                    getItemId = GI_RUPEE_PURPLE;
+                    if (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_CAUGHT_LOACH)) {
+                        Flags_SetRandomizerInf(RAND_INF_CAUGHT_LOACH);
+                        getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_HYRULE_LOACH, GI_RUPEE_PURPLE);
+                        getItemId = getItemEntry.getItemId;
+                    } else {
+                        getItemId = GI_RUPEE_PURPLE;
+                    }
                     sFishOnHandLength = 0.0f; // doesn't record loach
                 }
 

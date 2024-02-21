@@ -202,6 +202,7 @@ void AreaTable_Init_HyruleField() {
                   LocationAccess(RC_LH_ADULT_FISH_14, {[]{return logic->CanGetAdultFish;}}),
                   LocationAccess(RC_LH_ADULT_FISH_15, {[]{return logic->CanGetAdultFish;}}),
                   LocationAccess(RC_LH_ADULT_LOACH,   {[]{return logic->CanGetAdultFish;}}),
+                  LocationAccess(RC_LH_HYRULE_LOACH,  {[]{return logic->CanFish;}}),
                   LocationAccess(RC_FISHING_POLE_HINT,{[]{return true;}}),
                 }, {
                   //Exits
