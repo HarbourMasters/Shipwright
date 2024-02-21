@@ -34,6 +34,7 @@ enum class OptionCategory {
  */
 enum class WidgetType {
   Checkbox, /** Default for Bools, not compatible if options.size() > 2. */
+  TristateCheckbox, /** Compatible with U8s, not compatible if options.size() != 3. */
   Combobox, /** Default for U8s, works with U8s and Bools. */
   Slider, /** Compatible with U8s. If constructed with NumOpts, consider using this. Technically can be used for Bool or non-NumOpts options but it would be a bit weird semantically. */
 };
@@ -317,6 +318,7 @@ protected:
 
   private:
     bool RenderCheckbox() const;
+    bool RenderTristateCheckbox() const;
     bool RenderCombobox() const;
     bool RenderSlider() const;
     std::variant<bool, uint8_t> var;
