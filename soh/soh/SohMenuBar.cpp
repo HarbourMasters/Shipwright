@@ -643,8 +643,37 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementSliderInt("Crawl speed %dx", "##CRAWLSPEED", "gCrawlSpeed", 1, 5, "", 1, true, false, true);
                 UIWidgets::PaddedEnhancementCheckbox("Faster Heavy Block Lift", "gFasterHeavyBlockLift", false, false);
                 UIWidgets::Tooltip("Speeds up lifting silver rocks and obelisks");
-                UIWidgets::PaddedEnhancementCheckbox("Link as default file name", "gLinkDefaultName", true, false);
-                UIWidgets::Tooltip("Allows you to have \"Link\" as a premade file name");
+                UIWidgets::PaddedEnhancementCheckbox("Skip Pickup Messages", "gFastDrops", true, false);
+                UIWidgets::Tooltip("Skip pickup messages for new consumable items and bottle swipes");
+                UIWidgets::PaddedEnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback", true, false);
+                UIWidgets::Tooltip("Skip the part where the Ocarina playback is called when you play a song");
+                bool forceSkipScarecrow = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_SCARECROWS_SONG);
+                static const char* forceSkipScarecrowText = "This setting is forcefully enabled because a savefile\nwith \"Skip Scarecrow Song\" is loaded";
+                UIWidgets::PaddedEnhancementCheckbox("Skip Scarecrow Song", "gSkipScarecrow", true, false,
+                                                        forceSkipScarecrow, forceSkipScarecrowText, UIWidgets::CheckboxGraphics::Checkmark);
+                UIWidgets::Tooltip("Pierre appears when Ocarina is pulled out. Requires learning scarecrow song.");
+                UIWidgets::PaddedEnhancementCheckbox("Skip Magic Arrow Equip Animation", "gSkipArrowAnimation", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Skip save confirmation", "gSkipSaveConfirmation", true, false);
+                UIWidgets::Tooltip("Skip the \"Game saved.\" confirmation screen");
+                UIWidgets::PaddedEnhancementCheckbox("Faster Farore's Wind", "gFastFarores", true, false);
+                UIWidgets::Tooltip("Greatly decreases cast time of Farore's Wind magic spell.");
+                UIWidgets::PaddedEnhancementCheckbox("Skip water take breath animation", "gSkipSwimDeepEndAnim", true, false);
+                UIWidgets::Tooltip("Skips Link's taking breath animation after coming up from water. This setting does not interfere with getting items from underwater.");
+
+                ImGui::TableNextColumn();
+                UIWidgets::Spacer(0);
+                ImGui::Text("Changes:");
+                UIWidgets::PaddedSeparator();
+
+                UIWidgets::PaddedEnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "", 3, true, false, true);
+                UIWidgets::Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
+                UIWidgets::PaddedEnhancementCheckbox("Remember Save Location", "gRememberSaveLocation", false, false);
+                UIWidgets::Tooltip("When loading a save, places Link at the last entrance he went through.\n"
+                        "This doesn't work if the save was made in a grotto.");
+                UIWidgets::PaddedEnhancementCheckbox("No Forced Navi", "gNoForcedNavi", true, false);
+                UIWidgets::Tooltip("Prevent forced Navi conversations");
+                UIWidgets::PaddedEnhancementCheckbox("Navi Timer Resets", "gEnhancements.ResetNaviTimer", true, false);
+                UIWidgets::Tooltip("Resets the Navi timer on scene change. If you have already talked to her, she will try and talk to you again, instead of needing a save warp or death. ");
                 UIWidgets::PaddedEnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze", true, false);
                 UIWidgets::Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
                 UIWidgets::PaddedEnhancementCheckbox("Nighttime GS Always Spawn", "gNightGSAlwaysSpawn", true, false);
