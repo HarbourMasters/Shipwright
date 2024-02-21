@@ -8,6 +8,7 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
 #include <ImGui/imgui.h>
+#include "AudioCollection.h"
 
 class AudioEditor : public LUS::GuiWindow {
     public:
@@ -20,7 +21,9 @@ class AudioEditor : public LUS::GuiWindow {
 };
 
 void AudioEditor_RandomizeAll();
+void AudioEditor_RandomizeGroup(SeqType group);
 void AudioEditor_ResetAll();
+void AudioEditor_ResetGroup(SeqType group);
 void AudioEditor_LockAll();
 void AudioEditor_UnlockAll();
 

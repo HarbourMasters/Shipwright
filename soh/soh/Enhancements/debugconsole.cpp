@@ -10,6 +10,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
+#include "soh/Enhancements/audio/AudioCollection.h"
 
 #define Path _Path
 #define PATH_HACK
@@ -1289,6 +1290,26 @@ static bool GenerateRandoHandler(std::shared_ptr<LUS::Console> Console, const st
     return 1;
 }
 
+static std::map<std::string, CosmeticGroup> cosmetic_groups = {
+    {"link", GROUP_LINK},
+    {"mirror_shield", GROUP_MIRRORSHIELD},
+    {"swords", GROUP_SWORDS},
+    {"gloves", GROUP_GLOVES},
+    {"equipment", GROUP_EQUIPMENT},
+    {"consumable", GROUP_CONSUMABLE},
+    {"hud", GROUP_HUD},
+    {"kaleido", GROUP_KALEIDO},
+    {"title", GROUP_TITLE},
+    {"npc", GROUP_NPC},
+    {"world", GROUP_WORLD},
+    {"magic", GROUP_MAGIC},
+    {"arrows", GROUP_ARROWS},
+    {"spin_attack", GROUP_SPIN_ATTACK},
+    {"trials", GROUP_TRAILS},
+    {"navi", GROUP_NAVI},
+    {"ivan", GROUP_IVAN},
+};
+
 static bool CosmeticsHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
@@ -1296,9 +1317,31 @@ static bool CosmeticsHandler(std::shared_ptr<LUS::Console> Console, const std::v
     }
 
     if (args[1].compare("reset") == 0) {
-        CosmeticsEditor_ResetAll();
+        if (args.size() == 2) {
+            CosmeticsEditor_ResetAll();
+        } else {
+            for (const auto& [key, value] : cosmetic_groups) {
+                if (args[2].compare(key) == 0) {
+                    CosmeticsEditor_ResetGroup(value);
+                    return 0;
+                }
+            }
+            ERROR_MESSAGE("[SOH] Invalid argument passed, unrecognized group name");
+            return 1;
+        }
     } else if (args[1].compare("randomize") == 0) {
-        CosmeticsEditor_RandomizeAll();
+        if (args.size() == 2) {
+            CosmeticsEditor_RandomizeAll();
+        } else {
+            for (const auto& [key, value] : cosmetic_groups) {
+                if (args[2].compare(key) == 0) {
+                    CosmeticsEditor_RandomizeGroup(value);
+                    return 0;
+                }
+            }
+            ERROR_MESSAGE("[SOH] Invalid argument passed, unrecognized group name");
+            return 1;
+        }
     } else {
         ERROR_MESSAGE("[SOH] Invalid argument passed, must be 'reset' or 'randomize'");
         return 1;
@@ -1307,6 +1350,18 @@ static bool CosmeticsHandler(std::shared_ptr<LUS::Console> Console, const std::v
     return 0;
 }
 
+static std::map<std::string, SeqType> sfx_groups = {
+    {"bgm", SEQ_BGM_WORLD},
+    {"fanfares", SEQ_FANFARE},
+    {"events", SEQ_BGM_EVENT},
+    {"battle", SEQ_BGM_BATTLE},
+    {"ocarina", SEQ_OCARINA},
+    {"instruments", SEQ_INSTRUMENT},
+    {"sfx", SEQ_SFX},
+    {"voices", SEQ_VOICE},
+    {"custom", SEQ_BGM_CUSTOM},
+};
+
 static bool SfxHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
@@ -1314,9 +1369,31 @@ static bool SfxHandler(std::shared_ptr<LUS::Console> Console, const std::vector<
     }
 
     if (args[1].compare("reset") == 0) {
-        AudioEditor_ResetAll();
+        if (args.size() == 2) {
+            AudioEditor_ResetAll();
+        } else {
+            for (const auto& [key, value] : sfx_groups) {
+                if (args[2].compare(key) == 0) {
+                    AudioEditor_ResetGroup(value);
+                    return 0;
+                }
+            }
+            ERROR_MESSAGE("[SOH] Invalid argument passed, unrecognized group name");
+            return 1;
+        }
     } else if (args[1].compare("randomize") == 0) {
-        AudioEditor_RandomizeAll();
+        if (args.size() == 2) {
+            AudioEditor_RandomizeAll();
+        } else {
+            for (const auto& [key, value] : sfx_groups) {
+                if (args[2].compare(key) == 0) {
+                    AudioEditor_RandomizeGroup(value);
+                    return 0;
+                }
+            }
+            ERROR_MESSAGE("[SOH] Invalid argument passed, unrecognized group name");
+            return 1;
+        }
     } else {
         ERROR_MESSAGE("[SOH] Invalid argument passed, must be 'reset' or 'randomize'");
         return 1;
@@ -1506,10 +1583,12 @@ void DebugConsole_Init(void) {
 
     CMD_REGISTER("cosmetics", {CosmeticsHandler, "Change cosmetics.", {
             {"reset|randomize", LUS::ArgumentType::TEXT},
+            {"group name", LUS::ArgumentType::TEXT, true},
     }});
 
     CMD_REGISTER("sfx", {SfxHandler, "Change SFX.", {
             {"reset|randomize", LUS::ArgumentType::TEXT},
+            {"group name", LUS::ArgumentType::TEXT, true},
     }});
 
     CVarSave();

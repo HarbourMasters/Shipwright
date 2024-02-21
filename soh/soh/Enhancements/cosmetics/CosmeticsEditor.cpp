@@ -57,28 +57,6 @@ u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 #define dgEndGrayscaleAndEndDlistDL "__OTR__helpers/cosmetics/gEndGrayscaleAndEndDlistDL"
 static const ALIGN_ASSET(2) char gEndGrayscaleAndEndDlistDL[] = dgEndGrayscaleAndEndDlistDL;
 
-// Not to be confused with tabs, groups are 1:1 with the boxes shown in the UI, grouping them allows us to reset/randomize
-// every item in a group at once. If you are looking for tabs they are rendered manually in ImGui in `DrawCosmeticsEditor`
-typedef enum {
-    GROUP_LINK,
-    GROUP_MIRRORSHIELD,
-    GROUP_SWORDS,
-    GROUP_GLOVES,
-    GROUP_EQUIPMENT,
-    GROUP_CONSUMABLE,
-    GROUP_HUD,
-    GROUP_KALEIDO,
-    GROUP_TITLE,
-    GROUP_NPC,
-    GROUP_WORLD,
-    GROUP_MAGIC,
-    GROUP_ARROWS,
-    GROUP_SPIN_ATTACK,
-    GROUP_TRAILS,
-    GROUP_NAVI,
-    GROUP_IVAN,
-} CosmeticGroup;
-
 std::map<CosmeticGroup, const char*> groupLabels = {
     { GROUP_LINK, "Link" },
     { GROUP_MIRRORSHIELD, "Mirror Shield" },
@@ -1885,9 +1863,33 @@ void CosmeticsEditor_RandomizeAll() {
     ApplyOrResetCustomGfxPatches();
 }
 
+void CosmeticsEditor_RandomizeGroup(CosmeticGroup group) {
+    for (auto& [id, cosmeticOption] : cosmeticOptions) {
+        if (!CVarGetInteger(cosmeticOption.lockedCvar, 0) &&
+            (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0)) &&
+            cosmeticOption.group == group) {
+            RandomizeColor(cosmeticOption);
+        }
+    }
+
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    ApplyOrResetCustomGfxPatches();
+}
+
 void CosmeticsEditor_ResetAll() {
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         if (!CVarGetInteger(cosmeticOption.lockedCvar, 0)) {
+            ResetColor(cosmeticOption);
+        }
+    }
+
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    ApplyOrResetCustomGfxPatches();
+}
+
+void CosmeticsEditor_ResetGroup(CosmeticGroup group) {
+    for (auto& [id, cosmeticOption] : cosmeticOptions) {
+        if (!CVarGetInteger(cosmeticOption.lockedCvar, 0) && cosmeticOption.group == group) {
             ResetColor(cosmeticOption);
         }
     }
