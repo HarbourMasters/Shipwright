@@ -634,7 +634,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             Play_CameraSetAtEye(play, camIdx, &spC0, &spB4);
             csCam->roll = 0;
             csCam->fov = 75.0f;
-            player->actor.shape.rot.y = player->actor.world.rot.y = player->currentYaw = spD0.yaw + 0x7FFF;
+            player->actor.shape.rot.y = player->actor.world.rot.y = player->yaw = spD0.yaw + 0x7FFF;
             func_8002DF54(play, NULL, 8);
             break;
         case 3240:
@@ -674,7 +674,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             Quake_SetCountdown(i, D_80120698 - 20);
             break;
         case 3390:
-            player->actor.shape.rot.y = player->actor.world.rot.y = player->currentYaw = -0x3FD9;
+            player->actor.shape.rot.y = player->actor.world.rot.y = player->yaw = -0x3FD9;
 
             csInfo->keyFrames = D_80121DB4;
             csInfo->keyFrameCnt = 9;
@@ -697,7 +697,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             D_80121F1C[0].eyeTargetInit = play->view.eye;
             D_80121F1C[0].fovTargetInit = play->view.fovy;
             Actor_GetFocus(&spA0, actor);
-            player->actor.shape.rot.y = player->actor.world.rot.y = player->currentYaw = spA0.rot.y;
+            player->actor.shape.rot.y = player->actor.world.rot.y = player->yaw = spA0.rot.y;
 
             csInfo->keyFrames = D_80121F1C;
             csInfo->keyFrameCnt = 4;
@@ -788,7 +788,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
 
             func_8002DF54(play, NULL, 8);
             func_800C0808(play, camIdx, player, CAM_SET_CS_C);
-            player->stateFlags1 |= 0x20000000;
+            player->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
             player->actor.freezeTimer = 90;
 
             i = Quake_Add(csCam, 1);
@@ -817,7 +817,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
                 csInfo->keyFrameCnt = 2;
             }
 
-            player->actor.shape.rot.y = player->actor.world.rot.y = player->currentYaw = 0x3FFC;
+            player->actor.shape.rot.y = player->actor.world.rot.y = player->yaw = 0x3FFC;
             func_800C0808(play, camIdx, player, CAM_SET_CS_C);
             func_8002DF54(play, NULL, 8);
             break;
@@ -990,7 +990,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             if (func_800C0CB8(play)) {
                 D_801231B4[0].eyeTargetInit.z = D_801231B4[1].eyeTargetInit.z = !LINK_IS_ADULT ? 100.0f : 120.0f;
 
-                if (player->stateFlags1 & 0x08000000) {
+                if (player->stateFlags1 & PLAYER_STATE1_IN_WATER) {
                     D_801231B4[2].atTargetInit.z = 0.0f;
                 }
                 Actor_GetWorldPosShapeRot(&spA0, &player->actor);

@@ -525,6 +525,11 @@ void Randomizer::LoadMerchantMessages() {
         CustomMessage(ctx->GetHint(RH_BEAN_SALESMAN)->GetText().GetEnglish(),
             ctx->GetHint(RH_BEAN_SALESMAN)->GetText().GetGerman(),
             ctx->GetHint(RH_BEAN_SALESMAN)->GetText().GetFrench()));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100,
+        CustomMessage("I never thought I'd say this, but I'm &selling the last %rMagic Bean%w. %r99%w Rupees...\x1B&%gYes&No%w",
+            "\x1B&%gJa&Nein%w",
+            "Je te vends mon dernier %rHaricot&magique%w pour %r99 Rubis%w.\x1B&%gAcheter&Ne pas acheter%w"));
 
 
     //Setup for merchant text boxes
@@ -536,7 +541,7 @@ void Randomizer::LoadMerchantMessages() {
             ctx->GetHint(RH_MEDIGORON)->GetText().GetGerman(),
             ctx->GetHint(RH_MEDIGORON)->GetText().GetFrench()));
 
-    //Granny Shopy
+    //Granny Shop
     //RANDOTODO: Implement obscure/ambiguous hints
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_GRANNYS_SHOP,
@@ -2164,7 +2169,11 @@ void RandomizerSettingsWindow::DrawElement() {
                                             excludedLocationString += std::to_string(excludedLocationIt);
                                             excludedLocationString += ",";
                                         }
-                                        CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
+                                        if (excludedLocationString == "") {
+                                            CVarClear("gRandomizeExcludedLocations");
+                                        } else {
+                                            CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
+                                        }
                                         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
@@ -2334,7 +2343,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         enabledTrickString += std::to_string(enabledTrickIt);
                         enabledTrickString += ",";
                     }
-                    CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                    CVarClear("gRandomizeEnabledTricks");
                     LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
                 ImGui::SameLine();
@@ -2506,7 +2515,7 @@ void RandomizerSettingsWindow::DrawElement() {
                             enabledTrickString += std::to_string(enabledTrickIt);
                             enabledTrickString += ",";
                         }
-                        CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                        CVarClear("gRandomizeEnabledTricks");
                         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     }
                     
@@ -2541,7 +2550,11 @@ void RandomizerSettingsWindow::DrawElement() {
                                                 enabledTrickString += std::to_string(enabledTrickIt);
                                                 enabledTrickString += ",";
                                         }
-                                        CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                        if (enabledTrickString == "") {
+                                            CVarClear("gRandomizeEnabledTricks");
+                                        } else {
+                                            CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                        }
                                         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     Rando::Tricks::DrawTagChips(option.GetTags());
@@ -2696,7 +2709,7 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
 }
 
 CustomMessage Randomizer::GetSariaMessage(u16 originalTextId) {
-    if (originalTextId == TEXT_SARIA_SFM || (originalTextId == TEXT_SARIAS_SONG_FOREST_SOUNDS && originalTextId == TEXT_SARIAS_SONG_FOREST_TEMPLE)) {
+    if (originalTextId == TEXT_SARIA_SFM || (originalTextId >= TEXT_SARIAS_SONG_FACE_TO_FACE && originalTextId <= TEXT_SARIAS_SONG_CHANNELING_POWER)) {
         CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE);
         CustomMessage messageEntry2 = messageEntry;
         std::string code = originalTextId == TEXT_SARIA_SFM ? "" : "\x0B";

@@ -78,7 +78,7 @@ void BgJyaZurerukabe_InitDynaPoly(BgJyaZurerukabe* this, PlayState* play, Collis
 void func_8089B4C8(BgJyaZurerukabe* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if ((player->stateFlags1 == 0x200000) && (player->actor.wallPoly != NULL)) {
+    if ((player->stateFlags1 == PLAYER_STATE1_CLIMBING_LADDER) && (player->actor.wallPoly != NULL)) {
         s32 i;
 
         for (i = 0; i < ARRAY_COUNT(D_8089BA18); i++) {

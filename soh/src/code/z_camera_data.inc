@@ -16,9 +16,11 @@ typedef struct {
     union {
         u32 unk_00;
         struct {
-            u32 unk_bit0 : 1;
-            u32 unk_bit1 : 1;
-            u32 validModes : 30;
+            // SoH [Port] These bitfield values are unused and led to shifting in validModes for little endian systems
+            // Removing those so that validModes can be a complete 32 bit value
+            // u32 unk_bit0 : 1;
+            // u32 unk_bit1 : 1;
+            u32 validModes;
         };
     };
     CameraMode* cameraModes;
