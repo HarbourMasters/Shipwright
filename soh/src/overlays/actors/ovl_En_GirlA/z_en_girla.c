@@ -487,6 +487,10 @@ s32 EnGirlA_CanBuy_Bombs(PlayState* play, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_DekuNuts(PlayState* play, EnGirlA* this) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG) && CUR_CAPACITY(UPG_NUTS) == 0) {
+        return CANBUY_RESULT_CANT_GET_NOW;
+    }
+
     if ((CUR_CAPACITY(UPG_NUTS) != 0) && (AMMO(ITEM_NUT) >= CUR_CAPACITY(UPG_NUTS))) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -500,6 +504,10 @@ s32 EnGirlA_CanBuy_DekuNuts(PlayState* play, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_DekuSticks(PlayState* play, EnGirlA* this) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG) && CUR_CAPACITY(UPG_STICKS) == 0) {
+        return CANBUY_RESULT_CANT_GET_NOW;
+    }
+
     if ((CUR_CAPACITY(UPG_STICKS) != 0) && (AMMO(ITEM_STICK) >= CUR_CAPACITY(UPG_STICKS))) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
