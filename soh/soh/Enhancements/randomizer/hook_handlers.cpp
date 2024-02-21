@@ -803,6 +803,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
         case GI_VB_ANJU_SET_OBTAINED_TRADE_ITEM:
         case GI_VB_GIVE_ITEM_FROM_ROLLING_GORON_AS_CHILD:
         case GI_VB_GIVE_ITEM_FROM_LAB_DIVE:
+        case GI_VB_GIVE_ITEM_FROM_SKULL_KID_SARIAS_SONG:
         case GI_VB_GIVE_ITEM_FROM_MAN_ON_ROOF:
         case GI_VB_GIVE_ITEM_SKULL_TOKEN:
         case GI_VB_GIVE_ITEM_FROM_BLUE_WARP:
