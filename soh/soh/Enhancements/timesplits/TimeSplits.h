@@ -43,3 +43,9 @@ static const char* itemImage[156] {
     "ITEM_BOMBS_20",            "ITEM_BOMBS_30",        "ITEM_ARROWS_SMALL",        "ITEM_ARROWS_MEDIUM",       "ITEM_ARROWS_LARGE",        "ITEM_SEEDS_30",    
     "ITEM_BOMBCHUS_5",          "ITEM_BOMBCHUS_20",     "ITEM_STICK_UPGRADE_20",    "ITEM_STICK_UPGRADE_30",    "ITEM_NUT_UPGRADE_30",      "ITEM_NUT_UPGRADE_40"
 };
+
+typedef struct {
+    uint32_t itemID;
+    const char* itemName;
+    const char* itemImage;
+} TimeSplitObject;
