@@ -417,7 +417,7 @@ f32 Actor_WorldDistXZToPoint(Actor* actor, Vec3f* refPoint);
 void func_8002DBD0(Actor* actor, Vec3f* result, Vec3f* arg2);
 f32 Actor_HeightDiff(Actor* actorA, Actor* actorB);
 f32 Player_GetHeight(Player* player);
-s32 func_8083E5A8(Player* player, PlayState* play);
+s32 Player_ActionChange_2(Player* player, PlayState* play);
 f32 func_8002DCE4(Player* player);
 s32 func_8002DD6C(Player* player);
 s32 func_8002DD78(Player* player);
@@ -2470,6 +2470,10 @@ void Message_DrawText(PlayState* play, Gfx** gfxP);
 
 void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
 void Interface_RandoRestoreSwordless(void);
+
+//Pause Warp
+void PauseWarp_HandleSelection();
+void PauseWarp_Execute();
 
 // #endregion
 

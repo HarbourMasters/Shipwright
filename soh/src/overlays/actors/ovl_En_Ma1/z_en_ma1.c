@@ -362,8 +362,8 @@ void func_80AA0F44(EnMa1* this, PlayState* play) {
     }
 
     if (Flags_GetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON)) {
-        if (player->stateFlags2 & 0x1000000) {
-            player->stateFlags2 |= 0x2000000;
+        if (player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) {
+            player->stateFlags2 |= PLAYER_STATE2_PLAY_FOR_ACTOR;
             player->unk_6A8 = &this->actor;
             this->actor.textId = 0x2061;
             Message_StartTextbox(play, this->actor.textId, NULL);
@@ -371,13 +371,13 @@ void func_80AA0F44(EnMa1* this, PlayState* play) {
             this->actor.flags |= ACTOR_FLAG_WILL_TALK;
             this->actionFunc = func_80AA106C;
         } else if (this->actor.xzDistToPlayer < 30.0f + (f32)this->collider.dim.radius) {
-            player->stateFlags2 |= 0x800000;
+            player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
         }
     }
 }
 
 void func_80AA106C(EnMa1* this, PlayState* play) {
-    GET_PLAYER(play)->stateFlags2 |= 0x800000;
+    GET_PLAYER(play)->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         Audio_OcaSetInstrument(2);
         func_8010BD58(play, OCARINA_ACTION_TEACH_EPONA);
@@ -387,7 +387,7 @@ void func_80AA106C(EnMa1* this, PlayState* play) {
 }
 
 void func_80AA10EC(EnMa1* this, PlayState* play) {
-    GET_PLAYER(play)->stateFlags2 |= 0x800000;
+    GET_PLAYER(play)->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_SONG_DEMO_DONE) {
         func_8010BD58(play, OCARINA_ACTION_PLAYBACK_EPONA);
         this->actionFunc = func_80AA1150;
@@ -395,7 +395,7 @@ void func_80AA10EC(EnMa1* this, PlayState* play) {
 }
 
 void func_80AA1150(EnMa1* this, PlayState* play) {
-    GET_PLAYER(play)->stateFlags2 |= 0x800000;
+    GET_PLAYER(play)->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
 
     if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         Flags_SetRandomizerInf(RAND_INF_LEARNED_EPONA_SONG);

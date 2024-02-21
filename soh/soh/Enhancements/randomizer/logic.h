@@ -422,6 +422,8 @@ class Logic {
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
+    bool CanKillEnemy(std::string enemy);
+    bool CanPassEnemy(std::string enemy);
     bool EventsUpdated();
     void Reset();
 

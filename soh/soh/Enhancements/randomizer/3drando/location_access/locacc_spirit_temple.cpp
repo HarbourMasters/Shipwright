@@ -269,5 +269,6 @@ void AreaTable_Init_SpiritTemple() {
         {
             // Exits
             Entrance(RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY, { [] { return false; } }),
+            Entrance(RR_DESERT_COLOSSUS, { [] { return logic->SpiritTempleClear; } }),
         });
 }

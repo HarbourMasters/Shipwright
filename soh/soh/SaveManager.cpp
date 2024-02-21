@@ -210,9 +210,9 @@ void SaveManager::LoadRandomizerVersion2() {
     auto entranceCtx = randoContext->GetEntranceShuffler();
     SaveManager::Instance->LoadArray("entrances", ARRAY_COUNT(entranceCtx->entranceOverrides), [&](size_t i) {
         SaveManager::Instance->LoadStruct("", [&]() {
+            SaveManager::Instance->LoadData("type", entranceCtx->entranceOverrides[i].type);
             SaveManager::Instance->LoadData("index", entranceCtx->entranceOverrides[i].index);
             SaveManager::Instance->LoadData("destination", entranceCtx->entranceOverrides[i].destination);
-            SaveManager::Instance->LoadData("blueWarp", entranceCtx->entranceOverrides[i].blueWarp);
             SaveManager::Instance->LoadData("override", entranceCtx->entranceOverrides[i].override);
             SaveManager::Instance->LoadData("overrideDestination", entranceCtx->entranceOverrides[i].overrideDestination);
         });
@@ -364,9 +364,9 @@ void SaveManager::LoadRandomizerVersion3() {
     auto entranceCtx = randoContext->GetEntranceShuffler();
     SaveManager::Instance->LoadArray("entrances", ARRAY_COUNT(entranceCtx->entranceOverrides), [&](size_t i) {
         SaveManager::Instance->LoadStruct("", [&]() {
+            SaveManager::Instance->LoadData("type", entranceCtx->entranceOverrides[i].type);
             SaveManager::Instance->LoadData("index", entranceCtx->entranceOverrides[i].index);
             SaveManager::Instance->LoadData("destination", entranceCtx->entranceOverrides[i].destination);
-            SaveManager::Instance->LoadData("blueWarp", entranceCtx->entranceOverrides[i].blueWarp);
             SaveManager::Instance->LoadData("override", entranceCtx->entranceOverrides[i].override);
             SaveManager::Instance->LoadData("overrideDestination",
                                             entranceCtx->entranceOverrides[i].overrideDestination);
@@ -463,9 +463,9 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
     auto entranceCtx = randoContext->GetEntranceShuffler();
     SaveManager::Instance->SaveArray("entrances", ARRAY_COUNT(entranceCtx->entranceOverrides), [&](size_t i) {
         SaveManager::Instance->SaveStruct("", [&]() {
+            SaveManager::Instance->SaveData("type", entranceCtx->entranceOverrides[i].type);
             SaveManager::Instance->SaveData("index", entranceCtx->entranceOverrides[i].index);
             SaveManager::Instance->SaveData("destination", entranceCtx->entranceOverrides[i].destination);
-            SaveManager::Instance->SaveData("blueWarp", entranceCtx->entranceOverrides[i].blueWarp);
             SaveManager::Instance->SaveData("override", entranceCtx->entranceOverrides[i].override);
             SaveManager::Instance->SaveData("overrideDestination", entranceCtx->entranceOverrides[i].overrideDestination);
         });

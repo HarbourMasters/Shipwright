@@ -612,10 +612,10 @@ void EnMb_SetupStunned(EnMb* this) {
 void EnMb_Stunned(EnMb* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if ((player->stateFlags2 & 0x80) && player->actor.parent == &this->actor) {
-        player->stateFlags2 &= ~0x80;
+    if ((player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY) && player->actor.parent == &this->actor) {
+        player->stateFlags2 &= ~PLAYER_STATE2_GRABBED_BY_ENEMY;
         player->actor.parent = NULL;
-        player->unk_850 = 200;
+        player->av2.actionVar2 = 200;
         func_8002F71C(play, &this->actor, 4.0f, this->actor.world.rot.y, 4.0f);
         this->attack = ENMB_ATTACK_NONE;
     }
@@ -737,10 +737,10 @@ void EnMb_SpearPatrolEndCharge(EnMb* this, PlayState* play) {
     s16 relYawFromPlayer;
     s16 yawPlayerToWaypoint;
 
-    if ((player->stateFlags2 & 0x80) && player->actor.parent == &this->actor) {
-        player->stateFlags2 &= ~0x80;
+    if ((player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY) && player->actor.parent == &this->actor) {
+        player->stateFlags2 &= ~PLAYER_STATE2_GRABBED_BY_ENEMY;
         player->actor.parent = NULL;
-        player->unk_850 = 200;
+        player->av2.actionVar2 = 200;
         func_8002F71C(play, &this->actor, 4.0f, this->actor.world.rot.y, 4.0f);
     }
 
@@ -939,7 +939,7 @@ void EnMb_SpearPatrolPrepareAndCharge(EnMb* this, PlayState* play) {
 
     if (this->attackCollider.base.atFlags & AT_HIT) {
         if (this->attackCollider.base.at == &player->actor) {
-            if (!endCharge && !(player->stateFlags2 & 0x80)) {
+            if (!endCharge && !(player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY)) {
                 if (player->invincibilityTimer < 0) {
                     if (player->invincibilityTimer < -39) {
                         player->invincibilityTimer = 0;
@@ -961,24 +961,24 @@ void EnMb_SpearPatrolPrepareAndCharge(EnMb* this, PlayState* play) {
         }
     }
 
-    if ((player->stateFlags2 & 0x80) && player->actor.parent == &this->actor) {
+    if ((player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY) && player->actor.parent == &this->actor) {
         player->actor.world.pos.x = this->actor.world.pos.x + Math_CosS(this->actor.shape.rot.y) * 10.0f +
                                     Math_SinS(this->actor.shape.rot.y) * 89.0f;
         hasHitPlayer = true;
         player->actor.world.pos.z = this->actor.world.pos.z + Math_SinS(this->actor.shape.rot.y) * 10.0f +
                                     Math_CosS(this->actor.shape.rot.y) * 89.0f;
-        player->unk_850 = 0;
+        player->av2.actionVar2 = 0;
         player->actor.speedXZ = 0.0f;
         player->actor.velocity.y = 0.0f;
     }
 
     if (endCharge) {
-        if (hasHitPlayer || (player->stateFlags2 & 0x80)) {
+        if (hasHitPlayer || (player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY)) {
             this->attackCollider.base.atFlags &= ~AT_HIT;
-            if (player->stateFlags2 & 0x80) {
-                player->stateFlags2 &= ~0x80;
+            if (player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY) {
+                player->stateFlags2 &= ~PLAYER_STATE2_GRABBED_BY_ENEMY;
                 player->actor.parent = NULL;
-                player->unk_850 = 200;
+                player->av2.actionVar2 = 200;
                 func_8002F71C(play, &this->actor, 4.0f, this->actor.world.rot.y, 4.0f);
             }
         }
@@ -1008,7 +1008,7 @@ void EnMb_SpearPatrolImmediateCharge(EnMb* this, PlayState* play) {
 
     if (this->attackCollider.base.atFlags & AT_HIT) {
         if (this->attackCollider.base.at == &player->actor) {
-            if (!endCharge && !(player->stateFlags2 & 0x80)) {
+            if (!endCharge && !(player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY)) {
                 if (player->invincibilityTimer < 0) {
                     if (player->invincibilityTimer <= -40) {
                         player->invincibilityTimer = 0;
@@ -1030,24 +1030,24 @@ void EnMb_SpearPatrolImmediateCharge(EnMb* this, PlayState* play) {
         }
     }
 
-    if ((player->stateFlags2 & 0x80) && player->actor.parent == &this->actor) {
+    if ((player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY) && player->actor.parent == &this->actor) {
         player->actor.world.pos.x = this->actor.world.pos.x + Math_CosS(this->actor.shape.rot.y) * 10.0f +
                                     Math_SinS(this->actor.shape.rot.y) * 89.0f;
         hasHitPlayer = true;
         player->actor.world.pos.z = this->actor.world.pos.z + Math_SinS(this->actor.shape.rot.y) * 10.0f +
                                     Math_CosS(this->actor.shape.rot.y) * 89.0f;
-        player->unk_850 = 0;
+        player->av2.actionVar2 = 0;
         player->actor.speedXZ = 0.0f;
         player->actor.velocity.y = 0.0f;
     }
 
     if (endCharge) {
-        if (hasHitPlayer || (player->stateFlags2 & 0x80)) {
+        if (hasHitPlayer || (player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY)) {
             this->attackCollider.base.atFlags &= ~AT_HIT;
-            if (player->stateFlags2 & 0x80) {
-                player->stateFlags2 &= ~0x80;
+            if (player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY) {
+                player->stateFlags2 &= ~PLAYER_STATE2_GRABBED_BY_ENEMY;
                 player->actor.parent = NULL;
-                player->unk_850 = 200;
+                player->av2.actionVar2 = 200;
                 func_8002F71C(play, &this->actor, 4.0f, this->actor.world.rot.y, 4.0f);
             }
             this->attack = ENMB_ATTACK_NONE;
@@ -1274,7 +1274,7 @@ void EnMb_ClubWaitPlayerNear(EnMb* this, PlayState* play) {
 
     SkelAnime_Update(&this->skelAnime);
     if (Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < this->playerDetectionRange &&
-        !(player->stateFlags1 & 0x4000000) && ABS(relYawFromPlayer) < 0x3E80) {
+        !(player->stateFlags1 & PLAYER_STATE1_DAMAGED) && ABS(relYawFromPlayer) < 0x3E80) {
         // Add a height check to the Moblin's Club attack when Enemy Randomizer is on.
         // Without the height check, the Moblin will attack (and play the sound effect) a lot even though
         // the Moblin is very far away from the player in vertical rooms (like the first room in Deku Tree).
@@ -1339,10 +1339,10 @@ void EnMb_SpearDead(EnMb* this, PlayState* play) {
 
     Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 1.0f, 0.5f, 0.0f);
 
-    if ((player->stateFlags2 & 0x80) && player->actor.parent == &this->actor) {
-        player->stateFlags2 &= ~0x80;
+    if ((player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY) && player->actor.parent == &this->actor) {
+        player->stateFlags2 &= ~PLAYER_STATE2_GRABBED_BY_ENEMY;
         player->actor.parent = NULL;
-        player->unk_850 = 200;
+        player->av2.actionVar2 = 200;
         func_8002F71C(play, &this->actor, 4.0f, this->actor.world.rot.y, 4.0f);
         this->attack = ENMB_ATTACK_NONE;
     }
@@ -1422,10 +1422,10 @@ void EnMb_CheckColliding(EnMb* this, PlayState* play) {
         this->hitbox.base.acFlags &= ~AC_HIT;
         if (this->actor.colChkInfo.damageEffect != ENMB_DMGEFF_IGNORE &&
             this->actor.colChkInfo.damageEffect != ENMB_DMGEFF_FREEZE) {
-            if ((player->stateFlags2 & 0x80) && player->actor.parent == &this->actor) {
-                player->stateFlags2 &= ~0x80;
+            if ((player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY) && player->actor.parent == &this->actor) {
+                player->stateFlags2 &= ~PLAYER_STATE2_GRABBED_BY_ENEMY;
                 player->actor.parent = NULL;
-                player->unk_850 = 200;
+                player->av2.actionVar2 = 200;
                 func_8002F71C(play, &this->actor, 6.0f, this->actor.world.rot.y, 6.0f);
             }
             this->damageEffect = this->actor.colChkInfo.damageEffect;

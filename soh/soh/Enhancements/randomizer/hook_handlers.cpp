@@ -188,7 +188,7 @@ void RandomizerOnPlayerUpdateForItemQueueHandler() {
     if (player->stateFlags1 & PLAYER_STATE1_IN_WATER) {
         // Allow the player to receive the item while swimming
         player->stateFlags2 |= PLAYER_STATE2_UNDERWATER;
-        func_8083E5A8(player, gPlayState);
+        Player_ActionChange_2(player, gPlayState);
     }
 }
 
@@ -322,7 +322,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
     switch (id) {
         case GI_VB_GIVE_ITEM_FROM_CHEST: {
             Player* player = GET_PLAYER(gPlayState);
-            player->unk_850 = 1;
+            player->av2.actionVar2 = 1;
             player->getItemId = GI_NONE;
             player->getItemEntry = GetItemEntry(GET_ITEM_NONE);
             *should = false;

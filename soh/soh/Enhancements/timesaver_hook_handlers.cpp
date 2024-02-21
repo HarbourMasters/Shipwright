@@ -881,7 +881,7 @@ void TimeSaverOnPlayerUpdateHandler() {
     if (player->stateFlags1 & PLAYER_STATE1_IN_WATER) {
         // Allow the player to receive the item while swimming
         player->stateFlags2 |= PLAYER_STATE2_UNDERWATER;
-        func_8083E5A8(player, gPlayState);
+        Player_ActionChange_2(player, gPlayState);
     }
 }
 

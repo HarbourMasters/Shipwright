@@ -68,6 +68,7 @@ void Settings::CreateOptions() {
     mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS] = Option::Bool("Overworld Spawns", "gRandomizeShuffleOverworldSpanws", mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]);
     mOptions[RSK_MIXED_ENTRANCE_POOLS] = Option::Bool("Mixed Entrance Pools", "gRandomizeMixedEntrances", mOptionDescriptions[RSK_MIXED_ENTRANCE_POOLS]);
     mOptions[RSK_MIX_DUNGEON_ENTRANCES] = Option::Bool("Mix Dungeons", "gRandomizeMixDungeons", mOptionDescriptions[RSK_MIX_DUNGEON_ENTRANCES], IMFLAG_NONE);
+    mOptions[RSK_MIX_BOSS_ENTRANCES] = Option::Bool("Mix Bosses", "gRandomizeMixBosses", mOptionDescriptions[RSK_MIX_BOSS_ENTRANCES], IMFLAG_NONE);
     mOptions[RSK_MIX_OVERWORLD_ENTRANCES] = Option::Bool("Mix Overworld", "gRandomizeMixOverworld", mOptionDescriptions[RSK_MIX_OVERWORLD_ENTRANCES], IMFLAG_NONE);
     mOptions[RSK_MIX_INTERIOR_ENTRANCES] = Option::Bool("Mix Interiors", "gRandomizeMixInteriors", mOptionDescriptions[RSK_MIX_INTERIOR_ENTRANCES], IMFLAG_NONE);
     mOptions[RSK_MIX_GROTTO_ENTRANCES] = Option::Bool("Mix Grottos", "gRandomizeMixGrottos", mOptionDescriptions[RSK_MIX_GROTTO_ENTRANCES]);
@@ -638,6 +639,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_DECOUPLED_ENTRANCES],
         &mOptions[RSK_MIXED_ENTRANCE_POOLS],
         &mOptions[RSK_MIX_DUNGEON_ENTRANCES],
+        &mOptions[RSK_MIX_BOSS_ENTRANCES],
         &mOptions[RSK_MIX_OVERWORLD_ENTRANCES],
         &mOptions[RSK_MIX_INTERIOR_ENTRANCES],
         &mOptions[RSK_MIX_GROTTO_ENTRANCES]
@@ -828,6 +830,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS],
         &mOptions[RSK_MIXED_ENTRANCE_POOLS],
         &mOptions[RSK_MIX_DUNGEON_ENTRANCES],
+        &mOptions[RSK_MIX_BOSS_ENTRANCES],
         &mOptions[RSK_MIX_OVERWORLD_ENTRANCES],
         &mOptions[RSK_MIX_INTERIOR_ENTRANCES],
         &mOptions[RSK_MIX_GROTTO_ENTRANCES],
@@ -1159,6 +1162,7 @@ void Settings::CreateOptions() {
         { "World Settings:Overworld Spawns", RSK_SHUFFLE_OVERWORLD_SPAWNS },
         { "World Settings:Mixed Entrance Pools", RSK_MIXED_ENTRANCE_POOLS },
         { "World Settings:Mix Dungeons", RSK_MIX_DUNGEON_ENTRANCES },
+        { "World Settings:Mix Bosses", RSK_MIX_BOSS_ENTRANCES },
         { "World Settings:Mix Overworld", RSK_MIX_OVERWORLD_ENTRANCES },
         { "World Settings:Mix Interiors", RSK_MIX_INTERIOR_ENTRANCES },
         { "World Settings:Mix Grottos", RSK_MIX_GROTTO_ENTRANCES },
@@ -1534,12 +1538,14 @@ void Settings::UpdateOptionProperties() {
     if (CVarGetInteger("gRandomizeMixedEntrances", RO_GENERIC_OFF)) {
         mOptions[RSK_MIXED_ENTRANCE_POOLS].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
         mOptions[RSK_MIX_DUNGEON_ENTRANCES].Unhide();
+        mOptions[RSK_MIX_BOSS_ENTRANCES].Unhide();
         mOptions[RSK_MIX_OVERWORLD_ENTRANCES].Unhide();
         mOptions[RSK_MIX_INTERIOR_ENTRANCES].Unhide();
         mOptions[RSK_MIX_GROTTO_ENTRANCES].Unhide();
     } else {
         mOptions[RSK_MIXED_ENTRANCE_POOLS].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
         mOptions[RSK_MIX_DUNGEON_ENTRANCES].Hide();
+        mOptions[RSK_MIX_BOSS_ENTRANCES].Hide();
         mOptions[RSK_MIX_OVERWORLD_ENTRANCES].Hide();
         mOptions[RSK_MIX_INTERIOR_ENTRANCES].Hide();
         mOptions[RSK_MIX_GROTTO_ENTRANCES].Hide();
@@ -2309,6 +2315,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
                 case RSK_SHUFFLE_OVERWORLD_SPAWNS:
                 case RSK_MIXED_ENTRANCE_POOLS:
                 case RSK_MIX_DUNGEON_ENTRANCES:
+                case RSK_MIX_BOSS_ENTRANCES:
                 case RSK_MIX_OVERWORLD_ENTRANCES:
                 case RSK_MIX_INTERIOR_ENTRANCES:
                 case RSK_MIX_GROTTO_ENTRANCES:

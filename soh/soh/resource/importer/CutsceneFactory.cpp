@@ -2,36 +2,14 @@
 #include "soh/resource/type/Cutscene.h"
 #include "spdlog/spdlog.h"
 
-namespace LUS {
-std::shared_ptr<IResource>
-CutsceneFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<Cutscene>(initData);
-    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
-
-    switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-	factory = std::make_shared<CutsceneFactoryV0>();
-	break;
-    }
-
-    if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Cutscene with version {}", resource->GetInitData()->ResourceVersion);
-	return nullptr;
-    }
-
-    factory->ParseFileBinary(reader, resource);
-
-    return resource;
-}
-
-static inline uint32_t read_CMD_BBBB(std::shared_ptr<BinaryReader> reader) {
+static inline uint32_t read_CMD_BBBB(std::shared_ptr<LUS::BinaryReader> reader) {
     uint32_t v;
     reader->Read((char*)&v, sizeof(uint32_t));
 
     return v;
 }
 
-static inline uint32_t read_CMD_BBH(std::shared_ptr<BinaryReader> reader) {
+static inline uint32_t read_CMD_BBH(std::shared_ptr<LUS::BinaryReader> reader) {
     uint32_t v;
     reader->Read((char*)&v, sizeof(uint32_t));
 
@@ -46,7 +24,7 @@ static inline uint32_t read_CMD_BBH(std::shared_ptr<BinaryReader> reader) {
     return v;
 }
 
-static inline uint32_t read_CMD_HBB(std::shared_ptr<BinaryReader> reader) {
+static inline uint32_t read_CMD_HBB(std::shared_ptr<LUS::BinaryReader> reader) {
     uint32_t v;
     reader->Read((char*)&v, sizeof(uint32_t));
 
@@ -61,7 +39,7 @@ static inline uint32_t read_CMD_HBB(std::shared_ptr<BinaryReader> reader) {
     return v;
 }
 
-static inline uint32_t read_CMD_HH(std::shared_ptr<BinaryReader> reader) {
+static inline uint32_t read_CMD_HH(std::shared_ptr<LUS::BinaryReader> reader) {
     uint32_t v;
     reader->Read((char*)&v, sizeof(uint32_t));
 
@@ -79,11 +57,14 @@ static inline uint32_t read_CMD_HH(std::shared_ptr<BinaryReader> reader) {
     return v;
 }
 
-void LUS::CutsceneFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                              std::shared_ptr<IResource> resource)
-{
-    std::shared_ptr<Cutscene> cutscene = std::static_pointer_cast<Cutscene>(resource);
-    ResourceVersionFactory::ParseFileBinary(reader, cutscene);
+namespace SOH {
+std::shared_ptr<LUS::IResource> ResourceFactoryBinaryCutsceneV0::ReadResource(std::shared_ptr<LUS::File> file) {
+    if (!FileHasValidFormatAndReader(file)) {
+        return nullptr;
+    }
+
+    auto cutscene = std::make_shared<Cutscene>(file->InitData);
+    auto reader = std::get<std::shared_ptr<LUS::BinaryReader>>(file->Reader);
 
     uint32_t numEntries = reader->ReadUInt32();
     cutscene->commands.reserve(numEntries);
@@ -459,7 +440,7 @@ void LUS::CutsceneFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
             case 0xFFFFFFFF: // CS_END
             {
                 cutscene->commands.push_back(reader->ReadUInt32());
-                return;
+                return cutscene;
             }
             default:
                 SPDLOG_TRACE("CutsceneV0: Unknown command {}\n", commandId);
@@ -467,5 +448,7 @@ void LUS::CutsceneFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
                 break;
         }
     }
+
+    return cutscene;
 }
-} // namespace LUS
+} // namespace SOH
