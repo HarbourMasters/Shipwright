@@ -1037,7 +1037,7 @@ void InitTTSBank() {
             break;
     }
 
-    auto sceneFile = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFileRaw("accessibility/texts/scenes" + languageSuffix);
+    auto sceneFile = LUS::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/scenes" + languageSuffix);
     if (sceneFile != nullptr) {
         sceneMap = nlohmann::json::parse(*sceneFile->Buffer.get(), nullptr, true, true);
     }
