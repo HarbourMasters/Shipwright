@@ -247,9 +247,10 @@ extern "C" void Randomizer_InitSaveFile() {
     Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_TALK_FIRST_TIME);
     Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE);
 
+    // Now handled by cutscene skips
     // Skip cutscenes before Nabooru fight
-    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_NABOORU_BATTLE);
-    Flags_SetEventChkInf(EVENTCHKINF_NABOORU_ORDERED_TO_FIGHT_BY_TWINROVA);
+    // Flags_SetEventChkInf(EVENTCHKINF_BEGAN_NABOORU_BATTLE);
+    // Flags_SetEventChkInf(EVENTCHKINF_NABOORU_ORDERED_TO_FIGHT_BY_TWINROVA);
 
     // Now handled by cutscene skips
     // Skip boss cutscenes

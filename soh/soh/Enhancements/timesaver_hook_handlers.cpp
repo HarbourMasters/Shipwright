@@ -638,6 +638,43 @@ void TimeSaverOnSceneInitHandler(int16_t sceneNum) {
                 }
             }
             break;
+        case SCENE_FOREST_TEMPLE_BOSS:
+            if (CVarGetInteger("gTimeSavers.SkipCutscene.BossIntro", 0)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_PHANTOM_GANON_BATTLE)) {
+                    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_PHANTOM_GANON_BATTLE);
+                }
+            }
+            break;
+        case SCENE_FIRE_TEMPLE_BOSS:
+            if (CVarGetInteger("gTimeSavers.SkipCutscene.BossIntro", 0)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_VOLVAGIA_BATTLE)) {
+                    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_VOLVAGIA_BATTLE);
+                }
+            }
+            break;
+        case SCENE_WATER_TEMPLE_BOSS:
+            if (CVarGetInteger("gTimeSavers.SkipCutscene.BossIntro", 0)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_MORPHA_BATTLE)) {
+                    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_MORPHA_BATTLE);
+                }
+            }
+            break;
+        case SCENE_SPIRIT_TEMPLE_BOSS:
+            if (CVarGetInteger("gTimeSavers.SkipCutscene.BossIntro", 0)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_TWINROVA_BATTLE)) {
+                    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_TWINROVA_BATTLE);
+                    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_NABOORU_BATTLE);
+                    Flags_SetEventChkInf(EVENTCHKINF_NABOORU_ORDERED_TO_FIGHT_BY_TWINROVA);
+                }
+            }
+            break;
+        case SCENE_SHADOW_TEMPLE_BOSS:
+            if (CVarGetInteger("gTimeSavers.SkipCutscene.BossIntro", 0)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE)) {
+                    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE);
+                }
+            }
+            break;
     }
 }
 
