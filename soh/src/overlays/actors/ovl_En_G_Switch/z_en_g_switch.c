@@ -440,7 +440,8 @@ void EnGSwitch_Update(Actor* thisx, PlayState* play) {
         if (this->type == ENGSWITCH_TARGET_RUPEE) {
             EnGSwitch_UpdateEffects(this, play);
         }
-        if ((this->actionFunc != EnGSwitch_Kill) && (this->actionFunc != EnGSwitch_SilverRupeeIdle)) {
+        if ((this->actionFunc != EnGSwitch_Kill) &&
+            ((this->actionFunc != EnGSwitch_SilverRupeeIdle) || CVarGetInteger("gCollisionGoggles", 0))) {
             Collider_UpdateCylinder(&this->actor, &this->collider);
             CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
         }

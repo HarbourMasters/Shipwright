@@ -216,6 +216,10 @@ void EnPoSisters_Init(Actor* thisx, PlayState* play) {
         func_80ADA094(this, play);
     } else if (this->unk_194 == 0) {
         if (this->unk_195 == 0) {
+            if (CVarGetInteger("gCollisionGoggles", 0)) {
+                this->collider.useColliderColor = 1;
+                this->collider.color = D_80ADD7E8[0];
+            }
             this->collider.base.ocFlags1 = OC1_ON | OC1_TYPE_PLAYER;
             func_80AD9AA8(this, play);
         } else {

@@ -41,6 +41,26 @@ const ActorInit En_Ex_Ruppy_InitVars = {
     NULL,
 };
 
+static ColliderCylinderInit sUselessCylinderInit = {
+    {
+        COLTYPE_NONE,
+        AT_NONE,
+        AC_ON,
+        OC1_NONE,
+        OC2_NONE,
+        COLSHAPE_CYLINDER,
+    },
+    {
+        ELEMTYPE_UNK2,
+        { 0x00000000, 0x00, 0x00 },
+        { 0x00000048, 0x00, 0x00 },
+        TOUCH_NONE,
+        BUMP_NONE,
+        OCELEM_NONE,
+    },
+    { 30, 30, 0, { 0 } },
+};
+
 void EnExRuppy_Init(Actor* thisx, PlayState* play) {
     EnExRuppy* this = (EnExRuppy*)thisx;
     EnDivingGame* divingGame;
@@ -159,9 +179,24 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = EnExRuppy_GalleryTarget;
             break;
     }
+
+    if (CVarGetInteger("gCollisionGoggles", 0)) {
+        this->useUselessCylinder = 1;
+    } else {
+        this->useUselessCylinder = 0;
+    }
+    if (this->useUselessCylinder) {
+        Collider_InitCylinder(play, &this->uselessCollider);
+        Collider_SetCylinder(play, &this->uselessCollider, &this->actor, &sUselessCylinderInit);
+    }
 }
 
 void EnExRuppy_Destroy(Actor* thisx, PlayState* play) {
+    EnExRuppy* this = (EnExRuppy*)thisx;
+
+    if (this->useUselessCylinder) {
+        Collider_DestroyCylinder(play, &this->uselessCollider);
+    }
 }
 
 void EnExRuppy_SpawnSparkles(EnExRuppy* this, PlayState* play, s16 numSparkles, s32 movementType) {
@@ -372,6 +407,11 @@ void EnExRuppy_Update(Actor* thisx, PlayState* play) {
     }
     Actor_MoveForward(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 50.0f, 0x1C);
+
+    if (this->useUselessCylinder) {
+        Collider_UpdateCylinder(&this->actor, &this->uselessCollider);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->uselessCollider.base);
+    }
 }
 
 void EnExRuppy_Draw(Actor* thisx, PlayState* play) {

@@ -55,6 +55,26 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 4000, ICHAIN_STOP),
 };
 
+static ColliderCylinderInit sUselessCylinderInit = {
+    {
+        COLTYPE_NONE,
+        AT_NONE,
+        AC_ON,
+        OC1_NONE,
+        OC2_NONE,
+        COLSHAPE_CYLINDER,
+    },
+    {
+        ELEMTYPE_UNK2,
+        { 0x00000000, 0x00, 0x00 },
+        { 0x00000048, 0x00, 0x00 },
+        TOUCH_NONE,
+        BUMP_NONE,
+        OCELEM_NONE,
+    },
+    { 60, 20, 0, { 0 } },
+};
+
 s16 sWarpTimerTarget;
 
 void DoorWarp1_SetupAction(DoorWarp1* this, DoorWarp1ActionFunc actionFunc) {
@@ -85,6 +105,16 @@ void DoorWarp1_Init(Actor* thisx, PlayState* play) {
     osSyncPrintf("\nBOSSWARP arg_data=[%d]", this->actor.params);
 
     DoorWarp1_ChooseInitialAction(this, play2);
+
+    if (CVarGetInteger("gCollisionGoggles", 0)) {
+        this->useUselessCylinder = 1;
+    } else {
+        this->useUselessCylinder = 0;
+    }
+    if (this->useUselessCylinder) {
+        Collider_InitCylinder(play, &this->uselessCollider);
+        Collider_SetCylinder(play, &this->uselessCollider, &this->actor, &sUselessCylinderInit);
+    }
 }
 
 void DoorWarp1_Destroy(Actor* thisx, PlayState* play) {
@@ -107,6 +137,10 @@ void DoorWarp1_Destroy(Actor* thisx, PlayState* play) {
             break;
         default:
             break;
+    }
+
+    if (this->useUselessCylinder) {
+        Collider_DestroyCylinder(play, &this->uselessCollider);
     }
 }
 
@@ -1042,6 +1076,11 @@ void DoorWarp1_Update(Actor* thisx, PlayState* play) {
 
     if (this->actor.params != WARP_PURPLE_CRYSTAL) {
         Actor_SetScale(&this->actor, this->scale / 100.0f);
+    }
+
+    if (this->useUselessCylinder) {
+        Collider_UpdateCylinder(&this->actor, &this->uselessCollider);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->uselessCollider.base);
     }
 }
 

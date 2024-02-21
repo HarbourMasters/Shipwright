@@ -36,6 +36,26 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 800, ICHAIN_STOP),
 };
 
+static ColliderCylinderInit sUselessCylinderInit = {
+    {
+        COLTYPE_NONE,
+        AT_NONE,
+        AC_ON,
+        OC1_NONE,
+        OC2_NONE,
+        COLSHAPE_CYLINDER,
+    },
+    {
+        ELEMTYPE_UNK2,
+        { 0x00000000, 0x00, 0x00 },
+        { 0x00000048, 0x00, 0x00 },
+        TOUCH_NONE,
+        BUMP_NONE,
+        OCELEM_NONE,
+    },
+    { 30, 40, 0, { 0 } },
+};
+
 void ItemBHeart_Init(Actor* thisx, PlayState* play) {
     ItemBHeart* this = (ItemBHeart*)thisx;
 
@@ -45,9 +65,24 @@ void ItemBHeart_Init(Actor* thisx, PlayState* play) {
         Actor_ProcessInitChain(&this->actor, sInitChain);
         ActorShape_Init(&this->actor.shape, 0.0f, NULL, 0.8f);
     }
+
+    if (CVarGetInteger("gCollisionGoggles", 0)) {
+        this->useUselessCylinder = 1;
+    } else {
+        this->useUselessCylinder = 0;
+    }
+    if (this->useUselessCylinder) {
+        Collider_InitCylinder(play, &this->uselessCollider);
+        Collider_SetCylinder(play, &this->uselessCollider, &this->actor, &sUselessCylinderInit);
+    }
 }
 
 void ItemBHeart_Destroy(Actor* thisx, PlayState* play) {
+    ItemBHeart* this = (ItemBHeart*)thisx;
+
+    if (this->useUselessCylinder) {
+        Collider_DestroyCylinder(play, &this->uselessCollider);
+    }
 }
 
 void ItemBHeart_Update(Actor* thisx, PlayState* play) {
@@ -65,6 +100,10 @@ void ItemBHeart_Update(Actor* thisx, PlayState* play) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromActor(this->actor.id, play->sceneNum, this->actor.params, GI_HEART_CONTAINER_2);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 30.0f, 40.0f);
         }
+    }
+    if (this->useUselessCylinder) {
+        Collider_UpdateCylinder(&this->actor, &this->uselessCollider);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->uselessCollider.base);
     }
 }
 

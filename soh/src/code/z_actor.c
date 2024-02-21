@@ -2854,7 +2854,19 @@ void Actor_DrawLensActors(PlayState* play, s32 numInvisibleActors, Actor** invis
     for (i = 0; i < numInvisibleActors; i++) {
         // "Magic lens invisible Actor display"
         gDPNoOpString(POLY_OPA_DISP++, "魔法のメガネ 見えないＡcｔｏｒ表示", i);
-        Actor_Draw(play, *(invisibleActor++));
+        if (!CVarGetInteger("gCollisionGoggles", 0)) {
+            Actor_Draw(play, *(invisibleActor++));
+        } else {
+            Gfx* workDl = WORK_DISP;
+            Gfx* opaDl = POLY_OPA_DISP;
+            Gfx* xluDl = POLY_XLU_DISP;
+            Gfx* ovlDl = OVERLAY_DISP;
+            Actor_Draw(play, *(invisibleActor++));
+            WORK_DISP = workDl;
+            POLY_OPA_DISP = opaDl;
+            POLY_XLU_DISP = xluDl;
+            OVERLAY_DISP = ovlDl;
+        }
     }
 
     // "Magic lens invisible Actor display END"
@@ -2974,7 +2986,19 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
                         invisibleActorCounter++;
                     } else {
                         if ((HREG(64) != 1) || ((HREG(65) != -1) && (HREG(65) != HREG(66))) || (HREG(72) == 0)) {
-                            Actor_Draw(play, actor);
+                            if (!CVarGetInteger("gCollisionGoggles", 0)) {
+                                Actor_Draw(play, actor);
+                            } else {
+                                Gfx* workDl = WORK_DISP;
+                                Gfx* opaDl = POLY_OPA_DISP;
+                                Gfx* xluDl = POLY_XLU_DISP;
+                                Gfx* ovlDl = OVERLAY_DISP;
+                                Actor_Draw(play, actor);
+                                WORK_DISP = workDl;
+                                POLY_OPA_DISP = opaDl;
+                                POLY_XLU_DISP = xluDl;
+                                OVERLAY_DISP = ovlDl;
+                            }
                             actor->isDrawn = true;
                         }
                     }
@@ -2986,11 +3010,35 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
     }
 
     if ((HREG(64) != 1) || (HREG(73) != 0)) {
-        Effect_DrawAll(play->state.gfxCtx);
+        if (!CVarGetInteger("gCollisionGoggles", 0)) {
+            Effect_DrawAll(play->state.gfxCtx);
+        } else {
+            Gfx* workDl = WORK_DISP;
+            Gfx* opaDl = POLY_OPA_DISP;
+            Gfx* xluDl = POLY_XLU_DISP;
+            Gfx* ovlDl = OVERLAY_DISP;
+            Effect_DrawAll(play->state.gfxCtx);
+            WORK_DISP = workDl;
+            POLY_OPA_DISP = opaDl;
+            POLY_XLU_DISP = xluDl;
+            OVERLAY_DISP = ovlDl;
+        }
     }
 
     if ((HREG(64) != 1) || (HREG(74) != 0)) {
-        EffectSs_DrawAll(play);
+        if (!CVarGetInteger("gCollisionGoggles", 0)) {
+            EffectSs_DrawAll(play);
+        } else {
+            Gfx* workDl = WORK_DISP;
+            Gfx* opaDl = POLY_OPA_DISP;
+            Gfx* xluDl = POLY_XLU_DISP;
+            Gfx* ovlDl = OVERLAY_DISP;
+            EffectSs_DrawAll(play);
+            WORK_DISP = workDl;
+            POLY_OPA_DISP = opaDl;
+            POLY_XLU_DISP = xluDl;
+            OVERLAY_DISP = ovlDl;
+        }
     }
 
     if ((HREG(64) != 1) || (HREG(72) != 0)) {
@@ -3005,7 +3053,20 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
     Actor_DrawFaroresWindPointer(play);
 
     if (IREG(32) == 0) {
-        Lights_DrawGlow(play);
+        if (!CVarGetInteger("gCollisionGoggles", 0)) {
+            Lights_DrawGlow(play);
+        } else {
+            Gfx* workDl = WORK_DISP;
+            Gfx* opaDl = POLY_OPA_DISP;
+            Gfx* xluDl = POLY_XLU_DISP;
+            Gfx* ovlDl = OVERLAY_DISP;
+            Lights_DrawGlow(play);
+            WORK_DISP = workDl;
+            POLY_OPA_DISP = opaDl;
+            POLY_XLU_DISP = xluDl;
+            OVERLAY_DISP = ovlDl;
+        }
+        
     }
 
     if ((HREG(64) != 1) || (HREG(75) != 0)) {
