@@ -431,5 +431,6 @@ void AreaTable_Init_ForestTemple() {
         {
             // Exits
             Entrance(RR_FOREST_TEMPLE_BOSS_ENTRYWAY, { [] { return false; } }),
+            Entrance(RR_SACRED_FOREST_MEADOW, { [] { return logic->ForestTempleClear; } }),
         });
 }

@@ -230,7 +230,7 @@ void EnDha_Wait(EnDha* this, PlayState* play) {
                 this->timer += 0x1194;
                 this->limbAngleY = Math_SinS(this->timer) * 1820.0f;
 
-                if (!(player->stateFlags2 & 0x80)) {
+                if (!(player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY)) {
                     this->unk_1CC = 0;
                     EnDha_SetupTakeDamage(this);
                     return;
@@ -245,10 +245,10 @@ void EnDha_Wait(EnDha* this, PlayState* play) {
             this->handAngle.y -= this->actor.shape.rot.y + this->limbAngleY;
             this->handAngle.x -= this->actor.shape.rot.x + this->limbAngleX[0] + this->limbAngleX[1];
         } else {
-            if ((player->stateFlags2 & 0x80) && (&this->actor == player->actor.parent)) {
-                player->stateFlags2 &= ~0x80;
+            if ((player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY) && (&this->actor == player->actor.parent)) {
+                player->stateFlags2 &= ~PLAYER_STATE2_GRABBED_BY_ENEMY;
                 player->actor.parent = NULL;
-                player->unk_850 = 200;
+                player->av2.actionVar2 = 200;
             }
 
             if (this->actor.home.rot.z != 0) {
@@ -285,10 +285,10 @@ void EnDha_Wait(EnDha* this, PlayState* play) {
             this->limbAngleX[1] *= -2;
         }
     } else {
-        if ((player->stateFlags2 & 0x80) && (&this->actor == player->actor.parent)) {
-            player->stateFlags2 &= ~0x80;
+        if ((player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY) && (&this->actor == player->actor.parent)) {
+            player->stateFlags2 &= ~PLAYER_STATE2_GRABBED_BY_ENEMY;
             player->actor.parent = NULL;
-            player->unk_850 = 200;
+            player->av2.actionVar2 = 200;
         }
 
         this->actor.home.rot.z = 1;
@@ -306,10 +306,10 @@ void EnDha_SetupTakeDamage(EnDha* this) {
 void EnDha_TakeDamage(EnDha* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if ((player->stateFlags2 & 0x80) && (&this->actor == player->actor.parent)) {
-        player->stateFlags2 &= ~0x80;
+    if ((player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY) && (&this->actor == player->actor.parent)) {
+        player->stateFlags2 &= ~PLAYER_STATE2_GRABBED_BY_ENEMY;
         player->actor.parent = NULL;
-        player->unk_850 = 200;
+        player->av2.actionVar2 = 200;
     }
 
     Math_SmoothStepToS(&this->limbAngleX[1], 0, 1, 2000, 0);
@@ -344,10 +344,10 @@ void EnDha_Die(EnDha* this, PlayState* play) {
     Vec3f vec;
     Player* player = GET_PLAYER(play);
 
-    if ((player->stateFlags2 & 0x80) && (&this->actor == player->actor.parent)) {
-        player->stateFlags2 &= ~0x80;
+    if ((player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY) && (&this->actor == player->actor.parent)) {
+        player->stateFlags2 &= ~PLAYER_STATE2_GRABBED_BY_ENEMY;
         player->actor.parent = NULL;
-        player->unk_850 = 200;
+        player->av2.actionVar2 = 200;
     }
 
     Math_SmoothStepToS(&this->limbAngleX[1], 0, 1, 0x7D0, 0);

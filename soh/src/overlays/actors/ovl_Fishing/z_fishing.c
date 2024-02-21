@@ -2254,7 +2254,7 @@ void Fishing_UpdateLure(Fishing* this, PlayState* play) {
 
             Math_ApproachF(&sRodLineSpooled, 195.0f, 1.0f, 1.0f);
 
-            if (player->stateFlags1 & 0x8000000) {
+            if (player->stateFlags1 & PLAYER_STATE1_IN_WATER) {
                 sRodCastTimer = 0;
                 player->unk_860 = 0;
             }
