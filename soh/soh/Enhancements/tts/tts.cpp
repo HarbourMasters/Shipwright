@@ -1037,10 +1037,13 @@ void InitTTSBank() {
             break;
     }
 
-    auto sceneFile = LUS::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/scenes" + languageSuffix);
-    if (sceneFile != nullptr) {
-        sceneMap = nlohmann::json::parse(*sceneFile->Buffer.get(), nullptr, true, true);
-    }
+    // auto sceneFile = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFileRaw("accessibility/texts/scenes" + languageSuffix);
+    // if (sceneFile != nullptr) {
+    //     sceneMap = nlohmann::json::parse(*sceneFile->Buffer.get(), nullptr, true, true);
+    // }
+    // use binaryreader as base for rawjsonfactory
+    // just pass a shared pointer to initdata in here
+    sceneMap = LUS::Context::GetInstance()->GetResourceManager()->LoadResource("accessibility/texts/scenes" + languageSuffix, initdata);
     
     auto miscFile = LUS::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFileRaw("accessibility/texts/misc" + languageSuffix);
     if (miscFile != nullptr) {
