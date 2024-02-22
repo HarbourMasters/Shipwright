@@ -46,124 +46,125 @@ static std::string splitNumDisp = "Attempt #: ";
 static ImVec4 colorChoice = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 static const char* backgroundColor;
 static std::string itemImager;
+static std::string itemNamer;
 
 using json = nlohmann::json;
 
 std::vector<TimeSplitObject> splitObjects = {
-    			//	ID,	 Item Name							    Image Name	
-TimeSplitObject(	0, 	 "Deku Stick", 							"ITEM_STICK"),
-TimeSplitObject(	1, 	 "Deku Nut", 							"ITEM_NUT"),
-TimeSplitObject(	3, 	 "Fairy Bow", 							"ITEM_BOW"),
-TimeSplitObject(	4, 	 "Fire Arrow", 							"ITEM_ARROW_FIRE"),
-TimeSplitObject(	5, 	 "Din's Fire", 							"ITEM_DINS_FIRE"),
-TimeSplitObject(	6, 	 "Fairy Slingshot", 					"ITEM_SLINGSHOT"),
-TimeSplitObject(	7, 	 "Fairy Ocarina", 						"ITEM_OCARINA_FAIRY"),
-TimeSplitObject(	8, 	 "Ocarina of Time", 					"ITEM_OCARINA_TIME"),
-TimeSplitObject(	9, 	 "Bombchu", 							"ITEM_BOMBCHU"),
-TimeSplitObject(	10,  "Hookshot", 							"ITEM_HOOKSHOT"),
-TimeSplitObject(	11,  "Longshot", 							"ITEM_LONGSHOT"),
-TimeSplitObject(	12,  "Ice Arrow", 							"ITEM_ARROW_ICE"),
-TimeSplitObject(	13,  "Farore's Wind", 						"ITEM_FARORES_WIND"),
-TimeSplitObject(	14,  "Boomerang", 							"ITEM_BOOMERANG"),
-TimeSplitObject(	15,  "Lens of Truth", 						"ITEM_LENS"),
-TimeSplitObject(	16,  "Magic Bean", 							"ITEM_BEAN"),
-TimeSplitObject(	17,  "Megaton Hammer", 						"ITEM_HAMMER"),
-TimeSplitObject(	18,  "Light Arrow", 						"ITEM_ARROW_LIGHT"),
-TimeSplitObject(	19,  "Nayru's Love", 						"ITEM_NAYRUS_LOVE"),
-TimeSplitObject(	20,  "Empty Bottle", 						"ITEM_BOTTLE"),
-TimeSplitObject(	21,  "Red Potion", 							"ITEM_POTION_RED"),
-TimeSplitObject(	22,  "Green Potion", 						"ITEM_POTION_GREEN"),
-TimeSplitObject(	23,  "Blue Potion", 						"ITEM_POTION_BLUE"),
-TimeSplitObject(	24,  "Bottled Fairy", 						"ITEM_FAIRY"),
-TimeSplitObject(	25,  "Fish", 								"ITEM_FISH"),
-TimeSplitObject(	26,  "Lon Lon Milk & Bottle", 				"ITEM_MILK_BOTTLE"),
-TimeSplitObject(	27,  "Ruto's Letter", 						"ITEM_LETTER_RUTO"),
-TimeSplitObject(	28,  "Blue Fire", 							"ITEM_BLUE_FIRE"),
-TimeSplitObject(	29,  "Bug", 								"ITEM_BUG"),
-TimeSplitObject(	30,  "Big Poe", 							"ITEM_BIG_POE"),
-TimeSplitObject(	32,  "Poe", 								"ITEM_POE"),
-TimeSplitObject(	33,  "Weird Egg", 							"ITEM_WEIRD_EGG"),
-TimeSplitObject(	34,  "Chicken", 							"ITEM_CHICKEN"),
-TimeSplitObject(	35,  "Zelda's Letter", 						"ITEM_LETTER_ZELDA"),
-TimeSplitObject(	36,  "Keaton Mask", 						"ITEM_MASK_KEATON"),
-TimeSplitObject(	37,  "Skull Mask", 							"ITEM_MASK_SKULL"),
-TimeSplitObject(	38,  "Spooky Mask", 						"ITEM_MASK_SPOOKY"),
-TimeSplitObject(	39,  "Bunny Hood", 							"ITEM_MASK_BUNNY"),
-TimeSplitObject(	40,  "Goron Mask", 							"ITEM_MASK_GORON"),
-TimeSplitObject(	41,  "Zora Mask", 							"ITEM_MASK_ZORA"),
-TimeSplitObject(	42,  "Gerudo Mask", 						"ITEM_MASK_GERUDO"),
-TimeSplitObject(	43,  "Mask of Truth", 						"ITEM_MASK_TRUTH"),
-TimeSplitObject(	45,  "Pocket Egg", 							"ITEM_POCKET_EGG"),
-TimeSplitObject(	46,  "Pocket Cucco", 						"ITEM_POCKET_CUCCO"),
-TimeSplitObject(	47,  "Cojiro", 								"ITEM_COJIRO"),
-TimeSplitObject(	48,  "Odd Mushroom", 						"ITEM_ODD_MUSHROOM"),
-TimeSplitObject(	49,  "Odd Potion", 							"ITEM_ODD_POTION"),
-TimeSplitObject(	50,  "Poacher's Saw", 						"ITEM_SAW"),
-TimeSplitObject(	51,  "Goron's Sword (Broken)", 				"ITEM_SWORD_BROKEN"),
-TimeSplitObject(	52,  "Prescription", 						"ITEM_PRESCRIPTION"),
-TimeSplitObject(	53,  "Eyeball Frog", 						"ITEM_FROG"),
-TimeSplitObject(	54,  "Eye Drops", 							"ITEM_EYEDROPS"),
-TimeSplitObject(	55,  "Claim Check",  						"ITEM_CLAIM_CHECK"),
-TimeSplitObject(	59,  "Kokiri Sword", 						"ITEM_SWORD_KOKIRI"),
-TimeSplitObject(	60,  "Master Sword", 						"ITEM_SWORD_MASTER"),
-TimeSplitObject(	61,  "Giant's Knife & Biggoron's Sword", 	"ITEM_SWORD_BGS"),
-TimeSplitObject(	62,  "Deku Shield", 						"ITEM_SHIELD_DEKU"),
-TimeSplitObject(	63,  "Hylian Shield", 						"ITEM_SHIELD_HYLIAN"),
-TimeSplitObject(	64,  "Mirror Shield", 						"ITEM_SHIELD_MIRROR"),
-TimeSplitObject(	65,  "Kokiri Tunic", 						"ITEM_TUNIC_KOKIRI"),
-TimeSplitObject(	66,  "Goron Tunic", 						"ITEM_TUNIC_GORON"),
-TimeSplitObject(	67,  "Zora Tunic", 							"ITEM_TUNIC_ZORA"),
-TimeSplitObject(	68,  "Kokiri Boots", 						"ITEM_BOOTS_KOKIRI"),
-TimeSplitObject(	69,  "Iron Boots", 							"ITEM_BOOTS_IRON"),
-TimeSplitObject(	70,  "Hover Boots", 						"ITEM_BOOTS_HOVER"),
-TimeSplitObject(	71,  "Bullet Bag (30)", 					"ITEM_BULLET_BAG_30"),
-TimeSplitObject(	72,  "Bullet Bag (40)", 					"ITEM_BULLET_BAG_40"),
-TimeSplitObject(	73,  "Bullet Bag (50)", 					"ITEM_BULLET_BAG_50"),
-TimeSplitObject(	74,  "Quiver (30)", 						"ITEM_QUIVER_30"),
-TimeSplitObject(	75,  "Big Quiver (40)", 					"ITEM_QUIVER_40"),
-TimeSplitObject(	76,  "Biggest Quiver (50)", 				"ITEM_QUIVER_50"),
-TimeSplitObject(	77,  "Bomb Bag (20)", 						"ITEM_BOMB_BAG_20"),
-TimeSplitObject(	78,  "Big Bomb Bag (30)", 					"ITEM_BOMB_BAG_30"),
-TimeSplitObject(	79,  "Biggest Bomb Bag (40)", 				"ITEM_BOMB_BAG_40"),
-TimeSplitObject(	80,  "Goron's Bracelet", 					"ITEM_BRACELET"),
-TimeSplitObject(	81,  "Silver Gauntlets", 					"ITEM_GAUNTLETS_SILVER"),
-TimeSplitObject(	82,  "Golden Gauntlets", 					"ITEM_GAUNTLETS_GOLD"),
-TimeSplitObject(	83,  "Silver Scale", 						"ITEM_SCALE_SILVER"),
-TimeSplitObject(	84,  "Golden Scale", 						"ITEM_SCALE_GOLDEN"),
-TimeSplitObject(	85,  "Giant's Knife (Broken)", 				"ITEM_SWORD_KNIFE"),
-TimeSplitObject(	86,  "Adult's Wallet", 						"ITEM_WALLET_ADULT"),
-TimeSplitObject(	87,  "Giant's Wallet", 						"ITEM_WALLET_GIANT"),
-TimeSplitObject(	89,  "Fishing Pole", 						"ITEM_FISHING_POLE"),
-TimeSplitObject(	90,  "Minuet of Forest",					"QUEST_SONG_MINUET"),
-TimeSplitObject(	91,  "Bolero of Fire", 						"QUEST_SONG_BOLERO"),
-TimeSplitObject(	92,  "Serenade of Water", 					"QUEST_SONG_SERENADE"),
-TimeSplitObject(	93,  "Requiem of Spirit", 					"QUEST_SONG_REQUIEM"),
-TimeSplitObject(	94,  "Nocturne of Shadow", 					"QUEST_SONG_NOCTURNE"),
-TimeSplitObject(	95,  "Prelude of Light", 					"QUEST_SONG_PRELUDE"),
-TimeSplitObject(	96,  "Zelda's Lullaby", 					"QUEST_SONG_LULLABY"),
-TimeSplitObject(	97,  "Epona's Song", 						"QUEST_SONG_EPONA"),
-TimeSplitObject(	98,  "Saria's Song", 						"QUEST_SONG_SARIA"),
-TimeSplitObject(	99,  "Sun's Song", 							"QUEST_SONG_SUN"),
-TimeSplitObject(	100, "Song of Time", 						"QUEST_SONG_TIME"),
-TimeSplitObject(	101, "Song of Storms", 						"QUEST_SONG_STORMS"),
-TimeSplitObject(	102, "Forest Medallion", 					"QUEST_MEDALLION_FOREST"),
-TimeSplitObject(	103, "Fire Medallion", 						"QUEST_MEDALLION_FIRE"),
-TimeSplitObject(	104, "Water Medallion", 					"QUEST_MEDALLION_WATER"),
-TimeSplitObject(	105, "Spirit Medallion", 					"QUEST_MEDALLION_SPIRIT"),
-TimeSplitObject(	106, "Shadow Medallion", 					"QUEST_MEDALLION_SHADOW"),
-TimeSplitObject(	107, "Light Medallion", 					"QUEST_MEDALLION_LIGHT"),
-TimeSplitObject(	108, "Kokiri's Emerald", 					"QUEST_KOKIRI_EMERALD"),
-TimeSplitObject(	109, "Goron's Ruby", 						"QUEST_GORON_RUBY"),
-TimeSplitObject(	110, "Zora's Sapphire", 					"QUEST_ZORA_SAPPHIRE"),
-TimeSplitObject(	111, "Stone of Agony", 						"QUEST_STONE_OF_AGONY"),
-TimeSplitObject(	112, "Gerudo's Card", 						"QUEST_GERUDO_CARD"),
-TimeSplitObject(	123, "Magic Meter", 						"ITEM_MAGIC_SMALL"),
-TimeSplitObject(	124, "Double Magic Meter", 				    "ITEM_MAGIC_LARGE"),
-TimeSplitObject(	125, "Double Defense", 						"ITEM_HEART_CONTAINER"),
-TimeSplitObject(	152, "Deku Stick Upgrade (20)", 			"ITEM_STICK"),
-TimeSplitObject(	153, "Deku Stick Upgrade (30)", 			"ITEM_STICK"),
-TimeSplitObject(	154, "Deku Nut Upgrade (30)", 				"ITEM_NUT"),
-TimeSplitObject(	155, "Deku Nut Upgrade (40)", 				"ITEM_NUT")
+ //	ID,	 Item Name							    Image Name	
+{	0, 	 "Deku Stick", 							"ITEM_STICK"},
+{	1, 	 "Deku Nut", 							"ITEM_NUT"},
+{	3, 	 "Fairy Bow", 							"ITEM_BOW"},
+{	4, 	 "Fire Arrow", 							"ITEM_ARROW_FIRE"},
+{	5, 	 "Din's Fire", 							"ITEM_DINS_FIRE"},
+{	6, 	 "Fairy Slingshot", 					"ITEM_SLINGSHOT"},
+{	7, 	 "Fairy Ocarina", 						"ITEM_OCARINA_FAIRY"},
+{	8, 	 "Ocarina of Time", 					"ITEM_OCARINA_TIME"},
+{	9, 	 "Bombchu", 							"ITEM_BOMBCHU"},
+{	10,  "Hookshot", 							"ITEM_HOOKSHOT"},
+{	11,  "Longshot", 							"ITEM_LONGSHOT"},
+{	12,  "Ice Arrow", 							"ITEM_ARROW_ICE"},
+{	13,  "Farore's Wind", 						"ITEM_FARORES_WIND"},
+{	14,  "Boomerang", 							"ITEM_BOOMERANG"},
+{	15,  "Lens of Truth", 						"ITEM_LENS"},
+{	16,  "Magic Bean", 							"ITEM_BEAN"},
+{	17,  "Megaton Hammer", 						"ITEM_HAMMER"},
+{	18,  "Light Arrow", 						"ITEM_ARROW_LIGHT"},
+{	19,  "Nayru's Love", 						"ITEM_NAYRUS_LOVE"},
+{	20,  "Empty Bottle", 						"ITEM_BOTTLE"},
+{	21,  "Red Potion", 							"ITEM_POTION_RED"},
+{	22,  "Green Potion", 						"ITEM_POTION_GREEN"},
+{	23,  "Blue Potion", 						"ITEM_POTION_BLUE"},
+{	24,  "Bottled Fairy", 						"ITEM_FAIRY"},
+{	25,  "Fish", 								"ITEM_FISH"},
+{	26,  "Lon Lon Milk & Bottle", 				"ITEM_MILK_BOTTLE"},
+{	27,  "Ruto's Letter", 						"ITEM_LETTER_RUTO"},
+{	28,  "Blue Fire", 							"ITEM_BLUE_FIRE"},
+{	29,  "Bug", 								"ITEM_BUG"},
+{	30,  "Big Poe", 							"ITEM_BIG_POE"},
+{	32,  "Poe", 								"ITEM_POE"},
+{	33,  "Weird Egg", 							"ITEM_WEIRD_EGG"},
+{	34,  "Chicken", 							"ITEM_CHICKEN"},
+{	35,  "Zelda's Letter", 						"ITEM_LETTER_ZELDA"},
+{	36,  "Keaton Mask", 						"ITEM_MASK_KEATON"},
+{	37,  "Skull Mask", 							"ITEM_MASK_SKULL"},
+{	38,  "Spooky Mask", 						"ITEM_MASK_SPOOKY"},
+{	39,  "Bunny Hood", 							"ITEM_MASK_BUNNY"},
+{	40,  "Goron Mask", 							"ITEM_MASK_GORON"},
+{	41,  "Zora Mask", 							"ITEM_MASK_ZORA"},
+{	42,  "Gerudo Mask", 						"ITEM_MASK_GERUDO"},
+{	43,  "Mask of Truth", 						"ITEM_MASK_TRUTH"},
+{	45,  "Pocket Egg", 							"ITEM_POCKET_EGG"},
+{	46,  "Pocket Cucco", 						"ITEM_POCKET_CUCCO"},
+{	47,  "Cojiro", 								"ITEM_COJIRO"},
+{	48,  "Odd Mushroom", 						"ITEM_ODD_MUSHROOM"},
+{	49,  "Odd Potion", 							"ITEM_ODD_POTION"},
+{	50,  "Poacher's Saw", 						"ITEM_SAW"},
+{	51,  "Goron's Sword (Broken)", 				"ITEM_SWORD_BROKEN"},
+{	52,  "Prescription", 						"ITEM_PRESCRIPTION"},
+{	53,  "Eyeball Frog", 						"ITEM_FROG"},
+{	54,  "Eye Drops", 							"ITEM_EYEDROPS"},
+{	55,  "Claim Check",  						"ITEM_CLAIM_CHECK"},
+{	59,  "Kokiri Sword", 						"ITEM_SWORD_KOKIRI"},
+{	60,  "Master Sword", 						"ITEM_SWORD_MASTER"},
+{	61,  "Giant's Knife & Biggoron's Sword", 	"ITEM_SWORD_BGS"},
+{	62,  "Deku Shield", 						"ITEM_SHIELD_DEKU"},
+{	63,  "Hylian Shield", 						"ITEM_SHIELD_HYLIAN"},
+{	64,  "Mirror Shield", 						"ITEM_SHIELD_MIRROR"},
+{	65,  "Kokiri Tunic", 						"ITEM_TUNIC_KOKIRI"},
+{	66,  "Goron Tunic", 						"ITEM_TUNIC_GORON"},
+{	67,  "Zora Tunic", 							"ITEM_TUNIC_ZORA"},
+{	68,  "Kokiri Boots", 						"ITEM_BOOTS_KOKIRI"},
+{	69,  "Iron Boots", 							"ITEM_BOOTS_IRON"},
+{	70,  "Hover Boots", 						"ITEM_BOOTS_HOVER"},
+{	71,  "Bullet Bag (30)", 					"ITEM_BULLET_BAG_30"},
+{	72,  "Bullet Bag (40)", 					"ITEM_BULLET_BAG_40"},
+{	73,  "Bullet Bag (50)", 					"ITEM_BULLET_BAG_50"},
+{	74,  "Quiver (30)", 						"ITEM_QUIVER_30"},
+{	75,  "Big Quiver (40)", 					"ITEM_QUIVER_40"},
+{	76,  "Biggest Quiver (50)", 				"ITEM_QUIVER_50"},
+{	77,  "Bomb Bag (20)", 						"ITEM_BOMB_BAG_20"},
+{	78,  "Big Bomb Bag (30)", 					"ITEM_BOMB_BAG_30"},
+{	79,  "Biggest Bomb Bag (40)", 				"ITEM_BOMB_BAG_40"},
+{	80,  "Goron's Bracelet", 					"ITEM_BRACELET"},
+{	81,  "Silver Gauntlets", 					"ITEM_GAUNTLETS_SILVER"},
+{	82,  "Golden Gauntlets", 					"ITEM_GAUNTLETS_GOLD"},
+{	83,  "Silver Scale", 						"ITEM_SCALE_SILVER"},
+{	84,  "Golden Scale", 						"ITEM_SCALE_GOLDEN"},
+{	85,  "Giant's Knife (Broken)", 				"ITEM_SWORD_KNIFE"},
+{	86,  "Adult's Wallet", 						"ITEM_WALLET_ADULT"},
+{	87,  "Giant's Wallet", 						"ITEM_WALLET_GIANT"},
+{	89,  "Fishing Pole", 						"ITEM_FISHING_POLE"},
+{	90,  "Minuet of Forest",					"QUEST_SONG_MINUET"},
+{	91,  "Bolero of Fire", 						"QUEST_SONG_BOLERO"},
+{	92,  "Serenade of Water", 					"QUEST_SONG_SERENADE"},
+{	93,  "Requiem of Spirit", 					"QUEST_SONG_REQUIEM"},
+{	94,  "Nocturne of Shadow", 					"QUEST_SONG_NOCTURNE"},
+{	95,  "Prelude of Light", 					"QUEST_SONG_PRELUDE"},
+{	96,  "Zelda's Lullaby", 					"QUEST_SONG_LULLABY"},
+{	97,  "Epona's Song", 						"QUEST_SONG_EPONA"},
+{	98,  "Saria's Song", 						"QUEST_SONG_SARIA"},
+{	99,  "Sun's Song", 							"QUEST_SONG_SUN"},
+{	100, "Song of Time", 						"QUEST_SONG_TIME"},
+{	101, "Song of Storms", 						"QUEST_SONG_STORMS"},
+{	102, "Forest Medallion", 					"QUEST_MEDALLION_FOREST"},
+{	103, "Fire Medallion", 						"QUEST_MEDALLION_FIRE"},
+{	104, "Water Medallion", 					"QUEST_MEDALLION_WATER"},
+{	105, "Spirit Medallion", 					"QUEST_MEDALLION_SPIRIT"},
+{	106, "Shadow Medallion", 					"QUEST_MEDALLION_SHADOW"},
+{	107, "Light Medallion", 					"QUEST_MEDALLION_LIGHT"},
+{	108, "Kokiri's Emerald", 					"QUEST_KOKIRI_EMERALD"},
+{	109, "Goron's Ruby", 						"QUEST_GORON_RUBY"},
+{	110, "Zora's Sapphire", 					"QUEST_ZORA_SAPPHIRE"},
+{	111, "Stone of Agony", 						"QUEST_STONE_OF_AGONY"},
+{	112, "Gerudo's Card", 						"QUEST_GERUDO_CARD"},
+{	123, "Magic Meter", 						"ITEM_MAGIC_SMALL"},
+{	124, "Double Magic Meter", 				    "ITEM_MAGIC_LARGE"},
+{	125, "Double Defense", 						"ITEM_HEART_CONTAINER"},
+{	152, "Deku Stick Upgrade (20)", 			"ITEM_STICK"},
+{	153, "Deku Stick Upgrade (30)", 			"ITEM_STICK"},
+{	154, "Deku Nut Upgrade (30)", 				"ITEM_NUT"},
+{	155, "Deku Nut Upgrade (40)", 				"ITEM_NUT"},
 };
 
 std::string formatTimestampTimeSplit(uint32_t value) {
@@ -211,7 +212,7 @@ void DrawTimeSplitOptions() {
         j["backgroundColor.g"] = colorChoice.y;
         j["backgroundColor.b"] = colorChoice.z;
         j["backgroundColor.a"] = colorChoice.w;
-        std::ofstream file("SplitofHarkinian.json");
+        std::ofstream file("splitdata.json");
         file << j.dump(4);
         file.close();
         status = "List has been saved to disk";
@@ -219,7 +220,7 @@ void DrawTimeSplitOptions() {
     }
     ImGui::SameLine(0);
     if (ImGui::Button("Load List")) {
-        std::ifstream file("SplitofHarkinian.json");
+        std::ifstream file("splitdata.json");
         json j;
 
         if (file.is_open()) {
@@ -275,8 +276,7 @@ void DrawTimeSplitOptions() {
     }
     UIWidgets::Spacer(0);
     ImGui::Text("Background Color");
-    if (ImGui::ColorEdit4("Background Color", (float*)&colorChoice,
-                          ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
+    if (ImGui::ColorEdit4("Background Color", (float*)&colorChoice, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
         Color_RGBA8 color;
         color.r = colorChoice.x;
         color.g = colorChoice.y;
@@ -287,7 +287,6 @@ void DrawTimeSplitOptions() {
     if (ImGui::Button("Reset")) {
         colorChoice = { 0.0f, 0.0f, 0.0f, 1.0f };
     }
-
     ImGui::TextColored(statusColor, status.c_str());
     UIWidgets::PaddedSeparator();
 }
@@ -314,6 +313,7 @@ void DrawTimeSplitSplits(){
         for (const auto& obj : splitObjects) {
             if (obj.itemID == splitItem[loopCounter]) {
                 itemImager = obj.itemImage;
+                itemNamer = obj.itemName;
             }
         }
         ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemImager), ImVec2(24.0f, 24.0f), ImVec2(0, 0), ImVec2(1, 1));
@@ -321,7 +321,7 @@ void DrawTimeSplitSplits(){
         // Item Name
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 5.0f));
         ImGui::AlignTextToFramePadding();
-        ImGui::Text(SohUtils::itemNames[splitItem[loopCounter]].c_str());
+        ImGui::Text(itemNamer.c_str());
         ImGui::TableNextColumn();
         // Current Time
         if (splitTime[loopCounter] == 0) {
@@ -367,7 +367,7 @@ void DrawTimeSplitSplits(){
 }
 
 void InitializeSplitFile() {
-    if (!std::filesystem::exists("SplitofHarkinian.json")) {
+    if (!std::filesystem::exists("splitdata.json")) {
         json j;
         j["splitItem"] = splitItem;
         j["splitTime"] = splitTime;
@@ -376,7 +376,7 @@ void InitializeSplitFile() {
         j["backgroundColor.g"] = colorChoice.y;
         j["backgroundColor.b"] = colorChoice.z;
         j["backgroundColor.a"] = colorChoice.w;
-        std::ofstream file("SplitofHarkinian.json");
+        std::ofstream file("splitdata.json");
         file << j.dump(4);
         file.close();
     }
