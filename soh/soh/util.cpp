@@ -117,7 +117,7 @@ std::vector<std::string> sceneNames = {
     "Treasure Chest Room",
 };
 
-std::vector<std::string> SohUtils::itemNames = {
+std::vector<std::string> itemNames = {
     "Deku Stick",
     "Deku Nut",
     "Bomb",
