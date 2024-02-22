@@ -11,6 +11,7 @@
 #include <cmath>
 
 #include "../../UIWidgets.hpp"
+#include "../../OTRGlobals.h"
 
 // Text colors
 static ImVec4 textColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -19,6 +20,8 @@ static ImVec4 range2Color = ImVec4(0, 1.0f, 0, 1.0f);
 
 static const char* buttonOutlineOptions[4] = { "Always Shown", "Shown Only While Not Pressed",
                                                "Shown Only While Pressed", "Always Hidden" };
+static const char* buttonOutlineOptionsVerbose[4] = { "Outline Always Shown", "Outline Shown Only While Not Pressed",
+                                                      "Outline Shown Only While Pressed", "Outline Always Hidden" };
 
 static const char* stickModeOptions[3] = { "Always", "While In Use", "Never" };
 
@@ -64,60 +67,78 @@ void InputViewer::DrawElement() {
         if (!sButtonTexturesLoaded) {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
                 "Input-Viewer-Background", "textures/buttons/InputViewerBackground.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("A-Btn", "textures/buttons/ABtn.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("B-Btn", "textures/buttons/BBtn.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("L-Btn", "textures/buttons/LBtn.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("R-Btn", "textures/buttons/RBtn.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Z-Btn", "textures/buttons/ZBtn.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Start-Btn",
-                                                                            "textures/buttons/StartBtn.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Left", "textures/buttons/CLeft.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Right", "textures/buttons/CRight.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Up", "textures/buttons/CUp.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Down", "textures/buttons/CDown.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Analog-Stick",
-                                                                            "textures/buttons/AnalogStick.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Left",
-                                                                            "textures/buttons/DPadLeft.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Right",
-                                                                            "textures/buttons/DPadRight.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Up", "textures/buttons/DPadUp.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Down",
-                                                                            "textures/buttons/DPadDown.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Right-Stick",
-                                                                            "textures/buttons/RightStick.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("A-Btn Outline",
-                                                                            "textures/buttons/ABtnOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("B-Btn Outline",
-                                                                            "textures/buttons/BBtnOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("L-Btn Outline",
-                                                                            "textures/buttons/LBtnOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("R-Btn Outline",
-                                                                            "textures/buttons/RBtnOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Z-Btn Outline",
-                                                                            "textures/buttons/ZBtnOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Start-Btn Outline",
-                                                                            "textures/buttons/StartBtnOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Left Outline",
-                                                                            "textures/buttons/CLeftOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Right Outline",
-                                                                            "textures/buttons/CRightOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Up Outline",
-                                                                            "textures/buttons/CUpOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Down Outline",
-                                                                            "textures/buttons/CDownOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Analog-Stick Outline",
-                                                                            "textures/buttons/AnalogStickOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Left Outline",
-                                                                            "textures/buttons/DPadLeftOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Right Outline",
-                                                                            "textures/buttons/DPadRightOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Up Outline",
-                                                                            "textures/buttons/DPadUpOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Down Outline",
-                                                                            "textures/buttons/DPadDownOutline.png");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Right-Stick Outline",
-                                                                            "textures/buttons/RightStickOutline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("A-Btn",
+                                                                                        "textures/buttons/ABtn.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("B-Btn",
+                                                                                        "textures/buttons/BBtn.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("L-Btn",
+                                                                                        "textures/buttons/LBtn.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("R-Btn",
+                                                                                        "textures/buttons/RBtn.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Z-Btn",
+                                                                                        "textures/buttons/ZBtn.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "Start-Btn", "textures/buttons/StartBtn.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Left",
+                                                                                        "textures/buttons/CLeft.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Right",
+                                                                                        "textures/buttons/CRight.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Up",
+                                                                                        "textures/buttons/CUp.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("C-Down",
+                                                                                        "textures/buttons/CDown.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "Analog-Stick", "textures/buttons/AnalogStick.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "Dpad-Left", "textures/buttons/DPadLeft.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "Dpad-Right", "textures/buttons/DPadRight.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Dpad-Up",
+                                                                                        "textures/buttons/DPadUp.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "Dpad-Down", "textures/buttons/DPadDown.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Modifier-1",
+                                                                                        "textures/buttons/Mod1.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage("Modifier-2",
+                                                                                        "textures/buttons/Mod2.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "Right-Stick", "textures/buttons/RightStick.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "A-Btn Outline", "textures/buttons/ABtnOutline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "B-Btn Outline", "textures/buttons/BBtnOutline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "L-Btn Outline", "textures/buttons/LBtnOutline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "R-Btn Outline", "textures/buttons/RBtnOutline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "Z-Btn Outline", "textures/buttons/ZBtnOutline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "Start-Btn Outline", "textures/buttons/StartBtnOutline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "C-Left Outline", "textures/buttons/CLeftOutline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "C-Right Outline", "textures/buttons/CRightOutline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "C-Up Outline", "textures/buttons/CUpOutline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "C-Down Outline", "textures/buttons/CDownOutline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "Analog-Stick Outline", "textures/buttons/AnalogStickOutline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "Dpad-Left Outline", "textures/buttons/DPadLeftOutline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "Dpad-Right Outline", "textures/buttons/DPadRightOutline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "Dpad-Up Outline", "textures/buttons/DPadUpOutline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "Dpad-Down Outline", "textures/buttons/DPadDownOutline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "Modifier-1 Outline", "textures/buttons/Mod1Outline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "Modifier-2 Outline", "textures/buttons/Mod2Outline.png");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadTextureFromRawImage(
+                "Right-Stick Outline", "textures/buttons/RightStickOutline.png");
             sButtonTexturesLoaded = true;
         }
 
@@ -131,17 +152,19 @@ void InputViewer::DrawElement() {
 #endif
         const int showAnalogAngles = CVarGetInteger("gInputViewer.AnalogAngles.Enabled", 0);
         const int buttonOutlineMode = CVarGetInteger("gInputViewer.ButtonOutlineMode", BUTTON_OUTLINE_NOT_PRESSED);
+        const bool useGlobalOutlineMode = CVarGetInteger("gInputViewer.GlobalButtonOutlineMode", 1);
 
         ImVec2 bgSize = LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureSize("Input-Viewer-Background");
         ImVec2 scaledBGSize = ImVec2(bgSize.x * scale, bgSize.y * scale);
 
-        ImGui::SetNextWindowSize(ImVec2(
-            scaledBGSize.x + 20,
-            scaledBGSize.y +
-                (showAnalogAngles ? ImGui::CalcTextSize("X").y : 0) * scale * CVarGetFloat("gInputViewer.AnalogAngles.Scale", 1.0f) + 20));
+        ImGui::SetNextWindowSize(
+            ImVec2(scaledBGSize.x + 20, scaledBGSize.y +
+                                            (showAnalogAngles ? ImGui::CalcTextSize("X").y : 0) * scale *
+                                                CVarGetFloat("gInputViewer.AnalogAngles.Scale", 1.0f) +
+                                            20));
         ImGui::SetNextWindowContentSize(
             ImVec2(scaledBGSize.x, scaledBGSize.y + (showAnalogAngles ? 15 : 0) * scale *
-                                                          CVarGetFloat("gInputViewer.AnalogAngles.Scale", 1.0f)));
+                                                        CVarGetFloat("gInputViewer.AnalogAngles.Scale", 1.0f)));
         ImGui::SetNextWindowPos(
             ImVec2(mainPos.x + size.x - scaledBGSize.x - 30, mainPos.y + size.y - scaledBGSize.y - 30),
             ImGuiCond_FirstUseEver);
@@ -175,52 +198,78 @@ void InputViewer::DrawElement() {
             if (CVarGetInteger("gInputViewer.BBtn", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("B-Btn", "B-Btn Outline", pads[0].button & BTN_B, scaledBGSize, buttonOutlineMode);
+                RenderButton("B-Btn", "B-Btn Outline", pads[0].button & BTN_B, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger("gInputViewer.BBtnOutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger("gInputViewer.ABtn", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("A-Btn", "A-Btn Outline", pads[0].button & BTN_A, scaledBGSize, buttonOutlineMode);
+                RenderButton("A-Btn", "A-Btn Outline", pads[0].button & BTN_A, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger("gInputViewer.ABtnOutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
             }
 
             // C buttons
             if (CVarGetInteger("gInputViewer.CUp", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("C-Up", "C-Up Outline", pads[0].button & BTN_CUP, scaledBGSize, buttonOutlineMode);
+                RenderButton("C-Up", "C-Up Outline", pads[0].button & BTN_CUP, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger("gInputViewer.CUpOutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger("gInputViewer.CLeft", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("C-Left", "C-Left Outline", pads[0].button & BTN_CLEFT, scaledBGSize, buttonOutlineMode);
+                RenderButton("C-Left", "C-Left Outline", pads[0].button & BTN_CLEFT, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger("gInputViewer.CLeftOutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger("gInputViewer.CRight", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("C-Right", "C-Right Outline", pads[0].button & BTN_CRIGHT, scaledBGSize,
-                             buttonOutlineMode);
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger("gInputViewer.CRightOutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger("gInputViewer.CDown", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("C-Down", "C-Down Outline", pads[0].button & BTN_CDOWN, scaledBGSize, buttonOutlineMode);
+                RenderButton("C-Down", "C-Down Outline", pads[0].button & BTN_CDOWN, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger("gInputViewer.CDownOutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
             }
 
             // L/R/Z
             if (CVarGetInteger("gInputViewer.LBtn", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("L-Btn", "L-Btn Outline", pads[0].button & BTN_L, scaledBGSize, buttonOutlineMode);
+                RenderButton("L-Btn", "L-Btn Outline", pads[0].button & BTN_L, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger("gInputViewer.LBtnOutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger("gInputViewer.RBtn", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("R-Btn", "R-Btn Outline", pads[0].button & BTN_R, scaledBGSize, buttonOutlineMode);
+                RenderButton("R-Btn", "R-Btn Outline", pads[0].button & BTN_R, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger("gInputViewer.RBtnOutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
             }
             if (CVarGetInteger("gInputViewer.ZBtn", 1)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("Z-Btn", "Z-Btn Outline", pads[0].button & BTN_Z, scaledBGSize, buttonOutlineMode);
+                RenderButton("Z-Btn", "Z-Btn Outline", pads[0].button & BTN_Z, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger("gInputViewer.ZBtnOutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
             }
 
             // Start
@@ -228,7 +277,9 @@ void InputViewer::DrawElement() {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Start-Btn", "Start-Btn Outline", pads[0].button & BTN_START, scaledBGSize,
-                             buttonOutlineMode);
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger("gInputViewer.StartBtnOutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
             }
 
             // Dpad
@@ -236,18 +287,46 @@ void InputViewer::DrawElement() {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Dpad-Left", "Dpad-Left Outline", pads[0].button & BTN_DLEFT, scaledBGSize,
-                             buttonOutlineMode);
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger("gInputViewer.DpadOutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Dpad-Right", "Dpad-Right Outline", pads[0].button & BTN_DRIGHT, scaledBGSize,
-                             buttonOutlineMode);
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger("gInputViewer.DpadOutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
-                RenderButton("Dpad-Up", "Dpad-Up Outline", pads[0].button & BTN_DUP, scaledBGSize, buttonOutlineMode);
+                RenderButton("Dpad-Up", "Dpad-Up Outline", pads[0].button & BTN_DUP, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger("gInputViewer.DpadOutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 RenderButton("Dpad-Down", "Dpad-Down Outline", pads[0].button & BTN_DDOWN, scaledBGSize,
-                             buttonOutlineMode);
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger("gInputViewer.DpadOutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
+            }
+
+            // Modifier 1
+            if (CVarGetInteger("gInputViewer.Mod1", 0)) {
+                ImGui::SetNextItemAllowOverlap();
+                ImGui::SetCursorPos(aPos);
+                RenderButton("Modifier-1", "Modifier-1 Outline", pads[0].button & BTN_MODIFIER1, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger("gInputViewer.Mod1OutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
+            }
+            // Modifier 2
+            if (CVarGetInteger("gInputViewer.Mod2", 0)) {
+                ImGui::SetNextItemAllowOverlap();
+                ImGui::SetCursorPos(aPos);
+                RenderButton("Modifier-2", "Modifier-2 Outline", pads[0].button & BTN_MODIFIER2, scaledBGSize,
+                             useGlobalOutlineMode
+                                 ? buttonOutlineMode
+                                 : CVarGetInteger("gInputViewer.Mod2OutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
             }
 
             const bool analogStickIsInDeadzone = !pads[0].stick_x && !pads[0].stick_y;
@@ -358,9 +437,9 @@ InputViewerSettingsWindow::~InputViewerSettingsWindow() {
 }
 
 void InputViewerSettingsWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(450, 525), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(500, 525), ImGuiCond_FirstUseEver);
 
-    if (ImGui::Begin("Input Viewer Settings", &mIsVisible)) {
+    if (ImGui::Begin("Input Viewer Settings", &mIsVisible, ImGuiWindowFlags_HorizontalScrollbar)) {
 
         // gInputViewer.Scale
         UIWidgets::EnhancementSliderFloat("Input Viewer Scale: %.2f", "##Input", "gInputViewer.Scale", 0.1f, 5.0f, "",
@@ -380,47 +459,142 @@ void InputViewerSettingsWindow::DrawElement() {
         UIWidgets::PaddedSeparator(true, true);
 
         if (ImGui::CollapsingHeader("Buttons")) {
-            // gInputViewer.ABtn
-            UIWidgets::EnhancementCheckbox("Show A-Button Layers", "gInputViewer.ABtn", false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.BBtn
-            UIWidgets::EnhancementCheckbox("Show B-Button Layers", "gInputViewer.BBtn", false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.CUp
-            UIWidgets::EnhancementCheckbox("Show C-Up Layers", "gInputViewer.CUp", false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.CRight
-            UIWidgets::EnhancementCheckbox("Show C-Right Layers", "gInputViewer.CRight", false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.CDown
-            UIWidgets::EnhancementCheckbox("Show C-Down Layers", "gInputViewer.CDown", false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.CLeft
-            UIWidgets::EnhancementCheckbox("Show C-Left Layers", "gInputViewer.CLeft", false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.LBtn
-            UIWidgets::EnhancementCheckbox("Show L-Button Layers", "gInputViewer.LBtn", false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.RBtn
-            UIWidgets::EnhancementCheckbox("Show R-Button Layers", "gInputViewer.RBtn", false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.ZBtn
-            UIWidgets::EnhancementCheckbox("Show Z-Button Layers", "gInputViewer.ZBtn", false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.StartBtn
-            UIWidgets::EnhancementCheckbox("Show Start Button Layers", "gInputViewer.StartBtn", false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, true);
-            // gInputViewer.Dpad
-            UIWidgets::EnhancementCheckbox("Show D-Pad Layers", "gInputViewer.Dpad", false, "",
-                                           UIWidgets::CheckboxGraphics::Checkmark, false);
 
             // gInputViewer.ButtonOutlineMode
             UIWidgets::PaddedText("Button Outlines/Backgrounds", true, false);
-            UIWidgets::EnhancementCombobox("gInputViewer.ButtonOutlineMode", buttonOutlineOptions,
-                                           BUTTON_OUTLINE_NOT_PRESSED);
+            UIWidgets::EnhancementCombobox(
+                "gInputViewer.ButtonOutlineMode", buttonOutlineOptions, BUTTON_OUTLINE_NOT_PRESSED,
+                !CVarGetInteger("gInputViewer.GlobalButtonOutlineMode", 1), "",
+                CVarGetInteger("gInputViewer.ButtonOutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
             UIWidgets::Tooltip(
                 "Sets the desired visibility behavior for the button outline/background layers. Useful for "
                 "custom input viewers.");
+
+            // gInputViewer.GlobalButtonOutlineMode
+            UIWidgets::EnhancementCheckbox("Use for all buttons", "gInputViewer.GlobalButtonOutlineMode", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+
+            UIWidgets::PaddedSeparator();
+
+            bool useIndividualOutlines = !CVarGetInteger("gInputViewer.GlobalButtonOutlineMode", 1);
+
+            // gInputViewer.ABtn
+            UIWidgets::EnhancementCheckbox("Show A-Button Layers", "gInputViewer.ABtn", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger("gInputViewer.ABtn", 1)) {
+                ImGui::Indent(16.0f);
+                UIWidgets::EnhancementCombobox("gInputViewer.ABtnOutlineMode", buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent(16.0f);
+            }
+            // gInputViewer.BBtn
+            UIWidgets::EnhancementCheckbox("Show B-Button Layers", "gInputViewer.BBtn", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger("gInputViewer.BBtn", 1)) {
+                ImGui::Indent(16.0f);
+                UIWidgets::EnhancementCombobox("gInputViewer.BBtnOutlineMode", buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent(16.0f);
+            }
+            // gInputViewer.CUp
+            UIWidgets::EnhancementCheckbox("Show C-Up Layers", "gInputViewer.CUp", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger("gInputViewer.CUp", 1)) {
+                ImGui::Indent(16.0f);
+                UIWidgets::EnhancementCombobox("gInputViewer.CUpOutlineMode", buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent(16.0f);
+            }
+            // gInputViewer.CRight
+            UIWidgets::EnhancementCheckbox("Show C-Right Layers", "gInputViewer.CRight", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger("gInputViewer.CRight", 1)) {
+                ImGui::Indent(16.0f);
+                UIWidgets::EnhancementCombobox("gInputViewer.CRightOutlineMode", buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent(16.0f);
+            }
+            // gInputViewer.CDown
+            UIWidgets::EnhancementCheckbox("Show C-Down Layers", "gInputViewer.CDown", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger("gInputViewer.CDown", 1)) {
+                ImGui::Indent(16.0f);
+                UIWidgets::EnhancementCombobox("gInputViewer.CDownOutlineMode", buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent(16.0f);
+            }
+            // gInputViewer.CLeft
+            UIWidgets::EnhancementCheckbox("Show C-Left Layers", "gInputViewer.CLeft", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger("gInputViewer.CLeft", 1)) {
+                ImGui::Indent(16.0f);
+                UIWidgets::EnhancementCombobox("gInputViewer.CLeftOutlineMode", buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent(16.0f);
+            }
+            // gInputViewer.LBtn
+            UIWidgets::EnhancementCheckbox("Show L-Button Layers", "gInputViewer.LBtn", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger("gInputViewer.LBtn", 1)) {
+                ImGui::Indent(16.0f);
+                UIWidgets::EnhancementCombobox("gInputViewer.LBtnOutlineMode", buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent(16.0f);
+            }
+            // gInputViewer.RBtn
+            UIWidgets::EnhancementCheckbox("Show R-Button Layers", "gInputViewer.RBtn", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger("gInputViewer.RBtn", 1)) {
+                ImGui::Indent(16.0f);
+                UIWidgets::EnhancementCombobox("gInputViewer.RBtnOutlineMode", buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent(16.0f);
+            }
+            // gInputViewer.ZBtn
+            UIWidgets::EnhancementCheckbox("Show Z-Button Layers", "gInputViewer.ZBtn", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger("gInputViewer.ZBtn", 1)) {
+                ImGui::Indent(16.0f);
+                UIWidgets::EnhancementCombobox("gInputViewer.ZBtnOutlineMode", buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent(16.0f);
+            }
+            // gInputViewer.StartBtn
+            UIWidgets::EnhancementCheckbox("Show Start Button Layers", "gInputViewer.StartBtn", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, true);
+            if (useIndividualOutlines && CVarGetInteger("gInputViewer.StartBtn", 1)) {
+                ImGui::Indent(16.0f);
+                UIWidgets::EnhancementCombobox("gInputViewer.StartBtnOutlineMode", buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent(16.0f);
+            }
+            // gInputViewer.Dpad
+            UIWidgets::EnhancementCheckbox("Show D-Pad Layers", "gInputViewer.Dpad", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, false);
+            if (useIndividualOutlines && CVarGetInteger("gInputViewer.Dpad", 0)) {
+                ImGui::Indent(16.0f);
+                UIWidgets::EnhancementCombobox("gInputViewer.DpadOutlineMode", buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent(16.0f);
+            }
+            // gInputViewer.Mod1
+            UIWidgets::EnhancementCheckbox("Show Modifier Button 1 Layers", "gInputViewer.Mod1", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, false);
+            if (useIndividualOutlines && CVarGetInteger("gInputViewer.Mod1", 0)) {
+                ImGui::Indent(16.0f);
+                UIWidgets::EnhancementCombobox("gInputViewer.Mod1OutlineMode", buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent(16.0f);
+            }
+            // gInputViewer.Mod2
+            UIWidgets::EnhancementCheckbox("Show Modifier Button 2 Layers", "gInputViewer.Mod2", false, "",
+                                           UIWidgets::CheckboxGraphics::Checkmark, false);
+            if (useIndividualOutlines && CVarGetInteger("gInputViewer.Mod2", 0)) {
+                ImGui::Indent(16.0f);
+                UIWidgets::EnhancementCombobox("gInputViewer.Mod2OutlineMode", buttonOutlineOptionsVerbose,
+                                               BUTTON_OUTLINE_NOT_PRESSED);
+                ImGui::Unindent(16.0f);
+            }
 
             UIWidgets::PaddedSeparator(true, true);
         }
