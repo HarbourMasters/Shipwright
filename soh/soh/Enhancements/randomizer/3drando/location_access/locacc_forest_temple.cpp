@@ -21,8 +21,8 @@ void AreaTable_Init_ForestTemple() {
   if (randoCtx->GetDungeon(FOREST_TEMPLE)->IsVanilla()) {
   areaTable[RR_FOREST_TEMPLE_FIRST_ROOM] = Area("Forest Temple First Room", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_FIRST_ROOM_CHEST, {[]{return true;}}),
-                  LocationAccess(RC_FOREST_TEMPLE_GS_FIRST_ROOM,    {[]{return (logic->IsAdult && logic->Bombs) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->HasBombchus || logic->CanUse(RG_DINS_FIRE) || (randoCtx->GetTrickOption(RT_FOREST_FIRST_GS) && (logic->CanJumpslash || (logic->IsChild && logic->Bombs)));}}),
+                  LOCATION(RC_FOREST_TEMPLE_FIRST_ROOM_CHEST, true),
+                  LOCATION(RC_FOREST_TEMPLE_GS_FIRST_ROOM,    (logic->IsAdult && logic->Bombs) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->HasBombchus || logic->CanUse(RG_DINS_FIRE) || (randoCtx->GetTrickOption(RT_FOREST_FIRST_GS) && (logic->CanJumpslash || (logic->IsChild && logic->Bombs)))),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_ENTRYWAY,       {[]{return true;}}),
@@ -40,7 +40,7 @@ void AreaTable_Init_ForestTemple() {
                   EventAccess(&logic->ForestTempleMeg, {[]{return logic->ForestTempleMeg || (logic->ForestTempleJoelle && logic->ForestTempleBeth && logic->ForestTempleAmy && logic->CanUse(RG_FAIRY_BOW));}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_GS_LOBBY, {[]{return logic->HookshotOrBoomerang;}}),
+                  LOCATION(RC_FOREST_TEMPLE_GS_LOBBY, logic->HookshotOrBoomerang),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_SOUTH_CORRIDOR,    {[]{return true;}}),
@@ -64,7 +64,7 @@ void AreaTable_Init_ForestTemple() {
                   EventAccess(&logic->FairyPot, {[]{return true;}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_FIRST_STALFOS_CHEST, {[]{return logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MEGATON_HAMMER);}}),
+                  LOCATION(RC_FOREST_TEMPLE_FIRST_STALFOS_CHEST, logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MEGATON_HAMMER)),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_NORTH_CORRIDOR, {[]{return true;}}),
@@ -76,7 +76,7 @@ void AreaTable_Init_ForestTemple() {
                   EventAccess(&logic->DekuBabaNuts,   {[]{return logic->DekuBabaNuts   || (logic->CanJumpslash || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_MEGATON_HAMMER) || logic->HasExplosives || logic->CanUse(RG_DINS_FIRE));}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD, {[]{return logic->CanUse(RG_LONGSHOT) || Here(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER, []{return logic->HookshotOrBoomerang;});}}),
+                  LOCATION(RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD, logic->CanUse(RG_LONGSHOT) || Here(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER, []{return logic->HookshotOrBoomerang;})),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_LOBBY,             {[]{return logic->CanUse(RG_SONG_OF_TIME);}}),
@@ -104,8 +104,8 @@ void AreaTable_Init_ForestTemple() {
                   EventAccess(&logic->DekuBabaNuts,   {[]{return logic->DekuBabaNuts   || (logic->CanJumpslash || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_MEGATON_HAMMER) || logic->HasExplosives || logic->CanUse(RG_DINS_FIRE));}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_RAISED_ISLAND_COURTYARD_CHEST, {[]{return logic->CanUse(RG_HOOKSHOT) || HasAccessTo(RR_FOREST_TEMPLE_FALLING_ROOM) || (HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER) && logic->IsAdult && randoCtx->GetTrickOption(RT_FOREST_OUTDOORS_LEDGE) && logic->HoverBoots);}}),
-                  LocationAccess(RC_FOREST_TEMPLE_GS_RAISED_ISLAND_COURTYARD,    {[]{return logic->CanUse(RG_HOOKSHOT) || (randoCtx->GetTrickOption(RT_FOREST_OUTDOORS_EAST_GS) && logic->CanUse(RG_BOOMERANG)) || Here(RR_FOREST_TEMPLE_FALLING_ROOM, []{return logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_DINS_FIRE) || logic->HasExplosives;});}}),
+                  LOCATION(RC_FOREST_TEMPLE_RAISED_ISLAND_COURTYARD_CHEST, logic->CanUse(RG_HOOKSHOT) || HasAccessTo(RR_FOREST_TEMPLE_FALLING_ROOM) || (HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER) && logic->IsAdult && randoCtx->GetTrickOption(RT_FOREST_OUTDOORS_LEDGE) && logic->HoverBoots)),
+                  LOCATION(RC_FOREST_TEMPLE_GS_RAISED_ISLAND_COURTYARD,    logic->CanUse(RG_HOOKSHOT) || (randoCtx->GetTrickOption(RT_FOREST_OUTDOORS_EAST_GS) && logic->CanUse(RG_BOOMERANG)) || Here(RR_FOREST_TEMPLE_FALLING_ROOM, []{return logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_DINS_FIRE) || logic->HasExplosives;})),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_LOBBY,             {[]{return true;}}),
@@ -127,7 +127,7 @@ void AreaTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_MAP_ROOM] = Area("Forest Temple Map Room", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_MAP_CHEST, {[]{return Here(RR_FOREST_TEMPLE_MAP_ROOM, []{return logic->HasExplosives || logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_FAIRY_BOW) || ((logic->CanJumpslash || logic->CanUse(RG_FAIRY_SLINGSHOT)) && (logic->Nuts || logic->HookshotOrBoomerang || logic->CanShield));});}}),
+                  LOCATION(RC_FOREST_TEMPLE_MAP_CHEST, Here(RR_FOREST_TEMPLE_MAP_ROOM, []{return logic->HasExplosives || logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_FAIRY_BOW) || ((logic->CanJumpslash || logic->CanUse(RG_FAIRY_SLINGSHOT)) && (logic->Nuts || logic->HookshotOrBoomerang || logic->CanShield));})),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_LOWER, {[]{return Here(RR_FOREST_TEMPLE_MAP_ROOM, []{return logic->HasExplosives || logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_FAIRY_BOW) || ((logic->CanJumpslash || logic->CanUse(RG_FAIRY_SLINGSHOT)) && (logic->Nuts || logic->HookshotOrBoomerang || logic->CanShield));});}}),
@@ -136,7 +136,7 @@ void AreaTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_SEWER] = Area("Forest Temple Sewer", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_WELL_CHEST, {[]{return HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER);}}),
+                  LOCATION(RC_FOREST_TEMPLE_WELL_CHEST, HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER)),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_LOWER, {[]{return true;}}),
@@ -150,7 +150,7 @@ void AreaTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_FLOORMASTER_ROOM] = Area("Forest Temple Floormaster Room", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_FLOORMASTER_CHEST, {[]{return logic->CanAdultDamage || logic->CanChildDamage;}}),
+                  LOCATION(RC_FOREST_TEMPLE_FLOORMASTER_CHEST, logic->CanAdultDamage || logic->CanChildDamage),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER, {[]{return true;}}),
@@ -164,7 +164,7 @@ void AreaTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_BLOCK_PUSH_ROOM] = Area("Forest Temple Block Push Room", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_EYE_SWITCH_CHEST, {[]{return logic->GoronBracelet && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT));}}),
+                  LOCATION(RC_FOREST_TEMPLE_EYE_SWITCH_CHEST, logic->GoronBracelet && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT))),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_WEST_CORRIDOR,            {[]{return true;}}),
@@ -181,7 +181,7 @@ void AreaTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_NW_CORRIDOR_STRAIGHTENED] = Area("Forest Temple NW Corridor Straightened", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_BOSS_KEY_CHEST, {[]{return true;}}),
+                  LOCATION(RC_FOREST_TEMPLE_BOSS_KEY_CHEST, true),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_BELOW_BOSS_KEY_CHEST, {[]{return true;}}),
@@ -193,7 +193,7 @@ void AreaTable_Init_ForestTemple() {
                   EventAccess(&logic->ForestTempleJoelle, {[]{return logic->ForestTempleJoelle || logic->CanUse(RG_FAIRY_BOW);}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_RED_POE_CHEST, {[]{return logic->ForestTempleJoelle;}}),
+                  LOCATION(RC_FOREST_TEMPLE_RED_POE_CHEST, logic->ForestTempleJoelle),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_NW_CORRIDOR_TWISTED, {[]{return logic->SmallKeys(RR_FOREST_TEMPLE, 3);}}),
@@ -202,7 +202,7 @@ void AreaTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_UPPER_STALFOS] = Area("Forest Temple Upper Stalfos", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_BOW_CHEST, {[]{return logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MEGATON_HAMMER);}}),
+                  LOCATION(RC_FOREST_TEMPLE_BOW_CHEST, logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MEGATON_HAMMER)),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_RED_POE_ROOM,  {[]{return logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MEGATON_HAMMER);}}),
@@ -214,7 +214,7 @@ void AreaTable_Init_ForestTemple() {
                   EventAccess(&logic->ForestTempleBeth, {[]{return logic->ForestTempleBeth || logic->CanUse(RG_FAIRY_BOW);}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_BLUE_POE_CHEST, {[]{return logic->ForestTempleBeth;}}),
+                  LOCATION(RC_FOREST_TEMPLE_BLUE_POE_CHEST, logic->ForestTempleBeth),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_UPPER_STALFOS,            {[]{return true;}}),
@@ -241,7 +241,7 @@ void AreaTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_FALLING_ROOM] = Area("Forest Temple Falling Room", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_FALLING_CEILING_ROOM_CHEST, {[]{return true;}}),
+                  LOCATION(RC_FOREST_TEMPLE_FALLING_CEILING_ROOM_CHEST, true),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_NE_OUTDOORS_LOWER, {[]{return true;}}),
@@ -265,8 +265,8 @@ void AreaTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_BOSS_REGION] = Area("Forest Temple Boss Region", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_BASEMENT_CHEST, {[]{return true;}}),
-                  LocationAccess(RC_FOREST_TEMPLE_GS_BASEMENT,    {[]{return logic->HookshotOrBoomerang;}}),
+                  LOCATION(RC_FOREST_TEMPLE_BASEMENT_CHEST, true),
+                  LOCATION(RC_FOREST_TEMPLE_GS_BASEMENT,    logic->HookshotOrBoomerang),
                 }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_LOBBY,     {[]{return true;}}),
@@ -280,8 +280,8 @@ void AreaTable_Init_ForestTemple() {
   if (randoCtx->GetDungeon(FOREST_TEMPLE)->IsMQ()) {
   areaTable[RR_FOREST_TEMPLE_MQ_LOBBY] = Area("Forest Temple MQ Lobby", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_FIRST_ROOM_CHEST, {[]{return logic->CanJumpslash || logic->Bombs || logic->CanUse(RG_STICKS) || logic->Nuts || logic->HookshotOrBoomerang || logic->CanUse(RG_DINS_FIRE) || logic->KokiriSword || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOVER_BOOTS);}}),
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_GS_FIRST_HALLWAY, {[]{return logic->HookshotOrBoomerang;}}),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_FIRST_ROOM_CHEST, logic->CanJumpslash || logic->Bombs || logic->CanUse(RG_STICKS) || logic->Nuts || logic->HookshotOrBoomerang || logic->CanUse(RG_DINS_FIRE) || logic->KokiriSword || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOVER_BOOTS)),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_GS_FIRST_HALLWAY, logic->HookshotOrBoomerang),
   }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_ENTRYWAY,        {[]{return true;}}),
@@ -293,8 +293,8 @@ void AreaTable_Init_ForestTemple() {
                   EventAccess(&logic->FairyPot, {[]{return true;}}),
   }, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_WOLFOS_CHEST,       {[]{return (logic->CanUse(RG_SONG_OF_TIME) || logic->IsChild) && (logic->CanJumpslash || logic->CanUse(RG_DINS_FIRE) || logic->CanUse(RG_STICKS) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->KokiriSword);}}),
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_GS_BLOCK_PUSH_ROOM, {[]{return logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MEGATON_HAMMER);}}),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_WOLFOS_CHEST,       (logic->CanUse(RG_SONG_OF_TIME) || logic->IsChild) && (logic->CanJumpslash || logic->CanUse(RG_DINS_FIRE) || logic->CanUse(RG_STICKS) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->KokiriSword)),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_GS_BLOCK_PUSH_ROOM, logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MEGATON_HAMMER)),
   }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_MQ_NW_OUTDOORS,        {[]{return logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT);}}),
@@ -308,7 +308,7 @@ void AreaTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_MQ_AFTER_BLOCK_PUZZLE] = Area("Forest Temple MQ After Block Puzzle", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST, {[]{return logic->SmallKeys(RR_FOREST_TEMPLE, 3);}}),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST, logic->SmallKeys(RR_FOREST_TEMPLE, 3)),
   }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_MQ_BOW_REGION,    {[]{return logic->SmallKeys(RR_FOREST_TEMPLE, 4);}}),
@@ -319,7 +319,7 @@ void AreaTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_MQ_OUTDOOR_LEDGE] = Area("Forest Temple MQ Outdoor Ledge", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_REDEAD_CHEST, {[]{return logic->CanJumpslash;}}),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_REDEAD_CHEST, logic->CanJumpslash),
   }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_MQ_NW_OUTDOORS, {[]{return true;}}),
@@ -327,7 +327,7 @@ void AreaTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_MQ_NW_OUTDOORS] = Area("Forest Temple MQ NW Outdoors", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_GS_LEVEL_ISLAND_COURTYARD, {[]{return logic->CanAdultAttack || logic->CanChildAttack;}}),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_GS_LEVEL_ISLAND_COURTYARD, logic->CanAdultAttack || logic->CanChildAttack),
   }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_MQ_NE_OUTDOORS,         {[]{return (logic->IsAdult && (logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_LONGSHOT) || (randoCtx->GetTrickOption(RT_FOREST_MQ_WELL_SWIM) && logic->CanUse(RG_HOOKSHOT)))) || logic->ProgressiveScale >= 2;}}),
@@ -341,9 +341,9 @@ void AreaTable_Init_ForestTemple() {
                   EventAccess(&logic->DekuBabaNuts,   {[]{return logic->DekuBabaNuts   || (logic->CanJumpslash || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_MEGATON_HAMMER) || logic->HasExplosives || logic->CanUse(RG_DINS_FIRE));}}),
   }, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_WELL_CHEST,                 {[]{return (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT));}}),
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD, {[]{return logic->HookshotOrBoomerang || (logic->IsAdult && logic->CanUse(RG_FIRE_ARROWS) && (logic->CanUse(RG_SONG_OF_TIME) || (logic->CanUse(RG_HOVER_BOOTS) && randoCtx->GetTrickOption(RT_FOREST_DOORFRAME))));}}),
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_GS_WELL,                    {[]{return (logic->IsAdult && ((logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT)) || logic->CanUse(RG_FAIRY_BOW))) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT));}}),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_WELL_CHEST,                 (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT))),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD, logic->HookshotOrBoomerang || (logic->IsAdult && logic->CanUse(RG_FIRE_ARROWS) && (logic->CanUse(RG_SONG_OF_TIME) || (logic->CanUse(RG_HOVER_BOOTS) && randoCtx->GetTrickOption(RT_FOREST_DOORFRAME))))),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_GS_WELL,                    (logic->IsAdult && ((logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT)) || logic->CanUse(RG_FAIRY_BOW))) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT))),
   }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_MQ_OUTDOORS_TOP_LEDGES, {[]{return logic->IsAdult && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME));}}),
@@ -352,7 +352,7 @@ void AreaTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_MQ_OUTDOORS_TOP_LEDGES] = Area("Forest Temple MQ Outdoors Top Ledges", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_UPPER_CHEST, {[]{return true;}}),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_UPPER_CHEST, true),
   }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_MQ_NE_OUTDOORS,       {[]{return true;}}),
@@ -362,7 +362,7 @@ void AreaTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_MQ_NE_OUTDOORS_LEDGE] = Area("Forest Temple MQ NE Outdoors Ledge", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_LOWER_CHEST, {[]{return true;}}),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_LOWER_CHEST, true),
   }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_MQ_NE_OUTDOORS,  {[]{return true;}}),
@@ -374,9 +374,9 @@ void AreaTable_Init_ForestTemple() {
                   EventAccess(&logic->ForestTempleJoAndBeth, {[]{return logic->ForestTempleJoAndBeth || (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW));}}),
   }, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_BOW_CHEST,     {[]{return logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MEGATON_HAMMER);}}),
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_MAP_CHEST,     {[]{return logic->IsAdult && logic->CanUse(RG_FAIRY_BOW);}}),
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_COMPASS_CHEST, {[]{return logic->IsAdult && logic->CanUse(RG_FAIRY_BOW);}}),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_BOW_CHEST,     logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MEGATON_HAMMER)),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_MAP_CHEST,     logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_COMPASS_CHEST, logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)),
   }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_MQ_FALLING_ROOM, {[]{return logic->SmallKeys(RR_FOREST_TEMPLE, 5) && ((logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || logic->CanUse(RG_DINS_FIRE));}}),
@@ -387,7 +387,7 @@ void AreaTable_Init_ForestTemple() {
                   EventAccess(&logic->ForestTempleAmyAndMeg, {[]{return logic->ForestTempleAmyAndMeg || (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW) && logic->SmallKeys(RR_FOREST_TEMPLE, 6));}}),
   }, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_FALLING_CEILING_ROOM_CHEST, {[]{return true;}}),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_FALLING_CEILING_ROOM_CHEST, true),
   }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_MQ_NE_OUTDOORS_LEDGE, {[]{return true;}}),
@@ -395,7 +395,7 @@ void AreaTable_Init_ForestTemple() {
 
   areaTable[RR_FOREST_TEMPLE_MQ_BOSS_REGION] = Area("Forest Temple MQ Boss Region", "Forest Temple", RA_FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_FOREST_TEMPLE_MQ_BASEMENT_CHEST,   {[]{return true;}}),
+                  LOCATION(RC_FOREST_TEMPLE_MQ_BASEMENT_CHEST,   true),
   }, {
                   //Exits
                   Entrance(RR_FOREST_TEMPLE_BOSS_ENTRYWAY, {[]{return logic->BossKeyForestTemple;}}),
@@ -425,8 +425,8 @@ void AreaTable_Init_ForestTemple() {
         },
         {
             // Locations
-            LocationAccess(RC_FOREST_TEMPLE_PHANTOM_GANON_HEART, { [] { return logic->ForestTempleClear; } }),
-            LocationAccess(RC_PHANTOM_GANON, { [] { return logic->ForestTempleClear; } }),
+            LOCATION(RC_FOREST_TEMPLE_PHANTOM_GANON_HEART, logic->ForestTempleClear),
+            LOCATION(RC_PHANTOM_GANON, logic->ForestTempleClear),
         },
         {
             // Exits

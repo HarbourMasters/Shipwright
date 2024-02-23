@@ -11,11 +11,11 @@ void AreaTable_Init_LostWoods() {
                   EventAccess(&logic->ShowedMidoSwordAndShield, {[]{return logic->ShowedMidoSwordAndShield || (logic->IsChild && logic->KokiriSword && logic->DekuShield);}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_KF_KOKIRI_SWORD_CHEST,   {[]{return logic->IsChild;}}),
-                  LocationAccess(RC_KF_GS_KNOW_IT_ALL_HOUSE, {[]{return logic->IsChild && logic->CanChildAttack && logic->AtNight && (/*TODO: HasNightStart ||*/ logic->CanLeaveForest || logic->CanUse(RG_SUNS_SONG)) && logic->CanGetNightTimeGS;}}),
-                  LocationAccess(RC_KF_GS_BEAN_PATCH,        {[]{return logic->CanPlantBugs && logic->CanChildAttack;}}),
-                  LocationAccess(RC_KF_GS_HOUSE_OF_TWINS,    {[]{return logic->IsAdult && logic->AtNight && (logic->HookshotOrBoomerang || (randoCtx->GetTrickOption(RT_KF_ADULT_GS) && logic->CanUse(RG_HOVER_BOOTS))) && logic->CanGetNightTimeGS;}}),
-                  LocationAccess(RC_KF_GOSSIP_STONE,         {[]{return true;}}),
+                  LOCATION(RC_KF_KOKIRI_SWORD_CHEST,   logic->IsChild),
+                  LOCATION(RC_KF_GS_KNOW_IT_ALL_HOUSE, logic->IsChild && logic->CanChildAttack && logic->AtNight && (/*TODO: HasNightStart ||*/ logic->CanLeaveForest || logic->CanUse(RG_SUNS_SONG)) && logic->CanGetNightTimeGS),
+                  LOCATION(RC_KF_GS_BEAN_PATCH,        logic->CanPlantBugs && logic->CanChildAttack),
+                  LOCATION(RC_KF_GS_HOUSE_OF_TWINS,    logic->IsAdult && logic->AtNight && (logic->HookshotOrBoomerang || (randoCtx->GetTrickOption(RT_KF_ADULT_GS) && logic->CanUse(RG_HOVER_BOOTS))) && logic->CanGetNightTimeGS),
+                  LOCATION(RC_KF_GOSSIP_STONE,         true),
                 }, {
                   //Exits
                   Entrance(RR_KF_LINKS_HOUSE,        {[]{return true;}}),
@@ -37,8 +37,8 @@ void AreaTable_Init_LostWoods() {
                   EventAccess(&logic->ShowedMidoSwordAndShield, {[]{return logic->ShowedMidoSwordAndShield || (logic->IsChild && logic->KokiriSword && logic->DekuShield);}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE,  {[]{return true;}}),
-                  LocationAccess(RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE, {[]{return true;}}),
+                  LOCATION(RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE,  true),
+                  LOCATION(RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE, true),
                 }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_ENTRYWAY, {[]{return logic->IsChild || (randoCtx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) && (randoCtx->GetOption(RSK_FOREST).Is(RO_FOREST_OPEN) || logic->ShowedMidoSwordAndShield));}}),
@@ -47,7 +47,7 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_KF_LINKS_HOUSE] = Area("KF Link's House", "KF Link's House", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_KF_LINKS_HOUSE_COW, {[]{return logic->IsAdult && logic->CanUse(RG_EPONAS_SONG) && logic->LinksCow;}}),
+                  LOCATION(RC_KF_LINKS_HOUSE_COW, logic->IsAdult && logic->CanUse(RG_EPONAS_SONG) && logic->LinksCow),
                 }, {
                   //Exits
                   Entrance(RR_KOKIRI_FOREST, {[]{return true;}})
@@ -55,10 +55,10 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_KF_MIDOS_HOUSE] = Area("KF Mido's House", "KF Mido's House", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_KF_MIDOS_TOP_LEFT_CHEST,     {[]{return true;}}),
-                  LocationAccess(RC_KF_MIDOS_TOP_RIGHT_CHEST,    {[]{return true;}}),
-                  LocationAccess(RC_KF_MIDOS_BOTTOM_LEFT_CHEST,  {[]{return true;}}),
-                  LocationAccess(RC_KF_MIDOS_BOTTOM_RIGHT_CHEST, {[]{return true;}}),
+                  LOCATION(RC_KF_MIDOS_TOP_LEFT_CHEST,     true),
+                  LOCATION(RC_KF_MIDOS_TOP_RIGHT_CHEST,    true),
+                  LOCATION(RC_KF_MIDOS_BOTTOM_LEFT_CHEST,  true),
+                  LOCATION(RC_KF_MIDOS_BOTTOM_RIGHT_CHEST, true),
                 }, {
                   //Exits
                   Entrance(RR_KOKIRI_FOREST, {[]{return true;}}),
@@ -81,14 +81,14 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_KF_KOKIRI_SHOP] = Area("KF Kokiri Shop", "KF Kokiri Shop", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_KF_SHOP_ITEM_1, {[]{return true;}}),
-                  LocationAccess(RC_KF_SHOP_ITEM_2, {[]{return true;}}),
-                  LocationAccess(RC_KF_SHOP_ITEM_3, {[]{return true;}}),
-                  LocationAccess(RC_KF_SHOP_ITEM_4, {[]{return true;}}),
-                  LocationAccess(RC_KF_SHOP_ITEM_5, {[]{return true;}}),
-                  LocationAccess(RC_KF_SHOP_ITEM_6, {[]{return true;}}),
-                  LocationAccess(RC_KF_SHOP_ITEM_7, {[]{return true;}}),
-                  LocationAccess(RC_KF_SHOP_ITEM_8, {[]{return true;}}),
+                  LOCATION(RC_KF_SHOP_ITEM_1, true),
+                  LOCATION(RC_KF_SHOP_ITEM_2, true),
+                  LOCATION(RC_KF_SHOP_ITEM_3, true),
+                  LOCATION(RC_KF_SHOP_ITEM_4, true),
+                  LOCATION(RC_KF_SHOP_ITEM_5, true),
+                  LOCATION(RC_KF_SHOP_ITEM_6, true),
+                  LOCATION(RC_KF_SHOP_ITEM_7, true),
+                  LOCATION(RC_KF_SHOP_ITEM_8, true),
                 }, {
                   //Exits
                   Entrance(RR_KOKIRI_FOREST, {[]{return true;}}),
@@ -96,11 +96,11 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_KF_STORMS_GROTTO] = Area("KF Storms Grotto", "KF Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(RC_KF_STORMS_GROTTO_CHEST,         {[]{return true;}}),
-                  LocationAccess(RC_KF_STORMS_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
-                  LocationAccess(RC_KF_STORMS_GOSSIP_STONE,         {[]{return true;}}),
-                  LocationAccess(RC_KF_STORMS_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
-                  LocationAccess(RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
+                  LOCATION(RC_KF_STORMS_GROTTO_CHEST,         true),
+                  LOCATION(RC_KF_STORMS_GROTTO_FISH,          logic->HasBottle),
+                  LOCATION(RC_KF_STORMS_GOSSIP_STONE,         true),
+                  LOCATION(RC_KF_STORMS_GROTTO_BEEHIVE_LEFT,  logic->CanBreakLowerBeehives),
+                  LOCATION(RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT, logic->CanBreakLowerBeehives),
                 }, {
                   //Exits
                   Entrance(RR_KOKIRI_FOREST, {[]{return true;}})
@@ -120,9 +120,9 @@ void AreaTable_Init_LostWoods() {
                   EventAccess(&logic->BugShrub,          {[]{return logic->IsChild && logic->CanCutShrubs;}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_LW_SKULL_KID,                 {[]{return logic->IsChild && logic->CanUse(RG_SARIAS_SONG);}}),
-                  LocationAccess(RC_LW_TRADE_COJIRO,              {[]{return logic->IsAdult && logic->Cojiro;}}),
-                  LocationAccess(RC_LW_TRADE_ODD_POTION,        {[]{return logic->IsAdult && logic->OddPoultice && logic->Cojiro;}}),
+                  LOCATION(RC_LW_SKULL_KID,                 logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
+                  LOCATION(RC_LW_TRADE_COJIRO,              logic->IsAdult && logic->Cojiro),
+                  LOCATION(RC_LW_TRADE_ODD_POTION,        logic->IsAdult && logic->OddPoultice && logic->Cojiro),
                                                                                                 //all 5 buttons are logically required for memory game
                                                                                                 //because the chances of being able to beat it
                                                                                                 //every time you attempt it are as follows:
@@ -131,11 +131,11 @@ void AreaTable_Init_LostWoods() {
                                                                                                 //3 buttons        => 3.75%
                                                                                                 //4 buttons        => 25.3125%
                                                                                                 //5 buttons        => 100%
-                  LocationAccess(RC_LW_OCARINA_MEMORY_GAME,       {[]{return logic->IsChild && logic->Ocarina && logic->OcarinaButtons >= 5;}}),
-                  LocationAccess(RC_LW_TARGET_IN_WOODS,           {[]{return logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT);}}),
-                  LocationAccess(RC_LW_DEKU_SCRUB_NEAR_BRIDGE,    {[]{return logic->IsChild && logic->CanStunDeku;}}),
-                  LocationAccess(RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE, {[]{return logic->CanPlantBugs && logic->CanChildAttack;}}),
-                  LocationAccess(RC_LW_GOSSIP_STONE,              {[]{return true;}}),
+                  LOCATION(RC_LW_OCARINA_MEMORY_GAME,       logic->IsChild && logic->Ocarina && logic->OcarinaButtons >= 5),
+                  LOCATION(RC_LW_TARGET_IN_WOODS,           logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)),
+                  LOCATION(RC_LW_DEKU_SCRUB_NEAR_BRIDGE,    logic->IsChild && logic->CanStunDeku),
+                  LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE, logic->CanPlantBugs && logic->CanChildAttack),
+                  LOCATION(RC_LW_GOSSIP_STONE,              true),
                 }, {
                   //Exits
                   Entrance(RR_LW_FOREST_EXIT,           {[]{return true;}}),
@@ -151,10 +151,10 @@ void AreaTable_Init_LostWoods() {
                   EventAccess(&logic->ButterflyFairy, {[]{return logic->ButterflyFairy || logic->CanUse(RG_STICKS);}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, {[]{return logic->IsChild && logic->CanStunDeku;}}),
-                  LocationAccess(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,  {[]{return logic->IsChild && logic->CanStunDeku;}}),
-                  LocationAccess(RC_LW_GS_ABOVE_THEATER,                   {[]{return logic->IsAdult && logic->AtNight && ((CanPlantBean(RR_LW_BEYOND_MIDO) && logic->CanAdultAttack) || (randoCtx->GetTrickOption(RT_LW_GS_BEAN) && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->HasBombchus || logic->CanUse(RG_DINS_FIRE)))) && logic->CanGetNightTimeGS;}}),
-                  LocationAccess(RC_LW_GS_BEAN_PATCH_NEAR_THEATER,         {[]{return logic->CanPlantBugs && (logic->CanChildAttack || (randoCtx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF) && logic->DekuShield));}}),
+                  LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, logic->IsChild && logic->CanStunDeku),
+                  LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,  logic->IsChild && logic->CanStunDeku),
+                  LOCATION(RC_LW_GS_ABOVE_THEATER,                   logic->IsAdult && logic->AtNight && ((CanPlantBean(RR_LW_BEYOND_MIDO) && logic->CanAdultAttack) || (randoCtx->GetTrickOption(RT_LW_GS_BEAN) && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->HasBombchus || logic->CanUse(RG_DINS_FIRE)))) && logic->CanGetNightTimeGS),
+                  LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_THEATER,         logic->CanPlantBugs && (logic->CanChildAttack || (randoCtx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF) && logic->DekuShield))),
                 }, {
                   //Exits
                   Entrance(RR_LW_FOREST_EXIT,   {[]{return true;}}),
@@ -166,11 +166,11 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_LW_NEAR_SHORTCUTS_GROTTO] = Area("LW Near Shortcuts Grotto", "LW Near Shortcuts Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST,         {[]{return true;}}),
-                  LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,          {[]{return logic->HasBottle;}}),
-                  LocationAccess(RC_LW_NEAR_SHORTCUTS_GOSSIP_STONE,         {[]{return true;}}),
-                  LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT,  {[]{return logic->CanBreakLowerBeehives;}}),
-                  LocationAccess(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT, {[]{return logic->CanBreakLowerBeehives;}}),
+                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST,         true),
+                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,          logic->HasBottle),
+                  LOCATION(RC_LW_NEAR_SHORTCUTS_GOSSIP_STONE,         true),
+                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT,  logic->CanBreakLowerBeehives),
+                  LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT, logic->CanBreakLowerBeehives),
                 }, {
                   //Exits
                   Entrance(RR_THE_LOST_WOODS, {[]{return true;}}),
@@ -178,8 +178,8 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_DEKU_THEATER] = Area("Deku Theater", "Deku Theater", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_DEKU_THEATER_SKULL_MASK,    {[]{return logic->IsChild && logic->SkullMask;}}),
-                  LocationAccess(RC_DEKU_THEATER_MASK_OF_TRUTH, {[]{return logic->IsChild && logic->MaskOfTruth;}}),
+                  LOCATION(RC_DEKU_THEATER_SKULL_MASK,    logic->IsChild && logic->SkullMask),
+                  LOCATION(RC_DEKU_THEATER_MASK_OF_TRUTH, logic->IsChild && logic->MaskOfTruth),
                 }, {
                   //Exits
                   Entrance(RR_LW_BEYOND_MIDO, {[]{return true;}}),
@@ -187,9 +187,9 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_LW_SCRUBS_GROTTO] = Area("LW Scrubs Grotto", "LW Scrubs Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_LW_DEKU_SCRUB_GROTTO_REAR,    {[]{return logic->CanStunDeku;}}),
-                  LocationAccess(RC_LW_DEKU_SCRUB_GROTTO_FRONT,   {[]{return logic->CanStunDeku;}}),
-                  LocationAccess(RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE, {[]{return logic->CanBreakUpperBeehives;}}),
+                  LOCATION(RC_LW_DEKU_SCRUB_GROTTO_REAR,    logic->CanStunDeku),
+                  LOCATION(RC_LW_DEKU_SCRUB_GROTTO_FRONT,   logic->CanStunDeku),
+                  LOCATION(RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE, logic->CanBreakUpperBeehives),
                 }, {
                   //Exits
                   Entrance(RR_LW_BEYOND_MIDO, {[]{return true;}}),
@@ -207,12 +207,12 @@ void AreaTable_Init_LostWoods() {
                   EventAccess(&logic->GossipStoneFairy, {[]{return logic->GossipStoneFairy || logic->CanSummonGossipFairyWithoutSuns;}}),
                 }, {
                   //Locations
-                  LocationAccess(RC_SONG_FROM_SARIA,             {[]{return logic->IsChild && logic->ZeldasLetter;}}),
-                  LocationAccess(RC_SHEIK_IN_FOREST,             {[]{return logic->IsAdult;}}),
-                  LocationAccess(RC_SFM_GS,                      {[]{return logic->IsAdult && logic->HookshotOrBoomerang && logic->AtNight && logic->CanGetNightTimeGS;}}),
-                  LocationAccess(RC_SFM_MAZE_LOWER_GOSSIP_STONE, {[]{return true;}}),
-                  LocationAccess(RC_SFM_MAZE_UPPER_GOSSIP_STONE, {[]{return true;}}),
-                  LocationAccess(RC_SFM_SARIA_GOSSIP_STONE,      {[]{return true;}}),
+                  LOCATION(RC_SONG_FROM_SARIA,             logic->IsChild && logic->ZeldasLetter),
+                  LOCATION(RC_SHEIK_IN_FOREST,             logic->IsAdult),
+                  LOCATION(RC_SFM_GS,                      logic->IsAdult && logic->HookshotOrBoomerang && logic->AtNight && logic->CanGetNightTimeGS),
+                  LOCATION(RC_SFM_MAZE_LOWER_GOSSIP_STONE, true),
+                  LOCATION(RC_SFM_MAZE_UPPER_GOSSIP_STONE, true),
+                  LOCATION(RC_SFM_SARIA_GOSSIP_STONE,      true),
                 }, {
                   //Exits
                   Entrance(RR_SFM_ENTRYWAY,           {[]{return true;}}),
@@ -231,7 +231,7 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_SFM_WOLFOS_GROTTO] = Area("SFM Wolfos Grotto", "SFM Wolfos Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_SFM_WOLFOS_GROTTO_CHEST, {[]{return logic->IsAdult || logic->Slingshot || logic->Sticks || logic->KokiriSword || logic->CanUse(RG_DINS_FIRE) || logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD);}}),
+                  LOCATION(RC_SFM_WOLFOS_GROTTO_CHEST, logic->IsAdult || logic->Slingshot || logic->Sticks || logic->KokiriSword || logic->CanUse(RG_DINS_FIRE) || logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)),
                 }, {
                   //Exits
                   Entrance(RR_SFM_ENTRYWAY, {[]{return true;}}),
@@ -239,9 +239,9 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_SFM_STORMS_GROTTO] = Area("SFM Storms Grotto", "SFM Storms Grotto", RA_NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_SFM_DEKU_SCRUB_GROTTO_REAR,  {[]{return logic->CanStunDeku;}}),
-                  LocationAccess(RC_SFM_DEKU_SCRUB_GROTTO_FRONT, {[]{return logic->CanStunDeku;}}),
-                  LocationAccess(RC_SFM_STORMS_GROTTO_BEEHIVE,   {[]{return logic->CanBreakUpperBeehives;}}),
+                  LOCATION(RC_SFM_DEKU_SCRUB_GROTTO_REAR,  logic->CanStunDeku),
+                  LOCATION(RC_SFM_DEKU_SCRUB_GROTTO_FRONT, logic->CanStunDeku),
+                  LOCATION(RC_SFM_STORMS_GROTTO_BEEHIVE,   logic->CanBreakUpperBeehives),
                 }, {
                   //Exits
                   Entrance(RR_SACRED_FOREST_MEADOW, {[]{return true;}}),
@@ -249,7 +249,7 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[RR_LW_BRIDGE_FROM_FOREST] = Area("LW Bridge From Forest", "Lost Woods", RA_THE_LOST_WOODS, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(RC_LW_GIFT_FROM_SARIA, {[]{return true;}}),
+                  LOCATION(RC_LW_GIFT_FROM_SARIA, true),
                 }, {
                   //Exits
                   Entrance(RR_LW_BRIDGE, {[]{return true;}}),

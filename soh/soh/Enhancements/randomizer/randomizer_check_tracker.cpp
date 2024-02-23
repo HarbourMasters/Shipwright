@@ -5,6 +5,7 @@
 #include "dungeon.h"
 #include "../../OTRGlobals.h"
 #include "../../UIWidgets.hpp"
+#include "3drando/location_access.hpp"
 
 #include <string>
 #include <vector>
@@ -895,6 +896,8 @@ void CheckTrackerWindow::DrawElement() {
         return;
     }
 
+    AreaTable_Init();
+
     ImGui::TableNextRow(0, headerHeight);
     ImGui::TableNextColumn();
     UIWidgets::EnhancementCheckbox(
@@ -1493,6 +1496,19 @@ void DrawLocation(RandomizerCheck rc) {
         ImGui::Text(" (%s)", txt.c_str());
         ImGui::PopStyleColor();
     }
+
+    if (CVarGetInteger("gCheckTrackerOptionShowLogic", 0)) {
+        std::vector<LocationAccess> locationsInRegion = areaTable[itemLoc->GetParentRegionKey()].locations;
+        for (auto& locationInRegion : locationsInRegion) {
+            if (locationInRegion.GetLocation() == rc) {
+                std::string conditionStr = locationInRegion.GetConditionStr();
+                if (conditionStr != "true") {
+                    UIWidgets::InsertHelpHoverText(conditionStr);
+                }
+                return;
+            }
+        }
+    }
 }
 
 static std::set<std::string> rainbowCVars = {
@@ -1630,6 +1646,8 @@ void CheckTrackerSettingsWindow::DrawElement() {
         RecalculateAreaTotals();
     }
     UIWidgets::Tooltip("If enabled, will show GS locations in the tracker regardless of tokensanity settings.");
+    UIWidgets::EnhancementCheckbox("Show Logic", "gCheckTrackerOptionShowLogic");
+    UIWidgets::Tooltip("If enabled, will show a check's logic when hovering over it.");
 
     ImGui::TableNextColumn();
 
