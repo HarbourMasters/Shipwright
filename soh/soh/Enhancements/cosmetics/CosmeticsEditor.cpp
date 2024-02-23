@@ -402,7 +402,7 @@ void SetMarginAll(const char* ButtonName, bool SetActivated) {
         for (auto cvarName : MarginCvarList) {
             std::string cvarPosType = std::string(cvarName).append("PosType");
             std::string cvarNameMargins = std::string(cvarName).append("UseMargins");
-            if (CVarGetInteger(cvarPosType.c_str(),0) <= 2 && SetActivated) { //Our element is not Hidden or Non anchor
+            if (CVarGetInteger(cvarPosType.c_str(),0) <= ANCHOR_RIGHT && SetActivated) { //Our element is not Hidden or Non anchor
                 for (int i = 0; i < arrayLengthNonMargin; i++){
                     if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType.c_str(), 0) == ORIGINAL_LOCATION)) { //Our element is both in original position and do not have anchor by default so we skip it.
                         CVarSetInteger(cvarNameMargins.c_str(), false); //force set off
@@ -1208,11 +1208,11 @@ void C_Button_Dropdown(const char* Header_Title, const char* Table_ID, const cha
             DrawPositionsRadioBoxes(Slider_ID);
             s16 Min_X_CU = 0;
             s16 Max_X_CU = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVarGetInteger(Int_Type,0) == 2){
+            if(CVarGetInteger(Int_Type,0) == ANCHOR_RIGHT){
                 Max_X_CU = 294;
-            } else if(CVarGetInteger(Int_Type,0) == 3){
+            } else if(CVarGetInteger(Int_Type,0) == ANCHOR_NONE){
                 Max_X_CU = ImGui::GetWindowViewport()->Size.x/2;
-            } else if(CVarGetInteger(Int_Type,0) == 4){
+            } else if(CVarGetInteger(Int_Type,0) == HIDDEN){
                 Min_X_CU = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
             DrawPositionSlider(Slider_ID, 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CU, Max_X_CU);

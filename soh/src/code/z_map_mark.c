@@ -164,6 +164,7 @@ void MapMark_DrawForDungeon(PlayState* play) {
                     } else if (CVarGetInteger("gMinimapPosType", 0) == ANCHOR_NONE) {
                         rectLeft = markPointX+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic;
                     } else if (CVarGetInteger("gMinimapPosType", 0) == HIDDEN) {
+                    } else if (CVarGetInteger("gMinimapPosType", 0) == HIDDEN) {
                         rectLeft = -9999;
                     }
                 } else {
