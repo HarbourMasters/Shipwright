@@ -482,118 +482,118 @@ void InputViewerSettingsWindow::DrawElement() {
             UIWidgets::EnhancementCheckbox("Show A-Button Layers", "gInputViewer.ABtn", false, "",
                                            UIWidgets::CheckboxGraphics::Checkmark, true);
             if (useIndividualOutlines && CVarGetInteger("gInputViewer.ABtn", 1)) {
-                ImGui::Indent(16.0f);
+                ImGui::Indent();
                 UIWidgets::EnhancementCombobox("gInputViewer.ABtnOutlineMode", buttonOutlineOptionsVerbose,
                                                BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent(16.0f);
+                ImGui::Unindent();
             }
             // gInputViewer.BBtn
             UIWidgets::EnhancementCheckbox("Show B-Button Layers", "gInputViewer.BBtn", false, "",
                                            UIWidgets::CheckboxGraphics::Checkmark, true);
             if (useIndividualOutlines && CVarGetInteger("gInputViewer.BBtn", 1)) {
-                ImGui::Indent(16.0f);
+                ImGui::Indent();
                 UIWidgets::EnhancementCombobox("gInputViewer.BBtnOutlineMode", buttonOutlineOptionsVerbose,
                                                BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent(16.0f);
+                ImGui::Unindent();
             }
             // gInputViewer.CUp
             UIWidgets::EnhancementCheckbox("Show C-Up Layers", "gInputViewer.CUp", false, "",
                                            UIWidgets::CheckboxGraphics::Checkmark, true);
             if (useIndividualOutlines && CVarGetInteger("gInputViewer.CUp", 1)) {
-                ImGui::Indent(16.0f);
+                ImGui::Indent();
                 UIWidgets::EnhancementCombobox("gInputViewer.CUpOutlineMode", buttonOutlineOptionsVerbose,
                                                BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent(16.0f);
+                ImGui::Unindent();
             }
             // gInputViewer.CRight
             UIWidgets::EnhancementCheckbox("Show C-Right Layers", "gInputViewer.CRight", false, "",
                                            UIWidgets::CheckboxGraphics::Checkmark, true);
             if (useIndividualOutlines && CVarGetInteger("gInputViewer.CRight", 1)) {
-                ImGui::Indent(16.0f);
+                ImGui::Indent();
                 UIWidgets::EnhancementCombobox("gInputViewer.CRightOutlineMode", buttonOutlineOptionsVerbose,
                                                BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent(16.0f);
+                ImGui::Unindent();
             }
             // gInputViewer.CDown
             UIWidgets::EnhancementCheckbox("Show C-Down Layers", "gInputViewer.CDown", false, "",
                                            UIWidgets::CheckboxGraphics::Checkmark, true);
             if (useIndividualOutlines && CVarGetInteger("gInputViewer.CDown", 1)) {
-                ImGui::Indent(16.0f);
+                ImGui::Indent();
                 UIWidgets::EnhancementCombobox("gInputViewer.CDownOutlineMode", buttonOutlineOptionsVerbose,
                                                BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent(16.0f);
+                ImGui::Unindent();
             }
             // gInputViewer.CLeft
             UIWidgets::EnhancementCheckbox("Show C-Left Layers", "gInputViewer.CLeft", false, "",
                                            UIWidgets::CheckboxGraphics::Checkmark, true);
             if (useIndividualOutlines && CVarGetInteger("gInputViewer.CLeft", 1)) {
-                ImGui::Indent(16.0f);
+                ImGui::Indent();
                 UIWidgets::EnhancementCombobox("gInputViewer.CLeftOutlineMode", buttonOutlineOptionsVerbose,
                                                BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent(16.0f);
+                ImGui::Unindent();
             }
             // gInputViewer.LBtn
             UIWidgets::EnhancementCheckbox("Show L-Button Layers", "gInputViewer.LBtn", false, "",
                                            UIWidgets::CheckboxGraphics::Checkmark, true);
             if (useIndividualOutlines && CVarGetInteger("gInputViewer.LBtn", 1)) {
-                ImGui::Indent(16.0f);
+                ImGui::Indent();
                 UIWidgets::EnhancementCombobox("gInputViewer.LBtnOutlineMode", buttonOutlineOptionsVerbose,
                                                BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent(16.0f);
+                ImGui::Unindent();
             }
             // gInputViewer.RBtn
             UIWidgets::EnhancementCheckbox("Show R-Button Layers", "gInputViewer.RBtn", false, "",
                                            UIWidgets::CheckboxGraphics::Checkmark, true);
             if (useIndividualOutlines && CVarGetInteger("gInputViewer.RBtn", 1)) {
-                ImGui::Indent(16.0f);
+                ImGui::Indent();
                 UIWidgets::EnhancementCombobox("gInputViewer.RBtnOutlineMode", buttonOutlineOptionsVerbose,
                                                BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent(16.0f);
+                ImGui::Unindent();
             }
             // gInputViewer.ZBtn
             UIWidgets::EnhancementCheckbox("Show Z-Button Layers", "gInputViewer.ZBtn", false, "",
                                            UIWidgets::CheckboxGraphics::Checkmark, true);
             if (useIndividualOutlines && CVarGetInteger("gInputViewer.ZBtn", 1)) {
-                ImGui::Indent(16.0f);
+                ImGui::Indent();
                 UIWidgets::EnhancementCombobox("gInputViewer.ZBtnOutlineMode", buttonOutlineOptionsVerbose,
                                                BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent(16.0f);
+                ImGui::Unindent();
             }
             // gInputViewer.StartBtn
             UIWidgets::EnhancementCheckbox("Show Start Button Layers", "gInputViewer.StartBtn", false, "",
                                            UIWidgets::CheckboxGraphics::Checkmark, true);
             if (useIndividualOutlines && CVarGetInteger("gInputViewer.StartBtn", 1)) {
-                ImGui::Indent(16.0f);
+                ImGui::Indent();
                 UIWidgets::EnhancementCombobox("gInputViewer.StartBtnOutlineMode", buttonOutlineOptionsVerbose,
                                                BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent(16.0f);
+                ImGui::Unindent();
             }
             // gInputViewer.Dpad
             UIWidgets::EnhancementCheckbox("Show D-Pad Layers", "gInputViewer.Dpad", false, "",
                                            UIWidgets::CheckboxGraphics::Checkmark, false);
             if (useIndividualOutlines && CVarGetInteger("gInputViewer.Dpad", 0)) {
-                ImGui::Indent(16.0f);
+                ImGui::Indent();
                 UIWidgets::EnhancementCombobox("gInputViewer.DpadOutlineMode", buttonOutlineOptionsVerbose,
                                                BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent(16.0f);
+                ImGui::Unindent();
             }
             // gInputViewer.Mod1
             UIWidgets::EnhancementCheckbox("Show Modifier Button 1 Layers", "gInputViewer.Mod1", false, "",
                                            UIWidgets::CheckboxGraphics::Checkmark, false);
             if (useIndividualOutlines && CVarGetInteger("gInputViewer.Mod1", 0)) {
-                ImGui::Indent(16.0f);
+                ImGui::Indent();
                 UIWidgets::EnhancementCombobox("gInputViewer.Mod1OutlineMode", buttonOutlineOptionsVerbose,
                                                BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent(16.0f);
+                ImGui::Unindent();
             }
             // gInputViewer.Mod2
             UIWidgets::EnhancementCheckbox("Show Modifier Button 2 Layers", "gInputViewer.Mod2", false, "",
                                            UIWidgets::CheckboxGraphics::Checkmark, false);
             if (useIndividualOutlines && CVarGetInteger("gInputViewer.Mod2", 0)) {
-                ImGui::Indent(16.0f);
+                ImGui::Indent();
                 UIWidgets::EnhancementCombobox("gInputViewer.Mod2OutlineMode", buttonOutlineOptionsVerbose,
                                                BUTTON_OUTLINE_NOT_PRESSED);
-                ImGui::Unindent(16.0f);
+                ImGui::Unindent();
             }
 
             UIWidgets::PaddedSeparator(true, true);
