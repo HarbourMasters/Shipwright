@@ -133,8 +133,8 @@ void AreaTable_Init_ShadowTemple() {
                   LOCATION(RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_UPPER_CHEST,  (randoCtx->GetTrickOption(RT_SHADOW_UMBRELLA) && logic->HoverBoots) || logic->GoronBracelet),
                   LOCATION(RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_SWITCH_CHEST, (randoCtx->GetTrickOption(RT_SHADOW_UMBRELLA) && logic->HoverBoots) || logic->GoronBracelet),
                   LOCATION(RC_SHADOW_TEMPLE_MQ_INVISIBLE_SPIKES_CHEST,      logic->CanJumpslash && logic->HoverBoots && logic->SmallKeys(RR_SHADOW_TEMPLE, 3) && ((randoCtx->GetTrickOption(RT_LENS_SHADOW_MQ) && randoCtx->GetTrickOption(RT_LENS_SHADOW_MQ_PLATFORM)) || logic->CanUse(RG_LENS_OF_TRUTH))),
-                  LocationAccess(RC_SHADOW_TEMPLE_MQ_STALFOS_ROOM_CHEST,          {[]{return (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)) && logic->HoverBoots && logic->SmallKeys(RR_SHADOW_TEMPLE, 3) && logic->Hookshot && ((randoCtx->GetTrickOption(RT_LENS_SHADOW_MQ) &&
-                   randoCtx->GetTrickOption(RT_LENS_SHADOW_MQ_INVISIBLE_BLADES) && randoCtx->GetTrickOption(RT_LENS_SHADOW_MQ_PLATFORM)) || logic->CanUse(RG_LENS_OF_TRUTH));}}),
+                  LOCATION(RC_SHADOW_TEMPLE_MQ_STALFOS_ROOM_CHEST,          (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)) && logic->HoverBoots && logic->SmallKeys(RR_SHADOW_TEMPLE, 3) && logic->Hookshot && ((randoCtx->GetTrickOption(RT_LENS_SHADOW_MQ) &&
+                   randoCtx->GetTrickOption(RT_LENS_SHADOW_MQ_INVISIBLE_BLADES) && randoCtx->GetTrickOption(RT_LENS_SHADOW_MQ_PLATFORM)) || logic->CanUse(RG_LENS_OF_TRUTH))),
                   LOCATION(RC_SHADOW_TEMPLE_MQ_GS_FALLING_SPIKES_ROOM,      logic->Hookshot || (randoCtx->GetTrickOption(RT_SHADOW_UMBRELLA_GS) && logic->HoverBoots)),
   }, {
                   //Exits

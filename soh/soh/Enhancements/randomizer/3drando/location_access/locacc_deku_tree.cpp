@@ -179,10 +179,10 @@ void AreaTable_Init_DekuTree() {
   areaTable[RR_DEKU_TREE_MQ_COMPASS_ROOM] = Area("Deku Tree MQ Compass Room", "Deku Tree", RA_DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LOCATION(RC_DEKU_TREE_MQ_COMPASS_CHEST,   true),
-                  LocationAccess(RC_DEKU_TREE_MQ_GS_COMPASS_ROOM, {[]{return logic->HookshotOrBoomerang &&
+                  LOCATION(RC_DEKU_TREE_MQ_GS_COMPASS_ROOM, logic->HookshotOrBoomerang &&
                                                                                Here(RR_DEKU_TREE_MQ_COMPASS_ROOM, []{return logic->HasBombchus ||
                                                                                (logic->Bombs && (logic->CanUse(RG_SONG_OF_TIME) || logic->IsAdult)) ||
-                                                                               (logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER) && (logic->CanUse(RG_SONG_OF_TIME) || randoCtx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS)));});}}),
+                                                                               (logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER) && (logic->CanUse(RG_SONG_OF_TIME) || randoCtx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS)));})),
   }, {
                   //Exits
                   Entrance(RR_DEKU_TREE_MQ_LOBBY, {[]{return true;}}),

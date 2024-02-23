@@ -202,7 +202,7 @@ void AreaTable_Init_HyruleField() {
                   LOCATION(RC_LH_ADULT_FISH_14, logic->CanGetAdultFish),
                   LOCATION(RC_LH_ADULT_FISH_15, logic->CanGetAdultFish),
                   LOCATION(RC_LH_ADULT_LOACH,   logic->CanGetAdultFish),
-                  LocationAccess(RC_FISHING_POLE_HINT,{[]{return true;}}),
+                  LOCATION(RC_FISHING_POLE_HINT,true),
                 }, {
                   //Exits
                   Entrance(RR_LH_FISHING_ISLAND, {[]{return true;}}),
