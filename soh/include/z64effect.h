@@ -87,7 +87,7 @@ typedef struct {
     /* 0x198 */ s32 unkFlag;
     /* 0x19C */ s32 calcMode;
     /* 0x1A0 */ TrailType trailType; // 1 is swords, 2 is boomerang, 3 is bombchu, 0 is rest
-} EffectBlureInit1; // size = 0x1A0
+} EffectBlureInit1;                  // size = 0x1A0
 
 typedef struct {
     /* 0x00 */ s32 calcMode;
@@ -102,9 +102,9 @@ typedef struct {
     /* 0x1A */ u8 drawMode; // 0: simple; 1: simple with alt colors; 2+: smooth
     /* 0x1B */ u8 mode4Param;
     /* 0x1C */ Color_RGBA8 altPrimColor; // used with drawMode 1
-    /* 0x20 */ Color_RGBA8 altEnvColor; // used with drawMode 1
-    /* 0x1A0 */ TrailType trailType; // 1 is swords, 2 is boomerang, 3 is bombchu, 4 is stick, 0 is rest
-} EffectBlureInit2; // size = 0x24
+    /* 0x20 */ Color_RGBA8 altEnvColor;  // used with drawMode 1
+    /* 0x1A0 */ TrailType trailType;     // 1 is swords, 2 is boomerang, 3 is bombchu, 4 is stick, 0 is rest
+} EffectBlureInit2;                      // size = 0x24
 
 typedef struct {
     /* 0x000 */ EffectBlureElement elements[16];
@@ -120,11 +120,12 @@ typedef struct {
     /* 0x19E */ u8 numElements; // "now_edge_num"
     /* 0x19F */ u8 elemDuration;
     /* 0x1A0 */ u8 unkFlag;
-    /* 0x1A1 */ u8 drawMode; // 0: simple; 1: simple with alt colors; 2+: smooth
-    /* 0x1A2 */ Color_RGBA8 altPrimColor; // used with drawMode 1
-    /* 0x1A6 */ Color_RGBA8 altEnvColor; // used with drawMode 1
-    /* 0x1A0 */ TrailType trailType; // 1 is default swords, 2 is boomerang, 3 is bombchu, 0 is rest. 4 is Kokiri, 5 is Master, 6 is BGS, 7 is Stick, 8 is Hammer.
-} EffectBlure; // size = 0x1AC
+    /* 0x1A1 */ u8 drawMode;                    // 0: simple; 1: simple with alt colors; 2+: smooth
+    /* 0x1A2 */ Color_RGBA8 altPrimColor;       // used with drawMode 1
+    /* 0x1A6 */ Color_RGBA8 altEnvColor;        // used with drawMode 1
+    /* 0x1A0 */ TrailType trailType; // 1 is default swords, 2 is boomerang, 3 is bombchu, 0 is rest. 4 is
+                                                // Kokiri, 5 is Master, 6 is BGS, 7 is Stick, 8 is Hammer.
+} EffectBlure;                                  // size = 0x1AC
 
 typedef struct {
     /* 0x00 */ f32 initialSpeed;
@@ -152,7 +153,7 @@ typedef struct {
     /* 0x2C */ u8 duration;
     /* 0x2E */ LightPoint lightPoint;
     /* 0x3C */ s32 lightDecay; // halves light radius every frame when set to 1
-} EffectShieldParticleInit; // size = 0x40
+} EffectShieldParticleInit;    // size = 0x40
 
 typedef struct {
     /* 0x000 */ EffectShieldParticleElement elements[16];
@@ -173,7 +174,7 @@ typedef struct {
     /* 0x1B2 */ LightInfo lightInfo;
     /* 0x1C0 */ LightNode* lightNode;
     /* 0x1C4 */ s32 lightDecay; // halves light radius every frame when set to 1
-} EffectShieldParticle; // size = 0x1C8
+} EffectShieldParticle;         // size = 0x1C8
 
 typedef struct {
     /* 0x0000 */ struct PlayState* play;
@@ -235,12 +236,12 @@ typedef struct EffectSs {
     /* 0x18 */ Vec3f accel;
     /* 0x24 */ EffectSsUpdateFunc update;
     /* 0x28 */ EffectSsDrawFunc draw;
-    /* 0x2C */ Vec3f vec; // usage specific per effect
-    /* 0x38 */ void* gfx; // mostly used for display lists, sometimes textures
+    /* 0x2C */ Vec3f vec;    // usage specific per effect
+    /* 0x38 */ void* gfx;    // mostly used for display lists, sometimes textures
     /* 0x3C */ Actor* actor; // interfacing actor, usually the actor that spawned the effect
     /* 0x40 */ s16 regs[13]; // specific per effect
     /* 0x5A */ u16 flags;
-    /* 0x5C */ s16 life; // -1 means this entry is free
+    /* 0x5C */ s16 life;    // -1 means this entry is free
     /* 0x5E */ u8 priority; // Lower value means higher priority
     /* 0x5F */ u8 type;
     u32 epoch;
@@ -271,7 +272,7 @@ typedef struct {
 #define DEFINE_EFFECT_SS_UNSET(enum) enum,
 
 typedef enum {
-    #include "tables/effect_ss_table.h"
+#include "tables/effect_ss_table.h"
     /* 0x25 */ EFFECT_SS_TYPE_MAX // originally "EFFECT_SS2_TYPE_LAST_LABEL"
 } EffectSsType;
 
