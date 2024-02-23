@@ -398,7 +398,6 @@ void HealthMeter_Draw(PlayState* play) {
     s32 ddHeartCountMinusOne = gSaveContext.isDoubleDefenseAcquired ? totalHeartCount - 1 : -1;
     f32 HeartsScale = 0.7f; 
     if (CVarGetInteger("gHeartsCountPosType", 0) != ORIGINAL_LOCATION) {
-    if (CVarGetInteger("gHeartsCountPosType", 0) != ANCHOR_NONE) {
         HeartsScale = CVarGetFloat("gHeartsCountScale", 0.7f);
     }
     static u32 epoch = 0;
