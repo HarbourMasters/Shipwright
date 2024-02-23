@@ -20,6 +20,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Tk/z_en_tk.h"
 #include "src/overlays/actors/ovl_En_Fu/z_en_fu.h"
 #include "src/overlays/actors/ovl_Bg_Spot02_Objects/z_bg_spot02_objects.h"
+#include "src/overlays/actors/ovl_Bg_Hidan_Kousi/z_bg_hidan_kousi.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
@@ -88,7 +89,8 @@ void EnZl4_SkipToGivingZeldasLetter(EnZl4* enZl4, PlayState* play) {
 static int successChimeCooldown = 0;
 void RateLimitedSuccessChime() {
     if (successChimeCooldown == 0) {
-        func_80078884(NA_SE_SY_CORRECT_CHIME);
+        // Currently disabled, need to find a better way to do this, while being consistent with vanilla
+        // func_80078884(NA_SE_SY_CORRECT_CHIME);
         successChimeCooldown = 120;
     }
 }
@@ -282,25 +284,31 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
                         RateLimitedSuccessChime();
                         break;
                     }
-                    // case ACTOR_PLAYER: // This might cause issues
+                    case ACTOR_BG_HIDAN_KOUSI: {
+                        BgHidanKousi* switchActor = static_cast<BgHidanKousi*>(opt);
+                        BgHidanKousi_SetupAction(switchActor, func_80889C18);
+                        *should = false;
+                        RateLimitedSuccessChime();
+                        break;
+                    }
+                    case ACTOR_BG_HIDAN_FWBIG: {
+                        *should = false;
+                        break;
+                    }
                     case ACTOR_EN_TA:
                     case ACTOR_DOOR_SHUTTER:
+                    case ACTOR_BG_ICE_SHUTTER:
+                    case ACTOR_OBJ_LIGHTSWITCH:
                     case ACTOR_EN_BOX:
                     case ACTOR_OBJ_SYOKUDAI:
                     case ACTOR_OBJ_TIMEBLOCK:
                     case ACTOR_EN_PO_SISTERS:
-                    // Prop
                     case ACTOR_OBJ_ICE_POLY:
                     case ACTOR_BG_YDAN_MARUTA:
                     case ACTOR_BG_SPOT18_SHUTTER:
                     case ACTOR_BG_SPOT05_SOKO:
                     case ACTOR_BG_SPOT18_BASKET:
-                    // BG
-                    // case ACTOR_BG_YDAN_SP:
-                    // case ACTOR_BG_YDAN_HASI:
-                    // case ACTOR_BG_DODOAGO:
-                    // case ACTOR_BG_DDAN_KD:
-                    // case ACTOR_BG_DDAN_JD:
+                    case ACTOR_BG_HIDAN_CURTAIN:
                         *should = false;
                         RateLimitedSuccessChime();
                         break;
@@ -684,14 +692,11 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     }
 
     if (actor->id == ACTOR_BG_SPOT02_OBJECTS && actor->params == 2) {
-        SPDLOG_INFO("Registering BG_SPOT02 hook");
         bgSpot02UpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
             Actor* innerActor = static_cast<Actor*>(innerActorRef);
             if (innerActor->id == ACTOR_BG_SPOT02_OBJECTS && innerActor->params == 2 && (CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO))) {
-                SPDLOG_INFO("on update BG_SPOT02 hook");
                 BgSpot02Objects* bgSpot02 = static_cast<BgSpot02Objects*>(innerActorRef);
                 if (bgSpot02->actionFunc == func_808ACC34) {
-                    SPDLOG_INFO("BGspot02 OVERRIDDEN");
                     bgSpot02->actionFunc = func_808AC908;
                     GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(bgSpot02UpdateHook);
                     GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot02KillHook);
