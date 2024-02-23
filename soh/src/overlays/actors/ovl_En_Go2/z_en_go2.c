@@ -142,7 +142,6 @@ typedef enum {
     /* 10 */ ENGO2_ANIM_10,
     /* 11 */ ENGO2_ANIM_11,
     /* 12 */ ENGO2_ANIM_12,
-    /* 13 */ ENGO2_ANIM_13, // Added to fix spinning goron issue for biggoron
 } EnGo2Animation;
 
 static AnimationInfo sAnimationInfo[] = {
@@ -152,7 +151,7 @@ static AnimationInfo sAnimationInfo[] = {
     { &gGoronAnim_002D80, 1.0f, 0.0f, -1.0f, 0x02, -8.0f }, { &gGoronAnim_00161C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
     { &gGoronAnim_001A00, 1.0f, 0.0f, -1.0f, 0x00, -8.0f }, { &gGoronAnim_0021D0, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
     { &gGoronAnim_004930, 0.0f, 0.0f, -1.0f, 0x01, -8.0f }, { &gGoronAnim_000750, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
-    { &gGoronAnim_000D5C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f }, { &gGoronAnim_004930, 0.0f, 1.0f, -1.0f, 0x01,  0.0f },
+    { &gGoronAnim_000D5C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
 };
 
 static EnGo2DustEffectData sDustEffectData[2][4] = {
@@ -284,15 +283,10 @@ s32 EnGo2_SpawnDust(EnGo2* this, u8 initialTimer, f32 scale, f32 scaleStep, s32 
 
 void EnGo2_GetItem(EnGo2* this, PlayState* play, s32 getItemId) {
     this->getItemId = getItemId;
-    func_8002F434(&this->actor, play, getItemId, this->actor.xzDistToPlayer + 1.0f,
-                  fabsf(this->actor.yDistToPlayer) + 1.0f);
-}
-
-void EnGo2_GetItemEntry(EnGo2* this, PlayState* play, GetItemEntry getItemEntry) {
-    this->getItemId = getItemEntry.getItemId;
-    this->getItemEntry = getItemEntry;
-    GiveItemEntryFromActor(&this->actor, play, getItemEntry, this->actor.xzDistToPlayer + 1.0f,
-                  fabsf(this->actor.yDistToPlayer) + 1.0f);
+    if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_GORON, true, this)) {
+        func_8002F434(&this->actor, play, getItemId, this->actor.xzDistToPlayer + 1.0f,
+                    fabsf(this->actor.yDistToPlayer) + 1.0f);
+    }
 }
 
 s32 EnGo2_GetDialogState(EnGo2* this, PlayState* play) {
@@ -335,7 +329,7 @@ u16 EnGo2_GoronFireGenericGetTextId(EnGo2* this) {
 u16 EnGo2_GetTextIdGoronCityRollingBig(PlayState* play, EnGo2* this) {
     if (Flags_GetInfTable(INFTABLE_11E)) {
         return 0x3013;
-    } else if (GameInteractor_Should(GI_VB_BE_ELIGIBLE_FOR_CHILD_ROLLING_GORON_REWARD, CUR_CAPACITY(UPG_BOMB_BAG) >= 2, this)
+    } else if (GameInteractor_Should(GI_VB_BE_ELIGIBLE_FOR_CHILD_ROLLING_GORON_REWARD, CUR_CAPACITY(UPG_BOMB_BAG) >= 20, this)
         && this->waypoint > 7 && this->waypoint < 12) {
         return 0x3012;
     } else {
@@ -351,14 +345,9 @@ s16 EnGo2_UpdateTalkStateGoronCityRollingBig(PlayState* play, EnGo2* this) {
             if (Message_ShouldAdvance(play)) {
                 if (this->actor.textId == 0x3012) {
                     this->actionFunc = EnGo2_SetupGetItem;
-                    if(GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_ROLLING_GORON_AS_CHILD, true, this)) {
-                        EnGo2_GetItem(this, play, CUR_CAPACITY(UPG_BOMB_BAG) == 30 ? GI_BOMB_BAG_40 : GI_BOMB_BAG_30);
-                    } else {
-                        this->actionFunc = EnGo2_SetGetItem;
-                    }
+                    EnGo2_GetItem(this, play, CUR_CAPACITY(UPG_BOMB_BAG) == 30 ? GI_BOMB_BAG_40 : GI_BOMB_BAG_30);
                     Message_CloseTextbox(play);
                     Flags_SetInfTable(INFTABLE_11E);
-                    Flags_SetRandomizerInf(RAND_INF_ROLLING_GORON_AS_CHILD);
                     return NPC_TALK_STATE_ACTION;
                 } else {
                     return NPC_TALK_STATE_ACTION;
@@ -511,9 +500,9 @@ u16 EnGo2_GetTextIdGoronCityLink(PlayState* play, EnGo2* this) {
         return overrideTextId;
     }
 
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
+    if (GameInteractor_Should(GI_VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE), NULL)) {
         return Flags_GetInfTable(INFTABLE_10F) ? 0x3042 : 0x3041;
-    } else if (CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)) {
+    } else if (GameInteractor_Should(GI_VB_GORONS_CONSIDER_TUNIC_COLLECTED, CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON), NULL)) {
         return Flags_GetInfTable(INFTABLE_SPOKE_TO_GORON_LINK) ? 0x3038 : 0x3037;
     } else if (Flags_GetInfTable(INFTABLE_STOPPED_GORON_LINKS_ROLLING)) {
         this->unk_20C = 0;
@@ -529,16 +518,9 @@ s16 EnGo2_UpdateTalkStateGoronCityLink(PlayState* play, EnGo2* this) {
         case TEXT_STATE_CLOSING:
             switch (this->actor.textId) {
                 case 0x3036:
-                    Flags_SetRandomizerInf(RAND_INF_ROLLING_GORON_AS_ADULT);
-                    this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
-                    if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_ROLLING_GORON_AS_ADULT, true, this)) {
-                        EnGo2_GetItem(this, play, GI_TUNIC_GORON);
-                        this->actionFunc = EnGo2_SetupGetItem;
-                        return NPC_TALK_STATE_ACTION;
-                    } else {
-                        this->actionFunc = EnGo2_SetGetItem;
-                        return this->interactInfo.talkState;
-                    }
+                    EnGo2_GetItem(this, play, GI_TUNIC_GORON);
+                    this->actionFunc = EnGo2_SetupGetItem;
+                    return NPC_TALK_STATE_ACTION;
                 case 0x3037:
                     Flags_SetInfTable(INFTABLE_SPOKE_TO_GORON_LINK);
                 default:
@@ -608,18 +590,14 @@ s16 EnGo2_UpdateTalkStateGoronDmtBiggoron(PlayState* play, EnGo2* this) {
     switch (EnGo2_GetDialogState(this, play)) {
         case TEXT_STATE_DONE:
             if (this->actor.textId == 0x305E) {
-                if (GameInteractor_Should(GI_VB_BIGGORON_CONSIDER_SWORD_COLLECTED, gSaveContext.bgsFlag, NULL)) {
-                    return NPC_TALK_STATE_IDLE;
-                }
-                Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_CLAIM_CHECK);
-                if (GameInteractor_Should(GI_VB_TRADE_CLAIM_CHECK, true, this)) {
+                if (!GameInteractor_Should(GI_VB_BIGGORON_CONSIDER_SWORD_COLLECTED, gSaveContext.bgsFlag, NULL)) {
+                    Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_CLAIM_CHECK);
                     EnGo2_GetItem(this, play, GI_SWORD_BGS);
                     this->actionFunc = EnGo2_SetupGetItem;
+                    return NPC_TALK_STATE_ACTION;
                 } else {
-                    this->actionFunc = EnGo2_SetGetItem;
+                    return NPC_TALK_STATE_IDLE;
                 }
-
-                return NPC_TALK_STATE_ACTION;
             } else {
                 return NPC_TALK_STATE_IDLE;
             }
@@ -645,12 +623,8 @@ s16 EnGo2_UpdateTalkStateGoronDmtBiggoron(PlayState* play, EnGo2* this) {
                 if ((this->actor.textId == 0x3054) || (this->actor.textId == 0x3055)) {
                     if (play->msgCtx.choiceIndex == 0) {
                         Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD);
-                        if (GameInteractor_Should(GI_VB_TRADE_BROKEN_SWORD, true, this)) {
-                            EnGo2_GetItem(this, play, GI_PRESCRIPTION);
-                            this->actionFunc = EnGo2_SetupGetItem;
-                        } else {
-                            this->actionFunc = EnGo2_SetGetItem;
-                        }
+                        EnGo2_GetItem(this, play, GI_PRESCRIPTION);
+                        this->actionFunc = EnGo2_SetupGetItem;
                         return NPC_TALK_STATE_ACTION;
                     }
                     this->actor.textId = 0x3056;
@@ -1056,7 +1030,10 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, PlayState* play, Player* player) {
             }
             player->actor.textId = this->actor.textId;
 
-        } else if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK) {
+        } else if (
+            !GameInteractor_Should(GI_VB_BIGGORON_CONSIDER_SWORD_COLLECTED, gSaveContext.bgsFlag, NULL) && 
+            (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK)
+        ) {
             if (func_8002F368(play) == EXCH_ITEM_CLAIM_CHECK) {
                 if (GameInteractor_Should(GI_VB_BIGGORON_CONSIDER_SWORD_FORGED, Environment_GetBgsDayCount() >= 3, NULL)) {
                     textId = 0x305E;
@@ -1193,8 +1170,10 @@ s32 EnGo2_IsCameraModified(EnGo2* this, PlayState* play) {
         (this->actor.params & 0x1F) == GORON_CITY_STAIRWELL || (this->actor.params & 0x1F) == GORON_DMT_BIGGORON ||
         (this->actor.params & 0x1F) == GORON_MARKET_BAZAAR) {
         return true;
-    } else if (GameInteractor_Should(GI_VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE), NULL) &&
-                CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)) {
+    } else if (
+        !GameInteractor_Should(GI_VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE), NULL) &&
+        GameInteractor_Should(GI_VB_GORONS_CONSIDER_TUNIC_COLLECTED, CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON), NULL)
+    ) {
         return true;
     } else {
         return false;
@@ -1251,8 +1230,10 @@ void EnGo2_SelectGoronWakingUp(EnGo2* this) {
             EnGo2_BiggoronWakingUp(this);
             break;
         case GORON_CITY_LINK:
-            if (GameInteractor_Should(GI_VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE), NULL) &&
-                CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)) {
+            if (
+                !GameInteractor_Should(GI_VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE), NULL) &&
+                GameInteractor_Should(GI_VB_GORONS_CONSIDER_TUNIC_COLLECTED, CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON), NULL)
+            ) {
                 EnGo2_WakingUp(this);
                 break;
             }
@@ -1349,25 +1330,10 @@ void EnGo2_WakeUp(EnGo2* this, PlayState* play) {
     }
     if ((this->actor.params & 0x1F) == GORON_DMT_BIGGORON) {
         OnePointCutscene_Init(play, 4200, -99, &this->actor, MAIN_CAM);
-        // There is an issue interpolating between ENGO2_ANIM_0 and ENGO2_ANIM_1/10, the goron
-        // is technically in the same position at the end of ANIM_0 and beginning of ANIM_1/10
-        // but something isn't getting translated correctly causing the 360 degree spin before
-        // then continuing the wake up animation like normal. One solution is to use ANIM_0
-        // which uses the same frame data as ANIM_1/10 but no morph frames, but only when the
-        // current animation frame is at 0, meaning no morphing is necessary anyway.
-        // ANIM_13 is ANIM_0 but with the startFrame and mode adjusted for biggoron.
-        if (this->skelAnime.curFrame == 0.0f && !CVarGetInteger("gUnfixGoronSpin", 0)) {
-            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_13);
-        } else {
-            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_10);
-        }
+        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_10);
         this->skelAnime.playSpeed = 0.5f;
     } else {
-        if (this->skelAnime.curFrame == 0.0f && !CVarGetInteger("gUnfixGoronSpin", 0)) {
-            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_0);
-        } else {
-            Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_1);
-        }
+        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_1);
         this->skelAnime.playSpeed = 1.0f;
     }
     this->actionFunc = func_80A46B40;
@@ -1589,14 +1555,13 @@ void EnGo2_Init(Actor* thisx, PlayState* play) {
     this->unk_216 = this->actor.shape.rot.z;
     this->trackingMode = NPC_TRACKING_NONE;
     this->path = Path_GetByIndex(play, (this->actor.params & 0x3E0) >> 5, 0x1F);
-    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     switch (this->actor.params & 0x1F) {
         case GORON_CITY_ENTRANCE:
         case GORON_CITY_ISLAND:
         case GORON_CITY_LOWEST_FLOOR:
         case GORON_CITY_STAIRWELL:
         case GORON_CITY_LOST_WOODS:
-            if (GameInteractor_Should(GI_VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE), NULL) && LINK_IS_ADULT) {
+            if (!GameInteractor_Should(GI_VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE), NULL) && LINK_IS_ADULT) {
                 Actor_Kill(&this->actor);
             }
             this->actionFunc = EnGo2_CurledUp;
@@ -1611,8 +1576,10 @@ void EnGo2_Init(Actor* thisx, PlayState* play) {
             if ((Flags_GetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED))) {
                 Path_CopyLastPoint(this->path, &this->actor.world.pos);
                 this->actor.home.pos = this->actor.world.pos;
-                if (GameInteractor_Should(GI_VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE), NULL) &&
-                    CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)) {
+                if (
+                    !GameInteractor_Should(GI_VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE), NULL) &&
+                    GameInteractor_Should(GI_VB_GORONS_CONSIDER_TUNIC_COLLECTED, CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON), NULL)
+                ) {
                     EnGo2_GetItemAnimation(this, play);
                 } else {
                     this->actionFunc = EnGo2_CurledUp;
@@ -1828,7 +1795,7 @@ void EnGo2_ReverseRolling(EnGo2* this, PlayState* play) {
 }
 
 void EnGo2_SetupGetItem(EnGo2* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play)) {
+    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_GORON, true, NULL)) {
         this->actor.parent = NULL;
         this->actionFunc = EnGo2_SetGetItem;
     } else {
@@ -1837,30 +1804,29 @@ void EnGo2_SetupGetItem(EnGo2* this, PlayState* play) {
 }
 
 void EnGo2_SetGetItem(EnGo2* this, PlayState* play) {
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play) || !GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_GORON, true, NULL)) {
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
-
-        if (GameInteractor_Should(GI_VB_EN_GO2_RESET_AFTER_GET_ITEM, true, this)) {
-            switch (this->getItemId) {
-                case GI_CLAIM_CHECK:
-                    Environment_ClearBgsDayCount();
-                    EnGo2_GetItemAnimation(this, play);
-                    return;
-                case GI_TUNIC_GORON:
-                    Flags_SetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED);
-                    EnGo2_GetItemAnimation(this, play);
-                    return;
-                case GI_SWORD_BGS:
+        switch (this->getItemId) {
+            case GI_CLAIM_CHECK:
+                Environment_ClearBgsDayCount();
+                EnGo2_GetItemAnimation(this, play);
+                return;
+            case GI_TUNIC_GORON:
+                Flags_SetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED);
+                EnGo2_GetItemAnimation(this, play);
+                return;
+            case GI_SWORD_BGS:
+                if (GameInteractor_Should(GI_VB_GIVE_ITEM_FROM_GORON, true, NULL)) {
                     gSaveContext.bgsFlag = true;
-                    break;
-                case GI_BOMB_BAG_30:
-                case GI_BOMB_BAG_40:
-                    EnGo2_RollingAnimation(this, play);
-                    this->actionFunc = EnGo2_GoronRollingBigContinueRolling;
-                    return;
-            }
-            this->actionFunc = func_80A46B40;
+                }
+                break;
+            case GI_BOMB_BAG_30:
+            case GI_BOMB_BAG_40:
+                EnGo2_RollingAnimation(this, play);
+                this->actionFunc = EnGo2_GoronRollingBigContinueRolling;
+                return;
         }
+        this->actionFunc = func_80A46B40;
     }
 }
 
@@ -1905,15 +1871,9 @@ void EnGo2_BiggoronEyedrops(EnGo2* this, PlayState* play) {
                 this->trackingMode = NPC_TRACKING_HEAD_AND_TORSO;
                 this->skelAnime.playSpeed = 0.0f;
                 this->skelAnime.curFrame = this->skelAnime.endFrame;
-
                 Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS);
-                if(GameInteractor_Should(GI_VB_TRADE_EYEDROPS, true, this)) {
-                    u32 getItemId = GI_CLAIM_CHECK;
-                    EnGo2_GetItem(this, play, getItemId);
-                    this->actionFunc = EnGo2_SetupGetItem;
-                } else {
-                    this->actionFunc = EnGo2_SetGetItem;
-                }
+                EnGo2_GetItem(this, play, GI_CLAIM_CHECK);
+                this->actionFunc = EnGo2_SetupGetItem;
                 this->goronState = 0;
             }
             break;

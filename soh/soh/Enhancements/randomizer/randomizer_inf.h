@@ -274,8 +274,6 @@ typedef enum {
     RAND_INF_LEARNED_EPONA_SONG,
     RAND_INF_DARUNIAS_JOY,
     RAND_INF_KING_ZORA_THAWED,
-    RAND_INF_ROLLING_GORON_AS_CHILD,
-    RAND_INF_ROLLING_GORON_AS_ADULT,
 
     // If you add anything to this list, you need to update the size of randomizerInf in z64save.h to be ceil(RAND_INF_MAX / 16)
 

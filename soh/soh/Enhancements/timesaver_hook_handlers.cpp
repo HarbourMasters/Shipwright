@@ -401,6 +401,17 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void*
             }
             break;
         }
+        case GI_VB_OVERRIDE_LINK_THE_GORON_DIALOGUE: {
+            if (CVarGetInteger("gTimeSavers.SkipMiscInteractions", IS_RANDO)) {
+                u16* textId = static_cast<u16*>(opt);
+                // If the doors are not open yet, prioritize opening them
+                if (!Flags_GetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED)) {
+                    *textId = 0x3036;
+                    *should = true;
+                }
+            }
+            break;
+        }
         case GI_VB_PLAY_EYEDROP_CREATION_ANIM:
         case GI_VB_PLAY_EYEDROPS_CS:
         case GI_VB_PLAY_DROP_FISH_FOR_JABU_CS:

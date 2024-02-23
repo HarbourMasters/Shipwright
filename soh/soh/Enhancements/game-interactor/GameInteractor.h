@@ -201,8 +201,8 @@ typedef enum {
     // Opt: *uint16_t
     // Vanilla condition: false
     GI_VB_OVERRIDE_LINK_THE_GORON_DIALOGUE,
-    // Opt: *EnGo2
-    GI_VB_EN_GO2_RESET_AFTER_GET_ITEM,
+    // Vanilla condition: CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)
+    GI_VB_GORONS_CONSIDER_TUNIC_COLLECTED,
     // Opt: *EnSyatekiMan
     // Vanilla condition: (this->getItemId == GI_QUIVER_40) || (this->getItemId == GI_QUIVER_50)
     GI_VB_BE_ELIGIBLE_FOR_ADULT_SHOOTING_GAME_REWARD,
@@ -273,9 +273,7 @@ typedef enum {
     // Vanilla condition: !CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA)
     GI_VB_GIVE_ITEM_FROM_THAWING_KING_ZORA,
     // Opt: *EnGo2
-    GI_VB_GIVE_ITEM_FROM_ROLLING_GORON_AS_CHILD,
-    // Opt: *EnGo2
-    GI_VB_GIVE_ITEM_FROM_ROLLING_GORON_AS_ADULT,
+    GI_VB_GIVE_ITEM_FROM_GORON,
     // Opt: *EnJs
     GI_VB_GIVE_ITEM_FROM_CARPET_SALESMAN,
     // Opt: *EnGm
@@ -333,16 +331,10 @@ typedef enum {
     GI_VB_TRADE_ODD_POTION,
     // Opt: *EnToryo
     GI_VB_TRADE_SAW,
-    // Opt: *EnGo2
-    GI_VB_TRADE_BROKEN_SWORD,
     // Opt: *EnKz,
     GI_VB_TRADE_PRESCRIPTION,
     // Opt: *EnMk
     GI_VB_TRADE_FROG,
-    // Opt: *EnGo2
-    GI_VB_TRADE_EYEDROPS,
-    // Opt: *EnGo2
-    GI_VB_TRADE_CLAIM_CHECK,
 
     GI_VB_TRADE_TIMER_ODD_MUSHROOM,
     GI_VB_TRADE_TIMER_EYEDROPS,

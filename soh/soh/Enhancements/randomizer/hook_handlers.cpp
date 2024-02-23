@@ -34,6 +34,7 @@ extern PlayState* gPlayState;
 RandomizerCheck GetRandomizerCheckFromFlag(int16_t flagType, int16_t flag) {
     for (auto& loc : Rando::StaticData::GetLocationTable()) {
         if (loc.GetCollectionCheck().flag == flag && (
+                (flagType == FLAG_INF_TABLE && loc.GetCollectionCheck().type == SPOILER_CHK_INF_TABLE) ||
                 (flagType == FLAG_EVENT_CHECK_INF && loc.GetCollectionCheck().type == SPOILER_CHK_EVENT_CHK_INF) ||
                 (flagType == FLAG_ITEM_GET_INF && loc.GetCollectionCheck().type == SPOILER_CHK_ITEM_GET_INF) ||
                 (flagType == FLAG_RANDOMIZER_INF && loc.GetCollectionCheck().type == SPOILER_CHK_RANDOMIZER_INF)
@@ -104,6 +105,18 @@ static RandomizerCheck randomizerQueuedCheck = RC_UNKNOWN_CHECK;
 static GetItemEntry randomizerQueuedItemEntry = GET_ITEM_NONE;
 
 void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
+    // Consume adult trade items
+    if (RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE) && flagType == FLAG_RANDOMIZER_INF) {
+        switch (flag) {
+            case RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD:
+                Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_SWORD_BROKEN);
+                break;
+            case RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS:
+                Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_EYEDROPS);
+                break;
+        }
+    }
+
     RandomizerCheck rc = GetRandomizerCheckFromFlag(flagType, flag);
     if (rc == RC_UNKNOWN_CHECK) return;
 
@@ -453,8 +466,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             break;
         }
         case GI_VB_BIGGORON_CONSIDER_TRADE_COMPLETE: {
-
-            *should = INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK && Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_CLAIM_CHECK);
+            // This being true will prevent other biggoron trades, there are already safegaurds in place to prevent
+            // claim check from being traded multiple times, so we don't really need the quest to ever be considered "complete"
+            *should = false;
             break;
         }
         case GI_VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED: {
@@ -465,46 +479,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             *should = Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP);
             break;
         }
-        case GI_VB_OVERRIDE_LINK_THE_GORON_DIALOGUE: {
-            u16* textId = static_cast<u16*>(optionalArg);
-            *should = true;
-
-            // For rando, prioritize opening the doors in GC when Link the goron has been stopped when
-            // the doors are not opened, otherwise let him talk about the DMC exit or that gorons are saved
-            if (!Flags_GetInfTable(INFTABLE_STOPPED_GORON_LINKS_ROLLING)) {
-                *textId = 0x3030;
-            } else if (!Flags_GetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED)) {
-                *textId = 0x3036;
-            } else if (Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) {
-                *textId = 0x3041;
-            } else {
-                *textId = Flags_GetInfTable(INFTABLE_SPOKE_TO_GORON_LINK) ? 0x3038 : 0x3037;
-            }
-            break;
-        }
-        case GI_VB_EN_GO2_RESET_AFTER_GET_ITEM: {
-            EnGo2* enGo2 = static_cast<EnGo2*>(optionalArg);
-            // For randomizer, handle updating the states for the gorons after receiving the item based on
-            // the goron type rather then the item being received
-            switch (enGo2->actor.params & 0x1F) {
-                case GORON_DMT_BIGGORON:
-                    // Resolves #1301. unk_13EE is used to set the opacity of the HUD. The trade sequence discussion
-                    // with Biggoron sets the HUD to transparent, and it is restored at z_message_PAL:3549, but by
-                    // specifically watching for trade sequence items, this leaves it transparent for non-trade sequence
-                    // items (in rando) so we fix that here
-                    gSaveContext.unk_13EE = 0x32;
-                    break;
-                case GORON_CITY_LINK:
-                    EnGo2_GetItemAnimation(enGo2, gPlayState);
-                    break;
-                case GORON_CITY_ROLLING_BIG:
-                    EnGo2_RollingAnimation(enGo2, gPlayState);
-                    enGo2->actionFunc = (EnGo2ActionFunc)EnGo2_GoronRollingBigContinueRolling;
-                    break;
-                default:
-                    enGo2->actionFunc = func_80A46B40;
-                    break;
-            }
+        case GI_VB_GORONS_CONSIDER_TUNIC_COLLECTED: {
+            *should = Flags_GetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED);
             break;
         }
         case GI_VB_GIVE_ITEM_FROM_ITEM_00: {
@@ -587,15 +563,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
         case GI_VB_GIVE_ITEM_FROM_ANJU_AS_ADULT: {
             Flags_SetItemGetInf(ITEMGETINF_2C);
             *should = false;
-            break;
-        }
-        case GI_VB_GIVE_ITEM_FROM_ROLLING_GORON_AS_ADULT: {
-            EnGo2* enGo2 = static_cast<EnGo2*>(optionalArg);
-            *should = false;
-            if (!Flags_GetRandomizerInf(RAND_INF_ROLLING_GORON_AS_ADULT)) {
-                Flags_SetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED);
-                enGo2->interactInfo.talkState = NPC_TALK_STATE_ACTION;
-            }
             break;
         }
         case GI_VB_GIVE_ITEM_FROM_CARPET_SALESMAN: {
@@ -692,16 +659,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
         }
         case GI_VB_TRADE_FROG: {
             Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_FROG);
-            *should = false;
-            break;
-        }
-        case GI_VB_TRADE_BROKEN_SWORD: {
-            Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_SWORD_BROKEN);
-            *should = false;
-            break;
-        }
-        case GI_VB_TRADE_EYEDROPS: {
-            Randomizer_ConsumeAdultTradeItem(gPlayState, ITEM_EYEDROPS);
             *should = false;
             break;
         }
@@ -806,12 +763,11 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, void
             *should = eligible;
             break;
         }
-        case GI_VB_TRADE_CLAIM_CHECK:
         case GI_VB_TRADE_TIMER_ODD_MUSHROOM:
         case GI_VB_TRADE_TIMER_EYEDROPS:
         case GI_VB_TRADE_TIMER_FROG:
         case GI_VB_ANJU_SET_OBTAINED_TRADE_ITEM:
-        case GI_VB_GIVE_ITEM_FROM_ROLLING_GORON_AS_CHILD:
+        case GI_VB_GIVE_ITEM_FROM_GORON:
         case GI_VB_GIVE_ITEM_FROM_LAB_DIVE:
         case GI_VB_GIVE_ITEM_FROM_SKULL_KID_SARIAS_SONG:
         case GI_VB_GIVE_ITEM_FROM_MAN_ON_ROOF:

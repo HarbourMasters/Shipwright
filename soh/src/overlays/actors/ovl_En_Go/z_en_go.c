@@ -971,7 +971,6 @@ void EnGo_GetItem(EnGo* this, PlayState* play) {
 
         if ((this->actor.params & 0xF0) == 0) {
             getItemId = GI_TUNIC_GORON;
-            Flags_SetRandomizerInf(RAND_INF_ROLLING_GORON_AS_ADULT);
         }
 
         yDist = fabsf(this->actor.yDistToPlayer) + 1.0f;
