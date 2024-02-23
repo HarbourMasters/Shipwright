@@ -152,7 +152,7 @@ void InputViewer::DrawElement() {
 #endif
         const int showAnalogAngles = CVarGetInteger("gInputViewer.AnalogAngles.Enabled", 0);
         const int buttonOutlineMode = CVarGetInteger("gInputViewer.ButtonOutlineMode", BUTTON_OUTLINE_NOT_PRESSED);
-        const bool useGlobalOutlineMode = CVarGetInteger("gInputViewer.GlobalButtonOutlineMode", 1);
+        const bool useGlobalOutlineMode = CVarGetInteger("gInputViewer.UseGlobalButtonOutlineMode", 1);
 
         ImVec2 bgSize = LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureSize("Input-Viewer-Background");
         ImVec2 scaledBGSize = ImVec2(bgSize.x * scale, bgSize.y * scale);
@@ -464,19 +464,19 @@ void InputViewerSettingsWindow::DrawElement() {
             UIWidgets::PaddedText("Button Outlines/Backgrounds", true, false);
             UIWidgets::EnhancementCombobox(
                 "gInputViewer.ButtonOutlineMode", buttonOutlineOptions, BUTTON_OUTLINE_NOT_PRESSED,
-                !CVarGetInteger("gInputViewer.GlobalButtonOutlineMode", 1), "",
+                !CVarGetInteger("gInputViewer.UseGlobalButtonOutlineMode", 1), "",
                 CVarGetInteger("gInputViewer.ButtonOutlineMode", BUTTON_OUTLINE_NOT_PRESSED));
             UIWidgets::Tooltip(
                 "Sets the desired visibility behavior for the button outline/background layers. Useful for "
                 "custom input viewers.");
 
-            // gInputViewer.GlobalButtonOutlineMode
-            UIWidgets::EnhancementCheckbox("Use for all buttons", "gInputViewer.GlobalButtonOutlineMode", false, "",
+            // gInputViewer.UseGlobalButtonOutlineMode
+            UIWidgets::EnhancementCheckbox("Use for all buttons", "gInputViewer.UseGlobalButtonOutlineMode", false, "",
                                            UIWidgets::CheckboxGraphics::Checkmark, true);
 
             UIWidgets::PaddedSeparator();
 
-            bool useIndividualOutlines = !CVarGetInteger("gInputViewer.GlobalButtonOutlineMode", 1);
+            bool useIndividualOutlines = !CVarGetInteger("gInputViewer.UseGlobalButtonOutlineMode", 1);
 
             // gInputViewer.ABtn
             UIWidgets::EnhancementCheckbox("Show A-Button Layers", "gInputViewer.ABtn", false, "",
